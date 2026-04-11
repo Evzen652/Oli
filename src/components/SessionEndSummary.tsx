@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { SessionData, TopicMetadata } from "@/lib/types";
 import { getFullTopicTitle } from "@/lib/types";
-import { generateLocalEvaluation } from "@/lib/sessionEvaluator";
+import { generateAiEvaluation } from "@/lib/sessionEvaluator";
 import { Button } from "@/components/ui/button";
 import { Trophy, ClipboardList, CheckCircle, Lightbulb, XCircle, Sparkles, RotateCcw, BookOpen } from "lucide-react";
 import categoryInfoImg from "@/assets/category-info.png";
@@ -50,8 +50,8 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
     setEvalMinReached(false);
     const timer = setTimeout(() => setEvalMinReached(true), 3000);
 
-    // Generate evaluation locally (smart mock — no AI needed)
-    const evalText = generateLocalEvaluation({
+    // Generate evaluation — AI with local fallback
+    generateAiEvaluation({
       topicTitle: getFullTopicTitle(session.matchedTopic),
       totalTasks: answered,
       correctCount: correctAlone,
@@ -59,15 +59,12 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
       helpUsedCount: helpUsed,
       grade: session.grade,
       subject: session.matchedTopic.subject,
-    });
+    })
+      .then((text) => setAiEvaluation(text))
+      .catch(() => {})
+      .finally(() => setAiEvalLoading(false));
 
-    // Simulate slight delay for natural UX
-    const evalTimer = setTimeout(() => {
-      setAiEvaluation(evalText);
-      setAiEvalLoading(false);
-    }, 2000);
-
-    return () => { clearTimeout(timer); clearTimeout(evalTimer); };
+    return () => { clearTimeout(timer); };
   }, []);
 
   const pct = answered > 0 ? Math.round((correctAlone / answered) * 100) : 0;

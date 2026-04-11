@@ -1,14 +1,18 @@
 /**
- * Smart local session evaluator — generates personalized Czech evaluation
- * without AI. Follows rules from ai-architecture-notes.md:
+ * Session evaluator — uses Groq AI (Llama 3.3 70B) when available,
+ * falls back to smart local evaluation.
+ *
+ * Rules from ai-architecture-notes.md:
  * - Grade 1-3: max 1-2 very short sentences, simple words
  * - Grade 4-5: 2-3 sentences, fuller evaluation
- * - Subject-specific terminology
+ * - Subject-specific terminology (matematika: pocitani, cestina: pravopis, diktat: special)
  * - Mentions help usage gently
  * - Encouraging tone, tykani, no emoticons
  */
 
-interface EvalInput {
+import { callAi, isAiAvailable } from "./aiClient";
+
+export interface EvalInput {
   topicTitle: string;
   totalTasks: number;
   correctCount: number;
@@ -16,6 +20,57 @@ interface EvalInput {
   helpUsedCount: number;
   grade: number;
   subject: string;
+}
+
+/**
+ * Main entry point — tries AI first, falls back to local.
+ */
+export async function generateAiEvaluation(input: EvalInput): Promise<string> {
+  if (!isAiAvailable()) {
+    return generateLocalEvaluation(input);
+  }
+
+  try {
+    const result = await callAiEvaluation(input);
+    if (result && result.length > 10) return result;
+    return generateLocalEvaluation(input);
+  } catch {
+    return generateLocalEvaluation(input);
+  }
+}
+
+async function callAiEvaluation(input: EvalInput): Promise<string> {
+  const { topicTitle, totalTasks, correctCount, wrongCount, helpUsedCount, grade, subject } = input;
+  const pct = totalTasks > 0 ? Math.round((correctCount / totalTasks) * 100) : 0;
+
+  const gradeInstruction = grade <= 3
+    ? "Piš maximálně 1-2 velmi krátké věty. Používej jednoduchá slova (max 12 slov na větu). Dítěti tykej."
+    : "Piš 2-3 věty. Dítěti tykej. Můžeš použít mírně složitější formulace.";
+
+  const subjectTerm = subject === "matematika" ? "počítání a příklady"
+    : subject === "čeština" || subject === "cestina" ? "pravopis a psaní"
+    : "učení";
+
+  const prompt = `Jsi laskavý učitel. Napiš krátké slovní hodnocení pro žáka ${grade}. ročníku ZŠ.
+
+Téma: ${topicTitle}
+Výsledek: ${correctCount} správně z ${totalTasks} (${pct} %)
+Chyby: ${wrongCount}
+Použitá nápověda: ${helpUsedCount}×
+
+Pravidla:
+- ${gradeInstruction}
+- Mluv o "${subjectTerm}", ne o "úlohách" nebo "testech".
+- ${helpUsedCount > 0 ? "Jemně povzbuď k větší samostatnosti." : "Pochval za samostatnost."}
+- ${pct >= 80 ? "Pochval, motivuj k dalšímu učení." : pct >= 50 ? "Povzbuď, navrhni další procvičování." : "Buď laskavý, nabídni pomoc a další pokus."}
+- Nepoužívej emotikony ani hvězdičky.
+- Piš česky s diakritikou.
+- Odpověz POUZE hodnocením, nic jiného.`;
+
+  return callAi(
+    [{ role: "user", content: prompt }],
+    { maxTokens: 150, temperature: 0.7, timeoutMs: 5000 }
+  );
 }
 
 export function generateLocalEvaluation(input: EvalInput): string {
