@@ -39,37 +39,100 @@ export async function generateAiEvaluation(input: EvalInput): Promise<string> {
   }
 }
 
+// Subject-specific terminology and topic context for the AI prompt
+function getSubjectContext(subject: string, topicTitle: string): { activity: string; whatWentWell: string; whatToPractice: string } {
+  const isDiktat = topicTitle.toLowerCase().includes("dikt");
+  if (isDiktat) {
+    return {
+      activity: "doplňování v diktátu",
+      whatWentWell: "doplnil/a správně",
+      whatToPractice: "zopakovat si pravidla pravopisu, která ti dělají potíže",
+    };
+  }
+  if (subject === "matematika") {
+    return {
+      activity: "počítání",
+      whatWentWell: "vypočítal/a správně",
+      whatToPractice: "projít si postup řešení u příkladů, kde ti to nevyšlo",
+    };
+  }
+  if (subject === "čeština" || subject === "cestina") {
+    if (topicTitle.toLowerCase().includes("vyjmenovan")) {
+      return {
+        activity: "doplňování y/i po obojetných souhláskách",
+        whatWentWell: "doplnil/a správně",
+        whatToPractice: "zopakovat si řadu vyjmenovaných slov, kde si nejsi jistý/á",
+      };
+    }
+    if (topicTitle.toLowerCase().includes("tvrd") || topicTitle.toLowerCase().includes("měk")) {
+      return {
+        activity: "doplňování y/i po tvrdých a měkkých souhláskách",
+        whatWentWell: "doplnil/a správně",
+        whatToPractice: "zopakovat si pravidlo, kdy se píše tvrdé y po tvrdých souhláskách",
+      };
+    }
+    if (topicTitle.toLowerCase().includes("párov") || topicTitle.toLowerCase().includes("parov")) {
+      return {
+        activity: "rozlišování párových souhlásek",
+        whatWentWell: "určil/a správně",
+        whatToPractice: "zkusit si ověřovací slova u souhlásek, kde váháš",
+      };
+    }
+    return {
+      activity: "pravopis",
+      whatWentWell: "zvládl/a správně",
+      whatToPractice: "procvičit si pravidla, kde děláš chyby",
+    };
+  }
+  return {
+    activity: "odpovídání na otázky",
+    whatWentWell: "odpověděl/a správně",
+    whatToPractice: "přečíst si o tomto tématu víc a zkusit to znovu",
+  };
+}
+
 async function callAiEvaluation(input: EvalInput): Promise<string> {
   const { topicTitle, totalTasks, correctCount, wrongCount, helpUsedCount, grade, subject } = input;
   const pct = totalTasks > 0 ? Math.round((correctCount / totalTasks) * 100) : 0;
+  const ctx = getSubjectContext(subject, topicTitle);
 
-  const gradeInstruction = grade <= 3
-    ? "Piš maximálně 1-2 velmi krátké věty. Používej jednoduchá slova (max 12 slov na větu). Dítěti tykej."
-    : "Piš 2-3 věty. Dítěti tykej. Můžeš použít mírně složitější formulace.";
+  const gradeStyle = grade <= 3
+    ? "Piš 2 krátké věty. Jednoduchá slova. Dítěti tykej."
+    : "Piš 2-3 věty. Dítěti tykej.";
 
-  const subjectTerm = subject === "matematika" ? "počítání a příklady"
-    : subject === "čeština" || subject === "cestina" ? "pravopis a psaní"
-    : "učení";
+  const helpNote = helpUsedCount === 0
+    ? "Žák nepotřeboval nápovědu — oceň konkrétně jeho samostatnost."
+    : `Žák použil nápovědu ${helpUsedCount}×. Jemně povzbuď k větší samostatnosti.`;
 
-  const prompt = `Jsi laskavý učitel. Napiš krátké slovní hodnocení pro žáka ${grade}. ročníku ZŠ.
+  const prompt = `Napiš slovní hodnocení pro žáka ${grade}. ročníku ZŠ.
 
-Téma: ${topicTitle}
-Výsledek: ${correctCount} správně z ${totalTasks} (${pct} %)
-Chyby: ${wrongCount}
-Použitá nápověda: ${helpUsedCount}×
+KONTEXT:
+- Téma: "${topicTitle}"
+- Aktivita: ${ctx.activity}
+- Výsledek: ${correctCount} z ${totalTasks} ${ctx.whatWentWell} (${pct} %)
+- Počet chyb: ${wrongCount}
+- ${helpNote}
 
-Pravidla:
-- ${gradeInstruction}
-- Mluv o "${subjectTerm}", ne o "úlohách" nebo "testech".
-- ${helpUsedCount > 0 ? "Jemně povzbuď k větší samostatnosti." : "Pochval za samostatnost."}
-- ${pct >= 80 ? "Pochval, motivuj k dalšímu učení." : pct >= 50 ? "Povzbuď, navrhni další procvičování." : "Buď laskavý, nabídni pomoc a další pokus."}
-- Nepoužívej emotikony ani hvězdičky.
+POVINNÁ STRUKTURA hodnocení:
+1. PRVNÍ VĚTA: Začni názvem tématu a řekni, jak to žákovi šlo (konkrétní čísla neříkej, ale řekni "většinu", "skoro vše", "některé" apod.)
+2. DRUHÁ VĚTA: ${wrongCount > 0 ? `Pojmenuj co ještě procvičit: "${ctx.whatToPractice}".` : "Pochval, že zvládl vše bez chyby."}
+${wrongCount > 0 && helpUsedCount === 0 ? `3. TŘETÍ VĚTA (krátká): Oceň, že pracoval/a samostatně bez nápovědy.` : ""}
+
+PRAVIDLA:
+- ${gradeStyle}
+- NIKDY neříkej "úlohy", "test", "cvičení" — mluv o konkrétní činnosti (${ctx.activity}).
+- NIKDY nepoužívej emotikony, hvězdičky, pomlčky na začátku.
+- Piš plynulý text, ne body.
 - Piš česky s diakritikou.
-- Odpověz POUZE hodnocením, nic jiného.`;
+
+PŘÍKLAD pro inspiraci (NEOPISUJ doslova):
+"${topicTitle} ti jde dobře — většinu jsi ${ctx.whatWentWell} a bez nápovědy. U pár slov sis ještě nebyl/a jistý/á, tak si zkus ${ctx.whatToPractice}."
+
+Odpověz POUZE hodnocením:`;
 
   return callAi(
     [{ role: "user", content: prompt }],
-    { maxTokens: 150, temperature: 0.7, timeoutMs: 5000 }
+    { maxTokens: 200, temperature: 0.6, timeoutMs: 5000 }
   );
 }
 
