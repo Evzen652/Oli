@@ -1,0 +1,1 @@
+ALTER TABLE public.session_logs ADD COLUMN help_used boolean NOT NULL DEFAULT false;

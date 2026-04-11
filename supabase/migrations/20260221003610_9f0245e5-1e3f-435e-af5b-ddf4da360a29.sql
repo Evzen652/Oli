@@ -1,0 +1,1 @@
+ALTER TABLE public.curriculum_skills ADD COLUMN fun_fact text;

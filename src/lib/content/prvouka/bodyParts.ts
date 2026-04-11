@@ -1,0 +1,85 @@
+import type { TopicMetadata, HelpData } from "../../types";
+import { mapQPoolToTasks, type QPool } from "../helpers";
+
+const BODY_PARTS_QUESTIONS: QPool[] = [
+  { question: "🦴 Která část těla chrání mozek?", correct: "Lebka", options: ["Lebka", "Žebra", "Páteř", "Lopatka"],
+    hints: ["Mozek je v hlavě — co ho obaluje a chrání zvenku?", "Je to tvrdá kost, která tvoří celou horní část hlavy."] },
+  { question: "💪 Čím ohýbáme ruku?", correct: "Svaly", options: ["Svaly", "Kosti", "Kůže", "Nehty"],
+    hints: ["Zkus ohnout ruku — cítíš, jak se něco napíná?", "Kosti drží tvar, ale co je pohybuje?"] },
+  { question: "🫁 Který orgán potřebujeme k dýchání?", correct: "Plíce", options: ["Plíce", "Žaludek", "Játra", "Ledviny"],
+    hints: ["Když se nadechneš, vzduch jde do hrudníku — do jakého orgánu?", "Tento orgán se při nádechu nafukuje a při výdechu splaskne."] },
+  { question: "❤️ Který orgán pumpuje krev po celém těle?", correct: "Srdce", options: ["Srdce", "Plíce", "Mozek", "Játra"],
+    hints: ["Přilož si ruku na hrudník vlevo — co tam cítíš tlouct?", "Tento orgán pracuje celý život a nikdy se nezastaví."] },
+  { question: "🧠 Který orgán řídí celé naše tělo?", correct: "Mozek", options: ["Mozek", "Srdce", "Žaludek", "Plíce"],
+    hints: ["Přemýšlíš, učíš se, pohybuješ se — co to všechno řídí?", "Je ukrytý v lebce a je to velitelské centrum těla."] },
+  { question: "🦷 K čemu slouží stoličky v ústech?", correct: "K rozmělnění jídla", options: ["K rozmělnění jídla", "K řeči", "K dýchání", "K pití"],
+    hints: ["Stoličky jsou široké a ploché zuby vzadu v ústech. Co s nimi děláme?", "Když žvýkáš jídlo, které zuby pracují nejvíc?"] },
+  { question: "👃 Který smyslový orgán nám pomáhá cítit vůně?", correct: "Nos", options: ["Nos", "Ucho", "Oko", "Jazyk"],
+    hints: ["Vůně a pachy — čím je vnímáme? Kterou částí obličeje?", "Když voníš ke květině, co k ní přiblížíš?"] },
+  { question: "🦵 Která kost je nejdelší v lidském těle?", correct: "Stehenní kost", options: ["Stehenní kost", "Holenní kost", "Pažní kost", "Žebro"],
+    hints: ["Nejdelší kost je v noze — ale v horní nebo dolní části nohy?", "Je to kost od kolena nahoru k pánvi — to je ta nejdelší."] },
+  { question: "🫀 Co rozvádí krev po celém těle?", correct: "Cévy", options: ["Cévy", "Nervy", "Svaly", "Kosti"],
+    hints: ["Krev teče z srdce do celého těla — ale čím? Jaké trubičky ji vedou?", "Jsou to žíly a tepny — jak se souhrnně jmenují?"] },
+  { question: "🦴 K čemu slouží páteř?", correct: "Drží tělo vzpřímené", options: ["Drží tělo vzpřímené", "Pumpuje krev", "Tráví jídlo", "Vidíme díky ní"],
+    hints: ["Páteř je řada kostí uprostřed zad. Co by se stalo, kdybychom ji neměli?", "Díky páteři můžeš stát rovně a chodit vzpřímeně."] },
+  // Nové otázky
+  { question: "🦴 Co chrání srdce a plíce?", correct: "Žebra", options: ["Žebra", "Lebka", "Páteř", "Pánev"],
+    hints: ["V hrudníku máš srdce a plíce. Co je kolem nich jako klec?", "Žebra tvoří hrudní koš — chrání důležité orgány."] },
+  { question: "🧠 Čím jsou propojeny mozek a celé tělo?", correct: "Nervy", options: ["Nervy", "Cévy", "Svaly", "Kůže"],
+    hints: ["Mozek posílá příkazy do celého těla. Čím?", "Jako elektrické dráty — nervy vedou signály z mozku do těla a zpět."] },
+  { question: "🦴 Kolik kostí má přibližně dospělý člověk?", correct: "Asi 206", options: ["Asi 206", "Asi 50", "Asi 500", "Asi 100"],
+    hints: ["Lidská kostra má hodně kostí — víc než 200.", "Dospělý člověk má přibližně 206 kostí."] },
+  { question: "💪 Který sval pracuje, i když spíš?", correct: "Srdce", options: ["Srdce", "Biceps", "Lýtkový sval", "Břišní sval"],
+    hints: ["Tento sval musí pracovat neustále — jinak bys nežil.", "Srdce je sval, který pumpuje krev 24 hodin denně."] },
+  { question: "🩸 Co přenáší kyslík v krvi?", correct: "Červené krvinky", options: ["Červené krvinky", "Bílé krvinky", "Plazma", "Krevní destičky"],
+    hints: ["Krev je červená díky těmto buňkám, které přenášejí kyslík.", "Červené krvinky roznášejí kyslík z plic do celého těla."] },
+  { question: "🫁 Kolik plic má člověk?", correct: "2", options: ["2", "1", "3", "4"],
+    hints: ["Plíce jsou párový orgán — jsou v hrudníku vlevo i vpravo.", "Máme dvě plíce — levou a pravou."] },
+  { question: "🦷 Kolik mléčných zubů má malé dítě?", correct: "20", options: ["20", "28", "32", "10"],
+    hints: ["Malé děti mají méně zubů než dospělí.", "Mléčný chrup má 20 zubů — potom vypadají a rostou trvalé."] },
+  { question: "👂 Který orgán nám pomáhá udržovat rovnováhu?", correct: "Vnitřní ucho", options: ["Vnitřní ucho", "Oko", "Nos", "Mozek"],
+    hints: ["Rovnováhu řídí orgán, který slyší, ale i něco jiného.", "Ve vnitřním uchu je centrum rovnováhy."] },
+  { question: "🦴 Co spojuje kosti mezi sebou?", correct: "Klouby", options: ["Klouby", "Svaly", "Nervy", "Žíly"],
+    hints: ["Koleno, loket, rameno — co tam spojuje dvě kosti?", "Klouby umožňují pohyb — ohýbání a natahování."] },
+  { question: "🫀 Kde v těle najdeme žaludek?", correct: "V břiše vlevo nahoře", options: ["V břiše vlevo nahoře", "V hrudníku", "V hlavě", "V noze"],
+    hints: ["Žaludek tráví jídlo. Je v břiše — ale kde přesně?", "V břiše nahoře, mírně vlevo — tam cítíš plnost po jídle."] },
+];
+
+const HELP_BODY_PARTS: HelpData = {
+  hint: "Zkus si vzpomenout, kde v těle je daná část a co dělá.",
+  steps: [
+    "Přečti si otázku — o jakém orgánu nebo části těla je řeč?",
+    "Vzpomeň si, kde se v těle nachází.",
+    "Přemýšlej, co ta část dělá — jakou má funkci.",
+    "Vyber správnou odpověď.",
+  ],
+  commonMistake: "Záměna plic a žaludku — plíce jsou na dýchání, žaludek na trávení.",
+  example: "❤️ Který orgán pumpuje krev? → Srdce ✅",
+  visualExamples: [
+    {
+      label: "Hlavní orgány",
+      illustration: "🧠 Mozek — řídí tělo\n❤️ Srdce — pumpuje krev\n🫁 Plíce — dýchání\n🟤 Žaludek — trávení\n🦴 Kostra — drží tělo",
+    },
+  ],
+};
+
+export const BODY_PARTS_TOPICS: TopicMetadata[] = [
+  {
+    id: "pr-body-parts",
+    title: "Části lidského těla",
+    subject: "prvouka",
+    category: "Člověk a jeho tělo",
+    topic: "Lidské tělo",
+    topicDescription: "Poznáš hlavní části a orgány lidského těla a pochopíš, k čemu slouží.",
+    briefDescription: "Poznáš hlavní části těla a orgány a zjistíš, co dělají.",
+    keywords: ["lidské tělo", "části těla", "orgány", "tělo", "kosti", "svaly"],
+    goals: ["Naučíš se pojmenovat hlavní části těla a jejich funkce."],
+    boundaries: ["Pouze základní orgány", "Žádné anatomické detaily"],
+    gradeRange: [3, 3],
+    practiceType: "result_only",
+    defaultLevel: 1,
+    inputType: "select_one",
+    generator: (_level) => mapQPoolToTasks(BODY_PARTS_QUESTIONS),
+    helpTemplate: HELP_BODY_PARTS,
+  },
+];

@@ -1,0 +1,1 @@
+ALTER TABLE public.children ADD COLUMN learning_notes text;

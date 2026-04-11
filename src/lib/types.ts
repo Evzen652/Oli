@@ -1,0 +1,142 @@
+// ===== SESSION STATE MACHINE =====
+export type SessionState =
+  | "INIT"
+  | "INPUT_CAPTURE"
+  | "PRE_INTENT"
+  | "TOPIC_MATCH"
+  | "EXPLAIN"
+  | "PRACTICE"
+  | "CHECK"
+  | "STOP_1"
+  | "STOP_2"
+  | "END";
+
+export type Grade = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+export type Modality = "voice" | "text" | "mixed";
+
+export type InputType = "comparison" | "fraction" | "number" | "select_one" | "drag_order" | "text" | "fill_blank" | "match_pairs" | "multi_select" | "categorize";
+
+// ===== HELP DATA =====
+export interface FractionBarData {
+  fraction: string;       // e.g. "3/5"
+  numerator: number;
+  denominator: number;
+}
+
+export interface HelpVisualExample {
+  label: string;
+  illustration?: string;          // fallback ASCII
+  fractionBars?: FractionBarData[]; // colored visual bars
+  conclusion?: string;            // e.g. "3/5 > 2/5"
+}
+
+export interface HelpData {
+  hint: string;
+  steps: string[];
+  commonMistake: string;
+  example: string;
+  visualExamples?: HelpVisualExample[];
+}
+
+// ===== CONTENT REGISTRY =====
+export interface TopicMetadata {
+  id: string;
+  title: string;
+  subject: string; // e.g. "matematika", "čeština"
+  category: string; // grouping within subject, e.g. "Zlomky"
+  topic: string; // grouping within category, e.g. "Porovnávání zlomků"
+  briefDescription: string; // 1-2 sentence description of the subtopic/skill
+  topicDescription?: string; // general description for the topic group (used when multiple subtopics exist)
+  keywords: string[]; // for matching child input
+  goals: string[]; // learning objectives
+  boundaries: string[]; // what NOT to cover
+  gradeRange: [Grade, Grade]; // min-max grade applicability
+  practiceType?: "result_only" | "step_based"; // default: result_only
+  defaultLevel?: number; // default difficulty level (1-3)
+  sessionTaskCount?: number; // how many tasks per session (default 6)
+  inputType: InputType; // determines UI component
+  generator: (level: number) => PracticeTask[]; // pure function, no network
+  helpTemplate: HelpData; // static help data
+}
+
+// ===== PRACTICE BATCH =====
+export interface PracticeTask {
+  question: string;
+  correctAnswer: string;
+  options?: string[]; // for select_one / true_false
+  items?: string[]; // for drag_order (correct order)
+  solutionSteps?: string[]; // specific step-by-step solution for this task
+  hints?: string[];          // progressive hints (guide without revealing answer)
+  blanks?: string[];         // for fill_blank (correct answers for each blank)
+  pairs?: { left: string; right: string }[]; // for match_pairs
+  categories?: { name: string; items: string[] }[]; // for categorize
+  correctAnswers?: string[]; // for multi_select
+}
+
+// ===== RULE ENGINE =====
+export interface SessionRules {
+  maxDurationSeconds: number;
+  modality: Modality;
+  maxErrorRepetitions: number;
+}
+
+// ===== SESSION =====
+export interface SessionData {
+  id: string;
+  state: SessionState;
+  grade: Grade;
+  startTime: number;
+  elapsedSeconds: number;
+  matchedTopic: TopicMetadata | null;
+  childInput: string;
+  errorCount: number;
+  confusionCount: number;
+  stopReason: string | null;
+  rules: SessionRules;
+  practiceBatch: PracticeTask[];
+  currentTaskIndex: number;
+  errorStreak: number;
+  successStreak: number;
+  usedQuestions: string[]; // deduplication: already used question strings
+  helpUsedCount: number; // count of tasks where help was opened before answering
+  helpUsedOnCurrent: boolean; // whether help was opened for the current task
+  currentLevel: number; // adaptive difficulty level (1-3)
+  adaptiveHelpOffered: boolean; // adaptive engine suggested offering help
+}
+
+// ===== AI EXECUTION (mock) =====
+export interface AIRequest {
+  type: "explain" | "practice" | "check";
+  topic: TopicMetadata;
+  grade: Grade;
+  childInput: string;
+  previousErrors: number;
+}
+
+export interface AIResponse {
+  content: string;
+  practiceQuestion?: string;
+  isCorrect?: boolean;
+}
+
+// ===== LOGGING =====
+export interface AuditLogEntry {
+  timestamp: number;
+  sessionId: string;
+  topicId: string | null;
+  sessionState: SessionState;
+  stopReason: string | null;
+  durationSeconds: number;
+  modality: Modality;
+  boundaryViolation: boolean;
+}
+
+// ===== HELPERS =====
+/** Full display title: "Porovnávání zlomků s různým jmenovatelem" instead of just "S různým jmenovatelem" */
+export function getFullTopicTitle(topic: TopicMetadata): string {
+  if (topic.topic === topic.title) return topic.title;
+  // Lowercase first char of subtitle when appending
+  const sub = topic.title.charAt(0).toLowerCase() + topic.title.slice(1);
+  return `${topic.topic} – ${sub}`;
+}
