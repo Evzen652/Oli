@@ -32,7 +32,7 @@ export default function Demo() {
         <div className="flex items-center gap-3 mb-6">
           <OlyLogo size="sm" />
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Oly — interaktivní procvičování</h1>
+            <h1 className="text-2xl font-bold text-foreground">Váš partner pro každodenní vyučování</h1>
             <p className="text-sm text-muted-foreground">Adaptivní tutor pro žáky 3.–9. třídy</p>
           </div>
         </div>

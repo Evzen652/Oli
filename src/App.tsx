@@ -26,6 +26,7 @@ import AdminCategories from "./pages/AdminCategories";
 import AdminTopics from "./pages/AdminTopics";
 import AdminSkills from "./pages/AdminSkills";
 import Demo from "./pages/Demo";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
@@ -134,12 +135,13 @@ const App = () => {
                 <AuthenticatedRoutes />
               ) : (
                 <Routes>
+                   <Route path="/" element={<Landing />} />
                    <Route path="/demo" element={<Demo />} />
                    <Route path="/auth" element={<Auth />} />
                    <Route path="/auth/child" element={<ChildAuth />} />
                    <Route path="/auth/forgot-password" element={<ForgotPassword />} />
                    <Route path="/reset-password" element={<ResetPassword />} />
-                   <Route path="*" element={<Navigate to="/auth" replace />} />
+                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               )}
             </BrowserRouter>

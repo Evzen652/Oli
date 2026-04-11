@@ -112,30 +112,34 @@ export async function generateWeeklyReport(childId?: string | null): Promise<Rep
   const strong = skills.filter(s => s.attempts >= 2 && s.correct / s.attempts >= 0.8);
   const weak = skills.filter(s => s.attempts >= 2 && s.correct / s.attempts < 0.5);
 
-  const strengthNames = strong.map(s => getTopicById(s.skill)?.title ?? s.skill).join(", ");
-  const weakNames = weak.map(s => getTopicById(s.skill)?.title ?? s.skill).join(", ");
+  const strengthCount = strong.length;
+  const weakCount = weak.length;
 
-  // Build summary
-  const name = childName ?? "Zak";
+  // Build summary — no numbers (those are in the stats section)
+  const name = childName ?? "Žák";
   let summary: string;
   if (accuracy >= 80) {
-    summary = `${name} mel/a tento tyden skvely tyden! Zvladl/a ${attempts} uloh v ${sessions} sezenich s uspesnosti ${accuracy} %. Jen tak dal!`;
+    summary = `${name} si tento týden vedl/a výborně! Učení jde správným směrem — jen tak dál.`;
   } else if (accuracy >= 50) {
-    summary = `${name} tento tyden procvicoval/a ${attempts} uloh v ${sessions} sezenich. Uspesnost ${accuracy} % — solidni zaklad, ale jeste je kam rust.`;
+    summary = `${name} tento týden procvičoval/a pravidelně. Základ je dobrý, ale některá témata si zaslouží víc pozornosti.`;
   } else {
-    summary = `${name} tento tyden procvicoval/a ${attempts} uloh. Uspesnost ${accuracy} % ukazuje, ze nektere temata potrebuji vice pozornosti.`;
+    summary = `${name} tento týden potřebuje s učením trochu pomoct. Doporučujeme se zaměřit na slabší témata a procvičovat kratší dobu, ale častěji.`;
   }
 
-  const strengths = strengthNames ? `Dobre zvlada: ${strengthNames}.` : undefined;
-  const to_practice = weakNames ? `Doporucujeme vice procvicovat: ${weakNames}.` : undefined;
+  const strengths = strengthCount > 0
+    ? `V ${strengthCount} ${strengthCount === 1 ? "tématu" : "tématech"} má úspěšnost nad 80 % — skvělá práce!`
+    : undefined;
+  const to_practice = weakCount > 0
+    ? `V ${weakCount} ${weakCount === 1 ? "tématu" : "tématech"} je úspěšnost pod 50 %. Viz přehled níže.`
+    : undefined;
 
   let recommendations: string;
-  if (weak.length > 0) {
-    recommendations = `Zamerit se na ${weakNames}. Doporucujeme kratsi, ale castejsi procvicovani (5-10 minut denne).`;
+  if (weakCount > 0) {
+    recommendations = "Doporučujeme kratší, ale častější procvičování slabších témat (5–10 minut denně).";
   } else if (accuracy >= 80) {
-    recommendations = "Vynikajici vykon! Muzete zkusit tezsi temata nebo novy predmet.";
+    recommendations = "Výborný výkon! Můžete zkusit těžší témata nebo nový předmět.";
   } else {
-    recommendations = "Pokracujte v pravidelnem procvicovani. Doporucujeme 3-4x tydne po 10 minutach.";
+    recommendations = "Pokračujte v pravidelném procvičování. Doporučujeme 3–4× týdně po 10 minutách.";
   }
 
   return {
