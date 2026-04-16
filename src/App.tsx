@@ -112,7 +112,15 @@ const App = () => {
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Safety timeout — if Supabase doesn't respond in 3s, show unauthenticated UI
+    const timeout = setTimeout(() => {
+      setLoading((prev) => {
+        if (prev) console.warn("Supabase auth timeout — showing landing page");
+        return false;
+      });
+    }, 3000);
+
+    return () => { subscription.unsubscribe(); clearTimeout(timeout); };
   }, []);
 
   if (loading) {
