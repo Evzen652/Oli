@@ -47,7 +47,7 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 function SectionHead({ title, sub }: { title: string; sub?: string }) {
   return (
     <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: C.dark }}>{title}</h2>
+      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-heading" style={{ color: C.dark }}>{title}</h2>
       {sub && <p className="text-lg text-slate-500 leading-relaxed">{sub}</p>}
     </div>
   );
@@ -58,7 +58,7 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
     <Card className="rounded-3xl border-0 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: bg || "#fff" }}>
       <CardContent className="p-7 space-y-3">
         <img src={img} alt={title} className="h-14 w-14 object-contain drop-shadow-md" />
-        <h3 className="text-lg font-semibold" style={{ color: C.dark }}>{title}</h3>
+        <h3 className="text-lg font-semibold font-heading" style={{ color: C.dark }}>{title}</h3>
         <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
       </CardContent>
     </Card>
@@ -79,7 +79,7 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-16 items-start pt-6 sm:pt-10">
             {/* Left — text */}
             <div className="space-y-8">
-              <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.12]" style={{ color: C.dark }}>
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.12] font-heading" style={{ color: C.dark }}>
                 Zvládnete školu a písemky s jistotou
               </h1>
               <p className="text-lg sm:text-xl text-slate-500 leading-relaxed max-w-lg">
@@ -150,7 +150,7 @@ export default function Landing() {
                   </div>
                   {/* Text */}
                   <div>
-                    <h3 className="text-lg font-bold leading-tight" style={{ color: C.dark }}>
+                    <h3 className="text-lg font-bold leading-tight font-heading" style={{ color: C.dark }}>
                       {tile.title}
                     </h3>
                     <p className="text-sm text-slate-500 mt-1">{tile.desc}</p>
@@ -169,7 +169,7 @@ export default function Landing() {
               ].map((tile) => (
                 <div key={tile.title} className="rounded-2xl shadow-md p-4 flex flex-col gap-2 items-center text-center" style={{ background: tile.bg }}>
                   <img src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm" />
-                  <h3 className="text-sm font-bold" style={{ color: C.dark }}>{tile.title}</h3>
+                  <h3 className="text-sm font-bold font-heading" style={{ color: C.dark }}>{tile.title}</h3>
                   <p className="text-xs text-slate-500">{tile.desc}</p>
                 </div>
               ))}
@@ -205,7 +205,7 @@ export default function Landing() {
                 <div className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: C.orange }}>
                   {item.step}
                 </div>
-                <h3 className="text-lg font-semibold" style={{ color: C.dark }}>{item.title}</h3>
+                <h3 className="text-lg font-semibold font-heading" style={{ color: C.dark }}>{item.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
               </CardContent>
             </Card>
@@ -226,14 +226,14 @@ export default function Landing() {
             <div key={item.title} className="flex items-start gap-5 p-6 rounded-3xl shadow-md hover:shadow-lg transition-shadow" style={{ background: item.bg }}>
               <img src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md" />
               <div>
-                <h3 className="font-semibold text-base" style={{ color: C.dark }}>{item.title}</h3>
+                <h3 className="font-semibold text-base font-heading" style={{ color: C.dark }}>{item.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed mt-1">{item.desc}</p>
               </div>
             </div>
           ))}
         </div>
         <div className="mt-16 text-center">
-          <p className="text-xl sm:text-2xl font-semibold leading-relaxed max-w-xl mx-auto" style={{ color: C.dark }}>
+          <p className="text-xl sm:text-2xl font-semibold leading-relaxed max-w-xl mx-auto font-heading" style={{ color: C.dark }}>
             „Každý den máte jasný přehled o učení vašeho dítěte."
           </p>
         </div>
@@ -259,7 +259,7 @@ export default function Landing() {
           {/* Free */}
           <Card className="rounded-3xl border border-slate-200 shadow-md">
             <CardContent className="p-8 space-y-6">
-              <div><h3 className="text-xl font-bold" style={{ color: C.dark }}>Zdarma</h3><p className="text-sm text-slate-400 mt-1">Na vyzkoušení a první pokroky</p></div>
+              <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Zdarma</h3><p className="text-sm text-slate-400 mt-1">Na vyzkoušení a první pokroky</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>0 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
                 {["1 dítě", "Všechny předměty", "Základní přehled", "5 AI cvičení/měsíc"].map((f) => (
@@ -276,7 +276,7 @@ export default function Landing() {
               <Badge className="text-white text-xs px-4 py-1 rounded-full" style={{ background: C.orange }}>Nejčastější volba</Badge>
             </div>
             <CardContent className="p-8 space-y-6">
-              <div><h3 className="text-xl font-bold" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-slate-400 mt-1">Pro pravidelný posun a přehled</p></div>
+              <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-slate-400 mt-1">Pro pravidelný posun a přehled</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>149 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
                 {["Až 3 děti", "Neomezená cvičení", "Podrobné reporty", "AI hodnocení", "Příprava na písemky", "Bez reklam"].map((f) => (
@@ -292,7 +292,7 @@ export default function Landing() {
           {/* Family */}
           <Card className="rounded-3xl border border-slate-200 shadow-md">
             <CardContent className="p-8 space-y-6">
-              <div><h3 className="text-xl font-bold" style={{ color: C.dark }}>Rodinný</h3><p className="text-sm text-slate-400 mt-1">Pro více dětí</p></div>
+              <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Rodinný</h3><p className="text-sm text-slate-400 mt-1">Pro více dětí</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>249 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
                 {["Až 5 dětí", "Vše ze Standard", "Rodinný přehled", "Export dat", "Prioritní podpora"].map((f) => (
@@ -309,7 +309,7 @@ export default function Landing() {
       {/* ═══════ FINAL CTA ═══════ */}
       <section className="py-20 sm:py-28" style={{ background: `linear-gradient(135deg, ${C.bgBlue}60, ${C.bgGreen}40)` }}>
         <div className="mx-auto max-w-2xl px-4 sm:px-6 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: C.dark }}>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-heading" style={{ color: C.dark }}>
             Začněte mít přehled o učení vašeho dítěte
           </h2>
           <p className="text-lg text-slate-500">Registrace trvá minutu. Prvních 14 dní je zdarma.</p>
