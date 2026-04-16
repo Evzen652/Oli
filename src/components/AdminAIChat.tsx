@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Send, Loader2, Sparkles, ArrowLeft } from "lucide-react";
+import { Bot, Send, Loader2, Sparkles, ArrowLeft, Search, PlusCircle, Eye, Lightbulb } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { CurriculumWizard } from "@/components/CurriculumWizard";
 import type { Grade } from "@/lib/types";
@@ -232,13 +232,13 @@ export function AdminAIChat({ grade, subject, category, topic, skillId, skillDet
             <ScrollArea className="flex-1 p-4" ref={scrollRef}>
               <div className="space-y-4">
                 {messages.length === 0 && (
-                  <div className="text-center text-muted-foreground text-sm py-8 space-y-2">
-                    <Bot className="h-8 w-8 mx-auto opacity-50" />
-                    <p>Řekněte mi, co chcete vytvořit.</p>
-                    <p className="text-xs">
-                      Např: "Navrhni matematiku pro 4. ročník" nebo "Přidej zlomky do 5. ročníku"
-                    </p>
-                  </div>
+                  <ChatEmptyState
+                    grade={grade}
+                    subject={subject}
+                    category={category || null}
+                    topic={topic || null}
+                    onPick={(prompt) => sendMessageWithText(prompt)}
+                  />
                 )}
                 {messages.map((msg, i) => (
                   <div
@@ -306,6 +306,145 @@ function AssistantMessage({ content }: { content: string }) {
   return (
     <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground prose-headings:mt-3 prose-headings:mb-1 prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5">
       <ReactMarkdown>{cleaned}</ReactMarkdown>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════
+// ChatEmptyState — context-aware suggestion chips
+// ══════════════════════════════════════════════════════
+interface Suggestion {
+  label: string;
+  prompt: string;
+  icon: React.ReactNode;
+}
+
+function buildSuggestions(
+  grade: Grade | null,
+  subject: string | null,
+  category: string | null,
+  topic: string | null,
+): Suggestion[] {
+  const gradeCtx = grade ? ` pro ${grade}. ročník` : "";
+
+  // Most specific context first
+  if (topic && category && subject) {
+    return [
+      {
+        label: "Přidej podtémata",
+        icon: <PlusCircle className="h-3 w-3" />,
+        prompt: `Pro téma "${topic}" (${category}, ${subject})${gradeCtx}: Navrhni nová podtémata s cíli, hranicemi, klíčovými slovy a kompletní nápovědou.`,
+      },
+      {
+        label: "Zkontroluj nápovědy",
+        icon: <Eye className="h-3 w-3" />,
+        prompt: `Zkontroluj nápovědy všech podtémat v tématu "${topic}" (${category}, ${subject}): neprozrazují odpověď? Jsou kroky logické?`,
+      },
+      {
+        label: "Vygeneruj cvičení",
+        icon: <Sparkles className="h-3 w-3" />,
+        prompt: `Vygeneruj 5-8 cvičení pro každé podtéma v tématu "${topic}" (${category}, ${subject})${gradeCtx}.`,
+      },
+    ];
+  }
+
+  if (category && subject) {
+    return [
+      {
+        label: "Doplň chybějící témata",
+        icon: <PlusCircle className="h-3 w-3" />,
+        prompt: `Pro okruh "${category}" (${subject})${gradeCtx}: Navrhni chybějící témata podle RVP.`,
+      },
+      {
+        label: "Zkontroluj pořadí",
+        icon: <Eye className="h-3 w-3" />,
+        prompt: `Zkontroluj didaktické pořadí témat v okruhu "${category}" (${subject}). Je pořadí logické od jednodušších ke složitějším?`,
+      },
+      {
+        label: "Vylepši popisy",
+        icon: <Lightbulb className="h-3 w-3" />,
+        prompt: `Vylepši motivační popisy témat v okruhu "${category}" (${subject})${gradeCtx}. Musí být stručné a věkově přiměřené.`,
+      },
+    ];
+  }
+
+  if (subject) {
+    return [
+      {
+        label: "Co chybí?",
+        icon: <Search className="h-3 w-3" />,
+        prompt: `Analyzuj existující obsah předmětu "${subject}"${gradeCtx} a najdi: chybějící okruhy, dovednosti bez nápověd, nekonzistence.`,
+      },
+      {
+        label: "Doplň okruhy",
+        icon: <PlusCircle className="h-3 w-3" />,
+        prompt: `Pro předmět "${subject}"${gradeCtx}: Navrhni chybějící okruhy a témata podle RVP.`,
+      },
+      {
+        label: "Pokrytí ročníků",
+        icon: <Eye className="h-3 w-3" />,
+        prompt: `Analyzuj předmět "${subject}" a zkontroluj, zda má každý ročník dostatečné pokrytí témat. Označ mezery a navrhni doplnění.`,
+      },
+    ];
+  }
+
+  // No context — general suggestions
+  return [
+    {
+      label: "Navrhni matematiku",
+      icon: <Sparkles className="h-3 w-3" />,
+      prompt: `Navrhni kompletní strukturu předmětu "matematika"${gradeCtx}. Zahrň okruhy, témata a dovednosti.`,
+    },
+    {
+      label: "Navrhni češtinu",
+      icon: <Sparkles className="h-3 w-3" />,
+      prompt: `Navrhni kompletní strukturu předmětu "čeština"${gradeCtx}. Zahrň pravopis, mluvnici a diktáty.`,
+    },
+    {
+      label: "Co kurikulu chybí?",
+      icon: <Search className="h-3 w-3" />,
+      prompt: `Analyzuj existující kurikulum${gradeCtx} a identifikuj chybějící okruhy, témata a nápovědy podle RVP.`,
+    },
+  ];
+}
+
+function ChatEmptyState({
+  grade, subject, category, topic, onPick,
+}: {
+  grade: Grade | null;
+  subject: string | null;
+  category: string | null;
+  topic: string | null;
+  onPick: (prompt: string) => void;
+}) {
+  const suggestions = buildSuggestions(grade, subject, category, topic);
+
+  return (
+    <div className="space-y-4 py-4">
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3">
+          <Bot className="h-6 w-6 text-primary" />
+        </div>
+        <p className="text-sm font-medium text-foreground">Co chcete udělat?</p>
+        <p className="text-xs text-muted-foreground">Vyberte návrh níže nebo napište vlastní</p>
+      </div>
+      <div className="space-y-2">
+        {suggestions.map((s, i) => (
+          <button
+            key={i}
+            onClick={() => onPick(s.prompt)}
+            className="w-full text-left rounded-lg border bg-background hover:bg-accent hover:border-primary/50 transition-colors p-3 group"
+          >
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-primary group-hover:scale-110 transition-transform">
+                {s.icon}
+              </span>
+              <span className="text-sm font-medium text-foreground">{s.label}</span>
+            </div>
+            <p className="text-xs text-muted-foreground line-clamp-2">{s.prompt}</p>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
