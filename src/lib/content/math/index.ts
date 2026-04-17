@@ -19,6 +19,14 @@ import { MEASUREMENT_TOPICS } from "./measurement";
 import { PERCENTAGE_TOPICS } from "./percentage";
 import { INTEGER_TOPICS } from "./integer";
 import { EQUATION_TOPICS } from "./equation";
+// ── 4. ročník ──
+import { ADD_SUB_10K_TOPICS } from "./addSub10k";
+import { MULT_WRITTEN_TOPICS } from "./multWritten";
+import { DIVIDE_REMAINDER_TOPICS } from "./divideRemainder";
+import { ROUNDING_4_TOPICS } from "./rounding4";
+import { FRAC_INTRO_TOPICS } from "./fracIntro";
+import { UNITS_4_TOPICS } from "./units4";
+import { PERIMETER_4_TOPICS } from "./perimeter4";
 
 export const MATH_TOPICS: TopicMetadata[] = [
   ...COMPARE_NATURAL_TOPICS,
@@ -38,6 +46,14 @@ export const MATH_TOPICS: TopicMetadata[] = [
   ...SHAPES_TOPICS,
   ...PERIMETER_TOPICS,
   ...MEASUREMENT_TOPICS,
+  // ── 4.–5. ročník (bridge) ──
+  ...ADD_SUB_10K_TOPICS,
+  ...MULT_WRITTEN_TOPICS,
+  ...DIVIDE_REMAINDER_TOPICS,
+  ...ROUNDING_4_TOPICS,
+  ...FRAC_INTRO_TOPICS,
+  ...UNITS_4_TOPICS,
+  ...PERIMETER_4_TOPICS,
   // ── II. stupeň ZŠ (6.–9. ročník) ──
   ...PERCENTAGE_TOPICS, // 7.–9. r.
   ...INTEGER_TOPICS,    // 7.–8. r.

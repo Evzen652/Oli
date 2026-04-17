@@ -43,6 +43,17 @@ export const PREREQUISITE_MAP: Record<string, string[]> = {
   "math-rounding": ["math-add-sub-100"],
   "math-order-numbers": ["math-compare-natural-numbers-100"],
   "math-perimeter": ["math-add-sub-100", "math-multiply"],
+  // Grade 4 math (bridge do 10 000, písemné, zaokrouhlování, zlomky úvod)
+  "math-add-sub-10k-4": ["math-add-sub-100"],
+  "math-mult-written-4": ["math-multiply", "math-add-sub-10k-4"],
+  "math-divide-remainder-4": ["math-multiply", "math-divide"],
+  "math-rounding-4": ["math-rounding"],
+  "math-frac-intro-4": ["math-divide", "math-multiply"],
+  "math-units-4": ["math-measurement", "math-multiply", "math-divide"],
+  "math-perimeter-4": ["math-perimeter", "math-add-sub-100"],
+  // Grade 6 — zlomky stojí na úvodu ve 4. roč.
+  "frac_compare_same_den": ["math-frac-intro-4"],
+  "frac_expand_by": ["math-frac-intro-4", "math-multiply"],
   // Grade 3 Czech
   "cz-parove-souhlasky": [],
   "cz-rod-cislo": ["cz-slovni-druhy"],
