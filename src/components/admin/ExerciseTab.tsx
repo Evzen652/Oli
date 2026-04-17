@@ -673,7 +673,7 @@ export function ExerciseTab({
       <div className="rounded-lg border bg-muted/40 p-3 text-sm text-muted-foreground">
         <p>
           {config.description}
-          {hasGenerator ? " Generátor vytváří variace automaticky." : ""}
+          {hasGenerator ? " Šablona vytváří variace automaticky." : ""}
         </p>
       </div>
 
@@ -716,7 +716,7 @@ export function ExerciseTab({
       {hasGenerator && genTasks.length > 0 && (
         <div className="space-y-3">
           <h5 className="text-sm font-semibold text-muted-foreground">
-            {config.emoji} Ukázky z generátoru ({genTasks.length})
+            {config.emoji} Ukázky ze šablony ({genTasks.length})
           </h5>
           {genTasks.map((task, i) => (
             <TaskCard key={`${regenCount}-${i}`} index={i} task={task} help={help} skill={skill} />

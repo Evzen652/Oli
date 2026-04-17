@@ -41,10 +41,9 @@ const INPUT_TYPE_LABELS: Record<string, string> = {
 type BrowseLevel = "subject" | "category" | "topic" | "subtopic" | "detail";
 
 export default function AdminDashboard() {
-  const { mergedTopics, dbOnlyTopics } = useDbCurriculum();
+  const { mergedTopics } = useDbCurriculum();
   const { topics: dbTopics } = useAdminCurriculum();
-  const [showDbOnly, setShowDbOnly] = useState(false);
-  const allTopics = showDbOnly ? dbOnlyTopics : mergedTopics;
+  const allTopics = mergedTopics;
 
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -206,15 +205,6 @@ export default function AdminDashboard() {
                   {g}
                 </Button>
               ))}
-              <span className="text-muted-foreground/50 mx-1">|</span>
-              <Button
-                size="sm"
-                variant={showDbOnly ? "default" : "outline"}
-                className="h-7 px-3 text-xs"
-                onClick={() => setShowDbOnly(!showDbOnly)}
-              >
-                {showDbOnly ? "Pouze DB" : "Vše (kód + DB)"}
-              </Button>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -225,7 +215,7 @@ export default function AdminDashboard() {
                 onClick={() => setQaAgentOpen(true)}
               >
                 <Search className="h-4 w-4" />
-                QA Agent
+                Kontrola cvičení
               </Button>
               <AdminAIChat
                 grade={gradeFilter}
@@ -488,7 +478,7 @@ export default function AdminDashboard() {
                                 variant="outline"
                                 className="text-xs border-amber-300 text-amber-700 bg-amber-50"
                               >
-                                Bez generátoru
+                                Bez šablony
                               </Badge>
                             )}
                           </div>

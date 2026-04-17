@@ -332,7 +332,7 @@ export function ExerciseValidator({ open, onOpenChange, grade }: ExerciseValidat
         <SheetContent side="right" className="w-full sm:max-w-2xl p-0 flex flex-col">
           <SheetHeader className="p-6 pb-0">
             <SheetTitle className="flex items-center gap-2">
-              🔍 QA Agent — {grade}. ročník
+              🔍 Kontrola cvičení — {grade}. ročník
             </SheetTitle>
           </SheetHeader>
 
@@ -612,7 +612,7 @@ export function ExerciseValidator({ open, onOpenChange, grade }: ExerciseValidat
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Zavřít QA Agenta?</AlertDialogTitle>
+            <AlertDialogTitle>Zavřít kontrolu cvičení?</AlertDialogTitle>
             <AlertDialogDescription>
               {running
                 ? "Validace stále běží. Pokud panel zavřete, výsledky se ztratí."

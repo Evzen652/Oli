@@ -213,7 +213,7 @@ export function AdminAIActions(props: AdminAIActionsProps) {
       <CardContent className="p-3">
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="h-4 w-4 text-primary" />
-          <span className="text-xs font-medium text-primary">AI asistent navrhuje</span>
+          <span className="text-xs font-medium text-primary">Doporučené akce</span>
         </div>
         <TooltipProvider delayDuration={300}>
           <div className="flex flex-wrap gap-2">

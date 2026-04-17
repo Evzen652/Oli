@@ -58,7 +58,7 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
     try {
       await saveProposalToDb(item);
       setItems((prev) => prev.map((it, i) => (i === index ? { ...it, saving: false, saved: true } : it)));
-      const actionLabel = item.action === "delete" ? "smazán/a" : "provedeno";
+      const actionLabel = item.action === "delete" ? "smazán/a" : "použito";
       toast.success(`${getTypeLabel(item.type)} "${item.data.name}" – ${actionLabel}`);
     } catch (e) {
       setItems((prev) => prev.map((it, i) => (i === index ? { ...it, saving: false } : it)));
@@ -129,11 +129,11 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
             </div>
             <div className="flex gap-2 shrink-0">
               <Button variant="outline" size="sm" onClick={onDismiss} disabled={savingAll}>
-                <X className="h-4 w-4 mr-1" /> Zahodit vše
+                <X className="h-4 w-4 mr-1" /> Odmítnout vše
               </Button>
               <Button size="sm" onClick={saveAll} disabled={savingAll || allSaved} className="gap-1">
                 {savingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-                {savingAll ? "Provádím…" : allSaved ? "Hotovo" : `Provést vše`}
+                {savingAll ? "Používám…" : allSaved ? "Hotovo" : `Použít vše`}
               </Button>
             </div>
           </div>
