@@ -51,8 +51,18 @@ export const PREREQUISITE_MAP: Record<string, string[]> = {
   "math-frac-intro-4": ["math-divide", "math-multiply"],
   "math-units-4": ["math-measurement", "math-multiply", "math-divide"],
   "math-perimeter-4": ["math-perimeter", "math-add-sub-100"],
-  // Grade 6 — zlomky stojí na úvodu ve 4. roč.
-  "frac_compare_same_den": ["math-frac-intro-4"],
+  // Grade 5 math
+  "math-numbers-million-5": ["math-compare-natural-numbers-100", "math-rounding-4"],
+  "math-decimal-read-5": ["math-numbers-million-5", "math-frac-intro-4"],
+  "math-frac-same-den-5": ["math-frac-intro-4"],
+  "math-divide-one-digit-5": ["math-divide-remainder-4", "math-mult-written-4"],
+  "math-area-grid-5": ["math-multiply", "math-perimeter-4"],
+  "math-negative-intro-5": ["math-compare-natural-numbers-100"],
+  "math-word-problems-5": ["math-add-sub-10k-4", "math-mult-written-4", "math-divide-remainder-4"],
+  // Grade 6 — zlomky stejný jmenovatel stojí na 5. ročníku (most do 6.)
+  "frac_compare_same_den": ["math-frac-same-den-5"],
+  "frac_add_same_den": ["math-frac-same-den-5"],
+  "frac_sub_same_den": ["math-frac-same-den-5"],
   "frac_expand_by": ["math-frac-intro-4", "math-multiply"],
   // Grade 3 Czech
   "cz-parove-souhlasky": [],

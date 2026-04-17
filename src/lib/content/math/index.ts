@@ -27,6 +27,14 @@ import { ROUNDING_4_TOPICS } from "./rounding4";
 import { FRAC_INTRO_TOPICS } from "./fracIntro";
 import { UNITS_4_TOPICS } from "./units4";
 import { PERIMETER_4_TOPICS } from "./perimeter4";
+// ── 5. ročník ──
+import { NUMBERS_MILLION_TOPICS } from "./numbersMillion";
+import { DECIMAL_READ_TOPICS } from "./decimalRead";
+import { FRAC_SAME_DEN_TOPICS } from "./fracSameDen";
+import { DIVIDE_ONE_DIGIT_TOPICS } from "./divideOneDigit";
+import { AREA_GRID_TOPICS } from "./areaGrid";
+import { NEGATIVE_INTRO_TOPICS } from "./negativeIntro";
+import { WORD_PROBLEMS_5_TOPICS } from "./wordProblems5";
 
 export const MATH_TOPICS: TopicMetadata[] = [
   ...COMPARE_NATURAL_TOPICS,
@@ -46,7 +54,7 @@ export const MATH_TOPICS: TopicMetadata[] = [
   ...SHAPES_TOPICS,
   ...PERIMETER_TOPICS,
   ...MEASUREMENT_TOPICS,
-  // ── 4.–5. ročník (bridge) ──
+  // ── 4. ročník ──
   ...ADD_SUB_10K_TOPICS,
   ...MULT_WRITTEN_TOPICS,
   ...DIVIDE_REMAINDER_TOPICS,
@@ -54,6 +62,14 @@ export const MATH_TOPICS: TopicMetadata[] = [
   ...FRAC_INTRO_TOPICS,
   ...UNITS_4_TOPICS,
   ...PERIMETER_4_TOPICS,
+  // ── 5. ročník ──
+  ...NUMBERS_MILLION_TOPICS,
+  ...DECIMAL_READ_TOPICS,
+  ...FRAC_SAME_DEN_TOPICS,
+  ...DIVIDE_ONE_DIGIT_TOPICS,
+  ...AREA_GRID_TOPICS,
+  ...NEGATIVE_INTRO_TOPICS,
+  ...WORD_PROBLEMS_5_TOPICS,
   // ── II. stupeň ZŠ (6.–9. ročník) ──
   ...PERCENTAGE_TOPICS, // 7.–9. r.
   ...INTEGER_TOPICS,    // 7.–8. r.

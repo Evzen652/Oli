@@ -127,6 +127,13 @@ const MATH_CATEGORY_VISUALS: Record<string, PrvoukaVisual> = {
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
     imageKey: "cat-math-cisla-a-operace",
   },
+  "Slovní úlohy": {
+    emoji: "📖",
+    colorClass: "border-[hsl(var(--math-numbers))]",
+    bgClass: "bg-[hsl(var(--math-numbers-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
+    imageKey: "cat-math-cisla-a-operace",
+  },
 };
 
 const MATH_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?: string }> = {
@@ -156,6 +163,13 @@ const MATH_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?
   "Procenta": { emoji: "%", imageKey: "topic-math-zlomek-z-cisla" },
   "Celá čísla": { emoji: "±", imageKey: "topic-math-scitani-a-odcitani-do-100" },
   "Lineární rovnice": { emoji: "𝑥", imageKey: "topic-math-nasobeni-a-deleni" },
+  // ── 5. ročník ──
+  "Čísla do milionu": { emoji: "🔢", imageKey: "topic-math-porovnavani-prirozenych-cisel" },
+  "Desetinná čísla": { emoji: "🔟", imageKey: "topic-math-zaokrouhlovani" },
+  "Zlomky se stejným jmenovatelem": { emoji: "🍕", imageKey: "topic-math-scitani-zlomku" },
+  "Písemné dělení": { emoji: "➗", imageKey: "topic-math-nasobeni-a-deleni" },
+  "Obsah": { emoji: "🟦", imageKey: "topic-math-geometricke-tvary" },
+  "Záporná čísla": { emoji: "➖", imageKey: "topic-math-scitani-a-odcitani-do-100" },
   "Obvod": { emoji: "📏", imageKey: "topic-math-obvod" },
   "Měření délky a odhad": { emoji: "📏", imageKey: "topic-math-mereni-delky" },
   "Základní jednotky a vztahy": { emoji: "📐", imageKey: "topic-math-zakladni-jednotky" },
