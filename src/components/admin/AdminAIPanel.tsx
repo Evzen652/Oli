@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sparkles, Bot, Search } from "lucide-react";
 import { AdminAIChat, type CurriculumProposal, type SkillDetail } from "@/components/AdminAIChat";
 import { ExerciseValidator } from "@/components/ExerciseValidator";
@@ -60,12 +59,6 @@ export function AdminAIPanel({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetTrigger asChild>
-        <Button className="gap-2" variant="default">
-          <Sparkles className="h-4 w-4" />
-          AI asistent
-        </Button>
-      </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0 gap-0">
         <SheetHeader className="p-4 pb-0 border-b">
           <SheetTitle className="flex items-center gap-2 mb-3">

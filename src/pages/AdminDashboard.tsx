@@ -15,7 +15,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { AdminAIActions } from "@/components/AdminAIActions";
 import { ProposalReview } from "@/components/ProposalReview";
@@ -101,13 +101,6 @@ export default function AdminDashboard() {
         )
       : [];
 
-  const handleBack = () => {
-    if (level === "detail") setSelectedSkill(null);
-    else if (level === "subtopic") setSelectedTopic(null);
-    else if (level === "topic") setSelectedCategory(null);
-    else if (level === "category") setSelectedSubject(null);
-  };
-
   const handleSubjectClick = (subject: string) => {
     setSelectedSubject(subject);
   };
@@ -171,95 +164,71 @@ export default function AdminDashboard() {
 
         {/* ═══════ Main content ═══════ */}
         <div className="flex-1 min-w-0 space-y-4 px-4 sm:px-6">
-          {/* Grade filter + AI button */}
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <div className="flex items-center gap-2 flex-wrap">
-              {/* Sidebar toggle */}
+          {/* Grade filter (kompaktní, bez AI button — přesunuto na FAB) */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Sidebar toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 hidden lg:flex"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              title={sidebarOpen ? "Skrýt sidebar" : "Zobrazit sidebar"}
+            >
+              {sidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
+            </Button>
+            <span className="text-sm text-muted-foreground font-medium">Ročník:</span>
+            <Button
+              size="sm"
+              variant={gradeFilter === null ? "default" : "outline"}
+              className="h-7 px-2 text-xs"
+              onClick={() => setGradeFilter(null)}
+            >
+              Vše
+            </Button>
+            {grades.map((g) => (
               <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 hidden lg:flex"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                title={sidebarOpen ? "Skrýt sidebar" : "Zobrazit sidebar"}
-              >
-                {sidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
-              </Button>
-              <span className="text-sm text-muted-foreground font-medium">Ročník:</span>
-              <Button
+                key={g}
                 size="sm"
-                variant={gradeFilter === null ? "default" : "outline"}
-                className="h-7 px-2 text-xs"
-                onClick={() => setGradeFilter(null)}
+                variant={gradeFilter === g ? "default" : "outline"}
+                className="h-7 w-7 p-0 text-xs"
+                onClick={() => setGradeFilter(g)}
               >
-                Vše
+                {g}
               </Button>
-              {grades.map((g) => (
-                <Button
-                  key={g}
-                  size="sm"
-                  variant={gradeFilter === g ? "default" : "outline"}
-                  className="h-7 w-7 p-0 text-xs"
-                  onClick={() => setGradeFilter(g)}
-                >
-                  {g}
-                </Button>
-              ))}
-            </div>
-            <div className="flex items-center gap-2">
-              <AdminAIPanel
-                grade={gradeFilter}
-                subject={selectedSubject}
-                category={selectedCategory}
-                topic={selectedTopic}
-                skillId={selectedSkill?.id}
-                skillDetail={
-                  selectedSkill
-                    ? {
-                        name: selectedSkill.title,
-                        code_skill_id: selectedSkill.id,
-                        brief_description: selectedSkill.briefDescription,
-                        goals: selectedSkill.goals,
-                        boundaries: selectedSkill.boundaries,
-                        keywords: selectedSkill.keywords,
-                        help_hint: selectedSkill.helpTemplate?.hint,
-                        help_example: selectedSkill.helpTemplate?.example,
-                        help_common_mistake: selectedSkill.helpTemplate?.commonMistake,
-                        help_steps: selectedSkill.helpTemplate?.steps,
-                        grade_min: selectedSkill.gradeRange[0],
-                        grade_max: selectedSkill.gradeRange[1],
-                        session_task_count: selectedSkill.sessionTaskCount,
-                        input_type: selectedSkill.inputType,
-                      }
-                    : null
-                }
-                open={aiChatOpen}
-                onOpenChange={setAiChatOpen}
-                initialPrompt={aiInitialPrompt}
-                onInitialPromptConsumed={() => setAiInitialPrompt(null)}
-                onProposalsReady={(p, e) => {
-                  setProposals(p);
-                  setProposalExplanation(e);
-                }}
-                availableSubjects={subjects}
-              />
-            </div>
+            ))}
           </div>
 
-          {/* Back button + title */}
-          {level !== "subject" && (
-            <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1 text-muted-foreground">
-              <ChevronLeft className="h-4 w-4" /> Zpět
-            </Button>
-          )}
+          {/* Sticky breadcrumb — kde v kurikulu jsem */}
+          <ContextBreadcrumb
+            subject={selectedSubject}
+            category={selectedCategory}
+            topic={selectedTopic}
+            skill={selectedSkill}
+            grade={gradeFilter}
+            onSelectRoot={() => {
+              setSelectedSubject(null);
+              setSelectedCategory(null);
+              setSelectedTopic(null);
+              setSelectedSkill(null);
+            }}
+            onSelectSubject={() => {
+              setSelectedCategory(null);
+              setSelectedTopic(null);
+              setSelectedSkill(null);
+            }}
+            onSelectCategory={() => {
+              setSelectedTopic(null);
+              setSelectedSkill(null);
+            }}
+            onSelectTopic={() => {
+              setSelectedSkill(null);
+            }}
+          />
 
+          {/* Title + subtitle (bez backbutton — navigace přes breadcrumb a sidebar) */}
           <div className="space-y-1 text-center">
             <h2 className="text-2xl font-semibold text-foreground">{title}</h2>
             <p className="text-sm text-muted-foreground">{subtitle}</p>
-            {gradeFilter && (
-              <Badge variant="secondary" className="mt-1">
-                {gradeFilter}. ročník
-              </Badge>
-            )}
           </div>
 
           {/* Contextual AI Actions */}
@@ -529,7 +498,139 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {/* ═══════ Floating AI button (FAB) — vždy přístupné ═══════ */}
+      <button
+        onClick={() => setAiChatOpen(true)}
+        className="fixed bottom-6 right-6 z-40 h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+        title="Otevřít AI asistenta"
+        aria-label="AI asistent"
+      >
+        <Sparkles className="h-6 w-6 sm:h-7 sm:w-7" />
+      </button>
+
+      {/* ═══════ AdminAIPanel (controlled — trigger je FAB výš) ═══════ */}
+      <AdminAIPanel
+        grade={gradeFilter}
+        subject={selectedSubject}
+        category={selectedCategory}
+        topic={selectedTopic}
+        skillId={selectedSkill?.id}
+        skillDetail={
+          selectedSkill
+            ? {
+                name: selectedSkill.title,
+                code_skill_id: selectedSkill.id,
+                brief_description: selectedSkill.briefDescription,
+                goals: selectedSkill.goals,
+                boundaries: selectedSkill.boundaries,
+                keywords: selectedSkill.keywords,
+                help_hint: selectedSkill.helpTemplate?.hint,
+                help_example: selectedSkill.helpTemplate?.example,
+                help_common_mistake: selectedSkill.helpTemplate?.commonMistake,
+                help_steps: selectedSkill.helpTemplate?.steps,
+                grade_min: selectedSkill.gradeRange[0],
+                grade_max: selectedSkill.gradeRange[1],
+                session_task_count: selectedSkill.sessionTaskCount,
+                input_type: selectedSkill.inputType,
+              }
+            : null
+        }
+        open={aiChatOpen}
+        onOpenChange={setAiChatOpen}
+        initialPrompt={aiInitialPrompt}
+        onInitialPromptConsumed={() => setAiInitialPrompt(null)}
+        onProposalsReady={(p, e) => {
+          setProposals(p);
+          setProposalExplanation(e);
+        }}
+        availableSubjects={subjects}
+      />
     </AdminLayout>
+  );
+}
+
+// ── ContextBreadcrumb ─────────────────────────────
+function ContextBreadcrumb({
+  subject, category, topic, skill, grade,
+  onSelectRoot, onSelectSubject, onSelectCategory, onSelectTopic,
+}: {
+  subject: string | null;
+  category: string | null;
+  topic: string | null;
+  skill: TopicMetadata | null;
+  grade: Grade | null;
+  onSelectRoot: () => void;
+  onSelectSubject: () => void;
+  onSelectCategory: () => void;
+  onSelectTopic: () => void;
+}) {
+  // Don't render if at root with no grade
+  if (!subject && !grade) return null;
+
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  return (
+    <div className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 py-2 bg-background/85 backdrop-blur-md border-b border-border/60">
+      <div className="flex items-center gap-1.5 text-sm flex-wrap">
+        <button
+          onClick={onSelectRoot}
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
+          📚 Kurikulum
+        </button>
+        {subject && (
+          <>
+            <span className="text-muted-foreground/40">›</span>
+            <button
+              onClick={onSelectSubject}
+              className={`hover:text-foreground transition-colors ${
+                category || topic || skill ? "text-muted-foreground" : "text-foreground font-medium"
+              }`}
+            >
+              {cap(subject)}
+            </button>
+          </>
+        )}
+        {category && (
+          <>
+            <span className="text-muted-foreground/40">›</span>
+            <button
+              onClick={onSelectCategory}
+              className={`hover:text-foreground transition-colors ${
+                topic || skill ? "text-muted-foreground" : "text-foreground font-medium"
+              }`}
+            >
+              {cap(category)}
+            </button>
+          </>
+        )}
+        {topic && (
+          <>
+            <span className="text-muted-foreground/40">›</span>
+            <button
+              onClick={onSelectTopic}
+              className={`hover:text-foreground transition-colors ${
+                skill ? "text-muted-foreground" : "text-foreground font-medium"
+              }`}
+            >
+              {cap(topic)}
+            </button>
+          </>
+        )}
+        {skill && (
+          <>
+            <span className="text-muted-foreground/40">›</span>
+            <span className="text-foreground font-medium truncate">{skill.title}</span>
+          </>
+        )}
+        {grade && (
+          <Badge variant="secondary" className="ml-auto text-[10px] h-5 shrink-0">
+            {grade}. ročník
+          </Badge>
+        )}
+      </div>
+    </div>
   );
 }
 
