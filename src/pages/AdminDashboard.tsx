@@ -76,6 +76,43 @@ export default function AdminDashboard() {
     ? allTopics.filter((t) => gradeFilter >= t.gradeRange[0] && gradeFilter <= t.gradeRange[1])
     : allTopics;
 
+  // Grade change: keep valid parts of the selection, reset invalid ones.
+  const handleGradeChange = (newGrade: Grade | null) => {
+    setGradeFilter(newGrade);
+
+    // Compute which topics will be visible after the grade change
+    const newTopics = newGrade
+      ? allTopics.filter((t) => newGrade >= t.gradeRange[0] && newGrade <= t.gradeRange[1])
+      : allTopics;
+
+    // If currently selected skill isn't in the new filter → drop it
+    if (selectedSkill && !newTopics.some((t) => t.id === selectedSkill.id)) {
+      setSelectedSkill(null);
+    }
+    // If selected topic has no skills in the new grade → drop it (and parent chain down to it)
+    if (selectedTopic && !newTopics.some(
+      (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic,
+    )) {
+      setSelectedTopic(null);
+      setSelectedSkill(null);
+    }
+    // Category
+    if (selectedCategory && !newTopics.some(
+      (t) => t.subject === selectedSubject && t.category === selectedCategory,
+    )) {
+      setSelectedCategory(null);
+      setSelectedTopic(null);
+      setSelectedSkill(null);
+    }
+    // Subject
+    if (selectedSubject && !newTopics.some((t) => t.subject === selectedSubject)) {
+      setSelectedSubject(null);
+      setSelectedCategory(null);
+      setSelectedTopic(null);
+      setSelectedSkill(null);
+    }
+  };
+
   const subjects = useMemo(() => [...new Set(topics.map((t) => t.subject))], [topics]);
 
   const categories = useMemo(() => {
@@ -181,7 +218,7 @@ export default function AdminDashboard() {
               size="sm"
               variant={gradeFilter === null ? "default" : "outline"}
               className="h-7 px-2 text-xs"
-              onClick={() => setGradeFilter(null)}
+              onClick={() => handleGradeChange(null)}
             >
               Vše
             </Button>
@@ -191,7 +228,7 @@ export default function AdminDashboard() {
                 size="sm"
                 variant={gradeFilter === g ? "default" : "outline"}
                 className="h-7 w-7 p-0 text-xs"
-                onClick={() => setGradeFilter(g)}
+                onClick={() => handleGradeChange(g)}
               >
                 {g}
               </Button>
