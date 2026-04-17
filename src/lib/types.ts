@@ -40,6 +40,13 @@ export interface HelpData {
 }
 
 // ===== CONTENT REGISTRY =====
+/**
+ * Content generation strategy for a skill.
+ * Musí odpovídat supabase/migrations/20260417120000_content_infrastructure.sql
+ * a src/lib/content/taxonomy.ts.
+ */
+export type ContentType = "algorithmic" | "factual" | "conceptual" | "mixed";
+
 export interface TopicMetadata {
   id: string;
   title: string;
@@ -58,6 +65,14 @@ export interface TopicMetadata {
   inputType: InputType; // determines UI component
   generator: (level: number) => PracticeTask[]; // pure function, no network
   helpTemplate: HelpData; // static help data
+
+  // ─── Governance metadata (default: algorithmic + no prerequisites) ───
+  /** Jak se obsah generuje a validuje. Default: algorithmic (zpětná kompatibilita). */
+  contentType?: ContentType;
+  /** Seznam code_skill_id, které musí žák umět PŘED touto dovedností (vertikální kontinuita). */
+  prerequisites?: string[];
+  /** RVP kód (např. "M-5-1-03") pro reporting pokrytí kurikula. */
+  rvpReference?: string;
 }
 
 // ===== PRACTICE BATCH =====
