@@ -56,6 +56,8 @@ interface ExerciseValidatorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   grade: Grade;
+  /** When true, renders body only (without Sheet wrapper) — for embedding in AdminAIPanel */
+  hideSheet?: boolean;
 }
 
 interface CurriculumItem {
@@ -63,7 +65,7 @@ interface CurriculumItem {
   name: string;
 }
 
-export function ExerciseValidator({ open, onOpenChange, grade }: ExerciseValidatorProps) {
+export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: ExerciseValidatorProps) {
   const { toast } = useToast();
   const [skills, setSkills] = useState<SkillValidation[]>([]);
   const [running, setRunning] = useState(false);
@@ -326,17 +328,10 @@ export function ExerciseValidator({ open, onOpenChange, grade }: ExerciseValidat
     return problemIds.length > 0 && problemIds.every(id => expandedExercises.has(id));
   })();
 
-  return (
+  // Inner body — shared between standalone (Sheet) and embedded (AdminAIPanel) usage
+  const body = (
     <>
-      <Sheet open={open} onOpenChange={handleOpenChange}>
-        <SheetContent side="right" className="w-full sm:max-w-2xl p-0 flex flex-col">
-          <SheetHeader className="p-6 pb-0">
-            <SheetTitle className="flex items-center gap-2">
-              🔍 Kontrola cvičení — {grade}. ročník
-            </SheetTitle>
-          </SheetHeader>
-
-          <div className="px-6 py-3 space-y-3">
+      <div className="px-6 py-3 space-y-3">
             {/* Cascade filters */}
             {!running && (
               <div className="grid grid-cols-2 gap-2">
@@ -605,6 +600,24 @@ export function ExerciseValidator({ open, onOpenChange, grade }: ExerciseValidat
               )}
             </div>
           </ScrollArea>
+    </>
+  );
+
+  // Embedded mode (inside AdminAIPanel): just the body, no Sheet/AlertDialog wrappers
+  if (hideSheet) {
+    return <div className="flex flex-col h-full">{body}</div>;
+  }
+
+  return (
+    <>
+      <Sheet open={open} onOpenChange={handleOpenChange}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl p-0 flex flex-col">
+          <SheetHeader className="p-6 pb-0">
+            <SheetTitle className="flex items-center gap-2">
+              🔍 Kontrola cvičení — {grade}. ročník
+            </SheetTitle>
+          </SheetHeader>
+          {body}
         </SheetContent>
       </Sheet>
 

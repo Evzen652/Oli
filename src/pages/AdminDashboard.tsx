@@ -15,14 +15,14 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search } from "lucide-react";
-import { AdminAIChat, type CurriculumProposal } from "@/components/AdminAIChat";
+import { ChevronLeft, ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft } from "lucide-react";
+import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { AdminAIActions } from "@/components/AdminAIActions";
 import { ProposalReview } from "@/components/ProposalReview";
-import { ExerciseValidator } from "@/components/ExerciseValidator";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
 import { SkillDetail } from "@/components/admin/SkillDetail";
 import { AdminCurriculumSidebar } from "@/components/admin/AdminCurriculumSidebar";
+import { AdminAIPanel } from "@/components/admin/AdminAIPanel";
 import type { TopicMetadata, Grade } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -54,7 +54,6 @@ export default function AdminDashboard() {
   const [proposalExplanation, setProposalExplanation] = useState("");
   const [aiChatOpen, setAiChatOpen] = useState(false);
   const [aiInitialPrompt, setAiInitialPrompt] = useState<string | null>(null);
-  const [qaAgentOpen, setQaAgentOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Derived browse level
@@ -207,17 +206,7 @@ export default function AdminDashboard() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                className="gap-1.5"
-                disabled={!gradeFilter}
-                onClick={() => setQaAgentOpen(true)}
-              >
-                <Search className="h-4 w-4" />
-                Kontrola cvičení
-              </Button>
-              <AdminAIChat
+              <AdminAIPanel
                 grade={gradeFilter}
                 subject={selectedSubject}
                 category={selectedCategory}
@@ -255,11 +244,6 @@ export default function AdminDashboard() {
               />
             </div>
           </div>
-
-          {/* QA Agent */}
-          {gradeFilter && (
-            <ExerciseValidator open={qaAgentOpen} onOpenChange={setQaAgentOpen} grade={gradeFilter} />
-          )}
 
           {/* Back button + title */}
           {level !== "subject" && (

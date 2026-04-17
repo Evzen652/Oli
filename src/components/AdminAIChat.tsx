@@ -57,6 +57,8 @@ interface AdminAIChatProps {
   onProposalsReady: (proposals: CurriculumProposal[], explanation: string) => void;
   /** Available subjects for the wizard dropdown */
   availableSubjects?: string[];
+  /** When true, renders body only (without Sheet wrapper) — for embedding in AdminAIPanel */
+  hideSheet?: boolean;
 }
 
 function parseProposals(text: string): ParsedAIResponse | null {
@@ -73,7 +75,7 @@ function parseProposals(text: string): ParsedAIResponse | null {
   return null;
 }
 
-export function AdminAIChat({ grade, subject, category, topic, skillId, skillDetail, open, onOpenChange, initialPrompt, onInitialPromptConsumed, onProposalsReady, availableSubjects }: AdminAIChatProps) {
+export function AdminAIChat({ grade, subject, category, topic, skillId, skillDetail, open, onOpenChange, initialPrompt, onInitialPromptConsumed, onProposalsReady, availableSubjects, hideSheet }: AdminAIChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
@@ -186,6 +188,107 @@ export function AdminAIChat({ grade, subject, category, topic, skillId, skillDet
     .filter(Boolean)
     .join(" · ");
 
+  // Internal body — view switcher (wizard / chat) without Sheet wrapper
+  const body = (
+    <>
+      {view === "wizard" ? (
+        <ScrollArea className="flex-1">
+          <CurriculumWizard
+            currentGrade={grade}
+            currentSubject={subject}
+            currentCategory={category || null}
+            currentTopic={topic || null}
+            availableSubjects={availableSubjects}
+            onGenerate={handleWizardGenerate}
+            onSwitchToChat={() => setView("chat")}
+          />
+        </ScrollArea>
+      ) : (
+        <>
+          <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+            <div className="space-y-4">
+              {messages.length === 0 && (
+                <ChatEmptyState
+                  grade={grade}
+                  subject={subject}
+                  category={category || null}
+                  topic={topic || null}
+                  onPick={(prompt) => sendMessageWithText(prompt)}
+                />
+              )}
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
+                      msg.role === "user"
+                        ? "bg-primary text-primary-foreground whitespace-pre-wrap"
+                        : "bg-muted text-foreground"
+                    }`}
+                  >
+                    {msg.role === "assistant" ? (
+                      <AssistantMessage content={msg.content} />
+                    ) : (
+                      msg.content
+                    )}
+                  </div>
+                </div>
+              ))}
+              {isStreaming && (
+                <div className="flex justify-start">
+                  <div className="bg-muted rounded-lg px-3 py-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </ScrollArea>
+
+          <div className="border-t p-4 space-y-2">
+            <Textarea
+              placeholder="Napište instrukci pro AI..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessageWithText(input);
+                }
+              }}
+              rows={2}
+              className="resize-none"
+            />
+            <Button
+              onClick={() => sendMessageWithText(input)}
+              disabled={!input.trim() || isStreaming}
+              className="w-full gap-2"
+            >
+              <Send className="h-4 w-4" />
+              Odeslat
+            </Button>
+          </div>
+        </>
+      )}
+    </>
+  );
+
+  // If used standalone, wrap in Sheet + trigger.
+  // If hideSheet=true (used inside AdminAIPanel), render only the body.
+  if (hideSheet) {
+    return (
+      <div className="flex flex-col h-full">
+        {contextLabel && (
+          <div className="px-4 pt-3 pb-2 border-b">
+            <Badge variant="secondary" className="w-fit">{contextLabel}</Badge>
+          </div>
+        )}
+        {body}
+      </div>
+    );
+  }
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>
@@ -214,87 +317,7 @@ export function AdminAIChat({ grade, subject, category, topic, skillId, skillDet
             <Badge variant="secondary" className="w-fit">{contextLabel}</Badge>
           )}
         </SheetHeader>
-
-        {view === "wizard" ? (
-          <ScrollArea className="flex-1">
-            <CurriculumWizard
-              currentGrade={grade}
-              currentSubject={subject}
-              currentCategory={category || null}
-              currentTopic={topic || null}
-              availableSubjects={availableSubjects}
-              onGenerate={handleWizardGenerate}
-              onSwitchToChat={() => setView("chat")}
-            />
-          </ScrollArea>
-        ) : (
-          <>
-            <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-              <div className="space-y-4">
-                {messages.length === 0 && (
-                  <ChatEmptyState
-                    grade={grade}
-                    subject={subject}
-                    category={category || null}
-                    topic={topic || null}
-                    onPick={(prompt) => sendMessageWithText(prompt)}
-                  />
-                )}
-                {messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
-                        msg.role === "user"
-                          ? "bg-primary text-primary-foreground whitespace-pre-wrap"
-                          : "bg-muted text-foreground"
-                      }`}
-                    >
-                      {msg.role === "assistant" ? (
-                        <AssistantMessage content={msg.content} />
-                      ) : (
-                        msg.content
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {isStreaming && (
-                  <div className="flex justify-start">
-                    <div className="bg-muted rounded-lg px-3 py-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </ScrollArea>
-
-            <div className="border-t p-4 space-y-2">
-              <Textarea
-                placeholder="Napište instrukci pro AI..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessageWithText(input);
-                  }
-                }}
-                rows={2}
-                className="resize-none"
-              />
-              <Button
-                onClick={() => sendMessageWithText(input)}
-                disabled={!input.trim() || isStreaming}
-                className="w-full gap-2"
-              >
-                <Send className="h-4 w-4" />
-                Odeslat
-              </Button>
-            </div>
-          </>
-        )}
+        {body}
       </SheetContent>
     </Sheet>
   );
