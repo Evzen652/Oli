@@ -16,6 +16,9 @@ import { ORDER_NUMBERS_TOPICS } from "./orderNumbers";
 import { SHAPES_TOPICS } from "./shapes";
 import { PERIMETER_TOPICS } from "./perimeter";
 import { MEASUREMENT_TOPICS } from "./measurement";
+import { PERCENTAGE_TOPICS } from "./percentage";
+import { INTEGER_TOPICS } from "./integer";
+import { EQUATION_TOPICS } from "./equation";
 
 export const MATH_TOPICS: TopicMetadata[] = [
   ...COMPARE_NATURAL_TOPICS,
@@ -35,4 +38,8 @@ export const MATH_TOPICS: TopicMetadata[] = [
   ...SHAPES_TOPICS,
   ...PERIMETER_TOPICS,
   ...MEASUREMENT_TOPICS,
+  // ── II. stupeň ZŠ (6.–9. ročník) ──
+  ...PERCENTAGE_TOPICS, // 7.–9. r.
+  ...INTEGER_TOPICS,    // 7.–8. r.
+  ...EQUATION_TOPICS,   // 8.–9. r.
 ];
