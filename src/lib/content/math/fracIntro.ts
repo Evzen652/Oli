@@ -101,8 +101,8 @@ export const FRAC_INTRO_TOPICS: TopicMetadata[] = [
     id: "math-frac-intro-4",
     title: "Zlomek jako část celku",
     subject: "matematika",
-    category: "zlomky (úvod)",
-    topic: "zlomek jako část celku",
+    category: "Zlomky",
+    topic: "Zlomek jako část celku",
     topicDescription: "Zlomek jako způsob, jak pojmenovat část celku.",
     briefDescription:
       "Naučíš se počítat zlomky — co je čitatel, co jmenovatel, a kolik je třeba 3/4 z 20.",

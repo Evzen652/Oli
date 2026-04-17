@@ -123,8 +123,8 @@ export const MULT_WRITTEN_TOPICS: TopicMetadata[] = [
     id: "math-mult-written-4",
     title: "Písemné násobení",
     subject: "matematika",
-    category: "čísla a operace",
-    topic: "písemné násobení",
+    category: "Čísla a operace",
+    topic: "Písemné násobení",
     topicDescription: "Násobení dvoj- a trojciferných čísel jednociferným činitelem.",
     briefDescription:
       "Naučíš se vynásobit velké číslo malým — třeba 347 × 4. Rozlož na řády nebo počítej pod sebou.",

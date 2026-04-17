@@ -136,8 +136,8 @@ export const PERIMETER_4_TOPICS: TopicMetadata[] = [
     id: "math-perimeter-4",
     title: "Obvod vícehranu",
     subject: "matematika",
-    category: "geometrie",
-    topic: "obvod",
+    category: "Geometrie",
+    topic: "Obvod vícehranu",
     topicDescription:
       "Výpočet obvodu obdélníku, trojúhelníku a obecného čtyřúhelníku.",
     briefDescription:

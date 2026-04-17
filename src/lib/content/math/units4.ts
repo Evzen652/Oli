@@ -148,8 +148,8 @@ export const UNITS_4_TOPICS: TopicMetadata[] = [
     id: "math-units-4",
     title: "Převody jednotek",
     subject: "matematika",
-    category: "měření",
-    topic: "převody jednotek",
+    category: "Měření",
+    topic: "Převody jednotek",
     topicDescription: "Délka, hmotnost, objem a čas — převody mezi jednotkami.",
     briefDescription:
       "Naučíš se převádět mezi jednotkami: m ↔ cm, kg ↔ g, l ↔ ml, h ↔ min. Větší → menší: násobím. Menší → větší: dělím.",

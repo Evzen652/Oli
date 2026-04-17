@@ -90,6 +90,28 @@ const MATH_CATEGORY_VISUALS: Record<string, PrvoukaVisual> = {
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-geometry-bg))]",
     imageKey: "cat-math-geometrie",
   },
+  // ── II. stupeň + bridge (4.-9. ročník) ──
+  "Měření": {
+    emoji: "📏",
+    colorClass: "border-[hsl(var(--math-numbers))]",
+    bgClass: "bg-[hsl(var(--math-numbers-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
+    imageKey: "cat-math-cisla-a-operace", // fallback — stejný asset jako čísla
+  },
+  "Poměr a procenta": {
+    emoji: "%",
+    colorClass: "border-[hsl(var(--math-fractions))]",
+    bgClass: "bg-[hsl(var(--math-fractions-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-fractions-bg))]",
+    imageKey: "cat-math-zlomky", // procenta jsou blízko zlomkům
+  },
+  "Algebra": {
+    emoji: "𝑥",
+    colorClass: "border-[hsl(var(--math-numbers))]",
+    bgClass: "bg-[hsl(var(--math-numbers-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
+    imageKey: "cat-math-cisla-a-operace",
+  },
 };
 
 const MATH_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?: string }> = {
@@ -107,6 +129,18 @@ const MATH_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?
   "Zlomek z čísla": { emoji: "🍎", imageKey: "topic-math-zlomek-z-cisla" },
   "Násobení zlomku celým číslem": { emoji: "✖️", imageKey: "topic-math-nasobeni-zlomku-celym-cislem" },
   "Geometrické tvary": { emoji: "🔷", imageKey: "topic-math-geometricke-tvary" },
+  // ── 4. ročník — bridge do II. stupně ──
+  "Sčítání a odčítání do 10 000": { emoji: "➕", imageKey: "topic-math-scitani-a-odcitani-do-100" },
+  "Písemné násobení": { emoji: "✖️", imageKey: "topic-math-nasobeni-a-deleni" },
+  "Dělení se zbytkem": { emoji: "➗", imageKey: "topic-math-nasobeni-a-deleni" },
+  "Zaokrouhlování na desítky, stovky a tisíce": { emoji: "🎯", imageKey: "topic-math-zaokrouhlovani" },
+  "Zlomek jako část celku": { emoji: "🍕", imageKey: "topic-math-zlomek-z-cisla" },
+  "Převody jednotek": { emoji: "📏", imageKey: "topic-math-zaokrouhlovani" },
+  "Obvod vícehranu": { emoji: "📐", imageKey: "topic-math-geometricke-tvary" },
+  // ── 7.-9. ročník ──
+  "Procenta": { emoji: "%", imageKey: "topic-math-zlomek-z-cisla" },
+  "Celá čísla": { emoji: "±", imageKey: "topic-math-scitani-a-odcitani-do-100" },
+  "Lineární rovnice": { emoji: "𝑥", imageKey: "topic-math-nasobeni-a-deleni" },
   "Obvod": { emoji: "📏", imageKey: "topic-math-obvod" },
   "Měření délky a odhad": { emoji: "📏", imageKey: "topic-math-mereni-delky" },
   "Základní jednotky a vztahy": { emoji: "📐", imageKey: "topic-math-zakladni-jednotky" },

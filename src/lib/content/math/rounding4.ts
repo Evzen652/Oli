@@ -125,8 +125,8 @@ export const ROUNDING_4_TOPICS: TopicMetadata[] = [
     id: "math-rounding-4",
     title: "Zaokrouhlování na desítky, stovky a tisíce",
     subject: "matematika",
-    category: "čísla a operace",
-    topic: "zaokrouhlování",
+    category: "Čísla a operace",
+    topic: "Zaokrouhlování na desítky, stovky a tisíce",
     topicDescription: "Zaokrouhlování přirozených čísel na různé řády.",
     briefDescription:
       "Naučíš se zaokrouhlit číslo na nejbližší desítku, stovku nebo tisícovku. Pravidlo: méně než 5 → dolů, 5 a víc → nahoru.",

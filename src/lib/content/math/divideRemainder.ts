@@ -112,8 +112,8 @@ export const DIVIDE_REMAINDER_TOPICS: TopicMetadata[] = [
     id: "math-divide-remainder-4",
     title: "Dělení se zbytkem",
     subject: "matematika",
-    category: "čísla a operace",
-    topic: "dělení se zbytkem",
+    category: "Čísla a operace",
+    topic: "Dělení se zbytkem",
     topicDescription: "Dělení přirozených čísel, kde výsledek má zbytek.",
     briefDescription:
       "Naučíš se dělit se zbytkem — třeba 23 : 4. Vyjde ti kvocient a zbytek. Zbytek je vždy menší než dělitel.",

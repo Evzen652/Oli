@@ -258,4 +258,14 @@ describe("Grade 4 — společné kontroly", () => {
       expect(t.rvpReference, `${t.id}`).toMatch(/^M-\d+-\d+-\d+$/);
     }
   });
+
+  it("všechny kategorie začínají velkým písmenem (pro vizuál lookup)", () => {
+    // Lookup v prvoukaVisuals.ts je case-sensitive; lowercase by ztratil ikony
+    for (const t of allTopics) {
+      const firstChar = t.category[0];
+      expect(firstChar === firstChar.toUpperCase(), `${t.id}: category "${t.category}" začíná malým písmenem`).toBe(true);
+      const topicFirstChar = t.topic[0];
+      expect(topicFirstChar === topicFirstChar.toUpperCase(), `${t.id}: topic "${t.topic}" začíná malým písmenem`).toBe(true);
+    }
+  });
 });
