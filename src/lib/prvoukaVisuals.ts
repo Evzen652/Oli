@@ -170,6 +170,10 @@ const MATH_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?
   "Písemné dělení": { emoji: "➗", imageKey: "topic-math-nasobeni-a-deleni" },
   "Obsah": { emoji: "🟦", imageKey: "topic-math-geometricke-tvary" },
   "Záporná čísla": { emoji: "➖", imageKey: "topic-math-scitani-a-odcitani-do-100" },
+  // ── 6. ročník ──
+  "Dělitelnost": { emoji: "🔢", imageKey: "topic-math-nasobeni-a-deleni" },
+  "Úhly": { emoji: "📐", imageKey: "topic-math-geometricke-tvary" },
+  "Trojúhelníky": { emoji: "🔺", imageKey: "topic-math-geometricke-tvary" },
   "Obvod": { emoji: "📏", imageKey: "topic-math-obvod" },
   "Měření délky a odhad": { emoji: "📏", imageKey: "topic-math-mereni-delky" },
   "Základní jednotky a vztahy": { emoji: "📐", imageKey: "topic-math-zakladni-jednotky" },

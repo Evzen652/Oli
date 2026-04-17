@@ -35,6 +35,13 @@ import { DIVIDE_ONE_DIGIT_TOPICS } from "./divideOneDigit";
 import { AREA_GRID_TOPICS } from "./areaGrid";
 import { NEGATIVE_INTRO_TOPICS } from "./negativeIntro";
 import { WORD_PROBLEMS_5_TOPICS } from "./wordProblems5";
+// ── 6. ročník ──
+import { DECIMAL_OPS_TOPICS } from "./decimalOps";
+import { DECIMAL_MUL_DIV_TOPICS } from "./decimalMulDiv";
+import { DIVISIBILITY_TOPICS } from "./divisibility";
+import { NSD_NSN_TOPICS } from "./nsdNsn";
+import { ANGLES_6_TOPICS } from "./angles6";
+import { TRIANGLES_6_TOPICS } from "./triangles6";
 
 export const MATH_TOPICS: TopicMetadata[] = [
   ...COMPARE_NATURAL_TOPICS,
@@ -70,6 +77,13 @@ export const MATH_TOPICS: TopicMetadata[] = [
   ...AREA_GRID_TOPICS,
   ...NEGATIVE_INTRO_TOPICS,
   ...WORD_PROBLEMS_5_TOPICS,
+  // ── 6. ročník ──
+  ...DECIMAL_OPS_TOPICS,
+  ...DECIMAL_MUL_DIV_TOPICS,
+  ...DIVISIBILITY_TOPICS,
+  ...NSD_NSN_TOPICS,
+  ...ANGLES_6_TOPICS,
+  ...TRIANGLES_6_TOPICS,
   // ── II. stupeň ZŠ (6.–9. ročník) ──
   ...PERCENTAGE_TOPICS, // 7.–9. r.
   ...INTEGER_TOPICS,    // 7.–8. r.

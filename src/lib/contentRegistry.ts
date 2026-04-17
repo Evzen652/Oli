@@ -64,6 +64,13 @@ export const PREREQUISITE_MAP: Record<string, string[]> = {
   "frac_add_same_den": ["math-frac-same-den-5"],
   "frac_sub_same_den": ["math-frac-same-den-5"],
   "frac_expand_by": ["math-frac-intro-4", "math-multiply"],
+  // Grade 6 math (desetinná, dělitelnost, geometrie)
+  "math-decimal-ops-6": ["math-decimal-read-5", "math-add-sub-10k-4"],
+  "math-decimal-muldiv-6": ["math-decimal-ops-6", "math-multiply"],
+  "math-divisibility-6": ["math-divide-remainder-4", "math-divide-one-digit-5"],
+  "math-nsd-nsn-6": ["math-divisibility-6"],
+  "math-angles-6": ["math-perimeter-4"],
+  "math-triangles-6": ["math-angles-6", "math-perimeter-4"],
   // Grade 3 Czech
   "cz-parove-souhlasky": [],
   "cz-rod-cislo": ["cz-slovni-druhy"],
