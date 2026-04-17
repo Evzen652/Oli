@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
+import { PLURALS } from "../czechPlural";
 
 /**
  * Převody jednotek — 4. ročník ZŠ
@@ -8,30 +9,34 @@ import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
  */
 
 interface UnitConversion {
-  from: string;
+  from: string;       // symbol (cm, kg, ...) nebo slovo (den)
   to: string;
-  factor: number;        // kolikrát větší je 1 from než 1 to  (např. 1 m = 100 cm → factor 100)
+  factor: number;     // kolikrát větší je 1 from než 1 to
   category: "délka" | "hmotnost" | "čas" | "objem";
   note?: string;
+  /** Plural helper — pokud je "from" české slovo (den/hodina/…), funkce vrátí správný tvar. */
+  fromPlural?: (n: number) => string;
+  toPlural?: (n: number) => string;
 }
 
 const CONVERSIONS: UnitConversion[] = [
-  // Délka
+  // Délka (zkratky — bez skloňování)
   { from: "m",  to: "cm", factor: 100,  category: "délka" },
   { from: "cm", to: "mm", factor: 10,   category: "délka" },
   { from: "km", to: "m",  factor: 1000, category: "délka" },
   { from: "dm", to: "cm", factor: 10,   category: "délka" },
   // Hmotnost
   { from: "kg", to: "g",  factor: 1000, category: "hmotnost" },
-  { from: "t",  to: "kg", factor: 1000, category: "hmotnost", note: "tuna = 1000 kg" },
+  { from: "t",  to: "kg", factor: 1000, category: "hmotnost", note: "1 tuna = 1 000 kg" },
   { from: "dkg", to: "g", factor: 10,   category: "hmotnost" },
   // Objem
   { from: "l",  to: "ml", factor: 1000, category: "objem" },
-  { from: "hl", to: "l",  factor: 100,  category: "objem", note: "hektolitr = 100 litrů" },
-  // Čas
+  { from: "hl", to: "l",  factor: 100,  category: "objem", note: "1 hektolitr = 100 litrů" },
+  // Čas — plné české tvary vyžadují skloňování
   { from: "h",   to: "min", factor: 60, category: "čas" },
   { from: "min", to: "s",   factor: 60, category: "čas" },
-  { from: "den", to: "h",   factor: 24, category: "čas" },
+  { from: "den", to: "h",   factor: 24, category: "čas",
+    fromPlural: PLURALS.den },
 ];
 
 function genUnits4(level: number): PracticeTask[] {
@@ -55,16 +60,23 @@ function genUnits4(level: number): PracticeTask[] {
     let fromUnit: string;
     let toUnit: string;
 
+    // Render jednotky — pokud je to plné slovo (den), skloňuj; jinak zkratka beze změny
+    const renderFrom = (n: number) =>
+      conv.fromPlural ? conv.fromPlural(n) : conv.from;
+    const renderTo = (n: number) =>
+      conv.toPlural ? conv.toPlural(n) : conv.to;
+
     if (isExpanding) {
-      // Z větší na menší: 3 m = ? cm
-      question = `${coeff} ${conv.from} = ? ${conv.to}`;
-      correctNum = coeff * conv.factor;
+      // Z větší na menší: "6 dnů = ? h" nebo "3 m = ? cm"
+      const largerValue = coeff * conv.factor;
+      question = `${coeff} ${renderFrom(coeff)} = ? ${renderTo(largerValue)}`;
+      correctNum = largerValue;
       fromUnit = conv.from;
       toUnit = conv.to;
     } else {
-      // Z menší na větší: musíme zajistit, že to vyjde celé
+      // Z menší na větší: "144 h = ? dnů" nebo "300 cm = ? m"
       const largerValue = coeff * conv.factor;
-      question = `${largerValue} ${conv.to} = ? ${conv.from}`;
+      question = `${largerValue} ${renderTo(largerValue)} = ? ${renderFrom(coeff)}`;
       correctNum = coeff;
       fromUnit = conv.to;
       toUnit = conv.from;
@@ -84,12 +96,15 @@ function genUnits4(level: number): PracticeTask[] {
 
     const options = [String(correctNum), ...filtered].sort(() => Math.random() - 0.5);
 
+    // Pro solution steps použij "1 den = 24 h", "1 m = 100 cm" — vždy singulár u jednotek
+    const oneUnitFrom = conv.fromPlural ? conv.fromPlural(1) : conv.from;
+    const factorUnitTo = conv.toPlural ? conv.toPlural(conv.factor) : conv.to;
     const solutionSteps: string[] = [
-      `Jedna jednotka ${conv.from} = ${conv.factor} ${conv.to}.${conv.note ? " (" + conv.note + ")" : ""}`,
+      `1 ${oneUnitFrom} = ${conv.factor} ${factorUnitTo}.${conv.note ? " (" + conv.note + ")" : ""}`,
       isExpanding
         ? `Z větší jednotky na menší NÁSOBÍM: ${coeff} × ${conv.factor} = ${correctNum}.`
         : `Z menší jednotky na větší DĚLÍM: ${coeff * conv.factor} ÷ ${conv.factor} = ${correctNum}.`,
-      `Výsledek: ${correctNum} ${toUnit}.`,
+      `Výsledek: ${correctNum} ${conv.toPlural ? conv.toPlural(correctNum) : toUnit}.`,
     ];
 
     tasks.push({
@@ -98,7 +113,7 @@ function genUnits4(level: number): PracticeTask[] {
       options,
       solutionSteps,
       hints: [
-        `Převádíš mezi ${fromUnit} a ${toUnit}. 1 ${conv.from} = ${conv.factor} ${conv.to}.`,
+        `Převádíš mezi ${fromUnit} a ${toUnit}. 1 ${oneUnitFrom} = ${conv.factor} ${factorUnitTo}.`,
         isExpanding
           ? `Jdu z větší jednotky na menší — čísla porostou. Násobím ${conv.factor}.`
           : `Jdu z menší jednotky na větší — čísla klesnou. Dělím ${conv.factor}.`,
