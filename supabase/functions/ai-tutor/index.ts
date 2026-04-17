@@ -22,7 +22,9 @@ PRAVIDLA:
 - VŽDY ověř, že correct_answer je matematicky/jazykově 100% správná. Spočítej si výsledek dvakrát.
 - Nikdy neuvádej nesprávný výsledek — raději zvol jednodušší úlohu.`;
 
-// ── Grade-level language constraints ──────────────
+// ── Grade-level language + RVP content constraints ──────────────
+// Každý ročník má explicitní domény z RVP (Rámcového vzdělávacího programu),
+// aby AI generovala obsahově relevantní úlohy pro daný věk.
 function getGradeConstraints(gradeMin: number): string {
   if (gradeMin <= 3) {
     return `
@@ -33,7 +35,8 @@ OMEZENÍ PRO ${gradeMin}. ROČNÍK (7-9 let):
 - ZAKÁZÁNO: "inženýr", "architekt", "navrhuješ", "analyzuj", "funguje jako", složená souvětí.
 - Kontext: hračky, zvířátka, ovoce, rodina, škola, hřiště, pohádky.
 - Příklady situací: "Máš 5 jablíček...", "Na hřišti je 8 dětí...", "Kočka má 4 koťátka...".
-- Otázka musí být srozumitelná dítěti, které čte 1 rok.`;
+- Otázka musí být srozumitelná dítěti, které čte 1 rok.
+RVP (3. ročník): sčítání/odčítání do 1000, násobení/dělení malou násobilkou, porovnávání, zaokrouhlování na desítky, jednotky délky/hmotnosti/času, jednoduché geometrické útvary.`;
   }
   if (gradeMin <= 5) {
     return `
@@ -42,14 +45,72 @@ OMEZENÍ PRO ${gradeMin}. ROČNÍK (9-11 let):
 - Používej běžnou slovní zásobu odpovídající ${gradeMin}. třídě.
 - ZAKÁZÁNO: odborné termíny, profesní metafory, abstraktní koncepty mimo osnovy.
 - Kontext: běžný život dítěte, sport, příroda, nakupování, cestování, škola.
-- Příklady situací: "V obchodě kupuješ...", "Na výletě jdete...", "Ve třídě je...".`;
+- Příklady situací: "V obchodě kupuješ...", "Na výletě jdete...", "Ve třídě je...".
+RVP (${gradeMin}. ročník): přirozená čísla do milionu, desetinná čísla (${gradeMin === 5 ? "úvod" : "ještě ne"}), zlomky jako části celku, písemné sčítání/odčítání/násobení/dělení, obvod a obsah, jednotky, jednoduchá slovní úloha.`;
   }
+  if (gradeMin === 6) {
+    return `
+OMEZENÍ PRO 6. ROČNÍK (11-12 let):
+- Věty maximálně 22 slov, srozumitelné a přesné.
+- Slovník: běžná mluvená čeština + základní matematická terminologie (čitatel, jmenovatel, zlomek, desetinná).
+- ZAKÁZÁNO: vysokoškolské termíny, anglicismy mimo IT/běžný svět.
+- Kontexty: pizza, koláč, čas, peníze, sport, cestování, rodinný rozpočet.
+RVP pro 6. ročník — HLAVNÍ DOMÉNY:
+- **Čísla a operace:** přirozená čísla do velkých řádů, dělitelnost (dělitelé, násobky, NSD/NSN — úvod), prvočísla, sčítání/odčítání/násobení/dělení desetinných čísel
+- **Zlomky:** smysl zlomku, rozšiřování/krácení, sčítání a odčítání zlomků se stejným jmenovatelem, smíšené číslo
+- **Geometrie:** úhel (vrcholový, vedlejší), osová souměrnost, trojúhelník (součet úhlů = 180°), čtyřúhelník, obvod a obsah
+- **Jednotky:** délka, plocha, hmotnost, čas, převody
+ZAKÁZÁNO PRO 6. ROČNÍK: procenta (probírají se až v 7.), mocniny (až v 8.), rovnice s neznámou (úvod až v 7.–8.).`;
+  }
+  if (gradeMin === 7) {
+    return `
+OMEZENÍ PRO 7. ROČNÍK (12-13 let):
+- Věty maximálně 25 slov, mohou obsahovat závislé věty.
+- Slovník: běžná čeština + matematická terminologie (poměr, procento, zlomek, úměra, záporné číslo).
+- ZAKÁZÁNO: cizí slova bez vysvětlení, vysokoškolské pojmy.
+- Kontexty: sport, vaření (poměry), finance, rozpočet kapesného, mapa a měřítko, populace.
+RVP pro 7. ročník — HLAVNÍ DOMÉNY:
+- **Celá čísla:** pojem, porovnávání, sčítání/odčítání/násobení/dělení, absolutní hodnota
+- **Zlomky:** všechny čtyři operace (+, −, ×, ÷), zlomek jako podíl, smíšené číslo, převody
+- **Desetinná čísla:** všechny čtyři operace, zaokrouhlování, odhad
+- **Poměr, přímá a nepřímá úměrnost:** poměr dvou veličin, trojčlenka, dělení v poměru
+- **Procenta:** základ, procentová část, počet procent, slovní úlohy (úroky, slevy)
+- **Geometrie:** osová/středová souměrnost, trojúhelník (strany, úhly, výška, těžnice), čtyřúhelník (druhy), objem a povrch kvádru a krychle
+- **Statistika — úvod:** aritmetický průměr, tabulky, grafy
+ZAKÁZÁNO PRO 7. ROČNÍK: mocniny (8. ročník), rovnice s neznámou více kroků (úvod je OK), Pythagorova věta (8. roč.), funkce (9. roč.).`;
+  }
+  if (gradeMin === 8) {
+    return `
+OMEZENÍ PRO 8. ROČNÍK (13-14 let):
+- Věty maximálně 28 slov.
+- Slovník: matematická terminologie (mocnina, odmocnina, výraz, rovnice, Pythagorova věta).
+- Kontexty: technika, sport, konstrukce, výpočty v běžném životě, ekonomie, věda pro mládež.
+RVP pro 8. ročník — HLAVNÍ DOMÉNY:
+- **Mocniny s přirozeným mocnitelem:** a², a³, aⁿ, pravidla pro počítání, zápis čísel mocninou deseti
+- **Druhá odmocnina:** pojem, odhad, kalkulačka
+- **Pythagorova věta:** a² + b² = c², použití v trojúhelníku, prostorové útvary
+- **Výrazy:** výraz s proměnnou, sčítání/odčítání/násobení výrazů, mnohočleny, rozklad
+- **Rovnice:** lineární rovnice s jednou neznámou, ekvivalentní úpravy, slovní úlohy
+- **Geometrie:** kruh (π), kružnice, tečna, válec (objem, povrch), konstrukce trojúhelníků
+- **Statistika:** medián, modus, závislosti veličin
+ZAKÁZÁNO PRO 8. ROČNÍK: soustavy dvou rovnic (9. roč.), funkce jako objekt (9. roč.), goniometrie (SŠ).`;
+  }
+  // gradeMin === 9 (nebo více — ignorováno vyšší než 9 pro ZŠ)
   return `
-OMEZENÍ PRO ${gradeMin}. ROČNÍK (11-15 let):
-- Věty maximálně 25 slov.
-- Můžeš používat složitější kontexty, ale stále srozumitelné pro daný věk.
-- Kontexty: technologie, příroda, ekonomie v jednoduchém podání, sport, cestování.
-- ZAKÁZÁNO: vysokoškolské pojmy, profesní žargon mimo běžné znalosti.`;
+OMEZENÍ PRO 9. ROČNÍK (14-15 let):
+- Věty maximálně 30 slov, pokročilá struktura je OK.
+- Slovník: plná matematická terminologie ZŠ (funkce, soustava, podobnost, jehlan, kužel).
+- Kontexty: věda, technika, ekonomie, příroda, společnost, IT, přijímačky na SŠ.
+RVP pro 9. ročník — HLAVNÍ DOMÉNY:
+- **Lomený výraz:** krácení, sčítání/odčítání/násobení/dělení, definiční obor
+- **Rovnice:** lineární rovnice s neznámou ve jmenovateli, soustava dvou rovnic o dvou neznámých (sčítací, dosazovací metoda)
+- **Funkce:** pojem, přímá a nepřímá úměrnost jako funkce, lineární funkce, kvadratická funkce (úvod), graf
+- **Podobnost:** podobnost trojúhelníků, věty (sss, sus, usu), poměry stran
+- **Goniometrie — úvod:** sin, cos, tg v pravoúhlém trojúhelníku
+- **Tělesa:** jehlan, kužel, koule (objem, povrch), řezy tělesem
+- **Finanční matematika:** jistina, úrok, úroková míra, složené úročení
+- **Statistika a pravděpodobnost:** jednoduchý pravděpodobnostní model
+Úroveň: příprava na přijímací zkoušky na SŠ.`;
 }
 
 // ── Validation prompt for post-generation check ──
@@ -275,6 +336,113 @@ const standardTools = [
 ];
 
 /** Run post-generation grade validation on tasks */
+// ── Druhý AI průchod: matematická/jazyková správnost (2nd opinion) ──
+// Používá jiný model než generator (diverzita pohledů).
+// Zamítá nesprávné úlohy — uživatel/dítě je nikdy neuvidí.
+async function validateTasksCorrectness(tasks: any[], gradeMin: number, apiKey: string): Promise<{ tasks: any[]; rejected: number[] }> {
+  if (!tasks.length) return { tasks, rejected: [] };
+
+  const correctnessTools = [{
+    type: "function",
+    function: {
+      name: "correctness_check",
+      description: "For each task, verify if correct_answer is mathematically/linguistically correct. Return which indices are WRONG.",
+      parameters: {
+        type: "object",
+        properties: {
+          results: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                index: { type: "number" },
+                is_correct: { type: "boolean", description: "Is the stated correct_answer actually correct?" },
+                computed_answer: { type: "string", description: "What YOU computed as the correct answer (for verification)." },
+                reason: { type: "string", description: "If is_correct=false, explain briefly why." },
+              },
+              required: ["index", "is_correct"],
+            },
+          },
+        },
+        required: ["results"],
+        additionalProperties: false,
+      },
+    },
+  }];
+
+  const tasksJson = JSON.stringify(tasks.map((t, i) => ({
+    index: i,
+    question: t.question,
+    stated_answer: t.correct_answer,
+    options: t.options || [],
+  })));
+
+  const prompt = `Jsi nezávislý kontrolor správnosti školních úloh. Druhý názor na již vygenerované úlohy.
+
+Pro KAŽDOU úlohu:
+1. Vyřeš úlohu sám — POMALU a KROK ZA KROKEM. Spočítej si výsledek.
+2. Porovnej svůj výsledek se "stated_answer".
+3. Pokud se liší — označ is_correct=false a vysvětli proč.
+4. U úloh typu select_one ověř, že stated_answer je v options.
+5. U jazykových úloh (doplňování i/y atd.) ověř pravopis.
+
+Buď PŘÍSNÝ. Raději označ jako špatnou úlohu, kde si nejsi 100% jistý.
+
+Cílový ročník: ${gradeMin}. ZŠ (${gradeMin + 6} let).
+
+Úlohy:
+${tasksJson}
+
+Zavolej funkci correctness_check.`;
+
+  try {
+    // Použít silnější model pro kontrolu — gpt-5-mini (jiný vendor než generator)
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "openai/gpt-5-mini",
+        messages: [
+          { role: "system", content: "Jsi expertní matematický a jazykový kontrolor pro ZŠ." },
+          { role: "user", content: prompt },
+        ],
+        tools: correctnessTools,
+        tool_choice: { type: "function", function: { name: "correctness_check" } },
+      }),
+    });
+
+    if (!response.ok) {
+      console.warn("[CorrectnessValidator] HTTP error:", response.status, "— pass-through");
+      return { tasks, rejected: [] };
+    }
+
+    const data = await response.json();
+    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+
+    if (toolCall?.function?.arguments) {
+      const parsed = JSON.parse(toolCall.function.arguments);
+      const results = parsed.results || [];
+      const rejected: number[] = [];
+
+      const verifiedTasks = tasks.map((task, i) => {
+        const r = results.find((x: any) => x.index === i);
+        if (r && r.is_correct === false) {
+          rejected.push(i);
+          console.warn(`[CorrectnessValidator] Rejected task ${i}: ${r.reason || "wrong answer"}. Computed=${r.computed_answer}, stated=${task.correct_answer}`);
+          return { ...task, _correctness_failed: true, _correctness_reason: r.reason };
+        }
+        return { ...task, _correctness_verified: true };
+      });
+
+      return { tasks: verifiedTasks, rejected };
+    }
+  } catch (e) {
+    console.warn("[CorrectnessValidator] Error:", e);
+  }
+
+  return { tasks, rejected: [] };
+}
+
 async function validateTasksForGrade(tasks: any[], gradeMin: number, apiKey: string): Promise<{ tasks: any[]; validation: any[] }> {
   try {
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -449,23 +617,44 @@ serve(async (req) => {
       const fnName = toolCall.function.name;
 
       if (fnName === "tutor_practice_batch" && parsed.tasks) {
-        // Post-generation format validation — filter unanswerable tasks
+        // LAYER 1 — Post-generation format validation (regex / structural)
         const formatFiltered = parsed.tasks.filter((t: any) => validateTaskFormat(t, practice_type));
-        console.log(`[Format filter] ${parsed.tasks.length} → ${formatFiltered.length} tasks (practice_type=${practice_type})`);
+        console.log(`[Layer 1 — Format] ${parsed.tasks.length} → ${formatFiltered.length} tasks (practice_type=${practice_type})`);
 
-        // Run post-generation grade validation
-        const { tasks: validatedTasks, validation } = await validateTasksForGrade(
+        // LAYER 2 — Věková přiměřenost (AI grade-appropriateness check, Gemini)
+        const { tasks: gradeValidated, validation } = await validateTasksForGrade(
           formatFiltered,
           effectiveGradeMin,
           LOVABLE_API_KEY
         );
+        console.log(`[Layer 2 — Grade] validated ${gradeValidated.length} tasks for ${effectiveGradeMin}. grade`);
+
+        // LAYER 3 — Matematická/jazyková správnost (2nd opinion AI check, GPT)
+        // Druhý model nezávisle ověří, že stated answer je skutečně správná.
+        const { tasks: correctnessChecked, rejected } = await validateTasksCorrectness(
+          gradeValidated,
+          effectiveGradeMin,
+          LOVABLE_API_KEY
+        );
+        console.log(`[Layer 3 — Correctness] rejected ${rejected.length}/${correctnessChecked.length} tasks as incorrect`);
+
+        // Filter out rejected tasks — dítě/admin je neuvidí
+        const finalTasks = correctnessChecked.filter((t: any) => !t._correctness_failed);
 
         return new Response(
           JSON.stringify({
-            tasks: validatedTasks,
+            tasks: finalTasks,
             validation,
             grade_validated: true,
+            correctness_verified: true,
             grade_min: effectiveGradeMin,
+            stats: {
+              generated: parsed.tasks.length,
+              after_format: formatFiltered.length,
+              after_grade: gradeValidated.length,
+              after_correctness: finalTasks.length,
+              rejected_correctness: rejected.length,
+            },
           }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
