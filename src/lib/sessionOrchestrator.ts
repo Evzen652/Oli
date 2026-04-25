@@ -337,10 +337,20 @@ export async function processState(session: SessionData, userInput?: string): Pr
         return { session: s, output: "Potřebuješ pomoc od dospělého. Požádej rodiče nebo učitele." };
       }
 
-      // Local deterministic evaluation
+      // Local deterministic evaluation — pluggable validators
       const task = s.practiceBatch[s.currentTaskIndex];
       const answer = (userInput || "").trim();
-      const correct = task ? answer === task.correctAnswer.trim() : false;
+      let correct = false;
+      if (task) {
+        // Use pluggable validator system (numeric tolerance, set match, ordered, ...)
+        // Falls back to string_exact for unknown input types.
+        const { validateAnswer } = await import("./validators");
+        const result = validateAnswer(answer, task.correctAnswer.trim(), {
+          inputType: s.matchedTopic?.inputType,
+          context: { topic: s.matchedTopic?.id, level: s.currentLevel },
+        });
+        correct = result.correct;
+      }
 
       // Update streaks
       if (correct) {
