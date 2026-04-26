@@ -2,10 +2,29 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getReadableSkillName } from "@/lib/skillReadableName";
+import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { useT } from "@/lib/i18n";
 import { CalendarDays, CalendarRange, History } from "lucide-react";
 import type { ReportRange } from "@/lib/weeklyReportGenerator";
+
+const SUBJECT_META: Record<string, { emoji: string; label: string; color: string }> = {
+  matematika: { emoji: "🔢", label: "Matematika", color: "text-blue-700" },
+  "čeština": { emoji: "📝", label: "Čeština", color: "text-purple-700" },
+  prvouka: { emoji: "🌍", label: "Prvouka", color: "text-green-700" },
+  "přírodověda": { emoji: "🌿", label: "Přírodověda", color: "text-emerald-700" },
+  "vlastivěda": { emoji: "🗺️", label: "Vlastivěda", color: "text-amber-700" },
+  ostatní: { emoji: "📚", label: "Ostatní", color: "text-slate-700" },
+};
+
+function detectSubjectForSkill(skillId: string): string {
+  const fromRegistry = getSkillSubject(skillId);
+  if (fromRegistry) return fromRegistry;
+  if (skillId.startsWith("math") || skillId.startsWith("frac")) return "matematika";
+  if (skillId.startsWith("cz-") || skillId.includes("diktat") || skillId.includes("pravopis") ||
+      skillId.includes("vyjmen") || skillId.includes("mluvnice") || skillId.includes("parove")) return "čeština";
+  if (skillId.startsWith("prv-") || skillId.startsWith("pr-") || skillId.includes("prvouka")) return "prvouka";
+  return "ostatní";
+}
 
 interface SkillSummary {
   skill: string;
@@ -58,7 +77,8 @@ function skillEmoji(s: SkillSummary): { emoji: string; label: string; bg: string
 function accuracyBadge(acc: number): { emoji: string; text: string; color: string } {
   if (acc >= 80) return { emoji: "🎉", text: "Skvělá!", color: "text-green-600 dark:text-green-400" };
   if (acc >= 50) return { emoji: "👍", text: "Dobrá", color: "text-amber-600 dark:text-amber-400" };
-  return { emoji: "🙂", text: "Příště to půjde líp", color: "text-blue-600 dark:text-blue-400" };
+  if (acc >= 25) return { emoji: "💪", text: "Stojí za to procvičit víc", color: "text-orange-600 dark:text-orange-400" };
+  return { emoji: "🌱", text: "Začátky bývají těžké — vytrvejte", color: "text-blue-600 dark:text-blue-400" };
 }
 
 export default function Report() {
@@ -221,30 +241,67 @@ export default function Report() {
           </div>
         )}
 
-        {/* Skills - emoji-based */}
-        {report.skills.length > 0 && (
-          <div className="space-y-3">
-            <h2 className="text-base font-semibold text-foreground">{t("report.skills")}</h2>
-            <div className="space-y-2">
-              {report.skills.map((skill) => {
-                const v = skillEmoji(skill);
+        {/* Skills — seskupené po předmětech */}
+        {report.skills.length > 0 && (() => {
+          // Grupuj skills podle předmětu
+          const bySubject = new Map<string, typeof report.skills>();
+          for (const s of report.skills) {
+            const subj = detectSubjectForSkill(s.skill);
+            if (!bySubject.has(subj)) bySubject.set(subj, []);
+            bySubject.get(subj)!.push(s);
+          }
+          // Pořadí: matematika → čeština → prvouka → přírodověda → vlastivěda → ostatní
+          const subjectOrder = ["matematika", "čeština", "prvouka", "přírodověda", "vlastivěda", "ostatní"];
+          const sortedSubjects = Array.from(bySubject.keys()).sort((a, b) => {
+            const ia = subjectOrder.indexOf(a);
+            const ib = subjectOrder.indexOf(b);
+            return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+          });
+
+          return (
+            <div className="space-y-4">
+              <h2 className="text-base font-semibold text-foreground">{t("report.skills")}</h2>
+              {sortedSubjects.map((subj) => {
+                const meta = SUBJECT_META[subj] ?? SUBJECT_META.ostatní;
+                const skills = bySubject.get(subj)!;
+                const totalAttempts = skills.reduce((s, k) => s + k.attempts, 0);
+                const totalCorrect = skills.reduce((s, k) => s + k.correct, 0);
+
                 return (
-                  <div key={skill.skill} className={`rounded-2xl border p-4 flex items-center gap-3 ${v.bg}`}>
-                    <span className="text-2xl">{v.emoji}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-foreground truncate">
-                        {getReadableSkillName(skill.skill)}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {v.label} · {skill.correct}/{skill.attempts} {t("report.correct")}
-                      </p>
+                  <div key={subj} className="space-y-2">
+                    {/* Subject header */}
+                    <div className="flex items-center gap-2 pb-1 border-b-2 border-border/40">
+                      <span className="text-xl">{meta.emoji}</span>
+                      <span className={`text-base font-bold ${meta.color}`}>{meta.label}</span>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {skills.length} {skills.length === 1 ? "téma" : skills.length < 5 ? "témata" : "témat"} · {totalCorrect}/{totalAttempts} správně
+                      </span>
+                    </div>
+                    {/* Skill cards in this subject */}
+                    <div className="space-y-2">
+                      {skills.map((skill) => {
+                        const v = skillEmoji(skill);
+                        return (
+                          <div key={skill.skill} className={`rounded-2xl border p-4 flex items-center gap-3 ${v.bg}`}>
+                            <span className="text-2xl">{v.emoji}</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-foreground truncate">
+                                {getReadableSkillName(skill.skill)}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {v.label} · {skill.correct}/{skill.attempts} {t("report.correct")}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 );
               })}
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Recommendations */}
         {report.recommendations && (
