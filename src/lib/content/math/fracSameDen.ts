@@ -90,20 +90,21 @@ function genCompare(_level: number): PracticeTask {
 
 function genFracSameDen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
+  // POZN.: input type tématu je "fraction" — porovnávací úlohy (vrací <,=,>) by
+  // do tohoto vstupu nepatřily. Mají vlastní téma frac_compare_same_den (6. r.).
+  // Zde jen sčítání + odčítání.
   if (level === 1) {
-    // Převážně sčítání, malé jmenovatele
-    for (let i = 0; i < 30; i++) tasks.push(genAdd(level));
-    for (let i = 0; i < 20; i++) tasks.push(genSub(level));
-    for (let i = 0; i < 10; i++) tasks.push(genCompare(level));
+    for (let i = 0; i < 35; i++) tasks.push(genAdd(level));
+    for (let i = 0; i < 25; i++) tasks.push(genSub(level));
   } else {
-    // Vyvážený mix
-    for (let i = 0; i < 25; i++) tasks.push(genAdd(level));
-    for (let i = 0; i < 20; i++) tasks.push(genSub(level));
-    for (let i = 0; i < 15; i++) tasks.push(genCompare(level));
+    for (let i = 0; i < 30; i++) tasks.push(genAdd(level));
+    for (let i = 0; i < 30; i++) tasks.push(genSub(level));
   }
-  // Porovnávací úlohy používají select_one style (options), ostatní fraction input
   return tasks.sort(() => Math.random() - 0.5);
 }
+
+// genCompare je ponechán pro budoucí použití (samostatné téma s comparison input)
+void genCompare;
 
 const HELP_FRAC_SAME_DEN: HelpData = {
   hint:

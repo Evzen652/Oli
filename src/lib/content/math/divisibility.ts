@@ -116,7 +116,19 @@ function genPrimes(_level: number): PracticeTask {
     if (!pool.includes(n)) pool.push(n);
   }
   pool.sort((a, b) => a - b);
-  const primes = pool.filter(isPrime);
+  let primes = pool.filter(isPrime);
+
+  // INVARIANT: vždy aspoň 1 prvočíslo v pool (jinak by correctAnswer byl prázdný)
+  if (primes.length === 0) {
+    const PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+    const addPrime = PRIMES[Math.floor(Math.random() * PRIMES.length)];
+    if (!pool.includes(addPrime)) {
+      pool.pop(); // odstraň poslední aby zachoval velikost 6
+      pool.push(addPrime);
+      pool.sort((a, b) => a - b);
+    }
+    primes = pool.filter(isPrime);
+  }
 
   return {
     question: `Vyber VŠECHNA prvočísla z nabídky:`,

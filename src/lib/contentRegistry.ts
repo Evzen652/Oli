@@ -49,7 +49,7 @@ export const PREREQUISITE_MAP: Record<string, string[]> = {
   "math-divide-remainder-4": ["math-multiply", "math-divide"],
   "math-rounding-4": ["math-rounding"],
   "math-frac-intro-4": ["math-divide", "math-multiply"],
-  "math-units-4": ["math-measurement", "math-multiply", "math-divide"],
+  "math-units-4": ["math-length-convert-combined", "math-multiply", "math-divide"],
   "math-perimeter-4": ["math-perimeter", "math-add-sub-100"],
   // Grade 5 math
   "math-numbers-million-5": ["math-compare-natural-numbers-100", "math-rounding-4"],

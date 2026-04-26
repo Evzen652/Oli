@@ -28,17 +28,25 @@ function genPart(level: number): PracticeTask {
   const { percent, baseFactor } = pickNicePercent(level);
   const multiplier = level === 1 ? 1 + Math.floor(Math.random() * 5) : 2 + Math.floor(Math.random() * 10);
   const base = baseFactor * multiplier;
-  const result = (percent * base) / 100;
+  const result = Math.round((percent * base) / 100);
 
-  const distractors = [
-    result + base / 10,            // zaměněná X/10 s X %
-    result - base / 10,
-    (percent * base) / 10,         // zapomenutá 100 ve jmenovateli
-    base - result,                 // inverze (slevá vs. výsledek)
-  ].filter((d) => d !== result && d > 0 && Number.isInteger(d))
-   .slice(0, 3)
-   .map(String);
-  while (distractors.length < 3) distractors.push(String(result + distractors.length + 1));
+  // Set pro deduplikaci distractorů
+  const candidatePool = new Set<number>();
+  candidatePool.add(Math.round(result + base / 10));
+  candidatePool.add(Math.round(result - base / 10));
+  candidatePool.add(Math.round((percent * base) / 10));
+  candidatePool.add(base - result);
+  candidatePool.add(result + 5);
+  candidatePool.add(result + 10);
+  candidatePool.delete(result);
+
+  const distractors = [...candidatePool].filter((d) => d > 0 && Number.isInteger(d)).slice(0, 3).map(String);
+  let pad = result + 11;
+  while (distractors.length < 3) {
+    const s = String(pad);
+    if (!distractors.includes(s) && pad !== result) distractors.push(s);
+    pad++;
+  }
 
   const options = [String(result), ...distractors].sort(() => Math.random() - 0.5);
 
@@ -65,15 +73,22 @@ function genBase(level: number): PracticeTask {
   const base = baseFactor * multiplier;
   const part = (percent * base) / 100;
 
-  const distractors = [
-    part + base / 5,
-    (part * 100) / (percent + 10),
-    base * 2,
-    base / 2,
-  ].filter((d) => d !== base && d > 0 && Number.isInteger(d))
-   .slice(0, 3)
-   .map(String);
-  while (distractors.length < 3) distractors.push(String(base + distractors.length * 10));
+  const candidatePool = new Set<number>();
+  candidatePool.add(part + Math.round(base / 5));
+  candidatePool.add(Math.round((part * 100) / (percent + 10)));
+  candidatePool.add(base * 2);
+  candidatePool.add(Math.round(base / 2));
+  candidatePool.add(base + 10);
+  candidatePool.add(part);
+  candidatePool.delete(base);
+
+  const distractors = [...candidatePool].filter((d) => d > 0 && Number.isInteger(d)).slice(0, 3).map(String);
+  let pad = base + 11;
+  while (distractors.length < 3) {
+    const s = String(pad);
+    if (!distractors.includes(s) && pad !== base) distractors.push(s);
+    pad++;
+  }
 
   const options = [String(base), ...distractors].sort(() => Math.random() - 0.5);
 
@@ -97,17 +112,29 @@ function genPercent(level: number): PracticeTask {
   const { percent, baseFactor } = pickNicePercent(level);
   const multiplier = level === 1 ? 1 + Math.floor(Math.random() * 3) : 2 + Math.floor(Math.random() * 6);
   const base = baseFactor * multiplier;
-  const part = (percent * base) / 100;
+  const part = Math.round((percent * base) / 100);
 
-  const distractors = [
-    percent + 10,
-    percent - 5,
-    Math.round((part / base) * 10),
-    100 - percent,
-  ].filter((d) => d !== percent && d > 0 && d <= 100 && Number.isInteger(d))
-   .slice(0, 3)
-   .map((d) => `${d}`);
-  while (distractors.length < 3) distractors.push(`${percent + distractors.length + 1}`);
+  // Test používá test computed = (part/base)*100; abychom unikli floating point
+  // chybám, generujeme part jako Math.round(...) a držíme v celých číslech.
+  const candidatePool = new Set<number>();
+  candidatePool.add(percent + 10);
+  candidatePool.add(percent - 5);
+  candidatePool.add(percent + 5);
+  candidatePool.add(percent - 10);
+  candidatePool.add(100 - percent);
+  candidatePool.add(percent * 2);
+  candidatePool.delete(percent);
+
+  const distractors = [...candidatePool]
+    .filter((d) => d > 0 && d <= 200 && Number.isInteger(d))
+    .slice(0, 3)
+    .map((d) => `${d}`);
+  let pad = percent + 11;
+  while (distractors.length < 3) {
+    const s = String(pad);
+    if (!distractors.includes(s) && pad !== percent) distractors.push(s);
+    pad++;
+  }
 
   const options = [`${percent}`, ...distractors].sort(() => Math.random() - 0.5);
 

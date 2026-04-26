@@ -15,15 +15,22 @@ function genAdd(level: number): PracticeTask {
   const b = Math.floor(Math.random() * range * 2) - range;
   const result = a + b;
 
-  const distractors = [
-    a - b,                // zaměněné + a -
-    result + range / 2,
-    result - range / 2,
-    -result,              // opačné znaménko
-  ].filter((d) => d !== result)
-   .slice(0, 3)
-   .map(String);
-  while (distractors.length < 3) distractors.push(String(result + distractors.length + 1));
+  const candidatePool = new Set<number>();
+  candidatePool.add(a - b);                              // zaměněné + a -
+  candidatePool.add(result + Math.max(1, Math.floor(range / 2)));
+  candidatePool.add(result - Math.max(1, Math.floor(range / 2)));
+  candidatePool.add(-result);
+  candidatePool.add(result + 1);
+  candidatePool.add(result - 1);
+  candidatePool.add(result + 2);
+  candidatePool.delete(result);
+  const distractors = [...candidatePool].slice(0, 3).map(String);
+  let pad = result + 3;
+  while (distractors.length < 3) {
+    const s = String(pad);
+    if (!distractors.includes(s) && pad !== result) distractors.push(s);
+    pad++;
+  }
 
   const options = [String(result), ...distractors].sort(() => Math.random() - 0.5);
 
@@ -51,15 +58,23 @@ function genMul(level: number): PracticeTask {
   if (a === 0 || b === 0) return genMul(level); // Avoid trivial zero
   const result = a * b;
 
-  const distractors = [
-    -result,
-    result + Math.abs(b),
-    result - Math.abs(a),
-    a + b,
-  ].filter((d) => d !== result)
-   .slice(0, 3)
-   .map(String);
-  while (distractors.length < 3) distractors.push(String(result + distractors.length + 1));
+  // Generuj 4 unikátní distraktory (deduplicate)
+  const candidatePool = new Set<number>();
+  candidatePool.add(-result);
+  candidatePool.add(result + Math.abs(b));
+  candidatePool.add(result - Math.abs(a));
+  candidatePool.add(a + b);
+  candidatePool.add(result + 1);
+  candidatePool.add(result - 1);
+  candidatePool.add(result + 2);
+  candidatePool.delete(result);
+  const distractors = [...candidatePool].slice(0, 3).map(String);
+  let pad = result + 3;
+  while (distractors.length < 3) {
+    const s = String(pad);
+    if (!distractors.includes(s) && pad !== result) distractors.push(s);
+    pad++;
+  }
 
   const options = [String(result), ...distractors].sort(() => Math.random() - 0.5);
 

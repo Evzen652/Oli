@@ -40,7 +40,10 @@ describe("Topic metadata invariants", () => {
       });
 
       it("has valid inputType", () => {
-        expect(["comparison", "fraction", "number", "select_one", "drag_order", "text"]).toContain(topic.inputType);
+        expect([
+          "comparison", "fraction", "number", "select_one", "drag_order",
+          "text", "fill_blank", "match_pairs", "multi_select", "categorize",
+        ]).toContain(topic.inputType);
       });
 
       it("generator is a function", () => {

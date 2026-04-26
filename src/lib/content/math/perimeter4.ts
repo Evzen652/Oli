@@ -61,7 +61,8 @@ function genPerimeter4(level: number): PracticeTask[] {
       const c = Math.floor(Math.random() * (maxSide - 3)) + 3;
       const d = Math.floor(Math.random() * (maxSide - 3)) + 3;
       correctNum = a + b + c + d;
-      question = `Čtyřúhelník má strany ${a}, ${b}, ${c} a ${d} ${unit}. Jaký má obvod?`;
+      // Jednotka u každého čísla pro konzistenci s ostatními tvary
+      question = `Čtyřúhelník má strany ${a} ${unit}, ${b} ${unit}, ${c} ${unit} a ${d} ${unit}. Jaký má obvod?`;
       stepsPrefix = [
         `Čtyřúhelník má 4 strany.`,
         `Obvod = ${a} + ${b} + ${c} + ${d} = ${correctNum} ${unit}.`,

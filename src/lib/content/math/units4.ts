@@ -198,7 +198,7 @@ export const UNITS_4_TOPICS: TopicMetadata[] = [
     generator: genUnits4,
     helpTemplate: HELP_UNITS_4,
     contentType: "algorithmic",
-    prerequisites: ["math-measurement", "math-multiply", "math-divide"],
+    prerequisites: ["math-length-convert-combined", "math-multiply", "math-divide"],
     rvpReference: "M-5-1-04",
   },
 ];

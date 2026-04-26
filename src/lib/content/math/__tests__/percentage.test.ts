@@ -51,10 +51,11 @@ describe("percentage.ts — matematická správnost", () => {
           else if (task.question.includes("Kolik procent")) computed = computePercent(task.question);
 
           expect(computed, `Unparseable: ${task.question}`).not.toBeNull();
+          // Tolerance pro floating-point (např. 42/600 * 100 = 7.000000001)
           expect(
-            answer,
-            `Task "${task.question}" has wrong answer. Expected ${computed}, got ${task.correctAnswer}`
-          ).toBe(computed);
+            Math.abs(answer - (computed as number)),
+            `Task "${task.question}" has wrong answer. Expected ~${computed}, got ${task.correctAnswer}`
+          ).toBeLessThan(0.01);
         }
       });
 
