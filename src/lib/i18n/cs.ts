@@ -113,7 +113,7 @@ const cs = {
   "parent.title": "Moje děti",
   "parent.add_child": "Přidat dítě",
   "parent.sign_out": "Odhlásit se",
-  "parent.report": "Týdenní report",
+  "parent.report": "Ukázat hodnocení",
   "parent.paired": "Propojeno ✓",
   "parent.not_paired": "Čeká na propojení",
   "parent.code_expired": "Kód vypršel",
@@ -149,7 +149,7 @@ const cs = {
   "parent.subtitle": "Přehled aktivit a pokroků vašich dětí",
 
   // Assignments
-  "assign.create": "Zadat úkol",
+  "assign.create": "Chci zadat úkol(y)",
   "assign.title": "Úkol pro {name}",
   "assign.subject": "Předmět",
   "assign.category": "Okruh",

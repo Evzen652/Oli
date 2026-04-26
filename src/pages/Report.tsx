@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReadableSkillName } from "@/lib/skillReadableName";
 import { useT } from "@/lib/i18n";
+import { CalendarDays, CalendarRange, History } from "lucide-react";
+import type { ReportRange } from "@/lib/weeklyReportGenerator";
 
 interface SkillSummary {
   skill: string;
@@ -24,7 +26,27 @@ interface ReportData {
   stats: { sessions: number; attempts: number; accuracy: number; withHelp?: number; wrong?: number };
   errors?: Record<string, number>;
   childName?: string | null;
+  range?: ReportRange;
+  rangeLabel?: string;
 }
+
+const VALID_RANGES: ReportRange[] = ["week", "month", "all"];
+
+function parseRange(s: string | null): ReportRange {
+  return VALID_RANGES.includes(s as ReportRange) ? (s as ReportRange) : "week";
+}
+
+const RANGE_TABS: { id: ReportRange; label: string; icon: React.ReactNode }[] = [
+  { id: "week", label: "Týdenní", icon: <CalendarDays className="h-4 w-4" /> },
+  { id: "month", label: "Měsíční", icon: <CalendarRange className="h-4 w-4" /> },
+  { id: "all", label: "Od začátku", icon: <History className="h-4 w-4" /> },
+];
+
+const RANGE_HEADING: Record<ReportRange, string> = {
+  week: "Týdenní hodnocení",
+  month: "Měsíční hodnocení",
+  all: "Hodnocení od začátku",
+};
 
 function skillEmoji(s: SkillSummary): { emoji: string; label: string; bg: string } {
   const acc = s.attempts > 0 ? s.correct / s.attempts : 0;
@@ -44,16 +66,18 @@ export default function Report() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const t = useT();
 
   const childId = searchParams.get("child");
+  const range = parseRange(searchParams.get("range"));
 
   useEffect(() => {
     async function fetchReport() {
       try {
+        setLoading(true);
         const { generateWeeklyReport } = await import("@/lib/weeklyReportGenerator");
-        const data = await generateWeeklyReport(childId);
+        const data = await generateWeeklyReport(childId, range);
         setReport(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : t("report.error"));
@@ -62,11 +86,18 @@ export default function Report() {
       }
     }
     fetchReport();
-  }, [navigate, childId, t]);
+  }, [navigate, childId, range, t]);
 
+  const handleRangeChange = (newRange: ReportRange) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("range", newRange);
+    setSearchParams(params, { replace: true });
+  };
+
+  const heading = RANGE_HEADING[range];
   const title = report?.childName
-    ? t("report.title_child").replace("{name}", report.childName)
-    : t("report.title");
+    ? `${heading} — ${report.childName}`
+    : heading;
 
   if (loading) {
     return (
@@ -106,6 +137,27 @@ export default function Report() {
           </Button>
         </header>
 
+        {/* Range tabs — Týdenní / Měsíční / Od začátku */}
+        <div className="rounded-xl border-2 border-border/60 bg-muted/40 p-1 grid grid-cols-3 gap-1">
+          {RANGE_TABS.map((tab) => {
+            const isActive = range === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => handleRangeChange(tab.id)}
+                className={`flex items-center justify-center gap-1.5 rounded-lg py-2 px-2 text-sm font-medium transition-all ${
+                  isActive
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/60"
+                }`}
+              >
+                {tab.icon}
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* AI Summary - warm card */}
         <div className="rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm">
           <p className="text-base text-foreground leading-relaxed">{report.summary}</p>
@@ -126,17 +178,28 @@ export default function Report() {
             </p>
           </div>
         ) : (
-          // Empty state — žádná aktivita za týden
+          // Empty state — žádná aktivita v daném rozsahu
           <div className="rounded-2xl border-2 border-dashed border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 text-center space-y-3">
             <p className="text-4xl">💤</p>
-            <p className="text-lg font-semibold text-blue-900">Tento týden žádná aktivita</p>
-            <p className="text-sm text-blue-700/80 leading-relaxed max-w-sm mx-auto">
-              {report.childName ?? "Dítě"} tento týden ještě neprocvičoval/a. Nejsou data, ze kterých
-              by šlo udělat report.
+            <p className="text-lg font-semibold text-blue-900">
+              {range === "week" && "Tento týden žádná aktivita"}
+              {range === "month" && "Tento měsíc žádná aktivita"}
+              {range === "all" && "Zatím žádná aktivita"}
             </p>
-            <Button variant="default" size="sm" className="gap-2" onClick={() => navigate(-1)}>
-              ← Zpět k zadání úkolu
-            </Button>
+            <p className="text-sm text-blue-700/80 leading-relaxed max-w-sm mx-auto">
+              {report.childName ?? "Dítě"} {report.rangeLabel ?? ""} ještě neprocvičoval/a. Nejsou data,
+              ze kterých by šlo udělat hodnocení.
+            </p>
+            <div className="flex items-center justify-center gap-2 pt-1">
+              <Button variant="default" size="sm" className="gap-2" onClick={() => navigate(-1)}>
+                ← Zpět k zadání úkolu
+              </Button>
+              {range !== "all" && (
+                <Button variant="outline" size="sm" onClick={() => handleRangeChange("all")}>
+                  Zkusit „Od začátku"
+                </Button>
+              )}
+            </div>
           </div>
         )}
 

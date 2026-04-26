@@ -1,10 +1,13 @@
 /**
- * Local weekly report generator — builds report data from session_logs + skill_profiles.
+ * Local report generator — builds report data from session_logs + skill_profiles.
+ * Supports 3 timeframes: week (7 dní), month (30 dní), all (od začátku).
  * No AI needed. Replaces edge function weekly-report.
  */
 
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById } from "@/lib/contentRegistry";
+
+export type ReportRange = "week" | "month" | "all";
 
 interface SkillSummary {
   skill: string;
@@ -23,9 +26,26 @@ interface ReportData {
   skills: SkillSummary[];
   stats: { sessions: number; attempts: number; accuracy: number; withHelp: number; wrong: number };
   childName?: string | null;
+  range: ReportRange;
+  rangeLabel: string;
 }
 
-export async function generateWeeklyReport(childId?: string | null): Promise<ReportData> {
+const RANGE_DAYS: Record<ReportRange, number | null> = {
+  week: 7,
+  month: 30,
+  all: null,
+};
+
+const RANGE_LABEL: Record<ReportRange, string> = {
+  week: "tento týden",
+  month: "tento měsíc",
+  all: "celkem",
+};
+
+export async function generateWeeklyReport(
+  childId?: string | null,
+  range: ReportRange = "week",
+): Promise<ReportData> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
@@ -54,12 +74,15 @@ export async function generateWeeklyReport(childId?: string | null): Promise<Rep
     }
   }
 
-  // Fetch session logs for last 7 days
-  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  // Fetch session logs — timeframe podle range parametru
+  const days = RANGE_DAYS[range];
   let query = supabase
     .from("session_logs")
-    .select("session_id, skill_id, correct, help_used, error_type")
-    .gte("created_at", weekAgo);
+    .select("session_id, skill_id, correct, help_used, error_type");
+  if (days !== null) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    query = query.gte("created_at", since);
+  }
 
   if (resolvedChildId) {
     query = query.eq("child_id", resolvedChildId);
@@ -68,15 +91,19 @@ export async function generateWeeklyReport(childId?: string | null): Promise<Rep
   }
 
   const { data: logs } = await query;
+  const rangeLabel = RANGE_LABEL[range];
   if (!logs || logs.length === 0) {
+    const periodNoun = range === "week" ? "týden" : range === "month" ? "měsíc" : "dosavadní období";
     return {
       summary: childName
-        ? `${childName} tento tyden jeste neprocvicoval/a zadne ulohy. Zkuste ho/ji motivovat k procvicovani.`
-        : "Tento tyden zatim zadna aktivita.",
-      recommendations: "Doporucujeme procvicovat alespon 3x tydne po 10 minutach.",
+        ? `${childName} ${rangeLabel} ještě neprocvičoval/a žádné úlohy. Zadejte úkol nebo motivujte k procvičování.`
+        : `Za ${periodNoun} zatím žádná aktivita.`,
+      recommendations: "Doporučujeme procvičovat alespoň 3× týdně po 10 minutách.",
       skills: [],
       stats: { sessions: 0, attempts: 0, accuracy: 0, withHelp: 0, wrong: 0 },
       childName,
+      range,
+      rangeLabel,
     };
   }
 
@@ -119,11 +146,11 @@ export async function generateWeeklyReport(childId?: string | null): Promise<Rep
   const name = childName ?? "Žák";
   let summary: string;
   if (accuracy >= 80) {
-    summary = `${name} si tento týden vedl/a výborně! Učení jde správným směrem — jen tak dál.`;
+    summary = `${name} si ${rangeLabel} vedl/a výborně! Učení jde správným směrem — jen tak dál.`;
   } else if (accuracy >= 50) {
-    summary = `${name} tento týden procvičoval/a pravidelně. Základ je dobrý, ale některá témata si zaslouží víc pozornosti.`;
+    summary = `${name} ${rangeLabel} procvičoval/a pravidelně. Základ je dobrý, ale některá témata si zaslouží víc pozornosti.`;
   } else {
-    summary = `${name} tento týden potřebuje s učením trochu pomoct. Doporučujeme se zaměřit na slabší témata a procvičovat kratší dobu, ale častěji.`;
+    summary = `${name} ${rangeLabel} potřebuje s učením trochu pomoct. Doporučujeme se zaměřit na slabší témata a procvičovat kratší dobu, ale častěji.`;
   }
 
   const strengths = strengthCount > 0
@@ -150,5 +177,7 @@ export async function generateWeeklyReport(childId?: string | null): Promise<Rep
     skills,
     stats: { sessions, attempts, accuracy, withHelp, wrong },
     childName,
+    range,
+    rangeLabel,
   };
 }
