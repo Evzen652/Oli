@@ -93,6 +93,75 @@ export const orderedSequenceValidator: Validator = {
   },
 };
 
+// ─── Fraction (zlomky — porovnává matematickou hodnotu, ne string) ──────
+/**
+ * Parsuje "a/b" a ověřuje matematickou ekvivalenci dvou zlomků.
+ * Klíčové vlastnosti:
+ *  • "3/8" ≡ "6/16" ≡ "9/24" — všechny dávají TRUE (ekvivalentní)
+ *  • "1/2" ≡ "0,5" ≡ "0.5"   — TRUE (číselná hodnota stejná)
+ *  • Smíšené číslo "1 1/2"   — TRUE (1+1/2 = 3/2)
+ *  • Záporný "-3/4"          — TRUE
+ *  • Nula ve jmenovateli     — FALSE (errorType: zero_denominator)
+ *
+ * Implementace přes a*d === b*c (zachovává přesnost u celých čísel).
+ */
+function parseFraction(s: string): { num: number; den: number } | null {
+  const trimmed = s.trim().replace(/\s+/g, " ");
+
+  // Smíšené číslo: "1 1/2" → 1 + 1/2 = 3/2
+  const mixedMatch = trimmed.match(/^(-?\d+)\s+(\d+)\/(\d+)$/);
+  if (mixedMatch) {
+    const whole = parseInt(mixedMatch[1], 10);
+    const n = parseInt(mixedMatch[2], 10);
+    const d = parseInt(mixedMatch[3], 10);
+    if (d === 0) return null;
+    const sign = whole < 0 ? -1 : 1;
+    return { num: sign * (Math.abs(whole) * d + n), den: d };
+  }
+
+  // Klasický zlomek: "3/8" nebo "-3/8"
+  const fracMatch = trimmed.match(/^(-?\d+)\/(-?\d+)$/);
+  if (fracMatch) {
+    const n = parseInt(fracMatch[1], 10);
+    const d = parseInt(fracMatch[2], 10);
+    if (d === 0) return null;
+    return { num: n, den: d };
+  }
+
+  // Celé číslo: "3" → 3/1
+  const intMatch = trimmed.match(/^-?\d+$/);
+  if (intMatch) {
+    return { num: parseInt(trimmed, 10), den: 1 };
+  }
+
+  // Desetinné: "0,5" nebo "0.5" → numerický fallback
+  const dec = parseFloat(trimmed.replace(",", "."));
+  if (!Number.isNaN(dec)) {
+    // Reprezentuj jako zlomek až na 4 desetinná místa
+    const den = 10000;
+    return { num: Math.round(dec * den), den };
+  }
+
+  return null;
+}
+
+export const fractionValidator: Validator = {
+  id: "fraction",
+  validate(answer, expected) {
+    const a = parseFraction(answer);
+    const e = parseFraction(expected);
+    if (!a) return { correct: false, errorType: "answer_invalid_format" };
+    if (!e) return { correct: false, errorType: "expected_invalid_format" };
+    if (a.den === 0 || e.den === 0) return { correct: false, errorType: "zero_denominator" };
+    // a.num/a.den === e.num/e.den ⇔ a.num * e.den === e.num * a.den
+    const cross1 = a.num * e.den;
+    const cross2 = e.num * a.den;
+    return cross1 === cross2
+      ? { correct: true }
+      : { correct: false, errorType: "different_value" };
+  },
+};
+
 // ─── Algebraic Equivalence (rovnice — bez závislostí, jednoduchá) ────────
 /**
  * Naivní algebraická ekvivalence — porovná po normalizaci (whitespace, *, závorky).
@@ -154,6 +223,7 @@ export const multiStepValidator: Validator = {
 const VALIDATORS: Record<string, Validator> = {
   string_exact: stringExactValidator,
   numeric_tolerance: numericToleranceValidator,
+  fraction: fractionValidator,
   set_match: setMatchValidator,
   ordered_sequence: orderedSequenceValidator,
   algebraic_equivalence: algebraicEquivalenceValidator,
@@ -169,8 +239,9 @@ export function getValidator(id?: string): Validator {
 /** Mapování InputType → výchozí validátor */
 export function getDefaultValidator(inputType: string): Validator {
   switch (inputType) {
-    case "number":
     case "fraction":
+      return fractionValidator;
+    case "number":
       return numericToleranceValidator;
     case "multi_select":
       return setMatchValidator;

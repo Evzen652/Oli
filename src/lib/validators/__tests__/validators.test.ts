@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   stringExactValidator,
   numericToleranceValidator,
+  fractionValidator,
   setMatchValidator,
   orderedSequenceValidator,
   algebraicEquivalenceValidator,
@@ -98,8 +99,72 @@ describe("validateAnswer dispatch", () => {
 describe("getDefaultValidator", () => {
   it("maps inputTypes correctly", () => {
     expect(getDefaultValidator("number").id).toBe("numeric_tolerance");
+    expect(getDefaultValidator("fraction").id).toBe("fraction");
     expect(getDefaultValidator("multi_select").id).toBe("set_match");
     expect(getDefaultValidator("drag_order").id).toBe("ordered_sequence");
     expect(getDefaultValidator("text").id).toBe("string_exact");
+  });
+});
+
+// ─── fractionValidator ───────────────────────────────────────────────────
+describe("fractionValidator", () => {
+  it("matches identical fractions", () => {
+    expect(fractionValidator.validate("3/8", "3/8").correct).toBe(true);
+  });
+
+  it("EQUIVALENCE: 3/8 = 6/16 = 9/24", () => {
+    expect(fractionValidator.validate("6/16", "3/8").correct).toBe(true);
+    expect(fractionValidator.validate("9/24", "3/8").correct).toBe(true);
+    expect(fractionValidator.validate("3/8", "9/24").correct).toBe(true);
+  });
+
+  it("EQUIVALENCE: 1/2 = 5/10 = 50/100", () => {
+    expect(fractionValidator.validate("5/10", "1/2").correct).toBe(true);
+    expect(fractionValidator.validate("50/100", "1/2").correct).toBe(true);
+  });
+
+  it("rejects different values", () => {
+    expect(fractionValidator.validate("3/8", "5/8").correct).toBe(false);
+    expect(fractionValidator.validate("3/8", "3/7").correct).toBe(false);
+  });
+
+  it("integer ↔ fraction equivalence", () => {
+    expect(fractionValidator.validate("2", "4/2").correct).toBe(true);
+    expect(fractionValidator.validate("3", "9/3").correct).toBe(true);
+    expect(fractionValidator.validate("0", "0/5").correct).toBe(true);
+  });
+
+  it("decimal ↔ fraction (with tolerance)", () => {
+    expect(fractionValidator.validate("0.5", "1/2").correct).toBe(true);
+    expect(fractionValidator.validate("0,5", "1/2").correct).toBe(true);
+    expect(fractionValidator.validate("0.25", "1/4").correct).toBe(true);
+  });
+
+  it("mixed numbers", () => {
+    // "1 1/2" = 1 + 1/2 = 3/2
+    expect(fractionValidator.validate("1 1/2", "3/2").correct).toBe(true);
+    expect(fractionValidator.validate("2 1/4", "9/4").correct).toBe(true);
+  });
+
+  it("negative fractions", () => {
+    expect(fractionValidator.validate("-3/4", "-3/4").correct).toBe(true);
+    expect(fractionValidator.validate("-3/4", "-6/8").correct).toBe(true);
+    expect(fractionValidator.validate("3/4", "-3/4").correct).toBe(false);
+  });
+
+  it("zero denominator returns error", () => {
+    const r = fractionValidator.validate("3/0", "3/0");
+    expect(r.correct).toBe(false);
+    expect(r.errorType).toMatch(/denominator|invalid/);
+  });
+
+  it("invalid format returns error", () => {
+    expect(fractionValidator.validate("abc", "1/2").correct).toBe(false);
+    expect(fractionValidator.validate("", "1/2").correct).toBe(false);
+  });
+
+  it("whitespace tolerated", () => {
+    expect(fractionValidator.validate(" 1/2 ", "1/2").correct).toBe(true);
+    expect(fractionValidator.validate("3 / 8", "3/8").correct).toBe(false); // mezery uvnitř — restriktivní
   });
 });
