@@ -120,8 +120,8 @@ export function AssignmentCreator({ childId, childName, onCreated }: Props) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="default" size="sm" className="gap-1.5">
-          <ClipboardList className="h-3.5 w-3.5" />
+        <Button variant="default" size="default" className="gap-2 h-10 font-medium shadow-sm">
+          <ClipboardList className="h-4 w-4" />
           {t("assign.create")}
         </Button>
       </SheetTrigger>

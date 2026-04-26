@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getTopicById } from "@/lib/contentRegistry";
+import { getReadableSkillName } from "@/lib/skillReadableName";
 import { useT } from "@/lib/i18n";
 
 interface SkillSummary {
@@ -93,6 +93,7 @@ export default function Report() {
 
   const independent = report.stats.attempts - (report.stats.withHelp ?? 0) - (report.stats.wrong ?? 0);
   const accBadge = accuracyBadge(report.stats.accuracy);
+  const hasActivity = report.stats.attempts > 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background p-4 pb-12">
@@ -110,19 +111,34 @@ export default function Report() {
           <p className="text-base text-foreground leading-relaxed">{report.summary}</p>
         </div>
 
-        {/* Stats as friendly sentence */}
-        <div className="rounded-2xl border bg-card p-5 text-center space-y-2">
-          <p className="text-lg text-foreground">
-            Tento týden: <span className="font-bold">{report.stats.attempts} úloh</span> v{" "}
-            <span className="font-bold">{report.stats.sessions} sezeních</span>
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {independent} samostatně · {report.stats.withHelp ?? 0} s nápovědou · {report.stats.wrong ?? 0} chybně
-          </p>
-          <p className={`text-lg font-semibold ${accBadge.color}`}>
-            {accBadge.emoji} Úspěšnost: {accBadge.text} ({report.stats.accuracy} %)
-          </p>
-        </div>
+        {/* Stats — pouze pokud je aktivita */}
+        {hasActivity ? (
+          <div className="rounded-2xl border bg-card p-5 text-center space-y-2">
+            <p className="text-lg text-foreground">
+              Tento týden: <span className="font-bold">{report.stats.attempts} úloh</span> v{" "}
+              <span className="font-bold">{report.stats.sessions} sezeních</span>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {independent} samostatně · {report.stats.withHelp ?? 0} s nápovědou · {report.stats.wrong ?? 0} chybně
+            </p>
+            <p className={`text-lg font-semibold ${accBadge.color}`}>
+              {accBadge.emoji} Úspěšnost: {accBadge.text} ({report.stats.accuracy} %)
+            </p>
+          </div>
+        ) : (
+          // Empty state — žádná aktivita za týden
+          <div className="rounded-2xl border-2 border-dashed border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 text-center space-y-3">
+            <p className="text-4xl">💤</p>
+            <p className="text-lg font-semibold text-blue-900">Tento týden žádná aktivita</p>
+            <p className="text-sm text-blue-700/80 leading-relaxed max-w-sm mx-auto">
+              {report.childName ?? "Dítě"} tento týden ještě neprocvičoval/a. Nejsou data, ze kterých
+              by šlo udělat report.
+            </p>
+            <Button variant="default" size="sm" className="gap-2" onClick={() => navigate(-1)}>
+              ← Zpět k zadání úkolu
+            </Button>
+          </div>
+        )}
 
         {/* Strengths & To Practice - friendly */}
         {(report.strengths || report.to_practice) && (
@@ -154,7 +170,7 @@ export default function Report() {
                     <span className="text-2xl">{v.emoji}</span>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-foreground truncate">
-                        {getTopicById(skill.skill)?.title ?? skill.skill}
+                        {getReadableSkillName(skill.skill)}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {v.label} · {skill.correct}/{skill.attempts} {t("report.correct")}

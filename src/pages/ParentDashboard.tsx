@@ -297,18 +297,33 @@ export default function ParentDashboard() {
               {/* Activity stats + chart for paired children */}
               {child.is_paired && (
                 <div className="px-5 pb-4 space-y-4">
-                  <ChildActivityBadge childId={child.id} />
-                  <ChildActivityChart childId={child.id} />
-                  <AssignmentList childId={child.id} refreshKey={assignmentRefresh} />
-                  <SelfPracticeList childId={child.id} />
-
-                  {/* Quick actions */}
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    <AssignmentCreator childId={child.id} childName={child.child_name} onCreated={() => setAssignmentRefresh(r => r + 1)} />
-                    <Button variant="outline" size="sm" className="gap-1.5" onClick={() => navigate(`/report?child=${child.id}`)}>
-                      <BarChart3 className="h-3.5 w-3.5" /> {t("parent.report")}
+                  {/* PRIMARY ACTIONS — nahoře, jasně viditelné */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <AssignmentCreator
+                      childId={child.id}
+                      childName={child.child_name}
+                      onCreated={() => setAssignmentRefresh(r => r + 1)}
+                    />
+                    <Button
+                      variant="outline"
+                      size="default"
+                      className="gap-2 h-10 border-2 border-blue-200 bg-blue-50/60 hover:bg-blue-50 text-blue-900 hover:text-blue-900 font-medium"
+                      onClick={() => navigate(`/report?child=${child.id}`)}
+                    >
+                      <BarChart3 className="h-4 w-4 text-blue-600" />
+                      <span>Týdenní report</span>
                     </Button>
                   </div>
+
+                  {/* Týdenní status — hero karta */}
+                  <ChildActivityBadge childId={child.id} />
+
+                  {/* Úkoly */}
+                  <AssignmentList childId={child.id} refreshKey={assignmentRefresh} />
+
+                  {/* Detaily aktivity (collapsible) */}
+                  <ChildActivityChart childId={child.id} />
+                  <SelfPracticeList childId={child.id} />
                 </div>
               )}
 
