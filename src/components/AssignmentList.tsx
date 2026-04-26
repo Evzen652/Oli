@@ -94,12 +94,16 @@ export function AssignmentList({ childId, refreshKey }: Props) {
       {done.length > 0 && (
         <Collapsible open={showCompleted} onOpenChange={setShowCompleted}>
           <CollapsibleTrigger asChild>
-            <button className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground transition-colors py-1">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3 w-3 text-green-600" />
-                Hotové úkoly ({done.length})
+            <button className="w-full flex items-center justify-between gap-2 rounded-lg border-2 border-green-200/60 bg-green-50/50 hover:bg-green-50 hover:border-green-300 px-3 py-2.5 text-sm font-medium text-green-800 transition-colors">
+              <span className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <span>Hotové úkoly</span>
+                <span className="text-xs font-normal text-green-700/70">({done.length})</span>
               </span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showCompleted ? "rotate-180" : ""}`} />
+              <span className="flex items-center gap-1 text-xs text-green-700/70">
+                <span>{showCompleted ? "Skrýt" : "Zobrazit"}</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${showCompleted ? "rotate-180" : ""}`} />
+              </span>
             </button>
           </CollapsibleTrigger>
           <CollapsibleContent>

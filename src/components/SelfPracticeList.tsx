@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { getTopicById } from "@/lib/contentRegistry";
+import { getReadableSkillName } from "@/lib/skillReadableName";
 
 interface Props {
   childId: string;
@@ -23,7 +23,7 @@ function subjectEmoji(skillId: string): string {
 }
 
 function skillDisplayName(skillId: string): string {
-  return getTopicById(skillId)?.title ?? skillId;
+  return getReadableSkillName(skillId);
 }
 
 export function SelfPracticeList({ childId }: Props) {

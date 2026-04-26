@@ -225,9 +225,13 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
       {/* Vysvětlení tématu */}
       <Separator className="mt-8 mb-4" />
       <Collapsible defaultOpen={false}>
-        <CollapsibleTrigger className="flex items-center gap-2 w-full group cursor-pointer">
-          <h4 className="text-sm font-semibold text-foreground">📋 Vysvětlení tématu</h4>
-          <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+        <CollapsibleTrigger className="flex items-center justify-between gap-2 w-full group rounded-lg border-2 border-border/60 bg-muted/40 hover:bg-muted hover:border-border px-3 py-2.5 transition-colors">
+          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">📋 Vysvětlení tématu</h4>
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="group-data-[state=open]:hidden">Zobrazit</span>
+            <span className="hidden group-data-[state=open]:inline">Skrýt</span>
+            <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+          </span>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="rounded-lg border p-4 space-y-6 mt-2">

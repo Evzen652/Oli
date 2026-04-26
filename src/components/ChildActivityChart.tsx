@@ -147,12 +147,18 @@ export function ChildActivityChart({ childId }: Props) {
   return (
     <Collapsible open={open || shouldDefaultOpen} onOpenChange={setOpen}>
       <CollapsibleTrigger asChild>
-        <button className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground transition-colors py-1">
-          <span className="flex items-center gap-1.5">
-            <BarChart3 className="h-3 w-3" />
-            Aktivita za 7 dní {hasAnyActivity ? `(${data.reduce((s, d) => s + d.total, 0)} úloh)` : "(zatím nic)"}
+        <button className="w-full flex items-center justify-between gap-2 rounded-lg border-2 border-border/60 bg-muted/40 hover:bg-muted hover:border-border px-3 py-2.5 text-sm font-medium text-foreground transition-colors">
+          <span className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            <span>Aktivita za 7 dní</span>
+            <span className="text-xs text-muted-foreground font-normal">
+              {hasAnyActivity ? `(${data.reduce((s, d) => s + d.total, 0)} úloh)` : "(zatím nic)"}
+            </span>
           </span>
-          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${(open || shouldDefaultOpen) ? "rotate-180" : ""}`} />
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span>{(open || shouldDefaultOpen) ? "Skrýt" : "Zobrazit"}</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${(open || shouldDefaultOpen) ? "rotate-180" : ""}`} />
+          </span>
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
