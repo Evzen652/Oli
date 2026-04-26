@@ -25,4 +25,10 @@ dist-ssr
 *.sln
 *.sw?
 src.backup/
-.claude/
+
+# Claude Code workspace — local data, settings overrides, history
+.claude/*
+# ALE povol sdílená nastavení (permissions, agents) napříč týmem/PC
+!.claude/settings.json
+!.claude/agents/
+!.claude/commands/

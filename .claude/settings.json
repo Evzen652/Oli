@@ -1,0 +1,62 @@
+{
+  "_comment": "Sdílené Claude Code nastavení pro projekt Oli — commitnuto v gitu. Pro lokální overrides použij .claude/settings.local.json (gitignored).",
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git show*)",
+      "Bash(git fetch*)",
+      "Bash(git pull*)",
+      "Bash(git push*)",
+      "Bash(git checkout*)",
+      "Bash(git branch*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git stash*)",
+      "Bash(git restore*)",
+      "Bash(git clean*)",
+      "Bash(git remote*)",
+      "Bash(git config*)",
+
+      "Bash(npm:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test*)",
+      "Bash(npm install*)",
+      "Bash(npx:*)",
+      "Bash(npx.cmd:*)",
+      "Bash(npx vite:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vitest:*)",
+
+      "Bash(/c/Program Files/nodejs/npm.cmd*)",
+      "Bash(/c/Program Files/nodejs/npx.cmd*)",
+      "Bash(powershell.exe:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(where.exe*)",
+
+      "Bash(ls*)",
+      "Bash(pwd)",
+      "Bash(echo*)",
+      "Bash(cat*)",
+      "Bash(mkdir*)",
+
+      "PowerShell(*)",
+
+      "Read(//c/Program Files/nodejs//**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_Preview__preview_stop",
+      "mcp__Claude_Preview__preview_eval",
+      "mcp__Claude_Preview__preview_screenshot",
+      "mcp__Claude_Preview__preview_console_logs",
+      "mcp__Claude_Preview__preview_logs",
+      "mcp__Claude_Preview__preview_inspect",
+      "mcp__Claude_Preview__preview_network",
+      "mcp__Claude_Preview__preview_snapshot",
+      "mcp__Claude_Preview__preview_list",
+      "mcp__ccd_directory__request_directory"
+    ]
+  }
+}
