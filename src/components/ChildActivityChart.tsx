@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
-import { getTopicById } from "@/lib/contentRegistry";
+import { getReadableSkillName } from "@/lib/skillReadableName";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronLeft, ChevronRight, ChevronDown, BarChart3 } from "lucide-react";
 
 interface LogEntry {
   created_at: string;
@@ -44,7 +45,7 @@ function subjectEmoji(skillId: string): string {
 }
 
 function skillDisplayName(skillId: string): string {
-  return getTopicById(skillId)?.title ?? skillId;
+  return getReadableSkillName(skillId);
 }
 
 function formatDateRange(weekOffset: number): string {
@@ -133,10 +134,29 @@ export function ChildActivityChart({ childId }: Props) {
     [data, selectedDay]
   );
 
+  const hasAnyActivity = data.some(d => d.total > 0);
+  const [open, setOpen] = useState(false);
+
   if (loading) return null;
 
+  // Pokud žádná aktivita za 7 dní — collapsed by default (graf nedominuje)
+  // Pokud aktivita — open by default (rodič ji chce vidět)
+  // Open state je resetnut při weekOffset change
+  const shouldDefaultOpen = hasAnyActivity;
+
   return (
-    <div className="space-y-4">
+    <Collapsible open={open || shouldDefaultOpen} onOpenChange={setOpen}>
+      <CollapsibleTrigger asChild>
+        <button className="w-full flex items-center justify-between text-xs font-medium text-muted-foreground hover:text-foreground transition-colors py-1">
+          <span className="flex items-center gap-1.5">
+            <BarChart3 className="h-3 w-3" />
+            Aktivita za 7 dní {hasAnyActivity ? `(${data.reduce((s, d) => s + d.total, 0)} úloh)` : "(zatím nic)"}
+          </span>
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${(open || shouldDefaultOpen) ? "rotate-180" : ""}`} />
+        </button>
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <div className="space-y-4 pt-2">
       {/* Week navigation */}
       <div className="flex items-center justify-between">
         <Button
@@ -269,6 +289,8 @@ export function ChildActivityChart({ childId }: Props) {
           <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-400" /> chybně
         </span>
       </div>
-    </div>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
