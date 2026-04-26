@@ -187,7 +187,7 @@ export default function Report() {
         {hasActivity ? (
           <div className="rounded-2xl border bg-card p-5 text-center space-y-2">
             <p className="text-lg text-foreground">
-              Tento týden: <span className="font-bold">{report.stats.attempts} úloh</span> v{" "}
+              {report.rangeLabel.charAt(0).toUpperCase() + report.rangeLabel.slice(1)}: <span className="font-bold">{report.stats.attempts} úloh</span> v{" "}
               <span className="font-bold">{report.stats.sessions} sezeních</span>
             </p>
             <p className="text-sm text-muted-foreground">
