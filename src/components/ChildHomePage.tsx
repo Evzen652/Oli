@@ -343,30 +343,37 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               </Card>
             ) : (
               <div className="space-y-2">
-                {/* Compact stats row */}
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 p-2.5 text-center">
-                    <p className="text-xl mb-0.5">⚡</p>
-                    <p className="text-lg font-bold text-blue-700 dark:text-blue-300 tabular-nums">{stats.daysActive}</p>
-                    <p className="text-[10px] text-blue-600/80 dark:text-blue-400/80 font-medium leading-tight">
-                      {stats.daysActive === 1 ? "den cvičení" : stats.daysActive < 5 ? "dny cvičení" : "dní cvičení"}
+                {/* Friendly summary — celé věty, žádné samostatné číselníky */}
+                <Card className="rounded-2xl border-2 border-primary/20 bg-card shadow-sm">
+                  <CardContent className="p-4 space-y-2">
+                    <p className="text-sm flex items-start gap-2.5">
+                      <span className="text-lg flex-shrink-0">📅</span>
+                      <span className="text-foreground">
+                        Cvičil/a jsi
+                        {" "}<span className="font-bold text-blue-700 dark:text-blue-300">{stats.daysActive}</span>
+                        {" "}{stats.daysActive === 1 ? "den" : stats.daysActive < 5 ? "dny" : "dnů"}
+                        {" "}<span className="text-muted-foreground">(z posledních 7)</span>
+                      </span>
                     </p>
-                  </div>
-                  <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 p-2.5 text-center">
-                    <p className="text-xl mb-0.5">🎯</p>
-                    <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300 tabular-nums">{stats.tasks}</p>
-                    <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-medium leading-tight">
-                      {stats.tasks === 1 ? "úloha" : stats.tasks < 5 ? "úlohy" : "úloh"}
+                    <p className="text-sm flex items-start gap-2.5">
+                      <span className="text-lg flex-shrink-0">📝</span>
+                      <span className="text-foreground">
+                        Dohromady jsi vyřešil/a
+                        {" "}<span className="font-bold text-emerald-700 dark:text-emerald-300">{stats.tasks}</span>
+                        {" "}{stats.tasks === 1 ? "úlohu" : stats.tasks < 5 ? "úlohy" : "úloh"}
+                        {" "}<span className="text-muted-foreground">{stats.sessions === 1 ? "v 1 cvičení" : `v ${stats.sessions} cvičeních`}</span>
+                      </span>
                     </p>
-                  </div>
-                  <div className="rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-2.5 text-center">
-                    <p className="text-xl mb-0.5">⭐</p>
-                    <p className="text-lg font-bold text-amber-700 dark:text-amber-300 tabular-nums">{stats.accuracy}%</p>
-                    <p className="text-[10px] text-amber-600/80 dark:text-amber-400/80 font-medium leading-tight">
-                      sám/sama
+                    <p className="text-sm flex items-start gap-2.5">
+                      <span className="text-lg flex-shrink-0">⭐</span>
+                      <span className="text-foreground">
+                        Z toho
+                        {" "}<span className="font-bold text-amber-700 dark:text-amber-300">{stats.accuracy} %</span>
+                        {" "}sis poradil/a sám/sama
+                      </span>
                     </p>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
 
                 {/* Co jsi procvičoval — per-skill rozpis (před globálním souhrnem,
                     aby žák věděl k čemu se čísla vztahují) */}
