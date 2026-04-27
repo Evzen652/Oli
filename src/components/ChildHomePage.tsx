@@ -368,7 +368,76 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   </div>
                 </div>
 
-                {/* Detail breakdown — vizuální checklist pro děti */}
+                {/* Co jsi procvičoval — per-skill rozpis (před globálním souhrnem,
+                    aby žák věděl k čemu se čísla vztahují) */}
+                {stats.skills.length > 0 && (
+                  <div className="space-y-2 pt-1">
+                    <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                      <span>📚</span>
+                      <span>Co jsi procvičoval</span>
+                    </h3>
+                    <div className="space-y-1.5">
+                      {stats.skills.map((s) => {
+                        const sAcc = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
+                        let tone = "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800";
+                        let badge = "🌟";
+                        let badgeText = "skvěle";
+                        let badgeColor = "text-emerald-700 dark:text-emerald-400";
+                        if (s.attempts < 2) {
+                          tone = "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800";
+                          badge = "🌱";
+                          badgeText = "začínáš";
+                          badgeColor = "text-slate-700 dark:text-slate-400";
+                        } else if (sAcc < 50) {
+                          tone = "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800";
+                          badge = "💪";
+                          badgeText = "trénovat";
+                          badgeColor = "text-amber-700 dark:text-amber-400";
+                        } else if (sAcc < 80) {
+                          tone = "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800";
+                          badge = "👍";
+                          badgeText = "dobře";
+                          badgeColor = "text-sky-700 dark:text-sky-400";
+                        }
+                        return (
+                          <div key={s.skillId} className={`rounded-xl border p-3 ${tone} space-y-1.5`}>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-base" aria-hidden>{getSkillIcon(s.skillId)}</span>
+                              <p className="font-medium text-sm text-foreground flex-1 min-w-0 truncate">
+                                {getReadableSkillName(s.skillId)}
+                              </p>
+                              <span className={`text-xs font-bold tabular-nums ${badgeColor} whitespace-nowrap`}>
+                                {badge} {badgeText}
+                              </span>
+                            </div>
+                            <div className="ml-6 space-y-0.5">
+                              {s.correct > 0 && (
+                                <p className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                                  <span>✅</span>
+                                  <span>Sám/sama: <span className="font-bold">{s.correct}×</span></span>
+                                </p>
+                              )}
+                              {s.helpUsed > 0 && (
+                                <p className="text-xs text-sky-700 dark:text-sky-400 flex items-center gap-1.5">
+                                  <span>💡</span>
+                                  <span>S nápovědou: <span className="font-bold">{s.helpUsed}×</span></span>
+                                </p>
+                              )}
+                              {s.wrong > 0 && (
+                                <p className="text-xs text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
+                                  <span>❌</span>
+                                  <span>Chyba: <span className="font-bold">{s.wrong}×</span></span>
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Globální souhrn — Celkem za týden */}
                 {(() => {
                   const aloneCount = stats.tasks - stats.helpUsed - stats.wrong;
                   const wordTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
@@ -397,6 +466,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   return (
                     <Card className="rounded-xl border bg-card shadow-sm">
                       <CardContent className="p-3 space-y-1.5">
+                        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                          Celkem za týden
+                        </p>
                         {rows.map((r, i) => (
                           <div key={i} className="flex items-center gap-2.5">
                             <span className="text-lg flex-shrink-0">{r.emoji}</span>
@@ -494,75 +566,6 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   );
                 })()}
 
-                {/* Co jsi procvičoval — per-skill rozpis */}
-                {stats.skills.length > 0 && (
-                  <div className="space-y-2 pt-2">
-                    <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
-                      <span>📚</span>
-                      <span>Co jsi procvičoval</span>
-                    </h3>
-                    <div className="space-y-1.5">
-                      {stats.skills.map((s) => {
-                        const sAcc = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
-                        // Tier podle úspěšnosti samostatnosti
-                        let tone = "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800";
-                        let badge = "🌟";
-                        let badgeText = "skvěle";
-                        let badgeColor = "text-emerald-700 dark:text-emerald-400";
-                        if (s.attempts < 2) {
-                          tone = "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800";
-                          badge = "🌱";
-                          badgeText = "začínáš";
-                          badgeColor = "text-slate-700 dark:text-slate-400";
-                        } else if (sAcc < 50) {
-                          tone = "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800";
-                          badge = "💪";
-                          badgeText = "trénovat";
-                          badgeColor = "text-amber-700 dark:text-amber-400";
-                        } else if (sAcc < 80) {
-                          tone = "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800";
-                          badge = "👍";
-                          badgeText = "dobře";
-                          badgeColor = "text-sky-700 dark:text-sky-400";
-                        }
-
-                        return (
-                          <div key={s.skillId} className={`rounded-xl border p-3 ${tone} space-y-1.5`}>
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-base" aria-hidden>{getSkillIcon(s.skillId)}</span>
-                              <p className="font-medium text-sm text-foreground flex-1 min-w-0 truncate">
-                                {getReadableSkillName(s.skillId)}
-                              </p>
-                              <span className={`text-xs font-bold tabular-nums ${badgeColor} whitespace-nowrap`}>
-                                {badge} {badgeText}
-                              </span>
-                            </div>
-                            <div className="ml-6 space-y-0.5">
-                              {s.correct > 0 && (
-                                <p className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-                                  <span>✅</span>
-                                  <span>Sám/sama: <span className="font-bold">{s.correct}×</span></span>
-                                </p>
-                              )}
-                              {s.helpUsed > 0 && (
-                                <p className="text-xs text-sky-700 dark:text-sky-400 flex items-center gap-1.5">
-                                  <span>💡</span>
-                                  <span>S nápovědou: <span className="font-bold">{s.helpUsed}×</span></span>
-                                </p>
-                              )}
-                              {s.wrong > 0 && (
-                                <p className="text-xs text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
-                                  <span>❌</span>
-                                  <span>Chyba: <span className="font-bold">{s.wrong}×</span></span>
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>
