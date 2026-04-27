@@ -368,17 +368,45 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   </div>
                 </div>
 
-                {/* Detail breakdown — pro pochopení čísel */}
-                <Card className="rounded-xl border bg-card shadow-sm">
-                  <CardContent className="p-3 space-y-1">
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      Z <span className="font-bold text-foreground">{stats.tasks}</span> úloh:
-                      {" "}<span className="font-semibold text-emerald-700 dark:text-emerald-400">{stats.tasks - stats.helpUsed - stats.wrong}× sám/sama</span>
-                      {stats.helpUsed > 0 && <>{" · "}<span className="font-semibold text-sky-700 dark:text-sky-400">{stats.helpUsed}× s nápovědou</span></>}
-                      {stats.wrong > 0 && <>{" · "}<span className="font-semibold text-rose-700 dark:text-rose-400">{stats.wrong}× chybně</span></>}
-                    </p>
-                  </CardContent>
-                </Card>
+                {/* Detail breakdown — vizuální checklist pro děti */}
+                {(() => {
+                  const aloneCount = stats.tasks - stats.helpUsed - stats.wrong;
+                  const wordTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
+                  const rows: { emoji: string; text: React.ReactNode; color: string }[] = [];
+                  if (aloneCount > 0) {
+                    rows.push({
+                      emoji: "✅",
+                      color: "text-emerald-700 dark:text-emerald-400",
+                      text: <>Sám/sama jsi vyřešil/a <span className="font-bold">{aloneCount}</span> {wordTasks(aloneCount)}</>,
+                    });
+                  }
+                  if (stats.helpUsed > 0) {
+                    rows.push({
+                      emoji: "💡",
+                      color: "text-sky-700 dark:text-sky-400",
+                      text: <>S nápovědou jsi zvládl/a <span className="font-bold">{stats.helpUsed}</span> {wordTasks(stats.helpUsed)}</>,
+                    });
+                  }
+                  if (stats.wrong > 0) {
+                    rows.push({
+                      emoji: "❌",
+                      color: "text-rose-700 dark:text-rose-400",
+                      text: <>Chybu jsi udělal/a <span className="font-bold">{stats.wrong}×</span></>,
+                    });
+                  }
+                  return (
+                    <Card className="rounded-xl border bg-card shadow-sm">
+                      <CardContent className="p-3 space-y-1.5">
+                        {rows.map((r, i) => (
+                          <div key={i} className="flex items-center gap-2.5">
+                            <span className="text-lg flex-shrink-0">{r.emoji}</span>
+                            <p className={`text-sm ${r.color}`}>{r.text}</p>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  );
+                })()}
 
                 {/* Návodný blok — co se ti daří + tip */}
                 {(() => {
@@ -499,7 +527,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                         }
 
                         return (
-                          <div key={s.skillId} className={`rounded-xl border p-2.5 ${tone}`}>
+                          <div key={s.skillId} className={`rounded-xl border p-3 ${tone} space-y-1.5`}>
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-base" aria-hidden>{getSkillIcon(s.skillId)}</span>
                               <p className="font-medium text-sm text-foreground flex-1 min-w-0 truncate">
@@ -509,12 +537,26 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                                 {badge} {badgeText}
                               </span>
                             </div>
-                            <p className="text-[11px] text-muted-foreground mt-1 ml-6">
-                              <span className="font-bold text-foreground">{s.attempts}</span> {s.attempts === 1 ? "úloha" : s.attempts < 5 ? "úlohy" : "úloh"}:
-                              {" "}<span className="font-semibold text-emerald-700 dark:text-emerald-400">{s.correct}× sám/sama</span>
-                              {s.helpUsed > 0 && <>{" · "}<span className="font-semibold text-sky-700 dark:text-sky-400">{s.helpUsed}× s nápovědou</span></>}
-                              {s.wrong > 0 && <>{" · "}<span className="font-semibold text-rose-700 dark:text-rose-400">{s.wrong}× chybně</span></>}
-                            </p>
+                            <div className="ml-6 space-y-0.5">
+                              {s.correct > 0 && (
+                                <p className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                                  <span>✅</span>
+                                  <span>Sám/sama: <span className="font-bold">{s.correct}×</span></span>
+                                </p>
+                              )}
+                              {s.helpUsed > 0 && (
+                                <p className="text-xs text-sky-700 dark:text-sky-400 flex items-center gap-1.5">
+                                  <span>💡</span>
+                                  <span>S nápovědou: <span className="font-bold">{s.helpUsed}×</span></span>
+                                </p>
+                              )}
+                              {s.wrong > 0 && (
+                                <p className="text-xs text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
+                                  <span>❌</span>
+                                  <span>Chyba: <span className="font-bold">{s.wrong}×</span></span>
+                                </p>
+                              )}
+                            </div>
                           </div>
                         );
                       })}
