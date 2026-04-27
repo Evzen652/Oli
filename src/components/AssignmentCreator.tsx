@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,15 @@ interface Props {
   childId: string;
   childName: string;
   onCreated?: () => void;
+  /**
+   * Pokud je předán code_skill_id (např. "math-compare-natural-numbers-100"),
+   * sheet se automaticky otevře a předvyplní celý řetězec
+   * subject → category → topic → skill.
+   * Změna této hodnoty (klíčem nebo přepsáním) znovu spustí prefill.
+   */
+  prefillSkillCode?: string | null;
+  /** Volitelný callback po dokončení/zrušení prefillu — rodič může vyresetovat hash */
+  onPrefillConsumed?: () => void;
 }
 
 interface Subject { id: string; name: string; slug: string; }
@@ -25,7 +34,7 @@ interface Category { id: string; name: string; subject_id: string; }
 interface Topic { id: string; name: string; category_id: string; }
 interface Skill { id: string; name: string; code_skill_id: string; topic_id: string; is_active: boolean; }
 
-export function AssignmentCreator({ childId, childName, onCreated }: Props) {
+export function AssignmentCreator({ childId, childName, onCreated, prefillSkillCode, onPrefillConsumed }: Props) {
   const t = useT();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -46,6 +55,11 @@ export function AssignmentCreator({ childId, childName, onCreated }: Props) {
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const [note, setNote] = useState("");
 
+  // Guard, který blokuje kaskádové resety během prefillu
+  const prefillingRef = useRef(false);
+  // Aktuálně zpracovávaný prefill kód (deduplikace)
+  const consumedPrefillRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!open) return;
     supabase.from("curriculum_subjects").select("id, name, slug").order("sort_order").then(({ data }) => setSubjects(data ?? []));
@@ -54,6 +68,7 @@ export function AssignmentCreator({ childId, childName, onCreated }: Props) {
   useEffect(() => {
     if (!selectedSubject) { setCategories([]); return; }
     supabase.from("curriculum_categories").select("id, name, subject_id").eq("subject_id", selectedSubject).order("sort_order").then(({ data }) => setCategories(data ?? []));
+    if (prefillingRef.current) return;
     setSelectedCategory(""); setSelectedTopic(""); setSelectedSkill("");
   }, [selectedSubject]);
 
@@ -62,6 +77,7 @@ export function AssignmentCreator({ childId, childName, onCreated }: Props) {
     supabase.from("curriculum_topics").select("id, name, category_id").eq("category_id", selectedCategory).order("sort_order").then(({ data }) => {
       const items = data ?? [];
       setTopics(items);
+      if (prefillingRef.current) return;
       // Auto-select if only one topic
       if (items.length === 1) {
         setSelectedTopic(items[0].id);
@@ -76,6 +92,7 @@ export function AssignmentCreator({ childId, childName, onCreated }: Props) {
     supabase.from("curriculum_skills").select("id, name, code_skill_id, topic_id, is_active").eq("topic_id", selectedTopic).eq("is_active", true).order("sort_order").then(({ data }) => {
       const items = data ?? [];
       setSkills(items);
+      if (prefillingRef.current) return;
       // Auto-select if only one skill
       if (items.length === 1) {
         setSelectedSkill(items[0].id);
@@ -84,6 +101,64 @@ export function AssignmentCreator({ childId, childName, onCreated }: Props) {
       }
     });
   }, [selectedTopic]);
+
+  // Prefill chain: code_skill_id → skill → topic → category → subject
+  useEffect(() => {
+    if (!prefillSkillCode) return;
+    if (consumedPrefillRef.current === prefillSkillCode) return;
+    consumedPrefillRef.current = prefillSkillCode;
+
+    let cancelled = false;
+    (async () => {
+      // 1) Najít skill podle code_skill_id (nebo přímo podle UUID, kdyby přišlo)
+      const { data: skillRow } = await supabase
+        .from("curriculum_skills")
+        .select("id, name, code_skill_id, topic_id, is_active")
+        .or(`code_skill_id.eq.${prefillSkillCode},id.eq.${prefillSkillCode}`)
+        .eq("is_active", true)
+        .maybeSingle();
+
+      if (cancelled) return;
+      if (!skillRow) {
+        // Skill se v curriculum_skills nenašel — otevři sheet aspoň prázdný
+        setOpen(true);
+        onPrefillConsumed?.();
+        return;
+      }
+
+      // 2) Topic
+      const { data: topicRow } = await supabase
+        .from("curriculum_topics")
+        .select("id, name, category_id")
+        .eq("id", skillRow.topic_id)
+        .maybeSingle();
+      if (cancelled || !topicRow) { setOpen(true); onPrefillConsumed?.(); return; }
+
+      // 3) Category
+      const { data: catRow } = await supabase
+        .from("curriculum_categories")
+        .select("id, name, subject_id")
+        .eq("id", topicRow.category_id)
+        .maybeSingle();
+      if (cancelled || !catRow) { setOpen(true); onPrefillConsumed?.(); return; }
+
+      // Aplikuj řetězec — guard zabrání kaskádovým resetům
+      prefillingRef.current = true;
+      setOpen(true);
+      setSelectedSubject(catRow.subject_id);
+      setSelectedCategory(catRow.id);
+      setSelectedTopic(topicRow.id);
+      setSelectedSkill(skillRow.id);
+
+      // Po vykreslení uvolni guard
+      setTimeout(() => {
+        prefillingRef.current = false;
+        onPrefillConsumed?.();
+      }, 100);
+    })();
+
+    return () => { cancelled = true; };
+  }, [prefillSkillCode, onPrefillConsumed]);
 
   const handleSave = async () => {
     if (!selectedSkill) return;

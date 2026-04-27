@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useChildren, type Child } from "@/hooks/useChildren";
 import { useProfile } from "@/hooks/useProfile";
@@ -118,10 +118,43 @@ export default function ParentDashboard() {
   const [editNotes, setEditNotes] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [assignmentRefresh, setAssignmentRefresh] = useState(0);
+  // Deep-link prefill — z URL hash #assign-<skillCode> (např. z reportu)
+  const [prefillSkillCode, setPrefillSkillCode] = useState<string | null>(null);
+  const [prefillForChildId, setPrefillForChildId] = useState<string | null>(null);
   const navigate = useNavigate();
   const t = useT();
   const { toast } = useToast();
   const { role } = useUserRole();
+
+  // Read URL hash on mount + při změně URL — #assign-<skillCode> nebo #assign-<childId>:<skillCode>
+  useEffect(() => {
+    const parseHash = () => {
+      const hash = window.location.hash;
+      const match = hash.match(/^#assign-(.+)$/);
+      if (!match) return;
+      const value = decodeURIComponent(match[1]);
+      // Format může být "skillCode" nebo "childId:skillCode"
+      if (value.includes(":")) {
+        const [cid, skill] = value.split(":");
+        setPrefillForChildId(cid);
+        setPrefillSkillCode(skill);
+      } else {
+        setPrefillSkillCode(value);
+      }
+    };
+    parseHash();
+    window.addEventListener("hashchange", parseHash);
+    return () => window.removeEventListener("hashchange", parseHash);
+  }, []);
+
+  const consumePrefill = () => {
+    setPrefillSkillCode(null);
+    setPrefillForChildId(null);
+    // Vyčistit hash z URL bez reloadu
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  };
 
   const startEdit = (child: Child) => {
     setEditingId(child.id);
@@ -303,6 +336,13 @@ export default function ParentDashboard() {
                       childId={child.id}
                       childName={child.child_name}
                       onCreated={() => setAssignmentRefresh(r => r + 1)}
+                      prefillSkillCode={
+                        prefillSkillCode &&
+                        (!prefillForChildId || prefillForChildId === child.id)
+                          ? prefillSkillCode
+                          : null
+                      }
+                      onPrefillConsumed={consumePrefill}
                     />
                     <Button
                       variant="outline"

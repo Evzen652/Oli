@@ -441,9 +441,13 @@ export default function Report() {
                       {skills.map((skill) => {
                         const v = skillEmoji(skill);
                         const acc = skill.attempts > 0 ? Math.round((skill.correct / skill.attempts) * 100) : 0;
+                        // Hash formát: #assign-<childId>:<skillCode> nebo #assign-<skillCode>
+                        const hashPayload = childId
+                          ? `${childId}:${skill.skill}`
+                          : skill.skill;
                         const targetUrl = childId
-                          ? `/parent?child=${childId}#assign-${encodeURIComponent(skill.skill)}`
-                          : `/parent#assign-${encodeURIComponent(skill.skill)}`;
+                          ? `/parent?child=${childId}#assign-${encodeURIComponent(hashPayload)}`
+                          : `/parent#assign-${encodeURIComponent(hashPayload)}`;
                         return (
                           <div key={skill.skill} className={`rounded-2xl border p-4 ${v.bg} space-y-2`}>
                             {/* Header row: topic icon + name + accuracy */}
