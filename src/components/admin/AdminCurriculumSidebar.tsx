@@ -241,14 +241,17 @@ export function AdminCurriculumSidebar({
                 {/* Categories */}
                 {isSubjectOpen && (
                   <div className="ml-3 border-l-2 border-border/60">
-                    {categories.map((category) => {
+                    {categories.map((category, catIdx) => {
                       const categoryKey = `${subject}::${category}`;
                       const isCatOpen = expandedCategories.has(categoryKey) || !!query;
                       const isCatActive = selectedSubject === subject && selectedCategory === category;
                       const topicsList = Object.keys(tree[subject][category]).sort();
 
                       return (
-                        <div key={category}>
+                        <div
+                          key={category}
+                          className={catIdx > 0 ? "mt-1.5 pt-1.5 border-t border-amber-300/50 dark:border-amber-800/50" : ""}
+                        >
                           {/* Category (Okruh) — amber barva, výrazný level chip */}
                           <button
                             onClick={() => handleCategoryClick(subject, category)}
