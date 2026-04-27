@@ -433,8 +433,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                           badgeText = "dobře";
                           badgeColor = "text-sky-700 dark:text-sky-400";
                         }
+                        const wTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
                         return (
                           <div key={s.skillId} className={`rounded-xl border p-3 ${tone} space-y-1.5`}>
+                            {/* Header: emoji + name + badge */}
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-base" aria-hidden>{getSkillIcon(s.skillId)}</span>
                               <p className="font-medium text-sm text-foreground flex-1 min-w-0 truncate">
@@ -444,23 +446,25 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                                 {badge} {badgeText}
                               </span>
                             </div>
-                            <div className="ml-6 space-y-0.5">
+                            {/* Subtitle: kolik úloh celkem */}
+                            <p className="text-xs text-muted-foreground ml-6">
+                              Vyzkoušel/a jsi <span className="font-bold text-foreground">{s.attempts}</span> {wTasks(s.attempts)}:
+                            </p>
+                            {/* Breakdown: stejný styl jako v summary kartě nahoře */}
+                            <div className="ml-6 space-y-1">
                               {s.correct > 0 && (
-                                <p className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-                                  <span>✅</span>
-                                  <span>Sám/sama: <span className="font-bold">{s.correct}×</span></span>
+                                <p className="text-xs text-emerald-700 dark:text-emerald-400">
+                                  ✅ Sám/sama jsi zvládl/a <span className="font-bold">{s.correct}</span> {wTasks(s.correct)}
                                 </p>
                               )}
                               {s.helpUsed > 0 && (
-                                <p className="text-xs text-sky-700 dark:text-sky-400 flex items-center gap-1.5">
-                                  <span>💡</span>
-                                  <span>S nápovědou: <span className="font-bold">{s.helpUsed}×</span></span>
+                                <p className="text-xs text-sky-700 dark:text-sky-400">
+                                  💡 S nápovědou jsi zvládl/a <span className="font-bold">{s.helpUsed}</span> {wTasks(s.helpUsed)}
                                 </p>
                               )}
                               {s.wrong > 0 && (
-                                <p className="text-xs text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
-                                  <span>❌</span>
-                                  <span>Chyba: <span className="font-bold">{s.wrong}×</span></span>
+                                <p className="text-xs text-rose-700 dark:text-rose-400">
+                                  ❌ Chybu jsi udělal/a <span className="font-bold">{s.wrong}×</span>
                                 </p>
                               )}
                             </div>
