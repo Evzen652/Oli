@@ -321,9 +321,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         {/* Weekly progress */}
         {!stats.loading && (
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-foreground text-center">
-              {t("child.progress_title")}
-            </h2>
+            <div className="text-center space-y-0.5">
+              <h2 className="text-lg font-semibold text-foreground">
+                {t("child.progress_title")}
+              </h2>
+              <p className="text-xs text-muted-foreground">posledních 7 dní</p>
+            </div>
             {stats.tasks === 0 ? (
               <Card className="border-2 border-dashed border-primary/30 rounded-xl bg-primary/5">
                 <CardContent className="p-5 text-center space-y-3">
