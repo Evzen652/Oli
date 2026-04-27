@@ -213,26 +213,37 @@ export default function AdminDashboard() {
             >
               {sidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
             </Button>
-            <span className="text-sm text-muted-foreground font-medium">Ročník:</span>
-            <Button
-              size="sm"
-              variant={gradeFilter === null ? "default" : "outline"}
-              className="h-7 px-2 text-xs"
-              onClick={() => handleGradeChange(null)}
-            >
-              Vše
-            </Button>
+            <span className="text-sm text-muted-foreground font-medium">
+              Filtr ročníku:
+            </span>
             {grades.map((g) => (
               <Button
                 key={g}
                 size="sm"
                 variant={gradeFilter === g ? "default" : "outline"}
                 className="h-7 w-7 p-0 text-xs"
-                onClick={() => handleGradeChange(g)}
+                onClick={() => handleGradeChange(gradeFilter === g ? null : g)}
+                title={gradeFilter === g ? "Klikněte znovu pro zrušení filtru" : `Filtrovat na ${g}. ročník`}
               >
                 {g}
               </Button>
             ))}
+            {gradeFilter !== null && (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-7 px-2 text-xs gap-1 text-muted-foreground"
+                onClick={() => handleGradeChange(null)}
+                title="Zrušit filtr — zobrazit všechny ročníky"
+              >
+                ✕ Zrušit filtr
+              </Button>
+            )}
+            {gradeFilter === null && (
+              <span className="text-xs text-muted-foreground italic">
+                (zobrazují se všechny ročníky)
+              </span>
+            )}
           </div>
 
           {/* Sticky breadcrumb — kde v kurikulu jsem */}
