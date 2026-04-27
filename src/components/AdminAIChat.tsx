@@ -146,32 +146,8 @@ export function AdminAIChat({ grade, subject, category, topic, skillId, skillDet
       });
 
       if (invokeError) {
-        // FunctionsHttpError / FunctionsRelayError / FunctionsFetchError
-        const status = (invokeError as { context?: { status?: number } }).context?.status;
-        if (status === 404) {
-          throw new Error(
-            "Edge funkce 'ai-curriculum' není nasazena. Spusťte: " +
-            "npx supabase functions deploy ai-curriculum",
-          );
-        }
-        if (status === 401 || status === 403) {
-          throw new Error("Nemáte přístup — pouze admin může používat AI asistenta.");
-        }
-        if (status === 500) {
-          // Pokus o přečtení error message z odpovědi
-          const ctx = (invokeError as { context?: { json?: () => Promise<{ error?: string }> } }).context;
-          const body = await ctx?.json?.().catch(() => null);
-          if (body?.error?.includes("LOVABLE_API_KEY")) {
-            throw new Error(
-              "AI brána není nakonfigurována. V Supabase projektu chybí " +
-              "LOVABLE_API_KEY (Settings → Edge Functions → Secrets).",
-            );
-          }
-          throw new Error(body?.error || "Chyba serveru (500). Zkontrolujte logy edge funkce.");
-        }
-        throw new Error(
-          invokeError.message || "Nepodařilo se spojit s AI službou. Zkuste to prosím znovu.",
-        );
+        const { friendlyEdgeFunctionError } = await import("@/lib/edgeFunctionError");
+        throw new Error(await friendlyEdgeFunctionError(invokeError, "ai-curriculum"));
       }
 
       if (data?.error) throw new Error(data.error);

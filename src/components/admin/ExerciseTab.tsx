@@ -8,6 +8,7 @@ import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X } from "
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 
 // ══════════════════════════════════════════════════════
 // Types
@@ -557,7 +558,10 @@ export function ExerciseTab({
           admin_prompt: prompt || config.defaultPrompt,
         },
       });
-      if (err) throw err;
+      if (err) {
+        setError(await friendlyEdgeFunctionError(err, "ai-tutor"));
+        return;
+      }
       if (data?.error) {
         setError(data.error);
         return;
@@ -647,7 +651,13 @@ export function ExerciseTab({
           admin_prompt: config.reformulatePrompt(task),
         },
       });
-      if (err) throw err;
+      if (err) {
+        toast({
+          description: await friendlyEdgeFunctionError(err, "ai-tutor"),
+          variant: "destructive",
+        });
+        return;
+      }
       if (data?.tasks?.[0]) {
         const updated = [...aiTasks];
         updated[index] = data.tasks[0];
