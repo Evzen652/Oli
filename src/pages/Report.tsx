@@ -70,11 +70,67 @@ const RANGE_HEADING: Record<ReportRange, string> = {
   all: "Hodnocení od začátku",
 };
 
-function skillEmoji(s: SkillSummary): { emoji: string; label: string; bg: string } {
+type SkillTier = "strong" | "medium" | "weak" | "tiny";
+
+function skillEmoji(s: SkillSummary): {
+  emoji: string;
+  label: string;
+  bg: string;
+  tier: SkillTier;
+  /** Konkrétní rada pro toto téma — 1 věta */
+  verdict: string;
+  /** Text pro hlavní CTA na kartě */
+  cta: string;
+  /** Vizuální variant CTA */
+  ctaVariant: "default" | "outline" | "ghost";
+} {
   const acc = s.attempts > 0 ? s.correct / s.attempts : 0;
-  if (acc >= 0.8) return { emoji: "🌟", label: "Skvěle!", bg: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800" };
-  if (acc >= 0.5) return { emoji: "💪", label: "Jde to, ještě trénovat", bg: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800" };
-  return { emoji: "🌱", label: "Teprve začínáme", bg: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800" };
+  const wrong = s.attempts - s.correct;
+
+  // Příliš málo dat (1 pokus) — nelze rozumně hodnotit
+  if (s.attempts < 2) {
+    return {
+      emoji: "🌱",
+      label: "Zatím jen jeden pokus",
+      bg: "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800",
+      tier: "tiny",
+      verdict: "Z jednoho pokusu zatím nepoznáme, jak na tom téma je. Pojďme přidat pár dalších cvičení.",
+      cta: "Zadat krátké cvičení",
+      ctaVariant: "default",
+    };
+  }
+
+  if (acc >= 0.8) {
+    return {
+      emoji: "🌟",
+      label: "Skvěle!",
+      bg: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800",
+      tier: "strong",
+      verdict: "Toto téma sedí — můžete zkusit těžší variantu nebo ho jen občas opakovat, ať se nezapomene.",
+      cta: "Posunout dál",
+      ctaVariant: "ghost",
+    };
+  }
+  if (acc >= 0.5) {
+    return {
+      emoji: "💪",
+      label: "Jde to, ještě trénovat",
+      bg: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800",
+      tier: "medium",
+      verdict: `${wrong} z ${s.attempts} úloh ještě nesedlo. Jedno krátké cvičení (5 minut) téma obvykle dotáhne.`,
+      cta: "Zadat procvičení",
+      ctaVariant: "default",
+    };
+  }
+  return {
+    emoji: "🌱",
+    label: "Teprve začínáme",
+    bg: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
+    tier: "weak",
+    verdict: `Téma zatím dělá potíže (${s.correct} z ${s.attempts} správně). Doporučujeme krátké cvičení a klidně se k němu vrátit i zítra.`,
+    cta: "Zadat úkol z tohoto tématu",
+    ctaVariant: "default",
+  };
 }
 
 function accuracyBadge(acc: number): { emoji: string; text: string; color: string } {
@@ -287,16 +343,46 @@ export default function Report() {
                     <div className="space-y-2">
                       {skills.map((skill) => {
                         const v = skillEmoji(skill);
+                        const acc = skill.attempts > 0 ? Math.round((skill.correct / skill.attempts) * 100) : 0;
+                        const targetUrl = childId
+                          ? `/parent?child=${childId}#assign-${encodeURIComponent(skill.skill)}`
+                          : `/parent#assign-${encodeURIComponent(skill.skill)}`;
                         return (
-                          <div key={skill.skill} className={`rounded-2xl border p-4 flex items-center gap-3 ${v.bg}`}>
-                            <span className="text-2xl">{v.emoji}</span>
-                            <div className="flex-1 min-w-0">
-                              <p className="font-medium text-foreground truncate">
-                                {getReadableSkillName(skill.skill)}
+                          <div key={skill.skill} className={`rounded-2xl border p-4 ${v.bg}`}>
+                            {/* Header row: emoji + name + accuracy */}
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl flex-shrink-0">{v.emoji}</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                                  <p className="font-semibold text-foreground">
+                                    {getReadableSkillName(skill.skill)}
+                                  </p>
+                                  {skill.attempts >= 2 && (
+                                    <span className="text-xs font-medium text-muted-foreground tabular-nums">
+                                      {acc} % · {skill.correct}/{skill.attempts}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs font-medium text-muted-foreground mt-0.5">
+                                  {v.label}
+                                </p>
+                              </div>
+                            </div>
+                            {/* Verdict + per-skill CTA */}
+                            <div className="mt-3 pl-9 space-y-2">
+                              <p className="text-sm text-foreground/80 leading-relaxed">
+                                {v.verdict}
                               </p>
-                              <p className="text-xs text-muted-foreground">
-                                {v.label} · {skill.correct}/{skill.attempts} {t("report.correct")}
-                              </p>
+                              {v.tier !== "strong" && (
+                                <Button
+                                  variant={v.ctaVariant}
+                                  size="sm"
+                                  className="gap-1.5 h-8"
+                                  onClick={() => navigate(targetUrl)}
+                                >
+                                  ✏️ {v.cta}
+                                </Button>
+                              )}
                             </div>
                           </div>
                         );
@@ -317,50 +403,17 @@ export default function Report() {
           </div>
         )}
 
-        {/* CTA — co teď */}
+        {/* Bottom action — návrat */}
         {hasActivity && (
-          <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 p-5 space-y-3 shadow-sm">
-            <div>
-              <p className="font-semibold text-foreground text-base">🎯 Co teď udělat</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                {report.weakSkillIds && report.weakSkillIds.length > 0
-                  ? `Zadejte ${report.childName ?? "dítěti"} úkol na slabší téma — krátké, konkrétní cvičení udělá víc než dlouhé samostudium.`
-                  : `Pokračujte v pravidelném tempu. Můžete zkusit těžší téma nebo zadat nový úkol.`}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant="default"
-                size="default"
-                className="gap-2 shadow-sm"
-                onClick={() => navigate(childId ? `/parent?child=${childId}#assign` : "/parent#assign")}
-              >
-                ✏️ Zadat úkol{report.weakSkillIds && report.weakSkillIds.length > 0 ? " ze slabých témat" : ""}
-              </Button>
-              <Button
-                variant="outline"
-                size="default"
-                className="gap-2"
-                onClick={() => navigate("/parent")}
-              >
-                ← Zpět na přehled
-              </Button>
-            </div>
-            {report.weakSkillIds && report.weakSkillIds.length > 0 && (
-              <div className="pt-2 border-t border-primary/20">
-                <p className="text-xs text-muted-foreground mb-1">Tipy na slabá témata:</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {report.weakSkillIds.map((sid) => (
-                    <span
-                      key={sid}
-                      className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-2.5 py-1 text-xs font-medium text-amber-800 dark:text-amber-300"
-                    >
-                      💪 {getReadableSkillName(sid)}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="default"
+              className="gap-2"
+              onClick={() => navigate("/parent")}
+            >
+              ← Zpět na přehled
+            </Button>
           </div>
         )}
       </div>
