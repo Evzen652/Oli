@@ -110,17 +110,57 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
 
     let cancelled = false;
     (async () => {
-      // 1) Najít skill podle code_skill_id (nebo přímo podle UUID, kdyby přišlo)
-      const { data: skillRow } = await supabase
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(prefillSkillCode);
+
+      // 1a) Pokus podle code_skill_id (preferované)
+      let skillRow: { id: string; name: string; code_skill_id: string; topic_id: string; is_active: boolean } | null = null;
+      const byCode = await supabase
         .from("curriculum_skills")
         .select("id, name, code_skill_id, topic_id, is_active")
-        .or(`code_skill_id.eq.${prefillSkillCode},id.eq.${prefillSkillCode}`)
+        .eq("code_skill_id", prefillSkillCode)
         .eq("is_active", true)
         .maybeSingle();
+      if (!cancelled) skillRow = byCode.data ?? null;
+
+      // 1b) Pokud je vstup UUID a nenašlo se podle kódu, zkus podle id
+      if (!cancelled && !skillRow && isUuid) {
+        const byId = await supabase
+          .from("curriculum_skills")
+          .select("id, name, code_skill_id, topic_id, is_active")
+          .eq("id", prefillSkillCode)
+          .eq("is_active", true)
+          .maybeSingle();
+        skillRow = byId.data ?? null;
+      }
+
+      // 1c) Fallback — zkus normalizovaný/canonical skill ID (např. zlomky aliasy)
+      if (!cancelled && !skillRow) {
+        try {
+          const { canonicalSkillId } = await import("@/lib/skillIdNormalizer");
+          const canonical = canonicalSkillId(prefillSkillCode);
+          if (canonical && canonical !== prefillSkillCode) {
+            const byCanon = await supabase
+              .from("curriculum_skills")
+              .select("id, name, code_skill_id, topic_id, is_active")
+              .eq("code_skill_id", canonical)
+              .eq("is_active", true)
+              .maybeSingle();
+            skillRow = byCanon.data ?? null;
+          }
+        } catch {
+          // ignore — canonical resolution selhal
+        }
+      }
 
       if (cancelled) return;
       if (!skillRow) {
         // Skill se v curriculum_skills nenašel — otevři sheet aspoň prázdný
+        // (uživatel vybere ručně, lepší než nic)
+        console.warn("[AssignmentCreator] prefill skill not found:", prefillSkillCode);
+        toast({
+          description: `Téma "${prefillSkillCode}" nelze automaticky předvyplnit — vyberte ho prosím ručně.`,
+          variant: "default",
+        });
         setOpen(true);
         onPrefillConsumed?.();
         return;
