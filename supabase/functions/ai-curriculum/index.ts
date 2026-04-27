@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { aiCall, hasAnyAiProvider } from "../_shared/aiCall.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -97,8 +98,12 @@ serve(async (req) => {
       detailContext += `- **Podtéma ID:** ${skillId}\n`;
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    if (!hasAnyAiProvider()) {
+      throw new Error(
+        "Žádný AI provider není nakonfigurován. Nastavte GROQ_API_KEY (preferováno) " +
+        "nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
+      );
+    }
 
     const systemPrompt = `Jsi odborný pedagogický asistent pro tvorbu kurikula české základní školy (3.–9. ročník).
 
@@ -194,23 +199,18 @@ Tím zajistíš, že staré záznamy nezůstanou v databázi.
 
 ${detailContext ? `\n## Aktuální kontext\n${detailContext}` : ""}`;
 
-    const requestBody = {
-      model: "openai/gpt-5-mini",
+    console.log("Sending AI request, message count:", messages.length + 1, "system prompt length:", systemPrompt.length);
+
+    const response = await aiCall({
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,
       ],
-    };
-
-    console.log("Sending request to AI gateway, message count:", requestBody.messages.length, "system prompt length:", systemPrompt.length);
-
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
+      model: {
+        // Curriculum wizard — větší kontext, lepší rozumění strukturám
+        groq: "llama-3.3-70b-versatile",
+        lovable: "openai/gpt-5-mini",
       },
-      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {

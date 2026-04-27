@@ -84,10 +84,17 @@ function formatMessage({
   if (status === 429) return "Příliš mnoho požadavků — počkejte chvíli a zkuste znovu.";
   // Server errors
   if (status === 500 || status === 502 || status === 503) {
-    if (bodyError?.includes("LOVABLE_API_KEY") || bodyError?.includes("API_KEY")) {
+    if (
+      bodyError?.includes("GROQ_API_KEY") ||
+      bodyError?.includes("LOVABLE_API_KEY") ||
+      bodyError?.includes("Žádný AI provider") ||
+      bodyError?.includes("API_KEY")
+    ) {
       return (
-        `AI brána není nakonfigurována. V Supabase projektu chybí API klíč ` +
-        `(Settings → Edge Functions → Secrets → LOVABLE_API_KEY).`
+        `AI brána není nakonfigurována. V Supabase projektu chybí API klíč.\n` +
+        `Settings → Edge Functions → Secrets → přidat:\n` +
+        `  • GROQ_API_KEY (preferováno — rychlé, levné, Llama 3.3 70B)\n` +
+        `  • nebo LOVABLE_API_KEY (Lovable Gateway)`
       );
     }
     if (bodyError) return `Chyba serveru: ${bodyError}`;

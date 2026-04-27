@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { aiCall, hasAnyAiProvider } from "../_shared/aiCall.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -396,19 +397,19 @@ ${tasksJson}
 Zavolej funkci correctness_check.`;
 
   try {
-    // Použít silnější model pro kontrolu — gpt-5-mini (jiný vendor než generator)
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "openai/gpt-5-mini",
-        messages: [
-          { role: "system", content: "Jsi expertní matematický a jazykový kontrolor pro ZŠ." },
-          { role: "user", content: prompt },
-        ],
-        tools: correctnessTools,
-        tool_choice: { type: "function", function: { name: "correctness_check" } },
-      }),
+    // Druhý model nezávisle ověří správnost — Groq Llama 70B nebo GPT přes Lovable.
+    const response = await aiCall({
+      messages: [
+        { role: "system", content: "Jsi expertní matematický a jazykový kontrolor pro ZŠ." },
+        { role: "user", content: prompt },
+      ],
+      tools: correctnessTools,
+      toolChoice: { type: "function", function: { name: "correctness_check" } },
+      model: {
+        // Pro Layer 3 stačí stejný model jako generator (cross-check je při toolu, ne při modelu)
+        groq: "llama-3.3-70b-versatile",
+        lovable: "openai/gpt-5-mini",
+      },
     });
 
     if (!response.ok) {
@@ -443,23 +444,19 @@ Zavolej funkci correctness_check.`;
   return { tasks, rejected: [] };
 }
 
-async function validateTasksForGrade(tasks: any[], gradeMin: number, apiKey: string): Promise<{ tasks: any[]; validation: any[] }> {
+async function validateTasksForGrade(tasks: any[], gradeMin: number, _apiKey: string): Promise<{ tasks: any[]; validation: any[] }> {
   try {
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+    const response = await aiCall({
+      messages: [
+        { role: "system", content: `Jsi kontrolor kvality školních úloh. Buď přísný — pokud je otázka příliš složitá pro daný ročník, označ ji jako nevhodnou a přepiš ji jednodušeji.` },
+        { role: "user", content: buildValidationPrompt(tasks, gradeMin) },
+      ],
+      tools: validationTools,
+      toolChoice: { type: "function", function: { name: "grade_validation" } },
+      model: {
+        groq: "llama-3.3-70b-versatile",
+        lovable: "google/gemini-3-flash-preview",
       },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: `Jsi kontrolor kvality školních úloh. Buď přísný — pokud je otázka příliš složitá pro daný ročník, označ ji jako nevhodnou a přepiš ji jednodušeji.` },
-          { role: "user", content: buildValidationPrompt(tasks, gradeMin) },
-        ],
-        tools: validationTools,
-        tool_choice: { type: "function", function: { name: "grade_validation" } },
-      }),
     });
 
     if (!response.ok) {
@@ -551,8 +548,12 @@ serve(async (req) => {
       );
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    if (!hasAnyAiProvider()) {
+      throw new Error(
+        "Žádný AI provider není nakonfigurován. Nastavte GROQ_API_KEY (preferováno) " +
+        "nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
+      );
+    }
 
     const isPracticeBatch = phase === "practice_batch";
     const taskCount = batch_size || 5;
@@ -568,25 +569,18 @@ serve(async (req) => {
       ? { type: "function", function: { name: "tutor_practice_batch" } }
       : { type: "function", function: { name: "tutor_response" } };
 
-    const response = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: userPrompt },
-          ],
-          tools,
-          tool_choice: toolChoice,
-        }),
-      }
-    );
+    const response = await aiCall({
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userPrompt },
+      ],
+      tools,
+      toolChoice,
+      model: {
+        groq: "llama-3.3-70b-versatile",
+        lovable: "google/gemini-3-flash-preview",
+      },
+    });
 
     if (!response.ok) {
       if (response.status === 429) {
