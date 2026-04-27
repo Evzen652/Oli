@@ -325,57 +325,142 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               {t("child.progress_title")}
             </h2>
             {stats.tasks === 0 ? (
-              <Card className="border-2 rounded-xl bg-muted/30">
-                <CardContent className="p-4 text-center">
-                  <p className="text-muted-foreground text-sm">{t("child.progress_empty")}</p>
+              <Card className="border-2 border-dashed border-primary/30 rounded-xl bg-primary/5">
+                <CardContent className="p-5 text-center space-y-3">
+                  <p className="text-3xl">🚀</p>
+                  <p className="text-base font-semibold text-foreground">
+                    Tento týden tu zatím není žádné cvičení.
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Pojď začít! Vyber si úkol od rodiče níž, nebo si zvol téma sám.
+                    Stačí jen 5 minut denně — to je nejlepší recept.
+                  </p>
                 </CardContent>
               </Card>
             ) : (
               <div className="space-y-2">
-                <Card className="rounded-xl border-0 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-950 dark:to-blue-900 shadow-sm">
-                  <CardContent className="p-3 flex items-center gap-3">
-                    <span className="text-2xl">⚡</span>
-                    <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                      {t("child.progress_sessions").replace("{n}", String(stats.sessions))}
+                {/* Compact stats row */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 p-2.5 text-center">
+                    <p className="text-xl mb-0.5">⚡</p>
+                    <p className="text-lg font-bold text-blue-700 dark:text-blue-300 tabular-nums">{stats.daysActive}</p>
+                    <p className="text-[10px] text-blue-600/80 dark:text-blue-400/80 font-medium leading-tight">
+                      {stats.daysActive === 1 ? "den cvičení" : stats.daysActive < 5 ? "dny cvičení" : "dní cvičení"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 p-2.5 text-center">
+                    <p className="text-xl mb-0.5">🎯</p>
+                    <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300 tabular-nums">{stats.tasks}</p>
+                    <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-medium leading-tight">
+                      {stats.tasks === 1 ? "úloha" : stats.tasks < 5 ? "úlohy" : "úloh"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-2.5 text-center">
+                    <p className="text-xl mb-0.5">⭐</p>
+                    <p className="text-lg font-bold text-amber-700 dark:text-amber-300 tabular-nums">{stats.accuracy}%</p>
+                    <p className="text-[10px] text-amber-600/80 dark:text-amber-400/80 font-medium leading-tight">
+                      sám/sama
+                    </p>
+                  </div>
+                </div>
+
+                {/* Detail breakdown — pro pochopení čísel */}
+                <Card className="rounded-xl border bg-card shadow-sm">
+                  <CardContent className="p-3 space-y-1">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Z <span className="font-bold text-foreground">{stats.tasks}</span> úloh:
+                      {" "}<span className="font-semibold text-emerald-700 dark:text-emerald-400">{stats.tasks - stats.helpUsed - stats.wrong}× sám/sama</span>
+                      {stats.helpUsed > 0 && <>{" · "}<span className="font-semibold text-sky-700 dark:text-sky-400">{stats.helpUsed}× s nápovědou</span></>}
+                      {stats.wrong > 0 && <>{" · "}<span className="font-semibold text-rose-700 dark:text-rose-400">{stats.wrong}× chybně</span></>}
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="rounded-xl border-0 bg-gradient-to-r from-emerald-100 to-emerald-50 dark:from-emerald-950 dark:to-emerald-900 shadow-sm">
-                  <CardContent className="p-3 flex items-center gap-3">
-                    <span className="text-2xl">🎯</span>
-                    <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
-                      {t("child.progress_tasks").replace("{n}", String(stats.tasks))}
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className="rounded-xl border-0 bg-gradient-to-r from-amber-100 to-amber-50 dark:from-amber-950 dark:to-amber-900 shadow-sm">
-                  <CardContent className="p-3 flex items-center gap-3">
-                    <span className="text-2xl">⭐</span>
-                    <p className="text-sm font-medium text-amber-700 dark:text-amber-300">
-                      {t("child.progress_accuracy").replace("{n}", String(stats.accuracy))}
-                    </p>
-                  </CardContent>
-                </Card>
-                {stats.accuracy >= 80 && (
-                  <Card className="rounded-xl border-0 bg-gradient-to-r from-green-100 to-teal-50 dark:from-green-950 dark:to-teal-900 shadow-sm">
-                    <CardContent className="p-3 flex items-center gap-3">
-                      <span className="text-2xl">🎉</span>
-                      <p className="text-sm font-semibold text-green-700 dark:text-green-300">
-                        {t("child.progress_great")}
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
-                {stats.accuracy >= 50 && stats.accuracy < 80 && (
-                  <Card className="rounded-xl border-0 bg-gradient-to-r from-sky-100 to-cyan-50 dark:from-sky-950 dark:to-cyan-900 shadow-sm">
-                    <CardContent className="p-3 flex items-center gap-3">
-                      <span className="text-2xl">👍</span>
-                      <p className="text-sm font-semibold text-sky-700 dark:text-sky-300">
-                        {t("child.progress_good")}
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
+
+                {/* Návodný blok — co se ti daří + tip */}
+                {(() => {
+                  const helpRatio = stats.tasks > 0 ? stats.helpUsed / stats.tasks : 0;
+                  const wrongRatio = stats.tasks > 0 ? stats.wrong / stats.tasks : 0;
+
+                  // Pravidelnost
+                  let regularityCard: { emoji: string; title: string; text: string; tone: string } | null = null;
+                  if (stats.daysActive >= 4) {
+                    regularityCard = {
+                      emoji: "🔥",
+                      title: "Cvičíš pravidelně — to je super!",
+                      text: "Pravidelnost je ten nejdůležitější krok. I jen 5 minut denně dělá zázraky.",
+                      tone: "bg-orange-50 dark:bg-orange-950/30 border-orange-200 dark:border-orange-800 text-orange-800 dark:text-orange-300",
+                    };
+                  } else if (stats.daysActive >= 2) {
+                    regularityCard = {
+                      emoji: "💪",
+                      title: "Dobře, že to nenecháváš",
+                      text: "Zkus cvičit každý den po malých kouscích — i 5 minut stačí, ale ať je to každý den.",
+                      tone: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300",
+                    };
+                  } else {
+                    regularityCard = {
+                      emoji: "📅",
+                      title: "Zkus si dát procvičování každý den",
+                      text: "I 5 minut denně přinese mnohem víc než dlouhé cvičení jen jednou za týden.",
+                      tone: "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800 text-purple-800 dark:text-purple-300",
+                    };
+                  }
+
+                  // Tip podle profilu chyb
+                  let tipCard: { emoji: string; title: string; text: string; tone: string } | null = null;
+                  if (stats.accuracy >= 80) {
+                    tipCard = {
+                      emoji: "🎉",
+                      title: "Jde ti to skvěle!",
+                      text: "Zkus si dnes nějaké těžší téma — když to máš v malíku, můžeš se posunout dál.",
+                      tone: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300",
+                    };
+                  } else if (helpRatio >= 0.3) {
+                    tipCard = {
+                      emoji: "💡",
+                      title: "Nápověda ti pomáhá — to je super!",
+                      text: "Když si nevíš rady, klidně ji použij. Ale postupně si zkus pár úloh i bez ní — uvidíš, že to půjde.",
+                      tone: "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800 text-sky-800 dark:text-sky-300",
+                    };
+                  } else if (wrongRatio >= 0.3) {
+                    tipCard = {
+                      emoji: "🌱",
+                      title: "Chyba není problém — tak se učíš",
+                      text: "Když je úloha těžká, klikni nejdřív na nápovědu a zkus to znovu. Není potřeba to mít napoprvé.",
+                      tone: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300",
+                    };
+                  } else {
+                    tipCard = {
+                      emoji: "👍",
+                      title: "Jde ti to dobře, pokračuj!",
+                      text: "Daří se ti většinu úloh řešit samostatně — to je přesně to, co chceme.",
+                      tone: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300",
+                    };
+                  }
+
+                  return (
+                    <>
+                      {regularityCard && (
+                        <div className={`rounded-xl border p-3 flex items-start gap-3 ${regularityCard.tone}`}>
+                          <span className="text-2xl flex-shrink-0">{regularityCard.emoji}</span>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-sm">{regularityCard.title}</p>
+                            <p className="text-xs leading-relaxed mt-0.5 opacity-90">{regularityCard.text}</p>
+                          </div>
+                        </div>
+                      )}
+                      {tipCard && (
+                        <div className={`rounded-xl border p-3 flex items-start gap-3 ${tipCard.tone}`}>
+                          <span className="text-2xl flex-shrink-0">{tipCard.emoji}</span>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-sm">{tipCard.title}</p>
+                            <p className="text-xs leading-relaxed mt-0.5 opacity-90">{tipCard.text}</p>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             )}
           </div>

@@ -5,15 +5,23 @@ export interface ChildStats {
   sessions: number;
   tasks: number;
   accuracy: number;
+  /** Úloh správně s pomocí nápovědy */
+  helpUsed: number;
+  /** Úloh chybně */
+  wrong: number;
+  /** Počet různých dnů, kdy proběhlo procvičování (za posledních 7 dní) */
+  daysActive: number;
   loading: boolean;
 }
 
 export function useChildStats(childId: string | null): ChildStats {
-  const [stats, setStats] = useState<ChildStats>({ sessions: 0, tasks: 0, accuracy: 0, loading: true });
+  const [stats, setStats] = useState<ChildStats>({
+    sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, loading: true,
+  });
 
   useEffect(() => {
     if (!childId) {
-      setStats({ sessions: 0, tasks: 0, accuracy: 0, loading: false });
+      setStats({ sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, loading: false });
       return;
     }
 
@@ -23,23 +31,30 @@ export function useChildStats(childId: string | null): ChildStats {
     (async () => {
       const { data, error } = await supabase
         .from("session_logs")
-        .select("session_id, correct, help_used")
+        .select("session_id, correct, help_used, created_at")
         .eq("child_id", childId)
         .gte("created_at", weekAgo);
 
       if (cancelled) return;
 
       if (error || !data) {
-        setStats({ sessions: 0, tasks: 0, accuracy: 0, loading: false });
+        setStats({ sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, loading: false });
         return;
       }
 
       const sessions = new Set(data.map((r) => r.session_id)).size;
       const tasks = data.length;
       const independent = data.filter((r) => r.correct && !r.help_used).length;
+      const helpUsed = data.filter((r) => r.correct && r.help_used).length;
+      const wrong = data.filter((r) => !r.correct).length;
       const accuracy = tasks > 0 ? Math.round((independent / tasks) * 100) : 0;
 
-      setStats({ sessions, tasks, accuracy, loading: false });
+      // Počet různých dnů s aktivitou
+      const dayKey = (iso: string) => new Date(iso).toISOString().slice(0, 10);
+      const days = new Set(data.map((r) => dayKey(r.created_at as string)));
+      const daysActive = days.size;
+
+      setStats({ sessions, tasks, accuracy, helpUsed, wrong, daysActive, loading: false });
     })();
 
     return () => { cancelled = true; };
