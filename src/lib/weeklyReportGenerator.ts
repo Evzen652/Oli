@@ -19,9 +19,17 @@ interface SkillSummary {
   weak_patterns: string[];
 }
 
+export interface ReportDetail {
+  icon: string;
+  label: string;
+  text: string;
+  /** Vizuální tón */
+  tone: "neutral" | "positive" | "warn" | "info";
+}
+
 interface ReportData {
   summary: string;
-  details?: string;
+  details?: ReportDetail[];
   strengths?: string;
   to_practice?: string;
   recommendations: string;
@@ -167,44 +175,84 @@ export async function generateWeeklyReport(
     summary = `${name} ${rangeLabel} potřebuje s učením trochu pomoct. Doporučujeme se zaměřit na slabší témata a procvičovat kratší dobu, ale častěji.`;
   }
 
-  // Detailní druhý odstavec: konkrétní pozorování
-  const detailParts: string[] = [];
+  // Detailní pozorování — strukturovaná, ne jeden splash odstavec
+  const detailParts: ReportDetail[] = [];
 
   // 1) Pravidelnost
   if (sessions >= 5) {
-    detailParts.push(`Procvičování probíhalo pravidelně (${sessions} sezení) — to je ten nejdůležitější krok.`);
+    detailParts.push({
+      icon: "📅",
+      label: "Pravidelnost",
+      tone: "positive",
+      text: `Procvičování probíhalo pravidelně (${sessions} sezení) — to je ten nejdůležitější krok.`,
+    });
   } else if (sessions >= 3) {
-    detailParts.push(`Sezení proběhlo ${sessions} — pravidelnost je v pořádku, ale ještě je co zlepšovat.`);
+    detailParts.push({
+      icon: "📅",
+      label: "Pravidelnost",
+      tone: "info",
+      text: `Sezení proběhlo ${sessions} — pravidelnost je v pořádku, ale ještě je co zlepšovat.`,
+    });
   } else if (sessions > 0) {
-    detailParts.push(`Sezení proběhla jen ${sessions === 1 ? "1" : sessions === 2 ? "2" : sessions} — častější procvičování (klidně po 5–10 minutách) přinese mnohem lepší výsledky než jedno dlouhé.`);
+    detailParts.push({
+      icon: "📅",
+      label: "Pravidelnost",
+      tone: "warn",
+      text: `Sezení proběhla jen ${sessions === 1 ? "1" : sessions} — častější procvičování (klidně po 5–10 minutách) přinese mnohem lepší výsledky než jedno dlouhé.`,
+    });
   }
 
-  // 2) Profil chyb
+  // 2) Profil chyb / samostatnost
   if (attempts > 0) {
     const helpRatio = withHelp / attempts;
     const wrongRatio = wrong / attempts;
     if (wrongRatio >= 0.3) {
-      detailParts.push(`Chybovost je vyšší (${wrong} z ${attempts} úloh) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`);
+      detailParts.push({
+        icon: "⚠️",
+        label: "Chybovost",
+        tone: "warn",
+        text: `Chybovost je vyšší (${wrong} z ${attempts} úloh) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`,
+      });
     } else if (helpRatio >= 0.25) {
-      detailParts.push(`Často využívá nápovědu (${withHelp}× z ${attempts}) — to je v pořádku, ukazuje to ochotu hledat řešení, jen je dobré postupně přejít na samostatnost.`);
+      detailParts.push({
+        icon: "💡",
+        label: "Využití nápovědy",
+        tone: "info",
+        text: `Často využívá nápovědu (${withHelp}× z ${attempts}) — je to v pořádku, ukazuje ochotu hledat řešení. Postupně je dobré přejít na samostatnost.`,
+      });
     } else if (correctAlone / attempts >= 0.7) {
-      detailParts.push(`Většinu úloh (${correctAlone} z ${attempts}) vyřešil/a samostatně — silná známka, že látku skutečně ovládá.`);
+      detailParts.push({
+        icon: "🧠",
+        label: "Samostatnost",
+        tone: "positive",
+        text: `Většinu úloh (${correctAlone} z ${attempts}) vyřešil/a samostatně — silná známka, že látku skutečně ovládá.`,
+      });
     }
   }
 
-  // 3) Konkrétní témata k procvičení
+  // 3) Konkrétní slabá témata
   if (topWeak.length > 0) {
     const names = topWeak.map(s => `„${getReadableSkillName(s.skill)}"`).join(topWeak.length === 2 ? " a " : ", ");
-    detailParts.push(`Největší prostor pro zlepšení vidíme u ${names}.`);
+    detailParts.push({
+      icon: "🎯",
+      label: "K procvičení",
+      tone: "warn",
+      text: `Největší prostor pro zlepšení vidíme u ${names}.`,
+    });
   }
 
-  // 4) Pochvala silných stránek (pokud nejsou v summary)
+  // 4) Pochvala silných stránek (pokud accuracy <80, jinak duplikuje summary)
   if (topStrong.length > 0 && accuracy < 80) {
     const names = topStrong.map(s => `„${getReadableSkillName(s.skill)}"`).join(topStrong.length === 2 ? " a " : ", ");
-    detailParts.push(`Naopak ${names} už zvládá s přehledem — to je dobrý základ, na kterém se dá stavět.`);
+    detailParts.push({
+      icon: "🌟",
+      label: "Silné stránky",
+      tone: "positive",
+      text: `${names} už zvládá s přehledem — to je dobrý základ, na kterém se dá stavět.`,
+    });
   }
 
-  const details = detailParts.length > 0 ? detailParts.join(" ") : undefined;
+  const details = detailParts.length > 0 ? detailParts : undefined;
 
   const strengths = strengthCount > 0
     ? `V ${strengthCount} ${strengthCount === 1 ? "tématu" : "tématech"} má úspěšnost nad 80 % — skvělá práce!`

@@ -5,7 +5,30 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { useT } from "@/lib/i18n";
 import { CalendarDays, CalendarRange, History } from "lucide-react";
-import type { ReportRange } from "@/lib/weeklyReportGenerator";
+import type { ReportRange, ReportDetail } from "@/lib/weeklyReportGenerator";
+
+const TONE_STYLES: Record<ReportDetail["tone"], { bg: string; border: string; label: string }> = {
+  positive: {
+    bg: "bg-green-50/60 dark:bg-green-950/20",
+    border: "border-green-200 dark:border-green-800",
+    label: "text-green-700 dark:text-green-400",
+  },
+  warn: {
+    bg: "bg-amber-50/60 dark:bg-amber-950/20",
+    border: "border-amber-200 dark:border-amber-800",
+    label: "text-amber-700 dark:text-amber-400",
+  },
+  info: {
+    bg: "bg-blue-50/60 dark:bg-blue-950/20",
+    border: "border-blue-200 dark:border-blue-800",
+    label: "text-blue-700 dark:text-blue-400",
+  },
+  neutral: {
+    bg: "bg-muted/40",
+    border: "border-border",
+    label: "text-foreground",
+  },
+};
 
 const SUBJECT_META: Record<string, { emoji: string; label: string; color: string }> = {
   matematika: { emoji: "🔢", label: "Matematika", color: "text-blue-700" },
@@ -38,7 +61,7 @@ interface SkillSummary {
 
 interface ReportData {
   summary: string;
-  details?: string;
+  details?: ReportDetail[];
   strengths?: string;
   to_practice?: string;
   recommendations: string;
@@ -238,12 +261,34 @@ export default function Report() {
         </div>
 
         {/* AI Summary - warm card */}
-        <div className="rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm space-y-3">
+        <div className="rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm">
           <p className="text-base text-foreground leading-relaxed font-medium">{report.summary}</p>
-          {report.details && (
-            <p className="text-sm text-muted-foreground leading-relaxed">{report.details}</p>
-          )}
         </div>
+
+        {/* Detail items — strukturovaná pozorování (jeden box per item) */}
+        {report.details && report.details.length > 0 && (
+          <div className="space-y-2">
+            {report.details.map((d, i) => {
+              const tone = TONE_STYLES[d.tone];
+              return (
+                <div
+                  key={i}
+                  className={`rounded-xl border ${tone.border} ${tone.bg} p-3.5 flex items-start gap-3`}
+                >
+                  <span className="text-xl flex-shrink-0 leading-none mt-0.5">{d.icon}</span>
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <p className={`text-xs font-bold uppercase tracking-wide ${tone.label}`}>
+                      {d.label}
+                    </p>
+                    <p className="text-sm text-foreground/85 leading-relaxed">
+                      {d.text}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Stats — pouze pokud je aktivita */}
         {hasActivity ? (
@@ -336,7 +381,7 @@ export default function Report() {
                       <span className="text-xl">{meta.emoji}</span>
                       <span className={`text-base font-bold ${meta.color}`}>{meta.label}</span>
                       <span className="text-xs text-muted-foreground ml-auto">
-                        {skills.length} {skills.length === 1 ? "téma" : skills.length < 5 ? "témata" : "témat"} · {totalCorrect}/{totalAttempts} správně
+                        {skills.length} {skills.length === 1 ? "téma" : skills.length < 5 ? "témata" : "témat"} · <span className="font-bold text-foreground">{totalCorrect}/{totalAttempts}</span> správně
                       </span>
                     </div>
                     {/* Skill cards in this subject */}
@@ -358,7 +403,7 @@ export default function Report() {
                                     {getReadableSkillName(skill.skill)}
                                   </p>
                                   {skill.attempts >= 2 && (
-                                    <span className="text-xs font-medium text-muted-foreground tabular-nums">
+                                    <span className="text-xs font-bold text-foreground tabular-nums">
                                       {acc} % · {skill.correct}/{skill.attempts}
                                     </span>
                                   )}
