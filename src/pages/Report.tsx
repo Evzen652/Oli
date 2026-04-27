@@ -96,8 +96,8 @@ const RANGE_HEADING: Record<ReportRange, string> = {
 type SkillTier = "strong" | "medium" | "weak" | "tiny";
 
 function skillEmoji(s: SkillSummary): {
-  emoji: string;
   label: string;
+  labelColor: string;
   bg: string;
   tier: SkillTier;
   /** Konkrétní rada pro toto téma — 1 věta */
@@ -113,8 +113,8 @@ function skillEmoji(s: SkillSummary): {
   // Příliš málo dat (1 pokus) — nelze rozumně hodnotit
   if (s.attempts < 2) {
     return {
-      emoji: "🌱",
       label: "Zatím jen jeden pokus",
+      labelColor: "text-slate-600 dark:text-slate-400",
       bg: "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800",
       tier: "tiny",
       verdict: "Z jednoho pokusu zatím nepoznáme, jak na tom téma je. Pojďme přidat pár dalších cvičení.",
@@ -125,8 +125,8 @@ function skillEmoji(s: SkillSummary): {
 
   if (acc >= 0.8) {
     return {
-      emoji: "🌟",
-      label: "Skvěle!",
+      label: "Zvládnuto",
+      labelColor: "text-green-700 dark:text-green-400",
       bg: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800",
       tier: "strong",
       verdict: "Toto téma sedí — můžete zkusit těžší variantu nebo ho jen občas opakovat, ať se nezapomene.",
@@ -136,8 +136,8 @@ function skillEmoji(s: SkillSummary): {
   }
   if (acc >= 0.5) {
     return {
-      emoji: "💪",
       label: "Jde to, ještě trénovat",
+      labelColor: "text-amber-700 dark:text-amber-400",
       bg: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800",
       tier: "medium",
       verdict: `${wrong} z ${s.attempts} úloh ještě nesedlo. Jedno krátké cvičení (5 minut) téma obvykle dotáhne.`,
@@ -146,8 +146,8 @@ function skillEmoji(s: SkillSummary): {
     };
   }
   return {
-    emoji: "🌱",
     label: "Teprve začínáme",
+    labelColor: "text-blue-700 dark:text-blue-400",
     bg: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
     tier: "weak",
     verdict: `Téma zatím dělá potíže (${s.correct} z ${s.attempts} správně). Doporučujeme krátké cvičení a klidně se k němu vrátit i zítra.`,
@@ -393,32 +393,28 @@ export default function Report() {
                           ? `/parent?child=${childId}#assign-${encodeURIComponent(skill.skill)}`
                           : `/parent#assign-${encodeURIComponent(skill.skill)}`;
                         return (
-                          <div key={skill.skill} className={`rounded-2xl border p-4 ${v.bg}`}>
-                            {/* Header row: emoji + name + accuracy */}
-                            <div className="flex items-start gap-3">
-                              <span className="text-2xl flex-shrink-0">{v.emoji}</span>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-baseline justify-between gap-2 flex-wrap">
-                                  <p className="font-semibold text-foreground">
-                                    {getReadableSkillName(skill.skill)}
-                                  </p>
-                                  {skill.attempts >= 2 && (
-                                    <span className="text-xs font-bold text-foreground tabular-nums">
-                                      {acc} % · {skill.correct}/{skill.attempts}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-xs font-medium text-muted-foreground mt-0.5">
-                                  {v.label}
-                                </p>
-                              </div>
-                            </div>
-                            {/* Verdict + per-skill CTA */}
-                            <div className="mt-3 pl-9 space-y-2">
-                              <p className="text-sm text-foreground/80 leading-relaxed">
-                                {v.verdict}
+                          <div key={skill.skill} className={`rounded-2xl border p-4 ${v.bg} space-y-2`}>
+                            {/* Header row: name + accuracy */}
+                            <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                              <p className="font-semibold text-foreground">
+                                {getReadableSkillName(skill.skill)}
                               </p>
-                              {v.tier !== "strong" && (
+                              {skill.attempts >= 2 && (
+                                <span className="text-xs font-bold text-foreground tabular-nums whitespace-nowrap">
+                                  {acc} % · {skill.correct}/{skill.attempts}
+                                </span>
+                              )}
+                            </div>
+                            {/* Status badge */}
+                            <p className={`text-xs font-bold uppercase tracking-wide ${v.labelColor}`}>
+                              {v.label}
+                            </p>
+                            {/* Verdict + per-skill CTA */}
+                            <p className="text-sm text-foreground/85 leading-relaxed">
+                              {v.verdict}
+                            </p>
+                            {v.tier !== "strong" && (
+                              <div>
                                 <Button
                                   variant={v.ctaVariant}
                                   size="sm"
@@ -427,8 +423,8 @@ export default function Report() {
                                 >
                                   ✏️ {v.cta}
                                 </Button>
-                              )}
-                            </div>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
