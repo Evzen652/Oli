@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, ArrowRight, Calendar, Link2 } from "lucide-react";
 import { OlyLogo } from "@/components/OlyLogo";
 import { toast } from "sonner";
+import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 
 interface Assignment {
   id: string;
@@ -464,6 +465,62 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                     </>
                   );
                 })()}
+
+                {/* Co jsi procvičoval — per-skill rozpis */}
+                {stats.skills.length > 0 && (
+                  <div className="space-y-2 pt-2">
+                    <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                      <span>📚</span>
+                      <span>Co jsi procvičoval</span>
+                    </h3>
+                    <div className="space-y-1.5">
+                      {stats.skills.map((s) => {
+                        const sAcc = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
+                        // Tier podle úspěšnosti samostatnosti
+                        let tone = "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800";
+                        let badge = "🌟";
+                        let badgeText = "skvěle";
+                        let badgeColor = "text-emerald-700 dark:text-emerald-400";
+                        if (s.attempts < 2) {
+                          tone = "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800";
+                          badge = "🌱";
+                          badgeText = "začínáš";
+                          badgeColor = "text-slate-700 dark:text-slate-400";
+                        } else if (sAcc < 50) {
+                          tone = "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800";
+                          badge = "💪";
+                          badgeText = "trénovat";
+                          badgeColor = "text-amber-700 dark:text-amber-400";
+                        } else if (sAcc < 80) {
+                          tone = "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800";
+                          badge = "👍";
+                          badgeText = "dobře";
+                          badgeColor = "text-sky-700 dark:text-sky-400";
+                        }
+
+                        return (
+                          <div key={s.skillId} className={`rounded-xl border p-2.5 ${tone}`}>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-base" aria-hidden>{getSkillIcon(s.skillId)}</span>
+                              <p className="font-medium text-sm text-foreground flex-1 min-w-0 truncate">
+                                {getReadableSkillName(s.skillId)}
+                              </p>
+                              <span className={`text-xs font-bold tabular-nums ${badgeColor} whitespace-nowrap`}>
+                                {badge} {badgeText}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-muted-foreground mt-1 ml-6">
+                              <span className="font-bold text-foreground">{s.attempts}</span> {s.attempts === 1 ? "úloha" : s.attempts < 5 ? "úlohy" : "úloh"}:
+                              {" "}<span className="font-semibold text-emerald-700 dark:text-emerald-400">{s.correct}× sám/sama</span>
+                              {s.helpUsed > 0 && <>{" · "}<span className="font-semibold text-sky-700 dark:text-sky-400">{s.helpUsed}× s nápovědou</span></>}
+                              {s.wrong > 0 && <>{" · "}<span className="font-semibold text-rose-700 dark:text-rose-400">{s.wrong}× chybně</span></>}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
