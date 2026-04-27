@@ -30,13 +30,62 @@ const TONE_STYLES: Record<ReportDetail["tone"], { bg: string; border: string; la
   },
 };
 
-const SUBJECT_META: Record<string, { emoji: string; label: string; color: string }> = {
-  matematika: { emoji: "🔢", label: "Matematika", color: "text-blue-700" },
-  "čeština": { emoji: "📝", label: "Čeština", color: "text-purple-700" },
-  prvouka: { emoji: "🌍", label: "Prvouka", color: "text-green-700" },
-  "přírodověda": { emoji: "🌿", label: "Přírodověda", color: "text-emerald-700" },
-  "vlastivěda": { emoji: "🗺️", label: "Vlastivěda", color: "text-amber-700" },
-  ostatní: { emoji: "📚", label: "Ostatní", color: "text-slate-700" },
+const SUBJECT_META: Record<string, {
+  emoji: string;
+  label: string;
+  color: string;
+  cardBg: string;
+  cardBorder: string;
+  headerBg: string;
+}> = {
+  matematika: {
+    emoji: "🔢",
+    label: "Matematika",
+    color: "text-blue-800 dark:text-blue-300",
+    cardBg: "bg-blue-50/40 dark:bg-blue-950/10",
+    cardBorder: "border-blue-300 dark:border-blue-800",
+    headerBg: "bg-blue-100 dark:bg-blue-900/40",
+  },
+  "čeština": {
+    emoji: "📝",
+    label: "Čeština",
+    color: "text-purple-800 dark:text-purple-300",
+    cardBg: "bg-purple-50/40 dark:bg-purple-950/10",
+    cardBorder: "border-purple-300 dark:border-purple-800",
+    headerBg: "bg-purple-100 dark:bg-purple-900/40",
+  },
+  prvouka: {
+    emoji: "🌍",
+    label: "Prvouka",
+    color: "text-green-800 dark:text-green-300",
+    cardBg: "bg-green-50/40 dark:bg-green-950/10",
+    cardBorder: "border-green-300 dark:border-green-800",
+    headerBg: "bg-green-100 dark:bg-green-900/40",
+  },
+  "přírodověda": {
+    emoji: "🌿",
+    label: "Přírodověda",
+    color: "text-emerald-800 dark:text-emerald-300",
+    cardBg: "bg-emerald-50/40 dark:bg-emerald-950/10",
+    cardBorder: "border-emerald-300 dark:border-emerald-800",
+    headerBg: "bg-emerald-100 dark:bg-emerald-900/40",
+  },
+  "vlastivěda": {
+    emoji: "🗺️",
+    label: "Vlastivěda",
+    color: "text-amber-800 dark:text-amber-300",
+    cardBg: "bg-amber-50/40 dark:bg-amber-950/10",
+    cardBorder: "border-amber-300 dark:border-amber-800",
+    headerBg: "bg-amber-100 dark:bg-amber-900/40",
+  },
+  ostatní: {
+    emoji: "📚",
+    label: "Ostatní",
+    color: "text-slate-800 dark:text-slate-300",
+    cardBg: "bg-slate-50/40 dark:bg-slate-950/10",
+    cardBorder: "border-slate-300 dark:border-slate-800",
+    headerBg: "bg-slate-100 dark:bg-slate-900/40",
+  },
 };
 
 function detectSubjectForSkill(skillId: string): string {
@@ -366,7 +415,7 @@ export default function Report() {
           });
 
           return (
-            <div className="space-y-4">
+            <div className="space-y-6">
               <h2 className="text-base font-semibold text-foreground">{t("report.skills")}</h2>
               {sortedSubjects.map((subj) => {
                 const meta = SUBJECT_META[subj] ?? SUBJECT_META.ostatní;
@@ -375,17 +424,20 @@ export default function Report() {
                 const totalCorrect = skills.reduce((s, k) => s + k.correct, 0);
 
                 return (
-                  <div key={subj} className="space-y-2">
-                    {/* Subject header */}
-                    <div className="flex items-center gap-2 pb-1 border-b-2 border-border/40">
-                      <span className="text-xl">{meta.emoji}</span>
-                      <span className={`text-base font-bold ${meta.color}`}>{meta.label}</span>
-                      <span className="text-xs text-muted-foreground ml-auto">
-                        {skills.length} {skills.length === 1 ? "téma" : skills.length < 5 ? "témata" : "témat"} · <span className="font-bold text-foreground">{totalCorrect}/{totalAttempts}</span> správně
+                  <section
+                    key={subj}
+                    className={`rounded-2xl border-2 ${meta.cardBorder} ${meta.cardBg} overflow-hidden shadow-sm`}
+                  >
+                    {/* Subject header — barevný pruh nahoře */}
+                    <div className={`flex items-center gap-2 px-4 py-3 ${meta.headerBg} border-b-2 ${meta.cardBorder}`}>
+                      <span className="text-2xl" aria-hidden>{meta.emoji}</span>
+                      <span className={`text-lg font-bold ${meta.color}`}>{meta.label}</span>
+                      <span className={`text-xs font-medium ml-auto ${meta.color} opacity-80`}>
+                        {skills.length} {skills.length === 1 ? "téma" : skills.length < 5 ? "témata" : "témat"} · <span className="font-bold">{totalCorrect}/{totalAttempts}</span> správně
                       </span>
                     </div>
                     {/* Skill cards in this subject */}
-                    <div className="space-y-2">
+                    <div className="p-3 space-y-2">
                       {skills.map((skill) => {
                         const v = skillEmoji(skill);
                         const acc = skill.attempts > 0 ? Math.round((skill.correct / skill.attempts) * 100) : 0;
@@ -432,7 +484,7 @@ export default function Report() {
                         );
                       })}
                     </div>
-                  </div>
+                  </section>
                 );
               })}
             </div>
