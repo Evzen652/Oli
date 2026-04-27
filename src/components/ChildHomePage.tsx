@@ -343,37 +343,64 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               </Card>
             ) : (
               <div className="space-y-2">
-                {/* Friendly summary — celé věty, žádné samostatné číselníky */}
-                <Card className="rounded-2xl border-2 border-primary/20 bg-card shadow-sm">
-                  <CardContent className="p-4 space-y-2">
-                    <p className="text-sm flex items-start gap-2.5">
-                      <span className="text-lg flex-shrink-0">📅</span>
-                      <span className="text-foreground">
-                        Cvičil/a jsi
-                        {" "}<span className="font-bold text-blue-700 dark:text-blue-300">{stats.daysActive}</span>
-                        {" "}{stats.daysActive === 1 ? "den" : stats.daysActive < 5 ? "dny" : "dnů"}
-                        {" "}<span className="text-muted-foreground">(z posledních 7)</span>
-                      </span>
-                    </p>
-                    <p className="text-sm flex items-start gap-2.5">
-                      <span className="text-lg flex-shrink-0">📝</span>
-                      <span className="text-foreground">
-                        Dohromady jsi vyřešil/a
-                        {" "}<span className="font-bold text-emerald-700 dark:text-emerald-300">{stats.tasks}</span>
-                        {" "}{stats.tasks === 1 ? "úlohu" : stats.tasks < 5 ? "úlohy" : "úloh"}
-                        {" "}<span className="text-muted-foreground">{stats.sessions === 1 ? "v 1 cvičení" : `v ${stats.sessions} cvičeních`}</span>
-                      </span>
-                    </p>
-                    <p className="text-sm flex items-start gap-2.5">
-                      <span className="text-lg flex-shrink-0">⭐</span>
-                      <span className="text-foreground">
-                        Z toho
-                        {" "}<span className="font-bold text-amber-700 dark:text-amber-300">{stats.accuracy} %</span>
-                        {" "}sis poradil/a sám/sama
-                      </span>
-                    </p>
-                  </CardContent>
-                </Card>
+                {/* Friendly summary — vše v jedné kartě, plné věty */}
+                {(() => {
+                  const aloneCount = stats.tasks - stats.helpUsed - stats.wrong;
+                  const wordTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
+                  return (
+                    <Card className="rounded-2xl border-2 border-primary/20 bg-card shadow-sm">
+                      <CardContent className="p-4 space-y-2">
+                        <p className="text-sm flex items-start gap-2.5">
+                          <span className="text-lg flex-shrink-0">📅</span>
+                          <span className="text-foreground">
+                            Cvičil/a jsi
+                            {" "}<span className="font-bold text-blue-700 dark:text-blue-300">{stats.daysActive}</span>
+                            {" "}{stats.daysActive === 1 ? "den" : stats.daysActive < 5 ? "dny" : "dnů"}
+                            {" "}<span className="text-muted-foreground">(z posledních 7)</span>
+                          </span>
+                        </p>
+                        <p className="text-sm flex items-start gap-2.5">
+                          <span className="text-lg flex-shrink-0">📝</span>
+                          <span className="text-foreground">
+                            Dohromady jsi vyřešil/a
+                            {" "}<span className="font-bold text-emerald-700 dark:text-emerald-300">{stats.tasks}</span>
+                            {" "}{stats.tasks === 1 ? "úlohu" : stats.tasks < 5 ? "úlohy" : "úloh"}
+                            {" "}<span className="text-muted-foreground">{stats.sessions === 1 ? "v 1 cvičení" : `v ${stats.sessions} cvičeních`}</span>
+                          </span>
+                        </p>
+                        {aloneCount > 0 && (
+                          <p className="text-sm flex items-start gap-2.5">
+                            <span className="text-lg flex-shrink-0">✅</span>
+                            <span className="text-foreground">
+                              Sám/sama jsi zvládl/a
+                              {" "}<span className="font-bold text-emerald-700 dark:text-emerald-400">{aloneCount}</span>
+                              {" "}{wordTasks(aloneCount)}
+                            </span>
+                          </p>
+                        )}
+                        {stats.helpUsed > 0 && (
+                          <p className="text-sm flex items-start gap-2.5">
+                            <span className="text-lg flex-shrink-0">💡</span>
+                            <span className="text-foreground">
+                              S nápovědou jsi zvládl/a
+                              {" "}<span className="font-bold text-sky-700 dark:text-sky-400">{stats.helpUsed}</span>
+                              {" "}{wordTasks(stats.helpUsed)}
+                            </span>
+                          </p>
+                        )}
+                        {stats.wrong > 0 && (
+                          <p className="text-sm flex items-start gap-2.5">
+                            <span className="text-lg flex-shrink-0">❌</span>
+                            <span className="text-foreground">
+                              Chybu jsi udělal/a
+                              {" "}<span className="font-bold text-rose-700 dark:text-rose-400">{stats.wrong}×</span>
+                            </span>
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })()}
 
                 {/* Co jsi procvičoval — per-skill rozpis (před globálním souhrnem,
                     aby žák věděl k čemu se čísla vztahují) */}
@@ -444,48 +471,6 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   </div>
                 )}
 
-                {/* Globální souhrn — Celkem za týden */}
-                {(() => {
-                  const aloneCount = stats.tasks - stats.helpUsed - stats.wrong;
-                  const wordTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
-                  const rows: { emoji: string; text: React.ReactNode; color: string }[] = [];
-                  if (aloneCount > 0) {
-                    rows.push({
-                      emoji: "✅",
-                      color: "text-emerald-700 dark:text-emerald-400",
-                      text: <>Sám/sama jsi vyřešil/a <span className="font-bold">{aloneCount}</span> {wordTasks(aloneCount)}</>,
-                    });
-                  }
-                  if (stats.helpUsed > 0) {
-                    rows.push({
-                      emoji: "💡",
-                      color: "text-sky-700 dark:text-sky-400",
-                      text: <>S nápovědou jsi zvládl/a <span className="font-bold">{stats.helpUsed}</span> {wordTasks(stats.helpUsed)}</>,
-                    });
-                  }
-                  if (stats.wrong > 0) {
-                    rows.push({
-                      emoji: "❌",
-                      color: "text-rose-700 dark:text-rose-400",
-                      text: <>Chybu jsi udělal/a <span className="font-bold">{stats.wrong}×</span></>,
-                    });
-                  }
-                  return (
-                    <Card className="rounded-xl border bg-card shadow-sm">
-                      <CardContent className="p-3 space-y-1.5">
-                        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                          Celkem za týden
-                        </p>
-                        {rows.map((r, i) => (
-                          <div key={i} className="flex items-center gap-2.5">
-                            <span className="text-lg flex-shrink-0">{r.emoji}</span>
-                            <p className={`text-sm ${r.color}`}>{r.text}</p>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-                  );
-                })()}
 
                 {/* Návodný blok — co se ti daří + tip */}
                 {(() => {
