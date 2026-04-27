@@ -178,34 +178,49 @@ export function AdminCurriculumSidebar({
               </p>
             </div>
           )}
+          {/* Legenda úrovní — pomáhá adminovi pochopit, co znamenají odsazení */}
+          {!query && subjects.length > 0 && (
+            <div className="px-3 py-1.5 text-[10px] text-muted-foreground/70 leading-tight border-b mb-1">
+              <span className="inline-flex items-center gap-1"><BookOpen className="h-2.5 w-2.5" />Předmět</span>
+              {" › "}
+              <span className="inline-flex items-center gap-1"><FolderTree className="h-2.5 w-2.5" />Okruh</span>
+              {" › "}
+              <span className="inline-flex items-center gap-1"><FileText className="h-2.5 w-2.5" />Téma</span>
+              {" › "}
+              <span className="inline-flex items-center gap-1"><Target className="h-2.5 w-2.5" />Podtéma</span>
+            </div>
+          )}
           {subjects.map((subject) => {
             const isSubjectOpen = expandedSubjects.has(subject) || !!query;
             const isSubjectActive = selectedSubject === subject;
             const categories = Object.keys(tree[subject]).sort();
+            // První písmeno velké, zbytek beze změny — žádný capitalize CSS
+            const fmtName = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
             return (
               <div key={subject} className="mb-0.5">
-                {/* Subject row */}
+                {/* Subject (Předmět) — největší font, primární barva */}
                 <button
                   onClick={() => handleSubjectClick(subject)}
-                  className={`w-full flex items-center gap-1.5 px-2 py-1.5 text-sm rounded-md transition-colors ${
+                  className={`w-full flex items-center gap-1.5 px-2 py-2 text-sm rounded-md transition-colors border-l-4 ${
                     isSubjectActive && !selectedCategory
-                      ? "bg-primary/15 text-primary font-semibold"
-                      : "hover:bg-accent/70"
+                      ? "bg-primary/15 text-primary font-bold border-primary"
+                      : "hover:bg-accent/70 font-semibold border-transparent"
                   }`}
+                  title={`Předmět: ${fmtName(subject)}`}
                 >
                   {isSubjectOpen ? (
-                    <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
                   ) : (
-                    <ChevronRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
                   )}
-                  <BookOpen className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span className="capitalize truncate">{subject}</span>
+                  <BookOpen className="h-4 w-4 text-primary shrink-0" />
+                  <span className="truncate">{fmtName(subject)}</span>
                 </button>
 
                 {/* Categories */}
                 {isSubjectOpen && (
-                  <div className="ml-3 border-l border-border/60">
+                  <div className="ml-3 border-l-2 border-border/60">
                     {categories.map((category) => {
                       const categoryKey = `${subject}::${category}`;
                       const isCatOpen = expandedCategories.has(categoryKey) || !!query;
@@ -214,21 +229,23 @@ export function AdminCurriculumSidebar({
 
                       return (
                         <div key={category}>
+                          {/* Category (Okruh) */}
                           <button
                             onClick={() => handleCategoryClick(subject, category)}
-                            className={`w-full flex items-center gap-1.5 px-2 py-1 text-xs rounded-md transition-colors ${
+                            className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
                               isCatActive && !selectedTopic
-                                ? "bg-primary/10 text-primary font-medium"
-                                : "hover:bg-accent/70 text-foreground/80"
+                                ? "bg-primary/10 text-primary font-semibold border-primary"
+                                : "hover:bg-accent/70 text-foreground/85 border-transparent"
                             }`}
+                            title={`Okruh: ${fmtName(category)}`}
                           >
                             {isCatOpen ? (
-                              <ChevronDown className="h-3 w-3 text-muted-foreground shrink-0" />
+                              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                             ) : (
-                              <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                             )}
-                            <FolderTree className="h-3 w-3 text-muted-foreground shrink-0" />
-                            <span className="capitalize truncate">{category}</span>
+                            <FolderTree className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                            <span className="truncate">{fmtName(category)}</span>
                           </button>
 
                           {/* Topics */}
@@ -245,27 +262,31 @@ export function AdminCurriculumSidebar({
 
                                 return (
                                   <div key={topic}>
+                                    {/* Topic (Téma) */}
                                     <button
                                       onClick={() => handleTopicClick(subject, category, topic)}
-                                      className={`w-full flex items-center gap-1.5 px-2 py-1 text-xs rounded-md transition-colors ${
+                                      className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1 text-xs rounded-md transition-colors border-l-4 ${
                                         isTopicActive && !selectedSkill
-                                          ? "bg-primary/10 text-primary font-medium"
-                                          : "hover:bg-accent/70 text-foreground/70"
+                                          ? "bg-primary/10 text-primary font-semibold border-primary"
+                                          : "hover:bg-accent/70 text-foreground/75 border-transparent"
                                       }`}
+                                      title={`Téma: ${fmtName(topic)}`}
                                     >
                                       {isTopicOpen ? (
                                         <ChevronDown className="h-3 w-3 text-muted-foreground shrink-0" />
                                       ) : (
                                         <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
                                       )}
-                                      <FileText className="h-3 w-3 text-muted-foreground shrink-0" />
-                                      <span className="capitalize truncate flex-1 text-left">
-                                        {topic}
+                                      <FileText className="h-3 w-3 text-sky-600 dark:text-sky-400 shrink-0" />
+                                      <span className="truncate flex-1 text-left">
+                                        {fmtName(topic)}
                                       </span>
-                                      <span className="text-[10px] text-muted-foreground shrink-0">{skills.length}</span>
+                                      <Badge variant="outline" className="text-[9px] h-4 px-1 shrink-0 font-mono">
+                                        {skills.length}
+                                      </Badge>
                                     </button>
 
-                                    {/* Skills */}
+                                    {/* Skills (Podtémata) */}
                                     {isTopicOpen && (
                                       <div className="ml-3 border-l border-border/30">
                                         {skills.map((skill) => {
@@ -274,13 +295,14 @@ export function AdminCurriculumSidebar({
                                             <button
                                               key={skill.id}
                                               onClick={() => handleSkillClick(skill)}
-                                              className={`w-full flex items-center gap-1.5 px-2 py-1 text-xs rounded-md transition-colors ${
+                                              className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1 text-xs rounded-md transition-colors border-l-4 ${
                                                 isSkillActive
-                                                  ? "bg-primary text-primary-foreground"
-                                                  : "hover:bg-accent/70 text-foreground/60"
+                                                  ? "bg-primary text-primary-foreground font-semibold border-primary-foreground/40"
+                                                  : "hover:bg-accent/70 text-foreground/65 border-transparent"
                                               }`}
+                                              title={`Podtéma: ${skill.title}`}
                                             >
-                                              <Target className="h-3 w-3 shrink-0" />
+                                              <Target className={`h-3 w-3 shrink-0 ${isSkillActive ? "" : "text-emerald-600 dark:text-emerald-400"}`} />
                                               <span className="truncate text-left flex-1">
                                                 {skill.title}
                                               </span>
