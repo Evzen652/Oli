@@ -100,3 +100,82 @@ export function getSkillSubject(skillId: string): string | null {
   const topic = getTopicById(skillId) ?? getTopicById(canonicalSkillId(skillId));
   return topic?.subject ?? null;
 }
+
+/**
+ * Vrátí emoji ilustraci pro téma podle klíčových slov v názvu/ID.
+ * Pokud žádný pattern neodpovídá, vrátí emoji předmětu (🔢/📝/🌍).
+ *
+ * Používá se na skill kartách v reportu a v list view.
+ */
+const TOPIC_ICON_PATTERNS: Array<{ test: RegExp; emoji: string }> = [
+  // Matematika — operace
+  { test: /(porovn[aá]v[aá]n[ií]|comparison|compare)/i, emoji: "⚖️" },
+  { test: /(s[čc][ií]t[aá]n[ií].*od[čc][ií]t[aá]n[ií]|add.?sub|addsub)/i, emoji: "➕" },
+  { test: /(s[čc][ií]t[aá]n[ií]|sum|add(?!sub))/i, emoji: "➕" },
+  { test: /(od[čc][ií]t[aá]n[ií]|subtract|sub(?:tract)?)/i, emoji: "➖" },
+  { test: /(n[aá]sob(?:ilka|en[ií])|multipl|násob)/i, emoji: "✖️" },
+  { test: /(d[eě]len[ií]|divide|divid)/i, emoji: "➗" },
+  { test: /(zaokrouhl|rounding)/i, emoji: "🎯" },
+  // Matematika — geometrie
+  { test: /(obvod|perimeter)/i, emoji: "📐" },
+  { test: /(obsah|area)/i, emoji: "🟦" },
+  { test: /(p[řr]evod|jednotk|units|length|d[eé]lk)/i, emoji: "📏" },
+  { test: /(troj[uú]heln[ií]k|triangle)/i, emoji: "🔺" },
+  { test: /([čc]tverec|square|obd[eé]ln[ií]k|rectangle)/i, emoji: "▢" },
+  { test: /(kruh|circle|kru[žz]nice)/i, emoji: "⭕" },
+  // Matematika — zlomky
+  { test: /(zlomek|zlomk|frac|frakce)/i, emoji: "🍕" },
+  { test: /(desetin|decimal)/i, emoji: "🔢" },
+  { test: /(procent|percent)/i, emoji: "💯" },
+  { test: /(z[aá]porn|negative|negativ)/i, emoji: "🌡️" },
+  // Matematika — čísla obecně
+  { test: /(milion|million|tis[ií]c|thousand)/i, emoji: "🔢" },
+  // Čeština
+  { test: /(diktat|diktát)/i, emoji: "✍️" },
+  { test: /(vyjmenovan[aá]|vyjmen)/i, emoji: "📚" },
+  { test: /(slovn[ií] druhy|slovn[ií]-druhy|word.?class)/i, emoji: "🏷️" },
+  { test: /(p[áa]rov[eé]|párov)/i, emoji: "🔤" },
+  { test: /(velk[áa] p[ií]smen|capital)/i, emoji: "🔠" },
+  { test: /(pravopis|spell)/i, emoji: "📝" },
+  { test: /(skloň|sklon|deklin)/i, emoji: "🔄" },
+  { test: /([čc]asov[áa]n|[čc]asov|conjug)/i, emoji: "⏱️" },
+  { test: /(synonym|antonym|protiklad)/i, emoji: "🔁" },
+  { test: /([čc]ten[aá]?|reading)/i, emoji: "📖" },
+  // Prvouka / přírodověda
+  { test: /(rostlin|plant)/i, emoji: "🌱" },
+  { test: /(zv[ií][řr]|animal)/i, emoji: "🐾" },
+  { test: /(t[eě]lo|body|orgán|organ)/i, emoji: "🫀" },
+  { test: /(po[čc]as[ií]|weather|teplot|temperature)/i, emoji: "🌤️" },
+  { test: /(voda|water)/i, emoji: "💧" },
+  { test: /(les|forest|strom|tree)/i, emoji: "🌳" },
+  { test: /(hodin|time|[čc]as)/i, emoji: "🕐" },
+  // Vlastivěda
+  { test: /(d[eě]jin|history|histor)/i, emoji: "📜" },
+  { test: /(geograf|země|země|map|stát)/i, emoji: "🗺️" },
+];
+
+const SUBJECT_FALLBACK_ICON: Record<string, string> = {
+  matematika: "🔢",
+  "čeština": "📝",
+  prvouka: "🌍",
+  "přírodověda": "🌿",
+  "vlastivěda": "🗺️",
+};
+
+export function getSkillIcon(skillId: string): string {
+  if (!skillId) return "📚";
+  const name = getReadableSkillName(skillId).toLowerCase();
+  // Hledáme v názvu (priorita) i v ID
+  const haystack = `${name} ${skillId}`;
+  for (const { test, emoji } of TOPIC_ICON_PATTERNS) {
+    if (test.test(haystack)) return emoji;
+  }
+  // Fallback na předmět
+  const subj = getSkillSubject(skillId);
+  if (subj && SUBJECT_FALLBACK_ICON[subj]) return SUBJECT_FALLBACK_ICON[subj];
+  // Heuristika podle prefixu
+  if (skillId.startsWith("math") || skillId.startsWith("frac")) return "🔢";
+  if (skillId.startsWith("cz-")) return "📝";
+  if (skillId.startsWith("pr-") || skillId.startsWith("prv-")) return "🌍";
+  return "📚";
+}

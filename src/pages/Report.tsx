@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
+import { getReadableSkillName, getSkillSubject, getSkillIcon } from "@/lib/skillReadableName";
 import { useT } from "@/lib/i18n";
 import { CalendarDays, CalendarRange, History } from "lucide-react";
 import type { ReportRange, ReportDetail } from "@/lib/weeklyReportGenerator";
@@ -394,13 +394,16 @@ export default function Report() {
                           : `/parent#assign-${encodeURIComponent(skill.skill)}`;
                         return (
                           <div key={skill.skill} className={`rounded-2xl border p-4 ${v.bg} space-y-2`}>
-                            {/* Header row: name + accuracy */}
-                            <div className="flex items-baseline justify-between gap-2 flex-wrap">
-                              <p className="font-semibold text-foreground">
-                                {getReadableSkillName(skill.skill)}
-                              </p>
+                            {/* Header row: topic icon + name + accuracy */}
+                            <div className="flex items-start justify-between gap-2 flex-wrap">
+                              <div className="flex items-center gap-2 min-w-0 flex-1">
+                                <span className="text-xl flex-shrink-0" aria-hidden>{getSkillIcon(skill.skill)}</span>
+                                <p className="font-semibold text-foreground">
+                                  {getReadableSkillName(skill.skill)}
+                                </p>
+                              </div>
                               {skill.attempts >= 2 && (
-                                <span className="text-xs font-bold text-foreground tabular-nums whitespace-nowrap">
+                                <span className="text-xs font-bold text-foreground tabular-nums whitespace-nowrap mt-0.5">
                                   {acc} % · {skill.correct}/{skill.attempts}
                                 </span>
                               )}
