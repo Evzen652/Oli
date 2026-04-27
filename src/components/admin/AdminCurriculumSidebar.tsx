@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRight, ChevronDown, Search, BookOpen, FolderTree, FileText, Target } from "lucide-react";
+// Target je použitý jen v legendě nahoře — proto zůstává
 import type { TopicMetadata } from "@/lib/types";
 
 export interface CurriculumContext {
@@ -104,12 +105,19 @@ export function AdminCurriculumSidebar({
 
   const handleSubjectClick = (subject: string) => {
     onSelectSubject(subject);
+    // CRITICAL: reset všech podřazených, jinak pravá strana zůstane
+    // na předchozí vybrané dovednosti / tématu
+    onSelectCategory(null);
+    onSelectTopic(null);
+    onSelectSkill(null);
     toggleSubject(subject);
   };
 
   const handleCategoryClick = (subject: string, category: string) => {
     onSelectSubject(subject);
     onSelectCategory(category);
+    onSelectTopic(null);
+    onSelectSkill(null);
     setExpandedSubjects((prev) => new Set(prev).add(subject));
     toggleCategory(subject, category);
   };
@@ -118,6 +126,7 @@ export function AdminCurriculumSidebar({
     onSelectSubject(subject);
     onSelectCategory(category);
     onSelectTopic(topic);
+    onSelectSkill(null);
     setExpandedSubjects((prev) => new Set(prev).add(subject));
     setExpandedCategories((prev) => new Set(prev).add(`${subject}::${category}`));
     toggleTopic(subject, category, topic);
@@ -180,14 +189,25 @@ export function AdminCurriculumSidebar({
           )}
           {/* Legenda úrovní — pomáhá adminovi pochopit, co znamenají odsazení */}
           {!query && subjects.length > 0 && (
-            <div className="px-3 py-1.5 text-[10px] text-muted-foreground/70 leading-tight border-b mb-1">
-              <span className="inline-flex items-center gap-1"><BookOpen className="h-2.5 w-2.5" />Předmět</span>
-              {" › "}
-              <span className="inline-flex items-center gap-1"><FolderTree className="h-2.5 w-2.5" />Okruh</span>
-              {" › "}
-              <span className="inline-flex items-center gap-1"><FileText className="h-2.5 w-2.5" />Téma</span>
-              {" › "}
-              <span className="inline-flex items-center gap-1"><Target className="h-2.5 w-2.5" />Podtéma</span>
+            <div className="px-3 py-2 text-[10px] leading-tight border-b mb-2 space-y-1 bg-muted/30">
+              <p className="font-semibold text-muted-foreground uppercase tracking-wide">Úrovně:</p>
+              <div className="flex flex-wrap gap-x-2 gap-y-0.5">
+                <span className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-400 font-bold">
+                  <BookOpen className="h-3 w-3" />Předmět
+                </span>
+                <span className="text-muted-foreground/50">→</span>
+                <span className="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400 font-semibold">
+                  <FolderTree className="h-3 w-3" />Okruh
+                </span>
+                <span className="text-muted-foreground/50">→</span>
+                <span className="inline-flex items-center gap-1 text-sky-700 dark:text-sky-400 font-medium">
+                  <FileText className="h-3 w-3" />Téma
+                </span>
+                <span className="text-muted-foreground/50">→</span>
+                <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
+                  <Target className="h-3 w-3" />Podtéma
+                </span>
+              </div>
             </div>
           )}
           {subjects.map((subject) => {
@@ -198,23 +218,23 @@ export function AdminCurriculumSidebar({
             const fmtName = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
             return (
-              <div key={subject} className="mb-0.5">
-                {/* Subject (Předmět) — největší font, primární barva */}
+              <div key={subject} className="mb-2">
+                {/* Subject (Předmět) — největší font, modré pozadí, výrazný */}
                 <button
                   onClick={() => handleSubjectClick(subject)}
-                  className={`w-full flex items-center gap-1.5 px-2 py-2 text-sm rounded-md transition-colors border-l-4 ${
+                  className={`w-full flex items-center gap-2 px-2.5 py-2.5 text-base rounded-lg transition-colors border-l-4 ${
                     isSubjectActive && !selectedCategory
-                      ? "bg-primary/15 text-primary font-bold border-primary"
-                      : "hover:bg-accent/70 font-semibold border-transparent"
+                      ? "bg-blue-100 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 font-bold border-blue-600 shadow-sm"
+                      : "bg-blue-50/60 dark:bg-blue-950/20 hover:bg-blue-100/80 dark:hover:bg-blue-950/40 text-blue-800 dark:text-blue-300 font-bold border-transparent"
                   }`}
                   title={`Předmět: ${fmtName(subject)}`}
                 >
                   {isSubjectOpen ? (
-                    <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <ChevronDown className="h-4 w-4 shrink-0" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <ChevronRight className="h-4 w-4 shrink-0" />
                   )}
-                  <BookOpen className="h-4 w-4 text-primary shrink-0" />
+                  <BookOpen className="h-4 w-4 shrink-0" />
                   <span className="truncate">{fmtName(subject)}</span>
                 </button>
 
@@ -229,22 +249,22 @@ export function AdminCurriculumSidebar({
 
                       return (
                         <div key={category}>
-                          {/* Category (Okruh) */}
+                          {/* Category (Okruh) — amber barva, výrazný level chip */}
                           <button
                             onClick={() => handleCategoryClick(subject, category)}
                             className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
                               isCatActive && !selectedTopic
-                                ? "bg-primary/10 text-primary font-semibold border-primary"
-                                : "hover:bg-accent/70 text-foreground/85 border-transparent"
+                                ? "bg-amber-100 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold border-amber-600 shadow-sm"
+                                : "hover:bg-amber-50 dark:hover:bg-amber-950/20 text-amber-800/90 dark:text-amber-400/90 font-semibold border-transparent"
                             }`}
                             title={`Okruh: ${fmtName(category)}`}
                           >
                             {isCatOpen ? (
-                              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                              <ChevronDown className="h-3.5 w-3.5 shrink-0" />
                             ) : (
-                              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                              <ChevronRight className="h-3.5 w-3.5 shrink-0" />
                             )}
-                            <FolderTree className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                            <span className="text-[9px] font-bold tracking-wider px-1 py-0.5 rounded bg-amber-200/60 dark:bg-amber-900/40 shrink-0">OKRUH</span>
                             <span className="truncate">{fmtName(category)}</span>
                           </button>
 
@@ -262,22 +282,22 @@ export function AdminCurriculumSidebar({
 
                                 return (
                                   <div key={topic}>
-                                    {/* Topic (Téma) */}
+                                    {/* Topic (Téma) — sky barva, level chip */}
                                     <button
                                       onClick={() => handleTopicClick(subject, category, topic)}
-                                      className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1 text-xs rounded-md transition-colors border-l-4 ${
+                                      className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
                                         isTopicActive && !selectedSkill
-                                          ? "bg-primary/10 text-primary font-semibold border-primary"
-                                          : "hover:bg-accent/70 text-foreground/75 border-transparent"
+                                          ? "bg-sky-100 dark:bg-sky-950/40 text-sky-900 dark:text-sky-200 font-bold border-sky-600 shadow-sm"
+                                          : "hover:bg-sky-50 dark:hover:bg-sky-950/20 text-sky-800/85 dark:text-sky-400/85 font-medium border-transparent"
                                       }`}
                                       title={`Téma: ${fmtName(topic)}`}
                                     >
                                       {isTopicOpen ? (
-                                        <ChevronDown className="h-3 w-3 text-muted-foreground shrink-0" />
+                                        <ChevronDown className="h-3 w-3 shrink-0" />
                                       ) : (
-                                        <ChevronRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                                        <ChevronRight className="h-3 w-3 shrink-0" />
                                       )}
-                                      <FileText className="h-3 w-3 text-sky-600 dark:text-sky-400 shrink-0" />
+                                      <span className="text-[9px] font-bold tracking-wider px-1 py-0.5 rounded bg-sky-200/60 dark:bg-sky-900/40 shrink-0">TÉMA</span>
                                       <span className="truncate flex-1 text-left">
                                         {fmtName(topic)}
                                       </span>
@@ -286,7 +306,7 @@ export function AdminCurriculumSidebar({
                                       </Badge>
                                     </button>
 
-                                    {/* Skills (Podtémata) */}
+                                    {/* Skills (Podtémata) — emerald barva, level chip */}
                                     {isTopicOpen && (
                                       <div className="ml-3 border-l border-border/30">
                                         {skills.map((skill) => {
@@ -295,14 +315,16 @@ export function AdminCurriculumSidebar({
                                             <button
                                               key={skill.id}
                                               onClick={() => handleSkillClick(skill)}
-                                              className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1 text-xs rounded-md transition-colors border-l-4 ${
+                                              className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-xs rounded-md transition-colors border-l-4 ${
                                                 isSkillActive
-                                                  ? "bg-primary text-primary-foreground font-semibold border-primary-foreground/40"
-                                                  : "hover:bg-accent/70 text-foreground/65 border-transparent"
+                                                  ? "bg-emerald-600 dark:bg-emerald-700 text-white font-bold border-emerald-800 dark:border-emerald-500 shadow-sm"
+                                                  : "hover:bg-emerald-50 dark:hover:bg-emerald-950/20 text-emerald-800/80 dark:text-emerald-400/80 border-transparent"
                                               }`}
                                               title={`Podtéma: ${skill.title}`}
                                             >
-                                              <Target className={`h-3 w-3 shrink-0 ${isSkillActive ? "" : "text-emerald-600 dark:text-emerald-400"}`} />
+                                              <span className={`text-[9px] font-bold tracking-wider px-1 py-0.5 rounded shrink-0 ${
+                                                isSkillActive ? "bg-white/20" : "bg-emerald-200/60 dark:bg-emerald-900/40"
+                                              }`}>PODTÉMA</span>
                                               <span className="truncate text-left flex-1">
                                                 {skill.title}
                                               </span>
