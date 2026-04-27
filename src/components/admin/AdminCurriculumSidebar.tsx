@@ -222,7 +222,7 @@ export function AdminCurriculumSidebar({
                 {/* Subject (Předmět) — největší font, modré pozadí, výrazný */}
                 <button
                   onClick={() => handleSubjectClick(subject)}
-                  className={`w-full flex items-center gap-2 px-2.5 py-2.5 text-base rounded-lg transition-colors border-l-4 ${
+                  className={`w-full flex items-start gap-2 px-2.5 py-2.5 text-base rounded-lg transition-colors border-l-4 ${
                     isSubjectActive && !selectedCategory
                       ? "bg-blue-100 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 font-bold border-blue-600 shadow-sm"
                       : "bg-blue-50/60 dark:bg-blue-950/20 hover:bg-blue-100/80 dark:hover:bg-blue-950/40 text-blue-800 dark:text-blue-300 font-bold border-transparent"
@@ -234,8 +234,8 @@ export function AdminCurriculumSidebar({
                   ) : (
                     <ChevronRight className="h-4 w-4 shrink-0" />
                   )}
-                  <BookOpen className="h-4 w-4 shrink-0" />
-                  <span className="truncate">{fmtName(subject)}</span>
+                  <BookOpen className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span className="break-words text-left flex-1 leading-tight">{fmtName(subject)}</span>
                 </button>
 
                 {/* Categories */}
@@ -252,7 +252,7 @@ export function AdminCurriculumSidebar({
                           {/* Category (Okruh) — amber barva, výrazný level chip */}
                           <button
                             onClick={() => handleCategoryClick(subject, category)}
-                            className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
+                            className={`w-full flex items-start gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
                               isCatActive && !selectedTopic
                                 ? "bg-amber-100 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold border-amber-600 shadow-sm"
                                 : "hover:bg-amber-50 dark:hover:bg-amber-950/20 text-amber-800/90 dark:text-amber-400/90 font-semibold border-transparent"
@@ -265,7 +265,7 @@ export function AdminCurriculumSidebar({
                               <ChevronRight className="h-3.5 w-3.5 shrink-0" />
                             )}
                             <span className="text-[9px] font-bold tracking-wider px-1 py-0.5 rounded bg-amber-200/60 dark:bg-amber-900/40 shrink-0">OKRUH</span>
-                            <span className="truncate">{fmtName(category)}</span>
+                            <span className="break-words text-left flex-1 leading-tight">{fmtName(category)}</span>
                           </button>
 
                           {/* Topics */}
@@ -285,7 +285,7 @@ export function AdminCurriculumSidebar({
                                     {/* Topic (Téma) — sky barva, level chip */}
                                     <button
                                       onClick={() => handleTopicClick(subject, category, topic)}
-                                      className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
+                                      className={`w-full flex items-start gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
                                         isTopicActive && !selectedSkill
                                           ? "bg-sky-100 dark:bg-sky-950/40 text-sky-900 dark:text-sky-200 font-bold border-sky-600 shadow-sm"
                                           : "hover:bg-sky-50 dark:hover:bg-sky-950/20 text-sky-800/85 dark:text-sky-400/85 font-medium border-transparent"
@@ -298,7 +298,7 @@ export function AdminCurriculumSidebar({
                                         <ChevronRight className="h-3 w-3 shrink-0" />
                                       )}
                                       <span className="text-[9px] font-bold tracking-wider px-1 py-0.5 rounded bg-sky-200/60 dark:bg-sky-900/40 shrink-0">TÉMA</span>
-                                      <span className="truncate flex-1 text-left">
+                                      <span className="break-words flex-1 text-left leading-tight">
                                         {fmtName(topic)}
                                       </span>
                                       <Badge variant="outline" className="text-[9px] h-4 px-1 shrink-0 font-mono">
@@ -315,7 +315,7 @@ export function AdminCurriculumSidebar({
                                             <button
                                               key={skill.id}
                                               onClick={() => handleSkillClick(skill)}
-                                              className={`w-full flex items-center gap-1.5 pl-2 pr-2 py-1.5 text-xs rounded-md transition-colors border-l-4 ${
+                                              className={`w-full flex items-start gap-1.5 pl-2 pr-2 py-1.5 text-xs rounded-md transition-colors border-l-4 ${
                                                 isSkillActive
                                                   ? "bg-emerald-600 dark:bg-emerald-700 text-white font-bold border-emerald-800 dark:border-emerald-500 shadow-sm"
                                                   : "hover:bg-emerald-50 dark:hover:bg-emerald-950/20 text-emerald-800/80 dark:text-emerald-400/80 border-transparent"
@@ -325,7 +325,7 @@ export function AdminCurriculumSidebar({
                                               <span className={`text-[9px] font-bold tracking-wider px-1 py-0.5 rounded shrink-0 ${
                                                 isSkillActive ? "bg-white/20" : "bg-emerald-200/60 dark:bg-emerald-900/40"
                                               }`}>PODTÉMA</span>
-                                              <span className="truncate text-left flex-1">
+                                              <span className="break-words text-left flex-1 leading-tight">
                                                 {skill.title}
                                               </span>
                                             </button>
