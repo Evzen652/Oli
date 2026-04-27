@@ -6,6 +6,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById } from "@/lib/contentRegistry";
+import { getReadableSkillName } from "@/lib/skillReadableName";
 
 export type ReportRange = "week" | "month" | "all";
 
@@ -20,11 +21,16 @@ interface SkillSummary {
 
 interface ReportData {
   summary: string;
+  details?: string;
   strengths?: string;
   to_practice?: string;
   recommendations: string;
   skills: SkillSummary[];
   stats: { sessions: number; attempts: number; accuracy: number; withHelp: number; wrong: number };
+  /** IDs nejslabších skillů (≥2 pokusů, úspěšnost <50 %), top 3 */
+  weakSkillIds?: string[];
+  /** IDs nejsilnějších skillů (≥2 pokusů, úspěšnost ≥80 %), top 3 */
+  strongSkillIds?: string[];
   childName?: string | null;
   range: ReportRange;
   rangeLabel: string;
@@ -142,7 +148,15 @@ export async function generateWeeklyReport(
   const strengthCount = strong.length;
   const weakCount = weak.length;
 
-  // Build summary — no numbers (those are in the stats section)
+  // Top 3 weakest / strongest skills (≥2 pokusů)
+  const weakSorted = [...weak].sort((a, b) => (a.correct / a.attempts) - (b.correct / b.attempts));
+  const strongSorted = [...strong].sort((a, b) => (b.correct / b.attempts) - (a.correct / a.attempts));
+  const topWeak = weakSorted.slice(0, 3);
+  const topStrong = strongSorted.slice(0, 3);
+  const weakSkillIds = topWeak.map(s => s.skill);
+  const strongSkillIds = topStrong.map(s => s.skill);
+
+  // Build summary — bohatší, víc konkrétních pozorování
   const name = childName ?? "Žák";
   let summary: string;
   if (accuracy >= 80) {
@@ -152,6 +166,45 @@ export async function generateWeeklyReport(
   } else {
     summary = `${name} ${rangeLabel} potřebuje s učením trochu pomoct. Doporučujeme se zaměřit na slabší témata a procvičovat kratší dobu, ale častěji.`;
   }
+
+  // Detailní druhý odstavec: konkrétní pozorování
+  const detailParts: string[] = [];
+
+  // 1) Pravidelnost
+  if (sessions >= 5) {
+    detailParts.push(`Procvičování probíhalo pravidelně (${sessions} sezení) — to je ten nejdůležitější krok.`);
+  } else if (sessions >= 3) {
+    detailParts.push(`Sezení proběhlo ${sessions} — pravidelnost je v pořádku, ale ještě je co zlepšovat.`);
+  } else if (sessions > 0) {
+    detailParts.push(`Sezení proběhla jen ${sessions === 1 ? "1" : sessions === 2 ? "2" : sessions} — častější procvičování (klidně po 5–10 minutách) přinese mnohem lepší výsledky než jedno dlouhé.`);
+  }
+
+  // 2) Profil chyb
+  if (attempts > 0) {
+    const helpRatio = withHelp / attempts;
+    const wrongRatio = wrong / attempts;
+    if (wrongRatio >= 0.3) {
+      detailParts.push(`Chybovost je vyšší (${wrong} z ${attempts} úloh) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`);
+    } else if (helpRatio >= 0.25) {
+      detailParts.push(`Často využívá nápovědu (${withHelp}× z ${attempts}) — to je v pořádku, ukazuje to ochotu hledat řešení, jen je dobré postupně přejít na samostatnost.`);
+    } else if (correctAlone / attempts >= 0.7) {
+      detailParts.push(`Většinu úloh (${correctAlone} z ${attempts}) vyřešil/a samostatně — silná známka, že látku skutečně ovládá.`);
+    }
+  }
+
+  // 3) Konkrétní témata k procvičení
+  if (topWeak.length > 0) {
+    const names = topWeak.map(s => `„${getReadableSkillName(s.skill)}"`).join(topWeak.length === 2 ? " a " : ", ");
+    detailParts.push(`Největší prostor pro zlepšení vidíme u ${names}.`);
+  }
+
+  // 4) Pochvala silných stránek (pokud nejsou v summary)
+  if (topStrong.length > 0 && accuracy < 80) {
+    const names = topStrong.map(s => `„${getReadableSkillName(s.skill)}"`).join(topStrong.length === 2 ? " a " : ", ");
+    detailParts.push(`Naopak ${names} už zvládá s přehledem — to je dobrý základ, na kterém se dá stavět.`);
+  }
+
+  const details = detailParts.length > 0 ? detailParts.join(" ") : undefined;
 
   const strengths = strengthCount > 0
     ? `V ${strengthCount} ${strengthCount === 1 ? "tématu" : "tématech"} má úspěšnost nad 80 % — skvělá práce!`
@@ -171,11 +224,14 @@ export async function generateWeeklyReport(
 
   return {
     summary,
+    details,
     strengths,
     to_practice,
     recommendations,
     skills,
     stats: { sessions, attempts, accuracy, withHelp, wrong },
+    weakSkillIds,
+    strongSkillIds,
     childName,
     range,
     rangeLabel,

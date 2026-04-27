@@ -38,12 +38,15 @@ interface SkillSummary {
 
 interface ReportData {
   summary: string;
+  details?: string;
   strengths?: string;
   to_practice?: string;
   recommendations: string;
   skills: SkillSummary[];
   stats: { sessions: number; attempts: number; accuracy: number; withHelp?: number; wrong?: number };
   errors?: Record<string, number>;
+  weakSkillIds?: string[];
+  strongSkillIds?: string[];
   childName?: string | null;
   range?: ReportRange;
   rangeLabel?: string;
@@ -179,8 +182,11 @@ export default function Report() {
         </div>
 
         {/* AI Summary - warm card */}
-        <div className="rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm">
-          <p className="text-base text-foreground leading-relaxed">{report.summary}</p>
+        <div className="rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm space-y-3">
+          <p className="text-base text-foreground leading-relaxed font-medium">{report.summary}</p>
+          {report.details && (
+            <p className="text-sm text-muted-foreground leading-relaxed">{report.details}</p>
+          )}
         </div>
 
         {/* Stats — pouze pokud je aktivita */}
@@ -308,6 +314,53 @@ export default function Report() {
           <div className="rounded-2xl border border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/20 p-5 space-y-2">
             <p className="font-semibold text-blue-700 dark:text-blue-400">💡 {t("report.recommendations")}</p>
             <p className="text-sm text-foreground leading-relaxed">{report.recommendations}</p>
+          </div>
+        )}
+
+        {/* CTA — co teď */}
+        {hasActivity && (
+          <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 p-5 space-y-3 shadow-sm">
+            <div>
+              <p className="font-semibold text-foreground text-base">🎯 Co teď udělat</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                {report.weakSkillIds && report.weakSkillIds.length > 0
+                  ? `Zadejte ${report.childName ?? "dítěti"} úkol na slabší téma — krátké, konkrétní cvičení udělá víc než dlouhé samostudium.`
+                  : `Pokračujte v pravidelném tempu. Můžete zkusit těžší téma nebo zadat nový úkol.`}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="default"
+                size="default"
+                className="gap-2 shadow-sm"
+                onClick={() => navigate(childId ? `/parent?child=${childId}#assign` : "/parent#assign")}
+              >
+                ✏️ Zadat úkol{report.weakSkillIds && report.weakSkillIds.length > 0 ? " ze slabých témat" : ""}
+              </Button>
+              <Button
+                variant="outline"
+                size="default"
+                className="gap-2"
+                onClick={() => navigate("/parent")}
+              >
+                ← Zpět na přehled
+              </Button>
+            </div>
+            {report.weakSkillIds && report.weakSkillIds.length > 0 && (
+              <div className="pt-2 border-t border-primary/20">
+                <p className="text-xs text-muted-foreground mb-1">Tipy na slabá témata:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {report.weakSkillIds.map((sid) => (
+                    <span
+                      key={sid}
+                      className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-2.5 py-1 text-xs font-medium text-amber-800 dark:text-amber-300"
+                    >
+                      💪 {getReadableSkillName(sid)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
