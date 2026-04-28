@@ -28,6 +28,9 @@ src.backup/
 
 # Claude Code workspace — local data, settings overrides, history
 .claude/*
+
+# Supabase CLI lokální cache — per-machine, nikdy ne v gitu
+supabase/.temp/
 # ALE povol sdílená nastavení (permissions, agents) napříč týmem/PC
 !.claude/settings.json
 !.claude/agents/
