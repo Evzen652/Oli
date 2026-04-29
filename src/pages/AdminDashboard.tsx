@@ -54,6 +54,9 @@ export default function AdminDashboard() {
   const [aiChatOpen, setAiChatOpen] = useState(false);
   const [aiInitialPrompt, setAiInitialPrompt] = useState<string | null>(null);
   const [aiPanelTab, setAiPanelTab] = useState<"create" | "check">("create");
+  // Když uživatel klikne explicitně na "AI asistent" / "AI kontrola" tlačítko,
+  // chceme schovat tab switcher (jen ten jeden mód). FAB neuzamyká.
+  const [aiPanelLocked, setAiPanelLocked] = useState<"create" | "check" | undefined>(undefined);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Derived browse level
@@ -256,9 +259,10 @@ export default function AdminDashboard() {
               className="h-7 px-3 gap-1.5 text-xs font-medium border-primary/40 text-primary hover:bg-primary/10"
               onClick={() => {
                 setAiPanelTab("create");
+                setAiPanelLocked("create");
                 setAiChatOpen(true);
               }}
-              title="Otevřít AI asistenta — chat pro tvorbu / úpravu kurikula"
+              title="Otevřít AI chat pro tvorbu nebo úpravu kurikula. Můžete se ptát, navrhovat témata, vylepšovat nápovědy."
             >
               <Bot className="h-3.5 w-3.5" />
               AI asistent
@@ -269,9 +273,14 @@ export default function AdminDashboard() {
               className="h-7 px-3 gap-1.5 text-xs font-medium border-amber-400/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30"
               onClick={() => {
                 setAiPanelTab("check");
+                setAiPanelLocked("check");
                 setAiChatOpen(true);
               }}
-              title="Hromadná AI kontrola srozumitelnosti, nápověd a správnosti odpovědí"
+              title={
+                !gradeFilter
+                  ? "Pro spuštění hromadné AI kontroly nejdřív vyberte ročník"
+                  : "Hromadná AI kontrola: ověří srozumitelnost zadání, kvalitu nápověd a správnost odpovědí napříč všemi cvičeními ve vybraném ročníku."
+              }
               disabled={!gradeFilter}
             >
               <Search className="h-3.5 w-3.5" />
@@ -569,11 +578,14 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* ═══════ Floating AI button (FAB) — vždy přístupné ═══════ */}
+      {/* ═══════ Floating AI button (FAB) — vždy přístupné, oba taby k dispozici ═══════ */}
       <button
-        onClick={() => setAiChatOpen(true)}
+        onClick={() => {
+          setAiPanelLocked(undefined);
+          setAiChatOpen(true);
+        }}
         className="fixed bottom-6 right-6 z-40 h-14 w-14 sm:h-16 sm:w-16 rounded-full shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-        title="Otevřít AI asistenta"
+        title="Otevřít AI asistenta (Tvořit + Zkontrolovat)"
         aria-label="AI asistent"
       >
         <Sparkles className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -609,6 +621,7 @@ export default function AdminDashboard() {
         open={aiChatOpen}
         onOpenChange={setAiChatOpen}
         defaultTab={aiPanelTab}
+        lockedTab={aiPanelLocked}
         initialPrompt={aiInitialPrompt}
         onInitialPromptConsumed={() => setAiInitialPrompt(null)}
         onProposalsReady={(p, e) => {

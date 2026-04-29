@@ -19,6 +19,11 @@ interface AdminAIPanelProps {
   onOpenChange: (open: boolean) => void;
   // Tab control
   defaultTab?: "create" | "check";
+  /**
+   * Pokud je nastavený, panel zobrazí JEN ten mód a skryje tab switcher.
+   * Použito když user otevřel přes specifické tlačítko (AI asistent / AI kontrola).
+   */
+  lockedTab?: "create" | "check";
   // Forwarded callbacks
   initialPrompt?: string | null;
   onInitialPromptConsumed?: () => void;
@@ -43,52 +48,72 @@ export function AdminAIPanel({
   open,
   onOpenChange,
   defaultTab = "create",
+  lockedTab,
   initialPrompt,
   onInitialPromptConsumed,
   onProposalsReady,
   availableSubjects,
 }: AdminAIPanelProps) {
-  const [tab, setTab] = useState<"create" | "check">(defaultTab);
+  const [tab, setTab] = useState<"create" | "check">(lockedTab ?? defaultTab);
 
   // Auto-switch to "create" tab when an initialPrompt arrives (smart suggestion clicks)
-  if (initialPrompt && tab !== "create") {
+  if (!lockedTab && initialPrompt && tab !== "create") {
     setTab("create");
+  }
+
+  // Když přijde lockedTab z parent, vynutit změnu
+  if (lockedTab && tab !== lockedTab) {
+    setTab(lockedTab);
   }
 
   // Tab "Zkontrolovat" záměrně NEdiisabled — když není ročník, uvnitř
   // se zobrazí přívětivá hláška (lepší než vypadat jakoby tlačítko
   // úplně chybělo).
 
+  const activeMode = lockedTab ?? tab;
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0 gap-0">
-        <SheetHeader className="p-4 pb-0 border-b">
-          <SheetTitle className="flex items-center gap-2 mb-3">
-            <Sparkles className="h-5 w-5 text-primary" />
-            AI asistent
+        <SheetHeader className="p-4 pb-3 border-b">
+          <SheetTitle className="flex items-center gap-2">
+            {activeMode === "check" ? (
+              <>
+                <Search className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                AI kontrola
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-5 w-5 text-primary" />
+                AI asistent
+              </>
+            )}
           </SheetTitle>
-          <Tabs value={tab} onValueChange={(v) => setTab(v as "create" | "check")} className="w-full">
-            <TabsList className="w-full grid grid-cols-2 h-9">
-              <TabsTrigger value="create" className="gap-1.5 text-sm">
-                <Bot className="h-4 w-4" />
-                Tvořit
-              </TabsTrigger>
-              <TabsTrigger
-                value="check"
-                className="gap-1.5 text-sm"
-                title={!grade ? "Pro spuštění kontroly vyberte ročník v hlavičce" : "Hromadná AI kontrola srozumitelnosti, nápověd a správnosti odpovědí"}
-              >
-                <Search className="h-4 w-4" />
-                Zkontrolovat
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          {/* Tab switcher zobrazený jen když není locked */}
+          {!lockedTab && (
+            <Tabs value={tab} onValueChange={(v) => setTab(v as "create" | "check")} className="w-full mt-3">
+              <TabsList className="w-full grid grid-cols-2 h-9">
+                <TabsTrigger value="create" className="gap-1.5 text-sm">
+                  <Bot className="h-4 w-4" />
+                  Tvořit
+                </TabsTrigger>
+                <TabsTrigger
+                  value="check"
+                  className="gap-1.5 text-sm"
+                  title={!grade ? "Pro spuštění kontroly vyberte ročník v hlavičce" : "Hromadná AI kontrola srozumitelnosti, nápověd a správnosti odpovědí"}
+                >
+                  <Search className="h-4 w-4" />
+                  Zkontrolovat
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          )}
         </SheetHeader>
 
         {/* Both bodies are kept mounted so state persists when switching tabs */}
         <div className="flex-1 min-h-0 relative">
           {/* Tvořit */}
-          <div className={`absolute inset-0 flex flex-col ${tab === "create" ? "" : "hidden"}`}>
+          <div className={`absolute inset-0 flex flex-col ${activeMode === "create" ? "" : "hidden"}`}>
             <AdminAIChat
               grade={grade}
               subject={subject}
@@ -96,7 +121,7 @@ export function AdminAIPanel({
               topic={topic}
               skillId={skillId}
               skillDetail={skillDetail}
-              open={open && tab === "create"}
+              open={open && activeMode === "create"}
               onOpenChange={onOpenChange}
               initialPrompt={initialPrompt}
               onInitialPromptConsumed={onInitialPromptConsumed}
@@ -107,10 +132,10 @@ export function AdminAIPanel({
           </div>
 
           {/* Zkontrolovat */}
-          <div className={`absolute inset-0 flex flex-col ${tab === "check" ? "" : "hidden"}`}>
+          <div className={`absolute inset-0 flex flex-col ${activeMode === "check" ? "" : "hidden"}`}>
             {grade && (
               <ExerciseValidator
-                open={open && tab === "check"}
+                open={open && activeMode === "check"}
                 onOpenChange={onOpenChange}
                 grade={grade}
                 hideSheet
