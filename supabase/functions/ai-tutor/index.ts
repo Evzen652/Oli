@@ -553,7 +553,7 @@ serve(async (req) => {
   }
 
   try {
-    const { skill_label, practice_type, current_level, phase, child_input, batch_size, admin_prompt, grade_min } = await req.json();
+    const { skill_label, practice_type, current_level, phase, child_input, batch_size, admin_prompt, grade_min, subject, category, topic } = await req.json();
 
     if (!skill_label || !phase) {
       return new Response(
@@ -573,6 +573,41 @@ serve(async (req) => {
     const taskCount = batch_size || 5;
     const effectiveGradeMin = grade_min ?? 3;
 
+    // Per-předmět prompt extras z DB (curriculum_subjects.ai_prompt_extra)
+    let subjectPromptExtra = "";
+    if (subject) {
+      try {
+        const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+        const sb = createClient(
+          Deno.env.get("SUPABASE_URL")!,
+          Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? Deno.env.get("SUPABASE_ANON_KEY")!
+        );
+        // Najdi předmět podle slug NEBO name (frontend posílá kde co)
+        const { data } = await sb
+          .from("curriculum_subjects")
+          .select("ai_prompt_extra, name, slug")
+          .or(`slug.eq.${subject},name.ilike.${subject}`)
+          .limit(1)
+          .maybeSingle();
+        if (data?.ai_prompt_extra) {
+          subjectPromptExtra = `\n\nPRAVIDLA PRO PŘEDMĚT (${data.name}):\n${data.ai_prompt_extra}`;
+          console.log(`[ai-tutor] Loaded ai_prompt_extra pro ${data.slug ?? data.name} (${subjectPromptExtra.length} chars)`);
+        }
+      } catch (e) {
+        console.warn("[ai-tutor] Failed to load subject prompt extra:", e);
+      }
+    }
+
+    // Kontextový prefix do system promptu — pomáhá AI udržet zaměření
+    const contextSuffix = [
+      subject && `Předmět: ${subject}`,
+      category && `Okruh: ${category}`,
+      topic && `Téma: ${topic}`,
+    ].filter(Boolean).join(" › ");
+    const contextLine = contextSuffix ? `\n\nKONTEXT: ${contextSuffix}` : "";
+
+    const fullSystemPrompt = SYSTEM_PROMPT + contextLine + subjectPromptExtra;
+
     const userPrompt = isPracticeBatch
       ? buildPracticeBatchPrompt(skill_label, practice_type, current_level, taskCount, admin_prompt, effectiveGradeMin)
       : buildStandardPrompt(skill_label, practice_type, current_level, phase, child_input);
@@ -585,7 +620,7 @@ serve(async (req) => {
 
     const response = await aiCall({
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: fullSystemPrompt },
         { role: "user", content: userPrompt },
       ],
       tools,

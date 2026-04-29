@@ -695,6 +695,9 @@ export function ExerciseTab({
           batch_size: 5,
           grade_min: skill.gradeRange[0],
           admin_prompt: prompt || config.defaultPrompt,
+          subject: skill.subject,
+          category: skill.category,
+          topic: skill.topic,
         },
       });
       if (err) {
@@ -792,6 +795,9 @@ export function ExerciseTab({
           batch_size: 1,
           grade_min: skill.gradeRange[0] ?? 3,
           admin_prompt: config.reformulatePrompt(task),
+          subject: skill.subject,
+          category: skill.category,
+          topic: skill.topic,
         },
       });
       if (err) {
