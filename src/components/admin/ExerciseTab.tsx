@@ -306,6 +306,8 @@ function TaskCard({
 // ══════════════════════════════════════════════════════
 // Saved exercises list (from DB)
 // ══════════════════════════════════════════════════════
+type ExerciseStatus = "pending" | "approved" | "rejected";
+
 function SavedExercisesList({
   skillId, source, colorClass, label, onCountsChanged,
 }: {
@@ -317,6 +319,7 @@ function SavedExercisesList({
 }) {
   const [saved, setSaved] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<ExerciseStatus>("pending");
   const { toast } = useToast();
 
   const fetchSaved = async () => {
@@ -338,16 +341,48 @@ function SavedExercisesList({
     fetchSaved();
   }, [skillId, source]);
 
-  const handleDeactivate = async (id: string) => {
+  // Smart default: vyber tab, který má nějaké položky (preferuje pending)
+  useEffect(() => {
+    if (saved.length === 0) return;
+    const counts = {
+      pending: saved.filter((e) => e.status === "pending").length,
+      approved: saved.filter((e) => e.status === "approved").length,
+      rejected: saved.filter((e) => e.status === "rejected").length,
+    };
+    if (counts.pending > 0) setStatusFilter("pending");
+    else if (counts.approved > 0) setStatusFilter("approved");
+    else setStatusFilter("rejected");
+  }, [saved]);
+
+  const updateStatus = async (id: string, newStatus: ExerciseStatus) => {
+    const { error } = await (supabase as any)
+      .from("custom_exercises")
+      .update({ status: newStatus })
+      .eq("id", id);
+    if (error) {
+      toast({ description: `Nepodařilo se: ${error.message}`, variant: "destructive" });
+      return;
+    }
+    setSaved((prev) => prev.map((e) => (e.id === id ? { ...e, status: newStatus } : e)));
+    const labels: Record<ExerciseStatus, string> = {
+      approved: "Schváleno ✓ (žáci uvidí)",
+      rejected: "Odmítnuto",
+      pending: "Vráceno k revizi",
+    };
+    toast({ description: labels[newStatus] });
+    onCountsChanged?.();
+  };
+
+  const handleDeletePermanently = async (id: string) => {
     const { error } = await (supabase as any)
       .from("custom_exercises")
       .update({ is_active: false })
       .eq("id", id);
     if (error) {
-      toast({ description: "Nepodařilo se deaktivovat.", variant: "destructive" });
+      toast({ description: "Nepodařilo se smazat.", variant: "destructive" });
     } else {
       setSaved((prev) => prev.filter((e) => e.id !== id));
-      toast({ description: "Cvičení deaktivováno ✓" });
+      toast({ description: "Smazáno ✓" });
       onCountsChanged?.();
     }
   };
@@ -355,69 +390,169 @@ function SavedExercisesList({
   if (loading) return <p className="text-sm text-muted-foreground py-2">Načítám uložená cvičení…</p>;
   if (saved.length === 0) return null;
 
+  const counts = {
+    pending: saved.filter((e) => e.status === "pending").length,
+    approved: saved.filter((e) => e.status === "approved").length,
+    rejected: saved.filter((e) => e.status === "rejected").length,
+  };
+  const filtered = saved.filter((e) => e.status === statusFilter);
+
+  // Vizuální tone podle aktuálního statusu
+  const statusToneMap: Record<ExerciseStatus, string> = {
+    pending: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800",
+    approved: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800",
+    rejected: "bg-rose-50/60 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800",
+  };
+  const statusBadgeMap: Record<ExerciseStatus, { text: string; cls: string }> = {
+    pending:  { text: "⏳ Čeká na schválení", cls: "bg-amber-100 text-amber-800 border-amber-200" },
+    approved: { text: "✅ Schváleno",         cls: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+    rejected: { text: "❌ Odmítnuto",         cls: "bg-rose-100 text-rose-800 border-rose-200" },
+  };
+
   return (
     <div className="space-y-3 mt-6">
       <h5 className="text-sm font-semibold text-foreground">
         {label} ({saved.length})
       </h5>
-      {saved.map((ex) => (
-        <div key={ex.id} className={`rounded-lg border ${colorClass} p-4 space-y-2`}>
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <p className="font-medium text-foreground">{ex.question}</p>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <Badge className="bg-green-100 text-green-800 border-green-200 text-[10px]">
-                ✅ V databázi
-              </Badge>
-            </div>
-          </div>
-          {ex.options && ex.options.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {ex.options.map((opt: string, j: number) => (
-                <Badge
-                  key={j}
-                  variant={opt === ex.correct_answer ? "default" : "outline"}
-                  className={opt === ex.correct_answer ? "bg-green-100 text-green-800 border-green-200" : ""}
-                >
-                  {opt}
-                </Badge>
-              ))}
-            </div>
-          )}
-          {Array.isArray(ex.hints) && (ex.hints as string[]).length > 0 && (
-            <div className="text-sm space-y-1 text-muted-foreground italic">
-              {(ex.hints as string[]).map((h: string, i: number) => (
-                <p key={i}>💡 Nápověda {i + 1}: {h}</p>
-              ))}
-            </div>
-          )}
-          <div className="mt-2 p-3 bg-green-50 rounded-lg border border-green-100 space-y-1">
-            <p className="font-bold text-green-800 text-sm">Odpověď pro žáka:</p>
-            <p className="font-medium text-sm text-foreground">{ex.correct_answer}</p>
-            {Array.isArray(ex.solution_steps) && (ex.solution_steps as string[]).length > 0 && (
-              <div className="text-sm text-green-700 space-y-0.5 mt-1">
-                <p className="font-semibold">Postup:</p>
-                <ol className="list-decimal list-inside">
-                  {(ex.solution_steps as string[]).map((step: string, i: number) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </ol>
-              </div>
-            )}
-          </div>
-          <div className="flex justify-end">
+
+      {/* Status tabs */}
+      <div className="flex flex-wrap gap-1.5 border-b pb-2">
+        {(["pending", "approved", "rejected"] as ExerciseStatus[]).map((s) => {
+          const isActive = statusFilter === s;
+          const meta = statusBadgeMap[s];
+          return (
             <Button
+              key={s}
               size="sm"
-              variant="ghost"
-              onClick={() => handleDeactivate(ex.id)}
-              className="gap-1 text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+              variant={isActive ? "default" : "ghost"}
+              onClick={() => setStatusFilter(s)}
+              className="h-7 px-2.5 text-xs gap-1.5"
+              disabled={counts[s] === 0}
             >
-              <X className="h-3 w-3" /> Deaktivovat
+              <span>{meta.text.split(" ")[0]}</span>
+              <span>{s === "pending" ? "Čeká" : s === "approved" ? "Schváleno" : "Odmítnuto"}</span>
+              <Badge variant="outline" className="text-[10px] h-4 px-1 ml-0.5 font-mono">
+                {counts[s]}
+              </Badge>
             </Button>
-          </div>
-        </div>
-      ))}
+          );
+        })}
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="text-sm text-muted-foreground italic py-3 text-center">
+          {statusFilter === "pending" && "Žádné návrhy nečekají na schválení."}
+          {statusFilter === "approved" && "Zatím nic neschváleno."}
+          {statusFilter === "rejected" && "Žádné odmítnuté."}
+        </p>
+      ) : (
+        filtered.map((ex) => {
+          const status: ExerciseStatus = (ex.status as ExerciseStatus) ?? "pending";
+          const tone = statusToneMap[status];
+          const badge = statusBadgeMap[status];
+          return (
+            <div key={ex.id} className={`rounded-lg border ${tone} p-4 space-y-2`}>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="font-medium text-foreground">{ex.question}</p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Badge className={`${badge.cls} text-[10px] whitespace-nowrap`}>
+                    {badge.text}
+                  </Badge>
+                </div>
+              </div>
+              {ex.options && ex.options.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {ex.options.map((opt: string, j: number) => (
+                    <Badge
+                      key={j}
+                      variant={opt === ex.correct_answer ? "default" : "outline"}
+                      className={opt === ex.correct_answer ? "bg-emerald-100 text-emerald-800 border-emerald-200" : ""}
+                    >
+                      {opt}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              {Array.isArray(ex.hints) && (ex.hints as string[]).length > 0 && (
+                <div className="text-sm space-y-1 text-muted-foreground italic">
+                  {(ex.hints as string[]).map((h: string, i: number) => (
+                    <p key={i}>💡 Nápověda {i + 1}: {h}</p>
+                  ))}
+                </div>
+              )}
+              <div className="mt-2 p-3 bg-background/60 rounded-lg border border-border/50 space-y-1">
+                <p className="font-bold text-emerald-800 dark:text-emerald-400 text-sm">Odpověď pro žáka:</p>
+                <p className="font-medium text-sm text-foreground">{ex.correct_answer}</p>
+                {Array.isArray(ex.solution_steps) && (ex.solution_steps as string[]).length > 0 && (
+                  <div className="text-sm text-foreground/80 space-y-0.5 mt-1">
+                    <p className="font-semibold">Postup:</p>
+                    <ol className="list-decimal list-inside">
+                      {(ex.solution_steps as string[]).map((step: string, i: number) => (
+                        <li key={i}>{step}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+              </div>
+
+              {/* Akce podle aktuálního statusu */}
+              <div className="flex flex-wrap items-center justify-end gap-1.5 pt-1">
+                {status === "pending" && (
+                  <>
+                    <Button
+                      size="sm"
+                      variant="default"
+                      onClick={() => updateStatus(ex.id, "approved")}
+                      className="gap-1 text-xs h-7 bg-emerald-600 hover:bg-emerald-700 text-white"
+                    >
+                      <Check className="h-3 w-3" /> Schválit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => updateStatus(ex.id, "rejected")}
+                      className="gap-1 text-xs h-7"
+                    >
+                      <X className="h-3 w-3" /> Odmítnout
+                    </Button>
+                  </>
+                )}
+                {status === "approved" && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => updateStatus(ex.id, "pending")}
+                    className="gap-1 text-xs h-7 text-amber-700 hover:text-amber-800 hover:bg-amber-100"
+                  >
+                    <RotateCw className="h-3 w-3" /> Vrátit k revizi
+                  </Button>
+                )}
+                {status === "rejected" && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => updateStatus(ex.id, "pending")}
+                    className="gap-1 text-xs h-7 text-amber-700 hover:text-amber-800 hover:bg-amber-100"
+                  >
+                    <RotateCw className="h-3 w-3" /> Vrátit k revizi
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => handleDeletePermanently(ex.id)}
+                  className="gap-1 text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                  title="Trvale smazat (neoznačit jen jako odmítnuté)"
+                >
+                  <Trash2 className="h-3 w-3" /> Smazat
+                </Button>
+              </div>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }
@@ -585,7 +720,7 @@ export function ExerciseTab({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
-      // Pozn: created_by není v aktuálním DB schématu — vynecháno
+      // status: 'pending' — admin musí explicitně schválit, než to žáci uvidí
       const { error: err } = await (supabase as any).from("custom_exercises").insert({
         skill_id: skill.id,
         question: task.question,
@@ -594,10 +729,11 @@ export function ExerciseTab({
         solution_steps: task.solution_steps || [],
         options: task.options || [],
         source: config.source,
+        status: "pending",
       });
       if (err) throw err;
       setSavedIndices((prev) => new Set([...prev, index]));
-      toast({ description: "Cvičení uloženo ✓" });
+      toast({ description: "Uloženo do návrhů — schvalte v sekci níže ✓" });
       onCountsChanged?.();
     } catch (e: any) {
       toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });
@@ -619,11 +755,12 @@ export function ExerciseTab({
         solution_steps: task.solution_steps || [],
         options: task.options || [],
         source: config.source,
+        status: "pending" as const,
       }));
       const { error: err } = await (supabase as any).from("custom_exercises").insert(rows);
       if (err) throw err;
       setSavedIndices(new Set(aiTasks.map((_, i) => i)));
-      toast({ description: `Uloženo ${aiTasks.length} ${config.shortLabel} cvičení ✓` });
+      toast({ description: `Uloženo ${aiTasks.length} ${config.shortLabel} návrhů — schvalte níže ✓` });
       onCountsChanged?.();
     } catch (e: any) {
       toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });

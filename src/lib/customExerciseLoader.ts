@@ -11,11 +11,14 @@ export async function loadCustomExercises(
   skillId: string,
   options?: { source?: "simple" | "advanced" | "expert"; inputType?: InputType }
 ): Promise<PracticeTask[]> {
+  // Žák vidí jen schválené úlohy (status='approved'). Pending/rejected
+  // viditelné pouze v admin UI.
   let query = (supabase as any)
     .from("custom_exercises")
     .select("*")
     .eq("skill_id", skillId)
-    .eq("is_active", true);
+    .eq("is_active", true)
+    .eq("status", "approved");
 
   if (options?.source) {
     query = query.eq("source", options.source);
@@ -47,11 +50,13 @@ export async function loadCustomExercises(
  * Check if custom exercises exist for a skill.
  */
 export async function hasCustomExercises(skillId: string): Promise<boolean> {
+  // Stejně jako loadCustomExercises — počítáme jen schválené.
   const { count, error } = await (supabase as any)
     .from("custom_exercises")
     .select("id", { count: "exact", head: true })
     .eq("skill_id", skillId)
-    .eq("is_active", true);
+    .eq("is_active", true)
+    .eq("status", "approved");
 
   return !error && (count ?? 0) > 0;
 }

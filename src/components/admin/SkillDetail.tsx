@@ -32,10 +32,15 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
   const { toast } = useToast();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [exerciseCounts, setExerciseCounts] = useState<{ simple: number; advanced: number; expert: number }>({
-    simple: 0,
-    advanced: 0,
-    expert: 0,
+  // Per-level rozpis stavů (approved = žáci vidí, pending = čeká na admina)
+  const [exerciseCounts, setExerciseCounts] = useState<{
+    simple: { approved: number; pending: number };
+    advanced: { approved: number; pending: number };
+    expert: { approved: number; pending: number };
+  }>({
+    simple: { approved: 0, pending: 0 },
+    advanced: { approved: 0, pending: 0 },
+    expert: { approved: 0, pending: 0 },
   });
   // Trigger pro refetch counts po save/delete v ExerciseTab
   const [countsRefresh, setCountsRefresh] = useState(0);
@@ -55,15 +60,22 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
     (async () => {
       const { data } = await (supabase as any)
         .from("custom_exercises")
-        .select("source")
+        .select("source, status")
         .eq("skill_id", skill.id)
         .eq("is_active", true);
       if (data) {
-        const counts = { simple: 0, advanced: 0, expert: 0 };
+        const counts = {
+          simple:   { approved: 0, pending: 0 },
+          advanced: { approved: 0, pending: 0 },
+          expert:   { approved: 0, pending: 0 },
+        };
         for (const row of data) {
-          if (row.source === "simple") counts.simple++;
-          else if (row.source === "advanced" || row.source === "ai") counts.advanced++;
-          else if (row.source === "expert") counts.expert++;
+          const status = (row.status as "pending" | "approved" | "rejected") ?? "pending";
+          if (status === "rejected") continue;
+          const bucket: "approved" | "pending" = status;
+          if (row.source === "simple") counts.simple[bucket]++;
+          else if (row.source === "advanced" || row.source === "ai") counts.advanced[bucket]++;
+          else if (row.source === "expert") counts.expert[bucket]++;
         }
         setExerciseCounts(counts);
       }
@@ -422,34 +434,66 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
               className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
               title={
                 templateSamplesCount > 0
-                  ? `${templateSamplesCount} algoritmických vzorků (generované za běhu) + ${exerciseCounts.simple} uložených AI úloh`
-                  : `${exerciseCounts.simple} uložených úloh`
+                  ? `${templateSamplesCount} algoritmických vzorků + ${exerciseCounts.simple.approved} schválených AI úloh${
+                      exerciseCounts.simple.pending > 0 ? ` (${exerciseCounts.simple.pending} čeká na schválení)` : ""
+                    }`
+                  : `${exerciseCounts.simple.approved} schválených úloh${
+                      exerciseCounts.simple.pending > 0 ? ` (${exerciseCounts.simple.pending} čeká)` : ""
+                    }`
               }
             >
               📗 Základní (Level I){" "}
               <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-2 py-0.5 text-[10px] font-semibold tabular-nums min-w-[20px]">
-                {templateSamplesCount > 0
-                  ? `${templateSamplesCount + exerciseCounts.simple}`
-                  : exerciseCounts.simple}
+                {templateSamplesCount + exerciseCounts.simple.approved}
               </span>
+              {exerciseCounts.simple.pending > 0 && (
+                <span
+                  className="inline-flex items-center justify-center rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200 px-1.5 py-0.5 text-[10px] font-bold tabular-nums"
+                  title={`${exerciseCounts.simple.pending} návrhů čeká na schválení`}
+                >
+                  +{exerciseCounts.simple.pending}
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="advanced"
               className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
+              title={`${exerciseCounts.advanced.approved} schválených${
+                exerciseCounts.advanced.pending > 0 ? ` (${exerciseCounts.advanced.pending} čeká)` : ""
+              }`}
             >
               📘 Pokročilá (Level II){" "}
               <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
-                {exerciseCounts.advanced}
+                {exerciseCounts.advanced.approved}
               </span>
+              {exerciseCounts.advanced.pending > 0 && (
+                <span
+                  className="inline-flex items-center justify-center rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200 px-1.5 py-0.5 text-[10px] font-bold tabular-nums"
+                  title={`${exerciseCounts.advanced.pending} návrhů čeká na schválení`}
+                >
+                  +{exerciseCounts.advanced.pending}
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="expert"
               className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
+              title={`${exerciseCounts.expert.approved} schválených${
+                exerciseCounts.expert.pending > 0 ? ` (${exerciseCounts.expert.pending} čeká)` : ""
+              }`}
             >
               📕 Vysoká obtížnost (Level III){" "}
               <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
-                {exerciseCounts.expert}
+                {exerciseCounts.expert.approved}
               </span>
+              {exerciseCounts.expert.pending > 0 && (
+                <span
+                  className="inline-flex items-center justify-center rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200 px-1.5 py-0.5 text-[10px] font-bold tabular-nums"
+                  title={`${exerciseCounts.expert.pending} návrhů čeká na schválení`}
+                >
+                  +{exerciseCounts.expert.pending}
+                </span>
+              )}
             </TabsTrigger>
           </TabsList>
 
