@@ -615,20 +615,21 @@ serve(async (req) => {
         const formatFiltered = parsed.tasks.filter((t: any) => validateTaskFormat(t, practice_type));
         console.log(`[Layer 1 — Format] ${parsed.tasks.length} → ${formatFiltered.length} tasks (practice_type=${practice_type})`);
 
-        // LAYER 2 — Věková přiměřenost (AI grade-appropriateness check, Gemini)
+        // LAYER 2 — Věková přiměřenost (AI grade-appropriateness check)
+        // apiKey parametr je legacy/unused — aiCall si secrets čte sám
         const { tasks: gradeValidated, validation } = await validateTasksForGrade(
           formatFiltered,
           effectiveGradeMin,
-          LOVABLE_API_KEY
+          ""
         );
         console.log(`[Layer 2 — Grade] validated ${gradeValidated.length} tasks for ${effectiveGradeMin}. grade`);
 
-        // LAYER 3 — Matematická/jazyková správnost (2nd opinion AI check, GPT)
-        // Druhý model nezávisle ověří, že stated answer je skutečně správná.
+        // LAYER 3 — Matematická/jazyková správnost (2nd opinion AI check)
+        // Druhý nezávislý průchod stejného providera — ověří, že stated answer je správná.
         const { tasks: correctnessChecked, rejected } = await validateTasksCorrectness(
           gradeValidated,
           effectiveGradeMin,
-          LOVABLE_API_KEY
+          ""
         );
         console.log(`[Layer 3 — Correctness] rejected ${rejected.length}/${correctnessChecked.length} tasks as incorrect`);
 
