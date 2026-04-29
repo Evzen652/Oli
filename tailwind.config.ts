@@ -14,8 +14,14 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Sora", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Plus Jakarta Sans", "Sora", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif"],
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        "soft-1": "0 1px 2px rgba(15,23,42,0.04)",
+        "soft-2": "0 1px 2px rgba(15,23,42,0.04), 0 4px 16px rgba(15,23,42,0.05)",
+        "soft-3": "0 2px 4px rgba(15,23,42,0.05), 0 8px 24px rgba(15,23,42,0.06)",
       },
       colors: {
         border: "hsl(var(--border))",

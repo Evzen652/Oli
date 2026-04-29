@@ -15,7 +15,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Bot, Search } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
@@ -205,87 +205,94 @@ export default function AdminDashboard() {
 
         {/* ═══════ Main content ═══════ */}
         <div className="flex-1 min-w-0 space-y-4">
-          {/* Grade filter (kompaktní, bez AI button — přesunuto na FAB) */}
-          <div className="flex items-center gap-2 flex-wrap">
+          {/* Top bar — Notion vibe: Ročník + AI akce vpravo */}
+          <div className="flex items-center gap-3 flex-wrap">
             {/* Sidebar toggle */}
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 hidden lg:flex"
+              className="h-8 w-8 hidden lg:flex rounded-lg text-muted-foreground hover:text-foreground"
               onClick={() => setSidebarOpen(!sidebarOpen)}
               title={sidebarOpen ? "Skrýt sidebar" : "Zobrazit sidebar"}
             >
               {sidebarOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
             </Button>
-            <span className="text-sm text-muted-foreground font-medium">
-              Filtr ročníku:
-            </span>
-            {grades.map((g) => (
-              <Button
-                key={g}
-                size="sm"
-                variant={gradeFilter === g ? "default" : "outline"}
-                className="h-7 w-7 p-0 text-xs"
-                onClick={() => handleGradeChange(gradeFilter === g ? null : g)}
-                title={gradeFilter === g ? "Klikněte znovu pro zrušení filtru" : `Filtrovat na ${g}. ročník`}
-              >
-                {g}
-              </Button>
-            ))}
-            {gradeFilter !== null && (
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-7 px-2 text-xs gap-1 text-muted-foreground"
-                onClick={() => handleGradeChange(null)}
-                title="Zrušit filtr — zobrazit všechny ročníky"
-              >
-                ✕ Zrušit filtr
-              </Button>
-            )}
+
+            {/* Ročník selector pill — výrazný, Notion-vibe pill grupa */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-card border border-border px-2 py-1 shadow-soft-1">
+              <span className="text-xs font-medium text-muted-foreground pl-2">Ročník</span>
+              <div className="flex items-center gap-0.5">
+                {grades.map((g) => (
+                  <Button
+                    key={g}
+                    size="sm"
+                    variant="ghost"
+                    className={`h-7 w-7 p-0 text-xs rounded-full transition-colors ${
+                      gradeFilter === g
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "text-foreground/70 hover:bg-accent hover:text-foreground"
+                    }`}
+                    onClick={() => handleGradeChange(gradeFilter === g ? null : g)}
+                    title={gradeFilter === g ? "Klikněte znovu pro zrušení filtru" : `Filtrovat na ${g}. ročník`}
+                  >
+                    {g}
+                  </Button>
+                ))}
+              </div>
+              {gradeFilter !== null && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 px-2 text-[11px] gap-1 text-muted-foreground rounded-full hover:text-foreground"
+                  onClick={() => handleGradeChange(null)}
+                  title="Zrušit filtr"
+                >
+                  ✕
+                </Button>
+              )}
+            </div>
+
             {gradeFilter === null && (
-              <span className="text-xs text-muted-foreground italic">
-                (zobrazují se všechny ročníky)
+              <span className="text-xs text-muted-foreground italic hidden md:inline">
+                všechny ročníky
               </span>
             )}
 
-            {/* Vertikální oddělovač */}
-            <div className="h-7 w-px bg-border mx-1 hidden sm:block" />
-
-            {/* AI tlačítka — vždy viditelná, hlavní vstupní body do AI */}
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-7 px-3 gap-1.5 text-xs font-medium border-primary/40 text-primary hover:bg-primary/10"
-              onClick={() => {
-                setAiPanelTab("create");
-                setAiPanelLocked("create");
-                setAiChatOpen(true);
-              }}
-              title="Otevřít AI chat pro tvorbu nebo úpravu kurikula. Můžete se ptát, navrhovat témata, vylepšovat nápovědy."
-            >
-              <Bot className="h-3.5 w-3.5" />
-              AI asistent
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-7 px-3 gap-1.5 text-xs font-medium border-amber-400/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30"
-              onClick={() => {
-                setAiPanelTab("check");
-                setAiPanelLocked("check");
-                setAiChatOpen(true);
-              }}
-              title={
-                !gradeFilter
-                  ? "Pro spuštění hromadné AI kontroly nejdřív vyberte ročník"
-                  : "Hromadná AI kontrola: ověří srozumitelnost zadání, kvalitu nápověd a správnost odpovědí napříč všemi cvičeními ve vybraném ročníku."
-              }
-              disabled={!gradeFilter}
-            >
-              <Search className="h-3.5 w-3.5" />
-              AI kontrola{!gradeFilter && " (vyberte ročník)"}
-            </Button>
+            {/* AI akce — vpravo, prominent indigo + secondary */}
+            <div className="flex items-center gap-2 ml-auto">
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
+                onClick={() => {
+                  setAiPanelTab("check");
+                  setAiPanelLocked("check");
+                  setAiChatOpen(true);
+                }}
+                title={
+                  !gradeFilter
+                    ? "Pro spuštění hromadné AI kontroly nejdřív vyberte ročník"
+                    : "Hromadná AI kontrola: ověří srozumitelnost zadání, kvalitu nápověd a správnost odpovědí."
+                }
+                disabled={!gradeFilter}
+              >
+                <Search className="h-4 w-4 text-foreground/70" />
+                AI kontrola
+              </Button>
+              <Button
+                size="sm"
+                className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft-2"
+                onClick={() => {
+                  setAiPanelTab("create");
+                  setAiPanelLocked("create");
+                  setAiChatOpen(true);
+                }}
+                title="Otevřít AI chat pro tvorbu nebo úpravu kurikula."
+              >
+                <Sparkles className="h-4 w-4" />
+                AI pomocník
+              </Button>
+            </div>
           </div>
 
           {/* Sticky breadcrumb — kde v kurikulu jsem */}
