@@ -153,33 +153,33 @@ export function AdminCurriculumSidebar({
   const totalSkills = topics.length;
 
   return (
-    <div className="h-full flex flex-col bg-muted/30 border-r">
+    <div className="h-full flex flex-col bg-muted/30 border-r rounded-lg">
       {/* Header */}
-      <div className="p-3 border-b bg-background/50">
+      <div className="p-4 border-b bg-background/50">
         <button
           onClick={handleHomeClick}
-          className="w-full flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent transition-colors text-sm font-semibold"
+          className="w-full flex items-center gap-2 rounded-md px-2 py-2 hover:bg-accent transition-colors text-base font-semibold"
         >
-          <BookOpen className="h-4 w-4 text-primary" />
+          <BookOpen className="h-5 w-5 text-primary" />
           <span>Kurikulum</span>
-          <Badge variant="secondary" className="ml-auto text-[10px]">
+          <Badge variant="secondary" className="ml-auto text-[11px]">
             {totalSubjects}·{totalSkills}
           </Badge>
         </button>
-        <div className="relative mt-2">
-          <Search className="absolute left-2 top-2 h-3.5 w-3.5 text-muted-foreground" />
+        <div className="relative mt-3">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Hledat v kurikulu…"
-            className="pl-7 h-7 text-xs"
+            className="pl-8 h-9 text-sm"
           />
         </div>
       </div>
 
       {/* Tree */}
       <ScrollArea className="flex-1">
-        <div className="py-1">
+        <div className="py-2 px-1">
           {subjects.length === 0 && (
             <div className="px-3 py-6 text-center">
               <p className="text-xs text-muted-foreground">
@@ -222,7 +222,7 @@ export function AdminCurriculumSidebar({
                 {/* Subject (Předmět) — největší font, modré pozadí, výrazný */}
                 <button
                   onClick={() => handleSubjectClick(subject)}
-                  className={`w-full flex items-start gap-2 px-2.5 py-2.5 text-base rounded-lg transition-colors border-l-4 ${
+                  className={`w-full flex items-start gap-2.5 px-3 py-3 text-base rounded-lg transition-colors border-l-4 ${
                     isSubjectActive && !selectedCategory
                       ? "bg-blue-100 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 font-bold border-blue-600 shadow-sm"
                       : "bg-blue-50/60 dark:bg-blue-950/20 hover:bg-blue-100/80 dark:hover:bg-blue-950/40 text-blue-800 dark:text-blue-300 font-bold border-transparent"
@@ -255,7 +255,7 @@ export function AdminCurriculumSidebar({
                           {/* Category (Okruh) — amber barva, výrazný level chip */}
                           <button
                             onClick={() => handleCategoryClick(subject, category)}
-                            className={`w-full flex items-start gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
+                            className={`w-full flex items-start gap-2 pl-2.5 pr-2 py-2 text-sm rounded-md transition-colors border-l-4 ${
                               isCatActive && !selectedTopic
                                 ? "bg-amber-100 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold border-amber-600 shadow-sm"
                                 : "hover:bg-amber-50 dark:hover:bg-amber-950/20 text-amber-800/90 dark:text-amber-400/90 font-semibold border-transparent"
@@ -288,7 +288,7 @@ export function AdminCurriculumSidebar({
                                     {/* Topic (Téma) — sky barva, level chip */}
                                     <button
                                       onClick={() => handleTopicClick(subject, category, topic)}
-                                      className={`w-full flex items-start gap-1.5 pl-2 pr-2 py-1.5 text-sm rounded-md transition-colors border-l-4 ${
+                                      className={`w-full flex items-start gap-2 pl-2.5 pr-2 py-2 text-sm rounded-md transition-colors border-l-4 ${
                                         isTopicActive && !selectedSkill
                                           ? "bg-sky-100 dark:bg-sky-950/40 text-sky-900 dark:text-sky-200 font-bold border-sky-600 shadow-sm"
                                           : "hover:bg-sky-50 dark:hover:bg-sky-950/20 text-sky-800/85 dark:text-sky-400/85 font-medium border-transparent"
@@ -318,7 +318,7 @@ export function AdminCurriculumSidebar({
                                             <button
                                               key={skill.id}
                                               onClick={() => handleSkillClick(skill)}
-                                              className={`w-full flex items-start gap-1.5 pl-2 pr-2 py-1.5 text-xs rounded-md transition-colors border-l-4 ${
+                                              className={`w-full flex items-start gap-2 pl-2.5 pr-2 py-2 text-xs rounded-md transition-colors border-l-4 ${
                                                 isSkillActive
                                                   ? "bg-emerald-600 dark:bg-emerald-700 text-white font-bold border-emerald-800 dark:border-emerald-500 shadow-sm"
                                                   : "hover:bg-emerald-50 dark:hover:bg-emerald-950/20 text-emerald-800/80 dark:text-emerald-400/80 border-transparent"

@@ -179,10 +179,10 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout breadcrumbs={[{ label: "Správa obsahu" }]}>
-      <div className="flex gap-4 -mx-4 sm:-mx-6" style={{ minHeight: "calc(100vh - 200px)" }}>
+      <div className="flex gap-6 lg:gap-8" style={{ minHeight: "calc(100vh - 200px)" }}>
         {/* ═══════ Sidebar (curriculum tree) ═══════ */}
         {sidebarOpen && (
-          <aside className="w-64 shrink-0 hidden lg:block">
+          <aside className="w-72 xl:w-80 shrink-0 hidden lg:block">
             <div className="sticky top-4 h-[calc(100vh-220px)]">
               <AdminCurriculumSidebar
                 topics={topics}
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
         )}
 
         {/* ═══════ Main content ═══════ */}
-        <div className="flex-1 min-w-0 space-y-4 px-4 sm:px-6">
+        <div className="flex-1 min-w-0 space-y-4">
           {/* Grade filter (kompaktní, bez AI button — přesunuto na FAB) */}
           <div className="flex items-center gap-2 flex-wrap">
             {/* Sidebar toggle */}

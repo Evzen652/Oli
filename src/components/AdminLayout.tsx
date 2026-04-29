@@ -39,8 +39,8 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b px-4 py-3">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
+      <header className="border-b px-4 sm:px-6 lg:px-8 py-3">
+        <div className="mx-auto flex max-w-screen-2xl items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
             <h1 className="text-xl font-semibold text-foreground">{t("admin.title")}</h1>
@@ -73,8 +73,8 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
       </header>
 
       {/* Breadcrumbs */}
-      <div className="border-b bg-muted/30 px-4 py-2">
-        <nav className="mx-auto flex max-w-4xl items-center gap-1 text-sm">
+      <div className="border-b bg-muted/30 px-4 sm:px-6 lg:px-8 py-2">
+        <nav className="mx-auto flex max-w-screen-2xl items-center gap-1 text-sm">
           <Button
             variant="ghost"
             size="sm"
@@ -103,7 +103,7 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
         </nav>
       </div>
 
-      <main className="mx-auto max-w-4xl p-4 space-y-4">
+      <main className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-8 space-y-4">
         {children}
       </main>
     </div>
