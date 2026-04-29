@@ -309,13 +309,15 @@ function TaskCard({
 type ExerciseStatus = "pending" | "approved" | "rejected";
 
 function SavedExercisesList({
-  skillId, source, colorClass, label, onCountsChanged,
+  skillId, source, colorClass, label, onCountsChanged, refreshTrigger,
 }: {
   skillId: string;
   source: ExerciseVariant;
   colorClass: string;
   label: string;
   onCountsChanged?: () => void;
+  /** Externí trigger pro refetch po save/delete/status změně v ExerciseTab */
+  refreshTrigger?: number;
 }) {
   const [saved, setSaved] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -339,7 +341,7 @@ function SavedExercisesList({
 
   useEffect(() => {
     fetchSaved();
-  }, [skillId, source]);
+  }, [skillId, source, refreshTrigger]);
 
   // Smart default: vyber tab, který má nějaké položky (preferuje pending)
   useEffect(() => {
@@ -655,6 +657,9 @@ export function ExerciseTab({
   const [saving, setSaving] = useState(false);
   const [savedIndices, setSavedIndices] = useState<Set<number>>(new Set());
   const [reformulatingIndex, setReformulatingIndex] = useState<number | null>(null);
+  // Trigger pro re-fetch SavedExercisesList po save/delete/status change
+  const [savedListRefresh, setSavedListRefresh] = useState(0);
+  const refreshSavedList = () => setSavedListRefresh((n) => n + 1);
 
   // Code-generator samples (simple only)
   const [genTasks, setGenTasks] = useState<PracticeTask[]>([]);
@@ -738,6 +743,7 @@ export function ExerciseTab({
       setSavedIndices((prev) => new Set([...prev, index]));
       toast({ description: "Uloženo do návrhů — schvalte v sekci níže ✓" });
       onCountsChanged?.();
+      refreshSavedList();
     } catch (e: any) {
       toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });
     }
@@ -765,6 +771,7 @@ export function ExerciseTab({
       setSavedIndices(new Set(aiTasks.map((_, i) => i)));
       toast({ description: `Uloženo ${aiTasks.length} ${config.shortLabel} návrhů — schvalte níže ✓` });
       onCountsChanged?.();
+      refreshSavedList();
     } catch (e: any) {
       toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });
     }
@@ -928,6 +935,7 @@ export function ExerciseTab({
         colorClass={config.color.saved}
         label={`${config.emoji} Uložená ${config.shortLabel} cvičení (${config.levelLabel.match(/\(([^)]+)\)/)?.[1] ?? ""})`}
         onCountsChanged={onCountsChanged}
+        refreshTrigger={savedListRefresh}
       />
     </div>
   );
