@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronRight, ChevronDown, Search, BookOpen, FolderTree, FileText, Target } from "lucide-react";
+import { ChevronRight, ChevronDown, Search, BookOpen, FolderTree, FileText, Target, RotateCcw } from "lucide-react";
 // Target je použitý jen v legendě nahoře — proto zůstává
 import type { TopicMetadata } from "@/lib/types";
 
@@ -151,19 +151,27 @@ export function AdminCurriculumSidebar({
   // Stats
   const totalSubjects = subjects.length;
   const totalSkills = topics.length;
+  const hasAnySelection = !!(selectedSubject || selectedCategory || selectedTopic || selectedSkill);
 
   return (
     <div className="h-full flex flex-col bg-muted/30 border-r rounded-lg">
       {/* Header */}
       <div className="p-4 border-b bg-background/50">
-        <button
-          onClick={handleHomeClick}
-          className="w-full flex items-center gap-2 rounded-md px-2 py-2 hover:bg-accent transition-colors text-base font-semibold"
-          title={`${totalSubjects} ${totalSubjects === 1 ? "předmět" : totalSubjects < 5 ? "předměty" : "předmětů"} · ${totalSkills} ${totalSkills === 1 ? "podtéma" : totalSkills < 5 ? "podtémata" : "podtémat"}`}
-        >
+        {/* Sidebar header: nadpis + (volitelně) reset */}
+        <div className="flex items-center gap-2 px-2 py-1">
           <BookOpen className="h-5 w-5 text-primary" />
-          <span>Kurikulum</span>
-        </button>
+          <span className="text-base font-semibold">Kurikulum</span>
+          {hasAnySelection && (
+            <button
+              onClick={handleHomeClick}
+              className="ml-auto inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
+              title="Zrušit výběr a vrátit se na úvod (Vyber předmět)"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span>Začátek</span>
+            </button>
+          )}
+        </div>
         <p className="px-2 mt-1 text-xs text-muted-foreground">
           {totalSubjects} {totalSubjects === 1 ? "předmět" : totalSubjects < 5 ? "předměty" : "předmětů"}
           {" · "}
