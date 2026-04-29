@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -66,6 +66,37 @@ export function AdminCurriculumSidebar({
         : [],
     ),
   );
+
+  // Sync expanded sets when parent selection changes externally
+  // (kliknutí na kartu v pravém panelu → automaticky rozbal levý sidebar)
+  useEffect(() => {
+    if (selectedSubject) {
+      setExpandedSubjects((prev) => {
+        if (prev.has(selectedSubject)) return prev;
+        const next = new Set(prev);
+        next.add(selectedSubject);
+        return next;
+      });
+    }
+    if (selectedSubject && selectedCategory) {
+      const key = `${selectedSubject}::${selectedCategory}`;
+      setExpandedCategories((prev) => {
+        if (prev.has(key)) return prev;
+        const next = new Set(prev);
+        next.add(key);
+        return next;
+      });
+    }
+    if (selectedSubject && selectedCategory && selectedTopic) {
+      const key = `${selectedSubject}::${selectedCategory}::${selectedTopic}`;
+      setExpandedTopics((prev) => {
+        if (prev.has(key)) return prev;
+        const next = new Set(prev);
+        next.add(key);
+        return next;
+      });
+    }
+  }, [selectedSubject, selectedCategory, selectedTopic]);
 
   // Build tree structure
   const tree = useMemo(() => {
