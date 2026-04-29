@@ -15,9 +15,8 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Bot, Search } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
-import { AdminAIActions } from "@/components/AdminAIActions";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
 import { SkillDetail } from "@/components/admin/SkillDetail";
@@ -54,6 +53,7 @@ export default function AdminDashboard() {
   const [proposalExplanation, setProposalExplanation] = useState("");
   const [aiChatOpen, setAiChatOpen] = useState(false);
   const [aiInitialPrompt, setAiInitialPrompt] = useState<string | null>(null);
+  const [aiPanelTab, setAiPanelTab] = useState<"create" | "check">("create");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Derived browse level
@@ -245,6 +245,38 @@ export default function AdminDashboard() {
                 (zobrazují se všechny ročníky)
               </span>
             )}
+
+            {/* Vertikální oddělovač */}
+            <div className="h-7 w-px bg-border mx-1 hidden sm:block" />
+
+            {/* AI tlačítka — vždy viditelná, hlavní vstupní body do AI */}
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 px-3 gap-1.5 text-xs font-medium border-primary/40 text-primary hover:bg-primary/10"
+              onClick={() => {
+                setAiPanelTab("create");
+                setAiChatOpen(true);
+              }}
+              title="Otevřít AI asistenta — chat pro tvorbu / úpravu kurikula"
+            >
+              <Bot className="h-3.5 w-3.5" />
+              AI asistent
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 px-3 gap-1.5 text-xs font-medium border-amber-400/60 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30"
+              onClick={() => {
+                setAiPanelTab("check");
+                setAiChatOpen(true);
+              }}
+              title="Hromadná AI kontrola srozumitelnosti, nápověd a správnosti odpovědí"
+              disabled={!gradeFilter}
+            >
+              <Search className="h-3.5 w-3.5" />
+              AI kontrola{!gradeFilter && " (vyberte ročník)"}
+            </Button>
           </div>
 
           {/* Sticky breadcrumb — kde v kurikulu jsem */}
@@ -280,20 +312,9 @@ export default function AdminDashboard() {
             <p className="text-sm text-muted-foreground">{subtitle}</p>
           </div>
 
-          {/* Contextual AI Actions */}
-          <AdminAIActions
-            level={level}
-            gradeFilter={gradeFilter}
-            selectedSubject={selectedSubject}
-            selectedCategory={selectedCategory}
-            selectedTopic={selectedTopic}
-            selectedSkill={selectedSkill}
-            subjectCount={subjects.length}
-            categoryCount={categories.length}
-            topicCount={topicGroups.length}
-            skillCount={subtopics.length}
-            onAction={handleAIAction}
-          />
+          {/* AdminAIActions panel byl matoucí — odstraněno.
+              AI funkce jsou přístupné přes 2 tlačítka v top baru
+              (AI asistent / AI kontrola) a FAB vpravo dole. */}
 
           {/* SUBJECTS */}
           {level === "subject" && (
@@ -587,6 +608,7 @@ export default function AdminDashboard() {
         }
         open={aiChatOpen}
         onOpenChange={setAiChatOpen}
+        defaultTab={aiPanelTab}
         initialPrompt={aiInitialPrompt}
         onInitialPromptConsumed={() => setAiInitialPrompt(null)}
         onProposalsReady={(p, e) => {
