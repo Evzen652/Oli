@@ -211,6 +211,61 @@ PRAVIDLA PRO TYP ODPOVĚDI "fill_blank":
 PRAVIDLA PRO TYP ODPOVĚDI "drag_order":
 - Musí obsahovat pole items se správným pořadím prvků.
 - correct_answer = prvky ve správném pořadí oddělené čárkou.`;
+    case "numeric_range":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "numeric_range" (číslo s tolerancí):
+- correct_answer formát:
+  • "5.5" — exact (s tolerancí 0.001)
+  • "5.5±0.1" — explicitní tolerance ±0.1
+  • "5.5..6.5" — rozsah (inclusive od 5.5 do 6.5)
+- Vhodné pro: fyziku (rychlost, hmotnost), chemii (koncentrace),
+  geografii (vzdálenosti, výšky), kde drobná odchylka je OK.
+- Příklad: "Jak vysoká je Sněžka?" → correct_answer: "1602..1610"`;
+    case "short_answer":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "short_answer" (krátká volná odpověď):
+- correct_answer = jediné slovo nebo krátká fráze (max 5 slov).
+- Pokud existuje VÍCE přijatelných variant, oddělit znakem |
+  Např. "polský|polák|polsko" — žák může napsat libovolnou.
+- Validátor toleruje překlepy do 2 znaků (typo tolerance).
+- Vhodné pro: humanitní předměty (kdo, kde, kdy), terminologii.
+- ZAKÁZÁNO: dlouhé volné odpovědi (víc než 5 slov), eseje.`;
+    case "table_fill":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "table_fill" (doplnit tabulku):
+- Otázka popisuje tabulku se sloupci a žák doplňuje prázdné buňky.
+- correct_answer = obsah buněk oddělený znakem |, v pořadí zleva doprava,
+  shora dolů. Např. pro tabulku 2×2 s prázdnou pravou stranou:
+  correct_answer = "12|18" (pokud horní pravá je 12, dolní pravá 18)
+- options pole obsahuje pojmenování řádků a sloupců nebo nápovědné údaje.
+- Vhodné pro: násobilkovou tabulku, převody jednotek, kalendáře.`;
+    case "sequence_step":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "sequence_step" (seřadit kroky):
+- options = pole 3-6 kroků v náhodném pořadí.
+- correct_answer = ty samé kroky ve SPRÁVNÉM pořadí, oddělené znakem |.
+- Vhodné pro: chemické experimenty, biologické procesy (mitóza),
+  historické události, postupy řešení úloh.
+- Příklad: chemická reakce — kroky "Zahřát|Smíchat|Filtrovat|Ochladit" →
+  správné pořadí "Smíchat|Zahřát|Ochladit|Filtrovat"`;
+    case "multi_select":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "multi_select":
+- options = 4-6 možností, ž žák zaškrtne všechny správné.
+- correct_answer = správné možnosti oddělené čárkou (pořadí nezáleží).
+- Min 2 a max polovina options jsou správné (ne 1 ne všechny).`;
+    case "match_pairs":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "match_pairs":
+- options obsahuje 2 sloupce: levý (otázky) a pravý (odpovědi) oddělené "::".
+- correct_answer = páry "levý=>pravý" oddělené čárkou.
+- Vhodné pro: spojení slov a překladů, definice, příčina-následek.`;
+    case "categorize":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "categorize":
+- options = 4-8 položek na zařazení do 2-3 kategorií.
+- correct_answer = "kategorie1: pol1, pol2 | kategorie2: pol3, pol4"
+- Vhodné pro: domácí vs. divoká zvířata, sudá vs. lichá čísla.`;
     default:
       return `
 PRAVIDLA PRO TYP ODPOVĚDI "${practice_type}":

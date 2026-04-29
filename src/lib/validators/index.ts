@@ -219,10 +219,185 @@ export const multiStepValidator: Validator = {
   },
 };
 
+// ─── Numeric Range (odpověď v rozsahu, např. fyzika ±tolerance) ─────────
+/**
+ * NumericRange: odpověď je v rozsahu min..max nebo expected ± tolerance.
+ * Expected formát:
+ *   "5.5"           — exact (default tolerance 0.001)
+ *   "5.5±0.1"       — explicitní tolerance
+ *   "5.5..6.5"      — explicitní rozsah (inclusive)
+ *   "5.5;6.5"       — alternativní rozsah syntax
+ *
+ * Use case: fyzika, chemie, měření, geografie (cca hodnoty).
+ */
+export const numericRangeValidator: Validator = {
+  id: "numeric_range",
+  validate(answer, expected) {
+    const parseNum = (s: string) => parseFloat(s.replace(",", ".").trim());
+    const a = parseNum(answer);
+    if (Number.isNaN(a)) return { correct: false, errorType: "not_a_number" };
+
+    // Rozsah: "min..max" nebo "min;max"
+    const rangeMatch = expected.match(/^(-?[\d.,]+)\s*(?:\.\.|;)\s*(-?[\d.,]+)$/);
+    if (rangeMatch) {
+      const min = parseNum(rangeMatch[1]);
+      const max = parseNum(rangeMatch[2]);
+      if (Number.isNaN(min) || Number.isNaN(max)) {
+        return { correct: false, errorType: "expected_invalid" };
+      }
+      if (a >= Math.min(min, max) && a <= Math.max(min, max)) {
+        return { correct: true };
+      }
+      return { correct: false, errorType: "out_of_range", feedback: `Očekáván rozsah ${min}–${max}` };
+    }
+
+    // Tolerance: "5.5±0.1" nebo "5.5+-0.1"
+    const tolMatch = expected.match(/^(-?[\d.,]+)\s*(?:±|\+-|\+\/-)\s*([\d.,]+)$/);
+    if (tolMatch) {
+      const center = parseNum(tolMatch[1]);
+      const tol = parseNum(tolMatch[2]);
+      if (Number.isNaN(center) || Number.isNaN(tol)) {
+        return { correct: false, errorType: "expected_invalid" };
+      }
+      if (Math.abs(a - center) <= tol + 1e-9) return { correct: true };
+      return { correct: false, errorType: "out_of_tolerance", feedback: `Očekáváno ${center} ± ${tol}` };
+    }
+
+    // Plain number → fallback na exact s tolerance 0.001
+    const e = parseNum(expected);
+    if (Number.isNaN(e)) return { correct: false, errorType: "expected_invalid" };
+    if (Math.abs(a - e) <= 0.001) return { correct: true };
+    return { correct: false, errorType: "wrong_number" };
+  },
+};
+
+// ─── Short Answer (volná textová odpověď, AI hodnotí později) ───────────
+/**
+ * ShortAnswer: žák napíše krátkou odpověď vlastními slovy.
+ * Validace má 2 vrstvy:
+ *   1) Pokud expected je seznam přijatelných odpovědí "a|b|c", match jakoukoli
+ *   2) Jinak fuzzy match s tolerance pro překlepy (2 chars)
+ *
+ * Pro full AI grading použít rubricValidator (TODO Fáze 7).
+ */
+export const shortAnswerValidator: Validator = {
+  id: "short_answer",
+  validate(answer, expected) {
+    const norm = (s: string) =>
+      s.trim().toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "") // odstraň diakritiku pro fuzzy match
+        .replace(/[^\w\s]/g, "")
+        .replace(/\s+/g, " ");
+
+    const a = norm(answer);
+    if (!a) return { correct: false, errorType: "empty" };
+
+    // Multi-accept: "polský|polák|polsko" — match jakoukoli z variant
+    const acceptable = expected.split("|").map((s) => norm(s)).filter(Boolean);
+    if (acceptable.length === 0) return { correct: false, errorType: "expected_invalid" };
+
+    for (const exp of acceptable) {
+      if (a === exp) return { correct: true };
+      // Fuzzy: max 2 chars Levenshtein (typo tolerance)
+      if (Math.abs(a.length - exp.length) <= 2 && levenshtein(a, exp) <= 2) {
+        return { correct: true, feedback: "Správně (s drobným překlepem)" };
+      }
+    }
+    return { correct: false, errorType: "wrong_answer" };
+  },
+};
+
+/** Levenshtein distance — small impl, ne lib. */
+function levenshtein(a: string, b: string): number {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const dp: number[][] = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+// ─── Table Fill (doplnit prázdné buňky v tabulce) ───────────────────────
+/**
+ * TableFill: žák vyplní více buněk v tabulce.
+ * Expected formát (CSV-like): "buňka1|buňka2|buňka3"
+ * Answer formát: stejný (žák vyplnil X buněk, oddělené |)
+ * Stejně jako multi_step, ale s permutací a partial scoring.
+ */
+export const tableFillValidator: Validator = {
+  id: "table_fill",
+  validate(answer, expected) {
+    const norm = (s: string) => s.trim().toLowerCase().normalize("NFC");
+    const aCells = answer.split("|").map(norm);
+    const eCells = expected.split("|").map(norm);
+    if (eCells.length === 0) return { correct: false, errorType: "no_cells" };
+    let correctCount = 0;
+    for (let i = 0; i < eCells.length; i++) {
+      if (i < aCells.length && aCells[i] === eCells[i]) correctCount++;
+    }
+    const partialScore = correctCount / eCells.length;
+    if (partialScore === 1) return { correct: true, partialScore };
+    return {
+      correct: false,
+      partialScore,
+      errorType: "partial_cells",
+      feedback: `Správně ${correctCount}/${eCells.length} buněk.`,
+    };
+  },
+};
+
+// ─── Sequence Step (seřadit kroky postupu) ──────────────────────────────
+/**
+ * SequenceStep: žák seřadí kroky do správného pořadí.
+ * Stejné jako orderedSequence, ale s lepším error feedbackem
+ * (řekne, na které pozici je první chyba — pomáhá adminovi i žákovi).
+ */
+export const sequenceStepValidator: Validator = {
+  id: "sequence_step",
+  validate(answer, expected) {
+    const norm = (s: string) => s.trim().toLowerCase().normalize("NFC");
+    const aSeq = answer.split("|").map(norm);
+    const eSeq = expected.split("|").map(norm);
+    if (eSeq.length === 0) return { correct: false, errorType: "no_steps" };
+    if (aSeq.length !== eSeq.length) {
+      return {
+        correct: false,
+        errorType: "wrong_length",
+        feedback: `Očekáváno ${eSeq.length} kroků, dáno ${aSeq.length}`,
+      };
+    }
+    let firstWrongIdx = -1;
+    for (let i = 0; i < eSeq.length; i++) {
+      if (aSeq[i] !== eSeq[i]) {
+        firstWrongIdx = i;
+        break;
+      }
+    }
+    if (firstWrongIdx === -1) return { correct: true };
+    return {
+      correct: false,
+      errorType: "wrong_order",
+      feedback: `Krok #${firstWrongIdx + 1} je ve špatném pořadí`,
+    };
+  },
+};
+
 // ─── Registry ────────────────────────────────────────────────────────────
 const VALIDATORS: Record<string, Validator> = {
   string_exact: stringExactValidator,
   numeric_tolerance: numericToleranceValidator,
+  numeric_range: numericRangeValidator,
+  short_answer: shortAnswerValidator,
+  table_fill: tableFillValidator,
+  sequence_step: sequenceStepValidator,
   fraction: fractionValidator,
   set_match: setMatchValidator,
   ordered_sequence: orderedSequenceValidator,
@@ -243,6 +418,14 @@ export function getDefaultValidator(inputType: string): Validator {
       return fractionValidator;
     case "number":
       return numericToleranceValidator;
+    case "numeric_range":
+      return numericRangeValidator;
+    case "short_answer":
+      return shortAnswerValidator;
+    case "table_fill":
+      return tableFillValidator;
+    case "sequence_step":
+      return sequenceStepValidator;
     case "multi_select":
       return setMatchValidator;
     case "drag_order":

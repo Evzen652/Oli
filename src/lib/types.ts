@@ -15,7 +15,21 @@ export type Grade = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export type Modality = "voice" | "text" | "mixed";
 
-export type InputType = "comparison" | "fraction" | "number" | "select_one" | "drag_order" | "text" | "fill_blank" | "match_pairs" | "multi_select" | "categorize";
+export type InputType =
+  | "comparison"
+  | "fraction"
+  | "number"
+  | "numeric_range"   // Číslo s tolerancí — fyzika, chemie, geografie
+  | "select_one"
+  | "drag_order"
+  | "text"
+  | "short_answer"    // Krátká volná odpověď s fuzzy match — humanitní předměty
+  | "fill_blank"
+  | "match_pairs"
+  | "multi_select"
+  | "categorize"
+  | "table_fill"      // Doplnit prázdné buňky tabulky
+  | "sequence_step";  // Seřadit kroky postupu (chemie, biologie, dějepis)
 
 // ===== HELP DATA =====
 export interface FractionBarData {
