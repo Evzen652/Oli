@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { aiCall, hasAnyAiProvider } from "../_shared/aiCall.ts";
+import { checkMathAnswer } from "../_shared/mathSolver.ts";
+import { checkHintLeakage } from "../_shared/hintLeakage.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,21 +9,33 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `Jsi strukturovaný matematický tutor pro základní školu.
+const SYSTEM_PROMPT = `Jsi strukturovaný tutor pro českou základní školu.
 Nejsi volný chat.
 Držíš se přesně fáze, kterou určuje systém.
 Nevymýšlíš nové téma.
 
-PRAVIDLA:
+ZÁKLADNÍ PRAVIDLA:
 - Buď stručný.
 - Vysvětlení maximálně 6 vět.
 - Úlohy odpovídají úrovni žáka.
-- Nepoužívej procenta.
 - Drž se pouze aktuálního skillu.
 - Odpovídej POUZE v češtině.
 - Vrať POUZE strukturovaný výstup přes tool call, ŽÁDNÝ volný text.
-- VŽDY ověř, že correct_answer je matematicky/jazykově 100% správná. Spočítej si výsledek dvakrát.
-- Nikdy neuvádej nesprávný výsledek — raději zvol jednodušší úlohu.`;
+- VŽDY ověř, že correct_answer je 100% správná. Spočítej si výsledek dvakrát.
+  Nikdy neuvádej nesprávný výsledek — raději zvol jednodušší úlohu.
+
+PRAVIDLA PRO NÁPOVĚDY (kritické — porušení = zamítnutí úlohy):
+- Nápověda NESMÍ obsahovat doslovnou odpověď ani jako rovnost (např. "= 36").
+- Nápověda NESMÍ ukazovat finální výpočet ("Spočítej 12 × 3").
+- Nápověda MÁ navést k myšlení: "Vzpomeň si na...", "Jak vypadá pravidlo...?", "Co znamená to slovo?"
+- 2-3 nápovědy odstupňované od obecné po konkrétnější, ale ANI poslední nesmí prozradit výsledek.
+- Příklad SPRÁVNĚ: úloha "12 × 3 = ?" → hint "Násobení 3 je opakované sčítání 3+3+3..."
+- Příklad ŠPATNĚ: tatáž úloha → hint "Spočítej: 12 × 3 = 36" (PROZRAZUJE!)
+
+PRAVIDLA PRO POSTUP (solution_steps):
+- Postup je VYSVĚTLENÍ pro žáka PO odpovědi — tady JE výsledek na konci.
+- Krátký, srozumitelný, krok za krokem.
+- Žák vidí postup, až když odpověděl (nebo se vzdal).`;
 
 // ── Grade-level language + RVP content constraints ──────────────
 // Každý ročník má explicitní domény z RVP (Rámcového vzdělávacího programu),
@@ -616,7 +630,6 @@ serve(async (req) => {
         console.log(`[Layer 1 — Format] ${parsed.tasks.length} → ${formatFiltered.length} tasks (practice_type=${practice_type})`);
 
         // LAYER 2 — Věková přiměřenost (AI grade-appropriateness check)
-        // apiKey parametr je legacy/unused — aiCall si secrets čte sám
         const { tasks: gradeValidated, validation } = await validateTasksForGrade(
           formatFiltered,
           effectiveGradeMin,
@@ -624,10 +637,50 @@ serve(async (req) => {
         );
         console.log(`[Layer 2 — Grade] validated ${gradeValidated.length} tasks for ${effectiveGradeMin}. grade`);
 
+        // LAYER 2.5 — Symbolic math solver (deterministická kontrola)
+        // Pro číselné úlohy nezávisle spočítá výsledek a porovná s tvrzeným.
+        // Když AI lhala (typický error u Llama 70B u složitějších úloh) → reject.
+        let mathSolverRejected = 0;
+        let mathSolverPassed = 0;
+        const mathSolverFiltered = gradeValidated.filter((task: any) => {
+          if (!task || typeof task.question !== "string" || typeof task.correct_answer !== "string") {
+            return true; // Nelze validovat, propustit dál
+          }
+          const result = checkMathAnswer(task.question, task.correct_answer, practice_type);
+          if (result.status === "mismatch") {
+            console.warn(`[Layer 2.5 — MathSolver] REJECT: "${task.question}" → AI: ${result.got}, Solver: ${result.expected}`);
+            mathSolverRejected++;
+            return false;
+          }
+          if (result.status === "match") {
+            mathSolverPassed++;
+          }
+          return true;
+        });
+        console.log(`[Layer 2.5 — MathSolver] checked ${gradeValidated.length}: ${mathSolverPassed} match, ${mathSolverRejected} mismatch (rejected), ${gradeValidated.length - mathSolverPassed - mathSolverRejected} indeterminate`);
+
+        // LAYER 2.6 — Hint leakage detector (deterministická heuristika)
+        // Kontroluje, že hinty neprozrazují odpověď. Pokud ano, hint se odstraní
+        // (raději bez nápovědy než se špatnou).
+        let hintLeakageRejected = 0;
+        const hintLeakageFiltered = mathSolverFiltered.map((task: any) => {
+          if (!task || !task.hints || !Array.isArray(task.hints)) return task;
+          const result = checkHintLeakage(task);
+          if (!result.ok) {
+            console.warn(`[Layer 2.6 — HintLeakage] STRIP hint from "${task.question}": ${result.reason}`);
+            hintLeakageRejected++;
+            // Odeber leakující hint, ostatní ponech
+            const cleanHints = task.hints.filter((_: string, idx: number) => idx !== result.leakingHintIndex);
+            return { ...task, hints: cleanHints, _hint_leakage_stripped: result.reason };
+          }
+          return task;
+        });
+        console.log(`[Layer 2.6 — HintLeakage] stripped ${hintLeakageRejected} leaking hints from ${mathSolverFiltered.length} tasks`);
+
         // LAYER 3 — Matematická/jazyková správnost (2nd opinion AI check)
         // Druhý nezávislý průchod stejného providera — ověří, že stated answer je správná.
         const { tasks: correctnessChecked, rejected } = await validateTasksCorrectness(
-          gradeValidated,
+          hintLeakageFiltered,
           effectiveGradeMin,
           ""
         );
@@ -647,6 +700,9 @@ serve(async (req) => {
               generated: parsed.tasks.length,
               after_format: formatFiltered.length,
               after_grade: gradeValidated.length,
+              after_math_solver: mathSolverFiltered.length,
+              math_solver_rejected: mathSolverRejected,
+              hint_leakage_stripped: hintLeakageRejected,
               after_correctness: finalTasks.length,
               rejected_correctness: rejected.length,
             },
