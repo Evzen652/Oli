@@ -191,7 +191,7 @@ export function AdminCurriculumSidebar({
 
       {/* Tree */}
       <ScrollArea className="flex-1">
-        <div className="py-2 px-1">
+        <div className="py-3 px-2 space-y-3">
           {subjects.length === 0 && (
             <div className="px-3 py-6 text-center">
               <p className="text-xs text-muted-foreground">
@@ -201,7 +201,7 @@ export function AdminCurriculumSidebar({
           )}
           {/* Legenda úrovní — pomáhá adminovi pochopit, co znamenají odsazení */}
           {!query && subjects.length > 0 && (
-            <div className="px-3 py-2 text-[10px] leading-tight border-b mb-2 space-y-1 bg-muted/30">
+            <div className="px-3 py-2.5 text-[10px] leading-tight rounded-md mb-1 space-y-1.5 bg-muted/40">
               <p className="font-semibold text-muted-foreground uppercase tracking-wide">Úrovně:</p>
               <div className="flex flex-wrap gap-x-2 gap-y-0.5">
                 <span className="inline-flex items-center gap-1 text-blue-700 dark:text-blue-400 font-bold">
@@ -230,11 +230,11 @@ export function AdminCurriculumSidebar({
             const fmtName = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
             return (
-              <div key={subject} className="mb-2">
+              <div key={subject}>
                 {/* Subject (Předmět) — největší font, modré pozadí, výrazný */}
                 <button
                   onClick={() => handleSubjectClick(subject)}
-                  className={`w-full flex items-start gap-2.5 px-3 py-3 text-base rounded-lg transition-colors border-l-4 ${
+                  className={`w-full flex items-start gap-2.5 px-3 py-3.5 text-base rounded-lg transition-colors border-l-4 ${
                     isSubjectActive && !selectedCategory
                       ? "bg-blue-100 dark:bg-blue-950/50 text-blue-900 dark:text-blue-200 font-bold border-blue-600 shadow-sm"
                       : "bg-blue-50/60 dark:bg-blue-950/20 hover:bg-blue-100/80 dark:hover:bg-blue-950/40 text-blue-800 dark:text-blue-300 font-bold border-transparent"
@@ -252,7 +252,7 @@ export function AdminCurriculumSidebar({
 
                 {/* Categories */}
                 {isSubjectOpen && (
-                  <div className="ml-3 border-l-2 border-border/60">
+                  <div className="ml-4 mt-2 pl-2 border-l-2 border-border/60 space-y-2">
                     {categories.map((category, catIdx) => {
                       const categoryKey = `${subject}::${category}`;
                       const isCatOpen = expandedCategories.has(categoryKey) || !!query;
@@ -262,7 +262,7 @@ export function AdminCurriculumSidebar({
                       return (
                         <div
                           key={category}
-                          className={catIdx > 0 ? "mt-1.5 pt-1.5 border-t border-amber-300/50 dark:border-amber-800/50" : ""}
+                          className={catIdx > 0 ? "pt-2 border-t border-amber-300/50 dark:border-amber-800/50" : ""}
                         >
                           {/* Category (Okruh) — amber barva, výrazný level chip */}
                           <button
@@ -285,7 +285,7 @@ export function AdminCurriculumSidebar({
 
                           {/* Topics */}
                           {isCatOpen && (
-                            <div className="ml-3 border-l border-border/40">
+                            <div className="ml-4 mt-2 pl-2 border-l border-border/40 space-y-1.5">
                               {topicsList.map((topic) => {
                                 const topicKey = `${subject}::${category}::${topic}`;
                                 const isTopicOpen = expandedTopics.has(topicKey) || !!query;
@@ -323,7 +323,7 @@ export function AdminCurriculumSidebar({
 
                                     {/* Skills (Podtémata) — emerald barva, level chip */}
                                     {isTopicOpen && (
-                                      <div className="ml-3 border-l border-border/30">
+                                      <div className="ml-4 mt-1.5 pl-2 border-l border-border/30 space-y-1">
                                         {skills.map((skill) => {
                                           const isSkillActive = selectedSkill?.id === skill.id;
                                           return (
