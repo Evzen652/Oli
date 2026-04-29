@@ -15,6 +15,8 @@ export interface CurriculumContext {
 
 interface AdminCurriculumSidebarProps {
   topics: TopicMetadata[];               // filtered by grade
+  /** Aktivní filtr ročníku — pro zobrazení badge v hlavičce sidebaru */
+  gradeFilter?: number | null;
   selectedSubject: string | null;
   selectedCategory: string | null;
   selectedTopic: string | null;
@@ -27,6 +29,7 @@ interface AdminCurriculumSidebarProps {
 
 export function AdminCurriculumSidebar({
   topics,
+  gradeFilter,
   selectedSubject,
   selectedCategory,
   selectedTopic,
@@ -170,10 +173,19 @@ export function AdminCurriculumSidebar({
     <div className="h-full flex flex-col bg-muted/30 border-r rounded-lg">
       {/* Header */}
       <div className="p-4 border-b bg-background/50">
-        {/* Sidebar header: nadpis + (volitelně) reset */}
+        {/* Sidebar header: nadpis + (volitelně) badge ročníku + reset */}
         <div className="flex items-center gap-2 px-2 py-1">
           <BookOpen className="h-5 w-5 text-primary" />
           <span className="text-base font-semibold">Kurikulum</span>
+          {gradeFilter != null && (
+            <Badge
+              variant="secondary"
+              className="bg-primary/15 text-primary border-primary/30 text-[10px] font-bold tracking-wide"
+              title={`Filtr ročníku: ${gradeFilter}. ročník`}
+            >
+              {gradeFilter}. ročník
+            </Badge>
+          )}
           {hasAnySelection && (
             <button
               onClick={handleHomeClick}

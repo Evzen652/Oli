@@ -186,6 +186,7 @@ export default function AdminDashboard() {
             <div className="sticky top-4 h-[calc(100vh-220px)]">
               <AdminCurriculumSidebar
                 topics={topics}
+                gradeFilter={gradeFilter}
                 selectedSubject={selectedSubject}
                 selectedCategory={selectedCategory}
                 selectedTopic={selectedTopic}
