@@ -159,13 +159,17 @@ export function AdminCurriculumSidebar({
         <button
           onClick={handleHomeClick}
           className="w-full flex items-center gap-2 rounded-md px-2 py-2 hover:bg-accent transition-colors text-base font-semibold"
+          title={`${totalSubjects} ${totalSubjects === 1 ? "předmět" : totalSubjects < 5 ? "předměty" : "předmětů"} · ${totalSkills} ${totalSkills === 1 ? "podtéma" : totalSkills < 5 ? "podtémata" : "podtémat"}`}
         >
           <BookOpen className="h-5 w-5 text-primary" />
           <span>Kurikulum</span>
-          <Badge variant="secondary" className="ml-auto text-[11px]">
-            {totalSubjects}·{totalSkills}
-          </Badge>
         </button>
+        <p className="px-2 mt-1 text-xs text-muted-foreground">
+          {totalSubjects} {totalSubjects === 1 ? "předmět" : totalSubjects < 5 ? "předměty" : "předmětů"}
+          {" · "}
+          <span className="font-medium text-foreground">{totalSkills}</span>{" "}
+          {totalSkills === 1 ? "podtéma" : totalSkills < 5 ? "podtémata" : "podtémat"}
+        </p>
         <div className="relative mt-3">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
