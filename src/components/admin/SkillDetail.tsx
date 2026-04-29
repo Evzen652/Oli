@@ -36,6 +36,8 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
     advanced: 0,
     expert: 0,
   });
+  // Trigger pro refetch counts po save/delete v ExerciseTab
+  const [countsRefresh, setCountsRefresh] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -54,7 +56,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
         setExerciseCounts(counts);
       }
     })();
-  }, [skill.id]);
+  }, [skill.id, countsRefresh]);
 
   const [dbRecord, setDbRecord] = useState<any>(null);
   const [form, setForm] = useState({
@@ -433,15 +435,15 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
           </TabsList>
 
           <TabsContent value="simple">
-            <ExerciseTab skill={skill} variant="simple" />
+            <ExerciseTab skill={skill} variant="simple" onCountsChanged={() => setCountsRefresh((n) => n + 1)} />
           </TabsContent>
 
           <TabsContent value="advanced">
-            <ExerciseTab skill={skill} variant="advanced" />
+            <ExerciseTab skill={skill} variant="advanced" onCountsChanged={() => setCountsRefresh((n) => n + 1)} />
           </TabsContent>
 
           <TabsContent value="expert">
-            <ExerciseTab skill={skill} variant="expert" />
+            <ExerciseTab skill={skill} variant="expert" onCountsChanged={() => setCountsRefresh((n) => n + 1)} />
           </TabsContent>
         </Tabs>
       </div>

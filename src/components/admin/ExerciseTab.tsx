@@ -307,12 +307,13 @@ function TaskCard({
 // Saved exercises list (from DB)
 // ══════════════════════════════════════════════════════
 function SavedExercisesList({
-  skillId, source, colorClass, label,
+  skillId, source, colorClass, label, onCountsChanged,
 }: {
   skillId: string;
   source: ExerciseVariant;
   colorClass: string;
   label: string;
+  onCountsChanged?: () => void;
 }) {
   const [saved, setSaved] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -347,6 +348,7 @@ function SavedExercisesList({
     } else {
       setSaved((prev) => prev.filter((e) => e.id !== id));
       toast({ description: "Cvičení deaktivováno ✓" });
+      onCountsChanged?.();
     }
   };
 
@@ -499,10 +501,12 @@ function AITaskRow({
 // Main unified ExerciseTab
 // ══════════════════════════════════════════════════════
 export function ExerciseTab({
-  skill, variant,
+  skill, variant, onCountsChanged,
 }: {
   skill: TopicMetadata;
   variant: ExerciseVariant;
+  /** Volá se po uložení/smazání cvičení — rodič refetchne tab counts */
+  onCountsChanged?: () => void;
 }) {
   const config = VARIANTS[variant];
   const { toast } = useToast();
@@ -594,6 +598,7 @@ export function ExerciseTab({
       if (err) throw err;
       setSavedIndices((prev) => new Set([...prev, index]));
       toast({ description: "Cvičení uloženo ✓" });
+      onCountsChanged?.();
     } catch (e: any) {
       toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });
     }
@@ -619,6 +624,7 @@ export function ExerciseTab({
       if (err) throw err;
       setSavedIndices(new Set(aiTasks.map((_, i) => i)));
       toast({ description: `Uloženo ${aiTasks.length} ${config.shortLabel} cvičení ✓` });
+      onCountsChanged?.();
     } catch (e: any) {
       toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });
     }
@@ -778,6 +784,7 @@ export function ExerciseTab({
         source={config.source}
         colorClass={config.color.saved}
         label={`${config.emoji} Uložená ${config.shortLabel} cvičení (${config.levelLabel.match(/\(([^)]+)\)/)?.[1] ?? ""})`}
+        onCountsChanged={onCountsChanged}
       />
     </div>
   );
