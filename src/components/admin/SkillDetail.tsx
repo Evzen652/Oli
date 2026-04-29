@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { ExerciseTab } from "@/components/admin/ExerciseTab";
+import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import type { TopicMetadata } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -38,6 +39,17 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
   });
   // Trigger pro refetch counts po save/delete v ExerciseTab
   const [countsRefresh, setCountsRefresh] = useState(0);
+
+  // Počet algoritmických vzorků (jen Level I — code generator)
+  const templateSamplesCount = (() => {
+    if (!hasCodeGenerator(skill)) return 0;
+    try {
+      const level = skill.defaultLevel ?? 1;
+      return skill.generator(level).length;
+    } catch {
+      return 0;
+    }
+  })();
 
   useEffect(() => {
     (async () => {
@@ -408,11 +420,24 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
             <TabsTrigger
               value="simple"
               className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
+              title={
+                templateSamplesCount > 0
+                  ? `${templateSamplesCount} algoritmických vzorků (generované za běhu) + ${exerciseCounts.simple} uložených AI úloh`
+                  : `${exerciseCounts.simple} uložených úloh`
+              }
             >
               📗 Základní (Level I){" "}
-              <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
-                {exerciseCounts.simple}
-              </span>
+              {templateSamplesCount > 0 ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-background/30 px-2 py-0.5 text-[10px] font-semibold">
+                  <span title="Algoritmické vzorky">📐 {templateSamplesCount}</span>
+                  <span className="opacity-50">·</span>
+                  <span title="Uložené AI úlohy">💾 {exerciseCounts.simple}</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
+                  {exerciseCounts.simple}
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="advanced"
