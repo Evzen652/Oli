@@ -148,10 +148,23 @@ export function AdminCurriculumSidebar({
 
   const subjects = Object.keys(tree).sort();
 
-  // Stats
+  // Stats — počty na všech úrovních (Subject → Category → Topic → Skill)
   const totalSubjects = subjects.length;
+  let totalCategories = 0;
+  let totalTopics = 0;
+  for (const subj of subjects) {
+    const cats = Object.keys(tree[subj]);
+    totalCategories += cats.length;
+    for (const cat of cats) {
+      totalTopics += Object.keys(tree[subj][cat]).length;
+    }
+  }
   const totalSkills = topics.length;
   const hasAnySelection = !!(selectedSubject || selectedCategory || selectedTopic || selectedSkill);
+
+  // Skloňování pomocí helperu — Czech: 1, 2-4, 5+
+  const plural = (n: number, one: string, few: string, many: string) =>
+    n === 1 ? one : n < 5 ? few : many;
 
   return (
     <div className="h-full flex flex-col bg-muted/30 border-r rounded-lg">
@@ -172,11 +185,15 @@ export function AdminCurriculumSidebar({
             </button>
           )}
         </div>
-        <p className="px-2 mt-1 text-xs text-muted-foreground">
-          {totalSubjects} {totalSubjects === 1 ? "předmět" : totalSubjects < 5 ? "předměty" : "předmětů"}
+        <p className="px-2 mt-1 text-xs text-muted-foreground leading-relaxed">
+          {totalSubjects} {plural(totalSubjects, "předmět", "předměty", "předmětů")}
+          {" · "}
+          {totalCategories} {plural(totalCategories, "okruh", "okruhy", "okruhů")}
+          {" · "}
+          {totalTopics} {plural(totalTopics, "téma", "témata", "témat")}
           {" · "}
           <span className="font-medium text-foreground">{totalSkills}</span>{" "}
-          {totalSkills === 1 ? "podtéma" : totalSkills < 5 ? "podtémata" : "podtémat"}
+          {plural(totalSkills, "podtéma", "podtémata", "podtémat")}
         </p>
         <div className="relative mt-3">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
