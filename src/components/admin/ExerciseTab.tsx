@@ -581,6 +581,7 @@ export function ExerciseTab({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
+      // Pozn: created_by není v aktuálním DB schématu — vynecháno
       const { error: err } = await (supabase as any).from("custom_exercises").insert({
         skill_id: skill.id,
         question: task.question,
@@ -589,7 +590,6 @@ export function ExerciseTab({
         solution_steps: task.solution_steps || [],
         options: task.options || [],
         source: config.source,
-        created_by: user.id,
       });
       if (err) throw err;
       setSavedIndices((prev) => new Set([...prev, index]));
@@ -605,6 +605,7 @@ export function ExerciseTab({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
+      // Pozn: created_by není v aktuálním DB schématu — vynecháno
       const rows = aiTasks.map((task) => ({
         skill_id: skill.id,
         question: task.question,
@@ -613,7 +614,6 @@ export function ExerciseTab({
         solution_steps: task.solution_steps || [],
         options: task.options || [],
         source: config.source,
-        created_by: user.id,
       }));
       const { error: err } = await (supabase as any).from("custom_exercises").insert(rows);
       if (err) throw err;
