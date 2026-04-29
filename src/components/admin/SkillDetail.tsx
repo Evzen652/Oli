@@ -427,17 +427,11 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
               }
             >
               📗 Základní (Level I){" "}
-              {templateSamplesCount > 0 ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-background/30 px-2 py-0.5 text-[10px] font-semibold">
-                  <span title="Algoritmické vzorky">📐 {templateSamplesCount}</span>
-                  <span className="opacity-50">·</span>
-                  <span title="Uložené AI úlohy">💾 {exerciseCounts.simple}</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
-                  {exerciseCounts.simple}
-                </span>
-              )}
+              <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-2 py-0.5 text-[10px] font-semibold tabular-nums min-w-[20px]">
+                {templateSamplesCount > 0
+                  ? `${templateSamplesCount + exerciseCounts.simple}`
+                  : exerciseCounts.simple}
+              </span>
             </TabsTrigger>
             <TabsTrigger
               value="advanced"
