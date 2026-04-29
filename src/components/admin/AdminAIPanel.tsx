@@ -55,7 +55,9 @@ export function AdminAIPanel({
     setTab("create");
   }
 
-  const checkDisabled = !grade;
+  // Tab "Zkontrolovat" záměrně NEdiisabled — když není ročník, uvnitř
+  // se zobrazí přívětivá hláška (lepší než vypadat jakoby tlačítko
+  // úplně chybělo).
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -73,9 +75,8 @@ export function AdminAIPanel({
               </TabsTrigger>
               <TabsTrigger
                 value="check"
-                disabled={checkDisabled}
                 className="gap-1.5 text-sm"
-                title={checkDisabled ? "Vyberte ročník v hlavičce" : undefined}
+                title={!grade ? "Pro spuštění kontroly vyberte ročník v hlavičce" : "Hromadná AI kontrola srozumitelnosti, nápověd a správnosti odpovědí"}
               >
                 <Search className="h-4 w-4" />
                 Zkontrolovat
@@ -116,9 +117,20 @@ export function AdminAIPanel({
               />
             )}
             {!grade && (
-              <div className="flex flex-col items-center justify-center h-full p-6 text-center text-muted-foreground gap-2">
-                <Search className="h-8 w-8 opacity-40" />
-                <p className="text-sm">Pro kontrolu cvičení vyberte ročník v hlavičce.</p>
+              <div className="flex flex-col items-center justify-center h-full p-6 text-center gap-3">
+                <Search className="h-10 w-10 text-primary/60" />
+                <div className="space-y-1.5 max-w-sm">
+                  <p className="font-semibold text-foreground">Hromadná AI kontrola</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Spustí AI kontrolu cvičení napříč celým ročníkem — ověří{" "}
+                    <span className="font-medium text-foreground">srozumitelnost</span>,{" "}
+                    <span className="font-medium text-foreground">nápovědy</span> a{" "}
+                    <span className="font-medium text-foreground">správnost odpovědí</span>.
+                  </p>
+                  <p className="text-xs text-muted-foreground italic pt-2">
+                    Pro spuštění vyberte v hlavičce ročník (1–9).
+                  </p>
+                </div>
               </div>
             )}
           </div>
