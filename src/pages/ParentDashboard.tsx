@@ -23,6 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Grade } from "@/lib/types";
 import { ChildActivityBadge } from "@/components/ChildActivityBadge";
 import { ChildActivityChart } from "@/components/ChildActivityChart";
+import { ChildMisconceptions } from "@/components/ChildMisconceptions";
 import { AssignmentCreator } from "@/components/AssignmentCreator";
 import { AssignmentList } from "@/components/AssignmentList";
 import { SelfPracticeList } from "@/components/SelfPracticeList";
@@ -390,6 +391,9 @@ export default function ParentDashboard() {
 
                   {/* Týdenní status — hero karta */}
                   <ChildActivityBadge childId={child.id} />
+
+                  {/* Misconceptions — AI-detekované vzorce chyb (skryje se pokud žádné aktivní) */}
+                  <ChildMisconceptions childId={child.id} />
 
                   {/* Úkoly */}
                   <AssignmentList childId={child.id} refreshKey={assignmentRefresh} />

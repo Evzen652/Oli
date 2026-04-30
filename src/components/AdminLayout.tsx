@@ -109,21 +109,22 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
         </div>
       </header>
 
-      {/* Breadcrumbs — minimalistické, na bg pozadí */}
-      <div className="px-4 sm:px-6 lg:px-8 pt-5">
-        <nav className="mx-auto flex max-w-screen-2xl items-center gap-1.5 text-sm">
+      {/* Breadcrumbs — wrapper má identickou strukturu jako <main> níže,
+          aby home ikona seděla přesně nad levým sloupcem (sidebar). */}
+      <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 pt-5">
+        <nav className="flex items-center gap-1 text-sm flex-nowrap overflow-x-auto whitespace-nowrap">
           <Button
             variant="ghost"
-            size="sm"
-            className="h-7 w-7 p-0 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent"
+            size="icon"
+            className="h-7 w-7 shrink-0 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent"
             onClick={() => navigate("/admin")}
             title="Domů"
           >
             <Home className="h-3.5 w-3.5" />
           </Button>
           {breadcrumbs.map((bc, i) => (
-            <span key={i} className="flex items-center gap-1.5">
-              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40" />
+            <span key={i} className="flex items-center gap-1 shrink-0">
+              <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/40" />
               {bc.path ? (
                 <Button
                   variant="ghost"
@@ -134,7 +135,7 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
                   {bc.label}
                 </Button>
               ) : (
-                <span className="px-1 font-semibold text-foreground">{bc.label}</span>
+                <span className="px-2 font-semibold text-foreground">{bc.label}</span>
               )}
             </span>
           ))}
