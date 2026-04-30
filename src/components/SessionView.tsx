@@ -9,6 +9,7 @@ import { TopicBrowser } from "@/components/TopicBrowser";
 import { ChildHomePage } from "@/components/ChildHomePage";
 import { DiktatFilterSelect } from "@/components/DiktatFilterSelect";
 import { HelpButton } from "@/components/HelpButton";
+import { TutorChat } from "@/components/TutorChat";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { SessionTimer } from "@/components/SessionTimer";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
@@ -508,6 +509,15 @@ export function SessionView() {
                   s.setSession(prev => prev ? { ...prev, helpUsedOnCurrent: true } : prev);
                 }
               }}
+            />
+          )}
+
+          {/* Konverzační tutor — Fáze 7 */}
+          {showPracticeInput && session.matchedTopic && (
+            <TutorChat
+              topic={session.matchedTopic}
+              currentTask={currentTask ?? null}
+              phase="practice"
             />
           )}
 
