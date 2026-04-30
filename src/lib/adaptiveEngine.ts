@@ -10,6 +10,12 @@ export interface SkillSnapshot {
   error_streak: number;
   success_streak: number;
   attempts_total: number;
+  /**
+   * Aktivní misconception confidence pro tento skill (0-1).
+   * Pokud je > 0.5, engine zařadí cílené terapeutické cvičení
+   * (lower difficulty, vždy offer help).
+   */
+  active_misconception_confidence?: number;
 }
 
 export interface AdaptiveDecision {
@@ -40,6 +46,17 @@ export function computeAdaptiveDecision(snapshot: SkillSnapshot | null): Adaptiv
       offerHelp: false,
       fallbackToPrerequisite: false,
       reason: "no_data",
+    };
+  }
+
+  // Aktivní misconception s vysokou jistotou → terapeutický mód:
+  // snížit obtížnost, vždy offer help. Cíl je léčit konkrétní bolístku.
+  if ((snapshot.active_misconception_confidence ?? 0) >= 0.7) {
+    return {
+      levelDelta: -1,
+      offerHelp: true,
+      fallbackToPrerequisite: false,
+      reason: "active_misconception",
     };
   }
 

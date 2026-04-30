@@ -130,6 +130,41 @@ async function persistResult(result: CheckResult): Promise<void> {
       child_id: childId,
     });
   }
+
+  // 3. Fire-and-forget AI misconception analysis trigger.
+  // Spustí se max 1× za 6 hodin per dítě (rate limit přes localStorage),
+  // a jen pokud má žák nedávné chyby. Ne-blokující — nečekáme na výsledek.
+  if (!result.correct) {
+    triggerMisconceptionAnalysis(childId, userId).catch(() => {
+      /* swallow — fire-and-forget */
+    });
+  }
+}
+
+/**
+ * Spustí analýzu misconceptions na pozadí.
+ * Rate-limit: max 1× za 6 hodin per child (přes localStorage timestamp).
+ * Princip: drobná latence prohraje proti rychlým iteracím — analyzujeme
+ * jen občas, ne po každé chybě.
+ */
+const ANALYSIS_COOLDOWN_MS = 6 * 60 * 60 * 1000;
+async function triggerMisconceptionAnalysis(childId: string | null, userId: string) {
+  const target = childId ?? userId;
+  const key = `oli_last_misconception_analysis_${target}`;
+  try {
+    const last = typeof window !== "undefined" ? Number(window.localStorage.getItem(key) ?? "0") : 0;
+    if (Date.now() - last < ANALYSIS_COOLDOWN_MS) return;
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(key, String(Date.now()));
+    }
+    const body: Record<string, unknown> = { days: 30 };
+    if (childId) body.child_id = childId;
+    else body.user_id = userId;
+    // Fire and forget — výsledek se ukáže rodiči až při příštím refreshi
+    await supabase.functions.invoke("analyze-misconceptions", { body });
+  } catch {
+    // Tichá chyba — feature nesmí blokovat zápis session_log
+  }
 }
 
 /**
