@@ -226,7 +226,7 @@ export default function ParentDashboard() {
         {/* Hero card s pozdravem */}
         <section className="rounded-3xl border border-border bg-card shadow-soft-2 p-6 sm:p-7">
           <div className="flex items-start gap-4 sm:gap-5">
-            <span className="grid h-14 w-14 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-soft-2 shrink-0">
+            <span className="shrink-0">
               <OlyLogo size="sm" />
             </span>
             <div className="flex-1 min-w-0">
