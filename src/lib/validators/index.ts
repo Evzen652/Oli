@@ -390,6 +390,143 @@ export const sequenceStepValidator: Validator = {
   },
 };
 
+// ─── Chemical Balance (vyrovnat chemickou rovnici) ─────────────────────
+/**
+ * ChemicalBalance: žák doplní stechiometrické koeficienty do rovnice.
+ *
+ * Expected formát: "2|H2|+|1|O2|=|2|H2O" — prokládané koeficienty a vzorce.
+ *   Liché pozice (0, 2, 4...) = koeficient (string číslo, "1" = implicitní)
+ *   Sudé pozice (1, 3, 5...) = vzorec/operátor (H2, +, O2, =, H2O)
+ *
+ * Answer formát: "2|2" — pouze koeficienty v pořadí (žák doplnil 2× a 2×).
+ *   Před submit musí žák doplnit všechny koeficienty.
+ *
+ * Validace:
+ *   1) Délka odpovědi sedí s počtem koeficientů v expected
+ *   2) Každý koeficient přesně sedí (po normalizaci, "01" → "1")
+ *   3) Plus normalizace: prázdný = "1" (chemici implicitní 1 vynechávají)
+ */
+export const chemicalBalanceValidator: Validator = {
+  id: "chemical_balance",
+  validate(answer, expected) {
+    const expParts = expected.split("|");
+    // Vytáhni koeficienty z expected (pozice 0, 2, 4, ...)
+    const expCoefs: string[] = [];
+    for (let i = 0; i < expParts.length; i += 2) {
+      expCoefs.push(expParts[i].trim());
+    }
+
+    const ansCoefs = answer.split("|").map((s) => s.trim());
+    if (ansCoefs.length !== expCoefs.length) {
+      return {
+        correct: false,
+        errorType: "wrong_coef_count",
+        feedback: `Očekáváno ${expCoefs.length} koeficientů, dáno ${ansCoefs.length}`,
+      };
+    }
+
+    const norm = (c: string) => {
+      const trimmed = c.replace(/^0+/, "").trim();
+      return trimmed === "" || trimmed === "0" ? "1" : trimmed;
+    };
+
+    let firstWrong = -1;
+    for (let i = 0; i < expCoefs.length; i++) {
+      if (norm(ansCoefs[i]) !== norm(expCoefs[i])) {
+        firstWrong = i;
+        break;
+      }
+    }
+    if (firstWrong === -1) return { correct: true };
+    return {
+      correct: false,
+      errorType: "wrong_coef",
+      feedback: `Koeficient #${firstWrong + 1} je špatně.`,
+    };
+  },
+};
+
+// ─── Timeline (události na časovou osu) ─────────────────────────────────
+/**
+ * Timeline: žák seřadí historické události chronologicky.
+ *
+ * Stejné jako sequenceStep, ale s feedbackem o roku — když se splete o 1
+ * pozici, řekneme nejen "krok #X", ale i správný rok pro orientaci.
+ *
+ * Expected: "Karel IV. (1346)|Husitské války (1419)|Bílá hora (1620)"
+ * Answer: stejné, jen v pořadí jak žák seřadil.
+ */
+export const timelineValidator: Validator = {
+  id: "timeline",
+  validate(answer, expected) {
+    const norm = (s: string) => s.trim().toLowerCase().normalize("NFC");
+    const aSeq = answer.split("|").map(norm);
+    const eSeq = expected.split("|").map(norm);
+    if (eSeq.length === 0) return { correct: false, errorType: "no_events" };
+    if (aSeq.length !== eSeq.length) {
+      return {
+        correct: false,
+        errorType: "wrong_length",
+        feedback: `Očekáváno ${eSeq.length} událostí, dáno ${aSeq.length}`,
+      };
+    }
+    let firstWrongIdx = -1;
+    for (let i = 0; i < eSeq.length; i++) {
+      if (aSeq[i] !== eSeq[i]) {
+        firstWrongIdx = i;
+        break;
+      }
+    }
+    if (firstWrongIdx === -1) return { correct: true };
+    // Vytáhni rok z expected[firstWrongIdx] pokud je v závorce
+    const yearMatch = eSeq[firstWrongIdx].match(/\((-?\d{1,4})\)/);
+    const yearHint = yearMatch ? ` (rok ${yearMatch[1]})` : "";
+    return {
+      correct: false,
+      errorType: "wrong_chronology",
+      feedback: `Pozice #${firstWrongIdx + 1} v časové ose${yearHint} je nesprávná`,
+    };
+  },
+};
+
+// ─── Formula Builder (sestav matematický/chemický vzorec) ───────────────
+/**
+ * FormulaBuilder: žák skládá vzorec z dílů (dropdown / drag-drop).
+ *
+ * Expected: "x|=|2|*|a|+|b" — díly oddělené |.
+ * Answer: stejné, jen v pořadí jak žák sestavil.
+ *
+ * Validace: identita po normalizaci spaces.
+ *   "2*a" == "2 * a" == "2  *  a"
+ */
+export const formulaBuilderValidator: Validator = {
+  id: "formula_builder",
+  validate(answer, expected) {
+    const norm = (s: string) =>
+      s.replace(/\s+/g, "").trim().toLowerCase();
+    const aTokens = answer.split("|").map(norm);
+    const eTokens = expected.split("|").map(norm);
+    if (eTokens.length === 0) return { correct: false, errorType: "no_tokens" };
+    if (aTokens.length !== eTokens.length) {
+      return {
+        correct: false,
+        errorType: "wrong_length",
+        feedback: `Očekáváno ${eTokens.length} dílů, dáno ${aTokens.length}`,
+      };
+    }
+    for (let i = 0; i < eTokens.length; i++) {
+      if (aTokens[i] !== eTokens[i]) {
+        return {
+          correct: false,
+          errorType: "wrong_position",
+          feedback: `Díl #${i + 1} je na špatné pozici.`,
+        };
+      }
+    }
+    return { correct: true };
+  },
+};
+
 // ─── Image Select (vyber správný obrázek) ──────────────────────────────
 /**
  * ImageSelect: žák klikne na 1 z 4 obrázků.
@@ -472,6 +609,9 @@ const VALIDATORS: Record<string, Validator> = {
   sequence_step: sequenceStepValidator,
   image_select: imageSelectValidator,
   diagram_label: diagramLabelValidator,
+  chemical_balance: chemicalBalanceValidator,
+  timeline: timelineValidator,
+  formula_builder: formulaBuilderValidator,
   fraction: fractionValidator,
   set_match: setMatchValidator,
   ordered_sequence: orderedSequenceValidator,
@@ -504,6 +644,12 @@ export function getDefaultValidator(inputType: string): Validator {
       return imageSelectValidator;
     case "diagram_label":
       return diagramLabelValidator;
+    case "chemical_balance":
+      return chemicalBalanceValidator;
+    case "timeline":
+      return timelineValidator;
+    case "formula_builder":
+      return formulaBuilderValidator;
     case "multi_select":
       return setMatchValidator;
     case "drag_order":

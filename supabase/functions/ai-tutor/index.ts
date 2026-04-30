@@ -266,6 +266,36 @@ PRAVIDLA PRO TYP ODPOVĚDI "categorize":
 - options = 4-8 položek na zařazení do 2-3 kategorií.
 - correct_answer = "kategorie1: pol1, pol2 | kategorie2: pol3, pol4"
 - Vhodné pro: domácí vs. divoká zvířata, sudá vs. lichá čísla.`;
+    case "chemical_balance":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "chemical_balance" (vyrovnat chemickou rovnici):
+- correct_answer formát: prokládané koeficienty a vzorce/operátory
+  oddělené znakem |. Liché pozice (0, 2, 4...) = koeficienty,
+  sudé = vzorce/operátory.
+- Příklad: "2|H2|+|1|O2|=|2|H2O" znamená 2H₂ + O₂ = 2H₂O
+- Implicitní koeficient 1 NEvynechávat — vždy "1".
+- Operátory: + - = →
+- ZAKÁZÁNO: dolní indexy ve vzorcích (H2O, ne H₂O), Unicode subscript.
+- Použít až od 8. ročníku (anorganická chemie).`;
+    case "timeline":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "timeline" (chronologické pořadí):
+- options = 4-6 historických událostí v náhodném pořadí.
+- correct_answer = ty samé události ve SPRÁVNÉM chronologickém pořadí
+  oddělené |, od nejstarší po nejnovější.
+- Doporučení: u každé události přidat rok do závorky pro orientaci
+  (např. "Karel IV. (1346)|Husitské války (1419)|Bílá hora (1620)").
+- Vhodné pro: dějepis 6.-9. ročník — české i světové dějiny.`;
+    case "formula_builder":
+      return `
+PRAVIDLA PRO TYP ODPOVĚDI "formula_builder" (sestav vzorec z dílů):
+- options = 4-8 dílů vzorce (čísla, proměnné, operátory) v náhodném
+  pořadí.
+- correct_answer = ty samé díly ve SPRÁVNÉM pořadí oddělené |.
+- Příklad: pool ["x", "=", "2", "*", "a"] → správně "x|=|2|*|a"
+- Vhodné pro: matematika (vzorce), fyzika (S = v·t), chemie
+  (jednoduché reakce).
+- ZAKÁZÁNO: díly delší než 3 znaky (díl má být atomická jednotka).`;
     default:
       return `
 PRAVIDLA PRO TYP ODPOVĚDI "${practice_type}":

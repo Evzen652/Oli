@@ -9,6 +9,9 @@ import { MultiSelectInput } from "@/components/MultiSelectInput";
 import { CategorizeInput } from "@/components/CategorizeInput";
 import { ImageSelectInput } from "@/components/ImageSelectInput";
 import { DiagramLabelInput } from "@/components/DiagramLabelInput";
+import { ChemicalBalanceInput } from "@/components/ChemicalBalanceInput";
+import { TimelineInput } from "@/components/TimelineInput";
+import { FormulaBuilderInput } from "@/components/FormulaBuilderInput";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -32,7 +35,17 @@ export function PracticeInputRouter({
   onTextSubmit,
 }: PracticeInputRouterProps) {
   // Per-task override: if task carries data for a specific input type, use it
-  // Image-based typy mají nejvyšší prioritu (kdykoli má task obrázky → použij vizuální renderer)
+  // Doménové typy s největší specifickou strukturou mají nejvyšší prioritu
+  if (currentTask?.chemEquation) {
+    return <ChemicalBalanceInput tokens={currentTask.chemEquation.tokens} onSubmit={onAnswerSubmit} disabled={loading} />;
+  }
+  if (currentTask?.timelineEvents && currentTask.timelineEvents.length > 0) {
+    return <TimelineInput events={currentTask.timelineEvents} onSubmit={onAnswerSubmit} disabled={loading} />;
+  }
+  if (currentTask?.formulaPool && currentTask.formulaPool.length > 0) {
+    return <FormulaBuilderInput pool={currentTask.formulaPool} onSubmit={onAnswerSubmit} disabled={loading} />;
+  }
+  // Image-based typy
   if (currentTask?.diagram) {
     return (
       <DiagramLabelInput

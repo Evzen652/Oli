@@ -30,8 +30,11 @@ export type InputType =
   | "categorize"
   | "table_fill"      // Doplnit prázdné buňky tabulky
   | "sequence_step"   // Seřadit kroky postupu (chemie, biologie, dějepis)
-  | "image_select"    // Vyber 1 ze 4 obrázků (zeměpis, biologie)
-  | "diagram_label";  // Popis bodů na obrázku (anatomie, mapa)
+  | "image_select"      // Vyber 1 ze 4 obrázků (zeměpis, biologie)
+  | "diagram_label"     // Popis bodů na obrázku (anatomie, mapa)
+  | "chemical_balance"  // Vyrovnat chemickou rovnici (chemie 8.-9.)
+  | "timeline"          // Seřadit historické události (dějepis)
+  | "formula_builder";  // Sestavit vzorec z dílů (matematika, fyzika, chemie)
 
 // ===== HELP DATA =====
 export interface FractionBarData {
@@ -114,6 +117,19 @@ export interface PracticeTask {
     /** Pool labelů které žák přiřazuje (random shuffled) */
     labelPool: string[];
   };
+  /**
+   * for chemical_balance — žák doplňuje koeficienty rovnice.
+   * tokens: prokládaný array — sudé indexy = vzorce/operátory ("H2O", "+", "="),
+   * liché indexy nebo isCoefficient flag = pole pro doplnění koeficientu.
+   */
+  chemEquation?: {
+    /** Tokens v pořadí. Označené jako koeficient = žák doplňuje. */
+    tokens: { value: string; isCoefficient: boolean }[];
+  };
+  /** for timeline — pool událostí v náhodném pořadí (žák seřadí) */
+  timelineEvents?: { id: string; label: string }[];
+  /** for formula_builder — pool dílů, žák sestaví ve správném pořadí */
+  formulaPool?: { id: string; token: string }[];
 }
 
 // ===== RULE ENGINE =====
