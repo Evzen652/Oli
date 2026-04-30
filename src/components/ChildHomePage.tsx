@@ -299,14 +299,17 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-background px-4 py-8">
-      <div className="w-full max-w-lg space-y-8">
-        {/* Logo + greeting */}
+    <div className="flex min-h-screen flex-col items-center bg-background px-4 py-8 sm:py-10">
+      <div className="w-full max-w-md space-y-7">
+        {/* Hero — owl + pozdrav */}
         <div className="text-center space-y-3">
-          <OlyLogo size="md" />
-          <h1 className="text-2xl font-bold text-foreground">
-            {t("child.hello").replace("{name}", childName || "žáku")}
+          <div className="flex justify-center">
+            <OlyLogo size="md" />
+          </div>
+          <h1 className="font-display text-3xl sm:text-[34px] font-extrabold text-foreground tracking-tight leading-tight">
+            Ahoj, {childName || "žáku"}! <span className="inline-block animate-wave">👋</span>
           </h1>
+          <p className="text-sm text-muted-foreground">Jdeme se dnes něco naučit?</p>
         </div>
 
         {/* Pairing code input — shown when child is not yet paired */}
@@ -321,15 +324,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
         {/* Weekly progress */}
         {!stats.loading && (
-          <div className="space-y-3">
-            <div className="text-center space-y-0.5">
-              <h2 className="text-lg font-semibold text-foreground">
-                {t("child.progress_title")}
-              </h2>
-              <p className="text-xs text-muted-foreground">posledních 7 dní</p>
-            </div>
+          <div className="space-y-5">
             {stats.tasks === 0 ? (
-              <Card className="border-2 border-dashed border-primary/30 rounded-xl bg-primary/5">
+              <Card className="border-2 border-dashed border-primary/30 rounded-3xl bg-primary/5">
                 <CardContent className="p-5 text-center space-y-3">
                   <p className="text-3xl">🚀</p>
                   <p className="text-base font-semibold text-foreground">
@@ -342,301 +339,183 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-2">
-                {/* Friendly summary — vše v jedné kartě, plné věty */}
-                {(() => {
-                  const aloneCount = stats.tasks - stats.helpUsed - stats.wrong;
-                  const wordTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
-                  return (
-                    <Card className="rounded-2xl border-2 border-primary/20 bg-card shadow-sm">
-                      <CardContent className="p-4 space-y-2">
-                        <p className="text-sm flex items-start gap-2.5">
-                          <span className="text-lg flex-shrink-0">📅</span>
-                          <span className="text-foreground">
-                            Cvičil/a jsi
-                            {" "}<span className="font-bold text-blue-700 dark:text-blue-300">{stats.daysActive}</span>
-                            {" "}{stats.daysActive === 1 ? "den" : stats.daysActive < 5 ? "dny" : "dnů"}
-                            {" "}<span className="text-muted-foreground">(z posledních 7)</span>
-                          </span>
-                        </p>
-                        <p className="text-sm flex items-start gap-2.5">
-                          <span className="text-lg flex-shrink-0">📝</span>
-                          <span className="text-foreground">
-                            Dohromady jsi vyřešil/a
-                            {" "}<span className="font-bold text-emerald-700 dark:text-emerald-300">{stats.tasks}</span>
-                            {" "}{stats.tasks === 1 ? "úlohu" : stats.tasks < 5 ? "úlohy" : "úloh"}
-                            {" "}<span className="text-muted-foreground">{stats.sessions === 1 ? "v 1 cvičení" : `v ${stats.sessions} cvičeních`}</span>
-                          </span>
-                        </p>
-                        {aloneCount > 0 && (
-                          <p className="text-sm flex items-start gap-2.5">
-                            <span className="text-lg flex-shrink-0">✅</span>
-                            <span className="text-foreground">
-                              Sám/sama jsi zvládl/a
-                              {" "}<span className="font-bold text-emerald-700 dark:text-emerald-400">{aloneCount}</span>
-                              {" "}{wordTasks(aloneCount)}
-                            </span>
-                          </p>
-                        )}
-                        {stats.helpUsed > 0 && (
-                          <p className="text-sm flex items-start gap-2.5">
-                            <span className="text-lg flex-shrink-0">💡</span>
-                            <span className="text-foreground">
-                              S nápovědou jsi zvládl/a
-                              {" "}<span className="font-bold text-sky-700 dark:text-sky-400">{stats.helpUsed}</span>
-                              {" "}{wordTasks(stats.helpUsed)}
-                            </span>
-                          </p>
-                        )}
-                        {stats.wrong > 0 && (
-                          <p className="text-sm flex items-start gap-2.5">
-                            <span className="text-lg flex-shrink-0">❌</span>
-                            <span className="text-foreground">
-                              Chybu jsi udělal/a
-                              {" "}<span className="font-bold text-rose-700 dark:text-rose-400">{stats.wrong}×</span>
-                            </span>
-                          </p>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                })()}
+              <div className="space-y-5">
+                {/* 3-stat grid s gradient cards a velkými emoji ikonami */}
+                <div className="grid grid-cols-3 gap-3">
+                  <StatCard
+                    icon="⚡"
+                    value={stats.daysActive}
+                    label={stats.daysActive === 1 ? "den" : stats.daysActive < 5 ? "dny" : "dnů"}
+                    sublabel="cvičil/a jsi"
+                    gradient="from-cyan-200 via-cyan-100 to-sky-200"
+                  />
+                  <StatCard
+                    icon="🎯"
+                    value={stats.tasks}
+                    label={stats.tasks === 1 ? "úloha" : stats.tasks < 5 ? "úlohy" : "úloh"}
+                    sublabel="vyřešeno"
+                    gradient="from-emerald-200 via-emerald-100 to-teal-200"
+                  />
+                  <StatCard
+                    icon="⭐"
+                    value={`${stats.accuracy} %`}
+                    label=""
+                    sublabel="úspěšnost"
+                    gradient="from-amber-200 via-yellow-100 to-orange-200"
+                  />
+                </div>
 
-                {/* Co jsi procvičoval — per-skill rozpis (před globálním souhrnem,
-                    aby žák věděl k čemu se čísla vztahují) */}
+                {/* Co jsi procvičoval — green pill cards podle mockupu */}
                 {stats.skills.length > 0 && (
-                  <div className="space-y-2 pt-1">
-                    <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                  <div className="space-y-2.5">
+                    <h3 className="font-display text-lg font-bold text-foreground flex items-center gap-2">
                       <span>📚</span>
                       <span>Co jsi procvičoval</span>
                     </h3>
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
                       {stats.skills.map((s) => {
                         const sAcc = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
-                        let tone = "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800";
-                        let badge = "🌟";
+                        let tone = "bg-emerald-100/70 border-emerald-200";
                         let badgeText = "skvěle";
-                        let badgeColor = "text-emerald-700 dark:text-emerald-400";
+                        let badgeIcon = "👍";
+                        let badgeBg = "bg-emerald-500 text-white";
                         if (s.attempts < 2) {
-                          tone = "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800";
-                          badge = "🌱";
+                          tone = "bg-slate-100/70 border-slate-200";
                           badgeText = "začínáš";
-                          badgeColor = "text-slate-700 dark:text-slate-400";
+                          badgeIcon = "🌱";
+                          badgeBg = "bg-slate-500 text-white";
                         } else if (sAcc < 50) {
-                          tone = "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800";
-                          badge = "💪";
+                          tone = "bg-amber-100/70 border-amber-200";
                           badgeText = "trénovat";
-                          badgeColor = "text-amber-700 dark:text-amber-400";
+                          badgeIcon = "💪";
+                          badgeBg = "bg-amber-500 text-white";
                         } else if (sAcc < 80) {
-                          tone = "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800";
-                          badge = "👍";
+                          tone = "bg-sky-100/70 border-sky-200";
                           badgeText = "dobře";
-                          badgeColor = "text-sky-700 dark:text-sky-400";
+                          badgeIcon = "👌";
+                          badgeBg = "bg-sky-500 text-white";
                         }
                         const wTasks = (n: number) => n === 1 ? "úlohu" : n < 5 ? "úlohy" : "úloh";
                         return (
-                          <div key={s.skillId} className={`rounded-xl border p-3 ${tone} space-y-1.5`}>
-                            {/* Header: emoji + name + badge */}
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-base" aria-hidden>{getSkillIcon(s.skillId)}</span>
-                              <p className="font-medium text-sm text-foreground flex-1 min-w-0 truncate">
+                          <div
+                            key={s.skillId}
+                            className={`rounded-2xl border ${tone} p-3.5 flex items-center gap-3 shadow-soft-1`}
+                          >
+                            <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-xl shadow-soft-1 shrink-0" aria-hidden>
+                              {getSkillIcon(s.skillId)}
+                            </span>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-foreground text-sm leading-tight truncate">
                                 {getReadableSkillName(s.skillId)}
                               </p>
-                              <span className={`text-xs font-bold tabular-nums ${badgeColor} whitespace-nowrap`}>
-                                {badge} {badgeText}
-                              </span>
+                              <p className="text-[12px] text-muted-foreground mt-0.5">
+                                Vyzkoušel/a jsi {s.attempts} {wTasks(s.attempts)}
+                              </p>
                             </div>
-                            {/* Subtitle: kolik úloh celkem */}
-                            <p className="text-xs text-muted-foreground ml-6">
-                              Vyzkoušel/a jsi <span className="font-bold text-foreground">{s.attempts}</span> {wTasks(s.attempts)}:
-                            </p>
-                            {/* Breakdown: stejný styl jako v summary kartě nahoře */}
-                            <div className="ml-6 space-y-1">
-                              {s.correct > 0 && (
-                                <p className="text-xs text-emerald-700 dark:text-emerald-400">
-                                  ✅ Sám/sama jsi zvládl/a <span className="font-bold">{s.correct}</span> {wTasks(s.correct)}
-                                </p>
-                              )}
-                              {s.helpUsed > 0 && (
-                                <p className="text-xs text-sky-700 dark:text-sky-400">
-                                  💡 S nápovědou jsi zvládl/a <span className="font-bold">{s.helpUsed}</span> {wTasks(s.helpUsed)}
-                                </p>
-                              )}
-                              {s.wrong > 0 && (
-                                <p className="text-xs text-rose-700 dark:text-rose-400">
-                                  ❌ Chybu jsi udělal/a <span className="font-bold">{s.wrong}×</span>
-                                </p>
-                              )}
-                            </div>
+                            <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold ${badgeBg} shadow-soft-1 shrink-0`}>
+                              <span>{badgeIcon}</span>
+                              <span>{badgeText}</span>
+                            </span>
                           </div>
                         );
                       })}
                     </div>
                   </div>
                 )}
-
-
-                {/* Návodný blok — co se ti daří + tip */}
-                {(() => {
-                  const helpRatio = stats.tasks > 0 ? stats.helpUsed / stats.tasks : 0;
-                  const wrongRatio = stats.tasks > 0 ? stats.wrong / stats.tasks : 0;
-
-                  // Pravidelnost
-                  let regularityCard: { emoji: string; title: string; text: string; tone: string } | null = null;
-                  if (stats.daysActive >= 4) {
-                    regularityCard = {
-                      emoji: "🔥",
-                      title: "Cvičíš pravidelně — to je super!",
-                      text: "Pravidelnost je ten nejdůležitější krok. I jen 5 minut denně dělá zázraky.",
-                      tone: "bg-orange-50 dark:bg-orange-950/30 border-orange-200 dark:border-orange-800 text-orange-800 dark:text-orange-300",
-                    };
-                  } else if (stats.daysActive >= 2) {
-                    regularityCard = {
-                      emoji: "💪",
-                      title: "Dobře, že to nenecháváš",
-                      text: "Zkus cvičit každý den po malých kouscích — i 5 minut stačí, ale ať je to každý den.",
-                      tone: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300",
-                    };
-                  } else {
-                    regularityCard = {
-                      emoji: "📅",
-                      title: "Zkus si dát procvičování každý den",
-                      text: "I 5 minut denně přinese mnohem víc než dlouhé cvičení jen jednou za týden.",
-                      tone: "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800 text-purple-800 dark:text-purple-300",
-                    };
-                  }
-
-                  // Tip podle profilu chyb
-                  let tipCard: { emoji: string; title: string; text: string; tone: string } | null = null;
-                  if (stats.accuracy >= 80) {
-                    tipCard = {
-                      emoji: "🎉",
-                      title: "Jde ti to skvěle!",
-                      text: "Zkus si dnes nějaké těžší téma — když to máš v malíku, můžeš se posunout dál.",
-                      tone: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300",
-                    };
-                  } else if (helpRatio >= 0.3) {
-                    tipCard = {
-                      emoji: "💡",
-                      title: "Nápověda ti pomáhá — to je super!",
-                      text: "Když si nevíš rady, klidně ji použij. Ale postupně si zkus pár úloh i bez ní — uvidíš, že to půjde.",
-                      tone: "bg-sky-50 dark:bg-sky-950/30 border-sky-200 dark:border-sky-800 text-sky-800 dark:text-sky-300",
-                    };
-                  } else if (wrongRatio >= 0.3) {
-                    tipCard = {
-                      emoji: "🌱",
-                      title: "Chyba není problém — tak se učíš",
-                      text: "Když je úloha těžká, klikni nejdřív na nápovědu a zkus to znovu. Není potřeba to mít napoprvé.",
-                      tone: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300",
-                    };
-                  } else {
-                    tipCard = {
-                      emoji: "👍",
-                      title: "Jde ti to dobře, pokračuj!",
-                      text: "Daří se ti většinu úloh řešit samostatně — to je přesně to, co chceme.",
-                      tone: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300",
-                    };
-                  }
-
-                  return (
-                    <>
-                      {regularityCard && (
-                        <div className={`rounded-xl border p-3 flex items-start gap-3 ${regularityCard.tone}`}>
-                          <span className="text-2xl flex-shrink-0">{regularityCard.emoji}</span>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-sm">{regularityCard.title}</p>
-                            <p className="text-xs leading-relaxed mt-0.5 opacity-90">{regularityCard.text}</p>
-                          </div>
-                        </div>
-                      )}
-                      {tipCard && (
-                        <div className={`rounded-xl border p-3 flex items-start gap-3 ${tipCard.tone}`}>
-                          <span className="text-2xl flex-shrink-0">{tipCard.emoji}</span>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-sm">{tipCard.title}</p>
-                            <p className="text-xs leading-relaxed mt-0.5 opacity-90">{tipCard.text}</p>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-
               </div>
             )}
           </div>
         )}
 
-        {/* Assignments section */}
+        {/* Úkoly od rodiče — pastel pill cards podle mockupu */}
         {assignments.length > 0 && (
-          <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <BookOpen className="h-5 w-5 text-primary" />
-              {t("child.assignments_title")}
+          <div className="space-y-2.5">
+            <h2 className="font-display text-lg font-bold text-foreground flex items-center gap-2">
+              <span>📖</span>
+              <span>{t("child.assignments_title")}</span>
             </h2>
-            <div className="space-y-3">
-              {assignments.map((a) => (
-                <Card key={a.id} className="border-2 rounded-xl hover:shadow-md transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex-1 min-w-0 space-y-1">
-                        <p className="font-medium text-foreground text-base">
-                          {SUBJECT_EMOJI[a.subject] || "📋"} {a.skillName}
-                        </p>
-                        {a.note && (
-                          <p className="text-sm text-muted-foreground italic truncate">
-                            „{a.note}"
-                          </p>
-                        )}
-                        {a.due_date && (
-                          <p className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            {t("child.due_date").replace("{date}", formatDueDate(a.due_date))}
-                          </p>
-                        )}
-                      </div>
-                      <Button
-                        size="sm"
-                        className="shrink-0 gap-1"
-                        onClick={() => handleStartAssignment(a)}
-                        disabled={!a.topic}
-                      >
-                        {t("child.start_assignment")}
-                        <ArrowRight className="h-4 w-4" />
-                      </Button>
+            <div className="space-y-2">
+              {assignments.map((a, i) => {
+                // Alternuj pastel pozadí pro vizuální rozdělení
+                const tones = [
+                  "bg-violet-100/70 border-violet-200",
+                  "bg-emerald-100/70 border-emerald-200",
+                  "bg-rose-100/70 border-rose-200",
+                  "bg-sky-100/70 border-sky-200",
+                ];
+                const tone = tones[i % tones.length];
+                return (
+                  <div key={a.id} className={`rounded-2xl border ${tone} p-3.5 flex items-center gap-3 shadow-soft-1`}>
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-xl shadow-soft-1 shrink-0" aria-hidden>
+                      {SUBJECT_EMOJI[a.subject] || "📋"}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-foreground text-sm leading-tight truncate">
+                        {a.skillName}
+                      </p>
+                      <p className="text-[12px] text-muted-foreground mt-0.5 truncate">
+                        {a.note ? `„${a.note}"` : a.due_date ? `termín: ${formatDueDate(a.due_date)}` : "od rodiče"}
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    <Button
+                      size="sm"
+                      className="shrink-0 gap-1 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-soft-2 px-4"
+                      onClick={() => handleStartAssignment(a)}
+                      disabled={!a.topic}
+                    >
+                      {t("child.start_assignment")}
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
 
-        {/* Divider */}
-        {assignments.length > 0 && (
-          <div className="flex items-center gap-4">
-            <div className="flex-1 h-px bg-border" />
-            <span className="text-sm text-muted-foreground">{t("child.or_divider")}</span>
-            <div className="flex-1 h-px bg-border" />
-          </div>
-        )}
+        {/* Self-practice — velký gradient CTA */}
+        <button
+          onClick={onBrowseTopics}
+          className="w-full rounded-2xl py-4 px-6 font-display font-bold text-lg text-white shadow-soft-3 bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 hover:from-violet-600 hover:via-purple-600 hover:to-pink-600 transition-all hover:shadow-soft-3 active:scale-[0.99] flex items-center justify-center gap-2"
+        >
+          <span aria-hidden>✨</span>
+          {assignments.length > 0 ? "Procvičovat samostatně" : t("child.browse_topics")}
+          <ArrowRight className="h-5 w-5" />
+        </button>
 
-        {/* Self-practice button */}
-        <div className="text-center">
-          {assignments.length === 0 && (
-            <p className="text-muted-foreground mb-4">{t("child.no_assignments")}</p>
-          )}
-          <Button
-            size="lg"
-            variant={assignments.length > 0 ? "outline" : "default"}
-            className="gap-2 text-base px-8"
-            onClick={onBrowseTopics}
-          >
-            {t("child.browse_topics")}
-            <ArrowRight className="h-5 w-5" />
-          </Button>
+        {/* Owl tip card */}
+        <div className="rounded-2xl border border-border bg-card/60 p-4 flex items-start gap-3 shadow-soft-1">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-xl shrink-0" aria-hidden>
+            🦉
+          </span>
+          <div className="space-y-0.5">
+            <p className="font-semibold text-sm text-foreground">
+              💡 Chyba není problém — tak se učíš
+            </p>
+            <p className="text-[12px] text-muted-foreground leading-snug">
+              Když je úloha těžká, klikni nejdřív na nápovědu.
+            </p>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Stat card s gradient pozadím a velkou emoji ikonou */
+function StatCard({
+  icon, value, label, sublabel, gradient,
+}: { icon: string; value: number | string; label: string; sublabel: string; gradient: string }) {
+  return (
+    <div className={`rounded-3xl bg-gradient-to-br ${gradient} p-3 sm:p-4 text-center shadow-soft-2 border border-white/40`}>
+      <div className="text-3xl sm:text-4xl mb-1 leading-none" aria-hidden>{icon}</div>
+      <p className="font-display text-2xl sm:text-3xl font-extrabold text-foreground tabular-nums leading-tight">
+        {value}
+        {label && <span className="text-base ml-0.5 font-bold opacity-80">{label}</span>}
+      </p>
+      <p className="text-[11px] text-foreground/70 font-medium mt-0.5">
+        {sublabel}
+      </p>
     </div>
   );
 }

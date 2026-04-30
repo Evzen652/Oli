@@ -28,7 +28,7 @@ import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPe
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
 import goodToKnowImg from "@/assets/good-to-know.png";
 import { useT } from "@/lib/i18n";
-import { LogOut } from "lucide-react";
+import { LogOut, Eye } from "lucide-react";
 import { OlyLogo } from "@/components/OlyLogo";
 
 function ChildLoadingFallback() {
@@ -149,9 +149,12 @@ export function SessionView() {
   // Admin floating banner component with grade dropdown
   const GRADES = [3, 4, 5, 6, 7, 8, 9];
   const AdminBanner = role === "admin" ? (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-primary text-primary-foreground px-4 py-2 flex items-center justify-between text-sm shadow-md">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur text-primary-foreground px-5 py-2.5 flex items-center justify-between text-sm shadow-soft-2">
       <div className="flex items-center gap-3">
-        <span className="font-medium">👁 Náhled žákovského pohledu</span>
+        <span className="font-medium inline-flex items-center gap-2">
+          <Eye className="h-3.5 w-3.5" />
+          Náhled žákovského pohledu
+        </span>
         <select
           value={grade ?? 3}
           onChange={(e) => {
@@ -159,7 +162,7 @@ export function SessionView() {
             s.setSession(null as any);
             setTimeout(() => s.handleGradeSelect(Number(e.target.value) as any), 0);
           }}
-          className="h-7 rounded bg-primary-foreground/20 border border-primary-foreground/30 text-primary-foreground text-xs px-2 cursor-pointer"
+          className="h-7 rounded-full bg-white/15 border border-white/20 text-primary-foreground text-xs px-3 cursor-pointer font-medium"
         >
           {GRADES.map(g => (
             <option key={g} value={g} className="text-foreground bg-background">{g}. ročník</option>
@@ -169,7 +172,7 @@ export function SessionView() {
       <Button
         variant="secondary"
         size="sm"
-        className="h-7 text-xs"
+        className="h-7 text-xs rounded-full bg-white/15 hover:bg-white/25 text-primary-foreground border border-white/20"
         onClick={() => navigate("/admin")}
       >
         ← Zpět do Adminu
