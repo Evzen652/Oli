@@ -147,34 +147,54 @@ function AssignmentCard({
   const isOverdue = hasTerminus && isPending && new Date(a.due_date!) < new Date();
 
   const cardClasses = isCompleted
-    ? "border-green-200 bg-green-50/40"
+    ? "border-emerald-200 bg-emerald-50/40"
     : isSkipped
-    ? "border-muted bg-muted/30 opacity-60"
+    ? "border-border bg-muted/30 opacity-60"
     : isOverdue
-    ? "border-red-300 bg-red-50/30"
+    ? "border-rose-200 bg-rose-50/40"
     : active
-    ? "border-orange-200 bg-orange-50/30"
+    ? "border-border bg-card"
     : "border-border bg-card";
 
   return (
-    <div className={`rounded-lg border-2 ${cardClasses} p-3 space-y-1`}>
-      <div className="flex items-start gap-2">
-        <span className="text-lg shrink-0 leading-none mt-0.5" aria-hidden="true">{emoji}</span>
-        <div className="flex-1 min-w-0">
-          <p className="font-medium text-foreground text-sm leading-tight">{name}</p>
-          <p className="text-[11px] text-muted-foreground mt-0.5">
-            {subject} · zadáno {formatCzDate(a.assigned_date)}
-            {hasTerminus && ` · do ${formatCzDate(a.due_date!)}`}
-          </p>
-          {a.note && (
-            <p className="text-xs text-foreground/80 italic mt-1 leading-snug">„{a.note}"</p>
-          )}
-        </div>
+    <div className={`rounded-2xl border ${cardClasses} p-3 flex items-center gap-3 shadow-soft-1`}>
+      <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-50 text-emerald-700 text-base shrink-0" aria-hidden="true">{emoji}</span>
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
+        <p className="text-[11px] text-muted-foreground mt-0.5">
+          {subject} · zadáno {formatCzDate(a.assigned_date)}
+          {hasTerminus && ` · do ${formatCzDate(a.due_date!)}`}
+        </p>
+        {a.note && (
+          <p className="text-xs text-foreground/80 italic mt-1 leading-snug">„{a.note}"</p>
+        )}
+      </div>
+      <div className="flex items-center gap-1 shrink-0">
+        {isCompleted && (
+          <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[11px] gap-1 h-6 rounded-full font-semibold px-2.5">
+            <CheckCircle2 className="h-3 w-3" /> Splněno
+          </Badge>
+        )}
+        {isSkipped && (
+          <Badge variant="secondary" className="text-[11px] gap-1 h-6 rounded-full font-semibold px-2.5">
+            <XCircle className="h-3 w-3" /> Přeskočeno
+          </Badge>
+        )}
+        {isPending && !isOverdue && (
+          <Badge className="bg-amber-50 text-amber-700 border-amber-200 text-[11px] gap-1 h-6 rounded-full font-semibold px-2.5">
+            K procvičení
+          </Badge>
+        )}
+        {isPending && isOverdue && (
+          <Badge className="bg-rose-50 text-rose-700 border-rose-200 text-[11px] gap-1 h-6 rounded-full font-semibold px-2.5">
+            Po termínu
+          </Badge>
+        )}
         {isPending && (
           <Button
             variant="ghost"
-            size="sm"
-            className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive shrink-0"
+            size="icon"
+            className="h-7 w-7 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50"
             onClick={() => onDelete(a.id)}
             title="Zrušit úkol"
           >
@@ -182,30 +202,5 @@ function AssignmentCard({
           </Button>
         )}
       </div>
-
-      {/* Status badge */}
-      <div className="flex items-center justify-end pt-1">
-        {isCompleted && (
-          <Badge className="bg-green-100 text-green-700 border-green-200 text-[10px] gap-1 h-5">
-            <CheckCircle2 className="h-2.5 w-2.5" /> Splněno
-          </Badge>
-        )}
-        {isSkipped && (
-          <Badge variant="secondary" className="text-[10px] gap-1 h-5">
-            <XCircle className="h-2.5 w-2.5" /> Přeskočeno
-          </Badge>
-        )}
-        {isPending && !isOverdue && (
-          <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 text-[10px] gap-1 h-5">
-            <Clock className="h-2.5 w-2.5" /> K procvičení
-          </Badge>
-        )}
-        {isPending && isOverdue && (
-          <Badge variant="destructive" className="text-[10px] gap-1 h-5">
-            <Clock className="h-2.5 w-2.5" /> Po termínu
-          </Badge>
-        )}
-      </div>
-    </div>
   );
 }

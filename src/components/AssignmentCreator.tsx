@@ -235,7 +235,7 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="default" size="default" className="gap-2 h-10 font-medium shadow-sm">
+        <Button variant="default" size="default" className="gap-2 h-10 rounded-xl font-semibold shadow-soft-2 bg-primary hover:bg-primary/90">
           <ClipboardList className="h-4 w-4" />
           {t("assign.create")}
         </Button>

@@ -126,18 +126,17 @@ export function SelfPracticeList({ childId }: Props) {
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger asChild>
-        <button className="w-full flex items-center justify-between gap-2 rounded-lg border-2 border-indigo-200/60 bg-indigo-50/50 hover:bg-indigo-50 hover:border-indigo-300 px-3 py-2.5 text-sm font-medium text-indigo-900 transition-colors">
-          <span className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-indigo-600" />
-            <span>Procvičoval(a) si sám/sama</span>
-            <span className="text-xs font-normal text-indigo-700/70">
-              ({totalSkills} {totalSkills === 1 ? "téma" : totalSkills < 5 ? "témata" : "témat"} · {totalTasks}×)
+        <button className="w-full flex items-center justify-between gap-2 rounded-2xl border border-border bg-primary/5 hover:bg-primary/10 px-4 py-3 text-sm font-medium text-foreground transition-colors shadow-soft-1">
+          <span className="flex items-center gap-2.5">
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/10 text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+            </span>
+            <span className="font-display font-semibold">Procvičoval si sám</span>
+            <span className="text-xs font-normal text-muted-foreground">
+              {totalSkills} {totalSkills === 1 ? "téma" : totalSkills < 5 ? "témata" : "témat"} · {totalTasks}× tento týden
             </span>
           </span>
-          <span className="flex items-center gap-1 text-xs text-indigo-700/70">
-            <span>{open ? "Skrýt" : "Zobrazit"}</span>
-            <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
-          </span>
+          <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent>

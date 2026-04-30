@@ -147,10 +147,12 @@ export function ChildActivityChart({ childId }: Props) {
   return (
     <Collapsible open={open || shouldDefaultOpen} onOpenChange={setOpen}>
       <CollapsibleTrigger asChild>
-        <button className="w-full flex items-center justify-between gap-2 rounded-lg border-2 border-border/60 bg-muted/40 hover:bg-muted hover:border-border px-3 py-2.5 text-sm font-medium text-foreground transition-colors">
-          <span className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            <span>Aktivita za 7 dní</span>
+        <button className="w-full flex items-center justify-between gap-2 rounded-2xl border border-border bg-card hover:bg-muted/40 px-4 py-3 text-sm font-medium text-foreground transition-colors shadow-soft-1">
+          <span className="flex items-center gap-2.5">
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/10 text-primary">
+              <BarChart3 className="h-3.5 w-3.5" />
+            </span>
+            <span className="font-display font-semibold">Aktivita za 7 dní</span>
             <span className="text-xs text-muted-foreground font-normal">
               {hasAnyActivity ? `(${data.reduce((s, d) => s + d.total, 0)} úloh)` : "(zatím nic)"}
             </span>
@@ -162,28 +164,30 @@ export function ChildActivityChart({ childId }: Props) {
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="space-y-4 pt-2">
+        <div className="space-y-4 pt-3 px-1">
       {/* Week navigation */}
       <div className="flex items-center justify-between">
         <Button
           variant="ghost"
-          size="sm"
-          className="gap-1 text-xs text-muted-foreground"
+          size="icon"
+          className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
           onClick={() => setWeekOffset(o => o + 1)}
+          title="Předchozí týden"
         >
-          <ChevronLeft className="h-3.5 w-3.5" /> Předchozí
+          <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-xs font-medium text-muted-foreground">
+        <span className="text-xs font-semibold text-foreground/80 px-2 py-1 rounded-full bg-muted/60">
           {weekOffset === 0 ? t("parent.chart_title") : formatDateRange(weekOffset)}
         </span>
         <Button
           variant="ghost"
-          size="sm"
-          className="gap-1 text-xs text-muted-foreground"
+          size="icon"
+          className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
           disabled={weekOffset === 0}
           onClick={() => setWeekOffset(o => o - 1)}
+          title="Další týden"
         >
-          Další <ChevronRight className="h-3.5 w-3.5" />
+          <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
 
