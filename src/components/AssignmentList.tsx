@@ -202,5 +202,6 @@ function AssignmentCard({
           </Button>
         )}
       </div>
+    </div>
   );
 }
