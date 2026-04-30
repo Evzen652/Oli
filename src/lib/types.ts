@@ -161,6 +161,13 @@ export interface SessionData {
   helpUsedOnCurrent: boolean; // whether help was opened for the current task
   currentLevel: number; // adaptive difficulty level (1-3)
   adaptiveHelpOffered: boolean; // adaptive engine suggested offering help
+  /**
+   * Pre-fetched active misconception confidence (0-1) pro matchedTopic.skill.
+   * Naplňuje se při TOPIC_MATCH transition (jednou per topic, ne per task),
+   * aby orchestrator mohl synchronně předat do adaptive engine bez DB volání
+   * v realtime loop.
+   */
+  misconceptionConfidence?: number;
 }
 
 // ===== AI EXECUTION (mock) =====

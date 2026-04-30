@@ -182,6 +182,15 @@ export async function processState(session: SessionData, userInput?: string): Pr
         };
       }
       s.matchedTopic = topic;
+      // Pre-fetch active misconception confidence pro tento skill (jednou per session/topic).
+      // Realtime adaptive loop pak jen čte z s.misconceptionConfidence (sync).
+      // Fire-and-forget — pokud DB lookup selže, default 0 znamená "žádný terapeutický mód".
+      try {
+        const { getActiveMisconceptionConfidence } = await import("./performanceTracker");
+        s.misconceptionConfidence = await getActiveMisconceptionConfidence(topic.id);
+      } catch {
+        s.misconceptionConfidence = 0;
+      }
       s = transition(s, "EXPLAIN");
       return processState(s);
     }
@@ -386,6 +395,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
         error_streak: s.errorStreak,
         success_streak: s.successStreak,
         attempts_total: s.currentTaskIndex + 1,
+        active_misconception_confidence: s.misconceptionConfidence ?? 0,
       };
       const adaptive = computeAdaptiveDecision(adaptiveSnapshot);
 

@@ -184,3 +184,55 @@ export async function getSkillProfile(skillId: string) {
 
   return data;
 }
+
+/**
+ * Vrátí confidence aktivní misconception pro daný skill, 0 pokud žádná.
+ *
+ * Hledá nejvyšší confidence z aktivních misconceptions:
+ *   - primárně podle child_id (paired session)
+ *   - fallback podle user_id (admin/parent preview)
+ *
+ * Volá se 1× na začátku session (při TOPIC_MATCH), výsledek se cache-uje
+ * v SessionData.misconceptionConfidence — orchestrator pak v realtime
+ * loop jen čte z paměti, žádné DB calls (CHECK < 60ms invariant).
+ */
+export async function getActiveMisconceptionConfidence(skillId: string): Promise<number> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return 0;
+
+  // Najdi child_id přes pairing (stejná logika jako recordOutcome)
+  let childId: string | null = null;
+  const { data: childByUser } = await supabase
+    .from("children")
+    .select("id")
+    .eq("child_user_id", user.id)
+    .maybeSingle();
+  if (childByUser) {
+    childId = childByUser.id;
+  } else {
+    const { data: childByParent } = await supabase
+      .from("children")
+      .select("id")
+      .eq("parent_user_id", user.id)
+      .limit(1)
+      .maybeSingle();
+    if (childByParent) childId = childByParent.id;
+  }
+
+  let query = supabase
+    .from("student_misconceptions")
+    .select("confidence")
+    .eq("skill_id", skillId)
+    .eq("status", "active")
+    .order("confidence", { ascending: false })
+    .limit(1);
+
+  if (childId) {
+    query = query.eq("child_id", childId);
+  } else {
+    query = query.eq("user_id", user.id);
+  }
+
+  const { data } = await query.maybeSingle();
+  return typeof data?.confidence === "number" ? data.confidence : 0;
+}
