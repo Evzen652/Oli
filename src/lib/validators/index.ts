@@ -390,6 +390,78 @@ export const sequenceStepValidator: Validator = {
   },
 };
 
+// ─── Image Select (vyber správný obrázek) ──────────────────────────────
+/**
+ * ImageSelect: žák klikne na 1 z 4 obrázků.
+ * Expected = ID nebo URL správného obrázku.
+ * Answer = ID/URL obrázku, na který žák klikl.
+ *
+ * Stejný jako stringExact, jen sémanticky jiné. Vlastní validátor pro
+ * případ, že bychom chtěli později přidat fuzzy URL match (s/bez query
+ * paramů, http vs https).
+ */
+export const imageSelectValidator: Validator = {
+  id: "image_select",
+  validate(answer, expected) {
+    const norm = (s: string) => s.trim().toLowerCase();
+    const ok = norm(answer) === norm(expected);
+    return ok
+      ? { correct: true }
+      : { correct: false, errorType: "wrong_image" };
+  },
+};
+
+// ─── Diagram Label (popsat oblasti obrázku) ─────────────────────────────
+/**
+ * DiagramLabel: žák popíše X bodů na obrázku (např. "kořen, stonek, list").
+ * Expected = labels v pevném pořadí oddělené |, např. "kořen|stonek|list|květ"
+ * Answer = labels v žákem zvoleném pořadí pro každý bod
+ *   (UI musí mít fixní mapování bod→index)
+ *
+ * Validace:
+ *   1) Délka musí sedět
+ *   2) Každý label fuzzy match (Levenshtein 1) — drobné překlepy OK
+ *   3) Partial scoring jako tableFill
+ */
+export const diagramLabelValidator: Validator = {
+  id: "diagram_label",
+  validate(answer, expected) {
+    const norm = (s: string) =>
+      s.trim().toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^\w\s]/g, "");
+    const aLabels = answer.split("|").map(norm);
+    const eLabels = expected.split("|").map(norm);
+    if (eLabels.length === 0) return { correct: false, errorType: "no_labels" };
+    if (aLabels.length !== eLabels.length) {
+      return {
+        correct: false,
+        errorType: "wrong_label_count",
+        feedback: `Očekáváno ${eLabels.length} popisků, dáno ${aLabels.length}`,
+      };
+    }
+    let correctCount = 0;
+    for (let i = 0; i < eLabels.length; i++) {
+      const a = aLabels[i];
+      const e = eLabels[i];
+      if (a === e) {
+        correctCount++;
+      } else if (Math.abs(a.length - e.length) <= 2 && levenshtein(a, e) <= 1) {
+        correctCount++;
+      }
+    }
+    const partialScore = correctCount / eLabels.length;
+    if (partialScore === 1) return { correct: true, partialScore };
+    return {
+      correct: false,
+      partialScore,
+      errorType: "partial_labels",
+      feedback: `Správně ${correctCount}/${eLabels.length} popisků.`,
+    };
+  },
+};
+
 // ─── Registry ────────────────────────────────────────────────────────────
 const VALIDATORS: Record<string, Validator> = {
   string_exact: stringExactValidator,
@@ -398,6 +470,8 @@ const VALIDATORS: Record<string, Validator> = {
   short_answer: shortAnswerValidator,
   table_fill: tableFillValidator,
   sequence_step: sequenceStepValidator,
+  image_select: imageSelectValidator,
+  diagram_label: diagramLabelValidator,
   fraction: fractionValidator,
   set_match: setMatchValidator,
   ordered_sequence: orderedSequenceValidator,
@@ -426,6 +500,10 @@ export function getDefaultValidator(inputType: string): Validator {
       return tableFillValidator;
     case "sequence_step":
       return sequenceStepValidator;
+    case "image_select":
+      return imageSelectValidator;
+    case "diagram_label":
+      return diagramLabelValidator;
     case "multi_select":
       return setMatchValidator;
     case "drag_order":

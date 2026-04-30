@@ -29,7 +29,9 @@ export type InputType =
   | "multi_select"
   | "categorize"
   | "table_fill"      // Doplnit prázdné buňky tabulky
-  | "sequence_step";  // Seřadit kroky postupu (chemie, biologie, dějepis)
+  | "sequence_step"   // Seřadit kroky postupu (chemie, biologie, dějepis)
+  | "image_select"    // Vyber 1 ze 4 obrázků (zeměpis, biologie)
+  | "diagram_label";  // Popis bodů na obrázku (anatomie, mapa)
 
 // ===== HELP DATA =====
 export interface FractionBarData {
@@ -101,6 +103,17 @@ export interface PracticeTask {
   pairs?: { left: string; right: string }[]; // for match_pairs
   categories?: { name: string; items: string[] }[]; // for categorize
   correctAnswers?: string[]; // for multi_select
+  /** for image_select — pole 4 obrázků s URL a alt textem */
+  imageOptions?: { url: string; alt: string; id: string }[];
+  /** for diagram_label — pozadí + body k popisu */
+  diagram?: {
+    imageUrl: string;
+    imageAlt: string;
+    /** Body s relativní pozicí (0-1) v rámci obrázku */
+    points: { x: number; y: number; id: string }[];
+    /** Pool labelů které žák přiřazuje (random shuffled) */
+    labelPool: string[];
+  };
 }
 
 // ===== RULE ENGINE =====

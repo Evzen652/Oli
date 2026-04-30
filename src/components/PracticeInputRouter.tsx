@@ -7,6 +7,8 @@ import { FillBlankInput } from "@/components/FillBlankInput";
 import { MatchPairsInput } from "@/components/MatchPairsInput";
 import { MultiSelectInput } from "@/components/MultiSelectInput";
 import { CategorizeInput } from "@/components/CategorizeInput";
+import { ImageSelectInput } from "@/components/ImageSelectInput";
+import { DiagramLabelInput } from "@/components/DiagramLabelInput";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -30,6 +32,22 @@ export function PracticeInputRouter({
   onTextSubmit,
 }: PracticeInputRouterProps) {
   // Per-task override: if task carries data for a specific input type, use it
+  // Image-based typy mají nejvyšší prioritu (kdykoli má task obrázky → použij vizuální renderer)
+  if (currentTask?.diagram) {
+    return (
+      <DiagramLabelInput
+        imageUrl={currentTask.diagram.imageUrl}
+        imageAlt={currentTask.diagram.imageAlt}
+        points={currentTask.diagram.points}
+        labelPool={currentTask.diagram.labelPool}
+        onSubmit={onAnswerSubmit}
+        disabled={loading}
+      />
+    );
+  }
+  if (currentTask?.imageOptions && currentTask.imageOptions.length > 0) {
+    return <ImageSelectInput imageOptions={currentTask.imageOptions} onSubmit={onAnswerSubmit} disabled={loading} />;
+  }
   if (currentTask?.categories && currentTask.categories.length > 0) {
     return <CategorizeInput categories={currentTask.categories} onSubmit={onAnswerSubmit} disabled={loading} />;
   }
