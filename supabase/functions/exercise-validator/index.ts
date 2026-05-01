@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { extractJsonFromResponse } from "../_shared/jsonExtract.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -58,33 +59,6 @@ PRAVIDLA:
 - Pokud je něco špatně, vždy to přepiš do správné podoby
 - Pokud je vše v pořádku, potvrď kvalitu stručně
 - Jazyk výstupu: čeština`;
-
-function extractJsonFromResponse(response: string): unknown {
-  let cleaned = response
-    .replace(/```json\s*/gi, "")
-    .replace(/```\s*/g, "")
-    .trim();
-
-  const jsonStart = cleaned.search(/[\{\[]/);
-  const isArray = jsonStart !== -1 && cleaned[jsonStart] === "[";
-  const jsonEnd = cleaned.lastIndexOf(isArray ? "]" : "}");
-
-  if (jsonStart === -1 || jsonEnd === -1) {
-    throw new Error("No JSON object found in response");
-  }
-
-  cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
-
-  try {
-    return JSON.parse(cleaned);
-  } catch (_) {
-    cleaned = cleaned
-      .replace(/,\s*}/g, "}")
-      .replace(/,\s*]/g, "]")
-      .replace(/[\x00-\x1F\x7F]/g, "");
-    return JSON.parse(cleaned);
-  }
-}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
