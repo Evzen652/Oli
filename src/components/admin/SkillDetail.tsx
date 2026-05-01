@@ -6,9 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Save, ChevronDown } from "lucide-react";
+import { Pencil, Save, ChevronDown, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { ExerciseTab } from "@/components/admin/ExerciseTab";
 import { AssetPicker } from "@/components/admin/AssetPicker";
@@ -46,6 +45,8 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
   });
   // Trigger pro refetch counts po save/delete v ExerciseTab
   const [countsRefresh, setCountsRefresh] = useState(0);
+  // Aktivní level (replace Tabs)
+  const [activeLevel, setActiveLevel] = useState<"simple" | "advanced" | "expert">("simple");
 
   // Počet algoritmických vzorků (jen Level I — code generator)
   const templateSamplesCount = (() => {
@@ -191,75 +192,119 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
   const displayVisualExamples = help?.visualExamples;
 
   return (
-    <div className="space-y-4 max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold text-foreground">{skill.title}</h3>
+    <div className="space-y-5 max-w-3xl mx-auto">
+      {/* Header — lila gradient card */}
+      <div className="relative overflow-hidden rounded-3xl border-2 border-violet-200/60 bg-gradient-to-br from-violet-50 via-indigo-50 to-purple-50 dark:from-violet-950/40 dark:via-indigo-950/30 dark:to-purple-950/40 p-6 shadow-soft-1">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <Badge
+            variant="outline"
+            className="rounded-full bg-violet-100/80 border-violet-300 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 px-3 py-0.5 text-[11px] font-bold uppercase tracking-[0.1em] gap-1"
+          >
+            <Plus className="h-3 w-3" />
+            Podtéma · {skill.category}
+          </Badge>
           {!editing ? (
-            <Button size="sm" variant="outline" onClick={() => setEditing(true)} className="gap-1">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setEditing(true)}
+              className="gap-1 rounded-full bg-white/80 backdrop-blur"
+            >
               <Pencil className="h-3 w-3" /> Upravit
             </Button>
           ) : (
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSave} disabled={saving} className="gap-1">
+              <Button size="sm" onClick={handleSave} disabled={saving} className="gap-1 rounded-full">
                 <Save className="h-3 w-3" /> {saving ? "Ukládám…" : "Uložit"}
               </Button>
-              <Button size="sm" variant="outline" onClick={handleCancel}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCancel}
+                className="rounded-full bg-white/80 backdrop-blur"
+              >
                 Zrušit
               </Button>
             </div>
           )}
         </div>
+
+        <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-2">
+          {skill.title}
+        </h2>
+
         {editing ? (
           <Textarea
             value={form.brief_description}
             onChange={(e) => setField("brief_description", e.target.value)}
             placeholder="Popis pro žáka"
-            className="min-h-[50px]"
+            className="min-h-[50px] bg-white/70 backdrop-blur border-violet-200"
           />
         ) : (
-          <p className="text-muted-foreground">{displayDescription}</p>
+          displayDescription && (
+            <p className="text-base text-foreground/75 leading-relaxed max-w-2xl">
+              {displayDescription}
+            </p>
+          )
         )}
-        <div className="flex gap-4 flex-wrap items-start">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-muted-foreground font-medium">Ročník</span>
-            <Badge variant="outline">
-              {skill.gradeRange[0]}–{skill.gradeRange[1]}. ročník
-            </Badge>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-muted-foreground font-medium">Typ odpovědi</span>
-            <Badge variant="secondary">{INPUT_TYPE_LABELS[skill.inputType] ?? skill.inputType}</Badge>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-muted-foreground font-medium">Knihovna obrázků</span>
-            <AssetPicker
-              skillId={skill.id}
-              trigger={
-                <Button variant="outline" size="sm" className="h-7 gap-1.5 rounded-lg text-xs">
-                  <ImageIcon className="h-3.5 w-3.5" />
-                  Spravovat obrázky
-                </Button>
-              }
-            />
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-muted-foreground font-medium">Počet úloh na procvičování</span>
-            {editing ? (
-              <Input
-                type="number"
-                min={1}
-                max={100}
-                value={form.session_task_count}
-                onChange={(e) => setField("session_task_count", e.target.value)}
-                className="w-20 h-8 text-sm"
-              />
-            ) : (
-              <Badge variant="outline">📋 {dbRecord?.session_task_count ?? skill.sessionTaskCount ?? 6}</Badge>
-            )}
-          </div>
+      </div>
+
+      {/* Metadata grid — 3 karty */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="rounded-2xl border-2 border-border/60 bg-card px-4 py-3.5 shadow-soft-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+            Ročník
+          </p>
+          <p className="mt-1 text-xl font-bold text-foreground tabular-nums">
+            {skill.gradeRange[0]}.–{skill.gradeRange[1]}.
+          </p>
         </div>
+
+        <div className="rounded-2xl border-2 border-border/60 bg-card px-4 py-3.5 shadow-soft-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+            Typ odpovědi
+          </p>
+          <p className="mt-1 text-xl font-bold text-foreground">
+            {INPUT_TYPE_LABELS[skill.inputType] ?? skill.inputType}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border-2 border-border/60 bg-card px-4 py-3.5 shadow-soft-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+            Úloh v procvičování
+          </p>
+          {editing ? (
+            <Input
+              type="number"
+              min={1}
+              max={100}
+              value={form.session_task_count}
+              onChange={(e) => setField("session_task_count", e.target.value)}
+              className="mt-1 w-24 h-9 text-xl font-bold"
+            />
+          ) : (
+            <p className="mt-1 text-xl font-bold text-foreground tabular-nums">
+              {dbRecord?.session_task_count ?? skill.sessionTaskCount ?? 6}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Knihovna obrázků — kompaktní řádek */}
+      <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-muted/30 px-4 py-2.5">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <ImageIcon className="h-4 w-4" />
+          <span>Knihovna obrázků pro toto podtéma</span>
+        </div>
+        <AssetPicker
+          skillId={skill.id}
+          trigger={
+            <Button variant="outline" size="sm" className="h-8 gap-1.5 rounded-full text-xs">
+              <ImageIcon className="h-3.5 w-3.5" />
+              Spravovat
+            </Button>
+          }
+        />
       </div>
 
       {/* Vysvětlení tématu */}
@@ -438,93 +483,111 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
         </CollapsibleContent>
       </Collapsible>
 
-      {/* Přehled cvičení */}
-      <div className="space-y-1 mt-6">
-        <h4 className="text-sm font-semibold text-foreground">📚 Přehled cvičení</h4>
-        <Tabs defaultValue="simple" className="w-full">
-          <TabsList className="w-full bg-muted/60 p-1.5 rounded-lg h-auto flex-col sm:flex-row">
-            <TabsTrigger
-              value="simple"
-              className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
-              title={
-                templateSamplesCount > 0
-                  ? `${templateSamplesCount} algoritmických vzorků + ${exerciseCounts.simple.approved} schválených AI úloh${
-                      exerciseCounts.simple.pending > 0 ? ` (${exerciseCounts.simple.pending} čeká na schválení)` : ""
-                    }`
-                  : `${exerciseCounts.simple.approved} schválených úloh${
-                      exerciseCounts.simple.pending > 0 ? ` (${exerciseCounts.simple.pending} čeká)` : ""
-                    }`
-              }
-            >
-              📗 Základní (Level I){" "}
-              <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-2 py-0.5 text-[10px] font-semibold tabular-nums min-w-[20px]">
-                {templateSamplesCount + exerciseCounts.simple.approved}
-              </span>
-              {exerciseCounts.simple.pending > 0 && (
-                <span
-                  className="inline-flex items-center justify-center rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200 px-1.5 py-0.5 text-[10px] font-bold tabular-nums"
-                  title={`${exerciseCounts.simple.pending} návrhů čeká na schválení`}
-                >
-                  +{exerciseCounts.simple.pending}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger
-              value="advanced"
-              className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-purple-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
-              title={`${exerciseCounts.advanced.approved} schválených${
-                exerciseCounts.advanced.pending > 0 ? ` (${exerciseCounts.advanced.pending} čeká)` : ""
-              }`}
-            >
-              📘 Pokročilá (Level II){" "}
-              <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
-                {exerciseCounts.advanced.approved}
-              </span>
-              {exerciseCounts.advanced.pending > 0 && (
-                <span
-                  className="inline-flex items-center justify-center rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200 px-1.5 py-0.5 text-[10px] font-bold tabular-nums"
-                  title={`${exerciseCounts.advanced.pending} návrhů čeká na schválení`}
-                >
-                  +{exerciseCounts.advanced.pending}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger
-              value="expert"
-              className="flex-1 gap-1.5 py-2 text-sm data-[state=active]:bg-red-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:font-bold data-[state=inactive]:hover:bg-muted"
-              title={`${exerciseCounts.expert.approved} schválených${
-                exerciseCounts.expert.pending > 0 ? ` (${exerciseCounts.expert.pending} čeká)` : ""
-              }`}
-            >
-              📕 Vysoká obtížnost (Level III){" "}
-              <span className="inline-flex items-center justify-center rounded-full bg-background/30 px-1.5 py-0.5 text-[10px] font-semibold min-w-[20px]">
-                {exerciseCounts.expert.approved}
-              </span>
-              {exerciseCounts.expert.pending > 0 && (
-                <span
-                  className="inline-flex items-center justify-center rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200 px-1.5 py-0.5 text-[10px] font-bold tabular-nums"
-                  title={`${exerciseCounts.expert.pending} návrhů čeká na schválení`}
-                >
-                  +{exerciseCounts.expert.pending}
-                </span>
-              )}
-            </TabsTrigger>
-          </TabsList>
+      {/* Přehled cvičení — 3 karty místo tabs */}
+      <div className="space-y-3 mt-6">
+        <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <span aria-hidden>📚</span>
+          Přehled cvičení
+        </h4>
 
-          <TabsContent value="simple">
-            <ExerciseTab skill={skill} variant="simple" onCountsChanged={() => setCountsRefresh((n) => n + 1)} />
-          </TabsContent>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <LevelCard
+            label="Level I"
+            title="Základní"
+            description="Jednoduché jednokrokové úlohy. Procvičení mechaniky."
+            count={templateSamplesCount + exerciseCounts.simple.approved}
+            pending={exerciseCounts.simple.pending}
+            colorClass="bg-emerald-100 text-emerald-800 border-emerald-200"
+            active={activeLevel === "simple"}
+            onClick={() => setActiveLevel("simple")}
+          />
+          <LevelCard
+            label="Level II"
+            title="Pokročilá"
+            description="Vícekrokové úlohy se zlomky a slovní zadání."
+            count={exerciseCounts.advanced.approved}
+            pending={exerciseCounts.advanced.pending}
+            colorClass="bg-sky-100 text-sky-800 border-sky-200"
+            active={activeLevel === "advanced"}
+            onClick={() => setActiveLevel("advanced")}
+          />
+          <LevelCard
+            label="Level III"
+            title="Vysoká obtížnost"
+            description="Nejtěžší úlohy — vícekrokové, kombinující více konceptů."
+            count={exerciseCounts.expert.approved}
+            pending={exerciseCounts.expert.pending}
+            colorClass="bg-violet-100 text-violet-800 border-violet-200"
+            active={activeLevel === "expert"}
+            onClick={() => setActiveLevel("expert")}
+          />
+        </div>
 
-          <TabsContent value="advanced">
-            <ExerciseTab skill={skill} variant="advanced" onCountsChanged={() => setCountsRefresh((n) => n + 1)} />
-          </TabsContent>
-
-          <TabsContent value="expert">
-            <ExerciseTab skill={skill} variant="expert" onCountsChanged={() => setCountsRefresh((n) => n + 1)} />
-          </TabsContent>
-        </Tabs>
+        {/* Obsah pro aktivní level */}
+        <div className="pt-2">
+          <ExerciseTab
+            skill={skill}
+            variant={activeLevel}
+            onCountsChanged={() => setCountsRefresh((n) => n + 1)}
+          />
+        </div>
       </div>
     </div>
+  );
+}
+
+// ── Helpers ─────────────────────────────
+function LevelCard({
+  label,
+  title,
+  description,
+  count,
+  pending,
+  colorClass,
+  active,
+  onClick,
+}: {
+  label: string;
+  title: string;
+  description: string;
+  count: number;
+  pending: number;
+  colorClass: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`relative text-left rounded-2xl border-2 bg-card px-4 py-4 shadow-soft-1 transition-all hover:shadow-md hover:-translate-y-0.5 ${
+        active
+          ? "border-violet-400 ring-2 ring-violet-200"
+          : "border-border/60 hover:border-violet-200"
+      }`}
+    >
+      <Badge
+        variant="outline"
+        className={`rounded-md ${colorClass} px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide`}
+      >
+        {label}
+      </Badge>
+      <p className="mt-2 text-base font-bold text-foreground">{title}</p>
+      <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{description}</p>
+      <div className="mt-3 flex items-baseline gap-1.5">
+        <span className="text-2xl font-black text-foreground tabular-nums">{count}</span>
+        <span className="text-xs text-muted-foreground">úloh</span>
+        {pending > 0 && (
+          <Badge
+            variant="outline"
+            className="ml-auto rounded-full bg-amber-100 border-amber-300 text-amber-800 text-[10px] font-bold tabular-nums"
+            title={`${pending} čeká na schválení`}
+          >
+            +{pending}
+          </Badge>
+        )}
+      </div>
+    </button>
   );
 }
 
