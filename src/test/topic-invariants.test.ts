@@ -17,7 +17,7 @@ describe("Topic metadata invariants", () => {
     describe(`${topic.id}`, () => {
       it("has valid gradeRange [min, max] where min <= max and both are valid grades", () => {
         const [min, max] = topic.gradeRange;
-        expect(min).toBeGreaterThanOrEqual(3);
+        expect(min).toBeGreaterThanOrEqual(1);
         expect(max).toBeLessThanOrEqual(9);
         expect(min).toBeLessThanOrEqual(max);
       });
@@ -41,8 +41,14 @@ describe("Topic metadata invariants", () => {
 
       it("has valid inputType", () => {
         expect([
-          "comparison", "fraction", "number", "select_one", "drag_order",
-          "text", "fill_blank", "match_pairs", "multi_select", "categorize",
+          "comparison", "fraction", "number", "numeric_range",
+          "select_one", "drag_order",
+          "text", "short_answer",
+          "fill_blank", "match_pairs", "multi_select", "categorize",
+          "table_fill", "sequence_step",
+          "image_select", "diagram_label",
+          "chemical_balance", "timeline", "formula_builder",
+          "essay",
         ]).toContain(topic.inputType);
       });
 

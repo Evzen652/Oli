@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { aiCall, hasAnyAiProvider } from "../_shared/aiCall.ts";
+import { checkAnswerLeak } from "../_shared/tutorAntiLeak.ts";
 
 /**
  * TUTOR-CHAT — konverzační follow-up tutor (Fáze 7).
@@ -60,53 +61,6 @@ PRAVIDLO PRO PHASE=explain:
 interface ChatTurn {
   role: "user" | "assistant";
   content: string;
-}
-
-/**
- * Detekuje, jestli AI odpověď prozrazuje correct_answer.
- * Heuristika: pokud se v odpovědi objeví celý correct_answer jako samostatný token
- * (nebo s rovnítkem před ním), považujeme to za leak.
- */
-function checkAnswerLeak(reply: string, correctAnswer: string): boolean {
-  if (!correctAnswer) return false;
-  const ans = correctAnswer.trim();
-  if (ans.length < 1) return false;
-
-  const replyLower = reply.toLowerCase();
-  const ansLower = ans.toLowerCase();
-
-  // Pattern 1: rovnost "= 36" / "=36"
-  const eqPattern = new RegExp(`=\\s*${escapeRegex(ansLower)}(\\b|$)`);
-  if (eqPattern.test(replyLower)) return true;
-
-  // Pattern 2: "odpověď je 36", "výsledek je 36", "vyjde 36", "je to 36"
-  const phrasePatterns = [
-    `odpověď\\s+je\\s+${escapeRegex(ansLower)}`,
-    `odpověď\\s*:\\s*${escapeRegex(ansLower)}`,
-    `výsledek\\s+je\\s+${escapeRegex(ansLower)}`,
-    `vyjde\\s+${escapeRegex(ansLower)}`,
-    `správně\\s+je\\s+${escapeRegex(ansLower)}`,
-    `je\\s+to\\s+${escapeRegex(ansLower)}\\b`,
-  ];
-  for (const p of phrasePatterns) {
-    if (new RegExp(p).test(replyLower)) return true;
-  }
-
-  // Pattern 3: pro krátké numerické odpovědi (≤ 4 znaky čísla nebo ostrá nerovnost)
-  // — pokud se objeví v odpovědi jako samostatný token, je to skoro jistě leak.
-  if (/^[<>=]$/.test(ans) || /^\d+([\.,]\d+)?$/.test(ans)) {
-    // Jen u krátkých — u "1602..1610" už ne
-    if (ans.length <= 4) {
-      const tokenPattern = new RegExp(`(^|[^\\w\\d])${escapeRegex(ansLower)}([^\\w\\d]|$)`);
-      if (tokenPattern.test(replyLower)) return true;
-    }
-  }
-
-  return false;
-}
-
-function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 serve(async (req) => {
