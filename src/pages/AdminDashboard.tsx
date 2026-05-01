@@ -323,8 +323,8 @@ export default function AdminDashboard() {
           />
 
           {/* Title + subtitle (bez backbutton — navigace přes breadcrumb a sidebar) */}
-          <div className="space-y-1 text-center">
-            <h2 className="text-2xl font-semibold text-foreground">{title}</h2>
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold text-foreground">{title}</h2>
             <p className="text-sm text-muted-foreground">{subtitle}</p>
           </div>
 
@@ -334,48 +334,93 @@ export default function AdminDashboard() {
 
           {/* SUBJECTS */}
           {level === "subject" && (
-            <div className="grid gap-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {subjects.map((subject) => {
-                const count = new Set(topics.filter((t) => t.subject === subject).map((t) => t.category)).size;
+                const subjectTopics = topics.filter((t) => t.subject === subject);
+                const categoryCount = new Set(subjectTopics.map((t) => t.category)).size;
+                const topicCount = new Set(subjectTopics.map((t) => `${t.category}::${t.topic}`)).size;
+                const subtopicCount = subjectTopics.length;
                 const meta = getSubjectMeta(subject);
                 return (
                   <Card
                     key={subject}
-                    className={`cursor-pointer border-2 transition-colors hover:shadow-md ${meta.gradientClass} ${meta.borderClass}`}
+                    className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${meta.gradientClass} ${meta.borderClass}`}
                     onClick={() => handleSubjectClick(subject)}
                   >
-                    <CardContent className="p-5 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          {meta.image ? (
-                            <img src={meta.image} alt="" className="w-14 h-14 object-contain mix-blend-multiply" />
-                          ) : (
-                            <span className="text-3xl">{meta.emoji}</span>
-                          )}
-                          <div>
-                            <p className="text-xl font-medium capitalize text-foreground">{subject}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {count} {count === 1 ? "okruh" : count < 5 ? "okruhy" : "okruhů"}
-                            </p>
-                          </div>
-                        </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                    {/* Polkadot decorations — 4 rohy */}
+                    <span className="pointer-events-none absolute top-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute top-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+
+                    <CardContent className="flex h-full flex-col gap-4 p-5">
+                      {/* Ilustrace v rounded panel */}
+                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                        {meta.image ? (
+                          <img
+                            src={meta.image}
+                            alt=""
+                            className="h-20 w-20 object-contain mix-blend-multiply"
+                          />
+                        ) : (
+                          <span className="text-6xl" aria-hidden>{meta.emoji}</span>
+                        )}
                       </div>
+
+                      {/* Title */}
+                      <h3 className="text-2xl font-bold capitalize text-foreground">
+                        {subject}
+                      </h3>
+
+                      {/* Statistics chips */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {categoryCount} {categoryCount === 1 ? "okruh" : categoryCount < 5 ? "okruhy" : "okruhů"}
+                        </Badge>
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {topicCount} {topicCount === 1 ? "téma" : topicCount < 5 ? "témata" : "témat"}
+                        </Badge>
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {subtopicCount} {subtopicCount === 1 ? "podtéma" : subtopicCount < 5 ? "podtémata" : "podtémat"}
+                        </Badge>
+                      </div>
+
+                      {/* Hook v boxu */}
                       {meta.hook && (
-                        <div className="rounded-md bg-accent/50 border border-border px-3 py-2">
-                          <p className="text-sm text-foreground">💡 {meta.hook}</p>
+                        <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
+                          <p className="text-xs leading-relaxed text-foreground/80">
+                            💡 {meta.hook}
+                          </p>
                         </div>
                       )}
+
+                      {/* Šipka v pravém dolním rohu */}
+                      <div className="flex justify-end">
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                          <ChevronRight className="h-4 w-4" />
+                        </span>
+                      </div>
                     </CardContent>
                   </Card>
                 );
               })}
               {subjects.length === 0 && (
-                <OnboardingHero
-                  gradeFilter={gradeFilter}
-                  onStartWithPrompt={(prompt) => handleAIAction(prompt)}
-                  onOpenWizard={() => setAiChatOpen(true)}
-                />
+                <div className="lg:col-span-3 sm:col-span-2">
+                  <OnboardingHero
+                    gradeFilter={gradeFilter}
+                    onStartWithPrompt={(prompt) => handleAIAction(prompt)}
+                    onOpenWizard={() => setAiChatOpen(true)}
+                  />
+                </div>
               )}
             </div>
           )}
