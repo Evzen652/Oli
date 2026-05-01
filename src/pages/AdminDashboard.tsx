@@ -15,13 +15,14 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
 import { SkillDetail } from "@/components/admin/SkillDetail";
 import { AdminCurriculumSidebar } from "@/components/admin/AdminCurriculumSidebar";
 import { AdminAIPanel } from "@/components/admin/AdminAIPanel";
+import { AdminContentAudit } from "@/components/admin/AdminContentAudit";
 import type { TopicMetadata, Grade } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -260,6 +261,19 @@ export default function AdminDashboard() {
 
             {/* AI akce — vpravo, prominent indigo + secondary */}
             <div className="flex items-center gap-2 ml-auto">
+              <AdminContentAudit
+                trigger={
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
+                    title="Hromadný audit obsahu — projde všechna cvičení a zkontroluje formát, validátory, hranice, prozrazení v nápovědách. Bez AI, rychlé."
+                  >
+                    <ShieldCheck className="h-4 w-4 text-foreground/70" />
+                    Audit obsahu
+                  </Button>
+                }
+              />
               <Button
                 size="sm"
                 variant="outline"
