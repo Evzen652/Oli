@@ -427,7 +427,7 @@ export default function AdminDashboard() {
 
           {/* CATEGORIES */}
           {level === "category" && (
-            <div className="grid gap-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category) => {
                 const topicCount = new Set(
                   topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic),
@@ -436,45 +436,79 @@ export default function AdminDashboard() {
                   (t) => t.subject_name === selectedSubject && t.category_name === category,
                 ).length;
                 const count = Math.max(topicCount, dbTopicCount);
+                const subtopicCount = topics.filter(
+                  (t) => t.subject === selectedSubject && t.category === category,
+                ).length;
                 const isEmpty = count === 0;
                 const visual = getPrvoukaCategoryVisual(selectedSubject!, category);
                 const catInfo = getCategoryInfo(selectedSubject!, category);
                 return (
                   <Card
                     key={category}
-                    className={`cursor-pointer border-2 transition-all hover:shadow-md ${
+                    className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                       isEmpty ? "border-dashed border-muted-foreground/30" : ""
-                    } ${visual ? `${visual.gradientClass} ${visual.colorClass}` : "hover:bg-accent"}`}
+                    } ${visual ? `${visual.gradientClass} ${visual.colorClass}` : "bg-card hover:bg-accent"}`}
                     onClick={() => handleCategoryClick(category)}
                   >
-                    <CardContent className="p-5 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <ImageOrEmoji
-                            imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)}
-                            emoji={visual?.emoji}
-                          />
-                          <div>
-                            <p className="text-xl font-medium text-foreground">{capitalize(category)}</p>
-                            <div className="flex items-center gap-2">
-                              <p className="text-xs text-muted-foreground">
-                                {count} {count === 1 ? "téma" : count < 5 ? "témata" : "témat"}
-                              </p>
-                              {isEmpty && (
-                                <Badge variant="outline" className="text-xs border-dashed">
-                                  Prázdné
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                    {/* Polkadot decorations — 4 rohy */}
+                    <span className="pointer-events-none absolute top-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute top-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+
+                    <CardContent className="flex h-full flex-col gap-4 p-5">
+                      {/* Ilustrace v rounded panel */}
+                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                        <ImageOrEmoji
+                          imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)}
+                          emoji={visual?.emoji}
+                          size="lg"
+                        />
                       </div>
+
+                      {/* Title */}
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {capitalize(category)}
+                      </h3>
+
+                      {/* Statistics chips */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {count} {count === 1 ? "téma" : count < 5 ? "témata" : "témat"}
+                        </Badge>
+                        {subtopicCount > 0 && (
+                          <Badge
+                            variant="outline"
+                            className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          >
+                            {subtopicCount} {subtopicCount === 1 ? "podtéma" : subtopicCount < 5 ? "podtémata" : "podtémat"}
+                          </Badge>
+                        )}
+                        {isEmpty && (
+                          <Badge variant="outline" className="rounded-full border-dashed text-[11px]">
+                            Prázdné
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Hook v boxu */}
                       {catInfo && (
-                        <div className="rounded-md bg-accent/50 border border-border px-3 py-2">
-                          <p className="text-sm text-foreground">💡 {catInfo.hook}</p>
+                        <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
+                          <p className="text-xs leading-relaxed text-foreground/80">
+                            💡 {catInfo.hook}
+                          </p>
                         </div>
                       )}
+
+                      {/* Šipka v pravém dolním rohu */}
+                      <div className="flex justify-end">
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                          <ChevronRight className="h-4 w-4" />
+                        </span>
+                      </div>
                     </CardContent>
                   </Card>
                 );
@@ -484,7 +518,7 @@ export default function AdminDashboard() {
 
           {/* TOPICS */}
           {level === "topic" && (
-            <div className="grid gap-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {topicGroups.map((topicName) => {
                 const skillsInGroup = topics.filter(
                   (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === topicName,
@@ -502,38 +536,62 @@ export default function AdminDashboard() {
                 return (
                   <Card
                     key={topicName}
-                    className={`cursor-pointer border-2 transition-all hover:shadow-md ${
+                    className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                       isEmpty ? "border-dashed border-muted-foreground/30" : ""
-                    } ${topicVisual ? `${topicVisual.gradientClass} ${topicVisual.colorClass}/60` : "hover:bg-accent"}`}
+                    } ${topicVisual ? `${topicVisual.gradientClass} ${topicVisual.colorClass}/60` : "bg-card hover:bg-accent"}`}
                     onClick={() => handleTopicClick(topicName)}
                   >
-                    <CardContent className="flex items-center justify-between p-5">
-                      <div className="flex items-center gap-4 flex-1 min-w-0">
+                    {/* Polkadot decorations — 4 rohy */}
+                    <span className="pointer-events-none absolute top-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute top-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+
+                    <CardContent className="flex h-full flex-col gap-4 p-5">
+                      {/* Ilustrace v rounded panel */}
+                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
                         <ImageOrEmoji
                           imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)}
                           emoji={topicEmoji}
+                          size="lg"
                         />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="text-lg font-medium text-foreground">{capitalize(topicName)}</p>
-                            {isEmpty && (
-                              <Badge variant="outline" className="text-xs border-dashed">
-                                Prázdné
-                              </Badge>
-                            )}
-                          </div>
-                          {description && (
-                            <p className="mt-0.5 text-sm text-muted-foreground line-clamp-2">{description}</p>
-                          )}
-                          {count > 1 && (
-                            <p className="mt-0.5 text-xs text-muted-foreground">
-                              {count} {count < 5 ? "podtémata" : "podtémat"}
-                            </p>
-                          )}
-                          {isEmpty && <p className="mt-0.5 text-xs text-muted-foreground">0 podtémat</p>}
-                        </div>
                       </div>
-                      <ChevronRight className="h-5 w-5 text-muted-foreground" />
+
+                      {/* Title */}
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {capitalize(topicName)}
+                      </h3>
+
+                      {/* Statistics chips */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {count} {count === 1 ? "podtéma" : count < 5 ? "podtémata" : "podtémat"}
+                        </Badge>
+                        {isEmpty && (
+                          <Badge variant="outline" className="rounded-full border-dashed text-[11px]">
+                            Prázdné
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Description (hook-style box) */}
+                      {description && (
+                        <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
+                          <p className="text-xs leading-relaxed text-foreground/80 line-clamp-3">
+                            💡 {description}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Šipka v pravém dolním rohu */}
+                      <div className="flex justify-end">
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                          <ChevronRight className="h-4 w-4" />
+                        </span>
+                      </div>
                     </CardContent>
                   </Card>
                 );
@@ -543,49 +601,86 @@ export default function AdminDashboard() {
 
           {/* SUBTOPICS (skills) */}
           {level === "subtopic" && (
-            <div className="grid gap-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {subtopics.map((skill) => {
                 const isDbOnly = !hasCodeGenerator(skill);
+                const skillEmoji = getPrvoukaTopicEmoji(skill.subject, skill.category, skill.topic);
+                const skillVisual = getPrvoukaTopicVisual(skill.subject, skill.category);
                 return (
                   <Card
                     key={skill.id}
-                    className="cursor-pointer border-2 transition-all hover:shadow-md hover:bg-accent"
+                    className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${
+                      skillVisual ? `${skillVisual.gradientClass} ${skillVisual.colorClass}/60` : "bg-card hover:bg-accent"
+                    }`}
                     onClick={() => handleSkillClick(skill)}
                   >
-                    <CardContent className="p-5">
+                    {/* Polkadot decorations — 4 rohy */}
+                    <span className="pointer-events-none absolute top-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute top-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+                    <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+
+                    <CardContent className="flex h-full flex-col gap-4 p-5">
+                      {/* Ilustrace v rounded panel */}
+                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                        <ImageOrEmoji
+                          imageUrl={getPrvoukaTopicImageUrl(skill.subject, skill.topic)}
+                          emoji={skillEmoji}
+                          size="lg"
+                        />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-bold text-foreground line-clamp-2">
+                        {skill.title}
+                      </h3>
+
+                      {/* Statistics chips */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {skill.gradeRange[0]}–{skill.gradeRange[1]}. ročník
+                        </Badge>
+                        <Badge
+                          variant="outline"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                        >
+                          {INPUT_TYPE_LABELS[skill.inputType] ?? skill.inputType}
+                        </Badge>
+                        {isDbOnly && (
+                          <Badge
+                            variant="outline"
+                            className="rounded-full border-amber-300 text-amber-700 bg-amber-50/90 px-2.5 py-0.5 text-[11px]"
+                          >
+                            Bez šablony
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Description box */}
+                      {skill.briefDescription && (
+                        <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
+                          <p className="text-xs leading-relaxed text-foreground/80 line-clamp-3">
+                            💡 {skill.briefDescription}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Šipka v pravém dolním rohu */}
                       <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <p className="text-lg font-medium text-foreground">{skill.title}</p>
-                            {isDbOnly && (
-                              <Badge
-                                variant="outline"
-                                className="text-xs border-amber-300 text-amber-700 bg-amber-50"
-                              >
-                                Bez šablony
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="mt-0.5 text-sm text-muted-foreground">{skill.briefDescription}</p>
-                          <div className="flex gap-2 mt-2">
-                            <Badge variant="outline" className="text-xs">
-                              {skill.gradeRange[0]}–{skill.gradeRange[1]}. ročník
-                            </Badge>
-                            <Badge variant="secondary" className="text-xs">
-                              {INPUT_TYPE_LABELS[skill.inputType] ?? skill.inputType}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        </div>
+                        <Eye className="h-4 w-4 text-muted-foreground/60" />
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                          <ChevronRight className="h-4 w-4" />
+                        </span>
                       </div>
                     </CardContent>
                   </Card>
                 );
               })}
               {subtopics.length === 0 && (
-                <Card className="border-2 border-dashed border-muted-foreground/30">
+                <Card className="lg:col-span-3 sm:col-span-2 border-2 border-dashed border-muted-foreground/30 rounded-3xl">
                   <CardContent className="flex flex-col items-center gap-4 p-8 text-center">
                     <div className="rounded-full bg-muted p-4">
                       <Sparkles className="h-8 w-8 text-muted-foreground" />
@@ -596,7 +691,7 @@ export default function AdminDashboard() {
                         Použijte AI asistenta k vytvoření podtémat pro toto téma.
                       </p>
                     </div>
-                    <Button onClick={() => setAiChatOpen(true)} className="gap-2">
+                    <Button onClick={() => setAiChatOpen(true)} className="gap-2 rounded-xl">
                       <Sparkles className="h-4 w-4" />
                       Vytvořit s AI
                     </Button>
