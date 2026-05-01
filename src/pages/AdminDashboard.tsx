@@ -15,6 +15,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
@@ -261,51 +262,96 @@ export default function AdminDashboard() {
 
             {/* AI akce — vpravo, prominent indigo + secondary */}
             <div className="flex items-center gap-2 ml-auto">
-              <AdminContentAudit
-                trigger={
+              <Tooltip delayDuration={150}>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex">
+                    <AdminContentAudit
+                      trigger={
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
+                        >
+                          <ShieldCheck className="h-4 w-4 text-foreground/70" />
+                          Audit obsahu
+                        </Button>
+                      }
+                    />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs">
+                  <div className="space-y-1.5">
+                    <p className="font-semibold">Technická kontrola obsahu</p>
+                    <p className="text-xs text-muted-foreground">
+                      Projde všechna cvičení a zkontroluje formát, validátory, hranice tématu a prozrazení v nápovědách.
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Bez AI, bez sítě, zdarma. Hotové za sekundu.
+                    </p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip delayDuration={150}>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1 disabled:opacity-50"
+                      onClick={() => {
+                        setAiPanelTab("check");
+                        setAiPanelLocked("check");
+                        setAiChatOpen(true);
+                      }}
+                      disabled={!gradeFilter}
+                    >
+                      <Search className="h-4 w-4 text-foreground/70" />
+                      AI kontrola
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs">
+                  <div className="space-y-1.5">
+                    <p className="font-semibold">Pedagogická kontrola od AI</p>
+                    <p className="text-xs text-muted-foreground">
+                      AI-učitel projde cvičení a posoudí přiměřenost ročníku, srozumitelnost zadání a kvalitu nápověd.
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Stojí AI tokeny, trvá minuty. {!gradeFilter && (
+                        <span className="text-amber-600 font-medium block mt-1">
+                          ⚠ Nejdřív vyber ročník v levém pillu.
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip delayDuration={150}>
+                <TooltipTrigger asChild>
                   <Button
                     size="sm"
-                    variant="outline"
-                    className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
-                    title="Hromadný audit obsahu — projde všechna cvičení a zkontroluje formát, validátory, hranice, prozrazení v nápovědách. Bez AI, rychlé."
+                    className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft-2"
+                    onClick={() => {
+                      setAiPanelTab("create");
+                      setAiPanelLocked("create");
+                      setAiChatOpen(true);
+                    }}
                   >
-                    <ShieldCheck className="h-4 w-4 text-foreground/70" />
-                    Audit obsahu
+                    <Sparkles className="h-4 w-4" />
+                    AI pomocník
                   </Button>
-                }
-              />
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
-                onClick={() => {
-                  setAiPanelTab("check");
-                  setAiPanelLocked("check");
-                  setAiChatOpen(true);
-                }}
-                title={
-                  !gradeFilter
-                    ? "Pro spuštění hromadné AI kontroly nejdřív vyberte ročník"
-                    : "Hromadná AI kontrola: ověří srozumitelnost zadání, kvalitu nápověd a správnost odpovědí."
-                }
-                disabled={!gradeFilter}
-              >
-                <Search className="h-4 w-4 text-foreground/70" />
-                AI kontrola
-              </Button>
-              <Button
-                size="sm"
-                className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft-2"
-                onClick={() => {
-                  setAiPanelTab("create");
-                  setAiPanelLocked("create");
-                  setAiChatOpen(true);
-                }}
-                title="Otevřít AI chat pro tvorbu nebo úpravu kurikula."
-              >
-                <Sparkles className="h-4 w-4" />
-                AI pomocník
-              </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs">
+                  <div className="space-y-1.5">
+                    <p className="font-semibold">AI pro tvorbu obsahu</p>
+                    <p className="text-xs text-muted-foreground">
+                      Otevře chat s AI, kde můžeš zadat „přidej 10 cvičení o zlomcích pro 5. třídu" a AI připraví návrhy ke schválení.
+                    </p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
 
