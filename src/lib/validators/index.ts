@@ -599,6 +599,32 @@ export const diagramLabelValidator: Validator = {
   },
 };
 
+// ─── Essay (sloh — AI vrátí skóre 0-100, prahová hodnota = pass) ────────
+/**
+ * Essay: AI hodnotí sloh, vrátí skóre 0-100 (přes EssayInput → edge fn `evaluate-essay`).
+ * Validátor jen porovná předané skóre s prahem (default 60).
+ *
+ * Kontrakt:
+ *   answer   = stringified score (např. "73") z EssayInput.onSubmit
+ *   expected = stringified threshold (např. "60") z task.correctAnswer
+ *
+ * AI grading se NEdělá zde (validátor je pure & sync), dělá ji EssayInput
+ * před tím, než zavolá onSubmit. Tady jen mapujeme číslo → correct/wrong.
+ */
+export const essayValidator: Validator = {
+  id: "essay",
+  validate(answer, expected) {
+    const score = parseInt(answer, 10);
+    if (Number.isNaN(score)) return { correct: false, errorType: "no_score" };
+    const threshold = parseInt(expected, 10);
+    const t = Number.isNaN(threshold) ? 60 : threshold;
+    const partialScore = Math.max(0, Math.min(1, score / 100));
+    return score >= t
+      ? { correct: true, partialScore }
+      : { correct: false, partialScore, errorType: "below_threshold" };
+  },
+};
+
 // ─── Registry ────────────────────────────────────────────────────────────
 const VALIDATORS: Record<string, Validator> = {
   string_exact: stringExactValidator,
@@ -617,6 +643,7 @@ const VALIDATORS: Record<string, Validator> = {
   ordered_sequence: orderedSequenceValidator,
   algebraic_equivalence: algebraicEquivalenceValidator,
   multi_step: multiStepValidator,
+  essay: essayValidator,
 };
 
 /** Získá validátor podle ID, fallback na string_exact */
@@ -650,6 +677,8 @@ export function getDefaultValidator(inputType: string): Validator {
       return timelineValidator;
     case "formula_builder":
       return formulaBuilderValidator;
+    case "essay":
+      return essayValidator;
     case "multi_select":
       return setMatchValidator;
     case "drag_order":

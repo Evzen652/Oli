@@ -12,6 +12,7 @@ import { DiagramLabelInput } from "@/components/DiagramLabelInput";
 import { ChemicalBalanceInput } from "@/components/ChemicalBalanceInput";
 import { TimelineInput } from "@/components/TimelineInput";
 import { FormulaBuilderInput } from "@/components/FormulaBuilderInput";
+import { EssayInput } from "@/components/EssayInput";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -36,6 +37,17 @@ export function PracticeInputRouter({
 }: PracticeInputRouterProps) {
   // Per-task override: if task carries data for a specific input type, use it
   // Doménové typy s největší specifickou strukturou mají nejvyšší prioritu
+  if (currentTask?.essay && topic.inputType === "essay") {
+    return (
+      <EssayInput
+        prompt={currentTask.question}
+        minWords={currentTask.essay.minWords ?? 30}
+        gradeMin={currentTask.essay.gradeMin}
+        onSubmit={onAnswerSubmit}
+        disabled={loading}
+      />
+    );
+  }
   if (currentTask?.chemEquation) {
     return <ChemicalBalanceInput tokens={currentTask.chemEquation.tokens} onSubmit={onAnswerSubmit} disabled={loading} />;
   }

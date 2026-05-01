@@ -34,7 +34,8 @@ export type InputType =
   | "diagram_label"     // Popis bodů na obrázku (anatomie, mapa)
   | "chemical_balance"  // Vyrovnat chemickou rovnici (chemie 8.-9.)
   | "timeline"          // Seřadit historické události (dějepis)
-  | "formula_builder";  // Sestavit vzorec z dílů (matematika, fyzika, chemie)
+  | "formula_builder"   // Sestavit vzorec z dílů (matematika, fyzika, chemie)
+  | "essay";            // Krátký sloh / vyprávění s AI hodnocením (čeština)
 
 // ===== HELP DATA =====
 export interface FractionBarData {
@@ -130,6 +131,17 @@ export interface PracticeTask {
   timelineEvents?: { id: string; label: string }[];
   /** for formula_builder — pool dílů, žák sestaví ve správném pořadí */
   formulaPool?: { id: string; token: string }[];
+  /**
+   * for essay — sloh / krátké vyprávění s AI hodnocením.
+   * `question` je samotné zadání. `correctAnswer` je passing threshold (např. "60").
+   * AI vrátí 0-100 → orchestrator porovná přes essayValidator.
+   */
+  essay?: {
+    /** Min počet slov před odesláním (default 30). */
+    minWords?: number;
+    /** Cílový ročník pro AI grader (přiměřená přísnost). */
+    gradeMin?: number;
+  };
 }
 
 // ===== RULE ENGINE =====
