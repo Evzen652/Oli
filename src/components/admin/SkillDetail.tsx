@@ -11,7 +11,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { ExerciseTab } from "@/components/admin/ExerciseTab";
+import { AssetPicker } from "@/components/admin/AssetPicker";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
+import { Image as ImageIcon } from "lucide-react";
 import type { TopicMetadata } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -229,6 +231,18 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
           <div className="flex flex-col gap-0.5">
             <span className="text-[11px] text-muted-foreground font-medium">Typ odpovědi</span>
             <Badge variant="secondary">{INPUT_TYPE_LABELS[skill.inputType] ?? skill.inputType}</Badge>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[11px] text-muted-foreground font-medium">Knihovna obrázků</span>
+            <AssetPicker
+              skillId={skill.id}
+              trigger={
+                <Button variant="outline" size="sm" className="h-7 gap-1.5 rounded-lg text-xs">
+                  <ImageIcon className="h-3.5 w-3.5" />
+                  Spravovat obrázky
+                </Button>
+              }
+            />
           </div>
           <div className="flex flex-col gap-0.5">
             <span className="text-[11px] text-muted-foreground font-medium">Počet úloh na procvičování</span>

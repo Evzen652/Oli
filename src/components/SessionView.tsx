@@ -10,6 +10,7 @@ import { ChildHomePage } from "@/components/ChildHomePage";
 import { DiktatFilterSelect } from "@/components/DiktatFilterSelect";
 import { HelpButton } from "@/components/HelpButton";
 import { TutorChat } from "@/components/TutorChat";
+import { MiniExplainer } from "@/components/MiniExplainer";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { SessionTimer } from "@/components/SessionTimer";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
@@ -483,6 +484,11 @@ export function SessionView() {
                 {loading ? t("session.processing") : session.errorCount > 0 ? t("session.explain.try_again") : t("session.explain.try")}
               </Button>
             </div>
+          )}
+
+          {/* Mini-vysvětlení s vizuálem (Fáze 10) */}
+          {showPracticeInput && session.matchedTopic && (
+            <MiniExplainer topic={session.matchedTopic} resetKey={currentTask?.question} />
           )}
 
           {/* PRACTICE: Dynamic input */}
