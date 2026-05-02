@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { Image as ImageIcon, Loader2, Play, CheckCircle2, AlertTriangle, RefreshCw, LayoutGrid, Wand2 } from "lucide-react";
+import { bumpImageVersion, useImageVersions } from "@/lib/imageVersions";
 
 const KEY_GROUPS: { label: string; emoji: string; keys: string[] }[] = [
   {
@@ -96,7 +97,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [previewImages, setPreviewImages] = useState<StorageImage[]>([]);
   const [missingKeys, setMissingKeys] = useState<Set<string>>(new Set());
   const [regenerating, setRegenerating] = useState<string | null>(null);
-  const [cacheBust, setCacheBust] = useState<Record<string, number>>({});
+  const versioned = useImageVersions();
   const [filterStatus, setFilterStatus] = useState<"all" | "done" | "missing">("all");
   const [filterGroup, setFilterGroup] = useState<string>("all");
 
@@ -133,7 +134,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     if (error || perKeyError) {
       toast({ description: `Chyba: ${perKeyError ?? error?.message ?? "neznámá"}`, variant: "destructive" });
     } else {
-      setCacheBust((prev) => ({ ...prev, [key]: Date.now() }));
+      bumpImageVersion(key);
       setMissingKeys((prev) => { const n = new Set(prev); n.delete(key); return n; });
       toast({ description: `✓ ${key} uložen` });
     }
@@ -373,7 +374,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                       </div>
                     ) : (
                       <img
-                        src={cacheBust[key] ? `${url}?t=${cacheBust[key]}` : url}
+                        src={versioned(url, key)}
                         alt={key}
                         className="w-full aspect-square object-contain rounded-xl mix-blend-multiply"
                         loading="lazy"

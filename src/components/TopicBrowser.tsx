@@ -16,6 +16,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft } from "lucide-react";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { useImageVersions } from "@/lib/imageVersions";
 import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
@@ -649,15 +650,20 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
 const IMG_SIZES = { hero: "w-48 h-48 sm:w-56 sm:h-56", lg: "w-20 h-20", md: "w-16 h-16", sm: "w-12 h-12" };
 const EMOJI_SIZES = { hero: "text-9xl", lg: "text-4xl", md: "text-3xl", sm: "text-2xl" };
 function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: string | null; fallbackEmoji?: string | null; size?: "hero" | "lg" | "md" | "sm" }) {
-  const [failed, setFailed] = useState(false);
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const versioned = useImageVersions();
 
-  if (imageUrl && !failed) {
+  const storageKey = imageUrl?.match(/prvouka-images\/(.+?)\.png/)?.[1] ?? null;
+  const src = storageKey && imageUrl ? versioned(imageUrl, storageKey) : imageUrl;
+  const hasFailed = src === failedUrl;
+
+  if (src && !hasFailed) {
     return (
       <img
-        src={imageUrl}
+        src={src}
         alt=""
         className={`${IMG_SIZES[size]} object-contain shrink-0 mix-blend-multiply`}
-        onError={() => setFailed(true)}
+        onError={() => setFailedUrl(src)}
       />
     );
   }
