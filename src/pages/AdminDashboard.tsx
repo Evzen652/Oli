@@ -984,7 +984,7 @@ function ImageOrEmoji({
       <img
         src={src}
         alt=""
-        className={`${sizes[size]} object-contain shrink-0 mix-blend-multiply brightness-[1.1]`}
+        className={`${sizes[size]} object-contain shrink-0 mix-blend-multiply brightness-[1.15] contrast-[1.1]`}
         onError={() => setFailedUrl(src)}
       />
     );
