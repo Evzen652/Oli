@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useImageVersions } from "@/lib/imageVersions";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
@@ -447,15 +448,7 @@ export default function AdminDashboard() {
                     <CardContent className="flex h-full flex-col gap-4 p-5">
                       {/* Ilustrace v rounded panel — image vyplňuje panel */}
                       <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm overflow-hidden">
-                        {meta.image ? (
-                          <img
-                            src={meta.image}
-                            alt=""
-                            className="h-28 w-28 object-contain mix-blend-multiply"
-                          />
-                        ) : (
-                          <span className="text-6xl" aria-hidden>{meta.emoji}</span>
-                        )}
+                        <ImageOrEmoji imageUrl={meta.image || null} emoji={meta.emoji} size="xl" />
                       </div>
 
                       {/* Title */}
@@ -967,7 +960,8 @@ function ImageOrEmoji({
   /** xl = pro admin grid karty (h-28), lg/md/sm = list/sidebar */
   size?: "xl" | "lg" | "md" | "sm";
 }) {
-  const [failed, setFailed] = useState(false);
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const versioned = useImageVersions();
   const sizes = {
     xl: "w-28 h-28",
     lg: "w-14 h-14",
@@ -981,13 +975,17 @@ function ImageOrEmoji({
     sm: "text-xl",
   };
 
-  if (imageUrl && !failed) {
+  const storageKey = imageUrl?.match(/prvouka-images\/(.+?)\.png/)?.[1] ?? null;
+  const src = storageKey && imageUrl ? versioned(imageUrl, storageKey) : imageUrl;
+  const hasFailed = src === failedUrl;
+
+  if (src && !hasFailed) {
     return (
       <img
-        src={imageUrl}
+        src={src}
         alt=""
         className={`${sizes[size]} object-contain shrink-0 mix-blend-multiply`}
-        onError={() => setFailed(true)}
+        onError={() => setFailedUrl(src)}
       />
     );
   }
