@@ -3,11 +3,6 @@
  * Used by TopicBrowser to render colorful cards.
  */
 
-// ── Bundled assets — preferované před Supabase storage ──
-import catMathCisla from "@/assets/cat-math-cisla-a-operace.png";
-import catMathZlomky from "@/assets/cat-math-zlomky.png";
-import catMathGeometrie from "@/assets/cat-math-geometrie.png";
-
 export interface PrvoukaVisual {
   emoji: string;
   colorClass: string;      // border + text accent
@@ -18,17 +13,7 @@ export interface PrvoukaVisual {
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
-/** Map imageKey → bundled local asset (preferováno před Supabase storage). */
-const BUNDLED_IMAGES: Record<string, string> = {
-  "cat-math-cisla-a-operace": catMathCisla,
-  "cat-math-zlomky": catMathZlomky,
-  "cat-math-geometrie": catMathGeometrie,
-};
-
 function imageUrl(key: string, ext: string = "png"): string {
-  // Přednostně bundled asset (rychlé, offline, žádný 404)
-  if (BUNDLED_IMAGES[key]) return BUNDLED_IMAGES[key];
-  // Fallback: Supabase storage (pro AI-generované obrázky)
   return `${SUPABASE_URL}/storage/v1/object/public/prvouka-images/${key}.${ext}`;
 }
 
