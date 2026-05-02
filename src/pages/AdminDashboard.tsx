@@ -312,15 +312,7 @@ export default function AdminDashboard() {
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="max-w-xs">
-                  <div className="space-y-1.5">
-                    <p className="font-semibold">Hromadné generování 3D ilustrací</p>
-                    <p className="text-xs text-muted-foreground">
-                      Gemini 2.5 Flash Image vygeneruje konzistentní 3D-rendered ilustrace (Pixar styl, soft pastel, friendly characters) pro všechny předměty / okruhy / témata.
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Trvá ~3 minuty pro 75 ilustrací. Default: Lovable Gateway (využívá tvůj kredit), fallback Gemini direct. Přepínání přes IMAGE_PROVIDER env.
-                    </p>
-                  </div>
+                  <p className="text-xs">Správa AI ilustrací — generuj, filtruj, upravuj.</p>
                 </TooltipContent>
               </Tooltip>
 
