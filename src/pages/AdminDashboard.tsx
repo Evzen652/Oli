@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
@@ -24,6 +24,7 @@ import { SkillDetail } from "@/components/admin/SkillDetail";
 import { AdminCurriculumSidebar } from "@/components/admin/AdminCurriculumSidebar";
 import { AdminAIPanel } from "@/components/admin/AdminAIPanel";
 import { AdminContentAudit } from "@/components/admin/AdminContentAudit";
+import { AdminGenerateIllustrations } from "@/components/admin/AdminGenerateIllustrations";
 import type { TopicMetadata, Grade } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -287,6 +288,36 @@ export default function AdminDashboard() {
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Bez AI, bez sítě, zdarma. Hotové za sekundu.
+                    </p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip delayDuration={150}>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex">
+                    <AdminGenerateIllustrations
+                      trigger={
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
+                        >
+                          <ImageIcon className="h-4 w-4 text-foreground/70" />
+                          Ilustrace
+                        </Button>
+                      }
+                    />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs">
+                  <div className="space-y-1.5">
+                    <p className="font-semibold">Hromadné generování 3D ilustrací</p>
+                    <p className="text-xs text-muted-foreground">
+                      AI vygeneruje konzistentní 3D-rendered ilustrace pro všechny předměty / okruhy / témata. Pixar styl, soft pastel, friendly characters.
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Trvá ~3 minuty pro 70 ilustrací. Vyžaduje deploy edge fn + LOVABLE_API_KEY v Supabase secrets.
                     </p>
                   </div>
                 </TooltipContent>

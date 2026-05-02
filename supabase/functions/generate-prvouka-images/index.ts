@@ -8,13 +8,20 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const PROMPT_PREFIX = "Cute colorful children's illustration of";
-const PROMPT_SUFFIX = ", simple flat style, bright pastel colors, no text, white background, educational, friendly, suitable for 8-year-old children";
+const PROMPT_PREFIX = "Cute 3D rendered cartoon illustration of";
+const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, white isolated background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
 
 function p(desc: string) { return `${PROMPT_PREFIX} ${desc}${PROMPT_SUFFIX}`; }
 
 // All keys to generate images for
 const IMAGE_KEYS: Record<string, string> = {
+  // ── SUBJECTS (top-level předmět karty) ────────────────────
+  "subject-matematika": p("colorful 3D numbers 1, 2, 3 floating with plus and equals signs"),
+  "subject-cestina": p("an open book with the letters A, B, C jumping out colorfully"),
+  "subject-prvouka": p("a friendly tree with a sun, flowers, and a small animal in a meadow"),
+  "subject-prirodoveda": p("a magnifying glass over leaves and a small ecosystem with plants and animals"),
+  "subject-vlastiveda": p("a globe and a Czech Republic outline map with landmarks like Prague Castle"),
+
   // ── PRVOUKA: Categories ───────────────────────────────────
   "cat-clovek-a-jeho-telo": p("a happy child showing body parts like arms, legs, head"),
   "cat-priroda-kolem-nas": p("nature scene with trees, flowers, sun, birds, and a small pond"),
@@ -88,6 +95,11 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-cz-slovesa-urcovani": p("a verb conjugation table with person and tense markers"),
   "topic-cz-zaklad-vety": p("a simple sentence with subject underlined and predicate circled"),
   "topic-cz-diktat": p("a child writing missing letters into blank spaces in sentences"),
+
+  // ── ČEŠTINA: Sloh ─────────────────────────────────────────
+  "cat-cz-sloh": p("a child writing a creative essay with a pencil, story bubbles around"),
+  "topic-cz-sloh-vypraveni": p("a child telling a story with a speech bubble showing characters and adventures"),
+  "topic-cz-sloh-popis": p("a child describing an object - magnifying glass, descriptive words floating, paint palette"),
 };
 
 serve(async (req) => {
