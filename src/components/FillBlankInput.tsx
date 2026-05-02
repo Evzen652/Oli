@@ -43,6 +43,7 @@ export function FillBlankInput({ question, blanks, onSubmit, disabled }: FillBla
                 value={values[i]}
                 onChange={(e) => handleChange(i, e.target.value)}
                 disabled={disabled}
+                aria-label={`Doplň ${i + 1}. mezeru`}
                 className="inline-block w-24 border-b-2 border-primary bg-transparent text-center text-lg font-semibold outline-none focus:border-primary/80 mx-1"
                 autoFocus={i === 0}
                 onKeyDown={(e) => {
