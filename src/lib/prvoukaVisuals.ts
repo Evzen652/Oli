@@ -329,3 +329,13 @@ export function getTopicIllustrationUrl(topic: { subject: string; category: stri
   return getPrvoukaTopicImageUrl(topic.subject, topic.topic)
     ?? getPrvoukaCategoryImageUrl(topic.subject, topic.category);
 }
+
+/** Returns just the storage key (not URL) for a topic image, or null if not defined. */
+export function getTopicImageKey(subject: string, topic: string): string | null {
+  return TOPIC_VISUALS_BY_SUBJECT[subject]?.[topic]?.imageKey ?? null;
+}
+
+/** Returns just the storage key (not URL) for a category image, or null if not defined. */
+export function getCategoryImageKey(subject: string, category: string): string | null {
+  return CATEGORY_VISUALS_BY_SUBJECT[subject]?.[category]?.imageKey ?? null;
+}
