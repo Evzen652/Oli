@@ -128,14 +128,14 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
 
   const handleRegenerate = async (key: string) => {
     setRegenerating(key);
-    const { error } = await supabase.functions.invoke("generate-prvouka-images", { body: { keys: [key], force: true } });
-    if (error) {
-      toast({ description: `Chyba: ${error.message}`, variant: "destructive" });
+    const { data, error } = await supabase.functions.invoke("generate-prvouka-images", { body: { keys: [key], force: true } });
+    const perKeyError = (data?.errors as Record<string, string> | undefined)?.[key];
+    if (error || perKeyError) {
+      toast({ description: `Chyba: ${perKeyError ?? error?.message ?? "neznámá"}`, variant: "destructive" });
     } else {
-      // Cache-bust: přidáme timestamp do URL aby browser nenačetl starý obrázek z cache
       setCacheBust((prev) => ({ ...prev, [key]: Date.now() }));
       setMissingKeys((prev) => { const n = new Set(prev); n.delete(key); return n; });
-      toast({ description: `✓ ${key} regenerován` });
+      toast({ description: `✓ ${key} uložen` });
     }
     setRegenerating(null);
   };
