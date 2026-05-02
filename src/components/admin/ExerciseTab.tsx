@@ -304,38 +304,45 @@ function TaskCard({
 }
 
 // ══════════════════════════════════════════════════════
-// CompactTaskCard — 2-col grid friendly varianta TaskCard
-// Pouze vizuál, žádná nová logika (jen render)
+// CompactTaskCard — vizuálně updated TaskCard (mockup style)
+// Obsahuje VŠECHNY informace: question, options, hints,
+// solution steps, ODPOVĚĎ PRO ŽÁKA panel (jako u původní TaskCard).
+// Žádná nová logika, jen jiný vizuální layout.
 // ══════════════════════════════════════════════════════
 function CompactTaskCard({
   index,
   question,
   correctAnswer,
   options,
-  hintsCount,
-  onPreview,
-  onEdit,
-  onDelete,
-  statusBadge,
+  hints,
+  solutionSteps,
+  help,
   topicLabel,
+  statusBadge,
+  rightAction,
 }: {
   index: number;
   question: string;
   correctAnswer: string;
   options?: string[];
-  hintsCount?: number;
-  onPreview?: () => void;
-  onEdit?: () => void;
-  onDelete?: () => void;
-  /** Status badge text + className (např. "✅ Schváleno") */
-  statusBadge?: { text: string; cls: string };
-  /** Krátký topic identifier (1 písmeno) — z mockupu */
+  hints?: string[];
+  solutionSteps?: string[];
+  help?: TopicMetadata["helpTemplate"];
+  /** Krátký topic identifier (např. "C", "Z", "P") — z mockupu */
   topicLabel?: string;
+  /** Status badge (např. "✅ Schváleno") */
+  statusBadge?: { text: string; cls: string };
+  /** Tlačítko/ikon do pravého horního rohu (např. "Náhled žáka") */
+  rightAction?: React.ReactNode;
 }) {
   const indexLabel = `#${String(index + 1).padStart(2, "0")}`;
+  // Effective postup: solution_steps > help.steps; navíc help.hint
+  const effectiveSteps = solutionSteps?.length ? solutionSteps : help?.steps;
+  const effectiveHint = !solutionSteps?.length ? help?.hint : undefined;
+
   return (
     <div className="rounded-2xl border border-border/60 bg-card p-4 space-y-3 shadow-soft-1 transition-all hover:shadow-md">
-      {/* Header — index + topic chip vlevo, status badge vpravo */}
+      {/* Header — index + topic chip vlevo, status/action vpravo */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
@@ -347,19 +354,22 @@ function CompactTaskCard({
             </span>
           )}
         </div>
-        {statusBadge && (
-          <Badge className={`${statusBadge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
-            {statusBadge.text}
-          </Badge>
-        )}
+        <div className="flex items-center gap-2">
+          {rightAction}
+          {statusBadge && (
+            <Badge className={`${statusBadge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
+              {statusBadge.text}
+            </Badge>
+          )}
+        </div>
       </div>
 
       {/* Question */}
-      <p className="text-sm font-semibold text-foreground leading-snug">
+      <p className="text-base font-semibold text-foreground leading-snug">
         {question}
       </p>
 
-      {/* Options — 2x2 grid s zeleným borderem na správné */}
+      {/* Options — 2x2 grid s emerald borderem na správné */}
       {options && options.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {options.map((opt, j) => {
@@ -381,45 +391,53 @@ function CompactTaskCard({
         </div>
       )}
 
-      {/* Pokud nejsou options → ukáže jen správnou odpověď */}
+      {/* Pokud nejsou options → samostatný emerald pill se správnou odpovědí */}
       {(!options || options.length === 0) && (
-        <div className="rounded-lg border-2 border-emerald-400 bg-emerald-50/70 px-3 py-2 text-xs font-medium text-emerald-800">
-          <Check className="inline h-3 w-3 mr-1 text-emerald-600" />
+        <div className="rounded-full border-2 border-emerald-400 bg-emerald-50/70 px-4 py-1.5 text-sm font-medium text-emerald-800 inline-flex items-center gap-1.5 max-w-fit">
+          <Check className="h-3.5 w-3.5 text-emerald-600" />
           {correctAnswer}
         </div>
       )}
 
-      {/* Footer — info vlevo, akce vpravo */}
-      <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/40">
-        <span className="text-[11px] text-muted-foreground">
-          {hintsCount ? `${hintsCount} nápověd` : "bez nápověd"} · postup pro žáka
-        </span>
-        <div className="flex items-center gap-1">
-          {onPreview && (
-            <button
-              onClick={onPreview}
-              className="text-[11px] text-sky-600 hover:text-sky-700 hover:underline px-1"
-            >
-              Náhled
-            </button>
-          )}
-          {onEdit && (
-            <button
-              onClick={onEdit}
-              className="text-[11px] text-foreground/70 hover:text-foreground hover:underline px-1"
-            >
-              Upravit
-            </button>
-          )}
-          {onDelete && (
-            <button
-              onClick={onDelete}
-              className="text-[11px] text-rose-600 hover:text-rose-700 hover:underline px-1"
-            >
-              Smazat
-            </button>
-          )}
+      {/* NÁPOVĚDY — rozepsané (jako v mockupu, ne jen počet) */}
+      {hints && hints.length > 0 && (
+        <div className="space-y-1">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            Nápovědy
+          </p>
+          <ol className="text-sm text-foreground/80 space-y-0.5">
+            {hints.map((h, j) => (
+              <li key={j}>
+                {j + 1}. {h}
+              </li>
+            ))}
+          </ol>
         </div>
+      )}
+
+      {/* ODPOVĚĎ PRO ŽÁKA panel — emerald rounded panel s postupem */}
+      <div className="rounded-2xl border-2 border-emerald-300 bg-emerald-50/40 p-3.5 space-y-2">
+        <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+          <span aria-hidden>👁️</span> Odpověď pro žáka
+        </p>
+        <p className="text-sm text-foreground">
+          <span className="text-foreground/80">Správná odpověď:</span>{" "}
+          <span className="font-bold text-emerald-700">{correctAnswer}</span>
+        </p>
+        {effectiveHint && (
+          <p className="text-sm text-foreground/85">
+            <span className="font-semibold text-foreground">Postup:</span> {effectiveHint}
+          </p>
+        )}
+        {effectiveSteps && effectiveSteps.length > 0 && (
+          <ol className="text-sm text-foreground/85 space-y-0.5">
+            {effectiveSteps.map((s, j) => (
+              <li key={j}>
+                {j + 1}. {s}
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
     </div>
   );
@@ -619,16 +637,36 @@ function SavedExercisesList({
                   </div>
                 )}
 
-                {/* Hints / postup — kompaktní footer info */}
-                <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/40">
-                  <span className="text-[11px] text-muted-foreground">
-                    {Array.isArray(ex.hints) && ex.hints.length > 0
-                      ? `${ex.hints.length} nápověd`
-                      : "bez nápověd"}
-                    {Array.isArray(ex.solution_steps) && ex.solution_steps.length > 0
-                      ? " · postup pro žáka"
-                      : ""}
-                  </span>
+                {/* NÁPOVĚDY — rozepsané */}
+                {Array.isArray(ex.hints) && ex.hints.length > 0 && (
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                      Nápovědy
+                    </p>
+                    <ol className="text-sm text-foreground/80 space-y-0.5">
+                      {(ex.hints as string[]).map((h, j) => (
+                        <li key={j}>{j + 1}. {h}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+
+                {/* ODPOVĚĎ PRO ŽÁKA panel */}
+                <div className="rounded-2xl border-2 border-emerald-300 bg-emerald-50/40 p-3.5 space-y-2">
+                  <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+                    <span aria-hidden>👁️</span> Odpověď pro žáka
+                  </p>
+                  <p className="text-sm text-foreground">
+                    <span className="text-foreground/80">Správná odpověď:</span>{" "}
+                    <span className="font-bold text-emerald-700">{ex.correct_answer}</span>
+                  </p>
+                  {Array.isArray(ex.solution_steps) && ex.solution_steps.length > 0 && (
+                    <ol className="text-sm text-foreground/85 space-y-0.5">
+                      {(ex.solution_steps as string[]).map((s, j) => (
+                        <li key={j}>{j + 1}. {s}</li>
+                      ))}
+                    </ol>
+                  )}
                 </div>
 
                 {/* Akce podle aktuálního statusu */}
@@ -1132,7 +1170,9 @@ export function ExerciseTab({
                 question={task.question}
                 correctAnswer={task.correctAnswer}
                 options={task.options}
-                hintsCount={task.hints?.length}
+                hints={task.hints}
+                solutionSteps={task.solutionSteps}
+                help={help}
               />
             ))}
           </div>
