@@ -96,6 +96,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [previewImages, setPreviewImages] = useState<StorageImage[]>([]);
   const [missingKeys, setMissingKeys] = useState<Set<string>>(new Set());
   const [regenerating, setRegenerating] = useState<string | null>(null);
+  const [cacheBust, setCacheBust] = useState<Record<string, number>>({});
   const [filterStatus, setFilterStatus] = useState<"all" | "done" | "missing">("all");
   const [filterGroup, setFilterGroup] = useState<string>("all");
 
@@ -132,8 +133,10 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     if (error) {
       toast({ description: `Chyba: ${error.message}`, variant: "destructive" });
     } else {
+      // Cache-bust: přidáme timestamp do URL aby browser nenačetl starý obrázek z cache
+      setCacheBust((prev) => ({ ...prev, [key]: Date.now() }));
+      setMissingKeys((prev) => { const n = new Set(prev); n.delete(key); return n; });
       toast({ description: `✓ ${key} regenerován` });
-      await loadPreview();
     }
     setRegenerating(null);
   };
@@ -371,7 +374,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                       </div>
                     ) : (
                       <img
-                        src={url}
+                        src={cacheBust[key] ? `${url}?t=${cacheBust[key]}` : url}
                         alt={key}
                         className="w-full aspect-square object-contain rounded-xl mix-blend-multiply"
                         loading="lazy"
