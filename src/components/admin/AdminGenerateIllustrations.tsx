@@ -51,6 +51,9 @@ type ImageKey = typeof ALL_KEYS[number];
 const PROMPT_PREFIX = "Cute 3D rendered cartoon illustration of";
 const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, white isolated background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
 
+const DISPLAY_PREFIX = "Roztomilá 3D cartoon ilustrace —";
+const DISPLAY_SUFFIX = "— Pixar styl, pastelové barvy, zaoblené tvary, bílé pozadí, bez textu";
+
 const DEFAULT_DESCS: Partial<Record<string, string>> = {
   // Předměty
   "subject-matematika": "barevná 3D čísla 1, 2, 3 vznášející se s plusem a rovnítkem",
@@ -322,7 +325,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           <DialogTitle className="font-mono text-sm">{promptDialog?.key}</DialogTitle>
         </DialogHeader>
         <div className="space-y-2">
-          <p className="text-xs text-muted-foreground italic px-1">{PROMPT_PREFIX} …</p>
+          <p className="text-xs text-muted-foreground italic px-1">{DISPLAY_PREFIX}</p>
           <Textarea
             rows={5}
             value={promptDialog?.desc ?? ""}
@@ -330,7 +333,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             placeholder="Popiš, co má obrázek zobrazovat…"
             className="resize-none text-sm"
           />
-          <p className="text-xs text-muted-foreground italic px-1 leading-relaxed">… {PROMPT_SUFFIX.slice(2)}</p>
+          <p className="text-xs text-muted-foreground italic px-1">{DISPLAY_SUFFIX}</p>
         </div>
         <DialogFooter className="gap-2">
           <Button variant="outline" onClick={() => setPromptDialog(null)}>Zrušit</Button>
