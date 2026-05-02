@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { Image as ImageIcon, Loader2, Play, CheckCircle2, AlertTriangle, RefreshCw, LayoutGrid, Wand2 } from "lucide-react";
-import { bumpImageVersion, useImageVersions } from "@/lib/imageVersions";
+import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageVersions";
 
 const KEY_GROUPS: { label: string; emoji: string; keys: string[] }[] = [
   {
@@ -137,6 +137,9 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       bumpImageVersion(key);
       setMissingKeys((prev) => { const n = new Set(prev); n.delete(key); return n; });
       toast({ description: `✓ ${key} uložen` });
+      // Fetch blob bypassing CDN — async, non-blocking; fires second re-render when ready
+      const storageUrl = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl;
+      fetchFreshBlob(key, storageUrl);
     }
     setRegenerating(null);
   };

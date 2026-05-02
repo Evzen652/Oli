@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 const LS_KEY = "oli-image-versions";
 const EVENT = "oli-image-versions-changed";
 
+// In-memory blob URL cache — bypasses CDN entirely, lasts for current session.
+const BLOB_CACHE: Record<string, string> = {};
+
 function readVersions(): Record<string, number> {
   try { return JSON.parse(localStorage.getItem(LS_KEY) ?? "{}"); }
   catch { return {}; }
 }
 
-/** Call after successful regeneration — persists across component remounts. */
+/** Persist timestamp to localStorage (cross-session cache-bust via ?t=...). */
 export function bumpImageVersion(key: string): void {
   const versions = readVersions();
   versions[key] = Date.now();
@@ -17,19 +20,44 @@ export function bumpImageVersion(key: string): void {
 }
 
 /**
- * React hook — returns a function that appends ?t=timestamp to storage URLs
- * when the key has been regenerated. Subscribes to bumps globally.
+ * Fetch a fresh copy of the image directly from origin, bypassing CDN cache.
+ * Stores result as a blob URL. Components using useImageVersions() will
+ * automatically switch to the blob URL on the next render.
+ */
+export async function fetchFreshBlob(key: string, storageUrl: string): Promise<void> {
+  try {
+    const resp = await fetch(storageUrl, { cache: "no-store" });
+    if (!resp.ok) return;
+    const old = BLOB_CACHE[key];
+    if (old) URL.revokeObjectURL(old);
+    BLOB_CACHE[key] = URL.createObjectURL(await resp.blob());
+    window.dispatchEvent(new Event(EVENT));
+  } catch {
+    // fallback: ?t=timestamp from bumpImageVersion is still applied
+  }
+}
+
+/**
+ * Hook — returns a function that resolves the best available URL for a key:
+ * 1. In-memory blob URL (freshly fetched, CDN-bypassing) — if available
+ * 2. Storage URL + ?t=timestamp from localStorage — if regenerated this session or before
+ * 3. Original URL
  */
 export function useImageVersions(): (url: string, key: string) => string {
   const [versions, setVersions] = useState<Record<string, number>>(readVersions);
+  const [, setTick] = useState(0);
 
   useEffect(() => {
-    const handler = () => setVersions(readVersions());
+    const handler = () => {
+      setVersions(readVersions());
+      setTick((n) => n + 1); // force re-render so BLOB_CACHE changes are picked up
+    };
     window.addEventListener(EVENT, handler);
     return () => window.removeEventListener(EVENT, handler);
   }, []);
 
   return (url: string, key: string) => {
+    if (BLOB_CACHE[key]) return BLOB_CACHE[key];
     const v = versions[key];
     return v ? `${url}?t=${v}` : url;
   };
