@@ -304,6 +304,128 @@ function TaskCard({
 }
 
 // ══════════════════════════════════════════════════════
+// CompactTaskCard — 2-col grid friendly varianta TaskCard
+// Pouze vizuál, žádná nová logika (jen render)
+// ══════════════════════════════════════════════════════
+function CompactTaskCard({
+  index,
+  question,
+  correctAnswer,
+  options,
+  hintsCount,
+  onPreview,
+  onEdit,
+  onDelete,
+  statusBadge,
+  topicLabel,
+}: {
+  index: number;
+  question: string;
+  correctAnswer: string;
+  options?: string[];
+  hintsCount?: number;
+  onPreview?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  /** Status badge text + className (např. "✅ Schváleno") */
+  statusBadge?: { text: string; cls: string };
+  /** Krátký topic identifier (1 písmeno) — z mockupu */
+  topicLabel?: string;
+}) {
+  const indexLabel = `#${String(index + 1).padStart(2, "0")}`;
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card p-4 space-y-3 shadow-soft-1 transition-all hover:shadow-md">
+      {/* Header — index + topic chip vlevo, status badge vpravo */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
+            {indexLabel}
+          </span>
+          {topicLabel && (
+            <span className="grid place-items-center h-5 min-w-[20px] px-1.5 rounded-md bg-emerald-100 text-emerald-700 text-[10px] font-bold">
+              {topicLabel}
+            </span>
+          )}
+        </div>
+        {statusBadge && (
+          <Badge className={`${statusBadge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
+            {statusBadge.text}
+          </Badge>
+        )}
+      </div>
+
+      {/* Question */}
+      <p className="text-sm font-semibold text-foreground leading-snug">
+        {question}
+      </p>
+
+      {/* Options — 2x2 grid s zeleným borderem na správné */}
+      {options && options.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {options.map((opt, j) => {
+            const isCorrect = opt === correctAnswer;
+            return (
+              <div
+                key={j}
+                className={`rounded-lg border-2 px-3 py-2 text-xs font-medium ${
+                  isCorrect
+                    ? "border-emerald-400 bg-emerald-50/70 text-emerald-800"
+                    : "border-border/60 bg-background text-foreground/70"
+                }`}
+              >
+                {isCorrect && <Check className="inline h-3 w-3 mr-1 text-emerald-600" />}
+                {opt}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Pokud nejsou options → ukáže jen správnou odpověď */}
+      {(!options || options.length === 0) && (
+        <div className="rounded-lg border-2 border-emerald-400 bg-emerald-50/70 px-3 py-2 text-xs font-medium text-emerald-800">
+          <Check className="inline h-3 w-3 mr-1 text-emerald-600" />
+          {correctAnswer}
+        </div>
+      )}
+
+      {/* Footer — info vlevo, akce vpravo */}
+      <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/40">
+        <span className="text-[11px] text-muted-foreground">
+          {hintsCount ? `${hintsCount} nápověd` : "bez nápověd"} · postup pro žáka
+        </span>
+        <div className="flex items-center gap-1">
+          {onPreview && (
+            <button
+              onClick={onPreview}
+              className="text-[11px] text-sky-600 hover:text-sky-700 hover:underline px-1"
+            >
+              Náhled
+            </button>
+          )}
+          {onEdit && (
+            <button
+              onClick={onEdit}
+              className="text-[11px] text-foreground/70 hover:text-foreground hover:underline px-1"
+            >
+              Upravit
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={onDelete}
+              className="text-[11px] text-rose-600 hover:text-rose-700 hover:underline px-1"
+            >
+              Smazat
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════
 // Saved exercises list (from DB)
 // ══════════════════════════════════════════════════════
 type ExerciseStatus = "pending" | "approved" | "rejected";
@@ -448,112 +570,123 @@ function SavedExercisesList({
           {statusFilter === "rejected" && "Žádné odmítnuté."}
         </p>
       ) : (
-        filtered.map((ex) => {
-          const status: ExerciseStatus = (ex.status as ExerciseStatus) ?? "pending";
-          const tone = statusToneMap[status];
-          const badge = statusBadgeMap[status];
-          return (
-            <div key={ex.id} className={`rounded-lg border ${tone} p-4 space-y-2`}>
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <p className="font-medium text-foreground">{ex.question}</p>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Badge className={`${badge.cls} text-[10px] whitespace-nowrap`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {filtered.map((ex) => {
+            const status: ExerciseStatus = (ex.status as ExerciseStatus) ?? "pending";
+            const tone = statusToneMap[status];
+            const badge = statusBadgeMap[status];
+            return (
+              <div key={ex.id} className={`rounded-2xl border ${tone} p-4 space-y-3 shadow-soft-1`}>
+                {/* Header — index/status */}
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
+                    #{ex.id?.slice(0, 6) ?? ""}
+                  </span>
+                  <Badge className={`${badge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
                     {badge.text}
                   </Badge>
                 </div>
-              </div>
-              {ex.options && ex.options.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {ex.options.map((opt: string, j: number) => (
-                    <Badge
-                      key={j}
-                      variant={opt === ex.correct_answer ? "default" : "outline"}
-                      className={opt === ex.correct_answer ? "bg-emerald-100 text-emerald-800 border-emerald-200" : ""}
-                    >
-                      {opt}
-                    </Badge>
-                  ))}
-                </div>
-              )}
-              {Array.isArray(ex.hints) && (ex.hints as string[]).length > 0 && (
-                <div className="text-sm space-y-1 text-muted-foreground italic">
-                  {(ex.hints as string[]).map((h: string, i: number) => (
-                    <p key={i}>💡 Nápověda {i + 1}: {h}</p>
-                  ))}
-                </div>
-              )}
-              <div className="mt-2 p-3 bg-background/60 rounded-lg border border-border/50 space-y-1">
-                <p className="font-bold text-emerald-800 dark:text-emerald-400 text-sm">Odpověď pro žáka:</p>
-                <p className="font-medium text-sm text-foreground">{ex.correct_answer}</p>
-                {Array.isArray(ex.solution_steps) && (ex.solution_steps as string[]).length > 0 && (
-                  <div className="text-sm text-foreground/80 space-y-0.5 mt-1">
-                    <p className="font-semibold">Postup:</p>
-                    <ol className="list-decimal list-inside">
-                      {(ex.solution_steps as string[]).map((step: string, i: number) => (
-                        <li key={i}>{step}</li>
-                      ))}
-                    </ol>
+
+                {/* Question */}
+                <p className="text-sm font-semibold text-foreground leading-snug">
+                  {ex.question}
+                </p>
+
+                {/* Options 2x2 grid s zeleným borderem na správné */}
+                {ex.options && ex.options.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    {ex.options.map((opt: string, j: number) => {
+                      const isCorrect = opt === ex.correct_answer;
+                      return (
+                        <div
+                          key={j}
+                          className={`rounded-lg border-2 px-3 py-2 text-xs font-medium ${
+                            isCorrect
+                              ? "border-emerald-400 bg-emerald-50/70 text-emerald-800"
+                              : "border-border/60 bg-background/60 text-foreground/70"
+                          }`}
+                        >
+                          {isCorrect && <Check className="inline h-3 w-3 mr-1 text-emerald-600" />}
+                          {opt}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="rounded-lg border-2 border-emerald-400 bg-emerald-50/70 px-3 py-2 text-xs font-medium text-emerald-800">
+                    <Check className="inline h-3 w-3 mr-1 text-emerald-600" />
+                    {ex.correct_answer}
                   </div>
                 )}
-              </div>
 
-              {/* Akce podle aktuálního statusu */}
-              <div className="flex flex-wrap items-center justify-end gap-1.5 pt-1">
-                {status === "pending" && (
-                  <>
+                {/* Hints / postup — kompaktní footer info */}
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/40">
+                  <span className="text-[11px] text-muted-foreground">
+                    {Array.isArray(ex.hints) && ex.hints.length > 0
+                      ? `${ex.hints.length} nápověd`
+                      : "bez nápověd"}
+                    {Array.isArray(ex.solution_steps) && ex.solution_steps.length > 0
+                      ? " · postup pro žáka"
+                      : ""}
+                  </span>
+                </div>
+
+                {/* Akce podle aktuálního statusu */}
+                <div className="flex flex-wrap items-center justify-end gap-1.5 pt-1">
+                  {status === "pending" && (
+                    <>
+                      <Button
+                        size="sm"
+                        variant="default"
+                        onClick={() => updateStatus(ex.id, "approved")}
+                        className="gap-1 text-xs h-7 bg-emerald-600 hover:bg-emerald-700 text-white"
+                      >
+                        <Check className="h-3 w-3" /> Schválit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => updateStatus(ex.id, "rejected")}
+                        className="gap-1 text-xs h-7"
+                      >
+                        <X className="h-3 w-3" /> Odmítnout
+                      </Button>
+                    </>
+                  )}
+                  {status === "approved" && (
                     <Button
                       size="sm"
-                      variant="default"
-                      onClick={() => updateStatus(ex.id, "approved")}
-                      className="gap-1 text-xs h-7 bg-emerald-600 hover:bg-emerald-700 text-white"
+                      variant="ghost"
+                      onClick={() => updateStatus(ex.id, "pending")}
+                      className="gap-1 text-xs h-7 text-amber-700 hover:text-amber-800 hover:bg-amber-100"
                     >
-                      <Check className="h-3 w-3" /> Schválit
+                      <RotateCw className="h-3 w-3" /> Vrátit k revizi
                     </Button>
+                  )}
+                  {status === "rejected" && (
                     <Button
                       size="sm"
-                      variant="outline"
-                      onClick={() => updateStatus(ex.id, "rejected")}
-                      className="gap-1 text-xs h-7"
+                      variant="ghost"
+                      onClick={() => updateStatus(ex.id, "pending")}
+                      className="gap-1 text-xs h-7 text-amber-700 hover:text-amber-800 hover:bg-amber-100"
                     >
-                      <X className="h-3 w-3" /> Odmítnout
+                      <RotateCw className="h-3 w-3" /> Vrátit k revizi
                     </Button>
-                  </>
-                )}
-                {status === "approved" && (
+                  )}
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={() => updateStatus(ex.id, "pending")}
-                    className="gap-1 text-xs h-7 text-amber-700 hover:text-amber-800 hover:bg-amber-100"
+                    onClick={() => handleDeletePermanently(ex.id)}
+                    className="gap-1 text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                    title="Trvale smazat (neoznačit jen jako odmítnuté)"
                   >
-                    <RotateCw className="h-3 w-3" /> Vrátit k revizi
+                    <Trash2 className="h-3 w-3" /> Smazat
                   </Button>
-                )}
-                {status === "rejected" && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => updateStatus(ex.id, "pending")}
-                    className="gap-1 text-xs h-7 text-amber-700 hover:text-amber-800 hover:bg-amber-100"
-                  >
-                    <RotateCw className="h-3 w-3" /> Vrátit k revizi
-                  </Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleDeletePermanently(ex.id)}
-                  className="gap-1 text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
-                  title="Trvale smazat (neoznačit jen jako odmítnuté)"
-                >
-                  <Trash2 className="h-3 w-3" /> Smazat
-                </Button>
+                </div>
               </div>
-            </div>
-          );
-        })
+            );
+          })}
+        </div>
       )}
     </div>
   );
@@ -833,42 +966,139 @@ export function ExerciseTab({
   const allowReformulate = variant !== "simple";
   const allSaved = aiTasks.length > 0 && savedIndices.size === aiTasks.length;
 
+  // Level header colors per variant (z mockup-u)
+  const levelHeaderColors: Record<ExerciseVariant, { ring: string; pill: string; titleText: string }> = {
+    simple: {
+      ring: "border-emerald-300 bg-gradient-to-br from-emerald-50/80 to-emerald-100/40",
+      pill: "bg-emerald-500 text-white",
+      titleText: "text-emerald-900",
+    },
+    advanced: {
+      ring: "border-purple-300 bg-gradient-to-br from-purple-50/80 to-purple-100/40",
+      pill: "bg-purple-500 text-white",
+      titleText: "text-purple-900",
+    },
+    expert: {
+      ring: "border-red-300 bg-gradient-to-br from-red-50/80 to-red-100/40",
+      pill: "bg-red-500 text-white",
+      titleText: "text-red-900",
+    },
+  };
+  const lh = levelHeaderColors[variant];
+
   return (
-    <div className="space-y-3">
-      {/* Header / description */}
-      <div className="rounded-lg border bg-muted/40 p-3 text-sm text-muted-foreground">
-        <p>
-          {config.description}
-          {hasGenerator ? " Šablona vytváří variace automaticky." : ""}
-        </p>
+    <div className="space-y-4">
+      {/* Header karta úrovně — barevný banner s "LEVEL X" pill, title, desc + počet uložených */}
+      <div className={`rounded-2xl border-2 ${lh.ring} px-5 py-4 shadow-soft-1 flex items-center justify-between gap-4`}>
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <Badge className={`${lh.pill} rounded-full px-3.5 py-1 text-xs font-bold uppercase tracking-wider shrink-0`}>
+            {variant === "simple" ? "Level I" : variant === "advanced" ? "Level II" : "Level III"}
+          </Badge>
+          <div className="min-w-0">
+            <h3 className={`text-xl font-bold ${lh.titleText} truncate`}>
+              {variant === "simple" ? "Základní obtížnost" : variant === "advanced" ? "Pokročilá obtížnost" : "Vysoká obtížnost"}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {variant === "simple"
+                ? "Jednoduché jednokrokové úlohy · drilová cvičení"
+                : variant === "advanced"
+                ? "Vícekrokové úlohy · aplikační situace"
+                : "Nejtěžší úlohy · vícekrokové · více konceptů"}
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* AI generator box */}
-      <div className={`rounded-lg border-2 border-dashed ${config.color.dashed} p-4 space-y-3`}>
-        <h5 className="text-sm font-semibold text-foreground flex items-center gap-2">
-          <Sparkles className={`h-4 w-4 ${config.color.icon}`} />
-          {config.emoji} Generovat {config.shortLabel} cvičení ({config.levelLabel}) pomocí AI
-        </h5>
-        <Textarea
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder={config.placeholder}
-          className="min-h-[60px] text-sm"
-        />
-        <Button
-          size="sm"
-          onClick={() => generate(aiTasks.length === 0)}
-          disabled={loading}
-          className={`gap-1 ${config.color.generateBtn}`}
-        >
-          <Sparkles className="h-3 w-3" />
-          {loading
-            ? "Generuji…"
-            : aiTasks.length > 0
-            ? `+ Další ${config.shortLabel}`
-            : `Generovat ${config.shortLabel}`}
-        </Button>
-        {error && <p className="text-sm text-destructive">{error}</p>}
+      {/* 2-col layout: AI generátor vlevo + "O této úrovni" karta vpravo */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* AI generator box */}
+        <div className={`rounded-2xl border-2 border-dashed ${config.color.dashed} p-5 space-y-3`}>
+          <div className="flex items-start gap-2">
+            <Sparkles className={`h-5 w-5 ${config.color.icon} shrink-0 mt-0.5`} />
+            <div>
+              <h5 className="text-sm font-bold text-foreground">
+                Generovat nové úlohy pomocí AI
+              </h5>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Doplň úroveň {config.levelLabel}
+              </p>
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              Zadání
+            </p>
+            <Textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder={config.placeholder}
+              className="min-h-[80px] text-sm bg-white/70 backdrop-blur-sm"
+            />
+          </div>
+          <Button
+            size="lg"
+            onClick={() => generate(aiTasks.length === 0)}
+            disabled={loading}
+            className={`w-full gap-2 rounded-xl ${config.color.generateBtn}`}
+          >
+            <Sparkles className="h-4 w-4" />
+            {loading
+              ? "Generuji…"
+              : aiTasks.length > 0
+              ? `+ Další ${config.shortLabel} cvičení`
+              : `Generovat ${config.shortLabel} cvičení`}
+          </Button>
+          {error && <p className="text-sm text-destructive">{error}</p>}
+        </div>
+
+        {/* "O této úrovni" stats karta */}
+        <div className="rounded-2xl border-2 border-border/60 bg-card p-5 space-y-3 shadow-soft-1">
+          <h5 className="text-sm font-bold text-foreground">O této úrovni</h5>
+
+          {/* 3 statistiky vedle sebe */}
+          <div className="grid grid-cols-3 gap-2 pt-1">
+            <div className="text-center">
+              <p className="text-3xl font-black text-emerald-600 tabular-nums">
+                {variant === "simple" && hasGenerator ? skill.generator(skill.defaultLevel ?? 1).length : "—"}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
+                úloh
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-black text-sky-600 tabular-nums">1</p>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
+                typ vstupu
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-black text-violet-600 tabular-nums">
+                {hasGenerator ? "100 %" : "—"}
+              </p>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
+                ověřeno
+              </p>
+            </div>
+          </div>
+
+          {/* Checklist o úrovni */}
+          <ul className="space-y-1.5 pt-2">
+            <li className="text-xs text-foreground/80 flex items-start gap-2">
+              <Check className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
+              <span>{config.description.replace(/^[📗📘📕]\s*/, "").split(".")[0]}.</span>
+            </li>
+            {hasGenerator && (
+              <li className="text-xs text-foreground/80 flex items-start gap-2">
+                <Check className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                <span>Šablona vytváří variace automaticky</span>
+              </li>
+            )}
+            <li className="text-xs text-foreground/80 flex items-start gap-2">
+              <Check className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
+              <span>Žákům se zobrazí pouze schválené úlohy</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       {/* Loading indicator */}
@@ -878,15 +1108,34 @@ export function ExerciseTab({
         </div>
       )}
 
-      {/* Code-generator sample preview (simple only) */}
+      {/* Code-generator sample preview (simple only) — 2-col grid + compact cards */}
       {hasGenerator && genTasks.length > 0 && (
         <div className="space-y-3">
-          <h5 className="text-sm font-semibold text-muted-foreground">
-            {config.emoji} Ukázky ze šablony ({genTasks.length})
-          </h5>
-          {genTasks.map((task, i) => (
-            <TaskCard key={`${regenCount}-${i}`} index={i} task={task} help={help} skill={skill} />
-          ))}
+          {/* Header — label + count badge + (placeholder) sort */}
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                Ukázky ze šablony
+              </p>
+              <Badge className="bg-emerald-500 text-white rounded-full px-2.5 py-0.5 text-[11px] font-bold">
+                {genTasks.length}
+              </Badge>
+            </div>
+          </div>
+
+          {/* 2-col grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {genTasks.map((task, i) => (
+              <CompactTaskCard
+                key={`${regenCount}-${i}`}
+                index={i}
+                question={task.question}
+                correctAnswer={task.correctAnswer}
+                options={task.options}
+                hintsCount={task.hints?.length}
+              />
+            ))}
+          </div>
         </div>
       )}
 
