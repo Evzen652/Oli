@@ -748,31 +748,47 @@ function AITaskRow({
   onReformulate: (task: AITask, i: number) => void;
   allowReformulate: boolean;
 }) {
-  return (
-    <div className={`rounded-lg border ${config.color.task} overflow-hidden`}>
-      <div className="flex justify-end gap-1 px-4 pt-3">
-        {task._grade_rewritten && (
-          <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-[10px]">
-            🔄 Přeformulováno
-          </Badge>
-        )}
-        {(task._grade_validated || task._grade_rewritten) && (
-          <Badge className="bg-green-100 text-green-700 border-green-200 text-[10px]">
-            ✅ Ověřeno pro ročník
-          </Badge>
-        )}
-        <Badge className={`${config.color.badge} text-[10px]`}>
-          {config.emoji} {config.shortLabel.charAt(0).toUpperCase() + config.shortLabel.slice(1)}
+  // Header validation badges (Přeformulováno / Ověřeno) — vlevo
+  const headerBadges = (
+    <div className="flex items-center gap-1">
+      {task._grade_rewritten && (
+        <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-[10px] rounded-full">
+          🔄 Přeformulováno
         </Badge>
-      </div>
-      <TaskCard index={index} task={task} isAI={config.source !== "simple"} />
-      <div className={`flex items-center justify-end gap-1 px-4 pb-3 pt-1 border-t ${config.color.taskBorder}`}>
+      )}
+      {(task._grade_validated || task._grade_rewritten) && (
+        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[10px] rounded-full">
+          ✅ Ověřeno pro ročník
+        </Badge>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="space-y-2">
+      {/* CompactTaskCard renderuje obsah (otázka + options + hints + ODPOVĚĎ PRO ŽÁKA panel) */}
+      <CompactTaskCard
+        index={index}
+        question={task.question}
+        correctAnswer={task.correct_answer}
+        options={task.options}
+        hints={task.hints}
+        solutionSteps={task.solution_steps}
+        statusBadge={{
+          text: `${config.emoji} ${config.shortLabel.charAt(0).toUpperCase() + config.shortLabel.slice(1)}`,
+          cls: config.color.badge,
+        }}
+        rightAction={headerBadges}
+      />
+
+      {/* Akce — Smazat / Přeformulovat / Uložit */}
+      <div className="flex items-center justify-end gap-1.5">
         <Button
           size="sm"
           variant="ghost"
           onClick={() => onDelete(index)}
           disabled={saving}
-          className="gap-1 text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+          className="gap-1 text-xs h-8 text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
         >
           <Trash2 className="h-3 w-3" /> Smazat
         </Button>
@@ -782,7 +798,7 @@ function AITaskRow({
             variant="ghost"
             onClick={() => onReformulate(task, index)}
             disabled={saving || reformulatingIndex === index}
-            className={`gap-1 text-xs h-7 ${config.color.reformulateText}`}
+            className={`gap-1 text-xs h-8 rounded-full ${config.color.reformulateText}`}
           >
             <RotateCw className={`h-3 w-3 ${reformulatingIndex === index ? "animate-spin" : ""}`} /> Přeformulovat
           </Button>
@@ -792,7 +808,7 @@ function AITaskRow({
           variant={savedIndices.has(index) ? "secondary" : "outline"}
           onClick={() => onSave(task, index)}
           disabled={saving || savedIndices.has(index)}
-          className="gap-1 text-xs h-7"
+          className="gap-1 text-xs h-8 rounded-full"
         >
           {savedIndices.has(index) ? (
             <><Check className="h-3 w-3" /> Uloženo</>
@@ -1179,41 +1195,47 @@ export function ExerciseTab({
         </div>
       )}
 
-      {/* AI-generated tasks list */}
+      {/* AI-generated tasks list — 2-col grid */}
       {aiTasks.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h5 className="text-sm font-semibold text-foreground flex items-center gap-2">
-              <Sparkles className={`h-4 w-4 ${config.color.icon}`} />
-              {config.emoji} {config.levelLabel.split(" (")[0]} cvičení – {config.levelLabel.match(/\(([^)]+)\)/)?.[1] ?? ""}
-              ({aiTasks.length})
-            </h5>
+            <div className="flex items-center gap-2">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                <Sparkles className={`h-3.5 w-3.5 ${config.color.icon}`} />
+                AI návrhy {config.shortLabel}
+              </p>
+              <Badge className={`${config.color.badge} rounded-full px-2.5 py-0.5 text-[11px] font-bold`}>
+                {aiTasks.length}
+              </Badge>
+            </div>
             <Button
               size="sm"
               variant="outline"
               onClick={handleSaveAll}
               disabled={saving || allSaved}
-              className="gap-1"
+              className="gap-1 rounded-full"
             >
               <Download className="h-3 w-3" />
               {allSaved ? "Vše uloženo ✓" : "Uložit vše do DB"}
             </Button>
           </div>
-          {aiTasks.map((task, i) => (
-            <AITaskRow
-              key={`${config.source}-${i}`}
-              index={i}
-              task={task}
-              config={config}
-              saving={saving}
-              savedIndices={savedIndices}
-              reformulatingIndex={reformulatingIndex}
-              onSave={handleSaveTask}
-              onDelete={handleDelete}
-              onReformulate={handleReformulate}
-              allowReformulate={allowReformulate}
-            />
-          ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {aiTasks.map((task, i) => (
+              <AITaskRow
+                key={`${config.source}-${i}`}
+                index={i}
+                task={task}
+                config={config}
+                saving={saving}
+                savedIndices={savedIndices}
+                reformulatingIndex={reformulatingIndex}
+                onSave={handleSaveTask}
+                onDelete={handleDelete}
+                onReformulate={handleReformulate}
+                allowReformulate={allowReformulate}
+              />
+            ))}
+          </div>
         </div>
       )}
 
