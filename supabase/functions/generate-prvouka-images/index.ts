@@ -119,11 +119,14 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   const PROVIDER_PREF = Deno.env.get("IMAGE_PROVIDER") ?? "lovable";
 
   const tryGemini = async () => {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`;
     const resp = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
+      }),
     });
     if (!resp.ok) {
       const t = await resp.text();

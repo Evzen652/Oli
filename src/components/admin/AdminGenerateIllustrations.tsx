@@ -209,19 +209,8 @@ export function AdminGenerateIllustrations({ trigger }: Props) {
           {/* INTRO */}
           <Card className="border-2 border-primary/20 bg-primary/5">
             <CardContent className="p-5 space-y-2 text-sm">
-              <p className="font-semibold text-foreground">
-                AI vygeneruje konzistentní 3D-rendered ilustrace pro vybrané kategorie.
-              </p>
-              <ul className="text-muted-foreground list-disc list-inside space-y-1 ml-2">
-                <li>Styl: Pixar-like 3D, soft pastel barvy, friendly characters, white background.</li>
-                <li>Provider: <strong>Lovable Gateway default</strong> (využije tvůj kredit), automatický fallback na Gemini direct. Přepnout přes env <code className="text-xs bg-muted px-1 rounded">IMAGE_PROVIDER=gemini</code>.</li>
-                <li>Cena: ~$0.039 / obrázek (Gemini 2.5 Flash Image) = cca <strong>$3 (70 Kč)</strong> za 75 ilustrací.</li>
-                <li>Ukládá: Supabase storage bucket <code className="text-xs bg-muted px-1 rounded">prvouka-images</code>.</li>
-                <li>Trvá ~2 sekundy per ilustrace + rate limit. Celý balík ~3 minuty.</li>
-              </ul>
-              <p className="text-xs text-muted-foreground italic mt-2">
-                Pozn: po vygenerování stačí refresh stránky — aplikace automaticky
-                načte nové URL z Supabase storage.
+              <p className="text-muted-foreground">
+                Vygeneruje Pixar-style 3D ilustrace přes AI a uloží je do Supabase storage. Po dokončení stačí refresh stránky.
               </p>
             </CardContent>
           </Card>
