@@ -385,137 +385,260 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
           </div>
         </div>
       ) : (
-        // ── PŮVODNÍ LAYOUT pro category / topic / subtopic levels ──
-        <div className="relative flex min-h-screen items-center justify-center p-4">
-          <div className={`absolute ${isAdmin ? "top-[4.5rem]" : "top-4"} left-4 z-10`}>
-            <OlyLogo onClick={onBack} />
-          </div>
-          <div className="w-full max-w-lg space-y-8">
-            <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1 text-base text-muted-foreground">
-              <ChevronLeft className="h-5 w-5" />
-              {t("topic.back")}
-            </Button>
+        // ── ŽÁKOVSKÝ POHLED — category / topic / subtopic (Lovable styl) ──
+        (() => {
+          const subjectStyle = (selectedSubject && SUBJECT_CARD_STYLES[selectedSubject]) || {
+            bg: "bg-gradient-to-br from-muted via-muted/50 to-background",
+            border: "border-border/60",
+            chipBg: "bg-white/80 text-foreground",
+            chipText: "text-foreground",
+          };
+          const subjectMeta = selectedSubject ? getSubjectMeta(selectedSubject) : null;
+          const infoForLevel =
+            level === "topic" && selectedSubject && selectedCategory
+              ? getCategoryInfo(selectedSubject, selectedCategory)
+              : level === "subtopic" && selectedSubject && selectedCategory && selectedTopic
+                ? getCategoryInfo(selectedSubject, selectedCategory, selectedTopic)
+                : null;
 
-            <div className="space-y-3 text-center">
-              <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-                {title}
-              </h1>
-              <p className="text-lg text-muted-foreground">{subtitle}</p>
-            </div>
-
-            {/* Category/topic info button — shown at topic and subtopic level */}
-            {level === "topic" && selectedSubject && selectedCategory && (() => {
-              const info = getCategoryInfo(selectedSubject, selectedCategory);
-              if (!info) return null;
-              return <CategoryInfoDialog info={info} />;
-            })()}
-            {level === "subtopic" && selectedSubject && selectedCategory && selectedTopic && (() => {
-              const info = getCategoryInfo(selectedSubject, selectedCategory, selectedTopic);
-              if (!info) return null;
-              return <CategoryInfoDialog info={info} />;
-            })()}
-
-            <div className="grid gap-4">{/* zachováno původní rendering pro category/topic/subtopic */}
-
-          {level === "category" &&
-            categories.map((category) => {
-              const count = new Set(
-                topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
-              ).size;
-              const catInfo = getCategoryInfo(selectedSubject!, category);
-              const visual = getPrvoukaCategoryVisual(selectedSubject!, category);
-              return (
-                <Card
-                  key={category}
-                  className={`cursor-pointer border-2 transition-all hover:shadow-md ${
-                    visual ? `${visual.gradientClass} ${visual.colorClass}` : "hover:bg-accent"
-                  }`}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <PrvoukaImage imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="lg" />
-                      <div>
-                        <p className="text-2xl font-medium text-foreground">{capitalize(category)}</p>
-                        <p className="text-base text-muted-foreground">{count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}</p>
-                      </div>
+          return (
+            <div className="mx-auto w-full max-w-5xl space-y-6">
+              {/* Welcome header card — barva podle aktuálního předmětu */}
+              <div className={`relative rounded-3xl border-2 ${subjectStyle.border} ${subjectStyle.bg} p-5 shadow-soft-1`}>
+                <div className="flex items-center gap-4">
+                  <div className="shrink-0">
+                    <OlyLogo size="sm" onClick={onBack} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground capitalize">
+                      {selectedSubject ?? title}
+                    </h1>
+                    <p className="text-sm text-foreground/70">
+                      {subtitle}
+                    </p>
+                  </div>
+                  {subjectMeta && (
+                    <div className="shrink-0 hidden sm:block">
+                      <PrvoukaImage
+                        imageUrl={subjectMeta.image || null}
+                        fallbackEmoji={subjectMeta.emoji}
+                        size="md"
+                      />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <ChevronLeft className="h-6 w-6 rotate-180 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                  )}
+                </div>
+              </div>
 
-          {level === "topic" &&
-            topicGroups.map((topicName) => {
-              const skillsInGroup = topics.filter(
-                (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === topicName
-              );
-              const count = skillsInGroup.length;
-              const description = count > 1
-                ? (skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? "")
-                : (skillsInGroup[0]?.briefDescription ?? "");
-              const topicEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topicName);
-              const topicVisual = getPrvoukaTopicVisual(selectedSubject!, selectedCategory!);
-              return (
-                <Card
-                  key={topicName}
-                  className={`cursor-pointer border-2 transition-all hover:shadow-md ${
-                    topicVisual ? `${topicVisual.gradientClass} ${topicVisual.colorClass}/60` : "hover:bg-accent"
-                  }`}
-                  onClick={() => handleTopicClick(topicName)}
+              {/* Title + back */}
+              <div className="flex items-end justify-between gap-3">
+                <div className="min-w-0">
+                  <h2 className="text-3xl font-black tracking-tight text-foreground capitalize truncate">
+                    {title}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    {level === "category"
+                      ? "Vyber si okruh, který chceš procvičovat."
+                      : level === "topic"
+                        ? "Klepni na téma a pusť se do něj."
+                        : "Klepni na konkrétní podtéma."}
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleBack}
+                  className="gap-1 text-sm text-muted-foreground shrink-0"
                 >
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)} fallbackEmoji={topicEmoji} size="md" />
-                      <div>
-                        <p className="text-xl font-medium text-foreground">{capitalize(topicName)}</p>
-                        {description && (
-                          <p className="mt-1 text-base text-muted-foreground">{description}</p>
+                  <ChevronLeft className="h-4 w-4" />
+                  {t("topic.back")}
+                </Button>
+              </div>
+
+              {/* Info dialog — pokud existuje pro tuto úroveň */}
+              {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
+
+              {/* CATEGORY level — asymmetric grid (1 primary + ostatní) */}
+              {level === "category" && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {categories.map((category, idx) => {
+                    const count = new Set(
+                      topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
+                    ).size;
+                    const visual = getPrvoukaCategoryVisual(selectedSubject!, category);
+                    const isPrimary = idx === 0 && categories.length > 1;
+                    return (
+                      <button
+                        key={category}
+                        type="button"
+                        onClick={() => handleCategoryClick(category)}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 sm:p-6 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
+                          isPrimary ? "md:col-span-2 md:row-span-2 min-h-[320px] flex flex-col" : "min-h-[160px]"
+                        }`}
+                      >
+                        {isPrimary ? (
+                          <>
+                            <div className="flex-1 flex items-center justify-center py-4">
+                              <PrvoukaImage imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
+                            </div>
+                            <div className="space-y-2">
+                              <h3 className="text-2xl sm:text-3xl font-black capitalize text-foreground tracking-tight">
+                                {capitalize(category)}
+                              </h3>
+                              <p className="text-sm text-foreground/70">
+                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
+                              </p>
+                              <div className="flex items-center gap-2 pt-1">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground/90 text-background px-4 py-2 text-sm font-bold shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                                  Pokračovat
+                                  <span aria-hidden>›</span>
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex items-center gap-3 h-full">
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <h3 className="text-lg sm:text-xl font-black capitalize text-foreground tracking-tight">
+                                {capitalize(category)}
+                              </h3>
+                              <p className="text-xs text-foreground/70">
+                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
+                              </p>
+                            </div>
+                            <div className="shrink-0">
+                              <PrvoukaImage imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
+                            </div>
+                            <span
+                              className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
+                              aria-hidden
+                            >
+                              ›
+                            </span>
+                          </div>
                         )}
-                        {count > 1 && (
-                          <p className="mt-1 text-sm text-muted-foreground">{count} {count < 5 ? t("count.subtopic_2_4") : t("count.subtopic_5_plus")}</p>
-                        )}
-                      </div>
-                    </div>
-                    <ChevronLeft className="h-6 w-6 rotate-180 text-muted-foreground" />
-                  </CardContent>
-                </Card>
-              );
-            })}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
-          {level === "subtopic" &&
-            subtopics.map((topic) => {
-              const subEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
-              const subVisual = getPrvoukaTopicVisual(selectedSubject!, selectedCategory!);
-              const isDbOnly = !hasCodeGenerator(topic);
-              return (
-                <Card
-                  key={topic.id}
-                  className={`cursor-pointer border-2 transition-all hover:shadow-md ${
-                    subVisual ? `${subVisual.gradientClass} ${subVisual.colorClass}/40` : "hover:bg-accent"
-                  } ${isDbOnly ? "opacity-80" : ""}`}
-                  onClick={() => onSelectTopic(topic)}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3">
-                      <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topic.title)} fallbackEmoji={getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="sm" />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="text-xl font-medium text-foreground">{topic.title}</p>
+              {/* TOPIC level — asymmetric grid s description na primary */}
+              {level === "topic" && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {topicGroups.map((topicName, idx) => {
+                    const skillsInGroup = topics.filter(
+                      (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === topicName
+                    );
+                    const count = skillsInGroup.length;
+                    const description = count > 1
+                      ? (skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? "")
+                      : (skillsInGroup[0]?.briefDescription ?? "");
+                    const topicEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topicName);
+                    const isPrimary = idx === 0 && topicGroups.length > 1;
+                    return (
+                      <button
+                        key={topicName}
+                        type="button"
+                        onClick={() => handleTopicClick(topicName)}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 sm:p-6 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
+                          isPrimary ? "md:col-span-2 md:row-span-2 min-h-[320px] flex flex-col" : "min-h-[160px]"
+                        }`}
+                      >
+                        {isPrimary ? (
+                          <>
+                            <div className="flex-1 flex items-center justify-center py-4">
+                              <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)} fallbackEmoji={topicEmoji} size="hero" />
+                            </div>
+                            <div className="space-y-2">
+                              <h3 className="text-2xl sm:text-3xl font-black capitalize text-foreground tracking-tight">
+                                {capitalize(topicName)}
+                              </h3>
+                              {description && (
+                                <p className="text-sm text-foreground/70 line-clamp-2">{description}</p>
+                              )}
+                              {count > 1 && (
+                                <p className="text-xs text-foreground/60">
+                                  {count} {count < 5 ? t("count.subtopic_2_4") : t("count.subtopic_5_plus")}
+                                </p>
+                              )}
+                              <div className="flex items-center gap-2 pt-1">
+                                <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground/90 text-background px-4 py-2 text-sm font-bold shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                                  Pokračovat
+                                  <span aria-hidden>›</span>
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex items-center gap-3 h-full">
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <h3 className="text-lg sm:text-xl font-black capitalize text-foreground tracking-tight line-clamp-2">
+                                {capitalize(topicName)}
+                              </h3>
+                              {description && (
+                                <p className="text-xs text-foreground/70 line-clamp-2">{description}</p>
+                              )}
+                              {count > 1 && (
+                                <p className="text-[10px] text-foreground/60">
+                                  {count} {count < 5 ? t("count.subtopic_2_4") : t("count.subtopic_5_plus")}
+                                </p>
+                              )}
+                            </div>
+                            <div className="shrink-0">
+                              <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)} fallbackEmoji={topicEmoji} size="md" />
+                            </div>
+                            <span
+                              className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
+                              aria-hidden
+                            >
+                              ›
+                            </span>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* SUBTOPIC level — uniformní 2-col grid (často hodně položek) */}
+              {level === "subtopic" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {subtopics.map((topic) => {
+                    const subEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
+                    const isDbOnly = !hasCodeGenerator(topic);
+                    return (
+                      <button
+                        key={topic.id}
+                        type="button"
+                        onClick={() => onSelectTopic(topic)}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[140px] ${isDbOnly ? "opacity-80" : ""}`}
+                      >
+                        <div className="flex items-start gap-3 h-full">
+                          <div className="shrink-0">
+                            <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topic.title)} fallbackEmoji={getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="lg" />
+                          </div>
+                          <div className="flex-1 min-w-0 space-y-1">
+                            <h3 className="text-lg font-black text-foreground tracking-tight line-clamp-2">
+                              {topic.title}
+                            </h3>
+                            <p className="text-sm text-foreground/70 line-clamp-2">{topic.goals[0]}</p>
+                          </div>
+                          <span
+                            className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
+                            aria-hidden
+                          >
+                            ›
+                          </span>
                         </div>
-                        <p className="mt-1 text-base text-muted-foreground">{topic.goals[0]}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          </div>
-        </div>
+          );
+        })()
       )}
     </div>
   );
