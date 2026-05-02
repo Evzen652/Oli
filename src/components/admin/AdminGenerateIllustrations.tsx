@@ -262,35 +262,50 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     setRegenerating(null);
   };
 
+  const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
+
   const runBatch = async (keys: string[], force: boolean) => {
     if (keys.length === 0) return;
     setRunning(true);
     setBatchResult(null);
-    try {
-      const { data, error } = await supabase.functions.invoke("generate-prvouka-images", {
-        body: { keys, force },
-      });
-      if (error) {
-        toast({ description: `Chyba: ${error.message}`, variant: "destructive" });
-        return;
+    setBatchProgress({ done: 0, total: keys.length });
+
+    const CHUNK = 3;
+    const allOk: string[] = [];
+    const allFailed: { key: string; reason: string }[] = [];
+
+    for (let i = 0; i < keys.length; i += CHUNK) {
+      const chunk = keys.slice(i, i + CHUNK);
+      try {
+        const { data, error } = await supabase.functions.invoke("generate-prvouka-images", {
+          body: { keys: chunk, force },
+        });
+        if (error) {
+          chunk.forEach((key) => allFailed.push({ key, reason: error.message }));
+        } else {
+          const ok = Object.keys((data?.results ?? {}) as Record<string, string>);
+          const failed = Object.entries((data?.errors ?? {}) as Record<string, string>).map(
+            ([key, reason]) => ({ key, reason })
+          );
+          allOk.push(...ok);
+          allFailed.push(...failed);
+          ok.forEach((key) => {
+            bumpImageVersion(key);
+            setMissingKeys((prev) => { const n = new Set(prev); n.delete(key); return n; });
+            const storageUrl = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl;
+            fetchFreshBlob(key, storageUrl);
+          });
+        }
+      } catch (e) {
+        chunk.forEach((key) => allFailed.push({ key, reason: e instanceof Error ? e.message : "Chyba" }));
       }
-      const ok = Object.keys((data?.results ?? {}) as Record<string, string>);
-      const failed = Object.entries((data?.errors ?? {}) as Record<string, string>).map(
-        ([key, reason]) => ({ key, reason })
-      );
-      setBatchResult({ ok, failed });
-      ok.forEach((key) => {
-        bumpImageVersion(key);
-        setMissingKeys((prev) => { const n = new Set(prev); n.delete(key); return n; });
-        const storageUrl = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl;
-        fetchFreshBlob(key, storageUrl);
-      });
-      toast({ description: `Hotovo: ${ok.length} / ${keys.length}` });
-    } catch (e) {
-      toast({ description: e instanceof Error ? e.message : "Chyba", variant: "destructive" });
-    } finally {
-      setRunning(false);
+      setBatchProgress({ done: Math.min(i + CHUNK, keys.length), total: keys.length });
     }
+
+    setBatchResult({ ok: allOk, failed: allFailed });
+    setBatchProgress(null);
+    setRunning(false);
+    toast({ description: `Hotovo: ${allOk.length} / ${keys.length}` });
   };
 
   const handleGenerateMissing = () => runBatch(missingFiltered.map((i) => i.key), false);
@@ -447,7 +462,21 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           <Card className="mt-3">
             <CardContent className="p-4 flex items-center gap-3">
               <Loader2 className="h-5 w-5 text-primary animate-spin shrink-0" />
-              <p className="text-sm text-muted-foreground">Generuji… (může trvat několik minut)</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground">
+                  {batchProgress
+                    ? `Generuji… ${batchProgress.done} / ${batchProgress.total}`
+                    : "Generuji…"}
+                </p>
+                {batchProgress && (
+                  <div className="mt-1.5 h-1.5 rounded-full bg-muted overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all duration-500"
+                      style={{ width: `${(batchProgress.done / batchProgress.total) * 100}%` }}
+                    />
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         )}
