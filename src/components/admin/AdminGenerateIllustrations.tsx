@@ -214,8 +214,8 @@ export function AdminGenerateIllustrations({ trigger }: Props) {
               </p>
               <ul className="text-muted-foreground list-disc list-inside space-y-1 ml-2">
                 <li>Styl: Pixar-like 3D, soft pastel barvy, friendly characters, white background.</li>
-                <li>Generuje: Gemini 2.5 Flash Image (direct Google API pokud je nastaven GEMINI_API_KEY, jinak fallback na Lovable Gateway).</li>
-                <li>Cena: ~$0.039 per obrázek = cca <strong>$3 (70 Kč)</strong> za celý balík 75 ilustrací.</li>
+                <li>Provider: <strong>Lovable Gateway default</strong> (využije tvůj kredit), automatický fallback na Gemini direct. Přepnout přes env <code className="text-xs bg-muted px-1 rounded">IMAGE_PROVIDER=gemini</code>.</li>
+                <li>Cena: ~$0.039 / obrázek (Gemini 2.5 Flash Image) = cca <strong>$3 (70 Kč)</strong> za 75 ilustrací.</li>
                 <li>Ukládá: Supabase storage bucket <code className="text-xs bg-muted px-1 rounded">prvouka-images</code>.</li>
                 <li>Trvá ~2 sekundy per ilustrace + rate limit. Celý balík ~3 minuty.</li>
               </ul>

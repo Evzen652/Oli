@@ -103,25 +103,27 @@ const IMAGE_KEYS: Record<string, string> = {
 };
 
 /**
- * Generuje obrázek přes preferovaný provider:
- *   1) GEMINI_API_KEY  → Google AI Studio direct (nejlevnější, Gemini 2.5 Flash Image)
- *   2) LOVABLE_API_KEY → Lovable AI Gateway (fallback, stejný model + marže)
+ * Generuje obrázek přes preferovaný provider.
+ *
+ * Priorita podle env IMAGE_PROVIDER:
+ *   "lovable"      → Lovable Gateway prefer, Gemini direct fallback
+ *   "gemini"       → Gemini direct prefer, Lovable fallback
+ *   (nenastaveno)  → default: Lovable prefer (využít předplacený kredit),
+ *                    Gemini fallback
  *
  * Vrací { base64, contentType } nebo throws Error.
  */
 async function generateImage(prompt: string): Promise<{ base64: string; contentType: string }> {
   const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  const PROVIDER_PREF = Deno.env.get("IMAGE_PROVIDER") ?? "lovable";
 
-  // ── A) Gemini direct (preferred) ──────────────────────────
-  if (GEMINI_API_KEY) {
+  const tryGemini = async () => {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${GEMINI_API_KEY}`;
     const resp = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
     });
     if (!resp.ok) {
       const t = await resp.text();
@@ -139,10 +141,9 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
       base64: imagePart.inlineData.data,
       contentType: imagePart.inlineData.mimeType ?? "image/png",
     };
-  }
+  };
 
-  // ── B) Lovable Gateway (fallback) ─────────────────────────
-  if (LOVABLE_API_KEY) {
+  const tryLovable = async () => {
     const resp = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
       {
@@ -173,9 +174,33 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
       base64,
       contentType: mimeMatch?.[1] ?? "image/png",
     };
+  };
+
+  // Build chain podle preference
+  const chain: Array<{ name: string; available: boolean; run: () => Promise<{ base64: string; contentType: string }> }> = [];
+  if (PROVIDER_PREF === "gemini") {
+    chain.push({ name: "gemini-direct", available: !!GEMINI_API_KEY, run: tryGemini });
+    chain.push({ name: "lovable-gateway", available: !!LOVABLE_API_KEY, run: tryLovable });
+  } else {
+    // default: lovable prefer
+    chain.push({ name: "lovable-gateway", available: !!LOVABLE_API_KEY, run: tryLovable });
+    chain.push({ name: "gemini-direct", available: !!GEMINI_API_KEY, run: tryGemini });
   }
 
-  throw new Error("Žádný API klíč nakonfigurován. Nastavte GEMINI_API_KEY (preferováno) nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets.");
+  let lastError: Error | null = null;
+  for (const provider of chain) {
+    if (!provider.available) continue;
+    try {
+      return await provider.run();
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e));
+      console.warn(`[generate-image] ${provider.name} failed:`, lastError.message);
+      // Pokračuj na další provider v chainu (fallback)
+    }
+  }
+
+  if (lastError) throw lastError;
+  throw new Error("Žádný API klíč nakonfigurován. Nastavte LOVABLE_API_KEY (default) nebo GEMINI_API_KEY v Supabase Edge Functions Secrets.");
 }
 
 serve(async (req) => {
@@ -191,12 +216,13 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const requestedKeys: string[] = body.keys ?? Object.keys(IMAGE_KEYS);
 
-    const provider = Deno.env.get("GEMINI_API_KEY")
-      ? "gemini-direct"
-      : Deno.env.get("LOVABLE_API_KEY")
-        ? "lovable-gateway"
-        : "none";
-    console.log(`[generate-prvouka-images] Provider: ${provider}`);
+    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+    const geminiKey = Deno.env.get("GEMINI_API_KEY");
+    const pref = Deno.env.get("IMAGE_PROVIDER") ?? "lovable";
+    const primary = pref === "gemini"
+      ? (geminiKey ? "gemini-direct" : (lovableKey ? "lovable-gateway (fallback)" : "none"))
+      : (lovableKey ? "lovable-gateway" : (geminiKey ? "gemini-direct (fallback)" : "none"));
+    console.log(`[generate-prvouka-images] Preference: ${pref}, Primary: ${primary}`);
 
     const results: Record<string, string> = {};
     const errors: Record<string, string> = {};

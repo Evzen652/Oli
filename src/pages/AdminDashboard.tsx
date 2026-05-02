@@ -317,7 +317,7 @@ export default function AdminDashboard() {
                       Gemini 2.5 Flash Image vygeneruje konzistentní 3D-rendered ilustrace (Pixar styl, soft pastel, friendly characters) pro všechny předměty / okruhy / témata.
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Trvá ~3 minuty pro 75 ilustrací. Vyžaduje GEMINI_API_KEY (preferováno, levnější) nebo LOVABLE_API_KEY v Supabase secrets.
+                      Trvá ~3 minuty pro 75 ilustrací. Default: Lovable Gateway (využívá tvůj kredit), fallback Gemini direct. Přepínání přes IMAGE_PROVIDER env.
                     </p>
                   </div>
                 </TooltipContent>
