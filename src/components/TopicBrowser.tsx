@@ -658,11 +658,23 @@ function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: stri
   const hasFailed = src === failedUrl;
 
   if (src && !hasFailed) {
+    if (size === "hero") {
+      return (
+        <div className={`${IMG_SIZES[size]} rounded-3xl bg-white shadow-sm flex items-center justify-center p-2 shrink-0`}>
+          <img
+            src={src}
+            alt=""
+            className="w-full h-full object-contain"
+            onError={() => setFailedUrl(src)}
+          />
+        </div>
+      );
+    }
     return (
       <img
         src={src}
         alt=""
-        className={`${IMG_SIZES[size]} object-contain shrink-0 mix-blend-multiply`}
+        className={`${IMG_SIZES[size]} object-contain shrink-0 mix-blend-multiply brightness-[1.1]`}
         onError={() => setFailedUrl(src)}
       />
     );

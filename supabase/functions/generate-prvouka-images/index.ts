@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 const PROMPT_PREFIX = "Cute 3D rendered cartoon illustration of";
-const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, white isolated background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
+const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, pure white background #ffffff, white studio background, no shadows on background, no gradients on background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
 
 function p(desc: string) { return `${PROMPT_PREFIX} ${desc}${PROMPT_SUFFIX}`; }
 
