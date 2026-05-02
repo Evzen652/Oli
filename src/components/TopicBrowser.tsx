@@ -206,60 +206,216 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
           ? t("topic.select_practice")
           : t("topic.select_subtopic");
 
+  // Subject-level visual config — barva karty per subject (Lovable mockup styl)
+  const SUBJECT_CARD_STYLES: Record<string, { bg: string; border: string; chipBg: string; chipText: string }> = {
+    matematika: {
+      bg: "bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50",
+      border: "border-indigo-200/70",
+      chipBg: "bg-white/80 text-indigo-700",
+      chipText: "text-indigo-700",
+    },
+    "čeština": {
+      bg: "bg-gradient-to-br from-rose-100 via-pink-50 to-red-50",
+      border: "border-rose-200/70",
+      chipBg: "bg-white/80 text-rose-700",
+      chipText: "text-rose-700",
+    },
+    prvouka: {
+      bg: "bg-gradient-to-br from-emerald-100 via-green-50 to-teal-50",
+      border: "border-emerald-200/70",
+      chipBg: "bg-white/80 text-emerald-700",
+      chipText: "text-emerald-700",
+    },
+    "přírodověda": {
+      bg: "bg-gradient-to-br from-teal-100 via-emerald-50 to-cyan-50",
+      border: "border-teal-200/70",
+      chipBg: "bg-white/80 text-teal-700",
+      chipText: "text-teal-700",
+    },
+    "vlastivěda": {
+      bg: "bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-50",
+      border: "border-amber-200/70",
+      chipBg: "bg-white/80 text-amber-700",
+      chipText: "text-amber-700",
+    },
+  };
+
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-background p-4" style={isAdmin ? { paddingTop: "2.5rem" } : undefined}>
-      <div className={`absolute ${isAdmin ? "top-[4.5rem]" : "top-4"} left-4 z-10`}>
-        <OlyLogo onClick={onBack} />
-      </div>
-      <div className="w-full max-w-lg space-y-8">
-        <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1 text-base text-muted-foreground">
-          <ChevronLeft className="h-5 w-5" />
-          {t("topic.back")}
-        </Button>
+    <div className="relative min-h-screen bg-gradient-to-b from-background to-muted/20 p-4 sm:p-6" style={isAdmin ? { paddingTop: "2.5rem" } : undefined}>
+      {level === "subject" ? (
+        // ── ŽÁKOVSKÝ POHLED VÝBĚRU PŘEDMĚTU (Lovable redesign) ──
+        <div className="mx-auto w-full max-w-5xl space-y-6">
+          {/* Welcome header card */}
+          <div className="relative rounded-3xl border-2 border-border/40 bg-card p-5 shadow-soft-1">
+            <div className="flex items-center gap-4">
+              <div className="shrink-0">
+                <OlyLogo size="sm" onClick={onBack} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+                  Ahoj!
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Co dnes procvičíš?
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <div className="space-y-3 text-center">
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-            {title}
-          </h1>
-          <p className="text-lg text-muted-foreground">{subtitle}</p>
-        </div>
+          {/* Title + back */}
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <h2 className="text-3xl font-black tracking-tight text-foreground">
+                {title}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Klepni na předmět a pusť se do toho.
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBack}
+              className="gap-1 text-sm text-muted-foreground"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              {t("topic.back")}
+            </Button>
+          </div>
 
-        {/* Category/topic info button — shown at topic and subtopic level */}
-        {level === "topic" && selectedSubject && selectedCategory && (() => {
-          const info = getCategoryInfo(selectedSubject, selectedCategory);
-          if (!info) return null;
-          return <CategoryInfoDialog info={info} />;
-        })()}
-        {level === "subtopic" && selectedSubject && selectedCategory && selectedTopic && (() => {
-          const info = getCategoryInfo(selectedSubject, selectedCategory, selectedTopic);
-          if (!info) return null;
-          return <CategoryInfoDialog info={info} />;
-        })()}
-
-        <div className="grid gap-4">
-          {level === "subject" &&
-            subjects.map((subject) => {
-              const count = new Set(topics.filter((t) => t.subject === subject).map((t) => t.category)).size;
+          {/* Asymmetric grid: 1. subject = velká karta vlevo, ostatní = stack vpravo */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {subjects.map((subject, idx) => {
+              const subjectTopics = topics.filter((t) => t.subject === subject);
+              const cats = [...new Set(subjectTopics.map((t) => t.category))];
+              const count = cats.length;
               const meta = getSubjectMeta(subject);
+              const cardStyle = SUBJECT_CARD_STYLES[subject] ?? {
+                bg: meta.gradientClass,
+                border: meta.borderClass,
+                chipBg: "bg-white/80 text-foreground",
+                chipText: "text-foreground",
+              };
+              const isPrimary = idx === 0;
+              // Top 3 categories jako chip pills
+              const chipCategories = cats.slice(0, 3).map((c) => {
+                // Zkrácení dlouhých kategorií
+                const short = c.length > 14 ? c.split(" ")[0] : c;
+                return short;
+              });
+
               return (
-                <Card
+                <button
                   key={subject}
-                  className={`cursor-pointer border-2 transition-colors hover:shadow-md ${meta.gradientClass} ${meta.borderClass}`}
+                  type="button"
                   onClick={() => handleSubjectClick(subject)}
+                  className={`group relative text-left rounded-3xl border-2 ${cardStyle.bg} ${cardStyle.border} p-5 sm:p-6 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
+                    isPrimary ? "md:col-span-2 md:row-span-2 min-h-[360px] flex flex-col" : "min-h-[170px]"
+                  }`}
                 >
-                  <CardContent className="flex items-center justify-between p-6">
-                    <div className="flex items-center gap-4">
-                      <PrvoukaImage imageUrl={meta.image || null} fallbackEmoji={meta.emoji} size="lg" />
-                      <div>
-                        <p className="text-2xl font-medium capitalize text-foreground">{subject}</p>
-                        <p className="text-base text-muted-foreground">{count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}</p>
+                  {isPrimary ? (
+                    <>
+                      {/* Velká primary karta — ilustrace nahoře centered */}
+                      <div className="flex-1 flex items-center justify-center py-4">
+                        <PrvoukaImage
+                          imageUrl={meta.image || null}
+                          fallbackEmoji={meta.emoji}
+                          size="hero"
+                        />
                       </div>
-                    </div>
-                    <ChevronLeft className="h-6 w-6 rotate-180 text-muted-foreground" />
-                  </CardContent>
-                </Card>
+                      <div className="space-y-3">
+                        <h3 className="text-3xl sm:text-4xl font-black capitalize text-foreground tracking-tight">
+                          {subject}
+                        </h3>
+                        <p className="text-sm text-foreground/70">
+                          {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
+                        </p>
+                        {/* Šipka v primary buttonu */}
+                        <div className="flex items-center gap-2 pt-1">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground/90 text-background px-4 py-2 text-sm font-bold shadow-soft-2 transition-transform group-hover:translate-x-0.5">
+                            Pokračovat
+                            <span aria-hidden>›</span>
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Menší kompaktní karty — ilustrace vpravo, text vlevo */}
+                      <div className="flex items-center gap-3 h-full">
+                        <div className="flex-1 min-w-0 space-y-1.5">
+                          <h3 className="text-xl sm:text-2xl font-black capitalize text-foreground tracking-tight">
+                            {subject}
+                          </h3>
+                          <p className="text-xs text-foreground/70">
+                            {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
+                          </p>
+                          {chipCategories.length > 0 && (
+                            <div className="flex flex-wrap gap-1 pt-1">
+                              {chipCategories.map((c, i) => (
+                                <span
+                                  key={i}
+                                  className={`rounded-full ${cardStyle.chipBg} px-2 py-0.5 text-[10px] font-semibold`}
+                                >
+                                  {c}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="shrink-0">
+                          <PrvoukaImage
+                            imageUrl={meta.image || null}
+                            fallbackEmoji={meta.emoji}
+                            size="md"
+                          />
+                        </div>
+                        <span
+                          className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${cardStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
+                          aria-hidden
+                        >
+                          ›
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </button>
               );
             })}
+          </div>
+        </div>
+      ) : (
+        // ── PŮVODNÍ LAYOUT pro category / topic / subtopic levels ──
+        <div className="relative flex min-h-screen items-center justify-center p-4">
+          <div className={`absolute ${isAdmin ? "top-[4.5rem]" : "top-4"} left-4 z-10`}>
+            <OlyLogo onClick={onBack} />
+          </div>
+          <div className="w-full max-w-lg space-y-8">
+            <Button variant="ghost" size="sm" onClick={handleBack} className="gap-1 text-base text-muted-foreground">
+              <ChevronLeft className="h-5 w-5" />
+              {t("topic.back")}
+            </Button>
+
+            <div className="space-y-3 text-center">
+              <h1 className="text-4xl font-semibold tracking-tight text-foreground">
+                {title}
+              </h1>
+              <p className="text-lg text-muted-foreground">{subtitle}</p>
+            </div>
+
+            {/* Category/topic info button — shown at topic and subtopic level */}
+            {level === "topic" && selectedSubject && selectedCategory && (() => {
+              const info = getCategoryInfo(selectedSubject, selectedCategory);
+              if (!info) return null;
+              return <CategoryInfoDialog info={info} />;
+            })()}
+            {level === "subtopic" && selectedSubject && selectedCategory && selectedTopic && (() => {
+              const info = getCategoryInfo(selectedSubject, selectedCategory, selectedTopic);
+              if (!info) return null;
+              return <CategoryInfoDialog info={info} />;
+            })()}
+
+            <div className="grid gap-4">{/* zachováno původní rendering pro category/topic/subtopic */}
 
           {level === "category" &&
             categories.map((category) => {
@@ -357,17 +513,19 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                 </Card>
               );
             })}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
 // ── Prvouka image with emoji fallback ────────────────────────
 
-const IMG_SIZES = { lg: "w-20 h-20", md: "w-16 h-16", sm: "w-12 h-12" };
-const EMOJI_SIZES = { lg: "text-4xl", md: "text-3xl", sm: "text-2xl" };
-function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: string | null; fallbackEmoji?: string | null; size?: "lg" | "md" | "sm" }) {
+const IMG_SIZES = { hero: "w-48 h-48 sm:w-56 sm:h-56", lg: "w-20 h-20", md: "w-16 h-16", sm: "w-12 h-12" };
+const EMOJI_SIZES = { hero: "text-9xl", lg: "text-4xl", md: "text-3xl", sm: "text-2xl" };
+function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: string | null; fallbackEmoji?: string | null; size?: "hero" | "lg" | "md" | "sm" }) {
   const [failed, setFailed] = useState(false);
 
   if (imageUrl && !failed) {
