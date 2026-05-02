@@ -26,7 +26,10 @@ export function bumpImageVersion(key: string): void {
  */
 export async function fetchFreshBlob(key: string, storageUrl: string): Promise<void> {
   try {
-    const resp = await fetch(storageUrl, { cache: "no-store" });
+    // Unique timestamp query param forces CDN cache miss (each request is a new URL)
+    const sep = storageUrl.includes("?") ? "&" : "?";
+    const bustUrl = `${storageUrl}${sep}_t=${Date.now()}`;
+    const resp = await fetch(bustUrl, { cache: "no-store" });
     if (!resp.ok) return;
     const old = BLOB_CACHE[key];
     if (old) URL.revokeObjectURL(old);
@@ -53,7 +56,13 @@ export function useImageVersions(): (url: string, key: string) => string {
       setTick((n) => n + 1); // force re-render so BLOB_CACHE changes are picked up
     };
     window.addEventListener(EVENT, handler);
-    return () => window.removeEventListener(EVENT, handler);
+    // Also handle cross-tab updates: storage event fires in OTHER tabs when localStorage changes
+    const storageHandler = (e: StorageEvent) => { if (e.key === LS_KEY) handler(); };
+    window.addEventListener("storage", storageHandler);
+    return () => {
+      window.removeEventListener(EVENT, handler);
+      window.removeEventListener("storage", storageHandler);
+    };
   }, []);
 
   return (url: string, key: string) => {
