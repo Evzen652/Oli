@@ -414,16 +414,16 @@ export default function AdminDashboard() {
                     <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
-                      {/* Ilustrace v rounded panel — výrazně větší (h-48, image w-40) */}
-                      <div className="flex h-48 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                      {/* Ilustrace v rounded panel — image vyplňuje panel */}
+                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm overflow-hidden">
                         {meta.image ? (
                           <img
                             src={meta.image}
                             alt=""
-                            className="h-40 w-40 object-contain mix-blend-multiply"
+                            className="h-28 w-28 object-contain mix-blend-multiply"
                           />
                         ) : (
-                          <span className="text-8xl" aria-hidden>{meta.emoji}</span>
+                          <span className="text-6xl" aria-hidden>{meta.emoji}</span>
                         )}
                       </div>
 
@@ -517,8 +517,8 @@ export default function AdminDashboard() {
                     <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
-                      {/* Ilustrace v rounded panel — výrazně větší (h-48 + xl) */}
-                      <div className="flex h-48 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                      {/* Ilustrace v rounded panel — image vyplňuje panel */}
+                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm overflow-hidden">
                         <ImageOrEmoji
                           imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)}
                           emoji={visual?.emoji}
@@ -938,13 +938,13 @@ function ImageOrEmoji({
 }) {
   const [failed, setFailed] = useState(false);
   const sizes = {
-    xl: "w-40 h-40",
+    xl: "w-28 h-28",
     lg: "w-14 h-14",
     md: "w-12 h-12",
     sm: "w-10 h-10",
   };
   const emojiSizes = {
-    xl: "text-8xl",
+    xl: "text-6xl",
     lg: "text-3xl",
     md: "text-2xl",
     sm: "text-xl",
