@@ -314,10 +314,10 @@ export default function AdminDashboard() {
                   <div className="space-y-1.5">
                     <p className="font-semibold">Hromadné generování 3D ilustrací</p>
                     <p className="text-xs text-muted-foreground">
-                      AI vygeneruje konzistentní 3D-rendered ilustrace pro všechny předměty / okruhy / témata. Pixar styl, soft pastel, friendly characters.
+                      Gemini 2.5 Flash Image vygeneruje konzistentní 3D-rendered ilustrace (Pixar styl, soft pastel, friendly characters) pro všechny předměty / okruhy / témata.
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Trvá ~3 minuty pro 70 ilustrací. Vyžaduje deploy edge fn + LOVABLE_API_KEY v Supabase secrets.
+                      Trvá ~3 minuty pro 75 ilustrací. Vyžaduje GEMINI_API_KEY (preferováno, levnější) nebo LOVABLE_API_KEY v Supabase secrets.
                     </p>
                   </div>
                 </TooltipContent>

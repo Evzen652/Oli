@@ -102,21 +102,101 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-cz-sloh-popis": p("a child describing an object - magnifying glass, descriptive words floating, paint palette"),
 };
 
+/**
+ * Generuje obrázek přes preferovaný provider:
+ *   1) GEMINI_API_KEY  → Google AI Studio direct (nejlevnější, Gemini 2.5 Flash Image)
+ *   2) LOVABLE_API_KEY → Lovable AI Gateway (fallback, stejný model + marže)
+ *
+ * Vrací { base64, contentType } nebo throws Error.
+ */
+async function generateImage(prompt: string): Promise<{ base64: string; contentType: string }> {
+  const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+
+  // ── A) Gemini direct (preferred) ──────────────────────────
+  if (GEMINI_API_KEY) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${GEMINI_API_KEY}`;
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+      }),
+    });
+    if (!resp.ok) {
+      const t = await resp.text();
+      throw new Error(`Gemini direct error ${resp.status}: ${t.slice(0, 200)}`);
+    }
+    const data = await resp.json();
+    const parts = data.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find((p: { inlineData?: { data?: string; mimeType?: string } }) =>
+      p?.inlineData?.data,
+    );
+    if (!imagePart?.inlineData?.data) {
+      throw new Error("No image data in Gemini response");
+    }
+    return {
+      base64: imagePart.inlineData.data,
+      contentType: imagePart.inlineData.mimeType ?? "image/png",
+    };
+  }
+
+  // ── B) Lovable Gateway (fallback) ─────────────────────────
+  if (LOVABLE_API_KEY) {
+    const resp = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image",
+          messages: [{ role: "user", content: prompt }],
+          modalities: ["image", "text"],
+        }),
+      },
+    );
+    if (!resp.ok) {
+      const t = await resp.text();
+      throw new Error(`Lovable error ${resp.status}: ${t.slice(0, 200)}`);
+    }
+    const data = await resp.json();
+    const dataUrl: string | undefined = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    if (!dataUrl || !dataUrl.startsWith("data:image/")) {
+      throw new Error("No image in Lovable response");
+    }
+    const base64 = dataUrl.split(",")[1];
+    const mimeMatch = dataUrl.match(/data:(image\/\w+);/);
+    return {
+      base64,
+      contentType: mimeMatch?.[1] ?? "image/png",
+    };
+  }
+
+  throw new Error("Žádný API klíč nakonfigurován. Nastavte GEMINI_API_KEY (preferováno) nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets.");
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
-
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const body = await req.json().catch(() => ({}));
     const requestedKeys: string[] = body.keys ?? Object.keys(IMAGE_KEYS);
+
+    const provider = Deno.env.get("GEMINI_API_KEY")
+      ? "gemini-direct"
+      : Deno.env.get("LOVABLE_API_KEY")
+        ? "lovable-gateway"
+        : "none";
+    console.log(`[generate-prvouka-images] Provider: ${provider}`);
 
     const results: Record<string, string> = {};
     const errors: Record<string, string> = {};
@@ -131,45 +211,8 @@ serve(async (req) => {
       try {
         console.log(`Generating image for: ${key}`);
 
-        const aiResponse = await fetch(
-          "https://ai.gateway.lovable.dev/v1/chat/completions",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${LOVABLE_API_KEY}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              model: "google/gemini-2.5-flash-image",
-              messages: [{ role: "user", content: prompt }],
-              modalities: ["image", "text"],
-            }),
-          }
-        );
-
-        if (!aiResponse.ok) {
-          const errText = await aiResponse.text();
-          console.error(`AI error for ${key}:`, aiResponse.status, errText);
-          errors[key] = `AI error: ${aiResponse.status}`;
-          continue;
-        }
-
-        const aiData = await aiResponse.json();
-        const imageUrl =
-          aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-
-        if (!imageUrl || !imageUrl.startsWith("data:image/")) {
-          errors[key] = "No image in AI response";
-          continue;
-        }
-
-        // Extract base64 data
-        const base64Data = imageUrl.split(",")[1];
-        const imageBytes = decode(base64Data);
-
-        // Determine content type
-        const mimeMatch = imageUrl.match(/data:(image\/\w+);/);
-        const contentType = mimeMatch?.[1] ?? "image/png";
+        const { base64, contentType } = await generateImage(prompt);
+        const imageBytes = decode(base64);
         const ext = contentType.split("/")[1] ?? "png";
 
         // Upload to storage
