@@ -94,30 +94,23 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
 
   // Preview tab state
   const [previewImages, setPreviewImages] = useState<StorageImage[]>([]);
-  const [loadingPreview, setLoadingPreview] = useState(false);
+  const [missingKeys, setMissingKeys] = useState<Set<string>>(new Set());
   const [regenerating, setRegenerating] = useState<string | null>(null);
 
   const selectedKeys = KEY_GROUPS.filter((g) => selectedGroups.has(g.label)).flatMap((g) => g.keys);
 
-  const loadPreview = async () => {
-    setLoadingPreview(true);
-    const { data } = await supabase.storage.from("prvouka-images").list("", { limit: 300 });
-    if (data) {
-      setPreviewImages(
-        data
-          .filter((f) => f.name.endsWith(".png"))
-          .map((f) => ({
-            key: f.name.replace(".png", ""),
-            url: supabase.storage.from("prvouka-images").getPublicUrl(f.name).data.publicUrl,
-          }))
-          .sort((a, b) => a.key.localeCompare(b.key)),
-      );
-    }
-    setLoadingPreview(false);
+  const loadPreview = () => {
+    // Sestavíme URL pro všechny known keys — img.onError označní chybějící
+    setPreviewImages(
+      ALL_KEYS.map((key) => ({
+        key,
+        url: supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl,
+      })),
+    );
   };
 
   useEffect(() => {
-    if (open && view === "preview") loadPreview();
+    if (open && view === "preview" && previewImages.length === 0) loadPreview();
   }, [open, view]);
 
   const handleRegenerate = async (key: string) => {
@@ -299,41 +292,37 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           <div className="mt-5 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                {previewImages.length > 0
-                  ? `${previewImages.length} obrázků v storage. Klepni 🔄 pro regeneraci.`
-                  : "Zatím žádné obrázky v storage."}
+                {ALL_KEYS.length - missingKeys.size} / {ALL_KEYS.length} vygenerováno. Klepni 🔄 pro regeneraci.
               </p>
-              <Button variant="ghost" size="sm" onClick={loadPreview} disabled={loadingPreview} className="gap-1.5">
-                <RefreshCw className={`h-3.5 w-3.5 ${loadingPreview ? "animate-spin" : ""}`} />
+              <Button variant="ghost" size="sm" onClick={() => { setMissingKeys(new Set()); loadPreview(); }} className="gap-1.5">
+                <RefreshCw className="h-3.5 w-3.5" />
                 Obnovit
               </Button>
             </div>
 
-            {loadingPreview && (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 text-primary animate-spin" />
-              </div>
-            )}
-
-            {!loadingPreview && previewImages.length === 0 && (
-              <div className="rounded-2xl border-2 border-dashed border-border p-10 text-center text-sm text-muted-foreground">
-                Nejsou žádné obrázky. Přejdi na záložku <strong>Generovat</strong> a spusť generování.
-              </div>
-            )}
-
-            {!loadingPreview && previewImages.length > 0 && (
-              <div className="grid grid-cols-3 gap-3">
-                {previewImages.map(({ key, url }) => (
+            <div className="grid grid-cols-3 gap-3">
+              {previewImages.map(({ key, url }) => {
+                const isMissing = missingKeys.has(key);
+                return (
                   <div
                     key={key}
-                    className="group relative rounded-2xl border-2 border-border/60 bg-card p-3 text-center hover:border-primary/40 transition-all"
+                    className={`rounded-2xl border-2 p-3 text-center transition-all ${
+                      isMissing ? "border-dashed border-border/40 bg-muted/30 opacity-50" : "border-border/60 bg-card hover:border-primary/40"
+                    }`}
                   >
-                    <img
-                      src={url}
-                      alt={key}
-                      className="w-full aspect-square object-contain rounded-xl mix-blend-multiply"
-                      loading="lazy"
-                    />
+                    {isMissing ? (
+                      <div className="w-full aspect-square rounded-xl bg-muted flex items-center justify-center">
+                        <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
+                      </div>
+                    ) : (
+                      <img
+                        src={url}
+                        alt={key}
+                        className="w-full aspect-square object-contain rounded-xl mix-blend-multiply"
+                        loading="lazy"
+                        onError={() => setMissingKeys((prev) => new Set([...prev, key]))}
+                      />
+                    )}
                     <p className="mt-2 text-[10px] text-muted-foreground font-mono leading-tight line-clamp-2">{key}</p>
                     <button
                       type="button"
@@ -342,15 +331,13 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                       title="Regenerovat"
                       className="mt-2 flex items-center justify-center gap-1 w-full rounded-full border border-border/60 bg-muted px-2 py-1 text-xs text-muted-foreground hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all disabled:opacity-40"
                     >
-                      {regenerating === key
-                        ? <Loader2 className="h-3 w-3 animate-spin" />
-                        : <RefreshCw className="h-3 w-3" />}
+                      {regenerating === key ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
                       {regenerating === key ? "…" : "Regenerovat"}
                     </button>
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              })}
+            </div>
           </div>
         )}
       </SheetContent>
