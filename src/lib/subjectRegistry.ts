@@ -1,6 +1,7 @@
-import subjectMatematika from "@/assets/subject-matematika.png";
-import subjectCestina from "@/assets/subject-cestina.png";
-import subjectPrvouka from "@/assets/subject-prvouka.png";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? "";
+function storageImg(key: string) {
+  return `${SUPABASE_URL}/storage/v1/object/public/prvouka-images/${key}.png`;
+}
 
 export interface SubjectMeta {
   label: string;
@@ -15,7 +16,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   matematika: {
     label: "Matematika",
     emoji: "🔢",
-    image: subjectMatematika,
+    image: storageImg("subject-matematika"),
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
     borderClass: "border-[hsl(var(--math-numbers))]/40",
     hook: "Matematika tě naučí počítat, porovnávat a řešit úlohy — v obchodě, ve hře i v životě!",
@@ -23,7 +24,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   čeština: {
     label: "Čeština",
     emoji: "📝",
-    image: subjectCestina,
+    image: storageImg("subject-cestina"),
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--cz-vyjm-bg))]",
     borderClass: "border-[hsl(var(--cz-vyjm))]/40",
     hook: "Čeština je klíč ke správnému psaní, čtení a porozumění — ve škole i na internetu!",
@@ -31,7 +32,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   prvouka: {
     label: "Prvouka",
     emoji: "🌍",
-    image: subjectPrvouka,
+    image: storageImg("subject-prvouka"),
     gradientClass: "bg-gradient-to-r from-white to-[hsl(142,64%,93%)]",
     borderClass: "border-[hsl(142,64%,42%)]/40",
     hook: "Prvouka ti ukáže, jak funguje příroda, lidské tělo i svět kolem tebe!",
@@ -39,7 +40,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   přírodověda: {
     label: "Přírodověda",
     emoji: "🌿",
-    image: "",
+    image: storageImg("subject-prirodoveda"),
     gradientClass: "bg-gradient-to-r from-white to-[hsl(152,60%,92%)]",
     borderClass: "border-[hsl(152,60%,42%)]/40",
     hook: "Přírodověda ti ukáže, jak fungují ekosystémy, koloběh vody i svět hornin!",
@@ -47,7 +48,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   vlastivěda: {
     label: "Vlastivěda",
     emoji: "🗺️",
-    image: "",
+    image: storageImg("subject-vlastiveda"),
     gradientClass: "bg-gradient-to-r from-white to-[hsl(38,70%,92%)]",
     borderClass: "border-[hsl(38,70%,45%)]/40",
     hook: "Vlastivěda tě provede kraji Česka, jeho historií a státními symboly!",
