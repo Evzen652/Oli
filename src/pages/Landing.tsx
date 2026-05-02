@@ -57,7 +57,7 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
   return (
     <Card className="rounded-3xl border-0 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: bg || "#fff" }}>
       <CardContent className="p-7 space-y-3">
-        <img src={img} alt={title} className="h-14 w-14 object-contain drop-shadow-md" />
+        <img src={img} alt={title} className="h-14 w-14 object-contain drop-shadow-md mix-blend-multiply" />
         <h3 className="text-lg font-semibold font-heading" style={{ color: C.dark }}>{title}</h3>
         <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
       </CardContent>
@@ -145,7 +145,7 @@ export default function Landing() {
                     <img
                       src={tile.img}
                       alt={tile.title}
-                      className="h-28 w-28 object-contain group-hover:scale-115 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg"
+                      className="h-28 w-28 object-contain group-hover:scale-115 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg mix-blend-multiply"
                     />
                   </div>
                   {/* Text */}
@@ -168,7 +168,7 @@ export default function Landing() {
                 { title: "Každodenní procvičování", desc: "Krátké úkoly na míru", img: imgProcvicovani, bg: C.bgOrange },
               ].map((tile) => (
                 <div key={tile.title} className="rounded-2xl shadow-md p-4 flex flex-col gap-2 items-center text-center" style={{ background: tile.bg }}>
-                  <img src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm" />
+                  <img src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm mix-blend-multiply" />
                   <h3 className="text-sm font-bold font-heading" style={{ color: C.dark }}>{tile.title}</h3>
                   <p className="text-xs text-slate-500">{tile.desc}</p>
                 </div>
@@ -201,7 +201,7 @@ export default function Landing() {
           ].map((item) => (
             <Card key={item.step} className="rounded-3xl border-0 shadow-lg text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: item.bg }}>
               <CardContent className="p-8 space-y-4">
-                <img src={item.img} alt={item.title} className="mx-auto h-20 w-20 object-contain drop-shadow-md" />
+                <img src={item.img} alt={item.title} className="mx-auto h-20 w-20 object-contain drop-shadow-md mix-blend-multiply" />
                 <div className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: C.orange }}>
                   {item.step}
                 </div>
@@ -224,7 +224,7 @@ export default function Landing() {
             { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a Oli vede dítě krok za krokem.", bg: "white" },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-5 p-6 rounded-3xl shadow-md hover:shadow-lg transition-shadow" style={{ background: item.bg }}>
-              <img src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md" />
+              <img src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md mix-blend-multiply" />
               <div>
                 <h3 className="font-semibold text-base font-heading" style={{ color: C.dark }}>{item.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed mt-1">{item.desc}</p>

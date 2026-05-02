@@ -20,7 +20,7 @@ export function OlyLogo({ size = "md", onClick }: OlyLogoProps) {
         <img
           src={logoImg}
           alt="Oli"
-          className={`${imgSize} object-contain`}
+          className={`${imgSize} object-contain mix-blend-multiply`}
           onError={() => setImgError(true)}
           style={{ background: "transparent" }}
         />
