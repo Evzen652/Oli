@@ -197,6 +197,7 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const requestedKeys: string[] = body.keys ?? Object.keys(IMAGE_KEYS);
     const force: boolean = body.force === true;
+    const customPrompts: Record<string, string> = body.customPrompts ?? {};
 
     const lovableKey = Deno.env.get("LOVABLE_API_KEY");
     const geminiKey = Deno.env.get("GEMINI_API_KEY");
@@ -219,7 +220,7 @@ serve(async (req) => {
     const errors: Record<string, string> = {};
 
     for (const key of requestedKeys) {
-      const prompt = IMAGE_KEYS[key];
+      const prompt = customPrompts[key] ?? IMAGE_KEYS[key];
       if (!prompt) {
         errors[key] = "Unknown key";
         continue;

@@ -3,8 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wand2, Zap } from "lucide-react";
+import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wand2, Zap, Pencil } from "lucide-react";
 import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageVersions";
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
@@ -43,6 +45,87 @@ const ALL_KEYS = [
 ] as const;
 
 type ImageKey = typeof ALL_KEYS[number];
+
+// ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
+
+const PROMPT_PREFIX = "Cute 3D rendered cartoon illustration of";
+const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, white isolated background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
+
+const DEFAULT_DESCS: Partial<Record<string, string>> = {
+  "subject-matematika": "colorful 3D numbers 1, 2, 3 floating with plus and equals signs",
+  "subject-cestina": "an open book with the letters A, B, C jumping out colorfully",
+  "subject-prvouka": "a friendly tree with a sun, flowers, and a small animal in a meadow",
+  "subject-prirodoveda": "a magnifying glass over leaves and a small ecosystem with plants and animals",
+  "subject-vlastiveda": "a globe and a Czech Republic outline map with landmarks like Prague Castle",
+  "cat-clovek-a-jeho-telo": "a happy child showing body parts like arms, legs, head",
+  "cat-priroda-kolem-nas": "nature scene with trees, flowers, sun, birds, and a small pond",
+  "cat-lide-a-spolecnost": "a friendly neighborhood with houses, people waving, a school, and a park",
+  "cat-orientace-v-prostoru-a-case": "a compass, map, clock, and calendar together",
+  "topic-lidske-telo": "a human body outline with labeled bones, muscles, and organs in a friendly style",
+  "topic-smysly": "five senses - eye, ear, nose, tongue, hand touching - in a playful layout",
+  "topic-zdravi-a-hygiena": "a child washing hands with soap, toothbrush, healthy food",
+  "topic-rostliny": "various plants - a tree, flower, mushroom, and grass - with roots visible",
+  "topic-zvirata": "friendly animals - dog, cat, deer, bird, butterfly, fish - together in nature",
+  "topic-rocni-obdobi-a-pocasi": "four seasons - spring flowers, summer sun, autumn leaves, winter snow - in quadrants",
+  "topic-nase-zeme": "Czech Republic map outline with Prague marked, Czech flag, and famous landmarks like Prague Castle",
+  "topic-rodina-a-spolecnost": "a family and community together - parents with children, neighbors waving, people helping each other",
+  "topic-rodina-a-pravidla-chovani": "a happy family - parents and children - holding hands, showing good manners, greeting neighbors",
+  "topic-obec-a-mesto": "a small Czech town with a town hall, church, school, and park",
+  "topic-ceska-republika": "Czech Republic landmarks - Prague Castle, Czech flag, map outline",
+  "topic-svetove-strany-a-mapa": "a compass rose with N S E W directions and a simple treasure map",
+  "topic-cas-a-kalendar": "a clock showing time, a calendar page, and day-night cycle",
+  "cat-math-cisla-a-operace": "colorful numbers 1-9 with plus and minus signs, counting blocks",
+  "cat-math-zlomky": "a pizza and a cake cut into equal slices showing fractions like 1/2 and 1/4",
+  "cat-math-geometrie": "geometric shapes - square, triangle, circle, rectangle - with a ruler and protractor",
+  "topic-math-porovnavani-prirozenych-cisel": "two groups of objects being compared with less-than and greater-than signs",
+  "topic-math-scitani-a-odcitani-do-100": "a child counting on fingers with numbers and plus/minus signs floating around",
+  "topic-math-nasobeni-a-deleni": "multiplication table grid with colorful numbers and a times symbol",
+  "topic-math-zaokrouhlovani": "a number line with arrows showing rounding to nearest ten",
+  "topic-math-razeni-cisel": "numbered cards being sorted from smallest to largest by a child",
+  "topic-math-porovnavani-zlomku": "two fraction bars side by side being compared, one bigger than the other",
+  "topic-math-kraceni-zlomku": "a fraction being simplified with arrows showing division of numerator and denominator",
+  "topic-math-rozsireni-zlomku": "a fraction being expanded with arrows showing multiplication of numerator and denominator",
+  "topic-math-scitani-zlomku": "two fraction pies being added together to make a larger portion",
+  "topic-math-odcitani-zlomku": "a fraction pie with a slice being removed, subtraction symbol",
+  "topic-math-smisena-cisla": "a whole number next to a fraction piece, like 2 and 1/3 of a pie",
+  "topic-math-zlomek-z-cisla": "a group of 12 apples with 1/4 of them circled and highlighted",
+  "topic-math-nasobeni-zlomku-celym-cislem": "a fraction piece being multiplied - showing 3 times 1/4 with three quarter-pieces",
+  "topic-math-geometricke-tvary": "basic geometric shapes - square, triangle, circle, rectangle - with labels",
+  "topic-math-obvod": "a rectangle with arrows around its perimeter showing measurement",
+  "topic-math-mereni-delky": "a ruler measuring objects, a tape measure, and a child estimating length",
+  "topic-math-zakladni-jednotky": "a ruler with millimeters, centimeters, and meters labeled, comparison arrows",
+  "topic-math-prevody-jednotek": "arrows showing conversions between cm and m, mm and cm, with equal signs",
+  "topic-math-odhad-delek": "a child guessing the length of a pencil and a book, with question marks",
+  "topic-math-jednotky-hmotnosti": "a kitchen scale with weights labeled in grams and kilograms, apples being weighed",
+  "topic-math-slovni-ulohy-delky": "a child measuring a ribbon with a ruler, cutting with scissors, numbers floating",
+  "topic-math-objem-ml-l": "a measuring cup with milliliter markings, a water bottle labeled 1 liter",
+  "cat-cz-vyjmenovana-slova": "Czech words with highlighted letters Y and I, a spelling book with a magnifying glass",
+  "cat-cz-pravopis": "a notebook with Czech text, a pencil correcting spelling, checkmarks and crosses",
+  "cat-cz-mluvnice": "sentence diagram with colorful parts of speech labels, a grammar tree",
+  "cat-cz-diktat": "a child writing in a notebook from dictation, speech bubble with words",
+  "cat-cz-sloh": "a child writing a creative essay with a pencil, story bubbles around",
+  "topic-cz-vyjm-b": "the Czech letter B with words like 'být, bydlit' and a house icon",
+  "topic-cz-vyjm-l": "the Czech letter L with words 'lyže, slyšet' and a ski icon",
+  "topic-cz-vyjm-m": "the Czech letter M with words 'my, myslit' and a thinking bubble",
+  "topic-cz-vyjm-p": "the Czech letter P with words 'pýcha, pytel' and a bag icon",
+  "topic-cz-vyjm-s": "the Czech letter S with words 'syn, sýr' and a cheese icon",
+  "topic-cz-vyjm-v": "the Czech letter V with words 'výt, zvyk' and a wolf icon",
+  "topic-cz-vyjm-z": "the Czech letter Z with words 'jazyk, brzy' and a tongue icon",
+  "topic-cz-parove-souhlasky": "letter pairs like D-T, B-P, Z-S shown side by side with a magnifying glass",
+  "topic-cz-tvrde-mekke": "hard and soft consonants divided into two groups with happy/stern face icons",
+  "topic-cz-velka-pismena": "a big capital letter A next to a small lowercase a, with city names",
+  "topic-cz-slovni-druhy": "colorful word labels - noun, verb, adjective - pointing to words in a sentence",
+  "topic-cz-rod-cislo": "masculine, feminine, neuter icons (he/she/it) with example Czech nouns",
+  "topic-cz-slovesa-urcovani": "a verb conjugation table with person and tense markers",
+  "topic-cz-zaklad-vety": "a simple sentence with subject underlined and predicate circled",
+  "topic-cz-diktat": "a child writing missing letters into blank spaces in sentences",
+  "topic-cz-sloh-vypraveni": "a child telling a story with a speech bubble showing characters and adventures",
+  "topic-cz-sloh-popis": "a child describing an object - magnifying glass, descriptive words floating, paint palette",
+};
+
+function getDefaultDesc(key: string): string {
+  return DEFAULT_DESCS[key] ?? "";
+}
 
 // ── Filter helpers ────────────────────────────────────────────────────────────
 
@@ -111,6 +194,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [regenerating, setRegenerating] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
   const [batchResult, setBatchResult] = useState<BatchResult | null>(null);
+  const [promptDialog, setPromptDialog] = useState<{ key: string; desc: string } | null>(null);
 
   const versioned = useImageVersions();
   const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
@@ -150,11 +234,11 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
 
   // ── Actions ──────────────────────────────────────────────────────────────────
 
-  const handleRegenerate = async (key: string) => {
+  const handleRegenerate = async (key: string, customPrompt?: string) => {
     setRegenerating(key);
-    const { data, error } = await supabase.functions.invoke("generate-prvouka-images", {
-      body: { keys: [key], force: true },
-    });
+    const body: Record<string, unknown> = { keys: [key], force: true };
+    if (customPrompt) body.customPrompts = { [key]: customPrompt };
+    const { data, error } = await supabase.functions.invoke("generate-prvouka-images", { body });
     const perKeyError = (data?.errors as Record<string, string> | undefined)?.[key];
     if (error || perKeyError) {
       toast({ description: `Chyba: ${perKeyError ?? error?.message ?? "neznámá"}`, variant: "destructive" });
@@ -223,6 +307,43 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   );
 
   return (
+    <>
+    {/* Prompt editor dialog */}
+    <Dialog open={!!promptDialog} onOpenChange={(o) => { if (!o) setPromptDialog(null); }}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="font-mono text-sm">{promptDialog?.key}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-2">
+          <p className="text-xs text-muted-foreground italic px-1">{PROMPT_PREFIX} …</p>
+          <Textarea
+            rows={5}
+            value={promptDialog?.desc ?? ""}
+            onChange={(e) => setPromptDialog((prev) => prev ? { ...prev, desc: e.target.value } : null)}
+            placeholder="Popiš, co má obrázek zobrazovat (anglicky nebo česky)"
+            className="resize-none text-sm"
+          />
+          <p className="text-xs text-muted-foreground italic px-1 leading-relaxed">… {PROMPT_SUFFIX.slice(2)}</p>
+        </div>
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={() => setPromptDialog(null)}>Zrušit</Button>
+          <Button
+            disabled={!promptDialog?.desc.trim() || !!regenerating}
+            onClick={() => {
+              if (!promptDialog) return;
+              const fullPrompt = `${PROMPT_PREFIX} ${promptDialog.desc.trim()}${PROMPT_SUFFIX}`;
+              setPromptDialog(null);
+              handleRegenerate(promptDialog.key, fullPrompt);
+            }}
+            className="gap-1.5"
+          >
+            {regenerating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
+            Regenerovat s tímto popisem
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         {trigger ?? (
@@ -370,23 +491,35 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   />
                 )}
                 <p className="mt-2 text-[10px] text-muted-foreground font-mono leading-tight line-clamp-2">{key}</p>
-                <button
-                  type="button"
-                  onClick={() => handleRegenerate(key)}
-                  disabled={!!regenerating || running}
-                  title="Regenerovat"
-                  className="mt-2 flex items-center justify-center gap-1 w-full rounded-full border border-border/60 bg-muted px-2 py-1 text-xs text-muted-foreground hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all disabled:opacity-40"
-                >
-                  {regenerating === key
-                    ? <Loader2 className="h-3 w-3 animate-spin" />
-                    : <RefreshCw className="h-3 w-3" />}
-                  {regenerating === key ? "…" : "Regenerovat"}
-                </button>
+                <div className="mt-2 flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => handleRegenerate(key)}
+                    disabled={!!regenerating || running}
+                    title="Regenerovat"
+                    className="flex-1 flex items-center justify-center gap-1 rounded-full border border-border/60 bg-muted px-2 py-1 text-xs text-muted-foreground hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all disabled:opacity-40"
+                  >
+                    {regenerating === key
+                      ? <Loader2 className="h-3 w-3 animate-spin" />
+                      : <RefreshCw className="h-3 w-3" />}
+                    {regenerating === key ? "…" : "Znovu"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPromptDialog({ key, desc: getDefaultDesc(key) })}
+                    disabled={!!regenerating || running}
+                    title="Upravit prompt"
+                    className="flex items-center justify-center rounded-full border border-border/60 bg-muted px-2 py-1 text-muted-foreground hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all disabled:opacity-40"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </button>
+                </div>
               </div>
             );
           })}
         </div>
       </SheetContent>
     </Sheet>
+    </>
   );
 }
