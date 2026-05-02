@@ -96,6 +96,18 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [previewImages, setPreviewImages] = useState<StorageImage[]>([]);
   const [missingKeys, setMissingKeys] = useState<Set<string>>(new Set());
   const [regenerating, setRegenerating] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<"all" | "done" | "missing">("all");
+  const [filterGroup, setFilterGroup] = useState<string>("all");
+
+  // key → group label lookup
+  const KEY_TO_GROUP = Object.fromEntries(KEY_GROUPS.flatMap((g) => g.keys.map((k) => [k, g.label])));
+
+  const filteredImages = previewImages.filter(({ key }) => {
+    if (filterStatus === "done" && missingKeys.has(key)) return false;
+    if (filterStatus === "missing" && !missingKeys.has(key)) return false;
+    if (filterGroup !== "all" && KEY_TO_GROUP[key] !== filterGroup) return false;
+    return true;
+  });
 
   const selectedKeys = KEY_GROUPS.filter((g) => selectedGroups.has(g.label)).flatMap((g) => g.keys);
 
@@ -292,7 +304,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           <div className="mt-5 space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                {ALL_KEYS.length - missingKeys.size} / {ALL_KEYS.length} vygenerováno. Klepni 🔄 pro regeneraci.
+                {ALL_KEYS.length - missingKeys.size} / {ALL_KEYS.length} vygenerováno
               </p>
               <Button variant="ghost" size="sm" onClick={() => { setMissingKeys(new Set()); loadPreview(); }} className="gap-1.5">
                 <RefreshCw className="h-3.5 w-3.5" />
@@ -300,8 +312,51 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
               </Button>
             </div>
 
+            {/* Status filter */}
+            <div className="flex flex-wrap gap-1.5">
+              {(["all", "done", "missing"] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setFilterStatus(s)}
+                  className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
+                    filterStatus === s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/70"
+                  }`}
+                >
+                  {s === "all" ? "Vše" : s === "done" ? "✓ Hotové" : "○ Chybějící"}
+                </button>
+              ))}
+            </div>
+
+            {/* Group filter */}
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => setFilterGroup("all")}
+                className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
+                  filterGroup === "all" ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:bg-muted/70"
+                }`}
+              >
+                Všechny skupiny
+              </button>
+              {KEY_GROUPS.map((g) => (
+                <button
+                  key={g.label}
+                  type="button"
+                  onClick={() => setFilterGroup(filterGroup === g.label ? "all" : g.label)}
+                  className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
+                    filterGroup === g.label ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:bg-muted/70"
+                  }`}
+                >
+                  {g.emoji} {g.label}
+                </button>
+              ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground">{filteredImages.length} zobrazeno</p>
+
             <div className="grid grid-cols-3 gap-3">
-              {previewImages.map(({ key, url }) => {
+              {filteredImages.map(({ key, url }) => {
                 const isMissing = missingKeys.has(key);
                 return (
                   <div
