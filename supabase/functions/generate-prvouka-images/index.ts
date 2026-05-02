@@ -118,32 +118,19 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const PROVIDER_PREF = Deno.env.get("IMAGE_PROVIDER") ?? "lovable";
 
-  const tryGemini = async () => {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`;
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
-      }),
-    });
-    if (!resp.ok) {
-      const t = await resp.text();
-      throw new Error(`Gemini direct error ${resp.status}: ${t.slice(0, 200)}`);
-    }
-    const data = await resp.json();
-    const parts = data.candidates?.[0]?.content?.parts ?? [];
-    const imagePart = parts.find((p: { inlineData?: { data?: string; mimeType?: string } }) =>
-      p?.inlineData?.data,
-    );
-    if (!imagePart?.inlineData?.data) {
-      throw new Error("No image data in Gemini response");
-    }
-    return {
-      base64: imagePart.inlineData.data,
-      contentType: imagePart.inlineData.mimeType ?? "image/png",
-    };
+  const tryPollinations = async () => {
+    // Pollinations.ai — zdarma, bez API klíče, Flux model
+    const encoded = encodeURIComponent(prompt);
+    const seed = Math.floor(Math.random() * 999999);
+    const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&model=flux&nologo=true&seed=${seed}`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
+    const bytes = new Uint8Array(await resp.arrayBuffer());
+    // Encode to base64 in Deno
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    const base64 = btoa(binary);
+    return { base64, contentType: "image/jpeg" };
   };
 
   const tryLovable = async () => {
@@ -179,31 +166,22 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     };
   };
 
-  // Build chain podle preference
+  // Chain: Lovable → Pollinations (vždy dostupný, zdarma)
   const chain: Array<{ name: string; available: boolean; run: () => Promise<{ base64: string; contentType: string }> }> = [];
-  if (PROVIDER_PREF === "gemini") {
-    chain.push({ name: "gemini-direct", available: !!GEMINI_API_KEY, run: tryGemini });
-    chain.push({ name: "lovable-gateway", available: !!LOVABLE_API_KEY, run: tryLovable });
-  } else {
-    // default: lovable prefer
-    chain.push({ name: "lovable-gateway", available: !!LOVABLE_API_KEY, run: tryLovable });
-    chain.push({ name: "gemini-direct", available: !!GEMINI_API_KEY, run: tryGemini });
-  }
+  if (LOVABLE_API_KEY) chain.push({ name: "lovable-gateway", available: true, run: tryLovable });
+  chain.push({ name: "pollinations", available: true, run: tryPollinations });
 
   let lastError: Error | null = null;
   for (const provider of chain) {
-    if (!provider.available) continue;
     try {
       return await provider.run();
     } catch (e) {
       lastError = e instanceof Error ? e : new Error(String(e));
       console.warn(`[generate-image] ${provider.name} failed:`, lastError.message);
-      // Pokračuj na další provider v chainu (fallback)
     }
   }
 
-  if (lastError) throw lastError;
-  throw new Error("Žádný API klíč nakonfigurován. Nastavte LOVABLE_API_KEY (default) nebo GEMINI_API_KEY v Supabase Edge Functions Secrets.");
+  throw lastError ?? new Error("Všichni provideři selhali.");
 }
 
 serve(async (req) => {
@@ -227,6 +205,15 @@ serve(async (req) => {
       : (lovableKey ? "lovable-gateway" : (geminiKey ? "gemini-direct (fallback)" : "none"));
     console.log(`[generate-prvouka-images] Preference: ${pref}, Primary: ${primary}`);
 
+    // Ensure bucket exists (auto-create if missing)
+    const { error: bucketError } = await supabase.storage.createBucket("prvouka-images", {
+      public: true,
+      allowedMimeTypes: ["image/png", "image/jpeg", "image/webp"],
+    });
+    if (bucketError && !bucketError.message.includes("already exists")) {
+      console.warn("Bucket create warning:", bucketError.message);
+    }
+
     const results: Record<string, string> = {};
     const errors: Record<string, string> = {};
 
@@ -238,14 +225,26 @@ serve(async (req) => {
       }
 
       try {
+        // Skip pokud obrázek už existuje v storage
+        const { data: existing } = await supabase.storage
+          .from("prvouka-images")
+          .list("", { search: `${key}.png` });
+        if (existing && existing.length > 0) {
+          const { data: publicUrlData } = supabase.storage
+            .from("prvouka-images")
+            .getPublicUrl(`${key}.png`);
+          results[key] = publicUrlData.publicUrl;
+          console.log(`⏭ ${key} already exists, skipping`);
+          continue;
+        }
+
         console.log(`Generating image for: ${key}`);
 
         const { base64, contentType } = await generateImage(prompt);
         const imageBytes = decode(base64);
-        const ext = contentType.split("/")[1] ?? "png";
 
-        // Upload to storage
-        const filePath = `${key}.${ext}`;
+        // Always save as .png — imageUrl() in prvoukaVisuals defaults to .png
+        const filePath = `${key}.png`;
         const { error: uploadError } = await supabase.storage
           .from("prvouka-images")
           .upload(filePath, imageBytes, {
@@ -266,8 +265,8 @@ serve(async (req) => {
         results[key] = publicUrlData.publicUrl;
         console.log(`✓ ${key} -> ${publicUrlData.publicUrl}`);
 
-        // Small delay to avoid rate limiting
-        await new Promise((r) => setTimeout(r, 2000));
+        // Krátká pauza mezi requesty
+        await new Promise((r) => setTimeout(r, 500));
       } catch (e) {
         console.error(`Error for ${key}:`, e);
         errors[key] = e instanceof Error ? e.message : "Unknown error";
