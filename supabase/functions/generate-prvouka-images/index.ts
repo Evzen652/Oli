@@ -196,6 +196,7 @@ serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
     const requestedKeys: string[] = body.keys ?? Object.keys(IMAGE_KEYS);
+    const force: boolean = body.force === true;
 
     const lovableKey = Deno.env.get("LOVABLE_API_KEY");
     const geminiKey = Deno.env.get("GEMINI_API_KEY");
@@ -225,11 +226,11 @@ serve(async (req) => {
       }
 
       try {
-        // Skip pokud obrázek už existuje v storage
-        const { data: existing } = await supabase.storage
+        // Skip pokud obrázek už existuje v storage (a není force)
+        const { data: existing } = force ? { data: null } : await supabase.storage
           .from("prvouka-images")
           .list("", { search: `${key}.png` });
-        if (existing && existing.length > 0) {
+        if (!force && existing && existing.length > 0) {
           const { data: publicUrlData } = supabase.storage
             .from("prvouka-images")
             .getPublicUrl(`${key}.png`);

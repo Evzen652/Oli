@@ -128,8 +128,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
 
   const handleRegenerate = async (key: string) => {
     setRegenerating(key);
-    await supabase.storage.from("prvouka-images").remove([`${key}.png`]);
-    const { error } = await supabase.functions.invoke("generate-prvouka-images", { body: { keys: [key] } });
+    const { error } = await supabase.functions.invoke("generate-prvouka-images", { body: { keys: [key], force: true } });
     if (error) {
       toast({ description: `Chyba: ${error.message}`, variant: "destructive" });
     } else {
