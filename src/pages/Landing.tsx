@@ -1,28 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { LandingNav } from "./LandingNav";
-import imgPisemka from "@/assets/topic-math-scitani-a-odcitani-do-100.png";
-import imgDiktat from "@/assets/topic-cz-diktat.png";
-import imgZlomky from "@/assets/topic-math-porovnavani-zlomku.png";
-import imgProcvicovani from "@/assets/subject-matematika.png";
-// Jak to funguje
-import imgRodina from "@/assets/topic-rodina-a-spolecnost.png";
-import imgZdraviHygiena from "@/assets/topic-zdravi-a-hygiena.png";
-import imgRocniObdobi from "@/assets/topic-rocni-obdobi-a-pocasi.png";
-// Prinosy
-import imgBarChart from "@/assets/cat-math-cisla-a-operace.png";
 import imgUceni from "@/assets/good-to-know.png";
-import imgSkola from "@/assets/cat-cz-pravopis.png";
-import imgPodpora from "@/assets/topic-rostliny.png";
-import imgStarosti from "@/assets/category-info.png";
-import imgProstredi from "@/assets/topic-zvirata.png";
-// Duvera
-import imgProcvic from "@/assets/subject-prvouka.png";
 import imgVysvetleni from "@/assets/help-hint.png";
-import imgPrehled from "@/assets/cat-math-zlomky.png";
-import imgCilene from "@/assets/subject-cestina.png";
+import imgStarosti from "@/assets/category-info.png";
+
+// Nově generované ilustrace ze Supabase storage
+const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
+const si = (key: string) => `${S}/${key}.png`;
+
+const imgPisemka     = si("subject-cestina");
+const imgDiktat      = si("topic-cz-diktat");
+const imgZlomky      = si("topic-math-odcitani-zlomku");
+const imgProcvicovani = si("topic-rocni-obdobi-a-pocasi");
+const imgRodina      = si("topic-rodina-a-spolecnost");
+const imgZdraviHygiena = si("topic-zdravi-a-hygiena");
+const imgRocniObdobi = si("topic-rocni-obdobi-a-pocasi");
+const imgBarChart    = si("cat-math-cisla-a-operace");
+const imgSkola       = si("cat-cz-pravopis");
+const imgPodpora     = si("topic-rostliny");
+const imgProstredi   = si("topic-zvirata");
+const imgProcvic     = si("subject-prvouka");
+const imgPrehled     = si("cat-math-zlomky");
+const imgCilene      = si("subject-cestina");
 import {
   BookOpen, BarChart3, Target, Shield, Clock, Sparkles,
   UserPlus, KeyRound, TrendingUp, CheckCircle2, Eye, Zap,
@@ -57,7 +60,7 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
   return (
     <Card className="rounded-3xl border-0 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: bg || "#fff" }}>
       <CardContent className="p-7 space-y-3">
-        <img src={img} alt={title} className="h-14 w-14 object-contain drop-shadow-md mix-blend-multiply" />
+        <DewhiteImg src={img} alt={title} className="h-14 w-14 object-contain drop-shadow-md" />
         <h3 className="text-lg font-semibold font-heading" style={{ color: C.dark }}>{title}</h3>
         <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
       </CardContent>
@@ -66,6 +69,34 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
 }
 
 /* ── page ── */
+function DewhiteImg({ src, alt, className, style }: { src: string; alt: string; className?: string; style?: React.CSSProperties }) {
+  const [out, setOut] = useState(src);
+  useEffect(() => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0);
+      try {
+        const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const px = d.data;
+        for (let i = 0; i < px.length; i += 4) {
+          const brightness = (px[i] + px[i + 1] + px[i + 2]) / 3;
+          if (brightness > 245) { px[i + 3] = 0; }
+          else if (brightness > 210) { px[i + 3] = Math.round((255 - brightness) * (255 / 45)); }
+        }
+        ctx.putImageData(d, 0, 0);
+        setOut(canvas.toDataURL("image/png"));
+      } catch { /* tainted canvas – show original */ }
+    };
+    img.src = src;
+  }, [src]);
+  return <img src={out} alt={alt} className={className} style={style} />;
+}
+
 export default function Landing() {
   const navigate = useNavigate();
 
@@ -137,15 +168,15 @@ export default function Landing() {
               ].map((tile) => (
                 <div
                   key={tile.title}
-                  className={`group rounded-3xl shadow-lg hover:shadow-2xl hover:scale-[1.05] hover:-translate-y-2 hover:rotate-0 transition-all duration-500 ease-out p-6 flex flex-col justify-between min-h-[230px] cursor-default border ${tile.border} ${tile.rotate} ${tile.mt ?? ""} backdrop-blur-sm`}
+                  className={`group rounded-3xl shadow-lg hover:shadow-2xl hover:scale-[1.05] hover:-translate-y-2 hover:rotate-0 transition-all duration-500 ease-out p-6 flex flex-col justify-between min-h-[230px] cursor-default border ${tile.border} ${tile.rotate} ${tile.mt ?? ""}`}
                   style={{ background: tile.bg }}
                 >
                   {/* Illustration — large, dominant */}
                   <div className="flex-1 flex items-center justify-center mb-3">
-                    <img
+                    <DewhiteImg
                       src={tile.img}
                       alt={tile.title}
-                      className="h-28 w-28 object-contain group-hover:scale-115 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg mix-blend-multiply"
+                      className="h-28 w-28 object-contain group-hover:scale-115 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg"
                     />
                   </div>
                   {/* Text */}
@@ -168,7 +199,7 @@ export default function Landing() {
                 { title: "Každodenní procvičování", desc: "Krátké úkoly na míru", img: imgProcvicovani, bg: C.bgOrange },
               ].map((tile) => (
                 <div key={tile.title} className="rounded-2xl shadow-md p-4 flex flex-col gap-2 items-center text-center" style={{ background: tile.bg }}>
-                  <img src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm mix-blend-multiply" />
+                  <DewhiteImg src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm" />
                   <h3 className="text-sm font-bold font-heading" style={{ color: C.dark }}>{tile.title}</h3>
                   <p className="text-xs text-slate-500">{tile.desc}</p>
                 </div>
@@ -201,7 +232,7 @@ export default function Landing() {
           ].map((item) => (
             <Card key={item.step} className="rounded-3xl border-0 shadow-lg text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: item.bg }}>
               <CardContent className="p-8 space-y-4">
-                <img src={item.img} alt={item.title} className="mx-auto h-20 w-20 object-contain drop-shadow-md mix-blend-multiply" />
+                <DewhiteImg src={item.img} alt={item.title} className="mx-auto h-20 w-20 object-contain drop-shadow-md" />
                 <div className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: C.orange }}>
                   {item.step}
                 </div>
@@ -224,7 +255,7 @@ export default function Landing() {
             { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a Oli vede dítě krok za krokem.", bg: "white" },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-5 p-6 rounded-3xl shadow-md hover:shadow-lg transition-shadow" style={{ background: item.bg }}>
-              <img src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md mix-blend-multiply" />
+              <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md" />
               <div>
                 <h3 className="font-semibold text-base font-heading" style={{ color: C.dark }}>{item.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed mt-1">{item.desc}</p>

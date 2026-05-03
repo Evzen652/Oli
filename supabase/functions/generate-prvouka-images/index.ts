@@ -8,98 +8,101 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const PROMPT_PREFIX = "Cute 3D rendered cartoon illustration of";
-const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, pure white background #ffffff, white studio background, no shadows on background, no gradients on background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
+// Flux zvládá vizuální scény — NO text, NO numbers in image, pure visual metaphors
+const SUFFIX = ", cute 3D Pixar-style cartoon illustration, soft volumetric shading, vibrant pastel colors, friendly rounded shapes, isolated on plain white studio background, no shadows on background, suitable for 8-year-old children, single centered subject, square composition";
 
-function p(desc: string) { return `${PROMPT_PREFIX} ${desc}${PROMPT_SUFFIX}`; }
+function p(desc: string) { return `Cute 3D rendered cartoon illustration of ${desc}${SUFFIX}`; }
+const concept = p;
+const scene = p;
 
 // All keys to generate images for
 const IMAGE_KEYS: Record<string, string> = {
-  // ── SUBJECTS (top-level předmět karty) ────────────────────
-  "subject-matematika": p("colorful 3D numbers 1, 2, 3 floating with plus and equals signs"),
-  "subject-cestina": p("an open book with the letters A, B, C jumping out colorfully"),
-  "subject-prvouka": p("a friendly tree with a sun, flowers, and a small animal in a meadow"),
-  "subject-prirodoveda": p("a magnifying glass over leaves and a small ecosystem with plants and animals"),
-  "subject-vlastiveda": p("a globe and a Czech Republic outline map with landmarks like Prague Castle"),
+  // ── SUBJECTS ──────────────────────────────────────────────
+  "subject-matematika": concept("colorful 3D abacus with bright red and blue beads, plus sign and equals sign shapes, counting blocks stacked"),
+  "subject-cestina": concept("open book with colorful alphabet letters flying out of the pages, fountain pen beside it"),
+  "subject-prvouka": scene("a friendly owl sitting on a tree branch with sun, flowers, and a small butterfly nearby"),
+  "subject-prirodoveda": concept("large magnifying glass over a detailed green leaf showing veins and cells"),
+  "subject-vlastiveda": concept("a stylized map shape of Czech Republic with a small castle silhouette and a flag on top"),
 
   // ── PRVOUKA: Categories ───────────────────────────────────
-  "cat-clovek-a-jeho-telo": p("a happy child showing body parts like arms, legs, head"),
-  "cat-priroda-kolem-nas": p("nature scene with trees, flowers, sun, birds, and a small pond"),
-  "cat-lide-a-spolecnost": p("a friendly neighborhood with houses, people waving, a school, and a park"),
-  "cat-orientace-v-prostoru-a-case": p("a compass, map, clock, and calendar together"),
+  "cat-clovek-a-jeho-telo": scene("a cheerful child with arms outstretched, glowing heart and lungs visible inside the body"),
+  "cat-priroda-kolem-nas": scene("lush nature scene with a tall tree, blooming flowers, bright sun, birds, and a small pond"),
+  "cat-lide-a-spolecnost": scene("a colorful neighborhood with houses, a school building, and people waving to each other"),
+  "cat-orientace-v-prostoru-a-case": concept("a large compass rose with four directional arrows, an analog clock face, and a calendar page"),
+
   // ── PRVOUKA: Topics ───────────────────────────────────────
-  "topic-lidske-telo": p("a human body outline with labeled bones, muscles, and organs in a friendly style"),
-  "topic-smysly": p("five senses - eye, ear, nose, tongue, hand touching - in a playful layout"),
-  "topic-zdravi-a-hygiena": p("a child washing hands with soap, toothbrush, healthy food"),
-  "topic-rostliny": p("various plants - a tree, flower, mushroom, and grass - with roots visible"),
-  "topic-zvirata": p("friendly animals - dog, cat, deer, bird, butterfly, fish - together in nature"),
-  "topic-rocni-obdobi-a-pocasi": p("four seasons - spring flowers, summer sun, autumn leaves, winter snow - in quadrants"),
-  "topic-nase-zeme": p("Czech Republic map outline with Prague marked, Czech flag, and famous landmarks like Prague Castle"),
-  "topic-rodina-a-spolecnost": p("a family and community together - parents with children, neighbors waving, people helping each other"),
-  "topic-rodina-a-pravidla-chovani": p("a happy family - parents and children - holding hands, showing good manners, greeting neighbors"),
-  "topic-obec-a-mesto": p("a small Czech town with a town hall, church, school, and park"),
-  "topic-ceska-republika": p("Czech Republic landmarks - Prague Castle, Czech flag, map outline"),
-  "topic-svetove-strany-a-mapa": p("a compass rose with N S E W directions and a simple treasure map"),
-  "topic-cas-a-kalendar": p("a clock showing time, a calendar page, and day-night cycle"),
+  "topic-lidske-telo": scene("a transparent human body outline with colorful glowing organs: heart, lungs, stomach, brain"),
+  "topic-smysly": concept("five sense icons arranged in a circle: eye, ear, nose, lips, hand — each a different bright color"),
+  "topic-zdravi-a-hygiena": scene("a child washing hands with large soap bubbles, a toothbrush, a red apple, and a glass of water"),
+  "topic-rostliny": concept("a large sunflower plant showing roots underground, green stem, leaves, and yellow flower head"),
+  "topic-zvirata": scene("six friendly animals together: dog, cat, deer, bird, butterfly, fish — in a colorful meadow"),
+  "topic-rocni-obdobi-a-pocasi": concept("four quadrants each showing a season: pink cherry blossom, bright sun, orange falling leaves, white snowflake"),
+  "topic-nase-zeme": concept("a stylized outline of Czech Republic as a colorful map shape with a small castle and red-white-blue flag"),
+  "topic-rodina-a-spolecnost": scene("a warm family scene with parents, two children, and grandparents all smiling together"),
+  "topic-rodina-a-pravidla-chovani": scene("two children greeting an elderly neighbor, one holding a door open, friendly smiles"),
+  "topic-obec-a-mesto": scene("a charming small town with a town hall, church tower, school, and green park"),
+  "topic-ceska-republika": concept("Prague Castle silhouette on a hill with Charles Bridge arches below and a small Czech flag"),
+  "topic-svetove-strany-a-mapa": concept("a large ornate compass rose with four bold directional arrows pointing North South East West"),
+  "topic-cas-a-kalendar": concept("a large analog clock face showing nine o'clock, next to a calendar page with a day circled"),
 
   // ── MATEMATIKA: Categories ────────────────────────────────
-  "cat-math-cisla-a-operace": p("colorful numbers 1-9 with plus and minus signs, counting blocks"),
-  "cat-math-zlomky": p("a pizza and a cake cut into equal slices showing fractions like 1/2 and 1/4"),
-  "cat-math-geometrie": p("geometric shapes - square, triangle, circle, rectangle - with a ruler and protractor"),
+  "cat-math-cisla-a-operace": concept("colorful 3D digit blocks stacked with a plus sign and equals sign between them, bright and bold"),
+  "cat-math-zlomky": concept("a large circle split into four equal colored sections — red, blue, yellow, green — one section slightly pulled out"),
+  "cat-math-geometrie": concept("four bold geometric shapes: red circle, blue square, yellow triangle, green rectangle — arranged in a square layout"),
 
   // ── MATEMATIKA: Topics ────────────────────────────────────
-  "topic-math-porovnavani-prirozenych-cisel": p("two groups of objects being compared with less-than and greater-than signs"),
-  "topic-math-scitani-a-odcitani-do-100": p("a child counting on fingers with numbers and plus/minus signs floating around"),
-  "topic-math-nasobeni-a-deleni": p("multiplication table grid with colorful numbers and a times symbol"),
-  "topic-math-zaokrouhlovani": p("a number line with arrows showing rounding to nearest ten"),
-  "topic-math-razeni-cisel": p("numbered cards being sorted from smallest to largest by a child"),
-  "topic-math-porovnavani-zlomku": p("two fraction bars side by side being compared, one bigger than the other"),
-  "topic-math-kraceni-zlomku": p("a fraction being simplified with arrows showing division of numerator and denominator"),
-  "topic-math-rozsireni-zlomku": p("a fraction being expanded with arrows showing multiplication of numerator and denominator"),
-  "topic-math-scitani-zlomku": p("two fraction pies being added together to make a larger portion"),
-  "topic-math-odcitani-zlomku": p("a fraction pie with a slice being removed, subtraction symbol"),
-  "topic-math-smisena-cisla": p("a whole number next to a fraction piece, like 2 and 1/3 of a pie"),
-  "topic-math-zlomek-z-cisla": p("a group of 12 apples with 1/4 of them circled and highlighted"),
-  "topic-math-nasobeni-zlomku-celym-cislem": p("a fraction piece being multiplied - showing 3 times 1/4 with three quarter-pieces"),
-  "topic-math-geometricke-tvary": p("basic geometric shapes - square, triangle, circle, rectangle - with labels"),
-  "topic-math-obvod": p("a rectangle with arrows around its perimeter showing measurement"),
+  "topic-math-porovnavani-prirozenych-cisel": concept("two piles of colorful balls, one large pile and one small pile, with a bold arrow pointing from large to small"),
+  "topic-math-scitani-a-odcitani-do-100": concept("two groups of colored counting cubes being pushed together with a plus arrow between them"),
+  "topic-math-nasobeni-a-deleni": concept("four rows of three colorful stars arranged in a grid, a multiplication symbol between two groups"),
+  "topic-math-zaokrouhlovani": concept("a curved arrow bouncing from a midpoint on a number line to the nearest larger round mark"),
+  "topic-math-razeni-cisel": concept("five colorful blocks of different heights arranged from shortest to tallest in a row"),
+  "topic-math-porovnavani-zlomku": concept("two bars side by side: left bar three-quarters filled in yellow, right bar one-half filled in blue"),
+  "topic-math-kraceni-zlomku": concept("a large rectangle divided into eight equal sections with four highlighted, arrow pointing to same rectangle divided in two with one highlighted"),
+  "topic-math-rozsireni-zlomku": concept("a circle split in three with one colored section, arrow pointing to same circle split in nine with three colored sections"),
+  "topic-math-scitani-zlomku": concept("two pie charts side by side — one showing one-quarter slice, one showing two-quarter slices — with a plus symbol between them"),
+  "topic-math-odcitani-zlomku": concept("a pie chart with three-quarters colored, one slice being lifted away, minus symbol visible"),
+  "topic-math-smisena-cisla": concept("two whole colored circles next to one half-colored circle, arranged in a clean row"),
+  "topic-math-zlomek-z-cisla": concept("twelve apples arranged in three rows of four, three apples highlighted in bright red while the rest are green"),
+  "topic-math-nasobeni-zlomku-celym-cislem": concept("three identical quarter-pie pieces in a row, separated by plus symbols, combining into one three-quarter pie"),
+  "topic-math-geometricke-tvary": concept("bold flat geometric shapes with measurement marks: a square with equal side marks, triangle, circle, pentagon"),
+  "topic-math-obvod": concept("a rectangle with a dotted line tracing around its full perimeter, small arrows on each side"),
 
   // ── MATEMATIKA: Měření ────────────────────────────────────
-  "topic-math-mereni-delky": p("a ruler measuring objects, a tape measure, and a child estimating length"),
-  "topic-math-zakladni-jednotky": p("a ruler with millimeters, centimeters, and meters labeled, comparison arrows"),
-  "topic-math-prevody-jednotek": p("arrows showing conversions between cm and m, mm and cm, with equal signs"),
-  "topic-math-odhad-delek": p("a child guessing the length of a pencil and a book, with question marks"),
-  "topic-math-jednotky-hmotnosti": p("a kitchen scale with weights labeled in grams and kilograms, apples being weighed"),
-  "topic-math-slovni-ulohy-delky": p("a child measuring a ribbon with a ruler, cutting with scissors, numbers floating"),
-  "topic-math-objem-ml-l": p("a measuring cup with milliliter markings, a water bottle labeled 1 liter"),
+  "topic-math-mereni-delky": concept("a bright yellow ruler measuring a pencil lying beside it, centimeter marks clearly visible"),
+  "topic-math-zakladni-jednotky": concept("three rulers of dramatically different lengths arranged from tiny to very long, stacked vertically"),
+  "topic-math-prevody-jednotek": concept("two measuring tapes of different scales connected by a bold double-headed arrow"),
+  "topic-math-odhad-delek": concept("a hand with a question mark above it hovering over a shoe, both items have dotted measurement lines"),
+  "topic-math-jednotky-hmotnosti": concept("a balance scale perfectly level with a small apple on one side and a weight on the other"),
+  "topic-math-slovni-ulohy-delky": concept("a colorful ribbon being cut by scissors, a ruler measuring the piece being cut"),
+  "topic-math-objem-ml-l": concept("a tall measuring jug with colored liquid showing a fill line, next to a large water bottle"),
 
   // ── ČEŠTINA: Categories ───────────────────────────────────
-  "cat-cz-vyjmenovana-slova": p("Czech words with highlighted letters Y and I, a spelling book with a magnifying glass"),
-  "cat-cz-pravopis": p("a notebook with Czech text, a pencil correcting spelling, checkmarks and crosses"),
-  "cat-cz-mluvnice": p("sentence diagram with colorful parts of speech labels, a grammar tree"),
-  "cat-cz-diktat": p("a child writing in a notebook from dictation, speech bubble with words"),
+  "cat-cz-vyjmenovana-slova": concept("a large magnifying glass focusing on a single letter Y on an open book page"),
+  "cat-cz-pravopis": concept("a notebook page with a bold red pencil drawing a checkmark and an X, correction marks"),
+  "cat-cz-mluvnice": concept("three colorful speech bubbles connected by arrows in a tree structure, each a different color"),
+  "cat-cz-diktat": concept("a notebook with a line of text that has a blank gap, with a pencil filling in the missing space"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
-  "topic-cz-vyjm-b": p("the Czech letter B with words like 'být, bydlit' and a house icon"),
-  "topic-cz-vyjm-l": p("the Czech letter L with words 'lyže, slyšet' and a ski icon"),
-  "topic-cz-vyjm-m": p("the Czech letter M with words 'my, myslit' and a thinking bubble"),
-  "topic-cz-vyjm-p": p("the Czech letter P with words 'pýcha, pytel' and a bag icon"),
-  "topic-cz-vyjm-s": p("the Czech letter S with words 'syn, sýr' and a cheese icon"),
-  "topic-cz-vyjm-v": p("the Czech letter V with words 'výt, zvyk' and a wolf icon"),
-  "topic-cz-vyjm-z": p("the Czech letter Z with words 'jazyk, brzy' and a tongue icon"),
-  "topic-cz-parove-souhlasky": p("letter pairs like D-T, B-P, Z-S shown side by side with a magnifying glass"),
-  "topic-cz-tvrde-mekke": p("hard and soft consonants divided into two groups with happy/stern face icons"),
-  "topic-cz-velka-pismena": p("a big capital letter A next to a small lowercase a, with city names"),
-  "topic-cz-slovni-druhy": p("colorful word labels - noun, verb, adjective - pointing to words in a sentence"),
-  "topic-cz-rod-cislo": p("masculine, feminine, neuter icons (he/she/it) with example Czech nouns"),
-  "topic-cz-slovesa-urcovani": p("a verb conjugation table with person and tense markers"),
-  "topic-cz-zaklad-vety": p("a simple sentence with subject underlined and predicate circled"),
-  "topic-cz-diktat": p("a child writing missing letters into blank spaces in sentences"),
+  "topic-cz-vyjm-b": concept("a large bold letter B glowing in the center, surrounded by a house, a bicycle, and a bee icon"),
+  "topic-cz-vyjm-l": concept("a large bold letter L glowing in the center, surrounded by a ski, a fox, and a linden leaf icon"),
+  "topic-cz-vyjm-m": concept("a large bold letter M glowing in the center, surrounded by a soap bubble, a bear, and a thought cloud icon"),
+  "topic-cz-vyjm-p": concept("a large bold letter P glowing in the center, surrounded by a bag, a dog, and a sand icon"),
+  "topic-cz-vyjm-s": concept("a large bold letter S glowing in the center, surrounded by a cheese wedge, an owl, and a salt shaker icon"),
+  "topic-cz-vyjm-v": concept("a large bold letter V glowing in the center, surrounded by a wolf, a tower, and a willow tree icon"),
+  "topic-cz-vyjm-z": concept("a large bold letter Z glowing in the center, surrounded by a tongue, a castle, and a bell icon"),
+  "topic-cz-parove-souhlasky": concept("two pairs of colorful letter-shaped 3D blocks side by side, one pair soft blue and one pair warm orange"),
+  "topic-cz-tvrde-mekke": concept("two groups of colorful letter-shaped blocks separated by a dividing line: hard group in blue, soft group in orange"),
+  "topic-cz-velka-pismena": concept("a large ornate capital letter A next to a small lowercase a, crown above the capital letter"),
+  "topic-cz-slovni-druhy": concept("three colorful speech bubbles in different shapes: round, square, and star — each a different vivid color representing different word types"),
+  "topic-cz-rod-cislo": concept("three distinct silhouette shapes: tall blue, smaller pink, and round yellow — each with a small symbol above"),
+  "topic-cz-slovesa-urcovani": concept("a colorful grid of six cells arranged in two rows and three columns, each cell a different color"),
+  "topic-cz-zaklad-vety": concept("a horizontal line with two distinct colorful segments: one bold underlined segment in blue, one circled segment in red"),
+  "topic-cz-diktat": concept("a notebook page with three dotted blank lines in the middle of a sentence, a pencil hovering above ready to write"),
 
   // ── ČEŠTINA: Sloh ─────────────────────────────────────────
-  "cat-cz-sloh": p("a child writing a creative essay with a pencil, story bubbles around"),
-  "topic-cz-sloh-vypraveni": p("a child telling a story with a speech bubble showing characters and adventures"),
-  "topic-cz-sloh-popis": p("a child describing an object - magnifying glass, descriptive words floating, paint palette"),
+  "cat-cz-sloh": scene("a child sitting at a desk writing in a notebook, colorful story bubbles with a dragon and castle floating above"),
+  "topic-cz-sloh-vypraveni": scene("a child excitedly telling a story with a large speech bubble showing a castle, dragon, and hero"),
+  "topic-cz-sloh-popis": concept("a large magnifying glass over a red apple, with descriptive arrows pointing to its color, shape, and texture"),
 };
 
 /**
@@ -114,73 +117,59 @@ const IMAGE_KEYS: Record<string, string> = {
  * Vrací { base64, contentType } nebo throws Error.
  */
 async function generateImage(prompt: string): Promise<{ base64: string; contentType: string }> {
-  const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-  const PROVIDER_PREF = Deno.env.get("IMAGE_PROVIDER") ?? "lovable";
 
   const tryPollinations = async () => {
-    // Pollinations.ai — zdarma, bez API klíče, Flux model
     const encoded = encodeURIComponent(prompt);
+    const negative = encodeURIComponent("text, letters, numbers, digits, words, typography, writing, labels, captions, watermark, logo, signature, background, texture, wood, table, surface, floor, wall, shadow, gradient, pattern, scenery, environment, dark background, colored background");
     const seed = Math.floor(Math.random() * 999999);
-    const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&model=flux&nologo=true&seed=${seed}`;
+    const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&seed=${seed}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
     const bytes = new Uint8Array(await resp.arrayBuffer());
-    // Encode to base64 in Deno
     let binary = "";
     for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-    const base64 = btoa(binary);
-    return { base64, contentType: "image/jpeg" };
+    return { base64: btoa(binary), contentType: "image/jpeg" };
   };
 
   const tryLovable = async () => {
-    const resp = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash-image",
-          messages: [{ role: "user", content: prompt }],
-          modalities: ["image", "text"],
-        }),
-      },
-    );
+    const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash-image",
+        messages: [{ role: "user", content: prompt }],
+        modalities: ["image", "text"],
+      }),
+    });
     if (!resp.ok) {
       const t = await resp.text();
       throw new Error(`Lovable error ${resp.status}: ${t.slice(0, 200)}`);
     }
     const data = await resp.json();
     const dataUrl: string | undefined = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-    if (!dataUrl || !dataUrl.startsWith("data:image/")) {
-      throw new Error("No image in Lovable response");
-    }
+    if (!dataUrl?.startsWith("data:image/")) throw new Error("No image in Lovable response");
     const base64 = dataUrl.split(",")[1];
     const mimeMatch = dataUrl.match(/data:(image\/\w+);/);
-    return {
-      base64,
-      contentType: mimeMatch?.[1] ?? "image/png",
-    };
+    return { base64, contentType: mimeMatch?.[1] ?? "image/png" };
   };
 
-  // Chain: Lovable → Pollinations (vždy dostupný, zdarma)
-  const chain: Array<{ name: string; available: boolean; run: () => Promise<{ base64: string; contentType: string }> }> = [];
-  if (LOVABLE_API_KEY) chain.push({ name: "lovable-gateway", available: true, run: tryLovable });
-  chain.push({ name: "pollinations", available: true, run: tryPollinations });
+  // Pollinations primárně, Lovable jako záloha
+  const chain = [
+    { name: "pollinations", run: tryPollinations },
+    ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
+  ];
 
   let lastError: Error | null = null;
   for (const provider of chain) {
     try {
+      console.log(`[generate-prvouka] Trying ${provider.name}...`);
       return await provider.run();
     } catch (e) {
       lastError = e instanceof Error ? e : new Error(String(e));
-      console.warn(`[generate-image] ${provider.name} failed:`, lastError.message);
+      console.warn(`[generate-prvouka] ${provider.name} failed:`, lastError.message);
     }
   }
-
   throw lastError ?? new Error("Všichni provideři selhali.");
 }
 

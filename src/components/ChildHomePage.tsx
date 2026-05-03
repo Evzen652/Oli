@@ -22,9 +22,27 @@ interface Assignment {
 }
 
 const SUBJECT_EMOJI: Record<string, string> = {
-  matematika: "🔢",
-  čeština: "📝",
+  matematika: "➕",
+  čeština: "📖",
   prvouka: "🌿",
+  přírodověda: "🔬",
+  vlastivěda: "🗺️",
+};
+
+const SUBJECT_LABEL: Record<string, string> = {
+  matematika: "Matematika",
+  čeština: "Čeština",
+  prvouka: "Prvouka",
+  přírodověda: "Přírodověda",
+  vlastivěda: "Vlastivěda",
+};
+
+const SUBJECT_COLOR: Record<string, string> = {
+  matematika: "bg-blue-100 text-blue-700",
+  čeština: "bg-purple-100 text-purple-700",
+  prvouka: "bg-green-100 text-green-700",
+  přírodověda: "bg-teal-100 text-teal-700",
+  vlastivěda: "bg-orange-100 text-orange-700",
 };
 
 // ── Pairing code ──────────────────────────────────────────────────────────────
@@ -187,8 +205,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     if (topic) onSelectTopic(topic);
   };
 
-  const formatDueDate = (dateStr: string) =>
+  const formatDate = (dateStr: string) =>
     new Date(dateStr + "T00:00:00").toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" });
+
+  const formatDueDate = formatDate;
 
   if (loading) {
     return (
@@ -230,11 +250,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         )}
 
         {/* ── Main 3-column grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-[2.2fr_1.4fr_1.4fr] gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-[2.2fr_1.4fr_1.4fr] gap-4">
 
           {/* LEFT: Hero */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-pink-400 p-6 flex flex-col text-white min-h-[300px]">
-            {/* Sparkle decorations */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-pink-400 p-6 flex flex-col text-white min-h-[320px]">
             <span className="absolute top-6 right-14 text-white/25 text-2xl pointer-events-none select-none">✦</span>
             <span className="absolute top-28 right-5 text-white/20 text-lg pointer-events-none select-none">+</span>
             <span className="absolute bottom-24 left-8 text-white/20 text-base pointer-events-none select-none">+</span>
@@ -250,21 +269,19 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
             <p className="text-white/80 text-sm leading-relaxed mb-6">
               Vyber si předmět a téma —<br />Oli ti připraví cvičení na míru.
             </p>
-
             <div className="flex flex-wrap gap-2 mb-auto">
               {[
-                { icon: "+", label: "Matematika" },
-                { icon: "Aa", label: "Čeština" },
-                { icon: "✓", label: "Prvouka" },
+                { icon: "➕", label: "Matematika" },
+                { icon: "📖", label: "Čeština" },
+                { icon: "🌿", label: "Prvouka" },
               ].map((s) => (
                 <button key={s.label} onClick={onBrowseTopics}
                   className="flex items-center gap-1.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/25 transition-colors">
-                  <span className="text-xs opacity-75">{s.icon}</span>
+                  <span className="text-xs">{s.icon}</span>
                   {s.label}
                 </button>
               ))}
             </div>
-
             <button onClick={onBrowseTopics}
               className="mt-6 w-full rounded-2xl bg-white py-3.5 font-bold text-violet-700 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base shadow-md">
               Začít procvičovat <ArrowRight className="h-4 w-4" />
@@ -273,7 +290,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
           {/* MIDDLE: Úkoly od rodiče */}
           <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06] flex flex-col overflow-hidden">
-            <div className="px-4 py-3 border-b border-border/40 flex items-center gap-2">
+            <div className="px-4 py-3.5 border-b border-border/40 flex items-center gap-2">
               <span className="text-rose-500 text-base">❤️</span>
               <h2 className="font-bold text-foreground text-sm flex-1">Úkoly od rodiče</h2>
               {assignments.length > 0 && (
@@ -283,32 +300,40 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               )}
             </div>
 
-            <div className="flex-1 p-3 space-y-2.5 overflow-y-auto">
+            <div className="flex-1 p-3 space-y-3 overflow-y-auto">
               {assignments.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-8">Žádné úkoly 🎉</p>
               ) : (
                 assignments.map((a) => {
                   const isOverdue = a.due_date && new Date(a.due_date + "T00:00:00") < new Date();
+                  const subjectColor = SUBJECT_COLOR[a.subject] ?? "bg-slate-100 text-slate-600";
+                  const subjectLabel = SUBJECT_LABEL[a.subject];
+                  const subjectEmoji = SUBJECT_EMOJI[a.subject] ?? "📋";
+                  const assignedFormatted = formatDate(a.assigned_date.slice(0, 10));
                   return (
-                    <div key={a.id} className="rounded-xl border border-border/50 bg-secondary/20 p-3 space-y-2.5">
-                      <div className="flex items-start gap-2.5">
-                        <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-100 text-lg shrink-0">
-                          {SUBJECT_EMOJI[a.subject] || "📋"}
+                    <div key={a.id} className="rounded-xl border border-border/40 bg-slate-50/60 p-3.5 space-y-3">
+                      {/* Předmět badge */}
+                      {subjectLabel && (
+                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${subjectColor}`}>
+                          {subjectEmoji} {subjectLabel}
                         </span>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-sm text-foreground leading-tight">{a.skillName}</p>
-                          {a.note && <p className="text-[11px] text-muted-foreground mt-0.5 truncate">{a.note}</p>}
+                      )}
+                      {/* Název */}
+                      <p className="font-bold text-sm text-foreground leading-snug">{a.skillName}</p>
+                      {/* Meta info */}
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+                          <Calendar className="h-3 w-3 shrink-0" />
+                          Zadáno {assignedFormatted}
                           {a.due_date && (
-                            <div className="flex items-center gap-1.5 mt-1">
-                              <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
-                                <Calendar className="h-2.5 w-2.5" /> do {formatDueDate(a.due_date)}
-                              </span>
-                              {isOverdue && (
-                                <span className="rounded-full bg-rose-100 text-rose-700 text-[9px] font-bold px-1.5 py-0.5">naléhavé</span>
-                              )}
-                            </div>
+                            <span className={`ml-1 rounded-full px-1.5 py-0.5 text-[9px] font-bold ${isOverdue ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"}`}>
+                              do {formatDueDate(a.due_date)}
+                            </span>
                           )}
-                        </div>
+                        </span>
+                        {a.note && (
+                          <span className="text-[11px] text-muted-foreground italic">„{a.note}"</span>
+                        )}
                       </div>
                       <button
                         onClick={() => handleStartAssignment(a)}
@@ -326,7 +351,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
           {/* RIGHT: Co jsi procvičoval */}
           <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06] flex flex-col overflow-hidden">
-            <div className="px-4 py-3 border-b border-border/40 flex items-start gap-2">
+            <div className="px-4 py-3.5 border-b border-border/40 flex items-start gap-2">
               <span className="text-blue-500 text-base mt-0.5">ℹ️</span>
               <div>
                 <h2 className="font-bold text-foreground text-sm">Co jsi procvičoval</h2>
@@ -334,36 +359,47 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               </div>
             </div>
 
-            <div className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+            <div className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
               {stats.loading ? null : stats.skills.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-8">Ještě nic — pojď začít! 🚀</p>
               ) : (
                 stats.skills.map((s) => {
-                  const sAcc = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
+                  const correct = s.correct ?? 0;
+                  const wrong = s.attempts - correct;
+                  const sAcc = s.attempts > 0 ? Math.round((correct / s.attempts) * 100) : 0;
                   let barColor = "bg-emerald-500";
                   let badgeText = "skvěle";
                   let badgeCls = "bg-emerald-100 text-emerald-700";
-                  if (s.attempts < 2) { barColor = "bg-slate-400"; badgeText = "začínáš"; badgeCls = "bg-slate-100 text-slate-600"; }
+                  if (s.attempts < 2) { barColor = "bg-slate-300"; badgeText = "začínáš"; badgeCls = "bg-slate-100 text-slate-600"; }
                   else if (sAcc < 50) { barColor = "bg-amber-500"; badgeText = "trénovat"; badgeCls = "bg-amber-100 text-amber-700"; }
                   else if (sAcc < 80) { barColor = "bg-sky-500"; badgeText = "dobře"; badgeCls = "bg-sky-100 text-sky-700"; }
 
                   return (
-                    <div key={s.skillId} className="flex items-center gap-2.5 py-2 border-b border-border/30 last:border-0">
-                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary text-base shrink-0">
-                        {getSkillIcon(s.skillId)}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-1 mb-1.5">
-                          <p className="font-semibold text-xs text-foreground truncate leading-tight">
-                            {getReadableSkillName(s.skillId)}
-                          </p>
-                          <span className={`text-[9px] font-bold rounded-full px-1.5 py-0.5 shrink-0 ${badgeCls}`}>
-                            {badgeText}
-                          </span>
+                    <div key={s.skillId} className="py-3 border-b border-border/30 last:border-0">
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary text-base shrink-0">
+                          {getSkillIcon(s.skillId)}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1">
+                            <p className="font-semibold text-xs text-foreground truncate leading-tight">
+                              {getReadableSkillName(s.skillId)}
+                            </p>
+                            <span className={`text-[9px] font-bold rounded-full px-1.5 py-0.5 shrink-0 ${badgeCls}`}>
+                              {badgeText}
+                            </span>
+                          </div>
                         </div>
-                        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                          <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${sAcc}%` }} />
-                        </div>
+                      </div>
+                      {/* Progress bar */}
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-1.5">
+                        <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${sAcc}%` }} />
+                      </div>
+                      {/* Správně / špatně */}
+                      <div className="flex items-center gap-2 text-[10px]">
+                        <span className="text-emerald-600 font-semibold">✓ {correct} správně</span>
+                        {wrong > 0 && <span className="text-rose-500 font-semibold">✗ {wrong} špatně</span>}
+                        <span className="text-muted-foreground ml-auto">{sAcc} %</span>
                       </div>
                     </div>
                   );
