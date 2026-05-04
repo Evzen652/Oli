@@ -24,7 +24,20 @@ export interface ChildStats {
   loading: boolean;
 }
 
-export function useChildStats(childId: string | null): ChildStats {
+export type StatsPeriod = "today" | "7d" | "30d" | "all";
+
+function periodSince(period: StatsPeriod): string | null {
+  if (period === "all") return null;
+  if (period === "today") {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d.toISOString();
+  }
+  const days = period === "7d" ? 7 : 30;
+  return new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+}
+
+export function useChildStats(childId: string | null, period: StatsPeriod = "7d"): ChildStats {
   const [stats, setStats] = useState<ChildStats>({
     sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: true,
   });
@@ -36,14 +49,15 @@ export function useChildStats(childId: string | null): ChildStats {
     }
 
     let cancelled = false;
-    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const since = periodSince(period);
 
     (async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("session_logs")
         .select("session_id, skill_id, correct, help_used, created_at")
-        .eq("child_id", childId)
-        .gte("created_at", weekAgo);
+        .eq("child_id", childId);
+      if (since) query = query.gte("created_at", since);
+      const { data, error } = await query;
 
       if (cancelled) return;
 
@@ -82,7 +96,7 @@ export function useChildStats(childId: string | null): ChildStats {
     })();
 
     return () => { cancelled = true; };
-  }, [childId]);
+  }, [childId, period]);
 
   return stats;
 }

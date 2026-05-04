@@ -3,15 +3,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { getTopicById } from "@/lib/contentRegistry";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
-import { useChildStats } from "@/hooks/useChildStats";
+import { useChildStats, type StatsPeriod } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Calendar, Link2 } from "lucide-react";
+import { ArrowRight, Calendar, ChevronDown, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { logoNoText } from "@/components/OlyLogo";
 import { IllustrationImg } from "@/components/IllustrationImg";
+import { toGreeting } from "@/lib/czechNames";
 
 interface Assignment {
   id: string;
@@ -24,29 +25,6 @@ interface Assignment {
   topic?: TopicMetadata;
 }
 
-const SUBJECT_EMOJI: Record<string, string> = {
-  matematika: "➕",
-  čeština: "📖",
-  prvouka: "🌿",
-  přírodověda: "🔬",
-  vlastivěda: "🗺️",
-};
-
-const SUBJECT_LABEL: Record<string, string> = {
-  matematika: "Matematika",
-  čeština: "Čeština",
-  prvouka: "Prvouka",
-  přírodověda: "Přírodověda",
-  vlastivěda: "Vlastivěda",
-};
-
-const SUBJECT_COLOR: Record<string, string> = {
-  matematika: "bg-blue-100 text-blue-700",
-  čeština: "bg-purple-100 text-purple-700",
-  prvouka: "bg-green-100 text-green-700",
-  přírodověda: "bg-teal-100 text-teal-700",
-  vlastivěda: "bg-orange-100 text-orange-700",
-};
 
 // ── Pairing code ──────────────────────────────────────────────────────────────
 
@@ -146,7 +124,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   const [isPaired, setIsPaired] = useState(false);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
-  const stats = useChildStats(childId);
+  const [statsPeriod, setStatsPeriod] = useState<StatsPeriod>("7d");
+  const stats = useChildStats(childId, statsPeriod);
 
   useEffect(() => {
     (async () => {
@@ -245,7 +224,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="font-bold text-lg text-foreground leading-tight">
-              Ahoj, {childName || "žáku"}!
+              Ahoj, {childName ? toGreeting(childName) : "kamaráde"}!
             </h1>
             <p className="text-sm text-muted-foreground">Pojď si procvičit. Vyber, co tě baví.</p>
           </div>
@@ -323,33 +302,21 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               ) : (
                 assignments.map((a) => {
                   const isOverdue = a.due_date && new Date(a.due_date + "T00:00:00") < new Date();
-                  const subjectColor = SUBJECT_COLOR[a.subject] ?? "bg-slate-100 text-slate-600";
-                  const subjectLabel = SUBJECT_LABEL[a.subject];
-                  const subjectEmoji = SUBJECT_EMOJI[a.subject] ?? "📋";
                   const assignedFormatted = formatDate(a.assigned_date.slice(0, 10));
+                  const subjMeta = a.subject ? getSubjectMeta(a.subject) : null;
+                  const breadcrumb = [
+                    subjMeta?.label,
+                    a.topic?.category,
+                    (a.topic as any)?.topic && (a.topic as any).topic !== a.skillName ? (a.topic as any).topic : null,
+                  ].filter(Boolean).join(" · ");
                   return (
-                    <div key={a.id} className="rounded-xl border border-border/40 bg-slate-50/60 p-3.5 space-y-3">
-                      {/* Předmět + okruh */}
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {subjectLabel && (
-                          <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${subjectColor}`}>
-                            {subjectEmoji} {subjectLabel}
-                          </span>
-                        )}
-                        {a.topic?.category && (
-                          <span className="text-[10px] text-muted-foreground font-medium">
-                            {a.topic.category}
-                          </span>
-                        )}
-                      </div>
-                      {/* Název */}
-                      <p className="font-bold text-sm text-foreground leading-snug">{a.skillName}</p>
-                      {/* Téma (pokud se liší od názvu) */}
-                      {a.topic?.topic && a.topic.topic !== a.skillName && (
-                        <p className="text-[11px] text-muted-foreground leading-snug -mt-2">{a.topic.topic}</p>
-                      )}
-                      {/* Meta info */}
-                      <div className="flex flex-col gap-1">
+                    <div key={a.id} className="rounded-xl border border-border/40 bg-slate-50/60 p-3 space-y-2">
+                      <SkillHeader
+                        subjMeta={subjMeta}
+                        breadcrumb={breadcrumb}
+                        skillName={a.skillName}
+                      />
+                      <div className="flex flex-col gap-1 pt-0.5">
                         <span className="text-[11px] text-muted-foreground flex items-center gap-1">
                           <Calendar className="h-3 w-3 shrink-0" />
                           Zadáno {assignedFormatted}
@@ -359,9 +326,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                             </span>
                           )}
                         </span>
-                        {a.note && (
-                          <span className="text-[11px] text-muted-foreground italic">„{a.note}"</span>
-                        )}
+                        {a.note && <span className="text-[11px] text-muted-foreground italic">„{a.note}"</span>}
                       </div>
                       <button
                         onClick={() => handleStartAssignment(a)}
@@ -383,7 +348,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               <span className="text-blue-500 text-base mt-0.5">ℹ️</span>
               <div>
                 <h2 className="font-bold text-foreground text-sm">Co jsi procvičoval</h2>
-                <p className="text-[11px] text-muted-foreground">Posledních 7 dní</p>
+                <PeriodSelect value={statsPeriod} onChange={setStatsPeriod} />
               </div>
             </div>
 
@@ -402,28 +367,31 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   else if (sAcc < 50) { barColor = "bg-amber-500"; badgeText = "trénovat"; badgeCls = "bg-amber-100 text-amber-700"; }
                   else if (sAcc < 80) { barColor = "bg-sky-500"; badgeText = "dobře"; badgeCls = "bg-sky-100 text-sky-700"; }
 
+                  const topic = getTopicById(s.skillId);
+                  const subjMeta = topic ? getSubjectMeta(topic.subject) : null;
+                  const breadcrumb = [
+                    subjMeta?.label,
+                    topic?.category,
+                    topic?.topic && topic.topic !== getReadableSkillName(s.skillId) ? topic.topic : null,
+                  ].filter(Boolean).join(" · ");
+
                   return (
-                    <div key={s.skillId} className="py-3 border-b border-border/30 last:border-0">
-                      <div className="flex items-center gap-2.5 mb-2">
-                        <span className="grid h-8 w-8 place-items-center rounded-lg bg-secondary text-base shrink-0">
-                          {getSkillIcon(s.skillId)}
-                        </span>
+                    <div key={s.skillId} className="py-3 border-b border-border/30 last:border-0 space-y-2">
+                      <div className="flex items-start gap-2">
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-1">
-                            <p className="font-semibold text-xs text-foreground truncate leading-tight">
-                              {getReadableSkillName(s.skillId)}
-                            </p>
-                            <span className={`text-[9px] font-bold rounded-full px-1.5 py-0.5 shrink-0 ${badgeCls}`}>
-                              {badgeText}
-                            </span>
-                          </div>
+                          <SkillHeader
+                            subjMeta={subjMeta}
+                            breadcrumb={breadcrumb}
+                            skillName={getReadableSkillName(s.skillId)}
+                          />
                         </div>
+                        <span className={`text-[9px] font-bold rounded-full px-1.5 py-0.5 shrink-0 mt-0.5 ${badgeCls}`}>
+                          {badgeText}
+                        </span>
                       </div>
-                      {/* Progress bar */}
-                      <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-1.5">
+                      <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                         <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${sAcc}%` }} />
                       </div>
-                      {/* Správně / špatně */}
                       <div className="flex items-center gap-2 text-[10px]">
                         <span className="text-emerald-600 font-semibold">✓ {correct} správně</span>
                         {wrong > 0 && <span className="text-rose-500 font-semibold">✗ {wrong} špatně</span>}
@@ -454,6 +422,79 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+const PERIOD_OPTIONS: { value: StatsPeriod; label: string }[] = [
+  { value: "today", label: "Dnes" },
+  { value: "7d",    label: "Posledních 7 dní" },
+  { value: "30d",   label: "Poslední měsíc" },
+  { value: "all",   label: "Od začátku" },
+];
+
+function PeriodSelect({ value, onChange }: { value: StatsPeriod; onChange: (v: StatsPeriod) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const label = PERIOD_OPTIONS.find(o => o.value === value)?.label ?? "";
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium hover:text-foreground transition-colors"
+      >
+        {label}
+        <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[150px] rounded-xl border border-border/50 bg-white shadow-lg py-1 overflow-hidden">
+          {PERIOD_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              className={`w-full text-left px-3.5 py-2 text-xs transition-colors ${
+                opt.value === value
+                  ? "bg-blue-50 text-blue-600 font-semibold"
+                  : "text-foreground hover:bg-slate-50"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SkillHeader({ subjMeta, breadcrumb, skillName }: {
+  subjMeta: ReturnType<typeof getSubjectMeta> | null;
+  breadcrumb: string;
+  skillName: string;
+}) {
+  return (
+    <div className="flex items-start gap-2">
+      <div className="shrink-0 h-9 w-9 rounded-lg bg-slate-100 flex items-center justify-center">
+        {subjMeta
+          ? <IllustrationImg src={subjMeta.image} className="h-7 w-7 object-contain" fallback={<span className="text-base">{subjMeta.emoji}</span>} />
+          : <span className="text-base">📋</span>}
+      </div>
+      <div className="flex-1 min-w-0">
+        {breadcrumb && (
+          <p className="text-[10px] text-muted-foreground leading-tight mb-0.5 truncate">{breadcrumb}</p>
+        )}
+        <p className="font-bold text-sm text-foreground leading-snug">{skillName}</p>
+      </div>
+    </div>
+  );
+}
 
 function StatPill({ emoji, main, sub, cls }: { emoji: string; main: string; sub: string; cls: string }) {
   return (
