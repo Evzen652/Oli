@@ -1,6 +1,32 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { decode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
+import { Image } from "https://deno.land/x/imagescript@1.2.15/mod.ts";
+
+/** Odstraní bílé/světlé pozadí z PNG — vrátí průhledné PNG bytes. */
+async function dewhiteBackground(imageBytes: Uint8Array, threshold = 245): Promise<Uint8Array> {
+  try {
+    const img = await Image.decode(imageBytes);
+    const fade = threshold - 35;
+    for (let y = 1; y <= img.height; y++) {
+      for (let x = 1; x <= img.width; x++) {
+        const pixel = img.getPixelAt(x, y);
+        const r = (pixel >> 24) & 0xff;
+        const g = (pixel >> 16) & 0xff;
+        const b = (pixel >> 8) & 0xff;
+        const brightness = (r + g + b) / 3;
+        let alpha = (pixel) & 0xff;
+        if (brightness > threshold) { alpha = 0; }
+        else if (brightness > fade) { alpha = Math.round((threshold - brightness) * (255 / (threshold - fade))); }
+        img.setPixelAt(x, y, Image.rgbaToColor(r, g, b, alpha));
+      }
+    }
+    return await img.encode(0); // 0 = PNG
+  } catch (e) {
+    console.warn("dewhiteBackground failed, using original:", e);
+    return imageBytes;
+  }
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -255,15 +281,18 @@ serve(async (req) => {
 
         console.log(`Generating image for: ${key}`);
 
-        const { base64, contentType } = await generateImage(prompt);
-        const imageBytes = decode(base64);
+        const { base64 } = await generateImage(prompt);
+        const rawBytes = decode(base64);
+
+        // Odstraní bílé pozadí → průhledné PNG
+        const imageBytes = await dewhiteBackground(rawBytes);
 
         // Always save as .png — imageUrl() in prvoukaVisuals defaults to .png
         const filePath = `${key}.png`;
         const { error: uploadError } = await supabase.storage
           .from("prvouka-images")
           .upload(filePath, imageBytes, {
-            contentType,
+            contentType: "image/png",
             upsert: true,
           });
 
