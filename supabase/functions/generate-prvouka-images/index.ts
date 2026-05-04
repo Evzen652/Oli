@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 // Flux zvládá vizuální scény — NO text, NO numbers in image, pure visual metaphors
-const SUFFIX = ", cute 3D Pixar-style cartoon illustration, soft volumetric shading, vibrant pastel colors, friendly rounded shapes, isolated on plain white studio background, no shadows on background, suitable for 8-year-old children, single centered subject, square composition";
+const SUFFIX = ", cute 3D Pixar-style cartoon illustration, soft volumetric shading, vibrant pastel colors, friendly rounded shapes, isolated on pure solid white background (#FFFFFF), absolutely no gradients on background, no blue tint, no colored tint, no shadows on background, background must be pure white RGB 255 255 255, suitable for 8-year-old children, single centered subject, square composition";
 
 function p(desc: string) { return `Cute 3D rendered cartoon illustration of ${desc}${SUFFIX}`; }
 const concept = p;
@@ -184,6 +184,30 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const body = await req.json().catch(() => ({}));
+
+    // ── save-image action: uloží base64 obrázek přímo do storage (service role) ──
+    if (body.action === "save-image") {
+      const { key, base64, contentType = "image/png" } = body;
+      if (!key || !base64) {
+        return new Response(JSON.stringify({ error: "Missing key or base64" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const bytes = decode(base64);
+      const { error: uploadErr } = await supabase.storage
+        .from("prvouka-images")
+        .upload(`${key}.png`, bytes, { contentType, upsert: true });
+      if (uploadErr) {
+        return new Response(JSON.stringify({ error: uploadErr.message }), {
+          status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data: urlData } = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`);
+      return new Response(JSON.stringify({ url: urlData.publicUrl }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const requestedKeys: string[] = body.keys ?? Object.keys(IMAGE_KEYS);
     const force: boolean = body.force === true;
     const customPrompts: Record<string, string> = body.customPrompts ?? {};

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { IllustrationImg } from "@/components/IllustrationImg";
 import { useImageVersions } from "@/lib/imageVersions";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -949,38 +950,20 @@ function ImageOrEmoji({
 }: {
   imageUrl: string | null;
   emoji?: string | null;
-  /** xl = pro admin grid karty (h-28), lg/md/sm = list/sidebar */
   size?: "xl" | "lg" | "md" | "sm";
 }) {
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const versioned = useImageVersions();
-  const sizes = {
-    xl: "w-28 h-28",
-    lg: "w-14 h-14",
-    md: "w-12 h-12",
-    sm: "w-10 h-10",
-  };
-  const emojiSizes = {
-    xl: "text-6xl",
-    lg: "text-3xl",
-    md: "text-2xl",
-    sm: "text-xl",
-  };
+  const sizes = { xl: "w-28 h-28", lg: "w-14 h-14", md: "w-12 h-12", sm: "w-10 h-10" };
+  const emojiSizes = { xl: "text-6xl", lg: "text-3xl", md: "text-2xl", sm: "text-xl" };
 
   const storageKey = imageUrl?.match(/prvouka-images\/(.+?)\.png/)?.[1] ?? null;
   const src = storageKey && imageUrl ? versioned(imageUrl, storageKey) : imageUrl;
-  const hasFailed = src === failedUrl;
 
-  if (src && !hasFailed) {
-    return (
-      <img
-        src={src}
-        alt=""
-        className={`${sizes[size]} object-contain shrink-0 mix-blend-multiply brightness-[1.15] contrast-[1.1]`}
-        onError={() => setFailedUrl(src)}
-      />
-    );
-  }
-  if (emoji) return <span className={emojiSizes[size]} aria-hidden>{emoji}</span>;
-  return null;
+  return (
+    <IllustrationImg
+      src={src}
+      className={`${sizes[size]} object-contain shrink-0`}
+      fallback={emoji ? <span className={emojiSizes[size]} aria-hidden>{emoji}</span> : undefined}
+    />
+  );
 }

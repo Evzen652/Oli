@@ -22,7 +22,7 @@ export function LandingNav() {
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <OlyLogo size="sm" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
+        <OlyLogo size="xs" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
 
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (

@@ -1,14 +1,19 @@
 import { useState } from "react";
-import logoImg from "@/assets/oli-logo.png";
+import logoWithText from "@/assets/oli-logo-text.png";
+import logoNoText from "@/assets/oli-logo-notext.png";
+
+export { logoNoText };
 
 interface OlyLogoProps {
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
+  variant?: "text" | "notext";
   onClick?: () => void;
 }
 
-export function OlyLogo({ size = "md", onClick }: OlyLogoProps) {
-  const [imgError, setImgError] = useState(false);
-  const imgSize = size === "sm" ? "h-32" : "h-40";
+export function OlyLogo({ size = "md", variant = "text", onClick }: OlyLogoProps) {
+  const [failed, setFailed] = useState(false);
+  const imgSize = size === "xs" ? "h-14" : size === "sm" ? "h-20" : "h-32";
+  const src = variant === "notext" ? logoNoText : logoWithText;
 
   return (
     <button
@@ -16,12 +21,12 @@ export function OlyLogo({ size = "md", onClick }: OlyLogoProps) {
       className="flex items-center focus:outline-none hover:opacity-80 transition-opacity"
       aria-label="Oli – zpět na úvod"
     >
-      {!imgError ? (
+      {!failed ? (
         <img
-          src={logoImg}
+          src={src}
           alt="Oli"
           className={`${imgSize} object-contain mix-blend-multiply`}
-          onError={() => setImgError(true)}
+          onError={() => setFailed(true)}
           style={{ background: "transparent" }}
         />
       ) : (

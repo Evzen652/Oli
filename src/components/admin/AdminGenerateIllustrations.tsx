@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wand2, Zap, Pencil } from "lucide-react";
+import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wand2, Zap, Pencil, Sparkles, Check, X } from "lucide-react";
 import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageVersions";
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
@@ -209,6 +209,14 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const versioned = useImageVersions();
   const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
 
+  // ── Logo state ───────────────────────────────────────────────────────────────
+  const DEFAULT_LOGO_PROMPT = "a friendly chubby little owl mascot with big expressive round eyes, warm amber and orange feathers, wearing a small graduation cap tilted to one side, sitting upright with wings slightly open in a welcoming pose, smiling warmly";
+  const [logoPrompt, setLogoPrompt] = useState(DEFAULT_LOGO_PROMPT);
+  const [logoGenerating, setLogoGenerating] = useState(false);
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+  const [logoTextPreviewUrl, setLogoTextPreviewUrl] = useState<string | null>(null);
+  const [logoSaving, setLogoSaving] = useState(false);
+
   const loadImages = () => {
     setMissingKeys(new Set());
     setAllImages(
@@ -308,6 +316,150 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     toast({ description: `Hotovo: ${allOk.length} / ${keys.length}` });
   };
 
+  const buildLogoWithText = async (sourceUrl: string): Promise<string> => {
+    const resp = await fetch(sourceUrl);
+    const blob = await resp.blob();
+    const bmp = await createImageBitmap(blob);
+
+    // Canvas: 2:1 poměr — levá polovina sova, pravá polovina text
+    const H = 1024;
+    const W = 2048;
+    const canvas = document.createElement("canvas");
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d")!;
+
+    // Bílé pozadí
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, W, H);
+
+    // Sova — 85 % výšky, vycentrovaná v levé polovině
+    const owlSize = Math.round(H * 0.85);
+    const owlX = Math.round((W / 2 - owlSize) / 2);
+    const owlY = Math.round((H - owlSize) / 2);
+    ctx.drawImage(bmp, owlX, owlY, owlSize, owlSize);
+
+    // Text "Oli" — pravá polovina, vycentrovaný
+    const fontSize = Math.round(H * 0.46);
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "center";
+    const tx = W * 0.62;
+    const ty = H / 2;
+
+    // Stín
+    ctx.shadowColor = "rgba(0,0,0,0.18)";
+    ctx.shadowBlur = Math.round(fontSize * 0.08);
+    ctx.shadowOffsetX = Math.round(fontSize * 0.04);
+    ctx.shadowOffsetY = Math.round(fontSize * 0.05);
+
+    // Obrys (stroke) pro 3D dojem
+    ctx.font = `900 ${fontSize}px 'Nunito', 'Poppins', 'Fredoka One', system-ui, sans-serif`;
+    ctx.strokeStyle = "#c2410c";
+    ctx.lineWidth = Math.round(fontSize * 0.06);
+    ctx.lineJoin = "round";
+    ctx.strokeText("Oli", tx, ty);
+
+    // Výplň
+    ctx.fillStyle = "#F97316";
+    ctx.fillText("Oli", tx, ty);
+
+    // Reset stínu
+    ctx.shadowColor = "transparent";
+
+    // Vrátíme data URL přímo — nepotřebujeme upload pro náhled
+    return canvas.toDataURL("image/png");
+  };
+
+  // Uloží data URL blob do storage přes admin JWT (obchází RLS)
+  const uploadLogoBlob = async (dataUrl: string, key: string): Promise<void> => {
+    const base64 = dataUrl.split(",")[1];
+    const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+    const blob = new Blob([bytes], { type: "image/png" });
+    const { data: { session } } = await supabase.auth.getSession();
+    const jwt = session?.access_token;
+    if (!jwt) throw new Error("Nejsi přihlášen");
+    const url = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/prvouka-images/${key}.png`;
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${jwt}`,
+        "apikey": import.meta.env.VITE_SUPABASE_ANON_KEY,
+        "Content-Type": "image/png",
+        "x-upsert": "true",
+      },
+      body: blob,
+    });
+    if (!resp.ok) {
+      const msg = await resp.text().catch(() => resp.statusText);
+      throw new Error(msg);
+    }
+  };
+
+  const handleGenerateLogo = async () => {
+    setLogoGenerating(true);
+    setLogoPreviewUrl(null);
+    setLogoTextPreviewUrl(null);
+
+    const noTextPrompt = `${PROMPT_PREFIX} ${logoPrompt.trim()}${PROMPT_SUFFIX}`;
+    const { data, error } = await supabase.functions.invoke("generate-prvouka-images", {
+      body: { keys: ["app-logo-preview"], force: true, customPrompts: { "app-logo-preview": noTextPrompt } },
+    });
+
+    if (error || data?.errors?.["app-logo-preview"]) {
+      toast({ description: `Chyba: ${data?.errors?.["app-logo-preview"] ?? error?.message}`, variant: "destructive" });
+      setLogoGenerating(false);
+      return;
+    }
+
+    const v = Date.now();
+    const storageUrl = supabase.storage.from("prvouka-images").getPublicUrl("app-logo-preview.png").data.publicUrl;
+    const previewUrl = `${storageUrl}?v=${v}`;
+    setLogoPreviewUrl(previewUrl);
+
+    // Verze s textem — canvas overlay, data URL (bez uploadu)
+    try {
+      const dataUrl = await buildLogoWithText(previewUrl);
+      setLogoTextPreviewUrl(dataUrl);
+    } catch (e) {
+      toast({ description: `Chyba při sestavování verze s textem: ${e instanceof Error ? e.message : e}`, variant: "destructive" });
+    }
+
+    setLogoGenerating(false);
+  };
+
+  const handleConfirmLogo = async () => {
+    if (!logoPreviewUrl || !logoTextPreviewUrl) return;
+    setLogoSaving(true);
+
+    try {
+      // Bez textu — stáhnout preview ze storage a nahrát jako app-logo
+      const previewResp = await fetch(logoPreviewUrl);
+      if (!previewResp.ok) throw new Error("Nelze načíst náhled bez textu");
+      const previewBlob = await previewResp.blob();
+      const noTextDataUrl = await new Promise<string>((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result as string);
+        r.onerror = rej;
+        r.readAsDataURL(previewBlob);
+      });
+
+      await Promise.all([
+        uploadLogoBlob(noTextDataUrl, "app-logo"),
+        uploadLogoBlob(logoTextPreviewUrl, "app-logo-text"),
+      ]);
+
+      bumpImageVersion("app-logo");
+      bumpImageVersion("app-logo-text");
+      setLogoPreviewUrl(null);
+      setLogoTextPreviewUrl(null);
+      toast({ description: "✓ Obě verze loga uloženy" });
+    } catch (e) {
+      toast({ description: `Chyba: ${e instanceof Error ? e.message : e}`, variant: "destructive" });
+    }
+
+    setLogoSaving(false);
+  };
+
   const handleGenerateMissing = () => runBatch(missingFiltered.map((i) => i.key), false);
 
   const handleRegenerateAll = () => {
@@ -388,6 +540,70 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             </span>
           </SheetTitle>
         </SheetHeader>
+
+        {/* ── Logo sekce ── */}
+        <div className="mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <h3 className="font-semibold text-sm">Logo aplikace</h3>
+          </div>
+
+          {!logoPreviewUrl && !logoTextPreviewUrl ? (
+            <>
+              <Textarea
+                rows={3}
+                value={logoPrompt}
+                onChange={(e) => setLogoPrompt(e.target.value)}
+                className="resize-none text-xs"
+                placeholder="Popiš, jak má logo vypadat…"
+              />
+              <p className="text-[10px] text-muted-foreground italic">
+                Bude obaleno: „{PROMPT_PREFIX} … {PROMPT_SUFFIX.slice(0, 40)}…"
+              </p>
+              <Button
+                size="sm"
+                disabled={logoGenerating || !logoPrompt.trim()}
+                onClick={handleGenerateLogo}
+                className="gap-1.5 w-full"
+              >
+                {logoGenerating
+                  ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generuji náhled…</>
+                  : <><Wand2 className="h-3.5 w-3.5" /> Generovat náhled</>}
+              </Button>
+            </>
+          ) : (
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                {logoPreviewUrl && (
+                  <div className="text-center space-y-1">
+                    <img src={logoPreviewUrl} alt="Bez textu" className="h-24 w-24 mx-auto object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply" />
+                    <p className="text-[10px] text-muted-foreground font-medium">Bez textu</p>
+                  </div>
+                )}
+                {logoTextPreviewUrl && (
+                  <div className="text-center space-y-1">
+                    <img src={logoTextPreviewUrl} alt="S textem Oli" className="h-24 w-24 mx-auto object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply" />
+                    <p className="text-[10px] text-muted-foreground font-medium">S textem „Oli"</p>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">Zkontroluj oba náhledy a potvrď, nebo vygeneruj znovu.</p>
+              <div className="flex gap-2">
+                <Button size="sm" disabled={logoSaving} onClick={handleConfirmLogo} className="gap-1.5 flex-1">
+                  {logoSaving
+                    ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Ukládám…</>
+                    : <><Check className="h-3.5 w-3.5" /> Potvrdit a uložit obě</>}
+                </Button>
+                <Button size="sm" variant="outline" disabled={logoSaving}
+                  onClick={() => { setLogoPreviewUrl(null); setLogoTextPreviewUrl(null); }}
+                  className="gap-1.5"
+                >
+                  <X className="h-3.5 w-3.5" /> Zkusit znovu
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* ── Filters ── */}
         <div className="mt-5 space-y-2">

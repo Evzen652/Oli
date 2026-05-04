@@ -9,6 +9,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
+import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { logoNoText } from "@/components/OlyLogo";
+import { IllustrationImg } from "@/components/IllustrationImg";
 
 interface Assignment {
   id: string;
@@ -180,20 +183,31 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         if (topic) topicMap[sid] = topic; else needDbLookup.push(sid);
       }
 
-      let dbNameMap: Record<string, { name: string }> = {};
+      let dbNameMap: Record<string, { name: string; subject: string; category: string }> = {};
       if (needDbLookup.length > 0) {
         const { data: skills } = await supabase.from("curriculum_skills")
-          .select("code_skill_id, name, topic_id").in("code_skill_id", needDbLookup);
-        if (skills) for (const sk of skills) dbNameMap[sk.code_skill_id] = { name: sk.name };
+          .select("code_skill_id, name, curriculum_topics(name, curriculum_categories(name, curriculum_subjects(slug, name)))")
+          .in("code_skill_id", needDbLookup);
+        if (skills) for (const sk of skills) {
+          const cat = (sk.curriculum_topics as any)?.curriculum_categories;
+          const subj = cat?.curriculum_subjects;
+          dbNameMap[sk.code_skill_id] = {
+            name: sk.name,
+            subject: subj?.slug ?? "",
+            category: cat?.name ?? "",
+          };
+        }
       }
 
       setAssignments(rawAssignments.map(a => {
         const topic = topicMap[a.skill_id];
+        const db = dbNameMap[a.skill_id];
         return {
           id: a.id, skill_id: a.skill_id, note: a.note, due_date: a.due_date,
           assigned_date: a.assigned_date,
-          skillName: topic?.title ?? dbNameMap[a.skill_id]?.name ?? a.skill_id,
-          subject: topic?.subject ?? "", topic,
+          skillName: topic?.title ?? db?.name ?? a.skill_id,
+          subject: topic?.subject ?? db?.subject ?? "",
+          topic: topic ?? (db ? { category: db.category } as any : undefined),
         };
       }));
       setLoading(false);
@@ -226,8 +240,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
         {/* ── Greeting bar ── */}
         <div className="bg-white rounded-2xl px-4 py-3 flex flex-wrap items-center gap-3 shadow-sm border border-black/[0.06]">
-          <div className="h-11 w-11 rounded-full bg-amber-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
-            🦉
+          <div className="h-11 w-11 flex items-center justify-center shrink-0">
+            <img src={logoNoText} alt="Oli" className="h-10 w-10 object-contain" />
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="font-bold text-lg text-foreground leading-tight">
@@ -270,17 +284,20 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               Vyber si předmět a téma —<br />Oli ti připraví cvičení na míru.
             </p>
             <div className="flex flex-wrap gap-2 mb-auto">
-              {[
-                { icon: "➕", label: "Matematika" },
-                { icon: "📖", label: "Čeština" },
-                { icon: "🌿", label: "Prvouka" },
-              ].map((s) => (
-                <button key={s.label} onClick={onBrowseTopics}
-                  className="flex items-center gap-1.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-sm font-semibold text-white hover:bg-white/25 transition-colors">
-                  <span className="text-xs">{s.icon}</span>
-                  {s.label}
-                </button>
-              ))}
+              {["matematika", "čeština", "prvouka"].map((subj) => {
+                const meta = getSubjectMeta(subj);
+                return (
+                  <button key={subj} onClick={onBrowseTopics}
+                    className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-white/90 transition-colors shadow-sm">
+                    <IllustrationImg
+                      src={meta.image}
+                      className="h-7 w-7 object-contain"
+                      fallback={<span className="text-sm">{meta.emoji}</span>}
+                    />
+                    {meta.label}
+                  </button>
+                );
+              })}
             </div>
             <button onClick={onBrowseTopics}
               className="mt-6 w-full rounded-2xl bg-white py-3.5 font-bold text-violet-700 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base shadow-md">
@@ -312,14 +329,25 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   const assignedFormatted = formatDate(a.assigned_date.slice(0, 10));
                   return (
                     <div key={a.id} className="rounded-xl border border-border/40 bg-slate-50/60 p-3.5 space-y-3">
-                      {/* Předmět badge */}
-                      {subjectLabel && (
-                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${subjectColor}`}>
-                          {subjectEmoji} {subjectLabel}
-                        </span>
-                      )}
+                      {/* Předmět + okruh */}
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {subjectLabel && (
+                          <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${subjectColor}`}>
+                            {subjectEmoji} {subjectLabel}
+                          </span>
+                        )}
+                        {a.topic?.category && (
+                          <span className="text-[10px] text-muted-foreground font-medium">
+                            {a.topic.category}
+                          </span>
+                        )}
+                      </div>
                       {/* Název */}
                       <p className="font-bold text-sm text-foreground leading-snug">{a.skillName}</p>
+                      {/* Téma (pokud se liší od názvu) */}
+                      {a.topic?.topic && a.topic.topic !== a.skillName && (
+                        <p className="text-[11px] text-muted-foreground leading-snug -mt-2">{a.topic.topic}</p>
+                      )}
                       {/* Meta info */}
                       <div className="flex flex-col gap-1">
                         <span className="text-[11px] text-muted-foreground flex items-center gap-1">
@@ -411,7 +439,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
         {/* ── Tip dne ── */}
         <div className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm border border-black/[0.06]">
-          <div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-xl shrink-0">🦉</div>
+          <div className="h-10 w-10 flex items-center justify-center shrink-0">
+            <img src={logoNoText} alt="Oli" className="h-10 w-10 object-contain" />
+          </div>
           <div>
             <p className="text-[11px] font-bold text-orange-500 mb-0.5">Tip dne</p>
             <p className="font-semibold text-sm text-foreground">Chyba není problém — tak se učíš.</p>

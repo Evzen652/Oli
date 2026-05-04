@@ -259,8 +259,8 @@ export default function ParentDashboard() {
 
         {loading && <p className="text-muted-foreground text-center py-8">{t("loading")}</p>}
 
-        {/* 2-column grid karet dětí — desktop, 1-col mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        {/* 2-column grid karet dětí — desktop, 1-col mobile; 1 dítě = vycentrováno */}
+        <div className={children.length === 1 ? "max-w-xl mx-auto w-full" : "grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"}>
         {loading && <p className="text-muted-foreground text-center py-8">{t("loading")}</p>}
 
         {children.map((child, idx) => (

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { IllustrationImg } from "@/components/IllustrationImg";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { getTopicsForGrade, getAllTopics } from "@/lib/contentRegistry";
 import { getCategoryInfo } from "@/lib/categoryInfo";
@@ -650,29 +651,18 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
 const IMG_SIZES = { hero: "w-48 h-48 sm:w-56 sm:h-56", lg: "w-20 h-20", md: "w-16 h-16", sm: "w-12 h-12" };
 const EMOJI_SIZES = { hero: "text-9xl", lg: "text-4xl", md: "text-3xl", sm: "text-2xl" };
 function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: string | null; fallbackEmoji?: string | null; size?: "hero" | "lg" | "md" | "sm" }) {
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const versioned = useImageVersions();
 
   const storageKey = imageUrl?.match(/prvouka-images\/(.+?)\.png/)?.[1] ?? null;
   const src = storageKey && imageUrl ? versioned(imageUrl, storageKey) : imageUrl;
-  const hasFailed = src === failedUrl;
 
-  if (src && !hasFailed) {
-    return (
-      <img
-        src={src}
-        alt=""
-        className={`${IMG_SIZES[size]} object-contain shrink-0 mix-blend-multiply brightness-[1.15] contrast-[1.1]`}
-        onError={() => setFailedUrl(src)}
-      />
-    );
-  }
-
-  if (fallbackEmoji) {
-    return <span className={EMOJI_SIZES[size]}>{fallbackEmoji}</span>;
-  }
-
-  return null;
+  return (
+    <IllustrationImg
+      src={src}
+      className={`${IMG_SIZES[size]} object-contain shrink-0`}
+      fallback={fallbackEmoji ? <span className={EMOJI_SIZES[size]}>{fallbackEmoji}</span> : undefined}
+    />
+  );
 }
 
 // ── Extracted dialog components ─────────────────────────────

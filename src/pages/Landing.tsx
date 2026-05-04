@@ -15,7 +15,7 @@ const si = (key: string) => `${S}/${key}.png`;
 const imgPisemka     = si("subject-cestina");
 const imgDiktat      = si("topic-cz-diktat");
 const imgZlomky      = si("topic-math-odcitani-zlomku");
-const imgProcvicovani = si("topic-rocni-obdobi-a-pocasi");
+const imgProcvicovani = si("topic-zvirata");
 const imgRodina      = si("topic-rodina-a-spolecnost");
 const imgZdraviHygiena = si("topic-zdravi-a-hygiena");
 const imgRocniObdobi = si("topic-rocni-obdobi-a-pocasi");
@@ -69,7 +69,7 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
 }
 
 /* ── page ── */
-function DewhiteImg({ src, alt, className, style }: { src: string; alt: string; className?: string; style?: React.CSSProperties }) {
+function DewhiteImg({ src, alt, className, style, threshold = 245 }: { src: string; alt: string; className?: string; style?: React.CSSProperties; threshold?: number }) {
   const [out, setOut] = useState(src);
   useEffect(() => {
     const img = new Image();
@@ -83,17 +83,18 @@ function DewhiteImg({ src, alt, className, style }: { src: string; alt: string; 
       try {
         const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const px = d.data;
+        const fade = threshold - 35;
         for (let i = 0; i < px.length; i += 4) {
           const brightness = (px[i] + px[i + 1] + px[i + 2]) / 3;
-          if (brightness > 245) { px[i + 3] = 0; }
-          else if (brightness > 210) { px[i + 3] = Math.round((255 - brightness) * (255 / 45)); }
+          if (brightness > threshold) { px[i + 3] = 0; }
+          else if (brightness > fade) { px[i + 3] = Math.round((threshold - brightness) * (255 / (threshold - fade))); }
         }
         ctx.putImageData(d, 0, 0);
         setOut(canvas.toDataURL("image/png"));
       } catch { /* tainted canvas – show original */ }
     };
     img.src = src;
-  }, [src]);
+  }, [src, threshold]);
   return <img src={out} alt={alt} className={className} style={style} />;
 }
 
@@ -137,6 +138,7 @@ export default function Landing() {
                   bg: "linear-gradient(135deg, #EAF2FF 0%, #DBEAFE 100%)",
                   border: "border-blue-200/60",
                   rotate: "-rotate-1",
+                  threshold: 220,
                 },
                 {
                   title: "Diktát",
@@ -155,6 +157,7 @@ export default function Landing() {
                   border: "border-teal-200/60",
                   rotate: "rotate-1",
                   mt: "-mt-2",
+                  imgClass: "h-44 w-44",
                 },
                 {
                   title: "Každodenní procvičování",
@@ -176,7 +179,8 @@ export default function Landing() {
                     <DewhiteImg
                       src={tile.img}
                       alt={tile.title}
-                      className="h-28 w-28 object-contain group-hover:scale-115 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg"
+                      className={`${tile.imgClass ?? "h-36 w-36"} object-contain group-hover:scale-115 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg`}
+                      threshold={tile.threshold}
                     />
                   </div>
                   {/* Text */}
