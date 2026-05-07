@@ -88,6 +88,7 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
   // Load curriculum hierarchy when open
   useEffect(() => {
     if (!open) return;
+    let cancelled = false;
     (async () => {
       const [subRes, catRes, topRes, skillRes] = await Promise.all([
         (supabase as any).from("curriculum_subjects").select("id, name").order("sort_order"),
@@ -101,7 +102,8 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
           .eq("is_active", true)
           .order("sort_order"),
       ]);
-      setSubjects(subRes.data || []);
+
+      if (cancelled) return;
 
       // Enrich categories / topics / skills with parent ids for cascading
       const catsRaw = catRes.data || [];
@@ -131,6 +133,7 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
         subject_id: catToSub[topToCat[s.topic_id]],
       })));
     })();
+    return () => { cancelled = true; };
   }, [open, grade]);
 
   // Reset child filters when parent changes

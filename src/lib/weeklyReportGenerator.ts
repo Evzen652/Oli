@@ -94,7 +94,9 @@ export async function generateWeeklyReport(
   const rangeDays = RANGE_DAYS[range];
   let query = supabase
     .from("session_logs")
-    .select("session_id, skill_id, correct, help_used, error_type, created_at");
+    .select("session_id, skill_id, correct, help_used, error_type, created_at")
+    .order("created_at", { ascending: false })
+    .limit(2000);
   if (rangeDays !== null) {
     const since = new Date(Date.now() - rangeDays * 24 * 60 * 60 * 1000).toISOString();
     query = query.gte("created_at", since);

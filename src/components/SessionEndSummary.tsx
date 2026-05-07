@@ -46,9 +46,10 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
   useEffect(() => {
     if (!session.matchedTopic || answered === 0) return;
 
+    let cancelled = false;
     setAiEvalLoading(true);
     setEvalMinReached(false);
-    const timer = setTimeout(() => setEvalMinReached(true), 3000);
+    const timer = setTimeout(() => { if (!cancelled) setEvalMinReached(true); }, 3000);
 
     // Generate evaluation — AI with local fallback
     generateAiEvaluation({
@@ -64,11 +65,11 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
       goals: session.matchedTopic.goals,
       inputType: session.matchedTopic.inputType,
     })
-      .then((text) => setAiEvaluation(text))
+      .then((text) => { if (!cancelled) setAiEvaluation(text); })
       .catch(() => {})
-      .finally(() => setAiEvalLoading(false));
+      .finally(() => { if (!cancelled) setAiEvalLoading(false); });
 
-    return () => { clearTimeout(timer); };
+    return () => { cancelled = true; clearTimeout(timer); };
   }, []);
 
   const pct = answered > 0 ? Math.round((correctAlone / answered) * 100) : 0;

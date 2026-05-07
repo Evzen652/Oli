@@ -18,7 +18,8 @@ export async function loadCustomExercises(
     .select("*")
     .eq("skill_id", skillId)
     .eq("is_active", true)
-    .eq("status", "approved");
+    .eq("status", "approved")
+    .limit(50);
 
   if (options?.source) {
     query = query.eq("source", options.source);

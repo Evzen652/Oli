@@ -100,27 +100,28 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
 
   // Try to load the DB record for this skill
   useEffect(() => {
+    let cancelled = false;
     (supabase as any)
       .from("curriculum_skills")
       .select("*")
       .eq("code_skill_id", skill.id)
       .maybeSingle()
       .then(({ data }: any) => {
-        if (data) {
-          setDbRecord(data);
-          setForm({
-            help_hint: data.help_hint || help?.hint || "",
-            help_example: data.help_example || help?.example || "",
-            help_common_mistake: data.help_common_mistake || help?.commonMistake || "",
-            help_steps: (data.help_steps?.length > 0 ? data.help_steps : help?.steps || []).join("\n"),
-            keywords: (data.keywords?.length > 0 ? data.keywords : skill.keywords).join(", "),
-            goals: (data.goals?.length > 0 ? data.goals : skill.goals).join("\n"),
-            boundaries: (data.boundaries?.length > 0 ? data.boundaries : skill.boundaries).join("\n"),
-            brief_description: data.brief_description || skill.briefDescription || "",
-            session_task_count: String(data.session_task_count ?? skill.sessionTaskCount ?? 6),
-          });
-        }
+        if (cancelled || !data) return;
+        setDbRecord(data);
+        setForm({
+          help_hint: data.help_hint || help?.hint || "",
+          help_example: data.help_example || help?.example || "",
+          help_common_mistake: data.help_common_mistake || help?.commonMistake || "",
+          help_steps: (data.help_steps?.length > 0 ? data.help_steps : help?.steps || []).join("\n"),
+          keywords: (data.keywords?.length > 0 ? data.keywords : skill.keywords).join(", "),
+          goals: (data.goals?.length > 0 ? data.goals : skill.goals).join("\n"),
+          boundaries: (data.boundaries?.length > 0 ? data.boundaries : skill.boundaries).join("\n"),
+          brief_description: data.brief_description || skill.briefDescription || "",
+          session_task_count: String(data.session_task_count ?? skill.sessionTaskCount ?? 6),
+        });
       });
+    return () => { cancelled = true; };
   }, [skill.id]);
 
   const setField = (key: string, value: string) => setForm((prev) => ({ ...prev, [key]: value }));
