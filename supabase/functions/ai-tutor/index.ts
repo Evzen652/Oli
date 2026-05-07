@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { aiCall, hasAnyAiProvider } from "../_shared/aiCall.ts";
 import { checkMathAnswer } from "../_shared/mathSolver.ts";
 import { checkHintLeakage } from "../_shared/hintLeakage.ts";
@@ -638,6 +639,27 @@ serve(async (req) => {
   }
 
   try {
+    // Auth check — prevent unauthenticated API abuse
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const sbAuth = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+    const { data: { user } } = await sbAuth.auth.getUser();
+    if (!user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { skill_label, practice_type, current_level, phase, child_input, batch_size, admin_prompt, grade_min, subject, category, topic } = await req.json();
 
     if (!skill_label || !phase) {

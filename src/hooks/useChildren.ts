@@ -23,17 +23,22 @@ export function useChildren() {
   const [children, setChildren] = useState<Child[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchChildren = useCallback(async () => {
+  const fetchChildren = useCallback(async (cancelled?: { v: boolean }) => {
     setLoading(true);
     const { data } = await supabase
       .from("children")
       .select("*")
       .order("created_at", { ascending: true });
+    if (cancelled?.v) return;
     setChildren((data as Child[]) ?? []);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchChildren(); }, [fetchChildren]);
+  useEffect(() => {
+    const c = { v: false };
+    fetchChildren(c);
+    return () => { c.v = true; };
+  }, [fetchChildren]);
 
   const addChild = useCallback(async (childName: string, grade: number, learningNotes?: string) => {
     const { data: { user } } = await supabase.auth.getUser();

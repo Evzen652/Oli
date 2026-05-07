@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -68,6 +69,15 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
 /* ── page ── */
 export default function Landing() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">

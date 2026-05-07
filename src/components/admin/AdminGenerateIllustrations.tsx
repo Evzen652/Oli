@@ -176,7 +176,8 @@ function buildGradeMap(topics: ReturnType<typeof getAllTopics>): Record<string, 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface StorageImage { key: string; url: string }
-interface BatchResult { ok: string[]; failed: { key: string; reason: string }[] }
+interface BatchFail { key: string; reason: string }
+interface BatchResult { ok: string[]; failed: BatchFail[] }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -263,16 +264,19 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   };
 
   const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
+  const [showFailedDetails, setShowFailedDetails] = useState(false);
 
   const runBatch = async (keys: string[], force: boolean) => {
     if (keys.length === 0) return;
     setRunning(true);
     setBatchResult(null);
+    setShowFailedDetails(false);
     setBatchProgress({ done: 0, total: keys.length });
 
     const CHUNK = 3;
+    const DELAY_MS = 2000;
     const allOk: string[] = [];
-    const allFailed: { key: string; reason: string }[] = [];
+    const allFailed: BatchFail[] = [];
 
     for (let i = 0; i < keys.length; i += CHUNK) {
       const chunk = keys.slice(i, i + CHUNK);
@@ -285,7 +289,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
         } else {
           const ok = Object.keys((data?.results ?? {}) as Record<string, string>);
           const failed = Object.entries((data?.errors ?? {}) as Record<string, string>).map(
-            ([key, reason]) => ({ key, reason })
+            ([key, reason]) => ({ key, reason: reason as string })
           );
           allOk.push(...ok);
           allFailed.push(...failed);
@@ -300,6 +304,8 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
         chunk.forEach((key) => allFailed.push({ key, reason: e instanceof Error ? e.message : "Chyba" }));
       }
       setBatchProgress({ done: Math.min(i + CHUNK, keys.length), total: keys.length });
+      // pause between chunks to avoid rate limiting
+      if (i + CHUNK < keys.length) await new Promise((r) => setTimeout(r, DELAY_MS));
     }
 
     setBatchResult({ ok: allOk, failed: allFailed });
@@ -484,21 +490,53 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
         {/* Batch result */}
         {batchResult && !running && (
           <Card className={`mt-3 border-2 ${batchResult.failed.length === 0 ? "border-emerald-300 bg-emerald-50/50" : "border-amber-300 bg-amber-50/50"}`}>
-            <CardContent className="p-3 flex items-center gap-3">
-              {batchResult.failed.length === 0
-                ? <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
-                : <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0" />}
-              <span className="text-sm font-semibold">{batchResult.ok.length} hotovo</span>
-              {batchResult.failed.length > 0 && (
-                <span className="text-xs text-amber-700">{batchResult.failed.length} selhalo</span>
+            <CardContent className="p-3 space-y-2">
+              <div className="flex items-center gap-3">
+                {batchResult.failed.length === 0
+                  ? <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+                  : <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0" />}
+                <span className="text-sm font-semibold">{batchResult.ok.length} hotovo</span>
+                {batchResult.failed.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowFailedDetails((v) => !v)}
+                    className="text-xs text-amber-700 underline underline-offset-2"
+                  >
+                    {batchResult.failed.length} selhalo {showFailedDetails ? "▲" : "▼"}
+                  </button>
+                )}
+                {batchResult.failed.length > 0 && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="ml-auto h-7 text-xs gap-1 border-amber-400 text-amber-700 hover:bg-amber-50"
+                    disabled={running}
+                    onClick={() => runBatch(batchResult.failed.map((f) => f.key), true)}
+                  >
+                    <RefreshCw className="h-3 w-3" />
+                    Zkusit selhaná ({batchResult.failed.length})
+                  </Button>
+                )}
+                {batchResult.failed.length === 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setBatchResult(null)}
+                    className="ml-auto text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+              {showFailedDetails && batchResult.failed.length > 0 && (
+                <ul className="text-[10px] text-amber-800 font-mono space-y-0.5 max-h-32 overflow-y-auto border border-amber-200 rounded p-2 bg-white/60">
+                  {batchResult.failed.map((f) => (
+                    <li key={f.key} className="truncate" title={f.reason}>
+                      <span className="font-semibold">{f.key}</span>
+                      {f.reason ? ` — ${f.reason}` : ""}
+                    </li>
+                  ))}
+                </ul>
               )}
-              <button
-                type="button"
-                onClick={() => setBatchResult(null)}
-                className="ml-auto text-xs text-muted-foreground hover:text-foreground"
-              >
-                ✕
-              </button>
             </CardContent>
           </Card>
         )}

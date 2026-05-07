@@ -28,6 +28,7 @@ export default function SessionHistory() {
 
   useEffect(() => {
     if (!childId) return;
+    let cancelled = false;
     (async () => {
       const [logsRes, skillsRes] = await Promise.all([
         supabase
@@ -40,6 +41,8 @@ export default function SessionHistory() {
           .from("curriculum_skills")
           .select("code_skill_id, name"),
       ]);
+
+      if (cancelled) return;
 
       // Build skill name map
       const nameMap: Record<string, string> = {};
@@ -79,6 +82,7 @@ export default function SessionHistory() {
       setSessions(Array.from(map.values()));
       setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [childId]);
 
   const formatDate = (iso: string) => {

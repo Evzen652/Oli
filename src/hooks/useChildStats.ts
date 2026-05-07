@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+export type StatsPeriod = "today" | "7d" | "30d" | "all";
+
+function periodSince(period: StatsPeriod): string | null {
+  if (period === "today") return new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+  if (period === "7d")    return new Date(Date.now() - 7  * 24 * 60 * 60 * 1000).toISOString();
+  if (period === "30d")   return new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  return null;
+}
+
 export interface SkillBreakdown {
   skillId: string;
   attempts: number;
   correct: number;
   helpUsed: number;
   wrong: number;
+  lastPracticed: string; // ISO date string
 }
 
 export interface ChildStats {
@@ -24,7 +34,7 @@ export interface ChildStats {
   loading: boolean;
 }
 
-export function useChildStats(childId: string | null): ChildStats {
+export function useChildStats(childId: string | null, period: StatsPeriod = "7d"): ChildStats {
   const [stats, setStats] = useState<ChildStats>({
     sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: true,
   });
@@ -36,14 +46,15 @@ export function useChildStats(childId: string | null): ChildStats {
     }
 
     let cancelled = false;
-    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const since = periodSince(period);
 
     (async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("session_logs")
         .select("session_id, skill_id, correct, help_used, created_at")
-        .eq("child_id", childId)
-        .gte("created_at", weekAgo);
+        .eq("child_id", childId);
+      if (since) query = query.gte("created_at", since);
+      const { data, error } = await query;
 
       if (cancelled) return;
 
@@ -69,11 +80,13 @@ export function useChildStats(childId: string | null): ChildStats {
       for (const row of data) {
         const sid = row.skill_id as string;
         if (!sid) continue;
-        const existing = skillMap.get(sid) ?? { skillId: sid, attempts: 0, correct: 0, helpUsed: 0, wrong: 0 };
+        const existing = skillMap.get(sid) ?? { skillId: sid, attempts: 0, correct: 0, helpUsed: 0, wrong: 0, lastPracticed: "" };
         existing.attempts++;
         if (row.correct && !row.help_used) existing.correct++;
         if (row.correct && row.help_used) existing.helpUsed++;
         if (!row.correct) existing.wrong++;
+        const rowDate = row.created_at as string;
+        if (!existing.lastPracticed || rowDate > existing.lastPracticed) existing.lastPracticed = rowDate;
         skillMap.set(sid, existing);
       }
       const skills = Array.from(skillMap.values()).sort((a, b) => b.attempts - a.attempts);
@@ -82,7 +95,7 @@ export function useChildStats(childId: string | null): ChildStats {
     })();
 
     return () => { cancelled = true; };
-  }, [childId]);
+  }, [childId, period]);
 
   return stats;
 }

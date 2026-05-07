@@ -15,8 +15,10 @@ interface SkillSummary {
   mastery: number;
   attempts: number;
   correct: number;
+  helpUsed: number;
   error_streak: number;
   weak_patterns: string[];
+  source: "assigned" | "self" | "both";
 }
 
 export interface ReportDetail {
@@ -34,7 +36,7 @@ interface ReportData {
   to_practice?: string;
   recommendations: string;
   skills: SkillSummary[];
-  stats: { sessions: number; attempts: number; accuracy: number; withHelp: number; wrong: number };
+  stats: { days: number; attempts: number; accuracy: number; withHelp: number; wrong: number };
   /** IDs nejslabších skillů (≥2 pokusů, úspěšnost <50 %), top 3 */
   weakSkillIds?: string[];
   /** IDs nejsilnějších skillů (≥2 pokusů, úspěšnost ≥80 %), top 3 */
@@ -70,31 +72,31 @@ export async function generateWeeklyReport(
   if (childId) {
     const { data: child } = await supabase
       .from("children")
-      .select("name")
+      .select("child_name")
       .eq("id", childId)
       .maybeSingle();
-    childName = child?.name ?? null;
+    childName = child?.child_name ?? null;
   } else {
     // Find first child for this parent
     const { data: child } = await supabase
       .from("children")
-      .select("id, name")
+      .select("id, child_name")
       .eq("parent_user_id", user.id)
       .limit(1)
       .maybeSingle();
     if (child) {
       resolvedChildId = child.id;
-      childName = child.name;
+      childName = child.child_name;
     }
   }
 
   // Fetch session logs — timeframe podle range parametru
-  const days = RANGE_DAYS[range];
+  const rangeDays = RANGE_DAYS[range];
   let query = supabase
     .from("session_logs")
-    .select("session_id, skill_id, correct, help_used, error_type");
-  if (days !== null) {
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+    .select("session_id, skill_id, correct, help_used, error_type, created_at");
+  if (rangeDays !== null) {
+    const since = new Date(Date.now() - rangeDays * 24 * 60 * 60 * 1000).toISOString();
     query = query.gte("created_at", since);
   }
 
@@ -114,7 +116,7 @@ export async function generateWeeklyReport(
         : `Za ${periodNoun} zatím žádná aktivita.`,
       recommendations: "Doporučujeme procvičovat alespoň 3× týdně po 10 minutách.",
       skills: [],
-      stats: { sessions: 0, attempts: 0, accuracy: 0, withHelp: 0, wrong: 0 },
+      stats: { days: 0, attempts: 0, accuracy: 0, withHelp: 0, wrong: 0 },
       childName,
       range,
       rangeLabel,
@@ -122,12 +124,18 @@ export async function generateWeeklyReport(
   }
 
   // Compute stats
-  const sessions = new Set(logs.map(l => l.session_id)).size;
+  const days = new Set(logs.map(l => (l.created_at as string).slice(0, 10))).size;
   const attempts = logs.length;
   const correctAlone = logs.filter(l => l.correct && !l.help_used).length;
   const withHelp = logs.filter(l => l.correct && l.help_used).length;
   const wrong = logs.filter(l => !l.correct).length;
   const accuracy = Math.round((correctAlone / attempts) * 100);
+
+  // Zjisti, které skill IDs jsou zadané rodiče
+  const { data: assignedRows } = resolvedChildId
+    ? await supabase.from("parent_assignments").select("skill_id").eq("child_id", resolvedChildId)
+    : { data: [] };
+  const assignedSkillIds = new Set((assignedRows ?? []).map(r => r.skill_id));
 
   // Per-skill breakdown
   const skillMap = new Map<string, { correct: number; attempts: number; helpUsed: number; errors: string[] }>();
@@ -145,8 +153,10 @@ export async function generateWeeklyReport(
     mastery: data.attempts > 0 ? Math.round((data.correct / data.attempts) * 100) / 100 : 0,
     attempts: data.attempts,
     correct: data.correct,
+    helpUsed: data.helpUsed,
     error_streak: 0,
     weak_patterns: [...new Set(data.errors)],
+    source: assignedSkillIds.has(skillId) ? "assigned" : "self",
   }));
 
   // Identify strengths and weaknesses
@@ -179,26 +189,26 @@ export async function generateWeeklyReport(
   const detailParts: ReportDetail[] = [];
 
   // 1) Pravidelnost
-  if (sessions >= 5) {
+  if (days >= 5) {
     detailParts.push({
       icon: "📅",
       label: "Pravidelnost",
       tone: "positive",
-      text: `Procvičování probíhalo pravidelně (${sessions} sezení) — to je ten nejdůležitější krok.`,
+      text: `Procvičování probíhalo pravidelně (${days} dní) — to je ten nejdůležitější krok.`,
     });
-  } else if (sessions >= 3) {
+  } else if (days >= 3) {
     detailParts.push({
       icon: "📅",
       label: "Pravidelnost",
       tone: "info",
-      text: `Sezení proběhlo ${sessions} — pravidelnost je v pořádku, ale ještě je co zlepšovat.`,
+      text: `Procvičování proběhlo ${days} ${days <= 4 ? "dny" : "dní"} — pravidelnost je v pořádku, ale ještě je co zlepšovat.`,
     });
-  } else if (sessions > 0) {
+  } else if (days > 0) {
     detailParts.push({
       icon: "📅",
       label: "Pravidelnost",
       tone: "warn",
-      text: `Sezení proběhla jen ${sessions === 1 ? "1" : sessions} — častější procvičování (klidně po 5–10 minutách) přinese mnohem lepší výsledky než jedno dlouhé.`,
+      text: `Procvičování proběhlo jen ${days === 1 ? "1 den" : `${days} dny`} — častější procvičování (klidně po 5–10 minutách) přinese mnohem lepší výsledky než jedno dlouhé.`,
     });
   }
 
@@ -277,7 +287,7 @@ export async function generateWeeklyReport(
     to_practice,
     recommendations,
     skills,
-    stats: { sessions, attempts, accuracy, withHelp, wrong },
+    stats: { days, attempts, accuracy, withHelp, wrong },
     weakSkillIds,
     strongSkillIds,
     childName,

@@ -11,13 +11,18 @@ const NAV_LINKS = [
   { label: "Ceník", href: "#ceny" },
 ];
 
-function scrollTo(id: string) {
-  document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
-}
-
 export function LandingNav() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  function scrollTo(id: string) {
+    const el = document.querySelector(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/landing" + id);
+    }
+  }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/70 backdrop-blur-xl">

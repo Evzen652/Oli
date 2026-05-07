@@ -32,6 +32,8 @@ import goodToKnowImg from "@/assets/good-to-know.png";
 import { useT } from "@/lib/i18n";
 import { LogOut, Eye } from "lucide-react";
 import { OlyLogo } from "@/components/OlyLogo";
+import { DewhiteImg } from "@/components/DewhiteImg";
+import { LandingNav } from "@/pages/LandingNav";
 
 function ChildLoadingFallback() {
   const [showFallback, setShowFallback] = useState(false);
@@ -113,22 +115,25 @@ export function SessionView() {
 
   // For paired children: auto-load grade from children table
   const [childGradeLoaded, setChildGradeLoaded] = useState(false);
+  const [isDemoChild, setIsDemoChild] = useState(false);
   useEffect(() => {
-    if (role === "child" && !grade && !childGradeLoaded) {
-      (async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        const { data } = await supabase
-          .from("children")
-          .select("grade")
-          .eq("child_user_id", user.id)
-          .maybeSingle();
-        if (data?.grade) {
-          s.handleGradeSelect(data.grade as any);
-        }
-        setChildGradeLoaded(true);
-      })();
-    }
+    if (role !== "child" || grade || childGradeLoaded) return;
+    let cancelled = false;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (cancelled || !user) return;
+      if (user.id === "705f7c4a-9f32-4efb-9c55-e8043f0ede5e") setIsDemoChild(true);
+      const { data } = await supabase
+        .from("children")
+        .select("grade")
+        .eq("child_user_id", user.id)
+        .maybeSingle();
+      if (!cancelled && data?.grade) {
+        s.handleGradeSelect(data.grade as any);
+      }
+      if (!cancelled) setChildGradeLoaded(true);
+    })();
+    return () => { cancelled = true; };
   }, [role, grade, childGradeLoaded]);
 
   useEffect(() => {
@@ -237,13 +242,59 @@ export function SessionView() {
     );
   }
 
+  const DemoHeader = isDemoChild ? (
+    <div className="fixed top-0 left-0 right-0 z-50 shadow-soft-2">
+      <div className="bg-[#F97316] text-white px-5 py-2 text-sm text-center font-medium">
+        Demo — prohlídka bez registrace
+      </div>
+      <LandingNav />
+    </div>
+  ) : null;
+
+  const DemoChildSwitcher = isDemoChild ? (
+    <div className="grid sm:grid-cols-2 gap-4 mx-auto max-w-5xl px-4 pt-6 sm:px-8">
+      <button
+        className="rounded-3xl border-2 border-blue-200 bg-blue-50/60 hover:border-blue-400 hover:bg-blue-50 hover:shadow-lg p-6 flex items-center gap-4 text-left transition-all active:scale-[0.98]"
+        onClick={async () => {
+          await supabase.auth.signInWithPassword({ email: "demo@oli.app", password: "Demo123demo" });
+          window.location.href = "/parent";
+        }}
+      >
+        <DewhiteImg
+          src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/topic-rodina-a-spolecnost.png"
+          alt=""
+          className="h-16 w-16 object-contain drop-shadow-md shrink-0"
+          threshold={240}
+        />
+        <div className="flex-1">
+          <p className="font-bold text-lg text-blue-900">Jsem rodič</p>
+          <p className="text-xs text-blue-600 mt-0.5">Přepnout na rodičovský pohled →</p>
+        </div>
+      </button>
+      <div className="rounded-3xl border-2 border-orange-300 bg-orange-50/80 p-6 flex items-center gap-4">
+        <DewhiteImg
+          src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/ui-child-desk.png"
+          alt=""
+          className="h-16 w-16 object-contain drop-shadow-md shrink-0"
+          threshold={240}
+        />
+        <div>
+          <p className="font-bold text-lg text-orange-900">Jsem žák</p>
+          <p className="text-xs text-orange-600 mt-0.5">Aktuální pohled</p>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   if (!session) {
     // Child role: show home page with assignments first
     if (isStudentView && !showTopicBrowser) {
       return (
         <>
+          {DemoHeader}
           {AdminBanner}
-          <div style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
+          <div style={isDemoChild ? { paddingTop: "7rem" } : role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
+            {DemoChildSwitcher}
             <ChildHomePage
               grade={grade}
               onSelectTopic={s.handleTopicSelect}
@@ -255,6 +306,7 @@ export function SessionView() {
     }
     return (
       <>
+        {DemoHeader}
         {AdminBanner}
         <TopicBrowser grade={grade} onSelectTopic={s.handleTopicSelect} onBack={() => {
           if (isStudentView) {

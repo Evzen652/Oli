@@ -103,6 +103,39 @@ serve(async (req) => {
       );
     }
 
+    // ── Ownership verification (IDOR guard) ──────────────────────────────────
+    // Service role key bypasses RLS, so we must verify ownership explicitly.
+    const { data: { user: caller } } = await supabase.auth.getUser();
+    if (!caller) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (user_id && user_id !== caller.id) {
+      return new Response(JSON.stringify({ error: "Forbidden: user_id mismatch" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (child_id) {
+      // Requester must be parent or the paired child of this child row
+      const { data: childRow } = await supabase
+        .from("children")
+        .select("id")
+        .eq("id", child_id)
+        .or(`parent_user_id.eq.${caller.id},child_user_id.eq.${caller.id}`)
+        .maybeSingle();
+      if (!childRow) {
+        return new Response(JSON.stringify({ error: "Forbidden: not your child" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
     // Fetch logs

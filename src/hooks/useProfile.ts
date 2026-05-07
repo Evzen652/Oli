@@ -13,9 +13,9 @@ export function useProfile() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = useCallback(async () => {
+  const fetchProfile = useCallback(async (cancelled?: { v: boolean }) => {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setLoading(false); return; }
+    if (!user || cancelled?.v) { setLoading(false); return; }
 
     const { data } = await supabase
       .from("profiles")
@@ -23,11 +23,16 @@ export function useProfile() {
       .eq("user_id", user.id)
       .maybeSingle();
 
+    if (cancelled?.v) return;
     setProfile(data as Profile | null);
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchProfile(); }, [fetchProfile]);
+  useEffect(() => {
+    const c = { v: false };
+    fetchProfile(c);
+    return () => { c.v = true; };
+  }, [fetchProfile]);
 
   const updateProfile = useCallback(async (updates: { display_name?: string; locale?: string }) => {
     const { data: { user } } = await supabase.auth.getUser();
