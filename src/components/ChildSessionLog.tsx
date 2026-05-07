@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CheckCircle2, HelpCircle, XCircle } from "lucide-react";
+import { CheckCircle2, HelpCircle, XCircle, BarChart2 } from "lucide-react";
 import { getTopicById } from "@/lib/contentRegistry";
 import { getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
+import { SkillDetailModal } from "@/components/SkillDetailModal";
+import { Button } from "@/components/ui/button";
 
 export interface SessionEntry {
   session_id: string;
@@ -57,6 +59,7 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
   const [loading, setLoading] = useState(!mockSessions);
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
   const [gradeFilter, setGradeFilter] = useState<number | null>(null);
+  const [detailSkillId, setDetailSkillId] = useState<string | null>(null);
 
   useEffect(() => {
     if (mockSessions) { setSessions(mockSessions); return; }
@@ -240,6 +243,17 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
                   <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
                     {grade}
                   </span>
+                  {childId && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
+                      onClick={() => setDetailSkillId(s.skill_id)}
+                    >
+                      <BarChart2 className="h-3.5 w-3.5" />
+                      Jak mu to šlo
+                    </Button>
+                  )}
                 </div>
               </div>
             );
@@ -247,6 +261,14 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
         </div>
       )}
       </div>
+
+      {detailSkillId && childId && (
+        <SkillDetailModal
+          childId={childId}
+          skillId={detailSkillId}
+          onClose={() => setDetailSkillId(null)}
+        />
+      )}
     </div>
   );
 }
