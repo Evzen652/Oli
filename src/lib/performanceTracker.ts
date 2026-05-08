@@ -17,6 +17,8 @@ export interface CheckResult {
   responseTimeMs: number;
   errorType?: string;
   helpUsed?: boolean;
+  questionText?: string;
+  correctAnswer?: string;
 }
 
 /** Mastery score exponential weighting factor (recent results matter more). */
@@ -75,7 +77,9 @@ async function persistResult(result: CheckResult): Promise<void> {
     error_type: result.errorType ?? null,
     help_used: result.helpUsed ?? false,
     child_id: childId,
-  });
+    question_text: result.questionText ?? null,
+    correct_answer: result.correctAnswer ?? null,
+  } as any);
 
   // 2. Upsert skill profile
   const { data: existing } = await supabase

@@ -385,6 +385,8 @@ export async function processState(session: SessionData, userInput?: string): Pr
           responseTimeMs: 0,
           errorType: correct ? undefined : "wrong_answer",
           helpUsed: s.helpUsedOnCurrent,
+          questionText: task.question,
+          correctAnswer: task.correctAnswer,
         });
       }
 
