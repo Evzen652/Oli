@@ -1,111 +1,25 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getReadableSkillName, getSkillSubject, getSkillIcon } from "@/lib/skillReadableName";
+import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
+import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { IllustrationImg } from "@/components/IllustrationImg";
+import { logoNoText } from "@/components/OlyLogo";
 import { useT } from "@/lib/i18n";
-import { CalendarDays, CalendarRange, History } from "lucide-react";
+import { CalendarDays, CalendarRange, History, ArrowLeft, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
 import type { ReportRange, ReportDetail } from "@/lib/weeklyReportGenerator";
-
-const TONE_STYLES: Record<ReportDetail["tone"], { bg: string; border: string; label: string }> = {
-  positive: {
-    bg: "bg-green-50/60 dark:bg-green-950/20",
-    border: "border-green-200 dark:border-green-800",
-    label: "text-green-700 dark:text-green-400",
-  },
-  warn: {
-    bg: "bg-amber-50/60 dark:bg-amber-950/20",
-    border: "border-amber-200 dark:border-amber-800",
-    label: "text-amber-700 dark:text-amber-400",
-  },
-  info: {
-    bg: "bg-blue-50/60 dark:bg-blue-950/20",
-    border: "border-blue-200 dark:border-blue-800",
-    label: "text-blue-700 dark:text-blue-400",
-  },
-  neutral: {
-    bg: "bg-muted/40",
-    border: "border-border",
-    label: "text-foreground",
-  },
-};
-
-const SUBJECT_META: Record<string, {
-  emoji: string;
-  label: string;
-  color: string;
-  cardBg: string;
-  cardBorder: string;
-  headerBg: string;
-}> = {
-  matematika: {
-    emoji: "🔢",
-    label: "Matematika",
-    color: "text-blue-800 dark:text-blue-300",
-    cardBg: "bg-blue-50/40 dark:bg-blue-950/10",
-    cardBorder: "border-blue-300 dark:border-blue-800",
-    headerBg: "bg-blue-100 dark:bg-blue-900/40",
-  },
-  "čeština": {
-    emoji: "📝",
-    label: "Čeština",
-    color: "text-purple-800 dark:text-purple-300",
-    cardBg: "bg-purple-50/40 dark:bg-purple-950/10",
-    cardBorder: "border-purple-300 dark:border-purple-800",
-    headerBg: "bg-purple-100 dark:bg-purple-900/40",
-  },
-  prvouka: {
-    emoji: "🌍",
-    label: "Prvouka",
-    color: "text-green-800 dark:text-green-300",
-    cardBg: "bg-green-50/40 dark:bg-green-950/10",
-    cardBorder: "border-green-300 dark:border-green-800",
-    headerBg: "bg-green-100 dark:bg-green-900/40",
-  },
-  "přírodověda": {
-    emoji: "🌿",
-    label: "Přírodověda",
-    color: "text-emerald-800 dark:text-emerald-300",
-    cardBg: "bg-emerald-50/40 dark:bg-emerald-950/10",
-    cardBorder: "border-emerald-300 dark:border-emerald-800",
-    headerBg: "bg-emerald-100 dark:bg-emerald-900/40",
-  },
-  "vlastivěda": {
-    emoji: "🗺️",
-    label: "Vlastivěda",
-    color: "text-amber-800 dark:text-amber-300",
-    cardBg: "bg-amber-50/40 dark:bg-amber-950/10",
-    cardBorder: "border-amber-300 dark:border-amber-800",
-    headerBg: "bg-amber-100 dark:bg-amber-900/40",
-  },
-  ostatní: {
-    emoji: "📚",
-    label: "Ostatní",
-    color: "text-slate-800 dark:text-slate-300",
-    cardBg: "bg-slate-50/40 dark:bg-slate-950/10",
-    cardBorder: "border-slate-300 dark:border-slate-800",
-    headerBg: "bg-slate-100 dark:bg-slate-900/40",
-  },
-};
-
-function detectSubjectForSkill(skillId: string): string {
-  const fromRegistry = getSkillSubject(skillId);
-  if (fromRegistry) return fromRegistry;
-  if (skillId.startsWith("math") || skillId.startsWith("frac")) return "matematika";
-  if (skillId.startsWith("cz-") || skillId.includes("diktat") || skillId.includes("pravopis") ||
-      skillId.includes("vyjmen") || skillId.includes("mluvnice") || skillId.includes("parove")) return "čeština";
-  if (skillId.startsWith("prv-") || skillId.startsWith("pr-") || skillId.includes("prvouka")) return "prvouka";
-  return "ostatní";
-}
 
 interface SkillSummary {
   skill: string;
   mastery: number;
   attempts: number;
   correct: number;
+  helpUsed: number;
   error_streak: number;
-  weak_patterns: unknown;
-  verdict?: string;
+  weak_patterns: string[];
+  source: "assigned" | "self" | "both";
 }
 
 interface ReportData {
@@ -115,8 +29,7 @@ interface ReportData {
   to_practice?: string;
   recommendations: string;
   skills: SkillSummary[];
-  stats: { sessions: number; attempts: number; accuracy: number; withHelp?: number; wrong?: number };
-  errors?: Record<string, number>;
+  stats: { days: number; attempts: number; accuracy: number; withHelp?: number; wrong?: number };
   weakSkillIds?: string[];
   strongSkillIds?: string[];
   childName?: string | null;
@@ -125,7 +38,6 @@ interface ReportData {
 }
 
 const VALID_RANGES: ReportRange[] = ["week", "month", "all"];
-
 function parseRange(s: string | null): ReportRange {
   return VALID_RANGES.includes(s as ReportRange) ? (s as ReportRange) : "week";
 }
@@ -137,79 +49,44 @@ const RANGE_TABS: { id: ReportRange; label: string; icon: React.ReactNode }[] = 
 ];
 
 const RANGE_HEADING: Record<ReportRange, string> = {
-  week: "Týdenní hodnocení",
-  month: "Měsíční hodnocení",
-  all: "Hodnocení od začátku",
+  week: "Tento týden",
+  month: "Tento měsíc",
+  all: "Celkový přehled",
 };
 
-type SkillTier = "strong" | "medium" | "weak" | "tiny";
-
-function skillEmoji(s: SkillSummary): {
-  label: string;
-  labelColor: string;
-  bg: string;
-  tier: SkillTier;
-  /** Konkrétní rada pro toto téma — 1 věta */
-  verdict: string;
-  /** Text pro hlavní CTA na kartě */
-  cta: string;
-  /** Vizuální variant CTA */
-  ctaVariant: "default" | "outline" | "ghost";
-} {
-  const acc = s.attempts > 0 ? s.correct / s.attempts : 0;
-  const wrong = s.attempts - s.correct;
-
-  // Příliš málo dat (1 pokus) — nelze rozumně hodnotit
-  if (s.attempts < 2) {
-    return {
-      label: "Zatím jen jeden pokus",
-      labelColor: "text-slate-600 dark:text-slate-400",
-      bg: "bg-slate-50 dark:bg-slate-950/30 border-slate-200 dark:border-slate-800",
-      tier: "tiny",
-      verdict: "Z jednoho pokusu zatím nepoznáme, jak na tom téma je. Pojďme přidat pár dalších cvičení.",
-      cta: "Zadat krátké cvičení",
-      ctaVariant: "default",
-    };
-  }
-
-  if (acc >= 0.8) {
-    return {
-      label: "Zvládnuto",
-      labelColor: "text-green-700 dark:text-green-400",
-      bg: "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800",
-      tier: "strong",
-      verdict: "Toto téma sedí — můžete zkusit těžší variantu nebo ho jen občas opakovat, ať se nezapomene.",
-      cta: "Posunout dál",
-      ctaVariant: "ghost",
-    };
-  }
-  if (acc >= 0.5) {
-    return {
-      label: "Jde to, ještě trénovat",
-      labelColor: "text-amber-700 dark:text-amber-400",
-      bg: "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800",
-      tier: "medium",
-      verdict: `${wrong} z ${s.attempts} úloh ještě nesedlo. Jedno krátké cvičení (5 minut) téma obvykle dotáhne.`,
-      cta: "Zadat procvičení",
-      ctaVariant: "default",
-    };
-  }
-  return {
-    label: "Teprve začínáme",
-    labelColor: "text-blue-700 dark:text-blue-400",
-    bg: "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
-    tier: "weak",
-    verdict: `Téma zatím dělá potíže (${s.correct} z ${s.attempts} správně). Doporučujeme krátké cvičení a klidně se k němu vrátit i zítra.`,
-    cta: "Zadat úkol z tohoto tématu",
-    ctaVariant: "default",
-  };
+function detectSubject(skillId: string): string {
+  const from = getSkillSubject(skillId);
+  if (from) return from;
+  if (skillId.startsWith("math") || skillId.startsWith("frac")) return "matematika";
+  if (skillId.startsWith("cz-") || skillId.includes("vyjmen") || skillId.includes("pravopis")) return "čeština";
+  if (skillId.startsWith("prv-") || skillId.startsWith("pr-")) return "prvouka";
+  return "ostatní";
 }
 
-function accuracyBadge(acc: number): { emoji: string; text: string; color: string } {
-  if (acc >= 80) return { emoji: "🎉", text: "Skvělá!", color: "text-green-600 dark:text-green-400" };
-  if (acc >= 50) return { emoji: "👍", text: "Dobrá", color: "text-amber-600 dark:text-amber-400" };
-  if (acc >= 25) return { emoji: "💪", text: "Stojí za to procvičit víc", color: "text-orange-600 dark:text-orange-400" };
-  return { emoji: "🌱", text: "Začátky bývají těžké — vytrvejte", color: "text-blue-600 dark:text-blue-400" };
+function subName(text: string, name?: string | null): string {
+  if (!name) return text;
+  return text.replace(/[Žž]ák/g, name);
+}
+
+const ERROR_LABELS: Record<string, string> = {
+  wrong_string:      "záměna písmen",
+  wrong_count:       "špatný počet",
+  wrong_items:       "špatné volby",
+  wrong_length:      "neúplná odpověď",
+  wrong_order:       "špatné pořadí",
+  wrong_number:      "chybný výsledek",
+  wrong_chronology:  "špatná chronologie",
+  wrong_position:    "špatná pozice",
+  wrong_image:       "záměna obrázku",
+  wrong_coef_count:  "špatný počet koeficientů",
+  wrong_coef:        "špatný koeficient",
+  wrong_label_count: "špatný počet popisků",
+};
+
+function translatePatterns(patterns: string[]): string[] {
+  return patterns
+    .filter(p => p !== "wrong_answer" && ERROR_LABELS[p])
+    .map(p => ERROR_LABELS[p]);
 }
 
 export default function Report() {
@@ -222,6 +99,8 @@ export default function Report() {
 
   const childId = searchParams.get("child");
   const range = parseRange(searchParams.get("range"));
+  const [chartSubject, setChartSubject] = useState<string | null>(null);
+  const [sourceFilter, setSourceFilter] = useState<"all" | "assigned" | "self">("all");
 
   useEffect(() => {
     async function fetchReport() {
@@ -237,7 +116,7 @@ export default function Report() {
       }
     }
     fetchReport();
-  }, [navigate, childId, range, t]);
+  }, [childId, range, t]);
 
   const handleRangeChange = (newRange: ReportRange) => {
     const params = new URLSearchParams(searchParams);
@@ -245,14 +124,9 @@ export default function Report() {
     setSearchParams(params, { replace: true });
   };
 
-  const heading = RANGE_HEADING[range];
-  const title = report?.childName
-    ? `${heading} — ${report.childName}`
-    : heading;
-
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="flex min-h-screen items-center justify-center bg-[#fdf8f2]">
         <div className="text-center space-y-3">
           <p className="text-4xl animate-bounce">📊</p>
           <p className="text-muted-foreground">{t("report.loading")}</p>
@@ -263,7 +137,7 @@ export default function Report() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-4">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#fdf8f2] p-4">
         <p className="text-4xl">😕</p>
         <p className="text-destructive">{error}</p>
         <Button variant="outline" onClick={() => navigate(-1)}>{t("report.back")}</Button>
@@ -273,249 +147,329 @@ export default function Report() {
 
   if (!report) return null;
 
-  const independent = report.stats.attempts - (report.stats.withHelp ?? 0) - (report.stats.wrong ?? 0);
-  const accBadge = accuracyBadge(report.stats.accuracy);
+  const childName = report.childName ?? null;
+  const heading = RANGE_HEADING[range];
+  const title = childName ? `${childName} · ${heading}` : heading;
+  const acc = report.stats.accuracy;
+  const accColor = acc >= 80 ? "text-emerald-600" : acc >= 50 ? "text-amber-600" : "text-rose-600";
+  const accBg = acc >= 80 ? "bg-emerald-50 border-emerald-200" : acc >= 50 ? "bg-amber-50 border-amber-200" : "bg-rose-50 border-rose-200";
+  const accLabel = acc >= 80 ? "Skvělá úspěšnost" : acc >= 50 ? "Zlepšuje se" : "Potřebuje pomoc";
+
+  // Skupiny po předmětech
+  const subjectOrder = ["matematika", "čeština", "prvouka", "přírodověda", "vlastivěda", "ostatní"];
+  const bySubject = new Map<string, SkillSummary[]>();
+  for (const s of report.skills) {
+    const subj = detectSubject(s.skill);
+    if (!bySubject.has(subj)) bySubject.set(subj, []);
+    bySubject.get(subj)!.push(s);
+  }
+  const sortedSubjects = Array.from(bySubject.keys()).sort(
+    (a, b) => (subjectOrder.indexOf(a) === -1 ? 99 : subjectOrder.indexOf(a)) - (subjectOrder.indexOf(b) === -1 ? 99 : subjectOrder.indexOf(b))
+  );
+
+  // Data pro graf
+  const allChartData = report.skills.map((s) => {
+    const a = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
+    const full = getReadableSkillName(s.skill);
+    const short = full.length > 14 ? full.slice(0, 12) + "…" : full;
+    const color = a >= 80 ? "#10b981" : a >= 50 ? "#f59e0b" : "#f43f5e";
+    return { name: full, short, acc: a, color, correct: s.correct, attempts: s.attempts, subject: detectSubject(s.skill), source: s.source };
+  });
+  const chartSubjects = Array.from(new Set(allChartData.map((d) => d.subject)));
+
+  // Filtrace podle zdroje + předmětu
+  const filteredSkills = report.skills.filter(s =>
+    (sourceFilter === "all" || s.source === sourceFilter)
+  );
+  const filteredBySubject = new Map<string, SkillSummary[]>();
+  for (const s of filteredSkills) {
+    const subj = detectSubject(s.skill);
+    if (!filteredBySubject.has(subj)) filteredBySubject.set(subj, []);
+    filteredBySubject.get(subj)!.push(s);
+  }
+  const visibleSubjects = Array.from(filteredBySubject.keys()).sort(
+    (a, b) => (subjectOrder.indexOf(a) === -1 ? 99 : subjectOrder.indexOf(a)) - (subjectOrder.indexOf(b) === -1 ? 99 : subjectOrder.indexOf(b))
+  );
+  const chartData = allChartData.filter(d =>
+    (sourceFilter === "all" || d.source === sourceFilter) &&
+    (!chartSubject || d.subject === chartSubject)
+  );
+  const manyBars = chartData.length > 7;
+
   const hasActivity = report.stats.attempts > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background p-4 pb-12">
-      <div className="mx-auto max-w-2xl space-y-5">
+    <div className="min-h-screen bg-[#fdf8f2] px-4 pb-12 pt-4">
+      <div className="mx-auto max-w-2xl space-y-4">
+
         {/* Header */}
-        <header className="flex items-center justify-between pt-2">
-          <h1 className="text-xl font-bold text-foreground">📋 {title}</h1>
-          <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
-            {t("report.back")}
-          </Button>
-        </header>
-
-        {/* Range tabs — Týdenní / Měsíční / Od začátku */}
-        <div className="rounded-xl border-2 border-border/60 bg-muted/40 p-1 grid grid-cols-3 gap-1">
-          {RANGE_TABS.map((tab) => {
-            const isActive = range === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleRangeChange(tab.id)}
-                className={`flex items-center justify-center gap-1.5 rounded-lg py-2 px-2 text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/60"
-                }`}
-              >
-                {tab.icon}
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* AI Summary - warm card */}
-        <div className="rounded-2xl border-2 border-primary/20 bg-card p-5 shadow-sm">
-          <p className="text-base text-foreground leading-relaxed font-medium">{report.summary}</p>
-        </div>
-
-        {/* Detail items — strukturovaná pozorování (jeden box per item) */}
-        {report.details && report.details.length > 0 && (
-          <div className="space-y-2">
-            {report.details.map((d, i) => {
-              const tone = TONE_STYLES[d.tone];
-              return (
-                <div
-                  key={i}
-                  className={`rounded-xl border ${tone.border} ${tone.bg} p-3.5 flex items-start gap-3`}
-                >
-                  <span className="text-xl flex-shrink-0 leading-none mt-0.5">{d.icon}</span>
-                  <div className="flex-1 min-w-0 space-y-1">
-                    <p className={`text-xs font-bold uppercase tracking-wide ${tone.label}`}>
-                      {d.label}
-                    </p>
-                    <p className="text-sm text-foreground/85 leading-relaxed">
-                      {d.text}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+        <div className="bg-white rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-black/[0.05]">
+          <button
+            onClick={() => navigate(-1)}
+            className="h-9 w-9 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-muted/80 transition-all shrink-0"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <img src={logoNoText} alt="Oli" className="h-10 w-10 object-contain shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h1 className="font-bold text-lg text-foreground leading-tight">{title}</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">Přehled výsledků · {report.rangeLabel}</p>
           </div>
-        )}
+        </div>
 
-        {/* Stats — pouze pokud je aktivita */}
+        {/* Range tabs */}
+        <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-1.5 grid grid-cols-3 gap-1">
+          {RANGE_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => handleRangeChange(tab.id)}
+              className={`flex items-center justify-center gap-1.5 rounded-2xl py-2.5 px-2 text-sm font-medium transition-all ${
+                range === tab.id
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Stats + shrnutí */}
         {hasActivity ? (
-          <div className="rounded-2xl border bg-card p-5 text-center space-y-2">
-            <p className="text-lg text-foreground">
-              {report.rangeLabel.charAt(0).toUpperCase() + report.rangeLabel.slice(1)}: <span className="font-bold">{report.stats.attempts} úloh</span> v{" "}
-              <span className="font-bold">{report.stats.sessions} sezeních</span>
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {independent} samostatně · {report.stats.withHelp ?? 0} s nápovědou · {report.stats.wrong ?? 0} chybně
-            </p>
-            <p className={`text-lg font-semibold ${accBadge.color}`}>
-              {accBadge.emoji} Úspěšnost: {accBadge.text} ({report.stats.accuracy} %)
-            </p>
+          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
+            <div className="grid grid-cols-3 divide-x divide-border/40">
+              <div className="px-5 py-5 text-center">
+                <p className="text-3xl font-extrabold text-foreground tabular-nums">{report.stats.days}</p>
+                <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-1">DNY</p>
+              </div>
+              <div className="px-5 py-5 text-center">
+                <p className="text-3xl font-extrabold text-foreground tabular-nums">{report.stats.attempts}</p>
+                <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-1">ÚLOH</p>
+              </div>
+              <div className="px-5 py-5 text-center">
+                <p className={`text-3xl font-extrabold tabular-nums ${accColor}`}>{acc} %</p>
+                <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-1">ÚSPĚŠNOST</p>
+              </div>
+            </div>
+            <div className="border-t border-border/40 px-5 py-4 space-y-2.5">
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${accBg} ${accColor}`}>
+                {accLabel}
+              </span>
+              <p className="text-sm text-foreground leading-relaxed">{subName(report.summary, childName)}</p>
+            </div>
           </div>
         ) : (
-          // Empty state — žádná aktivita v daném rozsahu
-          <div className="rounded-2xl border-2 border-dashed border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 text-center space-y-3">
+          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-6 text-center space-y-3">
             <p className="text-4xl">💤</p>
-            <p className="text-lg font-semibold text-blue-900">
+            <p className="text-lg font-semibold text-foreground">
               {range === "week" && "Tento týden žádná aktivita"}
               {range === "month" && "Tento měsíc žádná aktivita"}
               {range === "all" && "Zatím žádná aktivita"}
             </p>
-            <p className="text-sm text-blue-700/80 leading-relaxed max-w-sm mx-auto">
-              {report.childName ?? "Dítě"} {report.rangeLabel ?? ""} ještě neprocvičoval/a. Nejsou data,
-              ze kterých by šlo udělat hodnocení.
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
+              {childName ?? "Dítě"} {report.rangeLabel ?? ""} ještě neprocvičovalo. Zkuste zadat první úkol.
             </p>
-            <div className="flex items-center justify-center gap-2 pt-1">
-              <Button variant="default" size="sm" className="gap-2" onClick={() => navigate(-1)}>
-                ← Zpět k zadání úkolu
+            {range !== "all" && (
+              <Button variant="outline" size="sm" onClick={() => handleRangeChange("all")}>
+                Zkusit „Od začátku"
               </Button>
-              {range !== "all" && (
-                <Button variant="outline" size="sm" onClick={() => handleRangeChange("all")}>
-                  Zkusit „Od začátku"
-                </Button>
-              )}
+            )}
+          </div>
+        )}
+
+        {/* Graf témat */}
+        {hasActivity && allChartData.length > 0 && (
+          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
+            <div className="px-5 py-4 border-b border-border/40">
+              <h2 className="font-bold text-base text-foreground">Přehled témat</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Úspěšnost v každém procvičovaném tématu (% správných odpovědí)</p>
             </div>
-          </div>
-        )}
-
-        {/* Strengths & To Practice - friendly */}
-        {(report.strengths || report.to_practice) && (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {report.strengths && (
-              <div className="rounded-2xl border border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/20 p-4 space-y-2">
-                <p className="font-semibold text-green-700 dark:text-green-400">🌟 Silné stránky</p>
-                <p className="text-sm text-foreground leading-relaxed">{report.strengths}</p>
-              </div>
-            )}
-            {report.to_practice && (
-              <div className="rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/20 p-4 space-y-2">
-                <p className="font-semibold text-amber-600 dark:text-amber-400">💪 K procvičení</p>
-                <p className="text-sm text-foreground leading-relaxed">{report.to_practice}</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Skills — seskupené po předmětech */}
-        {report.skills.length > 0 && (() => {
-          // Grupuj skills podle předmětu
-          const bySubject = new Map<string, typeof report.skills>();
-          for (const s of report.skills) {
-            const subj = detectSubjectForSkill(s.skill);
-            if (!bySubject.has(subj)) bySubject.set(subj, []);
-            bySubject.get(subj)!.push(s);
-          }
-          // Pořadí: matematika → čeština → prvouka → přírodověda → vlastivěda → ostatní
-          const subjectOrder = ["matematika", "čeština", "prvouka", "přírodověda", "vlastivěda", "ostatní"];
-          const sortedSubjects = Array.from(bySubject.keys()).sort((a, b) => {
-            const ia = subjectOrder.indexOf(a);
-            const ib = subjectOrder.indexOf(b);
-            return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-          });
-
-          return (
-            <div className="space-y-6">
-              <h2 className="text-base font-semibold text-foreground">{t("report.skills")}</h2>
-              {sortedSubjects.map((subj) => {
-                const meta = SUBJECT_META[subj] ?? SUBJECT_META.ostatní;
-                const skills = bySubject.get(subj)!;
-                const totalAttempts = skills.reduce((s, k) => s + k.attempts, 0);
-                const totalCorrect = skills.reduce((s, k) => s + k.correct, 0);
-
+            <div className="px-5 pt-4 pb-1 flex flex-wrap gap-1.5">
+              {(["all", "self", "assigned"] as const).map((v) => {
+                const label = v === "all" ? "Vše" : v === "self" ? "Samostatně" : "Od rodiče";
+                const active = sourceFilter === v;
+                const cls = active
+                  ? v === "self" ? "bg-sky-600 text-white" : v === "assigned" ? "bg-violet-600 text-white" : "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80";
                 return (
-                  <section
-                    key={subj}
-                    className={`rounded-2xl border-2 ${meta.cardBorder} ${meta.cardBg} overflow-hidden shadow-sm`}
-                  >
-                    {/* Subject header — barevný pruh nahoře */}
-                    <div className={`flex items-center gap-2 px-4 py-3 ${meta.headerBg} border-b-2 ${meta.cardBorder}`}>
-                      <span className="text-2xl" aria-hidden>{meta.emoji}</span>
-                      <span className={`text-lg font-bold ${meta.color}`}>{meta.label}</span>
-                      <span className={`text-xs font-medium ml-auto ${meta.color} opacity-80`}>
-                        {skills.length} {skills.length === 1 ? "téma" : skills.length < 5 ? "témata" : "témat"} · <span className="font-bold">{totalCorrect}/{totalAttempts}</span> správně
-                      </span>
-                    </div>
-                    {/* Skill cards in this subject */}
-                    <div className="p-3 space-y-2">
-                      {skills.map((skill) => {
-                        const v = skillEmoji(skill);
-                        const acc = skill.attempts > 0 ? Math.round((skill.correct / skill.attempts) * 100) : 0;
-                        // Hash formát: #assign-<childId>:<skillCode> nebo #assign-<skillCode>
-                        const hashPayload = childId
-                          ? `${childId}:${skill.skill}`
-                          : skill.skill;
-                        const targetUrl = childId
-                          ? `/parent?child=${childId}#assign-${encodeURIComponent(hashPayload)}`
-                          : `/parent#assign-${encodeURIComponent(hashPayload)}`;
-                        return (
-                          <div key={skill.skill} className={`rounded-2xl border p-4 ${v.bg} space-y-2`}>
-                            {/* Header row: topic icon + name + accuracy */}
-                            <div className="flex items-start justify-between gap-2 flex-wrap">
-                              <div className="flex items-center gap-2 min-w-0 flex-1">
-                                <span className="text-xl flex-shrink-0" aria-hidden>{getSkillIcon(skill.skill)}</span>
-                                <p className="font-semibold text-foreground">
-                                  {getReadableSkillName(skill.skill)}
-                                </p>
-                              </div>
-                              {skill.attempts >= 2 && (
-                                <span className="text-xs font-bold text-foreground tabular-nums whitespace-nowrap mt-0.5">
-                                  {acc} % · {skill.correct}/{skill.attempts}
-                                </span>
-                              )}
-                            </div>
-                            {/* Status badge */}
-                            <p className={`text-xs font-bold uppercase tracking-wide ${v.labelColor}`}>
-                              {v.label}
-                            </p>
-                            {/* Verdict + per-skill CTA */}
-                            <p className="text-sm text-foreground/85 leading-relaxed">
-                              {v.verdict}
-                            </p>
-                            {v.tier !== "strong" && (
-                              <div>
-                                <Button
-                                  variant={v.ctaVariant}
-                                  size="sm"
-                                  className="gap-1.5 h-8"
-                                  onClick={() => navigate(targetUrl)}
-                                >
-                                  ✏️ {v.cta}
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </section>
+                  <button key={v} onClick={() => setSourceFilter(v)}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${cls}`}>
+                    {label}
+                  </button>
                 );
               })}
             </div>
-          );
-        })()}
+            {chartSubjects.length > 1 && (
+              <div className="px-5 pt-2 pb-1 flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => setChartSubject(null)}
+                  className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${!chartSubject ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
+                >Vše</button>
+                {chartSubjects.map((subj) => {
+                  const meta = getSubjectMeta(subj);
+                  return (
+                    <button
+                      key={subj}
+                      onClick={() => setChartSubject(chartSubject === subj ? null : subj)}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors flex items-center gap-1 ${chartSubject === subj ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
+                    >
+                      <span>{meta?.emoji}</span>
+                      {meta?.label ?? subj}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+            <div className="px-4 pt-4 pb-3">
+              <ResponsiveContainer width="100%" height={manyBars ? 260 : 220}>
+                <BarChart data={chartData} barSize={manyBars ? undefined : 44} margin={{ top: 8, right: 8, left: 0, bottom: manyBars ? 68 : 4 }}>
+                  <XAxis
+                    dataKey="short"
+                    tick={{ fontSize: 10, fill: "#888" }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval={0}
+                    angle={manyBars ? -45 : 0}
+                    textAnchor={manyBars ? "end" : "middle"}
+                  />
+                  <YAxis domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} tick={{ fontSize: 11, fill: "#888" }} axisLine={false} tickLine={false} unit="%" width={44} />
+                  <ReferenceLine y={80} stroke="#10b981" strokeDasharray="5 3" strokeWidth={1.5} label={{ value: "cíl 80 %", position: "insideTopRight", fontSize: 10, fill: "#10b981" }} />
+                  <Tooltip
+                    cursor={{ fill: "hsl(var(--muted))", radius: 6 }}
+                    content={({ active, payload }) => {
+                      if (!active || !payload?.length) return null;
+                      const d = payload[0].payload;
+                      return (
+                        <div className="bg-white border border-border rounded-xl shadow-md px-3 py-2 text-xs space-y-0.5">
+                          <p className="font-semibold text-foreground">{d.name}</p>
+                          <p className="text-muted-foreground">{d.correct} z {d.attempts} správně</p>
+                          <p className="font-bold" style={{ color: d.color }}>{d.acc} %</p>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Bar dataKey="acc" radius={[6, 6, 0, 0]}>
+                    {chartData.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <div className="flex items-center justify-center gap-5 pt-1 pb-2 text-[11px] text-muted-foreground flex-wrap">
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-emerald-500 inline-block shrink-0" />Zvládnuto (≥ 80 %)</span>
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-amber-400 inline-block shrink-0" />Zlepšuje se (50–79 %)</span>
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-rose-500 inline-block shrink-0" />Potřebuje pomoc</span>
+              </div>
+            </div>
+            <div className="border-t border-border/40 p-4 space-y-4">
+              {(chartSubject ? visibleSubjects.filter(s => s === chartSubject) : visibleSubjects).map((subj) => {
+                const meta = getSubjectMeta(subj);
+                const skills = filteredBySubject.get(subj)!;
+                return (
+                  <div key={subj} className="space-y-2">
+                    <div className="flex items-center gap-2.5 px-1">
+                      <IllustrationImg src={meta.image} alt={meta.label} className="h-7 w-7 object-contain shrink-0" fallback={<span className="text-xl">{meta.emoji}</span>} />
+                      <p className="font-bold text-sm text-foreground">{meta.label}</p>
+                    </div>
+                    {skills.map((s) => {
+                      const a = s.attempts > 0 ? Math.round((s.correct / s.attempts) * 100) : 0;
+                      const textColor = a >= 80 ? "text-emerald-700" : a >= 50 ? "text-amber-600" : "text-rose-600";
+                      const barColor = a >= 80 ? "bg-emerald-500" : a >= 50 ? "bg-amber-400" : "bg-rose-500";
+                      const dotColor = a >= 80 ? "bg-emerald-500" : a >= 50 ? "bg-amber-400" : "bg-rose-500";
+                      const nm = childName ?? "Dítě";
+                      const helpRatio = s.attempts > 0 ? Math.round((s.helpUsed / s.attempts) * 100) : 0;
+                      const wrongCount = s.attempts - s.correct - s.helpUsed;
+                      const translated = translatePatterns(s.weak_patterns ?? []);
 
-        {/* Recommendations */}
-        {report.recommendations && (
-          <div className="rounded-2xl border border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/20 p-5 space-y-2">
-            <p className="font-semibold text-blue-700 dark:text-blue-400">💡 {t("report.recommendations")}</p>
-            <p className="text-sm text-foreground leading-relaxed">{report.recommendations}</p>
+                      let evalText: string;
+                      if (s.attempts < 3) {
+                        evalText = `Zatím jen ${s.attempts} ${s.attempts === 1 ? "pokus" : "pokusy"} — příliš málo dat pro spolehlivé hodnocení.`;
+                      } else if (a >= 80) {
+                        evalText = helpRatio <= 10
+                          ? `${nm} toto téma zvládá samostatně a spolehlivě (${a} %).`
+                          : `${nm} dosahuje dobrých výsledků (${a} %), ale využívá nápovědu v ${helpRatio} % případů.`;
+                      } else if (a >= 50) {
+                        evalText = wrongCount > s.correct
+                          ? `Výsledky jsou smíšené — více chyb než správných odpovědí (${s.correct}/${s.attempts}).`
+                          : `${nm} se zlepšuje (${a} %), ale látka ještě není pevně zažitá.`;
+                      } else {
+                        evalText = `Téma dělá ${nm === "Dítě" ? "dítěti" : nm} velké potíže — správně pouze ${s.correct} z ${s.attempts} pokusů.`;
+                      }
+
+                      let tip: string;
+                      if (a >= 80 && helpRatio <= 10) {
+                        tip = "Doporučujeme přejít na těžší úlohy nebo nové téma.";
+                      } else if (a >= 80) {
+                        tip = "Zkuste snížit používání nápovědy — procvičujte bez ní.";
+                      } else if (a >= 50) {
+                        tip = "Zadejte 1–2 krátké úkoly týdně pro upevnění. Pravidelnost pomáhá víc než jedno dlouhé procvičování.";
+                      } else if (translated.length > 0) {
+                        tip = `Časté chyby: ${translated.slice(0, 2).join(", ")}. Procvičujte denně po 5–10 minutách.`;
+                      } else {
+                        tip = "Doporučujeme začít od základů a procvičovat denně po 5–10 minutách.";
+                      }
+                      return (
+                        <div key={s.skill} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-2">
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className={`h-2 w-2 rounded-full shrink-0 ${dotColor}`} />
+                              <p className="text-sm font-semibold text-foreground truncate">{getReadableSkillName(s.skill)}</p>
+                            </div>
+                            <div className="flex items-center gap-2 shrink-0">
+                              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.source === "assigned" ? "bg-violet-100 text-violet-700" : "bg-sky-100 text-sky-700"}`}>
+                                {s.source === "assigned" ? "Zadáno" : "Samostatně"}
+                              </span>
+                              <span className="text-xs text-muted-foreground">{s.correct}/{s.attempts}</span>
+                              <span className={`text-sm font-bold tabular-nums ${textColor}`}>{a} %</span>
+                            </div>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                            <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${a}%` }} />
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-snug">{evalText}</p>
+                          <p className="text-xs font-medium text-foreground/70 leading-snug">{tip}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 
-        {/* Bottom action — návrat */}
-        {hasActivity && (
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-            <Button
-              variant="outline"
-              size="default"
-              className="gap-2"
-              onClick={() => navigate("/parent")}
-            >
-              ← Zpět na přehled
-            </Button>
+        {/* Co teď */}
+        {hasActivity && report.recommendations && (
+          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
+            <div className="px-5 py-4 border-b border-border/40">
+              <h2 className="font-bold text-base text-foreground">Co teď?</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Doporučení na základě výsledků</p>
+            </div>
+            <div className="p-5 space-y-4">
+              <p className="text-sm text-foreground leading-relaxed">{subName(report.recommendations, childName)}</p>
+              <button
+                className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-between px-4 shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm"
+                onClick={() => navigate(childId ? `/parent#assign-${childId}` : "/parent")}
+              >
+                Zadat úkol {childName ? `pro ${childName}` : ""}
+                <ArrowRight className="h-4 w-4 shrink-0" />
+              </button>
+            </div>
           </div>
         )}
+
+        {/* Zpět */}
+        <div className="flex justify-center pt-2">
+          <button
+            className="h-11 rounded-2xl bg-white border border-border text-foreground font-semibold text-sm px-5 flex items-center gap-2 hover:bg-muted/50 active:scale-[0.98] transition-all shadow-sm"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Zpět na přehled
+          </button>
+        </div>
+
       </div>
     </div>
   );

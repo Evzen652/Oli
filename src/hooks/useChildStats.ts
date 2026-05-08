@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+export type StatsPeriod = "today" | "7d" | "30d" | "all";
+
+function periodSince(period: StatsPeriod): string | null {
+  if (period === "today") return new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+  if (period === "7d")    return new Date(Date.now() - 7  * 24 * 60 * 60 * 1000).toISOString();
+  if (period === "30d")   return new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  return null;
+}
+
 export interface SkillBreakdown {
   skillId: string;
   attempts: number;
   correct: number;
   helpUsed: number;
   wrong: number;
+  lastPracticed: string; // ISO date string
 }
 
 export interface ChildStats {
@@ -22,19 +32,6 @@ export interface ChildStats {
   /** Per-skill rozpis (řazený podle počtu pokusů, sestupně) */
   skills: SkillBreakdown[];
   loading: boolean;
-}
-
-export type StatsPeriod = "today" | "7d" | "30d" | "all";
-
-function periodSince(period: StatsPeriod): string | null {
-  if (period === "all") return null;
-  if (period === "today") {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    return d.toISOString();
-  }
-  const days = period === "7d" ? 7 : 30;
-  return new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 }
 
 export function useChildStats(childId: string | null, period: StatsPeriod = "7d"): ChildStats {
@@ -83,11 +80,13 @@ export function useChildStats(childId: string | null, period: StatsPeriod = "7d"
       for (const row of data) {
         const sid = row.skill_id as string;
         if (!sid) continue;
-        const existing = skillMap.get(sid) ?? { skillId: sid, attempts: 0, correct: 0, helpUsed: 0, wrong: 0 };
+        const existing = skillMap.get(sid) ?? { skillId: sid, attempts: 0, correct: 0, helpUsed: 0, wrong: 0, lastPracticed: "" };
         existing.attempts++;
         if (row.correct && !row.help_used) existing.correct++;
         if (row.correct && row.help_used) existing.helpUsed++;
         if (!row.correct) existing.wrong++;
+        const rowDate = row.created_at as string;
+        if (!existing.lastPracticed || rowDate > existing.lastPracticed) existing.lastPracticed = rowDate;
         skillMap.set(sid, existing);
       }
       const skills = Array.from(skillMap.values()).sort((a, b) => b.attempts - a.attempts);

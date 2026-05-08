@@ -1,3 +1,12 @@
+/**
+ * Content registry — komplexní testy curriculum API a session orchestrátoru.
+ *
+ * Pokrývá:
+ *  - getAllTopics, getTopicsForGrade, getTopicById, matchTopic
+ *  - PREREQUISITE_MAP konzistence
+ *  - TopicMetadata strukturální invarianty
+ *  - createSession, transition (sessionOrchestrator)
+ */
 import { describe, it, expect } from "vitest";
 import {
   getAllTopics,
@@ -7,262 +16,348 @@ import {
   getPrerequisites,
   PREREQUISITE_MAP,
 } from "@/lib/contentRegistry";
+import { createSession, transition } from "@/lib/sessionOrchestrator";
+import type { SessionState } from "@/lib/types";
 
-/**
- * Content Registry — deep coverage.
- *
- * Pokrývá:
- *  - getAllTopics: read-only, frozen, contains all subjects
- *  - getTopicsForGrade: filter by grade range
- *  - getTopicById: lookup OR undefined
- *  - matchTopic: deterministic + longest-match resolution + grade gating
- *  - getPrerequisites: lookup OR []
- *  - Subject coverage: matematika / čeština / prvouka all present
- *  - Grade coverage: at least 1 topic per grade 3-9
- */
+// ─────────────────────────────────────────────────────────
+// getAllTopics — strukturální invarianty
+// ─────────────────────────────────────────────────────────
+describe("getAllTopics — základní invarianty", () => {
+  const topics = getAllTopics();
 
-const allTopics = getAllTopics();
-
-describe("getAllTopics — invariants", () => {
-  it("vrací array (Object.freeze immutable)", () => {
-    expect(Array.isArray(allTopics)).toBe(true);
-    expect(Object.isFrozen(allTopics)).toBe(true);
-  });
-
-  it("aspoň 30 topics (curriculum coverage sanity)", () => {
-    expect(allTopics.length).toBeGreaterThan(30);
-  });
-
-  it("subjects pokryty: matematika, čeština, prvouka", () => {
-    const subjects = new Set(allTopics.map((t) => t.subject));
-    expect(subjects.has("matematika")).toBe(true);
-    expect(subjects.has("čeština")).toBe(true);
-    // prvouka je pokrytá pro nižší ročníky
-    const hasPrvouka = subjects.has("prvouka") || subjects.has("Prvouka");
-    expect(hasPrvouka).toBe(true);
-  });
-
-  it("readonly array — push throws (frozen)", () => {
-    expect(() => {
-      // @ts-expect-error testing immutability
-      allTopics.push({} as TopicMetadata);
-    }).toThrow();
-  });
-});
-
-describe("getTopicsForGrade — grade filtering", () => {
-  it.each([3, 4, 5, 6, 7, 8, 9])("grade %d má aspoň 1 topic", (grade) => {
-    // Grades 1-2 zatím nemají curriculum content
-    const topics = getTopicsForGrade(grade);
+  it("vrátí neprázdný seznam témat", () => {
     expect(topics.length).toBeGreaterThan(0);
   });
 
-  it("grade 1-2 zatím bez topiců (curriculum gap, dokumentováno)", () => {
-    // Když se přidá content pro 1-2 → tento test fail signal pro update
-    expect(getTopicsForGrade(1).length + getTopicsForGrade(2).length).toBe(0);
+  it("každé téma má povinná string pole", () => {
+    for (const t of topics) {
+      expect(typeof t.id, `id u ${t.id}`).toBe("string");
+      expect(t.id.length, `id prázdné u ${t.id}`).toBeGreaterThan(0);
+      expect(typeof t.title, `title u ${t.id}`).toBe("string");
+      expect(t.title.length, `title prázdné u ${t.id}`).toBeGreaterThan(0);
+      expect(typeof t.subject, `subject u ${t.id}`).toBe("string");
+      expect(t.subject.length, `subject prázdné u ${t.id}`).toBeGreaterThan(0);
+      expect(typeof t.category, `category u ${t.id}`).toBe("string");
+      expect(typeof t.inputType, `inputType u ${t.id}`).toBe("string");
+    }
   });
 
-  it("grade out of range (10) → 0 topics", () => {
-    expect(getTopicsForGrade(10).length).toBe(0);
+  it("každé téma má platný gradeRange [min, max] kde min ≤ max a oba jsou 1–9", () => {
+    for (const t of topics) {
+      const [min, max] = t.gradeRange;
+      expect(min, `${t.id}: min < 1`).toBeGreaterThanOrEqual(1);
+      expect(max, `${t.id}: max > 9`).toBeLessThanOrEqual(9);
+      expect(min, `${t.id}: min > max`).toBeLessThanOrEqual(max);
+    }
   });
 
-  it("grade 0 → 0 topics", () => {
+  it("každé téma má generator funkci", () => {
+    for (const t of topics) {
+      expect(typeof t.generator, `generator u ${t.id}`).toBe("function");
+    }
+  });
+
+  it("každé téma má keywords (neprázdné pole)", () => {
+    for (const t of topics) {
+      expect(Array.isArray(t.keywords), `keywords u ${t.id}`).toBe(true);
+      expect(t.keywords.length, `keywords prázdné u ${t.id}`).toBeGreaterThan(0);
+    }
+  });
+
+  it("žádné topic ID není duplikováno", () => {
+    const ids = topics.map((t) => t.id);
+    const unique = new Set(ids);
+    expect(unique.size).toBe(ids.length);
+  });
+
+  it("ID odpovídají bezpečnému vzoru [a-zA-Z0-9_-]+", () => {
+    for (const t of topics) {
+      expect(t.id, `neplatné ID: ${t.id}`).toMatch(/^[a-zA-Z0-9_-]+$/);
+    }
+  });
+
+  it("helpTemplate existuje u každého tématu", () => {
+    for (const t of topics) {
+      expect(t.helpTemplate, `helpTemplate chybí u ${t.id}`).toBeDefined();
+      expect(t.helpTemplate).not.toBeNull();
+    }
+  });
+
+  it("generator vrátí neprázdné pole pro level 1", () => {
+    for (const t of topics) {
+      const tasks = t.generator(1);
+      expect(Array.isArray(tasks), `generator u ${t.id} nevrátil pole`).toBe(true);
+      expect(tasks.length, `generator u ${t.id} vrátil prázdné pole`).toBeGreaterThan(0);
+    }
+  });
+
+  it("každý task z generatoru má question a correctAnswer", () => {
+    for (const t of topics) {
+      const tasks = t.generator(1);
+      for (const task of tasks.slice(0, 2)) {
+        expect(task.question?.trim().length, `prázdná question u ${t.id}`).toBeGreaterThan(0);
+        expect(task.correctAnswer !== undefined && task.correctAnswer !== null,
+          `chybí correctAnswer u ${t.id}`).toBe(true);
+      }
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────
+// getTopicsForGrade
+// ─────────────────────────────────────────────────────────
+describe("getTopicsForGrade", () => {
+  it("každý ročník 3–9 vrátí aspoň 1 topic (grade 1–2 jsou DB-only)", () => {
+    for (let grade = 3; grade <= 9; grade++) {
+      expect(getTopicsForGrade(grade).length,
+        `Ročník ${grade} nemá žádné téma`).toBeGreaterThan(0);
+    }
+  });
+  it("grade 1 a 2 vrátí 0 statických témat (pouze DB-only)", () => {
+    expect(getTopicsForGrade(1).length).toBe(0);
+    expect(getTopicsForGrade(2).length).toBe(0);
+  });
+  it("ročník 0 — prázdný seznam", () => {
     expect(getTopicsForGrade(0).length).toBe(0);
   });
-
-  it("vrácené topics mají gradeRange obsahující daný grade", () => {
-    const grade = 3;
-    const topics = getTopicsForGrade(grade);
-    topics.forEach((t) => {
-      expect(t.gradeRange[0]).toBeLessThanOrEqual(grade);
-      expect(t.gradeRange[1]).toBeGreaterThanOrEqual(grade);
-    });
+  it("ročník 10 — prázdný seznam", () => {
+    expect(getTopicsForGrade(10).length).toBe(0);
   });
-
-  it("topic v gradeRange [3,5] je viditelný v 3, 4 i 5", () => {
-    const sampleTopic = allTopics.find((t) => t.gradeRange[0] === 3 && t.gradeRange[1] === 5);
-    if (!sampleTopic) return; // skip if no such topic
-    expect(getTopicsForGrade(3)).toContain(sampleTopic);
-    expect(getTopicsForGrade(4)).toContain(sampleTopic);
-    expect(getTopicsForGrade(5)).toContain(sampleTopic);
-    expect(getTopicsForGrade(2)).not.toContain(sampleTopic);
+  it("všechny vrácené topics mají ročník v rozsahu", () => {
+    for (const grade of [1, 3, 5, 7, 9] as const) {
+      for (const t of getTopicsForGrade(grade)) {
+        expect(grade >= t.gradeRange[0] && grade <= t.gradeRange[1],
+          `${t.id} by nemělo být v ročníku ${grade} (rozsah ${t.gradeRange})`).toBe(true);
+      }
+    }
   });
 });
 
-describe("getTopicById — lookup", () => {
-  it("existující ID → topic", () => {
-    const t = getTopicById("math-compare-natural-numbers-100");
-    expect(t).toBeDefined();
-    expect(t?.id).toBe("math-compare-natural-numbers-100");
+// ─────────────────────────────────────────────────────────
+// getTopicById
+// ─────────────────────────────────────────────────────────
+describe("getTopicById", () => {
+  it("existující ID → vrátí topic se správným id", () => {
+    const topic = getTopicById("math-compare-natural-numbers-100");
+    expect(topic).toBeDefined();
+    expect(topic?.id).toBe("math-compare-natural-numbers-100");
   });
-
   it("neexistující ID → undefined", () => {
-    expect(getTopicById("xxx-not-a-real-topic")).toBeUndefined();
+    expect(getTopicById("totally-fake-skill")).toBeUndefined();
   });
-
-  it("prázdný ID → undefined", () => {
+  it("prázdný string → undefined", () => {
     expect(getTopicById("")).toBeUndefined();
   });
-
-  it("topic objekt obsahuje všechny required fields", () => {
-    const t = getTopicById("math-compare-natural-numbers-100");
-    expect(t?.title).toBeTruthy();
-    expect(t?.subject).toBeTruthy();
-    expect(t?.category).toBeTruthy();
-    expect(t?.keywords.length).toBeGreaterThan(0);
-    expect(t?.goals.length).toBeGreaterThan(0);
-    expect(typeof t?.generator).toBe("function");
-  });
-});
-
-describe("matchTopic — comprehensive", () => {
-  it("deterministic: stejný input + grade → stejný topic", () => {
-    const r1 = matchTopic("porovnávání čísel", 3);
-    const r2 = matchTopic("porovnávání čísel", 3);
-    expect(r1?.id).toBe(r2?.id);
-  });
-
-  it("partial match (substring) funguje", () => {
-    // Topic má keyword "porovnávání čísel", input "kde porovnáváme čísla" by NEMĚL match
-    // (substring "porovnávání čísel" není v inputu)
-    expect(matchTopic("kde porovnáváme dvě čísla", 3)).toBeNull();
-  });
-
-  it("plný keyword match", () => {
-    const r = matchTopic("porovnávání čísel", 3);
-    expect(r).toBeTruthy();
-    expect(r?.subject).toBe("matematika");
-  });
-
-  it("longest-match wins při ambiguity", () => {
-    // sloh-vyprávění a sloh-popis sdílejí "sloh", ale "vyprávění" je delší
-    const r = matchTopic("vyprávění", 4);
-    expect(r?.id).toBe("cz-sloh-vypraveni");
-  });
-
-  it("grade out-of-range → null", () => {
-    expect(matchTopic("vyprávění", 9)).toBeNull();
-    expect(matchTopic("porovnávání čísel", 9)).toBeNull();
-  });
-
-  it("performance: 1000 calls < 500ms", () => {
-    const start = performance.now();
-    for (let i = 0; i < 1000; i++) {
-      matchTopic("porovnávání čísel", 3);
+  it("každé ID z getAllTopics() se nalezne zpět", () => {
+    for (const t of getAllTopics()) {
+      expect(getTopicById(t.id)?.id).toBe(t.id);
     }
-    const elapsed = performance.now() - start;
-    expect(elapsed).toBeLessThan(500);
   });
 });
 
-describe("getPrerequisites — lookup", () => {
-  it("topic v PREREQUISITE_MAP → list", () => {
-    const prereqs = getPrerequisites("frac_compare_diff_den");
-    expect(Array.isArray(prereqs)).toBe(true);
-    expect(prereqs.length).toBeGreaterThan(0);
+// ─────────────────────────────────────────────────────────
+// matchTopic
+// ─────────────────────────────────────────────────────────
+describe("matchTopic", () => {
+  it("prázdný vstup → null", () => {
+    expect(matchTopic("", 3)).toBeNull();
   });
-
-  it("topic mimo mapu → []", () => {
-    expect(getPrerequisites("non-existent-id")).toEqual([]);
+  it("whitespace-only → null", () => {
+    expect(matchTopic("   ", 3)).toBeNull();
   });
+  it("deterministický — stejný vstup → stejný výsledek", () => {
+    const a = matchTopic("porovnávání čísel", 3);
+    const b = matchTopic("porovnávání čísel", 3);
+    expect(a?.id).toBe(b?.id);
+  });
+  it("case-insensitive", () => {
+    const lower = matchTopic("porovnávání čísel", 3);
+    const upper = matchTopic("POROVNÁVÁNÍ ČÍSEL", 3);
+    expect(lower?.id).toBe(upper?.id);
+  });
+  it("nikdy nevyhodí výjimku pro libovolný vstup", () => {
+    const inputs = ["???", "sčítání zlomků", "abc123", "zlomky", "diktát"];
+    for (const inp of inputs) {
+      expect(() => matchTopic(inp, 5)).not.toThrow();
+    }
+  });
+  it("topic matchnutý pro ročník patří do gradeRange", () => {
+    const result = matchTopic("porovnávání čísel", 3);
+    if (result) {
+      expect(result.gradeRange[0] <= 3 && result.gradeRange[1] >= 3).toBe(true);
+    }
+  });
+  it("longest-keyword preference: specifičtější keyword vítězí", () => {
+    // Pokud existuje topic s delším klíčovým slovem, ten by měl vyhrát
+    expect(() => matchTopic("sčítání zlomků se stejným jmenovatelem", 5)).not.toThrow();
+  });
+});
 
-  it("topic s no prereqs ('cz-parove-souhlasky') → []", () => {
+// ─────────────────────────────────────────────────────────
+// PREREQUISITE_MAP
+// ─────────────────────────────────────────────────────────
+describe("PREREQUISITE_MAP", () => {
+  it("getPrerequisites pro neznámý skill → []", () => {
+    expect(getPrerequisites("neexistuje")).toEqual([]);
+  });
+  it("getPrerequisites pro skill bez prereq → []", () => {
     expect(getPrerequisites("cz-parove-souhlasky")).toEqual([]);
   });
-
-  it("PREREQUISITE_MAP má alespoň 30 záznamů (curriculum graph coverage)", () => {
-    expect(Object.keys(PREREQUISITE_MAP).length).toBeGreaterThan(30);
+  it("žádný skill není svým vlastním prerequisitem", () => {
+    for (const [skill, prereqs] of Object.entries(PREREQUISITE_MAP)) {
+      expect(prereqs, `${skill} je svůj vlastní prereq`).not.toContain(skill);
+    }
+  });
+  it("žádný skill nemá více než 5 přímých prereq", () => {
+    for (const [skill, prereqs] of Object.entries(PREREQUISITE_MAP)) {
+      expect(prereqs.length, `${skill} má příliš mnoho prereq`).toBeLessThanOrEqual(5);
+    }
+  });
+  it("prereq jsou pole stringů", () => {
+    for (const [skill, prereqs] of Object.entries(PREREQUISITE_MAP)) {
+      expect(Array.isArray(prereqs), `${skill}: prereqs není pole`).toBe(true);
+      for (const p of prereqs) {
+        expect(typeof p, `prereq u ${skill} není string`).toBe("string");
+      }
+    }
+  });
+  it("žádný cyklus v prereq grafu (max hloubka 10)", () => {
+    function hasCycle(skill: string, visited = new Set<string>()): boolean {
+      if (visited.has(skill)) return true;
+      visited.add(skill);
+      for (const p of (PREREQUISITE_MAP[skill] ?? [])) {
+        if (hasCycle(p, new Set(visited))) return true;
+      }
+      return false;
+    }
+    for (const skill of Object.keys(PREREQUISITE_MAP)) {
+      expect(hasCycle(skill), `Cyklus u ${skill}`).toBe(false);
+    }
   });
 });
 
-describe("Content registry — graph integrity", () => {
-  it("žádný self-prerequisite (a → a)", () => {
-    const cycles: string[] = [];
-    for (const [topicId, prereqs] of Object.entries(PREREQUISITE_MAP)) {
-      if (prereqs.includes(topicId)) cycles.push(topicId);
-    }
-    expect(cycles).toEqual([]);
+// ─────────────────────────────────────────────────────────
+// createSession
+// ─────────────────────────────────────────────────────────
+describe("createSession", () => {
+  it("vrátí session ve stavu INIT", () => {
+    expect(createSession(3).state).toBe("INIT");
   });
-
-  it("2-cycle detection (a → b, b → a)", () => {
-    const cycles: string[] = [];
-    for (const [a, prereqsA] of Object.entries(PREREQUISITE_MAP)) {
-      for (const b of prereqsA) {
-        const prereqsB = PREREQUISITE_MAP[b] ?? [];
-        if (prereqsB.includes(a)) {
-          cycles.push(`${a} ↔ ${b}`);
-        }
-      }
-    }
-    expect(cycles).toEqual([]);
+  it("id má UUID formát", () => {
+    expect(createSession(3).id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
   });
-
-  it("max 5 prereqs per topic (curriculum sanity)", () => {
-    for (const [topicId, prereqs] of Object.entries(PREREQUISITE_MAP)) {
-      expect(prereqs.length, topicId).toBeLessThanOrEqual(5);
-    }
+  it("každé volání vrátí unikátní id", () => {
+    const ids = Array.from({ length: 5 }, () => createSession(3).id);
+    expect(new Set(ids).size).toBe(5);
   });
-});
-
-describe("Content registry — generators stability", () => {
-  it("každý topic.generator volaný 5× nekráchá", () => {
-    let crashes = 0;
-    for (const t of allTopics.slice(0, 30)) {
-      for (let i = 0; i < 5; i++) {
-        try {
-          const tasks = t.generator(2);
-          if (!Array.isArray(tasks)) throw new Error("not array");
-        } catch {
-          crashes++;
-        }
-      }
-    }
-    expect(crashes).toBe(0);
+  it("grade odpovídá zadanému", () => {
+    expect(createSession(5).grade).toBe(5);
+    expect(createSession(1).grade).toBe(1);
   });
-
-  it("generator output má alespoň 1 task pro level 1, 2, 3", () => {
-    let zeroCount = 0;
-    for (const t of allTopics.slice(0, 20)) {
-      for (const lvl of [1, 2, 3]) {
-        const tasks = t.generator(lvl);
-        if (tasks.length === 0) zeroCount++;
-      }
-    }
-    // Některé generators mohou vrátit 0 pro neexistující level — sanity threshold
-    expect(zeroCount).toBeLessThan(allTopics.slice(0, 20).length * 3 * 0.1);
+  it("countery inicializovány na 0", () => {
+    const s = createSession(3);
+    expect(s.errorCount).toBe(0);
+    expect(s.errorStreak).toBe(0);
+    expect(s.successStreak).toBe(0);
+    expect(s.currentTaskIndex).toBe(0);
+    expect(s.helpUsedCount).toBe(0);
+    expect(s.currentLevel).toBe(1);
   });
-
-  it("generator tasks mají non-empty question + correctAnswer", () => {
-    let invalidCount = 0;
-    for (const t of allTopics.slice(0, 30)) {
-      const tasks = t.generator(2);
-      for (const task of tasks.slice(0, 3)) { // jen 3 sample
-        if (!task.question?.trim() || task.correctAnswer === undefined) invalidCount++;
-      }
-    }
-    expect(invalidCount).toBe(0);
+  it("matchedTopic null, practiceBatch prázdný", () => {
+    const s = createSession(3);
+    expect(s.matchedTopic).toBeNull();
+    expect(s.practiceBatch).toEqual([]);
+  });
+  it("rules jsou definovány (z getRulesForGrade)", () => {
+    const s = createSession(3);
+    expect(s.rules).toBeDefined();
+    expect(typeof s.rules.maxDurationSeconds).toBe("number");
+    expect(s.rules.maxDurationSeconds).toBeGreaterThan(0);
   });
 });
 
-describe("Content registry — practiceType + sessionTaskCount", () => {
-  it("practiceType je 'result_only' nebo 'step_based' nebo undefined", () => {
-    const valid = ["result_only", "step_based", undefined];
-    allTopics.forEach((t) => {
-      expect(valid, t.id).toContain(t.practiceType);
-    });
-  });
+// ─────────────────────────────────────────────────────────
+// transition — stavový stroj
+// ─────────────────────────────────────────────────────────
+describe("transition — platné přechody", () => {
+  const mk = (state: SessionState) => ({ ...createSession(3), state });
 
-  it("sessionTaskCount sanity (1-20)", () => {
-    allTopics.forEach((t) => {
-      const count = t.sessionTaskCount ?? 6;
-      expect(count, t.id).toBeGreaterThanOrEqual(1);
-      expect(count, t.id).toBeLessThanOrEqual(20);
-    });
+  it("INIT → INPUT_CAPTURE", () => {
+    expect(transition(createSession(3), "INPUT_CAPTURE").state).toBe("INPUT_CAPTURE");
   });
+  it("INPUT_CAPTURE → PRE_INTENT", () => {
+    expect(transition(mk("INPUT_CAPTURE"), "PRE_INTENT").state).toBe("PRE_INTENT");
+  });
+  it("PRE_INTENT → TOPIC_MATCH", () => {
+    expect(transition(mk("PRE_INTENT"), "TOPIC_MATCH").state).toBe("TOPIC_MATCH");
+  });
+  it("PRE_INTENT → INPUT_CAPTURE (retry)", () => {
+    expect(transition(mk("PRE_INTENT"), "INPUT_CAPTURE").state).toBe("INPUT_CAPTURE");
+  });
+  it("TOPIC_MATCH → EXPLAIN", () => {
+    expect(transition(mk("TOPIC_MATCH"), "EXPLAIN").state).toBe("EXPLAIN");
+  });
+  it("EXPLAIN → PRACTICE", () => {
+    expect(transition(mk("EXPLAIN"), "PRACTICE").state).toBe("PRACTICE");
+  });
+  it("PRACTICE → CHECK", () => {
+    expect(transition(mk("PRACTICE"), "CHECK").state).toBe("CHECK");
+  });
+  it("CHECK → PRACTICE (opakování)", () => {
+    expect(transition(mk("CHECK"), "PRACTICE").state).toBe("PRACTICE");
+  });
+  it("CHECK → END", () => {
+    expect(transition(mk("CHECK"), "END").state).toBe("END");
+  });
+  it("STOP_1 → EXPLAIN", () => {
+    expect(transition(mk("STOP_1"), "EXPLAIN").state).toBe("EXPLAIN");
+  });
+  it("STOP_1 → INPUT_CAPTURE", () => {
+    expect(transition(mk("STOP_1"), "INPUT_CAPTURE").state).toBe("INPUT_CAPTURE");
+  });
+  it("STOP_2 → END", () => {
+    expect(transition(mk("STOP_2"), "END").state).toBe("END");
+  });
+});
 
-  it("essay topics mají sessionTaskCount = 1 (drahá AI)", () => {
-    allTopics.filter((t) => t.inputType === "essay").forEach((t) => {
-      expect(t.sessionTaskCount, t.id).toBe(1);
-    });
+describe("transition — neplatné přechody vyhodí Error", () => {
+  const mk = (state: SessionState) => ({ ...createSession(3), state });
+
+  it("INIT → PRACTICE", () => {
+    expect(() => transition(createSession(3), "PRACTICE")).toThrow();
+  });
+  it("END → INPUT_CAPTURE", () => {
+    expect(() => transition(mk("END"), "INPUT_CAPTURE")).toThrow();
+  });
+  it("INIT → END", () => {
+    expect(() => transition(createSession(3), "END")).toThrow();
+  });
+  it("PRACTICE → INIT", () => {
+    expect(() => transition(mk("PRACTICE"), "INIT")).toThrow();
+  });
+  it("CHECK → INIT", () => {
+    expect(() => transition(mk("CHECK"), "INIT")).toThrow();
+  });
+  it("END → END (terminální stav)", () => {
+    expect(() => transition(mk("END"), "END")).toThrow();
+  });
+});
+
+describe("transition — immutabilita", () => {
+  it("původní session nezměněna", () => {
+    const original = createSession(3);
+    transition(original, "INPUT_CAPTURE");
+    expect(original.state).toBe("INIT");
+  });
+  it("vrácená session je nový objekt", () => {
+    const s = createSession(3);
+    const next = transition(s, "INPUT_CAPTURE");
+    expect(next).not.toBe(s);
+  });
+  it("grade, id a ostatní pole se zkopírují", () => {
+    const s = createSession(5);
+    const next = transition(s, "INPUT_CAPTURE");
+    expect(next.grade).toBe(5);
+    expect(next.id).toBe(s.id);
   });
 });

@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Plus Jakarta Sans", "Sora", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif"],
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
         "soft-1": "0 1px 2px rgba(15,23,42,0.04)",

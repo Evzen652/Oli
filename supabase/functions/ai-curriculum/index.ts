@@ -107,6 +107,8 @@ serve(async (req) => {
 
     const systemPrompt = `Jsi odborný pedagogický asistent pro tvorbu kurikula české základní školy (3.–9. ročník).
 
+**DŮLEŽITÉ: Veškeré odpovědi piš VÝHRADNĚ česky. Nepoužívej žádný jiný jazyk — ani němčinu, angličtinu, španělštinu, portugalštinu ani jiný. Pokud nevíš české slovo, popiš pojem opisem v češtině.**
+
 ## Tvůj úkol
 Pomáháš administrátorovi vytvářet a spravovat obsah výukové aplikace. Na základě jeho instrukcí navrhuješ strukturu kurikula: předměty, okruhy (categories), témata (topics) a podtémata (skills).
 

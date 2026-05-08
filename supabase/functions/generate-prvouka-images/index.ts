@@ -43,6 +43,10 @@ const scene = p;
 
 // All keys to generate images for
 const IMAGE_KEYS: Record<string, string> = {
+  // ── UI ilustrace ──────────────────────────────────────────
+  "ui-child-desk": scene("a happy smiling child sitting at a wooden school desk, open notebook and pencil on the desk, bright colorful classroom background with a chalkboard"),
+  "ui-focus-target": scene("a friendly cheerful owl teacher pointing at a glowing golden star target on a board, encouraging smile, colorful classroom setting"),
+
   // ── SUBJECTS ──────────────────────────────────────────────
   "subject-matematika": concept("colorful 3D abacus with bright red and blue beads, plus sign and equals sign shapes, counting blocks stacked"),
   "subject-cestina": concept("open book with colorful alphabet letters flying out of the pages, fountain pen beside it"),

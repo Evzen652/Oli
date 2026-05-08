@@ -18,7 +18,9 @@ const FALLBACK_NAMES: Record<string, string> = {
   "math-multiply-small": "Malá násobilka",
   "math-multiply-twodigit": "Násobení dvojciferným",
   "math-add-sub-20": "Sčítání a odčítání do 20",
+  "math-add-sub-50": "Sčítání a odčítání do 50",
   "addSub20": "Sčítání a odčítání do 20",
+  "addSub50": "Sčítání a odčítání do 50",
   "addSub100": "Sčítání a odčítání do 100",
   "math-divide-simple": "Dělení",
   "math-divide-remainder": "Dělení se zbytkem",
@@ -96,9 +98,19 @@ export function getShortSkillName(skillId: string): string {
  * Vrátí předmět (subject) skillu pokud existuje v registry.
  * Užitečné pro řazení/grupování (matematika, čeština, ...).
  */
+const SUBJECT_BY_PREFIX: Array<{ pattern: RegExp; subject: string }> = [
+  { pattern: /^(math[-_]|addSub|divideO|divideR|compareN|frac[-_])/i, subject: "matematika" },
+  { pattern: /^(cz[-_]|czech)/i, subject: "čeština" },
+  { pattern: /^(pr[-_]|prvouka)/i, subject: "prvouka" },
+];
+
 export function getSkillSubject(skillId: string): string | null {
   const topic = getTopicById(skillId) ?? getTopicById(canonicalSkillId(skillId));
-  return topic?.subject ?? null;
+  if (topic?.subject) return topic.subject;
+  for (const { pattern, subject } of SUBJECT_BY_PREFIX) {
+    if (pattern.test(skillId)) return subject;
+  }
+  return null;
 }
 
 /**

@@ -25,9 +25,12 @@ export function useChildren() {
 
   const fetchChildren = useCallback(async () => {
     setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setChildren([]); setLoading(false); return; }
     const { data } = await supabase
       .from("children")
       .select("*")
+      .eq("parent_user_id", user.id)
       .order("created_at", { ascending: true });
     setChildren((data as Child[]) ?? []);
     setLoading(false);

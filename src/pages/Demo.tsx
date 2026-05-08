@@ -1,68 +1,116 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { OlyLogo } from "@/components/OlyLogo";
-import { DemoChildTab } from "@/components/demo/DemoChildTab";
-import { DemoParentTab } from "@/components/demo/DemoParentTab";
-import { DemoAdminTab } from "@/components/demo/DemoAdminTab";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GraduationCap, Users, Settings } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { DewhiteImg } from "@/components/DewhiteImg";
+import { LandingNav } from "./LandingNav";
+import { Loader2 } from "lucide-react";
+
+const DEMO_PARENT_EMAIL = "demo@oli.app";
+const DEMO_CHILD_EMAIL  = "demo-child@oli.app";
+const DEMO_PASSWORD     = "Demo123demo";
 
 export default function Demo() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  async function handleParentDemo() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: DEMO_PARENT_EMAIL,
+      password: DEMO_PASSWORD,
+    });
+    if (error) {
+      toast.error("Demo není momentálně dostupné. Zkuste to za chvíli.");
+      setLoading(false);
+    } else {
+      window.location.href = "/parent";
+    }
+  }
+
+  async function handleChildDemo() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: DEMO_CHILD_EMAIL,
+      password: DEMO_PASSWORD,
+    });
+    if (error) {
+      toast.error("Demo není momentálně dostupné. Zkuste to za chvíli.");
+      setLoading(false);
+    } else {
+      window.location.href = "/";
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Demo banner */}
-      <div className="sticky top-0 z-50 bg-primary text-primary-foreground px-4 py-2 flex items-center justify-between text-sm shadow-md">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">🎯</span>
-          <span className="font-medium">Demo režim — vyzkoušej si Oly bez registrace</span>
-        </div>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="h-7 text-xs"
-          onClick={() => navigate("/auth")}
-        >
-          Registrovat se →
-        </Button>
+      <div className="bg-[#F97316] text-white px-4 py-2 text-sm text-center font-medium">
+        Demo — prohlídka bez registrace
       </div>
+      <LandingNav />
 
-      <div className="mx-auto max-w-4xl px-4 py-6">
-        <div className="flex items-center gap-3 mb-6">
-          <OlyLogo size="sm" />
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Váš partner pro každodenní vyučování</h1>
-            <p className="text-sm text-muted-foreground">Adaptivní tutor pro žáky 3.–9. třídy</p>
-          </div>
+      <div className="mx-auto max-w-3xl px-4 py-12 space-y-8">
+        <div className="text-center space-y-2">
+          <h1 className="font-bold text-3xl text-foreground">Vyzkoušejte Oli</h1>
+          <p className="text-muted-foreground text-base max-w-md mx-auto">
+            Projděte si Oli očima rodiče nebo žáka. Žádná registrace, žádné omezení.
+          </p>
         </div>
 
-        <Tabs defaultValue="child" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3 h-12">
-            <TabsTrigger value="child" className="gap-2 text-sm">
-              <GraduationCap className="h-4 w-4" />
-              Žák
-            </TabsTrigger>
-            <TabsTrigger value="parent" className="gap-2 text-sm">
-              <Users className="h-4 w-4" />
-              Rodič
-            </TabsTrigger>
-            <TabsTrigger value="admin" className="gap-2 text-sm">
-              <Settings className="h-4 w-4" />
-              Admin
-            </TabsTrigger>
-          </TabsList>
+        <div className="grid sm:grid-cols-2 gap-5">
+          {/* Rodičovský pohled */}
+          <button
+            onClick={handleParentDemo}
+            disabled={loading}
+            className="group relative rounded-3xl border-2 border-blue-200 bg-blue-50/60 hover:border-blue-400 hover:bg-blue-50 hover:shadow-lg p-8 text-center space-y-4 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-wait flex flex-col items-center"
+          >
+            <DewhiteImg
+              src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/topic-rodina-a-spolecnost.png"
+              alt=""
+              className="h-24 w-24 object-contain drop-shadow-md"
+              threshold={240}
+            />
+            <div>
+              <p className="font-bold text-xl text-blue-900">Jsem rodič</p>
+              <p className="text-sm text-blue-700 mt-1 leading-snug">
+                Zadávejte úkoly, sledujte pokrok a výsledky, odhalte slabá místa — vše přehledně na jednom místě.
+              </p>
+            </div>
+            {loading
+              ? <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
+              : <span className="text-blue-400 text-lg group-hover:translate-x-1 transition-transform inline-block">→</span>
+            }
+          </button>
 
-          <TabsContent value="child">
-            <DemoChildTab />
-          </TabsContent>
-          <TabsContent value="parent">
-            <DemoParentTab />
-          </TabsContent>
-          <TabsContent value="admin">
-            <DemoAdminTab />
-          </TabsContent>
-        </Tabs>
+          {/* Žákovský pohled */}
+          <button
+            onClick={handleChildDemo}
+            disabled={loading}
+            className="group rounded-3xl border-2 border-orange-200 bg-orange-50/60 hover:border-orange-400 hover:bg-orange-50 hover:shadow-lg p-8 text-center space-y-4 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-wait flex flex-col items-center"
+          >
+            <DewhiteImg
+              src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/ui-child-desk.png"
+              alt=""
+              className="h-24 w-24 object-contain drop-shadow-md"
+              threshold={240}
+            />
+            <div>
+              <p className="font-bold text-xl text-orange-900">Jsem žák</p>
+              <p className="text-sm text-orange-700 mt-1 leading-snug">
+                Procvičuj libovolné téma — Oli připraví úlohy přesně na míru, poradí a okamžitě ohodnotí.
+              </p>
+            </div>
+            {loading
+              ? <Loader2 className="h-5 w-5 text-orange-400 animate-spin" />
+              : <span className="text-orange-400 text-lg group-hover:translate-x-1 transition-transform inline-block">→</span>
+            }
+          </button>
+        </div>
+
+        <p className="text-center text-xs text-muted-foreground">
+          Oba pohledy se přihlásí jako demo účet s předpřipravenou historií.
+          Výsledky z demo relace se neukládají natrvalo.
+        </p>
       </div>
     </div>
   );

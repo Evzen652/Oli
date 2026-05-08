@@ -101,6 +101,15 @@ function DewhiteImg({ src, alt, className, style, threshold = 245 }: { src: stri
 export default function Landing() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       <LandingNav />
@@ -121,8 +130,8 @@ export default function Landing() {
                 <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-lg shadow-orange-200 w-full sm:w-auto" style={{ background: C.orange }} onClick={() => navigate("/auth")}>
                   Začít zdarma <ArrowRight className="h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-base px-12 h-14 rounded-full border-slate-200 text-slate-600 w-full sm:w-auto" onClick={() => document.querySelector("#jak-to-funguje")?.scrollIntoView({ behavior: "smooth" })}>
-                  Podívat se, jak to funguje
+                <Button size="lg" variant="outline" className="text-base px-12 h-14 rounded-full border-slate-200 text-slate-600 w-full sm:w-auto" onClick={() => navigate("/demo")}>
+                  Vyzkoušet demo
                 </Button>
               </div>
               <p className="text-sm text-slate-400">14 dní zdarma · Bez zadání karty</p>
@@ -213,20 +222,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ═══════ PŘÍPRAVA NA PÍSEMKY ═══════ */}
-      <Section id="jak-to-funguje" className="">
-        <p className="text-center text-lg font-medium text-slate-500 mb-2">Jak to funguje</p>
-        <SectionHead title="Příprava na písemku bez stresu" sub="Stačí vybrat téma a Oli připraví dítě krok za krokem." />
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <FeatureCard img={imgZlomky} title="Vyberete téma nebo okruh" desc="Např. zlomky, vyjmenovaná slova nebo konkrétní látku ze školy." bg={C.bgBlue} />
-          <FeatureCard img={imgUceni} title="Oli připraví cvičení na míru" desc="Navazuje na aktuální úroveň dítěte a postupně ho vede dál." bg="white" />
-          <FeatureCard img={imgPodpora} title="Dítě získá jistotu" desc="Procvičuje přesně to, co potřebuje, v tempu, které mu vyhovuje." bg="white" />
-          <FeatureCard img={imgPrehled} title="Vy vidíte výsledek" desc="Přehledně sledujete, jak se dítě připravuje a jak se mu daří." bg={C.bgGreen} />
-        </div>
-      </Section>
-
       {/* ═══════ JAK TO FUNGUJE ═══════ */}
-      <Section className="bg-[#F8FAFC]">
+      <Section id="jak-to-funguje" className="bg-[#F8FAFC]">
         <SectionHead title="Jak to funguje" sub="Oli vás provede celým procesem — od prvního přihlášení až po každodenní učení." />
         <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {[
@@ -248,15 +245,37 @@ export default function Landing() {
         </div>
       </Section>
 
-      {/* ═══════ DŮVĚROVÝ BLOK ═══════ */}
-      <Section>
-        <SectionHead title="Jak vypadá běžný den s Oli" />
-        <div className="space-y-5 max-w-3xl mx-auto">
+      {/* ═══════ PŘÍPRAVA NA PÍSEMKY ═══════ */}
+      <Section id="pisemka" className="">
+        <SectionHead title="Příprava na písemku bez stresu" sub="Stačí vybrat téma a Oli připraví dítě krok za krokem." />
+        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {[
+            { step: 1, img: imgZlomky, title: "Vyberete téma nebo okruh", desc: "Např. zlomky, vyjmenovaná slova nebo konkrétní látku ze školy.", bg: C.bgBlue },
+            { step: 2, img: imgUceni, title: "Oli připraví cvičení na míru", desc: "Navazuje na aktuální úroveň dítěte a postupně ho vede dál.", bg: C.bgOrange },
+            { step: 3, img: imgPodpora, title: "Dítě získá jistotu", desc: "Procvičuje přesně to, co potřebuje, v tempu, které mu vyhovuje.", bg: C.bgGreen },
+            { step: 4, img: imgPrehled, title: "Vy vidíte výsledek", desc: "Přehledně sledujete, jak se dítě připravuje a jak se mu daří.", bg: "#FEF9C3" },
+          ].map((item) => (
+            <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
+              <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.orange }}>
+                {item.step}
+              </div>
+              <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain drop-shadow-sm" />
+              <h3 className="text-base font-semibold font-heading pr-8" style={{ color: C.dark }}>{item.title}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ═══════ DEN S OLIM ═══════ */}
+      <Section id="den-s-olim">
+        <SectionHead title="Jak vypadá běžný den s Olim" />
+        <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {[
             { img: imgProcvic, title: "Krátké procvičování", desc: "Oli navazuje na to, co už dítě zvládá, a přirozeně ho posouvá dál.", bg: C.bgOrange },
             { img: imgVysvetleni, title: "Vysvětlení během učení", desc: "Každý krok dává smysl a pomáhá látku pochopit.", bg: C.bgBlue },
             { img: imgPrehled, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
-            { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a Oli vede dítě krok za krokem.", bg: "white" },
+            { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a Oli vede dítě krok za krokem.", bg: "#FEF9C3" },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-5 p-6 rounded-3xl shadow-md hover:shadow-lg transition-shadow" style={{ background: item.bg }}>
               <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md" />
@@ -278,11 +297,11 @@ export default function Landing() {
       <Section id="prinosy" className="bg-[#F8FAFC]">
         <SectionHead title="Co vám Oli přinese" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <FeatureCard img={imgBarChart} title="Přehled o pokroku" desc="Každý den vidíte, co dítě procvičilo a jak se mu dařilo." />
+          <FeatureCard img={imgBarChart} title="Přehled o pokroku" desc="Každý den vidíte, co dítě procvičilo a jak se mu dařilo." bg={C.bgOrange} />
           <FeatureCard img={imgUceni} title="Učení, které dává smysl" desc="Cvičení odpovídají aktuální úrovni dítěte." bg={C.bgBlue} />
-          <FeatureCard img={imgSkola} title="Cílená příprava na školu" desc="Snadno zaměříte učení na konkrétní téma nebo písemku." />
+          <FeatureCard img={imgSkola} title="Cílená příprava na školu" desc="Snadno zaměříte učení na konkrétní téma nebo písemku." bg="#F3F0FF" />
           <FeatureCard img={imgPodpora} title="Podpora bez tlaku" desc="Dítě postupuje vlastním tempem." bg={C.bgGreen} />
-          <FeatureCard img={imgStarosti} title="Méně starostí pro rodiče" desc="Oli se stará o průběh učení za vás." />
+          <FeatureCard img={imgStarosti} title="Méně starostí pro rodiče" desc="Oli se stará o průběh učení za vás." bg="#FEF9C3" />
           <FeatureCard img={imgProstredi} title="Soustředěné prostředí" desc="Bez reklam a rušivých prvků." bg={C.bgOrange} />
         </div>
       </Section>

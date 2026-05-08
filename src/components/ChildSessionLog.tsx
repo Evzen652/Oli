@@ -201,7 +201,7 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
       {filtered.length === 0 ? (
         <p className="text-xs text-center text-muted-foreground py-3">Žádné záznamy odpovídající filtru.</p>
       ) : (
-        <div className="space-y-2 py-1">
+        <div className="space-y-4 py-1">
           {filtered.slice(0, 30).map((s) => {
             const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
             const grade = pctToGrade(pct);
@@ -212,7 +212,7 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
             const subjectMeta = subject ? getSubjectMeta(subject) : null;
 
             return (
-              <div key={s.session_id} className="rounded-2xl border border-border/40 bg-slate-50/60 p-3 flex items-center gap-3.5">
+              <div key={s.session_id} className="rounded-3xl border border-border/40 bg-slate-50/60 px-7 py-6 flex items-center gap-6">
                 <div className="grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 shrink-0">
                   <IllustrationImg
                     src={subjectMeta?.image ?? ""}
@@ -233,13 +233,15 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
                     {new Date(s.date).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="flex items-center gap-0.5 text-xs text-green-600"><CheckCircle2 className="h-3 w-3" />{s.correct}</span>
-                  {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500"><HelpCircle className="h-3 w-3" />{s.help_used}</span>}
-                  {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500"><XCircle className="h-3 w-3" />{s.total - s.correct}</span>}
-                  <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
-                    {grade}
-                  </span>
+                <div className="flex flex-col items-end gap-3 shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="flex items-center gap-0.5 text-xs text-green-600"><CheckCircle2 className="h-3 w-3" />{s.correct}</span>
+                    {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500"><HelpCircle className="h-3 w-3" />{s.help_used}</span>}
+                    {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500"><XCircle className="h-3 w-3" />{s.total - s.correct}</span>}
+                    <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
+                      {grade}
+                    </span>
+                  </div>
                   {childId && (
                     <Button
                       variant="outline"
@@ -248,7 +250,7 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
                       onClick={() => setDetailSkillId(s.skill_id)}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
-                      Jak mu to šlo
+                      Ukázat výsledky a hodnocení
                     </Button>
                   )}
                 </div>

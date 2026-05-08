@@ -7,17 +7,24 @@ import { OlyLogo } from "@/components/OlyLogo";
 
 const NAV_LINKS = [
   { label: "Jak to funguje", href: "#jak-to-funguje" },
+  { label: "Příprava na písemku", href: "#pisemka" },
+  { label: "Den s Olim", href: "#den-s-olim" },
   { label: "Přínosy", href: "#prinosy" },
   { label: "Ceník", href: "#ceny" },
 ];
 
-function scrollTo(id: string) {
-  document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
-}
-
 export function LandingNav() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  function scrollTo(id: string) {
+    const el = document.querySelector(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/landing" + id);
+    }
+  }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/70 backdrop-blur-xl">
@@ -37,8 +44,8 @@ export function LandingNav() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-slate-600" onClick={() => navigate("/demo")}>
-            Demo
+          <Button variant="ghost" size="sm" className="text-slate-600" onClick={() => window.location.href = "/demo"}>
+            Vyzkoušet demo
           </Button>
           <Button variant="ghost" size="sm" className="text-slate-600" onClick={() => navigate("/auth")}>
             Přihlásit se
@@ -66,7 +73,7 @@ export function LandingNav() {
                   </button>
                 ))}
                 <hr />
-                <Button variant="outline" className="w-full" onClick={() => { navigate("/demo"); setOpen(false); }}>Demo</Button>
+                <Button variant="outline" className="w-full" onClick={() => { navigate("/demo"); setOpen(false); }}>Vyzkoušet demo</Button>
                 <Button variant="outline" className="w-full" onClick={() => { navigate("/auth"); setOpen(false); }}>Přihlásit se</Button>
                 <Button className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white" onClick={() => { navigate("/auth"); setOpen(false); }}>
                   Registrace zdarma

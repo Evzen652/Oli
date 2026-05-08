@@ -1,21 +1,31 @@
 import { useState } from "react";
-import { useChildMisconceptions } from "@/hooks/useChildMisconceptions";
-import { AlertTriangle, Lightbulb, Sparkles, Loader2 } from "lucide-react";
-import { getReadableSkillName } from "@/lib/skillReadableName";
+import { useChildMisconceptions, type Misconception } from "@/hooks/useChildMisconceptions";
+import { Lightbulb, Sparkles, Loader2 } from "lucide-react";
+import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
+import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { IllustrationImg } from "@/components/IllustrationImg";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 interface Props {
-  childId: string;
+  childId?: string;
+  /** Jméno dítěte — nahradí "žák/Žák" v AI-generovaných textech */
+  childName?: string;
+  /** Demo/mock mode — přeskočí Supabase fetch */
+  mockData?: Misconception[];
 }
 
 /**
  * Zobrazí AI-detekované vzorce chyb dítěte (misconceptions).
  * Pokud žádné aktivní → nezobrazí nic (skrytá sekce).
  */
-export function ChildMisconceptions({ childId }: Props) {
-  const { data, loading } = useChildMisconceptions(childId);
+export function ChildMisconceptions({ childId = "", childName, mockData }: Props) {
+  const sub = (text: string) =>
+    childName ? text.replace(/[Žž]ák/g, childName) : text;
+  const hookResult = useChildMisconceptions(mockData ? null : childId);
+  const data = mockData ?? hookResult.data;
+  const loading = mockData ? false : hookResult.loading;
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState(false);
 
@@ -65,53 +75,48 @@ export function ChildMisconceptions({ childId }: Props) {
   }
 
   return (
-    <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4 space-y-3 shadow-soft-1">
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="grid h-7 w-7 place-items-center rounded-lg bg-amber-100 text-amber-700">
-          <AlertTriangle className="h-3.5 w-3.5" />
-        </span>
-        <p className="font-display font-semibold text-foreground text-sm">
-          Co se opakovaně nedaří
-        </p>
-        <span className="text-[11px] text-muted-foreground">
-          AI rozpoznala {data.length} {data.length === 1 ? "vzor" : data.length < 5 ? "vzory" : "vzorů"}
-        </span>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleAnalyze}
-          disabled={analyzing}
-          className="ml-auto h-7 px-2 text-[11px] gap-1 text-amber-700 hover:text-amber-900 hover:bg-amber-100 rounded-full"
-          title="Spustit novou AI analýzu"
-        >
-          {analyzing ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
-          {analyzing ? "Analyzuji…" : "Aktualizovat"}
-        </Button>
-      </div>
-
-      <div className="space-y-2.5">
-        {data.map((m) => (
-          <div key={m.id} className="rounded-xl bg-card border border-amber-200/70 p-3 space-y-1.5">
-            <div className="flex items-start gap-2 flex-wrap">
-              <p className="font-semibold text-foreground text-sm flex-1 min-w-0">
-                {m.pattern_label}
-              </p>
-              <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0">
-                {getReadableSkillName(m.skill_id)}
-              </span>
-            </div>
-            {m.description && (
-              <p className="text-[12px] text-muted-foreground leading-snug">{m.description}</p>
-            )}
-            {m.suggestion && (
-              <div className="flex items-start gap-1.5 pt-1.5 border-t border-amber-200/50">
-                <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
-                <p className="text-[12px] text-foreground/85 leading-snug font-medium">{m.suggestion}</p>
+    <div className="space-y-3">
+      {data.map((m) => {
+        const subject = getSkillSubject(m.skill_id);
+        const subjectMeta = subject ? getSubjectMeta(subject) : null;
+        const skillName = getReadableSkillName(m.skill_id);
+        return (
+          <div key={m.id} className="rounded-2xl border border-amber-200/70 overflow-hidden">
+            {/* Hlavička: předmět + téma */}
+            <div className="flex items-center gap-2.5 px-4 py-3 bg-amber-50/60 border-b border-amber-200/50">
+              <IllustrationImg
+                src={subjectMeta?.image ?? ""}
+                className="h-7 w-7 object-contain shrink-0"
+                fallback={<span className="text-lg">{subjectMeta?.emoji ?? "📋"}</span>}
+              />
+              <div className="min-w-0">
+                {subjectMeta?.label && (
+                  <p className="text-[10px] font-bold text-amber-700/70 uppercase tracking-[0.12em] leading-none mb-0.5">{subjectMeta.label}</p>
+                )}
+                <p className="text-sm font-bold text-foreground leading-tight truncate">{skillName}</p>
               </div>
-            )}
+            </div>
+            {/* Tělo */}
+            <div className="px-4 py-3 space-y-3 bg-card">
+              {m.description && (
+                <div className="space-y-1">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground">Kde chybuje</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{sub(m.description)}</p>
+                </div>
+              )}
+              {m.suggestion && (
+                <div className="space-y-1 pt-2 border-t border-border/50">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-amber-700/80">Návrh</p>
+                  <div className="flex items-start gap-2">
+                    <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                    <p className="text-sm text-foreground/85 leading-relaxed">{sub(m.suggestion)}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }

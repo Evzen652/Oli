@@ -94,6 +94,21 @@ serve(async (req) => {
       );
     }
 
+    // Zjisti totožnost volajícího z JWT
+    const token = authHeader.replace("Bearer ", "");
+    const authClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+    );
+    const { data: { user: callerUser }, error: userErr } = await authClient.auth.getUser(token);
+    if (userErr || !callerUser) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const callerUserId = callerUser.id;
+
     const body = await req.json();
     const { child_id, user_id, days = 30 } = body ?? {};
     if (!child_id && !user_id) {
@@ -101,6 +116,48 @@ serve(async (req) => {
         JSON.stringify({ error: "Missing child_id or user_id" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
+    }
+
+    // IDOR guard: ověř vlastnictví dítěte před přístupem k datům
+    if (child_id) {
+      const { data: childRow } = await supabase
+        .from("children")
+        .select("parent_user_id, child_user_id")
+        .eq("id", child_id)
+        .maybeSingle();
+
+      const isParent = childRow?.parent_user_id === callerUserId;
+      const isChild = childRow?.child_user_id === callerUserId;
+
+      if (!isParent && !isChild) {
+        // Zkontroluj, zda je admin
+        const { data: roleRow } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", callerUserId)
+          .eq("role", "admin")
+          .maybeSingle();
+        if (!roleRow) {
+          return new Response(JSON.stringify({ error: "Forbidden" }), {
+            status: 403,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+    } else if (user_id && user_id !== callerUserId) {
+      // user_id mode: smí přistupovat pouze k vlastním datům (nebo admin)
+      const { data: roleRow } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", callerUserId)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (!roleRow) {
+        return new Response(JSON.stringify({ error: "Forbidden" }), {
+          status: 403,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
     }
 
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();

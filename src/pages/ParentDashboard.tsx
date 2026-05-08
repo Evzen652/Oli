@@ -3,7 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useChildren, type Child } from "@/hooks/useChildren";
 import { useProfile } from "@/hooks/useProfile";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -13,97 +12,30 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { LogOut, Plus, RefreshCw, UserCheck, Clock, BarChart3, Pencil, Check, X, Trash2, History, ChevronDown, CheckCircle2, HelpCircle, XCircle, Eye, Sparkles } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { getTopicById } from "@/lib/contentRegistry";
+import { LogOut, Plus, RefreshCw, Clock, Pencil, Check, X, Trash2, CheckCircle2, HelpCircle, XCircle, Eye, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useT } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
 import type { Grade } from "@/lib/types";
 import { ChildActivityBadge } from "@/components/ChildActivityBadge";
-import { ChildActivityChart } from "@/components/ChildActivityChart";
 import { ChildMisconceptions } from "@/components/ChildMisconceptions";
 import { AssignmentCreator } from "@/components/AssignmentCreator";
 import { AssignmentList } from "@/components/AssignmentList";
-import { SelfPracticeList } from "@/components/SelfPracticeList";
-import { OlyLogo } from "@/components/OlyLogo";
+import { ChildSessionLog } from "@/components/ChildSessionLog";
+import { DewhiteImg } from "@/components/DewhiteImg";
+import { logoNoText } from "@/components/OlyLogo";
+import { LandingNav } from "@/pages/LandingNav";
 
 const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-function InlineHistory({ childId }: { childId: string }) {
-  const [open, setOpen] = useState(false);
-  const [sessions, setSessions] = useState<{ session_id: string; date: string; skill_id: string; total: number; correct: number; help_used: number }[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const t = useT();
 
-  const handleToggle = (isOpen: boolean) => {
-    setOpen(isOpen);
-    if (isOpen && !loaded) {
-      setLoading(true);
-      supabase
-        .from("session_logs")
-        .select("session_id, skill_id, correct, help_used, created_at")
-        .eq("child_id", childId)
-        .order("created_at", { ascending: false })
-        .limit(200)
-        .then(({ data }) => {
-          if (data) {
-            const map = new Map<string, typeof sessions[0]>();
-            for (const row of data) {
-              let s = map.get(row.session_id);
-              if (!s) {
-                s = { session_id: row.session_id, date: row.created_at, skill_id: row.skill_id, total: 0, correct: 0, help_used: 0 };
-                map.set(row.session_id, s);
-              }
-              s.total++;
-              if (row.correct) s.correct++;
-              if (row.help_used) s.help_used++;
-            }
-            setSessions(Array.from(map.values()));
-          }
-          setLoading(false);
-          setLoaded(true);
-        });
-    }
-  };
-
-  return (
-    <Collapsible open={open} onOpenChange={handleToggle}>
-      <CollapsibleTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-1.5">
-          <History className="h-3.5 w-3.5" />
-          {t("parent.history")}
-          <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
-        </Button>
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <div className="mt-3 rounded-lg border bg-card p-3 space-y-1">
-          {loading && <p className="text-xs text-muted-foreground text-center py-3">Načítám…</p>}
-          {!loading && sessions.length === 0 && loaded && <p className="text-xs text-muted-foreground text-center py-3">Žádná historie</p>}
-          {sessions.slice(0, 15).map((s) => {
-            const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
-            const topic = getTopicById(s.skill_id);
-            const name = topic?.title ?? s.skill_id.replace(/[-_]/g, " ");
-            return (
-              <div key={s.session_id} className="flex items-center gap-2 py-1.5 border-b last:border-0 text-xs">
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-foreground truncate">{name}</p>
-                  <p className="text-muted-foreground">{new Date(s.date).toLocaleDateString("cs-CZ", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</p>
-                </div>
-                <span className="flex items-center gap-0.5 text-green-600"><CheckCircle2 className="h-3 w-3" />{s.correct}</span>
-                {s.help_used > 0 && <span className="flex items-center gap-0.5 text-amber-500"><HelpCircle className="h-3 w-3" />{s.help_used}</span>}
-                {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-red-500"><XCircle className="h-3 w-3" />{s.total - s.correct}</span>}
-                <span className={`font-bold ${pct >= 80 ? "text-green-600" : pct >= 50 ? "text-amber-600" : "text-red-500"}`}>{pct}%</span>
-              </div>
-            );
-          })}
-        </div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
+function pluralDays(n: number) {
+  if (n === 1) return "1 den";
+  if (n >= 2 && n <= 4) return `${n} dny`;
+  return `${n} dní`;
 }
+
 
 export default function ParentDashboard() {
   const { children, loading, addChild, regenerateCode, updateChild, deleteChild } = useChildren();
@@ -119,6 +51,7 @@ export default function ParentDashboard() {
   const [editNotes, setEditNotes] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [assignmentRefresh, setAssignmentRefresh] = useState(0);
+  const [newAssignment, setNewAssignment] = useState<{ childId: string; skillId: string } | null>(null);
   // Deep-link prefill — z URL hash #assign-<skillCode> (např. z reportu)
   const [prefillSkillCode, setPrefillSkillCode] = useState<string | null>(null);
   const [prefillForChildId, setPrefillForChildId] = useState<string | null>(null);
@@ -204,302 +137,319 @@ export default function ParentDashboard() {
     "bg-gradient-to-br from-sky-500 to-sky-700",
   ];
 
+  const isDemo = profile?.user_id === "f0b2bf8b-39f1-4d12-a47b-46691d8472a9";
+
   return (
-    <div className="min-h-screen bg-background" style={role === "admin" ? { paddingTop: "3rem" } : undefined}>
+    <div className="min-h-screen bg-[#fdf8f2]" style={role === "admin" ? { paddingTop: "2.5rem" } : isDemo ? { paddingTop: "7rem" } : undefined}>
       {role === "admin" && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur text-primary-foreground px-5 py-2.5 flex items-center justify-between text-sm shadow-soft-2">
-          <span className="font-medium inline-flex items-center gap-2">
-            <Eye className="h-3.5 w-3.5" />
-            Náhled rodičovského pohledu
-          </span>
-          <Button
-            variant="secondary"
-            size="sm"
-            className="h-7 text-xs rounded-full bg-white/15 hover:bg-white/25 text-primary-foreground border border-white/20"
-            onClick={() => navigate("/admin")}
-          >
-            ← Zpět do Adminu
-          </Button>
+          <span className="font-medium inline-flex items-center gap-2"><Eye className="h-3.5 w-3.5" />Náhled rodičovského pohledu</span>
+          <Button variant="secondary" size="sm" className="h-7 text-xs rounded-full bg-white/15 hover:bg-white/25 text-primary-foreground border border-white/20" onClick={() => navigate("/admin")}>← Zpět do Adminu</Button>
+        </div>
+      )}
+      {isDemo && role !== "admin" && (
+        <div className="fixed top-0 left-0 right-0 z-50 shadow-soft-2">
+          <div className="bg-[#F97316] text-white px-5 py-2 text-sm text-center font-medium">
+            Demo — prohlídka bez registrace
+          </div>
+          <LandingNav />
         </div>
       )}
 
-      <main className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6">
-        {/* Hero card s pozdravem */}
-        <section className="rounded-3xl border border-border bg-card shadow-soft-2 p-6 sm:p-7">
-          <div className="flex items-start gap-4 sm:gap-5">
-            <span className="shrink-0">
-              <OlyLogo size="sm" />
-            </span>
-            <div className="flex-1 min-w-0">
-              <h1 className="font-display text-[26px] sm:text-3xl font-bold leading-tight text-foreground tracking-tight">
-                {profile?.display_name ? t("parent.greeting").replace("{name}", profile.display_name) : t("parent.title")}
-              </h1>
-              <p className="text-sm text-muted-foreground mt-1">{t("parent.subtitle")}</p>
+      <main className="mx-auto max-w-5xl px-4 py-6 sm:px-8 sm:py-10 space-y-5">
+
+        {/* ── Demo switcher ── */}
+        {isDemo && role !== "admin" && (
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="rounded-3xl border-2 border-blue-300 bg-blue-50/80 p-6 flex items-center gap-4">
+              <DewhiteImg
+                src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/topic-rodina-a-spolecnost.png"
+                alt=""
+                className="h-16 w-16 object-contain drop-shadow-md shrink-0"
+                threshold={240}
+              />
+              <div>
+                <p className="font-bold text-lg text-blue-900">Jsem rodič</p>
+                <p className="text-xs text-blue-600 mt-0.5">Aktuální pohled</p>
+              </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 rounded-full border-border bg-card hover:bg-accent shadow-soft-1 hidden sm:inline-flex"
-              onClick={() => supabase.auth.signOut()}
+            <button
+              className="rounded-3xl border-2 border-orange-200 bg-orange-50/60 hover:border-orange-400 hover:bg-orange-50 hover:shadow-lg p-6 flex items-center gap-4 text-left transition-all active:scale-[0.98]"
+              onClick={async () => {
+                await supabase.auth.signInWithPassword({ email: "demo-child@oli.app", password: "Demo123demo" });
+                window.location.href = "/";
+              }}
             >
-              <LogOut className="h-3.5 w-3.5" />
-              <span>{t("parent.sign_out")}</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="sm:hidden rounded-full text-muted-foreground"
-              onClick={() => supabase.auth.signOut()}
-              title={t("parent.sign_out")}
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
+              <DewhiteImg
+                src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/ui-child-desk.png"
+                alt=""
+                className="h-16 w-16 object-contain drop-shadow-md shrink-0"
+                threshold={240}
+              />
+              <div className="flex-1">
+                <p className="font-bold text-lg text-orange-900">Jsem žák</p>
+                <p className="text-xs text-orange-600 mt-0.5">Přepnout na žákovský pohled →</p>
+              </div>
+            </button>
           </div>
-        </section>
+        )}
+
+        {/* ── Greeting bar ── */}
+        <div className="bg-white rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-sm border border-black/[0.05]">
+          <img src={logoNoText} alt="Oli" className="h-14 w-14 object-contain shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h1 className="font-bold text-2xl text-foreground leading-tight">
+              {profile?.display_name ? t("parent.greeting").replace("{name}", profile.display_name) : t("parent.title")}
+            </h1>
+            <p className="text-base text-muted-foreground mt-0.5">Zadávejte úkoly, sledujte pokrok a reagujte na chyby dříve, než se zafixují.</p>
+          </div>
+          {!isDemo && (
+            <>
+              <Button variant="outline" size="sm" className="gap-1.5 rounded-full hidden sm:inline-flex" onClick={() => supabase.auth.signOut()}>
+                <LogOut className="h-3.5 w-3.5" />{t("parent.sign_out")}
+              </Button>
+              <Button variant="ghost" size="icon" className="sm:hidden rounded-full" onClick={() => supabase.auth.signOut()}>
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </>
+          )}
+        </div>
 
         {loading && <p className="text-muted-foreground text-center py-8">{t("loading")}</p>}
 
-        {/* 2-column grid karet dětí — desktop, 1-col mobile; 1 dítě = vycentrováno */}
-        <div className={children.length === 1 ? "max-w-xl mx-auto w-full" : "grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"}>
-        {loading && <p className="text-muted-foreground text-center py-8">{t("loading")}</p>}
-
+        {/* ── Karta pro každé dítě — 3 sloupce ── */}
         {children.map((child, idx) => (
-          <Card key={child.id} className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft-2 hover:shadow-soft-3 transition-shadow">
-            <CardContent className="p-0">
-              {/* Child header with avatar */}
-              <div className="flex items-center gap-4 p-5 pb-3">
-                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl text-2xl font-bold font-display text-white shadow-soft-2 ${avatarColors[idx % avatarColors.length]}`}>
-                  {getInitial(child.child_name)}
+          <div key={child.id} className="flex flex-col gap-5">
+
+            {/* Edit formulář — zobrazí se jen při editaci */}
+            {editingId === child.id && (
+              <div className="bg-white rounded-2xl border border-border p-4 flex gap-2 items-center flex-wrap shadow-sm">
+                <Input value={editName} onChange={(e) => setEditName(e.target.value)} className="h-8 w-40" />
+                <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
+                  <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
+                  <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. třída</SelectItem>)}</SelectContent>
+                </Select>
+                <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="gap-1 h-8"><Check className="h-3 w-3" /></Button>
+                <Button size="sm" variant="outline" onClick={() => setEditingId(null)} className="h-8"><X className="h-3 w-3" /></Button>
+              </div>
+            )}
+
+            {/* Jednosloupcový layout */}
+            {child.is_paired ? (
+              <>
+              {/* Hero karta — horizontální, full width */}
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-50 via-white to-sky-50 border border-violet-100 shadow-sm px-8 py-10 flex flex-col sm:flex-row items-start gap-6">
+                <span className="absolute top-4 right-16 text-primary/15 text-2xl pointer-events-none select-none">✦</span>
+                <span className="absolute top-10 right-6 text-primary/10 text-lg pointer-events-none select-none">+</span>
+                <span className="absolute bottom-4 left-1/3 text-primary/10 text-sm pointer-events-none select-none">✦</span>
+                <span className="absolute bottom-8 right-20 text-primary/10 text-base pointer-events-none select-none">✦</span>
+                <span className="absolute top-1/2 right-10 text-primary/10 text-xs pointer-events-none select-none">+</span>
+
+                {/* Edit/delete tlačítka — pravý horní roh */}
+                <div className="absolute top-3 right-3 flex gap-1">
+                  <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
+                        <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
+                        <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
+                          try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
+                          catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
+                        }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
 
-                {editingId === child.id ? (
-                  <div className="flex-1 space-y-2">
-                    <Input value={editName} onChange={(e) => setEditName(e.target.value)} className="h-8" />
-                    <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
-                      <SelectTrigger className="h-8"><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        {GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. {t("parent.grade_label")}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                    <Textarea
-                      value={editNotes}
-                      onChange={(e) => setEditNotes(e.target.value)}
-                      placeholder="Např. ADHD, dyslexie, potřebuje více času…"
-                      className="min-h-[60px] text-xs"
-                    />
-                    <div className="flex gap-1">
-                      <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="gap-1">
-                        <Check className="h-3 w-3" /> {t("parent.save")}
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => setEditingId(null)} className="gap-1">
-                        <X className="h-3 w-3" /> {t("parent.cancel")}
-                      </Button>
-                    </div>
+                {/* Jméno + stats */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-bold tracking-[0.15em] text-muted-foreground mb-1">✦ PŘEHLED DÍTĚTE</p>
+                  <h2 className="font-bold text-3xl leading-tight text-foreground">{child.child_name}</h2>
+                  <div className="flex items-center gap-2 mt-1 mb-5">
+                    <p className="text-muted-foreground text-sm">{child.grade}. ročník · aktivní</p>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
+                      <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
+                    </span>
                   </div>
-                ) : (
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <p className="font-display text-xl font-bold text-foreground truncate">{child.child_name}</p>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent shrink-0" onClick={() => startEdit(child)} title={t("parent.edit_child")}>
-                        <Pencil className="h-3 w-3" />
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-rose-600 hover:text-rose-700 hover:bg-rose-50 shrink-0" title={t("parent.delete_child")}>
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t("parent.delete_confirm_description").replace("{name}", child.child_name)}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                              onClick={async () => {
-                                try {
-                                  await deleteChild(child.id);
-                                  toast({ description: t("parent.toast_child_deleted") });
-                                } catch {
-                                  toast({ description: t("parent.toast_error"), variant: "destructive" });
-                                }
-                              }}
-                            >
-                              {t("parent.delete_confirm_yes")}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-muted/60 px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
-                        🎓 {child.grade}. {t("parent.grade_label")}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">
-                        {child.is_paired ? "· aktivní" : "· čeká na propojení"}
-                      </span>
-                    </div>
-                  </div>
-                )}
+                  <ChildActivityBadge childId={child.id} compact />
+                </div>
 
-                {child.is_paired ? (
-                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 gap-1 shrink-0 rounded-full px-2.5 py-0.5 font-semibold">
-                    <CheckCircle2 className="h-3 w-3" /> {t("parent.paired")}
-                  </Badge>
-                ) : isExpired(child) ? (
-                  <Badge className="bg-rose-50 text-rose-700 border-rose-200 gap-1 shrink-0 rounded-full px-2.5 py-0.5 font-semibold">
-                    <Clock className="h-3 w-3" /> {t("parent.code_expired")}
-                  </Badge>
-                ) : (
-                  <Badge className="bg-amber-50 text-amber-700 border-amber-200 gap-1 shrink-0 rounded-full px-2.5 py-0.5 font-semibold">
-                    <Clock className="h-3 w-3" /> {t("parent.not_paired")}
-                  </Badge>
-                )}
-              </div>
-
-              {/* Activity stats + chart for paired children */}
-              {child.is_paired && (
-                <div className="px-5 pb-4 space-y-4">
-                  {/* PRIMARY ACTIONS — nahoře, jasně viditelné */}
-                  <div className="grid grid-cols-2 gap-2">
+                {/* Akce */}
+                {editingId !== child.id && (
+                  <div className="flex flex-col gap-3 w-full sm:w-56 shrink-0 sm:self-end">
                     <AssignmentCreator
                       childId={child.id}
                       childName={child.child_name}
-                      onCreated={() => setAssignmentRefresh(r => r + 1)}
-                      prefillSkillCode={
-                        prefillSkillCode &&
-                        (!prefillForChildId || prefillForChildId === child.id)
-                          ? prefillSkillCode
-                          : null
-                      }
+                      onCreated={(skillId) => {
+                        setAssignmentRefresh(r => r + 1);
+                        setNewAssignment({ childId: child.id, skillId });
+                        setTimeout(() => setNewAssignment(null), 60000);
+                      }}
+                      prefillSkillCode={prefillSkillCode && (!prefillForChildId || prefillForChildId === child.id) ? prefillSkillCode : null}
                       onPrefillConsumed={consumePrefill}
                     />
-                    <Button
-                      variant="outline"
-                      size="default"
-                      className="gap-2 h-10 rounded-xl border-border bg-card hover:bg-accent text-foreground font-semibold shadow-soft-1"
-                      onClick={() => navigate(`/report?child=${child.id}`)}
-                    >
-                      <BarChart3 className="h-4 w-4 text-primary" />
-                      <span>Hodnocení</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Zadané úkoly — full width */}
+              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] flex flex-col overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-rose-500">❤️</span>
+                    <h2 className="font-bold text-base text-foreground">Zadané úkoly</h2>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste {child.child_name} zadali k procvičení.</p>
+                </div>
+                <div className="p-4 h-[460px]">
+                  <AssignmentList childId={child.id} refreshKey={assignmentRefresh} highlightSkillId={newAssignment?.childId === child.id ? newAssignment.skillId : null} />
+                </div>
+              </div>
+
+              {/* Samostatné procvičování — full width */}
+              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] flex flex-col overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-blue-500">🧩</span>
+                    <h2 className="font-bold text-base text-foreground">Samostatné procvičování</h2>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičoval/a sám/a, bez vašeho zadání.</p>
+                </div>
+                <div className="px-4 h-[460px]">
+                  <ChildSessionLog childId={child.id} grade={child.grade} />
+                </div>
+              </div>
+
+              {/* Na co se zaměřit — full width */}
+              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] flex flex-col overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40 flex items-center gap-2.5">
+                  <span className="text-violet-500">🎯</span>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-bold text-base text-foreground">Na co se zaměřit</h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">Opakující se chyby z posledních cvičení, na které stojí za to reagovat.</p>
+                  </div>
+                  <button
+                    className="h-8 rounded-xl bg-muted border border-border text-foreground font-semibold flex items-center gap-1.5 px-3 hover:bg-muted/80 active:scale-[0.98] transition-all text-xs shrink-0"
+                    onClick={() => navigate(`/report?child=${child.id}`)}
+                  >
+                    Podrobné hodnocení
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+                <div className="p-4">
+                  <ChildMisconceptions childId={child.id} childName={child.child_name} />
+                </div>
+              </div>
+              </>
+            ) : (
+              /* Nepropojené dítě — jednoduchá karta */
+              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold text-white shrink-0 ${avatarColors[idx % avatarColors.length]}`}>
+                    {getInitial(child.child_name)}
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-lg text-foreground">{child.child_name}</span>
+                    <span className="text-sm text-muted-foreground">· {child.grade}. {t("parent.grade_label")}</span>
+                    {isExpired(child)
+                      ? <Badge className="bg-rose-50 text-rose-700 border-rose-200 gap-1 rounded-full text-xs"><Clock className="h-3 w-3" />{t("parent.code_expired")}</Badge>
+                      : <Badge className="bg-amber-50 text-amber-700 border-amber-200 gap-1 rounded-full text-xs"><Clock className="h-3 w-3" />{t("parent.not_paired")}</Badge>}
+                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-rose-500 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
+                          <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
+                          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
+                            try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
+                            catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
+                          }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </div>
+                <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-700">{t("parent.pairing_code_label")}</p>
+                  <div className="mt-3 flex items-center justify-center gap-3">
+                    {child.pairing_code.split("").map((ch, i) => (
+                      <span key={i} className="font-bold text-3xl text-primary tabular-nums">{ch}</span>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-xs text-amber-700/80">Zadej kód v aplikaci na zařízení dítěte. Kód platí 24 hodin.</p>
+                  {isExpired(child) && (
+                    <Button variant="outline" size="sm" className="mt-3 gap-1 rounded-full border-amber-300 hover:bg-amber-100 text-amber-800" onClick={() => regenerateCode(child.id)}>
+                      <RefreshCw className="h-3 w-3" />{t("parent.regenerate_code")}
                     </Button>
-                  </div>
-
-                  {/* Týdenní status — hero karta */}
-                  <ChildActivityBadge childId={child.id} />
-
-                  {/* Misconceptions — AI-detekované vzorce chyb (skryje se pokud žádné aktivní) */}
-                  <ChildMisconceptions childId={child.id} />
-
-                  {/* Úkoly */}
-                  <AssignmentList childId={child.id} refreshKey={assignmentRefresh} />
-
-                  {/* Detaily aktivity (collapsible) */}
-                  <ChildActivityChart childId={child.id} />
-                  <SelfPracticeList childId={child.id} />
+                  )}
                 </div>
-              )}
-
-              {!child.is_paired && (
-                <div className="mx-5 mb-5 space-y-3">
-                  {/* Žluté pairing code card — výrazné rozestouplé znaky */}
-                  <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-700">
-                      {t("parent.pairing_code_label")}
-                    </p>
-                    <div className="mt-2.5 flex items-center justify-center gap-1.5 sm:gap-2.5">
-                      {child.pairing_code.split("").map((ch, i) => (
-                        <span
-                          key={i}
-                          className="font-display font-extrabold text-2xl sm:text-3xl text-primary tabular-nums"
-                        >
-                          {ch}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="mt-2 text-[11px] text-amber-700/80 leading-snug">
-                      Zadej kód v aplikaci na zařízení dítěte. Kód platí 24 hodin.
-                    </p>
-                    {isExpired(child) && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="mt-3 gap-1 rounded-full border-amber-300 bg-card hover:bg-amber-100 text-amber-800"
-                        onClick={() => regenerateCode(child.id)}
-                      >
-                        <RefreshCw className="h-3 w-3" /> {t("parent.regenerate_code")}
-                      </Button>
-                    )}
-                  </div>
-                  {/* Info "Jak propojit?" */}
-                  <div className="flex items-start gap-3 rounded-2xl bg-muted/40 p-4 border border-border">
-                    <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
-                      <HelpCircle className="h-4 w-4" />
-                    </span>
-                    <div className="space-y-0.5">
-                      <p className="text-sm font-semibold text-foreground">Jak propojit?</p>
-                      <p className="text-[12px] text-muted-foreground leading-snug">
-                        Otevři Oly na tabletu nebo telefonu {child.child_name} a zadej kód výše. Po propojení uvidíš její pokrok zde.
-                      </p>
-                    </div>
+                <div className="flex items-start gap-3 rounded-2xl bg-muted/40 p-4 border border-border">
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><HelpCircle className="h-4 w-4" /></span>
+                  <div>
+                    <p className="text-sm font-semibold">Jak propojit?</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Otevři Oly na tabletu nebo telefonu {child.child_name} a zadej kód výše.</p>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            )}
+          </div>
         ))}
-        </div>
 
-        {/* Add child — dashed card podle mockupu */}
-        {showAdd ? (
-          <Card className="rounded-3xl border-2 border-dashed border-border bg-card/60">
-            <CardContent className="p-5 space-y-3">
-              <div className="space-y-2">
-                <Label>{t("onboarding.step2.child_name")}</Label>
-                <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Péťa" className="rounded-xl" />
-              </div>
-              <div className="space-y-2">
-                <Label>{t("onboarding.step2.grade")}</Label>
-                <Select value={String(newGrade)} onValueChange={(v) => setNewGrade(Number(v) as Grade)}>
-                  <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. {t("parent.grade_label")}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Poznámky k učení</Label>
-                <Textarea
-                  value={newNotes}
-                  onChange={(e) => setNewNotes(e.target.value)}
-                  placeholder="Např. ADHD, dyslexie, potřebuje více času…"
-                  className="min-h-[60px] text-xs rounded-xl"
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={handleAdd} disabled={!newName.trim() || addLoading} className="flex-1 rounded-xl">
-                  {addLoading ? t("auth.loading") : t("parent.add_child")}
-                </Button>
-                <Button variant="outline" onClick={() => setShowAdd(false)} className="rounded-xl">{t("topic.back")}</Button>
-              </div>
-            </CardContent>
-          </Card>
+        {/* ── Přidat dítě ── */}
+        {isDemo ? (
+          showAdd ? (
+            <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-6 text-center space-y-3">
+              <p className="text-2xl">👶</p>
+              <p className="font-bold text-blue-900 text-lg">Po registraci přidáte vlastní dítě</p>
+              <p className="text-sm text-blue-700 max-w-md mx-auto">
+                Vyplníte jméno a ročník, Oli vygeneruje párovací kód — dítě ho zadá při prvním přihlášení a profily se propojí. Od té chvíle vidíte vše, co procvičuje.
+              </p>
+              <button onClick={() => setShowAdd(false)} className="text-xs text-blue-500 underline underline-offset-2 mt-1">Zavřít</button>
+            </div>
+          ) : (
+            <button onClick={() => setShowAdd(true)} className="w-full rounded-3xl border-2 border-dashed border-border bg-white/60 hover:bg-white hover:border-primary/40 transition-all py-10 px-4 text-center group">
+              <span className="grid h-12 w-12 mx-auto place-items-center rounded-2xl bg-primary/10 text-primary group-hover:scale-105 transition-transform"><Plus className="h-5 w-5" /></span>
+              <p className="mt-3 font-bold text-foreground">{t("parent.add_child")}</p>
+              <p className="mt-1 text-sm text-muted-foreground">Každé dítě má vlastní profil, kód a pokrok.</p>
+            </button>
+          )
+        ) : showAdd ? (
+          <div className="bg-white rounded-3xl border-2 border-dashed border-border shadow-sm p-6 space-y-4">
+            <div className="space-y-2"><Label>{t("onboarding.step2.child_name")}</Label><Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Péťa" className="rounded-xl" /></div>
+            <div className="space-y-2">
+              <Label>{t("onboarding.step2.grade")}</Label>
+              <Select value={String(newGrade)} onValueChange={(v) => setNewGrade(Number(v) as Grade)}>
+                <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
+                <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. {t("parent.grade_label")}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2"><Label>Poznámky k učení</Label><Textarea value={newNotes} onChange={(e) => setNewNotes(e.target.value)} placeholder="Např. ADHD, dyslexie…" className="min-h-[60px] text-xs rounded-xl" /></div>
+            <div className="flex gap-2">
+              <Button onClick={handleAdd} disabled={!newName.trim() || addLoading} className="flex-1 rounded-xl">{addLoading ? t("auth.loading") : t("parent.add_child")}</Button>
+              <Button variant="outline" onClick={() => setShowAdd(false)} className="rounded-xl">{t("topic.back")}</Button>
+            </div>
+          </div>
         ) : (
-          <button
-            onClick={() => setShowAdd(true)}
-            className="w-full rounded-3xl border-2 border-dashed border-border bg-card/40 hover:bg-card hover:border-primary/40 transition-all py-10 px-4 text-center group"
-          >
-            <span className="grid h-12 w-12 mx-auto place-items-center rounded-2xl bg-primary/10 text-primary shadow-soft-1 group-hover:scale-105 transition-transform">
-              <Plus className="h-5 w-5" />
-            </span>
-            <p className="mt-3 font-display font-bold text-foreground">{t("parent.add_child")}</p>
-            <p className="mt-1 text-xs text-muted-foreground">Každé dítě má vlastní profil, kód a pokrok.</p>
+          <button onClick={() => setShowAdd(true)} className="w-full rounded-3xl border-2 border-dashed border-border bg-white/60 hover:bg-white hover:border-primary/40 transition-all py-10 px-4 text-center group">
+            <span className="grid h-12 w-12 mx-auto place-items-center rounded-2xl bg-primary/10 text-primary group-hover:scale-105 transition-transform"><Plus className="h-5 w-5" /></span>
+            <p className="mt-3 font-bold text-foreground">{t("parent.add_child")}</p>
+            <p className="mt-1 text-sm text-muted-foreground">Každé dítě má vlastní profil, kód a pokrok.</p>
           </button>
         )}
+
       </main>
     </div>
   );
