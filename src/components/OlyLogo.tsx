@@ -1,8 +1,6 @@
-import { useState } from "react";
-import logoWithText from "@/assets/oli-logo-text.png";
-import logoNoText from "@/assets/oli-logo-notext.png";
+import owlSrc from "@/assets/oli-owl.png";
 
-export { logoNoText };
+export { owlSrc as logoNoText };
 
 interface OlyLogoProps {
   size?: "xs" | "sm" | "md";
@@ -10,30 +8,38 @@ interface OlyLogoProps {
   onClick?: () => void;
 }
 
-export function OlyLogo({ size = "md", variant = "text", onClick }: OlyLogoProps) {
-  const [failed, setFailed] = useState(false);
-  const imgSize = size === "xs" ? "h-14" : size === "sm" ? "h-20" : "h-32";
-  const src = variant === "notext" ? logoNoText : logoWithText;
+const SIZE = {
+  xs: { owl: "h-9 w-9",  text: "text-2xl" },
+  sm: { owl: "h-12 w-12", text: "text-3xl" },
+  md: { owl: "h-20 w-20", text: "text-5xl" },
+};
 
+export function OlyLogo({ size = "md", variant = "text", onClick }: OlyLogoProps) {
+  const s = SIZE[size];
   return (
     <button
       onClick={onClick}
-      className="flex items-center focus:outline-none hover:opacity-80 transition-opacity"
+      className="flex items-center gap-1.5 focus:outline-none hover:opacity-80 transition-opacity"
       aria-label="Oli – zpět na úvod"
     >
-      {!failed ? (
-        <img
-          src={src}
-          alt="Oli"
-          className={`${imgSize} object-contain mix-blend-multiply`}
-          onError={() => setFailed(true)}
-          style={{ background: "transparent" }}
-        />
-      ) : (
-        <>
-          <span className="text-lg">🦉</span>
-          <span className="text-xl font-bold tracking-tight text-foreground ml-1.5">Oli</span>
-        </>
+      <img
+        src={owlSrc}
+        alt=""
+        className={`${s.owl} object-contain`}
+      />
+      {variant === "text" && (
+        <span
+          className={`${s.text} font-extrabold leading-none select-none`}
+          style={{
+            fontFamily: "'Nunito', sans-serif",
+            background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Oli
+        </span>
       )}
     </button>
   );
