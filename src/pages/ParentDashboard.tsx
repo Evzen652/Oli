@@ -199,9 +199,9 @@ export default function ParentDashboard() {
           <img src={logoNoText} alt="Oli" className="h-14 w-14 object-contain shrink-0" />
           <div className="flex-1 min-w-0">
             <h1 className="font-bold text-2xl text-foreground leading-tight">
-              {profile?.display_name ? t("parent.greeting").replace("{name}", profile.display_name) : t("parent.title")}
+              {t("parent.greeting")}
             </h1>
-            <p className="text-base text-muted-foreground mt-0.5">Zadávejte úkoly, sledujte pokrok a reagujte na chyby dříve, než se zafixují.</p>
+            <p className="text-base text-muted-foreground mt-0.5">Zde vidíte přehled procvičování vašeho dítěte — co zadáváte, jak mu to jde a na které chyby se vyplatí zaměřit.</p>
           </div>
           {!isDemo && (
             <>

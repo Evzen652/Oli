@@ -194,7 +194,7 @@ const cs = {
   "not_found.title": "404",
   "not_found.message": "Stránka nebyla nalezena",
   "not_found.back": "Zpět na úvodní stránku",
-  "parent.greeting": "Ahoj, {name}!",
+  "parent.greeting": "Vítejte v rodičovském přehledu",
 
   // Child home page
   "child.hello": "Ahoj, {name}! 👋",
