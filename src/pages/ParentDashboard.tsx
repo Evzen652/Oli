@@ -138,6 +138,7 @@ export default function ParentDashboard() {
   ];
 
   const isDemo = profile?.user_id === "f0b2bf8b-39f1-4d12-a47b-46691d8472a9";
+  const DEMO_STATS = { tasks: 31, days: 6, accuracy: 72, assignedTasks: 18, selfTasks: 13 };
 
   return (
     <div className="min-h-screen bg-[#fdf8f2]" style={role === "admin" ? { paddingTop: "2.5rem" } : isDemo ? { paddingTop: "7rem" } : undefined}>
@@ -278,7 +279,7 @@ export default function ParentDashboard() {
                       <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
                     </span>
                   </div>
-                  <ChildActivityBadge childId={child.id} compact />
+                  <ChildActivityBadge childId={child.id} mockStats={isDemo ? DEMO_STATS : undefined} compact />
                 </div>
 
                 {/* Akce */}
