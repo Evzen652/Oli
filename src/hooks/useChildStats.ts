@@ -34,12 +34,16 @@ export interface ChildStats {
   loading: boolean;
 }
 
-export function useChildStats(childId: string | null, period: StatsPeriod = "7d"): ChildStats {
+export function useChildStats(childId: string | null, period: StatsPeriod = "7d", mock?: Partial<ChildStats>): ChildStats {
   const [stats, setStats] = useState<ChildStats>({
     sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: true,
   });
 
   useEffect(() => {
+    if (mock) {
+      setStats({ sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: false, ...mock });
+      return;
+    }
     if (!childId) {
       setStats({ sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: false });
       return;

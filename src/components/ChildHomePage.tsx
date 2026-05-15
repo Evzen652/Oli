@@ -246,7 +246,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   const [skillSubject, setSkillSubject] = useState<string | null>(null);
   const [assignmentSubject, setAssignmentSubject] = useState<string | null>(null);
   const [assignmentDateFilter, setAssignmentDateFilter] = useState<"all" | "today" | "week" | "older" | "completed">("all");
-  const stats = useChildStats(childId, statsPeriod);
+  const [isDemoUser, setIsDemoUser] = useState(false);
+  const DEMO_STATS = { tasks: 41, daysActive: 8, accuracy: 66, sessions: 12, helpUsed: 8, wrong: 14 };
+  const stats = useChildStats(childId, statsPeriod, isDemoUser ? DEMO_STATS : undefined);
 
   const [assignmentRefreshKey, setAssignmentRefreshKey] = useState(0);
 
@@ -276,8 +278,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       setChildName(child.child_name);
       setChildId(child.id);
 
-      // Demo účet — inject mock úkoly, neptat se DB
+      // Demo účet — inject mock data, neptat se DB
       if (user.email === "eweigl@email.cz") {
+        setIsDemoUser(true);
         setAssignments(DEMO_CHILD_ASSIGNMENTS);
         setLoading(false);
         return;
