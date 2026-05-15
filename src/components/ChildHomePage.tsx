@@ -277,7 +277,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       setChildId(child.id);
 
       // Demo účet — inject mock úkoly, neptat se DB
-      if (user.id === DEMO_PARENT_ID) {
+      if (user.email === "eweigl@email.cz") {
         setAssignments(DEMO_CHILD_ASSIGNMENTS);
         setLoading(false);
         return;
