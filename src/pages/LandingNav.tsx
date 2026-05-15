@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { OlyLogo } from "@/components/OlyLogo";
+import { supabase } from "@/integrations/supabase/client";
 
 const NAV_LINKS = [
   { label: "Jak to funguje", href: "#jak-to-funguje" },
@@ -16,6 +17,11 @@ const NAV_LINKS = [
 export function LandingNav() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  async function goToLogin() {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  }
 
   function scrollTo(id: string) {
     const el = document.querySelector(id);
@@ -47,7 +53,7 @@ export function LandingNav() {
           <Button variant="ghost" size="sm" className="text-slate-600" onClick={() => window.location.href = "/demo"}>
             Vyzkoušet demo
           </Button>
-          <Button variant="ghost" size="sm" className="text-slate-600" onClick={() => navigate("/auth")}>
+          <Button variant="ghost" size="sm" className="text-slate-600" onClick={goToLogin}>
             Přihlásit se
           </Button>
           <Button
@@ -74,7 +80,7 @@ export function LandingNav() {
                 ))}
                 <hr />
                 <Button variant="outline" className="w-full" onClick={() => { navigate("/demo"); setOpen(false); }}>Vyzkoušet demo</Button>
-                <Button variant="outline" className="w-full" onClick={() => { navigate("/auth"); setOpen(false); }}>Přihlásit se</Button>
+                <Button variant="outline" className="w-full" onClick={() => { goToLogin(); setOpen(false); }}>Přihlásit se</Button>
                 <Button className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white" onClick={() => { navigate("/auth"); setOpen(false); }}>
                   Registrace zdarma
                 </Button>
