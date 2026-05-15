@@ -23,10 +23,25 @@ interface Assignment {
   assigned_date: string;
   skillName: string;
   subject: string;
+  status?: string;
   topic?: TopicMetadata;
 }
 
+const DEMO_PARENT_ID = "f0b2bf8b-39f1-4d12-a47b-46691d8472a9";
 
+const today = new Date();
+const dStr = (daysAgo: number) => {
+  const d = new Date(today); d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().slice(0, 10);
+};
+
+const DEMO_CHILD_ASSIGNMENTS: Assignment[] = [
+  { id: "dc1", skill_id: "math-multiply",          note: null, due_date: dStr(-1), assigned_date: dStr(1),  skillName: "Násobilka",              subject: "matematika", status: "pending" },
+  { id: "dc2", skill_id: "math-add-sub-100",        note: null, due_date: null,     assigned_date: dStr(3),  skillName: "Sčítání a odčítání do 100", subject: "matematika", status: "pending" },
+  { id: "dc3", skill_id: "cz-vyjmenovana-slova-b",  note: null, due_date: null,     assigned_date: dStr(6),  skillName: "Vyjmenovaná slova po B",  subject: "čeština",    status: "pending" },
+  { id: "dc4", skill_id: "pr-plant-parts",          note: null, due_date: null,     assigned_date: dStr(14), skillName: "Části rostlin",           subject: "prvouka",    status: "completed" },
+  { id: "dc5", skill_id: "cz-slovni-druhy",         note: null, due_date: null,     assigned_date: dStr(18), skillName: "Slovní druhy",            subject: "čeština",    status: "completed" },
+];
 
 // ── Pairing code ──────────────────────────────────────────────────────────────
 
@@ -260,6 +275,13 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       if (!child) { setLoading(false); return; }
       setChildName(child.child_name);
       setChildId(child.id);
+
+      // Demo účet — inject mock úkoly, neptat se DB
+      if (user.id === DEMO_PARENT_ID) {
+        setAssignments(DEMO_CHILD_ASSIGNMENTS);
+        setLoading(false);
+        return;
+      }
 
       const { data: rawAll } = await supabase.from("parent_assignments")
         .select("id, skill_id, note, due_date, assigned_date, status").eq("child_id", child.id)
