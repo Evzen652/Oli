@@ -50,11 +50,35 @@ function makeMockAssignments() {
 
 const MOCK_ASSIGNMENTS = makeMockAssignments();
 
-const MOCK_SESSIONS: SessionEntry[] = [
-  { session_id: "s1", date: "2025-05-01T11:46:00Z", skill_id: "cz-vyjmenovana-slova-b", total: 7, correct: 4, help_used: 1 },
-  { session_id: "s2", date: "2025-05-01T02:31:00Z", skill_id: "math-add-sub-100", total: 6, correct: 0, help_used: 0 },
-  { session_id: "s3", date: "2025-05-01T02:23:00Z", skill_id: "math-add-sub-100", total: 1, correct: 0, help_used: 0 },
-];
+function makeDemoSessions(): SessionEntry[] {
+  const dt = (daysAgo: number, hour: number, min: number) => {
+    const d = new Date(); d.setDate(d.getDate() - daysAgo); d.setHours(hour, min, 0, 0); return d.toISOString();
+  };
+  return [
+    // ── Výborný (≥ 90 %) ─────────────────────────────────────────────────────
+    { session_id: "s1",  date: dt(2,  14, 30), skill_id: "math-multiply",          total: 10, correct: 9, help_used: 0 },
+    { session_id: "s2",  date: dt(4,  16,  0), skill_id: "cz-vyjmenovana-slova-b", total: 10, correct: 10, help_used: 0 },
+    { session_id: "s3",  date: dt(6,  15, 15), skill_id: "pr-plant-parts",         total: 10, correct: 9, help_used: 0 },
+    // ── Chvalitebný (75–89 %) ────────────────────────────────────────────────
+    { session_id: "s4",  date: dt(8,  14, 45), skill_id: "math-add-sub-100",       total: 10, correct: 8, help_used: 1 },
+    { session_id: "s5",  date: dt(10, 16, 30), skill_id: "cz-slovni-druhy",        total: 9,  correct: 7, help_used: 1 },
+    { session_id: "s6",  date: dt(12, 15,  0), skill_id: "pr-animals",             total: 8,  correct: 6, help_used: 1 },
+    // ── Dobrý (55–74 %) ──────────────────────────────────────────────────────
+    { session_id: "s7",  date: dt(14, 14,  0), skill_id: "math-multiply",          total: 10, correct: 6, help_used: 1 },
+    { session_id: "s8",  date: dt(16, 16, 15), skill_id: "cz-tvrde-mekke",         total: 9,  correct: 5, help_used: 2 },
+    { session_id: "s9",  date: dt(18, 15, 45), skill_id: "pr-plant-parts",         total: 9,  correct: 5, help_used: 1 },
+    // ── Dostatečný (40–54 %) ─────────────────────────────────────────────────
+    { session_id: "s10", date: dt(20, 14, 15), skill_id: "math-add-sub-100",       total: 10, correct: 4, help_used: 2 },
+    { session_id: "s11", date: dt(21, 16,  0), skill_id: "cz-vyjmenovana-slova-l", total: 9,  correct: 4, help_used: 1 },
+    { session_id: "s12", date: dt(22, 15, 30), skill_id: "pr-animals",             total: 10, correct: 4, help_used: 1 },
+    // ── Nedostatečný (< 40 %) ────────────────────────────────────────────────
+    { session_id: "s13", date: dt(23, 14, 30), skill_id: "math-multiply",          total: 10, correct: 3, help_used: 1 },
+    { session_id: "s14", date: dt(24, 16, 45), skill_id: "cz-slovni-druhy",        total: 8,  correct: 2, help_used: 2 },
+    { session_id: "s15", date: dt(25, 15,  0), skill_id: "pr-plant-parts",         total: 9,  correct: 1, help_used: 3 },
+  ];
+}
+
+const MOCK_SESSIONS: SessionEntry[] = makeDemoSessions();
 
 const MOCK_MISCONCEPTIONS: Misconception[] = [
   {

@@ -22,7 +22,7 @@ import { ChildActivityBadge } from "@/components/ChildActivityBadge";
 import { ChildMisconceptions } from "@/components/ChildMisconceptions";
 import { AssignmentCreator } from "@/components/AssignmentCreator";
 import { AssignmentList } from "@/components/AssignmentList";
-import { ChildSessionLog } from "@/components/ChildSessionLog";
+import { ChildSessionLog, type SessionEntry } from "@/components/ChildSessionLog";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { logoNoText } from "@/components/OlyLogo";
 import { LandingNav } from "@/pages/LandingNav";
@@ -55,6 +55,36 @@ function makeDemoAssignments() {
     { id: "da6", skill_id: "pr-animals", assigned_date: ago(22), due_date: null as null, status: "completed", note: null as null, completedDate: ago(20) + "T16:00:00", completionCorrect: 5, completionHelpUsed: 2, completionTotal: 8 },
   ];
 }
+
+function makeDemoSessions(): SessionEntry[] {
+  const dt = (daysAgo: number, hour: number, min: number) => {
+    const d = new Date(); d.setDate(d.getDate() - daysAgo); d.setHours(hour, min, 0, 0); return d.toISOString();
+  };
+  return [
+    // Výborný (≥ 90 %)
+    { session_id: "ds1",  date: dt(2,  14, 30), skill_id: "math-multiply",          total: 10, correct: 9,  help_used: 0 },
+    { session_id: "ds2",  date: dt(4,  16,  0), skill_id: "cz-vyjmenovana-slova-b", total: 10, correct: 10, help_used: 0 },
+    { session_id: "ds3",  date: dt(6,  15, 15), skill_id: "pr-plant-parts",         total: 10, correct: 9,  help_used: 0 },
+    // Chvalitebný (75–89 %)
+    { session_id: "ds4",  date: dt(8,  14, 45), skill_id: "math-add-sub-100",       total: 10, correct: 8,  help_used: 1 },
+    { session_id: "ds5",  date: dt(10, 16, 30), skill_id: "cz-slovni-druhy",        total: 9,  correct: 7,  help_used: 1 },
+    { session_id: "ds6",  date: dt(12, 15,  0), skill_id: "pr-animals",             total: 8,  correct: 6,  help_used: 1 },
+    // Dobrý (55–74 %)
+    { session_id: "ds7",  date: dt(14, 14,  0), skill_id: "math-multiply",          total: 10, correct: 6,  help_used: 1 },
+    { session_id: "ds8",  date: dt(16, 16, 15), skill_id: "cz-tvrde-mekke",         total: 9,  correct: 5,  help_used: 2 },
+    { session_id: "ds9",  date: dt(18, 15, 45), skill_id: "pr-plant-parts",         total: 9,  correct: 5,  help_used: 1 },
+    // Dostatečný (40–54 %)
+    { session_id: "ds10", date: dt(20, 14, 15), skill_id: "math-add-sub-100",       total: 10, correct: 4,  help_used: 2 },
+    { session_id: "ds11", date: dt(21, 16,  0), skill_id: "cz-vyjmenovana-slova-l", total: 9,  correct: 4,  help_used: 1 },
+    { session_id: "ds12", date: dt(22, 15, 30), skill_id: "pr-animals",             total: 10, correct: 4,  help_used: 1 },
+    // Nedostatečný (< 40 %)
+    { session_id: "ds13", date: dt(23, 14, 30), skill_id: "math-multiply",          total: 10, correct: 3,  help_used: 1 },
+    { session_id: "ds14", date: dt(24, 16, 45), skill_id: "cz-slovni-druhy",        total: 8,  correct: 2,  help_used: 2 },
+    { session_id: "ds15", date: dt(25, 15,  0), skill_id: "pr-plant-parts",         total: 9,  correct: 1,  help_used: 3 },
+  ];
+}
+
+const DEMO_SESSIONS = makeDemoSessions();
 
 export default function ParentDashboard() {
   const { children, loading, addChild, regenerateCode, updateChild, deleteChild } = useChildren();
@@ -358,7 +388,11 @@ export default function ParentDashboard() {
                   <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičoval/a sám/a, bez vašeho zadání.</p>
                 </div>
                 <div className="px-4 h-[460px]">
-                  <ChildSessionLog childId={child.id} grade={child.grade} />
+                  <ChildSessionLog
+                    childId={isDemo ? undefined : child.id}
+                    grade={child.grade}
+                    mockSessions={isDemo ? DEMO_SESSIONS : undefined}
+                  />
                 </div>
               </div>
 
