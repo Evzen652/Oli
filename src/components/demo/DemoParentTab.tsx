@@ -29,9 +29,13 @@ const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prv
 
 const MOCK_STATS = { tasks: 31, days: 6, accuracy: 32, assignedTasks: 18, selfTasks: 13 };
 
+function localDateStr(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function makeMockAssignments() {
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+  const todayStr = localDateStr(new Date());
+  const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return localDateStr(d); };
   return [
     // Dnes zadané + Nesplněné
     { id: "d1", skill_id: "math-multiply", assigned_date: todayStr, due_date: null, status: "pending", note: null },

@@ -37,9 +37,13 @@ function pluralDays(n: number) {
 }
 
 
+function localDateStr(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function makeDemoAssignments() {
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+  const todayStr = localDateStr(new Date());
+  const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return localDateStr(d); };
   return [
     // Dnes zadané + Nesplněné (status pending, assigned_date = dnes)
     { id: "da1", skill_id: "math-multiply", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
@@ -159,7 +163,7 @@ export default function ParentDashboard() {
     "bg-gradient-to-br from-sky-500 to-sky-700",
   ];
 
-  const isDemo = userEmail === "demo@oli.app";
+  const isDemo = userEmail === "demo@oli.app"; // demo detection v2
   const DEMO_STATS = { tasks: 31, days: 6, accuracy: 72, assignedTasks: 18, selfTasks: 13 };
 
   return (
