@@ -389,7 +389,7 @@ export default function ParentDashboard() {
                 </div>
                 <div className="px-4 h-[460px]">
                   <ChildSessionLog
-                    childId={isDemo ? undefined : child.id}
+                    childId={child.id}
                     grade={child.grade}
                     mockSessions={isDemo ? DEMO_SESSIONS : undefined}
                   />
