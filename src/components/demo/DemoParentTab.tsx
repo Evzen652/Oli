@@ -29,13 +29,22 @@ const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prv
 
 const MOCK_STATS = { tasks: 31, days: 6, accuracy: 32, assignedTasks: 18, selfTasks: 13 };
 
-const MOCK_ASSIGNMENTS = [
-  { id: "d1", skill_id: "pr-plant-parts", assigned_date: "2025-04-27", due_date: null, status: "pending", note: null },
-  { id: "d2", skill_id: "math-multiply", assigned_date: "2025-04-18", due_date: null, status: "pending", note: null },
-  { id: "d3", skill_id: "cz-vyjmenovana-slova-b", assigned_date: "2025-04-10", due_date: null, status: "completed", note: null, completedDate: "2025-04-14T17:32:00", completionCorrect: 4, completionHelpUsed: 1, completionTotal: 8 },
-  { id: "d4", skill_id: "math-add-sub-100", assigned_date: "2025-04-03", due_date: null, status: "completed", note: null, completedDate: "2025-04-07T16:10:00", completionCorrect: 3, completionHelpUsed: 0, completionTotal: 10 },
-  { id: "d5", skill_id: "cz-slovni-druhy", assigned_date: "2025-03-28", due_date: null, status: "completed", note: null, completedDate: "2025-04-01T15:55:00", completionCorrect: 7, completionHelpUsed: 1, completionTotal: 9 },
-];
+function makeMockAssignments() {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+  return [
+    // Dnes zadané + Nesplněné
+    { id: "d1", skill_id: "math-multiply", assigned_date: todayStr, due_date: null, status: "pending", note: null },
+    { id: "d2", skill_id: "cz-vyjmenovana-slova-b", assigned_date: todayStr, due_date: null, status: "pending", note: null },
+    { id: "d3", skill_id: "pr-plant-parts", assigned_date: todayStr, due_date: null, status: "pending", note: null },
+    // Splněné
+    { id: "d4", skill_id: "math-add-sub-100", assigned_date: ago(12), due_date: null, status: "completed", note: null, completedDate: ago(10) + "T15:00:00", completionCorrect: 6, completionHelpUsed: 1, completionTotal: 8 },
+    { id: "d5", skill_id: "cz-slovni-druhy", assigned_date: ago(18), due_date: null, status: "completed", note: null, completedDate: ago(16) + "T14:30:00", completionCorrect: 7, completionHelpUsed: 0, completionTotal: 9 },
+    { id: "d6", skill_id: "pr-animals", assigned_date: ago(22), due_date: null, status: "completed", note: null, completedDate: ago(20) + "T16:00:00", completionCorrect: 5, completionHelpUsed: 2, completionTotal: 8 },
+  ];
+}
+
+const MOCK_ASSIGNMENTS = makeMockAssignments();
 
 const MOCK_SESSIONS: SessionEntry[] = [
   { session_id: "s1", date: "2025-05-01T11:46:00Z", skill_id: "cz-vyjmenovana-slova-b", total: 7, correct: 4, help_used: 1 },

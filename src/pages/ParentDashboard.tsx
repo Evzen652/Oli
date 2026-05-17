@@ -37,9 +37,25 @@ function pluralDays(n: number) {
 }
 
 
+function makeDemoAssignments() {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+  return [
+    // Dnes zadané + Nesplněné (status pending, assigned_date = dnes)
+    { id: "da1", skill_id: "math-multiply", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
+    { id: "da2", skill_id: "cz-vyjmenovana-slova-b", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
+    { id: "da3", skill_id: "pr-plant-parts", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
+    // Splněné
+    { id: "da4", skill_id: "math-add-sub-100", assigned_date: ago(12), due_date: null as null, status: "completed", note: null as null, completedDate: ago(10) + "T15:00:00", completionCorrect: 6, completionHelpUsed: 1, completionTotal: 8 },
+    { id: "da5", skill_id: "cz-slovni-druhy", assigned_date: ago(18), due_date: null as null, status: "completed", note: null as null, completedDate: ago(16) + "T14:30:00", completionCorrect: 7, completionHelpUsed: 0, completionTotal: 9 },
+    { id: "da6", skill_id: "pr-animals", assigned_date: ago(22), due_date: null as null, status: "completed", note: null as null, completedDate: ago(20) + "T16:00:00", completionCorrect: 5, completionHelpUsed: 2, completionTotal: 8 },
+  ];
+}
+
 export default function ParentDashboard() {
   const { children, loading, addChild, regenerateCode, updateChild, deleteChild } = useChildren();
   const { profile } = useProfile();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [newName, setNewName] = useState("");
   const [newGrade, setNewGrade] = useState<Grade>(3);
@@ -52,6 +68,7 @@ export default function ParentDashboard() {
   const [editLoading, setEditLoading] = useState(false);
   const [assignmentRefresh, setAssignmentRefresh] = useState(0);
   const [newAssignment, setNewAssignment] = useState<{ childId: string; skillId: string } | null>(null);
+  const [demoAssignments, setDemoAssignments] = useState(() => makeDemoAssignments());
   // Deep-link prefill — z URL hash #assign-<skillCode> (např. z reportu)
   const [prefillSkillCode, setPrefillSkillCode] = useState<string | null>(null);
   const [prefillForChildId, setPrefillForChildId] = useState<string | null>(null);
@@ -59,6 +76,11 @@ export default function ParentDashboard() {
   const t = useT();
   const { toast } = useToast();
   const { role } = useUserRole();
+
+  // Detekce demo účtu
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => setUserEmail(user?.email ?? null));
+  }, []);
 
   // Read URL hash on mount + při změně URL — #assign-<skillCode> nebo #assign-<childId>:<skillCode>
   useEffect(() => {
@@ -137,7 +159,7 @@ export default function ParentDashboard() {
     "bg-gradient-to-br from-sky-500 to-sky-700",
   ];
 
-  const isDemo = profile?.user_id === "f0b2bf8b-39f1-4d12-a47b-46691d8472a9";
+  const isDemo = userEmail === "demo@oli.app";
   const DEMO_STATS = { tasks: 31, days: 6, accuracy: 72, assignedTasks: 18, selfTasks: 13 };
 
   return (
@@ -246,28 +268,30 @@ export default function ParentDashboard() {
                 <span className="absolute bottom-8 right-20 text-primary/10 text-base pointer-events-none select-none">✦</span>
                 <span className="absolute top-1/2 right-10 text-primary/10 text-xs pointer-events-none select-none">+</span>
 
-                {/* Edit/delete tlačítka — pravý horní roh */}
-                <div className="absolute top-3 right-3 flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
-                        <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
-                        <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
-                          try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
-                          catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
-                        }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
+                {/* Edit/delete tlačítka — pravý horní roh (skryté v demo) */}
+                {!isDemo && (
+                  <div className="absolute top-3 right-3 flex gap-1">
+                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
+                          <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
+                          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
+                            try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
+                            catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
+                          }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                )}
 
                 {/* Jméno + stats */}
                 <div className="flex-1 min-w-0">
@@ -310,7 +334,13 @@ export default function ParentDashboard() {
                   <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste {child.child_name} zadali k procvičení.</p>
                 </div>
                 <div className="p-4 h-[460px]">
-                  <AssignmentList childId={child.id} refreshKey={assignmentRefresh} highlightSkillId={newAssignment?.childId === child.id ? newAssignment.skillId : null} />
+                  <AssignmentList
+                    childId={child.id}
+                    refreshKey={assignmentRefresh}
+                    highlightSkillId={newAssignment?.childId === child.id ? newAssignment.skillId : null}
+                    mockAssignments={isDemo ? demoAssignments : undefined}
+                    onMockDelete={isDemo ? (id) => setDemoAssignments(prev => prev.filter(a => a.id !== id)) : undefined}
+                  />
                 </div>
               </div>
 
@@ -362,25 +392,27 @@ export default function ParentDashboard() {
                     {isExpired(child)
                       ? <Badge className="bg-rose-50 text-rose-700 border-rose-200 gap-1 rounded-full text-xs"><Clock className="h-3 w-3" />{t("parent.code_expired")}</Badge>
                       : <Badge className="bg-amber-50 text-amber-700 border-amber-200 gap-1 rounded-full text-xs"><Clock className="h-3 w-3" />{t("parent.not_paired")}</Badge>}
-                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-rose-500 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
-                          <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
-                          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
-                            try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
-                            catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
-                          }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    {!isDemo && <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>}
+                    {!isDemo && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-rose-500 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
+                            <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
+                            <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
+                              try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
+                              catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
+                            }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
                   </div>
                 </div>
                 <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
