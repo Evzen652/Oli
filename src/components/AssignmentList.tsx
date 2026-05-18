@@ -25,6 +25,7 @@ interface Assignment {
 
 interface Props {
   childId?: string;
+  childName?: string;
   refreshKey?: number;
   mockAssignments?: Assignment[];
   onMockDelete?: (id: string) => void;
@@ -63,7 +64,7 @@ function isToday(dateStr: string): boolean {
     d.getDate() === today.getDate();
 }
 
-export function AssignmentList({ childId = "", refreshKey, mockAssignments, onMockDelete, highlightSkillId }: Props) {
+export function AssignmentList({ childId = "", childName, refreshKey, mockAssignments, onMockDelete, highlightSkillId }: Props) {
   const [assignments, setAssignments] = useState<Assignment[]>(mockAssignments ?? []);
   const [loading, setLoading] = useState(!mockAssignments);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -270,6 +271,7 @@ export function AssignmentList({ childId = "", refreshKey, mockAssignments, onMo
           childId={childId}
           skillId={detailData.skillId}
           mockSession={detailData.mock}
+          childName={childName}
           onClose={() => setDetailData(null)}
         />
       )}

@@ -338,9 +338,10 @@ interface Props {
   skillId: string;
   onClose: () => void;
   mockSession?: MockSessionForModal;
+  childName?: string;
 }
 
-export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Props) {
+export function SkillDetailModal({ childId, skillId, onClose, mockSession, childName }: Props) {
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [logItems, setLogItems] = useState<LogItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -485,11 +486,17 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
               <div className="space-y-2">
                 {/* Úvodní věta */}
                 <p className="text-sm text-slate-600 leading-snug">
-                  {lastGrade <= 2
-                    ? `Procvičování ze dne ${formatCzDate(last.date)} dopadlo dobře — ${last.total} otázek, úspěšnost ${last.pct} %.`
-                    : lastGrade === 3
-                    ? `Procvičování ze dne ${formatCzDate(last.date)} — ${last.total} otázek s průměrným výsledkem (${last.pct} %).`
-                    : `Procvičování ze dne ${formatCzDate(last.date)} — ${last.total} otázek, výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`
+                  {childName
+                    ? (lastGrade <= 2
+                        ? `${childName} procvičoval toto téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
+                        : lastGrade === 3
+                        ? `${childName} procvičoval toto téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek průměrný (${last.pct} %).`
+                        : `${childName} procvičoval toto téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
+                    : (lastGrade <= 2
+                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
+                        : lastGrade === 3
+                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek průměrný (${last.pct} %).`
+                        : `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
                   }
                 </p>
                 {/* Hodnotící karta */}

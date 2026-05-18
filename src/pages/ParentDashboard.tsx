@@ -370,6 +370,7 @@ export default function ParentDashboard() {
                 <div className="p-4 h-[460px]">
                   <AssignmentList
                     childId={child.id}
+                    childName={child.child_name}
                     refreshKey={assignmentRefresh}
                     highlightSkillId={newAssignment?.childId === child.id ? newAssignment.skillId : null}
                     mockAssignments={isDemo ? demoAssignments : undefined}
@@ -390,6 +391,7 @@ export default function ParentDashboard() {
                 <div className="px-4 h-[460px]">
                   <ChildSessionLog
                     childId={child.id}
+                    childName={child.child_name}
                     grade={child.grade}
                     mockSessions={isDemo ? DEMO_SESSIONS : undefined}
                   />

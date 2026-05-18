@@ -26,6 +26,7 @@ function subjectsForGrade(grade: number): string[] {
 
 interface Props {
   childId?: string;
+  childName?: string;
   grade?: number;
   mockSessions?: SessionEntry[];
 }
@@ -55,7 +56,7 @@ const SUBJECT_LABELS: Record<string, string> = {
   "vlastivěda": "Vlastivěda",
 };
 
-export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
+export function ChildSessionLog({ childId = "", childName, grade, mockSessions }: Props) {
   const [sessions, setSessions] = useState<SessionEntry[]>(mockSessions ?? []);
   const [loading, setLoading] = useState(!mockSessions);
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
@@ -276,6 +277,7 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
           childId={childId}
           skillId={detailData.skillId}
           mockSession={detailData.mock}
+          childName={childName}
           onClose={() => setDetailData(null)}
         />
       )}
