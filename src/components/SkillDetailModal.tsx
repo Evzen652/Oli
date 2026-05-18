@@ -449,7 +449,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-2xl w-[90vw] max-h-[85vh] flex flex-col overflow-hidden">
         <DialogHeader>
           {/* Předmět + název dovednosti */}
           <div className="flex items-center gap-3 mb-1">
@@ -473,6 +473,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
           </div>
         </DialogHeader>
 
+        <div className="overflow-y-auto flex-1 pr-1">
         {loading ? (
           <p className="text-center text-sm text-muted-foreground py-8">Načítám výsledky…</p>
         ) : sessions.length === 0 ? (
@@ -611,6 +612,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
             )}
           </div>
         )}
+        </div>
       </DialogContent>
     </Dialog>
   );
