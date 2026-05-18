@@ -488,10 +488,10 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
                 <p className="text-sm text-slate-600 leading-snug">
                   {childName
                     ? (lastGrade <= 2
-                        ? `${childName} procvičoval toto téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
+                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
                         : lastGrade === 3
-                        ? `${childName} procvičoval toto téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek průměrný (${last.pct} %).`
-                        : `${childName} procvičoval toto téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
+                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek průměrný (${last.pct} %).`
+                        : `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
                     : (lastGrade <= 2
                         ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
                         : lastGrade === 3
