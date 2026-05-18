@@ -250,7 +250,7 @@ function DemoAssignmentSheet({ open, onOpenChange, onCreated }: {
             {/* Dovednost */}
             {skills.length > 1 && (
               <div className="space-y-1.5">
-                <Label>Dovednost</Label>
+                <Label>Téma</Label>
                 <Select value={selSkill} onValueChange={setSelSkill}>
                   <SelectTrigger><SelectValue placeholder="Vyberte dovednost…" /></SelectTrigger>
                   <SelectContent>{skills.map(sk => <SelectItem key={sk.id} value={sk.id}>{sk.name}</SelectItem>)}</SelectContent>

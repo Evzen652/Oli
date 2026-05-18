@@ -154,7 +154,7 @@ const cs = {
   "assign.subject": "Předmět",
   "assign.category": "Okruh",
   "assign.topic": "Téma",
-  "assign.skill": "Dovednost",
+  "assign.skill": "Téma",
   "assign.pick": "Vyberte…",
   "assign.date": "Na kdy",
   "assign.due_date": "Splnit do (volitelné)",
