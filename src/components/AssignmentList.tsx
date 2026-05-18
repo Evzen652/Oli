@@ -7,7 +7,7 @@ import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { SkillDetailModal } from "@/components/SkillDetailModal";
+import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
 
 interface Assignment {
   id: string;
@@ -68,7 +68,7 @@ export function AssignmentList({ childId = "", refreshKey, mockAssignments, onMo
   const [loading, setLoading] = useState(!mockAssignments);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
-  const [detailSkillId, setDetailSkillId] = useState<string | null>(null);
+  const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
 
   const fetchAssignments = async () => {
     const { data } = await supabase
@@ -248,18 +248,29 @@ export function AssignmentList({ childId = "", refreshKey, mockAssignments, onMo
                 a={a}
                 onDelete={handleDelete}
                 isNew={!!highlightSkillId && a.skill_id === highlightSkillId}
-                onDetail={childId ? () => setDetailSkillId(a.skill_id) : undefined}
+                onDetail={childId ? () => {
+                  if (mockAssignments && a.completionTotal != null) {
+                    const correct = a.completionCorrect ?? 0;
+                    const helpUsed = a.completionHelpUsed ?? 0;
+                    const wrong = (a.completionTotal ?? 0) - correct - helpUsed;
+                    const pct = Math.round(correct / (a.completionTotal || 1) * 100);
+                    setDetailData({ skillId: a.skill_id, mock: { correct, helpUsed, wrong, total: a.completionTotal ?? 0, date: a.completedDate ?? new Date().toISOString(), pct } });
+                  } else {
+                    setDetailData({ skillId: a.skill_id });
+                  }
+                } : undefined}
               />
             ))}
           </div>
         )}
       </div>
 
-      {detailSkillId && childId && (
+      {detailData && childId && (
         <SkillDetailModal
           childId={childId}
-          skillId={detailSkillId}
-          onClose={() => setDetailSkillId(null)}
+          skillId={detailData.skillId}
+          mockSession={detailData.mock}
+          onClose={() => setDetailData(null)}
         />
       )}
     </div>

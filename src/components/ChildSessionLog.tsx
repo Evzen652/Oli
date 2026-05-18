@@ -5,7 +5,7 @@ import { getTopicById } from "@/lib/contentRegistry";
 import { getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { SkillDetailModal } from "@/components/SkillDetailModal";
+import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
 import { Button } from "@/components/ui/button";
 
 export interface SessionEntry {
@@ -60,7 +60,7 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
   const [loading, setLoading] = useState(!mockSessions);
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
   const [gradeFilter, setGradeFilter] = useState<number | null>(null);
-  const [detailSkillId, setDetailSkillId] = useState<string | null>(null);
+  const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
 
   useEffect(() => {
     if (mockSessions) { setSessions(mockSessions); return; }
@@ -247,7 +247,17 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
                       variant="outline"
                       size="sm"
                       className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
-                      onClick={() => setDetailSkillId(s.skill_id)}
+                      onClick={() => {
+                        if (mockSessions) {
+                          // s.correct = vše správně (včetně nápovědy) — DB konvence
+                          const correctOnly = s.correct - s.help_used;
+                          const wrong = s.total - s.correct;
+                          const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
+                          setDetailData({ skillId: s.skill_id, mock: { correct: correctOnly, helpUsed: s.help_used, wrong, total: s.total, date: s.date, pct } });
+                        } else {
+                          setDetailData({ skillId: s.skill_id });
+                        }
+                      }}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
                       Ukázat výsledky a hodnocení
@@ -261,11 +271,12 @@ export function ChildSessionLog({ childId = "", grade, mockSessions }: Props) {
       )}
       </div>
 
-      {detailSkillId && childId && (
+      {detailData && childId && (
         <SkillDetailModal
           childId={childId}
-          skillId={detailSkillId}
-          onClose={() => setDetailSkillId(null)}
+          skillId={detailData.skillId}
+          mockSession={detailData.mock}
+          onClose={() => setDetailData(null)}
         />
       )}
     </div>

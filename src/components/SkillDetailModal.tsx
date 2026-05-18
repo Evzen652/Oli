@@ -324,13 +324,23 @@ function sessionCountLabel(n: number): string {
   return `${n} cvičení`;
 }
 
+export interface MockSessionForModal {
+  correct: number;   // správně bez nápovědy
+  helpUsed: number;  // správně s nápovědou
+  wrong: number;     // chybně
+  total: number;
+  date: string;
+  pct: number;       // předpočítané % (musí souhlasit se seznamem)
+}
+
 interface Props {
   childId: string;
   skillId: string;
   onClose: () => void;
+  mockSession?: MockSessionForModal;
 }
 
-export function SkillDetailModal({ childId, skillId, onClose }: Props) {
+export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Props) {
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [logItems, setLogItems] = useState<LogItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -339,6 +349,40 @@ export function SkillDetailModal({ childId, skillId, onClose }: Props) {
   const subjectMeta = subject ? getSubjectMeta(subject) : null;
 
   useEffect(() => {
+    // ── Demo mock: přeskočí DB, použije dodaná data ───────────────
+    if (mockSession) {
+      const s: SessionSummary = {
+        sessionId: "mock-session",
+        date: mockSession.date,
+        correct: mockSession.correct,
+        helpUsed: mockSession.helpUsed,
+        wrong: mockSession.wrong,
+        total: mockSession.total,
+        pct: mockSession.pct,
+      };
+      setSessions([s]);
+
+      // Vygeneruj log položky z DEMO_QB
+      const items: LogItem[] = [];
+      let qi = 0;
+      for (let i = 0; i < mockSession.wrong; i++, qi++) {
+        const dq = getDemoQuestion(skillId, qi);
+        items.push({ id: `mock-w-${i}`, correct: false, helpUsed: false, errorType: null, question: dq?.q, correctAnswer: dq?.a });
+      }
+      for (let i = 0; i < mockSession.helpUsed; i++, qi++) {
+        const dq = getDemoQuestion(skillId, qi);
+        items.push({ id: `mock-h-${i}`, correct: true, helpUsed: true, errorType: null, question: dq?.q });
+      }
+      for (let i = 0; i < mockSession.correct; i++, qi++) {
+        const dq = getDemoQuestion(skillId, qi);
+        items.push({ id: `mock-c-${i}`, correct: true, helpUsed: false, errorType: null, question: dq?.q });
+      }
+      setLogItems(items);
+      setLoading(false);
+      return;
+    }
+
+    // ── Reálná DB ─────────────────────────────────────────────────
     let cancelled = false;
     async function load() {
       const { data } = await (supabase as any)
@@ -393,7 +437,7 @@ export function SkillDetailModal({ childId, skillId, onClose }: Props) {
     }
     load();
     return () => { cancelled = true; };
-  }, [childId, skillId]);
+  }, [childId, skillId, mockSession]);
 
   // Souhrnný panel = pouze poslední sezení
   const last = sessions[0] ?? null;
