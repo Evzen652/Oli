@@ -558,7 +558,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
               </div>
             )}
 
-            {/* Jak si vedl/a */}
+            {/* Jak si vedl(a) */}
             {logItems.length > 0 && (() => {
               const wrong   = logItems.filter(l => !l.correct);
               const helped  = logItems.filter(l => l.correct && l.helpUsed);
@@ -605,7 +605,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
 
               return (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Jak si vedl/a</p>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Jak si vedl(a)</p>
                   {renderGroup(wrong,   <XCircle className="h-3 w-3" />,      "Chybně",         "bg-red-50 border border-red-100 text-red-800",      "text-red-500")}
                   {renderGroup(helped,  <HelpCircle className="h-3 w-3" />,   "S nápovědou",    "bg-amber-50 border border-amber-100 text-amber-800", "text-amber-500")}
                   {renderGroup(correct, <CheckCircle2 className="h-3 w-3" />, "Správně",        "bg-green-50 border border-green-100 text-green-800", "text-green-600")}
