@@ -482,33 +482,42 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
           <div className="space-y-4">
             {/* Souhrnný panel — poslední sezení */}
             {last && lastGrade !== null && gMeta && (
-              <div className={`rounded-2xl border-2 p-4 ${gMeta.bg} ${gMeta.border}`}>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-2">
-                  Poslední cvičení · {formatCzDate(last.date)}
+              <div className="space-y-2">
+                {/* Úvodní věta */}
+                <p className="text-sm text-slate-600 leading-snug">
+                  {lastGrade <= 2
+                    ? `Procvičování ze dne ${formatCzDate(last.date)} dopadlo dobře — ${last.total} otázek, úspěšnost ${last.pct} %.`
+                    : lastGrade === 3
+                    ? `Procvičování ze dne ${formatCzDate(last.date)} — ${last.total} otázek s průměrným výsledkem (${last.pct} %).`
+                    : `Procvičování ze dne ${formatCzDate(last.date)} — ${last.total} otázek, výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`
+                  }
                 </p>
-                <div className="flex items-center gap-4">
-                  <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl font-bold border-2 shrink-0 bg-white ${gMeta.color} ${gMeta.border}`}>
-                    {lastGrade}
+                {/* Hodnotící karta */}
+                <div className={`rounded-2xl border-2 p-4 ${gMeta.bg} ${gMeta.border}`}>
+                  <div className="flex items-center gap-4">
+                    <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl font-bold border-2 shrink-0 bg-white ${gMeta.color} ${gMeta.border}`}>
+                      {lastGrade}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`font-bold text-lg leading-tight ${gMeta.color}`}>{gMeta.label}</p>
+                      <span className={`text-2xl font-bold ${gMeta.color}`}>{last.pct} %</span>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`font-bold text-lg leading-tight ${gMeta.color}`}>{gMeta.label}</p>
-                    <span className={`text-2xl font-bold ${gMeta.color}`}>{last.pct} %</span>
+                  <div className="flex gap-4 mt-3 pt-3 border-t border-black/10">
+                    <span className="text-green-700 font-semibold text-sm flex items-center gap-1">
+                      <CheckCircle2 className="h-4 w-4" /> {last.correct} správně
+                    </span>
+                    {last.helpUsed > 0 && (
+                      <span className="text-amber-600 font-semibold text-sm flex items-center gap-1">
+                        <HelpCircle className="h-4 w-4" /> {last.helpUsed} s nápovědou
+                      </span>
+                    )}
+                    {last.wrong > 0 && (
+                      <span className="text-red-600 font-semibold text-sm flex items-center gap-1">
+                        <XCircle className="h-4 w-4" /> {last.wrong} chybně
+                      </span>
+                    )}
                   </div>
-                </div>
-                <div className="flex gap-4 mt-3 pt-3 border-t border-black/10">
-                  <span className="text-green-700 font-semibold text-sm flex items-center gap-1">
-                    <CheckCircle2 className="h-4 w-4" /> {last.correct} správně
-                  </span>
-                  {last.helpUsed > 0 && (
-                    <span className="text-amber-600 font-semibold text-sm flex items-center gap-1">
-                      <HelpCircle className="h-4 w-4" /> {last.helpUsed} s nápovědou
-                    </span>
-                  )}
-                  {last.wrong > 0 && (
-                    <span className="text-red-600 font-semibold text-sm flex items-center gap-1">
-                      <XCircle className="h-4 w-4" /> {last.wrong} chybně
-                    </span>
-                  )}
                 </div>
               </div>
             )}
