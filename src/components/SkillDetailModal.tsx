@@ -565,7 +565,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
                       <div key={l.id} className={`rounded-xl px-3 py-2 text-xs ${rowCls}`}>
                         {l.question
                           ? <><span className="font-medium">{l.question}</span>
-                              {!l.correct && l.correctAnswer && (
+                              {l.correctAnswer && (
                                 <span className="block text-muted-foreground mt-0.5">
                                   Správná odpověď: <span className="font-semibold">{l.correctAnswer}</span>
                                 </span>
@@ -573,11 +573,9 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
                             </>
                           : dq
                             ? <><span className="font-medium">{dq.q}</span>
-                                {!l.correct && (
-                                  <span className="block text-muted-foreground mt-0.5">
-                                    Správná odpověď: <span className="font-semibold">{dq.a}</span>
-                                  </span>
-                                )}
+                                <span className="block text-muted-foreground mt-0.5">
+                                  Správná odpověď: <span className="font-semibold">{dq.a}</span>
+                                </span>
                               </>
                             : <span className="text-muted-foreground italic">
                                 {!l.correct ? "Chybná odpověď" : l.helpUsed ? "Správně s nápovědou" : "Správně"}
