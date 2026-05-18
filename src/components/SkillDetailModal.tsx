@@ -371,11 +371,11 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession }: Pro
       }
       for (let i = 0; i < mockSession.helpUsed; i++, qi++) {
         const dq = getDemoQuestion(skillId, qi);
-        items.push({ id: `mock-h-${i}`, correct: true, helpUsed: true, errorType: null, question: dq?.q });
+        items.push({ id: `mock-h-${i}`, correct: true, helpUsed: true, errorType: null, question: dq?.q, correctAnswer: dq?.a });
       }
       for (let i = 0; i < mockSession.correct; i++, qi++) {
         const dq = getDemoQuestion(skillId, qi);
-        items.push({ id: `mock-c-${i}`, correct: true, helpUsed: false, errorType: null, question: dq?.q });
+        items.push({ id: `mock-c-${i}`, correct: true, helpUsed: false, errorType: null, question: dq?.q, correctAnswer: dq?.a });
       }
       setLogItems(items);
       setLoading(false);
