@@ -145,15 +145,18 @@ export function AdminCurriculumSidebar({
       if (!byS[t.subject][t.category][t.topic]) byS[t.subject][t.category][t.topic] = [];
       byS[t.subject][t.category][t.topic].push(t);
     }
-    // Přidej předměty z DB, které nemají žádné skills (prázdné)
-    for (const s of dbSubjects) {
-      const name = s.name.toLowerCase();
-      if (!q || name.includes(q)) {
-        if (!byS[name]) byS[name] = {};
+    // Přidej předměty z DB bez obsahu — jen pokud není aktivní grade filtr.
+    // S filtrem zobrazuj jen předměty, které mají obsah pro daný ročník (už jsou v byS).
+    if (!gradeFilter) {
+      for (const s of dbSubjects) {
+        const name = s.name.toLowerCase();
+        if (!q || name.includes(q)) {
+          if (!byS[name]) byS[name] = {};
+        }
       }
     }
     return byS;
-  }, [topics, dbSubjects, query]);
+  }, [topics, dbSubjects, query, gradeFilter]);
 
   const toggleSubject = (s: string) => {
     setExpandedSubjects((prev) => {
