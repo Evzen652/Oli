@@ -657,7 +657,7 @@ export default function AdminDashboard() {
               {selectedSubject && (
                 <QuickAddCard
                   label="okruh"
-                  hint="Okruh je tematická kapitola předmětu — např. „Čísla a výpočty" nebo „Geometrie". Témata se pak přidávají dovnitř okruhu."
+                  hint={`Okruh je tematická kapitola předmětu — např. „Čísla a výpočty" nebo „Geometrie". Témata se pak přidávají dovnitř okruhu.`}
                   aiPrompt={(grade) => buildCategoryPrompt({
                     subject: capitalize(selectedSubject),
                     grade,
@@ -775,7 +775,7 @@ export default function AdminDashboard() {
               {selectedSubject && selectedCategory && (
                 <QuickAddCard
                   label="téma"
-                  hint="Téma je konkrétní výukový celek v rámci okruhu — např. „Sčítání do 100" nebo „Psaní velkých písmen". Cvičení se pak přidávají k tématu."
+                  hint={`Téma je konkrétní výukový celek v rámci okruhu — např. „Sčítání do 100" nebo „Psaní velkých písmen". Cvičení se pak přidávají k tématu.`}
                   aiPrompt={(grade) => buildTopicPrompt({
                     subject: capitalize(selectedSubject),
                     category: capitalize(selectedCategory),
