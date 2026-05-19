@@ -137,15 +137,41 @@ function getDefaultDesc(key: string): string {
   return DEFAULT_DESCS[key] ?? "";
 }
 
-/** Vrátí popis pro jakýkoli klíč — pro dynamické subjekty z DB sestaví výchozí. */
-function getAutoDesc(key: string, dbSubjects: { name: string; slug: string }[]): string {
+/** Vrátí popis pro jakýkoli klíč — pro dynamické položky z DB sestaví výchozí. */
+function getAutoDesc(
+  key: string,
+  dbSubjects: { name: string; slug: string }[],
+  dbCategories: { name: string; slug: string; description: string | null }[] = [],
+  dbTopics: { name: string; slug: string; description: string | null }[] = [],
+): string {
   const known = getDefaultDesc(key);
   if (known) return known;
+
   if (key.startsWith("subject-")) {
     const slug = key.slice("subject-".length);
     const subject = dbSubjects.find((s) => s.slug === slug);
     if (subject) {
       return `učebnice předmětu "${subject.name}" s výukovými ikonami, barevnými symboly a vzdělávacím vybavením kolem ní`;
+    }
+  }
+  if (key.startsWith("cat-")) {
+    const parts = key.slice("cat-".length).split("-");
+    // poslední část je cat slug pokud je víc segmentů (cat-subject_slug-category_slug)
+    const catSlug = parts.length > 1 ? parts.slice(1).join("-") : parts[0];
+    const cat = dbCategories.find((c) => c.slug === catSlug);
+    if (cat) {
+      const base = cat.description || `oblast "${cat.name}"`;
+      return `${base} — vizuálně bohatá ilustrace symbolů a prvků z této oblasti`;
+    }
+  }
+  if (key.startsWith("topic-")) {
+    const parts = key.slice("topic-".length).split("-");
+    // poslední část je topic slug
+    const topSlug = parts.length > 2 ? parts.slice(2).join("-") : parts[parts.length - 1];
+    const topic = dbTopics.find((t) => t.slug === topSlug);
+    if (topic) {
+      const base = topic.description || `téma "${topic.name}"`;
+      return `${base} — konkrétní vizuální scéna z tohoto tématu`;
     }
   }
   return "";
@@ -154,12 +180,25 @@ function getAutoDesc(key: string, dbSubjects: { name: string; slug: string }[]):
 // ── Filter helpers ────────────────────────────────────────────────────────────
 
 function keyToSubject(key: string): string {
+  // Legacy prefix shortcuts (hardcoded mapy)
   if (key === "subject-matematika" || key.startsWith("cat-math-") || key.startsWith("topic-math-")) return "matematika";
   if (key === "subject-cestina" || key.startsWith("cat-cz-") || key.startsWith("topic-cz-")) return "čeština";
   if (key === "subject-prirodoveda" || key.startsWith("topic-pr-")) return "přírodověda";
   if (key === "subject-vlastiveda" || key.startsWith("topic-vl-")) return "vlastivěda";
   // Dynamic subjects — subject-{slug} → slug
   if (key.startsWith("subject-")) return key.slice("subject-".length);
+  // Dynamic categories — cat-{subject_slug}-{category_slug} → subject_slug
+  if (key.startsWith("cat-")) {
+    const rest = key.slice("cat-".length);
+    const firstDash = rest.indexOf("-");
+    return firstDash > 0 ? rest.slice(0, firstDash) : rest;
+  }
+  // Dynamic topics — topic-{subject_slug}-{category_slug}-{topic_slug} → subject_slug
+  if (key.startsWith("topic-")) {
+    const rest = key.slice("topic-".length);
+    const firstDash = rest.indexOf("-");
+    return firstDash > 0 ? rest.slice(0, firstDash) : rest;
+  }
   return "prvouka";
 }
 
@@ -225,8 +264,10 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const versioned = useImageVersions();
   const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
 
-  // ── Dynamic DB subjects ──────────────────────────────────────────────────────
-  const [dbSubjects, setDbSubjects] = useState<{ name: string; slug: string }[]>([]);
+  // ── Dynamic DB hierarchy ─────────────────────────────────────────────────────
+  const [dbSubjects, setDbSubjects] = useState<{ id: string; name: string; slug: string }[]>([]);
+  const [dbCategoriesState, setDbCategoriesState] = useState<{ id: string; name: string; slug: string; subject_id: string; description: string | null }[]>([]);
+  const [dbTopicsState, setDbTopicsState] = useState<{ id: string; name: string; slug: string; category_id: string; description: string | null }[]>([]);
 
   // Klíče pro dynamické subjekty (ty, které nejsou v statickém ALL_KEYS)
   const dynamicSubjectKeys = useMemo(
@@ -237,10 +278,32 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     [dbSubjects]
   );
 
-  // Finální seznam všech klíčů (statické + dynamické)
+  // Dynamic category klíče: cat-{subject_slug}-{category_slug}
+  const dynamicCategoryKeys = useMemo(() => {
+    const subjBySlug = Object.fromEntries(dbSubjects.map((s) => [s.id, s.slug]));
+    return dbCategoriesState
+      .map((c) => `cat-${subjBySlug[c.subject_id]}-${c.slug}`)
+      .filter((k) => !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number]) && !k.includes("undefined"));
+  }, [dbSubjects, dbCategoriesState]);
+
+  // Dynamic topic klíče: topic-{subject_slug}-{category_slug}-{topic_slug}
+  const dynamicTopicKeys = useMemo(() => {
+    const subjBySlug = Object.fromEntries(dbSubjects.map((s) => [s.id, s.slug]));
+    const catSubject = Object.fromEntries(dbCategoriesState.map((c) => [c.id, { slug: c.slug, subject_id: c.subject_id }]));
+    return dbTopicsState
+      .map((t) => {
+        const cat = catSubject[t.category_id];
+        if (!cat) return null;
+        const subjSlug = subjBySlug[cat.subject_id];
+        return `topic-${subjSlug}-${cat.slug}-${t.slug}`;
+      })
+      .filter((k): k is string => !!k && !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number]));
+  }, [dbSubjects, dbCategoriesState, dbTopicsState]);
+
+  // Finální seznam všech klíčů
   const allKeys = useMemo(
-    () => [...ALL_KEYS, ...dynamicSubjectKeys],
-    [dynamicSubjectKeys]
+    () => [...ALL_KEYS, ...dynamicSubjectKeys, ...dynamicCategoryKeys, ...dynamicTopicKeys],
+    [dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys]
   );
 
   // Filtrování předmětů — statické + dynamické subjekty
@@ -263,19 +326,40 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [logoSaving, setLogoSaving] = useState(false);
 
   const loadImages = async () => {
-    // Načteme DB subjekty (pro dynamické klíče)
-    const { data: subjects } = await supabase
-      .from("curriculum_subjects")
-      .select("name, slug")
-      .order("sort_order", { ascending: true });
-    const dbData = subjects ?? [];
-    setDbSubjects(dbData);
+    // Načteme celou DB hierarchii pro dynamické klíče (subjects + categories + topics)
+    const [subjRes, catRes, topRes] = await Promise.all([
+      supabase.from("curriculum_subjects").select("id, name, slug").order("sort_order", { ascending: true }),
+      supabase.from("curriculum_categories").select("id, name, slug, subject_id, description").order("sort_order", { ascending: true }),
+      supabase.from("curriculum_topics").select("id, name, slug, category_id, description").order("sort_order", { ascending: true }),
+    ]);
+    const dbSubj = subjRes.data ?? [];
+    const dbCat = catRes.data ?? [];
+    const dbTop = topRes.data ?? [];
+    setDbSubjects(dbSubj);
+    setDbCategoriesState(dbCat);
+    setDbTopicsState(dbTop);
 
-    const dynKeys = dbData
+    // Hierarchické mapování pro klíče
+    const subjBySlug = Object.fromEntries(dbSubj.map((s) => [s.id, s.slug]));
+    const catData = Object.fromEntries(dbCat.map((c) => [c.id, { slug: c.slug, subject_id: c.subject_id }]));
+
+    const dynSubjKeys = dbSubj
       .map((s) => `subject-${s.slug}`)
       .filter((k) => !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number]));
 
-    const keys = [...ALL_KEYS, ...dynKeys];
+    const dynCatKeys = dbCat
+      .map((c) => `cat-${subjBySlug[c.subject_id]}-${c.slug}`)
+      .filter((k) => !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number]) && !k.includes("undefined"));
+
+    const dynTopKeys = dbTop
+      .map((t) => {
+        const cat = catData[t.category_id];
+        if (!cat) return null;
+        return `topic-${subjBySlug[cat.subject_id]}-${cat.slug}-${t.slug}`;
+      })
+      .filter((k): k is string => !!k);
+
+    const keys = [...ALL_KEYS, ...dynSubjKeys, ...dynCatKeys, ...dynTopKeys];
     setMissingKeys(new Set());
     setAllImages(
       keys.map((key) => ({
@@ -832,7 +916,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                       // Neznámý klíč (dynamický subjekt) → nejdřív zobraz prompt
                       const isDynamic = !getDefaultDesc(key) && key.startsWith("subject-");
                       if (isDynamic) {
-                        setPromptDialog({ key, desc: getAutoDesc(key, dbSubjects) });
+                        setPromptDialog({ key, desc: getAutoDesc(key, dbSubjects, dbCategoriesState, dbTopicsState) });
                       } else {
                         handleRegenerate(key);
                       }
@@ -848,7 +932,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   </button>
                   <button
                     type="button"
-                    onClick={() => setPromptDialog({ key, desc: getAutoDesc(key, dbSubjects) })}
+                    onClick={() => setPromptDialog({ key, desc: getAutoDesc(key, dbSubjects, dbCategoriesState, dbTopicsState) })}
                     disabled={!!regenerating || running}
                     title="Upravit prompt"
                     className="flex items-center justify-center rounded-full border border-border/60 bg-muted px-2 py-1 text-muted-foreground hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all disabled:opacity-40"
