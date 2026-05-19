@@ -168,10 +168,14 @@ export default function AdminDashboard() {
   };
 
   const subjects = useMemo(() => {
-    const fromTopics = topics.map((t) => t.subject.toLowerCase());
-    const fromDb = dbAdminSubjects.map((s) => s.name.toLowerCase());
-    return [...new Set([...fromTopics, ...fromDb])].sort();
-  }, [topics, dbAdminSubjects]);
+    const fromTopics = new Set(topics.map((t) => t.subject.toLowerCase()));
+    // Bez grade filtru: zobraz všechny DB předměty (i prázdné — admin je může spravovat)
+    // S grade filtrem: zobraz jen DB předměty, které mají obsah pro daný ročník
+    const dbNames = gradeFilter
+      ? dbAdminSubjects.filter((s) => fromTopics.has(s.name.toLowerCase())).map((s) => s.name.toLowerCase())
+      : dbAdminSubjects.map((s) => s.name.toLowerCase());
+    return [...new Set([...fromTopics, ...dbNames])].sort();
+  }, [topics, dbAdminSubjects, gradeFilter]);
 
   const categories = useMemo(() => {
     if (!selectedSubject) return [];
