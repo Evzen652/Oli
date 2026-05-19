@@ -9,7 +9,9 @@ function getGeminiKey(): string | undefined {
   return Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("GOOGLE_AI_KEY");
 }
 
-async function callAI(messages: Array<{ role: string; content: string }>): Promise<Response> {
+type AICallResult = { response: Response; provider: string };
+
+async function callAI(messages: Array<{ role: string; content: string }>): Promise<AICallResult> {
   const geminiKey = getGeminiKey();
   const groqKey = Deno.env.get("GROQ_API_KEY");
 
@@ -20,29 +22,31 @@ async function callAI(messages: Array<{ role: string; content: string }>): Promi
       headers: { Authorization: `Bearer ${geminiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: GEMINI_MODEL, messages }),
     });
-    if (res.ok) return res;
+    if (res.ok) return { response: res, provider: "Gemini" };
     const errText = await res.text();
     console.warn(`[ai-curriculum] Gemini ${res.status}, falling back to Groq. Body: ${errText.slice(0, 200)}`);
     // Fallback na Groq při jakékoli chybě
     if (groqKey) {
       console.log("[ai-curriculum] Using Groq fallback");
-      return fetch(GROQ_URL, {
+      const groqRes = await fetch(GROQ_URL, {
         method: "POST",
         headers: { Authorization: `Bearer ${groqKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({ model: GROQ_MODEL, messages }),
       });
+      return { response: groqRes, provider: "Groq" };
     }
     // Vrátíme Gemini chybu pokud není Groq
-    return new Response(errText, { status: res.status, headers: { "Content-Type": "application/json" } });
+    return { response: new Response(errText, { status: res.status, headers: { "Content-Type": "application/json" } }), provider: "Gemini" };
   }
 
   // Jen Groq
   if (groqKey) {
-    return fetch(GROQ_URL, {
+    const groqRes = await fetch(GROQ_URL, {
       method: "POST",
       headers: { Authorization: `Bearer ${groqKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: GROQ_MODEL, messages }),
     });
+    return { response: groqRes, provider: "Groq" };
   }
 
   throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY nebo GROQ_API_KEY).");
@@ -205,21 +209,28 @@ Tím zajistíš, že staré záznamy nezůstanou v databázi.
 
 ${detailContext ? `\n## Aktuální kontext\n${detailContext}` : ""}`;
 
-    console.log("Sending Gemini request, message count:", messages.length + 1, "system prompt length:", systemPrompt.length);
+    console.log("[ai-curriculum] Sending request, messages:", messages.length + 1, "system prompt length:", systemPrompt.length);
 
-    const response = await callAI([
+    const { response, provider } = await callAI([
       { role: "system", content: systemPrompt },
       ...messages,
     ]);
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error(`[ai-curriculum] AI provider status=${response.status} body=${errText.slice(0, 300)}`);
-      console.error("AI gateway error:", response.status, errText);
-      // Extrahuj čitelnou zprávu z Google error response
-      let geminiMsg = errText.slice(0, 400);
-      try { geminiMsg = JSON.parse(errText)?.[0]?.error?.message?.slice(0, 300) ?? geminiMsg; } catch {}
-      return new Response(JSON.stringify({ error: `Gemini ${response.status}: ${geminiMsg}` }), {
+      console.error(`[ai-curriculum] ${provider} ${response.status}: ${errText.slice(0, 300)}`);
+      // Extrahuj čitelnou zprávu — formát se liší mezi Gemini a Groq
+      let aiMsg = errText.slice(0, 400);
+      try {
+        const parsed = JSON.parse(errText);
+        // Groq: { error: { message: "..." } }
+        // Gemini: [{ error: { message: "..." } }]
+        aiMsg = parsed?.error?.message
+          ?? parsed?.[0]?.error?.message
+          ?? aiMsg;
+        aiMsg = aiMsg.slice(0, 300);
+      } catch { /* raw text */ }
+      return new Response(JSON.stringify({ error: `${provider} ${response.status}: ${aiMsg}` }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
