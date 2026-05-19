@@ -31,7 +31,48 @@ import { AdminGenerateIllustrations } from "@/components/admin/AdminGenerateIllu
 import { supabase } from "@/integrations/supabase/client";
 import { ACTIVE_STANDARD } from "@/lib/curriculumStandards";
 import { buildCategoryPrompt, buildTopicPrompt } from "@/lib/curriculumPromptBuilder";
+import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 import type { TopicMetadata, Grade } from "@/lib/types";
+
+// ── Direct AI call helper ─────────────────────────────────────────────────────
+/**
+ * Volá ai-curriculum edge funkci přímo bez chat panelu.
+ * Vrací parsed proposals nebo vyhazuje Error s českou hláškou.
+ */
+async function callCurriculumAIDirect(params: {
+  prompt: string;
+  grade: number | null;
+  subject: string | null;
+  category: string | null;
+}): Promise<{ proposals: CurriculumProposal[]; explanation: string }> {
+  const { data, error } = await supabase.functions.invoke<{ reply?: string; error?: string }>(
+    "ai-curriculum",
+    {
+      body: {
+        messages: [{ role: "user", content: params.prompt }],
+        grade: params.grade,
+        subject: params.subject,
+        category: params.category,
+        topic: null,
+      },
+    }
+  );
+
+  if (error) {
+    throw new Error(await friendlyEdgeFunctionError(error, "ai-curriculum"));
+  }
+  if (data?.error) {
+    throw new Error(data.error);
+  }
+
+  const parsed = parseProposals(data?.reply || "");
+  if (!parsed || parsed.proposals.length === 0) {
+    throw new Error(
+      "AI nevrátilo žádné návrhy ve správném formátu. Uprav prompt nebo zkus znovu."
+    );
+  }
+  return parsed;
+}
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
   select_one: "Výběr odpovědi",
@@ -682,15 +723,9 @@ export default function AdminDashboard() {
                     toast.success(`Okruh „${name}" přidán`);
                   }}
                   onAIDirect={async (prompt, grade) => {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) throw new Error("Nejste přihlášen/a");
-                    const { data, error } = await (supabase as any).functions.invoke("ai-curriculum", {
-                      body: { messages: [{ role: "user", content: prompt }], grade, subject: selectedSubject, category: null, topic: null },
+                    const parsed = await callCurriculumAIDirect({
+                      prompt, grade, subject: selectedSubject, category: null,
                     });
-                    if (error) throw new Error(error.message);
-                    if (data?.error) throw new Error(data.error);
-                    const parsed = parseProposals(data?.reply || "");
-                    if (!parsed || parsed.proposals.length === 0) throw new Error("AI nevrátilo žádné návrhy. Uprav prompt a zkus znovu.");
                     setProposals(parsed.proposals);
                     setProposalExplanation(parsed.explanation);
                     setTimeout(() => {
@@ -816,15 +851,9 @@ export default function AdminDashboard() {
                     toast.success(`Téma „${name}" přidáno`);
                   }}
                   onAIDirect={async (prompt, grade) => {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) throw new Error("Nejste přihlášen/a");
-                    const { data, error } = await (supabase as any).functions.invoke("ai-curriculum", {
-                      body: { messages: [{ role: "user", content: prompt }], grade, subject: selectedSubject, category: selectedCategory, topic: null },
+                    const parsed = await callCurriculumAIDirect({
+                      prompt, grade, subject: selectedSubject, category: selectedCategory,
                     });
-                    if (error) throw new Error(error.message);
-                    if (data?.error) throw new Error(data.error);
-                    const parsed = parseProposals(data?.reply || "");
-                    if (!parsed || parsed.proposals.length === 0) throw new Error("AI nevrátilo žádné návrhy. Uprav prompt a zkus znovu.");
                     setProposals(parsed.proposals);
                     setProposalExplanation(parsed.explanation);
                     setTimeout(() => {
