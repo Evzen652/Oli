@@ -3,15 +3,12 @@
  *
  * DB ukládá jména bez diakritiky (např. "Cisla a operace", "Cestina").
  * Tyto mappingy zajišťují správné zobrazení v UI.
+ *
+ * POZN: Subject slug→name přesunut do `subjectSlugMap.ts` (single source of truth).
+ *       Tady jen wrapper s Capitalize-First-Letter formátem pro UI.
  */
 
-export const SLUG_TO_SUBJECT_LABEL: Record<string, string> = {
-  matematika: "Matematika",
-  cestina: "Čeština",
-  prvouka: "Prvouka",
-  prirodoveda: "Přírodověda",
-  vlastiveda: "Vlastivěda",
-};
+import { canonicalSubjectName } from "./subjectSlugMap";
 
 export const CATEGORY_NAME_MAP: Record<string, string> = {
   "Cisla a operace": "Čísla a operace",
@@ -41,9 +38,11 @@ export const TOPIC_NAME_MAP: Record<string, string> = {
   "Zvirata": "Zvířata",
 };
 
+/** Subject name s velkým prvním písmenem (pro UI labels). */
 export function normalizeSubjectLabel(name: string, slug?: string): string {
-  if (slug) return SLUG_TO_SUBJECT_LABEL[slug] ?? name;
-  return SLUG_TO_SUBJECT_LABEL[name.toLowerCase()] ?? name;
+  const effectiveSlug = slug ?? name.toLowerCase();
+  const canonical = canonicalSubjectName(effectiveSlug, name);
+  return canonical.charAt(0).toUpperCase() + canonical.slice(1);
 }
 
 export function normalizeCategoryName(name: string): string {

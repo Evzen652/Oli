@@ -30,6 +30,7 @@ import { AdminContentAudit } from "@/components/admin/AdminContentAudit";
 import { AdminGenerateIllustrations } from "@/components/admin/AdminGenerateIllustrations";
 import { supabase } from "@/integrations/supabase/client";
 import { ACTIVE_STANDARD } from "@/lib/curriculumStandards";
+import { isSubjectVisibleForGrade } from "@/lib/curriculumSubjectFilter";
 import { buildCategoryPrompt, buildTopicPrompt } from "@/lib/curriculumPromptBuilder";
 import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 import type { TopicMetadata, Grade } from "@/lib/types";
@@ -44,6 +45,8 @@ async function callCurriculumAIDirect(params: {
   grade: number | null;
   subject: string | null;
   category: string | null;
+  /** scope říká edge funkci jaká část DB se má přidat do contextu (token-efficient) */
+  scope: "subjects" | "categories" | "topics" | "skills";
 }): Promise<{ proposals: CurriculumProposal[]; explanation: string }> {
   const { data, error } = await supabase.functions.invoke<{ reply?: string; error?: string }>(
     "ai-curriculum",
@@ -54,6 +57,7 @@ async function callCurriculumAIDirect(params: {
         subject: params.subject,
         category: params.category,
         topic: null,
+        scope: params.scope,
       },
     }
   );
@@ -65,10 +69,23 @@ async function callCurriculumAIDirect(params: {
     throw new Error(data.error);
   }
 
-  const parsed = parseProposals(data?.reply || "");
+  const reply = data?.reply ?? "";
+  const parsed = parseProposals(reply);
   if (!parsed || parsed.proposals.length === 0) {
+    // Diagnostika: log raw reply do konzole + víc kontextu v error message
+    console.warn("[ai-curriculum] AI reply (no JSON proposals):", reply.slice(0, 500));
+    if (reply.trim().length === 0) {
+      throw new Error("AI vrátila prázdnou odpověď. Zkus znovu — možná dočasný výpadek.");
+    }
+    if (!reply.includes("```json")) {
+      throw new Error(
+        "AI nevrátila JSON code block. Pravděpodobně dočasný problém na straně AI " +
+        "(zkus znovu) — nebo si stáhni starou verzi stránky (Ctrl+Shift+R)."
+      );
+    }
     throw new Error(
-      "AI nevrátilo žádné návrhy ve správném formátu. Uprav prompt nebo zkus znovu."
+      "AI vrátila JSON, ale s prázdným polem 'proposals'. " +
+      "Zkus přesnější prompt nebo zopakuj."
     );
   }
   return parsed;
@@ -91,7 +108,7 @@ type BrowseLevel = "subject" | "category" | "topic" | "subtopic" | "detail";
 
 export default function AdminDashboard() {
   const { mergedTopics } = useDbCurriculum();
-  const { subjects: dbAdminSubjects, topics: dbTopics, refetch: refetchAdminCurriculum } = useAdminCurriculum();
+  const { subjects: dbAdminSubjects, categories: dbCategories, topics: dbTopics, refetch: refetchAdminCurriculum } = useAdminCurriculum();
   const allTopics = mergedTopics;
 
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
@@ -158,40 +175,60 @@ export default function AdminDashboard() {
       setSelectedTopic(null);
       setSelectedSkill(null);
     }
-    // Subject
-    if (selectedSubject && !newTopics.some((t) => t.subject === selectedSubject)) {
-      setSelectedSubject(null);
-      setSelectedCategory(null);
-      setSelectedTopic(null);
-      setSelectedSkill(null);
+    // Subject — reset pouze pokud předmět nebude viditelný v novém ročníku
+    if (selectedSubject && newGrade != null) {
+      const hasContent = newTopics.some((t) => t.subject === selectedSubject);
+      const dbSubj = dbAdminSubjects.find((s) => s.name.toLowerCase() === selectedSubject);
+      const stillVisible = dbSubj
+        ? isSubjectVisibleForGrade(dbSubj, newGrade, hasContent)
+        : hasContent; // jen code subject bez DB záznamu → řídí se obsahem
+      if (!stillVisible) {
+        setSelectedSubject(null);
+        setSelectedCategory(null);
+        setSelectedTopic(null);
+        setSelectedSkill(null);
+      }
     }
   };
 
   const subjects = useMemo(() => {
     const fromTopics = new Set(topics.map((t) => t.subject.toLowerCase()));
-    // Bez grade filtru: zobraz všechny DB předměty (i prázdné — admin je může spravovat)
-    // S grade filtrem: zobraz jen DB předměty, které mají obsah pro daný ročník
-    const dbNames = gradeFilter
-      ? dbAdminSubjects.filter((s) => fromTopics.has(s.name.toLowerCase())).map((s) => s.name.toLowerCase())
-      : dbAdminSubjects.map((s) => s.name.toLowerCase());
+    // Single source of truth → isSubjectVisibleForGrade
+    const dbNames = dbAdminSubjects
+      .filter((s) => isSubjectVisibleForGrade(s, gradeFilter, fromTopics.has(s.name.toLowerCase())))
+      .map((s) => s.name.toLowerCase());
     return [...new Set([...fromTopics, ...dbNames])].sort();
   }, [topics, dbAdminSubjects, gradeFilter]);
 
   const categories = useMemo(() => {
     if (!selectedSubject) return [];
-    return [...new Set(topics.filter((t) => t.subject === selectedSubject).map((t) => t.category))];
-  }, [selectedSubject, topics]);
+    // (a) odvozeno z obsahu (skills/code topics) — kategorie která má skills
+    const fromContent = new Set(topics.filter((t) => t.subject === selectedSubject).map((t) => t.category));
+    // (b) přímo z DB curriculum_categories — registrované kategorie bez obsahu
+    const fromDb = dbCategories
+      .filter((c) => c.subject_name?.toLowerCase() === selectedSubject.toLowerCase())
+      .map((c) => c.name);
+    return [...new Set([...fromContent, ...fromDb])];
+  }, [selectedSubject, topics, dbCategories]);
 
   const topicGroups = useMemo(() => {
     if (!selectedSubject || !selectedCategory) return [];
-    return [
-      ...new Set(
-        topics
-          .filter((t) => t.subject === selectedSubject && t.category === selectedCategory)
-          .map((t) => t.topic),
-      ),
-    ];
-  }, [selectedSubject, selectedCategory, topics]);
+    // (a) odvozeno z obsahu
+    const fromContent = new Set(
+      topics
+        .filter((t) => t.subject === selectedSubject && t.category === selectedCategory)
+        .map((t) => t.topic),
+    );
+    // (b) přímo z DB curriculum_topics — registrovaná témata bez skills
+    const fromDb = dbTopics
+      .filter(
+        (t) =>
+          t.subject_name?.toLowerCase() === selectedSubject.toLowerCase() &&
+          t.category_name?.toLowerCase() === selectedCategory.toLowerCase(),
+      )
+      .map((t) => t.name);
+    return [...new Set([...fromContent, ...fromDb])];
+  }, [selectedSubject, selectedCategory, topics, dbTopics]);
 
   const subtopics =
     selectedSubject && selectedCategory && selectedTopic
@@ -729,6 +766,7 @@ export default function AdminDashboard() {
                   onAIDirect={async (prompt, grade) => {
                     const parsed = await callCurriculumAIDirect({
                       prompt, grade, subject: selectedSubject, category: null,
+                      scope: "categories",
                     });
                     setProposals(parsed.proposals);
                     setProposalExplanation(parsed.explanation);
@@ -857,6 +895,7 @@ export default function AdminDashboard() {
                   onAIDirect={async (prompt, grade) => {
                     const parsed = await callCurriculumAIDirect({
                       prompt, grade, subject: selectedSubject, category: selectedCategory,
+                      scope: "topics",
                     });
                     setProposals(parsed.proposals);
                     setProposalExplanation(parsed.explanation);

@@ -12,6 +12,7 @@ import {
   Sparkles, MessageSquare, Wand2, Search, PlusCircle, BookOpen,
 } from "lucide-react";
 import type { Grade } from "@/lib/types";
+import { isSubjectVisibleForGrade } from "@/lib/curriculumSubjectFilter";
 
 type WizardTask = "create" | "check" | "fill_gaps" | "custom";
 
@@ -118,32 +119,41 @@ export function CurriculumWizard({
   const [subject, setSubject] = useState<string | null>(currentSubject);
   const [task, setTask] = useState<WizardTask>("create");
   const [customText, setCustomText] = useState("");
-  // Předměty z DB — filtrované podle ročníku (přes skills.grade_min/max)
+  // Předměty z DB — konzistentní s AdminDashboard přes isSubjectVisibleForGrade.
   const [allSubjects, setAllSubjects] = useState<string[]>([]);
   useEffect(() => {
     if (grade) {
-      // Pouze předměty, které mají alespoň jedno skill pro daný ročník
-      supabase
-        .from("curriculum_skills")
-        .select(`
-          curriculum_topics (
-            curriculum_categories (
-              curriculum_subjects ( name )
+      Promise.all([
+        supabase
+          .from("curriculum_subjects")
+          .select("name, grade_min, grade_max") as any,
+        supabase
+          .from("curriculum_skills")
+          .select(`
+            curriculum_topics (
+              curriculum_categories (
+                curriculum_subjects ( name )
+              )
             )
-          )
-        `)
-        .lte("grade_min", grade)
-        .gte("grade_max", grade)
-        .then(({ data }) => {
-          if (!data) return;
-          const names = new Set<string>();
-          for (const skill of data) {
-            const subjectName = (skill as any)
-              .curriculum_topics?.curriculum_categories?.curriculum_subjects?.name;
-            if (subjectName) names.add(subjectName.toLowerCase());
+          `)
+          .lte("grade_min", grade)
+          .gte("grade_max", grade) as any,
+      ]).then(([subjRes, skillRes]: [any, any]) => {
+        // (a) jména předmětů, které mají skills pro daný ročník
+        const subjectsWithContent = new Set<string>();
+        for (const skill of skillRes.data ?? []) {
+          const sn = skill?.curriculum_topics?.curriculum_categories?.curriculum_subjects?.name;
+          if (sn) subjectsWithContent.add(sn.toLowerCase());
+        }
+        // (b) aplikuj sdílený filter na všechny DB předměty
+        const names = new Set<string>();
+        for (const s of subjRes.data ?? []) {
+          if (isSubjectVisibleForGrade(s, grade, subjectsWithContent.has(s.name.toLowerCase()))) {
+            names.add(s.name.toLowerCase());
           }
-          setAllSubjects([...names].sort());
-        });
+        }
+        setAllSubjects([...names].sort());
+      });
     } else {
       // Bez ročníku — všechny předměty z DB
       supabase.from("curriculum_subjects").select("name").then(({ data }) => {

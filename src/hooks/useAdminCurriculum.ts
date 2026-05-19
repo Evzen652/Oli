@@ -1,34 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-
-/**
- * Kanonická jména předmětů podle slug.
- * Opravuje případy, kdy AI vygeneroval název bez diakritiky (Cestina → čeština).
- */
-const CANONICAL_SUBJECT_NAME: Record<string, string> = {
-  cestina: "čeština",
-  matematika: "matematika",
-  prvouka: "prvouka",
-  prirodoveda: "přírodověda",
-  vlastiveda: "vlastivěda",
-  biologie: "biologie",
-  chemie: "chemie",
-  fyzika: "fyzika",
-  dejepis: "dějepis",
-  zemeris: "zeměpis",
-  zemeopis: "zeměpis",
-  zemepis: "zeměpis",
-  informatika: "informatika",
-  anglictina: "anglický jazyk",
-  nemcina: "německý jazyk",
-  obcanska: "občanská výchova",
-};
+import { canonicalSubjectName } from "@/lib/subjectSlugMap";
 
 export interface DbSubject {
   id: string;
   name: string;
   slug: string;
   sort_order: number;
+  /** Explicitní ročníkový rozsah dle RVP. Null = nemá rozsah, zobrazí se jen s obsahem. */
+  grade_min: number | null;
+  grade_max: number | null;
 }
 
 export interface DbCategory {
@@ -70,7 +51,7 @@ export function useAdminCurriculum() {
       const [subRes, catRes, topRes] = await Promise.all([
         (supabase as any)
           .from("curriculum_subjects")
-          .select("id, name, slug, sort_order")
+          .select("id, name, slug, sort_order, grade_min, grade_max")
           .order("sort_order", { ascending: true }),
         (supabase as any)
           .from("curriculum_categories")
@@ -85,8 +66,10 @@ export function useAdminCurriculum() {
       setSubjects(
         (subRes.data || []).map((s: any) => ({
           ...s,
-          // Oprav jméno dle slug → zabrání zobrazení "Cestina" místo "čeština"
-          name: CANONICAL_SUBJECT_NAME[s.slug] ?? s.name,
+          // Single source of truth → subjectSlugMap
+          name: canonicalSubjectName(s.slug, s.name),
+          grade_min: s.grade_min ?? null,
+          grade_max: s.grade_max ?? null,
         }))
       );
       setCategories(

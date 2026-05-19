@@ -11,7 +11,11 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "audit:content": "vitest run src/test/content-audit.test.ts --reporter=verbose"
+    "audit:content": "vitest run src/test/content-audit.test.ts --reporter=verbose",
+    "verify:curriculum": "node scripts/verify-curriculum.mjs",
+    "verify:ai-curriculum": "node scripts/verify-ai-curriculum.mjs",
+    "sb": "node scripts/sb.mjs",
+    "sb:status": "node scripts/sb.mjs status"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -67,7 +67,9 @@ describe("useAdminCurriculum — happy path", () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.subjects).toHaveLength(1);
-    expect(result.current.subjects[0].name).toBe("Matematika");
+    // POZN: useAdminCurriculum normalizuje name přes subjectSlugMap (lowercase).
+    // Display capitalizace se děje přes CSS class `capitalize` při renderu.
+    expect(result.current.subjects[0].name).toBe("matematika");
 
     expect(result.current.categories).toHaveLength(1);
     expect(result.current.categories[0].subject_name).toBe("Matematika");

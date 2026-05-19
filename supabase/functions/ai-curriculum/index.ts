@@ -1,9 +1,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const GEMINI_MODEL = "gemini-2.0-flash-lite";
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODEL = "llama-3.3-70b-versatile";
+
+// AI provider URLs
+const GEMINI_URL  = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+const GROQ_URL    = "https://api.groq.com/openai/v1/chat/completions";
+const LOVABLE_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+
+// Models per provider
+const GEMINI_MODEL  = "gemini-2.0-flash-lite";
+const GROQ_MODEL    = "llama-3.3-70b-versatile";
+const LOVABLE_MODEL = "google/gemini-3-flash-preview";
 
 function getGeminiKey(): string | undefined {
   return Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("GOOGLE_AI_KEY");
@@ -11,45 +17,56 @@ function getGeminiKey(): string | undefined {
 
 type AICallResult = { response: Response; provider: string };
 
+async function tryProvider(
+  url: string,
+  apiKey: string,
+  model: string,
+  messages: Array<{ role: string; content: string }>,
+  providerName: string,
+): Promise<AICallResult> {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model, messages }),
+  });
+  return { response: res, provider: providerName };
+}
+
+/**
+ * 3-úrovňový AI fallback chain:
+ *   Gemini  → Groq  → Lovable Gateway
+ * Pokud první selže (4xx/5xx), zkusíme další. Vrátíme úspěšnou odpověď
+ * nebo posledně neúspěšnou (s provider info).
+ */
 async function callAI(messages: Array<{ role: string; content: string }>): Promise<AICallResult> {
-  const geminiKey = getGeminiKey();
-  const groqKey = Deno.env.get("GROQ_API_KEY");
+  const geminiKey  = getGeminiKey();
+  const groqKey    = Deno.env.get("GROQ_API_KEY");
+  const lovableKey = Deno.env.get("LOVABLE_API_KEY");
 
-  // Zkus Gemini jako primární
-  if (geminiKey) {
-    const res = await fetch(GEMINI_URL, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${geminiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: GEMINI_MODEL, messages }),
-    });
-    if (res.ok) return { response: res, provider: "Gemini" };
-    const errText = await res.text();
-    console.warn(`[ai-curriculum] Gemini ${res.status}, falling back to Groq. Body: ${errText.slice(0, 200)}`);
-    // Fallback na Groq při jakékoli chybě
-    if (groqKey) {
-      console.log("[ai-curriculum] Using Groq fallback");
-      const groqRes = await fetch(GROQ_URL, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${groqKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: GROQ_MODEL, messages }),
-      });
-      return { response: groqRes, provider: "Groq" };
+  if (!geminiKey && !groqKey && !lovableKey) {
+    throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY, GROQ_API_KEY nebo LOVABLE_API_KEY).");
+  }
+
+  const chain: Array<{ name: string; url: string; key: string; model: string }> = [];
+  if (geminiKey)  chain.push({ name: "Gemini",  url: GEMINI_URL,  key: geminiKey,  model: GEMINI_MODEL  });
+  if (groqKey)    chain.push({ name: "Groq",    url: GROQ_URL,    key: groqKey,    model: GROQ_MODEL    });
+  if (lovableKey) chain.push({ name: "Lovable", url: LOVABLE_URL, key: lovableKey, model: LOVABLE_MODEL });
+
+  let lastResult: AICallResult | null = null;
+  for (let i = 0; i < chain.length; i++) {
+    const p = chain[i];
+    const result = await tryProvider(p.url, p.key, p.model, messages, p.name);
+    if (result.response.ok) {
+      if (i > 0) console.log(`[ai-curriculum] ${p.name} succeeded after ${i} failed providers`);
+      return result;
     }
-    // Vrátíme Gemini chybu pokud není Groq
-    return { response: new Response(errText, { status: res.status, headers: { "Content-Type": "application/json" } }), provider: "Gemini" };
+    const errText = await result.response.clone().text();
+    console.warn(`[ai-curriculum] ${p.name} ${result.response.status}: ${errText.slice(0, 200)}`);
+    lastResult = result;
   }
 
-  // Jen Groq
-  if (groqKey) {
-    const groqRes = await fetch(GROQ_URL, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${groqKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ model: GROQ_MODEL, messages }),
-    });
-    return { response: groqRes, provider: "Groq" };
-  }
-
-  throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY nebo GROQ_API_KEY).");
+  // Všechny selhaly — vrátíme poslední neúspěšný result
+  return lastResult!;
 }
 
 const corsHeaders = {
@@ -65,8 +82,15 @@ serve(async (req) => {
   const url = new URL(req.url);
   if (url.searchParams.get("healthcheck") === "1") {
     return new Response(JSON.stringify({
-      gemini_api_key: !!Deno.env.get("GEMINI_API_KEY"),
-      google_ai_key: !!Deno.env.get("GOOGLE_AI_KEY"),
+      gemini_api_key:  !!Deno.env.get("GEMINI_API_KEY"),
+      google_ai_key:   !!Deno.env.get("GOOGLE_AI_KEY"),
+      groq_api_key:    !!Deno.env.get("GROQ_API_KEY"),
+      lovable_api_key: !!Deno.env.get("LOVABLE_API_KEY"),
+      providers_chain: [
+        getGeminiKey()                       ? "Gemini"  : null,
+        Deno.env.get("GROQ_API_KEY")         ? "Groq"    : null,
+        Deno.env.get("LOVABLE_API_KEY")      ? "Lovable" : null,
+      ].filter(Boolean),
       keyPrefix: (Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("GOOGLE_AI_KEY"))?.slice(0, 8) ?? "not set",
     }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
@@ -110,27 +134,76 @@ serve(async (req) => {
       });
     }
 
-    const { messages, grade, subject, category, topic, skillId, skillDetail } = await req.json();
+    const { messages, grade, subject, category, topic, skillId, skillDetail, scope } = await req.json();
 
-    // Load existing curriculum context from DB (minimální — jen names/slugs, bez skills)
-    const { data: subjects } = await supabase
-      .from("curriculum_subjects")
-      .select("id, name, slug");
+    /**
+     * SCOPE-BASED CONTEXT (token-efficient):
+     *
+     * Posíláme AI POUZE ten výřez DB, který je relevantní pro daný request:
+     *   - scope="subjects"   → jen seznam subjects (jména, slugs) pro dedup
+     *   - scope="categories" → categories pod selectedSubject
+     *   - scope="topics"     → topics pod selectedCategory
+     *   - scope="skills"     → code_skill_ids pod selectedTopic
+     *   - scope nezadán → minimal (jen subject jména, žádné categories/topics)
+     *
+     * Důsledek: prompt size klesne z ~1000 tokenů na ~50-200 i s 100+ předměty.
+     * Bezpečnostní limit: nikdy nepřekročit MAX_CONTEXT_ITEMS položek.
+     */
+    const MAX_CONTEXT_ITEMS = 200;
+    let existingContext = "{}";
 
-    const { data: categories } = await supabase
-      .from("curriculum_categories")
-      .select("id, name, slug, subject_id");
+    if (scope === "subjects" || !scope) {
+      const { data: subjects } = await supabase
+        .from("curriculum_subjects")
+        .select("name, slug")
+        .limit(MAX_CONTEXT_ITEMS);
+      existingContext = JSON.stringify({ subjects: subjects ?? [] });
+    } else if (scope === "categories" && subject) {
+      // Najdi subject_id podle jména a vrať jeho categories
+      const { data: subjRow } = await supabase
+        .from("curriculum_subjects")
+        .select("id")
+        .ilike("name", subject)
+        .maybeSingle();
+      if (subjRow?.id) {
+        const { data: cats } = await supabase
+          .from("curriculum_categories")
+          .select("name, slug")
+          .eq("subject_id", subjRow.id)
+          .limit(MAX_CONTEXT_ITEMS);
+        existingContext = JSON.stringify({ categories_under_subject: cats ?? [] });
+      }
+    } else if (scope === "topics" && category) {
+      const { data: catRow } = await supabase
+        .from("curriculum_categories")
+        .select("id")
+        .ilike("name", category)
+        .maybeSingle();
+      if (catRow?.id) {
+        const { data: tops } = await supabase
+          .from("curriculum_topics")
+          .select("name, slug")
+          .eq("category_id", catRow.id)
+          .limit(MAX_CONTEXT_ITEMS);
+        existingContext = JSON.stringify({ topics_under_category: tops ?? [] });
+      }
+    } else if (scope === "skills" && topic) {
+      const { data: topRow } = await supabase
+        .from("curriculum_topics")
+        .select("id")
+        .ilike("name", topic)
+        .maybeSingle();
+      if (topRow?.id) {
+        const { data: skills } = await supabase
+          .from("curriculum_skills")
+          .select("name, code_skill_id")
+          .eq("topic_id", topRow.id)
+          .limit(MAX_CONTEXT_ITEMS);
+        existingContext = JSON.stringify({ skills_under_topic: skills ?? [] });
+      }
+    }
 
-    const { data: topics } = await supabase
-      .from("curriculum_topics")
-      .select("id, name, slug, category_id");
-
-    // Skills vynecháme — stovky řádků zbytečně plní kontext
-    const existingContext = JSON.stringify({
-      subjects: subjects?.map(s => ({ id: s.id, name: s.name, slug: s.slug })),
-      categories: categories?.map(c => ({ id: c.id, name: c.name, slug: c.slug, subject_id: c.subject_id })),
-      topics: topics?.map(t => ({ id: t.id, name: t.name, slug: t.slug, category_id: t.category_id })),
-    });
+    console.log(`[ai-curriculum] scope=${scope ?? "default"}, context bytes=${existingContext.length}`);
 
     // Build detailed context block
     let detailContext = "";
@@ -158,48 +231,13 @@ serve(async (req) => {
       throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY nebo GROQ_API_KEY).");
     }
 
-    const systemPrompt = `Jsi odborný pedagogický asistent pro tvorbu kurikula české základní školy (3.–9. ročník).
+    const systemPrompt = `Jsi pedagogický asistent pro české kurikulum (RVP ZV, 3.-9. ročník). Píšeš česky.
 
-**DŮLEŽITÉ: Veškeré odpovědi piš VÝHRADNĚ česky. Nepoužívej žádný jiný jazyk.**
+User prompt obsahuje konkrétní JSON příklad — drž se ho přesně.
+Pokud admin žádá konzultaci (ne návrh), odpověz textem bez JSON bloku.
 
-## Úkol
-Pomáháš administrátorovi budovat kurikulum české ZŠ (3.–9. ročník): předměty, okruhy, témata, podtémata (skills).
-
-## Podporované typy vstupu pro skills (input_type)
-text, number, fraction, select_one, comparison, drag_order, fill_blank, multi_select, match_pairs, categorize.
-Každý skill MUSÍ mít jeden z těchto input_type.
-
-## Pravidla
-1. Vše česky, gramaticky správně, dle RVP pro daný ročník.
-2. **ÚPLNOST:** Pro předmět navrhni 4–8 okruhů, pro okruh 4–8 témat, pro téma 3–6 podtémat. Nikdy 1–2 položky pokud o to admin výslovně nežádá.
-3. Podtémata nesmí duplikovat existující obsah.
-4. \`brief_description\` z pohledu žáka ve 2. osobě: "Naučíš se...", "Spočítáš...", "Poznáš...".
-5. \`code_skill_id\` formát: "math-nazev" nebo "czech-nazev".
-6. Každý skill musí mít \`help_visual_examples\` — pole stručných textových popisů s emoji/ASCII diagramy.
-
-## Existující obsah v databázi
+## Existující obsah (pro dedup, nepřidávej duplikáty)
 ${existingContext}
-
-## Formát návrhu
-Když navrhuješ nový obsah, VŽDY odpověz ve strukturovaném JSON formátu uvnitř bloku \`\`\`json ... \`\`\`.
-Struktura:
-{
-  "proposals": [
-    {
-      "type": "subject" | "category" | "topic" | "skill",
-      "action": "create" | "update" | "delete",
-      "data": {
-        // Pro subject: { name, slug }
-        // Pro category: { name, slug, subject_slug, description, fun_fact, sort_order }
-        // Pro topic: { name, slug, category_slug, description, sort_order }
-        // Pro skill: { name, code_skill_id, brief_description, grade_min, grade_max, input_type, goals: [], boundaries: [], keywords: [], help_hint, help_example, help_common_mistake, help_steps: [], help_visual_examples: [], topic_slug, sort_order }
-      }
-    }
-  ],
-  "explanation": "Stručné vysvětlení co a proč navrhuješ"
-}
-
-Pokud administrátor žádá jen o konzultaci nebo otázku (ne o generování obsahu), odpověz normálně textem bez JSON bloku.
 
 ## Pravidlo pro konsolidaci (sloučení)
 Když administrátor chce sloučit více podtémat do menšího počtu, MUSÍŠ:

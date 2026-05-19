@@ -64,11 +64,35 @@ Navrhni 4–6 NOVÝCH okruhů, které:
 ━━ STANDARD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${standard.promptInstructions}
 
-━━ FORMÁT ODPOVĚDI ━━━━━━━━━━━━━━━━━━━━━━
-Pro každý okruh:
-  - název (max 5 slov)
-  - popis (1–2 věty, co se dítě naučí)
-  - klíčové pojmy (3–5 slov oddělených čárkami)`;
+━━ FORMÁT ODPOVĚDI — POVINNÝ JSON ━━━━━━━━
+Vrať VÝHRADNĚ jeden JSON code block (markdown fence s jazykem json).
+Žádný text vedle bloku, žádné dodatečné vysvětlení mimo pole "explanation".
+Struktura níže:
+
+\`\`\`json
+{
+  "proposals": [
+    {
+      "type": "category",
+      "action": "create",
+      "data": {
+        "name": "Organismy",
+        "slug": "organismy",
+        "subject_slug": "${subject.toLowerCase().replace(/\s+/g, "-")}",
+        "description": "Stavba a funkce živých organismů",
+        "fun_fact": null,
+        "sort_order": 1
+      }
+    }
+  ],
+  "explanation": "Krátké vysvětlení proč právě tyto okruhy."
+}
+\`\`\`
+
+Pravidla:
+  • slug = lowercase ASCII, pomlčky místo mezer (např. "lidske-telo")
+  • subject_slug MUSÍ být přesně "${subject.toLowerCase().replace(/\s+/g, "-")}"
+  • žádné duplikáty s existujícími okruhy výše`;
 }
 
 // ─── Topic prompt ─────────────────────────────────────────────────────────────
@@ -113,11 +137,33 @@ Navrhni 4–6 NOVÝCH témat, která:
 ━━ STANDARD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${standard.promptInstructions}
 
-━━ FORMÁT ODPOVĚDI ━━━━━━━━━━━━━━━━━━━━━━
-Pro každé téma:
-  - název (max 5 slov)
-  - popis (1–2 věty, co se dítě naučí)
-  - klíčové pojmy (3–5 slov oddělených čárkami)`;
+━━ FORMÁT ODPOVĚDI — POVINNÝ JSON ━━━━━━━━
+Vrať VÝHRADNĚ jeden JSON code block (markdown fence s jazykem json).
+Struktura níže:
+
+\`\`\`json
+{
+  "proposals": [
+    {
+      "type": "topic",
+      "action": "create",
+      "data": {
+        "name": "Savci",
+        "slug": "savci",
+        "category_slug": "${category.toLowerCase().replace(/\s+/g, "-")}",
+        "description": "Stavba a chování savců",
+        "sort_order": 1
+      }
+    }
+  ],
+  "explanation": "Krátké vysvětlení."
+}
+\`\`\`
+
+Pravidla:
+  • slug = lowercase ASCII, pomlčky místo mezer
+  • category_slug MUSÍ být přesně "${category.toLowerCase().replace(/\s+/g, "-")}"
+  • žádné duplikáty s existujícími tématy výše`;
 }
 
 // ─── Subject prompt ───────────────────────────────────────────────────────────
@@ -156,9 +202,30 @@ Navrhni předměty, které:
 ━━ STANDARD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${standard.promptInstructions}
 
-━━ FORMÁT ODPOVĚDI ━━━━━━━━━━━━━━━━━━━━━━
-Pro každý předmět:
-  - název (oficiální název dle ${standard.name})
-  - stručný popis (1 věta)
-  - typický ročník zahájení výuky`;
+━━ FORMÁT ODPOVĚDI — POVINNÝ JSON ━━━━━━━━
+Vrať VÝHRADNĚ jeden JSON code block (markdown fence s jazykem json).
+Struktura níže:
+
+\`\`\`json
+{
+  "proposals": [
+    {
+      "type": "subject",
+      "action": "create",
+      "data": {
+        "name": "Biologie",
+        "slug": "biologie",
+        "grade_min": 6,
+        "grade_max": 9
+      }
+    }
+  ],
+  "explanation": "Krátké vysvětlení."
+}
+\`\`\`
+
+Pravidla:
+  • slug = lowercase ASCII, pomlčky místo mezer
+  • grade_min a grade_max v rozsahu 1-9, grade_min ≤ grade_max
+  • žádné duplikáty s existujícími předměty výše`;
 }

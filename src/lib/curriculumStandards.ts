@@ -86,3 +86,30 @@ Zohľadni vzdelávacie štandardy: výkonový štandard a obsahový štandard pr
 
 /** Active standard for current deployment. Switch when expanding to new country. */
 export const ACTIVE_STANDARD: CurriculumStandard = CURRICULUM_STANDARDS.CZ;
+
+/**
+ * Known grade ranges per subject name (lowercase, with diacritics as stored in DB).
+ * Used to filter DB subjects that have no skills yet — we still know their curriculum grade range.
+ * Source: RVP ZV (MŠMT). Extend when adding new subjects.
+ */
+export const CZ_SUBJECT_GRADE_RANGES: Record<string, [number, number]> = {
+  "matematika":           [1, 9],
+  "čeština":             [1, 9],
+  "prvouka":             [1, 3],
+  "přírodověda":         [4, 5],
+  "vlastivěda":          [4, 5],
+  "biologie":            [6, 9],
+  "přírodopis":          [6, 9],
+  "chemie":              [8, 9],
+  "fyzika":              [6, 9],
+  "dějepis":             [6, 9],
+  "zeměpis":             [6, 9],
+  "informatika":         [1, 9],
+  "anglický jazyk":      [3, 9],
+  "německý jazyk":       [6, 9],
+  "občanská výchova":    [6, 9],
+  "výtvarná výchova":    [1, 9],
+  "hudební výchova":     [1, 9],
+  "tělesná výchova":     [1, 9],
+  "pracovní výchova":    [1, 9],
+};

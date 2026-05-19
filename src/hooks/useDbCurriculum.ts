@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getAllTopics } from "@/lib/contentRegistry";
+import { canonicalSubjectName } from "@/lib/subjectSlugMap";
 import type { TopicMetadata, Grade, InputType, PracticeTask } from "@/lib/types";
 
 /** A DB skill record joined with its hierarchy */
@@ -33,14 +34,7 @@ export interface DbSkillRow {
   subject_slug: string;
 }
 
-/** Map DB subject slug to content registry subject name */
-const SLUG_TO_SUBJECT: Record<string, string> = {
-  matematika: "matematika",
-  cestina: "čeština",
-  prvouka: "prvouka",
-  prirodoveda: "přírodověda",
-  vlastiveda: "vlastivěda",
-};
+// Single source of truth — viz src/lib/subjectSlugMap.ts
 
 /** Normalize DB category names to match code registry (ASCII → diacritics) */
 const CATEGORY_NAME_MAP: Record<string, string> = {
@@ -68,7 +62,7 @@ export function dbSkillToTopicMetadata(row: DbSkillRow): TopicMetadata {
   return {
     id: row.code_skill_id,
     title: row.name,
-    subject: SLUG_TO_SUBJECT[row.subject_slug] ?? row.subject_slug,
+    subject: canonicalSubjectName(row.subject_slug),
     category: normalizeCategoryName(row.category_name),
     topic: row.topic_name,
     briefDescription: row.brief_description || "",

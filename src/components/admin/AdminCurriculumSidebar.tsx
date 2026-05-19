@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRight, ChevronDown, Search, RotateCcw } from "lucide-react";
 import type { TopicMetadata } from "@/lib/types";
 import type { DbSubject } from "@/hooks/useAdminCurriculum";
+import { isSubjectVisibleForGrade } from "@/lib/curriculumSubjectFilter";
 
 // Barva pro vizuální dot per předmět — Notion-vibe minimal indikátor
 const SUBJECT_DOT: Record<string, string> = {
@@ -145,14 +146,13 @@ export function AdminCurriculumSidebar({
       if (!byS[t.subject][t.category][t.topic]) byS[t.subject][t.category][t.topic] = [];
       byS[t.subject][t.category][t.topic].push(t);
     }
-    // Přidej předměty z DB bez obsahu — jen pokud není aktivní grade filtr.
-    // S filtrem zobrazuj jen předměty, které mají obsah pro daný ročník (už jsou v byS).
-    if (!gradeFilter) {
-      for (const s of dbSubjects) {
-        const name = s.name.toLowerCase();
-        if (!q || name.includes(q)) {
-          if (!byS[name]) byS[name] = {};
-        }
+    // Single source of truth → isSubjectVisibleForGrade
+    for (const s of dbSubjects) {
+      const name = s.name.toLowerCase();
+      if (q && !name.includes(q)) continue;
+      const hasContent = !!byS[name];
+      if (isSubjectVisibleForGrade(s, gradeFilter ?? null, hasContent)) {
+        if (!byS[name]) byS[name] = {};
       }
     }
     return byS;
