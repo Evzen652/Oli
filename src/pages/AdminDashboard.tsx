@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2 } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2, Plus, Check, X as XIcon } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
@@ -650,6 +650,32 @@ export default function AdminDashboard() {
                   </Card>
                 );
               })}
+
+              {/* Přidat okruh — inline formulář */}
+              {selectedSubject && (
+                <QuickAddCard
+                  label="okruh"
+                  onSave={async (name, description) => {
+                    const dbSubj = dbAdminSubjects.find(
+                      (s) => s.name.toLowerCase() === selectedSubject.toLowerCase()
+                    );
+                    if (!dbSubj) { toast.error("Předmět nenalezen v DB"); return; }
+                    const slug = name.toLowerCase()
+                      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+                      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                    const { error } = await (supabase as any)
+                      .from("curriculum_categories")
+                      .insert({ name, slug, subject_id: dbSubj.id, description: description || null, sort_order: 0 });
+                    if (error) throw error;
+                    refetchAdminCurriculum();
+                    toast.success(`Okruh „${name}" přidán`);
+                  }}
+                  onAI={() => {
+                    setAiInitialPrompt(`Navrhni okruhy pro předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ""}`);
+                    setAiChatOpen(true);
+                  }}
+                />
+              )}
             </div>
           )}
 
@@ -733,6 +759,34 @@ export default function AdminDashboard() {
                   </Card>
                 );
               })}
+
+              {/* Přidat téma — inline formulář */}
+              {selectedSubject && selectedCategory && (
+                <QuickAddCard
+                  label="téma"
+                  onSave={async (name, description) => {
+                    const dbCat = (await (supabase as any)
+                      .from("curriculum_categories")
+                      .select("id")
+                      .ilike("name", selectedCategory)
+                      .maybeSingle()).data;
+                    if (!dbCat) { toast.error("Okruh nenalezen v DB"); return; }
+                    const slug = name.toLowerCase()
+                      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+                      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                    const { error } = await (supabase as any)
+                      .from("curriculum_topics")
+                      .insert({ name, slug, category_id: dbCat.id, description: description || null, sort_order: 0 });
+                    if (error) throw error;
+                    refetchAdminCurriculum();
+                    toast.success(`Téma „${name}" přidáno`);
+                  }}
+                  onAI={() => {
+                    setAiInitialPrompt(`Navrhni témata pro okruh ${capitalize(selectedCategory)} (předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ""})`);
+                    setAiChatOpen(true);
+                  }}
+                />
+              )}
             </div>
           )}
 
@@ -1038,5 +1092,115 @@ function ImageOrEmoji({
       className={`${sizes[size]} object-contain shrink-0`}
       fallback={emoji ? <span className={emojiSizes[size]} aria-hidden>{emoji}</span> : undefined}
     />
+  );
+}
+
+// ── QuickAddCard ─────────────────────────────────────
+/**
+ * Inline karta „+ Přidat okruh / téma" v gridu.
+ * Po kliknutí se rozbalí formulář s polem pro název + volitelný popis.
+ * Tlačítko „✨ AI" pošle připravený prompt do AI asistenta.
+ */
+function QuickAddCard({
+  label,
+  onSave,
+  onAI,
+}: {
+  label: string;
+  onSave: (name: string, description: string) => Promise<void>;
+  onAI: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    if (!name.trim()) return;
+    setSaving(true);
+    try {
+      await onSave(name.trim(), description.trim());
+      setName("");
+      setDescription("");
+      setOpen(false);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Chyba při ukládání");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!open) {
+    return (
+      <Card
+        className="border-2 border-dashed border-primary/30 rounded-3xl cursor-pointer bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all flex items-center justify-center min-h-[200px]"
+        onClick={() => setOpen(true)}
+      >
+        <CardContent className="flex flex-col items-center gap-3 p-6 text-center">
+          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Plus className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-primary">Přidat {label}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">ručně nebo s AI</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="border-2 border-primary/40 rounded-3xl bg-primary/5">
+      <CardContent className="flex flex-col gap-3 p-5">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-semibold text-foreground">Nový {label}</p>
+          <button
+            onClick={() => { setOpen(false); setName(""); setDescription(""); }}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <XIcon className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          <input
+            autoFocus
+            placeholder={`Název ${label}u…`}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") handleSave(); if (e.key === "Escape") setOpen(false); }}
+            className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60"
+          />
+          <textarea
+            placeholder="Popis (nepovinné)…"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+            className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 resize-none"
+          />
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            className="flex-1 gap-1.5 rounded-xl"
+            onClick={handleSave}
+            disabled={!name.trim() || saving}
+          >
+            {saving ? <span className="animate-spin">⏳</span> : <Check className="h-3.5 w-3.5" />}
+            Uložit
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="gap-1.5 rounded-xl border-primary/40 text-primary hover:bg-primary/10"
+            onClick={() => { setOpen(false); onAI(); }}
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            AI návrh
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
