@@ -61,6 +61,20 @@ const FALLBACK_EMOJIS = ["📚", "🧪", "🎨", "🌐", "🔬", "🎵", "🏛�
 // Supabase storage URL pro dynamické ilustrace předmětů
 const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
 
+// Předem definované gradienty + bordera — statické třídy, Tailwind je vidí
+const FALLBACK_PALETTES = [
+  { gradientClass: "bg-gradient-to-r from-white to-violet-50",  borderClass: "border-violet-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-blue-50",    borderClass: "border-blue-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-emerald-50", borderClass: "border-emerald-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-amber-50",   borderClass: "border-amber-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-rose-50",    borderClass: "border-rose-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-cyan-50",    borderClass: "border-cyan-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-orange-50",  borderClass: "border-orange-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-teal-50",    borderClass: "border-teal-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-pink-50",    borderClass: "border-pink-200/60" },
+  { gradientClass: "bg-gradient-to-r from-white to-lime-50",    borderClass: "border-lime-200/60" },
+];
+
 /** Deterministic hash of a string to a number. */
 function hashString(str: string): number {
   let hash = 0;
@@ -70,19 +84,15 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
-/** Generate a deterministic HSL hue from a subject name. */
-function subjectHue(subject: string): number {
-  return hashString(subject) % 360;
-}
-
 /**
  * Build a dynamic fallback SubjectMeta from the subject name.
  * Zkouší načíst ilustraci ze Supabase storage (subject-{slug}.png).
  * Pokud neexistuje, IllustrationImg automaticky zobrazí emoji fallback.
  */
 function buildFallback(subject: string): SubjectMeta {
-  const hue = subjectHue(subject);
-  const emoji = FALLBACK_EMOJIS[hashString(subject) % FALLBACK_EMOJIS.length];
+  const hash = hashString(subject);
+  const emoji = FALLBACK_EMOJIS[hash % FALLBACK_EMOJIS.length];
+  const palette = FALLBACK_PALETTES[hash % FALLBACK_PALETTES.length];
   const slug = subject.toLowerCase()
     .normalize("NFD").replace(/[̀-ͯ]/g, "") // diakritika
     .replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
@@ -90,8 +100,8 @@ function buildFallback(subject: string): SubjectMeta {
     label: subject.charAt(0).toUpperCase() + subject.slice(1),
     emoji,
     image: `${SUPABASE_STORAGE}/subject-${slug}.png`,
-    gradientClass: `bg-gradient-to-r from-white to-[hsl(${hue},60%,92%)]`,
-    borderClass: `border-[hsl(${hue},60%,50%)]/40`,
+    gradientClass: palette.gradientClass,
+    borderClass: palette.borderClass,
   };
 }
 
