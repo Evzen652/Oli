@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "gemini-2.0-flash-lite";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 
