@@ -1,6 +1,29 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+/**
+ * Kanonická jména předmětů podle slug.
+ * Opravuje případy, kdy AI vygeneroval název bez diakritiky (Cestina → čeština).
+ */
+const CANONICAL_SUBJECT_NAME: Record<string, string> = {
+  cestina: "čeština",
+  matematika: "matematika",
+  prvouka: "prvouka",
+  prirodoveda: "přírodověda",
+  vlastiveda: "vlastivěda",
+  biologie: "biologie",
+  chemie: "chemie",
+  fyzika: "fyzika",
+  dejepis: "dějepis",
+  zemeris: "zeměpis",
+  zemeopis: "zeměpis",
+  zemepis: "zeměpis",
+  informatika: "informatika",
+  anglictina: "anglický jazyk",
+  nemcina: "německý jazyk",
+  obcanska: "občanská výchova",
+};
+
 export interface DbSubject {
   id: string;
   name: string;
@@ -59,7 +82,13 @@ export function useAdminCurriculum() {
           .order("sort_order", { ascending: true }),
       ]);
 
-      setSubjects(subRes.data || []);
+      setSubjects(
+        (subRes.data || []).map((s: any) => ({
+          ...s,
+          // Oprav jméno dle slug → zabrání zobrazení "Cestina" místo "čeština"
+          name: CANONICAL_SUBJECT_NAME[s.slug] ?? s.name,
+        }))
+      );
       setCategories(
         (catRes.data || []).map((c: any) => ({
           ...c,

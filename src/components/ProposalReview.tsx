@@ -1170,9 +1170,14 @@ async function saveProposalToDb(item: ProposalItem) {
 
   switch (type) {
     case "subject": {
+      // Normalizuj slug (ASCII, pomlčky) a název (zachovej diakritiku z AI)
+      const rawSlug = String(data.slug || data.name || "")
+        .toLowerCase()
+        .normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       const payload = {
         name: String(data.name),
-        slug: String(data.slug),
+        slug: rawSlug || String(data.slug),
         sort_order: Number(data.sort_order || 0),
       };
       // Upsert — funguje pro create i update, bezpečné při opakovaném pokusu
