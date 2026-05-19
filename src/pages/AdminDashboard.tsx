@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2 } from "lucide-react";
 import { type CurriculumProposal } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
@@ -28,6 +28,7 @@ import { AdminCurriculumSidebar } from "@/components/admin/AdminCurriculumSideba
 import { AdminAIPanel } from "@/components/admin/AdminAIPanel";
 import { AdminContentAudit } from "@/components/admin/AdminContentAudit";
 import { AdminGenerateIllustrations } from "@/components/admin/AdminGenerateIllustrations";
+import { supabase } from "@/integrations/supabase/client";
 import type { TopicMetadata, Grade } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -454,6 +455,26 @@ export default function AdminDashboard() {
                 const topicCount = new Set(subjectTopics.map((t) => `${t.category}::${t.topic}`)).size;
                 const subtopicCount = subjectTopics.length;
                 const meta = getSubjectMeta(subject);
+                // DB-only subject = je v dbAdminSubjects ale nemá žádné skills v topics
+                const dbSubject = dbAdminSubjects.find((s) => s.name.toLowerCase() === subject);
+                const isDbOnly = !!dbSubject && subtopicCount === 0 && categoryCount === 0;
+
+                const handleDeleteSubject = async (e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  if (!dbSubject) return;
+                  if (!window.confirm(`Opravdu smazat předmět "${capitalize(subject)}"? Tato akce je nevratná.`)) return;
+                  const { error } = await (supabase as any)
+                    .from("curriculum_subjects")
+                    .delete()
+                    .eq("id", dbSubject.id);
+                  if (error) {
+                    toast.error(`Chyba při mazání: ${error.message}`);
+                  } else {
+                    toast.success(`Předmět "${capitalize(subject)}" smazán`);
+                    refetchAdminCurriculum();
+                  }
+                };
+
                 return (
                   <Card
                     key={subject}
@@ -465,6 +486,17 @@ export default function AdminDashboard() {
                     <span className="pointer-events-none absolute top-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
                     <span className="pointer-events-none absolute bottom-3 left-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
                     <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
+
+                    {/* Smazat — jen pro DB-only předměty, zobrazí se po najetí */}
+                    {isDbOnly && (
+                      <button
+                        onClick={handleDeleteSubject}
+                        className="absolute top-3 right-10 z-10 opacity-0 group-hover:opacity-100 transition-opacity h-7 w-7 rounded-full bg-destructive/90 text-white flex items-center justify-center hover:bg-destructive shadow-sm"
+                        title="Smazat předmět"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
                       {/* Ilustrace v rounded panel — image vyplňuje panel */}
