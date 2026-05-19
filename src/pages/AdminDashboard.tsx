@@ -655,6 +655,7 @@ export default function AdminDashboard() {
               {selectedSubject && (
                 <QuickAddCard
                   label="okruh"
+                  aiPrompt={`Navrhni 4–6 okruhů (kapitol) pro předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ", celý ZŠ"}. Pro každý okruh uveď název a stručný popis.`}
                   onSave={async (name, description) => {
                     const dbSubj = dbAdminSubjects.find(
                       (s) => s.name.toLowerCase() === selectedSubject.toLowerCase()
@@ -670,8 +671,8 @@ export default function AdminDashboard() {
                     refetchAdminCurriculum();
                     toast.success(`Okruh „${name}" přidán`);
                   }}
-                  onAI={() => {
-                    setAiInitialPrompt(`Navrhni okruhy pro předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ""}`);
+                  onAI={(prompt) => {
+                    setAiInitialPrompt(prompt);
                     setAiChatOpen(true);
                   }}
                 />
@@ -764,6 +765,7 @@ export default function AdminDashboard() {
               {selectedSubject && selectedCategory && (
                 <QuickAddCard
                   label="téma"
+                  aiPrompt={`Navrhni 4–6 témat pro okruh „${capitalize(selectedCategory)}" (předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ""}). Pro každé téma uveď název a stručný popis.`}
                   onSave={async (name, description) => {
                     const dbCat = (await (supabase as any)
                       .from("curriculum_categories")
@@ -781,8 +783,8 @@ export default function AdminDashboard() {
                     refetchAdminCurriculum();
                     toast.success(`Téma „${name}" přidáno`);
                   }}
-                  onAI={() => {
-                    setAiInitialPrompt(`Navrhni témata pro okruh ${capitalize(selectedCategory)} (předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ""})`);
+                  onAI={(prompt) => {
+                    setAiInitialPrompt(prompt);
                     setAiChatOpen(true);
                   }}
                 />
@@ -1098,31 +1100,38 @@ function ImageOrEmoji({
 // ── QuickAddCard ─────────────────────────────────────
 /**
  * Inline karta „+ Přidat okruh / téma" v gridu.
- * Po kliknutí se rozbalí formulář s polem pro název + volitelný popis.
- * Tlačítko „✨ AI" pošle připravený prompt do AI asistenta.
+ * Má dva módy: ruční přidání a AI návrh s editovatelným promptem.
  */
 function QuickAddCard({
   label,
+  aiPrompt,
   onSave,
   onAI,
 }: {
   label: string;
+  /** Výchozí prompt pro AI — zobrazí se editovatelný před odesláním */
+  aiPrompt: string;
   onSave: (name: string, description: string) => Promise<void>;
-  onAI: () => void;
+  onAI: (prompt: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<"closed" | "manual" | "ai">("closed");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [editedPrompt, setEditedPrompt] = useState(aiPrompt);
   const [saving, setSaving] = useState(false);
+
+  // Sync prompt when aiPrompt prop changes (grade/subject changed)
+  useState(() => { setEditedPrompt(aiPrompt); });
+
+  const close = () => { setMode("closed"); setName(""); setDescription(""); setEditedPrompt(aiPrompt); };
 
   const handleSave = async () => {
     if (!name.trim()) return;
     setSaving(true);
     try {
       await onSave(name.trim(), description.trim());
-      setName("");
-      setDescription("");
-      setOpen(false);
+      setName(""); setDescription("");
+      setMode("closed");
     } catch (e: any) {
       toast.error(e?.message ?? "Chyba při ukládání");
     } finally {
@@ -1130,11 +1139,11 @@ function QuickAddCard({
     }
   };
 
-  if (!open) {
+  if (mode === "closed") {
     return (
       <Card
         className="border-2 border-dashed border-primary/30 rounded-3xl cursor-pointer bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all flex items-center justify-center min-h-[200px]"
-        onClick={() => setOpen(true)}
+        onClick={() => setMode("manual")}
       >
         <CardContent className="flex flex-col items-center gap-3 p-6 text-center">
           <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -1152,54 +1161,85 @@ function QuickAddCard({
   return (
     <Card className="border-2 border-primary/40 rounded-3xl bg-primary/5">
       <CardContent className="flex flex-col gap-3 p-5">
+
+        {/* Hlavička + zavřít */}
         <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold text-foreground">Nový {label}</p>
-          <button
-            onClick={() => { setOpen(false); setName(""); setDescription(""); }}
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
+          <div className="flex gap-1">
+            <button
+              onClick={() => setMode("manual")}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                mode === "manual" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              Ručně
+            </button>
+            <button
+              onClick={() => { setMode("ai"); setEditedPrompt(aiPrompt); }}
+              className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                mode === "ai" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              <Sparkles className="h-3 w-3" /> AI návrh
+            </button>
+          </div>
+          <button onClick={close} className="text-muted-foreground hover:text-foreground">
             <XIcon className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="space-y-2">
-          <input
-            autoFocus
-            placeholder={`Název ${label}u…`}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") handleSave(); if (e.key === "Escape") setOpen(false); }}
-            className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60"
-          />
-          <textarea
-            placeholder="Popis (nepovinné)…"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={2}
-            className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 resize-none"
-          />
-        </div>
+        {/* Mód: ruční */}
+        {mode === "manual" && (
+          <div className="space-y-2">
+            <input
+              autoFocus
+              placeholder={`Název ${label}u…`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSave(); if (e.key === "Escape") close(); }}
+              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40"
+            />
+            <textarea
+              placeholder="Popis (nepovinné)…"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={2}
+              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 resize-none"
+            />
+            <Button
+              size="sm" className="w-full gap-1.5 rounded-xl"
+              onClick={handleSave}
+              disabled={!name.trim() || saving}
+            >
+              {saving ? <span className="animate-spin text-xs">⏳</span> : <Check className="h-3.5 w-3.5" />}
+              Uložit {label}
+            </Button>
+          </div>
+        )}
 
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            className="flex-1 gap-1.5 rounded-xl"
-            onClick={handleSave}
-            disabled={!name.trim() || saving}
-          >
-            {saving ? <span className="animate-spin">⏳</span> : <Check className="h-3.5 w-3.5" />}
-            Uložit
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="gap-1.5 rounded-xl border-primary/40 text-primary hover:bg-primary/10"
-            onClick={() => { setOpen(false); onAI(); }}
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            AI návrh
-          </Button>
-        </div>
+        {/* Mód: AI */}
+        {mode === "ai" && (
+          <div className="space-y-2">
+            <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">
+              Pokyn pro AI — uprav dle potřeby:
+            </p>
+            <textarea
+              autoFocus
+              value={editedPrompt}
+              onChange={(e) => setEditedPrompt(e.target.value)}
+              rows={4}
+              className="w-full rounded-xl border border-primary/30 bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 resize-none font-mono leading-relaxed"
+            />
+            <Button
+              size="sm" className="w-full gap-1.5 rounded-xl"
+              onClick={() => { close(); onAI(editedPrompt); }}
+              disabled={!editedPrompt.trim()}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              Odeslat AI
+            </Button>
+          </div>
+        )}
+
       </CardContent>
     </Card>
   );
