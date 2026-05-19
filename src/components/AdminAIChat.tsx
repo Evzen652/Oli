@@ -321,7 +321,7 @@ export function AdminAIChat({ grade, subject, category, topic, skillId, skillDet
 
 /** Renders assistant message with markdown, stripping JSON blocks */
 function AssistantMessage({ content }: { content: string }) {
-  const cleaned = content.replace(/```json[\s\S]*?```/g, "📋 *[Návrh vygenerován — viz formulář]*");
+  const cleaned = content.replace(/```json[\s\S]*?```/g, "✅ **Návrh je připraven.** Panel se právě zavřel a návrh se zobrazuje v hlavním obsahu — zkontroluj ho a potvrď, co chceš uložit.");
   return (
     <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground prose-headings:mt-3 prose-headings:mb-1 prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5">
       <ReactMarkdown>{cleaned}</ReactMarkdown>

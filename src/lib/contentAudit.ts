@@ -21,9 +21,15 @@ export type AuditCategory = "format" | "self_validation" | "hint_leak" | "bounda
 export interface AuditIssue {
   topicId: string;
   topicTitle: string;
+  topicSubject: string;
+  topicCategory: string;
+  topicGradeRange: [number, number];
   taskQuestion: string;
   category: AuditCategory;
   detail: string;
+  /** Přesné nápovědy, které selhaly — pro AI opravu */
+  failingHints?: string[];
+  correctAnswer?: string;
 }
 
 export interface AuditReport {
@@ -94,6 +100,9 @@ export function runOfflineAudit(
       issues.push({
         topicId: topic.id,
         topicTitle: topic.title,
+        topicSubject: topic.subject,
+        topicCategory: topic.category,
+        topicGradeRange: topic.gradeRange,
         taskQuestion: "(generator crashed)",
         category: "format",
         detail: e instanceof Error ? e.message : "Unknown error",
@@ -108,11 +117,18 @@ export function runOfflineAudit(
     for (const task of sampled) {
       totalTasksChecked++;
 
+      const issueMeta = {
+        topicId: topic.id,
+        topicTitle: topic.title,
+        topicSubject: topic.subject,
+        topicCategory: topic.category,
+        topicGradeRange: topic.gradeRange,
+      };
+
       // b) Neprázdné question + correctAnswer
       if (!task.question?.trim()) {
         issues.push({
-          topicId: topic.id,
-          topicTitle: topic.title,
+          ...issueMeta,
           taskQuestion: task.question || "(empty)",
           category: "format",
           detail: "Prázdné question",
@@ -121,8 +137,7 @@ export function runOfflineAudit(
       }
       if (task.correctAnswer === undefined || task.correctAnswer === null) {
         issues.push({
-          topicId: topic.id,
-          topicTitle: topic.title,
+          ...issueMeta,
           taskQuestion: task.question.slice(0, 80),
           category: "format",
           detail: "Chybí correctAnswer",
@@ -133,8 +148,7 @@ export function runOfflineAudit(
       // c) Format check pro inputType
       if (!validateTaskForInputType(task, topic.inputType)) {
         issues.push({
-          topicId: topic.id,
-          topicTitle: topic.title,
+          ...issueMeta,
           taskQuestion: task.question.slice(0, 80),
           category: "format",
           detail: `Nesedí formát pro typ ${topic.inputType}`,
@@ -150,11 +164,12 @@ export function runOfflineAudit(
         });
         if (!leak.ok) {
           issues.push({
-            topicId: topic.id,
-            topicTitle: topic.title,
+            ...issueMeta,
             taskQuestion: task.question.slice(0, 80),
             category: "hint_leak",
             detail: leak.reason ?? "Nápověda prozrazuje odpověď",
+            failingHints: task.hints,
+            correctAnswer: String(task.correctAnswer),
           });
         }
       }
@@ -162,8 +177,7 @@ export function runOfflineAudit(
       // e) Boundary check
       if (checkBoundaryViolation(task.correctAnswer, topic)) {
         issues.push({
-          topicId: topic.id,
-          topicTitle: topic.title,
+          ...issueMeta,
           taskQuestion: task.question.slice(0, 80),
           category: "boundary",
           detail: `Odpověď "${task.correctAnswer}" porušuje hranice tématu`,
@@ -177,8 +191,7 @@ export function runOfflineAudit(
         });
         if (!result.correct) {
           issues.push({
-            topicId: topic.id,
-            topicTitle: topic.title,
+            ...issueMeta,
             taskQuestion: task.question.slice(0, 80),
             category: "self_validation",
             detail: `Odpověď "${task.correctAnswer}" neprojde svým validátorem (${result.errorType})`,

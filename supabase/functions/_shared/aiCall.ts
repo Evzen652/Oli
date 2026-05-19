@@ -27,6 +27,8 @@ export interface AiModelMap {
   groq: string;
   /** Lovable Gateway model ID — např. "google/gemini-3-flash-preview" */
   lovable: string;
+  /** Google AI model ID — např. "gemini-2.0-flash" */
+  google?: string;
 }
 
 export interface AiCallOptions {
@@ -47,6 +49,12 @@ export interface AiProviderInfo {
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const LOVABLE_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const GOOGLE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+
+/** Přečte Google AI klíč — podporuje obě varianty názvu secretu */
+function getGoogleKey(): string | undefined {
+  return Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("GOOGLE_AI_KEY");
+}
 
 /**
  * Vyhodnotí, který provider se použije, BEZ volání AI.
@@ -72,43 +80,70 @@ export async function aiCall(opts: AiCallOptions): Promise<Response> {
 
   const groqKey = Deno.env.get("GROQ_API_KEY");
   const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+  const googleKey = getGoogleKey();
 
-  // Volba providera
-  let useGroq = false;
-  if (preferGroq && groqKey) useGroq = true;
-  else if (lovableKey) useGroq = false;
-  else if (groqKey) useGroq = true;
-  else throw new Error(
-    "Žádný AI provider není nakonfigurován. Nastavte GROQ_API_KEY (preferováno) " +
-    "nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
-  );
-
-  const url = useGroq ? GROQ_URL : LOVABLE_URL;
-  const apiKey = useGroq ? groqKey! : lovableKey!;
-  const modelId = useGroq ? model.groq : model.lovable;
-
-  console.log(`[aiCall] Provider: ${useGroq ? "Groq" : "Lovable"}, model: ${modelId}`);
-
-  const body: Record<string, unknown> = {
-    model: modelId,
-    messages,
+  const buildBody = (modelId: string): Record<string, unknown> => {
+    const body: Record<string, unknown> = { model: modelId, messages };
+    if (tools) body.tools = tools;
+    if (toolChoice) body.tool_choice = toolChoice;
+    if (typeof temperature === "number") body.temperature = temperature;
+    if (typeof maxTokens === "number") body.max_tokens = maxTokens;
+    return body;
   };
-  if (tools) body.tools = tools;
-  if (toolChoice) body.tool_choice = toolChoice;
-  if (typeof temperature === "number") body.temperature = temperature;
-  if (typeof maxTokens === "number") body.max_tokens = maxTokens;
 
-  return await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  const doFetch = (url: string, apiKey: string, modelId: string) =>
+    fetch(url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify(buildBody(modelId)),
+    });
+
+  // Priorita: Google AI (pokud je klíč a model) → Groq (preferGroq) → Lovable → Groq fallback
+  if (googleKey && model.google) {
+    console.log(`[aiCall] Provider: Google AI, model: ${model.google}`);
+    const res = await doFetch(GOOGLE_URL, googleKey, model.google);
+    if (res.ok) return res;
+    const errBody = await res.clone().text();
+    console.error(`[aiCall] Google returned ${res.status}: ${errBody.slice(0, 200)}`);
+    // Fallback na Groq při jakékoli chybě
+    if (groqKey) {
+      console.log(`[aiCall] Google failed (${res.status}), falling back to Groq`);
+      return await doFetch(GROQ_URL, groqKey, model.groq);
+    }
+    return res;
+  }
+
+  if (preferGroq && groqKey) {
+    console.log(`[aiCall] Provider: Groq, model: ${model.groq}`);
+    const res = await doFetch(GROQ_URL, groqKey, model.groq);
+    if ((res.status === 429 || res.status >= 500) && lovableKey) {
+      console.log(`[aiCall] Groq returned ${res.status}, falling back to Lovable`);
+      return await doFetch(LOVABLE_URL, lovableKey, model.lovable);
+    }
+    return res;
+  }
+
+  if (lovableKey) {
+    console.log(`[aiCall] Provider: Lovable, model: ${model.lovable}`);
+    const res = await doFetch(LOVABLE_URL, lovableKey, model.lovable);
+    if ((res.status === 429 || res.status >= 500) && groqKey) {
+      console.log(`[aiCall] Lovable returned ${res.status}, falling back to Groq`);
+      return await doFetch(GROQ_URL, groqKey, model.groq);
+    }
+    return res;
+  }
+
+  if (groqKey) {
+    console.log(`[aiCall] Provider: Groq (last resort), model: ${model.groq}`);
+    return await doFetch(GROQ_URL, groqKey, model.groq);
+  }
+
+  throw new Error(
+    "Žádný AI provider není nakonfigurován. Nastavte GOOGLE_AI_KEY, GROQ_API_KEY nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
+  );
 }
 
 /** Vrátí true, pokud je nakonfigurován alespoň jeden provider. */
 export function hasAnyAiProvider(): boolean {
-  return !!(Deno.env.get("GROQ_API_KEY") || Deno.env.get("LOVABLE_API_KEY"));
+  return !!(getGoogleKey() || Deno.env.get("GROQ_API_KEY") || Deno.env.get("LOVABLE_API_KEY"));
 }

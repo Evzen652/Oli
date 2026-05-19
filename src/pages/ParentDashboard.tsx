@@ -41,19 +41,39 @@ function localDateStr(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-function makeDemoAssignments() {
-  const todayStr = localDateStr(new Date());
+function makeDemoStaticAssignments() {
   const ago = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return localDateStr(d); };
   return [
-    // Dnes zadané + Nesplněné (status pending, assigned_date = dnes)
-    { id: "da1", skill_id: "math-multiply", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
-    { id: "da2", skill_id: "cz-vyjmenovana-slova-b", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
-    { id: "da3", skill_id: "pr-plant-parts", assigned_date: todayStr, due_date: null as null, status: "pending", note: null as null },
-    // Splněné
+    // Statická pending — vše v rozsahu tohoto týdne (1–5 dní zpět), střídání předmětů
+    { id: "da1", skill_id: "math-multiply",          assigned_date: ago(1),  due_date: null as null, status: "pending", note: null as null },
+    { id: "da2", skill_id: "cz-vyjmenovana-slova-b", assigned_date: ago(3),  due_date: null as null, status: "pending", note: null as null },
+    { id: "da3", skill_id: "pr-plant-parts",         assigned_date: ago(5),  due_date: null as null, status: "pending", note: null as null },
+    // Statická splněná — pro filtr Splněné (3 ks, střídání předmětů)
     { id: "da4", skill_id: "math-add-sub-100", assigned_date: ago(12), due_date: null as null, status: "completed", note: null as null, completedDate: ago(10) + "T15:00:00", completionCorrect: 6, completionHelpUsed: 1, completionTotal: 8 },
-    { id: "da5", skill_id: "cz-slovni-druhy", assigned_date: ago(18), due_date: null as null, status: "completed", note: null as null, completedDate: ago(16) + "T14:30:00", completionCorrect: 7, completionHelpUsed: 0, completionTotal: 9 },
-    { id: "da6", skill_id: "pr-animals", assigned_date: ago(22), due_date: null as null, status: "completed", note: null as null, completedDate: ago(20) + "T16:00:00", completionCorrect: 5, completionHelpUsed: 2, completionTotal: 8 },
+    { id: "da5", skill_id: "cz-slovni-druhy",  assigned_date: ago(18), due_date: null as null, status: "completed", note: null as null, completedDate: ago(16) + "T14:30:00", completionCorrect: 7, completionHelpUsed: 0, completionTotal: 9 },
+    { id: "da6", skill_id: "pr-animals",       assigned_date: ago(22), due_date: null as null, status: "completed", note: null as null, completedDate: ago(20) + "T16:00:00", completionCorrect: 5, completionHelpUsed: 2, completionTotal: 8 },
   ];
+}
+
+/** Generuje nebo načte hash IP adresy z localStorage pro demo izolaci */
+async function getOrCreateDemoHash(): Promise<string> {
+  const stored = localStorage.getItem("oli_demo_hash");
+  if (stored) return stored;
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const { ip } = await res.json() as { ip: string };
+    // Jednoduchý hash — převede IP na krátký alfanumerický řetězec
+    let h = 0;
+    for (let i = 0; i < ip.length; i++) { h = (Math.imul(31, h) + ip.charCodeAt(i)) | 0; }
+    const hash = Math.abs(h).toString(36).padStart(6, "0").slice(0, 8);
+    localStorage.setItem("oli_demo_hash", hash);
+    return hash;
+  } catch {
+    // Fallback — náhodný hash pokud selže fetch
+    const fallback = Math.random().toString(36).slice(2, 10);
+    localStorage.setItem("oli_demo_hash", fallback);
+    return fallback;
+  }
 }
 
 function makeDemoSessions(): SessionEntry[] {
@@ -102,7 +122,11 @@ export default function ParentDashboard() {
   const [editLoading, setEditLoading] = useState(false);
   const [assignmentRefresh, setAssignmentRefresh] = useState(0);
   const [newAssignment, setNewAssignment] = useState<{ childId: string; skillId: string } | null>(null);
-  const [demoAssignments, setDemoAssignments] = useState(() => makeDemoAssignments());
+  const [demoStaticAssignments] = useState(() => makeDemoStaticAssignments());
+  const [demoPendingAssignments, setDemoPendingAssignments] = useState<Array<{
+    id: string; skill_id: string; assigned_date: string; due_date: null; status: "pending"; note: null;
+  }>>([]);
+  const [demoIpHash, setDemoIpHash] = useState<string | null>(null);
   // Deep-link prefill — z URL hash #assign-<skillCode> (např. z reportu)
   const [prefillSkillCode, setPrefillSkillCode] = useState<string | null>(null);
   const [prefillForChildId, setPrefillForChildId] = useState<string | null>(null);
@@ -115,6 +139,36 @@ export default function ParentDashboard() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => setUserEmail(user?.email ?? null));
   }, []);
+
+  // Demo: načti/vytvoř IP hash a natáhni reálné pending úkoly pro tuto IP
+  useEffect(() => {
+    if (userEmail !== "demo@oli.app") return;
+    getOrCreateDemoHash().then(hash => {
+      setDemoIpHash(hash);
+      const prefix = `__demo:${hash}`;
+      // Načti reálné pending úkoly z DB (filtrované podle IP prefixu v note)
+      supabase
+        .from("parent_assignments")
+        .select("id, skill_id, assigned_date, due_date, status, note")
+        .eq("status", "pending")
+        .like("note", `${prefix}%`)
+        .order("assigned_date", { ascending: false })
+        .then(({ data }) => {
+          if (data && data.length > 0) {
+            setDemoPendingAssignments(
+              data.map(r => ({
+                id: r.id,
+                skill_id: r.skill_id as string,
+                assigned_date: r.assigned_date as string,
+                due_date: r.due_date as null,
+                status: "pending" as const,
+                note: null as null,
+              }))
+            );
+          }
+        });
+    });
+  }, [userEmail]);
 
   // Read URL hash on mount + při změně URL — #assign-<skillCode> nebo #assign-<childId>:<skillCode>
   useEffect(() => {
@@ -195,6 +249,9 @@ export default function ParentDashboard() {
 
   const isDemo = userEmail === "demo@oli.app"; // demo detection v2
   const DEMO_STATS = { tasks: 31, days: 6, accuracy: 72, assignedTasks: 18, selfTasks: 13 };
+  // Sloučení reálných pending úkolů + statických splněných pro demo
+  // Reálné pending z DB (tato IP) + statická pending + statická splněná
+  const demoAssignments = [...demoPendingAssignments, ...demoStaticAssignments];
 
   return (
     <div className="min-h-screen bg-[#fdf8f2]" style={role === "admin" ? { paddingTop: "2.5rem" } : isDemo ? { paddingTop: "7rem" } : undefined}>
@@ -347,12 +404,21 @@ export default function ParentDashboard() {
                       childId={child.id}
                       childName={child.child_name}
                       onCreated={(skillId) => {
+                        if (isDemo && demoIpHash) {
+                          // Přidej nový pending úkol do lokálního stavu ihned
+                          const todayStr = localDateStr(new Date());
+                          setDemoPendingAssignments(prev => [
+                            { id: `db-${Date.now()}`, skill_id: skillId, assigned_date: todayStr, due_date: null as null, status: "pending" as const, note: null as null },
+                            ...prev,
+                          ]);
+                        }
                         setAssignmentRefresh(r => r + 1);
                         setNewAssignment({ childId: child.id, skillId });
                         setTimeout(() => setNewAssignment(null), 60000);
                       }}
                       prefillSkillCode={prefillSkillCode && (!prefillForChildId || prefillForChildId === child.id) ? prefillSkillCode : null}
                       onPrefillConsumed={consumePrefill}
+                      demoNotePrefix={isDemo && demoIpHash ? `__demo:${demoIpHash}` : undefined}
                     />
                   </div>
                 )}
@@ -374,7 +440,15 @@ export default function ParentDashboard() {
                     refreshKey={assignmentRefresh}
                     highlightSkillId={newAssignment?.childId === child.id ? newAssignment.skillId : null}
                     mockAssignments={isDemo ? demoAssignments : undefined}
-                    onMockDelete={isDemo ? (id) => setDemoAssignments(prev => prev.filter(a => a.id !== id)) : undefined}
+                    onMockDelete={isDemo ? (id) => {
+                      // Odstraň z lokálního stavu
+                      setDemoPendingAssignments(prev => prev.filter(a => a.id !== id));
+                      // Pokud je ID UUID (reálný DB záznam), smaž i z DB
+                      const isRealDbId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+                      if (isRealDbId) {
+                        supabase.from("parent_assignments").delete().eq("id", id);
+                      }
+                    } : undefined}
                   />
                 </div>
               </div>

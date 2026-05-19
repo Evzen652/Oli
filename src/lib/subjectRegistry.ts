@@ -58,6 +58,9 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
 
 const FALLBACK_EMOJIS = ["📚", "🧪", "🎨", "🌐", "🔬", "🎵", "🏛️", "💡"];
 
+// Supabase storage URL pro dynamické ilustrace předmětů
+const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
+
 /** Deterministic hash of a string to a number. */
 function hashString(str: string): number {
   let hash = 0;
@@ -74,15 +77,19 @@ function subjectHue(subject: string): number {
 
 /**
  * Build a dynamic fallback SubjectMeta from the subject name.
- * Produces a unique, visually distinguishable card for any unknown subject.
+ * Zkouší načíst ilustraci ze Supabase storage (subject-{slug}.png).
+ * Pokud neexistuje, IllustrationImg automaticky zobrazí emoji fallback.
  */
 function buildFallback(subject: string): SubjectMeta {
   const hue = subjectHue(subject);
   const emoji = FALLBACK_EMOJIS[hashString(subject) % FALLBACK_EMOJIS.length];
+  const slug = subject.toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "") // diakritika
+    .replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   return {
     label: subject.charAt(0).toUpperCase() + subject.slice(1),
     emoji,
-    image: "",
+    image: `${SUPABASE_STORAGE}/subject-${slug}.png`,
     gradientClass: `bg-gradient-to-r from-white to-[hsl(${hue},60%,92%)]`,
     borderClass: `border-[hsl(${hue},60%,50%)]/40`,
   };

@@ -3,10 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { getTopicById } from "@/lib/contentRegistry";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
-import { useChildStats, type StatsPeriod } from "@/hooks/useChildStats";
+import { useChildStats, type StatsPeriod, type SkillBreakdown } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Calendar, ChevronDown, Link2 } from "lucide-react";
+import { ArrowRight, BarChart2, Calendar, ChevronDown, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -14,6 +14,7 @@ import { logoNoText } from "@/components/OlyLogo";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { toGreeting } from "@/lib/czechNames";
+import { SkillDetailModal } from "@/components/SkillDetailModal";
 
 interface Assignment {
   id: string;
@@ -36,12 +37,55 @@ const dStr = (daysAgo: number) => {
 };
 
 const DEMO_CHILD_ASSIGNMENTS: Assignment[] = [
-  { id: "dc1", skill_id: "math-multiply",          note: null, due_date: dStr(-1), assigned_date: dStr(1),  skillName: "Násobilka",              subject: "matematika", status: "pending" },
-  { id: "dc2", skill_id: "math-add-sub-100",        note: null, due_date: null,     assigned_date: dStr(3),  skillName: "Sčítání a odčítání do 100", subject: "matematika", status: "pending" },
-  { id: "dc3", skill_id: "cz-vyjmenovana-slova-b",  note: null, due_date: null,     assigned_date: dStr(6),  skillName: "Vyjmenovaná slova po B",  subject: "čeština",    status: "pending" },
-  { id: "dc4", skill_id: "pr-plant-parts",          note: null, due_date: null,     assigned_date: dStr(14), skillName: "Části rostlin",           subject: "prvouka",    status: "completed" },
-  { id: "dc5", skill_id: "cz-slovni-druhy",         note: null, due_date: null,     assigned_date: dStr(18), skillName: "Slovní druhy",            subject: "čeština",    status: "completed" },
+  // Pending — vše v rozsahu "tento týden" (1–5 dní zpět), střídání předmětů
+  { id: "dc1", skill_id: "math-multiply",          note: null, due_date: null, assigned_date: dStr(1),  skillName: "Násobilka",              subject: "matematika", status: "pending" },
+  { id: "dc2", skill_id: "cz-vyjmenovana-slova-b", note: null, due_date: null, assigned_date: dStr(3),  skillName: "Vyjmenovaná slova po B",  subject: "čeština",    status: "pending" },
+  { id: "dc3", skill_id: "pr-plant-parts",         note: null, due_date: null, assigned_date: dStr(5),  skillName: "Části rostlin",           subject: "prvouka",    status: "pending" },
+  // Splněné — střídání předmětů (3 ks)
+  { id: "dc4", skill_id: "math-add-sub-100", note: null, due_date: null, assigned_date: dStr(14), skillName: "Sčítání a odčítání do 100", subject: "matematika", status: "completed" },
+  { id: "dc5", skill_id: "cz-slovni-druhy",  note: null, due_date: null, assigned_date: dStr(18), skillName: "Slovní druhy",            subject: "čeština",    status: "completed" },
+  { id: "dc6", skill_id: "pr-animals",       note: null, due_date: null, assigned_date: dStr(22), skillName: "Zvířata a jejich mláďata", subject: "prvouka",    status: "completed" },
 ];
+
+const DEMO_CHILD_PENDING: Assignment[] = DEMO_CHILD_ASSIGNMENTS.filter(a => a.status === "pending");
+const DEMO_CHILD_COMPLETED: Assignment[] = DEMO_CHILD_ASSIGNMENTS.filter(a => a.status === "completed");
+
+const _dt = (daysAgo: number) => { const d = new Date(); d.setDate(d.getDate() - daysAgo); return d.toISOString(); };
+
+const DEMO_SKILLS: SkillBreakdown[] = [
+  // Dnes — všechny tři předměty
+  { skillId: "math-multiply",          attempts: 10, correct: 9,  helpUsed: 0, wrong: 1, lastPracticed: _dt(0)  },
+  { skillId: "cz-vyjmenovana-slova-b", attempts: 10, correct: 10, helpUsed: 0, wrong: 0, lastPracticed: _dt(0)  },
+  { skillId: "pr-plant-parts",         attempts: 10, correct: 9,  helpUsed: 0, wrong: 1, lastPracticed: _dt(0)  },
+  // Posledních 7 dní (navíc) — všechny tři předměty
+  { skillId: "math-add-sub-100",       attempts: 10, correct: 8,  helpUsed: 1, wrong: 1, lastPracticed: _dt(4)  },
+  { skillId: "cz-slovni-druhy",        attempts: 9,  correct: 7,  helpUsed: 1, wrong: 1, lastPracticed: _dt(5)  },
+  { skillId: "pr-animals",             attempts: 9,  correct: 5,  helpUsed: 2, wrong: 2, lastPracticed: _dt(6)  },
+  // Poslední měsíc (navíc)
+  { skillId: "cz-tvrde-mekke",         attempts: 8,  correct: 4,  helpUsed: 2, wrong: 2, lastPracticed: _dt(14) },
+];
+
+/** Odstraní demo prefix z poznámky (např. "__demo:abc123 Pozn." → "Pozn." nebo null) */
+function stripDemoNotePrefix(note: string | null): string | null {
+  if (!note) return null;
+  const cleaned = note.replace(/^__demo:[a-z0-9]+\s?/, "").trim();
+  return cleaned || null;
+}
+
+function pctToGrade(pct: number): 1 | 2 | 3 | 4 | 5 {
+  if (pct >= 90) return 1;
+  if (pct >= 75) return 2;
+  if (pct >= 55) return 3;
+  if (pct >= 40) return 4;
+  return 5;
+}
+const GRADE_META: Record<number, { label: string; color: string; bg: string; border: string }> = {
+  1: { label: "Výborný",      color: "text-emerald-700", bg: "bg-emerald-50",  border: "border-emerald-300" },
+  2: { label: "Chvalitebný",  color: "text-green-700",   bg: "bg-green-50",    border: "border-green-300" },
+  3: { label: "Dobrý",        color: "text-amber-700",   bg: "bg-amber-50",    border: "border-amber-300" },
+  4: { label: "Dostatečný",   color: "text-orange-700",  bg: "bg-orange-50",   border: "border-orange-300" },
+  5: { label: "Nedostatečný", color: "text-rose-700",    bg: "bg-rose-50",     border: "border-rose-300" },
+};
 
 // ── Pairing code ──────────────────────────────────────────────────────────────
 
@@ -244,10 +288,22 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   const [loading, setLoading] = useState(true);
   const [statsPeriod, setStatsPeriod] = useState<StatsPeriod>("7d");
   const [skillSubject, setSkillSubject] = useState<string | null>(null);
+  const [skillGradeFilter, setSkillGradeFilter] = useState<1 | 2 | 3 | 4 | 5 | null>(null);
   const [assignmentSubject, setAssignmentSubject] = useState<string | null>(null);
   const [assignmentDateFilter, setAssignmentDateFilter] = useState<"all" | "today" | "week" | "older" | "completed">("all");
   const [isDemoUser, setIsDemoUser] = useState(false);
-  const DEMO_STATS = { tasks: 41, daysActive: 8, accuracy: 66, sessions: 12, helpUsed: 8, wrong: 14 };
+  const [selectedSkill, setSelectedSkill] = useState<{ skillId: string; mock?: { correct: number; helpUsed: number; wrong: number; total: number; date: string; pct: number } } | null>(null);
+  const demoSkillsForPeriod = (() => {
+    const now = Date.now();
+    if (statsPeriod === "today") {
+      const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
+      return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= startOfDay);
+    }
+    if (statsPeriod === "7d")  return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= new Date(now - 7  * 86400_000));
+    if (statsPeriod === "30d") return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= new Date(now - 30 * 86400_000));
+    return DEMO_SKILLS; // "all"
+  })();
+  const DEMO_STATS = { tasks: 41, daysActive: 8, accuracy: 66, sessions: 12, helpUsed: 8, wrong: 14, skills: demoSkillsForPeriod };
   const stats = useChildStats(childId, statsPeriod, isDemoUser ? DEMO_STATS : undefined);
 
   const [assignmentRefreshKey, setAssignmentRefreshKey] = useState(0);
@@ -278,7 +334,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       setChildName(child.child_name);
       setChildId(child.id);
 
-      // Demo účet — inject mock data, neptat se DB
+      // Admin/dev preview — inject mock data, neptat se DB
       if (user.email === "eweigl@email.cz") {
         setIsDemoUser(true);
         setAssignments(DEMO_CHILD_ASSIGNMENTS);
@@ -286,14 +342,36 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         return;
       }
 
-      const { data: rawAll } = await supabase.from("parent_assignments")
-        .select("id, skill_id, note, due_date, assigned_date, status").eq("child_id", child.id)
-        .order("due_date", { ascending: true, nullsFirst: false })
-        .order("assigned_date", { ascending: true });
+      // Demo žák — načti reálné pending úkoly filtrované podle IP hashe
+      const isDemoChildAccount = user.email === "demo-child@oli.app";
 
-      const rawPending = rawAll ?? [];
+      let rawAll: Array<{ id: string; skill_id: string; note: string | null; due_date: string | null; assigned_date: string; status: string }> | null = null;
 
-      const skillIds = [...new Set(rawPending.map(a => a.skill_id))];
+      if (isDemoChildAccount) {
+        setIsDemoUser(true);
+        const hash = localStorage.getItem("oli_demo_hash");
+        if (hash) {
+          const prefix = `__demo:${hash}`;
+          const { data } = await supabase.from("parent_assignments")
+            .select("id, skill_id, note, due_date, assigned_date, status")
+            .eq("child_id", child.id)
+            .like("note", `${prefix}%`)
+            .order("due_date", { ascending: true, nullsFirst: false })
+            .order("assigned_date", { ascending: true });
+          rawAll = data;
+        }
+        // Pokud není hash (přímý vstup bez rodičovské session), zobrazíme prázdný seznam pending
+      } else {
+        const { data } = await supabase.from("parent_assignments")
+          .select("id, skill_id, note, due_date, assigned_date, status").eq("child_id", child.id)
+          .order("due_date", { ascending: true, nullsFirst: false })
+          .order("assigned_date", { ascending: true });
+        rawAll = data;
+      }
+
+      const rawList = rawAll ?? [];
+
+      const skillIds = [...new Set(rawList.map(a => a.skill_id))];
       const topicMap: Record<string, TopicMetadata> = {};
       const needDbLookup: string[] = [];
       for (const sid of skillIds) {
@@ -317,19 +395,30 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         }
       }
 
-      const resolveAssignment = (a: typeof allRaw[0]): Assignment => {
+      const resolveAssignment = (a: typeof rawList[0]): Assignment => {
         const topic = topicMap[a.skill_id];
         const db = dbNameMap[a.skill_id];
+        // U demo žáka vyčistíme prefix z poznámky
+        const note = isDemoChildAccount ? stripDemoNotePrefix(a.note) : a.note;
         return {
-          id: a.id, skill_id: a.skill_id, note: a.note, due_date: a.due_date,
+          id: a.id, skill_id: a.skill_id, note, due_date: a.due_date,
           assigned_date: a.assigned_date,
           skillName: topic?.title ?? db?.name ?? a.skill_id,
           subject: topic?.subject ?? db?.subject ?? "",
+          status: a.status,
           topic: topic ?? (db ? { category: db.category, subject: db.subject, _dbOnly: true, generator: () => [] } as any : undefined),
         };
       };
 
-      setAssignments(rawPending.map(resolveAssignment));
+      const resolved = rawList.map(resolveAssignment);
+
+      // U demo žáka: reálné pending z DB (tato IP) + vždy 3 statická pending + 2 statická splněná
+      if (isDemoChildAccount) {
+        const realPending = resolved.filter(a => a.status === "pending");
+        setAssignments([...realPending, ...DEMO_CHILD_PENDING, ...DEMO_CHILD_COMPLETED]);
+      } else {
+        setAssignments(resolved);
+      }
       setLoading(false);
     })();
   }, [assignmentRefreshKey]);
@@ -363,6 +452,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     if (assignmentSubject && a.subject !== assignmentSubject) return false;
     if (assignmentDateFilter === "completed") return a.status === "completed";
     if (a.status !== "pending") return false;
+    // Demo: datové filtry přeskočíme — vždy zobrazíme všechna 3 pending
+    if (isDemoUser) return true;
     const d = new Date(a.assigned_date + "T00:00:00");
     if (assignmentDateFilter === "today") return d >= today;
     if (assignmentDateFilter === "week") return d >= weekAgo && d < today;
@@ -375,11 +466,17 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     : grade <= 5
     ? ["matematika", "čeština", "přírodověda", "vlastivěda"]
     : ["matematika", "čeština"];
-  const visibleSkills = skillSubject
-    ? stats.skills.filter(s => getTopicById(s.skillId)?.subject === skillSubject)
-    : stats.skills;
+  const visibleSkills = stats.skills.filter(s => {
+    if (skillSubject && getTopicById(s.skillId)?.subject !== skillSubject) return false;
+    if (skillGradeFilter !== null) {
+      const acc = s.attempts > 0 ? Math.round(((s.correct ?? 0) / s.attempts) * 100) : 0;
+      if (s.attempts < 2 || pctToGrade(acc) !== skillGradeFilter) return false;
+    }
+    return true;
+  });
 
   return (
+    <>
     <div className="min-h-screen bg-[#fdf8f2] px-4 py-6 sm:px-8 sm:py-10">
       <div className="w-full max-w-5xl mx-auto space-y-5">
 
@@ -456,9 +553,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               <h2 className="font-bold text-foreground text-base">Úkoly od rodiče</h2>
               <p className="text-xs text-muted-foreground leading-tight">Tady jsou cvičení, která ti zadali doma. Snaž se je splnit do termínu!</p>
             </div>
-            {assignments.length > 0 && (
+            {assignments.filter(a => a.status === "pending").length > 0 && (
               <span className="rounded-full bg-primary text-primary-foreground text-[10px] font-bold px-2.5 py-1 leading-none shrink-0">
-                {assignments.length}&nbsp;nové
+                {assignments.filter(a => a.status === "pending").length}&nbsp;nové
               </span>
             )}
           </div>
@@ -513,15 +610,16 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 a.topic?.category,
                 (a.topic as any)?.topic && (a.topic as any).topic !== a.skillName ? (a.topic as any).topic : null,
               ].filter(Boolean).join(" · ");
+              const isCompleted = a.status === "completed" || a.status === "skipped";
               return (
-                <div key={a.id} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 flex items-center gap-4">
+                <div key={a.id} className={`rounded-2xl border p-4 flex items-center gap-4 ${isCompleted ? "border-emerald-200 bg-emerald-50/40" : "border-border/40 bg-slate-50/60"}`}>
                   <div className="flex-1 min-w-0">
                     <SkillHeader subjMeta={subjMeta} breadcrumb={breadcrumb} skillName={a.skillName} />
                     <div className="flex items-center gap-2 mt-2 flex-wrap">
                       <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Calendar className="h-3 w-3 shrink-0" /> Zadáno {assignedFormatted}
                       </span>
-                      {a.due_date && (
+                      {a.due_date && !isCompleted && (
                         <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${isOverdue ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"}`}>
                           do {formatDueDate(a.due_date)}
                         </span>
@@ -529,13 +627,19 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                       {a.note && <span className="text-xs text-muted-foreground italic truncate">„{a.note}"</span>}
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleStartAssignment(a)}
-                    disabled={!a.topic}
-                    className="shrink-0 h-10 rounded-xl bg-primary hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50 text-primary-foreground font-bold px-4 flex items-center gap-1.5 text-sm transition-all"
-                  >
-                    Začít <ArrowRight className="h-3.5 w-3.5" />
-                  </button>
+                  {isCompleted ? (
+                    <span className="shrink-0 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 flex items-center gap-1">
+                      ✓ Splněno
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => handleStartAssignment(a)}
+                      disabled={!a.topic}
+                      className="shrink-0 h-10 rounded-xl bg-primary hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50 text-primary-foreground font-bold px-4 flex items-center gap-1.5 text-sm transition-all"
+                    >
+                      Začít <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </div>
               );
             })}
@@ -582,21 +686,34 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               })}
             </div>
           )}
+          <div className="px-5 pt-2 pb-1">
+            <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5 flex-wrap">
+              <button
+                onClick={() => setSkillGradeFilter(null)}
+                className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === null ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+              >Vše</button>
+              {([1, 2, 3, 4, 5] as const).map(g => {
+                const m = GRADE_META[g];
+                return (
+                  <button key={g}
+                    onClick={() => setSkillGradeFilter(skillGradeFilter === g ? null : g)}
+                    className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === g ? `bg-white shadow-sm ${m.color}` : "text-slate-500 hover:text-slate-700"}`}
+                  >{g} – {m.label}</button>
+                );
+              })}
+            </div>
+          </div>
           <div className="p-4 space-y-2">
             {stats.loading ? null : stats.skills.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">Ještě nic — pojď začít! 🚀</p>
             ) : visibleSkills.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-6">Žádné výsledky pro tento předmět.</p>
+              <p className="text-sm text-muted-foreground text-center py-6">Žádné výsledky pro zvolený filtr.</p>
             ) : visibleSkills.map((s) => {
               const correct = s.correct ?? 0;
               const wrong = s.attempts - correct;
               const sAcc = s.attempts > 0 ? Math.round((correct / s.attempts) * 100) : 0;
-              let barColor = "bg-emerald-500";
-              let badgeText = "skvěle";
-              let badgeCls = "bg-emerald-100 text-emerald-700";
-              if (s.attempts < 2) { barColor = "bg-slate-300"; badgeText = "začínáš"; badgeCls = "bg-slate-100 text-slate-600"; }
-              else if (sAcc < 50) { barColor = "bg-amber-500"; badgeText = "trénovat"; badgeCls = "bg-amber-100 text-amber-700"; }
-              else if (sAcc < 80) { barColor = "bg-sky-500"; badgeText = "dobře"; badgeCls = "bg-sky-100 text-sky-700"; }
+              const grade = s.attempts >= 2 ? pctToGrade(sAcc) : null;
+              const gMeta = grade !== null ? GRADE_META[grade] : null;
               const topic = getTopicById(s.skillId);
               const subjMeta = topic ? getSubjectMeta(topic.subject) : null;
               const breadcrumb = [
@@ -605,28 +722,39 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 topic?.topic && topic.topic !== getReadableSkillName(s.skillId) ? topic.topic : null,
               ].filter(Boolean).join(" · ");
               return (
-                <div key={s.skillId} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-2">
+                <div key={s.skillId} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-3">
                   <div className="flex items-start gap-3">
-                    <SkillHeader subjMeta={subjMeta} breadcrumb={breadcrumb} skillName={getReadableSkillName(s.skillId)} />
-                    <span className={`text-[10px] font-bold rounded-full px-2.5 py-1 shrink-0 ml-auto ${badgeCls}`}>{badgeText}</span>
+                    <SkillHeader subjMeta={subjMeta} breadcrumb={breadcrumb} skillName={getReadableSkillName(s.skillId)} lastPracticed={s.lastPracticed} />
+                    <div className="flex items-center gap-1.5 text-xs ml-auto shrink-0">
+                      <span className="text-emerald-600 font-semibold">✓ {correct} správně</span>
+                      {wrong > 0 && <span className="text-rose-500 font-semibold">✗ {wrong} špatně</span>}
+                      {gMeta && grade && (
+                        <span className={`inline-flex items-center justify-center h-6 w-6 rounded-full text-[11px] font-bold border shrink-0 ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
+                          {grade}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                    <div className={`h-full rounded-full ${barColor} transition-all`} style={{ width: `${sAcc}%` }} />
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-emerald-600 font-semibold">✓ {correct} správně</span>
-                    {wrong > 0 && <span className="text-rose-500 font-semibold">✗ {wrong} špatně</span>}
-                    <span className="text-muted-foreground ml-auto">{sAcc} %</span>
-                  </div>
-                  <div className="flex items-start justify-between gap-2">
-                    <p className={`text-xs font-medium ${sAcc >= 80 ? "text-emerald-600" : sAcc >= 50 ? "text-sky-600" : s.attempts < 2 ? "text-slate-500" : "text-amber-600"}`}>
-                      {skillEvaluation(sAcc, s.attempts, s.skillId.charCodeAt(0) + s.skillId.length)}
-                    </p>
-                    {s.lastPracticed && (
-                      <span className="text-[10px] text-muted-foreground shrink-0 whitespace-nowrap">
-                        Naposledy: {formatLastPracticed(s.lastPracticed)}
-                      </span>
-                    )}
+                  <div className="flex justify-end">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
+                      onClick={() => {
+                        const mock = isDemoUser ? {
+                          correct,
+                          helpUsed: s.helpUsed,
+                          wrong,
+                          total: s.attempts,
+                          date: s.lastPracticed ?? new Date().toISOString(),
+                          pct: sAcc,
+                        } : undefined;
+                        setSelectedSkill({ skillId: s.skillId, mock });
+                      }}
+                    >
+                      <BarChart2 className="h-3.5 w-3.5" />
+                      Ukázat moje výsledky
+                    </Button>
                   </div>
                 </div>
               );
@@ -647,6 +775,17 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
       </div>
     </div>
+
+      {selectedSkill && childId && (
+        <SkillDetailModal
+          childId={childId}
+          skillId={selectedSkill.skillId}
+          mockSession={selectedSkill.mock}
+          childName={childName || undefined}
+          onClose={() => setSelectedSkill(null)}
+        />
+      )}
+    </>
   );
 }
 
@@ -745,10 +884,11 @@ function PeriodSelect({ value, onChange }: { value: StatsPeriod; onChange: (v: S
   );
 }
 
-function SkillHeader({ subjMeta, breadcrumb, skillName }: {
+function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
   subjMeta: ReturnType<typeof getSubjectMeta> | null;
   breadcrumb: string;
   skillName: string;
+  lastPracticed?: string | null;
 }) {
   return (
     <div className="flex items-start gap-2">
@@ -762,6 +902,9 @@ function SkillHeader({ subjMeta, breadcrumb, skillName }: {
           <p className="text-[10px] text-muted-foreground leading-tight mb-0.5 truncate">{breadcrumb}</p>
         )}
         <p className="font-bold text-sm text-foreground leading-snug">{skillName}</p>
+        {lastPracticed && (
+          <p className="text-[11px] text-muted-foreground mt-0.5">{formatLastPracticed(lastPracticed)}</p>
+        )}
       </div>
     </div>
   );

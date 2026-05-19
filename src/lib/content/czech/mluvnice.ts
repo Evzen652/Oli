@@ -129,7 +129,7 @@ function genRodCislo(_level: number): PracticeTask[] {
           isPlural
             ? `Převeď do jednotného čísla (${item.word} → ${hintWord}) a zkus: ten ${hintWord}, ta ${hintWord}, to ${hintWord} — co zní správně?`
             : `Zkus si říct: ten ${item.word}, ta ${item.word}, to ${item.word} — co zní správně?`,
-          `ten = mužský rod, ta = ženský rod, to = střední rod.`,
+          `Které zájmeno ti znělo nejpřirozeněji? Podle toho poznáš rod.`,
         ],
       };
     } else {
@@ -142,7 +142,7 @@ function genRodCislo(_level: number): PracticeTask[] {
           `„${item.word}" — ${item.cislo === "jednotné číslo" ? "je to jedna věc" : "je to víc věcí"}.`,
           `Správná odpověď: ${item.cislo}.`,
         ],
-        hints: [`Je „${item.word}" jedna věc, nebo víc věcí?`, `Jednotné číslo = jedna, množné číslo = víc.`],
+        hints: [`Je „${item.word}" jedna věc, nebo víc věcí?`, `Zkus si říct: jedno ${item.cislo === "množné číslo" && item.singular ? item.singular : item.word} — nebo jich je více?`],
       };
     }
   });
@@ -187,7 +187,7 @@ function genSlovesaUrcovani(_level: number): PracticeTask[] {
         correctAnswer: item.osoba,
         options: shuffleArray(["1. osoba", "2. osoba", "3. osoba"]),
         solutionSteps: [`1. osoba = já/my, 2. osoba = ty/vy, 3. osoba = on/ona/ono/oni.`, `Správná odpověď: ${item.osoba}.`],
-        hints: [`Podívej se na větu „${item.sentence.replace(/\*\*/g, '')}" — kdo dělá tu činnost?`, `Já/my = 1. osoba, ty/vy = 2. osoba, on/ona/oni = 3. osoba.`],
+        hints: [`Podívej se na větu — kdo dělá tu činnost? Já, ty, nebo někdo jiný?`, `Já a my → první, ty a vy → druhá, on/ona/oni → třetí. Jaký podmět je ve větě?`],
       };
     } else if (type === 1) {
       return {
@@ -195,7 +195,7 @@ function genSlovesaUrcovani(_level: number): PracticeTask[] {
         correctAnswer: item.cislo,
         options: shuffleArray(["jednotné", "množné"]),
         solutionSteps: [`Jednotné = jeden člověk dělá činnost, množné = víc lidí.`, `Správná odpověď: ${item.cislo}.`],
-        hints: [`Ve větě „${item.sentence.replace(/\*\*/g, '')}" — dělá činnost jeden člověk, nebo víc?`, `Jednotné = jeden, množné = víc.`],
+        hints: [`Dělá tu činnost jeden člověk, nebo víc lidí?`, `Zkus si větu představit: vidíš tam jednoho, nebo skupinu?`],
       };
     } else {
       return {
@@ -250,7 +250,14 @@ function genZakladVety(_level: number): PracticeTask[] {
           : `Přísudek vyjadřuje, co podmět dělá. Ptáme se: Co dělá?`,
         `Správná odpověď: „${item.odpoved}".`,
       ],
-      hints: [item.typ === "podmět" ? `Kdo nebo co „${item.prisudek}"? Najdi ve větě toho, kdo to dělá.` : `Co dělá „${item.podmet}"? Najdi ve větě činnost.`, `Ve větě „${item.sentence}" hledej ${item.typ === "podmět" ? "podmět (kdo/co)" : "přísudek (co dělá)"}.`],
+      hints: [
+        item.typ === "podmět"
+          ? `Ptej se: Kdo nebo co „${item.prisudek}"? Ten, kdo dělá činnost, je podmět.`
+          : `Ptej se: Co dělá „${item.podmet}"? Činnost ve větě je přísudek.`,
+        item.typ === "podmět"
+          ? `Podmět odpovídá na otázku „Kdo?" nebo „Co?". Najdi podstatné jméno nebo jméno osoby.`
+          : `Přísudek odpovídá na otázku „Co dělá?". Najdi ve větě sloveso (činnost nebo stav).`,
+      ],
     };
   });
 }

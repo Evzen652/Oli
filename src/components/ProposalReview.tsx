@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,140 @@ type ProposalItem = CurriculumProposal & {
 };
 
 // ══════════════════════════════════════════════════════
+// ProposalTree — box/card layout, vše předpočítáno synchronně
+// ══════════════════════════════════════════════════════
+function ProposalTree({ items }: { items: ProposalItem[] }) {
+  const subjects   = items.filter((i) => i.type === "subject");
+  const categories = items.filter((i) => i.type === "category");
+  const topics     = items.filter((i) => i.type === "topic");
+  const skills     = items.filter((i) => i.type === "skill");
+
+  const norm = (s: unknown) => String(s || "").toLowerCase().replace(/[\s_-]/g, "");
+  const ms = (a: unknown, b: unknown) => norm(a) === norm(b) && norm(a) !== "";
+
+  // ── Předpočítej celou strukturu synchronně (ne uvnitř komponent) ──
+  type TopicRow  = { top: ProposalItem; skillCount: number };
+  type CatRow    = { cat: ProposalItem; topicRows: TopicRow[] };
+  type SubjRow   = { subj: ProposalItem; catRows: CatRow[] };
+
+  const usedCatIdx   = new Set<number>();
+  const usedTopicIdx = new Set<number>();
+
+  const subjRows: SubjRow[] = subjects.map((subj) => {
+    const catRows: CatRow[] = categories
+      .map((cat, ci) => ({ cat, ci }))
+      .filter(({ cat }) => ms(cat.data.subject_slug, subj.data.slug))
+      .map(({ cat, ci }) => {
+        usedCatIdx.add(ci);
+        const topicRows: TopicRow[] = topics
+          .map((top, ti) => ({ top, ti }))
+          .filter(({ top }) => ms(top.data.category_slug, cat.data.slug))
+          .map(({ top, ti }) => {
+            usedTopicIdx.add(ti);
+            const skillCount = skills.filter(
+              (sk) => ms(sk.data.topic_slug, top.data.slug) || ms(sk.data.category_slug, top.data.slug)
+            ).length;
+            return { top, skillCount };
+          });
+        return { cat, topicRows };
+      });
+    return { subj, catRows };
+  });
+
+  const orphanCatRows: CatRow[] = categories
+    .map((cat, ci) => ({ cat, ci }))
+    .filter(({ ci }) => !usedCatIdx.has(ci))
+    .map(({ cat, ci }) => {
+      usedCatIdx.add(ci);
+      const topicRows: TopicRow[] = topics
+        .map((top, ti) => ({ top, ti }))
+        .filter(({ top }) => ms(top.data.category_slug, cat.data.slug))
+        .map(({ top, ti }) => {
+          usedTopicIdx.add(ti);
+          const skillCount = skills.filter(
+            (sk) => ms(sk.data.topic_slug, top.data.slug)
+          ).length;
+          return { top, skillCount };
+        });
+      return { cat, topicRows };
+    });
+
+  // Jemné pastelové podbarvení pro každý boxík — cyklicky
+  const boxPalette = [
+    { bg: "bg-violet-50/70",  border: "border-violet-100",  chip: "bg-violet-100/60 border-violet-200/60 text-violet-800" },
+    { bg: "bg-amber-50/70",   border: "border-amber-100",   chip: "bg-amber-100/60 border-amber-200/60 text-amber-800" },
+    { bg: "bg-sky-50/70",     border: "border-sky-100",     chip: "bg-sky-100/60 border-sky-200/60 text-sky-800" },
+    { bg: "bg-emerald-50/70", border: "border-emerald-100", chip: "bg-emerald-100/60 border-emerald-200/60 text-emerald-800" },
+    { bg: "bg-rose-50/70",    border: "border-rose-100",    chip: "bg-rose-100/60 border-rose-200/60 text-rose-800" },
+    { bg: "bg-orange-50/70",  border: "border-orange-100",  chip: "bg-orange-100/60 border-orange-200/60 text-orange-800" },
+  ];
+
+  // ── Render jednoho boxíku okruhu ──
+  const CatBox = ({ cat, topicRows, idx }: CatRow & { idx: number }) => {
+    const p = boxPalette[idx % boxPalette.length];
+    return (
+    <div className={`rounded-lg border px-3 py-2.5 min-w-[130px] flex-1 transition-all ${
+      cat.saved ? "border-green-200 bg-green-50/60" : `${p.border} ${p.bg}`
+    }`}>
+      <p className={`text-[12px] font-semibold leading-tight mb-2 ${
+        cat.saved ? "text-green-700 line-through" : "text-foreground"
+      }`}>
+        {cat.saved && "✓ "}{String(cat.data.name)}
+      </p>
+      {topicRows.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {topicRows.map(({ top, skillCount }, ti) => (
+            <span key={ti} className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[10px] font-medium border ${
+              top.saved
+                ? "bg-green-100 border-green-200 text-green-700 line-through"
+                : p.chip
+            }`}>
+              {String(top.data.name)}
+              {skillCount > 0 && <span className="opacity-40 font-normal">·{skillCount}</span>}
+            </span>
+          ))}
+        </div>
+      )}
+      {topicRows.length > 0 && (
+        <p className="mt-1.5 text-[10px] text-muted-foreground/40">
+          {topicRows.length} témat
+          {topicRows.reduce((a, r) => a + r.skillCount, 0) > 0 &&
+            ` · ${topicRows.reduce((a, r) => a + r.skillCount, 0)} podtémat`}
+        </p>
+      )}
+    </div>
+    );
+  };
+
+  return (
+    <div className="space-y-3 select-none">
+      {subjRows.map(({ subj, catRows }, si) => (
+        <div key={si}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${subj.saved ? "bg-green-500" : "bg-primary"}`} />
+            <span className={`text-[13px] font-bold ${subj.saved ? "text-green-700 line-through" : "text-foreground"}`}>
+              {subj.saved && "✓ "}{String(subj.data.name)}
+            </span>
+            {catRows.length > 0 && (
+              <span className="text-[10px] text-muted-foreground/50">{catRows.length} okruhů</span>
+            )}
+          </div>
+          {catRows.length > 0 && (
+            <div className="flex flex-wrap gap-2 pl-5">
+              {catRows.map((cr, ci) => <CatBox key={ci} {...cr} idx={ci} />)}
+            </div>
+          )}
+        </div>
+      ))}
+      {orphanCatRows.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {orphanCatRows.map((cr, ci) => <CatBox key={`oc-${ci}`} {...cr} idx={ci} />)}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Main component
 // ══════════════════════════════════════════════════════
 export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNextAction }: ProposalReviewProps) {
@@ -52,8 +186,15 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
   };
 
   const saveOne = async (index: number) => {
-    const item = items[index];
-    setItems((prev) => prev.map((it, i) => (i === index ? { ...it, saving: true } : it)));
+    // Snapshot item at call time — avoid stale closure
+    let item: ProposalItem | undefined;
+    setItems((prev) => {
+      item = prev[index];
+      return prev.map((it, i) => (i === index ? { ...it, saving: true } : it));
+    });
+    // Wait for state to flush
+    await new Promise<void>(r => setTimeout(r, 0));
+    if (!item) return;
 
     try {
       await saveProposalToDb(item);
@@ -64,6 +205,7 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
       setItems((prev) => prev.map((it, i) => (i === index ? { ...it, saving: false } : it)));
       const msg = e instanceof Error ? e.message : (e as any)?.message || "Neznámá chyba";
       toast.error(`Chyba při ukládání: ${msg}`);
+      throw e; // re-throw so approveStep can stop
     }
   };
 
@@ -113,90 +255,414 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
     return groups;
   }, [items]);
 
-  const typeOrder = ["subject", "category", "topic", "skill"];
+  const typeOrder = ["subject", "category", "topic", "skill"] as const;
+  const typeLabels: Record<string, string> = { subject: "Předmět", category: "Okruhy", topic: "Témata", skill: "Podtémata" };
+  const typeDesc: Record<string, string> = {
+    subject: "Zkontroluj název předmětu a potvrď.",
+    category: "Zkontroluj okruhy (kapitoly) předmětu.",
+    topic: "Zkontroluj témata uvnitř každého okruhu.",
+    skill: "Zkontroluj podtémata — konkrétní dovednosti.",
+  };
+
+  // Kroky = jen typy, které skutečně existují v návrhu — fixní při mountu, nemění se
+  const steps = useMemo(
+    () => typeOrder.filter(t => proposals.some(p => p.type === t)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [] // záměrně bez deps — steps se nesmí měnit za běhu
+  );
+  const [stepIdx, setStepIdx] = useState(0);
+  const safeStepIdx = Math.min(stepIdx, steps.length - 1);
+  const currentStep = steps[safeStepIdx] ?? null;
+
+  const stepItems = useMemo(
+    () => items.map((it, i) => ({ it, i })).filter(({ it }) => it.type === currentStep),
+    [items, currentStep]
+  );
+  const stepAllSaved = stepItems.length > 0 && stepItems.every(({ it }) => it.saved);
+  const isLastStep = safeStepIdx === steps.length - 1;
+
+  const approveStep = async () => {
+    setSavingAll(true);
+    try {
+      const unsaved = stepItems.filter(({ it }) => !it.saved);
+      for (const { i } of unsaved) {
+        await saveOne(i);
+      }
+      if (isLastStep) {
+        setAllDone(true);
+      } else {
+        setStepIdx(s => Math.min(s + 1, steps.length - 1));
+      }
+    } catch {
+      // saveOne already showed toast — jen zastavíme
+    } finally {
+      setSavingAll(false);
+    }
+  };
+
+  const goBack = () => {
+    setStepIdx(s => Math.max(s - 1, 0));
+  };
+
+  const unsaveItem = (index: number) => {
+    setItems(prev => prev.map((it, i) => i === index ? { ...it, saved: false } : it));
+  };
+
+  // Přidat novou položku aktuálního kroku
+  const addStepItem = () => {
+    if (!currentStep) return;
+    // Auto-assign parent slug podle aktuálního kroku
+    const subjects  = items.filter(x => x.type === "subject");
+    const categories = items.filter(x => x.type === "category");
+    const topics    = items.filter(x => x.type === "topic");
+    const parentData: Record<string, string> = {};
+    if (currentStep === "category" && subjects[0])   parentData.subject_slug  = String(subjects[0].data.slug);
+    if (currentStep === "topic"    && categories[0]) parentData.category_slug = String(categories[0].data.slug);
+    if (currentStep === "skill"    && topics[0])     parentData.topic_slug    = String(topics[0].data.slug);
+
+    const newItem: ProposalItem = {
+      type: currentStep,
+      action: "create",
+      data: { name: "", slug: `new-${Date.now()}`, ...parentData },
+      expanded: true,
+      saving: false,
+      saved: false,
+    };
+    setItems(prev => [...prev, newItem]);
+  };
 
   return (
     <div className="space-y-4">
-      {/* ═══════ Header with summary, progress, batch actions ═══════ */}
-      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10">
-        <CardContent className="p-5 space-y-4">
+      <div className="rounded-xl border border-primary/30 bg-primary/5 overflow-hidden shadow-sm">
+
+        {/* ── Hlavička s přehledem ── */}
+        <div className="p-5 space-y-4 border-b border-border">
           <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1 flex-1">
+            <div className="space-y-0.5 flex-1">
               <h3 className="font-semibold text-foreground flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" /> AI návrh kurikula
               </h3>
               {explanation && <p className="text-sm text-muted-foreground">{explanation}</p>}
             </div>
-            <div className="flex gap-2 shrink-0">
-              <Button variant="outline" size="sm" onClick={onDismiss} disabled={savingAll}>
-                <X className="h-4 w-4 mr-1" /> Odmítnout vše
-              </Button>
-              <Button size="sm" onClick={saveAll} disabled={savingAll || allSaved} className="gap-1">
-                {savingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-                {savingAll ? "Používám…" : allSaved ? "Hotovo" : `Použít vše`}
-              </Button>
-            </div>
+            <Button variant="ghost" size="sm" onClick={onDismiss} className="text-muted-foreground shrink-0">
+              <X className="h-4 w-4 mr-1" /> Odmítnout
+            </Button>
           </div>
 
-          {/* Progress bar */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>{savedCount} z {items.length} hotovo</span>
-              <span>{progressPct} %</span>
-            </div>
-            <Progress value={progressPct} className="h-2" />
-          </div>
+          {/* Stromový přehled celého návrhu */}
+          <ProposalTree items={items} />
 
-          {/* Per-type summary with quick action */}
-          <div className="flex flex-wrap gap-2">
-            {typeOrder
-              .filter((t) => byType[t])
-              .map((t) => {
-                const g = byType[t];
-                const allTypeSaved = g.pending === 0;
-                return (
-                  <Button
-                    key={t}
-                    size="sm"
-                    variant={allTypeSaved ? "secondary" : "outline"}
-                    disabled={allTypeSaved || savingType === t || savingAll}
-                    onClick={() => saveByType(t)}
-                    className="gap-1.5 h-7 text-xs"
+          {/* Krokový indikátor — klikatelný pro dokončené kroky */}
+          <div className="flex items-center gap-1 pt-2 mt-1 border-t border-border flex-wrap">
+            {steps.map((t, i) => {
+              const done = i < safeStepIdx || (i === safeStepIdx && stepAllSaved);
+              const active = i === safeStepIdx;
+              const clickable = i < safeStepIdx; // lze přejít zpět
+              return (
+                <div key={t} className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    disabled={!clickable && !active}
+                    onClick={() => clickable ? setStepIdx(i) : undefined}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all ${
+                      done ? "bg-green-100 text-green-700" :
+                      active ? "bg-primary text-white" :
+                      "bg-muted text-muted-foreground"
+                    } ${clickable ? "cursor-pointer hover:opacity-80 ring-1 ring-green-300" : "cursor-default"}`}
+                    title={clickable ? `Přejít zpět na: ${typeLabels[t]}` : undefined}
                   >
-                    {savingType === t ? <Loader2 className="h-3 w-3 animate-spin" /> : getTypeIcon(t)}
-                    {getTypeLabel(t)} {allTypeSaved ? "✓" : `(${g.pending}/${g.total})`}
-                  </Button>
+                    {done ? "✓" : i + 1} {typeLabels[t]}
+                  </button>
+                  {i < steps.length - 1 && <span className="text-muted-foreground/40 text-xs">→</span>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Aktuální krok ── */}
+        {currentStep && !allDone && (
+          <>
+            {/* Hlavička kroku */}
+            <div className="px-5 py-3 border-b-2 border-border bg-muted/40">
+              <p className="text-[11px] text-muted-foreground uppercase tracking-wide font-medium">
+                Krok {safeStepIdx + 1} z {steps.length}
+              </p>
+              <p className="text-[14px] font-semibold text-foreground mt-0.5">
+                {typeDesc[currentStep]}
+              </p>
+            </div>
+
+            {/* Potvrzovací karty — bez formuláře, jen název + rodič + akce */}
+            <div className="divide-y-2 divide-border/60">
+              {stepItems.map(({ it, i }) => {
+                // Najdi rodiče podle slug vazby
+                const parentName = (() => {
+                  if (it.type === "category") {
+                    const p = items.find(x => x.type === "subject" && x.data.slug === it.data.subject_slug);
+                    return p ? String(p.data.name) : null;
+                  }
+                  if (it.type === "topic") {
+                    const p = items.find(x => x.type === "category" && x.data.slug === it.data.category_slug);
+                    return p ? String(p.data.name) : null;
+                  }
+                  if (it.type === "skill") {
+                    const p = items.find(x => x.type === "topic" && x.data.slug === it.data.topic_slug);
+                    return p ? String(p.data.name) : null;
+                  }
+                  return null;
+                })();
+                return (
+                  <ConfirmCard
+                    key={i}
+                    item={it}
+                    parentName={parentName}
+                    allItems={items}
+                    onConfirm={() => saveOne(i)}
+                    onEdit={() => toggleExpand(i)}
+                    onChange={(d) => updateItem(i, d)}
+                    onRemove={() => removeItem(i)}
+                    onUnsave={() => unsaveItem(i)}
+                  />
                 );
               })}
+            </div>
+
+            {/* Přidat novou položku */}
+            <div className="px-5 py-2 border-t border-dashed border-border/60">
+              <button
+                type="button"
+                onClick={addStepItem}
+                className="flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-primary transition-colors py-1"
+              >
+                <span className="text-base leading-none">＋</span>
+                Přidat {typeLabels[currentStep].toLowerCase().replace(/y$/, "").replace(/a$/, "")}
+              </button>
+            </div>
+
+            {/* Akce kroku */}
+            <div className="px-5 py-4 border-t border-border flex items-center justify-between gap-3 bg-muted/20">
+              {safeStepIdx > 0 && (
+                <Button
+                  variant="ghost" size="sm" className="text-xs gap-1.5 text-muted-foreground"
+                  onClick={goBack}
+                  disabled={savingAll}
+                  title="Vrátit se na předchozí krok a upravit"
+                >
+                  ← Zpět
+                </Button>
+              )}
+              <Button
+                size="sm" className="gap-1.5"
+                onClick={approveStep}
+                disabled={savingAll}
+              >
+                {savingAll ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                {isLastStep ? "Uložit a dokončit" : `Potvrdit ${typeLabels[currentStep]} a pokračovat →`}
+              </Button>
+            </div>
+          </>
+        )}
+
+        {/* ── Hotovo ── */}
+        {allDone && (
+          <div className="p-6 text-center space-y-3">
+            <p className="text-green-700 font-semibold">✓ Celý návrh byl uložen</p>
+            {onNextAction && onDone && <NextStepsCard items={items} onNextAction={onNextAction} onDone={onDone} />}
+            {!onNextAction && (
+              <Button size="sm" variant="outline" onClick={onDone}>Zavřít</Button>
+            )}
           </div>
-        </CardContent>
-      </Card>
+        )}
 
-      {/* ═══════ Items ═══════ */}
-      {items.map((item, i) => (
-        <ProposalCard
-          key={i}
-          item={item}
-          onToggle={() => toggleExpand(i)}
-          onRemove={() => removeItem(i)}
-          onSave={() => saveOne(i)}
-          onChange={(d) => updateItem(i, d)}
-        />
-      ))}
+      </div>
+    </div>
+  );
+}
 
-      {/* ═══════ Next steps after all saved ═══════ */}
-      {allDone && onNextAction && (
-        <NextStepsCard items={items} onNextAction={onNextAction} onDone={onDone} />
+// ══════════════════════════════════════════════════════
+// ConfirmCard — jednoduchá potvrzovací karta bez formuláře
+// ══════════════════════════════════════════════════════
+function ConfirmCard({ item, parentName, allItems, onConfirm, onEdit, onChange, onRemove, onUnsave }: {
+  item: ProposalItem;
+  parentName: string | null;
+  allItems: ProposalItem[];
+  onConfirm: () => void;
+  onEdit: () => void;
+  onChange: (d: Record<string, unknown>) => void;
+  onRemove: () => void;
+  onUnsave?: () => void;
+}) {
+  const isNew = !item.data.name; // prázdné jméno = nová položka
+  const [editing, setEditing] = useState(isNew); // nové položky rovnou v edit módu
+  const [nameVal, setNameVal] = useState(String(item.data.name || ""));
+
+  // Ilustrace — jen pro předmět
+  const illustrationUrl = useMemo(() => {
+    if (item.type !== "subject") return null;
+    const slug = String(item.data.slug || item.data.name || "").toLowerCase().replace(/\s+/g, "-");
+    return supabase.storage.from("prvouka-images").getPublicUrl(`subject-${slug}.png`).data.publicUrl;
+  }, [item.type, item.data.slug, item.data.name]);
+  const [imgExists, setImgExists] = useState<boolean | null>(null);
+  const [imgCheckKey, setImgCheckKey] = useState(0);
+  const [imgChecking, setImgChecking] = useState(false);
+
+  useEffect(() => {
+    if (!illustrationUrl) return;
+    setImgChecking(true);
+    fetch(`${illustrationUrl}?v=${Date.now()}`, { method: "HEAD" })
+      .then(r => setImgExists(r.ok))
+      .catch(() => setImgExists(false))
+      .finally(() => setImgChecking(false));
+  }, [illustrationUrl, imgCheckKey]);
+
+  const handleSaveName = () => {
+    if (!nameVal.trim()) return;
+    // Auto-generuj slug z názvu
+    const slug = nameVal.trim().toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "") // diakritika
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    onChange({ name: nameVal.trim(), slug });
+    setEditing(false);
+  };
+
+  // Parent options pro nové položky
+  const parentOptions = useMemo(() => {
+    if (item.type === "category") return allItems.filter(x => x.type === "subject").map(x => ({ slug: String(x.data.slug), name: String(x.data.name) }));
+    if (item.type === "topic")    return allItems.filter(x => x.type === "category").map(x => ({ slug: String(x.data.slug), name: String(x.data.name) }));
+    if (item.type === "skill")    return allItems.filter(x => x.type === "topic").map(x => ({ slug: String(x.data.slug), name: String(x.data.name) }));
+    return [];
+  }, [allItems, item.type]);
+
+  const parentSlugKey = item.type === "category" ? "subject_slug" : item.type === "topic" ? "category_slug" : "topic_slug";
+  const currentParentSlug = String(item.data[parentSlugKey] || "");
+
+  return (
+    <div className={`px-5 py-3.5 flex items-center gap-3 transition-all ${item.saved ? "bg-green-50/50" : ""}`}>
+
+      {/* Ilustrace (jen u předmětu) */}
+      {item.type === "subject" && (
+        <div className="shrink-0 flex flex-col items-center gap-1">
+          {imgExists === true && illustrationUrl ? (
+            <img
+              src={`${illustrationUrl}?v=${imgCheckKey}`}
+              alt=""
+              className="h-10 w-10 object-contain rounded-lg bg-white border border-border/40"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setImgCheckKey(k => k + 1)}
+              className="h-10 w-10 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-muted-foreground/40 text-lg hover:border-primary/40 hover:text-primary/60 transition-all"
+              title="Klikni pro obnovení — zkontroluje, zda byla ilustrace vygenerována"
+            >
+              {imgChecking ? (
+                <Loader2 className="h-4 w-4 animate-spin text-primary/60" />
+              ) : (
+                "🖼"
+              )}
+            </button>
+          )}
+          {imgExists === true && (
+            <button
+              type="button"
+              onClick={() => setImgCheckKey(k => k + 1)}
+              className="text-[9px] text-muted-foreground/50 hover:text-muted-foreground leading-none"
+              title="Znovu načíst ilustraci"
+            >
+              ↺
+            </button>
+          )}
+        </div>
       )}
-      {allDone && !onNextAction && (
-        <Card className="border-green-300 bg-green-50">
-          <CardContent className="p-4 text-center">
-            <p className="text-sm text-green-800 font-medium">✓ Všechny návrhy provedeny</p>
-            <Button size="sm" variant="outline" onClick={onDone} className="mt-2">
-              Zavřít
+
+      {/* Ikona pro ostatní typy */}
+      {item.type !== "subject" && (
+        <span className="text-lg shrink-0">{getTypeIcon(item.type)}</span>
+      )}
+
+      {/* Název + breadcrumb rodiče */}
+      <div className="flex-1 min-w-0">
+        {parentName && (
+          <p className="text-[11px] text-muted-foreground/70 mb-0.5">
+            v: <span className="font-medium text-muted-foreground">{parentName}</span>
+          </p>
+        )}
+        {editing ? (
+          <div className="space-y-1.5 w-full">
+            <input
+              autoFocus
+              placeholder="Název…"
+              className="w-full text-sm font-medium border border-primary rounded px-2 py-1 outline-none focus:ring-1 focus:ring-primary"
+              value={nameVal}
+              onChange={e => setNameVal(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter") handleSaveName(); if (e.key === "Escape") { if (isNew) onRemove(); else setEditing(false); } }}
+            />
+            {parentOptions.length > 1 && (
+              <select
+                className="w-full text-xs border border-border rounded px-2 py-1 bg-background text-muted-foreground"
+                value={currentParentSlug}
+                onChange={e => onChange({ [parentSlugKey]: e.target.value })}
+              >
+                {parentOptions.map(opt => (
+                  <option key={opt.slug} value={opt.slug}>{opt.name}</option>
+                ))}
+              </select>
+            )}
+          </div>
+        ) : (
+          <div>
+            <span className={`text-sm font-medium ${item.saved ? "text-green-700 line-through" : "text-foreground"}`}>
+              {item.saved && "✓ "}{String(item.data.name || "?")}
+            </span>
+            {item.type === "subject" && imgExists === false && !item.saved && (
+              <p className="text-[11px] text-amber-600 mt-0.5">
+                ⚠ Chybí ilustrace — vygeneruj ji v panelu Ilustrace, pak klikni na rámeček vlevo pro obnovení.
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Akce */}
+      {item.saved ? (
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[11px] text-green-600 font-medium">✓ Potvrzeno</span>
+          {onUnsave && (
+            <Button
+              size="sm" variant="ghost"
+              className="h-6 text-[11px] px-2 text-muted-foreground hover:text-foreground"
+              onClick={onUnsave}
+              title="Vrátit do editace"
+            >
+              ✏ Upravit
             </Button>
-          </CardContent>
-        </Card>
+          )}
+        </div>
+      ) : editing ? (
+        <div className="flex gap-1.5 shrink-0">
+          <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => { if (isNew) onRemove(); else setEditing(false); }}>Zrušit</Button>
+          <Button size="sm" className="h-7 text-xs" disabled={!nameVal.trim()} onClick={handleSaveName}>Uložit</Button>
+        </div>
+      ) : (
+        <div className="flex gap-1.5 shrink-0">
+          <Button
+            size="sm" variant="ghost"
+            className="h-7 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => setEditing(true)}
+            title="Upravit název"
+          >
+            ✏ Upravit
+          </Button>
+          <Button
+            size="sm" variant="ghost"
+            className="h-7 text-xs text-muted-foreground hover:text-destructive"
+            onClick={onRemove}
+            title="Odebrat z návrhu"
+          >
+            <X className="h-3.5 w-3.5" />
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -218,28 +684,33 @@ function ProposalCard({
   const isUpdate = item.action === "update";
 
   return (
-    <Card
-      className={`transition-all ${item.saved ? "opacity-60 border-green-300 bg-green-50/30" : ""} ${
-        isDelete && !item.saved ? "border-destructive/50 bg-destructive/5" : ""
+    <div
+      className={`transition-all ${item.saved ? "opacity-60 bg-green-50/40" : ""} ${
+        isDelete && !item.saved ? "bg-destructive/5" : ""
       }`}
     >
-      <CardHeader className="p-4 pb-3 cursor-pointer" onClick={onToggle}>
+      <div className="p-4 pb-3 cursor-pointer" onClick={onToggle}>
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 min-w-0 flex-1">
             <div className="text-xl shrink-0">{getTypeIcon(item.type)}</div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <CardTitle className={`text-base ${isDelete ? "line-through text-muted-foreground" : ""}`}>
+                <span className={`text-base font-semibold ${isDelete ? "line-through text-muted-foreground" : "text-foreground"}`}>
                   {String(item.data.name || "Bez názvu")}
-                </CardTitle>
-                <Badge variant={isDelete ? "destructive" : isUpdate ? "secondary" : "outline"} className="text-[10px]">
-                  {isDelete ? "🗑️ smazat" : isUpdate ? "✏️ upravit" : "➕ vytvořit"}
-                </Badge>
-                <Badge variant="outline" className="text-[10px]">{getTypeLabel(item.type)}</Badge>
+                </span>
+                {/* Informační štítky — nejsou tlačítka, jen popis akce a typu */}
+                <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${
+                  isDelete ? "bg-red-100 text-red-700" : isUpdate ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"
+                }`}>
+                  {isDelete ? "smazat" : isUpdate ? "upravit" : "vytvořit"}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  {getTypeLabel(item.type)}
+                </span>
                 {item.saved && (
-                  <Badge variant="secondary" className="text-[10px] bg-green-100 text-green-800 border-green-200">
+                  <span className="text-[11px] font-medium text-green-700">
                     ✓ {isDelete ? "Smazáno" : "Uloženo"}
-                  </Badge>
+                  </span>
                 )}
               </div>
             </div>
@@ -284,19 +755,19 @@ function ProposalCard({
             </Button>
           </div>
         </div>
-      </CardHeader>
+      </div>
 
       {item.expanded && !isDelete && (
-        <CardContent className="p-4 pt-0 space-y-3">
+        <div className="px-4 pb-4 space-y-3">
           <ProposalFields
             type={item.type}
             data={item.data}
             onChange={onChange}
             disabled={item.saved}
           />
-        </CardContent>
+        </div>
       )}
-    </Card>
+    </div>
   );
 }
 
@@ -385,12 +856,33 @@ function ArrayField({ label, value, onChange, disabled, placeholder }: {
   );
 }
 
+// ── Slug řádek — skrytý v <details>, admin ho normálně nevidí ──
+function SlugRow({ label, value, onChange, disabled }: { label: string; value: unknown; onChange: (v: string) => void; disabled: boolean }) {
+  return (
+    <details className="group">
+      <summary className="text-[11px] text-muted-foreground/60 cursor-pointer select-none hover:text-muted-foreground list-none flex items-center gap-1">
+        <span className="group-open:hidden">▸</span>
+        <span className="hidden group-open:inline">▾</span>
+        {label} <span className="italic">(technické ID — není třeba měnit)</span>
+      </summary>
+      <div className="mt-1.5">
+        <Input
+          value={String(value || "")}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
+          className="text-xs text-muted-foreground h-7"
+        />
+      </div>
+    </details>
+  );
+}
+
 // ── Simple types ──────────────────────────────────────
 function SubjectFields({ data, onChange, disabled }: any) {
   return (
     <div className="space-y-3">
       <TextField label="Název" value={data.name} onChange={(v) => onChange({ name: v })} disabled={disabled} />
-      <TextField label="Slug (URL identifikátor)" value={data.slug} onChange={(v) => onChange({ slug: v })} disabled={disabled} placeholder="napr-matematika" />
+      <SlugRow label="ID předmětu" value={data.slug} onChange={(v) => onChange({ slug: v })} disabled={disabled} />
     </div>
   );
 }
@@ -398,13 +890,13 @@ function SubjectFields({ data, onChange, disabled }: any) {
 function CategoryFields({ data, onChange, disabled }: any) {
   return (
     <div className="space-y-3">
-      <div className="grid sm:grid-cols-2 gap-3">
-        <TextField label="Název" value={data.name} onChange={(v) => onChange({ name: v })} disabled={disabled} />
-        <TextField label="Slug" value={data.slug} onChange={(v) => onChange({ slug: v })} disabled={disabled} />
-      </div>
-      <TextField label="Předmět (slug)" value={data.subject_slug} onChange={(v) => onChange({ subject_slug: v })} disabled={disabled} />
+      <TextField label="Název" value={data.name} onChange={(v) => onChange({ name: v })} disabled={disabled} />
       <TextField label="Popis" value={data.description} onChange={(v) => onChange({ description: v })} disabled={disabled} multiline />
       <TextField label="🌟 Zajímavost" value={data.fun_fact} onChange={(v) => onChange({ fun_fact: v })} disabled={disabled} />
+      <div className="space-y-1.5 pt-1 border-t border-border/40">
+        <SlugRow label="ID okruhu" value={data.slug} onChange={(v) => onChange({ slug: v })} disabled={disabled} />
+        <SlugRow label="ID předmětu" value={data.subject_slug} onChange={(v) => onChange({ subject_slug: v })} disabled={disabled} />
+      </div>
     </div>
   );
 }
@@ -412,12 +904,12 @@ function CategoryFields({ data, onChange, disabled }: any) {
 function TopicFields({ data, onChange, disabled }: any) {
   return (
     <div className="space-y-3">
-      <div className="grid sm:grid-cols-2 gap-3">
-        <TextField label="Název" value={data.name} onChange={(v) => onChange({ name: v })} disabled={disabled} />
-        <TextField label="Slug" value={data.slug} onChange={(v) => onChange({ slug: v })} disabled={disabled} />
-      </div>
-      <TextField label="Okruh (slug)" value={data.category_slug} onChange={(v) => onChange({ category_slug: v })} disabled={disabled} />
+      <TextField label="Název" value={data.name} onChange={(v) => onChange({ name: v })} disabled={disabled} />
       <TextField label="Popis" value={data.description} onChange={(v) => onChange({ description: v })} disabled={disabled} multiline />
+      <div className="space-y-1.5 pt-1 border-t border-border/40">
+        <SlugRow label="ID tématu" value={data.slug} onChange={(v) => onChange({ slug: v })} disabled={disabled} />
+        <SlugRow label="ID okruhu" value={data.category_slug} onChange={(v) => onChange({ category_slug: v })} disabled={disabled} />
+      </div>
     </div>
   );
 }
@@ -683,13 +1175,11 @@ async function saveProposalToDb(item: ProposalItem) {
         slug: String(data.slug),
         sort_order: Number(data.sort_order || 0),
       };
-      if (isUpdate) {
-        const { error } = await supabase.from("curriculum_subjects").update(payload).eq("slug", payload.slug);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from("curriculum_subjects").insert(payload);
-        if (error) throw error;
-      }
+      // Upsert — funguje pro create i update, bezpečné při opakovaném pokusu
+      const { error } = await supabase
+        .from("curriculum_subjects")
+        .upsert(payload, { onConflict: "slug" });
+      if (error) throw error;
       break;
     }
     case "category": {
@@ -698,9 +1188,9 @@ async function saveProposalToDb(item: ProposalItem) {
         .select("id")
         .eq("slug", String(data.subject_slug))
         .maybeSingle();
-      if (!subjectRow) throw new Error(`Předmět "${data.subject_slug}" nenalezen`);
+      if (!subjectRow) throw new Error(`Předmět "${data.subject_slug}" nenalezen v DB. Nejdřív ulož předmět.`);
 
-      const payload = {
+      const catPayload = {
         name: String(data.name),
         slug: String(data.slug),
         subject_id: subjectRow.id,
@@ -708,15 +1198,17 @@ async function saveProposalToDb(item: ProposalItem) {
         fun_fact: data.fun_fact ? String(data.fun_fact) : null,
         sort_order: Number(data.sort_order || 0),
       };
-      if (isUpdate) {
-        const { error } = await supabase
-          .from("curriculum_categories")
-          .update(payload)
-          .eq("slug", payload.slug)
-          .eq("subject_id", subjectRow.id);
+      // Ručně check-then-insert-or-update (slug nemá UNIQUE constraint v DB)
+      const { data: existingCat } = await supabase
+        .from("curriculum_categories")
+        .select("id")
+        .eq("slug", String(data.slug))
+        .maybeSingle();
+      if (existingCat) {
+        const { error } = await supabase.from("curriculum_categories").update(catPayload).eq("id", existingCat.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("curriculum_categories").insert(payload);
+        const { error } = await supabase.from("curriculum_categories").insert(catPayload);
         if (error) throw error;
       }
       break;
@@ -727,26 +1219,25 @@ async function saveProposalToDb(item: ProposalItem) {
         .select("id")
         .eq("slug", String(data.category_slug))
         .maybeSingle();
-      if (!catRow) throw new Error(`Okruh "${data.category_slug}" nenalezen`);
+      if (!catRow) throw new Error(`Okruh "${data.category_slug}" nenalezen v DB. Nejdřív ulož okruhy.`);
 
-      const payload = {
+      const topicPayload = {
         name: String(data.name),
         slug: String(data.slug),
         category_id: catRow.id,
         description: data.description ? String(data.description) : null,
         sort_order: Number(data.sort_order || 0),
       };
-      if (isUpdate) {
-        const { error } = await supabase
-          .from("curriculum_topics")
-          .update(payload)
-          .eq("slug", payload.slug)
-          .eq("category_id", catRow.id);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from("curriculum_topics").insert(payload);
-        if (error) throw error;
-      }
+      // Ručně check-then-insert-or-update (slug nemá UNIQUE constraint v DB)
+      const { data: existingTopic } = await supabase
+        .from("curriculum_topics")
+        .select("id")
+        .eq("slug", String(data.slug))
+        .maybeSingle();
+      const { error } = existingTopic
+        ? await supabase.from("curriculum_topics").update(topicPayload).eq("id", existingTopic.id)
+        : await supabase.from("curriculum_topics").insert(topicPayload);
+      if (error) throw error;
       break;
     }
     case "skill": {

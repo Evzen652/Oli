@@ -388,6 +388,8 @@ export function DemoParentTab() {
         </div>
         <div className="p-4 h-[460px]">
           <AssignmentList
+            childId="demo"
+            childName="Tomáš"
             mockAssignments={mockAssignments}
             onMockDelete={handleMockDelete}
             highlightSkillId={newSkillId}
@@ -405,7 +407,7 @@ export function DemoParentTab() {
           <p className="text-xs text-muted-foreground mt-0.5">Co Tomáš procvičoval sám, bez vašeho zadání.</p>
         </div>
         <div className="px-4 h-[460px]">
-          <ChildSessionLog mockSessions={MOCK_SESSIONS} />
+          <ChildSessionLog childId="demo" mockSessions={MOCK_SESSIONS} childName="Tomáš" />
         </div>
       </div>
 

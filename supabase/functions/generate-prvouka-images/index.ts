@@ -263,7 +263,24 @@ serve(async (req) => {
     const errors: Record<string, string> = {};
 
     for (const key of requestedKeys) {
-      const prompt = customPrompts[key] ?? IMAGE_KEYS[key];
+      let prompt = customPrompts[key] ?? IMAGE_KEYS[key];
+
+      // Dynamický subjekt (subject-{slug}) — vygeneruj výchozí prompt z DB
+      if (!prompt && key.startsWith("subject-")) {
+        const slug = key.slice("subject-".length);
+        const { data: subjectRow } = await supabase
+          .from("curriculum_subjects")
+          .select("name")
+          .eq("slug", slug)
+          .maybeSingle();
+        if (subjectRow?.name) {
+          prompt = p(
+            `school textbook for the subject "${subjectRow.name}" with relevant educational icons and colorful symbols floating around it, cheerful academic theme`
+          );
+          console.log(`[generate-prvouka] Dynamic subject prompt for ${key}: ${prompt.slice(0, 80)}…`);
+        }
+      }
+
       if (!prompt) {
         errors[key] = "Unknown key";
         continue;

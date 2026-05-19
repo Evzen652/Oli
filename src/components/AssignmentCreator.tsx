@@ -30,6 +30,8 @@ interface Props {
   prefillSkillCode?: string | null;
   /** Volitelný callback po dokončení/zrušení prefillu — rodič může vyresetovat hash */
   onPrefillConsumed?: () => void;
+  /** Demo mode: prefix vložený do note pro IP-izolaci (např. "__demo:abc123") */
+  demoNotePrefix?: string;
 }
 
 interface Subject { id: string; name: string; slug: string; }
@@ -37,7 +39,7 @@ interface Category { id: string; name: string; subject_id: string; }
 interface Topic { id: string; name: string; category_id: string; }
 interface Skill { id: string; name: string; code_skill_id: string; topic_id: string; is_active: boolean; }
 
-export function AssignmentCreator({ childId, childName, onCreated, prefillSkillCode, onPrefillConsumed }: Props) {
+export function AssignmentCreator({ childId, childName, onCreated, prefillSkillCode, onPrefillConsumed, demoNotePrefix }: Props) {
   const t = useT();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -213,13 +215,16 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
     if (!user) { setSaving(false); return; }
 
     const skill = skills.find(s => s.id === selectedSkill);
+    const noteValue = demoNotePrefix
+      ? `${demoNotePrefix}${note.trim() ? ' ' + note.trim() : ''}`
+      : (note.trim() || null);
     const { error } = await supabase.from("parent_assignments").insert({
       child_id: childId,
       parent_user_id: user.id,
       skill_id: skill?.code_skill_id ?? selectedSkill,
       assigned_date: format(assignedDate, "yyyy-MM-dd"),
       due_date: dueDate ? format(dueDate, "yyyy-MM-dd") : null,
-      note: note.trim() || null,
+      note: noteValue,
     });
 
     setSaving(false);

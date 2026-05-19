@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Calendar, ChevronDown } from "lucide-react";
+import { ArrowRight, BarChart2, Calendar, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { logoNoText } from "@/components/OlyLogo";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -296,28 +297,32 @@ export function DemoChildTab() {
         )}
         <div className="p-4 space-y-2">
           {visibleSkills.map((s) => (
-            <div key={s.skillId} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-2">
-              <div className="flex items-center justify-between gap-2">
+            <div key={s.skillId} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-3">
+              <div className="flex items-start gap-3">
                 <SkillHeader subject={s.subject} skillId={s.skillId} skillName={s.skillId === "math-add-sub-100" ? "Sčítání a odčítání do 100" : "Vyjmenovaná slova po B"} />
-                <span className={`text-[10px] font-bold rounded-full px-2.5 py-1 shrink-0 ${s.badgeCls}`}>{s.badgeText}</span>
+                <span className={`text-[10px] font-bold rounded-full px-2.5 py-1 shrink-0 ml-auto ${s.badgeCls}`}>{s.badgeText}</span>
               </div>
-              <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                <div className={`h-full rounded-full ${s.barColor} transition-all`} style={{ width: `${s.acc}%` }} />
-              </div>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="text-emerald-600 font-semibold">✓ {s.correct} správně</span>
-                <span className="text-rose-500 font-semibold">✗ {s.attempts - s.correct} špatně</span>
-                <span className="text-muted-foreground ml-auto">{s.acc} %</span>
-              </div>
-              <div className="flex items-start justify-between gap-2">
-                <p className={`text-xs font-medium ${s.acc >= 80 ? "text-emerald-600" : s.acc >= 50 ? "text-sky-600" : s.attempts < 2 ? "text-slate-500" : "text-amber-600"}`}>
-                  {skillEvaluation(s.acc, s.attempts, s.skillId.charCodeAt(0) + s.skillId.length)}
-                </p>
+              <div className="flex items-center justify-between gap-3">
                 {s.lastPracticed && (
                   <span className="text-[10px] text-muted-foreground shrink-0 whitespace-nowrap">
-                    Naposledy: {formatLastPracticed(s.lastPracticed)}
+                    {formatLastPracticed(s.lastPracticed)}
                   </span>
                 )}
+                <div className="flex items-center gap-2 text-xs ml-auto">
+                  <span className="text-emerald-600 font-semibold">✓ {s.correct} správně</span>
+                  {s.attempts - s.correct > 0 && <span className="text-rose-500 font-semibold">✗ {s.attempts - s.correct} špatně</span>}
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
+                  onClick={() => {}}
+                >
+                  <BarChart2 className="h-3.5 w-3.5" />
+                  Ukázat moje výsledky
+                </Button>
               </div>
             </div>
           ))}

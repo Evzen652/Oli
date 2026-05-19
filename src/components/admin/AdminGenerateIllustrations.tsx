@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -137,6 +137,20 @@ function getDefaultDesc(key: string): string {
   return DEFAULT_DESCS[key] ?? "";
 }
 
+/** Vrátí popis pro jakýkoli klíč — pro dynamické subjekty z DB sestaví výchozí. */
+function getAutoDesc(key: string, dbSubjects: { name: string; slug: string }[]): string {
+  const known = getDefaultDesc(key);
+  if (known) return known;
+  if (key.startsWith("subject-")) {
+    const slug = key.slice("subject-".length);
+    const subject = dbSubjects.find((s) => s.slug === slug);
+    if (subject) {
+      return `učebnice předmětu "${subject.name}" s výukovými ikonami, barevnými symboly a vzdělávacím vybavením kolem ní`;
+    }
+  }
+  return "";
+}
+
 // ── Filter helpers ────────────────────────────────────────────────────────────
 
 function keyToSubject(key: string): string {
@@ -144,6 +158,8 @@ function keyToSubject(key: string): string {
   if (key === "subject-cestina" || key.startsWith("cat-cz-") || key.startsWith("topic-cz-")) return "čeština";
   if (key === "subject-prirodoveda" || key.startsWith("topic-pr-")) return "přírodověda";
   if (key === "subject-vlastiveda" || key.startsWith("topic-vl-")) return "vlastivěda";
+  // Dynamic subjects — subject-{slug} → slug
+  if (key.startsWith("subject-")) return key.slice("subject-".length);
   return "prvouka";
 }
 
@@ -209,6 +225,35 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const versioned = useImageVersions();
   const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
 
+  // ── Dynamic DB subjects ──────────────────────────────────────────────────────
+  const [dbSubjects, setDbSubjects] = useState<{ name: string; slug: string }[]>([]);
+
+  // Klíče pro dynamické subjekty (ty, které nejsou v statickém ALL_KEYS)
+  const dynamicSubjectKeys = useMemo(
+    () =>
+      dbSubjects
+        .map((s) => `subject-${s.slug}`)
+        .filter((k) => !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number])),
+    [dbSubjects]
+  );
+
+  // Finální seznam všech klíčů (statické + dynamické)
+  const allKeys = useMemo(
+    () => [...ALL_KEYS, ...dynamicSubjectKeys],
+    [dynamicSubjectKeys]
+  );
+
+  // Filtrování předmětů — statické + dynamické subjekty
+  const subjectFilterList = useMemo(
+    () => [
+      ...SUBJECTS,
+      ...dbSubjects
+        .filter((s) => !ALL_KEYS.includes(`subject-${s.slug}` as (typeof ALL_KEYS)[number]))
+        .map((s) => ({ value: s.slug, label: s.name })),
+    ],
+    [dbSubjects]
+  );
+
   // ── Logo state ───────────────────────────────────────────────────────────────
   const DEFAULT_LOGO_PROMPT = "a friendly chubby little owl mascot with big expressive round eyes, warm amber and orange feathers, wearing a small graduation cap tilted to one side, sitting upright with wings slightly open in a welcoming pose, smiling warmly";
   const [logoPrompt, setLogoPrompt] = useState(DEFAULT_LOGO_PROMPT);
@@ -217,10 +262,23 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [logoTextPreviewUrl, setLogoTextPreviewUrl] = useState<string | null>(null);
   const [logoSaving, setLogoSaving] = useState(false);
 
-  const loadImages = () => {
+  const loadImages = async () => {
+    // Načteme DB subjekty (pro dynamické klíče)
+    const { data: subjects } = await supabase
+      .from("curriculum_subjects")
+      .select("name, slug")
+      .order("sort_order", { ascending: true });
+    const dbData = subjects ?? [];
+    setDbSubjects(dbData);
+
+    const dynKeys = dbData
+      .map((s) => `subject-${s.slug}`)
+      .filter((k) => !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number]));
+
+    const keys = [...ALL_KEYS, ...dynKeys];
     setMissingKeys(new Set());
     setAllImages(
-      ALL_KEYS.map((key) => ({
+      keys.map((key) => ({
         key,
         url: supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl,
       }))
@@ -228,7 +286,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   };
 
   useEffect(() => {
-    if (open && allImages.length === 0) loadImages();
+    if (open && allImages.length === 0) { loadImages(); }
   }, [open]);
 
   const filteredImages = useMemo(() => {
@@ -489,18 +547,35 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     <Dialog open={!!promptDialog} onOpenChange={(o) => { if (!o) setPromptDialog(null); }}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="font-mono text-sm">{promptDialog?.key}</DialogTitle>
+          <DialogTitle className="flex items-center gap-2 text-sm">
+            <Wand2 className="h-4 w-4 text-primary" />
+            Prompt pro ilustraci
+            <span className="font-mono font-normal text-muted-foreground">{promptDialog?.key}</span>
+          </DialogTitle>
         </DialogHeader>
-        <div className="space-y-2">
-          <p className="text-xs text-muted-foreground italic px-1">{DISPLAY_PREFIX}</p>
-          <Textarea
-            rows={5}
-            value={promptDialog?.desc ?? ""}
-            onChange={(e) => setPromptDialog((prev) => prev ? { ...prev, desc: e.target.value } : null)}
-            placeholder="Popiš, co má obrázek zobrazovat…"
-            className="resize-none text-sm"
-          />
-          <p className="text-xs text-muted-foreground italic px-1">{DISPLAY_SUFFIX}</p>
+        <div className="space-y-3">
+          <div>
+            <p className="text-[11px] font-medium text-muted-foreground mb-1.5">Popis obrázku (co má zobrazovat):</p>
+            <Textarea
+              rows={4}
+              value={promptDialog?.desc ?? ""}
+              onChange={(e) => setPromptDialog((prev) => prev ? { ...prev, desc: e.target.value } : null)}
+              placeholder="Popiš, co má obrázek zobrazovat — v češtině nebo angličtině…"
+              className="resize-none text-sm"
+              autoFocus
+            />
+          </div>
+          {/* Náhled výsledného promptu */}
+          {promptDialog?.desc.trim() && (
+            <div className="rounded-lg bg-muted/50 border border-border/60 p-3 space-y-1">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Výsledný prompt (anglicky):</p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed break-words">
+                <span className="text-muted-foreground/60">{PROMPT_PREFIX} </span>
+                <span className="text-foreground font-medium">{promptDialog.desc.trim()}</span>
+                <span className="text-muted-foreground/60">{PROMPT_SUFFIX.slice(0, 60)}…</span>
+              </p>
+            </div>
+          )}
         </div>
         <DialogFooter className="gap-2">
           <Button variant="outline" onClick={() => setPromptDialog(null)}>Zrušit</Button>
@@ -515,7 +590,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             className="gap-1.5"
           >
             {regenerating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Wand2 className="h-3.5 w-3.5" />}
-            Regenerovat s tímto popisem
+            Generovat
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -536,13 +611,13 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             <ImageIcon className="h-5 w-5 text-primary" />
             3D ilustrace
             <span className="ml-auto text-sm font-normal text-muted-foreground">
-              {ALL_KEYS.length - missingKeys.size} / {ALL_KEYS.length} vygenerováno
+              {allKeys.length - missingKeys.size} / {allKeys.length} vygenerováno
             </span>
           </SheetTitle>
         </SheetHeader>
 
-        {/* ── Logo sekce ── */}
-        <div className="mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">
+        {/* ── Logo sekce — dočasně skrytá (logo je hotové) ── */}
+        <div className="hidden mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
             <h3 className="font-semibold text-sm">Logo aplikace</h3>
@@ -610,20 +685,24 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           {/* Ročník */}
           <div className="flex flex-wrap gap-1.5">
             {chip(filterGrade === "all", () => setFilterGrade("all"), "Všechny ročníky")}
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) =>
-              chip(filterGrade === g, () => setFilterGrade(filterGrade === g ? "all" : g), `${g}.`)
-            )}
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) => (
+              <React.Fragment key={g}>
+                {chip(filterGrade === g, () => setFilterGrade(filterGrade === g ? "all" : g), `${g}.`)}
+              </React.Fragment>
+            ))}
           </div>
           {/* Předmět */}
           <div className="flex flex-wrap gap-1.5">
             {chip(filterSubject === "all", () => setFilterSubject("all"), "Všechny předměty")}
-            {SUBJECTS.map(({ value, label }) =>
-              chip(
-                filterSubject === value,
-                () => setFilterSubject(filterSubject === value ? "all" : value),
-                label
-              )
-            )}
+            {subjectFilterList.map(({ value, label }) => (
+              <React.Fragment key={value}>
+                {chip(
+                  filterSubject === value,
+                  () => setFilterSubject(filterSubject === value ? "all" : value),
+                  label
+                )}
+              </React.Fragment>
+            ))}
           </div>
           {/* Typ */}
           <div className="flex flex-wrap gap-1.5">
@@ -749,7 +828,15 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                 <div className="mt-2 flex gap-1">
                   <button
                     type="button"
-                    onClick={() => handleRegenerate(key)}
+                    onClick={() => {
+                      // Neznámý klíč (dynamický subjekt) → nejdřív zobraz prompt
+                      const isDynamic = !getDefaultDesc(key) && key.startsWith("subject-");
+                      if (isDynamic) {
+                        setPromptDialog({ key, desc: getAutoDesc(key, dbSubjects) });
+                      } else {
+                        handleRegenerate(key);
+                      }
+                    }}
                     disabled={!!regenerating || running}
                     title="Regenerovat"
                     className="flex-1 flex items-center justify-center gap-1 rounded-full border border-border/60 bg-muted px-2 py-1 text-xs text-muted-foreground hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all disabled:opacity-40"
@@ -761,7 +848,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   </button>
                   <button
                     type="button"
-                    onClick={() => setPromptDialog({ key, desc: getDefaultDesc(key) })}
+                    onClick={() => setPromptDialog({ key, desc: getAutoDesc(key, dbSubjects) })}
                     disabled={!!regenerating || running}
                     title="Upravit prompt"
                     className="flex items-center justify-center rounded-full border border-border/60 bg-muted px-2 py-1 text-muted-foreground hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-all disabled:opacity-40"

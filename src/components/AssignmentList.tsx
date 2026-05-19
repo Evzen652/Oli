@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, HelpCircle, XCircle, Trash2, BarChart2 } from "lucide-react";
+import { CheckCircle2, XCircle, Trash2, BarChart2 } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -149,15 +149,23 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
   const subjects = [...new Set(assignments.map(a => a.subject).filter(Boolean) as string[])];
 
   // Aplikuj filtry
+  const isDemo = !!mockAssignments;
   const filtered = assignments.filter(a => {
     const isPending = a.status === "pending";
     const isCompleted = a.status === "completed" || a.status === "skipped";
 
-    if (statusFilter === "today" && !isToday(a.assigned_date)) return false;
-    if (statusFilter === "pending" && !isPending) return false;
-    if (statusFilter === "completed" && !isCompleted) return false;
     if (subjectFilter && a.subject !== subjectFilter) return false;
-    return true;
+
+    // "Splněné" vždy jen splněné
+    if (statusFilter === "completed") return isCompleted;
+
+    // Demo: ostatní záložky vždy zobrazí všechna pending (bez datového filtru)
+    if (isDemo) return isPending;
+
+    // Ostrý provoz — datové a stavové filtry
+    if (statusFilter === "today") return isToday(a.assigned_date);
+    if (statusFilter === "pending") return isPending;
+    return true; // "all" → vše
   });
 
   const STATUS_FILTERS: { key: StatusFilter; label: string }[] = [
@@ -349,16 +357,16 @@ function AssignmentCard({
         {isCompleted && total > 0 && (
           <div className="flex items-center gap-1.5">
             <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">
-              <CheckCircle2 className="h-3 w-3" />{correct}
+              ✓ {correct} správně
             </span>
             {helpUsed > 0 && (
               <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">
-                <HelpCircle className="h-3 w-3" />{helpUsed}
+                {helpUsed} s nápov.
               </span>
             )}
             {wrong > 0 && (
               <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">
-                <XCircle className="h-3 w-3" />{wrong}
+                ✗ {wrong} špatně
               </span>
             )}
             {gMeta && (

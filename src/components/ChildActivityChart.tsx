@@ -261,23 +261,20 @@ export function ChildActivityChart({ childId }: Props) {
                     <span className="flex-1 truncate font-medium text-foreground">{skillDisplayName(skillId)}</span>
                     <span className="text-xs text-muted-foreground">{stats.count}×</span>
                   </div>
-                  <div className="flex items-center gap-3 pl-7 text-[11px] text-muted-foreground">
-                    {stats.independent > 0 && (
-                      <span className="flex items-center gap-1">
-                        <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
-                        {stats.independent} sam.
+                  <div className="flex items-center gap-3 pl-7 text-[11px]">
+                    {(stats.independent + stats.withHelp) > 0 && (
+                      <span className="flex items-center gap-1 text-green-600 font-semibold">
+                        ✓ {stats.independent + stats.withHelp} správně
                       </span>
                     )}
                     {stats.withHelp > 0 && (
-                      <span className="flex items-center gap-1">
-                        <span className="inline-block w-2 h-2 rounded-full bg-amber-400" />
-                        {stats.withHelp} s&nbsp;náp.
+                      <span className="flex items-center gap-1 text-amber-500 font-semibold">
+                        {stats.withHelp} s&nbsp;nápov.
                       </span>
                     )}
                     {stats.wrong > 0 && (
-                      <span className="flex items-center gap-1">
-                        <span className="inline-block w-2 h-2 rounded-full bg-red-400" />
-                        {stats.wrong} chyb
+                      <span className="flex items-center gap-1 text-red-500 font-semibold">
+                        ✗ {stats.wrong} špatně
                       </span>
                     )}
                   </div>

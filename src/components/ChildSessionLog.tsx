@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CheckCircle2, HelpCircle, XCircle, BarChart2 } from "lucide-react";
+import { BarChart2 } from "lucide-react";
 import { getTopicById } from "@/lib/contentRegistry";
 import { getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -236,9 +236,9 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                 </div>
                 <div className="flex flex-col items-end gap-3 shrink-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="flex items-center gap-0.5 text-xs text-green-600"><CheckCircle2 className="h-3 w-3" />{s.correct}</span>
-                    {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500"><HelpCircle className="h-3 w-3" />{s.help_used}</span>}
-                    {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500"><XCircle className="h-3 w-3" />{s.total - s.correct}</span>}
+                    <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct} správně</span>
+                    {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">{s.help_used} s nápov.</span>}
+                    {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">✗ {s.total - s.correct} špatně</span>}
                     <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
                       {grade}
                     </span>

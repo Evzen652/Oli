@@ -5,17 +5,41 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRight, ChevronDown, Search, RotateCcw } from "lucide-react";
 import type { TopicMetadata } from "@/lib/types";
+import type { DbSubject } from "@/hooks/useAdminCurriculum";
 
 // Barva pro vizuální dot per předmět — Notion-vibe minimal indikátor
 const SUBJECT_DOT: Record<string, string> = {
   matematika: "bg-violet-500",
   "čeština": "bg-rose-500",
   cestina: "bg-rose-500",
+  cesky: "bg-rose-500",
+  "česky": "bg-rose-500",
   prvouka: "bg-emerald-500",
   "přírodověda": "bg-amber-500",
   prirodoveda: "bg-amber-500",
   "vlastivěda": "bg-fuchsia-500",
   vlastiveda: "bg-fuchsia-500",
+  biologie: "bg-green-500",
+  chemie: "bg-cyan-500",
+  fyzika: "bg-blue-500",
+  "dějepis": "bg-orange-500",
+  dejepis: "bg-orange-500",
+  "zeměpis": "bg-teal-500",
+  zemeopis: "bg-teal-500",
+  zemeris: "bg-teal-500",
+  informatika: "bg-indigo-500",
+  hudebni: "bg-pink-500",
+  "hudební výchova": "bg-pink-500",
+  "výtvarná výchova": "bg-yellow-500",
+  vytvarnahm: "bg-yellow-500",
+  "tělesná výchova": "bg-red-500",
+  telesna: "bg-red-500",
+  obcanska: "bg-lime-500",
+  "občanská výchova": "bg-lime-500",
+  anglictina: "bg-sky-500",
+  "anglický jazyk": "bg-sky-500",
+  nemcina: "bg-purple-500",
+  "německý jazyk": "bg-purple-500",
 };
 const dotFor = (subject: string) =>
   SUBJECT_DOT[subject.toLowerCase()] ?? "bg-slate-400";
@@ -28,6 +52,8 @@ export interface CurriculumContext {
 
 interface AdminCurriculumSidebarProps {
   topics: TopicMetadata[];               // filtered by grade
+  /** Předměty přímo z DB — zobrazí se i když nemají žádné skills */
+  dbSubjects?: DbSubject[];
   /** Aktivní filtr ročníku — pro zobrazení badge v hlavičce sidebaru */
   gradeFilter?: number | null;
   selectedSubject: string | null;
@@ -42,6 +68,7 @@ interface AdminCurriculumSidebarProps {
 
 export function AdminCurriculumSidebar({
   topics,
+  dbSubjects = [],
   gradeFilter,
   selectedSubject,
   selectedCategory,
@@ -118,8 +145,15 @@ export function AdminCurriculumSidebar({
       if (!byS[t.subject][t.category][t.topic]) byS[t.subject][t.category][t.topic] = [];
       byS[t.subject][t.category][t.topic].push(t);
     }
+    // Přidej předměty z DB, které nemají žádné skills (prázdné)
+    for (const s of dbSubjects) {
+      const name = s.name.toLowerCase();
+      if (!q || name.includes(q)) {
+        if (!byS[name]) byS[name] = {};
+      }
+    }
     return byS;
-  }, [topics, query]);
+  }, [topics, dbSubjects, query]);
 
   const toggleSubject = (s: string) => {
     setExpandedSubjects((prev) => {
@@ -251,7 +285,7 @@ export function AdminCurriculumSidebar({
 
       {/* Tree */}
       <ScrollArea className="flex-1">
-        <div className="px-2 pb-4 pt-1 space-y-0.5">
+        <div className="px-2 pb-4 pt-1 space-y-1">
           {subjects.length === 0 && (
             <div className="px-3 py-6 text-center">
               <p className="text-xs text-muted-foreground">
@@ -283,7 +317,7 @@ export function AdminCurriculumSidebar({
                   ) : (
                     <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                   )}
-                  <span className={`h-2 w-2 rounded-full shrink-0 ${dotFor(subject)}`} aria-hidden />
+                  <span className={`h-2.5 w-2.5 rounded-full shrink-0 ${dotFor(subject)}`} aria-hidden />
                   <span className="break-words text-left flex-1 leading-tight font-display font-semibold text-[14px]">
                     {fmtName(subject)}
                   </span>
