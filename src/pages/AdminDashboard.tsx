@@ -655,7 +655,8 @@ export default function AdminDashboard() {
               {selectedSubject && (
                 <QuickAddCard
                   label="okruh"
-                  aiPrompt={`Navrhni 4–6 okruhů (kapitol) pro předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ", celý ZŠ"}. Pro každý okruh uveď název a stručný popis.`}
+                  aiPrompt={(grade) => `Navrhni 4–6 okruhů (kapitol) pro předmět ${capitalize(selectedSubject)}${grade ? `, ${grade}. ročník` : ", celý ZŠ"}. Pro každý okruh uveď název a stručný popis. Obsah musí odpovídat RVP ZV.`}
+                  gradeFilter={gradeFilter}
                   onSave={async (name, description) => {
                     const dbSubj = dbAdminSubjects.find(
                       (s) => s.name.toLowerCase() === selectedSubject.toLowerCase()
@@ -765,7 +766,8 @@ export default function AdminDashboard() {
               {selectedSubject && selectedCategory && (
                 <QuickAddCard
                   label="téma"
-                  aiPrompt={`Navrhni 4–6 témat pro okruh „${capitalize(selectedCategory)}" (předmět ${capitalize(selectedSubject)}${gradeFilter ? `, ${gradeFilter}. ročník` : ""}). Pro každé téma uveď název a stručný popis.`}
+                  aiPrompt={(grade) => `Navrhni 4–6 témat pro okruh „${capitalize(selectedCategory)}" (předmět ${capitalize(selectedSubject)}${grade ? `, ${grade}. ročník` : ""}). Pro každé téma uveď název a stručný popis. Obsah musí odpovídat RVP ZV.`}
+                  gradeFilter={gradeFilter}
                   onSave={async (name, description) => {
                     const dbCat = (await (supabase as any)
                       .from("curriculum_categories")
@@ -1105,25 +1107,31 @@ function ImageOrEmoji({
 function QuickAddCard({
   label,
   aiPrompt,
+  gradeFilter,
   onSave,
   onAI,
 }: {
   label: string;
   /** Výchozí prompt pro AI — zobrazí se editovatelný před odesláním */
-  aiPrompt: string;
+  aiPrompt: (grade: number | null) => string;
+  gradeFilter: number | null;
   onSave: (name: string, description: string) => Promise<void>;
   onAI: (prompt: string) => void;
 }) {
   const [mode, setMode] = useState<"closed" | "manual" | "ai">("closed");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [editedPrompt, setEditedPrompt] = useState(aiPrompt);
+  const [localGrade, setLocalGrade] = useState<number | null>(gradeFilter);
+  const [editedPrompt, setEditedPrompt] = useState<string>(() => aiPrompt(gradeFilter));
   const [saving, setSaving] = useState(false);
 
-  // Sync prompt when aiPrompt prop changes (grade/subject changed)
-  useState(() => { setEditedPrompt(aiPrompt); });
+  // Rebuild prompt when grade changes — resets any manual edits intentionally
+  const handleLocalGradeChange = (g: number | null) => {
+    setLocalGrade(g);
+    setEditedPrompt(aiPrompt(g));
+  };
 
-  const close = () => { setMode("closed"); setName(""); setDescription(""); setEditedPrompt(aiPrompt); };
+  const close = () => { setMode("closed"); setName(""); setDescription(""); setLocalGrade(gradeFilter); setEditedPrompt(aiPrompt(gradeFilter)); };
 
   const handleSave = async () => {
     if (!name.trim()) return;
@@ -1174,7 +1182,7 @@ function QuickAddCard({
               Ručně
             </button>
             <button
-              onClick={() => { setMode("ai"); setEditedPrompt(aiPrompt); }}
+              onClick={() => setMode("ai")}
               className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
                 mode === "ai" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"
               }`}
@@ -1219,16 +1227,47 @@ function QuickAddCard({
         {/* Mód: AI */}
         {mode === "ai" && (
           <div className="space-y-2">
-            <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide">
+
+            {/* Výběr ročníku přímo v kartě */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[11px] text-muted-foreground font-medium">Ročník:</span>
+              {[1,2,3,4,5,6,7,8,9].map((g) => (
+                <button
+                  key={g}
+                  onClick={() => handleLocalGradeChange(localGrade === g ? null : g)}
+                  className={`h-6 w-6 rounded-full text-[11px] font-medium transition-colors ${
+                    localGrade === g
+                      ? "bg-primary text-white"
+                      : "bg-muted text-foreground/70 hover:bg-muted/80"
+                  }`}
+                >
+                  {g}
+                </button>
+              ))}
+              {localGrade && (
+                <button onClick={() => handleLocalGradeChange(null)} className="text-[11px] text-muted-foreground hover:text-foreground">✕</button>
+              )}
+            </div>
+
+            {!localGrade && (
+              <p className="text-[11px] text-amber-600 bg-amber-50 rounded-lg px-2 py-1">
+                ⚠ Vyber ročník — AI jinak navrhne obsah pro celou ZŠ bez konkrétní úrovně.
+              </p>
+            )}
+
+            <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide pt-1">
               Pokyn pro AI — uprav dle potřeby:
             </p>
             <textarea
               autoFocus
               value={editedPrompt}
               onChange={(e) => setEditedPrompt(e.target.value)}
-              rows={4}
-              className="w-full rounded-xl border border-primary/30 bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 resize-none font-mono leading-relaxed"
+              rows={5}
+              className="w-full rounded-xl border border-primary/30 bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 resize-none leading-relaxed text-foreground/80"
             />
+            <p className="text-[10px] text-muted-foreground/60">
+              Zdroj: RVP ZV (Rámcový vzdělávací program pro základní vzdělávání, MŠMT). AI čerpá z oficiálního kurikula.
+            </p>
             <Button
               size="sm" className="w-full gap-1.5 rounded-xl"
               onClick={() => { close(); onAI(editedPrompt); }}
