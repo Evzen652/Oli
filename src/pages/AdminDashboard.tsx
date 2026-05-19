@@ -29,6 +29,8 @@ import { AdminAIPanel } from "@/components/admin/AdminAIPanel";
 import { AdminContentAudit } from "@/components/admin/AdminContentAudit";
 import { AdminGenerateIllustrations } from "@/components/admin/AdminGenerateIllustrations";
 import { supabase } from "@/integrations/supabase/client";
+import { ACTIVE_STANDARD } from "@/lib/curriculumStandards";
+import { buildCategoryPrompt, buildTopicPrompt } from "@/lib/curriculumPromptBuilder";
 import type { TopicMetadata, Grade } from "@/lib/types";
 
 const INPUT_TYPE_LABELS: Record<string, string> = {
@@ -655,8 +657,14 @@ export default function AdminDashboard() {
               {selectedSubject && (
                 <QuickAddCard
                   label="okruh"
-                  aiPrompt={(grade) => `Navrhni 4–6 okruhů (kapitol) pro předmět ${capitalize(selectedSubject)}${grade ? `, ${grade}. ročník` : ", celý ZŠ"}. Pro každý okruh uveď název a stručný popis. Obsah musí odpovídat RVP ZV.`}
+                  aiPrompt={(grade) => buildCategoryPrompt({
+                    subject: capitalize(selectedSubject),
+                    grade,
+                    existingCategories: categories,
+                    standard: ACTIVE_STANDARD,
+                  })}
                   gradeFilter={gradeFilter}
+                  sourceNote={`${ACTIVE_STANDARD.name}, ${ACTIVE_STANDARD.authority}`}
                   onSave={async (name, description) => {
                     const dbSubj = dbAdminSubjects.find(
                       (s) => s.name.toLowerCase() === selectedSubject.toLowerCase()
@@ -766,8 +774,15 @@ export default function AdminDashboard() {
               {selectedSubject && selectedCategory && (
                 <QuickAddCard
                   label="téma"
-                  aiPrompt={(grade) => `Navrhni 4–6 témat pro okruh „${capitalize(selectedCategory)}" (předmět ${capitalize(selectedSubject)}${grade ? `, ${grade}. ročník` : ""}). Pro každé téma uveď název a stručný popis. Obsah musí odpovídat RVP ZV.`}
+                  aiPrompt={(grade) => buildTopicPrompt({
+                    subject: capitalize(selectedSubject),
+                    category: capitalize(selectedCategory),
+                    grade,
+                    existingTopics: topicGroups,
+                    standard: ACTIVE_STANDARD,
+                  })}
                   gradeFilter={gradeFilter}
+                  sourceNote={`${ACTIVE_STANDARD.name}, ${ACTIVE_STANDARD.authority}`}
                   onSave={async (name, description) => {
                     const dbCat = (await (supabase as any)
                       .from("curriculum_categories")
@@ -1108,6 +1123,7 @@ function QuickAddCard({
   label,
   aiPrompt,
   gradeFilter,
+  sourceNote,
   onSave,
   onAI,
 }: {
@@ -1115,6 +1131,8 @@ function QuickAddCard({
   /** Výchozí prompt pro AI — zobrazí se editovatelný před odesláním */
   aiPrompt: (grade: number | null) => string;
   gradeFilter: number | null;
+  /** Citace zdroje — zobrazí se pod promptem (např. "RVP ZV, MŠMT") */
+  sourceNote?: string;
   onSave: (name: string, description: string) => Promise<void>;
   onAI: (prompt: string) => void;
 }) {
@@ -1266,7 +1284,9 @@ function QuickAddCard({
               className="w-full rounded-xl border border-primary/30 bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 resize-none leading-relaxed text-foreground/80"
             />
             <p className="text-[10px] text-muted-foreground/60">
-              Zdroj: RVP ZV (Rámcový vzdělávací program pro základní vzdělávání, MŠMT). AI čerpá z oficiálního kurikula.
+              {sourceNote
+                ? `Zdroj: ${sourceNote}. AI čerpá z oficiálního kurikula.`
+                : "AI čerpá z oficiálního kurikula."}
             </p>
             <Button
               size="sm" className="w-full gap-1.5 rounded-xl"
