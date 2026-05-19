@@ -61,7 +61,7 @@ interface AdminAIChatProps {
   hideSheet?: boolean;
 }
 
-function parseProposals(text: string): ParsedAIResponse | null {
+export function parseProposals(text: string): ParsedAIResponse | null {
   const jsonMatch = text.match(/```json\s*([\s\S]*?)```/);
   if (!jsonMatch) return null;
   try {

@@ -19,8 +19,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2, Plus, Check, X as XIcon } from "lucide-react";
-import { type CurriculumProposal } from "@/components/AdminAIChat";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2, Plus, Check, X as XIcon, Loader2 } from "lucide-react";
+import { type CurriculumProposal, parseProposals } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
 import { SkillDetail } from "@/components/admin/SkillDetail";
@@ -681,9 +681,22 @@ export default function AdminDashboard() {
                     refetchAdminCurriculum();
                     toast.success(`Okruh „${name}" přidán`);
                   }}
-                  onAI={(prompt) => {
-                    setAiInitialPrompt(prompt);
-                    setAiChatOpen(true);
+                  onAIDirect={async (prompt, grade) => {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) throw new Error("Nejste přihlášen/a");
+                    const { data, error } = await (supabase as any).functions.invoke("ai-curriculum", {
+                      body: { messages: [{ role: "user", content: prompt }], grade, subject: selectedSubject, category: null, topic: null },
+                    });
+                    if (error) throw new Error(error.message);
+                    if (data?.error) throw new Error(data.error);
+                    const parsed = parseProposals(data?.reply || "");
+                    if (!parsed || parsed.proposals.length === 0) throw new Error("AI nevrátilo žádné návrhy. Uprav prompt a zkus znovu.");
+                    setProposals(parsed.proposals);
+                    setProposalExplanation(parsed.explanation);
+                    setTimeout(() => {
+                      proposalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      toast.success(`✅ AI navrhlo ${parsed.proposals.length} položek — zkontroluj a potvrď návrhy níže`, { duration: 6000 });
+                    }, 200);
                   }}
                 />
               )}
@@ -802,9 +815,22 @@ export default function AdminDashboard() {
                     refetchAdminCurriculum();
                     toast.success(`Téma „${name}" přidáno`);
                   }}
-                  onAI={(prompt) => {
-                    setAiInitialPrompt(prompt);
-                    setAiChatOpen(true);
+                  onAIDirect={async (prompt, grade) => {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) throw new Error("Nejste přihlášen/a");
+                    const { data, error } = await (supabase as any).functions.invoke("ai-curriculum", {
+                      body: { messages: [{ role: "user", content: prompt }], grade, subject: selectedSubject, category: selectedCategory, topic: null },
+                    });
+                    if (error) throw new Error(error.message);
+                    if (data?.error) throw new Error(data.error);
+                    const parsed = parseProposals(data?.reply || "");
+                    if (!parsed || parsed.proposals.length === 0) throw new Error("AI nevrátilo žádné návrhy. Uprav prompt a zkus znovu.");
+                    setProposals(parsed.proposals);
+                    setProposalExplanation(parsed.explanation);
+                    setTimeout(() => {
+                      proposalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      toast.success(`✅ AI navrhlo ${parsed.proposals.length} položek — zkontroluj a potvrď návrhy níže`, { duration: 6000 });
+                    }, 200);
                   }}
                 />
               )}
@@ -1119,7 +1145,8 @@ function ImageOrEmoji({
 // ── QuickAddCard ─────────────────────────────────────
 /**
  * Inline karta „+ Přidat okruh / téma" v gridu.
- * Má dva módy: ruční přidání a AI návrh s editovatelným promptem.
+ * Dva módy: ruční přidání a AI návrh.
+ * AI mód volá edge funkci přímo — bez otevírání chat panelu.
  */
 function QuickAddCard({
   label,
@@ -1128,18 +1155,19 @@ function QuickAddCard({
   gradeFilter,
   sourceNote,
   onSave,
-  onAI,
+  onAIDirect,
 }: {
   label: string;
   /** Krátký popis co to je — zobrazí se v closed state */
   hint: string;
-  /** Výchozí prompt pro AI — zobrazí se editovatelný před odesláním */
+  /** Prompt builder — volá se s vybraným ročníkem */
   aiPrompt: (grade: number | null) => string;
   gradeFilter: number | null;
   /** Citace zdroje — zobrazí se pod promptem (např. "RVP ZV, MŠMT") */
   sourceNote?: string;
   onSave: (name: string, description: string) => Promise<void>;
-  onAI: (prompt: string) => void;
+  /** Přímé volání AI — bez chat panelu. Karta zobrazí spinner, po dokončení se zavře. */
+  onAIDirect: (prompt: string, grade: number | null) => Promise<void>;
 }) {
   const [mode, setMode] = useState<"closed" | "manual" | "ai">("closed");
   const [name, setName] = useState("");
@@ -1147,6 +1175,7 @@ function QuickAddCard({
   const [localGrade, setLocalGrade] = useState<number | null>(gradeFilter);
   const [editedPrompt, setEditedPrompt] = useState<string>(() => aiPrompt(gradeFilter));
   const [saving, setSaving] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
 
   // Rebuild prompt when grade changes — resets any manual edits intentionally
   const handleLocalGradeChange = (g: number | null) => {
@@ -1327,14 +1356,38 @@ function QuickAddCard({
                 ? `Zdroj: ${sourceNote}. AI čerpá z oficiálního kurikula.`
                 : "AI čerpá z oficiálního kurikula."}
             </p>
-            <Button
-              size="sm" className="w-full gap-1.5 rounded-xl"
-              onClick={() => { close(); onAI(editedPrompt); }}
-              disabled={!editedPrompt.trim()}
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              Odeslat AI
-            </Button>
+
+            {/* Loading state — přes celý AI mód */}
+            {aiLoading ? (
+              <div className="flex flex-col items-center gap-3 py-4">
+                <div className="flex items-center gap-2 text-primary">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <span className="text-sm font-medium">AI generuje návrhy…</span>
+                </div>
+                <p className="text-[11px] text-muted-foreground text-center">
+                  Obvykle trvá 5–15 sekund. Návrhy se zobrazí přímo pod touto kartou.
+                </p>
+              </div>
+            ) : (
+              <Button
+                size="sm" className="w-full gap-1.5 rounded-xl"
+                onClick={async () => {
+                  setAiLoading(true);
+                  try {
+                    await onAIDirect(editedPrompt, localGrade);
+                    close();
+                  } catch (e: any) {
+                    toast.error(e?.message ?? "Chyba AI — zkus to znovu");
+                  } finally {
+                    setAiLoading(false);
+                  }
+                }}
+                disabled={!editedPrompt.trim()}
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                Odeslat AI
+              </Button>
+            )}
           </div>
         )}
 
