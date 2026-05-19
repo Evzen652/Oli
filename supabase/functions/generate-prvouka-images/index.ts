@@ -281,6 +281,74 @@ serve(async (req) => {
         }
       }
 
+      // Dynamic category (cat-{subject_slug}-{category_slug}) → prompt z DB description
+      if (!prompt && key.startsWith("cat-")) {
+        const rest = key.slice("cat-".length);
+        const firstDash = rest.indexOf("-");
+        if (firstDash > 0) {
+          const subjectSlug = rest.slice(0, firstDash);
+          const categorySlug = rest.slice(firstDash + 1);
+          // JOIN s subject přes subject_id
+          const { data: subj } = await supabase
+            .from("curriculum_subjects")
+            .select("id, name")
+            .eq("slug", subjectSlug)
+            .maybeSingle();
+          if (subj?.id) {
+            const { data: cat } = await supabase
+              .from("curriculum_categories")
+              .select("name, description")
+              .eq("subject_id", subj.id)
+              .eq("slug", categorySlug)
+              .maybeSingle();
+            if (cat?.name) {
+              const base = cat.description || `topic area "${cat.name}" in subject ${subj.name}`;
+              prompt = p(`${base}, visually rich illustration of symbols and elements from this area`);
+              console.log(`[generate-prvouka] Dynamic category prompt for ${key}`);
+            }
+          }
+        }
+      }
+
+      // Dynamic topic (topic-{subject_slug}-{category_slug}-{topic_slug}) → prompt z DB
+      if (!prompt && key.startsWith("topic-")) {
+        const rest = key.slice("topic-".length);
+        const firstDash = rest.indexOf("-");
+        if (firstDash > 0) {
+          const subjectSlug = rest.slice(0, firstDash);
+          const remaining = rest.slice(firstDash + 1);
+          // Najdi všechna témata pod tímto subjektem a hledej match na "cat-slug-topic-slug"
+          const { data: subj } = await supabase
+            .from("curriculum_subjects")
+            .select("id")
+            .eq("slug", subjectSlug)
+            .maybeSingle();
+          if (subj?.id) {
+            const { data: cats } = await supabase
+              .from("curriculum_categories")
+              .select("id, slug")
+              .eq("subject_id", subj.id);
+            for (const cat of cats ?? []) {
+              if (remaining.startsWith(cat.slug + "-")) {
+                const topicSlug = remaining.slice(cat.slug.length + 1);
+                const { data: top } = await supabase
+                  .from("curriculum_topics")
+                  .select("name, description")
+                  .eq("category_id", cat.id)
+                  .eq("slug", topicSlug)
+                  .maybeSingle();
+                if (top?.name) {
+                  const base = top.description || `specific topic "${top.name}"`;
+                  prompt = p(`${base}, concrete visual scene from this topic`);
+                  console.log(`[generate-prvouka] Dynamic topic prompt for ${key}`);
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
       if (!prompt) {
         errors[key] = "Unknown key";
         continue;
