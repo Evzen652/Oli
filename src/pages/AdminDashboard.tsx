@@ -657,6 +657,7 @@ export default function AdminDashboard() {
               {selectedSubject && (
                 <QuickAddCard
                   label="okruh"
+                  hint="Okruh je tematická kapitola předmětu — např. „Čísla a výpočty" nebo „Geometrie". Témata se pak přidávají dovnitř okruhu."
                   aiPrompt={(grade) => buildCategoryPrompt({
                     subject: capitalize(selectedSubject),
                     grade,
@@ -774,6 +775,7 @@ export default function AdminDashboard() {
               {selectedSubject && selectedCategory && (
                 <QuickAddCard
                   label="téma"
+                  hint="Téma je konkrétní výukový celek v rámci okruhu — např. „Sčítání do 100" nebo „Psaní velkých písmen". Cvičení se pak přidávají k tématu."
                   aiPrompt={(grade) => buildTopicPrompt({
                     subject: capitalize(selectedSubject),
                     category: capitalize(selectedCategory),
@@ -1121,6 +1123,7 @@ function ImageOrEmoji({
  */
 function QuickAddCard({
   label,
+  hint,
   aiPrompt,
   gradeFilter,
   sourceNote,
@@ -1128,6 +1131,8 @@ function QuickAddCard({
   onAI,
 }: {
   label: string;
+  /** Krátký popis co to je — zobrazí se v closed state */
+  hint: string;
   /** Výchozí prompt pro AI — zobrazí se editovatelný před odesláním */
   aiPrompt: (grade: number | null) => string;
   gradeFilter: number | null;
@@ -1167,18 +1172,52 @@ function QuickAddCard({
 
   if (mode === "closed") {
     return (
-      <Card
-        className="border-2 border-dashed border-primary/30 rounded-3xl cursor-pointer bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all flex items-center justify-center min-h-[200px]"
-        onClick={() => setMode("manual")}
-      >
-        <CardContent className="flex flex-col items-center gap-3 p-6 text-center">
-          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Plus className="h-6 w-6 text-primary" />
+      <Card className="border-2 border-dashed border-primary/30 rounded-3xl bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all min-h-[200px]">
+        <CardContent className="flex flex-col gap-4 p-5 h-full">
+
+          {/* Ikona + název */}
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+              <Plus className="h-4 w-4 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-foreground">Přidat {label}</p>
+              <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{hint}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-primary">Přidat {label}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">ručně nebo s AI</p>
+
+          {/* Oddělovač */}
+          <div className="border-t border-border/50" />
+
+          {/* Dvě akce — přímé, bez mezicroku */}
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => setMode("manual")}
+              className="flex items-center gap-2.5 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-left hover:border-primary/40 hover:bg-primary/5 transition-colors group"
+            >
+              <div className="h-7 w-7 shrink-0 rounded-lg bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                <Plus className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-foreground">Přidat ručně</p>
+                <p className="text-[10px] text-muted-foreground">Zadej název a popis sám</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => setMode("ai")}
+              className="flex items-center gap-2.5 w-full rounded-xl border border-primary/30 bg-primary/5 px-3 py-2.5 text-left hover:border-primary/60 hover:bg-primary/10 transition-colors group"
+            >
+              <div className="h-7 w-7 shrink-0 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-primary">Navrhnout s AI</p>
+                <p className="text-[10px] text-muted-foreground">AI navrhne obsah dle RVP ZV</p>
+              </div>
+            </button>
           </div>
+
         </CardContent>
       </Card>
     );
