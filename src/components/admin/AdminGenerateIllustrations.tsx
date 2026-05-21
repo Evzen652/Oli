@@ -157,14 +157,29 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "Minimalist 3D app icon with a small cute friendly mascot, representing";
+const PROMPT_PREFIX = "Minimalist 3D illustration where the EDUCATIONAL CONCEPT is the visual hero, depicting";
 const PROMPT_SUFFIX = `.
 
-STYLE: Pixar-short-film style 3D illustration, single warm composition with ONE small cute friendly mascot character (a stylized chubby owl with big round eyes, OR a cute fox, OR a friendly creature — pick one) interacting with the main educational object. Mascot is a small companion, the educational object is the hero. Smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent color. Think Pixar short film, NOT a classroom scene.
+VISUAL HIERARCHY (STRICT):
+1. PRIMARY (70% of image): the educational concept — abstract objects that clearly represent the topic. THE TOPIC MUST BE INSTANTLY RECOGNIZABLE from the icon alone, without the mascot.
+2. SECONDARY (20-25%): a small cute mascot character — a stylized chubby owl with big round eyes, positioned in a corner or peeking, INTERACTING with the concept (holding it, pointing to it, looking at it with curiosity). The mascot is NEVER alone with generic props (books, pencils, papers) — it must engage with the SPECIFIC topic objects.
+3. The mascot serves the concept, not vice versa. If the topic is hard to visualize, prefer making the concept clearer rather than enlarging the mascot.
 
-COMPOSITION: the mascot is small (max 30% of image), positioned beside, behind, or peeking from the main object. The mascot has a friendly cartoon FACE with eyes — it's the emotional anchor. No human children, no realistic faces, no babies — only a stylized cute creature.
+STYLE: Pixar-short-film 3D rendering, smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent. Single centered composition. Think a single product icon, not a scene.
 
-THIS IS A FRIENDLY ICON, NOT A SCHOOL SCENE — no chalkboards, no posters, no books with visible covers, no papers with writing, no screens displaying anything, no signs, no school setting.
+TOPIC-SPECIFIC VISUAL CUES (use these literal visual metaphors based on the concept):
+- "multiplication": multiple identical groups of objects (e.g., 3 rows × 4 cubes)
+- "division": one group splitting into smaller equal piles
+- "addition/subtraction": stacked blocks arranged in columns
+- "fractions": pie slices or stacked bars in different colors
+- "rounding numbers": arrows pointing up/down to nearest level
+- "shapes/geometry": the actual geometric shapes (triangle, circle, square in 3D)
+- "symmetry": mirrored shapes along a visible axis line
+- "data/tables/charts": 3D bar chart or pie chart shape (no labels)
+- "logic puzzles": interlocking geometric shapes or magic-square grid of colored cubes
+- "perimeter/area": a rectangle with measuring corners highlighted
+
+THIS IS NOT A SCHOOL SCENE — no chalkboards, no posters, no books with visible covers, no papers with writing, no screens displaying anything, no signs, no classroom setting.
 
 ZERO TEXT POLICY (HARD CONSTRAINT):
 - Zero letters, zero words, zero alphabet characters of any language

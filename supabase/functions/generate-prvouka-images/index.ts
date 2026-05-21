@@ -34,16 +34,31 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Flux má extrémně silné priors na text v "educational/classroom" scénách.
-// Strategie: změnit STYL na "minimalist 3D icon s malým maskotem" — Pixar short film vibe,
-// ne školní scéna. Maskot je emoční kotva (obličej), ale není dominantní.
+// Klíčové: edukační koncept JE HRDINA (70%), maskot je malý průvodce (20-25%) který
+// musí INTERAGOVAT s konceptem. Bez interakce by maskot byl jen generický a téma by
+// nešlo poznat.
 const SUFFIX = `.
 
-STYLE: Pixar-short-film style 3D illustration, single warm composition with ONE small cute friendly mascot character (a stylized chubby owl, OR a cute fox, OR a friendly creature — pick one) interacting with the main educational object. Mascot is a small companion, the educational object is the hero. Smooth rounded surfaces, soft volumetric shading, gentle pastel colors. Think Pixar short film, NOT a classroom scene.
+VISUAL HIERARCHY (STRICT):
+1. PRIMARY (70% of image): the educational concept — abstract objects clearly representing the topic. THE TOPIC MUST BE INSTANTLY RECOGNIZABLE without the mascot.
+2. SECONDARY (20-25%): a small cute mascot character — stylized chubby owl with big round eyes, positioned in a corner or peeking, INTERACTING with the concept (holding it, pointing to it). Mascot is NEVER alone with generic props — it engages with the SPECIFIC topic objects.
+3. The mascot serves the concept, not vice versa.
 
-COMPOSITION: the mascot is small (max 30% of image), positioned beside, behind, or peeking from the main object. The mascot has a friendly cartoon FACE with eyes — emotional anchor. No human children, no realistic faces, no babies — only a stylized cute creature.
+STYLE: Pixar-short-film 3D rendering, smooth rounded surfaces, soft volumetric shading, gentle pastel colors. Single centered composition. Think a single product icon, not a scene.
 
-THIS IS A FRIENDLY ICON, NOT A SCHOOL SCENE — no chalkboards, no posters, no books with covers, no papers with writing, no screens displaying anything, no signs, no school setting.
+TOPIC-SPECIFIC VISUAL CUES (use these literal metaphors based on the concept):
+- "multiplication": multiple identical groups of objects (e.g., 3 rows × 4 cubes)
+- "division": one group splitting into smaller equal piles
+- "addition/subtraction": stacked blocks arranged in columns
+- "fractions": pie slices or stacked bars in different colors
+- "rounding": arrows pointing up/down to nearest level
+- "shapes/geometry": the actual geometric shapes in 3D
+- "symmetry": mirrored shapes along a visible axis
+- "data/charts": 3D bar chart or pie chart shape (no labels)
+- "logic puzzles": interlocking shapes or magic-square grid of colored cubes
+- "perimeter/area": rectangle with measuring corners highlighted
+
+THIS IS NOT A SCHOOL SCENE — no chalkboards, no posters, no books with covers, no papers with writing, no screens, no signs, no classroom setting.
 
 ZERO TEXT POLICY (HARD CONSTRAINT):
 - Zero letters, zero words, zero alphabet characters of any language
@@ -59,7 +74,7 @@ BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint.
 
 OUTPUT: square 1:1, single centered composition, no text anywhere.`;
 
-function p(desc: string) { return `Minimalist 3D illustration with a small cute friendly mascot, representing ${desc}${SUFFIX}`; }
+function p(desc: string) { return `Minimalist 3D illustration where the EDUCATIONAL CONCEPT is the visual hero, depicting ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
 
