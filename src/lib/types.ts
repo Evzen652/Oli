@@ -93,6 +93,13 @@ export interface TopicMetadata {
   prerequisites?: string[];
   /** RVP kód (např. "M-5-1-03") pro reporting pokrytí kurikula. */
   rvpReference?: string;
+  /**
+   * Stabilní ID uzlu z RVP datasetu (`data/rvp_data.json`).
+   * Formát: `g{grade}-{subject}-{area}-{topic}-{subtopic}`.
+   * Slouží jako most mezi internímim `id` a kanonickým curriculum stromem.
+   * Vyplňují grade-N session moduly.
+   */
+  rvpNodeId?: string;
 }
 
 // ===== PRACTICE BATCH =====

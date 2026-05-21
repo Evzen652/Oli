@@ -88,18 +88,34 @@ Pak pokračuj v jiné práci uvnitř `grade-4/` a počkej, až architekt požada
 ```
 src/content/grade-4/
 ├── README.md           ← tento soubor
+├── TEMPLATE.ts         ← šablona topiku (kopíruj, nikdy neměň)
 ├── index.ts            ← veřejný export (jen tohle čte zbytek app)
 ├── matematika/
-│   ├── index.ts
-│   └── {topic}/
-│       ├── generator.ts
-│       ├── facts.ts (volitelné)
-│       └── __tests__/
+│   ├── zlomkyIntro.ts  ← jeden soubor per topic
+│   └── obvodObsah.ts
 ├── cestina/
 ├── vlastiveda/
 ├── prirodoveda/
-└── informatika/
+├── informatika/
+└── __tests__/
+    ├── zlomkyIntro.test.ts
+    └── obvodObsah.test.ts
 ```
+
+## Workflow pro nový topic
+
+1. Zkopíruj `TEMPLATE.ts` jako `src/content/grade-4/{predmet}/{tema-slug}.ts`
+2. Vyplň `TODO:` značky podle reálného RVP uzlu
+3. Napiš unit testy v `__tests__/`
+4. Přidej import + spread do `GRADE_4_TOPICS` v `index.ts`
+5. `npm run test` — musí projít
+6. Commit: `git commit -m "[grade-4] {predmet} — {tema}"`
+
+## Klíčová pravda
+
+Existující typy v `src/lib/types.ts` (`TopicMetadata`, `PracticeTask`, `HelpData`, `InputType`) jsou **bohaté a funkční**. NEPIŠ si vlastní typy, používej tyto.
+
+Most mezi tvým interním `id` a RVP datasetem je pole `rvpNodeId` v `TopicMetadata`.
 
 ## Workflow
 

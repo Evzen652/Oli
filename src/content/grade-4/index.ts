@@ -3,25 +3,21 @@
  *
  * Vše, co grade-4 modul nabízí zbytku aplikace, prochází tudy.
  * Vnitřní soubory grade-4/ se NEimportují odjinud.
+ *
+ * Grade-4 session přidává topics postupně. Každý topic je `TopicMetadata`
+ * (z `src/lib/types.ts`) s vyplněným `rvpNodeId` linkujícím na RVP dataset.
  */
 
-import type { TopicMetadata } from "../types";
+import type { TopicMetadata } from "@/lib/types";
 
-// Pro lookup vlastních uzlů ve své práci použij:
-//   import { getNodesByGradeSubject } from "../curriculum";
-//   const nodes = getNodesByGradeSubject(4, "matematika"); // 14 uzlů
-
-// Postupně přidává grade-4 session, jak vznikají topics:
-// import { MATEMATIKA_GRADE_4 } from "./matematika";
-// import { CESTINA_GRADE_4 } from "./cestina";
-// import { VLASTIVEDA_GRADE_4 } from "./vlastiveda";
-// import { PRIRODOVEDA_GRADE_4 } from "./prirodoveda";
-// import { INFORMATIKA_GRADE_4 } from "./informatika";
+// Postupně přidává grade-4 session, jak vznikají topics.
+// Pattern: jeden soubor per téma, exportuje pole TopicMetadata.
+//
+// import { ZLOMKY_INTRO } from "./matematika/zlomkyIntro";
+// import { OBVOD_OBSAH } from "./matematika/obvodObsah";
+// ...
 
 export const GRADE_4_TOPICS: TopicMetadata[] = [
-  // ...MATEMATIKA_GRADE_4,
-  // ...CESTINA_GRADE_4,
-  // ...VLASTIVEDA_GRADE_4,
-  // ...PRIRODOVEDA_GRADE_4,
-  // ...INFORMATIKA_GRADE_4,
+  // ...ZLOMKY_INTRO,
+  // ...OBVOD_OBSAH,
 ];
