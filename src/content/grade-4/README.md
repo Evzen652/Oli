@@ -102,14 +102,32 @@ src/content/grade-4/
     └── obvodObsah.test.ts
 ```
 
-## Workflow pro nový topic
+## Two-phase workflow
 
-1. Zkopíruj `TEMPLATE.ts` jako `src/content/grade-4/{predmet}/{tema-slug}.ts`
-2. Vyplň `TODO:` značky podle reálného RVP uzlu
-3. Napiš unit testy v `__tests__/`
-4. Přidej import + spread do `GRADE_4_TOPICS` v `index.ts`
-5. `npm run test` — musí projít
-6. Commit: `git commit -m "[grade-4] {predmet} — {tema}"`
+### Fáze 1 — Skelet (jednorázově, na začátku)
+
+Cíl: mít filesystem strukturu pro všech 72 podtémat, aby bylo vidět scope.
+
+1. Z RVP datasetu (`getNodesByGradeSubject(4, subject)`) vytáhni seznam uzlů
+2. Pro každý uzel vytvoř soubor `src/content/grade-4/{predmet}/{subtopic-camelCase}.ts`
+   - V souboru zatím **jen `TopicMetadata` skelet s vyplněnými metadaty** (id, rvpNodeId, title, subject, category, topic, gradeRange, briefDescription)
+   - **Generator nedávej** (nebo dej placeholder `() => []`)
+   - **NEEXPORTUJ ho do `GRADE_4_TOPICS`** — soubor zatím v index.ts neimportuj
+3. Hotová fáze 1 = 72 souborů, `STATUS.md` obsahuje všech 72 řádků, `GRADE_4_TOPICS` zůstává `[]`
+
+### Fáze 2 — Implementace (postupně, jeden topic po druhém)
+
+Pro každý topic v `STATUS.md`:
+
+1. Otevři jeho soubor (existuje z fáze 1)
+2. Naplň podle `TEMPLATE.ts` — generator s reálnou logikou, helpTemplate, atd.
+3. Napiš unit testy v `__tests__/{subtopic}.test.ts`
+4. Přidej `import` + spread do `GRADE_4_TOPICS` v `index.ts`
+5. V `STATUS.md` přepiš `[ ]` na `[x]`
+6. `npm run test` — musí projít
+7. Commit: `git commit -m "[grade-4] {predmet} — {subtopic}"`
+
+**Pravidlo:** `GRADE_4_TOPICS` obsahuje **jen** hotové topics. Skelety se nepřidávají — vyhnem se broken topics v běžící app.
 
 ## Klíčová pravda
 
