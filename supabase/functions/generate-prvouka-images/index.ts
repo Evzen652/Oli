@@ -35,12 +35,15 @@ const corsHeaders = {
 };
 
 // Flux má extrémně silné priors na text v "educational/classroom" scénách.
-// Strategie: změnit STYL na "minimalist 3D app icon" — AI ví že ikony nemají text.
+// Strategie: změnit STYL na "minimalist 3D icon s malým maskotem" — Pixar short film vibe,
+// ne školní scéna. Maskot je emoční kotva (obličej), ale není dominantní.
 const SUFFIX = `.
 
-STYLE: minimalist 3D app icon style (like a premium iOS or macOS app icon), single hero object on white background, smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent. Think Apple system icon, not a classroom poster.
+STYLE: Pixar-short-film style 3D illustration, single warm composition with ONE small cute friendly mascot character (a stylized chubby owl, OR a cute fox, OR a friendly creature — pick one) interacting with the main educational object. Mascot is a small companion, the educational object is the hero. Smooth rounded surfaces, soft volumetric shading, gentle pastel colors. Think Pixar short film, NOT a classroom scene.
 
-THIS IS AN ICON, NOT A SCENE — no people, no characters, no books with visible covers, no chalkboards, no posters, no papers with writing, no screens displaying anything, no signs, no labels.
+COMPOSITION: the mascot is small (max 30% of image), positioned beside, behind, or peeking from the main object. The mascot has a friendly cartoon FACE with eyes — emotional anchor. No human children, no realistic faces, no babies — only a stylized cute creature.
+
+THIS IS A FRIENDLY ICON, NOT A SCHOOL SCENE — no chalkboards, no posters, no books with covers, no papers with writing, no screens displaying anything, no signs, no school setting.
 
 ZERO TEXT POLICY (HARD CONSTRAINT):
 - Zero letters, zero words, zero alphabet characters of any language
@@ -54,9 +57,9 @@ ZERO TEXT POLICY (HARD CONSTRAINT):
 
 BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint.
 
-OUTPUT: square 1:1, single centered subject, no text anywhere.`;
+OUTPUT: square 1:1, single centered composition, no text anywhere.`;
 
-function p(desc: string) { return `Minimalist 3D app icon representing ${desc}${SUFFIX}`; }
+function p(desc: string) { return `Minimalist 3D illustration with a small cute friendly mascot, representing ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
 

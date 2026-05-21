@@ -157,12 +157,14 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "Minimalist 3D app icon, single hero object, isometric clean design representing";
+const PROMPT_PREFIX = "Minimalist 3D app icon with a small cute friendly mascot, representing";
 const PROMPT_SUFFIX = `.
 
-STYLE: minimalist 3D app icon style (like a premium iOS or macOS app icon), single hero object on white background, smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent color, isometric or three-quarter view, mascot-free, character-free, completely abstract geometric/object composition. Think Apple system icon, not a classroom poster.
+STYLE: Pixar-short-film style 3D illustration, single warm composition with ONE small cute friendly mascot character (a stylized chubby owl with big round eyes, OR a cute fox, OR a friendly creature — pick one) interacting with the main educational object. Mascot is a small companion, the educational object is the hero. Smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent color. Think Pixar short film, NOT a classroom scene.
 
-THE IMAGE IS AN ICON, NOT A SCENE — no people, no characters, no books with covers showing text, no chalkboards, no posters, no papers with writing, no screens displaying anything, no signs, no labels on objects.
+COMPOSITION: the mascot is small (max 30% of image), positioned beside, behind, or peeking from the main object. The mascot has a friendly cartoon FACE with eyes — it's the emotional anchor. No human children, no realistic faces, no babies — only a stylized cute creature.
+
+THIS IS A FRIENDLY ICON, NOT A SCHOOL SCENE — no chalkboards, no posters, no books with visible covers, no papers with writing, no screens displaying anything, no signs, no school setting.
 
 ZERO TEXT POLICY (HARD CONSTRAINT):
 - Zero letters, zero words, zero alphabet characters of any language
@@ -176,7 +178,7 @@ ZERO TEXT POLICY (HARD CONSTRAINT):
 
 BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint, no texture — background must be pure white so transparency can be applied.
 
-OUTPUT: square 1:1 format, single centered subject, no text anywhere.`;
+OUTPUT: square 1:1 format, single centered composition, no text anywhere.`;
 
 const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
 const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly oboru, pastelové barvy, bílé pozadí, bez textu";
