@@ -91,6 +91,10 @@ async function callCurriculumAIDirect(params: {
   return parsed;
 }
 
+// Výchozí jemné podbarvení karty — používá se vždy, když není definován specifický visual.
+// Jeden styl pro celý systém, konzistentní a nenápadný.
+const CARD_DEFAULT_BG = "bg-gradient-to-br from-white to-violet-50/50 border-violet-100/60";
+
 const INPUT_TYPE_LABELS: Record<string, string> = {
   select_one: "Výběr odpovědi",
   comparison: "Porovnání",
@@ -668,7 +672,7 @@ export default function AdminDashboard() {
                     key={category}
                     className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                       isEmpty ? "border-dashed border-muted-foreground/30" : ""
-                    } ${visual ? `${visual.gradientClass} ${visual.colorClass}` : "bg-card hover:bg-accent"}`}
+                    } ${visual ? `${visual.gradientClass} ${visual.colorClass}` : CARD_DEFAULT_BG}`}
                     onClick={() => handleCategoryClick(category)}
                   >
                     {/* Polkadot decorations — 4 rohy */}
@@ -802,7 +806,7 @@ export default function AdminDashboard() {
                     key={topicName}
                     className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                       isEmpty ? "border-dashed border-muted-foreground/30" : ""
-                    } ${topicVisual ? `${topicVisual.gradientClass} ${topicVisual.colorClass}/60` : "bg-card hover:bg-accent"}`}
+                    } ${topicVisual ? `${topicVisual.gradientClass} ${topicVisual.colorClass}/60` : CARD_DEFAULT_BG}`}
                     onClick={() => handleTopicClick(topicName)}
                   >
                     {/* Polkadot decorations — 4 rohy */}
@@ -920,7 +924,7 @@ export default function AdminDashboard() {
                   <Card
                     key={skill.id}
                     className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${
-                      skillVisual ? `${skillVisual.gradientClass} ${skillVisual.colorClass}/60` : "bg-card hover:bg-accent"
+                      skillVisual ? `${skillVisual.gradientClass} ${skillVisual.colorClass}/60` : CARD_DEFAULT_BG
                     }`}
                     onClick={() => handleSkillClick(skill)}
                   >
