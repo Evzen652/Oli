@@ -244,11 +244,21 @@ function buildGradeMap(topics: ReturnType<typeof getAllTopics>): Record<string, 
     map[k].add(g);
   };
   for (const t of topics) {
+    // Legacy: imageKey z TOPIC_VISUALS_BY_SUBJECT (pokud existuje)
     const topicKey = getTopicImageKey(t.subject, t.topic);
     const catKey = getCategoryImageKey(t.subject, t.category);
+    // Slug-based klíče pro všechna témata (grade-N topics)
+    const subjSlug = toSlug(t.subject);
+    const catSlug = toSlug(t.category);
+    const topSlug = toSlug(t.topic);
+    const slugTopicKey = `topic-${subjSlug}-${catSlug}-${topSlug}`;
+    const slugCatKey = `cat-${subjSlug}-${catSlug}`;
+
     for (let g = t.gradeRange[0]; g <= t.gradeRange[1]; g++) {
       addKey(topicKey, g);
       addKey(catKey, g);
+      addKey(slugTopicKey, g);
+      addKey(slugCatKey, g);
     }
   }
   return Object.fromEntries(
