@@ -815,7 +815,7 @@ export default function AdminDashboard() {
                       {/* Ilustrace v rounded panel */}
                       <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
                         <ImageOrEmoji
-                          imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)}
+                          imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName, selectedCategory ?? undefined)}
                           emoji={topicEmoji}
                           size="lg"
                         />

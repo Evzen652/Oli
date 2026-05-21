@@ -297,6 +297,31 @@ const TOPIC_VISUALS_BY_SUBJECT: Record<string, Record<string, { emoji: string; i
   "vlastivěda": VLASTIVEDA_TOPIC_VISUALS,
 };
 
+// ── Slug helper (mirrors toSlug() in AdminGenerateIllustrations) ──────────────
+
+function toSlug(s: string): string {
+  return s
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/** Sestaví slug-based klíč pro kategorii (grade-N formát). */
+function slugCatKey(subject: string, category: string): string {
+  return `cat-${toSlug(subject)}-${toSlug(category)}`;
+}
+
+/** Sestaví slug-based klíč pro téma (grade-N formát). */
+function slugTopicKey(subject: string, category: string, topic: string): string {
+  return `topic-${toSlug(subject)}-${toSlug(category)}-${toSlug(topic)}`;
+}
+
+/** Sestaví slug-based klíč pro předmět (grade-N formát). */
+function slugSubjectKey(subject: string): string {
+  return `subject-${toSlug(subject)}`;
+}
+
 // ── PUBLIC API ──────────────────────────────────────────────
 
 export function getPrvoukaCategoryVisual(subject: string, category: string): PrvoukaVisual | null {
@@ -309,16 +334,27 @@ export function getPrvoukaTopicEmoji(subject: string, category: string, topic: s
   return topicVisuals?.[topic]?.emoji ?? categoryVisuals?.[category]?.emoji ?? null;
 }
 
-export function getPrvoukaTopicImageUrl(subject: string, topic: string): string | null {
+export function getPrvoukaTopicImageUrl(subject: string, topic: string, category?: string): string | null {
+  // 1. Legacy lookup
   const topicVisuals = TOPIC_VISUALS_BY_SUBJECT[subject];
   const visual = topicVisuals?.[topic];
-  return visual ? imageUrl(visual.imageKey, visual.ext ?? "png") : null;
+  if (visual?.imageKey) return imageUrl(visual.imageKey, visual.ext ?? "png");
+  // 2. Slug-based fallback (grade-N topics)
+  if (category) return imageUrl(slugTopicKey(subject, category, topic));
+  return null;
 }
 
 export function getPrvoukaCategoryImageUrl(subject: string, category: string): string | null {
+  // 1. Legacy lookup
   const categoryVisuals = CATEGORY_VISUALS_BY_SUBJECT[subject];
   const visual = categoryVisuals?.[category];
-  return visual?.imageKey ? imageUrl(visual.imageKey) : null;
+  if (visual?.imageKey) return imageUrl(visual.imageKey);
+  // 2. Slug-based fallback (grade-N categories)
+  return imageUrl(slugCatKey(subject, category));
+}
+
+export function getPrvoukaSubjectImageUrl(subject: string): string {
+  return imageUrl(slugSubjectKey(subject));
 }
 
 export function getPrvoukaTopicVisual(subject: string, category: string): PrvoukaVisual | null {
@@ -326,7 +362,7 @@ export function getPrvoukaTopicVisual(subject: string, category: string): Prvouk
 }
 
 export function getTopicIllustrationUrl(topic: { subject: string; category: string; topic: string }): string | null {
-  return getPrvoukaTopicImageUrl(topic.subject, topic.topic)
+  return getPrvoukaTopicImageUrl(topic.subject, topic.topic, topic.category)
     ?? getPrvoukaCategoryImageUrl(topic.subject, topic.category);
 }
 
