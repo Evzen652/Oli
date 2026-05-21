@@ -34,25 +34,29 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Flux má slabé renderování textu/čísel — striktní negativní instrukce a alternativy.
-const SUFFIX = `,
+// Flux má extrémně silné priors na text v "educational/classroom" scénách.
+// Strategie: změnit STYL na "minimalist 3D app icon" — AI ví že ikony nemají text.
+const SUFFIX = `.
 
-cute 3D Pixar-style cartoon illustration, soft volumetric shading, vibrant pastel colors, friendly rounded shapes, suitable for 8-year-old children, single centered subject, square composition.
+STYLE: minimalist 3D app icon style (like a premium iOS or macOS app icon), single hero object on white background, smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent. Think Apple system icon, not a classroom poster.
 
-CRITICAL — TEXT AND NUMBERS ARE STRICTLY FORBIDDEN:
-- ABSOLUTELY NO text of any kind: no words, no letters, no labels, no captions, no titles
-- ABSOLUTELY NO digits or numerals: no 0123456789, no Roman numerals, no math expressions, no equations
-- ABSOLUTELY NO writing on books, signs, papers, screens, blackboards, tablets, or any surface
-- ABSOLUTELY NO logos, watermarks, or branding
-- Instead of digits, use: abacus beads, colored cubes/blocks, geometric shapes, dots, tally marks
-- Instead of math expressions, use: arrows between objects, grouped items, visual fractions (pie slices, bars)
-- Instead of text labels, use: icons, colored borders, recognizable objects
+THIS IS AN ICON, NOT A SCENE — no people, no characters, no books with visible covers, no chalkboards, no posters, no papers with writing, no screens displaying anything, no signs, no labels.
 
-Background: pure solid white RGB(255,255,255), absolutely no gradients on background, no blue tint, no colored tint, no shadows on background.
+ZERO TEXT POLICY (HARD CONSTRAINT):
+- Zero letters, zero words, zero alphabet characters of any language
+- Zero digits, zero numerals (0-9), zero Roman numerals, zero equations
+- Zero handwriting, zero typography
+- Zero text on any surface
+- Zero logos, zero watermarks
+- Use abstract visual metaphors only: shapes, dots, beads, blocks, arrows
+- If concept implies numbers, show abacus beads or cubes — NO digits
+- If concept implies text, show solid-color books with NO covers, NO titles
 
-NO TEXT. NO NUMBERS. NO LETTERS.`;
+BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint.
 
-function p(desc: string) { return `ZERO TEXT, ZERO NUMBERS, ZERO LETTERS anywhere. Cute 3D rendered cartoon illustration of ${desc}${SUFFIX}`; }
+OUTPUT: square 1:1, single centered subject, no text anywhere.`;
+
+function p(desc: string) { return `Minimalist 3D app icon representing ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
 
@@ -190,7 +194,9 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
       "blurry", "low quality", "deformed", "ugly",
     ].join(", "));
     const seed = Math.floor(Math.random() * 999999);
-    const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&seed=${seed}`;
+    // enhance=false → Pollinations neupravuje prompt LLM-em (může přidat text-friendly slova)
+    // private=true → nezveřejňovat v public feedu
+    const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&enhance=false&private=true&seed=${seed}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
     const bytes = new Uint8Array(await resp.arrayBuffer());

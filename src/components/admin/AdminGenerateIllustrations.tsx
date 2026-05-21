@@ -157,24 +157,26 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "ZERO TEXT, ZERO NUMBERS, ZERO LETTERS anywhere in the image. Modern educational 3D illustration depicting";
-const PROMPT_SUFFIX = `,
+const PROMPT_PREFIX = "Minimalist 3D app icon, single hero object, isometric clean design representing";
+const PROMPT_SUFFIX = `.
 
-clean 3D rendered style with soft volumetric shading and gentle pastel colors, focused on educational objects, tools and symbols related to the subject matter (NOT cute cartoon characters, NOT babies, NOT toddlers), professional and informative visual metaphor suitable for students aged 9 to 11 years old.
+STYLE: minimalist 3D app icon style (like a premium iOS or macOS app icon), single hero object on white background, smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent color, isometric or three-quarter view, mascot-free, character-free, completely abstract geometric/object composition. Think Apple system icon, not a classroom poster.
 
-CRITICAL — TEXT AND NUMBERS ARE STRICTLY FORBIDDEN:
-- ABSOLUTELY NO text of any kind: no words, no letters, no labels, no captions, no titles
-- ABSOLUTELY NO digits or numerals: no 0123456789, no Roman numerals, no math expressions, no equations
-- ABSOLUTELY NO writing on books, signs, papers, screens, blackboards, tablets, or any surface
-- ABSOLUTELY NO logos, watermarks, or branding
-- Instead of digits, use: abacus beads, colored cubes/blocks, geometric shapes, dots, tally marks
-- Instead of math expressions, use: arrows between objects, grouped items, visual fractions (pie slices, bars)
-- Instead of text labels, use: icons, colored borders, recognizable objects
-- If the concept normally involves text/numbers, render it as PURE ABSTRACT VISUALS with shapes and colors only
+THE IMAGE IS AN ICON, NOT A SCENE — no people, no characters, no books with covers showing text, no chalkboards, no posters, no papers with writing, no screens displaying anything, no signs, no labels on objects.
 
-Background: pure solid white RGB(255,255,255), absolutely no gradients, no shadows behind subject, no colored or tinted background — background must be pure white so transparency can be applied in post-processing.
+ZERO TEXT POLICY (HARD CONSTRAINT):
+- Zero letters, zero words, zero alphabet characters of any language
+- Zero digits, zero numerals (0-9), zero Roman numerals, zero math equations
+- Zero handwriting, zero typography, zero calligraphy
+- Zero text on any surface: not on books, not on screens, not on signs, not in the air
+- Zero logos, zero watermarks, zero signatures
+- Use abstract visual metaphors only: shapes, dots, beads, blocks, arrows, geometric forms
+- If concept implies numbers (e.g. counting), show abacus beads or colored cubes without any digits
+- If concept implies text (e.g. reading), show stack of solid-color books with NO covers, NO titles
 
-Composition: single centered subject, square format. NO TEXT. NO NUMBERS. NO LETTERS.`;
+BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint, no texture — background must be pure white so transparency can be applied.
+
+OUTPUT: square 1:1 format, single centered subject, no text anywhere.`;
 
 const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
 const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly oboru, pastelové barvy, bílé pozadí, bez textu";
