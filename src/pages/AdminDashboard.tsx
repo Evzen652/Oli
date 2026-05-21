@@ -588,7 +588,7 @@ export default function AdminDashboard() {
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
                       {/* Ilustrace v rounded panel — image vyplňuje panel */}
-                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm overflow-hidden">
+                      <div className="flex h-32 items-center justify-center rounded-2xl overflow-hidden">
                         <ImageOrEmoji imageUrl={meta.image || null} emoji={meta.emoji} size="xl" />
                       </div>
 
@@ -683,7 +683,7 @@ export default function AdminDashboard() {
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
                       {/* Ilustrace v rounded panel — image vyplňuje panel */}
-                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm overflow-hidden">
+                      <div className="flex h-32 items-center justify-center rounded-2xl overflow-hidden">
                         <ImageOrEmoji
                           imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)}
                           emoji={visual?.emoji}
@@ -817,7 +817,7 @@ export default function AdminDashboard() {
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
                       {/* Ilustrace v rounded panel */}
-                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                      <div className="flex h-32 items-center justify-center rounded-2xl">
                         <ImageOrEmoji
                           imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })}
                           emoji={topicEmoji}
@@ -936,7 +936,7 @@ export default function AdminDashboard() {
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
                       {/* Ilustrace v rounded panel */}
-                      <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
+                      <div className="flex h-32 items-center justify-center rounded-2xl">
                         <ImageOrEmoji
                           imageUrl={getTopicIllustrationUrl({ subject: skill.subject, topic: skill.topic, category: skill.category })}
                           emoji={skillEmoji}

@@ -103,7 +103,7 @@ const ALL_KEYS: string[] = [];
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
 const PROMPT_PREFIX = "Modern educational 3D illustration depicting";
-const PROMPT_SUFFIX = ", clean 3D rendered style with soft volumetric shading and gentle pastel colors, focused on educational objects, tools and symbols related to the subject matter (NOT cute cartoon characters, NOT babies, NOT toddlers), professional and informative visual metaphor suitable for students aged 9 to 11 years old, isolated on pure solid white background (#FFFFFF), absolutely no text, no labels, no numerals, no logos, single clear composition, square format";
+const PROMPT_SUFFIX = ", clean 3D rendered style with soft volumetric shading and gentle pastel colors, focused on educational objects, tools and symbols related to the subject matter (NOT cute cartoon characters, NOT babies, NOT toddlers), professional and informative visual metaphor suitable for students aged 9 to 11 years old, MANDATORY: pure solid white background RGB(255,255,255) with absolutely no gradients, no shadows behind subject, no colored background, no tinted background — background must be pure white so transparency can be applied in post-processing, absolutely no text, no labels, no numerals, no logos, single centered subject, square format";
 
 const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
 const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly oboru, pastelové barvy, bílé pozadí, bez textu";
