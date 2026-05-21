@@ -11,6 +11,34 @@ import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageV
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
 
+// ── Key generation from ALL_TOPICS ───────────────────────────────────────────
+
+/** Převede libovolný string na slug: lowercase, bez diakritiky, pomlčky místo mezer/speciálních znaků */
+function toSlug(s: string): string {
+  return s
+    .normalize("NFD").replace(/[̀-ͯ]/g, "") // strip diacritics
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/** Generuje ilustrační klíče ze všech topics v ALL_TOPICS (včetně grade-N). */
+function buildTopicIllustrationKeys(topics: ReturnType<typeof getAllTopics>): string[] {
+  const catKeys = new Set<string>();
+  const topicKeys = new Set<string>();
+
+  for (const t of topics) {
+    const subjSlug = toSlug(t.subject);
+    const catSlug = toSlug(t.category);
+    const topicSlug = toSlug(t.topic);
+
+    catKeys.add(`cat-${subjSlug}-${catSlug}`);
+    topicKeys.add(`topic-${subjSlug}-${catSlug}-${topicSlug}`);
+  }
+
+  return [...catKeys, ...topicKeys];
+}
+
 // ── Static key list ───────────────────────────────────────────────────────────
 
 const ALL_KEYS = [
@@ -263,6 +291,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
 
   const versioned = useImageVersions();
   const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
+  const codeTopicKeys = useMemo(() => buildTopicIllustrationKeys(getAllTopics()), []);
 
   // ── Dynamic DB hierarchy ─────────────────────────────────────────────────────
   const [dbSubjects, setDbSubjects] = useState<{ id: string; name: string; slug: string }[]>([]);
@@ -300,11 +329,15 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       .filter((k): k is string => !!k && !ALL_KEYS.includes(k as (typeof ALL_KEYS)[number]));
   }, [dbSubjects, dbCategoriesState, dbTopicsState]);
 
-  // Finální seznam všech klíčů
-  const allKeys = useMemo(
-    () => [...ALL_KEYS, ...dynamicSubjectKeys, ...dynamicCategoryKeys, ...dynamicTopicKeys],
-    [dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys]
-  );
+  // Finální seznam všech klíčů — statické + DB dynamické + code-based (grade-N topics)
+  const allKeys = useMemo(() => {
+    const seen = new Set<string>(ALL_KEYS);
+    const extra: string[] = [];
+    for (const k of [...dynamicSubjectKeys, ...dynamicCategoryKeys, ...dynamicTopicKeys, ...codeTopicKeys]) {
+      if (!seen.has(k)) { seen.add(k); extra.push(k); }
+    }
+    return [...ALL_KEYS, ...extra];
+  }, [dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys, codeTopicKeys]);
 
   // Filtrování předmětů — statické + dynamické subjekty
   const subjectFilterList = useMemo(
