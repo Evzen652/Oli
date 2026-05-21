@@ -230,10 +230,12 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64, contentType: mimeMatch?.[1] ?? "image/png" };
   };
 
-  // Pollinations primárně, Lovable jako záloha
+  // Gemini 2.5 Flash Image primárně (přes Lovable Gateway) — výrazně lepší kvalita,
+  // nevytváří gibberish text, lépe drží edukační koncept.
+  // Pollinations/Flux jako záloha pokud Gemini selže (rate limit, content policy).
   const chain = [
-    { name: "pollinations", run: tryPollinations },
     ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
+    { name: "pollinations", run: tryPollinations },
   ];
 
   let lastError: Error | null = null;
