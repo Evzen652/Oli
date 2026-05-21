@@ -21,18 +21,6 @@ CREATE POLICY "own rows"
   ON student_skill_level
   USING (student_id = auth.uid());
 
--- Admin může číst vše (pro rodičovský dashboard)
-CREATE POLICY "admin read all"
-  ON student_skill_level
-  FOR SELECT
-  USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE profiles.id = auth.uid()
-        AND profiles.role = 'admin'
-    )
-  );
-
 -- Index pro rychlé dotazy rodiče na celé dítě
 CREATE INDEX student_skill_level_student_idx
   ON student_skill_level (student_id);
