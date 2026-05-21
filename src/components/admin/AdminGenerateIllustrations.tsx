@@ -256,12 +256,14 @@ function buildGradeMap(topics: ReturnType<typeof getAllTopics>): Record<string, 
     const topSlug = toSlug(t.topic);
     const slugTopicKey = `topic-${subjSlug}-${catSlug}-${topSlug}`;
     const slugCatKey = `cat-${subjSlug}-${catSlug}`;
+    const slugSubjKey = `subject-${subjSlug}`;
 
     for (let g = t.gradeRange[0]; g <= t.gradeRange[1]; g++) {
       addKey(topicKey, g);
       addKey(catKey, g);
       addKey(slugTopicKey, g);
       addKey(slugCatKey, g);
+      addKey(slugSubjKey, g);
     }
   }
   return Object.fromEntries(
@@ -276,13 +278,20 @@ interface BatchResult { ok: string[]; failed: { key: string; reason: string }[] 
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const SUBJECTS = [
-  { value: "matematika", label: "Matematika" },
-  { value: "čeština", label: "Čeština" },
-  { value: "prvouka", label: "Prvouka" },
-  { value: "přírodověda", label: "Přírodověda" },
-  { value: "vlastivěda", label: "Vlastivěda" },
-];
+// Dynamicky z aktivních topics — přidej nový ročník → automaticky se zobrazí nový předmět
+function buildActiveSubjects(topics: ReturnType<typeof getAllTopics>): { value: string; label: string }[] {
+  const seen = new Map<string, string>(); // slug → display name
+  for (const t of topics) {
+    const slug = toSlug(t.subject);
+    if (!seen.has(slug)) seen.set(slug, t.subject);
+  }
+  return [...seen.entries()].map(([slug, name]) => ({
+    value: slug,
+    label: name.charAt(0).toUpperCase() + name.slice(1),
+  }));
+}
+
+const SUBJECTS = buildActiveSubjects(getAllTopics());
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
