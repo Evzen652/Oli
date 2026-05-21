@@ -324,17 +324,17 @@ function slugSubjectKey(subject: string): string {
 
 // ── PUBLIC API ──────────────────────────────────────────────
 
-export function getPrvoukaCategoryVisual(subject: string, category: string): PrvoukaVisual | null {
+export function getCategoryVisual(subject: string, category: string): PrvoukaVisual | null {
   return CATEGORY_VISUALS_BY_SUBJECT[subject]?.[category] ?? null;
 }
 
-export function getPrvoukaTopicEmoji(subject: string, category: string, topic: string): string | null {
+export function getTopicEmoji(subject: string, category: string, topic: string): string | null {
   const topicVisuals = TOPIC_VISUALS_BY_SUBJECT[subject];
   const categoryVisuals = CATEGORY_VISUALS_BY_SUBJECT[subject];
   return topicVisuals?.[topic]?.emoji ?? categoryVisuals?.[category]?.emoji ?? null;
 }
 
-export function getPrvoukaTopicImageUrl(subject: string, topic: string, category?: string): string | null {
+function _getTopicImageUrl(subject: string, topic: string, category?: string): string | null {
   // 1. Legacy lookup
   const topicVisuals = TOPIC_VISUALS_BY_SUBJECT[subject];
   const visual = topicVisuals?.[topic];
@@ -344,7 +344,7 @@ export function getPrvoukaTopicImageUrl(subject: string, topic: string, category
   return null;
 }
 
-export function getPrvoukaCategoryImageUrl(subject: string, category: string): string | null {
+export function getCategoryIllustrationUrl(subject: string, category: string): string | null {
   // 1. Legacy lookup
   const categoryVisuals = CATEGORY_VISUALS_BY_SUBJECT[subject];
   const visual = categoryVisuals?.[category];
@@ -353,17 +353,17 @@ export function getPrvoukaCategoryImageUrl(subject: string, category: string): s
   return imageUrl(slugCatKey(subject, category));
 }
 
-export function getPrvoukaSubjectImageUrl(subject: string): string {
+export function getSubjectIllustrationUrl(subject: string): string {
   return imageUrl(slugSubjectKey(subject));
 }
 
-export function getPrvoukaTopicVisual(subject: string, category: string): PrvoukaVisual | null {
-  return getPrvoukaCategoryVisual(subject, category);
+export function getTopicVisual(subject: string, category: string): PrvoukaVisual | null {
+  return getCategoryVisual(subject, category);
 }
 
 export function getTopicIllustrationUrl(topic: { subject: string; category: string; topic: string }): string | null {
-  return getPrvoukaTopicImageUrl(topic.subject, topic.topic, topic.category)
-    ?? getPrvoukaCategoryImageUrl(topic.subject, topic.category);
+  return _getTopicImageUrl(topic.subject, topic.topic, topic.category)
+    ?? getCategoryIllustrationUrl(topic.subject, topic.category);
 }
 
 /** Returns just the storage key (not URL) for a topic image, or null if not defined. */

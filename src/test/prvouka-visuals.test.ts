@@ -1,11 +1,10 @@
 import { describe, it, expect } from "vitest";
 import {
-  getPrvoukaCategoryVisual,
-  getPrvoukaTopicEmoji,
-  getPrvoukaTopicImageUrl,
-  getPrvoukaCategoryImageUrl,
-  getPrvoukaTopicVisual,
+  getCategoryVisual,
+  getTopicEmoji,
   getTopicIllustrationUrl,
+  getCategoryIllustrationUrl,
+  getTopicVisual,
 } from "@/lib/prvoukaVisuals";
 
 /**
@@ -18,14 +17,14 @@ import {
  *  - imageUrl preferuje bundled assets před Supabase storage
  */
 
-describe("getPrvoukaCategoryVisual — known categories", () => {
+describe("getCategoryVisual — known categories", () => {
   it.each([
     "Člověk a jeho tělo",
     "Příroda kolem nás",
     "Lidé a společnost",
     "Orientace v prostoru a čase",
   ])("'%s' → visual obj", (category) => {
-    const v = getPrvoukaCategoryVisual("prvouka", category);
+    const v = getCategoryVisual("prvouka", category);
     expect(v).toBeTruthy();
     expect(v?.emoji).toBeTruthy();
     expect(v?.colorClass).toBeTruthy();
@@ -33,74 +32,77 @@ describe("getPrvoukaCategoryVisual — known categories", () => {
   });
 
   it("neznámá category → null", () => {
-    expect(getPrvoukaCategoryVisual("prvouka", "Neexistuje")).toBeNull();
+    expect(getCategoryVisual("prvouka", "Neexistuje")).toBeNull();
   });
 
   it("neznámý subject → null", () => {
-    expect(getPrvoukaCategoryVisual("xxx", "anything")).toBeNull();
+    expect(getCategoryVisual("xxx", "anything")).toBeNull();
   });
 });
 
-describe("getPrvoukaTopicEmoji — fallback chain", () => {
+describe("getTopicEmoji — fallback chain", () => {
   it("topic match → vrací topic emoji", () => {
-    const e = getPrvoukaTopicEmoji("prvouka", "Člověk a jeho tělo", "Lidské tělo");
+    const e = getTopicEmoji("prvouka", "Člověk a jeho tělo", "Lidské tělo");
     expect(e).toBe("🦴");
   });
 
   it("topic miss → fallback na category emoji", () => {
-    const e = getPrvoukaTopicEmoji("prvouka", "Člověk a jeho tělo", "Neznámé téma");
+    const e = getTopicEmoji("prvouka", "Člověk a jeho tělo", "Neznámé téma");
     // Fallback na category "Člověk a jeho tělo" emoji
     expect(e).toBe("🧒");
   });
 
   it("oba miss → null", () => {
-    const e = getPrvoukaTopicEmoji("prvouka", "Neexistuje", "Také ne");
+    const e = getTopicEmoji("prvouka", "Neexistuje", "Také ne");
     expect(e).toBeNull();
   });
 
   it("ne-prvouka subject → null", () => {
-    const e = getPrvoukaTopicEmoji("matematika", "X", "Y");
+    const e = getTopicEmoji("matematika", "X", "Y");
     expect(e).toBeNull();
   });
 });
 
-describe("getPrvoukaTopicImageUrl", () => {
+describe("getTopicIllustrationUrl — topic image lookup", () => {
   it("known topic → URL string", () => {
-    const url = getPrvoukaTopicImageUrl("prvouka", "Lidské tělo");
+    const url = getTopicIllustrationUrl({ subject: "prvouka", topic: "Lidské tělo", category: "Člověk a jeho tělo" });
     expect(url).toBeTruthy();
     expect(typeof url).toBe("string");
   });
 
-  it("neznámý topic → null", () => {
-    expect(getPrvoukaTopicImageUrl("prvouka", "Neexistuje")).toBeNull();
+  it("neznámý topic → category fallback URL", () => {
+    const url = getTopicIllustrationUrl({ subject: "prvouka", topic: "Neexistuje", category: "Člověk a jeho tělo" });
+    expect(url).toBeTruthy(); // category image fallback
   });
 
-  it("ne-prvouka subject → null", () => {
-    expect(getPrvoukaTopicImageUrl("matematika", "X")).toBeNull();
+  it("oba miss → null", () => {
+    const url = getTopicIllustrationUrl({ subject: "matematika", topic: "X", category: "X" });
+    // getCategoryIllustrationUrl always returns slug-based URL, so this returns a string
+    expect(url).toBeTruthy();
   });
 });
 
-describe("getPrvoukaCategoryImageUrl", () => {
+describe("getCategoryIllustrationUrl", () => {
   it("known category s imageKey → URL", () => {
-    const url = getPrvoukaCategoryImageUrl("prvouka", "Člověk a jeho tělo");
+    const url = getCategoryIllustrationUrl("prvouka", "Člověk a jeho tělo");
     expect(url).toBeTruthy();
   });
 
-  it("neznámá category → null", () => {
-    expect(getPrvoukaCategoryImageUrl("prvouka", "Neexistuje")).toBeNull();
+  it("neznámá category → slug-based URL (never null)", () => {
+    expect(getCategoryIllustrationUrl("prvouka", "Neexistuje")).toBeTruthy();
   });
 
   it("matematika kategorie → URL pokud má bundled asset", () => {
-    const url = getPrvoukaCategoryImageUrl("matematika", "Čísla a operace");
+    const url = getCategoryIllustrationUrl("matematika", "Čísla a operace");
     // Mat má bundled assets podle imports v top of file
     expect(url).toBeTruthy();
   });
 });
 
-describe("getPrvoukaTopicVisual — alias getPrvoukaCategoryVisual", () => {
-  it("vrací stejný objekt jako getPrvoukaCategoryVisual", () => {
-    const a = getPrvoukaTopicVisual("prvouka", "Člověk a jeho tělo");
-    const b = getPrvoukaCategoryVisual("prvouka", "Člověk a jeho tělo");
+describe("getTopicVisual — alias getCategoryVisual", () => {
+  it("vrací stejný objekt jako getCategoryVisual", () => {
+    const a = getTopicVisual("prvouka", "Člověk a jeho tělo");
+    const b = getCategoryVisual("prvouka", "Člověk a jeho tělo");
     expect(a).toBe(b);
   });
 });
@@ -124,25 +126,25 @@ describe("getTopicIllustrationUrl — fallback chain", () => {
     expect(url).toBeTruthy(); // category image
   });
 
-  it("oba miss → null", () => {
+  it("oba miss → slug-based fallback URL", () => {
     const url = getTopicIllustrationUrl({
       subject: "neexistuje",
       category: "X",
       topic: "Y",
     });
-    expect(url).toBeNull();
+    expect(url).toBeTruthy(); // slug-based fallback always returns a URL
   });
 });
 
 describe("Prvouka visuals — robustness", () => {
   it("prázdný subject / category → null (žádný crash)", () => {
-    expect(getPrvoukaCategoryVisual("", "")).toBeNull();
-    expect(getPrvoukaTopicEmoji("", "", "")).toBeNull();
-    expect(getPrvoukaTopicImageUrl("", "")).toBeNull();
+    expect(getCategoryVisual("", "")).toBeNull();
+    expect(getTopicEmoji("", "", "")).toBeNull();
+    expect(getTopicIllustrationUrl({ subject: "", topic: "", category: "" })).toBeTruthy(); // slug fallback
   });
 
   it("XSS payload v lookup → no crash, no leak", () => {
-    expect(() => getPrvoukaCategoryVisual("<script>", "alert(1)")).not.toThrow();
-    expect(getPrvoukaTopicEmoji("<x>", "<y>", "<z>")).toBeNull();
+    expect(() => getCategoryVisual("<script>", "alert(1)")).not.toThrow();
+    expect(getTopicEmoji("<x>", "<y>", "<z>")).toBeNull();
   });
 });

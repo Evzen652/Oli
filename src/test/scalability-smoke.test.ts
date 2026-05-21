@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import type { TopicMetadata, PracticeTask, Grade } from "../lib/types";
 import { getSubjectMeta } from "../lib/subjectRegistry";
-import { getPrvoukaCategoryVisual, getPrvoukaTopicEmoji } from "../lib/prvoukaVisuals";
+import { getCategoryVisual, getTopicEmoji } from "../lib/prvoukaVisuals";
 import { computeAdaptiveDecision, type SkillSnapshot } from "../lib/adaptiveEngine";
 
 // ── Fake subject: "testověda" with 5 topics ──
@@ -81,10 +81,10 @@ describe("Scalability smoke test – fake subject 'testověda'", () => {
   });
 
   it("visual functions return null gracefully for unknown subject", () => {
-    const catVisual = getPrvoukaCategoryVisual("testověda", "Kategorie A");
+    const catVisual = getCategoryVisual("testověda", "Kategorie A");
     expect(catVisual).toBeNull();
 
-    const emoji = getPrvoukaTopicEmoji("testověda", "Kategorie A", "Alpha");
+    const emoji = getTopicEmoji("testověda", "Kategorie A", "Alpha");
     expect(emoji).toBeNull();
   });
 

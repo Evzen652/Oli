@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useT } from "@/lib/i18n";
 import { ArrowLeft, CheckCircle2, HelpCircle, XCircle } from "lucide-react";
 import { getTopicById } from "@/lib/contentRegistry";
-import { getTopicIllustrationUrl, getPrvoukaTopicEmoji } from "@/lib/prvoukaVisuals";
+import { getTopicIllustrationUrl, getTopicEmoji } from "@/lib/prvoukaVisuals";
 
 interface SessionSummary {
   session_id: string;
@@ -99,7 +99,7 @@ export default function SessionHistory() {
     const topic = getTopicById(skillId);
     if (!topic) return { url: null, emoji: "📚" };
     const url = getTopicIllustrationUrl({ subject: topic.subject, category: topic.category, topic: topic.topic });
-    const emoji = getPrvoukaTopicEmoji(topic.subject, topic.category, topic.topic) ?? "📚";
+    const emoji = getTopicEmoji(topic.subject, topic.category, topic.topic) ?? "📚";
     return { url, emoji };
   };
 

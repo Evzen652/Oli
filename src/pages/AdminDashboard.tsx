@@ -8,11 +8,11 @@ import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { useAdminCurriculum } from "@/hooks/useAdminCurriculum";
 import { getCategoryInfo } from "@/lib/categoryInfo";
 import {
-  getPrvoukaCategoryVisual,
-  getPrvoukaTopicEmoji,
-  getPrvoukaTopicVisual,
-  getPrvoukaCategoryImageUrl,
-  getPrvoukaTopicImageUrl,
+  getCategoryVisual,
+  getTopicEmoji,
+  getTopicVisual,
+  getCategoryIllustrationUrl,
+  getTopicIllustrationUrl,
 } from "@/lib/prvoukaVisuals";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
@@ -661,7 +661,7 @@ export default function AdminDashboard() {
                   (t) => t.subject === selectedSubject && t.category === category,
                 ).length;
                 const isEmpty = count === 0;
-                const visual = getPrvoukaCategoryVisual(selectedSubject!, category);
+                const visual = getCategoryVisual(selectedSubject!, category);
                 const catInfo = getCategoryInfo(selectedSubject!, category);
                 return (
                   <Card
@@ -681,7 +681,7 @@ export default function AdminDashboard() {
                       {/* Ilustrace v rounded panel — image vyplňuje panel */}
                       <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm overflow-hidden">
                         <ImageOrEmoji
-                          imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)}
+                          imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)}
                           emoji={visual?.emoji}
                           size="xl"
                         />
@@ -795,8 +795,8 @@ export default function AdminDashboard() {
                       ? skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? ""
                       : skillsInGroup[0]?.briefDescription ?? ""
                     : dbTopics.find((t) => t.name === topicName && t.category_name === selectedCategory)?.description ?? "";
-                const topicEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topicName);
-                const topicVisual = getPrvoukaTopicVisual(selectedSubject!, selectedCategory!);
+                const topicEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, topicName);
+                const topicVisual = getTopicVisual(selectedSubject!, selectedCategory!);
                 return (
                   <Card
                     key={topicName}
@@ -815,7 +815,7 @@ export default function AdminDashboard() {
                       {/* Ilustrace v rounded panel */}
                       <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
                         <ImageOrEmoji
-                          imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName, selectedCategory ?? undefined)}
+                          imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })}
                           emoji={topicEmoji}
                           size="lg"
                         />
@@ -914,8 +914,8 @@ export default function AdminDashboard() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {subtopics.map((skill) => {
                 const isDbOnly = !hasCodeGenerator(skill);
-                const skillEmoji = getPrvoukaTopicEmoji(skill.subject, skill.category, skill.topic);
-                const skillVisual = getPrvoukaTopicVisual(skill.subject, skill.category);
+                const skillEmoji = getTopicEmoji(skill.subject, skill.category, skill.topic);
+                const skillVisual = getTopicVisual(skill.subject, skill.category);
                 return (
                   <Card
                     key={skill.id}
@@ -934,7 +934,7 @@ export default function AdminDashboard() {
                       {/* Ilustrace v rounded panel */}
                       <div className="flex h-32 items-center justify-center rounded-2xl bg-white/60 backdrop-blur-sm">
                         <ImageOrEmoji
-                          imageUrl={getPrvoukaTopicImageUrl(skill.subject, skill.topic)}
+                          imageUrl={getTopicIllustrationUrl({ subject: skill.subject, topic: skill.topic, category: skill.category })}
                           emoji={skillEmoji}
                           size="lg"
                         />

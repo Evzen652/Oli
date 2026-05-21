@@ -3,7 +3,7 @@ import { IllustrationImg } from "@/components/IllustrationImg";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { getTopicsForGrade, getAllTopics } from "@/lib/contentRegistry";
 import { getCategoryInfo } from "@/lib/categoryInfo";
-import { getPrvoukaCategoryVisual, getPrvoukaTopicEmoji, getPrvoukaTopicVisual, getPrvoukaCategoryImageUrl, getPrvoukaTopicImageUrl } from "@/lib/prvoukaVisuals";
+import { getCategoryVisual, getTopicEmoji, getTopicVisual, getCategoryIllustrationUrl, getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -466,7 +466,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                     const count = new Set(
                       topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
                     ).size;
-                    const visual = getPrvoukaCategoryVisual(selectedSubject!, category);
+                    const visual = getCategoryVisual(selectedSubject!, category);
                     const isPrimary = idx === 0 && categories.length > 1;
                     return (
                       <button
@@ -480,7 +480,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                         {isPrimary ? (
                           <>
                             <div className="flex-1 flex items-center justify-center py-4">
-                              <PrvoukaImage imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
+                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
                             </div>
                             <div className="space-y-2">
                               <h3 className="text-2xl sm:text-3xl font-black capitalize text-foreground tracking-tight">
@@ -508,7 +508,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                               </p>
                             </div>
                             <div className="shrink-0">
-                              <PrvoukaImage imageUrl={getPrvoukaCategoryImageUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
+                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
                             </div>
                             <span
                               className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
@@ -535,7 +535,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                     const description = count > 1
                       ? (skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? "")
                       : (skillsInGroup[0]?.briefDescription ?? "");
-                    const topicEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topicName);
+                    const topicEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, topicName);
                     const isPrimary = idx === 0 && topicGroups.length > 1;
                     return (
                       <button
@@ -549,7 +549,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                         {isPrimary ? (
                           <>
                             <div className="flex-1 flex items-center justify-center py-4">
-                              <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)} fallbackEmoji={topicEmoji} size="hero" />
+                              <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })} fallbackEmoji={topicEmoji} size="hero" />
                             </div>
                             <div className="space-y-2">
                               <h3 className="text-2xl sm:text-3xl font-black capitalize text-foreground tracking-tight">
@@ -587,7 +587,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                               )}
                             </div>
                             <div className="shrink-0">
-                              <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topicName)} fallbackEmoji={topicEmoji} size="md" />
+                              <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })} fallbackEmoji={topicEmoji} size="md" />
                             </div>
                             <span
                               className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
@@ -607,7 +607,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
               {level === "subtopic" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {subtopics.map((topic) => {
-                    const subEmoji = getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
+                    const subEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
                     const isDbOnly = !hasCodeGenerator(topic);
                     return (
                       <button
@@ -618,7 +618,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                       >
                         <div className="flex items-start gap-3 h-full">
                           <div className="shrink-0">
-                            <PrvoukaImage imageUrl={getPrvoukaTopicImageUrl(selectedSubject!, topic.title)} fallbackEmoji={getPrvoukaTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="lg" />
+                            <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topic.title, category: selectedCategory! })} fallbackEmoji={getTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="lg" />
                           </div>
                           <div className="flex-1 min-w-0 space-y-1">
                             <h3 className="text-lg font-black text-foreground tracking-tight line-clamp-2">
