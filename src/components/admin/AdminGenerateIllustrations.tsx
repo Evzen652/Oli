@@ -460,10 +460,35 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
 
   // ── Actions ──────────────────────────────────────────────────────────────────
 
+  /**
+   * Pro grade-N klíče (KEY_TO_TOPIC_MAP) sestaví wrapped prompt z getAutoDesc().
+   * Edge function tyhle klíče nezná, takže musíme posílat customPrompt.
+   */
+  const buildAutoCustomPrompts = (keys: string[]): Record<string, string> => {
+    const out: Record<string, string> = {};
+    for (const key of keys) {
+      // Posílej custom prompt jen pro grade-N klíče (které jsou v KEY_TO_TOPIC_MAP)
+      // nebo pro subject-{slug} který je z aktivních topics
+      const meta = KEY_TO_TOPIC_MAP.get(key);
+      const isCodeKey = !!meta || codeTopicKeys.includes(key);
+      if (!isCodeKey) continue;
+      const desc = getAutoDesc(key, dbSubjects, dbCategoriesState, dbTopicsState);
+      if (desc.trim()) {
+        out[key] = `${PROMPT_PREFIX} ${desc.trim()}${PROMPT_SUFFIX}`;
+      }
+    }
+    return out;
+  };
+
   const handleRegenerate = async (key: string, customPrompt?: string) => {
     setRegenerating(key);
     const body: Record<string, unknown> = { keys: [key], force: true };
-    if (customPrompt) body.customPrompts = { [key]: customPrompt };
+    if (customPrompt) {
+      body.customPrompts = { [key]: customPrompt };
+    } else {
+      const auto = buildAutoCustomPrompts([key]);
+      if (auto[key]) body.customPrompts = auto;
+    }
     const { data, error } = await supabase.functions.invoke("generate-prvouka-images", { body });
     const perKeyError = (data?.errors as Record<string, string> | undefined)?.[key];
     if (error || perKeyError) {
@@ -493,8 +518,11 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     for (let i = 0; i < keys.length; i += CHUNK) {
       const chunk = keys.slice(i, i + CHUNK);
       try {
+        const autoPrompts = buildAutoCustomPrompts(chunk);
+        const body: Record<string, unknown> = { keys: chunk, force };
+        if (Object.keys(autoPrompts).length > 0) body.customPrompts = autoPrompts;
         const { data, error } = await supabase.functions.invoke("generate-prvouka-images", {
-          body: { keys: chunk, force },
+          body,
         });
         if (error) {
           chunk.forEach((key) => allFailed.push({ key, reason: error.message }));
