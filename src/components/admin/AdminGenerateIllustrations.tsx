@@ -157,8 +157,24 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "Modern educational 3D illustration depicting";
-const PROMPT_SUFFIX = ", clean 3D rendered style with soft volumetric shading and gentle pastel colors, focused on educational objects, tools and symbols related to the subject matter (NOT cute cartoon characters, NOT babies, NOT toddlers), professional and informative visual metaphor suitable for students aged 9 to 11 years old, MANDATORY: pure solid white background RGB(255,255,255) with absolutely no gradients, no shadows behind subject, no colored background, no tinted background — background must be pure white so transparency can be applied in post-processing, absolutely no text, no labels, no numerals, no logos, single centered subject, square format";
+const PROMPT_PREFIX = "ZERO TEXT, ZERO NUMBERS, ZERO LETTERS anywhere in the image. Modern educational 3D illustration depicting";
+const PROMPT_SUFFIX = `,
+
+clean 3D rendered style with soft volumetric shading and gentle pastel colors, focused on educational objects, tools and symbols related to the subject matter (NOT cute cartoon characters, NOT babies, NOT toddlers), professional and informative visual metaphor suitable for students aged 9 to 11 years old.
+
+CRITICAL — TEXT AND NUMBERS ARE STRICTLY FORBIDDEN:
+- ABSOLUTELY NO text of any kind: no words, no letters, no labels, no captions, no titles
+- ABSOLUTELY NO digits or numerals: no 0123456789, no Roman numerals, no math expressions, no equations
+- ABSOLUTELY NO writing on books, signs, papers, screens, blackboards, tablets, or any surface
+- ABSOLUTELY NO logos, watermarks, or branding
+- Instead of digits, use: abacus beads, colored cubes/blocks, geometric shapes, dots, tally marks
+- Instead of math expressions, use: arrows between objects, grouped items, visual fractions (pie slices, bars)
+- Instead of text labels, use: icons, colored borders, recognizable objects
+- If the concept normally involves text/numbers, render it as PURE ABSTRACT VISUALS with shapes and colors only
+
+Background: pure solid white RGB(255,255,255), absolutely no gradients, no shadows behind subject, no colored or tinted background — background must be pure white so transparency can be applied in post-processing.
+
+Composition: single centered subject, square format. NO TEXT. NO NUMBERS. NO LETTERS.`;
 
 const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
 const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly oboru, pastelové barvy, bílé pozadí, bez textu";
@@ -574,6 +590,25 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
    * Pro grade-N klíče (KEY_TO_TOPIC_MAP) sestaví wrapped prompt z getAutoDesc().
    * Edge function tyhle klíče nezná, takže musíme posílat customPrompt.
    */
+  /**
+   * Odstraní z popisu konstrukce, které lákají AI rendrovat literální text/čísla.
+   * AI vidí "1 000 000" a snaží se to namalovat jako digity — vyhneme se tomu.
+   */
+  const sanitizeForImagePrompt = (desc: string): string => {
+    return desc
+      // "0–1 000 000", "1 000 000", "100 000" — velká čísla → "very large numbers"
+      .replace(/\d[\d\s,. –\-]{2,}\d/g, "very large quantities")
+      // Samostatné víceciferné číslo → "numerical quantities"
+      .replace(/\b\d{2,}\b/g, "numerical quantities")
+      // Math symbols v textu (např. "<, >, =", "+, −, ×, ÷") → "comparison concepts"
+      .replace(/symboly?\s+[<>=+\-−×÷,\s"']+/gi, "comparison concepts")
+      .replace(/symbols?\s+[<>=+\-−×÷,\s"']+/gi, "comparison concepts")
+      // Konkrétní math operátory v citacích → odstranit
+      .replace(/[<>=]\s*[<>=]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+
   const buildAutoCustomPrompts = (keys: string[]): Record<string, string> => {
     const out: Record<string, string> = {};
     for (const key of keys) {
@@ -583,8 +618,9 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       const isCodeKey = !!meta || codeTopicKeys.includes(key);
       if (!isCodeKey) continue;
       const desc = getAutoDesc(key, dbSubjects, dbCategoriesState, dbTopicsState);
-      if (desc.trim()) {
-        out[key] = `${PROMPT_PREFIX} ${desc.trim()}${PROMPT_SUFFIX}`;
+      const cleaned = sanitizeForImagePrompt(desc);
+      if (cleaned) {
+        out[key] = `${PROMPT_PREFIX} ${cleaned}${PROMPT_SUFFIX}`;
       }
     }
     return out;

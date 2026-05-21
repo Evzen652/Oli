@@ -34,10 +34,25 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Flux zvládá vizuální scény — NO text, NO numbers in image, pure visual metaphors
-const SUFFIX = ", cute 3D Pixar-style cartoon illustration, soft volumetric shading, vibrant pastel colors, friendly rounded shapes, isolated on pure solid white background (#FFFFFF), absolutely no gradients on background, no blue tint, no colored tint, no shadows on background, background must be pure white RGB 255 255 255, suitable for 8-year-old children, single centered subject, square composition";
+// Flux má slabé renderování textu/čísel — striktní negativní instrukce a alternativy.
+const SUFFIX = `,
 
-function p(desc: string) { return `Cute 3D rendered cartoon illustration of ${desc}${SUFFIX}`; }
+cute 3D Pixar-style cartoon illustration, soft volumetric shading, vibrant pastel colors, friendly rounded shapes, suitable for 8-year-old children, single centered subject, square composition.
+
+CRITICAL — TEXT AND NUMBERS ARE STRICTLY FORBIDDEN:
+- ABSOLUTELY NO text of any kind: no words, no letters, no labels, no captions, no titles
+- ABSOLUTELY NO digits or numerals: no 0123456789, no Roman numerals, no math expressions, no equations
+- ABSOLUTELY NO writing on books, signs, papers, screens, blackboards, tablets, or any surface
+- ABSOLUTELY NO logos, watermarks, or branding
+- Instead of digits, use: abacus beads, colored cubes/blocks, geometric shapes, dots, tally marks
+- Instead of math expressions, use: arrows between objects, grouped items, visual fractions (pie slices, bars)
+- Instead of text labels, use: icons, colored borders, recognizable objects
+
+Background: pure solid white RGB(255,255,255), absolutely no gradients on background, no blue tint, no colored tint, no shadows on background.
+
+NO TEXT. NO NUMBERS. NO LETTERS.`;
+
+function p(desc: string) { return `ZERO TEXT, ZERO NUMBERS, ZERO LETTERS anywhere. Cute 3D rendered cartoon illustration of ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
 
@@ -151,7 +166,29 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
 
   const tryPollinations = async () => {
     const encoded = encodeURIComponent(prompt);
-    const negative = encodeURIComponent("text, letters, numbers, digits, words, typography, writing, labels, captions, watermark, logo, signature, background, texture, wood, table, surface, floor, wall, shadow, gradient, pattern, scenery, environment, dark background, colored background");
+    const negative = encodeURIComponent([
+      // Text variants
+      "text", "letters", "alphabet", "characters", "typography", "writing", "handwriting",
+      "words", "sentences", "paragraphs", "labels", "captions", "titles", "headings",
+      "calligraphy", "lettering", "fonts", "script",
+      // Number variants
+      "numbers", "digits", "numerals", "Arabic numerals", "Roman numerals",
+      "math expressions", "equations", "formulas", "calculations",
+      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+      // Where text shows up
+      "writing on books", "writing on blackboard", "writing on whiteboard",
+      "writing on paper", "writing on signs", "writing on screens",
+      "text on objects", "text on shirts", "text in air",
+      "math problems written", "homework written",
+      // Other artifacts
+      "watermark", "logo", "signature", "brand name",
+      // Background artifacts (we want pure white)
+      "background", "texture", "wood", "table", "surface", "floor", "wall",
+      "shadow", "gradient", "pattern", "scenery", "environment",
+      "dark background", "colored background", "tinted background",
+      // Style artifacts
+      "blurry", "low quality", "deformed", "ugly",
+    ].join(", "));
     const seed = Math.floor(Math.random() * 999999);
     const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&seed=${seed}`;
     const resp = await fetch(url);
