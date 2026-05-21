@@ -10,6 +10,7 @@ import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wa
 import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageVersions";
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
+import { getDisplayCategory, getDisplayTitle, getDisplayTopic } from "@/lib/displayNames";
 
 // ── Key generation from ALL_TOPICS ───────────────────────────────────────────
 
@@ -92,6 +93,60 @@ function buildSubjectToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<s
 const KEY_TO_TOPIC_MAP = buildKeyToTopicMap(getAllTopics());
 const CAT_TO_TOPICS_MAP = buildCategoryToTopicsMap(getAllTopics());
 const SUBJ_TO_TOPICS_MAP = buildSubjectToTopicsMap(getAllTopics());
+
+/**
+ * Vrátí lidsky čitelný název pro ilustrační klíč — dětský jako v UI.
+ * Pro `subject-X` vrací název předmětu, pro `cat-X-Y` dětský okruh, pro `topic-X-Y-Z` studentTitle.
+ * Slouží pro adminský panel ilustrací, aby uživatel věděl, co ke klíči patří.
+ */
+function getHumanLabel(key: string): string | null {
+  // Topic podtéma — máme přímý TopicMetadata
+  if (key.startsWith("topic-")) {
+    const meta = KEY_TO_TOPIC_MAP.get(key);
+    if (meta) return getDisplayTitle(meta);
+  }
+  // Kategorie — najdi první topic v této kategorii a vezmi z něj jméno + grade
+  if (key.startsWith("cat-")) {
+    const topics = CAT_TO_TOPICS_MAP.get(key);
+    if (topics && topics.length > 0) {
+      const t = topics[0];
+      return getDisplayCategory(t.category, t.gradeRange[0]);
+    }
+  }
+  // Předmět
+  if (key.startsWith("subject-")) {
+    const topics = SUBJ_TO_TOPICS_MAP.get(key);
+    if (topics && topics.length > 0) {
+      const subjectName = topics[0].subject;
+      return subjectName.charAt(0).toUpperCase() + subjectName.slice(1);
+    }
+  }
+  return null;
+}
+
+/**
+ * Vrátí čitelný "drobečkový" kontext pro klíč — předmět › okruh › téma (pro topic key).
+ * Pro cat key: předmět › okruh. Pro subject key: prázdný.
+ */
+function getHumanBreadcrumb(key: string): string | null {
+  if (key.startsWith("topic-")) {
+    const meta = KEY_TO_TOPIC_MAP.get(key);
+    if (meta) {
+      const subj = meta.subject.charAt(0).toUpperCase() + meta.subject.slice(1);
+      const cat = getDisplayCategory(meta.category, meta.gradeRange[0]);
+      const topic = getDisplayTopic(meta.topic, meta.gradeRange[0]);
+      return `${subj} › ${cat} › ${topic}`;
+    }
+  }
+  if (key.startsWith("cat-")) {
+    const topics = CAT_TO_TOPICS_MAP.get(key);
+    if (topics && topics.length > 0) {
+      const t = topics[0];
+      return t.subject.charAt(0).toUpperCase() + t.subject.slice(1);
+    }
+  }
+  return null;
+}
 
 // ── Static key list ───────────────────────────────────────────────────────────
 // Prázdné — všechny klíče se generují dynamicky z getAllTopics() (buildTopicIllustrationKeys)
@@ -1052,12 +1107,41 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   <img
                     src={versioned(url, key)}
                     alt={key}
-                    className="w-full aspect-square object-contain rounded-xl mix-blend-multiply"
+                    className="w-full aspect-square object-contain rounded-xl"
                     loading="lazy"
                     onError={() => setMissingKeys((prev) => new Set([...prev, key]))}
                   />
                 )}
-                <p className="mt-2 text-[10px] text-muted-foreground font-mono leading-tight line-clamp-2">{key}</p>
+                {/* Lidský název (dětský) + breadcrumb + slug pro tech ref */}
+                {(() => {
+                  const label = getHumanLabel(key);
+                  const breadcrumb = getHumanBreadcrumb(key);
+                  const typeLabel = key.startsWith("subject-") ? "Předmět" : key.startsWith("cat-") ? "Okruh" : key.startsWith("topic-") ? "Téma" : "";
+                  return (
+                    <div className="mt-2 space-y-0.5">
+                      {label ? (
+                        <>
+                          <p className="text-xs font-semibold text-foreground leading-tight line-clamp-2" title={label}>
+                            {label}
+                          </p>
+                          {breadcrumb && (
+                            <p className="text-[10px] text-muted-foreground leading-tight line-clamp-1" title={breadcrumb}>
+                              {typeLabel && <span className="font-medium">{typeLabel}: </span>}{breadcrumb}
+                            </p>
+                          )}
+                          {!breadcrumb && typeLabel && (
+                            <p className="text-[10px] text-muted-foreground leading-tight">{typeLabel}</p>
+                          )}
+                        </>
+                      ) : (
+                        <p className="text-xs font-semibold text-foreground leading-tight line-clamp-2 font-mono" title={key}>{key}</p>
+                      )}
+                      <p className="text-[9px] text-muted-foreground/60 font-mono leading-tight line-clamp-1 pt-0.5" title={key}>
+                        {key}
+                      </p>
+                    </div>
+                  );
+                })()}
                 <div className="mt-2 flex gap-1">
                   <button
                     type="button"
