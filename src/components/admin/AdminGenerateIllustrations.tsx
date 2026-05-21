@@ -39,6 +39,26 @@ function buildTopicIllustrationKeys(topics: ReturnType<typeof getAllTopics>): st
   return [...catKeys, ...topicKeys];
 }
 
+/**
+ * Sestaví mapu: ilustrační klíč → TopicMetadata.
+ * Umožňuje getAutoDesc() vytáhnout konkrétní popis pro grade-N topics.
+ */
+function buildKeyToTopicMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>[number]> {
+  const map = new Map<string, ReturnType<typeof getAllTopics>[number]>();
+  for (const t of topics) {
+    const subjSlug = toSlug(t.subject);
+    const catSlug = toSlug(t.category);
+    const topicSlug = toSlug(t.topic);
+    map.set(`topic-${subjSlug}-${catSlug}-${topicSlug}`, t);
+    // kategorie → použij první topic v kategorii (stačí pro popis)
+    const catKey = `cat-${subjSlug}-${catSlug}`;
+    if (!map.has(catKey)) map.set(catKey, t);
+  }
+  return map;
+}
+
+const KEY_TO_TOPIC_MAP = buildKeyToTopicMap(getAllTopics());
+
 // ── Static key list ───────────────────────────────────────────────────────────
 
 const ALL_KEYS = [
@@ -165,7 +185,7 @@ function getDefaultDesc(key: string): string {
   return DEFAULT_DESCS[key] ?? "";
 }
 
-/** Vrátí popis pro jakýkoli klíč — pro dynamické položky z DB sestaví výchozí. */
+/** Vrátí popis pro jakýkoli klíč — pro dynamické položky z DB nebo TopicMetadata sestaví výchozí. */
 function getAutoDesc(
   key: string,
   dbSubjects: { name: string; slug: string }[],
@@ -184,22 +204,31 @@ function getAutoDesc(
   }
   if (key.startsWith("cat-")) {
     const parts = key.slice("cat-".length).split("-");
-    // poslední část je cat slug pokud je víc segmentů (cat-subject_slug-category_slug)
     const catSlug = parts.length > 1 ? parts.slice(1).join("-") : parts[0];
     const cat = dbCategories.find((c) => c.slug === catSlug);
     if (cat) {
       const base = cat.description || `oblast "${cat.name}"`;
       return `${base} — vizuálně bohatá ilustrace symbolů a prvků z této oblasti`;
     }
+    // Fallback: hledej v KEY_TO_TOPIC_MAP
+    const meta = KEY_TO_TOPIC_MAP.get(key);
+    if (meta) {
+      return `oblast "${meta.category}" v předmětu ${meta.subject} — barevné symboly a prvky typické pro tuto oblast výuky`;
+    }
   }
   if (key.startsWith("topic-")) {
     const parts = key.slice("topic-".length).split("-");
-    // poslední část je topic slug
     const topSlug = parts.length > 2 ? parts.slice(2).join("-") : parts[parts.length - 1];
     const topic = dbTopics.find((t) => t.slug === topSlug);
     if (topic) {
       const base = topic.description || `téma "${topic.name}"`;
       return `${base} — konkrétní vizuální scéna z tohoto tématu`;
+    }
+    // Fallback: hledej v KEY_TO_TOPIC_MAP — použij title + briefDescription
+    const meta = KEY_TO_TOPIC_MAP.get(key);
+    if (meta) {
+      const brief = meta.briefDescription ? ` ${meta.briefDescription}` : "";
+      return `${meta.title}.${brief} Konkrétní scéna zachycující tuto látku — dítě nebo předměty znázorňující postup, čísla, tvary nebo pojmy z tohoto tématu`;
     }
   }
   return "";
