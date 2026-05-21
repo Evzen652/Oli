@@ -59,7 +59,39 @@ function buildKeyToTopicMap(topics: ReturnType<typeof getAllTopics>): Map<string
   return map;
 }
 
+/**
+ * Sestaví mapu cat-key → seznam všech topics pod touto kategorií.
+ * Umožňuje agregovat briefDescription všech podtémat pro bohatší prompt.
+ */
+function buildCategoryToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>> {
+  const map = new Map<string, ReturnType<typeof getAllTopics>>();
+  for (const t of topics) {
+    const subjSlug = toSlug(t.subject);
+    const catSlug = toSlug(t.category);
+    const catKey = `cat-${subjSlug}-${catSlug}`;
+    if (!map.has(catKey)) map.set(catKey, []);
+    map.get(catKey)!.push(t);
+  }
+  return map;
+}
+
+/**
+ * Sestaví mapu subject-key → seznam všech topics v předmětu.
+ */
+function buildSubjectToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>> {
+  const map = new Map<string, ReturnType<typeof getAllTopics>>();
+  for (const t of topics) {
+    const subjSlug = toSlug(t.subject);
+    const subjKey = `subject-${subjSlug}`;
+    if (!map.has(subjKey)) map.set(subjKey, []);
+    map.get(subjKey)!.push(t);
+  }
+  return map;
+}
+
 const KEY_TO_TOPIC_MAP = buildKeyToTopicMap(getAllTopics());
+const CAT_TO_TOPICS_MAP = buildCategoryToTopicsMap(getAllTopics());
+const SUBJ_TO_TOPICS_MAP = buildSubjectToTopicsMap(getAllTopics());
 
 // ── Static key list ───────────────────────────────────────────────────────────
 // Prázdné — všechny klíče se generují dynamicky z getAllTopics() (buildTopicIllustrationKeys)
@@ -70,11 +102,11 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "Cute 3D rendered cartoon illustration of";
-const PROMPT_SUFFIX = ", Pixar-style 3D rendering with soft volumetric shading, vibrant pastel colors, friendly rounded shapes, kid-friendly characters, white isolated background, no text, no logos, suitable for 8-year-old children, single centered subject, square composition";
+const PROMPT_PREFIX = "Modern educational 3D illustration depicting";
+const PROMPT_SUFFIX = ", clean 3D rendered style with soft volumetric shading and gentle pastel colors, focused on educational objects, tools and symbols related to the subject matter (NOT cute cartoon characters, NOT babies, NOT toddlers), professional and informative visual metaphor suitable for students aged 9 to 11 years old, isolated on pure solid white background (#FFFFFF), absolutely no text, no labels, no numerals, no logos, single clear composition, square format";
 
-const DISPLAY_PREFIX = "Roztomilá 3D cartoon ilustrace —";
-const DISPLAY_SUFFIX = "— Pixar styl, pastelové barvy, zaoblené tvary, bílé pozadí, bez textu";
+const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
+const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly oboru, pastelové barvy, bílé pozadí, bez textu";
 
 const DEFAULT_DESCS: Partial<Record<string, string>> = {
   // Předměty
@@ -170,39 +202,52 @@ function getAutoDesc(
   if (known) return known;
 
   if (key.startsWith("subject-")) {
+    // Code-based (grade-N) — agreguj přes všechny topics v předmětu
+    const subjTopics = SUBJ_TO_TOPICS_MAP.get(key);
+    if (subjTopics && subjTopics.length > 0) {
+      const subjectName = subjTopics[0].subject;
+      const categories = [...new Set(subjTopics.map((t) => t.category))].slice(0, 6).join(", ");
+      return `the school subject "${subjectName}" — a composition of iconic objects representing its main areas: ${categories}; arranged as a visual collage of subject-specific tools, symbols and instruments (no characters, no people)`;
+    }
+    // DB fallback
     const slug = key.slice("subject-".length);
     const subject = dbSubjects.find((s) => s.slug === slug);
     if (subject) {
-      return `učebnice předmětu "${subject.name}" s výukovými ikonami, barevnými symboly a vzdělávacím vybavením kolem ní`;
+      return `the school subject "${subject.name}" — a composition of iconic objects, tools and symbols representing this subject area (no characters)`;
     }
   }
   if (key.startsWith("cat-")) {
+    // Code-based (grade-N) — agreguj všechny topics v této kategorii
+    const catTopics = CAT_TO_TOPICS_MAP.get(key);
+    if (catTopics && catTopics.length > 0) {
+      const catName = catTopics[0].category;
+      const subjectName = catTopics[0].subject;
+      const titles = catTopics.map((t) => t.title).slice(0, 6).join("; ");
+      return `the curriculum area "${catName}" within ${subjectName} — visual elements representing the following topics: ${titles}. Show concrete objects, symbols and concepts (NO cartoon characters, NO people), arranged as a clean educational composition that explains what this area covers`;
+    }
+    // DB fallback
     const parts = key.slice("cat-".length).split("-");
     const catSlug = parts.length > 1 ? parts.slice(1).join("-") : parts[0];
     const cat = dbCategories.find((c) => c.slug === catSlug);
     if (cat) {
-      const base = cat.description || `oblast "${cat.name}"`;
-      return `${base} — vizuálně bohatá ilustrace symbolů a prvků z této oblasti`;
-    }
-    // Fallback: hledej v KEY_TO_TOPIC_MAP
-    const meta = KEY_TO_TOPIC_MAP.get(key);
-    if (meta) {
-      return `oblast "${meta.category}" v předmětu ${meta.subject} — barevné symboly a prvky typické pro tuto oblast výuky`;
+      const base = cat.description || `the area "${cat.name}"`;
+      return `${base} — visual composition of objects, symbols and tools from this area (no characters)`;
     }
   }
   if (key.startsWith("topic-")) {
+    // Code-based (grade-N) — použij briefDescription
+    const meta = KEY_TO_TOPIC_MAP.get(key);
+    if (meta) {
+      const brief = meta.briefDescription || meta.title;
+      return `"${meta.title}" — ${brief} Show this specific learning content visually: concrete objects, symbols, diagrams, mathematical or subject-specific elements that directly illustrate the concept (NO cartoon characters, NO children, NO people — focus on the learning material itself)`;
+    }
+    // DB fallback
     const parts = key.slice("topic-".length).split("-");
     const topSlug = parts.length > 2 ? parts.slice(2).join("-") : parts[parts.length - 1];
     const topic = dbTopics.find((t) => t.slug === topSlug);
     if (topic) {
-      const base = topic.description || `téma "${topic.name}"`;
-      return `${base} — konkrétní vizuální scéna z tohoto tématu`;
-    }
-    // Fallback: hledej v KEY_TO_TOPIC_MAP — použij title + briefDescription
-    const meta = KEY_TO_TOPIC_MAP.get(key);
-    if (meta) {
-      const brief = meta.briefDescription ? ` ${meta.briefDescription}` : "";
-      return `${meta.title}.${brief} Konkrétní scéna zachycující tuto látku — dítě nebo předměty znázorňující postup, čísla, tvary nebo pojmy z tohoto tématu`;
+      const base = topic.description || `the topic "${topic.name}"`;
+      return `${base} — concrete visual scene illustrating this learning content (no characters)`;
     }
   }
   return "";
