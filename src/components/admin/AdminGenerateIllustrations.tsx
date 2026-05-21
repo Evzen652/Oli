@@ -467,10 +467,20 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       if (!seenKeys.has(k)) { seenKeys.add(k); allKeysNow.push(k); }
     }
 
-    // Zkontroluj skutečnou existenci obrázků přes storage list
-    const { data: storageFiles } = await supabase.storage.from("prvouka-images").list("", { limit: 1000 });
-    const existingFiles = new Set((storageFiles ?? []).map((f) => f.name.replace(/\.png$/, "")));
-    const missing = new Set(allKeysNow.filter((k) => !existingFiles.has(k)));
+    // Zkontroluj skutečnou existenci obrázků — HEAD na public URL každého klíče paralelně
+    // (storage.list() vrací prázdno pro klienty s anon/publishable key)
+    const checkResults = await Promise.all(
+      allKeysNow.map(async (key) => {
+        const url = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl;
+        try {
+          const res = await fetch(url, { method: "HEAD", cache: "no-store" });
+          return { key, exists: res.ok };
+        } catch {
+          return { key, exists: false };
+        }
+      })
+    );
+    const missing = new Set(checkResults.filter((r) => !r.exists).map((r) => r.key));
     setMissingKeys(missing);
     setAllImages(
       allKeysNow.map((key) => ({
