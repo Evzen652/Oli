@@ -7,6 +7,8 @@ import { ChevronRight, ChevronDown, Search, RotateCcw } from "lucide-react";
 import type { TopicMetadata } from "@/lib/types";
 import type { DbSubject } from "@/hooks/useAdminCurriculum";
 import { isSubjectVisibleForGrade } from "@/lib/curriculumSubjectFilter";
+import { getDisplayCategory, getDisplayTopic, getDisplayTitle } from "@/lib/displayNames";
+import type { Grade } from "@/lib/types";
 
 // Barva pro vizuální dot per předmět — Notion-vibe minimal indikátor
 const SUBJECT_DOT: Record<string, string> = {
@@ -356,7 +358,7 @@ export function AdminCurriculumSidebar({
                             ) : (
                               <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
                             )}
-                            <span className="break-words text-left flex-1 leading-tight">{fmtName(category)}</span>
+                            <span className="break-words text-left flex-1 leading-tight">{getDisplayCategory(category, (gradeFilter ?? null) as Grade | null)}</span>
                             <span className="text-[11px] font-normal text-muted-foreground tabular-nums">
                               {catSkillCount}
                             </span>
@@ -392,7 +394,7 @@ export function AdminCurriculumSidebar({
                                         <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
                                       )}
                                       <span className="break-words flex-1 text-left leading-tight">
-                                        {fmtName(topic)}
+                                        {getDisplayTopic(topic, (gradeFilter ?? null) as Grade | null)}
                                       </span>
                                       <span className="text-[11px] text-muted-foreground tabular-nums">
                                         {skills.length}
@@ -419,7 +421,7 @@ export function AdminCurriculumSidebar({
                                                 isSkillActive ? "bg-primary" : "bg-muted-foreground/40"
                                               }`} aria-hidden />
                                               <span className="break-words text-left flex-1 leading-tight">
-                                                {skill.title}
+                                                {getDisplayTitle(skill)}
                                               </span>
                                             </button>
                                           );

@@ -83,11 +83,12 @@ export const TEMPLATE_TOPIC: TopicMetadata[] = [
     //    getNodesByGradeSubject(4, 'matematika').find(n => n.labels.subtopic === 'TODO')
     rvpNodeId: "g4-matematika-TODO-area-TODO-topic-TODO-subtopic",
 
-    title: "TODO: lidsky čitelný název cvičení",
+    title: "TODO: oficiální RVP název podtématu (např. 'Aritmetický průměr')",
+    studentTitle: "TODO: 1-3 slova dětsky (např. 'Průměr'). Optional — fallback je 'title'. Přidej i do displayNames.ts pokud potřebuješ.",
     subject: "matematika", // "matematika" | "čeština" | "vlastivěda" | "přírodověda" | "informatika"
-    category: "TODO: oblast (např. 'Zlomky')",
-    topic: "TODO: téma uvnitř category (např. 'Úvod do zlomků')",
-    briefDescription: "TODO: 1-2 věty co se naučíš (2. osoba, mluv přímo k žákovi — např. 'Naučíš se...', 'Pochopíš...')",
+    category: "TODO: oficiální RVP okruh (např. 'Závislosti, vztahy a práce s daty'). Dětský název přidej do `displayNames.ts`.",
+    topic: "TODO: oficiální RVP téma (např. 'Práce s daty'). Dětský název přidej do `displayNames.ts`.",
+    briefDescription: "TODO: 1 věta, max 12 slov, 2. osoba ('Naučíš se...', 'Spočítáš...'). Bez odborného žargonu — viz README.",
     keywords: ["TODO", "klíčová", "slova", "pro", "matching"],
     goals: [
       "TODO: cíl 1",

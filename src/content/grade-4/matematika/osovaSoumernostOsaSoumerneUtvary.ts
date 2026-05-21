@@ -100,10 +100,11 @@ export const OSOVA_SOUMERNOST: TopicMetadata[] = [
     id: "g4-mat-osova-soumernost-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-osa-soumerne-utvary",
     title: "Osová souměrnost",
+    studentTitle: "Osová souměrnost",
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Souměrnost",
-    briefDescription: "Poznáš osově souměrné útvary, najdeš osu souměrnosti a určíš její počet u základních geometrických tvarů.",
+    briefDescription: "Poznáš souměrné tvary a najdeš jejich osu.",
     keywords: [
       "osová souměrnost", "osa souměrnosti", "souměrný útvar",
       "zrcadlení", "překládání", "symetrie",

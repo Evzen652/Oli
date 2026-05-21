@@ -116,10 +116,11 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
     id: "g4-mat-magicke-ctverce-ciselne-rady-4",
     rvpNodeId: "g4-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-magicke-ctverce-ciselne-rady",
     title: "Magické čtverce a číselné řady",
+    studentTitle: "Magické čtverce",
     subject: "matematika",
     category: "Nestandardní aplikační úlohy a problémy",
     topic: "Logické úlohy",
-    briefDescription: "Najdeš chybějící číslo v magickém čtverci 3×3 a odhalíš vzor v číselné řadě — procvičíš si logické myšlení a práci se vzory.",
+    briefDescription: "Najdeš chybějící čísla a odhalíš tajemství číselné řady.",
     keywords: [
       "magický čtverec", "číselná řada", "vzor", "logická úloha",
       "aritmetická řada", "posloupnost",

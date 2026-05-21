@@ -98,10 +98,11 @@ export const TROJUHELNIK_DRUHY: TopicMetadata[] = [
     id: "g4-mat-trojuhelnik-druhy-stran-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-trojuhelnik-druhy-podle-stran",
     title: "Trojúhelník — druhy podle stran",
+    studentTitle: "Druhy trojúhelníků",
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Rovinné útvary",
-    briefDescription: "Rozlišíš rovnostranný, rovnoramenný a různostranný trojúhelník — poznáš jeho druh podle délek stran a spočítáš obvod.",
+    briefDescription: "Rozlišíš trojúhelníky podle délek jejich stran.",
     keywords: [
       "trojúhelník", "rovnostranný", "rovnoramenný", "různostranný",
       "strany trojúhelníku", "obvod trojúhelníku",

@@ -86,10 +86,11 @@ export const SCITANI_ODCITANI_ZLOMKU: TopicMetadata[] = [
     id: "g4-mat-zlomky-scitani-odcitani-stejny-jmenovatel-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-zlomky-scitani-a-odcitani-zlomku-se-stejnym-jmenovatelem",
     title: "Sčítání a odčítání zlomků se stejným jmenovatelem",
+    studentTitle: "Zlomky: + a −",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Zlomky",
-    briefDescription: "Naučíš se sčítat a odčítat zlomky se stejným jmenovatelem — jmenovatel necháš stejný, operaci uděláš jen s čitateli a výsledek případně zjednodušíš.",
+    briefDescription: "Sečteš a odečteš zlomky se stejným jmenovatelem.",
     keywords: [
       "zlomky", "sčítání zlomků", "odčítání zlomků",
       "stejný jmenovatel", "čitatel", "jmenovatel", "zjednodušení",

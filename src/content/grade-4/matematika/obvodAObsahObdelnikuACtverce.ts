@@ -98,10 +98,11 @@ export const OBVOD_OBSAH: TopicMetadata[] = [
     id: "g4-mat-obvod-obsah-obdelnik-ctverec-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-obvod-a-obsah-obvod-a-obsah-obdelniku-a-ctverce",
     title: "Obvod a obsah obdélníku a čtverce",
+    studentTitle: "Obvod a obsah",
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Obvod a obsah",
-    briefDescription: "Spočítáš obvod a obsah čtverce i obdélníku ze zadaných rozměrů a naopak najdeš chybějící rozměr ze zadaného obvodu.",
+    briefDescription: "Spočítáš obvod a obsah čtverce i obdélníku.",
     keywords: [
       "obvod", "obsah", "obdélník", "čtverec", "strana",
       "cm", "cm²", "vzorec obvodu", "vzorec obsahu",

@@ -75,10 +75,11 @@ export const ARITMETICKY_PRUMER: TopicMetadata[] = [
     id: "g4-mat-aritmeticky-prumer-4",
     rvpNodeId: "g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-uvod",
     title: "Aritmetický průměr",
+    studentTitle: "Průměr",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",
-    briefDescription: "Naučíš se počítat aritmetický průměr — sečteš hodnoty a vydělíš jejich počtem; zvládneš i zpětnou úlohu (najít chybějící člen).",
+    briefDescription: "Sečteš čísla, vydělíš jejich počtem a máš průměr.",
     keywords: [
       "průměr", "aritmetický průměr", "součet", "počet hodnot",
       "statistika", "data", "průměrná hodnota",

@@ -39,3 +39,4 @@ supabase/.temp/
 !.claude/settings.json
 !.claude/agents/
 !.claude/commands/
+OLI-pitch-deck.pptx

@@ -90,10 +90,11 @@ export const ZAOKROUHLOVANI: TopicMetadata[] = [
     id: "g4-mat-zaokrouhlovani-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-zaokrouhlovani-na-desitky-stovky-tisice-desetitisice",
     title: "Zaokrouhlování čísel",
+    studentTitle: "Zaokrouhlování",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–1 000 000",
-    briefDescription: "Naučíš se zaokrouhlovat čísla na desítky, stovky, tisíce a desetitisíce — použiješ pravidlo: ≥ 5 nahoru, < 5 dolů.",
+    briefDescription: "Naučíš se zaokrouhlovat čísla nahoru i dolů.",
     keywords: [
       "zaokrouhlování", "zaokrouhlit na desítky", "zaokrouhlit na stovky",
       "zaokrouhlit na tisíce", "odhad", "přibližná hodnota",

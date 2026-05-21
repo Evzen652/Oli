@@ -119,10 +119,11 @@ export const CTENI_ZAPIS_POROVNAVANI: TopicMetadata[] = [
     id: "g4-mat-cisla-do-milionu-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-cteni-zapis-a-porovnavani-cisel-do-milionu",
     title: "Čtení, zápis a porovnávání čísel do milionu",
+    studentTitle: "Velká čísla",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–1 000 000",
-    briefDescription: "Naučíš se číst, zapisovat a porovnávat čísla do 1 000 000 — určíš hodnotu číslice v daném řádu a správně použiješ symboly <, >, =.",
+    briefDescription: "Naučíš se číst a porovnávat čísla až do milionu.",
     keywords: [
       "čísla do milionu", "porovnávání čísel", "číselný zápis",
       "řády čísel", "stotisíce", "desetitisíce", "tisíce",

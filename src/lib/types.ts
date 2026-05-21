@@ -70,6 +70,12 @@ export type ContentType = "algorithmic" | "factual" | "conceptual" | "mixed";
 export interface TopicMetadata {
   id: string;
   title: string;
+  /**
+   * Dětské jméno podtématu pro UI (1-3 slova).
+   * Pokud chybí, použije se `title` (RVP). Per-grade tone-of-voice
+   * viz `src/content/grade-N/README.md`.
+   */
+  studentTitle?: string;
   subject: string; // e.g. "matematika", "čeština"
   category: string; // grouping within subject, e.g. "Zlomky"
   topic: string; // grouping within category, e.g. "Porovnávání zlomků"

@@ -14,6 +14,7 @@ import {
   getCategoryIllustrationUrl,
   getTopicIllustrationUrl,
 } from "@/lib/prvoukaVisuals";
+import { getDisplayCategory, getDisplayTopic, getDisplayTitle } from "@/lib/displayNames";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -262,10 +263,10 @@ export default function AdminDashboard() {
       : level === "category"
       ? capitalize(selectedSubject!)
       : level === "topic"
-      ? capitalize(selectedCategory!)
+      ? getDisplayCategory(selectedCategory!, gradeFilter)
       : level === "subtopic"
-      ? capitalize(selectedTopic!)
-      : selectedSkill?.title || "";
+      ? getDisplayTopic(selectedTopic!, gradeFilter)
+      : (selectedSkill ? getDisplayTitle(selectedSkill) : "");
 
   const subtitle =
     level === "subject"
@@ -691,9 +692,9 @@ export default function AdminDashboard() {
                         />
                       </div>
 
-                      {/* Title */}
+                      {/* Title — dětský název okruhu (RVP skryto) */}
                       <h3 className="text-2xl font-bold text-foreground">
-                        {capitalize(category)}
+                        {getDisplayCategory(category, gradeFilter)}
                       </h3>
 
                       {/* Statistics chips */}
@@ -825,9 +826,9 @@ export default function AdminDashboard() {
                         />
                       </div>
 
-                      {/* Title */}
+                      {/* Title — dětský název tématu (RVP skryto) */}
                       <h3 className="text-2xl font-bold text-foreground">
-                        {capitalize(topicName)}
+                        {getDisplayTopic(topicName, gradeFilter)}
                       </h3>
 
                       {/* Statistics chips */}
@@ -944,9 +945,9 @@ export default function AdminDashboard() {
                         />
                       </div>
 
-                      {/* Title */}
+                      {/* Title — dětský název podtématu (RVP `title` skryto) */}
                       <h3 className="text-xl font-bold text-foreground line-clamp-2">
-                        {skill.title}
+                        {getDisplayTitle(skill)}
                       </h3>
 
                       {/* Statistics chips */}
@@ -1159,7 +1160,7 @@ function ContextBreadcrumb({
                 topic || skill ? "text-muted-foreground" : "text-foreground font-medium"
               }`}
             >
-              {cap(category)}
+              {getDisplayCategory(category, grade)}
             </button>
           </>
         )}
@@ -1172,14 +1173,14 @@ function ContextBreadcrumb({
                 skill ? "text-muted-foreground" : "text-foreground font-medium"
               }`}
             >
-              {cap(topic)}
+              {getDisplayTopic(topic, grade)}
             </button>
           </>
         )}
         {skill && (
           <>
             <span className="text-muted-foreground/40">›</span>
-            <span className="text-foreground font-medium truncate">{skill.title}</span>
+            <span className="text-foreground font-medium truncate">{getDisplayTitle(skill)}</span>
           </>
         )}
         {grade && (

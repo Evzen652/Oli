@@ -80,10 +80,11 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
     id: "g4-mat-pisemne-nasobeni-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-nasobeni-jedno-a-dvoucifernym-cinitelem",
     title: "Písemné násobení jedno- a dvouciferným činitelem",
+    studentTitle: "Násobení pod sebou",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Písemné početní operace",
-    briefDescription: "Naučíš se násobit víceciferné číslo jednociferným nebo dvouciferným činitelem — správně zvládneš přenos i mezisoučty.",
+    briefDescription: "Naučíš se násobit větší čísla pod sebou.",
     keywords: [
       "násobení", "písemné násobení", "činitel", "součin",
       "přenos", "mezisoučet", "dvouciferný", "jednociferný",

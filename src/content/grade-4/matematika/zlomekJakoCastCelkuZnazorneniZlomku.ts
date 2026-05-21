@@ -103,10 +103,11 @@ export const ZLOMEK_CAST_CELKU: TopicMetadata[] = [
     id: "g4-mat-zlomek-cast-celku-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-zlomky-zlomek-jako-cast-celku-znazorneni-zlomku",
     title: "Zlomek jako část celku",
+    studentTitle: "Co je zlomek",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Zlomky",
-    briefDescription: "Pochopíš zlomek jako část celku — naučíš se zapsat zlomek z rozdělení celku na díly a porovnat zlomky se stejným jmenovatelem.",
+    briefDescription: "Pochopíš, co je zlomek — část celku.",
     keywords: [
       "zlomek", "čitatel", "jmenovatel", "část celku",
       "znázornění zlomku", "porovnání zlomků",

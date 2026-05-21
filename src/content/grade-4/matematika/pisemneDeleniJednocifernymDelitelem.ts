@@ -80,10 +80,11 @@ export const PISEMNE_DELENI: TopicMetadata[] = [
     id: "g4-mat-pisemne-deleni-jednociferne-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-jednocifernym-delitelem",
     title: "Písemné dělení jednociferným dělitelem",
+    studentTitle: "Dělení pod sebou",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Písemné početní operace",
-    briefDescription: "Naučíš se písemně dělit víceciferné číslo jednociferným dělitelem — budeš postupovat zleva a správně zapíšeš podíl i zbytek.",
+    briefDescription: "Naučíš se dělit větší čísla pod sebou.",
     keywords: [
       "dělení", "písemné dělení", "dělitel", "dělenec", "podíl",
       "zbytek", "jednociferný dělitel",

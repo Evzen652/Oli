@@ -144,9 +144,59 @@ Most mezi tvým interním `id` a RVP datasetem je pole `rvpNodeId` v `TopicMetad
 5. Commit s prefixem `[grade-4]`: `git commit -m "[grade-4] desetinná čísla — sčítání"`
 6. Před koncem session: `git push origin content/grade-4`
 
-## Pravidla pro texty (briefDescription, popisky)
+## Pravidla pro texty (Tone of voice — grade-4, 9-10 let)
 
-**briefDescription a všechny student-facing texty musí být ve 2. osobě jednotného čísla** — mluv přímo k žákovi (9–11 let): 'Naučíš se...', 'Spočítáš...', 'Pochopíš...', 'Zvládneš...'. NIKDY 'Žák...' (3. osoba je RVP formulace pro učitele, ne pro děti).
+Dvouúrovňový systém:
+- **RVP fields** (`title`, `category`, `topic`) — oficiální RVP názvy. NIKDY se neobjeví v UI, jen v auditu/reportech.
+- **Dětská vrstva** — `studentTitle` + `displayNames.ts` + `briefDescription`. To je co dítě skutečně vidí.
+
+### `briefDescription`
+
+- **Max 12 slov, 1 věta.** Hard limit, lint test ho kontroluje.
+- **2. osoba jednotného čísla** — mluv přímo k žákovi: "Naučíš se...", "Spočítáš...", "Pochopíš...", "Zvládneš...", "Najdeš...", "Poznáš...", "Rozlišíš...".
+- **NIKDY "Žák..."** (RVP formulace pro učitele, ne pro děti).
+- **Žádný odborný žargon.** Lint test odmítá: aritmetický, víceciferný, jednociferný, interpretuje, aplikuje, přirozená čísla, ...
+- **Konkrétní obraty** místo abstraktních. ❌ "interpretuje data" → ✅ "přečteš data z tabulky".
+
+### `studentTitle` (v `TopicMetadata`)
+
+- 1-3 slova, max 4. Dětský název pro UI.
+- Vynech "Písemné", "Úvod do", "Druhy podle..." — zkracuj. Příklady:
+  - "Aritmetický průměr" → "Průměr"
+  - "Písemné dělení jednociferným dělitelem" → "Dělení pod sebou"
+  - "Zlomek jako část celku — znázornění" → "Co je zlomek"
+- Pokud chybí, UI použije `title` (RVP) jako fallback.
+
+### `displayNames.ts` (per ročník)
+
+- Mapuje RVP názvy okruhů (`category`) a témat (`topic`) na dětské varianty.
+- Co-located s obsahem (`src/content/grade-4/displayNames.ts`).
+- 2-4 slova, konkrétní. "Závislosti, vztahy a práce s daty" → "Tabulky a vzorce".
+
+### Slovník 4. ročníku (9-10 let)
+
+| ❌ Nepoužívej (RVP, pedagogický) | ✅ Použij (dětské) |
+|---|---|
+| aritmetický průměr | průměr |
+| víceciferné číslo | větší číslo |
+| jednociferným dělitelem | malým číslem / pod sebou |
+| interpretuje data | přečteš / pochopíš |
+| zaznamenává | zapíšeš |
+| aplikuje pravidlo | použiješ pravidlo |
+| přirozená čísla | čísla |
+| desetitisíce | velká čísla |
+
+V 7. - 9. ročníku se slovník rozšíří — žák už zná "víceciferné", "interpretovat" atd. Per-grade slovník je v každém `grade-N/README.md`.
+
+### Lint test
+
+`src/content/grade-4/__tests__/language.test.ts` automaticky ověřuje:
+- max délku briefDescription
+- že nezačíná "Žák"
+- že neobsahuje zakázané termíny
+- max délku studentTitle
+
+CI nepustí PR, který tato pravidla porušuje.
 
 ## Pedagogická vodítka pro 4. ročník
 

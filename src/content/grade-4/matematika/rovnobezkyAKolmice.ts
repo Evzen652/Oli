@@ -110,10 +110,11 @@ export const ROVNOBEZKY_KOLMICE: TopicMetadata[] = [
     id: "g4-mat-rovnobezky-kolmice-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-rovnobezky-a-kolmice",
     title: "Rovnoběžky a kolmice",
+    studentTitle: "Rovnoběžky a kolmice",
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Rovinné útvary",
-    briefDescription: "Rozlišíš rovnoběžky (přímky, které se nikdy neprotnou) a kolmice (přímky svírající pravý úhel 90°) — poznáš je v příkladech ze svého okolí.",
+    briefDescription: "Poznáš rovnoběžky a kolmice kolem sebe.",
     keywords: [
       "rovnoběžky", "kolmice", "pravý úhel", "přímky", "90°",
       "geometrie", "průsečík",

@@ -90,10 +90,11 @@ export const TABULKY_DIAGRAMY: TopicMetadata[] = [
     id: "g4-mat-tabulky-diagramy-4",
     rvpNodeId: "g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-diagramy-sloupcovy-kruhovy",
     title: "Tabulky a diagramy",
+    studentTitle: "Tabulky a grafy",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",
-    briefDescription: "Naučíš se číst a chápat data v tabulce — určíš celkový součet, největší a nejmenší hodnotu, porovnáš položky; pochopíš sloupcový i kruhový diagram.",
+    briefDescription: "Přečteš data z tabulky a poznáš různé grafy.",
     keywords: [
       "tabulka", "sloupcový diagram", "kruhový diagram",
       "čtení dat", "interpretace grafu", "největší hodnota", "celkový součet",

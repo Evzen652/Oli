@@ -89,10 +89,11 @@ export const PISEMNE_SCITANI_ODCITANI: TopicMetadata[] = [
     id: "g4-mat-pisemne-scitani-odcitani-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-scitani-a-odcitani-vicecifernych-cisel",
     title: "Písemné sčítání a odčítání",
+    studentTitle: "Sčítání pod sebou",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Písemné početní operace",
-    briefDescription: "Naučíš se písemně sčítat a odčítat čísla do 1 000 000 — správně zarovnáš řády a zvládneš přenos i výpůjčku.",
+    briefDescription: "Naučíš se sčítat a odčítat velká čísla pod sebou.",
     keywords: [
       "sčítání", "odčítání", "písemné sčítání", "písemné odčítání",
       "víceciferná čísla", "přenos", "výpůjčka", "sloupec",
