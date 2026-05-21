@@ -10,6 +10,9 @@ import { classifySemanticInput } from "./semanticGate";
 import type { SemanticGateResult } from "./semanticGate";
 import { recordCheckResult } from "./performanceTracker";
 import { computeAdaptiveDecision, clampLevel, type SkillSnapshot } from "./adaptiveEngine";
+import { calcSessionScore } from "./sessionUtils";
+import { computeNextLevel } from "./levelProgression";
+import { supabase } from "@/integrations/supabase/client";
 
 /** EMA alpha for mastery calculation */
 const EMA_ALPHA = 0.3;
@@ -182,6 +185,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
         };
       }
       s.matchedTopic = topic;
+
       // Pre-fetch active misconception confidence pro tento skill (jednou per session/topic).
       // Realtime adaptive loop pak jen čte z s.misconceptionConfidence (sync).
       // Fire-and-forget — pokud DB lookup selže, default 0 znamená "žádný terapeutický mód".
@@ -191,6 +195,20 @@ export async function processState(session: SessionData, userInput?: string): Pr
       } catch {
         s.misconceptionConfidence = 0;
       }
+
+      // Načti uložený level žáka pro toto téma (mezi-sezení adaptace).
+      // Fire-and-forget — pokud selže, použij defaultLevel z metadat.
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { getSkillLevel } = await import("./supabase/skillLevel");
+          const skillRow = await getSkillLevel(user.id, topic.id);
+          s.currentLevel = skillRow?.level ?? topic.defaultLevel ?? 1;
+        }
+      } catch {
+        s.currentLevel = topic.defaultLevel ?? 1;
+      }
+
       s = transition(s, "EXPLAIN");
       return processState(s);
     }
@@ -453,6 +471,38 @@ export async function processState(session: SessionData, userInput?: string): Pr
     }
 
     case "END": {
+      // Vypočítej session score a ulož nový level — fire-and-forget, neblokuje UI
+      if (s.matchedTopic && s.sessionScore === undefined) {
+        const score = calcSessionScore(s);
+        s.sessionScore = score;
+
+        (async () => {
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { getSkillLevel, upsertSkillLevel } = await import("./supabase/skillLevel");
+            const current = await getSkillLevel(user.id, s.matchedTopic!.id);
+            const state = current ?? {
+              level: s.matchedTopic!.defaultLevel ?? 1,
+              consecutiveGood: 0,
+              consecutiveBad: 0,
+              lastScore: 0,
+            };
+
+            const result = computeNextLevel(state, score);
+            await upsertSkillLevel(user.id, s.matchedTopic!.id, {
+              level: result.newLevel,
+              consecutiveGood: result.newConsecutiveGood,
+              consecutiveBad: result.newConsecutiveBad,
+              lastScore: score,
+            });
+          } catch (err) {
+            console.warn("[END] level progression save failed:", err);
+          }
+        })();
+      }
+
       return {
         session: s,
         output: "Sezení bylo ukončeno.",

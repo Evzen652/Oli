@@ -187,6 +187,11 @@ export interface SessionData {
    * v realtime loop.
    */
   misconceptionConfidence?: number;
+  /**
+   * Výkon žáka v tomto sezení (0–1). Vypočítá se na konci sezení přes calcSessionScore().
+   * Slouží jako vstup pro computeNextLevel() a uložení do student_skill_level.
+   */
+  sessionScore?: number;
 }
 
 // ===== AI EXECUTION (mock) =====
