@@ -34,47 +34,42 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Klíčové: edukační koncept JE HRDINA (70%), maskot je malý průvodce (20-25%) který
-// musí INTERAGOVAT s konceptem. Bez interakce by maskot byl jen generický a téma by
-// nešlo poznat.
+// Styl shodný s landing page ilustracemi: Pixar 3D, dětský hrdina/maskot + edukační objekty,
+// dekorativní 3D písmena/čísla povolena (ABC, 5, +, ×), ale FORBIDDEN je narrative text.
 const SUFFIX = `.
 
-VISUAL HIERARCHY (STRICT):
-1. PRIMARY (70% of image): the educational concept — abstract objects clearly representing the topic. THE TOPIC MUST BE INSTANTLY RECOGNIZABLE without the mascot.
-2. SECONDARY (20-25%): a small cute mascot character — stylized chubby owl with big round eyes, positioned in a corner or peeking, INTERACTING with the concept (holding it, pointing to it). Mascot is NEVER alone with generic props — it engages with the SPECIFIC topic objects.
-3. The mascot serves the concept, not vice versa.
+STYLE: Cute 3D Pixar-style illustration, smooth rounded volumetric surfaces, soft cinematic shading, vibrant but soft pastel colors with one strong accent. Warm, welcoming, kid-friendly. Like a high-quality children's educational app icon.
 
-STYLE: Pixar-short-film 3D rendering, smooth rounded surfaces, soft volumetric shading, gentle pastel colors. Single centered composition. Think a single product icon, not a scene.
+CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHARACTER with a clear face and expressive eyes — either:
+  (a) a cheerful CHILD (boy or girl, age 8-10, friendly smile, optional glasses), OR
+  (b) a stylized cartoon CREATURE (chubby owl, fox, bear cub) with big round eyes.
+Character is actively engaged with the educational concept (holding, pointing, looking curious). Character is medium-sized — visible but not dominant; concept objects share equal weight.
 
-TOPIC-SPECIFIC VISUAL CUES (use these literal metaphors based on the concept):
-- "multiplication": multiple identical groups of objects (e.g., 3 rows × 4 cubes)
-- "division": one group splitting into smaller equal piles
-- "addition/subtraction": stacked blocks arranged in columns
-- "fractions": pie slices or stacked bars in different colors
-- "rounding": arrows pointing up/down to nearest level
-- "shapes/geometry": the actual geometric shapes in 3D
-- "symmetry": mirrored shapes along a visible axis
-- "data/charts": 3D bar chart or pie chart shape (no labels)
-- "logic puzzles": interlocking shapes or magic-square grid of colored cubes
-- "perimeter/area": rectangle with measuring corners highlighted
+CONCEPT OBJECTS (the topic — required): 3D sculpted objects clearly representing the topic. Examples:
+- multiplication: multiple identical groups (3 rows of 4 colorful cubes)
+- division: one group splitting into equal piles
+- addition/subtraction: stacked colorful blocks in columns
+- fractions: 3D pie slices or stacked bars in different colors
+- rounding: arrows pointing up/down
+- geometry: large 3D geometric shapes (triangle, circle, square)
+- symmetry: mirrored shapes along visible axis
+- data/charts: 3D bar or pie chart shape
+- logic puzzles: magic-square grid of colored cubes
+- reading/letters: large stylized 3D-sculpted decorative letters (A B C) on/around a book
+- writing: notebook with abstract scribble lines (NOT readable words)
 
-THIS IS NOT A SCHOOL SCENE — no chalkboards, no posters, no books with covers, no papers with writing, no screens, no signs, no classroom setting.
+DECORATIVE TYPOGRAPHY (limited):
+- ALLOWED: large 3D-sculpted SINGLE letters or digits as standalone design elements (sparkly 3D 'A', 3D number '5'), max 1-3 characters, never forming a word
+- ALLOWED: 3D-sculpted math operators (+, ×, ÷, =)
+- FORBIDDEN: narrative text, sentences, paragraphs, gibberish word-like text, fake writing
+- FORBIDDEN: writing on chalkboards/posters/papers/screens, books with text on covers
+- FORBIDDEN: any attempt to render real words — AI consistently fails
 
-ZERO TEXT POLICY (HARD CONSTRAINT):
-- Zero letters, zero words, zero alphabet characters of any language
-- Zero digits, zero numerals (0-9), zero Roman numerals, zero equations
-- Zero handwriting, zero typography
-- Zero text on any surface
-- Zero logos, zero watermarks
-- Use abstract visual metaphors only: shapes, dots, beads, blocks, arrows
-- If concept implies numbers, show abacus beads or cubes — NO digits
-- If concept implies text, show solid-color books with NO covers, NO titles
+BACKGROUND: pure solid white (#FFFFFF), no gradient, no tint, no shadow — must allow alpha transparency.
 
-BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint.
+COMPOSITION: square 1:1, single warm centered composition. The topic must be instantly recognizable.`;
 
-OUTPUT: square 1:1, single centered composition, no text anywhere.`;
-
-function p(desc: string) { return `Minimalist 3D illustration where the EDUCATIONAL CONCEPT is the visual hero, depicting ${desc}${SUFFIX}`; }
+function p(desc: string) { return `Cute 3D Pixar-style illustration depicting ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
 
@@ -189,32 +184,22 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   const tryPollinations = async () => {
     const encoded = encodeURIComponent(prompt);
     const negative = encodeURIComponent([
-      // Text variants
-      "text", "letters", "alphabet", "characters", "typography", "writing", "handwriting",
-      "words", "sentences", "paragraphs", "labels", "captions", "titles", "headings",
-      "calligraphy", "lettering", "fonts", "script",
-      // Number variants
-      "numbers", "digits", "numerals", "Arabic numerals", "Roman numerals",
-      "math expressions", "equations", "formulas", "calculations",
-      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-      // Where text shows up
-      "writing on books", "writing on blackboard", "writing on whiteboard",
-      "writing on paper", "writing on signs", "writing on screens",
-      "text on objects", "text on shirts", "text in air",
-      "math problems written", "homework written",
-      // Other artifacts
-      "watermark", "logo", "signature", "brand name",
+      // FORBIDDEN: narrative text (gibberish, paragraphs)
+      "gibberish text", "fake text", "nonsense letters", "blurry text",
+      "handwriting on paper", "writing on chalkboard", "writing on whiteboard",
+      "writing on signs", "text on book covers", "text on screens",
+      "paragraphs", "sentences", "captions", "labels", "watermark", "logo", "signature",
+      "math problems written out", "homework with text",
       // Background artifacts (we want pure white)
-      "background", "texture", "wood", "table", "surface", "floor", "wall",
-      "shadow", "gradient", "pattern", "scenery", "environment",
-      "dark background", "colored background", "tinted background",
-      // Style artifacts
-      "blurry", "low quality", "deformed", "ugly",
+      "colored background", "tinted background", "gradient background",
+      "wood texture", "table surface", "floor", "wall", "scenery", "environment",
+      // Quality
+      "blurry", "low quality", "deformed face", "ugly", "extra fingers", "extra limbs",
     ].join(", "));
     const seed = Math.floor(Math.random() * 999999);
-    // enhance=false → Pollinations neupravuje prompt LLM-em (může přidat text-friendly slova)
     // private=true → nezveřejňovat v public feedu
-    const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&enhance=false&private=true&seed=${seed}`;
+    // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
+    const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&private=true&seed=${seed}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
     const bytes = new Uint8Array(await resp.arrayBuffer());

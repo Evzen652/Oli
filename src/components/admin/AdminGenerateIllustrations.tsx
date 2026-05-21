@@ -157,29 +157,40 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "Minimalist 3D illustration where the EDUCATIONAL CONCEPT is the visual hero, depicting";
+const PROMPT_PREFIX = "Cute 3D Pixar-style illustration depicting";
 const PROMPT_SUFFIX = `.
 
-VISUAL HIERARCHY (STRICT):
-1. PRIMARY (70% of image): the educational concept — abstract objects that clearly represent the topic. THE TOPIC MUST BE INSTANTLY RECOGNIZABLE from the icon alone, without the mascot.
-2. SECONDARY (20-25%): a small cute mascot character — a stylized chubby owl with big round eyes, positioned in a corner or peeking, INTERACTING with the concept (holding it, pointing to it, looking at it with curiosity). The mascot is NEVER alone with generic props (books, pencils, papers) — it must engage with the SPECIFIC topic objects.
-3. The mascot serves the concept, not vice versa. If the topic is hard to visualize, prefer making the concept clearer rather than enlarging the mascot.
+STYLE: Cute 3D Pixar-style illustration, smooth rounded volumetric surfaces, soft cinematic shading, vibrant but soft pastel colors with one strong accent. Warm, welcoming, kid-friendly. Like a high-quality children's educational app icon.
 
-STYLE: Pixar-short-film 3D rendering, smooth rounded surfaces, soft volumetric shading, gentle pastel colors with one strong accent. Single centered composition. Think a single product icon, not a scene.
+CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHARACTER with a clear face and expressive eyes — either:
+  (a) a cheerful CHILD (boy or girl, age 8-10, friendly smile, optional glasses), OR
+  (b) a stylized cartoon CREATURE (chubby owl, fox, bear cub) with big round eyes.
+The character is actively engaged with the educational concept (holding it, pointing to it, looking curious about it). Character is medium-sized — clearly visible but not dominant; the concept objects share equal weight.
 
-TOPIC-SPECIFIC VISUAL CUES (use these literal visual metaphors based on the concept):
-- "multiplication": multiple identical groups of objects (e.g., 3 rows × 4 cubes)
-- "division": one group splitting into smaller equal piles
-- "addition/subtraction": stacked blocks arranged in columns
-- "fractions": pie slices or stacked bars in different colors
-- "rounding numbers": arrows pointing up/down to nearest level
-- "shapes/geometry": the actual geometric shapes (triangle, circle, square in 3D)
-- "symmetry": mirrored shapes along a visible axis line
-- "data/tables/charts": 3D bar chart or pie chart shape (no labels)
-- "logic puzzles": interlocking geometric shapes or magic-square grid of colored cubes
-- "perimeter/area": a rectangle with measuring corners highlighted
+CONCEPT OBJECTS (the topic — required): 3D sculpted objects that clearly represent the topic. Examples by concept:
+  - multiplication: multiple identical groups (e.g., 3 rows of 4 colorful cubes)
+  - division: one group splitting into equal smaller piles
+  - addition/subtraction: stacked colorful blocks in columns
+  - fractions: 3D pie slices or stacked bars in different colors
+  - rounding: arrows pointing up/down to nearest level
+  - geometry/shapes: large 3D geometric shapes (triangle, circle, square)
+  - symmetry: mirrored shapes along a visible axis line
+  - data/charts: 3D bar chart or pie chart shape
+  - logic puzzles: magic-square grid of colored cubes or interlocking shapes
+  - perimeter/area: highlighted rectangle outline
+  - reading/letters: large stylized 3D-sculpted decorative letters (A B C) floating on/around a book — NOT realistic text
+  - writing: notebook with abstract scribble lines (NOT readable words)
 
-THIS IS NOT A SCHOOL SCENE — no chalkboards, no posters, no books with visible covers, no papers with writing, no screens displaying anything, no signs, no classroom setting.
+DECORATIVE TYPOGRAPHY (limited):
+  - ALLOWED: large 3D-sculpted SINGLE letters or digits as standalone design elements (like a sparkly 3D letter 'A' or a 3D number '5' as a sculpture) — only 1-3 characters max, never forming a word
+  - ALLOWED: 3D-sculpted math operators (+, ×, ÷, =) as design shapes
+  - FORBIDDEN: any narrative text, sentences, paragraphs, gibberish word-like text, fake writing
+  - FORBIDDEN: writing on chalkboards, posters, papers, screens, books with text on covers
+  - FORBIDDEN: any attempt to render real words — AI consistently fails at this
+
+BACKGROUND: pure solid white (#FFFFFF), no gradient, no tint, no shadow behind subject — must allow alpha transparency.
+
+COMPOSITION: square 1:1, single warm centered composition. The topic must be instantly recognizable.`;
 
 ZERO TEXT POLICY (HARD CONSTRAINT):
 - Zero letters, zero words, zero alphabet characters of any language
