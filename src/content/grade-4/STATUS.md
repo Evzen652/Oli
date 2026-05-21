@@ -9,29 +9,29 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_4_TOPICS)
 
 ### Geometrie v rovině a v prostoru
 
-- [ ] **Obvod a obsah obdélníku a čtverce** `g4-matematika-geometrie-v-rovine-a-v-prostoru-obvod-a-obsah-obvod-a-obsah-obdelniku-a-ctverce`
-- [ ] **Rovnoběžky a kolmice** `g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-rovnobezky-a-kolmice`
-- [ ] **Trojúhelník - druhy podle stran** `g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-trojuhelnik-druhy-podle-stran`
-- [ ] **Osová souměrnost - osa, souměrné útvary** `g4-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-osa-soumerne-utvary`
+- [x] **Obvod a obsah obdélníku a čtverce** `g4-matematika-geometrie-v-rovine-a-v-prostoru-obvod-a-obsah-obvod-a-obsah-obdelniku-a-ctverce`
+- [x] **Rovnoběžky a kolmice** `g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-rovnobezky-a-kolmice`
+- [x] **Trojúhelník - druhy podle stran** `g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-trojuhelnik-druhy-podle-stran`
+- [x] **Osová souměrnost - osa, souměrné útvary** `g4-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-osa-soumerne-utvary`
 
 ### Nestandardní aplikační úlohy a problémy
 
-- [ ] **Magické čtverce, číselné řady** `g4-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-magicke-ctverce-ciselne-rady`
+- [x] **Magické čtverce, číselné řady** `g4-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-magicke-ctverce-ciselne-rady`
 
 ### Závislosti, vztahy a práce s daty
 
-- [ ] **Aritmetický průměr (úvod)** `g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-uvod`
-- [ ] **Tabulky, diagramy (sloupcový, kruhový)** `g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-diagramy-sloupcovy-kruhovy`
+- [x] **Aritmetický průměr (úvod)** `g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-uvod`
+- [x] **Tabulky, diagramy (sloupcový, kruhový)** `g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-diagramy-sloupcovy-kruhovy`
 
 ### Číslo a početní operace
 
-- [ ] **Písemné dělení jednociferným dělitelem** `g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-jednocifernym-delitelem`
-- [ ] **Písemné násobení jedno- a dvouciferným činitelem** `g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-nasobeni-jedno-a-dvoucifernym-cinitelem`
-- [ ] **Písemné sčítání a odčítání víceciferných čísel** `g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-scitani-a-odcitani-vicecifernych-cisel`
-- [ ] **Sčítání a odčítání zlomků se stejným jmenovatelem** `g4-matematika-cislo-a-pocetni-operace-zlomky-scitani-a-odcitani-zlomku-se-stejnym-jmenovatelem`
-- [ ] **Zlomek jako část celku, znázornění zlomku** `g4-matematika-cislo-a-pocetni-operace-zlomky-zlomek-jako-cast-celku-znazorneni-zlomku`
-- [ ] **Zaokrouhlování na desítky, stovky, tisíce, desetitisíce** `g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-zaokrouhlovani-na-desitky-stovky-tisice-desetitisice`
-- [ ] **Čtení, zápis a porovnávání čísel do milionu** `g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-cteni-zapis-a-porovnavani-cisel-do-milionu`
+- [x] **Písemné dělení jednociferným dělitelem** `g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-jednocifernym-delitelem`
+- [x] **Písemné násobení jedno- a dvouciferným činitelem** `g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-nasobeni-jedno-a-dvoucifernym-cinitelem`
+- [x] **Písemné sčítání a odčítání víceciferných čísel** `g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-scitani-a-odcitani-vicecifernych-cisel`
+- [x] **Sčítání a odčítání zlomků se stejným jmenovatelem** `g4-matematika-cislo-a-pocetni-operace-zlomky-scitani-a-odcitani-zlomku-se-stejnym-jmenovatelem`
+- [x] **Zlomek jako část celku, znázornění zlomku** `g4-matematika-cislo-a-pocetni-operace-zlomky-zlomek-jako-cast-celku-znazorneni-zlomku`
+- [x] **Zaokrouhlování na desítky, stovky, tisíce, desetitisíce** `g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-zaokrouhlovani-na-desitky-stovky-tisice-desetitisice`
+- [x] **Čtení, zápis a porovnávání čísel do milionu** `g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-cteni-zapis-a-porovnavani-cisel-do-milionu`
 
 ## Český jazyk (22)
 
