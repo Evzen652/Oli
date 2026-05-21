@@ -14,7 +14,7 @@ import {
   getCategoryIllustrationUrl,
   getTopicIllustrationUrl,
 } from "@/lib/prvoukaVisuals";
-import { getDisplayCategory, getDisplayTopic, getDisplayTitle } from "@/lib/displayNames";
+import { getDisplayCategory, getDisplayTopic, getDisplayTitle, getDisplayCategoryDescription, getDisplayTopicDescription } from "@/lib/displayNames";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -720,14 +720,19 @@ export default function AdminDashboard() {
                         )}
                       </div>
 
-                      {/* Hook v boxu */}
-                      {catInfo && (
-                        <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
-                          <p className="text-xs leading-relaxed text-foreground/80">
-                            💡 {catInfo.hook}
-                          </p>
-                        </div>
-                      )}
+                      {/* Popis okruhu — dětský (z displayNames) nebo legacy catInfo.hook */}
+                      {(() => {
+                        const childDesc = getDisplayCategoryDescription(category, gradeFilter);
+                        const text = childDesc ?? catInfo?.hook;
+                        if (!text) return null;
+                        return (
+                          <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
+                            <p className="text-xs leading-relaxed text-foreground/80">
+                              💡 {text}
+                            </p>
+                          </div>
+                        );
+                      })()}
 
                       {/* Šipka v pravém dolním rohu */}
                       <div className="flex justify-end">
@@ -794,12 +799,15 @@ export default function AdminDashboard() {
                 );
                 const count = skillsInGroup.length;
                 const isEmpty = count === 0;
+                // Priorita: dětský popis z displayNames → topicDescription → briefDescription prvního podtématu → DB
+                const displayDesc = getDisplayTopicDescription(topicName, gradeFilter);
                 const description =
-                  count > 0
-                    ? count > 1
-                      ? skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? ""
-                      : skillsInGroup[0]?.briefDescription ?? ""
-                    : dbTopics.find((t) => t.name === topicName && t.category_name === selectedCategory)?.description ?? "";
+                  displayDesc
+                    ?? (count > 0
+                      ? (count > 1
+                        ? skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? ""
+                        : skillsInGroup[0]?.briefDescription ?? "")
+                      : dbTopics.find((t) => t.name === topicName && t.category_name === selectedCategory)?.description ?? "");
                 const topicEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, topicName);
                 const topicVisual = getTopicVisual(selectedSubject!, selectedCategory!);
                 return (

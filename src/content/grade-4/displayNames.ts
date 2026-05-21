@@ -9,28 +9,66 @@
  * Per-grade — neimportovat z jiných ročníků, každý má vlastní slovník.
  */
 
-export const DISPLAY_NAMES = {
-  // RVP okruh → dětsky (2-4 slova, konkrétní)
-  categories: {
-    "Číslo a početní operace": "Počítání s čísly",
-    "Geometrie v rovině a v prostoru": "Tvary a prostor",
-    "Závislosti, vztahy a práce s daty": "Tabulky a vzorce",
-    "Nestandardní aplikační úlohy a problémy": "Logické hádanky",
-  } as Record<string, string>,
+import type { DisplayMap } from "@/lib/displayNames";
 
-  // RVP téma → dětsky (2-4 slova, konkrétní)
+export const DISPLAY_NAMES: DisplayMap = {
+  // RVP okruh → dětský název + krátký popis
+  categories: {
+    "Číslo a početní operace": {
+      name: "Počítání s čísly",
+      description: "Naučíš se počítat s čísly až do milionu a poznáš zlomky.",
+    },
+    "Geometrie v rovině a v prostoru": {
+      name: "Tvary a prostor",
+      description: "Poznáš tvary, spočítáš obvod a obsah a najdeš osu souměrnosti.",
+    },
+    "Závislosti, vztahy a práce s daty": {
+      name: "Tabulky a vzorce",
+      description: "Přečteš tabulky a grafy a spočítáš průměr.",
+    },
+    "Nestandardní aplikační úlohy a problémy": {
+      name: "Logické hádanky",
+      description: "Vyřešíš logické hlavolamy a najdeš skryté vzory.",
+    },
+  },
+
+  // RVP téma → dětský název + krátký popis
   topics: {
     // Číslo a početní operace
-    "Číselný obor 0–1 000 000": "Velká čísla",
-    "Písemné početní operace": "Počítání pod sebou",
-    "Zlomky": "Zlomky",
+    "Číselný obor 0–1 000 000": {
+      name: "Velká čísla",
+      description: "Pracuješ s velkými čísly — čteš je, zapisuješ a zaokrouhluješ.",
+    },
+    "Písemné početní operace": {
+      name: "Počítání pod sebou",
+      description: "Sčítáš, odčítáš, násobíš a dělíš velká čísla pod sebou.",
+    },
+    "Zlomky": {
+      name: "Zlomky",
+      description: "Pochopíš zlomky a naučíš se s nimi počítat.",
+    },
     // Geometrie v rovině a v prostoru
-    "Obvod a obsah": "Obvod a obsah",
-    "Rovinné útvary": "Rovinné tvary",
-    "Souměrnost": "Souměrnost",
+    "Obvod a obsah": {
+      name: "Obvod a obsah",
+      description: "Spočítáš obvod i obsah čtverce a obdélníku.",
+    },
+    "Rovinné útvary": {
+      name: "Rovinné tvary",
+      description: "Poznáš trojúhelníky, rovnoběžky a kolmice.",
+    },
+    "Souměrnost": {
+      name: "Souměrnost",
+      description: "Najdeš souměrné tvary a jejich osu.",
+    },
     // Závislosti, vztahy a práce s daty
-    "Práce s daty": "Tabulky a grafy",
+    "Práce s daty": {
+      name: "Tabulky a grafy",
+      description: "Přečteš tabulky, poznáš grafy a spočítáš průměr.",
+    },
     // Nestandardní aplikační úlohy a problémy
-    "Logické úlohy": "Hlavolamy",
-  } as Record<string, string>,
+    "Logické úlohy": {
+      name: "Hlavolamy",
+      description: "Vyřešíš magické čtverce a najdeš vzory v číselných řadách.",
+    },
+  },
 } as const;

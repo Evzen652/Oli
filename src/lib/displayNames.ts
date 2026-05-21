@@ -1,5 +1,5 @@
 /**
- * Resolver dětských variant RVP jmen.
+ * Resolver dětských variant RVP jmen + popisků.
  *
  * RVP fields v `TopicMetadata` (subject, category, topic, title) zůstávají
  * neměnné — slouží pro mapování na standard, DB, audit, parent reporty.
@@ -10,49 +10,79 @@
  * Pokud dětská varianta neexistuje, fallback je RVP název — UI se nikdy nerozbije.
  */
 
-import { DISPLAY_NAMES as G4 } from "@/content/grade-4/displayNames";
 import type { Grade, TopicMetadata } from "./types";
 
-interface DisplayMap {
-  categories: Record<string, string>;
-  topics: Record<string, string>;
+// ─── Per-grade datová struktura (export pro typování v grade-N/displayNames.ts) ───
+
+export interface DisplayEntry {
+  /** Krátký dětský název (2-4 slova) — co dítě vidí jako titulek karty. */
+  name: string;
+  /** 1 věta dětsky, 2. osoba, max ~15 slov — popis na kartě (volitelné). */
+  description?: string;
 }
 
-// Per-grade lookup. Přidáním nového ročníku: importovat + zapsat do mapy.
+export interface DisplayMap {
+  /** RVP okruh → dětský záznam. Klíč = `TopicMetadata.category`. */
+  categories: Record<string, DisplayEntry>;
+  /** RVP téma → dětský záznam. Klíč = `TopicMetadata.topic`. */
+  topics: Record<string, DisplayEntry>;
+}
+
+// ─── Imports per-grade slovníků ────────────────────────────────────────────
+
+import { DISPLAY_NAMES as G4 } from "@/content/grade-4/displayNames";
+
+// Per-grade lookup. Přidáním nového ročníku: importuj + zapiš do mapy.
 const BY_GRADE: Partial<Record<Grade, DisplayMap>> = {
   4: G4,
 };
 
+// ─── Interní helper — najde entry napříč ročníky pokud `grade` chybí ──────
+
+function lookupEntry(
+  kind: "categories" | "topics",
+  key: string,
+  grade?: Grade | null,
+): DisplayEntry | null {
+  if (grade != null) {
+    return BY_GRADE[grade]?.[kind][key] ?? null;
+  }
+  for (const map of Object.values(BY_GRADE)) {
+    if (map?.[kind][key]) return map[kind][key];
+  }
+  return null;
+}
+
+// ─── PUBLIC API ────────────────────────────────────────────────────────────
+
 /**
  * Vrátí dětský název okruhu (kategorie).
- * Pokud je `grade` zadané, hledá v jeho slovníku.
- * Pokud `null`/`undefined`, hledá napříč všemi ročníky (vrátí první nález).
  * Fallback: RVP název (UI se nikdy nerozbije).
  */
 export function getDisplayCategory(category: string, grade?: Grade | null): string {
-  if (grade != null) {
-    return BY_GRADE[grade]?.categories[category] ?? category;
-  }
-  for (const map of Object.values(BY_GRADE)) {
-    if (map?.categories[category]) return map.categories[category];
-  }
-  return category;
+  return lookupEntry("categories", category, grade)?.name ?? category;
+}
+
+/**
+ * Vrátí dětský popis okruhu (1 věta, 2. osoba). Null pokud popis chybí.
+ */
+export function getDisplayCategoryDescription(category: string, grade?: Grade | null): string | null {
+  return lookupEntry("categories", category, grade)?.description ?? null;
 }
 
 /**
  * Vrátí dětský název tématu.
- * Pokud je `grade` zadané, hledá v jeho slovníku.
- * Pokud `null`/`undefined`, hledá napříč všemi ročníky.
  * Fallback: RVP název.
  */
 export function getDisplayTopic(topic: string, grade?: Grade | null): string {
-  if (grade != null) {
-    return BY_GRADE[grade]?.topics[topic] ?? topic;
-  }
-  for (const map of Object.values(BY_GRADE)) {
-    if (map?.topics[topic]) return map.topics[topic];
-  }
-  return topic;
+  return lookupEntry("topics", topic, grade)?.name ?? topic;
+}
+
+/**
+ * Vrátí dětský popis tématu (1 věta, 2. osoba). Null pokud popis chybí.
+ */
+export function getDisplayTopicDescription(topic: string, grade?: Grade | null): string | null {
+  return lookupEntry("topics", topic, grade)?.description ?? null;
 }
 
 /**
@@ -65,7 +95,6 @@ export function getDisplayTitle(t: Pick<TopicMetadata, "title" | "studentTitle">
 
 /**
  * Odvodí grade z `TopicMetadata` — bere první ročník z `gradeRange`.
- * Pomocná funkce pro místa kde nemáme explicitní grade kontext.
  */
 export function inferGradeForDisplay(t: Pick<TopicMetadata, "gradeRange">): Grade {
   return t.gradeRange[0];
