@@ -24,20 +24,51 @@
 - No gamification — no points, badges, streaks, leaderboards
 - Efficiency principle — "the less time child spends in system, the better"
 
-## AI Models (via Lovable AI Gateway or direct API)
-- AI Tutor: google/gemini-3-flash-preview
-- Curriculum Wizard: openai/gpt-5-mini
-- Semantic Gate: google/gemini-2.5-flash-lite (cheapest, fastest)
-- Session Evaluation: google/gemini-3-flash-preview
-- Exercise Validator: google/gemini-2.5-flash
+## AI Models — NOVÁ ARCHITEKTURA (rozhodnuto 2026-05-20)
+Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 
-## Content Fallback Chain
+### Zůstává
+- Session Evaluation (async, po sezení): google/gemini-2.5-flash-lite
+- Report pro rodiče (async): google/gemini-2.5-flash-lite
+- Authoring asistent v adminu (tvorba cvičení): Claude API — NE runtime
+
+### Odchází (smazat až při refaktoru)
+- ~~AI Tutor~~ (Gemini) — generoval cvičení za běhu
+- ~~Curriculum Wizard~~ (GPT)
+- ~~Semantic Gate~~ (Gemini lite)
+- ~~Exercise Validator~~ (Gemini)
+
+### AI tutor (žák se ptá)
+- Zatím odloženo, probere se zvlášť
+
+## Content Fallback Chain — NOVÁ
 1. custom_exercises (DB cache)
 2. Algorithmic generator (topic.generator)
-3. AI tutor (edge fn, 5s timeout)
-4. Empty state (toast + offer different topic)
+3. Empty state (toast + offer different topic)
+— žádné AI volání za běhu pro generování cvičení
 
-## Hybrid mixing: 4 algo + 2 DB exercises per batch (shuffled)
+## Roadmap (pořadí práce)
+1. Nové typy cvičení — největší dopad pro žáky
+2. Admin editor cvičení — základ pro vlastní obsah
+3. i18n příprava — technický základ pro jiné státy
+4. Audit systém — nápovědy + vysvětlení řešení
+5. RVP import — naplnění obsahem (720 řádků, 1:1 mapping připraven)
+
+## Nové typy cvičení (přidat)
+- [x] Multiple choice (máme)
+- [ ] Text input (volná odpověď)
+- [ ] Fill in the blank (doplň do věty)
+- [ ] Matching pairs (spoj pojmy)
+- [ ] Ordering (seřaď)
+- [ ] True/False
+- [ ] Multi-select (více správných odpovědí)
+
+## Claude Chat ↔ Claude Code provázanost
+- Udržovat `PROJECT_STATUS.md` v root repa
+- Claude Chat fetchne přes raw GitHub URL (web browsing)
+- TODO: ověřit zda je repo public, pak nastavit Claude.ai Project
+- Claude Chat = product manager (design, UX, strategie)
+- Claude Code = developer (implementace)
 
 ## DB Column Notes
 - children table uses `name` (not child_name)
