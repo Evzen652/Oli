@@ -24,6 +24,7 @@ function toSlug(s: string): string {
 
 /** Generuje ilustrační klíče ze všech topics v ALL_TOPICS (včetně grade-N). */
 function buildTopicIllustrationKeys(topics: ReturnType<typeof getAllTopics>): string[] {
+  const subjKeys = new Set<string>();
   const catKeys = new Set<string>();
   const topicKeys = new Set<string>();
 
@@ -32,11 +33,12 @@ function buildTopicIllustrationKeys(topics: ReturnType<typeof getAllTopics>): st
     const catSlug = toSlug(t.category);
     const topicSlug = toSlug(t.topic);
 
+    subjKeys.add(`subject-${subjSlug}`);
     catKeys.add(`cat-${subjSlug}-${catSlug}`);
     topicKeys.add(`topic-${subjSlug}-${catSlug}-${topicSlug}`);
   }
 
-  return [...catKeys, ...topicKeys];
+  return [...subjKeys, ...catKeys, ...topicKeys];
 }
 
 /**
@@ -60,39 +62,11 @@ function buildKeyToTopicMap(topics: ReturnType<typeof getAllTopics>): Map<string
 const KEY_TO_TOPIC_MAP = buildKeyToTopicMap(getAllTopics());
 
 // ── Static key list ───────────────────────────────────────────────────────────
+// Prázdné — všechny klíče se generují dynamicky z getAllTopics() (buildTopicIllustrationKeys)
+// a z DB tabulek (dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys).
+// Legacy klíče odstraněny — odpovídají deaktivovaným legacy topics.
 
-const ALL_KEYS = [
-  // Subject cards
-  "subject-matematika", "subject-cestina", "subject-prvouka", "subject-prirodoveda", "subject-vlastiveda",
-  // Matematika — okruhy
-  "cat-math-cisla-a-operace", "cat-math-zlomky", "cat-math-geometrie",
-  // Matematika — témata
-  "topic-math-porovnavani-prirozenych-cisel", "topic-math-scitani-a-odcitani-do-100",
-  "topic-math-nasobeni-a-deleni", "topic-math-zaokrouhlovani", "topic-math-razeni-cisel",
-  "topic-math-porovnavani-zlomku", "topic-math-kraceni-zlomku", "topic-math-rozsireni-zlomku",
-  "topic-math-scitani-zlomku", "topic-math-odcitani-zlomku", "topic-math-smisena-cisla",
-  "topic-math-zlomek-z-cisla", "topic-math-nasobeni-zlomku-celym-cislem", "topic-math-geometricke-tvary",
-  "topic-math-obvod", "topic-math-mereni-delky", "topic-math-zakladni-jednotky",
-  "topic-math-prevody-jednotek", "topic-math-odhad-delek", "topic-math-jednotky-hmotnosti",
-  "topic-math-slovni-ulohy-delky", "topic-math-objem-ml-l",
-  // Čeština — okruhy
-  "cat-cz-vyjmenovana-slova", "cat-cz-pravopis", "cat-cz-mluvnice", "cat-cz-diktat", "cat-cz-sloh",
-  // Čeština — témata
-  "topic-cz-vyjm-b", "topic-cz-vyjm-l", "topic-cz-vyjm-m", "topic-cz-vyjm-p",
-  "topic-cz-vyjm-s", "topic-cz-vyjm-v", "topic-cz-vyjm-z",
-  "topic-cz-parove-souhlasky", "topic-cz-tvrde-mekke", "topic-cz-velka-pismena",
-  "topic-cz-slovni-druhy", "topic-cz-rod-cislo", "topic-cz-slovesa-urcovani",
-  "topic-cz-zaklad-vety", "topic-cz-diktat", "topic-cz-sloh-vypraveni", "topic-cz-sloh-popis",
-  // Prvouka — okruhy
-  "cat-clovek-a-jeho-telo", "cat-priroda-kolem-nas", "cat-lide-a-spolecnost", "cat-orientace-v-prostoru-a-case",
-  // Prvouka — témata
-  "topic-lidske-telo", "topic-smysly", "topic-zdravi-a-hygiena",
-  "topic-rostliny", "topic-zvirata", "topic-rocni-obdobi-a-pocasi",
-  "topic-nase-zeme", "topic-rodina-a-spolecnost", "topic-rodina-a-pravidla-chovani",
-  "topic-obec-a-mesto", "topic-ceska-republika", "topic-svetove-strany-a-mapa", "topic-cas-a-kalendar",
-] as const;
-
-type ImageKey = typeof ALL_KEYS[number];
+const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
