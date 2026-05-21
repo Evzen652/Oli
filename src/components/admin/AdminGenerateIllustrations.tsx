@@ -414,10 +414,21 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       })
       .filter((k): k is string => !!k);
 
-    const keys = [...ALL_KEYS, ...dynSubjKeys, ...dynCatKeys, ...dynTopKeys];
-    setMissingKeys(new Set());
+    // Přidej code-based klíče (grade-N topics) — ty nejsou v DB ani v ALL_KEYS
+    const codeKeys = buildTopicIllustrationKeys(getAllTopics());
+    const seenKeys = new Set<string>(ALL_KEYS);
+    const allKeysNow: string[] = [...ALL_KEYS];
+    for (const k of [...dynSubjKeys, ...dynCatKeys, ...dynTopKeys, ...codeKeys]) {
+      if (!seenKeys.has(k)) { seenKeys.add(k); allKeysNow.push(k); }
+    }
+
+    // Zkontroluj skutečnou existenci obrázků přes storage list
+    const { data: storageFiles } = await supabase.storage.from("prvouka-images").list("", { limit: 1000 });
+    const existingFiles = new Set((storageFiles ?? []).map((f) => f.name.replace(/\.png$/, "")));
+    const missing = new Set(allKeysNow.filter((k) => !existingFiles.has(k)));
+    setMissingKeys(missing);
     setAllImages(
-      keys.map((key) => ({
+      allKeysNow.map((key) => ({
         key,
         url: supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl,
       }))
