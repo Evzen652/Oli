@@ -47,6 +47,19 @@ Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 3. Empty state (toast + offer different topic)
 — žádné AI volání za běhu pro generování cvičení
 
+## RVP Dataset — zdroj pravdy pro kurikulum
+- `data/rvp_data.json` — 841 podtémat, 9 ročníků × 12 předmětů, verze 1.0.0
+- Stabilní ID formát: `g{grade}-{subject}-{area}-{topic}-{subtopic}` (kebab-case, bez diakritiky)
+- API: `src/content/curriculum.ts` — `getNode()`, `getNodesByGrade()`, `getNodesByGradeSubject()`
+- **Soubor je readonly** — nikdy needituj z aplikace ani z grade-N session
+- Sdílené typy v `src/content/types.ts` jsou ZMRAZENÉ — mění je jen architekt session
+
+## Paralelní sessions (architekt + grade-N)
+- Architekt: branch `main`, vlastní vše mimo `src/content/grade-*/`
+- Grade-N: branch `content/grade-N`, worktree v `.claude/worktrees/grade-N`, vlastní jen `src/content/grade-N/**`
+- Komunikace přes `docs/PENDING_CHANGES.md` (eskalace mimo vlastní hranice)
+- Detail v `docs/SESSION_OWNERSHIP.md`
+
 ## Roadmap (pořadí práce)
 1. Nové typy cvičení — největší dopad pro žáky
 2. Admin editor cvičení — základ pro vlastní obsah

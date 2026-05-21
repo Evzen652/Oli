@@ -7,6 +7,10 @@
 
 import type { TopicMetadata } from "../types";
 
+// Pro lookup vlastních uzlů ve své práci použij:
+//   import { getNodesByGradeSubject } from "../curriculum";
+//   const nodes = getNodesByGradeSubject(4, "matematika"); // 14 uzlů
+
 // Postupně přidává grade-4 session, jak vznikají topics:
 // import { MATEMATIKA_GRADE_4 } from "./matematika";
 // import { CESTINA_GRADE_4 } from "./cestina";

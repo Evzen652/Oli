@@ -30,11 +30,25 @@ Předměty 4. ročníku podle RVP:
 - Vytvářet a měnit cokoli v `src/content/grade-4/**`
 - Číst (jen číst) sdílené:
   - `src/content/types.ts` — typy `Exercise`, `NodeId`, `TopicMetadata`
+  - `src/content/curriculum.ts` — RVP lookup (`getNodesByGradeSubject(4, ...)`, `getNode(id)`)
+  - `data/rvp_data.json` — zdroj pravdy pro 841 podtémat (NIKDY needituj)
   - `src/lib/types.ts` — existující domain typy
   - `src/lib/content/taxonomy.ts` — `ContentType`, `QualityTier`, `AcademicSubject`
   - `src/integrations/supabase/types.ts` — DB typy (auto-generated, readonly)
 - Přidávat unit testy do `src/content/grade-4/__tests__/`
 - Commit na branchi `content/grade-4`
+
+### 📌 Tvá podtémata
+
+Grade-4 vlastní těchto 72 podtémat z RVP (čti přes `getNodesByGradeSubject`):
+- Matematika: 14 (zlomky, milion, písemné operace, geometrie, …)
+- Český jazyk (cjl): 22
+- Vlastivěda: 13
+- Přírodověda: 13
+- Informatika: 10
+
+**NodeId formát:** `g4-{subject}-{area}-{topic}-{subtopic}` (kebab-case, bez diakritiky).
+**Příklad:** `g4-matematika-cislo-a-pocetni-operace-zlomky-zlomek-jako-cast-celku-znazorneni-zlomku`
 
 ### ❌ Co NESMÍŠ
 
