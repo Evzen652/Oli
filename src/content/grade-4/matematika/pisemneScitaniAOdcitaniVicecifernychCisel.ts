@@ -92,7 +92,7 @@ export const PISEMNE_SCITANI_ODCITANI: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Písemné početní operace",
-    briefDescription: "Žák provádí písemné sčítání a odčítání čísel do 1 000 000 — správně zarovnává řády, pracuje s přenosem a výpůjčkou.",
+    briefDescription: "Naučíš se písemně sčítat a odčítat čísla do 1 000 000 — správně zarovnáš řády a zvládneš přenos i výpůjčku.",
     keywords: [
       "sčítání", "odčítání", "písemné sčítání", "písemné odčítání",
       "víceciferná čísla", "přenos", "výpůjčka", "sloupec",

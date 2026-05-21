@@ -83,7 +83,7 @@ export const PISEMNE_DELENI: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Písemné početní operace",
-    briefDescription: "Žák provádí písemné dělení víceciferného čísla jednociferným dělitelem — postupuje zleva, správně zapíše podíl i zbytek.",
+    briefDescription: "Naučíš se písemně dělit víceciferné číslo jednociferným dělitelem — budeš postupovat zleva a správně zapíšeš podíl i zbytek.",
     keywords: [
       "dělení", "písemné dělení", "dělitel", "dělenec", "podíl",
       "zbytek", "jednociferný dělitel",

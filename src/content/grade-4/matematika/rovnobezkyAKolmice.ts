@@ -113,7 +113,7 @@ export const ROVNOBEZKY_KOLMICE: TopicMetadata[] = [
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Rovinné útvary",
-    briefDescription: "Žák rozlišuje rovnoběžky (přímky, které se nikdy neprotnou) a kolmice (přímky svírající pravý úhel 90°) — rozpozná je v příkladech z okolí.",
+    briefDescription: "Rozlišíš rovnoběžky (přímky, které se nikdy neprotnou) a kolmice (přímky svírající pravý úhel 90°) — poznáš je v příkladech ze svého okolí.",
     keywords: [
       "rovnoběžky", "kolmice", "pravý úhel", "přímky", "90°",
       "geometrie", "průsečík",

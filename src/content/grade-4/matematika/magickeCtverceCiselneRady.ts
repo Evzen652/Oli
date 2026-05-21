@@ -119,7 +119,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
     subject: "matematika",
     category: "Nestandardní aplikační úlohy a problémy",
     topic: "Logické úlohy",
-    briefDescription: "Žák hledá chybějící číslo v magickém čtverci 3×3 a určuje vzor číselné řady — procvičuje logické myšlení a práci se vzory.",
+    briefDescription: "Najdeš chybějící číslo v magickém čtverci 3×3 a odhalíš vzor v číselné řadě — procvičíš si logické myšlení a práci se vzory.",
     keywords: [
       "magický čtverec", "číselná řada", "vzor", "logická úloha",
       "aritmetická řada", "posloupnost",

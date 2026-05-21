@@ -89,7 +89,7 @@ export const SCITANI_ODCITANI_ZLOMKU: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Zlomky",
-    briefDescription: "Žák sčítá a odčítá zlomky se stejným jmenovatelem — jmenovatel zachová, operaci provede jen s čitateli, výsledek případně zjednodušní.",
+    briefDescription: "Naučíš se sčítat a odčítat zlomky se stejným jmenovatelem — jmenovatel necháš stejný, operaci uděláš jen s čitateli a výsledek případně zjednodušíš.",
     keywords: [
       "zlomky", "sčítání zlomků", "odčítání zlomků",
       "stejný jmenovatel", "čitatel", "jmenovatel", "zjednodušení",

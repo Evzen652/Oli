@@ -93,7 +93,7 @@ export const ZAOKROUHLOVANI: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–1 000 000",
-    briefDescription: "Žák zaokrouhluje přirozená čísla na desítky, stovky, tisíce a desetitisíce — správně aplikuje pravidlo ≥ 5 nahoru, < 5 dolů.",
+    briefDescription: "Naučíš se zaokrouhlovat čísla na desítky, stovky, tisíce a desetitisíce — použiješ pravidlo: ≥ 5 nahoru, < 5 dolů.",
     keywords: [
       "zaokrouhlování", "zaokrouhlit na desítky", "zaokrouhlit na stovky",
       "zaokrouhlit na tisíce", "odhad", "přibližná hodnota",

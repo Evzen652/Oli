@@ -101,7 +101,7 @@ export const TROJUHELNIK_DRUHY: TopicMetadata[] = [
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Rovinné útvary",
-    briefDescription: "Žák rozlišuje rovnostranný, rovnoramenný a různostranný trojúhelník — rozpozná druh ze zadaných délek stran a spočítá obvod.",
+    briefDescription: "Rozlišíš rovnostranný, rovnoramenný a různostranný trojúhelník — poznáš jeho druh podle délek stran a spočítáš obvod.",
     keywords: [
       "trojúhelník", "rovnostranný", "rovnoramenný", "různostranný",
       "strany trojúhelníku", "obvod trojúhelníku",

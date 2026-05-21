@@ -83,7 +83,7 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Písemné početní operace",
-    briefDescription: "Žák násobí víceciferné číslo jednociferným nebo dvouciferným činitelem — správně pracuje s přenosem a mezisoučty.",
+    briefDescription: "Naučíš se násobit víceciferné číslo jednociferným nebo dvouciferným činitelem — správně zvládneš přenos i mezisoučty.",
     keywords: [
       "násobení", "písemné násobení", "činitel", "součin",
       "přenos", "mezisoučet", "dvouciferný", "jednociferný",

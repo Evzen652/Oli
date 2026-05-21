@@ -144,6 +144,10 @@ Most mezi tvým interním `id` a RVP datasetem je pole `rvpNodeId` v `TopicMetad
 5. Commit s prefixem `[grade-4]`: `git commit -m "[grade-4] desetinná čísla — sčítání"`
 6. Před koncem session: `git push origin content/grade-4`
 
+## Pravidla pro texty (briefDescription, popisky)
+
+**briefDescription a všechny student-facing texty musí být ve 2. osobě jednotného čísla** — mluv přímo k žákovi (9–11 let): 'Naučíš se...', 'Spočítáš...', 'Pochopíš...', 'Zvládneš...'. NIKDY 'Žák...' (3. osoba je RVP formulace pro učitele, ne pro děti).
+
 ## Pedagogická vodítka pro 4. ročník
 
 - **Matematika:** přechod od počítání po milion, písemné algoritmy, zlomky (úvod), jednotky

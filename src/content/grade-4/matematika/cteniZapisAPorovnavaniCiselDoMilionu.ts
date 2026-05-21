@@ -122,7 +122,7 @@ export const CTENI_ZAPIS_POROVNAVANI: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–1 000 000",
-    briefDescription: "Žák čte, zapisuje a porovnává přirozená čísla do 1 000 000 — určuje hodnotu číslice v daném řádu a správně používá symboly <, >, =.",
+    briefDescription: "Naučíš se číst, zapisovat a porovnávat čísla do 1 000 000 — určíš hodnotu číslice v daném řádu a správně použiješ symboly <, >, =.",
     keywords: [
       "čísla do milionu", "porovnávání čísel", "číselný zápis",
       "řády čísel", "stotisíce", "desetitisíce", "tisíce",

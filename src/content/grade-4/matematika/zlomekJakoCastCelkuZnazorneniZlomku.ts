@@ -106,7 +106,7 @@ export const ZLOMEK_CAST_CELKU: TopicMetadata[] = [
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Zlomky",
-    briefDescription: "Žák rozumí zlomku jako části celku — správně zapíše zlomek z rozdělení celku na díly a porovná zlomky se stejným jmenovatelem.",
+    briefDescription: "Pochopíš zlomek jako část celku — naučíš se zapsat zlomek z rozdělení celku na díly a porovnat zlomky se stejným jmenovatelem.",
     keywords: [
       "zlomek", "čitatel", "jmenovatel", "část celku",
       "znázornění zlomku", "porovnání zlomků",

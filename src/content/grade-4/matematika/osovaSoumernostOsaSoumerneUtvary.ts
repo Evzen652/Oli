@@ -103,7 +103,7 @@ export const OSOVA_SOUMERNOST: TopicMetadata[] = [
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Souměrnost",
-    briefDescription: "Žák rozpozná osově souměrné útvary, určí osu souměrnosti a počet os pro základní geometrické tvary.",
+    briefDescription: "Poznáš osově souměrné útvary, najdeš osu souměrnosti a určíš její počet u základních geometrických tvarů.",
     keywords: [
       "osová souměrnost", "osa souměrnosti", "souměrný útvar",
       "zrcadlení", "překládání", "symetrie",

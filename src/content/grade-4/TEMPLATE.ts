@@ -87,7 +87,7 @@ export const TEMPLATE_TOPIC: TopicMetadata[] = [
     subject: "matematika", // "matematika" | "čeština" | "vlastivěda" | "přírodověda" | "informatika"
     category: "TODO: oblast (např. 'Zlomky')",
     topic: "TODO: téma uvnitř category (např. 'Úvod do zlomků')",
-    briefDescription: "TODO: 1-2 věty co se žák naučí",
+    briefDescription: "TODO: 1-2 věty co se naučíš (2. osoba, mluv přímo k žákovi — např. 'Naučíš se...', 'Pochopíš...')",
     keywords: ["TODO", "klíčová", "slova", "pro", "matching"],
     goals: [
       "TODO: cíl 1",

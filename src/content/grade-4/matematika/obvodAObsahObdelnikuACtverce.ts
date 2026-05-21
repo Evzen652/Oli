@@ -101,7 +101,7 @@ export const OBVOD_OBSAH: TopicMetadata[] = [
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Obvod a obsah",
-    briefDescription: "Žák počítá obvod a obsah čtverce i obdélníku ze zadaných rozměrů a naopak hledá chybějící rozměr ze zadaného obvodu.",
+    briefDescription: "Spočítáš obvod a obsah čtverce i obdélníku ze zadaných rozměrů a naopak najdeš chybějící rozměr ze zadaného obvodu.",
     keywords: [
       "obvod", "obsah", "obdélník", "čtverec", "strana",
       "cm", "cm²", "vzorec obvodu", "vzorec obsahu",

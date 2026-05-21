@@ -78,7 +78,7 @@ export const ARITMETICKY_PRUMER: TopicMetadata[] = [
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",
-    briefDescription: "Žák vypočítá aritmetický průměr malé skupiny čísel — sečte hodnoty a vydělí jejich počtem; zvládne i zpětnou úlohu (hledání chybějícího členu).",
+    briefDescription: "Naučíš se počítat aritmetický průměr — sečteš hodnoty a vydělíš jejich počtem; zvládneš i zpětnou úlohu (najít chybějící člen).",
     keywords: [
       "průměr", "aritmetický průměr", "součet", "počet hodnot",
       "statistika", "data", "průměrná hodnota",

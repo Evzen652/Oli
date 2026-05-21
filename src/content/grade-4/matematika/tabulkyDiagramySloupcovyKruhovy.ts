@@ -93,7 +93,7 @@ export const TABULKY_DIAGRAMY: TopicMetadata[] = [
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",
-    briefDescription: "Žák čte a interpretuje data z tabulky — určí celkový součet, největší a nejmenší hodnotu, porovná položky; rozumí principu sloupcového a kruhového diagramu.",
+    briefDescription: "Naučíš se číst a chápat data v tabulce — určíš celkový součet, největší a nejmenší hodnotu, porovnáš položky; pochopíš sloupcový i kruhový diagram.",
     keywords: [
       "tabulka", "sloupcový diagram", "kruhový diagram",
       "čtení dat", "interpretace grafu", "největší hodnota", "celkový součet",
