@@ -9,18 +9,26 @@
 
 ## Otevřené
 
-### Hint leak v grade-4 geometrii a průměru (pre-existing)
-- `src/content/grade-4/matematika/trojuhelnikDruhyStran.ts` — hints obsahují správnou odpověď
-- `src/content/grade-4/matematika/aritmetickyPrumerUvod.ts` — hint #2 prozrazuje výsledek
-- Opravit: přepsat hints tak, aby neobsahovaly `correctAnswer` jako podřetězec
+### Rozdělení historie procvičování podle původu (parent vs. self)
+- `session_logs` neobsahuje `origin` pole (parent / self).
+- Pro správné rozdělení v dětském UI je potřeba přidat
+  `session_logs.origin enum ('parent', 'self')` + naplnit při insertu z FSM
+  podle session source.
+- Odloženo z follow-up ČÁST C bod 2 — bez DB migrace nelze čistě implementovat.
 
 ### `audit:pedagogical` script nefunguje na Windows CMD
-- Prefix `AUDIT_PEDAGOGICAL=1` nefunguje v `cmd.exe` 
+- Prefix `AUDIT_PEDAGOGICAL=1` nefunguje v `cmd.exe`
 - Řešení: přidat `cross-env` do devDependencies, nebo dokumentovat jen pro Git Bash
 
 ---
 
 ## Vyřízené
+
+### 2026-05-22 — Follow-up po review (Hint leaks + Parent UI + Student UI) ✅
+- ✅ Hint leaks (3 soubory) — branch `fix/hint-leaks-grade-4`,
+  audit: 0 hint_leak issues, 100% passingPct
+- ✅ Parent report: positive_observation + next_week_plan (backend i UI)
+- ✅ Student UI: filtry 1-5 za FEATURES, displayName fallback
 
 ### 2026-05-22 — Noční pipeline (Tasks 1–6) ✅
 Viz `docs/MORNING_SUMMARY_2026-05-22.md` pro úplný přehled.

@@ -123,3 +123,50 @@ npx vitest run src/test/factualGenerator.test.ts
 git checkout feat/student-ui
 git checkout feat/pedagogical-audit-pipeline
 ```
+
+---
+
+## Follow-up dokončen — 2026-05-22 (post-review)
+
+Tři skupiny problémů identifikovaných při review byly opraveny.
+
+### ČÁST A — Hint leaks (`fix/hint-leaks-grade-4`)
+- ✅ `trojuhelnikDruhyPodleStran.ts` — Level 1 hints přepsány na naváděcí
+  ("Porovnej délky všech tří stran." / "Kolik stran je stejně dlouhých?")
+- ✅ `aritmetickyPrumerUvod.ts` — Level 1-2 i Level 3 přepsány tak, aby
+  hint neobsahoval spočítaný součet ani výsledek
+- ✅ Bonus: `rovnobezkyAKolmice.ts` — třetí leak nahlášený auditem také opraven
+- **Audit po opravě: 0 hint_leak issues, 100% passingPct**
+- PR: https://github.com/Evzen652/Oli/pull/new/fix/hint-leaks-grade-4
+
+### ČÁST B — Parent backend + UI (`feat/parent-first`, pokračování)
+- ✅ Gemini schema v `weekly-report` rozšířeno o `positive_observation` a `next_week_plan`
+- ✅ aiPrompt FORMÁT sekce doplněna pravidly pro obě nová pole
+- ✅ `narrative` initialization + 3 fallback bloky propagují nová pole
+- ✅ `weeklyReportGenerator.ts` (frontend) dopočítává obě pole deterministicky
+  z dat (žádné runtime AI — respektuje princip projektu)
+- ✅ `pages/Report.tsx`: zapojen `<PositiveObservation>` nahoře a `<NextWeekPlan>`
+  po sekci "Co teď?" se "Zadat" CTA
+- PR: pokračování na `feat/parent-first`
+
+### ČÁST C — Student UI (`feat/student-ui`, pokračování)
+- ✅ Filtry 1-5 v rozcestníku skryté za `FEATURES.studentGradeFilters` (default false)
+- ⚠️ Rozdělení historie podle původu (parent vs. self) — **odložen**:
+  `session_logs` neobsahuje `origin` pole. Detail zalogován v `PENDING_CHANGES.md`.
+  Bez DB migrace nelze čistě implementovat.
+- ✅ 3D ilustrace v rozcestníku — již integrované přes `IllustrationImg` +
+  `getSubjectMeta.image` (h-6 w-6 v subject button row). Bez další změny.
+- ✅ `topic.title` → `topic.displayName ?? topic.title` ve student/ a hlavním
+  `ChildHomePage.tsx`. `displayName?: string` přidáno do `TopicMetadata`.
+- PR: pokračování na `feat/student-ui`
+
+### Audit stav (po follow-up)
+- **0 hint_leak issues**
+- **100% passingPct** (70/70 tasků OK)
+
+### Branches & PRs (follow-up)
+| Branch | Status |
+|--------|--------|
+| `fix/hint-leaks-grade-4` | ✅ pushed (3 commity) |
+| `feat/parent-first` | ✅ pushed (2 nové commity) |
+| `feat/student-ui` | ✅ pushed (1 nový commit) |
