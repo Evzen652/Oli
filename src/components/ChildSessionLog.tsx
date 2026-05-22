@@ -189,7 +189,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                       fallback={<span className="text-[11px]">{meta?.emoji ?? "📋"}</span>}
                     />
                   </span>
-                  {SUBJECT_LABELS[s] ?? (s.charAt(0).toUpperCase() + s.slice(1))}
+                  {SUBJECT_LABELS[s] ?? (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)}
                 </button>
               );
             })}

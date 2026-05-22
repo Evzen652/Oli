@@ -190,7 +190,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
     }
   };
 
-  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const capitalize = (s: string | null | undefined) => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
 
   // Dětské vs. RVP názvy — admin vidí formální RVP, žák vidí dětský název
   const displayCat = (cat: string) => isAdmin ? capitalize(cat) : getDisplayCategory(cat, grade);

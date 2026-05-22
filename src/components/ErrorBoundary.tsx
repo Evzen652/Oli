@@ -40,6 +40,11 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="text-muted-foreground text-sm">
               Nastala neočekávaná chyba. Zkus to znovu.
             </p>
+            {this.state.error && (
+              <pre className="text-left text-xs bg-muted rounded-lg p-3 overflow-auto max-h-40 text-destructive">
+                {this.state.error.message}
+              </pre>
+            )}
             <Button onClick={this.handleReset} className="gap-2">
               <RotateCcw className="h-4 w-4" />
               Začít znovu

@@ -219,7 +219,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
             </button>
             {subjects.map(s => {
               const meta = getSubjectMeta(s);
-              const label = SUBJECT_LABELS[s] ?? (s.charAt(0).toUpperCase() + s.slice(1));
+              const label = SUBJECT_LABELS[s] ?? (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
               return (
                 <button
                   key={s}

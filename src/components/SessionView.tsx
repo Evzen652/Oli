@@ -100,9 +100,9 @@ function getSubjectColor(subject?: string): { bg: string; border: string; badge:
 function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string }, grade: number | null, isStudentView: boolean): string {
   if (!isStudentView) return getFullTopicTitle(topic as any);
   const g = grade ?? 4;
-  const displayGroup = getDisplayTopic(topic.topic, g as any);
-  const displaySub = topic.displayName ?? topic.title;
-  if (topic.topic === topic.title) return displayGroup;
+  const displayGroup = getDisplayTopic(topic.topic ?? "", g as any);
+  const displaySub = topic.displayName ?? topic.title ?? "";
+  if (!displaySub || topic.topic === topic.title) return displayGroup;
   const sub = displaySub.charAt(0).toLowerCase() + displaySub.slice(1);
   return `${displayGroup} – ${sub}`;
 }

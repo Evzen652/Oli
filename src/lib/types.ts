@@ -254,8 +254,10 @@ export interface AuditLogEntry {
 // ===== HELPERS =====
 /** Full display title: "Porovnávání zlomků s různým jmenovatelem" instead of just "S různým jmenovatelem" */
 export function getFullTopicTitle(topic: TopicMetadata): string {
-  if (topic.topic === topic.title) return topic.title;
+  const title = topic.title ?? "";
+  const topicName = topic.topic ?? "";
+  if (!title || topicName === title) return title || topicName;
   // Lowercase first char of subtitle when appending
-  const sub = topic.title.charAt(0).toLowerCase() + topic.title.slice(1);
-  return `${topic.topic} – ${sub}`;
+  const sub = title.charAt(0).toLowerCase() + title.slice(1);
+  return `${topicName} – ${sub}`;
 }
