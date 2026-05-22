@@ -466,71 +466,39 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
               {/* Info dialog — pokud existuje pro tuto úroveň */}
               {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
 
-              {/* CATEGORY level — asymmetric grid (1 primary + ostatní) */}
+              {/* CATEGORY level — rovnoměrný 2×2 grid */}
               {level === "category" && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {categories.map((category, idx) => {
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {categories.map((category) => {
                     const count = new Set(
                       topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
                     ).size;
                     const visual = getCategoryVisual(selectedSubject!, category);
-                    const isPrimary = idx === 0 && categories.length > 1;
                     return (
                       <button
                         key={category}
                         type="button"
                         onClick={() => handleCategoryClick(category)}
-                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 sm:p-6 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
-                          isPrimary ? "md:col-span-2 md:row-span-2 min-h-[320px] flex flex-col" : "min-h-[160px]"
-                        }`}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-4 min-h-[120px]`}
                       >
-                        {isPrimary ? (
-                          <>
-                            <div className="flex-1 flex items-center justify-center py-4">
-                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
-                            </div>
-                            <div className="space-y-2">
-                              <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
-                                {displayCat(category)}
-                              </h3>
-                              {displayCatDesc(category) && (
-                                <p className="text-sm text-foreground/70 leading-snug">{displayCatDesc(category)}</p>
-                              )}
-                              <p className="text-sm text-foreground/70">
-                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
-                              </p>
-                              <div className="flex items-center gap-2 pt-1">
-                                <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground/90 text-background px-4 py-2 text-sm font-bold shadow-soft-2 transition-transform group-hover:translate-x-0.5">
-                                  Pokračovat
-                                  <span aria-hidden>›</span>
-                                </span>
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <div className="flex items-center gap-3 h-full">
-                            <div className="flex-1 min-w-0 space-y-1">
-                              <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
-                                {displayCat(category)}
-                              </h3>
-                              {displayCatDesc(category) && (
-                                <p className="text-xs text-foreground/70 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
-                              )}
-                              <p className="text-xs text-foreground/70">
-                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
-                              </p>
-                            </div>
-                            <div className="shrink-0">
-                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
-                            </div>
-                            <span
-                              className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
-                              aria-hidden
-                            >
-                              ›
-                            </span>
-                          </div>
-                        )}
+                        <div className="shrink-0">
+                          <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
+                        </div>
+                        <div className="flex-1 min-w-0 space-y-1">
+                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight">
+                            {displayCat(category)}
+                          </h3>
+                          {displayCatDesc(category) && (
+                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
+                          )}
+                          <p className="text-xs text-foreground/50 font-medium">
+                            {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
+                          </p>
+                        </div>
+                        <span
+                          className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`}
+                          aria-hidden
+                        >›</span>
                       </button>
                     );
                   })}
