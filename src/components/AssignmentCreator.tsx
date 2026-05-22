@@ -32,6 +32,8 @@ interface Props {
   onPrefillConsumed?: () => void;
   /** Demo mode: prefix vložený do note pro IP-izolaci (např. "__demo:abc123") */
   demoNotePrefix?: string;
+  /** Vlastní CSS třídy pro trigger tlačítko */
+  buttonClassName?: string;
 }
 
 interface Subject { id: string; name: string; slug: string; }
@@ -39,7 +41,7 @@ interface Category { id: string; name: string; subject_id: string; }
 interface Topic { id: string; name: string; category_id: string; }
 interface Skill { id: string; name: string; code_skill_id: string; topic_id: string; is_active: boolean; }
 
-export function AssignmentCreator({ childId, childName, onCreated, prefillSkillCode, onPrefillConsumed, demoNotePrefix }: Props) {
+export function AssignmentCreator({ childId, childName, onCreated, prefillSkillCode, onPrefillConsumed, demoNotePrefix, buttonClassName }: Props) {
   const t = useT();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -51,6 +53,8 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
   const [categories, setCategories] = useState<Category[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [subjectsLoading, setSubjectsLoading] = useState(false);
+  const [subjectsError, setSubjectsError] = useState<string | null>(null);
 
   // Selection state
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -68,8 +72,21 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
 
   useEffect(() => {
     if (!open) return;
-    supabase.from("curriculum_subjects").select("id, name, slug").order("sort_order").then(({ data }) =>
-      setSubjects((data ?? []).map(s => ({ ...s, name: normalizeSubjectLabel(s.name, s.slug) }))));
+    setSubjectsLoading(true);
+    setSubjectsError(null);
+    supabase.from("curriculum_subjects").select("id, name, slug").order("sort_order").then(({ data, error }) => {
+      setSubjectsLoading(false);
+      if (error) {
+        console.error("[AssignmentCreator] subjects fetch error:", error);
+        setSubjectsError("Nepodařilo se načíst předměty. Zkuste dialog zavřít a znovu otevřít.");
+        return;
+      }
+      const rows = data ?? [];
+      if (rows.length === 0) {
+        console.warn("[AssignmentCreator] curriculum_subjects returned 0 rows");
+      }
+      setSubjects(rows.map(s => ({ ...s, name: normalizeSubjectLabel(s.name, s.slug) })));
+    });
   }, [open]);
 
   useEffect(() => {
@@ -241,6 +258,8 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
     setSelectedSubject(""); setSelectedCategory(""); setSelectedTopic(""); setSelectedSkill("");
     setAssignedDate(new Date()); setDueDate(undefined); setNote("");
     setSuccess(false);
+    setSubjects([]); setCategories([]); setTopics([]); setSkills([]);
+    setSubjectsError(null);
   };
 
   const handleOpenChange = (v: boolean) => {
@@ -251,7 +270,7 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <button className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-between px-4 shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm">
+        <button className={cn("w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-between px-4 shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm", buttonClassName)}>
           {t("assign.create")}
           <ArrowRight className="h-4 w-4 shrink-0" />
         </button>
@@ -287,10 +306,19 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
             {/* Předmět */}
             <div className="space-y-1.5">
               <Label>{t("assign.subject")}</Label>
-              <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-                <SelectTrigger><SelectValue placeholder={t("assign.pick")} /></SelectTrigger>
-                <SelectContent>{subjects.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
-              </Select>
+              {subjectsError ? (
+                <p className="text-sm text-destructive rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2">{subjectsError}</p>
+              ) : (
+                <Select value={selectedSubject} onValueChange={setSelectedSubject} disabled={subjectsLoading}>
+                  <SelectTrigger>
+                    {subjectsLoading
+                      ? <span className="text-muted-foreground flex items-center gap-2"><Loader2 className="h-3.5 w-3.5 animate-spin" />Načítám…</span>
+                      : <SelectValue placeholder={t("assign.pick")} />
+                    }
+                  </SelectTrigger>
+                  <SelectContent>{subjects.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
+                </Select>
+              )}
             </div>
 
             {/* Okruh */}
