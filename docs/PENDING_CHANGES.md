@@ -7,6 +7,16 @@
 
 ---
 
+## CI/CD + E2E testy (přidáno)
+- GitHub Actions CI pipeline: .github/workflows/ci.yml
+- GitHub Actions PR check: .github/workflows/pr-check.yml  
+- Playwright E2E testy: e2e/ (landing, demo, auth, výkon, přístupnost)
+- ⚠️ GitHub Secrets musí přidat Evžen ručně v repo Settings → Secrets:
+  - VITE_SUPABASE_URL
+  - VITE_SUPABASE_ANON_KEY
+
+---
+
 ## Otevřené
 
 ### Rozdělení historie procvičování podle původu (parent vs. self)

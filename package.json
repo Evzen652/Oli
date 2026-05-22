@@ -16,7 +16,12 @@
     "verify:curriculum": "node scripts/verify-curriculum.mjs",
     "verify:ai-curriculum": "node scripts/verify-ai-curriculum.mjs",
     "sb": "node scripts/sb.mjs",
-    "sb:status": "node scripts/sb.mjs status"
+    "sb:status": "node scripts/sb.mjs status",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:all": "npm test && npm run audit:content && npm run test:e2e",
+    "test:ci": "npm test && npm run audit:content && npm run verify:curriculum"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -72,7 +77,9 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/js": "^9.32.0",
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
