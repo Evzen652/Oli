@@ -25,8 +25,8 @@ function gen(level: number): PracticeTask[] {
         options: shuffle([String(avg), String(avg + 1), String(avg - 1), String(avg + 2)]
           .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
         hints: [
-          `Průměr = součet všech čísel ÷ počet čísel.`,
-          `Součet: ${nums.join(" + ")} = ${sum}. Počet čísel: ${count}.`,
+          "Sečti všechna čísla.",
+          "Vyděl součet počtem čísel.",
         ],
         solutionSteps: [
           `Součet: ${nums.join(" + ")} = ${sum}`,
@@ -48,8 +48,8 @@ function gen(level: number): PracticeTask[] {
         options: shuffle([String(missing), String(missing + 2), String(missing - 2), String(missing + avg)]
           .filter((v, idx, arr) => arr.indexOf(v) === idx && parseInt(v) > 0).slice(0, 4)),
         hints: [
-          `Celkový součet = průměr × počet čísel = ${avg} × ${count} = ${avg * count}.`,
-          `Chybějící číslo = ${avg * count} − (${knownNums.join(" + ")}) = ${missing}.`,
+          "Nejdřív spočítej celkový součet: průměr × počet čísel.",
+          "Od celkového součtu odečti známá čísla — to je chybějící.",
         ],
         solutionSteps: [
           `Celkový součet = ${avg} × ${count} = ${avg * count}`,
