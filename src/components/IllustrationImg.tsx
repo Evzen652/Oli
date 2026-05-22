@@ -22,7 +22,7 @@ export function IllustrationImg({ src, alt = "", className, fallback }: Props) {
     <img
       src={src}
       alt={alt}
-      className={className ?? ""}
+      className={`mix-blend-multiply ${className ?? ""}`}
       onError={() => setFailed(true)}
     />
   );
