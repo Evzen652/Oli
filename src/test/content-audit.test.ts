@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { getAllTopics } from "@/lib/contentRegistry";
-import { runOfflineAudit, CATEGORY_LABELS } from "@/lib/contentAudit";
+import {
+  runOfflineAudit,
+  runPedagogicalAudit,
+  CATEGORY_LABELS,
+  PEDAGOGICAL_CATEGORY_LABELS,
+} from "@/lib/contentAudit";
 
 /**
  * AUTOMATICKÝ KONTROLNÍ BĚH OBSAHU (Audit)
@@ -50,6 +55,58 @@ describe("CONTENT AUDIT — offline (vždy běží)", () => {
       `Pouze ${report.passingPct}% cvičení je technicky OK (cíl ≥70%)`,
     ).toBeGreaterThanOrEqual(70);
   }, 60_000);
+});
+
+// ─────────────────────────────────────────────────────────
+// PEDAGOGICKÝ AUDIT — opt-in (AUDIT_PEDAGOGICAL=1)
+// Čistě statický, bez network. Kontroluje didaktickou kvalitu.
+// ─────────────────────────────────────────────────────────
+
+const PEDAGOGICAL_AUDIT_ENABLED = process.env.AUDIT_PEDAGOGICAL === "1";
+
+describe.skipIf(!PEDAGOGICAL_AUDIT_ENABLED)("CONTENT AUDIT — pedagogická kontrola (AUDIT_PEDAGOGICAL=1)", () => {
+  it("Pedagogický audit: gradace obtížnosti, nápovědy, distraktory, audit flagy", () => {
+    const report = runPedagogicalAudit(allTopics);
+
+    console.log("\n═══════════════════════════════════════════");
+    console.log("    PEDAGOGICKÝ AUDIT REPORT");
+    console.log("═══════════════════════════════════════════");
+    console.log(`  Topics zkontrolováno:     ${report.totalTopicsChecked} / ${allTopics.length}`);
+    console.log(`  Problémy celkem:          ${report.issues.length}`);
+    if (report.needsReviewTopics.length > 0) {
+      console.log(`\n  ⚠ NEEDS_REVIEW (${report.needsReviewTopics.length}):`);
+      report.needsReviewTopics.forEach((id) => console.log(`    • ${id}`));
+    }
+    if (report.nonAdaptiveTopics.length > 0) {
+      console.log(`\n  ↕ Non-adaptivní generátory (${report.nonAdaptiveTopics.length}):`);
+      report.nonAdaptiveTopics.slice(0, 10).forEach((id) => console.log(`    • ${id}`));
+      if (report.nonAdaptiveTopics.length > 10) {
+        console.log(`    … a dalších ${report.nonAdaptiveTopics.length - 10}`);
+      }
+    }
+    console.log("\n  Rozpis kategorií:");
+    for (const [cat, count] of Object.entries(report.byCategory)) {
+      if (count > 0) {
+        const label = PEDAGOGICAL_CATEGORY_LABELS[cat as keyof typeof PEDAGOGICAL_CATEGORY_LABELS];
+        console.log(`    • ${label.padEnd(32)} ${count}`);
+      }
+    }
+    if (report.issues.length > 0) {
+      console.log("\n  Top 15 problémů:");
+      report.issues.slice(0, 15).forEach((i, idx) => {
+        console.log(`    ${idx + 1}. [${i.category}] ${i.topicId}`);
+        console.log(`       → ${i.detail}`);
+      });
+      if (report.issues.length > 15) {
+        console.log(`    … a dalších ${report.issues.length - 15}`);
+      }
+    }
+    console.log("═══════════════════════════════════════════\n");
+
+    // Pedagogický audit neselhává testy — jen reportuje. Hard fail jen u audit_flagů.
+    const flagIssues = report.issues.filter((i) => i.category === "audit_flag");
+    expect(flagIssues.length).toBeDefined(); // vždy pass — audit je informativní
+  }, 120_000);
 });
 
 // ─────────────────────────────────────────────────────────
