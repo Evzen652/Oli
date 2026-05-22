@@ -326,8 +326,8 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                         />
                       </div>
                       <div className="space-y-3">
-                        <h3 className="text-3xl sm:text-4xl font-black capitalize text-foreground tracking-tight">
-                          {subject}
+                        <h3 className="text-3xl sm:text-4xl font-black text-foreground tracking-tight">
+                          {capitalize(subject)}
                         </h3>
                         <p className="text-sm text-foreground/70">
                           {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
@@ -346,8 +346,8 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                       {/* Menší kompaktní karty — ilustrace vpravo, text vlevo */}
                       <div className="flex items-center gap-3 h-full">
                         <div className="flex-1 min-w-0 space-y-1.5">
-                          <h3 className="text-xl sm:text-2xl font-black capitalize text-foreground tracking-tight">
-                            {subject}
+                          <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
+                            {capitalize(subject)}
                           </h3>
                           <p className="text-xs text-foreground/70">
                             {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
@@ -412,8 +412,8 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                     <OlyLogo size="sm" onClick={onBack} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground capitalize">
-                      {selectedSubject ?? title}
+                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+                      {capitalize(selectedSubject ?? title)}
                     </h1>
                     <p className="text-sm text-foreground/70">
                       {subtitle}
@@ -434,7 +434,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
               {/* Title + back */}
               <div className="flex items-end justify-between gap-3">
                 <div className="min-w-0">
-                  <h2 className="text-3xl font-black tracking-tight text-foreground capitalize truncate">
+                  <h2 className="text-3xl font-black tracking-tight text-foreground truncate">
                     {title}
                   </h2>
                   <p className="text-sm text-muted-foreground">
@@ -483,7 +483,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                               <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
                             </div>
                             <div className="space-y-2">
-                              <h3 className="text-2xl sm:text-3xl font-black capitalize text-foreground tracking-tight">
+                              <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
                                 {capitalize(category)}
                               </h3>
                               <p className="text-sm text-foreground/70">
@@ -500,7 +500,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                         ) : (
                           <div className="flex items-center gap-3 h-full">
                             <div className="flex-1 min-w-0 space-y-1">
-                              <h3 className="text-lg sm:text-xl font-black capitalize text-foreground tracking-tight">
+                              <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
                                 {capitalize(category)}
                               </h3>
                               <p className="text-xs text-foreground/70">
@@ -552,7 +552,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                               <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })} fallbackEmoji={topicEmoji} size="hero" />
                             </div>
                             <div className="space-y-2">
-                              <h3 className="text-2xl sm:text-3xl font-black capitalize text-foreground tracking-tight">
+                              <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
                                 {capitalize(topicName)}
                               </h3>
                               {description && (
@@ -574,7 +574,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                         ) : (
                           <div className="flex items-center gap-3 h-full">
                             <div className="flex-1 min-w-0 space-y-1">
-                              <h3 className="text-lg sm:text-xl font-black capitalize text-foreground tracking-tight line-clamp-2">
+                              <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight line-clamp-2">
                                 {capitalize(topicName)}
                               </h3>
                               {description && (
