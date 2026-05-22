@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -14,231 +14,116 @@ import { cs } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
-import { normalizeSubjectLabel, normalizeCategoryName, normalizeTopicName } from "@/lib/curriculumNormalize";
-import { getReadableSkillName } from "@/lib/skillReadableName";
+import { getAllTopics } from "@/lib/contentRegistry";
+import type { Grade, TopicMetadata } from "@/lib/types";
+import { getSubjectMeta } from "@/lib/subjectRegistry";
 
 interface Props {
   childId: string;
   childName: string;
+  grade?: Grade | null;
   onCreated?: (skillId: string) => void;
-  /**
-   * Pokud je předán code_skill_id (např. "math-compare-natural-numbers-100"),
-   * sheet se automaticky otevře a předvyplní celý řetězec
-   * subject → category → topic → skill.
-   * Změna této hodnoty (klíčem nebo přepsáním) znovu spustí prefill.
-   */
   prefillSkillCode?: string | null;
-  /** Volitelný callback po dokončení/zrušení prefillu — rodič může vyresetovat hash */
   onPrefillConsumed?: () => void;
-  /** Demo mode: prefix vložený do note pro IP-izolaci (např. "__demo:abc123") */
   demoNotePrefix?: string;
-  /** Vlastní CSS třídy pro trigger tlačítko */
   buttonClassName?: string;
 }
 
-interface Subject { id: string; name: string; slug: string; }
-interface Category { id: string; name: string; subject_id: string; }
-interface Topic { id: string; name: string; category_id: string; }
-interface Skill { id: string; name: string; code_skill_id: string; topic_id: string; is_active: boolean; }
+function cap(s: string) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
 
-export function AssignmentCreator({ childId, childName, onCreated, prefillSkillCode, onPrefillConsumed, demoNotePrefix, buttonClassName }: Props) {
+export function AssignmentCreator({ childId, childName, grade, onCreated, prefillSkillCode, onPrefillConsumed, demoNotePrefix, buttonClassName }: Props) {
   const t = useT();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Curriculum data
-  const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [subjectsLoading, setSubjectsLoading] = useState(false);
-  const [subjectsError, setSubjectsError] = useState<string | null>(null);
-
   // Selection state
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
-  const [selectedSkill, setSelectedSkill] = useState("");
+  const [selectedSkillId, setSelectedSkillId] = useState(""); // TopicMetadata.id
   const [assignedDate, setAssignedDate] = useState<Date>(new Date());
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const [note, setNote] = useState("");
 
-  // Guard, který blokuje kaskádové resety během prefillu
-  const prefillingRef = useRef(false);
-  // Aktuálně zpracovávaný prefill kód (deduplikace)
-  const consumedPrefillRef = useRef<string | null>(null);
+  // All topics from code registry — filtered by grade if provided
+  const allTopics = useMemo<TopicMetadata[]>(() => {
+    const all = getAllTopics();
+    if (!grade) return all;
+    return all.filter(t => grade >= t.gradeRange[0] && grade <= t.gradeRange[1]);
+  }, [grade]);
 
+  // Derived hierarchy
+  const subjects = useMemo(() => [...new Set(allTopics.map(t => t.subject))], [allTopics]);
+
+  const categories = useMemo(() =>
+    selectedSubject
+      ? [...new Set(allTopics.filter(t => t.subject === selectedSubject).map(t => t.category))]
+      : [],
+    [allTopics, selectedSubject]);
+
+  const topicGroups = useMemo(() =>
+    selectedSubject && selectedCategory
+      ? [...new Set(allTopics.filter(t => t.subject === selectedSubject && t.category === selectedCategory).map(t => t.topic))]
+      : [],
+    [allTopics, selectedSubject, selectedCategory]);
+
+  const skills = useMemo<TopicMetadata[]>(() =>
+    selectedSubject && selectedCategory && selectedTopic
+      ? allTopics.filter(t => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic)
+      : [],
+    [allTopics, selectedSubject, selectedCategory, selectedTopic]);
+
+  // When category changes, reset downstream
+  useEffect(() => { setSelectedCategory(""); setSelectedTopic(""); setSelectedSkillId(""); }, [selectedSubject]);
+  useEffect(() => { setSelectedTopic(""); setSelectedSkillId(""); }, [selectedCategory]);
   useEffect(() => {
-    if (!open) return;
-    setSubjectsLoading(true);
-    setSubjectsError(null);
-    supabase.from("curriculum_subjects").select("id, name, slug").order("sort_order").then(({ data, error }) => {
-      setSubjectsLoading(false);
-      if (error) {
-        console.error("[AssignmentCreator] subjects fetch error:", error);
-        setSubjectsError("Nepodařilo se načíst předměty. Zkuste dialog zavřít a znovu otevřít.");
-        return;
-      }
-      const rows = data ?? [];
-      if (rows.length === 0) {
-        console.warn("[AssignmentCreator] curriculum_subjects returned 0 rows");
-      }
-      setSubjects(rows.map(s => ({ ...s, name: normalizeSubjectLabel(s.name, s.slug) })));
-    });
-  }, [open]);
+    if (skills.length === 1) setSelectedSkillId(skills[0].id);
+    else setSelectedSkillId("");
+  }, [selectedTopic, skills]);
 
+  // Auto-select if only one option
   useEffect(() => {
-    if (!selectedSubject) { setCategories([]); return; }
-    supabase.from("curriculum_categories").select("id, name, subject_id").eq("subject_id", selectedSubject).order("sort_order").then(({ data }) =>
-      setCategories((data ?? []).map(c => ({ ...c, name: normalizeCategoryName(c.name) }))));
-    if (prefillingRef.current) return;
-    setSelectedCategory(""); setSelectedTopic(""); setSelectedSkill("");
-  }, [selectedSubject]);
-
+    if (categories.length === 1) setSelectedCategory(categories[0]);
+  }, [categories]);
   useEffect(() => {
-    if (!selectedCategory) { setTopics([]); return; }
-    supabase.from("curriculum_topics").select("id, name, category_id").eq("category_id", selectedCategory).order("sort_order").then(({ data }) => {
-      const items = (data ?? []).map(t => ({ ...t, name: normalizeTopicName(t.name) }));
-      setTopics(items);
-      if (prefillingRef.current) return;
-      // Auto-select if only one topic
-      if (items.length === 1) {
-        setSelectedTopic(items[0].id);
-      } else {
-        setSelectedTopic(""); setSelectedSkill("");
-      }
-    });
-  }, [selectedCategory]);
+    if (topicGroups.length === 1) setSelectedTopic(topicGroups[0]);
+  }, [topicGroups]);
 
+  // Prefill from code_skill_id
   useEffect(() => {
-    if (!selectedTopic) { setSkills([]); return; }
-    supabase.from("curriculum_skills").select("id, name, code_skill_id, topic_id, is_active").eq("topic_id", selectedTopic).eq("is_active", true).order("sort_order").then(({ data }) => {
-      const items = (data ?? []).map(sk => ({ ...sk, name: getReadableSkillName(sk.code_skill_id) || sk.name }));
-      setSkills(items);
-      if (prefillingRef.current) return;
-      // Auto-select if only one skill
-      if (items.length === 1) {
-        setSelectedSkill(items[0].id);
-      } else {
-        setSelectedSkill("");
-      }
-    });
-  }, [selectedTopic]);
+    if (!prefillSkillCode || !open) return;
+    const topic = allTopics.find(t => t.id === prefillSkillCode);
+    if (topic) {
+      setSelectedSubject(topic.subject);
+      setSelectedCategory(topic.category);
+      setSelectedTopic(topic.topic);
+      setSelectedSkillId(topic.id);
+    } else {
+      toast({ description: `Téma "${prefillSkillCode}" nelze předvyplnit — vyberte ho prosím ručně.` });
+    }
+    onPrefillConsumed?.();
+  }, [prefillSkillCode, open]);
 
-  // Prefill chain: code_skill_id → skill → topic → category → subject
-  useEffect(() => {
-    if (!prefillSkillCode) return;
-    if (consumedPrefillRef.current === prefillSkillCode) return;
-    consumedPrefillRef.current = prefillSkillCode;
-
-    let cancelled = false;
-    (async () => {
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(prefillSkillCode);
-
-      // 1a) Pokus podle code_skill_id (preferované)
-      let skillRow: { id: string; name: string; code_skill_id: string; topic_id: string; is_active: boolean } | null = null;
-      const byCode = await supabase
-        .from("curriculum_skills")
-        .select("id, name, code_skill_id, topic_id, is_active")
-        .eq("code_skill_id", prefillSkillCode)
-        .eq("is_active", true)
-        .maybeSingle();
-      if (!cancelled) skillRow = byCode.data ?? null;
-
-      // 1b) Pokud je vstup UUID a nenašlo se podle kódu, zkus podle id
-      if (!cancelled && !skillRow && isUuid) {
-        const byId = await supabase
-          .from("curriculum_skills")
-          .select("id, name, code_skill_id, topic_id, is_active")
-          .eq("id", prefillSkillCode)
-          .eq("is_active", true)
-          .maybeSingle();
-        skillRow = byId.data ?? null;
-      }
-
-      // 1c) Fallback — zkus normalizovaný/canonical skill ID (např. zlomky aliasy)
-      if (!cancelled && !skillRow) {
-        try {
-          const { canonicalSkillId } = await import("@/lib/skillIdNormalizer");
-          const canonical = canonicalSkillId(prefillSkillCode);
-          if (canonical && canonical !== prefillSkillCode) {
-            const byCanon = await supabase
-              .from("curriculum_skills")
-              .select("id, name, code_skill_id, topic_id, is_active")
-              .eq("code_skill_id", canonical)
-              .eq("is_active", true)
-              .maybeSingle();
-            skillRow = byCanon.data ?? null;
-          }
-        } catch {
-          // ignore — canonical resolution selhal
-        }
-      }
-
-      if (cancelled) return;
-      if (!skillRow) {
-        // Skill se v curriculum_skills nenašel — otevři sheet aspoň prázdný
-        // (uživatel vybere ručně, lepší než nic)
-        console.warn("[AssignmentCreator] prefill skill not found:", prefillSkillCode);
-        toast({
-          description: `Téma "${prefillSkillCode}" nelze automaticky předvyplnit — vyberte ho prosím ručně.`,
-          variant: "default",
-        });
-        setOpen(true);
-        onPrefillConsumed?.();
-        return;
-      }
-
-      // 2) Topic
-      const { data: topicRow } = await supabase
-        .from("curriculum_topics")
-        .select("id, name, category_id")
-        .eq("id", skillRow.topic_id)
-        .maybeSingle();
-      if (cancelled || !topicRow) { setOpen(true); onPrefillConsumed?.(); return; }
-
-      // 3) Category
-      const { data: catRow } = await supabase
-        .from("curriculum_categories")
-        .select("id, name, subject_id")
-        .eq("id", topicRow.category_id)
-        .maybeSingle();
-      if (cancelled || !catRow) { setOpen(true); onPrefillConsumed?.(); return; }
-
-      // Aplikuj řetězec — guard zabrání kaskádovým resetům
-      prefillingRef.current = true;
-      setOpen(true);
-      setSelectedSubject(catRow.subject_id);
-      setSelectedCategory(catRow.id);
-      setSelectedTopic(topicRow.id);
-      setSelectedSkill(skillRow.id);
-
-      // Po vykreslení uvolni guard
-      setTimeout(() => {
-        prefillingRef.current = false;
-        onPrefillConsumed?.();
-      }, 100);
-    })();
-
-    return () => { cancelled = true; };
-  }, [prefillSkillCode, onPrefillConsumed]);
+  const selectedSkillMeta = skills.find(s => s.id === selectedSkillId);
 
   const handleSave = async () => {
-    if (!selectedSkill) return;
+    if (!selectedSkillId) return;
     setSaving(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setSaving(false); return; }
 
-    const skill = skills.find(s => s.id === selectedSkill);
     const noteValue = demoNotePrefix
       ? `${demoNotePrefix}${note.trim() ? ' ' + note.trim() : ''}`
       : (note.trim() || null);
+
     const { error } = await supabase.from("parent_assignments").insert({
       child_id: childId,
       parent_user_id: user.id,
-      skill_id: skill?.code_skill_id ?? selectedSkill,
+      skill_id: selectedSkillId,
       assigned_date: format(assignedDate, "yyyy-MM-dd"),
       due_date: dueDate ? format(dueDate, "yyyy-MM-dd") : null,
       note: noteValue,
@@ -249,23 +134,23 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
       toast({ description: t("parent.toast_error"), variant: "destructive" });
     } else {
       setSuccess(true);
-      onCreated?.(skill?.code_skill_id ?? selectedSkill);
+      onCreated?.(selectedSkillId);
       setTimeout(() => handleOpenChange(false), 1800);
     }
   };
 
   const resetForm = () => {
-    setSelectedSubject(""); setSelectedCategory(""); setSelectedTopic(""); setSelectedSkill("");
+    setSelectedSubject(""); setSelectedCategory(""); setSelectedTopic(""); setSelectedSkillId("");
     setAssignedDate(new Date()); setDueDate(undefined); setNote("");
     setSuccess(false);
-    setSubjects([]); setCategories([]); setTopics([]); setSkills([]);
-    setSubjectsError(null);
   };
 
   const handleOpenChange = (v: boolean) => {
     if (!v) resetForm();
     setOpen(v);
   };
+
+  const subjectMeta = (subj: string) => getSubjectMeta(subj);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -276,7 +161,7 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
         </button>
       </DialogTrigger>
       <DialogContent className="overflow-y-auto max-h-[90vh] sm:max-w-xl p-0 gap-0">
-        {/* Ilustrační záhlaví */}
+        {/* Záhlaví */}
         <div className="flex flex-col items-center gap-3 pt-8 pb-4 px-8">
           <div className="relative">
             <div className="h-24 w-24 rounded-3xl bg-amber-50 border border-amber-100 flex items-center justify-center shadow-sm">
@@ -306,51 +191,80 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
             {/* Předmět */}
             <div className="space-y-1.5">
               <Label>{t("assign.subject")}</Label>
-              {subjectsError ? (
-                <p className="text-sm text-destructive rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2">{subjectsError}</p>
-              ) : (
-                <Select value={selectedSubject} onValueChange={setSelectedSubject} disabled={subjectsLoading}>
-                  <SelectTrigger>
-                    {subjectsLoading
-                      ? <span className="text-muted-foreground flex items-center gap-2"><Loader2 className="h-3.5 w-3.5 animate-spin" />Načítám…</span>
-                      : <SelectValue placeholder={t("assign.pick")} />
-                    }
-                  </SelectTrigger>
-                  <SelectContent>{subjects.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
-                </Select>
-              )}
+              <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t("assign.pick")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjects.map(subj => {
+                    const meta = subjectMeta(subj);
+                    return (
+                      <SelectItem key={subj} value={subj}>
+                        <span className="flex items-center gap-2">
+                          <span>{meta.emoji}</span>
+                          <span>{cap(subj)}</span>
+                        </span>
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Okruh */}
-            {categories.length > 0 && (
+            {selectedSubject && categories.length > 0 && (
               <div className="space-y-1.5">
                 <Label>{t("assign.category")}</Label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger><SelectValue placeholder={t("assign.pick")} /></SelectTrigger>
-                  <SelectContent>{categories.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+                  <SelectContent>
+                    {categories.map(cat => (
+                      <SelectItem key={cat} value={cat}>{cap(cat)}</SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </div>
             )}
 
             {/* Téma */}
-            {topics.length > 1 && (
+            {selectedCategory && topicGroups.length > 1 && (
               <div className="space-y-1.5">
                 <Label>{t("assign.topic")}</Label>
                 <Select value={selectedTopic} onValueChange={setSelectedTopic}>
                   <SelectTrigger><SelectValue placeholder={t("assign.pick")} /></SelectTrigger>
-                  <SelectContent>{topics.map(tp => <SelectItem key={tp.id} value={tp.id}>{tp.name}</SelectItem>)}</SelectContent>
+                  <SelectContent>
+                    {topicGroups.map(tg => (
+                      <SelectItem key={tg} value={tg}>{cap(tg)}</SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </div>
             )}
 
             {/* Dovednost */}
-            {skills.length > 1 && (
+            {selectedTopic && skills.length > 1 && (
               <div className="space-y-1.5">
                 <Label>{t("assign.skill")}</Label>
-                <Select value={selectedSkill} onValueChange={setSelectedSkill}>
+                <Select value={selectedSkillId} onValueChange={setSelectedSkillId}>
                   <SelectTrigger><SelectValue placeholder={t("assign.pick")} /></SelectTrigger>
-                  <SelectContent>{skills.map(sk => <SelectItem key={sk.id} value={sk.id}>{sk.name}</SelectItem>)}</SelectContent>
+                  <SelectContent>
+                    {skills.map(sk => (
+                      <SelectItem key={sk.id} value={sk.id}>
+                        {sk.displayName ?? sk.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
+              </div>
+            )}
+
+            {/* Shrnutí vybraného tématu */}
+            {selectedSkillMeta && (
+              <div className="rounded-xl bg-violet-50 border border-violet-100 px-4 py-3 text-sm text-violet-800">
+                <p className="font-semibold">{selectedSkillMeta.displayName ?? selectedSkillMeta.title}</p>
+                {selectedSkillMeta.briefDescription && (
+                  <p className="text-violet-600 text-xs mt-0.5">{selectedSkillMeta.briefDescription}</p>
+                )}
               </div>
             )}
 
@@ -392,7 +306,7 @@ export function AssignmentCreator({ childId, childName, onCreated, prefillSkillC
               <Textarea value={note} onChange={e => setNote(e.target.value)} placeholder={t("assign.note_placeholder")} rows={2} />
             </div>
 
-            <Button className="w-full gap-2" onClick={handleSave} disabled={!selectedSkill || saving}>
+            <Button className="w-full gap-2" onClick={handleSave} disabled={!selectedSkillId || saving}>
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
               {t("assign.save")}
             </Button>

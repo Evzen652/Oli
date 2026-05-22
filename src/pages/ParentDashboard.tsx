@@ -427,6 +427,7 @@ export default function ParentDashboard() {
                         <AssignmentCreator
                           childId={child.id}
                           childName={child.child_name}
+                          grade={child.grade as Grade}
                           onCreated={(skillId) => {
                             if (isDemo && demoIpHash) {
                               const todayStr = localDateStr(new Date());
