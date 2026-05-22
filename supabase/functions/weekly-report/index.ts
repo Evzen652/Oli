@@ -132,6 +132,8 @@ serve(async (req) => {
             skills: [],
             stats: { sessions: 0, attempts: 0, accuracy: 0, withHelp: 0, wrong: 0 },
             recommendations: "Doporučujeme začít s krátkým 5minutovým procvičováním každý den.",
+            positive_observation: "Tento týden zatím žádné procvičování.",
+            next_week_plan: [],
             childName,
           },
         }),
@@ -149,6 +151,10 @@ serve(async (req) => {
             stats: { sessions: totalSessions, attempts: totalAttempts, accuracy, withHelp: totalWithHelp, wrong: totalWrong },
             errors: errorTypes,
             recommendations: "Data jsou dostupná, ale AI narace není k dispozici.",
+            positive_observation: totalAttempts > 0
+              ? `Procvičoval ${totalAttempts} úloh za týden.`
+              : "Tento týden zatím žádné procvičování.",
+            next_week_plan: [],
             childName,
           },
         }),
@@ -181,6 +187,16 @@ FORMÁT:
 3. to_practice: Co ještě potřebuje procvičit (konkrétně)
 4. recommendations: 2-3 konkrétní tipy pro rodiče co dělat doma (ne obecné fráze)
 5. skill_verdicts: Ke každému skill_id slovní hodnocení (1-3 slova)
+6. positive_observation: Jedno konkrétní pozitivum (jedna věta). MUSÍ být:
+   - Konkrétní fakt z dat (číslo, název dovednosti, akce)
+   - NE obecná fráze ("skvělé!", "výborně!")
+   - Pokud žádné konkrétní pozitivum z dat nelze odvodit, napiš neutrální
+     fakt (např. "Procvičuje pravidelně 4 dny v týdnu")
+7. next_week_plan: 1-3 doporučené akce na příští týden. Každá obsahuje:
+   - topic_id: skill_id existující dovednosti z dat
+   - reason: jedna věta proč
+   - type: "repeat" pro téma kde úspěšnost < 0.75, "new" pro postup po
+     zvládnutém tématu
 
 Zavolej funkci weekly_report s výsledkem.`;
 
@@ -214,8 +230,27 @@ Zavolej funkci weekly_report s výsledkem.`;
                     description: "Map of skill_id to short verbal verdict (e.g. 'Výborně zvládá').",
                     additionalProperties: { type: "string" },
                   },
+                  positive_observation: {
+                    type: "string",
+                    description: "Jedno konkrétní pozitivum z dat dítěte (např. 'Zvládl 3 nová témata v matematice'). NIKDY obecné fráze jako 'výborně!'. Pokud žádné konkrétní pozitivum neexistuje, použij neutrální fakt (např. 'Procvičuje pravidelně 4 dny v týdnu').",
+                  },
+                  next_week_plan: {
+                    type: "array",
+                    description: "1-3 doporučené akce pro příští týden. Každá s topic_id (z dovedností v datech), důvodem (1 věta) a typem.",
+                    maxItems: 3,
+                    items: {
+                      type: "object",
+                      properties: {
+                        topic_id: { type: "string", description: "ID dovednosti (skill_id) z dat." },
+                        reason: { type: "string", description: "Jedna věta proč to dítě potřebuje." },
+                        type: { type: "string", enum: ["repeat", "new"], description: "'repeat' pro opakování stávajícího tématu, 'new' pro nové." },
+                      },
+                      required: ["topic_id", "reason", "type"],
+                      additionalProperties: false,
+                    },
+                  },
                 },
-                required: ["summary", "strengths", "to_practice", "recommendations"],
+                required: ["summary", "strengths", "to_practice", "recommendations", "positive_observation", "next_week_plan"],
                 additionalProperties: false,
               },
             },
@@ -234,6 +269,10 @@ Zavolej funkci weekly_report s výsledkem.`;
             stats: { sessions: totalSessions, attempts: totalAttempts, accuracy, withHelp: totalWithHelp, wrong: totalWrong },
             errors: errorTypes,
             recommendations: "AI report není momentálně dostupný.",
+            positive_observation: totalAttempts > 0
+              ? `Procvičoval ${totalAttempts} úloh za týden.`
+              : "Tento týden zatím žádné procvičování.",
+            next_week_plan: [],
             childName,
           },
         }),
@@ -243,7 +282,15 @@ Zavolej funkci weekly_report s výsledkem.`;
 
     const aiData = await aiResponse.json();
     const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-    let narrative = { summary: "", strengths: "", to_practice: "", recommendations: "", skill_verdicts: {} as Record<string, string> };
+    let narrative = {
+      summary: "",
+      strengths: "",
+      to_practice: "",
+      recommendations: "",
+      skill_verdicts: {} as Record<string, string>,
+      positive_observation: "",
+      next_week_plan: [] as Array<{ topic_id: string; reason: string; type: "repeat" | "new" }>,
+    };
 
     if (toolCall?.function?.arguments) {
       narrative = JSON.parse(toolCall.function.arguments);
@@ -262,6 +309,8 @@ Zavolej funkci weekly_report s výsledkem.`;
           strengths: narrative.strengths,
           to_practice: narrative.to_practice,
           recommendations: narrative.recommendations,
+          positive_observation: narrative.positive_observation,
+          next_week_plan: narrative.next_week_plan ?? [],
           skills: enrichedSkills,
           stats: { sessions: totalSessions, attempts: totalAttempts, accuracy, withHelp: totalWithHelp, wrong: totalWrong },
           errors: errorTypes,
