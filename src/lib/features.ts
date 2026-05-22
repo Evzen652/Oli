@@ -11,11 +11,25 @@
 
 const DEFAULTS = {
   /**
+   * AI pomocník "Tvořit obsah" v admin panelu.
+   * Zastaralé — obsah se tvoří přes Claude Chat + CC, ne za běhu.
+   * Zachováno v kódu pro případ, že se vrátí v jiné podobě.
+   */
+  adminAiContentCreator: false,
+
+  /**
    * Konverzační tutor ("Zeptat se Oli") v dětském sezení.
    * Vypnutý pro grade 1–7 (příliš komplikované, porušuje efektivní princip).
    * Zapnout až po UX testu se staršími žáky (grade 8–9).
    */
   studentChat: false,
+
+  /**
+   * Runtime AI generátor cvičení v admin detailu podtématu (Level II a III).
+   * Vypnutý — obsah Level II a III se tvoří přes Claude Chat + Claude Code.
+   * Viz AuthoringLauncher komponenta.
+   */
+  adminRuntimeAiGenerator: false,
 
   /**
    * Bodové ohodnocení (%) v dětské historii procvičování.

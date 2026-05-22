@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FEATURES } from "@/lib/features";
+import { AuthoringLauncher } from "@/components/admin/AuthoringLauncher";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -1063,9 +1065,10 @@ export function ExerciseTab({
         </div>
       </div>
 
-      {/* 2-col layout: AI generátor vlevo + "O této úrovni" karta vpravo */}
+      {/* 2-col layout: AI generátor / Authoring launcher vlevo + "O této úrovni" karta vpravo */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* AI generator box */}
+        {/* AI generator box — skrytý za feature flaggem */}
+        {FEATURES.adminRuntimeAiGenerator && (
         <div className={`rounded-2xl border-2 border-dashed ${config.color.dashed} p-5 space-y-3`}>
           <div className="flex items-start gap-2">
             <Sparkles className={`h-5 w-5 ${config.color.icon} shrink-0 mt-0.5`} />
@@ -1104,6 +1107,15 @@ export function ExerciseTab({
           </Button>
           {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
+        )}
+
+        {/* Authoring launcher — místo runtime AI generátoru pro Level II a III */}
+        {!FEATURES.adminRuntimeAiGenerator && variant !== "simple" && (
+          <AuthoringLauncher
+            topic={skill}
+            level={variant === "advanced" ? 2 : 3}
+          />
+        )}
 
         {/* "O této úrovni" stats karta */}
         <div className="rounded-2xl border-2 border-border/60 bg-card p-5 space-y-3 shadow-soft-1">
