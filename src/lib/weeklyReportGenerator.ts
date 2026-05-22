@@ -29,12 +29,29 @@ export interface ReportDetail {
   tone: "neutral" | "positive" | "warn" | "info";
 }
 
+export interface NextWeekPlanItemLocal {
+  topic_id: string;
+  reason: string;
+  type: "repeat" | "new";
+}
+
 interface ReportData {
   summary: string;
   details?: ReportDetail[];
   strengths?: string;
   to_practice?: string;
   recommendations: string;
+  /**
+   * Konkrétní pozitivní pozorování z dat (jedna věta).
+   * Deterministický výpočet — žádné AI. Sleduje stejné pravidlo
+   * jako Gemini schema v supabase/functions/weekly-report/index.ts.
+   */
+  positive_observation?: string;
+  /**
+   * 1–3 doporučené akce pro nadcházející týden.
+   * Deterministický výpočet z weakSkillIds — žádné AI.
+   */
+  next_week_plan?: NextWeekPlanItemLocal[];
   skills: SkillSummary[];
   stats: { days: number; attempts: number; accuracy: number; withHelp: number; wrong: number };
   /** IDs nejslabších skillů (≥2 pokusů, úspěšnost <50 %), top 3 */
@@ -280,12 +297,48 @@ export async function generateWeeklyReport(
     recommendations = "Pokračujte v pravidelném procvičování. Doporučujeme 3–4× týdně po 10 minutách.";
   }
 
+  // ── Pozitivní pozorování — konkrétní fakt z dat, ne obecná fráze ──
+  let positive_observation: string | undefined;
+  if (strongSorted.length > 0 && strongSorted[0].attempts >= 2) {
+    const s = strongSorted[0];
+    const pct = Math.round((s.correct / s.attempts) * 100);
+    positive_observation = `Téma "${s.skill}" zvládá na ${pct} % (${s.correct} z ${s.attempts}).`;
+  } else if (days >= 4) {
+    positive_observation = `Procvičoval/a pravidelně ${days} dny ${rangeLabel}.`;
+  } else if (attempts >= 10) {
+    positive_observation = `Procvičoval/a ${attempts} úloh ${rangeLabel}.`;
+  } else if (attempts > 0) {
+    positive_observation = `Začal/a s procvičováním (${attempts} ${attempts === 1 ? "úloha" : attempts < 5 ? "úlohy" : "úloh"} ${rangeLabel}).`;
+  }
+
+  // ── Plán na příští týden — z weakSkillIds (repeat) nebo strongSkillIds (new) ──
+  const next_week_plan: NextWeekPlanItemLocal[] = [];
+  // 1-2 slabá témata k opakování (priority)
+  for (const w of topWeak.slice(0, 2)) {
+    const pct = Math.round((w.correct / w.attempts) * 100);
+    next_week_plan.push({
+      topic_id: w.skill,
+      reason: `Úspěšnost ${pct} % — potřebuje procvičit, aby téma neusnulo.`,
+      type: "repeat",
+    });
+  }
+  // Pokud má prostor, přidej 1 nové téma (návrh na pokrok)
+  if (next_week_plan.length < 3 && topStrong.length > 0 && weakCount === 0) {
+    next_week_plan.push({
+      topic_id: topStrong[0].skill,
+      reason: "Zvládnuto na výbornou — čas na navazující téma.",
+      type: "new",
+    });
+  }
+
   return {
     summary,
     details,
     strengths,
     to_practice,
     recommendations,
+    positive_observation,
+    next_week_plan: next_week_plan.length > 0 ? next_week_plan : undefined,
     skills,
     stats: { days, attempts, accuracy, withHelp, wrong },
     weakSkillIds,

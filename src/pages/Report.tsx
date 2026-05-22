@@ -10,6 +10,8 @@ import { CalendarDays, CalendarRange, History, ArrowLeft, ArrowRight } from "luc
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
 import type { ReportRange, ReportDetail } from "@/lib/weeklyReportGenerator";
+import { PositiveObservation } from "@/components/parent/PositiveObservation";
+import { NextWeekPlan, type NextWeekPlanItem } from "@/components/parent/NextWeekPlan";
 
 interface SkillSummary {
   skill: string;
@@ -28,6 +30,10 @@ interface ReportData {
   strengths?: string;
   to_practice?: string;
   recommendations: string;
+  /** Konkrétní pozitivní pozorování z Gemini (jedna věta). */
+  positive_observation?: string;
+  /** 1-3 doporučené akce pro příští týden z Gemini. */
+  next_week_plan?: NextWeekPlanItem[];
   skills: SkillSummary[];
   stats: { days: number; attempts: number; accuracy: number; withHelp?: number; wrong?: number };
   weakSkillIds?: string[];
@@ -234,6 +240,14 @@ export default function Report() {
             </button>
           ))}
         </div>
+
+        {/* Pozitivní pozorování — nahoře, ihned za range tabs */}
+        {hasActivity && report.positive_observation && (
+          <PositiveObservation
+            text={report.positive_observation}
+            childName={childName ?? undefined}
+          />
+        )}
 
         {/* Stats + shrnutí */}
         {hasActivity ? (
@@ -457,6 +471,19 @@ export default function Report() {
               </button>
             </div>
           </div>
+        )}
+
+        {/* Plán na příští týden — z Gemini next_week_plan */}
+        {hasActivity && report.next_week_plan && report.next_week_plan.length > 0 && (
+          <NextWeekPlan
+            items={report.next_week_plan}
+            childName={childName ?? undefined}
+            onAssign={(topicId, type) => {
+              // Placeholder navigace — propojit s assign formulářem až existuje samostatný flow
+              console.log("[next_week_plan] assign", { topicId, type });
+              navigate(childId ? `/parent#assign-${childId}-${topicId}` : "/parent");
+            }}
+          />
         )}
 
         {/* Zpět */}
