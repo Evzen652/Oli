@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { FractionBarVisual } from "@/components/FractionBarVisual";
@@ -109,6 +110,7 @@ export function SessionView() {
 
   // For child role: show ChildHomePage by default, TopicBrowser on demand
   const [showTopicBrowser, setShowTopicBrowser] = useState(false);
+  const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(undefined);
 
   // Session recovery from localStorage
   const [recoveryData, setRecoveryData] = useState<ReturnType<typeof getPersistedSession>>(null);
@@ -298,7 +300,7 @@ export function SessionView() {
             <ChildHomePage
               grade={grade}
               onSelectTopic={s.handleTopicSelect}
-              onBrowseTopics={() => setShowTopicBrowser(true)}
+              onBrowseTopics={(subject?: string) => { setTopicBrowserSubject(subject); setShowTopicBrowser(true); }}
             />
           </div>
         </>
@@ -311,10 +313,11 @@ export function SessionView() {
         <TopicBrowser grade={grade} onSelectTopic={s.handleTopicSelect} onBack={() => {
           if (isStudentView) {
             setShowTopicBrowser(false);
+            setTopicBrowserSubject(undefined);
           } else {
             s.setGrade(null);
           }
-        }} isAdmin={role === "admin" && !isStudentView} />
+        }} isAdmin={role === "admin" && !isStudentView} initialSubject={topicBrowserSubject} />
       </>
     );
   }
@@ -390,23 +393,23 @@ export function SessionView() {
                   </p>
                 </div>
               </div>
-              <Sheet>
-                <SheetTrigger asChild>
+              <Dialog>
+                <DialogTrigger asChild>
                   <Button
                     variant="outline"
                     className="w-full text-base border-2 gap-2 px-5 py-3 h-auto rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-300 text-amber-800 hover:from-amber-100 hover:to-yellow-100 hover:border-amber-400 hover:shadow-lg hover:scale-[1.01] transition-all duration-200 font-semibold"
                   >
                     {t("session.good_to_know")}
                   </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:max-w-none p-0">
-                  <SheetHeader className="p-6 pb-0">
+                </DialogTrigger>
+                <DialogContent className="max-w-lg w-full max-h-[85vh] flex flex-col p-0">
+                  <DialogHeader className="px-6 pt-6 pb-0 shrink-0">
                     <div className="flex items-center gap-4">
-                      <img src={goodToKnowImg} alt="Co je dobré vědět" className="w-14 h-14 object-contain shrink-0 mix-blend-multiply" />
-                      <SheetTitle className="text-2xl">{getFullTopicTitle(session.matchedTopic)}</SheetTitle>
+                      <img src={goodToKnowImg} alt="Co je dobré vědět" className="w-12 h-12 object-contain shrink-0 mix-blend-multiply" />
+                      <DialogTitle className="text-xl text-left">{getFullTopicTitle(session.matchedTopic)}</DialogTitle>
                     </div>
-                  </SheetHeader>
-                  <ScrollArea className="h-[calc(100vh-8rem)] px-6 pb-6">
+                  </DialogHeader>
+                  <ScrollArea className="flex-1 px-6 pb-6">
                     <div className="space-y-6 text-base pt-4">
                       <p className="text-muted-foreground">{session.matchedTopic.briefDescription}</p>
                       <div className="rounded-md bg-secondary p-5 space-y-3">
@@ -469,8 +472,8 @@ export function SessionView() {
                       })()}
                     </div>
                   </ScrollArea>
-                </SheetContent>
-              </Sheet>
+                </DialogContent>
+              </Dialog>
             </div>
           )}
 
