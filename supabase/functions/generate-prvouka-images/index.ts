@@ -231,10 +231,38 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64, contentType: mimeMatch?.[1] ?? "image/png" };
   };
 
-  // Gemini 2.5 Flash Image primárně (přes Lovable Gateway) — výrazně lepší kvalita,
-  // nevytváří gibberish text, lépe drží edukační koncept.
-  // Pollinations/Flux jako záloha pokud Gemini selže (rate limit, content policy).
+  // Gemini direct (přímo Google API) — využije GEMINI_API_KEY z env.
+  const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+  const tryGeminiDirect = async () => {
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${GEMINI_API_KEY}`;
+    const resp = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseModalities: ["IMAGE"] },
+      }),
+    });
+    if (!resp.ok) {
+      const t = await resp.text();
+      throw new Error(`Gemini direct error ${resp.status}: ${t.slice(0, 200)}`);
+    }
+    const data = await resp.json();
+    // Najdi inlineData v parts
+    const parts = data.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find((p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData);
+    if (!imagePart?.inlineData?.data) {
+      throw new Error("No image in Gemini response: " + JSON.stringify(data).slice(0, 200));
+    }
+    return {
+      base64: imagePart.inlineData.data,
+      contentType: imagePart.inlineData.mimeType ?? "image/png",
+    };
+  };
+
+  // Priorita: Gemini direct (kvalita, instruction-following) → Lovable Gemini (záloha) → Pollinations (last resort).
   const chain = [
+    ...(GEMINI_API_KEY ? [{ name: "gemini-direct", run: tryGeminiDirect }] : []),
     ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
     { name: "pollinations", run: tryPollinations },
   ];
