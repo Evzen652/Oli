@@ -335,93 +335,120 @@ export default function ParentDashboard() {
         {children.map((child, idx) => (
           <div key={child.id} className="flex flex-col gap-5">
 
-            {/* Edit formulář — zobrazí se jen při editaci */}
-            {editingId === child.id && (
-              <div className="bg-white rounded-2xl border border-border p-4 flex gap-2 items-center flex-wrap shadow-sm">
-                <Input value={editName} onChange={(e) => setEditName(e.target.value)} className="h-8 w-40" />
-                <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
-                  <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
-                  <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. třída</SelectItem>)}</SelectContent>
-                </Select>
-                <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="gap-1 h-8"><Check className="h-3 w-3" /></Button>
-                <Button size="sm" variant="outline" onClick={() => setEditingId(null)} className="h-8"><X className="h-3 w-3" /></Button>
-              </div>
-            )}
 
             {/* Jednosloupcový layout */}
             {child.is_paired ? (
               <>
               {/* Hero karta — horizontální, full width */}
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-50 via-white to-sky-50 border border-violet-100 shadow-sm px-8 py-10 flex flex-col sm:flex-row items-start gap-6">
-                <span className="absolute top-4 right-16 text-primary/15 text-2xl pointer-events-none select-none">✦</span>
-                <span className="absolute top-10 right-6 text-primary/10 text-lg pointer-events-none select-none">+</span>
-                <span className="absolute bottom-4 left-1/3 text-primary/10 text-sm pointer-events-none select-none">✦</span>
-                <span className="absolute bottom-8 right-20 text-primary/10 text-base pointer-events-none select-none">✦</span>
-                <span className="absolute top-1/2 right-10 text-primary/10 text-xs pointer-events-none select-none">+</span>
+              <div className="rounded-3xl overflow-hidden shadow-sm border border-violet-200">
+                {/* Gradient hlavička — jméno + hvězdičky */}
+                <div className="relative overflow-hidden bg-gradient-to-br from-violet-500 via-purple-500 to-pink-400 px-8 pt-8 pb-6 text-white">
+                  <span className="absolute top-4 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
+                  <span className="absolute top-6 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>
+                  <span className="absolute bottom-3 right-12 text-white text-lg pointer-events-none select-none" style={{ animation: 'oli-star-3 15s ease-in-out infinite', animationDelay: '-3s' }}>✦</span>
+                  <span className="absolute top-3 left-1/3  text-white text-sm pointer-events-none select-none" style={{ animation: 'oli-star-1 25s ease-in-out infinite', animationDelay: '-14s' }}>✦</span>
 
-                {/* Edit/delete tlačítka — pravý horní roh (skryté v demo) */}
-                {!isDemo && (
-                  <div className="absolute top-3 right-3 flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
-                          <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
-                          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
-                            try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
-                            catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
-                          }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                )}
+                  {/* Edit/delete — pravý horní roh */}
+                  {!isDemo && (
+                    <div className="absolute top-3 right-3 flex gap-1">
+                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-white/60 hover:text-white hover:bg-white/20" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-white/60 hover:text-white hover:bg-white/20"><Trash2 className="h-3 w-3" /></Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{t("parent.delete_confirm_title")}</AlertDialogTitle>
+                            <AlertDialogDescription>{t("parent.delete_confirm_description").replace("{name}", child.child_name)}</AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t("parent.delete_confirm_no")}</AlertDialogCancel>
+                            <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={async () => {
+                              try { await deleteChild(child.id); toast({ description: t("parent.toast_child_deleted") }); }
+                              catch { toast({ description: t("parent.toast_error"), variant: "destructive" }); }
+                            }}>{t("parent.delete_confirm_yes")}</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  )}
 
-                {/* Jméno + stats */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-bold tracking-[0.15em] text-muted-foreground mb-1">✦ PŘEHLED DÍTĚTE</p>
-                  <h2 className="font-bold text-3xl leading-tight text-foreground">{child.child_name}</h2>
-                  <div className="flex items-center gap-2 mt-1 mb-5">
-                    <p className="text-muted-foreground text-sm">{child.grade}. ročník · aktivní</p>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
-                      <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
-                    </span>
+                  <p className="text-[11px] font-bold tracking-[0.15em] text-white/60 mb-1">✦ PŘEHLED DÍTĚTE</p>
+                  {editingId === child.id ? (
+                    <>
+                      <input
+                        autoFocus
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") setEditingId(null); }}
+                        className="font-bold text-3xl leading-tight text-white bg-white/20 border border-white/40 rounded-xl px-3 py-1 w-full max-w-xs outline-none placeholder:text-white/40 mb-2"
+                      />
+                      <div className="flex items-center gap-2 mb-5">
+                        <select
+                          value={editGrade}
+                          onChange={(e) => setEditGrade(Number(e.target.value) as Grade)}
+                          className="rounded-lg bg-white/20 border border-white/30 text-white text-sm px-2 py-1 cursor-pointer"
+                        >
+                          {GRADES.map((g) => <option key={g} value={g}>{g}. třída</option>)}
+                        </select>
+                        <button
+                          onClick={handleSaveEdit}
+                          disabled={editLoading || !editName.trim()}
+                          className="flex items-center gap-1 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 px-3 py-1 text-xs font-semibold text-white transition-colors disabled:opacity-50"
+                        >
+                          <Check className="h-3 w-3" /> Uložit
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="flex items-center gap-1 rounded-full hover:bg-white/20 border border-white/30 px-3 py-1 text-xs font-semibold text-white/70 hover:text-white transition-colors"
+                        >
+                          <X className="h-3 w-3" /> Zrušit
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="font-bold text-3xl leading-tight text-white">{child.child_name}</h2>
+                      <div className="flex items-center gap-2 mt-1 mb-5">
+                        <p className="text-white/70 text-sm">{child.grade}. ročník · aktivní</p>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-[11px] font-semibold text-white">
+                          <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
+                        </span>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Stats + tlačítko — bílá barva přes child selector */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+                    <div className="[&_*]:!text-white [&_*]:!border-white/30 flex-1 min-w-0">
+                      <ChildActivityBadge childId={child.id} mockStats={isDemo ? DEMO_STATS : undefined} compact />
+                    </div>
+                    {editingId !== child.id && (
+                      <div className="shrink-0 w-full sm:w-auto">
+                        <AssignmentCreator
+                          childId={child.id}
+                          childName={child.child_name}
+                          onCreated={(skillId) => {
+                            if (isDemo && demoIpHash) {
+                              const todayStr = localDateStr(new Date());
+                              setDemoPendingAssignments(prev => [
+                                { id: `db-${Date.now()}`, skill_id: skillId, assigned_date: todayStr, due_date: null as null, status: "pending" as const, note: null as null },
+                                ...prev,
+                              ]);
+                            }
+                            setAssignmentRefresh(r => r + 1);
+                            setNewAssignment({ childId: child.id, skillId });
+                            setTimeout(() => setNewAssignment(null), 60000);
+                          }}
+                          prefillSkillCode={prefillSkillCode && (!prefillForChildId || prefillForChildId === child.id) ? prefillSkillCode : null}
+                          onPrefillConsumed={consumePrefill}
+                          demoNotePrefix={isDemo && demoIpHash ? `__demo:${demoIpHash}` : undefined}
+                          buttonClassName="bg-white text-violet-700 hover:bg-white/90"
+                        />
+                      </div>
+                    )}
                   </div>
-                  <ChildActivityBadge childId={child.id} mockStats={isDemo ? DEMO_STATS : undefined} compact />
                 </div>
-
-                {/* Akce */}
-                {editingId !== child.id && (
-                  <div className="flex flex-col gap-3 w-full sm:w-56 shrink-0 sm:self-end">
-                    <AssignmentCreator
-                      childId={child.id}
-                      childName={child.child_name}
-                      onCreated={(skillId) => {
-                        if (isDemo && demoIpHash) {
-                          // Přidej nový pending úkol do lokálního stavu ihned
-                          const todayStr = localDateStr(new Date());
-                          setDemoPendingAssignments(prev => [
-                            { id: `db-${Date.now()}`, skill_id: skillId, assigned_date: todayStr, due_date: null as null, status: "pending" as const, note: null as null },
-                            ...prev,
-                          ]);
-                        }
-                        setAssignmentRefresh(r => r + 1);
-                        setNewAssignment({ childId: child.id, skillId });
-                        setTimeout(() => setNewAssignment(null), 60000);
-                      }}
-                      prefillSkillCode={prefillSkillCode && (!prefillForChildId || prefillForChildId === child.id) ? prefillSkillCode : null}
-                      onPrefillConsumed={consumePrefill}
-                      demoNotePrefix={isDemo && demoIpHash ? `__demo:${demoIpHash}` : undefined}
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Zadané úkoly — full width */}
@@ -498,8 +525,25 @@ export default function ParentDashboard() {
               <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold text-white shrink-0 ${avatarColors[idx % avatarColors.length]}`}>
-                    {getInitial(child.child_name)}
+                    {getInitial(editingId === child.id ? editName : child.child_name)}
                   </div>
+                  {editingId === child.id ? (
+                    <div className="flex items-center gap-2 flex-wrap flex-1">
+                      <Input
+                        autoFocus
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") setEditingId(null); }}
+                        className="h-8 w-36 font-bold text-base"
+                      />
+                      <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
+                        <SelectTrigger className="h-8 w-24"><SelectValue /></SelectTrigger>
+                        <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. třída</SelectItem>)}</SelectContent>
+                      </Select>
+                      <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="h-8 gap-1"><Check className="h-3 w-3" /> Uložit</Button>
+                      <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-8"><X className="h-3 w-3" /></Button>
+                    </div>
+                  ) : (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-bold text-lg text-foreground">{child.child_name}</span>
                     <span className="text-sm text-muted-foreground">· {child.grade}. {t("parent.grade_label")}</span>
@@ -528,6 +572,7 @@ export default function ParentDashboard() {
                       </AlertDialog>
                     )}
                   </div>
+                  )}
                 </div>
                 <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-700">{t("parent.pairing_code_label")}</p>
