@@ -109,6 +109,7 @@ export const ROVNOBEZKY_KOLMICE: TopicMetadata[] = [
   {
     id: "g4-mat-rovnobezky-kolmice-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-rovnobezky-a-kolmice",
+    displayName: "Rovnoběžky a kolmice",
     title: "Rovnoběžky a kolmice",
     studentTitle: "Rovnoběžky a kolmice",
     subject: "matematika",
@@ -134,6 +135,7 @@ export const ROVNOBEZKY_KOLMICE: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-mat-osova-soumernost-4", "g4-mat-obvod-obsah-obdelnik-ctverec-4"],
     generator: gen,
     helpTemplate: {
       hint: "Rovnoběžky jsou jako koleje — nikdy se neprotnou a jsou všude stejně daleko. Kolmice jsou jako rohy místnosti — svírají přesně 90°.",

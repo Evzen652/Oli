@@ -97,6 +97,7 @@ export const OBVOD_OBSAH: TopicMetadata[] = [
   {
     id: "g4-mat-obvod-obsah-obdelnik-ctverec-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-obvod-a-obsah-obvod-a-obsah-obdelniku-a-ctverce",
+    displayName: "Obvod a obsah",
     title: "Obvod a obsah obdélníku a čtverce",
     studentTitle: "Obvod a obsah",
     subject: "matematika",
@@ -122,6 +123,7 @@ export const OBVOD_OBSAH: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-trojuhelnik-druhy-stran-4", "g4-mat-rovnobezky-kolmice-4"],
     generator: gen,
     helpTemplate: {
       hint: "Obvod = součet všech stran. Obsah = délka × šířka. Čtverec: O = 4a, S = a×a. Obdélník: O = 2×(a+b), S = a×b.",

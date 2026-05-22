@@ -118,6 +118,7 @@ export const CTENI_ZAPIS_POROVNAVANI: TopicMetadata[] = [
   {
     id: "g4-mat-cisla-do-milionu-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-cteni-zapis-a-porovnavani-cisel-do-milionu",
+    displayName: "Čísla do milionu",
     title: "Čtení, zápis a porovnávání čísel do milionu",
     studentTitle: "Velká čísla",
     subject: "matematika",
@@ -143,6 +144,7 @@ export const CTENI_ZAPIS_POROVNAVANI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-zaokrouhlovani-4", "g4-mat-pisemne-scitani-odcitani-4"],
     generator: gen,
     helpTemplate: {
       hint: "Porovnávej čísla od nejvyššího řádu zleva. Číslo s větší číslicí na prvním odlišném místě je větší.",

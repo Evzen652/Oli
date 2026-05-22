@@ -69,6 +69,13 @@ export type ContentType = "algorithmic" | "factual" | "conceptual" | "mixed";
 
 export interface TopicMetadata {
   id: string;
+  /**
+   * Česky srozumitelný název pro UI (rodič i dítě).
+   * Musí být česky, bez anglických zkratek a technického žargonu.
+   * Příklad: "Sčítání a odčítání do 100" (ne "Add sub 100").
+   * Pokud chybí, fallback na `title`.
+   */
+  displayName?: string;
   title: string;
   /**
    * Dětské jméno podtématu pro UI (1-3 slova).
@@ -97,6 +104,12 @@ export interface TopicMetadata {
   contentType?: ContentType;
   /** Seznam code_skill_id, které musí žák umět PŘED touto dovedností (vertikální kontinuita). */
   prerequisites?: string[];
+  /**
+   * ID topiců, které logicky navazují po zvládnutí tohoto tématu.
+   * Více variant — záleží na pedagogické volbě (hloubka vs. šíře).
+   * Používá se v rodičovském reportu pro CTA "co dál".
+   */
+  recommendedNext?: string[];
   /** RVP kód (např. "M-5-1-03") pro reporting pokrytí kurikula. */
   rvpReference?: string;
   /**

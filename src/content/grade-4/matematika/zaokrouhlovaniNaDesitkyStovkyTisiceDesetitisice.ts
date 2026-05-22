@@ -89,6 +89,7 @@ export const ZAOKROUHLOVANI: TopicMetadata[] = [
   {
     id: "g4-mat-zaokrouhlovani-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1-000-000-zaokrouhlovani-na-desitky-stovky-tisice-desetitisice",
+    displayName: "Zaokrouhlování",
     title: "Zaokrouhlování čísel",
     studentTitle: "Zaokrouhlování",
     subject: "matematika",
@@ -114,6 +115,7 @@ export const ZAOKROUHLOVANI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-pisemne-scitani-odcitani-4", "g4-mat-cisla-do-milionu-4"],
     generator: gen,
     helpTemplate: {
       hint: "Podívej se na číslici řádu těsně pod tím, na který zaokrouhlujeme. Je-li ≥ 5, přičti 1 k vyšší číslici; je-li < 5, nech ji. Všechny nižší číslice nahraď nulami.",

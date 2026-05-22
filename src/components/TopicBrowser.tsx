@@ -622,7 +622,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                           </div>
                           <div className="flex-1 min-w-0 space-y-1">
                             <h3 className="text-lg font-black text-foreground tracking-tight line-clamp-2">
-                              {topic.title}
+                              {topic.displayName ?? topic.title}
                             </h3>
                             <p className="text-sm text-foreground/70 line-clamp-2">{topic.goals[0]}</p>
                           </div>

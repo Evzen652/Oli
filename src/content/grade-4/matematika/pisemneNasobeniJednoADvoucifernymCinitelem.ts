@@ -79,6 +79,7 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
   {
     id: "g4-mat-pisemne-nasobeni-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-nasobeni-jedno-a-dvoucifernym-cinitelem",
+    displayName: "Písemné násobení",
     title: "Písemné násobení jedno- a dvouciferným činitelem",
     studentTitle: "Násobení pod sebou",
     subject: "matematika",
@@ -104,6 +105,7 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-pisemne-deleni-jednociferne-4"],
     generator: gen,
     helpTemplate: {
       hint: "Násobíme zprava. Výsledek každé číslice zapíšeme, přenos přičteme k dalšímu sloupci. Dvouciferný činitel = dva mezisoučty, druhý posunutý o místo.",
