@@ -29,14 +29,15 @@ interface TopicBrowserProps {
   onSelectTopic: (topic: TopicMetadata) => void;
   onBack: () => void;
   isAdmin?: boolean;
+  initialSubject?: string;
 }
 
 type BrowseLevel = "subject" | "category" | "topic" | "subtopic";
 
-export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBrowserProps) {
+export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSubject }: TopicBrowserProps) {
   const t = useT();
-  const [level, setLevel] = useState<BrowseLevel>("subject");
-  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [level, setLevel] = useState<BrowseLevel>(initialSubject ? "category" : "subject");
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(initialSubject ?? null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
@@ -278,7 +279,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                 {title}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Klepni na předmět a pusť se do toho.
+                Vyber předmět a pusť se do toho.
               </p>
             </div>
             <Button
@@ -424,8 +425,8 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                     {level === "category"
                       ? "Vyber si okruh, který chceš procvičovat."
                       : level === "topic"
-                        ? "Klepni na téma a pusť se do něj."
-                        : "Klepni na konkrétní podtéma."}
+                        ? "Vyber téma a pusť se do něj."
+                        : "Vyber konkrétní podtéma."}
                   </p>
                 </div>
                 <Button
