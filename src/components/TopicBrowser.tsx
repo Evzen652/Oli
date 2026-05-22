@@ -466,39 +466,59 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
               {/* Info dialog — pokud existuje pro tuto úroveň */}
               {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
 
-              {/* CATEGORY level — rovnoměrný 2×2 grid */}
+              {/* CATEGORY level — asymetrický grid (1 velká + ostatní menší) */}
               {level === "category" && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {categories.map((category) => {
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {categories.map((category, idx) => {
                     const count = new Set(
                       topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
                     ).size;
                     const visual = getCategoryVisual(selectedSubject!, category);
+                    const isPrimary = idx === 0 && categories.length > 1;
                     return (
                       <button
                         key={category}
                         type="button"
                         onClick={() => handleCategoryClick(category)}
-                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-4 min-h-[120px]`}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
+                          isPrimary ? "md:col-span-2 md:row-span-2 min-h-[280px] flex flex-col p-6" : "flex items-center gap-4 p-5 min-h-[130px]"
+                        }`}
                       >
-                        <div className="shrink-0">
-                          <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
-                        </div>
-                        <div className="flex-1 min-w-0 space-y-1">
-                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight">
-                            {displayCat(category)}
-                          </h3>
-                          {displayCatDesc(category) && (
-                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
-                          )}
-                          <p className="text-xs text-foreground/50 font-medium">
-                            {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
-                          </p>
-                        </div>
-                        <span
-                          className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`}
-                          aria-hidden
-                        >›</span>
+                        {isPrimary ? (
+                          <>
+                            {/* Velká karta — ilustrace nahoře, text dole, šipka v rohu */}
+                            <div className="flex-1 flex items-center justify-center">
+                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="text-2xl font-black text-foreground tracking-tight">{displayCat(category)}</h3>
+                              {displayCatDesc(category) && (
+                                <p className="text-sm text-foreground/65 leading-snug">{displayCatDesc(category)}</p>
+                              )}
+                              <p className="text-sm text-foreground/50 font-medium">
+                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
+                              </p>
+                            </div>
+                            <span className={`absolute top-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
+                          </>
+                        ) : (
+                          <>
+                            {/* Malá karta — ilustrace vlevo, text vpravo */}
+                            <div className="shrink-0">
+                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
+                            </div>
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <h3 className="text-base font-black text-foreground tracking-tight leading-tight">{displayCat(category)}</h3>
+                              {displayCatDesc(category) && (
+                                <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
+                              )}
+                              <p className="text-xs text-foreground/50 font-medium">
+                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
+                              </p>
+                            </div>
+                            <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
+                          </>
+                        )}
                       </button>
                     );
                   })}
