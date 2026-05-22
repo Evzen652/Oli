@@ -62,7 +62,7 @@ function gen(level: number): PracticeTask[] {
             "Ano, pokud jsou obě přímky stejně dlouhé.",
             "Ne — rovnoběžky se protínají pod 45°.",
           ]),
-          hints: ["Vzpomeň si: rovnoběžky nikdy neprotnou, kolmice svírají pravý úhel."],
+          hints: ["Zamysli se: chovají se rovnoběžky a kolmice úplně stejně?"],
           solutionSteps: ["Rovnoběžky ≠ kolmice. Jsou to různé vztahy mezi přímkami."],
         });
       }
