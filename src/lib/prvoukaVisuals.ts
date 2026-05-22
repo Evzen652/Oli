@@ -362,8 +362,7 @@ export function getTopicVisual(subject: string, category: string): PrvoukaVisual
 }
 
 export function getTopicIllustrationUrl(topic: { subject: string; category: string; topic: string }): string | null {
-  return _getTopicImageUrl(topic.subject, topic.topic, topic.category)
-    ?? getCategoryIllustrationUrl(topic.subject, topic.category);
+  return _getTopicImageUrl(topic.subject, topic.topic, topic.category);
 }
 
 /** Returns just the storage key (not URL) for a topic image, or null if not defined. */
