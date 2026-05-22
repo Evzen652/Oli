@@ -162,10 +162,7 @@ const PROMPT_SUFFIX = `.
 
 STYLE: Cute 3D Pixar-style illustration, smooth rounded volumetric surfaces, soft cinematic shading, vibrant but soft pastel colors with one strong accent. Warm, welcoming, kid-friendly. Like a high-quality children's educational app icon.
 
-CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHARACTER with a clear face and expressive eyes — either:
-  (a) a cheerful CHILD (boy or girl, age 8-10, friendly smile, optional glasses), OR
-  (b) a stylized cartoon CREATURE (chubby owl, fox, bear cub) with big round eyes.
-The character is actively engaged with the educational concept (holding it, pointing to it, looking curious about it). Character is medium-sized — clearly visible but not dominant; the concept objects share equal weight.
+CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHILD with a clear face and expressive eyes — a cheerful boy or girl aged 8-10, friendly smile, optional glasses, modern casual clothes. STRICTLY NO ANIMALS, NO ANIMAL MASCOTS, NO OWLS, NO FOXES, NO CREATURES — only a human child character. The child is actively engaged with the educational concept (holding it, pointing to it, looking curious). Child is medium-sized — clearly visible but not dominant; the concept objects share equal weight.
 
 CONCEPT OBJECTS (the topic — required): 3D sculpted objects that clearly represent the topic. Examples by concept:
   - multiplication: multiple identical groups (e.g., 3 rows of 4 colorful cubes)

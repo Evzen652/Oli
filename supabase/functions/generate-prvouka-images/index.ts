@@ -40,10 +40,7 @@ const SUFFIX = `.
 
 STYLE: Cute 3D Pixar-style illustration, smooth rounded volumetric surfaces, soft cinematic shading, vibrant but soft pastel colors with one strong accent. Warm, welcoming, kid-friendly. Like a high-quality children's educational app icon.
 
-CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHARACTER with a clear face and expressive eyes — either:
-  (a) a cheerful CHILD (boy or girl, age 8-10, friendly smile, optional glasses), OR
-  (b) a stylized cartoon CREATURE (chubby owl, fox, bear cub) with big round eyes.
-Character is actively engaged with the educational concept (holding, pointing, looking curious). Character is medium-sized — visible but not dominant; concept objects share equal weight.
+CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHILD with a clear face and expressive eyes — a cheerful boy or girl aged 8-10, friendly smile, optional glasses, modern casual clothes. STRICTLY NO ANIMALS, NO ANIMAL MASCOTS, NO OWLS, NO FOXES, NO CREATURES — only a human child. Child is actively engaged with the educational concept (holding, pointing, looking curious). Child is medium-sized — visible but not dominant; concept objects share equal weight.
 
 CONCEPT OBJECTS (the topic — required): 3D sculpted objects clearly representing the topic. Examples:
 - multiplication: multiple identical groups (3 rows of 4 colorful cubes)
@@ -184,6 +181,10 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   const tryPollinations = async () => {
     const encoded = encodeURIComponent(prompt);
     const negative = encodeURIComponent([
+      // FORBIDDEN: animals (jsou tu výhradně děti)
+      "animal", "animals", "owl", "fox", "bear", "cat", "dog", "rabbit", "bird",
+      "creature", "mascot animal", "animal character", "cartoon animal",
+      "anthropomorphic animal", "stuffed toy",
       // FORBIDDEN: narrative text (gibberish, paragraphs)
       "gibberish text", "fake text", "nonsense letters", "blurry text",
       "handwriting on paper", "writing on chalkboard", "writing on whiteboard",
