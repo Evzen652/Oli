@@ -102,6 +102,7 @@ export const ZLOMEK_CAST_CELKU: TopicMetadata[] = [
   {
     id: "g4-mat-zlomek-cast-celku-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-zlomky-zlomek-jako-cast-celku-znazorneni-zlomku",
+    displayName: "Co je zlomek",
     title: "Zlomek jako část celku",
     studentTitle: "Co je zlomek",
     subject: "matematika",
@@ -127,6 +128,7 @@ export const ZLOMEK_CAST_CELKU: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-mat-zlomky-scitani-odcitani-stejny-jmenovatel-4"],
     generator: gen,
     helpTemplate: {
       hint: "Zlomek a/b říká: vzal jsem a dílů z b stejných dílů celku. Čitatel (a) = kolik jsem vzal, jmenovatel (b) = na kolik dílů je celek rozdělen.",

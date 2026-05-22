@@ -99,6 +99,7 @@ export const OSOVA_SOUMERNOST: TopicMetadata[] = [
   {
     id: "g4-mat-osova-soumernost-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-osa-soumerne-utvary",
+    displayName: "Osová souměrnost",
     title: "Osová souměrnost",
     studentTitle: "Osová souměrnost",
     subject: "matematika",
@@ -124,6 +125,7 @@ export const OSOVA_SOUMERNOST: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-mat-trojuhelnik-druhy-stran-4"],
     generator: gen,
     helpTemplate: {
       hint: "Útvar je osově souměrný, pokud ho lze přeložit podél osy souměrnosti tak, aby se obě poloviny dokonale překryly (jako motýlí křídla).",

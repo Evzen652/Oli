@@ -111,6 +111,23 @@ export function runOfflineAudit(
     }
     totalTopicsChecked++;
 
+    // a2) displayName validace — musí být česky (žádná čistě anglická slova)
+    if (topic.displayName) {
+      const englishOnlyPattern = /^[a-zA-Z0-9\s\-_]+$/;
+      if (englishOnlyPattern.test(topic.displayName)) {
+        issues.push({
+          topicId: topic.id,
+          topicTitle: topic.title,
+          topicSubject: topic.subject,
+          topicCategory: topic.category,
+          topicGradeRange: topic.gradeRange,
+          taskQuestion: "(metadata)",
+          category: "format",
+          detail: `displayName "${topic.displayName}" vypadá jako anglický název — musí být česky.`,
+        });
+      }
+    }
+
     // Sample max N tasks per topic
     const sampled = allTasks.slice(0, maxSamplesPerTopic);
 

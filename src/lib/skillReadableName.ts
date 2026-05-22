@@ -70,12 +70,14 @@ export function getReadableSkillName(
   }
 
   if (topic) {
-    // Pokud je topic.topic shodný s title (nebo title obsahuje topic), vrať jen title
+    // Preferuj displayName (UI-friendly, vždy česky) když je k dispozici
+    const label = topic.displayName ?? topic.title;
+    // Pokud je topic.topic shodný s title (nebo title obsahuje topic), vrať jen label
     if (!includeTopic || topic.topic === topic.title || topic.title.includes(topic.topic)) {
-      return topic.title;
+      return label;
     }
     // Jinak prefix s topic pro kontext (např. "Sčítání zlomků: Se stejným jmenovatelem")
-    return `${topic.topic}: ${topic.title}`;
+    return `${topic.topic}: ${label}`;
   }
 
   // 3) Curated fallback

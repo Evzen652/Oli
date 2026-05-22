@@ -88,6 +88,7 @@ export const PISEMNE_SCITANI_ODCITANI: TopicMetadata[] = [
   {
     id: "g4-mat-pisemne-scitani-odcitani-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-scitani-a-odcitani-vicecifernych-cisel",
+    displayName: "Písemné sčítání a odčítání",
     title: "Písemné sčítání a odčítání",
     studentTitle: "Sčítání pod sebou",
     subject: "matematika",
@@ -113,6 +114,7 @@ export const PISEMNE_SCITANI_ODCITANI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-pisemne-nasobeni-4", "g4-mat-cisla-do-milionu-4"],
     generator: gen,
     helpTemplate: {
       hint: "Zapiš čísla pod sebe (jednotky pod jednotky, desítky pod desítky) a počítej sloupec po sloupci zprava.",

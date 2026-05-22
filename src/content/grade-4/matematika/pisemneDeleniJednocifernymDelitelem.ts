@@ -79,6 +79,7 @@ export const PISEMNE_DELENI: TopicMetadata[] = [
   {
     id: "g4-mat-pisemne-deleni-jednociferne-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-jednocifernym-delitelem",
+    displayName: "Písemné dělení",
     title: "Písemné dělení jednociferným dělitelem",
     studentTitle: "Dělení pod sebou",
     subject: "matematika",
@@ -104,6 +105,7 @@ export const PISEMNE_DELENI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-aritmeticky-prumer-4", "g4-mat-tabulky-diagramy-4"],
     generator: gen,
     helpTemplate: {
       hint: "Dělíme zleva: vezmi tolik číslic, aby byl úsek ≥ děliteli, a zjisti, kolikrát se dělitel vejde.",

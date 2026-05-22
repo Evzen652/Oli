@@ -74,6 +74,7 @@ export const ARITMETICKY_PRUMER: TopicMetadata[] = [
   {
     id: "g4-mat-aritmeticky-prumer-4",
     rvpNodeId: "g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-uvod",
+    displayName: "Průměr čísel",
     title: "Aritmetický průměr",
     studentTitle: "Průměr",
     subject: "matematika",
@@ -99,6 +100,7 @@ export const ARITMETICKY_PRUMER: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-tabulky-diagramy-4"],
     generator: gen,
     helpTemplate: {
       hint: "Průměr = (součet všech čísel) ÷ (počet čísel). Lze si to představit jako: kdybychom vše rozdělili rovnoměrně, kolik dostane každý?",

@@ -89,6 +89,7 @@ export const TABULKY_DIAGRAMY: TopicMetadata[] = [
   {
     id: "g4-mat-tabulky-diagramy-4",
     rvpNodeId: "g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-diagramy-sloupcovy-kruhovy",
+    displayName: "Tabulky a grafy",
     title: "Tabulky a diagramy",
     studentTitle: "Tabulky a grafy",
     subject: "matematika",
@@ -113,6 +114,7 @@ export const TABULKY_DIAGRAMY: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-mat-aritmeticky-prumer-4"],
     generator: gen,
     helpTemplate: {
       hint: "Tabulka přehledně ukazuje data. Pro každou otázku najdi správný řádek/sloupec a přečti hodnotu.",

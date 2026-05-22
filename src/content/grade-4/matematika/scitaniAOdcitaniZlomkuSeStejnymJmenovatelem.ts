@@ -85,6 +85,7 @@ export const SCITANI_ODCITANI_ZLOMKU: TopicMetadata[] = [
   {
     id: "g4-mat-zlomky-scitani-odcitani-stejny-jmenovatel-4",
     rvpNodeId: "g4-matematika-cislo-a-pocetni-operace-zlomky-scitani-a-odcitani-zlomku-se-stejnym-jmenovatelem",
+    displayName: "Sčítání zlomků",
     title: "Sčítání a odčítání zlomků se stejným jmenovatelem",
     studentTitle: "Zlomky: + a −",
     subject: "matematika",
@@ -110,6 +111,7 @@ export const SCITANI_ODCITANI_ZLOMKU: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-mat-zlomek-cast-celku-4"],
     generator: gen,
     helpTemplate: {
       hint: "Při sčítání/odčítání zlomků se stejným jmenovatelem: jmenovatel nechej stejný, sečti/odečti jen čitatele.",

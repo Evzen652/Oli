@@ -97,6 +97,7 @@ export const TROJUHELNIK_DRUHY: TopicMetadata[] = [
   {
     id: "g4-mat-trojuhelnik-druhy-stran-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-trojuhelnik-druhy-podle-stran",
+    displayName: "Druhy trojúhelníků",
     title: "Trojúhelník — druhy podle stran",
     studentTitle: "Druhy trojúhelníků",
     subject: "matematika",
@@ -122,6 +123,7 @@ export const TROJUHELNIK_DRUHY: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-mat-osova-soumernost-4", "g4-mat-obvod-obsah-obdelnik-ctverec-4"],
     generator: gen,
     helpTemplate: {
       hint: "Rovnostranný = všechny 3 strany stejně dlouhé. Rovnoramenný = právě 2 strany stejné. Různostranný = všechny strany různé.",

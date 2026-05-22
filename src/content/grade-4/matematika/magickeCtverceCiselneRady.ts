@@ -115,6 +115,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
   {
     id: "g4-mat-magicke-ctverce-ciselne-rady-4",
     rvpNodeId: "g4-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-magicke-ctverce-ciselne-rady",
+    displayName: "Magické čtverce a řady",
     title: "Magické čtverce a číselné řady",
     studentTitle: "Magické čtverce",
     subject: "matematika",
@@ -140,6 +141,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "mixed",
+    recommendedNext: ["g4-mat-aritmeticky-prumer-4", "g4-mat-tabulky-diagramy-4"],
     generator: gen,
     helpTemplate: {
       hint: "Magický čtverec: každý řádek, sloupec i obě úhlopříčky mají stejný součet. Číselná řada: najdi, o kolik se každý člen mění.",
