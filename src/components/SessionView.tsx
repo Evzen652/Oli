@@ -314,7 +314,7 @@ export function SessionView() {
           } else {
             s.setGrade(null);
           }
-        }} isAdmin={role === "admin"} />
+        }} isAdmin={role === "admin" && !isStudentView} />
       </>
     );
   }
