@@ -384,13 +384,12 @@ export default function ParentDashboard() {
                         className="font-bold text-3xl leading-tight text-white bg-white/20 border border-white/40 rounded-xl px-3 py-1 w-full max-w-xs outline-none placeholder:text-white/40 mb-2"
                       />
                       <div className="flex items-center gap-2 mb-5">
-                        <select
-                          value={editGrade}
-                          onChange={(e) => setEditGrade(Number(e.target.value) as Grade)}
-                          className="rounded-lg bg-white/20 border border-white/30 text-white text-sm px-2 py-1 cursor-pointer"
-                        >
-                          {GRADES.map((g) => <option key={g} value={g}>{g}. třída</option>)}
-                        </select>
+                        <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
+                          <SelectTrigger className="h-8 w-28 bg-white/20 border-white/30 text-white [&>svg]:text-white hover:bg-white/30 focus:ring-white/30">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. třída</SelectItem>)}</SelectContent>
+                        </Select>
                         <button
                           onClick={handleSaveEdit}
                           disabled={editLoading || !editName.trim()}
