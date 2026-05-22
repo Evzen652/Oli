@@ -513,6 +513,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                               <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
                                 {displayCat(category)}
                               </h3>
+                              {displayCatDesc(category) && (
+                                <p className="text-xs text-foreground/70 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
+                              )}
                               <p className="text-xs text-foreground/70">
                                 {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
                               </p>
