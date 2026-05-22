@@ -339,8 +339,8 @@ export function SessionView() {
               {t("session.back")}
             </Button>
             {session.matchedTopic && (
-              <Badge className={`text-base capitalize px-3 py-1 border ${subjectColors.badge}`}>
-                {session.matchedTopic.subject}
+              <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
+                {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
               </Badge>
             )}
           </div>

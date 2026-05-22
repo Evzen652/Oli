@@ -453,8 +453,8 @@ function DemoHeader({
             ← Zpět
           </Button>
           {topic && (
-            <Badge className={`text-base capitalize px-3 py-1 border ${subjectColors.badge}`}>
-              {topic.subject}
+            <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
+              {topic.subject.charAt(0).toUpperCase() + topic.subject.slice(1)}
             </Badge>
           )}
         </div>
