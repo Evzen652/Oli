@@ -29,7 +29,8 @@ async function dewhiteBackground(imageBytes: Uint8Array, threshold = 230): Promi
     };
 
     // ─── FLOOD-FILL z okrajů ──────────────────────────────────────────────
-    // Seed body: 4 rohy + 4 středy stran (pro robustnost když roh je zakrytý objektem)
+    // Seed body: CELÝ obvod obrázku — každý pixel na 4 stranách.
+    // Robustnější než jen 8 bodů: zachytí pozadí i když jsou rohy zakryté objektem nebo stínem.
     const visited = new Uint8Array(W * H); // 0 = ne, 1 = pozadí (transparentní)
     const stack: number[] = [];
     const pushSeed = (x: number, y: number) => {
@@ -37,14 +38,16 @@ async function dewhiteBackground(imageBytes: Uint8Array, threshold = 230): Promi
         stack.push((y - 1) * W + (x - 1));
       }
     };
-    pushSeed(1, 1);
-    pushSeed(W, 1);
-    pushSeed(1, H);
-    pushSeed(W, H);
-    pushSeed(Math.floor(W / 2), 1);
-    pushSeed(Math.floor(W / 2), H);
-    pushSeed(1, Math.floor(H / 2));
-    pushSeed(W, Math.floor(H / 2));
+    // Top + bottom row
+    for (let x = 1; x <= W; x++) {
+      pushSeed(x, 1);
+      pushSeed(x, H);
+    }
+    // Left + right column (bez rohů — ty jsou už přidané)
+    for (let y = 2; y < H; y++) {
+      pushSeed(1, y);
+      pushSeed(W, y);
+    }
 
     while (stack.length > 0) {
       const idx = stack.pop()!;
