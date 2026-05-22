@@ -160,7 +160,12 @@ const ALL_KEYS: string[] = [];
 // PŘÍSNĚ POZITIVNÍ POPIS — bez negací. AI image modely extraktují slova z negace
 // ("no owls" → vygeneruje sovu, "no text" → přidá text). Popisuj jen co tam JE.
 // Negace patří jen do separátního negative_prompt pole (Pollinations má, Gemini ne).
-const PROMPT_PREFIX = "Cute 3D Pixar-style illustration. A cheerful smiling human child (boy or girl, age 8 to 10, big expressive eyes, optional glasses, modern casual colorful clothes) engaged with";
+//
+// PROMPT_PREFIX záměrně NEnutí dítě do každé scény. Jednotlivé popisy
+// v DEFAULT_DESCS/OVERRIDES rozhodují samy, jestli dítě/postava patří do scény
+// (např. "topic-clovek-a-jeho-telo" → dítě má smysl; "topic-math-trojuhelnik" →
+// jen geometrický útvar, žádná postava).
+const PROMPT_PREFIX = "Cute 3D Pixar-style educational illustration for children's learning app, showing";
 const PROMPT_SUFFIX = ". Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format.";
 
 const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
