@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
 import { getFullTopicTitle } from "@/lib/types";
+import { getDisplayTopic, getDisplayCategory } from "@/lib/displayNames";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { GradeSelect } from "@/components/GradeSelect";
@@ -93,6 +94,17 @@ function getSubjectColor(subject?: string): { bg: string; border: string; badge:
     default:
       return { bg: "from-secondary to-secondary/50", border: "border-l-primary", badge: "bg-secondary text-secondary-foreground", accent: "bg-primary" };
   }
+}
+
+/** Vrátí dětský název tématu — pro student view, jinak RVP */
+function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string }, grade: number | null, isStudentView: boolean): string {
+  if (!isStudentView) return getFullTopicTitle(topic as any);
+  const g = grade ?? 4;
+  const displayGroup = getDisplayTopic(topic.topic, g as any);
+  const displaySub = topic.displayName ?? topic.title;
+  if (topic.topic === topic.title) return displayGroup;
+  const sub = displaySub.charAt(0).toLowerCase() + displaySub.slice(1);
+  return `${displayGroup} – ${sub}`;
 }
 
 export function SessionView() {
@@ -332,56 +344,45 @@ export function SessionView() {
     <div className={`flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
       {AdminBanner}
       {/* Header */}
-      <header className="sticky top-0 z-10 h-16 bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500 shadow-lg overflow-hidden flex items-center px-5">
-        {/* Dekorativní hvězdičky */}
-        <span className="pointer-events-none absolute left-[12%] top-[15%] text-white/20 text-lg select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite', animationDelay: '-4s' }}>✦</span>
-        <span className="pointer-events-none absolute left-[48%] top-[55%] text-white/15 text-sm select-none" style={{ animation: 'oli-star-3 22s ease-in-out infinite', animationDelay: '-10s' }}>✦</span>
-        <span className="pointer-events-none absolute right-[18%] top-[20%] text-white/20 text-base select-none" style={{ animation: 'oli-star-2 20s ease-in-out infinite', animationDelay: '-7s' }}>✦</span>
-
-        {/* Levá část — zpět + předmět */}
-        <div className="flex items-center gap-2 relative z-10">
-          <button onClick={s.handleReset} className="flex items-center gap-1.5 text-sm font-semibold text-white/90 hover:text-white transition-colors rounded-lg px-2 py-1.5 hover:bg-white/15">
-            <span className="text-base leading-none">←</span>
-            {t("session.back")}
-          </button>
-          {session.matchedTopic && (
-            <div className="flex items-center gap-1.5 rounded-full bg-white/20 border border-white/30 px-3 py-1">
-              <span className="text-xs font-bold text-white">
-                {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Střed — logo */}
-        <div className="absolute left-1/2 -translate-x-1/2 z-10">
+      <header className="relative border-b px-4 py-3">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2">
           <OlyLogo size="sm" onClick={s.handleReset} />
         </div>
-
-        {/* Pravá část — timer + odhlásit */}
-        <div className="flex items-center gap-2 ml-auto relative z-10">
-          {!isTerminal && (
-            <div className="flex items-center gap-1.5 rounded-full bg-white/20 border border-white/30 px-3 py-1.5 text-white font-semibold text-sm">
-              <SessionTimer
-                startTime={session.startTime}
-                maxSeconds={session.rules.maxDurationSeconds}
-                isActive={!isLocked}
-                onTimeExpired={s.handleTimeExpired}
-                countUp={isStudentView}
-              />
-            </div>
-          )}
-          {!isStudentView && (
-            <a href="/report" className="text-sm text-white/70 hover:text-white transition-colors rounded-lg px-2 py-1.5 hover:bg-white/15">
-              Report
-            </a>
-          )}
-          <button onClick={() => supabase.auth.signOut()} className="text-sm text-white/70 hover:text-white transition-colors rounded-lg px-2 py-1.5 hover:bg-white/15">
-            {t("session.sign_out")}
-          </button>
-          <button onClick={s.handleReset} className="text-sm text-white/70 hover:text-white transition-colors rounded-lg p-1.5 hover:bg-white/15">
-            ✕
-          </button>
+        <div className="mx-auto flex max-w-2xl items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+              {t("session.back")}
+            </Button>
+            {session.matchedTopic && (
+              <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
+                {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
+              </Badge>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            {!isTerminal && (
+              <div className={isStudentView ? "w-auto" : "w-48"}>
+                <SessionTimer
+                  startTime={session.startTime}
+                  maxSeconds={session.rules.maxDurationSeconds}
+                  isActive={!isLocked}
+                  onTimeExpired={s.handleTimeExpired}
+                  countUp={isStudentView}
+                />
+              </div>
+            )}
+            {!isStudentView && (
+              <a href="/report" className="text-base text-muted-foreground hover:text-foreground">
+                Report
+              </a>
+            )}
+            <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-base">
+              {t("session.sign_out")}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+              ✕
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -397,7 +398,7 @@ export function SessionView() {
                 })()}
                 <div className="flex-1 space-y-1">
                   <p className="text-xl font-medium text-foreground">
-                    <span className="text-muted-foreground">{t("session.topic_label")}</span>{getFullTopicTitle(session.matchedTopic)}
+                    <span className="text-muted-foreground">{t("session.topic_label")}</span>{getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
                   </p>
                   <p className="text-base text-muted-foreground">
                     {session.matchedTopic.briefDescription}
@@ -417,7 +418,7 @@ export function SessionView() {
                   <DialogHeader className="px-6 pt-6 pb-0 shrink-0">
                     <div className="flex items-center gap-4">
                       <img src={goodToKnowImg} alt="Co je dobré vědět" className="w-12 h-12 object-contain shrink-0 mix-blend-multiply" />
-                      <DialogTitle className="text-xl text-left">{getFullTopicTitle(session.matchedTopic)}</DialogTitle>
+                      <DialogTitle className="text-xl text-left">{getChildTopicTitle(session.matchedTopic, grade, isStudentView)}</DialogTitle>
                     </div>
                   </DialogHeader>
                   <ScrollArea className="flex-1 px-6 pb-6">
