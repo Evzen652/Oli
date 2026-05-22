@@ -22,9 +22,8 @@ function gen(level: number): PracticeTask[] {
         correctAnswer: specs.kind,
         options: ["Rovnostranný", "Rovnoramenný", "Různostranný", "Pravúhlý"],
         hints: [
-          "Rovnostranný = všechny 3 strany stejně dlouhé.",
-          "Rovnoramenný = právě 2 strany stejně dlouhé.",
-          "Různostranný = všechny strany různě dlouhé.",
+          "Porovnej délky všech tří stran.",
+          "Kolik stran je stejně dlouhých?",
         ],
         solutionSteps: [
           `Strany: ${specs.sides.join(", ")} cm.`,
