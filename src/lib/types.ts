@@ -124,6 +124,12 @@ export interface TopicMetadata {
    * Vyplňují grade-N session moduly.
    */
   rvpNodeId?: string;
+  /**
+   * Pedagogické štítky pro audit pipeline.
+   * Přidávají se ručně nebo AI validátorem.
+   * Příklady: "NEEDS_REVIEW", "MISSING_HINTS", "AI_CHECKED", "DISTRACTOR_WEAK"
+   */
+  auditFlag?: string[];
 }
 
 // ===== PRACTICE BATCH =====
