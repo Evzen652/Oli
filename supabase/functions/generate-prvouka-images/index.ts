@@ -3,25 +3,73 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { decode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 import { Image } from "https://deno.land/x/imagescript@1.2.15/mod.ts";
 
-/** Odstraní bílé/světlé pozadí z PNG — vrátí průhledné PNG bytes. */
-async function dewhiteBackground(imageBytes: Uint8Array, threshold = 245): Promise<Uint8Array> {
+/**
+ * Odstraní bílé/světlé pozadí z PNG — vrátí průhledné PNG bytes.
+ *
+ * Strategie:
+ *  1. Flood-fill ze 4 rohů obrázku — pouze pozadí propojené s rohem se odstraní
+ *     (chrání bílé části uvnitř objektu, např. oči, papír v ruce).
+ *  2. Threshold 235 (nižší než 245) — chytá i off-white od Gemini/Flux.
+ *  3. Anti-alias zóna 40 — měkký přechod pixelů.
+ */
+async function dewhiteBackground(imageBytes: Uint8Array, threshold = 235): Promise<Uint8Array> {
   try {
     const img = await Image.decode(imageBytes);
-    const fade = threshold - 35;
-    for (let y = 1; y <= img.height; y++) {
-      for (let x = 1; x <= img.width; x++) {
+    const W = img.width;
+    const H = img.height;
+    const fade = threshold - 40;
+
+    // Crisp brightness check
+    const isBright = (x: number, y: number): boolean => {
+      const pixel = img.getPixelAt(x, y);
+      const r = (pixel >> 24) & 0xff;
+      const g = (pixel >> 16) & 0xff;
+      const b = (pixel >> 8) & 0xff;
+      return (r + g + b) / 3 > fade;
+    };
+
+    // Flood-fill ze 4 rohů — označ všechny propojené světlé pixely
+    const visited = new Uint8Array(W * H);
+    const stack: number[] = [];
+    const seedCorners = [[1, 1], [W, 1], [1, H], [W, H]];
+    for (const [sx, sy] of seedCorners) {
+      if (isBright(sx, sy)) stack.push(sy * W + sx - 1);
+    }
+    while (stack.length > 0) {
+      const idx = stack.pop()!;
+      if (visited[idx]) continue;
+      const x = (idx % W) + 1;
+      const y = Math.floor(idx / W) + 1;
+      if (x < 1 || x > W || y < 1 || y > H) continue;
+      if (!isBright(x, y)) continue;
+      visited[idx] = 1;
+      if (x + 1 <= W) stack.push(idx + 1);
+      if (x - 1 >= 1) stack.push(idx - 1);
+      if (y + 1 <= H) stack.push(idx + W);
+      if (y - 1 >= 1) stack.push(idx - W);
+    }
+
+    // Aplikuj alpha: ze 4-rohovým flood-fillem propojené světlé pixely = transparentní.
+    for (let y = 1; y <= H; y++) {
+      for (let x = 1; x <= W; x++) {
+        const idx = (y - 1) * W + (x - 1);
+        if (!visited[idx]) continue;
         const pixel = img.getPixelAt(x, y);
         const r = (pixel >> 24) & 0xff;
         const g = (pixel >> 16) & 0xff;
         const b = (pixel >> 8) & 0xff;
         const brightness = (r + g + b) / 3;
-        let alpha = (pixel) & 0xff;
-        if (brightness > threshold) { alpha = 0; }
-        else if (brightness > fade) { alpha = Math.round((threshold - brightness) * (255 / (threshold - fade))); }
+        let alpha = pixel & 0xff;
+        if (brightness > threshold) {
+          alpha = 0;
+        } else if (brightness > fade) {
+          // Měkký přechod (anti-alias edge)
+          alpha = Math.round((threshold - brightness) * (255 / (threshold - fade)));
+        }
         img.setPixelAt(x, y, Image.rgbaToColor(r, g, b, alpha));
       }
     }
-    return await img.encode(0); // 0 = PNG
+    return await img.encode(0); // PNG
   } catch (e) {
     console.warn("dewhiteBackground failed, using original:", e);
     return imageBytes;

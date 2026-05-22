@@ -830,7 +830,7 @@ export default function AdminDashboard() {
                         <ImageOrEmoji
                           imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })}
                           emoji={topicEmoji}
-                          size="lg"
+                          size="xl"
                         />
                       </div>
 
@@ -949,7 +949,7 @@ export default function AdminDashboard() {
                         <ImageOrEmoji
                           imageUrl={getTopicIllustrationUrl({ subject: skill.subject, topic: skill.topic, category: skill.category })}
                           emoji={skillEmoji}
-                          size="lg"
+                          size="xl"
                         />
                       </div>
 
@@ -1212,7 +1212,7 @@ function ImageOrEmoji({
   size?: "xl" | "lg" | "md" | "sm";
 }) {
   const versioned = useImageVersions();
-  const sizes = { xl: "w-28 h-28", lg: "w-14 h-14", md: "w-12 h-12", sm: "w-10 h-10" };
+  const sizes = { xl: "w-full h-full max-w-32 max-h-32", lg: "w-20 h-20", md: "w-12 h-12", sm: "w-10 h-10" };
   const emojiSizes = { xl: "text-6xl", lg: "text-3xl", md: "text-2xl", sm: "text-xl" };
 
   const storageKey = imageUrl?.match(/prvouka-images\/(.+?)\.png/)?.[1] ?? null;
