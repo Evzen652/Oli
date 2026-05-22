@@ -16,13 +16,13 @@
   podle session source.
 - Odloženo z follow-up ČÁST C bod 2 — bez DB migrace nelze čistě implementovat.
 
-### `audit:pedagogical` script nefunguje na Windows CMD
-- Prefix `AUDIT_PEDAGOGICAL=1` nefunguje v `cmd.exe`
-- Řešení: přidat `cross-env` do devDependencies, nebo dokumentovat jen pro Git Bash
-
 ---
 
 ## Vyřízené
+
+### 2026-05-22 — audit:pedagogical cross-platform wrapper ✅
+- `scripts/run-audit-pedagogical.mjs` — node wrapper bez `cross-env` dep
+- Funguje v Linux, macOS, Git Bash i Windows CMD/PowerShell
 
 ### 2026-05-22 — Follow-up po review (Hint leaks + Parent UI + Student UI) ✅
 - ✅ Hint leaks (3 soubory) — branch `fix/hint-leaks-grade-4`,
