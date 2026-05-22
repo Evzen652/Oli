@@ -4,7 +4,7 @@
  * CheckFeedbackCard, HelpButton, ProgressIndicator, SessionTimer).
  */
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { validateAnswer } from "@/lib/validators";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
@@ -61,6 +61,8 @@ type Phase = "browse" | "practicing" | "done";
 // ── Hlavní komponenta ──────────────────────────────────────────────────────
 export function DemoSession() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialSubject = searchParams.get("subject");
 
   const [phase, setPhase] = useState<Phase>("browse");
   const [topic, setTopic] = useState<TopicMetadata | null>(null);
@@ -137,7 +139,7 @@ export function DemoSession() {
 
   // ── BROWSE fáze — výběr tématu ───────────────────────────────────────────
   if (phase === "browse") {
-    return <DemoTopicBrowser onSelect={handleTopicSelect} onBack={() => navigate("/demo")} />;
+    return <DemoTopicBrowser onSelect={handleTopicSelect} onBack={() => navigate("/demo")} initialSubject={initialSubject} />;
   }
 
   const currentTask = tasks[taskIdx];
@@ -295,12 +297,13 @@ export function DemoSession() {
 const DEMO_GRADE = 3;
 
 function DemoTopicBrowser({
-  onSelect, onBack,
+  onSelect, onBack, initialSubject = null,
 }: {
   onSelect: (t: TopicMetadata) => void;
   onBack: () => void;
+  initialSubject?: string | null;
 }) {
-  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(initialSubject);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const allTopics = getAllTopics().filter(
@@ -375,6 +378,21 @@ function DemoTopicBrowser({
             </button>
           );
         })}
+
+        {/* Fallback — předmět bez obsahu */}
+        {selectedSubject && !selectedCategory && categories.length === 0 && (
+          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] px-6 py-8 text-center space-y-4">
+            <p className="text-3xl">🚧</p>
+            <p className="font-semibold text-foreground">Tento předmět zatím připravujeme.</p>
+            <p className="text-sm text-muted-foreground">Obsah pro <strong>{selectedSubject}</strong> brzy přibyde. Mezitím vyzkoušej matematiku!</p>
+            <Button
+              onClick={() => { setSelectedSubject("matematika"); setSelectedCategory(null); }}
+              className="rounded-2xl font-bold"
+            >
+              Přejít na matematiku
+            </Button>
+          </div>
+        )}
 
         {/* Výběr kategorie */}
         {selectedSubject && !selectedCategory && categories.map(cat => {

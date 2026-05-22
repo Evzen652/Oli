@@ -21,6 +21,12 @@
 
 ## Vyřízené
 
+### 2026-05-22 — UX audit critical fixes ✅ (branch: fix/ux-audit-critical)
+- ✅ BUG 1: "Začít zdarma" vede na registraci — přidán ?mode=register param (Auth.tsx + Landing.tsx)
+- ✅ BUG 2: /demo/session routa existovala — žádná změna nutná
+- ✅ BUG 3: Subject param předáván z DemoChildTab → DemoSession, fallback zpráva pro předměty bez obsahu
+- ✅ BUG 4: autoComplete="off" na email inputu v Auth.tsx (dev autocomplete odstraněn)
+
 ### 2026-05-22 — audit:pedagogical cross-platform wrapper ✅
 - `scripts/run-audit-pedagogical.mjs` — node wrapper bez `cross-env` dep
 - Funguje v Linux, macOS, Git Bash i Windows CMD/PowerShell

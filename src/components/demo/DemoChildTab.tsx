@@ -179,7 +179,7 @@ export function DemoChildTab() {
             {["matematika", "čeština", "prvouka"].map((subj) => {
               const meta = getSubjectMeta(subj);
               return (
-                <button key={subj} onClick={() => navigate("/demo/session")}
+                <button key={subj} onClick={() => navigate(`/demo/session?subject=${subj}`)}
                   className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white/90 transition-colors shadow-sm">
                   <IllustrationImg src={meta.image} className="h-6 w-6 object-contain" fallback={<span className="text-sm">{meta.emoji}</span>} />
                   {meta.label}

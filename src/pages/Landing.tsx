@@ -127,7 +127,7 @@ export default function Landing() {
                 Oli učí, pomáhá, procvičuje — krok za krokem
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-lg shadow-orange-200 w-full sm:w-auto" style={{ background: C.orange }} onClick={() => navigate("/auth")}>
+                <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-lg shadow-orange-200 w-full sm:w-auto" style={{ background: C.orange }} onClick={() => navigate("/auth?mode=register")}>
                   Začít zdarma <ArrowRight className="h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="text-base px-12 h-14 rounded-full border-slate-200 text-slate-600 w-full sm:w-auto" onClick={() => navigate("/demo")}>
@@ -320,7 +320,7 @@ export default function Landing() {
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
-              <Button variant="outline" className="w-full rounded-full" onClick={() => navigate("/auth")}>Začít zdarma</Button>
+              <Button variant="outline" className="w-full rounded-full" onClick={() => navigate("/auth?mode=register")}>Začít zdarma</Button>
             </CardContent>
           </Card>
 
@@ -337,7 +337,7 @@ export default function Landing() {
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
-              <Button className="w-full rounded-full text-white gap-2" style={{ background: C.orange }} onClick={() => navigate("/auth")}>
+              <Button className="w-full rounded-full text-white gap-2" style={{ background: C.orange }} onClick={() => navigate("/auth?mode=register")}>
                 Zkusit 14 dní zdarma <ArrowRight className="h-4 w-4" />
               </Button>
             </CardContent>
@@ -353,7 +353,7 @@ export default function Landing() {
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
-              <Button variant="outline" className="w-full rounded-full" onClick={() => navigate("/auth")}>Zkusit 14 dní zdarma</Button>
+              <Button variant="outline" className="w-full rounded-full" onClick={() => navigate("/auth?mode=register")}>Zkusit 14 dní zdarma</Button>
             </CardContent>
           </Card>
         </div>
@@ -367,7 +367,7 @@ export default function Landing() {
             Začněte mít přehled o učení vašeho dítěte
           </h2>
           <p className="text-lg text-slate-500">Registrace trvá minutu. Prvních 14 dní je zdarma.</p>
-          <Button size="lg" className="text-base px-10 h-13 gap-2 rounded-full shadow-lg shadow-orange-200 text-white" style={{ background: C.orange }} onClick={() => navigate("/auth")}>
+          <Button size="lg" className="text-base px-10 h-13 gap-2 rounded-full shadow-lg shadow-orange-200 text-white" style={{ background: C.orange }} onClick={() => navigate("/auth?mode=register")}>
             Vytvořit účet zdarma <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
