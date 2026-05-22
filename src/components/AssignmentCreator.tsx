@@ -201,7 +201,10 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
                     return (
                       <SelectItem key={subj} value={subj}>
                         <span className="flex items-center gap-2">
-                          <span>{meta.emoji}</span>
+                          {meta.image
+                            ? <img src={meta.image} alt="" className="h-5 w-5 object-contain mix-blend-multiply shrink-0" />
+                            : <span className="text-base leading-none">{meta.emoji}</span>
+                          }
                           <span>{cap(subj)}</span>
                         </span>
                       </SelectItem>
