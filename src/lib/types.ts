@@ -78,6 +78,11 @@ export interface TopicMetadata {
   displayName?: string;
   title: string;
   /**
+   * Krátký český název pro dětské + rodičovské UI ("Násobilka",
+   * "Průměr čísel"). Pokud chybí, použije se `title`.
+   */
+  displayName?: string;
+  /**
    * Dětské jméno podtématu pro UI (1-3 slova).
    * Pokud chybí, použije se `title` (RVP). Per-grade tone-of-voice
    * viz `src/content/grade-N/README.md`.

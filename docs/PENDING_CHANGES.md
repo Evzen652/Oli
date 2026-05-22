@@ -9,7 +9,13 @@
 
 ## Otevřené
 
-_(žádné)_
+### Rozdělení historie procvičování podle původu (parent vs. self)
+- `session_logs` neobsahuje `origin` pole (parent / self).
+- Lze odvodit z `parent_assignments.skill_id IN session_logs.skill_id`,
+  ale je to drahé a nepřesné (rodič mohl smazat assignment po splnění).
+- **Pro správnou implementaci přidat `session_logs.origin` enum
+  ('parent', 'self') + naplnit při insertu z FSM podle session source.**
+- Bez DB migrace zatím odložen — viz `feat/student-ui` ČÁST C bod 2.
 
 ---
 

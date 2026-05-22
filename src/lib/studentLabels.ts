@@ -37,7 +37,7 @@ export function getStudentLabel(successRate: number): string {
   }
 }
 
-/** Vrátí emoji pro danou úspěšnost (do 1 znaku). */
+/** Vrátí emoji pro danou úspěšnost. */
 export function getStudentEmoji(successRate: number): string {
   const tier = getStudentLabelTier(successRate);
   switch (tier) {
@@ -51,7 +51,7 @@ export function getStudentEmoji(successRate: number): string {
 
 /**
  * Vrátí tailwind barvu textu pro label.
- * Záměrně žádná červená — "retry" dostane amber (oranžová), ne červenou.
+ * Žádná červená — "retry" dostane amber (oranžová), ne červenou.
  */
 export function getStudentLabelColor(successRate: number): string {
   const tier = getStudentLabelTier(successRate);
