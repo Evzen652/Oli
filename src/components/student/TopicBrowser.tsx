@@ -120,7 +120,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack }: Props) {
               >
                 <CardContent className="p-4 flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold">{topic.title}</h3>
+                    <h3 className="font-semibold">{topic.displayName ?? topic.title}</h3>
                     <p className="text-sm text-muted-foreground">{topic.briefDescription}</p>
                   </div>
                   <div className="flex gap-1">
