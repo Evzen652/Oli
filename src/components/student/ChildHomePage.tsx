@@ -116,7 +116,7 @@ export function ChildHomePage({ grade: _grade, onSelectTopic, onBrowseTopics }: 
                         <div className="flex items-center gap-2">
                           <span>{topic ? getSubjectEmoji(topic.subject) : ''}</span>
                           <span className="font-medium">
-                            {topic?.title ?? assignment.skill_id}
+                            {topic?.displayName ?? topic?.title ?? assignment.skill_id}
                           </span>
                         </div>
                         {assignment.note && (

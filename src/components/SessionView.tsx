@@ -10,6 +10,7 @@ import { ChildHomePage } from "@/components/ChildHomePage";
 import { DiktatFilterSelect } from "@/components/DiktatFilterSelect";
 import { HelpButton } from "@/components/HelpButton";
 import { TutorChat } from "@/components/TutorChat";
+import { FEATURES } from "@/lib/features";
 import { MiniExplainer } from "@/components/MiniExplainer";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { SessionTimer } from "@/components/SessionTimer";
@@ -569,8 +570,8 @@ export function SessionView() {
             />
           )}
 
-          {/* Konverzační tutor — Fáze 7 */}
-          {showPracticeInput && session.matchedTopic && (
+          {/* Konverzační tutor — Fáze 7 — skryto: FEATURES.studentChat = false pro grade 1-7 */}
+          {showPracticeInput && session.matchedTopic && FEATURES.studentChat && (
             <TutorChat
               topic={session.matchedTopic}
               currentTask={currentTask ?? null}

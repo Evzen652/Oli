@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getTopicById } from "@/lib/contentRegistry";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
+import { FEATURES } from "@/lib/features";
 import { useChildStats, type StatsPeriod, type SkillBreakdown } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -403,7 +404,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         return {
           id: a.id, skill_id: a.skill_id, note, due_date: a.due_date,
           assigned_date: a.assigned_date,
-          skillName: topic?.title ?? db?.name ?? a.skill_id,
+          skillName: topic?.displayName ?? topic?.title ?? db?.name ?? a.skill_id,
           subject: topic?.subject ?? db?.subject ?? "",
           status: a.status,
           topic: topic ?? (db ? { category: db.category, subject: db.subject, _dbOnly: true, generator: () => [] } as any : undefined),
@@ -686,23 +687,26 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               })}
             </div>
           )}
-          <div className="px-5 pt-2 pb-1">
-            <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5 flex-wrap">
-              <button
-                onClick={() => setSkillGradeFilter(null)}
-                className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === null ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
-              >Vše</button>
-              {([1, 2, 3, 4, 5] as const).map(g => {
-                const m = GRADE_META[g];
-                return (
-                  <button key={g}
-                    onClick={() => setSkillGradeFilter(skillGradeFilter === g ? null : g)}
-                    className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === g ? `bg-white shadow-sm ${m.color}` : "text-slate-500 hover:text-slate-700"}`}
-                  >{g} – {m.label}</button>
-                );
-              })}
+          {/* Filtry 1-5 jsou pro dětské UI demotivační (FEATURES.studentGradeFilters = false). */}
+          {FEATURES.studentGradeFilters && (
+            <div className="px-5 pt-2 pb-1">
+              <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5 flex-wrap">
+                <button
+                  onClick={() => setSkillGradeFilter(null)}
+                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === null ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                >Vše</button>
+                {([1, 2, 3, 4, 5] as const).map(g => {
+                  const m = GRADE_META[g];
+                  return (
+                    <button key={g}
+                      onClick={() => setSkillGradeFilter(skillGradeFilter === g ? null : g)}
+                      className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === g ? `bg-white shadow-sm ${m.color}` : "text-slate-500 hover:text-slate-700"}`}
+                    >{g} – {m.label}</button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
           <div className="p-4 space-y-2">
             {stats.loading ? null : stats.skills.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">Ještě nic — pojď začít! 🚀</p>
