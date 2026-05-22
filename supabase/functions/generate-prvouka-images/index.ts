@@ -34,39 +34,11 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Styl shodný s landing page ilustracemi: Pixar 3D, dětský hrdina/maskot + edukační objekty,
-// dekorativní 3D písmena/čísla povolena (ABC, 5, +, ×), ale FORBIDDEN je narrative text.
-const SUFFIX = `.
+// PŘÍSNĚ POZITIVNÍ POPIS — bez negací. AI extrahuje noun z "no X" a přidá ho do obrázku.
+// Popisuj POUZE co tam má být. Co nemá být tam → jen v separátním negative_prompt poli.
+const SUFFIX = `. Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format.`;
 
-STYLE: Cute 3D Pixar-style illustration, smooth rounded volumetric surfaces, soft cinematic shading, vibrant but soft pastel colors with one strong accent. Warm, welcoming, kid-friendly. Like a high-quality children's educational app icon.
-
-CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHILD with a clear face and expressive eyes — a cheerful boy or girl aged 8-10, friendly smile, optional glasses, modern casual clothes. STRICTLY NO ANIMALS, NO ANIMAL MASCOTS, NO OWLS, NO FOXES, NO CREATURES — only a human child. Child is actively engaged with the educational concept (holding, pointing, looking curious). Child is medium-sized — visible but not dominant; concept objects share equal weight.
-
-CONCEPT OBJECTS (the topic — required): 3D sculpted objects clearly representing the topic. Examples:
-- multiplication: multiple identical groups (3 rows of 4 colorful cubes)
-- division: one group splitting into equal piles
-- addition/subtraction: stacked colorful blocks in columns
-- fractions: 3D pie slices or stacked bars in different colors
-- rounding: arrows pointing up/down
-- geometry: large 3D geometric shapes (triangle, circle, square)
-- symmetry: mirrored shapes along visible axis
-- data/charts: 3D bar or pie chart shape
-- logic puzzles: magic-square grid of colored cubes
-- reading/letters: large stylized 3D-sculpted decorative letters (A B C) on/around a book
-- writing: notebook with abstract scribble lines (NOT readable words)
-
-DECORATIVE TYPOGRAPHY (limited):
-- ALLOWED: large 3D-sculpted SINGLE letters or digits as standalone design elements (sparkly 3D 'A', 3D number '5'), max 1-3 characters, never forming a word
-- ALLOWED: 3D-sculpted math operators (+, ×, ÷, =)
-- FORBIDDEN: narrative text, sentences, paragraphs, gibberish word-like text, fake writing
-- FORBIDDEN: writing on chalkboards/posters/papers/screens, books with text on covers
-- FORBIDDEN: any attempt to render real words — AI consistently fails
-
-BACKGROUND: pure solid white (#FFFFFF), no gradient, no tint, no shadow — must allow alpha transparency.
-
-COMPOSITION: square 1:1, single warm centered composition. The topic must be instantly recognizable.`;
-
-function p(desc: string) { return `Cute 3D Pixar-style illustration depicting ${desc}${SUFFIX}`; }
+function p(desc: string) { return `Cute 3D Pixar-style illustration. A cheerful smiling human child (boy or girl, age 8 to 10, big expressive eyes, optional glasses, modern casual colorful clothes) engaged with ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
 

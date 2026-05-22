@@ -157,51 +157,11 @@ const ALL_KEYS: string[] = [];
 
 // ── Default prompts (mirror of edge function IMAGE_KEYS descriptions) ─────────
 
-const PROMPT_PREFIX = "Cute 3D Pixar-style illustration depicting";
-const PROMPT_SUFFIX = `.
-
-STYLE: Cute 3D Pixar-style illustration, smooth rounded volumetric surfaces, soft cinematic shading, vibrant but soft pastel colors with one strong accent. Warm, welcoming, kid-friendly. Like a high-quality children's educational app icon.
-
-CHARACTER (warm anchor — required): exactly ONE cute friendly 3D cartoon CHILD with a clear face and expressive eyes — a cheerful boy or girl aged 8-10, friendly smile, optional glasses, modern casual clothes. STRICTLY NO ANIMALS, NO ANIMAL MASCOTS, NO OWLS, NO FOXES, NO CREATURES — only a human child character. The child is actively engaged with the educational concept (holding it, pointing to it, looking curious). Child is medium-sized — clearly visible but not dominant; the concept objects share equal weight.
-
-CONCEPT OBJECTS (the topic — required): 3D sculpted objects that clearly represent the topic. Examples by concept:
-  - multiplication: multiple identical groups (e.g., 3 rows of 4 colorful cubes)
-  - division: one group splitting into equal smaller piles
-  - addition/subtraction: stacked colorful blocks in columns
-  - fractions: 3D pie slices or stacked bars in different colors
-  - rounding: arrows pointing up/down to nearest level
-  - geometry/shapes: large 3D geometric shapes (triangle, circle, square)
-  - symmetry: mirrored shapes along a visible axis line
-  - data/charts: 3D bar chart or pie chart shape
-  - logic puzzles: magic-square grid of colored cubes or interlocking shapes
-  - perimeter/area: highlighted rectangle outline
-  - reading/letters: large stylized 3D-sculpted decorative letters (A B C) floating on/around a book — NOT realistic text
-  - writing: notebook with abstract scribble lines (NOT readable words)
-
-DECORATIVE TYPOGRAPHY (limited):
-  - ALLOWED: large 3D-sculpted SINGLE letters or digits as standalone design elements (like a sparkly 3D letter 'A' or a 3D number '5' as a sculpture) — only 1-3 characters max, never forming a word
-  - ALLOWED: 3D-sculpted math operators (+, ×, ÷, =) as design shapes
-  - FORBIDDEN: any narrative text, sentences, paragraphs, gibberish word-like text, fake writing
-  - FORBIDDEN: writing on chalkboards, posters, papers, screens, books with text on covers
-  - FORBIDDEN: any attempt to render real words — AI consistently fails at this
-
-BACKGROUND: pure solid white (#FFFFFF), no gradient, no tint, no shadow behind subject — must allow alpha transparency.
-
-COMPOSITION: square 1:1, single warm centered composition. The topic must be instantly recognizable.`;
-
-ZERO TEXT POLICY (HARD CONSTRAINT):
-- Zero letters, zero words, zero alphabet characters of any language
-- Zero digits, zero numerals (0-9), zero Roman numerals, zero math equations
-- Zero handwriting, zero typography, zero calligraphy
-- Zero text on any surface: not on books, not on screens, not on signs, not in the air
-- Zero logos, zero watermarks, zero signatures
-- Use abstract visual metaphors only: shapes, dots, beads, blocks, arrows, geometric forms
-- If concept implies numbers (e.g. counting), show abacus beads or colored cubes without any digits
-- If concept implies text (e.g. reading), show stack of solid-color books with NO covers, NO titles
-
-BACKGROUND: pure solid white RGB(255,255,255), no gradient, no shadow, no tint, no texture — background must be pure white so transparency can be applied.
-
-OUTPUT: square 1:1 format, single centered composition, no text anywhere.`;
+// PŘÍSNĚ POZITIVNÍ POPIS — bez negací. AI image modely extraktují slova z negace
+// ("no owls" → vygeneruje sovu, "no text" → přidá text). Popisuj jen co tam JE.
+// Negace patří jen do separátního negative_prompt pole (Pollinations má, Gemini ne).
+const PROMPT_PREFIX = "Cute 3D Pixar-style illustration. A cheerful smiling human child (boy or girl, age 8 to 10, big expressive eyes, optional glasses, modern casual colorful clothes) engaged with";
+const PROMPT_SUFFIX = ". Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format.";
 
 const DISPLAY_PREFIX = "Vzdělávací 3D ilustrace —";
 const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly oboru, pastelové barvy, bílé pozadí, bez textu";
