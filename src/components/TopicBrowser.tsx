@@ -22,6 +22,7 @@ import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { OlyLogo } from "@/components/OlyLogo";
+import { getDisplayCategory, getDisplayCategoryDescription, getDisplayTopic, getDisplayTopicDescription } from "@/lib/displayNames";
 
 interface TopicBrowserProps {
   grade: Grade;
@@ -190,14 +191,20 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
 
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+  // Dětské vs. RVP názvy — admin vidí formální RVP, žák vidí dětský název
+  const displayCat = (cat: string) => isAdmin ? capitalize(cat) : getDisplayCategory(cat, grade);
+  const displayTop = (top: string) => isAdmin ? capitalize(top) : getDisplayTopic(top, grade);
+  const displayCatDesc = (cat: string) => isAdmin ? null : getDisplayCategoryDescription(cat, grade);
+  const displayTopDesc = (top: string) => isAdmin ? null : getDisplayTopicDescription(top, grade);
+
   const title =
     level === "subject"
       ? t("topic.select_subject")
       : level === "category"
         ? selectedSubject ? capitalize(selectedSubject) : ""
         : level === "topic"
-          ? selectedCategory ? capitalize(selectedCategory) : ""
-          : selectedTopic ? capitalize(selectedTopic) : "";
+          ? selectedCategory ? displayCat(selectedCategory) : ""
+          : selectedTopic ? displayTop(selectedTopic) : "";
 
   const subtitle =
     level === "subject"
@@ -484,8 +491,11 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                             </div>
                             <div className="space-y-2">
                               <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
-                                {capitalize(category)}
+                                {displayCat(category)}
                               </h3>
+                              {displayCatDesc(category) && (
+                                <p className="text-sm text-foreground/70 leading-snug">{displayCatDesc(category)}</p>
+                              )}
                               <p className="text-sm text-foreground/70">
                                 {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
                               </p>
@@ -501,7 +511,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                           <div className="flex items-center gap-3 h-full">
                             <div className="flex-1 min-w-0 space-y-1">
                               <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
-                                {capitalize(category)}
+                                {displayCat(category)}
                               </h3>
                               <p className="text-xs text-foreground/70">
                                 {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
@@ -532,9 +542,10 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                       (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === topicName
                     );
                     const count = skillsInGroup.length;
-                    const description = count > 1
+                    const descFromNames = displayTopDesc(topicName);
+                    const description = descFromNames ?? (count > 1
                       ? (skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? "")
-                      : (skillsInGroup[0]?.briefDescription ?? "");
+                      : (skillsInGroup[0]?.briefDescription ?? ""));
                     const topicEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, topicName);
                     const isPrimary = idx === 0 && topicGroups.length > 1;
                     return (
@@ -553,7 +564,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                             </div>
                             <div className="space-y-2">
                               <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
-                                {capitalize(topicName)}
+                                {displayTop(topicName)}
                               </h3>
                               {description && (
                                 <p className="text-sm text-foreground/70 line-clamp-2">{description}</p>
@@ -575,7 +586,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin }: TopicBro
                           <div className="flex items-center gap-3 h-full">
                             <div className="flex-1 min-w-0 space-y-1">
                               <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight line-clamp-2">
-                                {capitalize(topicName)}
+                                {displayTop(topicName)}
                               </h3>
                               {description && (
                                 <p className="text-xs text-foreground/70 line-clamp-2">{description}</p>
