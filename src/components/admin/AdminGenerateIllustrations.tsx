@@ -259,53 +259,48 @@ function getAutoDesc(
   const known = getDefaultDesc(key);
   if (known) return known;
 
+  // POZN: Popisy jsou ČISTĚ POZITIVNÍ — žádné "no characters", "no people", "no animals".
+  // AI image modely extraktují nouns z negace. Vše negativní → jen do negative_prompt pole.
   if (key.startsWith("subject-")) {
-    // Code-based (grade-N) — agreguj přes všechny topics v předmětu
     const subjTopics = SUBJ_TO_TOPICS_MAP.get(key);
     if (subjTopics && subjTopics.length > 0) {
       const subjectName = subjTopics[0].subject;
-      const categories = [...new Set(subjTopics.map((t) => t.category))].slice(0, 6).join(", ");
-      return `the school subject "${subjectName}" — a composition of iconic objects representing its main areas: ${categories}; arranged as a visual collage of subject-specific tools, symbols and instruments (no characters, no people)`;
+      const categories = [...new Set(subjTopics.map((t) => t.category))].slice(0, 4).join(" and ");
+      return `colorful 3D objects representing the school subject ${subjectName} (covering ${categories})`;
     }
-    // DB fallback
     const slug = key.slice("subject-".length);
     const subject = dbSubjects.find((s) => s.slug === slug);
     if (subject) {
-      return `the school subject "${subject.name}" — a composition of iconic objects, tools and symbols representing this subject area (no characters)`;
+      return `colorful 3D objects representing the school subject ${subject.name}`;
     }
   }
   if (key.startsWith("cat-")) {
-    // Code-based (grade-N) — agreguj všechny topics v této kategorii
     const catTopics = CAT_TO_TOPICS_MAP.get(key);
     if (catTopics && catTopics.length > 0) {
       const catName = catTopics[0].category;
-      const subjectName = catTopics[0].subject;
-      const titles = catTopics.map((t) => t.title).slice(0, 6).join("; ");
-      return `the curriculum area "${catName}" within ${subjectName} — visual elements representing the following topics: ${titles}. Show concrete objects, symbols and concepts (NO cartoon characters, NO people), arranged as a clean educational composition that explains what this area covers`;
+      const titles = catTopics.map((t) => t.title).slice(0, 3).join(" and ");
+      return `3D objects representing ${catName} — including ${titles}`;
     }
-    // DB fallback
     const parts = key.slice("cat-".length).split("-");
     const catSlug = parts.length > 1 ? parts.slice(1).join("-") : parts[0];
     const cat = dbCategories.find((c) => c.slug === catSlug);
     if (cat) {
-      const base = cat.description || `the area "${cat.name}"`;
-      return `${base} — visual composition of objects, symbols and tools from this area (no characters)`;
+      const base = cat.description || `the area ${cat.name}`;
+      return `colorful 3D objects representing ${base}`;
     }
   }
   if (key.startsWith("topic-")) {
-    // Code-based (grade-N) — použij briefDescription
     const meta = KEY_TO_TOPIC_MAP.get(key);
     if (meta) {
       const brief = meta.briefDescription || meta.title;
-      return `"${meta.title}" — ${brief} Show this specific learning content visually: concrete objects, symbols, diagrams, mathematical or subject-specific elements that directly illustrate the concept (NO cartoon characters, NO children, NO people — focus on the learning material itself)`;
+      return `colorful 3D objects showing ${meta.title.toLowerCase()} — ${brief}`;
     }
-    // DB fallback
     const parts = key.slice("topic-".length).split("-");
     const topSlug = parts.length > 2 ? parts.slice(2).join("-") : parts[parts.length - 1];
     const topic = dbTopics.find((t) => t.slug === topSlug);
     if (topic) {
-      const base = topic.description || `the topic "${topic.name}"`;
-      return `${base} — concrete visual scene illustrating this learning content (no characters)`;
+      const base = topic.description || `the topic ${topic.name}`;
+      return `colorful 3D objects showing ${base}`;
     }
   }
   return "";
