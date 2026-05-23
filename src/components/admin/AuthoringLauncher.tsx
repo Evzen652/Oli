@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
+import { Copy, Check, ExternalLink } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import type { TopicMetadata } from "@/lib/types";
 
 interface AuthoringLauncherProps {
@@ -36,9 +38,15 @@ Výstup: TypeScript soubor připravený pro integraci přes Claude Code.`;
 }
 
 export function AuthoringLauncher({ topic, level }: AuthoringLauncherProps) {
-  const handleOpen = () => {
-    const url = `https://claude.ai/new?q=${encodeURIComponent(buildPrompt(topic, level))}`;
-    window.open(url, "_blank");
+  const [copied, setCopied] = useState(false);
+  const { toast } = useToast();
+
+  const handleCopy = async () => {
+    const prompt = buildPrompt(topic, level);
+    await navigator.clipboard.writeText(prompt);
+    setCopied(true);
+    toast({ description: "Zkopírováno — vlož do Claude (Ctrl+V)" });
+    setTimeout(() => setCopied(false), 3000);
   };
 
   return (
@@ -51,17 +59,31 @@ export function AuthoringLauncher({ topic, level }: AuthoringLauncherProps) {
           </p>
           <p className="text-violet-700 text-xs mt-1 leading-relaxed">
             Obsah se vytváří přes Claude Chat + Claude Code.
+            Zkopíruj prompt a vlož ho do Claude Chatu.
           </p>
         </div>
       </div>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={handleOpen}
-        className="border-violet-300 text-violet-700 hover:bg-violet-100 gap-1.5"
-      >
-        Vytvořit obsah v Claude Chat <ExternalLink className="h-3.5 w-3.5" />
-      </Button>
+      <div className="flex gap-2 flex-wrap">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleCopy}
+          className="border-violet-300 text-violet-700 hover:bg-violet-100 gap-1.5"
+        >
+          {copied
+            ? <><Check className="h-3.5 w-3.5" /> Zkopírováno!</>
+            : <><Copy className="h-3.5 w-3.5" /> Zkopírovat příkaz pro Claude</>
+          }
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => window.open("https://claude.ai", "_blank")}
+          className="text-violet-500 hover:text-violet-700 gap-1"
+        >
+          Otevřít Claude Chat <ExternalLink className="h-3 w-3" />
+        </Button>
+      </div>
     </div>
   );
 }
