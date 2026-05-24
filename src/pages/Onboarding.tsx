@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { OlyLogo } from "@/components/OlyLogo";
+import { hasContentForGrade } from "@/lib/contentAvailability";
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -20,20 +21,30 @@ export default function Onboarding() {
           <p className="text-gray-500 text-lg">Jaký chodíš ročník?</p>
         </div>
 
-        {/* Mřížka ročníků */}
+        {/* Mřížka ročníků — plné fialové = má obsah, šedé "brzy" = fallback */}
         <div className="grid grid-cols-3 gap-3">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => (
-            <button
-              key={grade}
-              onClick={() => handleGradeSelect(grade)}
-              className="aspect-square rounded-2xl border-2 border-violet-200 bg-white
-                         text-2xl font-bold text-violet-700
-                         hover:bg-violet-50 hover:border-violet-400 hover:shadow-md
-                         active:scale-95 transition-all cursor-pointer"
-            >
-              {grade}.
-            </button>
-          ))}
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
+            const hasContent = hasContentForGrade(grade);
+            return (
+              <button
+                key={grade}
+                onClick={() => handleGradeSelect(grade)}
+                title={hasContent ? undefined : "Obsah připravujeme — zatím dostaneš cvičení z jiného ročníku"}
+                className={`aspect-square rounded-2xl border-2 bg-white
+                           text-2xl font-bold transition-all cursor-pointer
+                           active:scale-95 flex flex-col items-center justify-center
+                           ${hasContent
+                             ? "border-violet-200 text-violet-700 hover:bg-violet-50 hover:border-violet-400 hover:shadow-md"
+                             : "border-gray-200 text-gray-400 hover:bg-gray-50 hover:border-gray-300"
+                           }`}
+              >
+                {grade}.
+                {!hasContent && (
+                  <span className="text-[10px] font-normal opacity-70 mt-0.5">brzy</span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Odkaz pro rodiče */}

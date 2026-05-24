@@ -137,10 +137,9 @@ src/
 | Admin UI cleanup + AuthoringLauncher | Architekt | ✅ Hotovo |
 | CI/CD pipeline + E2E testy (Playwright) | Architekt | 🟡 V PR |
 | Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
-| Freemium / anonymní vstup pro dítě (Krok A + B + C + D) | Architekt | ✅ Hotovo |
+| Freemium / anonymní vstup pro dítě (Kroky A–E kompletní) | Architekt | ✅ Hotovo |
 | Email integrace pro parent_invitations (Resend/SendGrid) | Architekt | ⏸️ Follow-up |
-| Aplikace migrace `parent_invitations` v Supabase | Evžen | ⏳ `npx supabase db push` |
-| Anonymní onboarding — Krok E (fallback obsah pro prázdné ročníky) | Architekt | ⏸️ Další krok |
+| Aplikace migrace `parent_invitations` v Supabase | Evžen | ✅ Provedeno 24.5. |
 | Sjednocení helpTemplate vs task.hints | Architekt | ⏸️ Čeká |
 | displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
 | Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na authoring |

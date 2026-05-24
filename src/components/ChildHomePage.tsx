@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
+import { getContentWarning } from "@/lib/contentAvailability";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { FEATURES } from "@/lib/features";
@@ -481,6 +482,17 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     <>
     <div className="min-h-screen bg-[#fdf8f2] px-4 py-6 sm:px-8 sm:py-10">
       <div className="w-full max-w-5xl mx-auto space-y-5">
+
+        {/* ── Content fallback banner — pokud ročník dítěte nemá vlastní obsah ── */}
+        {(() => {
+          const warning = getContentWarning(grade);
+          return warning ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 flex items-start gap-2">
+              <span className="shrink-0">🚧</span>
+              <span>{warning}</span>
+            </div>
+          ) : null;
+        })()}
 
         {/* ── Greeting bar ── */}
         <div className="bg-white rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-sm border border-black/[0.05]">

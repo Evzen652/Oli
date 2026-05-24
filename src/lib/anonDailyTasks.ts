@@ -5,9 +5,9 @@
 
 import type { TopicMetadata } from "@/lib/types";
 import { getAllTopics } from "@/lib/contentRegistry";
+import { getBestAvailableGrade } from "./contentAvailability";
 
 const DEFAULT_DAILY_COUNT = 3;
-const FALLBACK_GRADE = 4;
 
 function hashString(str: string): number {
   let hash = 0;
@@ -68,19 +68,18 @@ export function getDailyTasksForGrade(
   grade: number,
   count: number = DEFAULT_DAILY_COUNT,
 ): TopicMetadata[] {
+  // Pokud daný ročník nemá obsah, použij nejlepší dostupný (typicky grade-4)
+  const effectiveGrade = getBestAvailableGrade(grade);
   const allTopics = getAllTopics();
-  const availableTopics = allTopics.filter(
-    (t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade,
+  const sourceTopics = allTopics.filter(
+    (t) => t.gradeRange[0] <= effectiveGrade && t.gradeRange[1] >= effectiveGrade,
   );
-
-  const sourceTopics =
-    availableTopics.length >= count
-      ? availableTopics
-      : allTopics.filter((t) => t.gradeRange[0] === FALLBACK_GRADE);
 
   if (sourceTopics.length === 0) return [];
 
   const today = getTodayDateString();
+  // Seed založen na původně vybraném ročníku — různá volba dává různý mix,
+  // i když oba spadají na stejný effective grade
   const seed = hashString(today + String(grade));
 
   return pickDailyTopics(sourceTopics, seed, count);

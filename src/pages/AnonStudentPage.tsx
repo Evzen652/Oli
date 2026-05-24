@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { SessionView } from "@/components/SessionView";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getTodayProgress, allTasksCompleted } from "@/lib/anonProgress";
+import { getContentWarning } from "@/lib/contentAvailability";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { OlyLogo } from "@/components/OlyLogo";
@@ -94,6 +95,17 @@ export default function AnonStudentPage() {
           <OlyLogo size="md" />
           <div className="text-sm text-violet-600 font-semibold">{grade}. ročník</div>
         </header>
+
+        {/* Content fallback banner — pokud ročník nemá vlastní obsah */}
+        {(() => {
+          const warning = getContentWarning(grade);
+          return warning ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 flex items-start gap-2">
+              <span className="shrink-0">🚧</span>
+              <span>{warning}</span>
+            </div>
+          ) : null;
+        })()}
 
         {/* Dnešní úkoly */}
         <section className="space-y-4">
