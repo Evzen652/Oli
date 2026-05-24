@@ -92,12 +92,12 @@ export default function Auth() {
       <div className={`mx-auto ${isLogin ? "max-w-sm" : "max-w-3xl"}`}>
         {/* Header */}
         <div className="mb-6 flex items-center justify-between gap-3">
+          <button onClick={() => navigate("/")} className="inline-flex">
+            <OlyLogo size="xs" />
+          </button>
           <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-sm text-foreground/70 hover:text-foreground bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 border border-white shadow-sm hover:shadow transition-all">
             <ArrowLeft className="h-4 w-4" />
             Zpět
-          </button>
-          <button onClick={() => navigate("/")} className="inline-flex">
-            <OlyLogo size="xs" />
           </button>
         </div>
 
