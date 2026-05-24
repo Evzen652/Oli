@@ -118,11 +118,7 @@ function subjectColor(slug: string) {
 
 // ── Česká pluralizace ──────────────────────────────────────────────────
 
-function plural(n: number, one: string, few: string, many: string) {
-  if (n === 1) return `${n} ${one}`;
-  if (n >= 2 && n <= 4) return `${n} ${few}`;
-  return `${n} ${many}`;
-}
+import { pluralWithNumber as plural } from "@/lib/czechGrammar";
 
 // ── UI komponenty ──────────────────────────────────────────────────────
 

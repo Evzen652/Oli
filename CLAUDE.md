@@ -9,6 +9,25 @@ Po dokončení každého tasku (velkého i malého) VŽDY:
 
 ---
 
+## ⚠️ ČESKÁ GRAMATIKA — POVINNÉ pro uživatelsky viditelný text
+
+Každý string s **číslem + podstatným jménem** MUSÍ použít helpery z `src/lib/czechGrammar.ts`.
+**Nikdy nepiš `${n} dílů` nebo ternární `n === 1 ? "úloha" : ...` inline.**
+
+```ts
+import { pad, plural, phrase, form } from "@/lib/czechGrammar";
+
+pad(3, "ÚLOHA")              // → "3 úlohy"  (číslo + tvar)
+plural(5, "díl", "díly", "dílů")  // → "dílů"     (jen tvar)
+phrase(3, "STEJNÝ", "DÍL")   // → "3 stejné díly" (číslo + adj + subst)
+form(3, "DÍL")               // → "díly"     (jen tvar z rejstříku)
+```
+
+Pravidlo: 1 = one (nom. sg.), 2-4 = few (nom. pl.), 0,5+ = many (gen. pl.).
+Pokud nové slovo není v rejstříku → přidej ho do `NOUNS` v `czechGrammar.ts`.
+
+---
+
 ## Multi-PC workflow
 - User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull` (na branchi `claude/cranky-shirley`), abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.

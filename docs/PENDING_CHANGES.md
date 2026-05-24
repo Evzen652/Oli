@@ -19,6 +19,12 @@
 
 ## Otevřené
 
+### Czech grammar audit zbylých generátorů
+- Centrální helper `src/lib/czechGrammar.ts` vytvořen + testován (18/18 testů ok)
+- Opraveny nejviditelnější bugy: `zlomekJakoCastCelku`, ChildHomePage motivační hlášky, weeklyReportGenerator, SkillDetailModal
+- **TODO**: audit zbývajících ~25 content generátorů v `src/lib/content/math/*` — najít ternární `n === 1 ? ... : ...` patterny a převést na `pad()` / `phrase()`
+- Postup: `grep "=== 1 \? .* : .* :"` per soubor, refactor postupně
+
 ### Email integrace pro parent_invitations (Krok D follow-up)
 - Pozvánka se ukládá do `parent_invitations`, ale email se zatím **neodesílá automaticky**.
 - Dialog dítěti říká "řekni rodiči ať se zaregistruje na oli-edu.com se stejným emailem".
@@ -46,6 +52,15 @@
 ---
 
 ## Vyřízené
+
+### 2026-05-25 — Česká gramatika — centrální systém ✅
+- ✅ `src/lib/czechGrammar.ts` — `plural()`, `pluralWithNumber()`, `pad()`, `form()`, `adj()`, `phrase()`, `pastTense()`, `pastTenseInclusive()`
+- ✅ Slovník 30+ běžných substantiv (ÚKOL, ÚLOHA, DEN, DÍL, METR, …) + 11 adjektiv (STEJNÝ, MALÝ, …)
+- ✅ 18 testů (`src/test/czech-grammar.test.ts`) — všechny prošly
+- ✅ Konsolidováno 4× lokální `plural()` duplikáty: `ChildHomePage`, `ParentDashboard`, `AdminRvpTree`, `AdminCurriculumSidebar`
+- ✅ Opravený bug "3 stejných dílů" → "3 stejné díly" v `zlomekJakoCastCelkuZnazorneniZlomku.ts`
+- ✅ Opraveny `weeklyReportGenerator.ts` (3×), `SkillDetailModal.tsx` (2×), `ChildHomePage.tsx` motivační hlášky (4×)
+- ✅ CLAUDE.md — povinné pravidlo "každý uživatelsky viditelný string s číslem + substantivem MUSÍ použít czechGrammar"
 
 ### 2026-05-24 — Anonymní onboarding — Krok E ✅ (fallback obsah pro prázdné ročníky)
 - ✅ `src/lib/contentAvailability.ts` — `hasContentForGrade()`, `getBestAvailableGrade()`, `getContentWarning()`

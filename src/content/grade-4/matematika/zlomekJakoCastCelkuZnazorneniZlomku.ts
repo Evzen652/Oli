@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { phrase, pad, form } from "@/lib/czechGrammar";
 
 // Otázky testují porozumění zlomku jako části celku.
 // Žádné obrázky — odpověď je slovní/číselná.
@@ -24,7 +25,7 @@ function gen(level: number): PracticeTask[] {
       const d3 = `${den}/${num}`;
 
       tasks.push({
-        question: `Celek je rozdělen na ${den} stejných dílů. Zbarveno je ${num} ${num === 1 ? "díl" : num < 5 ? "díly" : "dílů"}. Jaký zlomek představují zbarvené díly?`,
+        question: `Celek je rozdělen na ${phrase(den, "STEJNÝ", "DÍL")}. Zbarveno ${num === 1 ? "je" : "jsou"} ${pad(num, "DÍL")}. Jaký zlomek představují zbarvené díly?`,
         correctAnswer: correct,
         options: shuffle([correct, d1, d2, d3]),
         hints: [
@@ -32,7 +33,7 @@ function gen(level: number): PracticeTask[] {
           `Čitatel je nahoře (zbarvené), jmenovatel dole (celkový počet).`,
         ],
         solutionSteps: [
-          `Zbarveno: ${num} dílů z celkových ${den}.`,
+          `Zbarveno: ${pad(num, "DÍL")} z celkových ${den}.`,
           `Zlomek = ${num}/${den}.`,
         ],
       });
@@ -71,7 +72,7 @@ function gen(level: number): PracticeTask[] {
       const d3 = `${num}/${den + 1}`;
 
       tasks.push({
-        question: `Petr ${item.action} ${num} ${num === 1 ? "díl" : "díly"} ${item.name} rozdělené na ${den} stejných dílů. Jaký zlomek ${item.name} snědl?`,
+        question: `Petr ${item.action} ${pad(num, "DÍL")} ${item.name} ${num === 1 ? "rozdělený" : "rozdělené"} na ${phrase(den, "STEJNÝ", "DÍL")}. Jaký zlomek ${item.name} snědl?`,
         correctAnswer: correct,
         options: shuffle([correct, d1, d2, d3]),
         hints: [

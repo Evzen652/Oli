@@ -249,7 +249,7 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
 
     // Hodně úloh
     manyTasks ? [
-      `${tasks} úloh tento týden — to je pořádná dávka! Mozek ti poděkuje, až přijde písemka.`,
+      `${czPad(tasks, "ÚLOHA")} tento týden — to je pořádná dávka! Mozek ti poděkuje, až přijde písemka.`,
       `${greeting}, ${tasks} splněných úloh mluví za vše. Jsi pilný/á a výsledky budou přicházet.`,
     ] : [],
 
@@ -261,10 +261,10 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
 
     // Obecné varianty (vždy dostupné jako záloha)
     [
-      `${greeting}, máš za sebou ${tasks} úloh a ${pluralDays(days)} procvičování v řadě. Jsi na dobré cestě — pokračuj!`,
-      `${pluralDays(days)} trénování a ${tasks} úloh — to se počítá. Co si dnes vybereš?`,
+      `${greeting}, máš za sebou ${czPad(tasks, "ÚLOHA")} a ${pluralDays(days)} procvičování v řadě. Jsi na dobré cestě — pokračuj!`,
+      `${pluralDays(days)} trénování a ${czPad(tasks, "ÚLOHA")} — to se počítá. Co si dnes vybereš?`,
       `Tvoje ${accuracy}% úspěšnost a ${tasks} splněných úloh ukazují, že makáš. Jen tak dál, ${greeting}!`,
-      `${tasks} úloh tento týden a ${accuracy} % správně — dobrý základ. Pojď přidat další!`,
+      `${czPad(tasks, "ÚLOHA")} tento týden a ${accuracy} % správně — dobrý základ. Pojď přidat další!`,
       `Každý den trošku navíc. ${pluralDays(days)} v řadě dokazuje, že to myslíš vážně.`,
     ],
   ];
@@ -934,16 +934,13 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
   );
 }
 
-function pluralDays(n: number) {
-  if (n === 1) return "1 den";
-  if (n >= 2 && n <= 4) return `${n} dny`;
-  return `${n} dní`;
-}
+import { pad as czPad, plural as czPlural } from "@/lib/czechGrammar";
+
+function pluralDays(n: number) { return czPad(n, "DEN"); }
 
 function pluralTasks(n: number) {
-  if (n === 1) return "úlohu";
-  if (n >= 2 && n <= 4) return "úlohy";
-  return "úloh";
+  // Akkuzativ (4. pád) — "splnil 1 úlohu / 2 úlohy / 5 úloh"
+  return czPlural(n, "úlohu", "úlohy", "úloh");
 }
 
 function StatPill({ emoji, main, sub, cls, tooltip }: { emoji: string; main: string; sub: string; cls: string; tooltip?: string }) {

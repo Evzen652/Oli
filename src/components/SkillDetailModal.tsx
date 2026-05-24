@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CheckCircle2, HelpCircle, XCircle } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
+import { pad } from "@/lib/czechGrammar";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 
@@ -156,9 +157,9 @@ function getRecommendations(sessions: SessionSummary[], overallPct: number, grad
 
   // === CELKOVÝ ROZSAH (počet úloh) ===
   if (totalAnswers >= 50 && grade <= 2) {
-    tips.push(`Za všechna cvičení celkem zodpovědělo ${totalAnswers} úloh s výborným výsledkem — to je pořádný kus práce!`);
+    tips.push(`Za všechna cvičení celkem zodpovědělo ${pad(totalAnswers, "ÚLOHA")} s výborným výsledkem — to je pořádný kus práce!`);
   } else if (totalAnswers >= 50 && grade >= 4) {
-    tips.push(`Za všechna cvičení proběhlo celkem ${totalAnswers} úloh. I přes velký objem procvičování výsledky zatím nestačí — zkuste jiný způsob výkladu.`);
+    tips.push(`Za všechna cvičení proběhlo celkem ${pad(totalAnswers, "ÚLOHA")}. I přes velký objem procvičování výsledky zatím nestačí — zkuste jiný způsob výkladu.`);
   } else if (totalAnswers <= 8 && n === 1) {
     tips.push("Cvičení bylo krátké — hodnocení je zatím orientační. Delší nebo opakované procvičení přinese přesnější obrázek.");
   }

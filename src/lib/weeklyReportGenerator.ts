@@ -7,6 +7,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById } from "@/lib/contentRegistry";
 import { getReadableSkillName } from "@/lib/skillReadableName";
+import { pad, form } from "@/lib/czechGrammar";
 
 export type ReportRange = "week" | "month" | "all";
 
@@ -238,7 +239,7 @@ export async function generateWeeklyReport(
         icon: "⚠️",
         label: "Chybovost",
         tone: "warn",
-        text: `Chybovost je vyšší (${wrong} z ${attempts} úloh) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`,
+        text: `Chybovost je vyšší (${wrong} z ${pad(attempts, "ÚLOHA")}) — to často znamená, že některé téma ještě nesedlo, ne že by žák nedával pozor.`,
       });
     } else if (helpRatio >= 0.25) {
       detailParts.push({
@@ -304,11 +305,11 @@ export async function generateWeeklyReport(
     const pct = Math.round((s.correct / s.attempts) * 100);
     positive_observation = `Téma "${s.skill}" zvládá na ${pct} % (${s.correct} z ${s.attempts}).`;
   } else if (days >= 4) {
-    positive_observation = `Procvičoval/a pravidelně ${days} dny ${rangeLabel}.`;
+    positive_observation = `Procvičoval/a pravidelně ${pad(days, "DEN")} ${rangeLabel}.`;
   } else if (attempts >= 10) {
-    positive_observation = `Procvičoval/a ${attempts} úloh ${rangeLabel}.`;
+    positive_observation = `Procvičoval/a ${pad(attempts, "ÚLOHA")} ${rangeLabel}.`;
   } else if (attempts > 0) {
-    positive_observation = `Začal/a s procvičováním (${attempts} ${attempts === 1 ? "úloha" : attempts < 5 ? "úlohy" : "úloh"} ${rangeLabel}).`;
+    positive_observation = `Začal/a s procvičováním (${pad(attempts, "ÚLOHA")} ${rangeLabel}).`;
   }
 
   // ── Plán na příští týden — z weakSkillIds (repeat) nebo strongSkillIds (new) ──

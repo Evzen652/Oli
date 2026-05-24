@@ -30,11 +30,9 @@ import { LandingNav } from "@/pages/LandingNav";
 const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
-function pluralDays(n: number) {
-  if (n === 1) return "1 den";
-  if (n >= 2 && n <= 4) return `${n} dny`;
-  return `${n} dní`;
-}
+import { pad as czPad } from "@/lib/czechGrammar";
+
+function pluralDays(n: number) { return czPad(n, "DEN"); }
 
 
 function localDateStr(d: Date): string {

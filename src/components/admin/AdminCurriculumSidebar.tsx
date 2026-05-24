@@ -8,6 +8,7 @@ import type { TopicMetadata } from "@/lib/types";
 import type { DbSubject } from "@/hooks/useAdminCurriculum";
 import { isSubjectVisibleForGrade } from "@/lib/curriculumSubjectFilter";
 import { getDisplayCategory, getDisplayTopic, getDisplayTitle } from "@/lib/displayNames";
+import { plural } from "@/lib/czechGrammar";
 import type { Grade } from "@/lib/types";
 
 // Barva pro vizuální dot per předmět — Notion-vibe minimal indikátor
@@ -248,9 +249,6 @@ export function AdminCurriculumSidebar({
   const totalSkills = topics.length;
   const hasAnySelection = !!(selectedSubject || selectedCategory || selectedTopic || selectedSkill);
 
-  // Skloňování pomocí helperu — Czech: 1, 2-4, 5+
-  const plural = (n: number, one: string, few: string, many: string) =>
-    n === 1 ? one : n < 5 ? few : many;
 
   return (
     <div className="h-full flex flex-col bg-card border border-border rounded-2xl shadow-soft-1 overflow-hidden">

@@ -139,6 +139,7 @@ src/
 | Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
 | Freemium / anonymní vstup pro dítě (Kroky A–E kompletní) | Architekt | ✅ Hotovo |
 | Email integrace pro parent_invitations (Resend/SendGrid) | Architekt | ⏸️ Follow-up |
+| Czech grammar — centrální helper + audit | Architekt | ✅ Hotovo (audit zbylých generátorů otevřený) |
 | Aplikace migrace `parent_invitations` v Supabase | Evžen | ✅ Provedeno 24.5. |
 | Sjednocení helpTemplate vs task.hints | Architekt | ⏸️ Čeká |
 | displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
