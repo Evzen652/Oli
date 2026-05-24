@@ -7,6 +7,7 @@ import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { OlyLogo } from "@/components/OlyLogo";
 import { ArrowRight, Check } from "lucide-react";
+import { InviteParentDialog } from "@/components/InviteParentDialog";
 import type { TopicMetadata } from "@/lib/types";
 
 /**
@@ -23,6 +24,8 @@ export default function AnonStudentPage() {
   const [sessionMode, setSessionMode] = useState(false);
   // refresh trigger po dokončení úkolu (re-read localStorage)
   const [refreshTick, setRefreshTick] = useState(0);
+  // invite parent dialog
+  const [showInviteParent, setShowInviteParent] = useState(false);
 
   // Pokud chybí grade → onboarding
   useEffect(() => {
@@ -142,6 +145,16 @@ export default function AnonStudentPage() {
           </div>
         </section>
 
+        {/* Nenápadné tlačítko "Sdílet pokrok s rodiči" — vždy viditelné, ne v centru */}
+        <div className="text-center pt-2">
+          <button
+            onClick={() => setShowInviteParent(true)}
+            className="text-sm text-gray-400 hover:text-violet-600 transition-colors"
+          >
+            👪 Sdílet pokrok s rodiči
+          </button>
+        </div>
+
         {/* CTA po splnění všech 3 */}
         {allDone && (
           <div className="rounded-2xl bg-gradient-to-br from-violet-100 to-purple-100 border-2 border-violet-200 p-6 text-center space-y-3">
@@ -157,6 +170,13 @@ export default function AnonStudentPage() {
           </div>
         )}
       </div>
+
+      {showInviteParent && (
+        <InviteParentDialog
+          onClose={() => setShowInviteParent(false)}
+          anonGrade={grade}
+        />
+      )}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
 export default function Auth() {
   const [searchParams] = useSearchParams();
   const anonSummary = hasAnonProgress() ? getAnonProgressSummary() : null;
+  const inviteId = searchParams.get("invite");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(searchParams.get("mode") !== "register");
@@ -41,6 +42,14 @@ export default function Auth() {
         // Assign parent role after signup
         if (data.user) {
           await supabase.from("user_roles").insert({ user_id: data.user.id, role: "parent" });
+          // Pokud rodič přišel z invite linku, označ pozvánku jako accepted
+          if (inviteId) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await (supabase as any)
+              .from("parent_invitations")
+              .update({ status: "accepted", accepted_at: new Date().toISOString() })
+              .eq("id", inviteId);
+          }
         }
         setMessage(t("auth.register_success"));
       }
@@ -57,6 +66,13 @@ export default function Auth() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Invite banner — rodič přišel z pozvánky od dítěte */}
+          {inviteId && (
+            <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs text-emerald-700">
+              👪 <strong>Pozvánka od dítěte</strong> — registruj se a po dokončení tě dítě propojí.
+            </div>
+          )}
+
           {/* Anon progress hint — pokud dítě procvičovalo a teď se rodič registruje */}
           {anonSummary && (
             <div className="rounded-xl bg-violet-50 border border-violet-200 px-3 py-2 text-xs text-violet-700">

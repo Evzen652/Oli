@@ -19,6 +19,22 @@
 
 ## Otevřené
 
+### Email integrace pro parent_invitations (Krok D follow-up)
+- Pozvánka se ukládá do `parent_invitations`, ale email se zatím **neodesílá automaticky**.
+- Dialog dítěti říká "řekni rodiči ať se zaregistruje na oli-edu.com se stejným emailem".
+- TODO: edge function s Resend/SendGrid integrací — odeslat email s registračním linkem `/auth?mode=register&invite={id}`.
+- Až bude email integrace, status pozvánky se přechodí automaticky `pending → accepted` při kliknutí na link.
+
+### Automatické propojení dítěte při akceptaci pozvánky rodičem
+- Po `Auth.tsx` update `status: accepted`, **TODO**: vytvořit záznam v `children` propojující rodiče s dítětem.
+- Závisí na child auth pattern (anon → registrovaný child user, nebo invite vytváří pending child profile).
+
+### Migrace `parent_invitations` v Supabase
+- Migrace `20260524180000_parent_invitations.sql` připravena, ale **musí být aplikována**:
+  - Lokálně: `npx supabase db push`
+  - Nebo přes Supabase Studio: SQL editor → run migration
+- Po migraci regenerovat types: `npx supabase gen types typescript` (jinak zůstane `(supabase as any)` cast v kódu).
+
 ### Rozdělení historie procvičování podle původu (parent vs. self)
 - `session_logs` neobsahuje `origin` pole (parent / self).
 - Lze odvodit z `parent_assignments.skill_id IN session_logs.skill_id`,
@@ -30,6 +46,13 @@
 ---
 
 ## Vyřízené
+
+### 2026-05-24 — Anonymní onboarding — Krok D ✅ (dítě pozve rodiče)
+- ✅ `supabase/migrations/20260524180000_parent_invitations.sql` — tabulka + RLS (dítě vidí svoje, kdokoli vytváří, kdokoli updatuje status)
+- ✅ `src/components/InviteParentDialog.tsx` — modal s emailem rodiče, validace, 2 stavy (form / sent confirmation)
+- ✅ `AnonStudentPage.tsx` — nenápadné tlačítko "👪 Sdílet pokrok s rodiči" dole pod denními úkoly
+- ✅ `Auth.tsx` — detekuje `?invite={id}` query param, po registraci označí pozvánku `status: accepted` + zobrazí informativní banner
+- ⚠️ Email odesílání chybí (viz Otevřené), automatické propojení children chybí (viz Otevřené)
 
 ### 2026-05-24 — Anonymní onboarding — Krok C ✅ (přenos pokroku při registraci)
 - ✅ `src/lib/anonMigration.ts` — `hasAnonProgress()`, `getAnonProgressSummary()`, `migrateAnonProgress(userId, childId)`, `clearAnonData()`
