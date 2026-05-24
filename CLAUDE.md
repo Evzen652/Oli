@@ -1,5 +1,14 @@
 # Oly (Sovicka) — Project Notes
 
+## ⚠️ POVINNÉ PO KAŽDÉM TASKU — BEZ VÝJIMKY
+
+Po dokončení každého tasku (velkého i malého) VŽDY:
+1. **Aktualizuj `PROJECT_STATUS.md` sekci 6 (Aktuálně rozpracované)** — označ hotové věci ✅, přidej nové položky
+2. **Aktualizuj `docs/PENDING_CHANGES.md` sekci Vyřízené** — přesuň splněné položky
+3. Toto platí i pro jednořádkové opravy — žádná výjimka
+
+---
+
 ## Multi-PC workflow
 - User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull` (na branchi `claude/cranky-shirley`), abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.
