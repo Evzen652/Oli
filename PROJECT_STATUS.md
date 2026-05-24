@@ -6,7 +6,7 @@
 >
 > Repo: https://github.com/Evzen652/Oli
 > Branch: `main`
-> Aktualizováno: 2026-05-21
+> Aktualizováno: 2026-05-24
 
 ---
 
@@ -88,28 +88,51 @@ src/
 5. **RVP import** — naplnění obsahem (probíhá přes grade-N sessions)
 
 ### Typy cvičení
-- [x] Multiple choice
-- [ ] Text input (volná odpověď)
-- [ ] Fill in the blank
-- [ ] Matching pairs
-- [ ] Ordering
-- [ ] True/False
+- [x] Multiple choice (`select_one`)
+- [x] Fill in the blank (`fill_blank`)
+- [x] True/False (`true_false`)
+- [x] Text input (`text_input`)
+- [x] Matching pairs (`matching`)
+- [x] Ordering (`ordering`)
 - [ ] Multi-select
 
 ---
 
-## 5. Aktuálně rozpracované
+## 5. Hotovo (od 2026-05-22)
+
+| Co | Stav | Popis |
+|---|---|---|
+| **6 typů cvičení** | ✅ | `select_one`, `fill_blank`, `true_false`, `text_input`, `matching`, `ordering` — nové komponenty + routing |
+| **Templated facts** | ✅ | Architektura faktů oddělená od generátorů; `contentType: "factual"` vs `"conceptual"` |
+| **Hint leaky — grade-4** | ✅ | Odstraněny prozrazující hinty v `aritmetickyPrumerUvod`, `rovnobezkyAKolmice`, `trojuhelnikDruhy` |
+| **Parent UI** | ✅ | `PositiveObservation` + `NextWeekPlan` ve zprávě, strukturovaný Gemini output |
+| **Student UI** | ✅ | Feature flags, pozitivní labely (Výborně!/Pěkně!), `TopicResultDetail`, skryty filtry známek |
+| **Pedagogický audit** | ✅ | `runPedagogicalAudit()` + `auditFlag` na `TopicMetadata`, npm skripty |
+| **UX bugy** | ✅ | Kapitalizace, grade filter, demo session subject parametr, auth redirect |
+| **Adaptivní obtížnost** | ✅ | Adaptive difficulty mezi sezeními (session evaluation → next level) |
+| **`refactor/inputType-per-task`** | ✅ | `inputType` přesunut z `TopicMetadata` na `PracticeTask` |
+| **DisplayNames (dětské názvy)** | ✅ | Per-grade slovník RVP okruhů → dětské ekvivalenty, viditelné v TopicBrowser |
+| **Authoring Launcher** | ✅ | `AuthoringLauncher` komponenta v admin ExerciseTab pro Level II+III — generuje prompt pro Claude Chat |
+| **CI/CD + E2E testy** | ✅ | GitHub Actions pipeline, Playwright setup, 5 E2E spec souborů, GitHub Secrets (Supabase) |
+| **Admin ilustrace — fix** | ✅ | Legacy imageKey priorita (admin panel = stejné klíče jako UI), DEFAULT_DESCS pro grade-4 geometrii |
+| **Inline editace dítěte** | ✅ | Editace jména/ročníku přímo v gradient kartě (shadcn Select přes Radix Portal) |
+| **AssignmentCreator** | ✅ | Přepsán na code registry (`getAllTopics()`), ilustrace s `mix-blend-multiply` |
+| **UI redesign** | ✅ | Stats karty s ikonami, fialový session header, ChildHomePage layout s chipy předmětů |
+| **Grade-4 matematika** | ✅ | 14/14 topics implementovány (plný RVP pro 4. ročník) |
+| **Architektura paralelních sessions** | ✅ | Worktree izolace, SESSION_OWNERSHIP, PENDING_CHANGES komunikace |
+| **RVP dataset + curriculum API** | ✅ | 841 podtémat, `data/rvp_data.json`, `rvpNodeId` most |
+
+## 6. Aktuálně rozpracované
 
 | Co | Kdo | Stav |
 |---|---|---|
-| Architektura paralelních sessions | Architekt | ✅ Hotovo |
-| RVP dataset + curriculum API | Architekt | ✅ Hotovo |
-| Grade-4 skelet (72 podtémat) | Grade-4 session | 🟡 Fáze 1 (filesystem skelet) |
-| Grade-4 implementace topics | Grade-4 session | ⏸️ Fáze 2 (čeká na fázi 1) |
+| Grade-4 obsah ostatní předměty | Grade-4 session | 🟡 Matematika hotová, čeština/prvouka/přírodověda/vlastivěda čekají |
+| Ilustrace — vygenerovat chybějící | Admin | ⏳ Spustit: Admin → Ilustrace → Generovat chybějící |
+| Multi-select typ cvičení | Architekt | 📋 Zbývající typ ze 7 |
 
 ---
 
-## 6. Detailní dokumenty (linky)
+## 7. Detailní dokumenty (linky)
 
 Pro hlubší kontext fetchni:
 
@@ -127,7 +150,7 @@ Pro hlubší kontext fetchni:
 
 ---
 
-## 7. Pedagogická filozofie
+## 8. Pedagogická filozofie
 
 - **Spirálovost** — stejné téma se vrací v komplexnější podobě napříč ročníky
 - **Chyba ≠ trest** — aplikace motivuje k opakování, ne penalizuje
@@ -138,7 +161,7 @@ Pro hlubší kontext fetchni:
 
 ---
 
-## 8. Role v projektu
+## 9. Role v projektu
 
 - **Claude Chat** (Claude.ai) — **product manager / strategický architekt**: navrhuje směr, ptá se, validuje rozhodnutí. Své návrhy formuluje jako instrukce pro Claude Code v code blocku.
 - **Claude Code (architekt session)** — developer infrastruktury, typů, integrace, DB schema, UI komponent. Mergne práci grade-N sessions.
@@ -146,7 +169,7 @@ Pro hlubší kontext fetchni:
 
 ---
 
-## 9. Poslední commity (top of `main`)
+## 10. Poslední commity (top of `main`)
 
 Pro aktuální seznam fetchni:
 https://api.github.com/repos/Evzen652/Oli/commits?per_page=10
