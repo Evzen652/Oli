@@ -6,9 +6,9 @@ import { getTodayProgress, allTasksCompleted } from "@/lib/anonProgress";
 import { getContentWarning } from "@/lib/contentAvailability";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { OlyLogo } from "@/components/OlyLogo";
-import { ArrowRight, ArrowLeft, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
+import { LandingNav } from "@/pages/LandingNav";
 import type { TopicMetadata } from "@/lib/types";
 
 /**
@@ -81,6 +81,8 @@ export default function AnonStudentPage() {
   // Home mode — 3 denní úkoly
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-50">
+      <LandingNav />
+
       {/* Anon banner */}
       <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
         <span>Procvičuješ jako host — pokrok se uloží jen v tomto prohlížeči.</span>
@@ -90,19 +92,15 @@ export default function AnonStudentPage() {
       </div>
 
       <div className="max-w-2xl mx-auto p-6 space-y-8">
-        {/* Header */}
-        <header className="flex items-center justify-between pt-2 gap-3">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/onboarding")}
-              className="inline-flex items-center gap-1.5 text-sm text-violet-700 hover:text-violet-900 bg-white/80 backdrop-blur-sm rounded-full px-3.5 py-2 border border-white shadow-sm hover:shadow transition-all"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Zpět
-            </button>
-            <OlyLogo size="sm" />
-          </div>
-          <div className="text-sm text-violet-600 font-semibold">{grade}. ročník</div>
+        {/* Subheader — ročník + změna */}
+        <header className="flex items-center justify-between pt-2 gap-3 text-sm">
+          <button
+            onClick={() => navigate("/onboarding")}
+            className="text-violet-700 hover:text-violet-900 hover:underline transition-colors"
+          >
+            ← Změnit ročník
+          </button>
+          <div className="text-violet-600 font-semibold">{grade}. ročník</div>
         </header>
 
         {/* Content fallback banner — pokud ročník nemá vlastní obsah */}
