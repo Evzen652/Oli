@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
+import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
+  const anonSummary = hasAnonProgress() ? getAnonProgressSummary() : null;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(searchParams.get("mode") !== "register");
@@ -55,6 +57,14 @@ export default function Auth() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Anon progress hint — pokud dítě procvičovalo a teď se rodič registruje */}
+          {anonSummary && (
+            <div className="rounded-xl bg-violet-50 border border-violet-200 px-3 py-2 text-xs text-violet-700">
+              Dítě má splněno <strong>{anonSummary.completedCount} úkolů</strong> ({anonSummary.grade}. třída).
+              Pokrok se přenese po propojení dítěte přes kód.
+            </div>
+          )}
+
           {/* Role selector */}
           <div className="grid grid-cols-2 gap-2">
             <Button

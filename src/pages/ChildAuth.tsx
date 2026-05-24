@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { useT } from "@/lib/i18n";
+import { AnonMigrationDialog } from "@/components/AnonMigrationDialog";
+import { hasAnonProgress, migrateAnonProgress, clearAnonData } from "@/lib/anonMigration";
 
 export default function ChildAuth() {
   const [code, setCode] = useState("");
@@ -12,6 +14,12 @@ export default function ChildAuth() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const t = useT();
+
+  // Migration dialog state
+  const [showMigration, setShowMigration] = useState(false);
+  const [migrationLoading, setMigrationLoading] = useState(false);
+  const [pairedUserId, setPairedUserId] = useState<string | null>(null);
+  const [pairedChildId, setPairedChildId] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     if (code.length !== 6) return;
@@ -35,14 +43,47 @@ export default function ChildAuth() {
           access_token: data.session.access_token,
           refresh_token: data.session.refresh_token,
         });
-        // Reload to trigger auth state change
+
+        const userId = data.session.user?.id ?? data.user?.id;
+        const childId = data.child?.id ?? data.child_id;
+
+        // Pokud má anonymní pokrok, nabídni migraci PŘED přesměrováním
+        if (userId && childId && hasAnonProgress()) {
+          setPairedUserId(userId);
+          setPairedChildId(childId);
+          setShowMigration(true);
+          setLoading(false);
+          return;
+        }
+
+        // Bez anon pokroku → rovnou do aplikace
         window.location.href = "/";
       }
     } catch {
       setError("Nepodařilo se připojit k serveru.");
     } finally {
-      setLoading(false);
+      if (!showMigration) setLoading(false);
     }
+  };
+
+  const handleMigrationConfirm = async () => {
+    if (!pairedUserId || !pairedChildId) return;
+    setMigrationLoading(true);
+    const result = await migrateAnonProgress(pairedUserId, pairedChildId);
+    setMigrationLoading(false);
+    setShowMigration(false);
+    if (!result.ok) {
+      setError(`Přenos pokroku selhal: ${result.error ?? "neznámá chyba"}`);
+      // I tak pokračujeme — pokrok zůstává v localStorage pro pozdější pokus
+      return;
+    }
+    window.location.href = "/";
+  };
+
+  const handleMigrationSkip = () => {
+    clearAnonData();
+    setShowMigration(false);
+    window.location.href = "/";
   };
 
   return (
@@ -88,6 +129,14 @@ export default function ChildAuth() {
           </Button>
         </CardContent>
       </Card>
+
+      {showMigration && (
+        <AnonMigrationDialog
+          onConfirm={handleMigrationConfirm}
+          onSkip={handleMigrationSkip}
+          loading={migrationLoading}
+        />
+      )}
     </div>
   );
 }

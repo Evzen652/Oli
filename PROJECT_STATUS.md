@@ -137,9 +137,9 @@ src/
 | Admin UI cleanup + AuthoringLauncher | Architekt | ✅ Hotovo |
 | CI/CD pipeline + E2E testy (Playwright) | Architekt | 🟡 V PR |
 | Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
-| Freemium / anonymní vstup pro dítě (Krok A + B) | Architekt | ✅ Hotovo |
-| Anonymní onboarding — Krok C (přenos pokroku po registraci) | Architekt | ⏸️ Další krok |
-| Anonymní onboarding — Krok D (dítě pozve rodiče) | Architekt | ⏸️ Plánováno |
+| Freemium / anonymní vstup pro dítě (Krok A + B + C) | Architekt | ✅ Hotovo |
+| Anonymní onboarding — Krok D (dítě pozve rodiče) | Architekt | ⏸️ Další krok |
+| Anonymní onboarding — Krok E (fallback obsah pro prázdné ročníky) | Architekt | ⏸️ Plánováno |
 | Sjednocení helpTemplate vs task.hints | Architekt | ⏸️ Čeká |
 | displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
 | Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na authoring |
