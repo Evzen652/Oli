@@ -108,7 +108,12 @@ export interface SessionDispatchActions {
 
 export function useSessionDispatch(): SessionDispatchState & SessionDispatchActions {
   const [pendingDiktatTopic, setPendingDiktatTopic] = useState<TopicMetadata | null>(null);
-  const [grade, setGrade] = useState<Grade | null>(null);
+  const [grade, setGrade] = useState<Grade | null>(() => {
+    // Anonymní mód — ročník uložený při onboardingu
+    const anon = localStorage.getItem("oli_anon_grade");
+    const parsed = anon ? parseInt(anon, 10) : NaN;
+    return (!isNaN(parsed) && parsed >= 1 && parsed <= 9) ? (parsed as Grade) : null;
+  });
   const [session, setSession] = useState<SessionData | null>(null);
   const [output, setOutput] = useState("");
   const [practiceQuestion, setPracticeQuestion] = useState<string>();

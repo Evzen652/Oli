@@ -27,6 +27,8 @@ import AdminCategories from "./pages/AdminCategories";
 import AdminTopics from "./pages/AdminTopics";
 import AdminSkills from "./pages/AdminSkills";
 import Landing from "./pages/Landing";
+import Onboarding from "./pages/Onboarding";
+import AnonStudentPage from "./pages/AnonStudentPage";
 import Demo from "./pages/Demo";
 import DemoSessionPage from "./pages/DemoSession";
 import DemoReport from "./pages/DemoReport";
@@ -157,6 +159,8 @@ const App = () => {
               ) : (
                 <Routes>
                    <Route path="/" element={<Landing />} />
+                   <Route path="/onboarding" element={<Onboarding />} />
+                   <Route path="/student" element={<AnonStudentPage />} />
                    <Route path="/demo" element={<Demo />} />
                    <Route path="/demo/session" element={<DemoSessionPage />} />
                    <Route path="/demo-report" element={<DemoReport />} />
