@@ -136,7 +136,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
       "Číselné řady s jednoduchým vzorem (aritmetické, geometrické, čtverce).",
       "Nezahrnuje sudoku ani jiné logické hry.",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

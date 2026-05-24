@@ -60,18 +60,8 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
             </span>
           </button>
 
-          {/* Pravá strana: nápověda, role switcher, avatar */}
+          {/* Pravá strana: role switcher, avatar */}
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-1.5 text-muted-foreground hover:text-foreground"
-              onClick={() => navigate("/admin")}
-              title="Otevřít nápovědu pro správu obsahu"
-            >
-              <HelpCircle className="h-4 w-4" />
-              <span className="hidden sm:inline">Nápověda</span>
-            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

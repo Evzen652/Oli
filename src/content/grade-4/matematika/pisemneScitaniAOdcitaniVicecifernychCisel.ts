@@ -109,7 +109,7 @@ export const PISEMNE_SCITANI_ODCITANI: TopicMetadata[] = [
       "Nezahrnuje desetinná čísla.",
       "Rozsah: čísla do 999 999 (level 3).",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

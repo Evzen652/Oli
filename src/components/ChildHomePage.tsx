@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { getTopicById } from "@/lib/contentRegistry";
+import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { FEATURES } from "@/lib/features";
@@ -277,11 +277,12 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
 interface ChildHomePageProps {
   grade: Grade;
   onSelectTopic: (topic: TopicMetadata) => void;
-  onBrowseTopics: () => void;
+  onBrowseTopics: (subject?: string) => void;
 }
 
 export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHomePageProps) {
   const t = useT();
+  const topics = grade ? getTopicsForGrade(grade) : [];
   const [childName, setChildName] = useState<string>("");
   const [childId, setChildId] = useState<string | null>(null);
   const [isPaired, setIsPaired] = useState(false);
@@ -512,35 +513,42 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
 
         {/* ── Hero: Procvičovat samostatně ── */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-pink-400 px-8 py-8 flex flex-col sm:flex-row items-center gap-6 text-white">
-          <span className="absolute top-4 right-16 text-white/25 text-2xl pointer-events-none select-none">✦</span>
-          <span className="absolute top-10 right-6 text-white/20 text-lg pointer-events-none select-none">+</span>
-          <span className="absolute bottom-4 left-1/3 text-white/15 text-sm pointer-events-none select-none">✦</span>
-          <span className="absolute bottom-8 right-20 text-white/15 text-base pointer-events-none select-none">✦</span>
-          <div className="flex-1 min-w-0">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-pink-400 px-8 py-8 text-white flex flex-col min-h-[180px]">
+          {/* Plovoucí hvězdičky — každá má vlastní dráhu */}
+          <span className="absolute top-5 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
+          <span className="absolute top-8 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>
+          <span className="absolute top-1/2 right-12 text-white text-lg pointer-events-none select-none" style={{ animation: 'oli-star-3 15s ease-in-out infinite', animationDelay: '-3s' }}>✦</span>
+          <span className="absolute bottom-6 right-24 text-white text-2xl pointer-events-none select-none" style={{ animation: 'oli-star-4 20s ease-in-out infinite', animationDelay: '-11s' }}>✦</span>
+          <span className="absolute bottom-5 left-1/2 text-white text-base pointer-events-none select-none" style={{ animation: 'oli-star-2 17s ease-in-out infinite', animationDelay: '-5s' }}>+</span>
+          <span className="absolute top-3 left-1/3  text-white text-sm pointer-events-none select-none" style={{ animation: 'oli-star-1 25s ease-in-out infinite', animationDelay: '-14s' }}>✦</span>
+
+          {/* Horní část — roste a tlačí spodní řadu dolů */}
+          <div className="flex-1">
             <p className="text-[11px] font-bold tracking-[0.15em] text-white/60 flex items-center gap-1.5 mb-3">
               <span>✦</span> HLAVNÍ AKCE
             </p>
             <h2 className="font-display text-3xl font-extrabold leading-tight mb-2">Procvičovat samostatně</h2>
-            <p className="text-white/80 text-sm leading-relaxed mb-4">
+            <p className="text-white/80 text-sm leading-relaxed">
               Vyber si předmět a téma — Oli ti připraví cvičení na míru.
             </p>
-            <div className="flex flex-wrap gap-2">
-              {["matematika", "čeština", "prvouka"].map((subj) => {
+          </div>
+
+          {/* Spodní řada — chipy vlevo, tlačítko vpravo, zarovnané dolů */}
+          <div className="flex items-end justify-between gap-4 mt-4">
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: 'none' }}>
+              {[...new Set(topics.map(t => t.subject))].map((subj) => {
                 const meta = getSubjectMeta(subj);
                 return (
-                  <button key={subj} onClick={onBrowseTopics}
-                    className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white/90 transition-colors shadow-sm">
+                  <button key={subj} onClick={() => onBrowseTopics(subj)}
+                    className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white/90 transition-colors shadow-sm shrink-0">
                     <IllustrationImg src={meta.image} className="h-6 w-6 object-contain" fallback={<span className="text-sm">{meta.emoji}</span>} />
                     {meta.label}
                   </button>
                 );
               })}
             </div>
-          </div>
-          <div className="shrink-0 w-full sm:w-52">
             <button onClick={onBrowseTopics}
-              className="w-full h-12 rounded-2xl bg-white font-bold text-violet-700 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center justify-between px-4 text-sm shadow-md">
+              className="shrink-0 h-12 rounded-2xl bg-white font-bold text-violet-700 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-md whitespace-nowrap">
               Začít procvičovat <ArrowRight className="h-4 w-4 shrink-0" />
             </button>
           </div>

@@ -468,9 +468,7 @@ export default function ParentDashboard() {
                     highlightSkillId={newAssignment?.childId === child.id ? newAssignment.skillId : null}
                     mockAssignments={isDemo ? demoAssignments : undefined}
                     onMockDelete={isDemo ? (id) => {
-                      // Odstraň z lokálního stavu
                       setDemoPendingAssignments(prev => prev.filter(a => a.id !== id));
-                      // Pokud je ID UUID (reálný DB záznam), smaž i z DB
                       const isRealDbId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
                       if (isRealDbId) {
                         supabase.from("parent_assignments").delete().eq("id", id);

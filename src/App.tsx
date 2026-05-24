@@ -22,6 +22,7 @@ import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import SessionHistory from "./pages/SessionHistory";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminRvpTree from "./pages/AdminRvpTree";
 import AdminCategories from "./pages/AdminCategories";
 import AdminTopics from "./pages/AdminTopics";
 import AdminSkills from "./pages/AdminSkills";
@@ -61,6 +62,7 @@ function AuthenticatedRoutes() {
     return (
       <Routes>
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/rvp-tree" element={<AdminRvpTree />} />
         <Route path="/parent" element={<ParentDashboard />} />
         <Route path="/onboarding" element={<ParentOnboarding />} />
         <Route path="/report" element={<Report />} />

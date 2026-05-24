@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { useImageVersions } from "@/lib/imageVersions";
@@ -16,11 +17,12 @@ import {
 } from "@/lib/prvoukaVisuals";
 import { getDisplayCategory, getDisplayTopic, getDisplayTitle, getDisplayCategoryDescription, getDisplayTopicDescription } from "@/lib/displayNames";
 import { AdminLayout } from "@/components/AdminLayout";
+import { FEATURES } from "@/lib/features";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2, Plus, Check, X as XIcon, Loader2 } from "lucide-react";
+import { ChevronRight, Eye, Sparkles, PanelLeftClose, PanelLeft, Search, ShieldCheck, Image as ImageIcon, Info, Trash2, Plus, Check, X as XIcon, Loader2, Network } from "lucide-react";
 import { type CurriculumProposal, parseProposals } from "@/components/AdminAIChat";
 import { ProposalReview } from "@/components/ProposalReview";
 import { OnboardingHero } from "@/components/admin/OnboardingHero";
@@ -112,6 +114,7 @@ const INPUT_TYPE_LABELS: Record<string, string> = {
 type BrowseLevel = "subject" | "category" | "topic" | "subtopic" | "detail";
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const { mergedTopics } = useDbCurriculum();
   const { subjects: dbAdminSubjects, categories: dbCategories, topics: dbTopics, refetch: refetchAdminCurriculum } = useAdminCurriculum();
   const allTopics = mergedTopics;
@@ -364,38 +367,40 @@ export default function AdminDashboard() {
             <div className="flex flex-col items-end gap-1 ml-auto">
               <p className="text-[11px] text-muted-foreground/70 hidden md:block pr-0.5">
                 <span className="font-medium text-muted-foreground">Pracovní postup:</span>
-                {" "}Tvořit obsah → AI revize <span className="italic">(pedagogika, jazyk)</span> → Audit chyb <span className="italic">(technické chyby)</span> → Ilustrace
+                {" "}Pedagogický audit <span className="italic">(pedagogika, jazyk)</span> → Technický audit <span className="italic">(technické chyby)</span> → Ilustrace
               </p>
             <div className="flex items-center gap-2">
 
-              {/* KROK 1 — Tvořit obsah (AI pomocník, primary CTA) */}
-              <Tooltip delayDuration={150}>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="sm"
-                    className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft-2"
-                    onClick={() => {
-                      setAiPanelTab("create");
-                      setAiPanelLocked("create");
-                      setAiChatOpen(true);
-                    }}
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    Tvořit obsah
-                    <Info className="h-3 w-3 opacity-60 ml-0.5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" className="max-w-xs">
-                  <div className="space-y-1.5">
-                    <p className="font-semibold">① Tvořit obsah — začni tady</p>
-                    <p className="text-xs text-muted-foreground">
-                      Chat s AI, kde zadáš „přidej 10 cvičení o zlomcích pro 5. třídu" a AI připraví návrhy ke schválení.
-                    </p>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
+              {/* KROK 1 — Tvořit obsah (zastaralé, skryto za feature flag) */}
+              {FEATURES.adminAiContentCreator && (
+                <Tooltip delayDuration={150}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="sm"
+                      className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft-2"
+                      onClick={() => {
+                        setAiPanelTab("create");
+                        setAiPanelLocked("create");
+                        setAiChatOpen(true);
+                      }}
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      Tvořit obsah
+                      <Info className="h-3 w-3 opacity-60 ml-0.5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <div className="space-y-1.5">
+                      <p className="font-semibold">① Tvořit obsah — začni tady</p>
+                      <p className="text-xs text-muted-foreground">
+                        Chat s AI, kde zadáš „přidej 10 cvičení o zlomcích pro 5. třídu" a AI připraví návrhy ke schválení.
+                      </p>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              )}
 
-              {/* KROK 2 — Pedagogická AI revize */}
+              {/* KROK 1 — Pedagogický audit */}
               <Tooltip delayDuration={150}>
                 <TooltipTrigger asChild>
                   <span className="inline-flex">
@@ -411,16 +416,16 @@ export default function AdminDashboard() {
                       disabled={!gradeFilter}
                     >
                       <Search className="h-4 w-4 text-foreground/70" />
-                      AI revize
+                      Pedagogický audit
                       <Info className="h-3 w-3 text-muted-foreground/60 ml-0.5" />
                     </Button>
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="max-w-xs">
                   <div className="space-y-1.5">
-                    <p className="font-semibold">② AI revize — po vytvoření obsahu</p>
+                    <p className="font-semibold">① Pedagogický audit</p>
                     <p className="text-xs text-muted-foreground">
-                      AI-učitel posoudí přiměřenost ročníku, srozumitelnost zadání a kvalitu nápověd.
+                      Zkontroluje jazyk, nápovědy a pedagogickou správnost cvičení.
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Stojí AI tokeny, trvá minuty.{!gradeFilter && (
@@ -433,7 +438,7 @@ export default function AdminDashboard() {
                 </TooltipContent>
               </Tooltip>
 
-              {/* KROK 3 — Technický audit */}
+              {/* KROK 2 — Technický audit */}
               <Tooltip delayDuration={150}>
                 <TooltipTrigger asChild>
                   <span className="inline-flex">
@@ -445,7 +450,7 @@ export default function AdminDashboard() {
                           className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
                         >
                           <ShieldCheck className="h-4 w-4 text-foreground/70" />
-                          Audit chyb
+                          Technický audit
                           <Info className="h-3 w-3 text-muted-foreground/60 ml-0.5" />
                         </Button>
                       }
@@ -454,9 +459,9 @@ export default function AdminDashboard() {
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="max-w-xs">
                   <div className="space-y-1.5">
-                    <p className="font-semibold">③ Audit chyb — technická kontrola</p>
+                    <p className="font-semibold">② Technický audit</p>
                     <p className="text-xs text-muted-foreground">
-                      Projde všechna cvičení a zkontroluje formát, validátory, hranice tématu a prozrazení v nápovědách.
+                      Zkontroluje formát, validátory a technickou správnost generátorů.
                     </p>
                     <p className="text-xs text-muted-foreground">
                       Bez AI, bez sítě, zdarma. Hotové za sekundu.
@@ -493,6 +498,17 @@ export default function AdminDashboard() {
                   </div>
                 </TooltipContent>
               </Tooltip>
+
+              {/* Přehled obsahu */}
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-9 px-3.5 gap-1.5 text-[13px] font-semibold rounded-xl border-border bg-card text-foreground hover:bg-accent shadow-soft-1"
+                onClick={() => navigate("/admin/rvp-tree")}
+              >
+                <Network className="h-4 w-4 text-foreground/70" />
+                Přehled obsahu
+              </Button>
 
             </div>
             </div>

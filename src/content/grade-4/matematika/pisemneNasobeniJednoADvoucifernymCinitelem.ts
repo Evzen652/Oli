@@ -100,7 +100,7 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
       "Nezahrnuje násobení víceciferným × víceciferným (nad 2 cifry).",
       "Nezahrnuje desetinná čísla.",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

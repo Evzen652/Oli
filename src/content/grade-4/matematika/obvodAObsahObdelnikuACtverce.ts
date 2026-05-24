@@ -118,7 +118,7 @@ export const OBVOD_OBSAH: TopicMetadata[] = [
       "Nezahrnuje trojúhelník, kruh ani jiné tvary.",
       "Rozměry jsou celá čísla.",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

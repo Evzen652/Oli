@@ -109,7 +109,7 @@ export const TABULKY_DIAGRAMY: TopicMetadata[] = [
       "Pouze textové/číselné reprezentace dat (bez skutečných obrázků grafů).",
       "Nezahrnuje tvorbu grafu ani výpočet procent pro kruhový diagram.",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

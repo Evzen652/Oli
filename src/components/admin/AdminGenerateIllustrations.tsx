@@ -35,8 +35,14 @@ function buildTopicIllustrationKeys(topics: ReturnType<typeof getAllTopics>): st
     const topicSlug = toSlug(t.topic);
 
     subjKeys.add(`subject-${subjSlug}`);
-    catKeys.add(`cat-${subjSlug}-${catSlug}`);
-    topicKeys.add(`topic-${subjSlug}-${catSlug}-${topicSlug}`);
+
+    // Prefer legacy imageKey (from prvoukaVisuals) — this is the key the UI actually loads.
+    // Only fall back to slug-based key if no legacy key is defined.
+    const legacyCatKey = getCategoryImageKey(t.subject, t.category);
+    catKeys.add(legacyCatKey ?? `cat-${subjSlug}-${catSlug}`);
+
+    const legacyTopicKey = getTopicImageKey(t.subject, t.topic);
+    topicKeys.add(legacyTopicKey ?? `topic-${subjSlug}-${catSlug}-${topicSlug}`);
   }
 
   return [...subjKeys, ...catKeys, ...topicKeys];
@@ -52,9 +58,13 @@ function buildKeyToTopicMap(topics: ReturnType<typeof getAllTopics>): Map<string
     const subjSlug = toSlug(t.subject);
     const catSlug = toSlug(t.category);
     const topicSlug = toSlug(t.topic);
-    map.set(`topic-${subjSlug}-${catSlug}-${topicSlug}`, t);
+    // Use the same key the UI uses: legacy if defined, slug-based otherwise
+    const legacyTopicKey = getTopicImageKey(t.subject, t.topic);
+    const topicKey = legacyTopicKey ?? `topic-${subjSlug}-${catSlug}-${topicSlug}`;
+    map.set(topicKey, t);
     // kategorie → použij první topic v kategorii (stačí pro popis)
-    const catKey = `cat-${subjSlug}-${catSlug}`;
+    const legacyCatKey = getCategoryImageKey(t.subject, t.category);
+    const catKey = legacyCatKey ?? `cat-${subjSlug}-${catSlug}`;
     if (!map.has(catKey)) map.set(catKey, t);
   }
   return map;
@@ -69,7 +79,8 @@ function buildCategoryToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<
   for (const t of topics) {
     const subjSlug = toSlug(t.subject);
     const catSlug = toSlug(t.category);
-    const catKey = `cat-${subjSlug}-${catSlug}`;
+    const legacyCatKey = getCategoryImageKey(t.subject, t.category);
+    const catKey = legacyCatKey ?? `cat-${subjSlug}-${catSlug}`;
     if (!map.has(catKey)) map.set(catKey, []);
     map.get(catKey)!.push(t);
   }
@@ -216,6 +227,10 @@ const DEFAULT_DESCS: Partial<Record<string, string>> = {
   "topic-math-zlomek-z-cisla": "skupina 12 jablek, čtvrtina z nich je zakroužkovaná a zvýrazněná",
   "topic-math-nasobeni-zlomku-celym-cislem": "zlomek vynásobený celým číslem — tři čtvrtiny znázorněné třemi výsečemi",
   "topic-math-geometricke-tvary": "základní geometrické tvary — čtverec, trojúhelník, kruh, obdélník — s popisky",
+  // 4. ročník — Geometrie v rovině a v prostoru
+  "topic-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary": "tři druhy trojúhelníků vedle sebe — rovnostranný se třemi stejnými stranami, rovnoramenný se dvěma stejnými stranami a různostranný se třemi různými stranami, každý s popiskem",
+  "topic-matematika-geometrie-v-rovine-a-v-prostoru-soumernost": "motýl s vyznačenou osou souměrnosti uprostřed, vlevo a vpravo zrcadlově shodná křídla, jednoduchá přerušovaná svislá osa",
+  "topic-matematika-geometrie-v-rovine-a-v-prostoru-obvod-a-obsah": "čtverec a obdélník s vyznačenými šipkami kolem obvodu a vybarvenou plochou uvnitř, jednoduché míry u stran",
   "topic-math-obvod": "obdélník se šipkami kolem obvodu s mírami",
   "topic-math-mereni-delky": "pravítko měřící předměty, svinovací metr, dítě odhaduje délku",
   "topic-math-zakladni-jednotky": "pravítko s milimetry, centimetry a metry, porovnávací šipky",

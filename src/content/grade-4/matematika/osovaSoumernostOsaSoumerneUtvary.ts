@@ -120,7 +120,7 @@ export const OSOVA_SOUMERNOST: TopicMetadata[] = [
       "Nezahrnuje středovou souměrnost.",
       "Nezahrnuje rotační symetrii.",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

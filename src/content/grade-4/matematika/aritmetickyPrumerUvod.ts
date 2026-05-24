@@ -95,7 +95,7 @@ export const ARITMETICKY_PRUMER: TopicMetadata[] = [
       "Počet hodnot: 3–5.",
       "Nezahrnuje vážený průměr ani medián.",
     ],
-    gradeRange: [4, 5],
+    gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,

@@ -1,5 +1,5 @@
 import { useChildStats } from "@/hooks/useChildStats";
-import { Sparkles, TrendingUp } from "lucide-react";
+import { Sparkles, Flame, CheckCircle2, Star } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 
 interface Props {
@@ -51,22 +51,32 @@ export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) 
     }
 
     return (
-      <div className="space-y-3">
-        <div className="flex gap-6">
-          <div>
-            <p className="text-2xl font-extrabold text-foreground tabular-nums">{tasks}</p>
-            <p className="text-muted-foreground text-[10px] font-bold tracking-[0.12em] mt-0.5">ÚLOH</p>
+      <div className="space-y-4">
+        {/* Stats — 3 bílé karty s ikonkou */}
+        <div className="flex gap-3">
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
+            <Flame className="h-5 w-5 text-orange-300 shrink-0" />
+            <div>
+              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{days}</p>
+              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">{days === 1 ? "DEN" : days >= 2 && days <= 4 ? "DNY" : "DNÍ"}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-2xl font-extrabold text-foreground tabular-nums">{days}</p>
-            <p className="text-muted-foreground text-[10px] font-bold tracking-[0.12em] mt-0.5">{days === 1 ? "DEN" : days >= 2 && days <= 4 ? "DNY" : "DNÍ"}</p>
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
+            <CheckCircle2 className="h-5 w-5 text-emerald-300 shrink-0" />
+            <div>
+              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{tasks}</p>
+              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">ÚLOH</p>
+            </div>
           </div>
-          <div>
-            <p className="text-2xl font-extrabold text-foreground tabular-nums">{accuracy}%</p>
-            <p className="text-muted-foreground text-[10px] font-bold tracking-[0.12em] mt-0.5">ÚSPĚŠNOST</p>
+          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
+            <Star className="h-5 w-5 text-yellow-300 shrink-0" />
+            <div>
+              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{accuracy}%</p>
+              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
+            </div>
           </div>
         </div>
-        <p className="text-muted-foreground text-sm leading-snug max-w-sm">{summaryText}</p>
+        <p className="text-white/70 text-sm leading-snug max-w-sm">{summaryText}</p>
       </div>
     );
   }
