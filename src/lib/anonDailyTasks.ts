@@ -1,0 +1,87 @@
+/**
+ * Anonymní mód: výběr 3 denních úkolů pro nepřihlášené dítě.
+ * Deterministický (stejný den + ročník = stejné úkoly), preferuje různé předměty.
+ */
+
+import type { TopicMetadata } from "@/lib/types";
+import { getAllTopics } from "@/lib/contentRegistry";
+
+const DEFAULT_DAILY_COUNT = 3;
+const FALLBACK_GRADE = 4;
+
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0; // force i32
+  }
+  return Math.abs(hash);
+}
+
+function pickDailyTopics(
+  topics: readonly TopicMetadata[],
+  seed: number,
+  count: number,
+): TopicMetadata[] {
+  // Deterministický shuffle podle seedu
+  const shuffled = [...topics].sort((a, b) => {
+    const ha = hashString(String(seed) + a.id);
+    const hb = hashString(String(seed) + b.id);
+    return ha - hb;
+  });
+
+  // Preferuj různé předměty
+  const result: TopicMetadata[] = [];
+  const usedSubjects = new Set<string>();
+
+  for (const t of shuffled) {
+    if (result.length >= count) break;
+    if (!usedSubjects.has(t.subject)) {
+      result.push(t);
+      usedSubjects.add(t.subject);
+    }
+  }
+
+  // Doplň zbytek pokud nemáme dost různých předmětů
+  for (const t of shuffled) {
+    if (result.length >= count) break;
+    if (!result.includes(t)) result.push(t);
+  }
+
+  return result;
+}
+
+/** Den ve tvaru YYYY-MM-DD (lokální čas, pro deterministický seed). */
+export function getTodayDateString(): string {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+/**
+ * Vrátí 3 denní úkoly pro daný ročník. Fallback na grade-4 pokud ročník nemá obsah.
+ * Deterministické per (datum, ročník).
+ */
+export function getDailyTasksForGrade(
+  grade: number,
+  count: number = DEFAULT_DAILY_COUNT,
+): TopicMetadata[] {
+  const allTopics = getAllTopics();
+  const availableTopics = allTopics.filter(
+    (t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade,
+  );
+
+  const sourceTopics =
+    availableTopics.length >= count
+      ? availableTopics
+      : allTopics.filter((t) => t.gradeRange[0] === FALLBACK_GRADE);
+
+  if (sourceTopics.length === 0) return [];
+
+  const today = getTodayDateString();
+  const seed = hashString(today + String(grade));
+
+  return pickDailyTopics(sourceTopics, seed, count);
+}

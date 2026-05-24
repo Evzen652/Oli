@@ -31,6 +31,20 @@
 
 ## Vyřízené
 
+### 2026-05-24 — Anonymní onboarding — Krok B ✅ (3 denní úkoly)
+- ✅ `src/lib/anonDailyTasks.ts` — deterministický výběr 3 topics pro daný ročník (seed = datum + grade), preference různých předmětů, fallback na grade-4 pokud ročník nemá obsah
+- ✅ `src/lib/anonProgress.ts` — `getTodayProgress()`, `markTaskCompleted()`, `allTasksCompleted()`, `clearAnonProgress()` — localStorage progress se resetuje při změně dne nebo ročníku
+- ✅ `AnonStudentPage.tsx` — UI s 3 denními úkoly, CTA k registraci po splnění všech 3, sessionMode pro spuštění konkrétního úkolu
+- ✅ `useSessionDispatch.ts` — při END stavu v anon módu se zavolá `markAnonTaskCompleted(topicId, score)` a vyhodí event `oli-anon-task-completed`
+- ✅ `SessionView.tsx` — auto-start topicu zvoleného v AnonStudentPage přes sessionStorage `oli_anon_start_topic`
+
+### 2026-05-24 — Anonymní onboarding — Krok A ✅ (anonymní vstup)
+- ✅ `Onboarding.tsx` — výběr ročníku 1-9, ukládá `oli_anon_grade` do localStorage, přesměrování na `/student?anon=1`
+- ✅ `AnonStudentPage.tsx` — banner "Procvičuješ jako host", grade z localStorage (rozšířeno v Kroku B)
+- ✅ `App.tsx` — `/onboarding` a `/student` dostupné bez přihlášení
+- ✅ `useSessionDispatch.ts` — grade inicializována z `oli_anon_grade` při startu
+- ✅ `Landing.tsx` — hero tlačítko "Začít zdarma" → `/onboarding`
+
 ### 2026-05-22 — UX audit critical fixes ✅ (branch: fix/ux-audit-critical)
 - ✅ BUG 1: "Začít zdarma" vede na registraci — přidán ?mode=register param (Auth.tsx + Landing.tsx)
 - ✅ BUG 2: /demo/session routa existovala — žádná změna nutná

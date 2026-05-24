@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSessionPersistence, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { loadCustomExercises } from "@/lib/customExerciseLoader";
 import { filterValidTasks } from "@/lib/taskValidator";
+import { markTaskCompleted as markAnonTaskCompleted } from "@/lib/anonProgress";
 import type { DiktatType } from "@/components/DiktatFilterSelect";
 import { toast } from "sonner";
 
@@ -187,9 +188,16 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         setCheckFeedback(null);
         clearPersistedSession();
         // Auto-complete matching parent assignment
-        
+
         if (result.session.matchedTopic?.id) {
           markAssignmentCompleted(result.session.matchedTopic.id);
+          // Anon mód: označ úkol jako splněný v localStorage
+          if (localStorage.getItem("oli_anon_grade")) {
+            const correct = taskResults.filter(r => r === "correct").length;
+            const score = taskResults.length > 0 ? correct / taskResults.length : 0;
+            markAnonTaskCompleted(result.session.matchedTopic.id, score);
+            window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+          }
         }
       }
       return result;
@@ -323,6 +331,14 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         setOutput(feedbackMsg);
         setPracticeQuestion(undefined);
         setPendingEndSession(result.session);
+        // Anon mód: označ úkol jako splněný v localStorage
+        if (result.session.matchedTopic?.id && localStorage.getItem("oli_anon_grade")) {
+          const allResults = [...taskResults, taskResult];
+          const correct = allResults.filter(r => r === "correct").length;
+          const score = allResults.length > 0 ? correct / allResults.length : 0;
+          markAnonTaskCompleted(result.session.matchedTopic.id, score);
+          window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+        }
         return;
       }
       setSession(result.session);
