@@ -37,7 +37,8 @@ export default function Onboarding() {
                 Ahoj! Já jsem Oli.
               </h1>
               <p className="text-slate-500 text-base leading-relaxed">
-                Pomůžu ti se vším, co máš teď ve škole.
+                Pomůžu ti se vším, co máš teď ve škole.<br />
+                Jen mi řekni, do které třídy chodíš a jdeme na to.
               </p>
             </div>
           </div>
@@ -70,10 +71,13 @@ export default function Onboarding() {
             </div>
           </div>
 
-          <div className="pt-2 border-t border-slate-200">
+          <div className="pt-4 border-t border-slate-200 space-y-1.5">
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Chcete dítěti zadávat úkoly a sledovat pokrok?
+            </p>
             <a
               href="/auth?mode=register"
-              className="text-sm font-medium text-slate-400 hover:text-slate-600 hover:underline transition-colors"
+              className="text-sm font-medium text-orange-500 hover:text-orange-600 hover:underline transition-colors inline-flex"
             >
               Jsem tady jako rodič →
             </a>
