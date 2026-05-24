@@ -16,7 +16,7 @@ export default function Onboarding() {
       <div className="max-w-sm w-full space-y-8 text-center">
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
-          <OlyLogo size="lg" />
+          <OlyLogo size="md" />
           <h1 className="text-3xl font-bold text-gray-900">Vítej v OLI!</h1>
           <p className="text-gray-500 text-lg">Jaký chodíš ročník?</p>
         </div>
