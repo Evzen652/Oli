@@ -72,7 +72,7 @@ export default function Onboarding() {
           </div>
 
           <div className="pt-4 border-t border-slate-200 space-y-1.5">
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-sm text-slate-600 leading-relaxed">
               Chcete dítěti zadávat úkoly a sledovat pokrok?
             </p>
             <a
