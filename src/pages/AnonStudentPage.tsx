@@ -4,24 +4,34 @@ import { SessionView } from "@/components/SessionView";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getTodayProgress, allTasksCompleted } from "@/lib/anonProgress";
 import { getContentWarning } from "@/lib/contentAvailability";
+import {
+  isTrialActive,
+  isTrialExpired,
+  getTrialDaysRemaining,
+  getTrialCurrentDay,
+  TRIAL_DAYS,
+} from "@/lib/anonTrial";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Sparkles, BookOpen } from "lucide-react";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
 import { LandingNav } from "@/pages/LandingNav";
+import { pad } from "@/lib/czechGrammar";
 import type { TopicMetadata } from "@/lib/types";
 
 /**
  * Žákovský dashboard pro anonymního (nepřihlášeného) uživatele.
- * Ukazuje 3 denní úkoly. Po splnění všech 3 zobrazí CTA k registraci.
- * Ročník se čte z localStorage (oli_anon_grade) — nastaveno v Onboarding.
+ *
+ * Dva režimy podle trial stavu (viz @/lib/anonTrial):
+ * - Den 1-14: FullStudentDashboard — plný přístup, doporučení + vlastní výběr
+ * - Den 15+: FreemiumStudentDashboard — jen 3 denní úkoly + CTA k registraci
  */
 export default function AnonStudentPage() {
   const navigate = useNavigate();
   const anonGradeRaw = localStorage.getItem("oli_anon_grade");
   const grade = anonGradeRaw ? parseInt(anonGradeRaw, 10) : NaN;
 
-  // session mode — zobrazí SessionView pro vybraný topic
+  // session mode — zobrazí SessionView pro vybraný topic / volný browse
   const [sessionMode, setSessionMode] = useState(false);
   // refresh trigger po dokončení úkolu (re-read localStorage)
   const [refreshTick, setRefreshTick] = useState(0);
@@ -57,17 +67,15 @@ export default function AnonStudentPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grade, refreshTick]);
 
-  const allDone = allTasksCompleted();
-
   if (!anonGradeRaw || isNaN(grade)) return null;
 
-  // Session mode — render SessionView (grade už nastavena z localStorage v useSessionDispatch)
+  // ── Session mode ──────────────────────────────────────────────────────────
   if (sessionMode) {
     return (
       <div className="min-h-screen flex flex-col">
         <div className="bg-violet-50 border-b border-violet-100 px-4 py-2 text-sm text-violet-700 flex items-center justify-between gap-4 shrink-0">
           <button onClick={() => setSessionMode(false)} className="hover:underline">
-            ← Zpět na dnešní úkoly
+            ← Zpět na dashboard
           </button>
           <span className="text-xs text-violet-500">Anonymní mód</span>
         </div>
@@ -78,18 +86,46 @@ export default function AnonStudentPage() {
     );
   }
 
-  // Home mode — 3 denní úkoly
+  // ── Trial state ───────────────────────────────────────────────────────────
+  const trialActive = isTrialActive();
+  const trialExpired = isTrialExpired();
+  const daysRemaining = getTrialDaysRemaining();
+  const currentDay = getTrialCurrentDay();
+
+  const handleStartTopic = (topicId: string) => {
+    sessionStorage.setItem("oli_anon_start_topic", topicId);
+    setSessionMode(true);
+  };
+
+  const handleBrowseAll = () => {
+    // Bez preset topicu — SessionView zobrazí TopicBrowser
+    sessionStorage.removeItem("oli_anon_start_topic");
+    setSessionMode(true);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-50">
       <LandingNav />
 
-      {/* Anon banner */}
-      <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
-        <span>Procvičuješ jako host — pokrok se uloží jen v tomto prohlížeči.</span>
-        <a href="/auth?mode=register" className="font-medium hover:underline whitespace-nowrap">
-          Uložit pokrok →
-        </a>
-      </div>
+      {/* Top banner — anon hint nebo trial expired CTA */}
+      {trialActive ? (
+        <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
+          <span className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 shrink-0" />
+            Den {currentDay} z {TRIAL_DAYS} — plný přístup zdarma
+          </span>
+          <a href="/auth?mode=register" className="font-medium hover:underline whitespace-nowrap">
+            Uložit pokrok →
+          </a>
+        </div>
+      ) : (
+        <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
+          <span>Procvičuješ jako host — pokrok se uloží jen v tomto prohlížeči.</span>
+          <a href="/auth?mode=register" className="font-medium hover:underline whitespace-nowrap">
+            Uložit pokrok →
+          </a>
+        </div>
+      )}
 
       <div className="max-w-2xl mx-auto p-6 space-y-8">
         {/* Subheader — ročník + změna */}
@@ -114,57 +150,69 @@ export default function AnonStudentPage() {
           ) : null;
         })()}
 
-        {/* Dnešní úkoly */}
-        <section className="space-y-4">
-          <div>
-            <h1 className="text-3xl font-bold text-violet-900">Dnešní úkoly</h1>
-            <p className="text-violet-700/70 mt-1">3 cvičení zdarma každý den</p>
+        {/* Trial expired CTA — jasná zpráva */}
+        {trialExpired && (
+          <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 space-y-2">
+            <p className="font-bold text-amber-900 text-lg">Tvých {TRIAL_DAYS} dní skončilo.</p>
+            <p className="text-sm text-amber-800">
+              Pokračuj v 3 úkolech denně — <strong>zdarma navždy</strong>.<br />
+              Pro plný přístup ti rodič může založit účet.
+            </p>
+            <button
+              onClick={() => setShowInviteParent(true)}
+              className="mt-2 text-sm font-semibold text-amber-900 hover:underline"
+            >
+              👪 Chci plný přístup — řekni rodičům →
+            </button>
           </div>
+        )}
 
-          <div className="space-y-3">
-            {dailyTopics.map(({ topic, completed }) => {
-              const meta = getSubjectMeta(topic.subject);
-              const title = topic.displayName ?? topic.studentTitle ?? topic.title;
-              return (
-                <div
-                  key={topic.id}
-                  className={`flex items-center gap-4 rounded-2xl p-4 transition-all ${
-                    completed
-                      ? "bg-emerald-50 border-2 border-emerald-200"
-                      : "bg-white border-2 border-violet-100 hover:border-violet-300 hover:shadow-md"
-                  }`}
-                >
-                  <IllustrationImg
-                    src={meta.image}
-                    className="h-12 w-12 object-contain shrink-0 mix-blend-multiply"
-                    fallback={<span className="text-2xl">{meta.emoji}</span>}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-gray-900 truncate">{title}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{meta.label}</p>
+        {/* Trial active: FullStudentDashboard */}
+        {trialActive && (
+          <>
+            <section className="space-y-4">
+              <div>
+                <h1 className="text-3xl font-bold text-violet-900">Dnes ti Oli doporučuje</h1>
+                <p className="text-violet-700/70 mt-1">
+                  3 cvičení pro {grade}. ročník — {pad(daysRemaining, "DEN")} přístupu zdarma
+                </p>
+              </div>
+              <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} />
+            </section>
+
+            <section className="space-y-3">
+              <h2 className="text-xl font-bold text-violet-900">Nebo si vyber vlastní téma</h2>
+              <button
+                onClick={handleBrowseAll}
+                className="w-full flex items-center justify-between rounded-2xl bg-white border-2 border-violet-200 hover:border-violet-400 hover:shadow-md p-5 transition-all group"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-400 to-purple-500 ring-4 ring-violet-100 flex items-center justify-center shadow-sm">
+                    <BookOpen className="h-5 w-5 text-white" strokeWidth={2.5} />
                   </div>
-                  {completed ? (
-                    <span className="flex items-center gap-1.5 text-emerald-700 font-semibold text-sm shrink-0 px-3 py-1.5">
-                      <Check className="h-4 w-4" /> Splněno
-                    </span>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        sessionStorage.setItem("oli_anon_start_topic", topic.id);
-                        setSessionMode(true);
-                      }}
-                      className="flex items-center gap-1.5 rounded-xl bg-violet-600 text-white px-4 py-2 text-sm font-semibold hover:bg-violet-700 active:scale-95 transition-all shrink-0"
-                    >
-                      Začít <ArrowRight className="h-4 w-4" />
-                    </button>
-                  )}
+                  <div className="text-left">
+                    <p className="font-bold text-gray-900">Procházet všechny předměty</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Matematika, čeština, prvouka a další</p>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </section>
+                <ArrowRight className="h-5 w-5 text-violet-600 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </section>
+          </>
+        )}
 
-        {/* Nenápadné tlačítko "Sdílet pokrok s rodiči" — vždy viditelné, ne v centru */}
+        {/* Trial expired: FreemiumStudentDashboard — jen 3 denní úkoly */}
+        {trialExpired && (
+          <section className="space-y-4">
+            <div>
+              <h1 className="text-3xl font-bold text-violet-900">Dnešní úkoly</h1>
+              <p className="text-violet-700/70 mt-1">3 cvičení zdarma každý den</p>
+            </div>
+            <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} />
+          </section>
+        )}
+
+        {/* Nenápadné tlačítko "Sdílet pokrok s rodiči" */}
         <div className="text-center pt-2">
           <button
             onClick={() => setShowInviteParent(true)}
@@ -174,8 +222,8 @@ export default function AnonStudentPage() {
           </button>
         </div>
 
-        {/* CTA po splnění všech 3 */}
-        {allDone && (
+        {/* CTA po splnění všech 3 (freemium mode) */}
+        {trialExpired && allTasksCompleted() && (
           <div className="rounded-2xl bg-gradient-to-br from-violet-100 to-purple-100 border-2 border-violet-200 p-6 text-center space-y-3">
             <h3 className="text-xl font-bold text-violet-900">Skvělé! Splnil jsi dnešní úkoly. 🎉</h3>
             <p className="text-violet-700">Zítra tě čekají nové. Chceš si uložit pokrok?</p>
@@ -196,6 +244,56 @@ export default function AnonStudentPage() {
           anonGrade={grade}
         />
       )}
+    </div>
+  );
+}
+
+// ── Pomocná komponenta — seznam denních úkolů (reuse v obou režimech) ────────
+
+interface DailyTaskListProps {
+  topics: { topic: TopicMetadata; completed: boolean; score?: number }[];
+  onStart: (topicId: string) => void;
+}
+
+function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
+  return (
+    <div className="space-y-3">
+      {topics.map(({ topic, completed }) => {
+        const meta = getSubjectMeta(topic.subject);
+        const title = topic.displayName ?? topic.studentTitle ?? topic.title;
+        return (
+          <div
+            key={topic.id}
+            className={`flex items-center gap-4 rounded-2xl p-4 transition-all ${
+              completed
+                ? "bg-emerald-50 border-2 border-emerald-200"
+                : "bg-white border-2 border-violet-100 hover:border-violet-300 hover:shadow-md"
+            }`}
+          >
+            <IllustrationImg
+              src={meta.image}
+              className="h-12 w-12 object-contain shrink-0 mix-blend-multiply"
+              fallback={<span className="text-2xl">{meta.emoji}</span>}
+            />
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-gray-900 truncate">{title}</p>
+              <p className="text-xs text-gray-500 mt-0.5">{meta.label}</p>
+            </div>
+            {completed ? (
+              <span className="flex items-center gap-1.5 text-emerald-700 font-semibold text-sm shrink-0 px-3 py-1.5">
+                <Check className="h-4 w-4" /> Splněno
+              </span>
+            ) : (
+              <button
+                onClick={() => onStart(topic.id)}
+                className="flex items-center gap-1.5 rounded-xl bg-violet-600 text-white px-4 py-2 text-sm font-semibold hover:bg-violet-700 active:scale-95 transition-all shrink-0"
+              >
+                Začít <ArrowRight className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

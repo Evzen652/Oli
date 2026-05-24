@@ -9,6 +9,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { clearAnonProgress } from "./anonProgress";
+import { clearTrial } from "./anonTrial";
 
 const STORAGE_KEY_PROGRESS = "oli_anon_progress";
 const STORAGE_KEY_GRADE = "oli_anon_grade";
@@ -121,13 +122,14 @@ export async function migrateAnonProgress(
   }
 }
 
-/** Vymaže všechna anonymní data z localStorage. */
+/** Vymaže všechna anonymní data z localStorage (progress, grade, started, trial). */
 export function clearAnonData(): void {
   try {
     localStorage.removeItem(STORAGE_KEY_PROGRESS);
     localStorage.removeItem(STORAGE_KEY_GRADE);
     localStorage.removeItem(STORAGE_KEY_STARTED);
     clearAnonProgress(); // belt-and-suspenders
+    clearTrial();
   } catch {
     /* ignore */
   }

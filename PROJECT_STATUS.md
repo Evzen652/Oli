@@ -138,6 +138,7 @@ src/
 | CI/CD pipeline + E2E testy (Playwright) | Architekt | 🟡 V PR |
 | Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
 | Freemium / anonymní vstup pro dítě (Kroky A–E kompletní) | Architekt | ✅ Hotovo |
+| 14-denní trial s plným přístupem (změna freemium modelu) | Architekt | ✅ Hotovo |
 | Email integrace pro parent_invitations (Resend/SendGrid) | Architekt | ⏸️ Follow-up |
 | Czech grammar — centrální helper + audit | Architekt | ✅ Hotovo (audit zbylých generátorů otevřený) |
 | Aplikace migrace `parent_invitations` v Supabase | Evžen | ✅ Provedeno 24.5. |

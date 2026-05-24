@@ -53,6 +53,18 @@
 
 ## Vyřízené
 
+### 2026-05-25 — Anonymní 14-denní trial ✅ (fundamentální změna freemium flow)
+- ✅ `src/lib/anonTrial.ts` — `startTrial()`, `getTrialState()`, `getTrialDaysRemaining()`, `getTrialCurrentDay()`, `isTrialActive()`, `isTrialExpired()`, `clearTrial()`
+- ✅ 14 testů (`src/test/anon-trial.test.ts`) — všechny prošly
+- ✅ `Onboarding.tsx` — `startTrial(grade)` při výběru ročníku (idempotent)
+- ✅ `AnonStudentPage.tsx` — refactor na 2 režimy:
+  - **Trial aktivní (den 1-14):** plný dashboard s doporučeními + tlačítkem "Procházet všechny předměty" → SessionView TopicBrowser. Banner "Den X z 14 — plný přístup zdarma"
+  - **Trial expired (den 15+):** freemium režim — jen 3 denní úkoly + amber CTA "Tvých 14 dní skončilo. Pokračuj zdarma navždy + řekni rodičům"
+- ✅ Idempotent — změna ročníku nezresetuje trial, zachová `startedAt`
+- ✅ `clearAnonData()` (anonMigration) maže i trial state po registraci
+
+**Změna chování:** dříve anonymní = 3 úkoly/den od začátku. Teď = 14 dní plný přístup → pak 3 úkoly/den zdarma navždy. Žádná tvrdá blokáda.
+
 ### 2026-05-25 — Česká gramatika — centrální systém ✅
 - ✅ `src/lib/czechGrammar.ts` — `plural()`, `pluralWithNumber()`, `pad()`, `form()`, `adj()`, `phrase()`, `pastTense()`, `pastTenseInclusive()`
 - ✅ Slovník 30+ běžných substantiv (ÚKOL, ÚLOHA, DEN, DÍL, METR, …) + 11 adjektiv (STEJNÝ, MALÝ, …)
