@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
 import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
+import { OlyLogo } from "@/components/OlyLogo";
 
 const PARENT_BENEFITS = [
   { icon: "📚", text: "Zadávat dítěti úkoly z předmětů, ve kterých potřebuje pomoct" },
@@ -65,32 +66,49 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className={`w-full ${isLogin ? "max-w-sm" : "max-w-3xl"} grid gap-6 ${isLogin ? "" : "md:grid-cols-2"}`}>
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50 px-4 py-8">
+      {/* Header s logem — zpět na landing */}
+      <div className="max-w-5xl mx-auto mb-8">
+        <button onClick={() => navigate("/")} className="inline-flex">
+          <OlyLogo size="sm" />
+        </button>
+      </div>
+
+      <div className={`mx-auto ${isLogin ? "max-w-sm" : "max-w-4xl"} grid gap-8 ${isLogin ? "" : "md:grid-cols-[1.1fr_1fr] items-start"}`}>
         {/* Benefity — jen u registrace */}
         {!isLogin && (
-          <div className="space-y-4 p-6 md:p-2 md:pr-6 md:pt-8">
-            <h2 className="font-bold text-xl text-foreground">S účtem rodiče můžete:</h2>
-            <ul className="space-y-3">
+          <div className="space-y-5 md:pt-2">
+            <div>
+              <h2 className="font-bold text-2xl text-foreground tracking-tight">
+                S účtem rodiče můžete:
+              </h2>
+            </div>
+            <ul className="space-y-3.5">
               {PARENT_BENEFITS.map((b) => (
-                <li key={b.text} className="flex items-start gap-3 text-sm text-foreground/85">
-                  <span className="text-lg shrink-0" aria-hidden>{b.icon}</span>
-                  <span>{b.text}</span>
+                <li key={b.text} className="flex items-start gap-3.5 bg-white/70 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white shadow-sm">
+                  <span className="text-2xl shrink-0 leading-none" aria-hidden>{b.icon}</span>
+                  <span className="text-[15px] text-foreground/85 leading-snug pt-0.5">{b.text}</span>
                 </li>
               ))}
             </ul>
-            <div className="rounded-xl bg-violet-50 border border-violet-100 px-3 py-2.5 text-xs text-violet-700">
-              <strong>14 dní zdarma</strong> — bez platební karty. Pak 149 Kč měsíčně. Můžete kdykoli zrušit.
+            <div className="rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 px-4 py-3 text-sm text-orange-900">
+              ⭐ <strong>14 dní zdarma</strong> — bez platební karty.<br />
+              <span className="text-orange-800/80 text-xs">Pak 149 Kč měsíčně. Můžete kdykoli zrušit.</span>
             </div>
           </div>
         )}
 
         {/* Formulář */}
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-center text-xl">
+        <Card className="w-full shadow-xl border-violet-100/60">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-center text-2xl font-bold">
               {isLogin ? t("auth.title.login") : "Registrace rodiče"}
             </CardTitle>
+            {!isLogin && (
+              <p className="text-center text-sm text-muted-foreground mt-1">
+                Stačí e-mail a heslo. Dítě si propojíte později kódem.
+              </p>
+            )}
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Invite banner — rodič přišel z pozvánky od dítěte */}
