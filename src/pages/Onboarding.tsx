@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { OlyLogo } from "@/components/OlyLogo";
 import { hasContentForGrade } from "@/lib/contentAvailability";
 import { LandingNav } from "@/pages/LandingNav";
+import { ArrowLeft } from "lucide-react";
 
 const GRADE_COLORS: Record<number, { bg: string; border: string; text: string; hover: string }> = {
   1: { bg: "bg-yellow-400",  border: "border-yellow-400",  text: "text-yellow-900", hover: "hover:bg-yellow-300" },
@@ -27,7 +28,15 @@ export default function Onboarding() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <LandingNav />
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex flex-col items-center p-8">
+        <div className="max-w-sm w-full">
+          <button
+            onClick={() => navigate(-1)}
+            className="mb-6 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" /> Zpět
+          </button>
+        </div>
         <div className="max-w-sm w-full space-y-10 text-center">
 
           <div className="flex flex-col items-center gap-4">
