@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { useT } from "@/lib/i18n";
 import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
 import { OlyLogo } from "@/components/OlyLogo";
 import { BookOpen, TrendingUp, Target, Mail, Sparkles, ArrowLeft } from "lucide-react";
+import { LandingNav } from "@/pages/LandingNav";
 
 const PARENT_BENEFITS = [
   {
@@ -44,6 +45,11 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(searchParams.get("mode") !== "register");
+
+  // Sync isLogin když se změní URL (kliknutí v navigaci na Přihlásit / Registrace)
+  useEffect(() => {
+    setIsLogin(searchParams.get("mode") !== "register");
+  }, [searchParams]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -87,21 +93,11 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50 px-4 py-6">
-      {/* Wrapper — header i obsah ve stejné šířce */}
-      <div className={`mx-auto ${isLogin ? "max-w-sm" : "max-w-3xl"}`}>
-        {/* Header */}
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <button onClick={() => navigate("/")} className="inline-flex">
-            <OlyLogo size="xs" />
-          </button>
-          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-sm text-foreground/70 hover:text-foreground bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 border border-white shadow-sm hover:shadow transition-all">
-            <ArrowLeft className="h-4 w-4" />
-            Zpět
-          </button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50">
+      <LandingNav />
+      <div className="mx-auto max-w-sm px-4 py-8">
 
-        <div className={`grid gap-6 ${isLogin ? "" : "md:grid-cols-2 md:items-start"}`}>
+        <div className="grid gap-6">
         {/* Benefity — jen u registrace */}
         {!isLogin && (
           <div className="space-y-5 md:pt-2">
