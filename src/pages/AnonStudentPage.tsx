@@ -7,7 +7,7 @@ import { getContentWarning } from "@/lib/contentAvailability";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { OlyLogo } from "@/components/OlyLogo";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
 import type { TopicMetadata } from "@/lib/types";
 
@@ -91,8 +91,17 @@ export default function AnonStudentPage() {
 
       <div className="max-w-2xl mx-auto p-6 space-y-8">
         {/* Header */}
-        <header className="flex items-center justify-between pt-2">
-          <OlyLogo size="md" />
+        <header className="flex items-center justify-between pt-2 gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate("/onboarding")}
+              className="inline-flex items-center gap-1.5 text-sm text-violet-700 hover:text-violet-900 bg-white/80 backdrop-blur-sm rounded-full px-3.5 py-2 border border-white shadow-sm hover:shadow transition-all"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Zpět
+            </button>
+            <OlyLogo size="sm" />
+          </div>
           <div className="text-sm text-violet-600 font-semibold">{grade}. ročník</div>
         </header>
 
