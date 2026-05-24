@@ -8,12 +8,33 @@ import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
 import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
 import { OlyLogo } from "@/components/OlyLogo";
+import { BookOpen, TrendingUp, Target, Mail, Sparkles } from "lucide-react";
 
 const PARENT_BENEFITS = [
-  { icon: "📚", text: "Zadávat dítěti úkoly z předmětů, ve kterých potřebuje pomoct" },
-  { icon: "📊", text: "Sledovat pokrok — co dítě zvládá a kde se zasekává" },
-  { icon: "📝", text: "Připravit ho na konkrétní písemku nebo zkoušení" },
-  { icon: "📬", text: "Dostávat týdenní shrnutí, jak se dítěti daří" },
+  {
+    Icon: BookOpen,
+    text: "Zadávat dítěti úkoly z předmětů, ve kterých potřebuje pomoct",
+    gradient: "from-violet-400 to-purple-500",
+    ring: "ring-violet-100",
+  },
+  {
+    Icon: TrendingUp,
+    text: "Sledovat pokrok — co dítě zvládá a kde se zasekává",
+    gradient: "from-emerald-400 to-teal-500",
+    ring: "ring-emerald-100",
+  },
+  {
+    Icon: Target,
+    text: "Připravit ho na konkrétní písemku nebo zkoušení",
+    gradient: "from-orange-400 to-pink-500",
+    ring: "ring-orange-100",
+  },
+  {
+    Icon: Mail,
+    text: "Dostávat týdenní shrnutí, jak se dítěti daří",
+    gradient: "from-sky-400 to-blue-500",
+    ring: "ring-sky-100",
+  },
 ];
 
 export default function Auth() {
@@ -83,17 +104,24 @@ export default function Auth() {
                 S účtem rodiče můžete:
               </h2>
             </div>
-            <ul className="space-y-3.5">
-              {PARENT_BENEFITS.map((b) => (
-                <li key={b.text} className="flex items-start gap-3.5 bg-white/70 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white shadow-sm">
-                  <span className="text-2xl shrink-0 leading-none" aria-hidden>{b.icon}</span>
-                  <span className="text-[15px] text-foreground/85 leading-snug pt-0.5">{b.text}</span>
+            <ul className="space-y-3">
+              {PARENT_BENEFITS.map(({ Icon, text, gradient, ring }) => (
+                <li key={text} className="flex items-center gap-4 bg-white/80 backdrop-blur-sm rounded-2xl px-4 py-3.5 border border-white shadow-sm hover:shadow-md transition-shadow">
+                  <div className={`h-11 w-11 shrink-0 rounded-2xl bg-gradient-to-br ${gradient} ring-4 ${ring} flex items-center justify-center shadow-sm`}>
+                    <Icon className="h-5 w-5 text-white" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-[15px] text-foreground/85 leading-snug">{text}</span>
                 </li>
               ))}
             </ul>
-            <div className="rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 px-4 py-3 text-sm text-orange-900">
-              ⭐ <strong>14 dní zdarma</strong> — bez platební karty.<br />
-              <span className="text-orange-800/80 text-xs">Pak 149 Kč měsíčně. Můžete kdykoli zrušit.</span>
+            <div className="rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 px-4 py-3 text-sm text-orange-900 flex items-start gap-3">
+              <div className="h-9 w-9 shrink-0 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 ring-4 ring-orange-100 flex items-center justify-center shadow-sm">
+                <Sparkles className="h-4 w-4 text-white" strokeWidth={2.5} />
+              </div>
+              <div className="pt-0.5">
+                <strong className="font-bold">14 dní zdarma</strong> — bez platební karty.<br />
+                <span className="text-orange-800/80 text-xs">Pak 149 Kč měsíčně. Můžete kdykoli zrušit.</span>
+              </div>
             </div>
           </div>
         )}
