@@ -81,10 +81,10 @@ src/
 
 ## 4. Roadmap (pořadí práce)
 
-1. **Nové typy cvičení** — největší dopad pro žáky
+1. ~~**Nové typy cvičení**~~ ✅ — 6 typů hotovo (TextInput, FillBlank, MatchPairs, DragOrder, MultiSelect, TrueFalse)
 2. **Admin editor cvičení** — základ pro vlastní obsah
 3. **i18n příprava** — technický základ pro jiné státy
-4. **Audit systém** — nápovědy + vysvětlení řešení
+4. ~~**Audit systém**~~ ✅ — contentAudit + pedagogický audit pipeline hotovo
 5. **RVP import** — naplnění obsahem (probíhá přes grade-N sessions)
 
 ### Typy cvičení
@@ -126,9 +126,23 @@ src/
 
 | Co | Kdo | Stav |
 |---|---|---|
-| Grade-4 obsah ostatní předměty | Grade-4 session | 🟡 Matematika hotová, čeština/prvouka/přírodověda/vlastivěda čekají |
-| Ilustrace — vygenerovat chybějící | Admin | ⏳ Spustit: Admin → Ilustrace → Generovat chybějící |
-| Multi-select typ cvičení | Architekt | 📋 Zbývající typ ze 7 |
+| Adaptabilita mezi sezeními | Architekt | ✅ Hotovo |
+| Refactor inputType na úroveň PracticeTask | Architekt | ✅ Hotovo |
+| 6 typů cvičení | Architekt | ✅ Hotovo |
+| Templated facts architektura | Architekt | ✅ Hotovo |
+| Parent UI (reporty, benchmarky, plán dopředu) | Architekt | ✅ Hotovo |
+| Student UI (pozitivní labely, TopicResultDetail) | Architekt | ✅ Hotovo |
+| Pedagogický audit pipeline | Architekt | ✅ Hotovo |
+| 4 kritické UX bugy (auth, demo flow) | Architekt | ✅ Hotovo |
+| Admin UI cleanup + AuthoringLauncher | Architekt | ✅ Hotovo |
+| CI/CD pipeline + E2E testy (Playwright) | Architekt | 🟡 V PR |
+| Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
+| Freemium / anonymní vstup pro dítě | Architekt | ⏸️ Čeká na rozhodnutí |
+| Sjednocení helpTemplate vs task.hints | Architekt | ⏸️ Čeká |
+| displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
+| Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na authoring |
+| Grade-4 čeština, vlastivěda, přírodověda | Grade-4 session | ⏸️ Čeká na authoring |
+| Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ---
 
