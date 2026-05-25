@@ -60,12 +60,20 @@ export default function ParentOnboarding() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-3">
-      <button
-        onClick={() => navigate("/")}
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" /> Zpět na úvod
-      </button>
+      <div className="flex items-center justify-between">
+        <button
+          onClick={() => navigate("/")}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" /> Zpět na úvod
+        </button>
+        <button
+          onClick={async () => { await supabase.auth.signOut(); navigate("/"); }}
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Odhlásit se
+        </button>
+      </div>
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-center text-xl">
