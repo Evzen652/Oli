@@ -287,6 +287,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   const [childName, setChildName] = useState<string>("");
   const [childId, setChildId] = useState<string | null>(null);
   const [isPaired, setIsPaired] = useState(false);
+  const [isAnonUser, setIsAnonUser] = useState(false);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [statsPeriod, setStatsPeriod] = useState<StatsPeriod>("7d");
@@ -322,7 +323,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         // Anonymní mód (trial) — nepřihlášený uživatel.
-        // Žádné DB assignments, žádný childId. Odblokuj loading.
+        // Žádné DB assignments, žádný childId. Skrýt pairing kód
+        // (rodič ještě neexistuje — místo toho ukážeme "Pozvat rodiče").
+        setIsAnonUser(true);
         setLoading(false);
         return;
       }
@@ -523,8 +526,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           )}
         </div>
 
-        {/* ── Pairing code ── */}
-        {!isPaired && (
+        {/* ── Pairing code — jen pro přihlášené nespárované dítě, NE pro anon trial ── */}
+        {!isPaired && !isAnonUser && (
           <PairingCodeInput onPaired={(name, g) => { setChildName(name); setIsPaired(true); }} />
         )}
 
