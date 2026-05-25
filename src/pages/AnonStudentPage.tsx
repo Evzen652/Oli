@@ -117,16 +117,16 @@ export default function AnonStudentPage() {
             <Sparkles className="h-4 w-4 shrink-0" />
             Den {currentDay} z {TRIAL_DAYS} — plný přístup zdarma
           </span>
-          <a href="/auth?mode=register" className="font-medium hover:underline whitespace-nowrap">
+          <button onClick={() => setShowInviteParent(true)} className="font-medium hover:underline whitespace-nowrap">
             Uložit pokrok →
-          </a>
+          </button>
         </div>
       ) : (
         <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
           <span>Procvičuješ jako host — pokrok se uloží jen v tomto prohlížeči.</span>
-          <a href="/auth?mode=register" className="font-medium hover:underline whitespace-nowrap">
+          <button onClick={() => setShowInviteParent(true)} className="font-medium hover:underline whitespace-nowrap">
             Uložit pokrok →
-          </a>
+          </button>
         </div>
       )}
 
