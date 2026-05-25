@@ -443,7 +443,14 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
   const handleReset = useCallback(() => {
     clearPersistedSession();
     setSession(null);
-    setGrade(null);
+    // Anon trial: zachovej grade z localStorage (jinak by GradeSelect ukázal jako bug
+    // viz "Zpět" z cvičení = neztratit kontext, ve kterém ročníku dítě je)
+    const anonGrade = getCurrentAnonGrade();
+    if (anonGrade !== null && anonGrade >= 1 && anonGrade <= 9) {
+      setGrade(anonGrade as Grade);
+    } else {
+      setGrade(null);
+    }
     setOutput("");
     setPracticeQuestion(undefined);
     setUserInput("");
