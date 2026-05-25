@@ -19,6 +19,11 @@
 
 ## Otevřené
 
+### BUG #5 — Tab zamrzne po zavření InviteParentDialog
+- Možný memory leak v animaci/listeneru — předběžně do PENDING
+- TODO: zkontrolovat `useEffect` cleanup v `InviteParentDialog.tsx`, vyčistit setTimeout/listenery při unmount
+- Pokud používá framer-motion AnimatePresence, zkontrolovat exit handler
+
 ### Czech grammar audit zbylých generátorů
 - Centrální helper `src/lib/czechGrammar.ts` vytvořen + testován (18/18 testů ok)
 - Opraveny nejviditelnější bugy: `zlomekJakoCastCelku`, ChildHomePage motivační hlášky, weeklyReportGenerator, SkillDetailModal
@@ -52,6 +57,13 @@
 ---
 
 ## Vyřízené
+
+### 2026-05-25 — Trial flow critical bug fixes ✅ (4 z 5 bugů opraveno)
+- ✅ **BUG #1 (BLOCKER):** ChildHomePage zaseknuté na "Načítání…" pro anon uživatele — chyběl `setLoading(false)` v `if (!user) return;` větvi
+- ✅ **BUG #2 (BLOCKER):** TopicBrowser crash `s.charAt is not a function` — `capitalize` přijímá `unknown` s typeof guardem
+- ✅ **BUG #3:** Špatný ročník v UI (6 místo 4) — sjednocení přes `getCurrentAnonGrade()` (trial state = single source of truth, legacy `oli_anon_grade` jen fallback)
+- ✅ **BUG #4:** Pokrok se neukládá průběžně — useEffect cleanup v `useSessionDispatch` markuje anon task při unmount sezení (alespoň 1 správná odpověď), `completedRef` brání duplikaci s END handlerem
+- ⏸️ BUG #5: Tab zamrzne po zavření InviteParentDialog — do Otevřené
 
 ### 2026-05-25 — Anonymní 14-denní trial ✅ (fundamentální změna freemium flow)
 - ✅ `src/lib/anonTrial.ts` — `startTrial()`, `getTrialState()`, `getTrialDaysRemaining()`, `getTrialCurrentDay()`, `isTrialActive()`, `isTrialExpired()`, `clearTrial()`

@@ -9,6 +9,7 @@ import {
   isTrialExpired,
   getTrialDaysRemaining,
   getTrialCurrentDay,
+  getCurrentAnonGrade,
   TRIAL_DAYS,
 } from "@/lib/anonTrial";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -28,8 +29,10 @@ import type { TopicMetadata } from "@/lib/types";
  */
 export default function AnonStudentPage() {
   const navigate = useNavigate();
-  const anonGradeRaw = localStorage.getItem("oli_anon_grade");
-  const grade = anonGradeRaw ? parseInt(anonGradeRaw, 10) : NaN;
+  // Single source of truth — trial state má přednost, fallback na legacy localStorage
+  const gradeOrNull = getCurrentAnonGrade();
+  const anonGradeRaw = gradeOrNull !== null ? String(gradeOrNull) : null;
+  const grade = gradeOrNull ?? NaN;
 
   // session mode — zobrazí SessionView pro vybraný topic / volný browse
   const [sessionMode, setSessionMode] = useState(false);

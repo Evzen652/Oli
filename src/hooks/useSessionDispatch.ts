@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type { SessionData, SessionState, PracticeTask, TopicMetadata, Grade } from "@/lib/types";
 import { createSession, processState } from "@/lib/sessionOrchestrator";
 import { setDiktatFilter } from "@/lib/content";
@@ -7,6 +7,7 @@ import { useSessionPersistence, clearPersistedSession } from "@/hooks/useSession
 import { loadCustomExercises } from "@/lib/customExerciseLoader";
 import { filterValidTasks } from "@/lib/taskValidator";
 import { markTaskCompleted as markAnonTaskCompleted } from "@/lib/anonProgress";
+import { getCurrentAnonGrade } from "@/lib/anonTrial";
 import type { DiktatType } from "@/components/DiktatFilterSelect";
 import { toast } from "sonner";
 
@@ -110,10 +111,9 @@ export interface SessionDispatchActions {
 export function useSessionDispatch(): SessionDispatchState & SessionDispatchActions {
   const [pendingDiktatTopic, setPendingDiktatTopic] = useState<TopicMetadata | null>(null);
   const [grade, setGrade] = useState<Grade | null>(() => {
-    // Anonymní mód — ročník uložený při onboardingu
-    const anon = localStorage.getItem("oli_anon_grade");
-    const parsed = anon ? parseInt(anon, 10) : NaN;
-    return (!isNaN(parsed) && parsed >= 1 && parsed <= 9) ? (parsed as Grade) : null;
+    // Anonymní mód — ročník uložený při onboardingu (single source of truth = trial state)
+    const g = getCurrentAnonGrade();
+    return (g !== null && g >= 1 && g <= 9) ? (g as Grade) : null;
   });
   const [session, setSession] = useState<SessionData | null>(null);
   const [output, setOutput] = useState("");
@@ -135,6 +135,32 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
 
   // Auto-persist session to localStorage
   useSessionPersistence(session, taskResults);
+
+  // BUG #4 fix — markovat anon task jako splněný i při částečném pokroku
+  // (předčasný odchod ze sezení). Ref nutný — cleanup vidí jen stale closure.
+  const latestSessionRef = useRef(session);
+  const latestTaskResultsRef = useRef(taskResults);
+  const completedRef = useRef(false);
+  useEffect(() => { latestSessionRef.current = session; }, [session]);
+  useEffect(() => { latestTaskResultsRef.current = taskResults; }, [taskResults]);
+
+  useEffect(() => {
+    return () => {
+      // Cleanup na unmount — pokud anon mode + máme alespoň 1 správnou odpověď
+      // a task nebyl už markován v END handleru, ulož částečný pokrok.
+      if (completedRef.current) return;
+      if (getCurrentAnonGrade() === null) return;
+      const sess = latestSessionRef.current;
+      const results = latestTaskResultsRef.current;
+      const topicId = sess?.matchedTopic?.id;
+      if (!topicId || results.length === 0) return;
+      const correct = results.filter(r => r === "correct").length;
+      if (correct === 0) return; // ani jedna správná → nemarkovat
+      const score = correct / results.length;
+      markAnonTaskCompleted(topicId, score);
+      window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+    };
+  }, []);
 
   const markAssignmentCompleted = useCallback(async (skillId: string) => {
     try {
@@ -192,11 +218,12 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         if (result.session.matchedTopic?.id) {
           markAssignmentCompleted(result.session.matchedTopic.id);
           // Anon mód: označ úkol jako splněný v localStorage
-          if (localStorage.getItem("oli_anon_grade")) {
+          if (getCurrentAnonGrade() !== null) {
             const correct = taskResults.filter(r => r === "correct").length;
             const score = taskResults.length > 0 ? correct / taskResults.length : 0;
             markAnonTaskCompleted(result.session.matchedTopic.id, score);
             window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+            completedRef.current = true; // brání duplicitnímu markování při unmount
           }
         }
       }
@@ -332,12 +359,13 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         setPracticeQuestion(undefined);
         setPendingEndSession(result.session);
         // Anon mód: označ úkol jako splněný v localStorage
-        if (result.session.matchedTopic?.id && localStorage.getItem("oli_anon_grade")) {
+        if (result.session.matchedTopic?.id && getCurrentAnonGrade() !== null) {
           const allResults = [...taskResults, taskResult];
           const correct = allResults.filter(r => r === "correct").length;
           const score = allResults.length > 0 ? correct / allResults.length : 0;
           markAnonTaskCompleted(result.session.matchedTopic.id, score);
           window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+          completedRef.current = true;
         }
         return;
       }

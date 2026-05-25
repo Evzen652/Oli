@@ -103,3 +103,22 @@ export function clearTrial(): void {
     /* ignore */
   }
 }
+
+/**
+ * Vrátí aktuální ročník anonymního uživatele.
+ * SINGLE SOURCE OF TRUTH — trial state má přednost před legacy `oli_anon_grade`.
+ * Použij všude, kde se čte ročník anonymního uživatele.
+ */
+export function getCurrentAnonGrade(): number | null {
+  const trial = getTrialState();
+  if (trial) return trial.grade;
+  // Fallback: legacy klíč pro zpětnou kompatibilitu
+  try {
+    const legacy = localStorage.getItem("oli_anon_grade");
+    if (!legacy) return null;
+    const n = parseInt(legacy, 10);
+    return isNaN(n) ? null : n;
+  } catch {
+    return null;
+  }
+}

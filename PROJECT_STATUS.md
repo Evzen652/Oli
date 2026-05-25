@@ -139,6 +139,7 @@ src/
 | Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
 | Freemium / anonymní vstup pro dítě (Kroky A–E kompletní) | Architekt | ✅ Hotovo |
 | 14-denní trial s plným přístupem (změna freemium modelu) | Architekt | ✅ Hotovo |
+| Trial flow bug fixes (loading, crash, grade, progress) | Architekt | ✅ Hotovo (4/5 — InviteDialog memory leak otevřený) |
 | Email integrace pro parent_invitations (Resend/SendGrid) | Architekt | ⏸️ Follow-up |
 | Czech grammar — centrální helper + audit | Architekt | ✅ Hotovo (audit zbylých generátorů otevřený) |
 | Aplikace migrace `parent_invitations` v Supabase | Evžen | ✅ Provedeno 24.5. |

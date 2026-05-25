@@ -320,7 +320,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   useEffect(() => {
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        // Anonymní mód (trial) — nepřihlášený uživatel.
+        // Žádné DB assignments, žádný childId. Odblokuj loading.
+        setLoading(false);
+        return;
+      }
 
       let child: { id: string; name: string } | null = null;
       const { data: childByUser } = await supabase.from("children").select("id, child_name")
