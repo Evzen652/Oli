@@ -59,11 +59,15 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
     return (
       <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
-          <div className="text-5xl">📬</div>
-          <h3 className="text-lg font-bold text-gray-900">Pozvánka uložena!</h3>
-          <p className="text-gray-500 text-sm">
-            Řekni rodiči, ať se zaregistruje na <strong>oli-edu.com</strong> se stejným
-            emailem ({email}). Pak uvidí tvůj pokrok.
+          <div className="text-5xl">💬</div>
+          <h3 className="text-lg font-bold text-gray-900">Skvěle!</h3>
+          <p className="text-gray-700 text-sm leading-relaxed">
+            Teď řekni rodičům, ať se podívají na <strong>oli-edu.com</strong> a založí si účet
+            s e‑mailem <strong>{email}</strong>.
+          </p>
+          <p className="text-xs text-gray-400 leading-relaxed">
+            (Automatické rozesílání e‑mailů zatím připravujeme — proto je potřeba říct
+            rodičům přímo.)
           </p>
           <button
             onClick={onClose}
