@@ -118,14 +118,14 @@ export default function AnonStudentPage() {
             Den {currentDay} z {TRIAL_DAYS} — plný přístup zdarma
           </span>
           <button onClick={() => setShowInviteParent(true)} className="font-medium hover:underline whitespace-nowrap">
-            Uložit pokrok →
+            Chci sdílet mé úspěchy s rodiči →
           </button>
         </div>
       ) : (
         <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
           <span>Procvičuješ jako host — pokrok se uloží jen v tomto prohlížeči.</span>
           <button onClick={() => setShowInviteParent(true)} className="font-medium hover:underline whitespace-nowrap">
-            Uložit pokrok →
+            Chci sdílet mé úspěchy s rodiči →
           </button>
         </div>
       )}
