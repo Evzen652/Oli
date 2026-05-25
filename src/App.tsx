@@ -54,6 +54,8 @@ function AuthenticatedRoutes() {
     return (
       <Routes>
         <Route path="/onboarding" element={<ParentOnboarding />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/landing" element={<Landing />} />
         <Route path="*" element={<Navigate to="/onboarding" replace />} />
       </Routes>
     );

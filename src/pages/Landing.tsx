@@ -223,12 +223,12 @@ export default function Landing() {
 
       {/* ═══════ JAK TO FUNGUJE ═══════ */}
       <Section id="jak-to-funguje" className="bg-[#F8FAFC]">
-        <SectionHead title="Jak to funguje" sub="Oli vás provede celým procesem — od prvního přihlášení až po každodenní učení." />
+        <SectionHead title="Jak to funguje" sub="Tři kroky od prvního spuštění až po každodenní učení." />
         <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {[
-            { img: imgRodina, step: "1", title: "Nastavíte profil dítěte", desc: "Zadáte ročník a během chvíle je vše připraveno.", bg: C.bgBlue },
-            { img: imgZdraviHygiena, step: "2", title: "Dítě se jednoduše přihlásí", desc: "Přístup pomocí krátkého kódu — bez e-mailu.", bg: C.bgOrange },
-            { img: imgRocniObdobi, step: "3", title: "Každý den jasný postup", desc: "Oli sleduje pokrok a připravuje cvičení na míru.", bg: C.bgGreen },
+            { img: imgRodina, step: "1", title: "Vstup bez bariér", desc: "Stačí vybrat ročník. Žádná registrace, žádné heslo. 14 dní plný přístup zdarma.", bg: C.bgBlue },
+            { img: imgZdraviHygiena, step: "2", title: "Propojení s rodičem", desc: "Volitelné. Když rodič vytvoří účet, vidí pokrok dítěte a může zadávat úkoly.", bg: C.bgOrange },
+            { img: imgRocniObdobi, step: "3", title: "Samostatné nebo společné", desc: "Aplikace funguje sama, ale s rodičem dává smysl. Záleží na tom, jak ji budete chtít používat.", bg: C.bgGreen },
           ].map((item) => (
             <Card key={item.step} className="rounded-3xl border-0 shadow-lg text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: item.bg }}>
               <CardContent className="p-8 space-y-4">
@@ -246,13 +246,12 @@ export default function Landing() {
 
       {/* ═══════ PŘÍPRAVA NA PÍSEMKY ═══════ */}
       <Section id="pisemka" className="">
-        <SectionHead title="Příprava na písemku bez stresu" sub="Stačí vybrat téma a Oli připraví dítě krok za krokem." />
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <SectionHead title="Příprava na písemku bez stresu" sub="Stačí vybrat téma a aplikace připraví cvičení krok za krokem." />
+        <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {[
-            { step: 1, img: imgZlomky, title: "Vyberete téma nebo okruh", desc: "Např. zlomky, vyjmenovaná slova nebo konkrétní látku ze školy.", bg: C.bgBlue },
-            { step: 2, img: imgUceni, title: "Oli připraví cvičení na míru", desc: "Navazuje na aktuální úroveň dítěte a postupně ho vede dál.", bg: C.bgOrange },
-            { step: 3, img: imgPodpora, title: "Dítě získá jistotu", desc: "Procvičuje přesně to, co potřebuje, v tempu, které mu vyhovuje.", bg: C.bgGreen },
-            { step: 4, img: imgPrehled, title: "Vy vidíte výsledek", desc: "Přehledně sledujete, jak se dítě připravuje a jak se mu daří.", bg: "#FEF9C3" },
+            { step: 1, img: imgZlomky, title: "Výběr tématu", desc: "Vyjmenovaná slova, zlomky, dělení — cokoli, co se zrovna učí ve škole.", bg: C.bgBlue },
+            { step: 2, img: imgUceni, title: "Procvičování krok za krokem", desc: "Aplikace začíná lehčími úlohami a postupuje k obtížnějším. Nápověda je k dispozici, žádný stres.", bg: C.bgOrange },
+            { step: 3, img: imgPrehled, title: "Přehled o úspěchu", desc: "S rodičovským účtem je vidět, co se daří a kde je co zlepšit.", bg: C.bgGreen },
           ].map((item) => (
             <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
               <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.orange }}>
@@ -271,10 +270,10 @@ export default function Landing() {
         <SectionHead title="Jak vypadá běžný den s Olim" />
         <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {[
-            { img: imgProcvic, title: "Krátké procvičování", desc: "Oli navazuje na to, co už dítě zvládá, a přirozeně ho posouvá dál.", bg: C.bgOrange },
+            { img: imgProcvic, title: "Krátké procvičování každý den", desc: "Aplikace si pamatuje, jak procvičování probíhá. Postupně přidává obtížnost — ne najednou, ale po malých krocích. Cílem není dlouhé sezení, ale pravidelný návyk: pár minut denně.", bg: C.bgOrange },
             { img: imgVysvetleni, title: "Vysvětlení během učení", desc: "Každý krok dává smysl a pomáhá látku pochopit.", bg: C.bgBlue },
             { img: imgPrehled, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
-            { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a Oli vede dítě krok za krokem.", bg: "#FEF9C3" },
+            { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a aplikace vede dítě krok za krokem.", bg: "#FEF9C3" },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-5 p-6 rounded-3xl shadow-md hover:shadow-lg transition-shadow" style={{ background: item.bg }}>
               <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md" />
@@ -285,10 +284,12 @@ export default function Landing() {
             </div>
           ))}
         </div>
-        <div className="mt-16 text-center">
-          <p className="text-xl sm:text-2xl font-semibold leading-relaxed max-w-xl mx-auto font-heading" style={{ color: C.dark }}>
-            „Každý den máte jasný přehled o učení vašeho dítěte."
-          </p>
+        <div className="mt-12 max-w-xl mx-auto rounded-3xl p-6 shadow-md flex items-start gap-4" style={{ background: C.bgBlue }}>
+          <BarChart3 className="h-6 w-6 shrink-0 mt-0.5" style={{ color: C.teal }} />
+          <div>
+            <p className="font-semibold text-base font-heading" style={{ color: C.dark }}>📊 Týdenní přehled v aplikaci</p>
+            <p className="text-sm text-slate-500 leading-relaxed mt-1">Stručné shrnutí: co se daří, co je třeba procvičit, co dítě nejvíc baví.</p>
+          </div>
         </div>
       </Section>
 
@@ -297,11 +298,11 @@ export default function Landing() {
         <SectionHead title="Co vám Oli přinese" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           <FeatureCard img={imgBarChart} title="Přehled o pokroku" desc="Každý den vidíte, co dítě procvičilo a jak se mu dařilo." bg={C.bgOrange} />
-          <FeatureCard img={imgUceni} title="Učení, které dává smysl" desc="Cvičení odpovídají aktuální úrovni dítěte." bg={C.bgBlue} />
-          <FeatureCard img={imgSkola} title="Cílená příprava na školu" desc="Snadno zaměříte učení na konkrétní téma nebo písemku." bg="#F3F0FF" />
-          <FeatureCard img={imgPodpora} title="Podpora bez tlaku" desc="Dítě postupuje vlastním tempem." bg={C.bgGreen} />
-          <FeatureCard img={imgStarosti} title="Méně starostí pro rodiče" desc="Oli se stará o průběh učení za vás." bg="#FEF9C3" />
-          <FeatureCard img={imgProstredi} title="Soustředěné prostředí" desc="Bez reklam a rušivých prvků." bg={C.bgOrange} />
+          <FeatureCard img={imgUceni} title="Učení po malých krocích" desc="Krátké úlohy místo dlouhých sezení." bg={C.bgBlue} />
+          <FeatureCard img={imgSkola} title="Příprava na konkrétní písemku" desc="Možnost zadat téma předem." bg="#F3F0FF" />
+          <FeatureCard img={imgPodpora} title="Bez stresu a známkování" desc="Žádné 1–5. Pozitivní zpětná vazba." bg={C.bgGreen} />
+          <FeatureCard img={imgStarosti} title="Pravidelný návyk" desc="Pár minut denně místo nárazového učení." bg="#FEF9C3" />
+          <FeatureCard img={imgProstredi} title="Bezpečné prostředí" desc="Žádné reklamy, žádné odkazy ven z aplikace." bg={C.bgOrange} />
         </div>
       </Section>
 
@@ -315,7 +316,7 @@ export default function Landing() {
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Zdarma</h3><p className="text-sm text-slate-400 mt-1">Na vyzkoušení a první pokroky</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>0 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
-                {["1 dítě", "Všechny předměty", "Základní přehled", "5 AI cvičení/měsíc"].map((f) => (
+                {["Anonymní vstup bez registrace", "14 dní plný přístup zdarma", "Po 14 dnech: 3 cvičení denně navždy", "Veškerý hotový obsah"].map((f) => (
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
@@ -332,8 +333,17 @@ export default function Landing() {
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-slate-400 mt-1">Pro pravidelný posun a přehled</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>149 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
-                {["Až 3 děti", "Neomezená cvičení", "Podrobné reporty", "AI hodnocení", "Příprava na písemky", "Bez reklam"].map((f) => (
-                  <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
+                {[
+                  { text: "Neomezené procvičování", soon: false },
+                  { text: "Rodičovský přehled a zadávání úkolů", soon: false },
+                  { text: "Týdenní přehled pokroku", soon: false },
+                  { text: "AI hodnocení", soon: true },
+                  { text: "Všechny předměty 1.–9. třída (postupně přibývají)", soon: true },
+                ].map((f) => (
+                  <li key={f.text} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} />
+                    {f.soon ? <span>🕒 <em>{f.text}</em></span> : f.text}
+                  </li>
                 ))}
               </ul>
               <Button className="w-full rounded-full text-white gap-2" style={{ background: C.orange }} onClick={() => navigate("/auth?mode=register")}>
@@ -348,7 +358,7 @@ export default function Landing() {
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Rodinný</h3><p className="text-sm text-slate-400 mt-1">Pro více dětí</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>249 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
-                {["Až 5 dětí", "Vše ze Standard", "Rodinný přehled", "Export dat", "Prioritní podpora"].map((f) => (
+                {["Vše ze Standard plánu", "Až 4 děti pod jedním účtem"].map((f) => (
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
@@ -356,7 +366,7 @@ export default function Landing() {
             </CardContent>
           </Card>
         </div>
-        <p className="text-center text-sm text-slate-400 mt-8">14 dní zdarma. Bez zadání karty. Zrušit můžete kdykoliv.</p>
+        <p className="text-center text-sm text-slate-400 mt-8">14 dní zdarma · Bez zadání karty · Zrušit můžete kdykoliv</p>
       </Section>
 
       {/* ═══════ FINAL CTA ═══════ */}
