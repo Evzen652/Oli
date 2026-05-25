@@ -95,7 +95,10 @@ export default function Auth() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50">
       <LandingNav />
-      <div className="mx-auto max-w-sm px-4 py-8">
+      <div className="mx-auto max-w-2xl px-4 py-8">
+        <button onClick={() => navigate("/")} className="mb-6 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Zpět
+        </button>
 
         <div className="grid gap-6">
         {/* Benefity — jen u registrace */}
