@@ -106,6 +106,8 @@ function buildFallback(subject: string): SubjectMeta {
 }
 
 /** Get subject-level metadata by subject key (e.g. "matematika"). */
-export function getSubjectMeta(subject: string): SubjectMeta {
-  return SUBJECTS[subject] ?? buildFallback(subject);
+export function getSubjectMeta(subject: unknown): SubjectMeta {
+  // Guard proti non-string input (např. undefined z DB nebo session)
+  const key = typeof subject === "string" && subject.length > 0 ? subject : "neznámý";
+  return SUBJECTS[key] ?? buildFallback(key);
 }
