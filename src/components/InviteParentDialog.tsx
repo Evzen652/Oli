@@ -81,11 +81,10 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
         <div className="text-center">
           <div className="text-4xl mb-2">👪</div>
-          <h3 className="text-lg font-bold text-gray-900">Sdílet pokrok s rodiči</h3>
-          <p className="text-gray-500 text-sm mt-1">
-            Rodič uvidí tvůj pokrok a může ti zadat úkoly.
-            <br />
-            <strong>Rozhoduješ ty — ne on.</strong>
+          <h3 className="text-lg font-bold text-gray-900">Pošli rodičům pozvánku</h3>
+          <p className="text-gray-500 text-sm mt-1 leading-relaxed">
+            Dostanou e‑mail s odkazem.<br />
+            Až si založí účet, uvidí, jak ti to jde, a můžou ti pomáhat se školou.
           </p>
         </div>
 
