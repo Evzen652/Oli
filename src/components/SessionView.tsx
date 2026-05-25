@@ -112,7 +112,9 @@ export function SessionView() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { role, loading: roleLoading } = useUserRole();
-  const isStudentView = role === "child" || (role === "admin" && pathname === "/student");
+  // Anonymní trial-active uživatel = student view (ChildHomePage místo TopicBrowser)
+  const isAnonTrial = pathname === "/student" && !!localStorage.getItem("oli_anon_trial");
+  const isStudentView = role === "child" || (role === "admin" && pathname === "/student") || isAnonTrial;
   const s = useSessionDispatch();
   const {
     grade, session, practiceQuestion, userInput, isLocked, loading,

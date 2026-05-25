@@ -69,7 +69,30 @@ export default function AnonStudentPage() {
 
   if (!anonGradeRaw || isNaN(grade)) return null;
 
-  // ── Session mode ──────────────────────────────────────────────────────────
+  // ── Trial-active: plný ChildHomePage přes SessionView ────────────────────
+  // SessionView detekuje anon trial (přes isAnonTrial) a vykreslí ChildHomePage
+  // stejně jako pro autentizované dítě. Anon banner + LandingNav přidáme nahoře.
+  if (isTrialActive() && !sessionMode) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <LandingNav />
+        <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4 shrink-0">
+          <span className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 shrink-0" />
+            Den {getTrialCurrentDay()} z {TRIAL_DAYS} — plný přístup zdarma
+          </span>
+          <a href="/auth?mode=register" className="font-medium hover:underline whitespace-nowrap">
+            Uložit pokrok →
+          </a>
+        </div>
+        <div className="flex-1">
+          <SessionView />
+        </div>
+      </div>
+    );
+  }
+
+  // ── Session mode (jen pro freemium režim — spuštění daily tasku) ─────────
   if (sessionMode) {
     return (
       <div className="min-h-screen flex flex-col">
