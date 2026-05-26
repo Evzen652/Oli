@@ -15,7 +15,7 @@ const si = (key: string) => `${S}/${key}.png`;
 const imgPisemka     = si("subject-cestina");
 const imgDiktat      = si("topic-cz-diktat");
 const imgZlomky      = si("landing-zlomky");
-const imgProcvicovani = si("topic-zvirata");
+const imgProcvicovani = si("landing-kazdenodni-vyucovani");
 const imgRodina      = si("landing-vstup-bez-barier");
 const imgZdraviHygiena = si("landing-rodic-propojeni");
 const imgRocniObdobi = si("landing-samostatne-spolecne");

@@ -42,6 +42,10 @@ const IMAGES = [
     key: "landing-zlomky",
     desc: "barevný 3D kruh rozdělený na čtyři stejné výseče v různých barvách, vedle něj velký symbol zlomku jedna polovina a jedna čtvrtina jako velká barevná čísla, jasná matematická vizualizace zlomků bez jídla",
   },
+  {
+    key: "landing-kazdenodni-vyucovani",
+    desc: "školák sedí u stolu s otevřenou knihou a tabletem, sluneční paprsky z okna, ranní rutina učení, usmívající se dítě s batohem vedle stolu, útulný domácí vzdělávací prostor",
+  },
 ];
 
 // ── Background removal: detekuje barvu pozadí z rohů, pak flood-fill ────────
