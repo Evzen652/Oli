@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useT } from "@/lib/i18n";
 import type { Grade } from "@/lib/types";
-import { ArrowLeft } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 
 const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -61,12 +61,7 @@ export default function ParentOnboarding() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-3">
       <div className="flex items-center justify-between">
-        <button
-          onClick={() => navigate("/")}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" /> Zpět na úvod
-        </button>
+        <BackButton to="/" label="Zpět na úvod" />
         <button
           onClick={async () => { await supabase.auth.signOut(); navigate("/"); }}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"

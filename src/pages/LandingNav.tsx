@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 const NAV_LINKS = [
   { label: "Jak to funguje", href: "#jak-to-funguje" },
   { label: "Příprava na písemku", href: "#pisemka" },
-  { label: "Den s Olim", href: "#den-s-olim" },
+  { label: "Každodenní vyučování", href: "#den-s-olim" },
   { label: "Přínosy", href: "#prinosy" },
   { label: "Ceník", href: "#ceny" },
 ];

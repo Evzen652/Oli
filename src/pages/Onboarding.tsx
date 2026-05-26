@@ -4,7 +4,7 @@ import { OlyLogo } from "@/components/OlyLogo";
 import { hasContentForGrade } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
 import { LandingNav } from "@/pages/LandingNav";
-import { ArrowLeft } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 
 const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
 
@@ -119,12 +119,9 @@ export default function Onboarding() {
 
       <div className="flex-1 flex flex-col items-center p-8">
         <div className="max-w-lg w-full">
-          <button
-            onClick={() => navigate(-1)}
-            className="mb-6 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" /> Zpět
-          </button>
+          <div className="mb-6">
+            <BackButton />
+          </div>
         </div>
         <div className="max-w-lg w-full space-y-10 text-center">
 
@@ -143,7 +140,7 @@ export default function Onboarding() {
 
 
           <div className="space-y-4">
-            <p className="text-slate-700 font-semibold text-base">Do které třídy chodíš?</p>
+            <p className="text-slate-700 font-semibold text-base">Vyber ročník</p>
             <div className="grid grid-cols-3 gap-5">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
                 const hasContent = hasContentForGrade(grade);

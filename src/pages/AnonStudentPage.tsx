@@ -14,9 +14,10 @@ import {
 } from "@/lib/anonTrial";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { ArrowRight, Check, Sparkles, BookOpen } from "lucide-react";
+import { ArrowRight, Check, Sparkles, BookOpen, Heart } from "lucide-react";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
 import { LandingNav } from "@/pages/LandingNav";
+import { BackButton } from "@/components/BackButton";
 import { pad } from "@/lib/czechGrammar";
 import type { TopicMetadata } from "@/lib/types";
 
@@ -110,35 +111,66 @@ export default function AnonStudentPage() {
     <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-50">
       <LandingNav />
 
-      {/* Top banner — anon hint nebo trial expired CTA */}
-      {trialActive ? (
-        <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
-          <span className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 shrink-0" />
-            Den {currentDay} z {TRIAL_DAYS} — plný přístup zdarma
-          </span>
-          <button onClick={() => setShowInviteParent(true)} className="font-medium hover:underline whitespace-nowrap">
-            Chci sdílet mé úspěchy s rodiči →
-          </button>
-        </div>
-      ) : (
-        <div className="bg-violet-100 border-b border-violet-200 px-4 py-2 text-sm text-violet-800 flex items-center justify-between gap-4">
-          <span>Procvičuješ jako host — pokrok se uloží jen v tomto prohlížeči.</span>
-          <button onClick={() => setShowInviteParent(true)} className="font-medium hover:underline whitespace-nowrap">
-            Chci sdílet mé úspěchy s rodiči →
-          </button>
-        </div>
-      )}
+      {/* Top banner — trial progress nebo anon hint */}
+      <div className="max-w-4xl mx-auto px-4 pt-4">
+        {trialActive ? (
+          <div className="rounded-2xl bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-violet-200">
+            <div className="rounded-2xl bg-white/95 backdrop-blur px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shadow-sm shrink-0">
+                  <Sparkles className="h-4.5 w-4.5 text-white" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-sm font-bold text-slate-800">Den {currentDay}</span>
+                    <span className="text-xs text-slate-500">z {TRIAL_DAYS}</span>
+                    <span className="text-xs text-violet-600 font-medium ml-1">— plný přístup zdarma</span>
+                  </div>
+                  <div className="mt-1.5 h-1.5 w-full max-w-xs rounded-full bg-violet-100 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
+                      style={{ width: `${(currentDay / TRIAL_DAYS) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowInviteParent(true)}
+                className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
+              >
+                <Heart className="h-3.5 w-3.5 fill-current" />
+                Sdílet s rodiči
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-2xl bg-white border border-violet-200 shadow-md px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="h-9 w-9 rounded-xl bg-violet-100 flex items-center justify-center shrink-0">
+                <BookOpen className="h-4.5 w-4.5 text-violet-600" />
+              </div>
+              <div className="text-sm text-slate-600 leading-snug">
+                <span className="font-semibold text-slate-800">Procvičuješ jako host.</span>{" "}
+                <span className="text-slate-500">Pokrok se uloží jen v tomto prohlížeči.</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowInviteParent(true)}
+              className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
+            >
+              <Heart className="h-3.5 w-3.5 fill-current" />
+              Sdílet s rodiči
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            </button>
+          </div>
+        )}
+      </div>
 
       <div className="max-w-2xl mx-auto p-6 space-y-8">
         {/* Subheader — ročník + změna */}
         <header className="flex items-center justify-between pt-2 gap-3 text-sm">
-          <button
-            onClick={() => navigate("/onboarding")}
-            className="text-violet-700 hover:text-violet-900 hover:underline transition-colors"
-          >
-            ← Změnit ročník
-          </button>
+          <BackButton to="/onboarding" label="Změnit ročník" size="sm" />
           <div className="text-violet-600 font-semibold">{grade}. ročník</div>
         </header>
 

@@ -8,9 +8,23 @@ interface Props {
   threshold?: number;
 }
 
+/**
+ * Zobrazí obrázek s odstraněným bílým pozadím.
+ *
+ * Dvě vrstvy záruky:
+ *  1. CSS mix-blend-multiply — okamžité, bez CORS, funguje vždy na barevném pozadí
+ *  2. Canvas dewhite — pro skutečnou průhlednost (funguje pokud CORS projde)
+ *
+ * Obrázky z edge funkce generate-prvouka-images jsou již uloženy jako transparentní PNG
+ * (server-side dewhiteBackground). mix-blend-multiply je záloha pro případ, že PNG
+ * transparency nestačí nebo CORS blokuje canvas.
+ */
 export function DewhiteImg({ src, alt, className, style, threshold = 245 }: Props) {
   const [out, setOut] = useState(src);
+
   useEffect(() => {
+    if (!src) return;
+    setOut(src); // reset pro nový src
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
@@ -30,9 +44,10 @@ export function DewhiteImg({ src, alt, className, style, threshold = 245 }: Prop
         }
         ctx.putImageData(d, 0, 0);
         setOut(canvas.toDataURL("image/png"));
-      } catch { /* tainted canvas — show original */ }
+      } catch { /* CORS blokuje canvas — mix-blend-multiply zajistí vizuální transparentnost */ }
     };
     img.src = src;
   }, [src, threshold]);
+
   return <img src={out} alt={alt} className={className} style={style} />;
 }

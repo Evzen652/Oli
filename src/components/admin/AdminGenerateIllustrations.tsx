@@ -429,6 +429,13 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [batchResult, setBatchResult] = useState<BatchResult | null>(null);
   const [promptDialog, setPromptDialog] = useState<{ key: string; desc: string } | null>(null);
 
+  // ── Vlastní ilustrace ────────────────────────────────────────────────────────
+  const [customKey, setCustomKey] = useState("");
+  const [customDesc, setCustomDesc] = useState("");
+  const [customGenerating, setCustomGenerating] = useState(false);
+  const [customPreviewUrl, setCustomPreviewUrl] = useState<string | null>(null);
+  const [customSaved, setCustomSaved] = useState(false);
+
   const versioned = useImageVersions();
   const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
   const codeTopicKeys = useMemo(() => buildTopicIllustrationKeys(getAllTopics()), []);
@@ -649,6 +656,31 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       fetchFreshBlob(key, storageUrl);
     }
     setRegenerating(null);
+  };
+
+  const handleGenerateCustom = async () => {
+    const key = customKey.trim().toLowerCase().replace(/\s+/g, "-");
+    const desc = customDesc.trim();
+    if (!key || !desc) return;
+    setCustomGenerating(true);
+    setCustomPreviewUrl(null);
+    setCustomSaved(false);
+    const fullPrompt = `${PROMPT_PREFIX} ${desc}${PROMPT_SUFFIX}`;
+    const { data, error } = await supabase.functions.invoke("generate-prvouka-images", {
+      body: { keys: [key], force: true, customPrompts: { [key]: fullPrompt } },
+    });
+    const perKeyError = (data?.errors as Record<string, string> | undefined)?.[key];
+    if (error || perKeyError) {
+      toast({ description: `Chyba: ${perKeyError ?? error?.message ?? "neznámá"}`, variant: "destructive" });
+    } else {
+      bumpImageVersion(key);
+      const v = Date.now();
+      const url = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl;
+      setCustomPreviewUrl(`${url}?v=${v}`);
+      setCustomSaved(true);
+      toast({ description: `✓ Ilustrace "${key}" uložena` });
+    }
+    setCustomGenerating(false);
   };
 
   const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
@@ -941,6 +973,66 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             </span>
           </SheetTitle>
         </SheetHeader>
+
+        {/* ── Vlastní ilustrace ── */}
+        <div className="mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <h3 className="font-semibold text-sm">Vlastní ilustrace</h3>
+            <span className="text-xs text-muted-foreground ml-1">— pro landing page a jiné potřeby</span>
+          </div>
+          <div className="space-y-2">
+            <div>
+              <p className="text-[11px] font-medium text-muted-foreground mb-1">Klíč (slug, bez mezer):</p>
+              <input
+                type="text"
+                value={customKey}
+                onChange={(e) => { setCustomKey(e.target.value); setCustomPreviewUrl(null); setCustomSaved(false); }}
+                placeholder="např. landing-rodic-propojeni"
+                className="w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <div>
+              <p className="text-[11px] font-medium text-muted-foreground mb-1">Popis (co má obrázek zobrazovat):</p>
+              <Textarea
+                rows={3}
+                value={customDesc}
+                onChange={(e) => { setCustomDesc(e.target.value); setCustomPreviewUrl(null); setCustomSaved(false); }}
+                placeholder="např. školák 9-10 let s tátou u počítače, procvičují společně příklady, teplá rodinná atmosféra"
+                className="resize-none text-sm"
+              />
+            </div>
+            {customDesc.trim() && (
+              <div className="rounded-lg bg-muted/50 border border-border/60 p-2.5 space-y-1">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Výsledný prompt:</p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed break-words">
+                  <span className="text-muted-foreground/60">{PROMPT_PREFIX} </span>
+                  <span className="text-foreground font-medium">{customDesc.trim()}</span>
+                  <span className="text-muted-foreground/60">{PROMPT_SUFFIX.slice(0, 50)}…</span>
+                </p>
+              </div>
+            )}
+          </div>
+          {customPreviewUrl && (
+            <div className="flex items-center gap-4">
+              <img src={customPreviewUrl} alt="náhled" className="h-24 w-24 object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply shrink-0" />
+              <div className="space-y-1">
+                {customSaved && <p className="text-xs text-emerald-600 font-medium">✓ Uloženo jako <code className="bg-muted px-1 rounded text-[11px]">{customKey.trim().toLowerCase().replace(/\s+/g, "-")}</code></p>}
+                <p className="text-[11px] text-muted-foreground">Klíč použij v kódu: <code className="bg-muted px-1 rounded">{`si("${customKey.trim().toLowerCase().replace(/\s+/g, "-")}")`}</code></p>
+              </div>
+            </div>
+          )}
+          <Button
+            size="sm"
+            disabled={customGenerating || !customKey.trim() || !customDesc.trim()}
+            onClick={handleGenerateCustom}
+            className="gap-1.5 w-full"
+          >
+            {customGenerating
+              ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generuji…</>
+              : <><Wand2 className="h-3.5 w-3.5" /> Generovat a uložit</>}
+          </Button>
+        </div>
 
         {/* ── Logo sekce — dočasně skrytá (logo je hotové) ── */}
         <div className="hidden mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">

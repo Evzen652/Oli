@@ -14,11 +14,11 @@ const si = (key: string) => `${S}/${key}.png`;
 
 const imgPisemka     = si("subject-cestina");
 const imgDiktat      = si("topic-cz-diktat");
-const imgZlomky      = si("topic-math-odcitani-zlomku");
+const imgZlomky      = si("landing-zlomky");
 const imgProcvicovani = si("topic-zvirata");
-const imgRodina      = si("topic-rodina-a-spolecnost");
-const imgZdraviHygiena = si("topic-zdravi-a-hygiena");
-const imgRocniObdobi = si("topic-rocni-obdobi-a-pocasi");
+const imgRodina      = si("landing-vstup-bez-barier");
+const imgZdraviHygiena = si("landing-rodic-propojeni");
+const imgRocniObdobi = si("landing-samostatne-spolecne");
 const imgBarChart    = si("cat-math-cisla-a-operace");
 const imgSkola       = si("cat-cz-pravopis");
 const imgPodpora     = si("topic-rostliny");
@@ -91,7 +91,7 @@ function DewhiteImg({ src, alt, className, style, threshold = 245 }: { src: stri
         }
         ctx.putImageData(d, 0, 0);
         setOut(canvas.toDataURL("image/png"));
-      } catch { /* tainted canvas – show original */ }
+      } catch { /* CORS blokuje canvas — mix-blend-multiply zajistí vizuální transparentnost */ }
     };
     img.src = src;
   }, [src, threshold]);
@@ -168,7 +168,7 @@ export default function Landing() {
                   imgClass: "h-44 w-44",
                 },
                 {
-                  title: "Každodenní procvičování",
+                  title: "Každodenní vyučování",
                   desc: "Krátké úkoly na míru",
                   img: imgProcvicovani,
                   bg: "linear-gradient(135deg, #FFF1E6 0%, #FED7AA 40%, #FFEDD5 100%)",
@@ -208,7 +208,7 @@ export default function Landing() {
                 { title: "Příprava na písemku", desc: "Procvičení konkrétní látky", img: imgPisemka, bg: C.bgBlue },
                 { title: "Diktát", desc: "Čeština krok za krokem", img: imgDiktat, bg: "#F3E8FF" },
                 { title: "Zlomky", desc: "Matematika srozumitelně", img: imgZlomky, bg: C.bgGreen },
-                { title: "Každodenní procvičování", desc: "Krátké úkoly na míru", img: imgProcvicovani, bg: C.bgOrange },
+                { title: "Každodenní vyučování", desc: "Krátké úkoly na míru", img: imgProcvicovani, bg: C.bgOrange },
               ].map((tile) => (
                 <div key={tile.title} className="rounded-2xl shadow-md p-4 flex flex-col gap-2 items-center text-center" style={{ background: tile.bg }}>
                   <DewhiteImg src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm" />
@@ -228,7 +228,7 @@ export default function Landing() {
           {[
             { img: imgRodina, step: "1", title: "Vstup bez bariér", desc: "Stačí vybrat ročník. Žádná registrace, žádné heslo. 14 dní plný přístup zdarma.", bg: C.bgBlue },
             { img: imgZdraviHygiena, step: "2", title: "Propojení s rodičem", desc: "Volitelné. Když rodič vytvoří účet, vidí pokrok dítěte a může zadávat úkoly.", bg: C.bgOrange },
-            { img: imgRocniObdobi, step: "3", title: "Samostatné nebo společné", desc: "Aplikace funguje sama, ale s rodičem dává smysl. Záleží na tom, jak ji budete chtít používat.", bg: C.bgGreen },
+            { img: imgRocniObdobi, step: "3", title: "Samostatně nebo společně", desc: "Aplikace funguje jen pro děti, ale s rodičem dává úžasné možnosti.", bg: C.bgGreen },
           ].map((item) => (
             <Card key={item.step} className="rounded-3xl border-0 shadow-lg text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: item.bg }}>
               <CardContent className="p-8 space-y-4">
@@ -265,31 +265,24 @@ export default function Landing() {
         </div>
       </Section>
 
-      {/* ═══════ DEN S OLIM ═══════ */}
+      {/* ═══════ KAŽDODENNÍ VYUČOVÁNÍ ═══════ */}
       <Section id="den-s-olim">
-        <SectionHead title="Jak vypadá běžný den s Olim" />
-        <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+        <SectionHead title="Každodenní vyučování" sub="Pár minut denně — pravidelný návyk místo nárazového učení." />
+        <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {[
-            { img: imgProcvic, title: "Krátké procvičování každý den", desc: "Aplikace si pamatuje, jak procvičování probíhá. Postupně přidává obtížnost — ne najednou, ale po malých krocích. Cílem není dlouhé sezení, ale pravidelný návyk: pár minut denně.", bg: C.bgOrange },
-            { img: imgVysvetleni, title: "Vysvětlení během učení", desc: "Každý krok dává smysl a pomáhá látku pochopit.", bg: C.bgBlue },
-            { img: imgPrehled, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
-            { img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a aplikace vede dítě krok za krokem.", bg: "#FEF9C3" },
+            { step: 1, img: imgProcvic, title: "Krátké procvičování každý den", desc: "Aplikace postupně přidává obtížnost — pár minut denně místo dlouhého sezení.", bg: C.bgOrange },
+            { step: 2, img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a aplikace vede dítě krok za krokem.", bg: C.bgBlue },
+            { step: 3, img: imgPrehled, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
           ].map((item) => (
-            <div key={item.title} className="flex items-start gap-5 p-6 rounded-3xl shadow-md hover:shadow-lg transition-shadow" style={{ background: item.bg }}>
-              <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain shrink-0 drop-shadow-md" />
-              <div>
-                <h3 className="font-semibold text-base font-heading" style={{ color: C.dark }}>{item.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed mt-1">{item.desc}</p>
+            <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
+              <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.orange }}>
+                {item.step}
               </div>
+              <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain drop-shadow-sm" />
+              <h3 className="text-base font-semibold font-heading pr-8" style={{ color: C.dark }}>{item.title}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
             </div>
           ))}
-        </div>
-        <div className="mt-12 max-w-xl mx-auto rounded-3xl p-6 shadow-md flex items-start gap-4" style={{ background: C.bgBlue }}>
-          <BarChart3 className="h-6 w-6 shrink-0 mt-0.5" style={{ color: C.teal }} />
-          <div>
-            <p className="font-semibold text-base font-heading" style={{ color: C.dark }}>📊 Týdenní přehled v aplikaci</p>
-            <p className="text-sm text-slate-500 leading-relaxed mt-1">Stručné shrnutí: co se daří, co je třeba procvičit, co dítě nejvíc baví.</p>
-          </div>
         </div>
       </Section>
 
@@ -331,7 +324,7 @@ export default function Landing() {
             </div>
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-slate-400 mt-1">Pro pravidelný posun a přehled</p></div>
-              <div><span className="text-4xl font-bold" style={{ color: C.dark }}>149 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
+              <div><span className="text-4xl font-bold" style={{ color: C.dark }}>249 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
                 {[
                   { text: "Neomezené procvičování", soon: false },
@@ -353,12 +346,15 @@ export default function Landing() {
           </Card>
 
           {/* Family */}
-          <Card className="rounded-3xl border border-slate-200 shadow-md">
+          <Card className="rounded-3xl shadow-md relative" style={{ border: `2px solid ${C.teal}` }}>
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <Badge className="text-white text-xs px-4 py-1 rounded-full" style={{ background: C.teal }}>Pro celou rodinu</Badge>
+            </div>
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Rodinný</h3><p className="text-sm text-slate-400 mt-1">Pro více dětí</p></div>
-              <div><span className="text-4xl font-bold" style={{ color: C.dark }}>249 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
+              <div><span className="text-4xl font-bold" style={{ color: C.dark }}>399 Kč</span><span className="text-slate-400 text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
-                {["Vše ze Standard plánu", "Až 4 děti pod jedním účtem"].map((f) => (
+                {["Vše ze Standard plánu", "Až 3 děti pod jedním účtem"].map((f) => (
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
