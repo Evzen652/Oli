@@ -364,22 +364,31 @@ export function SessionView() {
 
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
-      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop, s transparentním pozadím
-          (DewhiteImg odstraní krémové/bílé pozadí přes canvas — funguje i pro non-pure-white). */}
+      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop.
+          Teplý radial gradient v pozadí, do kterého krémové pozadí ilustrace organicky splývá. */}
       {showDecor && (
-        <div
-          aria-hidden="true"
-          className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 pointer-events-none select-none z-0"
-          style={{ opacity: 0.7 }}
-        >
-          <DewhiteImg
+        <>
+          {/* Teplý "spotlight" gradient v levém dolním rohu — ilustrace do něj splývá */}
+          <div
+            aria-hidden="true"
+            className="hidden lg:block fixed pointer-events-none select-none z-0"
+            style={{
+              left: 0,
+              bottom: 0,
+              width: "32rem",
+              height: "32rem",
+              background: "radial-gradient(ellipse at 25% 75%, rgba(254, 243, 226, 0.95) 0%, rgba(254, 243, 226, 0.6) 30%, rgba(254, 243, 226, 0) 65%)",
+            }}
+          />
+          {/* Ilustrace na vrchu gradientu */}
+          <img
             src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
             alt=""
-            threshold={220}
-            className="w-full h-auto object-contain"
-            style={{ mixBlendMode: "multiply" }}
+            aria-hidden="true"
+            className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain pointer-events-none select-none z-0"
+            style={{ opacity: 0.92 }}
           />
-        </div>
+        </>
       )}
       {AdminBanner}
       {/* Header */}
