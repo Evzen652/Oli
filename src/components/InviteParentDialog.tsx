@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2, Mail, MessageCircle } from "lucide-react";
 
 interface Props {
   onClose: () => void;
@@ -11,30 +11,65 @@ interface Props {
   childId?: string;
 }
 
+type Tab = "whatsapp" | "email";
+
+/** Normalizuje české tel. číslo na E.164 (bez +) pro wa.me */
+function normalizePhone(raw: string): string | null {
+  const digits = raw.replace(/\D/g, "");
+  if (digits.startsWith("420") && digits.length === 12) return digits;
+  if (digits.startsWith("0") && digits.length === 10) return "420" + digits.slice(1);
+  if (digits.length === 9) return "420" + digits;
+  return null;
+}
+
+function buildWhatsAppUrl(phone: string, childName?: string, grade?: number): string {
+  const name = childName ? childName : "moje dítě";
+  const gradeText = grade ? ` (${grade}. třída)` : "";
+  const text = `Ahoj! Procvičuji na Oli${gradeText} a chci, abys viděl/a můj pokrok. Podívej se na: https://oli-edu.com`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+}
+
 /**
  * Dialog "Pozvat rodiče" — dítě iniciuje sdílení pokroku.
  *
- * Princip: dítě má kontrolu. Rodič se nedostane bez pozvánky.
- * Pro anonymního uživatele se uloží pozvánka s anon_grade.
- * Pro přihlášeného se uloží s child_id.
+ * Dva způsoby:
+ *  1. WhatsApp — zadá telefonní číslo, otevře se WhatsApp s předvyplněnou zprávou
+ *  2. Email — uloží pozvánku do DB (email integrace připravena)
  */
 export function InviteParentDialog({ onClose, childName, anonGrade, childId }: Props) {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>("whatsapp");
 
-  const handleSend = async () => {
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Zadej platný email");
+  // WhatsApp state
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+
+  // Email state
+  const [email, setEmail] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  // ── WhatsApp ──────────────────────────────────────────────────────────────
+  const handleWhatsApp = () => {
+    const normalized = normalizePhone(phone);
+    if (!normalized) {
+      setPhoneError("Zadej platné číslo (např. 777 123 456)");
       return;
     }
-    setLoading(true);
-    setError(null);
+    const url = buildWhatsAppUrl(normalized, childName, anonGrade);
+    window.open(url, "_blank", "noopener,noreferrer");
+    onClose();
+  };
 
-    // TODO(email): zatím jen uložíme pozvánku do DB. Email integrace
-    // (Resend/SendGrid via edge fn) přijde v separátním kroku. Mezitím
-    // se rodič musí zaregistrovat ručně přes oli-edu.com a invite link.
+  // ── Email ─────────────────────────────────────────────────────────────────
+  const handleEmail = async () => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError("Zadej platný email");
+      return;
+    }
+    setEmailLoading(true);
+    setEmailError(null);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error: insertErr } = await (supabase as any)
       .from("parent_invitations")
@@ -46,28 +81,24 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
         status: "pending",
       });
 
-    setLoading(false);
-
+    setEmailLoading(false);
     if (insertErr) {
-      setError(`Nepodařilo se odeslat pozvánku: ${insertErr.message}`);
+      setEmailError(`Nepodařilo se uložit: ${insertErr.message}`);
       return;
     }
-    setSent(true);
+    setEmailSent(true);
   };
 
-  if (sent) {
+  // ── Potvrzovací obrazovka (email) ─────────────────────────────────────────
+  if (emailSent) {
     return (
       <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
-          <div className="text-5xl">💬</div>
-          <h3 className="text-lg font-bold text-gray-900">Skvěle!</h3>
+          <div className="text-5xl">✉️</div>
+          <h3 className="text-lg font-bold text-gray-900">Skoro hotovo!</h3>
           <p className="text-gray-700 text-sm leading-relaxed">
-            Teď řekni rodičům, ať se podívají na <strong>oli-edu.com</strong> a založí si účet
-            s e‑mailem <strong>{email}</strong>.
-          </p>
-          <p className="text-xs text-gray-400 leading-relaxed">
-            (Automatické rozesílání e‑mailů zatím připravujeme — proto je potřeba říct
-            rodičům přímo.)
+            Řekni rodičům, ať se zaregistrují na <strong>oli-edu.com</strong> pomocí emailu{" "}
+            <strong>{email}</strong>.
           </p>
           <button
             onClick={onClose}
@@ -80,55 +111,121 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
     );
   }
 
+  // ── Hlavní dialog ─────────────────────────────────────────────────────────
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
+      <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-5 shadow-2xl">
+
+        {/* Hlavička */}
         <div className="text-center">
           <div className="text-4xl mb-2">👪</div>
           <h3 className="text-lg font-bold text-gray-900">
-            Pošli rodičům pozvánku, ať vidí, jak jsi šikovný :-)
+            Pošli rodičům odkaz, ať vidí, jak jsi šikovný!
           </h3>
         </div>
 
-        <div>
-          <label htmlFor="parent-email" className="text-sm text-gray-600 font-medium flex items-center gap-1.5">
-            <Mail className="h-3.5 w-3.5" /> Email rodiče
-          </label>
-          <input
-            id="parent-email"
-            type="email"
-            value={email}
-            onChange={(e) => { setEmail(e.target.value); setError(null); }}
-            placeholder="maminka@email.cz"
-            autoComplete="off"
-            className="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3
-                       text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
-          />
-          {error && <p className="text-xs text-red-600 mt-1.5">{error}</p>}
+        {/* Záložky */}
+        <div className="flex rounded-xl bg-gray-100 p-1 gap-1">
+          <button
+            onClick={() => setTab("whatsapp")}
+            className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-semibold transition-all ${
+              tab === "whatsapp"
+                ? "bg-white shadow text-green-700"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <MessageCircle className="h-4 w-4" />
+            WhatsApp
+          </button>
+          <button
+            onClick={() => setTab("email")}
+            className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-semibold transition-all ${
+              tab === "email"
+                ? "bg-white shadow text-violet-700"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <Mail className="h-4 w-4" />
+            Email
+          </button>
         </div>
 
-        <div className="space-y-2">
-          <button
-            onClick={handleSend}
-            disabled={!email || loading}
-            className="w-full bg-violet-600 text-white rounded-xl py-3 font-semibold
-                       hover:bg-violet-700 disabled:opacity-60 disabled:cursor-not-allowed
-                       transition-colors flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <><Loader2 className="h-4 w-4 animate-spin" /> Odesílám…</>
-            ) : (
-              <>Poslat pozvánku →</>
-            )}
-          </button>
-          <button
-            onClick={onClose}
-            disabled={loading}
-            className="w-full text-gray-400 text-sm hover:text-gray-600 py-2 disabled:opacity-60"
-          >
-            Teď ne
-          </button>
-        </div>
+        {/* WhatsApp panel */}
+        {tab === "whatsapp" && (
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="parent-phone" className="text-sm text-gray-600 font-medium">
+                Telefonní číslo rodiče
+              </label>
+              <input
+                id="parent-phone"
+                type="tel"
+                value={phone}
+                onChange={(e) => { setPhone(e.target.value); setPhoneError(null); }}
+                placeholder="777 123 456"
+                autoComplete="off"
+                className="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3
+                           text-sm focus:outline-none focus:ring-2 focus:ring-green-300"
+              />
+              {phoneError && <p className="text-xs text-red-600 mt-1.5">{phoneError}</p>}
+            </div>
+            <button
+              onClick={handleWhatsApp}
+              disabled={!phone}
+              className="w-full bg-green-500 text-white rounded-xl py-3 font-semibold
+                         hover:bg-green-600 disabled:opacity-60 disabled:cursor-not-allowed
+                         transition-colors flex items-center justify-center gap-2"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Otevřít WhatsApp →
+            </button>
+            <p className="text-xs text-gray-400 text-center">
+              Otevře se WhatsApp s předvyplněnou zprávou — jen ji pošleš.
+            </p>
+          </div>
+        )}
+
+        {/* Email panel */}
+        {tab === "email" && (
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="parent-email" className="text-sm text-gray-600 font-medium">
+                Email rodiče
+              </label>
+              <input
+                id="parent-email"
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
+                placeholder="maminka@email.cz"
+                autoComplete="off"
+                className="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3
+                           text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
+              />
+              {emailError && <p className="text-xs text-red-600 mt-1.5">{emailError}</p>}
+            </div>
+            <button
+              onClick={handleEmail}
+              disabled={!email || emailLoading}
+              className="w-full bg-violet-600 text-white rounded-xl py-3 font-semibold
+                         hover:bg-violet-700 disabled:opacity-60 disabled:cursor-not-allowed
+                         transition-colors flex items-center justify-center gap-2"
+            >
+              {emailLoading ? (
+                <><Loader2 className="h-4 w-4 animate-spin" /> Ukládám…</>
+              ) : (
+                <>Uložit email →</>
+              )}
+            </button>
+          </div>
+        )}
+
+        <button
+          onClick={onClose}
+          className="w-full text-gray-400 text-sm hover:text-gray-600 py-1 transition-colors"
+        >
+          Teď ne
+        </button>
       </div>
     </div>
   );
