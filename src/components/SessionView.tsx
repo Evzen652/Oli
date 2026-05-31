@@ -358,8 +358,22 @@ export function SessionView() {
   const currentTask: PracticeTask | undefined = session.practiceBatch[session.currentTaskIndex];
   const subjectColors = getSubjectColor(session.matchedTopic?.subject);
 
+  // Dekorace pozadí — zobrazí se jen během PRACTICE/EXPLAIN, fixní vlevo dole
+  const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
+  const showDecor = session.state === "PRACTICE" || session.state === "EXPLAIN";
+
   return (
-    <div className={`flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
+    <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
+      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop, decentní */}
+      {showDecor && (
+        <img
+          src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
+          alt=""
+          aria-hidden="true"
+          className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain opacity-80 pointer-events-none select-none z-0"
+          style={{ mixBlendMode: "multiply" }}
+        />
+      )}
       {AdminBanner}
       {/* Header */}
       <header className="relative border-b px-4 py-3">
