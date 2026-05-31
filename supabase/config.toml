@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.exercise-validator]
 verify_jwt = false
+
+[functions.send-parent-invite]
+verify_jwt = false
