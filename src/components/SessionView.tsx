@@ -365,21 +365,22 @@ export function SessionView() {
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
       {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop.
-          Pozadí stránky má v levém dolním rohu krémovou barvu (viz session-bg-gradient),
-          která ladí s pozadím obrázku. Lehká mask jen změkčí horní a pravý okraj. */}
+          Page má radial krémový gradient v levém dolním rohu (viz session-bg-gradient).
+          Maska je radial fade kolem objektů (knihy + globus), krémové pozadí kresby
+          se rozpustí do krémového pozadí stránky → bez viditelného přechodu. */}
       {showDecor && (
         <img
           src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
           alt=""
           aria-hidden="true"
-          className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain pointer-events-none select-none z-0"
+          className="hidden lg:block fixed bottom-0 left-0 w-72 xl:w-96 h-auto object-contain pointer-events-none select-none z-0"
           style={{
-            opacity: 0.95,
-            // Jemný fade pravého horního rohu (kde obrázek vyrůstá ze stránky)
+            opacity: 1,
+            // Radial fade kolem objektů (lampa, knihy, globus, sukulent — vystředěné lehce vlevo dole)
             WebkitMaskImage:
-              "linear-gradient(225deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 50%)",
+              "radial-gradient(ellipse 70% 70% at 40% 70%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 90%)",
             maskImage:
-              "linear-gradient(225deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 50%)",
+              "radial-gradient(ellipse 70% 70% at 40% 70%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 90%)",
           }}
         />
       )}

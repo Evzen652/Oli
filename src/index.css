@@ -211,15 +211,16 @@ All colors MUST be HSL.
 .animate-float-up { animation: float-up 0.8s ease-out forwards; }
 
 .session-bg-gradient {
-  /* Diagonální gradient: bílá vpravo nahoře → krémová vlevo dole.
-     Krémový roh ladí s pozadím dekorativní ilustrace (practice-decor-globe),
-     takže obrázek se stranou splývá s pozadím a vypadá jako organická součást stránky. */
-  background: linear-gradient(225deg,
-    hsl(var(--background)) 0%,
-    hsl(var(--background)) 40%,
-    #FDF4E3 80%,
-    #FCEACD 100%
-  );
+  /* Radial gradient z levého dolního rohu — sytá krémová splývá s pozadím dekorativní
+     ilustrace (practice-decor-globe), tak aby ilustrace vypadala jako organická
+     součást teplého rohu stránky, ne jako vlepený PNG. */
+  background:
+    radial-gradient(ellipse 80% 70% at 0% 100%,
+      #FBE5BD 0%,
+      #FDEFD2 25%,
+      #FEF7E6 50%,
+      hsl(var(--background)) 80%
+    );
 }
 
 /* Owl loading animations */
