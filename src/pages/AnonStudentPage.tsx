@@ -78,9 +78,7 @@ export default function AnonStudentPage() {
     return (
       <div className="min-h-screen flex flex-col">
         <div className="bg-violet-50 border-b border-violet-100 px-4 py-2 text-sm text-violet-700 flex items-center justify-between gap-4 shrink-0">
-          <button onClick={() => setSessionMode(false)} className="hover:underline">
-            ← Zpět na dashboard
-          </button>
+          <BackButton size="sm" label="Zpět na dashboard" onClick={() => setSessionMode(false)} />
           <span className="text-xs text-violet-500">Anonymní mód</span>
         </div>
         <div className="flex-1">
