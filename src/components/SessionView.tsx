@@ -365,36 +365,27 @@ export function SessionView() {
       style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}
     >
       {AdminBanner}
-      {/* Header — Zpět vlevo (skryto v anon — vnější wrapper má vlastní), logo + název uprostřed */}
-      <header className="sticky top-0 z-30 border-b border-slate-100/80 bg-white/90 backdrop-blur-md">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3 flex items-center gap-3">
-          {/* Levá: Zpět — skryto v anon trial (vnější wrapper poskytuje navigaci zpět) */}
-          {!isAnonTrial && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={s.handleReset}
-              className="text-sm rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 shrink-0"
-              title={t("session.back")}
-            >
-              ← {t("session.back")}
-            </Button>
-          )}
-
-          {/* Střed: Oli logo + název tématu */}
-          <div className="flex-1 min-w-0 flex items-center justify-center gap-2 sm:gap-3">
-            <OlyLogo size="xs" onClick={s.handleReset} />
+      {/* Header — původní layout */}
+      <header className="relative border-b px-4 py-3">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2">
+          <OlyLogo size="sm" onClick={s.handleReset} />
+        </div>
+        <div className="mx-auto flex max-w-2xl items-center justify-between">
+          <div className="flex items-center gap-3">
+            {!isAnonTrial && (
+              <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+                {t("session.back")}
+              </Button>
+            )}
             {session.matchedTopic && (
-              <span className="hidden sm:inline text-sm font-semibold text-slate-700 truncate">
-                · {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
-              </span>
+              <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
+                {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
+              </Badge>
             )}
           </div>
-
-          {/* Pravá: timer + admin akce */}
-          <div className="flex items-center gap-2 shrink-0">
-            {!isTerminal && !isStudentView && (
-              <div className="hidden md:block w-40">
+          <div className="flex items-center gap-3">
+            {!isTerminal && (
+              <div className={isStudentView ? "w-auto" : "w-48"}>
                 <SessionTimer
                   startTime={session.startTime}
                   maxSeconds={session.rules.maxDurationSeconds}
@@ -405,25 +396,22 @@ export function SessionView() {
               </div>
             )}
             {!isStudentView && (
-              <a href="/report" className="hidden md:inline text-sm text-slate-500 hover:text-slate-900">
+              <a href="/report" className="text-base text-muted-foreground hover:text-foreground">
                 Report
               </a>
             )}
             {!isStudentView && (
-              <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-sm rounded-full">
+              <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-base">
                 {t("session.sign_out")}
+              </Button>
+            )}
+            {!isAnonTrial && (
+              <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+                ✕
               </Button>
             )}
           </div>
         </div>
-        {/* Mobile: název tématu pod logem */}
-        {session.matchedTopic && (
-          <div className="sm:hidden px-4 pb-2 text-center">
-            <p className="text-xs font-semibold text-slate-600 truncate">
-              {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
-            </p>
-          </div>
-        )}
       </header>
 
       <main className="flex flex-1 flex-col items-center p-4 sm:p-6">
