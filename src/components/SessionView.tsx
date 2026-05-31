@@ -364,15 +364,22 @@ export function SessionView() {
 
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
-      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop, decentní */}
+      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop, s transparentním pozadím
+          (DewhiteImg odstraní krémové/bílé pozadí přes canvas — funguje i pro non-pure-white). */}
       {showDecor && (
-        <img
-          src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
-          alt=""
+        <div
           aria-hidden="true"
-          className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain opacity-80 pointer-events-none select-none z-0"
-          style={{ mixBlendMode: "multiply" }}
-        />
+          className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 pointer-events-none select-none z-0"
+          style={{ opacity: 0.7 }}
+        >
+          <DewhiteImg
+            src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
+            alt=""
+            threshold={220}
+            className="w-full h-auto object-contain"
+            style={{ mixBlendMode: "multiply" }}
+          />
+        </div>
       )}
       {AdminBanner}
       {/* Header */}
