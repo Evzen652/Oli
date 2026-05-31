@@ -37,6 +37,7 @@ import { LogOut, Eye } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { LandingNav } from "@/pages/LandingNav";
 import { OlyLogo } from "@/components/OlyLogo";
+import { BackButton } from "@/components/BackButton";
 
 function ChildLoadingFallback() {
   const [showFallback, setShowFallback] = useState(false);
@@ -367,9 +368,9 @@ export function SessionView() {
         </div>
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
-              {t("session.back")}
-            </Button>
+            {!isAnonTrial && (
+              <BackButton size="sm" onClick={s.handleReset} />
+            )}
             {session.matchedTopic && (
               <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
                 {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
@@ -393,12 +394,16 @@ export function SessionView() {
                 Report
               </a>
             )}
-            <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-base">
-              {t("session.sign_out")}
-            </Button>
-            <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
-              ✕
-            </Button>
+            {!isAnonTrial && (
+              <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-base">
+                {t("session.sign_out")}
+              </Button>
+            )}
+            {!isAnonTrial && (
+              <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+                ✕
+              </Button>
+            )}
           </div>
         </div>
       </header>
