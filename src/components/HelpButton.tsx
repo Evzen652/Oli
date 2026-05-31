@@ -3,7 +3,7 @@ import { getHelpForTopic } from "@/lib/helpEngine";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
 import helpHintImg from "@/assets/help-hint.png";
 import { useT } from "@/lib/i18n";
 
@@ -44,17 +44,18 @@ export function HelpButton({ skillId, topic, currentTask, onHelpOpened }: HelpBu
         <Button
           variant="outline"
           size="lg"
-          className={`w-full text-base border-2 gap-2 rounded-xl transition-all duration-200 ${
+          className={`w-full text-base border-2 gap-2.5 rounded-2xl transition-all duration-200 py-5 ${
             open
-              ? "bg-violet-50 border-violet-300 text-violet-700 hover:bg-violet-100 hover:text-violet-800"
-              : "bg-violet-50 border-violet-200 text-violet-700 hover:bg-violet-100 hover:border-violet-300 hover:shadow-md hover:scale-[1.02]"
+              ? "bg-violet-100 border-violet-300 text-violet-800 hover:bg-violet-100"
+              : "bg-white border-violet-200 text-violet-700 hover:bg-violet-50 hover:border-violet-300 hover:shadow-md hover:-translate-y-0.5"
           }`}
         >
-          {open ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          <Lightbulb className="w-5 h-5" />
           {open ? t("help.close") : t("help.open")}
+          {open ? <ChevronUp className="w-5 h-5 ml-auto" /> : <ChevronDown className="w-5 h-5 ml-auto" />}
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="mt-4 rounded-xl border-2 border-amber-200 bg-amber-50/50 p-5 text-base animate-fade-in">
+      <CollapsibleContent className="mt-4 rounded-2xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-6 text-base animate-fade-in shadow-sm">
         <div className="flex gap-4">
           <div className="flex-1 space-y-4">
             {hasHints ? (
