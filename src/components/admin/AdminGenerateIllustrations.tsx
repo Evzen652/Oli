@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -679,8 +679,78 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       setCustomPreviewUrl(`${url}?v=${v}`);
       setCustomSaved(true);
       toast({ description: `✓ Ilustrace "${key}" uložena` });
+
+      // Zaregistruj do DB — abychom ho viděli v admin panelu napříč zařízeními.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: existing } = await (supabase as any)
+        .from("custom_illustrations")
+        .select("generations")
+        .eq("key", key)
+        .maybeSingle();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: dbErr } = await (supabase as any)
+        .from("custom_illustrations")
+        .upsert({
+          key,
+          description: desc,
+          full_prompt: fullPrompt,
+          generations: ((existing as { generations?: number } | null)?.generations ?? 0) + 1,
+        }, { onConflict: "key" });
+      if (dbErr) {
+        console.warn(`[custom_illustrations] zápis selhal: ${dbErr.message}`);
+      } else {
+        // Refresh seznamu vlastních ilustrací
+        loadCustomList();
+      }
     }
     setCustomGenerating(false);
+  };
+
+  // ── Seznam vlastních ilustrací (z DB) ────────────────────────────────────────
+  const [customList, setCustomList] = useState<Array<{ key: string; description: string; updated_at: string; generations: number }>>([]);
+  const [customListLoading, setCustomListLoading] = useState(false);
+
+  const loadCustomList = useCallback(async () => {
+    setCustomListLoading(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any)
+      .from("custom_illustrations")
+      .select("key, description, updated_at, generations")
+      .order("updated_at", { ascending: false });
+    if (error) {
+      console.warn(`[custom_illustrations] load chyba: ${error.message}`);
+    } else if (data) {
+      setCustomList(data as typeof customList);
+    }
+    setCustomListLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (open) loadCustomList();
+  }, [open, loadCustomList]);
+
+  const handleDeleteCustom = async (key: string) => {
+    if (!window.confirm(`Smazat vlastní ilustraci "${key}"?\n(Soubor ${key}.png ve storage zůstane — smaž ho ručně v Supabase Studio pokud chceš.)`)) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
+      .from("custom_illustrations")
+      .delete()
+      .eq("key", key);
+    if (error) {
+      toast({ description: `Chyba: ${error.message}`, variant: "destructive" });
+    } else {
+      toast({ description: `✓ Vlastní ilustrace "${key}" odstraněna z registru` });
+      loadCustomList();
+    }
+  };
+
+  const handleRegenerateCustom = (key: string, description: string) => {
+    setCustomKey(key);
+    setCustomDesc(description);
+    setCustomPreviewUrl(null);
+    setCustomSaved(false);
+    // Scroll na sekci vlastní ilustrace
+    document.querySelector("[data-section=\"custom-illustrace\"]")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
@@ -975,7 +1045,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
         </SheetHeader>
 
         {/* ── Vlastní ilustrace ── */}
-        <div className="mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">
+        <div data-section="custom-illustrace" className="mt-5 rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" />
             <h3 className="font-semibold text-sm">Vlastní ilustrace</h3>
@@ -1035,6 +1105,68 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
               ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Generuji…</>
               : <><Wand2 className="h-3.5 w-3.5" /> Generovat a uložit</>}
           </Button>
+
+          {/* ── Seznam vlastních ilustrací (z DB) ── */}
+          {customList.length > 0 && (
+            <div className="pt-4 border-t border-border/60 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-semibold text-foreground">
+                  Uložené vlastní ilustrace ({customList.length})
+                </h4>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-6 px-2 text-[11px]"
+                  onClick={loadCustomList}
+                  disabled={customListLoading}
+                >
+                  <RefreshCw className={`h-3 w-3 ${customListLoading ? "animate-spin" : ""}`} />
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {customList.map((it) => {
+                  const url = supabase.storage.from("prvouka-images").getPublicUrl(`${it.key}.png`).data.publicUrl;
+                  return (
+                    <div key={it.key} className="rounded-xl border border-border/60 bg-card p-2 space-y-1.5">
+                      <img
+                        src={versioned(url, it.key)}
+                        alt={it.key}
+                        className="w-full aspect-square object-contain rounded-lg bg-white"
+                        loading="lazy"
+                      />
+                      <div className="space-y-0.5">
+                        <p className="text-[10px] font-mono text-foreground break-all" title={it.key}>{it.key}</p>
+                        <p className="text-[10px] text-muted-foreground line-clamp-2" title={it.description}>{it.description}</p>
+                        <p className="text-[9px] text-muted-foreground/70">
+                          {new Date(it.updated_at).toLocaleDateString("cs-CZ")} · {it.generations}× generováno
+                        </p>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-6 px-1.5 text-[10px] gap-1 flex-1"
+                          onClick={() => handleRegenerateCustom(it.key, it.description)}
+                          title="Upravit a přegenerovat"
+                        >
+                          <Pencil className="h-2.5 w-2.5" /> Upravit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-6 px-1.5 text-[10px] gap-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                          onClick={() => handleDeleteCustom(it.key)}
+                          title="Smazat z registru (soubor ve storage zůstává)"
+                        >
+                          <X className="h-2.5 w-2.5" />
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── Logo sekce — dočasně skrytá (logo je hotové) ── */}
