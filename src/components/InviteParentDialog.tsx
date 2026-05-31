@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, MessageCircle } from "lucide-react";
 
 interface Props {
@@ -70,23 +69,31 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
     setEmailLoading(true);
     setEmailError(null);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error: insertErr } = await (supabase as any)
-      .from("parent_invitations")
-      .insert({
-        email: email.trim().toLowerCase(),
-        child_id: childId ?? null,
-        child_name: childName ?? null,
-        anon_grade: anonGrade ?? null,
-        status: "pending",
+    try {
+      const SUPABASE_URL = "https://uusaczibimqvaazpaopy.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_33yUDPztgleFHYtChSvGKQ_rMlyktGV";
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/send-parent-invite`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "apikey": SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          childName: childName ?? null,
+          anonGrade: anonGrade ?? null,
+          childId: childId ?? null,
+        }),
       });
-
-    setEmailLoading(false);
-    if (insertErr) {
-      setEmailError(`Nepodařilo se uložit: ${insertErr.message}`);
-      return;
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.error) throw new Error(data.error ?? res.statusText);
+      setEmailSent(true);
+    } catch (e: unknown) {
+      setEmailError(`Nepodařilo se odeslat: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setEmailLoading(false);
     }
-    setEmailSent(true);
   };
 
   // ── Potvrzovací obrazovka (email) ─────────────────────────────────────────
