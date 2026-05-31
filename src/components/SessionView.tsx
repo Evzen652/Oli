@@ -384,6 +384,36 @@ export function SessionView() {
           }}
         />
       )}
+
+      {/* Dekorativní obláčky — modro-bílé, průhledné, vlevo a nahoře. Jen desktop. */}
+      {showDecor && (
+        <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 z-0">
+          {/* Velký oblak vlevo nahoře */}
+          <div className="absolute" style={{
+            top: "5%", left: "8%", width: "22rem", height: "11rem",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(219, 234, 254, 0.85) 0%, rgba(219, 234, 254, 0.45) 40%, rgba(219, 234, 254, 0) 75%)",
+            filter: "blur(8px)",
+          }} />
+          {/* Menší oblak vlevo prostřed */}
+          <div className="absolute" style={{
+            top: "32%", left: "2%", width: "14rem", height: "7rem",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(224, 242, 254, 0.7) 0%, rgba(224, 242, 254, 0.3) 45%, rgba(224, 242, 254, 0) 80%)",
+            filter: "blur(6px)",
+          }} />
+          {/* Široký oblak nahoře uprostřed */}
+          <div className="absolute" style={{
+            top: "2%", left: "30%", width: "30rem", height: "9rem",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(241, 245, 249, 0.75) 0%, rgba(241, 245, 249, 0.35) 45%, rgba(241, 245, 249, 0) 80%)",
+            filter: "blur(10px)",
+          }} />
+          {/* Drobný oblak vpravo nahoře */}
+          <div className="absolute" style={{
+            top: "8%", right: "10%", width: "16rem", height: "7rem",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(219, 234, 254, 0.6) 0%, rgba(219, 234, 254, 0.25) 45%, rgba(219, 234, 254, 0) 80%)",
+            filter: "blur(8px)",
+          }} />
+        </div>
+      )}
       {AdminBanner}
       {/* Header */}
       <header className="relative border-b px-4 py-3">
