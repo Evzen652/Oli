@@ -17,7 +17,8 @@ const corsHeaders = {
 };
 
 const APP_URL = "https://oli-edu.com";
-const FROM_EMAIL = "Oli <noreply@oli-edu.com>";
+// Po ověření domény v Resendu přepnout na: "Oli <noreply@oli-edu.com>"
+const FROM_EMAIL = Deno.env.get("RESEND_FROM_EMAIL") ?? "Oli <noreply@oli-edu.com>";
 
 function buildEmailHtml(inviteUrl: string, childName?: string, grade?: number): string {
   const gradeText = grade ? ` (${grade}. třída)` : "";
@@ -181,8 +182,8 @@ Deno.serve(async (req) => {
         from: FROM_EMAIL,
         to: [email.trim().toLowerCase()],
         subject: childName
-          ? `${childName} vás zve do Oli 🦉`
-          : "Vaše dítě vás zve do Oli 🦉",
+          ? `${childName} vás zve do Oli`
+          : "Vaše dítě vás zve do Oli",
         html: buildEmailHtml(inviteUrl, childName, anonGrade),
       }),
     });
