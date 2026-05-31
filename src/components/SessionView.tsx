@@ -385,29 +385,66 @@ export function SessionView() {
         />
       )}
 
-      {/* Dekorativní obláčky — modro-bílé, jemné ale viditelné. Jen desktop. */}
+      {/* Dekorativní obláčky — vygenerovaná ilustrace ve 4 kopiích rozesetá v horní polovině.
+          mix-blend-multiply odstraní bílé pozadí, rotace + různé velikosti = přirozený scatter. */}
       {showDecor && (
-        <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 z-0">
+        <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 overflow-hidden z-0">
           {/* Velký oblak vlevo nahoře */}
-          <div className="absolute" style={{
-            top: "5%", left: "8%", width: "22rem", height: "11rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(191, 219, 254, 0.95) 0%, rgba(191, 219, 254, 0.7) 50%, rgba(191, 219, 254, 0) 90%)",
-          }} />
-          {/* Menší oblak vlevo prostřed */}
-          <div className="absolute" style={{
-            top: "32%", left: "2%", width: "14rem", height: "7rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(186, 230, 253, 0.85) 0%, rgba(186, 230, 253, 0.55) 55%, rgba(186, 230, 253, 0) 90%)",
-          }} />
+          <img
+            src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
+            alt=""
+            className="absolute object-contain"
+            style={{
+              top: "-3%", left: "-5%", width: "30rem",
+              opacity: 0.7,
+              transform: "rotate(-6deg)",
+              mixBlendMode: "multiply",
+              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
+              maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
+            }}
+          />
           {/* Široký oblak nahoře uprostřed */}
-          <div className="absolute" style={{
-            top: "2%", left: "30%", width: "30rem", height: "9rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(226, 232, 240, 0.9) 0%, rgba(226, 232, 240, 0.55) 55%, rgba(226, 232, 240, 0) 90%)",
-          }} />
-          {/* Drobný oblak vpravo nahoře */}
-          <div className="absolute" style={{
-            top: "8%", right: "10%", width: "16rem", height: "7rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(191, 219, 254, 0.75) 0%, rgba(191, 219, 254, 0.4) 55%, rgba(191, 219, 254, 0) 90%)",
-          }} />
+          <img
+            src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
+            alt=""
+            className="absolute object-contain"
+            style={{
+              top: "-8%", left: "28%", width: "36rem",
+              opacity: 0.55,
+              transform: "rotate(2deg) scaleX(-1)",
+              mixBlendMode: "multiply",
+              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 35%, transparent 85%)",
+              maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 35%, transparent 85%)",
+            }}
+          />
+          {/* Drobnější oblak vpravo nahoře */}
+          <img
+            src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
+            alt=""
+            className="absolute object-contain"
+            style={{
+              top: "2%", right: "-4%", width: "22rem",
+              opacity: 0.65,
+              transform: "rotate(8deg)",
+              mixBlendMode: "multiply",
+              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
+              maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
+            }}
+          />
+          {/* Drobný oblak střed vlevo */}
+          <img
+            src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
+            alt=""
+            className="absolute object-contain"
+            style={{
+              top: "30%", left: "-8%", width: "18rem",
+              opacity: 0.4,
+              transform: "rotate(-3deg)",
+              mixBlendMode: "multiply",
+              WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, black 35%, transparent 85%)",
+              maskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, black 35%, transparent 85%)",
+            }}
+          />
         </div>
       )}
       {AdminBanner}
