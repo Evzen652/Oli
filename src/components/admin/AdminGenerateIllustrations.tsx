@@ -659,7 +659,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   };
 
   const handleGenerateCustom = async () => {
-    const key = customKey.trim().toLowerCase().replace(/\s+/g, "-");
+    const key = toSlug(customKey);
     const desc = customDesc.trim();
     if (!key || !desc) return;
     setCustomGenerating(true);
@@ -983,14 +983,17 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           </div>
           <div className="space-y-2">
             <div>
-              <p className="text-[11px] font-medium text-muted-foreground mb-1">Klíč (slug, bez mezer):</p>
+              <p className="text-[11px] font-medium text-muted-foreground mb-1">Klíč (diakritika a mezery se automaticky převedou na slug):</p>
               <input
                 type="text"
                 value={customKey}
                 onChange={(e) => { setCustomKey(e.target.value); setCustomPreviewUrl(null); setCustomSaved(false); }}
-                placeholder="např. landing-rodic-propojeni"
+                placeholder="např. landing rodič propojení → landing-rodic-propojeni"
                 className="w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
+              {customKey.trim() && (
+                <p className="text-[11px] text-muted-foreground mt-1">→ uloží se jako <code className="bg-muted px-1 rounded">{toSlug(customKey)}</code></p>
+              )}
             </div>
             <div>
               <p className="text-[11px] font-medium text-muted-foreground mb-1">Popis (co má obrázek zobrazovat):</p>
@@ -1017,8 +1020,8 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             <div className="flex items-center gap-4">
               <img src={customPreviewUrl} alt="náhled" className="h-24 w-24 object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply shrink-0" />
               <div className="space-y-1">
-                {customSaved && <p className="text-xs text-emerald-600 font-medium">✓ Uloženo jako <code className="bg-muted px-1 rounded text-[11px]">{customKey.trim().toLowerCase().replace(/\s+/g, "-")}</code></p>}
-                <p className="text-[11px] text-muted-foreground">Klíč použij v kódu: <code className="bg-muted px-1 rounded">{`si("${customKey.trim().toLowerCase().replace(/\s+/g, "-")}")`}</code></p>
+                {customSaved && <p className="text-xs text-emerald-600 font-medium">✓ Uloženo jako <code className="bg-muted px-1 rounded text-[11px]">{toSlug(customKey)}</code></p>}
+                <p className="text-[11px] text-muted-foreground">Klíč použij v kódu: <code className="bg-muted px-1 rounded">{`si("${toSlug(customKey)}")`}</code></p>
               </div>
             </div>
           )}
