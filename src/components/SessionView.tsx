@@ -385,32 +385,28 @@ export function SessionView() {
         />
       )}
 
-      {/* Dekorativní obláčky — modro-bílé, průhledné, vlevo a nahoře. Jen desktop. */}
+      {/* Dekorativní obláčky — modro-bílé, jemné ale viditelné. Jen desktop. */}
       {showDecor && (
         <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 z-0">
           {/* Velký oblak vlevo nahoře */}
           <div className="absolute" style={{
             top: "5%", left: "8%", width: "22rem", height: "11rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(219, 234, 254, 0.85) 0%, rgba(219, 234, 254, 0.45) 40%, rgba(219, 234, 254, 0) 75%)",
-            filter: "blur(8px)",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(191, 219, 254, 0.95) 0%, rgba(191, 219, 254, 0.7) 50%, rgba(191, 219, 254, 0) 90%)",
           }} />
           {/* Menší oblak vlevo prostřed */}
           <div className="absolute" style={{
             top: "32%", left: "2%", width: "14rem", height: "7rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(224, 242, 254, 0.7) 0%, rgba(224, 242, 254, 0.3) 45%, rgba(224, 242, 254, 0) 80%)",
-            filter: "blur(6px)",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(186, 230, 253, 0.85) 0%, rgba(186, 230, 253, 0.55) 55%, rgba(186, 230, 253, 0) 90%)",
           }} />
           {/* Široký oblak nahoře uprostřed */}
           <div className="absolute" style={{
             top: "2%", left: "30%", width: "30rem", height: "9rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(241, 245, 249, 0.75) 0%, rgba(241, 245, 249, 0.35) 45%, rgba(241, 245, 249, 0) 80%)",
-            filter: "blur(10px)",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(226, 232, 240, 0.9) 0%, rgba(226, 232, 240, 0.55) 55%, rgba(226, 232, 240, 0) 90%)",
           }} />
           {/* Drobný oblak vpravo nahoře */}
           <div className="absolute" style={{
             top: "8%", right: "10%", width: "16rem", height: "7rem",
-            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(219, 234, 254, 0.6) 0%, rgba(219, 234, 254, 0.25) 45%, rgba(219, 234, 254, 0) 80%)",
-            filter: "blur(8px)",
+            background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(191, 219, 254, 0.75) 0%, rgba(191, 219, 254, 0.4) 55%, rgba(191, 219, 254, 0) 90%)",
           }} />
         </div>
       )}
