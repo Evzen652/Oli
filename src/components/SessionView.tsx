@@ -361,9 +361,28 @@ export function SessionView() {
 
   return (
     <div
-      className={`flex min-h-screen flex-col ${isPracticeBg ? "bg-gradient-to-br from-violet-50 via-white to-fuchsia-50" : "bg-background"}`}
+      className={`relative flex min-h-screen flex-col overflow-hidden ${isPracticeBg ? "bg-gradient-to-b from-sky-50 via-violet-50 to-emerald-50" : "bg-background"}`}
       style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}
     >
+      {/* Dekorativní scenérie — obloha s mraky + zelený kopec dole */}
+      {isPracticeBg && (
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* Mraky vlevo nahoře */}
+          <div className="absolute -top-12 -left-10 w-72 h-72 rounded-full bg-white/70 blur-3xl" />
+          <div className="absolute top-20 left-1/4 w-48 h-48 rounded-full bg-white/60 blur-3xl" />
+          <div className="absolute top-8 right-1/4 w-56 h-56 rounded-full bg-white/65 blur-3xl" />
+          <div className="absolute -top-8 -right-12 w-80 h-80 rounded-full bg-white/55 blur-3xl" />
+          <div className="absolute top-1/3 left-1/2 w-40 h-40 rounded-full bg-white/50 blur-3xl" />
+
+          {/* Zelené kopce dole */}
+          <div className="absolute -bottom-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-gradient-to-br from-emerald-200/70 to-green-300/60 blur-xl" />
+          <div className="absolute -bottom-28 left-1/3 w-72 h-72 rounded-full bg-gradient-to-br from-emerald-100/70 to-green-200/60 blur-xl" />
+          <div className="absolute -bottom-36 -right-16 w-[24rem] h-[24rem] rounded-full bg-gradient-to-br from-green-200/60 to-emerald-300/50 blur-xl" />
+        </div>
+      )}
+
+      {/* Veškerý obsah nad pozadím */}
+      <div className="relative z-10 flex flex-col flex-1">
       {AdminBanner}
       {/* Header — původní layout */}
       <header className="relative border-b px-4 py-3">
@@ -745,6 +764,7 @@ export function SessionView() {
           </div>
         </div>
       </main>
+      </div>
     </div>
   );
 }
