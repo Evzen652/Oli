@@ -36,7 +36,7 @@ import { useT } from "@/lib/i18n";
 import { LogOut, Eye } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { LandingNav } from "@/pages/LandingNav";
-import { OlyLogo, logoNoText } from "@/components/OlyLogo";
+import { OlyLogo } from "@/components/OlyLogo";
 
 function ChildLoadingFallback() {
   const [showFallback, setShowFallback] = useState(false);
@@ -365,23 +365,21 @@ export function SessionView() {
       style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}
     >
       {AdminBanner}
-      {/* Header — Zpět vlevo (skryto v anon — vnější wrapper má vlastní), logo + název uprostřed */}
+      {/* Header — Zpět vlevo, Oli logo+text+název uprostřed, akce vpravo */}
       <header className="sticky top-0 z-30 border-b border-slate-100/80 bg-white/90 backdrop-blur-md">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3 flex items-center gap-3">
-          {/* Levá: Zpět — skryto v anon trial (vnější wrapper poskytuje navigaci zpět) */}
-          {!isAnonTrial && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={s.handleReset}
-              className="text-sm rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 shrink-0"
-              title={t("session.back")}
-            >
-              ← {t("session.back")}
-            </Button>
-          )}
+          {/* Levá: Zpět */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={s.handleReset}
+            className="text-sm rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 shrink-0"
+            title={t("session.back")}
+          >
+            ← {t("session.back")}
+          </Button>
 
-          {/* Střed: Oli logo + název tématu */}
+          {/* Střed: Oli logo + text + název tématu */}
           <div className="flex-1 min-w-0 flex items-center justify-center gap-2 sm:gap-3">
             <OlyLogo size="xs" onClick={s.handleReset} />
             {session.matchedTopic && (
@@ -427,28 +425,7 @@ export function SessionView() {
       </header>
 
       <main className="flex flex-1 flex-col items-center p-4 sm:p-6">
-        <div className="w-full max-w-5xl flex gap-6 pt-2 pb-8">
-          {/* Oli mascot + chat bublina vlevo — jen desktop, jen PRACTICE */}
-          {session.matchedTopic && session.state === "PRACTICE" && !checkFeedback && !revealedAnswer && (
-            <aside className="hidden lg:flex flex-col items-center w-44 shrink-0 pt-12">
-              <img
-                src={logoNoText}
-                alt=""
-                className="h-32 w-32 object-contain drop-shadow-md"
-              />
-              <div className="relative mt-4 rounded-2xl bg-white border border-violet-100 shadow-sm px-4 py-3 text-center">
-                <p className="text-sm font-bold text-slate-900">Ahoj!</p>
-                <p className="text-xs text-slate-500 mt-1 leading-snug">
-                  Společně to zvládneme. 💜
-                </p>
-                {/* Trojúhelník bubliny směrem nahoru k sově */}
-                <span className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-l border-t border-violet-100 rotate-45" />
-              </div>
-            </aside>
-          )}
-
-          {/* Hlavní obsah */}
-          <div className="flex-1 min-w-0 flex flex-col space-y-5 max-w-2xl mx-auto lg:mx-0">
+        <div className="w-full max-w-2xl flex flex-col space-y-5 pt-2 pb-8">
           {/* Topic hero karta */}
           {session.matchedTopic && !isTerminal && (
             <div className="space-y-3">
@@ -754,7 +731,6 @@ export function SessionView() {
               />
             </div>
           )}
-          </div>
         </div>
       </main>
     </div>
