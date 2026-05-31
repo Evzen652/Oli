@@ -365,8 +365,8 @@ export function SessionView() {
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
       {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop.
-          CSS mask rozpustí okraje obrázku do transparentna — zmizí hranice čtverce,
-          ilustrace vypadá jako organická součást stránky, ne jako vlepený PNG. */}
+          Pozadí stránky má v levém dolním rohu krémovou barvu (viz session-bg-gradient),
+          která ladí s pozadím obrázku. Lehká mask jen změkčí horní a pravý okraj. */}
       {showDecor && (
         <img
           src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
@@ -374,12 +374,12 @@ export function SessionView() {
           aria-hidden="true"
           className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain pointer-events-none select-none z-0"
           style={{
-            opacity: 0.85,
-            // Radial fade — střed plný, okraje transparentní (rozplyne do stránky)
+            opacity: 0.95,
+            // Jemný fade pravého horního rohu (kde obrázek vyrůstá ze stránky)
             WebkitMaskImage:
-              "radial-gradient(ellipse 80% 90% at 30% 75%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0) 85%)",
+              "linear-gradient(225deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 50%)",
             maskImage:
-              "radial-gradient(ellipse 80% 90% at 30% 75%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0) 85%)",
+              "linear-gradient(225deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 50%)",
           }}
         />
       )}
