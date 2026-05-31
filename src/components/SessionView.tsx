@@ -357,139 +357,78 @@ export function SessionView() {
   const currentTask: PracticeTask | undefined = session.practiceBatch[session.currentTaskIndex];
   const subjectColors = getSubjectColor(session.matchedTopic?.subject);
 
-  // Body derived from existing taskResults (no new logic) — correct: 20, help: 10
-  const sessionPoints = taskResults.reduce((sum, r) => sum + (r === "correct" ? 20 : r === "help" ? 10 : 0), 0);
-  const isPracticeBg = isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN";
-
   return (
-    <div
-      className={`flex min-h-screen flex-col ${isPracticeBg ? "bg-gradient-to-br from-violet-50 via-white to-fuchsia-50" : "bg-background"}`}
-      style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}
-    >
+    <div className={`flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
       {AdminBanner}
-      {/* Sticky header — Logo + Zpět • Téma + progress • Body */}
-      <header className="sticky top-0 z-30 border-b border-slate-100/80 bg-white/85 backdrop-blur-md">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3">
-          <div className="flex items-center gap-3 sm:gap-5">
-            {/* Levá: Logo + Zpět */}
-            <div className="flex items-center gap-2 shrink-0">
-              <OlyLogo size="sm" onClick={s.handleReset} />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={s.handleReset}
-                className="text-sm rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 gap-1"
-                title={t("session.back")}
-              >
-                ← {t("session.back")}
-              </Button>
-            </div>
-
-            {/* Střed: téma + progress */}
-            <div className="flex-1 min-w-0 hidden sm:block">
-              {session.matchedTopic && session.state === "PRACTICE" && session.practiceBatch.length > 0 ? (
-                <div className="space-y-1.5">
-                  <p className="text-sm font-semibold text-slate-700 truncate text-center">
-                    {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
-                  </p>
-                  <ProgressIndicator
-                    current={answeredTask ? Math.max(session.currentTaskIndex - 1, 0) : session.currentTaskIndex}
-                    total={session.practiceBatch.length}
-                    results={taskResults}
-                    compact
-                  />
-                </div>
-              ) : session.matchedTopic ? (
-                <p className="text-sm font-semibold text-slate-700 truncate text-center">
-                  {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
-                </p>
-              ) : null}
-            </div>
-
-            {/* Pravá: body + (admin reportů) + zavřít */}
-            <div className="flex items-center gap-2 shrink-0">
-              {session.state === "PRACTICE" && (
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1.5 text-white text-sm font-bold shadow-sm">
-                  <span aria-hidden>⭐</span>
-                  <span className="tabular-nums">{sessionPoints}</span>
-                  <span className="hidden md:inline opacity-90">bodů</span>
-                </div>
-              )}
-              {!isTerminal && (
-                <div className={`hidden md:block ${isStudentView ? "w-auto" : "w-40"}`}>
-                  <SessionTimer
-                    startTime={session.startTime}
-                    maxSeconds={session.rules.maxDurationSeconds}
-                    isActive={!isLocked}
-                    onTimeExpired={s.handleTimeExpired}
-                    countUp={isStudentView}
-                  />
-                </div>
-              )}
-              {!isStudentView && (
-                <a href="/report" className="hidden md:inline text-sm text-slate-500 hover:text-slate-900">
-                  Report
-                </a>
-              )}
-              {!isStudentView && (
-                <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-sm rounded-full">
-                  {t("session.sign_out")}
-                </Button>
-              )}
-            </div>
+      {/* Header */}
+      <header className="relative border-b px-4 py-3">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2">
+          <OlyLogo size="sm" onClick={s.handleReset} />
+        </div>
+        <div className="mx-auto flex max-w-2xl items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+              {t("session.back")}
+            </Button>
+            {session.matchedTopic && (
+              <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
+                {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
+              </Badge>
+            )}
           </div>
-
-          {/* Mobile: progress pod hlavičkou */}
-          {session.matchedTopic && session.state === "PRACTICE" && session.practiceBatch.length > 0 && (
-            <div className="sm:hidden mt-3">
-              <p className="text-xs font-semibold text-slate-700 truncate text-center mb-1.5">
-                {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
-              </p>
-              <ProgressIndicator
-                current={answeredTask ? Math.max(session.currentTaskIndex - 1, 0) : session.currentTaskIndex}
-                total={session.practiceBatch.length}
-                results={taskResults}
-                compact
-              />
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            {!isTerminal && (
+              <div className={isStudentView ? "w-auto" : "w-48"}>
+                <SessionTimer
+                  startTime={session.startTime}
+                  maxSeconds={session.rules.maxDurationSeconds}
+                  isActive={!isLocked}
+                  onTimeExpired={s.handleTimeExpired}
+                  countUp={isStudentView}
+                />
+              </div>
+            )}
+            {!isStudentView && (
+              <a href="/report" className="text-base text-muted-foreground hover:text-foreground">
+                Report
+              </a>
+            )}
+            <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-base">
+              {t("session.sign_out")}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+              ✕
+            </Button>
+          </div>
         </div>
       </header>
 
-      <main className="flex flex-1 flex-col items-center p-4 sm:p-6">
-        <div className="w-full max-w-2xl flex flex-col space-y-5 pt-2 pb-8">
-          {/* Topic hero card */}
+      <main className="flex flex-1 flex-col items-center justify-center p-4">
+        <div className="w-full max-w-2xl flex flex-col space-y-6">
+          {/* Topic info */}
           {session.matchedTopic && !isTerminal && (
             <div className="space-y-3">
-              <div className="relative overflow-hidden rounded-3xl bg-white border border-violet-100 shadow-sm p-5 sm:p-6">
-                {/* Dekorativní gradient v pozadí */}
-                <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-gradient-to-br from-violet-100/60 to-fuchsia-100/40 blur-2xl pointer-events-none" />
-                <div className="relative flex items-center gap-4 sm:gap-5">
-                  {(() => {
-                    const illUrl = getTopicIllustrationUrl(session.matchedTopic);
-                    return illUrl ? (
-                      <div className="shrink-0 h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-gradient-to-br from-violet-50 to-fuchsia-50 flex items-center justify-center ring-4 ring-white shadow-sm">
-                        <img src={illUrl} alt="" className="h-12 w-12 sm:h-14 sm:w-14 object-contain mix-blend-multiply" />
-                      </div>
-                    ) : null;
-                  })()}
-                  <div className="flex-1 min-w-0 space-y-1">
-                    <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-tight">
-                      {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
-                    </h1>
-                    <p className="text-sm sm:text-base text-slate-500 leading-relaxed">
-                      {session.matchedTopic.briefDescription}
-                    </p>
-                  </div>
+              <div className="flex items-center gap-4">
+                {(() => {
+                  const illUrl = getTopicIllustrationUrl(session.matchedTopic);
+                  return illUrl ? <img src={illUrl} alt="" className="w-16 h-16 object-contain shrink-0 self-center mix-blend-multiply" /> : null;
+                })()}
+                <div className="flex-1 space-y-1">
+                  <p className="text-xl font-medium text-foreground">
+                    <span className="text-muted-foreground">{t("session.topic_label")}</span>{getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
+                  </p>
+                  <p className="text-base text-muted-foreground">
+                    {session.matchedTopic.briefDescription}
+                  </p>
                 </div>
               </div>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full text-base border-2 gap-2 px-5 py-3.5 h-auto rounded-2xl bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200 text-amber-800 hover:from-amber-100 hover:to-yellow-100 hover:border-amber-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 font-semibold"
+                    className="w-full text-base border-2 gap-2 px-5 py-3 h-auto rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-300 text-amber-800 hover:from-amber-100 hover:to-yellow-100 hover:border-amber-400 hover:shadow-lg hover:scale-[1.01] transition-all duration-200 font-semibold"
                   >
-                    💡 {t("session.good_to_know")}
+                    {t("session.good_to_know")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl w-full max-h-[90vh] flex flex-col p-0">
@@ -569,18 +508,18 @@ export function SessionView() {
 
           {/* Question card (EXPLAIN / PRACTICE without feedback) */}
           {session.state !== "INPUT_CAPTURE" && !isTerminal && !checkFeedback && (
-            <Card className="border-0 rounded-3xl overflow-hidden bg-white shadow-md ring-1 ring-violet-100">
-              <CardContent className="p-6 sm:p-7">
+            <Card className={`border-2 rounded-2xl overflow-hidden border-l-4 ${subjectColors.border} bg-gradient-to-br ${subjectColors.bg}`}>
+              <CardContent className="p-6">
                 {session.state === "EXPLAIN" && (
                   <>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3 tracking-tight">{t("session.explain.title")}</h2>
-                    <p className="mt-2 text-base text-slate-500 leading-relaxed">
+                    <h2 className="text-2xl font-semibold text-foreground mb-3">{t("session.explain.title")}</h2>
+                    <p className="mt-2 text-base text-muted-foreground">
                       {session.errorCount > 0
                         ? t("session.explain.errors")
                         : t("session.explain.intro")}
                     </p>
                     {session.matchedTopic && (
-                      <div className="rounded-2xl bg-violet-50 border border-violet-100 p-5 text-base text-slate-700 space-y-3 mt-4">
+                      <div className="rounded-xl bg-background/70 p-5 text-base text-secondary-foreground space-y-3 mt-3">
                         <p>{session.matchedTopic.helpTemplate.hint}</p>
                         {session.matchedTopic.helpTemplate.steps.length > 0 && (
                           <ol className="list-decimal list-inside space-y-1">
@@ -589,21 +528,17 @@ export function SessionView() {
                             ))}
                           </ol>
                         )}
-                        <p><span className="font-semibold text-slate-900">{t("session.example_label")}</span> {session.matchedTopic.helpTemplate.example}</p>
+                        <p><span className="font-semibold text-foreground">{t("session.example_label")}</span> {session.matchedTopic.helpTemplate.example}</p>
                       </div>
                     )}
-                    <p className="mt-4 text-base text-slate-500">{t("session.explain.one_way")}</p>
+                    <p className="mt-4 text-base text-muted-foreground">{t("session.explain.one_way")}</p>
                   </>
                 )}
                 {session.state === "PRACTICE" && (
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-100 text-violet-700 px-3 py-1 text-xs font-bold uppercase tracking-wide">
-                      <span aria-hidden>🎯</span> {questionTitle}
-                    </span>
-                  </div>
+                  <h2 className="text-2xl font-bold text-foreground mb-3">{questionTitle}</h2>
                 )}
                 {practiceQuestion && (
-                  <p className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
+                  <p className="mt-5 rounded-xl bg-background/70 p-5 text-xl font-semibold text-foreground">
                     {practiceQuestion}
                   </p>
                 )}
@@ -750,8 +685,19 @@ export function SessionView() {
             />
           )}
 
-          {/* Progress je v headeru — toto je jen mírná mezera od spodního okraje */}
-          <div aria-hidden className="h-2" />
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Progress indicator */}
+          {session.matchedTopic && session.state === "PRACTICE" && session.practiceBatch.length > 0 && (
+            <div className="pb-4">
+              <ProgressIndicator
+                current={answeredTask ? Math.max(session.currentTaskIndex - 1, 0) : session.currentTaskIndex}
+                total={session.practiceBatch.length}
+                results={taskResults}
+              />
+            </div>
+          )}
         </div>
       </main>
     </div>
