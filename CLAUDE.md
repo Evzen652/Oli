@@ -28,6 +28,24 @@ Pokud nové slovo není v rejstříku → přidej ho do `NOUNS` v `czechGrammar.
 
 ---
 
+## ⚠️ TLAČÍTKO ZPĚT — POVINNĚ `<BackButton />`
+
+Pro každé tlačítko "Zpět" v aplikaci **VŽDY** použij komponentu `<BackButton />` z `src/components/BackButton.tsx`.
+**Nikdy nepiš custom `<button>` s "← Zpět" inline.**
+
+```tsx
+import { BackButton } from "@/components/BackButton";
+
+<BackButton />                                       // navigate(-1), label "Zpět"
+<BackButton to="/" />                                // navigate("/")
+<BackButton to="/onboarding" label="Změnit ročník" size="sm" />
+<BackButton onClick={() => doSomething()} label="Konec sezení" />
+```
+
+Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikací.
+
+---
+
 ## Multi-PC workflow
 - User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull` (na branchi `claude/cranky-shirley`), abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.
