@@ -365,30 +365,23 @@ export function SessionView() {
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
       {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop.
-          Teplý radial gradient v pozadí, do kterého krémové pozadí ilustrace organicky splývá. */}
+          CSS mask rozpustí okraje obrázku do transparentna — zmizí hranice čtverce,
+          ilustrace vypadá jako organická součást stránky, ne jako vlepený PNG. */}
       {showDecor && (
-        <>
-          {/* Teplý "spotlight" gradient v levém dolním rohu — ilustrace do něj splývá */}
-          <div
-            aria-hidden="true"
-            className="hidden lg:block fixed pointer-events-none select-none z-0"
-            style={{
-              left: 0,
-              bottom: 0,
-              width: "32rem",
-              height: "32rem",
-              background: "radial-gradient(ellipse at 25% 75%, rgba(254, 243, 226, 0.95) 0%, rgba(254, 243, 226, 0.6) 30%, rgba(254, 243, 226, 0) 65%)",
-            }}
-          />
-          {/* Ilustrace na vrchu gradientu */}
-          <img
-            src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
-            alt=""
-            aria-hidden="true"
-            className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain pointer-events-none select-none z-0"
-            style={{ opacity: 0.92 }}
-          />
-        </>
+        <img
+          src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
+          alt=""
+          aria-hidden="true"
+          className="hidden lg:block fixed bottom-0 left-0 w-64 xl:w-80 h-auto object-contain pointer-events-none select-none z-0"
+          style={{
+            opacity: 0.85,
+            // Radial fade — střed plný, okraje transparentní (rozplyne do stránky)
+            WebkitMaskImage:
+              "radial-gradient(ellipse 80% 90% at 30% 75%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0) 85%)",
+            maskImage:
+              "radial-gradient(ellipse 80% 90% at 30% 75%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.7) 55%, rgba(0,0,0,0) 85%)",
+          }}
+        />
       )}
       {AdminBanner}
       {/* Header */}
