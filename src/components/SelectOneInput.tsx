@@ -1,26 +1,23 @@
+import { Button } from "@/components/ui/button";
+
 interface SelectOneInputProps {
   options: string[];
   onSubmit: (answer: string) => void;
   disabled?: boolean;
 }
 
-/**
- * Multiple-choice odpovědi jako velké pastelové karty (2×2 grid).
- * Design sjednocený s landing — bílé karty s pastel akcentem, soft shadow, hover scale.
- */
 export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputProps) {
   if (!options || options.length === 0) return null;
 
   const maxLen = Math.max(...options.map(o => o.length));
   const isLong = maxLen > 20;
-  const textSize = maxLen > 20 ? "text-base" : maxLen > 10 ? "text-xl" : "text-3xl";
+  const textSize = maxLen > 20 ? "text-base" : maxLen > 10 ? "text-lg" : "text-2xl";
 
-  // Pastelové akcenty per pozici — odpovídají mockupu
-  const palettes = [
-    { border: "border-violet-200", text: "text-violet-700", hover: "hover:border-violet-300 hover:bg-violet-50" },
-    { border: "border-emerald-200", text: "text-emerald-700", hover: "hover:border-emerald-300 hover:bg-emerald-50" },
-    { border: "border-orange-200", text: "text-orange-700", hover: "hover:border-orange-300 hover:bg-orange-50" },
-    { border: "border-sky-200", text: "text-sky-700", hover: "hover:border-sky-300 hover:bg-sky-50" },
+  const colors = [
+    "hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 active:bg-blue-100",
+    "hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700 active:bg-purple-100",
+    "hover:bg-green-50 hover:border-green-300 hover:text-green-700 active:bg-green-100",
+    "hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 active:bg-amber-100",
   ];
 
   const gridCols = isLong
@@ -28,31 +25,21 @@ export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputPr
     : options.length <= 2 ? "grid-cols-2" : options.length === 3 ? "grid-cols-3" : "grid-cols-2";
 
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-slate-500">Vyber správnou odpověď.</p>
+    <div className="space-y-4">
+      <p className="text-base text-muted-foreground">Vyber správnou odpověď.</p>
       <div className={`grid gap-4 ${gridCols}`}>
-        {options.map((option, i) => {
-          const p = palettes[i % palettes.length];
-          return (
-            <button
-              key={option}
-              type="button"
-              disabled={disabled}
-              onClick={() => onSubmit(option)}
-              className={`
-                min-h-[80px] rounded-2xl border-2 bg-white
-                ${p.border} ${p.text} ${p.hover}
-                ${textSize} font-bold text-center
-                px-6 py-5 leading-tight whitespace-normal
-                shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]
-                transition-all duration-200
-                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-sm
-              `}
-            >
-              {option}
-            </button>
-          );
-        })}
+        {options.map((option, i) => (
+          <Button
+            key={option}
+            variant="outline"
+            size="lg"
+            disabled={disabled}
+            onClick={() => onSubmit(option)}
+            className={`${textSize} font-bold py-4 min-h-[64px] h-auto border-2 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-md whitespace-normal text-center ${colors[i % colors.length]}`}
+          >
+            {option}
+          </Button>
+        ))}
       </div>
     </div>
   );
