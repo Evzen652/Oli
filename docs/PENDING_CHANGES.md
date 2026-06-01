@@ -58,6 +58,10 @@
 
 ## Vyřízené
 
+### 2026-06-01 — Grade-4 kompletní obsah ✅
+- 58 nových topics implementováno: čeština 22, vlastivěda 13, přírodověda 13, informatika 10
+- Celkem 72 topics v GRADE_4_TOPICS (vč. 14 matematiky)
+
 ### 2026-05-25 — Trial flow critical bug fixes ✅ (4 z 5 bugů opraveno)
 - ✅ **BUG #1 (BLOCKER):** ChildHomePage zaseknuté na "Načítání…" pro anon uživatele — chyběl `setLoading(false)` v `if (!user) return;` větvi
 - ✅ **BUG #2 (BLOCKER):** TopicBrowser crash `s.charAt is not a function` — `capitalize` přijímá `unknown` s typeof guardem
