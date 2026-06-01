@@ -585,11 +585,11 @@ export function SessionView() {
                 )}
                 {session.state === "PRACTICE" && (
                   <div className="flex items-center gap-3 mb-3">
-                    <img
+                    <DewhiteImg
                       src={`${SUPABASE_STORAGE}/${questionIcon}.png`}
                       alt=""
-                      aria-hidden="true"
-                      className="h-10 w-10 object-contain shrink-0 mix-blend-multiply"
+                      threshold={220}
+                      className="h-14 w-14 object-contain shrink-0"
                     />
                     <h2 className="text-2xl font-bold text-foreground">{questionTitle}</h2>
                   </div>
