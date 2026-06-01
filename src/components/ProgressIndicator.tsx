@@ -14,33 +14,28 @@ export function ProgressIndicator({ current, total, results = [] }: ProgressIndi
         {Array.from({ length: total }).map((_, i) => {
           const result = results[i];
           const isCurrent = i === current;
-          let dotClass = "rounded-full transition-all duration-300 flex items-center justify-center text-sm ";
-          let emoji = "";
+          let dotClass = "rounded-full transition-all duration-300 ";
 
           if (result === "correct") {
-            dotClass += "w-7 h-7 bg-green-500";
-            emoji = "😊";
+            dotClass += "w-3 h-3 bg-emerald-500";
           } else if (result === "wrong") {
-            dotClass += "w-7 h-7 bg-orange-400";
-            emoji = "😕";
+            dotClass += "w-3 h-3 bg-orange-400";
           } else if (result === "help") {
-            dotClass += "w-7 h-7 bg-blue-400";
-            emoji = "🤔";
+            dotClass += "w-3 h-3 bg-sky-400";
           } else if (isCurrent) {
-            dotClass += "w-8 h-8 bg-primary/20 ring-2 ring-primary/50 scale-110";
-            emoji = "✏️";
+            dotClass += "w-4 h-4 bg-primary ring-2 ring-primary/30 scale-110";
           } else {
-            dotClass += "w-7 h-7 bg-muted-foreground/20";
+            dotClass += "w-3 h-3 bg-slate-200";
           }
 
-          return <div key={i} className={dotClass}>{emoji}</div>;
+          return <div key={i} className={dotClass} />;
         })}
       </div>
       {results.length > 0 && (
-        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1 bg-green-100 text-green-800 rounded-full px-2 py-0.5">😊 správně</span>
-          <span className="flex items-center gap-1 bg-orange-100 text-orange-800 rounded-full px-2 py-0.5">😕 zkus to příště</span>
-          <span className="flex items-center gap-1 bg-blue-100 text-blue-800 rounded-full px-2 py-0.5">🤔 s nápovědou</span>
+        <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground pt-1">
+          <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> správně</span>
+          <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-sky-400" /> s nápovědou</span>
+          <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-orange-400" /> zkus to příště</span>
         </div>
       )}
     </div>
