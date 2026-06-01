@@ -58,23 +58,13 @@ function getNextQuestionTitle(): string {
   return t;
 }
 
-// 15 dekorativních ikon pro rotaci vedle question title — uloženo v Supabase storage
-// jako practice-icon-{name}.png. Generováno přes scripts/generate-practice-icons.ps1.
+// Dekorativní ikony pro rotaci vedle question title — uloženo v Supabase storage
+// jako practice-icon-{name}.png.
 export const QUESTION_ICONS = [
-  "practice-icon-pencil",
+  "practice-icon-star",
   "practice-icon-lightbulb",
   "practice-icon-rocket",
-  "practice-icon-star",
-  "practice-icon-magnifier",
   "practice-icon-compass",
-  "practice-icon-key",
-  "practice-icon-trophy",
-  "practice-icon-book",
-  "practice-icon-balloon",
-  "practice-icon-medal",
-  "practice-icon-puzzle",
-  "practice-icon-gem",
-  "practice-icon-feather",
   "practice-icon-clock",
 ];
 let questionIconIndex = 0;
