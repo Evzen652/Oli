@@ -388,13 +388,13 @@ export function SessionView() {
       {/* Dekorativní obláčky — vygenerovaná ilustrace, jen vpravo, normální velikost. */}
       {showDecor && (
         <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 overflow-hidden z-0">
-          {/* Oblak vpravo nahoře */}
+          {/* Oblak vpravo nahoře — víc do rohu */}
           <img
             src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
             alt=""
             className="absolute object-contain"
             style={{
-              top: "2%", right: "-4%", width: "22rem",
+              top: "2%", right: "-14%", width: "22rem",
               opacity: 0.65,
               transform: "rotate(8deg)",
               mixBlendMode: "multiply",
@@ -402,13 +402,13 @@ export function SessionView() {
               maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
             }}
           />
-          {/* Drobnější oblak vpravo prostřed */}
+          {/* Drobnější oblak vpravo prostřed — víc do rohu */}
           <img
             src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
             alt=""
             className="absolute object-contain"
             style={{
-              top: "34%", right: "-6%", width: "18rem",
+              top: "34%", right: "-16%", width: "18rem",
               opacity: 0.45,
               transform: "rotate(-4deg)",
               mixBlendMode: "multiply",
