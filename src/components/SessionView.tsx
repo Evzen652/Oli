@@ -385,38 +385,24 @@ export function SessionView() {
         />
       )}
 
-      {/* Dekorativní obláčky — vygenerovaná ilustrace, jen vpravo, normální velikost. */}
+      {/* Letící kniha s pohádkovými hvězdičkami vpravo nahoře — tematický protějšek
+          ke knihám+globusu vlevo dole (dole studovna, nahoře vzlétající fantazie). */}
       {showDecor && (
-        <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 overflow-hidden z-0">
-          {/* Oblak vpravo nahoře — víc do rohu */}
-          <img
-            src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
-            alt=""
-            className="absolute object-contain"
-            style={{
-              top: "2%", right: "-14%", width: "22rem",
-              opacity: 0.65,
-              transform: "rotate(8deg)",
-              mixBlendMode: "multiply",
-              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
-              maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
-            }}
-          />
-          {/* Drobnější oblak vpravo prostřed — víc do rohu */}
-          <img
-            src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
-            alt=""
-            className="absolute object-contain"
-            style={{
-              top: "34%", right: "-16%", width: "18rem",
-              opacity: 0.45,
-              transform: "rotate(-4deg)",
-              mixBlendMode: "multiply",
-              WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, black 35%, transparent 85%)",
-              maskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, black 35%, transparent 85%)",
-            }}
-          />
-        </div>
+        <img
+          src={`${SUPABASE_STORAGE}/practice-decor-flying-book.png`}
+          alt=""
+          aria-hidden="true"
+          className="hidden lg:block fixed top-0 right-0 w-72 xl:w-96 h-auto object-contain pointer-events-none select-none z-0"
+          style={{
+            opacity: 0.85,
+            mixBlendMode: "multiply",
+            // Fade levého a spodního okraje — kresba se rozplyne do stránky
+            WebkitMaskImage:
+              "radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 90%)",
+            maskImage:
+              "radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 90%)",
+          }}
+        />
       )}
       {AdminBanner}
       {/* Header */}
