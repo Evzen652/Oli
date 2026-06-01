@@ -36,7 +36,7 @@ export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputPr
             size="lg"
             disabled={disabled}
             onClick={() => onSubmit(option)}
-            className={`${textSize} font-bold py-4 min-h-[64px] h-auto border-2 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-md whitespace-normal text-center ${colors[i % colors.length]}`}
+            className={`${textSize} font-bold py-4 min-h-[64px] h-auto border-2 rounded-xl shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md whitespace-normal text-center ${colors[i % colors.length]}`}
           >
             {option}
           </Button>

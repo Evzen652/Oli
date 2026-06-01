@@ -44,7 +44,7 @@ export function HelpButton({ skillId, topic, currentTask, onHelpOpened }: HelpBu
         <Button
           variant="outline"
           size="lg"
-          className={`w-full text-base border-2 gap-2 rounded-xl transition-all duration-200 ${
+          className={`w-full text-base border-2 gap-2 rounded-xl shadow-sm transition-all duration-200 ${
             open
               ? "bg-violet-50 border-violet-300 text-violet-700 hover:bg-violet-100 hover:text-violet-800"
               : "bg-violet-50 border-violet-200 text-violet-700 hover:bg-violet-100 hover:border-violet-300 hover:shadow-md hover:scale-[1.02]"

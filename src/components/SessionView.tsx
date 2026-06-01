@@ -475,7 +475,7 @@ export function SessionView() {
                 <DialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full text-base border-2 gap-2 px-5 py-3 h-auto rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-300 text-amber-800 hover:from-amber-100 hover:to-yellow-100 hover:border-amber-400 hover:shadow-lg hover:scale-[1.01] transition-all duration-200 font-semibold"
+                    className="w-full text-base border-2 gap-2 px-5 py-3 h-auto rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-300 text-amber-800 shadow-sm hover:from-amber-100 hover:to-yellow-100 hover:border-amber-400 hover:shadow-lg hover:scale-[1.01] transition-all duration-200 font-semibold"
                   >
                     {t("session.good_to_know")}
                   </Button>
@@ -557,7 +557,7 @@ export function SessionView() {
 
           {/* Question card (EXPLAIN / PRACTICE without feedback) */}
           {session.state !== "INPUT_CAPTURE" && !isTerminal && !checkFeedback && (
-            <Card className={`border-2 rounded-2xl overflow-hidden border-l-4 ${subjectColors.border} bg-gradient-to-br ${subjectColors.bg}`}>
+            <Card className={`border-2 rounded-2xl overflow-hidden border-l-4 shadow-sm ${subjectColors.border} bg-gradient-to-br ${subjectColors.bg}`}>
               <CardContent className="p-6">
                 {session.state === "EXPLAIN" && (
                   <>
@@ -672,7 +672,7 @@ export function SessionView() {
           {/* Revealed answer */}
           {revealedAnswer && session.state === "PRACTICE" && !checkFeedback && (
             <div className="space-y-5">
-              <Card className="border-2 rounded-2xl">
+              <Card className="border-2 rounded-2xl shadow-sm">
                 <CardContent className="p-6 space-y-4">
                   <p className="text-lg font-medium text-foreground">
                     {t("session.correct_answer")}<span className="font-bold">{revealedAnswer.answer}</span>
