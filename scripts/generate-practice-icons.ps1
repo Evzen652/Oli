@@ -1,4 +1,4 @@
-# Hromadne generovani 15 dekorativnich ikon pro question title rotation.
+# Hromadne generovani 15 ikon -- minimalisticke single-object prompty pro spolehlivy dewhite.
 $ErrorActionPreference = "Continue"
 
 $SUPABASE_URL = "https://uusaczibimqvaazpaopy.supabase.co"
@@ -7,67 +7,54 @@ $ANON_KEY = "sb_publishable_33yUDPztgleFHYtChSvGKQ_rMlyktGV"
 $PREFIX = "Cute 3D Pixar-style educational illustration for children's learning app, showing"
 $SUFFIX = ". Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children educational app aesthetic. Square format."
 
+# Kazdy prompt: JEDEN objekt vystreden, BEZ sparkles/trails/floating elementu (rusi flood-fill dewhite).
+# Compact silhouette = uspesny dewhite (brightness>230 detekce z okraju funguje).
 $icons = @(
-  @{ key = "practice-icon-pencil"; desc = "small 3D illustration of a stylized pastel violet pencil floating diagonally with a tiny glowing star next to its tip leaving a soft sparkle trail; pastel violet and soft gold palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-lightbulb"; desc = "small 3D illustration of a glowing pastel yellow lightbulb with soft warm light radiating outward and a few tiny sparkles around it; pastel amber and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-rocket"; desc = "small 3D illustration of a stylized pastel rocket flying diagonally upward with a trail of soft pastel exhaust and a few tiny stars; pastel coral and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-star"; desc = "small 3D illustration of a pastel five-pointed star with a gentle glow and several smaller sparkles around it forming a constellation; pastel gold and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-magnifier"; desc = "small 3D illustration of a stylized magnifying glass with golden handle and clear glass with tiny sparkle reflecting in the lens; pastel cream and gold palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-compass"; desc = "small 3D illustration of a stylized round compass with a north arrow pointing upward, ornate brass details on white face; pastel cream and gold palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-key"; desc = "small 3D illustration of a stylized vintage golden key with ornate head and decorative teeth, floating at a slight angle with a tiny sparkle; pastel gold and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-trophy"; desc = "small 3D illustration of a tiny stylized golden trophy cup with two handles on a small round base; pastel gold and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-book"; desc = "small 3D illustration of a single small open book with a pastel violet ribbon bookmark hanging down, pages slightly fluttering; pastel violet and cream palette; NO characters, NO faces, NO readable text on pages, NO words" }
-  @{ key = "practice-icon-balloon"; desc = "small 3D illustration of a stylized hot air balloon with a tiny basket below, soft horizontal pastel stripes on the balloon; pastel mint and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-medal"; desc = "small 3D illustration of a tiny gold medal with a star embossed on it hanging from a pastel ribbon; pastel gold and rose palette; NO characters, NO faces, NO text, NO numbers" }
-  @{ key = "practice-icon-puzzle"; desc = "small 3D illustration of a single decorative jigsaw puzzle piece floating at a slight angle; pastel sky blue palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-gem"; desc = "small 3D illustration of a stylized faceted crystal gem with a soft sparkle around it, slightly translucent appearance; pastel violet and cream palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-feather"; desc = "small 3D illustration of a single white feather quill with golden tip and soft pastel barbs; pastel cream and gold palette; NO characters, NO faces, NO text" }
-  @{ key = "practice-icon-clock"; desc = "small 3D illustration of a tiny stylized round clock with classic numerals showing 10 hours 10 minutes position, decorative hands; pastel cream and gold palette; NO characters, NO faces, NO words" }
+  @{ key = "practice-icon-star"; desc = "a single chubby rounded 3D five-pointed star shape, bright pastel gold color, smooth volumetric surfaces; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-lightbulb"; desc = "a single chubby rounded 3D lightbulb shape, bright pastel yellow glass with subtle warm glow inside, silver screw base; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-rocket"; desc = "a single chubby rounded 3D rocket shape pointing straight up, pastel coral body with white tip, mint green fins at bottom, round porthole window in middle; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-compass"; desc = "a single chubby rounded 3D compass shape, round white face with bold red north arrow pointing up and black south arrow pointing down, gold rim around the case; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-clock"; desc = "a single chubby rounded 3D round clock shape, white face with bold black hands pointing at 10 and 2 position, simple round gold rim, no numerals; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-dice"; desc = "a single chubby rounded 3D dice cube shape, clean white faces with bold pastel coral dots showing five on front face, rounded corners; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-palette"; desc = "a single chubby rounded 3D artist palette shape, oval pastel cream body with thumb hole, small rounded blobs of pastel paint colors around the edge; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-calculator"; desc = "a single chubby rounded 3D calculator shape, pastel mint green body with small dark rounded buttons and a light display screen at top; cute minimal compact icon design, centered, no other elements" }
+  @{ key = "practice-icon-bell"; desc = "a single chubby rounded 3D bell shape, pastel gold body with a small round clapper visible at the bottom, smooth dome top; cute minimal compact icon design, centered, no other elements" }
 )
 
 $totalSuccess = 0
 $failedKeys = New-Object System.Collections.ArrayList
-$chunkSize = 3
-$totalChunks = [Math]::Ceiling($icons.Count / $chunkSize)
+$idx = 0
 
-for ($i = 0; $i -lt $icons.Count; $i += $chunkSize) {
-  $endIdx = [Math]::Min($i + $chunkSize - 1, $icons.Count - 1)
-  $chunk = @($icons[$i..$endIdx])
-
-  $keys = @($chunk | ForEach-Object { $_.key })
-  $customPrompts = @{}
-  foreach ($icon in $chunk) {
-    $customPrompts[$icon.key] = "$PREFIX $($icon.desc)$SUFFIX"
-  }
+foreach ($icon in $icons) {
+  $idx++
+  $key = $icon.key
+  $fullPrompt = "$PREFIX $($icon.desc)$SUFFIX"
 
   $body = @{
-    keys = $keys
+    keys = @($key)
     force = $true
-    customPrompts = $customPrompts
-  } | ConvertTo-Json -Depth 5
+    customPrompts = @{ $key = $fullPrompt }
+  } | ConvertTo-Json -Depth 5 -Compress
 
-  $chunkNum = [int]($i / $chunkSize) + 1
   Write-Host ""
-  Write-Host "[$chunkNum/$totalChunks] Generuji: $($keys -join ', ')"
+  Write-Host "[$idx/$($icons.Count)] $key"
 
   try {
-    $response = Invoke-WebRequest -Uri "$SUPABASE_URL/functions/v1/generate-prvouka-images" -Method POST -Headers @{ "Authorization" = "Bearer $ANON_KEY"; "apikey" = $ANON_KEY; "Content-Type" = "application/json" } -Body $body -TimeoutSec 300 -UseBasicParsing
+    $response = Invoke-WebRequest -Uri "$SUPABASE_URL/functions/v1/generate-prvouka-images" -Method POST -Headers @{ "Authorization" = "Bearer $ANON_KEY"; "apikey" = $ANON_KEY; "Content-Type" = "application/json" } -Body $body -TimeoutSec 180 -UseBasicParsing
     $data = $response.Content | ConvertFrom-Json
-    if ($data.results) {
-      foreach ($k in $data.results.PSObject.Properties.Name) {
-        Write-Host "  OK $k"
-        $totalSuccess++
-      }
-    }
-    if ($data.errors) {
-      foreach ($k in $data.errors.PSObject.Properties.Name) {
-        Write-Host "  FAIL $k -- $($data.errors.$k)"
-        $null = $failedKeys.Add($k)
-      }
+    if ($data.results -and $data.results.PSObject.Properties.Name -contains $key) {
+      Write-Host "  OK"
+      $totalSuccess++
+    } elseif ($data.errors -and $data.errors.PSObject.Properties.Name -contains $key) {
+      Write-Host "  FAIL: $($data.errors.$key)"
+      $null = $failedKeys.Add($key)
+    } else {
+      Write-Host "  UNKNOWN response"
+      $null = $failedKeys.Add($key)
     }
   } catch {
     Write-Host "  EXCEPTION: $($_.Exception.Message)"
-    foreach ($k in $keys) { $null = $failedKeys.Add($k) }
+    $null = $failedKeys.Add($key)
   }
 }
 
