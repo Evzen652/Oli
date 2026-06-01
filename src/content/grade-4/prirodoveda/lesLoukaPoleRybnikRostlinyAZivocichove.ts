@@ -9,54 +9,311 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Který živočich žije typicky v lese a má parohy?", correctAnswer: "Jelen", options: ["Jelen", "Zajíc", "Vydra", "Kapr"] },
-  { question: "Kde žije kapr?", correctAnswer: "V rybníku a řece", options: ["V rybníku a řece", "V lese", "Na louce", "Na poli"] },
-  { question: "Která rostlina roste typicky na louce a má žluté květy?", correctAnswer: "Pampeliška", options: ["Pampeliška", "Leknín", "Kopřiva", "Smrk"] },
-  { question: "Jak se jmenuje patro lesa, kde rostou stromy?", correctAnswer: "Stromové patro", options: ["Stromové patro", "Keřové patro", "Bylinné patro", "Mechové patro"] },
-  { question: "Co je typická ryba pro rybník v ČR?", correctAnswer: "Kapr", options: ["Kapr", "Losos", "Treska", "Sardinka"] },
-  { question: "Která rostlina roste ve vodě rybníka a má velké plovoucí listy?", correctAnswer: "Leknín", options: ["Leknín", "Kopretina", "Jetel", "Pampeliška"] },
-  { question: "Jaký hmyz sbírá nektar z lučních květů?", correctAnswer: "Čmelák a motýl", options: ["Čmelák a motýl", "Mravenec a brouk", "Moucha a komár", "Šváb a mšice"] },
-  { question: "Který živočich dlábe dřevo v lese a hledá larvy?", correctAnswer: "Datel", options: ["Datel", "Sýkorka", "Liška", "Hlemýžď"] },
-  { question: "Co je potravní řetězec?", correctAnswer: "Posloupnost organismů, kde každý je potravou dalšího", options: ["Posloupnost organismů, kde každý je potravou dalšího", "Druh lesa s různými rostlinami", "Počet vrstev (pater) lesa", "Způsob, jak rostliny sdílejí živiny"] },
-  { question: "Jaká je první složka potravního řetězce?", correctAnswer: "Producent — zelená rostlina (vyrábí organiku fotosyntézou)", options: ["Producent — zelená rostlina (vyrábí organiku fotosyntézou)", "Konzument — bylinožravec", "Konzument — masožravec", "Rozkladač — houba nebo bakterie"] },
-  { question: "Jaké zvíře loví myši na poli a hnízdí na stromech?", correctAnswer: "Poštolka", options: ["Poštolka", "Žába", "Vydra", "Zajíc"] },
-  { question: "Kde typicky roste rákos?", correctAnswer: "Na břehu rybníka nebo řeky", options: ["Na břehu rybníka nebo řeky", "Uprostřed hustého lesa", "Na vysychajícím poli", "Na kamenitém kopci"] },
-  { question: "Jaký živočich loví ryby v řekách a rybnících v ČR?", correctAnswer: "Vydra říční", options: ["Vydra říční", "Liška", "Srnec", "Volavka šedá"] },
-  { question: "Co jsou houby v ekosystému?", correctAnswer: "Rozkladači — rozkládají odumřelou organiku", options: ["Rozkladači — rozkládají odumřelou organiku", "Producenti — vyrábí organiku fotosyntézou", "Konzumenti — jedí jiné živočichy", "Parazité — ničí živé organismy"] },
-  { question: "Kde žijí žáby?", correctAnswer: "Na rozhraní vody a souše — rybníky, potoky, louky poblíž vody", options: ["Na rozhraní vody a souše — rybníky, potoky, louky poblíž vody", "Jen v hustém lese", "Jen ve vodě celoročně", "Na suchých polích"] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kapr", right: "Rybník" },
+      { left: "Jelen", right: "Les" },
+      { left: "Pampeliška", right: "Louka" },
+      { left: "Pšenice", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Leknín", right: "Rybník" },
+      { left: "Datel", right: "Les" },
+      { left: "Kopretina", right: "Louka" },
+      { left: "Koroptev", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vydra říční", right: "Rybník" },
+      { left: "Srnec", right: "Les" },
+      { left: "Čmelák", right: "Louka" },
+      { left: "Myš polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Rákos obecný", right: "Rybník" },
+      { left: "Smrk ztepilý", right: "Les" },
+      { left: "Jetel luční", right: "Louka" },
+      { left: "Poštolka", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Štika obecná", right: "Rybník" },
+      { left: "Liška obecná", right: "Les" },
+      { left: "Motýl bělásek", right: "Louka" },
+      { left: "Zajíc polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Orobinec", right: "Rybník" },
+      { left: "Borovice lesní", right: "Les" },
+      { left: "Pryskyřník", right: "Louka" },
+      { left: "Strnad polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žába skokan", right: "Rybník" },
+      { left: "Sova puštík", right: "Les" },
+      { left: "Kobylka", right: "Louka" },
+      { left: "Bažant", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Volavka šedá", right: "Rybník" },
+      { left: "Jelen lesní", right: "Les" },
+      { left: "Jeřáb luční", right: "Louka" },
+      { left: "Chřástal polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Plotice obecná", right: "Rybník" },
+      { left: "Sýkorka koňadra", right: "Les" },
+      { left: "Pampeliška", right: "Louka" },
+      { left: "Skřivan polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Řasa zelená", right: "Rybník" },
+      { left: "Mravenec lesní", right: "Les" },
+      { left: "Čekanka", right: "Louka" },
+      { left: "Kukuřice", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Labuť velká", right: "Rybník" },
+      { left: "Veverka obecná", right: "Les" },
+      { left: "Tráva (kavyl)", right: "Louka" },
+      { left: "Slepice polní koroptev", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Čolník obecný", right: "Rybník" },
+      { left: "Kůrovec", right: "Les" },
+      { left: "Koník luční", right: "Louka" },
+      { left: "Ječmen", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kachna divoká", right: "Rybník" },
+      { left: "Jestřáb lesní", right: "Les" },
+      { left: "Pupalka dvouletá", right: "Louka" },
+      { left: "Mák polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Bahník (bahnivka)", right: "Rybník" },
+      { left: "Dub letní", right: "Les" },
+      { left: "Hvozdík kartouzek", right: "Louka" },
+      { left: "Ovsík vyvýšený", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Rak říční", right: "Rybník" },
+      { left: "Kuna lesní", right: "Les" },
+      { left: "Šťovík kyselý", right: "Louka" },
+      { left: "Vlčí mák", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Potápka chocholatá", right: "Rybník" },
+      { left: "Plch velký", right: "Les" },
+      { left: "Starček obecný", right: "Louka" },
+      { left: "Snovač polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Leklík (ryba)", right: "Rybník" },
+      { left: "Chrobák nosorožec", right: "Les" },
+      { left: "Prvosenka jarní", right: "Louka" },
+      { left: "Řepka olejná", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Okounek pstruhový", right: "Rybník" },
+      { left: "Sojka obecná", right: "Les" },
+      { left: "Blatoucha", right: "Louka" },
+      { left: "Koukol polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vrkoč (plž)", right: "Rybník" },
+      { left: "Tchoř lesní", right: "Les" },
+      { left: "Řebříček obecný", right: "Louka" },
+      { left: "Zemník (brambor)", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Husa divoká", right: "Rybník" },
+      { left: "Střevlík zahradní", right: "Les" },
+      { left: "Lipnice luční", right: "Louka" },
+      { left: "Oves", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Rosnička zelená", right: "Rybník" },
+      { left: "Srnec obecný", right: "Les" },
+      { left: "Modřenec", right: "Louka" },
+      { left: "Slunečnice", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lín obecný", right: "Rybník" },
+      { left: "Čáp černý", right: "Les" },
+      { left: "Kuklík obecný", right: "Louka" },
+      { left: "Bavlník", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Poduška (mechorost)", right: "Rybník" },
+      { left: "Holub hřivnáč", right: "Les" },
+      { left: "Hrachor luční", right: "Louka" },
+      { left: "Pohanka setá", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sekáč (klepeto)", right: "Rybník" },
+      { left: "Drobek lesní", right: "Les" },
+      { left: "Vikev ptačí", right: "Louka" },
+      { left: "Hrách polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Blecha vodní (perloočka)", right: "Rybník" },
+      { left: "Jezevec lesní", right: "Les" },
+      { left: "Kakost luční", right: "Louka" },
+      { left: "Soja luštinná", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Klouzatec (ryba)", right: "Rybník" },
+      { left: "Ořešník pěti", right: "Les" },
+      { left: "Čičorka pestrá", right: "Louka" },
+      { left: "Len setý", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lyska černá", right: "Rybník" },
+      { left: "Bobr evropský", right: "Les" },
+      { left: "Marulka (Potentilla)", right: "Louka" },
+      { left: "Žito", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Piskor pruhovaný", right: "Rybník" },
+      { left: "Rys ostrovid", right: "Les" },
+      { left: "Mochna husí", right: "Louka" },
+      { left: "Sudka (cukrová řepa)", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Šídlatka (vážka)", right: "Rybník" },
+      { left: "Divoké prase", right: "Les" },
+      { left: "Lomikámen", right: "Louka" },
+      { left: "Tabák", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Okřídlenec (vážka)", right: "Rybník" },
+      { left: "Medvěd hnědý", right: "Les" },
+      { left: "Kozlík lékařský", right: "Louka" },
+      { left: "Konopí seté", right: "Pole" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Kolik pater má les a jak se jmenují?", correctAnswer: "4 patra: stromové, keřové, bylinné, mechové", options: ["4 patra: stromové, keřové, bylinné, mechové", "3 patra: stromové, keřové, mechové", "5 pater: stromové, keřové, bylinné, mechové, podzemní", "2 patra: stromové a bylinné"] },
-  { question: "Jaký je rozdíl mezi bylinožravcem a masožravcem?", correctAnswer: "Bylinožravec jí rostliny, masožravec loví jiné živočichy", options: ["Bylinožravec jí rostliny, masožravec loví jiné živočichy", "Bylinožravec žije v lese, masožravec na louce", "Masožravec jí rostliny, bylinožravec maso", "Oba jsou konzumenti druhého řádu"] },
-  { question: "Sestav jednoduchý potravní řetězec louky.", correctAnswer: "Tráva → myš → poštolka (nebo sova)", options: ["Tráva → myš → poštolka (nebo sova)", "Myš → tráva → poštolka", "Poštolka → tráva → myš", "Myš → poštolka → tráva"] },
-  { question: "Proč jsou rozkladači (houby, bakterie) nezbytní v ekosystému?", correctAnswer: "Rozkládají odumřelou organiku na minerály, které pak využijí rostliny", options: ["Rozkládají odumřelou organiku na minerály, které pak využijí rostliny", "Produkují kyslík pro ostatní organismy", "Loví nemocné živočichy a udržují populaci", "Chrání půdu před erozí"] },
-  { question: "Která ptáci typicky hnízdí v lese (2 příklady)?", correctAnswer: "Sýkorka, datel (nebo sojka, kukačka)", options: ["Sýkorka, datel (nebo sojka, kukačka)", "Čáp, vlaštovka", "Kachna, volavka", "Koroptev, křepelka"] },
-  { question: "Co je biotop?", correctAnswer: "Životní prostředí s typickými podmínkami pro určité druhy (les, louka, rybník...)", options: ["Životní prostředí s typickými podmínkami pro určité druhy (les, louka, rybník...)", "Druh rostliny v konkrétním ekosystému", "Způsob přizpůsobení živočicha prostředí", "Vědecký název pro skupinu rostlin"] },
-  { question: "Proč je pro rybník důležitý rákos a orobinec?", correctAnswer: "Poskytují úkryt pro živočichy, čistí vodu a zpevňují břehy", options: ["Poskytují úkryt pro živočichy, čistí vodu a zpevňují břehy", "Jen zvyšují hloubku rybníka", "Brání rybám v pohybu", "Rákos nemá pro rybník praktický význam"] },
-  { question: "Jaký je rozdíl mezi přirozeným lesem a plantáží?", correctAnswer: "Přirozený les: různé druhy stromů, bohatá biodiverzita. Plantáž: jeden druh stromů, chudá biodiverzita.", options: ["Přirozený les: různé druhy stromů, bohatá biodiverzita. Plantáž: jeden druh stromů, chudá biodiverzita.", "Plantáž je starší než přirozený les.", "V přirozeném lese nejsou žádné stromy.", "Rozdíl je jen v tom, kdo les pěstuje."] },
-  { question: "Jak se jmenuje jev, kdy různé druhy žijí vedle sebe a závisí na sobě?", correctAnswer: "Ekosystém (vzájemné vztahy v biotopu)", options: ["Ekosystém (vzájemné vztahy v biotopu)", "Evoluce", "Adaptace", "Koloběh látek"] },
-  { question: "Proč jsou louky cenné pro hmyz, zejména opylovače?", correctAnswer: "Nabízejí bohatou nabídku rozmanitých kvetoucích rostlin po celé léto", options: ["Nabízejí bohatou nabídku rozmanitých kvetoucích rostlin po celé léto", "Louky jsou jediným místem, kde motýli přezimují", "Louky nemají pro hmyz zvláštní význam", "Na louce je méně hmyzu než v lese"] },
-  { question: "Co jsou škůdci pole a jak se s nimi bojuje?", correctAnswer: "Mšice, plevel, hlodavci — biologicky (predátoři), chemicky (pesticidie), agrotechnicky", options: ["Mšice, plevel, hlodavci — biologicky (predátoři), chemicky (pesticidie), agrotechnicky", "Jen mšice — léčí se hnojením", "Všechen hmyz na poli je škůdce", "Plevel se nevyskytuje na moderních polích"] },
-  { question: "Proč přirozené mokřady ubývají?", correctAnswer: "Odvodnění pro zemědělství a zástavbu — mokřady jsou záměrně vysoušeny", options: ["Odvodnění pro zemědělství a zástavbu — mokřady jsou záměrně vysoušeny", "Mokřady zanikají přirozeným vývojem bez lidského vlivu", "Klimatická změna způsobuje vznik nových mokřadů", "Mokřady ubývají kvůli nadměrnému rybolovu"] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Proč je ztráta biodiverzity nebezpečná pro ekosystémy?", correctAnswer: "Každý druh plní roli v potravním řetězci — zánik jednoho může způsobit kolaps celého ekosystému", options: ["Každý druh plní roli v potravním řetězci — zánik jednoho může způsobit kolaps celého ekosystému", "Ztráta biodiverzity je přirozená a ekosystém se vždy obnoví", "Zánik druhů ovlivňuje jen potravní řetěz, ne půdu ani vodu", "Biodiverzita je jen estetická záležitost"] },
-  { question: "Co je invazivní druh a proč je problémem?", correctAnswer: "Druh zavlečený z jiného území, který vytlačuje původní druhy a narušuje ekosystém", options: ["Druh zavlečený z jiného území, který vytlačuje původní druhy a narušuje ekosystém", "Druh schopný rychlého rozmnožení v přirozeném prostředí", "Chráněný druh přesouvaný mezi ekosystémy", "Druh adaptovaný na extrémy prostředí"] },
-  { question: "Jak les přispívá k regulaci klimatu?", correctAnswer: "Absorbuje CO₂, produkuje O₂, zvyšuje vlhkost vzduchu transpirací a zadržuje vodu v půdě", options: ["Absorbuje CO₂, produkuje O₂, zvyšuje vlhkost vzduchu transpirací a zadržuje vodu v půdě", "Les ovlivňuje pouze místní teplotu bez globálního efektu", "Les produkuje CO₂ v noci — celkový efekt je neutrální", "Les zvyšuje sucho absorbcí spodní vody"] },
-  { question: "Co je nitrifikace a proč je důležitá pro ekosystém?", correctAnswer: "Přeměna amoniaku na dusičnany bakteriemi v půdě — zpřístupňuje dusík rostlinám", options: ["Přeměna amoniaku na dusičnany bakteriemi v půdě — zpřístupňuje dusík rostlinám", "Absorpce dusíku listovými průduchy", "Přeměna dusíku na kyslík fotosyntézou", "Uvolňování dusíku do atmosféry rozkladem"] },
-  { question: "Co je trofická kaskáda?", correctAnswer: "Efekt, kdy změna počtu predátorů na vrcholu potravního řetězce ovlivní celý ekosystém", options: ["Efekt, kdy změna počtu predátorů na vrcholu potravního řetězce ovlivní celý ekosystém", "Vertikální uspořádání pater lesa", "Sezonní migrace živočichů v ekosystému", "Postupné obohacování půdy o živiny"] },
-  { question: "Jak mohou rybníky tlumit povodně?", correctAnswer: "Zadržují přebytečnou vodu při přívalových deštích a postupně ji uvolňují", options: ["Zadržují přebytečnou vodu při přívalových deštích a postupně ji uvolňují", "Rybníky povodně naopak zhoršují", "Rybníky mají vliv jen na místní vlhkost vzduchu", "Rybníky odvádějí vodu rychleji do řek"] },
-  { question: "Proč smrkové monokultury jsou náchylnější ke kůrovcové kalamitě?", correctAnswer: "Monokultura nemá přirozené predátory kůrovce ani odolné druhy stromů, které by kalamitu omezily", options: ["Monokultura nemá přirozené predátory kůrovce ani odolné druhy stromů, které by kalamitu omezily", "Smrk je přirozeně citlivý na kůrovce bez ohledu na okolní druhy", "Smrkové lesy mají příliš vysokou vlhkost pro kůrovce", "Kůrovcová kalamita postihuje stejně smrky i listnaté stromy"] },
-  { question: "Jaký je vztah mezi opylováním a produkcí potravin pro lidstvo?", correctAnswer: "Cca 75 % potravin závisí na opylení hmyzem — bez opylovačů by hrozil kolaps zemědělství", options: ["Cca 75 % potravin závisí na opylení hmyzem — bez opylovačů by hrozil kolaps zemědělství", "Opylování hmyzem je jen estetický proces bez vlivu na produkci", "Pouze ovoce závisí na opylení, ostatní potraviny ne", "Opylení větrem plně nahradí úbytek hmyzu"] },
-  { question: "Co je ekoton?", correctAnswer: "Přechodová zóna mezi dvěma ekosystémy (např. okraj lesa a louka) — bývá druhově nejbohatší", options: ["Přechodová zóna mezi dvěma ekosystémy (např. okraj lesa a louka) — bývá druhově nejbohatší", "Typ chráněného území s nejvíce druhy", "Oblast bez živočichů na pomezí biotopu", "Vědecký název pro suché louky"] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 45);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const LESLOUKAPOLERYBNIKROSTLINYAZIVOCICHOVE: TopicMetadata[] = [
@@ -78,7 +335,7 @@ export const LESLOUKAPOLERYBNIKROSTLINYAZIVOCICHOVE: TopicMetadata[] = [
     ],
     boundaries: ["Podrobná taxonomie živočichů není náplní 4. ročníku"],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "mixed",
     defaultLevel: 1,
     sessionTaskCount: 6,

@@ -27,7 +27,21 @@ const POOL_L1: FillItem[] = [
   { sentence: "Závodník ___trénoval měsíc.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
   { sentence: "Přečetl ___tisk z novin.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
   { sentence: "Horolezec ___stoupil na vrchol.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dostal jsem ___zvu na párty.", blank: "po", options: ["vy-", "vý-", "po-", "z-"] },
+  { sentence: "Žák ___světlil úlohu správně.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Dostal ___znamení z matematiky.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Žába ___skočila z rybníka.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Sbírka má ___bornou cenu.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Ptáci ___létali z hnízda.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Přečetl jsem ___tah ze smlouvy.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Dítě ___běhlo za míčem.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Je to ___borný nápad.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Sluníčko ___šlo z mraků.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Dostal ___zvu na oslavu.", blank: "po", options: ["vy-", "vý-", "po-", "z-"] },
+  { sentence: "Kluk ___koumal z okna.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Přečetl jsem ___bornou knihu.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Ryba ___skočila z vody.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Zpěvák měl ___borný hlas.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Závodník ___koupal závod.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
 ];
 
 const POOL_L2: FillItem[] = [
@@ -47,6 +61,20 @@ const POOL_L2: FillItem[] = [
   { sentence: "Přátelé ___sloučili síly.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
   { sentence: "Vlak ___pomalel před stanicí.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
   { sentence: "Raketa ___startovala a mířila ke hvězdám.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
+  { sentence: "Voda ___houstla mrazem.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Letadlo ___klesalo k přistání.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Cena ___klesla po slevě.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Chlapec ___klidnil se postupně.", blank: "u", options: ["s-", "z-", "u-", "vz-"] },
+  { sentence: "Přátelé ___chystali na výlet.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Puk ___klouzal po ledu.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Jelen ___mizel v lese.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Oheň ___hasl ráno.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Ptáci ___lítali nad vodou.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
+  { sentence: "Děti ___sedly na zem.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Stromy ___dřevěněly s lety.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Pes ___kulovitěl jak houska.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Prameny ___víraly se do řeky.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Déšť ___silnil odpoledne.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
 ];
 
 const POOL_L3: FillItem[] = [
@@ -66,12 +94,25 @@ const POOL_L3: FillItem[] = [
   { sentence: "Závodník ___trénoval a dosáhl nového rekordu.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
   { sentence: "Raketa ___startovala a mířila ke hvězdám.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
   { sentence: "Mlha ___hustla poté, co přišla studená fronta.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Ptáci ___lítali do výšky, když viděli nebezpečí.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
+  { sentence: "Chlapec ___pracoval projekt za jeden večer.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Lyžař ___jel z hory, a pak znovu vyjel nahoru.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Voda ___hustla na ledu a zamrzla.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Dívka ___lepšila výsledky po celý rok.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Orel ___letěl nad horami a hledal kořist.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
+  { sentence: "Sníh ___tálo pomalu, ale jaro přišlo.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Závodníci ___jeli z vrcholu sjezdovky.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Cvičením ___silnil a byl stále fittovanější.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Dítě ___bredilo s teplotou celou noc.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Přátelé ___chystali na cestu a naložili zavazadla.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Ptáci ___letěli na jih, kde bylo teplo.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
+  { sentence: "Teplota ___klesala každý den o stupeň.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
+  { sentence: "Hoch ___dal to a šel za svým cílem.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
 ];
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ sentence, blank, options }) => ({
+  return shuffle(pool).slice(0, 30).map(({ sentence, blank, options }) => ({
     question: `Doplň správnou předponu: "${sentence}"`,
     correctAnswer: blank.toLowerCase() + "-",
     options: options,

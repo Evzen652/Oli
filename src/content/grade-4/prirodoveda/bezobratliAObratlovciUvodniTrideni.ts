@@ -9,53 +9,311 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Jaký je hlavní rozdíl mezi bezobratlými a obratlovci?", correctAnswer: "Obratlovci mají páteř (kostru z obratlů), bezobratlí nemají", options: ["Obratlovci mají páteř (kostru z obratlů), bezobratlí nemají", "Obratlovci jsou větší než bezobratlí", "Bezobratlí žijí jen ve vodě", "Obratlovci mají křídla, bezobratlí ne"] },
-  { question: "Kolik noh má hmyz?", correctAnswer: "6 noh", options: ["6 noh", "4 nohy", "8 noh", "10 noh"] },
-  { question: "Kolik noh má pavouk?", correctAnswer: "8 noh", options: ["8 noh", "6 noh", "4 nohy", "10 noh"] },
-  { question: "Z kolika částí se skládá tělo hmyzu?", correctAnswer: "Ze 3 částí: hlava, hruď, zadeček", options: ["Ze 3 částí: hlava, hruď, zadeček", "Ze 2 částí: hlava a tělo", "Ze 4 částí: hlava, hruď, břicho, ocas", "Z 1 části — tělo hmyzu není členěno"] },
-  { question: "Která skupina živočichů má šupiny, žábry a ploutve?", correctAnswer: "Ryby", options: ["Ryby", "Obojživelníci", "Plazi", "Ptáci"] },
-  { question: "Co jsou obojživelníci?", correctAnswer: "Živočichové, jejichž larvy žijí ve vodě a dospělci na souši i ve vodě", options: ["Živočichové, jejichž larvy žijí ve vodě a dospělci na souši i ve vodě", "Živočichové žijící výhradně ve vodě", "Živočichové s křídly i ploutvemi", "Živočichové žijící jen na souši"] },
-  { question: "Které skupině obratlovců patří had?", correctAnswer: "Plazi", options: ["Plazi", "Obojživelníci", "Savci", "Ryby"] },
-  { question: "Které skupině obratlovců patří žába?", correctAnswer: "Obojživelníci", options: ["Obojživelníci", "Plazi", "Ryby", "Savci"] },
-  { question: "Co charakterizuje ptáky?", correctAnswer: "Peří, teplokrevní, snášejí vejce, přední končetiny = křídla", options: ["Peří, teplokrevní, snášejí vejce, přední končetiny = křídla", "Šupiny, chladnokrevní, snášejí vejce", "Srst, teplokrevní, kojí mláďata", "Žábry, studená krev, ploutve"] },
-  { question: "Co charakterizuje savce?", correctAnswer: "Srst nebo chlupy, teplokrevní, kojení mláďat mlékem", options: ["Srst nebo chlupy, teplokrevní, kojení mláďat mlékem", "Peří, teplokrevní, vejce", "Šupiny, chladnokrevní, vejce", "Žábry, studená krev, ploutve"] },
-  { question: "Které skupině živočichů patří klíště?", correctAnswer: "Pavoukovci (8 noh)", options: ["Pavoukovci (8 noh)", "Hmyz (6 noh)", "Červi", "Měkkýši"] },
-  { question: "Které skupině živočichů patří hlemýžď?", correctAnswer: "Měkkýši", options: ["Měkkýši", "Hmyz", "Červi", "Pavoukovci"] },
-  { question: "Mají ryby teplou nebo studenou krev?", correctAnswer: "Studenou (teplota těla závisí na prostředí)", options: ["Studenou (teplota těla závisí na prostředí)", "Teplou (teplota těla stálá)", "Ani studenou ani teplou — nemají krev", "V létě teplou, v zimě studenou"] },
-  { question: "Jak dýchají dospělé žáby?", correctAnswer: "Plícemi a kůží", options: ["Plícemi a kůží", "Žábrami jako ryby", "Jen kůží", "Průduchy jako hmyz"] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Včela medonosná", right: "Hmyz" },
+      { left: "Pes domácí", right: "Savec" },
+      { left: "Holub domácí", right: "Pták" },
+      { left: "Ještěrka obecná", right: "Plaz" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pavouk křižák", right: "Pavoukovci" },
+      { left: "Kapr obecný", right: "Ryby" },
+      { left: "Skokan zelený", right: "Obojživelníci" },
+      { left: "Bažant obecný", right: "Pták" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hlemýžď zahradní", right: "Měkkýši" },
+      { left: "Klíště obecné", right: "Pavoukovci" },
+      { left: "Kuna lesní", right: "Savec" },
+      { left: "Kapr", right: "Ryby" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Motýl babočka", right: "Hmyz" },
+      { left: "Žížala obecná", right: "Červi" },
+      { left: "Had užovka", right: "Plaz" },
+      { left: "Netopýr ušatý", right: "Savec" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Čmelák zemní", right: "Hmyz" },
+      { left: "Rak říční", right: "Korýši" },
+      { left: "Sýkorka koňadra", right: "Pták" },
+      { left: "Mlok skvrnitý", right: "Obojživelníci" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Štír", right: "Pavoukovci" },
+      { left: "Slimák", right: "Měkkýši" },
+      { left: "Losos atlantský", right: "Ryby" },
+      { left: "Vlk obecný", right: "Savec" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Mravenec lesní", right: "Hmyz" },
+      { left: "Žába rosnička", right: "Obojživelníci" },
+      { left: "Liška obecná", right: "Savec" },
+      { left: "Pijavice lékařská", right: "Červi" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vrápenec malý", right: "Savec" },
+      { left: "Štika obecná", right: "Ryby" },
+      { left: "Šnek vinný", right: "Měkkýši" },
+      { left: "Čáp bílý", right: "Pták" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Koník stepní", right: "Hmyz" },
+      { left: "Krab", right: "Korýši" },
+      { left: "Zmije obecná", right: "Plaz" },
+      { left: "Ježek západní", right: "Savec" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Brouk zlatohlávek", right: "Hmyz" },
+      { left: "Datel černý", right: "Pták" },
+      { left: "Humr evropský", right: "Korýši" },
+      { left: "Srnec obecný", right: "Savec" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Komár", right: "Hmyz" },
+      { left: "Krokodýl nilský", right: "Plaz" },
+      { left: "Plch velký", right: "Savec" },
+      { left: "Chobotnice", right: "Měkkýši" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Tuleň", right: "Savec" },
+      { left: "Candát obecný", right: "Ryby" },
+      { left: "Kobylka", right: "Hmyz" },
+      { left: "Slepýš křehký", right: "Plaz" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Moucha domácí", right: "Hmyz" },
+      { left: "Řekněte, kam patří tasemnice?", right: "Červi" },
+      { left: "Čáp černý", right: "Pták" },
+      { left: "Vydra říční", right: "Savec" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vosa obecná", right: "Hmyz" },
+      { left: "Krevetka říční", right: "Korýši" },
+      { left: "Jelen evropský", right: "Savec" },
+      { left: "Rosnička zelená", right: "Obojživelníci" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Strnad obecný", right: "Pták" },
+      { left: "Kuna skalní", right: "Savec" },
+      { left: "Pijavka", right: "Červi" },
+      { left: "Kameleon", right: "Plaz" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Veverka obecná", right: "Savec" },
+      { left: "Cikáda", right: "Hmyz" },
+      { left: "Čolník obecný", right: "Obojživelníci" },
+      { left: "Mušle", right: "Měkkýši" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Moucha masná", right: "Hmyz" },
+      { left: "Jeřáb popelavý", right: "Pták" },
+      { left: "Bobr evropský", right: "Savec" },
+      { left: "Platýz", right: "Ryby" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Čmelák skalní", right: "Hmyz" },
+      { left: "Skokanka štíhlá", right: "Obojživelníci" },
+      { left: "Bělozubka šedá", right: "Savec" },
+      { left: "Krab říční", right: "Korýši" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Svišť horský", right: "Savec" },
+      { left: "Tesařík obecný", right: "Hmyz" },
+      { left: "Pelikán", right: "Pták" },
+      { left: "Horský had (asp)", right: "Plaz" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Střevle potoční", right: "Ryby" },
+      { left: "Kopřivka obecná", right: "Hmyz" },
+      { left: "Tchoř stepní", right: "Savec" },
+      { left: "Rosnička", right: "Obojživelníci" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Jepice obecná", right: "Hmyz" },
+      { left: "Kachna divoká", right: "Pták" },
+      { left: "Slimák plzák", right: "Měkkýši" },
+      { left: "Želva bahenní", right: "Plaz" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Šváb obecný", right: "Hmyz" },
+      { left: "Netopýr velký", right: "Savec" },
+      { left: "Piskor pruhovaný", right: "Ryby" },
+      { left: "Volavka šedá", right: "Pták" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vlasatka (vlasovec)", right: "Červi" },
+      { left: "Rys ostrovid", right: "Savec" },
+      { left: "Čáp bílý", right: "Pták" },
+      { left: "Krabice modrá", right: "Korýši" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sýkora modřinka", right: "Pták" },
+      { left: "Kuna lesní", right: "Savec" },
+      { left: "Šídlo modré", right: "Hmyz" },
+      { left: "Kapr stříbřitý", right: "Ryby" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Jelenec (wapiti)", right: "Savec" },
+      { left: "Komár pisklavý", right: "Hmyz" },
+      { left: "Geko domácí", right: "Plaz" },
+      { left: "Olm jeskynní", right: "Obojživelníci" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Dravec jestřáb", right: "Pták" },
+      { left: "Závornatka lesní", right: "Měkkýši" },
+      { left: "Vydra říční", right: "Savec" },
+      { left: "Vran obecný", right: "Pták" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Stonožka", right: "Hmyz (mnohonožkovci)" },
+      { left: "Hvězdice mořská", right: "Ostnokožci" },
+      { left: "Medvěd hnědý", right: "Savec" },
+      { left: "Hatérie novozélandská", right: "Plaz" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Jezerní kapr", right: "Ryby" },
+      { left: "Krkavec velký", right: "Pták" },
+      { left: "Krtek obecný", right: "Savec" },
+      { left: "Pulec skokana", right: "Obojživelníci" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Šváb lesní", right: "Hmyz" },
+      { left: "Plch lískový", right: "Savec" },
+      { left: "Anakonda zelená", right: "Plaz" },
+      { left: "Mlok horský", right: "Obojživelníci" },
+    ],
+  },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Zubr evropský", right: "Savec" },
+      { left: "Vážka ploská", right: "Hmyz" },
+      { left: "Káně lesní", right: "Pták" },
+      { left: "Rak bahenní", right: "Korýši" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Vyjmenuj 5 skupin bezobratlých živočichů.", correctAnswer: "Hmyz, pavoukovci, měkkýši, červi, korýši (nebo raci, krabi...)", options: ["Hmyz, pavoukovci, měkkýši, červi, korýši (nebo raci, krabi...)", "Hmyz, obojživelníci, ryby, plazi, ptáci", "Motýli, pavouci, šneci, žížaly, raci", "Hmyz, ptáci, savci, plazi, červi"] },
-  { question: "Vyjmenuj 5 skupin obratlovců.", correctAnswer: "Ryby, obojživelníci, plazi, ptáci, savci", options: ["Ryby, obojživelníci, plazi, ptáci, savci", "Hmyz, pavoukovci, červi, ptáci, savci", "Ryby, žáby, hadi, ptáci, pes", "Korýši, měkkýši, červi, ptáci, savci"] },
-  { question: "Co je chitinová kostra hmyzu?", correctAnswer: "Vnější tvrdý obal (exoskelet) z chitinu, který chrání tělo hmyzu", options: ["Vnější tvrdý obal (exoskelet) z chitinu, který chrání tělo hmyzu", "Vnitřní kostra jako u savců", "Kůže plnící funkci kostry", "Vápenatý obal jako u šneků"] },
-  { question: "Jak se nazývá přeměna housenky v motýla?", correctAnswer: "Metamorfóza (přeměna: vajíčko → larva/housenka → kukla → imago/motýl)", options: ["Metamorfóza (přeměna: vajíčko → larva/housenka → kukla → imago/motýl)", "Hibernace", "Evoluce", "Transpirace"] },
-  { question: "Jak se liší plazi od obojživelníků?", correctAnswer: "Plazi: šupiny, vejce kladou na souši. Obojživelníci: vlhká kůže, larvy ve vodě.", options: ["Plazi: šupiny, vejce kladou na souši. Obojživelníci: vlhká kůže, larvy ve vodě.", "Plazi žijí ve vodě, obojživelníci na souši.", "Obě skupiny mají šupiny a kladou vejce.", "Žádný rozdíl — jsou to synonyma."] },
-  { question: "Proč plazi potřebují sluneční teplo?", correctAnswer: "Jsou chladnokrevní — tělesná teplota závisí na okolním prostředí, ohřívají se ze slunce", options: ["Jsou chladnokrevní — tělesná teplota závisí na okolním prostředí, ohřívají se ze slunce", "Plazi potřebují teplo pro fotosyntézu", "Teplo jim pomáhá s dýcháním", "Plazi jsou teplokrevní a potřebují teplo ke stálé teplotě"] },
-  { question: "Co jsou korýši a uveď příklady?", correctAnswer: "Bezobratlí s tvrdým pancéřem a většinou 5 páry noh — rak, krab, humr, krevetka", options: ["Bezobratlí s tvrdým pancéřem a většinou 5 páry noh — rak, krab, humr, krevetka", "Bezobratlí s ulitou — šnek, hlemýžď", "Hmyz s krunýřem — brouk, chrobák", "Obratlovci s šupinami — ryby"] },
-  { question: "Jak dýchají larvy žab?", correctAnswer: "Žábrami (jako ryby) — dospělec pak přechází na plíce + kůži", options: ["Žábrami (jako ryby) — dospělec pak přechází na plíce + kůži", "Plícemi od počátku", "Průduchy jako hmyz", "Kůží od vajíčka až do dospělosti"] },
-  { question: "Jak se liší struktura těla pavoukovců od hmyzu?", correctAnswer: "Pavoukovci: 8 noh, 2 části těla (hlavohruď + zadeček). Hmyz: 6 noh, 3 části těla.", options: ["Pavoukovci: 8 noh, 2 části těla (hlavohruď + zadeček). Hmyz: 6 noh, 3 části těla.", "Pavoukovci: 6 noh, 3 části. Hmyz: 8 noh, 2 části.", "Obě skupiny mají 6 noh a 3 části těla.", "Pavoukovci a hmyz jsou synonyma."] },
-  { question: "Co jsou molusky (měkkýši)?", correctAnswer: "Bezobratlí s měkkým tělem, většinou s ulitou nebo pláštěm — šnek, hlemýžď, sépie, mušle", options: ["Bezobratlí s měkkým tělem, většinou s ulitou nebo pláštěm — šnek, hlemýžď, sépie, mušle", "Bezobratlí s chitinovou kostrou — hmyz a pavoukovci", "Bezobratlí s tvrdým pancéřem — rak, krab", "Červi s válcovitým tělem"] },
-  { question: "Proč jsou obratlovci evolučně 'úspěšnější' než bezobratlí?", correctAnswer: "Páteř umožnila větší tělesnou velikost, složitější nervový systém a obsazení nových prostředí", options: ["Páteř umožnila větší tělesnou velikost, složitější nervový systém a obsazení nových prostředí", "Obratlovci nejsou evolučně úspěšnější — bezobratlých je víc druhů", "Obratlovci mají výhodu jen ve vodním prostředí", "Páteř je zbytečná — evoluční výhoda je jen chitinový obal"] },
-  { question: "Jaké jsou příklady parazitických bezobratlých?", correctAnswer: "Klíště, pijavice, tasemnice, škrkavka — žijí na úkor jiného organismu", options: ["Klíště, pijavice, tasemnice, škrkavka — žijí na úkor jiného organismu", "Žížala, mravenec, pavouci", "Motýl, včela, čmelák", "Rak, krab, humr"] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Co je endoskeleton a exoskeleton a jaké jsou výhody/nevýhody každého?", correctAnswer: "Endoskeleton (vnitřní): umožňuje velký růst. Exoskeleton (vnější, hmyz): pevná ochrana, ale limituje velikost (svlékání).", options: ["Endoskeleton (vnitřní): umožňuje velký růst. Exoskeleton (vnější, hmyz): pevná ochrana, ale limituje velikost (svlékání).", "Endoskeleton je u bezobratlých, exoskeleton u obratlovců.", "Exoskeleton umožňuje neomezený růst bez svlékání.", "Oba typy kostry mají stejné výhody a nevýhody."] },
-  { question: "Proč je pavouček v naší mytologii a kultuře tak odlišně vnímán než hmyz?", correctAnswer: "Tato otázka není vědecká — jde o kulturní vnímání; vědecky jsou oba bezobratlí s exoskeletem", options: ["Tato otázka není vědecká — jde o kulturní vnímání; vědecky jsou oba bezobratlí s exoskeletem", "Pavouk je nebezpečnější než hmyz vědecky prokázáno", "Hmyz je evolučně vyspělejší než pavouci", "Pavouci jsou oblíbenější kvůli sítím"] },
-  { question: "Jak se vyvíjely obratlovci z vodního na suchozemský způsob života?", correctAnswer: "Ryby → lalokovité ryby → obojživelníci (přechod) → plazi (vajíčka na souši) → ptáci+savci", options: ["Ryby → lalokovité ryby → obojživelníci (přechod) → plazi (vajíčka na souši) → ptáci+savci", "Ptáci → savci → plazi → obojživelníci → ryby", "Obojživelníci přímo přešli na savce bez mezistádia", "Suchozemský život vznikl nezávisle na rybách"] },
-  { question: "Co je kambrium v kontextu evoluce bezobratlých?", correctAnswer: "Geologické období (~541–485 milionů let) — 'exploze' druhů, vznik většiny typů bezobratlých", options: ["Geologické období (~541–485 milionů let) — 'exploze' druhů, vznik většiny typů bezobratlých", "Geologické období vzniku savců", "Výbuch vulkánu, který zničil bezobratlé", "Kambrická exploze = zánik dinosaurů"] },
-  { question: "Co je metamorfóza kompletní (holometabolia) vs. neúplná (hemimetabolia)?", correctAnswer: "Kompletní: vajíčko → larva → kukla → imago (motýl, brouk). Neúplná: vajíčko → nymfa (podobná dospělci) → imago (kobylka).", options: ["Kompletní: vajíčko → larva → kukla → imago (motýl, brouk). Neúplná: vajíčko → nymfa (podobná dospělci) → imago (kobylka).", "Kompletní: jen 2 stádia. Neúplná: 4 stádia.", "Obě metamorfózy zahrnují stádium kukly.", "Hemimetabolia je dokonalejší forma než holometabolia."] },
-  { question: "Co je mimikry u bezobratlých?", correctAnswer: "Napodobení barvy nebo tvaru jedovatého nebo nebezpečného druhu jako ochrana (batesovská mimikry)", options: ["Napodobení barvy nebo tvaru jedovatého nebo nebezpečného druhu jako ochrana (batesovská mimikry)", "Schopnost pavouků měnit barvu jako chameleon", "Druh obranného jeda produkovaného hmyzem", "Napodobení hlasu predátora k zastrašení"] },
-  { question: "Proč jsou ptáci klasifikováni jako letití plazi (Archosauria)?", correctAnswer: "Ptáci se vyvinuli z teropodních dinosaurů — sdílejí mnoho znaků s plazy (šupiny na nohách, vejce)", options: ["Ptáci se vyvinuli z teropodních dinosaurů — sdílejí mnoho znaků s plazy (šupiny na nohách, vejce)", "Ptáci jsou savci s křídly", "Ptáci a plazi nemají nic společného — jsou nezávislé skupiny", "Ptáci se vyvinuli z ryb přes obojživelníky"] },
-  { question: "Co je endotermie u savců a ptáků a proč je výhodná?", correctAnswer: "Schopnost udržet stálou tělesnou teplotu vlastním metabolismem — umožňuje aktivitu nezávislou na počasí", options: ["Schopnost udržet stálou tělesnou teplotu vlastním metabolismem — umožňuje aktivitu nezávislou na počasí", "Schopnost přijímat teplo z okolního prostředí", "Regulace teploty pomocí pití vody", "Endotermie je jen u savců, ptáci jsou chladnokrevní"] },
-  { question: "Co je viviparismus u savců a čím se liší od oviparity?", correctAnswer: "Viviparismus: mládě se vyvíjí v těle matky. Oviparismus: vajíčka kladena mimo tělo matky.", options: ["Viviparismus: mládě se vyvíjí v těle matky. Oviparismus: vajíčka kladena mimo tělo matky.", "Viviparismus: vejce se vyvíjí v hnízdu. Oviparismus: vejce v těle matky.", "Oba způsoby jsou totožné u savců.", "Viviparismus mají jen mořští savci."] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 45);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const BEZOBRATLIAOBRATLOVCIUVODNITRIDENI: TopicMetadata[] = [
@@ -77,7 +335,7 @@ export const BEZOBRATLIAOBRATLOVCIUVODNITRIDENI: TopicMetadata[] = [
     ],
     boundaries: ["Podrobná taxonomie a latinské názvy nejsou náplní 4. ročníku"],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,

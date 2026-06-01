@@ -9,40 +9,311 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Co je první krok trávení v ústech?", correctAnswer: "Rozmělnění zuby a smísení se slinami – začátek trávení škrobů", options: ["Rozmělnění zuby a smísení se slinami (začátek trávení škrobů)", "Vstřebání živin do krve", "Ničení bakterií kyselinou", "Pohyb potravy do žaludku"], hints: ["Sliny obsahují enzym amylázu, která štěpí škrob."] },
-  { question: "Jaká kyselina se nachází v žaludku a k čemu slouží?", correctAnswer: "Kyselina chlorovodíková – HCl – ničí bakterie a pomáhá trávit bílkoviny", options: ["Kyselina chlorovodíková (HCl) – ničí bakterie a pomáhá trávit bílkoviny", "Kyselina mléčná pro rozkládání tuků", "Žluč produkovaná žaludkem pro trávení tuků", "Kyselina octová pro konzervaci potravy"], hints: ["pH žaludku je přibližně 2 – velmi kyselé."] },
-  { question: "Kde se vstřebávají živiny do krve?", correctAnswer: "V tenkém střevě – přes klky", options: ["V tenkém střevě (přes klky)", "V žaludku", "V tlustém střevě", "V jícnu"], hints: ["Tenké střevo = hlavní vstřebávání. Délka: 6–7 metrů."] },
-  { question: "Jakou funkci mají játra v trávení?", correctAnswer: "Produkují žluč – trávení tuků, detoxikují krev a metabolizují živiny", options: ["Produkují žluč (trávení tuků), detoxikují krev a metabolizují živiny", "Tráví bílkoviny pomocí enzymů", "Vstřebávají vodu z zbytků potravy", "Produkují inzulín pro trávení cukrů"], hints: ["Játra jsou největší žlázou v těle."] },
-  { question: "Co dělá tlusté střevo?", correctAnswer: "Vstřebává vodu ze zbytků potravy a tvoří výkaly", options: ["Vstřebává vodu ze zbytků potravy a tvoří výkaly", "Vstřebává bílkoviny a cukry", "Produkuje trávicí enzymy", "Ničí bakterie kyselinou"], hints: ["Tlustě střevo = záverečná fáze trávení."] },
-  { question: "Co jsou ledviny a jaká je jejich hlavní funkce?", correctAnswer: "Párové orgány filtrující krev a vylučující odpadní látky do moče", options: ["Párové orgány filtrující krev a vylučující odpadní látky do moče", "Orgány produkující trávicí enzymy", "Zásobník pro krev v těle", "Orgány regulující srdeční tep"], hints: ["Ledviny čistí 180 litrů krve denně."] },
-  { question: "Jaký odpad vylučují plíce?", correctAnswer: "Oxid uhličitý – CO₂ a vodní páru", options: ["Oxid uhličitý (CO₂) a vodní páru", "Dusíkaté látky", "Kyselinu mléčnou", "Soli a minerály"], hints: ["Vydechuješ CO₂ – produkt buněčného dýchání."] },
-  { question: "Co vylučuje kůže?", correctAnswer: "Pot – voda + soli + dusíkaté látky – chlazení a vylučování", options: ["Pot (voda + soli + dusíkaté látky) – chlazení a vylučování", "Pouze CO₂ při pocení", "Kyselinu mléčnou z svalů", "Hormony regulující trávení"], hints: ["Pocení také ochlazuje tělo výparem."] },
-  { question: "Co je pankreas (slinivka břišní)?", correctAnswer: "Žláza produkující trávicí enzymy a inzulín – regulace cukru v krvi", options: ["Žláza produkující trávicí enzymy a inzulín (regulace cukru v krvi)", "Součást tenkého střeva vstřebávající tuky", "Orgán filtrující krev jako ledviny", "Záložní játra pro detoxikaci"], hints: ["Inzulín = hormon snižující hladinu cukru v krvi."] },
-  { question: "Jak dlouho trvá přejít jídlu celou trávicí soustavou?", correctAnswer: "Přibližně 24–72 hodin – 1–3 dny", options: ["Přibližně 24–72 hodin (1–3 dny)", "Přibližně 2 hodiny", "Přibližně 1 týden", "Přibližně 30 minut"], hints: ["Záleží na složení jídla – tuky a vláknina zpomalují trávení."] },
-  { question: "Co je jícen?", correctAnswer: "Trubice vedoucí potravu z úst do žaludku", options: ["Trubice vedoucí potravu z úst do žaludku", "Část tenkého střeva", "Orgán trávící tuky", "Spojení mezi žaludkem a tlustým střevem"], hints: ["Jícen = rychlá trubka pro transport jídla."] },
-  { question: "Co způsobuje průjem?", correctAnswer: "Příliš rychlý pohyb potravy tlustým střevem – střevo nestačí vstřebat vodu", options: ["Příliš rychlý pohyb potravy tlustým střevem – střevo nestačí vstřebat vodu", "Příliš mnoho trávicích enzymů v žaludku", "Nedostatek kyseliny v žaludku", "Zánět ledvin způsobující přebytek vody v těle"], hints: ["Průjem = nebezpečí dehydratace, zejména u dětí."] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou HCl" },
+      { left: "Tenké střevo", right: "Vstřebává živiny do krve přes klky" },
+      { left: "Játra", right: "Produkují žluč a detoxikují krev" },
+      { left: "Slinivka (pankreas)", right: "Produkuje trávicí enzymy a inzulín" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ústa", right: "Rozmělnění zuby, sliny štěpí škrob" },
+      { left: "Jícen", right: "Vede potravu z úst do žaludku" },
+      { left: "Tlusté střevo", right: "Vstřebává vodu, tvoří výkaly" },
+      { left: "Konečník", right: "Uchovává a vylučuje výkaly" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Filtrují krev a tvoří moč" },
+      { left: "Plíce", right: "Vydechují CO₂ a vodní páru" },
+      { left: "Kůže (pot)", right: "Vylučují vodu, soli a dusíkaté látky" },
+      { left: "Játra (žluč)", right: "Vylučují odpadní produkty rozkladu hemoglobinu" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Churning – míchání a trávení bílkovin" },
+      { left: "Tenké střevo", right: "Finální trávení tuků, cukrů, bílkovin" },
+      { left: "Slinivka", right: "Enzymy do střeva + inzulín do krve" },
+      { left: "Žlučník", right: "Zásobník žluče" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sliny", right: "Zvlhčují potravu a štěpí škrob (amyláza)" },
+      { left: "Pepsin", right: "Enzym žaludku štěpící bílkoviny" },
+      { left: "Žluč", right: "Emulguje tuky (produkují ji játra)" },
+      { left: "Klky střeva", right: "Zvyšují plochu pro vstřebávání živin" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací nebo regulační funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Regulují množství vody a solí v těle" },
+      { left: "Plíce", right: "Udržují pH krve výdejem CO₂" },
+      { left: "Inzulín", right: "Snižuje hladinu glukózy v krvi" },
+      { left: "Glukagon", right: "Zvyšuje hladinu glukózy v krvi" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ústa", right: "Mechanické a enzymatické trávení škrobu" },
+      { left: "Žaludek", right: "Kyselé prostředí (pH 2) – trávení bílkovin" },
+      { left: "Tenké střevo", right: "Enzymatické trávení a vstřebávání živin" },
+      { left: "Tlusté střevo", right: "Vstřebávání vody a tvorba výkalů" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Játra", right: "Metabolizují živiny, produkují žluč, detoxikují" },
+      { left: "Slinivka", right: "Enzymy (lipáza, amyláza, proteáza) + inzulín" },
+      { left: "Žlučník", right: "Uchovává žluč a uvolňuje ji do střeva" },
+      { left: "Dvanáctník", right: "První část tenkého střeva přijímá enzymy" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Odstraňují ureu, přebytek solí a vody" },
+      { left: "Kůže", right: "Potní žlázy vylučují pot a ochlazují tělo" },
+      { left: "Plíce", right: "Vydechují CO₂ (odpad buněčného dýchání)" },
+      { left: "Játra", right: "Vylučují odpadní látky žlučí do střeva" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Promíchává potravu a tráví kyselinou" },
+      { left: "Tenké střevo", right: "Vstřebává glukózu, aminokyseliny, vitamíny" },
+      { left: "Tlusté střevo", right: "Vstřebává vodu, střevní bakterie pomáhají" },
+      { left: "Konečník", right: "Ukládá výkaly do vyprázdnění" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím nebo vylučovacím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Kyselinou HCl tráví bílkoviny" },
+      { left: "Ledviny", right: "Filtrují krev a tvoří moč" },
+      { left: "Játra", right: "Produkují žluč, detoxikují krev" },
+      { left: "Slinivka", right: "Produkují trávicí enzymy a inzulín" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Filtrují krev a vylučují moč" },
+      { left: "Játra", right: "Metabolické centrum – detoxikace, žluč" },
+      { left: "Tenké střevo", right: "Vstřebávání živin přes klky" },
+      { left: "Tlusté střevo", right: "Vstřebávání vody, formování výkalů" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Mechanické a chemické trávení jídla" },
+      { left: "Jícen", right: "Transport potravy do žaludku" },
+      { left: "Dvanáctník", right: "Přijímá žluč a enzymy ze slinivky" },
+      { left: "Slepé střevo (appendix)", right: "Pozůstatek, imunitní funkce" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ústa", right: "Začátek trávení – zuby a sliny" },
+      { left: "Žaludek", right: "Kyselé trávení bílkovin" },
+      { left: "Tenké střevo", right: "Vstřebávání živin do krve" },
+      { left: "Ledviny", right: "Vylučování odpadních látek z krve" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Glomerulus ledviny", right: "Filtruje krev – malé molekuly procházejí" },
+      { left: "Tubulus ledviny", right: "Zpětně vstřebává glukózu a vodu" },
+      { left: "Ureter", right: "Vede moč z ledviny do močového měchýře" },
+      { left: "Močový měchýř", right: "Ukládá moč do vyprázdnění" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou a enzymy" },
+      { left: "Tenké střevo", right: "Vstřebání cukrů, tuků, bílkovin" },
+      { left: "Slinivka", right: "Enzymy do střeva, inzulín do krve" },
+      { left: "Játra", right: "Detoxikace a tvorba žluče" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Tvoří moč – odstraňují ureu a soli" },
+      { left: "Plíce", right: "Vylučují CO₂ výdechem" },
+      { left: "Kůže", right: "Vylučují pot – vodu, soli, dusíkaté látky" },
+      { left: "Játra", right: "Vylučují bilirubin do žluče" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sliny (amyláza)", right: "Štěpí škrob v ústech na cukry" },
+      { left: "HCl v žaludku", right: "Ničí bakterie a aktivuje pepsiny" },
+      { left: "Lipáza (slinivka)", right: "Štěpí tuky na mastné kyseliny" },
+      { left: "Střevní klky", right: "Mnohonásobně zvyšují plochu vstřebávání" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Kyselé prostředí rozkladu bílkovin" },
+      { left: "Duodenum (dvanáctník)", right: "Přijímá trávicí šťávy ze slinivky a jater" },
+      { left: "Jejunum (lačník)", right: "Hlavní část tenkého střeva pro vstřebávání" },
+      { left: "Ileum (kyčelník)", right: "Vstřebává vitamín B12 a žlučové kyseliny" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Filtrují 180 litrů krve denně" },
+      { left: "Játra", right: "Metabolizují živiny po vstřebání ze střeva" },
+      { left: "Slinivka", right: "Produkují enzymy i hormony (inzulín)" },
+      { left: "Žlučník", right: "Zásobník a rezervoár žluče" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Trávení bílkovin kyselinou a enzymy" },
+      { left: "Tlusté střevo", right: "Vstřebávání vody, střevní mikrobiom" },
+      { left: "Játra", right: "Detoxikace + tvorba žluče" },
+      { left: "Slinivka", right: "Enzymy (štěpení) + inzulín (regulace)" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Míchá a tráví potravu HCl a pepsimy" },
+      { left: "Tenké střevo", right: "Vstřebává živiny do krve a lymfy" },
+      { left: "Ledviny", right: "Odstraňují odpadní látky z krve do moče" },
+      { left: "Kůže", right: "Vylučuje pot a ochlazuje tělo" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ústa", right: "Mechanické a chemické trávení" },
+      { left: "Jícen", right: "Peristaltika – posun potravy do žaludku" },
+      { left: "Žaludek", right: "Kyselé trávení" },
+      { left: "Tenké střevo", right: "Vstřebávání živin přes klky" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací nebo metabolickou funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Filtrují krev a regulují složení moče" },
+      { left: "Játra", right: "Metabolizují léky, alkohol a toxiny" },
+      { left: "Plíce", right: "Vydechují odpadní CO₂" },
+      { left: "Kůže (pot)", right: "Vylučují přebytek solí a vody" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím nebo vylučovacím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Rozkládá bílkoviny" },
+      { left: "Tenké střevo", right: "Vstřebává živiny" },
+      { left: "Tlusté střevo", right: "Vstřebává vodu" },
+      { left: "Ledviny", right: "Vylučují dusíkaté odpadní látky" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou HCl" },
+      { left: "Játra", right: "Produkují žluč k emulgaci tuků" },
+      { left: "Slinivka", right: "Enzym lipáza štěpí tuky ve střevě" },
+      { left: "Tenké střevo", right: "Vstřebává tuky přes lymfatické cévy" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím nebo vylučovacím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Trávení bílkovin" },
+      { left: "Tenké střevo", right: "Vstřebávání živin" },
+      { left: "Ledviny", right: "Filtrování krve a tvorba moče" },
+      { left: "Játra", right: "Detoxikace a tvorba žluče" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Zuby", right: "Mechanické rozmělnění potravy" },
+      { left: "Sliny", right: "Enzymatické štěpení škrobu v ústech" },
+      { left: "Žaludek", right: "Chemické trávení bílkovin kyselinou" },
+      { left: "Klky tenkého střeva", right: "Vstřebávání živin do krve" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím nebo vylučovacím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ústa", right: "Přijímání a první trávení potravy" },
+      { left: "Žaludek", right: "Kyselé trávení bílkovin" },
+      { left: "Tenké střevo", right: "Vstřebávání živin do krve" },
+      { left: "Ledviny", right: "Vylučování dusíkatého odpadu (urea)" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou a enzymy" },
+      { left: "Tenké střevo", right: "Vstřebává živiny do krve" },
+      { left: "Tlusté střevo", right: "Vstřebává vodu ze zbytků potravy" },
+      { left: "Ledviny", right: "Čistí krev a vylučují odpad moč" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Jak fungují klky tenkého střeva?", correctAnswer: "Klky – a mikroklky = výrůstky zvyšující povrch tenkého střeva na 200–300 m². Živiny difundují přes tenkou stěnu do krevních kapilár.", options: ["Klky (a mikroklky) = výrůstky zvyšující povrch tenkého střeva na 200–300 m². Živiny difundují přes tenkou stěnu do krevních kapilár.", "Klky rozmělňují potravu mechanicky jako zuby.", "Klky produkují enzymy pro trávení bílkovin.", "Klky jsou bakterie pomáhající s trávením vlákniny."], hints: ["Velký povrch = více místa pro vstřebávání živin."] },
-  { question: "Proč játra provádí detoxikaci a co to znamená?", correctAnswer: "Krev z trávicí soustavy jde nejprve do jater. Játra neutralizují toxiny – alkohol, léky, jedy z jídla a přeměňují je na méně škodlivé látky vyloučené žlučí nebo ledvinami.", options: ["Krev z trávicí soustavy jde nejprve do jater. Játra neutralizují toxiny (alkohol, léky, jedy z jídla) a přeměňují je na méně škodlivé látky vyloučené žlučí nebo ledvinami.", "Detoxikace probíhá v ledvinách, ne v játrech.", "Játra detoxikují jen alkohol – jiné toxiny jdou přímo do krve.", "Detoxikace = filtrování krve jako ledviny – játra a ledviny dělají totéž."], hints: ["Portální krevní oběh: střevo → jater → játra → srdce."] },
-  { question: "Jak ledviny rozlišují, co z krve vyloučit a co ponechat?", correctAnswer: "Glomeruly filtrují krev – malé molekuly – voda, soli, urea procházejí. Tubuly zpětně vstřebávají užitečné látky – glukózu, vodu – zbytek jde jako moč.", options: ["Glomeruly filtrují krev – malé molekuly (voda, soli, urea) procházejí. Tubuly zpětně vstřebávají užitečné látky (glukózu, vodu) – zbytek jde jako moč.", "Ledviny vylučují vše – tělo pak vstřebá co potřebuje zpět.", "Ledviny filtrují krev chemicky – přidávají enzymy, které ničí toxiny.", "Ledviny vylučují jen ureu – vodu a soli zpracovávají střeva."], hints: ["Nefron = základní filtrační jednotka ledvin."] },
-  { question: "Proč je důležité jíst vlákninu?", correctAnswer: "Vláknina urychluje pohyb potravy střevem, krmí střevní bakterie, snižuje cholesterol a zabraňuje zácpě", options: ["Vláknina urychluje pohyb potravy střevem, krmí střevní bakterie, snižuje cholesterol a zabraňuje zácpě", "Vláknina se vstřebává v tenkém střevě jako bílkoviny.", "Vláknina způsobuje průjem, proto je třeba ji omezit.", "Vláknina je zdroj energie – spaluje se v žaludku."], hints: ["Vláknina = nestravitelná složka potravy (zelenina, ovoce, celozrnné)."] },
-  { question: "Jak střevní mikrobiom ovlivňuje zdraví?", correctAnswer: "Biliony bakterií v tlustém střevě pomáhají trávit vlákninu, produkují vitamíny – K, B12, chrání před patogeny a ovlivňují imunitu i náladu.", options: ["Biliony bakterií v tlustém střevě pomáhají trávit vlákninu, produkují vitamíny (K, B12), chrání před patogeny a ovlivňují imunitu i náladu.", "Střevní bakterie jsou škodlivé – způsobují infekce.", "Střevní mikrobiom ovlivňuje jen trávení tuků.", "Střevo je sterilní – bakterie v něm způsobují nemoci."], hints: ["Střevní mikrobiom = 1,5–2 kg bakterií v tlustém střevě."] },
-  { question: "Jak diabetes (cukrovka) narušuje trávení a vylučování?", correctAnswer: "Bez dostatku inzulínu – pankreas nemůže glukóza vstoupit do buněk → hromadí se v krvi → ledviny ji vylučují do moče – glukóza v moči → nadměrné vylučování moče.", options: ["Bez dostatku inzulínu (pankreas) nemůže glukóza vstoupit do buněk → hromadí se v krvi → ledviny ji vylučují do moče (glukóza v moči) → nadměrné vylučování moče.", "Cukrovka ovlivňuje jen trávení škrobů – ostatní živiny nejsou postiženy.", "Inzulín produkují ledviny – jejich porucha způsobuje cukrovku.", "Diabetes způsobuje, že játra přestávají metabolizovat glukózu."], hints: ["Diabetes mellitus = cukrová nemoc. Inzulín = hormon z pankreatu."] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Proč se po tučném jídle cítíme déle sytí než po sladkém?", correctAnswer: "Tuky se tráví nejpomaleji – lipázy v tenkém střevě, žluč emulguje. Cukry se vstřebají rychle → rychlý pokles glykémie → hlad. Tuky udržují sytost déle.", options: ["Tuky se tráví nejpomaleji (lipázy v tenkém střevě, žluč emulguje). Cukry se vstřebají rychle → rychlý pokles glykémie → hlad. Tuky udržují sytost déle.", "Tučné jídlo obsahuje více kalorií – proto nasytí více.", "Cukry zastavují trávení a způsobují sytost.", "Bílkoviny způsobují sytost – tuk i cukry jsou stejně rychlé."], hints: ["Glykemický index = rychlost vzestupu cukru v krvi po jídle."] },
-  { question: "Jak alkohol poškozuje játra?", correctAnswer: "Alkohol je pro játra prioritní toxin – metabolizují ho přednostně. Chronické přetěžování → zánět – hepatitida → jizevnatá tkáň – cirhóza → jaterní selhání.", options: ["Alkohol je pro játra prioritní toxin – metabolizují ho přednostně. Chronické přetěžování → zánět (hepatitida) → jizevnatá tkáň (cirhóza) → jaterní selhání.", "Alkohol poškozuje ledviny, ne játra.", "Alkohol se metabolizuje v žaludku – játra nejsou zatížena.", "Játra zpracovávají alkohol bez problémů – poškozují se jen plíce."], hints: ["Cirhóza jater = nezvratné poškození jaterní tkáně."] },
-  { question: "Proč dialýza (umělá ledvina) je záchranou při selhání ledvin?", correctAnswer: "Dialyzační přístroj filtruje krev umělou membránou – odstraňuje ureu, přebytek solí a vody, které zdravé ledviny normálně vylučují. Pacient musí na dialýzu 3× týdně.", options: ["Dialyzační přístroj filtruje krev umělou membránou – odstraňuje ureu, přebytek solí a vody, které zdravé ledviny normálně vylučují. Pacient musí na dialýzu 3× týdně.", "Dialýza léčí ledviny a obnovuje jejich funkci.", "Dialýza je záložní metoda pro játra při jejich selhání.", "Dialýza je umělé trávení pro lidi, kteří nemohou jíst."], hints: ["Urea = hlavní odpadní látka z metabolismu bílkovin."] },
-  { question: "Jak střevní bakterie ovlivňují duševní zdraví?", correctAnswer: "Střevo-mozková osa: bakterie produkují neurotransmitery – serotonin, dopamin přes bloudivý nerv. Stav mikrobiomu ovlivňuje náladu, úzkost a koncentraci.", options: ["Střevo-mozková osa: bakterie produkují neurotransmitery (serotonin, dopamin) přes bloudivý nerv. Stav mikrobiomu ovlivňuje náladu, úzkost a koncentraci.", "Střevo a mozek spolu nekomunikují – jsou odděleny hematoencefalickou bariérou.", "Střevní bakterie ovlivňují jen fyzické zdraví – duševní závisí na mozku.", "Serotonin se tvoří jen v mozku – střevo ho produkovat neumí."], hints: ["90 % serotoninu (hormonu štěstí) se tvoří ve střevě."] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const TRAVICISOUSTAVAVYLUCOVACISOUSTAVA: TopicMetadata[] = [
@@ -59,7 +330,7 @@ export const TRAVICISOUSTAVAVYLUCOVACISOUSTAVA: TopicMetadata[] = [
     goals: ["Popsat cestu potravy trávicí soustavou", "Vysvětlit funkce jater a pankreatu", "Popsat vylučovací orgány a jejich funkce"],
     boundaries: ["Neprobírá biochemii enzymů do hloubky", "Neprobírá trávicí choroby"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,

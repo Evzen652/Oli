@@ -29,6 +29,18 @@ const POOL_L1: { sentence: string; blank: string }[] = [
   { sentence: "Vypadlo ___ stolu.", blank: "ze" },
   { sentence: "Jede ___ dědou.", blank: "s" },
   { sentence: "Vylezl ___ díry.", blank: "z" },
+  { sentence: "Vyskočil ___ auta.", blank: "z" },
+  { sentence: "Šla ___ babičkou.", blank: "s" },
+  { sentence: "Vzal míč ___ tašky.", blank: "ze" },
+  { sentence: "Hrají ___ sousedy.", blank: "se" },
+  { sentence: "Přišel ___ školy unavený.", blank: "ze" },
+  { sentence: "Jede ___ celou rodinou.", blank: "s" },
+  { sentence: "Sníh padal ___ střechy.", blank: "ze" },
+  { sentence: "Cestoval ___ přítelem.", blank: "s" },
+  { sentence: "Ryba vyskočila ___ vody.", blank: "z" },
+  { sentence: "Šel na výlet ___ třídou.", blank: "se" },
+  { sentence: "Vypadl ___ okna míč.", blank: "z" },
+  { sentence: "Sedí ___ sestrou.", blank: "se" },
 ];
 
 // Level 2: delsi vety
@@ -49,6 +61,20 @@ const POOL_L2: { sentence: string; blank: string }[] = [
   { sentence: "Psal úkol ___ velkou pečlivostí.", blank: "s" },
   { sentence: "Odskočil ___ cesty, aby ho auto nesrazilo.", blank: "ze" },
   { sentence: "Nakupoval ___ starší sestrou.", blank: "se" },
+  { sentence: "Vrátil knihu ___ police.", blank: "ze" },
+  { sentence: "Šel do parku ___ sousedovým psem.", blank: "se" },
+  { sentence: "Vytáhl zápisník ___ batohu.", blank: "z" },
+  { sentence: "Pracoval ___ zápalem celý týden.", blank: "se" },
+  { sentence: "Přijel ___ Brna na návštěvu.", blank: "z" },
+  { sentence: "Jela autobusem ___ babičkou.", blank: "s" },
+  { sentence: "Snesl krabici ___ police.", blank: "ze" },
+  { sentence: "Vrátil se domů ___ starším bratrem.", blank: "se" },
+  { sentence: "Psal dopis ___ velkou pečlivostí.", blank: "s" },
+  { sentence: "Vykoukl ___ okna a zamával.", blank: "z" },
+  { sentence: "Diskutoval ___ učitelkou o knize.", blank: "s" },
+  { sentence: "Vylezl ___ podkroví a přinesl fotografie.", blank: "z" },
+  { sentence: "Pomáhal ___ nadšením celé odpoledne.", blank: "se" },
+  { sentence: "Vzal si kabát ___ věšáku.", blank: "ze" },
 ];
 
 // Level 3: souvetí
@@ -69,12 +95,25 @@ const POOL_L3: { sentence: string; blank: string }[] = [
   { sentence: "Jela autobusem ___ babičkou na druhý konec města.", blank: "s" },
   { sentence: "Vykoukl ___ okna a zamával kamarádům.", blank: "z" },
   { sentence: "Přemýšlel ___ velkou pozorností nad každou větou.", blank: "s" },
+  { sentence: "Vytáhl zápisník ___ tašky a opsal úkol.", blank: "z" },
+  { sentence: "Cestoval ___ přítelem, i když bylo špatné počasí.", blank: "s" },
+  { sentence: "Vypadl míč ___ stolu a kutálel se po podlaze.", blank: "ze" },
+  { sentence: "Šel ven ___ psem, aby se procházeli v parku.", blank: "se" },
+  { sentence: "Přinesl košík ___ zahrady, kde rostly jahody.", blank: "ze" },
+  { sentence: "Sedí ___ sestrou u okna a čtou si.", blank: "se" },
+  { sentence: "Vypadlo pero ___ kapsy kabátu na zem.", blank: "z" },
+  { sentence: "Jede ___ babičkou na víkend, těší se.", blank: "s" },
+  { sentence: "Vrátil se ___ hory, kde strávil celý týden.", blank: "z" },
+  { sentence: "Pracoval ___ soustředěním, i když byl unavený.", blank: "s" },
+  { sentence: "Vylezl ___ sklepa a přinesl zavařeniny.", blank: "ze" },
+  { sentence: "Vylovil rybu ___ rybníka a pustil ji zpátky.", blank: "z" },
+  { sentence: "Přivítal hosty ___ srdečným úsměvem u dveří.", blank: "se" },
+  { sentence: "Hrál si ___ spolužáky, dokud ho maminka nezavolala.", blank: "se" },
 ];
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ sentence, blank }) => ({
+  return shuffle(pool).slice(0, 30).map(({ sentence, blank }) => ({
     question: `Doplň správnou předložku: "${sentence}"`,
     correctAnswer: blank,
     options: ["s", "z", "se", "ze"],

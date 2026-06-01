@@ -9,44 +9,275 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Jaký je tvar Země?", correctAnswer: "Geoid – zploštělá koule", options: ["Geoid – zploštělá koule", "Dokonalá koule", "Disk", "Elipsa"], hints: ["Země je trochu zploštělá u pólů."] },
-  { question: "Jak dlouho trvá jedna rotace Země kolem své osy?", correctAnswer: "24 hodin – jeden den", options: ["24 hodin (jeden den)", "365 dní", "12 hodin", "7 dní"], hints: ["Rotace způsobuje střídání dne a noci."] },
-  { question: "Co způsobuje střídání dne a noci?", correctAnswer: "Rotace Země kolem vlastní osy", options: ["Rotace Země kolem vlastní osy", "Oběh Země kolem Slunce", "Pohyb Měsíce kolem Země", "Sklon zemské osy"], hints: ["Den a noc se mění každých 24 hodin."] },
-  { question: "Jak dlouho trvá jeden oběh Země kolem Slunce?", correctAnswer: "365,25 dne – jeden rok", options: ["365,25 dne (jeden rok)", "24 hodin", "30 dní", "12 hodin"], hints: ["Proto máme přestupný rok každé 4 roky."] },
-  { question: "Co způsobuje střídání ročních období?", correctAnswer: "Sklon zemské osy – 23,5° při oběhu kolem Slunce", options: ["Sklon zemské osy (23,5°) při oběhu kolem Slunce", "Vzdálenost Země od Slunce", "Rotace Země kolem osy", "Pohyb Měsíce"], hints: ["V zimě je severní polokoule odkloněná od Slunce."] },
-  { question: "Kdy nastává nejdelší den v roce na severní polokouli?", correctAnswer: "21. června – letní slunovrat", options: ["21. června (letní slunovrat)", "21. prosince", "21. března", "23. září"], hints: ["V létě je severní polokoule nakloněná ke Slunci."] },
-  { question: "Co je to přestupný rok?", correctAnswer: "Rok s 366 dny, vyskytuje se každé 4 roky", options: ["Rok s 366 dny, vyskytuje se každé 4 roky", "Rok s 364 dny", "Rok, kdy se mění časová pásma", "Rok, kdy je Slunce nejblíže Zemi"], hints: ["Přibývá 29. únor."] },
-  { question: "Kolik časových pásem má Země?", correctAnswer: "24 časových pásem", options: ["24 časových pásem", "12 časových pásem", "36 časových pásem", "10 časových pásem"], hints: ["Každé pásmo odpovídá 15° zeměpisné délky."] },
-  { question: "Co je rovnodennost?", correctAnswer: "Den, kdy je den stejně dlouhý jako noc – 21. března a 23. září", options: ["Den, kdy je den stejně dlouhý jako noc (21. března a 23. září)", "Den, kdy je nejdelší noc v roce", "Den, kdy Slunce svítí nejsilněji", "Den, kdy začíná přestupný rok"], hints: ["Rovnodennost = stejně dlouhý den i noc."] },
-  { question: "Jak velký je obvod rovníku Země přibližně?", correctAnswer: "40 075 km", options: ["40 075 km", "12 742 km", "6 371 km", "100 000 km"], hints: ["Průměr Země je asi 12 742 km."] },
-  { question: "V jakém časovém pásmu leží Česká republika?", correctAnswer: "SEČ – UTC+1, v létě SELČ – UTC+2", options: ["SEČ (UTC+1), v létě SELČ (UTC+2)", "UTC+0 celoročně", "UTC+3", "UTC-1"], hints: ["Česká republika je ve střední Evropě."] },
-  { question: "Kdy nastává zimní slunovrat na severní polokouli?", correctAnswer: "21. prosince – nejkratší den", options: ["21. prosince (nejkratší den)", "21. června", "23. září", "21. března"], hints: ["V zimě je severní polokoule odkloněná od Slunce."] },
-  { question: "Jak se pohybuje Slunce po obloze každý den?", correctAnswer: "Vychází na východě, přechází přes jih a zapadá na západě", options: ["Vychází na východě, přechází přes jih a zapadá na západě", "Vychází na severu a zapadá na jihu", "Pohybuje se ze západu na východ", "Zůstává na místě a Země se otáčí kolem něj"], hints: ["Je to zdánlivý pohyb – ve skutečnosti se otáčí Země."] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Seřaď části dne od rána do noci ve správném pořadí.",
+    correctAnswer: "order",
+    items: [
+      "Ráno – vychází slunce na východě",
+      "Dopoledne – slunce stoupá na obloze",
+      "Poledne – slunce je nejvýše",
+      "Odpoledne – slunce klesá",
+      "Večer – slunce zapadá na západě",
+      "Noc – tma, slunce svítí na druhé straně Země",
+    ],
+  },
+  {
+    question: "Seřaď roční období v pořadí, ve kterém přicházejí (od jara).",
+    correctAnswer: "order",
+    items: ["Jaro", "Léto", "Podzim", "Zima"],
+  },
+  {
+    question: "Seřaď kroky, jak Země způsobuje střídání dne a noci.",
+    correctAnswer: "order",
+    items: [
+      "Slunce osvětluje polovinu Země",
+      "Zemská osa se otáčí ze západu na východ",
+      "Oblast otočená ke Slunci má den",
+      "Oblast otočená od Slunce má noc",
+      "Po 24 hodinách se otočí celá Země",
+    ],
+  },
+  {
+    question: "Seřaď měsíce roku od začátku (leden) do konce.",
+    correctAnswer: "order",
+    items: ["Leden", "Duben", "Červenec", "Říjen", "Prosinec"],
+  },
+  {
+    question: "Seřaď klíčové dny roku (slunovraty a rovnodennosti) od začátku roku.",
+    correctAnswer: "order",
+    items: [
+      "21. března – jarní rovnodennost (začátek jara)",
+      "21. června – letní slunovrat (nejdelší den)",
+      "23. září – podzimní rovnodennost (začátek podzimu)",
+      "21. prosince – zimní slunovrat (nejkratší den)",
+    ],
+  },
+  {
+    question: "Seřaď výšku slunce na obloze během dne (od nejníže po nejvýše a zpět).",
+    correctAnswer: "order",
+    items: [
+      "Východ slunce – slunce nízko na horizontu",
+      "Dopoledne – slunce stoupá",
+      "Poledne – slunce nejvýše (kulminace)",
+      "Odpoledne – slunce klesá",
+      "Západ slunce – slunce opět nízko na horizontu",
+    ],
+  },
+  {
+    question: "Seřaď od nejkratšího po nejdelší časový úsek.",
+    correctAnswer: "order",
+    items: [
+      "Sekunda",
+      "Minuta",
+      "Hodina",
+      "Den (24 hodin)",
+      "Týden",
+      "Měsíc",
+      "Rok (365 dní)",
+    ],
+  },
+  {
+    question: "Seřaď kroky oběhu Země kolem Slunce od jara.",
+    correctAnswer: "order",
+    items: [
+      "Jaro – severní polokoule se naklání ke Slunci",
+      "Léto – slunce nejvýše, nejdelší dny",
+      "Podzim – rovnodennost, den = noc",
+      "Zima – nejkratší dny, slunce nízko",
+      "Jaro opět – nový rok dokončen",
+    ],
+  },
+  {
+    question: "Seřaď části dne od půlnoci do následující půlnoci.",
+    correctAnswer: "order",
+    items: [
+      "Půlnoc – 00:00",
+      "Svítání – slunce stoupá pod horizontem",
+      "Východ slunce – začíná den",
+      "Poledne – 12:00, slunce nejvýše",
+      "Západ slunce – začíná soumrak",
+      "Večer – tma se prohlubuje",
+      "Půlnoc opět – 24:00",
+    ],
+  },
+  {
+    question: "Seřaď délku dne v průběhu roku na severní polokouli od nejkratšího po nejdelší.",
+    correctAnswer: "order",
+    items: [
+      "21. prosince – nejkratší den (~8 hodin světla)",
+      "21. března – rovnodennost (12 hodin světla)",
+      "21. června – nejdelší den (~16 hodin světla)",
+    ],
+  },
+  {
+    question: "Seřaď kroky vzniku stínu při pohybu slunce.",
+    correctAnswer: "order",
+    items: [
+      "Ráno – dlouhý stín směřuje na západ",
+      "Dopoledne – stín se zkracuje",
+      "Poledne – stín nejkratší, směřuje na sever",
+      "Odpoledne – stín se prodlužuje",
+      "Večer – dlouhý stín směřuje na východ",
+    ],
+  },
+  {
+    question: "Seřaď planety sluneční soustavy od nejbližší ke Slunci.",
+    correctAnswer: "order",
+    items: [
+      "Merkur – nejblíže Slunci",
+      "Venuše",
+      "Země",
+      "Mars",
+      "Jupiter – největší planeta",
+    ],
+  },
+  {
+    question: "Seřaď kroky, jak slunce mění výšku v průběhu roku (jaro → zima).",
+    correctAnswer: "order",
+    items: [
+      "Jaro – slunce stoupá výš každým dnem",
+      "Léto – slunce v poledne nejvýše v roce",
+      "Podzim – slunce klesá níž každým dnem",
+      "Zima – slunce v poledne nejníže v roce",
+    ],
+  },
+  {
+    question: "Seřaď fáze Měsíce od novu do úplňku a zpět.",
+    correctAnswer: "order",
+    items: [
+      "Nov – Měsíc není vidět",
+      "Srpek (první čtvrt) – vidět pravá část",
+      "Úplněk – Měsíc celý osvětlený",
+      "Srpek (poslední čtvrt) – vidět levá část",
+      "Nov opět – cyklus se opakuje",
+    ],
+  },
+  {
+    question: "Seřaď kroky, jak se změnila délka dne od jarní rovnodennosti do zimního slunovratu.",
+    correctAnswer: "order",
+    items: [
+      "21. března – den = noc (12 h / 12 h)",
+      "21. června – nejdelší den v roce",
+      "23. září – den = noc opět",
+      "21. prosince – nejkratší den v roce",
+    ],
+  },
+  {
+    question: "Seřaď od největšího po nejmenší vesmírný objekt.",
+    correctAnswer: "order",
+    items: [
+      "Galaxie (Mléčná dráha)",
+      "Sluneční soustava",
+      "Slunce",
+      "Země",
+      "Měsíc",
+    ],
+  },
+  {
+    question: "Seřaď kroky, jak vznikají roční období na Zemi.",
+    correctAnswer: "order",
+    items: [
+      "Zemská osa je nakloněna o 23,5°",
+      "Při oběhu kolem Slunce se polokoule střídavě naklánějí",
+      "Nakloněná polokoule dostává více světla → léto",
+      "Odkloněná polokoule dostává méně světla → zima",
+      "Po půlroku se role obrátí",
+    ],
+  },
+  {
+    question: "Seřaď události od východu do západu slunce.",
+    correctAnswer: "order",
+    items: [
+      "Svítání – obloha se rozjasňuje",
+      "Východ slunce – slunce se objeví nad horizontem",
+      "Dopoledne – slunce stoupá nad obzor",
+      "Poledne – slunce kulminuje (nejvýše)",
+      "Odpoledne – slunce klesá",
+      "Západ slunce – slunce zmizí pod horizont",
+      "Soumrak – obloha ještě prosvětlená",
+    ],
+  },
+  {
+    question: "Seřaď kroky rotace Země od začátku dne na nultém poledníku.",
+    correctAnswer: "order",
+    items: [
+      "Nultý poledník (Greenwich) – polední slunce",
+      "Česká republika (15° V.d.) – poledne o 1 hodinu dříve",
+      "New York (75° Z.d.) – poledne o 5 hodin pozdější",
+      "Tokio (135° V.d.) – poledne o 9 hodin dřívější",
+      "Zemský poledník se otočil o 360° – opět polední",
+    ],
+  },
+  {
+    question: "Seřaď čísla hodin od rána do noci (celý den).",
+    correctAnswer: "order",
+    items: [
+      "6:00 – svítá",
+      "9:00 – dopoledne",
+      "12:00 – poledne",
+      "15:00 – odpoledne",
+      "18:00 – večer",
+      "21:00 – soumrak",
+      "24:00 – půlnoc",
+    ],
+  },
+  {
+    question: "Seřaď kroky, jak rotace Země způsobuje zdánlivý pohyb Slunce.",
+    correctAnswer: "order",
+    items: [
+      "Slunce stojí, Země se otáčí ze západu na východ",
+      "Pozorovatel na Zemi vidí Slunce putovat opačně",
+      "Ráno Slunce vychází na východě",
+      "V poledne kulminuje na jihu",
+      "Večer zapadá na západě",
+    ],
+  },
+  {
+    question: "Seřaď roční období a jejich typické rysy od jara do zimy.",
+    correctAnswer: "order",
+    items: [
+      "Jaro – teploty stoupají, rostliny kvetou",
+      "Léto – nejteplejší, nejdelší dny",
+      "Podzim – teploty klesají, listí opadá",
+      "Zima – nejchladnější, nejkratší dny",
+    ],
+  },
+  {
+    question: "Seřaď kroky, jak roste den v průběhu roku (od zimního slunovratu).",
+    correctAnswer: "order",
+    items: [
+      "21. prosince – nejkratší den",
+      "Leden–únor – den se pomalu prodlužuje",
+      "21. března – rovnodennost, den = noc",
+      "Duben–květen – dny stále delší",
+      "21. června – nejdelší den",
+    ],
+  },
+  {
+    question: "Seřaď od nejmenšího po největší počet hodin denního světla.",
+    correctAnswer: "order",
+    items: [
+      "Zimní slunovrat (21. 12.) – ~8 hodin světla",
+      "Podzimní rovnodennost (23. 9.) – 12 hodin světla",
+      "Letní slunovrat (21. 6.) – ~16 hodin světla",
+    ],
+  },
+  {
+    question: "Seřaď kroky, jak se mění délka stínu v průběhu dne.",
+    correctAnswer: "order",
+    items: [
+      "Ráno – stín nejdelší (slunce nízko)",
+      "Dopoledne – stín se zkracuje",
+      "Poledne – stín nejkratší (slunce nejvýše)",
+      "Odpoledne – stín se opět prodlužuje",
+      "Večer – stín opět nejdelší",
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Proč je Země zploštělá u pólů a vydutá u rovníku?", correctAnswer: "Odstředivá síla způsobená rotací Země způsobuje zploštění u pólů a vydutí u rovníku", options: ["Odstředivá síla způsobená rotací Země způsobuje zploštění u pólů a vydutí u rovníku", "Gravitace Měsíce táhne Zemi ze stran", "Zemské nitro je tekuté a vytlačuje povrch", "Je to způsobeno srážkami s asteroidy v minulosti"], hints: ["Rotace způsobuje odstředivou sílu – nejsilnější na rovníku."] },
-  { question: "Proč je v létě na severní polokouli teplo, zatímco na jižní je zima?", correctAnswer: "Severní polokoule je v létě nakloněna ke Slunci – dopadá na ni více světla pod menším úhlem", options: ["Severní polokoule je v létě nakloněna ke Slunci – dopadá na ni více světla pod menším úhlem", "V létě je Země blíže ke Slunci", "Sluneční paprsky jsou v létě intenzivnější", "Atmosféra lépe propouští světlo v létě"], hints: ["Sklon osy = 23,5°. Paprsky pod ostrým úhlem zahřívají méně."] },
-  { question: "Jak se mění délka dne v průběhu roku na severní polokouli?", correctAnswer: "Od nejkratšího dne – 21. 12. přes rovnodennost – 21. 3. k nejdelšímu dni – 21. 6. a zpět", options: ["Od nejkratšího dne (21. 12.) přes rovnodennost (21. 3.) k nejdelšímu dni (21. 6.) a zpět", "Den je celoročně stejně dlouhý na severní polokouli", "Den se prodlužuje jen v létě, v zimě zůstává stálý", "Nejkratší den je 23. 9. a nejdelší 21. 3."], hints: ["Sklon zemské osy způsobuje, že Slunce stoupá v létě výše nad obzor."] },
-  { question: "Co je to greenwichský poledník a k čemu slouží?", correctAnswer: "Nultý poledník – 0° délky procházející Greenwich u Londýna – základ pro určení časových pásem", options: ["Nultý poledník (0° délky) procházející Greenwich u Londýna – základ pro určení časových pásem", "Poledník oddělující Evropu od Asie", "Datumová hranice mezinárodní datové linie", "Poledník určující polohu severního magnetického pólu"], hints: ["Každé časové pásmo je posunuto o 1 hodinu a 15° zeměpisné délky."] },
-  { question: "Proč musíme přidávat 29. únor každé 4 roky?", correctAnswer: "Rok trvá 365,25 dne – čtvrt dne se za 4 roky nasčítá na celý den navíc – 29. únor", options: ["Rok trvá 365,25 dne – čtvrt dne se za 4 roky nasčítá na celý den navíc (29. únor)", "Měsíc má nepravidelný oběh a způsobuje nerovnoměrnost", "Slunce se mírně zpomaluje, proto potřebujeme korekci", "Přestupný rok byl zvykový svátek v Antickém Řecku"], hints: ["365 × 4 = 1 460 dní, ale skutečně uběhne 1 461 dní – proto 29. únor."] },
-  { question: "Proč jsou noci v zimě delší než v létě?", correctAnswer: "Zemská osa je nakloněna – v zimě míří severní polokoule od Slunce, takže Slunce svítí méně hodin", options: ["Zemská osa je nakloněna – v zimě míří severní polokoule od Slunce, takže Slunce svítí méně hodin", "Země se v zimě otáčí pomaleji", "Slunce vychází dřív v létě než v zimě kvůli jiné dráze", "Atmosféra absorbuje světlo delší dobu v zimě"], hints: ["Sklon osy: 23,5°. Čím více nakloněno od Slunce, tím kratší den."] },
-  { question: "Na severním pólu je 6 měsíců nepřetržité noci. Proč?", correctAnswer: "Severní pól je v zimě zcela odvrácen od Slunce kvůli sklonu osy – ani rotace Země ho nepřiblíží ke Slunci", options: ["Severní pól je v zimě zcela odvrácen od Slunce kvůli sklonu osy – ani rotace Země ho nepřiblíží ke Slunci", "Sever leží za atmosférou, která blokuje světlo", "Magnetické pole odráží sluneční světlo od pólů", "Na pólu se Země neotáčí, proto tam není den ani noc"], hints: ["Polární noc a polární den jsou extrémní důsledky sklonu zemské osy."] },
-  { question: "Jak se liší rotace od oběhu Země?", correctAnswer: "Rotace = otočení Země kolem vlastní osy – 24 h, oběh = pohyb Země kolem Slunce – 365,25 dne", options: ["Rotace = otočení Země kolem vlastní osy (24 h), oběh = pohyb Země kolem Slunce (365,25 dne)", "Rotace = pohyb kolem Slunce, oběh = otočení kolem osy", "Obě jsou stejné, jen různá slova", "Rotace trvá rok, oběh trvá den"], hints: ["Rotace → den/noc. Oběh → rok."] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Vysvětli, proč v létě na severní polokouli je teplo, ačkoli je Země v létě ve skutečnosti dál od Slunce než v zimě.", correctAnswer: "Roční období závisí na sklonu osy – 23,5°, nikoli na vzdálenosti. V létě dopadají paprsky kolměji → více energie na m². V zimě je Země blíže, ale paprsky dopadají šikmo.", options: ["Roční období závisí na sklonu osy (23,5°), nikoli na vzdálenosti. V létě dopadají paprsky kolměji → více energie na m². V zimě je Země blíže, ale paprsky dopadají šikmo.", "V létě je Země blíže ke Slunci, to způsobuje teplo.", "Vzdálenost i sklon osy se kompenzují – výsledek je teplo v létě.", "Atmosféra lépe propouští světlo v létě než v zimě."], hints: ["Klíč je úhel dopadajících paprsků, ne vzdálenost."] },
-  { question: "Jak by se změnil život na Zemi, kdyby zemská osa nebyla nakloněna?", correctAnswer: "Neexistovala by roční období – na celé Zemi by byl stále stejný klimatický vzorec. Den by byl vždy stejně dlouhý jako noc – 12 h/12 h na všech místech.", options: ["Neexistovala by roční období – na celé Zemi by byl stále stejný klimatický vzorec. Den by byl vždy stejně dlouhý jako noc (12 h/12 h) na všech místech.", "Roku by bylo více dní, protože by se Země točila rychleji.", "Zima a léto by se střídaly každý měsíc místo každé půlroku.", "Neexistoval by den a noc – Země by vždy svítila jen z jedné strany."], hints: ["Sklon osy způsobuje roční období. Bez sklonu = bez ročních období."] },
-  { question: "Jak funguje letní čas a proč ho zavedli?", correctAnswer: "V létě se hodiny posunou o 1 hodinu dopředu – SELČ = UTC+2, aby lidé lépe využívali denního světla – méně elektřiny na osvětlení večer.", options: ["V létě se hodiny posunou o 1 hodinu dopředu (SELČ = UTC+2), aby lidé lépe využívali denního světla – méně elektřiny na osvětlení večer.", "V létě se hodiny posunou zpět, aby byl večer delší.", "Letní čas přizpůsobuje hodiny pohybu Slunce na obloze.", "Letní čas zavedli kvůli zemědělcům, aby vstávali dřív."], hints: ["V březnu přidáme hodinu, v říjnu odebereme."] },
-  { question: "Proč jsou rovnodennosti jen dvakrát ročně?", correctAnswer: "Rovnodennosti nastávají, když zemská osa není nakloněna ani k Slunci, ani od něj – to nastane jen při přechodu mezi létem a zimou – 21. 3. a 23. 9..", options: ["Rovnodennosti nastávají, když zemská osa není nakloněna ani k Slunci, ani od něj – to nastane jen při přechodu mezi létem a zimou (21. 3. a 23. 9.).", "Rovnodennosti jsou způsobeny fázemi Měsíce.", "Rovnodennosti nastávají jen v tropech, na rovníku je den vždy stejně dlouhý.", "Rovnodennosti se vztahují jen na polární oblasti."], hints: ["Osa je nakloněna 23,5° – rovnodennost nastává ve chvíli, kdy osa míří kolmo ke Slunci."] },
-  { question: "Proč je cestování na západ nebo na východ spojeno se 'zpožděním'?", correctAnswer: "Časová pásma se mění o 1 hodinu na každých 15° zeměpisné délky – letadlo letící na západ 'dohání' slunce, na východ ho 'přeskakuje'.", options: ["Časová pásma se mění o 1 hodinu na každých 15° zeměpisné délky – letadlo letící na západ 'dohání' slunce, na východ ho 'přeskakuje'.", "Letadlo letí pomaleji ve směru větru, proto trvá déle.", "Biologické hodiny se resetují při přechodu rovníku.", "Gravitace se mění v různých pásmech a ovlivňuje rytmus těla."], hints: ["Jet lag = desynchronizace biologických hodin a místního času."] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 25);
 }
 
 export const ZEMEJAKOPLANETATVARROTACEOBEHSTRIDANIDNEANOCI: TopicMetadata[] = [
@@ -63,7 +294,7 @@ export const ZEMEJAKOPLANETATVARROTACEOBEHSTRIDANIDNEANOCI: TopicMetadata[] = [
     goals: ["Vysvětlit střídání dne a noci rotací Země", "Popsat vztah sklonu osy k ročním obdobím", "Určit data slunovratů a rovnodenností"],
     boundaries: ["Neprobírá precesi zemské osy", "Neprobírá přesnou astronomii oběžných drah"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    inputType: "drag_order",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,

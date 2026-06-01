@@ -9,60 +9,76 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[] }
+interface TFItem { q: string; a: "ano" | "ne"; hint: string }
 
-const POOL_L1: QA[] = [
-  { q: "Jaký reklamní trik používá slogan 'Jednou ochutnáš, navždy zůstaneš'?", a: "opakování a návykovost", opts: ["opakování a návykovost", "slavná osobnost", "falešná naléhavost", "emocionální apel"] },
-  { q: "Reklama říká: 'Slavný sportovec pije tento nápoj.' — jaký trik?", a: "slavná osobnost (celebrita doporučuje)", opts: ["slavná osobnost (celebrita doporučuje)", "opakování", "falešná naléhavost", "zdánlivé výhody"] },
-  { q: "Reklama říká: 'Jen dnes! Poslední kusy!' — jaký trik?", a: "falešná naléhavost", opts: ["falešná naléhavost", "emocionální apel", "slavná osobnost", "opakování"] },
-  { q: "Reklama říká: 'Milujte svou rodinu — kupte náš produkt.' — jaký trik?", a: "emocionální apel (emoce)", opts: ["emocionální apel (emoce)", "slavná osobnost", "falešná naléhavost", "opakování"] },
-  { q: "Reklama říká: 'O 20% lepší!' — co by nás mělo zaujmout?", a: "Čím lepší? Oproti čemu? — zdánlivá výhoda bez základu", opts: ["Čím lepší? Oproti čemu? — zdánlivá výhoda bez základu", "Je to pravda — věříme číslu", "Slavná osobnost to říká", "Je to falešná naléhavost"] },
-  { q: "Co je cílem reklamy?", a: "přesvědčit nás ke koupi nebo změně názoru", opts: ["přesvědčit nás ke koupi nebo změně názoru", "informovat nás o světě", "poučit nás o zdraví", "pobavit nás"] },
-  { q: "Manipulativní komunikace je:", a: "sdělení, které záměrně ovlivňuje bez logických argumentů", opts: ["sdělení, které záměrně ovlivňuje bez logických argumentů", "sdělení s pravdivými fakty", "popis věcí a lidí", "neutrální zpráva"] },
-  { q: "Co je slogan?", a: "krátká, zapamatovatelná reklamní věta", opts: ["krátká, zapamatovatelná reklamní věta", "dlouhý text o výrobku", "podmínky záruky", "technický popis výrobku"] },
-  { q: "Proč reklamy opakují slogan?", a: "aby se zarylo do paměti — efekt opakování", opts: ["aby se zarylo do paměti — efekt opakování", "protože nemají jiný obsah", "aby text byl delší", "protože to je zákonná povinnost"] },
-  { q: "Reklama říká: 'Vědci dokázali, že...' bez citace — jaký trik?", a: "falešná autorita (zdánlivý vědecký základ)", opts: ["falešná autorita (zdánlivý vědecký základ)", "emocionální apel", "slavná osobnost", "opakování"] },
-  { q: "Jak rozpoznáme manipulativní reklamní trik?", a: "Ptáme se: Je to pravda? Jaký je základ tvrzení?", opts: ["Ptáme se: Je to pravda? Jaký je základ tvrzení?", "Věříme všemu v reklamě", "Porovnáme s jinými reklamami", "Zeptáme se slavné osobnosti"] },
-  { q: "Proč reklamy používají krásné lidi a obrazy?", a: "aby vyvolaly kladné emoce a touhu po produktu", opts: ["aby vyvolaly kladné emoce a touhu po produktu", "protože zákon to nařizuje", "protože je to levnější", "aby informovaly o vlastnostech"] },
-  { q: "Co znamená 'falešná naléhavost' v reklamě?", a: "Říká 'kupte teď', i když zboží není opravdu vzácné", opts: ["Říká 'kupte teď', i když zboží není opravdu vzácné", "Nabízí levnější zboží", "Říká pravdu o nedostatku zboží", "Informuje o slevě"] },
-  { q: "Jak nás reklamy manipulují přes emoce?", a: "Propojují produkt s rodinou, přátelstvím, štěstím", opts: ["Propojují produkt s rodinou, přátelstvím, štěstím", "Říkají objektivní fakta", "Ukazují technické schéma výrobku", "Srovnávají s konkurencí poctivě"] },
-  { q: "Reklama říká: 'Všichni to kupují!' — jaký trik?", a: "bandwagon — tlak skupiny ('ostatní to dělají')", opts: ["bandwagon — tlak skupiny ('ostatní to dělají')", "emocionální apel", "slavná osobnost", "falešná naléhavost"] },
-  { q: "Jak kriticky přistupovat k reklamě?", a: "Ptát se: Proč to říkají? Co tím chtějí? Je to pravda?", opts: ["Ptát se: Proč to říkají? Co tím chtějí? Je to pravda?", "Věřit vždy slavné osobnosti", "Kupovat vše, co je v slevě", "Sdílet reklamu s přáteli"] },
+// Level 1: zakladni tvrzeni o reklame
+const POOL_L1: TFItem[] = [
+  { q: "Reklama vždy říká pravdu.", a: "ne", hint: "Reklamy jsou navrženy, aby přesvědčily, ne aby informovaly objektivně." },
+  { q: "Cílem reklamy je přesvědčit nás ke koupi produktu.", a: "ano", hint: "Přesvědčení ke koupi je hlavní účel reklamy." },
+  { q: "Slavná osobnost v reklamě zaručuje kvalitu výrobku.", a: "ne", hint: "Celebrita je placená za doporučení — to nezaručuje kvalitu." },
+  { q: "Slogan je krátká, zapamatovatelná reklamní věta.", a: "ano", hint: "Slogan je definován jako stručná fráze, která se snadno pamatuje." },
+  { q: "Reklama na zmrzlinu ukazující šťastnou rodinu nám slibuje, že zmrzlina udělá naši rodinu šťastnou.", a: "ne", hint: "Je to emocionální apel — propojení produktu se štěstím, ne slib." },
+  { q: "Výrazy jako 'Jen dnes!' nebo 'Poslední kusy!' vždy odrážejí skutečný nedostatek zboží.", a: "ne", hint: "Jde o falešnou naléhavost — tlak na rychlé rozhodnutí." },
+  { q: "Reklamy opakují slogan, aby si ho zákazníci lépe zapamatovali.", a: "ano", hint: "Opakování je klasická technika zapamatování." },
+  { q: "Tvrzení '20% lepší' je vždy dokazatelné a srovnatelné.", a: "ne", hint: "Lepší než co? Základ srovnání nebývá uveden." },
+  { q: "Kritické myšlení nám pomáhá nepodléhat reklamní manipulaci.", a: "ano", hint: "Ptáme se: Je to pravda? Jaký je základ tvrzení?" },
+  { q: "Bandwagon ('všichni to kupují') je spolehlivý důvod pro koupi.", a: "ne", hint: "Tlak skupiny není argument pro kvalitu produktu." },
+  { q: "Manipulativní komunikace záměrně ovlivňuje bez logických argumentů.", a: "ano", hint: "Manipulace využívá emoce a triky místo faktů." },
+  { q: "Reklamy jsou vždy povinny uvést všechny nevýhody produktu.", a: "ne", hint: "Reklamy záměrně vynechávají nevýhody — to je jejich povaha." },
+  { q: "Emocionální apel propojuje produkt s pozitivními pocity (rodina, přátelství, štěstí).", a: "ano", hint: "Emocionální apel je jedna z nejčastějších reklamních technik." },
+  { q: "Vědecký výzkum zmíněný v reklamě bez citace je vždy spolehlivý.", a: "ne", hint: "Jde o falešnou autoritu — základ tvrzení není ověřitelný." },
+  { q: "Dětská cílová skupina je snáze ovlivnitelná reklamou než dospělí.", a: "ano", hint: "Proto existují přísná pravidla pro reklamu cílenou na děti." },
+  { q: "Superlativy jako 'nejlepší na trhu' jsou vždy dokazatelné.", a: "ne", hint: "Superlativ bez srovnávací základny není dokazatelný." },
+  { q: "Záměrné vynechání podmínek akce (hvězdičky) je poctivá komunikace.", a: "ne", hint: "Skryté podmínky jsou manipulativní technika." },
+  { q: "Reklama nám může říkat, co si máme myslet, aniž to přímo tvrdí.", a: "ano", hint: "Emoce a obrazy ovlivňují naše postoje nepřímo." },
+  { q: "Pokud reklamu sdílí slavný sportovec, produkt je vhodný pro každého sportovce.", a: "ne", hint: "Celebrita je zaplacena — nejde o odborné doporučení." },
+  { q: "Reklamy na hračky jsou záměrně cíleny na děti, protože ty pak prosí rodiče.", a: "ano", hint: "Jde o záměrnou marketingovou strategii." },
 ];
 
-const POOL_L2: QA[] = [
-  { q: "Analýza reklamy: 'Nový krém — zlepší pleť o 50%!' — co je problematické?", a: "50% — oproti čemu? základ tvrzení není uveden", opts: ["50% — oproti čemu? základ tvrzení není uveden", "nic — čísla jsou vždy pravdivá", "použití slova 'nový'", "fakt, že je to krém"] },
-  { q: "Reklama na zmrzlinu ukazuje šťastnou rodinu u moře. Jaký trik?", a: "emocionální apel — propojení produktu se štěstím", opts: ["emocionální apel — propojení produktu se štěstím", "falešná naléhavost", "slavná osobnost", "zdánlivá výhoda"] },
-  { q: "Reklama: 'Doporučeno 9 z 10 dentistů.' — co chybí?", a: "Kolik dentistů bylo dotázáno? Kdo je vybral?", opts: ["Kolik dentistů bylo dotázáno? Kdo je vybral?", "Nic nechybí — čísla jsou důkaz", "Chybí obrázek dentisty", "Chybí cena produktu"] },
-  { q: "Slogan 'Rozdělíme se o radost' (čokoláda) — jaký trik?", a: "emocionální apel — propojení s pozitivním sdílením", opts: ["emocionální apel — propojení s pozitivním sdílením", "falešná naléhavost", "slavná osobnost", "opakování"] },
-  { q: "Co je 'záměrné vynechání informací' v reklamě?", a: "Reklama neříká nevýhody nebo podmínky akce", opts: ["Reklama neříká nevýhody nebo podmínky akce", "Reklama říká vše o produktu", "Reklama je příliš dlouhá", "Reklama je nudná"] },
-  { q: "Reklama: 'Zdarma* (*při nákupu nad 500 Kč)' — jaký trik?", a: "záměrné vynechání podmínek (hvězdička = skrytá podmínka)", opts: ["záměrné vynechání podmínek (hvězdička = skrytá podmínka)", "falešná naléhavost", "emocionální apel", "slavná osobnost"] },
-  { q: "Proč děti bývají cílovou skupinou reklam na hračky?", a: "Jsou snáze ovlivnitelné a prosí rodiče o koupi", opts: ["Jsou snáze ovlivnitelné a prosí rodiče o koupi", "Mají nejvíce peněz", "Jsou nejlépe informovaní o produktech", "Jsou zákonnou cílovou skupinou"] },
-  { q: "Reklama říká: 'Nejlepší produkt na trhu!' — proč to nestačí?", a: "Superlativ bez srovnání není dokazatelný", opts: ["Superlativ bez srovnání není dokazatelný", "Protože je to lež", "Protože nás to nebaví", "Protože to říká slavná osobnost"] },
-  { q: "Co je 'cílová skupina' v reklamě?", a: "Skupiny lidí, na které je reklama zaměřena", opts: ["Skupiny lidí, na které je reklama zaměřena", "Výrobci produktu", "Prodejci v obchodě", "Designéři reklamy"] },
-  { q: "Reklama: 'Naše auto spotřebuje méně!' — co chybí?", a: "Méně než co? Základ srovnání", opts: ["Méně než co? Základ srovnání", "Nic nechybí", "Chybí cena auta", "Chybí barva auta"] },
-  { q: "Proč je důležité umět rozpoznat reklamní triky?", a: "Abychom se rozhodovali sami a nepodléhali manipulaci", opts: ["Abychom se rozhodovali sami a nepodléhali manipulaci", "Abychom kupovali více", "Abychom věřili všem reklamám", "Abychom tvořili reklamy"] },
-  { q: "Reklama: 'Teď nebo nikdy!' — jaký trik?", a: "falešná naléhavost (tlak na okamžité rozhodnutí)", opts: ["falešná naléhavost (tlak na okamžité rozhodnutí)", "emocionální apel", "slavná osobnost", "opakování"] },
-  { q: "Co dělá slogan silným?", a: "Krátký, rytmický, snadno zapamatovatelný, emocionální", opts: ["Krátký, rytmický, snadno zapamatovatelný, emocionální", "Dlouhý a podrobný", "Plný čísel a faktů", "Technický a odborný"] },
-  { q: "Jak se lišíreklamní komunikace od objektivní informace?", a: "Reklama má zájem přesvědčit; objektivní info je nestranná", opts: ["Reklama má zájem přesvědčit; objektivní info je nestranná", "Jsou stejné", "Reklama je vždy pravdivá; info může být nepravdivá", "Reklama je kratší"] },
+// Level 2: slozitejsi tvrzeni o reklamních tricích
+const POOL_L2: TFItem[] = [
+  { q: "Tvrzení 'Doporučeno 9 z 10 dentistů' je vždy věrohodné bez dalšího kontextu.", a: "ne", hint: "Kolik dentistů bylo dotázáno? Kdo je vybral? To nevíme." },
+  { q: "Reklama 'Zdarma* (*při nákupu nad 500 Kč)' záměrně skrývá podmínku.", a: "ano", hint: "Hvězdička s podmínkou je klasická technika skrytých podmínek." },
+  { q: "Objektivní informace a reklamní komunikace jsou si rovny, protože obě sdělují fakta.", a: "ne", hint: "Reklama má zájem přesvědčit; objektivní informace je nestranná." },
+  { q: "Silný slogan je krátký, rytmický a emocionálně působivý.", a: "ano", hint: "Tyto vlastnosti dělají slogan zapamatovatelným." },
+  { q: "Reklama 'Naše auto spotřebuje méně!' poskytuje úplnou informaci.", a: "ne", hint: "Méně než co? Základ srovnání chybí." },
+  { q: "Když reklama ukazuje šťastné lidi, produkt opravdu udělá kupující šťastnými.", a: "ne", hint: "Šťastné obrazy jsou emocionální apel, ne slib výsledku." },
+  { q: "Záměrné vynechání informací je běžná reklamní technika.", a: "ano", hint: "Reklamy záměrně neuvádí nevýhody nebo skryté podmínky." },
+  { q: "Čísla v reklamě (50% lepší, 3× výkonnější) jsou vždy podložena nezávislým výzkumem.", a: "ne", hint: "Čísla bez zdroje a základny nejsou ověřitelná." },
+  { q: "Kritický přístup k reklamě znamená ptát se: Proč to říkají? Co z toho mají?", a: "ano", hint: "Kritické otázky pomáhají odhalit záměr a techniky reklamy." },
+  { q: "Reklamy mají vždy povinnost uvést cenu produktu.", a: "ne", hint: "Reklamy mají zákonné povinnosti, ale ne vždy musí uvádět cenu." },
+  { q: "Falešná naléhavost ('jen dnes!') nutí zákazníky rozhodovat se unáhleně.", a: "ano", hint: "Právě to je cíl falešné naléhavosti — nedát čas na přemyšlení." },
+  { q: "Reklama zaměřená na emoce je méně manipulativní než reklama s čísly.", a: "ne", hint: "Emocionální manipulace je stejně silná, jen funguje jinak." },
+  { q: "Bandwagon efekt ('všichni to mají') využívá sociálního tlaku skupiny.", a: "ano", hint: "Patřit ke skupině je silná lidská potřeba, reklamy toho využívají." },
+  { q: "Pokud se slogan rýmuje, produkt je automaticky kvalitnější.", a: "ne", hint: "Rým usnadňuje zapamatování, ale neříká nic o kvalitě." },
+  { q: "Je vhodné ověřit reklamní tvrzení z nezávislých zdrojů, než se rozhodneme ke koupi.", a: "ano", hint: "Srovnání a ověřování je součást kritického spotřebitelského chování." },
+  { q: "Reklama může ovlivnit naše rozhodování, aniž si to uvědomujeme.", a: "ano", hint: "Emoce a opakování působí i nevědomě." },
+  { q: "Slogan 'Rozdělíme se o radost' slibuje, že čokoláda opravdu přinese radost.", a: "ne", hint: "Je to emocionální apel — propojení produktu s pozitivním pocitem." },
+  { q: "Cílová skupina reklamy jsou lidé, na které je reklama zaměřena.", a: "ano", hint: "Reklamy jsou vytvářeny pro konkrétní skupiny zákazníků." },
+  { q: "Falešná autorita ('vědci dokázali') bez citace zdrojů je spolehlivý argument.", a: "ne", hint: "Bez ověřitelného zdroje jde o manipulaci, ne o fakta." },
+  { q: "Reklama může propagovat produkt, aniž o něm přímo mluví (jen obrazy a hudba).", a: "ano", hint: "Emocionální asociace jsou silnou nepřímou technikou." },
+  { q: "Přemýšlet o tom, komu reklama slouží, nám pomáhá lépe ji pochopit.", a: "ano", hint: "Reklama vždy slouží zájmům výrobce nebo prodejce." },
+  { q: "Reklamy cílené na děti mají v ČR stejná pravidla jako reklamy pro dospělé.", a: "ne", hint: "Reklamy pro děti podléhají přísnějším pravidlům na ochranu dětí." },
+  { q: "Pokud reklama mluví o 'přirozeném složení', produkt neobsahuje žádné přísady.", a: "ne", hint: "'Přirozené' je marketingový výraz, ne zákonná definice bez přísad." },
+  { q: "Umět rozpoznat reklamní triky pomáhá lépe hospodařit s penězi.", a: "ano", hint: "Kdo odolá manipulaci, kupuje to, co skutečně potřebuje." },
+  { q: "Reklama je vždy dobrá, protože informuje o dostupných produktech.", a: "ne", hint: "Reklama může informovat, ale také záměrně klamat nebo manipulovat." },
+  { q: "Vizuální obraz (krásní lidé, příroda) v reklamě ovlivňuje naše pocity vůči produktu.", a: "ano", hint: "Vizuální asociace jsou klíčovou součástí emocionálního apelu." },
+  { q: "Reklamní slogan může být lhaní, i když neříká žádnou nepravdivou větu.", a: "ano", hint: "Záměrné vynechání informací nebo zavádějící kontext je také manipulace." },
+  { q: "Opakování reklamy na nás nemá žádný vliv, pokud ji nevnímáme vědomě.", a: "ne", hint: "Opakování funguje i nevědomě — to je efekt zapamatování." },
+  { q: "Každý zákazník by měl mít právo znát skutečné vlastnosti produktu před koupí.", a: "ano", hint: "Spotřebitelská práva zahrnují právo na pravdivé informace." },
+  { q: "Dobrý reklamní trik nám může prodat i produkt, který nepotřebujeme.", a: "ano", hint: "Manipulativní reklama přesvědčuje i bez skutečné potřeby." },
 ];
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : shuffle([...POOL_L1, ...POOL_L2]);
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts }) => ({
+  return shuffle(pool).slice(0, 30).map(({ q, a, hint }) => ({
     question: q,
     correctAnswer: a,
-    options: shuffle(opts),
+    options: ["Ano", "Ne"],
     hints: [
-      "Reklamní triky: emoce, slavná osobnost, opakování, falešná naléhavost, zdánlivá výhoda",
-      "Ptej se: Je to pravda? Proč to říkají? Co z toho mají?",
-      "Superlativy a čísla bez základu jsou podezřelé",
-    ],
-    solutionSteps: [
-      "Identifikuj tvrzení v reklamě.",
-      "Jakou techniku používá? (emoce / autorita / naléhavost / opakování?)",
-      "Ptej se: Co chybí? Na čem je tvrzení postaveno?",
+      hint,
+      "Reklamní triky: emoce, slavná osobnost, opakování, falešná naléhavost, zdánlivá výhoda.",
+      "Ptej se: Je to pravda? Co z toho má výrobce? Je základ tvrzení uveden?",
     ],
   }));
 }
@@ -84,7 +100,7 @@ export const MANIPULATIVNIKOMUNIKACEVREKLAME: TopicMetadata[] = [
     ],
     boundaries: ["Bez analýzy politické propagandy", "Bez pokročilé semiotiky"],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    inputType: "true_false",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
@@ -92,7 +108,7 @@ export const MANIPULATIVNIKOMUNIKACEVREKLAME: TopicMetadata[] = [
     helpTemplate: {
       hint: "Triky: emoce (rodina/štěstí), celebrita (slavný doporučuje), naléhavost (jen dnes!), opakování (slogan), zdánlivá výhoda (o 20% lepší — než co?)",
       steps: [
-        "Přečti reklamní sdělení.",
+        "Přečti tvrzení pečlivě.",
         "Ptej se: Je to pravda? Co tím chtějí říct?",
         "Najdi techniku: emoce / slavná osoba / naléhavost / opakování.",
         "Zhodnoť, zda je tvrzení dokazatelné.",

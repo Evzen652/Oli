@@ -9,40 +9,311 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Z čeho se skládá nervová soustava?", correctAnswer: "Mozek + mícha + nervy", options: ["Mozek + mícha + nervy", "Srdce + mozek + nervy", "Játra + mozek + mícha", "Mozek + plíce + nervy"], hints: ["CNS = centrální nervová soustava = mozek + mícha."] },
-  { question: "Jakou funkcí má velký mozek?", correctAnswer: "Myšlení, paměť, vědomé pohyby, řeč", options: ["Myšlení, paměť, vědomé pohyby, řeč", "Koordinace pohybů a rovnováha", "Dýchání a srdeční tep", "Vnímání chuti a čichu"], hints: ["Velký mozek = největší část mozku."] },
-  { question: "Co řídí mozeček?", correctAnswer: "Koordinaci pohybů a rovnováhu", options: ["Koordinaci pohybů a rovnováhu", "Vědomé myšlení a paměť", "Dýchání a srdeční tep", "Vidění a sluch"], hints: ["Bez mozečku bychom nedokázali chodit rovně."] },
-  { question: "Co řídí mozkový kmen?", correctAnswer: "Životně důležité funkce: dýchání, srdeční tep, trávení", options: ["Životně důležité funkce: dýchání, srdeční tep, trávení", "Myšlení a paměť", "Rovnováhu a koordinaci", "Zrak a sluch"], hints: ["Mozkový kmen pracuje i ve spánku."] },
-  { question: "Který smyslový orgán slouží k vidění?", correctAnswer: "Oko – sítnice + zrakový nerv", options: ["Oko (sítnice + zrakový nerv)", "Ucho", "Jazyk", "Nos"], hints: ["Sítnice = citlivá vrstva na zadní stěně oka."] },
-  { question: "Jak funguje sluch?", correctAnswer: "Zvuk → ušní boltec → ušní bubínek → sluchové kůstky → hlemýžď → sluchový nerv → mozek", options: ["Zvuk → ušní boltec → ušní bubínek → sluchové kůstky → hlemýžď → sluchový nerv → mozek", "Zvuk → nos → mozek", "Zvuk → oko → mozek přes zrakový nerv", "Zvuk → mozek přímo přes vzduch"], hints: ["Bubínek vibruje a přenáší zvuk do středního ucha."] },
-  { question: "Jakou roli hraje čich?", correctAnswer: "Vnímání vůní a pachů přes čichové buňky v nose", options: ["Vnímání vůní a pachů přes čichové buňky v nose", "Vnímání chuti jídla", "Udržení rovnováhy", "Detekce teploty vzduchu"], hints: ["Čich a chuť jsou úzce propojeny."] },
-  { question: "Jak rozpoznáváme různé chutě?", correctAnswer: "Chuťovými pohárky na jazyku – sladký, slaný, kyselý, hořký, umami", options: ["Chuťovými pohárky na jazyku (sladký, slaný, kyselý, hořký, umami)", "Čichovými buňkami v nose", "Receptory v žaludku", "Nervovými zakončeními v zubech"], hints: ["Jazyk má tisíce chuťových pohárků."] },
-  { question: "Co vnímá kůže (hmat)?", correctAnswer: "Dotek, tlak, bolest, teplotu přes kožní receptory", options: ["Dotek, tlak, bolest, teplotu přes kožní receptory", "Zvuk a světlo", "Chemické látky a vůně", "Pohyb a polohu těla"], hints: ["Kůže je největší smyslový orgán těla."] },
-  { question: "Co je reflex?", correctAnswer: "Rychlá mimovolná reakce nervové soustavy – bez vědomé kontroly", options: ["Rychlá mimovolná reakce nervové soustavy (bez vědomé kontroly)", "Vědomé rozhodnutí reagovat na podnět", "Pomalá reakce mozku na bolest", "Pohyb způsobený vůlí"], hints: ["Kolenkový reflex – lékař gumovým kladívkem."] },
-  { question: "Co jsou neurony?", correctAnswer: "Nervové buňky přenášející elektrické signály", options: ["Nervové buňky přenášející elektrické signály", "Buňky mozku produkující hormony", "Krevní buňky zásobující mozek kyslíkem", "Svalové buňky reagující na nervové impulzy"], hints: ["Mozek obsahuje asi 86 miliard neuronů."] },
-  { question: "Proč je spánek důležitý pro mozek?", correctAnswer: "Mozek ve spánku upevňuje paměť, čistí odpadní látky a obnovuje energii", options: ["Mozek ve spánku upevňuje paměť, čistí odpadní látky a obnovuje energii", "Mozek ve spánku úplně odpočívá a nepracuje", "Spánek je potřebný jen pro svaly, ne pro mozek", "Ve spánku se tvoří nové neurony pro paměť"], hints: ["Děti ve věku 10–11 let potřebují 9–11 hodin spánku."] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo a obraz" },
+      { left: "Ucho", right: "Zvuk a rovnováhu" },
+      { left: "Nos", right: "Vůně a pachy" },
+      { left: "Jazyk", right: "Chutě (sladké, slané, kyselé, hořké)" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kůže", right: "Dotek, tlak, bolest, teplotu" },
+      { left: "Sítnice", right: "Světlo – přeměňuje ho na nervový signál" },
+      { left: "Hlemýžď (kochlea)", right: "Zvukové vibrace v uchu" },
+      { left: "Čichové buňky", right: "Chemické molekuly vůní v nose" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velký mozek", right: "Myšlení, paměť, vědomé pohyby, řeč" },
+      { left: "Mozeček", right: "Koordinace pohybů a rovnováha" },
+      { left: "Mozkový kmen", right: "Dýchání, srdeční tep, trávení (automatické)" },
+      { left: "Mícha", right: "Vede signály mezi mozkem a tělem, reflexy" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Chuťové pohárky", right: "Rozpuštěné chemické látky na jazyku" },
+      { left: "Ušní bubínek", right: "Zvukové vlny ze vzduchu" },
+      { left: "Zornička", right: "Reguluje množství světla vstupujícího do oka" },
+      { left: "Polokruhovité kanálky", right: "Rotaci a polohu hlavy (rovnováha)" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Barvy, tvary, pohyb" },
+      { left: "Ucho", right: "Zvuky, výšky tónů" },
+      { left: "Nos", right: "Tisíce různých vůní" },
+      { left: "Kůže", right: "Teplo, chlad, bolest, tlak" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Neuron", right: "Nervová buňka přenášející elektrické signály" },
+      { left: "Synapse", right: "Místo přenosu signálu mezi neurony" },
+      { left: "Myelinová pochva", right: "Izolace nervu – zrychluje přenos signálu" },
+      { left: "Periferní nervy", right: "Propojují mozek a míchu s orgány a smysly" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Čípky (sítnice)", right: "Barvy a ostré vidění za denního světla" },
+      { left: "Tyčinky (sítnice)", right: "Vidění za šera – pohyb a tvary" },
+      { left: "Sluchové kůstky", right: "Zesilují vibrace bubínku do hlemýždě" },
+      { left: "Vestibulární systém", right: "Rovnováhu a polohu těla v prostoru" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velký mozek", right: "Uvědomělé myšlení a rozhodování" },
+      { left: "Mozeček", right: "Jemné ladění pohybů – psaní, sport" },
+      { left: "Mícha", right: "Míšní reflex – rychlá reakce bez mozku" },
+      { left: "Autonomní NS", right: "Řídí mimovolné funkce – tep, trávení" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Elektromagnetické záření (viditelné světlo)" },
+      { left: "Ucho", right: "Mechanické vlnění vzduchu (zvuk)" },
+      { left: "Nos", right: "Chemické látky ve vzduchu (vůně)" },
+      { left: "Jazyk", right: "Chemické látky v jídle (chuť)" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sítnice", right: "Dopadající světlo – vznik obrazu" },
+      { left: "Zrakový nerv", right: "Přenáší obraz z oka do mozku" },
+      { left: "Sluchový nerv", right: "Přenáší zvukový signál z ucha do mozku" },
+      { left: "Čichový nerv", right: "Přenáší signál z nosu do mozku" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo, barvy, pohyb" },
+      { left: "Nos", right: "Vonné a páchnoucí látky" },
+      { left: "Kůže", right: "Mechanický kontakt a teplota" },
+      { left: "Chuťové pohárky", right: "Sladká, slaná, kyselá, hořká, umami chuť" },
+    ],
+  },
+  {
+    question: "Spoj část mozku s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Frontální lalok", right: "Plánování, rozhodování, osobnost" },
+      { left: "Okcipitální lalok", right: "Zpracování zrakových informací" },
+      { left: "Temporální lalok", right: "Zpracování zvuku, paměť" },
+      { left: "Parietální lalok", right: "Zpracování dotyku a prostorové orientace" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ucho vnější", right: "Zachytává zvukové vlny z okolí" },
+      { left: "Střední ucho", right: "Zesiluje a přenáší vibrace (kůstky)" },
+      { left: "Vnitřní ucho", right: "Mění vibrace na nervový signál + rovnováha" },
+      { left: "Sluchový nerv", right: "Vede signál do mozku (spánkový lalok)" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Centrální NS", right: "Mozek a mícha – centrum řízení" },
+      { left: "Periferní NS", right: "Nervy mimo mozek a míchu" },
+      { left: "Somatická NS", right: "Vědomá kontrola kosterních svalů" },
+      { left: "Autonomní NS", right: "Mimovolné funkce – tep, trávení, dýchání" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo – přeměňuje na nervový vzruch" },
+      { left: "Ucho", right: "Zvuk – přeměňuje na nervový vzruch" },
+      { left: "Nos", right: "Vůně – přeměňuje na nervový vzruch" },
+      { left: "Kůže", right: "Dotek – přeměňuje na nervový vzruch" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velký mozek", right: "Vědomí, inteligence, řeč, paměť" },
+      { left: "Mozeček", right: "Rovnováha a koordinace pohybů" },
+      { left: "Mozkový kmen", right: "Automatické životní funkce" },
+      { left: "Mícha", right: "Rychlé reflexy a vedení vzruchů" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Termorecepory kůže", right: "Teplotu okolí a dotýkaných předmětů" },
+      { left: "Nocisensory", right: "Bolest (poškození tkáně)" },
+      { left: "Mechanosensory", right: "Tlak a dotek" },
+      { left: "Propriocepce", right: "Polohu a pohyb vlastního těla" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Barevné spektrum viditelného světla" },
+      { left: "Nos", right: "Tisíce různých chemických látek" },
+      { left: "Jazyk", right: "Základní chuťové kvality jídla" },
+      { left: "Vnitřní ucho", right: "Zvuk i rovnováhu (polohu hlavy)" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sítnice oka", right: "Světlo – vznik elektrického signálu" },
+      { left: "Ušní bubínek", right: "Zvuk – vibrace vzduchu" },
+      { left: "Čichová sliznice", right: "Vonné molekuly ve vzduchu" },
+      { left: "Chuťový pohárek", right: "Chemické látky v potravinách" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hipokampus", right: "Tvorba nových vzpomínek" },
+      { left: "Amygdala", right: "Zpracování emocí, zejména strachu" },
+      { left: "Thalamus", right: "Přepojovací stanice smyslových informací" },
+      { left: "Hypotalamus", right: "Řídí tělesnou teplotu, hlad, žízeň" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Elektromagnetické záření viditelné části spektra" },
+      { left: "Ucho", right: "Mechanické vlnění (zvuk)" },
+      { left: "Kůže", right: "Mechanické, termické a bolestivé podněty" },
+      { left: "Nos + jazyk", right: "Chemické látky (vůně a chuť)" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo" },
+      { left: "Ucho", right: "Zvuk" },
+      { left: "Nos", right: "Vůně" },
+      { left: "Jazyk", right: "Chuť" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kůže (hmat)", right: "Dotek, tlak, teplota, bolest" },
+      { left: "Zrakový nerv", right: "Vizuální informace z oka do mozku" },
+      { left: "Vestibulární aparát", right: "Rovnováhu a prostorovou orientaci" },
+      { left: "Čichový bulbus", right: "Zpracovává vůně přicházející z nosu" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo a barvy" },
+      { left: "Ucho (sluch)", right: "Zvuky a tóny" },
+      { left: "Ucho (rovnováha)", right: "Polohu a pohyb hlavy" },
+      { left: "Nos", right: "Vůně a pachy" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Intenzitu a vlnovou délku světla" },
+      { left: "Ucho", right: "Frekvenci a intenzitu zvuku" },
+      { left: "Nos", right: "Chemické molekuly vůní" },
+      { left: "Kůže", right: "Mechanické podněty a teplotu" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo – vidění" },
+      { left: "Ucho", right: "Zvuk – sluch a rovnováha" },
+      { left: "Nos", right: "Vůně – čich" },
+      { left: "Jazyk", right: "Chuť – sladké, slané, kyselé, hořké" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sítnice", right: "Přijímá světlo a tvoří nervový signál" },
+      { left: "Hlemýžď", right: "Přeměňuje zvukové vibrace na signál" },
+      { left: "Čichová sliznice", right: "Detekuje vonné molekuly" },
+      { left: "Kožní receptor", right: "Detekuje dotek, tlak nebo teplotu" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světelné podněty z okolí" },
+      { left: "Ucho", right: "Zvukové vibrace z okolí" },
+      { left: "Nos", right: "Chemické podněty – vůně" },
+      { left: "Kůže", right: "Fyzické podněty – dotek a teplota" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velký mozek", right: "Řídí vědomé myšlení a pohyby" },
+      { left: "Mozeček", right: "Koordinuje pohyby a udržuje rovnováhu" },
+      { left: "Mozkový kmen", right: "Řídí automatické funkce (dýchání, tep)" },
+      { left: "Mícha", right: "Vede vzruchy a zprostředkuje reflexy" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo a vizuální informace" },
+      { left: "Ucho (sluch)", right: "Zvuk – tóny, hluk, řeč" },
+      { left: "Ucho (rovnováha)", right: "Pohyb a poloha těla v prostoru" },
+      { left: "Jazyk a nos", right: "Chuť a vůně (chemoreceptory)" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Jak probíhá přenos nervového signálu z neuronu na neuron?", correctAnswer: "Elektrický signál přechází přes synaptickou štěrbinu pomocí chemických přenašečů – neurotransmiterů na další neuron", options: ["Elektrický signál přechází přes synaptickou štěrbinu pomocí chemických přenašečů (neurotransmiterů) na další neuron", "Signál přechází přímo elektrickým kontaktem mezi neurony", "Signál putuje krevním řečištěm do dalších neuronů", "Neurony jsou propojeny fyzicky – signál teče mechanicky"], hints: ["Synapse = místo spojení dvou neuronů."] },
-  { question: "Jak se liší vědomé a reflexní pohyby?", correctAnswer: "Vědomé: signál prochází mozkem – pomalejší. Reflex: míšní oblouk bez mozku – rychlejší – ochranná reakce na nebezpečí.", options: ["Vědomé: signál prochází mozkem (pomalejší). Reflex: míšní oblouk bez mozku (rychlejší) – ochranná reakce na nebezpečí.", "Vědomé pohyby jsou rychlejší – mozek je nejefektivnější.", "Reflexy procházejí mozkem, vědomé pohyby ne.", "Oba typy pohybů jsou stejně rychlé."], hints: ["Reflex na bolest ruky: ruka se stáhne dřív, než si to uvědomíme."] },
-  { question: "Proč ztratíme rovnováhu při zánětu středního ucha?", correctAnswer: "Středního ucho obsahuje rovnovážný orgán – polokruhovité kanálky. Zánět narušuje tekutinu v nich → mozek dostává zkreslené informace o poloze těla.", options: ["Středního ucho obsahuje rovnovážný orgán (polokruhovité kanálky). Zánět narušuje tekutinu v nich → mozek dostává zkreslené informace o poloze těla.", "Zánět ucha přerušuje sluchový nerv vedoucí do mozečku.", "Rovnováha závisí na oči – zánět ucha postihuje zrakový nerv.", "Zánět středního ucha způsobuje bolest, která narušuje soustředění potřebné k rovnováze."], hints: ["Polokruhovité kanálky = tři trubičky kolmé na sebe → vnímají rotaci ve 3D."] },
-  { question: "Jak mozek zpracovává obraz z obou očí?", correctAnswer: "Každé oko snímá obraz trochu jinak. Mozek je spojí a vytvoří 3D vnímání – stereoskopické vidění pro posouzení vzdálenosti.", options: ["Každé oko snímá obraz trochu jinak. Mozek je spojí a vytvoří 3D vnímání (stereoskopické vidění) pro posouzení vzdálenosti.", "Každé oko posílá obraz do jiné hemisféry – mozek je nikdy nespojuje.", "Mozek vybere obraz z jednoho oka a druhé ignoruje.", "Obraz je stejný v obou očích – mozek ho zostruje, ne spojuje."], hints: ["Zakryjte jedno oko – hloubka vnímání se změní."] },
-  { question: "Jak bolest chrání tělo?", correctAnswer: "Bolest signalizuje poškození tkáně – nutí nás ukončit škodlivou činnost a vyhledat pomoc. Bez bolesti bychom si závažná zranění ani nevšimli.", options: ["Bolest signalizuje poškození tkáně – nutí nás ukončit škodlivou činnost a vyhledat pomoc. Bez bolesti bychom si závažná zranění ani nevšimli.", "Bolest je negativní jev bez ochranné funkce.", "Bolest vzniká v srdci a varuje před srdečním infarktem.", "Bolest je způsobena zánětem, ne nervovým signálem."], hints: ["Lidé s vrozenou necitlivostí k bolesti si způsobují těžká zranění bez povšimnutí."] },
-  { question: "Co je podmíněný reflex (Pavlovův pes)?", correctAnswer: "Naučený reflex: organismus reaguje na neutrální podnět – zvonek, který byl opakovaně spojen s původním podnětem – jídlo. Pavlovovi psi slinili na zvuk zvonku.", options: ["Naučený reflex: organismus reaguje na neutrální podnět (zvonek), který byl opakovaně spojen s původním podnětem (jídlo). Pavlovovi psi slinili na zvuk zvonku.", "Podmíněný reflex je vrozený – nelze se ho naučit.", "Podmíněný reflex prochází vědomou kontrolou mozku.", "Podmíněný reflex se mění u každého jedince každý den."], hints: ["Ivan Pavlov (1849–1936) – Nobel 1904 za fyziologii trávení."] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Jak způsobuje pití alkoholu poruchy koordinace a paměti?", correctAnswer: "Alkohol zpomaluje přenos nervových signálů tlumením neurotransmiterů – GABA. Potkozuje mozeček – koordinace a hipokampus – paměť. Způsobuje 'výpadky paměti'.", options: ["Alkohol zpomaluje přenos nervových signálů tlumením neurotransmiterů (GABA). Potkozuje mozeček (koordinace) a hipokampus (paměť). Způsobuje 'výpadky paměti'.", "Alkohol zvyšuje aktivitu mozku, proto je koordinace narušena.", "Alkohol ničí neurony přímo – poruchy jsou nevratné ihned.", "Alkohol ovlivňuje jen motorické nervy, ne paměťové centrum."], hints: ["Hipokampus = centrum krátkodobé paměti. Mozeček = koordinace."] },
-  { question: "Proč máme různou ostrost vidění v centru a na okraji zorného pole?", correctAnswer: "Sítnice: centrum – žlutá skvrna má vysokou hustotu čípků pro ostré barevné vidění. Okraj má tyčinky pro vnímání pohybu a vidění za šera, ale menší ostrost.", options: ["Sítnice: centrum (žlutá skvrna) má vysokou hustotu čípků pro ostré barevné vidění. Okraj má tyčinky pro vnímání pohybu a vidění za šera, ale menší ostrost.", "Oko vidí stejně ostře všude – jen mozek ostří jen střed obrazu.", "Centrum oka vnímá jen světlo, okraj barvy.", "Ostrost vidění závisí na poloze zorniček, ne na sítnici."], hints: ["Tyčinky = šerovidění. Čípky = barevné ostré vidění."] },
-  { question: "Proč trénink a opakování zlepšují motorické dovednosti?", correctAnswer: "Opakování posiluje synaptická spojení – plasticita mozku a myelinizaci nervů → signály se přenášejí rychleji a přesněji. Pohyb se stane automatickým.", options: ["Opakování posiluje synaptická spojení (plasticita mozku) a myelinizaci nervů → signály se přenášejí rychleji a přesněji. Pohyb se stane automatickým.", "Trénink zvyšuje počet neuronů v motorickém kortexu.", "Opakování zlepšuje jen výdrž svalů, ne nervový přenos.", "Motorické dovednosti jsou vrozené – trénink jen odhaluje přirozený talent."], hints: ["Myelin = izolace nervu. Více myelinu = rychlejší přenos."] },
-  { question: "Jak neuroplasticita pomáhá po poranění mozku?", correctAnswer: "Zdravé neurony přebírají funkci poškozených oblastí tvorbou nových synapsí. Intenzivní rehabilitace využívá tuto plasticitu k obnově ztracených funkcí.", options: ["Zdravé neurony přebírají funkci poškozených oblastí tvorbou nových synapsí. Intenzivní rehabilitace využívá tuto plasticitu k obnově ztracených funkcí.", "Poranění mozku je vždy nevratné – neuroplasticita nepomáhá.", "Mozek se regeneruje přemnožením stávajících neuronů na postižené místo.", "Rehabilitace pomáhá jen svalům – mozek se neopravuje."], hints: ["Neuroplasticita = schopnost mozku měnit svou strukturu a funkci."] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const NERVOVASOUSTAVASMYSLY: TopicMetadata[] = [
@@ -59,7 +330,7 @@ export const NERVOVASOUSTAVASMYSLY: TopicMetadata[] = [
     goals: ["Popsat části nervové soustavy a jejich funkce", "Vysvětlit princip vnímání základními smysly", "Rozlišit vědomý pohyb od reflexu"],
     boundaries: ["Neprobírá neurochemii do hloubky", "Neprobírá duševní poruchy"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,

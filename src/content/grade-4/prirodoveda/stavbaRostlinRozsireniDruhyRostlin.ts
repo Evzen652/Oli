@@ -9,52 +9,321 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Jaké jsou hlavní části rostliny?", correctAnswer: "Kořen, stonek, list, květ, plod", options: ["Kořen, stonek, list, květ, plod", "Kořen, větve, listy, šišky", "Hlíza, kmen, jehličí, semena", "Kořen, stonek, liána, květ"] },
-  { question: "Jaká je funkce kořene?", correctAnswer: "Ukotvení v půdě, příjem vody a minerálních látek", options: ["Ukotvení v půdě, příjem vody a minerálních látek", "Výroba cukru fotosyntézou", "Opylení rostliny", "Šíření semen do okolí"] },
-  { question: "V jaké části rostliny probíhá fotosyntéza?", correctAnswer: "V listech (v chloroplastech s chlorofylem)", options: ["V listech (v chloroplastech s chlorofylem)", "V kořenech", "V plodech", "V stonku"] },
-  { question: "Co rostlina potřebuje k fotosyntéze?", correctAnswer: "Světlo, oxid uhličitý (CO₂), voda", options: ["Světlo, oxid uhličitý (CO₂), voda", "Světlo, kyslík, voda", "Teplo, dusík, voda", "Světlo, cukr, voda"] },
-  { question: "Co vzniká při fotosyntéze?", correctAnswer: "Cukr (glukóza) a kyslík", options: ["Cukr (glukóza) a kyslík", "Oxid uhličitý a voda", "Dusík a kyslík", "Voda a kypřidla"] },
-  { question: "Jak se nazývá zelené barvivo v listech?", correctAnswer: "Chlorofyl", options: ["Chlorofyl", "Melanin", "Karotén", "Hemoglobin"] },
-  { question: "Jaká je funkce stonku?", correctAnswer: "Mechanická opora a vedení látek (voda a minerály nahoru, cukry dolů)", options: ["Mechanická opora a vedení látek (voda a minerály nahoru, cukry dolů)", "Zásobení rostliny vodou kořeny", "Výroba cukru jako listy", "Zásobní funkce semen"] },
-  { question: "Jaká je funkce květu?", correctAnswer: "Rozmnožování — opylení vede ke vzniku plodu a semen", options: ["Rozmnožování — opylení vede ke vzniku plodu a semen", "Fotosyntéza náhradou za listy", "Přijímání minerálů z půdy", "Vedení vody ke stonku"] },
-  { question: "Co vzniká z květu po opylení?", correctAnswer: "Plod (se semeny)", options: ["Plod (se semeny)", "Nový kořen", "Nový stonek", "Nový květ"] },
-  { question: "Jak se šíří semena pampeliška?", correctAnswer: "Větrem — semena mají chmýří (nažky s létajícím přívěskem)", options: ["Větrem — semena mají chmýří (nažky s létajícím přívěskem)", "Vodou", "Ptáky", "Mravenci"] },
-  { question: "Jak se šíří semena jahod a třešní?", correctAnswer: "Živočichy — ptáci a savci sní plod a vyloučí semena", options: ["Živočichy — ptáci a savci sní plod a vyloučí semena", "Větrem", "Vodou", "Vlastním výstřelem"] },
-  { question: "Jak se šíří semena javoru?", correctAnswer: "Větrem — mají křídlo (vrtulka), které zpomaluje pád a nese vítr", options: ["Větrem — mají křídlo (vrtulka), které zpomaluje pád a nese vítr", "Vodou", "Živočichy", "Vlastním výstřelem jako boba"] },
-  { question: "Jaká je zásobní funkce kořene?", correctAnswer: "Ukládá zásoby živin — příkladem je mrkev a řepa (zásobní kořen)", options: ["Ukládá zásoby živin — příkladem je mrkev a řepa (zásobní kořen)", "Zásobuje okolní rostliny vodou", "Ukládá zásoby světla pro fotosyntézu", "Zásobní funkci má jen stonek"] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořen", right: "Přijímá vodu a minerály z půdy" },
+      { left: "Stonek", right: "Vede vodu nahoru a cukry dolů" },
+      { left: "List", right: "Provádí fotosyntézu" },
+      { left: "Květ", right: "Umožňuje opylení a rozmnožování" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Plod", right: "Chrání semena a šíří je" },
+      { left: "Semeno", right: "Obsahuje zárodek nové rostliny" },
+      { left: "Chlorofyl", right: "Zelené barvivo v listech pro fotosyntézu" },
+      { left: "Kořenové vlášení", right: "Zvětšuje plochu pro příjem vody" },
+    ],
+  },
+  {
+    question: "Spoj způsob šíření semen s příkladem rostliny.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vítr (chmýří)", right: "Pampeliška" },
+      { left: "Živočichové (dužnatý plod)", right: "Třešeň" },
+      { left: "Vítr (křídélko)", right: "Javor" },
+      { left: "Voda (nepromokavý plod)", right: "Kokos" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Bránice (průduch)", right: "Reguluje výměnu plynů v listu" },
+      { left: "Dřevo", right: "Vede vodu a minerály nahoru" },
+      { left: "Lýko", right: "Vede cukry dolů ke kořenům" },
+      { left: "Zásobní kořen", right: "Ukládá zásoby živin (mrkev, řepa)" },
+    ],
+  },
+  {
+    question: "Spoj potřeby fotosyntézy s tím, co při ní vzniká.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Světlo", right: "Zdroj energie pro fotosyntézu" },
+      { left: "Oxid uhličitý (CO₂)", right: "Vstupní látka pro tvorbu cukru" },
+      { left: "Voda (H₂O)", right: "Vstupní látka přijímaná kořenem" },
+      { left: "Kyslík (O₂)", right: "Vzniká při fotosyntéze jako vedlejší produkt" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořen", right: "Ukotvení v půdě" },
+      { left: "List", right: "Transpirace – výpar vody" },
+      { left: "Květ", right: "Přitahuje opylovače barvou a nektarem" },
+      { left: "Plod", right: "Láká živočichy k roznesení semen" },
+    ],
+  },
+  {
+    question: "Spoj způsob šíření semen s popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Háčky (lopuch)", right: "Zachytí se na srsti zvířat nebo oblečení" },
+      { left: "Voda", right: "Lehký nepromokavý plod se nechá unést proudem" },
+      { left: "Živočichové", right: "Sní plod a vylučují semena" },
+      { left: "Samovýstřel (boba)", right: "Tobolka praskne a semena vystřelí" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Děloha", right: "Zásobní list semene živící klíček" },
+      { left: "Apikální meristém", right: "Pletivo na špičce kořene zodpovídající za růst" },
+      { left: "Průduch", right: "Malý otvor v listu pro výměnu plynů" },
+      { left: "Chloroplast", right: "Buněčný orgán obsahující chlorofyl" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Stonek", right: "Mechanická opora celé rostliny" },
+      { left: "Kořen", right: "Příjem vody a minerálních látek" },
+      { left: "List", right: "Výroba cukru pomocí světla a CO₂" },
+      { left: "Semeno", right: "Zárodek s výživou pro klíček" },
+    ],
+  },
+  {
+    question: "Spoj rostlinu s typem opylení.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pampeliška", right: "Hmyz (barevný květ s nektarem)" },
+      { left: "Vrba", right: "Hmyz (kvetoucí na jaře)" },
+      { left: "Bříza", right: "Vítr (velké množství drobného pylu)" },
+      { left: "Jetel", right: "Hmyz (čmelák)" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořen", right: "Vstřebává vodu s minerály" },
+      { left: "Stonek", right: "Spojuje kořen s listy" },
+      { left: "Květ", right: "Po opylení se změní v plod" },
+      { left: "Plod", right: "Obklopuje a chrání semena" },
+    ],
+  },
+  {
+    question: "Spoj části listu s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pokožka listu", right: "Ochranná vnější vrstva" },
+      { left: "Průduch", right: "Otvor pro výměnu CO₂ a O₂" },
+      { left: "Žilnatina", right: "Vedení vody a cukrů v listu" },
+      { left: "Chloroplast", right: "Místo, kde probíhá fotosyntéza" },
+    ],
+  },
+  {
+    question: "Spoj způsob přizpůsobení rostliny s prostředím.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Trny místo listů", right: "Omezení výparu v poušti (kaktus)" },
+      { left: "Tlusté listy", right: "Zásobárna vody (sukulenty, aloe)" },
+      { left: "Barevné květy", right: "Přilákání opylovačů (hmyz)" },
+      { left: "Dlouhý kořen", right: "Dosažení spodní vody v suchu" },
+    ],
+  },
+  {
+    question: "Spoj typ rostliny s příkladem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Jednoděložná rostlina", right: "Tráva, pšenice, kukuřice" },
+      { left: "Dvouděložná rostlina", right: "Dub, fazol, jabloň" },
+      { left: "Sukulentní rostlina", right: "Kaktus, aloe, agáve" },
+      { left: "Vodní rostlina", right: "Leknín, rdest, rákos" },
+    ],
+  },
+  {
+    question: "Spoj části stonku s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Dřevo (xylém)", right: "Vede vodu a minerály od kořene nahoru" },
+      { left: "Lýko (floém)", right: "Vede cukry z listů dolů ke kořenům" },
+      { left: "Kambium", right: "Vrstva buněk produkující nové dřevo a lýko" },
+      { left: "Kůra stonku", right: "Ochrana stonku před poškozením" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Květ", right: "Rozmnožení – opylení vede k plodu" },
+      { left: "Plod", right: "Šíření semen do okolí" },
+      { left: "Semeno", right: "Klíčení a vznik nové rostliny" },
+      { left: "Kořen", right: "Ukotvení a příjem živin z půdy" },
+    ],
+  },
+  {
+    question: "Spoj proces v rostlině s jeho popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Fotosyntéza", right: "Přeměna CO₂ + H₂O + světlo → cukr + O₂" },
+      { left: "Transpirace", right: "Výpar vody z listů průduchy" },
+      { left: "Klíčení", right: "Semeno nasaje vodu a vyroste kořínek" },
+      { left: "Opylení", right: "Přenos pylu na bliznu květu" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s tím, co je jejich hlavní funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "List", right: "Fotosyntéza a výměna plynů" },
+      { left: "Květ", right: "Rozmnožování" },
+      { left: "Stonek", right: "Vedení látek a opora" },
+      { left: "Kořen", right: "Příjem vody a ukotvení" },
+    ],
+  },
+  {
+    question: "Spoj způsob šíření semen s příkladem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vítr", right: "Javor, pampeliška, borovice" },
+      { left: "Voda", right: "Kokos, olše" },
+      { left: "Živočichové (uvnitř plodu)", right: "Třešeň, malina, šípek" },
+      { left: "Živočichové (na povrchu)", right: "Lopuch, jehlice" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hlíza", right: "Zásobní podzemní orgán (brambor)" },
+      { left: "Oddenek", right: "Podzemní stonek s pupeny (konvalinka)" },
+      { left: "Cibule", right: "Zásobní listy kolem poupěte (cibule, česnek)" },
+      { left: "Výhonek", right: "Nadzemní stonek sloužící k vegetativnímu rozmnožování (jahoda)" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořenová čepička", right: "Chrání kořen při prorůstání půdou" },
+      { left: "Kořenové vlášení", right: "Zvyšuje plochu pro příjem vody a živin" },
+      { left: "Hlavní kořen", right: "Ukotví rostlinu do hloubky" },
+      { left: "Postranní kořeny", right: "Rozvětvení pro příjem vody do šířky" },
+    ],
+  },
+  {
+    question: "Spoj látku s jejím pohybem v rostlině.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Voda", right: "Z kořene přes stonek do listů (nahoru)" },
+      { left: "Cukr (asimilát)", right: "Z listů přes stonek do kořene (dolů)" },
+      { left: "CO₂", right: "Vstupuje do listu průduchy z okolí" },
+      { left: "O₂", right: "Uniká z listu průduchy do okolí" },
+    ],
+  },
+  {
+    question: "Spoj typ rozmnožování s příkladem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pohlavní rozmnožování (semena)", right: "Jabloň, hrušeň, obilí" },
+      { left: "Vegetativní (výhonky)", right: "Jahoda (plazivé výhonky)" },
+      { left: "Vegetativní (hlízy)", right: "Brambor" },
+      { left: "Vegetativní (řízky)", right: "Řeřicha, pelargonie" },
+    ],
+  },
+  {
+    question: "Spoj části květu s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Tyčinka", right: "Mužský orgán – tvoří pyl" },
+      { left: "Pestík", right: "Ženský orgán – obsahuje vajíčka" },
+      { left: "Okvětní lístky", right: "Přilákání opylovačů barvou" },
+      { left: "Nektar", right: "Odměna pro opylovače (hmyz)" },
+    ],
+  },
+  {
+    question: "Spoj rostlinu s ekosystémem, kde typicky roste.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Leknín", right: "Rybník nebo jezero" },
+      { left: "Pampeliška", right: "Louka" },
+      { left: "Jedle", right: "Les" },
+      { left: "Pšenice", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Stonek", right: "Drží rostlinu vzpřímeně" },
+      { left: "List", right: "Zachycuje sluneční energii" },
+      { left: "Kořen", right: "Brání vyvrácení rostliny větrem" },
+      { left: "Plod", right: "Přiláká živočichy ke šíření semen" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořen", right: "Vstřebává vodu a soli z půdy" },
+      { left: "Stonek", right: "Dopravuje vodu od kořene k listům" },
+      { left: "List", right: "Vyrábí organické látky pro celou rostlinu" },
+      { left: "Semeno", right: "Šíří druh do nového prostředí" },
+    ],
+  },
+  {
+    question: "Spoj přizpůsobení rostliny s podmínkami prostředí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velké ploché listy", right: "Deštný prales – zachycení světla ve stínu" },
+      { left: "Jehličí", right: "Mírné pásmo – odolnost vůči mrazu a suchu" },
+      { left: "Vzdušné kořeny", right: "Mokřad – příjem kyslíku nad vodou" },
+      { left: "Trny", right: "Sucho – omezení výparu místo listů" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Blizna", right: "Lepkavá část pestíku zachytávající pyl" },
+      { left: "Čnělka", right: "Spojuje bliznu s vaječníkem" },
+      { left: "Vaječník", right: "Obsahuje vajíčka, ze kterých vznikají semena" },
+      { left: "Pylová láčka", right: "Vede pyl k vajíčku při oplodnění" },
+    ],
+  },
+  {
+    question: "Spoj typ listu s jeho popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Jehličí", right: "Úzký list jehličnanů odolný mrazu" },
+      { left: "Šupinatý list", right: "Přeměněný list přikrývající pupeny" },
+      { left: "Složený list", right: "List složený z více lístků (akát, jasan)" },
+      { left: "Jednoduchý list", right: "Celý list na jednom řapíku (dub, lípa)" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořen", right: "Příjem vody a minerálů, ukotvení" },
+      { left: "Stonek", right: "Mechanická opora, transport látek" },
+      { left: "List", right: "Fotosyntéza, transpirace" },
+      { left: "Květ", right: "Pohlavní rozmnožování" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Co je kořenové vlášení?", correctAnswer: "Jemné výrůstky kořene zvětšující plochu pro příjem vody a živin", options: ["Jemné výrůstky kořene zvětšující plochu pro příjem vody a živin", "Větší větve kořenového systému", "Drobné listy na kořenech", "Kořeny jiných rostlin pronikající do půdy"] },
-  { question: "Co je dřevo a lýko ve stonku?", correctAnswer: "Dřevo: vede vodu + minerály nahoru. Lýko: vede cukry (asimiláty) dolů.", options: ["Dřevo: vede vodu + minerály nahoru. Lýko: vede cukry (asimiláty) dolů.", "Dřevo: vede cukry dolů. Lýko: vede vodu nahoru.", "Obě tkáně vedou vodu stejným směrem.", "Dřevo i lýko mají jen mechanickou funkci."] },
-  { question: "Co jsou průduchy na listech?", correctAnswer: "Drobné otvůrky regulující výměnu plynů (CO₂, O₂) a odpařování vody", options: ["Drobné otvůrky regulující výměnu plynů (CO₂, O₂) a odpařování vody", "Otvory pro příjem vody listy", "Kanálky pro vedení živin v listu", "Chloroplasty na povrchu listu"] },
-  { question: "Co je transpiraci u rostlin?", correctAnswer: "Výpar vody z listů průduchy — pohání vzestup vody z kořenů", options: ["Výpar vody z listů průduchy — pohání vzestup vody z kořenů", "Příjem vody kořeny z půdy", "Přenos cukrů z listů do kořenů", "Fotosyntéza za horkého počasí"] },
-  { question: "Jaký je rozdíl mezi jednoděložnými a dvouděložnými rostlinami?", correctAnswer: "Jednoděložné: 1 děloha (trávy, obiloviny). Dvouděložné: 2 dělohy (stromy, byliny, zelenina).", options: ["Jednoděložné: 1 děloha (trávy, obiloviny). Dvouděložné: 2 dělohy (stromy, byliny, zelenina).", "Jednoděložné mají listy po jednom, dvouděložné po dvou.", "Dvouděložné jsou vždy stromy, jednoděložné byliny.", "Jednoděložné mají zelenější listy."] },
-  { question: "Proč mají rostliny v pouštích drobné listy nebo trny?", correctAnswer: "Omezení transpiraci — malý povrch listu = méně výparu vody v suchém prostředí", options: ["Omezení transpiraci — malý povrch listu = méně výparu vody v suchém prostředí", "Přizpůsobení k využití více světla", "Ochrana před živočichy v pouštích", "Trny a jehlice lépe sbírají rosnou vláhu"] },
-  { question: "Jak se rostliny přizpůsobily k opylení hmyzem?", correctAnswer: "Barevné a vonné květy, nektar — přitahují opylovače", options: ["Barevné a vonné květy, nektar — přitahují opylovače", "Produkce velkého množství lehkého pylu", "Rostliny přizpůsobení hmyzu nemají — opylení je pasivní", "Lepkavé listy zachytávající hmyz"] },
-  { question: "Jak se šíří semena s háčky (např. lopuch)?", correctAnswer: "Živočichy — háčky se zachytí na srsti nebo oblečení (epizoochorie)", options: ["Živočichy — háčky se zachytí na srsti nebo oblečení (epizoochorie)", "Větrem", "Vodou", "Prasknutím tobolky"] },
-  { question: "Co je zásobní funkce plodu?", correctAnswer: "Chrání semeno a láká živočichy (sladká dužina) k roznesení", options: ["Chrání semeno a láká živočichy (sladká dužina) k roznesení", "Uchovává zásoby vody pro semeno", "Zásobuje kořeny rostliny cukry", "Plod nemá zásobní funkci"] },
-  { question: "Co je klíčení semene?", correctAnswer: "Semeno nasaje vodu a klíčí — nejprve vyrůstá kořínek, pak stonek s dělohami", options: ["Semeno nasaje vodu a klíčí — nejprve vyrůstá kořínek, pak stonek s dělohami", "Semeno se rozloží v půdě a hnojí ji", "Semeno vyrůstá jen po opylení květu", "Klíčení nastává jen v tropickém podnebí"] },
-  { question: "Jak se šíří semena kokosového ořechu?", correctAnswer: "Vodou — plod je vzdušný a nepromokavý, unese ho moře", options: ["Vodou — plod je vzdušný a nepromokavý, unese ho moře", "Živočichy", "Větrem", "Explozí plodu"] },
-  { question: "Proč rostliny opylovane větrem mají méně nápadné květy?", correctAnswer: "Nepotřebují přitáhnout hmyz — produkují velké množství drobného lehkého pylu", options: ["Nepotřebují přitáhnout hmyz — produkují velké množství drobného lehkého pylu", "Větrný pyl nepotřebuje barvu pro rozptýlení", "Rostliny s větrem nemají květy vůbec", "Méně výrazné barvy chrání pyl před UV"] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Jak probíhá fotosyntéza na molekulární úrovni (zjednodušeně)?", correctAnswer: "6CO₂ + 6H₂O + světlo → C₆H₁₂O₆ (glukóza) + 6O₂", options: ["6CO₂ + 6H₂O + světlo → C₆H₁₂O₆ (glukóza) + 6O₂", "6O₂ + 6H₂O + světlo → C₆H₁₂O₆ + 6CO₂", "CO₂ + H₂O + světlo → O₂ (bez vzniku cukru)", "Fotosyntéza jen přeměňuje CO₂ na O₂ bez vzniku cukru"] },
-  { question: "Co je celulóza a kde ji u rostlin najdeme?", correctAnswer: "Polysacharid tvořící buněčné stěny — dává pevnost stonkům, listům a dřevu", options: ["Polysacharid tvořící buněčné stěny — dává pevnost stonkům, listům a dřevu", "Zásobní cukr v hlízách rostlin", "Pigment zodpovědný za barvu listů", "Enzym katalyzující fotosyntézu"] },
-  { question: "Co je apikální meristém a jaká je jeho funkce?", correctAnswer: "Pletivo na špičce kořene a výhonu schopné dělení — zodpovídá za prodlužování rostliny", options: ["Pletivo na špičce kořene a výhonu schopné dělení — zodpovídá za prodlužování rostliny", "Pletivo zodpovídající za fotosyntézu v listech", "Zásobní tkáň pro cukry v hlízách", "Buňky tvořící vodivé trubice"] },
-  { question: "Jak probíhá opylení a oplodnění u rostlin?", correctAnswer: "Pyl se přenese na bliznu, klíčí pylová láčka, splyne s vajíčkem → zárodek → semeno", options: ["Pyl se přenese na bliznu, klíčí pylová láčka, splyne s vajíčkem → zárodek → semeno", "Pyl padá do plodu a vytváří semena přímo", "Opylení a oplodnění jsou totéž — dochází k nim najednou", "Pyl splyne s plodnicí bez vajíčka"] },
-  { question: "Co je endosperm semene?", correctAnswer: "Zásobní pletivo semene zásobující klíček živinami při klíčení", options: ["Zásobní pletivo semene zásobující klíček živinami při klíčení", "Vnější obal semene (osemení)", "Zárodečný kořen v semenu", "Chlorofyl v nezralém semeni"] },
-  { question: "Jak se liší C3 a C4 rostliny?", correctAnswer: "C4 (kukuřice, cukrová třtina) mají efektivnější fotosyntézu v horku — méně ztrát vody", options: ["C4 (kukuřice, cukrová třtina) mají efektivnější fotosyntézu v horku — méně ztrát vody", "C3 jsou náchylnější k suchu než C4", "C4 rostliny mají 4 listy, C3 mají 3 listy", "Rozdíl je pouze v počtu chromozomů"] },
-  { question: "Co je vegetativní rozmnožování a uveď příklady?", correctAnswer: "Rozmnožování bez semen — výhonky (jahoda), hlízy (brambor), odnože (česnek), řízky", options: ["Rozmnožování bez semen — výhonky (jahoda), hlízy (brambor), odnože (česnek), řízky", "Opylení bez hmyzu — výlučně větrem", "Klonování pomocí laboratorní metody", "Semena klíčící bez zálivky"] },
-  { question: "Co je kamenice (sukulentní) rostlina a jak přežívá sucho?", correctAnswer: "Rostlina ukládající vodu v tlustých listích nebo stoncích (kaktus, aloe) — průduchy otevírá v noci", options: ["Rostlina ukládající vodu v tlustých listích nebo stoncích (kaktus, aloe) — průduchy otevírá v noci", "Rostlina přežívající sucho odpadem listí v létě", "Rostlina rostoucí jen na mokrých půdách", "Rostlina s hlubokými kořeny čerpající spodní vodu"] },
-  { question: "Proč jsou stromy schopny žít stovky let?", correctAnswer: "Kambium (meristém) se neustále dělí a tvoří nové vrstvičky dřeva a lýka — neomezený růst", options: ["Kambium (meristém) se neustále dělí a tvoří nové vrstvičky dřeva a lýka — neomezený růst", "Stromy mají speciální enzymy zpomalující stárnutí", "Délka života je geneticky omezena stejně jako u zvířat", "Stromy se každé jaro kompletně obnoví z klíčků"] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 40);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const STAVBAROSTLINROZSIRENIDRUHYROSTLIN: TopicMetadata[] = [
@@ -76,7 +345,7 @@ export const STAVBAROSTLINROZSIRENIDRUHYROSTLIN: TopicMetadata[] = [
     ],
     boundaries: ["Podrobná buněčná biologie není náplní 4. ročníku"],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,

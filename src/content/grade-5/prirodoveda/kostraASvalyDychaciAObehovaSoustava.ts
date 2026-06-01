@@ -9,41 +9,321 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Z kolika kostí se skládá lidská kostra?", correctAnswer: "206 kostí", options: ["206 kostí", "300 kostí", "150 kostí", "360 kostí"], hints: ["Novorozenec má více kostí – srůstají s věkem."] },
-  { question: "Jaké jsou funkce kostry?", correctAnswer: "Opora, ochrana orgánů, pohyb, krvetvorba", options: ["Opora, ochrana orgánů, pohyb, krvetvorba", "Pouze opora a pohyb", "Trávení a dýchání", "Krevní oběh a imunita"], hints: ["Červená kostní dřeň vyrábí krvinky."] },
-  { question: "Kde v těle probíhá výměna kyslíku za CO₂?", correctAnswer: "V plicích – plicních sklípcích – alveolách", options: ["V plicních sklípcích – alveolách", "V srdci", "V krvi", "V játrech"], hints: ["Alveoly = malé váčky v plicích s obrovským povrchem."] },
-  { question: "Kolikrát za minutu dýchá zdravý žák přibližně?", correctAnswer: "15–20 dechů za minutu", options: ["15–20 dechů za minutu", "5–8 dechů za minutu", "30–40 dechů za minutu", "60 dechů za minutu"], hints: ["Během cvičení se dýchání zrychluje."] },
-  { question: "Co jsou tepny?", correctAnswer: "Cévy vedoucí krev od srdce do těla", options: ["Cévy vedoucí krev od srdce do těla", "Cévy vedoucí krev od těla k srdci", "Cévy v plicích přenášející kyslík", "Mikrocévy propojující tkáně"], hints: ["Tepna = z srdce ven."] },
-  { question: "Co jsou žíly?", correctAnswer: "Cévy vedoucí krev od těla zpět k srdci", options: ["Cévy vedoucí krev od těla zpět k srdci", "Cévy vedoucí krev od srdce do těla", "Cévy v mozku přenášející nervové impulzy", "Kapiláry v kůži"], hints: ["Žíla = do srdce."] },
-  { question: "Z kolika komor a předsíní se skládá lidské srdce?", correctAnswer: "2 komory a 2 předsíně – celkem 4 části", options: ["2 komory a 2 předsíně (celkem 4 části)", "1 komora a 1 předsíň", "4 komory", "2 komory bez předsíní"], hints: ["Srdce = výkonná pumpa ve tvaru hrušky."] },
-  { question: "Co jsou červené krvinky?", correctAnswer: "Přenášejí kyslík z plic do tkání – obsahují hemoglobin", options: ["Přenášejí kyslík z plic do tkání (obsahují hemoglobin)", "Bojují s bakteriemi a viry", "Srážejí krev při krvácení", "Přenášejí živiny z trávicí soustavy"], hints: ["Červené = hemoglobin = červené barvivo vázající kyslík."] },
-  { question: "Jakou funkci mají bílé krvinky?", correctAnswer: "Chrání tělo před infekcí – imunita", options: ["Chrání tělo před infekcí (imunita)", "Přenášejí kyslík", "Srážejí krev", "Rozkládají živiny v krvi"], hints: ["Bílé krvinky = vojáci imunitního systému."] },
-  { question: "Co je bránice a jakou má funkci při dýchání?", correctAnswer: "Svalová přepážka pod plícemi – stahem stahuje a roztahuje hrudník při dýchání", options: ["Svalová přepážka pod plícemi – stahem stahuje a roztahuje hrudník při dýchání", "Část plic, kde probíhá výměna plynů", "Chrupavka oddělující průdušnici od jícnu", "Část srdce pumupující krev do plic"], hints: ["Bránice + mezižeberní svaly = dýchací svaly."] },
-  { question: "Co jsou klouby?", correctAnswer: "Spoje kostí umožňující pohyb – koleno, kyčel, rameno", options: ["Spoje kostí umožňující pohyb (koleno, kyčel, rameno)", "Svaly ovládající pohyb kostí", "Část kostra bez pohyblivých spojů", "Šlachy připevňující svaly ke kostem"], hints: ["Kloub = místo, kde se dvě kosti pohyblivě spojují."] },
-  { question: "Co tvoří kostru páteř, k čemu slouží?", correctAnswer: "Páteř = 33 obratlů, chrání míchu a nese váhu těla", options: ["Páteř = 33 obratlů, chrání míchu a nese váhu těla", "Páteř = jeden pevný kus kosti od hlavy k pánvi", "Páteř nese jen hlavu – trup drží žebra", "Páteř produkuje bílé krvinky v kostní dřeni"], hints: ["Obratel = jeden kus páteře."] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj orgán nebo součást těla s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Pumpuje krev tělem" },
+      { left: "Plíce", right: "Provádějí výměnu O₂ a CO₂" },
+      { left: "Páteř", right: "Chrání míchu a nese váhu těla" },
+      { left: "Bránice", right: "Sval umožňující dýchání" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást těla s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Tepna", right: "Vede krev od srdce do těla" },
+      { left: "Žíla", right: "Vede krev od těla k srdci" },
+      { left: "Alveola (plicní sklípek)", right: "Místo výměny kyslíku a CO₂ v plicích" },
+      { left: "Kloub", right: "Pohyblivý spoj dvou kostí" },
+    ],
+  },
+  {
+    question: "Spoj součást krve s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Červené krvinky", right: "Přenášejí kyslík z plic do tkání" },
+      { left: "Bílé krvinky", right: "Chrání tělo před infekcemi (imunita)" },
+      { left: "Destičky (trombocyty)", right: "Srážejí krev při krvácení" },
+      { left: "Krevní plasma", right: "Kapalina přenášející živiny a odpadní látky" },
+    ],
+  },
+  {
+    question: "Spoj součást kostrové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lebka", right: "Chrání mozek" },
+      { left: "Žebra", right: "Chrání srdce a plíce" },
+      { left: "Páteř", right: "Opora těla, ochrana míchy" },
+      { left: "Kost stehenní", right: "Nejdelší kost v těle, tvoří základ stehna" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v dýchací nebo oběhové soustavě.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Průdušnice", right: "Vede vzduch z hrtanu do plic" },
+      { left: "Hrtan", right: "Obsahuje hlasivky, spojuje nosohltán s průdušnicí" },
+      { left: "Levá komora srdce", right: "Pumpuje okysličenou krev do velkého oběhu" },
+      { left: "Pravá komora srdce", right: "Pumpuje odkysličenou krev do plic" },
+    ],
+  },
+  {
+    question: "Spoj sval s jeho popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kosterní sval", right: "Ovládáme ho vědomě – pohyb ruky, nohy" },
+      { left: "Srdeční sval", right: "Bije automaticky, nelze ho vědomě zastavit" },
+      { left: "Hladký sval", right: "Ve stěnách střev a cév, mimovolný" },
+      { left: "Šlacha", right: "Pojivová tkáň připevňující sval ke kosti" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Červená kostní dřeň", right: "Tvoří krvinky (krvetvorba)" },
+      { left: "Chrupavka", right: "Tlumí nárazy v kloubech" },
+      { left: "Vaz", right: "Spojuje kosti v kloubu" },
+      { left: "Hemoglobin", right: "Červené barvivo krvinky vázající kyslík" },
+    ],
+  },
+  {
+    question: "Spoj část dýchací soustavy s jejím popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Nosní sliznice", right: "Ohřívá, zvlhčuje a čistí vzduch" },
+      { left: "Průduška", right: "Větví se do plicních laloků" },
+      { left: "Plicní lalok", right: "Část plíce zásobená jednou průduškou" },
+      { left: "Pohrudnice", right: "Blána obalující plíce a usnadňující dýchání" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Čerpá krev do dvou oddělených oběhů" },
+      { left: "Plíce", right: "Okysličují krev a vydechují CO₂" },
+      { left: "Kostra", right: "Chrání orgány a umožňuje pohyb" },
+      { left: "Svaly", right: "Tahají za kosti a způsobují pohyb" },
+    ],
+  },
+  {
+    question: "Spoj krevní oběh s jeho popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Malý (plicní) oběh", right: "Srdce → plíce → okysličení → zpět k srdci" },
+      { left: "Velký (tělový) oběh", right: "Srdce → tělo → odevzdání O₂ → zpět k srdci" },
+      { left: "Tepna plicní", right: "Vede odkysličenou krev do plic" },
+      { left: "Žíla plicní", right: "Přivádí okysličenou krev z plic do srdce" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Páteř", right: "33 obratlů chrání míchu" },
+      { left: "Kost", right: "Pevná tkáň tvořící kostru" },
+      { left: "Sval", right: "Stahuje se a uvolňuje – způsobuje pohyb" },
+      { left: "Krev", right: "Rozvádí látky, O₂ a imunitní buňky po těle" },
+    ],
+  },
+  {
+    question: "Spoj orgán s popisem jeho umístění nebo stavby.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Leží v hrudní dutině, vlevo od středu" },
+      { left: "Plíce", right: "Dvě houbovité struktury v hrudním koši" },
+      { left: "Bránice", right: "Klenutý sval oddělující hrudník od břicha" },
+      { left: "Žebra", right: "12 párů kostěných oblouků chránící hrudní orgány" },
+    ],
+  },
+  {
+    question: "Spoj součást kostrové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kyčelní kost", right: "Základ pánve, nese váhu těla" },
+      { left: "Lopatka", right: "Základ ramenního kloubu" },
+      { left: "Klíční kost", right: "Spojuje lopatku s hrudní kostí" },
+      { left: "Kost holenní", right: "Větší ze dvou kostí bérce" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Vytváří krevní tlak pro oběh krve" },
+      { left: "Kapiláry", right: "Nejtenčí cévy, kde probíhá výměna látek s tkáněmi" },
+      { left: "Alveoly", right: "Miliony váčků s velkým povrchem pro výměnu plynů" },
+      { left: "Průdušnice", right: "Vede vzduch do plic (trachea)" },
+    ],
+  },
+  {
+    question: "Spoj součást s jejím popisem v oběhové soustavě.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Předsíň srdeční", right: "Přijímá krev přitékající žílami do srdce" },
+      { left: "Komora srdeční", right: "Vypuzuje krev do tepen ze srdce" },
+      { left: "Srdeční chlopeň", right: "Brání zpětnému toku krve" },
+      { left: "Aorta", right: "Největší tepna vycházející ze srdce" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kostra", right: "Opora, ochrana, pohyb, krvetvorba" },
+      { left: "Sval", right: "Stahuje se – vytváří pohyb nebo teplo" },
+      { left: "Plíce", right: "Výměna plynů – O₂ dovnitř, CO₂ ven" },
+      { left: "Srdce", right: "Pumpa udržující tok krve" },
+    ],
+  },
+  {
+    question: "Spoj součást krve s jejím popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hemoglobin", right: "Protein v červených krvinkách vázající O₂" },
+      { left: "Fibrin", right: "Bílkovina srážející krev při zranění" },
+      { left: "Sérum", right: "Krevní plasma bez srážecích faktorů" },
+      { left: "Lymfocyt", right: "Typ bílé krvinky – klíčový pro imunitu" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Dýchací centrum mozku", right: "Řídí rytmus dýchání automaticky" },
+      { left: "Mezižeberní svaly", right: "Pomáhají bránici při dýchání" },
+      { left: "Nosní přepážka", right: "Dělí nosní dutinu na dvě poloviny" },
+      { left: "Mandle", right: "Imunitní tkáň v nosohltanu – první obrana" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Pumpuje krev tělem" },
+      { left: "Kloub", right: "Pohyblivý spoj kostí umožňující pohyb" },
+      { left: "Červené krvinky", right: "Přenášejí kyslík z plic do buněk" },
+      { left: "Bránice", right: "Sval dýchání, odděluje hrudník od břicha" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Plíce", right: "Okysličují krev" },
+      { left: "Tepny", right: "Vedou okysličenou krev od srdce" },
+      { left: "Žíly", right: "Vedou odkysličenou krev k srdci" },
+      { left: "Kosterní svaly", right: "Ovládají pohyb kostí vědomě" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lebka", right: "Chrání mozek před poraněním" },
+      { left: "Srdeční sval", right: "Nepřetržitě bije bez vědomé kontroly" },
+      { left: "Alveola", right: "Váček v plicích pro výměnu plynů" },
+      { left: "Červená kostní dřeň", right: "Tvoří červené a bílé krvinky" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Páteř", right: "Mechanická osa těla, chrání míchu" },
+      { left: "Bílé krvinky", right: "Bojují s bakteriemi a viry" },
+      { left: "Průdušnice", right: "Trubice vedoucí vzduch do plic" },
+      { left: "Destičky", right: "Zastavují krvácení tvorbou krevní zátky" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pravá předsíň", right: "Přijímá odkysličenou krev z těla" },
+      { left: "Levá předsíň", right: "Přijímá okysličenou krev z plic" },
+      { left: "Aorta", right: "Největší tepna vycházející z levé komory" },
+      { left: "Plicní tepna", right: "Vede odkysličenou krev do plic" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kostra", right: "Základní nosná struktura těla" },
+      { left: "Sval", right: "Přeměňuje chemickou energii na pohyb" },
+      { left: "Plíce", right: "Zásobují krev kyslíkem" },
+      { left: "Srdce", right: "Udržuje cirkulaci krve" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Dýchání nosem", right: "Filtruje, ohřívá a zvlhčuje vzduch" },
+      { left: "Výdech CO₂", right: "Odpad buněčného dýchání opouštějící plíce" },
+      { left: "Vdech O₂", right: "Kyslík vstupující do krve v alveolách" },
+      { left: "Bránice", right: "Stahem dolů rozepíná plíce při vdechu" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Pumpuje krev tělem" },
+      { left: "Plíce", right: "Vyměňují O₂ a CO₂" },
+      { left: "Páteř", right: "Chrání míchu a nese váhu" },
+      { left: "Šlacha", right: "Připevňuje sval ke kosti" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kolenní kloub", right: "Umožňuje ohýbání a natahování nohy" },
+      { left: "Ramenní kloub", right: "Umožňuje pohyb paže do všech stran" },
+      { left: "Kyčelní kloub", right: "Kulový kloub spojující stehno s pánví" },
+      { left: "Loketní kloub", right: "Ohýbání a natahování předloktí" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Červené krvinky", right: "Přenášejí O₂ pomocí hemoglobinu" },
+      { left: "Bílé krvinky", right: "Ničí patogeny (imunita)" },
+      { left: "Destičky", right: "Pomáhají zastavit krvácení" },
+      { left: "Plasma", right: "Přenáší živiny, hormony a odpadní látky" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Pumpuje krev tělem" },
+      { left: "Kostra", right: "Drží tělo vzpřímené a chrání orgány" },
+      { left: "Svaly", right: "Pohybují kostmi" },
+      { left: "Krev", right: "Zásobuje buňky kyslíkem a živinami" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Nosohltán", right: "Propojuje nos s hrtanem" },
+      { left: "Glotis", right: "Hlasová štěrbina v hrtanu" },
+      { left: "Plicní povrch", right: "Celkem 70–100 m² pro výměnu plynů" },
+      { left: "Kapilára plicní", right: "Tenká céva opletená kolem alveoly" },
+    ],
+  },
+  {
+    question: "Spoj orgán nebo součást s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Srdce", right: "Pumpuje krev tělem" },
+      { left: "Plíce", right: "Provádějí výměnu dýchacích plynů" },
+      { left: "Kostra", right: "Základ těla – opora a ochrana orgánů" },
+      { left: "Svaly", right: "Generují sílu pro pohyb" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Jak se liší kosterní sval od srdečního svalu?", correctAnswer: "Kosterní svaly ovládáme vědomě – ruka. Srdeční sval bije nepřetržitě automaticky – nelze ho vědomě zastavit.", options: ["Kosterní svaly ovládáme vědomě (ruka). Srdeční sval bije nepřetržitě automaticky – nelze ho vědomě zastavit.", "Kosterní svaly jsou větší než srdeční", "Srdeční sval lze zastavit meditací a vůlí", "Oba typy svalů ovládáme vědomě stejně"], hints: ["Vědomé × mimovolné svalstvo = klíčový rozdíl."] },
-  { question: "Jak probíhají oba krevní oběhy (malý a velký)?", correctAnswer: "Malý – plicní: srdce → plíce – okysličení → srdce. Velký: srdce → tělo – živiny a O₂ → srdce – CO₂.", options: ["Malý (plicní): srdce → plíce (okysličení) → srdce. Velký: srdce → tělo (živiny a O₂) → srdce (CO₂).", "Malý oběh zásobuje mozek, velký zbytek těla", "Velký oběh jde přes plíce, malý přes játra", "Oba oběhy jsou totéž – pumpa je jen jedna"], hints: ["Dva oběhy = srdce čerpá do dvou oddělených okruhů."] },
-  { question: "Co je plicní sklípek (alveola) a proč má velký povrch?", correctAnswer: "Alveola = malý vzduchový váček v plicích. Miliony alveol mají dohromady povrch 70–100 m² – obrovská plocha pro výměnu plynů.", options: ["Alveola = malý vzduchový váček v plicích. Miliony alveol mají dohromady povrch 70–100 m² – obrovská plocha pro výměnu plynů.", "Alveola je průdušnice vedoucí vzduch do plic", "Povrch alveol je malý – výměna probíhá v průduškách", "Alveoly jsou cévy v plicích, ne vzduchové váčky"], hints: ["Velký povrch = více kontaktu krev/vzduch = efektivnější výměna plynů."] },
-  { question: "Proč se sportovci rozcvičují a ochlazují po výkonu?", correctAnswer: "Rozcvičení zahřeje svaly, zvýší průtok krve a sníží riziko zranění. Ochlazení postupně sníží srdeční tep a odplaví kyselinu mléčnou.", options: ["Rozcvičení zahřeje svaly, zvýší průtok krve a sníží riziko zranění. Ochlazení postupně sníží srdeční tep a odplaví kyselinu mléčnou.", "Rozcvičení je jen zvyk bez vědeckého zdůvodnění", "Ochlazení je zbytečné – tělo se přirozeně uklidní samo", "Rozcvičení spaluje kalorie před výkonem"], hints: ["Kyselina mléčná = vedlejší produkt intenzivního cvičení způsobující svalovou bolest."] },
-  { question: "Co je krevní tlak a co ovlivňuje jeho výši?", correctAnswer: "Síla, s jakou krev tlačí na stěny tepen. Ovlivňuje ho stres, fyzická aktivita, sůl ve stravě, věk a hmotnost.", options: ["Síla, s jakou krev tlačí na stěny tepen. Ovlivňuje ho stres, fyzická aktivita, sůl ve stravě, věk a hmotnost.", "Rychlost, s jakou srdce bije za minutu", "Množství kyslíku v krvi měřené oximetrem", "Teplota krve při průchodu srdcem"], hints: ["Normální krevní tlak u dospělého: 120/80 mmHg."] },
-  { question: "Jak fyzická aktivita prospívá srdci a plicím?", correctAnswer: "Pravidelný pohyb posiluje srdeční sval → srdce čerpá efektivněji. Plíce se rozšiřují → větší kapacita. Krevní cévy jsou pružnější.", options: ["Pravidelný pohyb posiluje srdeční sval → srdce čerpá efektivněji. Plíce se rozšiřují → větší kapacita. Krevní cévy jsou pružnější.", "Fyzická aktivita zvyšuje tlak krve trvale, což je nezdravé.", "Pohyb prospívá jen svalům – srdce a plíce se nemění tréninkem.", "Srdce je svůj vlastní orgán – trénink ho neovlivňuje."], hints: ["Sportovci mají pomalejší klidový tep – srdce je efektivnější."] },
-  { question: "Proč jsou destičky (trombocyty) v krvi důležité?", correctAnswer: "Srážejí krev při poranění – tvoří zátku – trombus a zastavují krvácení, aby nedošlo ke ztrátě krve", options: ["Srážejí krev při poranění – tvoří zátku (trombus) a zastavují krvácení, aby nedošlo ke ztrátě krve", "Přenášejí kyslík jako červené krvinky", "Bojují s bakteriemi jako bílé krvinky", "Regulují teplotu krve procházením cévami"], hints: ["Bez destiček by se i malé škrábnutí stalo smrtelným krvácením."] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Jak souvisí osteoporóza s výživou a pohybem?", correctAnswer: "Osteoporóza = řídnutí kostí při nedostatku vápníku a vitamínu D. Pohyb stimuluje tvorbu nové kostní hmoty – bez pohybu kosti slábnou i při dobré výživě.", options: ["Osteoporóza = řídnutí kostí při nedostatku vápníku a vitamínu D. Pohyb stimuluje tvorbu nové kostní hmoty – bez pohybu kosti slábnou i při dobré výživě.", "Osteoporóza vzniká jen v důsledku zranění kostí.", "Pohyb kostem škodí – přetěžuje je a způsobuje osteoporózu.", "Osteoporóza je způsobena nadbytkem vápníku v krvi."], hints: ["Kost je živá tkáň – potřebuje pohybovou zátěž ke zpevnění."] },
-  { question: "Proč je počet červených krvinek u horolezcích ve výšce vyšší než u lidí v nížině?", correctAnswer: "Ve výšce je méně kyslíku. Tělo reaguje produkcí více červených krvinek, aby přepravilo dostatek kyslíku při nižší koncentraci vzduchu.", options: ["Ve výšce je méně kyslíku. Tělo reaguje produkcí více červených krvinek, aby přepravilo dostatek kyslíku při nižší koncentraci vzduchu.", "Ve výšce je více kyslíku, proto jsou potřeba větší krvinky.", "Červené krvinky nemají vliv na přizpůsobení výšce.", "Horolezci mají více krvinek díky potravinovým doplňkům, ne prostředí."], hints: ["Aklimatizace = přizpůsobení těla na jiné podmínky prostředí."] },
-  { question: "Jak by se změnila funkce srdce při chlopňové vadě?", correctAnswer: "Chlopeň zabraňuje zpětnému toku krve. Vadná chlopeň = krev teče zpět → srdce musí pracovat víc → přetížení a srdeční selhání.", options: ["Chlopeň zabraňuje zpětnému toku krve. Vadná chlopeň = krev teče zpět → srdce musí pracovat víc → přetížení a srdeční selhání.", "Vadná chlopeň zpomaluje srdeční tep bez jiných následků.", "Chlopně jsou ve svalech, ne v srdci – jejich poškození neovlivňuje pumpu.", "Srdce má záložní mechanismus, který funkci chlopní nahradí."], hints: ["4 srdeční chlopně: mezi předsíněmi a komorami a ve výstupních cévách."] },
-  { question: "Proč při intenzivním cvičení cítíme pálení ve svalech?", correctAnswer: "Při nedostatku kyslíku přechází svaly na anaerobní metabolismus → vzniká kyselina mléčná, která způsobuje pálení a únavu.", options: ["Při nedostatku kyslíku přechází svaly na anaerobní metabolismus → vzniká kyselina mléčná, která způsobuje pálení a únavu.", "Pálení způsobuje přehřátí svalů při silném tréninku.", "Při cvičení se svaly trhlají a opravují – pálení = zánět.", "Kyslík způsobuje pálení tím, že reaguje s glukózou ve svalech."], hints: ["Anaerobní = bez kyslíku. Kyselina mléčná = dočasný metabolický produkt."] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const KOSTRAASVALYDYCHACIAOBEHOVASOUSTAVA: TopicMetadata[] = [
@@ -60,7 +340,7 @@ export const KOSTRAASVALYDYCHACIAOBEHOVASOUSTAVA: TopicMetadata[] = [
     goals: ["Popsat funkce kostry a svalů", "Vysvětlit princip dýchání a výměny plynů", "Popsat malý a velký krevní oběh"],
     boundaries: ["Neprobírá biochemii krve", "Neprobírá kardiovaskulární choroby do hloubky"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,

@@ -9,54 +9,311 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL_L1: PracticeTask[] = [
-  { question: "Do které říše patří houby?", correctAnswer: "Do vlastní říše hub", options: ["Do vlastní říše hub", "Do říše rostlin", "Do říše živočichů", "Do říše bakterií"], hints: ["Houby nejsou ani rostliny, ani živočichové."] },
-  { question: "Čím se živí rostliny?", correctAnswer: "Fotosyntézou – přeměňují sluneční světlo na cukry", options: ["Fotosyntézou – přeměňují sluneční světlo na cukry", "Loví jiné organismy", "Vstřebávají hotové organické látky z půdy", "Parazitují na jiných rostlinách"], hints: ["Rostliny jsou producenti."] },
-  { question: "Jak se jmenuje jedovatá houba s červeným kloboukem s bílými skvrnami?", correctAnswer: "Muchomůrka červená", options: ["Muchomůrka červená", "Hřib smrkový", "Lišká obecná", "Ryzec pravý"], hints: ["Je nebezpečně jedovatá."] },
-  { question: "Kolik noh má hmyz?", correctAnswer: "6 noh", options: ["6 noh", "4 nohy", "8 noh", "10 noh"], hints: ["Hmyz patří mezi bezobratlé."] },
-  { question: "Kolik noh mají pavouci?", correctAnswer: "8 noh", options: ["8 noh", "6 noh", "4 nohy", "10 noh"], hints: ["Pavouci nejsou hmyz."] },
-  { question: "Které živočichy řadíme mezi savce?", correctAnswer: "Živočichy, kteří krmí mláďata mlékem", options: ["Živočichy, kteří krmí mláďata mlékem", "Živočichy s peřím", "Živočichy s šupinami", "Živočichy dýchající žábrami"], hints: ["Savci mají srst a jsou teplokrevní."] },
-  { question: "Co je charakteristické pro ptáky?", correctAnswer: "Mají peří a jsou teplokrevní", options: ["Mají peří a jsou teplokrevní", "Mají šupiny a jsou studenokrevní", "Krmí mláďata mlékem", "Dýchají žábrami"], hints: ["Ptáci kladou vajíčka."] },
-  { question: "Jak se živí houby?", correctAnswer: "Jsou rozkladači – rozkládají mrtvou organickou hmotu", options: ["Jsou rozkladači – rozkládají mrtvou organickou hmotu", "Fotosyntézou", "Loví jiné organismy", "Pijí jen vodu"], hints: ["Houby vracejí živiny zpět do půdy."] },
-  { question: "Co mají společného ryby?", correctAnswer: "Dýchají žábrami a mají ploutve", options: ["Dýchají žábrami a mají ploutve", "Mají srst a krmí mláďata mlékem", "Mají peří a létají", "Dýchají plícemi a jsou teplokrevní"], hints: ["Ryby žijí ve vodě."] },
-  { question: "Plazi jsou:", correctAnswer: "Studenokrevní živočichové se suchou pokožkou", options: ["Studenokrevní živočichové se suchou pokožkou", "Teplokrevní živočichové s peřím", "Teplokrevní živočichové se srstí", "Bezobratlí živočichové s šesti nohami"], hints: ["Hadi a ještěrky jsou plazi."] },
-  { question: "Který organismus provádí fotosyntézu?", correctAnswer: "Strom", options: ["Strom", "Houba", "Vlk", "Žížala"], hints: ["Potřebuje sluneční světlo a chlorofyl."] },
-  { question: "Hřib smrkový je příkladem:", correctAnswer: "Jedlé houby", options: ["Jedlé houby", "Jedovaté houby", "Rostliny", "Živočicha"], hints: ["Je oblíbenou houbou v lese."] },
-  { question: "Čím se liší obojživelníci od plazů?", correctAnswer: "Jejich larvy žijí ve vodě", options: ["Jejich larvy žijí ve vodě", "Mají peří", "Jsou teplokrevní", "Mají srst"], hints: ["Žáby jsou obojživelníci."] },
-  { question: "Do které skupiny patří hmyz, pavouci a mnohonožky?", correctAnswer: "Bezobratlí", options: ["Bezobratlí", "Obratlovci", "Savci", "Plazi"], hints: ["Nemají páteř."] },
-  { question: "Kolik částí těla má hmyz?", correctAnswer: "3 části – hlava, hruď, zadeček", options: ["3 části (hlava, hruď, zadeček)", "2 části (hlavohruď, zadeček)", "4 části", "1 celek"], hints: ["Pavouk má jen 2 části."] },
+const POOL: PracticeTask[] = [
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hlíva ústřičná", right: "Houba" },
+      { left: "Dub letní", right: "Rostlina" },
+      { left: "Vlk obecný", right: "Živočich" },
+      { left: "Hřib smrkový", right: "Houba" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pampeliška", right: "Rostlina" },
+      { left: "Muchomůrka červená", right: "Houba" },
+      { left: "Kapr obecný", right: "Živočich" },
+      { left: "Borovice lesní", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lišák obecný", right: "Houba" },
+      { left: "Kopretina bílá", right: "Rostlina" },
+      { left: "Netopýr velký", right: "Živočich" },
+      { left: "Smrk ztepilý", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žížala obecná", right: "Živočich" },
+      { left: "Lišák obecný", right: "Houba" },
+      { left: "Jetel luční", right: "Rostlina" },
+      { left: "Motýl babočka", right: "Živočich" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Křemenáč osikový", right: "Houba" },
+      { left: "Tráva psárka", right: "Rostlina" },
+      { left: "Ještěrka obecná", right: "Živočich" },
+      { left: "Plíseň chlebová", right: "Houba" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ryzec pravý", right: "Houba" },
+      { left: "Kopřiva dvoudomá", right: "Rostlina" },
+      { left: "Sýkorka koňadra", right: "Živočich" },
+      { left: "Liška obecná", right: "Živočich" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pečárka polní", right: "Houba" },
+      { left: "Akát bílý", right: "Rostlina" },
+      { left: "Žába rosnička", right: "Živočich" },
+      { left: "Holub skalní", right: "Živočich" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lanýž černý", right: "Houba" },
+      { left: "Kukuřice setá", right: "Rostlina" },
+      { left: "Medvěd hnědý", right: "Živočich" },
+      { left: "Kvasinka", right: "Houba" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Sněhová plíseň", right: "Houba" },
+      { left: "Jabloň domácí", right: "Rostlina" },
+      { left: "Vydra říční", right: "Živočich" },
+      { left: "Smrž jedlý", right: "Houba" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Muchomůrka zelená", right: "Houba" },
+      { left: "Jedle bělokorá", right: "Rostlina" },
+      { left: "Srnec obecný", right: "Živočich" },
+      { left: "Modřín opadavý", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Lišaj pásovaný", right: "Živočich" },
+      { left: "Bedla vysoká", right: "Houba" },
+      { left: "Šeřík obecný", right: "Rostlina" },
+      { left: "Rak říční", right: "Živočich" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hlíva ústřičná", right: "Houba" },
+      { left: "Ostružiník maliník", right: "Rostlina" },
+      { left: "Ropucha obecná", right: "Živočich" },
+      { left: "Jasan ztepilý", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Čirůvka fialová", right: "Houba" },
+      { left: "Lípa srdčitá", right: "Rostlina" },
+      { left: "Bobr evropský", right: "Živočich" },
+      { left: "Holub", right: "Živočich" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Chorošek", right: "Houba" },
+      { left: "Bříza bradavičnatá", right: "Rostlina" },
+      { left: "Veverka obecná", right: "Živočich" },
+      { left: "Třešeň ptačí", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Penicilin (Penicillium)", right: "Houba" },
+      { left: "Řasa zelená", right: "Rostlina" },
+      { left: "Hvězdice mořská", right: "Živočich" },
+      { left: "Mech lesní", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Klouzek obecný", right: "Houba" },
+      { left: "Konvalinka vonná", right: "Rostlina" },
+      { left: "Plch velký", right: "Živočich" },
+      { left: "Jinan dvoulaločný", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Troudnatec kopytovitý", right: "Houba" },
+      { left: "Jmelí bílé", right: "Rostlina" },
+      { left: "Krtek obecný", right: "Živočich" },
+      { left: "Jezerní rybník", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hřib satan", right: "Houba" },
+      { left: "Šípkový keř", right: "Rostlina" },
+      { left: "Liška obecná", right: "Živočich" },
+      { left: "Topol osika", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kozák březový", right: "Houba" },
+      { left: "Ostřice trsnatá", right: "Rostlina" },
+      { left: "Čáp bílý", right: "Živočich" },
+      { left: "Vrba bílá", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Václavka obecná", right: "Houba" },
+      { left: "Zvonečník klasnatý", right: "Rostlina" },
+      { left: "Ježek západní", right: "Živočich" },
+      { left: "Habr obecný", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Šafránek jarní", right: "Rostlina" },
+      { left: "Ryzec kravský", right: "Houba" },
+      { left: "Tchoř lesní", right: "Živočich" },
+      { left: "Dřín obecný", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Rudoušek (houba)", right: "Houba" },
+      { left: "Prvosenka jarní", right: "Rostlina" },
+      { left: "Zajíc polní", right: "Živočich" },
+      { left: "Bez černý", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pýchavka obrovská", right: "Houba" },
+      { left: "Leknín bílý", right: "Rostlina" },
+      { left: "Potápka chocholatá", right: "Živočich" },
+      { left: "Orobinec úzkolistý", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Chorošovec (Trametes)", right: "Houba" },
+      { left: "Papratka samičí", right: "Rostlina" },
+      { left: "Mlok skvrnatý", right: "Živočich" },
+      { left: "Kapradí orlí", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hřib kovář", right: "Houba" },
+      { left: "Rákos obecný", right: "Rostlina" },
+      { left: "Čolník obecný", right: "Živočich" },
+      { left: "Kosatec žlutý", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Liška obecná (houba lišák)", right: "Houba" },
+      { left: "Vrbovka úzkolistá", right: "Rostlina" },
+      { left: "Užovka obojková", right: "Živočich" },
+      { left: "Starček obecný", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hřib hnědý", right: "Houba" },
+      { left: "Pomněnka lesní", right: "Rostlina" },
+      { left: "Holub hřivnáč", right: "Živočich" },
+      { left: "Hloh obecný", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Houba korálovec", right: "Houba" },
+      { left: "Šťavel kyselý", right: "Rostlina" },
+      { left: "Bažant obecný", right: "Živočich" },
+      { left: "Líska obecná", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Muchovník (Amanita)", right: "Houba" },
+      { left: "Jahodník obecný", right: "Rostlina" },
+      { left: "Labuť velká", right: "Živočich" },
+      { left: "Malina obecná", right: "Rostlina" },
+    ],
+  },
+  {
+    question: "Spoj organismus s říší, do které patří.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hřib bronzový", right: "Houba" },
+      { left: "Vlaštovičník větší", right: "Rostlina" },
+      { left: "Strnad obecný", right: "Živočich" },
+      { left: "Ptačí zob obecný", right: "Rostlina" },
+    ],
+  },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  { question: "Jaký je rozdíl mezi nahosemennými a krytosemennými rostlinami?", correctAnswer: "Krytosemenné mají semena uzavřená v plodu, nahosemenné nikoliv", options: ["Krytosemenné mají semena uzavřená v plodu, nahosemenné nikoliv", "Nahosemenné mají listy, krytosemenné jehličí", "Nahosemenné kvetou, krytosemenné ne", "Žádný rozdíl není"], hints: ["Jehličnany jsou příkladem nahosemenných."] },
-  { question: "Mycelium je:", correctAnswer: "Podhoubí – spleť vláken, které tvoří tělo houby", options: ["Podhoubí – spleť vláken, které tvoří tělo houby", "Druh jedovaté houby", "Název pro klobouk houby", "Zelené vlákno řasy"], hints: ["Vidíme jen plodnici, ale mycelium je skryté v půdě."] },
-  { question: "Co znamená, že živočich je 'teplokrevný'?", correctAnswer: "Udržuje stálou tělesnou teplotu bez ohledu na okolí", options: ["Udržuje stálou tělesnou teplotu bez ohledu na okolí", "Žije jen v teplých krajích", "Má teplou srst", "V zimě se zahřívá u ohně"], hints: ["Ptáci a savci jsou teplokrevní."] },
-  { question: "Mezi obratlovce NEPATŘÍ:", correctAnswer: "Hmyz", options: ["Hmyz", "Ryby", "Ptáci", "Savci"], hints: ["Obratlovci mají páteř."] },
-  { question: "Lišky jsou konzumenti. Co to znamená?", correctAnswer: "Živí se jinými organismy, nevyrábí si potravu sami", options: ["Živí se jinými organismy, nevyrábí si potravu sami", "Vyrábí potravu fotosyntézou", "Jsou rozkladači", "Jsou producenti"], hints: ["Producenti jsou rostliny, konzumenti je jedí."] },
-  { question: "Proč jsou houby zařazeny do vlastní říše a ne mezi rostliny?", correctAnswer: "Nemají chlorofyl, nefotosyntetizují a živí se jinak než rostliny", options: ["Nemají chlorofyl, nefotosyntetizují a živí se jinak než rostliny", "Jsou příliš malé", "Rostou jen v lese", "Mají klobouk místo listů"], hints: ["Chlorofyl je potřebný pro fotosyntézu."] },
-  { question: "Pavouci patří do skupiny:", correctAnswer: "Členovci – bezobratlí", options: ["Členovci (bezobratlí)", "Obratlovci", "Savci", "Hmyz"], hints: ["Pavouci mají 8 noh a 2 části těla – nejsou to hmyz."] },
-  { question: "Jak se živí plazi v zimě?", correctAnswer: "Upadají do stavu strnulosti, protože jsou studenokrevní", options: ["Upadají do stavu strnulosti, protože jsou studenokrevní", "Létají na jih jako ptáci", "Lovají pod ledem", "Jedí zásoby uložené v létě"], hints: ["Studenokrevní živočichové závisí na teplotě prostředí."] },
-  { question: "Mezi měkkýše patří:", correctAnswer: "Šnek zahradní a slimák", options: ["Šnek zahradní a slimák", "Žížala a pijavice", "Ježek a krtek", "Housenka a můra"], hints: ["Měkkýši jsou mělkouši s měkkým tělem."] },
-  { question: "Proč mají jehličnany jehličí místo listů?", correctAnswer: "Jehličí lépe odolává mrazu a suchu", options: ["Jehličí lépe odolává mrazu a suchu", "Jehličí fotosyntézu neprovádí", "Jehličí je jedovaté pro ochranu", "Jehlice jsou přeměněné kořeny"], hints: ["Jehličnany jsou stálezelené stromy."] },
-  { question: "Co mají společného všichni savci?", correctAnswer: "Mají srst, jsou teplokrevní a krmí mláďata mlékem", options: ["Mají srst, jsou teplokrevní a krmí mláďata mlékem", "Létají nebo plavou", "Kladou vajíčka", "Žijí pouze na souši"], hints: ["Netopýr je také savec."] },
-  { question: "Ostnokožci jsou příkladem:", correctAnswer: "Mořských bezobratlých – hvězdice, ježovka", options: ["Mořských bezobratlých (hvězdice, ježovka)", "Sladkovodních ryb", "Hmyzu", "Plazů"], hints: ["Mají ostny nebo trny na těle."] },
-  { question: "Jak se množí nahosemenné rostliny (jehličnany)?", correctAnswer: "Semenami bez obalu – v šiškách", options: ["Semenami bez obalu – v šiškách", "Výtrusy", "Plody s chráněnými semeny", "Oddenky"], hints: ["Šiška je plodní útvar borovice."] },
-];
-
-const POOL_L3: PracticeTask[] = [
-  { question: "Vysvětli rozdíl mezi producentem, konzumentem a rozkladačem v přírodě.", correctAnswer: "Producent vyrábí organické látky – rostlina, konzument je jí – živočich, rozkladač je rozkládá – houba, bakterie", options: ["Producent vyrábí organické látky (rostlina), konzument je jí (živočich), rozkladač je rozkládá (houba, bakterie)", "Producent je největší, konzument střední, rozkladač nejmenší", "Všichni tři provádějí fotosyntézu různou rychlostí", "Producent loví, konzument utíká, rozkladač stojí"], hints: ["Myslí na tok energie v přírodě."] },
-  { question: "Proč jsou obojživelníci závislí na vodě i v dospělosti?", correctAnswer: "Jejich kůže musí být vlhká pro dýchání a rozmnožují se ve vodě", options: ["Jejich kůže musí být vlhká pro dýchání a rozmnožují se ve vodě", "Umí jen plavat, nemohou chodit po souši", "Jsou studenokrevní a potřebují se chladit", "Živí se pouze vodními organismy"], hints: ["Žáby dýchají i kůží."] },
-  { question: "Červi (žížaly) patří mezi bezobratlé. Jaký mají ekologický význam?", correctAnswer: "Kypří půdu, zlepšují její strukturu a urychlují rozklad organické hmoty", options: ["Kypří půdu, zlepšují její strukturu a urychlují rozklad organické hmoty", "Jsou jedinou potravou pro ptáky", "Tvoří vrstvu nad půdou a chrání ji před deštěm", "Vyrábějí kyslík pro půdní organismy"], hints: ["Žížaly jsou zemědělcovým přítelem."] },
-  { question: "Jaký je rozdíl mezi jedlými a jedovatými houbami z hlediska bezpečnosti?", correctAnswer: "Jedovaté houby obsahují toxiny, které mohou způsobit otravu nebo smrt – nelze je bezpečně rozpoznat bez zkušeností", options: ["Jedovaté houby obsahují toxiny, které mohou způsobit otravu nebo smrt – nelze je bezpečně rozpoznat bez zkušeností", "Jedovaté houby jsou vždy červené", "Jedovaté houby zapáchají", "Jedovaté houby se hned rozkládají po uvaření"], hints: ["Muchovůrka červená je nebezpečná pro svůj atraktivní vzhled."] },
-  { question: "Proč jsou krytosemenné rostliny evolučně úspěšnější než nahosemenné?", correctAnswer: "Plod chrání semeno a láká živočichy k šíření semen na větší vzdálenosti", options: ["Plod chrání semeno a láká živočichy k šíření semen na větší vzdálenosti", "Mají více listů než jehličnany", "Rostou rychleji a jsou větší", "Plod je jedovatý pro ochranu před predátory"], hints: ["Semena se šíří díky zvířatům, kteří jedí plody."] },
-  { question: "Proč jsou houby důležité v ekosystému lesa?", correctAnswer: "Rozkládají mrtvé dřevo a organismy, vracejí živiny do půdy a tvoří symbiózu s kořeny stromů", options: ["Rozkládají mrtvé dřevo a organismy, vracejí živiny do půdy a tvoří symbiózu s kořeny stromů", "Produkují kyslík pro les", "Chrání stromy před hmyzem svými toxiny", "Tvoří zásobu potravy pro savce"], hints: ["Mykorhiza je symbióza houby a kořene stromu."] },
-  { question: "Jak se liší 5 skupin obratlovců z hlediska rozmnožování?", correctAnswer: "Ryby a obojživelníci kladou vajíčka do vody, plazi a ptáci na souši, savci rodí živá mláďata – výjimky existují", options: ["Ryby a obojživelníci kladou vajíčka do vody, plazi a ptáci na souši, savci rodí živá mláďata (výjimky existují)", "Všichni obratlovci rodí živá mláďata", "Všichni obratlovci kladou vajíčka", "Savci kladou vajíčka a ryby rodí živě"], hints: ["Ptakopysk je savec, který klade vajíčka."] },
-  { question: "Proč jsou bakterie a prvoci zařazeni do vlastních říší odděleně od ostatních?", correctAnswer: "Jsou prokaryota nebo jednobuněčné eukaryota – jejich buněčná stavba se zásadně liší od hub, rostlin a živočichů", options: ["Jsou prokaryota nebo jednobuněčné eukaryota – jejich buněčná stavba se zásadně liší od hub, rostlin a živočichů", "Jsou příliš malé na to, abychom je viděli", "Nemají DNA", "Žijí jen v extrémních prostředích"], hints: ["Bakterie nemají jádro buňky."] },
-];
-
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+function gen(_level: number): PracticeTask[] {
+  return shuffle(POOL).slice(0, 30);
 }
 
 export const RISEROSTLINHUBZIVOCICHU: TopicMetadata[] = [
@@ -73,7 +330,7 @@ export const RISEROSTLINHUBZIVOCICHU: TopicMetadata[] = [
     goals: ["Rozlišit základní říše živých organismů", "Popsat způsob výživy rostlin, hub a živočichů", "Zařadit konkrétní organismy do správné říše"],
     boundaries: ["Neprobírá buněčnou biologii do hloubky", "Neprobírá evoluci"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    inputType: "match_pairs",
     contentType: "factual",
     defaultLevel: 1,
     sessionTaskCount: 6,
