@@ -21,8 +21,8 @@ const HORY = [
 const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje nejvyšší hora ČR?",
-    correctAnswer: "Sněžka (1603 m)",
-    options: ["Sněžka (1603 m)", "Praděd (1492 m)", "Lysá hora (1323 m)", "Plechý (1378 m)"],
+    correctAnswer: "Sněžka – 1603 m",
+    options: ["Sněžka – 1603 m", "Praděd – 1492 m", "Lysá hora – 1323 m", "Plechý – 1378 m"],
     hints: ["Nejvyšší hora ČR leží v Krkonoších."],
     solutionSteps: ["Nejvyšší hora ČR je Sněžka v Krkonoších s výškou 1603 m n. m."],
   },
@@ -68,19 +68,19 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se jmenuje nejvyšší hora Jeseníků?",
-    correctAnswer: "Praděd (1492 m)",
-    options: ["Praděd (1492 m)", "Sněžka (1603 m)", "Lysá hora (1323 m)", "Plechý (1378 m)"],
+    correctAnswer: "Praděd – 1492 m",
+    options: ["Praděd – 1492 m", "Sněžka – 1603 m", "Lysá hora – 1323 m", "Plechý – 1378 m"],
     hints: ["Praděd leží v severní Moravě."],
     solutionSteps: ["Nejvyšší hora Jeseníků je Praděd s výškou 1492 m n. m."],
   },
   {
     question: "Na které straně ČR leží Šumava?",
-    correctAnswer: "Na jihozápadě (u Německa a Rakouska)",
+    correctAnswer: "Na jihozápadě – u Německa a Rakouska",
     options: [
-      "Na jihozápadě (u Německa a Rakouska)",
-      "Na severovýchodě (u Polska)",
+      "Na jihozápadě – u Německa a Rakouska",
+      "Na severovýchodě – u Polska",
       "Uprostřed Čech",
-      "Na jihovýchodě (u Slovenska)",
+      "Na jihovýchodě – u Slovenska",
     ],
     hints: ["Šumava leží v jihozápadních Čechách."],
     solutionSteps: ["Šumava leží na jihozápadě ČR a hraničí s Německem a Rakouskem."],
@@ -130,9 +130,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč jsou nížiny nejúrodnějšími oblastmi ČR?",
-    correctAnswer: "Mají úrodnou půdu (sprašová hlína) a příznivé klima pro zemědělství",
+    correctAnswer: "Mají úrodnou půdu – sprašová hlína a příznivé klima pro zemědělství",
     options: [
-      "Mají úrodnou půdu (sprašová hlína) a příznivé klima pro zemědělství",
+      "Mají úrodnou půdu – sprašová hlína a příznivé klima pro zemědělství",
       "Je tam více slunce než v horách",
       "V nížinách jsou velká města",
       "Nížiny jsou blíže k moři",
@@ -185,9 +185,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je to Plechý?",
-    correctAnswer: "Nejvyšší hora Šumavy (1378 m)",
+    correctAnswer: "Nejvyšší hora Šumavy – 1378 m",
     options: [
-      "Nejvyšší hora Šumavy (1378 m)",
+      "Nejvyšší hora Šumavy – 1378 m",
       "Nejvyšší hora Krkonoš",
       "Jezero na Šumavě",
       "Přehrada v jižních Čechách",
@@ -212,9 +212,9 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Seřaď od nejvyššího po nejnižší: Sněžka, Plechý, Lysá hora, Praděd.",
-    correctAnswer: "Sněžka (1603 m), Praděd (1492 m), Plechý (1378 m), Lysá hora (1323 m)",
+    correctAnswer: "Sněžka (1603 m), Praděd (1492 m), Plechý (1378 m), Lysá hora – 1323 m",
     options: [
-      "Sněžka (1603 m), Praděd (1492 m), Plechý (1378 m), Lysá hora (1323 m)",
+      "Sněžka (1603 m), Praděd (1492 m), Plechý (1378 m), Lysá hora – 1323 m",
       "Praděd, Sněžka, Lysá hora, Plechý",
       "Sněžka, Plechý, Praděd, Lysá hora",
       "Lysá hora, Sněžka, Praděd, Plechý",
@@ -236,9 +236,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak vznikly Krkonoše a Šumava — jsou to mladé nebo staré hory?",
-    correctAnswer: "Jsou to staré hory (hercynského stáří) — starší než Alpy",
+    correctAnswer: "Jsou to staré hory – hercynského stáří — starší než Alpy",
     options: [
-      "Jsou to staré hory (hercynského stáří) — starší než Alpy",
+      "Jsou to staré hory – hercynského stáří — starší než Alpy",
       "Jsou to mladé hory podobné Alpám",
       "Vznikly sopečnou činností",
       "Jsou stejně staré jako Himaláje",

@@ -154,8 +154,8 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Chodil bych do divadla, kdybych měl čas.' – kolik slov v podmiňovacím způsobu?",
     correctAnswer: "2 – chodil bych, měl bych – ale 'kdybych' obsahuje by",
     options: [
-      "1 (jen chodil bych)",
-      "2 (chodil bych, měl bych – ale 'kdybych' obsahuje by)",
+      "1 – jen chodil bych",
+      "2 – chodil bych, měl bych – ale 'kdybych' obsahuje by",
       "3",
       "0",
     ],
@@ -180,10 +180,10 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší 'Jdi!' od 'Jděte!'?",
-    correctAnswer: "Jdi = rozkaz pro jednoho – 2. os. j. č., jděte = pro více – 2. os. mn. č.",
+    correctAnswer: "Jdi = rozkaz pro jednoho (2. os. j. č.), jděte = pro více – 2. os. mn. č.",
     options: [
       "jsou totéž",
-      "Jdi = rozkaz pro jednoho (2. os. j. č.), jděte = pro více (2. os. mn. č.)",
+      "Jdi = rozkaz pro jednoho (2. os. j. č.), jděte = pro více – 2. os. mn. č.",
       "Jdi je oznamovací",
       "Jděte je podmiňovací",
     ],
@@ -214,10 +214,10 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Pokud bys mohl, zavolej mi.' – jaké způsoby jsou použity?",
-    correctAnswer: "podmiňovací – bys + rozkazovací – zavolej",
+    correctAnswer: "podmiňovací (bys) + rozkazovací – zavolej",
     options: [
       "oznamovací + oznamovací",
-      "podmiňovací (bys) + rozkazovací (zavolej)",
+      "podmiňovací (bys) + rozkazovací – zavolej",
       "rozkazovací + oznamovací",
       "podmiňovací + podmiňovací",
     ],
@@ -232,7 +232,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "rozkazovací",
       "podmiňovací",
-      "oznamovací (zde jako přací/neosobní konstrukce s 'ať')",
+      "oznamovací – zde jako přací/neosobní konstrukce s 'ať'",
       "neurčitek",
     ],
     hints: ["'Ať' + oznamovací tvar = přací výraz (přání nebo svolení)."],
@@ -254,7 +254,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "rozkazovací",
       "podmiňovací",
-      "oznamovací způsob (otázka s oznamovacím tvarem – zdvořilá prosba)",
+      "oznamovací způsob – otázka s oznamovacím tvarem – zdvořilá prosba",
       "neurčitek",
     ],
     hints: ["Zdvořilá prosba může být vyjádřena oznamovacím způsobem v otázce."],
@@ -265,7 +265,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "2. osobu",
       "množné číslo",
-      "1. osobu jednotného čísla (nemohu rozkázat sám sobě formálně)",
+      "1. osobu jednotného čísla – nemohu rozkázat sám sobě formálně",
       "záporné tvary",
     ],
     hints: ["Nemůžeme říct 'Pojdi!' sám sobě – chybí 1. os. j. č."],
@@ -275,7 +275,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "ne- + tvar rozkazovacího způsobu – nepiš, nečti, nepij",
     options: [
       "bez- + tvar",
-      "ne- + tvar rozkazovacího způsobu (nepiš, nečti, nepij)",
+      "ne- + tvar rozkazovacího způsobu – nepiš, nečti, nepij",
       "un- + tvar",
       "neumíme tvořit záporný",
     ],
@@ -333,7 +333,7 @@ const POOL_L3: PracticeTask[] = [
       "oznamovací",
       "podmiňovací",
       "rozkazovací způsob – vztahuje se k okamžiku příkazu",
-      "neurčitek (infinitiv)",
+      "neurčitek – infinitiv",
     ],
     hints: ["Rozkaz platí 'teď' – nemá gramatické časy jako oznamovací způsob."],
   },

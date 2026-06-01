@@ -145,9 +145,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se ČR jmenovala dříve, před rokem 1993?",
-    correctAnswer: "Československo (Česká a Slovenská Federativní Republika)",
+    correctAnswer: "Československo – Česká a Slovenská Federativní Republika",
     options: [
-      "Československo (Česká a Slovenská Federativní Republika)",
+      "Československo – Česká a Slovenská Federativní Republika",
       "Český stát",
       "Království Čechy",
       "Moravsko-Česká republika",
@@ -157,8 +157,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve které světové organizaci je ČR členem od roku 2004?",
-    correctAnswer: "Evropská unie (EU)",
-    options: ["Evropská unie (EU)", "NATO (ale to je od 1999)", "OSN (ale to je od 1945)", "ASEAN"],
+    correctAnswer: "Evropská unie – EU",
+    options: ["Evropská unie – EU", "NATO – ale to je od 1999", "OSN – ale to je od 1945", "ASEAN"],
     hints: ["V roce 2004 vstoupilo do EU 10 nových zemí z východní Evropy."],
     solutionSteps: ["ČR vstoupila do Evropské unie 1. 5. 2004."],
   },
@@ -178,8 +178,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se jmenuje měna používaná v ČR?",
-    correctAnswer: "Česká koruna (Kč)",
-    options: ["Česká koruna (Kč)", "Euro (€)", "Dolar ($)", "Forint (Ft)"],
+    correctAnswer: "Česká koruna – Kč",
+    options: ["Česká koruna – Kč", "Euro – €", "Dolar – $", "Forint – Ft"],
     hints: ["ČR nepoužívá euro."],
     solutionSteps: ["V ČR platíme českou korunou (Kč). ČR není v eurozóně."],
   },
@@ -224,9 +224,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč Slovensko a ČR tvoří kulturně blízké státy i po rozdělení v roce 1993?",
-    correctAnswer: "Po 75 let (1918–1993) tvořily jeden stát — Československo",
+    correctAnswer: "Po 75 let – 1918–1993 tvořily jeden stát — Československo",
     options: [
-      "Po 75 let (1918–1993) tvořily jeden stát — Československo",
+      "Po 75 let – 1918–1993 tvořily jeden stát — Československo",
       "Mají stejný jazyk",
       "Leží na stejném území",
       "Sdílejí stejnou měnu",
@@ -279,9 +279,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se jmenuje místo v ČR, kde se setkávají hranice tří států najednou (ČR, Německo, Polsko)?",
-    correctAnswer: "Trojmezí (trojpomezí) v oblasti Krušných hor / Jizerských hor",
+    correctAnswer: "Trojmezí – trojpomezí v oblasti Krušných hor / Jizerských hor",
     options: [
-      "Trojmezí (trojpomezí) v oblasti Krušných hor / Jizerských hor",
+      "Trojmezí – trojpomezí v oblasti Krušných hor / Jizerských hor",
       "Na Šumavě u Železné Rudy",
       "Na Lysé hoře v Beskydech",
       "U Opavy na severu Moravy",
@@ -291,9 +291,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jakými horami je ČR oddělena od sousedních zemí na severu?",
-    correctAnswer: "Krkonošemi, Jizerskými horami, Orlickými horami, Jeseníky (Sudetský oblouk)",
+    correctAnswer: "Krkonošemi, Jizerskými horami, Orlickými horami, Jeseníky – Sudetský oblouk",
     options: [
-      "Krkonošemi, Jizerskými horami, Orlickými horami, Jeseníky (Sudetský oblouk)",
+      "Krkonošemi, Jizerskými horami, Orlickými horami, Jeseníky – Sudetský oblouk",
       "Alpami a Karpaty",
       "Šumavou a Krušnými horami",
       "Beskydami a Tatrami",

@@ -41,13 +41,13 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký typ textu je návod k pračce?",
     correctAnswer: "věcný – neumělecký",
-    options: ["umělecký", "poetický", "věcný (neumělecký)", "záleží na výrobci"],
+    options: ["umělecký", "poetický", "věcný – neumělecký", "záleží na výrobci"],
     hints: ["Návod = informace a instrukce = věcný text."],
   },
   {
     question: "Jaký typ textu je encyklopedie?",
     correctAnswer: "věcný – odborný",
-    options: ["umělecký", "poetický", "věcný (odborný)", "záleží na tématu"],
+    options: ["umělecký", "poetický", "věcný – odborný", "záleží na tématu"],
     hints: ["Encyklopedie = fakta, definice, odborné informace = věcný text."],
   },
   {
@@ -59,19 +59,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký typ textu je novinový článek o fotbale?",
     correctAnswer: "věcný – informuje o událostech",
-    options: ["umělecký", "věcný (informuje o událostech)", "poetický", "záleží na novinách"],
+    options: ["umělecký", "věcný – informuje o událostech", "poetický", "záleží na novinách"],
     hints: ["Zpravodajství = fakta o událostech = věcný text."],
   },
   {
     question: "Jaký typ textu je román od Jarlava Foglara?",
     correctAnswer: "umělecký – beletrie",
-    options: ["věcný", "odborný", "umělecký (beletrie)", "záleží na románu"],
+    options: ["věcný", "odborný", "umělecký – beletrie", "záleží na románu"],
     hints: ["Foglar = prozaický spisovatel. Romány = umělecké texty."],
   },
   {
     question: "Jaký typ textu je jízdní řád autobusu?",
     correctAnswer: "věcný – funkční",
-    options: ["umělecký", "věcný (funkční)", "poetický", "záleží na dopravci"],
+    options: ["umělecký", "věcný – funkční", "poetický", "záleží na dopravci"],
     hints: ["Jízdní řád = informace pro cestující = věcný funkční text."],
   },
   {
@@ -99,7 +99,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký typ textu je učebnice matematiky?",
     correctAnswer: "věcný – odborný",
-    options: ["umělecký", "poetický", "věcný (odborný)", "záleží na nakladatelství"],
+    options: ["umělecký", "poetický", "věcný – odborný", "záleží na nakladatelství"],
     hints: ["Učebnice = fakta a výuka = věcný odborný text."],
   },
   {
@@ -119,7 +119,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "čistě umělecký",
       "čistě věcný",
-      "přechodný – věcný s uměleckými prvky (přesvědčuje i informuje)",
+      "přechodný – věcný s uměleckými prvky – přesvědčuje i informuje",
       "záleží na produktu",
     ],
     hints: ["Reklama informuje o produktu, ale používá kreativní jazyk."],
@@ -143,7 +143,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "text v médiích – novinách, webu informující o aktuálních událostech",
     options: [
       "umělecká próza",
-      "text v médiích (novinách, webu) informující o aktuálních událostech",
+      "text v médiích – novinách, webu informující o aktuálních událostech",
       "báseň v novinách",
       "záleží na periodiku",
     ],
@@ -166,7 +166,7 @@ const POOL_L2: PracticeTask[] = [
     options: [
       "čistě umělecký",
       "čistě věcný",
-      "přechodný – věcný s uměleckými prvky (humor, ironie)",
+      "přechodný – věcný s uměleckými prvky – humor, ironie",
       "záleží na autorovi",
     ],
     hints: ["Fejeton = vtipný nebo kritický článek. Mix věcného a uměleckého."],
@@ -220,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "věcný funkční text – pracovní postup",
     options: [
       "umělecký",
-      "věcný funkční text (pracovní postup)",
+      "věcný funkční text – pracovní postup",
       "poetický",
       "záleží na kuchyni",
     ],
@@ -311,7 +311,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "odkaz jednoho textu na jiný text – citace, parafráze, alúze",
     options: [
       "typ věcného textu",
-      "odkaz jednoho textu na jiný text (citace, parafráze, alúze)",
+      "odkaz jednoho textu na jiný text – citace, parafráze, alúze",
       "druh básně",
       "záleží na autorovi",
     ],
@@ -388,7 +388,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "literatura o skutečných událostech a faktech – biografie, historia, věda",
     options: [
       "vymyšlené příběhy",
-      "literatura o skutečných událostech a faktech (biografie, historia, věda)",
+      "literatura o skutečných událostech a faktech – biografie, historia, věda",
       "pohádky",
       "záleží na vydavateli",
     ],

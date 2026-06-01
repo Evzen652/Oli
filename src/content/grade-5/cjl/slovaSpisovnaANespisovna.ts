@@ -162,7 +162,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Jak zní spisovná varianta věty 'Von jde domů.'?",
     correctAnswer: "On jde domů.",
     options: [
-      "Von jde domů. (správně)",
+      "Von jde domů. – správně",
       "On jde domů.",
       "Un jde domů.",
       "Vono jde domů.",
@@ -192,7 +192,7 @@ const POOL_L2: PracticeTask[] = [
     options: [
       "odborné vědecké termíny",
       "nářeční výrazy jednoho kraje",
-      "výrazy specifické skupiny lidí (mládeže, sportovců atd.)",
+      "výrazy specifické skupiny lidí – mládeže, sportovců atd.",
       "zastaralé výrazy z 18. století",
     ],
     hints: ["Slang = žargon určité skupiny – hráči, programátoři, hudebníci..."],
@@ -348,7 +348,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "tajný jazyk určité skupiny – zloději, vězeňský slang",
     options: [
       "nářečí z Moravy",
-      "tajný jazyk určité skupiny (zloději, vězeňský slang)",
+      "tajný jazyk určité skupiny – zloději, vězeňský slang",
       "odborný vědecký jazyk",
       "forma starší češtiny z 18. stol.",
     ],
@@ -378,11 +378,11 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Přišel s bráchou a řek, že přijdou.' kolik nespisovných prvků je?",
-    correctAnswer: "dva: brácha – místo bratr, řek – místo řekl",
+    correctAnswer: "dva: brácha (místo bratr), řek – místo řekl",
     options: [
       "žádný – vše je správně",
       "jeden: brácha",
-      "dva: brácha (místo bratr), řek (místo řekl)",
+      "dva: brácha (místo bratr), řek – místo řekl",
       "tři: brácha, řek, přijdou",
     ],
     hints: ["Brácha = hovorové, řek = zkrácený nespisovný tvar 'řekl'."],
@@ -394,7 +394,7 @@ const POOL_L3: PracticeTask[] = [
       "brácha",
       "ksicht",
       "telefon",
-      "du (jdu)",
+      "du – jdu",
     ],
     hints: ["Telefon je neutrální – není slang ani nespisovný výraz."],
   },

@@ -387,7 +387,7 @@ export const MARIETEREZIEJOSEFIIREFORMY: TopicMetadata[] = [
     id: "g5-vlastiveda-lide-a-cas-novovek-habsburska-monarchie-marie-terezie-josef-ii-reformy",
     rvpNodeId: "g5-vlastiveda-lide-a-cas-novovek-habsburska-monarchie-marie-terezie-josef-ii-reformy",
     title: "Marie Terezie, Josef II., reformy",
-    studentTitle: "Marie Terezie a Josef II.",
+    studentTitle: "Marie Terezie",
     subject: "vlastivěda",
     category: "Lidé a čas",
     topic: "Novověk - habsburská monarchie",

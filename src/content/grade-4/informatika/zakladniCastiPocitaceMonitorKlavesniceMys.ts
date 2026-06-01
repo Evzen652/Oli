@@ -23,7 +23,7 @@ const MATCH_TASKS: PracticeTask[] = [
   },
   {
     question: "Spoj součásti uvnitř počítače s jejich popisem:",
-    correctAnswer: "CPU (procesor)-Mozek počítače, zpracovává instrukce|RAM-Dočasná pracovní paměť (vymaže se po vypnutí)|HDD nebo SSD-Trvalé uložení dat a programů|GPU (grafická karta)-Zpracovává obraz a 3D grafiku",
+    correctAnswer: "CPU – procesor-Mozek počítače, zpracovává instrukce|RAM-Dočasná pracovní paměť – vymaže se po vypnutí|HDD nebo SSD-Trvalé uložení dat a programů|GPU – grafická karta-Zpracovává obraz a 3D grafiku",
     pairs: [
       { left: "CPU (procesor)", right: "Mozek počítače, zpracovává instrukce" },
       { left: "RAM", right: "Dočasná pracovní paměť (vymaže se po vypnutí)" },
@@ -34,7 +34,7 @@ const MATCH_TASKS: PracticeTask[] = [
   },
   {
     question: "Spoj software s jeho kategorií:",
-    correctAnswer: "Windows 11-Operační systém|Microsoft Word-Textový editor (aplikace)|Google Chrome-Webový prohlížeč (aplikace)|VLC Media Player-Přehrávač médií (aplikace)",
+    correctAnswer: "Windows 11-Operační systém|Microsoft Word-Textový editor – aplikace|Google Chrome-Webový prohlížeč – aplikace|VLC Media Player-Přehrávač médií – aplikace",
     pairs: [
       { left: "Windows 11", right: "Operační systém" },
       { left: "Microsoft Word", right: "Textový editor (aplikace)" },
@@ -114,7 +114,7 @@ const SELECT_L1: PracticeTask[] = [
   },
   {
     question: "Co je základní deska (motherboard)?",
-    correctAnswer: "Propojuje všechny součásti počítače (CPU, RAM, GPU, disk)",
+    correctAnswer: "Propojuje všechny součásti počítače – CPU, RAM, GPU, disk",
     options: shuffle(["Propojuje všechny součásti počítače (CPU, RAM, GPU, disk)", "Trvalé úložiště dat", "Napájecí zdroj", "Výstupní zařízení"]),
     hints: ["Základní deska = páteř počítače.", "Vše ostatní se zapojuje do základní desky."],
   },
@@ -123,7 +123,7 @@ const SELECT_L1: PracticeTask[] = [
 const SELECT_L2: PracticeTask[] = [
   {
     question: "Jaký je rozdíl mezi HDD a SSD?",
-    correctAnswer: "HDD = magnetické plotny (pomalejší, levnější); SSD = flash paměť (rychlejší, dražší)",
+    correctAnswer: "HDD = magnetické plotny – pomalejší, levnější; SSD = flash paměť – rychlejší, dražší",
     options: shuffle(["HDD = magnetické plotny (pomalejší, levnější); SSD = flash paměť (rychlejší, dražší)", "Jsou totéž", "SSD je starší technologie", "HDD je vždy rychlejší"]),
     hints: ["HDD = pohyblivé části.", "SSD = žádné pohyblivé části, proto rychlejší."],
   },
@@ -135,7 +135,7 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Co je dotyková obrazovka — vstupní nebo výstupní zařízení?",
-    correctAnswer: "Vstupně-výstupní — zobrazuje obraz (výstupní) i přijímá dotek (vstupní)",
+    correctAnswer: "Vstupně-výstupní — zobrazuje obraz – výstupní i přijímá dotek – vstupní",
     options: shuffle(["Vstupně-výstupní — zobrazuje obraz (výstupní) i přijímá dotek (vstupní)", "Jen vstupní", "Jen výstupní", "Ani vstupní ani výstupní"]),
     hints: ["Dotyk = vstup.", "Zobrazení = výstup.", "Obojí = vstupně-výstupní."],
   },
@@ -147,7 +147,7 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Jaké operační systémy se používají na desktopech a noteboocích?",
-    correctAnswer: "Windows (Microsoft), macOS (Apple), Linux",
+    correctAnswer: "Windows – Microsoft, macOS – Apple, Linux",
     options: shuffle(["Windows (Microsoft), macOS (Apple), Linux", "Android, iOS, Windows Phone", "iOS (Apple), Android (Google)", "Chrome OS, Android, iOS"]),
     hints: ["Desktop/notebook = Windows, Mac nebo Linux.", "Telefon = Android nebo iOS."],
   },
@@ -159,7 +159,7 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Co je napájecí zdroj (PSU) v počítači?",
-    correctAnswer: "Převádí síťové napětí (230V) na nízká napětí pro součástky počítače",
+    correctAnswer: "Převádí síťové napětí – 230V na nízká napětí pro součástky počítače",
     options: shuffle(["Převádí síťové napětí (230V) na nízká napětí pro součástky počítače", "Záložní baterie počítače", "Zdroj bezdrátového internetu", "Typ procesoru"]),
     hints: ["PSU = Power Supply Unit.", "Bez napájecího zdroje by počítač neběžel."],
   },
@@ -171,7 +171,7 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Proč je webkamera vstupní zařízení?",
-    correctAnswer: "Snímá obraz (video) a posílá ho jako vstupní data do počítače",
+    correctAnswer: "Snímá obraz – video a posílá ho jako vstupní data do počítače",
     options: shuffle(["Snímá obraz (video) a posílá ho jako vstupní data do počítače", "Zobrazuje obraz z internetu", "Přehrává video soubory", "Je to výstupní zařízení"]),
     hints: ["Webkamera → data → počítač = vstupní.", "Monitor → obraz k tobě = výstupní."],
   },
@@ -210,19 +210,19 @@ const SELECT_L3: PracticeTask[] = [
   },
   {
     question: "Co je herní mechanická klávesnice a jak se liší od membránové?",
-    correctAnswer: "Mechanická = každá klávesa má vlastní přepínač (přesnost, hmat); membránová = gumová vrstva",
+    correctAnswer: "Mechanická = každá klávesa má vlastní přepínač – přesnost, hmat; membránová = gumová vrstva",
     options: shuffle(["Mechanická = každá klávesa má vlastní přepínač (přesnost, hmat); membránová = gumová vrstva", "Jsou totéž", "Membránová je přesnější", "Mechanická je levnější"]),
     hints: ["Mechanická = klik a hmat při stisku.", "Membránová = tichá, levnější."],
   },
   {
     question: "Co je displejová rozlišení a proč záleží?",
-    correctAnswer: "Počet pixelů (šíříka × výška) — více pixelů = ostřejší obraz",
+    correctAnswer: "Počet pixelů – šíříka × výška — více pixelů = ostřejší obraz",
     options: shuffle(["Počet pixelů (šíříka × výška) — více pixelů = ostřejší obraz", "Rychlost displeje v Hz", "Velikost displeje v palcích", "Intenzita podsvícení"]),
     hints: ["1920×1080 = Full HD, 3840×2160 = 4K.", "Více pixelů = jemnější, detailnější obraz."],
   },
   {
     question: "Co je frekvence obnovení displeje (refresh rate) a proč je důležitá pro hráče?",
-    correctAnswer: "Počet snímků za sekundu, který displej zobrazí (Hz) — 144Hz = plynulejší obraz",
+    correctAnswer: "Počet snímků za sekundu, který displej zobrazí – Hz — 144Hz = plynulejší obraz",
     options: shuffle(["Počet snímků za sekundu, který displej zobrazí (Hz) — 144Hz = plynulejší obraz", "Jas displeje", "Rozlišení displeje", "Energetická náročnost displeje"]),
     hints: ["60Hz = standardní, 144Hz/240Hz = herní.", "Více Hz = plynulejší pohyb v hrách."],
   },
@@ -234,7 +234,7 @@ const SELECT_L3: PracticeTask[] = [
   },
   {
     question: "Co je USB-C oproti USB-A?",
-    correctAnswer: "USB-C = nový oboustranný konektor (rychlejší, přenos energie, video); USB-A = starší jednostranný",
+    correctAnswer: "USB-C = nový oboustranný konektor – rychlejší, přenos energie, video; USB-A = starší jednostranný",
     options: shuffle(["USB-C = nový oboustranný konektor (rychlejší, přenos energie, video); USB-A = starší jednostranný", "Jsou totéž, jen jiný tvar", "USB-A je rychlejší", "USB-C je jen pro Apple"]),
     hints: ["USB-C = reversible (nelze zastrčit špatně).", "Thunderbolt 4, USB4 = USB-C formát."],
   },

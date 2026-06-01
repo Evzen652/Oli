@@ -27,7 +27,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "báseň jen o přírodě",
       "báseň bez děje vyjadřující jen pocity",
-      "báseň s příběhem a dějem (balada, epos, pohádkový příběh)",
+      "báseň s příběhem a dějem – balada, epos, pohádkový příběh",
       "báseň z pohledu zvířete",
     ],
     hints: ["Epika = příběh. Epická báseň = příběh ve verších."],
@@ -60,7 +60,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "román",
       "sbírka povídek",
-      "sbírka balad (epických básní)",
+      "sbírka balad – epických básní",
       "divadelní hra",
     ],
     hints: ["Kytice = básně s příběhem (balady). Karel Jaromír Erben."],
@@ -91,9 +91,9 @@ const POOL_L1: PracticeTask[] = [
     question: "Který z těchto titulů je román?",
     correctAnswer: "Dobrodružství Toma Sawyera – Mark Twain",
     options: [
-      "Kytice (Erben)",
-      "Dobrodružství Toma Sawyera (Mark Twain)",
-      "Máj (Mácha)",
+      "Kytice – Erben",
+      "Dobrodružství Toma Sawyera – Mark Twain",
+      "Máj – Mácha",
       "básně pro děti",
     ],
     hints: ["Tom Sawyer = dlouhé dobrodružné prozaické dílo = román."],
@@ -194,7 +194,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "prozaické – nebo veršované dílo s fantastickými prvky, typicky pro děti",
     options: [
       "historický román",
-      "prozaické (nebo veršované) dílo s fantastickými prvky, typicky pro děti",
+      "prozaické – nebo veršované dílo s fantastickými prvky, typicky pro děti",
       "vědecký text",
       "divadelní hra",
     ],
@@ -337,7 +337,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "dobrodružný román o potulném hrdinu – šibalovi z lidového prostředí",
     options: [
       "vědeckofantastický román",
-      "dobrodružný román o potulném hrdinu (šibalovi) z lidového prostředí",
+      "dobrodružný román o potulném hrdinu – šibalovi z lidového prostředí",
       "historický román",
       "lyrická báseň",
     ],
@@ -373,7 +373,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "dramatické dílo s vážným, smutným závěrem – hrdina zahyne nebo padá",
     options: [
       "veselá divadelní hra",
-      "dramatické dílo s vážným, smutným závěrem (hrdina zahyne nebo padá)",
+      "dramatické dílo s vážným, smutným závěrem – hrdina zahyne nebo padá",
       "epická báseň",
       "pohádka",
     ],
@@ -392,10 +392,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je literární próza?",
-    correctAnswer: "texty psané normální větnou řečí – bez verše, jako romány a povídky",
+    correctAnswer: "texty psané normální větnou řečí – bez verše , jako romány a povídky",
     options: [
       "texty psané ve verších",
-      "texty psané normální větnou řečí (bez verše), jako romány a povídky",
+      "texty psané normální větnou řečí – bez verše , jako romány a povídky",
       "básně o přírodě",
       "záleží na autorovi",
     ],
@@ -406,7 +406,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "hlas básně – kdo v básni hovoří – ne nutně autor",
     options: [
       "vždy autor básně",
-      "hlas básně – kdo v básni hovoří (ne nutně autor)",
+      "hlas básně – kdo v básni hovoří – ne nutně autor",
       "hlavní postava příběhu",
       "záleží na délce básně",
     ],
@@ -417,7 +417,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "tragédie nebo drama – vážná divadelní hra",
     options: [
       "komedie",
-      "tragédie nebo drama (vážná divadelní hra)",
+      "tragédie nebo drama – vážná divadelní hra",
       "lyrická báseň",
       "epický román",
     ],
@@ -461,7 +461,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "umělé – autorské pohádky v próze",
     options: [
       "lidové pohádky",
-      "umělé (autorské) pohádky v próze",
+      "umělé – autorské pohádky v próze",
       "epické básně",
       "balady",
     ],

@@ -62,10 +62,10 @@ const POOL_L1: PracticeTask[] = [
     question: "Vzor 'mladý' skloňuje přídavná jména:",
     correctAnswer: "tvrdá – mladý, starý, hezký, velký",
     options: [
-      "měkká (jarní, večerní, cizí)",
-      "tvrdá (mladý, starý, hezký, velký)",
-      "přivlastňovací (otcův, matčin)",
-      "záporná (ne-)",
+      "měkká – jarní, večerní, cizí",
+      "tvrdá – mladý, starý, hezký, velký",
+      "přivlastňovací – otcův, matčin",
+      "záporná – ne-",
     ],
     hints: ["Vzor mladý = základ pro tvrdá přídavná jména."],
   },
@@ -73,9 +73,9 @@ const POOL_L1: PracticeTask[] = [
     question: "Vzor 'jarní' skloňuje přídavná jména:",
     correctAnswer: "měkká – jarní, ranní, cizí, domácí",
     options: [
-      "tvrdá (mladý, starý)",
-      "měkká (jarní, ranní, cizí, domácí)",
-      "přivlastňovací (otcův, matčin)",
+      "tvrdá – mladý, starý",
+      "měkká – jarní, ranní, cizí, domácí",
+      "přivlastňovací – otcův, matčin",
       "příslovečná",
     ],
     hints: ["Vzor jarní = základ pro měkká přídavná jména."],
@@ -84,10 +84,10 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký pád je přídavné jméno 'krásné' ve větě 'Vidím krásné moře.'?",
     correctAnswer: "4. pád – akuzativ – koho/co vidím?",
     options: [
-      "1. pád (nominativ)",
-      "2. pád (genitiv)",
-      "4. pád (akuzativ) – koho/co vidím?",
-      "7. pád (instrumentál)",
+      "1. pád – nominativ",
+      "2. pád – genitiv",
+      "4. pád – akuzativ – koho/co vidím?",
+      "7. pád – instrumentál",
     ],
     hints: ["Vidím koho/co? → 4. pád."],
   },
@@ -150,13 +150,13 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Tvrdé přídavné jméno v 6. pádu množného čísla má koncovku:",
     correctAnswer: "-ých – o mladých",
-    options: ["-ých (o mladých)", "-ím (o mladím)", "-ích (o mladích)", "-em (o mladem)"],
+    options: ["-ých – o mladých", "-ím – o mladím", "-ích – o mladích", "-em – o mladem"],
     hints: ["O mladých chlapcích – 6. pád mn. č. = -ých."],
   },
   {
     question: "Měkké přídavné jméno v 6. pádu množného čísla má koncovku:",
     correctAnswer: "-ích – o jarních",
-    options: ["-ých (o jarních)", "-ích (o jarních)", "-im (o jarnim)", "-ám (o jarním)"],
+    options: ["-ých – o jarních", "-ích – o jarních", "-im – o jarnim", "-ám – o jarním"],
     hints: ["O jarních dnech – 6. pád mn. č. měkkého přídavného jmena = -ích."],
   },
   {
@@ -168,13 +168,13 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Přívlastňovací přídavné jméno vzoru 'otcův' je v 1. pádu mužského rodu:",
     correctAnswer: "-ův – otcův, bratranců, tátkův",
-    options: ["-in (matčin)", "-ův (otcův, bratranců, tátkův)", "-ní (jarní)", "-ý (mladý)"],
+    options: ["-in – matčin", "-ův – otcův, bratranců, tátkův", "-ní – jarní", "-ý – mladý"],
     hints: ["Vzor otcův = přivlastňovací od mužského jména."],
   },
   {
     question: "Přívlastňovací přídavné jméno vzoru 'matčin' je v 1. pádu mužského rodu:",
     correctAnswer: "-in – maminčin, sestřin, Kateřinin",
-    options: ["-ův (otcův)", "-in (maminčin, sestřin, Kateřinin)", "-ní (jarní)", "-ý (mladý)"],
+    options: ["-ův – otcův", "-in – maminčin, sestřin, Kateřinin", "-ní – jarní", "-ý – mladý"],
     hints: ["Vzor matčin = přivlastňovací od ženského jména."],
   },
   {
@@ -183,7 +183,7 @@ const POOL_L2: PracticeTask[] = [
     options: [
       "1. pádu",
       "2. pádu",
-      "3. pádu, mužský životný (bratrovi)",
+      "3. pádu, mužský životný – bratrovi",
       "4. pádu",
     ],
     hints: ["Bratrovi = komu? = 3. pád. Kamarádovu se shoduje s bratrem."],
@@ -193,7 +193,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "domácí – s domácí kuchyní",
     options: [
       "domácím",
-      "domácí (s domácí kuchyní)",
+      "domácí – s domácí kuchyní",
       "domácou",
       "domácímu",
     ],
@@ -208,7 +208,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Přídavné jméno 'bratrův' je v 1. pádu žen. rodu:",
     correctAnswer: "bratrova – sestra",
-    options: ["bratrův (sestra)", "bratrova (sestra)", "bratrové (sestra)", "bratruvou"],
+    options: ["bratrův – sestra", "bratrova – sestra", "bratrové – sestra", "bratruvou"],
     hints: ["Vzor otcův: ženský rod 1. pádu = -ova (otcova, bratrova)."],
   },
   {
@@ -241,7 +241,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "3. pádu množném čísle – k čemu/komu? → k dětem",
     options: [
       "1. pádu",
-      "3. pádu množném čísle (k čemu/komu? → k dětem)",
+      "3. pádu množném čísle – k čemu/komu? → k dětem",
       "6. pádu",
       "4. pádu",
     ],
@@ -252,7 +252,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "4. pád, mužský neživotný – domeček = co?",
     options: [
       "1. pád, mužský neživotný",
-      "4. pád, mužský neživotný (domeček = co?)",
+      "4. pád, mužský neživotný – domeček = co?",
       "2. pád, střední rod",
       "6. pád, ženský rod",
     ],
@@ -263,7 +263,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "6. pádu množném čísle – o čem? o plánech",
     options: [
       "2. pádu mn. č.",
-      "6. pádu množném čísle (o čem? o plánech)",
+      "6. pádu množném čísle – o čem? o plánech",
       "3. pádu mn. č.",
       "1. pádu mn. č.",
     ],
@@ -272,7 +272,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak zní 2. pád množného čísla přídavného jména 'jarní'?",
     correctAnswer: "jarních – bez jarních vůní",
-    options: ["jarným", "jarních (bez jarních vůní)", "jarných", "jarnímu"],
+    options: ["jarným", "jarních – bez jarních vůní", "jarných", "jarnímu"],
     hints: ["Vzor jarní, 2. pád mn. č. = -ích (jarních, ranních)."],
   },
   {
@@ -281,7 +281,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "1. pádu, ženský rod",
       "3. pádu, ženský rod",
-      "7. pádu, ženský rod (čím? cestou)",
+      "7. pádu, ženský rod – čím? cestou",
       "4. pádu, ženský rod",
     ],
     hints: ["Šel čím? = 7. pád. Cestou = ženský rod."],
@@ -290,10 +290,10 @@ const POOL_L3: PracticeTask[] = [
     question: "Přídavné jméno 'Kateřinin' je vzoru:",
     correctAnswer: "matčin – přivlastňovací od ženského jména",
     options: [
-      "otcův (přivlastňovací od mužského)",
-      "matčin (přivlastňovací od ženského jména)",
-      "jarní (měkké)",
-      "mladý (tvrdé)",
+      "otcův – přivlastňovací od mužského",
+      "matčin – přivlastňovací od ženského jména",
+      "jarní – měkké",
+      "mladý – tvrdé",
     ],
     hints: ["Kateřina = ženské jméno → vzor matčin."],
   },
@@ -308,7 +308,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "2. pádu množném čísle – koho/čeho? zpráv",
     options: [
       "6. pádu mn. č.",
-      "2. pádu množném čísle (koho/čeho? zpráv)",
+      "2. pádu množném čísle – koho/čeho? zpráv",
       "4. pádu mn. č.",
       "1. pádu mn. č.",
     ],
@@ -318,10 +318,10 @@ const POOL_L3: PracticeTask[] = [
     question: "Jak zní 1. pád množného čísla tvrdého přídavného jmena mužského životného rodu (vzor mladý)?",
     correctAnswer: "-í – mladí muži, staří pánové",
     options: [
-      "-ý (mladý)",
-      "-í (mladí muži, staří pánové)",
-      "-ého (mladého)",
-      "-ých (mladých)",
+      "-ý – mladý",
+      "-í – mladí muži, staří pánové",
+      "-ého – mladého",
+      "-ých – mladých",
     ],
     hints: ["1. pád mn. č. mužský životný vzor mladý = -í."],
   },
@@ -331,7 +331,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "3. pádu mn. č.",
       "6. pádu mn. č.",
-      "7. pádu množném čísle (s kým/čím?)",
+      "7. pádu množném čísle – s kým/čím?",
       "4. pádu mn. č.",
     ],
     hints: ["S kým/čím? = 7. pád. Kolegy = mužský životný, mn. č."],

@@ -35,14 +35,14 @@ const POOL_L1: PracticeTask[] = [
 
 // Level 2: prostorová představivost, složitější logika
 const POOL_L2: PracticeTask[] = [
-  { question: "Pohled ze shora na L-tvar: oba ramena jsou 2 × 1. Jaký je celkový tvar?", correctAnswer: "L – 4 čtverečky", options: ["L (4 čtverečky)", "T (4 čtverečky)", "Kříž (4 čtverečky)", "Čtverec (4 čtverečky)"] },
+  { question: "Pohled ze shora na L-tvar: oba ramena jsou 2 × 1. Jaký je celkový tvar?", correctAnswer: "L – 4 čtverečky", options: ["L – 4 čtverečky", "T – 4 čtverečky", "Kříž – 4 čtverečky", "Čtverec – 4 čtverečky"] },
   { question: "Kostka je složena z 27 malých kostek (3×3×3). Kolik malých kostek vidíme z jedné strany?", correctAnswer: "9", options: ["9", "27", "18", "6"] },
   { question: "Kostka 3×3×3 = 27 kostek. Kolik kostek je v prostředku (nevidíme je)?", correctAnswer: "1", options: ["1", "0", "8", "3"] },
   { question: "Čtverec rozstřihneme jedním řezem. Kolik částí dostaneme?", correctAnswer: "2", options: ["2", "1", "3", "4"] },
   { question: "Čtverec rozstřihneme dvěma řezy rovnoběžně. Kolik části dostaneme?", correctAnswer: "3", options: ["3", "2", "4", "6"] },
-  { question: "Přeložíme čtverec napůl. Vznikne:", correctAnswer: "Obdélník – poloviční obsah", options: ["Obdélník (poloviční obsah)", "Čtverec", "Trojúhelník", "Trapéz"] },
+  { question: "Přeložíme čtverec napůl. Vznikne:", correctAnswer: "Obdélník – poloviční obsah", options: ["Obdélník – poloviční obsah", "Čtverec", "Trojúhelník", "Trapéz"] },
   { question: "Přeložíme čtverec přes úhlopříčku. Vznikne:", correctAnswer: "Rovnoramenný pravoúhlý trojúhelník", options: ["Rovnoramenný pravoúhlý trojúhelník", "Obdélník", "Rovnostranný trojúhelník", "Čtverec"] },
-  { question: "Do čtverce 4×4 nakreslíme všechny úhlopříčky malých čtverečků. Jaký tvar vznikne uprostřed?", correctAnswer: "Čtverec – otočený o 45°", options: ["Čtverec (otočený o 45°)", "Trojúhelník", "Šestiúhelník", "Kružnice"] },
+  { question: "Do čtverce 4×4 nakreslíme všechny úhlopříčky malých čtverečků. Jaký tvar vznikne uprostřed?", correctAnswer: "Čtverec – otočený o 45°", options: ["Čtverec – otočený o 45°", "Trojúhelník", "Šestiúhelník", "Kružnice"] },
   { question: "Celkový počet kostek 2×2×2 = ?", correctAnswer: "8", options: ["8", "6", "4", "12"] },
   { question: "Kostka 2×2×2 — kolik kostek je vidět z každého pohledu?", correctAnswer: "4", options: ["4", "2", "8", "6"] },
   { question: "Vzor: 1 trojúhelník = 3 strany. 2 trojúhelníky sdílejí 1 stranu = ? stran celkem?", correctAnswer: "5", options: ["5", "6", "4", "7"] },

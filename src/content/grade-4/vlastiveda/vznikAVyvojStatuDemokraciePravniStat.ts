@@ -24,9 +24,9 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co znamená slovo demokracie?",
-    correctAnswer: "Vláda lidu (řecky demos = lid, kratos = vláda)",
+    correctAnswer: "Vláda lidu – řecky demos = lid, kratos = vláda",
     options: [
-      "Vláda lidu (řecky demos = lid, kratos = vláda)",
+      "Vláda lidu – řecky demos = lid, kratos = vláda",
       "Vláda krále",
       "Vláda církve",
       "Vláda armády",
@@ -62,9 +62,9 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá nejvyšší zákonodárný orgán ČR?",
-    correctAnswer: "Parlament (Poslanecká sněmovna + Senát)",
+    correctAnswer: "Parlament – Poslanecká sněmovna + Senát",
     options: [
-      "Parlament (Poslanecká sněmovna + Senát)",
+      "Parlament – Poslanecká sněmovna + Senát",
       "Vláda",
       "Prezident",
       "Ministerstvo",
@@ -81,8 +81,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kdo vede vládu ČR?",
-    correctAnswer: "Předseda vlády (premiér)",
-    options: ["Předseda vlády (premiér)", "Prezident", "Ministr financí", "Předseda sněmovny"],
+    correctAnswer: "Předseda vlády – premiér",
+    options: ["Předseda vlády – premiér", "Prezident", "Ministr financí", "Předseda sněmovny"],
     hints: ["Předseda vlády = premiér."],
     solutionSteps: ["Vládu ČR vede předseda vlády (premiér) — jmenuje ho prezident."],
   },
@@ -110,9 +110,9 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Jaký je rozdíl mezi přímou a zastupitelskou demokracií?",
-    correctAnswer: "Přímá = lidé rozhodují sami (hlasování); zastupitelská = volí zástupce, kteří rozhodují",
+    correctAnswer: "Přímá = lidé rozhodují sami – hlasování ; zastupitelská = volí zástupce, kteří rozhodují",
     options: [
-      "Přímá = lidé rozhodují sami (hlasování); zastupitelská = volí zástupce, kteří rozhodují",
+      "Přímá = lidé rozhodují sami – hlasování ; zastupitelská = volí zástupce, kteří rozhodují",
       "Přímá = vláda rozhoduje, zastupitelská = prezident rozhoduje",
       "Jsou to totéž",
       "Přímá je starší forma demokracie v ČR",

@@ -120,8 +120,8 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký vzorec odpovídá souvětí 'Přišel, ale nezdravil.'?",
     correctAnswer: "V1, ale V2 – souřadící souvětí",
     options: [
-      "V1, že V2 (podřadící)",
-      "V1, ale V2 (souřadící souvětí)",
+      "V1, že V2 – podřadící",
+      "V1, ale V2 – souřadící souvětí",
       "V1 + V2 + V3",
       "jen jedna věta",
     ],
@@ -133,7 +133,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "nikdy",
       "jen na konci souvětí",
-      "před spojkami podřadícími a některými souřadícími (ale, proto)",
+      "před spojkami podřadícími a některými souřadícími – ale, proto",
       "za každým slovesem",
     ],
     hints: ["Před 'že, aby, protože, ale, proto' píšeme čárku."],
@@ -202,7 +202,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "HV, PV – hlavní věta, vedlejší věta příčinná",
     options: [
       "V1 + V2 souřadící",
-      "HV, PV (hlavní věta, vedlejší věta příčinná)",
+      "HV, PV – hlavní věta, vedlejší věta příčinná",
       "PV + HV",
       "HV a HV",
     ],
@@ -280,7 +280,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "zpravidla ne, ale záleží na kontextu – nevylučuje se",
     options: [
       "vždy",
-      "zpravidla ne, ale záleží na kontextu (nevylučuje se)",
+      "zpravidla ne, ale záleží na kontextu – nevylučuje se",
       "nikdy",
       "jen před posledním 'a'",
     ],
@@ -311,7 +311,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "souřadící souvětí důsledkové – proto, tedy, tudíž",
     options: [
       "podřadící souvětí příčinné",
-      "souřadící souvětí důsledkové (proto, tedy, tudíž)",
+      "souřadící souvětí důsledkové – proto, tedy, tudíž",
       "souřadící souvětí odporovací",
       "podřadící souvětí podmínkové",
     ],
@@ -347,10 +347,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Napište vzorec souvětí: 'Nevím, kdy přijde, protože mi nic neřekl.'",
-    correctAnswer: "HV – PV– kdy – PV– protože",
+    correctAnswer: "HV – PV(kdy) – PV – protože",
     options: [
       "HV + HV + HV",
-      "HV – PV(kdy) – PV(protože)",
+      "HV – PV(kdy) – PV – protože",
       "PV – HV – PV",
       "HV + PV souřadící",
     ],
@@ -383,7 +383,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "2 vedlejší věty – že je čas jít + i když se mu nechtělo",
     options: [
       "1 vedlejší věta",
-      "2 vedlejší věty (že je čas jít + i když se mu nechtělo)",
+      "2 vedlejší věty – že je čas jít + i když se mu nechtělo",
       "3 vedlejší věty",
       "žádná vedlejší věta",
     ],
@@ -394,7 +394,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "vedlejší věta předmětná – viděl co? jak to udělal",
     options: [
       "vedlejší věta způsobová",
-      "vedlejší věta předmětná (viděl co? jak to udělal)",
+      "vedlejší věta předmětná – viděl co? jak to udělal",
       "vedlejší věta časová",
       "vedlejší věta přívlastková",
     ],

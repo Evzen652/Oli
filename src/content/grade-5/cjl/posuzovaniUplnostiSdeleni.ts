@@ -37,7 +37,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "téměř úplná – chybí jen proč – předmět schůzky",
     options: [
       "plně úplná – obsahuje vše",
-      "téměř úplná – chybí jen proč (předmět schůzky)",
+      "téměř úplná – chybí jen proč – předmět schůzky",
       "zcela neúplná",
       "záleží na adresátovi",
     ],
@@ -59,7 +59,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "kdy přijela – čas a zda je vše v pořádku",
     options: [
       "nic – úplná zpráva",
-      "kdy přijela (čas) a zda je vše v pořádku",
+      "kdy přijela – čas a zda je vše v pořádku",
       "jen adresa",
       "způsob cesty",
     ],
@@ -114,7 +114,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "do kdy a proč – co se stane, pokud to neudělám",
     options: [
       "nic – sdělení je jasné",
-      "do kdy a proč (co se stane, pokud to neudělám)",
+      "do kdy a proč – co se stane, pokud to neudělám",
       "adresa pokoje",
       "kdo to říká",
     ],
@@ -362,7 +362,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "redundance – zbytečná informace nepřidávající hodnotu",
     options: [
       "přirovnání",
-      "redundance (zbytečná informace nepřidávající hodnotu)",
+      "redundance – zbytečná informace nepřidávající hodnotu",
       "metafora",
       "citace",
     ],
@@ -381,10 +381,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve sdělení pro záchranáře je nejdůležitější:",
-    correctAnswer: "poloha – kde, co se děje a počet postižených",
+    correctAnswer: "poloha – kde , co se děje a počet postižených",
     options: [
       "délka sdělení",
-      "poloha (kde), co se děje a počet postižených",
+      "poloha – kde , co se děje a počet postižených",
       "jméno oznamovatele",
       "datum a čas",
     ],
@@ -450,7 +450,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Griceovy maxima – maxima kvality a množství",
     options: [
       "pravopis",
-      "Griceovy maxima (maxima kvality a množství)",
+      "Griceovy maxima – maxima kvality a množství",
       "rétorika",
       "kompozice",
     ],

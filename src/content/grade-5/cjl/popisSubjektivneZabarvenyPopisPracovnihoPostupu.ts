@@ -15,7 +15,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "objektivní popis – jen fakta",
     options: [
       "subjektivně zabarvený popis",
-      "objektivní popis (jen fakta)",
+      "objektivní popis – jen fakta",
       "pracovní postup",
       "vyprávění",
     ],
@@ -26,7 +26,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "subjektivně zabarvený popis – emoce, přirovnání",
     options: [
       "objektivní popis",
-      "subjektivně zabarvený popis (emoce, přirovnání)",
+      "subjektivně zabarvený popis – emoce, přirovnání",
       "pracovní postup",
       "zpráva",
     ],
@@ -38,7 +38,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "objektivní popis",
       "subjektivně zabarvený popis",
-      "pracovní postup (chronologické kroky)",
+      "pracovní postup – chronologické kroky",
       "pohádka",
     ],
     hints: ["Recept = kroky v pořadí = pracovní postup."],
@@ -48,7 +48,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "rozkazovacím způsobu nebo infinitivu – přidej, smíchej, ohřej",
     options: [
       "podmiňovacím způsobu",
-      "rozkazovacím způsobu nebo infinitivu (přidej, smíchej, ohřej)",
+      "rozkazovacím způsobu nebo infinitivu – přidej, smíchej, ohřej",
       "minulém čase",
       "přítomném čase bez rozkazů",
     ],
@@ -71,7 +71,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "osobní dojmy",
       "přirovnání a emoce",
-      "fakta bez hodnocení (tvar, barva, rozměry)",
+      "fakta bez hodnocení – tvar, barva, rozměry",
       "kroky pracovního postupu",
     ],
     hints: ["Objektivní = bez emocí, jen fakta a měřitelné vlastnosti."],
@@ -226,9 +226,9 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Bohatě ozdobený sál rozjasňovaly stovky svíček.' je styl:",
     correctAnswer: "subjektivně zabarvený – výrazná přídavná jména, poetika",
     options: [
-      "objektivní (jen fakta)",
+      "objektivní – jen fakta",
       "pracovní postup",
-      "subjektivně zabarvený (výrazná přídavná jména, poetika)",
+      "subjektivně zabarvený – výrazná přídavná jména, poetika",
       "zpravodajský",
     ],
     hints: ["Bohatě ozdobený, rozjasňovaly = hodnotící a poetický styl."],
@@ -237,9 +237,9 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Místnost má plochu 25 m² a výšku stropu 2,8 m.' je styl:",
     correctAnswer: "objektivní – měřitelná fakta",
     options: [
-      "subjektivní (emoce)",
+      "subjektivní – emoce",
       "pracovní postup",
-      "objektivní (měřitelná fakta)",
+      "objektivní – měřitelná fakta",
       "lyrika",
     ],
     hints: ["Číselné hodnoty = objektivní popis."],
@@ -283,7 +283,7 @@ const POOL_L2: PracticeTask[] = [
     options: [
       "subjektivní popis",
       "pracovní postup",
-      "objektivní popis (parametry, měření, fakta)",
+      "objektivní popis – parametry, měření, fakta",
       "báseň",
     ],
     hints: ["Specifikace = číselné a technické hodnoty = objektivní."],
@@ -293,7 +293,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "popis = jak vypadá a jaká je; vyprávění = co se stalo – děj",
     options: [
       "jsou totéž",
-      "popis = jak vypadá a jaká je; vyprávění = co se stalo (děj)",
+      "popis = jak vypadá a jaká je; vyprávění = co se stalo – děj",
       "vyprávění je kratší",
       "popis neobsahuje jméno",
     ],
@@ -328,7 +328,7 @@ const POOL_L2: PracticeTask[] = [
       "Moře má hloubku 3800 m.",
       "Moře se třpytí v barvě safíru a voní po svobodě.",
       "Moře je plocha vody.",
-      "Moře je modré. (nezměnit)",
+      "Moře je modré. – nezměnit",
     ],
     hints: ["Přidáme poetické přirovnání a smyslové vnímání."],
   },
@@ -359,10 +359,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký je rozdíl mezi popisem statickým a dynamickým?",
-    correctAnswer: "statický popisuje věc v klidu – poloha, tvar, dynamický zachycuje pohyb nebo změnu",
+    correctAnswer: "statický popisuje věc v klidu – poloha, tvar , dynamický zachycuje pohyb nebo změnu",
     options: [
       "statický je delší",
-      "statický popisuje věc v klidu (poloha, tvar), dynamický zachycuje pohyb nebo změnu",
+      "statický popisuje věc v klidu – poloha, tvar , dynamický zachycuje pohyb nebo změnu",
       "dynamický je vždy subjektivní",
       "nejsou žádné rozdíly",
     ],
@@ -395,7 +395,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "přisouzení lidských vlastností neživým věcem – les šeptá, kameny sní",
     options: [
       "popis osoby z objektivního hlediska",
-      "přisouzení lidských vlastností neživým věcem (les šeptá, kameny sní)",
+      "přisouzení lidských vlastností neživým věcem – les šeptá, kameny sní",
       "přirovnání ke zvířeti",
       "záporná charakteristika",
     ],
@@ -429,7 +429,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "číslům",
       "slovesům",
-      "nejasným nebo vágním formulacím (přidej hodně, ohřej trochu)",
+      "nejasným nebo vágním formulacím – přidej hodně, ohřej trochu",
       "časovým výrazům",
     ],
     hints: ["Pracovní postup = přesné instrukce, žádné 'nějak' nebo 'trochu'."],
@@ -439,7 +439,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "prolínání smyslů v popisu – slyšet barvu, cítit hudbu",
     options: [
       "záporný popis",
-      "prolínání smyslů v popisu (slyšet barvu, cítit hudbu)",
+      "prolínání smyslů v popisu – slyšet barvu, cítit hudbu",
       "přirovnání",
       "popis číselných hodnot",
     ],

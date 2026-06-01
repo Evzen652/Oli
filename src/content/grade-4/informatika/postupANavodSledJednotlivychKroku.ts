@@ -144,13 +144,13 @@ const SELECT_TASKS_L2: PracticeTask[] = [
   },
   {
     question: "Algoritmus sčítání dvou čísel je příkladem vlastnosti:",
-    correctAnswer: "Obecnosti (funguje pro libovolná dvě čísla)",
+    correctAnswer: "Obecnosti – funguje pro libovolná dvě čísla",
     options: shuffle(["Obecnosti (funguje pro libovolná dvě čísla)", "Jedinečnosti (funguje jen pro 3+5)", "Náhodnosti", "Nekonečnosti"]),
     hints: ["Obecnost znamená, že algoritmus funguje pro různé hodnoty vstupů.", "3+5 i 10+20 jsou oba vstupy stejného algoritmu."],
   },
   {
     question: "Co se stane, pokud algoritmus nemá konečnost?",
-    correctAnswer: "Nikdy neskončí (zacyklí se)",
+    correctAnswer: "Nikdy neskončí – zacyklí se",
     options: shuffle(["Nikdy neskončí (zacyklí se)", "Skončí rychleji", "Přeskočí některé kroky", "Vymaže vstup"]),
     hints: ["Nekonečný algoritmus = program, který nikdy nekončí.", "Počítač by 'zamrz' v nekonečné smyčce."],
   },
@@ -162,13 +162,13 @@ const SELECT_TASKS_L2: PracticeTask[] = [
   },
   {
     question: "Příprava domácího úkolu je algoritmus, protože:",
-    correctAnswer: "Má přesné kroky v daném pořadí a výsledek (hotový úkol)",
+    correctAnswer: "Má přesné kroky v daném pořadí a výsledek – hotový úkol",
     options: shuffle(["Má přesné kroky v daném pořadí a výsledek (hotový úkol)", "Je to hra", "Nemá žádné kroky", "Trvá nekonečně"]),
     hints: ["Algoritmus = konečný sled kroků vedoucí k cíli.", "Hotový úkol = výstup algoritmu."],
   },
   {
     question: "Jak se nazývá algoritmus zapsaný jako program v počítači?",
-    correctAnswer: "Zdrojový kód (kód programu)",
+    correctAnswer: "Zdrojový kód – kód programu",
     options: shuffle(["Zdrojový kód (kód programu)", "Vývojový diagram", "Databáze", "Operační systém"]),
     hints: ["Program je algoritmus zapsaný v programovacím jazyce.", "Python, Java nebo C jsou jazyky pro zápis kódu."],
   },
@@ -201,7 +201,7 @@ const SELECT_TASKS_L2: PracticeTask[] = [
 const SELECT_TASKS_L3: PracticeTask[] = [
   {
     question: "Která z možností NENÍ vlastností správného algoritmu?",
-    correctAnswer: "Náhodnost (výsledek se liší při každém spuštění)",
+    correctAnswer: "Náhodnost – výsledek se liší při každém spuštění",
     options: shuffle(["Náhodnost (výsledek se liší při každém spuštění)", "Jednoznačnost", "Konečnost", "Obecnost"]),
     hints: ["Algoritmus musí být deterministický — stejné vstupy = stejný výsledek.", "Náhodnost je opakem jednoznačnosti."],
   },
@@ -225,7 +225,7 @@ const SELECT_TASKS_L3: PracticeTask[] = [
   },
   {
     question: "Ve vývojovém diagramu je kosočtverec s textem 'Je číslo větší než 10?'. Co representuje?",
-    correctAnswer: "Podmínku (větvení) — dva možné výstupy: Ano / Ne",
+    correctAnswer: "Podmínku – větvení — dva možné výstupy: Ano / Ne",
     options: shuffle(["Podmínku (větvení) — dva možné výstupy: Ano / Ne", "Příkaz (akci)", "Začátek diagramu", "Konec diagramu"]),
     hints: ["Kosočtverec = rozhodnutí v diagramu.", "Z kosočtverce vedou dvě šipky: Ano a Ne."],
   },
@@ -243,7 +243,7 @@ const SELECT_TASKS_L3: PracticeTask[] = [
   },
   {
     question: "Jaký je rozdíl mezi algoritmem a programem?",
-    correctAnswer: "Algoritmus je postup (myšlenka), program je algoritmus zapsaný v kódu pro počítač",
+    correctAnswer: "Algoritmus je postup – myšlenka, program je algoritmus zapsaný v kódu pro počítač",
     options: shuffle(["Algoritmus je postup (myšlenka), program je algoritmus zapsaný v kódu pro počítač", "Jsou to totéž", "Program je obecnější než algoritmus", "Algoritmus funguje jen na papíře"]),
     hints: ["Algoritmus lze zapsat slovem, diagramem i kódem.", "Program je konkrétní implementace algoritmu."],
   },

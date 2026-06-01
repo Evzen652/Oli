@@ -26,7 +26,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Slovo 'les' je vícevýznamové. Jaký může mít druhý význam?",
     correctAnswer: "vícero stromů pohromadě, ale i typ šachové figurky – věž v nářečí",
     options: [
-      "vícero stromů pohromadě, ale i typ šachové figurky (věž) v nářečí",
+      "vícero stromů pohromadě, ale i typ šachové figurky – věž v nářečí",
       "má jen jeden význam – stromy",
       "znamená jen houby",
       "znamená jen přírodu",
@@ -61,7 +61,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "více – část těla, ale i způsob označení v kartách apod.",
     options: [
       "jen jeden – část těla",
-      "více (část těla, ale i způsob označení v kartách apod.)",
+      "více – část těla, ale i způsob označení v kartách apod.",
       "žádný – to není slovo",
       "tři přesně",
     ],
@@ -70,7 +70,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Ve větě 'Listoval v knize.' slovo 'list' znamená:",
     correctAnswer: "stránka – papír",
-    options: ["zelený list stromu", "stránka (papír)", "dopis", "karta"],
+    options: ["zelený list stromu", "stránka – papír", "dopis", "karta"],
     hints: ["Při listování v knize myslíme na stránky."],
   },
   {
@@ -193,7 +193,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "větev – proud řeky",
     options: [
       "část těla",
-      "větev (proud) řeky",
+      "větev – proud řeky",
       "most přes řeku",
       "hráz",
     ],
@@ -221,7 +221,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "starou délkovou míru – palec = cca 2,54 cm",
     options: [
       "druh kamene",
-      "starou délkovou míru (palec = cca 2,54 cm)",
+      "starou délkovou míru – palec = cca 2,54 cm",
       "způsob psaní",
       "typ oblečení",
     ],
@@ -384,7 +384,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "vícevýznamové – 'Jak ti to jde?' – daří se vs. 'Jdu domů.'",
     options: [
       "jednoznačné – vždy pohyb pěšky",
-      "vícevýznamové – 'Jak ti to jde?' (daří se) vs. 'Jdu domů.'",
+      "vícevýznamové – 'Jak ti to jde?' – daří se vs. 'Jdu domů.'",
       "jednoznačné – odborný termín z fyziky",
       "vícevýznamové – jen v příslovích",
     ],
@@ -406,7 +406,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "ničivé působení času – přenesený smysl",
     options: [
       "zubní sklovinu",
-      "ničivé působení času (přenesený smysl)",
+      "ničivé působení času – přenesený smysl",
       "ozubené kolo",
       "typ nástrojů",
     ],

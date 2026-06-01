@@ -46,7 +46,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Na jak dlouho je volen prezident ČR?",
     correctAnswer: "5 let – max. 2 funkční období",
-    options: ["5 let (max. 2 funkční období)", "4 roky", "6 let", "7 let"],
+    options: ["5 let – max. 2 funkční období", "4 roky", "6 let", "7 let"],
     hints: ["Delší než poslanci, kratší než senátoři."],
     solutionSteps: ["Prezident ČR je volen přímou volbou na 5 let, max. 2× za sebou."],
   },
@@ -55,7 +55,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Přímo občané v přímé volbě",
     options: [
       "Přímo občané v přímé volbě",
-      "Parlament (Sněmovna a Senát)",
+      "Parlament – Sněmovna a Senát",
       "Vláda",
       "Jmenuje ho EU",
     ],
@@ -84,7 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se nazývá vedoucí vlády ČR?",
     correctAnswer: "Předseda vlády – premiér",
-    options: ["Předseda vlády (premiér)", "Prezident", "Předseda Sněmovny", "Kancléř"],
+    options: ["Předseda vlády – premiér", "Prezident", "Předseda Sněmovny", "Kancléř"],
     hints: ["Jmenuje ho prezident."],
     solutionSteps: ["Vládu vede předseda vlády (premiér), jmenovaný prezidentem."],
   },
@@ -143,9 +143,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší role prezidenta a premiéra?",
-    correctAnswer: "Prezident = hlava státu – ceremoniální + jmenovací role; premiér = šéf vlády – výkonná moc",
+    correctAnswer: "Prezident = hlava státu (ceremoniální + jmenovací role); premiér = šéf vlády – výkonná moc",
     options: [
-      "Prezident = hlava státu (ceremoniální + jmenovací role); premiér = šéf vlády (výkonná moc)",
+      "Prezident = hlava státu (ceremoniální + jmenovací role); premiér = šéf vlády – výkonná moc",
       "Jsou to totéž — oba řídí vládu",
       "Premiér je nadřazen prezidentovi",
       "Prezident řídí ministerstva přímo",
@@ -191,9 +191,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co znamená princip dělby moci?",
-    correctAnswer: "Moc je rozdělena mezi zákonodárnou – parlament, výkonnou – vláda a soudní – soudy",
+    correctAnswer: "Moc je rozdělena mezi zákonodárnou (parlament), výkonnou (vláda) a soudní – soudy",
     options: [
-      "Moc je rozdělena mezi zákonodárnou (parlament), výkonnou (vláda) a soudní (soudy)",
+      "Moc je rozdělena mezi zákonodárnou (parlament), výkonnou (vláda) a soudní – soudy",
       "Moc má jen prezident",
       "Vláda rozhoduje o všem",
       "Soud může vydávat zákony",
@@ -315,7 +315,8 @@ const POOL_L3: PracticeTask[] = [
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  // POOL_L3 obsahuje drag_order/match_pairs tasks — pro select_one topic použij L1+L2
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : [...POOL_L1, ...POOL_L2];
   return shuffle(pool).slice(0, 30);
 }
 

@@ -314,9 +314,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký vliv má přítomnost řeky na hospodářství kraje?",
-    correctAnswer: "Řeka přináší vodu pro zemědělství, dopravu, energii (vodní elektrárny) a turistiku",
+    correctAnswer: "Řeka přináší vodu pro zemědělství, dopravu, energii – vodní elektrárny a turistiku",
     options: [
-      "Řeka přináší vodu pro zemědělství, dopravu, energii (vodní elektrárny) a turistiku",
+      "Řeka přináší vodu pro zemědělství, dopravu, energii – vodní elektrárny a turistiku",
       "Řeka komplikuje dopravu",
       "Řeka způsobuje záplavy a nic jiného",
       "Řeka je bezvýznamná pro hospodářství",

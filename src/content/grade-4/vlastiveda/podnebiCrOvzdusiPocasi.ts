@@ -26,8 +26,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kde v ČR bývá nejteplejší podnebí?",
-    correctAnswer: "Na jižní Moravě (Brno, Znojmo)",
-    options: ["Na jižní Moravě (Brno, Znojmo)", "V Krkonoších", "Na Šumavě", "V Libereckém kraji"],
+    correctAnswer: "Na jižní Moravě – Brno, Znojmo",
+    options: ["Na jižní Moravě – Brno, Znojmo", "V Krkonoších", "Na Šumavě", "V Libereckém kraji"],
     hints: ["Jižní oblasti ČR jsou teplejší než severní."],
     solutionSteps: ["Nejteplejší oblasti ČR jsou jižní Morava — Brno a okolí Znojma."],
   },
@@ -83,8 +83,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "V které části ČR padá více srážek — na západě nebo na východě?",
-    correctAnswer: "Na západě ČR (návětrná strana)",
-    options: ["Na západě ČR (návětrná strana)", "Na východě ČR", "Všude stejně", "Na jihu ČR"],
+    correctAnswer: "Na západě ČR – návětrná strana",
+    options: ["Na západě ČR – návětrná strana", "Na východě ČR", "Všude stejně", "Na jihu ČR"],
     hints: ["Déšť přichází ze západ a na návětrné straně hor spadne více srážek."],
     solutionSteps: ["Na západě ČR (návětrná strana) spadá více srážek, protože oblaka přicházejí od Atlantiku."],
   },
@@ -153,9 +153,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co způsobuje bouřky v létě v ČR?",
-    correctAnswer: "Ohřátý vzduch stoupá a vytváří bouřkové mraky (kumulonimbus)",
+    correctAnswer: "Ohřátý vzduch stoupá a vytváří bouřkové mraky – kumulonimbus",
     options: [
-      "Ohřátý vzduch stoupá a vytváří bouřkové mraky (kumulonimbus)",
+      "Ohřátý vzduch stoupá a vytváří bouřkové mraky – kumulonimbus",
       "Studená fronta ze severu",
       "Příliv teplého vzduchu z Afriky",
       "Výbuchy sopek",
@@ -165,8 +165,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá měřítko teplot, které používáme v ČR?",
-    correctAnswer: "Stupně Celsia (°C)",
-    options: ["Stupně Celsia (°C)", "Stupně Fahrenheita (°F)", "Kelviny (K)", "Stupně Réaumura"],
+    correctAnswer: "Stupně Celsia – °C",
+    options: ["Stupně Celsia – °C", "Stupně Fahrenheita – °F", "Kelviny – K", "Stupně Réaumura"],
     hints: ["Voda zamrzá při 0 °C a vaří se při 100 °C."],
     solutionSteps: ["V ČR (a většině světa) měříme teplotu ve stupních Celsia — 0 °C = bod mrazu vody."],
   },
@@ -184,9 +184,9 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Kde se v ČR měří počasí a shromažďují data?",
-    correctAnswer: "Na meteorologických stanicích a v meteorologickém ústavu (ČHMÚ)",
+    correctAnswer: "Na meteorologických stanicích a v meteorologickém ústavu – ČHMÚ",
     options: [
-      "Na meteorologických stanicích a v meteorologickém ústavu (ČHMÚ)",
+      "Na meteorologických stanicích a v meteorologickém ústavu – ČHMÚ",
       "Jen v Praze na Václavském náměstí",
       "Na horách, jen v zimě",
       "V laboratořích akademie věd",

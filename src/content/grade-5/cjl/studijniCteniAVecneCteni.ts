@@ -125,7 +125,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "studijní je pomalejší, věcné může být rychlejší – jen hledám",
     options: [
       "věcné je vždy pomalejší",
-      "studijní je pomalejší, věcné může být rychlejší (jen hledám)",
+      "studijní je pomalejší, věcné může být rychlejší – jen hledám",
       "oboje je stejně rychlé",
       "záleží na délce textu",
     ],
@@ -194,7 +194,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "podívám se do obsahu – rejstříku a vyhledám stránku – věcné čtení",
     options: [
       "přečtu celou učebnici",
-      "podívám se do obsahu (rejstříku) a vyhledám stránku – věcné čtení",
+      "podívám se do obsahu – rejstříku a vyhledám stránku – věcné čtení",
       "zeptám se kamaráda",
       "záleží na předmětu",
     ],
@@ -238,7 +238,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "scanning – vyhledávací čtení – přelétu očima a hledám jméno",
     options: [
       "studijní čtení celého textu",
-      "scanning (vyhledávací čtení) – přelétu očima a hledám jméno",
+      "scanning – vyhledávací čtení – přelétu očima a hledám jméno",
       "čtení nahlas",
       "záleží na délce textu",
     ],
@@ -268,10 +268,10 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je SQ3R metoda studijního čtení?",
-    correctAnswer: "Survey – přehled – Question – otázky – Read – čtení – Recite – shrnutí – Review – opakování",
+    correctAnswer: "Survey (přehled) – Question (otázky) – Read (čtení) – Recite (shrnutí) – Review – opakování",
     options: [
       "rychlé čtení bez zastavení",
-      "Survey (přehled) – Question (otázky) – Read (čtení) – Recite (shrnutí) – Review (opakování)",
+      "Survey (přehled) – Question (otázky) – Read (čtení) – Recite (shrnutí) – Review – opakování",
       "jen čtení a poznámky",
       "záleží na textu",
     ],
@@ -315,7 +315,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "přehledové čtení – skimming – rychle posoudím, o čem text je",
     options: [
       "studijní čtení celého textu",
-      "přehledové čtení (skimming) – rychle posoudím, o čem text je",
+      "přehledové čtení – skimming – rychle posoudím, o čem text je",
       "věcné čtení",
       "záleží na tématu",
     ],

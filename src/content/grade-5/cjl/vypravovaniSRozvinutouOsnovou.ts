@@ -15,7 +15,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "plán textu rozčleněný na části – úvod, zápletka, vyvrcholení, závěr",
     options: [
       "seznam postav",
-      "plán textu rozčleněný na části (úvod, zápletka, vyvrcholení, závěr)",
+      "plán textu rozčleněný na části – úvod, zápletka, vyvrcholení, závěr",
       "seznam slov",
       "popis prostředí",
     ],
@@ -81,7 +81,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "každou část dělí na dílčí podčásti – I.A, I.B, II.A...",
     options: [
       "je vždy kratší",
-      "každou část dělí na dílčí podčásti (I.A, I.B, II.A...)",
+      "každou část dělí na dílčí podčásti – I.A, I.B, II.A...",
       "neobsahuje závěr",
       "je jen v bodech bez popisků",
     ],
@@ -93,7 +93,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "budoucí čas",
       "přítomný čas vždy",
-      "minulý čas (byl, přišel, stalo se)",
+      "minulý čas – byl, přišel, stalo se",
       "podmiňovací způsob",
     ],
     hints: ["Vyprávění = to, co se stalo → minulý čas."],
@@ -180,10 +180,10 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Jak zní rozvitá osnova pro příběh o ztraceném psu?",
-    correctAnswer: "I. Úvod – pes, rodina, zahrada II.A Zápletka – pes zmizel II.B Hledání III. Vyvrcholení – pes nalezen IV. Závěr",
+    correctAnswer: "I. Úvod (pes, rodina, zahrada) II.A Zápletka (pes zmizel) II.B Hledání III. Vyvrcholení – pes nalezen IV. Závěr",
     options: [
       "I. Pes II. Rodina III. Zahrada IV. Konec",
-      "I. Úvod (pes, rodina, zahrada) II.A Zápletka (pes zmizel) II.B Hledání III. Vyvrcholení (pes nalezen) IV. Závěr",
+      "I. Úvod (pes, rodina, zahrada) II.A Zápletka (pes zmizel) II.B Hledání III. Vyvrcholení – pes nalezen IV. Závěr",
       "I. Popis psa II. Dialog III. Závěr",
       "jen seznam hlavních událostí",
     ],
@@ -227,7 +227,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "jednoduché mají 3–4 body; složené mají podčásti – I.A, I.B, II.A...",
     options: [
       "jednoduchá je vždy kratší",
-      "jednoduché mají 3–4 body; složené mají podčásti (I.A, I.B, II.A...)",
+      "jednoduché mají 3–4 body; složené mají podčásti – I.A, I.B, II.A...",
       "složená je bez úvodu",
       "záleží jen na autorovi",
     ],
@@ -348,7 +348,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Co je epizoda ve vyprávění?",
-    correctAnswer: "kratší uzavřený příběh v rámci většího příběhu",
+    correctAnswer: "kratší uzavřený příběh v rámci většíhopříběhu",
     options: [
       "typ zápletky",
       "kratší uzavřený příběh v rámci většíhopříběhu",
@@ -362,7 +362,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "vnější příběh, který uvozuje vnitřní příběhy – pohádka v pohádce",
     options: [
       "jen popis prostředí",
-      "vnější příběh, který uvozuje vnitřní příběhy (pohádka v pohádce)",
+      "vnější příběh, který uvozuje vnitřní příběhy – pohádka v pohádce",
       "závěrečné poučení",
       "typ osnovy",
     ],
@@ -381,10 +381,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je vypravěč v 1. osobě a co v 3. osobě?",
-    correctAnswer: "1. osoba = 'já' – subjektivní pohled; 3. osoba = 'on/ona' – objektivnější pohled",
+    correctAnswer: "1. osoba = 'já' (subjektivní pohled); 3. osoba = 'on/ona' – objektivnější pohled",
     options: [
       "1. osoba je vždy v minulém čase",
-      "1. osoba = 'já' (subjektivní pohled); 3. osoba = 'on/ona' (objektivnější pohled)",
+      "1. osoba = 'já' (subjektivní pohled); 3. osoba = 'on/ona' – objektivnější pohled",
       "3. osoba je vždy kratší",
       "záleží jen na žánru",
     ],
@@ -396,7 +396,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "expozice",
       "zápletka",
-      "peripetie (obrat, zlomový bod)",
+      "peripetie – obrat, zlomový bod",
       "epilog",
     ],
     hints: ["Peripetie = moment obratu děje."],
@@ -450,7 +450,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "předznamenání – foreshadowing",
     options: [
       "retrospektiva",
-      "předznamenání (foreshadowing)",
+      "předznamenání – foreshadowing",
       "epilog",
       "peripetie",
     ],
@@ -458,10 +458,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak zapíšeme rozvitou osnovu vyprávění o výletu třídy?",
-    correctAnswer: "I. Přípravy – kdo jde, kam, kdy II.A Cesta autobusem II.B Příjezd III. Vyvrcholení – nečekaná situace IV. Návrat a závěr",
+    correctAnswer: "I. Přípravy (kdo jde, kam, kdy) II.A Cesta autobusem II.B Příjezd III. Vyvrcholení – nečekaná situace IV. Návrat a závěr",
     options: [
       "I. Výlet II. Třída III. Autobus IV. Konec",
-      "I. Přípravy (kdo jde, kam, kdy) II.A Cesta autobusem II.B Příjezd III. Vyvrcholení (nečekaná situace) IV. Návrat a závěr",
+      "I. Přípravy (kdo jde, kam, kdy) II.A Cesta autobusem II.B Příjezd III. Vyvrcholení – nečekaná situace IV. Návrat a závěr",
       "jen chronologický seznam událostí",
       "záleží na délce výletu",
     ],

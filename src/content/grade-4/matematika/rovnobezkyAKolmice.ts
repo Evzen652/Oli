@@ -76,7 +76,7 @@ function gen(level: number): PracticeTask[] {
       tasks.push({
         question: `Jaký vztah mají přímky v tomto příkladu: „${pool.example}"?`,
         correctAnswer: pool.correct,
-        options: ["Rovnoběžky", "Kolmice", "Ani rovnoběžky, ani kolmice", "Různoběžky (svírají jiný úhel)"],
+        options: ["Rovnoběžky", "Kolmice", "Ani rovnoběžky, ani kolmice", "Různoběžky – svírají jiný úhel"],
         hints: ["Rovnoběžky = nikdy se neprotnou. Kolmice = protínají se pod 90°."],
         solutionSteps: [`„${pool.example}" → ${pool.correct}.`],
       });

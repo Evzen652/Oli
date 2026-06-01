@@ -84,7 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Řádkový graf teploty v průběhu dne: 6:00 h = 8 °C, 12:00 h = 18 °C, 18:00 h = 14 °C. Kdy bylo nejtepleji?",
     correctAnswer: "v poledne – 12:00",
-    options: ["v poledne (12:00)", "ráno (6:00)", "večer (18:00)", "všude stejně"],
+    options: ["v poledne – 12:00", "ráno – 6:00", "večer – 18:00", "všude stejně"],
   },
 ];
 
@@ -187,7 +187,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Tabulka výsledků: 5A průměr 2,3; 5B průměr 2,5; 5C průměr 2,1. Která třída má nejlepší průměr?",
     correctAnswer: "5C – průměr 2,1",
-    options: ["5C (průměr 2,1)", "5A (průměr 2,3)", "5B (průměr 2,5)", "všechny stejně"],
+    options: ["5C – průměr 2,1", "5A – průměr 2,3", "5B – průměr 2,5", "všechny stejně"],
   },
   {
     question: "Sloupcový graf vývoje počtu obyvatel: 2000 = 10 000, 2010 = 10 500, 2020 = 9 800. Kdy byl největší počet obyvatel?",

@@ -70,7 +70,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "ten, kdo příběh vypráví – může být postavou nebo neosobním hlasem",
     options: [
       "autor díla vždy",
-      "ten, kdo příběh vypráví (může být postavou nebo neosobním hlasem)",
+      "ten, kdo příběh vypráví – může být postavou nebo neosobním hlasem",
       "hlavní postava vždy",
       "záleží na žánru",
     ],
@@ -147,7 +147,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "vypravěč je postava v příběhu a mluví v 1. osobě – já",
     options: [
       "neosobní vypravěč",
-      "vypravěč je postava v příběhu a mluví v 1. osobě (já)",
+      "vypravěč je postava v příběhu a mluví v 1. osobě – já",
       "vypravěč mluví o jiné osobě",
       "záleží na díle",
     ],
@@ -227,7 +227,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "způsob, jakým je dílo uspořádáno – struktura, části, pořadí",
     options: [
       "téma díla",
-      "způsob, jakým je dílo uspořádáno (struktura, části, pořadí)",
+      "způsob, jakým je dílo uspořádáno – struktura, části, pořadí",
       "jazyk díla",
       "záleží na autorovi",
     ],
@@ -249,7 +249,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "věc nebo obraz, který reprezentuje něco jiného – hlubší smysl",
     options: [
       "jméno postavy",
-      "věc nebo obraz, který reprezentuje něco jiného (hlubší smysl)",
+      "věc nebo obraz, který reprezentuje něco jiného – hlubší smysl",
       "typ rýmu",
       "záleží na textu",
     ],
@@ -260,7 +260,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "protikladné elementy zdůrazňující rozdíl – světlo × tma, dobro × zlo",
     options: [
       "opakující se prvek",
-      "protikladné elementy zdůrazňující rozdíl (světlo × tma, dobro × zlo)",
+      "protikladné elementy zdůrazňující rozdíl – světlo × tma, dobro × zlo",
       "typ rytmu",
       "záleží na žánru",
     ],
@@ -271,7 +271,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "srovnání pomocí 'jako' – Byl statečný jako lev.",
     options: [
       "přenesené pojmenování bez 'jako'",
-      "srovnání pomocí 'jako' (Byl statečný jako lev.)",
+      "srovnání pomocí 'jako' – Byl statečný jako lev.",
       "opakování slova",
       "záleží na textu",
     ],
@@ -282,7 +282,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "přenesené pojmenování bez 'jako' – Byl lev boje.",
     options: [
       "srovnání pomocí 'jako'",
-      "přenesené pojmenování bez 'jako' (Byl lev boje.)",
+      "přenesené pojmenování bez 'jako' – Byl lev boje.",
       "opakování slova",
       "záleží na textu",
     ],
@@ -315,7 +315,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "zjemnění nepříjemné skutečnosti výrazem – zemřel → odešel",
     options: [
       "záměrné přehánění",
-      "zjemnění nepříjemné skutečnosti výrazem (zemřel → odešel)",
+      "zjemnění nepříjemné skutečnosti výrazem – zemřel → odešel",
       "opakování slova",
       "záleží na textu",
     ],
@@ -337,7 +337,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "opakování stejné hlásky na začátku slov – zlatý západ zbarvil zemi",
     options: [
       "rým na konci verše",
-      "opakování stejné hlásky na začátku slov (zlatý západ zbarvil zemi)",
+      "opakování stejné hlásky na začátku slov – zlatý západ zbarvil zemi",
       "záleží na básni",
       "typ rytmu",
     ],
@@ -395,7 +395,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "spojení protikladných pojmů – živá smrt, mlčící výkřik",
     options: [
       "přirovnání",
-      "spojení protikladných pojmů (živá smrt, mlčící výkřik)",
+      "spojení protikladných pojmů – živá smrt, mlčící výkřik",
       "záleží na textu",
       "metafora",
     ],

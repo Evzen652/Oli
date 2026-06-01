@@ -26,7 +26,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "stručné označení předmětu – tématu dopisu",
     options: [
       "pozdrav",
-      "stručné označení předmětu (tématu) dopisu",
+      "stručné označení předmětu – tématu dopisu",
       "podpis odesilatele",
       "datum dopisu",
     ],
@@ -70,7 +70,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "osobní údaje žadatele a požadované informace – co, kam, kdy",
     options: [
       "jen podpis",
-      "osobní údaje žadatele a požadované informace (co, kam, kdy)",
+      "osobní údaje žadatele a požadované informace – co, kam, kdy",
       "jen datum",
       "jen pozdrav",
     ],
@@ -103,7 +103,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "vlastním jménem a příjmením – vlastnoruční nebo tištěný podpis",
     options: [
       "přezdívkou",
-      "vlastním jménem a příjmením (vlastnoruční nebo tištěný podpis)",
+      "vlastním jménem a příjmením – vlastnoruční nebo tištěný podpis",
       "jen iniciálami",
       "podpis není nutný",
     ],
@@ -238,7 +238,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "doklady nebo dokumenty připojené k dopisu – kopie, certifikáty",
     options: [
       "poštovní razítko",
-      "doklady nebo dokumenty připojené k dopisu (kopie, certifikáty)",
+      "doklady nebo dokumenty připojené k dopisu – kopie, certifikáty",
       "seznam adresátů",
       "datum odeslání",
     ],
@@ -293,7 +293,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "jméno a adresa odesilatele – kdo píše",
     options: [
       "jméno a adresa adresáta",
-      "jméno a adresa odesilatele (kdo píše)",
+      "jméno a adresa odesilatele – kdo píše",
       "datum",
       "Vec:",
     ],
@@ -305,7 +305,7 @@ const POOL_L2: PracticeTask[] = [
     options: [
       "jméno odesilatele",
       "jen datum",
-      "jméno a adresa adresáta (komu píšeme)",
+      "jméno a adresa adresáta – komu píšeme",
       "Vec:",
     ],
     hints: ["Vpravo nebo níže = adresát (komu dopis patří)."],
@@ -326,7 +326,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "dopis přikládaný k jinému dokumentu – životopis, žádost o brigádu",
     options: [
       "pozdravný dopis příteli",
-      "dopis přikládaný k jinému dokumentu (životopis, žádost o brigádu)",
+      "dopis přikládaný k jinému dokumentu – životopis, žádost o brigádu",
       "pohlednice",
       "dopis bez adresy",
     ],
@@ -417,7 +417,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "strukturovaný dokument s osobními a pracovními údaji – přikládaný k žádosti",
     options: [
       "úřední dopis",
-      "strukturovaný dokument s osobními a pracovními údaji (přikládaný k žádosti)",
+      "strukturovaný dokument s osobními a pracovními údaji – přikládaný k žádosti",
       "dotazník",
       "pohlednice",
     ],

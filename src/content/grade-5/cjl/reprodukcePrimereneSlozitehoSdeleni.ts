@@ -220,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "věta, která shrnuje hlavní myšlenku odstavce – bývá na začátku",
     options: [
       "vždy poslední věta odstavce",
-      "věta, která shrnuje hlavní myšlenku odstavce (bývá na začátku)",
+      "věta, která shrnuje hlavní myšlenku odstavce – bývá na začátku",
       "nejkratší věta",
       "záleží na autorovi",
     ],
@@ -388,7 +388,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "reprodukce jen vybrané části textu – ne celku",
     options: [
       "reprodukce celého textu doslova",
-      "reprodukce jen vybrané části textu (ne celku)",
+      "reprodukce jen vybrané části textu – ne celku",
       "zkrácení textu na polovinu",
       "záleží na délce",
     ],

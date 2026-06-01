@@ -49,7 +49,7 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "jen popis postav",
       "jen dialogy",
-      "postavy, prostředí, děj (problém a jeho řešení)",
+      "postavy, prostředí, děj – problém a jeho řešení",
       "jen závěr",
     ],
     hints: ["Kdo? kde? co se stalo? jak se to vyřešilo? = základ příběhu."],
@@ -59,7 +59,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "fantastické prvky – kouzelník, čarodějnice, mluvící zvířata a morální poučení",
     options: [
       "historické události",
-      "fantastické prvky (kouzelník, čarodějnice, mluvící zvířata) a morální poučení",
+      "fantastické prvky – kouzelník, čarodějnice, mluvící zvířata a morální poučení",
       "vědecké výzkumy",
       "jen dialogy bez děje",
     ],
@@ -81,7 +81,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "pohádka – fantastické prvky",
     options: [
       "detektivní povídka",
-      "pohádka (fantastické prvky)",
+      "pohádka – fantastické prvky",
       "historický román",
       "věcný popis",
     ],
@@ -147,7 +147,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "popis vzhledu, chování a vnitřního světa – myšlenky, pocity",
     options: [
       "jen jméno a věk",
-      "popis vzhledu, chování a vnitřního světa (myšlenky, pocity)",
+      "popis vzhledu, chování a vnitřního světa – myšlenky, pocity",
       "jen seznam přátel",
       "záleží na žánru",
     ],
@@ -226,8 +226,8 @@ const POOL_L2: PracticeTask[] = [
     question: "Jaký typ pohledu zvolit v pohádce pro děti?",
     correctAnswer: "třetí osoba – er-forma nebo první osoba pro dojemnost",
     options: [
-      "vždy druhá osoba (ty)",
-      "třetí osoba (er-forma) nebo první osoba pro dojemnost",
+      "vždy druhá osoba – ty",
+      "třetí osoba – er-forma nebo první osoba pro dojemnost",
       "záleží na délce",
       "pouze první osoba",
     ],
@@ -326,7 +326,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "příliš používané fráze bez originality – bylo jednou jedno dítě, které bylo hodné",
     options: [
       "odborné termíny",
-      "příliš používané fráze bez originality (bylo jednou jedno dítě, které bylo hodné)",
+      "příliš používané fráze bez originality – bylo jednou jedno dítě, které bylo hodné",
       "záleží na žánru",
       "krásné věty",
     ],
@@ -450,7 +450,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "vytváření detailního, konzistentního světa pro příběh – v fantasy, sci-fi",
     options: [
       "popis reálného světa",
-      "vytváření detailního, konzistentního světa pro příběh (v fantasy, sci-fi)",
+      "vytváření detailního, konzistentního světa pro příběh – v fantasy, sci-fi",
       "záleží na žánru",
       "jen popis prostředí",
     ],

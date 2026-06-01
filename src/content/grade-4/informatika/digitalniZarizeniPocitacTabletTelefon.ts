@@ -23,7 +23,7 @@ const MATCH_TASKS: PracticeTask[] = [
   },
   {
     question: "Spoj zařízení se způsobem jeho hlavního použití:",
-    correctAnswer: "Herní konzole-PS5, Xbox, Nintendo Switch pro hry|E-čtečka (Kindle)-Čtení knih, e-Ink displej|Chytré hodinky-Health monitoring, notifikace, nositelná elektronika|Desktop PC-Náročná práce, programování, střih videa",
+    correctAnswer: "Herní konzole-PS5, Xbox, Nintendo Switch pro hry|E-čtečka – Kindle-Čtení knih, e-Ink displej|Chytré hodinky-Health monitoring, notifikace, nositelná elektronika|Desktop PC-Náročná práce, programování, střih videa",
     pairs: [
       { left: "Herní konzole", right: "PS5, Xbox, Nintendo Switch pro hry" },
       { left: "E-čtečka (Kindle)", right: "Čtení knih, e-Ink displej" },
@@ -37,7 +37,7 @@ const MATCH_TASKS: PracticeTask[] = [
 const SELECT_L1: PracticeTask[] = [
   {
     question: "Co je desktop počítač?",
-    correctAnswer: "Výkonný stolní počítač s oddělnými částmi (skříň PC, monitor, klávesnice, myš)",
+    correctAnswer: "Výkonný stolní počítač s oddělnými částmi – skříň PC, monitor, klávesnice, myš",
     options: shuffle(["Výkonný stolní počítač s oddělnými částmi (skříň PC, monitor, klávesnice, myš)", "Přenosný počítač s baterií", "Velký tablet", "Herní konzole"]),
     hints: ["Desktop = stojí na stole, nepřenosný.", "Oddělené části: skříň PC + monitor + klávesnice + myš."],
   },
@@ -61,7 +61,7 @@ const SELECT_L1: PracticeTask[] = [
   },
   {
     question: "Která zařízení jsou příklady herních konzolí?",
-    correctAnswer: "PlayStation 5 (PS5), Xbox, Nintendo Switch",
+    correctAnswer: "PlayStation 5 – PS5, Xbox, Nintendo Switch",
     options: shuffle(["PlayStation 5 (PS5), Xbox, Nintendo Switch", "iPad, Samsung Galaxy Tab", "MacBook, Dell Notebook", "Kindle, Kobo"]),
     hints: ["Herní konzole = speciální hardware pro hry.", "PS5 = PlayStation 5, Xbox = Microsoft."],
   },
@@ -85,7 +85,7 @@ const SELECT_L1: PracticeTask[] = [
   },
   {
     question: "Pro co je vhodný tablet?",
-    correctAnswer: "Konzumace obsahu (videa, knihy), online výuka, kreslení",
+    correctAnswer: "Konzumace obsahu – videa, knihy, online výuka, kreslení",
     options: shuffle(["Konzumace obsahu (videa, knihy), online výuka, kreslení", "Náročné programování", "Hraní výkonných her", "Přesné CAD projekty"]),
     hints: ["Tablet = prohlížení, čtení, jednoduché úkoly.", "Programování a profesionální práce = PC/notebook."],
   },
@@ -103,7 +103,7 @@ const SELECT_L1: PracticeTask[] = [
   },
   {
     question: "Jak se připojuje přídavná klávesnice k tabletu?",
-    correctAnswer: "Přes Bluetooth (bezdrátově) nebo speciální konektor",
+    correctAnswer: "Přes Bluetooth – bezdrátově nebo speciální konektor",
     options: shuffle(["Přes Bluetooth (bezdrátově) nebo speciální konektor", "Přes USB-A port", "Přes HDMI", "Přes WiFi"]),
     hints: ["Tablety nemají USB-A, ale mají Bluetooth.", "Speciální konektor = nasazovací klávesnice (např. iPad Magic Keyboard)."],
   },
@@ -112,7 +112,7 @@ const SELECT_L1: PracticeTask[] = [
 const SELECT_L2: PracticeTask[] = [
   {
     question: "Pro koho je desktop počítač nejlepší volbou?",
-    correctAnswer: "Pro uživatele pracující na pevném místě s náročnými úkoly (střih videa, programování)",
+    correctAnswer: "Pro uživatele pracující na pevném místě s náročnými úkoly – střih videa, programování",
     options: shuffle(["Pro uživatele pracující na pevném místě s náročnými úkoly (střih videa, programování)", "Pro studenty cestující do školy", "Pro krátkodobé použití na cestách", "Pro čtení knih"]),
     hints: ["Desktop = výkon + pevné místo.", "Střih 4K videa = potřeba výkonu = desktop."],
   },
@@ -130,7 +130,7 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Co je nositelná elektronika (wearables)?",
-    correctAnswer: "Zařízení noselná na těle (hodinky, fitness náramky, chytré brýle)",
+    correctAnswer: "Zařízení noselná na těle – hodinky, fitness náramky, chytré brýle",
     options: shuffle(["Zařízení noselná na těle (hodinky, fitness náramky, chytré brýle)", "Přenosné reproduktory", "Tablet v pouzdru", "Miniaturní notebook"]),
     hints: ["Wearables = nositelné technologie.", "Apple Watch, Fitbit, Google Glass."],
   },
@@ -148,13 +148,13 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Co je operační systém chytrého telefonu?",
-    correctAnswer: "Software, který řídí telefon — nejčastěji Android (Google) nebo iOS (Apple)",
+    correctAnswer: "Software, který řídí telefon — nejčastěji Android – Google nebo iOS – Apple",
     options: shuffle(["Software, který řídí telefon — nejčastěji Android (Google) nebo iOS (Apple)", "Sim karta", "Aplikační obchod", "Mobilní síť"]),
     hints: ["Android = Samsung, Xiaomi, atd.", "iOS = Apple iPhone."],
   },
   {
     question: "Jaké zařízení by sis vybral/a pro čtení knih na dovolené u moře?",
-    correctAnswer: "E-čtečku (Kindle) — nezáří, vydrží na slunci, baterie 4-6 týdnů",
+    correctAnswer: "E-čtečku – Kindle — nezáří, vydrží na slunci, baterie 4-6 týdnů",
     options: shuffle(["E-čtečku (Kindle) — nezáří, vydrží na slunci, baterie 4-6 týdnů", "Notebook", "Desktop počítač", "Herní konzoli"]),
     hints: ["Na slunci = e-Ink se čte lépe než klasický displej.", "Baterie e-čtečky vydrží týdny."],
   },
@@ -199,13 +199,13 @@ const SELECT_L3: PracticeTask[] = [
   },
   {
     question: "Proč je Apple Silicon (M-série) v MacBookách tak efektivní?",
-    correctAnswer: "Integruje CPU, GPU, RAM na jednom čipu (System on Chip) — výkon s nízkou spotřebou",
+    correctAnswer: "Integruje CPU, GPU, RAM na jednom čipu – System on Chip — výkon s nízkou spotřebou",
     options: shuffle(["Integruje CPU, GPU, RAM na jednom čipu (System on Chip) — výkon s nízkou spotřebou", "Používá nejnovější Intel procesor", "Má speciální Apple operační systém", "Větší baterie než ostatní notebooky"]),
     hints: ["SoC = vše na jednom čipu.", "M1/M2/M3 = Apple Silicon = ARM architektura."],
   },
   {
     question: "Co je IoT (Internet of Things) a jak rozšiřuje pojem 'digitální zařízení'?",
-    correctAnswer: "IoT = připojené věci (televize, lednice, žárovky) s čipy a internetem",
+    correctAnswer: "IoT = připojené věci – televize, lednice, žárovky s čipy a internetem",
     options: shuffle(["IoT = připojené věci (televize, lednice, žárovky) s čipy a internetem", "IoT = jen chytré telefony", "IoT = pouze počítačové servery", "IoT = typ mobilní sítě"]),
     hints: ["IoT = smart home zařízení.", "Chytrá lednice, termostat, žárovka = IoT."],
   },

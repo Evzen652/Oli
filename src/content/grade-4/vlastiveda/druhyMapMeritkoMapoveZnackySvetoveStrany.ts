@@ -203,8 +203,8 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Mapa má měřítko 1:50 000. Jak dlouhá je cesta, jejíž délka na mapě je 4 cm?",
-    correctAnswer: "2 km (2 000 m)",
-    options: ["2 km (2 000 m)", "200 m", "20 km", "400 m"],
+    correctAnswer: "2 km – 2 000 m",
+    options: ["2 km – 2 000 m", "200 m", "20 km", "400 m"],
     hints: ["1 cm = 500 m → 4 cm = ?"],
     solutionSteps: ["1 cm = 500 m. 4 cm × 500 m = 2 000 m = 2 km."],
   },

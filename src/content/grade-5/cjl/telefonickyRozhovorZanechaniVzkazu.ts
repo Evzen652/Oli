@@ -114,7 +114,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "kontakt – číslo nebo e-mail pro zpětné volání",
     options: [
       "jen jméno",
-      "kontakt (číslo nebo e-mail) pro zpětné volání",
+      "kontakt – číslo nebo e-mail pro zpětné volání",
       "jen čas hovoru",
       "jméno svého psa",
     ],
@@ -193,7 +193,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Telefonuješ do knihovny. Jak se správně zeptáš na otevírací dobu?",
     correctAnswer: "Dobrý den, chtěl/a jsem se zeptat, jaká je vaše otevírací doba.",
     options: [
-      "Kdy máte otevřeno? (bez pozdravu)",
+      "Kdy máte otevřeno? – bez pozdravu",
       "Dobrý den, chtěl/a jsem se zeptat, jaká je vaše otevírací doba.",
       "Máte otevřeno?",
       "Hej, časy?",

@@ -94,7 +94,7 @@ const SELECT_L1: PracticeTask[] = [
   },
   {
     question: "Co znamená signal SOS v Morseově abecedě?",
-    correctAnswer: "Záchranný/tísňový signál (Pomoc!)",
+    correctAnswer: "Záchranný/tísňový signál – Pomoc!",
     options: shuffle(["Záchranný/tísňový signál (Pomoc!)", "Zpráva 'Vše v pořádku'", "Kód pro potvrzení zprávy", "Konec přenosu"]),
     hints: ["SOS = ···−−−···", "SOS se používá při nouzi na moři nebo v lese."],
   },
@@ -124,7 +124,7 @@ const SELECT_L1: PracticeTask[] = [
   },
   {
     question: "Kde nejčastěji narazíš na QR kód?",
-    correctAnswer: "Na plakátech, obalech, v restauracích (jídelní lístek)",
+    correctAnswer: "Na plakátech, obalech, v restauracích – jídelní lístek",
     options: shuffle(["Na plakátech, obalech, v restauracích (jídelní lístek)", "Na dopravních značkách", "Na semaforech", "Na klávesnicích"]),
     hints: ["QR kód naskenujete mobilem a dostanete odkaz.", "Restaurace, letenky, reklamy mají QR kódy."],
   },
@@ -133,7 +133,7 @@ const SELECT_L1: PracticeTask[] = [
 const SELECT_L2: PracticeTask[] = [
   {
     question: "Jaký je rozdíl mezi QR kódem a čárovým kódem?",
-    correctAnswer: "QR kód = 2D (čtverec), více dat; čárový kód = 1D (pruhy), méně dat",
+    correctAnswer: "QR kód = 2D – čtverec, více dat; čárový kód = 1D – pruhy, méně dat",
     options: shuffle(["QR kód = 2D (čtverec), více dat; čárový kód = 1D (pruhy), méně dat", "Jsou totéž", "Čárový kód ukládá více dat", "QR kód se čte laserem"]),
     hints: ["QR = čtverec s tečkami = více informací.", "Čárový = pruhy = jen číslo."],
   },
@@ -145,13 +145,13 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Co je zkratka QR v 'QR kód'?",
-    correctAnswer: "Quick Response (rychlá odezva)",
+    correctAnswer: "Quick Response – rychlá odezva",
     options: shuffle(["Quick Response (rychlá odezva)", "Quality Rating", "Queue Reader", "Quantum Registry"]),
     hints: ["QR = čte se velmi rychle.", "Quick = rychlý, Response = odezva."],
   },
   {
     question: "Jaký symbol by jsi hledal/a při hledání záchranky/emergency?",
-    correctAnswer: "Bílý kříž na zeleném pozadí (lékárna/zdravotnická pomoc)",
+    correctAnswer: "Bílý kříž na zeleném pozadí – lékárna/zdravotnická pomoc",
     options: shuffle(["Bílý kříž na zeleném pozadí (lékárna/zdravotnická pomoc)", "Červený trojúhelník", "Modrý kruh", "Přeškrtnutá figurka"]),
     hints: ["Kříž = zdravotnictví.", "Zelené pozadí = bezpečí."],
   },
@@ -175,7 +175,7 @@ const SELECT_L2: PracticeTask[] = [
   },
   {
     question: "Jaké barvy mají informační dopravní značky?",
-    correctAnswer: "Modré pozadí (nebo zelené na dálnicích)",
+    correctAnswer: "Modré pozadí – nebo zelené na dálnicích",
     options: shuffle(["Modré pozadí (nebo zelené na dálnicích)", "Červené pozadí", "Žluté pozadí", "Bílé pozadí"]),
     hints: ["Modré = informace (parkoviště, nemocnice).", "Zelené = dálniční informační tabule."],
   },
@@ -208,13 +208,13 @@ const SELECT_L3: PracticeTask[] = [
   },
   {
     question: "Jak se kóduje písmeno 'A' v Morseově abecedě?",
-    correctAnswer: "· – (tečka pomlčka)",
+    correctAnswer: "· – – tečka pomlčka",
     options: shuffle(["· – (tečka pomlčka)", "– · (pomlčka tečka)", "· · · (tři tečky)", "– – – (tři pomlčky)"]),
     hints: ["A = krátký + dlouhý = . –", "SOS = ... --- ..."],
   },
   {
     question: "Co je EAN kód (European Article Number)?",
-    correctAnswer: "Standardní čárový kód na zboží v Evropě (13 číslic)",
+    correctAnswer: "Standardní čárový kód na zboží v Evropě – 13 číslic",
     options: shuffle(["Standardní čárový kód na zboží v Evropě (13 číslic)", "QR kód pro e-shopy", "Kód pro identifikaci osob", "Druh QR kódu"]),
     hints: ["EAN = 13 číslic na obale každého zboží.", "Skenujete ho u pokladny."],
   },
@@ -238,7 +238,7 @@ const SELECT_L3: PracticeTask[] = [
   },
   {
     question: "Co je RFID čip a jak se liší od čárového kódu?",
-    correctAnswer: "RFID = radiofrekvenční identifikace — čte se bezdrátově bez přímého kontaktu (na rozdíl od čárového kódu)",
+    correctAnswer: "RFID = radiofrekvenční identifikace — čte se bezdrátově bez přímého kontaktu – na rozdíl od čárového kódu",
     options: shuffle(["RFID = radiofrekvenční identifikace — čte se bezdrátově bez přímého kontaktu (na rozdíl od čárového kódu)", "RFID = typ čárového kódu", "RFID je totéž jako QR kód", "RFID se čte kamerou"]),
     hints: ["RFID = chip v kartě nebo zboží.", "Čárový kód = laser, RFID = rádiové vlny."],
   },
@@ -250,7 +250,7 @@ const SELECT_L3: PracticeTask[] = [
   },
   {
     question: "Jaký je rozdíl mezi příkazovou (modrý kruh) a zákazovou (červený kruh) dopravní značkou?",
-    correctAnswer: "Příkazová = musíš udělat (jednosměrka); zákazová = nesmíš udělat (zákaz vjezdu)",
+    correctAnswer: "Příkazová = musíš udělat – jednosměrka; zákazová = nesmíš udělat – zákaz vjezdu",
     options: shuffle(["Příkazová = musíš udělat (jednosměrka); zákazová = nesmíš udělat (zákaz vjezdu)", "Jsou totéž", "Zákazová = musíš udělat", "Barva nemá s významem nic společného"]),
     hints: ["Modrý kruh = příkaz (jednosměrná, jízdní pruhy).", "Červený kruh = zákaz (nesmíš)."],
   },

@@ -63,7 +63,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je uvozovací věta?",
-    correctAnswer: "věta, která uvádí přímou řeč – říká, kdo mluví",
+    correctAnswer: "věta, která uvádí přímou řeč (říká, kdo mluví)",
     options: [
       "věta v uvozovkách",
       "věta, která uvádí přímou řeč (říká, kdo mluví)",
@@ -74,7 +74,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Převeď do nepřímé řeči: Lucie se zeptala: \"Jdeš s námi?\"",
-    correctAnswer: "Lucie se zeptala, jestli – zda jdu s nimi.",
+    correctAnswer: "Lucie se zeptala, jestli (zda) jdu s nimi.",
     options: [
       "Lucie se zeptala, jestli (zda) jdu s nimi.",
       "Lucie se zeptala, jestli jdeš s námi.",
@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "V přímé řeči se pronomen 'já' v nepřímé řeči změní na:",
-    correctAnswer: "on nebo ona – podle pohlaví mluvčího",
+    correctAnswer: "on nebo ona (podle pohlaví mluvčího)",
     options: [
       "já zůstane stejné",
       "ty",
@@ -107,7 +107,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se změní sloveso v nepřímé řeči věty: Pavel řekl: \"Mám čas.\"?",
-    correctAnswer: "Pavel řekl, že má čas. – mám → má",
+    correctAnswer: "Pavel řekl, že má čas. (mám → má)",
     options: [
       "Pavel řekl, že mám čas.",
       "Pavel řekl, že má čas. (mám → má)",
@@ -226,7 +226,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "V nepřímé řeči se 'my' mění na:",
-    correctAnswer: "oni – pokud mluvčí mluví o sobě a ostatních třetí osobě",
+    correctAnswer: "oni (pokud mluvčí mluví o sobě a ostatních třetí osobě)",
     options: [
       "zůstane 'my'",
       "oni (pokud mluvčí mluví o sobě a ostatních třetí osobě)",
@@ -259,7 +259,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě: Lucie řekla, že přijde zítra. – čím se liší 'přijde' od přímé řeči?",
-    correctAnswer: "v přímé řeči by bylo 'přijdu' – 1. osoba Lucie",
+    correctAnswer: "v přímé řeči by bylo 'přijdu' (1. osoba Lucie)",
     options: [
       "ničím, oboje je stejné",
       "v přímé řeči by bylo 'přijdu' (1. osoba Lucie)",
@@ -350,7 +350,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč v nepřímé řeči časujeme sloveso jinak než v přímé?",
-    correctAnswer: "protože přímá řeč je z pohledu mluvčího – já, nepřímá z pohledu vypravěče – on/ona",
+    correctAnswer: "protože přímá řeč je z pohledu mluvčího (já), nepřímá z pohledu vypravěče (on/ona)",
     options: [
       "není to pravda – časování se nemění",
       "protože nepřímá řeč je zdvořilejší",
@@ -383,7 +383,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co se stane s vykřičníkem v přímé řeči, když ji přepíšeme do nepřímé?",
-    correctAnswer: "vykřičník mizí, obsah se vyjádří opisem – že, aby, jak...",
+    correctAnswer: "vykřičník mizí, obsah se vyjádří opisem (že, aby, jak...)",
     options: [
       "vykřičník zůstane",
       "vykřičník mizí, obsah se vyjádří opisem (že, aby, jak...)",
