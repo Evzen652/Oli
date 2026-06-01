@@ -152,7 +152,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Chodil bych do divadla, kdybych měl čas.' – kolik slov v podmiňovacím způsobu?",
-    correctAnswer: "2 (chodil bych, měl bych – ale 'kdybych' obsahuje by)",
+    correctAnswer: "2 – chodil bych, měl bych – ale 'kdybych' obsahuje by",
     options: [
       "1 (jen chodil bych)",
       "2 (chodil bych, měl bych – ale 'kdybych' obsahuje by)",
@@ -180,7 +180,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší 'Jdi!' od 'Jděte!'?",
-    correctAnswer: "Jdi = rozkaz pro jednoho (2. os. j. č.), jděte = pro více (2. os. mn. č.)",
+    correctAnswer: "Jdi = rozkaz pro jednoho – 2. os. j. č., jděte = pro více – 2. os. mn. č.",
     options: [
       "jsou totéž",
       "Jdi = rozkaz pro jednoho (2. os. j. č.), jděte = pro více (2. os. mn. č.)",
@@ -214,7 +214,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Pokud bys mohl, zavolej mi.' – jaké způsoby jsou použity?",
-    correctAnswer: "podmiňovací (bys) + rozkazovací (zavolej)",
+    correctAnswer: "podmiňovací – bys + rozkazovací – zavolej",
     options: [
       "oznamovací + oznamovací",
       "podmiňovací (bys) + rozkazovací (zavolej)",
@@ -228,7 +228,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Ať přijde, koho chce.' jaký způsob má 'přijde'?",
-    correctAnswer: "oznamovací (zde jako přací/neosobní konstrukce s 'ať')",
+    correctAnswer: "oznamovací – zde jako přací/neosobní konstrukce s 'ať'",
     options: [
       "rozkazovací",
       "podmiňovací",
@@ -250,7 +250,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Prosím, nepůjdeš se mnou?' jaký způsob je použit?",
-    correctAnswer: "oznamovací způsob (otázka s oznamovacím tvarem – zdvořilá prosba)",
+    correctAnswer: "oznamovací způsob – otázka s oznamovacím tvarem – zdvořilá prosba",
     options: [
       "rozkazovací",
       "podmiňovací",
@@ -261,7 +261,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Rozkazovací způsob nemá:",
-    correctAnswer: "1. osobu jednotného čísla (nemohu rozkázat sám sobě formálně)",
+    correctAnswer: "1. osobu jednotného čísla – nemohu rozkázat sám sobě formálně",
     options: [
       "2. osobu",
       "množné číslo",
@@ -272,7 +272,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se tvoří záporný rozkazovací způsob?",
-    correctAnswer: "ne- + tvar rozkazovacího způsobu (nepiš, nečti, nepij)",
+    correctAnswer: "ne- + tvar rozkazovacího způsobu – nepiš, nečti, nepij",
     options: [
       "bez- + tvar",
       "ne- + tvar rozkazovacího způsobu (nepiš, nečti, nepij)",

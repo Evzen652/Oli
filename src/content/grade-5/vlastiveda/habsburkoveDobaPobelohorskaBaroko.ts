@@ -64,7 +64,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kdo byli jezuité?",
-    correctAnswer: "Katoličtí vzdělanci a misionáři (řád)",
+    correctAnswer: "Katoličtí vzdělanci a misionáři – řád",
     options: [
       "Katoličtí vzdělanci a misionáři (řád)",
       "Protestantští kazatelé",
@@ -220,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Kde a v jaké době Komenský žil v exilu?",
-    correctAnswer: "V Polsku, Anglii, Švédsku a Holandsku (17. století)",
+    correctAnswer: "V Polsku, Anglii, Švédsku a Holandsku – 17. století",
     options: [
       "V Polsku, Anglii, Švédsku a Holandsku (17. století)",
       "Ve Francii a Španělsku",
@@ -297,7 +297,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Komenský napsal Orbis Pictus, Didaktiku Magna a Labyrint světa a ráj srdce. Co mají tyto tři díla společného?",
-    correctAnswer: "Všechna reagují na dobu (exil, hledání smyslu, vzdělávání národů)",
+    correctAnswer: "Všechna reagují na dobu – exil, hledání smyslu, vzdělávání národů",
     options: [
       "Všechna reagují na dobu (exil, hledání smyslu, vzdělávání národů)",
       "Jsou to válečné kroniky",

@@ -184,7 +184,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Kvítky a tráva rostly na louce.' je přísudek správně?",
-    correctAnswer: "ano – kvítky (střední) a tráva (ženský) = žádný mužský životný → rostly",
+    correctAnswer: "ano – kvítky – střední a tráva – ženský = žádný mužský životný → rostly",
     options: [
       "ne – správně je rostli",
       "ne – správně je rostlo",
@@ -307,7 +307,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Skály a hory tyčily se k nebi.' – je přísudek správně?",
-    correctAnswer: "ano – skály (ženský neživotný) + hory (ženský neživotný) = -y",
+    correctAnswer: "ano – skály – ženský neživotný + hory – ženský neživotný = -y",
     options: [
       "ne – správně je tyčili",
       "ne – správně je tyčilo",

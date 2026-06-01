@@ -34,7 +34,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Je tato zpráva úplná? 'Schůzka v úterý v 15:00 ve škole.'",
-    correctAnswer: "téměř úplná – chybí jen proč (předmět schůzky)",
+    correctAnswer: "téměř úplná – chybí jen proč – předmět schůzky",
     options: [
       "plně úplná – obsahuje vše",
       "téměř úplná – chybí jen proč (předmět schůzky)",
@@ -56,7 +56,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co chybí ve zprávě: 'Přijela maminka z Brna.'?",
-    correctAnswer: "kdy přijela (čas) a zda je vše v pořádku",
+    correctAnswer: "kdy přijela – čas a zda je vše v pořádku",
     options: [
       "nic – úplná zpráva",
       "kdy přijela (čas) a zda je vše v pořádku",
@@ -111,7 +111,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve zprávě 'Ukliď pokoj!' – co chybí?",
-    correctAnswer: "do kdy a proč (co se stane, pokud to neudělám)",
+    correctAnswer: "do kdy a proč – co se stane, pokud to neudělám",
     options: [
       "nic – sdělení je jasné",
       "do kdy a proč (co se stane, pokud to neudělám)",
@@ -359,7 +359,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá nadbytečná informace v sdělení?",
-    correctAnswer: "redundance (zbytečná informace nepřidávající hodnotu)",
+    correctAnswer: "redundance – zbytečná informace nepřidávající hodnotu",
     options: [
       "přirovnání",
       "redundance (zbytečná informace nepřidávající hodnotu)",
@@ -381,7 +381,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve sdělení pro záchranáře je nejdůležitější:",
-    correctAnswer: "poloha (kde), co se děje a počet postižených",
+    correctAnswer: "poloha – kde, co se děje a počet postižených",
     options: [
       "délka sdělení",
       "poloha (kde), co se děje a počet postižených",
@@ -447,7 +447,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá komunikační princip, podle něhož sdělení má být přesné a úplné?",
-    correctAnswer: "Griceovy maxima (maxima kvality a množství)",
+    correctAnswer: "Griceovy maxima – maxima kvality a množství",
     options: [
       "pravopis",
       "Griceovy maxima (maxima kvality a množství)",

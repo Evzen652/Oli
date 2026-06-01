@@ -40,7 +40,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kdo byl první prezident Československa?",
-    correctAnswer: "Tomáš Garrigue Masaryk (TGM)",
+    correctAnswer: "Tomáš Garrigue Masaryk – TGM",
     options: ["Tomáš Garrigue Masaryk (TGM)", "Edvard Beneš", "Milan Rastislav Štefánik", "Karel Kramář"],
     hints: ["Říká se mu TGM nebo 'Tatíček Masaryk'."],
     solutionSteps: ["T. G. Masaryk byl prvním prezidentem ČSR a bojoval za vznik státu v emigraci."],
@@ -54,7 +54,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kdo byli legionáři?",
-    correctAnswer: "Čeští vojáci bojující za Dohodu (Francii, Rusko, Itálii)",
+    correctAnswer: "Čeští vojáci bojující za Dohodu – Francii, Rusko, Itálii",
     options: [
       "Čeští vojáci bojující za Dohodu (Francii, Rusko, Itálii)",
       "Habsburská císařská garda",
@@ -66,7 +66,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaké dvě strany stály proti sobě v první světové válce?",
-    correctAnswer: "Dohoda (Francie, Británie, Rusko) a Trojspolek (Německo, Rakousko, Itálie)",
+    correctAnswer: "Dohoda – Francie, Británie, Rusko a Trojspolek – Německo, Rakousko, Itálie",
     options: [
       "Dohoda (Francie, Británie, Rusko) a Trojspolek (Německo, Rakousko, Itálie)",
       "NATO a Varšavská smlouva",
@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co znamenalo, že Masaryk bojoval za vznik Československa 'v emigraci'?",
-    correctAnswer: "Pracoval v zahraničí (Paříž, Londýn, Washington) pro uznání státu",
+    correctAnswer: "Pracoval v zahraničí – Paříž, Londýn, Washington pro uznání státu",
     options: [
       "Pracoval v zahraničí (Paříž, Londýn, Washington) pro uznání státu",
       "Bojoval na frontě jako voják",
@@ -148,7 +148,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč byl Masaryk pro vznik ČSR klíčový?",
-    correctAnswer: "Přesvědčil mocnosti Dohody (USA, Francii, Británii) aby ČSR uznaly",
+    correctAnswer: "Přesvědčil mocnosti Dohody – USA, Francii, Británii aby ČSR uznaly",
     options: [
       "Přesvědčil mocnosti Dohody (USA, Francii, Británii) aby ČSR uznaly",
       "Vedl armádu na frontě",
@@ -248,7 +248,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč je vznik ČSR příkladem národního sebeurčení?",
-    correctAnswer: "Národ bez státu (Češi + Slováci) využil příležitost a vytvořil vlastní stát",
+    correctAnswer: "Národ bez státu – Češi + Slováci využil příležitost a vytvořil vlastní stát",
     options: [
       "Národ bez státu (Češi + Slováci) využil příležitost a vytvořil vlastní stát",
       "ČSR byl darován Masarykovi jako odměna",
@@ -272,7 +272,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký byl rozdíl mezi Trojspolkem a Dohodou?",
-    correctAnswer: "Trojspolek (AUH, Německo, Itálie) byl na straně poraženého; Dohoda (UK, FR, RUS, USA) vyhrála",
+    correctAnswer: "Trojspolek – AUH, Německo, Itálie byl na straně poraženého; Dohoda – UK, FR, RUS, USA vyhrála",
     options: [
       "Trojspolek (AUH, Německo, Itálie) byl na straně poraženého; Dohoda (UK, FR, RUS, USA) vyhrála",
       "Trojspolek vyhrál válku",

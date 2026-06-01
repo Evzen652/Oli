@@ -45,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Na jak dlouho je volen prezident ČR?",
-    correctAnswer: "5 let (max. 2 funkční období)",
+    correctAnswer: "5 let – max. 2 funkční období",
     options: ["5 let (max. 2 funkční období)", "4 roky", "6 let", "7 let"],
     hints: ["Delší než poslanci, kratší než senátoři."],
     solutionSteps: ["Prezident ČR je volen přímou volbou na 5 let, max. 2× za sebou."],
@@ -83,7 +83,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá vedoucí vlády ČR?",
-    correctAnswer: "Předseda vlády (premiér)",
+    correctAnswer: "Předseda vlády – premiér",
     options: ["Předseda vlády (premiér)", "Prezident", "Předseda Sněmovny", "Kancléř"],
     hints: ["Jmenuje ho prezident."],
     solutionSteps: ["Vládu vede předseda vlády (premiér), jmenovaný prezidentem."],
@@ -143,7 +143,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší role prezidenta a premiéra?",
-    correctAnswer: "Prezident = hlava státu (ceremoniální + jmenovací role); premiér = šéf vlády (výkonná moc)",
+    correctAnswer: "Prezident = hlava státu – ceremoniální + jmenovací role; premiér = šéf vlády – výkonná moc",
     options: [
       "Prezident = hlava státu (ceremoniální + jmenovací role); premiér = šéf vlády (výkonná moc)",
       "Jsou to totéž — oba řídí vládu",
@@ -191,7 +191,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co znamená princip dělby moci?",
-    correctAnswer: "Moc je rozdělena mezi zákonodárnou (parlament), výkonnou (vláda) a soudní (soudy)",
+    correctAnswer: "Moc je rozdělena mezi zákonodárnou – parlament, výkonnou – vláda a soudní – soudy",
     options: [
       "Moc je rozdělena mezi zákonodárnou (parlament), výkonnou (vláda) a soudní (soudy)",
       "Moc má jen prezident",

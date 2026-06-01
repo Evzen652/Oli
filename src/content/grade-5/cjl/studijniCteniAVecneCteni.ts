@@ -122,7 +122,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se liší studijní a věcné čtení v rychlosti?",
-    correctAnswer: "studijní je pomalejší, věcné může být rychlejší (jen hledám)",
+    correctAnswer: "studijní je pomalejší, věcné může být rychlejší – jen hledám",
     options: [
       "věcné je vždy pomalejší",
       "studijní je pomalejší, věcné může být rychlejší (jen hledám)",
@@ -191,7 +191,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Hledám, ve které kapitole učebnice je téma 'zlomky'. Jak postupuji?",
-    correctAnswer: "podívám se do obsahu (rejstříku) a vyhledám stránku – věcné čtení",
+    correctAnswer: "podívám se do obsahu – rejstříku a vyhledám stránku – věcné čtení",
     options: [
       "přečtu celou učebnici",
       "podívám se do obsahu (rejstříku) a vyhledám stránku – věcné čtení",
@@ -235,7 +235,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký typ čtení je nejefektivnější, když v textu hledám konkrétní jméno osoby?",
-    correctAnswer: "scanning (vyhledávací čtení) – přelétu očima a hledám jméno",
+    correctAnswer: "scanning – vyhledávací čtení – přelétu očima a hledám jméno",
     options: [
       "studijní čtení celého textu",
       "scanning (vyhledávací čtení) – přelétu očima a hledám jméno",
@@ -268,7 +268,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je SQ3R metoda studijního čtení?",
-    correctAnswer: "Survey (přehled) – Question (otázky) – Read (čtení) – Recite (shrnutí) – Review (opakování)",
+    correctAnswer: "Survey – přehled – Question – otázky – Read – čtení – Recite – shrnutí – Review – opakování",
     options: [
       "rychlé čtení bez zastavení",
       "Survey (přehled) – Question (otázky) – Read (čtení) – Recite (shrnutí) – Review (opakování)",
@@ -312,7 +312,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký typ čtení zvolíme, když chceme posoudit, zda je text pro nás užitečný?",
-    correctAnswer: "přehledové čtení (skimming) – rychle posoudím, o čem text je",
+    correctAnswer: "přehledové čtení – skimming – rychle posoudím, o čem text je",
     options: [
       "studijní čtení celého textu",
       "přehledové čtení (skimming) – rychle posoudím, o čem text je",

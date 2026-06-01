@@ -23,7 +23,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je epická báseň?",
-    correctAnswer: "báseň s příběhem a dějem (balada, epos, pohádkový příběh)",
+    correctAnswer: "báseň s příběhem a dějem – balada, epos, pohádkový příběh",
     options: [
       "báseň jen o přírodě",
       "báseň bez děje vyjadřující jen pocity",
@@ -56,7 +56,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký literární žánr je Erbenova Kytice?",
-    correctAnswer: "sbírka balad (epických básní)",
+    correctAnswer: "sbírka balad – epických básní",
     options: [
       "román",
       "sbírka povídek",
@@ -89,7 +89,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Který z těchto titulů je román?",
-    correctAnswer: "Dobrodružství Toma Sawyera (Mark Twain)",
+    correctAnswer: "Dobrodružství Toma Sawyera – Mark Twain",
     options: [
       "Kytice (Erben)",
       "Dobrodružství Toma Sawyera (Mark Twain)",
@@ -191,7 +191,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je pohádka a jaký žánr to je?",
-    correctAnswer: "prozaické (nebo veršované) dílo s fantastickými prvky, typicky pro děti",
+    correctAnswer: "prozaické – nebo veršované dílo s fantastickými prvky, typicky pro děti",
     options: [
       "historický román",
       "prozaické (nebo veršované) dílo s fantastickými prvky, typicky pro děti",
@@ -334,7 +334,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je pikareskní román?",
-    correctAnswer: "dobrodružný román o potulném hrdinu (šibalovi) z lidového prostředí",
+    correctAnswer: "dobrodružný román o potulném hrdinu – šibalovi z lidového prostředí",
     options: [
       "vědeckofantastický román",
       "dobrodružný román o potulném hrdinu (šibalovi) z lidového prostředí",
@@ -370,7 +370,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je tragédie?",
-    correctAnswer: "dramatické dílo s vážným, smutným závěrem (hrdina zahyne nebo padá)",
+    correctAnswer: "dramatické dílo s vážným, smutným závěrem – hrdina zahyne nebo padá",
     options: [
       "veselá divadelní hra",
       "dramatické dílo s vážným, smutným závěrem (hrdina zahyne nebo padá)",
@@ -392,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je literární próza?",
-    correctAnswer: "texty psané normální větnou řečí (bez verše), jako romány a povídky",
+    correctAnswer: "texty psané normální větnou řečí – bez verše, jako romány a povídky",
     options: [
       "texty psané ve verších",
       "texty psané normální větnou řečí (bez verše), jako romány a povídky",
@@ -403,7 +403,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je lyrický subjekt v básni?",
-    correctAnswer: "hlas básně – kdo v básni hovoří (ne nutně autor)",
+    correctAnswer: "hlas básně – kdo v básni hovoří – ne nutně autor",
     options: [
       "vždy autor básně",
       "hlas básně – kdo v básni hovoří (ne nutně autor)",
@@ -414,7 +414,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký je literární druh divadla pro dospělé zaměřeného na vážná témata?",
-    correctAnswer: "tragédie nebo drama (vážná divadelní hra)",
+    correctAnswer: "tragédie nebo drama – vážná divadelní hra",
     options: [
       "komedie",
       "tragédie nebo drama (vážná divadelní hra)",
@@ -458,7 +458,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký žánr jsou Andersenovy pohádky?",
-    correctAnswer: "umělé (autorské) pohádky v próze",
+    correctAnswer: "umělé – autorské pohádky v próze",
     options: [
       "lidové pohádky",
       "umělé (autorské) pohádky v próze",

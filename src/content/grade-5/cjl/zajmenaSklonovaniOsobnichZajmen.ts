@@ -48,7 +48,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Která forma je správná: 'Řekl to ___ (já).' v 3. pádu?",
-    correctAnswer: "mi (krátký tvar) nebo mně (dlouhý tvar)",
+    correctAnswer: "mi – krátký tvar nebo mně – dlouhý tvar",
     options: [
       "mě (2. pád)",
       "mi (krátký tvar) nebo mně (dlouhý tvar)",
@@ -71,7 +71,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký je 1. pád množného čísla od zájmena 'on'?",
-    correctAnswer: "oni (mužský životný) / ony (ostatní) / ona (střední)",
+    correctAnswer: "oni – mužský životný / ony – ostatní / ona – střední",
     options: [
       "ony vždy",
       "oni (mužský životný) / ony (ostatní) / ona (střední)",
@@ -94,13 +94,13 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Jdu s ___ (on).' v 7. pádu:",
-    correctAnswer: "ním (po předložce: s ním)",
+    correctAnswer: "ním – po předložce: s ním",
     options: ["mu", "ho", "ním (po předložce: s ním)", "jemu"],
     hints: ["Po předložce se používá tvar 'ním' (s ním, o něm)."],
   },
   {
     question: "Ve větě 'Myslím na ___ (ona).' v 4. pádu:",
-    correctAnswer: "ni (po předložce: na ni) nebo ji",
+    correctAnswer: "ni – po předložce: na ni nebo ji",
     options: ["jí", "ni (po předložce: na ni) nebo ji", "ní", "ona"],
     hints: ["Na koho? → 4. pád, po předložce = ni nebo ji."],
   },
@@ -115,7 +115,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Ve větě 'Viděl ___ (já) v parku.' v 4. pádu:",
-    correctAnswer: "mě (krátký tvar) nebo mne",
+    correctAnswer: "mě – krátký tvar nebo mne",
     options: ["mi", "mě (krátký tvar) nebo mne", "mnou", "mé"],
     hints: ["Viděl koho? → 4. pád = mě nebo mne."],
   },
@@ -127,7 +127,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Krátký tvar 'mi' se používá:",
-    correctAnswer: "v nepřízvučné pozici (ne po předložkách)",
+    correctAnswer: "v nepřízvučné pozici – ne po předložkách",
     options: [
       "vždy",
       "v nepřízvučné pozici (ne po předložkách)",
@@ -138,7 +138,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč se říká 'pro mě' a ne 'pro mi'?",
-    correctAnswer: "po předložkách se používá delší tvar (mě/mne, ne mi)",
+    correctAnswer: "po předložkách se používá delší tvar – mě/mne, ne mi",
     options: [
       "mi je zkrácenina",
       "po předložkách se používá delší tvar (mě/mne, ne mi)",
@@ -149,7 +149,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký je 4. pád od zájmena 'oni'?",
-    correctAnswer: "je (krátký) nebo je (po předložce: ně)",
+    correctAnswer: "je – krátký nebo je – po předložce: ně",
     options: ["jim", "je (krátký) nebo je (po předložce: ně)", "jimi", "nim"],
     hints: ["Viděl jsem je (koho?) = 4. pád."],
   },
@@ -161,7 +161,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Přišlo mi to ___ (já) v 6. pádu – o mně nebo o mi?'",
-    correctAnswer: "o mně (po předložce vždy dlouhý tvar)",
+    correctAnswer: "o mně – po předložce vždy dlouhý tvar",
     options: [
       "o mi",
       "o mně (po předložce vždy dlouhý tvar)",
@@ -178,7 +178,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Jdu za ___ (ona).' – za ní nebo za ji?",
-    correctAnswer: "za ní (po předložce = ní, nikoliv ji)",
+    correctAnswer: "za ní – po předložce = ní, nikoliv ji",
     options: [
       "za ji",
       "za ní (po předložce = ní, nikoliv ji)",
@@ -201,13 +201,13 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Záleží na ___ (on).' v 6. pádu:",
-    correctAnswer: "něm (po předložce: na něm)",
+    correctAnswer: "něm – po předložce: na něm",
     options: ["mu", "ho", "něm (po předložce: na něm)", "jemu"],
     hints: ["Po předložce 'na' = 6. pád = něm."],
   },
   {
     question: "Ve větě 'Jde tam bez ___ (já).' – bez mě nebo bez mi?",
-    correctAnswer: "bez mě (předložka vyžaduje 2. pád = mě/mne)",
+    correctAnswer: "bez mě – předložka vyžaduje 2. pád = mě/mne",
     options: [
       "bez mi",
       "bez mě (předložka vyžaduje 2. pád = mě/mne)",
@@ -218,7 +218,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Volal jsi na ___ (já)?' – na mě nebo na mnou?",
-    correctAnswer: "na mě (4. pád po předložce 'na')",
+    correctAnswer: "na mě – 4. pád po předložce 'na'",
     options: [
       "na mnou (7. pád)",
       "na mě (4. pád po předložce 'na')",
@@ -229,7 +229,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší 'jím' a 'jim'?",
-    correctAnswer: "jím = 7. pád j. č. (s jím); jim = 3. pád mn. č. (řeknu jim)",
+    correctAnswer: "jím = 7. pád j. č. – s jím; jim = 3. pád mn. č. – řeknu jim",
     options: [
       "jsou totéž – jen pravopis",
       "jím = 7. pád j. č. (s jím); jim = 3. pád mn. č. (řeknu jim)",
@@ -243,13 +243,13 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Přijdu k ___ (ty).' v 3. pádu:",
-    correctAnswer: "tobě (k tobě)",
+    correctAnswer: "tobě – k tobě",
     options: ["tě", "ti", "tobě (k tobě)", "tebou"],
     hints: ["Po předložce 'k' = 3. pád. K tobě (ne k ti)."],
   },
   {
     question: "Ve větě 'Myslím jen na ___ (já).' v 4. pádu:",
-    correctAnswer: "sebe (zvratné zájmeno) – nebo na mě (osobní)",
+    correctAnswer: "sebe – zvratné zájmeno – nebo na mě – osobní",
     options: [
       "mě",
       "mi",
@@ -271,7 +271,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Dej to mně, ne jemu.' – proč 'mně' a ne 'mi'?",
-    correctAnswer: "mně je zdůrazněný (přízvučný) tvar, vhodný při kontrastu",
+    correctAnswer: "mně je zdůrazněný – přízvučný tvar, vhodný při kontrastu",
     options: [
       "mi je špatně",
       "mně je zdůrazněný (přízvučný) tvar, vhodný při kontrastu",
@@ -282,7 +282,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak skloňujeme zájmeno 'ona' v 7. pádu?",
-    correctAnswer: "ní (s ní, před ní, za ní)",
+    correctAnswer: "ní – s ní, před ní, za ní",
     options: ["jí", "ní (s ní, před ní, za ní)", "ji", "ona"],
     hints: ["7. pád ona = ní. 'Jí' je 3. nebo 4. pád."],
   },
@@ -294,19 +294,19 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Šli jsme s ___ (oni).' v 7. pádu:",
-    correctAnswer: "nimi (po předložce: s nimi)",
+    correctAnswer: "nimi – po předložce: s nimi",
     options: ["jim", "ně", "nimi (po předložce: s nimi)", "jimi"],
     hints: ["S kým? → 7. pád. Po předložce = nimi."],
   },
   {
     question: "Jaký tvar má zájmeno 'ony' v 6. pádu po předložce?",
-    correctAnswer: "nich (o nich, v nich)",
+    correctAnswer: "nich – o nich, v nich",
     options: ["ji", "ní", "nich (o nich, v nich)", "jimi"],
     hints: ["O nich = 6. pád množného čísla."],
   },
   {
     question: "Kdy použijeme 'jejím' a kdy 'jím'?",
-    correctAnswer: "jejím = přivlastňovací (jejím přítelem); jím = osobní zájmeno 7. pádu",
+    correctAnswer: "jejím = přivlastňovací – jejím přítelem; jím = osobní zájmeno 7. pádu",
     options: [
       "jsou totéž",
       "jejím = přivlastňovací (jejím přítelem); jím = osobní zájmeno 7. pádu",
@@ -329,7 +329,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Viděl jsem ___ (oni, mužský životný) v parku.' v 4. pádu:",
-    correctAnswer: "je nebo ně (po předložce)",
+    correctAnswer: "je nebo ně – po předložce",
     options: [
       "jim",
       "jimi",
@@ -346,13 +346,13 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Potřebuju ___ (ty) tady.' v 4. pádu:",
-    correctAnswer: "tě (krátký tvar) nebo tebe",
+    correctAnswer: "tě – krátký tvar nebo tebe",
     options: ["tobě", "tě (krátký tvar) nebo tebe", "ti", "tebou"],
     hints: ["Potřebuji koho? → 4. pád = tě nebo tebe."],
   },
   {
     question: "Ve větě 'Záleží mi na ___ (my).' – co je špatně?",
-    correctAnswer: "správně by bylo 'na nás' (6. pád mn. č.)",
+    correctAnswer: "správně by bylo 'na nás' – 6. pád mn. č.",
     options: [
       "nic – věta je správně",
       "správně by bylo 'na nás' (6. pád mn. č.)",

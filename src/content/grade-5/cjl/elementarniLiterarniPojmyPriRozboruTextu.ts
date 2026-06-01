@@ -67,7 +67,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je vypravěč v literárním díle?",
-    correctAnswer: "ten, kdo příběh vypráví (může být postavou nebo neosobním hlasem)",
+    correctAnswer: "ten, kdo příběh vypráví – může být postavou nebo neosobním hlasem",
     options: [
       "autor díla vždy",
       "ten, kdo příběh vypráví (může být postavou nebo neosobním hlasem)",
@@ -144,7 +144,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ich-forma vypravěče znamená:",
-    correctAnswer: "vypravěč je postava v příběhu a mluví v 1. osobě (já)",
+    correctAnswer: "vypravěč je postava v příběhu a mluví v 1. osobě – já",
     options: [
       "neosobní vypravěč",
       "vypravěč je postava v příběhu a mluví v 1. osobě (já)",
@@ -224,7 +224,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je kompozice literárního díla?",
-    correctAnswer: "způsob, jakým je dílo uspořádáno (struktura, části, pořadí)",
+    correctAnswer: "způsob, jakým je dílo uspořádáno – struktura, části, pořadí",
     options: [
       "téma díla",
       "způsob, jakým je dílo uspořádáno (struktura, části, pořadí)",
@@ -246,7 +246,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je symbol v literárním textu?",
-    correctAnswer: "věc nebo obraz, který reprezentuje něco jiného (hlubší smysl)",
+    correctAnswer: "věc nebo obraz, který reprezentuje něco jiného – hlubší smysl",
     options: [
       "jméno postavy",
       "věc nebo obraz, který reprezentuje něco jiného (hlubší smysl)",
@@ -257,7 +257,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je kontrast v literárním díle?",
-    correctAnswer: "protikladné elementy zdůrazňující rozdíl (světlo × tma, dobro × zlo)",
+    correctAnswer: "protikladné elementy zdůrazňující rozdíl – světlo × tma, dobro × zlo",
     options: [
       "opakující se prvek",
       "protikladné elementy zdůrazňující rozdíl (světlo × tma, dobro × zlo)",
@@ -268,7 +268,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je přirovnání v literárním textu?",
-    correctAnswer: "srovnání pomocí 'jako' (Byl statečný jako lev.)",
+    correctAnswer: "srovnání pomocí 'jako' – Byl statečný jako lev.",
     options: [
       "přenesené pojmenování bez 'jako'",
       "srovnání pomocí 'jako' (Byl statečný jako lev.)",
@@ -279,7 +279,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je metafora v literárním textu?",
-    correctAnswer: "přenesené pojmenování bez 'jako' (Byl lev boje.)",
+    correctAnswer: "přenesené pojmenování bez 'jako' – Byl lev boje.",
     options: [
       "srovnání pomocí 'jako'",
       "přenesené pojmenování bez 'jako' (Byl lev boje.)",
@@ -312,7 +312,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je eufemismus?",
-    correctAnswer: "zjemnění nepříjemné skutečnosti výrazem (zemřel → odešel)",
+    correctAnswer: "zjemnění nepříjemné skutečnosti výrazem – zemřel → odešel",
     options: [
       "záměrné přehánění",
       "zjemnění nepříjemné skutečnosti výrazem (zemřel → odešel)",
@@ -334,7 +334,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je aliterace?",
-    correctAnswer: "opakování stejné hlásky na začátku slov (zlatý západ zbarvil zemi)",
+    correctAnswer: "opakování stejné hlásky na začátku slov – zlatý západ zbarvil zemi",
     options: [
       "rým na konci verše",
       "opakování stejné hlásky na začátku slov (zlatý západ zbarvil zemi)",
@@ -392,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je oxymóron?",
-    correctAnswer: "spojení protikladných pojmů (živá smrt, mlčící výkřik)",
+    correctAnswer: "spojení protikladných pojmů – živá smrt, mlčící výkřik",
     options: [
       "přirovnání",
       "spojení protikladných pojmů (živá smrt, mlčící výkřik)",

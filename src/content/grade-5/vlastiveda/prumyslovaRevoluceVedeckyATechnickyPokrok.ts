@@ -90,7 +90,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve které zemi průmyslová revoluce začala?",
-    correctAnswer: "Velká Británie (Anglie)",
+    correctAnswer: "Velká Británie – Anglie",
     options: ["Velká Británie (Anglie)", "Francie", "Německo", "Česko"],
     hints: ["Ostrov na severozápadě Evropy."],
     solutionSteps: ["Průmyslová revoluce začala v Anglii v 2. pol. 18. stol., poté se šířila do Evropy."],
@@ -280,7 +280,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak průmyslová revoluce změnila společnost ve třech oblastech?",
-    correctAnswer: "Ekonomika (továrny), společnost (dělnická třída), životní styl (stěhování do měst)",
+    correctAnswer: "Ekonomika – továrny, společnost – dělnická třída, životní styl – stěhování do měst",
     options: [
       "Ekonomika (továrny), společnost (dělnická třída), životní styl (stěhování do měst)",
       "Jen ekonomika se změnila",
@@ -292,7 +292,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč se Čechy staly průmyslově vyspělou oblastí habsburské monarchie?",
-    correctAnswer: "Přírodní zdroje (uhlí), vzdělané obyvatelstvo a napojení na obchodní cesty",
+    correctAnswer: "Přírodní zdroje – uhlí, vzdělané obyvatelstvo a napojení na obchodní cesty",
     options: [
       "Přírodní zdroje (uhlí), vzdělané obyvatelstvo a napojení na obchodní cesty",
       "Habsburkové vědomě investovali jen do Čech",
@@ -304,7 +304,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Kde bys v 19. stol. nejspíše žil jako nový průmyslový dělník a proč?",
-    correctAnswer: "V průmyslovém městě (Liberec, Kladno, Praha) — továrny byly ve městech",
+    correctAnswer: "V průmyslovém městě – Liberec, Kladno, Praha — továrny byly ve městech",
     options: [
       "V průmyslovém městě (Liberec, Kladno, Praha) — továrny byly ve městech",
       "Na venkově — továrny byly jen na vsích",

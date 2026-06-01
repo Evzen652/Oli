@@ -62,7 +62,7 @@ const POOL_L3: PracticeTask[] = [
   { question: "Obdélník má obsah 72 cm² a výšku 8 cm. Jak je wide?", correctAnswer: "9 cm", options: ["9 cm", "8 cm", "10 cm", "64 cm"] },
   { question: "Obdélník 15 cm × 6 cm. Obsah?", correctAnswer: "90 cm²", options: ["90 cm²", "42 cm", "21 cm²", "900 cm²"] },
   { question: "Čtverec se stranou 12 cm. Obsah?", correctAnswer: "144 cm²", options: ["144 cm²", "48 cm", "24 cm²", "1 440 cm²"] },
-  { question: "Porovnej obsah: čtverec se stranou 5 cm vs. obdélník 6 cm × 4 cm. Který je větší?", correctAnswer: "Čtverec (25 cm²) je větší než obdélník (24 cm²)", options: ["Čtverec (25 cm²) je větší než obdélník (24 cm²)", "Obdélník (24 cm²) je větší", "jsou stejné", "nelze porovnat"] },
+  { question: "Porovnej obsah: čtverec se stranou 5 cm vs. obdélník 6 cm × 4 cm. Který je větší?", correctAnswer: "Čtverec – 25 cm² je větší než obdélník – 24 cm²", options: ["Čtverec (25 cm²) je větší než obdélník (24 cm²)", "Obdélník (24 cm²) je větší", "jsou stejné", "nelze porovnat"] },
   { question: "Stěna 3 m × 2,5 m. Obsah v cm²?", correctAnswer: "750 000 cm²", options: ["750 000 cm²", "75 000 cm²", "7 500 cm²", "7 500 000 cm²"] },
   { question: "Zahrada 30 m × 25 m. Obsah v m²? A v km²?", correctAnswer: "750 m² = 0,00075 km²", options: ["750 m² = 0,00075 km²", "55 m = 0,0055 km²", "750 m² = 0,075 km²", "7 500 m² = 0,0075 km²"] },
   { question: "Obrazec se skládá z obdélníku 4×3 a přilepeného čtverce se stranou 2. Celkový obsah?", correctAnswer: "16 cm²", options: ["16 cm²", "20 cm²", "12 cm²", "24 cm²"] },

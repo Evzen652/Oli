@@ -111,7 +111,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co nezapomene sdělit vzkaz, který zanecháváme?",
-    correctAnswer: "kontakt (číslo nebo e-mail) pro zpětné volání",
+    correctAnswer: "kontakt – číslo nebo e-mail pro zpětné volání",
     options: [
       "jen jméno",
       "kontakt (číslo nebo e-mail) pro zpětné volání",

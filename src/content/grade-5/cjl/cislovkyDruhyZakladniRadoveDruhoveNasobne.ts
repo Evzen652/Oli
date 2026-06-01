@@ -12,38 +12,38 @@ function shuffle<T>(arr: T[]): T[] {
 const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký druh číslovky je 'pět'?",
-    correctAnswer: "základní (kolik?)",
-    options: ["základní (kolik?)", "řadová (kolikátý?)", "druhová (koliker?)", "násobná (kolikrát?)"],
+    correctAnswer: "základní – kolik?",
+    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
     hints: ["Základní číslovky vyjadřují počet: jeden, dva, pět, sto."],
   },
   {
     question: "Jaký druh číslovky je 'třetí'?",
-    correctAnswer: "řadová (kolikátý?)",
-    options: ["základní (kolik?)", "řadová (kolikátý?)", "druhová (koliker?)", "násobná (kolikrát?)"],
+    correctAnswer: "řadová – kolikátý?",
+    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
     hints: ["Řadové číslovky vyjadřují pořadí: první, druhý, třetí."],
   },
   {
     question: "Jaký druh číslovky je 'dvoje'?",
-    correctAnswer: "druhová (koliker?)",
-    options: ["základní (kolik?)", "řadová (kolikátý?)", "druhová (koliker?)", "násobná (kolikrát?)"],
+    correctAnswer: "druhová – koliker?",
+    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
     hints: ["Druhové číslovky: jedny, dvoje, troje, čtvery."],
   },
   {
     question: "Jaký druh číslovky je 'třikrát'?",
-    correctAnswer: "násobná (kolikrát?)",
-    options: ["základní (kolik?)", "řadová (kolikátý?)", "druhová (koliker?)", "násobná (kolikrát?)"],
+    correctAnswer: "násobná – kolikrát?",
+    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
     hints: ["Násobné číslovky: jednou, dvakrát, třikrát, stonásobně."],
   },
   {
     question: "Jaký druh číslovky je 'druhý'?",
-    correctAnswer: "řadová (kolikátý?)",
-    options: ["základní", "řadová (kolikátý?)", "druhová", "násobná"],
+    correctAnswer: "řadová – kolikátý?",
+    options: ["základní", "řadová – kolikátý?", "druhová", "násobná"],
     hints: ["Druhý = kolikátý? → řadová číslovka."],
   },
   {
     question: "Jaký druh číslovky je 'jednou'?",
-    correctAnswer: "násobná (kolikrát?)",
-    options: ["základní", "řadová", "druhová", "násobná (kolikrát?)"],
+    correctAnswer: "násobná – kolikrát?",
+    options: ["základní", "řadová", "druhová", "násobná – kolikrát?"],
     hints: ["Jednou = kolikrát? Jednou → násobná."],
   },
   {
@@ -84,8 +84,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Na jakou otázku odpovídají druhové číslovky?",
-    correctAnswer: "kolikery? / koliker?",
-    options: ["kolik?", "kolikátý?", "kolikery? / koliker?", "kolikrát?"],
+    correctAnswer: "kolikery? nebo koliker?",
+    options: ["kolik?", "kolikátý?", "kolikery? nebo koliker?", "kolikrát?"],
     hints: ["Druhové = druh nebo sada: dvoje, troje."],
   },
   {
@@ -96,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký druh číslovky je 'trojnásobný'?",
-    correctAnswer: "násobná (přídavné jméno odvozené od číslovky)",
+    correctAnswer: "násobná – přídavné jméno odvozené od číslovky",
     options: [
       "základní",
       "řadová",
@@ -134,7 +134,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je rozdíl mezi 'tři' a 'troje'?",
-    correctAnswer: "tři = základní (počet), troje = druhová (druh nebo sada věcí)",
+    correctAnswer: "tři = základní – počet, troje = druhová – druh nebo sada věcí",
     options: [
       "jsou totéž",
       "tři = základní (počet), troje = druhová (druh nebo sada věcí)",
@@ -145,25 +145,25 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký druh číslovky je 'stonásobně'?",
-    correctAnswer: "násobná (příslovce odvozené od násobné číslovky)",
+    correctAnswer: "násobná – příslovce odvozené od násobné číslovky",
     options: ["základní", "řadová", "druhová", "násobná (příslovce odvozené od násobné číslovky)"],
     hints: ["Stonásobně = tolikrát více → násobná."],
   },
   {
     question: "Ve větě 'Setkal jsem se s ním potřetí.' jaký druh číslovky je 'potřetí'?",
-    correctAnswer: "násobná (kolikrát? = potřetí = po třetí)",
+    correctAnswer: "násobná – kolikrát? = potřetí = po třetí",
     options: ["základní", "řadová", "druhová", "násobná (kolikrát? = potřetí = po třetí)"],
     hints: ["Potřetí = po třetí = kolikrát? → násobná."],
   },
   {
     question: "Ve větě 'Na třetím místě skončila.' jaký druh číslovky je 'třetím'?",
-    correctAnswer: "řadová (kolikáté místo?)",
+    correctAnswer: "řadová – kolikáté místo?",
     options: ["základní", "řadová (kolikáté místo?)", "druhová", "násobná"],
     hints: ["Kolikátém místě? Třetím → řadová."],
   },
   {
     question: "Jaký druh číslovky je 'půldruhého'?",
-    correctAnswer: "základní (zlomková číslovka – 1,5)",
+    correctAnswer: "základní – zlomková číslovka – 1,5",
     options: ["řadová", "druhová", "násobná", "základní (zlomková číslovka – 1,5)"],
     hints: ["Půldruhého = jeden a půl = 1,5 → základní."],
   },
@@ -193,7 +193,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Použij správný druh číslovky: 'Přeložil to do ___ jazyků.' (počet = 5)",
-    correctAnswer: "pěti (nebo pěti jazyků) – základní číslovka",
+    correctAnswer: "pěti – nebo pěti jazyků – základní číslovka",
     options: ["pátých", "pětkrát", "pěti (nebo pěti jazyků) – základní číslovka", "patery"],
     hints: ["Do kolika jazyků? = počet = základní číslovka."],
   },
@@ -208,7 +208,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Jaký druh číslovky je 'jednorázově'?",
-    correctAnswer: "násobná (odvozená příslovečná forma = jednou/jednou)",
+    correctAnswer: "násobná – odvozená příslovečná forma = jednou/jednou",
     options: ["základní", "řadová", "druhová", "násobná (odvozená příslovečná forma = jednou/jednou)"],
     hints: ["Jednorázově = jen jednou → násobná."],
   },
@@ -236,7 +236,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký druh číslovky je 'oba / obě'?",
-    correctAnswer: "základní (= dva, dvě – speciální tvar pro 2 ze skupiny)",
+    correctAnswer: "základní – = dva, dvě – speciální tvar pro 2 ze skupiny",
     options: [
       "druhová",
       "základní (= dva, dvě – speciální tvar pro 2 ze skupiny)",
@@ -253,7 +253,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Řadová číslovka 'první' se skloňuje jako:",
-    correctAnswer: "přídavné jméno (vzor mladý / jarní)",
+    correctAnswer: "přídavné jméno – vzor mladý / jarní",
     options: [
       "podstatné jméno",
       "přídavné jméno (vzor mladý / jarní)",
@@ -264,7 +264,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Základní číslovky 1–4 se skloňují jako:",
-    correctAnswer: "přídavná jména nebo zájmena (jeden – jedno, dva – dvě...)",
+    correctAnswer: "přídavná jména nebo zájmena – jeden – jedno, dva – dvě...",
     options: [
       "podstatná jména",
       "přídavná jména nebo zájmena (jeden – jedno, dva – dvě...)",
@@ -275,7 +275,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Základní číslovky 5+ (pět, šest...) se skloňují jako:",
-    correctAnswer: "podstatná jména (vzor kost – v nepřímých pádech: pěti, sedmi...)",
+    correctAnswer: "podstatná jména – vzor kost – v nepřímých pádech: pěti, sedmi...",
     options: [
       "přídavná jména",
       "podstatná jména (vzor kost – v nepřímých pádech: pěti, sedmi...)",
@@ -286,7 +286,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Přišel poprvé.' jaký druh číslovky je 'poprvé'?",
-    correctAnswer: "násobná (= jednou, po prvé)",
+    correctAnswer: "násobná – = jednou, po prvé",
     options: ["základní", "řadová", "druhová", "násobná (= jednou, po prvé)"],
     hints: ["Poprvé = kolikrát? = první → násobná."],
   },
@@ -298,7 +298,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký druh číslovky je 'dvojí' (například dvojí názor)?",
-    correctAnswer: "druhová (= dvou druhů/typů)",
+    correctAnswer: "druhová – = dvou druhů/typů",
     options: ["základní", "řadová", "druhová (= dvou druhů/typů)", "násobná"],
     hints: ["Dvojí = dvou druhů → druhová číslovka."],
   },

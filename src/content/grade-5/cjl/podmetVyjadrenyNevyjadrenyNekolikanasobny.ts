@@ -24,13 +24,13 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký je podmět ve větě 'Čtu.'?",
-    correctAnswer: "já (nevyjádřený podmět)",
+    correctAnswer: "já – nevyjádřený podmět",
     options: ["já (nevyjádřený podmět)", "ty", "čtu", "věta nemá podmět"],
     hints: ["Podmět 'já' je schovaný v koncovce slovesa – je nevyjádřený."],
   },
   {
     question: "Ve větě 'Pojďme do kina.' jaký je podmět?",
-    correctAnswer: "my (nevyjádřený)",
+    correctAnswer: "my – nevyjádřený",
     options: ["my (nevyjádřený)", "pojďme", "kino", "žádný"],
     hints: ["Pojďme = my pojdeme – podmět 'my' je v koncovce."],
   },
@@ -53,7 +53,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Hrajete si venku.' jaký je podmět?",
-    correctAnswer: "vy (nevyjádřený)",
+    correctAnswer: "vy – nevyjádřený",
     options: ["vy (nevyjádřený)", "hrajete", "venku", "si"],
     hints: ["Hrajete = vy hrajete. Podmět 'vy' je schovaný v koncovce."],
   },
@@ -65,19 +65,19 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Zpívám a tancuji.' jaký je podmět?",
-    correctAnswer: "já (nevyjádřený) – jeden podmět pro obě slovesa",
+    correctAnswer: "já – nevyjádřený – jeden podmět pro obě slovesa",
     options: ["já a ty", "zpívám", "já (nevyjádřený) – jeden podmět pro obě slovesa", "tancuji"],
     hints: ["Obě slovesa mají stejný podmět – já."],
   },
   {
     question: "Ve větě 'Babička a děda sedí na lavičce.' je podmět:",
-    correctAnswer: "babička a děda (několikanásobný)",
+    correctAnswer: "babička a děda – několikanásobný",
     options: ["jen babička", "jen děda", "babička a děda (několikanásobný)", "lavička"],
     hints: ["Dva lidé = dva podměty = několikanásobný podmět."],
   },
   {
     question: "Jak poznáš nevyjádřený podmět?",
-    correctAnswer: "z tvaru slovesa (koncovky) poznáš, kdo je podmět",
+    correctAnswer: "z tvaru slovesa – koncovky poznáš, kdo je podmět",
     options: [
       "nelze ho vůbec poznat",
       "z tvaru slovesa (koncovky) poznáš, kdo je podmět",
@@ -94,7 +94,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Mlčte!' jaký je podmět?",
-    correctAnswer: "vy (nevyjádřený) – rozkazovací způsob",
+    correctAnswer: "vy – nevyjádřený – rozkazovací způsob",
     options: ["já", "vy (nevyjádřený) – rozkazovací způsob", "mlčte", "věta nemá podmět"],
     hints: ["Mlčte = rozkaz pro 'vy'. Podmět je nevyjádřen."],
   },
@@ -115,13 +115,13 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Ve větě 'Prší.' jaký je podmět?",
-    correctAnswer: "věta podmět nemá (bezpodmětová věta)",
+    correctAnswer: "věta podmět nemá – bezpodmětová věta",
     options: ["déšť", "počasí", "věta podmět nemá (bezpodmětová věta)", "ono"],
     hints: ["Prší = bezpodmětová věta. Nikdo konkrétně neprší."],
   },
   {
     question: "Ve větě 'Sněží a fouká.' jaký je podmět?",
-    correctAnswer: "věta podmět nemá (bezpodmětová)",
+    correctAnswer: "věta podmět nemá – bezpodmětová",
     options: ["vítr a sníh", "věta podmět nemá (bezpodmětová)", "ono", "počasí"],
     hints: ["Meteorologické jevy jako sněžení a foukání nemají podmět."],
   },
@@ -138,19 +138,19 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Přijdu a pomůžu.' jaký je podmět?",
-    correctAnswer: "já (nevyjádřený) – pro obě slovesa",
+    correctAnswer: "já – nevyjádřený – pro obě slovesa",
     options: ["já a ty", "já (nevyjádřený) – pro obě slovesa", "přijdu", "pomůžu"],
     hints: ["Obě slovesa mají stejnou osobu – 1. osoba jednotného čísla."],
   },
   {
     question: "Ve větě 'Knihy a filmy jsou moje záliby.' jaký je podmět?",
-    correctAnswer: "knihy a filmy (několikanásobný podmět)",
+    correctAnswer: "knihy a filmy – několikanásobný podmět",
     options: ["jen knihy", "jen filmy", "záliby", "knihy a filmy (několikanásobný podmět)"],
     hints: ["Dvě podstatná jména spojena jako subjekt = několikanásobný podmět."],
   },
   {
     question: "Podmět a přísudek se shodují v:",
-    correctAnswer: "osobě a čísle (u sloves), u příčestí i v rodě",
+    correctAnswer: "osobě a čísle – u sloves, u příčestí i v rodě",
     options: [
       "délce slov",
       "osobě a čísle (u sloves), u příčestí i v rodě",
@@ -161,19 +161,19 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Loni jsme jeli na výlet.' jaký je podmět?",
-    correctAnswer: "my (nevyjádřený)",
+    correctAnswer: "my – nevyjádřený",
     options: ["já", "vy", "my (nevyjádřený)", "loni"],
     hints: ["Jsme = 1. osoba množného čísla = my."],
   },
   {
     question: "Ve větě 'Chtěla bych více spát.' jaký je podmět?",
-    correctAnswer: "já (nevyjádřený) – ženský rod",
+    correctAnswer: "já – nevyjádřený – ženský rod",
     options: ["ona", "ty", "já (nevyjádřený) – ženský rod", "chtěla"],
     hints: ["Bych + chtěla = 1. os. j. č., ženský rod = já."],
   },
   {
     question: "Ve větě 'Maminka a tatínek přišli.' – proč je přísudek 'přišli' (ne 'přišly')?",
-    correctAnswer: "podmět obsahuje mužský životný rod (tatínek), proto mužský rod přísudku",
+    correctAnswer: "podmět obsahuje mužský životný rod – tatínek, proto mužský rod přísudku",
     options: [
       "protože 'maminka' je hlavní podmět",
       "podmět obsahuje mužský životný rod (tatínek), proto mužský rod přísudku",
@@ -184,7 +184,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Ryby a ptáci jsou obratlovci.' je přísudek 'jsou'. Proč?",
-    correctAnswer: "podmět v množném čísle (ryby i ptáci) = přísudek v množném čísle",
+    correctAnswer: "podmět v množném čísle – ryby i ptáci = přísudek v množném čísle",
     options: [
       "protože obratlovci je množné číslo",
       "podmět v množném čísle (ryby i ptáci) = přísudek v množném čísle",
@@ -195,7 +195,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Ráno se probudil a šel do školy.' je podmět:",
-    correctAnswer: "on (nevyjádřený) – mužský rod",
+    correctAnswer: "on – nevyjádřený – mužský rod",
     options: ["ráno", "on (nevyjádřený) – mužský rod", "já", "škola"],
     hints: ["Probudil a šel = mužský rod, 3. osoba j. č. = on."],
   },
@@ -212,7 +212,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Čtu a píšu zároveň.' kolik podmětů je?",
-    correctAnswer: "jeden: já (nevyjádřený) – pro obě slovesa",
+    correctAnswer: "jeden: já – nevyjádřený – pro obě slovesa",
     options: ["žádný", "dva: čtu a píšu", "jeden: já (nevyjádřený) – pro obě slovesa", "tři různé podmět"],
     hints: ["Obě slovesa jsou v 1. os. j. č. – sdílí jeden podmět."],
   },
@@ -229,7 +229,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Učte se pilně!' jaký je podmět?",
-    correctAnswer: "vy (nevyjádřený) – rozkazovací způsob, množné číslo",
+    correctAnswer: "vy – nevyjádřený – rozkazovací způsob, množné číslo",
     options: ["já", "vy (nevyjádřený) – rozkazovací způsob, množné číslo", "on", "věta podmět nemá vůbec"],
     hints: ["Učte = 2. os. mn. č. rozkazovacího způsobu = vy."],
   },
@@ -238,7 +238,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Ona i její sestra přišly pozdě.' jaký je podmět a jaký je rod přísudku?",
-    correctAnswer: "podmět: ona a sestra (oba ženský rod) → přísudek: přišly (ženský rod)",
+    correctAnswer: "podmět: ona a sestra – oba ženský rod → přísudek: přišly – ženský rod",
     options: [
       "podmět: sestra → přišly",
       "podmět: ona a sestra (oba ženský rod) → přísudek: přišly (ženský rod)",
@@ -249,19 +249,19 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Kdo to udělal?' jaký je podmět?",
-    correctAnswer: "kdo (tázací zájmeno jako podmět)",
+    correctAnswer: "kdo – tázací zájmeno jako podmět",
     options: ["to", "udělal", "kdo (tázací zájmeno jako podmět)", "věta nemá podmět"],
     hints: ["Tázací zájmena mohou být podmětem."],
   },
   {
     question: "Ve větě 'Nikdo nepřišel.' jaký je podmět?",
-    correctAnswer: "nikdo (záporné zájmeno jako podmět)",
+    correctAnswer: "nikdo – záporné zájmeno jako podmět",
     options: ["věta podmět nemá", "nikdo (záporné zájmeno jako podmět)", "nevyjádřený já", "přišel"],
     hints: ["Nikdo = záporné zájmeno ve funkci podmětu."],
   },
   {
     question: "Ve větě 'Zpívat je zdravé.' jaký je podmět?",
-    correctAnswer: "zpívat (infinitiv jako podmět)",
+    correctAnswer: "zpívat – infinitiv jako podmět",
     options: ["zdravé", "je", "zpívat (infinitiv jako podmět)", "věta nemá podmět"],
     hints: ["Infinitiv může být podmětem věty."],
   },
@@ -306,7 +306,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Tři chlapci přišli.' slovo 'tři' je:",
-    correctAnswer: "číslovka jako součást podmětu (podmět = tři chlapci)",
+    correctAnswer: "číslovka jako součást podmětu – podmět = tři chlapci",
     options: ["přísudek", "podmět samotný", "číslovka jako součást podmětu (podmět = tři chlapci)", "příslovečné určení"],
     hints: ["Podmět tvoří celé nominativní spojení – číslovka + podstatné jméno."],
   },
@@ -323,7 +323,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Co máš nového?' jaký je podmět?",
-    correctAnswer: "ty (nevyjádřený) – 2. osoba",
+    correctAnswer: "ty – nevyjádřený – 2. osoba",
     options: ["co", "nového", "ty (nevyjádřený) – 2. osoba", "věta podmět nemá"],
     hints: ["Máš = 2. os. j. č. = ty. Podmět je nevyjádřený."],
   },
@@ -335,7 +335,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Maminka a tatínek hráli karty.' je přísudek 'hráli'. Jsou oba podměty životné?",
-    correctAnswer: "ano – maminka (ženský životný) a tatínek (mužský životný) → hráli (mužský rod z důvodu tatínka)",
+    correctAnswer: "ano – maminka – ženský životný a tatínek – mužský životný → hráli – mužský rod z důvodu tatínka",
     options: [
       "ne – maminka je neživotná",
       "ano – maminka (ženský životný) a tatínek (mužský životný) → hráli (mužský rod z důvodu tatínka)",

@@ -23,7 +23,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je 'Vec:' v úředním dopisu?",
-    correctAnswer: "stručné označení předmětu (tématu) dopisu",
+    correctAnswer: "stručné označení předmětu – tématu dopisu",
     options: [
       "pozdrav",
       "stručné označení předmětu (tématu) dopisu",
@@ -67,7 +67,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co musí obsahovat přihláška?",
-    correctAnswer: "osobní údaje žadatele a požadované informace (co, kam, kdy)",
+    correctAnswer: "osobní údaje žadatele a požadované informace – co, kam, kdy",
     options: [
       "jen podpis",
       "osobní údaje žadatele a požadované informace (co, kam, kdy)",
@@ -100,7 +100,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se podepisujeme v úředním dopisu?",
-    correctAnswer: "vlastním jménem a příjmením (vlastnoruční nebo tištěný podpis)",
+    correctAnswer: "vlastním jménem a příjmením – vlastnoruční nebo tištěný podpis",
     options: [
       "přezdívkou",
       "vlastním jménem a příjmením (vlastnoruční nebo tištěný podpis)",
@@ -235,7 +235,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je 'příloha' u dopisu?",
-    correctAnswer: "doklady nebo dokumenty připojené k dopisu (kopie, certifikáty)",
+    correctAnswer: "doklady nebo dokumenty připojené k dopisu – kopie, certifikáty",
     options: [
       "poštovní razítko",
       "doklady nebo dokumenty připojené k dopisu (kopie, certifikáty)",
@@ -290,7 +290,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co uvádíme v záhlaví na levé straně?",
-    correctAnswer: "jméno a adresa odesilatele (kdo píše)",
+    correctAnswer: "jméno a adresa odesilatele – kdo píše",
     options: [
       "jméno a adresa adresáta",
       "jméno a adresa odesilatele (kdo píše)",
@@ -301,7 +301,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co uvádíme v záhlaví na pravé nebo spodní straně?",
-    correctAnswer: "jméno a adresa adresáta (komu píšeme)",
+    correctAnswer: "jméno a adresa adresáta – komu píšeme",
     options: [
       "jméno odesilatele",
       "jen datum",
@@ -323,7 +323,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je průvodní dopis?",
-    correctAnswer: "dopis přikládaný k jinému dokumentu (životopis, žádost o brigádu)",
+    correctAnswer: "dopis přikládaný k jinému dokumentu – životopis, žádost o brigádu",
     options: [
       "pozdravný dopis příteli",
       "dopis přikládaný k jinému dokumentu (životopis, žádost o brigádu)",
@@ -414,7 +414,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je životopis a jaký typ dokumentu to je?",
-    correctAnswer: "strukturovaný dokument s osobními a pracovními údaji (přikládaný k žádosti)",
+    correctAnswer: "strukturovaný dokument s osobními a pracovními údaji – přikládaný k žádosti",
     options: [
       "úřední dopis",
       "strukturovaný dokument s osobními a pracovními údaji (přikládaný k žádosti)",

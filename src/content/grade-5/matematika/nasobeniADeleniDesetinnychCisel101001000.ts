@@ -88,7 +88,7 @@ const POOL_L3: PracticeTask[] = [
   { question: "3600 ÷ 100 ÷ 10 = ?", correctAnswer: "3,6", options: ["3,6", "36", "0,36", "360"] },
   { question: "0,1 × 1000 = ?", correctAnswer: "100", options: ["100", "10", "1000", "0,1"] },
   { question: "999 ÷ 1000 = ?", correctAnswer: "0,999", options: ["0,999", "9,99", "99,9", "999"] },
-  { question: "4,5 × 100 = ? (výsledek porovnej s 4,5 × 10)", correctAnswer: "450 (desetkrát více než 45)", options: ["450 (desetkrát více než 45)", "45 (stejné jako ×10)", "4500 (stokrát více)", "450 (stejné jako ×10)"] },
+  { question: "4,5 × 100 = ? (výsledek porovnej s 4,5 × 10)", correctAnswer: "450 – desetkrát více než 45", options: ["450 (desetkrát více než 45)", "45 (stejné jako ×10)", "4500 (stokrát více)", "450 (stejné jako ×10)"] },
 ];
 
 function gen(level: number): PracticeTask[] {

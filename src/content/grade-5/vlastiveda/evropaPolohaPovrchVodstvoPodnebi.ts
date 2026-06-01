@@ -12,7 +12,7 @@ function shuffle<T>(arr: T[]): T[] {
 const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se nazývá nejvyšší hora Evropy?",
-    correctAnswer: "Mont Blanc (4808 m)",
+    correctAnswer: "Mont Blanc – 4808 m",
     options: ["Mont Blanc (4808 m)", "Elbrus (5642 m)", "Matterhorn (4478 m)", "Grossglockner (3798 m)"],
     hints: ["Leží na hranici Francie a Itálie."],
     solutionSteps: ["Mont Blanc (4808 m) je nejvyšší hora Alp, tedy nejvyšší hora západní Evropy."],
@@ -45,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ podnebí panuje na jihu Evropy (Španělsko, Itálie, Řecko)?",
-    correctAnswer: "Středomořské (suché léto, mírná zima)",
+    correctAnswer: "Středomořské – suché léto, mírná zima",
     options: [
       "Středomořské (suché léto, mírná zima)",
       "Atlantické (vlhké, mírné)",
@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ podnebí mají Čechy?",
-    correctAnswer: "Mírné kontinentální (teplé léto, studená zima)",
+    correctAnswer: "Mírné kontinentální – teplé léto, studená zima",
     options: [
       "Mírné kontinentální (teplé léto, studená zima)",
       "Středomořské",
@@ -150,7 +150,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč Dunaj protéká 10 státy a Vltava jen jedním?",
-    correctAnswer: "Dunaj je mnohem delší (2860 km) a teče nížinou přes více zemí",
+    correctAnswer: "Dunaj je mnohem delší – 2860 km a teče nížinou přes více zemí",
     options: [
       "Dunaj je mnohem delší (2860 km) a teče nížinou přes více zemí",
       "Vltava je delší, ale protéká horami",
@@ -238,7 +238,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč se říká, že Evropa je 'polostrov polostrovů'?",
-    correctAnswer: "Evropa sama je polostrov Eurasie a má mnoho dalších poloostrovů (Skandinávie, Iberský, Balkán)",
+    correctAnswer: "Evropa sama je polostrov Eurasie a má mnoho dalších poloostrovů – Skandinávie, Iberský, Balkán",
     options: [
       "Evropa sama je polostrov Eurasie a má mnoho dalších poloostrovů (Skandinávie, Iberský, Balkán)",
       "Evropa je ostrov oddělený od Asie",

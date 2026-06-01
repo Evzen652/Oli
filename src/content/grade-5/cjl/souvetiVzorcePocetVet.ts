@@ -118,7 +118,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký vzorec odpovídá souvětí 'Přišel, ale nezdravil.'?",
-    correctAnswer: "V1, ale V2 (souřadící souvětí)",
+    correctAnswer: "V1, ale V2 – souřadící souvětí",
     options: [
       "V1, že V2 (podřadící)",
       "V1, ale V2 (souřadící souvětí)",
@@ -129,7 +129,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Čárka v souvětí se píše:",
-    correctAnswer: "před spojkami podřadícími a některými souřadícími (ale, proto)",
+    correctAnswer: "před spojkami podřadícími a některými souřadícími – ale, proto",
     options: [
       "nikdy",
       "jen na konci souvětí",
@@ -199,7 +199,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Napište vzorec souvětí 'Nešel ven, protože pršelo.':",
-    correctAnswer: "HV, PV (hlavní věta, vedlejší věta příčinná)",
+    correctAnswer: "HV, PV – hlavní věta, vedlejší věta příčinná",
     options: [
       "V1 + V2 souřadící",
       "HV, PV (hlavní věta, vedlejší věta příčinná)",
@@ -277,7 +277,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Čárka před spojkou 'a' se píše:",
-    correctAnswer: "zpravidla ne, ale záleží na kontextu (nevylučuje se)",
+    correctAnswer: "zpravidla ne, ale záleží na kontextu – nevylučuje se",
     options: [
       "vždy",
       "zpravidla ne, ale záleží na kontextu (nevylučuje se)",
@@ -308,7 +308,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se nazývá souvětí, kde věty mají vztah příčiny a důsledku spojen souřadící spojkou?",
-    correctAnswer: "souřadící souvětí důsledkové (proto, tedy, tudíž)",
+    correctAnswer: "souřadící souvětí důsledkové – proto, tedy, tudíž",
     options: [
       "podřadící souvětí příčinné",
       "souřadící souvětí důsledkové (proto, tedy, tudíž)",
@@ -347,7 +347,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Napište vzorec souvětí: 'Nevím, kdy přijde, protože mi nic neřekl.'",
-    correctAnswer: "HV – PV(kdy) – PV(protože)",
+    correctAnswer: "HV – PV– kdy – PV– protože",
     options: [
       "HV + HV + HV",
       "HV – PV(kdy) – PV(protože)",
@@ -380,7 +380,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Kolik vedlejších vět je v souvětí: 'Věděl, že je čas jít, i když se mu nechtělo.'?",
-    correctAnswer: "2 vedlejší věty (že je čas jít + i když se mu nechtělo)",
+    correctAnswer: "2 vedlejší věty – že je čas jít + i když se mu nechtělo",
     options: [
       "1 vedlejší věta",
       "2 vedlejší věty (že je čas jít + i když se mu nechtělo)",
@@ -391,7 +391,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá vedlejší věta 'jak to udělal' ve větě 'Viděl jsem, jak to udělal.'?",
-    correctAnswer: "vedlejší věta předmětná (viděl co? jak to udělal)",
+    correctAnswer: "vedlejší věta předmětná – viděl co? jak to udělal",
     options: [
       "vedlejší věta způsobová",
       "vedlejší věta předmětná (viděl co? jak to udělal)",

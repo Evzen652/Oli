@@ -62,7 +62,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co byl holocaust?",
-    correctAnswer: "Systematické vyhlazování Židů nacisty (6 milionů obětí)",
+    correctAnswer: "Systematické vyhlazování Židů nacisty – 6 milionů obětí",
     options: [
       "Systematické vyhlazování Židů nacisty (6 milionů obětí)",
       "Bombardování Londýna",
@@ -107,7 +107,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co se stalo s Němci žijícími v Sudetech po roce 1945?",
-    correctAnswer: "Byli odsunuti (deportováni) z Československa",
+    correctAnswer: "Byli odsunuti – deportováni z Československa",
     options: [
       "Byli odsunuti (deportováni) z Československa",
       "Dostali vlastní stát v Sudetech",

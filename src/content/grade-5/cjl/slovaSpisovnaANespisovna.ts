@@ -188,7 +188,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co patří do skupiny 'slang'?",
-    correctAnswer: "výrazy specifické skupiny lidí (mládeže, sportovců atd.)",
+    correctAnswer: "výrazy specifické skupiny lidí – mládeže, sportovců atd.",
     options: [
       "odborné vědecké termíny",
       "nářeční výrazy jednoho kraje",
@@ -345,7 +345,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je 'argot'?",
-    correctAnswer: "tajný jazyk určité skupiny (zloději, vězeňský slang)",
+    correctAnswer: "tajný jazyk určité skupiny – zloději, vězeňský slang",
     options: [
       "nářečí z Moravy",
       "tajný jazyk určité skupiny (zloději, vězeňský slang)",
@@ -378,7 +378,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Přišel s bráchou a řek, že přijdou.' kolik nespisovných prvků je?",
-    correctAnswer: "dva: brácha (místo bratr), řek (místo řekl)",
+    correctAnswer: "dva: brácha – místo bratr, řek – místo řekl",
     options: [
       "žádný – vše je správně",
       "jeden: brácha",

@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+﻿import type { TopicMetadata, PracticeTask } from "@/lib/types";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -63,7 +63,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je uvozovací věta?",
-    correctAnswer: "věta, která uvádí přímou řeč (říká, kdo mluví)",
+    correctAnswer: "věta, která uvádí přímou řeč – říká, kdo mluví",
     options: [
       "věta v uvozovkách",
       "věta, která uvádí přímou řeč (říká, kdo mluví)",
@@ -74,7 +74,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Převeď do nepřímé řeči: Lucie se zeptala: \"Jdeš s námi?\"",
-    correctAnswer: "Lucie se zeptala, jestli (zda) jdu s nimi.",
+    correctAnswer: "Lucie se zeptala, jestli – zda jdu s nimi.",
     options: [
       "Lucie se zeptala, jestli (zda) jdu s nimi.",
       "Lucie se zeptala, jestli jdeš s námi.",
@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "V přímé řeči se pronomen 'já' v nepřímé řeči změní na:",
-    correctAnswer: "on nebo ona (podle pohlaví mluvčího)",
+    correctAnswer: "on nebo ona – podle pohlaví mluvčího",
     options: [
       "já zůstane stejné",
       "ty",
@@ -107,7 +107,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se změní sloveso v nepřímé řeči věty: Pavel řekl: \"Mám čas.\"?",
-    correctAnswer: "Pavel řekl, že má čas. (mám → má)",
+    correctAnswer: "Pavel řekl, že má čas. – mám → má",
     options: [
       "Pavel řekl, že mám čas.",
       "Pavel řekl, že má čas. (mám → má)",
@@ -145,7 +145,7 @@ const POOL_L1: PracticeTask[] = [
     hints: ["V přímé řeči vrátíme 1. nebo 3. osobu a přidáme uvozovky."],
   },
   {
-    question: "Ve větě s přímou řečí: „Pojď sem," řekla babička. – kde je čárka?",
+    question: "Ve větě s přímou řečí: dolni-uvoz.Pojď sem,horni-uvoz. řekla babička. – kde je čárka?",
     correctAnswer: "uvnitř uvozovek, před uvozovací větou",
     options: [
       "za uvozovkami",
@@ -226,7 +226,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "V nepřímé řeči se 'my' mění na:",
-    correctAnswer: "oni (pokud mluvčí mluví o sobě a ostatních třetí osobě)",
+    correctAnswer: "oni – pokud mluvčí mluví o sobě a ostatních třetí osobě",
     options: [
       "zůstane 'my'",
       "oni (pokud mluvčí mluví o sobě a ostatních třetí osobě)",
@@ -259,7 +259,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě: Lucie řekla, že přijde zítra. – čím se liší 'přijde' od přímé řeči?",
-    correctAnswer: "v přímé řeči by bylo 'přijdu' (1. osoba Lucie)",
+    correctAnswer: "v přímé řeči by bylo 'přijdu' – 1. osoba Lucie",
     options: [
       "ničím, oboje je stejné",
       "v přímé řeči by bylo 'přijdu' (1. osoba Lucie)",
@@ -292,14 +292,14 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký tvar mají uvozovky v češtině?",
-    correctAnswer: "dole-nahoru: „..." nebo «...» – spodní otevírací, horní zavírací",
+    correctAnswer: "dole-nahoru: otevírací dole, zavírací nahoře",
     options: [
-      "jen horní: \"...\"",
-      "dole-nahoru: „..." nebo «...» – spodní otevírací, horní zavírací",
+      "dole-nahoru: otevírací dole, zavírací nahoře",
+      "jen horní uvozovky na obou stranách",
       "záleží na tiskárně",
-      "vždy jednoduché: '...'",
+      "vždy jednoduché apostrofy",
     ],
-    hints: ["Česká typografická norma: „takto" – otevírací dole, zavírací nahoře."],
+    hints: ["Česká typografická norma: otevírací uvozovka je dole, zavírací nahoře."],
   },
   {
     question: "Přepiš do přímé řeči: Táta nám řekl, abychom šli spát.",
@@ -350,7 +350,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč v nepřímé řeči časujeme sloveso jinak než v přímé?",
-    correctAnswer: "protože přímá řeč je z pohledu mluvčího (já), nepřímá z pohledu vypravěče (on/ona)",
+    correctAnswer: "protože přímá řeč je z pohledu mluvčího – já, nepřímá z pohledu vypravěče – on/ona",
     options: [
       "není to pravda – časování se nemění",
       "protože nepřímá řeč je zdvořilejší",
@@ -383,7 +383,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co se stane s vykřičníkem v přímé řeči, když ji přepíšeme do nepřímé?",
-    correctAnswer: "vykřičník mizí, obsah se vyjádří opisem (že, aby, jak...)",
+    correctAnswer: "vykřičník mizí, obsah se vyjádří opisem – že, aby, jak...",
     options: [
       "vykřičník zůstane",
       "vykřičník mizí, obsah se vyjádří opisem (že, aby, jak...)",
@@ -405,10 +405,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Ve větě: Kamarádka šeptala: \"Pss, nevíkej tomu!\" – najdi chybu.",
-    correctAnswer: "chybí tečka nebo výzva – správně: „Pss, nikomu to nevíkej!"",
+    correctAnswer: "slovo 'nevíkej' neexistuje – správně 'neříkej'",
     options: [
       "věta je správně",
-      "chybí tečka nebo výzva – správně: „Pss, nikomu to nevíkej!"",
+      "slovo 'nevíkej' neexistuje – správně 'neříkej'",
       "chybí uvozovky",
       "chybí uvozovací věta",
     ],
@@ -426,7 +426,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Aby se soustředili → rozkaz: Soustřeďte se! (+ uvozovky)."],
   },
   {
-    question: "Přímá řeč ve středu věty: „Přijdeme," slíbili kamarádi, „ale trochu pozdě." – je zapsána správně?",
+    question: "Může být uvozovací věta uprostřed přímé řeči, například: kamarádi slíbili, ale trochu pozdě?",
     correctAnswer: "ano – uvozovací věta uprostřed přerušuje přímou řeč",
     options: [
       "ne – uvozovací věta nesmí být uprostřed",

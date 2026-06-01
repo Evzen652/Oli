@@ -45,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co se stalo v srpnu 1968 v Československu?",
-    correctAnswer: "Vojska Varšavské smlouvy (SSSR) obsadila ČSR a ukončila Pražské jaro",
+    correctAnswer: "Vojska Varšavské smlouvy – SSSR obsadila ČSR a ukončila Pražské jaro",
     options: [
       "Vojska Varšavské smlouvy (SSSR) obsadila ČSR a ukončila Pražské jaro",
       "ČSR vstoupila do NATO",
@@ -119,7 +119,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kdo byl Gustáv Husák?",
-    correctAnswer: "Komunistický vůdce v době normalizace (1969–1989)",
+    correctAnswer: "Komunistický vůdce v době normalizace – 1969–1989",
     options: [
       "Komunistický vůdce v době normalizace (1969–1989)",
       "Iniciátor Pražského jara",
@@ -134,7 +134,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Proč komunisté zestátnili soukromé podniky a zemědělství?",
-    correctAnswer: "Ideologicky odmítali soukromé vlastnictví — vše mělo patřit státu (lidu)",
+    correctAnswer: "Ideologicky odmítali soukromé vlastnictví — vše mělo patřit státu – lidu",
     options: [
       "Ideologicky odmítali soukromé vlastnictví — vše mělo patřit státu (lidu)",
       "Chtěli obohatit rolníky",
@@ -218,7 +218,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co byl Charta 77?",
-    correctAnswer: "Petice a hnutí disidentů (včetně Havla) kritizující porušování lidských práv",
+    correctAnswer: "Petice a hnutí disidentů – včetně Havla kritizující porušování lidských práv",
     options: [
       "Petice a hnutí disidentů (včetně Havla) kritizující porušování lidských práv",
       "Zákon o nové ústavě",

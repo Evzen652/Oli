@@ -12,7 +12,7 @@ function shuffle<T>(arr: T[]): T[] {
 const POOL_L1: PracticeTask[] = [
   {
     question: "Co je osnova vyprávění?",
-    correctAnswer: "plán textu rozčleněný na části (úvod, zápletka, vyvrcholení, závěr)",
+    correctAnswer: "plán textu rozčleněný na části – úvod, zápletka, vyvrcholení, závěr",
     options: [
       "seznam postav",
       "plán textu rozčleněný na části (úvod, zápletka, vyvrcholení, závěr)",
@@ -78,7 +78,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Rozvitá osnova se liší od jednoduché tím, že:",
-    correctAnswer: "každou část dělí na dílčí podčásti (I.A, I.B, II.A...)",
+    correctAnswer: "každou část dělí na dílčí podčásti – I.A, I.B, II.A...",
     options: [
       "je vždy kratší",
       "každou část dělí na dílčí podčásti (I.A, I.B, II.A...)",
@@ -89,7 +89,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký čas se nejčastěji používá ve vyprávění?",
-    correctAnswer: "minulý čas (byl, přišel, stalo se)",
+    correctAnswer: "minulý čas – byl, přišel, stalo se",
     options: [
       "budoucí čas",
       "přítomný čas vždy",
@@ -180,7 +180,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Jak zní rozvitá osnova pro příběh o ztraceném psu?",
-    correctAnswer: "I. Úvod (pes, rodina, zahrada) II.A Zápletka (pes zmizel) II.B Hledání III. Vyvrcholení (pes nalezen) IV. Závěr",
+    correctAnswer: "I. Úvod – pes, rodina, zahrada II.A Zápletka – pes zmizel II.B Hledání III. Vyvrcholení – pes nalezen IV. Závěr",
     options: [
       "I. Pes II. Rodina III. Zahrada IV. Konec",
       "I. Úvod (pes, rodina, zahrada) II.A Zápletka (pes zmizel) II.B Hledání III. Vyvrcholení (pes nalezen) IV. Závěr",
@@ -224,7 +224,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší jednoduché a složené osnovy?",
-    correctAnswer: "jednoduché mají 3–4 body; složené mají podčásti (I.A, I.B, II.A...)",
+    correctAnswer: "jednoduché mají 3–4 body; složené mají podčásti – I.A, I.B, II.A...",
     options: [
       "jednoduchá je vždy kratší",
       "jednoduché mají 3–4 body; složené mají podčásti (I.A, I.B, II.A...)",
@@ -359,7 +359,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je rámcový příběh?",
-    correctAnswer: "vnější příběh, který uvozuje vnitřní příběhy (pohádka v pohádce)",
+    correctAnswer: "vnější příběh, který uvozuje vnitřní příběhy – pohádka v pohádce",
     options: [
       "jen popis prostředí",
       "vnější příběh, který uvozuje vnitřní příběhy (pohádka v pohádce)",
@@ -381,7 +381,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je vypravěč v 1. osobě a co v 3. osobě?",
-    correctAnswer: "1. osoba = 'já' (subjektivní pohled); 3. osoba = 'on/ona' (objektivnější pohled)",
+    correctAnswer: "1. osoba = 'já' – subjektivní pohled; 3. osoba = 'on/ona' – objektivnější pohled",
     options: [
       "1. osoba je vždy v minulém čase",
       "1. osoba = 'já' (subjektivní pohled); 3. osoba = 'on/ona' (objektivnější pohled)",
@@ -392,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá moment v příběhu, kdy se vše zlomí a problém začíná řešit?",
-    correctAnswer: "peripetie (obrat, zlomový bod)",
+    correctAnswer: "peripetie – obrat, zlomový bod",
     options: [
       "expozice",
       "zápletka",
@@ -447,7 +447,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá literární technika, kde budoucí události jsou naznačeny dříve?",
-    correctAnswer: "předznamenání (foreshadowing)",
+    correctAnswer: "předznamenání – foreshadowing",
     options: [
       "retrospektiva",
       "předznamenání (foreshadowing)",
@@ -458,7 +458,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak zapíšeme rozvitou osnovu vyprávění o výletu třídy?",
-    correctAnswer: "I. Přípravy (kdo jde, kam, kdy) II.A Cesta autobusem II.B Příjezd III. Vyvrcholení (nečekaná situace) IV. Návrat a závěr",
+    correctAnswer: "I. Přípravy – kdo jde, kam, kdy II.A Cesta autobusem II.B Příjezd III. Vyvrcholení – nečekaná situace IV. Návrat a závěr",
     options: [
       "I. Výlet II. Třída III. Autobus IV. Konec",
       "I. Přípravy (kdo jde, kam, kdy) II.A Cesta autobusem II.B Příjezd III. Vyvrcholení (nečekaná situace) IV. Návrat a závěr",

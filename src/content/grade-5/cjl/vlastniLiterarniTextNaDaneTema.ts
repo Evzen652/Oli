@@ -45,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co musí povídka nebo pohádka obsahovat?",
-    correctAnswer: "postavy, prostředí, děj (problém a jeho řešení)",
+    correctAnswer: "postavy, prostředí, děj – problém a jeho řešení",
     options: [
       "jen popis postav",
       "jen dialogy",
@@ -56,7 +56,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je charakteristické pro pohádku?",
-    correctAnswer: "fantastické prvky (kouzelník, čarodějnice, mluvící zvířata) a morální poučení",
+    correctAnswer: "fantastické prvky – kouzelník, čarodějnice, mluvící zvířata a morální poučení",
     options: [
       "historické události",
       "fantastické prvky (kouzelník, čarodějnice, mluvící zvířata) a morální poučení",
@@ -78,7 +78,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký žánr by jsi vybral/a pro příběh o kouzelném lesním skřítku?",
-    correctAnswer: "pohádka (fantastické prvky)",
+    correctAnswer: "pohádka – fantastické prvky",
     options: [
       "detektivní povídka",
       "pohádka (fantastické prvky)",
@@ -144,7 +144,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je nezbytné pro dobrou charakteristiku postavy?",
-    correctAnswer: "popis vzhledu, chování a vnitřního světa (myšlenky, pocity)",
+    correctAnswer: "popis vzhledu, chování a vnitřního světa – myšlenky, pocity",
     options: [
       "jen jméno a věk",
       "popis vzhledu, chování a vnitřního světa (myšlenky, pocity)",
@@ -224,7 +224,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký typ pohledu zvolit v pohádce pro děti?",
-    correctAnswer: "třetí osoba (er-forma) nebo první osoba pro dojemnost",
+    correctAnswer: "třetí osoba – er-forma nebo první osoba pro dojemnost",
     options: [
       "vždy druhá osoba (ty)",
       "třetí osoba (er-forma) nebo první osoba pro dojemnost",
@@ -323,7 +323,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co jsou klišé v literárním textu?",
-    correctAnswer: "příliš používané fráze bez originality (bylo jednou jedno dítě, které bylo hodné)",
+    correctAnswer: "příliš používané fráze bez originality – bylo jednou jedno dítě, které bylo hodné",
     options: [
       "odborné termíny",
       "příliš používané fráze bez originality (bylo jednou jedno dítě, které bylo hodné)",
@@ -447,7 +447,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je world-building?",
-    correctAnswer: "vytváření detailního, konzistentního světa pro příběh (v fantasy, sci-fi)",
+    correctAnswer: "vytváření detailního, konzistentního světa pro příběh – v fantasy, sci-fi",
     options: [
       "popis reálného světa",
       "vytváření detailního, konzistentního světa pro příběh (v fantasy, sci-fi)",

@@ -12,7 +12,7 @@ function shuffle<T>(arr: T[]): T[] {
 const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký typ popisu je: 'Jablko je kulaté, červené, průměru přibližně 8 cm.'?",
-    correctAnswer: "objektivní popis (jen fakta)",
+    correctAnswer: "objektivní popis – jen fakta",
     options: [
       "subjektivně zabarvený popis",
       "objektivní popis (jen fakta)",
@@ -23,7 +23,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ popisu je: 'Jablko voní jako zahrada po dešti a jeho šťavnatost je jako polibek léta.'?",
-    correctAnswer: "subjektivně zabarvený popis (emoce, přirovnání)",
+    correctAnswer: "subjektivně zabarvený popis – emoce, přirovnání",
     options: [
       "objektivní popis",
       "subjektivně zabarvený popis (emoce, přirovnání)",
@@ -34,7 +34,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ popisu je recept na dort?",
-    correctAnswer: "pracovní postup (chronologické kroky)",
+    correctAnswer: "pracovní postup – chronologické kroky",
     options: [
       "objektivní popis",
       "subjektivně zabarvený popis",
@@ -45,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Pracovní postup používá slovesa v:",
-    correctAnswer: "rozkazovacím způsobu nebo infinitivu (přidej, smíchej, ohřej)",
+    correctAnswer: "rozkazovacím způsobu nebo infinitivu – přidej, smíchej, ohřej",
     options: [
       "podmiňovacím způsobu",
       "rozkazovacím způsobu nebo infinitivu (přidej, smíchej, ohřej)",
@@ -67,7 +67,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Objektivní popis obsahuje:",
-    correctAnswer: "fakta bez hodnocení (tvar, barva, rozměry)",
+    correctAnswer: "fakta bez hodnocení – tvar, barva, rozměry",
     options: [
       "osobní dojmy",
       "přirovnání a emoce",
@@ -224,7 +224,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Bohatě ozdobený sál rozjasňovaly stovky svíček.' je styl:",
-    correctAnswer: "subjektivně zabarvený (výrazná přídavná jména, poetika)",
+    correctAnswer: "subjektivně zabarvený – výrazná přídavná jména, poetika",
     options: [
       "objektivní (jen fakta)",
       "pracovní postup",
@@ -235,7 +235,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Místnost má plochu 25 m² a výšku stropu 2,8 m.' je styl:",
-    correctAnswer: "objektivní (měřitelná fakta)",
+    correctAnswer: "objektivní – měřitelná fakta",
     options: [
       "subjektivní (emoce)",
       "pracovní postup",
@@ -279,7 +279,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je technický datasheet (specifikace produktu)?",
-    correctAnswer: "objektivní popis (parametry, měření, fakta)",
+    correctAnswer: "objektivní popis – parametry, měření, fakta",
     options: [
       "subjektivní popis",
       "pracovní postup",
@@ -290,7 +290,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší popis osoby od vyprávění o osobě?",
-    correctAnswer: "popis = jak vypadá a jaká je; vyprávění = co se stalo (děj)",
+    correctAnswer: "popis = jak vypadá a jaká je; vyprávění = co se stalo – děj",
     options: [
       "jsou totéž",
       "popis = jak vypadá a jaká je; vyprávění = co se stalo (děj)",
@@ -359,7 +359,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jaký je rozdíl mezi popisem statickým a dynamickým?",
-    correctAnswer: "statický popisuje věc v klidu (poloha, tvar), dynamický zachycuje pohyb nebo změnu",
+    correctAnswer: "statický popisuje věc v klidu – poloha, tvar, dynamický zachycuje pohyb nebo změnu",
     options: [
       "statický je delší",
       "statický popisuje věc v klidu (poloha, tvar), dynamický zachycuje pohyb nebo změnu",
@@ -392,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je personifikace v subjektivním popisu?",
-    correctAnswer: "přisouzení lidských vlastností neživým věcem (les šeptá, kameny sní)",
+    correctAnswer: "přisouzení lidských vlastností neživým věcem – les šeptá, kameny sní",
     options: [
       "popis osoby z objektivního hlediska",
       "přisouzení lidských vlastností neživým věcem (les šeptá, kameny sní)",
@@ -425,7 +425,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "V pracovním postupu se vyhýbáme:",
-    correctAnswer: "nejasným nebo vágním formulacím (přidej hodně, ohřej trochu)",
+    correctAnswer: "nejasným nebo vágním formulacím – přidej hodně, ohřej trochu",
     options: [
       "číslům",
       "slovesům",
@@ -436,7 +436,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je synestézie v subjektivním popisu?",
-    correctAnswer: "prolínání smyslů v popisu (slyšet barvu, cítit hudbu)",
+    correctAnswer: "prolínání smyslů v popisu – slyšet barvu, cítit hudbu",
     options: [
       "záporný popis",
       "prolínání smyslů v popisu (slyšet barvu, cítit hudbu)",

@@ -40,13 +40,13 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je návod k pračce?",
-    correctAnswer: "věcný (neumělecký)",
+    correctAnswer: "věcný – neumělecký",
     options: ["umělecký", "poetický", "věcný (neumělecký)", "záleží na výrobci"],
     hints: ["Návod = informace a instrukce = věcný text."],
   },
   {
     question: "Jaký typ textu je encyklopedie?",
-    correctAnswer: "věcný (odborný)",
+    correctAnswer: "věcný – odborný",
     options: ["umělecký", "poetický", "věcný (odborný)", "záleží na tématu"],
     hints: ["Encyklopedie = fakta, definice, odborné informace = věcný text."],
   },
@@ -58,19 +58,19 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je novinový článek o fotbale?",
-    correctAnswer: "věcný (informuje o událostech)",
+    correctAnswer: "věcný – informuje o událostech",
     options: ["umělecký", "věcný (informuje o událostech)", "poetický", "záleží na novinách"],
     hints: ["Zpravodajství = fakta o událostech = věcný text."],
   },
   {
     question: "Jaký typ textu je román od Jarlava Foglara?",
-    correctAnswer: "umělecký (beletrie)",
+    correctAnswer: "umělecký – beletrie",
     options: ["věcný", "odborný", "umělecký (beletrie)", "záleží na románu"],
     hints: ["Foglar = prozaický spisovatel. Romány = umělecké texty."],
   },
   {
     question: "Jaký typ textu je jízdní řád autobusu?",
-    correctAnswer: "věcný (funkční)",
+    correctAnswer: "věcný – funkční",
     options: ["umělecký", "věcný (funkční)", "poetický", "záleží na dopravci"],
     hints: ["Jízdní řád = informace pro cestující = věcný funkční text."],
   },
@@ -98,7 +98,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je učebnice matematiky?",
-    correctAnswer: "věcný (odborný)",
+    correctAnswer: "věcný – odborný",
     options: ["umělecký", "poetický", "věcný (odborný)", "záleží na nakladatelství"],
     hints: ["Učebnice = fakta a výuka = věcný odborný text."],
   },
@@ -115,7 +115,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je reklama?",
-    correctAnswer: "přechodný – věcný s uměleckými prvky (přesvědčuje i informuje)",
+    correctAnswer: "přechodný – věcný s uměleckými prvky – přesvědčuje i informuje",
     options: [
       "čistě umělecký",
       "čistě věcný",
@@ -140,7 +140,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Co je publicistický text?",
-    correctAnswer: "text v médiích (novinách, webu) informující o aktuálních událostech",
+    correctAnswer: "text v médiích – novinách, webu informující o aktuálních událostech",
     options: [
       "umělecká próza",
       "text v médiích (novinách, webu) informující o aktuálních událostech",
@@ -162,7 +162,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je fejeton?",
-    correctAnswer: "přechodný – věcný s uměleckými prvky (humor, ironie)",
+    correctAnswer: "přechodný – věcný s uměleckými prvky – humor, ironie",
     options: [
       "čistě umělecký",
       "čistě věcný",
@@ -217,7 +217,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaký typ textu je recept?",
-    correctAnswer: "věcný funkční text (pracovní postup)",
+    correctAnswer: "věcný funkční text – pracovní postup",
     options: [
       "umělecký",
       "věcný funkční text (pracovní postup)",
@@ -308,7 +308,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Co je intertextualita?",
-    correctAnswer: "odkaz jednoho textu na jiný text (citace, parafráze, alúze)",
+    correctAnswer: "odkaz jednoho textu na jiný text – citace, parafráze, alúze",
     options: [
       "typ věcného textu",
       "odkaz jednoho textu na jiný text (citace, parafráze, alúze)",
@@ -385,7 +385,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je non-fiction?",
-    correctAnswer: "literatura o skutečných událostech a faktech (biografie, historia, věda)",
+    correctAnswer: "literatura o skutečných událostech a faktech – biografie, historia, věda",
     options: [
       "vymyšlené příběhy",
       "literatura o skutečných událostech a faktech (biografie, historia, věda)",

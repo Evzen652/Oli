@@ -12,7 +12,7 @@ function shuffle<T>(arr: T[]): T[] {
 const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik sousedních zemí má Česká republika?",
-    correctAnswer: "4 (Německo, Polsko, Slovensko, Rakousko)",
+    correctAnswer: "4 – Německo, Polsko, Slovensko, Rakousko",
     options: [
       "4 (Německo, Polsko, Slovensko, Rakousko)",
       "3",
@@ -80,14 +80,14 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve kterém městě sídlí hlavní instituce EU?",
-    correctAnswer: "Brusel (Belgie)",
+    correctAnswer: "Brusel – Belgie",
     options: ["Brusel (Belgie)", "Paříž (Francie)", "Berlín (Německo)", "Štrasburk (Francie)"],
     hints: ["Je to hlavní město Belgie."],
     solutionSteps: ["Komise EU a Rada EU sídlí v Bruselu."],
   },
   {
     question: "Která z těchto zemí je nejmenší ze sousedů ČR?",
-    correctAnswer: "Slovensko (~5,5 milionu obyvatel)",
+    correctAnswer: "Slovensko – ~5,5 milionu obyvatel",
     options: [
       "Slovensko (~5,5 milionu obyvatel)",
       "Německo (~84 milionů)",
@@ -217,7 +217,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč má Německo nejsilnější ekonomiku v EU?",
-    correctAnswer: "Silný průmysl (auta, stroje, chemie), velká populace a vývoz po celém světě",
+    correctAnswer: "Silný průmysl – auta, stroje, chemie, velká populace a vývoz po celém světě",
     options: [
       "Silný průmysl (auta, stroje, chemie), velká populace a vývoz po celém světě",
       "Německo má nejvíce surovin v Evropě",
@@ -268,7 +268,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co mají společného Norsko, Švýcarsko a Velká Británie ve vztahu k EU?",
-    correctAnswer: "Nejsou (nebo přestaly být) členy EU, ale úzce s ní spolupracují",
+    correctAnswer: "Nejsou – nebo přestaly být členy EU, ale úzce s ní spolupracují",
     options: [
       "Nejsou (nebo přestaly být) členy EU, ale úzce s ní spolupracují",
       "Jsou zakládajícími členy EU",

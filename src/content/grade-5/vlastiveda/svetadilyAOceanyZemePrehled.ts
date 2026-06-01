@@ -75,7 +75,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se nazývá oceán u jižního pólu?",
-    correctAnswer: "Jižní (Antarktický) oceán",
+    correctAnswer: "Jižní – Antarktický oceán",
     options: ["Jižní (Antarktický) oceán", "Tichý oceán", "Indický oceán", "Atlantský oceán"],
     hints: ["Obklopuje Antarktidu."],
     solutionSteps: ["Jižní (Antarktický) oceán obklopuje Antarktidu — nejjižnější ze pěti oceánů."],
@@ -111,7 +111,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč Antarktida nemá stálé obyvatelstvo?",
-    correctAnswer: "Extrémní chlad (−60 °C), ledový povrch bez půdy a izolovanost od ostatního světa",
+    correctAnswer: "Extrémní chlad – −60 °C, ledový povrch bez půdy a izolovanost od ostatního světa",
     options: [
       "Extrémní chlad (−60 °C), ledový povrch bez půdy a izolovanost",
       "Je to mezinárodní park — lidé jsou tam zakázáni",
@@ -123,7 +123,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak Tichý oceán ovlivňuje klima Asie a Ameriky?",
-    correctAnswer: "Reguluje teplotu a přináší srážky (monsuny na Asii, Tichý proud na Ameriku)",
+    correctAnswer: "Reguluje teplotu a přináší srážky – monsuny na Asii, Tichý proud na Ameriku",
     options: [
       "Reguluje teplotu a přináší srážky — monsuny pro Asii",
       "Tichý oceán klima neovlivňuje",
@@ -147,7 +147,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co mají společného Jižní Amerika a Afrika?",
-    correctAnswer: "Pasují k sobě jako puzzle — kdysi byly spojeny (Pangea), podobná fauna a flora",
+    correctAnswer: "Pasují k sobě jako puzzle — kdysi byly spojeny – Pangea, podobná fauna a flora",
     options: [
       "Pasují k sobě jako puzzle — kdysi byly spojeny (Pangea), podobná fauna a flora",
       "Oba leží na severu",
@@ -195,7 +195,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč Afrika je druhý největší světadíl, ale ne nejlidnatější?",
-    correctAnswer: "Velká část Afriky je poušť (Sahara) nebo džungle — málo úrodné půdy",
+    correctAnswer: "Velká část Afriky je poušť – Sahara nebo džungle — málo úrodné půdy",
     options: [
       "Velká část Afriky je poušť (Sahara) nebo džungle — méně úrodné půdy",
       "Afrika má méně lidí, protože je malá",

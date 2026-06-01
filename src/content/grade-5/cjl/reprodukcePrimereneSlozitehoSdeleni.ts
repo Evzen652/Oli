@@ -217,7 +217,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co je tématická věta (topic sentence)?",
-    correctAnswer: "věta, která shrnuje hlavní myšlenku odstavce (bývá na začátku)",
+    correctAnswer: "věta, která shrnuje hlavní myšlenku odstavce – bývá na začátku",
     options: [
       "vždy poslední věta odstavce",
       "věta, která shrnuje hlavní myšlenku odstavce (bývá na začátku)",
@@ -385,7 +385,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Co je selektivní reprodukce?",
-    correctAnswer: "reprodukce jen vybrané části textu (ne celku)",
+    correctAnswer: "reprodukce jen vybrané části textu – ne celku",
     options: [
       "reprodukce celého textu doslova",
       "reprodukce jen vybrané části textu (ne celku)",

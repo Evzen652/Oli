@@ -19,7 +19,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se nazývají vodorovné čáry na mapě nebo glóbusu?",
-    correctAnswer: "Rovnoběžky (zeměpisná šířka)",
+    correctAnswer: "Rovnoběžky – zeměpisná šířka",
     options: [
       "Rovnoběžky (zeměpisná šířka)",
       "Poledníky (zeměpisná délka)",
@@ -31,7 +31,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Jak se nazývají svislé čáry na mapě nebo glóbusu?",
-    correctAnswer: "Poledníky (zeměpisná délka)",
+    correctAnswer: "Poledníky – zeměpisná délka",
     options: [
       "Poledníky (zeměpisná délka)",
       "Rovnoběžky (zeměpisná šířka)",
@@ -83,7 +83,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co ukazuje šipka na kompasu?",
-    correctAnswer: "Sever (magnetický pól)",
+    correctAnswer: "Sever – magnetický pól",
     options: ["Sever (magnetický pól)", "Západ", "Pohyb slunce", "Nejbližší město"],
     hints: ["Kompas se orientuje magnetickým polem Země."],
     solutionSteps: ["Kompasová jehla vždy ukazuje na magnetický sever."],
@@ -109,7 +109,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je nultý poledník (greenwichský)?",
-    correctAnswer: "Výchozí poledník (0° délky) procházející Greenwichem v Londýně",
+    correctAnswer: "Výchozí poledník – 0° délky procházející Greenwichem v Londýně",
     options: [
       "Výchozí poledník (0° délky) procházející Greenwichem v Londýně",
       "Poledník procházející Prahou",
@@ -124,7 +124,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se liší glóbus od mapy a kdy je každý vhodný?",
-    correctAnswer: "Glóbus = přesný tvar Země (cestování, ); mapa = detailnější pro konkrétní oblasti",
+    correctAnswer: "Glóbus = přesný tvar Země – cestování, ; mapa = detailnější pro konkrétní oblasti",
     options: [
       "Glóbus = přesný tvar Země; mapa = detailnější pro konkrétní oblasti",
       "Glóbus a mapa jsou totéž",
@@ -136,7 +136,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč jsou poledníky nutné pro určení přesné polohy?",
-    correctAnswer: "Rovnoběžky určují sever-jih (šířku), poledníky západ-východ (délku) — spolu dávají souřadnice",
+    correctAnswer: "Rovnoběžky určují sever-jih – šířku, poledníky západ-východ – délku — spolu dávají souřadnice",
     options: [
       "Rovnoběžky určují sever-jih (šířku), poledníky západ-východ (délku) — spolu dávají souřadnice",
       "Poledníky jsou zbytečné — stačí rovnoběžky",
@@ -148,7 +148,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč když je v Praze poledne, je v New Yorku 6 hodin ráno?",
-    correctAnswer: "New York leží přibližně 6 časových pásem (90°) západně od Prahy",
+    correctAnswer: "New York leží přibližně 6 časových pásem – 90° západně od Prahy",
     options: [
       "New York leží přibližně 6 časových pásem (90°) západně od Prahy",
       "New York a Praha mají stejný čas",
@@ -172,7 +172,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak nultý poledník ovlivňuje počítání světového času?",
-    correctAnswer: "Je výchozím bodem pro UTC (koordinovaný světový čas) — ostatní pásma se od něj počítají",
+    correctAnswer: "Je výchozím bodem pro UTC – koordinovaný světový čas — ostatní pásma se od něj počítají",
     options: [
       "Je výchozím bodem pro UTC — ostatní pásma se od něj počítají",
       "Nultý poledník je jen historická zajímavost",
@@ -220,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se orientovat na mapě bez kompasu?",
-    correctAnswer: "Otočit mapu tak, aby sever na mapě směřoval ke skutečnému severu (Polárka, stín)",
+    correctAnswer: "Otočit mapu tak, aby sever na mapě směřoval ke skutečnému severu – Polárka, stín",
     options: [
       "Otočit mapu tak, aby sever na mapě směřoval ke skutečnému severu",
       "Mapu vždy držet s horním okrajem k sobě",
@@ -259,7 +259,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Vypočítej: Praha leží na 14°E, Londýn na 0°. Jaký je hodinový rozdíl?",
-    correctAnswer: "1 hodina (14°/15° = 0,93 → přibližně 1 pásmo)",
+    correctAnswer: "1 hodina – 14°/15° = 0,93 → přibližně 1 pásmo",
     options: [
       "1 hodina (Praha je UTC+1, Londýn UTC+0)",
       "2 hodiny",
@@ -283,7 +283,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Seřaď od rovníku k severnímu pólu: severní obratník, polární kruh, rovník, severní pól.",
-    correctAnswer: "Rovník (0°) → Severní obratník (23,5°) → Polární kruh (66,5°) → Severní pól (90°)",
+    correctAnswer: "Rovník – 0° → Severní obratník – 23,5° → Polární kruh – 66,5° → Severní pól – 90°",
     items: [
       "Rovník (0°)",
       "Severní obratník (23,5°)",

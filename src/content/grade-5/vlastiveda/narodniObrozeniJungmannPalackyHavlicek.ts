@@ -160,7 +160,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se lišil přístup Jungmanna a Havlíčka k obrození?",
-    correctAnswer: "Jungmann obrozoval jazykově (slovník), Havlíček politicky (noviny, satira)",
+    correctAnswer: "Jungmann obrozoval jazykově – slovník, Havlíček politicky – noviny, satira",
     options: [
       "Jungmann obrozoval jazykově (slovník), Havlíček politicky (noviny, satira)",
       "Oba se věnovali výhradně politice",

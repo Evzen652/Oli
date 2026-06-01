@@ -40,7 +40,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Používá Česká republika euro?",
-    correctAnswer: "Ne, ČR má stále českou korunu (CZK)",
+    correctAnswer: "Ne, ČR má stále českou korunu – CZK",
     options: [
       "Ne, ČR má stále českou korunu (CZK)",
       "Ano, od vstupu do EU 2004",
@@ -114,7 +114,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kde sídlí Evropská unie (její hlavní instituce)?",
-    correctAnswer: "V Bruselu (Belgie)",
+    correctAnswer: "V Bruselu – Belgie",
     options: ["V Bruselu (Belgie)", "V Paříži (Francie)", "Ve Vídni (Rakousko)", "V Berlíně (Německo)"],
     hints: ["Je to hlavní město Belgie."],
     solutionSteps: ["Většina institucí EU (Komise, Rada) sídlí v Bruselu, Evropský parlament také ve Štrasburku."],

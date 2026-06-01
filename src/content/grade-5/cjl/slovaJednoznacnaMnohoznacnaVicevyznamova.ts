@@ -24,7 +24,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Slovo 'les' je vícevýznamové. Jaký může mít druhý význam?",
-    correctAnswer: "vícero stromů pohromadě, ale i typ šachové figurky (věž) v nářečí",
+    correctAnswer: "vícero stromů pohromadě, ale i typ šachové figurky – věž v nářečí",
     options: [
       "vícero stromů pohromadě, ale i typ šachové figurky (věž) v nářečí",
       "má jen jeden význam – stromy",
@@ -58,7 +58,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Slovo 'ruka' — kolik významů má?",
-    correctAnswer: "více (část těla, ale i způsob označení v kartách apod.)",
+    correctAnswer: "více – část těla, ale i způsob označení v kartách apod.",
     options: [
       "jen jeden – část těla",
       "více (část těla, ale i způsob označení v kartách apod.)",
@@ -69,7 +69,7 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Listoval v knize.' slovo 'list' znamená:",
-    correctAnswer: "stránka (papír)",
+    correctAnswer: "stránka – papír",
     options: ["zelený list stromu", "stránka (papír)", "dopis", "karta"],
     hints: ["Při listování v knize myslíme na stránky."],
   },
@@ -190,7 +190,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Ve větě 'Řeka se rozdělila na dvě ramena.' slovo 'rameno' znamená:",
-    correctAnswer: "větev (proud) řeky",
+    correctAnswer: "větev – proud řeky",
     options: [
       "část těla",
       "větev (proud) řeky",
@@ -218,7 +218,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Slovo 'palec' může znamenat prst. Co ještě?",
-    correctAnswer: "starou délkovou míru (palec = cca 2,54 cm)",
+    correctAnswer: "starou délkovou míru – palec = cca 2,54 cm",
     options: [
       "druh kamene",
       "starou délkovou míru (palec = cca 2,54 cm)",
@@ -381,7 +381,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Slovo 'jít' – je jednoznačné nebo vícevýznamové? Uveď příklad jiného smyslu.",
-    correctAnswer: "vícevýznamové – 'Jak ti to jde?' (daří se) vs. 'Jdu domů.'",
+    correctAnswer: "vícevýznamové – 'Jak ti to jde?' – daří se vs. 'Jdu domů.'",
     options: [
       "jednoznačné – vždy pohyb pěšky",
       "vícevýznamové – 'Jak ti to jde?' (daří se) vs. 'Jdu domů.'",
@@ -403,7 +403,7 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Slovo 'zub' ve větě 'Zuby času to nahlodaly.' znamená:",
-    correctAnswer: "ničivé působení času (přenesený smysl)",
+    correctAnswer: "ničivé působení času – přenesený smysl",
     options: [
       "zubní sklovinu",
       "ničivé působení času (přenesený smysl)",
