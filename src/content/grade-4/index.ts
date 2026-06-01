@@ -80,17 +80,7 @@ import { CHRANENEROSTLINYAZIVOCICHOVEOHROZENEDRUHY } from "./prirodoveda/chranen
 import { PRVNIPOMOCTISNOVEVOLANIMIMORADNEUDALOSTI } from "./prirodoveda/prvniPomocTisnoveVolaniMimoradneUdalosti";
 import { STRAVAPOHYBSPANEKPREVENCEURAZUANEMOCI } from "./prirodoveda/stravaPohybSpanekPrevenceUrazuANemoci";
 
-// Informatika
-import { POSTUPANAVODSLEDJEDNOTLIVYCHKROKU } from "./informatika/postupANavodSledJednotlivychKroku";
-import { OPAKOVANIVPOSTUPUVETVENI } from "./informatika/opakovaniVPostupuVetveni";
-import { VIZUALNIPROGRAMOVACIPROSTREDINAPRSCRATCHJRCODEORGUVOD } from "./informatika/vizualniProgramovaciProstrediNaprScratchJrCodeOrgUvod";
-import { INFORMACEVYZNAMAPREDAVANIINFORMACI } from "./informatika/informaceVyznamAPredavaniInformaci";
-import { SBERAZAZNAMDATTEXTOBRAZZVUKCISLA } from "./informatika/sberAZaznamDatTextObrazZvukCisla";
-import { SYMBOLYPIKTOGRAMYKODYJEJICHVYZNAM } from "./informatika/symbolyPiktogramyKodyJejichVyznam";
-import { BEZPECNECHOVANIVDIGITALNIMPROSTREDIOCHRANAOSOBNICHUDAJU } from "./informatika/bezpecneChovaniVDigitalnimProstrediOchranaOsobnichUdaju";
-import { DIGITALNIZARIZENIPOCITACTABLETTELEFON } from "./informatika/digitalniZarizeniPocitacTabletTelefon";
-import { ZAKLADNICASTIPOCITACEMONITORKLAVESNICEMYS } from "./informatika/zakladniCastiPocitaceMonitorKlavesniceMys";
-import { PRACESAPLIKACEMISPOUSTENIUKLADANIUKONCENI } from "./informatika/praceSAplikacemiSpousteniUkladaniUkonceni";
+// Informatika — skryta, soubory existuji, az bude pripravena zverejnit odkomentovat
 
 export const GRADE_4_TOPICS: TopicMetadata[] = [
   // Matematika (14)
@@ -159,15 +149,5 @@ export const GRADE_4_TOPICS: TopicMetadata[] = [
   ...CHRANENEROSTLINYAZIVOCICHOVEOHROZENEDRUHY,
   ...PRVNIPOMOCTISNOVEVOLANIMIMORADNEUDALOSTI,
   ...STRAVAPOHYBSPANEKPREVENCEURAZUANEMOCI,
-  // Informatika (10)
-  ...POSTUPANAVODSLEDJEDNOTLIVYCHKROKU,
-  ...OPAKOVANIVPOSTUPUVETVENI,
-  ...VIZUALNIPROGRAMOVACIPROSTREDINAPRSCRATCHJRCODEORGUVOD,
-  ...INFORMACEVYZNAMAPREDAVANIINFORMACI,
-  ...SBERAZAZNAMDATTEXTOBRAZZVUKCISLA,
-  ...SYMBOLYPIKTOGRAMYKODYJEJICHVYZNAM,
-  ...BEZPECNECHOVANIVDIGITALNIMPROSTREDIOCHRANAOSOBNICHUDAJU,
-  ...DIGITALNIZARIZENIPOCITACTABLETTELEFON,
-  ...ZAKLADNICASTIPOCITACEMONITORKLAVESNICEMYS,
-  ...PRACESAPLIKACEMISPOUSTENIUKLADANIUKONCENI,
+  // Informatika (10) — skryta, odkomentovat az bude pripravena
 ];

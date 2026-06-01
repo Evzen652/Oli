@@ -71,17 +71,7 @@ import { TRAVICISOUSTAVAVYLUCOVACISOUSTAVA } from "./prirodoveda/traviciSoustava
 import { VESMIRSLUNECNISOUSTAVAPLANETYSLUNCEMESIC } from "./prirodoveda/vesmirSlunecniSoustavaPlanetySlunceMesic";
 import { ZEMEJAKOPLANETATVARROTACEOBEHSTRIDANIDNEANOCI } from "./prirodoveda/zemeJakoPlanetaTvarRotaceObehStridaniDneANoci";
 
-// ── Informatika ──
-import { HLEDANICHYBVPROGRAMULADENI } from "./informatika/hledaniChybVProgramuLadeni";
-import { HODNOCENIZISKANYCHDATVYVOZOVANIZAVERU } from "./informatika/hodnoceniZiskanychDatVyvozovaniZaveru";
-import { INFORMACNISYSTEMVESKOLEKNIHOVNEDOPRAVE } from "./informatika/informacniSystemVeSkoleKnihovneDoprave";
-import { MODELOVANIMYSLENKOVEMAPYSCHEMATADIAGRAMY } from "./informatika/modelovaniMyslenkoveMapySchemataDiagramy";
-import { OPAKOVANICYKLYPRIPRAVENEPODPROGRAMY } from "./informatika/opakovaniCyklyPripravenePodprogramy";
-import { PRACESOBRAZKYUPRAVAUKLADANI } from "./informatika/praceSObrazkyUpravaUkladani";
-import { SDILENIDATCOANOCONEOCHRANAPREDNEBEZPECIMNAINTERNETU } from "./informatika/sdileniDatCoAnoCoNeOchranaPredNebezpecimNaInternetu";
-import { SESTAVOVANIPROGRAMUVBLOKOVEORIENTOVANEMJAZYCESCRATCH } from "./informatika/sestavovaniProgramuVBlokoveOrientovanemJazyceScratch";
-import { TVORBAAUPRAVATEXTUFORMATOVANI } from "./informatika/tvorbaAUpravaTextuFormatovani";
-import { ZAZNAMATRIDENIDATVTABULCE } from "./informatika/zaznamATrideniDatVTabulce";
+// Informatika — skryta, soubory existuji, az bude pripravena zverejnit odkomentovat
 
 export const GRADE_5_TOPICS: TopicMetadata[] = [
   // Matematika (12)
@@ -155,15 +145,5 @@ export const GRADE_5_TOPICS: TopicMetadata[] = [
   ...VESMIRSLUNECNISOUSTAVAPLANETYSLUNCEMESIC,
   ...ZEMEJAKOPLANETATVARROTACEOBEHSTRIDANIDNEANOCI,
 
-  // Informatika (10)
-  ...HLEDANICHYBVPROGRAMULADENI,
-  ...HODNOCENIZISKANYCHDATVYVOZOVANIZAVERU,
-  ...INFORMACNISYSTEMVESKOLEKNIHOVNEDOPRAVE,
-  ...MODELOVANIMYSLENKOVEMAPYSCHEMATADIAGRAMY,
-  ...OPAKOVANICYKLYPRIPRAVENEPODPROGRAMY,
-  ...PRACESOBRAZKYUPRAVAUKLADANI,
-  ...SDILENIDATCOANOCONEOCHRANAPREDNEBEZPECIMNAINTERNETU,
-  ...SESTAVOVANIPROGRAMUVBLOKOVEORIENTOVANEMJAZYCESCRATCH,
-  ...TVORBAAUPRAVATEXTUFORMATOVANI,
-  ...ZAZNAMATRIDENIDATVTABULCE,
+  // Informatika (10) — skryta, odkomentovat az bude pripravena
 ];
