@@ -48,8 +48,8 @@ function getNextIncorrect(): string {
 }
 
 const QUESTION_TITLES = [
-  "Zkus si to! 🎯", "Tvůj tah! 🎲", "A teď ty! ✏️",
-  "Poradíš si? 💡", "Co myslíš? 🤔", "Jdeme na to! 🚀",
+  "Zkus si to!", "Tvůj tah!", "A teď ty!",
+  "Poradíš si?", "Co myslíš?", "Jdeme na to!",
 ];
 let questionTitleIndex = 0;
 function getNextQuestionTitle(): string {

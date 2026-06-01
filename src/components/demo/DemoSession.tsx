@@ -39,8 +39,8 @@ const nextPraise = () => PRAISE[praiseIdx++ % PRAISE.length];
 const nextIncorrect = () => INCORRECT[incorrectIdx++ % INCORRECT.length];
 
 const QUESTION_TITLES = [
-  "Zkus si to! 🎯", "Tvůj tah! 🎲", "A teď ty! ✏️",
-  "Poradíš si? 💡", "Co myslíš? 🤔", "Jdeme na to! 🚀",
+  "Zkus si to!", "Tvůj tah!", "A teď ty!",
+  "Poradíš si?", "Co myslíš?", "Jdeme na to!",
 ];
 let qTitleIdx = 0;
 const nextTitle = () => QUESTION_TITLES[qTitleIdx++ % QUESTION_TITLES.length];
