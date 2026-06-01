@@ -58,6 +58,32 @@ function getNextQuestionTitle(): string {
   return t;
 }
 
+// 15 dekorativních ikon pro rotaci vedle question title — uloženo v Supabase storage
+// jako practice-icon-{name}.png. Generováno přes scripts/generate-practice-icons.ps1.
+export const QUESTION_ICONS = [
+  "practice-icon-pencil",
+  "practice-icon-lightbulb",
+  "practice-icon-rocket",
+  "practice-icon-star",
+  "practice-icon-magnifier",
+  "practice-icon-compass",
+  "practice-icon-key",
+  "practice-icon-trophy",
+  "practice-icon-book",
+  "practice-icon-balloon",
+  "practice-icon-medal",
+  "practice-icon-puzzle",
+  "practice-icon-gem",
+  "practice-icon-feather",
+  "practice-icon-clock",
+];
+let questionIconIndex = 0;
+function getNextQuestionIcon(): string {
+  const icon = QUESTION_ICONS[questionIconIndex % QUESTION_ICONS.length];
+  questionIconIndex += 1;
+  return icon;
+}
+
 export interface SessionDispatchState {
   grade: Grade | null;
   session: SessionData | null;
@@ -76,6 +102,7 @@ export interface SessionDispatchState {
   evalMinReached: boolean;
   answeredTask: PracticeTask | null;
   questionTitle: string;
+  questionIcon: string;
   taskResults: ("correct" | "wrong" | "help")[];
   pendingDiktatTopic: TopicMetadata | null;
 }
@@ -131,6 +158,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
   const [evalMinReached, setEvalMinReached] = useState(true);
   const [answeredTask, setAnsweredTask] = useState<PracticeTask | null>(null);
   const [questionTitle, setQuestionTitle] = useState(getNextQuestionTitle());
+  const [questionIcon, setQuestionIcon] = useState(getNextQuestionIcon());
   const [taskResults, setTaskResults] = useState<("correct" | "wrong" | "help")[]>([]);
 
   // Auto-persist session to localStorage
@@ -389,6 +417,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setRevealedAnswer(null);
     setAnsweredTask(null);
     setQuestionTitle(getNextQuestionTitle());
+    setQuestionIcon(getNextQuestionIcon());
     if (pendingEndSession) {
       setSession(pendingEndSession);
       setOutput("session.ended");
@@ -473,7 +502,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     grade, session, output, practiceQuestion, userInput, isLocked, loading,
     checkFeedback, lastAnswerCorrect, pendingEndSession, revealedAnswer,
     explanation, aiEvaluation, aiEvalLoading, evalMinReached, answeredTask,
-    questionTitle, taskResults, pendingDiktatTopic,
+    questionTitle, questionIcon, taskResults, pendingDiktatTopic,
     setGrade, setSession, setOutput, setUserInput, setIsLocked,
     setCheckFeedback, setLastAnswerCorrect, setRevealedAnswer,
     setExplanation, setAiEvaluation, setAiEvalLoading, setEvalMinReached,

@@ -120,7 +120,7 @@ export function SessionView() {
   const {
     grade, session, practiceQuestion, userInput, isLocked, loading,
     checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask,
-    questionTitle, taskResults, pendingDiktatTopic,
+    questionTitle, questionIcon, taskResults, pendingDiktatTopic,
   } = s;
 
   // For child role: show ChildHomePage by default, TopicBrowser on demand
@@ -584,7 +584,15 @@ export function SessionView() {
                   </>
                 )}
                 {session.state === "PRACTICE" && (
-                  <h2 className="text-2xl font-bold text-foreground mb-3">{questionTitle}</h2>
+                  <div className="flex items-center gap-3 mb-3">
+                    <img
+                      src={`${SUPABASE_STORAGE}/${questionIcon}.png`}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-10 w-10 object-contain shrink-0 mix-blend-multiply"
+                    />
+                    <h2 className="text-2xl font-bold text-foreground">{questionTitle}</h2>
+                  </div>
                 )}
                 {practiceQuestion && (
                   <p className="mt-5 rounded-xl bg-background/70 p-5 text-xl font-semibold text-foreground">
