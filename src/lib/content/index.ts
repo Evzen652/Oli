@@ -8,6 +8,7 @@ import type { TopicMetadata } from "../types";
 
 // ── Grade-N moduly (vlastněné grade-N sessions) ──
 import { GRADE_4_TOPICS } from "@/content/grade-4";
+import { GRADE_5_TOPICS } from "@/content/grade-5";
 
 export { setDiktatFilter } from "./czech";
 
@@ -19,6 +20,6 @@ export const ALL_TOPICS: TopicMetadata[] = [
 
   // ── Aktivní obsah (grade-N RVP sessions) ──
   ...GRADE_4_TOPICS,
+  ...GRADE_5_TOPICS,
   // ...GRADE_3_TOPICS,  ← přibyde až grade-3 session začne
-  // ...GRADE_5_TOPICS,  ← přibyde až grade-5 session začne
 ];
