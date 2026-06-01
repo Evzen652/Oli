@@ -66,6 +66,7 @@ export const QUESTION_ICONS = [
   "practice-icon-rocket",
   "practice-icon-compass",
   "practice-icon-clock",
+  "practice-icon-dice",
 ];
 let questionIconIndex = 0;
 function getNextQuestionIcon(): string {
