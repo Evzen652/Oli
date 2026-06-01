@@ -34,7 +34,7 @@ const POOL_L2: QA[] = [
   { q: "Jak zapracovat motiv přátelství do příběhu?", a: "Ukažeme postavy, jak si pomáhají nebo spolu prožívají těžké chvíle", opts: ["Ukažeme postavy, jak si pomáhají nebo spolu prožívají těžké chvíle", "Napíšeme slovo 'přátelství' co nejvíce", "Vložíme definici přátelství", "Popíšeme fyzický popis přátel"] },
   { q: "Co je nejsilnější místo v příběhu?", a: "Vyvrcholení — kdy příběh dosáhne největšího napětí", opts: ["Vyvrcholení — kdy příběh dosáhne největšího napětí", "Úvod — kdy začíná příběh", "Závěr — kdy příběh končí", "Zápletka — kdy začíná problém"] },
   { q: "Jak popsat prostředí v příběhu?", a: "Zapojit smysly: co vidíme, slyšíme, cítíme, hmatáme", opts: ["Zapojit smysly: co vidíme, slyšíme, cítíme, hmatáme", "Jen vyjmenovat objekty v prostředí", "Napsat souřadnice místa", "Nepolohu prostředí neuvádíme"] },
-  { q: "Jak psát dialog (přímou řeč) správně?", a: "Uvozovky + uvozovací věta: „Pojď," řekl Honza.", opts: ["Uvozovky + uvozovací věta: „Pojď," řekl Honza.", "Bez uvozovek — prostý text", "Jen tučné písmo", "V závorce"] },
+  { q: "Jak psát dialog (přímou řeč) správně?", a: "Dolní+horní uvozovky + obsah + čárka + uvozovací věta malým", opts: ["Dolní+horní uvozovky + obsah + čárka + uvozovací věta malým", "Bez uvozovek — prostý text", "Jen tučné písmo", "V závorce"] },
   { q: "Co je metafora v textu?", a: "Přirovnání bez 'jako': 'Petr je lev.' (přeneseně statečný)", opts: ["Přirovnání bez 'jako': 'Petr je lev.' (přeneseně statečný)", "Přirovnání s 'jako': 'Petr je jako lev.'", "Popis fyzického vzhledu", "Přímá řeč postavy"] },
   { q: "Co je přirovnání (simile) v textu?", a: "Přirovnání se 'jako': 'Petr běží jako vítr.'", opts: ["Přirovnání se 'jako': 'Petr běží jako vítr.'", "Přirovnání bez 'jako'", "Citát z jiné knihy", "Faktická informace"] },
   { q: "Jak si udělat poznámky před psaním?", a: "Brainstorming: klíčová slova, osnova, hlavní myšlenka", opts: ["Brainstorming: klíčová slova, osnova, hlavní myšlenka", "Přečíst jiný text a zkopírovat ho", "Napsat rovnou celý text", "Požádat kamaráda o nápady"] },
@@ -104,3 +104,4 @@ export const VLASTNILITERARNITVORBANADANETEMA: TopicMetadata[] = [
     },
   },
 ];
+
