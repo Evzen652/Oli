@@ -385,38 +385,35 @@ export function SessionView() {
         />
       )}
 
-      {/* Dekorativní obláčky — vygenerovaná ilustrace, jen vpravo, roztažená do šířky.
-          scaleX > 1 ji roztáhne, mix-blend-multiply + mask = přirozený scatter. */}
+      {/* Dekorativní obláčky — vygenerovaná ilustrace, jen vpravo, normální velikost. */}
       {showDecor && (
         <div aria-hidden="true" className="hidden lg:block pointer-events-none select-none fixed inset-0 overflow-hidden z-0">
-          {/* Velký roztažený oblak vpravo nahoře */}
+          {/* Oblak vpravo nahoře */}
           <img
             src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
             alt=""
             className="absolute object-contain"
             style={{
-              top: "-5%", right: "-15%", width: "52rem",
-              opacity: 0.7,
-              transform: "rotate(-3deg) scaleX(1.4)",
-              transformOrigin: "right top",
+              top: "2%", right: "-4%", width: "22rem",
+              opacity: 0.65,
+              transform: "rotate(8deg)",
               mixBlendMode: "multiply",
-              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 55% 50%, black 40%, transparent 90%)",
-              maskImage: "radial-gradient(ellipse 70% 70% at 55% 50%, black 40%, transparent 90%)",
+              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
+              maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 90%)",
             }}
           />
-          {/* Roztažený oblak vpravo prostřed */}
+          {/* Drobnější oblak vpravo prostřed */}
           <img
             src={`${SUPABASE_STORAGE}/practice-decor-clouds.png`}
             alt=""
             className="absolute object-contain"
             style={{
-              top: "32%", right: "-10%", width: "40rem",
-              opacity: 0.5,
-              transform: "rotate(4deg) scaleX(1.5) scaleY(0.9)",
-              transformOrigin: "right center",
+              top: "34%", right: "-6%", width: "18rem",
+              opacity: 0.45,
+              transform: "rotate(-4deg)",
               mixBlendMode: "multiply",
-              WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 55% 50%, black 35%, transparent 90%)",
-              maskImage: "radial-gradient(ellipse 70% 70% at 55% 50%, black 35%, transparent 90%)",
+              WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, black 35%, transparent 85%)",
+              maskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, black 35%, transparent 85%)",
             }}
           />
         </div>
