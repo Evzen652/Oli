@@ -25,6 +25,7 @@ export type InputType =
   | "text"
   | "short_answer"    // Krátká volná odpověď s fuzzy match — humanitní předměty
   | "fill_blank"
+  | "true_false"
   | "match_pairs"
   | "multi_select"
   | "categorize"
