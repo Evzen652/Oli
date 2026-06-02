@@ -178,10 +178,10 @@ export function SessionView() {
     }
   }, [recoveryChecked, session, grade]);
 
-  // Admin: auto-select grade 3 if none set, skip GradeSelect entirely
+  // Admin: auto-select grade 4 if none set (grade 3 has no content yet)
   useEffect(() => {
     if (role === "admin" && !grade) {
-      s.handleGradeSelect(3 as any);
+      s.handleGradeSelect(4 as any);
     }
   }, [role, grade]);
 
@@ -195,7 +195,7 @@ export function SessionView() {
           Náhled žákovského pohledu
         </span>
         <select
-          value={grade ?? 3}
+          value={grade ?? 4}
           onChange={(e) => {
             s.setGrade(null);
             s.setSession(null as any);
