@@ -89,6 +89,14 @@ export interface TopicMetadata {
    * viz `src/content/grade-N/README.md`.
    */
   studentTitle?: string;
+  /**
+   * Konkrétní vizuální popis scény pro generování ilustrace (1–2 věty, bez abstraktních pojmů).
+   * Popisuj CO JE na obrázku — ne co se dítě naučí. Konkrétní objekty, postavy, prostředí.
+   * Příklad: "dítě píše příběh tužkou do sešitu, kolem knih a kelímku s pastelkami".
+   * Pokud chybí, generátor sestaví popis automaticky z keywords + kategorie (horší kvalita).
+   * Pište při autorování obsahu — ideálně 1 věta, max 2, bez negací.
+   */
+  illustrationDesc?: string;
   subject: string; // e.g. "matematika", "čeština"
   category: string; // grouping within subject, e.g. "Zlomky"
   topic: string; // grouping within category, e.g. "Porovnávání zlomků"

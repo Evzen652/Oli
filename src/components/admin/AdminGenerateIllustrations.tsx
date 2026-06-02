@@ -269,6 +269,147 @@ function getDefaultDesc(key: string): string {
   return DEFAULT_DESCS[key] ?? "";
 }
 
+/** Odstraní diakritiku pro porovnávání stringů. */
+function stripDia(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+/**
+ * Sestaví konkrétní vizuální popis scény pro topic.
+ *
+ * Priorita: illustrationDesc > subject/category template > keyword-based fallback.
+ * Nikdy neemituje "colorful 3D objects representing" pro abstraktní pojmy — místo toho
+ * vždy vrátí konkrétní scénu s viditelnými objekty/postavami.
+ */
+function buildConcreteTopicDesc(meta: ReturnType<typeof getAllTopics>[number]): string {
+  // 1. Kurátorovaný popis — přesný prompt od autora obsahu
+  if (meta.illustrationDesc) return meta.illustrationDesc;
+
+  const subj = stripDia(meta.subject);
+  const cat  = stripDia(meta.category);
+  const label = meta.studentTitle || meta.title;
+
+  // Vizuální klíčová slova — filtrujeme abstraktní pojmy, zachováváme konkrétní nouns
+  const ABSTRACT = new Set(["tema", "motiv", "styl", "popis", "prvek", "obsah", "pojem",
+    "typ", "druh", "cast", "ukazka", "vyraz", "pojem", "vlastnost", "zpusob", "princip",
+    "zaklad", "uvod", "pokrocily", "teorie", "pravidlo", "system", "proces"]);
+  const visualKws = (meta.keywords ?? [])
+    .map(k => k.trim())
+    .filter(k => k.length >= 4 && !ABSTRACT.has(stripDia(k)))
+    .slice(0, 4);
+  const kwStr = visualKws.length ? `, klíčová slova: ${visualKws.join(", ")}` : "";
+
+  // 2. Čeština / CJL
+  if (subj.includes("cestin") || subj.includes("cjl")) {
+    if (cat.includes("literarn") || cat.includes("cteni") || cat.includes("cetba"))
+      return `dítě čte nebo píše příběh, otevřená barevná kniha, brk a sešit, kolem létají malé pohádkové postavičky — ${label}`;
+    if (cat.includes("pravopis") || cat.includes("vyjmenovan"))
+      return `sešit s českým textem, tužka podtrhuje slova, zelené fajfky a červené škrty${kwStr}`;
+    if (cat.includes("mluvnic") || cat.includes("jazykova") || cat.includes("slovni") || cat.includes("vetny"))
+      return `barevné štítky s mluvnickými termíny uspořádané do větného schématu, gramatická tabulka${kwStr}`;
+    if (cat.includes("komunik") || cat.includes("sloh") || cat.includes("vypravo") || cat.includes("dopis"))
+      return `list papíru s tužkou a mluvícími bublinami, obálka nebo zápisník${kwStr}`;
+    // Jakákoli čeština bez přesnějšího zařazení
+    return `dítě čte nebo píše, otevřená kniha, tužka a sešit${kwStr}`;
+  }
+
+  // 3. Matematika
+  if (subj.includes("matematik")) {
+    if (cat.includes("geome") || cat.includes("uvary") || cat.includes("rovine") || cat.includes("soumetr"))
+      return `geometrické tvary — trojúhelník, čtverec, kruh — s pravítkem a úhloměrem${kwStr}`;
+    if (cat.includes("zlomk") || cat.includes("procent") || cat.includes("pomer"))
+      return `pizza nebo koláč rozkrojený na díly zobrazující zlomky a poměry${kwStr}`;
+    if (cat.includes("mereni") || cat.includes("jednotk") || cat.includes("delka") || cat.includes("hmot"))
+      return `pravítko, váha a odměrný kelímek jako skupinka 3D objektů${kwStr}`;
+    if (cat.includes("statistik") || cat.includes("data") || cat.includes("diagram") || cat.includes("graf"))
+      return `barevný sloupcový diagram a kruhový graf s číselnými daty${kwStr}`;
+    if (cat.includes("algebra") || cat.includes("rovnic") || cat.includes("promenn"))
+      return `tabule s rovnicemi a barevnými proměnnými x a y, závorky a šipky${kwStr}`;
+    // Obecná matematika — alespoň konkrétní čísla, ne abstraktní blob
+    return `barevná 3D čísla a matematické symboly vznášející se ve vzduchu, počítací kostky${kwStr}`;
+  }
+
+  // 4. Přírodověda
+  if (subj.includes("prirodov")) {
+    if (cat.includes("ziva") || cat.includes("rostlin") || cat.includes("zvira"))
+      return `živá příroda — strom, rostlina, zvíře — scéna lesa nebo louky${kwStr}`;
+    if (cat.includes("neziva") || cat.includes("hornin") || cat.includes("voda") || cat.includes("vzduch"))
+      return `horniny, kapky vody a vzduchové bubliny jako přírodní 3D objekty${kwStr}`;
+    if (cat.includes("zdravi") || cat.includes("clovek") || cat.includes("telo"))
+      return `dítě se zdravou stravou a pohybem, symbol srdce a zdraví${kwStr}`;
+    if (cat.includes("ekosys") || cat.includes("prostr") || cat.includes("ochran"))
+      return `příroda, les nebo louka, znázornění potravního řetězce nebo ekosystému${kwStr}`;
+    return `přírodniny — rostliny, zvířata nebo horniny — v přírodním prostředí${kwStr}`;
+  }
+
+  // 5. Vlastivěda
+  if (subj.includes("vlastived")) {
+    if (cat.includes("zemep") || cat.includes("mapa") || cat.includes("kraj"))
+      return `mapa České republiky s barevnými regiony, kompas a turistická značka${kwStr}`;
+    if (cat.includes("histor") || cat.includes("kultura") || cat.includes("osobnosti"))
+      return `historická scéna s hradem, panovníkem nebo středověkými symboly${kwStr}`;
+    return `mapa a historické symboly České republiky${kwStr}`;
+  }
+
+  // 6. Informatika / digitální svět
+  if (subj.includes("informatik") || subj.includes("digital") || subj.includes("it-")) {
+    if (cat.includes("bezpec") || cat.includes("soukromi") || cat.includes("heslo"))
+      return `tablet s ikonkou zámku a štítu, ochrana dat a bezpečí${kwStr}`;
+    if (cat.includes("programov") || cat.includes("algoritm") || cat.includes("kod"))
+      return `barevné bloky kódu, robot nebo postava ve hře Scratch${kwStr}`;
+    if (cat.includes("zarizeni") || cat.includes("pocitac") || cat.includes("hardware"))
+      return `počítač, tablet a telefon jako trojice přátelských 3D zařízení${kwStr}`;
+    return `tablet nebo počítač s barevnými ikonkami a digitálním prostředím${kwStr}`;
+  }
+
+  // 7. Prvouka (legacy)
+  if (subj.includes("prvouka")) {
+    return `přátelská scéna ze světa dítěte${kwStr} — ${label}`;
+  }
+
+  // 8. Posledně resort — stále lepší než "colorful 3D objects"
+  if (visualKws.length >= 2) {
+    return `barevná vzdělávací 3D scéna s objekty: ${visualKws.join(", ")} — ${label}`;
+  }
+  return `vzdělávací scéna — ${label}: ${meta.briefDescription}`;
+}
+
+/**
+ * Sestaví vizuální popis pro kategorii (okruh) na základě souhrnných klíčových slov podtémat.
+ */
+function buildCategoryDesc(catTopics: ReturnType<typeof getAllTopics>): string {
+  if (catTopics.length === 0) return "";
+  const t0 = catTopics[0];
+  const subj = stripDia(t0.subject);
+  const cat  = stripDia(t0.category);
+  const catLabel = t0.category;
+
+  // Agreguj vizuální klíčová slova ze všech podtémat kategorie
+  const allKws = catTopics.flatMap(t => t.keywords ?? []);
+  const ABSTRACT = new Set(["tema", "motiv", "styl", "popis", "obsah", "pojem", "typ", "druh",
+    "cast", "vyraz", "vlastnost", "zpusob", "princip", "zaklad", "uvod", "teorie", "pravidlo"]);
+  const uniqueKws = [...new Set(allKws.map(k => k.trim()).filter(k => k.length >= 4 && !ABSTRACT.has(stripDia(k))))].slice(0, 5);
+  const kwStr = uniqueKws.length ? ` — klíčová slova: ${uniqueKws.join(", ")}` : "";
+
+  if (subj.includes("cestin") || subj.includes("cjl")) {
+    if (cat.includes("literarn")) return `knihovna knih, brk, sešit a malé pohádkové postavičky — ${catLabel}`;
+    if (cat.includes("pravopis") || cat.includes("vyjmenovan")) return `sešit s textem, barevné opravy tužkou, fajfky a škrty${kwStr}`;
+    if (cat.includes("mluvnic") || cat.includes("jazykova")) return `barevné mluvnické štítky a větné schéma${kwStr}`;
+    if (cat.includes("sloh") || cat.includes("komunik")) return `list papíru, pero, bublinky s textem${kwStr}`;
+    return `kniha, tužka a sešit — ${catLabel}${kwStr}`;
+  }
+  if (subj.includes("matematik")) {
+    if (cat.includes("geome")) return `trojúhelník, čtverec a kruh s pravítkem — ${catLabel}`;
+    if (cat.includes("zlomk") || cat.includes("procent")) return `koláč a pizza rozkrojené na díly — zlomky a poměry`;
+    if (cat.includes("mereni")) return `pravítko, váha, odměrný kelímek — ${catLabel}`;
+    return `barevná 3D čísla a matematické symboly — ${catLabel}${kwStr}`;
+  }
+  if (subj.includes("prirodov")) return `přírodniny — rostliny, zvířata nebo horniny — ${catLabel}${kwStr}`;
+  if (subj.includes("vlastived")) return `mapa České republiky a historické symboly — ${catLabel}${kwStr}`;
+  if (subj.includes("informatik")) return `počítač nebo tablet s barevnými ikonkami — ${catLabel}${kwStr}`;
+  return `vzdělávací scéna — ${catLabel}${kwStr}`;
+}
+
 /** Vrátí popis pro jakýkoli klíč — pro dynamické položky z DB nebo TopicMetadata sestaví výchozí. */
 function getAutoDesc(
   key: string,
@@ -281,46 +422,44 @@ function getAutoDesc(
 
   // POZN: Popisy jsou ČISTĚ POZITIVNÍ — žádné "no characters", "no people", "no animals".
   // AI image modely extraktují nouns z negace. Vše negativní → jen do negative_prompt pole.
+  // Nikdy nepoužívej "colorful 3D objects representing X" — je to abstraktní → generuje blobs.
+  // Vždy popisuj KONKRÉTNÍ scénu: co je na obrázku, jaké objekty, jaké postavy, jaké prostředí.
   if (key.startsWith("subject-")) {
     const subjTopics = SUBJ_TO_TOPICS_MAP.get(key);
     if (subjTopics && subjTopics.length > 0) {
-      const subjectName = subjTopics[0].subject;
-      const categories = [...new Set(subjTopics.map((t) => t.category))].slice(0, 4).join(" and ");
-      return `colorful 3D objects representing the school subject ${subjectName} (covering ${categories})`;
+      // Použij první kategorii k odvození vizuálního charakteru předmětu
+      const firstCatTopics = subjTopics.slice(0, 6);
+      return buildCategoryDesc(firstCatTopics);
     }
     const slug = key.slice("subject-".length);
     const subject = dbSubjects.find((s) => s.slug === slug);
     if (subject) {
-      return `colorful 3D objects representing the school subject ${subject.name}`;
+      return `vzdělávací scéna pro předmět ${subject.name}`;
     }
   }
   if (key.startsWith("cat-")) {
     const catTopics = CAT_TO_TOPICS_MAP.get(key);
     if (catTopics && catTopics.length > 0) {
-      const catName = catTopics[0].category;
-      const titles = catTopics.map((t) => t.title).slice(0, 3).join(" and ");
-      return `3D objects representing ${catName} — including ${titles}`;
+      return buildCategoryDesc(catTopics);
     }
     const parts = key.slice("cat-".length).split("-");
     const catSlug = parts.length > 1 ? parts.slice(1).join("-") : parts[0];
     const cat = dbCategories.find((c) => c.slug === catSlug);
     if (cat) {
-      const base = cat.description || `the area ${cat.name}`;
-      return `colorful 3D objects representing ${base}`;
+      return `vzdělávací ilustrace — ${cat.name}${cat.description ? ": " + cat.description : ""}`;
     }
   }
   if (key.startsWith("topic-")) {
     const meta = KEY_TO_TOPIC_MAP.get(key);
     if (meta) {
-      const brief = meta.briefDescription || meta.title;
-      return `colorful 3D objects showing ${meta.title.toLowerCase()} — ${brief}`;
+      // buildConcreteTopicDesc: přednost illustrationDesc, pak subject/category template
+      return buildConcreteTopicDesc(meta);
     }
     const parts = key.slice("topic-".length).split("-");
     const topSlug = parts.length > 2 ? parts.slice(2).join("-") : parts[parts.length - 1];
     const topic = dbTopics.find((t) => t.slug === topSlug);
     if (topic) {
-      const base = topic.description || `the topic ${topic.name}`;
-      return `colorful 3D objects showing ${base}`;
+      return `vzdělávací ilustrace — ${topic.name}${topic.description ? ": " + topic.description : ""}`;
     }
   }
   return "";

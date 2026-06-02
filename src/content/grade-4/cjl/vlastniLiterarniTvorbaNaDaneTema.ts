@@ -74,6 +74,7 @@ export const VLASTNILITERARNITVORBANADANETEMA: TopicMetadata[] = [
     rvpNodeId: "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema",
     title: "Vlastní literární tvorba na dané téma",
     studentTitle: "Píšu svůj příběh",
+    illustrationDesc: "usmívající se dítě sedí u dřevěného stolu a píše vlastní příběh tužkou do otevřeného sešitu, nad jeho hlavou myšlenková bublina s malým rytířem a drakem, vedle stolu komínek barevných knih a kelímek s tužkami",
     subject: "čeština",
     category: "Literární výchova",
     topic: "Literární výchova",

@@ -85,6 +85,10 @@ export const TEMPLATE_TOPIC: TopicMetadata[] = [
 
     title: "TODO: oficiální RVP název podtématu (např. 'Aritmetický průměr')",
     studentTitle: "TODO: 1-3 slova dětsky (např. 'Průměr'). Optional — fallback je 'title'. Přidej i do displayNames.ts pokud potřebuješ.",
+    // 💡 illustrationDesc: DOPORUČENO — 1 věta, KONKRÉTNÍ vizuální scéna (co je NA obrázku, ne co se dítě naučí).
+    //    Příklad: "dítě počítá na prstech u stolu, kolem létají barevná čísla a kostky"
+    //    Bez illustrationDesc generátor použije automatický fallback (horší shoda s obsahem).
+    //    illustrationDesc: "TODO: konkrétní vizuální scéna pro ilustraci",
     subject: "matematika", // "matematika" | "čeština" | "vlastivěda" | "přírodověda" | "informatika"
     category: "TODO: oficiální RVP okruh (např. 'Závislosti, vztahy a práce s daty'). Dětský název přidej do `displayNames.ts`.",
     topic: "TODO: oficiální RVP téma (např. 'Práce s daty'). Dětský název přidej do `displayNames.ts`.",
