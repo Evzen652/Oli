@@ -101,9 +101,14 @@ const corsHeaders = {
 // Popisuj POUZE co tam má být. Co nemá být tam → jen v separátním negative_prompt poli.
 const SUFFIX = `. Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format. No text, no letters, no words, no writing, no labels, no captions anywhere in the image.`;
 
+// scene/concept: child as main subject — for topic-* keys
 function p(desc: string) { return `Cute 3D Pixar-style illustration. A cheerful smiling human child (boy or girl, age 8 to 10, big expressive eyes, optional glasses, modern casual colorful clothes) engaged with ${desc}${SUFFIX}`; }
 const concept = p;
 const scene = p;
+
+// icon: pure 3D symbolic object, NO child, NO flat text-bearing surfaces — for cat-* keys
+// Reliable anti-text formula: floating 3D objects in air, smooth rounded shapes only
+function icon(desc: string) { return `Cute 3D Pixar-style icon illustration. ${desc}. Floating in the center against a pure white background, smooth rounded glossy 3D surfaces, soft drop shadow, vibrant pastel colors, no flat surfaces, no screens, no paper, no books, no signs${SUFFIX}`; }
 
 // All keys to generate images for
 const IMAGE_KEYS: Record<string, string> = {
@@ -119,10 +124,10 @@ const IMAGE_KEYS: Record<string, string> = {
   "subject-vlastiveda": concept("a stylized map shape of Czech Republic with a small castle silhouette and a flag on top"),
 
   // ── PRVOUKA: Categories ───────────────────────────────────
-  "cat-clovek-a-jeho-telo": scene("a cheerful child with arms outstretched, glowing heart and lungs visible inside the body"),
-  "cat-priroda-kolem-nas": scene("lush nature scene with a tall tree, blooming flowers, bright sun, birds, and a small pond"),
-  "cat-lide-a-spolecnost": scene("a colorful neighborhood with houses, a school building, and people waving to each other"),
-  "cat-orientace-v-prostoru-a-case": concept("a large compass rose with four directional arrows, an analog clock face, and a calendar page"),
+  "cat-clovek-a-jeho-telo": icon("a glowing 3D heart and a pair of lungs side by side, warm red and pink tones"),
+  "cat-priroda-kolem-nas": icon("a bright green 3D tree next to a yellow sun and a small blue cloud, cheerful nature trio"),
+  "cat-lide-a-spolecnost": icon("three colorful 3D human silhouettes of different sizes standing together, warm friendly colors"),
+  "cat-orientace-v-prostoru-a-case": icon("a glossy 3D compass rose and a round analog clock floating side by side"),
 
   // ── PRVOUKA: Topics ───────────────────────────────────────
   "topic-lidske-telo": scene("a transparent human body outline with colorful glowing organs: heart, lungs, stomach, brain"),
@@ -140,9 +145,9 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-cas-a-kalendar": concept("a large analog clock face showing nine o'clock, next to a calendar page with a day circled"),
 
   // ── MATEMATIKA: Categories ────────────────────────────────
-  "cat-math-cisla-a-operace": concept("colorful 3D digit blocks stacked with a plus sign and equals sign between them, bright and bold"),
-  "cat-math-zlomky": concept("a large circle split into four equal colored sections — red, blue, yellow, green — one section slightly pulled out"),
-  "cat-math-geometrie": concept("four bold geometric shapes: red circle, blue square, yellow triangle, green rectangle — arranged in a square layout"),
+  "cat-math-cisla-a-operace": icon("colorful 3D digit blocks — a red 3, a blue 7 — with a shiny plus symbol between them"),
+  "cat-math-zlomky": icon("a glossy 3D sphere sliced cleanly in half, one half yellow one half blue, floating apart slightly"),
+  "cat-math-geometrie": icon("four glossy 3D geometric shapes floating in a cluster: a red sphere, blue cube, yellow cone, green cylinder"),
 
   // ── MATEMATIKA: Topics ────────────────────────────────────
   "topic-math-porovnavani-prirozenych-cisel": concept("two piles of colorful balls, one large pile and one small pile, with a bold arrow pointing from large to small"),
@@ -171,11 +176,11 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-math-objem-ml-l": concept("a tall measuring jug with colored liquid showing a fill line, next to a large water bottle"),
 
   // ── ČEŠTINA: Categories ───────────────────────────────────
-  "cat-cz-vyjmenovana-slova": concept("a large magnifying glass focusing on a single letter Y on an open book page"),
-  "cat-cz-pravopis": concept("a notebook page with a bold red pencil drawing a checkmark and an X, correction marks"),
-  "cat-cz-mluvnice": concept("three colorful speech bubbles connected by arrows in a tree structure, each a different color"),
-  "cat-cz-diktat": concept("a notebook with a line of text that has a blank gap, with a pencil filling in the missing space"),
-  "cat-cestina-literarni-vychova": scene("a child lying on a cloud with eyes wide open in wonder, surrounded by glowing fairy tale dream bubbles floating around them: a tiny glowing castle, a golden crown, a friendly tiny dragon — dreamy magical atmosphere, soft pastel purples and golds"),
+  "cat-cz-vyjmenovana-slova": icon("a large glossy 3D magnifying glass hovering over a single glowing letter Y, warm golden light"),
+  "cat-cz-pravopis": icon("a shiny green 3D checkmark and a red 3D cross floating side by side, bold and clear"),
+  "cat-cz-mluvnice": icon("three colorful 3D speech bubbles of different sizes floating in a triangle — blue, orange, green"),
+  "cat-cz-diktat": icon("a glossy 3D pencil next to three floating dotted-line oval shapes representing blank spaces"),
+  "cat-cestina-literarni-vychova": icon("a glowing golden crown, a sparkling magic wand, and a tiny 3D dragon — three magical objects floating in a triangle"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
   "topic-cz-vyjm-b": concept("a large bold letter B glowing in the center, surrounded by a house, a bicycle, and a bee icon"),
@@ -195,7 +200,7 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-cz-diktat": concept("a notebook page with three dotted blank lines in the middle of a sentence, a pencil hovering above ready to write"),
 
   // ── ČEŠTINA: Sloh ─────────────────────────────────────────
-  "cat-cz-sloh": scene("a child sitting at a desk writing in a notebook, colorful story bubbles with a dragon and castle floating above"),
+  "cat-cz-sloh": icon("a glossy 3D feather quill pen and a colorful speech bubble floating side by side, warm creative atmosphere"),
   "topic-cz-sloh-vypraveni": scene("a child excitedly telling a story with a large speech bubble showing a castle, dragon, and hero"),
   "topic-cz-sloh-popis": concept("a large magnifying glass over a red apple, with descriptive arrows pointing to its color, shape, and texture"),
 };
@@ -272,7 +277,9 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // gen.pollinations.ai = paid endpoint, token jako ?key=
     const keyParam = POLLINATIONS_TOKEN ? `&key=${POLLINATIONS_TOKEN}` : "";
     // negative_prompt se skutečně posílá — předtím byl definován ale nikdy použit
-    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true&negative_prompt=${negative}${keyParam}`;
+    // negative_prompt jako samostatný param — krátký, bez speciálních znaků
+    const negShort = encodeURIComponent("text, letters, words, writing, labels, watermark, sign");
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true&negative_prompt=${negShort}${keyParam}`;
     const resp = await fetch(url);
     if (!resp.ok) {
       const errBody = await resp.text().catch(() => "");
