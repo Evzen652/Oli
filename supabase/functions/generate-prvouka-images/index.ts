@@ -98,10 +98,18 @@ const corsHeaders = {
 };
 
 /**
- * SYSTÉM ILUSTRACÍ
- * edu() — 3D symboly, žádné dítě (cat-*, subject-*)
+ * SYSTÉM ILUSTRACÍ — FLUX PRAVIDLA (důležité!)
+ *
+ * edu() — čisté 3D objekty, žádné dítě (cat-*, subject-*)
  * kid() — dítě v akci (topic-*)
- * Krátký prompt = model ho lépe sleduje. Max 3 objekty.
+ *
+ * ✅ FLUX neudělá text na: geometrické tvary, příroda, zvířata, jídlo,
+ *    abstraktní objekty (hodiny, přesýpačka, míč, klíč, hvězdička)
+ * ❌ FLUX VŽDY přidá text na: budovy, architektura, mapy, vlajky,
+ *    civic/geografické scény, vývěsní štíty, knihy (obálky)
+ *
+ * Pravidlo: pokud popis obsahuje budovu nebo architekturu → nahradit
+ * abstraktním symbolem (location pin místo domu, sphere místo mapy).
  */
 function edu(objects: string): string {
   return `3D Pixar icon: ${objects}. Pure white background, smooth glossy rounded 3D shapes, soft pastel colors, centered composition.`;
