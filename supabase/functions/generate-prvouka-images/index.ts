@@ -213,6 +213,7 @@ const IMAGE_KEYS: Record<string, string> = {
 async function generateImage(prompt: string): Promise<{ base64: string; contentType: string }> {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
+  const POLLINATIONS_TOKEN = Deno.env.get("POLLINATIONS_TOKEN");
   const tryPollinations = async () => {
     const encoded = encodeURIComponent(prompt);
     const negative = encodeURIComponent([
@@ -235,8 +236,10 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     const seed = Math.floor(Math.random() * 999999);
     // private=true → nezveřejňovat v public feedu
     // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
-    const url = `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&model=flux&seed=${seed}`;
-    const resp = await fetch(url);
+    const url = `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&model=flux&seed=${seed}&nologo=true&private=true`;
+    const headers: Record<string, string> = {};
+    if (POLLINATIONS_TOKEN) headers["Authorization"] = `Bearer ${POLLINATIONS_TOKEN}`;
+    const resp = await fetch(url, { headers });
     if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
     const bytes = new Uint8Array(await resp.arrayBuffer());
     let binary = "";
@@ -266,11 +269,11 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64, contentType: mimeMatch?.[1] ?? "image/png" };
   };
 
-  // Gemini 2.0 Flash Exp — nativní image generation přes generateContent + responseModalities.
-  // Funguje s Google AI Studio API klíčem (bez Vertex AI).
+  // Gemini 2.0 Flash — nativní image generation přes generateContent + responseModalities.
   const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   const tryGeminiDirect = async () => {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`;
+    // gemini-2.0-flash má nativní image output od 2026; v1beta endpoint
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
     const resp = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -281,22 +284,22 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     });
     if (!resp.ok) {
       const t = await resp.text();
-      throw new Error(`Gemini2Flash error ${resp.status}: ${t.slice(0, 300)}`);
+      throw new Error(`GeminiFlash error ${resp.status}: ${t.slice(0, 300)}`);
     }
     const data = await resp.json();
     const parts = data.candidates?.[0]?.content?.parts ?? [];
     const imagePart = parts.find((p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData);
     if (!imagePart?.inlineData?.data) {
-      throw new Error("No image in Gemini2Flash response: " + JSON.stringify(data).slice(0, 200));
+      throw new Error("No image in GeminiFlash response: " + JSON.stringify(data).slice(0, 200));
     }
     return { base64: imagePart.inlineData.data, contentType: imagePart.inlineData.mimeType ?? "image/png" };
   };
 
-  // Priorita: Gemini direct (kvalita, instruction-following) → Lovable Gemini (záloha) → Pollinations (last resort).
+  // Priorita: Pollinations s tokenem (rychlý, free s auth) → Gemini Flash (záloha) → Lovable → Pollinations bez tokenu.
   const chain = [
+    { name: "pollinations", run: tryPollinations },  // první — s tokenem obchází IP rate limit
     ...(GEMINI_API_KEY ? [{ name: "gemini-direct", run: tryGeminiDirect }] : []),
     ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
-    { name: "pollinations", run: tryPollinations },
   ];
 
   const errors: string[] = [];
