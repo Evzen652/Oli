@@ -185,9 +185,9 @@ const IMAGE_KEYS: Record<string, string> = {
   "cat-cz-sloh": kid("gesturing enthusiastically as colorful speech bubbles and stars float upward around them"),
 
   // ── VLASTIVĚDA: Categories ────────────────────────────────
-  "cat-vlastiveda-misto-kde-zijeme": kid("standing on a colorful map with a glowing pin marking home location"),
-  "cat-vlastiveda-lide-kolem-nas": kid("surrounded by colorful 3D human figures of different heights and skin tones, all smiling and waving"),
-  "cat-vlastiveda-lide-a-cas": kid("looking at a large timeline with historical figures and events floating above it"),
+  "cat-vlastiveda-misto-kde-zijeme": kid("holding a glowing 3D house model with colorful trees and a small church floating around it"),
+  "cat-vlastiveda-lide-kolem-nas": kid("in the middle of a circle of cheerful colorful 3D people of different heights, all smiling"),
+  "cat-vlastiveda-lide-a-cas": kid("holding a large hourglass with golden sand, a round clock and crescent moon floating nearby"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
   "topic-cz-vyjm-b": edu("glowing letter B with house, bicycle, bee around it"),
