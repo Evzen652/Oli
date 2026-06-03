@@ -235,7 +235,7 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     const seed = Math.floor(Math.random() * 999999);
     // private=true → nezveřejňovat v public feedu
     // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
-    const url = `https://image.pollinations.ai/prompt/${encoded}?negative_prompt=${negative}&width=1024&height=1024&model=flux&nologo=true&private=true&seed=${seed}`;
+    const url = `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&model=flux&seed=${seed}`;
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
     const bytes = new Uint8Array(await resp.arrayBuffer());
