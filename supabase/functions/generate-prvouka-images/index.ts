@@ -322,10 +322,10 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64: imagePart.inlineData.data, contentType: imagePart.inlineData.mimeType ?? "image/png" };
   };
 
-  // Priorita: HuggingFace FLUX.1 (free, bez IP limitu) → Pollinations → Gemini → Lovable
+  // Priorita: Pollinations (nejlepší kvalita, s tokenem) → HuggingFace (záloha) → Gemini → Lovable
   const chain = [
-    ...(HF_TOKEN ? [{ name: "huggingface", run: tryHuggingFace }] : []),
     { name: "pollinations", run: tryPollinations },
+    ...(HF_TOKEN ? [{ name: "huggingface", run: tryHuggingFace }] : []),
     ...(GEMINI_API_KEY ? [{ name: "gemini-direct", run: tryGeminiDirect }] : []),
     ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
   ];
