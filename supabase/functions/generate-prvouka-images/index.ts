@@ -212,6 +212,32 @@ const IMAGE_KEYS: Record<string, string> = {
  */
 async function generateImage(prompt: string): Promise<{ base64: string; contentType: string }> {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  const HF_TOKEN = Deno.env.get("HF_TOKEN");
+
+  // Hugging Face FLUX.1-schnell — bezplatný, bez IP rate limitů
+  const tryHuggingFace = async () => {
+    if (!HF_TOKEN) throw new Error("HF_TOKEN not set");
+    const resp = await fetch(
+      "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${HF_TOKEN}`,
+          "Content-Type": "application/json",
+          "x-use-cache": "false",
+        },
+        body: JSON.stringify({ inputs: prompt, parameters: { num_inference_steps: 4 } }),
+      },
+    );
+    if (!resp.ok) {
+      const t = await resp.text();
+      throw new Error(`HuggingFace error ${resp.status}: ${t.slice(0, 200)}`);
+    }
+    const bytes = new Uint8Array(await resp.arrayBuffer());
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    return { base64: btoa(binary), contentType: "image/jpeg" };
+  };
 
   const POLLINATIONS_TOKEN = Deno.env.get("POLLINATIONS_TOKEN");
   const tryPollinations = async () => {
@@ -295,9 +321,10 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64: imagePart.inlineData.data, contentType: imagePart.inlineData.mimeType ?? "image/png" };
   };
 
-  // Priorita: Pollinations s tokenem (rychlý, free s auth) → Gemini Flash (záloha) → Lovable → Pollinations bez tokenu.
+  // Priorita: HuggingFace FLUX.1 (free, bez IP limitu) → Pollinations → Gemini → Lovable
   const chain = [
-    { name: "pollinations", run: tryPollinations },  // první — s tokenem obchází IP rate limit
+    ...(HF_TOKEN ? [{ name: "huggingface", run: tryHuggingFace }] : []),
+    { name: "pollinations", run: tryPollinations },
     ...(GEMINI_API_KEY ? [{ name: "gemini-direct", run: tryGeminiDirect }] : []),
     ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
   ];
