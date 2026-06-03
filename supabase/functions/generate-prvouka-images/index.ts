@@ -270,7 +270,7 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
     // gen.pollinations.ai = paid endpoint, token jako ?key=
     const keyParam = POLLINATIONS_TOKEN ? `&key=${POLLINATIONS_TOKEN}` : "";
-    const url = `https://gen.pollinations.ai/image/${encoded}?width=1024&height=1024&model=flux&seed=${seed}&nologo=true&private=true${keyParam}`;
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true${keyParam}`;
     const resp = await fetch(url);
     if (!resp.ok) {
       const errBody = await resp.text().catch(() => "");
