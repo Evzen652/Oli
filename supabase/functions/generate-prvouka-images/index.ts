@@ -104,10 +104,10 @@ const corsHeaders = {
  * Krátký prompt = model ho lépe sleduje. Max 3 objekty.
  */
 function edu(objects: string): string {
-  return `NO TEXT NO WORDS NO LETTERS. 3D Pixar icon: ${objects}. White background, smooth glossy rounded 3D shapes, soft pastel colors, centered.`;
+  return `3D Pixar icon: ${objects}. Pure white background, smooth glossy rounded 3D shapes, soft pastel colors, centered composition.`;
 }
 function kid(activity: string): string {
-  return `NO TEXT NO WORDS NO LETTERS. 3D Pixar: cheerful child age 8-10 ${activity}. White background, smooth rounded 3D shapes, soft pastel colors.`;
+  return `3D Pixar illustration: cheerful smiling child age 8-10 with big eyes ${activity}. Pure white background, smooth rounded 3D shapes, soft pastel colors.`;
 }
 const scene = kid;
 const concept = edu;
@@ -185,9 +185,9 @@ const IMAGE_KEYS: Record<string, string> = {
   "cat-cz-sloh": kid("gesturing enthusiastically as colorful speech bubbles and stars float upward around them"),
 
   // ── VLASTIVĚDA: Categories ────────────────────────────────
-  "cat-vlastiveda-misto-kde-zijeme": kid("holding a glowing 3D house model with colorful trees and a small church floating around it"),
-  "cat-vlastiveda-lide-kolem-nas": kid("in the middle of a circle of cheerful colorful 3D people of different heights, all smiling"),
-  "cat-vlastiveda-lide-a-cas": kid("holding a large hourglass with golden sand, a round clock and crescent moon floating nearby"),
+  "cat-vlastiveda-misto-kde-zijeme": edu("small 3D house, tall green tree, and tiny church — a cozy village trio floating in soft light"),
+  "cat-vlastiveda-lide-kolem-nas": edu("five colorful 3D rounded human figures of different sizes standing in a circle, warm friendly colors"),
+  "cat-vlastiveda-lide-a-cas": edu("golden hourglass with flowing sand, round analog clock, crescent moon — three time symbols floating"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
   "topic-cz-vyjm-b": edu("glowing letter B with house, bicycle, bee around it"),
@@ -299,7 +299,8 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // negative_prompt se skutečně posílá — předtím byl definován ale nikdy použit
     // negative_prompt jako samostatný param — krátký, bez speciálních znaků
     const negShort = encodeURIComponent("text, letters, words, writing, labels, watermark, sign");
-    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true${keyParam}`;
+    const neg = encodeURIComponent("text, letters, words, writing, labels, watermark, sign, flag, map, parliament");
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true&negative_prompt=${neg}${keyParam}`;
     const resp = await fetch(url);
     if (!resp.ok) {
       const errBody = await resp.text().catch(() => "");
