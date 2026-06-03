@@ -175,6 +175,7 @@ const IMAGE_KEYS: Record<string, string> = {
   "cat-cz-pravopis": concept("a notebook page with a bold red pencil drawing a checkmark and an X, correction marks"),
   "cat-cz-mluvnice": concept("three colorful speech bubbles connected by arrows in a tree structure, each a different color"),
   "cat-cz-diktat": concept("a notebook with a line of text that has a blank gap, with a pencil filling in the missing space"),
+  "cat-cestina-literarni-vychova": scene("a child sitting in a cozy armchair reading a large open fairytale book, glowing magical characters floating above the pages — a dragon, a castle, a princess — warm golden light"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
   "topic-cz-vyjm-b": concept("a large bold letter B glowing in the center, surrounded by a house, a bicycle, and a bee icon"),
