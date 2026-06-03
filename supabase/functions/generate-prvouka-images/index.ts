@@ -266,34 +266,28 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64, contentType: mimeMatch?.[1] ?? "image/png" };
   };
 
-  // Gemini direct (přímo Google API) — využije GEMINI_API_KEY z env.
+  // Imagen 3 (Google API) — stabilní model pro image generation, jiný endpoint než generateContent.
   const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   const tryGeminiDirect = async () => {
-    // gemini-2.0-flash-preview-image-generation = aktuální model pro image generation via generateContent
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`;
+    // Imagen 3 via Google Generative Language API — predict endpoint
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${GEMINI_API_KEY}`;
     const resp = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
+        instances: [{ prompt }],
+        parameters: { sampleCount: 1, aspectRatio: "1:1" },
       }),
     });
     if (!resp.ok) {
       const t = await resp.text();
-      throw new Error(`Gemini direct error ${resp.status}: ${t.slice(0, 300)}`);
+      throw new Error(`Imagen3 error ${resp.status}: ${t.slice(0, 300)}`);
     }
     const data = await resp.json();
-    // Najdi inlineData v parts
-    const parts = data.candidates?.[0]?.content?.parts ?? [];
-    const imagePart = parts.find((p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData);
-    if (!imagePart?.inlineData?.data) {
-      throw new Error("No image in Gemini response: " + JSON.stringify(data).slice(0, 200));
-    }
-    return {
-      base64: imagePart.inlineData.data,
-      contentType: imagePart.inlineData.mimeType ?? "image/png",
-    };
+    const b64 = data.predictions?.[0]?.bytesBase64Encoded;
+    const mime = data.predictions?.[0]?.mimeType ?? "image/png";
+    if (!b64) throw new Error("No image in Imagen3 response: " + JSON.stringify(data).slice(0, 200));
+    return { base64: b64, contentType: mime };
   };
 
   // Priorita: Gemini direct (kvalita, instruction-following) → Lovable Gemini (záloha) → Pollinations (last resort).
