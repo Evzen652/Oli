@@ -185,7 +185,7 @@ const IMAGE_KEYS: Record<string, string> = {
   "cat-cz-sloh": kid("gesturing enthusiastically as colorful speech bubbles and stars float upward around them"),
 
   // ── VLASTIVĚDA: Categories ────────────────────────────────
-  "cat-vlastiveda-misto-kde-zijeme": edu("small 3D house, tall green tree, and tiny church — a cozy village trio floating in soft light"),
+  "cat-vlastiveda-misto-kde-zijeme": edu("large glowing 3D location pin, small green 3D sphere, miniature roof shape — home and place symbols"),
   "cat-vlastiveda-lide-kolem-nas": edu("five colorful 3D rounded human figures of different sizes standing in a circle, warm friendly colors"),
   "cat-vlastiveda-lide-a-cas": edu("golden hourglass with flowing sand, round analog clock, crescent moon — three time symbols floating"),
 
