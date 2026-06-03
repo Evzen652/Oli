@@ -6,7 +6,7 @@
 >
 > Repo: https://github.com/Evzen652/Oli
 > Branch: `main`
-> Aktualizováno: 2026-05-24
+> Aktualizováno: 2026-06-03
 
 ---
 
@@ -87,14 +87,14 @@ src/
 4. ~~**Audit systém**~~ ✅ — contentAudit + pedagogický audit pipeline hotovo
 5. **RVP import** — naplnění obsahem (probíhá přes grade-N sessions)
 
-### Typy cvičení
+### Typy cvičení — všechny hotovy ✅
 - [x] Multiple choice (`select_one`)
 - [x] Fill in the blank (`fill_blank`)
 - [x] True/False (`true_false`)
 - [x] Text input (`text_input`)
 - [x] Matching pairs (`matching`)
 - [x] Ordering (`ordering`)
-- [ ] Multi-select
+- [x] Multi-select (`multi_select`)
 
 ---
 
@@ -115,40 +115,27 @@ src/
 | **Authoring Launcher** | ✅ | `AuthoringLauncher` komponenta v admin ExerciseTab pro Level II+III — generuje prompt pro Claude Chat |
 | **CI/CD + E2E testy** | ✅ | GitHub Actions pipeline, Playwright setup, 5 E2E spec souborů, GitHub Secrets (Supabase) |
 | **Admin ilustrace — fix** | ✅ | Legacy imageKey priorita (admin panel = stejné klíče jako UI), DEFAULT_DESCS pro grade-4 geometrii |
+| **Admin ilustrace — generování** | ✅ | Pollinations `gen.pollinations.ai` + `?key=` auth; HF seed fix; `key` prop na `<img>` pro remount |
 | **Inline editace dítěte** | ✅ | Editace jména/ročníku přímo v gradient kartě (shadcn Select přes Radix Portal) |
 | **AssignmentCreator** | ✅ | Přepsán na code registry (`getAllTopics()`), ilustrace s `mix-blend-multiply` |
 | **UI redesign** | ✅ | Stats karty s ikonami, fialový session header, ChildHomePage layout s chipy předmětů |
 | **Grade-4 matematika** | ✅ | 14/14 topics implementovány (plný RVP pro 4. ročník) |
+| **Grade-4 obsah kompletní** | ✅ | 72 topics: matematika 14, čeština 22, vlastivěda 13, přírodověda 13, informatika 10 |
+| **CI/CD + E2E testy** | ✅ | GitHub Actions pipeline, Playwright setup, 5 E2E spec souborů |
+| **Freemium + 14-denní trial** | ✅ | Anonymní vstup, trial flow, adaptive difficulty, InviteParent flow |
 | **Architektura paralelních sessions** | ✅ | Worktree izolace, SESSION_OWNERSHIP, PENDING_CHANGES komunikace |
 | **RVP dataset + curriculum API** | ✅ | 841 podtémat, `data/rvp_data.json`, `rvpNodeId` most |
 
-## 6. Aktuálně rozpracované
+## 6. Otevřené / další v pořadí
 
 | Co | Kdo | Stav |
 |---|---|---|
-| Adaptabilita mezi sezeními | Architekt | ✅ Hotovo |
-| Refactor inputType na úroveň PracticeTask | Architekt | ✅ Hotovo |
-| 6 typů cvičení | Architekt | ✅ Hotovo |
-| Admin ilustrace — překreslení po generování (`key` na `<img>` + bez `loading="lazy"`) | Architekt | ✅ Hotovo |
-| Admin ilustrace — regenerace vracela stejný obrázek (HF chybějící seed; Pollinations padá na HF) | Architekt | ✅ Hotovo (Pollinations 403 k prověření) |
-| Templated facts architektura | Architekt | ✅ Hotovo |
-| Parent UI (reporty, benchmarky, plán dopředu) | Architekt | ✅ Hotovo |
-| Student UI (pozitivní labely, TopicResultDetail) | Architekt | ✅ Hotovo |
-| Pedagogický audit pipeline | Architekt | ✅ Hotovo |
-| 4 kritické UX bugy (auth, demo flow) | Architekt | ✅ Hotovo |
-| Admin UI cleanup + AuthoringLauncher | Architekt | ✅ Hotovo |
-| CI/CD pipeline + E2E testy (Playwright) | Architekt | 🟡 V PR |
-| Hero layout (plovoucí hvězdičky, tlačítko dolů) | Architekt | 🟡 V PR |
-| Freemium / anonymní vstup pro dítě (Kroky A–E kompletní) | Architekt | ✅ Hotovo |
-| 14-denní trial s plným přístupem (změna freemium modelu) | Architekt | ✅ Hotovo |
-| Trial flow bug fixes (loading, crash, grade, progress) | Architekt | ✅ Hotovo (4/5 — InviteDialog memory leak otevřený) |
-| Email integrace pro parent_invitations (Resend/SendGrid) | Architekt | ⏸️ Follow-up |
-| Czech grammar — centrální helper + audit | Architekt | ✅ Hotovo (audit zbylých generátorů otevřený) |
-| Aplikace migrace `parent_invitations` v Supabase | Evžen | ✅ Provedeno 24.5. |
+| InviteDialog memory leak (bug #5 z trial flow) | Architekt | 🐛 Otevřený |
+| Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
 | Sjednocení helpTemplate vs task.hints | Architekt | ⏸️ Čeká |
 | displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
-| Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na authoring |
-| Grade-4 čeština, vlastivěda, přírodověda | Grade-4 session | ⏸️ Čeká na authoring |
+| Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
+| Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na admin editor |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ---
