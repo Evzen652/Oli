@@ -210,14 +210,17 @@ const IMAGE_KEYS: Record<string, string> = {
  *
  * Vrací { base64, contentType } nebo throws Error.
  */
-async function generateImage(prompt: string): Promise<{ base64: string; contentType: string }> {
+async function generateImage(prompt: string): Promise<{ base64: string; contentType: string; provider: string }> {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const HF_TOKEN = Deno.env.get("HF_TOKEN");
 
   // Hugging Face FLUX.1-schnell — nový router endpoint (router.huggingface.co)
   const tryHuggingFace = async () => {
     if (!HF_TOKEN) throw new Error("HF_TOKEN not set");
-    // HF router — klasický inference formát s inputs
+    // HF router — klasický inference formát s inputs.
+    // DŮLEŽITÉ: bez seedu vrací FLUX.1-schnell pro stejný prompt deterministicky
+    // identický obrázek → regenerace by nic nezměnila. Náhodný seed vynutí novou variantu.
+    const hfSeed = Math.floor(Math.random() * 2147483647);
     const resp = await fetch(
       "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell",
       {
@@ -226,7 +229,7 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
           Authorization: `Bearer ${HF_TOKEN}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ inputs: prompt }),
+        body: JSON.stringify({ inputs: prompt, parameters: { seed: hfSeed } }),
       },
     );
     if (!resp.ok) {
@@ -260,10 +263,12 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
       // Quality
       "blurry", "low quality", "deformed face", "ugly", "extra fingers", "extra limbs",
     ].join(", "));
-    const seed = Math.floor(Math.random() * 999999);
+    // Vysoká entropie seedu (čas + random) — aby každé volání bylo jiné URL.
+    const seed = (Date.now() % 1000000) * 1000 + Math.floor(Math.random() * 1000);
     // private=true → nezveřejňovat v public feedu
+    // nofeed=true + safe=false → obejít agregátní cache feedu, vynutit čerstvou generaci
     // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
-    const url = `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&model=flux&seed=${seed}&nologo=true&private=true`;
+    const url = `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&model=flux&seed=${seed}&nologo=true&private=true&nofeed=true`;
     const headers: Record<string, string> = {};
     if (POLLINATIONS_TOKEN) headers["Authorization"] = `Bearer ${POLLINATIONS_TOKEN}`;
     const resp = await fetch(url, { headers });
@@ -334,7 +339,8 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   for (const provider of chain) {
     try {
       console.log(`[generate-prvouka] Trying ${provider.name}...`);
-      return await provider.run();
+      const result = await provider.run();
+      return { ...result, provider: provider.name };
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       errors.push(`${provider.name}: ${msg}`);
@@ -402,6 +408,7 @@ serve(async (req) => {
 
     const results: Record<string, string> = {};
     const errors: Record<string, string> = {};
+    const providers: Record<string, string> = {}; // diagnostika: který provider obrázek vygeneroval
 
     for (const key of requestedKeys) {
       let prompt = customPrompts[key] ?? IMAGE_KEYS[key];
@@ -511,7 +518,8 @@ serve(async (req) => {
 
         console.log(`Generating image for: ${key}`);
 
-        const { base64 } = await generateImage(prompt);
+        const { base64, provider } = await generateImage(prompt);
+        providers[key] = provider;
         const rawBytes = decode(base64);
 
         // Odstraní bílé pozadí → průhledné PNG
@@ -548,7 +556,7 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ results, errors }),
+      JSON.stringify({ results, errors, providers }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
