@@ -214,29 +214,29 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const HF_TOKEN = Deno.env.get("HF_TOKEN");
 
-  // Hugging Face FLUX.1-schnell — bezplatný, bez IP rate limitů
+  // Hugging Face FLUX.1-schnell — nový router endpoint (router.huggingface.co)
   const tryHuggingFace = async () => {
     if (!HF_TOKEN) throw new Error("HF_TOKEN not set");
+    // Nový HF Inference Providers router — lepší dostupnost z edge prostředí
     const resp = await fetch(
-      "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
+      "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell/v1/images/generations",
       {
         method: "POST",
         headers: {
           Authorization: `Bearer ${HF_TOKEN}`,
           "Content-Type": "application/json",
-          "x-use-cache": "false",
         },
-        body: JSON.stringify({ inputs: prompt, parameters: { num_inference_steps: 4 } }),
+        body: JSON.stringify({ prompt, num_inference_steps: 4, response_format: "b64_json" }),
       },
     );
     if (!resp.ok) {
       const t = await resp.text();
       throw new Error(`HuggingFace error ${resp.status}: ${t.slice(0, 200)}`);
     }
-    const bytes = new Uint8Array(await resp.arrayBuffer());
-    let binary = "";
-    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-    return { base64: btoa(binary), contentType: "image/jpeg" };
+    const data = await resp.json();
+    const b64 = data.data?.[0]?.b64_json;
+    if (!b64) throw new Error("No image in HF response: " + JSON.stringify(data).slice(0, 200));
+    return { base64: b64, contentType: "image/png" };
   };
 
   const POLLINATIONS_TOKEN = Deno.env.get("POLLINATIONS_TOKEN");
