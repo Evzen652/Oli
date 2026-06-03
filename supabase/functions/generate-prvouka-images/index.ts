@@ -97,113 +97,128 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// PŘÍSNĚ POZITIVNÍ POPIS — bez negací. AI extrahuje noun z "no X" a přidá ho do obrázku.
-// Popisuj POUZE co tam má být. Co nemá být tam → jen v separátním negative_prompt poli.
-const SUFFIX = `. Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format. No text, no letters, no words, no writing, no labels, no captions anywhere in the image.`;
-
-// scene/concept: child as main subject — for topic-* keys
-function p(desc: string) { return `Cute 3D Pixar-style illustration. A cheerful smiling human child (boy or girl, age 8 to 10, big expressive eyes, optional glasses, modern casual colorful clothes) engaged with ${desc}${SUFFIX}`; }
-const concept = p;
-const scene = p;
-
-// icon: pure 3D symbolic object, NO child, NO flat text-bearing surfaces — for cat-* keys
-// Reliable anti-text formula: floating 3D objects in air, smooth rounded shapes only
-function icon(desc: string) { return `Cute 3D Pixar-style icon illustration. ${desc}. Floating in the center against a pure white background, smooth rounded glossy 3D surfaces, soft drop shadow, vibrant pastel colors, no flat surfaces, no screens, no paper, no books, no signs${SUFFIX}`; }
+/**
+ * SYSTÉM ILUSTRACÍ
+ * edu() — 3D symboly, žádné dítě (cat-*, subject-*)
+ * kid() — dítě v akci (topic-*)
+ * Krátký prompt = model ho lépe sleduje. Max 3 objekty.
+ */
+function edu(objects: string): string {
+  return `3D Pixar icon: ${objects}. White background, smooth glossy rounded 3D shapes, soft pastel colors, centered. No text, no letters, no flat surfaces.`;
+}
+function kid(activity: string): string {
+  return `3D Pixar illustration: cheerful child age 8-10 ${activity}. White background, smooth rounded 3D shapes, soft pastel colors. No text, no letters.`;
+}
+const scene = kid;
+const concept = edu;
+const icon = edu;
 
 // All keys to generate images for
 const IMAGE_KEYS: Record<string, string> = {
   // ── UI ilustrace ──────────────────────────────────────────
-  "ui-child-desk": scene("a happy smiling child sitting at a wooden school desk, open notebook and pencil on the desk, bright colorful classroom background with a chalkboard"),
-  "ui-focus-target": scene("a friendly cheerful owl teacher pointing at a glowing golden star target on a board, encouraging smile, colorful classroom setting"),
+  "ui-child-desk": kid("sitting at a school desk with a pencil and notebook"),
+  "ui-focus-target": kid("pointing at a glowing golden star target"),
 
   // ── SUBJECTS ──────────────────────────────────────────────
-  "subject-matematika": concept("colorful 3D abacus with bright red and blue beads, plus sign and equals sign shapes, counting blocks stacked"),
-  "subject-cestina": concept("open book with colorful alphabet letters flying out of the pages, fountain pen beside it"),
-  "subject-prvouka": scene("a friendly owl sitting on a tree branch with sun, flowers, and a small butterfly nearby"),
-  "subject-prirodoveda": concept("large magnifying glass over a detailed green leaf showing veins and cells"),
-  "subject-vlastiveda": concept("a stylized map shape of Czech Republic with a small castle silhouette and a flag on top"),
+  "subject-matematika": edu("colorful abacus beads, plus sign, counting cubes"),
+  "subject-cestina": edu("speech bubble, fountain pen, colorful letter A"),
+  "subject-prvouka": edu("bright sun, green tree, small butterfly"),
+  "subject-prirodoveda": edu("magnifying glass over a green leaf"),
+  "subject-vlastiveda": edu("map shape of Czech Republic, small castle, flag"),
 
   // ── PRVOUKA: Categories ───────────────────────────────────
-  "cat-clovek-a-jeho-telo": icon("a glowing 3D heart and a pair of lungs side by side, warm red and pink tones"),
-  "cat-priroda-kolem-nas": icon("a bright green 3D tree next to a yellow sun and a small blue cloud, cheerful nature trio"),
-  "cat-lide-a-spolecnost": icon("three colorful 3D human silhouettes of different sizes standing together, warm friendly colors"),
-  "cat-orientace-v-prostoru-a-case": icon("a glossy 3D compass rose and a round analog clock floating side by side"),
+  "cat-clovek-a-jeho-telo": edu("glowing 3D heart, pair of lungs, brain — anatomy trio"),
+  "cat-priroda-kolem-nas": edu("green tree, yellow sun, small blue cloud"),
+  "cat-lide-a-spolecnost": edu("three colorful human silhouettes of different sizes"),
+  "cat-orientace-v-prostoru-a-case": edu("compass rose and round analog clock"),
 
   // ── PRVOUKA: Topics ───────────────────────────────────────
-  "topic-lidske-telo": scene("a transparent human body outline with colorful glowing organs: heart, lungs, stomach, brain"),
-  "topic-smysly": concept("five sense icons arranged in a circle: eye, ear, nose, lips, hand — each a different bright color"),
-  "topic-zdravi-a-hygiena": scene("a child washing hands with large soap bubbles, a toothbrush, a red apple, and a glass of water"),
-  "topic-rostliny": concept("a large sunflower plant showing roots underground, green stem, leaves, and yellow flower head"),
-  "topic-zvirata": scene("six friendly animals together: dog, cat, deer, bird, butterfly, fish — in a colorful meadow"),
-  "topic-rocni-obdobi-a-pocasi": concept("four quadrants each showing a season: pink cherry blossom, bright sun, orange falling leaves, white snowflake"),
-  "topic-nase-zeme": concept("a stylized outline of Czech Republic as a colorful map shape with a small castle and red-white-blue flag"),
-  "topic-rodina-a-spolecnost": scene("a warm family scene with parents, two children, and grandparents all smiling together"),
-  "topic-rodina-a-pravidla-chovani": scene("two children greeting an elderly neighbor, one holding a door open, friendly smiles"),
-  "topic-obec-a-mesto": scene("a charming small town with a town hall, church tower, school, and green park"),
-  "topic-ceska-republika": concept("Prague Castle silhouette on a hill with Charles Bridge arches below and a small Czech flag"),
-  "topic-svetove-strany-a-mapa": concept("a large ornate compass rose with four bold directional arrows pointing North South East West"),
-  "topic-cas-a-kalendar": concept("a large analog clock face showing nine o'clock, next to a calendar page with a day circled"),
+  "topic-lidske-telo": kid("with colorful glowing organs visible: heart, lungs, brain"),
+  "topic-smysly": edu("eye, ear, nose, lips, hand — five sense symbols in a circle"),
+  "topic-zdravi-a-hygiena": kid("washing hands with big soap bubbles, toothbrush nearby"),
+  "topic-rostliny": edu("sunflower showing roots, stem, leaves, flower head"),
+  "topic-zvirata": edu("dog, cat, bird, butterfly — four friendly animal icons"),
+  "topic-rocni-obdobi-a-pocasi": edu("four season symbols: cherry blossom, sun, falling leaf, snowflake"),
+  "topic-nase-zeme": edu("Czech Republic map shape, castle, red-white-blue flag"),
+  "topic-rodina-a-spolecnost": kid("waving alongside two smaller child figures and two adult figures"),
+  "topic-rodina-a-pravidla-chovani": kid("holding a door open, smiling"),
+  "topic-obec-a-mesto": edu("town hall, church tower, school building — small town trio"),
+  "topic-ceska-republika": edu("Prague Castle silhouette, Charles Bridge arch, Czech flag"),
+  "topic-svetove-strany-a-mapa": edu("large compass rose with four bold directional arrows"),
+  "topic-cas-a-kalendar": edu("analog clock showing nine o'clock, calendar page with circled day"),
 
   // ── MATEMATIKA: Categories ────────────────────────────────
-  "cat-math-cisla-a-operace": icon("colorful 3D digit blocks — a red 3, a blue 7 — with a shiny plus symbol between them"),
-  "cat-math-zlomky": icon("a glossy 3D sphere sliced cleanly in half, one half yellow one half blue, floating apart slightly"),
-  "cat-math-geometrie": icon("four glossy 3D geometric shapes floating in a cluster: a red sphere, blue cube, yellow cone, green cylinder"),
+  "cat-math-cisla-a-operace": edu("red digit 3 block, blue digit 7 block, shiny plus symbol"),
+  "cat-math-zlomky": edu("sphere sliced in half — one half yellow one half blue"),
+  "cat-math-geometrie": edu("red sphere, blue cube, yellow cone, green cylinder — floating cluster"),
 
   // ── MATEMATIKA: Topics ────────────────────────────────────
-  "topic-math-porovnavani-prirozenych-cisel": concept("two piles of colorful balls, one large pile and one small pile, with a bold arrow pointing from large to small"),
-  "topic-math-scitani-a-odcitani-do-100": concept("two groups of colored counting cubes being pushed together with a plus arrow between them"),
-  "topic-math-nasobeni-a-deleni": concept("four rows of three colorful stars arranged in a grid, a multiplication symbol between two groups"),
-  "topic-math-zaokrouhlovani": concept("a curved arrow bouncing from a midpoint on a number line to the nearest larger round mark"),
-  "topic-math-razeni-cisel": concept("five colorful blocks of different heights arranged from shortest to tallest in a row"),
-  "topic-math-porovnavani-zlomku": concept("two bars side by side: left bar three-quarters filled in yellow, right bar one-half filled in blue"),
-  "topic-math-kraceni-zlomku": concept("a large rectangle divided into eight equal sections with four highlighted, arrow pointing to same rectangle divided in two with one highlighted"),
-  "topic-math-rozsireni-zlomku": concept("a circle split in three with one colored section, arrow pointing to same circle split in nine with three colored sections"),
-  "topic-math-scitani-zlomku": concept("two pie charts side by side — one showing one-quarter slice, one showing two-quarter slices — with a plus symbol between them"),
-  "topic-math-odcitani-zlomku": concept("a pie chart with three-quarters colored, one slice being lifted away, minus symbol visible"),
-  "topic-math-smisena-cisla": concept("two whole colored circles next to one half-colored circle, arranged in a clean row"),
-  "topic-math-zlomek-z-cisla": concept("twelve apples arranged in three rows of four, three apples highlighted in bright red while the rest are green"),
-  "topic-math-nasobeni-zlomku-celym-cislem": concept("three identical quarter-pie pieces in a row, separated by plus symbols, combining into one three-quarter pie"),
-  "topic-math-geometricke-tvary": concept("bold flat geometric shapes with measurement marks: a square with equal side marks, triangle, circle, pentagon"),
-  "topic-math-obvod": concept("a rectangle with a dotted line tracing around its full perimeter, small arrows on each side"),
-
-  // ── MATEMATIKA: Měření ────────────────────────────────────
-  "topic-math-mereni-delky": concept("a bright yellow ruler measuring a pencil lying beside it, centimeter marks clearly visible"),
-  "topic-math-zakladni-jednotky": concept("three rulers of dramatically different lengths arranged from tiny to very long, stacked vertically"),
-  "topic-math-prevody-jednotek": concept("two measuring tapes of different scales connected by a bold double-headed arrow"),
-  "topic-math-odhad-delek": concept("a hand with a question mark above it hovering over a shoe, both items have dotted measurement lines"),
-  "topic-math-jednotky-hmotnosti": concept("a balance scale perfectly level with a small apple on one side and a weight on the other"),
-  "topic-math-slovni-ulohy-delky": concept("a colorful ribbon being cut by scissors, a ruler measuring the piece being cut"),
-  "topic-math-objem-ml-l": concept("a tall measuring jug with colored liquid showing a fill line, next to a large water bottle"),
+  "topic-math-porovnavani-prirozenych-cisel": edu("large pile of balls vs small pile, bold arrow between them"),
+  "topic-math-scitani-a-odcitani-do-100": edu("two groups of colored cubes with plus arrow between them"),
+  "topic-math-nasobeni-a-deleni": edu("grid of colorful stars, multiplication symbol"),
+  "topic-math-zaokrouhlovani": edu("curved arrow bouncing on a number line to a round mark"),
+  "topic-math-razeni-cisel": edu("five colorful blocks arranged shortest to tallest"),
+  "topic-math-porovnavani-zlomku": edu("two bars: left three-quarters yellow, right one-half blue"),
+  "topic-math-kraceni-zlomku": edu("rectangle in eight sections → same rectangle in two sections, arrow"),
+  "topic-math-rozsireni-zlomku": edu("circle in three parts one colored → same circle in nine parts three colored"),
+  "topic-math-scitani-zlomku": edu("two pie slices with plus symbol between them"),
+  "topic-math-odcitani-zlomku": edu("pie chart with one slice being lifted away, minus symbol"),
+  "topic-math-smisena-cisla": edu("two whole colored circles next to one half-colored circle"),
+  "topic-math-zlomek-z-cisla": edu("twelve apples in rows, three highlighted bright red"),
+  "topic-math-nasobeni-zlomku-celym-cislem": edu("three quarter-pie pieces in a row combining into one"),
+  "topic-math-geometricke-tvary": edu("square, triangle, circle, pentagon — bold geometric shapes"),
+  "topic-math-obvod": edu("rectangle with dotted line tracing its perimeter"),
+  "topic-math-mereni-delky": edu("yellow ruler next to a pencil"),
+  "topic-math-zakladni-jednotky": edu("three rulers of dramatically different lengths"),
+  "topic-math-prevody-jednotek": edu("two measuring tapes connected by double-headed arrow"),
+  "topic-math-odhad-delek": edu("hand hovering over a shoe with dotted measurement lines"),
+  "topic-math-jednotky-hmotnosti": edu("balance scale with apple on one side, weight on other"),
+  "topic-math-slovni-ulohy-delky": edu("ribbon being cut by scissors, ruler measuring it"),
+  "topic-math-objem-ml-l": edu("measuring jug with colored liquid, large water bottle"),
 
   // ── ČEŠTINA: Categories ───────────────────────────────────
-  "cat-cz-vyjmenovana-slova": icon("a large glossy 3D magnifying glass hovering over a single glowing letter Y, warm golden light"),
-  "cat-cz-pravopis": icon("a shiny green 3D checkmark and a red 3D cross floating side by side, bold and clear"),
-  "cat-cz-mluvnice": icon("three colorful 3D speech bubbles of different sizes floating in a triangle — blue, orange, green"),
-  "cat-cz-diktat": icon("a glossy 3D pencil next to three floating dotted-line oval shapes representing blank spaces"),
-  "cat-cestina-literarni-vychova": icon("two 3D theater masks side by side — one smiling in warm gold, one sad in cool blue — the universal symbol of storytelling and drama"),
+  "cat-cz-vyjmenovana-slova": edu("magnifying glass hovering over a single glowing letter Y"),
+  "cat-cz-pravopis": edu("shiny green checkmark and red cross floating side by side"),
+  "cat-cz-mluvnice": edu("three colorful speech bubbles of different sizes — blue, orange, green"),
+  "cat-cz-diktat": edu("pencil next to three floating dotted oval blank spaces"),
+  "cat-cestina-literarni-vychova": edu("two theater masks side by side — one smiling gold, one sad blue"),
+  "cat-cz-sloh": edu("feather quill pen and colorful speech bubble floating side by side"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
-  "topic-cz-vyjm-b": concept("a large bold letter B glowing in the center, surrounded by a house, a bicycle, and a bee icon"),
-  "topic-cz-vyjm-l": concept("a large bold letter L glowing in the center, surrounded by a ski, a fox, and a linden leaf icon"),
-  "topic-cz-vyjm-m": concept("a large bold letter M glowing in the center, surrounded by a soap bubble, a bear, and a thought cloud icon"),
-  "topic-cz-vyjm-p": concept("a large bold letter P glowing in the center, surrounded by a bag, a dog, and a sand icon"),
-  "topic-cz-vyjm-s": concept("a large bold letter S glowing in the center, surrounded by a cheese wedge, an owl, and a salt shaker icon"),
-  "topic-cz-vyjm-v": concept("a large bold letter V glowing in the center, surrounded by a wolf, a tower, and a willow tree icon"),
-  "topic-cz-vyjm-z": concept("a large bold letter Z glowing in the center, surrounded by a tongue, a castle, and a bell icon"),
-  "topic-cz-parove-souhlasky": concept("two pairs of colorful letter-shaped 3D blocks side by side, one pair soft blue and one pair warm orange"),
-  "topic-cz-tvrde-mekke": concept("two groups of colorful letter-shaped blocks separated by a dividing line: hard group in blue, soft group in orange"),
-  "topic-cz-velka-pismena": concept("a large ornate capital letter A next to a small lowercase a, crown above the capital letter"),
-  "topic-cz-slovni-druhy": concept("three colorful speech bubbles in different shapes: round, square, and star — each a different vivid color representing different word types"),
-  "topic-cz-rod-cislo": concept("three distinct silhouette shapes: tall blue, smaller pink, and round yellow — each with a small symbol above"),
-  "topic-cz-slovesa-urcovani": concept("a colorful grid of six cells arranged in two rows and three columns, each cell a different color"),
-  "topic-cz-zaklad-vety": concept("a horizontal line with two distinct colorful segments: one bold underlined segment in blue, one circled segment in red"),
-  "topic-cz-diktat": concept("a notebook page with three dotted blank lines in the middle of a sentence, a pencil hovering above ready to write"),
-
-  // ── ČEŠTINA: Sloh ─────────────────────────────────────────
-  "cat-cz-sloh": icon("a glossy 3D feather quill pen and a colorful speech bubble floating side by side, warm creative atmosphere"),
-  "topic-cz-sloh-vypraveni": scene("a child excitedly telling a story with a large speech bubble showing a castle, dragon, and hero"),
-  "topic-cz-sloh-popis": concept("a large magnifying glass over a red apple, with descriptive arrows pointing to its color, shape, and texture"),
+  "topic-cz-vyjm-b": edu("glowing letter B with house, bicycle, bee around it"),
+  "topic-cz-vyjm-l": edu("glowing letter L with ski, fox, linden leaf around it"),
+  "topic-cz-vyjm-m": edu("glowing letter M with soap bubble, bear, thought cloud around it"),
+  "topic-cz-vyjm-p": edu("glowing letter P with bag, dog, sand around it"),
+  "topic-cz-vyjm-s": edu("glowing letter S with cheese wedge, owl, salt shaker around it"),
+  "topic-cz-vyjm-v": edu("glowing letter V with wolf, tower, willow tree around it"),
+  "topic-cz-vyjm-z": edu("glowing letter Z with tongue, castle, bell around it"),
+  "topic-cz-parove-souhlasky": edu("two pairs of colorful 3D letter blocks — soft blue pair, warm orange pair"),
+  "topic-cz-tvrde-mekke": edu("two groups of letter blocks separated by dividing line — blue group, orange group"),
+  "topic-cz-velka-pismena": edu("large capital letter A with a small crown above it, lowercase a beside"),
+  "topic-cz-slovni-druhy": edu("round bubble, square bubble, star bubble — three different speech bubble shapes"),
+  "topic-cz-rod-cislo": edu("three silhouette shapes: tall blue, smaller pink, round yellow"),
+  "topic-cz-slovesa-urcovani": edu("colorful grid of six cells in two rows, each cell different color"),
+  "topic-cz-zaklad-vety": edu("horizontal line with blue underlined segment and red circled segment"),
+  "topic-cz-diktat": kid("holding a pencil, ready to write, looking focused"),
+  "topic-cz-sloh-vypraveni": kid("gesturing excitedly with speech bubble showing castle and dragon"),
+  "topic-cz-sloh-popis": edu("magnifying glass over a red apple with descriptive arrows"),
 };
+
+/**
+ * Fallback prompt pro dynamické klíče z DB.
+ * Parsuje slug a generuje edu() prompt ze slov klíče.
+ */
+function autoPrompt(key: string): string {
+  // Odstraní prefix (cat-, topic-, subject-) a první slug (subject)
+  const parts = key.split('-');
+  const prefix = parts[0]; // cat, topic, subject
+  // Vezme poslední 2-3 části jako popis
+  const words = parts.slice(prefix === 'topic' ? 2 : 1).join(' ');
+  if (prefix === 'cat' || prefix === 'subject') {
+    return edu(`symbolic 3D objects representing "${words}" for Czech elementary school`);
+  }
+  return kid(`learning about "${words}"`);
+}
 
 /**
  * Generuje obrázek přes preferovaný provider.
@@ -511,8 +526,8 @@ serve(async (req) => {
       }
 
       if (!prompt) {
-        errors[key] = "Unknown key";
-        continue;
+        prompt = autoPrompt(key);
+        console.log(`[generate-prvouka] Auto-prompt for unknown key ${key}: ${prompt.slice(0, 60)}…`);
       }
 
       try {
