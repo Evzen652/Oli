@@ -210,7 +210,7 @@ const IMAGE_KEYS: Record<string, string> = {
  *
  * Vrací { base64, contentType } nebo throws Error.
  */
-async function generateImage(prompt: string): Promise<{ base64: string; contentType: string; provider: string }> {
+async function generateImage(prompt: string): Promise<{ base64: string; contentType: string; provider: string; providerErrors?: string[] }> {
   const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const HF_TOKEN = Deno.env.get("HF_TOKEN");
 
@@ -268,11 +268,14 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // private=true → nezveřejňovat v public feedu
     // nofeed=true + safe=false → obejít agregátní cache feedu, vynutit čerstvou generaci
     // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
-    const url = `https://image.pollinations.ai/prompt/${encoded}?width=1024&height=1024&model=flux&seed=${seed}&nologo=true&private=true&nofeed=true`;
-    const headers: Record<string, string> = {};
-    if (POLLINATIONS_TOKEN) headers["Authorization"] = `Bearer ${POLLINATIONS_TOKEN}`;
-    const resp = await fetch(url, { headers });
-    if (!resp.ok) throw new Error(`Pollinations error ${resp.status}`);
+    // gen.pollinations.ai = paid endpoint, token jako ?key=
+    const keyParam = POLLINATIONS_TOKEN ? `&key=${POLLINATIONS_TOKEN}` : "";
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=1024&height=1024&model=flux&seed=${seed}&nologo=true&private=true${keyParam}`;
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      const errBody = await resp.text().catch(() => "");
+      throw new Error(`Pollinations error ${resp.status}: ${errBody.slice(0, 200)}`);
+    }
     const bytes = new Uint8Array(await resp.arrayBuffer());
     let binary = "";
     for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
@@ -340,11 +343,12 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     try {
       console.log(`[generate-prvouka] Trying ${provider.name}...`);
       const result = await provider.run();
-      return { ...result, provider: provider.name };
+      console.log(`[generate-prvouka] OK: ${provider.name}`);
+      return { ...result, provider: provider.name, providerErrors: errors };
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       errors.push(`${provider.name}: ${msg}`);
-      console.warn(`[generate-prvouka] ${provider.name} failed:`, msg);
+      console.warn(`[generate-prvouka] FAIL ${provider.name}:`, msg);
     }
   }
   throw new Error(`Všichni provideri selhali — ${errors.join(" | ")}`);
@@ -518,12 +522,12 @@ serve(async (req) => {
 
         console.log(`Generating image for: ${key}`);
 
-        const { base64, provider } = await generateImage(prompt);
-        providers[key] = provider;
+        const { base64, provider, providerErrors: pErrs } = await generateImage(prompt);
         const rawBytes = decode(base64);
 
         // Odstraní bílé pozadí → průhledné PNG
         const imageBytes = await dewhiteBackground(rawBytes);
+        providers[key] = provider + (pErrs?.length ? ` [tried: ${pErrs.join(" | ")}]` : "");
 
         // Always save as .png — imageUrl() in prvoukaVisuals defaults to .png
         const filePath = `${key}.png`;
