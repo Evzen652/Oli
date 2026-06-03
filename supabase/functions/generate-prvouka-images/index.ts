@@ -269,18 +269,19 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
   // Gemini direct (přímo Google API) — využije GEMINI_API_KEY z env.
   const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   const tryGeminiDirect = async () => {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${GEMINI_API_KEY}`;
+    // gemini-2.0-flash-preview-image-generation = aktuální model pro image generation via generateContent
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`;
     const resp = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseModalities: ["IMAGE"] },
+        generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
       }),
     });
     if (!resp.ok) {
       const t = await resp.text();
-      throw new Error(`Gemini direct error ${resp.status}: ${t.slice(0, 200)}`);
+      throw new Error(`Gemini direct error ${resp.status}: ${t.slice(0, 300)}`);
     }
     const data = await resp.json();
     // Najdi inlineData v parts
@@ -302,17 +303,18 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     { name: "pollinations", run: tryPollinations },
   ];
 
-  let lastError: Error | null = null;
+  const errors: string[] = [];
   for (const provider of chain) {
     try {
       console.log(`[generate-prvouka] Trying ${provider.name}...`);
       return await provider.run();
     } catch (e) {
-      lastError = e instanceof Error ? e : new Error(String(e));
-      console.warn(`[generate-prvouka] ${provider.name} failed:`, lastError.message);
+      const msg = e instanceof Error ? e.message : String(e);
+      errors.push(`${provider.name}: ${msg}`);
+      console.warn(`[generate-prvouka] ${provider.name} failed:`, msg);
     }
   }
-  throw lastError ?? new Error("Všichni provideři selhali.");
+  throw new Error(`Všichni provideri selhali — ${errors.join(" | ")}`);
 }
 
 serve(async (req) => {
