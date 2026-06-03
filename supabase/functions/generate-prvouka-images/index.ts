@@ -99,7 +99,7 @@ const corsHeaders = {
 
 // PŘÍSNĚ POZITIVNÍ POPIS — bez negací. AI extrahuje noun z "no X" a přidá ho do obrázku.
 // Popisuj POUZE co tam má být. Co nemá být tam → jen v separátním negative_prompt poli.
-const SUFFIX = `. Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format.`;
+const SUFFIX = `. Single centered composition, smooth rounded volumetric 3D surfaces, soft cinematic shading, vibrant pastel colors with one strong accent. Clean pure solid white background. Modern professional 3D render quality, warm welcoming children's educational app aesthetic. Square format. No text, no letters, no words, no writing, no labels, no captions anywhere in the image.`;
 
 function p(desc: string) { return `Cute 3D Pixar-style illustration. A cheerful smiling human child (boy or girl, age 8 to 10, big expressive eyes, optional glasses, modern casual colorful clothes) engaged with ${desc}${SUFFIX}`; }
 const concept = p;
@@ -229,7 +229,7 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
           Authorization: `Bearer ${HF_TOKEN}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ inputs: prompt, parameters: { seed: hfSeed } }),
+        body: JSON.stringify({ inputs: prompt, parameters: { seed: hfSeed, negative_prompt: "text, letters, words, writing, labels, captions, watermark, logo, gibberish, blurry" } }),
       },
     );
     if (!resp.ok) {
@@ -270,7 +270,8 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // (enhance ponecháváme default — Pollinations LLM může pomoct enrichovat Pixar styl)
     // gen.pollinations.ai = paid endpoint, token jako ?key=
     const keyParam = POLLINATIONS_TOKEN ? `&key=${POLLINATIONS_TOKEN}` : "";
-    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true${keyParam}`;
+    // negative_prompt se skutečně posílá — předtím byl definován ale nikdy použit
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true&negative_prompt=${negative}${keyParam}`;
     const resp = await fetch(url);
     if (!resp.ok) {
       const errBody = await resp.text().catch(() => "");
