@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wand2, Zap, Pencil, Sparkles, Check, X } from "lucide-react";
+import { Image as ImageIcon, Loader2, CheckCircle2, AlertTriangle, RefreshCw, Wand2, Zap, Pencil, Sparkles, Check, X, ChevronDown, ChevronRight } from "lucide-react";
 import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageVersions";
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
@@ -848,6 +848,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   // ── Seznam vlastních ilustrací (z DB) ────────────────────────────────────────
   const [customList, setCustomList] = useState<Array<{ key: string; description: string; updated_at: string; generations: number }>>([]);
   const [customListLoading, setCustomListLoading] = useState(false);
+  const [showSavedCustom, setShowSavedCustom] = useState(false);
 
   const loadCustomList = useCallback(async () => {
     setCustomListLoading(true);
@@ -1249,9 +1250,15 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           {customList.length > 0 && (
             <div className="pt-4 border-t border-border/60 space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-semibold text-foreground">
+                <button
+                  className="flex items-center gap-1.5 text-xs font-semibold text-foreground hover:text-primary transition-colors"
+                  onClick={() => setShowSavedCustom(v => !v)}
+                >
+                  {showSavedCustom
+                    ? <ChevronDown className="h-3.5 w-3.5" />
+                    : <ChevronRight className="h-3.5 w-3.5" />}
                   Uložené vlastní ilustrace ({customList.length})
-                </h4>
+                </button>
                 <Button
                   size="sm"
                   variant="ghost"
@@ -1262,7 +1269,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   <RefreshCw className={`h-3 w-3 ${customListLoading ? "animate-spin" : ""}`} />
                 </Button>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              {showSavedCustom && <div className="grid grid-cols-2 gap-2">
                 {customList.map((it) => {
                   const url = supabase.storage.from("prvouka-images").getPublicUrl(`${it.key}.png`).data.publicUrl;
                   return (
@@ -1303,7 +1310,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                     </div>
                   );
                 })}
-              </div>
+              </div>}
             </div>
           )}
         </div>
