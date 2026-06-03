@@ -58,6 +58,14 @@
 
 ## Vyřízené
 
+### 2026-06-03 — Ilustrace se po regeneraci neměnily (HF chybějící seed) ✅
+- **Hlavní příčina:** Pollinations selhává (403 / IP block), chain padne na HuggingFace FLUX.1-schnell, který **bez `seed` parametru** vrací pro stejný prompt deterministicky bajtově identický obrázek → force regenerace zapsala stejná data → UI ukazovalo starý obrázek
+- **Fix:** edge funkce posílá `parameters.seed` (random) do HF requestu → každá regenerace = nová varianta
+- Ověřeno end-to-end přes preview: SHA-256 hash obrázku se po kliku „Znovu" mění, `<img>` se překreslí na nový blob (`visuallyChanged: true`)
+- Vedlejší: do response přidán `providers` (diagnostika, který provider obrázek vygeneroval), Pollinations `nofeed=true` + vyšší entropie seedu
+- **Pozn. k ověření:** předchozí fix `key` na `<img>` byl správný (zajišťuje remount), problém byl čistě na backendu
+- ⚠️ **Otevřené:** Pollinations (deklarovaný jako primární „nejlepší kvalita") reálně **nikdy neběží** — vždy selže na 403 a použije se HF. K prověření zvlášť (token / IP).
+
 ### 2026-06-03 — Admin ilustrace se nepřekreslovaly po generování ✅
 - Bug: po `bumpImageVersion()` hook `useImageVersions()` vrátil novou URL (blob / `?t=`), ale `<img>` se v UI nepřekreslil
 - Příčina: React jen měnil `src` atribut (stejný element) → prohlížeč držel starý obrázek; `loading="lazy"` navíc odkládal načtení

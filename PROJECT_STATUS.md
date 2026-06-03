@@ -130,6 +130,7 @@ src/
 | Refactor inputType na úroveň PracticeTask | Architekt | ✅ Hotovo |
 | 6 typů cvičení | Architekt | ✅ Hotovo |
 | Admin ilustrace — překreslení po generování (`key` na `<img>` + bez `loading="lazy"`) | Architekt | ✅ Hotovo |
+| Admin ilustrace — regenerace vracela stejný obrázek (HF chybějící seed; Pollinations padá na HF) | Architekt | ✅ Hotovo (Pollinations 403 k prověření) |
 | Templated facts architektura | Architekt | ✅ Hotovo |
 | Parent UI (reporty, benchmarky, plán dopředu) | Architekt | ✅ Hotovo |
 | Student UI (pozitivní labely, TopicResultDetail) | Architekt | ✅ Hotovo |
