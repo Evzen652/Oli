@@ -127,10 +127,10 @@ const IMAGE_KEYS: Record<string, string> = {
   "subject-vlastiveda": edu("map shape of Czech Republic, small castle, flag"),
 
   // ── PRVOUKA: Categories ───────────────────────────────────
-  "cat-clovek-a-jeho-telo": edu("glowing 3D heart, pair of lungs, brain — anatomy trio"),
-  "cat-priroda-kolem-nas": edu("green tree, yellow sun, small blue cloud"),
-  "cat-lide-a-spolecnost": edu("three colorful human silhouettes of different sizes"),
-  "cat-orientace-v-prostoru-a-case": edu("compass rose and round analog clock"),
+  "cat-clovek-a-jeho-telo": kid("with glowing colorful organs visible inside — heart, lungs, brain — like an x-ray illustration"),
+  "cat-priroda-kolem-nas": kid("sitting in a sunny meadow with a tall tree, blooming flowers and a butterfly nearby"),
+  "cat-lide-a-spolecnost": kid("waving in a cheerful neighborhood with small colorful houses and a school behind them"),
+  "cat-orientace-v-prostoru-a-case": kid("holding a large compass and looking at a round clock floating beside them"),
 
   // ── PRVOUKA: Topics ───────────────────────────────────────
   "topic-lidske-telo": kid("with colorful glowing organs visible: heart, lungs, brain"),
@@ -148,9 +148,9 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-cas-a-kalendar": edu("analog clock showing nine o'clock, calendar page with circled day"),
 
   // ── MATEMATIKA: Categories ────────────────────────────────
-  "cat-math-cisla-a-operace": edu("red digit 3 block, blue digit 7 block, shiny plus symbol"),
-  "cat-math-zlomky": edu("sphere sliced in half — one half yellow one half blue"),
-  "cat-math-geometrie": edu("red sphere, blue cube, yellow cone, green cylinder — floating cluster"),
+  "cat-math-cisla-a-operace": kid("stacking colorful numbered 3D blocks with a big plus and equals symbol floating nearby"),
+  "cat-math-zlomky": kid("slicing a colorful round cake into equal pieces with a happy expression"),
+  "cat-math-geometrie": kid("juggling colorful 3D shapes — sphere, cube, cone, cylinder"),
 
   // ── MATEMATIKA: Topics ────────────────────────────────────
   "topic-math-porovnavani-prirozenych-cisel": edu("large pile of balls vs small pile, bold arrow between them"),
@@ -177,12 +177,12 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-math-objem-ml-l": edu("measuring jug with colored liquid, large water bottle"),
 
   // ── ČEŠTINA: Categories ───────────────────────────────────
-  "cat-cz-vyjmenovana-slova": edu("magnifying glass hovering over a single glowing letter Y"),
-  "cat-cz-pravopis": edu("shiny green checkmark and red cross floating side by side"),
-  "cat-cz-mluvnice": edu("three colorful speech bubbles of different sizes — blue, orange, green"),
-  "cat-cz-diktat": edu("pencil next to three floating dotted oval blank spaces"),
-  "cat-cestina-literarni-vychova": edu("two theater masks side by side — one smiling gold, one sad blue"),
-  "cat-cz-sloh": edu("feather quill pen and colorful speech bubble floating side by side"),
+  "cat-cz-vyjmenovana-slova": kid("holding a large glowing magnifying glass with a curious expression"),
+  "cat-cz-pravopis": kid("giving a thumbs up next to a big green checkmark floating in the air"),
+  "cat-cz-mluvnice": kid("with three colorful speech bubbles of different shapes floating around them"),
+  "cat-cz-diktat": kid("listening carefully with hand to ear, focused expression"),
+  "cat-cestina-literarni-vychova": kid("wearing a golden crown, with a tiny dragon and glowing castle floating beside them"),
+  "cat-cz-sloh": kid("gesturing enthusiastically as colorful speech bubbles and stars float upward around them"),
 
   // ── VLASTIVĚDA: Categories ────────────────────────────────
   "cat-vlastiveda-misto-kde-zijeme": kid("standing on a colorful map with a glowing pin marking home location"),
@@ -299,7 +299,7 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // negative_prompt se skutečně posílá — předtím byl definován ale nikdy použit
     // negative_prompt jako samostatný param — krátký, bez speciálních znaků
     const negShort = encodeURIComponent("text, letters, words, writing, labels, watermark, sign");
-    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=gptimage&seed=${seed}&nologo=true&private=true${keyParam}`;
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=flux&seed=${seed}&nologo=true&private=true${keyParam}`;
     const resp = await fetch(url);
     if (!resp.ok) {
       const errBody = await resp.text().catch(() => "");
