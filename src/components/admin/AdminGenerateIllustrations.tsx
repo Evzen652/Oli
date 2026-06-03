@@ -1275,10 +1275,10 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   return (
                     <div key={it.key} className="rounded-xl border border-border/60 bg-card p-2 space-y-1.5">
                       <img
+                        key={versioned(url, it.key)}
                         src={versioned(url, it.key)}
                         alt={it.key}
                         className="w-full aspect-square object-contain rounded-lg bg-white"
-                        loading="lazy"
                       />
                       <div className="space-y-0.5">
                         <p className="text-[10px] font-mono text-foreground break-all" title={it.key}>{it.key}</p>
@@ -1516,10 +1516,10 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                   </div>
                 ) : (
                   <img
+                    key={versioned(url, key)}
                     src={versioned(url, key)}
                     alt={key}
                     className="w-full aspect-square object-contain rounded-xl"
-                    loading="lazy"
                     onError={() => setMissingKeys((prev) => new Set([...prev, key]))}
                   />
                 )}

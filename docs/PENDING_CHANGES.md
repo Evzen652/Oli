@@ -58,6 +58,11 @@
 
 ## Vyřízené
 
+### 2026-06-03 — Admin ilustrace se nepřekreslovaly po generování ✅
+- Bug: po `bumpImageVersion()` hook `useImageVersions()` vrátil novou URL (blob / `?t=`), ale `<img>` se v UI nepřekreslil
+- Příčina: React jen měnil `src` atribut (stejný element) → prohlížeč držel starý obrázek; `loading="lazy"` navíc odkládal načtení
+- Fix v `AdminGenerateIllustrations.tsx` (2 `<img>`): `key={versioned(url, key)}` vynutí remount + odebráno `loading="lazy"`
+
 ### 2026-06-01 — Grade-4 kompletní obsah ✅
 - 58 nových topics implementováno: čeština 22, vlastivěda 13, přírodověda 13, informatika 10
 - Celkem 72 topics v GRADE_4_TOPICS (vč. 14 matematiky)
