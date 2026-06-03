@@ -104,10 +104,10 @@ const corsHeaders = {
  * Krátký prompt = model ho lépe sleduje. Max 3 objekty.
  */
 function edu(objects: string): string {
-  return `3D Pixar icon: ${objects}. White background, smooth glossy rounded 3D shapes, soft pastel colors, centered. No text, no letters, no flat surfaces.`;
+  return `NO TEXT NO WORDS NO LETTERS. 3D Pixar icon: ${objects}. White background, smooth glossy rounded 3D shapes, soft pastel colors, centered.`;
 }
 function kid(activity: string): string {
-  return `3D Pixar illustration: cheerful child age 8-10 ${activity}. White background, smooth rounded 3D shapes, soft pastel colors. No text, no letters.`;
+  return `NO TEXT NO WORDS NO LETTERS. 3D Pixar: cheerful child age 8-10 ${activity}. White background, smooth rounded 3D shapes, soft pastel colors.`;
 }
 const scene = kid;
 const concept = edu;
@@ -186,7 +186,7 @@ const IMAGE_KEYS: Record<string, string> = {
 
   // ── VLASTIVĚDA: Categories ────────────────────────────────
   "cat-vlastiveda-misto-kde-zijeme": kid("standing on a colorful map with a glowing pin marking home location"),
-  "cat-vlastiveda-lide-kolem-nas": kid("standing with diverse community figures around them — firefighter, doctor, teacher — all smiling"),
+  "cat-vlastiveda-lide-kolem-nas": kid("surrounded by colorful 3D human figures of different heights and skin tones, all smiling and waving"),
   "cat-vlastiveda-lide-a-cas": kid("looking at a large timeline with historical figures and events floating above it"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
