@@ -184,6 +184,11 @@ const IMAGE_KEYS: Record<string, string> = {
   "cat-cestina-literarni-vychova": edu("two theater masks side by side — one smiling gold, one sad blue"),
   "cat-cz-sloh": edu("feather quill pen and colorful speech bubble floating side by side"),
 
+  // ── VLASTIVĚDA: Categories ────────────────────────────────
+  "cat-vlastiveda-misto-kde-zijeme": kid("standing on a colorful map with a glowing pin marking home location"),
+  "cat-vlastiveda-lide-kolem-nas": kid("standing with diverse community figures around them — firefighter, doctor, teacher — all smiling"),
+  "cat-vlastiveda-lide-a-cas": kid("looking at a large timeline with historical figures and events floating above it"),
+
   // ── ČEŠTINA: Topics ───────────────────────────────────────
   "topic-cz-vyjm-b": edu("glowing letter B with house, bicycle, bee around it"),
   "topic-cz-vyjm-l": edu("glowing letter L with ski, fox, linden leaf around it"),
@@ -294,7 +299,7 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     // negative_prompt se skutečně posílá — předtím byl definován ale nikdy použit
     // negative_prompt jako samostatný param — krátký, bez speciálních znaků
     const negShort = encodeURIComponent("text, letters, words, writing, labels, watermark, sign");
-    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=zimage&seed=${seed}&nologo=true&private=true&negative_prompt=${negShort}${keyParam}`;
+    const url = `https://gen.pollinations.ai/image/${encoded}?width=512&height=512&model=gptimage&seed=${seed}&nologo=true&private=true${keyParam}`;
     const resp = await fetch(url);
     if (!resp.ok) {
       const errBody = await resp.text().catch(() => "");
