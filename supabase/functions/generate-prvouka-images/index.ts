@@ -180,7 +180,7 @@ const IMAGE_KEYS: Record<string, string> = {
   "cat-cz-pravopis": icon("a shiny green 3D checkmark and a red 3D cross floating side by side, bold and clear"),
   "cat-cz-mluvnice": icon("three colorful 3D speech bubbles of different sizes floating in a triangle — blue, orange, green"),
   "cat-cz-diktat": icon("a glossy 3D pencil next to three floating dotted-line oval shapes representing blank spaces"),
-  "cat-cestina-literarni-vychova": icon("a glowing golden crown, a sparkling magic wand, and a tiny 3D dragon — three magical objects floating in a triangle"),
+  "cat-cestina-literarni-vychova": scene("a child wearing a golden crown and a purple cape, arms wide open, with a friendly small dragon sitting beside them and a glowing castle in the background — fairy tale adventure"),
 
   // ── ČEŠTINA: Topics ───────────────────────────────────────
   "topic-cz-vyjm-b": concept("a large bold letter B glowing in the center, surrounded by a house, a bicycle, and a bee icon"),
