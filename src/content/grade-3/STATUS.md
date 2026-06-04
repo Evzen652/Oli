@@ -40,32 +40,32 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_3_TOPICS)
 
 ### Lidé a čas
 
-- [ ] **Minulost našeho regionu, pověsti** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti`
-- [ ] **Časová přímka, generace v rodině** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine`
+- [x] **Minulost našeho regionu, pověsti** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti`
+- [x] **Časová přímka, generace v rodině** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine`
 
 ### Lidé kolem nás
 
-- [ ] **Komunikace, jednání s neznámými lidmi - bezpečnost** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost`
-- [ ] **Vztahy mezi lidmi, řešení konfliktů** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu`
+- [x] **Komunikace, jednání s neznámými lidmi - bezpečnost** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost`
+- [x] **Vztahy mezi lidmi, řešení konfliktů** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu`
 
 ### Místo, kde žijeme
 
-- [ ] **Kraje a regiony ČR (úvod), náš region** `g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region`
-- [ ] **Mapa - světové strany, plán a mapa, kompas** `g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas`
-- [ ] **Česká republika - hlavní město, státní symboly** `g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly`
+- [x] **Kraje a regiony ČR (úvod), náš region** `g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region`
+- [x] **Mapa - světové strany, plán a mapa, kompas** `g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas`
+- [x] **Česká republika - hlavní město, státní symboly** `g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly`
 
 ### Rozmanitost přírody
 
-- [ ] **Pole, louka, les, voda - jednoduché ekosystémy** `g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy`
-- [ ] **Skupiny živočichů - savci, ptáci, ryby, plazi, obojživelníci, hmyz** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz`
-- [ ] **Stavba rostlin (kořen, stonek, list, květ, plod)** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod`
-- [ ] **Rozdíly mezi živou a neživou přírodou** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou`
-- [ ] **Voda, vzduch, půda - význam pro život** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot`
+- [x] **Pole, louka, les, voda - jednoduché ekosystémy** `g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy`
+- [x] **Skupiny živočichů - savci, ptáci, ryby, plazi, obojživelníci, hmyz** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz`
+- [x] **Stavba rostlin (kořen, stonek, list, květ, plod)** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod`
+- [x] **Rozdíly mezi živou a neživou přírodou** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou`
+- [x] **Voda, vzduch, půda - význam pro život** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot`
 
 ### Člověk a jeho zdraví
 
-- [ ] **Mimořádné události - požár, povodeň; chování při ohrožení** `g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni`
-- [ ] **Stavba lidského těla (kostra, svaly - úvod), zdraví a nemoc** `g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc`
+- [x] **Mimořádné události - požár, povodeň; chování při ohrožení** `g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni`
+- [x] **Stavba lidského těla (kostra, svaly - úvod), zdraví a nemoc** `g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc`
 
 ---
 
@@ -73,55 +73,55 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_3_TOPICS)
 
 ### Jazyková výchova — Nauka o slově
 
-- [ ] **Slova příbuzná, kořen slova** `g3-cjl-jazykova-vychova-nauka-o-slove-slova-pribuzna-koren-slova`
-- [ ] **Slova souznačná (synonyma) a protikladná (antonyma)** `g3-cjl-jazykova-vychova-nauka-o-slove-slova-souznacna-synonyma-a-protikladna-antonyma`
-- [ ] **Význam slova - slova jednoznačná a mnohoznačná** `g3-cjl-jazykova-vychova-nauka-o-slove-vyznam-slova-slova-jednoznacna-a-mnohoznacna`
+- [x] **Slova příbuzná, kořen slova** `g3-cjl-jazykova-vychova-nauka-o-slove-slova-pribuzna-koren-slova`
+- [x] **Slova souznačná (synonyma) a protikladná (antonyma)** `g3-cjl-jazykova-vychova-nauka-o-slove-slova-souznacna-synonyma-a-protikladna-antonyma`
+- [x] **Význam slova - slova jednoznačná a mnohoznačná** `g3-cjl-jazykova-vychova-nauka-o-slove-vyznam-slova-slova-jednoznacna-a-mnohoznacna`
 
 ### Jazyková výchova — Pravopis
 
-- [ ] **Slova příbuzná k vyjmenovaným slovům, psaní i/y po obojetných souhláskách** `g3-cjl-jazykova-vychova-pravopis-slova-pribuzna-k-vyjmenovanym-slovum-psani-i-y-po-obojetnych-souhlaskach`
-- [ ] **Velká písmena ve vlastních jménech (osoby, města, řeky, hory)** `g3-cjl-jazykova-vychova-pravopis-velka-pismena-ve-vlastnich-jmenech-osoby-mesta-reky-hory`
-- [ ] **Vyjmenovaná slova po B, L, M, P, S, V, Z** `g3-cjl-jazykova-vychova-pravopis-vyjmenovana-slova-po-b-l-m-p-s-v-z`
+- [x] **Slova příbuzná k vyjmenovaným slovům, psaní i/y po obojetných souhláskách** `g3-cjl-jazykova-vychova-pravopis-slova-pribuzna-k-vyjmenovanym-slovum-psani-i-y-po-obojetnych-souhlaskach`
+- [x] **Velká písmena ve vlastních jménech (osoby, města, řeky, hory)** `g3-cjl-jazykova-vychova-pravopis-velka-pismena-ve-vlastnich-jmenech-osoby-mesta-reky-hory`
+- [x] **Vyjmenovaná slova po B, L, M, P, S, V, Z** `g3-cjl-jazykova-vychova-pravopis-vyjmenovana-slova-po-b-l-m-p-s-v-z`
 
 ### Jazyková výchova — Skladba
 
-- [ ] **Spojování vět spojkami a spojovacími výrazy** `g3-cjl-jazykova-vychova-skladba-spojovani-vet-spojkami-a-spojovacimi-vyrazy`
-- [ ] **Věta jednoduchá a souvětí (úvod)** `g3-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-uvod`
+- [x] **Spojování vět spojkami a spojovacími výrazy** `g3-cjl-jazykova-vychova-skladba-spojovani-vet-spojkami-a-spojovacimi-vyrazy`
+- [x] **Věta jednoduchá a souvětí (úvod)** `g3-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-uvod`
 
 ### Jazyková výchova — Tvarosloví
 
-- [ ] **Podstatná jména - rod, číslo, pád (úvod)** `g3-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-rod-cislo-pad-uvod`
-- [ ] **Slovesa - osoba, číslo, čas** `g3-cjl-jazykova-vychova-tvaroslovi-slovesa-osoba-cislo-cas`
-- [ ] **Slovní druhy - přehled deseti slovních druhů** `g3-cjl-jazykova-vychova-tvaroslovi-slovni-druhy-prehled-deseti-slovnich-druhu`
+- [x] **Podstatná jména - rod, číslo, pád (úvod)** `g3-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-rod-cislo-pad-uvod`
+- [x] **Slovesa - osoba, číslo, čas** `g3-cjl-jazykova-vychova-tvaroslovi-slovesa-osoba-cislo-cas`
+- [x] **Slovní druhy - přehled deseti slovních druhů** `g3-cjl-jazykova-vychova-tvaroslovi-slovni-druhy-prehled-deseti-slovnich-druhu`
 
 ### Komunikační a slohová výchova — Psaní
 
-- [ ] **Sebekontrola vlastního písemného projevu** `g3-cjl-komunikacni-a-slohova-vychova-psani-sebekontrola-vlastniho-pisemneho-projevu`
-- [ ] **Úhledné a čitelné psaní, úprava textu** `g3-cjl-komunikacni-a-slohova-vychova-psani-uhledne-a-citelne-psani-uprava-textu`
+- [x] **Sebekontrola vlastního písemného projevu** `g3-cjl-komunikacni-a-slohova-vychova-psani-sebekontrola-vlastniho-pisemneho-projevu`
+- [x] **Úhledné a čitelné psaní, úprava textu** `g3-cjl-komunikacni-a-slohova-vychova-psani-uhledne-a-citelne-psani-uprava-textu`
 
 ### Komunikační a slohová výchova — Slohová výchova
 
-- [ ] **Dialog - pravidla rozhovoru** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dialog-pravidla-rozhovoru`
-- [ ] **Omluvenka, zpráva, oznámení, pozvánka** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-omluvenka-zprava-oznameni-pozvanka`
-- [ ] **Popis předmětu, zvířete, osoby** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-zvirete-osoby`
-- [ ] **Vypravování podle obrázkové i slovní osnovy** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-podle-obrazkove-i-slovni-osnovy`
+- [x] **Dialog - pravidla rozhovoru** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dialog-pravidla-rozhovoru`
+- [x] **Omluvenka, zpráva, oznámení, pozvánka** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-omluvenka-zprava-oznameni-pozvanka`
+- [x] **Popis předmětu, zvířete, osoby** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-zvirete-osoby`
+- [x] **Vypravování podle obrázkové i slovní osnovy** `g3-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-podle-obrazkove-i-slovni-osnovy`
 
 ### Komunikační a slohová výchova — Čtení
 
-- [ ] **Plynulé čtení s porozuměním delších textů** `g3-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-delsich-textu`
-- [ ] **Reprodukce přečteného textu** `g3-cjl-komunikacni-a-slohova-vychova-cteni-reprodukce-precteneho-textu`
-- [ ] **Vyhledávání informací v textu, klíčová slova** `g3-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-informaci-v-textu-klicova-slova`
+- [x] **Plynulé čtení s porozuměním delších textů** `g3-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-delsich-textu`
+- [x] **Reprodukce přečteného textu** `g3-cjl-komunikacni-a-slohova-vychova-cteni-reprodukce-precteneho-textu`
+- [x] **Vyhledávání informací v textu, klíčová slova** `g3-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-informaci-v-textu-klicova-slova`
 
 ### Literární výchova — Literární druhy a žánry
 
-- [ ] **Pohádka, povídka, báseň, bajka** `g3-cjl-literarni-vychova-literarni-druhy-a-zanry-pohadka-povidka-basen-bajka`
-- [ ] **Próza a verše - rozlišení** `g3-cjl-literarni-vychova-literarni-druhy-a-zanry-proza-a-verse-rozliseni`
-- [ ] **Verš, rým, přirovnání** `g3-cjl-literarni-vychova-literarni-druhy-a-zanry-vers-rym-prirovnani`
+- [x] **Pohádka, povídka, báseň, bajka** `g3-cjl-literarni-vychova-literarni-druhy-a-zanry-pohadka-povidka-basen-bajka`
+- [x] **Próza a verše - rozlišení** `g3-cjl-literarni-vychova-literarni-druhy-a-zanry-proza-a-verse-rozliseni`
+- [x] **Verš, rým, přirovnání** `g3-cjl-literarni-vychova-literarni-druhy-a-zanry-vers-rym-prirovnani`
 
 ### Literární výchova — Práce s textem
 
-- [ ] **Tvořivé činnosti s literárním textem** `g3-cjl-literarni-vychova-prace-s-textem-tvorive-cinnosti-s-literarnim-textem`
-- [ ] **Vlastní výtvarný doprovod k textu** `g3-cjl-literarni-vychova-prace-s-textem-vlastni-vytvarny-doprovod-k-textu`
+- [x] **Tvořivé činnosti s literárním textem** `g3-cjl-literarni-vychova-prace-s-textem-tvorive-cinnosti-s-literarnim-textem`
+- [x] **Vlastní výtvarný doprovod k textu** `g3-cjl-literarni-vychova-prace-s-textem-vlastni-vytvarny-doprovod-k-textu`
 
 ---
 

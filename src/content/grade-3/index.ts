@@ -19,7 +19,31 @@ import { OBVODTROJUHELNIKUCTVERCEOBD } from "./matematika/obvodTrojuhelnikuCtver
 // TODO: přibývají jak grade-3 session implementuje
 
 // ── Český jazyk a literatura (25) ──
-// TODO: přibývají jak grade-3 session implementuje
+import { SLOVAPRIBYZNAKOREN } from "./cjl/slovaPribuznaKorenSlova";
+import { SLOVASOUZNACNAPROTIKLADNA } from "./cjl/slovaSouznacnaAProtikladna";
+import { SLOVAJEDNOZNACNAMNOHO } from "./cjl/slovaJednoznacnaMnohoznacna";
+import { SLOVAPRIBYZNAVANJE } from "./cjl/slovaPribuznaVyjmenovana";
+import { VYJMENOVANASLOVA } from "./cjl/vyjmenovanaSlova";
+import { VELKAPISMENA } from "./cjl/velkaPismenaVlastniJmena";
+import { SPOJOVANIVETSPOJKAMI } from "./cjl/spojovaniVetSpojkami";
+import { VETAJJEDNODUCHASONVETI } from "./cjl/vetaJednoduchaSouveti";
+import { PODSTATNAROD } from "./cjl/podstatnaJmenaRodCisloPad";
+import { SLOVESAOSOBACISELCAS } from "./cjl/slovesaOsobaCisloCas";
+import { SLOVNIDRUHY } from "./cjl/slovniDruhyPrehled";
+import { SEBEKONTROLAPROJEVU } from "./cjl/sebekontrolaPisemnehoProjevu";
+import { UHLEDNEPISANI } from "./cjl/uhledneACitelnePsani";
+import { DIALOGPRAVIDLA } from "./cjl/dialogPravidlaRozhovoru";
+import { OMLUVENKAZPRAVA } from "./cjl/omluvenkaZpravaOznameniPozvanka";
+import { POPISPREDMETU } from "./cjl/popisPredmetuZvireteOsoby";
+import { VYPRAVOVANIOSNOVA } from "./cjl/vypravovaniOsnova";
+import { PLYNULECTENI } from "./cjl/plynuleCteniSPorozumenim";
+import { REPRODUKCETEXTU } from "./cjl/reprodukcePrectenehoTextu";
+import { VYHLEDAVANIINFO } from "./cjl/vyhledavaniInformaciKlicova";
+import { POHADKAPOVIDKA } from "./cjl/pohadkaPovídkaBasenBajka";
+import { PROZAVERSE } from "./cjl/prozaAVerseRozliseni";
+import { VERSRYMPRIROVNANI } from "./cjl/versRymPrirovnani";
+import { TVORIVECINN } from "./cjl/tvoriveCinnostiLiterarni";
+import { VLASTNIVYTVARNY } from "./cjl/vlastniVytvarnyDoprovod";
 
 export const GRADE_3_TOPICS: TopicMetadata[] = [
   // ── Matematika ──
@@ -36,4 +60,31 @@ export const GRADE_3_TOPICS: TopicMetadata[] = [
   ...RYSOVANIUSECKYODANEDELCE,
   ...KRUZNICAAKRUHRYSOVANI,
   ...OBVODTROJUHELNIKUCTVERCEOBD,
+
+  // ── Český jazyk a literatura ──
+  ...SLOVAPRIBYZNAKOREN,
+  ...SLOVASOUZNACNAPROTIKLADNA,
+  ...SLOVAJEDNOZNACNAMNOHO,
+  ...SLOVAPRIBYZNAVANJE,
+  ...VYJMENOVANASLOVA,
+  ...VELKAPISMENA,
+  ...SPOJOVANIVETSPOJKAMI,
+  ...VETAJJEDNODUCHASONVETI,
+  ...PODSTATNAROD,
+  ...SLOVESAOSOBACISELCAS,
+  ...SLOVNIDRUHY,
+  ...SEBEKONTROLAPROJEVU,
+  ...UHLEDNEPISANI,
+  ...DIALOGPRAVIDLA,
+  ...OMLUVENKAZPRAVA,
+  ...POPISPREDMETU,
+  ...VYPRAVOVANIOSNOVA,
+  ...PLYNULECTENI,
+  ...REPRODUKCETEXTU,
+  ...VYHLEDAVANIINFO,
+  ...POHADKAPOVIDKA,
+  ...PROZAVERSE,
+  ...VERSRYMPRIROVNANI,
+  ...TVORIVECINN,
+  ...VLASTNIVYTVARNY,
 ];
