@@ -38,10 +38,24 @@ const TEXTY: { text: string; otazky: { q: string; a: string; opts: string[] }[] 
 
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
-  const texty = level <= 2 ? TEXTY.slice(0, 2) : TEXTY;
+  // Level 1: jen první text + přímé otázky (kdo/kde/co) — index 0,1
+  // Level 2: první dva texty + "jak/proč" otázky (index 1,2)
+  // Level 3: všechny texty + všechny otázky
+  const texty = level === 1 ? TEXTY.slice(0, 1)
+    : level === 2 ? TEXTY.slice(0, 2)
+    : TEXTY;
+  // Každý level má jiný "startovní" index otázky — zajišťuje různou 1. otázku
+  const startIdx = level === 1 ? 0 : level === 2 ? 1 : 2;
+  const getOtazky = (t: typeof TEXTY[0]) =>
+    level === 1 ? t.otazky.slice(0, 2)
+    : level === 2 ? [t.otazky[1 % t.otazky.length], t.otazky[0]]
+    : t.otazky;
+
   for (let i = 0; i < 40; i++) {
     const t = texty[i % texty.length];
-    const o = t.otazky[i % t.otazky.length];
+    const otazky = getOtazky(t);
+    // První task pro level 1 začíná od indexu 0, pro level 2 od 1, pro level 3 od 2
+    const o = otazky[(i + startIdx) % otazky.length];
     tasks.push({
       question: `Přečti si text:\n\n${t.text}\n\n${o.q}`,
       correctAnswer: o.a,

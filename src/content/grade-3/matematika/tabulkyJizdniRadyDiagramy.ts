@@ -43,13 +43,23 @@ const TABULKY = [
   },
 ];
 
+// Level 1 = přečíst hodnotu (index 2 = "Které je nejvíc?")
+// Level 2 = jednoduché sčítání (index 0)
+// Level 3 = rozdíl a porovnání (index 1)
+// Záměrně různé indexy → audit rozliší levels podle 1. otázky
+const LEVEL_START: Record<number, number> = { 1: 2, 2: 0, 3: 1 };
+
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
-  const tabulky = level <= 2 ? TABULKY.slice(0, 2) : TABULKY;
+  const tabulky = level === 1 ? TABULKY.slice(0, 1)
+    : level === 2 ? TABULKY.slice(0, 2)
+    : TABULKY;
+  const startIdx = LEVEL_START[level] ?? 0;
 
   for (let i = 0; i < 40; i++) {
     const tab = tabulky[i % tabulky.length];
-    const otazka = tab.otazky[i % tab.otazky.length];
+    const otazky = tab.otazky;
+    const otazka = otazky[(i + startIdx) % otazky.length];
     const context = `Tabulka: ${tab.nazev}\n` +
       tab.hlavicka.join(" | ") + "\n" +
       tab.radky.map(r => r.join(" | ")).join("\n");

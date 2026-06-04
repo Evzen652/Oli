@@ -37,10 +37,19 @@ const TEORIE: { q: string; a: string; opts: string[] }[] = [
 
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
-  const texty = level <= 2 ? TEXTY.slice(0, 1) : TEXTY;
+  // Level 1: jen faktické otázky z prvního textu
+  // Level 2: oba texty + klíčová slova
+  // Level 3: vše
+  const texty = level === 1 ? TEXTY.slice(0, 1)
+    : level === 2 ? TEXTY.slice(0, 2)
+    : TEXTY;
+  const getOtazky = (t: typeof TEXTY[0]) =>
+    level === 1 ? t.otazky.slice(1) : t.otazky; // level 1: přeskočit klíčová slova
+
   for (let i = 0; i < 20; i++) {
     const t = texty[i % texty.length];
-    const o = t.otazky[i % t.otazky.length];
+    const otazky = getOtazky(t);
+    const o = otazky[i % otazky.length];
     tasks.push({
       question: `Text:\n${t.text}\n\n${o.q}`,
       correctAnswer: o.a,
