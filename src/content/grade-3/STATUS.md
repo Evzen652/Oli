@@ -11,28 +11,28 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_3_TOPICS)
 
 ### Geometrie v rovině a v prostoru
 
-- [ ] **Kružnice a kruh - rýsování** `g3-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-kruznice-a-kruh-rysovaani`
-- [ ] **Obvod trojúhelníku, čtverce, obdélníku** `g3-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-obvod-trojuhelniku-ctverce-obdelniku`
-- [ ] **Rýsování úsečky o dané délce** `g3-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-rysovaani-usecky-o-dane-delce`
+- [x] **Kružnice a kruh - rýsování** `g3-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-kruznice-a-kruh-rysovaani`
+- [x] **Obvod trojúhelníku, čtverce, obdélníku** `g3-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-obvod-trojuhelniku-ctverce-obdelniku`
+- [x] **Rýsování úsečky o dané délce** `g3-matematika-geometrie-v-rovine-a-v-prostoru-rovinne-utvary-rysovaani-usecky-o-dane-delce`
 
 ### Nestandardní aplikační úlohy a problémy
 
-- [ ] **Slovní úlohy se dvěma a více početními operacemi** `g3-matematika-nestandardni-aplikacni-ulohy-a-problemy-slovni-a-logicke-ulohy-slovni-ulohy-se-dvema-a-vice-pocetnimi-operacemi`
+- [x] **Slovní úlohy se dvěma a více početními operacemi** `g3-matematika-nestandardni-aplikacni-ulohy-a-problemy-slovni-a-logicke-ulohy-slovni-ulohy-se-dvema-a-vice-pocetnimi-operacemi`
 
 ### Závislosti, vztahy a práce s daty
 
-- [ ] **Převody jednotek délky (mm, cm, dm, m, km)** `g3-matematika-zavislosti-vztahy-a-prace-s-daty-mereni-a-jednotky-prevody-jednotek-delky-mm-cm-dm-m-km`
-- [ ] **Převody jednotek hmotnosti, objemu, času** `g3-matematika-zavislosti-vztahy-a-prace-s-daty-mereni-a-jednotky-prevody-jednotek-hmotnosti-objemu-casu`
-- [ ] **Tabulky, jízdní řády, jednoduché diagramy** `g3-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-jizdni-rady-jednoduche-diagramy`
+- [x] **Převody jednotek délky (mm, cm, dm, m, km)** `g3-matematika-zavislosti-vztahy-a-prace-s-daty-mereni-a-jednotky-prevody-jednotek-delky-mm-cm-dm-m-km`
+- [x] **Převody jednotek hmotnosti, objemu, času** `g3-matematika-zavislosti-vztahy-a-prace-s-daty-mereni-a-jednotky-prevody-jednotek-hmotnosti-objemu-casu`
+- [x] **Tabulky, jízdní řády, jednoduché diagramy** `g3-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-jizdni-rady-jednoduche-diagramy`
 
 ### Číslo a početní operace
 
-- [ ] **Násobení 10, 100; dělení se zbytkem (úvod)** `g3-matematika-cislo-a-pocetni-operace-nasobilka-nasobeni-10-100-deleni-se-zbytkem-uvod`
-- [ ] **Násobení a dělení v oboru malé násobilky** `g3-matematika-cislo-a-pocetni-operace-nasobilka-nasobeni-a-deleni-v-oboru-male-nasobilky`
-- [ ] **Násobilka 6, 7, 8, 9, 10 (celá malá násobilka)** `g3-matematika-cislo-a-pocetni-operace-nasobilka-nasobilka-6-7-8-9-10-cela-mala-nasobilka`
-- [ ] **Sčítání a odčítání do 1000 (pamětné i písemné)** `g3-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1000-scitani-a-odcitani-do-1000-pametnei-pisemne`
-- [ ] **Zaokrouhlování na desítky a stovky** `g3-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1000-zaokrouhlovani-na-desitky-a-stovky`
-- [ ] **Čtení, zápis a porovnávání čísel do 1000** `g3-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1000-cteni-zapis-a-porovnavani-cisel-do-1000`
+- [x] **Násobení 10, 100; dělení se zbytkem (úvod)** `g3-matematika-cislo-a-pocetni-operace-nasobilka-nasobeni-10-100-deleni-se-zbytkem-uvod`
+- [x] **Násobení a dělení v oboru malé násobilky** `g3-matematika-cislo-a-pocetni-operace-nasobilka-nasobeni-a-deleni-v-oboru-male-nasobilky`
+- [x] **Násobilka 6, 7, 8, 9, 10 (celá malá násobilka)** `g3-matematika-cislo-a-pocetni-operace-nasobilka-nasobilka-6-7-8-9-10-cela-mala-nasobilka`
+- [x] **Sčítání a odčítání do 1000 (pamětné i písemné)** `g3-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1000-scitani-a-odcitani-do-1000-pametnei-pisemne`
+- [x] **Zaokrouhlování na desítky a stovky** `g3-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1000-zaokrouhlovani-na-desitky-a-stovky`
+- [x] **Čtení, zápis a porovnávání čísel do 1000** `g3-matematika-cislo-a-pocetni-operace-ciselny-obor-0-1000-cteni-zapis-a-porovnavani-cisel-do-1000`
 
 ---
 
