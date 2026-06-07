@@ -10,44 +10,44 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 // Příbuzná slova k vyjmenovaným — doplň i/y
-const POOL: { q: string; a: string; opts: string[] }[] = [
+const POOL: { q: string; a: string; opts: string[]; e: string }[] = [
   // po B
-  { q: "Doplň správně: 'Koupili jsme nové b_dlení.'", a: "bydlení", opts: ["bydlení", "bidlení", "bydliny", "bidliny"] },
-  { q: "Doplň správně: 'Na louce pásla se b_k a krávy.'", a: "byk", opts: ["byk", "bik", "býk", "bíky"] },
-  { q: "Doplň správně: 'B_strý potok tekl přes kameny.'", a: "Bystří / Bystrý", opts: ["Bystrý", "Bistrý", "Bystri", "Bistri"] },
-  { q: "Příbuzné slovo k 'být' je:", a: "bydliště", opts: ["bydliště", "bidlo", "bičovat", "bílek"] },
+  { q: "Doplň správně: 'Koupili jsme nové b_dlení.'", a: "bydlení", opts: ["bydlení", "bidlení", "bydliny", "bidliny"], e: "Slovo 'bydlení' patří do rodiny vyjmenovaného slova 'být' — bydlet, bydliště, bydlení. Po souhlásce B u vyjmenovaných slov a jejich příbuzných píšeme vždy Y." },
+  { q: "Doplň správně: 'Na louce pásla se b_k a krávy.'", a: "byk", opts: ["byk", "bik", "býk", "bíky"], e: "Slovo 'byk' je vyjmenované slovo po B, proto píšeme Y. Byk je samec krávy — pamatuj si ho jako jedno z vyjmenovaných slov." },
+  { q: "Doplň správně: 'B_strý potok tekl přes kameny.'", a: "Bystří / Bystrý", opts: ["Bystrý", "Bistrý", "Bystri", "Bistri"], e: "Slovo 'bystrý' je příbuzné k vyjmenovanému slovu 'bystřina' (rychlá řeka). Po B ve vyjmenovaných slovech a jejich příbuzných píšeme Y." },
+  { q: "Příbuzné slovo k 'být' je:", a: "bydliště", opts: ["bydliště", "bidlo", "bičovat", "bílek"], e: "Slovo 'bydliště' patří do rodiny slova 'být' — bydlet, bydlení, bydliště. Všechna tato slova mají Y, protože jsou příbuzná s vyjmenovaným slovem 'být'." },
   // po L
-  { q: "Doplň správně: 'Na l_žích jsme jeli z kopce.'", a: "lyžích", opts: ["lyžích", "ližích", "lyzích", "lizích"] },
-  { q: "Doplň správně: 'Kůra stromu se nazývá l_ko.'", a: "lýko", opts: ["lýko", "líko", "lyko", "liko"] },
-  { q: "Příbuzné slovo k 'lyže' je:", a: "lyžař", opts: ["lyžař", "ližař", "lyzař", "lizař"] },
+  { q: "Doplň správně: 'Na l_žích jsme jeli z kopce.'", a: "lyžích", opts: ["lyžích", "ližích", "lyzích", "lizích"], e: "Slovo 'lyže' je vyjmenované slovo po L, takže 'lyžích' (míst. pád od lyže) se píše také s Y. Celá rodina lyže, lyžař, lyžování má Y." },
+  { q: "Doplň správně: 'Kůra stromu se nazývá l_ko.'", a: "lýko", opts: ["lýko", "líko", "lyko", "liko"], e: "Slovo 'lýko' je vyjmenované slovo po L — je to tenká vrstva pod kůrou stromu. Vyjmenovaná slova po L se píší s Y nebo Ý." },
+  { q: "Příbuzné slovo k 'lyže' je:", a: "lyžař", opts: ["lyžař", "ližař", "lyzař", "lizař"], e: "Slovo 'lyžař' je příbuzné k vyjmenovanému slovu 'lyže'. Patří do stejné rodiny: lyže → lyžař → lyžovat. Celá rodina píše Y." },
   // po M
-  { q: "Doplň správně: 'M_dlo voní levandulí.'", a: "Mýdlo", opts: ["Mýdlo", "Mydlo", "Mídlo", "Midlo"] },
-  { q: "Doplň správně: 'Musíme m_t nádobí po večeři.'", a: "mýt", opts: ["mýt", "mít", "myt", "mit"] },
-  { q: "Příbuzné slovo k 'myslet' je:", a: "myšlenka", opts: ["myšlenka", "mišlenka", "myšlinka", "mišlinka"] },
+  { q: "Doplň správně: 'M_dlo voní levandulí.'", a: "Mýdlo", opts: ["Mýdlo", "Mydlo", "Mídlo", "Midlo"], e: "Slovo 'mýdlo' je příbuzné k vyjmenovanému slovu 'mýt' — mýdlem se myjeme. Píšeme Ý, protože je to příbuzné s vyjmenovaným slovem." },
+  { q: "Doplň správně: 'Musíme m_t nádobí po večeři.'", a: "mýt", opts: ["mýt", "mít", "myt", "mit"], e: "Slovo 'mýt' je přímo vyjmenované slovo po M. Pozor, nezaměňuj s 'mít' (vlastnit) — to je jiné slovo s krátkým I!" },
+  { q: "Příbuzné slovo k 'myslet' je:", a: "myšlenka", opts: ["myšlenka", "mišlenka", "myšlinka", "mišlinka"], e: "Slovo 'myšlenka' patří do rodiny slova 'myslet', které je příbuzné s vyjmenovaným slovem 'mysl'. Proto celá rodina — myslet, myšlenka, myšlení — píše Y." },
   // po P
-  { q: "Doplň správně: 'P_cha předchází pád.'", a: "Pýcha", opts: ["Pýcha", "Pícha", "Pycha", "Picha"] },
-  { q: "Doplň správně: 'Brambory dáme do p_tele.'", a: "pytle", opts: ["pytle", "pitle", "pytlie", "pitlie"] },
-  { q: "Příbuzné slovo k 'pyšný' je:", a: "pýcha", opts: ["pýcha", "pícha", "pycha", "pichla"] },
+  { q: "Doplň správně: 'P_cha předchází pád.'", a: "Pýcha", opts: ["Pýcha", "Pícha", "Pycha", "Picha"], e: "Slovo 'pýcha' je příbuzné k vyjmenovanému slovu 'pyšný'. Kdo je pyšný, má v sobě pýchu — píšeme Y, protože patří do rodiny vyjmenovaného slova." },
+  { q: "Doplň správně: 'Brambory dáme do p_tele.'", a: "pytle", opts: ["pytle", "pitle", "pytlie", "pitlie"], e: "Slovo 'pytel' je vyjmenované slovo po P, proto jeho tvary — pytle, pytlích, pytlíku — se také píší s Y." },
+  { q: "Příbuzné slovo k 'pyšný' je:", a: "pýcha", opts: ["pýcha", "pícha", "pycha", "pichla"], e: "Slova 'pyšný' a 'pýcha' patří do jedné rodiny vyjmenovaných slov po P. Kdo je pyšný, má pýchu — obě slova píšeme s Y." },
   // po S
-  { q: "Doplň správně: 'S_r je výrobek z mléka.'", a: "Sýr", opts: ["Sýr", "Sír", "Syr", "Sir"] },
-  { q: "Doplň správně: 'Byl s_tý, protože hodně snědl.'", a: "sytý", opts: ["sytý", "sitý", "sytí", "sitý"] },
+  { q: "Doplň správně: 'S_r je výrobek z mléka.'", a: "Sýr", opts: ["Sýr", "Sír", "Syr", "Sir"], e: "Slovo 'sýr' je vyjmenované slovo po S, proto se píše s Ý. Pamatuj si ho zpaměti jako součást řady vyjmenovaných slov." },
+  { q: "Byl s_tý, protože hodně snědl.", a: "sytý", opts: ["sytý", "sitý", "sytí", "sitý"], e: "Slovo 'sytý' je příbuzné k vyjmenovanému slovu 'sytit' (nasycovat). Po S u vyjmenovaných slov a příbuzných píšeme Y." },
   // po V
-  { q: "Doplň správně: 'Vlk začal v_t na měsíc.'", a: "výt", opts: ["výt", "vít", "vyt", "vit"] },
-  { q: "Příbuzné slovo k 'zvyk' je:", a: "zvyknout", opts: ["zvyknout", "zviknut", "zvyknout", "zvíknout"] },
+  { q: "Doplň správně: 'Vlk začal v_t na měsíc.'", a: "výt", opts: ["výt", "vít", "vyt", "vit"], e: "Slovo 'výt' je vyjmenované slovo po V — takto označujeme zvuk vlka. Píšeme Ý, protože je to vyjmenované slovo." },
+  { q: "Příbuzné slovo k 'zvyk' je:", a: "zvyknout", opts: ["zvyknout", "zviknut", "zvyknout", "zvíknout"], e: "Slovo 'zvyknout' patří do rodiny slova 'zvyk', které je příbuzné s vyjmenovaným slovem 'vyknout'. Celá rodina — zvyk, zvyknout, zvyklý — se píše s Y." },
   // po Z
-  { q: "Doplň správně: 'Přijď brz_.'", a: "brzy", opts: ["brzy", "brzi", "brzy", "brzí"] },
-  { q: "Příbuzné slovo k 'jazyk' je:", a: "jazykový", opts: ["jazykový", "jazikový", "jazykovi", "jazikovi"] },
-  { q: "Doplň správně: 'Lékař zkoumal můj j_zyk.'", a: "jazyk", opts: ["jazyk", "jazik", "jázyk", "jázik"] },
+  { q: "Doplň správně: 'Přijď brz_.'", a: "brzy", opts: ["brzy", "brzi", "brzy", "brzí"], e: "Slovo 'brzy' je příbuzné k vyjmenovanému slovu 'zbývat'. Píšeme Y, protože patří do rodiny vyjmenovaných slov po Z." },
+  { q: "Příbuzné slovo k 'jazyk' je:", a: "jazykový", opts: ["jazykový", "jazikový", "jazykovi", "jazikovi"], e: "Slovo 'jazykový' patří do rodiny vyjmenovaného slova 'jazyk'. Jazyk, jazykový, jazykověda — celá rodina píše Y, protože 'jazyk' je vyjmenované slovo po Z." },
+  { q: "Doplň správně: 'Lékař zkoumal můj j_zyk.'", a: "jazyk", opts: ["jazyk", "jazik", "jázyk", "jázik"], e: "Slovo 'jazyk' je vyjmenované slovo po Z — jazykem mluvíme a ochutnáváme. Vyjmenovaná slova po Z píšeme s Y." },
 ];
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL.slice(0, 10) : level === 2 ? POOL.slice(0, 15) : POOL;
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts }) => ({
+  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
     hints: ["Příbuzná slova k vyjmenovaným se také píší s Y/Ý.", "Najdi vyjmenované slovo, ke kterému toto patří."],
-    solutionSteps: ["Rozeznám, po které souhlásce se píše.", `Slovo patří do rodiny vyjmenovaných — píšeme: ${a}`],
+    explanation: e,
   }));
 }
 

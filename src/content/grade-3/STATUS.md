@@ -40,32 +40,32 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_3_TOPICS)
 
 ### Lidé a čas
 
-- [x] **Minulost našeho regionu, pověsti** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti`
-- [x] **Časová přímka, generace v rodině** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine`
+- [ ] **Minulost našeho regionu, pověsti** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti`
+- [ ] **Časová přímka, generace v rodině** `g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine`
 
 ### Lidé kolem nás
 
-- [x] **Komunikace, jednání s neznámými lidmi - bezpečnost** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost`
-- [x] **Vztahy mezi lidmi, řešení konfliktů** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu`
+- [ ] **Komunikace, jednání s neznámými lidmi - bezpečnost** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost`
+- [ ] **Vztahy mezi lidmi, řešení konfliktů** `g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu`
 
 ### Místo, kde žijeme
 
-- [x] **Kraje a regiony ČR (úvod), náš region** `g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region`
-- [x] **Mapa - světové strany, plán a mapa, kompas** `g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas`
-- [x] **Česká republika - hlavní město, státní symboly** `g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly`
+- [ ] **Kraje a regiony ČR (úvod), náš region** `g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region`
+- [ ] **Mapa - světové strany, plán a mapa, kompas** `g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas`
+- [ ] **Česká republika - hlavní město, státní symboly** `g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly`
 
 ### Rozmanitost přírody
 
-- [x] **Pole, louka, les, voda - jednoduché ekosystémy** `g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy`
-- [x] **Skupiny živočichů - savci, ptáci, ryby, plazi, obojživelníci, hmyz** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz`
-- [x] **Stavba rostlin (kořen, stonek, list, květ, plod)** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod`
-- [x] **Rozdíly mezi živou a neživou přírodou** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou`
-- [x] **Voda, vzduch, půda - význam pro život** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot`
+- [ ] **Pole, louka, les, voda - jednoduché ekosystémy** `g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy`
+- [ ] **Skupiny živočichů - savci, ptáci, ryby, plazi, obojživelníci, hmyz** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz`
+- [ ] **Stavba rostlin (kořen, stonek, list, květ, plod)** `g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod`
+- [ ] **Rozdíly mezi živou a neživou přírodou** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou`
+- [ ] **Voda, vzduch, půda - význam pro život** `g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot`
 
 ### Člověk a jeho zdraví
 
-- [x] **Mimořádné události - požár, povodeň; chování při ohrožení** `g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni`
-- [x] **Stavba lidského těla (kostra, svaly - úvod), zdraví a nemoc** `g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc`
+- [ ] **Mimořádné události - požár, povodeň; chování při ohrožení** `g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni`
+- [ ] **Stavba lidského těla (kostra, svaly - úvod), zdraví a nemoc** `g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc`
 
 ---
 
@@ -129,7 +129,7 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_3_TOPICS)
 
 | Předmět | Celkem | Hotovo | Zbývá |
 |---|---|---|---|
-| Matematika | 13 | 0 | 13 |
+| Matematika | 13 | 13 | 0 |
 | Prvouka | 14 | 0 | 14 |
-| Čeština | 25 | 0 | 25 |
-| **Celkem** | **52** | **0** | **52** |
+| Čeština | 25 | 25 | 0 |
+| **Celkem** | **52** | **38** | **14** |

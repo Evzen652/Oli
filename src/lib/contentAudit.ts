@@ -191,6 +191,65 @@ export function runOfflineAudit(
         }
       }
 
+      // d2) Essay: musí mít hints (correctAnswer je numerický threshold, ne rubric — délkový check přeskočen)
+      if (topic.inputType === "essay" && (!task.hints || task.hints.length === 0)) {
+        issues.push({
+          ...issueMeta,
+          taskQuestion: task.question.slice(0, 80),
+          category: "format",
+          detail: "Essay: chybí hints — žák potřebuje vodítko pro psaní",
+        });
+      }
+
+      // d3) step_based: min 2 kroky, žádný krok nesmí obsahovat correctAnswer
+      if (topic.practiceType === "step_based") {
+        if (!task.solutionSteps || task.solutionSteps.length < 2) {
+          issues.push({
+            ...issueMeta,
+            taskQuestion: task.question.slice(0, 80),
+            category: "format",
+            detail: `step_based task: ${task.solutionSteps?.length ?? 0} kroků řešení (min 2)`,
+          });
+        }
+        if (task.solutionSteps) {
+          const correctLower = String(task.correctAnswer).toLowerCase();
+          const leakingStep = task.solutionSteps.find(s => s.toLowerCase().includes(correctLower));
+          if (leakingStep) {
+            issues.push({
+              ...issueMeta,
+              taskQuestion: task.question.slice(0, 80),
+              category: "hint_leak",
+              detail: `solutionStep prozrazuje correctAnswer: "${leakingStep.slice(0, 60)}"`,
+            });
+          }
+        }
+      }
+
+      // d4) text/short_answer + grade ≤ 3: odpověď max 5 slov
+      if ((topic.inputType === "text" || topic.inputType === "short_answer") && topic.gradeRange[0] <= 3) {
+        const wordCount = task.correctAnswer.trim().split(/\s+/).length;
+        if (wordCount > 5) {
+          issues.push({
+            ...issueMeta,
+            taskQuestion: task.question.slice(0, 80),
+            category: "format",
+            detail: `text odpověď pro ≤ 3. ročník má ${wordCount} slov (max 5): "${task.correctAnswer.slice(0, 40)}"`,
+          });
+        }
+      }
+
+      // d5) matematika + text/short_answer: odpověď musí být parsovatelná jako číslo
+      if (topic.subject === "matematika" && (topic.inputType === "text" || topic.inputType === "short_answer")) {
+        if (!/^-?\d+([.,]\d+)?(\/\d+)?$/.test(task.correctAnswer.trim())) {
+          issues.push({
+            ...issueMeta,
+            taskQuestion: task.question.slice(0, 80),
+            category: "format",
+            detail: `matematika text odpověď není číslo: "${task.correctAnswer.slice(0, 40)}"`,
+          });
+        }
+      }
+
       // e) Boundary check
       if (checkBoundaryViolation(task.correctAnswer, topic)) {
         issues.push({
@@ -275,7 +334,12 @@ export type PedagogicalAuditCategory =
   | "missing_hints"           // Témata bez nápověd pro žáky
   | "distractor_quality"      // Slabé distraktory v select_one (prázdné, příliš podobné, příliš málo)
   | "audit_flag"              // Témata ručně označena jako NEEDS_REVIEW nebo jiným audit flagem
-  | "missing_solution_steps"; // Témata kde < 50 % tasků má solutionSteps (pro step_based topics)
+  | "missing_solution_steps"  // Témata kde < 50 % tasků má solutionSteps (pro step_based topics)
+  | "czech_register"          // Otázka obsahuje formální slova nevhodná pro ZŠ
+  | "sentence_complexity"     // Otázka překračuje max. délku slov pro daný ročník
+  | "answer_uniqueness"       // 5+ tasků v jednom levelu má shodnou odpověď → šablonový generátor
+  | "difficulty_delta"        // Průměrná délka odpovědi level 3 ≤ level 1 → invertovaná obtížnost
+  | "hint_progression";       // Velká nápověda není o ≥ 20 % delší než malá
 
 export interface PedagogicalAuditIssue {
   topicId: string;
@@ -304,6 +368,11 @@ export const PEDAGOGICAL_CATEGORY_LABELS: Record<PedagogicalAuditCategory, strin
   distractor_quality: "Slabé distraktory",
   audit_flag: "Označeno k revizi",
   missing_solution_steps: "Chybí postup řešení",
+  czech_register: "Formální jazyk nevhodný pro ZŠ",
+  sentence_complexity: "Příliš složitá otázka",
+  answer_uniqueness: "Šablonový generátor (stejné odpovědi)",
+  difficulty_delta: "Invertovaná obtížnost",
+  hint_progression: "Nápověda špatně stupňována",
 };
 
 export const PEDAGOGICAL_CATEGORY_COLORS: Record<PedagogicalAuditCategory, string> = {
@@ -312,6 +381,11 @@ export const PEDAGOGICAL_CATEGORY_COLORS: Record<PedagogicalAuditCategory, strin
   distractor_quality: "bg-rose-100 text-rose-800 border-rose-200",
   audit_flag: "bg-red-100 text-red-800 border-red-200",
   missing_solution_steps: "bg-amber-100 text-amber-800 border-amber-200",
+  czech_register: "bg-orange-100 text-orange-800 border-orange-200",
+  sentence_complexity: "bg-purple-100 text-purple-800 border-purple-200",
+  answer_uniqueness: "bg-pink-100 text-pink-800 border-pink-200",
+  difficulty_delta: "bg-indigo-100 text-indigo-800 border-indigo-200",
+  hint_progression: "bg-teal-100 text-teal-800 border-teal-200",
 };
 
 /**
@@ -490,6 +564,87 @@ export function runPedagogicalAudit(
         });
       }
     }
+
+    // ── 6) Czech register — formální slova nevhodná pro ZŠ ──────────────
+    const FORMAL_WORDS = ["proveďte", "zodpovězte", "určete", "stanovte", "charakterizujte"];
+    for (const t of sampleTasks) {
+      const q = t.question.toLowerCase();
+      const found = FORMAL_WORDS.find(w => q.includes(w));
+      if (found) {
+        issues.push({
+          ...issueMeta,
+          category: "czech_register",
+          detail: `Formální slovo nevhodné pro ZŠ: "${found}" → "${t.question.slice(0, 60)}"`,
+        });
+        break;
+      }
+    }
+
+    // ── 7) Sentence complexity — délka otázky dle ročníku ────────────────
+    const grade = topic.gradeRange[0];
+    const maxWords = grade <= 2 ? 12 : grade <= 4 ? 18 : 25;
+    for (const t of sampleTasks) {
+      const wc = t.question.trim().split(/\s+/).length;
+      if (wc > maxWords) {
+        issues.push({
+          ...issueMeta,
+          category: "sentence_complexity",
+          detail: `Otázka má ${wc} slov (max pro ${grade}. ročník: ${maxWords}): "${t.question.slice(0, 60)}"`,
+        });
+        break;
+      }
+    }
+
+    // ── 8) Answer uniqueness within level 1 — šablonový generátor ────────
+    // Přeskočit pro inputType kde shodná odpověď je legitimní (true_false, comparison)
+    if (
+      topic.inputType !== "true_false" &&
+      topic.inputType !== "comparison" &&
+      lvl1Tasks.length >= 5
+    ) {
+      const sample5 = lvl1Tasks.slice(0, 5);
+      if (sample5.every(t => t.correctAnswer === sample5[0].correctAnswer)) {
+        issues.push({
+          ...issueMeta,
+          category: "answer_uniqueness",
+          detail: `5 tasků v level 1 má shodnou odpověď "${String(sample5[0].correctAnswer).slice(0, 30)}" → generátor je šablonový`,
+        });
+      }
+    }
+
+    // ── 9) Difficulty delta — průměrná délka odpovědí level 1 vs 3 ───────
+    // Jen pro text inputTypes kde délka koreluje s obtížností
+    if (
+      (topic.inputType === "short_answer" || topic.inputType === "essay") &&
+      lvl1Tasks.length >= 3 &&
+      lvl3Tasks.length >= 3
+    ) {
+      const avgLen = (tasks: PracticeTask[]) =>
+        tasks.slice(0, 5).reduce((s, t) => s + t.correctAnswer.length, 0) / Math.min(tasks.length, 5);
+      const avg1 = avgLen(lvl1Tasks);
+      const avg3 = avgLen(lvl3Tasks);
+      if (avg3 <= avg1) {
+        issues.push({
+          ...issueMeta,
+          category: "difficulty_delta",
+          detail: `Průměrná délka odpovědi level 3 (${Math.round(avg3)} zn.) ≤ level 1 (${Math.round(avg1)} zn.) → invertovaná obtížnost`,
+        });
+      }
+    }
+
+    // ── 10) Hint progression — velká nápověda musí být o ≥ 20 % delší ───
+    for (const t of sampleTasks) {
+      if (Array.isArray(t.hints) && t.hints.length >= 2 && t.hints[0] && t.hints[1]) {
+        if (t.hints[1].length < t.hints[0].length * 1.2) {
+          issues.push({
+            ...issueMeta,
+            category: "hint_progression",
+            detail: `Velká nápověda (${t.hints[1].length} zn.) není o ≥ 20 % delší než malá (${t.hints[0].length} zn.)`,
+          });
+          break;
+        }
+      }
+    }
   }
 
   if (onProgress) onProgress(1);
@@ -501,6 +656,11 @@ export function runPedagogicalAudit(
     distractor_quality: 0,
     audit_flag: 0,
     missing_solution_steps: 0,
+    czech_register: 0,
+    sentence_complexity: 0,
+    answer_uniqueness: 0,
+    difficulty_delta: 0,
+    hint_progression: 0,
   };
   for (const issue of issues) {
     byCategory[issue.category] = (byCategory[issue.category] ?? 0) + 1;

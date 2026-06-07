@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2, Mail, MessageCircle } from "lucide-react";
 
 interface Props {
@@ -48,6 +48,12 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
 
+  // Abort in-flight fetch on unmount → zabraňuje setState na unmounted komponentu
+  const abortRef = useRef<AbortController | null>(null);
+  useEffect(() => {
+    return () => { abortRef.current?.abort(); };
+  }, []);
+
   // ── WhatsApp ──────────────────────────────────────────────────────────────
   const handleWhatsApp = () => {
     const normalized = normalizePhone(phone);
@@ -66,6 +72,11 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
       setEmailError("Zadej platný email");
       return;
     }
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setEmailLoading(true);
     setEmailError(null);
 
@@ -74,6 +85,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
       const SUPABASE_ANON_KEY = "sb_publishable_33yUDPztgleFHYtChSvGKQ_rMlyktGV";
       const res = await fetch(`${SUPABASE_URL}/functions/v1/send-parent-invite`, {
         method: "POST",
+        signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
@@ -86,13 +98,15 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
           childId: childId ?? null,
         }),
       });
+      if (controller.signal.aborted) return;
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.error) throw new Error(data.error ?? res.statusText);
       setEmailSent(true);
     } catch (e: unknown) {
+      if (controller.signal.aborted) return;
       setEmailError(`Nepodařilo se odeslat: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
-      setEmailLoading(false);
+      if (!controller.signal.aborted) setEmailLoading(false);
     }
   };
 

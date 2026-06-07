@@ -41,10 +41,19 @@ export function CheckFeedbackCard({
           )}
           {answeredTask && topic && (
             <div className="mt-4 rounded-xl bg-background/70 p-5 text-base text-secondary-foreground space-y-3">
-              <p>
-                {t("session.correct_answer")}<span className="font-bold text-foreground">{answeredTask.correctAnswer}</span>
-              </p>
-              {answeredTask.solutionSteps && answeredTask.solutionSteps.length > 0 ? (
+              {/* Správná odpověď — jen při špatné odpovědi */}
+              {!lastAnswerCorrect && (
+                <p>
+                  {t("session.correct_answer")}<span className="font-bold text-foreground">{answeredTask.correctAnswer}</span>
+                </p>
+              )}
+
+              {/* Vysvětlení proč — tři úrovně priority */}
+              {answeredTask.explanation ? (
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  {answeredTask.explanation}
+                </p>
+              ) : answeredTask.solutionSteps && answeredTask.solutionSteps.length > 0 ? (
                 <>
                   <p className="font-semibold text-foreground">{t("session.procedure")}</p>
                   <ol className="list-decimal list-inside text-base text-muted-foreground space-y-1">
@@ -54,18 +63,9 @@ export function CheckFeedbackCard({
                   </ol>
                 </>
               ) : (
-                <>
-                  <p className="text-base text-muted-foreground">
-                    <span className="font-semibold">{t("session.procedure")}</span> {topic.helpTemplate.hint}
-                  </p>
-                  {topic.helpTemplate.steps && topic.helpTemplate.steps.length > 0 && (
-                    <ol className="list-decimal list-inside text-base text-muted-foreground space-y-1">
-                      {topic.helpTemplate.steps.map((step, i) => (
-                        <li key={i}>{step}</li>
-                      ))}
-                    </ol>
-                  )}
-                </>
+                <p className="text-base text-muted-foreground">
+                  {topic.helpTemplate.hint}
+                </p>
               )}
             </div>
           )}

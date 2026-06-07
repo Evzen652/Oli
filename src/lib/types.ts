@@ -147,7 +147,8 @@ export interface PracticeTask {
   correctAnswer: string;
   options?: string[]; // for select_one / true_false
   items?: string[]; // for drag_order (correct order)
-  solutionSteps?: string[]; // specific step-by-step solution for this task
+  solutionSteps?: string[]; // specific step-by-step solution for this task (matematika)
+  explanation?: string;     // proč je odpověď správná — pro humanitní předměty místo solutionSteps
   hints?: string[];          // progressive hints (guide without revealing answer)
   blanks?: string[];         // for fill_blank (correct answers for each blank)
   pairs?: { left: string; right: string }[]; // for match_pairs

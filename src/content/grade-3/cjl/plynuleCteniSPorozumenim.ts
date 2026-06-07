@@ -9,29 +9,29 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const TEXTY: { text: string; otazky: { q: string; a: string; opts: string[] }[] }[] = [
+const TEXTY: { text: string; otazky: { q: string; a: string; opts: string[]; e: string }[] }[] = [
   {
     text: "Máša má psa Boba. Bob je velký hnědý pes. Každý den ho Máša venčí v parku. Bob rád honí míč a plave v rybníku. Večer spí vedle Máši na koberci.",
     otazky: [
-      { q: "Jak se jmenuje Mášin pes?", a: "Bob", opts: ["Bob", "Max", "Brok", "Rex"] },
-      { q: "Kde Máša venčí psa?", a: "V parku", opts: ["V parku", "V lese", "Na zahradě", "U řeky"] },
-      { q: "Co Bob rád dělá?", a: "Honí míč a plave", opts: ["Honí míč a plave", "Jen spí", "Hlídá dům", "Hraje si s kočkou"] },
+      { q: "Jak se jmenuje Mášin pes?", a: "Bob", opts: ["Bob", "Max", "Brok", "Rex"], e: "V textu je napsáno 'Máša má psa Boba' — jméno psa je tedy Bob. Max, Brok ani Rex v textu nejsou zmíněni." },
+      { q: "Kde Máša venčí psa?", a: "V parku", opts: ["V parku", "V lese", "Na zahradě", "U řeky"], e: "Text říká 'Každý den ho Máša venčí v parku' — odpověď je přímo v textu. Les, zahrada ani řeka v textu nejsou." },
+      { q: "Co Bob rád dělá?", a: "Honí míč a plave", opts: ["Honí míč a plave", "Jen spí", "Hlídá dům", "Hraje si s kočkou"], e: "V textu stojí 'Bob rád honí míč a plave v rybníku' — obě činnosti jsou správně. Spí sice také, ale to dělá každý pes, text zdůrazňuje honičku a plavání." },
     ],
   },
   {
     text: "V zimě přišla do zahrady liška. Byla červená s bílým ocasem. Hledala jídlo, protože měla hlad. Zahradník ji uviděl a dal jí kousek chleba. Liška vzala chléb a utekla do lesa.",
     otazky: [
-      { q: "Co hledala liška v zahradě?", a: "Jídlo, protože měla hlad", opts: ["Jídlo, protože měla hlad", "Noru", "Kamaráda", "Vodu"] },
-      { q: "Kdo dal lišce chleba?", a: "Zahradník", opts: ["Zahradník", "Dítě", "Farmář", "Pes"] },
-      { q: "Jakou barvu měla liška?", a: "Červenou s bílým ocasem", opts: ["Červenou s bílým ocasem", "Hnědou", "Šedou", "Černobílou"] },
+      { q: "Co hledala liška v zahradě?", a: "Jídlo, protože měla hlad", opts: ["Jídlo, protože měla hlad", "Noru", "Kamaráda", "Vodu"], e: "Text přímo říká 'Hledala jídlo, protože měla hlad' — důvod i odpověď jsou jasně napsané. Noru, kamaráda ani vodu liška nehledala." },
+      { q: "Kdo dal lišce chleba?", a: "Zahradník", opts: ["Zahradník", "Dítě", "Farmář", "Pes"], e: "V textu je napsáno 'Zahradník ji uviděl a dal jí kousek chleba' — chléb dala lišce zahradník, ne dítě ani farmář." },
+      { q: "Jakou barvu měla liška?", a: "Červenou s bílým ocasem", opts: ["Červenou s bílým ocasem", "Hnědou", "Šedou", "Černobílou"], e: "Text popisuje lišku jako 'červenou s bílým ocasem' — to jsou dvě barvy najednou. Hnědá, šedá ani černobílá v textu nejsou." },
     ],
   },
   {
     text: "Petr a Jana jdou do školy každý den spolu. Škola je daleko, proto jezdí autobusem. V autobuse se Petr vždy učí slovíčka a Jana čte knížku. Na zastávce se rozloučí a každý jde do své třídy.",
     otazky: [
-      { q: "Jak Petr a Jana jezdí do školy?", a: "Autobusem", opts: ["Autobusem", "Pěšky", "Autem", "Na kole"] },
-      { q: "Co dělá Petr v autobuse?", a: "Učí se slovíčka", opts: ["Učí se slovíčka", "Čte knížku", "Spí", "Poslouchá hudbu"] },
-      { q: "Proč jezdí autobusem?", a: "Protože škola je daleko", opts: ["Protože škola je daleko", "Protože prší", "Protože je zima", "Protože chtějí"] },
+      { q: "Jak Petr a Jana jezdí do školy?", a: "Autobusem", opts: ["Autobusem", "Pěšky", "Autem", "Na kole"], e: "Text říká 'proto jezdí autobusem' — slovo 'proto' ukazuje, že autobusem jezdí kvůli tomu, že škola je daleko. Auto, kolo ani chůze v textu nejsou zmíněny." },
+      { q: "Co dělá Petr v autobuse?", a: "Učí se slovíčka", opts: ["Učí se slovíčka", "Čte knížku", "Spí", "Poslouchá hudbu"], e: "V textu stojí 'Petr vždy učí slovíčka' — Jana čte knížku, ale Petr se učí slovíčka. Je důležité si všimnout, kdo dělá co." },
+      { q: "Proč jezdí autobusem?", a: "Protože škola je daleko", opts: ["Protože škola je daleko", "Protože prší", "Protože je zima", "Protože chtějí"], e: "Text jasně říká 'Škola je daleko, proto jezdí autobusem' — slovo 'proto' označuje příčinu. O dešti ani zimě text nic neříká." },
     ],
   },
 ];
@@ -61,7 +61,7 @@ function gen(level: number): PracticeTask[] {
       correctAnswer: o.a,
       options: shuffle([...o.opts]),
       hints: ["Přečti text pozorně a hledej odpověď přímo v textu.", "Pokud si nejsi jistý, přečti text znovu."],
-      solutionSteps: ["Najdu odpověď v textu.", `Správná odpověď: ${o.a}`],
+      explanation: o.e,
     });
   }
   return tasks;
