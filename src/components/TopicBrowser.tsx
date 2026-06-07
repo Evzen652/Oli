@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronLeft } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { useImageVersions } from "@/lib/imageVersions";
 import categoryInfoImg from "@/assets/category-info.png";
@@ -273,15 +273,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                 Vyber předmět a pusť se do toho.
               </p>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleBack}
-              className="gap-1 text-sm text-muted-foreground"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              {t("topic.back")}
-            </Button>
+            <BackButton onClick={handleBack} />
           </div>
 
           {/* Asymmetric grid: 1. subject = velká karta vlevo, ostatní = stack vpravo */}
@@ -417,15 +409,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         : "Vyber konkrétní podtéma."}
                   </p>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleBack}
-                  className="gap-1 text-sm text-muted-foreground shrink-0"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  {t("topic.back")}
-                </Button>
+                <BackButton onClick={handleBack} />
               </div>
 
               {/* Info dialog — pokud existuje pro tuto úroveň */}
