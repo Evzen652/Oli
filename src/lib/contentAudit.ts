@@ -16,7 +16,7 @@ import { validateAnswer } from "./validators";
 import { checkBoundaryViolation } from "./boundaryEnforcement";
 import { checkHintLeakage } from "../../supabase/functions/_shared/hintLeakage";
 
-export type AuditCategory = "format" | "self_validation" | "hint_leak" | "boundary";
+export type AuditCategory = "format" | "self_validation" | "hint_leak" | "boundary" | "czech_grammar";
 
 export interface AuditIssue {
   topicId: string;
@@ -250,6 +250,22 @@ export function runOfflineAudit(
         }
       }
 
+      // d6) Česká gramatika — čísla 2–4 nesmí stát před genitiv-plurálovým tvarem
+      // Detekuje vzor "2 jablek", "3 dílů", "4 knížek" atd. — správně: "2 jablka", "3 díly"
+      {
+        const genitivPlural = /\b[234]\s+\w+(?:ů|ek|en)\b/g;
+        const questionText = task.question;
+        const matches = questionText.match(genitivPlural);
+        if (matches) {
+          issues.push({
+            ...issueMeta,
+            taskQuestion: task.question.slice(0, 80),
+            category: "czech_grammar",
+            detail: `Pravděpodobná špatná pluralizace (2–4 + genitiv plurálu): ${matches.map(m => `"${m}"`).join(", ")} — použij plural() z czechGrammar.ts`,
+          });
+        }
+      }
+
       // e) Boundary check
       if (checkBoundaryViolation(task.correctAnswer, topic)) {
         issues.push({
@@ -285,6 +301,7 @@ export function runOfflineAudit(
     self_validation: 0,
     hint_leak: 0,
     boundary: 0,
+    czech_grammar: 0,
   };
   const byTopic: Record<string, number> = {};
   for (const issue of issues) {
@@ -314,6 +331,7 @@ export const CATEGORY_LABELS: Record<AuditCategory, string> = {
   self_validation: "Validace odpovědi",
   hint_leak: "Nápověda prozrazuje",
   boundary: "Mimo hranice tématu",
+  czech_grammar: "Česká gramatika",
 };
 
 /** Barva pro UI dle kategorie */
@@ -322,6 +340,7 @@ export const CATEGORY_COLORS: Record<AuditCategory, string> = {
   self_validation: "bg-orange-100 text-orange-800 border-orange-200",
   hint_leak: "bg-amber-100 text-amber-800 border-amber-200",
   boundary: "bg-violet-100 text-violet-800 border-violet-200",
+  czech_grammar: "bg-blue-100 text-blue-800 border-blue-200",
 };
 
 // ─────────────────────────────────────────────────────────
