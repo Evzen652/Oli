@@ -431,26 +431,22 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Info dialog — pokud existuje pro tuto úroveň */}
               {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
 
-              {/* CATEGORY level — asymetrický grid (1 velká + ostatní menší) */}
+              {/* CATEGORY level — rovnoměrný grid */}
               {level === "category" && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {categories.map((category, idx) => {
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {categories.map((category) => {
                     const count = new Set(
                       topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
                     ).size;
                     const visual = getCategoryVisual(selectedSubject!, category);
-                    const isPrimary = idx === 0 && categories.length > 1;
                     return (
                       <button
                         key={category}
                         type="button"
                         onClick={() => handleCategoryClick(category)}
-                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[130px] p-5 ${
-                          isPrimary ? "md:col-span-2 md:row-span-2 md:min-h-[280px] md:p-6" : ""
-                        }`}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[130px] p-5`}
                       >
-                        {/* Mobile: kompaktní layout pro všechny karty */}
-                        <div className={`flex items-center gap-4 h-full ${isPrimary ? "md:hidden" : ""}`}>
+                        <div className="flex items-center gap-4 h-full">
                           <div className="shrink-0">
                             <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
                           </div>
@@ -465,25 +461,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                           </div>
                           <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
                         </div>
-
-                        {/* Desktop primary: velká karta — ilustrace nahoře, text dole */}
-                        {isPrimary && (
-                          <div className="hidden md:flex flex-col h-full">
-                            <div className="flex-1 flex items-center justify-center">
-                              <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="hero" />
-                            </div>
-                            <div className="space-y-1">
-                              <h3 className="text-2xl font-black text-foreground tracking-tight">{displayCat(category)}</h3>
-                              {displayCatDesc(category) && (
-                                <p className="text-sm text-foreground/65 leading-snug">{displayCatDesc(category)}</p>
-                              )}
-                              <p className="text-sm text-foreground/50 font-medium">
-                                {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
-                              </p>
-                            </div>
-                            <span className={`absolute top-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
-                          </div>
-                        )}
                       </button>
                     );
                   })}
@@ -493,7 +470,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* TOPIC level — asymmetric grid s description na primary */}
               {level === "topic" && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {topicGroups.map((topicName, idx) => {
+                  {topicGroups.map((topicName) => {
                     const skillsInGroup = topics.filter(
                       (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === topicName
                     );
@@ -503,18 +480,14 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                       ? (skillsInGroup[0]?.topicDescription ?? skillsInGroup[0]?.briefDescription ?? "")
                       : (skillsInGroup[0]?.briefDescription ?? ""));
                     const topicEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, topicName);
-                    const isPrimary = idx === 0 && topicGroups.length > 1;
                     return (
                       <button
                         key={topicName}
                         type="button"
                         onClick={() => handleTopicClick(topicName)}
-                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[130px] p-5 ${
-                          isPrimary ? "md:col-span-2 md:row-span-2 md:min-h-[320px] md:p-6" : ""
-                        }`}
+                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[130px] p-5`}
                       >
-                        {/* Mobile: kompaktní layout pro všechny karty */}
-                        <div className={`flex items-center gap-3 h-full ${isPrimary ? "md:hidden" : ""}`}>
+                        <div className="flex items-center gap-3 h-full">
                           <div className="flex-1 min-w-0 space-y-1">
                             <h3 className="text-lg font-black text-foreground tracking-tight line-clamp-2">
                               {displayTop(topicName)}
@@ -533,29 +506,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                           </div>
                           <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`} aria-hidden>›</span>
                         </div>
-
-                        {/* Desktop primary: velká karta */}
-                        {isPrimary && (
-                          <div className="hidden md:flex flex-col h-full">
-                            <div className="flex-1 flex items-center justify-center py-4">
-                              <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })} fallbackEmoji={topicEmoji} size="hero" />
-                            </div>
-                            <div className="space-y-2">
-                              <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
-                                {displayTop(topicName)}
-                              </h3>
-                              {description && (
-                                <p className="text-sm text-foreground/70 line-clamp-2">{description}</p>
-                              )}
-                              {count > 1 && (
-                                <p className="text-xs text-foreground/60">
-                                  {count} {count < 5 ? t("count.subtopic_2_4") : t("count.subtopic_5_plus")}
-                                </p>
-                              )}
-                            </div>
-                            <span className={`absolute top-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
-                          </div>
-                        )}
                       </button>
                     );
                   })}
