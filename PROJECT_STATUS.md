@@ -138,8 +138,15 @@ src/
 | displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
-### Session 2026-06-07 (pokr.) — hotovo:
-- ✅ **Grade-4 CJL: explanation kompletní — 22/22 souborů.** Pilot `popisPredmetu` ručně, zbytek paralelními agenty podle vzoru. Každá otázka má vlastní pedagogické vysvětlení (proč správná + odliš distraktory), `solutionSteps` → `explanation` v gen() všude (0 výskytů solutionSteps). 2 soubory s True/False strukturou (plynuleCteni, manipulativni) původně neměly žádné vysvětlení → doplněno. 2 pravopisné soubory (predlozky s/z, predpony vy/s/z/vz) řeší explanation šablonou podle generované odpovědi. tsc čisté.
+### Session 2026-06-08 — hotovo:
+- ✅ **Grade-4 CJL: explanation kompletní — 22/22 souborů.**
+- ✅ **SubjectGrid** na AnonStudentPage — předměty s ilustracemi místo jednoho tlačítka. Klik → TopicBrowser filtrovaný na předmět (SessionView čte `oli_anon_browse_subject` ze sessionStorage).
+- ✅ **TopicBrowser UI redesign:** logo Oli odstraněno z headerů; rovnoměrný grid (aspect-square, 2–3 sloupce) místo featured layout; ilustrace `w-44 h-44`; nadpis `text-lg font-black`; popis okruhu jako fallback na `briefDescription`.
+- ✅ **grade-3 displayNames.ts** vytvořen — 7 okruhů + 17 témat s dětskými názvy a popisy (matematika + CJL). Zaregistrováno v `displayNames.ts` (BY_GRADE[3]).
+- ✅ **SkillHeader / DailyTaskList** — předmět nahoře `text-base font-bold` v barvě + `|` + okruh stejnou barvou; téma pod tím.
+- ✅ **subjectRegistry.ts** — přidáno pole `color` ke `SubjectMeta` (matematika=blue-600, čeština=purple-600, prvouka=green-600, přírodověda=emerald-600, vlastivěda=amber-600).
+- ✅ **Audit check `czech_grammar`** — detekuje vzor `2–4 + genitiv plurálu` v question textu. Přidáno do `contentAudit.ts` (AuditCategory, CATEGORY_LABELS, CATEGORY_COLORS, byCategory).
+- ✅ **slovniUlohySeDvemaOperacemi.ts** — opravena gramatika: `plural()` pro jablko/knížku/místo/auto; KNÍŽKA/MÍSTO/AUTO přidány do NOUNS rejstříku; `solutionSteps` → `explanation`.
 
 ### Poslední session (2026-06-07) — hotovo:
 - ✅ InviteDialog memory leak opraven (AbortController)
