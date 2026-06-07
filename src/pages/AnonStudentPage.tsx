@@ -310,7 +310,7 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
             />
             <div className="flex-1 min-w-0">
               <p className="font-bold text-gray-900 truncate">{title}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{meta.label}</p>
+              <p className={`text-xs font-semibold mt-0.5 ${meta.color}`}>{meta.label}</p>
             </div>
             {completed ? (
               <span className="flex items-center gap-1.5 text-emerald-700 font-semibold text-sm shrink-0 px-3 py-1.5">
