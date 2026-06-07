@@ -14,7 +14,7 @@ import {
 } from "@/lib/anonTrial";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { ArrowRight, Check, Sparkles, BookOpen, Heart } from "lucide-react";
+import { ArrowRight, Check, Sparkles, Heart, BookOpen } from "lucide-react";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
@@ -215,21 +215,11 @@ export default function AnonStudentPage() {
 
             <section className="space-y-3">
               <h2 className="text-xl font-bold text-violet-900">Nebo si vyber vlastní téma</h2>
-              <button
-                onClick={handleBrowseAll}
-                className="w-full flex items-center justify-between rounded-2xl bg-white border-2 border-violet-200 hover:border-violet-400 hover:shadow-md p-5 transition-all group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-400 to-purple-500 ring-4 ring-violet-100 flex items-center justify-center shadow-sm">
-                    <BookOpen className="h-5 w-5 text-white" strokeWidth={2.5} />
-                  </div>
-                  <div className="text-left">
-                    <p className="font-bold text-gray-900">Procházet všechny předměty</p>
-                    <p className="text-xs text-gray-500 mt-0.5">Matematika, čeština, prvouka a další</p>
-                  </div>
-                </div>
-                <ArrowRight className="h-5 w-5 text-violet-600 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <SubjectGrid grade={grade} onSelect={(subject) => {
+                sessionStorage.setItem("oli_anon_browse_subject", subject);
+                sessionStorage.removeItem("oli_anon_start_topic");
+                setSessionMode(true);
+              }} />
             </section>
           </>
         )}
@@ -333,6 +323,35 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
               </button>
             )}
           </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function SubjectGrid({ grade, onSelect }: { grade: number; onSelect: (subject: string) => void }) {
+  const subjects = useMemo(() => {
+    const all = getAllTopics().filter((t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade);
+    return [...new Set(all.map((t) => t.subject))];
+  }, [grade]);
+
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      {subjects.map((subject) => {
+        const meta = getSubjectMeta(subject);
+        return (
+          <button
+            key={subject}
+            onClick={() => onSelect(subject)}
+            className="flex flex-col items-center gap-2 rounded-2xl bg-white border-2 border-violet-100 hover:border-violet-400 hover:shadow-md p-4 transition-all group"
+          >
+            <IllustrationImg
+              src={meta.image}
+              className="h-14 w-14 object-contain"
+              fallback={<span className="text-4xl">{meta.emoji}</span>}
+            />
+            <p className={`text-sm font-bold text-center ${meta.color}`}>{meta.label}</p>
+          </button>
         );
       })}
     </div>
