@@ -551,7 +551,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
 // ── Prvouka image with emoji fallback ────────────────────────
 
-const IMG_SIZES = { hero: "w-48 h-48 sm:w-56 sm:h-56", lg: "w-32 h-32", md: "w-16 h-16", sm: "w-12 h-12" };
+const IMG_SIZES = { hero: "w-48 h-48 sm:w-56 sm:h-56", lg: "w-44 h-44", md: "w-16 h-16", sm: "w-12 h-12" };
 const EMOJI_SIZES = { hero: "text-9xl", lg: "text-6xl", md: "text-3xl", sm: "text-2xl" };
 function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: string | null; fallbackEmoji?: string | null; size?: "hero" | "lg" | "md" | "sm" }) {
   const versioned = useImageVersions();
