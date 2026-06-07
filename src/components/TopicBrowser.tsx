@@ -449,9 +449,12 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         <div className="flex-1 flex items-center justify-center">
                           <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="lg" />
                         </div>
-                        <div className="space-y-0.5">
-                          <h3 className="text-sm font-black text-foreground tracking-tight leading-tight line-clamp-2">{displayCat(category)}</h3>
-                          <p className="text-[10px] text-foreground/50 font-medium">
+                        <div className="space-y-1">
+                          <h3 className="text-base font-black text-foreground tracking-tight leading-tight line-clamp-2">{displayCat(category)}</h3>
+                          {displayCatDesc(category) && (
+                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
+                          )}
+                          <p className="text-xs text-foreground/50 font-medium">
                             {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
                           </p>
                         </div>
