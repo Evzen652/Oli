@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { plural } from "@/lib/czechGrammar";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -9,22 +10,25 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-type Uloha = { q: string; a: number; steps: string[] };
+type Uloha = { q: string; a: number; steps: string[]; e: string };
 
 function makeUlohy(level: number): Uloha[] {
   const ulohy: Uloha[] = [];
 
-  // Šablony slovních úloh — dvě operace
   const templates = [
     () => {
       const a = Math.floor(Math.random() * (level === 1 ? 20 : 50)) + 5;
       const b = Math.floor(Math.random() * (level === 1 ? 10 : 30)) + 2;
       const c = Math.floor(Math.random() * (level === 1 ? 10 : 20)) + 1;
       const r = (a + b) - c;
+      const jablkaA = plural(a, "jablko", "jablka", "jablek");
+      const jablkaB = plural(b, "jablko", "jablka", "jablek");
+      const jablkaR = plural(r, "jablko", "jablka", "jablek");
       return {
-        q: `V košíku bylo ${a} jablek. Přidali jsme ${b} jablek a pak ${c} snědli. Kolik jablek je v košíku?`,
+        q: `V košíku bylo ${a} ${jablkaA}. Přidali jsme ${b} ${jablkaB} a pak ${c} snědli. Kolik jablek je v košíku?`,
         a: r,
         steps: [`${a} + ${b} = ${a + b}`, `${a + b} − ${c} = ${r}`],
+        e: `Nejdřív spočítáme, kolik jablek je po přidání: ${a} + ${b} = ${a + b}. Pak odečteme snědená: ${a + b} − ${c} = ${r}. V košíku je ${r} ${jablkaR}.`,
       };
     },
     () => {
@@ -32,10 +36,12 @@ function makeUlohy(level: number): Uloha[] {
       const cena = Math.floor(Math.random() * (level === 1 ? 10 : 20)) + 5;
       const zaplaceno = pocet * cena + Math.floor(Math.random() * 20) + pocet * cena;
       const r = zaplaceno - pocet * cena;
+      const knizky = plural(pocet, "knížku", "knížky", "knížek");
       return {
-        q: `Koupili jsme ${pocet} knížky po ${cena} Kč. Zaplatili jsme ${zaplaceno} Kč. Kolik Kč jsme dostali zpět?`,
+        q: `Koupili jsme ${pocet} ${knizky} po ${cena} Kč. Zaplatili jsme ${zaplaceno} Kč. Kolik Kč jsme dostali zpět?`,
         a: r,
         steps: [`${pocet} × ${cena} = ${pocet * cena} Kč`, `${zaplaceno} − ${pocet * cena} = ${r} Kč`],
+        e: `Nejdřív spočítáme cenu všech knížek: ${pocet} × ${cena} = ${pocet * cena} Kč. Pak odečteme od zaplacené částky: ${zaplaceno} − ${pocet * cena} = ${r} Kč zpět.`,
       };
     },
     () => {
@@ -44,10 +50,13 @@ function makeUlohy(level: number): Uloha[] {
       const obsazeno = Math.floor(Math.random() * (radyPocet * mistyPocet / 2)) + 1;
       const celkem = radyPocet * mistyPocet;
       const volnych = celkem - obsazeno;
+      const mista = plural(mistyPocet, "místem", "místy", "místy");
+      const mistVolnych = plural(volnych, "místo", "místa", "míst");
       return {
-        q: `V kině je ${radyPocet} řady po ${mistyPocet} místech. Obsazeno je ${obsazeno} míst. Kolik míst je volných?`,
+        q: `V kině je ${radyPocet} řady po ${mistyPocet} ${mista}. Obsazeno je ${obsazeno} míst. Kolik míst je volných?`,
         a: volnych,
         steps: [`${radyPocet} × ${mistyPocet} = ${celkem} míst celkem`, `${celkem} − ${obsazeno} = ${volnych} volných míst`],
+        e: `Nejdřív zjistíme celkový počet míst: ${radyPocet} × ${mistyPocet} = ${celkem}. Od toho odečteme obsazená místa: ${celkem} − ${obsazeno} = ${volnych}. Volných je ${volnych} ${mistVolnych}.`,
       };
     },
     () => {
@@ -55,10 +64,13 @@ function makeUlohy(level: number): Uloha[] {
       const b = Math.floor(Math.random() * (level === 1 ? 20 : 40)) + 5;
       const c = Math.floor(Math.random() * (level === 1 ? 15 : 30)) + 3;
       const r = a - b + c;
+      const autA = plural(a, "auto", "auta", "aut");
+      const autR = plural(r, "auto", "auta", "aut");
       return {
-        q: `Na parkovišti stálo ${a} aut. Odjelo ${b} aut a přijelo ${c} nových. Kolik aut je teď na parkovišti?`,
+        q: `Na parkovišti stálo ${a} ${autA}. Odjelo ${b} aut a přijelo ${c} nových. Kolik aut je teď na parkovišti?`,
         a: r,
         steps: [`${a} − ${b} = ${a - b}`, `${a - b} + ${c} = ${r}`],
+        e: `Nejdřív odečteme auta, která odjela: ${a} − ${b} = ${a - b}. Pak přičteme nová: ${a - b} + ${c} = ${r}. Na parkovišti je teď ${r} ${autR}.`,
       };
     },
   ];
@@ -76,7 +88,7 @@ function gen(level: number): PracticeTask[] {
     correctAnswer: String(u.a),
     options: shuffle([String(u.a), String(u.a + 10), String(u.a - 5 > 0 ? u.a - 5 : u.a + 15), String(u.a + 5)].filter((v, i, a) => a.indexOf(v) === i).slice(0, 4)),
     hints: ["Každý krok = jedna početní operace.", "Rozděl úlohu na dva kroky: co se děje nejdřív a co potom — zapiš každý krok zvlášť."],
-    solutionSteps: u.steps,
+    explanation: u.e,
   }));
 }
 

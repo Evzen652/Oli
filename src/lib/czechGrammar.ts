@@ -80,6 +80,9 @@ const NOUNS: Record<string, [string, string, string]> = {
   ČÍSLO:      ["číslo", "čísla", "čísel"],
   KOSTKA:     ["kostka", "kostky", "kostek"],
   JABLKO:     ["jablko", "jablka", "jablek"],
+  KNÍŽKA:     ["knížku", "knížky", "knížek"],
+  MÍSTO:      ["místo", "místa", "míst"],
+  AUTO:       ["auto", "auta", "aut"],
   KORUNA:     ["koruna", "koruny", "korun"],
 
   // Jednotky
