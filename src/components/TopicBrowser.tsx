@@ -435,10 +435,10 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {level === "category" && (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {categories.map((category) => {
-                    const count = new Set(
-                      topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
-                    ).size;
+                    const catTopics = topics.filter((t) => t.subject === selectedSubject && t.category === category);
+                    const count = new Set(catTopics.map((t) => t.topic)).size;
                     const visual = getCategoryVisual(selectedSubject!, category);
+                    const desc = displayCatDesc(category) ?? catTopics[0]?.briefDescription ?? null;
                     return (
                       <button
                         key={category}
@@ -450,9 +450,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                           <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="lg" />
                         </div>
                         <div className="space-y-1">
-                          <h3 className="text-base font-black text-foreground tracking-tight leading-tight line-clamp-2">{displayCat(category)}</h3>
-                          {displayCatDesc(category) && (
-                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
+                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight line-clamp-2">{displayCat(category)}</h3>
+                          {desc && (
+                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{desc}</p>
                           )}
                           <p className="text-xs text-foreground/50 font-medium">
                             {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
