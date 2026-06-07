@@ -21,7 +21,6 @@ import { useImageVersions } from "@/lib/imageVersions";
 import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
-import { OlyLogo } from "@/components/OlyLogo";
 import { getDisplayCategory, getDisplayCategoryDescription, getDisplayTopic, getDisplayTopicDescription } from "@/lib/displayNames";
 
 interface TopicBrowserProps {
@@ -260,19 +259,8 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
         <div className="mx-auto w-full max-w-5xl space-y-6">
           {/* Welcome header card */}
           <div className="relative rounded-3xl border-2 border-border/40 bg-card p-5 shadow-soft-1">
-            <div className="flex items-center gap-4">
-              <div className="shrink-0">
-                <OlyLogo size="sm" onClick={onBack} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                  Ahoj!
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                  Co dnes procvičíš?
-                </p>
-              </div>
-            </div>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Ahoj!</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">Co dnes procvičíš?</p>
           </div>
 
           {/* Title + back */}
@@ -395,9 +383,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Welcome header card — barva podle aktuálního předmětu */}
               <div className={`relative rounded-3xl border-2 ${subjectStyle.border} ${subjectStyle.bg} p-5 shadow-soft-1`}>
                 <div className="flex items-center gap-4">
-                  <div className="shrink-0">
-                    <OlyLogo size="sm" onClick={onBack} />
-                  </div>
                   <div className="flex-1 min-w-0">
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
                       {capitalize(selectedSubject ?? title)}
