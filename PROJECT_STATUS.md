@@ -130,13 +130,22 @@ src/
 
 | Co | Kdo | Stav |
 |---|---|---|
-| InviteDialog memory leak (bug #5 z trial flow) | Architekt | 🐛 Otevřený |
-| Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
-| Sjednocení helpTemplate vs task.hints | Architekt | ⏸️ Čeká |
-| displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
+| Grade-3 prvouka (0/14 témat) | Grade-3 session | ⏸️ Další obsah |
+| Grade-4 CJL: přidat explanation (jako grade-3) | Architekt | ⏸️ Čeká |
 | Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
 | Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na admin editor |
+| Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
+| displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
+
+### Poslední session (2026-06-07) — hotovo:
+- ✅ InviteDialog memory leak opraven (AbortController)
+- ✅ Audit systém: 10 nových checků, 33 unit testů
+- ✅ Feedback systém: `explanation` pole na PracticeTask, CheckFeedbackCard redesign
+- ✅ Grade-3 CJL (25 souborů): explanation per otázka, odstraněno `solutionSteps: Odpověď: a`
+- ✅ Grade-3 matematika audit: 7 hint_leak → 0, 10 hint_progression → 0
+- ✅ hintLeakage.ts: oprava regex escapování (pipe char bug v hintShowsEquality)
+- ✅ STATUS.md grade-3: checkboxy prvouka opraveny (0/14)
 
 ---
 
