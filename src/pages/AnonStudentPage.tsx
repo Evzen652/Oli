@@ -309,8 +309,13 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
               fallback={<span className="text-2xl">{meta.emoji}</span>}
             />
             <div className="flex-1 min-w-0">
+              <div className="flex items-baseline gap-1.5 mb-0.5">
+                <p className={`text-sm font-bold leading-tight ${meta.color}`}>{meta.label}</p>
+                {topic.category && (
+                  <p className="text-[11px] text-gray-400 truncate">{topic.category}</p>
+                )}
+              </div>
               <p className="font-bold text-gray-900 truncate">{title}</p>
-              <p className={`text-xs font-semibold mt-0.5 ${meta.color}`}>{meta.label}</p>
             </div>
             {completed ? (
               <span className="flex items-center gap-1.5 text-emerald-700 font-semibold text-sm shrink-0 px-3 py-1.5">
