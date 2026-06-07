@@ -32,7 +32,7 @@ function gen(level: number): PracticeTask[] {
         question: `Zapiš číslo: ${slovy.trim()}`,
         correctAnswer: String(n),
         options: shuffle([String(n), String(n + 10), String(n + 100), String(n - 1 > 0 ? n - 1 : n + 1)]),
-        hints: ["Stovky × 100 + desítky × 10 + jednotky.", "Sečti všechny části dohromady."],
+        hints: ["Sečti všechny části dohromady.", "Stovky × 100 + desítky × 10 + jednotky = výsledné číslo."],
         solutionSteps: [`Stovky: ${stovky} × 100 = ${stovky * 100}`, `Desítky: ${desitky} × 10 = ${desitky * 10}`, `Jednotky: ${jednotky}`, `Celkem: ${n}`],
       });
     } else if (type === 1) {
@@ -45,7 +45,7 @@ function gen(level: number): PracticeTask[] {
         question: `Porovnej: ${a} ○ ${b}`,
         correctAnswer: correct,
         options: shuffle([">", "<", "="]),
-        hints: ["Větší číslo má více stovek, nebo více desítek, nebo více jednotek.", `${a} je ${a > b ? "větší" : "menší"} než ${b}.`],
+        hints: [`${a} je ${a > b ? "větší" : "menší"} než ${b}.`, "Porovnej stovky — kdo má více, je větší. Stejné stovky? Porovnej desítky, pak jednotky."],
         solutionSteps: [`Porovnáváme ${a} a ${b}.`, a > b ? `${a} > ${b} — první číslo je větší.` : `${a} < ${b} — první číslo je menší.`],
       });
     } else if (type === 2) {
@@ -64,7 +64,7 @@ function gen(level: number): PracticeTask[] {
           `${s} stovky, ${d + 1} desítky, ${j} jednotky`,
           `${s} stovky, ${d} desítky, ${j + 1} jednotky`,
         ]),
-        hints: ["Stovky = první číslice, desítky = prostřední, jednotky = poslední."],
+        hints: ["Stovky = první číslice, desítky = prostřední, jednotky = poslední.", "U tříciferného čísla (např. 347): stovky = 3, desítky = 4, jednotky = 7. Každá číslice stojí na svém místě!"],
         solutionSteps: [`${n}: číslice stovek = ${s}, číslice desítek = ${d}, číslice jednotek = ${j}.`],
       });
     } else {
@@ -80,7 +80,7 @@ function gen(level: number): PracticeTask[] {
           [sorted[1], sorted[0], sorted[2], sorted[3]].join(", "),
           [sorted[0], sorted[2], sorted[1], sorted[3]].join(", "),
         ]),
-        hints: ["Nejdřív porovnej stovky, pak desítky, pak jednotky."],
+        hints: ["Nejdřív porovnej stovky, pak desítky, pak jednotky.", "Číslo s nejméně stovkami jde první — pokud jsou stovky stejné, rozhodují desítky."],
         solutionSteps: [`Čísla: ${nums.join(", ")}`, `Seřazeno: ${sorted.join(", ")}`],
       });
     }

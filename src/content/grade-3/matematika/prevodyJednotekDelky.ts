@@ -43,8 +43,8 @@ function gen(level: number): PracticeTask[] {
           `${n} ${prev.na}`,
         ]),
         hints: [
-          `1 ${prev.z} = ${prev.nasobek} ${prev.na}`,
-          `${n} ${prev.z} = ${n} × ${prev.nasobek} ${prev.na}`,
+          `Zapamatuj si: kolik ${prev.na} je v jednom ${prev.z}.`,
+          "Na menší jednotku: vynásob počet koeficientem přepočtu.",
         ],
         solutionSteps: [
           `1 ${prev.z} = ${prev.nasobek} ${prev.na}`,
@@ -65,8 +65,8 @@ function gen(level: number): PracticeTask[] {
           `${n} ${prev.z}`,
         ]),
         hints: [
-          `${prev.nasobek} ${prev.na} = 1 ${prev.z}`,
-          `${n} ÷ ${prev.nasobek} = ?`,
+          `Zapamatuj si: kolik ${prev.na} tvoří jeden ${prev.z}.`,
+          "Na větší jednotku: vyděl počet malých jednotek přepočítávacím koeficientem.",
         ],
         solutionSteps: [
           `${prev.nasobek} ${prev.na} = 1 ${prev.z}`,

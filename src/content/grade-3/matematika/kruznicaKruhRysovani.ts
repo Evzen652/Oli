@@ -37,8 +37,7 @@ function gen(level: number): PracticeTask[] {
       question: item.q,
       correctAnswer: item.a,
       options: shuffle([...item.opts]),
-      hints: ["Kružnice = jen čára (obvod). Kruh = plocha uvnitř.", "Poloměr = polovina průměru."],
-      solutionSteps: [`Správná odpověď: ${item.a}`],
+      hints: ["Poloměr = polovina průměru (r = d ÷ 2).", "Kružnice je jen čára (obvod bez plochy). Kruh je celá plocha uvnitř kružnice. Poloměr jde ze středu k obvodu."],
     });
   }
   return tasks;

@@ -44,7 +44,7 @@ function gen(level: number): PracticeTask[] {
           `${correct - prev.nasobek > 0 ? correct - prev.nasobek : correct + prev.nasobek * 2} ${prev.na}`,
           `${n} ${prev.na}`,
         ]),
-        hints: [`1 ${prev.z} = ${prev.nasobek} ${prev.na}`, `${n} × ${prev.nasobek} = ${correct}`],
+        hints: [`Zapamatuj si: kolik ${prev.na} je v jednom ${prev.z}.`, "Na menší jednotku: vynásob počet koeficientem přepočtu."],
         solutionSteps: [`1 ${prev.z} = ${prev.nasobek} ${prev.na}`, `${n} × ${prev.nasobek} = ${correct}`, `Výsledek: ${correct} ${prev.na}`],
       });
     } else {
@@ -58,7 +58,7 @@ function gen(level: number): PracticeTask[] {
           `${n - 1 > 0 ? n - 1 : n + 2} ${prev.z}`,
           `${nNa} ${prev.z}`,
         ]),
-        hints: [`${prev.nasobek} ${prev.na} = 1 ${prev.z}`, `${nNa} ÷ ${prev.nasobek} = ${n}`],
+        hints: [`Zapamatuj si: kolik ${prev.na} tvoří jeden ${prev.z}.`, "Na větší jednotku: vyděl počet malých jednotek přepočítávacím koeficientem."],
         solutionSteps: [`${prev.nasobek} ${prev.na} = 1 ${prev.z}`, `${nNa} ÷ ${prev.nasobek} = ${n}`, `Výsledek: ${n} ${prev.z}`],
       });
     }

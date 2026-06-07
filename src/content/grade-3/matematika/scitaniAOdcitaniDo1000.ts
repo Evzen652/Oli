@@ -38,10 +38,10 @@ function gen(level: number): PracticeTask[] {
       correctAnswer: String(correct),
       options: shuffle([String(correct), String(d1), String(d2), String(d3)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
       hints: [
-        isAdd
-          ? `Sčítej po složkách: nejdřív stovky, pak desítky, pak jednotky.`
-          : `Odečítej od stovek: ${a} − ${b}.`,
         level >= 2 ? "Dávej pozor na přechod přes desítky nebo stovky." : "Sčítej jednotky, pak desítky.",
+        isAdd
+          ? "Sčítej po složkách: nejdřív stovky, pak desítky, pak jednotky — každou část zvlášť."
+          : "Odečítej od stovek: nejprve desítky, pak jednotky — s přechodem pokud je třeba.",
       ],
       solutionSteps: isAdd
         ? [`${a} + ${b}`, `= ${correct}`]

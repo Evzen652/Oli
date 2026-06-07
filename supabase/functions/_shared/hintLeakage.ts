@@ -88,7 +88,8 @@ function hintContainsAnswer(hint: string, answer: string): { leaks: boolean; fra
     // Nebo hledej alespoň jedno významové slovo (pokud má >= 4 znaky)
     for (const tok of answerTokens) {
       if (tok.length >= 4) {
-        const pattern = new RegExp(`(^|[\\s])${tok}([\\s]|$)`);
+        const escapedTok = tok.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const pattern = new RegExp(`(^|[\\s])${escapedTok}([\\s]|$)`);
         if (pattern.test(normHint)) {
           return { leaks: true, fragment: tok };
         }
@@ -113,9 +114,10 @@ function hintContainsAnswer(hint: string, answer: string): { leaks: boolean; fra
  */
 function hintShowsEquality(hint: string, answer: string): boolean {
   const normAnswer = answer.trim().replace(/,/g, ".");
+  const escapedAnswer = normAnswer.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // Hledej "= 36" nebo "= 36." apod.
   const patterns = [
-    new RegExp(`=\\s*${normAnswer.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}(?:\\s|$|\\.|,)`),
+    new RegExp(`=\\s*${escapedAnswer}(?:\\s|$|\\.|,)`),
   ];
   return patterns.some((p) => p.test(hint));
 }

@@ -23,7 +23,7 @@ function gen(level: number): PracticeTask[] {
         question: `${n} × 10 = ?`,
         correctAnswer: String(correct),
         options: shuffle([String(correct), String(correct + 10), String(correct - 10 > 0 ? correct - 10 : correct + 20), String(n + 10)]),
-        hints: ["Násobení 10 = přidáme nulu za číslo.", `${n} × 10 = ${n}0`],
+        hints: ["Přidej za číslo jednu nulu na konci.", "Násobení deseti posune každou číslici o jedno místo doleva — jednotky se stanou desítkami."],
         solutionSteps: [`${n} × 10 = ${correct} (přidáme nulu: ${n}0)`],
       });
     } else if (type === 1) {
@@ -57,7 +57,7 @@ function gen(level: number): PracticeTask[] {
           ]),
           hints: [
             `Hledej největší násobek ${delitel}, který se vejde do ${delenec}.`,
-            `${delitel} × ${podil} = ${delitel * podil}. Zbytek = ${delenec} − ${delitel * podil} = ${zbytek}.`,
+            `Spočítej kolik celých násobků ${delitel} se vejde, pak odečti od ${delenec} — co zbyde je zbytek.`,
           ],
           solutionSteps: [
             `${delenec} ÷ ${delitel}`,

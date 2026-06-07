@@ -75,7 +75,7 @@ function gen(level: number): PracticeTask[] {
     question: u.q,
     correctAnswer: String(u.a),
     options: shuffle([String(u.a), String(u.a + 10), String(u.a - 5 > 0 ? u.a - 5 : u.a + 15), String(u.a + 5)].filter((v, i, a) => a.indexOf(v) === i).slice(0, 4)),
-    hints: ["Rozděl úlohu na dva kroky — co se děje nejdřív a co potom.", "Každý krok = jedna početní operace."],
+    hints: ["Každý krok = jedna početní operace.", "Rozděl úlohu na dva kroky: co se děje nejdřív a co potom — zapiš každý krok zvlášť."],
     solutionSteps: u.steps,
   }));
 }

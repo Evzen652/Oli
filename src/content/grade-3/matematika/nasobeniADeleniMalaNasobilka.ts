@@ -26,7 +26,7 @@ function gen(level: number): PracticeTask[] {
         question: `${product} ÷ ${t} = ?`,
         correctAnswer: String(n),
         options: shuffle([String(n), String(d1), String(d2), String(n + 2 <= 10 ? n + 2 : 1)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [`Ptáme se: ${t} × ? = ${product}.`, `Vzpomeň si na násobilku ${t}.`],
+        hints: [`Vzpomeň si na násobilku ${t}.`, `Ptáme se: ${t} × ? = ${product}. Projdi: ${t}×1, ${t}×2 … dokud nedostaneš ${product}.`],
         solutionSteps: [`${product} ÷ ${t} = ?`, `${t} × ${n} = ${product}`, `Výsledek: ${n}`],
       });
     } else {
@@ -36,7 +36,7 @@ function gen(level: number): PracticeTask[] {
         question: `${t} × ${n} = ?`,
         correctAnswer: String(product),
         options: shuffle([String(product), String(d1), String(d2), String(product + 1)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [`${t} × ${n} = opakované sčítání ${t}`, `Výsledek je v násobilce ${t}.`],
+        hints: [`Výsledek je v násobilce ${t}.`, `${t} × ${n} = opakované sčítání čísla ${t}, celkem ${n}×.`],
         solutionSteps: [`${t} × ${n} = ${product}`],
       });
     }

@@ -23,7 +23,7 @@ function gen(level: number): PracticeTask[] {
         question: `Čtverec má stranu ${a} cm. Jaký je jeho obvod?`,
         correctAnswer: `${o} cm`,
         options: shuffle([`${o} cm`, `${o + 4} cm`, `${o - 4} cm`, `${a * 2} cm`]),
-        hints: ["Čtverec má 4 stejné strany.", `Obvod = 4 × strana = 4 × ${a}`],
+        hints: ["Čtverec má 4 stejné strany.", `Obvod čtverce = 4 × délka strany = 4 × ${a} cm.`],
         solutionSteps: [`Obvod čtverce = 4 × a = 4 × ${a} = ${o} cm`],
       });
     } else if (shape === 1) {
@@ -35,7 +35,7 @@ function gen(level: number): PracticeTask[] {
         question: `Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obvod?`,
         correctAnswer: `${o} cm`,
         options: shuffle([`${o} cm`, `${o + 2} cm`, `${a + b} cm`, `${2 * a + b} cm`]),
-        hints: ["Obdélník má 2 stejné delší strany a 2 stejné kratší strany.", `Obvod = 2 × (${a} + ${b})`],
+        hints: [`Obvod obdélníku = 2 × (delší + kratší strana).`, `Obdélník má 2 stejné delší strany (${a} cm) a 2 stejné kratší strany (${b} cm) — sečti je všechny čtyři.`],
         solutionSteps: [`Obvod obdélníku = 2 × (a + b) = 2 × (${a} + ${b}) = 2 × ${a + b} = ${o} cm`],
       });
     } else {
@@ -48,7 +48,7 @@ function gen(level: number): PracticeTask[] {
         question: `Trojúhelník má strany ${a} cm, ${b} cm a ${c} cm. Jaký je jeho obvod?`,
         correctAnswer: `${o} cm`,
         options: shuffle([`${o} cm`, `${o + 1} cm`, `${o - 1} cm`, `${a + b} cm`]),
-        hints: ["Obvod trojúhelníku = součet všech tří stran.", `${a} + ${b} + ${c} = ?`],
+        hints: [`Sečti všechny tři strany: ${a} + ${b} + ${c}.`, "Obvod trojúhelníku = součet všech tří stran — každou stranu přičti jednou."],
         solutionSteps: [`Obvod trojúhelníku = a + b + c = ${a} + ${b} + ${c} = ${o} cm`],
       });
     }

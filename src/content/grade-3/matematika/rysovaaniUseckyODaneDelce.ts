@@ -37,8 +37,7 @@ function gen(level: number): PracticeTask[] {
       question: item.q,
       correctAnswer: item.a,
       options: shuffle([...item.opts]),
-      hints: ["Úsečka = část přímky ohraničená dvěma body.", "Délku měříme pravítkem v cm nebo mm."],
-      solutionSteps: [`Správná odpověď: ${item.a}`],
+      hints: ["Délku měříme v cm nebo mm, vždy od nuly.", "Úsečka je část přímky ohraničená dvěma body A a B. Délku vždy měříme od nuly, aby byl výsledek přesný."],
     });
   }
   return tasks;
