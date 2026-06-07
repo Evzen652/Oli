@@ -310,12 +310,15 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline gap-1.5 mb-0.5">
-                <p className={`text-sm font-bold leading-tight ${meta.color}`}>{meta.label}</p>
+                <p className={`text-base font-bold leading-tight ${meta.color}`}>{meta.label}</p>
                 {topic.category && (
-                  <p className="text-[11px] text-gray-400 truncate">{topic.category}</p>
+                  <>
+                    <span className="text-xs text-gray-300">|</span>
+                    <p className="text-xs text-gray-400 truncate">{topic.category}</p>
+                  </>
                 )}
               </div>
-              <p className="font-bold text-gray-900 truncate">{title}</p>
+              <p className="font-semibold text-gray-900 truncate">{title}</p>
             </div>
             {completed ? (
               <span className="flex items-center gap-1.5 text-emerald-700 font-semibold text-sm shrink-0 px-3 py-1.5">

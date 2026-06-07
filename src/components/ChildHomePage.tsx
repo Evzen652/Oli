@@ -937,10 +937,13 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-1.5 mb-0.5">
           {subjectLabel && (
-            <p className={`text-sm font-bold leading-tight ${subjMeta!.color}`}>{subjectLabel}</p>
+            <p className={`text-base font-bold leading-tight ${subjMeta!.color}`}>{subjectLabel}</p>
           )}
           {shortBreadcrumb && (
-            <p className="text-[11px] text-muted-foreground truncate">{shortBreadcrumb}</p>
+            <>
+              <span className="text-xs text-muted-foreground/50">|</span>
+              <p className="text-xs text-muted-foreground truncate">{shortBreadcrumb}</p>
+            </>
           )}
         </div>
         <p className="font-bold text-sm text-foreground leading-snug">{skillName}</p>
