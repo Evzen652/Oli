@@ -313,8 +313,8 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
                 <p className={`text-base font-bold leading-tight ${meta.color}`}>{meta.label}</p>
                 {topic.category && (
                   <>
-                    <span className="text-xs text-gray-300">|</span>
-                    <p className="text-xs text-gray-400 truncate">{topic.category}</p>
+                    <span className={`text-base font-bold ${meta.color}`}>|</span>
+                    <p className={`text-base font-bold truncate ${meta.color}`}>{topic.category}</p>
                   </>
                 )}
               </div>

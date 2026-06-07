@@ -941,8 +941,8 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
           )}
           {shortBreadcrumb && (
             <>
-              <span className="text-xs text-muted-foreground/50">|</span>
-              <p className="text-xs text-muted-foreground truncate">{shortBreadcrumb}</p>
+              <span className={`text-base font-bold ${subjMeta!.color}`}>|</span>
+              <p className={`text-base font-bold truncate ${subjMeta!.color}`}>{shortBreadcrumb}</p>
             </>
           )}
         </div>
