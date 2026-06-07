@@ -137,6 +137,7 @@ export const PRAVOPISPREDLOZEKSZSEZE: TopicMetadata[] = [
   {
     id: "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predlozek-s-z-se-ze",
     rvpNodeId: "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predlozek-s-z-se-ze",
+    displayName: "Předložky s/z",
     title: "Pravopis předložek (s, z, se, ze)",
     studentTitle: "Předložky s/z",
     subject: "čeština",
@@ -154,6 +155,7 @@ export const PRAVOPISPREDLOZEKSZSEZE: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-cjl-jazykova-vychova-stavba-slova-predpona-koren-pripona-koncovka"],
     generator: gen,
     helpTemplate: {
       hint: "z/ze = pohyb z vnitřku (ze školy, z lesa); s/se = pohyb z povrchu nebo dohromady (s kamarádem, sjel ze střechy)",

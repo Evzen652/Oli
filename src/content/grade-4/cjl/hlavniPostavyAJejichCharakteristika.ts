@@ -67,6 +67,7 @@ export const HLAVNIPOSTAVYAJEJICHCHARAKTERISTIKA: TopicMetadata[] = [
   {
     id: "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika",
     rvpNodeId: "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika",
+    displayName: "Postavy v příbězích",
     title: "Hlavní postavy a jejich charakteristika",
     studentTitle: "Postavy v příbězích",
     subject: "čeština",
@@ -85,6 +86,7 @@ export const HLAVNIPOSTAVYAJEJICHCHARAKTERISTIKA: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema"],
     generator: gen,
     helpTemplate: {
       hint: "Fyzické = vzhled; psychické = charakter; přímá = autor říká přímo; nepřímá = z jednání postavy",

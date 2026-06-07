@@ -69,6 +69,7 @@ export const ENCYKLOPEDIESLOVNIKPERIODIKA: TopicMetadata[] = [
   {
     id: "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika",
     rvpNodeId: "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika",
+    displayName: "Encyklopedie a slovníky",
     title: "Encyklopedie, slovník, periodika",
     studentTitle: "Knihy a zdroje info",
     subject: "čeština",
@@ -86,6 +87,7 @@ export const ENCYKLOPEDIESLOVNIKPERIODIKA: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka"],
     generator: gen,
     helpTemplate: {
       hint: "Encyklopedie=fakta o světě; Slovník=výklad/překlad slov; Periodika=noviny/časopisy vycházející opakovaně",

@@ -88,12 +88,13 @@ export const STAVBAVETYZAKLADNISKLADEBNIDVOJICEPODMETPRISUDEK: TopicMetadata[] =
   {
     id: "g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek",
     rvpNodeId: "g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek",
+    displayName: "Podmět a přísudek",
     title: "Stavba věty - základní skladební dvojice (podmět, přísudek)",
     studentTitle: "Podmět a přísudek",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Jazyková výchova",
-    briefDescription: "Pochopíš, co je podmět a přísudek a jak je najít v každé větě.",
+    briefDescription: "Pochopíš, co je podmět a přísudek a jak je najdeš.",
     keywords: ["podmět", "přísudek", "skladba", "věta", "základní skladební dvojice"],
     goals: [
       "Určit podmět a přísudek ve větě",
@@ -106,6 +107,7 @@ export const STAVBAVETYZAKLADNISKLADEBNIDVOJICEPODMETPRISUDEK: TopicMetadata[] =
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-vzorec-souveti"],
     generator: gen,
     helpTemplate: {
       hint: "Podmět = KDO/CO; Přísudek = CO DĚLÁ/JE; podmět může být nevyjádřený (schovaný v koncovce slovesa)",

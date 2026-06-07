@@ -99,6 +99,7 @@ export const PLYNULECTENISPOROZUMENIMPRIMERENENAROCNYCHTEXTU: TopicMetadata[] = 
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-primerene-narocnych-textu",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-primerene-narocnych-textu",
+    displayName: "Čtení s porozuměním",
     title: "Plynulé čtení s porozuměním přiměřeně náročných textů",
     studentTitle: "Čtení s porozuměním",
     subject: "čeština",
@@ -117,6 +118,7 @@ export const PLYNULECTENISPOROZUMENIMPRIMERENENAROCNYCHTEXTU: TopicMetadata[] = 
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci"],
     generator: gen,
     helpTemplate: {
       hint: "Porozumění: umím odpovědět na kdo/co/kde/kdy/proč; hlavní myšlenka = bez ní text nedává smysl",

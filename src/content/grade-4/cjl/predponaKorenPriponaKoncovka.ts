@@ -89,6 +89,7 @@ export const PREDPONAKORENPRIPONAKONCOVKA: TopicMetadata[] = [
   {
     id: "g4-cjl-jazykova-vychova-stavba-slova-predpona-koren-pripona-koncovka",
     rvpNodeId: "g4-cjl-jazykova-vychova-stavba-slova-predpona-koren-pripona-koncovka",
+    displayName: "Stavba slova",
     title: "Předpona, kořen, přípona, koncovka",
     studentTitle: "Stavba slova",
     subject: "čeština",
@@ -106,6 +107,7 @@ export const PREDPONAKORENPRIPONAKONCOVKA: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-stavba-slova-pravopis-predpon-vy-vy-s-z-vz"],
     generator: gen,
     helpTemplate: {
       hint: "Předpona = před kořenem, kořen = základ, přípona = za kořenem (tvoří slova), koncovka = mění tvar",

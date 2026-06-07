@@ -88,6 +88,7 @@ export const MANIPULATIVNIKOMUNIKACEVREKLAME: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-cteni-manipulativni-komunikace-v-reklame",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-cteni-manipulativni-komunikace-v-reklame",
+    displayName: "Triky v reklamě",
     title: "Manipulativní komunikace v reklamě",
     studentTitle: "Triky v reklamě",
     subject: "čeština",
@@ -105,6 +106,7 @@ export const MANIPULATIVNIKOMUNIKACEVREKLAME: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky"],
     generator: gen,
     helpTemplate: {
       hint: "Triky: emoce (rodina/štěstí), celebrita (slavný doporučuje), naléhavost (jen dnes!), opakování (slogan), zdánlivá výhoda (o 20% lepší — než co?)",

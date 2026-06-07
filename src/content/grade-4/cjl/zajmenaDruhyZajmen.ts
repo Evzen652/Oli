@@ -92,6 +92,7 @@ export const ZAJMENADRUHYZAJMEN: TopicMetadata[] = [
   {
     id: "g4-cjl-jazykova-vychova-tvaroslovi-zajmena-druhy-zajmen",
     rvpNodeId: "g4-cjl-jazykova-vychova-tvaroslovi-zajmena-druhy-zajmen",
+    displayName: "Druhy zájmen",
     title: "Zájmena - druhy zájmen",
     studentTitle: "Druhy zájmen",
     subject: "čeština",
@@ -109,6 +110,7 @@ export const ZAJMENADRUHYZAJMEN: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek"],
     generator: gen,
     helpTemplate: {
       hint: "7 druhů: osobní, přivlastňovací, ukazovací, tázací, vztažná, neurčitá, záporná",

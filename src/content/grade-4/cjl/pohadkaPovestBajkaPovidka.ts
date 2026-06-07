@@ -69,6 +69,7 @@ export const POHADKAPOVESTBAJKAPOVIDKA: TopicMetadata[] = [
   {
     id: "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
     rvpNodeId: "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
+    displayName: "Literární žánry",
     title: "Pohádka, pověst, bajka, povídka",
     studentTitle: "Literární žánry",
     subject: "čeština",
@@ -86,6 +87,7 @@ export const POHADKAPOVESTBAJKAPOVIDKA: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika"],
     generator: gen,
     helpTemplate: {
       hint: "Pohádka=draci+víly; Pověst=historické místo+osoby; Bajka=zvířata+ponaučení; Povídka=reální lidé+jeden příběh",

@@ -69,6 +69,7 @@ export const DOPISPSANISOUKROMEHODOPISU: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu",
+    displayName: "Psaní dopisu",
     title: "Dopis - psaní soukromého dopisu",
     studentTitle: "Jak psát dopis",
     subject: "čeština",
@@ -87,6 +88,7 @@ export const DOPISPSANISOUKROMEHODOPISU: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor"],
     generator: gen,
     helpTemplate: {
       hint: "Dopis: záhlaví (místo+datum) → oslovení → text → závěr+podpis; soukromý=tykáme, formální=vykáme s V",

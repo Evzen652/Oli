@@ -88,6 +88,7 @@ export const VETAJEDNODUCHAASOUVETIVZORECSOUVETI: TopicMetadata[] = [
   {
     id: "g4-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-vzorec-souveti",
     rvpNodeId: "g4-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-vzorec-souveti",
+    displayName: "Věta a souvětí",
     title: "Věta jednoduchá a souvětí, vzorec souvětí",
     studentTitle: "Věta a souvětí",
     subject: "čeština",
@@ -106,6 +107,7 @@ export const VETAJEDNODUCHAASOUVETIVZORECSOUVETI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek"],
     generator: gen,
     helpTemplate: {
       hint: "Věta jednoduchá = 1 přísudek; souvětí = 2+ přísudků spojených spojkami",

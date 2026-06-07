@@ -67,13 +67,14 @@ export const VLASTNILITERARNITVORBANADANETEMA: TopicMetadata[] = [
   {
     id: "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema",
     rvpNodeId: "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema",
+    displayName: "Vlastní tvorba",
     title: "Vlastní literární tvorba na dané téma",
     studentTitle: "Píšu svůj příběh",
     illustrationDesc: "usmívající se dítě sedí u dřevěného stolu a píše vlastní příběh tužkou do otevřeného sešitu, nad jeho hlavou myšlenková bublina s malým rytířem a drakem, vedle stolu komínek barevných knih a kelímek s tužkami",
     subject: "čeština",
     category: "Literární výchova",
     topic: "Literární výchova",
-    briefDescription: "Naučíš se psát vlastní příběh s osnovou, živým popisem a správnou přímou řečí.",
+    briefDescription: "Naučíš se psát vlastní příběh s osnovou, popisem a přímou řečí.",
     keywords: ["vlastní tvorba", "téma", "motiv", "osnova", "přímá řeč", "styl", "popis", "vypravování"],
     goals: [
       "Sestavit osnovu pro vlastní příběh",
@@ -86,6 +87,7 @@ export const VLASTNILITERARNITVORBANADANETEMA: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka"],
     generator: gen,
     helpTemplate: {
       hint: "Téma=o čem; motiv=opakující se prvek; osnova=plán; text oživíme přídavnými jmény a přímou řečí",

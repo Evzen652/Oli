@@ -68,8 +68,9 @@ export const POPISPREDMETUOSOBYAPRACOVNIHOPOSTUPU: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-osoby-a-pracovniho-postupu",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-osoby-a-pracovniho-postupu",
+    displayName: "Popis a postup",
     title: "Popis předmětu, osoby a pracovního postupu",
-    studentTitle: "Jak popsat věci a lidi",
+    studentTitle: "Popis věcí a lidí",
     subject: "čeština",
     category: "Komunikační a slohová výchova",
     topic: "Komunikační a slohová výchova",
@@ -86,6 +87,7 @@ export const POPISPREDMETUOSOBYAPRACOVNIHOPOSTUPU: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova"],
     generator: gen,
     helpTemplate: {
       hint: "Popis předmětu=od celku k detailu; osoby=vzhled+povaha; pracovní postup=kroky v pořadí",

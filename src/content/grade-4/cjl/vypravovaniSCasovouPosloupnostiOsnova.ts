@@ -68,6 +68,7 @@ export const VYPRAVOVANISCASOVOUPOSLOUPNOSTIOSNOVA: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova",
+    displayName: "Vypravování a osnova",
     title: "Vypravování s časovou posloupností, osnova",
     studentTitle: "Vypravování a osnova",
     subject: "čeština",
@@ -86,6 +87,7 @@ export const VYPRAVOVANISCASOVOUPOSLOUPNOSTIOSNOVA: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu"],
     generator: gen,
     helpTemplate: {
       hint: "Osnova: 1.úvod (kde/kdy/kdo), 2.zápletka (co se stalo), 3.vyvrcholení (napětí), 4.závěr (rozuzlení)",

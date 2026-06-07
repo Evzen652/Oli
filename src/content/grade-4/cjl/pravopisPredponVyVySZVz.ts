@@ -142,6 +142,7 @@ export const PRAVOPISPREDPONVYVYSZVZ: TopicMetadata[] = [
   {
     id: "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predpon-vy-vy-s-z-vz",
     rvpNodeId: "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predpon-vy-vy-s-z-vz",
+    displayName: "Předpony vy/s/z",
     title: "Pravopis předpon (vy-, vý-, s-, z-, vz-)",
     studentTitle: "Předpony vy/s/z",
     subject: "čeština",
@@ -159,6 +160,7 @@ export const PRAVOPISPREDPONVYVYSZVZ: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
+    recommendedNext: ["g4-cjl-jazykova-vychova-stavba-slova-pravopis-predlozek-s-z-se-ze"],
     generator: gen,
     helpTemplate: {
       hint: "vy-=dokončení, vý-=přízvučná slabika, s-=dolů/dohromady, z-=změna stavu, vz-=nahoru/vznik",

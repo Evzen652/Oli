@@ -89,6 +89,7 @@ export const SLOVESAMLUVNICKEKATEGORIECASOVANIVJEDNODUCHYCHCASECH: TopicMetadata
   {
     id: "g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech",
     rvpNodeId: "g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech",
+    displayName: "Slovesa a časování",
     title: "Slovesa - mluvnické kategorie, časování v jednoduchých časech",
     studentTitle: "Slovesa a časy",
     subject: "čeština",
@@ -106,6 +107,7 @@ export const SLOVESAMLUVNICKEKATEGORIECASOVANIVJEDNODUCHYCHCASECH: TopicMetadata
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-tvaroslovi-zajmena-druhy-zajmen"],
     generator: gen,
     helpTemplate: {
       hint: "Osoba=kdo, Číslo=j.č./mn.č., Čas=minulý/přítomný/budoucí, Způsob=oznamovací/rozkazovací/podmiňovací",

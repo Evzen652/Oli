@@ -69,6 +69,7 @@ export const INZERATVZKAZTELEFONICKYROZHOVOR: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor",
+    displayName: "Inzerát a vzkaz",
     title: "Inzerát, vzkaz, telefonický rozhovor",
     studentTitle: "Inzerát a vzkaz",
     subject: "čeština",
@@ -87,6 +88,7 @@ export const INZERATVZKAZTELEFONICKYROZHOVOR: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova"],
     generator: gen,
     helpTemplate: {
       hint: "Inzerát=stručný+kontakt; Vzkaz=kdo+komu+co+kdy; Telefonní hovor=pozdrav+jméno+věc+rozloučení",

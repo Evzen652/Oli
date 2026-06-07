@@ -67,6 +67,7 @@ export const VYHLEDAVANIKLICOVYCHSLOVAHLAVNIMYSLENKY: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky",
+    displayName: "Klíčová slova",
     title: "Vyhledávání klíčových slov a hlavní myšlenky",
     studentTitle: "Klíčová slova a myšlenka",
     subject: "čeština",
@@ -85,6 +86,7 @@ export const VYHLEDAVANIKLICOVYCHSLOVAHLAVNIMYSLENKY: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-manipulativni-komunikace-v-reklame"],
     generator: gen,
     helpTemplate: {
       hint: "Klíčová slova = opakují se nebo jsou tučně; hlavní myšlenka = co chce autor říct (shrnutí celého textu)",

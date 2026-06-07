@@ -88,6 +88,7 @@ export const PODSTATNAJMENASKLONOVANIPODLEVZORURODMUZZENSTR: TopicMetadata[] = [
   {
     id: "g4-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-sklonovani-podle-vzoru-rod-muz-zen-str",
     rvpNodeId: "g4-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-sklonovani-podle-vzoru-rod-muz-zen-str",
+    displayName: "Skloňování jmen",
     title: "Podstatná jména - skloňování podle vzorů (rod muž., žen., stř.)",
     studentTitle: "Rody a vzory",
     subject: "čeština",
@@ -106,6 +107,7 @@ export const PODSTATNAJMENASKLONOVANIPODLEVZORURODMUZZENSTR: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce"],
     generator: gen,
     helpTemplate: {
       hint: "Rod: ten=mužský, ta=ženský, to=střední; vzor závisí na zakončení a životnosti",

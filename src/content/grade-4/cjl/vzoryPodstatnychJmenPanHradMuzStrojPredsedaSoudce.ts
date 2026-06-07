@@ -88,6 +88,7 @@ export const VZORYPODSTATNYCHJMENPANHRADMUZSTROJPREDSEDASOUDCE: TopicMetadata[] 
   {
     id: "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce",
     rvpNodeId: "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce",
+    displayName: "Vzory mužského rodu",
     title: "Vzory podstatných jmen - pán, hrad, muž, stroj, předseda, soudce",
     studentTitle: "Vzory mužského rodu",
     subject: "čeština",
@@ -105,6 +106,7 @@ export const VZORYPODSTATNYCHJMENPANHRADMUZSTROJPREDSEDASOUDCE: TopicMetadata[] 
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure"],
     generator: gen,
     helpTemplate: {
       hint: "pán=živý tvrdý, hrad=neživý tvrdý, muž=živý měkký, stroj=neživý měkký, předseda=-a, soudce=-ce",

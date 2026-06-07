@@ -89,8 +89,9 @@ export const VZORYPODSTATNYCHJMENZENARUZEPISENKOSTMESTOMOREKURESTAVENI: TopicMet
   {
     id: "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure",
     rvpNodeId: "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure",
+    displayName: "Vzory žen. a stř. rodu",
     title: "Vzory podstatných jmen - žena, růže, píseň, kost, město, moře, kuře, stavení",
-    studentTitle: "Vzory žen. a střed. rodu",
+    studentTitle: "Ženské a střední vzory",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Jazyková výchova",
@@ -106,6 +107,7 @@ export const VZORYPODSTATNYCHJMENZENARUZEPISENKOSTMESTOMOREKURESTAVENI: TopicMet
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
+    recommendedNext: ["g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech"],
     generator: gen,
     helpTemplate: {
       hint: "žena=tvrdý žen., růže=měkký žen., píseň=-ň, kost=-i v 7.p., město=tvrdý střed., moře=měkký střed., kuře=živý střed., stavení=-í",

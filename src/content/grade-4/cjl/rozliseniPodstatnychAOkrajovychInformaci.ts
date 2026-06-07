@@ -67,12 +67,13 @@ export const ROZLISENIPODSTATNYCHAOKRAJOVYCHINFORMACI: TopicMetadata[] = [
   {
     id: "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci",
     rvpNodeId: "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci",
+    displayName: "Hlavní a vedlejší info",
     title: "Rozlišení podstatných a okrajových informací",
     studentTitle: "Hlavní a vedlejší info",
     subject: "čeština",
     category: "Komunikační a slohová výchova",
     topic: "Komunikační a slohová výchova",
-    briefDescription: "Naučíš se rozlišit, co je v textu důležité a co jen doplňující detail.",
+    briefDescription: "Naučíš se rozlišit, co je v textu důležité a co okrajové.",
     keywords: ["podstatná informace", "okrajová informace", "shrnutí", "hlavní myšlenka", "čtení s porozuměním"],
     goals: [
       "Rozlišit podstatné a okrajové informace v textu",
@@ -84,6 +85,7 @@ export const ROZLISENIPODSTATNYCHAOKRAJOVYCHINFORMACI: TopicMetadata[] = [
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
+    recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky"],
     generator: gen,
     helpTemplate: {
       hint: "Podstatná = bez ní text nedává smysl; okrajová = text dává smysl i bez ní (jen doplňuje)",
