@@ -127,17 +127,24 @@ export function SessionView() {
   const [showTopicBrowser, setShowTopicBrowser] = useState(false);
   const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(undefined);
 
-  // Anon mód: auto-start topicu zvoleného v AnonStudentPage (předaný přes sessionStorage)
+  // Anon mód: auto-start topicu nebo otevření TopicBrowseru pro předmět
   useEffect(() => {
     if (session || !grade) return;
     const startTopicId = sessionStorage.getItem("oli_anon_start_topic");
-    if (!startTopicId) return;
-    sessionStorage.removeItem("oli_anon_start_topic");
-    // Najdi topic v code registry a spusť ho
-    import("@/lib/contentRegistry").then(({ getAllTopics }) => {
-      const topic = getAllTopics().find((t) => t.id === startTopicId);
-      if (topic) s.handleTopicSelect(topic);
-    });
+    if (startTopicId) {
+      sessionStorage.removeItem("oli_anon_start_topic");
+      import("@/lib/contentRegistry").then(({ getAllTopics }) => {
+        const topic = getAllTopics().find((t) => t.id === startTopicId);
+        if (topic) s.handleTopicSelect(topic);
+      });
+      return;
+    }
+    const browseSubject = sessionStorage.getItem("oli_anon_browse_subject");
+    if (browseSubject) {
+      sessionStorage.removeItem("oli_anon_browse_subject");
+      setTopicBrowserSubject(browseSubject);
+      setShowTopicBrowser(true);
+    }
     // session, grade jsou jen guardy — spusť jen jednou po mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
