@@ -506,9 +506,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                 </div>
               )}
 
-              {/* SUBTOPIC level — uniformní 2-col grid (často hodně položek) */}
+              {/* SUBTOPIC level — čtvercový grid */}
               {level === "subtopic" && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {subtopics.map((topic) => {
                     const subEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
                     const isDbOnly = !hasCodeGenerator(topic);
@@ -517,24 +517,18 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         key={topic.id}
                         type="button"
                         onClick={() => onSelectTopic(topic)}
-                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} p-5 shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[140px] ${isDbOnly ? "opacity-80" : ""}`}
+                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col ${isDbOnly ? "opacity-80" : ""}`}
                       >
-                        <div className="flex items-start gap-3 h-full">
-                          <div className="shrink-0">
-                            <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topic.title, category: selectedCategory! })} fallbackEmoji={getTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="lg" />
-                          </div>
-                          <div className="flex-1 min-w-0 space-y-1">
-                            <h3 className="text-lg font-black text-foreground tracking-tight line-clamp-2">
-                              {topic.displayName ?? topic.title}
-                            </h3>
-                            <p className="text-sm text-foreground/70 line-clamp-2">{topic.goals[0]}</p>
-                          </div>
-                          <span
-                            className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`}
-                            aria-hidden
-                          >
-                            ›
-                          </span>
+                        <div className="flex-1 flex items-center justify-center">
+                          <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topic.title, category: selectedCategory! })} fallbackEmoji={getTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="lg" />
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="text-base font-black text-foreground tracking-tight leading-tight line-clamp-2">
+                            {topic.studentTitle ?? topic.displayName ?? topic.title}
+                          </h3>
+                          {topic.briefDescription && (
+                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{topic.briefDescription}</p>
+                          )}
                         </div>
                       </button>
                     );
