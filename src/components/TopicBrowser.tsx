@@ -431,9 +431,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Info dialog — pokud existuje pro tuto úroveň */}
               {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
 
-              {/* CATEGORY level — rovnoměrný grid */}
+              {/* CATEGORY level — čtvercový grid */}
               {level === "category" && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {categories.map((category) => {
                     const count = new Set(
                       topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
@@ -444,22 +444,16 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         key={category}
                         type="button"
                         onClick={() => handleCategoryClick(category)}
-                        className={`group relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[130px] p-5`}
+                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
                       >
-                        <div className="flex items-center gap-4 h-full">
-                          <div className="shrink-0">
-                            <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="md" />
-                          </div>
-                          <div className="flex-1 min-w-0 space-y-1">
-                            <h3 className="text-base font-black text-foreground tracking-tight leading-tight">{displayCat(category)}</h3>
-                            {displayCatDesc(category) && (
-                              <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{displayCatDesc(category)}</p>
-                            )}
-                            <p className="text-xs text-foreground/50 font-medium">
-                              {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
-                            </p>
-                          </div>
-                          <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${subjectStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
+                        <div className="flex-1 flex items-center justify-center">
+                          <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="lg" />
+                        </div>
+                        <div className="space-y-0.5">
+                          <h3 className="text-sm font-black text-foreground tracking-tight leading-tight line-clamp-2">{displayCat(category)}</h3>
+                          <p className="text-[10px] text-foreground/50 font-medium">
+                            {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
+                          </p>
                         </div>
                       </button>
                     );
