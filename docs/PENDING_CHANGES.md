@@ -58,6 +58,13 @@
 
 ## Vyřízené
 
+### 2026-06-08 — Grade-4 CJL: displayName + recommendedNext ✅
+- Doplněno `displayName` (krátký rodičovský/dětský název) do všech 22 CJL souborů
+- Doplněno `recommendedNext` (logická pedagogická návaznost) do všech 22 CJL souborů — návaznost v rámci podkategorií (slohová, čtení, stavba slova, tvarosloví, skladba, literární pojmy, práce s textem)
+- Bonus: opraveno 10× `briefDescription` >12 slov + 2× `studentTitle` >4 slova napříč grade-4 (CJL, vlastivěda, přírodověda) — `language.test.ts` nyní zelený
+- Typecheck čistý, 114/115 grade-4 testů zelených
+- ⚠️ **Otevřené:** `pisemneScitaniAOdcitani.test.ts` — předexistující fail `gradeRange [4,4]` vs test očekává `[4,5]` (rozhodnout, zda téma patří i do 5. ročníku)
+
 ### 2026-06-03 — Ilustrace se po regeneraci neměnily (HF chybějící seed) ✅
 - **Hlavní příčina:** Pollinations selhává (403 / IP block), chain padne na HuggingFace FLUX.1-schnell, který **bez `seed` parametru** vrací pro stejný prompt deterministicky bajtově identický obrázek → force regenerace zapsala stejná data → UI ukazovalo starý obrázek
 - **Fix:** edge funkce posílá `parameters.seed` (random) do HF requestu → každá regenerace = nová varianta

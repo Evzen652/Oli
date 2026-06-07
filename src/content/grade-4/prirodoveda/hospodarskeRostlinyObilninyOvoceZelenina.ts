@@ -64,11 +64,11 @@ export const HOSPODARSKEROSTLINYOBILNINYOVOCEZELENINA: TopicMetadata[] = [
     id: "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-hospodarske-rostliny-obilniny-ovoce-zelenina",
     rvpNodeId: "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-hospodarske-rostliny-obilniny-ovoce-zelenina",
     title: "Hospodářské rostliny - obilniny, ovoce, zelenina",
-    studentTitle: "Rostliny z polí a zahrad",
+    studentTitle: "Rostliny z polí",
     subject: "přírodověda",
     category: "Rozmanitost přírody",
     topic: "Rozmanitost přírody",
-    briefDescription: "Poznáš obilniny, ovoce a zeleninu a pochopíš, jak se pěstují a k čemu slouží.",
+    briefDescription: "Poznáš obilniny, ovoce a zeleninu a jak se pěstují.",
     keywords: ["pšenice", "ječmen", "žito", "oves", "kukuřice", "rýže", "luštěniny", "zelenina", "ovoce"],
     goals: [
       "Jmenovat hlavní obilniny a jejich využití",

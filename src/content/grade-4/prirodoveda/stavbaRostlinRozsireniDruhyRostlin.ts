@@ -335,7 +335,7 @@ export const STAVBAROSTLINROZSIRENIDRUHYROSTLIN: TopicMetadata[] = [
     subject: "přírodověda",
     category: "Rozmanitost přírody",
     topic: "Rozmanitost přírody",
-    briefDescription: "Pochopíš, jak fungují části rostliny a jak se semena dostávají do celého světa.",
+    briefDescription: "Pochopíš části rostliny a jak se semena šíří do světa.",
     keywords: ["fotosyntéza", "chlorofyl", "kořen", "stonek", "list", "květ", "plod", "semena", "opylení", "šíření semen"],
     goals: [
       "Popsat funkci kořene, stonku, listu, květu a plodu",

@@ -9,7 +9,7 @@ describe("pisemneScitaniAOdcitani – metadata", () => {
     expect(meta.rvpNodeId).toBeTruthy();
     expect(meta.title).toBeTruthy();
     expect(meta.subject).toBe("matematika");
-    expect(meta.gradeRange).toEqual([4, 5]);
+    expect(meta.gradeRange).toEqual([4, 4]);
     expect(meta.inputType).toBe("select_one");
   });
 

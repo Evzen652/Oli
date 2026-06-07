@@ -72,7 +72,7 @@ export const SLUNCESVETLOTEPLOENERGIE: TopicMetadata[] = [
     subject: "přírodověda",
     category: "Rozmanitost přírody",
     topic: "Rozmanitost přírody",
-    briefDescription: "Poznáš planety sluneční soustavy a pochopíš, proč je Slunce zdrojem energie pro Zemi.",
+    briefDescription: "Poznáš planety sluneční soustavy a proč je Slunce zdrojem energie.",
     keywords: ["Slunce", "planety", "sluneční soustava", "energie", "světlo", "teplo", "fotosyntéza", "roční období"],
     goals: [
       "Vyjmenovat planety sluneční soustavy ve správném pořadí",

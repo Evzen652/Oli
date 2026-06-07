@@ -135,10 +135,12 @@ src/
 | Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
 | Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na admin editor |
 | Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
-| displayName + recommendedNext grade-4 (14 souborů) | Architekt | ⏸️ Čeká |
+| displayName + recommendedNext grade-4 CJL (22 souborů) | Architekt | ✅ 22/22 hotovo |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ### Session 2026-06-08 — hotovo:
+- ✅ **Grade-4 CJL: `displayName` + `recommendedNext` — 22/22 souborů.** Krátký rodičovský/dětský název + logická pedagogická návaznost v rámci podkategorií (slohová, čtení, stavba slova, tvarosloví, skladba, literární pojmy, práce s textem).
+- ✅ **Bonus — `language.test.ts` zelený:** opraveno 10× `briefDescription` >12 slov + 2× `studentTitle` >4 slova napříč grade-4 (CJL, vlastivěda, přírodověda). ⚠️ Zbývá předexistující fail `pisemneScitaniAOdcitani` (`gradeRange [4,4]` vs test `[4,5]`).
 - ✅ **Grade-4 CJL: explanation kompletní — 22/22 souborů.**
 - ✅ **SubjectGrid** na AnonStudentPage — předměty s ilustracemi místo jednoho tlačítka. Klik → TopicBrowser filtrovaný na předmět (SessionView čte `oli_anon_browse_subject` ze sessionStorage).
 - ✅ **TopicBrowser UI redesign:** logo Oli odstraněno z headerů; rovnoměrný grid (aspect-square, 2–3 sloupce) místo featured layout; ilustrace `w-44 h-44`; nadpis `text-lg font-black`; popis okruhu jako fallback na `briefDescription`.

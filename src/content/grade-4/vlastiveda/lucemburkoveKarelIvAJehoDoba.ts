@@ -411,7 +411,7 @@ export const LUCEMBURKOVEKARELIVAJEHODOBA: TopicMetadata[] = [
     subject: "vlastivěda",
     category: "Lidé a čas",
     topic: "Lidé a čas",
-    briefDescription: "Poznáš Karla IV. — Otce vlasti, co postavil a proč je tak slavný.",
+    briefDescription: "Poznáš Karla IV., Otce vlasti — co postavil a proč je slavný.",
     keywords: ["Karel IV.", "Lucemburkové", "Otec vlasti", "Karlova univerzita", "Karlův most", "Karlštejn", "1348"],
     goals: [
       "Znát přezdívku a přínos Karla IV.",

@@ -411,7 +411,7 @@ export const PRAVEKAPRVNILIDENANASEMUZEMI: TopicMetadata[] = [
     subject: "vlastivěda",
     category: "Lidé a čas",
     topic: "Lidé a čas",
-    briefDescription: "Poznáš, jak žili první lidé na území ČR od lovců po zemědělce a Kelty.",
+    briefDescription: "Poznáš, jak žili první lidé u nás — od lovců po Kelty.",
     keywords: ["pravěk", "paleolit", "neolit", "Keltové", "Slované", "Věstonická venuše", "bronz"],
     goals: [
       "Rozlišit hlavní pravěké epochy (paleolit, neolit, bronz, železo)",

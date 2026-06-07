@@ -66,7 +66,7 @@ export const STRAVAPOHYBSPANEKPREVENCEURAZUANEMOCI: TopicMetadata[] = [
     subject: "přírodověda",
     category: "Člověk a jeho zdraví",
     topic: "Člověk a jeho zdraví",
-    briefDescription: "Naučíš se, co tvoří zdravý životní styl a jak pečovat o své tělo každý den.",
+    briefDescription: "Naučíš se, co je zdravý životní styl a jak pečovat o tělo.",
     keywords: ["strava", "pohyb", "spánek", "hygiena", "vitamíny", "potravinová pyramida", "prevence", "přilba", "očkování"],
     goals: [
       "Popsat potravinovou pyramidu a vysvětlit, co jíme nejvíce/nejméně",

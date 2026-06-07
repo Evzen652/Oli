@@ -67,7 +67,7 @@ export const SAVCIPTACIZNAKYZASTUPCI: TopicMetadata[] = [
     subject: "přírodověda",
     category: "Rozmanitost přírody",
     topic: "Rozmanitost přírody",
-    briefDescription: "Poznáš znaky savců a ptáků a naučíš se je rozeznávat na konkrétních příkladech.",
+    briefDescription: "Poznáš znaky savců a ptáků a naučíš se je rozeznávat.",
     keywords: ["savci", "ptáci", "srst", "peří", "teplokrevní", "kojení", "migrace", "stěhování", "velryba", "netopýr"],
     goals: [
       "Vyjmenovat znaky savců a ptáků",

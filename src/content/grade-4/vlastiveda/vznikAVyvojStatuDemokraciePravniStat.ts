@@ -322,7 +322,7 @@ export const VZNIKAVYVOJSTATUDEMOKRACIEPRAVNISTAT: TopicMetadata[] = [
     subject: "vlastivěda",
     category: "Lidé kolem nás",
     topic: "Lidé kolem nás",
-    briefDescription: "Pochopíš, co je demokracie, jak funguje stát a proč jsou zákony pro všechny.",
+    briefDescription: "Pochopíš, co je demokracie, jak funguje stát a proč platí zákony.",
     keywords: ["demokracie", "stát", "ústava", "parlament", "prezident", "právní stát", "volby", "práva"],
     goals: [
       "Vysvětlit pojem demokracie a právní stát",
