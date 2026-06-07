@@ -131,7 +131,7 @@ src/
 | Co | Kdo | Stav |
 |---|---|---|
 | Grade-3 prvouka (0/14 témat) | Grade-3 session | ⏸️ Další obsah |
-| Grade-4 CJL: přidat explanation (jako grade-3) | Architekt | 🔄 1/22 (pilot popisPredmetu hotov, zbývá 21) |
+| Grade-4 CJL: přidat explanation (jako grade-3) | Architekt | ✅ 22/22 hotovo |
 | Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
 | Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na admin editor |
 | Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
@@ -139,7 +139,7 @@ src/
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ### Session 2026-06-07 (pokr.) — hotovo:
-- ✅ Grade-4 CJL pilot: `popisPredmetuOsobyAPracovnihoPostupu.ts` — explanation per otázka (31 ks), `solutionSteps` → `explanation` v gen(). Vzor pro zbylých 21 souborů.
+- ✅ **Grade-4 CJL: explanation kompletní — 22/22 souborů.** Pilot `popisPredmetu` ručně, zbytek paralelními agenty podle vzoru. Každá otázka má vlastní pedagogické vysvětlení (proč správná + odliš distraktory), `solutionSteps` → `explanation` v gen() všude (0 výskytů solutionSteps). 2 soubory s True/False strukturou (plynuleCteni, manipulativni) původně neměly žádné vysvětlení → doplněno. 2 pravopisné soubory (predlozky s/z, predpony vy/s/z/vz) řeší explanation šablonou podle generované odpovědi. tsc čisté.
 
 ### Poslední session (2026-06-07) — hotovo:
 - ✅ InviteDialog memory leak opraven (AbortController)

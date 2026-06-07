@@ -111,6 +111,13 @@ const POOL_L3: { sentence: string; blank: string }[] = [
   { sentence: "Hrál si ___ spolužáky, dokud ho maminka nezavolala.", blank: "se" },
 ];
 
+function explain(blank: string): string {
+  if (blank === "s" || blank === "se") {
+    return `Správně je předložka „${blank}“. Předložky s/se píšeme tehdy, když je něco spolu s něčím nebo někým, anebo když se něco pohybuje z povrchu (dolů, shora). Zeptej se „s kým, s čím?“ — pokud věta dává smysl, patří tam s/se. Tvar „se“ použijeme před slovem, které se těžko vyslovuje (se sestrou, se psem).`;
+  }
+  return `Správně je předložka „${blank}“. Předložky z/ze píšeme tehdy, když se něco pohybuje z vnitřku ven nebo odněkud pryč (ze školy, z lesa). Zeptej se „odkud?“ — pokud něco vychází zevnitř nebo směřuje pryč, patří tam z/ze. Tvar „ze“ použijeme před slovem, které se těžko vyslovuje (ze školy, ze stromu).`;
+}
+
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   return shuffle(pool).slice(0, 30).map(({ sentence, blank }) => ({
@@ -122,10 +129,7 @@ function gen(level: number): PracticeTask[] {
       "s/se = pohyb z povrchu nebo dohromady s někým",
       "z/ze = pohyb z vnitřku (ze školy = z vnitřku budovy)",
     ],
-    solutionSteps: [
-      "Ptám se: odkud přišel? → z vnitřku → z/ze",
-      "Ptám se: s kým? nebo odkud z povrchu? → s/se",
-    ],
+    explanation: explain(blank),
   }));
 }
 

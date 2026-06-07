@@ -110,6 +110,16 @@ const POOL_L3: FillItem[] = [
   { sentence: "Hoch ___dal to a šel za svým cílem.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
 ];
 
+const EXPLANATIONS: Record<string, string> = {
+  "vy": "Předpona vy- se vždy píše s tvrdým y. Vyjadřuje dokončení děje nebo pohyb ven (například vyletět z klece). Když není slabika přízvučná, píšeme krátké vy-.",
+  "vý": "Předpona vý- se vždy píše s tvrdým ý. Píšeme ji tehdy, když je první slabika přízvučná a dlouhá, většinou u podstatných a přídavných jmen (výhra, výborný, výtah). Měkké i sem nikdy nepatří.",
+  "s": "Předpona s- se píše, když znamená pohyb dolů nebo spojení dohromady (sjet z kopce, sloučit síly). Rozhoduje se podle významu — když jde o směr dolů či dání věcí k sobě, je to s-.",
+  "z": "Předpona z- se píše, když znamená změnu stavu — něco se stane jiným (ztuhnout, zbohatnout, zlepšit). Rozhoduj se podle významu: pokud se mění stav nebo vlastnost, patří tam z-.",
+  "vz": "Předpona vz- se píše, když znamená pohyb nahoru nebo vznik něčeho nového (vzlétnout do výšky, vzejít). Když jde děj směrem vzhůru, je to vz-.",
+  "po": "Tady nejde o předpony vy-/vý- ani s-/z-/vz-. Slovo má předponu po-, kterou poznáš podle významu slovesa. Vždy se rozhoduj podle toho, co sloveso vyjadřuje.",
+  "u": "Tady nejde o předpony vy-/vý- ani s-/z-/vz-. Slovo má předponu u-, kterou poznáš podle významu slovesa. Vždy se rozhoduj podle toho, co sloveso vyjadřuje.",
+};
+
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   return shuffle(pool).slice(0, 30).map(({ sentence, blank, options }) => ({
@@ -124,14 +134,7 @@ function gen(level: number): PracticeTask[] {
       "z- = změna stavu (ztuhnout, zbohatnout, zlepšit)",
       "vz- = pohyb nahoru nebo vznik (vzlétnout, vzdát)",
     ],
-    solutionSteps: [
-      "Přečti větu a zamysli se, co sloveso vyjadřuje.",
-      "Pohyb dolů nebo dohromady → s-",
-      "Změna stavu → z-",
-      "Dokončení nebo pohyb ven → vy-",
-      "Pohyb nahoru nebo vznik → vz-",
-      "Přízvučná 1. slabika → vý-",
-    ],
+    explanation: EXPLANATIONS[blank.toLowerCase()] ?? EXPLANATIONS["vy"],
   }));
 }
 
