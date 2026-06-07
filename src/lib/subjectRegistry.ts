@@ -8,6 +8,7 @@ export interface SubjectMeta {
   label: string;
   emoji: string;
   image: string;
+  color: string;
   gradientClass: string;
   borderClass: string;
   hook?: string;
@@ -18,6 +19,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     label: "Matematika",
     emoji: "🔢",
     image: imgMatematika,
+    color: "text-blue-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
     borderClass: "border-[hsl(var(--math-numbers))]/40",
     hook: "Matematika tě naučí počítat, porovnávat a řešit úlohy — v obchodě, ve hře i v životě!",
@@ -26,6 +28,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     label: "Čeština",
     emoji: "📝",
     image: imgCestina,
+    color: "text-purple-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--cz-vyjm-bg))]",
     borderClass: "border-[hsl(var(--cz-vyjm))]/40",
     hook: "Čeština je klíč ke správnému psaní, čtení a porozumění — ve škole i na internetu!",
@@ -34,6 +37,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     label: "Prvouka",
     emoji: "🌍",
     image: imgPrvouka,
+    color: "text-green-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(142,64%,93%)]",
     borderClass: "border-[hsl(142,64%,42%)]/40",
     hook: "Prvouka ti ukáže, jak funguje příroda, lidské tělo i svět kolem tebe!",
@@ -42,6 +46,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     label: "Přírodověda",
     emoji: "🌿",
     image: imgPrirodoveda,
+    color: "text-emerald-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(152,60%,92%)]",
     borderClass: "border-[hsl(152,60%,42%)]/40",
     hook: "Přírodověda ti ukáže, jak fungují ekosystémy, koloběh vody i svět hornin!",
@@ -50,6 +55,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     label: "Vlastivěda",
     emoji: "🗺️",
     image: imgVlastiveda,
+    color: "text-amber-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(38,70%,92%)]",
     borderClass: "border-[hsl(38,70%,45%)]/40",
     hook: "Vlastivěda tě provede kraji Česka, jeho historií a státními symboly!",
@@ -100,6 +106,7 @@ function buildFallback(subject: string): SubjectMeta {
     label: subject.charAt(0).toUpperCase() + subject.slice(1),
     emoji,
     image: `${SUPABASE_STORAGE}/subject-${slug}.png`,
+    color: "text-slate-600",
     gradientClass: palette.gradientClass,
     borderClass: palette.borderClass,
   };

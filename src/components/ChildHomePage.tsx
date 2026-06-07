@@ -922,6 +922,11 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
   skillName: string;
   lastPracticed?: string | null;
 }) {
+  const subjectLabel = subjMeta?.label ?? null;
+  const shortBreadcrumb = subjectLabel && breadcrumb.startsWith(subjectLabel)
+    ? breadcrumb.slice(subjectLabel.length).replace(/^\s*·\s*/, '').trim()
+    : breadcrumb;
+
   return (
     <div className="flex items-start gap-2">
       <div className="shrink-0 h-9 w-9 rounded-lg bg-slate-100 flex items-center justify-center">
@@ -930,10 +935,13 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
           : <span className="text-base">📋</span>}
       </div>
       <div className="flex-1 min-w-0">
-        {breadcrumb && (
-          <p className="text-[10px] text-muted-foreground leading-tight mb-0.5 truncate">{breadcrumb}</p>
-        )}
         <p className="font-bold text-sm text-foreground leading-snug">{skillName}</p>
+        {subjectLabel && (
+          <p className={`text-xs font-semibold leading-tight mt-0.5 ${subjMeta!.color}`}>{subjectLabel}</p>
+        )}
+        {shortBreadcrumb && (
+          <p className="text-[10px] text-muted-foreground leading-tight mt-0.5 truncate">{shortBreadcrumb}</p>
+        )}
         {lastPracticed && (
           <p className="text-[11px] text-muted-foreground mt-0.5">{formatLastPracticed(lastPracticed)}</p>
         )}
