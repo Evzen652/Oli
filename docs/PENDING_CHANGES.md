@@ -19,6 +19,12 @@
 
 ## Otevřené
 
+### Zastaralý inputType whitelist v testech (67 pre-existujících selhání)
+- `src/test/topic-invariants.test.ts` (ř. ~50–52) má whitelist povolených `inputType`, který neobsahuje aktuálně používané typy → 67 testů padá napříč 17 soubory (topic-invariants, security, red-team, content-registry, generator-validation, …).
+- Chybí mj. `true_false`, `essay` (a možná další — ověřit proti reálně použitým `inputType` v obsahu).
+- **Není to regrese z 2026-06-08** (ověřeno: 67 failed na čistém HEAD i se změnami té session). Dluh z dřívějška.
+- **TODO:** doplnit chybějící typy do whitelistu (jediný zdroj pravdy = skutečné `inputType` napříč `getAllTopics()`), pak ověřit `npx vitest run`.
+
 ### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
 Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 1. **F1 — validátor substring (false-positive, ~20 format chyb):** `validateTaskForInputType` (src/lib/taskValidator.ts ř. 26–32) faulne legitimní distraktory: `8 cm` ⊂ `8 cm²`, `5 °C` ⊂ `−5 °C`, `přímá řeč` ⊂ `nepřímá řeč`, `umělecký` ⊂ `neumělecký`. Opravit: vyjmout numerické/jednotkové odpovědi + token/word-boundary shoda místo `includes`. ⚠️ Systémový invariant — testovat proti celé `audit:content` sadě.
