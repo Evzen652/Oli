@@ -14,6 +14,98 @@ interface CheckFeedbackCardProps {
   onContinue: () => void;
 }
 
+/** Zobrazení správné odpovědi dle typu úlohy */
+function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
+  const inputType = topic.inputType;
+
+  if (inputType === "drag_order" && task.items && task.items.length > 0) {
+    return (
+      <div className="space-y-1">
+        <p className="font-semibold text-foreground">Správné pořadí:</p>
+        <ol className="list-decimal list-inside space-y-1 text-base text-muted-foreground">
+          {task.items.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ol>
+      </div>
+    );
+  }
+
+  if (inputType === "match_pairs" && task.pairs && task.pairs.length > 0) {
+    return (
+      <div className="space-y-1">
+        <p className="font-semibold text-foreground">Správné páry:</p>
+        <ul className="space-y-1 text-base text-muted-foreground">
+          {task.pairs.map((p, i) => (
+            <li key={i}>{p.left} → {p.right}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  if (inputType === "categorize" && task.categories && task.categories.length > 0) {
+    return (
+      <div className="space-y-2">
+        <p className="font-semibold text-foreground">Správné zařazení:</p>
+        {task.categories.map((cat, i) => (
+          <div key={i}>
+            <p className="font-medium text-foreground text-sm">{cat.name}:</p>
+            <p className="text-sm text-muted-foreground">{cat.items.join(", ")}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Výchozí: prostý text
+  return (
+    <p>
+      Správná odpověď: <span className="font-bold text-foreground">{task.correctAnswer}</span>
+    </p>
+  );
+}
+
+/** Kontextové vysvětlení proč je odpověď správná */
+function ExplanationDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
+  // Per-task explanation má vždy nejvyšší prioritu (pro všechny typy)
+  if (task.explanation) {
+    return (
+      <p className="text-base text-muted-foreground leading-relaxed">
+        {task.explanation}
+      </p>
+    );
+  }
+
+  // Matematika: step-by-step postup
+  if (task.solutionSteps && task.solutionSteps.length > 0) {
+    return (
+      <ol className="list-decimal list-inside text-base text-muted-foreground space-y-1">
+        {task.solutionSteps.map((step, i) => (
+          <li key={i}>{step}</li>
+        ))}
+      </ol>
+    );
+  }
+
+  // Ordering/matching bez explanation: nezobrazovat helpTemplate (je opakující se a generické)
+  const inputType = topic.inputType;
+  if (inputType === "drag_order" || inputType === "match_pairs" || inputType === "categorize") {
+    return null;
+  }
+
+  // Ostatní typy: fallback na helpTemplate.hint
+  if (topic.helpTemplate?.hint) {
+    return (
+      <p className="text-base text-muted-foreground leading-relaxed">
+        {topic.helpTemplate.hint}
+      </p>
+    );
+  }
+
+  return null;
+}
+
 export function CheckFeedbackCard({
   checkFeedback,
   lastAnswerCorrect,
@@ -43,30 +135,11 @@ export function CheckFeedbackCard({
             <div className="mt-4 rounded-xl bg-background/70 p-5 text-base text-secondary-foreground space-y-3">
               {/* Správná odpověď — jen při špatné odpovědi */}
               {!lastAnswerCorrect && (
-                <p>
-                  {t("session.correct_answer")}<span className="font-bold text-foreground">{answeredTask.correctAnswer}</span>
-                </p>
+                <CorrectAnswerDisplay task={answeredTask} topic={topic} />
               )}
 
-              {/* Vysvětlení proč — tři úrovně priority */}
-              {answeredTask.explanation ? (
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  {answeredTask.explanation}
-                </p>
-              ) : answeredTask.solutionSteps && answeredTask.solutionSteps.length > 0 ? (
-                <>
-                  <p className="font-semibold text-foreground">{t("session.procedure")}</p>
-                  <ol className="list-decimal list-inside text-base text-muted-foreground space-y-1">
-                    {answeredTask.solutionSteps.map((step, i) => (
-                      <li key={i}>{step}</li>
-                    ))}
-                  </ol>
-                </>
-              ) : (
-                <p className="text-base text-muted-foreground">
-                  {topic.helpTemplate.hint}
-                </p>
-              )}
+              {/* Vysvětlení proč — vždy, u správné i špatné odpovědi */}
+              <ExplanationDisplay task={answeredTask} topic={topic} />
             </div>
           )}
         </CardContent>

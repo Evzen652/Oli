@@ -9,7 +9,6 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// Každý task = seřaď historické pravěké události ve správném pořadí
 const VSECHNY_TASKY: PracticeTask[] = [
   {
     question: "Seřaď pravěké epochy od nejstarší po nejnovější.",
@@ -20,7 +19,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – bronzové nástroje",
       "Doba železná – Keltové v Čechách",
     ],
-    hints: ["Paleolit → neolit → bronz → železo."],
+    hints: ["Přemýšlej, z čeho lidé vyráběli nástroje — nejdřív kámen, pak kovy.", "Jako první přišla nejstarší doba kamenná (paleolit)."],
+    explanation: "Lidé nejdřív opracovávali kámen (paleolit, neolit), pak zjistili, že z bronzu (slitina mědi a cínu) lze vyrobit pevnější nástroje, a nakonec přešli na ještě tvrdší železo — to přinesli Keltové.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -31,7 +31,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – slitina mědi a cínu",
       "Keltové (Boiové) v Čechách – Bohemia",
     ],
-    hints: ["Paleolit → neolit → bronz → Keltové."],
+    hints: ["Přemýšlej, jak se změnil způsob obživy — nejdřív lov, pak zemědělství.", "Jako první přišel paleolit — lidé lovili a sbírali."],
+    explanation: "Nejprve lidé žili jako lovci (paleolit). Pak nastala zemědělská revoluce — neolit. Teprve po zvládnutí zemědělství začali lidé tavit kovy: nejdřív bronz (měď+cín), a Keltové přinesli železo a pojmenování Bohemia.",
   },
   {
     question: "Seřaď pravěké epochy chronologicky.",
@@ -42,7 +43,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – únětická kultura",
       "Doba železná – Keltové, oppida",
     ],
-    hints: ["Věstonická venuše → zemědělství → bronz → Keltové."],
+    hints: ["Věstonická venuše je stará 29 000 let — to je paleolit, úplný začátek.", "Zemědělství přišlo až po lovu — to je neolit."],
+    explanation: "Věstonická venuše (29 000 let) pochází z paleolitu — tehdy ještě nebylo zemědělství. Neolit přinesl zemědělství a keramiku. Únětická kultura patří do doby bronzové. Keltská oppida (opevněná města) jsou z doby železné.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -53,7 +55,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové v Čechách – doba železná",
       "Slované přicházejí do Čech (6. stol. n. l.)",
     ],
-    hints: ["Paleolit → neolit → Keltové → Slované."],
+    hints: ["Neandrtálci žili ještě před kromaňonci — to je nejstarší pravěk.", "Slované přišli jako poslední — až v 6. století našeho letopočtu."],
+    explanation: "Neandrtálci a kromaňonci žili v paleolitu — tisíce let před zemědělstvím. Neolit přinesl revoluci: lidé začali pěstovat obilí. Keltové přišli v době železné (kolem 5. st. př. n. l.). Slované dorazili do Čech nejpozději — až v 6. století n. l.",
   },
   {
     question: "Seřaď pravěké a starověké epochy od nejstarší po nejnovější.",
@@ -64,7 +67,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová",
       "Doba železná – Keltové",
     ],
-    hints: ["Paleolit → neolit → bronz → železo."],
+    hints: ["Doba kamenná je vždy starší než doba bronzová nebo železná.", "Starší doba kamenná přišla před mladší."],
+    explanation: "Epochy se jmenují podle materiálu, z nějž lidé vyráběli nástroje: kámen (nejdřív starší, pak mladší), poté bronz a nakonec železo. Každý nový materiál byl tvrdší a lidé ho dokázali lépe opracovat.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -75,7 +79,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Únětická kultura – doba bronzová",
       "Keltové (Boiové) – Bohemia",
     ],
-    hints: ["29 000 let → neolit → únětická kultura → Keltové."],
+    hints: ["Věstonická venuše je stará 29 000 let — jde o jedno z nejstarších uměleckých děl světa.", "Zemědělská revoluce přišla až po tisících letech lovu."],
+    explanation: "Věstonická venuše (29 000 let) je dokladem paleolitického umění. Zemědělská revoluce v neolitu změnila vše — lidé přestali být nomádi. Únětická kultura (bronz) je typická pro naše území. Keltové (Boiové) pojmenovali zemi Bohemia — odtud název Čechy.",
   },
   {
     question: "Seřaď pravěké epochy chronologicky.",
@@ -86,7 +91,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – kovové nástroje z bronzu",
       "Keltové – doba železná, oppida",
     ],
-    hints: ["Jeskyně → vesnice → bronz → Keltové."],
+    hints: ["Přemýšlej, kde lidé bydleli: nejdřív jeskyně, pak vesnice.", "Keltská oppida jsou opevněná města — to přišlo až úplně nakonec."],
+    explanation: "Bydlení ukazuje pokrok: paleolit = jeskyně a tábořiště, neolit = stálé vesnice díky zemědělství, bronzová doba = složitější společnost s kovy, Keltové stavěli oppida — první města na našem území.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -97,7 +103,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – únětická kultura",
       "Slované přicházejí (6. stol. n. l.)",
     ],
-    hints: ["Paleolit → neolit → bronz → Slované."],
+    hints: ["Paleolit je vždy nejstarší — trvalo statisíce let.", "Slované přišli do Čech v 6. století — to je skoro středověk."],
+    explanation: "Paleolit trval statisíce let a byl nejdelší epochou. Neolit trval asi 3 000 let a přinesl zemědělství. Únětická kultura (bronz) je typicky česká — naleziště jsou po celých Čechách. Slované přišli ze severovýchodu Evropy v 6. st. n. l., tedy po Keltech i Germánech.",
   },
   {
     question: "Seřaď pravěké mezníky chronologicky.",
@@ -108,7 +115,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové (Boiové) – pojmenování Bohemia",
       "Germáni v Čechách (po Keltech)",
     ],
-    hints: ["Neandrtálci → neolit → Keltové → Germáni."],
+    hints: ["Neandrtálci žili dávno před zemědělstvím — patří do paleolitu.", "Germáni přišli až po Keltech a vytlačili je z Čech."],
+    explanation: "Neandrtálci (a po nich kromaňonci) žili v paleolitu jako lovci. Zemědělská revoluce v neolitu vše změnila. Keltové (Boiové) dali zemi jméno Bohemia. Po nich přišli Germáni — ti Kelty z Čech vytlačili kolem přelomu letopočtu.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -119,7 +127,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – bronzové meče a nástroje",
       "Keltové – oppida, obchod",
     ],
-    hints: ["Lovci → zemědělci → bronz → Keltové."],
+    hints: ["Lovci a sběrači přišli před zemědělci — to je základní přechod.", "Keltové byli výborní obchodníci a řemeslníci — to vyžadovalo rozvoj, který přišel nakonec."],
+    explanation: "Lovci a sběrači (paleolit) žili nomádsky. Zemědělci (neolit) se usadili. Bronzová doba přinesla kovové zbraně i nástroje — společnost se stala složitější. Keltové vybudovali oppida — centra řemesel a obchodu, první skutečná města.",
   },
   {
     question: "Seřaď pravěké epochy chronologicky.",
@@ -130,7 +139,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – únětická kultura",
       "Keltové – doba železná, oppida",
     ],
-    hints: ["Venuše → keramika → únětická kultura → Keltové."],
+    hints: ["Věstonická venuše je 29 000 let stará — to je paleolit, absolutní začátek.", "Keramika a zemědělství patří do neolitu."],
+    explanation: "Věstonická venuše (29 000 let) dokazuje, že paleolitičtí lidé uměli tvořit umění. Neolit přinesl keramiku a zemědělství. Únětická kultura (bronzová doba) je charakteristická pro střední Evropu. Keltové v době železné stavěli oppida — opevněná obchodní centra.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -141,7 +151,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové v Čechách (doba železná)",
       "Slované v Čechách (6. stol. n. l.)",
     ],
-    hints: ["Lovci → zemědělci → Keltové → Slované."],
+    hints: ["Způsob obživy ukazuje pořadí: lov → zemědělství.", "Slované přišli jako poslední — až v 6. století n. l."],
+    explanation: "Lov a sběr (paleolit) byl prvním způsobem obživy lidí. Zemědělství (neolit) umožnilo usazení. Keltové přišli v době železné a pojmenovali zemi Bohemia. Slované dorazili nejpozději — z východní Evropy v 6. st. n. l.",
   },
   {
     question: "Seřaď pravěké mezníky od nejstarší po nejnovější.",
@@ -152,7 +163,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – bronz = měď + cín",
       "Doba železná – Keltové, Bohemia",
     ],
-    hints: ["Mamuty → zemědělství → bronz → Keltové."],
+    hints: ["Mamuti žili v době ledové — to je paleolit, nejstarší část pravěku.", "Bronz vzniká smícháním mědi a cínu — to byla velká technická novinka."],
+    explanation: "Lov mamutů patří do paleolitu (doby ledové). Zemědělská revoluce v neolitu umožnila vznik osad. Bronz = slitina mědi a cínu — lidé museli vědět, jak kovy tavit a mísit. Keltové ovládli výrobu ze železa a pojmenovali zemi Bohemia.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -163,7 +175,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Doba bronzová – únětická kultura",
       "Germáni v Čechách (po Keltech)",
     ],
-    hints: ["Paleolit → neolit → bronz → Germáni."],
+    hints: ["Neandrtálci a kromaňonci patří do paleolitu — žili dávno před zemědělstvím.", "Germáni přišli do Čech po Keltech."],
+    explanation: "Neandrtálci vymřeli, kromaňonci (moderní lidé) je nahradili — oba v paleolitu. Neolit přinesl zemědělství. Únětická kultura (bronz) patří k nejznámějším pravěkým kulturám u nás. Germáni vytlačili Kelty z Čech kolem přelomu letopočtu.",
   },
   {
     question: "Seřaď pravěké epochy chronologicky.",
@@ -174,7 +187,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové – Boiové, Bohemia",
       "Slované – 6. stol. n. l.",
     ],
-    hints: ["Paleolit → neolit → Keltové → Slované."],
+    hints: ["Lovci a sběrači přišli vždy jako první — to je začátek pravěku.", "Slované přišli v 6. století n. l. — to je skoro středověk."],
+    explanation: "Lovci a sběrači (paleolit) žili nomádsky. První osady vznikly v neolitu, kdy lidé začali pěstovat obilí. Keltové (Boiové) byli výborní řemeslníci a obchodníci — z jejich názvu vzniklo slovo Bohemia. Slované přišli jako poslední, ze severovýchodu.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -185,7 +199,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové v Čechách (5. stol. př. n. l.)",
       "Germáni v Čechách – po Keltech",
     ],
-    hints: ["29 000 let → neolit → Keltové → Germáni."],
+    hints: ["Věstonická venuše je stará 29 000 let — to je paleolit, absolutní začátek.", "Keltové přišli do Čech kolem 5. st. př. n. l."],
+    explanation: "Věstonická venuše (Dolní Věstonice, 29 000 let) je důkaz paleolitického umění. Neolit přinesl zemědělství a keramiku — první hliněné nádoby. Keltové přišli do Čech kolem 5. st. př. n. l. Germáni (Markomané) je vytlačili kolem přelomu letopočtu.",
   },
   {
     question: "Seřaď pravěké mezníky chronologicky.",
@@ -196,7 +211,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové – Boiové, Bohemia",
       "Slované – příchod do Čech",
     ],
-    hints: ["Paleolit → neolit → Keltové → Slované."],
+    hints: ["Paleolit je vždy první — název znamená starší doba kamenná.", "Slované přišli jako poslední pravěcí/raně středověcí obyvatelé Čech."],
+    explanation: "Paleolit (starší doba kamenná) je nejdelší prehistorická epocha — trvala statisíce let. Neolit (mladší doba kamenná) přinesl zemědělství. Keltové (Boiové) dali zemi název Bohemia. Slované přišli v 6. st. n. l. a stali se předky dnešních Čechů.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -207,7 +223,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Únětická kultura – doba bronzová",
       "Keltové – oppida, obchod, Bohemia",
     ],
-    hints: ["Venuše → vesnice → únětická kultura → oppida."],
+    hints: ["Věstonická venuše je z paleolitu — 29 000 let stará.", "Únětická kultura je typicky česká bronzová kultura."],
+    explanation: "Věstonická venuše (paleolit) je jedním z nejstarších uměleckých děl světa. První vesnice a zemědělství (neolit) změnily způsob života. Únětická kultura (bronz) je pojmenována po obci Únětice u Prahy. Keltové stavěli oppida — opevněná obchodní centra, předchůdce měst.",
   },
   {
     question: "Seřaď pravěké epochy chronologicky.",
@@ -218,7 +235,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Bronzová doba (bronz = měď + cín)",
       "Keltové v Čechách (5.–1. stol. př. n. l.)",
     ],
-    hints: ["Paleolit → neolit → bronz → Keltové."],
+    hints: ["Kamenné nástroje jsou ze starší doby kamenné — paleolit.", "Bronz = měď + cín — lidé se to museli naučit."],
+    explanation: "Kamenné nástroje (paleolit) byly první technologií. Keramika a obilí (neolit) umožnily trvalé usazení. Bronz vzniká smícháním mědi a cínu — to byl velký technologický pokrok. Keltové ovládli Čechy od 5. do 1. st. př. n. l. a zpracovávali železo i sklo.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -229,7 +247,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové – Boiové, Bohemia",
       "Germáni vytlačují Kelty z Čech",
     ],
-    hints: ["Paleolit → neolit → Keltové → Germáni."],
+    hints: ["Lovci přišli dříve než zemědělci — lov je starší způsob obživy.", "Germáni přišli po Keltech a vytlačili je."],
+    explanation: "Lov a sběr (paleolit) byl prvotní strategií přežití. Zemědělství (neolit) umožnilo vznik vesnic. Keltové (Boiové) byli skvělí řemeslníci — zpracovávali železo, sklo i jantarové šperky. Germáni (Markomané) je vytlačili z Čech kolem přelomu letopočtu.",
   },
   {
     question: "Seřaď pravěké mezníky od nejstarší po nejnovější.",
@@ -240,95 +259,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Neolit – zemědělství",
       "Keltové – Bohemia",
     ],
-    hints: ["Neandrtálec → Venuše → neolit → Keltové."],
-  },
-  {
-    question: "Seřaď od nejstarší po nejnovější.",
-    correctAnswer: "order",
-    items: [
-      "Starší doba kamenná – lovci a sběrači",
-      "Neolit – zemědělci, keramika",
-      "Keltové v Čechách (5.–1. stol. př. n. l.)",
-      "Slované v Čechách (6. stol. n. l.)",
-    ],
-    hints: ["Lovci → zemědělci → Keltové → Slované."],
-  },
-  {
-    question: "Seřaď pravěké epochy chronologicky.",
-    correctAnswer: "order",
-    items: [
-      "Věstonická venuše – paleolit (29 000 let)",
-      "Neolit – zemědělská revoluce",
-      "Bronzová doba – únětická kultura",
-      "Keltové – Boiové, oppida",
-    ],
-    hints: ["Venuše 29 000 let → neolit → únětická kultura → Keltové."],
-  },
-  {
-    question: "Seřaď od nejstarší po nejnovější.",
-    correctAnswer: "order",
-    items: [
-      "Paleolit – lidé loví mamuty",
-      "Neolit – lidé pěstují obilí",
-      "Keltové – Bohemia (5.–1. stol. př. n. l.)",
-      "Germáni vytlačují Kelty (kolem 1. stol. př. n. l.)",
-    ],
-    hints: ["Mamuty → obilí → Keltové → Germáni."],
-  },
-  {
-    question: "Seřaď pravěké mezníky od nejstarší po nejnovější.",
-    correctAnswer: "order",
-    items: [
-      "Starší doba kamenná – Věstonická venuše",
-      "Neolit – osady a zemědělství",
-      "Bronzová doba (bronz = měď + cín)",
-      "Slované přicházejí do Čech (6. stol. n. l.)",
-    ],
-    hints: ["Venuše → osady → bronz → Slované."],
-  },
-  {
-    question: "Seřaď od nejstarší po nejnovější.",
-    correctAnswer: "order",
-    items: [
-      "Paleolit – lovci a sběrači",
-      "Neolit – zemědělci",
-      "Keltové – Boiové, Bohemia",
-      "Germáni nahrazují Kelty v Čechách",
-    ],
-    hints: ["Paleolit → neolit → Keltové → Germáni."],
-  },
-  {
-    question: "Seřaď pravěké epochy chronologicky.",
-    correctAnswer: "order",
-    items: [
-      "Lovci a sběrači (paleolit)",
-      "Zemědělská revoluce (neolit)",
-      "Únětická kultura (bronz)",
-      "Keltové – oppida v Čechách",
-    ],
-    hints: ["Lovci → zemědělci → únětická kultura → oppida."],
-  },
-  {
-    question: "Seřaď od nejstarší po nejnovější.",
-    correctAnswer: "order",
-    items: [
-      "Neandrtálci v Čechách (paleolit)",
-      "Věstonická venuše – kromaňonci",
-      "Neolit – keramika a zemědělství",
-      "Keltové – Bohemia",
-    ],
-    hints: ["Neandrtálci → Venuše → neolit → Keltové."],
-  },
-  {
-    question: "Seřaď pravěké mezníky od nejstarší po nejnovější.",
-    correctAnswer: "order",
-    items: [
-      "Paleolit – kamenné nástroje",
-      "Neolit – zemědělci a osady",
-      "Bronzová doba – bronzové meče",
-      "Keltové (Boiové) – Bohemia",
-    ],
-    hints: ["Paleolit → neolit → bronz → Keltové."],
+    hints: ["Neandrtálci přišli před kromaňonci — oba žili v paleolitu.", "Věstonická venuše pochází z doby 29 000 let před Kristem."],
+    explanation: "Neandrtálec (nález u Štramberku) dokazuje nejstarší osídlení Čech. Kromaňonci (moderní lidé) přišli po neandrtálcích — Věstonická venuše je jejich dílem. Zemědělství (neolit) přišlo mnohem později. Keltové (Bohemia) uzavírají pravěk na našem území.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -339,7 +271,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové v Čechách – Boiové",
       "Slované v Čechách (6. stol. n. l.)",
     ],
-    hints: ["Lovci → zemědělci → Keltové → Slované."],
+    hints: ["Starší doba kamenná přišla před mladší — název to napovídá.", "Slované přišli v 6. století n. l. — to je po konci pravěku."],
+    explanation: "Starší (paleolit) a mladší (neolit) doba kamenná jsou obě z pravěku, ale neolit přinesl zemědělství. Keltové (Boiové) dali zemi název Bohemia — česky Čechy. Slované přišli v 6. st. n. l. a jsou přímými předky dnešních Čechů.",
   },
   {
     question: "Seřaď pravěké epochy chronologicky.",
@@ -350,7 +283,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Bronzová doba – únětická kultura",
       "Germáni vytlačují Kelty (1. stol. př. n. l.)",
     ],
-    hints: ["Paleolit → neolit → únětická kultura → Germáni."],
+    hints: ["Paleolit = nejstarší lovci — začátek pravěku.", "Germáni vytlačili Kelty kolem 1. století před naším letopočtem."],
+    explanation: "Paleolit (lovci) je nejstarší epocha. Neolit přinesl zemědělství. Únětická kultura (bronz, pojmenována po Únětici u Prahy) je typická pro naše území. Germáni (Markomané) vytlačili Kelty z Čech kolem 1. st. př. n. l. — tím skončila keltská epocha.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -361,7 +295,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové – Bohemia (5.–1. stol. př. n. l.)",
       "Slované – 6. stol. n. l.",
     ],
-    hints: ["29 000 let → neolit → Keltové → Slované."],
+    hints: ["Věstonická venuše 29 000 let = paleolit.", "Slované přišli v 6. st. n. l. — to je nejpozději ze všech."],
+    explanation: "Věstonická venuše (29 000 let, Dolní Věstonice) patří do paleolitu. Zemědělství a keramika (neolit) umožnily trvalé usazení. Keltové ovládali Čechy od 5. do 1. st. př. n. l. Slované dorazili v 6. st. n. l. — jsou předky dnešních Čechů.",
   },
   {
     question: "Seřaď pravěké mezníky chronologicky.",
@@ -372,7 +307,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové – oppida a Bohemia",
       "Germáni v Čechách",
     ],
-    hints: ["Lovci → zemědělci → Keltové → Germáni."],
+    hints: ["Lovci přišli dříve než zemědělci.", "Germáni přišli do Čech po Keltech."],
+    explanation: "Lovci (paleolit) přišli jako první. Zemědělci (neolit) se usadili. Keltové stavěli oppida — opevněná centra obchodu a řemesel — a pojmenovali zemi Bohemia. Germáni (Markomané) Kelty vytlačili kolem přelomu letopočtu.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -383,7 +319,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Keltové (Boiové) – Bohemia",
       "Slované přicházejí do Čech",
     ],
-    hints: ["Venuše → neolit → Keltové → Slované."],
+    hints: ["Věstonická venuše pochází z paleolitu — je to nejstarší umělecké dílo nalezené u nás.", "Slované přišli jako poslední."],
+    explanation: "Věstonická venuše (paleolit) je nejstarší umělecká soška nalezená v Čechách. Neolit přinesl první zemědělce — přišli ze středního východu. Keltové (Boiové) pojmenovali zemi Bohemia. Slované přišli ze severovýchodu Evropy v 6. st. n. l.",
   },
   {
     question: "Seřaď pravěké epochy od nejstarší po nejnovější.",
@@ -394,7 +331,116 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Bronzová doba",
       "Keltové v Čechách – Bohemia",
     ],
-    hints: ["Paleolit → neolit → bronz → Keltové."],
+    hints: ["Lov a sběr je nejstarší způsob obživy — paleolit.", "Bronzová doba přišla po neolitu."],
+    explanation: "Lov a sběr (paleolit) byl prvním způsobem obživy. Zemědělská revoluce (neolit) změnila vše — lidé se usadili. Bronzová doba přinesla kovy. Keltové uzavírají pravěk na našem území — pojmenovali zemi Bohemia a ovládali výrobu ze železa.",
+  },
+  {
+    question: "Seřaď pravěké epochy chronologicky.",
+    correctAnswer: "order",
+    items: [
+      "Lovci a sběrači (paleolit)",
+      "Zemědělská revoluce (neolit)",
+      "Únětická kultura (bronz)",
+      "Keltové – oppida v Čechách",
+    ],
+    hints: ["Lovci a sběrači = paleolit — nejstarší způsob života.", "Únětická kultura je bronzová kultura pojmenovaná po obci u Prahy."],
+    explanation: "Lovci a sběrači (paleolit) žili nomádsky tisíce let. Zemědělská revoluce (neolit) umožnila stálé osady. Únětická kultura (bronz) je pojmenována po obci Únětice u Prahy — u nás bylo mnoho nálezů. Keltská oppida jsou první opevněná města v Čechách.",
+  },
+  {
+    question: "Seřaď od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Neandrtálci v Čechách (paleolit)",
+      "Věstonická venuše – kromaňonci",
+      "Neolit – keramika a zemědělství",
+      "Keltové – Bohemia",
+    ],
+    hints: ["Neandrtálci žili dříve než kromaňonci — oba v paleolitu.", "Neolit přišel po paleolitu — přinesl zemědělství."],
+    explanation: "Neandrtálci (archaičtí lidé) žili v paleolitu dříve než kromaňonci (moderní lidé). Věstonická venuše je dílo kromaňonců. Neolit přinesl keramiku a zemědělství. Keltové (Boiové) dali zemi jméno Bohemia — odtud dnešní název Čechy.",
+  },
+  {
+    question: "Seřaď pravěké mezníky od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Paleolit – kamenné nástroje",
+      "Neolit – zemědělci a osady",
+      "Bronzová doba – bronzové meče",
+      "Keltové (Boiové) – Bohemia",
+    ],
+    hints: ["Kamenné nástroje jsou nejstarší — patří do paleolitu.", "Bronzové meče přišly po kamenných nástrojích."],
+    explanation: "Kamenné nástroje (paleolit) jsou nejstarší technologií. Zemědělci a osady (neolit) přišly po tisících letech lovu. Bronzové meče (bronzová doba) jsou pevnější než kamenné — bronz = slitina mědi a cínu. Keltové (Boiové) pojmenovali zemi Bohemia a ovládali železo.",
+  },
+  {
+    question: "Seřaď od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Starší doba kamenná – lovci a sběrači",
+      "Mladší doba kamenná – zemědělci",
+      "Keltové v Čechách – Boiové",
+      "Slované v Čechách (6. stol. n. l.)",
+    ],
+    hints: ["Starší předchází mladší — i v názvech dob.", "Slované přišli jako poslední — v 6. st. n. l."],
+    explanation: "Starší (paleolit) i mladší (neolit) doba kamenná jsou z pravěku — neolit přinesl revoluci: zemědělství. Keltové (Boiové) dali zemi název Bohemia = Čechy. Slované přišli v 6. st. n. l. a jsou přímými předky dnešních Čechů.",
+  },
+  {
+    question: "Seřaď pravěké epochy chronologicky.",
+    correctAnswer: "order",
+    items: [
+      "Paleolit – nejstarší lidé (lovci)",
+      "Neolit – zemědělci",
+      "Bronzová doba – únětická kultura",
+      "Germáni vytlačují Kelty (1. stol. př. n. l.)",
+    ],
+    hints: ["Paleolit = nejstarší lovci.", "Germáni přišli po Keltech — kolem 1. st. př. n. l."],
+    explanation: "Lovci (paleolit) přišli první. Zemědělci (neolit) se usadili. Únětická kultura (bronz) je z doby asi 2 300–1 500 let př. n. l. Germáni (Markomané) vytlačili Kelty kolem 1. st. př. n. l. — tím skončila keltská éra v Čechách.",
+  },
+  {
+    question: "Seřaď od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Paleolit – Věstonická venuše (29 000 let)",
+      "Neolit – zemědělství a keramika",
+      "Keltové – Bohemia (5.–1. stol. př. n. l.)",
+      "Slované – 6. stol. n. l.",
+    ],
+    hints: ["Věstonická venuše = paleolit, 29 000 let.", "Slované přišli jako poslední — 6. st. n. l."],
+    explanation: "Věstonická venuše (29 000 let, Dolní Věstonice) je z paleolitu. Zemědělství a keramika (neolit) umožnily trvalé osídlení. Keltové ovládali Čechy od 5. do 1. st. př. n. l. Slované dorazili v 6. st. n. l. — jsou předky dnešních Čechů.",
+  },
+  {
+    question: "Seřaď pravěké epochy od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Paleolit – lidé loví mamuty",
+      "Neolit – lidé pěstují obilí",
+      "Keltové – Bohemia (5.–1. stol. př. n. l.)",
+      "Germáni vytlačují Kelty (kolem 1. stol. př. n. l.)",
+    ],
+    hints: ["Lov mamutů = paleolit, doba ledová.", "Germáni vytlačili Kelty kolem 1. st. př. n. l."],
+    explanation: "Lov mamutů (paleolit) patří do doby ledové. Pěstování obilí (neolit) změnilo obživu — lidé přestali lovit a začali hospodařit. Keltové (Bohemia, 5.–1. st. př. n. l.) byli zdatní řemeslníci. Germáni je kolem 1. st. př. n. l. vytlačili z Čech.",
+  },
+  {
+    question: "Seřaď pravěké mezníky od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Starší doba kamenná – Věstonická venuše",
+      "Neolit – osady a zemědělství",
+      "Bronzová doba (bronz = měď + cín)",
+      "Slované přicházejí do Čech (6. stol. n. l.)",
+    ],
+    hints: ["Věstonická venuše je z paleolitu — 29 000 let stará.", "Slované přišli jako poslední — v 6. st. n. l."],
+    explanation: "Věstonická venuše (paleolit) je nejstarší umělecká soška v Čechách. Zemědělství a osady (neolit) přišly mnohem později. Bronz (měď + cín) byl technologickým skokem. Slované přišli jako poslední — v 6. st. n. l. — a jsou předky Čechů.",
+  },
+  {
+    question: "Seřaď od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: [
+      "Paleolit – lovci a sběrači",
+      "Neolit – zemědělci",
+      "Keltové – Boiové, Bohemia",
+      "Germáni nahrazují Kelty v Čechách",
+    ],
+    hints: ["Lovci a sběrači jsou nejstarší — paleolit.", "Germáni přišli po Keltech."],
+    explanation: "Lovci a sběrači (paleolit) žili nomádsky. Zemědělci (neolit) se usadili. Keltové (Boiové) pojmenovali zemi Bohemia a ovládali železo. Germáni (Markomané) Kelty nahradili kolem přelomu letopočtu — tím skončila keltská epocha v Čechách.",
   },
 ];
 

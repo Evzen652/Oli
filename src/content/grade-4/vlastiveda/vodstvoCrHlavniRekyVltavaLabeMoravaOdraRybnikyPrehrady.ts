@@ -68,17 +68,38 @@ const SADY: [number, number, number, number][] = [
   [2, 9, 7, 13],
 ];
 
+const VODNI_FAKTA: Record<string, string> = {
+  "Vltava": "Vltava (430 km) je nejdelší česká řeka — pramení na Šumavě a ústí do Labe u Mělníka.",
+  "Labe": "Labe pramení v Krkonoších a odtéká přes Německo do Severního moře.",
+  "Morava": "Morava teče na jih, ústí do Dunaje a voda odtéká do Černého moře.",
+  "Odra": "Odra teče přes Polsko do Baltského moře — ČR tak odvádí vodu do tří různých moří.",
+  "Rožmberk": "Rožmberk je největší rybník ČR — leží v Třeboňsku v jižních Čechách.",
+  "Přehrada Lipno": "Lipno je největší vodní plocha ČR — přehradní nádrž na horní Vltavě.",
+  "Přehrada Orlík": "Orlík je největší vodní elektrárna ČR — stojí na řece Vltavě.",
+  "Třeboňsko": "Třeboňsko je proslulá oblast rybníků — rybníkářství tu má tradici přes 500 let.",
+  "Berounka": "Berounka je hlavní levý přítok Vltavy — vzniká soutokem Mže a Radbúzy u Plzně.",
+  "Máchovo jezero": "Máchovo jezero je největší přirozené jezero v Čechách — leží v Libereckém kraji.",
+  "Šumava": "Šumava je místo pramene Vltavy — Vltava zde pramení na svazích Černé hory.",
+  "Mělník": "U Mělníka se Vltava vlévá do Labe — odtud vody odtékají do Severního moře.",
+};
+
 function gen(_level: number): PracticeTask[] {
   const tasks: PracticeTask[] = SADY.slice(0, 35).map((idxs, i) => {
     const pairs = idxs.map(idx => ({
       left: VSECHNY_PARY[idx].left,
       right: VSECHNY_PARY[idx].right,
     }));
+    const prvni = VSECHNY_PARY[idxs[0]].left;
+    const fakt = VODNI_FAKTA[prvni] ?? "Vody ČR odtékají do tří moří: Severního, Černého a Baltského.";
     return {
       question: `Spoj vodní prvky s jejich popisem. (sada ${i + 1})`,
       correctAnswer: "match",
       pairs,
-      hints: ["Vzpomeň si na mapu ČR — kde řeka pramení a kam teče."],
+      hints: [
+        "Vzpomeň si na mapu ČR — kde řeka pramení a kam teče.",
+        `Tip: ${VSECHNY_PARY[idxs[0]].left} → ${VSECHNY_PARY[idxs[0]].right}`,
+      ],
+      explanation: `Vody ČR odtékají do tří moří: Severního (Labe), Černého (Morava→Dunaj) a Baltského (Odra). ${fakt}`,
     } as PracticeTask;
   });
   return shuffle(tasks).slice(0, 35);

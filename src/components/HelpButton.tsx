@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getHelpForTopic } from "@/lib/helpEngine";
+import { getSafeHints } from "@/lib/safeHints";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -20,8 +21,8 @@ export function HelpButton({ skillId, topic, currentTask, onHelpOpened }: HelpBu
   const [revealedCount, setRevealedCount] = useState(1);
   const help = getHelpForTopic(topic ?? null);
 
-  const hints = currentTask?.hints;
-  const hasHints = hints && hints.length > 0;
+  const hints = getSafeHints(currentTask, topic);
+  const hasHints = hints.length > 0;
   const hasSolutionSteps = currentTask?.solutionSteps && currentTask.solutionSteps.length > 0;
 
   // Reset revealed count when task changes
@@ -59,12 +60,12 @@ export function HelpButton({ skillId, topic, currentTask, onHelpOpened }: HelpBu
           <div className="flex-1 space-y-4">
             {hasHints ? (
               <>
-                {hints!.slice(0, revealedCount).map((hint, i) => (
+                {hints.slice(0, revealedCount).map((hint, i) => (
                   <p key={i} className="text-foreground text-base leading-relaxed">
                     💡 {hint}
                   </p>
                 ))}
-                {revealedCount < hints!.length && (
+                {revealedCount < hints.length && (
                   <Button
                     variant="outline"
                     size="sm"

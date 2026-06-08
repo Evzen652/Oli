@@ -65,17 +65,40 @@ const SKUPINY_4: [number, number, number, number][] = [
   [1, 3, 8, 12],
 ];
 
+const KRAJ_FAKTA: Record<string, string> = {
+  "Praha": "Praha je výjimka — je zároveň krajem i svým vlastním krajským městem.",
+  "Středočeský kraj": "Středočeský kraj obklopuje Prahu, ale krajský úřad sídlí také v Praze.",
+  "Jihočeský kraj": "Jihočeský kraj je největší kraj v ČR.",
+  "Plzeňský kraj": "Plzeňský kraj je druhý největší kraj v ČR.",
+  "Karlovarský kraj": "Karlovarský kraj je nejmenší kraj v ČR, leží na severozápadě.",
+  "Ústecký kraj": "Ústecký kraj leží na severu podél Labe.",
+  "Liberecký kraj": "Liberecký kraj leží v Krkonoších a Jizerských horách.",
+  "Královéhradecký kraj": "Královéhradecký kraj sousedí s Polskem a leží u Krkonoš.",
+  "Pardubický kraj": "Pardubice jsou proslulé Velkou pardubickou — světoznámým dostihem.",
+  "Kraj Vysočina": "Kraj Vysočina leží uprostřed ČR na hranici Čech a Moravy.",
+  "Jihomoravský kraj": "Brno je druhé největší město v ČR.",
+  "Olomoucký kraj": "Olomouc je historické město — sídlilo tam arcibiskupství.",
+  "Zlínský kraj": "Zlínský kraj leží na jihovýchodě Moravy u hranic se Slovenskem.",
+  "Moravskoslezský kraj": "Ostrava je třetí největší město ČR — centrum průmyslu a těžby.",
+};
+
 function gen(_level: number): PracticeTask[] {
   const tasks: PracticeTask[] = SKUPINY_4.slice(0, 35).map((idxs, i) => {
     const pairs = idxs.map(idx => ({
       left: KRAJE[idx].kraj,
       right: KRAJE[idx].mesto,
     }));
+    const prvniKraj = KRAJE[idxs[0]].kraj;
+    const fakt = KRAJ_FAKTA[prvniKraj] ?? "Krajské město je sídlo krajského úřadu.";
     return {
       question: `Spoj každý kraj s jeho krajským městem. (sada ${i + 1})`,
       correctAnswer: "match",
       pairs,
-      hints: ["Každý kraj má jedno krajské město — správní centrum."],
+      hints: [
+        "Každý kraj má jedno krajské město — správní centrum kraje.",
+        `Tip: ${KRAJE[idxs[0]].kraj} → ${KRAJE[idxs[0]].mesto}`,
+      ],
+      explanation: `ČR má 14 krajů — každý má krajské město, kde sídlí krajský úřad. ${fakt}`,
     } as PracticeTask;
   });
   return shuffle(tasks).slice(0, 35);

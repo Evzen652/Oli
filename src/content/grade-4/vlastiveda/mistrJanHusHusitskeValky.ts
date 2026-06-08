@@ -20,7 +20,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace – vypuknutí husitských válek (1419)",
       "Basilejská kompaktáta – mír mezi husity a církví (1436)",
     ],
-    hints: ["Kázání → upálení 1415 → defenestrace 1419 → kompaktáta 1436."],
+    hints: ["Kázání bylo nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Jan Hus kázal v Betlémské kapli česky — ne latinsky — a přiváděl tisíce posluchačů. Po jeho upálení roku 1415 čekalo Čechy 17 let náboženských válek, které skončily Basilejskými kompaktáty roku 1436.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -31,7 +32,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Hus upálen (1415)",
       "1. pražská defenestrace – začátek husitských válek (1419)",
     ],
-    hints: ["Kritika → koncil → upálení 1415 → defenestrace 1419."],
+    hints: ["Kritika byla nejdříve, defenestrace (1419) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Hus byl odsouzen jako kacíř, přestože přijel do Kostnice s císařovým glejtem (slibem bezpečnosti). Porušení slibu pobouřilo Čechy a roku 1419 vedlo k vypuknutí husitských válek.",
   },
   {
     question: "Seřaď události od nejstarší po nejnovější.",
@@ -42,7 +44,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Žižka vede husitské vojsko – vozová hradba",
       "Bitva u Lipan – táborité poraženi kališníky (1434)",
     ],
-    hints: ["Betlémská kaple → 1415 → Žižka → Lipany 1434."],
+    hints: ["Kázání bylo nejdříve, Lipany (1434) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Jan Žižka byl vojenský génius — vynalezl vozovou hradbu, která umožnila porazit rytířské armády. Husité díky ní odrazili pět papežských křižáckých výprav. Bitva u Lipan (1434) byl ale jejich vnitřní souboj.",
   },
   {
     question: "Seřaď husitské události chronologicky.",
@@ -53,7 +56,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Pět křižáckých výprav proti husitům – všechny odraženy",
       "Basilejská kompaktáta – konec husitských válek (1436)",
     ],
-    hints: ["1415 → 1419 → křižácké výpravy → kompaktáta 1436."],
+    hints: ["1415 → 1419 → křižácké výpravy → kompaktáta 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Husité odrazili pět papežských výprav — to bylo v tehdejší Evropě nevídané. Nakonec ne silou zbraní, ale diplomaticky: Basilejská kompaktáta (1436) husitům povolila přijímat pod obojím.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -64,7 +68,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Hus upálen (1415)",
       "Husitské války (1419–1436)",
     ],
-    hints: ["Karel IV. → Hus kázal → upálení 1415 → války."],
+    hints: ["Karel IV. byl nejdříve, husitské války (1419–1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Karel IV. zanechal Čechám prosperující říši. Po jeho smrti (1378) nastoupil slabý Václav IV. a narůstala náboženská nespokojenost — živnou půdu pro Jana Husa a jeho kritiku korupce v církvi.",
   },
   {
     question: "Seřaď husitské mezníky od nejstarší po nejnovější.",
@@ -75,7 +80,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Kostnický koncil – Hus odsouzen a upálen (1415)",
       "Husitské války – 1419 až 1436",
     ],
-    hints: ["1369 → kázání → 1415 → 1419–1436."],
+    hints: ["1369 → kázání → 1415 → 1419–1436.", "Hus se narodil roku 1369."],
+    explanation: "Jan Hus se narodil roku 1369 v Husinci v jižních Čechách. Stal se profesorem na Karlově universitě a kazatelem v Betlémské kapli — a zemřel jako mučedník v Kostnici ve svých 46 letech.",
   },
   {
     question: "Seřaď události od nejstarší po nejnovější.",
@@ -86,7 +92,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Hus upálen na Kostnickém koncilu",
       "1. pražská defenestrace – husitské války",
     ],
-    hints: ["Betlémská kaple → glejt → upálení → defenestrace."],
+    hints: ["Kázání bylo nejdříve, defenestrace nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Císař Zikmund dal Husovi glejt — slib bezpečí. Přesto ho v Kostnici uvěznili a upálili. Porušení císařského slibu bylo skandální a roku 1419 vyvolalo první pražskou defenestraci, start husitských válek.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -97,7 +104,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Bitva u Lipan – táborité poraženi (1434)",
       "Basilejská kompaktáta – konec husitských válek (1436)",
     ],
-    hints: ["1415 → 1419 → 1434 → 1436."],
+    hints: ["1415 → 1419 → 1434 → 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Husitské války trvaly 17 let (1419–1436). Záhy se rozkol objevil uvnitř: táborité (radikální) vs. kališníci (umírnění). Bitva u Lipan (1434) táborité porazila, a kališníci pak uzavřeli mír v Basileji.",
   },
   {
     question: "Seřaď husitské události chronologicky.",
@@ -108,7 +116,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Žižka vede husity – 5 výprav poraženo",
       "Basilejská kompaktáta (1436)",
     ],
-    hints: ["Kritika → Kostnice → Žižka → 1436."],
+    hints: ["Kritika byla nejdříve, kompaktáta (1436) nejpozději.", "Kostnický koncil byl 1414–1418."],
+    explanation: "Husité pod Žižkovým vedením odrazili pět papežských křižáckých výprav — nevídaný výsledek v tehdejší Evropě. Jejich vozová hradba (husitský vozový válečný systém) změnila středověkou taktiku.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -119,7 +128,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války – táborité a kališníci (1419–1436)",
       "Jiří z Poděbrad – husitský král (1458)",
     ],
-    hints: ["Betlémská kaple → 1415 → války → Jiří z Poděbrad."],
+    hints: ["Kázání bylo nejdříve, Jiří z Poděbrad (1458) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Jiří z Poděbrad (1458–1471) byl prvním husitským králem Čech — a jedním z mála nekatolicích panovníků středověké Evropy. Husitství tak nevymizelo, ale přetrvalo v české státnosti.",
   },
   {
     question: "Seřaď mezníky husitské doby od nejstarší po nejnovější.",
@@ -130,7 +140,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Hus upálen (1415)",
       "Basilejská kompaktáta (1436)",
     ],
-    hints: ["Karel IV. 1378 → Hus → 1415 → 1436."],
+    hints: ["Karel IV. zemřel roku 1378, kompaktáta byla roku 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Karel IV. zanechal Čechám prosperující říši, ale duchovně neklidnou. Po jeho smrti (1378) začala hospodářská i náboženská krize — a Jan Hus byl hlasem nespokojenosti, dokud nebyl umlčen ohněm.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -141,7 +152,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Kostnický koncil – Hus odsouzen a upálen (1415)",
       "1. pražská defenestrace (1419)",
     ],
-    hints: ["Kázání → glejt → Kostnice 1415 → defenestrace 1419."],
+    hints: ["Kázání bylo nejdříve, defenestrace (1419) nejpozději.", "Kostnický koncil byl roku 1415."],
+    explanation: "Kostnický koncil (1414–1418) byl největší církevní sněm pozdního středověku. Jan Hus přijel s císařovým glejtem, ale byl uvězněn a odsouzen — porušení slibu rozhořčilo celé Čechy.",
   },
   {
     question: "Seřaď husitské události chronologicky.",
@@ -152,7 +164,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Bitva u Lipan – vnitřní boj husitů (1434)",
       "Basilejská kompaktáta – mír (1436)",
     ],
-    hints: ["1415 → 1420 → 1434 → 1436."],
+    hints: ["1415 → 1420 → 1434 → 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Rok 1420: husité odrazili první papežskou výpravu u Vítkova — Žižkovo vítězství. Pět výprav celkem odrazili, ale nakonec padli ne pod křižáky, ale sami mezi sebou: Bitva u Lipan 1434.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -163,7 +176,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Žižka a husitské vojsko odráží křižáky (1420–1431)",
       "Bitva u Lipan – kališníci poráží táborité (1434)",
     ],
-    hints: ["Betlémská kaple → upálení → Žižka → Lipany 1434."],
+    hints: ["Kázání bylo nejdříve, Lipany (1434) nejpozději.", "Žižka bránil husity v letech 1420–1431."],
+    explanation: "Husitská taktika byla revoluční: vozová hradba přeměnila selský vůz v pohyblivou pevnost. Pět křížových výprav se rozbilo o tuto obranu. Ale bitva u Lipan (1434) byla přímou bitvou husitů navzájem.",
   },
   {
     question: "Seřaď husitské mezníky od nejstarší po nejnovější.",
@@ -174,7 +188,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace (1419) – husitské války začínají",
       "Basilejská kompaktáta (1436) – konec válek",
     ],
-    hints: ["Kritika → 1415 → 1419 → 1436."],
+    hints: ["Kritika byla nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Basilejská kompaktáta (1436) byla první uznání práv kacířů v dějinách církve — husitům bylo povoleno přijímat pod obojím, způlat kalich vína. Byl to kompromis, ne vítězství, ale husitství přežilo.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -185,7 +200,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války – pět papežských výprav poraženo",
       "Kompaktáta 1436 – husité uznáni",
     ],
-    hints: ["Kázání → 1415 → války → kompaktáta 1436."],
+    hints: ["Kázání bylo nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Jan Hus kázal česky — ne latinsky jako ostatní kněží. Pro chudý lid to bylo revoluční: poprvé mohli rozumět kazateli. Tato demokratizace víry byla jedním z důvodů, proč ho církev odsoudila.",
   },
   {
     question: "Seřaď mezníky od nejstarší po nejnovější.",
@@ -196,7 +212,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace – vypuknutí válek (1419)",
       "Basilejská kompaktáta – konec husitských válek (1436)",
     ],
-    hints: ["Karel IV. → Hus kázal → 1419 → 1436."],
+    hints: ["Karel IV. zemřel roku 1378, kompaktáta byla roku 1436.", "Defenestrace byla roku 1419."],
+    explanation: "Zlatý věk Karla IV. trval do jeho smrti roku 1378. Pak přišla krize — slabý Václav IV., odpustky, korupce. Jan Hus zapaloval dav svým kázáním a roku 1415 byl upálen, ale jeho dílo přetrvalo v husitství.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -207,7 +224,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace (1419)",
       "Bitva u Lipan (1434) – kališníci vs. táborité",
     ],
-    hints: ["1369 → 1415 → 1419 → 1434."],
+    hints: ["1369 → 1415 → 1419 → 1434.", "Hus se narodil roku 1369."],
+    explanation: "Jan Hus žil jen 46 let, ale jeho vliv trval staletí. Byl popraven roku 1415 — a přesto jeho myšlenky přežily celé husitské hnutí (1419–1436) a inspirovaly reformaci 100 let po jeho smrti.",
   },
   {
     question: "Seřaď husitské události chronologicky.",
@@ -218,7 +236,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války (1419–1436) – Jan Žižka velí",
       "Jiří z Poděbrad – husitský král (1458)",
     ],
-    hints: ["Betlémská kaple → Kostnice → války → Jiří z Poděbrad."],
+    hints: ["Kázání bylo nejdříve, Jiří z Poděbrad (1458) nejpozději.", "Kostnický koncil byl roku 1415."],
+    explanation: "Jiří z Poděbrad byl husitský šlechtic, který se roku 1458 stal prvním husitským králem Čech. Byl vzácnou postavou: nekatolický vládce, jehož uznala část Evropy, ale zároveň byl exkomunikován papežem.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -229,7 +248,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husité odrazili pět křižáckých výprav",
       "Basilejská kompaktáta – mír a uznání husitů (1436)",
     ],
-    hints: ["Kritika → 1415 → pět výprav → kompaktáta 1436."],
+    hints: ["Kritika byla nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Odpustky — placené prominutí hříchů — Hus označil za korupci. Církev ho za to odsoudila. Ironie je, že 100 let po Husově upálení Martin Luther zahájil reformaci přesně se stejnou kritikou odpustků.",
   },
   {
     question: "Seřaď husitské mezníky od nejstarší po nejnovější.",
@@ -240,7 +260,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace – husité vyhodili radní (1419)",
       "Bitva u Lipan – rozkol husitů (1434)",
     ],
-    hints: ["Kázání → 1415 → 1419 → Lipany 1434."],
+    hints: ["Kázání bylo nejdříve, Lipany (1434) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Husitství se brzy rozdělilo na dvě křídla: kališníci (umírnění, chtěli jen přijímání pod obojím) a táborité (radikální, chtěli reformu celé společnosti). Bitva u Lipan (1434) tento spor rozhodla.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -251,7 +272,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Žižkova vozová hradba odráží rytíře",
       "Basilejská kompaktáta – konec husitských válek",
     ],
-    hints: ["Kritika → Kostnice → Žižka → kompaktáta."],
+    hints: ["Kritika byla nejdříve, kompaktáta nejpozději.", "Kostnický koncil byl roku 1415."],
+    explanation: "Žižkova vozová hradba změnila středověkou taktiku: z prostých selských vozů vytvořil pohyblivou pevnost. Tento vynález byl tak revoluční, že ho evropská vojska napodobovala ještě 150 let.",
   },
   {
     question: "Seřaď husitské události chronologicky.",
@@ -262,7 +284,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Žižka vede husity k vítězstvím",
       "Basilejská kompaktáta – mír (1436)",
     ],
-    hints: ["1415 → 1419 → Žižka → kompaktáta 1436."],
+    hints: ["1415 → 1419 → Žižka → kompaktáta 1436.", "Hus byl upálen roku 1415."],
+    explanation: "1. pražská defenestrace (1419): husité vyhodili z oken radnice 7 konšelů na pikle. Tento akt byl symbolem revolty — začátek 17letých husitských válek, které změnily Čechy na pokolení.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -273,7 +296,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války začínají (1419)",
       "Basilejská kompaktáta – konec válek (1436)",
     ],
-    hints: ["1402 → 1415 → 1419 → 1436."],
+    hints: ["1402 → 1415 → 1419 → 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Betlémská kaple byla postavena roku 1391 speciálně pro česká kázání — ne latinská. Jan Hus zde kázal od roku 1402 a přiváděl tisíce lidí z Prahy i venkova. Byla to líheň husitského hnutí.",
   },
   {
     question: "Seřaď mezníky husitství od nejstarší po nejnovější.",
@@ -284,7 +308,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války – táborité a kališníci bojují za reformu",
       "Jiří z Poděbrad – husitský král Čech (1458)",
     ],
-    hints: ["Kázání → 1415 → války → Jiří z Poděbrad."],
+    hints: ["Kázání bylo nejdříve, Jiří z Poděbrad (1458) nejpozději.", "Kostnický koncil byl roku 1415."],
+    explanation: "Husitství trvalo 40 let — od Husova upálení (1415) po Basilejská kompaktáta (1436) — a jeho plody viděl Jiří z Poděbrad, první husitský král (1458). Hus změnil dějiny Čech na celá staletí.",
   },
   {
     question: "Seřaď události od nejstarší po nejnovější.",
@@ -295,7 +320,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války (1419–1436)",
       "Basilejská kompaktáta – husité uznáni (1436)",
     ],
-    hints: ["Václav IV. → Hus → války 1419–1436 → kompaktáta."],
+    hints: ["Václav IV. nastoupil roku 1378, kompaktáta byla roku 1436.", "Husitské války byly 1419–1436."],
+    explanation: "Václav IV. byl slabý vládce — opak Karla IV. Pod jeho vládou se nakupila napětí: hospodářská krize, korupce v církvi, odpustky. Jan Hus tuto nespokojenost artikuloval — za cenu vlastního života.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -306,7 +332,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace (1419)",
       "Bitva u Lipan (1434) – kališníci vítězí nad táborité",
     ],
-    hints: ["Kázání → 1415 → 1419 → Lipany 1434."],
+    hints: ["Kázání bylo nejdříve, Lipany (1434) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Hus kázal česky v době, kdy všechny církevní obřady byly v latině — jazyce, kterému nerozuměl prostý lid. Byl to revoluční krok: demokratizace víry, která stála Husa život a Čechy 17 let válek.",
   },
   {
     question: "Seřaď husitské mezníky chronologicky.",
@@ -317,7 +344,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husité odrazili pět křižáckých výprav (1420–1431)",
       "Basilejská kompaktáta – konec husitských válek (1436)",
     ],
-    hints: ["Kritika → 1415 → pět výprav → kompaktáta 1436."],
+    hints: ["Kritika byla nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Pět křižáckých výprav (1420–1431) — všechny odraženy husity. To byl nevídaný výsledek: selská armáda s vozovou hradbou porazila rytíře celé Evropy. Husité jako vojenská síla neměli v Evropě obdobu.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -328,7 +356,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Hus upálen (1415)",
       "Basilejská kompaktáta (1436) – konec husitských válek",
     ],
-    hints: ["Karel IV. 1378 → Václav IV. → 1415 → kompaktáta 1436."],
+    hints: ["Karel IV. zemřel roku 1378, kompaktáta byla roku 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Karel IV. byl moudrý diplomat, který udržoval náboženský mír. Václav IV. (od 1378) byl neschopný — a napětí narůstalo. Hus byl hlasem nespokojenosti, který církev umlčela, ale hnutí nezastavila.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -339,7 +368,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Žižka velí husitskému vojsku – odráží křižáky",
       "Kompaktáta 1436 – husité uznáni církví",
     ],
-    hints: ["Betlémská kaple → upálení → Žižka → kompaktáta 1436."],
+    hints: ["Kázání bylo nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Kalich se stal symbolem husitů — přijímání vína (krve Kristovy) bylo jejich hlavním požadavkem. Katolická církev totiž podávala víno pouze kněžím. Právo přijímat 'pod obojím' husité roku 1436 prosadili.",
   },
   {
     question: "Seřaď husitské události chronologicky.",
@@ -350,7 +380,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace – start válek (1419)",
       "Bitva u Lipan – rozkol husitů (1434)",
     ],
-    hints: ["Kázání → 1415 → 1419 → Lipany 1434."],
+    hints: ["Kázání bylo nejdříve, Lipany (1434) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Bitva u Lipan (1434) nebyla boj s křižáky — byl to boj husitů navzájem. Kališníci (s katolickými šlechtici) porazili táborité. Husitské hnutí přestalo být jednotné — ale mír pak byl pro husity příznivý.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -361,7 +392,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války – Jan Žižka a pět vítězných výprav",
       "Basilejská kompaktáta – husité uznáni (1436)",
     ],
-    hints: ["Betlémská kaple → 1415 → války → kompaktáta 1436."],
+    hints: ["Kázání bylo nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Basilejská kompaktáta (1436) husitům přiznávala přijímání pod obojím — skromný výsledek po 17 letech válek. Ale byl to průlom: poprvé v dějinách středověku získalo kacířské hnutí formální uznání.",
   },
   {
     question: "Seřaď mezníky husitské doby od nejstarší po nejnovější.",
@@ -372,7 +404,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Husitské války (1419–1436)",
       "Jiří z Poděbrad – husitský král (1458)",
     ],
-    hints: ["1369 → Kostnice → 1419–1436 → Jiří z Poděbrad."],
+    hints: ["1369 → Kostnice → 1419–1436 → Jiří z Poděbrad.", "Hus se narodil roku 1369."],
+    explanation: "Od Husova narození (1369) po Jiřího z Poděbrad (1458) uplynulo 89 let — a celou tuto dobu formovalo husitství českou společnost. Jiří z Poděbrad byl jeho posledním politickým plodem.",
   },
   {
     question: "Seřaď od nejstarší po nejnovější.",
@@ -383,7 +416,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "1. pražská defenestrace (1419) – start husitských válek",
       "Kompaktáta 1436 – konec válek, husité uznáni",
     ],
-    hints: ["Kritika → 1415 → 1419 → kompaktáta 1436."],
+    hints: ["Kritika byla nejdříve, kompaktáta (1436) nejpozději.", "Hus byl upálen roku 1415."],
+    explanation: "Husitství přežilo válku i kompaktáta. Jiří z Poděbrad (1458) byl nekatolický král — první a poslední v dějinách Čech. Husitská tradice se tak stala součástí české státní identity.",
   },
   {
     question: "Seřaď husitské mezníky chronologicky.",
@@ -394,7 +428,8 @@ const VSECHNY_TASKY: PracticeTask[] = [
       "Jan Hus upálen (1415)",
       "Basilejská kompaktáta – mír (1436)",
     ],
-    hints: ["1378 → kázání → 1415 → kompaktáta 1436."],
+    hints: ["Karel IV. zemřel roku 1378, kompaktáta byla roku 1436.", "Hus byl upálen roku 1415."],
+    explanation: "Karel IV. zanechal Čechám prosperující říši, ale po jeho smrti roku 1378 začala hospodářská i náboženská krize. Jan Žižka zemřel roku 1424 uprostřed válek — ale husité pokračovali pod jeho generály jako neporažené vojsko.",
   },
 ];
 

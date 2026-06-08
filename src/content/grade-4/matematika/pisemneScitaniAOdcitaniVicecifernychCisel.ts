@@ -1,11 +1,56 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 
+const COL_NAMES = ["jednotky", "desítky", "stovky", "tisíce", "desetitisíce", "stotisíce"];
+
+function addSteps(a: number, b: number): string[] {
+  const result = a + b;
+  const cols = Math.max(String(a).length, String(b).length);
+  const steps: string[] = [`Zapíšeme pod sebe: ${fmt(a)} + ${fmt(b)}`];
+  let carry = 0;
+  for (let c = 0; c < cols; c++) {
+    const dA = Math.floor(a / Math.pow(10, c)) % 10;
+    const dB = Math.floor(b / Math.pow(10, c)) % 10;
+    const sum = dA + dB + carry;
+    const newCarry = Math.floor(sum / 10);
+    let step = `${COL_NAMES[c]}: ${dA} + ${dB}`;
+    if (carry > 0) step += ` + 1 (přenos)`;
+    if (newCarry > 0) step += ` = ${sum} → píšeme ${sum % 10}, přenášíme 1`;
+    else step += ` = ${sum}`;
+    steps.push(step);
+    carry = newCarry;
+  }
+  if (carry > 0) steps.push(`přenos: píšeme 1`);
+  steps.push(`Výsledek: ${fmt(result)}`);
+  return steps;
+}
+
+function subSteps(a: number, b: number): string[] {
+  const result = a - b;
+  const cols = Math.max(String(a).length, String(b).length);
+  const steps: string[] = [`Zapíšeme pod sebe: ${fmt(a)} − ${fmt(b)}`];
+  let borrow = 0;
+  for (let c = 0; c < cols; c++) {
+    const dA = Math.floor(a / Math.pow(10, c)) % 10;
+    const dB = Math.floor(b / Math.pow(10, c)) % 10;
+    const top = dA - borrow;
+    let step = `${COL_NAMES[c]}: ${dA}`;
+    if (borrow > 0) step += ` − 1 (výp.)`;
+    step += ` − ${dB}`;
+    if (top < dB) {
+      step += ` → nestačí, půjčíme: ${top + 10} − ${dB} = ${top + 10 - dB}`;
+      borrow = 1;
+    } else {
+      step += ` = ${top - dB}`;
+      borrow = 0;
+    }
+    steps.push(step);
+  }
+  steps.push(`Výsledek: ${fmt(result)}`);
+  return steps;
+}
+
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
-
-  // level 1: 4-cifernná čísla (do 9 999), bez přechodu
-  // level 2: 5-ciferná čísla (do 99 999), s přechodem
-  // level 3: 6-ciferná čísla (do 999 999), s přechodem + odčítání s výpůjčkou
 
   const count = 40;
 
@@ -15,26 +60,23 @@ function gen(level: number): PracticeTask[] {
     let a: number, b: number;
 
     if (level === 1) {
-      a = Math.floor(Math.random() * 5000) + 1000;   // 1 000–5 999
-      b = Math.floor(Math.random() * 3000) + 1000;   // 1 000–3 999
+      a = Math.floor(Math.random() * 5000) + 1000;
+      b = Math.floor(Math.random() * 3000) + 1000;
       if (!isAdd && b > a) [a, b] = [b, a];
     } else if (level === 2) {
-      a = Math.floor(Math.random() * 50000) + 10000; // 10 000–59 999
-      b = Math.floor(Math.random() * 30000) + 10000; // 10 000–39 999
+      a = Math.floor(Math.random() * 50000) + 10000;
+      b = Math.floor(Math.random() * 30000) + 10000;
       if (!isAdd && b > a) [a, b] = [b, a];
     } else {
-      a = Math.floor(Math.random() * 500000) + 100000; // 100 000–599 999
-      b = Math.floor(Math.random() * 300000) + 100000; // 100 000–399 999
+      a = Math.floor(Math.random() * 500000) + 100000;
+      b = Math.floor(Math.random() * 300000) + 100000;
       if (!isAdd && b > a) [a, b] = [b, a];
     }
 
     const correct = isAdd ? a + b : a - b;
     const op = isAdd ? "+" : "−";
 
-    // Distraktory: blízké hodnoty (±1, ±10, ±100)
-    const offsets = isAdd
-      ? [1, -1, 10, -10, 100, -100]
-      : [1, -1, 10, -10, 100, -100];
+    const offsets = [1, -1, 10, -10, 100, -100];
     const distractors = offsets
       .map(o => correct + o)
       .filter(v => v > 0 && v !== correct);
@@ -53,17 +95,7 @@ function gen(level: number): PracticeTask[] {
           ? `Sčítej sloupec po sloupci zprava: jednotky, desítky, stovky…`
           : `Odčítej sloupec po sloupci zprava. Kde nestačí, půjč si z vyššího řádu.`,
       ],
-      solutionSteps: isAdd
-        ? [
-            `Zapíšeme: ${fmt(a)} + ${fmt(b)}`,
-            `Sčítáme zprava: ${a % 10} + ${b % 10} = ${(a + b) % 10}${(a + b) % 10 !== (a % 10 + b % 10) ? " (přenos 1)" : ""}`,
-            `Výsledek: ${fmt(correct)}`,
-          ]
-        : [
-            `Zapíšeme: ${fmt(a)} − ${fmt(b)}`,
-            `Odčítáme zprava, výpůjčka kde je třeba.`,
-            `Výsledek: ${fmt(correct)}`,
-          ],
+      solutionSteps: isAdd ? addSteps(a, b) : subSteps(a, b),
     });
   }
 
@@ -71,8 +103,7 @@ function gen(level: number): PracticeTask[] {
 }
 
 function fmt(n: number): string {
-  // Formátuje číslo s mezerou jako oddělovačem tisíců (české konvence)
-  return n.toLocaleString("cs-CZ").replace(/ /g, " ");
+  return n.toLocaleString("cs-CZ").replace(/ /g, " ");
 }
 
 function shuffle<T>(arr: T[]): T[] {
