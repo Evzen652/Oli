@@ -69,6 +69,43 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené
 
+### 2026-06-08 — Per-karta OK + sync mezi PC (Supabase) ✅
+- `useExerciseReview.ts` — per-karta „OK" stav, klíč `skill.id::otázka::odpověď`
+- Supabase tabulka `admin_reviewed_cards` (migrace `20260608120000`), RLS pro admina (inline `EXISTS` nad `user_roles`)
+- OK + Přeformulovat tlačítka přesunuta dovnitř karty (footer prop v CompactTaskCard); červený okraj = nezkontrolováno, zelený = OK
+- Stabilní seedovaný náhled (`seededRandom.ts`) + tlačítko „Přegenerovat ukázky"
+- ⚠️ Migration repair: `parent_invitations` + `custom_illustrations` označeny jako applied (existovaly v DB, chyběly v historii)
+
+### 2026-06-08 — Admin editor: ReformulateTaskDialog + oprava corrupted ternárků ✅
+- `ReformulateTaskDialog.tsx` — 2-sloupkový dialog, Groq Llama 3.3 70B, 5 polí (otázka/odpovědi/nápověda/postup/možnosti)
+- Tlačítko „✦ Přeformulovat" per-karta v ExerciseTab, modifiedGenIndices tracking, uložení do DB
+- Opraveny 4 soubory s corrupted ternárky (`□` místo `?`): `numbersMillion.ts`, `fracSameDen.ts`, `negativeIntro.ts`, `cteniZapisPorovnavaniCiselDo1000.ts`
+- 29/29 grade-5 testů zelených, TypeScript 0 chyb
+
+### 2026-06-08 — Grade-4 vlastivěda: explanation na historických tématech ✅
+- `slovaneVelkomoravskaRiseCyrilAMetodej.ts` (31 úloh) — unikátní explanation na každé drag_order úloze
+- `premyslovciSvVaclavPremyslOtakarIiVaclavIi.ts` (36 úloh) — unikátní explanation na každé drag_order úloze
+- `lucemburkoveKarelIvAJehoDoba.ts` (35 úloh) — unikátní explanation na každé drag_order úloze
+- `mistrJanHusHusitskeValky.ts` (35 úloh) — unikátní explanation na každé drag_order úloze
+- Celkem ~137 unikátních vysvětlení ve 4 souborech
+- Hinty přepsány: odstraněny sekvence dat „623 → 863 → …" (které leakují odpovědi)
+- TypeScript check čistý (0 chyb)
+
+### 2026-06-08 — Systémová oprava hints (getSafeHints.ts) ✅
+- Vytvořen `src/lib/safeHints.ts` — centrální funkce `getSafeHints(task, topic)` pro drag_order/match_pairs/categorize
+- drag_order: vždy 2 generické hinty (strategie + první položka jako kotva), NIKDY neprozrazuje pořadí
+- Zapojen v `HelpButton.tsx` (runtime nápovědy) a zahrnut do `CheckFeedbackCard.tsx` (type-aware)
+
+### 2026-06-08 — CheckFeedbackCard redesign ✅
+- `CorrectAnswerDisplay`: type-aware zobrazení (drag_order=číslovaný seznam, match_pairs=šipky, ostatní=text)
+- `ExplanationDisplay`: priorita task.explanation → task.solutionSteps → fallback helpTemplate.hint
+- drag_order/match_pairs/categorize bez explanation: null (nevypisuje generické texty)
+
+### 2026-06-08 — Auth.tsx: gramatika „1 úkolů" → `pad()` ✅
+- Banner anon pokroku v `Auth.tsx` (ř. 158) měl inline `{count} úkolů` → „1 úkolů" (špatně)
+- Opraveno na `pad(anonSummary.completedCount, "ÚKOL")` → 1 úkol / 2 úkoly / 5 úkolů
+- Ověřeno v preview na localhost:8080
+
 ### 2026-06-08 — Grade-4 CJL: displayName + recommendedNext ✅
 - Doplněno `displayName` (krátký rodičovský/dětský název) do všech 22 CJL souborů
 - Doplněno `recommendedNext` (logická pedagogická návaznost) do všech 22 CJL souborů — návaznost v rámci podkategorií (slohová, čtení, stavba slova, tvarosloví, skladba, literární pojmy, práce s textem)

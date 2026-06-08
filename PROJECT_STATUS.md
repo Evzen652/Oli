@@ -138,7 +138,26 @@ src/
 | displayName + recommendedNext grade-4 CJL (22 souborů) | Architekt | ✅ 22/22 hotovo |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
+### Session 2026-06-08 (pokračování) — hotovo:
+- ✅ **Grade-4 vlastivěda: systémový fix hints + explanation** — `getSafeHints.ts` centrální funkce zabraňuje únikům správných odpovědí v nápovědách (drag_order/match_pairs/categorize). `CheckFeedbackCard` redesign: type-aware zobrazení správné odpovědi (`CorrectAnswerDisplay`) + unikátní vysvětlení WHY pro každou otázku (`ExplanationDisplay`).
+- ✅ **Grade-4 vlastivěda: explanation na všech 4 historických tématech** — `pravekAPrvniLideNaNasemUzemi` (36 úloh), `slovane` (31), `premyslovci` (36), `lucemburkove` (35), `mistrJanHus` (35) — každá úloha má unikátní `explanation` vysvětlující kauzální logiku pořadí. Celkem ~173 unikátních vysvětlení.
+- ✅ **Grade-4 vlastivěda: kraje + vodstvo** — dynamická explanation přes `KRAJ_FAKTA` a `VODNI_FAKTA` slovníky.
+- ✅ **solutionSteps bug (písemné sčítání)** — přepsáno s `addSteps`/`subSteps` helpery, zobrazuje všechny sloupce (jednotky/desítky/stovky/tisíce) + přenosy.
+- ✅ **Auth.tsx: gramatika „1 úkolů"** → `pad(count, "ÚKOL")`.
+
+### Session 2026-06-08 (pokračování 3) — hotovo:
+- ✅ **Symbol porovnání `□` → `vs`** — placeholder ve všech porovnávacích úlohách (grade-3/4/5 matematika) změněn na čitelné „vs" (např. „Porovnej: 183 vs 126"). Upraveny i test regexpy. 29/29 grade-5 testů zelených.
+- ✅ **Stabilní (seedovaný) náhled ukázek v adminu** — `src/lib/seededRandom.ts` (mulberry32 + FNV-1a hash + `withSeededRandom`). ExerciseTab generuje ukázky deterministicky ze `skill.id` → karty „neskáčou" při renderu/reloadu. Tlačítko „Přegenerovat ukázky" (zvýší seed) pro novou stabilní sadu.
+- ✅ **Per-karta OK (kontrola obsahu) + sync mezi PC** — `src/hooks/useExerciseReview.ts`: každá ukázková karta má tlačítko „Označit OK" vedle „Přeformulovat" (obě uvnitř karty, pod obsahem, v rámci okraje). Nezkontrolovaná = červený okraj, OK = zelený. Klíč = `skill.id + otázka + odpověď`. **Persistence v Supabase** (`admin_reviewed_cards`, migrace `20260608120000`) → synchronizuje se mezi oběma PC. Optimistický update + fire-and-forget zápis.
+- ⚠️ **Supabase migrace — repair:** `parent_invitations` + `custom_illustrations` existovaly v DB, ale chyběly v historii migrací → `supabase migration repair --status applied`. Pozn.: remote DB nemá funkci `has_role()`, RLS politiky musí používat inline `EXISTS (SELECT 1 FROM user_roles WHERE user_id = auth.uid() AND role = 'admin')`.
+
+### Session 2026-06-08 (pokračování 2) — hotovo:
+- ✅ **Admin editor cvičení: Přeformulovat dialog** — `ReformulateTaskDialog.tsx` s Groq Llama 3.3 70B. Tlačítko „✦ Přeformulovat" na každé kartě ukázky ze šablony; 2-sloupkový dialog (originál vlevo, varianty vpravo); 5 polí (otázka, odpovědi, nápověda, postup, možnosti). Varianty jsou klikatelné → aplikují se na task. Upravené tasky lze uložit do `custom_exercises`.
+- ✅ **Opraveny corrupted ternárky (□ symbol)** — `replace_all` na ` ?` → ` □` poškodil ternární operátory v 4 souborech. Opraveny: `numbersMillion.ts`, `fracSameDen.ts`, `negativeIntro.ts`, `cteniZapisPorovnavaniCiselDo1000.ts`. Symbol `□` zůstává jen v string literálech otázek (placeholder pro porovnání). 29/29 grade-5 testů zelených.
+- ✅ **Česká gramatika — STOVKA/DESÍTKA/JEDNOTKA** — přidány do NOUNS registru `czechGrammar.ts`; `cteniZapisPorovnavaniCiselDo1000.ts` (grade-3) opravuje „5 desítky" → `pad(5, "DESÍTKA")` = „5 desítek".
+
 ### Session 2026-06-08 — hotovo:
+- ✅ **Auth.tsx gramatika:** banner anon pokroku měl „1 úkolů" (inline `{count} úkolů`) → opraveno na `pad(count, "ÚKOL")`. Ověřeno v preview.
 - ✅ **Audit obsahu grade-5** → [`docs/AUDIT_GRADE_5_2026-06-08.md`](docs/AUDIT_GRADE_5_2026-06-08.md). 63 témat / 1008 úloh, technická úspěšnost 84 %. Report rozlišuje reálné problémy (fill_blank `___`/blanks, match_pairs→categorize u obratlovců/říší, hint_leak vzorec „= odpověď", 2 neadaptivní generátory) od false-positive auditu (select_one substring-heuristika validátoru, answer_uniqueness nerozumí order/match). Prioritizace oprav viz report; otevřené body v PENDING_CHANGES.
 - ✅ **subject-vlastiveda.png: odstraněno neprůhledné pozadí.** Jediná subject ilustrace měla místo transparentního pozadí světle modrou oblohu → na bílé kartě (`mix-blend-multiply` umí skrýt jen bílou) zůstával viditelný čtverec. Pozadí odstraněno flood-fillem od rohů (sharp) — souvislé pozadí pryč, modrá zeměkoule v motivu zachována. Ověřeno: rohy alpha=0, střed alpha=255.
 - ✅ **Denní úkoly: 3 → 4 návrhy.** `DEFAULT_DAILY_COUNT = 4` v `anonDailyTasks.ts`; texty „X cvičení" v AnonStudentPage převedeny na `pad(dailyTopics.length, "CVIČENÍ")` (dynamicky dle počtu, dle pravidla czechGrammar). Výběr dál preferuje různé předměty → 4 úkoly = po jednom z matematiky/češtiny/vlastivědy/přírodovědy.
