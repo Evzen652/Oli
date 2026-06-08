@@ -276,9 +276,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
             <BackButton onClick={handleBack} />
           </div>
 
-          {/* Asymmetric grid: 1. subject = velká karta vlevo, ostatní = stack vpravo */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {subjects.map((subject, idx) => {
+          {/* Jednotný čtvercový grid — všechny předměty stejně velké */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {subjects.map((subject) => {
               const subjectTopics = topics.filter((t) => t.subject === subject);
               const cats = [...new Set(subjectTopics.map((t) => t.category))];
               const count = cats.length;
@@ -289,65 +289,26 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                 chipBg: "bg-white/80 text-foreground",
                 chipText: "text-foreground",
               };
-              const isPrimary = idx === 0;
-              // Top 3 categories jako chip pills
-              const chipCategories = cats.slice(0, 3).map((c) => {
-                // Zkrácení dlouhých kategorií
-                const short = c.length > 14 ? c.split(" ")[0] : c;
-                return short;
-              });
 
               return (
                 <button
                   key={subject}
                   type="button"
                   onClick={() => handleSubjectClick(subject)}
-                  className={`group relative text-left rounded-3xl border-2 ${cardStyle.bg} ${cardStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 min-h-[130px] p-5 ${
-                    isPrimary ? "md:col-span-2 md:row-span-2 md:min-h-[360px] md:p-6" : ""
-                  }`}
+                  className={`group aspect-square relative text-left rounded-3xl border-2 ${cardStyle.bg} ${cardStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
                 >
-                  {/* Mobile: kompaktní layout pro všechny karty */}
-                  <div className={`flex items-center gap-3 h-full ${isPrimary ? "md:hidden" : ""}`}>
-                    <div className="flex-1 min-w-0 space-y-1.5">
-                      <h3 className="text-xl font-black text-foreground tracking-tight">
-                        {capitalize(subject)}
-                      </h3>
-                      <p className="text-xs text-foreground/70">
-                        {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
-                      </p>
-                      {chipCategories.length > 0 && (
-                        <div className="flex flex-wrap gap-1 pt-1">
-                          {chipCategories.map((c, i) => (
-                            <span key={i} className={`rounded-full ${cardStyle.chipBg} px-2 py-0.5 text-[10px] font-semibold`}>
-                              {c}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="shrink-0">
-                      <PrvoukaImage imageUrl={meta.image || null} fallbackEmoji={meta.emoji} size="md" />
-                    </div>
-                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/90 ${cardStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`} aria-hidden>›</span>
+                  <span className={`absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-white/90 ${cardStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`} aria-hidden>›</span>
+                  <div className="flex-1 flex items-center justify-center">
+                    <PrvoukaImage imageUrl={meta.image || null} fallbackEmoji={meta.emoji} size="lg" />
                   </div>
-
-                  {/* Desktop primary karta — ilustrace nahoře, text dole */}
-                  {isPrimary && (
-                    <div className="hidden md:flex flex-col h-full">
-                      <div className="flex-1 flex items-center justify-center py-4">
-                        <PrvoukaImage imageUrl={meta.image || null} fallbackEmoji={meta.emoji} size="hero" />
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-3xl sm:text-4xl font-black text-foreground tracking-tight">
-                          {capitalize(subject)}
-                        </h3>
-                        <p className="text-sm text-foreground/70">
-                          {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
-                        </p>
-                      </div>
-                      <span className={`absolute top-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white/90 ${cardStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5 text-lg`} aria-hidden>›</span>
-                    </div>
-                  )}
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-black text-foreground tracking-tight leading-tight">
+                      {capitalize(subject)}
+                    </h3>
+                    <p className="text-xs text-foreground/70">
+                      {count} {count === 1 ? t("count.category_1") : count < 5 ? t("count.category_2_4") : t("count.category_5_plus")}
+                    </p>
+                  </div>
                 </button>
               );
             })}
@@ -398,9 +359,13 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Title + back */}
               <div className="flex items-end justify-between gap-3">
                 <div className="min-w-0">
-                  <h2 className="text-3xl font-black tracking-tight text-foreground truncate">
-                    {title}
-                  </h2>
+                  {/* Na úrovni "category" je title = předmět, který už nese
+                      welcome banner výše — nezobrazovat ho podruhé. */}
+                  {level !== "category" && (
+                    <h2 className="text-3xl font-black tracking-tight text-foreground truncate">
+                      {title}
+                    </h2>
+                  )}
                   <p className="text-sm text-muted-foreground">
                     {level === "category"
                       ? "Vyber si okruh, který chceš procvičovat."
@@ -417,7 +382,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
               {/* CATEGORY level — čtvercový grid */}
               {level === "category" && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {categories.map((category) => {
                     const catTopics = topics.filter((t) => t.subject === selectedSubject && t.category === category);
                     const count = new Set(catTopics.map((t) => t.topic)).size;
@@ -450,7 +415,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
               {/* TOPIC level — asymmetric grid s description na primary */}
               {level === "topic" && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {topicGroups.map((topicName) => {
                     const skillsInGroup = topics.filter(
                       (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === topicName
@@ -492,7 +457,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
               {/* SUBTOPIC level — čtvercový grid */}
               {level === "subtopic" && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {subtopics.map((topic) => {
                     const subEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
                     const isDbOnly = !hasCodeGenerator(topic);

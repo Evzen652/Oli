@@ -13,6 +13,7 @@ import {
   TRIAL_DAYS,
 } from "@/lib/anonTrial";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { getDisplayCategory } from "@/lib/displayNames";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { ArrowRight, Check, Sparkles, Heart, BookOpen } from "lucide-react";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
@@ -207,7 +208,7 @@ export default function AnonStudentPage() {
               <div>
                 <h1 className="text-3xl font-bold text-violet-900">Dnes ti Oli doporučuje</h1>
                 <p className="text-violet-700/70 mt-1">
-                  3 cvičení pro {grade}. ročník — {pad(daysRemaining, "DEN")} přístupu zdarma
+                  {pad(dailyTopics.length, "CVIČENÍ")} pro {grade}. ročník — {pad(daysRemaining, "DEN")} přístupu zdarma
                 </p>
               </div>
               <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} />
@@ -229,7 +230,7 @@ export default function AnonStudentPage() {
           <section className="space-y-4">
             <div>
               <h1 className="text-3xl font-bold text-violet-900">Dnešní úkoly</h1>
-              <p className="text-violet-700/70 mt-1">3 cvičení zdarma každý den</p>
+              <p className="text-violet-700/70 mt-1">{pad(dailyTopics.length, "CVIČENÍ")} zdarma každý den</p>
             </div>
             <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} />
           </section>
@@ -280,48 +281,52 @@ interface DailyTaskListProps {
 
 function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {topics.map(({ topic, completed }) => {
         const meta = getSubjectMeta(topic.subject);
         const title = topic.displayName ?? topic.studentTitle ?? topic.title;
         return (
           <div
             key={topic.id}
-            className={`flex items-center gap-4 rounded-2xl p-4 transition-all ${
+            className={`group aspect-square flex flex-col rounded-3xl p-6 transition-all ${
               completed
                 ? "bg-emerald-50 border-2 border-emerald-200"
-                : "bg-white border-2 border-violet-100 hover:border-violet-300 hover:shadow-md"
+                : "bg-white border-2 border-violet-100 hover:border-violet-300 hover:shadow-md hover:-translate-y-0.5"
             }`}
           >
-            <IllustrationImg
-              src={meta.image}
-              className="h-12 w-12 object-contain shrink-0 mix-blend-multiply"
-              fallback={<span className="text-2xl">{meta.emoji}</span>}
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-baseline gap-1.5 mb-0.5">
-                <p className={`text-base font-bold leading-tight ${meta.color}`}>{meta.label}</p>
-                {topic.category && (
-                  <>
-                    <span className={`text-base font-bold ${meta.color}`}>|</span>
-                    <p className={`text-base font-bold truncate ${meta.color}`}>{topic.category}</p>
-                  </>
-                )}
-              </div>
-              <p className="font-semibold text-gray-900 truncate">{title}</p>
+            <div className="flex-1 flex items-center justify-center min-h-0">
+              <IllustrationImg
+                src={meta.image}
+                className="h-28 w-28 object-contain mix-blend-multiply"
+                fallback={<span className="text-6xl">{meta.emoji}</span>}
+              />
             </div>
-            {completed ? (
-              <span className="flex items-center gap-1.5 text-emerald-700 font-semibold text-sm shrink-0 px-3 py-1.5">
-                <Check className="h-4 w-4" /> Splněno
-              </span>
-            ) : (
-              <button
-                onClick={() => onStart(topic.id)}
-                className="flex items-center gap-1.5 rounded-xl bg-violet-600 text-white px-4 py-2 text-sm font-semibold hover:bg-violet-700 active:scale-95 transition-all shrink-0"
-              >
-                Začít <ArrowRight className="h-4 w-4" />
-              </button>
-            )}
+            <div className="space-y-2">
+              <div>
+                <div className="flex items-baseline gap-1 flex-wrap leading-tight">
+                  <span className={`text-sm font-bold ${meta.color}`}>{meta.label}</span>
+                  {topic.category && (
+                    <>
+                      <span className={`text-sm font-bold ${meta.color}`}>|</span>
+                      <span className={`text-sm font-bold ${meta.color}`}>{topic.category}</span>
+                    </>
+                  )}
+                </div>
+                <p className="font-bold text-gray-900 text-base leading-tight">{title}</p>
+              </div>
+              {completed ? (
+                <span className="flex items-center justify-center gap-1.5 text-emerald-700 font-semibold text-sm py-2">
+                  <Check className="h-4 w-4" /> Splněno
+                </span>
+              ) : (
+                <button
+                  onClick={() => onStart(topic.id)}
+                  className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-violet-600 text-white px-3 py-2.5 text-sm font-semibold hover:bg-violet-700 active:scale-95 transition-all"
+                >
+                  Začít <ArrowRight className="h-4 w-4" />
+                </button>
+              )}
+            </div>
           </div>
         );
       })}
@@ -330,27 +335,38 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
 }
 
 function SubjectGrid({ grade, onSelect }: { grade: number; onSelect: (subject: string) => void }) {
-  const subjects = useMemo(() => {
-    const all = getAllTopics().filter((t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade);
-    return [...new Set(all.map((t) => t.subject))];
-  }, [grade]);
+  const topicsForGrade = useMemo(
+    () => getAllTopics().filter((t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade),
+    [grade],
+  );
+  const subjects = useMemo(() => [...new Set(topicsForGrade.map((t) => t.subject))], [topicsForGrade]);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {subjects.map((subject) => {
         const meta = getSubjectMeta(subject);
+        const categories = [...new Set(topicsForGrade.filter((t) => t.subject === subject).map((t) => t.category))];
         return (
           <button
             key={subject}
             onClick={() => onSelect(subject)}
-            className="flex flex-col items-center gap-2 rounded-2xl bg-white border-2 border-violet-100 hover:border-violet-400 hover:shadow-md p-4 transition-all group"
+            className="group aspect-square flex flex-col items-center justify-center gap-3 rounded-3xl bg-white border-2 border-violet-100 hover:border-violet-400 hover:shadow-md hover:-translate-y-0.5 p-6 transition-all"
           >
             <IllustrationImg
               src={meta.image}
-              className="h-14 w-14 object-contain"
-              fallback={<span className="text-4xl">{meta.emoji}</span>}
+              className="h-24 w-24 object-contain"
+              fallback={<span className="text-6xl">{meta.emoji}</span>}
             />
-            <p className={`text-sm font-bold text-center ${meta.color}`}>{meta.label}</p>
+            <p className={`text-xl font-bold text-center ${meta.color}`}>{meta.label}</p>
+            {categories.length > 0 && (
+              <div className="flex flex-col items-center gap-0.5">
+                {categories.slice(0, 3).map((c) => (
+                  <span key={c} className={`text-sm font-semibold text-center ${meta.color} opacity-80`}>
+                    {getDisplayCategory(c, grade as Parameters<typeof getDisplayCategory>[1])}
+                  </span>
+                ))}
+              </div>
+            )}
           </button>
         );
       })}

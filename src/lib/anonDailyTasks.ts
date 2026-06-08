@@ -1,5 +1,5 @@
 /**
- * Anonymní mód: výběr 3 denních úkolů pro nepřihlášené dítě.
+ * Anonymní mód: výběr 4 denních úkolů pro nepřihlášené dítě.
  * Deterministický (stejný den + ročník = stejné úkoly), preferuje různé předměty.
  */
 
@@ -7,7 +7,7 @@ import type { TopicMetadata } from "@/lib/types";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getBestAvailableGrade } from "./contentAvailability";
 
-const DEFAULT_DAILY_COUNT = 3;
+const DEFAULT_DAILY_COUNT = 4;
 
 function hashString(str: string): number {
   let hash = 0;
@@ -61,7 +61,7 @@ export function getTodayDateString(): string {
 }
 
 /**
- * Vrátí 3 denní úkoly pro daný ročník. Fallback na grade-4 pokud ročník nemá obsah.
+ * Vrátí 4 denní úkoly pro daný ročník. Fallback na grade-4 pokud ročník nemá obsah.
  * Deterministické per (datum, ročník).
  */
 export function getDailyTasksForGrade(

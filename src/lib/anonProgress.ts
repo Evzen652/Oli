@@ -46,12 +46,25 @@ function writeProgress(p: AnonDailyProgress): void {
 export function getTodayProgress(grade: number): AnonDailyProgress {
   const today = getTodayDateString();
   const saved = readProgress();
+  const dailyTopics = getDailyTasksForGrade(grade);
 
   if (saved && saved.date === today && saved.grade === grade) {
+    // Cílový počet úkolů se mohl zvětšit (např. 3 → 4) — doplň nové úkoly,
+    // ale zachovej dosavadní pokrok u už rozpracovaných.
+    if (saved.tasks.length < dailyTopics.length) {
+      const existingIds = new Set(saved.tasks.map((t) => t.topicId));
+      for (const t of dailyTopics) {
+        if (saved.tasks.length >= dailyTopics.length) break;
+        if (!existingIds.has(t.id)) {
+          saved.tasks.push({ topicId: t.id, completed: false });
+          existingIds.add(t.id);
+        }
+      }
+      writeProgress(saved);
+    }
     return saved;
   }
 
-  const dailyTopics = getDailyTasksForGrade(grade);
   const fresh: AnonDailyProgress = {
     date: today,
     grade,

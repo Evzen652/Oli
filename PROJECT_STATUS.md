@@ -139,6 +139,16 @@ src/
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ### Session 2026-06-08 — hotovo:
+- ✅ **subject-vlastiveda.png: odstraněno neprůhledné pozadí.** Jediná subject ilustrace měla místo transparentního pozadí světle modrou oblohu → na bílé kartě (`mix-blend-multiply` umí skrýt jen bílou) zůstával viditelný čtverec. Pozadí odstraněno flood-fillem od rohů (sharp) — souvislé pozadí pryč, modrá zeměkoule v motivu zachována. Ověřeno: rohy alpha=0, střed alpha=255.
+- ✅ **Denní úkoly: 3 → 4 návrhy.** `DEFAULT_DAILY_COUNT = 4` v `anonDailyTasks.ts`; texty „X cvičení" v AnonStudentPage převedeny na `pad(dailyTopics.length, "CVIČENÍ")` (dynamicky dle počtu, dle pravidla czechGrammar). Výběr dál preferuje různé předměty → 4 úkoly = po jednom z matematiky/češtiny/vlastivědy/přírodovědy.
+  - `getTodayProgress` (anonProgress.ts) doplní nové úkoly do už uloženého dnešního progressu (3 → 4) bez ztráty dosavadního pokroku — stávající uživatelé uvidí 4. úkol hned po reloadu, ne až další den.
+- ✅ **SubjectGrid: výpis okruhů na kartách.** Karty předmětů na dashboardu zobrazují pod názvem až 3 okruhy (přes `getDisplayCategory` → dětské názvy tam, kde existují, jinak RVP). Styl sjednocen s denními úkoly — barevný text v barvě předmětu (ne šedé pilulky). Přírodověda má reálně jen 2 okruhy.
+- ✅ **Sjednocené čtvercové karty napříč /student dashboardem i TopicBrowserem.** Všechny gridy (DailyTaskList, SubjectGrid, TopicBrowser subject/topic/category/subtopic) převedeny na `aspect-square` čtverce.
+  - Dashboard (úzký kontejner ~624px): `grid-cols-1 sm:grid-cols-2` → karty 304×304, aby se vešel celý text bez ořezávání (odstraněn `line-clamp`/`truncate` u okruhu i tématu).
+  - TopicBrowser (max-w-5xl): `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` → karty ~331×331.
+  - DailyTaskList přepsán z horizontálního seznamu na grid: ilustrace nahoře, předmět | okruh, téma, tlačítko Začít / štítek Splněno dole.
+  - TopicBrowser subject grid: odstraněn asymetrický „featured" layout (1. předmět velký) ve prospěch jednotných čtverců.
+- ✅ **TopicBrowser: odstraněn duplicitní nadpis předmětu.** Na úrovni `category` byl název předmětu (např. „Čeština") dvakrát — ve welcome banneru i jako `h2`. Na úrovni `category` se `h2` už nezobrazuje (banner ho nese), na hlubších úrovních zůstává (banner = předmět, `h2` = okruh/téma).
 - ✅ **Grade-4 CJL: `displayName` + `recommendedNext` — 22/22 souborů.** Krátký rodičovský/dětský název + logická pedagogická návaznost v rámci podkategorií (slohová, čtení, stavba slova, tvarosloví, skladba, literární pojmy, práce s textem).
 - ✅ **Bonus — `language.test.ts` zelený:** opraveno 10× `briefDescription` >12 slov + 2× `studentTitle` >4 slova napříč grade-4 (CJL, vlastivěda, přírodověda). ⚠️ Zbývá předexistující fail `pisemneScitaniAOdcitani` (`gradeRange [4,4]` vs test `[4,5]`).
 - ✅ **Grade-4 CJL: explanation kompletní — 22/22 souborů.**
