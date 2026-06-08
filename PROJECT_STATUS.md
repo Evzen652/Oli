@@ -139,6 +139,7 @@ src/
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ### Session 2026-06-08 — hotovo:
+- ✅ **Audit obsahu grade-5** → [`docs/AUDIT_GRADE_5_2026-06-08.md`](docs/AUDIT_GRADE_5_2026-06-08.md). 63 témat / 1008 úloh, technická úspěšnost 84 %. Report rozlišuje reálné problémy (fill_blank `___`/blanks, match_pairs→categorize u obratlovců/říší, hint_leak vzorec „= odpověď", 2 neadaptivní generátory) od false-positive auditu (select_one substring-heuristika validátoru, answer_uniqueness nerozumí order/match). Prioritizace oprav viz report; otevřené body v PENDING_CHANGES.
 - ✅ **subject-vlastiveda.png: odstraněno neprůhledné pozadí.** Jediná subject ilustrace měla místo transparentního pozadí světle modrou oblohu → na bílé kartě (`mix-blend-multiply` umí skrýt jen bílou) zůstával viditelný čtverec. Pozadí odstraněno flood-fillem od rohů (sharp) — souvislé pozadí pryč, modrá zeměkoule v motivu zachována. Ověřeno: rohy alpha=0, střed alpha=255.
 - ✅ **Denní úkoly: 3 → 4 návrhy.** `DEFAULT_DAILY_COUNT = 4` v `anonDailyTasks.ts`; texty „X cvičení" v AnonStudentPage převedeny na `pad(dailyTopics.length, "CVIČENÍ")` (dynamicky dle počtu, dle pravidla czechGrammar). Výběr dál preferuje různé předměty → 4 úkoly = po jednom z matematiky/češtiny/vlastivědy/přírodovědy.
   - `getTodayProgress` (anonProgress.ts) doplní nové úkoly do už uloženého dnešního progressu (3 → 4) bez ztráty dosavadního pokroku — stávající uživatelé uvidí 4. úkol hned po reloadu, ne až další den.

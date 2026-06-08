@@ -19,6 +19,17 @@
 
 ## Otevřené
 
+### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
+Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
+1. **F1 — validátor substring (false-positive, ~20 format chyb):** `validateTaskForInputType` (src/lib/taskValidator.ts ř. 26–32) faulne legitimní distraktory: `8 cm` ⊂ `8 cm²`, `5 °C` ⊂ `−5 °C`, `přímá řeč` ⊂ `nepřímá řeč`, `umělecký` ⊂ `neumělecký`. Opravit: vyjmout numerické/jednotkové odpovědi + token/word-boundary shoda místo `includes`. ⚠️ Systémový invariant — testovat proti celé `audit:content` sadě.
+2. **F2 — answer_uniqueness (false-positive, 18):** runPedagogicalAudit hlásí `order`/`match` markery jako „shodné odpovědi". Přidat `drag_order`/`match_pairs` do výjimek (vedle `true_false`/`comparison`).
+3. **R1 — fill_blank (13):** `shodaPrisudkuSPodmetem.ts` má `___` (3 podtržítka) vs `blanks` délky 1. Smazat `blanks: [blank]` nebo `___`→`_` (ověřit UI render).
+4. **R2 — match_pairs→categorize:** `obratlovciSavciPtaci...` a `riseRostlinHubZivocichu.ts` jsou kategorizace (víc položek → stejná třída), ne 1:1 párování. Změnit `inputType` na `categorize` + restrukturovat data. Bonus překlepy: „Čolník"→„Čolek", Rak označen jako ryba.
+5. **R3 — match_pairs vadná data:** `evropaPoloha...` (1 úloha, Alpy 2×), `evropskeStaty...` (2 úlohy, Euro 2×, Německo 2×). Opravit jen vadné úlohy, NEMĚNIT typ.
+6. **R4 — hint_leak vzorec „= odpověď" (~60 z 108):** zejm. `zajmenaSklonovani...`, `etapyLidskehoZivota...`. Přeformulovat 1. nápovědy bez `= <tvar/termín>`.
+7. **R5 — neadaptivní generátory (2):** `nervovaSoustavaSmysly.ts`, `riseRostlinHubZivocichu.ts` — stejný výstup L1/2/3.
+8. **R6 — missing_hints matematika (12):** ověřit, zda spoléhají na `helpTemplate` (pak OK), jinak doplnit.
+
 ### BUG #5 — Tab zamrzne po zavření InviteParentDialog
 - Možný memory leak v animaci/listeneru — předběžně do PENDING
 - TODO: zkontrolovat `useEffect` cleanup v `InviteParentDialog.tsx`, vyčistit setTimeout/listenery při unmount
