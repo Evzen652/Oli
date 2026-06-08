@@ -145,6 +145,13 @@ src/
 - ✅ **solutionSteps bug (písemné sčítání)** — přepsáno s `addSteps`/`subSteps` helpery, zobrazuje všechny sloupce (jednotky/desítky/stovky/tisíce) + přenosy.
 - ✅ **Auth.tsx: gramatika „1 úkolů"** → `pad(count, "ÚKOL")`.
 
+### Session 2026-06-08 (pokračování 4) — audit:
+- ✅ **Komplexní audit (technický + pedagogický + bezpečnostní)** → `docs/AUDIT_2026-06-08_full.md`. 3 paralelní agenti, nic neměněno (jen hodnocení).
+- 🔴 **2× CRITICAL bezpečnost:** Groq klíč v klientském bundlu (rotovat!) · `generate-prvouka-images` edge funkce bez auth.
+- 🟠 **Korekce:** „67 testů = whitelist" bylo CHYBNÉ — ≥6 příčin, nejvážnější možná regrese `classifyIntent` boundary brány (~40 selhání).
+- 🟠 **Pedagogika:** vymyšlené názvy druhů v g4 přírodovědě (ekosystémy) · hinty historie prozrazují celé pořadí.
+- Detail + prioritizovaný akční plán (P0–P3) v audit reportu.
+
 ### Session 2026-06-08 (pokračování 3) — hotovo:
 - ✅ **Symbol porovnání `□` → `vs`** — placeholder ve všech porovnávacích úlohách (grade-3/4/5 matematika) změněn na čitelné „vs" (např. „Porovnej: 183 vs 126"). Upraveny i test regexpy. 29/29 grade-5 testů zelených.
 - ✅ **Stabilní (seedovaný) náhled ukázek v adminu** — `src/lib/seededRandom.ts` (mulberry32 + FNV-1a hash + `withSeededRandom`). ExerciseTab generuje ukázky deterministicky ze `skill.id` → karty „neskáčou" při renderu/reloadu. Tlačítko „Přegenerovat ukázky" (zvýší seed) pro novou stabilní sadu.

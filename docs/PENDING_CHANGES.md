@@ -19,11 +19,20 @@
 
 ## Otevřené
 
-### Zastaralý inputType whitelist v testech (67 pre-existujících selhání)
-- `src/test/topic-invariants.test.ts` (ř. ~50–52) má whitelist povolených `inputType`, který neobsahuje aktuálně používané typy → 67 testů padá napříč 17 soubory (topic-invariants, security, red-team, content-registry, generator-validation, …).
-- Chybí mj. `true_false`, `essay` (a možná další — ověřit proti reálně použitým `inputType` v obsahu).
-- **Není to regrese z 2026-06-08** (ověřeno: 67 failed na čistém HEAD i se změnami té session). Dluh z dřívějška.
-- **TODO:** doplnit chybějící typy do whitelistu (jediný zdroj pravdy = skutečné `inputType` napříč `getAllTopics()`), pak ověřit `npx vitest run`.
+### 67 pre-existujících padajících testů — ≥6 příčin (NE jen whitelist!)
+> ⚠️ KOREKCE: dříve zde stálo „jen zastaralý inputType whitelist". Audit 2026-06-08 (`docs/AUDIT_2026-06-08_full.md`) ukázal, že whitelist je jen **2 z 67**. Padá 17 test souborů s ≥6 příčinami:
+- **A** (2): `topic-invariants.test.ts:42-53` whitelist chybí `true_false`. Triviální.
+- **B** (~40+, NEJVÁŽNĚJŠÍ): `classifyIntent`/keyword-matching vrací `topical` místo `unclear_input`/`nonsense`/`wrong_grade` — nová obsahová klíčová slova matchují dříve odmítané vstupy. **Možná funkční regrese boundary/security brány** (žák může dostat „téma" na nesmysl/out-of-scope). Prošetřit prioritně. Soubory: `preintent*`, `red-team`, `security`, `system-stress`, `stress-test-a`, `keyword-conflicts`, `multi-role-flow`, `prvouka-visuals`.
+- **C** (9): `generator-validation.test.ts` — `correctAnswer` není v `options` (vyjmenovaná slova, rýmy).
+- **D** (1): spec rozpor `taskValidator.ts:54` (match_pairs ≥3) vs `lib-utilities.test.ts:246` (≥2).
+- **E** (1): `i18n-completeness` — `parent.greeting` bez `{name}`.
+- **F** (1): `sloh-topics` — chybí topic `cz-sloh-vypraveni`.
+- Vše **pre-existující** (67 na čistém HEAD i se změnami 2026-06-08).
+
+### Bezpečnostní nálezy z auditu 2026-06-08 (viz docs/AUDIT_2026-06-08_full.md)
+- 🔴 **C1 (vyžaduje akci uživatele):** Groq klíč `VITE_GROQ_API_KEY` je v klientském bundlu → rotovat v Groq dashboardu + přesunout volání do edge funkce. `src/lib/aiClient.ts`.
+- 🔴 **C2:** `generate-prvouka-images` edge funkce bez auth (service-role) → přepis ilustrací / DoS. Přidat admin gate.
+- 🟠 H1 `generate-logo` bez auth · H2 `send-parent-invite` bez auth (email bombing) · H3 `parent_invitations` UPDATE `USING(true)` · H4 bucket `prvouka-images` zápis bez role check.
 
 ### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
 Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
