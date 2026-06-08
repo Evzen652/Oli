@@ -4,7 +4,7 @@ import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
  * Čísla do milionu — porovnávání — 5. ročník ZŠ
  * Input type: COMPARISON (žák vybírá <, =, >)
  *
- * Úlohy: "Porovnej: 125 890 ○ 125 980" — odpověď < / = / >
+ * Úlohy: "Porovnej: 125 890 vs 125 980" — odpověď < / = / >
  */
 
 function fmtNum(n: number): string {
@@ -42,7 +42,7 @@ function genNumbersMillion(level: number): PracticeTask[] {
     const correctAnswer = a < b ? "<" : a > b ? ">" : "=";
 
     tasks.push({
-      question: `Porovnej: ${fmtNum(a)} ○ ${fmtNum(b)}`,
+      question: `Porovnej: ${fmtNum(a)} vs ${fmtNum(b)}`,
       correctAnswer,
       options: ["<", "=", ">"],
       solutionSteps: [

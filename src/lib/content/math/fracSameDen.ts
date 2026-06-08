@@ -12,7 +12,7 @@ import { PLURALS } from "../czechPlural";
  * Úlohy:
  *   1) 3/8 + 2/8 = 5/8  (sčítání)
  *   2) 5/9 − 2/9 = 3/9  (odčítání)
- *   3) Porovnej 3/7 ○ 5/7  (porovnávání)
+ *   3) Porovnej 3/7 vs 5/7  (porovnávání)
  *
  * Pravidlo: čitatele sčítáme/odčítáme, jmenovatel zůstává stejný.
  */
@@ -35,7 +35,7 @@ function genAdd(_level: number): PracticeTask {
     ],
     hints: [
       `Jmenovatel je stejný — ten se při sčítání NEMĚNÍ.`,
-      `Sečti jen čitatele: ${n1} + ${n2} = ?`,
+      `Sečti jen čitatele: ${n1} + ${n2} = □`,
     ],
   };
 }
@@ -58,7 +58,7 @@ function genSub(_level: number): PracticeTask {
     ],
     hints: [
       `Jmenovatel je stejný — ten se NEMĚNÍ.`,
-      `Odečti jen čitatele: ${n1} − ${n2} = ?`,
+      `Odečti jen čitatele: ${n1} − ${n2} = □`,
     ],
   };
 }
@@ -73,7 +73,7 @@ function genCompare(_level: number): PracticeTask {
   const correct = n1 < n2 ? "<" : n1 > n2 ? ">" : "=";
 
   return {
-    question: `Porovnej: ${n1}/${den} ○ ${n2}/${den}`,
+    question: `Porovnej: ${n1}/${den} vs ${n2}/${den}`,
     correctAnswer: correct,
     options: ["<", "=", ">"],
     solutionSteps: [

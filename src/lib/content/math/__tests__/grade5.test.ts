@@ -24,7 +24,7 @@ describe("numbersMillion — porovnávání do 1M", () => {
       const tasks = t.generator(level);
       expect(tasks.length).toBeGreaterThan(30);
       for (const task of tasks) {
-        const m = task.question.match(/Porovnej:\s*([\d\s]+)\s*○\s*([\d\s]+)/);
+        const m = task.question.match(/Porovnej:\s*([\d\s]+)\s*vs\s*([\d\s]+)/);
         expect(m, `unparseable: ${task.question}`).not.toBeNull();
         if (!m) continue;
         const a = parseNumCs(m[1]);
@@ -87,7 +87,7 @@ describe("fracSameDen — +/−/porovnávání zlomků", () => {
           expect(task.correctAnswer).toBe(`${n1 - n2}/${d}`);
           continue;
         }
-        const cmp = task.question.match(/Porovnej:\s*(\d+)\/(\d+)\s*○\s*(\d+)\/(\d+)/);
+        const cmp = task.question.match(/Porovnej:\s*(\d+)\/(\d+)\s*vs\s*(\d+)\/(\d+)/);
         if (cmp) {
           const n1 = +cmp[1], d = +cmp[2], n2 = +cmp[3], d2 = +cmp[4];
           expect(d).toBe(d2);
@@ -159,7 +159,7 @@ describe("negativeIntro — záporná čísla, porovnání", () => {
       const tasks = t.generator(level);
       expect(tasks.length).toBeGreaterThan(30);
       for (const task of tasks) {
-        const m = task.question.match(/Porovnej:\s*(-?\d+|\(-\d+\))\s*○\s*(-?\d+|\(-\d+\))/);
+        const m = task.question.match(/Porovnej:\s*(-?\d+|\(-\d+\))\s*vs\s*(-?\d+|\(-\d+\))/);
         expect(m).not.toBeNull();
         if (!m) continue;
         const parseSigned = (s: string) => parseInt(s.replace(/[()]/g, ""), 10);

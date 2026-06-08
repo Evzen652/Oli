@@ -16,7 +16,7 @@ function gen(level: number): PracticeTask[] {
       const b = Math.floor(Math.random() * max) + 1;
       const correct = a > b ? ">" : a < b ? "<" : "=";
       tasks.push({
-        question: `Porovnej čísla: ${fmt(a)} ○ ${fmt(b)}`,
+        question: `Porovnej čísla: ${fmt(a)} vs ${fmt(b)}`,
         correctAnswer: correct,
         options: [">", "<", "="],
         hints: [
@@ -72,7 +72,6 @@ function gen(level: number): PracticeTask[] {
 }
 
 function numberToWords(n: number): string {
-  // Simplified Czech number words for 6-digit numbers
   const ones = ["", "jedna", "dvě", "tři", "čtyři", "pět", "šest", "sedm", "osm", "devět"];
   const teens = ["deset", "jedenáct", "dvanáct", "třináct", "čtrnáct", "patnáct", "šestnáct", "sedmnáct", "osmnáct", "devatenáct"];
   const tens = ["", "deset", "dvacet", "třicet", "čtyřicet", "padesát", "šedesát", "sedmdesát", "osmdesát", "devadesát"];

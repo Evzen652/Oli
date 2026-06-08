@@ -45,7 +45,7 @@ function genCompareSigned(_level: number): PracticeTask {
   const fmt = (n: number) => (n < 0 ? `(${n})` : `${n}`);
 
   return {
-    question: `Porovnej: ${fmt(a)} ○ ${fmt(b)}`,
+    question: `Porovnej: ${fmt(a)} vs ${fmt(b)}`,
     correctAnswer: correct,
     options: ["<", "=", ">"],
     solutionSteps: [

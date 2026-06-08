@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
 import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
+import { pad } from "@/lib/czechGrammar";
 import { OlyLogo } from "@/components/OlyLogo";
 import { BookOpen, TrendingUp, Target, Mail, Sparkles } from "lucide-react";
 import { BackButton } from "@/components/BackButton";
@@ -155,7 +156,7 @@ export default function Auth() {
             {/* Anon progress hint — pokud dítě procvičovalo a teď se rodič registruje */}
             {anonSummary && (
               <div className="rounded-xl bg-violet-50 border border-violet-200 px-3 py-2 text-xs text-violet-700">
-                Dítě má splněno <strong>{anonSummary.completedCount} úkolů</strong> ({anonSummary.grade}. třída).
+                Dítě má splněno <strong>{pad(anonSummary.completedCount, "ÚKOL")}</strong> ({anonSummary.grade}. třída).
                 Pokrok se přenese po propojení dítěte přes kód.
               </div>
             )}
