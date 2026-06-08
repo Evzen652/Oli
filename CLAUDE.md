@@ -51,6 +51,19 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.
 - Pro jednoduchý start je v repo skript `scripts/oli-start.ps1` (Windows) — dělá `git pull` + `npm install` (jen když je třeba) + `npm run dev`. User ho spouští dvojklikem.
 
+## ⚠️ ZAČÁTEK KAŽDÉ SESSION — POVINNÉ
+
+Po `git pull` vždy zobraz stručné shrnutí stavu projektu:
+1. **Kde jsme skončili** — přečti sekci 6 z `PROJECT_STATUS.md` (Otevřené / poslední session hotovo)
+2. **Co je rozděláno** — přečti otevřené položky z `docs/PENDING_CHANGES.md`
+3. Zobraz jako 2–3 věty + bullet list „Doporučené další kroky" (priorita dle PENDING_CHANGES)
+
+## ⚠️ KONTEXT — UPOZORNĚNÍ NA DÉLKU SESSION
+
+Pokud session trvá déle (mnoho zpráv / velké soubory), proaktivně upozorni:
+> „⚠️ Session je delší — pokud si chceš být jistý pamětí, spusť `/compact` nebo začni novou session. Výsledky práce jsou commitnuty a v pořádku."
+Toto upozornění dej vždy po velkém tasku nebo pokud máš pocit, že kontext přesahuje ~70 % kapacity.
+
 ## Stack
 - React 19 + Vite 5 + TypeScript + Tailwind CSS 3 + shadcn/ui + Supabase
 - State: React hooks + Zustand (implicit)
