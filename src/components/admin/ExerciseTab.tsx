@@ -6,11 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X } from "lucide-react";
+import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X, CheckCircle2, Circle } from "lucide-react";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
+import { ReformulateButtons } from "@/components/admin/ReformulateTaskDialog";
+import type { ReformField } from "@/components/admin/ReformulateTaskDialog";
+import { hashString, withSeededRandom } from "@/lib/seededRandom";
+import { useExerciseReview, cardKey } from "@/hooks/useExerciseReview";
+
 
 // ══════════════════════════════════════════════════════
 // Types
@@ -322,6 +327,8 @@ function CompactTaskCard({
   topicLabel,
   statusBadge,
   rightAction,
+  reviewTone,
+  footer,
 }: {
   index: number;
   question: string;
@@ -336,14 +343,25 @@ function CompactTaskCard({
   statusBadge?: { text: string; cls: string };
   /** Tlačítko/ikon do pravého horního rohu (např. "Náhled žáka") */
   rightAction?: React.ReactNode;
+  /** Barevný okraj podle stavu kontroly: "ok" = zelená, "pending" = červená */
+  reviewTone?: "ok" | "pending" | null;
+  /** Akční lišta uvnitř karty (pod obsahem, v rámci okraje karty) */
+  footer?: React.ReactNode;
 }) {
   const indexLabel = `#${String(index + 1).padStart(2, "0")}`;
   // Effective postup: solution_steps > help.steps; navíc help.hint
   const effectiveSteps = solutionSteps?.length ? solutionSteps : help?.steps;
   const effectiveHint = !solutionSteps?.length ? help?.hint : undefined;
 
+  const reviewBorder =
+    reviewTone === "ok"
+      ? "border-2 border-emerald-400"
+      : reviewTone === "pending"
+      ? "border-2 border-rose-300"
+      : "border border-border/60";
+
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-4 space-y-3 shadow-soft-1 transition-all hover:shadow-md">
+    <div className={`rounded-2xl ${reviewBorder} bg-card p-4 space-y-3 shadow-soft-1 transition-all hover:shadow-md`}>
       {/* Header — index + topic chip vlevo, status/action vpravo */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -441,6 +459,13 @@ function CompactTaskCard({
           </ol>
         )}
       </div>
+
+      {/* Footer — akce uvnitř karty (OK / Přeformulovat / Uložit) */}
+      {footer && (
+        <div className="pt-2 border-t border-border/40">
+          {footer}
+        </div>
+      )}
     </div>
   );
 }
@@ -838,6 +863,8 @@ export function ExerciseTab({
   const { toast } = useToast();
   const hasGenerator = variant === "simple" && hasCodeGenerator(skill);
   const help = skill.helpTemplate;
+  // Per-karta „OK" stav (zkontrolováno) — drží na obsahu konkrétní karty
+  const { toggleReviewed, isReviewed } = useExerciseReview();
 
   const [prompt, setPrompt] = useState("");
   const [aiTasks, setAiTasks] = useState<AITask[]>([]);
@@ -853,27 +880,64 @@ export function ExerciseTab({
   // Code-generator samples (simple only)
   const [genTasks, setGenTasks] = useState<PracticeTask[]>([]);
   const [regenCount, setRegenCount] = useState(0);
+  // Seed pro deterministický náhled — stejné podtéma ukáže stejné příklady,
+  // dokud uživatel nestiskne "Přegenerovat ukázky" (zvýší seed).
+  const [regenSeed, setRegenSeed] = useState(0);
+  const [modifiedGenIndices, setModifiedGenIndices] = useState<Set<number>>(new Set());
+  const [savedGenIndices, setSavedGenIndices] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (!hasGenerator) return;
     try {
       const level = skill.defaultLevel ?? 1;
-      const all = skill.generator(level);
-      const shuffled = [...all].sort(() => Math.random() - 0.5);
+      // Seed odvozený ze skill.id + regenSeed → deterministické úlohy.
+      const seed = hashString(skill.id) + regenSeed;
+      const shuffled = withSeededRandom(seed, () => {
+        const all = skill.generator(level);
+        return [...all].sort(() => Math.random() - 0.5);
+      });
       setGenTasks(shuffled);
       setRegenCount((c) => c + 1);
     } catch {
       setGenTasks([]);
     }
-  }, [skill.id, hasGenerator]);
+  }, [skill.id, hasGenerator, regenSeed]);
 
   // Reset per-skill state
   useEffect(() => {
     setAiTasks([]);
     setSavedIndices(new Set());
+    setModifiedGenIndices(new Set());
+    setSavedGenIndices(new Set());
     setPrompt("");
     setError(null);
   }, [skill.id]);
+
+  const handleSaveGenTask = async (task: PracticeTask, index: number) => {
+    setSaving(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+      const { error: err } = await (supabase as any).from("custom_exercises").insert({
+        skill_id: skill.id,
+        question: task.question,
+        correct_answer: task.correctAnswer,
+        hints: task.hints ?? [],
+        solution_steps: task.solutionSteps ?? [],
+        options: task.options ?? [],
+        source: "simple",
+        status: "pending",
+      });
+      if (err) throw err;
+      setSavedGenIndices((prev) => new Set([...prev, index]));
+      toast({ description: "Uloženo do návrhů — schvalte v sekci níže ✓" });
+      onCountsChanged?.();
+      refreshSavedList();
+    } catch (e: any) {
+      toast({ description: e?.message || "Nepodařilo se uložit.", variant: "destructive" });
+    }
+    setSaving(false);
+  };
 
   const generate = async (replace: boolean) => {
     setLoading(true);
@@ -1187,22 +1251,99 @@ export function ExerciseTab({
                 {genTasks.length}
               </Badge>
             </div>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                setRegenSeed((s) => s + 1);
+                setModifiedGenIndices(new Set());
+                setSavedGenIndices(new Set());
+              }}
+              className="gap-1.5 text-xs h-7 text-muted-foreground hover:text-foreground"
+              title="Zobrazí jiné náhodné příklady ze stejné šablony"
+            >
+              <RefreshCw className="h-3 w-3" /> Přegenerovat ukázky
+            </Button>
           </div>
 
           {/* 2-col grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-            {genTasks.map((task, i) => (
-              <CompactTaskCard
-                key={`${regenCount}-${i}`}
-                index={i}
-                question={task.question}
-                correctAnswer={task.correctAnswer}
-                options={task.options}
-                hints={task.hints}
-                solutionSteps={task.solutionSteps}
-                help={help}
-              />
-            ))}
+            {genTasks.map((task, i) => {
+              const key = cardKey(skill.id, task.question, task.correctAnswer);
+              const reviewed = isReviewed(key);
+              return (
+              <div key={`${regenCount}-${i}`}>
+                <CompactTaskCard
+                  index={i}
+                  question={task.question}
+                  correctAnswer={task.correctAnswer}
+                  options={task.options}
+                  hints={task.hints}
+                  solutionSteps={task.solutionSteps}
+                  help={help}
+                  reviewTone={reviewed ? "ok" : "pending"}
+                  footer={
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => toggleReviewed(key)}
+                          className={`gap-1.5 rounded-full text-xs h-7 ${
+                            reviewed
+                              ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+                              : "text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                          }`}
+                          title={reviewed ? "Zkontrolováno — klikni pro zrušení" : "Označit kartu jako OK"}
+                        >
+                          {reviewed ? (
+                            <><CheckCircle2 className="h-3.5 w-3.5" /> OK</>
+                          ) : (
+                            <><Circle className="h-3.5 w-3.5" /> Označit OK</>
+                          )}
+                        </Button>
+                        <ReformulateButtons
+                          task={task}
+                          skill={skill}
+                          help={help}
+                          onApply={(field: ReformField, value: unknown) => {
+                            setGenTasks((prev) => {
+                              const next = [...prev];
+                              const t = { ...next[i] };
+                              if (field === "question") t.question = value as string;
+                              else if (field === "correctAnswer") t.correctAnswer = value as string;
+                              else if (field === "hints") t.hints = value as string[];
+                              else if (field === "options") t.options = value as string[];
+                              else if (field === "solutionSteps") t.solutionSteps = value as string[];
+                              next[i] = t;
+                              return next;
+                            });
+                            setModifiedGenIndices((prev) => new Set([...prev, i]));
+                            setSavedGenIndices((prev) => { const s = new Set(prev); s.delete(i); return s; });
+                          }}
+                        />
+                      </div>
+                      {modifiedGenIndices.has(i) && (
+                        <Button
+                          size="sm"
+                          variant={savedGenIndices.has(i) ? "secondary" : "default"}
+                          disabled={saving || savedGenIndices.has(i)}
+                          onClick={() => handleSaveGenTask(task, i)}
+                          className="gap-1 rounded-full text-xs h-7 shrink-0"
+                        >
+                          {savedGenIndices.has(i) ? (
+                            <><Check className="h-3 w-3" /> Uloženo</>
+                          ) : (
+                            <><Download className="h-3 w-3" /> Uložit upravenou verzi</>
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                  }
+                />
+              </div>
+              );
+            })}
           </div>
         </div>
       )}
