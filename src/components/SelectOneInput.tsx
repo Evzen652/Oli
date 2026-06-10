@@ -13,12 +13,11 @@ export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputPr
   const isLong = maxLen > 20;
   const textSize = maxLen > 20 ? "text-base" : maxLen > 10 ? "text-lg" : "text-2xl";
 
-  // Pastelové akcenty viditelné hned — bez nutnosti hoveru
   const colors = [
-    "bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 active:bg-blue-200",
-    "bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100 hover:border-purple-300 active:bg-purple-200",
-    "bg-green-50 border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 active:bg-green-200",
-    "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100 hover:border-amber-300 active:bg-amber-200",
+    "bg-blue-100 border-blue-300 text-blue-800 hover:bg-blue-200 hover:border-blue-400 active:bg-blue-300",
+    "bg-purple-100 border-purple-300 text-purple-800 hover:bg-purple-200 hover:border-purple-400 active:bg-purple-300",
+    "bg-green-100 border-green-300 text-green-800 hover:bg-green-200 hover:border-green-400 active:bg-green-300",
+    "bg-amber-100 border-amber-300 text-amber-800 hover:bg-amber-200 hover:border-amber-400 active:bg-amber-300",
   ];
 
   const gridCols = isLong

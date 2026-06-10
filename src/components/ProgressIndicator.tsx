@@ -2,9 +2,10 @@ interface ProgressIndicatorProps {
   current: number;
   total: number;
   results?: ("correct" | "wrong" | "help")[];
+  dotAccentClass?: string;
 }
 
-export function ProgressIndicator({ current, total, results = [] }: ProgressIndicatorProps) {
+export function ProgressIndicator({ current, total, results = [], dotAccentClass }: ProgressIndicatorProps) {
   return (
     <div className="space-y-2">
       <p className="text-sm text-muted-foreground text-center">
@@ -27,7 +28,7 @@ export function ProgressIndicator({ current, total, results = [] }: ProgressIndi
             dotClass += "w-7 h-7 bg-blue-400";
             emoji = "🤔";
           } else if (isCurrent) {
-            dotClass += "w-8 h-8 bg-primary/20 ring-2 ring-primary/50 scale-110";
+            dotClass += `w-8 h-8 ${dotAccentClass ?? "bg-primary/20 ring-2 ring-primary/50"} scale-110`;
             emoji = "✏️";
           } else {
             dotClass += "w-7 h-7 bg-muted-foreground/20";

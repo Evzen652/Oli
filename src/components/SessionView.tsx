@@ -84,16 +84,22 @@ const STATE_LABELS: Record<SessionState, string> = {
 };
 
 /** Get subject accent color class */
-function getSubjectColor(subject?: string): { bg: string; border: string; badge: string; accent: string } {
+function getSubjectColor(subject?: string): { bg: string; border: string; badge: string; accent: string; dotAccent: string } {
   switch (subject) {
     case "matematika":
-      return { bg: "from-blue-50 to-blue-100/50", border: "border-l-blue-400", badge: "bg-blue-100 text-blue-700 border-blue-200", accent: "bg-blue-400" };
+      return { bg: "from-blue-50 to-blue-100/50", border: "border-l-blue-400", badge: "bg-blue-500 text-white border-blue-600", accent: "bg-blue-500", dotAccent: "bg-blue-100 ring-2 ring-blue-400" };
     case "čeština":
-      return { bg: "from-purple-50 to-purple-100/50", border: "border-l-purple-400", badge: "bg-purple-100 text-purple-700 border-purple-200", accent: "bg-purple-400" };
+      return { bg: "from-purple-50 to-purple-100/50", border: "border-l-purple-400", badge: "bg-purple-500 text-white border-purple-600", accent: "bg-purple-500", dotAccent: "bg-purple-100 ring-2 ring-purple-400" };
     case "prvouka":
-      return { bg: "from-green-50 to-green-100/50", border: "border-l-green-400", badge: "bg-green-100 text-green-700 border-green-200", accent: "bg-green-400" };
+      return { bg: "from-green-50 to-green-100/50", border: "border-l-green-400", badge: "bg-green-500 text-white border-green-600", accent: "bg-green-500", dotAccent: "bg-green-100 ring-2 ring-green-400" };
+    case "přírodověda":
+      return { bg: "from-emerald-50 to-emerald-100/50", border: "border-l-emerald-400", badge: "bg-emerald-500 text-white border-emerald-600", accent: "bg-emerald-500", dotAccent: "bg-emerald-100 ring-2 ring-emerald-400" };
+    case "vlastivěda":
+      return { bg: "from-amber-50 to-amber-100/50", border: "border-l-amber-400", badge: "bg-amber-500 text-white border-amber-600", accent: "bg-amber-500", dotAccent: "bg-amber-100 ring-2 ring-amber-400" };
+    case "informatika":
+      return { bg: "from-sky-50 to-sky-100/50", border: "border-l-sky-400", badge: "bg-sky-500 text-white border-sky-600", accent: "bg-sky-500", dotAccent: "bg-sky-100 ring-2 ring-sky-400" };
     default:
-      return { bg: "from-secondary to-secondary/50", border: "border-l-primary", badge: "bg-secondary text-secondary-foreground", accent: "bg-primary" };
+      return { bg: "from-secondary to-secondary/50", border: "border-l-primary", badge: "bg-secondary text-secondary-foreground", accent: "bg-primary", dotAccent: "bg-primary/10 ring-2 ring-primary/40" };
   }
 }
 
@@ -419,7 +425,8 @@ export function SessionView() {
       )}
       {AdminBanner}
       {/* Header */}
-      <header className="relative border-b px-4 py-3">
+      <header className="relative border-b px-4 pt-4 pb-3">
+        <div className={`absolute top-0 left-0 right-0 h-1 ${subjectColors.accent}`} />
         <div className="absolute left-4 top-1/2 -translate-y-1/2">
           <OlyLogo size="sm" onClick={s.handleReset} />
         </div>
@@ -766,6 +773,7 @@ export function SessionView() {
                 current={answeredTask ? Math.max(session.currentTaskIndex - 1, 0) : session.currentTaskIndex}
                 total={session.practiceBatch.length}
                 results={taskResults}
+                dotAccentClass={subjectColors.dotAccent}
               />
             </div>
           )}
