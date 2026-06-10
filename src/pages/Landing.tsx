@@ -162,7 +162,6 @@ export default function Landing() {
                   border: "border-teal-200/60",
                   rotate: "rotate-1",
                   mt: "-mt-2",
-                  imgClass: "h-44 w-44",
                 },
                 {
                   title: "Každodenní vyučování",
@@ -172,6 +171,7 @@ export default function Landing() {
                   border: "border-orange-200/60",
                   rotate: "-rotate-1",
                   mt: "mt-4",
+                  imgClass: "h-44 w-44",
                 },
               ].map((tile) => (
                 <div
