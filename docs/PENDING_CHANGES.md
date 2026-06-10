@@ -82,7 +82,17 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ---
 
+## Otevřené (doplněno 2026-06-11)
+
+### 29 témat bez gradace obtížnosti (nový check 2b)
+Nový audit check „recyklace otázek L1 → L3" odhalil 29 non-adaptivních generátorů napříč ročníky (původní check viděl jen 7 — shuffle ho obcházel). Level 3 vrací ≥ 90 % stejných otázek jako level 1. Grade-3: dialog-pravidla, omluvenka-zprava, popis-predmetu, sebekontrola-projevu, uhledne-psani + další v g4/g5. Seznam: `npm run audit:pedagogical` → difficulty_progression. **Oprava = autorská práce** (napsat těžší L3 úlohy — aplikační místo definičních), vhodné pro grade-N sessions po tématech.
+
 ## Vyřízené
+
+### 2026-06-11 — Gradace obtížnosti: systémový check + velká písmena bez meta-textu ✅
+- **Check 2b v runPedagogicalAudit**: podíl otázek L3 shodných s L1 ≥ 90 % → difficulty_progression. Imunní vůči shuffle (check 2 porovnával jen 1. otázku). Šablonové generátory s náhodnými čísly ~0 % překryv, pool-based s nadmnožinou < 60 % — bez false positives. Nález: 7 → 29 non-adaptivních témat.
+- **velkaPismenaVlastniJmena.ts**: 6 úloh zbaveno meta-textu v options („Kopci (název ulice → velké)" → „Kopci") — zdůvodnění patří do explanation; +1 odpověď mimo options („paní (malé) Nováková (velké)"). Uzavřen otevřený nález z 2026-06-11.
+- Testy: 61 failed (baseline 67, −6), audit-new-checks 44/44 ✅
 
 ### 2026-06-11 — Pedagogická revize grade-3 obsahu + systémové audit checky ✅
 **Opravy obsahu (učily chybu):**

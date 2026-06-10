@@ -261,6 +261,38 @@ describe("runOfflineAudit — porovnávací hint leak", () => {
   });
 });
 
+// ─── runPedagogicalAudit — recyklace otázek L1 → L3 ────────────────────────
+
+describe("runPedagogicalAudit — recyklace otázek L1 → L3", () => {
+  const FIXED = [
+    task("Co je kružnice?", "čára", { options: ["čára", "plocha", "bod"] }),
+    task("Co je kruh?", "plocha", { options: ["plocha", "čára", "bod"] }),
+    task("Co je poloměr?", "úsečka", { options: ["úsečka", "čára", "bod"] }),
+  ];
+
+  it("stejné otázky na L1 i L3 (jen přeházené) → difficulty_progression issue", () => {
+    const topic = makeTopic({
+      // Jiné pořadí + jiný počet → obejde check 2 (stejný počet + 1. otázka)
+      generator: (level: number) => (level === 1 ? FIXED : [...FIXED].reverse()),
+    });
+    const report = runPedagogicalAudit([topic]);
+    expect(report.issues.some(i => i.category === "difficulty_progression" && i.detail.includes("shodných s levelem 1"))).toBe(true);
+    expect(report.nonAdaptiveTopics).toContain("test-topic");
+  });
+
+  it("L3 s vlastními těžšími otázkami → žádný issue", () => {
+    const HARDER = [
+      task("Narýsuj kružnici s poloměrem 4 cm — jaký je průměr?", "8 cm", { options: ["8 cm", "4 cm", "2 cm"] }),
+      task("Průměr je 10 cm. Jaký je poloměr?", "5 cm", { options: ["5 cm", "10 cm", "20 cm"] }),
+    ];
+    const topic = makeTopic({
+      generator: (level: number) => (level === 1 ? FIXED : HARDER),
+    });
+    const report = runPedagogicalAudit([topic]);
+    expect(report.issues.filter(i => i.detail.includes("shodných s levelem 1"))).toHaveLength(0);
+  });
+});
+
 // ─── runOfflineAudit — step_based ─────────────────────────────────────────
 
 describe("runOfflineAudit — step_based checky", () => {

@@ -559,6 +559,25 @@ export function runPedagogicalAudit(
       });
     }
 
+    // ── 2b) Recyklace otázek L1 → L3 — shuffle obejde check 2 ─────────────
+    // Měří, jaký podíl otázek na NEJTĚŽŠÍ úrovni pochází z L1. ≥ 90 % znamená,
+    // že level 3 nepřidává obtížnost — jen přehází pořadí. Šablonové generátory
+    // s náhodnými čísly mají překryv ~0 %, pool-based s nadmnožinou < 60 %.
+    if (lvl1Tasks.length >= 2 && lvl3Tasks.length >= 2 && !nonAdaptiveTopics.includes(topic.id)) {
+      const q1 = new Set(lvl1Tasks.map(t => t.question));
+      const q3 = new Set(lvl3Tasks.map(t => t.question));
+      const shared = [...q3].filter(q => q1.has(q)).length;
+      const recycled = shared / q3.size;
+      if (recycled >= 0.9) {
+        nonAdaptiveTopics.push(topic.id);
+        issues.push({
+          ...issueMeta,
+          category: "difficulty_progression",
+          detail: `${Math.round(recycled * 100)} % otázek levelu 3 je shodných s levelem 1 — nejtěžší úroveň nepřidává obtížnost`,
+        });
+      }
+    }
+
     // ── 3) Missing hints — témata bez nápověd ───────────────────────────
     const allTasks = [...lvl1Tasks, ...lvl2Tasks, ...lvl3Tasks];
     const sampleTasks = allTasks.slice(0, 10); // sample max 10
