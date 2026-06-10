@@ -84,6 +84,13 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené
 
+### 2026-06-09 — Grade-3 žákovská navigace: zploštění na 2 úrovně (okruh → téma) ✅
+- Nový `src/content/grade-3/navigation.ts` — custom mapování okruhů (max 4 témata/okruh), 52 podtémat zachováno
+- `TopicBrowser.tsx` — pro `grade === 3` použije custom 2-úrovňovou nav (okruh → téma → cvičení) místo 4-úrovňové RVP hierarchie; ostatní ročníky beze změny
+- Matematika 5 okruhů, Čeština 8 okruhů (Prvouka zatím bez obsahu); RVP strom v adminu (`/admin/rvp-tree`) zůstává věrný oficiálnímu kurikulu
+- Ověřeno v prohlížeči end-to-end (okruh → téma → spuštěné cvičení), TypeScript 0 chyb
+- ⚠️ TODO (spawned): sloučit duplicitní CATEGORY render blok v TopicBrowseru
+
 ### 2026-06-08 — Per-karta OK + sync mezi PC (Supabase) ✅
 - `useExerciseReview.ts` — per-karta „OK" stav, klíč `skill.id::otázka::odpověď`
 - Supabase tabulka `admin_reviewed_cards` (migrace `20260608120000`), RLS pro admina (inline `EXISTS` nad `user_roles`)

@@ -40,3 +40,4 @@ supabase/.temp/
 !.claude/agents/
 !.claude/commands/
 OLI-pitch-deck.pptx
+.vercel

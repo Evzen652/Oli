@@ -185,10 +185,12 @@ export function SessionView() {
     }
   }, [recoveryChecked, session, grade]);
 
-  // Admin: auto-select grade 4 if none set (grade 3 has no content yet)
+  // Admin: obnov naposledy testovaný ročník (zapamatovaný v localStorage), fallback 4
   useEffect(() => {
     if (role === "admin" && !grade) {
-      s.handleGradeSelect(4 as any);
+      const saved = Number(localStorage.getItem("oli_admin_preview_grade"));
+      const g = saved >= 1 && saved <= 9 ? saved : 4;
+      s.handleGradeSelect(g as any);
     }
   }, [role, grade]);
 
@@ -204,9 +206,13 @@ export function SessionView() {
         <select
           value={grade ?? 4}
           onChange={(e) => {
-            s.setGrade(null);
+            const g = Number(e.target.value);
+            localStorage.setItem("oli_admin_preview_grade", String(g));
             s.setSession(null as any);
-            setTimeout(() => s.handleGradeSelect(Number(e.target.value) as any), 0);
+            // Reset výběru — jinak zůstane předmět z minulého ročníku (prázdná stránka)
+            setShowTopicBrowser(false);
+            setTopicBrowserSubject(undefined);
+            s.handleGradeSelect(g as any);
           }}
           className="h-7 rounded-full bg-white/15 border border-white/20 text-primary-foreground text-xs px-3 cursor-pointer font-medium"
         >
@@ -347,7 +353,7 @@ export function SessionView() {
       <>
         {DemoHeader}
         {AdminBanner}
-        <TopicBrowser grade={grade} onSelectTopic={s.handleTopicSelect} onBack={() => {
+        <TopicBrowser key={grade} grade={grade} onSelectTopic={s.handleTopicSelect} onBack={() => {
           if (isStudentView) {
             setShowTopicBrowser(false);
             setTopicBrowserSubject(undefined);

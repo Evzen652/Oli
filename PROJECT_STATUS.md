@@ -125,12 +125,14 @@ src/
 | **Freemium + 14-denní trial** | ✅ | Anonymní vstup, trial flow, adaptive difficulty, InviteParent flow |
 | **Architektura paralelních sessions** | ✅ | Worktree izolace, SESSION_OWNERSHIP, PENDING_CHANGES komunikace |
 | **RVP dataset + curriculum API** | ✅ | 841 podtémat, `data/rvp_data.json`, `rvpNodeId` most |
+| **Grade-3 žákovská navigace 2 úrovně** | ✅ | `navigation.ts` — okruh → téma (max 4/okruh), 52 podtémat zachováno; jen pro grade 3, RVP strom v adminu beze změny |
 
 ## 6. Otevřené / další v pořadí
 
 | Co | Kdo | Stav |
 |---|---|---|
-| Grade-3 prvouka (0/14 témat) | Grade-3 session | ⏸️ Další obsah |
+| Sloučit duplicitní CATEGORY render v TopicBrowseru | Architekt | ⏸️ Drobný refactor (spawned task) |
+| Grade-3 prvouka (0/14 témat) — pak doplnit do `navigation.ts` | Grade-3 session | ⏸️ Další obsah |
 | Grade-4 CJL: přidat explanation (jako grade-3) | Architekt | ✅ 22/22 hotovo |
 | Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
 | Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na admin editor |

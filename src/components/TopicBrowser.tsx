@@ -22,6 +22,8 @@ import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { getDisplayCategory, getDisplayCategoryDescription, getDisplayTopic, getDisplayTopicDescription } from "@/lib/displayNames";
+import { GRADE3_NAVIGATION, type Grade3Okruh } from "@/content/grade-3/navigation";
+import { pad } from "@/lib/czechGrammar";
 
 interface TopicBrowserProps {
   grade: Grade;
@@ -55,6 +57,13 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   const subjects = [...new Set(topics.map((t) => t.subject))];
 
+  const getSubjectOkruhy = (subject: string): Grade3Okruh[] | null => {
+    if (grade === 3) {
+      return GRADE3_NAVIGATION.find(n => n.subject === subject)?.okruhy ?? null;
+    }
+    return null;
+  };
+
   const categories = selectedSubject
     ? [...new Set(topics.filter((t) => t.subject === selectedSubject).map((t) => t.category))]
     : [];
@@ -69,19 +78,29 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
         )]
       : [];
 
-  // Subtopics (skills) within selected topic group
-  const subtopics =
-    selectedSubject && selectedCategory && selectedTopic
-      ? topics.filter(
-          (t) =>
-            t.subject === selectedSubject &&
-            t.category === selectedCategory &&
-            t.topic === selectedTopic
-        )
-      : [];
+  // Subtopics (skills) within selected topic group — or custom okruh témata
+  const subtopics = useMemo(() => {
+    if (!selectedSubject || !selectedCategory) return [];
+    const okruhy = getSubjectOkruhy(selectedSubject);
+    if (okruhy) {
+      const okruh = okruhy.find(o => o.id === selectedCategory);
+      return okruh ? topics.filter(t => okruh.topicIds.includes(t.id)) : [];
+    }
+    if (!selectedTopic) return [];
+    return topics.filter(
+      t => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubject, selectedCategory, selectedTopic, topics, grade]);
 
   const handleBack = () => {
     if (level === "subtopic") {
+      // Custom nav: vždy zpět na okruhy (category)
+      if (selectedSubject && getSubjectOkruhy(selectedSubject)) {
+        setSelectedCategory(null);
+        setLevel("category");
+        return;
+      }
       // If topic level has only 1 group, skip it
       const groups = selectedSubject && selectedCategory
         ? [...new Set(topics.filter(t => t.subject === selectedSubject && t.category === selectedCategory).map(t => t.topic))]
@@ -128,6 +147,16 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   const handleSubjectClick = (subject: string) => {
     setSelectedSubject(subject);
+    const okruhy = getSubjectOkruhy(subject);
+    if (okruhy) {
+      if (okruhy.length === 1) {
+        setSelectedCategory(okruhy[0].id);
+        setLevel("subtopic");
+      } else {
+        setLevel("category");
+      }
+      return;
+    }
     const cats = [...new Set(topics.filter((t) => t.subject === subject).map((t) => t.category))];
     if (cats.length === 1) {
       setSelectedCategory(cats[0]);
@@ -155,6 +184,10 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
+    if (selectedSubject && getSubjectOkruhy(selectedSubject)) {
+      setLevel("subtopic");
+      return;
+    }
     const groups = [...new Set(
       topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic)
     )];
@@ -200,6 +233,10 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
   const displayCatDesc = (cat: string) => isAdmin ? null : getDisplayCategoryDescription(cat, grade);
   const displayTopDesc = (top: string) => isAdmin ? null : getDisplayTopicDescription(top, grade);
 
+  const activeOkruh = level === "subtopic" && selectedSubject && selectedCategory
+    ? getSubjectOkruhy(selectedSubject)?.find(o => o.id === selectedCategory) ?? null
+    : null;
+
   const title =
     level === "subject"
       ? t("topic.select_subject")
@@ -207,7 +244,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
         ? selectedSubject ? capitalize(selectedSubject) : ""
         : level === "topic"
           ? selectedCategory ? displayCat(selectedCategory) : ""
-          : selectedTopic ? displayTop(selectedTopic) : "";
+          : activeOkruh
+            ? activeOkruh.name
+            : selectedTopic ? displayTop(selectedTopic) : "";
 
   const subtitle =
     level === "subject"
@@ -216,7 +255,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
         ? t("topic.select_topic")
         : level === "topic"
           ? t("topic.select_practice")
-          : t("topic.select_subtopic");
+          : activeOkruh
+            ? "Vyber téma a pusť se do toho."
+            : t("topic.select_subtopic");
 
   // Subject-level visual config — barva karty per subject (Lovable mockup styl)
   const SUBJECT_CARD_STYLES: Record<string, { bg: string; border: string; chipBg: string; chipText: string }> = {
@@ -281,7 +322,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
             {subjects.map((subject) => {
               const subjectTopics = topics.filter((t) => t.subject === subject);
               const cats = [...new Set(subjectTopics.map((t) => t.category))];
-              const count = cats.length;
+              const count = getSubjectOkruhy(subject)?.length ?? cats.length;
               const meta = getSubjectMeta(subject);
               const cardStyle = SUBJECT_CARD_STYLES[subject] ?? {
                 bg: meta.gradientClass,
@@ -371,7 +412,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                       ? "Vyber si okruh, který chceš procvičovat."
                       : level === "topic"
                         ? "Vyber téma a pusť se do něj."
-                        : "Vyber konkrétní podtéma."}
+                        : activeOkruh
+                          ? "Vyber téma a pusť se do toho."
+                          : "Vyber konkrétní podtéma."}
                   </p>
                 </div>
                 <BackButton onClick={handleBack} />
@@ -380,8 +423,40 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Info dialog — pokud existuje pro tuto úroveň */}
               {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
 
-              {/* CATEGORY level — čtvercový grid */}
-              {level === "category" && (
+              {/* CATEGORY level — custom okruhy (grade 3) */}
+              {level === "category" && selectedSubject && getSubjectOkruhy(selectedSubject) && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {getSubjectOkruhy(selectedSubject)!.map((okruh) => {
+                    const okruhTopics = topics.filter((t) => okruh.topicIds.includes(t.id));
+                    const count = okruhTopics.length;
+                    const rvpCategory = okruhTopics[0]?.category ?? "";
+                    return (
+                      <button
+                        key={okruh.id}
+                        type="button"
+                        onClick={() => handleCategoryClick(okruh.id)}
+                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
+                      >
+                        <div className="flex-1 flex items-center justify-center">
+                          <PrvoukaImage
+                            imageUrl={getCategoryIllustrationUrl(selectedSubject!, rvpCategory)}
+                            fallbackEmoji={okruh.emoji}
+                            size="lg"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight line-clamp-2">{okruh.name}</h3>
+                          <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{okruh.description}</p>
+                          <p className="text-xs text-foreground/50 font-medium">{pad(count, "TÉMA")}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* CATEGORY level — čtvercový grid (RVP, ostatní ročníky) */}
+              {level === "category" && !(selectedSubject && getSubjectOkruhy(selectedSubject)) && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {categories.map((category) => {
                     const catTopics = topics.filter((t) => t.subject === selectedSubject && t.category === category);
@@ -459,7 +534,10 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {level === "subtopic" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {subtopics.map((topic) => {
-                    const subEmoji = getTopicEmoji(selectedSubject!, selectedCategory!, selectedTopic!);
+                    // Custom nav: selectedCategory je id okruhu — pro illustration/emoji
+                    // použij skutečnou RVP kategorii tématu.
+                    const rvpCategory = activeOkruh ? topic.category : selectedCategory!;
+                    const subEmoji = getTopicEmoji(selectedSubject!, rvpCategory, selectedTopic ?? topic.topic);
                     const isDbOnly = !hasCodeGenerator(topic);
                     return (
                       <button
@@ -469,7 +547,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col ${isDbOnly ? "opacity-80" : ""}`}
                       >
                         <div className="flex-1 flex items-center justify-center">
-                          <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topic.title, category: selectedCategory! })} fallbackEmoji={getTopicEmoji(selectedSubject!, selectedCategory!, topic.title) || subEmoji} size="lg" />
+                          <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topic.title, category: rvpCategory })} fallbackEmoji={getTopicEmoji(selectedSubject!, rvpCategory, topic.title) || subEmoji} size="lg" />
                         </div>
                         <div className="space-y-1">
                           <h3 className="text-base font-black text-foreground tracking-tight leading-tight line-clamp-2">

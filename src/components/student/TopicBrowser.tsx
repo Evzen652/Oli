@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { OlyLogo } from '@/components/shared/OlyLogo';
 import { useT } from '@/app/LocaleProvider';
 import { cn } from '@/lib/utils/cn';
+import { GRADE3_NAVIGATION } from '@/content/grade-3/navigation';
 
 interface Props {
   grade: Grade;
@@ -26,14 +27,31 @@ export function TopicBrowser({ grade, onSelectTopic, onBack }: Props) {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+  const getSubjectOkruhy = (subject: string) => {
+    if (grade === 3) return GRADE3_NAVIGATION.find(n => n.subject === subject)?.okruhy ?? null;
+    return null;
+  };
+
   const filteredBySubject = selectedSubject
     ? topics.filter((t) => t.subject === selectedSubject)
     : topics;
 
+  // Při custom nav: filteredByCategory = témata v daném okruhu
+  const filteredByCategory = useMemo(() => {
+    if (selectedSubject && selectedCategory) {
+      const okruhy = getSubjectOkruhy(selectedSubject);
+      if (okruhy) {
+        const okruh = okruhy.find(o => o.id === selectedCategory);
+        return okruh ? topics.filter(t => okruh.topicIds.includes(t.id)) : [];
+      }
+    }
+    return selectedCategory
+      ? filteredBySubject.filter((t) => t.category === selectedCategory)
+      : filteredBySubject;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSubject, selectedCategory, topics, grade]);
+
   const categories = [...new Set(filteredBySubject.map((t) => t.category))];
-  const filteredByCategory = selectedCategory
-    ? filteredBySubject.filter((t) => t.category === selectedCategory)
-    : filteredBySubject;
 
   const handleBack = () => {
     if (level === 'topic') {
@@ -85,8 +103,31 @@ export function TopicBrowser({ grade, onSelectTopic, onBack }: Props) {
           </div>
         )}
 
-        {/* Category level */}
-        {level === 'category' && (
+        {/* Category level — custom okruhy (grade 3) */}
+        {level === 'category' && selectedSubject && getSubjectOkruhy(selectedSubject) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {getSubjectOkruhy(selectedSubject)!.map((okruh) => {
+              const count = topics.filter(t => okruh.topicIds.includes(t.id)).length;
+              return (
+                <Card
+                  key={okruh.id}
+                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => { setSelectedCategory(okruh.id); setLevel('topic'); }}
+                >
+                  <CardContent className="p-6">
+                    <div className="text-3xl mb-2">{okruh.emoji}</div>
+                    <h3 className="text-lg font-bold">{okruh.name}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{okruh.description}</p>
+                    <Badge variant="secondary" className="mt-2">{count} témat</Badge>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Category level — RVP (ostatní ročníky) */}
+        {level === 'category' && !(selectedSubject && getSubjectOkruhy(selectedSubject)) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {categories.map((cat) => {
               const count = filteredBySubject.filter((t) => t.category === cat).length;
@@ -94,10 +135,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack }: Props) {
                 <Card
                   key={cat}
                   className="cursor-pointer hover:shadow-md transition-shadow"
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setLevel('topic');
-                  }}
+                  onClick={() => { setSelectedCategory(cat); setLevel('topic'); }}
                 >
                   <CardContent className="p-6">
                     <h3 className="text-lg font-bold">{cat}</h3>
