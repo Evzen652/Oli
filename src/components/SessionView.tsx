@@ -483,7 +483,7 @@ export function SessionView() {
                   return illUrl ? <img src={illUrl} alt="" className="w-16 h-16 object-contain shrink-0 self-center mix-blend-multiply" /> : null;
                 })()}
                 <div className="flex-1 space-y-1">
-                  <p className="text-xl font-bold text-foreground">
+                  <p className="text-xl font-heading font-bold text-foreground">
                     {getChildTopicTitle(session.matchedTopic, grade, isStudentView)}
                   </p>
                   <p className="text-base font-semibold text-muted-foreground">
@@ -581,7 +581,7 @@ export function SessionView() {
               <CardContent className="p-6">
                 {session.state === "EXPLAIN" && (
                   <>
-                    <h2 className="text-2xl font-semibold text-foreground mb-3">{t("session.explain.title")}</h2>
+                    <h2 className="text-2xl font-heading font-bold text-foreground mb-3">{t("session.explain.title")}</h2>
                     <p className="mt-2 text-base text-muted-foreground">
                       {session.errorCount > 0
                         ? t("session.explain.errors")
@@ -612,7 +612,7 @@ export function SessionView() {
                       className="h-16 w-16 object-contain shrink-0"
                       style={{ mixBlendMode: "multiply" }}
                     />
-                    <h2 className="text-2xl font-bold text-foreground">{questionTitle}</h2>
+                    <h2 className="text-2xl font-heading font-bold text-foreground">{questionTitle}</h2>
                   </div>
                 )}
                 {practiceQuestion && (

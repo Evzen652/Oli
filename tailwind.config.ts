@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Fredoka One", "Nunito", "ui-sans-serif", "sans-serif"],
+        display: ["Fredoka One", "Nunito", "ui-sans-serif", "sans-serif"],
         sans: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
