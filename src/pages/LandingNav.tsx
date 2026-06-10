@@ -60,9 +60,6 @@ export function LandingNav() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-slate-600" onClick={() => window.location.href = "/demo"}>
-            Vyzkoušet demo
-          </Button>
           <Button variant="ghost" size="sm" className="text-slate-600" onClick={goToLogin}>
             Přihlásit se
           </Button>
@@ -89,7 +86,6 @@ export function LandingNav() {
                   </button>
                 ))}
                 <hr />
-                <Button variant="outline" className="w-full" onClick={() => { navigate("/demo"); setOpen(false); }}>Vyzkoušet demo</Button>
                 <Button variant="outline" className="w-full" onClick={() => { goToLogin(); setOpen(false); }}>Přihlásit se</Button>
                 <Button className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white" onClick={() => { navigate("/auth"); setOpen(false); }}>
                   Registrace zdarma

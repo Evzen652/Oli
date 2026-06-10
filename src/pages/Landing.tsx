@@ -130,9 +130,6 @@ export default function Landing() {
                 <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-lg shadow-orange-200 w-full sm:w-auto bg-orange-500 hover:bg-orange-600 active:bg-orange-700 transition-colors duration-150" onClick={() => navigate("/onboarding")}>
                   Začít zdarma <ArrowRight className="h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-base px-12 h-14 rounded-full border-slate-200 text-slate-600 w-full sm:w-auto" onClick={() => navigate("/demo")}>
-                  Vyzkoušet demo
-                </Button>
               </div>
             </div>
 
