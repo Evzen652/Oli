@@ -142,8 +142,7 @@ export default function Landing() {
                   img: imgDiktat,
                   bg: "linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%)",
                   border: "border-purple-200/60",
-                  rotate: "rotate-1",
-                  mt: "mt-6",
+                  rotate: "-rotate-1",
                 },
                 {
                   title: "Příprava na písemku",
@@ -151,7 +150,8 @@ export default function Landing() {
                   img: imgPisemka,
                   bg: "linear-gradient(135deg, #EAF2FF 0%, #DBEAFE 100%)",
                   border: "border-blue-200/60",
-                  rotate: "-rotate-1",
+                  rotate: "rotate-1",
+                  mt: "mt-6",
                   threshold: 220,
                 },
                 {
