@@ -567,7 +567,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 );
               })}
             </div>
-            <button onClick={onBrowseTopics}
+            <button onClick={() => onBrowseTopics()}
               className="shrink-0 h-12 rounded-2xl bg-white font-bold text-violet-700 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-md whitespace-nowrap">
               Začít procvičovat <ArrowRight className="h-4 w-4 shrink-0" />
             </button>
