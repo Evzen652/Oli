@@ -129,6 +129,11 @@ src/
 
 ### Session 2026-06-10 — hotovo:
 - ✅ **TopicBrowser UX: vynechaná meziúroveň „Vyber si okruh"** — klik na chip předmětu v ChildHomePage přeskočí úroveň `category` a jde přímo na `subtopic` (zobrazí všechna témata daného předmětu najednou). Výjimka: grade-3 matematika + čeština s `GRADE3_NAVIGATION` zůstávají na 2-úrovňové okruhové navigaci beze změny. Opraveno i `rvpCategory = selectedCategory ?? topic.category` pro ilustrace v "all topics" módu. TypeScript 0 chyb.
+- ✅ **„Začít procvičovat" bug** — `onClick={onBrowseTopics}` předávalo MouseEvent jako `subject` → prázdný subtopic grid. Opraveno na `() => onBrowseTopics()`.
+- ✅ **Session obrazovka — barevný redesign dle předmětu** — header proužek (4px), solid badge, aktivní progress dot a karta cvičení (shadow-lg, gradient -100→-200, bez levého proužku) v barvě předmětu. `getSubjectColor()` rozšířen o přírodovědu/vlastivědu/informatiku. Sytější tlačítka odpovědí (`-200/-400` + barevný stín). Nápověda „Chceš trochu poradit?" violet-200/400/900.
+- ✅ **Typografie** — nadpisy session (`font-heading`) přepnuty na **Baloo 2** (oblý dětský font s českou diakritikou; Fredoka One měl vadné háčky). Odstraněn prefix „Téma:", tučnější texty.
+- ✅ **Dialog „Co je dobré vědět" — barevné boxy** — Jak na to (modrá), Příklad (zelená), Častá chyba (červená).
+- ✅ **Landing page** — skryté tlačítko „Vyzkoušet demo" (hero + desktop nav + mobile menu); prohozeny karty Diktát ↔ Příprava na písemku (zachována geometrie); větší box vpravo (Každodenní vyučování). ⚠️ Obnoven původní obrázek `subject-cestina.png` v Supabase storage (omylem přepsaný dřív). **Pravidlo: na landing obrázky nešahat bez pokynu** (uloženo do paměti).
 
 ## 6. Otevřené / další v pořadí
 
