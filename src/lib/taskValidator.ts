@@ -1,6 +1,24 @@
 import type { PracticeTask, InputType } from "./types";
 
 /**
+ * True pokud `needle` je v `haystack` obsažen jako celá slova (na hranicích slov).
+ * Hranice = začátek/konec řetězce nebo ne-písmenný znak.
+ * → "přímá řeč" NENÍ uvnitř "nepřímá řeč" (přímá je uvnitř slova nepřímá),
+ *   ale "kočka" JE uvnitř "kočka domácí" (skutečná ambiguita).
+ */
+function containsAsPhrase(haystack: string, needle: string): boolean {
+  const isLetter = (ch: string | undefined) => !!ch && /\p{L}/u.test(ch);
+  let idx = haystack.indexOf(needle);
+  while (idx !== -1) {
+    const before = haystack[idx - 1];
+    const after = haystack[idx + needle.length];
+    if (!isLetter(before) && !isLetter(after)) return true;
+    idx = haystack.indexOf(needle, idx + 1);
+  }
+  return false;
+}
+
+/**
  * System-wide task format validator.
  * Used in all 3 exercise paths: algorithmic generator, AI edge function, DB custom_exercises.
  */
@@ -22,13 +40,16 @@ export function validateTaskForInputType(task: PracticeTask, inputType: InputTyp
         const underscores = (task.question.match(/_/g) || []).length;
         if (underscores !== 1) return false;
       }
-      // Distractor nesmí být substring correctAnswer a naopak (jen slova > 3 znaky)
-      if (task.correctAnswer.length > 3) {
+      // Distractor nesmí být celá fráze obsažená v correctAnswer a naopak (jen slova > 3 znaky).
+      // Numerické/jednotkové odpovědi vyjmuty — "8 cm" vs "8 cm²" či "5 °C" vs "−5 °C"
+      // jsou legitimní distraktory. Shoda na hranicích slov (containsAsPhrase), ne substring —
+      // "přímá řeč" vs "nepřímá řeč", "umělecký" vs "neumělecký" jsou legitimní.
+      if (task.correctAnswer.length > 3 && !/\d/.test(task.correctAnswer)) {
         const correct = task.correctAnswer.trim().toLowerCase();
         const wrongOpts = task.options.filter(o => o !== task.correctAnswer);
         for (const opt of wrongOpts) {
           const o = opt.trim().toLowerCase();
-          if (o.length > 3 && (correct.includes(o) || o.includes(correct))) return false;
+          if (o.length > 3 && !/\d/.test(o) && (containsAsPhrase(correct, o) || containsAsPhrase(o, correct))) return false;
         }
       }
       return true;

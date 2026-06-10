@@ -36,8 +36,8 @@
 
 ### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
 Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
-1. **F1 — validátor substring (false-positive, ~20 format chyb):** `validateTaskForInputType` (src/lib/taskValidator.ts ř. 26–32) faulne legitimní distraktory: `8 cm` ⊂ `8 cm²`, `5 °C` ⊂ `−5 °C`, `přímá řeč` ⊂ `nepřímá řeč`, `umělecký` ⊂ `neumělecký`. Opravit: vyjmout numerické/jednotkové odpovědi + token/word-boundary shoda místo `includes`. ⚠️ Systémový invariant — testovat proti celé `audit:content` sadě.
-2. **F2 — answer_uniqueness (false-positive, 18):** runPedagogicalAudit hlásí `order`/`match` markery jako „shodné odpovědi". Přidat `drag_order`/`match_pairs` do výjimek (vedle `true_false`/`comparison`).
+1. ~~**F1 — validátor substring**~~ ✅ 2026-06-10 (viz Vyřízené)
+2. ~~**F2 — answer_uniqueness**~~ ✅ 2026-06-10 (viz Vyřízené)
 3. **R1 — fill_blank (13):** `shodaPrisudkuSPodmetem.ts` má `___` (3 podtržítka) vs `blanks` délky 1. Smazat `blanks: [blank]` nebo `___`→`_` (ověřit UI render).
 4. **R2 — match_pairs→categorize:** `obratlovciSavciPtaci...` a `riseRostlinHubZivocichu.ts` jsou kategorizace (víc položek → stejná třída), ne 1:1 párování. Změnit `inputType` na `categorize` + restrukturovat data. Bonus překlepy: „Čolník"→„Čolek", Rak označen jako ryba.
 5. **R3 — match_pairs vadná data:** `evropaPoloha...` (1 úloha, Alpy 2×), `evropskeStaty...` (2 úlohy, Euro 2×, Německo 2×). Opravit jen vadné úlohy, NEMĚNIT typ.
@@ -83,6 +83,29 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 ---
 
 ## Vyřízené
+
+### 2026-06-11 — Pedagogická revize grade-3 obsahu + systémové audit checky ✅
+**Opravy obsahu (učily chybu):**
+- `vyjmenovanaSlova.ts` + `slovaPribuznaVyjmenovana.ts`: **„byk" → „býk"** (3 úlohy učily špatný pravopis!), „pásla se býk" → „pásl se býk", duplicitní distraktory (bik 2×, milili 2×, sitý 2×, zvyknout 2×, brzy 2×), odpověď „Bystří / Bystrý" mimo options, cirkulární/zmatené explanations (kobyla→kobyla, hedging „nebo přinejmenším")
+- `slovaPribuznaKorenSlova.ts`: voda-úloha s odpovědí obsahující řešení („— VODIT nepatří"), „KNIH / KNIH" a „koňský, koňar, kůň" mimo options, neexistující slovo „výpit", zmatené explanations (zimnička, srdce, DEN/DEN)
+- `cteniZapisPorovnavaniCiselDo1000.ts`: hint „31 je menší než 60" prozrazoval odpověď → metodický hint
+- `tabulkyJizdniRadyDiagramy.ts`: „zebr" → „zeber", „Které zvíře je nejvíce" → „Kterých zvířat je nejvíce"
+- `obvodTrojuhelnikuCtverceObdelniku.ts`: duplicitní distraktor pro a=2 (4 cm 2×) → dedup
+
+**Systémové řešení (contentAudit.ts — offline audit, běží v CI):**
+- **c2 Duplicitní options** (case-sensitive — „Vltava" vs „vltava" je u velkých písmen legitimní)
+- **c3 Giveaway option** — meta-text („nepatří", „→", „správně") nebo délka ≥ 2× všech distraktorů
+- **d1b Sémantický leak porovnávání** — hint s čísly + menší/větší/rovná (s \b — „porovnávat" nematchuje)
+- **Slovníkový strážce** `src/test/vyjmenovana-canon.test.ts` — každá correctAnswer vyjmenovaných témat pinována na kánon správných tvarů; překlep typu „byk" = okamžitý fail testu
+- +10 unit testů checků (audit-new-checks 45/45 ✅)
+- Testy: 63 failed (baseline 67 — žádný nový, 4 opraveny obsahem)
+- **Otevřený nález:** velkaPismena options s meta-textem „(… → velké)" — flagged auditem, vyžaduje redesign options (ne kritické)
+
+### 2026-06-10 — Audit grade-5: F1 + F2 — false-positive opravy audit nástroje ✅
+- **F1** `taskValidator.ts`: substring check → `containsAsPhrase` (shoda jen na hranicích slov) + výjimka pro numerické/jednotkové odpovědi. `8 cm`/`8 cm²`, `5 °C`/`−5 °C`, `přímá řeč`/`nepřímá řeč`, `umělecký`/`neumělecký` už nejsou faulovány; `Praha` ⊂ `stará Praha` (skutečná ambiguita) stále invalid.
+- **F2** `contentAudit.ts`: `answer_uniqueness` přeskakuje `drag_order`/`match_pairs` (correctAnswer je technický marker).
+- Testy: `audit-new-checks.test.ts` aktualizovány na novou sémantiku (35/35 ✅), `audit:content` ✅, `audit:pedagogical` ✅, celá sada bez nových failů vs. baseline (67 pre-existujících).
+- **Další krok:** znovu spustit audit grade-5 → reálný počet nálezů, pak R1–R6.
 
 ### 2026-06-10 — TopicBrowser UX: vynechání zbytečné meziúrovně při výběru předmětu ✅
 - Klik na chip předmětu (initialSubject) → nová logika: `level = "subtopic"` (zobrazí všechna témata pro předmět), dříve `level = "category"` → prázdná stránka „Vyber si okruh"

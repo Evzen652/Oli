@@ -17,8 +17,8 @@ const TABULKY = [
     radky: [["Lev", "4"], ["Slon", "2"], ["Zebra", "7"], ["Opice", "12"]],
     otazky: [
       { q: "Kolik je slonů a lvů dohromady?", a: "6", d: ["6", "8", "5", "14"] },
-      { q: "O kolik je opic víc než zebr?", a: "5", d: ["5", "4", "6", "19"] },
-      { q: "Které zvíře je v zoo nejvíce?", a: "Opice", d: ["Opice", "Zebra", "Lev", "Slon"] },
+      { q: "O kolik je opic víc než zeber?", a: "5", d: ["5", "4", "6", "19"] },
+      { q: "Kterých zvířat je v zoo nejvíce?", a: "Opic", d: ["Opic", "Zeber", "Lvů", "Slonů"] },
     ],
   },
   {

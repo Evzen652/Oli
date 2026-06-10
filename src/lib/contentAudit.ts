@@ -172,6 +172,42 @@ export function runOfflineAudit(
         });
       }
 
+      // c2) Duplicitní options — stejná možnost 2× mate žáka a snižuje obtížnost.
+      // Case-SENSITIVE záměrně: "Vltava" vs "vltava" jsou u cvičení na velká
+      // písmena různé (legitimní) možnosti.
+      if (task.options && task.options.length > 0) {
+        const norm = task.options.map(o => o.trim());
+        if (new Set(norm).size !== norm.length) {
+          const dup = norm.find((o, i) => norm.indexOf(o) !== i);
+          issues.push({
+            ...issueMeta,
+            taskQuestion: task.question.slice(0, 80),
+            category: "format",
+            detail: `Duplicitní možnost v options: "${dup}"`,
+          });
+        }
+      }
+
+      // c3) Giveaway option — správná možnost se prozrazuje délkou nebo meta-textem
+      // ("— X nepatří", "→ velké", "(správně)") → žák vybere bez znalosti
+      if (task.options && task.options.length >= 3 && task.options.includes(task.correctAnswer)) {
+        const correct = String(task.correctAnswer);
+        const distractors = task.options.filter(o => o !== task.correctAnswer);
+        const maxDistractorLen = Math.max(...distractors.map(o => o.length));
+        const giveawayMarker = /nepatří|patří|správně|→/i.test(correct);
+        const giveawayLength = correct.length > 15 && correct.length >= 2 * maxDistractorLen;
+        if (giveawayMarker || giveawayLength) {
+          issues.push({
+            ...issueMeta,
+            taskQuestion: task.question.slice(0, 80),
+            category: "format",
+            detail: giveawayMarker
+              ? `Správná možnost obsahuje meta-text prozrazující odpověď: "${correct.slice(0, 60)}"`
+              : `Správná možnost je ≥ 2× delší než všechny distraktory (${correct.length} vs ${maxDistractorLen} znaků) — prozrazuje se`,
+          });
+        }
+      }
+
       // d) Hint leak (skip pro essay)
       if (topic.inputType !== "essay" && task.hints && task.hints.length > 0) {
         const leak = checkHintLeakage({
@@ -188,6 +224,26 @@ export function runOfflineAudit(
             failingHints: task.hints,
             correctAnswer: String(task.correctAnswer),
           });
+        }
+      }
+
+      // d1b) Porovnávání: nápověda s konkrétními čísly + směrovým slovem (menší/větší)
+      // prozrazuje výsledek, i když neobsahuje doslovný symbol odpovědi (<, >, =)
+      {
+        const caStr = String(task.correctAnswer).trim();
+        if (["<", ">", "="].includes(caStr) && task.hints) {
+          // \b před "rovn" — jinak by matchlo "porovnávat" (metodický hint, ne leak)
+          const leaking = task.hints.find(h => /\d/.test(h) && /(menší|větší|\brovn[áoý]|stejn)/i.test(h));
+          if (leaking) {
+            issues.push({
+              ...issueMeta,
+              taskQuestion: task.question.slice(0, 80),
+              category: "hint_leak",
+              detail: `Nápověda prozrazuje výsledek porovnání: "${leaking.slice(0, 60)}"`,
+              failingHints: task.hints,
+              correctAnswer: caStr,
+            });
+          }
         }
       }
 
@@ -615,10 +671,14 @@ export function runPedagogicalAudit(
     }
 
     // ── 8) Answer uniqueness within level 1 — šablonový generátor ────────
-    // Přeskočit pro inputType kde shodná odpověď je legitimní (true_false, comparison)
+    // Přeskočit pro inputType kde shodná odpověď je legitimní:
+    // true_false/comparison (malá množina hodnot), drag_order/match_pairs
+    // (correctAnswer je jen technický marker, skutečná odpověď je v items/pairs)
     if (
       topic.inputType !== "true_false" &&
       topic.inputType !== "comparison" &&
+      topic.inputType !== "drag_order" &&
+      topic.inputType !== "match_pairs" &&
       lvl1Tasks.length >= 5
     ) {
       const sample5 = lvl1Tasks.slice(0, 5);

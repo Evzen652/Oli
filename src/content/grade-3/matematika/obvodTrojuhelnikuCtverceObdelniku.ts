@@ -22,7 +22,8 @@ function gen(level: number): PracticeTask[] {
       tasks.push({
         question: `Čtverec má stranu ${a} cm. Jaký je jeho obvod?`,
         correctAnswer: `${o} cm`,
-        options: shuffle([`${o} cm`, `${o + 4} cm`, `${o - 4} cm`, `${a * 2} cm`]),
+        // Dedup: pro a=2 je o−4 = a×2 (obě 4 cm) — doplň náhradní distraktor
+        options: shuffle([`${o} cm`, ...[...new Set([`${o + 4} cm`, `${o - 4} cm`, `${a * 2} cm`, `${o + 2} cm`])].filter(d => d !== `${o} cm`).slice(0, 3)]),
         hints: ["Čtverec má 4 stejné strany.", `Obvod čtverce = 4 × délka strany = 4 × ${a} cm.`],
         solutionSteps: [`Obvod čtverce = 4 × a = 4 × ${a} = ${o} cm`],
       });

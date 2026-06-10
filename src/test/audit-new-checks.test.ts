@@ -44,12 +44,35 @@ describe("validateTaskForInputType — select_one nové checky", () => {
     )).toBe(false);
   });
 
-  it("substring check: distractor je substring correctAnswer → invalid", () => {
-    // "Prah" je substring "Praha"
+  it("phrase check: distractor je celá fráze uvnitř correctAnswer → invalid", () => {
+    // "Praha" je na hranici slov uvnitř "stará Praha" → ambiguita
     expect(validateTaskForInputType(
-      task("Hlavní město ČR?", "Praha", { options: ["Praha", "Prah", "Brno", "Plzeň"] }),
+      task("Hlavní město ČR?", "stará Praha", { options: ["stará Praha", "Praha", "Brno", "Plzeň"] }),
       "select_one"
     )).toBe(false);
+  });
+
+  it("phrase check: prefix uvnitř slova → valid (umělecký/neumělecký, přímá/nepřímá)", () => {
+    // "umělecký" je substring "neumělecký", ale uvnitř slova → legitimní distraktor
+    expect(validateTaskForInputType(
+      task("Jaký je to text?", "umělecký", { options: ["umělecký", "neumělecký", "odborný", "publicistický"] }),
+      "select_one"
+    )).toBe(true);
+    expect(validateTaskForInputType(
+      task("Jaká je to řeč?", "přímá řeč", { options: ["přímá řeč", "nepřímá řeč", "monolog", "dialog"] }),
+      "select_one"
+    )).toBe(true);
+  });
+
+  it("phrase check: numerické/jednotkové odpovědi se nekontrolují (8 cm vs 8 cm²)", () => {
+    expect(validateTaskForInputType(
+      task("Jaký je obvod?", "8 cm", { options: ["8 cm", "8 cm²", "16 cm", "4 cm"] }),
+      "select_one"
+    )).toBe(true);
+    expect(validateTaskForInputType(
+      task("Jaká je teplota?", "5 °C", { options: ["5 °C", "−5 °C", "15 °C", "0 °C"] }),
+      "select_one"
+    )).toBe(true);
   });
 
   it("substring check: correctAnswer je substring distractoru → invalid", () => {
@@ -157,6 +180,84 @@ describe("runOfflineAudit — essay missing hints", () => {
     });
     const report = runOfflineAudit([topic]);
     expect(report.issues.filter(i => i.category === "format" && i.detail.includes("hints"))).toHaveLength(0);
+  });
+});
+
+// ─── runOfflineAudit — duplicitní options ──────────────────────────────────
+
+describe("runOfflineAudit — duplicitní options", () => {
+  it("options s duplicitou → format issue", () => {
+    const topic = makeTopic({
+      generator: () => [task("Doplň: b_k", "býk", { options: ["býk", "bik", "byk", "bik"] })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.some(i => i.category === "format" && i.detail.includes("Duplicitní"))).toBe(true);
+  });
+
+  it("unikátní options → žádný issue", () => {
+    const topic = makeTopic({
+      generator: () => [task("Doplň: b_k", "býk", { options: ["býk", "bík", "byk", "bik"] })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.filter(i => i.detail.includes("Duplicitní"))).toHaveLength(0);
+  });
+});
+
+// ─── runOfflineAudit — giveaway option ─────────────────────────────────────
+
+describe("runOfflineAudit — giveaway option", () => {
+  it("správná možnost s meta-textem ('— X nepatří') → format issue", () => {
+    const topic = makeTopic({
+      generator: () => [task("Které slovo NEPATŘÍ k 'voda'?", "vodník, vodopád, vodit — VODIT nepatří", {
+        options: ["vodník, vodopád, vodit — VODIT nepatří", "vodník", "vodopád", "vodní"],
+      })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.some(i => i.category === "format" && i.detail.includes("meta-text"))).toBe(true);
+  });
+
+  it("správná možnost ≥ 2× delší než všechny distraktory → format issue", () => {
+    const topic = makeTopic({
+      generator: () => [task("Co je dialog?", "Rozhovor mezi dvěma nebo více lidmi, kteří si odpovídají", {
+        options: ["Rozhovor mezi dvěma nebo více lidmi, kteří si odpovídají", "Dopis", "Báseň", "Monolog"],
+      })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.some(i => i.category === "format" && i.detail.includes("delší"))).toBe(true);
+  });
+
+  it("vyvážené délky options → žádný giveaway issue", () => {
+    const topic = makeTopic({
+      generator: () => [task("Hlavní město ČR?", "Praha", { options: ["Praha", "Brno", "Plzeň", "Ostrava"] })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.filter(i => i.detail.includes("prozrazuje se") || i.detail.includes("meta-text"))).toHaveLength(0);
+  });
+});
+
+// ─── runOfflineAudit — sémantický leak u porovnávání ───────────────────────
+
+describe("runOfflineAudit — porovnávací hint leak", () => {
+  it("hint '31 je menší než 60' u odpovědi '<' → hint_leak", () => {
+    const topic = makeTopic({
+      generator: () => [task("Porovnej: 31 vs 60", "<", {
+        options: ["<", ">", "="],
+        hints: ["31 je menší než 60.", "Porovnej stovky, pak desítky."],
+      })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.some(i => i.category === "hint_leak" && i.detail.includes("porovnání"))).toBe(true);
+  });
+
+  it("metodický hint bez čísel ('kdo má více, je větší') → žádný leak", () => {
+    const topic = makeTopic({
+      generator: () => [task("Porovnej: 31 vs 60", "<", {
+        options: ["<", ">", "="],
+        hints: ["Kolik stovek má každé číslo?", "Porovnej stovky — kdo má více, je větší."],
+      })],
+    });
+    const report = runOfflineAudit([topic]);
+    expect(report.issues.filter(i => i.detail.includes("porovnání"))).toHaveLength(0);
   });
 });
 

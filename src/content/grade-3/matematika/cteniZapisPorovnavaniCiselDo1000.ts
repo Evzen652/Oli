@@ -46,7 +46,7 @@ function gen(level: number): PracticeTask[] {
         question: `Porovnej: ${a} vs ${b}`,
         correctAnswer: correct,
         options: shuffle([">", "<", "="]),
-        hints: [`${a} je ${a > b ? "větší" : "menší"} než ${b}.`, "Porovnej stovky — kdo má více, je větší. Stejné stovky? Porovnej desítky, pak jednotky."],
+        hints: [`Kolik stovek má ${a} a kolik ${b}? Začni porovnávat od stovek.`, "Porovnej stovky — kdo má více, je větší. Stejné stovky? Porovnej desítky, pak jednotky."],
         solutionSteps: [`Porovnáváme ${a} a ${b}.`, a > b ? `${a} > ${b} — první číslo je větší.` : `${a} < ${b} — první číslo je menší.`],
       });
     } else if (type === 2) {

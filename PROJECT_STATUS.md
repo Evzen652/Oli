@@ -137,8 +137,14 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-10/11 (pokračování) — hotovo:
+- ✅ **Audit grade-5 F1+F2: false-positive opravy audit nástroje** — `taskValidator.ts` substring → word-boundary shoda (`containsAsPhrase`) + výjimka numerických/jednotkových odpovědí; `contentAudit.ts` answer_uniqueness přeskakuje `drag_order`/`match_pairs`. Testy aktualizovány (35/35 ✅), žádné nové faily vs. baseline 67.
+- ✅ **Pedagogická revize grade-3 (152 vzorků) + opravy kritických chyb obsahu** — „byk"→„býk" (učilo špatný pravopis!), giveaway úlohy, hint leaky, duplicitní distraktory, „zebr"→„zeber". Detail v PENDING_CHANGES.
+- ✅ **Systémové audit checky** — duplicitní options, giveaway option (meta-text/délka), sémantický leak porovnávání + slovníkový strážce vyjmenovaných slov (`vyjmenovana-canon.test.ts`). Checky samy našly 3 chyby, které ruční revize přehlédla. Testy: 63 failed (o 4 méně než baseline).
+
 | Co | Kdo | Stav |
 |---|---|---|
+| Audit grade-5: re-run po F1+F2 → reálné počty, pak opravy R1–R6 | Architekt | ⏭️ Další krok |
 | Sloučit duplicitní CATEGORY render v TopicBrowseru | Architekt | ⏸️ Drobný refactor (spawned task) |
 | Grade-3 prvouka (0/14 témat) — pak doplnit do `navigation.ts` | Grade-3 session | ⏸️ Další obsah |
 | Grade-4 CJL: přidat explanation (jako grade-3) | Architekt | ✅ 22/22 hotovo |
