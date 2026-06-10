@@ -37,7 +37,12 @@ type BrowseLevel = "subject" | "category" | "topic" | "subtopic";
 
 export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSubject }: TopicBrowserProps) {
   const t = useT();
-  const [level, setLevel] = useState<BrowseLevel>(initialSubject ? "category" : "subject");
+  // Grade 3 + subject with custom okruhy → start at category (okruhy nav).
+  // Všechny ostatní případy s initialSubject → rovnou na "subtopic" (všechna témata předmětu).
+  const initHasOkruhy = !!(initialSubject && grade === 3 && GRADE3_NAVIGATION.some(n => n.subject === initialSubject));
+  const [level, setLevel] = useState<BrowseLevel>(
+    !initialSubject ? "subject" : initHasOkruhy ? "category" : "subtopic"
+  );
   const [selectedSubject, setSelectedSubject] = useState<string | null>(initialSubject ?? null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
@@ -80,16 +85,20 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   // Subtopics (skills) within selected topic group — or custom okruh témata
   const subtopics = useMemo(() => {
-    if (!selectedSubject || !selectedCategory) return [];
+    if (!selectedSubject) return [];
     const okruhy = getSubjectOkruhy(selectedSubject);
-    if (okruhy) {
+    if (okruhy && selectedCategory) {
       const okruh = okruhy.find(o => o.id === selectedCategory);
       return okruh ? topics.filter(t => okruh.topicIds.includes(t.id)) : [];
     }
-    if (!selectedTopic) return [];
-    return topics.filter(
-      t => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic
-    );
+    if (selectedCategory) {
+      if (!selectedTopic) return [];
+      return topics.filter(
+        t => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic
+      );
+    }
+    // "All topics" mode — initialSubject bez výběru kategorie, zobrazit vše pro daný předmět
+    return topics.filter(t => t.subject === selectedSubject);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSubject, selectedCategory, selectedTopic, topics, grade]);
 
@@ -99,6 +108,12 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
       if (selectedSubject && getSubjectOkruhy(selectedSubject)) {
         setSelectedCategory(null);
         setLevel("category");
+        return;
+      }
+      // "All topics" mode — žádná kategorie, zpět na výběr předmětu
+      if (!selectedCategory) {
+        setSelectedSubject(null);
+        setLevel("subject");
         return;
       }
       // If topic level has only 1 group, skip it
@@ -246,7 +261,8 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
           ? selectedCategory ? displayCat(selectedCategory) : ""
           : activeOkruh
             ? activeOkruh.name
-            : selectedTopic ? displayTop(selectedTopic) : "";
+            : selectedTopic ? displayTop(selectedTopic)
+            : selectedSubject ? capitalize(selectedSubject) : "";  // "all topics" mode
 
   const subtitle =
     level === "subject"
@@ -257,7 +273,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
           ? t("topic.select_practice")
           : activeOkruh
             ? "Vyber téma a pusť se do toho."
-            : t("topic.select_subtopic");
+            : !selectedCategory
+              ? "Vyber téma a pusť se do toho."  // "all topics" mode
+              : t("topic.select_subtopic");
 
   // Subject-level visual config — barva karty per subject (Lovable mockup styl)
   const SUBJECT_CARD_STYLES: Record<string, { bg: string; border: string; chipBg: string; chipText: string }> = {
@@ -536,7 +554,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                   {subtopics.map((topic) => {
                     // Custom nav: selectedCategory je id okruhu — pro illustration/emoji
                     // použij skutečnou RVP kategorii tématu.
-                    const rvpCategory = activeOkruh ? topic.category : selectedCategory!;
+                    const rvpCategory = activeOkruh ? topic.category : (selectedCategory ?? topic.category);
                     const subEmoji = getTopicEmoji(selectedSubject!, rvpCategory, selectedTopic ?? topic.topic);
                     const isDbOnly = !hasCodeGenerator(topic);
                     return (

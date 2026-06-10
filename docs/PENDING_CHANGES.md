@@ -84,6 +84,13 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené
 
+### 2026-06-10 — TopicBrowser UX: vynechání zbytečné meziúrovně při výběru předmětu ✅
+- Klik na chip předmětu (initialSubject) → nová logika: `level = "subtopic"` (zobrazí všechna témata pro předmět), dříve `level = "category"` → prázdná stránka „Vyber si okruh"
+- Výjimka zachována: grade-3 + předmět s `GRADE3_NAVIGATION` → stále zobrazuje okruhovou navigaci
+- Opraveno `selectedCategory!` → `selectedCategory ?? topic.category` (ilustrace v "all topics" módu)
+- `handleBack` v "all topics" módu (bez selectedCategory) → vrátí na výběr předmětu
+- TypeScript 0 chyb
+
 ### 2026-06-09 — Grade-3 žákovská navigace: zploštění na 2 úrovně (okruh → téma) ✅
 - Nový `src/content/grade-3/navigation.ts` — custom mapování okruhů (max 4 témata/okruh), 52 podtémat zachováno
 - `TopicBrowser.tsx` — pro `grade === 3` použije custom 2-úrovňovou nav (okruh → téma → cvičení) místo 4-úrovňové RVP hierarchie; ostatní ročníky beze změny

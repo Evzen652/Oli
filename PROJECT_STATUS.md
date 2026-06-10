@@ -127,6 +127,9 @@ src/
 | **RVP dataset + curriculum API** | ✅ | 841 podtémat, `data/rvp_data.json`, `rvpNodeId` most |
 | **Grade-3 žákovská navigace 2 úrovně** | ✅ | `navigation.ts` — okruh → téma (max 4/okruh), 52 podtémat zachováno; jen pro grade 3, RVP strom v adminu beze změny |
 
+### Session 2026-06-10 — hotovo:
+- ✅ **TopicBrowser UX: vynechaná meziúroveň „Vyber si okruh"** — klik na chip předmětu v ChildHomePage přeskočí úroveň `category` a jde přímo na `subtopic` (zobrazí všechna témata daného předmětu najednou). Výjimka: grade-3 matematika + čeština s `GRADE3_NAVIGATION` zůstávají na 2-úrovňové okruhové navigaci beze změny. Opraveno i `rvpCategory = selectedCategory ?? topic.category` pro ilustrace v "all topics" módu. TypeScript 0 chyb.
+
 ## 6. Otevřené / další v pořadí
 
 | Co | Kdo | Stav |
