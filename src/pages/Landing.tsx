@@ -161,7 +161,7 @@ export default function Landing() {
                   bg: "linear-gradient(135deg, #CCFBF1 0%, #D1FAE5 100%)",
                   border: "border-teal-200/60",
                   rotate: "rotate-1",
-                  mt: "-mt-2",
+                  mt: "mt-4",
                 },
                 {
                   title: "Každodenní vyučování",
@@ -170,7 +170,7 @@ export default function Landing() {
                   bg: "linear-gradient(135deg, #FFF1E6 0%, #FED7AA 40%, #FFEDD5 100%)",
                   border: "border-orange-200/60",
                   rotate: "-rotate-1",
-                  mt: "mt-4",
+                  mt: "-mt-2",
                   imgClass: "h-44 w-44",
                 },
               ].map((tile) => (
