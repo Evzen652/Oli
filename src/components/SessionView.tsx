@@ -510,11 +510,11 @@ export function SessionView() {
                   <ScrollArea className="flex-1 px-6 pb-6">
                     <div className="space-y-6 text-base pt-4">
                       <p className="text-muted-foreground">{session.matchedTopic.briefDescription}</p>
-                      <div className="rounded-md bg-secondary p-5 space-y-3">
-                        <p className="font-semibold text-foreground text-lg">{t("session.how_to")}</p>
-                        <p>{session.matchedTopic.helpTemplate.hint}</p>
+                      <div className="rounded-xl bg-blue-50 border-2 border-blue-200 p-5 space-y-3">
+                        <p className="font-bold text-blue-800 text-lg">{t("session.how_to")}</p>
+                        <p className="text-blue-900">{session.matchedTopic.helpTemplate.hint}</p>
                         {session.matchedTopic.helpTemplate.steps.length > 0 && (
-                          <ol className="list-decimal list-inside space-y-2">
+                          <ol className="list-decimal list-inside space-y-2 text-blue-900">
                             {session.matchedTopic.helpTemplate.steps.map((step, i) => (
                               <li key={i}>{step}</li>
                             ))}
@@ -551,13 +551,13 @@ export function SessionView() {
                           })()}
                         </div>
                       )}
-                      <div className="rounded-md bg-secondary p-5 space-y-2">
-                        <p className="font-semibold text-foreground">{t("session.example_label")}</p>
-                        <p>{session.matchedTopic.helpTemplate.example}</p>
+                      <div className="rounded-xl bg-emerald-50 border-2 border-emerald-200 p-5 space-y-2">
+                        <p className="font-bold text-emerald-800">{t("session.example_label")}</p>
+                        <p className="text-emerald-900">{session.matchedTopic.helpTemplate.example}</p>
                       </div>
-                      <div className="rounded-md border-2 border-destructive/30 bg-destructive/5 p-5 space-y-2">
-                        <p className="font-semibold text-foreground">{t("session.common_mistake")}</p>
-                        <p className="text-muted-foreground">{session.matchedTopic.helpTemplate.commonMistake}</p>
+                      <div className="rounded-xl border-2 border-red-300 bg-red-50 p-5 space-y-2">
+                        <p className="font-bold text-red-800">{t("session.common_mistake")}</p>
+                        <p className="text-red-900">{session.matchedTopic.helpTemplate.commonMistake}</p>
                       </div>
                       {(() => {
                         const catInfo = getCategoryInfo(session.matchedTopic!.subject, session.matchedTopic!.category, session.matchedTopic!.topic);
