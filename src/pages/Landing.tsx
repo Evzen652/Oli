@@ -137,15 +137,6 @@ export default function Landing() {
             <div className="hidden lg:grid grid-cols-2 gap-7 -mt-12">
               {[
                 {
-                  title: "Příprava na písemku",
-                  desc: "Procvičení konkrétní látky",
-                  img: imgPisemka,
-                  bg: "linear-gradient(135deg, #EAF2FF 0%, #DBEAFE 100%)",
-                  border: "border-blue-200/60",
-                  rotate: "-rotate-1",
-                  threshold: 220,
-                },
-                {
                   title: "Diktát",
                   desc: "Čeština krok za krokem",
                   img: imgDiktat,
@@ -153,6 +144,15 @@ export default function Landing() {
                   border: "border-purple-200/60",
                   rotate: "rotate-1",
                   mt: "mt-6",
+                },
+                {
+                  title: "Příprava na písemku",
+                  desc: "Procvičení konkrétní látky",
+                  img: imgPisemka,
+                  bg: "linear-gradient(135deg, #EAF2FF 0%, #DBEAFE 100%)",
+                  border: "border-blue-200/60",
+                  rotate: "-rotate-1",
+                  threshold: 220,
                 },
                 {
                   title: "Zlomky",
@@ -202,8 +202,8 @@ export default function Landing() {
             {/* Mobile — stacked tiles */}
             <div className="grid grid-cols-2 gap-3 lg:hidden">
               {[
-                { title: "Příprava na písemku", desc: "Procvičení konkrétní látky", img: imgPisemka, bg: C.bgBlue },
                 { title: "Diktát", desc: "Čeština krok za krokem", img: imgDiktat, bg: "#F3E8FF" },
+                { title: "Příprava na písemku", desc: "Procvičení konkrétní látky", img: imgPisemka, bg: C.bgBlue },
                 { title: "Zlomky", desc: "Matematika srozumitelně", img: imgZlomky, bg: C.bgGreen },
                 { title: "Každodenní vyučování", desc: "Krátké úkoly na míru", img: imgProcvicovani, bg: C.bgOrange },
               ].map((tile) => (
