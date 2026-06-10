@@ -45,10 +45,10 @@ export function HelpButton({ skillId, topic, currentTask, onHelpOpened }: HelpBu
         <Button
           variant="outline"
           size="lg"
-          className={`w-full text-base border-2 gap-2 rounded-xl shadow-sm transition-all duration-200 ${
+          className={`w-full text-base font-bold border-2 gap-2 rounded-xl shadow-md transition-all duration-200 ${
             open
-              ? "bg-violet-50 border-violet-300 text-violet-700 hover:bg-violet-100 hover:text-violet-800"
-              : "bg-violet-50 border-violet-200 text-violet-700 hover:bg-violet-100 hover:border-violet-300 hover:shadow-md hover:scale-[1.02]"
+              ? "bg-violet-200 border-violet-400 text-violet-900 hover:bg-violet-300 hover:text-violet-950"
+              : "bg-violet-200 border-violet-400 text-violet-900 hover:bg-violet-300 hover:border-violet-500 hover:shadow-lg hover:scale-[1.02]"
           }`}
         >
           {open ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}

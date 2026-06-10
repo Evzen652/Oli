@@ -26,7 +26,7 @@ export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputPr
 
   return (
     <div className="space-y-4">
-      <p className="text-base text-muted-foreground">Vyber správnou odpověď.</p>
+      <p className="text-base font-bold text-foreground">Vyber správnou odpověď.</p>
       <div className={`grid gap-4 ${gridCols}`}>
         {options.map((option, i) => (
           <Button
