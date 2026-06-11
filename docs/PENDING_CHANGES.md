@@ -54,6 +54,12 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 ### Czech grammar audit zbylých generátorů ✅ 2026-06-12
 - Hotovo — viz sekce Vyřízené výše.
 
+### Chybějící ilustrace grade-5 témat (a dalších grade-N)
+- Mnoho grade-N témat nemá ve storage `prvouka-images` vygenerovanou ilustraci → slug URL 404.
+- Rozbitá ikona už se nezobrazuje (✅ `IllustrationImg` graceful fallback 2026-06-12), ale session header je bez obrázku.
+- TODO: dávkově vygenerovat ilustrace pro grade-5 (čeština sloh, vlastivěda, přírodověda…) přes admin pipeline `AdminGenerateIllustrations`.
+- Alternativa pro mezičas: emoji fallback v `IllustrationImg` (předat `getTopicEmoji()` jako `fallback`).
+
 ### Email integrace pro parent_invitations (Krok D follow-up)
 - Pozvánka se ukládá do `parent_invitations`, ale email se zatím **neodesílá automaticky**.
 - Dialog dítěti říká "řekni rodiči ať se zaregistruje na oli-edu.com se stejným emailem".

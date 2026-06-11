@@ -230,7 +230,14 @@ export function DemoSession() {
               <div className="flex items-center gap-4">
                 {(() => {
                   const url = getTopicIllustrationUrl(topic);
-                  return url ? <img src={url} alt="" className="w-16 h-16 object-contain shrink-0 self-center mix-blend-multiply" /> : null;
+                  // IllustrationImg skryje obrázek při 404 místo rozbité ikony.
+                  return url ? (
+                    <IllustrationImg
+                      src={url}
+                      alt=""
+                      className="w-16 h-16 object-contain shrink-0 self-center"
+                    />
+                  ) : null;
                 })()}
                 <div className="flex-1 space-y-1">
                   <p className="text-xl font-medium text-foreground">

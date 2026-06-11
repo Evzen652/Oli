@@ -35,6 +35,7 @@ import goodToKnowImg from "@/assets/good-to-know.png";
 import { useT } from "@/lib/i18n";
 import { LogOut, Eye } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
+import { IllustrationImg } from "@/components/IllustrationImg";
 import { LandingNav } from "@/pages/LandingNav";
 import { OlyLogo } from "@/components/OlyLogo";
 import { BackButton } from "@/components/BackButton";
@@ -480,7 +481,15 @@ export function SessionView() {
               <div className="flex items-center gap-4">
                 {(() => {
                   const illUrl = getTopicIllustrationUrl(session.matchedTopic);
-                  return illUrl ? <img src={illUrl} alt="" className="w-16 h-16 object-contain shrink-0 self-center mix-blend-multiply" /> : null;
+                  // IllustrationImg skryje obrázek při 404 (mnoho grade-N témat nemá
+                  // vygenerovanou ilustraci) místo rozbité ikony.
+                  return illUrl ? (
+                    <IllustrationImg
+                      src={illUrl}
+                      alt=""
+                      className="w-16 h-16 object-contain shrink-0 self-center"
+                    />
+                  ) : null;
                 })()}
                 <div className="flex-1 space-y-1">
                   <p className="text-xl font-heading font-bold text-foreground">
