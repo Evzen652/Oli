@@ -13,6 +13,7 @@ import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 import { ReformulateButtons } from "@/components/admin/ReformulateTaskDialog";
 import type { ReformField } from "@/components/admin/ReformulateTaskDialog";
+import { CreateExerciseDialog } from "@/components/admin/CreateExerciseDialog";
 import { hashString, withSeededRandom } from "@/lib/seededRandom";
 import { useExerciseReview, cardKey } from "@/hooks/useExerciseReview";
 
@@ -1391,6 +1392,18 @@ export function ExerciseTab({
           </div>
         </div>
       )}
+
+      {/* Ruční tvorba cvičení */}
+      <div className="flex items-center justify-between py-1">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+          Ruční tvorba
+        </p>
+        <CreateExerciseDialog
+          skill={skill}
+          variant={variant}
+          onSaved={() => { refreshSavedList(); onCountsChanged?.(); }}
+        />
+      </div>
 
       {/* Saved exercises from DB */}
       <SavedExercisesList
