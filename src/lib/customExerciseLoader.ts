@@ -37,6 +37,8 @@ export async function loadCustomExercises(
     options: Array.isArray(ex.options) && ex.options.length > 0 ? ex.options : undefined,
     hints: Array.isArray(ex.hints) && ex.hints.length > 0 ? ex.hints : undefined,
     solutionSteps: Array.isArray(ex.solution_steps) && ex.solution_steps.length > 0 ? ex.solution_steps : undefined,
+    pairs: Array.isArray(ex.pairs) && ex.pairs.length > 0 ? ex.pairs : undefined,
+    correctAnswers: Array.isArray(ex.correct_answers) && ex.correct_answers.length > 0 ? ex.correct_answers : undefined,
   }));
 
   // Validate if inputType is known

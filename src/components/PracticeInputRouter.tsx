@@ -79,13 +79,16 @@ export function PracticeInputRouter({
   if (currentTask?.pairs && currentTask.pairs.length > 0) {
     return <MatchPairsInput pairs={currentTask.pairs} onSubmit={onAnswerSubmit} disabled={loading} />;
   }
+  if (currentTask?.correctAnswers && currentTask.correctAnswers.length > 0 && currentTask.options?.length) {
+    return <MultiSelectInput options={currentTask.options} onSubmit={onAnswerSubmit} disabled={loading} />;
+  }
   if (currentTask?.blanks && currentTask.blanks.length > 0) {
     return <FillBlankInput question={currentTask.question} blanks={currentTask.blanks} onSubmit={onAnswerSubmit} disabled={loading} />;
   }
   if (currentTask?.items && currentTask.items.length > 0 && topic.inputType !== "drag_order") {
     return <DragOrderInput items={currentTask.items} onSubmit={onAnswerSubmit} disabled={loading} />;
   }
-  if (currentTask?.options && currentTask.options.length > 0 && !["select_one", "multi_select"].includes(topic.inputType)) {
+  if (currentTask?.options && currentTask.options.length > 0 && !["select_one", "multi_select"].includes(topic.inputType) && !currentTask.correctAnswers?.length) {
     return <SelectOneInput options={currentTask.options} onSubmit={onAnswerSubmit} disabled={loading} />;
   }
 

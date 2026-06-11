@@ -26,6 +26,13 @@ export function validateTaskForInputType(task: PracticeTask, inputType: InputTyp
   // Universal: must have question and correctAnswer
   if (!task.question?.trim() || !task.correctAnswer?.trim()) return false;
 
+  // Structural overrides: task type is determined by data shape, not topic inputType.
+  // These tasks are rendered/validated by PracticeInputRouter based on field presence,
+  // so they are valid regardless of the topic's inputType.
+  if (task.pairs && task.pairs.length > 0) return true;
+  if (task.correctAnswers && task.correctAnswers.length > 0) return true;
+  if (task.categories && task.categories.length > 0) return true;
+
   switch (inputType) {
     case "comparison":
       return ["<", "=", ">"].includes(task.correctAnswer.trim());

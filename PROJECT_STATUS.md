@@ -159,7 +159,7 @@ src/
 | Giveaway délkou (178 nálezů) | Architekt | ⏸️ Velký rozsah, autorská práce |
 | ~~Sloučit duplicitní CATEGORY render v TopicBrowseru~~ | Architekt | ✅ 2026-06-11 |
 | ~~Grade-3 prvouka (14/14 témat)~~ | Architekt | ✅ 2026-06-12 |
-| Admin editor cvičení (Level II+III authoring) | Architekt | 🔄 Probíhá — CreateExerciseDialog ✅, EditExerciseDialog ✅ |
+| Admin editor cvičení (Level II+III authoring) | Architekt | ✅ 2026-06-12 — Create+Edit dialogy, 6 typů (select_one/true_false/fill_blank/short_answer/match_pairs/multi_select), DB migrace |
 | Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 

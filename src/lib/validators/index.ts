@@ -785,6 +785,7 @@ export function resolveTaskValidation(task: {
   items?: string[];
   pairs?: { left: string; right: string }[];
   categories?: { name: string; items: string[] }[];
+  correctAnswers?: string[];
 }): { expected: string; validatorId?: string } {
   if (task.categories && task.categories.length > 0) {
     return { expected: JSON.stringify(task.categories), validatorId: "categorize_groups" };
@@ -794,6 +795,9 @@ export function resolveTaskValidation(task: {
   }
   if (task.items && task.items.length > 0) {
     return { expected: task.items.join(","), validatorId: "ordered_sequence" };
+  }
+  if (task.correctAnswers && task.correctAnswers.length > 0) {
+    return { expected: task.correctAnswers.join(","), validatorId: "set_match" };
   }
   return { expected: task.correctAnswer.trim() };
 }
