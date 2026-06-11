@@ -36,7 +36,7 @@
 - ~~🟠 **H2** `send-parent-invite` bez auth (email bombing)~~ ✅ 2026-06-12 — rate limit: max 1 pozvánka/email/hodinu.
 - ~~🟠 **H3** `parent_invitations` UPDATE `USING(true)`~~ ✅ 2026-06-12 — migrace `20260612100000` opravuje na `USING(status='pending') WITH CHECK (status='accepted')`.
 - ~~🟠 **H4** bucket `prvouka-images` zápis bez role check~~ ✅ 2026-06-12 — migrace `20260612100001` vyžaduje admin roli pro INSERT/UPDATE.
-- ⚠️ **Migrace H3+H4 musí aplikovat Evžen:** `npx supabase db push` nebo přes Supabase Studio SQL editor.
+- ✅ Migrace H3+H4 aplikovány (`supabase db push` 2026-06-12).
 
 ### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
 Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
