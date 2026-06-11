@@ -16,7 +16,20 @@ import { KRUZNICAAKRUHRYSOVANI } from "./matematika/kruznicaKruhRysovani";
 import { OBVODTROJUHELNIKUCTVERCEOBD } from "./matematika/obvodTrojuhelnikuCtverceObdelniku";
 
 // ── Prvouka (14) ──
-// TODO: přibývají jak grade-3 session implementuje
+import { MINULOSTREGIONUPOVESTI } from "./prvouka/minulostRegionuPovesti";
+import { CASOVAPRIMKAGENERACE } from "./prvouka/casovaPrimkaGenerace";
+import { KOMUNIKACEBEZPECNOST } from "./prvouka/komunikaceBezpecnost";
+import { VZTAHYKONFLIKTY } from "./prvouka/vztahyKonflikty";
+import { KRAJEREGIONYCR } from "./prvouka/krajeRegionyCr";
+import { MAPASTRANYSVET } from "./prvouka/mapaStranySveta";
+import { CRSYMBOLY } from "./prvouka/crSymboly";
+import { EKOSYSTEMYPOLLOUKAES } from "./prvouka/ekosystemyPoleLoukaLes";
+import { SKUPINYZIVOCICHU } from "./prvouka/skupinyZivocichu";
+import { STAVBAROSTLIN } from "./prvouka/stavbaRostlin";
+import { ZIVANEZIVAPRIRODA } from "./prvouka/zivaNezivaPrivroda";
+import { VODAVZDUCHPUDA } from "./prvouka/vodaVzduchPuda";
+import { MIMORADNEUDALOSTI } from "./prvouka/mimoradneUdalosti";
+import { STAVBATELAAZDRAV } from "./prvouka/stavbaTelaaZdravi";
 
 // ── Český jazyk a literatura (25) ──
 import { SLOVAPRIBYZNAKOREN } from "./cjl/slovaPribuznaKorenSlova";
@@ -60,6 +73,22 @@ export const GRADE_3_TOPICS: TopicMetadata[] = [
   ...RYSOVANIUSECKYODANEDELCE,
   ...KRUZNICAAKRUHRYSOVANI,
   ...OBVODTROJUHELNIKUCTVERCEOBD,
+
+  // ── Prvouka ──
+  ...MINULOSTREGIONUPOVESTI,
+  ...CASOVAPRIMKAGENERACE,
+  ...KOMUNIKACEBEZPECNOST,
+  ...VZTAHYKONFLIKTY,
+  ...KRAJEREGIONYCR,
+  ...MAPASTRANYSVET,
+  ...CRSYMBOLY,
+  ...EKOSYSTEMYPOLLOUKAES,
+  ...SKUPINYZIVOCICHU,
+  ...STAVBAROSTLIN,
+  ...ZIVANEZIVAPRIRODA,
+  ...VODAVZDUCHPUDA,
+  ...MIMORADNEUDALOSTI,
+  ...STAVBATELAAZDRAV,
 
   // ── Český jazyk a literatura ──
   ...SLOVAPRIBYZNAKOREN,

@@ -170,4 +170,63 @@ export const GRADE3_NAVIGATION: Grade3SubjectNav[] = [
       },
     ],
   },
+  {
+    subject: "prvouka",
+    okruhy: [
+      {
+        id: "lide-a-cas",
+        name: "Lidé a čas",
+        description: "Poznáš historii svého regionu, pověsti a práci s časovou přímkou.",
+        emoji: "🕰️",
+        topicIds: [
+          "g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti",
+          "g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine",
+        ],
+      },
+      {
+        id: "lide-kolem-nas",
+        name: "Lidé kolem nás",
+        description: "Bezpečné chování s cizími lidmi a řešení konfliktů.",
+        emoji: "🤝",
+        topicIds: [
+          "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost",
+          "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu",
+        ],
+      },
+      {
+        id: "misto-kde-zijeme",
+        name: "Místo, kde žijeme",
+        description: "Kraje ČR, mapa, světové strany a státní symboly.",
+        emoji: "🗺️",
+        topicIds: [
+          "g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region",
+          "g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas",
+          "g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly",
+        ],
+      },
+      {
+        id: "priroda",
+        name: "Rozmanitost přírody",
+        description: "Ekosystémy, zvířata, rostliny, živá a neživá příroda.",
+        emoji: "🌿",
+        topicIds: [
+          "g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy",
+          "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz",
+          "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod",
+          "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou",
+          "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot",
+        ],
+      },
+      {
+        id: "zdravi",
+        name: "Člověk a zdraví",
+        description: "Stavba těla, zdraví a chování při mimořádných událostech.",
+        emoji: "🏥",
+        topicIds: [
+          "g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni",
+          "g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc",
+        ],
+      },
+    ],
+  },
 ];
