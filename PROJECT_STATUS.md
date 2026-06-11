@@ -143,16 +143,24 @@ src/
 - ✅ **Systémové audit checky** — duplicitní options, giveaway option (meta-text/délka), sémantický leak porovnávání + slovníkový strážce vyjmenovaných slov (`vyjmenovana-canon.test.ts`). Checky samy našly 3 chyby, které ruční revize přehlédla. Testy: 63 failed (o 4 méně než baseline).
 - ✅ **Gradace obtížnosti: check 2b (recyklace otázek L1→L3)** — odhalil 29 non-adaptivních generátorů (původní check viděl 7). + velká písmena: 6 úloh zbaveno meta-textu v options, 1 odpověď mimo options. Testy: 61 failed (baseline 67, −6). **Follow-up:** 29 témat potřebuje autorsky těžší L3 úlohy (viz PENDING_CHANGES).
 
+### Session 2026-06-11 (pokračování 2) — hotovo:
+- ✅ **P0 KRITICKÁ OPRAVA: drag_order/match_pairs/categorize vždy vyhodnocovaly špatně** — orchestrátor porovnával žákovu strukturovanou odpověď se stringovým markerem `"order"`/`"match"`. Přidány `pairsMatchValidator` + `categorizeValidator` + `resolveTaskValidation()`. Zapojeno v `sessionOrchestrator.ts` CHECK + `DemoSession.tsx`. Ověřeno v prohlížeči. 183 testů zelených.
+- ✅ **R1 fill_blank validátor** — `shodaPrisudkuSPodmetem.ts` používá `___` (3 podtržítka = 1 blank). Validátor přepnut na `/_+/g`. Bonus: fix i/y větve (vyžaduje obě varianty i+y, ne samotné „I").
+- ✅ **R3 match_pairs vadná data Evropa** — `evropaPolohaPovrchVodstvoPodnebi`: Matterhorn→Alpy (duplicita) → Pico de Aneto→Pyreneje. `evropskeStatyAEuSousedniZemeCrPodrobne`: Euro 2× → forint, Německo 2× → Maďarsko.
+- ✅ **Audit grade-5 re-run** — report `docs/AUDIT_GRADE_5_2026-06-11_rerun.md`. F1+F2 ověřeny (select_one format 20→0, answer_uniqueness 18→0). Nové nálezy: giveaway délkou 178, meta-text 14, non-adaptivní 2→6.
+- ✅ **UX: SelectOneInput** — barevná tlačítka odpovědí (modrá/fuchsiová/zelená/žlutá) → čisté bílé karty s šedým okrajem (`bg-white border-stone-300 shadow-md`).
+
 | Co | Kdo | Stav |
 |---|---|---|
-| Audit grade-5: re-run po F1+F2 → reálné počty, pak opravy R1–R6 | Architekt | ⏭️ Další krok |
+| R2: match_pairs→categorize (obratlovci, říše) | Architekt | ⏸️ Větší restruktura obsahu |
+| R4: hint_leak „= odpověď" (104 nálezů) | Architekt | ⏸️ Autorská práce |
+| R5: non-adaptivní generátory grade-5 (6 témat) | Architekt | ⏸️ Autorská práce |
+| R6: missing_hints matematika (12 témat) | Architekt | ⏸️ Ověřit helpTemplate |
+| Giveaway délkou (178 nálezů) | Architekt | ⏸️ Velký rozsah, autorská práce |
 | Sloučit duplicitní CATEGORY render v TopicBrowseru | Architekt | ⏸️ Drobný refactor (spawned task) |
-| Grade-3 prvouka (0/14 témat) — pak doplnit do `navigation.ts` | Grade-3 session | ⏸️ Další obsah |
-| Grade-4 CJL: přidat explanation (jako grade-3) | Architekt | ✅ 22/22 hotovo |
+| Grade-3 prvouka (0/14 témat) | Grade-3 session | ⏸️ Další obsah |
 | Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
-| Grade-4 obsah Level II a III | Grade-4 session | ⏸️ Čeká na admin editor |
 | Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
-| displayName + recommendedNext grade-4 CJL (22 souborů) | Architekt | ✅ 22/22 hotovo |
 | Grade-5 až Grade-9 | Grade-N sessions | ⏸️ Čeká |
 
 ### Session 2026-06-08 (pokračování) — hotovo:

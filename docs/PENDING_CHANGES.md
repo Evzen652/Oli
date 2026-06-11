@@ -82,12 +82,36 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ---
 
+## Otevřené (doplněno 2026-06-11 pokr.)
+
+### R2 — match_pairs→categorize (obratlovci, říše rostlin/hub/živočichů)
+Audit R2: `obratlovciSavciPtaciPlaziObojzivelniciRyby.ts` a `riseRostlinHubZivocichu.ts` jsou ve skutečnosti kategorizace (více položek → stejná třída), ne 1:1 párování. Změnit `inputType` na `categorize` + restrukturovat data na `categories: [{name, items}]`. Bonus překlepy: „Čolník"→„Čolek", Rak označen jako ryba.
+
+### Giveaway délkou — 178 nálezů grade-5 (nový check c3)
+Správná možnost je ≥ 2× delší než všechny distraktory → žák vybere nejdelší bez čtení. Koncentrace v CJL slohové + literární výchově (~120), přírodovědě (~30). Oprava = autorsky prodloužit distraktory / zkrátit správnou. Velký rozsah — vhodné pro grade-5 session po tématech.
+
+### R4 — hint_leak „= odpověď" (104 nálezů, grade-5)
+Zejm. `zajmenaSklonovaniOsobnichZajmen.ts`, `etapyLidskehoZivotaDospivani.ts`, CJL tvarosloví. Přeformulovat 1. nápovědy bez `= <termín/tvar>` — navádět přes vlastnost/příklad.
+
+### R5 — non-adaptivní generátory grade-5 (6 témat)
+Totožný výstup L1/2/3: `kostraASvaly`, `nervovaSoustava`, `obratlovci`, `riseRostlin`, `traviciSoustava` + `zemeJakoPlaneta` (100% recyklace L3=L1). Zavést gradaci obtížnosti.
+
+### R6 — missing_hints matematika grade-5 (18 témat)
+Matematické generátory bez per-task hints. Ověřit, zda spoléhají na `helpTemplate` (pak OK), jinak doplnit.
+
 ## Otevřené (doplněno 2026-06-11)
 
 ### 29 témat bez gradace obtížnosti (nový check 2b)
 Nový audit check „recyklace otázek L1 → L3" odhalil 29 non-adaptivních generátorů napříč ročníky (původní check viděl jen 7 — shuffle ho obcházel). Level 3 vrací ≥ 90 % stejných otázek jako level 1. Grade-3: dialog-pravidla, omluvenka-zprava, popis-predmetu, sebekontrola-projevu, uhledne-psani + další v g4/g5. Seznam: `npm run audit:pedagogical` → difficulty_progression. **Oprava = autorská práce** (napsat těžší L3 úlohy — aplikační místo definičních), vhodné pro grade-N sessions po tématech.
 
 ## Vyřízené
+
+### 2026-06-11 (pokr. 2) — P0 oprava validátorů + R1/R3 obsah grade-5 + UX ✅
+- **P0:** `pairsMatchValidator` + `categorizeValidator` + `resolveTaskValidation()` — strukturované odpovědi (match_pairs/categorize/drag_order) se vyhodnocují správně. Zapojeno v orchestrátoru + DemoSession. 183 testů zelených.
+- **R1:** fill_blank validátor — `/_+/g` místo `/_/g`; fix i/y větve.
+- **R3:** `evropaPolohaPovrchVodstvoPodnebi` + `evropskeStatyAEuSousedniZemeCrPodrobne` — odstraněny duplicitní pravé strany párů (Alpy 2×, Euro 2×, Německo 2×).
+- **UX:** SelectOneInput — barevná tlačítka → bílé karty (`bg-white border-stone-300 shadow-md`).
+- **Audit:** re-run grade-5 → `docs/AUDIT_GRADE_5_2026-06-11_rerun.md`.
 
 ### 2026-06-11 — Gradace obtížnosti: systémový check + velká písmena bez meta-textu ✅
 - **Check 2b v runPedagogicalAudit**: podíl otázek L3 shodných s L1 ≥ 90 % → difficulty_progression. Imunní vůči shuffle (check 2 porovnával jen 1. otázku). Šablonové generátory s náhodnými čísly ~0 % překryv, pool-based s nadmnožinou < 60 % — bez false positives. Nález: 7 → 29 non-adaptivních témat.
