@@ -157,7 +157,7 @@ src/
 | R5: non-adaptivní generátory grade-5 (6 témat) | Architekt | ⏸️ Autorská práce |
 | R6: missing_hints matematika (12 témat) | Architekt | ⏸️ Ověřit helpTemplate |
 | Giveaway délkou (178 nálezů) | Architekt | ⏸️ Velký rozsah, autorská práce |
-| Sloučit duplicitní CATEGORY render v TopicBrowseru | Architekt | ⏸️ Drobný refactor (spawned task) |
+| ~~Sloučit duplicitní CATEGORY render v TopicBrowseru~~ | Architekt | ✅ 2026-06-11 |
 | Grade-3 prvouka (0/14 témat) | Grade-3 session | ⏸️ Další obsah |
 | Admin editor cvičení (Level II+III authoring) | Architekt | ⏸️ Další velká věc |
 | Email integrace pro parent_invitations (Resend) | Architekt | ⏸️ Follow-up |
