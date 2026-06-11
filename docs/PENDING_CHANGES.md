@@ -54,11 +54,6 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 ### Czech grammar audit zbylých generátorů ✅ 2026-06-12
 - Hotovo — viz sekce Vyřízené výše.
 
-### ⚠️ Migrace — aplikovat na Supabase
-- `supabase/migrations/20260612120000_custom_exercises_structured_types.sql` — přidává `pairs JSONB` a `correct_answers JSONB` do `custom_exercises`
-- Spustit: `supabase db push` (nebo přes Supabase dashboard SQL editor)
-- Bez migrace: match_pairs a multi_select cvičení se v adminu uloží, ale data `pairs`/`correct_answers` se ztratí
-
 ### Email integrace pro parent_invitations (Krok D follow-up)
 - Pozvánka se ukládá do `parent_invitations`, ale email se zatím **neodesílá automaticky**.
 - Dialog dítěti říká "řekni rodiči ať se zaregistruje na oli-edu.com se stejným emailem".
