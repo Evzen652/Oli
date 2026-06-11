@@ -441,70 +441,62 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Info dialog — pokud existuje pro tuto úroveň */}
               {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
 
-              {/* CATEGORY level — custom okruhy (grade 3) */}
-              {level === "category" && selectedSubject && getSubjectOkruhy(selectedSubject) && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {getSubjectOkruhy(selectedSubject)!.map((okruh) => {
-                    const okruhTopics = topics.filter((t) => okruh.topicIds.includes(t.id));
-                    const count = okruhTopics.length;
-                    const rvpCategory = okruhTopics[0]?.category ?? "";
-                    return (
+              {/* CATEGORY level — okruhy (grade-3) i RVP kategorie (ostatní) ve stejném gridu */}
+              {level === "category" && (() => {
+                const subjectOkruhy = selectedSubject ? getSubjectOkruhy(selectedSubject) : null;
+                const cards = subjectOkruhy
+                  ? subjectOkruhy.map(okruh => {
+                      const okruhTopics = topics.filter(t => okruh.topicIds.includes(t.id));
+                      const rvpCategory = okruhTopics[0]?.category ?? "";
+                      return {
+                        id: okruh.id,
+                        name: okruh.name,
+                        desc: okruh.description,
+                        emoji: okruh.emoji,
+                        imageUrl: getCategoryIllustrationUrl(selectedSubject!, rvpCategory),
+                        countLabel: pad(okruhTopics.length, "TÉMA"),
+                        onClick: () => handleCategoryClick(okruh.id),
+                      };
+                    })
+                  : categories.map(category => {
+                      const catTopics = topics.filter(t => t.subject === selectedSubject && t.category === category);
+                      const count = new Set(catTopics.map(t => t.topic)).size;
+                      const visual = getCategoryVisual(selectedSubject!, category);
+                      const desc = displayCatDesc(category) ?? catTopics[0]?.briefDescription ?? null;
+                      return {
+                        id: category,
+                        name: displayCat(category),
+                        desc,
+                        emoji: visual?.emoji,
+                        imageUrl: getCategoryIllustrationUrl(selectedSubject!, category),
+                        countLabel: `${count} ${count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}`,
+                        onClick: () => handleCategoryClick(category),
+                      };
+                    });
+                return (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {cards.map(card => (
                       <button
-                        key={okruh.id}
+                        key={card.id}
                         type="button"
-                        onClick={() => handleCategoryClick(okruh.id)}
+                        onClick={card.onClick}
                         className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
                       >
                         <div className="flex-1 flex items-center justify-center">
-                          <PrvoukaImage
-                            imageUrl={getCategoryIllustrationUrl(selectedSubject!, rvpCategory)}
-                            fallbackEmoji={okruh.emoji}
-                            size="lg"
-                          />
+                          <PrvoukaImage imageUrl={card.imageUrl} fallbackEmoji={card.emoji} size="lg" />
                         </div>
                         <div className="space-y-1">
-                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight line-clamp-2">{okruh.name}</h3>
-                          <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{okruh.description}</p>
-                          <p className="text-xs text-foreground/50 font-medium">{pad(count, "TÉMA")}</p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* CATEGORY level — čtvercový grid (RVP, ostatní ročníky) */}
-              {level === "category" && !(selectedSubject && getSubjectOkruhy(selectedSubject)) && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {categories.map((category) => {
-                    const catTopics = topics.filter((t) => t.subject === selectedSubject && t.category === category);
-                    const count = new Set(catTopics.map((t) => t.topic)).size;
-                    const visual = getCategoryVisual(selectedSubject!, category);
-                    const desc = displayCatDesc(category) ?? catTopics[0]?.briefDescription ?? null;
-                    return (
-                      <button
-                        key={category}
-                        type="button"
-                        onClick={() => handleCategoryClick(category)}
-                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
-                      >
-                        <div className="flex-1 flex items-center justify-center">
-                          <PrvoukaImage imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)} fallbackEmoji={visual?.emoji} size="lg" />
-                        </div>
-                        <div className="space-y-1">
-                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight line-clamp-2">{displayCat(category)}</h3>
-                          {desc && (
-                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{desc}</p>
+                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight line-clamp-2">{card.name}</h3>
+                          {card.desc && (
+                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{card.desc}</p>
                           )}
-                          <p className="text-xs text-foreground/50 font-medium">
-                            {count} {count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}
-                          </p>
+                          <p className="text-xs text-foreground/50 font-medium">{card.countLabel}</p>
                         </div>
                       </button>
-                    );
-                  })}
-                </div>
-              )}
+                    ))}
+                  </div>
+                );
+              })()}
 
               {/* TOPIC level — asymmetric grid s description na primary */}
               {level === "topic" && (
