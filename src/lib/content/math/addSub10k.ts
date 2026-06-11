@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+import { pad, form } from "../../czechGrammar";
 
 /**
  * Sčítání a odčítání do 10 000 — 4. ročník ZŠ
@@ -72,11 +72,11 @@ function genAddSub10k(level: number): PracticeTask[] {
       const stovkyB = b / 100;
       const stovkyVysl = result / 100;
       solutionSteps.push(
-        `${fmtNum(a)} = ${stovkyA} ${PLURALS.stovek(stovkyA)}, ${fmtNum(b)} = ${stovkyB} ${PLURALS.stovek(stovkyB)}.`,
+        `${fmtNum(a)} = ${pad(stovkyA, "STOVKA")}, ${fmtNum(b)} = ${pad(stovkyB, "STOVKA")}.`,
         isAdd
-          ? `${stovkyA} + ${stovkyB} = ${stovkyVysl} ${PLURALS.stovek(stovkyVysl)}.`
-          : `${stovkyA} − ${stovkyB} = ${stovkyVysl} ${PLURALS.stovek(stovkyVysl)}.`,
-        `${stovkyVysl} ${PLURALS.stovek(stovkyVysl)} = ${fmtNum(result)}.`,
+          ? `${stovkyA} + ${stovkyB} = ${pad(stovkyVysl, "STOVKA")}.`
+          : `${stovkyA} − ${stovkyB} = ${pad(stovkyVysl, "STOVKA")}.`,
+        `${pad(stovkyVysl, "STOVKA")} = ${fmtNum(result)}.`,
       );
     } else if (level === 2) {
       // Rozklad na stovky + desítky + jednotky
@@ -112,7 +112,7 @@ function genAddSub10k(level: number): PracticeTask[] {
           ? `Přičítáš k ${fmtNum(a)} číslo ${fmtNum(b)}.`
           : `Od čísla ${fmtNum(a)} odčítáš ${fmtNum(b)}.`,
         level === 1
-          ? `Spočítej si nejdřív, kolik je ${a / 100} ${op} ${b / 100} (v ${PLURALS.stovek(Math.max(a / 100, b / 100))}).`
+          ? `Spočítej si nejdřív, kolik je ${a / 100} ${op} ${b / 100} (v ${form(Math.max(a / 100, b / 100), "STOVKA")}).`
           : `Rozlož si čísla na tisíce, stovky, desítky a jednotky.`,
       ],
     });

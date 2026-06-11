@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+
 
 /**
  * Sčítání, odčítání a porovnávání zlomků se stejným jmenovatelem — 5. ročník ZŠ

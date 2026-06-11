@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+import { pad } from "../../czechGrammar";
 
 /**
  * Zlomek jako část celku — úvod, 4. ročník ZŠ
@@ -49,7 +49,7 @@ function genFracIntro(level: number): PracticeTask[] {
         `${whole} ÷ ${frac.d} = ${whole / frac.d} (jedna část).`,
         frac.n === 1
           ? `Vezmu jednu část: ${whole / frac.d}.`
-          : `Vezmu ${frac.n} ${PLURALS.cast(frac.n)}: ${frac.n} × ${whole / frac.d} = ${part}.`,
+          : `Vezmu ${pad(frac.n, "ČÁST")}: ${frac.n} × ${whole / frac.d} = ${part}.`,
         `Výsledek: ${part}.`,
       ],
       hints: [

@@ -90,6 +90,20 @@ const NOUNS: Record<string, [string, string, string]> = {
   DESÍTKA:    ["desítka", "desítky", "desítek"],
   JEDNOTKA:   ["jednotka", "jednotky", "jednotek"],
 
+  // Geometrie / mřížka
+  SLOUPEC:    ["sloupec", "sloupce", "sloupců"],
+  ŘÁDEK:      ["řádek", "řádky", "řádků"],
+
+  // Desetinná čísla
+  NULA:       ["nulu", "nuly", "nul"],
+  DESETINA:   ["desetina", "desetiny", "desetin"],
+  SETINA:     ["setina", "setiny", "setin"],
+  TISÍCINA:   ["tisícina", "tisíciny", "tisícin"],
+
+  // Skupiny / řády
+  TISÍCOVKA:  ["tisícovka", "tisícovky", "tisícovek"],
+  SKUPINKA:   ["skupinka", "skupinky", "skupinek"],
+
   // Jednotky
   METR:       ["metr", "metry", "metrů"],
   CENTIMETR:  ["centimetr", "centimetry", "centimetrů"],

@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+import { form } from "../../czechGrammar";
 
 /**
  * Převody jednotek — 4. ročník ZŠ
@@ -36,7 +36,7 @@ const CONVERSIONS: UnitConversion[] = [
   { from: "h",   to: "min", factor: 60, category: "čas" },
   { from: "min", to: "s",   factor: 60, category: "čas" },
   { from: "den", to: "h",   factor: 24, category: "čas",
-    fromPlural: PLURALS.den },
+    fromPlural: (n: number) => form(n, "DEN") },
 ];
 
 function genUnits4(level: number): PracticeTask[] {

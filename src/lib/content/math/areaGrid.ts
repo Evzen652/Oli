@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+import { pad } from "../../czechGrammar";
 
 /**
  * Obsah přes čtvercovou síť — 5. ročník ZŠ
@@ -39,7 +39,7 @@ function genRectangle(_level: number): PracticeTask {
   ].join("\n");
 
   return {
-    question: `Obdélník v čtvercové síti: ${cols} ${cols === 1 ? "sloupec" : cols >= 2 && cols <= 4 ? "sloupce" : "sloupců"} × ${rows} ${rows === 1 ? "řádek" : rows >= 2 && rows <= 4 ? "řádky" : "řádků"}. Kolik čtverečků má?`,
+    question: `Obdélník v čtvercové síti: ${pad(cols, "SLOUPEC")} × ${pad(rows, "ŘÁDEK")}. Kolik čtverečků má?`,
     correctAnswer: String(area),
     options,
     solutionSteps: [

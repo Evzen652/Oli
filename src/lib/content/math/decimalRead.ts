@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
+import { form } from "../../czechGrammar";
 
 /**
  * Desetinná čísla — čtení a zobrazení na ose — 5. ročník ZŠ
@@ -31,11 +32,11 @@ function toWords(whole: number, frac: number, places: number): string {
                      whole >= 2 && whole <= 4 ? `${wholeWord} celé` :
                      `${wholeWord} celých`;
   if (frac === 0) {
-    return `${wholePrefix} ${places === 1 ? "nula desetin" : places === 2 ? "nula setin" : "nula tisícin"}`;
+    return `${wholePrefix} nula ${places === 1 ? form(0, "DESETINA") : places === 2 ? form(0, "SETINA") : form(0, "TISÍCINA")}`;
   }
-  const unit = places === 1 ? (frac === 1 ? "desetina" : frac >= 2 && frac <= 4 ? "desetiny" : "desetin")
-             : places === 2 ? (frac === 1 ? "setina" : frac >= 2 && frac <= 4 ? "setiny" : "setin")
-             : (frac === 1 ? "tisícina" : frac >= 2 && frac <= 4 ? "tisíciny" : "tisícin");
+  const unit = places === 1 ? form(frac, "DESETINA")
+             : places === 2 ? form(frac, "SETINA")
+             : form(frac, "TISÍCINA");
   return `${wholePrefix} ${frac} ${unit}`;
 }
 

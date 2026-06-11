@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+import { pad } from "../../czechGrammar";
 
 /**
  * Písemné násobení jednociferným činitelem — 4. ročník ZŠ
@@ -58,10 +58,10 @@ function genMultWritten(level: number): PracticeTask[] {
     const jednotky = a % 10;
 
     const radyParts: string[] = [];
-    if (tisice > 0) radyParts.push(`${tisice} ${PLURALS.tisicovek(tisice)}`);
-    if (stovky > 0) radyParts.push(`${stovky} ${PLURALS.stovek(stovky)}`);
-    if (desitky > 0) radyParts.push(`${desitky} ${PLURALS.desitek(desitky)}`);
-    if (jednotky > 0) radyParts.push(`${jednotky} ${PLURALS.jednotek(jednotky)}`);
+    if (tisice > 0) radyParts.push(pad(tisice, "TISÍCOVKA"));
+    if (stovky > 0) radyParts.push(pad(stovky, "STOVKA"));
+    if (desitky > 0) radyParts.push(pad(desitky, "DESÍTKA"));
+    if (jednotky > 0) radyParts.push(pad(jednotky, "JEDNOTKA"));
     const solutionSteps: string[] = [
       `Rozlož si ${fmtNum(a)} na řády: ${radyParts.join(", ")}.`,
     ];

@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
-import { PLURALS } from "../czechPlural";
+import { form } from "../../czechGrammar";
 
 /**
  * Slovní úlohy — 5. ročník ZŠ
@@ -135,15 +135,15 @@ const CAS_TEMPLATES: WordProblemTemplate[] = [
       const cas = randBetween(2, level === 1 ? 4 : 7);
       const vzdal = rychlost * cas;
       return {
-        question: `Auto jede rychlostí ${rychlost} km/h. Za kolik kilometrů urazí za ${cas} ${PLURALS.hodina(cas)}?`,
+        question: `Auto jede rychlostí ${rychlost} km/h. Za kolik kilometrů urazí za ${cas} ${form(cas, "HODINA")}?`,
         answer: vzdal,
         steps: [
           `Rychlost: ${rychlost} km za 1 hodinu.`,
-          `Čas: ${cas} ${PLURALS.hodina(cas)}.`,
+          `Čas: ${cas} ${form(cas, "HODINA")}.`,
           `Vzdálenost = rychlost × čas = ${rychlost} × ${cas} = ${vzdal} km.`,
         ],
         hints: [
-          `Rychlost říká, kolik km urazí za 1 hodinu. Co se stane, když pojede ${cas} ${PLURALS.hodina(cas)}?`,
+          `Rychlost říká, kolik km urazí za 1 hodinu. Co se stane, když pojede ${cas} ${form(cas, "HODINA")}?`,
           `Vynásob rychlost × čas.`,
         ],
       };
@@ -158,11 +158,11 @@ const CAS_TEMPLATES: WordProblemTemplate[] = [
       const trvaniH = randBetween(2, 5);
       const konecH = startH + trvaniH;
       return {
-        question: `Film začíná v ${startH}:00 a trvá ${trvaniH} ${PLURALS.hodina(trvaniH)}. Kdy skončí?`,
+        question: `Film začíná v ${startH}:00 a trvá ${trvaniH} ${form(trvaniH, "HODINA")}. Kdy skončí?`,
         answer: konecH,
         steps: [
           `Začátek: ${startH}:00.`,
-          `Trvání: ${trvaniH} ${PLURALS.hodina(trvaniH)}.`,
+          `Trvání: ${trvaniH} ${form(trvaniH, "HODINA")}.`,
           `Konec = ${startH} + ${trvaniH} = ${konecH}:00.`,
         ],
         hints: [
@@ -180,11 +180,11 @@ const CAS_TEMPLATES: WordProblemTemplate[] = [
       const hodin = randBetween(2, 8);
       const minut = hodin * 60;
       return {
-        question: `Kolik minut je ${hodin} ${PLURALS.hodina(hodin)}?`,
+        question: `Kolik minut je ${hodin} ${form(hodin, "HODINA")}?`,
         answer: minut,
         steps: [
           `1 hodina = 60 minut.`,
-          `${hodin} ${PLURALS.hodina(hodin)} = ${hodin} × 60 = ${minut} minut.`,
+          `${hodin} ${form(hodin, "HODINA")} = ${hodin} × 60 = ${minut} minut.`,
         ],
         hints: [
           `Kolik minut je v jedné hodině?`,
@@ -209,7 +209,7 @@ const MNOZSTVI_TEMPLATES: WordProblemTemplate[] = [
       const skupin = randBetween(3, level === 1 ? 5 : 9);
       const celkem = poSkupin * skupin;
       return {
-        question: `Na výlet jede ${skupin} ${PLURALS.skupinka(skupin)} po ${poSkupin} dětech. Kolik dětí jede celkem?`,
+        question: `Na výlet jede ${skupin} ${form(skupin, "SKUPINKA")} po ${poSkupin} dětech. Kolik dětí jede celkem?`,
         answer: celkem,
         steps: [
           `Jedna skupinka: ${poSkupin} dětí.`,

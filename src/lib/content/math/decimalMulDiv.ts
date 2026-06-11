@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
+import { pad } from "../../czechGrammar";
 
 /**
  * Násobení a dělení desetinných čísel — 6. ročník ZŠ
@@ -41,7 +42,7 @@ function genMulByPowerOfTen(_level: number): PracticeTask {
     options,
     solutionSteps: [
       `Násobení 10, 100 nebo 1000 = POSUN čárky doprava.`,
-      `Číslo ${power} má ${posunMist === 1 ? "jednu nulu" : posunMist === 2 ? "dvě nuly" : "tři nuly"} → posuň čárku o ${posunMist} ${posunMist === 1 ? "místo" : "místa"} doprava.`,
+      `Číslo ${power} má ${pad(posunMist, "NULA")} → posuň čárku o ${pad(posunMist, "MÍSTO")} doprava.`,
       `${fmtDec(base)} → ${fmtDec(result)}.`,
     ],
     hints: [
@@ -75,7 +76,7 @@ function genDivByPowerOfTen(_level: number): PracticeTask {
     options,
     solutionSteps: [
       `Dělení 10, 100 nebo 1000 = POSUN čárky doleva.`,
-      `Číslo ${power} má ${posunMist} ${posunMist === 1 ? "nulu" : posunMist < 5 ? "nuly" : "nul"} → posuň čárku o ${posunMist} ${posunMist === 1 ? "místo" : "místa"} doleva.`,
+      `Číslo ${power} má ${pad(posunMist, "NULA")} → posuň čárku o ${pad(posunMist, "MÍSTO")} doleva.`,
       `${base} = ${base},0 → posunem vznikne ${fmtDec(result)}.`,
     ],
     hints: [

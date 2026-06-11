@@ -1,5 +1,6 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
 import { shuffleArray } from "../helpers";
+import { form } from "../../czechGrammar";
 
 function genFracOfNumberSimple(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
@@ -39,7 +40,7 @@ function genFracOfNumberWord(level: number): PracticeTask[] {
     const numr = Math.floor(Math.random() * (den - 1)) + 1;
     const base = den * (Math.floor(Math.random() * 4) + 2);
     const result = (numr * base) / den;
-    const csCast = numr === 1 ? "část" : numr >= 2 && numr <= 4 ? "části" : "částí";
+    const csCast = form(numr, "ČÁST");
     const solutionSteps = [`Celkem je ${base}. Potřebujeme ${numr}/${den} z toho.`, `Jedna část: ${base} ÷ ${den} = ${base / den}.`, `${numr} ${csCast}: ${base / den} × ${numr} = ${result}.`, `Výsledek: ${result}.`];
     const distractors = new Set<number>();
     distractors.add(base / den); distractors.add(base * numr); distractors.add(result + 1); distractors.add(result - 1);

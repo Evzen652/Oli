@@ -1,6 +1,6 @@
 import type { TopicMetadata, PracticeTask, HelpData } from "../../types";
 import { shuffleArray } from "../helpers";
-import { PLURALS } from "../czechPlural";
+import { form } from "../../czechGrammar";
 
 function genMultiply(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
@@ -25,10 +25,10 @@ function genMultiply(level: number): PracticeTask[] {
       options,
       solutionSteps: [
         `Spočítej ${a} × ${b}.`,
-        `To je jako ${a} ${PLURALS.skupinka(a)} po ${b}: ${Array(a).fill(b).join(" + ")} = ${correct}.`,
+        `To je jako ${a} ${form(a, "SKUPINKA")} po ${b}: ${Array(a).fill(b).join(" + ")} = ${correct}.`,
         `Výsledek: ${correct}.`,
       ],
-      hints: [`Kolik je ${a} × ${b}? Představ si ${a} ${PLURALS.skupinka(a)} po ${b}.`, `Spočítej: ${Array(a).fill(b).join(" + ")} = ?`],
+      hints: [`Kolik je ${a} × ${b}? Představ si ${a} ${form(a, "SKUPINKA")} po ${b}.`, `Spočítej: ${Array(a).fill(b).join(" + ")} = ?`],
     });
   }
   return tasks;

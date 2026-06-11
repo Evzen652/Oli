@@ -50,11 +50,8 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 - TODO: zkontrolovat `useEffect` cleanup v `InviteParentDialog.tsx`, vyčistit setTimeout/listenery při unmount
 - Pokud používá framer-motion AnimatePresence, zkontrolovat exit handler
 
-### Czech grammar audit zbylých generátorů
-- Centrální helper `src/lib/czechGrammar.ts` vytvořen + testován (18/18 testů ok)
-- Opraveny nejviditelnější bugy: `zlomekJakoCastCelku`, ChildHomePage motivační hlášky, weeklyReportGenerator, SkillDetailModal
-- **TODO**: audit zbývajících ~25 content generátorů v `src/lib/content/math/*` — najít ternární `n === 1 ? ... : ...` patterny a převést na `pad()` / `phrase()`
-- Postup: `grep "=== 1 \? .* : .* :"` per soubor, refactor postupně
+### Czech grammar audit zbylých generátorů ✅ 2026-06-12
+- Hotovo — viz sekce Vyřízené výše.
 
 ### Email integrace pro parent_invitations (Krok D follow-up)
 - Pozvánka se ukládá do `parent_invitations`, ale email se zatím **neodesílá automaticky**.
@@ -81,6 +78,15 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 - Odloženo z follow-up ČÁST C bod 2 — bez DB migrace nelze čistě implementovat.
 
 ---
+
+## Vyřízené (doplněno 2026-06-12)
+
+### Czech grammar audit — math generátory ✅ 2026-06-12
+- Přidáno 8 nových slov do NOUNS v `czechGrammar.ts`: SLOUPEC, ŘÁDEK, NULA, DESETINA, SETINA, TISÍCINA, TISÍCOVKA, SKUPINKA.
+- Migrováno 8 souborů z legacy `czechPlural.ts` → `czechGrammar.ts` (pad/form): `addSub10k`, `areaGrid`, `fracIntro`, `fracSameDen` (dead import), `multiply`, `multWritten`, `units4`, `wordProblems5`.
+- Opraveny inline ternáry v `decimalMulDiv`, `decimalRead`, `fracOfNumber`.
+- `czechPlural.ts` už není importován nikde v kódu (soubor zachován pro případ dalšího použití).
+- TypeScript 0 chyb, czech-grammar.test 18/18 ✅.
 
 ## Otevřené (doplněno 2026-06-12)
 
