@@ -10,7 +10,7 @@ describe("grade-5 inputType konzistence", () => {
   it("každý topic má validní inputType", () => {
     const VALID_TYPES = [
       "select_one", "fill_blank", "true_false", "drag_order",
-      "match_pairs", "multi_select", "text", "short_answer",
+      "match_pairs", "multi_select", "text", "short_answer", "categorize",
     ];
     for (const topic of GRADE_5_TOPICS) {
       expect(
