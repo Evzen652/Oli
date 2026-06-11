@@ -31,7 +31,7 @@
 
 ### Bezpečnostní nálezy z auditu 2026-06-08 (viz docs/AUDIT_2026-06-08_full.md)
 - 🔴 **C1 (vyžaduje akci uživatele):** Groq klíč `VITE_GROQ_API_KEY` je v klientském bundlu → rotovat v Groq dashboardu + přesunout volání do edge funkce. `src/lib/aiClient.ts`.
-- 🔴 **C2:** `generate-prvouka-images` edge funkce bez auth (service-role) → přepis ilustrací / DoS. Přidat admin gate.
+- ~~🔴 **C2:** `generate-prvouka-images` edge funkce bez auth~~ ✅ 2026-06-11 — JWT + admin role gate přidán.
 - 🟠 H1 `generate-logo` bez auth · H2 `send-parent-invite` bez auth (email bombing) · H3 `parent_invitations` UPDATE `USING(true)` · H4 bucket `prvouka-images` zápis bez role check.
 
 ### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
