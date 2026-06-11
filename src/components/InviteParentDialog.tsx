@@ -50,8 +50,20 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
 
   // Abort in-flight fetch on unmount → zabraňuje setState na unmounted komponentu
   const abortRef = useRef<AbortController | null>(null);
+
+  // Focus management — uloží focus před otevřením, vrátí ho po zavření
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const prevFocusRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
-    return () => { abortRef.current?.abort(); };
+    prevFocusRef.current = document.activeElement as HTMLElement;
+    const first = dialogRef.current?.querySelector<HTMLElement>(
+      'button, input, [tabindex]:not([tabindex="-1"])',
+    );
+    first?.focus();
+    return () => {
+      abortRef.current?.abort();
+      prevFocusRef.current?.focus();
+    };
   }, []);
 
   // ── WhatsApp ──────────────────────────────────────────────────────────────
@@ -135,7 +147,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
   // ── Hlavní dialog ─────────────────────────────────────────────────────────
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-5 shadow-2xl">
+      <div ref={dialogRef} className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-5 shadow-2xl">
 
         {/* Hlavička */}
         <div className="text-center">

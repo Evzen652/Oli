@@ -32,7 +32,11 @@
 ### Bezpečnostní nálezy z auditu 2026-06-08 (viz docs/AUDIT_2026-06-08_full.md)
 - 🔴 **C1 (vyžaduje akci uživatele):** Groq klíč `VITE_GROQ_API_KEY` je v klientském bundlu → rotovat v Groq dashboardu + přesunout volání do edge funkce. `src/lib/aiClient.ts`.
 - ~~🔴 **C2:** `generate-prvouka-images` edge funkce bez auth~~ ✅ 2026-06-11 — JWT + admin role gate přidán.
-- 🟠 H1 `generate-logo` bez auth · H2 `send-parent-invite` bez auth (email bombing) · H3 `parent_invitations` UPDATE `USING(true)` · H4 bucket `prvouka-images` zápis bez role check.
+- ~~🟠 **H1** `generate-logo` bez auth~~ ✅ 2026-06-12 — JWT + admin role gate přidán.
+- ~~🟠 **H2** `send-parent-invite` bez auth (email bombing)~~ ✅ 2026-06-12 — rate limit: max 1 pozvánka/email/hodinu.
+- ~~🟠 **H3** `parent_invitations` UPDATE `USING(true)`~~ ✅ 2026-06-12 — migrace `20260612100000` opravuje na `USING(status='pending') WITH CHECK (status='accepted')`.
+- ~~🟠 **H4** bucket `prvouka-images` zápis bez role check~~ ✅ 2026-06-12 — migrace `20260612100001` vyžaduje admin roli pro INSERT/UPDATE.
+- ⚠️ **Migrace H3+H4 musí aplikovat Evžen:** `npx supabase db push` nebo přes Supabase Studio SQL editor.
 
 ### Audit grade-5 — opravy (priorita dle docs/AUDIT_GRADE_5_2026-06-08.md)
 Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
@@ -45,10 +49,7 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 7. **R5 — neadaptivní generátory (2):** `nervovaSoustavaSmysly.ts`, `riseRostlinHubZivocichu.ts` — stejný výstup L1/2/3.
 8. **R6 — missing_hints matematika (12):** ověřit, zda spoléhají na `helpTemplate` (pak OK), jinak doplnit.
 
-### BUG #5 — Tab zamrzne po zavření InviteParentDialog
-- Možný memory leak v animaci/listeneru — předběžně do PENDING
-- TODO: zkontrolovat `useEffect` cleanup v `InviteParentDialog.tsx`, vyčistit setTimeout/listenery při unmount
-- Pokud používá framer-motion AnimatePresence, zkontrolovat exit handler
+~~**BUG #5** — Tab zamrzne po zavření InviteParentDialog~~ ✅ 2026-06-12 — přidána focus restoration (save activeElement při mount, vrátí focus při unmount + focus první prvek po otevření).
 
 ### Czech grammar audit zbylých generátorů ✅ 2026-06-12
 - Hotovo — viz sekce Vyřízené výše.

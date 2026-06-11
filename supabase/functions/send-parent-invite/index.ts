@@ -144,6 +144,24 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    // Rate limit: max 1 pozvánka na stejný email za hodinu
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recent } = await supabase
+      .from("parent_invitations")
+      .select("id")
+      .eq("email", email.trim().toLowerCase())
+      .eq("status", "pending")
+      .gte("invited_at", oneHourAgo)
+      .limit(1)
+      .maybeSingle();
+
+    if (recent) {
+      return new Response(
+        JSON.stringify({ ok: true, emailSent: false, reason: "rate-limited" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     // 1. Uložit pozvánku do DB
     const { data: invite, error: insertErr } = await supabase
       .from("parent_invitations")
