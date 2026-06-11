@@ -6,7 +6,7 @@
 import { useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { validateAnswer } from "@/lib/validators";
+import { validateAnswer, resolveTaskValidation } from "@/lib/validators";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getFullTopicTitle } from "@/lib/types";
 import { getAllTopics } from "@/lib/contentRegistry";
@@ -100,7 +100,11 @@ export function DemoSession() {
   const handleAnswerSubmit = useCallback((answer: string) => {
     const task = tasks[taskIdx];
     if (!task) return;
-    const result = validateAnswer(answer.trim(), task.correctAnswer.trim(), {
+    // resolveTaskValidation: u strukturovaných typů (items/pairs/categories)
+    // je correctAnswer jen marker — očekávaná hodnota se odvozuje z tasku.
+    const { expected, validatorId } = resolveTaskValidation(task);
+    const result = validateAnswer(answer.trim(), expected, {
+      validatorId,
       inputType: topic?.inputType,
     });
     const correct = result.correct;

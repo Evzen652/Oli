@@ -371,8 +371,13 @@ export async function processState(session: SessionData, userInput?: string): Pr
       if (task) {
         // Use pluggable validator system (numeric tolerance, set match, ordered, ...)
         // Falls back to string_exact for unknown input types.
-        const { validateAnswer } = await import("./validators");
-        const result = validateAnswer(answer, task.correctAnswer.trim(), {
+        // resolveTaskValidation: u strukturovaných typů (items/pairs/categories)
+        // je correctAnswer jen technický marker ("order"/"match") — očekávaná
+        // hodnota i validátor se odvozují z tvaru tasku.
+        const { validateAnswer, resolveTaskValidation } = await import("./validators");
+        const { expected, validatorId } = resolveTaskValidation(task);
+        const result = validateAnswer(answer, expected, {
+          validatorId,
           inputType: s.matchedTopic?.inputType,
           context: { topic: s.matchedTopic?.id, level: s.currentLevel },
         });

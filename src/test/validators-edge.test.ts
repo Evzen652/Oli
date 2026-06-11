@@ -387,11 +387,11 @@ describe("getDefaultValidator — coverage", () => {
     ["essay", "essay"],
     ["multi_select", "set_match"],
     ["drag_order", "ordered_sequence"],
+    ["match_pairs", "pairs_match"],
+    ["categorize", "categorize_groups"],
     ["select_one", "string_exact"],
     ["comparison", "string_exact"],
     ["fill_blank", "string_exact"],
-    ["match_pairs", "string_exact"],
-    ["categorize", "string_exact"],
     ["text", "string_exact"],
     ["unknown_type_xyz", "string_exact"], // fallback
   ])("inputType '%s' → validator '%s'", (inputType, expectedId) => {

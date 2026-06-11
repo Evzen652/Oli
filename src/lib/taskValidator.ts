@@ -34,8 +34,13 @@ export function validateTaskForInputType(task: PracticeTask, inputType: InputTyp
       if (!task.options || task.options.length < 2) return false;
       if (task.options.length > 6) return false;
       if (!task.options.includes(task.correctAnswer)) return false;
-      // i/y spelling: question must have exactly 1 underscore
-      const isIY = task.options.some(o => ["i/í", "y/ý", "i", "y"].includes(o.toLowerCase()));
+      // i/y spelling: question must have exactly 1 underscore.
+      // Skutečné i/y cvičení nabízí OBĚ varianty (i + y) — samotné "I" může být
+      // legitimní odpověď jinde (písmenné řady: "A, C, E, G, ?" → "I").
+      const lowerOpts = task.options.map(o => o.toLowerCase());
+      const isIY =
+        lowerOpts.some(o => ["i/í", "i", "í"].includes(o)) &&
+        lowerOpts.some(o => ["y/ý", "y", "ý"].includes(o));
       if (isIY) {
         const underscores = (task.question.match(/_/g) || []).length;
         if (underscores !== 1) return false;
@@ -61,7 +66,9 @@ export function validateTaskForInputType(task: PracticeTask, inputType: InputTyp
     }
 
     case "fill_blank": {
-      const blankCount = (task.question.match(/_/g) || []).length;
+      // Souvislá řada podtržítek ("___") = JEDEN blank — stejně to renderují
+      // obě UI komponenty (FillBlankInput splituje na "___", student input na /_+/).
+      const blankCount = (task.question.match(/_+/g) || []).length;
       if (blankCount === 0) return false;
       // If blanks array provided, must match blank count
       if (task.blanks && task.blanks.length !== blankCount) return false;

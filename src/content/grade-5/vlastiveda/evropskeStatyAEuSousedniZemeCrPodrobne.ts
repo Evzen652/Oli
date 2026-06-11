@@ -51,7 +51,7 @@ const POOL_L1: PracticeTask[] = [
       { left: "Česká republika", right: "Česká koruna (CZK)" },
       { left: "Slovensko", right: "Euro" },
       { left: "Polsko", right: "Polský zlotý" },
-      { left: "Německo", right: "Euro" },
+      { left: "Maďarsko", right: "Maďarský forint" },
     ],
     hints: ["ČR nemá euro — používáme korunu."],
   },
@@ -219,7 +219,7 @@ const POOL_L2: PracticeTask[] = [
     pairs: [
       { left: "Česká republika (západ)", right: "Německo" },
       { left: "Česká republika (východ)", right: "Slovensko" },
-      { left: "Polsko (západ)", right: "Německo" },
+      { left: "Rakousko (východ)", right: "Maďarsko" },
       { left: "Slovensko (východ)", right: "Ukrajina" },
     ],
     hints: ["Na západ od ČR leží Německo."],

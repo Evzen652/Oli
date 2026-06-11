@@ -93,6 +93,79 @@ export const orderedSequenceValidator: Validator = {
   },
 };
 
+// ─── Match Pairs (spoj dvojice — porovnává množinu dvojic, ne string) ───
+/**
+ * answer:   JSON `[{left, right}, ...]` — dvojice tak, jak je žák spojil
+ *           (MatchPairsInput.handleSubmit)
+ * expected: JSON `[{left, right}, ...]` — správné dvojice (task.pairs)
+ * Pořadí dvojic nehraje roli; každé left musí mít správné right.
+ */
+export const pairsMatchValidator: Validator = {
+  id: "pairs_match",
+  validate(answer, expected) {
+    const norm = (s: string) =>
+      s.trim().toLowerCase().replace(/\s+/g, " ").normalize("NFC");
+    type Pair = { left: string; right: string };
+    const parse = (s: string): Pair[] | null => {
+      try {
+        const v = JSON.parse(s);
+        if (!Array.isArray(v)) return null;
+        return v.map((p) => ({ left: String(p?.left ?? ""), right: String(p?.right ?? "") }));
+      } catch {
+        return null;
+      }
+    };
+    const e = parse(expected);
+    if (!e || e.length === 0) return { correct: false, errorType: "expected_invalid" };
+    const a = parse(answer);
+    if (!a) return { correct: false, errorType: "malformed_answer" };
+    if (a.length !== e.length) return { correct: false, errorType: "wrong_count" };
+    const expectedMap = new Map(e.map((p) => [norm(p.left), norm(p.right)]));
+    for (const p of a) {
+      if (expectedMap.get(norm(p.left)) !== norm(p.right)) {
+        return { correct: false, errorType: "wrong_pairs" };
+      }
+    }
+    return { correct: true };
+  },
+};
+
+// ─── Categorize (zařaď do skupin — množinová shoda per kategorie) ───────
+/**
+ * answer:   JSON `{"Savci": ["pes", ...], ...}` — přiřazení žáka
+ *           (CategorizeInput.handleSubmit)
+ * expected: JSON `[{name, items}, ...]` — správné kategorie (task.categories)
+ * Pořadí položek v kategorii nehraje roli.
+ */
+export const categorizeValidator: Validator = {
+  id: "categorize_groups",
+  validate(answer, expected) {
+    const norm = (s: string) =>
+      s.trim().toLowerCase().replace(/\s+/g, " ").normalize("NFC");
+    let a: Record<string, unknown>;
+    let e: { name: string; items: string[] }[];
+    try {
+      a = JSON.parse(answer);
+      e = JSON.parse(expected);
+    } catch {
+      return { correct: false, errorType: "malformed_answer" };
+    }
+    if (!Array.isArray(e) || e.length === 0) return { correct: false, errorType: "expected_invalid" };
+    if (!a || typeof a !== "object") return { correct: false, errorType: "malformed_answer" };
+    for (const cat of e) {
+      const got = a[cat.name];
+      const gotArr = Array.isArray(got) ? got.map((x) => norm(String(x))) : [];
+      const want = cat.items.map((x) => norm(x));
+      if (gotArr.length !== want.length) return { correct: false, errorType: "wrong_count" };
+      const wantSet = new Set(want);
+      for (const item of gotArr) {
+        if (!wantSet.has(item)) return { correct: false, errorType: "wrong_items" };
+      }
+    }
+    return { correct: true };
+  },
+};
+
 // ─── Fraction (zlomky — porovnává matematickou hodnotu, ne string) ──────
 /**
  * Parsuje "a/b" a ověřuje matematickou ekvivalenci dvou zlomků.
@@ -641,6 +714,8 @@ const VALIDATORS: Record<string, Validator> = {
   fraction: fractionValidator,
   set_match: setMatchValidator,
   ordered_sequence: orderedSequenceValidator,
+  pairs_match: pairsMatchValidator,
+  categorize_groups: categorizeValidator,
   algebraic_equivalence: algebraicEquivalenceValidator,
   multi_step: multiStepValidator,
   essay: essayValidator,
@@ -683,15 +758,44 @@ export function getDefaultValidator(inputType: string): Validator {
       return setMatchValidator;
     case "drag_order":
       return orderedSequenceValidator;
+    case "match_pairs":
+      return pairsMatchValidator;
+    case "categorize":
+      return categorizeValidator;
     case "select_one":
     case "comparison":
     case "fill_blank":
-    case "match_pairs":
-    case "categorize":
     case "text":
     default:
       return stringExactValidator;
   }
+}
+
+/**
+ * Odvodí očekávanou hodnotu + validátor z TVARU tasku.
+ *
+ * Obsah u strukturovaných typů používá technické markery
+ * (`correctAnswer: "order"` / `"match"`) — správná odpověď žije v polích
+ * `items` / `pairs` / `categories`. UI komponenta se vybírá podle těchto
+ * polí (PracticeInputRouter), proto se podle nich musí vybrat i validátor,
+ * jinak by se žákova strukturovaná odpověď porovnávala se stringem markeru.
+ */
+export function resolveTaskValidation(task: {
+  correctAnswer: string;
+  items?: string[];
+  pairs?: { left: string; right: string }[];
+  categories?: { name: string; items: string[] }[];
+}): { expected: string; validatorId?: string } {
+  if (task.categories && task.categories.length > 0) {
+    return { expected: JSON.stringify(task.categories), validatorId: "categorize_groups" };
+  }
+  if (task.pairs && task.pairs.length > 0) {
+    return { expected: JSON.stringify(task.pairs), validatorId: "pairs_match" };
+  }
+  if (task.items && task.items.length > 0) {
+    return { expected: task.items.join(","), validatorId: "ordered_sequence" };
+  }
+  return { expected: task.correctAnswer.trim() };
 }
 
 /** Hlavní vstupní bod pro orchestrator */

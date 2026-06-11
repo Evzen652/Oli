@@ -82,7 +82,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "match",
     pairs: [
       { left: "Mont Blanc", right: "Alpy" },
-      { left: "Matterhorn", right: "Alpy" },
+      { left: "Pico de Aneto", right: "Pyreneje (Francie/Španělsko)" },
       { left: "Gerlachovský štít", right: "Karpaty (Slovensko)" },
       { left: "Elbrus", right: "Kavkaz (Rusko/Gruzie)" },
     ],

@@ -14,10 +14,10 @@ export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputPr
   const textSize = maxLen > 20 ? "text-base" : maxLen > 10 ? "text-lg" : "text-2xl";
 
   const colors = [
-    "bg-blue-200 border-blue-400 text-blue-900 shadow-md shadow-blue-200/60 hover:bg-blue-300 hover:border-blue-500 hover:shadow-lg active:bg-blue-400",
-    "bg-fuchsia-200 border-fuchsia-400 text-fuchsia-900 shadow-md shadow-fuchsia-200/60 hover:bg-fuchsia-300 hover:border-fuchsia-500 hover:shadow-lg active:bg-fuchsia-400",
-    "bg-emerald-200 border-emerald-400 text-emerald-900 shadow-md shadow-emerald-200/60 hover:bg-emerald-300 hover:border-emerald-500 hover:shadow-lg active:bg-emerald-400",
-    "bg-amber-200 border-amber-400 text-amber-900 shadow-md shadow-amber-200/60 hover:bg-amber-300 hover:border-amber-500 hover:shadow-lg active:bg-amber-400",
+    "bg-white border-stone-300 text-stone-800 shadow-md hover:bg-stone-50 hover:border-stone-400 hover:shadow-lg active:bg-stone-100",
+    "bg-white border-stone-300 text-stone-800 shadow-md hover:bg-stone-50 hover:border-stone-400 hover:shadow-lg active:bg-stone-100",
+    "bg-white border-stone-300 text-stone-800 shadow-md hover:bg-stone-50 hover:border-stone-400 hover:shadow-lg active:bg-stone-100",
+    "bg-white border-stone-300 text-stone-800 shadow-md hover:bg-stone-50 hover:border-stone-400 hover:shadow-lg active:bg-stone-100",
   ];
 
   const gridCols = isLong

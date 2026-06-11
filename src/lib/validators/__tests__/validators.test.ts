@@ -5,10 +5,13 @@ import {
   fractionValidator,
   setMatchValidator,
   orderedSequenceValidator,
+  pairsMatchValidator,
+  categorizeValidator,
   algebraicEquivalenceValidator,
   multiStepValidator,
   validateAnswer,
   getDefaultValidator,
+  resolveTaskValidation,
 } from "../index";
 
 describe("stringExactValidator", () => {
@@ -59,6 +62,90 @@ describe("orderedSequenceValidator", () => {
   });
   it("rejects different order", () => {
     expect(orderedSequenceValidator.validate("1,3,2", "1,2,3").correct).toBe(false);
+  });
+});
+
+describe("pairsMatchValidator", () => {
+  const expected = JSON.stringify([
+    { left: "Mont Blanc", right: "Alpy" },
+    { left: "Gerlachovský štít", right: "Karpaty" },
+  ]);
+  it("matches correct pairs in any order", () => {
+    const answer = JSON.stringify([
+      { left: "Gerlachovský štít", right: "Karpaty" },
+      { left: "Mont Blanc", right: "Alpy" },
+    ]);
+    expect(pairsMatchValidator.validate(answer, expected).correct).toBe(true);
+  });
+  it("rejects swapped rights", () => {
+    const answer = JSON.stringify([
+      { left: "Mont Blanc", right: "Karpaty" },
+      { left: "Gerlachovský štít", right: "Alpy" },
+    ]);
+    expect(pairsMatchValidator.validate(answer, expected).correct).toBe(false);
+  });
+  it("rejects incomplete answer", () => {
+    const answer = JSON.stringify([{ left: "Mont Blanc", right: "Alpy" }]);
+    expect(pairsMatchValidator.validate(answer, expected).errorType).toBe("wrong_count");
+  });
+  it("rejects malformed answer", () => {
+    expect(pairsMatchValidator.validate("match", expected).errorType).toBe("malformed_answer");
+  });
+  it("rejects marker as expected (legacy guard)", () => {
+    expect(pairsMatchValidator.validate("match", "match").errorType).toBe("expected_invalid");
+  });
+});
+
+describe("categorizeValidator", () => {
+  const expected = JSON.stringify([
+    { name: "Savci", items: ["pes", "kočka"] },
+    { name: "Ptáci", items: ["vrabec"] },
+  ]);
+  it("matches correct assignment, item order irrelevant", () => {
+    const answer = JSON.stringify({ Savci: ["kočka", "pes"], Ptáci: ["vrabec"] });
+    expect(categorizeValidator.validate(answer, expected).correct).toBe(true);
+  });
+  it("rejects item in wrong category", () => {
+    const answer = JSON.stringify({ Savci: ["pes", "vrabec"], Ptáci: ["kočka"] });
+    expect(categorizeValidator.validate(answer, expected).correct).toBe(false);
+  });
+  it("rejects missing item", () => {
+    const answer = JSON.stringify({ Savci: ["pes"], Ptáci: ["vrabec"] });
+    expect(categorizeValidator.validate(answer, expected).errorType).toBe("wrong_count");
+  });
+  it("rejects malformed answer", () => {
+    expect(categorizeValidator.validate("nonsense", expected).errorType).toBe("malformed_answer");
+  });
+});
+
+describe("resolveTaskValidation — marker → strukturovaná odpověď", () => {
+  it("drag_order: expected = items.join(','), validator ordered_sequence", () => {
+    const r = resolveTaskValidation({ correctAnswer: "order", items: ["a", "b", "c"] });
+    expect(r.expected).toBe("a,b,c");
+    expect(r.validatorId).toBe("ordered_sequence");
+  });
+  it("match_pairs: expected = JSON pairs, validator pairs_match", () => {
+    const pairs = [{ left: "l", right: "r" }];
+    const r = resolveTaskValidation({ correctAnswer: "match", pairs });
+    expect(r.expected).toBe(JSON.stringify(pairs));
+    expect(r.validatorId).toBe("pairs_match");
+  });
+  it("categorize: expected = JSON categories, validator categorize_groups", () => {
+    const categories = [{ name: "A", items: ["x"] }, { name: "B", items: ["y"] }];
+    const r = resolveTaskValidation({ correctAnswer: "categorize", categories });
+    expect(r.expected).toBe(JSON.stringify(categories));
+    expect(r.validatorId).toBe("categorize_groups");
+  });
+  it("plain task: expected = correctAnswer, žádný validatorId", () => {
+    const r = resolveTaskValidation({ correctAnswer: "42" });
+    expect(r.expected).toBe("42");
+    expect(r.validatorId).toBeUndefined();
+  });
+  it("end-to-end: žákova správná odpověď drag_order projde", () => {
+    const task = { correctAnswer: "order", items: ["Sámova říše", "Velká Morava", "Přemyslovci"] };
+    const { expected, validatorId } = resolveTaskValidation(task);
+    expect(validateAnswer("Sámova říše,Velká Morava,Přemyslovci", expected, { validatorId }).correct).toBe(true);
+    expect(validateAnswer("Velká Morava,Sámova říše,Přemyslovci", expected, { validatorId }).correct).toBe(false);
   });
 });
 
