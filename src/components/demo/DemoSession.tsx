@@ -230,14 +230,24 @@ export function DemoSession() {
               <div className="flex items-center gap-4">
                 {(() => {
                   const url = getTopicIllustrationUrl(topic);
-                  // IllustrationImg skryje obrázek při 404 místo rozbité ikony.
+                  const sm = getSubjectMeta(topic.subject);
+                  // Fallback řetěz: ilustrace tématu → ilustrace předmětu → emoji.
+                  const subjectFallback = (
+                    <IllustrationImg
+                      src={sm.image}
+                      alt=""
+                      className="w-16 h-16 object-contain shrink-0 self-center"
+                      fallback={<span className="text-5xl shrink-0 self-center">{sm.emoji}</span>}
+                    />
+                  );
                   return url ? (
                     <IllustrationImg
                       src={url}
                       alt=""
                       className="w-16 h-16 object-contain shrink-0 self-center"
+                      fallback={subjectFallback}
                     />
-                  ) : null;
+                  ) : subjectFallback;
                 })()}
                 <div className="flex-1 space-y-1">
                   <p className="text-xl font-medium text-foreground">

@@ -36,6 +36,7 @@ import { useT } from "@/lib/i18n";
 import { LogOut, Eye } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { IllustrationImg } from "@/components/IllustrationImg";
+import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { LandingNav } from "@/pages/LandingNav";
 import { OlyLogo } from "@/components/OlyLogo";
 import { BackButton } from "@/components/BackButton";
@@ -481,15 +482,26 @@ export function SessionView() {
               <div className="flex items-center gap-4">
                 {(() => {
                   const illUrl = getTopicIllustrationUrl(session.matchedTopic);
-                  // IllustrationImg skryje obrázek při 404 (mnoho grade-N témat nemá
-                  // vygenerovanou ilustraci) místo rozbité ikony.
+                  const subjectMeta = getSubjectMeta(session.matchedTopic.subject);
+                  // Fallback řetěz: ilustrace tématu → ilustrace předmětu (lokální
+                  // asset, existuje vždy) → emoji. Mnoho grade-N témat nemá
+                  // vygenerovanou ilustraci (404) — nikdy nezobrazit rozbitou ikonu.
+                  const subjectFallback = (
+                    <IllustrationImg
+                      src={subjectMeta.image}
+                      alt=""
+                      className="w-16 h-16 object-contain shrink-0 self-center"
+                      fallback={<span className="text-5xl shrink-0 self-center">{subjectMeta.emoji}</span>}
+                    />
+                  );
                   return illUrl ? (
                     <IllustrationImg
                       src={illUrl}
                       alt=""
                       className="w-16 h-16 object-contain shrink-0 self-center"
+                      fallback={subjectFallback}
                     />
-                  ) : null;
+                  ) : subjectFallback;
                 })()}
                 <div className="flex-1 space-y-1">
                   <p className="text-xl font-heading font-bold text-foreground">
