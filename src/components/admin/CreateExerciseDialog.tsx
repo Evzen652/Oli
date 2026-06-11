@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
@@ -273,6 +273,259 @@ export function CreateExerciseDialog({ skill, variant, onSaved }: Props) {
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+// ──────────────────────────────────────────────────────────
+// EditExerciseDialog — úprava již uloženého cvičení
+// ──────────────────────────────────────────────────────────
+
+function inferInputType(ex: {
+  correct_answer: string;
+  options?: string[];
+  question: string;
+}): FormInputType {
+  if (Array.isArray(ex.options) && ex.options.includes("Pravda") && ex.options.includes("Nepravda")) {
+    return "true_false";
+  }
+  if (Array.isArray(ex.options) && ex.options.length >= 2) return "select_one";
+  if (ex.question.includes("___")) return "fill_blank";
+  return "short_answer";
+}
+
+interface EditProps {
+  exercise: {
+    id: string;
+    question: string;
+    correct_answer: string;
+    options?: string[];
+    hints?: string[];
+    solution_steps?: string[];
+  };
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onSaved: () => void;
+}
+
+export function EditExerciseDialog({ exercise, open, onOpenChange, onSaved }: EditProps) {
+  const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
+
+  const [inputType, setInputType] = useState<FormInputType>(() => inferInputType(exercise));
+  const [question, setQuestion] = useState(exercise.question);
+  const [correctAnswer, setCorrectAnswer] = useState(exercise.correct_answer);
+  const [distractors, setDistractors] = useState<string[]>(() => {
+    const d = (exercise.options ?? []).filter(o => o !== exercise.correct_answer);
+    return d.length >= 3 ? d : [...d, ...Array(3 - d.length).fill("")];
+  });
+  const [hints, setHints] = useState<string[]>(() => {
+    const h = exercise.hints ?? [];
+    return h.length >= 2 ? h : [...h, ...Array(2 - h.length).fill("")];
+  });
+  const [explanation, setExplanation] = useState(exercise.solution_steps?.[0] ?? "");
+
+  useEffect(() => {
+    setInputType(inferInputType(exercise));
+    setQuestion(exercise.question);
+    setCorrectAnswer(exercise.correct_answer);
+    const d = (exercise.options ?? []).filter(o => o !== exercise.correct_answer);
+    setDistractors(d.length >= 3 ? d : [...d, ...Array(3 - d.length).fill("")]);
+    const h = exercise.hints ?? [];
+    setHints(h.length >= 2 ? h : [...h, ...Array(2 - h.length).fill("")]);
+    setExplanation(exercise.solution_steps?.[0] ?? "");
+  }, [exercise.id]);
+
+  const handleSave = async () => {
+    if (!question.trim()) {
+      toast({ description: "Zadej otázku.", variant: "destructive" });
+      return;
+    }
+    if (!correctAnswer.trim()) {
+      toast({ description: "Zadej správnou odpověď.", variant: "destructive" });
+      return;
+    }
+    if (inputType === "select_one" && distractors.filter(d => d.trim()).length < 1) {
+      toast({ description: "Přidej aspoň 1 nesprávnou možnost.", variant: "destructive" });
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const options =
+        inputType === "select_one"
+          ? shuffle([...distractors.filter(d => d.trim()), correctAnswer.trim()])
+          : inputType === "true_false"
+          ? ["Pravda", "Nepravda"]
+          : [];
+
+      const { error } = await (supabase as any)
+        .from("custom_exercises")
+        .update({
+          question: question.trim(),
+          correct_answer: correctAnswer.trim(),
+          options,
+          hints: hints.filter(h => h.trim()),
+          solution_steps: explanation.trim() ? [explanation.trim()] : [],
+        })
+        .eq("id", exercise.id);
+
+      if (error) throw error;
+
+      toast({ description: "Cvičení aktualizováno ✓" });
+      onSaved();
+      onOpenChange(false);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Nepodařilo se uložit.";
+      toast({ description: msg, variant: "destructive" });
+    }
+    setSaving(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={v => { if (!v) onOpenChange(false); }}>
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-base">Upravit cvičení</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-5 py-1">
+          <div className="space-y-1.5">
+            <Label>Typ cvičení</Label>
+            <Select
+              value={inputType}
+              onValueChange={v => {
+                setInputType(v as FormInputType);
+                setCorrectAnswer("");
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {(Object.entries(INPUT_TYPE_LABELS) as [FormInputType, string][]).map(([k, label]) => (
+                  <SelectItem key={k} value={k}>{label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Otázka</Label>
+            {inputType === "fill_blank" && (
+              <p className="text-xs text-muted-foreground">
+                Použij <code className="bg-muted px-1 rounded">___</code> jako místo k doplnění.
+              </p>
+            )}
+            <Textarea
+              value={question}
+              onChange={e => setQuestion(e.target.value)}
+              placeholder={inputType === "fill_blank" ? "Pes je ___ zvíře." : "Napiš otázku…"}
+              className="min-h-[80px] resize-none"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Správná odpověď</Label>
+            {inputType === "true_false" ? (
+              <div className="grid grid-cols-2 gap-2">
+                {["Pravda", "Nepravda"].map(opt => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => setCorrectAnswer(opt)}
+                    className={`rounded-lg border-2 py-2.5 text-sm font-medium transition-colors ${
+                      correctAnswer === opt
+                        ? "border-emerald-400 bg-emerald-50 text-emerald-800"
+                        : "border-border bg-background text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {correctAnswer === opt && <Check className="inline h-3.5 w-3.5 mr-1 text-emerald-600" />}
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <Input
+                value={correctAnswer}
+                onChange={e => setCorrectAnswer(e.target.value)}
+                placeholder="Správná odpověď…"
+              />
+            )}
+          </div>
+
+          {inputType === "select_one" && (
+            <div className="space-y-1.5">
+              <Label>
+                Nesprávné možnosti
+                <span className="text-muted-foreground font-normal ml-1">(distraktory)</span>
+              </Label>
+              <div className="space-y-2">
+                {distractors.map((d, i) => (
+                  <Input
+                    key={i}
+                    value={d}
+                    onChange={e => {
+                      const next = [...distractors];
+                      next[i] = e.target.value;
+                      setDistractors(next);
+                    }}
+                    placeholder={`Nesprávná možnost ${i + 1}…`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="space-y-1.5">
+            <Label>
+              Nápovědy
+              <span className="text-muted-foreground font-normal ml-1">(nepovinné)</span>
+            </Label>
+            <div className="space-y-2">
+              {hints.map((h, i) => (
+                <Input
+                  key={i}
+                  value={h}
+                  onChange={e => {
+                    const next = [...hints];
+                    next[i] = e.target.value;
+                    setHints(next);
+                  }}
+                  placeholder={
+                    i === 0
+                      ? "Nápověda 1 — navede směr, neprozradí odpověď…"
+                      : "Nápověda 2 — konkrétnější krok…"
+                  }
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>
+              Vysvětlení
+              <span className="text-muted-foreground font-normal ml-1">(nepovinné)</span>
+            </Label>
+            <Textarea
+              value={explanation}
+              onChange={e => setExplanation(e.target.value)}
+              placeholder="Proč je tato odpověď správná…"
+              className="min-h-[60px] resize-none"
+            />
+          </div>
+        </div>
+
+        <DialogFooter className="gap-2 pt-2">
+          <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving}>
+            <X className="h-4 w-4 mr-1" /> Zrušit
+          </Button>
+          <Button onClick={handleSave} disabled={saving} className="gap-1.5">
+            <Save className="h-4 w-4" />
+            {saving ? "Ukládám…" : "Uložit změny"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

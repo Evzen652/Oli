@@ -82,6 +82,15 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ---
 
+## Otevřené (doplněno 2026-06-12)
+
+### Admin editor — edit uložených cvičení ✅ 2026-06-12
+- `EditExerciseDialog` přidán do `CreateExerciseDialog.tsx` — prefilluje formulář z DB záznamu, inferuje `inputType` z dat, ukládá přes `UPDATE`.
+- Tlačítko „✏️ Upravit" v `SavedExercisesList` (vedle Smazat) pro každý stav (pending/approved/rejected).
+- TypeScript 0 chyb.
+
+---
+
 ## Otevřené (doplněno 2026-06-11 pokr.)
 
 ### ~~R2 — match_pairs→categorize (obratlovci, říše rostlin/hub/živočichů)~~ ✅ 2026-06-11

@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X, CheckCircle2, Circle } from "lucide-react";
+import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X, CheckCircle2, Circle, Pencil } from "lucide-react";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 import { ReformulateButtons } from "@/components/admin/ReformulateTaskDialog";
 import type { ReformField } from "@/components/admin/ReformulateTaskDialog";
-import { CreateExerciseDialog } from "@/components/admin/CreateExerciseDialog";
+import { CreateExerciseDialog, EditExerciseDialog } from "@/components/admin/CreateExerciseDialog";
 import { hashString, withSeededRandom } from "@/lib/seededRandom";
 import { useExerciseReview, cardKey } from "@/hooks/useExerciseReview";
 
@@ -490,6 +490,7 @@ function SavedExercisesList({
   const [saved, setSaved] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<ExerciseStatus>("pending");
+  const [editingExercise, setEditingExercise] = useState<any | null>(null);
   const { toast } = useToast();
 
   const fetchSaved = async () => {
@@ -742,6 +743,14 @@ function SavedExercisesList({
                   <Button
                     size="sm"
                     variant="ghost"
+                    onClick={() => setEditingExercise(ex)}
+                    className="gap-1 text-xs h-7 text-muted-foreground hover:text-foreground"
+                  >
+                    <Pencil className="h-3 w-3" /> Upravit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
                     onClick={() => handleDeletePermanently(ex.id)}
                     className="gap-1 text-xs h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
                     title="Trvale smazat (neoznačit jen jako odmítnuté)"
@@ -753,6 +762,15 @@ function SavedExercisesList({
             );
           })}
         </div>
+      )}
+
+      {editingExercise && (
+        <EditExerciseDialog
+          exercise={editingExercise}
+          open={!!editingExercise}
+          onOpenChange={v => { if (!v) setEditingExercise(null); }}
+          onSaved={() => { fetchSaved(); onCountsChanged?.(); setEditingExercise(null); }}
+        />
       )}
     </div>
   );
