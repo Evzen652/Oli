@@ -42,7 +42,7 @@ describe("Topic metadata invariants", () => {
       it("has valid inputType", () => {
         expect([
           "comparison", "fraction", "number", "numeric_range",
-          "select_one", "drag_order",
+          "select_one", "true_false", "drag_order",
           "text", "short_answer",
           "fill_blank", "match_pairs", "multi_select", "categorize",
           "table_fill", "sequence_step",

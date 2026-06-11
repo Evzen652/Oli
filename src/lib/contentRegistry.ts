@@ -1,5 +1,6 @@
 import type { TopicMetadata } from "./types";
 import { ALL_TOPICS, setDiktatFilter } from "./content";
+import { matchesAnyKeyword, longestMatchingKeywordLen } from "./keywordMatch";
 
 export { setDiktatFilter };
 
@@ -113,7 +114,7 @@ export function matchTopic(childInput: string, grade: number): TopicMetadata | n
 
   const candidates = TOPICS.filter((topic) => {
     if (grade < topic.gradeRange[0] || grade > topic.gradeRange[1]) return false;
-    return topic.keywords.some((kw) => input.includes(kw.toLowerCase()));
+    return matchesAnyKeyword(input, topic.keywords);
   });
 
   if (candidates.length === 0) return null;
@@ -123,11 +124,10 @@ export function matchTopic(childInput: string, grade: number): TopicMetadata | n
   let best: TopicMetadata | null = null;
   let bestLen = 0;
   for (const c of candidates) {
-    for (const kw of c.keywords) {
-      if (input.includes(kw.toLowerCase()) && kw.length > bestLen) {
-        bestLen = kw.length;
-        best = c;
-      }
+    const len = longestMatchingKeywordLen(input, c.keywords);
+    if (len > bestLen) {
+      bestLen = len;
+      best = c;
     }
   }
   return best;

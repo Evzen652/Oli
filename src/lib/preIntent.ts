@@ -1,5 +1,5 @@
-import type { TopicMetadata } from "./types";
 import { getAllTopics } from "./contentRegistry";
+import { matchesAnyKeyword } from "./keywordMatch";
 
 /**
  * PRE_INTENT CLASSIFICATION
@@ -43,25 +43,29 @@ export function classifyIntent(input: string, grade: number): PreIntentResult {
     return "confusion";
   }
 
-  // B) Check if input contains any topic-related keyword for this grade
+  // B) Pure numeric input → likely an answer, not a topic description.
+  // Musí být PŘED keyword matchingem: některá témata mají numerické keywordy
+  // (roky, čísla, tísňové linky), které by jinak holé číslo chybně označily
+  // jako wrong_grade místo unclear_input.
+  if (/^\d+$/.test(normalized)) {
+    return "unclear_input";
+  }
+
+  // C) Check if input contains any topic-related keyword for this grade.
+  // Word-boundary match + defensive guard (téma bez keywords nesmí shodit bránu).
   const topics = getAllTopics();
   for (const topic of topics) {
     if (grade < topic.gradeRange[0] || grade > topic.gradeRange[1]) continue;
-    if (topic.keywords.some((kw) => normalized.includes(kw.toLowerCase()))) {
+    if (matchesAnyKeyword(normalized, topic.keywords)) {
       return "topical";
     }
   }
 
-  // C) Check if input matches a keyword in ANY grade (wrong grade selected)
+  // D) Check if input matches a keyword in ANY grade (wrong grade selected)
   for (const topic of topics) {
-    if (topic.keywords.some((kw) => normalized.includes(kw.toLowerCase()))) {
+    if (matchesAnyKeyword(normalized, topic.keywords)) {
       return "wrong_grade";
     }
-  }
-
-  // D) Pure numeric input → likely an answer, not a topic description
-  if (/^\d+$/.test(normalized)) {
-    return "unclear_input";
   }
 
   // E) Everything else is nonsense

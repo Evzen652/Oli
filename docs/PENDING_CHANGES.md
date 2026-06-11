@@ -21,13 +21,17 @@
 
 ### 67 pre-existujících padajících testů — ≥6 příčin (NE jen whitelist!)
 > ⚠️ KOREKCE: dříve zde stálo „jen zastaralý inputType whitelist". Audit 2026-06-08 (`docs/AUDIT_2026-06-08_full.md`) ukázal, že whitelist je jen **2 z 67**. Padá 17 test souborů s ≥6 příčinami:
-- **A** (2): `topic-invariants.test.ts:42-53` whitelist chybí `true_false`. Triviální.
-- **B** (~40+, NEJVÁŽNĚJŠÍ): `classifyIntent`/keyword-matching vrací `topical` místo `unclear_input`/`nonsense`/`wrong_grade` — nová obsahová klíčová slova matchují dříve odmítané vstupy. **Možná funkční regrese boundary/security brány** (žák může dostat „téma" na nesmysl/out-of-scope). Prošetřit prioritně. Soubory: `preintent*`, `red-team`, `security`, `system-stress`, `stress-test-a`, `keyword-conflicts`, `multi-role-flow`, `prvouka-visuals`.
-- **C** (9): `generator-validation.test.ts` — `correctAnswer` není v `options` (vyjmenovaná slova, rýmy).
+- ~~**A** (2): `topic-invariants.test.ts:42-53` whitelist chybí `true_false`~~ ✅ 2026-06-12 — doplněno.
+- ~~**B** (~40+, NEJVÁŽNĚJŠÍ): `classifyIntent`/keyword-matching vrací `topical` místo boundary klasifikace~~ ✅ 2026-06-12 — **POTVRZENÁ SKUTEČNÁ REGRESE, opraveno.** Dvě příčiny: (1) **crash** — 1 téma (`g3-prvouka-...-skupiny-zivocichu...`) nemělo `keywords` pole → `classifyIntent`/`matchTopic` shodily bránu na ŽIVÉ cestě (sessionOrchestrator:119) pro JAKÝKOLIV grade-3 vstup; (2) **substring over-match** — 83 krátkých keywordů (`"a"`,`"s"`,`"6"`…) přes naivní `input.includes(kw)` označovalo nesmysly jako `topical`. Fix: nový `src/lib/keywordMatch.ts` (word-boundary matching + min. délka 2 + guard) použitý v `preIntent.ts` i `contentRegistry.matchTopic`; doplněna data tématu; numerická kontrola přesunuta před keyword matching. **Net: −98 padajících testů** (137→~39). Detail: viz commit.
+- **C** (~9–12): `generator-validation.test.ts` — pre-existující. Dvě podpříčiny: `correctAnswer` není v `options` (vyjmenovaná slova, rýmy) + **témata s míchanými typy tasků deklarují `inputType: "select_one"`, ale emitují match_pairs/categorize tasky bez options** (`stavba-rostlin`, `ekosystemy-pole-louka-les`, `lidske-telo`). Test asertuje options dle `topic.inputType`.
 - **D** (1): spec rozpor `taskValidator.ts:54` (match_pairs ≥3) vs `lib-utilities.test.ts:246` (≥2).
 - **E** (1): `i18n-completeness` — `parent.greeting` bez `{name}`.
-- **F** (1): `sloh-topics` — chybí topic `cz-sloh-vypraveni`.
-- Vše **pre-existující** (67 na čistém HEAD i se změnami 2026-06-08).
+- **F** (~5): stale fixtures odkazují na smazaná legacy ID `cz-sloh-vypraveni`/`cz-sloh-popis` (nahrazena grade-N obsahem). Soubory: `sloh-topics`, `keyword-conflicts`, `security` sanity, `content-registry`.
+
+### 🔴 NOVÝ NÁLEZ (Cause B audit 2026-06-12): boundary pravidla nemigrována na grade-N ID
+- `src/lib/boundaryEnforcement.ts` `BOUNDARY_RULES` je klíčovaný **starými ID** (`math-compare-natural-numbers-100`, `math-add-sub-100`…), ale `matchTopic` teď vrací grade-N ID (`g3-mat-*`). → **runtime boundary enforcement (STOP_2 pro čísla mimo rozsah / zakázané operace) je pro aktuální grade-3 math obsah NEAKTIVNÍ.**
+- Projevuje se faily: `red-team` AC-S2 (4), `system-stress-test` boundary (3).
+- TODO: namapovat `BOUNDARY_RULES` na grade-N topic ID (+ ověřit `numericRange`/`forbiddenKeywords` per téma). Bezpečnostně relevantní — vlastní fokus task.
 
 ### Bezpečnostní nálezy z auditu 2026-06-08 (viz docs/AUDIT_2026-06-08_full.md)
 - 🔴 **C1 (vyžaduje akci uživatele):** Groq klíč `VITE_GROQ_API_KEY` je v klientském bundlu → rotovat v Groq dashboardu + přesunout volání do edge funkce. `src/lib/aiClient.ts`.

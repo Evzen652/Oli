@@ -27,11 +27,11 @@ export function validateTaskForInputType(task: PracticeTask, inputType: InputTyp
   if (!task.question?.trim() || !task.correctAnswer?.trim()) return false;
 
   // Structural overrides: task type is determined by data shape, not topic inputType.
-  // These tasks are rendered/validated by PracticeInputRouter based on field presence,
-  // so they are valid regardless of the topic's inputType.
-  if (task.pairs && task.pairs.length > 0) return true;
-  if (task.correctAnswers && task.correctAnswers.length > 0) return true;
-  if (task.categories && task.categories.length > 0) return true;
+  // PracticeInputRouter renders these by field presence, so validate them by the
+  // shape's own rules (NOT skip validation) — přesměruj na správný inputType.
+  if (task.pairs && task.pairs.length > 0) inputType = "match_pairs";
+  else if (task.correctAnswers && task.correctAnswers.length > 0) inputType = "multi_select";
+  else if (task.categories && task.categories.length > 0) inputType = "categorize";
 
   switch (inputType) {
     case "comparison":
