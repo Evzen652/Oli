@@ -152,7 +152,7 @@ src/
 
 | Co | Kdo | Stav |
 |---|---|---|
-| R2: match_pairs→categorize (obratlovci, říše) | Architekt | ⏸️ Větší restruktura obsahu |
+| ~~R2: match_pairs→categorize (obratlovci, říše)~~ | Architekt | ✅ 2026-06-11 |
 | R4: hint_leak „= odpověď" (104 nálezů) | Architekt | ⏸️ Autorská práce |
 | R5: non-adaptivní generátory grade-5 (6 témat) | Architekt | ⏸️ Autorská práce |
 | R6: missing_hints matematika (12 témat) | Architekt | ⏸️ Ověřit helpTemplate |

@@ -84,8 +84,8 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Otevřené (doplněno 2026-06-11 pokr.)
 
-### R2 — match_pairs→categorize (obratlovci, říše rostlin/hub/živočichů)
-Audit R2: `obratlovciSavciPtaciPlaziObojzivelniciRyby.ts` a `riseRostlinHubZivocichu.ts` jsou ve skutečnosti kategorizace (více položek → stejná třída), ne 1:1 párování. Změnit `inputType` na `categorize` + restrukturovat data na `categories: [{name, items}]`. Bonus překlepy: „Čolník"→„Čolek", Rak označen jako ryba.
+### ~~R2 — match_pairs→categorize (obratlovci, říše rostlin/hub/živočichů)~~ ✅ 2026-06-11
+`inputType: categorize`, `pairs` → `categories`, Čolník→Čolek, Rak odstraněn, Jezerní rybník→Olše lepkavá.
 
 ### Giveaway délkou — 178 nálezů grade-5 (nový check c3)
 Správná možnost je ≥ 2× delší než všechny distraktory → žák vybere nejdelší bez čtení. Koncentrace v CJL slohové + literární výchově (~120), přírodovědě (~30). Oprava = autorsky prodloužit distraktory / zkrátit správnou. Velký rozsah — vhodné pro grade-5 session po tématech.
