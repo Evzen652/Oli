@@ -30,6 +30,53 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Logické hádanky",
       description: "Vyřešíš logické hlavolamy a najdeš skryté vzory.",
     },
+    // Český jazyk
+    "Jazyková výchova": {
+      name: "Pravopis a mluvnice",
+      description: "Naučíš se vyjmenovaná slova, slovní druhy a stavbu vět.",
+    },
+    "Komunikační a slohová výchova": {
+      name: "Čtení, psaní a sloh",
+      description: "Čteš s porozuměním a tvoříš vlastní texty.",
+    },
+    "Literární výchova": {
+      name: "Knihy a příběhy",
+      description: "Poznáš básně, pohádky a příběhy a umíš o nich mluvit.",
+    },
+    // Vlastivěda + Přírodověda — Člověk a jeho svět
+    "Místo, kde žijeme": {
+      name: "Naše vlast",
+      description: "Poznáš Českou republiku, kraje, mapy a světové strany.",
+    },
+    "Lidé kolem nás": {
+      name: "Lidé kolem nás",
+      description: "Poznáš, jak spolu lidé žijí, pracují a pomáhají si.",
+    },
+    "Lidé a čas": {
+      name: "Z naší historie",
+      description: "Projdeš dějinami od pravěku až po vznik Československa.",
+    },
+    "Rozmanitost přírody": {
+      name: "Příroda a přírodověda",
+      description: "Poznáš ekosystémy, rostliny, živočichy a přírodní jevy.",
+    },
+    "Člověk a jeho zdraví": {
+      name: "Tělo a zdraví",
+      description: "Poznáš lidské tělo a naučíš se, jak o sebe pečovat.",
+    },
+    // Informatika
+    "Algoritmizace a programování": {
+      name: "Programování",
+      description: "Sestavíš postupy a vyzkoušíš si základy programování.",
+    },
+    "Data, informace a modelování": {
+      name: "Data a informace",
+      description: "Zjistíš, jak se informace ukládají, třídí a zobrazují.",
+    },
+    "Digitální technologie": {
+      name: "Počítač a technologie",
+      description: "Naučíš se ovládat počítač a používat ho bezpečně.",
+    },
   },
 
   // RVP téma → dětský název + krátký popis

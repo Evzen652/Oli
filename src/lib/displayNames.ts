@@ -32,11 +32,13 @@ export interface DisplayMap {
 
 import { DISPLAY_NAMES as G3 } from "@/content/grade-3/displayNames";
 import { DISPLAY_NAMES as G4 } from "@/content/grade-4/displayNames";
+import { DISPLAY_NAMES as G5 } from "@/content/grade-5/displayNames";
 
 // Per-grade lookup. Přidáním nového ročníku: importuj + zapiš do mapy.
 const BY_GRADE: Partial<Record<Grade, DisplayMap>> = {
   3: G3,
   4: G4,
+  5: G5,
 };
 
 // ─── Interní helper — najde entry napříč ročníky pokud `grade` chybí ──────

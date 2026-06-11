@@ -42,6 +42,27 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Knihy a příběhy",
       description: "Poznáš pohádky, básně i povídky a naučíš se o nich mluvit.",
     },
+    // Prvouka — Člověk a jeho svět
+    "Místo, kde žijeme": {
+      name: "Domov a okolí",
+      description: "Poznáš svůj domov, obec a cestu do školy podle mapy.",
+    },
+    "Lidé kolem nás": {
+      name: "Lidé kolem nás",
+      description: "Poznáš rodinu, kamarády a jak se k sobě lidé chovají.",
+    },
+    "Lidé a čas": {
+      name: "Čas a minulost",
+      description: "Zjistíš, jak měříme čas a jak se žilo dřív než dnes.",
+    },
+    "Rozmanitost přírody": {
+      name: "Příroda kolem nás",
+      description: "Poznáš rostliny, zvířata a roční období v přírodě.",
+    },
+    "Člověk a jeho zdraví": {
+      name: "Tělo a zdraví",
+      description: "Poznáš lidské tělo a naučíš se, jak o sebe pečovat.",
+    },
   },
 
   // RVP téma → dětský název + krátký popis

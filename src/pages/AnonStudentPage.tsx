@@ -211,7 +211,7 @@ export default function AnonStudentPage() {
                   {pad(dailyTopics.length, "CVIČENÍ")} pro {grade}. ročník — {pad(daysRemaining, "DEN")} přístupu zdarma
                 </p>
               </div>
-              <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} />
+              <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} grade={grade} />
             </section>
 
             <section className="space-y-3">
@@ -232,7 +232,7 @@ export default function AnonStudentPage() {
               <h1 className="text-3xl font-bold text-violet-900">Dnešní úkoly</h1>
               <p className="text-violet-700/70 mt-1">{pad(dailyTopics.length, "CVIČENÍ")} zdarma každý den</p>
             </div>
-            <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} />
+            <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} grade={grade} />
           </section>
         )}
 
@@ -277,9 +277,10 @@ export default function AnonStudentPage() {
 interface DailyTaskListProps {
   topics: { topic: TopicMetadata; completed: boolean; score?: number }[];
   onStart: (topicId: string) => void;
+  grade: number;
 }
 
-function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
+function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {topics.map(({ topic, completed }) => {
@@ -308,7 +309,9 @@ function DailyTaskList({ topics, onStart }: DailyTaskListProps) {
                   {topic.category && (
                     <>
                       <span className={`text-sm font-bold ${meta.color}`}>|</span>
-                      <span className={`text-sm font-bold ${meta.color}`}>{topic.category}</span>
+                      <span className={`text-sm font-bold ${meta.color}`}>
+                        {getDisplayCategory(topic.category, grade as Parameters<typeof getDisplayCategory>[1])}
+                      </span>
                     </>
                   )}
                 </div>
