@@ -81,7 +81,7 @@ export const CTENIZAPISPOROVNAVANICISELDO100: TopicMetadata[] = [
     title: "Čtení, zápis a porovnávání čísel do 100",
     studentTitle: "Čísla do 100",
     subject: "matematika",
-    category: "Číslo a початní operace",
+    category: "Číslo a početní operace",
     topic: "Číselný obor 0–100",
     briefDescription: "Porovnáš čísla do 100 a najdeš větší nebo menší.",
     keywords: ["porovnávání", "větší", "menší", "čísla do 100", "čtení čísel"],
