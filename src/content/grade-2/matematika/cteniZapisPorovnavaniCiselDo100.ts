@@ -13,7 +13,7 @@ function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
 
   for (let i = 0; i < 30; i++) {
-    let question: string, correct: string, opts: string[];
+    let question: string, correct: string, opts: string[], hint: string;
 
     if (level === 1) {
       // Porovnání dvou čísel
@@ -23,6 +23,7 @@ function gen(level: number): PracticeTask[] {
       question = `Které je větší: ${a} nebo ${b}?`;
       correct = String(Math.max(a, b));
       opts = shuffle([String(a), String(b)]);
+      hint = "Srovnej desítky — větší desítka, větší číslo.";
     } else if (level === 2) {
       // O 1 více / méně
       const base = Math.floor(Math.random() * 97) + 2;
@@ -41,6 +42,7 @@ function gen(level: number): PracticeTask[] {
         const d3 = String(base - 10);
         opts = shuffle([correct, d1, d2, d3].filter((v, i, a) => a.indexOf(v) === i && Number(v) >= 0).slice(0, 4));
       }
+      hint = "Stačí přidat nebo ubrat jednu jedničku.";
     } else {
       // L3: O 10 více / méně
       const base = Math.floor(Math.random() * 80) + 10;
@@ -59,13 +61,14 @@ function gen(level: number): PracticeTask[] {
         const d3 = String(base - 20);
         opts = shuffle([correct, d1, d2, d3].filter((v, i, a) => a.indexOf(v) === i && Number(v) >= 0).slice(0, 4));
       }
+      hint = "Přidej nebo uber jednu celou desítku.";
     }
 
     tasks.push({
       question,
       correctAnswer: correct,
       options: opts,
-      hints: [`Porovnej desítky, pak jedničky.`],
+      hints: [hint],
       solutionSteps: [`Odpověď: ${correct}`],
     });
   }
