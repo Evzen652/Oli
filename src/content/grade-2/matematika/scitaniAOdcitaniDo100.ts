@@ -9,6 +9,30 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+/**
+ * Adaptivní nápověda podle konkrétního příkladu.
+ * Parsuje operandy z otázky ("X + Y = ?" / "X − Y = ?") a rozliší,
+ * zda dochází k přechodu přes desítku — rada se tomu přizpůsobí.
+ * U příkladů bez přechodu se desítky nemění, takže neradíme "počítat po desítkách".
+ */
+function hintFor(question: string): string {
+  const m = question.match(/(\d+)\s*([+−])\s*(\d+)/);
+  if (!m) return "Počítej nejdřív desítky, pak jednotky.";
+  const x = Number(m[1]);
+  const y = Number(m[3]);
+  const op = m[2];
+  const xu = x % 10;
+  const yu = y % 10;
+  if (op === "+") {
+    return xu + yu >= 10
+      ? "Nejdřív dopočítej do desítky, pak přidej zbytek."
+      : "Desítky zůstanou — stačí sečíst jednotky.";
+  }
+  return xu < yu
+    ? "Půjč si jednu desítku, pak odečti jednotky."
+    : "Desítky zůstanou — stačí odečíst jednotky.";
+}
+
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
 
@@ -84,7 +108,7 @@ function gen(level: number): PracticeTask[] {
       question,
       correctAnswer: String(correct),
       options: opts,
-      hints: [`Zkus počítat po desítkách, pak po jedničkách.`],
+      hints: [hintFor(question)],
       solutionSteps: [`${question.replace("?", String(correct))}`],
     });
   }
