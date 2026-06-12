@@ -98,8 +98,12 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 - **Session start flash** — odstraněno probliknutí dashboardu/EXPLAIN při startu tématu (`isStarting` flag ze sessionStorage při mountu; EXPLAIN→PRACTICE bez mezilehlého setSession).
 - **Giveaway grade-3** — `velkaPismenaVlastniJmena.ts` úloha „Labe" měla odpověď ve znění věty → přeformulováno.
 
+### UX + obsah session 2026-06-13 (pokr.) ✅
+- **Grade-2 matematika** — 13 topics, celý RVP 2. ročníku. `src/content/grade-2/matematika/`. Designová zásada: otázky max 5–6 slov (7–8 let, čtou pomalu). Sčítání/odčítání, číselná osa, porovnávání, násobilka 2–5, násobení jako opakované sčítání, vztah ×÷, slovní úlohy, jednotky, měření času, posloupnosti, tabulky, geometrie (bod/přímka/úsečka).
+
 ### Otevřené (nové 2026-06-13)
 - **Sken grade-3 na giveaway „odpověď ve znění otázky"** — current audit check (c3) chytá jen meta-text/délku distraktorů, NE případ, kdy je správná odpověď doslova ve znění `q`. Vhodné doplnit nový check + proskenovat existující POOL napříč grade-3 cjl.
+- **Grade-2: chybí navigace (onboarding + displayNames)** — grade-2 obsah existuje, ale dětské názvy kategorií (`getDisplayCategory()`) pro grade-2 nejsou v `BY_GRADE` slovníku → žáci 2. ročníku by viděli syrové RVP texty. Přidat grade-2 do `src/lib/displayNames.ts`.
 
 ## Vyřízené (doplněno 2026-06-12)
 
