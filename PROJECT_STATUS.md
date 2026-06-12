@@ -137,6 +137,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-13 — hotovo:
+- ✅ **Landing: nová ilustrace zlomků** — `landing-zlomky` přegenerována (Pollinations, objekt bez postavy — barevný koláč/graf rozdělený na díly). Cache-bust `?v=2` v `Landing.tsx`.
+- ✅ **Onboarding: animace výběru ročníku** — vybraný ročník skočí na 1.25× (pružinový ease) + světelný ripple, ostatní se zmenší/zprůhlední, pak navigace (650 ms).
+- ✅ **Onboarding: zamčené ročníky bez obsahu** — klik na ročník bez obsahu zobrazí toast „Připravuje se" místo fallbacku na jiný ročník. Tlačítka zůstávají barevná (žádný greyscale).
+- ✅ **Session start: odstraněna probliknutá meziobrazovka** — při spuštění tématu (auto-start z denního úkolu i klik na téma) probliknul dashboard/EXPLAIN. Příčina: auto-start jde přes `useEffect`, ne `onSelectTopic`. Fix: `isStarting` flag čtený **synchronně z sessionStorage při mountu** SessionView → první render je rovnou spinner; EXPLAIN→PRACTICE se v `handleTopicSelect` zpracuje bez mezilehlého `setSession`. Bezpečnostní reset přes `loading` ref pro prázdná témata.
+- ✅ **Obsah grade-3 velká písmena: oprava giveaway** — úloha „Labe" měla správnou odpověď napsanou ve znění věty. Přeformulováno na `'_____ je česká řeka.' (řeka labe)`. ⏸️ Follow-up: proskenovat zbytek grade-3 na vzor „odpověď ve znění otázky" (current audit check to nechytá).
+
 ### Session 2026-06-10/11 (pokračování) — hotovo:
 - ✅ **Audit grade-5 F1+F2: false-positive opravy audit nástroje** — `taskValidator.ts` substring → word-boundary shoda (`containsAsPhrase`) + výjimka numerických/jednotkových odpovědí; `contentAudit.ts` answer_uniqueness přeskakuje `drag_order`/`match_pairs`. Testy aktualizovány (35/35 ✅), žádné nové faily vs. baseline 67.
 - ✅ **Pedagogická revize grade-3 (152 vzorků) + opravy kritických chyb obsahu** — „byk"→„býk" (učilo špatný pravopis!), giveaway úlohy, hint leaky, duplicitní distraktory, „zebr"→„zeber". Detail v PENDING_CHANGES.

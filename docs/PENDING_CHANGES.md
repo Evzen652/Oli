@@ -90,6 +90,17 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ---
 
+## Vyřízené (doplněno 2026-06-13)
+
+### UX + obsah session 2026-06-13 ✅
+- **Landing zlomky** — nová ilustrace (Pollinations, objekt bez postavy), cache-bust `?v=2`.
+- **Onboarding** — animace výběru ročníku (scale+ripple) + zamčené ročníky bez obsahu (toast „Připravuje se", bez fallbacku).
+- **Session start flash** — odstraněno probliknutí dashboardu/EXPLAIN při startu tématu (`isStarting` flag ze sessionStorage při mountu; EXPLAIN→PRACTICE bez mezilehlého setSession).
+- **Giveaway grade-3** — `velkaPismenaVlastniJmena.ts` úloha „Labe" měla odpověď ve znění věty → přeformulováno.
+
+### Otevřené (nové 2026-06-13)
+- **Sken grade-3 na giveaway „odpověď ve znění otázky"** — current audit check (c3) chytá jen meta-text/délku distraktorů, NE případ, kdy je správná odpověď doslova ve znění `q`. Vhodné doplnit nový check + proskenovat existující POOL napříč grade-3 cjl.
+
 ## Vyřízené (doplněno 2026-06-12)
 
 ### Czech grammar audit — math generátory ✅ 2026-06-12
