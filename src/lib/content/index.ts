@@ -7,6 +7,7 @@ import type { TopicMetadata } from "../types";
 // import { PRVOUKA_TOPICS } from "./prvouka";
 
 // ── Grade-N moduly (vlastněné grade-N sessions) ──
+import { GRADE_2_TOPICS } from "@/content/grade-2";
 import { GRADE_3_TOPICS } from "@/content/grade-3";
 import { GRADE_4_TOPICS } from "@/content/grade-4";
 import { GRADE_5_TOPICS } from "@/content/grade-5";
@@ -20,6 +21,7 @@ export const ALL_TOPICS: TopicMetadata[] = [
   // ...PRVOUKA_TOPICS,
 
   // ── Aktivní obsah (grade-N RVP sessions) ──
+  ...GRADE_2_TOPICS,
   ...GRADE_3_TOPICS,
   ...GRADE_4_TOPICS,
   ...GRADE_5_TOPICS,
