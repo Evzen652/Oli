@@ -145,6 +145,14 @@ export interface TopicMetadata {
 export interface PracticeTask {
   question: string;
   correctAnswer: string;
+  /**
+   * Volitelné emoji zobrazené velké nad otázkou.
+   * Vizuální opora hlavně pro nejmladší ročníky (1.–2. třída), které
+   * čtou pomalu — obrázek pomůže pochopit kontext otázky.
+   * Příklad: "🐄" u otázky o krávě, "🌷" u jarní rostliny.
+   * Renderuje SessionView (question card) i DemoSession.
+   */
+  emoji?: string;
   options?: string[]; // for select_one / true_false
   items?: string[]; // for drag_order (correct order)
   solutionSteps?: string[]; // specific step-by-step solution for this task (matematika)

@@ -17,3 +17,23 @@
 | g2-mat-tabulky | Tabulky a jednoduchá schémata | [x] |
 | g2-mat-bod-primka-usecka | Bod, přímka, úsečka | [x] |
 | g2-mat-mereni-delky | Měření délky úsečky | [x] |
+
+## Prvouka (15 podtémat)
+
+| ID | Název | Status |
+|---|---|---|
+| g2-prv-hodiny-cas | Hodiny, kalendář a čas | [x] |
+| g2-prv-tradice | Tradice a zvyky | [x] |
+| g2-prv-sousedstvi | Lidé v okolí, sousedství, kamarádství | [x] |
+| g2-prv-povolani | Povolání a práce dospělých | [x] |
+| g2-prv-chovani | Pravidla slušného chování | [x] |
+| g2-prv-nase-obec | Naše obec, název | [x] |
+| g2-prv-orientace-obec | Orientace v obci | [x] |
+| g2-prv-plan-obce | Plán obce a okolí školy | [x] |
+| g2-prv-zvirata-uzitek | Domácí a hospodářská zvířata | [x] |
+| g2-prv-jaro-rostliny-mladata | Kvetoucí rostliny a mláďata | [x] |
+| g2-prv-jaro-leto | Změny v přírodě – jaro a léto | [x] |
+| g2-prv-zima-zvirata | Zazimování zvířat | [x] |
+| g2-prv-podzim-zima | Změny v přírodě – podzim a zima | [x] |
+| g2-prv-prvni-pomoc | Drobná poranění, tísňové linky | [x] |
+| g2-prv-zdravy-styl | Zdravý životní styl | [x] |

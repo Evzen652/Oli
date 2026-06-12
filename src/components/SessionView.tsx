@@ -680,9 +680,16 @@ export function SessionView() {
                   </div>
                 )}
                 {practiceQuestion && (
-                  <p className="mt-5 rounded-xl bg-background/70 p-5 text-xl font-semibold text-foreground">
-                    {practiceQuestion}
-                  </p>
+                  <div className="mt-5 rounded-xl bg-background/70 p-5">
+                    {currentTask?.emoji && (
+                      <div className="mb-3 text-center text-6xl leading-none" aria-hidden="true">
+                        {currentTask.emoji}
+                      </div>
+                    )}
+                    <p className="text-xl font-semibold text-foreground">
+                      {practiceQuestion}
+                    </p>
+                  </div>
                 )}
               </CardContent>
             </Card>

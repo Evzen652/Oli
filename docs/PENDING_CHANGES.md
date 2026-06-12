@@ -100,6 +100,7 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ### UX + obsah session 2026-06-13 (pokr.) ✅
 - **Grade-2 matematika** — 13 topics, celý RVP 2. ročníku. `src/content/grade-2/matematika/`. Designová zásada: otázky max 5–6 slov (7–8 let, čtou pomalu). Sčítání/odčítání, číselná osa, porovnávání, násobilka 2–5, násobení jako opakované sčítání, vztah ×÷, slovní úlohy, jednotky, měření času, posloupnosti, tabulky, geometrie (bod/přímka/úsečka).
+- **Grade-2 prvouka** — 15 topics, `src/content/grade-2/prvouka/`. Okruhy: Lidé a čas, Lidé kolem nás, Místo kde žijeme, Rozmanitost přírody, Člověk a jeho zdraví. Každá úloha má `emoji` vizuální oporu, otázky 4–5 slov. 7× true_false, 8× select_one. Doplněn index.ts, displayNames.ts, STATUS.md. tsc 0 chyb.
 
 ### Otevřené (nové 2026-06-13)
 - **Sken grade-3 na giveaway „odpověď ve znění otázky"** — current audit check (c3) chytá jen meta-text/délku distraktorů, NE případ, kdy je správná odpověď doslova ve znění `q`. Vhodné doplnit nový check + proskenovat existující POOL napříč grade-3 cjl.

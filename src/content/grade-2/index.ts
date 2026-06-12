@@ -15,6 +15,23 @@ import { TABULKYAJEDNODUCHASHEMA } from "./matematika/tabulkyAJednoduchaSchema";
 import { BODPRIMKAUSECKA } from "./matematika/bodPrimkaUsecka";
 import { MERIENIDELIVKYUSECKY } from "./matematika/mereniDelkyUsecky";
 
+// ── Prvouka (15) ──
+import { HODINYKALENDARCAS } from "./prvouka/hodinyKalendarCas";
+import { TRADICEAZVYKY } from "./prvouka/tradiceAZvyky";
+import { LIDEVOKOLIKAMARADSTVI } from "./prvouka/lideVOkoliKamaradstvi";
+import { POVOLANIPRACEDOSPELYCH } from "./prvouka/povolaniPraceDospelych";
+import { PRAVIDLASLUSNEHOCHOVANI } from "./prvouka/pravidlaSlusnehoChovani";
+import { NASEOBECNAZEV } from "./prvouka/naseObecNazev";
+import { ORIENTACEVOBCI } from "./prvouka/orientaceVObci";
+import { PLANOBCEOKOLISKOLY } from "./prvouka/planObceOkoliSkoly";
+import { DOMACIHOSPODARSKAZVIRATA } from "./prvouka/domaciHospodarskaZvirata";
+import { KVETOUCIROSTLINYMLADATA } from "./prvouka/kvetouciRostlinyMladata";
+import { ZMENYVPRIRODEJAROLETO } from "./prvouka/zmenyVPrirodeJaroLeto";
+import { ZAZIMOVANIZVIRAT } from "./prvouka/zazimovaniZvirat";
+import { ZMENYVPRIRODEPODZIMZIMA } from "./prvouka/zmenyVPrirodePodzimZima";
+import { DROBNAPORANENITISNOVELINKY } from "./prvouka/drobnaPoraneniTisnoveLinky";
+import { ZDRAVYZIVOTNISTYL } from "./prvouka/zdravyZivotniStyl";
+
 export const GRADE_2_TOPICS: TopicMetadata[] = [
   // ── Matematika ──
   ...SCITANIAODCITANIDO100,
@@ -30,4 +47,20 @@ export const GRADE_2_TOPICS: TopicMetadata[] = [
   ...TABULKYAJEDNODUCHASHEMA,
   ...BODPRIMKAUSECKA,
   ...MERIENIDELIVKYUSECKY,
+  // ── Prvouka ──
+  ...HODINYKALENDARCAS,
+  ...TRADICEAZVYKY,
+  ...LIDEVOKOLIKAMARADSTVI,
+  ...POVOLANIPRACEDOSPELYCH,
+  ...PRAVIDLASLUSNEHOCHOVANI,
+  ...NASEOBECNAZEV,
+  ...ORIENTACEVOBCI,
+  ...PLANOBCEOKOLISKOLY,
+  ...DOMACIHOSPODARSKAZVIRATA,
+  ...KVETOUCIROSTLINYMLADATA,
+  ...ZMENYVPRIRODEJAROLETO,
+  ...ZAZIMOVANIZVIRAT,
+  ...ZMENYVPRIRODEPODZIMZIMA,
+  ...DROBNAPORANENITISNOVELINKY,
+  ...ZDRAVYZIVOTNISTYL,
 ];

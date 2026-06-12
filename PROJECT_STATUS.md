@@ -138,6 +138,7 @@ src/
 ## 6. Otevřené / další v pořadí
 
 ### Session 2026-06-13 — hotovo:
+- ✅ **Grade-2 prvouka: 15 topics implementováno** — `src/content/grade-2/prvouka/` (15 souborů). Okruhy: Lidé a čas (hodiny/kalendář, tradice), Lidé kolem nás (kamarádství, povolání, slušné chování), Místo kde žijeme (naše obec, orientace, plán obce), Rozmanitost přírody (domácí zvířata, mláďata/květiny, jaro-léto, zazimování, podzim-zima), Člověk a jeho zdraví (první pomoc/tísňové linky, zdravý styl). Každá úloha má `emoji` vizuální oporu, krátké otázky (4–5 slov) pro pomalu čtoucí děti. 7× true_false, 8× select_one. Pool 16–19 úloh/téma, gen vybírá 15. Doplněn `index.ts`, `displayNames.ts`, `STATUS.md`. TypeScript 0 chyb, žádné cyrilské znaky.
 - ✅ **Grade-2 matematika: 13 topics implementováno** — `src/content/grade-2/` (README, STATUS, index.ts) + 13 topic souborů v `matematika/`. Pokrývá: sčítání/odčítání do 100, číselná osa, porovnávání čísel, násobení jako opakované sčítání, násobilka 2–5, vztah násobení a dělení, slovní úlohy, jednotky (cm/m/kg/l), měření času, posloupnosti čísel, tabulky, bod/přímka/úsečka, měření délky. TypeScript 0 chyb.
 - ✅ **Landing: nová ilustrace zlomků** — `landing-zlomky` přegenerována (Pollinations, objekt bez postavy — barevný koláč/graf rozdělený na díly). Cache-bust `?v=2` v `Landing.tsx`.
 - ✅ **Onboarding: animace výběru ročníku** — vybraný ročník skočí na 1.25× (pružinový ease) + světelný ripple, ostatní se zmenší/zprůhlední, pak navigace (650 ms).
