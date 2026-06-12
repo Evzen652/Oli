@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OlyLogo } from "@/components/OlyLogo";
 import { hasContentForGrade } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
+import { useToast } from "@/hooks/use-toast";
 
 const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
 
@@ -103,12 +104,20 @@ const GRADE_META: Record<number, {
 
 export default function Onboarding() {
   const navigate = useNavigate();
+  const [selected, setSelected] = useState<number | null>(null);
+  const { toast } = useToast();
 
   const handleGradeSelect = (grade: number) => {
+    if (selected !== null) return;
+    if (!hasContentForGrade(grade)) {
+      toast({ title: "Připravuje se", description: `Obsah pro ${grade}. ročník brzy přidáme.` });
+      return;
+    }
+    setSelected(grade);
     localStorage.setItem("oli_anon_grade", String(grade));
     localStorage.setItem("oli_anon_started", new Date().toISOString());
-    startTrial(grade); // spustí 14-denní trial (idempotent)
-    navigate("/student?anon=1");
+    startTrial(grade);
+    setTimeout(() => navigate("/student?anon=1"), 650);
   };
 
   return (
@@ -145,27 +154,52 @@ export default function Onboarding() {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
                 const hasContent = hasContentForGrade(grade);
                 const m = GRADE_META[grade];
+                const isSelected = selected === grade;
+                const isOther = selected !== null && selected !== grade;
                 return (
                   <button
                     key={grade}
                     onClick={() => handleGradeSelect(grade)}
-                    title={hasContent ? undefined : "Obsah připravujeme — zatím dostaneš cvičení z jiného ročníku"}
+                    style={{
+                      transition: "transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.35s ease, box-shadow 0.3s ease",
+                      transform: isSelected
+                        ? "scale(1.25) rotate(0deg)"
+                        : isOther
+                        ? "scale(0.82)"
+                        : undefined,
+                      opacity: isOther ? 0.35 : 1,
+                      boxShadow: isSelected ? "0 0 0 6px rgba(255,255,255,0.7), 0 8px 32px rgba(0,0,0,0.18)" : undefined,
+                    }}
                     className={`
                       relative overflow-hidden aspect-square rounded-2xl border-2 bg-gradient-to-br
-                      transition-all duration-200 cursor-pointer active:scale-95
-                      flex items-center justify-center shadow-md hover:shadow-xl hover:rotate-0 hover:scale-105
-                      ${m.gradient} ${m.border} ${m.text} ${m.rotate}
-                      ${!hasContent ? "opacity-60" : ""}
+                      flex flex-col items-center justify-center shadow-md
+                      ${selected === null ? "cursor-pointer hover:shadow-xl hover:rotate-0 hover:scale-105 active:scale-95 transition-all duration-200" : "cursor-default"}
+                      ${m.gradient} ${m.border} ${m.text} ${selected === null ? m.rotate : ""}
                     `}
                   >
                     <span className="text-[5rem] font-black leading-none opacity-60 select-none">
                       {grade}
                     </span>
+                    {isSelected && (
+                      <span
+                        className="absolute inset-0 rounded-2xl"
+                        style={{
+                          animation: "gradeRipple 0.6s ease-out forwards",
+                          background: "radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%)",
+                        }}
+                      />
+                    )}
                   </button>
                 );
               })}
             </div>
           </div>
+          <style>{`
+            @keyframes gradeRipple {
+              0%   { opacity: 1; transform: scale(0.3); }
+              100% { opacity: 0; transform: scale(2.2); }
+            }
+          `}</style>
 
           <div className="pt-4 border-t border-slate-200 space-y-1.5">
             <p className="text-sm text-slate-600 leading-relaxed">
