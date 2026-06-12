@@ -45,7 +45,7 @@ function gen(_level: number): PracticeTask[] {
       question: item.question,
       correctAnswer: item.correct,
       options: opts,
-      hints: [`1 hodina = 60 minut, 1 den = 24 hodin.`],
+      hints: [`Vzpomeň si na převody času: hodina, minuta, sekunda.`],
       solutionSteps: [`Odpověď: ${item.correct}`],
     };
   });

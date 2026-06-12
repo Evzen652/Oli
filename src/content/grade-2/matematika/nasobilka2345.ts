@@ -15,7 +15,7 @@ function gen(level: number): PracticeTask[] {
 
   for (let i = 0; i < 35; i++) {
     const t = tables[i % tables.length];
-    const n = Math.floor(Math.random() * 10) + 1;
+    const n = Math.floor(Math.random() * 9) + 2; // 2–10 (×1 je triviální + rozpis prozradí odpověď)
     const correct = t * n;
     const d1 = correct + t;
     const d2 = correct - t > 0 ? correct - t : correct + t * 2;

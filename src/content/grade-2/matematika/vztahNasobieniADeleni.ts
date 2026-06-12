@@ -24,7 +24,7 @@ function gen(level: number): PracticeTask[] {
       // Dělení: product ÷ t = n
       question = `${product} ÷ ${t} = ?`;
       correct = String(n);
-      const hint = `${t} × ${n} = ${product}, takže ${product} ÷ ${t} = ${n}`;
+      const hint = `Ptej se: ${t} × kolik = ${product}?`;
       const d1 = String(n + 1);
       const d2 = String(n - 1 > 0 ? n - 1 : n + 2);
       const d3 = String(t); // common confusion: swap t and n

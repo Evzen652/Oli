@@ -43,7 +43,7 @@ function gen(_level: number): PracticeTask[] {
       correctAnswer: item.correct,
       options,
       emoji: item.emoji,
-      hints: ["Při úrazu zavoláme pomoc a řekneme dospělému."],
+      hints: ["Vzpomeň si na správné tísňové číslo a kdo umí pomoct."],
       solutionSteps: [`Správně: ${item.correct}`],
     };
   });

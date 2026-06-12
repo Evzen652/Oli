@@ -45,7 +45,7 @@ function gen(_level: number): PracticeTask[] {
       correctAnswer: item.correct,
       options,
       emoji: item.emoji,
-      hints: ["Vzpomeň si na hodiny a kalendář."],
+      hints: ["Mysli na čas, dny a měsíce."],
       solutionSteps: [`Správně: ${item.correct}`],
     };
   });

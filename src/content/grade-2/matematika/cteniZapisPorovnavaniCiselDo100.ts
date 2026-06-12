@@ -16,13 +16,13 @@ function gen(level: number): PracticeTask[] {
     let question: string, correct: string, opts: string[], hint: string;
 
     if (level === 1) {
-      // Porovnání dvou čísel
-      let a = Math.floor(Math.random() * 99) + 1;
-      let b = Math.floor(Math.random() * 99) + 1;
-      while (a === b) b = Math.floor(Math.random() * 99) + 1;
-      question = `Které je větší: ${a} nebo ${b}?`;
-      correct = String(Math.max(a, b));
-      opts = shuffle([String(a), String(b)]);
+      // Porovnání tří čísel — vyber největší
+      const nums = new Set<number>();
+      while (nums.size < 3) nums.add(Math.floor(Math.random() * 99) + 1);
+      const arr = [...nums];
+      question = `Které je největší: ${arr.join(", ")}?`;
+      correct = String(Math.max(...arr));
+      opts = shuffle(arr.map(String));
       hint = "Srovnej desítky — větší desítka, větší číslo.";
     } else if (level === 2) {
       // O 1 více / méně

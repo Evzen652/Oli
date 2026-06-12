@@ -19,7 +19,7 @@ const POOL: Array<{ question: string; correct: string; hint: string; level: numb
   { question: "6 + 6 + 6 + 6 = 6 × ?", correct: "4", hint: "Kolikrát přičítáš 6?", level: 1 },
   { question: "10 + 10 = 10 × ?", correct: "2", hint: "Kolikrát přičítáš 10?", level: 1 },
   { question: "7 + 7 + 7 = 7 × ?", correct: "3", hint: "Kolikrát přičítáš 7?", level: 1 },
-  { question: "2 + 2 + 2 + 2 + 2 = 2 × ?", correct: "5", hint: "Kolikrát přičítáš 2?", level: 1 },
+  { question: "5 + 5 + 5 = 5 × ?", correct: "3", hint: "Kolikrát přičítáš 5?", level: 1 },
   { question: "8 + 8 = 8 × ?", correct: "2", hint: "Kolikrát přičítáš 8?", level: 1 },
   { question: "3 + 3 = 3 × ?", correct: "2", hint: "Kolikrát přičítáš 3?", level: 1 },
   // L2: výsledek násobení (s nápovědou sčítání)
