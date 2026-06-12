@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
 import { getFullTopicTitle } from "@/lib/types";
@@ -134,6 +134,29 @@ export function SessionView() {
   // For child role: show ChildHomePage by default, TopicBrowser on demand
   const [showTopicBrowser, setShowTopicBrowser] = useState(false);
   const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(undefined);
+  // isStarting = právě se zakládá session (z auto-startu daily tasku NEBO z kliknutí
+  // na téma). Čteme sessionStorage synchronně při mountu → první render je rovnou
+  // spinner, nikdy nepropliknе ChildHomePage/TopicBrowser.
+  const [isStarting, setIsStarting] = useState(
+    () => !!sessionStorage.getItem("oli_anon_start_topic"),
+  );
+
+  // Jakmile je session založená, vypni starting flag
+  useEffect(() => {
+    if (session && isStarting) setIsStarting(false);
+  }, [session, isStarting]);
+
+  // Bezpečnostní reset: pokud start doběhl (loading šel true→false) a session
+  // přesto nevznikla (např. prázdné DB téma), nenech spinner viset navždy.
+  // Ref zabrání spuštění při prvním tiku, než async start vůbec nastaví loading.
+  const startSawLoading = useRef(false);
+  useEffect(() => {
+    if (isStarting && loading) startSawLoading.current = true;
+    if (isStarting && startSawLoading.current && !loading && !session) {
+      setIsStarting(false);
+      startSawLoading.current = false;
+    }
+  }, [isStarting, loading, session]);
 
   // Anon mód: auto-start topicu nebo otevření TopicBrowseru pro předmět
   useEffect(() => {
@@ -340,6 +363,19 @@ export function SessionView() {
   ) : null;
 
   if (!session) {
+    // Během zakládání session — spinner místo ChildHomePage/TopicBrowser
+    // (zabrání probliknutí dashboardu při auto-startu i při kliknutí na téma)
+    if (isStarting) {
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="text-center space-y-4">
+            <div className="w-12 h-12 rounded-full border-2 border-muted border-t-primary animate-spin mx-auto" />
+            <p className="text-sm text-muted-foreground">{t("loading")}</p>
+          </div>
+        </div>
+      );
+    }
+
     // Child role: show home page with assignments first
     if (isStudentView && !showTopicBrowser) {
       return (
@@ -350,7 +386,7 @@ export function SessionView() {
             {DemoChildSwitcher}
             <ChildHomePage
               grade={grade}
-              onSelectTopic={s.handleTopicSelect}
+              onSelectTopic={(topic) => { setIsStarting(true); s.handleTopicSelect(topic); }}
               onBrowseTopics={(subject?: string) => { setTopicBrowserSubject(subject); setShowTopicBrowser(true); }}
             />
           </div>
@@ -361,14 +397,21 @@ export function SessionView() {
       <>
         {DemoHeader}
         {AdminBanner}
-        <TopicBrowser key={grade} grade={grade} onSelectTopic={s.handleTopicSelect} onBack={() => {
-          if (isStudentView) {
-            setShowTopicBrowser(false);
-            setTopicBrowserSubject(undefined);
-          } else {
-            s.setGrade(null);
-          }
-        }} isAdmin={role === "admin" && !isStudentView} initialSubject={topicBrowserSubject} />
+        <TopicBrowser
+          key={grade}
+          grade={grade}
+          onSelectTopic={(topic) => { setIsStarting(true); s.handleTopicSelect(topic); }}
+          onBack={() => {
+            if (isStudentView) {
+              setShowTopicBrowser(false);
+              setTopicBrowserSubject(undefined);
+            } else {
+              s.setGrade(null);
+            }
+          }}
+          isAdmin={role === "admin" && !isStudentView}
+          initialSubject={topicBrowserSubject}
+        />
       </>
     );
   }

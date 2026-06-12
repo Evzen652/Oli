@@ -282,54 +282,78 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       setPendingDiktatTopic(topic);
       return;
     }
-    setDiktatFilter(null);
-    setTaskResults([]);
-    const enrichedTopic = await enrichTopicFromDb(topic);
+    // setLoading(true) hned na začátku → SessionView má spolehlivý signál
+    // (loading true→false) i pro cesty, které session nevytvoří (prázdné téma).
+    setLoading(true);
+    try {
+      setDiktatFilter(null);
+      setTaskResults([]);
+      const enrichedTopic = await enrichTopicFromDb(topic);
 
-    // Check if this is a DB-only topic (no code generator)
-    const isDbOnly = (topic as any)._dbOnly === true;
-    let preloadedBatch: PracticeTask[] = [];
+      // Check if this is a DB-only topic (no code generator)
+      const isDbOnly = (topic as any)._dbOnly === true;
+      let preloadedBatch: PracticeTask[] = [];
 
-    if (isDbOnly) {
-      // Load all exercises from custom_exercises table (with format validation)
-      preloadedBatch = await loadCustomExercises(topic.id, { inputType: topic.inputType });
-      if (preloadedBatch.length === 0) {
-        setOutput("Toto cvičení se připravuje. Zkus jiné téma.");
-        return;
+      if (isDbOnly) {
+        // Load all exercises from custom_exercises table (with format validation)
+        preloadedBatch = await loadCustomExercises(topic.id, { inputType: topic.inputType });
+        if (preloadedBatch.length === 0) {
+          setOutput("Toto cvičení se připravuje. Zkus jiné téma.");
+          toast.error("Toto cvičení se připravuje. Zkus jiné téma.");
+          return;
+        }
       }
-    }
 
-    // For topics WITH a generator, also load DB exercises for hybrid mixing
-    let dbExercises: PracticeTask[] = [];
-    if (!isDbOnly) {
-      try {
-        dbExercises = await loadCustomExercises(topic.id, { inputType: topic.inputType });
-      } catch { /* silent — fallback to pure algo */ }
-    }
+      // For topics WITH a generator, also load DB exercises for hybrid mixing
+      let dbExercises: PracticeTask[] = [];
+      if (!isDbOnly) {
+        try {
+          dbExercises = await loadCustomExercises(topic.id, { inputType: topic.inputType });
+        } catch { /* silent — fallback to pure algo */ }
+      }
 
-    const newSession = createSession(grade);
-    newSession.matchedTopic = enrichedTopic;
-    newSession.childInput = enrichedTopic.title;
-    newSession.state = "EXPLAIN" as SessionState;
+      const newSession = createSession(grade);
+      newSession.matchedTopic = enrichedTopic;
+      newSession.childInput = enrichedTopic.title;
+      newSession.state = "EXPLAIN" as SessionState;
 
-    // Pre-load custom exercises into the session batch (DB-only topics)
-    if (preloadedBatch.length > 0) {
-      const taskCount = enrichedTopic.sessionTaskCount ?? 6;
-      const validBatch = filterValidTasks(preloadedBatch, topic.inputType);
-      newSession.practiceBatch = validBatch.slice(0, taskCount);
-      newSession.usedQuestions = newSession.practiceBatch.map(t => t.question);
-    }
+      // Pre-load custom exercises into the session batch (DB-only topics)
+      if (preloadedBatch.length > 0) {
+        const taskCount = enrichedTopic.sessionTaskCount ?? 6;
+        const validBatch = filterValidTasks(preloadedBatch, topic.inputType);
+        newSession.practiceBatch = validBatch.slice(0, taskCount);
+        newSession.usedQuestions = newSession.practiceBatch.map(t => t.question);
+      }
 
-    // Store DB exercises for hybrid mixing (non-DB-only topics)
-    if (dbExercises.length > 0) {
-      (newSession as any)._dbExercises = dbExercises;
-    }
+      // Store DB exercises for hybrid mixing (non-DB-only topics)
+      if (dbExercises.length > 0) {
+        (newSession as any)._dbExercises = dbExercises;
+      }
 
-    const result = await dispatch(newSession);
-    if (result?.output) {
-      setExplanation(result.output);
+      // Process EXPLAIN → PRACTICE without an intermediate setSession,
+      // jinak by probliknul EXPLAIN screen mezi výběrem tématu a procvičováním.
+      const s1 = { ...newSession, elapsedSeconds: 0 };
+      const r1 = await processState(s1);
+      if (r1.session.state === "EXPLAIN") {
+        setExplanation(r1.output);
+        const s2 = { ...r1.session, elapsedSeconds: 0 };
+        const r2 = await processState(s2);
+        setSession(r2.session);
+        setOutput(r2.output ?? "");
+        setPracticeQuestion(r2.practiceQuestion ?? "");
+        setUserInput("");
+      } else {
+        setSession(r1.session);
+        setOutput(r1.output ?? "");
+        setPracticeQuestion(r1.practiceQuestion ?? "");
+        setUserInput("");
+      }
+    } catch (err) {
+      console.error("[handleTopicSelect] error:", err);
+    } finally {
+      setLoading(false);
     }
-  }, [grade, dispatch, enrichTopicFromDb]);
+  }, [grade, enrichTopicFromDb]);
 
   const handleDiktatFilterConfirm = useCallback(async (types: DiktatType[]) => {
     if (!grade || !pendingDiktatTopic) return;
