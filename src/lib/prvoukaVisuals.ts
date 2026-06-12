@@ -297,15 +297,7 @@ const TOPIC_VISUALS_BY_SUBJECT: Record<string, Record<string, { emoji: string; i
   "vlastivěda": VLASTIVEDA_TOPIC_VISUALS,
 };
 
-// ── Slug helper (mirrors toSlug() in AdminGenerateIllustrations) ──────────────
-
-function toSlug(s: string): string {
-  return s
-    .normalize("NFD").replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+import { toSlug } from "./slugify";
 
 /** Sestaví slug-based klíč pro kategorii (grade-N formát). */
 function slugCatKey(subject: string, category: string): string {

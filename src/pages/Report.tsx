@@ -478,9 +478,7 @@ export default function Report() {
           <NextWeekPlan
             items={report.next_week_plan}
             childName={childName ?? undefined}
-            onAssign={(topicId, type) => {
-              // Placeholder navigace — propojit s assign formulářem až existuje samostatný flow
-              console.log("[next_week_plan] assign", { topicId, type });
+            onAssign={(topicId, _type) => {
               navigate(childId ? `/parent#assign-${childId}-${topicId}` : "/parent");
             }}
           />

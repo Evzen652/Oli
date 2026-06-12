@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,17 +11,9 @@ import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageV
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getDisplayCategory, getDisplayTitle, getDisplayTopic } from "@/lib/displayNames";
+import { toSlug } from "@/lib/slugify";
 
 // ── Key generation from ALL_TOPICS ───────────────────────────────────────────
-
-/** Převede libovolný string na slug: lowercase, bez diakritiky, pomlčky místo mezer/speciálních znaků */
-function toSlug(s: string): string {
-  return s
-    .normalize("NFD").replace(/[̀-ͯ]/g, "") // strip diacritics
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 /** Generuje ilustrační klíče ze všech topics v ALL_TOPICS (včetně grade-N). */
 function buildTopicIllustrationKeys(topics: ReturnType<typeof getAllTopics>): string[] {

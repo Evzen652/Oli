@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogOut, ChevronRight, Home, Shield, Users, GraduationCap, HelpCircle, BookOpenCheck } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { toSlug as _toSlug } from "@/lib/slugify";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export interface Breadcrumb {
@@ -141,10 +142,5 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
 
 /** Auto-generate slug from name. */
 export function toSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+  return _toSlug(name);
 }
