@@ -49,6 +49,20 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Zdraví",
       description: "Jak žít zdravě a pomoci při úrazu.",
     },
+
+    // ── Čeština (CJL) ──
+    "Jazyková výchova": {
+      name: "Jazyková výchova",
+      description: "Pravopis, slovní druhy a slovní zásoba.",
+    },
+    "Komunikační a slohová výchova": {
+      name: "Sloh",
+      description: "Věty, text a způsoby komunikace.",
+    },
+    "Literární výchova": {
+      name: "Čtení",
+      description: "Pohádky, básně a práce s knihou.",
+    },
   },
 
   // RVP téma → dětský název + krátký popis
@@ -110,6 +124,32 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Zdravý životní styl": {
       name: "Zdravý život",
       description: "Pohyb, spánek, voda a zdravé jídlo.",
+    },
+
+    // ── Čeština (CJL) ──
+    "Zvuková stránka jazyka": {
+      name: "Hlásky a pravopis",
+      description: "Samohlásky, souhlásky a skupiny písmen.",
+    },
+    "Tvarosloví": {
+      name: "Slova a tvary",
+      description: "Vlastní jména, slovesa a abeceda.",
+    },
+    "Slovní zásoba": {
+      name: "Slovní zásoba",
+      description: "Protiklady, synonyma a skupiny slov.",
+    },
+    "Práce s textem": {
+      name: "Práce s textem",
+      description: "Věty, odstavce a druhy vět.",
+    },
+    "Literární žánry": {
+      name: "Literární žánry",
+      description: "Pohádka, říkanka, báseň a hádanka.",
+    },
+    "Práce s knihou": {
+      name: "Práce s knihou",
+      description: "Spisovatel, ilustrátor a knihovna.",
     },
   },
 } as const;

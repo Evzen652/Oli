@@ -23,7 +23,7 @@ interface TrueFalseItem {
 const POOL: TrueFalseItem[] = [
   { question: "Na jaře kvetou květiny. Je to pravda?", correct: true, emoji: "🌷", hint: "Na jaře se příroda probouzí a otepluje — co dělají květiny?", solution: "Na jaře kvetou květiny — příroda se probouzí po zimě." },
   { question: "V létě je teplo. Je to pravda?", correct: true, emoji: "☀️", hint: "Léto je nejteplejší roční období — chodíme v tričku nebo plavkách.", solution: "V létě je teplo — léto je nejteplejší roční období." },
-  { question: "Na jaře padá sníh. Je to pravda?", correct: false, emoji: "🌷", hint: "Sníh patří do zimy — jaké počasí bývá na jaře?", solution: "Na jaře sníh nespadá — sníh je typický pro zimu, na jaře se otepluje." },
+  { question: "Na jaře padá sníh. Je to pravda?", correct: false, emoji: "🌷", hint: "Na jaře se otepluje a příroda se probouzí — k čemu dochází se sněhem z předchozí zimy?", solution: "Na jaře sníh většinou nepadá — teploty stoupají nad nulu, takže zbývající sníh taje. Sněžení patří do zimy." },
   { question: "V létě se koupeme. Je to pravda?", correct: true, emoji: "🏊", hint: "Léto je teplé — chodíme k vodě nebo na bazén.", solution: "V létě se koupeme — je horko a voda nás příjemně ochladí." },
   { question: "Na jaře raší listí. Je to pravda?", correct: true, emoji: "🌱", hint: "Na jaře se stromy probouzejí a vyrůstají jim nové listy.", solution: "Na jaře raší listí — stromy se po zimě probouzejí a ozelenávají." },
   { question: "V létě nosíme čepici a rukavice. Je to pravda?", correct: false, emoji: "🧤", hint: "Čepici a rukavice nosíme, když je zima — je v létě zima?", solution: "V létě čepici a rukavice nenosíme — v létě je teplo, nosíme lehké oblečení." },

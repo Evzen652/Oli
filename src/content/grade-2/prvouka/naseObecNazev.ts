@@ -23,7 +23,7 @@ interface TrueFalseItem {
 const POOL: TrueFalseItem[] = [
   { question: "Praha je město. Je to pravda?", correct: true, emoji: "🏙️", hint: "Praha je velká — víš, jestli je to vesnice nebo město?", solution: "Praha je město — je to dokonce hlavní město České republiky." },
   { question: "V obci bývá škola. Je to pravda?", correct: true, emoji: "🏫", hint: "Ve většině obcí najdeme školu, kde se děti učí.", solution: "V obci bývá škola — děti tam chodí se vzdělávat." },
-  { question: "Obec nemá název. Je to pravda?", correct: false, emoji: "🏘️", hint: "Každé místo, kde bydlíme, má své jméno — jak se jmenuje tvoje obec?", solution: "Každá obec má svůj název — například Praha, Brno nebo Ostrava." },
+  { question: "Naše adresa obsahuje název obce. Je to pravda?", correct: true, emoji: "📮", hint: "Adresa říká, kde bydlíme — napíšeme tam název ulice, číslo domu a také...", solution: "Naše adresa obsahuje název obce — díky tomu pošta i záchranáři vědí, kde nás najít." },
   { question: "Každá obec má jméno. Je to pravda?", correct: true, emoji: "🏘️", hint: "Stejně jako my máme jméno, má i každá obec své jméno.", solution: "Každá obec má jméno — podle něj ji poznáme na mapě a v adrese." },
   { question: "Vesnice je menší než město. Je to pravda?", correct: true, emoji: "🏡", hint: "Ve městě žije víc lidí a je tam více budov než na vesnici.", solution: "Vesnice je menší než město — v městě žije více lidí a je tam více budov." },
   { question: "V obci bydlí lidé. Je to pravda?", correct: true, emoji: "🏘️", hint: "Obec je místo, kde lidé bydlí, pracují a žijí.", solution: "V obci bydlí lidé — to je základní smysl obce jako místa k životu." },

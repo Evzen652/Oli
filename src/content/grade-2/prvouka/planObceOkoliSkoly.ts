@@ -19,7 +19,7 @@ interface PoolItem {
 }
 
 const POOL: PoolItem[] = [
-  { question: "Jak se jmenují pojmenované cesty v obci?", correct: "Ulice", distractors: ["Mraky", "Hvězdy"], emoji: "🗺️", hint: "Plán obce zobrazuje cesty a domy shora — jak se jmenují pojmenované cesty?", solution: "Cesty v obci se jmenují ulice — každá má své jméno a vede ke konkrétním domům." },
+  { question: "Jak se jmenují pojmenované cesty v obci?", correct: "Ulice", distractors: ["Mraky", "Hvězdy"], emoji: "🗺️", hint: "V adrese bydliště píšeme název cesty, na které stojí dům — Hlavní _____, Školní _____.", solution: "Cesty v obci se jmenují ulice — každá má své jméno a vede ke konkrétním domům." },
   { question: "Jakou hromadnou dopravou jezdíme do školy?", correct: "Autobus", distractors: ["Loď", "Letadlo"], emoji: "🚌", hint: "Hromadná doprava přepravuje mnoho lidí najednou — jaký dopravní prostředek jezdí na pravidelných linkách?", solution: "Do školy jezdíme autobusem — je to hromadná doprava, která jezdí po zastávkách." },
   { question: "Co svítí na přechodu pro chodce?", correct: "Semafor", distractors: ["Lampa", "Svíčka"], emoji: "🚦", hint: "Na přechodu pro chodce jsou světla, která říkají, kdy přejít — jak se jim říká?", solution: "Na přechodu svítí semafor — červená znamená stůj, zelená znamená jdi." },
   { question: "Po čem chodíme u silnice?", correct: "Chodník", distractors: ["Tráva", "Voda"], emoji: "🚶", hint: "Auta jezdí po silnici a chodci chodí odděleně po...", solution: "U silnice chodíme po chodníku — je pro chodce a odděluje je od silnice." },

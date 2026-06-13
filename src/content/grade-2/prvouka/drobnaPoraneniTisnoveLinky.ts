@@ -19,7 +19,7 @@ interface PoolItem {
 }
 
 const POOL: PoolItem[] = [
-  { question: "Jaké je tísňové číslo záchranné služby?", correct: "155", distractors: ["150", "158"], emoji: "🚑", hint: "Záchranka přiváží sanitky a pomáhá při úrazech — na jaké číslo voláme?", solution: "Záchranná služba má číslo 155 — voláme ho, když někdo potřebuje zdravotní pomoc." },
+  { question: "Jaké je tísňové číslo záchranné služby?", correct: "155", distractors: ["150", "158"], emoji: "🚑", hint: "Záchranáři přijíždějí sanitkou a pomáhají zraněným nebo nemocným — na jaké číslo je voláme?", solution: "Záchranná služba má číslo 155 — voláme ho, když někdo potřebuje zdravotní pomoc." },
   { question: "Jaké je tísňové číslo hasičů?", correct: "150", distractors: ["155", "158"], emoji: "🚒", hint: "Hasiči hasí požáry — na jaké číslo voláme?", solution: "Hasiči mají číslo 150 — voláme ho, když hoří nebo hrozí jiné nebezpečí." },
   { question: "Jaké je tísňové číslo policie?", correct: "158", distractors: ["150", "155"], emoji: "👮", hint: "Policie chrání lidi a řeší krádeže a nehody — na jaké číslo voláme?", solution: "Policie má číslo 158 — voláme ho, když potřebujeme policejní pomoc." },
   { question: "Jaké je tísňové číslo platné v celé Evropě?", correct: "112", distractors: ["155", "150"], emoji: "📞", hint: "Jedno číslo funguje v celé Evropě — je to 112 nebo 155?", solution: "Tísňové číslo platné v celé Evropě je 112 — funguje ve všech zemích EU." },

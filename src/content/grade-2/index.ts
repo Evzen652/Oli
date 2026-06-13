@@ -15,6 +15,20 @@ import { TABULKYAJEDNODUCHASHEMA } from "./matematika/tabulkyAJednoduchaSchema";
 import { BODPRIMKAUSECKA } from "./matematika/bodPrimkaUsecka";
 import { MERIENIDELIVKYUSECKY } from "./matematika/mereniDelkyUsecky";
 
+// ── Čeština (12) ──
+import { PRAVOPISIY } from "./cjl/pravopisIY";
+import { SKUPINYDЕТЕНЕ } from "./cjl/skupinyDeTeNe";
+import { SLABIKY } from "./cjl/slabiky";
+import { DRUHYVET } from "./cjl/druhyVet";
+import { SLOVESA } from "./cjl/slovesa";
+import { VLASTNIJMENA } from "./cjl/vlastniJmena";
+import { SLOVAPROTIKLADNA } from "./cjl/slovaProtikladna";
+import { SLOVANADRAZENA } from "./cjl/slovaNadrazena";
+import { ABECEDAAZENI } from "./cjl/abecedaRazeni";
+import { POHADKARIKANKABASEN } from "./cjl/pohadkaRikankaBasen";
+import { SPISOVATELKNIHA } from "./cjl/spisovatelKniha";
+import { ORIENTACEVTEXTU } from "./cjl/orientaceVTextu";
+
 // ── Prvouka (15) ──
 import { HODINYKALENDARCAS } from "./prvouka/hodinyKalendarCas";
 import { TRADICEAZVYKY } from "./prvouka/tradiceAZvyky";
@@ -47,6 +61,19 @@ export const GRADE_2_TOPICS: TopicMetadata[] = [
   ...TABULKYAJEDNODUCHASHEMA,
   ...BODPRIMKAUSECKA,
   ...MERIENIDELIVKYUSECKY,
+  // ── Čeština ──
+  ...PRAVOPISIY,
+  ...SKUPINYDЕТЕНЕ,
+  ...SLABIKY,
+  ...DRUHYVET,
+  ...SLOVESA,
+  ...VLASTNIJMENA,
+  ...SLOVAPROTIKLADNA,
+  ...SLOVANADRAZENA,
+  ...ABECEDAAZENI,
+  ...POHADKARIKANKABASEN,
+  ...SPISOVATELKNIHA,
+  ...ORIENTACEVTEXTU,
   // ── Prvouka ──
   ...HODINYKALENDARCAS,
   ...TRADICEAZVYKY,
