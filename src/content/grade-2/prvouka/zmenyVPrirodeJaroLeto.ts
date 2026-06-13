@@ -9,41 +9,46 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+const ANO = "Ano, to je pravda";
+const NE = "Ne, to není pravda";
+
 interface TrueFalseItem {
   question: string;
   correct: boolean;
   emoji: string;
+  hint: string;
+  solution: string;
 }
 
 const POOL: TrueFalseItem[] = [
-  { question: "Na jaře kvetou květiny. Pravda?", correct: true, emoji: "🌷" },
-  { question: "V létě je teplo. Pravda?", correct: true, emoji: "☀️" },
-  { question: "Na jaře padá sníh. Pravda?", correct: false, emoji: "🌷" },
-  { question: "V létě se koupeme. Pravda?", correct: true, emoji: "🏊" },
-  { question: "Na jaře raší listí. Pravda?", correct: true, emoji: "🌱" },
-  { question: "V létě nosíme čepici a rukavice. Pravda?", correct: false, emoji: "🧤" },
-  { question: "Na jaře se vrací ptáci. Pravda?", correct: true, emoji: "🐦" },
-  { question: "V létě jsou dlouhé dny. Pravda?", correct: true, emoji: "☀️" },
-  { question: "Na jaře všechno usychá. Pravda?", correct: false, emoji: "🌷" },
-  { question: "V létě dozrávají jahody. Pravda?", correct: true, emoji: "🍓" },
-  { question: "Na jaře se rodí mláďata. Pravda?", correct: true, emoji: "🐣" },
-  { question: "V létě zamrzá rybník. Pravda?", correct: false, emoji: "🏊" },
-  { question: "Na jaře je tepleji než v zimě. Pravda?", correct: true, emoji: "🌷" },
-  { question: "V létě svítí slunce dlouho. Pravda?", correct: true, emoji: "☀️" },
-  { question: "Na jaře kvetou stromy. Pravda?", correct: true, emoji: "🌸" },
-  { question: "V létě padá listí ze stromů. Pravda?", correct: false, emoji: "🌳" },
-  { question: "V létě nosíme krátké tričko. Pravda?", correct: true, emoji: "👕" },
-  { question: "Na jaře včely sbírají pyl. Pravda?", correct: true, emoji: "🐝" },
+  { question: "Na jaře kvetou květiny. Je to pravda?", correct: true, emoji: "🌷", hint: "Na jaře se příroda probouzí a otepluje — co dělají květiny?", solution: "Na jaře kvetou květiny — příroda se probouzí po zimě." },
+  { question: "V létě je teplo. Je to pravda?", correct: true, emoji: "☀️", hint: "Léto je nejteplejší roční období — chodíme v tričku nebo plavkách.", solution: "V létě je teplo — léto je nejteplejší roční období." },
+  { question: "Na jaře padá sníh. Je to pravda?", correct: false, emoji: "🌷", hint: "Sníh patří do zimy — jaké počasí bývá na jaře?", solution: "Na jaře sníh nespadá — sníh je typický pro zimu, na jaře se otepluje." },
+  { question: "V létě se koupeme. Je to pravda?", correct: true, emoji: "🏊", hint: "Léto je teplé — chodíme k vodě nebo na bazén.", solution: "V létě se koupeme — je horko a voda nás příjemně ochladí." },
+  { question: "Na jaře raší listí. Je to pravda?", correct: true, emoji: "🌱", hint: "Na jaře se stromy probouzejí a vyrůstají jim nové listy.", solution: "Na jaře raší listí — stromy se po zimě probouzejí a ozelenávají." },
+  { question: "V létě nosíme čepici a rukavice. Je to pravda?", correct: false, emoji: "🧤", hint: "Čepici a rukavice nosíme, když je zima — je v létě zima?", solution: "V létě čepici a rukavice nenosíme — v létě je teplo, nosíme lehké oblečení." },
+  { question: "Na jaře se vrací ptáci z teplých krajů. Je to pravda?", correct: true, emoji: "🐦", hint: "Některé ptáky (jako vlaštovky) přes zimu nevidíme — vrátí se na jaře?", solution: "Na jaře se vrací ptáci — jako vlaštovky, kteří zimu tráví v teplých krajích." },
+  { question: "V létě jsou dlouhé dny. Je to pravda?", correct: true, emoji: "☀️", hint: "V létě svítí slunce hodně dlouho — jsou dny kratší nebo delší?", solution: "V létě jsou dlouhé dny — slunce vychází brzy a zapadá pozdě." },
+  { question: "Na jaře všechno usychá. Je to pravda?", correct: false, emoji: "🌷", hint: "Na jaře se příroda probouzí a roste — usychá, nebo kvete?", solution: "Na jaře příroda neusychá — naopak se probouzí, kvete a zelená." },
+  { question: "V létě dozrávají jahody. Je to pravda?", correct: true, emoji: "🍓", hint: "Jahody sklízíme v létě — jsou sladké a červené.", solution: "V létě dozrávají jahody — jsou jedním z prvních letních plodů." },
+  { question: "Na jaře se rodí mláďata. Je to pravda?", correct: true, emoji: "🐣", hint: "Na jaře se příroda obnovuje — zvířata mají malá mláďata.", solution: "Na jaře se rodí mláďata — zvířata přivádějí na svět potomky." },
+  { question: "V létě zamrzá rybník. Je to pravda?", correct: false, emoji: "🏊", hint: "Rybník zamrzá, když je velká zima — je v létě zima?", solution: "V létě rybník nezamrzá — zamrzá v zimě, kdy jsou teploty pod nulou." },
+  { question: "Na jaře je tepleji než v zimě. Je to pravda?", correct: true, emoji: "🌷", hint: "Srovnej jaro a zimu — kde je tepleji?", solution: "Na jaře je tepleji než v zimě — teploty stoupají a sníh taje." },
+  { question: "V létě svítí slunce dlouho. Je to pravda?", correct: true, emoji: "☀️", hint: "V létě bývají dlouhé světlé dny — slunce svítí hodně hodin.", solution: "V létě svítí slunce dlouho — dny jsou delší než v zimě." },
+  { question: "Na jaře kvetou stromy. Je to pravda?", correct: true, emoji: "🌸", hint: "Stromy se na jaře probouzejí a rozkvetou — třešně a jabloně.", solution: "Na jaře kvetou stromy — třešně, jabloně a švestky jsou celé bílé." },
+  { question: "V létě padá listí ze stromů. Je to pravda?", correct: false, emoji: "🌳", hint: "Listí padá na podzim — co se děje se stromy v létě?", solution: "V létě listí ze stromů nepadá — listí padá na podzim, v létě jsou stromy zelené." },
+  { question: "V létě nosíme krátké tričko. Je to pravda?", correct: true, emoji: "👕", hint: "Když je horko, nosíme lehké oblečení — krátké tričko nebo šaty.", solution: "V létě nosíme krátké tričko — v létě je teplo a lehké oblečení nás chladí." },
+  { question: "Na jaře včely sbírají pyl. Je to pravda?", correct: true, emoji: "🐝", hint: "Včely létají od květiny ke květině — co sbírají?", solution: "Na jaře včely sbírají pyl — když kvetou květiny, včely pilně pracují." },
 ];
 
 function gen(_level: number): PracticeTask[] {
   return shuffle(POOL).slice(0, 15).map(item => ({
     question: item.question,
-    correctAnswer: item.correct ? "Pravda" : "Nepravda",
-    options: ["Pravda", "Nepravda"],
+    correctAnswer: item.correct ? ANO : NE,
+    options: [ANO, NE],
     emoji: item.emoji,
-    hints: ["Na jaře vše roste, v létě je teplo."],
-    solutionSteps: [item.correct ? "Ano, je to pravda." : "Ne, není to pravda."],
+    hints: [item.hint],
+    solutionSteps: [item.solution],
   }));
 }
 

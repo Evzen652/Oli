@@ -14,41 +14,40 @@ interface PoolItem {
   correct: string;
   distractors: string[];
   emoji: string;
+  hint: string;
+  solution: string;
 }
 
 const POOL: PoolItem[] = [
-  { question: "Rok má kolik měsíců?", correct: "12", distractors: ["10", "7"], emoji: "📅" },
-  { question: "Týden má kolik dní?", correct: "7", distractors: ["5", "10"], emoji: "📆" },
-  { question: "Den má kolik hodin?", correct: "24", distractors: ["12", "60"], emoji: "⏰" },
-  { question: "Hodina má kolik minut?", correct: "60", distractors: ["30", "100"], emoji: "🕐" },
-  { question: "Kolik dní má rok?", correct: "365", distractors: ["300", "100"], emoji: "📅" },
-  { question: "První den v týdnu?", correct: "Pondělí", distractors: ["Neděle", "Středa"], emoji: "📆" },
-  { question: "Poslední den v týdnu?", correct: "Neděle", distractors: ["Sobota", "Pátek"], emoji: "📆" },
-  { question: "Čím měříme čas?", correct: "Hodiny", distractors: ["Metr", "Váha"], emoji: "⏰" },
-  { question: "Kdy je nejvíc tma?", correct: "Noc", distractors: ["Ráno", "Poledne"], emoji: "🌙" },
-  { question: "Kdy vychází slunce?", correct: "Ráno", distractors: ["Večer", "Noc"], emoji: "🌅" },
-  { question: "Kolik je ručiček na hodinách?", correct: "Dvě", distractors: ["Jedna", "Tři"], emoji: "🕐" },
-  { question: "Co je delší než minuta?", correct: "Hodina", distractors: ["Vteřina", "Nic"], emoji: "⏳" },
-  { question: "Který měsíc je první?", correct: "Leden", distractors: ["Prosinec", "Březen"], emoji: "❄️" },
-  { question: "Který měsíc je poslední?", correct: "Prosinec", distractors: ["Leden", "Červen"], emoji: "🎄" },
-  { question: "Co máme každý den jednou?", correct: "Ráno", distractors: ["Týden", "Rok"], emoji: "🌅" },
-  { question: "Kolik je hodin v poledne?", correct: "12", distractors: ["6", "24"], emoji: "🕛" },
-  { question: "Co přijde po pondělí?", correct: "Úterý", distractors: ["Neděle", "Pátek"], emoji: "📆" },
-  { question: "Co přijde po létě?", correct: "Podzim", distractors: ["Jaro", "Zima"], emoji: "🍂" },
+  { question: "Kolik měsíců má rok?", correct: "12", distractors: ["10", "7"], emoji: "📅", hint: "Vzpomeň si na kalendář — leden, únor, březen… kolik jich je celkem?", solution: "Rok má 12 měsíců — od ledna do prosince." },
+  { question: "Kolik dní má týden?", correct: "7", distractors: ["5", "10"], emoji: "📆", hint: "Spočítej dny: pondělí, úterý, středa, čtvrtek, pátek, sobota, neděle — kolik jich je?", solution: "Týden má 7 dní — od pondělí do neděle." },
+  { question: "Kolik hodin má den?", correct: "24", distractors: ["12", "60"], emoji: "⏰", hint: "Den má část denní a část noční — dohromady 24 hodin.", solution: "Den má 24 hodin — 12 hodin dne a 12 hodin noci." },
+  { question: "Kolik minut má hodina?", correct: "60", distractors: ["30", "100"], emoji: "🕐", hint: "Na hodinách je 60 dílků — každý dílek je 1 minuta.", solution: "Hodina má 60 minut." },
+  { question: "Kolik dní má rok?", correct: "365", distractors: ["300", "100"], emoji: "📅", hint: "Rok má přibližně 52 týdnů. Každý týden má 7 dní — kolik je to celkem?", solution: "Rok má 365 dní (přestupný rok má 366)." },
+  { question: "Který den je první v týdnu?", correct: "Pondělí", distractors: ["Neděle", "Středa"], emoji: "📆", hint: "Týden začíná pracovním dnem — pondělí, úterý…", solution: "Pondělí je první den v týdnu — každý týden začíná pondělím." },
+  { question: "Který den je poslední v týdnu?", correct: "Neděle", distractors: ["Sobota", "Pátek"], emoji: "📆", hint: "Týden končí víkendem — sobota nebo neděle. Který je poslední?", solution: "Neděle je poslední den v týdnu." },
+  { question: "Čím měříme čas?", correct: "Hodiny", distractors: ["Metr", "Váha"], emoji: "⏰", hint: "Co visí na zdi a ukazuje, kolik je hodin?", solution: "Čas měříme hodinami." },
+  { question: "Kdy je nejvíc tma?", correct: "Noc", distractors: ["Ráno", "Poledne"], emoji: "🌙", hint: "Slunce svítí přes den — kdy ho nevidíme?", solution: "Nejvíc tma je v noci — slunce pak nesvítí." },
+  { question: "Kdy vychází slunce?", correct: "Ráno", distractors: ["Večer", "Noc"], emoji: "🌅", hint: "Slunce vychází na začátku dne — ráno, v poledne nebo večer?", solution: "Slunce vychází ráno — na začátku každého dne." },
+  { question: "Kolik ručiček mají hodiny?", correct: "Dvě", distractors: ["Jedna", "Tři"], emoji: "🕐", hint: "Hodiny mají hodinovou ručičku (kratší) a minutovou ručičku (delší).", solution: "Hodiny mají dvě hlavní ručičky — hodinovou a minutovou." },
+  { question: "Co je delší než minuta?", correct: "Hodina", distractors: ["Vteřina", "Nic"], emoji: "⏳", hint: "Srovnej: vteřina, minuta, hodina — která z nich trvá nejdéle?", solution: "Hodina je delší než minuta — 1 hodina = 60 minut." },
+  { question: "Který měsíc je první v roce?", correct: "Leden", distractors: ["Prosinec", "Březen"], emoji: "❄️", hint: "Rok začíná zimním měsícem — leden, únor…", solution: "První měsíc v roce je leden — rok začíná v lednu." },
+  { question: "Který měsíc je poslední v roce?", correct: "Prosinec", distractors: ["Leden", "Červen"], emoji: "🎄", hint: "Rok končí vánočním měsícem — kdy slavíme Vánoce?", solution: "Poslední měsíc v roce je prosinec — v prosinci slavíme Vánoce." },
+  { question: "Které roční období přijde po podzimu?", correct: "Zima", distractors: ["Léto", "Jaro"], emoji: "❄️", hint: "Čtyři roční období jdou za sebou: jaro, léto, podzim, zima — co přijde po podzimu?", solution: "Po podzimu přijde zima — rok má čtyři roční období: jaro, léto, podzim, zima." },
+  { question: "Kolik hodin ukazují hodiny v poledne?", correct: "12", distractors: ["6", "24"], emoji: "🕛", hint: "Poledne je uprostřed dne — ručičky jsou obě nahoře na 12.", solution: "V poledne je 12 hodin — ručičky jsou obě nahoře." },
+  { question: "Který den přijde po pondělí?", correct: "Úterý", distractors: ["Neděle", "Pátek"], emoji: "📆", hint: "Dny v týdnu jdou za sebou: pondělí, úterý, středa… Co přijde hned po pondělí?", solution: "Po pondělí přijde úterý — je to druhý den v týdnu." },
+  { question: "Které roční období přijde po létě?", correct: "Podzim", distractors: ["Jaro", "Zima"], emoji: "🍂", hint: "Čtyři roční období: jaro, léto, podzim, zima — co přijde po létě?", solution: "Po létě přijde podzim — listí začne padat a ochladí se." },
 ];
 
 function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 15).map(item => {
-    const options = shuffle([item.correct, ...item.distractors]);
-    return {
-      question: item.question,
-      correctAnswer: item.correct,
-      options,
-      emoji: item.emoji,
-      hints: ["Mysli na čas, dny a měsíce."],
-      solutionSteps: [`Správně: ${item.correct}`],
-    };
-  });
+  return shuffle(POOL).slice(0, 15).map(item => ({
+    question: item.question,
+    correctAnswer: item.correct,
+    options: shuffle([item.correct, ...item.distractors]),
+    emoji: item.emoji,
+    hints: [item.hint],
+    solutionSteps: [item.solution],
+  }));
 }
 
 export const HODINYKALENDARCAS: TopicMetadata[] = [

@@ -137,6 +137,9 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-13 (pokračování 2) — hotovo:
+- ✅ **Grade-2 prvouka: ruční review obsahu — 13 zbývajících témat** — přepsáno všech 13 souborů (7× true_false, 6× select_one). Opravy: R11 „Pravda?" → „Je to pravda?", R12 „Pravda/Nepravda" → celé věty „Ano, to je pravda/Ne, to není pravda", solutionSteps „Správně: X" → konkrétní vysvětlení PROČ, per-item hint+solution (dřív jen generický). Opraveny fragment-otázky (kvetouciRostliny, drobnaPoraneni, planObce), broken distractor „Souseda kočku", otázky v první osobě „Jak se jmenuje mládě...".
+
 ### Session 2026-06-13 (pokračování) — hotovo:
 - ✅ **Grade-2 matematika: ruční review obsahu — 13 témat** — projity všechny otázky, nápovědy a "odpověď pro žáka" (solutionSteps) v každém ze 13 témat matematiky. Odvozena a uložena pravidla R7–R12 (konkrétní předměty ve slovních úlohách, kompletní otázky s „?", konkrétní hinty s čísly z příkladu, solutionSteps neutrálně vysvětlující PROČ, True/False formát „Je to pravda?" + celé věty). Přepsáno 6 souborů od základu (slovniUlohy, jednotky, mereniCasu, mereniDelkyUsecky, bodPrimkaUsecka, tabulky, posloupnosti). Opraveny drobné obsahové chyby: „0,5 hodiny" → „půl hodiny" (nevhodné pro 2. třídu), otázka „Narýsuj" (nelze v multiple choice), nepřesná „asi 7 cm". L3 chybějící faktor (vztahNasobeniADeleni) dostaly dva hinty: paměťový + akční. Commit b825a7f.
 

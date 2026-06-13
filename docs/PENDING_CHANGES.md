@@ -55,6 +55,13 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ~~**BUG #5** — Tab zamrzne po zavření InviteParentDialog~~ ✅ 2026-06-12 — přidána focus restoration (save activeElement při mount, vrátí focus při unmount + focus první prvek po otevření).
 
+### ✅ Grade-2 prvouka: ruční review obsahu (2026-06-13)
+- Přepsáno všech 13 zbývajících souborů prvouka (7× true_false, 6× select_one).
+- R11+R12: True/False „Je to pravda?" + celé věty „Ano, to je pravda/Ne, to není pravda".
+- Per-item hint+solution (dřív generické „Mysli na to, co..." a „Správně: X").
+- Opraveny fragment-otázky: „Mládě kočky je?" → „Jak se jmenuje mládě kočky?", „Číslo na záchranku?" → „Jaké je tísňové číslo záchranné služby?".
+- Opraven broken distractor „Souseda kočku" v drobnaPoraneni.
+
 ### ✅ Grade-2 matematika: ruční review obsahu (2026-06-13)
 - Projity všechny otázky, nápovědy a solutionSteps u 13 témat matematiky 2. ročníku.
 - Odvozena pravidla R7–R12 (uložena v memory `feedback_content_review_rules.md`).

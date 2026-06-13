@@ -14,25 +14,27 @@ interface PoolItem {
   correct: string;
   distractors: string[];
   emoji: string;
+  hint: string;
+  solution: string;
 }
 
 const POOL: PoolItem[] = [
-  { question: "Co je na plánu obce?", correct: "Ulice", distractors: ["Mraky", "Hvězdy"], emoji: "🗺️" },
-  { question: "Čím jezdíme do školy?", correct: "Autobus", distractors: ["Loď", "Letadlo"], emoji: "🚌" },
-  { question: "Co svítí na přechodu?", correct: "Semafor", distractors: ["Lampa", "Svíčka"], emoji: "🚦" },
-  { question: "Po čem chodíme u silnice?", correct: "Chodník", distractors: ["Tráva", "Voda"], emoji: "🚶" },
-  { question: "Kde přejdeme silnici?", correct: "Přechod", distractors: ["Strom", "Plot"], emoji: "🚸" },
-  { question: "Po čem jezdí auta?", correct: "Silnice", distractors: ["Chodník", "Tráva"], emoji: "🛣️" },
-  { question: "Co ukazuje cestu?", correct: "Cedule", distractors: ["Mrak", "Strom"], emoji: "🪧" },
-  { question: "Co je nad řekou?", correct: "Most", distractors: ["Plot", "Lavička"], emoji: "🌉" },
-  { question: "Kde si sedneme v parku?", correct: "Lavička", distractors: ["Semafor", "Cedule"], emoji: "🪑" },
-  { question: "Co je v parku?", correct: "Stromy", distractors: ["Auta", "Semafory"], emoji: "🌳" },
-  { question: "Čím ještě jezdíme ve městě?", correct: "Tramvaj", distractors: ["Loď", "Letadlo"], emoji: "🚊" },
-  { question: "Kde čekáme na autobus?", correct: "Zastávka", distractors: ["Most", "Park"], emoji: "🚏" },
-  { question: "Co stojí u domu?", correct: "Plot", distractors: ["Řeka", "Mrak"], emoji: "🏡" },
-  { question: "Kde parkují auta?", correct: "Parkoviště", distractors: ["Řeka", "Park"], emoji: "🅿️" },
-  { question: "Co teče obcí?", correct: "Řeka", distractors: ["Silnice", "Plot"], emoji: "🏞️" },
-  { question: "Kde si hrají děti?", correct: "Hřiště", distractors: ["Silnice", "Most"], emoji: "🛝" },
+  { question: "Jak se jmenují pojmenované cesty v obci?", correct: "Ulice", distractors: ["Mraky", "Hvězdy"], emoji: "🗺️", hint: "Plán obce zobrazuje cesty a domy shora — jak se jmenují pojmenované cesty?", solution: "Cesty v obci se jmenují ulice — každá má své jméno a vede ke konkrétním domům." },
+  { question: "Jakou hromadnou dopravou jezdíme do školy?", correct: "Autobus", distractors: ["Loď", "Letadlo"], emoji: "🚌", hint: "Hromadná doprava přepravuje mnoho lidí najednou — jaký dopravní prostředek jezdí na pravidelných linkách?", solution: "Do školy jezdíme autobusem — je to hromadná doprava, která jezdí po zastávkách." },
+  { question: "Co svítí na přechodu pro chodce?", correct: "Semafor", distractors: ["Lampa", "Svíčka"], emoji: "🚦", hint: "Na přechodu pro chodce jsou světla, která říkají, kdy přejít — jak se jim říká?", solution: "Na přechodu svítí semafor — červená znamená stůj, zelená znamená jdi." },
+  { question: "Po čem chodíme u silnice?", correct: "Chodník", distractors: ["Tráva", "Voda"], emoji: "🚶", hint: "Auta jezdí po silnici a chodci chodí odděleně po...", solution: "U silnice chodíme po chodníku — je pro chodce a odděluje je od silnice." },
+  { question: "Kde bezpečně přejdeme silnici?", correct: "Přechod", distractors: ["Strom", "Plot"], emoji: "🚸", hint: "Silnici bezpečně přejdeme na označeném místě — jak se jmenuje?", solution: "Silnici přejdeme na přechodu — tam mají chodci přednost." },
+  { question: "Po čem jezdí auta?", correct: "Silnice", distractors: ["Chodník", "Tráva"], emoji: "🛣️", hint: "Auta nepojezdí po chodníku — po čem tedy jezdí?", solution: "Auta jezdí po silnici — silnice je jen pro motorová vozidla." },
+  { question: "Co ukazuje cestu nebo směr?", correct: "Cedule", distractors: ["Mrak", "Strom"], emoji: "🪧", hint: "Abychom věděli, kde jsme nebo kde co je, slouží nám...", solution: "Cestu nám ukazuje cedule (dopravní značka) — ukazuje směr nebo upozorňuje." },
+  { question: "Co je postaveno nad řekou, aby se dalo přejít?", correct: "Most", distractors: ["Plot", "Lavička"], emoji: "🌉", hint: "Přes řeku se dá přejít nebo přejet — přes co se přejde?", solution: "Nad řekou je most — po mostě přecházíme nebo přejíždíme na druhý břeh." },
+  { question: "Kde si sedneme v parku k odpočinku?", correct: "Lavička", distractors: ["Semafor", "Cedule"], emoji: "🪑", hint: "V parku jsou dřevěné nebo kovové sedačky — jak se jmenují?", solution: "V parku si sedneme na lavičku — jsou tam k odpočinku pro návštěvníky." },
+  { question: "Co roste v parku a poskytuje stín?", correct: "Stromy", distractors: ["Auta", "Semafory"], emoji: "🌳", hint: "Park je místo s zelení, kde rostou vysoké dřeviny.", solution: "V parku rostou stromy — poskytují stín a zkrášlují park." },
+  { question: "Jaká hromadná doprava jezdí po kolejích ve městě?", correct: "Tramvaj", distractors: ["Loď", "Letadlo"], emoji: "🚊", hint: "Ve větším městě jezdí hromadná doprava po kolejích — jak se jmenuje?", solution: "Ve městě jezdí tramvaj — jezdí po kolejích v ulicích." },
+  { question: "Kde čekáme na autobus?", correct: "Zastávka", distractors: ["Most", "Park"], emoji: "🚏", hint: "Autobus nezastavuje kdekoliv — čekáme na konkrétním místě, které se jmenuje...", solution: "Na autobus čekáme na zastávce — označené místo, kde autobus zastavuje." },
+  { question: "Co ohraničuje zahradu u domu?", correct: "Plot", distractors: ["Řeka", "Mrak"], emoji: "🏡", hint: "Domy mají ohraničenou zahradu nebo pozemek — co ho ohraničuje?", solution: "Zahradu ohraničuje plot — odděluje ji od ulice a sousedů." },
+  { question: "Kde parkují auta?", correct: "Parkoviště", distractors: ["Řeka", "Park"], emoji: "🅿️", hint: "Auta potřebují místo k zaparkování — jak se tomu místu říká?", solution: "Auta parkují na parkovišti — je to plocha vyhrazená pro zaparkovaná vozidla." },
+  { question: "Co teče přirozeně obcí?", correct: "Řeka", distractors: ["Silnice", "Plot"], emoji: "🏞️", hint: "V obci může téct přirozený vodní tok — jak se jmenuje?", solution: "Obcí teče řeka — je to přirozený vodní tok, který protéká krajinou." },
+  { question: "Kde si hrají děti venku?", correct: "Hřiště", distractors: ["Silnice", "Most"], emoji: "🛝", hint: "Děti si hrají venku na místě s prolézačkami — kde to je?", solution: "Děti si hrají na hřišti — je tam pískoviště, houpačky a prolézačky." },
 ];
 
 function gen(_level: number): PracticeTask[] {
@@ -43,8 +45,8 @@ function gen(_level: number): PracticeTask[] {
       correctAnswer: item.correct,
       options,
       emoji: item.emoji,
-      hints: ["Mysli na to, co vidíš venku v obci."],
-      solutionSteps: [`Správně: ${item.correct}`],
+      hints: [item.hint],
+      solutionSteps: [item.solution],
     };
   });
 }

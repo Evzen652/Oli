@@ -9,41 +9,46 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+const ANO = "Ano, to je pravda";
+const NE = "Ne, to není pravda";
+
 interface TrueFalseItem {
   question: string;
   correct: boolean;
   emoji: string;
+  hint: string;
+  solution: string;
 }
 
 const POOL: TrueFalseItem[] = [
-  { question: "Na podzim padá listí. Pravda?", correct: true, emoji: "🍂" },
-  { question: "V zimě padá sníh. Pravda?", correct: true, emoji: "❄️" },
-  { question: "V zimě kvetou stromy. Pravda?", correct: false, emoji: "🌳" },
-  { question: "Na podzim sklízíme jablka. Pravda?", correct: true, emoji: "🍎" },
-  { question: "V zimě je zima. Pravda?", correct: true, emoji: "❄️" },
-  { question: "Na podzim je horko jako v létě. Pravda?", correct: false, emoji: "🍂" },
-  { question: "V zimě zamrzá rybník. Pravda?", correct: true, emoji: "⛸️" },
-  { question: "Na podzim listí žloutne. Pravda?", correct: true, emoji: "🍁" },
-  { question: "V zimě nosíme čepici. Pravda?", correct: true, emoji: "🧢" },
-  { question: "V zimě se koupeme v rybníku. Pravda?", correct: false, emoji: "❄️" },
-  { question: "Na podzim fouká vítr. Pravda?", correct: true, emoji: "🍂" },
-  { question: "V zimě stavíme sněhuláka. Pravda?", correct: true, emoji: "⛄" },
-  { question: "Na podzim sbíráme houby. Pravda?", correct: true, emoji: "🍄" },
-  { question: "V zimě dozrávají jahody. Pravda?", correct: false, emoji: "❄️" },
-  { question: "Na podzim sklízíme brambory. Pravda?", correct: true, emoji: "🥔" },
-  { question: "V zimě jezdíme na saních. Pravda?", correct: true, emoji: "🛷" },
-  { question: "Na podzim raší nové listí. Pravda?", correct: false, emoji: "🍂" },
-  { question: "V zimě bývají krátké dny. Pravda?", correct: true, emoji: "🌙" },
+  { question: "Na podzim padá listí. Je to pravda?", correct: true, emoji: "🍂", hint: "Stromy na podzim ztrácejí listí — padá dolů.", solution: "Na podzim padá listí — stromy se připravují na zimu a zbavují se listů." },
+  { question: "V zimě padá sníh. Je to pravda?", correct: true, emoji: "❄️", hint: "Sníh vzniká, když je velmi zima — v zimě nebo v létě?", solution: "V zimě padá sníh — teploty klesnou pod nulu a déšť se mění v sníh." },
+  { question: "V zimě kvetou stromy. Je to pravda?", correct: false, emoji: "🌳", hint: "Stromy kvetou, když je teplo — je v zimě teplo?", solution: "V zimě stromy nekvetou — kvetou na jaře, v zimě jsou bez listí a bez květů." },
+  { question: "Na podzim sklízíme jablka. Je to pravda?", correct: true, emoji: "🍎", hint: "Jablka dozrávají na podzim — kdy je sklízíme?", solution: "Na podzim sklízíme jablka — dozrávají na stromech v září a říjnu." },
+  { question: "V zimě bývá zima (chladno). Je to pravda?", correct: true, emoji: "❄️", hint: "Zima je nejchladnější roční období — mrazy a sníh.", solution: "V zimě bývá zima (chladno) — teploty klesají, může mrazit a padat sníh." },
+  { question: "Na podzim je horko jako v létě. Je to pravda?", correct: false, emoji: "🍂", hint: "Na podzim se ochlazuje — oblékáme se do kabátů.", solution: "Na podzim není horko jako v létě — podzim je chladnější, teploty klesají." },
+  { question: "V zimě zamrzá rybník. Je to pravda?", correct: true, emoji: "⛸️", hint: "Když teploty klesnou pod nulu, voda tuhne — zmrzne i rybník?", solution: "V zimě zamrzá rybník — při velkém mrazu se vodní hladina pokryje ledem." },
+  { question: "Na podzim listí žloutne. Je to pravda?", correct: true, emoji: "🍁", hint: "Před tím, než listí opadá, změní barvu — ze zelené na žlutou nebo červenou.", solution: "Na podzim listí žloutne a červená — před opadem mění barvu." },
+  { question: "V zimě nosíme čepici. Je to pravda?", correct: true, emoji: "🧢", hint: "Čepice chrání hlavu před chladem — v zimě je to potřeba.", solution: "V zimě nosíme čepici — chrání nás před zimou a mrazem." },
+  { question: "V zimě se koupeme v rybníku. Je to pravda?", correct: false, emoji: "❄️", hint: "Rybník v zimě zamrzne — koupali bychom se v ledové vodě?", solution: "V zimě se v rybníku nekoupeme — rybník je zamrzlý a voda by byla ledová." },
+  { question: "Na podzim fouká vítr. Je to pravda?", correct: true, emoji: "🍂", hint: "Podzim přináší vítr a déšť — listí vítr sfoukává ze stromů.", solution: "Na podzim fouká vítr — vítr pomáhá opadávat listí ze stromů." },
+  { question: "V zimě stavíme sněhuláka. Je to pravda?", correct: true, emoji: "⛄", hint: "Ze sněhu děláme koule a skládáme je na sebe — co tím vytvoříme?", solution: "V zimě stavíme sněhuláka — ze sněhu vytvoříme postavičku." },
+  { question: "Na podzim sbíráme houby. Je to pravda?", correct: true, emoji: "🍄", hint: "Houby rostou v lese na podzim — kdy je sbíráme?", solution: "Na podzim sbíráme houby — v lesích jich roste hodně, například hříbky." },
+  { question: "V zimě dozrávají jahody. Je to pravda?", correct: false, emoji: "❄️", hint: "Jahody dozrávají v létě — dozrávají v létě nebo v zimě?", solution: "V zimě jahody nedozrávají — jahody jsou letní ovoce, zrají v červnu a červenci." },
+  { question: "Na podzim sklízíme brambory. Je to pravda?", correct: true, emoji: "🥔", hint: "Brambory vyrůstají pod zemí a na podzim je vykopáváme.", solution: "Na podzim sklízíme brambory — vykopáváme je ze země v říjnu." },
+  { question: "V zimě jezdíme na saních. Je to pravda?", correct: true, emoji: "🛷", hint: "Saně kloužou po sněhu — kdy máme dost sněhu?", solution: "V zimě jezdíme na saních — po sněhu se saně hezky kloužou." },
+  { question: "Na podzim raší nové listí. Je to pravda?", correct: false, emoji: "🍂", hint: "Nové listí raší na jaře — na podzim listí padá.", solution: "Na podzim nové listí neraší — nové listí raší na jaře, na podzim listí opadává." },
+  { question: "V zimě bývají krátké dny. Je to pravda?", correct: true, emoji: "🌙", hint: "V zimě slunce vychází pozdě a zapadá brzy — jsou dny krátké nebo dlouhé?", solution: "V zimě bývají krátké dny — slunce svítí málo hodin a brzy se setmí." },
 ];
 
 function gen(_level: number): PracticeTask[] {
   return shuffle(POOL).slice(0, 15).map(item => ({
     question: item.question,
-    correctAnswer: item.correct ? "Pravda" : "Nepravda",
-    options: ["Pravda", "Nepravda"],
+    correctAnswer: item.correct ? ANO : NE,
+    options: [ANO, NE],
     emoji: item.emoji,
-    hints: ["Na podzim padá listí, v zimě padá sníh."],
-    solutionSteps: [item.correct ? "Ano, je to pravda." : "Ne, není to pravda."],
+    hints: [item.hint],
+    solutionSteps: [item.solution],
   }));
 }
 
