@@ -55,6 +55,12 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ~~**BUG #5** — Tab zamrzne po zavření InviteParentDialog~~ ✅ 2026-06-12 — přidána focus restoration (save activeElement při mount, vrátí focus při unmount + focus první prvek po otevření).
 
+### ✅ Grade-2 matematika: ruční review obsahu (2026-06-13)
+- Projity všechny otázky, nápovědy a solutionSteps u 13 témat matematiky 2. ročníku.
+- Odvozena pravidla R7–R12 (uložena v memory `feedback_content_review_rules.md`).
+- Přepsány soubory: slovniUlohy, jednotky, mereniCasu, mereniDelkyUsecky, bodPrimkaUsecka, tabulky, posloupnosti, vztahNasobeniADeleni (L3 hinty).
+- Opraveny obsahové chyby: „0,5 hodiny", „Narýsuj", „asi 7 cm", neúplné otázky.
+
 ### Czech grammar audit zbylých generátorů ✅ 2026-06-12
 - Hotovo — viz sekce Vyřízené výše.
 
