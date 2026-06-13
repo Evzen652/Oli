@@ -55,6 +55,22 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ~~**BUG #5** — Tab zamrzne po zavření InviteParentDialog~~ ✅ 2026-06-12 — přidána focus restoration (save activeElement při mount, vrátí focus při unmount + focus první prvek po otevření).
 
+### ✅ Navigace předmět → okruh → téma pro všechny ročníky (2026-06-13)
+- Sjednocena 2-úrovňová žákovská navigace (okruh → téma) pro grade-2/4/5 — dříve jen grade-3.
+- Nové soubory: `src/content/navigation.ts` (registr + typy), `grade-2/navigation.ts`, `grade-4/navigation.ts`, `grade-5/navigation.ts`.
+- `TopicBrowser.tsx` zobecněn (per-ročník lookup místo `grade === 3`).
+- Žádné cvičení se nemazalo/neměnilo; okruhy odkazují na existující `id`. RVP pole beze změny.
+- Informatika ponechána plochá (dle pravidla; studentům se nezobrazuje).
+- Nový test `navigation-consistency.test.ts` (42 ✅): každé cvičení v právě jednom okruhu, žádní sirotci/duplikáty.
+- Opraveny 2 build-breaking ASCII uvozovky (lideVOkoliKamaradstvi, povolaniPraceDospelych).
+- TODO (neblokující): dorovnat nekonzistentní `topic` v grade-4/5 (degenerované == category u nematematických předmětů).
+
+### ✅ Grade-2 čeština: 12 topics implementováno (2026-06-13)
+- 12 souborů v `src/content/grade-2/cjl/`: pravopisIY, skupinyDeTeNe, slabiky, druhyVet, slovesa, vlastniJmena, slovaProtikladna, slovaNadrazena, abecedaRazeni, pohadkaRikankaBasen, spisovatelKniha, orientaceVTextu.
+- `displayNames.ts`: přidány 3 categories (Jazyková výchova, Komunikační a slohová výchova, Literární výchova) + 6 topics.
+- `index.ts`: importy + exporty všech 12 topics.
+- Pravidla R1–R16, `explanation` (ne `solutionSteps`), pool 17–18 úloh, TypeScript 0 chyb.
+
 ### ✅ Grade-2 prvouka: ruční review obsahu (2026-06-13)
 - Přepsáno všech 13 zbývajících souborů prvouka (7× true_false, 6× select_one).
 - R11+R12: True/False „Je to pravda?" + celé věty „Ano, to je pravda/Ne, to není pravda".
@@ -117,7 +133,7 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ### Otevřené (nové 2026-06-13)
 - **Sken grade-3 na giveaway „odpověď ve znění otázky"** — current audit check (c3) chytá jen meta-text/délku distraktorů, NE případ, kdy je správná odpověď doslova ve znění `q`. Vhodné doplnit nový check + proskenovat existující POOL napříč grade-3 cjl.
-- **Grade-2: chybí navigace (onboarding + displayNames)** — grade-2 obsah existuje, ale dětské názvy kategorií (`getDisplayCategory()`) pro grade-2 nejsou v `BY_GRADE` slovníku → žáci 2. ročníku by viděli syrové RVP texty. Přidat grade-2 do `src/lib/displayNames.ts`.
+- ~~**Grade-2: chybí navigace (onboarding + displayNames)**~~ ✅ 2026-06-13 — `displayNames.ts` grade-2 existuje a je kompletní, import i `BY_GRADE` záznam jsou v pořádku, `GRADE_2_TOPICS` registrováno v content indexu.
 
 ## Vyřízené (doplněno 2026-06-12)
 

@@ -22,7 +22,7 @@ import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { getDisplayCategory, getDisplayCategoryDescription, getDisplayTopic, getDisplayTopicDescription } from "@/lib/displayNames";
-import { GRADE3_NAVIGATION, type Grade3Okruh } from "@/content/grade-3/navigation";
+import { getSubjectOkruhy as getNavOkruhy, type Okruh } from "@/content/navigation";
 import { pad } from "@/lib/czechGrammar";
 
 interface TopicBrowserProps {
@@ -37,9 +37,9 @@ type BrowseLevel = "subject" | "category" | "topic" | "subtopic";
 
 export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSubject }: TopicBrowserProps) {
   const t = useT();
-  // Grade 3 + subject with custom okruhy → start at category (okruhy nav).
-  // Všechny ostatní případy s initialSubject → rovnou na "subtopic" (všechna témata předmětu).
-  const initHasOkruhy = !!(initialSubject && grade === 3 && GRADE3_NAVIGATION.some(n => n.subject === initialSubject));
+  // Předmět s okruhovou navigací → start na "category" (výběr okruhu).
+  // Předmět bez okruhů (např. informatika) → rovnou na "subtopic" (všechna témata předmětu).
+  const initHasOkruhy = !!(initialSubject && getNavOkruhy(grade, initialSubject));
   const [level, setLevel] = useState<BrowseLevel>(
     !initialSubject ? "subject" : initHasOkruhy ? "category" : "subtopic"
   );
@@ -62,12 +62,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   const subjects = [...new Set(topics.map((t) => t.subject))];
 
-  const getSubjectOkruhy = (subject: string): Grade3Okruh[] | null => {
-    if (grade === 3) {
-      return GRADE3_NAVIGATION.find(n => n.subject === subject)?.okruhy ?? null;
-    }
-    return null;
-  };
+  const getSubjectOkruhy = (subject: string): Okruh[] | null => getNavOkruhy(grade, subject);
 
   const categories = selectedSubject
     ? [...new Set(topics.filter((t) => t.subject === selectedSubject).map((t) => t.category))]
