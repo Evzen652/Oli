@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { phrase, pad, form } from "@/lib/czechGrammar";
+import { phrase, pad } from "@/lib/czechGrammar";
 
 // Otázky testují porozumění zlomku jako části celku.
 // Žádné obrázky — odpověď je slovní/číselná.

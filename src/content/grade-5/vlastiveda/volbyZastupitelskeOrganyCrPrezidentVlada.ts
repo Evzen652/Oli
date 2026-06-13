@@ -239,7 +239,9 @@ const POOL_L2: PracticeTask[] = [
   },
 ];
 
-const POOL_L3: PracticeTask[] = [
+// TODO(review): autorský L3 obsah (drag_order/match_pairs) nezapojen — téma je
+// select_one, takže by emitoval nekompatibilní úlohy. Viz DECISIONS.md.
+const _POOL_L3: PracticeTask[] = [
   {
     question: "Seřaď orgány ČR podle počtu členů od nejméně po nejvíce.",
     correctAnswer: "Prezident → Senát → Sněmovna",

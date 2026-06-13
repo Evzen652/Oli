@@ -9,7 +9,8 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const HORY = [
+// TODO(review): autorská data zatím nezapojená do generátoru — viz DECISIONS.md
+const _HORY = [
   { pohoří: "Krkonoše", vrchol: "Sněžka", výška: "1603 m", poloha: "severovýchodní Čechy, u Polska" },
   { pohoří: "Šumava", vrchol: "Plechý", výška: "1378 m", poloha: "jihozápadní Čechy, u Německa a Rakouska" },
   { pohoří: "Jeseníky", vrchol: "Praděd", výška: "1492 m", poloha: "severní Morava" },
