@@ -18,7 +18,7 @@ function gen(level: number): PracticeTask[] {
       b = Math.floor(Math.random() * 8) + 2;       // 2–9
     } else {
       a = Math.floor(Math.random() * 900) + 100;   // 100–999
-      b = Math.floor(Math.random() * 90) + 11;     // 11–99 (aspoň dvouciferné)
+      b = Math.floor(Math.random() * 89) + 11;     // 11–99 (aspoň dvouciferné)
     }
 
     const correct = a * b;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { dbSkillToTopicMetadata, hasCodeGenerator, type DbSkillRow } from "@/hooks/useDbCurriculum";
-import { getTopicById } from "@/lib/contentRegistry";
+import { getAllTopics } from "@/lib/contentRegistry";
 import type { TopicMetadata } from "@/lib/types";
 
 /**
@@ -148,7 +148,8 @@ describe("hasCodeGenerator", () => {
   });
 
   it("registry topic s reálným generator → true", () => {
-    const t = getTopicById("math-compare-natural-numbers-100");
+    // Dynamicky z registry — odolné vůči migraci ID (legacy ID už neexistují).
+    const t = getAllTopics()[0];
     expect(t).toBeDefined();
     if (t) expect(hasCodeGenerator(t)).toBe(true);
   });

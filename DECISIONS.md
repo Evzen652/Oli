@@ -72,3 +72,39 @@ problémem „mixed-type tasks" v PENDING_CHANGES). `HORY` je autorská geografi
 *Alternativy:* (a) smazat — zamítnuto, ztráta obsahu; (b) zapojit do generátoru —
 mimo rozsah (vyžaduje změnu inputType/restrukturalizaci, rozhodnutí content ownera).
 Flagováno k revizi.
+
+## D6 — Triáž 37 failujících testů: opravit reálné, dokumentovat baseline
+
+**Rozhodnutí:** Z 37 failů (baseline dle PROJECT_STATUS ~39, tj. mé předchozí změny
+nepřidaly regrese) opraveno 6 reálných/stale, zbytek (31) ponechán jako dokumentovaný
+pre-existující baseline.
+
+**Opraveno:**
+- `pisemneNasobeni` L3 — **reálný bug generátoru**: `Math.random()*90+11` dávalo
+  rozsah 11–**100** místo 11–99. Oprava `*90`→`*89`.
+- `content-registry` (3) — stale testy: grade-2 už má statický obsah (40 témat, ne 0);
+  ročníky 6–9 zatím prázdné (test čekal 3–9); legacy ID `math-compare-natural-numbers-100`
+  neexistuje → dynamický výběr z registry.
+- `db-curriculum` (1) — stejný legacy ID → dynamický výběr.
+- `prvouka-visuals` (1) — edge case: plně prázdný vstup do `getTopicIllustrationUrl`
+  vrací null (konzistentní s okolními aserce); test sjednocen na `toBeNull()`.
+
+**Ponecháno jako baseline (NEopravovat autonomně):**
+- **Boundary enforcement** — `red-team` (4) + `system-stress` (3): `BOUNDARY_RULES` v
+  `boundaryEnforcement.ts` klíčovaný starými ID (`math-*`, `frac_*`), runtime kontrola
+  neaktivní pro grade-N. PENDING_CHANGES to flagují jako **bezpečnostně relevantní vlastní
+  fokus task**. Slepý remap by riskoval false-positive STOP_2 blokující děti (nesprávné
+  numericRange) — riziková akce, mimo autonomní rozsah.
+- **execution-directive** (4) + **keyword-conflicts** (3) — rodina Cause B (topic-matching
+  po migraci ID); session flow nedojde do PRACTICE pro testovací vstupy.
+- **generator-validation** (3) — Cause C (mixed-type tasks: téma `select_one` emituje
+  match_pairs/categorize). Spec rozhodnutí content ownera.
+- **lib-utilities** (1) — Cause D: spec rozpor match_pairs ≥2 vs ≥3. Spec rozhodnutí, ne bug.
+- **sloh-topics** (1) + **security** (1) — Cause F: stale fixtures s mazanými legacy ID.
+- **i18n-completeness** (1) — Cause E: `parent.greeting` bez `{name}`.
+- **content-audit** (1) — offline přehled (počty se mění s obsahem).
+
+*Zdůvodnění:* Spec-disagreementy (match_pairs ≥2/≥3) a bezpečnostní remap vyžadují
+rozhodnutí ownera; stale fixtures vyžadují znalost správných náhradních ID. Riziko
+zavlečení regresí nebo produkčních false-positives převažuje nad hodnotou „zelené sady"
+v autonomním režimu. Doporučení: samostatné fokus tasky (zejm. boundary remap).

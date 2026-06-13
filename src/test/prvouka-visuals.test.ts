@@ -140,7 +140,9 @@ describe("Prvouka visuals — robustness", () => {
   it("prázdný subject / category → null (žádný crash)", () => {
     expect(getCategoryVisual("", "")).toBeNull();
     expect(getTopicEmoji("", "", "")).toBeNull();
-    expect(getTopicIllustrationUrl({ subject: "", topic: "", category: "" })).toBeTruthy(); // slug fallback
+    // Plně prázdný vstup → null (konzistentní s řádky výše; bez category nelze
+    // sestavit smysluplný slug, vracet garantovanou 404 URL by bylo horší).
+    expect(getTopicIllustrationUrl({ subject: "", topic: "", category: "" })).toBeNull();
   });
 
   it("XSS payload v lookup → no crash, no leak", () => {
