@@ -9,49 +9,54 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface TrueFalseItem {
+interface PoolItem {
   question: string;
   correct: boolean;
+  hint: string;
+  solution: string;
 }
 
-const POOL: TrueFalseItem[] = [
+const POOL: PoolItem[] = [
   // Délka — pravda
-  { question: "1 m = 100 cm. Pravda?", correct: true },
-  { question: "2 m = 200 cm. Pravda?", correct: true },
-  { question: "5 m = 500 cm. Pravda?", correct: true },
-  { question: "100 cm = 1 m. Pravda?", correct: true },
+  { question: "1 m = 100 cm. Je to pravda?", correct: true, hint: "1 metr má 100 centimetrů.", solution: "1 metr = 100 centimetrů — je to pravda." },
+  { question: "2 m = 200 cm. Je to pravda?", correct: true, hint: "1 metr má 100 centimetrů.", solution: "2 metry = 2 × 100 = 200 centimetrů — je to pravda." },
+  { question: "5 m = 500 cm. Je to pravda?", correct: true, hint: "1 metr má 100 centimetrů.", solution: "5 metrů = 5 × 100 = 500 centimetrů — je to pravda." },
+  { question: "100 cm = 1 m. Je to pravda?", correct: true, hint: "1 metr má 100 centimetrů.", solution: "100 centimetrů = 1 metr — je to pravda." },
   // Délka — nepravda
-  { question: "1 m = 10 cm. Pravda?", correct: false },
-  { question: "2 m = 20 cm. Pravda?", correct: false },
-  { question: "50 cm = 1 m. Pravda?", correct: false },
-  { question: "3 m = 30 cm. Pravda?", correct: false },
+  { question: "1 m = 10 cm. Je to pravda?", correct: false, hint: "1 metr má 100 centimetrů.", solution: "1 metr = 100 centimetrů, ne 10. Takže to pravda není." },
+  { question: "2 m = 20 cm. Je to pravda?", correct: false, hint: "1 metr má 100 centimetrů.", solution: "2 metry = 200 centimetrů, ne 20. Takže to pravda není." },
+  { question: "50 cm = 1 m. Je to pravda?", correct: false, hint: "1 metr má 100 centimetrů.", solution: "1 metr = 100 centimetrů, ne 50. Takže to pravda není." },
+  { question: "3 m = 30 cm. Je to pravda?", correct: false, hint: "1 metr má 100 centimetrů.", solution: "3 metry = 300 centimetrů, ne 30. Takže to pravda není." },
   // Hmotnost — pravda
-  { question: "1 kg = 1000 g. Pravda?", correct: true },
-  { question: "2 kg = 2000 g. Pravda?", correct: true },
-  { question: "1000 g = 1 kg. Pravda?", correct: true },
+  { question: "1 kg = 1000 g. Je to pravda?", correct: true, hint: "1 kilogram má 1000 gramů.", solution: "1 kilogram = 1000 gramů — je to pravda." },
+  { question: "2 kg = 2000 g. Je to pravda?", correct: true, hint: "1 kilogram má 1000 gramů.", solution: "2 kilogramy = 2 × 1000 = 2000 gramů — je to pravda." },
+  { question: "1000 g = 1 kg. Je to pravda?", correct: true, hint: "1 kilogram má 1000 gramů.", solution: "1000 gramů = 1 kilogram — je to pravda." },
   // Hmotnost — nepravda
-  { question: "1 kg = 100 g. Pravda?", correct: false },
-  { question: "500 g = 1 kg. Pravda?", correct: false },
-  { question: "2 kg = 200 g. Pravda?", correct: false },
+  { question: "1 kg = 100 g. Je to pravda?", correct: false, hint: "1 kilogram má 1000 gramů.", solution: "1 kilogram = 1000 gramů, ne 100. Takže to pravda není." },
+  { question: "500 g = 1 kg. Je to pravda?", correct: false, hint: "1 kilogram má 1000 gramů.", solution: "1 kilogram = 1000 gramů, ne 500. Takže to pravda není." },
+  { question: "2 kg = 200 g. Je to pravda?", correct: false, hint: "1 kilogram má 1000 gramů.", solution: "2 kilogramy = 2000 gramů, ne 200. Takže to pravda není." },
   // Objem — pravda
-  { question: "1 l = 10 dl. Pravda?", correct: true },
-  { question: "2 l = 20 dl. Pravda?", correct: true },
-  { question: "10 dl = 1 l. Pravda?", correct: true },
+  { question: "1 l = 10 dl. Je to pravda?", correct: true, hint: "1 litr má 10 decilitrů.", solution: "1 litr = 10 decilitrů — je to pravda." },
+  { question: "2 l = 20 dl. Je to pravda?", correct: true, hint: "1 litr má 10 decilitrů.", solution: "2 litry = 2 × 10 = 20 decilitrů — je to pravda." },
+  { question: "10 dl = 1 l. Je to pravda?", correct: true, hint: "1 litr má 10 decilitrů.", solution: "10 decilitrů = 1 litr — je to pravda." },
   // Objem — nepravda
-  { question: "1 l = 100 dl. Pravda?", correct: false },
-  { question: "1 l = 1 dl. Pravda?", correct: false },
-  { question: "5 dl = 1 l. Pravda?", correct: false },
-  { question: "2 l = 2 dl. Pravda?", correct: false },
+  { question: "1 l = 100 dl. Je to pravda?", correct: false, hint: "1 litr má 10 decilitrů.", solution: "1 litr = 10 decilitrů, ne 100. Takže to pravda není." },
+  { question: "1 l = 1 dl. Je to pravda?", correct: false, hint: "1 litr má 10 decilitrů.", solution: "1 litr = 10 decilitrů, ne 1. Takže to pravda není." },
+  { question: "5 dl = 1 l. Je to pravda?", correct: false, hint: "1 litr má 10 decilitrů.", solution: "1 litr = 10 decilitrů, ne 5. Takže to pravda není." },
+  { question: "2 l = 2 dl. Je to pravda?", correct: false, hint: "1 litr má 10 decilitrů.", solution: "2 litry = 20 decilitrů, ne 2. Takže to pravda není." },
 ];
+
+const ANO = "Ano, to je pravda";
+const NE = "Ne, to není pravda";
 
 function gen(_level: number): PracticeTask[] {
   const shuffled = shuffle(POOL);
   return shuffled.slice(0, 20).map(item => ({
     question: item.question,
-    correctAnswer: item.correct ? "Pravda" : "Nepravda",
-    options: ["Pravda", "Nepravda"],
-    hints: [`Vzpomeň si: 1 m = 100 cm, 1 kg = 1000 g, 1 l = 10 dl.`],
-    solutionSteps: [item.correct ? "Ano, je to pravda." : "Ne, to není správně."],
+    correctAnswer: item.correct ? ANO : NE,
+    options: [ANO, NE],
+    hints: [item.hint],
+    solutionSteps: [item.solution],
   }));
 }
 

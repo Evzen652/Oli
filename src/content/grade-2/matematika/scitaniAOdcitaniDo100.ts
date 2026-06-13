@@ -9,111 +9,59 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-/**
- * Adaptivní nápověda podle konkrétního příkladu.
- * Parsuje operandy z otázky ("X + Y = ?" / "X − Y = ?") a rozliší,
- * zda dochází k přechodu přes desítku — rada se tomu přizpůsobí.
- * U příkladů bez přechodu se desítky nemění, takže neradíme "počítat po desítkách".
- */
-function hintFor(question: string): string {
-  const m = question.match(/(\d+)\s*([+−])\s*(\d+)/);
-  if (!m) return "Počítej nejdřív desítky, pak jednotky.";
-  const x = Number(m[1]);
-  const y = Number(m[3]);
-  const op = m[2];
-  const xu = x % 10;
-  const yu = y % 10;
-  if (op === "+") {
-    return xu + yu >= 10
-      ? "Nejdřív dopočítej do desítky, pak přidej zbytek."
-      : "Desítky zůstanou — stačí sečíst jednotky.";
-  }
-  return xu < yu
-    ? "Půjč si jednu desítku, pak odečti jednotky."
-    : "Desítky zůstanou — stačí odečíst jednotky.";
+interface PoolItem {
+  question: string;
+  correct: string;
+  distractors: string[];
+  hint: string;
+  level: number;
 }
 
+// Používá U+2212 (−) pro minus, stejně jako zbytek grade-2 matematiky.
+const POOL: PoolItem[] = [
+  // L1: sčítání bez přechodu přes desítku
+  { question: "23 + 5 = ?", correct: "28", distractors: ["27", "29", "38"], hint: "23 má 2 desítky. Přidej 5 k trojce: 3 + 5 = ?", level: 1 },
+  { question: "41 + 7 = ?", correct: "48", distractors: ["47", "49", "51"], hint: "41 má 4 desítky. Přidej 7 k jedničce: 1 + 7 = ?", level: 1 },
+  { question: "35 + 4 = ?", correct: "39", distractors: ["38", "40", "45"], hint: "35 má 3 desítky. Přidej 4 k pětce: 5 + 4 = ?", level: 1 },
+  { question: "62 + 6 = ?", correct: "68", distractors: ["67", "69", "72"], hint: "62 má 6 desítek. Přidej 6 k dvojce: 2 + 6 = ?", level: 1 },
+  { question: "54 + 3 = ?", correct: "57", distractors: ["56", "58", "64"], hint: "54 má 5 desítek. Přidej 3 ke čtyřce: 4 + 3 = ?", level: 1 },
+  // L1: odčítání bez přechodu
+  { question: "48 − 5 = ?", correct: "43", distractors: ["42", "44", "53"], hint: "48 má 4 desítky. Odečti 5 od osmičky: 8 − 5 = ?", level: 1 },
+  { question: "67 − 4 = ?", correct: "63", distractors: ["62", "64", "71"], hint: "67 má 6 desítek. Odečti 4 od sedmičky: 7 − 4 = ?", level: 1 },
+  { question: "85 − 3 = ?", correct: "82", distractors: ["81", "83", "88"], hint: "85 má 8 desítek. Odečti 3 od pětky: 5 − 3 = ?", level: 1 },
+  { question: "76 − 6 = ?", correct: "70", distractors: ["69", "71", "80"], hint: "76 má 7 desítek. Odečti 6 od šestky: 6 − 6 = ?", level: 1 },
+  // L2: sčítání s přechodem přes desítku
+  { question: "27 + 8 = ?", correct: "35", distractors: ["34", "36", "45"], hint: "27 + 3 = 30. Zbývá přidat ještě 5.", level: 2 },
+  { question: "39 + 4 = ?", correct: "43", distractors: ["42", "44", "53"], hint: "39 + 1 = 40. Zbývá přidat ještě 3.", level: 2 },
+  { question: "56 + 7 = ?", correct: "63", distractors: ["62", "64", "73"], hint: "56 + 4 = 60. Zbývá přidat ještě 3.", level: 2 },
+  { question: "45 + 6 = ?", correct: "51", distractors: ["50", "52", "61"], hint: "45 + 5 = 50. Zbývá přidat ještě 1.", level: 2 },
+  { question: "38 + 5 = ?", correct: "43", distractors: ["42", "44", "33"], hint: "38 + 2 = 40. Zbývá přidat ještě 3.", level: 2 },
+  // L2: odčítání s přechodem
+  { question: "42 − 5 = ?", correct: "37", distractors: ["36", "38", "47"], hint: "42 − 2 = 40. Ještě odečti 3 od 40.", level: 2 },
+  { question: "53 − 7 = ?", correct: "46", distractors: ["45", "47", "56"], hint: "53 − 3 = 50. Ještě odečti 4 od 50.", level: 2 },
+  { question: "61 − 4 = ?", correct: "57", distractors: ["56", "58", "65"], hint: "61 − 1 = 60. Ještě odečti 3 od 60.", level: 2 },
+  { question: "74 − 8 = ?", correct: "66", distractors: ["65", "67", "76"], hint: "74 − 4 = 70. Ještě odečti 4 od 70.", level: 2 },
+  { question: "31 − 6 = ?", correct: "25", distractors: ["24", "26", "35"], hint: "31 − 1 = 30. Ještě odečti 5 od 30.", level: 2 },
+  // L3: větší čísla
+  { question: "45 + 38 = ?", correct: "83", distractors: ["81", "85", "73"], hint: "45 + 5 = 50, pak 50 + 33 = ?", level: 3 },
+  { question: "63 + 29 = ?", correct: "92", distractors: ["90", "94", "82"], hint: "63 + 7 = 70, pak 70 + 22 = ?", level: 3 },
+  { question: "57 + 26 = ?", correct: "83", distractors: ["80", "86", "73"], hint: "57 + 3 = 60, pak 60 + 23 = ?", level: 3 },
+  { question: "71 − 34 = ?", correct: "37", distractors: ["35", "39", "47"], hint: "71 − 1 = 70, pak 70 − 33 = ?", level: 3 },
+  { question: "86 − 48 = ?", correct: "38", distractors: ["36", "40", "48"], hint: "86 − 6 = 80, pak 80 − 42 = ?", level: 3 },
+  { question: "92 − 35 = ?", correct: "57", distractors: ["55", "59", "67"], hint: "92 − 2 = 90, pak 90 − 33 = ?", level: 3 },
+  { question: "64 + 27 = ?", correct: "91", distractors: ["89", "93", "81"], hint: "64 + 6 = 70, pak 70 + 21 = ?", level: 3 },
+];
+
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-
-  for (let i = 0; i < 30; i++) {
-    let a: number, b: number, correct: number, question: string;
-
-    if (level === 1) {
-      // Bez přechodu přes desítku
-      const tens = Math.floor(Math.random() * 8) * 10 + 10;
-      const units = Math.floor(Math.random() * (10 - (tens % 10 || 10)));
-      a = tens - Math.floor(Math.random() * 5) * 10 + Math.floor(Math.random() * 5);
-      // Jednodušší: přímé příklady bez přechodu
-      const base = Math.floor(Math.random() * 8) * 10;
-      const add = Math.floor(Math.random() * (9 - (base % 100 === 0 ? 0 : 0)));
-      a = base + Math.floor(Math.random() * 5) + 1;
-      b = Math.floor(Math.random() * (10 - (a % 10))) ;
-      if (b === 0) b = 1;
-      const op = Math.random() < 0.5 ? "+" : "-";
-      if (op === "+") {
-        correct = a + b;
-        question = `${a} + ${b} = ?`;
-      } else {
-        if (a < b) [a, b] = [b, a];
-        // ensure no underflow of tens digit
-        const aUnits = a % 10;
-        const bAdj = Math.min(b, aUnits);
-        b = bAdj === 0 ? 1 : bAdj;
-        correct = a - b;
-        question = `${a} − ${b} = ?`;
-      }
-    } else if (level === 2) {
-      // S přechodem přes desítku
-      const tens = (Math.floor(Math.random() * 8) + 1) * 10;
-      const rem = Math.floor(Math.random() * 9) + 1;
-      a = tens - rem; // e.g. 27
-      b = rem + Math.floor(Math.random() * 5) + 1; // překročí desítku
-      if (Math.random() < 0.5) {
-        correct = a + b;
-        question = `${a} + ${b} = ?`;
-      } else {
-        const sum = tens + Math.floor(Math.random() * 9) + 1;
-        a = sum;
-        b = rem + Math.floor(Math.random() * 5) + 1;
-        if (b >= a) b = Math.floor(a / 2);
-        correct = a - b;
-        question = `${a} − ${b} = ?`;
-      }
-    } else {
-      // L3: větší čísla s přechodem
-      a = Math.floor(Math.random() * 40) + 30;
-      b = Math.floor(Math.random() * 25) + 10;
-      if (Math.random() < 0.5 && a + b <= 100) {
-        correct = a + b;
-        question = `${a} + ${b} = ?`;
-      } else {
-        if (a < b) [a, b] = [b, a];
-        correct = a - b;
-        question = `${a} − ${b} = ?`;
-      }
-    }
-
-    const d1 = correct + 1;
-    const d2 = correct - 1 >= 0 ? correct - 1 : correct + 2;
-    const d3 = correct + 10 <= 100 ? correct + 10 : correct - 10;
-
-    const opts = shuffle(
-      [String(correct), String(d1), String(d2), String(d3)]
-        .filter((v, idx, arr) => arr.indexOf(v) === idx && Number(v) >= 0)
-        .slice(0, 4)
-    );
-
-    tasks.push({
-      question,
-      correctAnswer: String(correct),
-      options: opts,
-      hints: [hintFor(question)],
-      solutionSteps: [`${question.replace("?", String(correct))}`],
-    });
-  }
-
-  return tasks;
+  const filtered = POOL.filter(item => item.level <= level);
+  const shuffled = shuffle(filtered);
+  return shuffled.slice(0, 20).map(item => ({
+    question: item.question,
+    correctAnswer: item.correct,
+    options: shuffle([item.correct, ...item.distractors]),
+    hints: [item.hint],
+    solutionSteps: [`${item.question.replace("?", item.correct)}`],
+  }));
 }
 
 export const SCITANIAODCITANIDO100: TopicMetadata[] = [
@@ -133,10 +81,7 @@ export const SCITANIAODCITANIDO100: TopicMetadata[] = [
       "Sčítat a odčítat čísla do 100 s přechodem přes desítku.",
       "Rychle počítat v oboru do 100.",
     ],
-    boundaries: [
-      "Pouze čísla do 100.",
-      "Nezahrnuje násobení ani dělení.",
-    ],
+    boundaries: ["Pouze čísla do 100.", "Nezahrnuje násobení ani dělení."],
     gradeRange: [2, 2],
     inputType: "select_one",
     defaultLevel: 1,

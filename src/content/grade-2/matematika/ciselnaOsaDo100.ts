@@ -9,65 +9,50 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+interface PoolItem {
+  question: string;
+  correct: string;
+  distractors: string[];
+  level: number;
+}
+
+const POOL: PoolItem[] = [
+  // L1: krok +10
+  { question: "Co chybí? 10, 20, ___, 40, 50", correct: "30", distractors: ["20", "40", "25"], level: 1 },
+  { question: "Co chybí? 0, 10, ___, 30, 40", correct: "20", distractors: ["10", "30", "25"], level: 1 },
+  { question: "Co chybí? 20, ___, 40, 50, 60", correct: "30", distractors: ["35", "25", "40"], level: 1 },
+  { question: "Co chybí? 30, 40, 50, ___, 70", correct: "60", distractors: ["55", "70", "50"], level: 1 },
+  { question: "Co chybí? 50, 60, ___, 80, 90", correct: "70", distractors: ["65", "75", "80"], level: 1 },
+  { question: "Co chybí? 10, ___, 30, 40, 50", correct: "20", distractors: ["15", "25", "30"], level: 1 },
+  { question: "Co chybí? 60, 70, ___, 90, 100", correct: "80", distractors: ["75", "85", "70"], level: 1 },
+  // L2: krok +5
+  { question: "Co chybí? 5, 10, ___, 20, 25", correct: "15", distractors: ["12", "18", "10"], level: 2 },
+  { question: "Co chybí? 25, 30, ___, 40, 45", correct: "35", distractors: ["30", "38", "40"], level: 2 },
+  { question: "Co chybí? 50, 55, ___, 65, 70", correct: "60", distractors: ["55", "58", "62"], level: 2 },
+  { question: "Co chybí? 10, ___, 20, 25, 30", correct: "15", distractors: ["12", "18", "20"], level: 2 },
+  { question: "Co chybí? 35, 40, 45, ___, 55", correct: "50", distractors: ["48", "52", "45"], level: 2 },
+  { question: "Co chybí? 65, 70, ___, 80, 85", correct: "75", distractors: ["72", "78", "70"], level: 2 },
+  { question: "Co chybí? 45, ___, 55, 60, 65", correct: "50", distractors: ["48", "52", "55"], level: 2 },
+  // L3: krok +2
+  { question: "Co chybí? 2, 4, ___, 8, 10", correct: "6", distractors: ["5", "7", "4"], level: 3 },
+  { question: "Co chybí? 10, 12, ___, 16, 18", correct: "14", distractors: ["13", "15", "12"], level: 3 },
+  { question: "Co chybí? 20, ___, 24, 26, 28", correct: "22", distractors: ["21", "23", "24"], level: 3 },
+  { question: "Co chybí? 30, 32, ___, 36, 38", correct: "34", distractors: ["33", "35", "32"], level: 3 },
+  { question: "Co chybí? 42, 44, 46, ___, 50", correct: "48", distractors: ["47", "49", "46"], level: 3 },
+  { question: "Co chybí? 56, ___, 60, 62, 64", correct: "58", distractors: ["57", "59", "60"], level: 3 },
+  { question: "Co chybí? 74, 76, ___, 80, 82", correct: "78", distractors: ["77", "79", "76"], level: 3 },
+];
+
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-
-  for (let i = 0; i < 28; i++) {
-    let step: number, start: number, missingPos: number, seq: number[];
-
-    if (level === 1) {
-      step = 10;
-      start = Math.floor(Math.random() * 9) * 10; // 0,10,20,...,80
-      seq = [start, start + step, start + 2 * step, start + 3 * step, start + 4 * step];
-    } else if (level === 2) {
-      step = 5;
-      start = Math.floor(Math.random() * 18) * 5; // 0,5,10,...,85
-      seq = [start, start + step, start + 2 * step, start + 3 * step, start + 4 * step];
-    } else {
-      // L3: krok 2 nebo zpětně
-      if (Math.random() < 0.5) {
-        step = 2;
-        start = Math.floor(Math.random() * 46) * 2; // even numbers
-        seq = [start, start + 2, start + 4, start + 6, start + 8];
-      } else {
-        step = -2;
-        start = Math.floor(Math.random() * 40) * 2 + 10;
-        seq = [start, start - 2, start - 4, start - 6, start - 8];
-      }
-    }
-
-    // Filter out-of-range
-    if (seq.some(n => n < 0 || n > 100)) {
-      i--;
-      continue;
-    }
-
-    missingPos = Math.floor(Math.random() * 3) + 1; // positions 1,2,3 (not first/last)
-    const correct = seq[missingPos];
-    const display = seq.map((n, idx) => idx === missingPos ? "___" : String(n));
-    const question = `Co chybí? ${display.join(", ")}`;
-
-    const absStep = Math.abs(step);
-    const d1 = correct + absStep;
-    const d2 = correct - absStep >= 0 ? correct - absStep : correct + absStep * 2;
-    const d3 = correct + 1;
-
-    const opts = shuffle(
-      [String(correct), String(d1), String(d2), String(d3)]
-        .filter((v, idx, arr) => arr.indexOf(v) === idx && Number(v) >= 0 && Number(v) <= 100)
-        .slice(0, 4)
-    );
-
-    tasks.push({
-      question,
-      correctAnswer: String(correct),
-      options: opts,
-      hints: [`Podívej se, o kolik se čísla mění.`],
-      solutionSteps: [`Krok je ${step > 0 ? "+" : ""}${step}. Chybí ${correct}.`],
-    });
-  }
-
-  return tasks;
+  const filtered = POOL.filter(item => item.level <= level);
+  const shuffled = shuffle(filtered);
+  return shuffled.slice(0, 20).map(item => ({
+    question: item.question,
+    correctAnswer: item.correct,
+    options: shuffle([item.correct, ...item.distractors]),
+    hints: ["Podívej se, o kolik se čísla mění."],
+    solutionSteps: [`Chybí číslo ${item.correct}.`],
+  }));
 }
 
 export const CISELNAOSADO100: TopicMetadata[] = [
@@ -85,7 +70,7 @@ export const CISELNAOSADO100: TopicMetadata[] = [
     goals: [
       "Orientovat se na číselné ose do 100.",
       "Určit chybějící číslo v řadě s krokem 2, 5 nebo 10.",
-      "Poznat směr číselné osy (rostoucí i klesající).",
+      "Poznat směr číselné osy (rostoucí).",
     ],
     boundaries: ["Pouze čísla 0–100.", "Kroky 2, 5 nebo 10."],
     gradeRange: [2, 2],
@@ -101,7 +86,7 @@ export const CISELNAOSADO100: TopicMetadata[] = [
         "Přičti nebo odečti krok k sousednímu číslu.",
         "Zkontroluj, zda sedí i druhý soused.",
       ],
-      commonMistake: "Záměna směru — dávej pozor, zda čísla rostou nebo klesají.",
+      commonMistake: "Záměna kroku — nejdřív zjisti, o kolik se čísla mění.",
       example: "10, 20, ___, 40 → krok je +10 → chybí 30.",
     },
   },
