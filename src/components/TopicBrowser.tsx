@@ -480,18 +480,18 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         type="button"
                         onClick={() => onLockedClick?.()}
                         title="Zaregistruj se zdarma a odemkni všechny okruhy"
-                        className="group aspect-square relative text-left rounded-3xl border-2 border-slate-200 bg-slate-100 shadow-soft-1 transition-all hover:border-slate-300 hover:shadow-md p-4 flex flex-col"
+                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
                       >
-                        {/* Zámek v rohu */}
-                        <div className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 border border-slate-200 flex items-center justify-center shadow-sm">
-                          <Lock className="h-4 w-4 text-slate-400" />
+                        {/* Zámek v rohu — obsah zůstává barevný (láká k registraci) */}
+                        <div className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 border border-black/5 flex items-center justify-center shadow-sm z-10">
+                          <Lock className="h-4 w-4 text-slate-500" />
                         </div>
-                        <div className="flex-1 flex items-center justify-center grayscale opacity-50">
+                        <div className="flex-1 flex items-center justify-center">
                           <PrvoukaImage imageUrl={card.imageUrl} fallbackEmoji={card.emoji} size="lg" />
                         </div>
                         <div className="space-y-1">
-                          <h3 className="text-lg font-black text-slate-400 tracking-tight leading-tight line-clamp-2">{card.name}</h3>
-                          <p className="text-sm font-semibold text-violet-500 leading-snug">Odemkni registrací →</p>
+                          <h3 className="text-lg font-black text-foreground tracking-tight leading-tight line-clamp-2">{card.name}</h3>
+                          <p className="text-sm font-bold text-violet-600 leading-snug">🔓 Odemkni registrací →</p>
                         </div>
                       </button>
                     ) : (

@@ -48,6 +48,44 @@ const PRVOUKA_CATEGORY_VISUALS: Record<string, PrvoukaVisual> = {
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--prvouka-space-bg))]",
     imageKey: "cat-orientace-v-prostoru-a-case",
   },
+
+  // Grade-2 prvouka okruhy (RVP kategorie) — sdílí existující legacy ilustrace,
+  // které sémanticky sedí (dedikované PNG zatím nevygenerovány).
+  "Lidé a čas": {
+    emoji: "🕐",
+    colorClass: "border-[hsl(var(--prvouka-space))]",
+    bgClass: "bg-[hsl(var(--prvouka-space-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--prvouka-space-bg))]",
+    imageKey: "cat-orientace-v-prostoru-a-case",
+  },
+  "Lidé kolem nás": {
+    emoji: "🤝",
+    colorClass: "border-[hsl(var(--prvouka-society))]",
+    bgClass: "bg-[hsl(var(--prvouka-society-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--prvouka-society-bg))]",
+    imageKey: "cat-lide-a-spolecnost",
+  },
+  "Místo, kde žijeme": {
+    emoji: "🏘️",
+    colorClass: "border-[hsl(var(--prvouka-space))]",
+    bgClass: "bg-[hsl(var(--prvouka-space-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--prvouka-space-bg))]",
+    imageKey: "cat-orientace-v-prostoru-a-case",
+  },
+  "Rozmanitost přírody": {
+    emoji: "🌳",
+    colorClass: "border-[hsl(var(--prvouka-nature))]",
+    bgClass: "bg-[hsl(var(--prvouka-nature-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--prvouka-nature-bg))]",
+    imageKey: "cat-priroda-kolem-nas",
+  },
+  "Člověk a jeho zdraví": {
+    emoji: "❤️",
+    colorClass: "border-[hsl(var(--prvouka-body))]",
+    bgClass: "bg-[hsl(var(--prvouka-body-bg))]",
+    gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--prvouka-body-bg))]",
+    imageKey: "cat-clovek-a-jeho-telo",
+  },
 };
 
 const PRVOUKA_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?: string }> = {
