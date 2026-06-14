@@ -3,10 +3,9 @@
  * Deterministický (stejný den + ročník = stejné úkoly), preferuje různé předměty.
  */
 
-import type { TopicMetadata, Grade } from "@/lib/types";
+import type { TopicMetadata } from "@/lib/types";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getBestAvailableGrade } from "./contentAvailability";
-import { getAnonUnlockedTopicIds, getSubjectOkruhy } from "@/content/navigation";
 
 const DEFAULT_DAILY_COUNT = 4;
 
@@ -72,19 +71,11 @@ export function getDailyTasksForGrade(
   // Pokud daný ročník nemá obsah, použij nejlepší dostupný (typicky grade-4)
   const effectiveGrade = getBestAvailableGrade(grade);
   const allTopics = getAllTopics();
-  let sourceTopics = allTopics.filter(
+  // Denní úkoly = ochutnávka napříč VŠEMI okruhy (i zamčenými v TopicBrowseru).
+  // Zamykání se týká jen volného výběru okruhů, ne kurátorovaných denních úkolů.
+  const sourceTopics = allTopics.filter(
     (t) => t.gradeRange[0] <= effectiveGrade && t.gradeRange[1] >= effectiveGrade,
   );
-
-  // Anon režim: doporučení čerpají JEN z odemčených okruhů (první okruh každého
-  // předmětu) — ať nejdou do zamčeného obsahu. Předměty bez okruhové navigace
-  // (ploché) ponecháváme beze změny.
-  const unlocked = getAnonUnlockedTopicIds(effectiveGrade as Grade);
-  if (unlocked.size > 0) {
-    sourceTopics = sourceTopics.filter((t) =>
-      getSubjectOkruhy(effectiveGrade as Grade, t.subject) ? unlocked.has(t.id) : true,
-    );
-  }
 
   if (sourceTopics.length === 0) return [];
 

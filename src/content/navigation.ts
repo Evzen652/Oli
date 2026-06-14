@@ -49,18 +49,3 @@ export function getGradeNavigation(grade: Grade): SubjectNav[] | null {
 export function getSubjectOkruhy(grade: Grade, subject: string): Okruh[] | null {
   return getGradeNavigation(grade)?.find((n) => n.subject === subject)?.okruhy ?? null;
 }
-
-/**
- * Anon režim: množina `topicId`, které jsou v každém předmětu ODEMČENÉ —
- * tj. patří do prvního okruhu předmětu. Stejné pořadí jako TopicBrowser
- * (index 0 = odemčený), takže výběr okruhů i denní doporučení jsou konzistentní.
- */
-export function getAnonUnlockedTopicIds(grade: Grade): Set<string> {
-  const ids = new Set<string>();
-  const nav = getGradeNavigation(grade);
-  if (!nav) return ids;
-  for (const subjectNav of nav) {
-    subjectNav.okruhy[0]?.topicIds.forEach((id) => ids.add(id));
-  }
-  return ids;
-}
