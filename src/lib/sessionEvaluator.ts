@@ -10,8 +10,6 @@
  * - Encouraging tone, tykani, no emoticons
  */
 
-import { callAi, isAiAvailable } from "./aiClient";
-
 export interface EvalInput {
   topicTitle: string;
   totalTasks: number;
@@ -26,70 +24,8 @@ export interface EvalInput {
   inputType?: string;
 }
 
-/**
- * Main entry point — tries AI first, falls back to local.
- */
 export async function generateAiEvaluation(input: EvalInput): Promise<string> {
-  if (!isAiAvailable()) {
-    return generateLocalEvaluation(input);
-  }
-
-  try {
-    const result = await callAiEvaluation(input);
-    if (result && result.length > 10) return result;
-    return generateLocalEvaluation(input);
-  } catch {
-    return generateLocalEvaluation(input);
-  }
-}
-
-async function callAiEvaluation(input: EvalInput): Promise<string> {
-  const { topicTitle, totalTasks, correctCount, wrongCount, helpUsedCount, grade, subject, category, briefDescription, goals, inputType } = input;
-  const pct = totalTasks > 0 ? Math.round((correctCount / totalTasks) * 100) : 0;
-
-  // Performance description (no raw numbers)
-  const perfWord = pct >= 90 ? "skoro vše" : pct >= 70 ? "většinu" : pct >= 50 ? "zhruba polovinu" : "některé";
-  const perfTone = pct >= 80 ? "pochval a motivuj" : pct >= 50 ? "povzbuď a navrhni co procvičit" : "buď laskavý, nabídni další pokus";
-
-  const gradeStyle = grade <= 3
-    ? "Piš max 2 krátké věty (max 15 slov na větu). Jednoduchá slova."
-    : grade <= 5
-    ? "Piš 2-3 věty."
-    : "Piš 2-3 věty, můžeš použít odborné termíny.";
-
-  const prompt = `Jsi laskavý český učitel. Napiš slovní hodnocení pro žáka ${grade}. ročníku ZŠ.
-
-METADATA TÉMATU:
-- Předmět: ${subject}${category ? `, okruh: ${category}` : ""}
-- Téma: "${topicTitle}"${briefDescription ? `\n- Popis: ${briefDescription}` : ""}${goals && goals.length > 0 ? `\n- Cíle: ${goals.join("; ")}` : ""}
-- Typ odpovídání: ${inputType ?? "text"}
-
-VÝKON ŽÁKA:
-- Zvládl/a ${perfWord} (${correctCount} z ${totalTasks})
-- Chyby: ${wrongCount}
-- Nápověda: ${helpUsedCount === 0 ? "nepoužil/a (pracoval/a samostatně)" : `použil/a ${helpUsedCount}×`}
-
-STRUKTURA (dodržuj přesně):
-1. Začni názvem tématu. Řekni jak to šlo — použij "${perfWord}", ne čísla.
-2. ${wrongCount > 0 ? "Pojmenuj konkrétně co procvičit (odvoď z názvu tématu a předmětu, buď specifický)." : "Pochval — zvládl/a vše správně."}
-${helpUsedCount === 0 && wrongCount > 0 ? "3. Krátce oceň samostatnost (nepotřeboval/a nápovědu)." : ""}
-
-PRAVIDLA:
-- ${gradeStyle}
-- Dítěti tykej.
-- ${perfTone}.
-- Mluv o konkrétní činnosti tématu — NE o "úlohách", "testu", "cvičení".
-- Pro matematiku: "počítání", "příklady", "řešení".
-- Pro češtinu: "doplňování", "pravopis", "psaní".
-- Pro prvouku/přírodovědu: "otázky", "učení o [téma]".
-- Žádné emotikony, hvězdičky, odrážky.
-- Plynulý text. Česky s diakritikou.
-- Odpověz POUZE hodnocením.`;
-
-  return callAi(
-    [{ role: "user", content: prompt }],
-    { maxTokens: 200, temperature: 0.6, timeoutMs: 5000 }
-  );
+  return generateLocalEvaluation(input);
 }
 
 export function generateLocalEvaluation(input: EvalInput): string {

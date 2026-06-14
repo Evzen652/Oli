@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Loader2, Check, Wand2 } from "lucide-react";
-import { callAi } from "@/lib/aiClient";
 import type { PracticeTask, TopicMetadata } from "@/lib/types";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -384,15 +383,7 @@ export function ReformulateTaskDialog({
     setError(null);
     setLoading(true);
     try {
-      const prompt = fieldDef.buildPrompt(effectiveTask, skill, styleKey);
-      const raw = await callAi(
-        [
-          { role: "system", content: "Jsi expert na tvorbu vzdělávacího obsahu. Odpovídáš POUZE validním JSON." },
-          { role: "user", content: prompt },
-        ],
-        { maxTokens: 600, temperature: 0.85, timeoutMs: 15000 }
-      );
-      const parsed = fieldDef.parseVariants(raw);
+      throw new Error("AI přeformulování není dostupné.");
       if (parsed.length === 0) throw new Error("Nepodařilo se načíst varianty.");
       setVariants(parsed);
     } catch (e) {
