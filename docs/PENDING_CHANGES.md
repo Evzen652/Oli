@@ -19,6 +19,19 @@
 
 ## Otevřené
 
+### 🔄 Grade-5 čeština — oprava hint_leak + giveaway délkou (ROZPRACOVÁNO 2026-06-14)
+**Vzor hotový:** `zajmenaSklonovaniOsobnichZajmen.ts` ✅ (commit 9b2372c). Stejný postup aplikovat na zbytek.
+
+**Postup (vzor):**
+1. **hint_leak (R4):** nápověda s `= <odpověď/tvar>` → useknout na metodu bez prozrazení. Např. „Koho/čeho? od já = mě nebo mne." → „Zeptej se: Koho/čeho? To je 2. pád zájmena 'já'."
+2. **giveaway délkou (R17/giveaway):** meta-text v `options`/`correctAnswer` (např. „mě – 2. pád", „mi (krátký tvar) nebo mně – dlouhý tvar") → přesunout do nového pole `explanation`, `options` zkrátit na čisté tvary podobné délky. Správná možnost nesmí být nejdelší/jediná popisná.
+3. Při tom opravit vadné položky: matoucí otázky, dvojí správné odpovědi mezi distraktory, neexistující tvary.
+4. Doplnit `explanation` u každé položky (vysvětlí PROČ). Ověřit: `npx tsc --noEmit` + `correctAnswer` ∈ `options`.
+
+**Soubory ke zpracování (grade-5 cjl, ~21):** projít každý, opravit jen pokud má leak/giveaway:
+primaANeprimaRecUvod, vypravovaniSRozvinutouOsnovou, souvetiVzorcePocetVet, slovesaZpusobOznamovaciRozkazovaciPodminovaci, slovaSpisovnaANespisovna, posuzovaniUplnostiSdeleni, podmetVyjadrenyNevyjadrenyNekolikanasobny, cislovkyDruhyZakladniRadoveDruhoveNasobne, basenLyrickaAEpickaRomanPovidka, studijniCteniAVecneCteni, popisSubjektivneZabarvenyPopisPracovnihoPostupu, vlastniLiterarniTextNaDaneTema, umeleckeANeumeleckeTexty, telefonickyRozhovorZanechaniVzkazu, slovniDruhyUrcovaniVsechDesetiOhebneANeohebne, slovaJednoznacnaMnohoznacnaVicevyznamova, shodaPrisudkuSPodmetem, reprodukcePrimereneSlozitehoSdeleni, pridavnaJmenaDruhyTvrdaMekkaPrivlastnovaciSklonovani, elementarniLiterarniPojmyPriRozboruTextu, dopisUredniZadostTiskopisyPrihlaskaDotaznik.
++ přírodověda: `etapyLidskehoZivotaDospivani.ts` (hint_leak), `nervovaSoustavaSmysly.ts` (R5 neadaptivní).
+
 ### 🔴 Anon → registrovaný flow + messaging „Odemkni registrací" (řešit v nové session, 2026-06-14)
 Messaging zamčených okruhů („🔓 Odemkni registrací →" + tooltip „Zaregistruj se zdarma a odemkni všechny okruhy") **neodpovídá realitě flow**:
 - Registruje **rodič**, ne dítě (klik → `/auth?mode=register`).
