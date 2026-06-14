@@ -24,6 +24,7 @@ import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { getDisplayCategory, getDisplayCategoryDescription, getDisplayTopic, getDisplayTopicDescription } from "@/lib/displayNames";
 import { getSubjectOkruhy as getNavOkruhy, type Okruh } from "@/content/navigation";
 import { pad } from "@/lib/czechGrammar";
+import { Lock } from "lucide-react";
 
 interface TopicBrowserProps {
   grade: Grade;
@@ -31,11 +32,15 @@ interface TopicBrowserProps {
   onBack: () => void;
   isAdmin?: boolean;
   initialSubject?: string;
+  /** Anonymní režim — v každém předmětu je odemčený jen první okruh, zbytek zamčený. */
+  anonLocked?: boolean;
+  /** Klik na zamčený (šedý) okruh — typicky pobídka k registraci. */
+  onLockedClick?: () => void;
 }
 
 type BrowseLevel = "subject" | "category" | "topic" | "subtopic";
 
-export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSubject }: TopicBrowserProps) {
+export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSubject, anonLocked, onLockedClick }: TopicBrowserProps) {
   const t = useT();
   // Předmět s okruhovou navigací → start na "category" (výběr okruhu).
   // Předmět bez okruhů (např. informatika) → rovnou na "subtopic" (všechna témata předmětu).
@@ -267,9 +272,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
         : level === "topic"
           ? t("topic.select_practice")
           : activeOkruh
-            ? "Vyber téma a pusť se do toho."
+            ? ""
             : !selectedCategory
-              ? "Vyber téma a pusť se do toho."  // "all topics" mode
+              ? ""  // "all topics" mode
               : t("topic.select_subtopic");
 
   // Subject-level visual config — barva karty per subject (Lovable mockup styl)
@@ -388,9 +393,11 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
                       {capitalize(selectedSubject ?? title)}
                     </h1>
-                    <p className="text-sm text-foreground/70">
-                      {subtitle}
-                    </p>
+                    {subtitle && (
+                      <p className="text-sm text-foreground/70">
+                        {subtitle}
+                      </p>
+                    )}
                   </div>
                   {subjectMeta && (
                     <div className="shrink-0 hidden sm:block">
@@ -414,7 +421,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                       {title}
                     </h2>
                   )}
-                  <p className={level === "category" ? "text-lg font-bold text-foreground" : "text-sm text-muted-foreground"}>
+                  <p className={(level === "category" || activeOkruh) ? "text-lg font-bold text-foreground" : "text-sm text-muted-foreground"}>
                     {level === "category"
                       ? "Vyber si okruh, který chceš procvičovat."
                       : level === "topic"
@@ -433,8 +440,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* CATEGORY level — okruhy (grade-3) i RVP kategorie (ostatní) ve stejném gridu */}
               {level === "category" && (() => {
                 const subjectOkruhy = selectedSubject ? getSubjectOkruhy(selectedSubject) : null;
+                // Anon režim: odemčený je jen první okruh, zbytek zamčený.
                 const cards = subjectOkruhy
-                  ? subjectOkruhy.map(okruh => {
+                  ? subjectOkruhy.map((okruh, i) => {
                       const okruhTopics = topics.filter(t => okruh.topicIds.includes(t.id));
                       const rvpCategory = okruhTopics[0]?.category ?? "";
                       return {
@@ -444,10 +452,11 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         emoji: okruh.emoji,
                         imageUrl: getCategoryIllustrationUrl(selectedSubject!, rvpCategory),
                         countLabel: pad(okruhTopics.length, "TÉMA"),
+                        locked: !!anonLocked && i > 0,
                         onClick: () => handleCategoryClick(okruh.id),
                       };
                     })
-                  : categories.map(category => {
+                  : categories.map((category, i) => {
                       const catTopics = topics.filter(t => t.subject === selectedSubject && t.category === category);
                       const count = new Set(catTopics.map(t => t.topic)).size;
                       const visual = getCategoryVisual(selectedSubject!, category);
@@ -459,12 +468,33 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         emoji: visual?.emoji,
                         imageUrl: getCategoryIllustrationUrl(selectedSubject!, category),
                         countLabel: `${count} ${count === 1 ? t("count.topic_1") : count < 5 ? t("count.topic_2_4") : t("count.topic_5_plus")}`,
+                        locked: !!anonLocked && i > 0,
                         onClick: () => handleCategoryClick(category),
                       };
                     });
                 return (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {cards.map(card => (
+                    {cards.map(card => card.locked ? (
+                      <button
+                        key={card.id}
+                        type="button"
+                        onClick={() => onLockedClick?.()}
+                        title="Zaregistruj se zdarma a odemkni všechny okruhy"
+                        className="group aspect-square relative text-left rounded-3xl border-2 border-slate-200 bg-slate-100 shadow-soft-1 transition-all hover:border-slate-300 hover:shadow-md p-4 flex flex-col"
+                      >
+                        {/* Zámek v rohu */}
+                        <div className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 border border-slate-200 flex items-center justify-center shadow-sm">
+                          <Lock className="h-4 w-4 text-slate-400" />
+                        </div>
+                        <div className="flex-1 flex items-center justify-center grayscale opacity-50">
+                          <PrvoukaImage imageUrl={card.imageUrl} fallbackEmoji={card.emoji} size="lg" />
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="text-lg font-black text-slate-400 tracking-tight leading-tight line-clamp-2">{card.name}</h3>
+                          <p className="text-sm font-semibold text-violet-500 leading-snug">Odemkni registrací →</p>
+                        </div>
+                      </button>
+                    ) : (
                       <button
                         key={card.id}
                         type="button"

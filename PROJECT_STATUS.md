@@ -137,6 +137,14 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-14 — hotovo:
+- ✅ **Groq odstraněn z klientského bundlu** (nález C1) — smazán `aiClient.ts` + test; `sessionEvaluator` volá lokální šablonu; AI tlačítka odebrána z `AdminContentAudit` + `ReformulateTaskDialog`; `VITE_GROQ_API_KEY` z `.env`. ⚠️ **Klíč rotovat v Groq dashboardu** (byl exponován v historii).
+- ✅ **TopicBrowser + SessionView UI doladění** — odstraněny redundantní subtitly a count labely, zvětšené popisy karet a hlavičky, předmět+ročník v session hlavičce `text-lg font-bold` jednotnou barvou.
+- ✅ **Anon onboarding zpřehledněn** — výběr předmětu jen název + větší ilustrace/nadpis; anon trial přeskakuje matoucí `ChildHomePage` a jde rovnou na `TopicBrowser`; žluté bannery „v anon režimu se neukládá" u Úkolů od rodiče + Co jsi procvičoval.
+- ✅ **Oprava tlačítka Zpět v anon** — na nejvyšší úrovni TopicBrowseru „Zpět" zavře session a vrátí na dashboard (event `oli-anon-exit-session`); dřív render hned spadl zpět na výběr předmětu.
+- ✅ **🔒 Zamykání okruhů v anon režimu** — v každém předmětu odemčený jen **první okruh**, ostatní šedé + zámek + „Odemkni registrací →" (klik → `/auth?mode=register`). Props `anonLocked`/`onLockedClick` v `TopicBrowser`. **Denní doporučení respektují zamykání** — helper `getAnonUnlockedTopicIds(grade)` v `navigation.ts`, `getDailyTasksForGrade` filtruje na odemčené okruhy. Trial banner „plný přístup zdarma" → „1 okruh v každém předmětu zdarma".
+- ⚠️ **K rozhodnutí:** 14denní trial counter teď nedává smysl (omezení vždy stejné) — zvážit zjednodušení/zrušení trial konceptu (produktové rozhodnutí).
+
 ### Session 2026-06-13 (pokračování 4) — hotovo:
 - ✅ **Navigace „předmět → okruh → téma" pro VŠECHNY ročníky** — sjednocení display vrstvy (dříve jen grade-3). Nové `navigation.ts` pro grade-2/4/5 + sdílený registr `src/content/navigation.ts` (typy `Okruh`/`SubjectNav`, `getGradeNavigation`/`getSubjectOkruhy`). `TopicBrowser.tsx` zobecněn z `grade === 3` na per-ročník lookup. Okruhy: g2 (mat 6, prv 5, čj 5), g4 (mat 6, čj 6, vlast 5, přír 5), g5 (mat 5, čj 6, přír 6, vlast 5). **Žádné cvičení se nemazalo ani neměnilo** — okruhy jen odkazují na existující `id`. RVP pole (category/topic) beze změny. **Informatika záměrně plochá** (dle pravidla; studentům se navíc vůbec nezobrazuje). Nový test `navigation-consistency.test.ts` (42 testů) hlídá: každé cvičení v právě jednom okruhu, žádní sirotci/duplikáty, topicIds existují. Ověřeno v prohlížeči (g2 čeština + g4 matematika zobrazují okruhy → témata). TypeScript 0 chyb.
 - ✅ **Oprava 2 build-breaking syntax chyb** — `lideVOkoliKamaradstvi.ts` + `povolaniPraceDospelych.ts` měly uvnitř stringu rovnou ASCII uvozovku `"` místo české `"` (U+201C) → předčasné ukončení JS stringu, padal vite/SWC build (tsc to přehlížel). Opraveno na korektní české uvozovky. Konzistenční test (importuje obsah všech ročníků) nyní slouží i jako syntax check.

@@ -377,8 +377,8 @@ export function SessionView() {
       );
     }
 
-    // Child role: show home page with assignments first
-    if (isStudentView && !showTopicBrowser) {
+    // Child role: show home page with assignments first (anon trial přeskočí rovnou na TopicBrowser)
+    if (isStudentView && !showTopicBrowser && !isAnonTrial) {
       return (
         <>
           {DemoHeader}
@@ -403,7 +403,11 @@ export function SessionView() {
           grade={grade}
           onSelectTopic={(topic) => { setIsStarting(true); s.handleTopicSelect(topic); }}
           onBack={() => {
-            if (isStudentView) {
+            if (isAnonTrial) {
+              // Anon: ChildHomePage je přeskočena → "zpět" na nejvyšší úrovni
+              // musí zavřít celou session a vrátit na anon dashboard (doporučení).
+              window.dispatchEvent(new CustomEvent("oli-anon-exit-session"));
+            } else if (isStudentView) {
               setShowTopicBrowser(false);
               setTopicBrowserSubject(undefined);
             } else {
@@ -412,6 +416,8 @@ export function SessionView() {
           }}
           isAdmin={role === "admin" && !isStudentView}
           initialSubject={topicBrowserSubject}
+          anonLocked={isAnonTrial}
+          onLockedClick={() => navigate("/auth?mode=register")}
         />
       </>
     );
@@ -482,9 +488,9 @@ export function SessionView() {
               <BackButton size="sm" onClick={s.handleReset} />
             )}
             {session.matchedTopic && (
-              <span className="text-base font-medium text-foreground">
+              <span className="text-lg font-bold text-foreground">
                 {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
-                <span className="text-muted-foreground font-normal"> | {session.grade}. ročník</span>
+                <span className="font-bold"> | {session.grade}. ročník</span>
               </span>
             )}
           </div>

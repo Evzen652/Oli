@@ -119,6 +119,21 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ---
 
+## Vyřízené (doplněno 2026-06-14)
+
+### Anon UX: zamykání okruhů + oprava navigace + onboarding čistota ✅
+- **Groq odstraněn z klientského bundlu** — smazán `aiClient.ts` + `ai-client.test.ts`; `sessionEvaluator` volá rovnou `generateLocalEvaluation` (lokální šablona); odebrány AI tlačítka z `AdminContentAudit` + `ReformulateTaskDialog`; GROQ hláška z `edgeFunctionError`; `VITE_GROQ_API_KEY` z `.env`. ⚠️ Klíč byl exponován v historii → **rotovat v Groq dashboardu** (řeší nález C1).
+- **TopicBrowser UI** — „Vyber okruh" subtitle odstraněn z hlavičkového boxu; „Vyber si okruh…" prompt zvětšen (`text-lg font-bold`) i pro úroveň podtémat; popisy karet zvětšeny `text-xs → text-base`; odstraněny count labely („3 témata") z karet.
+- **SessionView hlavička** — předmět + ročník `text-lg font-bold`, ročník stejnou barvou jako předmět.
+- **AnonStudentPage výběr předmětu** — karty jen název (bez okruhů pod ním), větší ilustrace (`h-36`) + nadpis (`text-2xl`).
+- **Anon upozornění** — žluté bannery „v anonymním režimu se neukládá" v sekcích „Úkoly od rodiče" + „Co jsi procvičoval" (`text-sm`, jen pro `isAnonUser`).
+- **Anon flow zjednodušen** — anon trial přeskakuje `ChildHomePage` a jde rovnou na `TopicBrowser` (matoucí prázdný dashboard jako první obrazovka pryč).
+- **Oprava tlačítka Zpět** — na nejvyšší úrovni TopicBrowseru v anon režimu „Zpět" zavře session a vrátí na dashboard (nový event `oli-anon-exit-session`); dřív kvůli přeskočení ChildHomePage render hned spadl zpět na výběr předmětu.
+- **🔒 Zamykání okruhů v anon režimu** (vždy, dle rozhodnutí uživatele) — v každém předmětu je odemčený **jen první okruh**, ostatní šedé (grayscale + ikona zámku + „Odemkni registrací →"); klik vede na `/auth?mode=register`. Props `anonLocked` + `onLockedClick` v `TopicBrowser`. Trial banner přeformulován „plný přístup zdarma" → „1 okruh v každém předmětu zdarma".
+- **Denní doporučení respektují zamykání** — nový helper `getAnonUnlockedTopicIds(grade)` v `navigation.ts`; `getDailyTasksForGrade` filtruje zdrojová témata jen na odemčené okruhy (předměty bez okruhové navigace ponechány). Konzistentní s výběrem okruhů (stejné pořadí, index 0 = odemčený).
+- TypeScript 0 chyb.
+- ⚠️ **K zvážení (neřešeno):** 14denní trial counter teď ztrácí smysl, když je omezení vždy stejné (1 okruh). Možná zjednodušit/zrušit trial koncept — samostatné produktové rozhodnutí.
+
 ## Vyřízené (doplněno 2026-06-13)
 
 ### UX + obsah session 2026-06-13 ✅

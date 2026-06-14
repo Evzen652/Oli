@@ -57,6 +57,13 @@ export default function AnonStudentPage() {
     return () => window.removeEventListener("oli-anon-task-completed", handler);
   }, []);
 
+  // "Zpět" z nejvyšší úrovně TopicBrowseru → zpět na dashboard (doporučení)
+  useEffect(() => {
+    const handler = () => setSessionMode(false);
+    window.addEventListener("oli-anon-exit-session", handler);
+    return () => window.removeEventListener("oli-anon-exit-session", handler);
+  }, []);
+
   const dailyTopics = useMemo(() => {
     if (isNaN(grade)) return [];
     const progress = getTodayProgress(grade);
@@ -123,7 +130,7 @@ export default function AnonStudentPage() {
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm font-bold text-slate-800">Den {currentDay}</span>
                     <span className="text-xs text-slate-500">z {TRIAL_DAYS}</span>
-                    <span className="text-xs text-violet-600 font-medium ml-1">— plný přístup zdarma</span>
+                    <span className="text-xs text-violet-600 font-medium ml-1">— 1 okruh v každém předmětu zdarma</span>
                   </div>
                   <div className="mt-1.5 h-1.5 w-full max-w-xs rounded-full bg-violet-100 overflow-hidden">
                     <div
@@ -357,19 +364,10 @@ function SubjectGrid({ grade, onSelect }: { grade: number; onSelect: (subject: s
           >
             <IllustrationImg
               src={meta.image}
-              className="h-24 w-24 object-contain"
-              fallback={<span className="text-6xl">{meta.emoji}</span>}
+              className="h-36 w-36 object-contain"
+              fallback={<span className="text-8xl">{meta.emoji}</span>}
             />
-            <p className={`text-xl font-bold text-center ${meta.color}`}>{meta.label}</p>
-            {categories.length > 0 && (
-              <div className="flex flex-col items-center gap-0.5">
-                {categories.slice(0, 3).map((c) => (
-                  <span key={c} className={`text-sm font-semibold text-center ${meta.color} opacity-80`}>
-                    {getDisplayCategory(c, grade as Parameters<typeof getDisplayCategory>[1])}
-                  </span>
-                ))}
-              </div>
-            )}
+            <p className={`text-2xl font-bold text-center ${meta.color}`}>{meta.label}</p>
           </button>
         );
       })}

@@ -588,6 +588,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               </span>
             )}
           </div>
+          {isAnonUser && (
+            <div className="mx-5 mt-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800 flex items-start gap-2">
+              <span className="text-base leading-none mt-0.5">⚠️</span>
+              <span>Úkoly od rodiče jsou dostupné jen přihlášeným žákům. <strong>Vytvoř si účet</strong> a propoj se s rodičem.</span>
+            </div>
+          )}
           {/* Filtr podle data zadání */}
           <div className="px-5 pt-3 pb-1">
             <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
@@ -684,6 +690,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               <p className="text-xs text-muted-foreground leading-tight">Podívej se, jak ti to šlo v poslední době.</p>
             </div>
           </div>
+          {isAnonUser && (
+            <div className="mx-5 mt-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800 flex items-start gap-2">
+              <span className="text-base leading-none mt-0.5">⚠️</span>
+              <span>V anonymním režimu se výsledky neukládají. <strong>Vytvoř si účet</strong>, aby ses mohl/a k výsledkům vrátit.</span>
+            </div>
+          )}
           <div className="px-5 pt-3 pb-1">
             <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
               {PERIOD_OPTIONS.map(opt => (
