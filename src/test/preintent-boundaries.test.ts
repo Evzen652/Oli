@@ -67,7 +67,9 @@ describe("SCENARIO 4 – NON-TOPICAL BUT VALID INPUT ('38')", () => {
 });
 
 describe("SCENARIO 5 – OUT-OF-SCOPE TOPIC QUESTION", () => {
-  it("matches topic via keyword but boundary enforcement triggers STOP_2", async () => {
+  // Boundary enforcement na odpovědi bylo vyřazeno (relikt AI tutora). Odpověď
+  // se zpracuje jako běžná odpověď — žádný boundary_violation STOP_2.
+  it("odpověď se zpracuje bez boundary_violation", async () => {
     let { session } = await startSession();
 
     let result = await processState(session, "A co znamená to větší než?");
@@ -76,8 +78,7 @@ describe("SCENARIO 5 – OUT-OF-SCOPE TOPIC QUESTION", () => {
     if (session.state === "PRACTICE") {
       result = await processState(session, "co znamená větší než");
       session = result.session;
-      expect(session.state).toBe("STOP_2");
-      expect(session.stopReason).toBe("boundary_violation");
+      expect(session.stopReason).not.toBe("boundary_violation");
     }
   });
 });

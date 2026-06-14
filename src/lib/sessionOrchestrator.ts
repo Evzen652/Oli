@@ -5,7 +5,6 @@ import { matchTopic, getPrerequisites, getTopicById } from "./contentRegistry";
 import { generateResponse, generatePracticeBatch, generateMockExplain, generateMockBatch } from "./aiExecution";
 import { logSession } from "./logger";
 import { classifyIntent, CONFUSION_THRESHOLD } from "./preIntent";
-import { checkBoundaryViolation } from "./boundaryEnforcement";
 import { classifySemanticInput } from "./semanticGate";
 import type { SemanticGateResult } from "./semanticGate";
 import { recordCheckResult } from "./performanceTracker";
@@ -294,12 +293,10 @@ export async function processState(session: SessionData, userInput?: string): Pr
 
     case "PRACTICE": {
       // If user submitted an answer → local CHECK (no AI call)
+      // Pozn.: boundary enforcement na odpovědi bylo vyřazeno — odpovědi jsou
+      // dnes kurátorované možnosti (select_one/true_false), ne volný text z éry
+      // AI tutora. Hlídání by falešně ukončovalo legitimní cvičení.
       if (userInput?.trim()) {
-        if (s.matchedTopic && checkBoundaryViolation(userInput.trim(), s.matchedTopic)) {
-          s.stopReason = "boundary_violation";
-          s = transition(s, "STOP_2");
-          return { session: s, output: "Potřebuješ pomoc od dospělého. Požádej rodiče nebo učitele." };
-        }
         s = transition(s, "CHECK");
         return processState(s, userInput);
       }
@@ -358,13 +355,8 @@ export async function processState(session: SessionData, userInput?: string): Pr
     }
 
     case "CHECK": {
-      if (userInput?.trim() && s.matchedTopic && checkBoundaryViolation(userInput.trim(), s.matchedTopic)) {
-        s.stopReason = "boundary_violation";
-        s = transition(s, "STOP_2");
-        return { session: s, output: "Potřebuješ pomoc od dospělého. Požádej rodiče nebo učitele." };
-      }
-
       // Local deterministic evaluation — pluggable validators
+      // (boundary enforcement na odpovědi vyřazeno — viz PRACTICE výše)
       const task = s.practiceBatch[s.currentTaskIndex];
       const answer = (userInput || "").trim();
       let correct = false;

@@ -13,7 +13,6 @@
 import type { TopicMetadata, PracticeTask } from "./types";
 import { validateTaskForInputType } from "./taskValidator";
 import { validateAnswer } from "./validators";
-import { checkBoundaryViolation } from "./boundaryEnforcement";
 import { checkHintLeakage } from "../../supabase/functions/_shared/hintLeakage";
 
 export type AuditCategory = "format" | "self_validation" | "hint_leak" | "boundary" | "czech_grammar";
@@ -322,17 +321,7 @@ export function runOfflineAudit(
         }
       }
 
-      // e) Boundary check
-      if (checkBoundaryViolation(task.correctAnswer, topic)) {
-        issues.push({
-          ...issueMeta,
-          taskQuestion: task.question.slice(0, 80),
-          category: "boundary",
-          detail: `Odpověď "${task.correctAnswer}" porušuje hranice tématu`,
-        });
-      }
-
-      // f) Self-validation (skip pro essay — tam je correctAnswer threshold)
+      // e) Self-validation (skip pro essay — tam je correctAnswer threshold)
       if (topic.inputType !== "essay") {
         const result = validateAnswer(task.correctAnswer, task.correctAnswer, {
           inputType: topic.inputType,

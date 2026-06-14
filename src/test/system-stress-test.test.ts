@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import { createSession, processState, transition } from "../lib/sessionOrchestrator";
 import { classifyIntent } from "../lib/preIntent";
 import { evaluateStop, isTimeExpired, getRulesForGrade } from "../lib/ruleEngine";
-import { checkBoundaryViolation } from "../lib/boundaryEnforcement";
 import { getAuditLog } from "../lib/logger";
 import { matchTopic } from "../lib/contentRegistry";
 import type { SessionData, SessionState, Grade } from "../lib/types";
@@ -171,24 +170,13 @@ describe("ERROR & CONFUSION ESCALATION", () => {
   });
 });
 
-describe("BOUNDARY VIOLATION", () => {
-  const VIOLATIONS = ["101", "200", "plus", "mínus", "děleno", "záporné", "desetinné", "slovní úloha"];
-
-  it("all violations detected in PRACTICE → STOP_2", async () => {
-    for (const v of VIOLATIONS) {
-      let s = await runToState("PRACTICE");
-      const r = await run(s, v);
-      expect(r.session.state).toBe("STOP_2");
-      expect(r.session.stopReason).toBe("boundary_violation");
-    }
-  });
-
-  it("boundary violation logged correctly", async () => {
-    let s = await runToState("PRACTICE");
-    await run(s, "999");
-    const log = getAuditLog();
-    const last = log[log.length - 1];
-    expect(last.boundaryViolation).toBe(true);
+// BOUNDARY VIOLATION: ODSTRANĚNO — boundary enforcement na odpovědi bylo
+// vyřazeno (relikt AI tutora; odpovědi jsou dnes kurátorované možnosti).
+describe("BOUNDARY (vyřazeno)", () => {
+  it("odpověď neukončuje session jako boundary_violation", async () => {
+    const s = await runToState("PRACTICE");
+    const r = await run(s, "999");
+    expect(r.session.stopReason).not.toBe("boundary_violation");
   });
 });
 
@@ -292,13 +280,12 @@ describe("CHAOS PROFILE: Chaotik", () => {
 });
 
 describe("CHAOS PROFILE: Hranář (Boundary attacker)", () => {
-  it("boundary attacks in PRACTICE always → STOP_2", async () => {
+  it("odpovědi se zpracují bez boundary_violation (enforcement vyřazen)", async () => {
     const attacks = ["999", "plus 5", "děleno", "101 záporné"];
     for (const atk of attacks) {
-      let s = await runToState("PRACTICE");
+      const s = await runToState("PRACTICE");
       const r = await run(s, atk);
-      expect(r.session.state).toBe("STOP_2");
-      expect(r.session.stopReason).toBe("boundary_violation");
+      expect(r.session.stopReason).not.toBe("boundary_violation");
     }
   });
 });

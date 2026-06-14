@@ -108,3 +108,30 @@ pre-existující baseline.
 rozhodnutí ownera; stale fixtures vyžadují znalost správných náhradních ID. Riziko
 zavlečení regresí nebo produkčních false-positives převažuje nad hodnotou „zelené sady"
 v autonomním režimu. Doporučení: samostatné fokus tasky (zejm. boundary remap).
+
+## D7 — Boundary enforcement VYŘAZEN z odpovědní cesty (ne remap)
+
+**Rozhodnutí:** Místo remapu `BOUNDARY_RULES` na grade-N ID **vyřazena celá kontrola
+hranic na odpovědi**: odebrány volání `checkBoundaryViolation` z `sessionOrchestrator`
+(PRACTICE + CHECK) i z offline `contentAudit`; smazán modul `boundaryEnforcement.ts`
+a test `boundary-deep.test.ts`; legacy boundary testy v red-team/system-stress/security/
+preintent-boundaries aktualizovány. (Schváleno uživatelem 2026-06-14.)
+
+*Zdůvodnění:* Hloubková analýza ukázala, že plánovaný remap by byl **nebezpečný**.
+Boundary enforcement je relikt éry AI tutora (volný text). V dnešní architektuře
+(`select_one`/`true_false`) jde živá odpověď přes `processState(s, answer)`, kde
+`answer` = **kurátorovaná možnost**. Kontrola funguje jen proto, že je neaktivní
+(pravidla na starých ID). Aktivace remapem by:
+- ukončila session (STOP_2) při kliknutí na legitimní možnost „150" u grade-3 (čísla do
+  1000) — testy přitom kódovaly rozsah [0,100], což pro grade-3 neplatí;
+- spustila violation u možnosti obsahující slovo „násobení"/„sčítání".
+AI tutor je dle CLAUDE.md deprecated → mechanismus je vestigiální.
+
+*Ověření:* testy 31→22 failů (boundary cluster vyřešen, 0 regresí), tsc 0, live
+ověřeno (numerická odpověď zpracována normálně, žádný STOP_2, čistá konzole).
+
+*Alternativy:* (a) **remap na grade-N** — ZAMÍTNUTO (produkční false-positives,
+ukončování dětských sezení); (b) **gate dle inputType** (skip pro select_one) — funkční,
+ale drží latentně mrtvý mechanismus bez živého free-text obsahu; (c) nechat neaktivní +
+skip testy — ZAMÍTNUTO, ponechává mrtvý kód a maskuje záměr. Vyřazení je nejčistší
+odraz architektury.

@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import { checkAnswerLeak } from "../../supabase/functions/_shared/tutorAntiLeak";
 import { validateAnswer } from "@/lib/validators";
 import { classifyIntent } from "@/lib/preIntent";
-import { checkBoundaryViolation } from "@/lib/boundaryEnforcement";
 import { getAllTopics } from "@/lib/contentRegistry";
 
 /**
@@ -117,31 +116,8 @@ describe("Security — DOS přes oversize inputy", () => {
   });
 });
 
-describe("Security — boundary enforcement", () => {
-  // Použij známý topic z curriculum
-  const topics = getAllTopics();
-  const compareTopic = topics.find((t) => t.id === "math-compare-natural-numbers-100");
-
-  it("topic existuje (sanity check)", () => {
-    expect(compareTopic).toBeDefined();
-  });
-
-  it("forbidden keyword v žákově odpovědi vyvolá violation", () => {
-    if (!compareTopic) return;
-    expect(checkBoundaryViolation("větší než 5", compareTopic)).toBe(true);
-  });
-
-  it("legitimní odpověď NEVYVOLÁ violation", () => {
-    if (!compareTopic) return;
-    expect(checkBoundaryViolation(">", compareTopic)).toBe(false);
-    expect(checkBoundaryViolation("38", compareTopic)).toBe(false);
-  });
-
-  it("prázdný input → no violation", () => {
-    if (!compareTopic) return;
-    expect(checkBoundaryViolation("", compareTopic)).toBe(false);
-  });
-});
+// Pozn.: blok „Security — boundary enforcement" odstraněn — boundary enforcement
+// na odpovědi bylo vyřazeno (relikt AI tutora, viz sessionOrchestrator).
 
 describe("Security — content sanity (žádný topic neobsahuje executable code v textech)", () => {
   const topics = getAllTopics();

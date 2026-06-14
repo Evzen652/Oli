@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import { createSession, processState, transition } from "../lib/sessionOrchestrator";
 import { getRulesForGrade, evaluateStop } from "../lib/ruleEngine";
 import { classifyIntent } from "../lib/preIntent";
-import { checkBoundaryViolation } from "../lib/boundaryEnforcement";
 import { getAuditLog } from "../lib/logger";
 import { matchTopic } from "../lib/contentRegistry";
 import type { SessionData, Grade } from "../lib/types";
@@ -125,47 +124,17 @@ describe("RED TEAM AC-S1 – Terminal state isolation", () => {
   });
 });
 
-describe("RED TEAM AC-S2 – Boundary violation attacks", () => {
-  it("number > 100 in PRACTICE triggers STOP_2", async () => {
-    let { session } = await reachPractice();
+// RED TEAM AC-S2 – Boundary violation attacks: ODSTRANĚNO.
+// Boundary enforcement na odpovědi bylo vyřazeno — odpovědi jsou dnes
+// kurátorované možnosti (select_one/true_false), ne volný text z éry AI tutora.
+// Hlídání odpovědi by falešně ukončovalo legitimní cvičení (např. možnost „150"
+// u grade-3 čísel do 1000). Viz sessionOrchestrator PRACTICE/CHECK.
+describe("RED TEAM AC-S2 – odpověď není boundary-blokována", () => {
+  it("velké číslo v PRACTICE NEukončí session jako boundary_violation", async () => {
+    const { session } = await reachPractice();
     expect(session.state).toBe("PRACTICE");
-
     const result = await processState(session, "150");
-    expect(result.session.state).toBe("STOP_2");
-    expect(result.session.stopReason).toBe("boundary_violation");
-  });
-
-  it("forbidden keyword 'sčítání' in PRACTICE triggers STOP_2", async () => {
-    let { session } = await reachPractice();
-    const result = await processState(session, "sčítání 5 a 3");
-    expect(result.session.state).toBe("STOP_2");
-    expect(result.session.stopReason).toBe("boundary_violation");
-  });
-
-  it("negative number representation triggers boundary violation", () => {
-    const topic = matchTopic("které číslo je větší", 3)!;
-    expect(checkBoundaryViolation("záporné číslo", topic)).toBe(true);
-  });
-
-  it("number 0 is within range (edge case)", () => {
-    const topic = matchTopic("které číslo je větší", 3)!;
-    expect(checkBoundaryViolation("0", topic)).toBe(false);
-  });
-
-  it("boundary violation in CHECK also triggers STOP_2", async () => {
-    let { session } = await reachPractice();
-    let result = await processState(session, "38");
-    session = result.session;
-    if (session.state === "EXPLAIN") {
-      result = await processState(session);
-      session = result.session;
-    }
-    if (session.state === "PRACTICE") {
-      result = await processState(session, "999");
-      session = result.session;
-      expect(session.state).toBe("STOP_2");
-      expect(session.stopReason).toBe("boundary_violation");
-    }
+    expect(result.session.stopReason).not.toBe("boundary_violation");
   });
 });
 
