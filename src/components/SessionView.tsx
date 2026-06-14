@@ -21,7 +21,6 @@ import { SessionEndSummary } from "@/components/SessionEndSummary";
 import { useSessionDispatch, TERMINAL_STATES } from "@/hooks/useSessionDispatch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -481,11 +480,10 @@ export function SessionView() {
               <BackButton size="sm" onClick={s.handleReset} />
             )}
             {session.matchedTopic && (
-              <Badge className={`text-base px-3 py-1 ${subjectColors.badge} border-transparent`}>
+              <span className="text-base font-medium text-foreground">
                 {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
-                <span className="opacity-70 mx-1.5">|</span>
-                {session.grade}. ročník
-              </Badge>
+                <span className="text-muted-foreground font-normal"> | {session.grade}. ročník</span>
+              </span>
             )}
           </div>
           <div className="flex items-center gap-3">
