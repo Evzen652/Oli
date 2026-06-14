@@ -105,8 +105,10 @@ function getSubjectColor(subject?: string): { bg: string; border: string; cardBo
 }
 
 /** Vrátí dětský název tématu — pro student view, jinak RVP */
-function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string }, grade: number | null, isStudentView: boolean): string {
+function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string; studentTitle?: string }, grade: number | null, isStudentView: boolean): string {
   if (!isStudentView) return getFullTopicTitle(topic as any);
+  // studentTitle je krátký, samostatný dětský název (např. „Násobilka 2–5") → použij přímo
+  if (topic.studentTitle) return topic.studentTitle;
   const g = grade ?? 4;
   const displayGroup = getDisplayTopic(topic.topic ?? "", g as any);
   const displaySub = topic.displayName ?? topic.title ?? "";
