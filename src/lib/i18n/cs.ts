@@ -37,6 +37,7 @@ const cs = {
   // Topic browser
   "topic.select_subject": "Vyber si předmět",
   "topic.what_today": "Co chceš dnes procvičovat?",
+  "topic.select_category": "Vyber okruh",
   "topic.select_topic": "Vyber téma",
   "topic.select_practice": "Vyber, co chceš procvičovat",
   "topic.select_subtopic": "Vyber podtéma",

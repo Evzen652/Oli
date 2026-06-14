@@ -263,7 +263,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
     level === "subject"
       ? t("topic.what_today")
       : level === "category"
-        ? t("topic.select_topic")
+        ? t("topic.select_category")
         : level === "topic"
           ? t("topic.select_practice")
           : activeOkruh
