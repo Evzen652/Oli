@@ -79,6 +79,14 @@ function ExplanationDisplay({ task, topic }: { task: PracticeTask; topic: TopicM
 
   // Matematika: step-by-step postup
   if (task.solutionSteps && task.solutionSteps.length > 0) {
+    // Jeden krok → prostý odstavec (žádné matoucí „1."); víc kroků → číslovaný seznam
+    if (task.solutionSteps.length === 1) {
+      return (
+        <p className="text-base text-muted-foreground leading-relaxed">
+          {task.solutionSteps[0]}
+        </p>
+      );
+    }
     return (
       <ol className="list-decimal list-inside text-base text-muted-foreground space-y-1">
         {task.solutionSteps.map((step, i) => (
