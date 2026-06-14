@@ -19,6 +19,14 @@
 
 ## Otevřené
 
+### 🔴 Anon → registrovaný flow + messaging „Odemkni registrací" (řešit v nové session, 2026-06-14)
+Messaging zamčených okruhů („🔓 Odemkni registrací →" + tooltip „Zaregistruj se zdarma a odemkni všechny okruhy") **neodpovídá realitě flow**:
+- Registruje **rodič**, ne dítě (klik → `/auth?mode=register`).
+- Odemčení **není okamžité** — vícekrok: registrace rodiče → ověření e-mailu → přidání dítěte → párovací kód → spárování dítěte. Teprve spárované dítě (role „child") má `anonLocked = false`.
+- „**zdarma**": Auth banner slibuje „14 dní zdarma, pak 149 Kč/měs", ale **platební integrace v kódu není** (žádný Stripe/subscription gate) → registrovaný teď dostane vše zdarma.
+
+**K rozhodnutí:** celý anon → registrovaný flow (kdo/jak/kdy se odemkne, co s platbami), pak doladit messaging. Text zamčených okruhů zatím **neopraven** (čeká na rozhodnutí o flow). Doporučení: řešit flow pořádně, ne jen kosmetiku.
+
 ### 67 pre-existujících padajících testů — ≥6 příčin (NE jen whitelist!)
 > ⚠️ KOREKCE: dříve zde stálo „jen zastaralý inputType whitelist". Audit 2026-06-08 (`docs/AUDIT_2026-06-08_full.md`) ukázal, že whitelist je jen **2 z 67**. Padá 17 test souborů s ≥6 příčinami:
 - ~~**A** (2): `topic-invariants.test.ts:42-53` whitelist chybí `true_false`~~ ✅ 2026-06-12 — doplněno.
