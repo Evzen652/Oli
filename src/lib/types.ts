@@ -70,17 +70,12 @@ export type ContentType = "algorithmic" | "factual" | "conceptual" | "mixed";
 
 export interface TopicMetadata {
   id: string;
-  /**
-   * Česky srozumitelný název pro UI (rodič i dítě).
-   * Musí být česky, bez anglických zkratek a technického žargonu.
-   * Příklad: "Sčítání a odčítání do 100" (ne "Add sub 100").
-   * Pokud chybí, fallback na `title`.
-   */
-  displayName?: string;
   title: string;
   /**
-   * Krátký český název pro dětské + rodičovské UI ("Násobilka",
-   * "Průměr čísel"). Pokud chybí, použije se `title`.
+   * Krátký česky srozumitelný název pro dětské + rodičovské UI
+   * ("Násobilka", "Sčítání a odčítání do 100").
+   * Musí být česky, bez anglických zkratek a technického žargonu.
+   * Pokud chybí, fallback na `title`.
    */
   displayName?: string;
   /**
@@ -157,6 +152,16 @@ export interface PracticeTask {
   items?: string[]; // for drag_order (correct order)
   solutionSteps?: string[]; // specific step-by-step solution for this task (matematika)
   explanation?: string;     // proč je odpověď správná — pro humanitní předměty místo solutionSteps
+  /**
+   * Cílený diagnostický feedback per zvolená možnost.
+   * Klíč = přesný text možnosti (shodný s `options`/`correctAnswer`),
+   * hodnota = krátké vysvětlení TÉ konkrétní chyby ("Vybral jsi obvod, ne obsah").
+   * Při chybě dostane přednost před obecným `explanation` (fallback).
+   * Smysl jen u výběrových typů: select_one / true_false / multi_select.
+   * Vazba na obsah: generátor s chybovým modelem distraktorů ho plní rovnou
+   * (ví, že distraktor X = "spočítal obvod" → feedback je skoro zdarma).
+   */
+  optionFeedback?: Record<string, string>;
   hints?: string[];          // progressive hints (guide without revealing answer)
   blanks?: string[];         // for fill_blank (correct answers for each blank)
   pairs?: { left: string; right: string }[]; // for match_pairs

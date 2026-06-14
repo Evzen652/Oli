@@ -128,7 +128,7 @@ export function SessionView() {
   const s = useSessionDispatch();
   const {
     grade, session, practiceQuestion, userInput, isLocked, loading,
-    checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask,
+    checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask, selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
   } = s;
 
@@ -714,6 +714,7 @@ export function SessionView() {
               loading={loading}
               isTerminal={isTerminal}
               onContinue={s.handleContinueAfterCheck}
+              selectedAnswer={selectedAnswer}
             />
           )}
 

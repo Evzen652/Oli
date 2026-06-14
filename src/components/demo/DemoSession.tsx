@@ -73,6 +73,7 @@ export function DemoSession() {
   const [checkFeedback, setCheckFeedback] = useState<string | null>(null);
   const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(null);
   const [answeredTask, setAnsweredTask] = useState<PracticeTask | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [taskResults, setTaskResults] = useState<("correct" | "wrong" | "help")[]>([]);
   const [questionTitle, setQuestionTitle] = useState(nextTitle());
   const [startTime] = useState(() => Date.now());
@@ -90,6 +91,7 @@ export function DemoSession() {
     setCheckFeedback(null);
     setLastAnswerCorrect(null);
     setAnsweredTask(null);
+    setSelectedAnswer("");
     setTaskResults([]);
     setHelpUsed(false);
     setQuestionTitle(nextTitle());
@@ -110,6 +112,7 @@ export function DemoSession() {
     const correct = result.correct;
     setLastAnswerCorrect(correct);
     setAnsweredTask(task);
+    setSelectedAnswer(answer);
     setCheckFeedback(correct ? nextPraise() : nextIncorrect());
     setTaskResults(prev => [...prev, helpUsed ? "help" : correct ? "correct" : "wrong"]);
     setHelpUsed(false);
@@ -129,6 +132,7 @@ export function DemoSession() {
       setCheckFeedback(null);
       setLastAnswerCorrect(null);
       setAnsweredTask(null);
+      setSelectedAnswer("");
       setUserInput("");
       setQuestionTitle(nextTitle());
     }
@@ -306,6 +310,7 @@ export function DemoSession() {
               loading={false}
               isTerminal={taskIdx + 1 >= tasks.length}
               onContinue={handleContinue}
+              selectedAnswer={selectedAnswer}
             />
           )}
         </div>

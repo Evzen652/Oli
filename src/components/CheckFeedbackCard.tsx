@@ -12,6 +12,23 @@ interface CheckFeedbackCardProps {
   loading: boolean;
   isTerminal: boolean;
   onContinue: () => void;
+  /** Hodnota, kterou žák zvolil — pro cílený diagnostický feedback (optionFeedback). */
+  selectedAnswer?: string;
+}
+
+/**
+ * Najde cílené vysvětlení pro konkrétní zvolenou možnost.
+ * Přímá shoda klíče (select_one / true_false); u multi_select zkusí
+ * i jednotlivé zvolené možnosti rozdělené čárkou/středníkem/pipou.
+ */
+export function getTargetedFeedback(task: PracticeTask, selectedAnswer?: string): string | null {
+  if (!task.optionFeedback || !selectedAnswer) return null;
+  const direct = task.optionFeedback[selectedAnswer.trim()];
+  if (direct) return direct;
+  for (const part of selectedAnswer.split(/[,;|]/).map((p) => p.trim()).filter(Boolean)) {
+    if (task.optionFeedback[part]) return task.optionFeedback[part];
+  }
+  return null;
 }
 
 /** Zobrazení správné odpovědi dle typu úlohy */
@@ -123,8 +140,13 @@ export function CheckFeedbackCard({
   loading,
   isTerminal,
   onContinue,
+  selectedAnswer,
 }: CheckFeedbackCardProps) {
   const t = useT();
+  const targetedFeedback =
+    !lastAnswerCorrect && answeredTask
+      ? getTargetedFeedback(answeredTask, selectedAnswer)
+      : null;
   return (
     <>
       <Card className={`rounded-2xl overflow-hidden bg-gradient-to-br ${subjectColors.bg} ${lastAnswerCorrect ? "animate-pop-in" : "animate-shake"}`}>
@@ -141,6 +163,15 @@ export function CheckFeedbackCard({
           )}
           {answeredTask && topic && (
             <div className="mt-4 rounded-xl bg-white p-5 text-base text-secondary-foreground space-y-3 shadow-md">
+              {/* Cílené vysvětlení konkrétní chyby — jen když je zvolená možnost diagnostikovaná */}
+              {targetedFeedback && (
+                <div className="rounded-lg bg-orange-50 border border-orange-200 p-3">
+                  <p className="text-base font-semibold text-orange-800 leading-relaxed">
+                    {targetedFeedback}
+                  </p>
+                </div>
+              )}
+
               {/* Správná odpověď — jen při špatné odpovědi */}
               {!lastAnswerCorrect && (
                 <CorrectAnswerDisplay task={answeredTask} topic={topic} />

@@ -95,6 +95,8 @@ export interface SessionDispatchState {
   aiEvalLoading: boolean;
   evalMinReached: boolean;
   answeredTask: PracticeTask | null;
+  /** Poslední odpověď zvolená žákem — pro cílený feedback v CheckFeedbackCard. */
+  selectedAnswer: string;
   questionTitle: string;
   questionIcon: string;
   taskResults: ("correct" | "wrong" | "help")[];
@@ -151,6 +153,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
   const [aiEvalLoading, setAiEvalLoading] = useState(false);
   const [evalMinReached, setEvalMinReached] = useState(true);
   const [answeredTask, setAnsweredTask] = useState<PracticeTask | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [questionTitle, setQuestionTitle] = useState(getNextQuestionTitle());
   const [questionIcon, setQuestionIcon] = useState(getNextQuestionIcon());
   const [taskResults, setTaskResults] = useState<("correct" | "wrong" | "help")[]>([]);
@@ -393,6 +396,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       const answeredTaskSnapshot = session.practiceBatch[session.currentTaskIndex];
       const result = await processState(s, answer);
       setAnsweredTask(answeredTaskSnapshot);
+      setSelectedAnswer(answer);
       setUserInput("");
       const wasCorrect = result.lastAnswerCorrect === true;
       const taskResult: "correct" | "wrong" | "help" = session.helpUsedOnCurrent ? "help" : wasCorrect ? "correct" : "wrong";
@@ -434,6 +438,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setLastAnswerCorrect(null);
     setRevealedAnswer(null);
     setAnsweredTask(null);
+    setSelectedAnswer("");
     setQuestionTitle(getNextQuestionTitle());
     setQuestionIcon(getNextQuestionIcon());
     if (pendingEndSession) {
@@ -507,6 +512,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setLastAnswerCorrect(null);
     setRevealedAnswer(null);
     setAnsweredTask(null);
+    setSelectedAnswer("");
     setExplanation(null);
     setAiEvaluation(null);
     setAiEvalLoading(false);
@@ -520,6 +526,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     grade, session, output, practiceQuestion, userInput, isLocked, loading,
     checkFeedback, lastAnswerCorrect, pendingEndSession, revealedAnswer,
     explanation, aiEvaluation, aiEvalLoading, evalMinReached, answeredTask,
+    selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
     setGrade, setSession, setOutput, setUserInput, setIsLocked,
     setCheckFeedback, setLastAnswerCorrect, setRevealedAnswer,
