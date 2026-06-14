@@ -481,8 +481,10 @@ export function SessionView() {
               <BackButton size="sm" onClick={s.handleReset} />
             )}
             {session.matchedTopic && (
-              <Badge className={`text-base px-3 py-1 border ${subjectColors.badge}`}>
+              <Badge className={`text-base px-3 py-1 ${subjectColors.badge} border-transparent`}>
                 {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
+                <span className="opacity-70 mx-1.5">|</span>
+                {session.grade}. ročník
               </Badge>
             )}
           </div>
