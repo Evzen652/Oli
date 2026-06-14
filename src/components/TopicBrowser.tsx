@@ -311,12 +311,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
       {level === "subject" ? (
         // ── ŽÁKOVSKÝ POHLED VÝBĚRU PŘEDMĚTU (Lovable redesign) ──
         <div className="mx-auto w-full max-w-5xl space-y-6">
-          {/* Welcome header card */}
-          <div className="relative rounded-3xl border-2 border-border/40 bg-card p-5 shadow-soft-1">
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">Ahoj!</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">Co dnes procvičíš?</p>
-          </div>
-
           {/* Title + back */}
           <div className="flex items-end justify-between gap-3">
             <div>
