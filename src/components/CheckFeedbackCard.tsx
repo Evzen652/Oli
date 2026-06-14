@@ -82,7 +82,7 @@ function ExplanationDisplay({ task, topic }: { task: PracticeTask; topic: TopicM
     // Jeden krok → prostý odstavec (žádné matoucí „1."); víc kroků → číslovaný seznam
     if (task.solutionSteps.length === 1) {
       return (
-        <p className="text-base text-muted-foreground leading-relaxed">
+        <p className="text-base font-bold text-foreground leading-relaxed">
           {task.solutionSteps[0]}
         </p>
       );
@@ -140,7 +140,7 @@ export function CheckFeedbackCard({
             </div>
           )}
           {answeredTask && topic && (
-            <div className="mt-4 rounded-xl bg-background/70 p-5 text-base text-secondary-foreground space-y-3">
+            <div className="mt-4 rounded-xl bg-white p-5 text-base text-secondary-foreground space-y-3">
               {/* Správná odpověď — jen při špatné odpovědi */}
               {!lastAnswerCorrect && (
                 <CorrectAnswerDisplay task={answeredTask} topic={topic} />
