@@ -414,7 +414,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                       {title}
                     </h2>
                   )}
-                  <p className="text-sm text-muted-foreground">
+                  <p className={level === "category" ? "text-lg font-bold text-foreground" : "text-sm text-muted-foreground"}>
                     {level === "category"
                       ? "Vyber si okruh, který chceš procvičovat."
                       : level === "topic"
