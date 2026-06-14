@@ -514,12 +514,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                             {displayTop(topicName)}
                           </h3>
                           {description && (
-                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{description}</p>
-                          )}
-                          {count > 1 && (
-                            <p className="text-[10px] text-foreground/50 font-medium">
-                              {count} {count < 5 ? t("count.subtopic_2_4") : t("count.subtopic_5_plus")}
-                            </p>
+                            <p className="text-base text-foreground/65 leading-snug line-clamp-2">{description}</p>
                           )}
                         </div>
                       </button>
