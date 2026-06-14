@@ -89,7 +89,7 @@ const STATE_LABELS: Record<SessionState, string> = {
 function getSubjectColor(subject?: string): { bg: string; border: string; cardBorder: string; badge: string; accent: string; dotAccent: string } {
   switch (subject) {
     case "matematika":
-      return { bg: "from-blue-100 to-blue-200", border: "border-l-blue-400", cardBorder: "border-blue-300", badge: "bg-blue-500 text-white border-blue-600", accent: "bg-blue-500", dotAccent: "bg-blue-100 ring-2 ring-blue-400" };
+      return { bg: "from-sky-50 to-blue-100", border: "border-l-blue-400", cardBorder: "border-blue-300", badge: "bg-blue-500 text-white border-blue-600", accent: "bg-blue-500", dotAccent: "bg-blue-100 ring-2 ring-blue-400" };
     case "čeština":
       return { bg: "from-purple-100 to-purple-200", border: "border-l-purple-400", cardBorder: "border-purple-300", badge: "bg-purple-500 text-white border-purple-600", accent: "bg-purple-500", dotAccent: "bg-purple-100 ring-2 ring-purple-400" };
     case "prvouka":

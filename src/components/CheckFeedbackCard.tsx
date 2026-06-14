@@ -127,7 +127,7 @@ export function CheckFeedbackCard({
   const t = useT();
   return (
     <>
-      <Card className={`border-2 rounded-2xl overflow-hidden border-l-4 ${subjectColors.border} bg-gradient-to-br ${subjectColors.bg} ${lastAnswerCorrect ? "animate-pop-in" : "animate-shake"}`}>
+      <Card className={`rounded-2xl overflow-hidden bg-gradient-to-br ${subjectColors.bg} ${lastAnswerCorrect ? "animate-pop-in" : "animate-shake"}`}>
         <CardContent className="p-6">
           <h2 className={`text-2xl font-bold mb-3 ${lastAnswerCorrect ? "text-green-600" : "text-orange-600"}`}>
             {checkFeedback}
@@ -140,7 +140,7 @@ export function CheckFeedbackCard({
             </div>
           )}
           {answeredTask && topic && (
-            <div className="mt-4 rounded-xl bg-white p-5 text-base text-secondary-foreground space-y-3">
+            <div className="mt-4 rounded-xl bg-white p-5 text-base text-secondary-foreground space-y-3 shadow-md">
               {/* Správná odpověď — jen při špatné odpovědi */}
               {!lastAnswerCorrect && (
                 <CorrectAnswerDisplay task={answeredTask} topic={topic} />
