@@ -479,7 +479,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                           {card.desc && (
                             <p className="text-base text-foreground/65 leading-snug line-clamp-2">{card.desc}</p>
                           )}
-                          <p className="text-xs text-foreground/50 font-medium">{card.countLabel}</p>
                         </div>
                       </button>
                     ))}
