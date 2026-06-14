@@ -39,29 +39,29 @@ const mkInput = (overrides: Partial<EvalInput> = {}): EvalInput => ({
 describe("generateLocalEvaluation — performance scaling", () => {
   it("pct >= 80 (great) → pochval", () => {
     const r = generateLocalEvaluation(mkInput({ correctCount: 5, totalTasks: 6 }));
-    // Skvělé/Vyborné/Parada/etc.
-    expect(r.toLowerCase()).toMatch(/skvel|vyborn|parad|jednic|super/);
+    // Skvělé/Výborně/Paráda/jedničku/…
+    expect(r.toLowerCase()).toMatch(/skvěl|výborn|parád|jedničk|hrd/);
   });
 
   it("pct 50-79 (good) → solidní/dobré", () => {
     const r = generateLocalEvaluation(mkInput({ correctCount: 4, totalTasks: 6 }));
-    expect(r.toLowerCase()).toMatch(/solidn|neni to spatn|ujde|dobr/);
+    expect(r.toLowerCase()).toMatch(/solidn|není to špatn|ujde|dobř|základ/);
   });
 
   it("pct < 50 (weak) → empatický + povzbudivý", () => {
     const r = generateLocalEvaluation(mkInput({ correctCount: 1, totalTasks: 6 }));
     // Match jakýkoliv weak-eval pattern (mladší, starší, basic)
-    expect(r.toLowerCase()).toMatch(/nevad|nic se nedeje|neni ono|potize|chce jeste|neni uplne|procvic|znovu/);
+    expect(r.toLowerCase()).toMatch(/nevadí|nic se neděje|není ono|potíže|není úplně|procvič|znovu/);
   });
 
   it("100% správně → great evaluation", () => {
     const r = generateLocalEvaluation(mkInput({ correctCount: 6, totalTasks: 6 }));
-    expect(r.toLowerCase()).toMatch(/skvel|vyborn|parad|jednic/);
+    expect(r.toLowerCase()).toMatch(/skvěl|výborn|parád|jedničk/);
   });
 
   it("0/N → weak evaluation", () => {
     const r = generateLocalEvaluation(mkInput({ correctCount: 0, totalTasks: 6 }));
-    expect(r.toLowerCase()).toMatch(/nevad|neni ono|potize|znovu/);
+    expect(r.toLowerCase()).toMatch(/nevadí|není ono|potíže|znovu/);
   });
 });
 
@@ -79,19 +79,19 @@ describe("generateLocalEvaluation — grade scaling", () => {
 });
 
 describe("generateLocalEvaluation — subject-specific terms", () => {
-  it("matematika → 'priklady' / 'priklad'", () => {
+  it("matematika → 'příklady' / 'počítání'", () => {
     const r = generateLocalEvaluation(mkInput({ subject: "matematika", correctCount: 3, totalTasks: 6 }));
-    expect(r.toLowerCase()).toMatch(/priklad|pocitan|reseni/);
+    expect(r.toLowerCase()).toMatch(/příklad|počítán|řešení/);
   });
 
-  it("čeština → 'pravopis' / 'doplnovani'", () => {
+  it("čeština → 'pravopis' / 'doplňování'", () => {
     const r = generateLocalEvaluation(mkInput({ subject: "cestina", correctCount: 3, totalTasks: 6 }));
-    expect(r.toLowerCase()).toMatch(/pravopis|doplnova|cviceni|pravidl/);
+    expect(r.toLowerCase()).toMatch(/pravopis|doplňová|cvičení|pravidl/);
   });
 
-  it("prvouka → 'otazky' / 'odpovidani'", () => {
+  it("prvouka → 'otázky' / 'odpovídání'", () => {
     const r = generateLocalEvaluation(mkInput({ subject: "prvouka", correctCount: 3, totalTasks: 6 }));
-    expect(r.toLowerCase()).toMatch(/otaz|odpovida|tema|znovu/);
+    expect(r.toLowerCase()).toMatch(/otáz|odpovídá|téma|znovu/);
   });
 
   it("diktát title → diktát-specific terms (pravopis)", () => {
@@ -101,21 +101,21 @@ describe("generateLocalEvaluation — subject-specific terms", () => {
       correctCount: 3,
       totalTasks: 6,
     }));
-    expect(r.toLowerCase()).toMatch(/pravopis|cviceni/);
+    expect(r.toLowerCase()).toMatch(/pravopis|cvičení/);
   });
 });
 
 describe("generateLocalEvaluation — helpUsed handling", () => {
   it("helpUsed=0 → zmíní samostatnost (great + young)", () => {
     const r = generateLocalEvaluation(mkInput({ correctCount: 5, totalTasks: 6, helpUsedCount: 0, grade: 3 }));
-    expect(r.toLowerCase()).toMatch(/sam|skvel|jednic/);
+    expect(r.toLowerCase()).toMatch(/sám|sama|skvěl|hrd/);
   });
 
   it("helpUsed > 0 (great) → mentioned (gentle)", () => {
     const r = generateLocalEvaluation(mkInput({
       correctCount: 5, totalTasks: 6, helpUsedCount: 2, grade: 5,
     }));
-    expect(r.toLowerCase()).toMatch(/napove|priste|sam/);
+    expect(r.toLowerCase()).toMatch(/nápově|příště|sebe/);
   });
 });
 

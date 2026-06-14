@@ -133,8 +133,16 @@ export function SessionView() {
   } = s;
 
   // For child role: show ChildHomePage by default, TopicBrowser on demand
-  const [showTopicBrowser, setShowTopicBrowser] = useState(false);
-  const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(undefined);
+  // Anon „procházet předmět" — subject čteme synchronně při mountu (stejně jako
+  // isStarting níže). Pro anon trial se TopicBrowser renderuje hned (přeskakuje
+  // ChildHomePage), takže initialSubject musí být k dispozici už při prvním
+  // renderu — jinak browser nastartuje na výběru předmětu místo na okruzích.
+  const [showTopicBrowser, setShowTopicBrowser] = useState(
+    () => !!sessionStorage.getItem("oli_anon_browse_subject"),
+  );
+  const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(
+    () => sessionStorage.getItem("oli_anon_browse_subject") ?? undefined,
+  );
   // isStarting = právě se zakládá session (z auto-startu daily tasku NEBO z kliknutí
   // na téma). Čteme sessionStorage synchronně při mountu → první render je rovnou
   // spinner, nikdy nepropliknе ChildHomePage/TopicBrowser.

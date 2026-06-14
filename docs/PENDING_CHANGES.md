@@ -129,6 +129,9 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené (doplněno 2026-06-14)
 
+### Anon: klik na předmět skončil na „Vyber si předmět" místo na okruhách ✅
+- `AnonStudentPage` SubjectGrid uloží `oli_anon_browse_subject` + přepne do session; `SessionView` ho ale četl až v `useEffect` po prvním renderu. Anon trial přeskakuje `ChildHomePage` → `TopicBrowser` se renderuje hned s `initialSubject=undefined` → `level="subject"` (= výběr předmětu), pozdější `setTopicBrowserSubject` browser neremountoval. **Fix:** `topicBrowserSubject` i `showTopicBrowser` čteny synchronně ze sessionStorage při init stavu (jako `isStarting`). Klik na předmět teď vede rovnou na okruhy daného předmětu. TypeScript 0 chyb.
+
 ### Anon UX: zamykání okruhů + oprava navigace + onboarding čistota ✅
 - **Groq odstraněn z klientského bundlu** — smazán `aiClient.ts` + `ai-client.test.ts`; `sessionEvaluator` volá rovnou `generateLocalEvaluation` (lokální šablona); odebrány AI tlačítka z `AdminContentAudit` + `ReformulateTaskDialog`; GROQ hláška z `edgeFunctionError`; `VITE_GROQ_API_KEY` z `.env`. ⚠️ Klíč byl exponován v historii → **rotovat v Groq dashboardu** (řeší nález C1).
 - **TopicBrowser UI** — „Vyber okruh" subtitle odstraněn z hlavičkového boxu; „Vyber si okruh…" prompt zvětšen (`text-lg font-bold`) i pro úroveň podtémat; popisy karet zvětšeny `text-xs → text-base`; odstraněny count labely („3 témata") z karet.

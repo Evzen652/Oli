@@ -266,7 +266,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   const subtitle =
     level === "subject"
-      ? t("topic.what_today")
+      ? ""
       : level === "category"
         ? ""
         : level === "topic"
@@ -322,9 +322,11 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               <h2 className="text-3xl font-black tracking-tight text-foreground">
                 {title}
               </h2>
-              <p className="text-sm text-muted-foreground">
-                {subtitle}
-              </p>
+              {subtitle && (
+                <p className="text-sm text-muted-foreground">
+                  {subtitle}
+                </p>
+              )}
             </div>
             <BackButton onClick={handleBack} />
           </div>
@@ -389,6 +391,15 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               {/* Welcome header card — barva podle aktuálního předmětu */}
               <div className={`relative rounded-3xl border-2 ${subjectStyle.border} ${subjectStyle.bg} p-5 shadow-soft-1`}>
                 <div className="flex items-center gap-4">
+                  {subjectMeta && (
+                    <div className="shrink-0 hidden sm:block">
+                      <PrvoukaImage
+                        imageUrl={subjectMeta.image || null}
+                        fallbackEmoji={subjectMeta.emoji}
+                        size="md"
+                      />
+                    </div>
+                  )}
                   <div className="flex-1 min-w-0">
                     <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
                       {capitalize(selectedSubject ?? title)}
@@ -399,15 +410,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                       </p>
                     )}
                   </div>
-                  {subjectMeta && (
-                    <div className="shrink-0 hidden sm:block">
-                      <PrvoukaImage
-                        imageUrl={subjectMeta.image || null}
-                        fallbackEmoji={subjectMeta.emoji}
-                        size="md"
-                      />
-                    </div>
-                  )}
                 </div>
               </div>
 

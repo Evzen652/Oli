@@ -221,7 +221,7 @@ export default function AnonStudentPage() {
               <DailyTaskList topics={dailyTopics} onStart={handleStartTopic} grade={grade} />
             </section>
 
-            <section className="space-y-3">
+            <section className="space-y-3 pt-6 border-t-2 border-violet-600">
               <h2 className="text-xl font-bold text-violet-900">Nebo si vyber vlastní téma</h2>
               <SubjectGrid grade={grade} onSelect={(subject) => {
                 sessionStorage.setItem("oli_anon_browse_subject", subject);

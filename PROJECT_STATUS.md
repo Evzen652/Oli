@@ -137,6 +137,11 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-14 (pokračování) — hotovo:
+- ✅ **Welcome header okruhů — ilustrace přesunuta vlevo** — na úrovni okruhů byla ilustrace předmětu v DOM až za textem → renderovala se vpravo. Prohozeno pořadí flex prvků: ilustrace teď vlevo před nadpisem.
+- ✅ **„Vyber si předmět" — odstraněn podtitul** — pod nadpisem na výběru předmětu se zobrazoval podtitul „Co chceš dnes procvičovat?", který působil odpojeně od nadpisu. Odstraněn (subtitle pro `level==="subject"` → prázdný, render `<p>` podmíněn), smazán nepoužitý i18n klíč `topic.what_today`. Nadpis „Vyber si předmět" stojí sám.
+- ✅ **Anon: klik na předmět skončil na „Vyber si předmět" místo na okruzích** — `AnonStudentPage` uloží `oli_anon_browse_subject` a přepne do session; `SessionView` ho ale plnil teprve v `useEffect` **po** prvním renderu. Protože anon trial přeskakuje `ChildHomePage` a renderuje `TopicBrowser` hned, browser nastartoval s `initialSubject=undefined` → `level="subject"`, a pozdější `setTopicBrowserSubject` ho už neremountoval (`key={grade}`). Fix: `topicBrowserSubject` i `showTopicBrowser` se čtou **synchronně** ze sessionStorage při inicializaci stavu (stejně jako `isStarting` čte `oli_anon_start_topic`). Klik na předmět teď jde rovnou na okruhy. TypeScript 0 chyb.
+
 ### Session 2026-06-14 — hotovo:
 - ✅ **Groq odstraněn z klientského bundlu** (nález C1) — smazán `aiClient.ts` + test; `sessionEvaluator` volá lokální šablonu; AI tlačítka odebrána z `AdminContentAudit` + `ReformulateTaskDialog`; `VITE_GROQ_API_KEY` z `.env`. ⚠️ **Klíč rotovat v Groq dashboardu** (byl exponován v historii).
 - ✅ **TopicBrowser + SessionView UI doladění** — odstraněny redundantní subtitly a count labely, zvětšené popisy karet a hlavičky, předmět+ročník v session hlavičce `text-lg font-bold` jednotnou barvou.
