@@ -94,18 +94,36 @@ Dosavadní model „pool 30 faktických otázek → `select_one`" je pro 13–15
 
 ### Fáze 0 — Architektonická příprava (architekt, `main`)
 Bez tohohle nemůže grade-N session pro nové předměty začít.
-- [ ] **`subjectRegistry.ts`**: doplnit 6 nových `SubjectMeta` (dějepis, fyzika,
-      chemie, přírodopis, zeměpis, výchova k občanství) — label, emoji, barva,
-      gradient, hook. (Dnes jedou přes `buildFallback` = jen auto emoji.)
+- [x] **`subjectRegistry.ts`** ✅ 2026-06-15 — doplněno 6 nových `SubjectMeta`
+      (dějepis amber/🏛️, fyzika indigo/⚛️, chemie teal/🧪, přírodopis green/🌱,
+      zeměpis cyan/🌍, výchova k občanství rose/⚖️). `SUPABASE_STORAGE` přesunut nad
+      `SUBJECTS`, image = `subject-{slug}.png` (fallback emoji dokud ilustrace nejsou).
+      Konvence: klíč = `TopicMetadata.subject` (malé, diakritika). TSC 0 chyb.
 - [ ] **Ilustrace** 6 nových předmětů (admin pipeline → Supabase storage
       `subject-{slug}.png`).
-- [ ] **Smoke test odborných typů** — komponenty UŽ existují (`ChemicalBalanceInput`,
-      `FormulaBuilderInput`, `TimelineInput`, `DiagramLabelInput`, `NumberInput`,
-      `EssayInput` jsou v `PracticeInputRouter.tsx`) + validátory existují.
-      Chybí jen ověření end-to-end: vytvořit 1 testovací topic každého odborného
-      typu (zejm. `chemical_balance`, `formula_builder`, `numeric_range`),
-      projet v prohlížeči CHECK→feedback. **Spike chemie** (chemical_balance)
+- [x] **Smoke test odborných typů — validační vrstva** ✅ 2026-06-15 — komponenty
+      i validátory existují; smoke test `src/test/stupen2-odborne-typy.smoke.test.ts`
+      (8/8 ✅) ověřil `number`, `numeric_range`, `chemical_balance`, `formula_builder`,
+      `timeline`, `diagram_label` a zafixoval správné formáty (viz cookbook níže).
+      Opraven matoucí komentář u `chemicalBalanceValidator`.
+      🔴 **Nález:** `resolveTaskValidation` NEpřevádí strukturovaná odborná pole
+      (chemEquation/timelineEvents/formulaPool/diagram) na `expected` → autor musí
+      ručně sladit `correctAnswer` (pipe-formát) + `inputType` + strukturované pole.
+- [ ] **Smoke test odborných typů — vizuální (prohlížeč)** — zbývá ověřit UI↔validátor
+      end-to-end: vytvořit 1 testovací topic každého typu, projet CHECK→feedback
+      v prohlížeči. Ověřit zejm., že ANSWER string z `ChemicalBalanceInput`/
+      `TimelineInput`/`FormulaBuilderInput` sedí na formát validátoru. **Spike chemie**
       tady — než se dělá grade-8.
+
+#### Cookbook formátů `correctAnswer` pro odborné typy (zafixováno smoke testem)
+| inputType | `correctAnswer` (= `expected`) | answer z UI | pozn. |
+|---|---|---|---|
+| `number` | `"8"` | `"8"` / `"8,0"` | čárka i tečka OK, tolerance 0.001 |
+| `numeric_range` | `"9.81±0.1"` nebo `"5..6"` | `"9.78"` | tolerance / rozsah |
+| `chemical_balance` | `"2\|H2\|1\|O2\|2\|H2O"` (páry koef\|vzorec, BEZ +/=) | `"2\|1\|2"` | jen koeficienty; prázdný/0 = „1" |
+| `formula_builder` | `"ρ\|=\|m\|/\|V"` | stejné pořadí | díly oddělené `\|` |
+| `timeline` | `"Pravěk (-3000)\|Antika (500)\|…"` | seřazené pořadí | rok v závorce → feedback |
+| `diagram_label` | `"kořen\|stonek\|list"` | dle pozic | toleruje diakritiku/překlep |
 - [ ] **`czechGrammar.ts` NOUNS** — předběžně doplnit odborné jednotky/pojmy
       (newton, joule, mol, atom, …) až budou potřeba (eskalace z grade-N).
 - [ ] Per-grade **slovník/tone of voice** pro 12–15 leté do README šablony

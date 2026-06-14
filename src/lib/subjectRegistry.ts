@@ -14,6 +14,13 @@ export interface SubjectMeta {
   hook?: string;
 }
 
+// Supabase storage URL pro dynamické ilustrace předmětů (subject-{slug}.png)
+const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
+
+// Klíč v SUBJECTS MUSÍ přesně odpovídat poli `subject` v TopicMetadata
+// (malé písmeno, s diakritikou). 1. stupeň = importované PNG, 2. stupeň =
+// dynamická ilustrace ze Supabase (dokud se nevygeneruje, IllustrationImg
+// zobrazí emoji fallback).
 export const SUBJECTS: Record<string, SubjectMeta> = {
   matematika: {
     label: "Matematika",
@@ -60,12 +67,65 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     borderClass: "border-[hsl(38,70%,45%)]/40",
     hook: "Vlastivěda tě provede kraji Česka, jeho historií a státními symboly!",
   },
+
+  // ── 2. stupeň (6.–9.) ──
+  dějepis: {
+    label: "Dějepis",
+    emoji: "🏛️",
+    image: `${SUPABASE_STORAGE}/subject-dejepis.png`,
+    color: "text-amber-700",
+    gradientClass: "bg-gradient-to-r from-white to-amber-50",
+    borderClass: "border-amber-300/50",
+    hook: "Dějepis tě provede minulostí — od pravěku po moderní dějiny.",
+  },
+  fyzika: {
+    label: "Fyzika",
+    emoji: "⚛️",
+    image: `${SUPABASE_STORAGE}/subject-fyzika.png`,
+    color: "text-indigo-600",
+    gradientClass: "bg-gradient-to-r from-white to-indigo-50",
+    borderClass: "border-indigo-300/50",
+    hook: "Fyzika vysvětluje, jak funguje svět — od pohybu po elektřinu.",
+  },
+  chemie: {
+    label: "Chemie",
+    emoji: "🧪",
+    image: `${SUPABASE_STORAGE}/subject-chemie.png`,
+    color: "text-teal-600",
+    gradientClass: "bg-gradient-to-r from-white to-teal-50",
+    borderClass: "border-teal-300/50",
+    hook: "Chemie odhaluje, z čeho jsou věci kolem nás a jak spolu reagují.",
+  },
+  přírodopis: {
+    label: "Přírodopis",
+    emoji: "🌱",
+    image: `${SUPABASE_STORAGE}/subject-prirodopis.png`,
+    color: "text-green-600",
+    gradientClass: "bg-gradient-to-r from-white to-green-50",
+    borderClass: "border-green-300/50",
+    hook: "Přírodopis tě zavede do světa rostlin, zvířat i lidského těla.",
+  },
+  zeměpis: {
+    label: "Zeměpis",
+    emoji: "🌍",
+    image: `${SUPABASE_STORAGE}/subject-zemepis.png`,
+    color: "text-cyan-600",
+    gradientClass: "bg-gradient-to-r from-white to-cyan-50",
+    borderClass: "border-cyan-300/50",
+    hook: "Zeměpis ti ukáže Zemi — krajiny, státy i přírodní jevy.",
+  },
+  "výchova k občanství": {
+    label: "Občanská výchova",
+    emoji: "⚖️",
+    image: `${SUPABASE_STORAGE}/subject-vychova-k-obcanstvi.png`,
+    color: "text-rose-600",
+    gradientClass: "bg-gradient-to-r from-white to-rose-50",
+    borderClass: "border-rose-300/50",
+    hook: "Občanská výchova tě připraví na život ve společnosti.",
+  },
 };
 
 const FALLBACK_EMOJIS = ["📚", "🧪", "🎨", "🌐", "🔬", "🎵", "🏛️", "💡"];
-
-// Supabase storage URL pro dynamické ilustrace předmětů
-const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
 
 // Předem definované gradienty + bordera — statické třídy, Tailwind je vidí
 const FALLBACK_PALETTES = [

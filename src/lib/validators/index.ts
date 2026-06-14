@@ -467,12 +467,14 @@ export const sequenceStepValidator: Validator = {
 /**
  * ChemicalBalance: žák doplní stechiometrické koeficienty do rovnice.
  *
- * Expected formát: "2|H2|+|1|O2|=|2|H2O" — prokládané koeficienty a vzorce.
- *   Liché pozice (0, 2, 4...) = koeficient (string číslo, "1" = implicitní)
- *   Sudé pozice (1, 3, 5...) = vzorec/operátor (H2, +, O2, =, H2O)
+ * Expected formát: páry "koef|vzorec|koef|vzorec|…" — koeficient na KAŽDÉ sudé
+ *   pozici (0, 2, 4…), vzorec na liché. Operátory +/= se do expected NEUVÁDĚJÍ
+ *   (jinak by se braly jako koeficient na sudé pozici!).
+ *   Příklad 2 H2 + O2 → 2 H2O: expected = "2|H2|1|O2|2|H2O" (koeficienty 2, 1, 2).
+ *   Pozn.: chemEquation.tokens pro UI MOHOU obsahovat operátory (+, =) jako
+ *   value s isCoefficient=false — to je oddělené od expected stringu.
  *
- * Answer formát: "2|2" — pouze koeficienty v pořadí (žák doplnil 2× a 2×).
- *   Před submit musí žák doplnit všechny koeficienty.
+ * Answer formát: jen koeficienty v pořadí "2|1|2". Prázdný/0 = implicitní "1".
  *
  * Validace:
  *   1) Délka odpovědi sedí s počtem koeficientů v expected
