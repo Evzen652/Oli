@@ -239,33 +239,9 @@ const POOL_L2: PracticeTask[] = [
   },
 ];
 
-// TODO(review): autorský L3 obsah (drag_order/match_pairs) nezapojen — téma je
-// select_one, takže by emitoval nekompatibilní úlohy. Viz DECISIONS.md.
-const _POOL_L3: PracticeTask[] = [
-  {
-    question: "Seřaď orgány ČR podle počtu členů od nejméně po nejvíce.",
-    correctAnswer: "Prezident → Senát → Sněmovna",
-    items: [
-      "Prezident (1 osoba)",
-      "Senát (81 senátorů)",
-      "Poslanecká sněmovna (200 poslanců)",
-    ],
-    hints: ["Prezident je vždy jen 1 osoba."],
-    solutionSteps: ["1 prezident < 81 senátorů < 200 poslanců."],
-  },
-  {
-    question: "Spoj orgán s jeho funkcí.",
-    correctAnswer: "Správné přiřazení",
-    pairs: [
-      { left: "Poslanecká sněmovna", right: "200 poslanců, schvaluje zákony" },
-      { left: "Senát", right: "81 senátorů, kontroluje zákony" },
-      { left: "Prezident", right: "Hlava státu, jmenuje vládu" },
-      { left: "Vláda", right: "Výkonná moc, řídí ministerstva" },
-      { left: "Ústavní soud", right: "Dohlíží na ústavnost zákonů" },
-    ],
-    hints: ["Sněmovna schvaluje, Senát kontroluje."],
-    solutionSteps: ["Zákonodárná moc: Sněmovna + Senát. Výkonná: Vláda + Prezident. Soudní: Ústavní soud."],
-  },
+// L3 — náročnější „proč" otázky (select_one). Varianty drag_order/match_pairs
+// byly odstraněny, protože téma je select_one (emitovaly by nekompatibilní úlohy).
+const POOL_L3: PracticeTask[] = [
   {
     question: "Proč je dělba moci zárukou demokracie?",
     correctAnswer: "Žádná skupina nemá všechnu moc — navzájem se kontrolují a brzdí",
@@ -291,7 +267,7 @@ const _POOL_L3: PracticeTask[] = [
     solutionSteps: ["Parlamentní volby = výběr stran; prezidentská = osobní přímá volba."],
   },
   {
-    question: "Proč komunikistický režim nebyl demokracií?",
+    question: "Proč komunistický režim nebyl demokracií?",
     correctAnswer: "Byly jen jedny 'volby', jeden povolený výsledek a žádná dělba moci",
     options: [
       "Byly jen jedny 'volby', jeden povolený výsledek a žádná dělba moci",
@@ -304,9 +280,9 @@ const _POOL_L3: PracticeTask[] = [
   },
   {
     question: "Jak bys jako 18letý využil volební právo? Která volba je nejdůležitější?",
-    correctAnswer: "Všechny jsou důležité — volba stránek i prezidenta ovlivňuje stát různými způsoby",
+    correctAnswer: "Všechny jsou důležité — volba stran i prezidenta ovlivňuje stát různými způsoby",
     options: [
-      "Všechny jsou důležité — volba stránek i prezidenta ovlivňuje stát různými způsoby",
+      "Všechny jsou důležité — volba stran i prezidenta ovlivňuje stát různými způsoby",
       "Jen prezidentská volba má smysl",
       "Jen volby do Sněmovny jsou důležité",
       "Volby jsou zbytečné — politici dělají, co chtějí",
@@ -317,8 +293,8 @@ const _POOL_L3: PracticeTask[] = [
 ];
 
 function gen(level: number): PracticeTask[] {
-  // POOL_L3 obsahuje drag_order/match_pairs tasks — pro select_one topic použij L1+L2
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : [...POOL_L1, ...POOL_L2];
+  // L3 = náročnější podmnožina (L2) + nejtěžší „proč" otázky (L3).
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : [...POOL_L2, ...POOL_L3];
   return shuffle(pool).slice(0, 30);
 }
 

@@ -9,16 +9,6 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// TODO(review): autorská data zatím nezapojená do generátoru — viz DECISIONS.md
-const _HORY = [
-  { pohoří: "Krkonoše", vrchol: "Sněžka", výška: "1603 m", poloha: "severovýchodní Čechy, u Polska" },
-  { pohoří: "Šumava", vrchol: "Plechý", výška: "1378 m", poloha: "jihozápadní Čechy, u Německa a Rakouska" },
-  { pohoří: "Jeseníky", vrchol: "Praděd", výška: "1492 m", poloha: "severní Morava" },
-  { pohoří: "Beskydy", vrchol: "Lysá hora", výška: "1323 m", poloha: "východní Morava" },
-  { pohoří: "Krušné hory", vrchol: "Klínovec", výška: "1244 m", poloha: "severozápadní Čechy, u Německa" },
-  { pohoří: "Orlické hory", vrchol: "Velká Deštná", výška: "1115 m", poloha: "východní Čechy, u Polska" },
-];
-
 const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje nejvyšší hora ČR?",

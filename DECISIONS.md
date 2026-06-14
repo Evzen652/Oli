@@ -135,3 +135,29 @@ ukončování dětských sezení); (b) **gate dle inputType** (skip pro select_o
 ale drží latentně mrtvý mechanismus bez živého free-text obsahu; (c) nechat neaktivní +
 skip testy — ZAMÍTNUTO, ponechává mrtvý kód a maskuje záměr. Vyřazení je nejčistší
 odraz architektury.
+
+## D8 — Nezapojený obsah `_POOL_L3` / `_HORY`: vyřešeno (zapojit/smazat dle typu)
+
+**Rozhodnutí:** (řeší otevřený bod z D5)
+- **`_HORY`** (g4 povrch ČR) → **SMAZÁNO**. Byla to redundantní datová tabulka 6 pohoří;
+  všechna její fakta (Sněžka 1603, Praděd 1492, …) už pokrývají autorské otázky v
+  POOL_L1/L2/L3. Žádná ztráta obsahu.
+- **`_POOL_L3`** (g5 volby) → **ČÁSTEČNĚ ZAPOJENO**. Ze 6 úloh byly 4 select_one
+  („proč" otázky — dělba moci, rozdíl voleb, komunismus, volební právo) zapojeny do L3
+  (`gen` L3 = POOL_L2 + POOL_L3). 2 nekompatibilní úlohy (drag_order `items` /
+  match_pairs `pairs`) odstraněny, protože téma je `select_one`. Opraveny překlepy
+  („komunikistický" → „komunistický", „volba stránek" → „volba stran").
+
+*Zdůvodnění:* Recovery hodnotného autorského obsahu (4 náročné L3 otázky → reálná
+gradace obtížnosti) bez zavlečení mixed-type problému (Cause C). Data bez přidané
+hodnoty (HORY) raději pryč než držet mrtvá.
+
+*Ověření:* volby prochází generator-validation na všech úrovních; tsc 0, lint 0,
+žádné `items`/`pairs` nezůstaly. (Kolísání celkového počtu failů 22↔23 je
+nedeterminismus pre-existujících Cause C témat, ne regrese — ověřeno 12 vs 10
+mezi běhy.)
+
+*Alternativy:* (a) `_POOL_L3` celé smazat — zamítnuto, ztráta 4 dobrých otázek;
+(b) převést drag_order/match_pairs na samostatné categorize téma — mimo rozsah
+(nové téma, restrukturalizace); (c) `_HORY` zapojit generátorem — zbytečné, fakta
+už v poolech.
