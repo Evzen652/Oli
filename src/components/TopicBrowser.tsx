@@ -318,7 +318,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                 {title}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Vyber předmět a pusť se do toho.
+                {subtitle}
               </p>
             </div>
             <BackButton onClick={handleBack} />

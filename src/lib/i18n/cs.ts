@@ -35,7 +35,7 @@ const cs = {
   "grade.subtitle": "Ročník slouží pouze k přizpůsobení jazyka a formy interakce, nikoliv k výběru učiva.",
 
   // Topic browser
-  "topic.select_subject": "Vyber předmět",
+  "topic.select_subject": "Vyber si předmět",
   "topic.what_today": "Co chceš dnes procvičovat?",
   "topic.select_topic": "Vyber téma",
   "topic.select_practice": "Vyber, co chceš procvičovat",
