@@ -19,6 +19,33 @@
 
 ## Otevřené
 
+### 📋 Obsah 2. stupně (ročníky 6–9) — PLÁN HOTOV, čeká na Fázi 0 (2026-06-15)
+Kompletní cesta v [`docs/STUPEN2_CONTENT_PLAN.md`](STUPEN2_CONTENT_PLAN.md). Rozsah ~505 podtémat, 6 nových předmětů.
+**Rozhodnuto:** pilot 6. ročník (Dějepis + Fyzika), metoda Hybrid (výpočetní ručně / faktické pipeline).
+
+**Sebeověření pedagogické kvality (sekce 6 plánu):** triangulační ověření
+(generátor + deterministický solver + LLM blind-solve/adversariální judge) +
+rubrika 7 kritérií pro slovní úlohy + „chybový model distraktorů". Ověřeno demem 2026-06-15.
+
+**Follow-up grade-3 (nález z dema, vlastní grade-3 session):** přepracovat distraktory
+v `grade-3/matematika/slovniUlohySeDvemaOperacemi.ts` z náhodných posunů (`r±5/±10`,
+ř. 89) na chybový model (jen 1. krok / opačná operace / sečetl vše); zreálnit cenu
+„knížka 12 Kč"; kontextualizovat 2. nápovědu (dnes identická pro všechny 4 šablony).
+
+**Fáze 0 (architekt, `main`) — další krok, blokuje start grade-N:**
+- [ ] `subjectRegistry.ts` — 6 nových `SubjectMeta` (dějepis, fyzika, chemie, přírodopis, zeměpis, výchova k občanství). Dnes přes `buildFallback`.
+- [ ] Ilustrace 6 nových předmětů (admin pipeline → Supabase `subject-{slug}.png`).
+- [ ] **Smoke test odborných typů** — komponenty + validátory existují (`ChemicalBalanceInput`, `FormulaBuilderInput`, `TimelineInput`, `DiagramLabelInput`, `NumberInput`, `EssayInput`), ale žádný topic je nepoužil. 1 testovací topic každého typu → projet v prohlížeči. **Spike chemie** (chemical_balance) tady.
+- [ ] Per-grade slovník 12–15 let do README šablony.
+- [ ] **Cílený feedback per zvolená možnost** (ZAŘAZENO 2026-06-15) — `PracticeTask.optionFeedback?:
+      Record<string,string>` (text možnosti → vysvětlení chyby) + `CheckFeedbackCard` dostane prop
+      `selectedAnswer` + při chybě zobrazí `optionFeedback[selectedAnswer]` (fallback `explanation`).
+      Rozsah select_one/true_false/multi_select. Architektonická změna (sdílený typ). Detail: plán Fáze 0.
+
+**Standard kvality:** [`PEDAGOGICKA_SPECIFIKACE_STUPEN2.md`](PEDAGOGICKA_SPECIFIKACE_STUPEN2.md)
+— platí pro generování i audit. Klíčové omezení: **žák jen vybírá, nepíše** → jen výběrové
+typy, jádro kvality = chybový model distraktorů (každý distraktor = typická chyba).
+
 ### 🔄 Grade-5 čeština — oprava hint_leak + giveaway délkou (ROZPRACOVÁNO 2026-06-14)
 **Vzor hotový:** `zajmenaSklonovaniOsobnichZajmen.ts` ✅ (commit 9b2372c). Stejný postup aplikovat na zbytek.
 
