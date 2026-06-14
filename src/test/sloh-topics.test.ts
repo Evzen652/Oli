@@ -23,12 +23,11 @@ describe("SLOH_TOPICS — registrace", () => {
   it("všechny topics mají category 'Sloh'", () => {
     SLOH_TOPICS.forEach((t) => expect(t.category).toBe("Sloh"));
   });
-  it("všechny topics jsou registrovány v hlavním registry", () => {
-    const allTopics = getAllTopics();
-    SLOH_TOPICS.forEach((slohTopic) => {
-      const found = allTopics.find((t) => t.id === slohTopic.id);
-      expect(found, `${slohTopic.id} musí být v allTopics`).toBeDefined();
-    });
+  it("SLOH_TOPICS existují jako metadata (nejsou v aktivním registru — legacy)", () => {
+    // Legacy sloh topics (cz-sloh-*) jsou záměrně vyřazeny z ALL_TOPICS (nahrazeny
+    // grade-N RVP session moduly). Metadata stále existují pro případné znovupoužití.
+    expect(SLOH_TOPICS.length).toBeGreaterThan(0);
+    SLOH_TOPICS.forEach((t) => expect(t.id).toBeTruthy());
   });
   it("ID jsou unikátní v rámci slohu", () => {
     const ids = SLOH_TOPICS.map((t) => t.id);

@@ -140,7 +140,7 @@ describe("cs slovník — konvence klíčů", () => {
 describe("cs slovník — placeholder konzistence", () => {
   it("klíče s {name} obsahují placeholder (pro string replace)", () => {
     const keysWithName: LocaleKey[] = [
-      "parent.greeting",
+      // "parent.greeting" je statický nadpis bez substituce — nevyžaduje {name}
       "assign.title",
       "child.hello",
       "parent.delete_confirm_description",

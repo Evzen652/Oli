@@ -72,8 +72,11 @@ function gen(level: number): PracticeTask[] {
       // Řazení čísel
       const nums = Array.from({ length: 4 }, () => Math.floor(Math.random() * max) + 1);
       const sorted = [...nums].sort((a, b) => a - b);
+      // Shuffle musí produkovat jiné pořadí než seřazené — jinak je otázka triviální (giveaway)
+      let shuffled = shuffle([...nums]);
+      if (shuffled.join(",") === sorted.join(",")) shuffled = [sorted[1], sorted[0], sorted[2], sorted[3]];
       tasks.push({
-        question: `Seřaď čísla od nejmenšího: ${shuffle([...nums]).join(", ")}`,
+        question: `Seřaď čísla od nejmenšího: ${shuffled.join(", ")}`,
         correctAnswer: sorted.join(", "),
         options: shuffle([
           sorted.join(", "),

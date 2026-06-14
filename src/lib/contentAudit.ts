@@ -207,6 +207,40 @@ export function runOfflineAudit(
         }
       }
 
+      // c4) Giveaway in question text — správná odpověď se doslova vyskytuje
+      // ve znění otázky → žák vybere správně bez znalosti, jen čtením.
+      // Přeskočit:
+      //   • true_false / comparison / drag_order / match_pairs / fill_blank
+      //   • otázky s embedded textem/tabulkou (čtení s porozuměním — by design)
+      //   • numerické odpovědi a odpovědi kratší než 3 znaky
+      {
+        const COMPREHENSION_PREFIXES = ["Text:", "Tabulka:", "Přečti si text:", "Graf:"];
+        const isComprehension = COMPREHENSION_PREFIXES.some(p => task.question.trimStart().startsWith(p));
+        const skipType = (
+          topic.inputType === "true_false" ||
+          topic.inputType === "comparison" ||
+          topic.inputType === "drag_order" ||
+          topic.inputType === "match_pairs" ||
+          topic.inputType === "fill_blank"
+        );
+        if (!skipType && !isComprehension) {
+          const correctStr = String(task.correctAnswer).trim();
+          if (correctStr.length >= 3 && !/^\d+([.,]\d+)?(\s*(cm|m|kg|l|°C|km|mm))?$/.test(correctStr)) {
+            const escaped = correctStr.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            const re = new RegExp(`\\b${escaped}\\b`, "i");
+            if (re.test(task.question)) {
+              issues.push({
+                ...issueMeta,
+                taskQuestion: task.question.slice(0, 80),
+                category: "format",
+                detail: `Správná odpověď "${correctStr.slice(0, 40)}" se doslova vyskytuje ve znění otázky — giveaway`,
+                correctAnswer: correctStr,
+              });
+            }
+          }
+        }
+      }
+
       // d) Hint leak (skip pro essay)
       if (topic.inputType !== "essay" && task.hints && task.hints.length > 0) {
         const leak = checkHintLeakage({

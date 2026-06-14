@@ -489,14 +489,13 @@ export function SessionView() {
             )}
           </div>
           <div className="flex items-center gap-3">
-            {!isTerminal && (
-              <div className={isStudentView ? "w-auto" : "w-48"}>
+            {!isTerminal && !isStudentView && (
+              <div className="w-48">
                 <SessionTimer
                   startTime={session.startTime}
                   maxSeconds={session.rules.maxDurationSeconds}
                   isActive={!isLocked}
                   onTimeExpired={s.handleTimeExpired}
-                  countUp={isStudentView}
                 />
               </div>
             )}
@@ -670,14 +669,7 @@ export function SessionView() {
                   </>
                 )}
                 {session.state === "PRACTICE" && (
-                  <div className="flex items-center gap-4 mb-4">
-                    <DewhiteImg
-                      src={`${SUPABASE_STORAGE}/${questionIcon}.png`}
-                      alt=""
-                      threshold={200}
-                      className="h-16 w-16 object-contain shrink-0"
-                      style={{ mixBlendMode: "multiply" }}
-                    />
+                  <div className="mb-4">
                     <h2 className="text-2xl font-heading font-bold text-foreground">{questionTitle}</h2>
                   </div>
                 )}

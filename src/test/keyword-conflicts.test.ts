@@ -35,45 +35,42 @@ describe("matchTopic — determinism", () => {
 });
 
 describe("matchTopic — longest-match resolution", () => {
-  it("preferuje delší keyword při kolizi", () => {
-    // Najdi 2 topics ve stejném gradu sdílející prefix
-    // sloh-vyprávění má keyword "sloh"
-    // sloh-popis má taky keyword "sloh"
-    // Specificky "vyprávění" by mělo trumfnout "sloh"
-    const m = matchTopic("vyprávění", 4);
+  it("preferuje delší keyword při kolizi (grade-4 popis vs vlastní tvorba)", () => {
+    // grade-4 popis topic má keyword "předmět" (7 zn.) — unikátní
+    // grade-4 vlastní tvorba topic má keyword "popis" (5 zn.) — sdílený
+    // "popis předmětu" → longest match "předmět" (7) → popis topic
+    const m = matchTopic("popis předmětu", 4);
     expect(m).toBeTruthy();
     if (m) {
-      expect(m.id).toBe("cz-sloh-vypraveni");
+      expect(m.id).toBe("g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-osoby-a-pracovniho-postupu");
     }
   });
 
-  it("'popis' v daném gradu match popis topic, ne vyprávění", () => {
-    const m = matchTopic("popis kamaráda", 4);
+  it("'vlastní tvorba' v grade 4 matchuje správný topic", () => {
+    const m = matchTopic("vlastní tvorba", 4);
     expect(m).toBeTruthy();
     if (m) {
-      expect(m.id).toBe("cz-sloh-popis");
+      expect(m.id).toBe("g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema");
     }
   });
 
-  it("samotné 'sloh' (krátký keyword) je ambiguous, vrací první nebo nějaký", () => {
-    // Krátké "sloh" je v obou keywords. Longest-match by měl vrátit jeden
-    // z nich (současný algoritmus může vrátit jeden nebo druhý — testem
-    // dokumentujeme, že NĚCO vrátí, deterministicky).
-    const m1 = matchTopic("sloh", 4);
-    const m2 = matchTopic("sloh", 4);
+  it("stejný input opakovaně → deterministický výsledek", () => {
+    const m1 = matchTopic("popis předmětu", 4);
+    const m2 = matchTopic("popis předmětu", 4);
     expect(m1?.id).toBe(m2?.id);
   });
 });
 
 describe("matchTopic — grade gating", () => {
   it("topic je viditelný pouze v jeho gradeRange", () => {
-    // sloh topics jsou pro grade 3-5
-    expect(matchTopic("vyprávění", 9)).toBeNull();
-    expect(matchTopic("vyprávění", 1)).toBeNull();
+    // grade-4 "vlastní tvorba" topic [4,4] nesmí matchovat mimo ročník 4
+    expect(matchTopic("vlastní tvorba", 9)).toBeNull();
+    expect(matchTopic("vlastní tvorba", 1)).toBeNull();
+    expect(matchTopic("vlastní tvorba", 3)).toBeNull();
   });
 
   it("v gradu uvnitř range → match OK", () => {
-    expect(matchTopic("vyprávění", 3)).toBeTruthy();
+    expect(matchTopic("popis předmětu", 4)).toBeTruthy();
     expect(matchTopic("vyprávění", 5)).toBeTruthy();
   });
 });

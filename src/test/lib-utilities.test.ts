@@ -243,13 +243,13 @@ describe("validateTaskForInputType — drag_order / match_pairs / multi_select /
     ).toBe(false);
   });
 
-  it("match_pairs: ≥2 párů → valid", () => {
+  it("match_pairs: ≥3 párů → valid", () => {
     expect(
       validateTaskForInputType(
         {
           question: "Q",
           correctAnswer: "[]",
-          pairs: [{ left: "a", right: "1" }, { left: "b", right: "2" }],
+          pairs: [{ left: "a", right: "1" }, { left: "b", right: "2" }, { left: "c", right: "3" }],
         },
         "match_pairs"
       )
