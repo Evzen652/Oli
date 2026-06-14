@@ -547,7 +547,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                             {topic.studentTitle ?? topic.displayName ?? topic.title}
                           </h3>
                           {topic.briefDescription && (
-                            <p className="text-xs text-foreground/65 leading-snug line-clamp-2">{topic.briefDescription}</p>
+                            <p className="text-base text-foreground/65 leading-snug line-clamp-2">{topic.briefDescription}</p>
                           )}
                         </div>
                       </button>
