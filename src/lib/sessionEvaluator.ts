@@ -1,6 +1,7 @@
 /**
- * Session evaluator — uses Groq AI (Llama 3.3 70B) when available,
- * falls back to smart local evaluation.
+ * Session evaluator — generuje hodnotící text lokální šablonou
+ * (deterministicky, bez sítě/AI). Dřív volal Groq; odstraněno kvůli
+ * bezpečnosti (klíč v klientském bundlu) — viz nález C1.
  *
  * Rules from ai-architecture-notes.md:
  * - Grade 1-3: max 1-2 very short sentences, simple words
