@@ -773,7 +773,7 @@ export function SessionView() {
                   <p className="text-base text-muted-foreground">{revealedAnswer.hint}</p>
                 </CardContent>
               </Card>
-              <Button onClick={s.handleContinueAfterCheck} disabled={loading} className="w-full text-lg h-14 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200">
+              <Button onClick={s.handleContinueAfterCheck} disabled={loading} className="w-full text-lg h-14 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200">
                 {loading ? t("session.processing") : t("session.continue")}
               </Button>
             </div>

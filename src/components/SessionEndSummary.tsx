@@ -160,7 +160,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
       <div className="grid grid-cols-2 gap-3">
         <Button
           variant="default"
-          className="text-lg h-14 rounded-full gap-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white border-0 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200 font-bold"
+          className="text-lg h-14 rounded-full gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200 font-bold"
           onClick={onRepeat}
         >
           <RotateCcw className="w-5 h-5" /> {t("summary.repeat")}
