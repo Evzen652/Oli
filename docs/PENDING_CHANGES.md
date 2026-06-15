@@ -19,6 +19,25 @@
 
 ## Otevřené
 
+### 🧪 Stav testů 2026-06-15 (diagnostika po Fázi 0 — žádná regrese z mé práce)
+Plná sada: **17 failů / 4343 (4324 passed)** ve 3 souborech. Ověřeno, že **moje noční
+změny (optionFeedback + smoke testy + README) nezpůsobily žádný z nich** — dotčené
+soubory jsou aditivní/UI/typové, padající testy importují nezměněný orchestrátor.
+Nové testy `option-feedback.test.ts` (9/9) + `stupen2-odborne-typy-ui.smoke.test.tsx` (8/8) zelené, tsc 0 chyb.
+
+Tři předexistující padající soubory:
+1. **`generator-validation.test.ts`** (~12) — **Cause C** (viz níže): `correctAnswer` mimo
+   `options` u `g3-cjl-vers-rym-prirovnani` (rýmy), `g3-prvouka-…-ekosystemy`,
+   `…-stavba-rostlin`, `…-lidske-telo-kostra-svaly`. Známé, grade-3 obsah.
+2. **`execution-directive.test.ts`** (5) — **NOVĚ DIAGNOSTIKOVÁNO:** testy volají
+   `createSession(6)` + `processState(s, "porovnávání zlomků")`, ale **grade 6 nemá žádný
+   obsah** → `matchTopic` striktně filtruje `gradeRange` (contentRegistry.ts:116) → 0 kandidátů
+   → `STOP_2`, prázdný `practiceBatch` → `practiceBatch[0]` undefined. Orchestrátor nemá
+   cross-grade fallback (design je správný). **K rozhodnutí:** přepsat testy na ročník s
+   obsahem (grade 5 „porovnávání zlomků" existuje), NEBO počkají na pilot grade-6 (Fáze 1).
+   Runtime dopad teď nulový (grade 6 není pro žáky dostupný).
+3. **`content-audit.test.ts`** (1) — „OFFLINE PŘEHLED" práh passingPct (audit, předexistující).
+
 ### 📋 Obsah 2. stupně (ročníky 6–9) — PLÁN HOTOV, čeká na Fázi 0 (2026-06-15)
 Kompletní cesta v [`docs/STUPEN2_CONTENT_PLAN.md`](STUPEN2_CONTENT_PLAN.md). Rozsah ~505 podtémat, 6 nových předmětů.
 **Rozhodnuto:** pilot 6. ročník (Dějepis + Fyzika), metoda Hybrid (výpočetní ručně / faktické pipeline).
