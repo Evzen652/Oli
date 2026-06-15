@@ -41,8 +41,11 @@
       (ZLATÝ FAKTICKÝ VZOR — most z výpočetní fyziky: L1 určení století → L2 řazení/rozdíl
       př. n. l. → L3 přelom letopočtu „rok 0 neexistuje"; chybový model + optionFeedback;
       blind-solve judge 18/18, konvence X+Y−1 ověřena). select_one (nemíchá typy).
+- [x] **Historické prameny — hmotné, písemné, obrazové** → `dejepis/historickePrameny.ts` ✅
+      (categorize — 3. ověřovaný typ; práce se zdrojem. Rozlišovací pravidlo „podle obsahu,
+      ne materiálu"; chybový model v L3 = klamavé prameny (klínové písmo na hliněné tabulce
+      = písemný, ne hmotný). Nezávislý klasifikátor v testu. ⏳ judge zbývá.) select_one nepoužit.
 - [ ] Co je dějepis — význam studia minulosti
-- [ ] Historické prameny — hmotné, písemné, obrazové (plán: **categorize** — práce se zdrojem)
 - [ ] Pomocné vědy historické — archeologie, paleografie, numismatika, heraldika
 
 ### Pravěk
@@ -56,4 +59,5 @@
 ### Starověk
 - [ ] Mezopotámie a Egypt · Indie a Čína · Antika Řecko · Antika Řím (13 podtémat)
 
-**Pilotní stav:** 2/24 (select_one + drag_order ověřeny; zbývá categorize — práce se zdrojem).
+**Pilotní stav:** 3/24 — **všechny tři klíčové faktické typy ověřeny** (select_one + drag_order + categorize). Trojice typů hotová → lze odvodit `TEMPLATE_STUPEN2.ts`.
+⏳ Téma 3 (prameny): prošlo tsc + testy (klasifikátor) + audity; **adversariální judge zbývá** doplnit.

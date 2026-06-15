@@ -92,3 +92,27 @@ export function buildOrderTask(
     explanation: parts.explanation,
   };
 }
+
+/**
+ * Sestaví categorize úlohu (žák třídí položky do skupin).
+ *  • `categories` = cílové skupiny s položkami, které do nich patří.
+ *  • correctAnswer je technický marker "categorize" (skutečná odpověď je
+ *    v `categories`); kvalita leží v JEDNOZNAČNÉM zařazení a ve vysvětlení
+ *    ROZLIŠOVACÍHO znaku (např. pramen „nese text" = písemný).
+ *  • Chybový model u categorize = záměrně zařadit položku, která NAVENEK vypadá
+ *    jako jiná skupina (klínová tabulka = hmotná hlína, ale nese text → písemný);
+ *    vysvětlení pak pojmenuje, podle čeho se rozhoduje.
+ */
+export function buildCategorizeTask(
+  question: string,
+  categories: { name: string; items: string[] }[],
+  parts: { hints: string[]; explanation: string },
+): PracticeTask {
+  return {
+    question,
+    correctAnswer: "categorize",
+    categories,
+    hints: parts.hints,
+    explanation: parts.explanation,
+  };
+}

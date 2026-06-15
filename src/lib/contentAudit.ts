@@ -714,13 +714,14 @@ export function runPedagogicalAudit(
 
     // ── 8) Answer uniqueness within level 1 — šablonový generátor ────────
     // Přeskočit pro inputType kde shodná odpověď je legitimní:
-    // true_false/comparison (malá množina hodnot), drag_order/match_pairs
-    // (correctAnswer je jen technický marker, skutečná odpověď je v items/pairs)
+    // true_false/comparison (malá množina hodnot), drag_order/match_pairs/categorize
+    // (correctAnswer je jen technický marker, skutečná odpověď je v items/pairs/categories)
     if (
       topic.inputType !== "true_false" &&
       topic.inputType !== "comparison" &&
       topic.inputType !== "drag_order" &&
       topic.inputType !== "match_pairs" &&
+      topic.inputType !== "categorize" &&
       lvl1Tasks.length >= 5
     ) {
       const sample5 = lvl1Tasks.slice(0, 5);
