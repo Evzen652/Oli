@@ -14,13 +14,13 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký druh řeči je věta: Petr řekl: \"Přijdu zítra.\"",
     correctAnswer: "přímá řeč",
     options: ["přímá řeč", "nepřímá řeč", "obě najednou", "ani jedna"],
-    hints: ["Přímá řeč jsou doslova citovaná slova v uvozovkách."],
+    hints: ["Jsou slova citována doslova a stojí v uvozovkách? Jak se takový způsob podání cizích slov jmenuje?"],
   },
   {
     question: "Jaký druh řeči je věta: Petr řekl, že přijde zítra.",
     correctAnswer: "nepřímá řeč",
     options: ["přímá řeč", "nepřímá řeč", "obě najednou", "ani jedna"],
-    hints: ["Nepřímá řeč přeformuluje obsah bez uvozovek a přidá spojku 'že'."],
+    hints: ["Jsou Petrova slova přeformulovaná (vlastními slovy) a chybí uvozovky? Všimni si spojky 'že'. O který druh řeči jde?"],
   },
   {
     question: "Přímá řeč se píše:",
@@ -145,7 +145,7 @@ const POOL_L1: PracticeTask[] = [
     hints: ["V přímé řeči vrátíme 1. nebo 3. osobu a přidáme uvozovky."],
   },
   {
-    question: "Ve větě s přímou řečí: dolni-uvoz.Pojď sem,horni-uvoz. řekla babička. – kde je čárka?",
+    question: "Ve větě s přímou řečí: „Pojď sem,“ řekla babička. – kde je čárka?",
     correctAnswer: "uvnitř uvozovek, před uvozovací větou",
     options: [
       "za uvozovkami",

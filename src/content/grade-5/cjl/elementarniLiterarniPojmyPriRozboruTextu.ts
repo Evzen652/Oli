@@ -140,7 +140,7 @@ const POOL_L1: PracticeTask[] = [
       "3. osobě – on/ona/oni",
       "záleží na díle",
     ],
-    hints: ["Er-forma = er (on/ona). Vypravěč je mimo příběh."],
+    hints: ["'Er' je německé zájmeno pro třetí osobu. Vypravěč stojí mimo příběh a popisuje ostatní — v které osobě tedy vypráví?"],
   },
   {
     question: "Ich-forma vypravěče znamená:",
@@ -151,7 +151,7 @@ const POOL_L1: PracticeTask[] = [
       "vypravěč mluví o jiné osobě",
       "záleží na díle",
     ],
-    hints: ["Ich-forma = ich (já). Vypravěč = postava v příběhu."],
+    hints: ["'Ich' je německé slovo pro první osobu. Zamysli se: je vypravěč uvnitř nebo vně příběhu, a v jaké osobě proto mluví?"],
   },
   {
     question: "Co je hlavní postava?",

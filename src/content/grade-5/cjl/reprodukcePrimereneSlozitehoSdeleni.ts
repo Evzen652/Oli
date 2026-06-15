@@ -282,7 +282,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Ověření: znovu přečti originál a zkontroluj."],
   },
   {
-    question: "Jak správně strukturujeme reproukci delšího textu?",
+    question: "Jak správně strukturujeme reprodukci delšího textu?",
     correctAnswer: "každý odstavec originálu shrnem do jedné věty reprodukce",
     options: [
       "napíšeme jen první a poslední odstavec",

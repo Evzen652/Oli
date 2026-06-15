@@ -19,7 +19,7 @@ const POOL_L1: PracticeTask[] = [
       "báseň o historické události",
       "báseň pro děti vždy",
     ],
-    hints: ["Lyrika = pocity, nálady, subjektivní zážitky."],
+    hints: ["'Lyrika' pochází z řeckého nástroje lyra, spojeného s výrazem vnitřního světa. Vypráví tato báseň příběh, nebo spíše vyjadřuje niterné prožívání?"],
   },
   {
     question: "Co je epická báseň?",
@@ -30,7 +30,7 @@ const POOL_L1: PracticeTask[] = [
       "báseň s příběhem a dějem – balada, epos, pohádkový příběh",
       "báseň z pohledu zvířete",
     ],
-    hints: ["Epika = příběh. Epická báseň = příběh ve verších."],
+    hints: ["'Epika' pochází z řeckého slova pro vyprávění. Má tato báseň příběh s postavami a dějem, nebo jen vyjadřuje pocity?"],
   },
   {
     question: "Co je román?",
@@ -74,7 +74,7 @@ const POOL_L1: PracticeTask[] = [
       "lyrická a lyrickoepická báseň",
       "divadelní hra",
     ],
-    hints: ["Máj od K. H. Máchy = lyrika i epika v jednom díle."],
+    hints: ["Máj od K. H. Máchy je proslulý tím, že v jednom díle kombinuje dvě různé formy. Přečti si názvy možností a zamysli se, která vystihuje tuto kombinaci."],
   },
   {
     question: "Jaký je hlavní rozdíl mezi románem a povídkou?",
@@ -187,7 +187,7 @@ const POOL_L2: PracticeTask[] = [
       "báseň kombinující lyrické pocity s epickým dějem",
       "pohádka ve verších",
     ],
-    hints: ["Lyrickoepická = má příběh (epika) i pocity (lyrika)."],
+    hints: ["'Lyricko-' a '-epická' — obě části názvu napovídají, co dílo spojuje. Která dvě slova označují pocity a příběh?"],
   },
   {
     question: "Co je pohádka a jaký žánr to je?",
@@ -209,7 +209,7 @@ const POOL_L2: PracticeTask[] = [
       "verše a sloky",
       "záleží na autorovi",
     ],
-    hints: ["Epická = má příběh. Lyrická = nemá příběh."],
+    hints: ["Zamysli se: co lyrickým básním chybí a epickým ne? Co potřebuješ, aby se dalo mluvit o hrdinovi, zápletce a rozuzlení?"],
   },
   {
     question: "Jaký je žánr díla Tři mušketýři (Alexandre Dumas)?",

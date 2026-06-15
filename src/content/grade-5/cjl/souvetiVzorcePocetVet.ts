@@ -25,7 +25,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Kolik vět obsahuje souvětí 'Šel domů, protože byl unavený.'?",
     correctAnswer: "2 věty",
     options: ["1 větu", "2 věty", "3 věty", "4 věty"],
-    hints: ["Šel domů = 1. věta. Byl unavený = 2. věta."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) — kolik přísudků, tolik vět."],
   },
   {
     question: "Které slovo spojuje věty v souvětí 'Přišel a sedl si.'?",
@@ -68,9 +68,9 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kolik vět je v souvětí 'Jedl, pil a zpíval, dokud mu nezbyly síly.'?",
-    correctAnswer: "3 věty",
+    correctAnswer: "2 věty",
     options: ["2 věty", "3 věty", "4 věty", "1 věta"],
-    hints: ["Jedl – pil a zpíval – dokud mu nezbyly síly = 3 části."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je. Pozor: 'jedl, pil a zpíval' — jsou to tři různé věty, nebo několikanásobný přísudek jedné věty?"],
   },
   {
     question: "Spojka 'nebo' spojuje:",
@@ -142,7 +142,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Kolik vět je v souvětí 'Vím, že přijdeš, když budeš mít čas.'?",
     correctAnswer: "3 věty",
     options: ["2 věty", "3 věty", "4 věty", "1 věta"],
-    hints: ["Vím – že přijdeš – když budeš mít čas = 3 věty."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru a spočítej je — kolik přísudků, tolik vět."],
   },
   {
     question: "Která z vět je jednoduchou větou (ne souvětím)?",
@@ -195,7 +195,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Kolik vět je v souvětí 'Doma bylo ticho, protože všichni spali a nikdo nerušil.'?",
     correctAnswer: "3 věty",
     options: ["2 věty", "3 věty", "4 věty", "5 vět"],
-    hints: ["Bylo ticho – protože spali – a nikdo nerušil = 3 věty."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je — kolik přísudků, tolik vět."],
   },
   {
     question: "Napište vzorec souvětí 'Nešel ven, protože pršelo.':",
@@ -212,7 +212,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Sněžilo, a přesto šli na procházku.' – kolik vět?",
     correctAnswer: "2 věty",
     options: ["1 věta", "2 věty", "3 věty", "4 věty"],
-    hints: ["Sněžilo = 1. věta. Šli na procházku = 2. věta."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je — kolik přísudků, tolik vět."],
   },
   {
     question: "Spojka 'aby' uvádí vedlejší větu:",
@@ -273,7 +273,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Kolik vět je v souvětí 'Zima přišla, sníh napadl a děti se radovaly.'?",
     correctAnswer: "3 věty",
     options: ["2 věty", "3 věty", "4 věty", "1 věta"],
-    hints: ["Zima přišla – sníh napadl – děti se radovaly = 3 věty."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je — kolik přísudků, tolik vět."],
   },
   {
     question: "Čárka před spojkou 'a' se píše:",

@@ -14,7 +14,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Kolik slovních druhů je v češtině?",
     correctAnswer: "10",
     options: ["6", "8", "10", "12"],
-    hints: ["V češtině je přesně 10 slovních druhů."],
+    hints: ["Vzpomeň si na všechny skupiny: jména, slovesa, zájmena, číslovky, příslovce, neohebné — kolik to celkem dá?"],
   },
   {
     question: "Jaký slovní druh je slovo 'pes'?",
@@ -96,19 +96,19 @@ const POOL_L1: PracticeTask[] = [
       "slovesa, číslovky, zájmena",
       "jen předložky a spojky",
     ],
-    hints: ["Neohebné = nemění se (příslovce, předložky, spojky, částice, citoslovce)."],
+    hints: ["Neohebné = nemění se v pádech ani osobách. Patří sem příslovce a dále čtyři skupiny slov, která slouží jako 'spojovací' nebo 'doplňující' — dokážeš je vyjmenovat?"],
   },
   {
     question: "Ve větě 'Dívka tiše zpívala.' – jaký slovní druh je 'tiše'?",
     correctAnswer: "příslovce",
     options: ["přídavné jméno", "příslovce", "sloveso", "podstatné jméno"],
-    hints: ["Tiše = jak zpívala? → příslovce způsobu."],
+    hints: ["Zeptej se: jak zpívala? Slovo, které odpovídá na otázku 'jak/kde/kdy/proč' u slovesa, patří do které skupiny?"],
   },
   {
     question: "Ve větě 'Ahoj, jak se máš?' – jaký slovní druh je 'ahoj'?",
     correctAnswer: "citoslovce",
     options: ["příslovce", "spojka", "podstatné jméno", "citoslovce"],
-    hints: ["Ahoj je pozdrav – vyjadřuje citový postoj = citoslovce."],
+    hints: ["'Ahoj' vyjadřuje citový nebo sociální postoj — nemění se, netvoří větné sklady. Který slovní druh vyjadřuje city a zvuky?"],
   },
 ];
 

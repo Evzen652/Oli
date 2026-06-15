@@ -14,43 +14,43 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký způsob má sloveso 'Jdu domů.'?",
     correctAnswer: "oznamovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "neurčitý"],
-    hints: ["Oznamovací způsob konstatuje fakta."],
+    hints: ["Projdi možnosti: je to příkaz, je tam 'bych/by', nebo věta prostě něco sděluje?"],
   },
   {
     question: "Jaký způsob má sloveso 'Jdi domů!'?",
     correctAnswer: "rozkazovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "neurčitý"],
-    hints: ["Rozkazovací způsob vyjadřuje rozkaz nebo prosbu."],
+    hints: ["Projdi možnosti: příkaz s vykřičníkem, 'bych/by', nebo prosté sdělení?"],
   },
   {
     question: "Jaký způsob má sloveso 'Šel bych domů.'?",
     correctAnswer: "podmiňovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "neurčitý"],
-    hints: ["Podmiňovací způsob vyjadřuje podmínku nebo možnost (bych, bys, by...)."],
+    hints: ["Najdi ve větě slůvko 'bych/by'. Co podle tebe naznačuje?"],
   },
   {
     question: "Sloveso 'Otevřete okno!' je v:",
     correctAnswer: "rozkazovacím způsobu",
     options: ["oznamovacím způsobu", "rozkazovacím způsobu", "podmiňovacím způsobu", "přítomném čase"],
-    hints: ["Otevřete = rozkaz pro více lidí."],
+    hints: ["Co ta věta po lidech chce? Projdi: příkaz, podmínka, nebo sdělení?"],
   },
   {
     question: "Sloveso 'Chtěla by spát.' je v:",
     correctAnswer: "podmiňovacím způsobu",
     options: ["oznamovacím způsobu", "rozkazovacím způsobu", "podmiňovacím způsobu", "budoucím čase"],
-    hints: ["'By' je příznak podmiňovacího způsobu."],
+    hints: ["Všimni si slůvka 'by'. Který způsob ho používá?"],
   },
   {
     question: "Sloveso 'Hrají si venku.' je v:",
     correctAnswer: "oznamovacím způsobu",
     options: ["oznamovacím způsobu", "rozkazovacím způsobu", "podmiňovacím způsobu", "neurčitku"],
-    hints: ["Konstatujeme fakt, co dělají."],
+    hints: ["Je tam příkaz nebo 'bych/by'? Pokud ne, co věta dělá?"],
   },
   {
     question: "Jaký způsob vyjadřuje rozkaz, zákaz nebo prosbu?",
     correctAnswer: "rozkazovací způsob",
     options: ["oznamovací způsob", "rozkazovací způsob", "podmiňovací způsob", "neurčitek"],
-    hints: ["Rozkaz/prosba/zákaz = rozkazovací způsob."],
+    hints: ["Odvoď název způsobu od toho, co věta dělá."],
   },
   {
     question: "Jaký způsob vyjadřuje možnost nebo podmínku?",
@@ -62,43 +62,43 @@ const POOL_L1: PracticeTask[] = [
     question: "'Buď hodný!' – jaký způsob?",
     correctAnswer: "rozkazovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "přací"],
-    hints: ["'Buď' je tvar rozkazovacího způsobu."],
+    hints: ["'Buď hodný!' – co ta věta po někom chce?"],
   },
   {
     question: "'Přišli by brzy.' – jaký způsob?",
     correctAnswer: "podmiňovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "budoucí čas"],
-    hints: ["'By' = podmiňovací způsob."],
+    hints: ["Všimni si slůvka 'by'. Který způsob ho má?"],
   },
   {
     question: "Oznamovací způsob konstatuje:",
     correctAnswer: "skutečnosti, fakta",
     options: ["rozkazy a prosby", "podmínky a možnosti", "skutečnosti, fakta", "přání a sny"],
-    hints: ["Oznamovací = sdělení toho, co je nebo bylo."],
+    hints: ["Co znamená sloveso 'konstatovat'?"],
   },
   {
     question: "'Mohl bych ti pomoci.' – jaký způsob?",
     correctAnswer: "podmiňovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "neurčitek"],
-    hints: ["Bych = podmiňovací způsob."],
+    hints: ["Najdi slůvko 'bych'. Který způsob ho používá?"],
   },
   {
     question: "'Nenech to tady!' – jaký způsob?",
     correctAnswer: "rozkazovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "přítomný čas"],
-    hints: ["Nenech = rozkaz (záporný)."],
+    hints: ["Co po tobě věta 'Nenech to tady!' chce?"],
   },
   {
     question: "Přesun z oznamovacího do rozkazovacího: 'Ty jdeš.' → ___",
     correctAnswer: "Jdi!",
     options: ["Jdi!", "Šel bys.", "Jdeš!", "Jde."],
-    hints: ["Rozkazovací způsob 2. osoby singuláru = Jdi!"],
+    hints: ["Změň větu na příkaz pro 'ty'."],
   },
   {
     question: "Přesun z oznamovacího do podmiňovacího: 'On přijde.' → ___",
     correctAnswer: "Přišel by.",
     options: ["Přijdi!", "Přišel by.", "Přijde by.", "Přicházel by."],
-    hints: ["Podmiňovací = přišel by (příčestí + by)."],
+    hints: ["Přidej k příčestí minulému slovesa slůvko 'by'."],
   },
 ];
 
@@ -131,7 +131,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Přišla bys, kdybych tě pozval?' jaký způsob má 'přišla bys'?",
     correctAnswer: "podmiňovací",
     options: ["oznamovací", "rozkazovací", "podmiňovací", "přací"],
-    hints: ["Bys = podmiňovací způsob 2. osoby."],
+    hints: ["Najdi slůvko 'bys'. Který způsob ho má?"],
   },
   {
     question: "Ve větě 'Zavřete okno!' jaký způsob a osoba?",
@@ -142,13 +142,13 @@ const POOL_L2: PracticeTask[] = [
       "podmiňovací, 2. os. mn. č.",
       "rozkazovací, 1. os. mn. č.",
     ],
-    hints: ["Zavřete = rozkaz pro 'vy' = 2. os. mn. č."],
+    hints: ["'Zavřete' míří na 'vy'. Jaký je to způsob?"],
   },
   {
     question: "Jak zní 1. os. mn. č. rozkazovacího způsobu slovesa 'jít'?",
     correctAnswer: "pojďme",
     options: ["jdeme", "pojďme", "jděme", "půjdeme"],
-    hints: ["Pojďme = vybídnutí skupiny: 'Pojďme!'"],
+    hints: ["Jaký tvar 'jít' použiješ, když vybízíš skupinu i se sebou?"],
   },
   {
     question: "Ve větě 'Chodil bych do divadla, kdybych měl čas.' – kolik slov v podmiňovacím způsobu?",
@@ -170,13 +170,13 @@ const POOL_L2: PracticeTask[] = [
       "Přijdi k vám.",
       "Přicházel bych k vám.",
     ],
-    hints: ["Podmiňovací: příčestí minulé (přišel) + bych."],
+    hints: ["Podmiňovací = příčestí minulé + 'bych'. Vytvoř tvar."],
   },
   {
     question: "Přepiš do rozkazovacího způsobu (ty): 'Ty spíš.'",
     correctAnswer: "Spi!",
     options: ["Spal!", "Spi!", "Spěj!", "Spíš!"],
-    hints: ["Rozkazovací způsob od slovesa 'spát' = spi."],
+    hints: ["Vytvoř příkaz pro 'ty' od slovesa 'spát'."],
   },
   {
     question: "Jak se liší 'Jdi!' od 'Jděte!'?",
@@ -187,7 +187,7 @@ const POOL_L2: PracticeTask[] = [
       "Jdi je oznamovací",
       "Jděte je podmiňovací",
     ],
-    hints: ["Jdi = ty. Jděte = vy."],
+    hints: ["Kolika lidem je každý z těch příkazů určen?"],
   },
   {
     question: "Ve větě 'Kdybychom měli peníze, cestovali bychom.' jaké způsoby použity?",
@@ -198,7 +198,7 @@ const POOL_L2: PracticeTask[] = [
       "oznamovací + podmiňovací",
       "rozkazovací + podmiňovací",
     ],
-    hints: ["Kdybychom (by) + cestovali bychom (by) = oba podmiňovací."],
+    hints: ["Najdi v obou slovesech slůvko 'by'. Co to znamená?"],
   },
   {
     question: "Přepiš do oznamovacího způsobu: 'Šel bych na procházku.'",
@@ -210,7 +210,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Jak zní podmiňovací způsob přítomný od slovesa 'být' ve 3. osobě jednotného čísla?",
     correctAnswer: "byl by / byla by / bylo by",
     options: ["je", "byl by / byla by / bylo by", "buď", "bývá by"],
-    hints: ["Byl + by = podmiňovací způsob přítomný."],
+    hints: ["Spoj příčestí minulé slovesa 'být' se slůvkem 'by'."],
   },
   {
     question: "Ve větě 'Pokud bys mohl, zavolej mi.' – jaké způsoby jsou použity?",
@@ -221,7 +221,7 @@ const POOL_L2: PracticeTask[] = [
       "rozkazovací + oznamovací",
       "podmiňovací + podmiňovací",
     ],
-    hints: ["Bys = podmiňovací. Zavolej = rozkazovací."],
+    hints: ["Rozeber slovesa 'bys mohl' a 'zavolej'. Co každé vyjadřuje?"],
   },
 ];
 
@@ -235,7 +235,7 @@ const POOL_L3: PracticeTask[] = [
       "oznamovací – zde jako přací/neosobní konstrukce s 'ať'",
       "neurčitek",
     ],
-    hints: ["'Ať' + oznamovací tvar = přací výraz (přání nebo svolení)."],
+    hints: ["Jaký tvar má samotné sloveso 'přijde', než k němu přidáš 'ať'?"],
   },
   {
     question: "Existuje podmiňovací způsob minulý? Jak by zněl pro 'přijít' (já)?",
@@ -246,7 +246,7 @@ const POOL_L3: PracticeTask[] = [
       "ano: přišel bych byl",
       "ne – tvar neexistuje",
     ],
-    hints: ["Podmiňovací minulý = byl bych + příčestí minulé (složený tvar)."],
+    hints: ["Existuje – tvoří se ze dvou příčestí. Zkus tvar složit."],
   },
   {
     question: "Ve větě 'Prosím, nepůjdeš se mnou?' jaký způsob je použit?",
@@ -257,7 +257,7 @@ const POOL_L3: PracticeTask[] = [
       "oznamovací způsob – otázka s oznamovacím tvarem – zdvořilá prosba",
       "neurčitek",
     ],
-    hints: ["Zdvořilá prosba může být vyjádřena oznamovacím způsobem v otázce."],
+    hints: ["Jaký tvar má sloveso 'nepůjdeš' – příkaz, podmínka, nebo běžné sdělení?"],
   },
   {
     question: "Rozkazovací způsob nemá:",
@@ -268,7 +268,7 @@ const POOL_L3: PracticeTask[] = [
       "1. osobu jednotného čísla – nemohu rozkázat sám sobě formálně",
       "záporné tvary",
     ],
-    hints: ["Nemůžeme říct 'Pojdi!' sám sobě – chybí 1. os. j. č."],
+    hints: ["Zkus si rozkázat sám sobě (1. osoba). Jde to?"],
   },
   {
     question: "Jak se tvoří záporný rozkazovací způsob?",
@@ -279,7 +279,7 @@ const POOL_L3: PracticeTask[] = [
       "un- + tvar",
       "neumíme tvořit záporný",
     ],
-    hints: ["Piš → nepiš. Čti → nečti. Jdi → nejdi."],
+    hints: ["Co přidáš před tvar příkazu, aby z něj byl zákaz?"],
   },
   {
     question: "Ve větě 'Kdybych věděl, šel bych.' jaké jsou podmínky?",
@@ -290,7 +290,7 @@ const POOL_L3: PracticeTask[] = [
       "kdybych věděl = oznamovací",
       "jen kdybych je podmiňovací",
     ],
-    hints: ["Celé souvětí je podmiňovací – podmínka + důsledek."],
+    hints: ["Najdi v obou částech souvětí slůvko 'by'. Co naznačuje?"],
   },
   {
     question: "Jak se liší použití podmiňovacího způsobu přítomného a minulého?",
@@ -301,7 +301,7 @@ const POOL_L3: PracticeTask[] = [
       "minulý je zdvořilejší",
       "přítomný je vždy s 'bys'",
     ],
-    hints: ["Šel bych (teď/pak). Byl bych šel (ale nešel jsem – minulost)."],
+    hints: ["Porovnej 'šel bych' a 'byl bych šel'. Která podmínka už nemůže nastat?"],
   },
   {
     question: "Ve větě 'Mlč!' – jaký slovesný způsob, osoba, číslo?",
@@ -312,7 +312,7 @@ const POOL_L3: PracticeTask[] = [
       "podmiňovací, 2. os., j. č.",
       "rozkazovací, 3. os., mn. č.",
     ],
-    hints: ["Mlč = rozkaz pro 'ty' = 2. os. j. č. rozkazovacího způsobu."],
+    hints: ["'Mlč!' – co to je za větu a komu je určena?"],
   },
   {
     question: "Tvoř podmiňovací způsob 2. osoby množného čísla od slovesa 'dělat':",
@@ -324,7 +324,7 @@ const POOL_L3: PracticeTask[] = [
     question: "Ve větě 'Nechte ho mluvit!' – jaký způsob?",
     correctAnswer: "rozkazovací způsob",
     options: ["oznamovací", "rozkazovací způsob", "podmiňovací", "neurčitek"],
-    hints: ["Nechte = rozkaz pro 'vy' = rozkazovací způsob."],
+    hints: ["'Nechte ho mluvit!' – co ta věta po lidech chce?"],
   },
   {
     question: "Jaký slovesný způsob nevyjadřuje čas (přítomnost/minulost/budoucnost)?",
@@ -335,7 +335,7 @@ const POOL_L3: PracticeTask[] = [
       "rozkazovací způsob – vztahuje se k okamžiku příkazu",
       "neurčitek – infinitiv",
     ],
-    hints: ["Rozkaz platí 'teď' – nemá gramatické časy jako oznamovací způsob."],
+    hints: ["U kterého způsobu nemá smysl ptát se 'kdy' (minulost/přítomnost/budoucnost)?"],
   },
 ];
 

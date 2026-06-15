@@ -348,10 +348,10 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Co je epizoda ve vyprávění?",
-    correctAnswer: "kratší uzavřený příběh v rámci většíhopříběhu",
+    correctAnswer: "kratší uzavřený příběh v rámci většího příběhu",
     options: [
       "typ zápletky",
-      "kratší uzavřený příběh v rámci většíhopříběhu",
+      "kratší uzavřený příběh v rámci většího příběhu",
       "druh osnovy",
       "závěrečné poučení",
     ],

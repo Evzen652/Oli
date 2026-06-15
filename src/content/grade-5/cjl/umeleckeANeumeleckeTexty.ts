@@ -271,7 +271,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Umělecký text = kreativní jazyk, obrazy, emoce."],
   },
   {
-    question: "Co je pohled jako věcný nebo umělecký text v záviseti na kontextu?",
+    question: "Může být stejné téma zpracováno jako věcný i jako umělecký text podle toho, jaký má autor záměr?",
     correctAnswer: "záleží na účelu – vědecký popis přírody = věcný; báseň o přírodě = umělecký",
     options: [
       "vždy věcný",

@@ -123,15 +123,15 @@ const POOL_L1: PracticeTask[] = [
     hints: ["Odborné texty vyžadují přesný a neutrální jazyk."],
   },
   {
-    question: "Jak zní nespisovný hovorový tvar slova 'nic'?",
-    correctAnswer: "nic je již hovorové i spisovné; v obecné češtině: 'vůbec nic'",
+    question: "Jak zní nespisovný hovorový tvar slovesa 'být'?",
+    correctAnswer: "bejt",
     options: [
-      "nič",
-      "nic je již hovorové i spisovné; v obecné češtině: 'vůbec nic'",
-      "nicujo",
-      "nijaké",
+      "bejt",
+      "býti",
+      "buďto",
+      "být je správně",
     ],
-    hints: ["Některá slova jsou přijatelná v obou vrstvách jazyka."],
+    hints: ["Obecná čeština mění 'ý' na 'ej': být → bejt, dobrý → dobrej."],
   },
   {
     question: "Slovo 'brácha' (místo 'bratr') je:",
@@ -444,10 +444,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Která z vět je stylově VHODNÁ pro školní sloh a která pro SMS?",
-    correctAnswer: "Sloh: 'Poté jsme navštívili museum.' SMS: 'Pak sme šli do muzea.'",
+    correctAnswer: "Sloh: 'Poté jsme navštívili muzeum.' SMS: 'Pak sme šli do muzea.'",
     options: [
       "Sloh: 'Pak sme šli do muzea.' SMS: 'Poté jsme navštívili muzeum.'",
-      "Sloh: 'Poté jsme navštívili museum.' SMS: 'Pak sme šli do muzea.'",
+      "Sloh: 'Poté jsme navštívili muzeum.' SMS: 'Pak sme šli do muzea.'",
       "Pro obě situace se hodí stejný styl",
       "SMS musí být vždy spisovná",
     ],
