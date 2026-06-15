@@ -113,6 +113,9 @@ const NOUNS: Record<string, [string, string, string]> = {
   KILOGRAM:   ["kilogram", "kilogramy", "kilogramů"],
   LITR:       ["litr", "litry", "litrů"],
   MILILITR:   ["mililitr", "mililitry", "mililitrů"],
+
+  // Fyzika / měření
+  KOLO:       ["kolo", "kola", "kol"],
 } as const;
 
 export type NounKey = keyof typeof NOUNS;

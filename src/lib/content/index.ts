@@ -11,6 +11,7 @@ import { GRADE_2_TOPICS } from "@/content/grade-2";
 import { GRADE_3_TOPICS } from "@/content/grade-3";
 import { GRADE_4_TOPICS } from "@/content/grade-4";
 import { GRADE_5_TOPICS } from "@/content/grade-5";
+import { GRADE_6_TOPICS } from "@/content/grade-6";
 
 export { setDiktatFilter } from "./czech";
 
@@ -25,4 +26,5 @@ export const ALL_TOPICS: TopicMetadata[] = [
   ...GRADE_3_TOPICS,
   ...GRADE_4_TOPICS,
   ...GRADE_5_TOPICS,
+  ...GRADE_6_TOPICS,
 ];
