@@ -19,6 +19,7 @@ import { MERENI_CASU } from "./fyzika/mereniCasu";
 
 // Dějepis (pilot — faktický vzor)
 import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
+import { DOBA_KAMENNA_PERIODIZACE } from "./dejepis/dobaKamennaPeriodizace";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
@@ -30,4 +31,6 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...MERENI_CASU,
   // Dějepis — Úvod do dějepisu
   ...PERIODIZACE_LETOPOCET,
+  // Dějepis — Pravěk
+  ...DOBA_KAMENNA_PERIODIZACE,
 ];

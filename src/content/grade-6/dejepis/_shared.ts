@@ -70,3 +70,25 @@ export function buildChoiceTask(
   if (parts.solutionSteps) task.solutionSteps = parts.solutionSteps;
   return task;
 }
+
+/**
+ * Sestaví drag_order (chronologickou) úlohu.
+ *  • `orderedItems` jsou ve SPRÁVNÉM pořadí (od nejstaršího po nejnovější);
+ *    UI je při zobrazení zamíchá, žák je seřazuje zpět.
+ *  • drag_order nemá distraktory ani optionFeedback — kvalita je v jednoznačné
+ *    chronologii a ve vysvětlení PROČ to pořadí (kauzální logika, ne jen „je to tak").
+ *  • Nápovědy navádějí kotvou (co je první/poslední), neprozrazují celé pořadí.
+ */
+export function buildOrderTask(
+  question: string,
+  orderedItems: string[],
+  parts: { hints: string[]; explanation: string },
+): PracticeTask {
+  return {
+    question,
+    correctAnswer: "order",
+    items: orderedItems,
+    hints: parts.hints,
+    explanation: parts.explanation,
+  };
+}

@@ -46,10 +46,14 @@
 - [ ] Pomocné vědy historické — archeologie, paleografie, numismatika, heraldika
 
 ### Pravěk
-- [ ] Vývoj člověka (hominizace, doba kamenná, neolitická revoluce, bronz/železo) — plán: **drag_order** chronologie
+- [x] **Doba kamenná / periodizace pravěku** → `dejepis/dobaKamennaPeriodizace.ts` ✅
+      (drag_order chronologie — 2. ověřovaný typ pilotu; gradace přes počet položek
+      3→4→5, disjunktní znění L1≠L3; chronologický rank-solver v testu + judge
+      ověřil všech 12 pořadí a fakta). `g6-dej-doba-kamenna-periodizace-6`.
+- [ ] Vývoj člověka — hominizace, neolitická revoluce, bronz/železo (zbytek oblasti)
 - [ ] Pravěk na našem území (lovci mamutů, Věstonická venuše, Keltové/Germáni/Slované)
 
 ### Starověk
 - [ ] Mezopotámie a Egypt · Indie a Čína · Antika Řecko · Antika Řím (13 podtémat)
 
-**Pilotní stav:** 1/24 (zlatý vzor hotov; další typy — drag_order, categorize — v plánu).
+**Pilotní stav:** 2/24 (select_one + drag_order ověřeny; zbývá categorize — práce se zdrojem).
