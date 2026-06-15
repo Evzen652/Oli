@@ -46,7 +46,9 @@ function genL1(): PracticeTask {
     ],
     {
       hints: [
-        `Z větší jednotky na menší se násobí. Připomeň si: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+        `Krok 1: Jdeš z větší jednotky (${conv.big}) na menší (${conv.small}) — budeš násobit.`,
+        `Krok 2: Připomeň si vztah mezi jednotkami: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+        `Krok 3: Vynásob zadané číslo ${conv.factor}× a dej pozor, kam patří desetinná čárka.`,
       ],
       solutionSteps: [
         `1 ${conv.big} = ${conv.factor} ${conv.small}`,
@@ -87,7 +89,9 @@ function genL2(): PracticeTask {
       ],
       {
         hints: [
-          `Z menší jednotky na větší se dělí. 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+          `Krok 1: Jdeš z menší jednotky (${conv.small}) na větší (${conv.big}) — budeš dělit.`,
+          `Krok 2: Připomeň si vztah: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+          `Krok 3: Vyděl zadané číslo ${conv.factor}. Výsledek bude menší než původní číslo.`,
         ],
         solutionSteps: [
           `1 ${conv.big} = ${conv.factor} ${conv.small}`,
@@ -120,7 +124,8 @@ function genL2(): PracticeTask {
     ],
     {
       hints: [
-        `Nejdřív převeď kg na g (1 kg = 1000 g), pak přičti zbývající gramy.`,
+        `Krok 1: Obě části musí být ve stejné jednotce. Převeď kilogramy na gramy (1 kg = 1000 g).`,
+        `Krok 2: K hmotnosti v gramech přičti zbývajících ${cz(smallPart)} g.`,
       ],
       solutionSteps: [
         `${cz(bigPart)} kg = ${cz(bigPart * 1000)} g`,
@@ -158,7 +163,8 @@ function genL3(): PracticeTask {
       ],
       {
         hints: [
-          `Dva kroky: spočítej celkovou hmotnost v gramech (balení × hmotnost balení), pak převeď na kg (÷ 1000).`,
+          `Krok 1: Nejdřív spočítej celkovou hmotnost v gramech — vynásob počet balení hmotností jednoho balení.`,
+          `Krok 2: Výsledek máš v gramech, ale otázka chce kilogramy. Převeď ho dělením 1000 (z gramů na kilogramy).`,
         ],
         solutionSteps: [
           `Celkem: ${cz(packs)} × ${cz(packG)} = ${cz(totalG)} g`,
@@ -192,7 +198,8 @@ function genL3(): PracticeTask {
     ],
     {
       hints: [
-        `Nejdřív převeď potřebu na gramy (1 kg = 1000 g), pak odečti, co už máš.`,
+        `Krok 1: Jednotky musí sedět. Převeď potřebné množství z kilogramů na gramy (1 kg = 1000 g).`,
+        `Krok 2: Od potřeby v gramech odečti množství, které už máš.`,
       ],
       solutionSteps: [
         `Potřeba: ${cz(targetKg)} kg = ${cz(targetG)} g`,

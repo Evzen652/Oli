@@ -48,7 +48,9 @@ function genL1(): PracticeTask {
     ],
     {
       hints: [
-        `Hustota = hmotnost dělená objemem (ρ = m / V). Dosaď hmotnost v g a objem v cm³.`,
+        `Krok 1: Napiš si vzorec pro hustotu — ρ = m / V (hmotnost dělená objemem).`,
+        `Krok 2: Dosaď zadané hodnoty: hmotnost m = ${cz(m)} g a objem V = ${cz(V)} cm³.`,
+        `Krok 3: Vyděl hmotnost objemem. Výsledek vyjde v g/cm³ — říká, kolik gramů váží 1 cm³.`,
       ],
       solutionSteps: [
         `ρ = m / V`,
@@ -85,7 +87,9 @@ function genL2(): PracticeTask {
     ],
     {
       hints: [
-        `Dva kroky: nejdřív převeď hmotnost na gramy (1 kg = 1000 g), pak děl objemem v cm³.`,
+        `Krok 1: Jednotky musí sedět. Hmotnost máš v kg, ale objem v cm³ — převeď kg na gramy (vynásob 1000).`,
+        `Krok 2: Teď máš hmotnost v gramech. Napiš si vzorec ρ = m / V.`,
+        `Krok 3: Vyděl hmotnost (v gramech) objemem ${cz(V)} cm³. Výsledek je v g/cm³.`,
       ],
       solutionSteps: [
         `Převod: ${cz(mKg)} kg = ${cz(mG)} g`,
@@ -122,7 +126,9 @@ function genL3(): PracticeTask {
       ],
       {
         hints: [
-          `Ze vztahu ρ = m / V vyjádři hmotnost: m = ρ · V. Hustotu vynásob objemem.`,
+          `Krok 1: Hledáš hmotnost, ne hustotu. Ze vztahu ρ = m / V vyjádři hmotnost: m = ρ · V.`,
+          `Krok 2: Dosaď do vzorce hustotu a objem ze zadání (obě hodnoty máš v textu úlohy).`,
+          `Krok 3: Vynásob hustotu objemem. Výsledek je hmotnost v gramech.`,
         ],
         solutionSteps: [
           `m = ρ · V`,
@@ -154,7 +160,9 @@ function genL3(): PracticeTask {
     ],
     {
       hints: [
-        `Nejdřív spočítej hustotu tělesa (ρ = m / V), pak ji porovnej s tabulkou látek.`,
+        `Krok 1: Nejdřív spočítej hustotu tělesa ze vztahu ρ = m / V.`,
+        `Krok 2: Dosaď m = ${cz(m)} g a V = ${cz(V)} cm³ a vyděl hmotnost objemem.`,
+        `Krok 3: Vypočítanou hustotu najdi v tabulce látek v zadání — u které látky sedí, ta je správná.`,
       ],
       solutionSteps: [
         `ρ = ${cz(m)} ÷ ${cz(V)} = ${cz(latka.rho)} g/cm³`,

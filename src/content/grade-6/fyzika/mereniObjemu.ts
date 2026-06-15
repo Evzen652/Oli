@@ -46,7 +46,9 @@ function genL1(): PracticeTask {
     ],
     {
       hints: [
-        `Z větší jednotky na menší se násobí. Připomeň si: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+        `Krok 1: Jdeš z větší jednotky (${conv.big}) na menší (${conv.small}) — budeš násobit.`,
+        `Krok 2: Připomeň si vztah mezi jednotkami: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+        `Krok 3: Vynásob zadané číslo ${conv.factor}× a dej pozor, kam patří desetinná čárka.`,
       ],
       solutionSteps: [
         `1 ${conv.big} = ${conv.factor} ${conv.small}`,
@@ -87,7 +89,9 @@ function genL2(): PracticeTask {
       ],
       {
         hints: [
-          `Z menší jednotky na větší se dělí. 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+          `Krok 1: Jdeš z menší jednotky (${conv.small}) na větší (${conv.big}) — budeš dělit.`,
+          `Krok 2: Připomeň si vztah: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+          `Krok 3: Vyděl zadané číslo ${conv.factor}. Výsledek bude menší než původní číslo.`,
         ],
         solutionSteps: [
           `1 ${conv.big} = ${conv.factor} ${conv.small}`,
@@ -124,7 +128,9 @@ function genL2(): PracticeTask {
     ],
     {
       hints: [
-        `Krychlové a objemové jednotky se kryjí: 1 cm³ = 1 ml a 1 dm³ = 1 l. Číslo se nemění.`,
+        `Krok 1: Tady není žádný násobek ani dělení. Krychlové a objemové jednotky se kryjí.`,
+        `Krok 2: Pravidlo: 1 cm³ = 1 ml a 1 dm³ = 1 l (stejně velký objem, jen jiný název).`,
+        `Krok 3: Protože jsou jednotky stejně velké, číslo zůstává — jen vyměníš název jednotky.`,
       ],
       solutionSteps: [
         `1 ${eq.from} = 1 ${eq.to}`,
@@ -162,7 +168,8 @@ function genL3(): PracticeTask {
       ],
       {
         hints: [
-          `Dva kroky: spočítej celkový objem v ml (balení × objem balení), pak převeď na litry (÷ 1000).`,
+          `Krok 1: Nejdřív spočítej celkový objem v mililitrech — vynásob počet balení objemem jednoho balení.`,
+          `Krok 2: Výsledek máš v ml, ale otázka chce litry. Převeď ho dělením 1000 (z mililitrů na litry).`,
         ],
         solutionSteps: [
           `Celkem: ${cz(packs)} × ${cz(packMl)} = ${cz(totalMl)} ml`,
@@ -196,7 +203,8 @@ function genL3(): PracticeTask {
     ],
     {
       hints: [
-        `Nejdřív převeď objem nádrže na ml (1 l = 1000 ml), pak odečti, co už jsi nalil.`,
+        `Krok 1: Jednotky musí sedět. Převeď objem nádrže z litrů na mililitry (1 l = 1000 ml).`,
+        `Krok 2: Od objemu nádrže v ml odečti objem, který jsi už nalil.`,
       ],
       solutionSteps: [
         `Nádrž: ${cz(targetL)} l = ${cz(targetMl)} ml`,

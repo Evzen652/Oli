@@ -34,7 +34,13 @@ Model „pool 30 faktických otázek → select_one" je **nedostatečný.**
 2. **Reálná gradace L1→L3** (vynucuje audit `difficulty_progression`):
    L1 = jeden krok / přímá aplikace · L2 = dva kroky / volba metody ·
    L3 = aplikace v neznámém kontextu. **Žádná recyklace L1→L3** (check 2b: ≥90 % = fail).
-3. **Nápověda = metoda, ne odpověď** (audit `hint_leak`).
+3. **Nápověda = metoda, ne odpověď** (audit `hint_leak`). U výpočetních úloh
+   2. stupně je nápověda **víceúrovňová — pole 2–3 krokových hintů** (`HelpButton`
+   je odhaluje progresivně). Krok 1 = nasměrování/vzorec, Krok 2 = první krok
+   s hodnotami ze zadání, Krok 3 = dotažení. Úloha na 2 kroky → nápověda oba
+   kroky rozepíše. **Nikdy nevkládej do hintu konkrétní výslednou hodnotu** —
+   ani jako součást převodního vztahu (pozor: „1 kg = 1000 g" leakuje, když je
+   odpověď „1 kg"; číslo už ušlé/nalité leakuje, když náhodou == zbytek).
 4. **Vysvětlení = proč, vícekrokově**; u výpočtů `solutionSteps` s mezivýsledky.
 
 ---

@@ -66,7 +66,9 @@ function genL1(): PracticeTask {
     distractors,
     {
       hints: [
-        `Z větší jednotky na menší se násobí. Připomeň si: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+        `Krok 1: Jdeš z větší jednotky (${conv.big}) na menší (${conv.small}) — budeš násobit.`,
+        `Krok 2: Připomeň si vztah mezi jednotkami: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+        `Krok 3: Vynásob zadané číslo ${conv.factor}× a dej pozor, kam patří desetinná čárka.`,
       ],
       solutionSteps: [
         `1 ${conv.big} = ${conv.factor} ${conv.small}`,
@@ -109,7 +111,9 @@ function genL2(): PracticeTask {
       ],
       {
         hints: [
-          `Z menší jednotky na větší se dělí. 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+          `Krok 1: Jdeš z menší jednotky (${conv.small}) na větší (${conv.big}) — budeš dělit.`,
+          `Krok 2: Připomeň si vztah: 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
+          `Krok 3: Vyděl zadané číslo ${conv.factor}. Výsledek bude menší než původní číslo.`,
         ],
         solutionSteps: [
           `1 ${conv.big} = ${conv.factor} ${conv.small}`,
@@ -148,7 +152,8 @@ function genL2(): PracticeTask {
     ],
     {
       hints: [
-        `Nejdřív převeď ${combo.big} na ${combo.small} (1 ${combo.big} = ${combo.factor} ${combo.small}), pak přičti zbytek.`,
+        `Krok 1: Obě části musí být ve stejné jednotce. Převeď ${combo.big} na ${combo.small} (1 ${combo.big} = ${combo.factor} ${combo.small}).`,
+        `Krok 2: K převedené hodnotě přičti zbývajících ${cz(smallPart)} ${combo.small}.`,
       ],
       solutionSteps: [
         `${cz(bigPart)} ${combo.big} = ${cz(bigPart * combo.factor)} ${combo.small}`,
@@ -187,7 +192,8 @@ function genL3(): PracticeTask {
       ],
       {
         hints: [
-          `Dva kroky: spočítej celkovou dráhu v metrech (kola × délka kola), pak převeď na km (÷ 1000).`,
+          `Krok 1: Nejdřív spočítej celkovou dráhu v metrech — vynásob počet kol délkou jednoho kola.`,
+          `Krok 2: Výsledek máš v metrech, ale otázka chce kilometry. Převeď ho dělením 1000 (z metrů na kilometry).`,
         ],
         solutionSteps: [
           `Celkem: ${cz(laps)} × ${cz(lapM)} = ${cz(totalM)} m`,
@@ -221,7 +227,8 @@ function genL3(): PracticeTask {
     ],
     {
       hints: [
-        `Nejdřív převeď trasu na metry (1 km = 1000 m), pak odečti, co už jsi ušel.`,
+        `Krok 1: Jednotky musí sedět. Převeď trasu z kilometrů na metry (1 km = 1000 m).`,
+        `Krok 2: Od trasy v metrech odečti vzdálenost, kterou jsi už ušel.`,
       ],
       solutionSteps: [
         `Trasa: ${cz(targetM / 1000)} km = ${cz(targetM)} m`,
