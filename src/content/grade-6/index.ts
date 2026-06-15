@@ -14,6 +14,8 @@ import { MERENI_DELKY } from "./fyzika/mereniDelky";
 import { MERENI_HMOTNOSTI } from "./fyzika/mereniHmotnosti";
 import { MERENI_OBJEMU } from "./fyzika/mereniObjemu";
 import { HUSTOTA } from "./fyzika/hustota";
+import { MERENI_TEPLOTY } from "./fyzika/mereniTeploty";
+import { MERENI_CASU } from "./fyzika/mereniCasu";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
@@ -21,4 +23,6 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...MERENI_HMOTNOSTI,
   ...MERENI_OBJEMU,
   ...HUSTOTA,
+  ...MERENI_TEPLOTY,
+  ...MERENI_CASU,
 ];

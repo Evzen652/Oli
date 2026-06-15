@@ -11,10 +11,10 @@
 - [x] **Hmotnost – jednotky, vážení** → `fyzika/mereniHmotnosti.ts` ✅ (mg/g/dkg/kg/t, recept/balení)
 - [x] **Objem – jednotky, měření odměrným válcem** → `fyzika/mereniObjemu.ts` ✅ (ml/l/dl/cm³/dm³ + ekvivalence cm³=ml)
 - [x] **Hustota – výpočet a měření** → `fyzika/hustota.ts` ✅ (vrchol: ρ=m/V, m=ρ·V, identifikace látky; chybový model = záměna vzorce)
-- [ ] Teplota – jednotky, teploměry, tepelná roztažnost
-- [ ] Čas – jednotky, měření času
+- [x] **Teplota – jednotky, výpočty, kelviny** → `fyzika/mereniTeploty.ts` ✅ (změna teploty, rozdíl přes nulu, °C→K; chybový model = směr + nula)
+- [x] **Čas – jednotky, převody, časová osa** → `fyzika/mereniCasu.ts` ✅ (h/min/s základ 60, zbytek, časová osa s přenosem; chybový model = ×100 místo ×60)
 
-**Okruh „Měření veličin": 4/6 hotovo.** Zbývá teplota + čas (jiný charakter — teplota není převod násobkem, čas má 60/24 základ).
+**Okruh „Měření veličin": 6/6 hotovo. ✅** Teplota a čas mají jiný charakter (teplota není násobkový převod, čas má základ 60) — vzor obstál.
 
 > Sdílené utility převodových úloh: `fyzika/_shared.ts` (cz/pick/shuffle/buildChoiceTask).
 > Společný test: `__tests__/prevodyJednotek.test.ts` (parametrizovaný přes 3 témata, 51 testů).
