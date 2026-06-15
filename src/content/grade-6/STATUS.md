@@ -31,4 +31,25 @@
 - [ ] Magnety – magnetické pole, magnetické póly Země
 
 ## Dějepis (24 RVP podtémat)
-- [ ] _zatím nezahájeno_ (faktický vzor — authoring pipeline)
+
+> Sdílené utility faktického vzoru: `dejepis/_shared.ts` (pick/shuffle/pickN/buildChoiceTask).
+> Distraktor = typický HISTORICKÝ omyl (záměna éry, „menší = dřív" u př. n. l.,
+> zapomenutý rok 0), ne numerický posun.
+
+### Úvod do dějepisu
+- [x] **Periodizace dějin, časová přímka, letopočet** → `dejepis/periodizaceLetopocet.ts` ✅
+      (ZLATÝ FAKTICKÝ VZOR — most z výpočetní fyziky: L1 určení století → L2 řazení/rozdíl
+      př. n. l. → L3 přelom letopočtu „rok 0 neexistuje"; chybový model + optionFeedback;
+      blind-solve judge 18/18, konvence X+Y−1 ověřena). select_one (nemíchá typy).
+- [ ] Co je dějepis — význam studia minulosti
+- [ ] Historické prameny — hmotné, písemné, obrazové (plán: **categorize** — práce se zdrojem)
+- [ ] Pomocné vědy historické — archeologie, paleografie, numismatika, heraldika
+
+### Pravěk
+- [ ] Vývoj člověka (hominizace, doba kamenná, neolitická revoluce, bronz/železo) — plán: **drag_order** chronologie
+- [ ] Pravěk na našem území (lovci mamutů, Věstonická venuše, Keltové/Germáni/Slované)
+
+### Starověk
+- [ ] Mezopotámie a Egypt · Indie a Čína · Antika Řecko · Antika Řím (13 podtémat)
+
+**Pilotní stav:** 1/24 (zlatý vzor hotov; další typy — drag_order, categorize — v plánu).

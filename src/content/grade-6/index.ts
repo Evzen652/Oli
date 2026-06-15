@@ -17,6 +17,9 @@ import { HUSTOTA } from "./fyzika/hustota";
 import { MERENI_TEPLOTY } from "./fyzika/mereniTeploty";
 import { MERENI_CASU } from "./fyzika/mereniCasu";
 
+// Dějepis (pilot — faktický vzor)
+import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
+
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
   ...MERENI_DELKY,
@@ -25,4 +28,6 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...HUSTOTA,
   ...MERENI_TEPLOTY,
   ...MERENI_CASU,
+  // Dějepis — Úvod do dějepisu
+  ...PERIODIZACE_LETOPOCET,
 ];
