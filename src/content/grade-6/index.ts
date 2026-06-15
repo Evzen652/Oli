@@ -13,10 +13,12 @@ import type { TopicMetadata } from "@/lib/types";
 import { MERENI_DELKY } from "./fyzika/mereniDelky";
 import { MERENI_HMOTNOSTI } from "./fyzika/mereniHmotnosti";
 import { MERENI_OBJEMU } from "./fyzika/mereniObjemu";
+import { HUSTOTA } from "./fyzika/hustota";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
   ...MERENI_DELKY,
   ...MERENI_HMOTNOSTI,
   ...MERENI_OBJEMU,
+  ...HUSTOTA,
 ];
