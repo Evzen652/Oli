@@ -8,11 +8,14 @@
 
 ### Měření fyzikálních veličin
 - [x] **Délka – jednotky, měření délky** → `fyzika/mereniDelky.ts` ✅ (zlatý vzor: L1→L3, chybový model, optionFeedback)
-- [ ] Hmotnost – jednotky, vážení
-- [ ] Objem – jednotky, měření odměrným válcem
-- [ ] Hustota – výpočet a měření
+- [x] **Hmotnost – jednotky, vážení** → `fyzika/mereniHmotnosti.ts` ✅ (mg/g/dkg/kg/t, recept/balení)
+- [x] **Objem – jednotky, měření odměrným válcem** → `fyzika/mereniObjemu.ts` ✅ (ml/l/dl/cm³/dm³ + ekvivalence cm³=ml)
+- [ ] Hustota – výpočet a měření ← **další (vrchol: ρ=m/V, staví na hmotnosti+objemu)**
 - [ ] Teplota – jednotky, teploměry, tepelná roztažnost
 - [ ] Čas – jednotky, měření času
+
+> Sdílené utility převodových úloh: `fyzika/_shared.ts` (cz/pick/shuffle/buildChoiceTask).
+> Společný test: `__tests__/prevodyJednotek.test.ts` (parametrizovaný přes 3 témata, 51 testů).
 
 ### Látky a tělesa
 - [ ] Látka a těleso – rozlišení, vlastnosti látek

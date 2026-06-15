@@ -12,50 +12,7 @@
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad } from "@/lib/czechGrammar";
-
-// ── Pomocné ───────────────────────────────────────────────────────────────
-/** České desetinné číslo (čárka), bez zbytečných nul. */
-function cz(n: number): string {
-  return Number(n.toFixed(3)).toString().replace(".", ",");
-}
-function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-/** Sestaví select_one task; options se zamíchají a deduplikují. */
-function task(
-  question: string,
-  correct: string,
-  distractors: { value: string; why: string }[],
-  parts: { hints: string[]; solutionSteps: string[]; explanation: string },
-): PracticeTask {
-  // deduplikace distraktorů (kdyby vyšel stejný string jako correct nebo navzájem)
-  const seen = new Set<string>([correct]);
-  const optionFeedback: Record<string, string> = {};
-  const uniq: string[] = [];
-  for (const d of distractors) {
-    if (seen.has(d.value)) continue;
-    seen.add(d.value);
-    uniq.push(d.value);
-    optionFeedback[d.value] = d.why;
-  }
-  return {
-    question,
-    correctAnswer: correct,
-    options: shuffle([correct, ...uniq]),
-    optionFeedback,
-    hints: parts.hints,
-    solutionSteps: parts.solutionSteps,
-    explanation: parts.explanation,
-  };
-}
+import { cz, pick, buildChoiceTask as task } from "./_shared";
 
 // ── Generátor ──────────────────────────────────────────────────────────────
 function gen(level: number): PracticeTask[] {

@@ -11,8 +11,12 @@ import type { TopicMetadata } from "@/lib/types";
 
 // Fyzika (pilot — výpočetní vzor)
 import { MERENI_DELKY } from "./fyzika/mereniDelky";
+import { MERENI_HMOTNOSTI } from "./fyzika/mereniHmotnosti";
+import { MERENI_OBJEMU } from "./fyzika/mereniObjemu";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
-  // Fyzika
+  // Fyzika — Měření fyzikálních veličin
   ...MERENI_DELKY,
+  ...MERENI_HMOTNOSTI,
+  ...MERENI_OBJEMU,
 ];
