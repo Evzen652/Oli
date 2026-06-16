@@ -35,9 +35,13 @@ src.backup/
 
 # Supabase CLI lokální cache — per-machine, nikdy ne v gitu
 supabase/.temp/
-# ALE povol sdílená nastavení (permissions, agents) napříč týmem/PC
+# ALE povol sdílená nastavení (permissions, agents, workflows) napříč týmem/PC
 !.claude/settings.json
 !.claude/agents/
 !.claude/commands/
+!.claude/workflows/
 OLI-pitch-deck.pptx
 .vercel
+
+# author-batch pipeline — dočasné dumpy vzorků z brány 0 (per-machine)
+.audit-topic/
