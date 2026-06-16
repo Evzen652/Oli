@@ -45,8 +45,13 @@
       (categorize — 3. ověřovaný typ; práce se zdrojem. Rozlišovací pravidlo „podle obsahu,
       ne materiálu"; chybový model v L3 = klamavé prameny (klínové písmo na hliněné tabulce
       = písemný, ne hmotný). Nezávislý klasifikátor v testu. ⏳ judge zbývá.) select_one nepoužit.
-- [ ] Co je dějepis — význam studia minulosti
-- [ ] Pomocné vědy historické — archeologie, paleografie, numismatika, heraldika
+- [x] **Pomocné vědy historické — archeologie, paleografie, numismatika, heraldika** → `dejepis/pomocneVedyHistoricke.ts` ✅
+      (categorize — přiřazení nálezu k vědě dle PŘEDMĚTU zkoumání. **Vytvořeno přes
+      `author-batch` pipeline** (dvojí optika): 7 vad nalezeno a opraveno žákem/pedagogem/
+      fakt-expertem. L3 chybový model = klamavé nálezy (mince s portrétem → numismatika,
+      ne heraldika). Autor sám ošetřil hranice oborů (sfragistika/epigrafika vyloučeny).
+      16/16 testů se sofistikovaným klasifikátorem, brána 0 PASS, tsc 0.)
+- [ ] Co je dějepis — význam studia minulosti (⚠️ pipeline pokus 2026-06-17: agent zemřel ve fázi spec → znovu)
 
 ### Pravěk
 - [x] **Doba kamenná / periodizace pravěku** → `dejepis/dobaKamennaPeriodizace.ts` ✅
@@ -59,5 +64,6 @@
 ### Starověk
 - [ ] Mezopotámie a Egypt · Indie a Čína · Antika Řecko · Antika Řím (13 podtémat)
 
-**Pilotní stav:** 3/24 — **všechny tři klíčové faktické typy ověřeny** (select_one + drag_order + categorize). Trojice typů hotová → lze odvodit `TEMPLATE_STUPEN2.ts`.
-⏳ Téma 3 (prameny): prošlo tsc + testy (klasifikátor) + audity; **adversariální judge zbývá** doplnit.
+**Pilotní stav:** 4/24. Okruh **Úvod do dějepisu**: 3/4 (periodizace, prameny, pomocné vědy);
+zbývá „Co je dějepis" (pipeline pokus selhal — re-run). Typy: select_one + drag_order + categorize ověřeny.
+⏳ Téma 3 (prameny): adversariální judge zbývá doplnit.

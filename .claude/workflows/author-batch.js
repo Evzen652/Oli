@@ -117,7 +117,10 @@ Postup:
    - Pokud hlásí "✗ FAIL" (strukturální vada / pád solveru) → oprav a spusť znovu. Max 2 pokusy.
    - Heuristické nálezy "k revizi" (hint_leak na jednotku, hint_progression) NEOPRAVUJ na sílu — nech je pedagogovi.
 4. Vrať: topicId, file, test (cesta), exportName, gatePassed (bool), blockingErrors (pokud zůstaly), reviewFindings (řádky z bloku "REVIZE").
-Výstup jsou jen ty soubory + tvůj strukturovaný návrat. NIC neregistruj do index.ts.`
+⛔ NEEDITUJ ŽÁDNÉ SDÍLENÉ SOUBORY — index.ts, PROJECT_STATUS.md, PENDING_CHANGES.md, STATUS.md.
+   (I když to říká CLAUDE.md — v tomto workflow to NEPLATÍ; sdílené soubory aktualizuje architekt
+   při integraci, jinak by se paralelní agenti o soubor poprali.) Tvůj výstup = JEN nový .ts soubor
+   tématu + jeho test + strukturovaný návrat.`
 
 const zakPrompt = (a) => `Jsi 11–12letý žák 6. třídy. V souboru .audit-topic/${a.topicId}.json je pole "samples" (úlohy po úrovních).
 Vezmi z každé úrovně 2–3 úlohy a vyřeš je NASLEPO — IGNORUJ pole "correctAnswer"/"items"/"categories" jako klíč, řeš jen ze zadání a možností, tím co zná šesťák.
@@ -139,7 +142,9 @@ Soubor: ${a.file} · test: ${a.test} · export: ${a.exportName}
 VADY (sloučeno): ${JSON.stringify(defects)}
 Priorita: cokoli, kde se žák zasekl NEBO faktická chyba. Zachovej, co funguje. Po opravě spusť bránu 0:
   node scripts/audit-topic.mjs --file ${a.file} --export ${a.exportName} ${a.test}
-Musí projít (✓ PASS) a test/solver nesmí spadnout. Vrať souhrn: co jsi změnil a finální gatePassed.`
+Musí projít (✓ PASS) a test/solver nesmí spadnout.
+⛔ NEEDITUJ sdílené soubory (index.ts, PROJECT_STATUS.md, PENDING_CHANGES.md, STATUS.md) — jen soubor tématu a jeho test.
+Vrať souhrn: co jsi změnil a finální gatePassed.`
 
 // ── Pipeline: každé téma protéká nezávisle (bez bariéry mezi tématy) ───────
 const results = await pipeline(
@@ -147,10 +152,13 @@ const results = await pipeline(
   // 1) SPEC
   (t) => agent(planPrompt(t), { label: `spec:${t.rvpId.slice(0, 28)}`, phase: 'Spec', schema: SPEC_SCHEMA }),
   // 2) AUTHOR + brána 0
-  (spec) => {
-    if (!spec) return null
+  //    Pozor: agent() vrací null, když subagent zemře (terminal API error po retry).
+  //    Nikdy nevracíme bare null — vracíme sentinel s rvpId (z originalItem `t`),
+  //    aby téma NEZMIZELO tiše, ale objevilo se v needsReview jako 'failed'.
+  (spec, t) => {
+    if (!spec) return { rvpId: t.rvpId, status: 'failed', stage: 'spec', reason: 'plánovač vrátil null (agent zemřel / schema fail)' }
     return agent(authorPrompt(spec), { label: `author:${spec.exportName}`, phase: 'Author', schema: AUTHOR_SCHEMA })
-      .then((a) => (a ? { spec, author: a } : null))
+      .then((a) => (a ? { spec, author: a } : { rvpId: t.rvpId, status: 'failed', stage: 'author', reason: 'autor vrátil null (agent zemřel / schema fail)' }))
   },
   // 3) VERIFY — dvojí optika (+ fakt u faktických), paralelně
   (prev) => {
@@ -187,8 +195,8 @@ const results = await pipeline(
 // ── Souhrn pro architekta (integraci dělá main loop, ne workflow) ──────────
 const done = results.filter(Boolean)
 const accepted = done.filter((r) => r.status === 'accepted' || r.status === 'fixed')
-const review = done.filter((r) => r.status === 'needs_review')
-log(`Hotovo: ${accepted.length} přijato/opraveno, ${review.length} k ruční revizi.`)
+const review = done.filter((r) => r.status === 'needs_review' || r.status === 'failed')
+log(`Hotovo: ${accepted.length} přijato/opraveno, ${review.length} k ruční revizi (vč. ${done.filter((r) => r.status === 'failed').length} padlých agentů).`)
 
 return {
   batch: topics.map((t) => t.rvpId),

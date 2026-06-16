@@ -21,6 +21,7 @@ import { MERENI_CASU } from "./fyzika/mereniCasu";
 import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
 import { DOBA_KAMENNA_PERIODIZACE } from "./dejepis/dobaKamennaPeriodizace";
 import { HISTORICKE_PRAMENY } from "./dejepis/historickePrameny";
+import { POMOCNE_VEDY_HISTORICKE } from "./dejepis/pomocneVedyHistoricke";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
@@ -36,4 +37,5 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...DOBA_KAMENNA_PERIODIZACE,
   // Dějepis — Úvod do dějepisu (prameny)
   ...HISTORICKE_PRAMENY,
+  ...POMOCNE_VEDY_HISTORICKE,
 ];
