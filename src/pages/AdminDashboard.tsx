@@ -136,17 +136,6 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const proposalRef = useRef<HTMLDivElement>(null);
 
-  // Derived browse level — v navigation módu přeskočíme "topic" rovinu (okruh → skills přímo)
-  const level: BrowseLevel = selectedSkill
-    ? "detail"
-    : selectedTopic
-    ? "subtopic"
-    : selectedCategory
-    ? (subjectOkruhy ? "subtopic" : "topic")
-    : selectedSubject
-    ? "category"
-    : "subject";
-
   const handleAIAction = (prompt: string) => {
     setAiInitialPrompt(prompt);
     setAiChatOpen(true);
@@ -157,11 +146,23 @@ export default function AdminDashboard() {
     : allTopics;
 
   // Navigation-based okruhy pro aktuální předmět+ročník (null = ročník nemá nav nebo není vybrán)
+  // MUSÍ být před `level` — level na ně odkazuje
   const subjectOkruhy = useMemo((): Okruh[] | null => {
     if (!selectedSubject || !gradeFilter) return null;
     const nav = getGradeNavigation(gradeFilter as Grade);
     return nav?.find((s) => s.subject === selectedSubject)?.okruhy ?? null;
   }, [selectedSubject, gradeFilter]);
+
+  // Derived browse level — v navigation módu přeskočíme "topic" rovinu (okruh → skills přímo)
+  const level: BrowseLevel = selectedSkill
+    ? "detail"
+    : selectedTopic
+    ? "subtopic"
+    : selectedCategory
+    ? (subjectOkruhy ? "subtopic" : "topic")
+    : selectedSubject
+    ? "category"
+    : "subject";
 
   // Grade change: keep valid parts of the selection, reset invalid ones.
   const handleGradeChange = (newGrade: Grade | null) => {
