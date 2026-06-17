@@ -228,6 +228,9 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené (doplněno 2026-06-17)
 
+### 🖼️ Fix: AI ilustrace měly v sobě zkomolený text — vyčištěny prompty ✅
+- FLUX maloval do obrázků český text, protože pozitivní prompty si o text říkaly („písmena A B C", „s popisky", „směry S V J Z"). Fix: `sanitizeForImagePrompt` rozšířen o neutralizaci text-spouštěčů (písmena/popisky/nápis/text/názvy + sekvence samostatných písmen). Běží na všech auto-promptech. `subject-cestina` vyčištěn u zdroje. Negace zůstává jen v negative_prompt edge funkce. Ověřeno node testem, tsc 0. ⚠️ Regenerování + schválení nových ilustrací dělá uživatel ručně v adminu.
+
 ### 🖼️ Fix: admin panel ilustrací ukazoval u ročníku cizí předměty ✅
 - Filtr ročníku v `AdminGenerateIllustrations` vyjímal `subject` typ → u 2. roč. se ukazovala přírodověda/vlastivěda (4.+) a fyzika (6.). Fix: výjimka odstraněna, filtr platí i pro subject karty (gradeMap zná ročníky subjectů). Ověřeno v prohlížeči: 2. roč. → mat/čj/prvouka, 4. roč. → mat/čj/přír/vlast. tsc 0.
 

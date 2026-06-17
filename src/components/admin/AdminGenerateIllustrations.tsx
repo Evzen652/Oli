@@ -177,7 +177,7 @@ const DISPLAY_SUFFIX = "— moderní 3D styl pro 9–11leté, objekty a symboly 
 const DEFAULT_DESCS: Partial<Record<string, string>> = {
   // Předměty
   "subject-matematika": "barevná 3D čísla 1, 2, 3 vznášející se s plusem a rovnítkem",
-  "subject-cestina": "otevřená kniha s písmeny A, B, C vyskakujícími barevně ven",
+  "subject-cestina": "otevřená kniha s barevnou stuhou, hvězdičkami a pastelovou duhou vyletující ze stránek",
   "subject-prvouka": "přátelský strom se sluncem, květinami a malým zvířátkem na louce",
   "subject-prirodoveda": "lupa nad listy a malý ekosystém s rostlinami a zvířaty",
   "subject-vlastiveda": "globus a obrys mapy České republiky s Pražským hradem",
@@ -749,6 +749,20 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       .replace(/symbols?\s+[<>=+\-−×÷,\s"']+/gi, "comparison concepts")
       // Konkrétní math operátory v citacích → odstranit
       .replace(/[<>=]\s*[<>=]/g, "")
+      // ── TEXT/PÍSMENA/POPISKY — image model je rendruje jako (zkomolený) text ──
+      // Negaci ("no text") do pozitivního promptu NEdáváme (model ji extrahuje),
+      // proto konstrukce vyžadující literální text raději ODSTRANÍME/zneutralizujeme.
+      .replace(/\bs\s+popisk\w+/gi, "")            // "— s popisky", "každý s popiskem"
+      .replace(/\bpopisk\w+/gi, "")                 // samostatné "popisky"
+      .replace(/\bs\s+nápis\w*/gi, "")
+      .replace(/\bnápis\w*/gi, "")
+      .replace(/\btext\w*/gi, "")                   // "text", "textem"
+      .replace(/\bnázv\w+\s+\w+/gi, "")             // "názvy měst", "názvem ..."
+      .replace(/\bpísmen\w*/gi, "barevné prvky")    // "písmena/písmeno/písmeny" → neutrál
+      // sekvence 2+ samostatných písmen ("A, B, C" / "S V J Z" / "Y a I" / "D-T, B-P")
+      .replace(/\b[A-Za-z]\b(\s*[,/\-–]?\s*\b[A-Za-z]\b)+/g, "")
+      // úklid mezer a osamělé interpunkce po odstranění
+      .replace(/\s+([,—–])/g, "$1")
       .replace(/\s+/g, " ")
       .trim();
   };
