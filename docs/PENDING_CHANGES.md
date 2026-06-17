@@ -226,6 +226,12 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ---
 
+## Vyřízené (doplněno 2026-06-17)
+
+### Dev helper: reset anon 14denního trialu ✅
+- `src/components/DevTrialReset.tsx` — plovoucí pilulka vlevo dole, renderuje se **JEN v dev módu** (`import.meta.env.DEV`, mount v `App.tsx` za flagem → produkční build ji nezahrne). Akce: reset na den 1 (14 dní), posun na den 13, nastav expirováno, smaž anon data — vše + reload.
+- Nový reusable helper `restartTrial(grade?, daysAgo?)` v `anonTrial.ts` (startedAt = teď, volitelný posun do minulosti; zachová ročník). 5 nových testů v `anon-trial.test.ts` (19/19), tsc 0.
+
 ## Vyřízené (doplněno 2026-06-14)
 
 ### Anon: klik na předmět skončil na „Vyber si předmět" místo na okruhách ✅

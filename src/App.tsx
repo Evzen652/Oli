@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session } from "@supabase/supabase-js";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { DevTrialReset } from "./components/DevTrialReset";
 import { LocaleProvider, useT } from "@/lib/i18n";
 import cs from "@/lib/i18n/cs";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -152,6 +153,7 @@ const App = () => {
           <LocaleProvider>
             <Toaster />
             <Sonner />
+            {import.meta.env.DEV && <DevTrialReset />}
             <BrowserRouter>
               {session ? (
                 <AuthenticatedRoutes />

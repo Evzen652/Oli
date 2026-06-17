@@ -7,6 +7,7 @@ import {
   isTrialActive,
   isTrialExpired,
   clearTrial,
+  restartTrial,
   TRIAL_DAYS,
 } from "@/lib/anonTrial";
 
@@ -124,5 +125,47 @@ describe("clearTrial", () => {
     expect(getTrialState()).not.toBeNull();
     clearTrial();
     expect(getTrialState()).toBeNull();
+  });
+});
+
+describe("restartTrial — dev reset", () => {
+  it("obnoví expirovaný trial zpět na 14 dní (den 1)", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-01T10:00:00Z"));
+    startTrial(5);
+    vi.setSystemTime(new Date("2026-05-20T10:00:00Z")); // dávno po expiraci
+    expect(getTrialDaysRemaining()).toBe(0);
+    restartTrial();
+    expect(getTrialDaysRemaining()).toBe(TRIAL_DAYS);
+    expect(getTrialCurrentDay()).toBe(1);
+    expect(isTrialActive()).toBe(true);
+  });
+
+  it("zachová ročník při resetu", () => {
+    startTrial(7);
+    restartTrial();
+    expect(getTrialState()?.grade).toBe(7);
+  });
+
+  it("nastaví předaný ročník (nebo default 4 bez existujícího)", () => {
+    restartTrial(); // žádný existující trial
+    expect(getTrialState()?.grade).toBe(4);
+    restartTrial(8);
+    expect(getTrialState()?.grade).toBe(8);
+  });
+
+  it("daysAgo posune start do minulosti (test stavu před koncem)", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-10T10:00:00Z"));
+    restartTrial(4, TRIAL_DAYS - 2); // start před 12 dny → den 13, zbývají 2
+    expect(getTrialDaysRemaining()).toBe(2);
+    expect(getTrialCurrentDay()).toBe(13);
+  });
+
+  it("daysAgo > TRIAL_DAYS → expirováno", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-10T10:00:00Z"));
+    restartTrial(4, TRIAL_DAYS + 1);
+    expect(isTrialExpired()).toBe(true);
   });
 });

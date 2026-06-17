@@ -105,6 +105,20 @@ export function clearTrial(): void {
 }
 
 /**
+ * Restartuje trial na „den 1" (startedAt = teď). Volitelně posune start do
+ * minulosti (`daysAgo`) pro testování stavu před koncem / po expiraci.
+ * Zachová ročník (nebo nastaví předaný / default 4). Na rozdíl od `startTrial`
+ * NENÍ idempotentní — vždy přepíše `startedAt`. Slouží k resetu / testování flow.
+ */
+export function restartTrial(grade?: number, daysAgo = 0): void {
+  const existing = readState();
+  const g = grade ?? existing?.grade ?? 4;
+  const d = new Date();
+  if (daysAgo > 0) d.setDate(d.getDate() - daysAgo);
+  writeState({ startedAt: d.toISOString(), grade: g });
+}
+
+/**
  * Vrátí aktuální ročník anonymního uživatele.
  * SINGLE SOURCE OF TRUTH — trial state má přednost před legacy `oli_anon_grade`.
  * Použij všude, kde se čte ročník anonymního uživatele.
