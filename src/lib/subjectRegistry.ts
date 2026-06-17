@@ -1,9 +1,3 @@
-import imgMatematika from "@/assets/subjects/subject-matematika.png";
-import imgCestina from "@/assets/subjects/subject-cestina.png";
-import imgPrvouka from "@/assets/subjects/subject-prvouka.png";
-import imgPrirodoveda from "@/assets/subjects/subject-prirodoveda.png";
-import imgVlastiveda from "@/assets/subjects/subject-vlastiveda.png";
-
 export interface SubjectMeta {
   label: string;
   emoji: string;
@@ -18,14 +12,16 @@ export interface SubjectMeta {
 const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
 
 // Klíč v SUBJECTS MUSÍ přesně odpovídat poli `subject` v TopicMetadata
-// (malé písmeno, s diakritikou). 1. stupeň = importované PNG, 2. stupeň =
-// dynamická ilustrace ze Supabase (dokud se nevygeneruje, IllustrationImg
-// zobrazí emoji fallback).
+// (malé písmeno, s diakritikou). VŠECHNY předměty čtou ilustraci ze Supabase
+// storage (subject-{slug}.png) — STEJNÝ zdroj, kam je generuje admin panel
+// (AdminGenerateIllustrations), takže žákovský pohled vždy ukáže aktuální
+// admin ilustraci a regenerace se propíšou samy. Dokud soubor neexistuje,
+// IllustrationImg zobrazí emoji fallback.
 export const SUBJECTS: Record<string, SubjectMeta> = {
   matematika: {
     label: "Matematika",
     emoji: "🔢",
-    image: imgMatematika,
+    image: `${SUPABASE_STORAGE}/subject-matematika.png`,
     color: "text-blue-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--math-numbers-bg))]",
     borderClass: "border-[hsl(var(--math-numbers))]/40",
@@ -34,7 +30,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   čeština: {
     label: "Čeština",
     emoji: "📝",
-    image: imgCestina,
+    image: `${SUPABASE_STORAGE}/subject-cestina.png`,
     color: "text-purple-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(var(--cz-vyjm-bg))]",
     borderClass: "border-[hsl(var(--cz-vyjm))]/40",
@@ -43,7 +39,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   prvouka: {
     label: "Prvouka",
     emoji: "🌍",
-    image: imgPrvouka,
+    image: `${SUPABASE_STORAGE}/subject-prvouka.png`,
     color: "text-green-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(142,64%,93%)]",
     borderClass: "border-[hsl(142,64%,42%)]/40",
@@ -52,7 +48,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   přírodověda: {
     label: "Přírodověda",
     emoji: "🌿",
-    image: imgPrirodoveda,
+    image: `${SUPABASE_STORAGE}/subject-prirodoveda.png`,
     color: "text-emerald-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(152,60%,92%)]",
     borderClass: "border-[hsl(152,60%,42%)]/40",
@@ -61,7 +57,7 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
   vlastivěda: {
     label: "Vlastivěda",
     emoji: "🗺️",
-    image: imgVlastiveda,
+    image: `${SUPABASE_STORAGE}/subject-vlastiveda.png`,
     color: "text-amber-600",
     gradientClass: "bg-gradient-to-r from-white to-[hsl(38,70%,92%)]",
     borderClass: "border-[hsl(38,70%,45%)]/40",

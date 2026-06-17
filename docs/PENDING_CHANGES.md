@@ -228,6 +228,9 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené (doplněno 2026-06-17)
 
+### 🖼️ Fix: žák ukazoval jiné ilustrace předmětů než admin ✅
+- `subjectRegistry.ts` měl pro 1. stupeň bundled PNG (`@/assets/subjects/…`), ale admin generuje do Supabase storage `subject-{slug}.png` → žák viděl staré obrázky (prvouka strom vs. admin sova). Hashe potvrdily rozdíl. Fix: 1. stupeň přepnut na `${SUPABASE_STORAGE}/subject-{slug}.png` (stejný zdroj jako admin) → regenerace se propisují samy. Ověřeno v prohlížeči, tsc 0.
+
 ### 🐛 Fix: admin panel „React is not defined" ✅
 - `AdminGenerateIllustrations.tsx` používal `React.Fragment` (s `key`), ale neimportoval `React` → s automatickým JSX runtimem (`jsx: react-jsx`) spadl celý admin při renderu. Pre-existující (z commitu `d130951`, ne z této session). Fix: import `Fragment` + `React.Fragment` → `Fragment`. Grep potvrdil jediný takový soubor v repu. Ověřeno přihlášením admina na dev serveru (`/admin` bez chyby), tsc 0.
 
