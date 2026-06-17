@@ -760,19 +760,31 @@ export default function AdminDashboard() {
 
                       {/* Statistics chips */}
                       <div className="flex flex-wrap gap-1.5">
-                        <Badge
-                          variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
-                        >
-                          {count} {count === 1 ? "téma" : count < 5 ? "témata" : "témat"}
-                        </Badge>
-                        {subtopicCount > 0 && (
+                        {okruh ? (
+                          // Navigation mode: zobraz jen počet skills přímo jako "témata" (žádná téma/podtéma hierarchie)
                           <Badge
                             variant="outline"
                             className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
                           >
-                            {subtopicCount} {subtopicCount === 1 ? "podtéma" : subtopicCount < 5 ? "podtémata" : "podtémat"}
+                            {subtopicCount} {subtopicCount === 1 ? "téma" : subtopicCount < 5 ? "témata" : "témat"}
                           </Badge>
+                        ) : (
+                          <>
+                            <Badge
+                              variant="outline"
+                              className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                            >
+                              {count} {count === 1 ? "téma" : count < 5 ? "témata" : "témat"}
+                            </Badge>
+                            {subtopicCount > 0 && (
+                              <Badge
+                                variant="outline"
+                                className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                              >
+                                {subtopicCount} {subtopicCount === 1 ? "podtéma" : subtopicCount < 5 ? "podtémata" : "podtémat"}
+                              </Badge>
+                            )}
+                          </>
                         )}
                         {isEmpty && (
                           <Badge variant="outline" className="rounded-full border-dashed text-[11px]">
