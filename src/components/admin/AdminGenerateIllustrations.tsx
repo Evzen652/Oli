@@ -711,7 +711,11 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       if (filterStatus === "missing" && !missingKeys.has(key)) return false;
       if (filterSubject !== "all" && keyToSubject(key) !== filterSubject) return false;
       if (filterType !== "all" && keyToType(key) !== filterType) return false;
-      if (filterGrade !== "all" && keyToType(key) !== "subject") {
+      // Filtr ročníku platí pro VŠECHNY typy včetně subject — subject karta se
+      // zobrazí jen u ročníků, kde předmět reálně existuje (gradeMap zná i
+      // subject-{slug} → ročníky). Dřív byl subject z filtru vyňatý, takže se
+      // u 2. ročníku ukazovala i přírodověda/vlastivěda (4.+) nebo fyzika (6.+).
+      if (filterGrade !== "all") {
         const grades = gradeMap[key] ?? [];
         if (!grades.includes(filterGrade as number)) return false;
       }

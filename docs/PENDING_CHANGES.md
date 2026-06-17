@@ -228,6 +228,9 @@ Z auditu 2026-06-08 (84 % technická úspěšnost). Pořadí dle páky/rizika:
 
 ## Vyřízené (doplněno 2026-06-17)
 
+### 🖼️ Fix: admin panel ilustrací ukazoval u ročníku cizí předměty ✅
+- Filtr ročníku v `AdminGenerateIllustrations` vyjímal `subject` typ → u 2. roč. se ukazovala přírodověda/vlastivěda (4.+) a fyzika (6.). Fix: výjimka odstraněna, filtr platí i pro subject karty (gradeMap zná ročníky subjectů). Ověřeno v prohlížeči: 2. roč. → mat/čj/prvouka, 4. roč. → mat/čj/přír/vlast. tsc 0.
+
 ### 🖼️ Fix: žák ukazoval jiné ilustrace předmětů než admin ✅
 - `subjectRegistry.ts` měl pro 1. stupeň bundled PNG (`@/assets/subjects/…`), ale admin generuje do Supabase storage `subject-{slug}.png` → žák viděl staré obrázky (prvouka strom vs. admin sova). Hashe potvrdily rozdíl. Fix: 1. stupeň přepnut na `${SUPABASE_STORAGE}/subject-{slug}.png` (stejný zdroj jako admin) → regenerace se propisují samy. Ověřeno v prohlížeči, tsc 0.
 
