@@ -16,6 +16,7 @@ import {
   getTopicIllustrationUrl,
 } from "@/lib/prvoukaVisuals";
 import { getDisplayCategory, getDisplayTopic, getDisplayTitle, getDisplayCategoryDescription, getDisplayTopicDescription } from "@/lib/displayNames";
+import { getGradeNavigation, type Okruh } from "@/content/navigation";
 import { AdminLayout } from "@/components/AdminLayout";
 import { FEATURES } from "@/lib/features";
 import { Button } from "@/components/ui/button";
@@ -155,6 +156,13 @@ export default function AdminDashboard() {
     ? allTopics.filter((t) => gradeFilter >= t.gradeRange[0] && gradeFilter <= t.gradeRange[1])
     : allTopics;
 
+  // Navigation-based okruhy pro aktuální předmět+ročník (null = ročník nemá nav nebo není vybrán)
+  const subjectOkruhy = useMemo((): Okruh[] | null => {
+    if (!selectedSubject || !gradeFilter) return null;
+    const nav = getGradeNavigation(gradeFilter as Grade);
+    return nav?.find((s) => s.subject === selectedSubject)?.okruhy ?? null;
+  }, [selectedSubject, gradeFilter]);
+
   // Grade change: keep valid parts of the selection, reset invalid ones.
   const handleGradeChange = (newGrade: Grade | null) => {
     setGradeFilter(newGrade);
@@ -210,24 +218,32 @@ export default function AdminDashboard() {
 
   const categories = useMemo(() => {
     if (!selectedSubject) return [];
-    // (a) odvozeno z obsahu (skills/code topics) — kategorie která má skills
+    // Pokud máme navigation pro tento ročník+předmět → použij okruh jména (stejná jako žákovský pohled)
+    if (subjectOkruhy) return subjectOkruhy.map((o) => o.name);
+    // Fallback: RVP kategorie z obsahu
     const fromContent = new Set(topics.filter((t) => t.subject === selectedSubject).map((t) => t.category));
-    // (b) přímo z DB curriculum_categories — registrované kategorie bez obsahu
     const fromDb = dbCategories
       .filter((c) => c.subject_name?.toLowerCase() === selectedSubject.toLowerCase())
       .map((c) => c.name);
     return [...new Set([...fromContent, ...fromDb])];
-  }, [selectedSubject, topics, dbCategories]);
+  }, [selectedSubject, topics, dbCategories, subjectOkruhy]);
 
   const topicGroups = useMemo(() => {
     if (!selectedSubject || !selectedCategory) return [];
-    // (a) odvozeno z obsahu
+    // Navigation mode: selectedCategory = okruh name → filtruj přes topicIds
+    if (subjectOkruhy) {
+      const okruh = subjectOkruhy.find((o) => o.name === selectedCategory);
+      if (okruh) {
+        const inOkruh = topics.filter((t) => okruh.topicIds.includes(t.id));
+        return [...new Set(inOkruh.map((t) => t.topic))];
+      }
+    }
+    // Fallback: RVP témata
     const fromContent = new Set(
       topics
         .filter((t) => t.subject === selectedSubject && t.category === selectedCategory)
         .map((t) => t.topic),
     );
-    // (b) přímo z DB curriculum_topics — registrovaná témata bez skills
     const fromDb = dbTopics
       .filter(
         (t) =>
@@ -236,14 +252,21 @@ export default function AdminDashboard() {
       )
       .map((t) => t.name);
     return [...new Set([...fromContent, ...fromDb])];
-  }, [selectedSubject, selectedCategory, topics, dbTopics]);
+  }, [selectedSubject, selectedCategory, topics, dbTopics, subjectOkruhy]);
 
-  const subtopics =
-    selectedSubject && selectedCategory && selectedTopic
-      ? topics.filter(
-          (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic,
-        )
-      : [];
+  const subtopics = useMemo(() => {
+    if (!selectedSubject || !selectedCategory || !selectedTopic) return [];
+    // Navigation mode: filtruj přes okruh topicIds + topic name
+    if (subjectOkruhy) {
+      const okruh = subjectOkruhy.find((o) => o.name === selectedCategory);
+      if (okruh) {
+        return topics.filter((t) => okruh.topicIds.includes(t.id) && t.topic === selectedTopic);
+      }
+    }
+    return topics.filter(
+      (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic,
+    );
+  }, [selectedSubject, selectedCategory, selectedTopic, topics, subjectOkruhy]);
 
   const handleSubjectClick = (subject: string) => {
     setSelectedSubject(subject);
@@ -556,7 +579,10 @@ export default function AdminDashboard() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {subjects.map((subject) => {
                 const subjectTopics = topics.filter((t) => t.subject === subject);
-                const categoryCount = new Set(subjectTopics.map((t) => t.category)).size;
+                const rvpCategoryCount = new Set(subjectTopics.map((t) => t.category)).size;
+                // Navigation mode: počet okruhů z navigation.ts; fallback na RVP kategorie
+                const navSubject = gradeFilter ? getGradeNavigation(gradeFilter as Grade)?.find((s) => s.subject === subject) : null;
+                const categoryCount = navSubject ? navSubject.okruhy.length : rvpCategoryCount;
                 const topicCount = new Set(subjectTopics.map((t) => `${t.category}::${t.topic}`)).size;
                 const subtopicCount = subjectTopics.length;
                 const meta = getSubjectMeta(subject);
@@ -671,19 +697,38 @@ export default function AdminDashboard() {
           {level === "category" && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category) => {
-                const topicCount = new Set(
-                  topics.filter((t) => t.subject === selectedSubject && t.category === category).map((t) => t.topic),
-                ).size;
-                const dbTopicCount = dbTopics.filter(
-                  (t) => t.subject_name === selectedSubject && t.category_name === category,
-                ).length;
+                // Navigation mode: category = okruh name
+                const okruh = subjectOkruhy?.find((o) => o.name === category) ?? null;
+
+                // Spočítej témata a podtémata
+                const inOkruhTopics = okruh
+                  ? topics.filter((t) => okruh.topicIds.includes(t.id))
+                  : topics.filter((t) => t.subject === selectedSubject && t.category === category);
+                const topicCount = new Set(inOkruhTopics.map((t) => t.topic)).size;
+                const subtopicCount = inOkruhTopics.length;
+
+                const dbTopicCount = !okruh
+                  ? dbTopics.filter((t) => t.subject_name === selectedSubject && t.category_name === category).length
+                  : 0;
                 const count = Math.max(topicCount, dbTopicCount);
-                const subtopicCount = topics.filter(
-                  (t) => t.subject === selectedSubject && t.category === category,
-                ).length;
                 const isEmpty = count === 0;
-                const visual = getCategoryVisual(selectedSubject!, category);
-                const catInfo = getCategoryInfo(selectedSubject!, category);
+
+                // Vizuál: pro navigation mode hledáme podle RVP kategorie prvního tématu v okruhu
+                const rvpCatForVisual = okruh
+                  ? (inOkruhTopics[0]?.category ?? category)
+                  : category;
+                const visual = getCategoryVisual(selectedSubject!, rvpCatForVisual);
+                const catInfo = okruh ? null : getCategoryInfo(selectedSubject!, category);
+
+                // Zobrazovaný název a popis
+                const displayName = okruh
+                  ? okruh.name
+                  : getDisplayCategory(category, gradeFilter);
+                const displayEmoji = okruh?.emoji ?? visual?.emoji;
+                const displayDesc = okruh?.description
+                  ?? getDisplayCategoryDescription(category, gradeFilter)
+                  ?? catInfo?.hook;
+
                 return (
                   <Card
                     key={category}
@@ -699,18 +744,22 @@ export default function AdminDashboard() {
                     <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
-                      {/* Ilustrace v rounded panel — image vyplňuje panel */}
+                      {/* Ilustrace / emoji v rounded panel */}
                       <div className="flex h-32 items-center justify-center rounded-2xl overflow-hidden">
-                        <ImageOrEmoji
-                          imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)}
-                          emoji={visual?.emoji}
-                          size="xl"
-                        />
+                        {okruh ? (
+                          <span className="text-6xl" aria-hidden>{okruh.emoji}</span>
+                        ) : (
+                          <ImageOrEmoji
+                            imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)}
+                            emoji={displayEmoji}
+                            size="xl"
+                          />
+                        )}
                       </div>
 
-                      {/* Title — dětský název okruhu (RVP skryto) */}
+                      {/* Title — okruh name (navigation) nebo dětský RVP název */}
                       <h3 className="text-2xl font-bold text-foreground">
-                        {getDisplayCategory(category, gradeFilter)}
+                        {displayName}
                       </h3>
 
                       {/* Statistics chips */}
@@ -736,19 +785,14 @@ export default function AdminDashboard() {
                         )}
                       </div>
 
-                      {/* Popis okruhu — dětský (z displayNames) nebo legacy catInfo.hook */}
-                      {(() => {
-                        const childDesc = getDisplayCategoryDescription(category, gradeFilter);
-                        const text = childDesc ?? catInfo?.hook;
-                        if (!text) return null;
-                        return (
-                          <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
-                            <p className="text-xs leading-relaxed text-foreground/80">
-                              💡 {text}
-                            </p>
-                          </div>
-                        );
-                      })()}
+                      {/* Popis okruhu */}
+                      {displayDesc && (
+                        <div className="flex-1 rounded-xl bg-white/60 border border-border/40 px-3 py-2.5 backdrop-blur-sm">
+                          <p className="text-xs leading-relaxed text-foreground/80">
+                            💡 {displayDesc}
+                          </p>
+                        </div>
+                      )}
 
                       {/* Šipka v pravém dolním rohu */}
                       <div className="flex justify-end">
@@ -761,8 +805,8 @@ export default function AdminDashboard() {
                 );
               })}
 
-              {/* Přidat okruh — inline formulář */}
-              {selectedSubject && (
+              {/* Přidat okruh — jen mimo navigation mode (okruhy z navigation.ts se nespravují přes DB) */}
+              {selectedSubject && !subjectOkruhy && (
                 <QuickAddCard
                   label="okruh"
                   hint={`Okruh je tematická kapitola předmětu — např. „Čísla a výpočty" nebo „Geometrie". Témata se pak přidávají dovnitř okruhu.`}
@@ -890,8 +934,8 @@ export default function AdminDashboard() {
                 );
               })}
 
-              {/* Přidat téma — inline formulář */}
-              {selectedSubject && selectedCategory && (
+              {/* Přidat téma — jen mimo navigation mode */}
+              {selectedSubject && selectedCategory && !subjectOkruhy && (
                 <QuickAddCard
                   label="téma"
                   hint={`Téma je konkrétní výukový celek v rámci okruhu — např. „Sčítání do 100" nebo „Psaní velkých písmen". Cvičení se pak přidávají k tématu.`}
