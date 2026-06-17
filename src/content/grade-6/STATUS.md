@@ -51,7 +51,15 @@
       fakt-expertem. L3 chybový model = klamavé nálezy (mince s portrétem → numismatika,
       ne heraldika). Autor sám ošetřil hranice oborů (sfragistika/epigrafika vyloučeny).
       16/16 testů se sofistikovaným klasifikátorem, brána 0 PASS, tsc 0.)
-- [ ] Co je dějepis — význam studia minulosti (⚠️ pipeline pokus 2026-06-17: agent zemřel ve fázi spec → znovu)
+- [x] **Co je dějepis — význam studia minulosti** → `dejepis/coJeDejepis.ts` ✅
+      (select_one — rozlišení DĚJINY (události) × DĚJEPIS (věda) + co historik zkoumá +
+      proč studovat minulost. **Author-batch pipeline** (re-run po pádu, opravený workflow):
+      2 vady opraveny dvojí optikou, agenti respektovali zákaz editace sdílených docs.
+      Chybový model = miskoncepce (záměna pojmů, „historik věští budoucnost", „jen války/data").
+      L1 definice → L2 aplikace na činnost → L3 hraniční případy + smysl studia. Nezávislý
+      solver odvozuje klíč ze sémantiky (ne z correctAnswer), 22/22, brána 0 PASS, tsc 0.)
+
+**Okruh „Úvod do dějepisu" KOMPLETNÍ (4/4).** ✅
 
 ### Pravěk
 - [x] **Doba kamenná / periodizace pravěku** → `dejepis/dobaKamennaPeriodizace.ts` ✅
