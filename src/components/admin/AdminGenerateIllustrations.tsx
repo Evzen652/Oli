@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, Fragment } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -1377,22 +1377,22 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           <div className="flex flex-wrap gap-1.5">
             {chip(filterGrade === "all", () => setFilterGrade("all"), "Všechny ročníky")}
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((g) => (
-              <React.Fragment key={g}>
+              <Fragment key={g}>
                 {chip(filterGrade === g, () => setFilterGrade(filterGrade === g ? "all" : g), `${g}.`)}
-              </React.Fragment>
+              </Fragment>
             ))}
           </div>
           {/* Předmět */}
           <div className="flex flex-wrap gap-1.5">
             {chip(filterSubject === "all", () => setFilterSubject("all"), "Všechny předměty")}
             {subjectFilterList.map(({ value, label }) => (
-              <React.Fragment key={value}>
+              <Fragment key={value}>
                 {chip(
                   filterSubject === value,
                   () => setFilterSubject(filterSubject === value ? "all" : value),
                   label
                 )}
-              </React.Fragment>
+              </Fragment>
             ))}
           </div>
           {/* Typ */}
