@@ -744,17 +744,13 @@ export default function AdminDashboard() {
                     <span className="pointer-events-none absolute bottom-3 right-3 h-2 w-2 rounded-full bg-primary/30" aria-hidden />
 
                     <CardContent className="flex h-full flex-col gap-4 p-5">
-                      {/* Ilustrace / emoji v rounded panel */}
+                      {/* Ilustrace v rounded panel — stejná logika jako TopicBrowser (rvpCatForVisual) */}
                       <div className="flex h-32 items-center justify-center rounded-2xl overflow-hidden">
-                        {okruh ? (
-                          <span className="text-6xl" aria-hidden>{okruh.emoji}</span>
-                        ) : (
-                          <ImageOrEmoji
-                            imageUrl={getCategoryIllustrationUrl(selectedSubject!, category)}
-                            emoji={displayEmoji}
-                            size="xl"
-                          />
-                        )}
+                        <ImageOrEmoji
+                          imageUrl={getCategoryIllustrationUrl(selectedSubject!, rvpCatForVisual)}
+                          emoji={displayEmoji}
+                          size="xl"
+                        />
                       </div>
 
                       {/* Title — okruh name (navigation) nebo dětský RVP název */}
