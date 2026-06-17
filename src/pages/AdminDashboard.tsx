@@ -136,13 +136,13 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const proposalRef = useRef<HTMLDivElement>(null);
 
-  // Derived browse level
+  // Derived browse level — v navigation módu přeskočíme "topic" rovinu (okruh → skills přímo)
   const level: BrowseLevel = selectedSkill
     ? "detail"
     : selectedTopic
     ? "subtopic"
     : selectedCategory
-    ? "topic"
+    ? (subjectOkruhy ? "subtopic" : "topic")
     : selectedSubject
     ? "category"
     : "subject";
@@ -255,14 +255,17 @@ export default function AdminDashboard() {
   }, [selectedSubject, selectedCategory, topics, dbTopics, subjectOkruhy]);
 
   const subtopics = useMemo(() => {
-    if (!selectedSubject || !selectedCategory || !selectedTopic) return [];
-    // Navigation mode: filtruj přes okruh topicIds + topic name
+    if (!selectedSubject || !selectedCategory) return [];
+    // Navigation mode: přeskakujeme t.topic level — zobrazíme všechny skills v okruhu přímo
     if (subjectOkruhy) {
       const okruh = subjectOkruhy.find((o) => o.name === selectedCategory);
       if (okruh) {
-        return topics.filter((t) => okruh.topicIds.includes(t.id) && t.topic === selectedTopic);
+        const inOkruh = topics.filter((t) => okruh.topicIds.includes(t.id));
+        // Pokud je selectedTopic, filtruj dál (pro případ přímého linku); jinak vše
+        return selectedTopic ? inOkruh.filter((t) => t.topic === selectedTopic) : inOkruh;
       }
     }
+    if (!selectedTopic) return [];
     return topics.filter(
       (t) => t.subject === selectedSubject && t.category === selectedCategory && t.topic === selectedTopic,
     );
@@ -291,7 +294,9 @@ export default function AdminDashboard() {
       : level === "topic"
       ? getDisplayCategory(selectedCategory!, gradeFilter)
       : level === "subtopic"
-      ? getDisplayTopic(selectedTopic!, gradeFilter)
+      ? (subjectOkruhy && !selectedTopic
+          ? selectedCategory!                          // nav mode: název okruhu
+          : getDisplayTopic(selectedTopic!, gradeFilter))
       : (selectedSkill ? getDisplayTitle(selectedSkill) : "");
 
   const subtitle =
@@ -302,7 +307,7 @@ export default function AdminDashboard() {
       : level === "topic"
       ? "Témata"
       : level === "subtopic"
-      ? "Podtémata"
+      ? (subjectOkruhy && !selectedTopic ? "Témata" : "Podtémata")
       : "Detail podtématu";
 
   const grades: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
