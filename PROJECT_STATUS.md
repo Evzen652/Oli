@@ -144,6 +144,11 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Flow mezery, Blok 2 (Robustnost session):
+- ✅ **S1 — empty-batch guard** v `sessionOrchestrator.ts` (PRACTICE): když generátor vrátí prázdný batch, `task` je undefined a `task.question` dosud shodil session do prázdné karty bez cesty dál (= bod A2 auditu fáze 1). Nově `if (!task) → transition END` s hláškou „Pro tuto úroveň zatím nejsou úlohy." Guard se spustí jen na prázdném batchi → žádná regrese (všechna témata teď vrací neprázdno).
+- ⏭️ **S2 — „Zopakovat" recykluje otázky: ZAMÍTNUTO jako non-issue.** Ověřeno čtením toku: pro témata s generátorem je `usedQuestions` při generování batche prázdné (batch se tvoří jednou v PRACTICE) a „Zopakovat" dělá `handleReset` → čerstvá session s prázdným `usedQuestions`. `deduplicateBatch` fallback se tak v praxi nespustí. Žádná změna kódu.
+- Ověřeno: tsc 0, generator-validation beze změny (12 baseline failů = versRym + 3 prvouka, mimo scope). 8 eslint `no-explicit-any` ve souboru je předexistující dluh (`as any` casty), netýká se změny.
+
 ### Session 2026-06-19 — Flow mezery, Blok 1 (Účet & role rodiče):
 - ✅ **R1 — role přes DB trigger, ne z klienta.** Migrace `20260619120000_auth_role_provisioning.sql` rozšiřuje `handle_new_user`: zakládá `profiles` i `user_roles` atomicky, roli bere z metadat signupu (`raw_user_meta_data->>'role'`, default `parent`; děti z `pair-child` mají `child`). Idempotentní (ON CONFLICT) + backfill pro existující účty bez role. `Auth.tsx` už roli nezakládá z klienta (mohlo tiše selhat → rodič bez role v žákovském UI). **⚠️ Migraci je třeba aplikovat na Supabase (`supabase db push`).**
 - ✅ **R2 — `updateProfile` → upsert** (`useProfile.ts`). Dříve `.update()` tiše zasáhl 0 řádků, když profil chyběl → onboarding zacyklen. Pojistka: `useUserRole` nově řadí role deterministicky (enum order admin>parent>child) místo náhodného `.limit(1)`.

@@ -354,7 +354,16 @@ export async function processState(session: SessionData, userInput?: string): Pr
         s.usedQuestions = [...s.usedQuestions, ...batch.map(t => t.question)];
       }
 
+      // Pojistka: generátor mohl vrátit prázdný batch (téma bez úloh na dané
+      // úrovni). Bez tohoto guardu by `task` bylo undefined a `task.question`
+      // by shodilo celou session do prázdné karty bez cesty dál. Místo toho
+      // session korektně ukončíme.
       const task = s.practiceBatch[s.currentTaskIndex];
+      if (!task) {
+        s = transition(s, "END");
+        return { session: s, output: "Pro tuto úroveň zatím nejsou úlohy." };
+      }
+
       return {
         session: s,
         output: "Vyřeš úlohu:",
