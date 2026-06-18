@@ -585,6 +585,35 @@ function buildOkruhIllustrationKeys(): string[] {
   return [...OKRUH_REGISTRY.keys()];
 }
 
+/** Mapa: TopicMetadata.id → TopicMetadata — pro vyhledávání fallback cat klíče. */
+const TOPIC_ID_TO_META = new Map(getAllTopics().map(t => [t.id, t]));
+
+/**
+ * Mapa: okruh-* klíč → odpovídající cat-* klíč (fallback ilustrace).
+ * Okruhy sdílí cat klíč pokud jejich témata patří do stejné RVP kategorie.
+ * Fallback se použije když okruh-specifická ilustrace ještě neexistuje.
+ */
+const OKRUH_FALLBACK_MAP = new Map<string, string>();
+(function buildOkruhFallbackMap() {
+  for (const grade of [2, 3, 4, 5] as const) {
+    const nav = getGradeNavigation(grade);
+    if (!nav) continue;
+    for (const subjectNav of nav) {
+      const subjSlug = toSlug(subjectNav.subject);
+      for (const okruh of subjectNav.okruhy) {
+        const okruhKey = `okruh-g${grade}-${subjSlug}-${okruh.id}`;
+        const firstTopicId = okruh.topicIds[0];
+        if (!firstTopicId) continue;
+        const meta = TOPIC_ID_TO_META.get(firstTopicId);
+        if (!meta) continue;
+        const legacyCatKey = getCategoryImageKey(meta.subject, meta.category);
+        const slugCatKey = `cat-${toSlug(meta.subject)}-${toSlug(meta.category)}`;
+        OKRUH_FALLBACK_MAP.set(okruhKey, legacyCatKey ?? slugCatKey);
+      }
+    }
+  }
+})();
+
 function buildOkruhGradeMap(): Record<string, number[]> {
   const result: Record<string, number[]> = {};
   for (const [key, entry] of OKRUH_REGISTRY) {
@@ -782,20 +811,25 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
         const url = supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl;
         try {
           const res = await fetch(url, { method: "HEAD", cache: "no-store" });
-          return { key, exists: res.ok };
-        } catch {
-          return { key, exists: false };
+          if (res.ok) return { key, exists: true, displayUrl: url };
+        } catch {}
+        // Okruh key — pokud vlastní ilustrace neexistuje, zkus fallback cat klíč
+        if (key.startsWith("okruh-")) {
+          const fallback = OKRUH_FALLBACK_MAP.get(key);
+          if (fallback) {
+            const fallbackUrl = supabase.storage.from("prvouka-images").getPublicUrl(`${fallback}.png`).data.publicUrl;
+            try {
+              const fallbackRes = await fetch(fallbackUrl, { method: "HEAD", cache: "no-store" });
+              if (fallbackRes.ok) return { key, exists: true, displayUrl: fallbackUrl };
+            } catch {}
+          }
         }
+        return { key, exists: false, displayUrl: url };
       })
     );
     const missing = new Set(checkResults.filter((r) => !r.exists).map((r) => r.key));
     setMissingKeys(missing);
-    setAllImages(
-      allKeysNow.map((key) => ({
-        key,
-        url: supabase.storage.from("prvouka-images").getPublicUrl(`${key}.png`).data.publicUrl,
-      }))
-    );
+    setAllImages(checkResults.map(({ key, displayUrl }) => ({ key, url: displayUrl })));
   };
 
   useEffect(() => {
@@ -1640,7 +1674,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                 {(() => {
                   const label = getHumanLabel(key);
                   const breadcrumb = getHumanBreadcrumb(key);
-                  const typeLabel = key.startsWith("subject-") ? "Předmět" : key.startsWith("cat-") ? "Okruh" : key.startsWith("topic-") ? "Téma" : "";
+                  const typeLabel = key.startsWith("subject-") ? "Předmět" : key.startsWith("okruh-") || key.startsWith("cat-") ? "Okruh" : key.startsWith("topic-") ? "Téma" : "";
                   return (
                     <div className="mt-2 space-y-0.5">
                       {label ? (
