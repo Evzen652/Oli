@@ -586,7 +586,7 @@ export default function ParentDashboard() {
                       <span key={i} className="font-bold text-3xl text-primary tabular-nums">{ch}</span>
                     ))}
                   </div>
-                  <p className="mt-2 text-xs text-amber-700/80">Zadej kód v aplikaci na zařízení dítěte. Kód platí 24 hodin.</p>
+                  <p className="mt-2 text-xs text-amber-700/80">Zadej kód v aplikaci na zařízení dítěte. Kód platí 48 hodin.</p>
                   {isExpired(child) && (
                     <Button variant="outline" size="sm" className="mt-3 gap-1 rounded-full border-amber-300 hover:bg-amber-100 text-amber-800" onClick={() => regenerateCode(child.id)}>
                       <RefreshCw className="h-3 w-3" />{t("parent.regenerate_code")}

@@ -144,6 +144,14 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Flow mezery, Blok 4 (Drobnosti):
+- ✅ **D1** — text „Kód platí 24 hodin" → „48 hodin" (`ParentDashboard.tsx`), sjednoceno s reálnou expirací (`useChildren.ts` 48 h).
+- ✅ **D2** — onboarding krok 1: tlačítko `disabled` i bez vyplněného jména (`ParentOnboarding.tsx`); `display_name` se ukládá `.trim()` (dřív šlo projít s prázdným → gate se znovu aktivoval).
+- ✅ **D3** — anon „Nové téma" z konce sezení → vrací na anon dashboard (denní úkoly) přes existující event `oli-anon-exit-session` místo zamčeného TopicBrowseru (`SessionView.tsx`).
+- ✅ **D4** — `ChildLoadingFallback`: přesnější text (propojení NEBO chybějící ročník) + tlačítko „Zkusit znovu" (reload), timeout 5 s → 4 s.
+- ⏭️ **D5** — localStorage trial warning: odloženo do širšího anon→registrovaný flow (viz memory/TODO).
+- Ověřeno: tsc 0, vite build OK. Tím je série flow-mezery (Blok 1–4) hotová na větvi `fix/flow-mezery-blok1-ucet`.
+
 ### Session 2026-06-19 — Flow mezery, Blok 3 (Navigace; demo vynecháno):
 - ✅ **N2 — `/session-history` zapojena.** Dříve plně funkční, ale bez vstupu z UI (mrtvá routa). Přidán odkaz „Celá historie →" v hlavičce karty „Samostatné procvičování" v `ParentDashboard.tsx` (jen pro reálné spárované děti, ne demo).
 - ✅ **N3 — sjednocení Zpět + oprava cíle.** `Report.tsx`: `navigate(-1)` (3×) → `navigate("/parent")` / `<BackButton to="/parent">` (chyba: při přímém odkazu na /report vyhazovalo mimo app). `SessionHistory.tsx`: custom ghost tlačítko → `<BackButton to="/parent">` (+ odebrán nepoužitý `useNavigate`).

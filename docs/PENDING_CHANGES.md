@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Flow mezery — Blok 4: Drobnosti (2026-06-19)
+- D1 text kódu 24→48 h. D2 onboarding tlačítko disabled bez jména + trim. D3 anon „Nové téma" → dashboard (event). D4 ChildLoadingFallback text + reload, 5→4 s. D5 (localStorage warning) odloženo do anon→registrovaný flow. tsc/build OK. **Série flow-mezery (Blok 1–4) hotová** na `fix/flow-mezery-blok1-ucet`.
+
 ## ✅ Flow mezery — Blok 3: Navigace (2026-06-19)
 - N2 odkaz „Celá historie" na `/session-history` z dashboardu (byla mrtvá routa). N3 Report `navigate(-1)`→`/parent` + BackButton sjednocení (Report, SessionHistory). N1 (smazat demo) vynecháno dle pokynu. tsc/build OK. Zbývá Blok 4 (drobnosti: kód 48h vs text, onboarding disabled, anon „Nové téma", child grade=null).
 
