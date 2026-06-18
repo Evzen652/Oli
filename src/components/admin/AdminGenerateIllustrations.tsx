@@ -11,6 +11,8 @@ import { bumpImageVersion, fetchFreshBlob, useImageVersions } from "@/lib/imageV
 import { getTopicImageKey, getCategoryImageKey } from "@/lib/prvoukaVisuals";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getDisplayCategory, getDisplayTitle, getDisplayTopic } from "@/lib/displayNames";
+import { getGradeNavigation, getSubjectOkruhy } from "@/content/navigation";
+import type { Grade } from "@/lib/types";
 import { toSlug } from "@/lib/slugify";
 
 // ── Key generation from ALL_TOPICS ───────────────────────────────────────────
@@ -103,6 +105,10 @@ const SUBJ_TO_TOPICS_MAP = buildSubjectToTopicsMap(getAllTopics());
  * Slouží pro adminský panel ilustrací, aby uživatel věděl, co ke klíči patří.
  */
 function getHumanLabel(key: string): string | null {
+  // Navigační okruh — přímo z registry
+  if (key.startsWith("okruh-")) {
+    return OKRUH_REGISTRY.get(key)?.name ?? null;
+  }
   // Topic podtéma — máme přímý TopicMetadata
   if (key.startsWith("topic-")) {
     const meta = KEY_TO_TOPIC_MAP.get(key);
@@ -132,6 +138,13 @@ function getHumanLabel(key: string): string | null {
  * Pro cat key: předmět › okruh. Pro subject key: prázdný.
  */
 function getHumanBreadcrumb(key: string): string | null {
+  if (key.startsWith("okruh-")) {
+    const entry = OKRUH_REGISTRY.get(key);
+    if (entry) {
+      const subj = entry.subject.charAt(0).toUpperCase() + entry.subject.slice(1);
+      return `${subj} • ${entry.grade}. ročník`;
+    }
+  }
   if (key.startsWith("topic-")) {
     const meta = KEY_TO_TOPIC_MAP.get(key);
     if (meta) {
@@ -412,6 +425,18 @@ function getAutoDesc(
   const known = getDefaultDesc(key);
   if (known) return known;
 
+  // Navigační okruh — použij popis okruhu jako základ pro scénu
+  if (key.startsWith("okruh-")) {
+    const entry = OKRUH_REGISTRY.get(key);
+    if (entry) {
+      const subjTopics = SUBJ_TO_TOPICS_MAP.get(`subject-${toSlug(entry.subject)}`);
+      if (subjTopics && subjTopics.length > 0) {
+        return buildCategoryDesc(subjTopics.slice(0, 6));
+      }
+      return `vzdělávací scéna — ${entry.name}: ${entry.description}`;
+    }
+  }
+
   // POZN: Popisy jsou ČISTĚ POZITIVNÍ — žádné "no characters", "no people", "no animals".
   // AI image modely extraktují nouns z negace. Vše negativní → jen do negative_prompt pole.
   // Nikdy nepoužívej "colorful 3D objects representing X" — je to abstraktní → generuje blobs.
@@ -460,6 +485,10 @@ function getAutoDesc(
 // ── Filter helpers ────────────────────────────────────────────────────────────
 
 function keyToSubject(key: string): string {
+  // Navigační okruh — okruh-g{grade}-{subject}-{id}
+  if (key.startsWith("okruh-")) {
+    return OKRUH_REGISTRY.get(key)?.subject ?? key.split("-")[2] ?? "prvouka";
+  }
   // Legacy prefix shortcuts (hardcoded mapy)
   if (key === "subject-matematika" || key.startsWith("cat-math-") || key.startsWith("topic-math-")) return "matematika";
   if (key === "subject-cestina" || key.startsWith("cat-cz-") || key.startsWith("topic-cz-")) return "čeština";
@@ -484,7 +513,7 @@ function keyToSubject(key: string): string {
 
 function keyToType(key: string): "subject" | "category" | "topic" {
   if (key.startsWith("subject-")) return "subject";
-  if (key.startsWith("cat-")) return "category";
+  if (key.startsWith("cat-") || key.startsWith("okruh-")) return "category";
   return "topic";
 }
 
@@ -518,6 +547,50 @@ function buildGradeMap(topics: ReturnType<typeof getAllTopics>): Record<string, 
   return Object.fromEntries(
     Object.entries(map).map(([k, s]) => [k, [...s].sort((a, b) => a - b)])
   );
+}
+
+// ── Okruh illustration keys (navigation.ts → okruh-g{grade}-{subject}-{id}) ──
+
+interface OkruhEntry {
+  name: string;
+  description: string;
+  emoji: string;
+  subject: string;
+  grade: number;
+}
+
+/** Registry: okruh illustration key → metadata pro label/breadcrumb/desc. */
+const OKRUH_REGISTRY = new Map<string, OkruhEntry>();
+
+(function buildOkruhRegistry() {
+  for (const grade of [2, 3, 4, 5] as const) {
+    const nav = getGradeNavigation(grade);
+    if (!nav) continue;
+    for (const subjectNav of nav) {
+      const subjSlug = toSlug(subjectNav.subject);
+      for (const okruh of subjectNav.okruhy) {
+        OKRUH_REGISTRY.set(`okruh-g${grade}-${subjSlug}-${okruh.id}`, {
+          name: okruh.name,
+          description: okruh.description,
+          emoji: okruh.emoji,
+          subject: subjectNav.subject,
+          grade,
+        });
+      }
+    }
+  }
+})();
+
+function buildOkruhIllustrationKeys(): string[] {
+  return [...OKRUH_REGISTRY.keys()];
+}
+
+function buildOkruhGradeMap(): Record<string, number[]> {
+  const result: Record<string, number[]> = {};
+  for (const [key, entry] of OKRUH_REGISTRY) {
+    result[key] = [entry.grade];
+  }
+  return result;
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -568,8 +641,9 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const [customSaved, setCustomSaved] = useState(false);
 
   const versioned = useImageVersions();
-  const gradeMap = useMemo(() => buildGradeMap(getAllTopics()), []);
+  const gradeMap = useMemo(() => ({ ...buildGradeMap(getAllTopics()), ...buildOkruhGradeMap() }), []);
   const codeTopicKeys = useMemo(() => buildTopicIllustrationKeys(getAllTopics()), []);
+  const okruhKeys = useMemo(() => buildOkruhIllustrationKeys(), []);
 
   // ── Dynamic DB hierarchy ─────────────────────────────────────────────────────
   const [dbSubjects, setDbSubjects] = useState<{ id: string; name: string; slug: string }[]>([]);
@@ -611,11 +685,11 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
   const allKeys = useMemo(() => {
     const seen = new Set<string>(ALL_KEYS);
     const extra: string[] = [];
-    for (const k of [...dynamicSubjectKeys, ...dynamicCategoryKeys, ...dynamicTopicKeys, ...codeTopicKeys]) {
+    for (const k of [...dynamicSubjectKeys, ...dynamicCategoryKeys, ...dynamicTopicKeys, ...codeTopicKeys, ...okruhKeys]) {
       if (!seen.has(k)) { seen.add(k); extra.push(k); }
     }
     return [...ALL_KEYS, ...extra];
-  }, [dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys, codeTopicKeys]);
+  }, [dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys, codeTopicKeys, okruhKeys]);
 
   // Množina slugů předmětů, které reálně existují ve vybraném ročníku.
   // null = bez filtru ročníku → zobraz všechny předměty.
@@ -692,11 +766,12 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       })
       .filter((k): k is string => !!k);
 
-    // Přidej code-based klíče (grade-N topics) — ty nejsou v DB ani v ALL_KEYS
+    // Přidej code-based klíče (grade-N topics) + okruh klíče z navigation.ts
     const codeKeys = buildTopicIllustrationKeys(getAllTopics());
+    const navOkruhKeys = buildOkruhIllustrationKeys();
     const seenKeys = new Set<string>(ALL_KEYS);
     const allKeysNow: string[] = [...ALL_KEYS];
-    for (const k of [...dynSubjKeys, ...dynCatKeys, ...dynTopKeys, ...codeKeys]) {
+    for (const k of [...dynSubjKeys, ...dynCatKeys, ...dynTopKeys, ...codeKeys, ...navOkruhKeys]) {
       if (!seenKeys.has(k)) { seenKeys.add(k); allKeysNow.push(k); }
     }
 
@@ -740,6 +815,12 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
       if (filterGrade !== "all") {
         const grades = gradeMap[key] ?? [];
         if (!grades.includes(filterGrade as number)) return false;
+        // Pokud ročník+předmět má navigation okruhy, skryj staré cat-* klíče
+        // pro ten předmět — nahrazují je přesnější okruh-* klíče.
+        if (key.startsWith("cat-")) {
+          const subj = keyToSubject(key);
+          if (getSubjectOkruhy(filterGrade as Grade, subj)) return false;
+        }
       }
       return true;
     });
