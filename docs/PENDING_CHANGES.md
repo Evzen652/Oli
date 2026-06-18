@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Disjunktní pooly grade-2 matematika (2026-06-18)
+- 6 kumulativních generátorů převedeno na `POOL_L1/L2/L3`: `scitaniAOdcitaniDo100`, `posloupnostiCisel`, `nasobeniJakoOpakovaneScitani`, `cteniZapisPorovnavaniCiselDo100`, `ciselnaOsaDo100`, `vztahNasobieniADeleni`. Audit 2× potvrzen (stabilní): `scitani 9/10/7`, `posloupnosti 7/7/7`, `nasobeni 10/10/8`, `cteni 7/7/7`, `ciselna-osa 7/7/7`, `vztah 9/9/9`. Všechna `max L3`. tsc 0 chyb.
+
 ## ✅ Sjednocení obtížnosti: generátor = zdroj pravdy (2026-06-18)
 - `src/lib/levelCoverage.ts` (`getTierTasks` / `maxAvailableLevel`), admin karty Level I/II/III z generátoru + DB overlay, audit „pokrytí úrovní", runtime ořez na `maxAvailableLevel`, `CONTENT_CONTRACT.md`. Detail v `PROJECT_STATUS.md` sekce 6.
 

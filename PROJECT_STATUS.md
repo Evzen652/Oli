@@ -144,6 +144,9 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-18 — Disjunktní pooly grade-2 matematika:
+- ✅ **6 kumulativních generátorů převedeno na disjunktní `POOL_L1/L2/L3`** — `scitaniAOdcitaniDo100`, `posloupnostiCisel`, `nasobeniJakoOpakovaneScitani`, `cteniZapisPorovnavaniCiselDo100`, `ciselnaOsaDo100`, `vztahNasobieniADeleni`. Před: `POOL.filter(item => item.level <= level)` → náhodný los při slice mohl zahodit L2/L3 položky. Po: `gen(N)` tahá pouze z poolu N → žádná ztráta, žádný překryv. Audit (2× spuštěn, čísla stabilní): **před** blikala, **po**: `scitani 9/10/7`, `posloupnosti 7/7/7`, `nasobeni 10/10/8`, `cteni 7/7/7`, `ciselna-osa 7/7/7`, `vztah 9/9/9` — všechna `max L3`, `maxAvailableLevel` vrací stabilně 3. tsc 0 chyb, žádná nová regrese.
+
 ### Session 2026-06-18 — Sjednocení obtížnosti (generátor = zdroj pravdy):
 - ✅ **`src/lib/levelCoverage.ts`** — nový sdílený helper: `getTierTasks(topic)` (rozdíl množin l1/l2/l3 podle `question`) + `maxAvailableLevel(topic)`. Jediné místo, kde je rozdílové pravidlo definováno (reuse admin/audit/runtime).
 - ✅ **Admin karty Level I/II/III z generátoru** — `SkillDetail.tsx` počítá počty přes `getTierTasks` (`l1/l2/l3` + DB overlay `approved` per source) místo dřívějšího „jen level 1". `ExerciseTab.tsx`: „Ukázky ze šablony" ukazují úlohy **aktivní** úrovně (Level II/III = ty těžší), gen-save ukládá s `config.source` (ne natvrdo `simple`), statistika „úloh" per úroveň.

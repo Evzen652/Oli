@@ -9,9 +9,8 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-// Pool of tasks for all levels
-const POOL: Array<{ question: string; correct: string; hint: string; level: number }> = [
-  // L1: kolikrát se číslo opakuje
+// level kept on items: used in distractor formula (d3 = correct + (level <= 2 ? t.level : 2))
+const POOL_L1: Array<{ question: string; correct: string; hint: string; level: number }> = [
   { question: "2 + 2 + 2 = 2 × ?", correct: "3", hint: "Spočítej dvojky v příkladu: 2 + 2 + 2 — kolik jich je?", level: 1 },
   { question: "3 + 3 + 3 + 3 = 3 × ?", correct: "4", hint: "Spočítej trojky v příkladu: 3 + 3 + 3 + 3 — kolik jich je?", level: 1 },
   { question: "5 + 5 = 5 × ?", correct: "2", hint: "Spočítej pětky v příkladu: 5 + 5 — kolik jich je?", level: 1 },
@@ -22,7 +21,9 @@ const POOL: Array<{ question: string; correct: string; hint: string; level: numb
   { question: "5 + 5 + 5 = 5 × ?", correct: "3", hint: "Spočítej pětky v příkladu: 5 + 5 + 5 — kolik jich je?", level: 1 },
   { question: "8 + 8 = 8 × ?", correct: "2", hint: "Spočítej osmičky v příkladu: 8 + 8 — kolik jich je?", level: 1 },
   { question: "3 + 3 = 3 × ?", correct: "2", hint: "Spočítej trojky v příkladu: 3 + 3 — kolik jich je?", level: 1 },
-  // L2: výsledek násobení (s nápovědou sčítání)
+];
+
+const POOL_L2: Array<{ question: string; correct: string; hint: string; level: number }> = [
   { question: "4 × 3 = ?", correct: "12", hint: "4 + 4 + 4 = ?", level: 2 },
   { question: "2 × 5 = ?", correct: "10", hint: "Vynásobit 2 = přičti číslo k sobě: 5 + 5 = ?", level: 2 },
   { question: "3 × 4 = ?", correct: "12", hint: "3 + 3 + 3 + 3 = ?", level: 2 },
@@ -33,7 +34,9 @@ const POOL: Array<{ question: string; correct: string; hint: string; level: numb
   { question: "3 × 3 = ?", correct: "9", hint: "3 + 3 + 3 = ?", level: 2 },
   { question: "4 × 2 = ?", correct: "8", hint: "Vynásobit 2 = přičti číslo k sobě: 4 + 4 = ?", level: 2 },
   { question: "5 × 4 = ?", correct: "20", hint: "5 + 5 + 5 + 5 = ?", level: 2 },
-  // L3: kombinace
+];
+
+const POOL_L3: Array<{ question: string; correct: string; hint: string; level: number }> = [
   { question: "Kolik je 5 × 4?", correct: "20", hint: "5 + 5 + 5 + 5 = ?", level: 3 },
   { question: "Kolik je 3 × 6?", correct: "18", hint: "3 + 3 + 3 + 3 + 3 + 3 = ?", level: 3 },
   { question: "Kolik je 4 × 4?", correct: "16", hint: "4 + 4 + 4 + 4 = ?", level: 3 },
@@ -45,12 +48,9 @@ const POOL: Array<{ question: string; correct: string; hint: string; level: numb
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 3
-    ? POOL
-    : POOL.filter(t => t.level <= level);
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
 
-  const shuffled = shuffle(pool);
-  return shuffled.slice(0, 25).map(t => {
+  return shuffle(pool).map(t => {
     const correct = Number(t.correct);
     const d1 = String(correct + 1);
     const d2 = String(correct - 1 > 0 ? correct - 1 : correct + 2);
