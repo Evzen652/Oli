@@ -144,6 +144,11 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-18 — Gradace levelů grade-2 čeština (12 souborů):
+- ✅ **Všech 12 souborů `src/content/grade-2/cjl/` převedeno na disjunktní `POOL_L1/L2/L3`** — dříve měly jeden flat `POOL` + `gen(_level)` ignoroval úroveň (`shuffle(POOL).slice(0,15)`), takže **level systém u čj 2. třídy nefungoval vůbec**. Nyní `gen(level)` tahá z poolu dané úrovně. Pedagogická gradace L1 (rozpozná pravidlo/definici) → L2 (aplikuje na frekventovaná slova) → L3 (méně frekventovaná / složitější kontext / věta). Audit: **všech 12 témat 8/8/8, max L3** (dříve nefunkční). Soubory: `pravopisIY`, `slovesa`, `abecedaRazeni`, `druhyVet`, `orientaceVTextu`, `pohadkaRikankaBasen`, `skupinyDeTeNe`, `slabiky`, `slovaNadrazena`, `slovaProtikladna`, `spisovatelKniha`, `vlastniJmena`.
+- ✅ **Doplněno ~84 nových položek** (každý pool dorovnán na 8) — reálná čeština, ověřená diakritika i abecední/slabičná logika. `true_false` témata (orientaceVTextu, vlastniJmena) zachovala strukturu ANO/NE + `options: [ANO, NE]`. Cyrilické názvy exportů (`SKUPINYDЕТЕНЕ`, `ABECEDAAZENI`) zachovány přesně (jsou tak importované v `grade-2/index.ts`).
+- ✅ **Metoda: 12 paralelních subagentů (Sonnet), 1 na soubor**, s přesným receptem; verifikace na Opusu: tsc 0 chyb, generator-validation **0 grade-2 failů** (correctAnswer ∈ options drží), audit 8/8/8. Zbylé audit flagy u g2-cjl jsou předexistující prose-MC formát („Které slovo je X: a, b, c" — možnosti ve znění záměrně) + heuristické false-positives (hint obsahuje „vždy"/„slovo") — ne regrese. Větev `feat/cjl-grade2-levely`.
+
 ### Session 2026-06-18 — Disjunktní pooly grade-2 matematika:
 - ✅ **6 kumulativních generátorů převedeno na disjunktní `POOL_L1/L2/L3`** — `scitaniAOdcitaniDo100`, `posloupnostiCisel`, `nasobeniJakoOpakovaneScitani`, `cteniZapisPorovnavaniCiselDo100`, `ciselnaOsaDo100`, `vztahNasobieniADeleni`. Před: `POOL.filter(item => item.level <= level)` → náhodný los při slice mohl zahodit L2/L3 položky. Po: `gen(N)` tahá pouze z poolu N → žádná ztráta, žádný překryv. Audit (2× spuštěn, čísla stabilní): **před** blikala, **po**: `scitani 9/10/7`, `posloupnosti 7/7/7`, `nasobeni 10/10/8`, `cteni 7/7/7`, `ciselna-osa 7/7/7`, `vztah 9/9/9` — všechna `max L3`, `maxAvailableLevel` vrací stabilně 3. tsc 0 chyb, žádná nová regrese.
 
