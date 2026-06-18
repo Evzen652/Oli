@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
+import { mapAuthError } from "@/lib/authErrors";
 import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
 import { pad } from "@/lib/czechGrammar";
-import { OlyLogo } from "@/components/OlyLogo";
 import { BookOpen, TrendingUp, Target, Mail, Sparkles } from "lucide-react";
 import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
@@ -53,7 +53,7 @@ export default function Auth() {
     setIsLogin(searchParams.get("mode") !== "register");
   }, [searchParams]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const t = useT();
@@ -62,33 +62,30 @@ export default function Auth() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setMessage(null);
 
     if (isLogin) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) setError(error.message);
+      if (error) setError(mapAuthError(error.message));
     } else {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: window.location.origin },
+        // role v metadatech → DB trigger handle_new_user založí profiles i user_roles.
+        // Klient roli nezakládá (mohlo tiše selhat a nechat rodiče bez role).
+        options: { emailRedirectTo: window.location.origin, data: { role: "parent" } },
       });
       if (error) {
-        setError(error.message);
+        setError(mapAuthError(error.message));
       } else {
-        // Assign parent role after signup
-        if (data.user) {
-          await supabase.from("user_roles").insert({ user_id: data.user.id, role: "parent" });
-          // Pokud rodič přišel z invite linku, označ pozvánku jako accepted
-          if (inviteId) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            await (supabase as any)
-              .from("parent_invitations")
-              .update({ status: "accepted", accepted_at: new Date().toISOString() })
-              .eq("id", inviteId);
-          }
+        // Pokud rodič přišel z invite linku, označ pozvánku jako accepted
+        if (data.user && inviteId) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await (supabase as any)
+            .from("parent_invitations")
+            .update({ status: "accepted", accepted_at: new Date().toISOString() })
+            .eq("id", inviteId);
         }
-        setMessage(t("auth.register_success"));
+        setRegisteredEmail(email);
       }
     }
     setLoading(false);
@@ -102,6 +99,29 @@ export default function Auth() {
           <BackButton to="/" />
         </div>
 
+        {registeredEmail ? (
+          <Card className="w-full shadow-xl border-violet-100/60">
+            <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
+              <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-400 to-purple-500 ring-4 ring-violet-100 flex items-center justify-center shadow-sm">
+                <Mail className="h-8 w-8 text-white" strokeWidth={2.5} />
+              </div>
+              <h2 className="font-bold text-2xl text-foreground">Zkontroluj e-mail</h2>
+              <p className="text-[15px] text-foreground/80 max-w-sm">
+                Poslali jsme ověřovací odkaz na <strong className="break-all">{registeredEmail}</strong>.
+                Klikni na něj a pak se přihlas.
+              </p>
+              <p className="text-xs text-muted-foreground max-w-sm">
+                E-mail nedorazil? Zkontroluj složku se spamem, nebo to za chvíli zkus znovu.
+              </p>
+              <Button
+                className="mt-2 w-full max-w-xs"
+                onClick={() => { setRegisteredEmail(null); setIsLogin(true); }}
+              >
+                Přejít na přihlášení
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
         <div className="grid gap-6">
         {/* Benefity — jen u registrace */}
         {!isLogin && (
@@ -186,7 +206,6 @@ export default function Auth() {
                 />
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
-              {message && <p className="text-sm text-muted-foreground">{message}</p>}
               <Button type="submit" disabled={loading} className="w-full">
                 {loading ? t("auth.loading") : isLogin ? t("auth.submit.login") : "Vytvořit účet"}
               </Button>
@@ -203,13 +222,14 @@ export default function Auth() {
             <Button
               variant="link"
               className="w-full text-sm text-muted-foreground"
-              onClick={() => { setIsLogin(!isLogin); setError(null); setMessage(null); }}
+              onClick={() => { setIsLogin(!isLogin); setError(null); }}
             >
               {isLogin ? "Ještě nemám účet — vytvořit nový" : "Už mám účet — přihlásit se"}
             </Button>
           </CardContent>
         </Card>
         </div>
+        )}
       </div>
     </div>
   );

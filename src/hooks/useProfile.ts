@@ -33,10 +33,12 @@ export function useProfile() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not authenticated");
 
+    // Upsert (ne update) — kdyby řádek profiles ještě neexistoval (timing po signupu
+    // nebo účet z doby před DB triggerem), update by tiše zasáhl 0 řádků a onboarding
+    // by se zacyklil. Upsert na user_id řádek vždy vytvoří/aktualizuje.
     const { error } = await supabase
       .from("profiles")
-      .update(updates)
-      .eq("user_id", user.id);
+      .upsert({ user_id: user.id, ...updates }, { onConflict: "user_id" });
 
     if (error) throw error;
     await fetchProfile();

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
+import { mapAuthError } from "@/lib/authErrors";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -47,7 +48,7 @@ export default function ResetPassword() {
     const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
-      setError(error.message);
+      setError(mapAuthError(error.message));
     } else {
       setDone(true);
     }

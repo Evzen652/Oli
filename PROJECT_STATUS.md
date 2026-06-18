@@ -144,6 +144,16 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Flow mezery, Blok 1 (Účet & role rodiče):
+- ✅ **R1 — role přes DB trigger, ne z klienta.** Migrace `20260619120000_auth_role_provisioning.sql` rozšiřuje `handle_new_user`: zakládá `profiles` i `user_roles` atomicky, roli bere z metadat signupu (`raw_user_meta_data->>'role'`, default `parent`; děti z `pair-child` mají `child`). Idempotentní (ON CONFLICT) + backfill pro existující účty bez role. `Auth.tsx` už roli nezakládá z klienta (mohlo tiše selhat → rodič bez role v žákovském UI). **⚠️ Migraci je třeba aplikovat na Supabase (`supabase db push`).**
+- ✅ **R2 — `updateProfile` → upsert** (`useProfile.ts`). Dříve `.update()` tiše zasáhl 0 řádků, když profil chyběl → onboarding zacyklen. Pojistka: `useUserRole` nově řadí role deterministicky (enum order admin>parent>child) místo náhodného `.limit(1)`.
+- ✅ **R3 — signup UX + české chyby.** Nový `src/lib/authErrors.ts` (`mapAuthError`) překládá Supabase hlášky do češtiny (duplicitní e-mail, špatné heslo, …) — zapojeno v Auth/ForgotPassword/ResetPassword. Po registraci dedikovaná obrazovka „📧 Zkontroluj e-mail" místo šedého textu.
+- Ověřeno: tsc 0, eslint 0, vite build OK. Větev `fix/flow-mezery-blok1-ucet`. Zbývá Blok 2 (robustnost session), 3 (smazat demo + navigace), 4 (drobnosti).
+
+### Session 2026-06-19 — Audit fáze 1 (reality check, READ-ONLY):
+- ✅ **Proběhl audit fáze 1** — výstup [`AUDIT_PHASE1.md`](AUDIT_PHASE1.md). Scope zúžen na **čj + matematiku, ročníky 2–4** (prvouka/přírodověda/vlastivěda/informatika mimo). Žádné kódové změny — jen mapování blokerů do dvou kbelíků (A: rozbíjí smyčku / faktické chyby; B: polish).
+- Klíčové A-nálezy k řešení ve fázi 2: `g3-cjl/versRymPrirovnani.ts` (4 neřešitelné úlohy, correctAnswer ∉ options — prokázáno testem); latentní pád enginu na prázdném batchi; bodové faktické chyby (math 358+64=412→422; záporné „parkoviště" g3; neexistující slova v g4 `pravopisPredponVyVySZVz.ts`; g2 dělení „sluníčko"; g2 „čtvrt na devět" pro 8:45; g3 překlep „pojdeme"). Detail + návrhy oprav v `AUDIT_PHASE1.md`.
+
 ### Session 2026-06-18 — Gradace levelů grade-2 čeština (12 souborů):
 - ✅ **Všech 12 souborů `src/content/grade-2/cjl/` převedeno na disjunktní `POOL_L1/L2/L3`** — dříve měly jeden flat `POOL` + `gen(_level)` ignoroval úroveň (`shuffle(POOL).slice(0,15)`), takže **level systém u čj 2. třídy nefungoval vůbec**. Nyní `gen(level)` tahá z poolu dané úrovně. Pedagogická gradace L1 (rozpozná pravidlo/definici) → L2 (aplikuje na frekventovaná slova) → L3 (méně frekventovaná / složitější kontext / věta). Audit: **všech 12 témat 8/8/8, max L3** (dříve nefunkční). Soubory: `pravopisIY`, `slovesa`, `abecedaRazeni`, `druhyVet`, `orientaceVTextu`, `pohadkaRikankaBasen`, `skupinyDeTeNe`, `slabiky`, `slovaNadrazena`, `slovaProtikladna`, `spisovatelKniha`, `vlastniJmena`.
 - ✅ **Doplněno ~84 nových položek** (každý pool dorovnán na 8) — reálná čeština, ověřená diakritika i abecední/slabičná logika. `true_false` témata (orientaceVTextu, vlastniJmena) zachovala strukturu ANO/NE + `options: [ANO, NE]`. Cyrilické názvy exportů (`SKUPINYDЕТЕНЕ`, `ABECEDAAZENI`) zachovány přesně (jsou tak importované v `grade-2/index.ts`).
