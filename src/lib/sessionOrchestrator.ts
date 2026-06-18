@@ -9,6 +9,7 @@ import { classifySemanticInput } from "./semanticGate";
 import type { SemanticGateResult } from "./semanticGate";
 import { recordCheckResult } from "./performanceTracker";
 import { computeAdaptiveDecision, clampLevel, type SkillSnapshot } from "./adaptiveEngine";
+import { maxAvailableLevel } from "./levelCoverage";
 import { calcSessionScore } from "./sessionUtils";
 import { computeNextLevel } from "./levelProgression";
 import { supabase } from "@/integrations/supabase/client";
@@ -207,6 +208,13 @@ export async function processState(session: SessionData, userInput?: string): Pr
       } catch {
         s.currentLevel = topic.defaultLevel ?? 1;
       }
+
+      // Pojistka: nikdy neservíruj úroveň, která nemá odlišné úlohy
+      // (generátor je zdroj pravdy — viz levelCoverage.ts). Spočítej JEDNOU
+      // a cachuj — CHECK loop pak jen čte (invariant CHECK < 60ms, žádné gen volání).
+      const topicMaxLevel = maxAvailableLevel(topic);
+      (s as unknown as { _maxLevel?: number })._maxLevel = topicMaxLevel;
+      s.currentLevel = Math.min(s.currentLevel, topicMaxLevel);
 
       s = transition(s, "EXPLAIN");
       return processState(s);
@@ -419,6 +427,10 @@ export async function processState(session: SessionData, userInput?: string): Pr
       // ADAPTIVE ENGINE — active: apply levelDelta and offerHelp
       // fallbackToPrerequisite is deferred (requires mid-session topic switch)
       s.currentLevel = clampLevel(s.currentLevel + adaptive.levelDelta);
+      // Ořež navíc na nejvyšší úroveň s odlišnými úlohami (prázdná/duplicitní pojistka).
+      // Čteme cache z INPUT_CAPTURE — žádné gen volání v realtime CHECK loopu.
+      const cachedMax = (s as unknown as { _maxLevel?: number })._maxLevel;
+      if (cachedMax) s.currentLevel = Math.min(s.currentLevel, cachedMax);
       s.adaptiveHelpOffered = adaptive.offerHelp;
 
       if (correct) {

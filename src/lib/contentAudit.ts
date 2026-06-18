@@ -13,6 +13,7 @@
 import type { TopicMetadata, PracticeTask } from "./types";
 import { validateTaskForInputType } from "./taskValidator";
 import { validateAnswer } from "./validators";
+import { getTierTasks } from "./levelCoverage";
 import { checkHintLeakage } from "../../supabase/functions/_shared/hintLeakage";
 
 export type AuditCategory = "format" | "self_validation" | "hint_leak" | "boundary" | "czech_grammar";
@@ -421,6 +422,98 @@ export const CATEGORY_COLORS: Record<AuditCategory, string> = {
   boundary: "bg-violet-100 text-violet-800 border-violet-200",
   czech_grammar: "bg-blue-100 text-blue-800 border-blue-200",
 };
+
+// ─────────────────────────────────────────────────────────
+// POKRYTÍ ÚROVNÍ — kolik odlišných úloh téma nabízí na L1/L2/L3.
+// Informativní (netvrdě failuje). Slouží k vyrobení worklistu témat,
+// kterým chybí těžší obtížnost. Zdroj pravdy = generátor (levelCoverage.ts).
+// ─────────────────────────────────────────────────────────
+
+export interface LevelCoverageEntry {
+  topicId: string;
+  topicTitle: string;
+  subject: string;
+  grade: number;
+  l1: number;
+  l2: number;
+  l3: number;
+  /** Nejvyšší úroveň s >0 odlišnými úlohami. */
+  maxLevel: 1 | 2 | 3;
+}
+
+export interface LevelCoverageReport {
+  entries: LevelCoverageEntry[];
+  /** topicId témat, kde l2 === 0 (chybí pokročilá obtížnost). */
+  missingL2: string[];
+  /** topicId témat, kde l3 === 0 (chybí vysoká obtížnost). */
+  missingL3: string[];
+}
+
+/** Normalizace názvu předmětu pro porovnání (lowercase bez diakritiky). */
+function normalizeSubject(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+}
+
+export interface LevelCoverageOptions {
+  /** Jen tyto ročníky (overlap s gradeRange). Default: všechny. */
+  grades?: number[];
+  /** Jen tyto předměty (porovnání bez diakritiky). Default: všechny. */
+  subjects?: string[];
+}
+
+/**
+ * Spočítá pokrytí úrovní pro daná témata přes `getTierTasks` (rozdíl množin).
+ * Filtr na ročník (overlap s gradeRange) a předmět je volitelný.
+ */
+export function runLevelCoverageReport(
+  topics: readonly TopicMetadata[],
+  options: LevelCoverageOptions = {},
+): LevelCoverageReport {
+  const { grades, subjects } = options;
+  const subjectSet = subjects ? new Set(subjects.map(normalizeSubject)) : null;
+
+  let filtered = topics.filter((t) => !(t as { _dbOnly?: boolean })._dbOnly);
+  if (grades && grades.length > 0) {
+    filtered = filtered.filter((t) =>
+      grades.some((g) => g >= t.gradeRange[0] && g <= t.gradeRange[1]),
+    );
+  }
+  if (subjectSet) {
+    filtered = filtered.filter((t) => subjectSet.has(normalizeSubject(t.subject)));
+  }
+
+  const entries: LevelCoverageEntry[] = [];
+  const missingL2: string[] = [];
+  const missingL3: string[] = [];
+
+  for (const topic of filtered) {
+    const tier = getTierTasks(topic);
+    const l1 = tier.l1.length;
+    const l2 = tier.l2.length;
+    const l3 = tier.l3.length;
+    const maxLevel: 1 | 2 | 3 = l3 > 0 ? 3 : l2 > 0 ? 2 : 1;
+    entries.push({
+      topicId: topic.id,
+      topicTitle: topic.title,
+      subject: topic.subject,
+      grade: topic.gradeRange[0],
+      l1,
+      l2,
+      l3,
+      maxLevel,
+    });
+    if (l2 === 0) missingL2.push(topic.id);
+    if (l3 === 0) missingL3.push(topic.id);
+  }
+
+  // Seřaď podle předmětu, pak ročníku, pak názvu — stabilní worklist.
+  entries.sort(
+    (a, b) =>
+      a.subject.localeCompare(b.subject) || a.grade - b.grade || a.topicTitle.localeCompare(b.topicTitle),
+  );
+
+  return { entries, missingL2, missingL3 };
+}
 
 // ─────────────────────────────────────────────────────────
 // PEDAGOGICKÝ AUDIT — čistě statická kontrola kvality obsahu

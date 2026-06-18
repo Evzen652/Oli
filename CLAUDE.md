@@ -106,6 +106,13 @@ Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 3. Empty state (toast + offer different topic)
 — žádné AI volání za běhu pro generování cvičení
 
+## Kontrakt obtížnosti — `CONTENT_CONTRACT.md`
+- **Generátor (`gen(1/2/3)`) = jediný zdroj pravdy o obtížnosti.** Admin i audit počítají
+  úrovně přes rozdílové pravidlo v `src/lib/levelCoverage.ts` (`getTierTasks`, `maxAvailableLevel`).
+- Nová témata: disjunktní pooly `POOL_L1/L2/L3` (vzor `grade-4/cjl/vzoryPodstatnychJmen…`).
+- `custom_exercises` = aditivní overlay nad generátorem, ne náhrada.
+- Detail viz [`CONTENT_CONTRACT.md`](CONTENT_CONTRACT.md).
+
 ## RVP Dataset — zdroj pravdy pro kurikulum
 - `data/rvp_data.json` — 841 podtémat, 9 ročníků × 12 předmětů, verze 1.0.0
 - Stabilní ID formát: `g{grade}-{subject}-{area}-{topic}-{subtopic}` (kebab-case, bez diakritiky)

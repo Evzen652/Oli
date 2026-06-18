@@ -7,6 +7,15 @@
 
 ---
 
+## ✅ Sjednocení obtížnosti: generátor = zdroj pravdy (2026-06-18)
+- `src/lib/levelCoverage.ts` (`getTierTasks` / `maxAvailableLevel`), admin karty Level I/II/III z generátoru + DB overlay, audit „pokrytí úrovní", runtime ořez na `maxAvailableLevel`, `CONTENT_CONTRACT.md`. Detail v `PROJECT_STATUS.md` sekce 6.
+
+### 📋 WORKLIST — doplnit těžší obtížnost (L2/L3), scope 2.–4. tř. mat+čj
+Z auditu `npm run audit:content` (report „pokrytí úrovní"). **Autorská práce**, ne strukturální — doplnit disjunktní `POOL_L2`/`POOL_L3` (vzor viz `CONTENT_CONTRACT.md`). Celkem **14 bez L2, 37 bez L3** z 99 témat. Témata, kterým chybí L2 **i** L3 (priorita — celá adaptace na L1):
+- `g3-cjl-dialog-pravidla`, `g3-cjl-omluvenka-zprava`, `g3-cjl-popis-predmetu`, `g3-cjl-proza-verse`, `g3-cjl-reprodukce-textu`, `g3-cjl-sebekontrola-projevu`, `g3-cjl-tvorive-cinnosti`, `g3-cjl-uhledne-psani`, `g3-cjl-vers-rym-prirovnani`, `g3-cjl-vlastni-vytvarny-doprovod`, `g3-cjl-vypravovani-osnova`, `g2-mat-mereni-delky`
+- Pozn.: některá témata mají L3 ale prázdné L2 (např. `g3-mat-kruznice-kruh` 24/0/15) — generátor přeskakuje pokročilou úroveň → projít při doplňování.
+- Plný rozpis: spusť `npm run audit:content` (sekce „POKRYTÍ ÚROVNÍ").
+
 ## ✅ Scope zúžení na ročníky 2–4 (2026-06-18)
 - Aktivní scope = ročníky 2, 3 a 4. Ročník 4 jen matematika + čeština (vlastivěda/přírodověda odloženy kvůli nehotovému factual/conceptual obsahu). Ročníky 5+ parkovány, obsah zachován.
 - Zaznamenáno v `DECISIONS.md` (D9), `PROJECT_STATUS.md` (sekce 1), `grade-5/STATUS.md`, `grade-6/STATUS.md`, `grade-4/STATUS.md` (vlastivěda + přírodověda).

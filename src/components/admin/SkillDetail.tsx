@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { ExerciseTab } from "@/components/admin/ExerciseTab";
 import { AssetPicker } from "@/components/admin/AssetPicker";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
+import { getTierTasks } from "@/lib/levelCoverage";
 import { Image as ImageIcon } from "lucide-react";
 import type { TopicMetadata } from "@/lib/types";
 
@@ -48,16 +49,9 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
   // Aktivní level (replace Tabs)
   const [activeLevel, setActiveLevel] = useState<"simple" | "advanced" | "expert">("simple");
 
-  // Počet algoritmických vzorků (jen Level I — code generator)
-  const templateSamplesCount = (() => {
-    if (!hasCodeGenerator(skill)) return 0;
-    try {
-      const level = skill.defaultLevel ?? 1;
-      return skill.generator(level).length;
-    } catch {
-      return 0;
-    }
-  })();
+  // Generátorové pokrytí úrovní I/II/III (rozdíl množin — viz levelCoverage.ts).
+  // Generátor je zdroj pravdy o obtížnosti; custom_exercises jsou aditivní overlay.
+  const tier = hasCodeGenerator(skill) ? getTierTasks(skill) : { l1: [], l2: [], l3: [] };
 
   useEffect(() => {
     (async () => {
@@ -495,7 +489,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
             label="Level I"
             title="Základní"
             description="Jednoduché jednokrokové úlohy. Procvičení mechaniky."
-            count={templateSamplesCount + exerciseCounts.simple.approved}
+            count={tier.l1.length + exerciseCounts.simple.approved}
             pending={exerciseCounts.simple.pending}
             colorClass="bg-emerald-100 text-emerald-800 border-emerald-200"
             active={activeLevel === "simple"}
@@ -505,7 +499,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
             label="Level II"
             title="Pokročilá"
             description="Vícekrokové úlohy se zlomky a slovní zadání."
-            count={exerciseCounts.advanced.approved}
+            count={tier.l2.length + exerciseCounts.advanced.approved}
             pending={exerciseCounts.advanced.pending}
             colorClass="bg-sky-100 text-sky-800 border-sky-200"
             active={activeLevel === "advanced"}
@@ -515,7 +509,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
             label="Level III"
             title="Vysoká obtížnost"
             description="Nejtěžší úlohy — vícekrokové, kombinující více konceptů."
-            count={exerciseCounts.expert.approved}
+            count={tier.l3.length + exerciseCounts.expert.approved}
             pending={exerciseCounts.expert.pending}
             colorClass="bg-violet-100 text-violet-800 border-violet-200"
             active={activeLevel === "expert"}

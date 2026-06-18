@@ -3,6 +3,7 @@ import { getAllTopics } from "@/lib/contentRegistry";
 import {
   runOfflineAudit,
   runPedagogicalAudit,
+  runLevelCoverageReport,
   CATEGORY_LABELS,
   PEDAGOGICAL_CATEGORY_LABELS,
 } from "@/lib/contentAudit";
@@ -54,6 +55,40 @@ describe("CONTENT AUDIT — offline (vždy běží)", () => {
       report.passingPct,
       `Pouze ${report.passingPct}% cvičení je technicky OK (cíl ≥70%)`,
     ).toBeGreaterThanOrEqual(70);
+  }, 60_000);
+
+  it("POKRYTÍ ÚROVNÍ: aktivní scope (2.–4. třída, matematika + čeština)", () => {
+    // Aktivní scope dle DECISIONS D9 — kde má smysl doplňovat L2/L3.
+    const report = runLevelCoverageReport(allTopics, {
+      grades: [2, 3, 4],
+      subjects: ["matematika", "čeština"],
+    });
+
+    console.log("\n═══════════════════════════════════════════");
+    console.log("    POKRYTÍ ÚROVNÍ — scope 2.–4. tř., mat + čj");
+    console.log("═══════════════════════════════════════════");
+    console.log(`  Témat ve scope:          ${report.entries.length}`);
+    console.log(`  Chybí L2 (pokročilá):    ${report.missingL2.length}`);
+    console.log(`  Chybí L3 (vysoká):       ${report.missingL3.length}`);
+    console.log("\n  Rozpis (předmět · ročník · L1/L2/L3 · max):");
+    for (const e of report.entries) {
+      const flag = e.l2 === 0 || e.l3 === 0 ? "  ⚠ chybí těžší" : "";
+      console.log(
+        `    ${e.subject.padEnd(9)} ${e.grade}. │ ${String(e.l1).padStart(2)}/${String(e.l2).padStart(2)}/${String(e.l3).padStart(2)} │ max L${e.maxLevel}${flag}  ${e.topicId}`,
+      );
+    }
+    if (report.missingL3.length > 0) {
+      console.log("\n  WORKLIST — doplnit těžší obtížnost (chybí L2 nebo L3):");
+      const needWork = report.entries.filter((e) => e.l2 === 0 || e.l3 === 0);
+      needWork.forEach((e, idx) => {
+        const miss = [e.l2 === 0 ? "L2" : null, e.l3 === 0 ? "L3" : null].filter(Boolean).join("+");
+        console.log(`    ${idx + 1}. [${miss}] ${e.topicId}`);
+      });
+    }
+    console.log("═══════════════════════════════════════════\n");
+
+    // Informativní — netvrdě failuje (jen produkuje worklist do logu).
+    expect(report.entries.length).toBeGreaterThanOrEqual(0);
   }, 60_000);
 });
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FEATURES } from "@/lib/features";
 import { AuthoringLauncher } from "@/components/admin/AuthoringLauncher";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X, CheckCircle2, Circle, Pencil } from "lucide-react";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
+import { getTierTasks } from "@/lib/levelCoverage";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 import { ReformulateButtons } from "@/components/admin/ReformulateTaskDialog";
@@ -880,8 +881,16 @@ export function ExerciseTab({
 }) {
   const config = VARIANTS[variant];
   const { toast } = useToast();
-  const hasGenerator = variant === "simple" && hasCodeGenerator(skill);
   const help = skill.helpTemplate;
+  // Generátor je zdroj pravdy o obtížnosti. Každá úroveň ukazuje SVÉ úlohy
+  // přes rozdíl množin (l1/l2/l3 — viz levelCoverage.ts), ne jen Level I.
+  const variantTierKey = variant === "simple" ? "l1" : variant === "advanced" ? "l2" : "l3";
+  const tierTaskCount = useMemo(() => {
+    if (!hasCodeGenerator(skill)) return 0;
+    return getTierTasks(skill)[variantTierKey].length;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skill.id, variantTierKey]);
+  const hasGenerator = tierTaskCount > 0;
   // Per-karta „OK" stav (zkontrolováno) — drží na obsahu konkrétní karty
   const { toggleReviewed, isReviewed } = useExerciseReview();
 
@@ -906,21 +915,21 @@ export function ExerciseTab({
   const [savedGenIndices, setSavedGenIndices] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    if (!hasGenerator) return;
+    if (!hasGenerator) { setGenTasks([]); return; }
     try {
-      const level = skill.defaultLevel ?? 1;
       // Seed odvozený ze skill.id + regenSeed → deterministické úlohy.
       const seed = hashString(skill.id) + regenSeed;
       const shuffled = withSeededRandom(seed, () => {
-        const all = skill.generator(level);
-        return [...all].sort(() => Math.random() - 0.5);
+        // Úlohy TÉTO úrovně (rozdíl množin) — Level II/III ukáže ty těžší.
+        const tasks = getTierTasks(skill)[variantTierKey];
+        return [...tasks].sort(() => Math.random() - 0.5);
       });
       setGenTasks(shuffled);
       setRegenCount((c) => c + 1);
     } catch {
       setGenTasks([]);
     }
-  }, [skill.id, hasGenerator, regenSeed]);
+  }, [skill.id, hasGenerator, regenSeed, variantTierKey]);
 
   // Reset per-skill state
   useEffect(() => {
@@ -944,7 +953,7 @@ export function ExerciseTab({
         hints: task.hints ?? [],
         solution_steps: task.solutionSteps ?? [],
         options: task.options ?? [],
-        source: "simple",
+        source: config.source,
         status: "pending",
       });
       if (err) throw err;
@@ -1208,7 +1217,7 @@ export function ExerciseTab({
           <div className="grid grid-cols-3 gap-2 pt-1">
             <div className="text-center">
               <p className="text-3xl font-black text-emerald-600 tabular-nums">
-                {variant === "simple" && hasGenerator ? skill.generator(skill.defaultLevel ?? 1).length : "—"}
+                {hasGenerator ? tierTaskCount : "—"}
               </p>
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
                 úloh

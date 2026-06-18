@@ -7,6 +7,7 @@ import { useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { validateAnswer, resolveTaskValidation } from "@/lib/validators";
+import { maxAvailableLevel } from "@/lib/levelCoverage";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getFullTopicTitle } from "@/lib/types";
 import { getAllTopics } from "@/lib/contentRegistry";
@@ -82,7 +83,11 @@ export function DemoSession() {
   // ── Výběr tématu ────────────────────────────────────────────────────────
   const handleTopicSelect = useCallback((t: TopicMetadata) => {
     const count = t.sessionTaskCount ?? 6;
-    const all = t.generator(1);
+    // Demo nemá uloženou úroveň žáka → startuj na defaultLevel, ořezané na
+    // nejvyšší úroveň s odlišnými úlohami (ne natvrdo 1 — respektuje defaultLevel
+    // a nikdy neservíruje prázdnou úroveň). Zdroj pravdy = generátor.
+    const level = Math.min(t.defaultLevel ?? 1, maxAvailableLevel(t));
+    const all = t.generator(level);
     const shuffled = [...all].sort(() => Math.random() - 0.5).slice(0, count);
     setTopic(t);
     setTasks(shuffled);
