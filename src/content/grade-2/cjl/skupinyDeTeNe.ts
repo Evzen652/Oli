@@ -18,7 +18,20 @@ interface PoolItem {
   solution: string;
 }
 
-const POOL: PoolItem[] = [
+// L1: Pravidlové a rozpoznávací otázky — co jsou skupiny, za kterými písmeny stojí ě
+const POOL_L1: PoolItem[] = [
+  { question: "Které skupiny píšeme s háčkem (ě)?", correct: "dě, tě, ně, bě, pě, vě, mě", distractors: ["da, ta, na, ba, pa, va, ma", "dy, ty, ny, by, py, vy, my"], emoji: "📖", hint: "Tyto skupiny vznikají, když měkká hláska je za d, t, n, b, p, v, m — zkus vyjmenovat.", solution: "Skupiny s háčkem jsou: dě, tě, ně, bě, pě, vě, mě — ve všech se za souhláskou píše ě, ne e ani i." },
+  { question: "Za kterými písmeny se píše ě (skupiny s háčkem)?", correct: "d, t, n, b, p, v, m", distractors: ["s, z, k, g, h, ch, l", "a, e, i, o, u, y"], emoji: "🔤", hint: "Skupiny s háčkem se tvoří jen za určitými souhláskami — jsou to: d, t, n, b, p, v, m.", solution: "Ě se v těchto skupinách píše za písmeny d, t, n, b, p, v, m — dě, tě, ně, bě, pě, vě, mě." },
+  { question: "Ve kterém slově je skupina 'mě'?", correct: "město", distractors: ["metro", "mince"], emoji: "🏙️", hint: "Hledej slovo, kde za M je ě (s háčkem) — ne e ani i.", solution: "Slovo 'město' obsahuje skupinu 'mě' — proto se píše 'město', ne 'mesto'." },
+  { question: "Ve kterém slově je skupina 'dě'?", correct: "děti", distractors: ["delta", "deset"], emoji: "👧", hint: "Hledej slovo, kde za D je ě (s háčkem) — ne e ani a.", solution: "Slovo 'děti' obsahuje skupinu 'dě' — proto se píše 'děti', ne 'deti'." },
+  { question: "Ve kterém slově je skupina 'ně'?", correct: "něco", distractors: ["nebe", "nikdy"], emoji: "❓", hint: "Hledej slovo, kde za N je ě (s háčkem) — ne e ani i.", solution: "Slovo 'něco' obsahuje skupinu 'ně' — proto se píše 'něco', ne 'neco'." },
+  { question: "Ve kterém slově je skupina 'bě'?", correct: "běhat", distractors: ["beran", "bída"], emoji: "🏃", hint: "Hledej slovo, kde za B je ě (s háčkem) — ne e ani i.", solution: "Slovo 'běhat' obsahuje skupinu 'bě' — proto se píše 'běhat', ne 'behat'." },
+  { question: "Ve kterém slově je skupina 'vě'?", correct: "věc", distractors: ["vesta", "vík"], emoji: "📦", hint: "Hledej slovo, kde za V je ě (s háčkem) — ne e ani i.", solution: "Slovo 'věc' obsahuje skupinu 'vě' — proto se píše 'věc', ne 'vec'." },
+  { question: "Ve kterém slově je skupina 'tě'?", correct: "tělo", distractors: ["tenis", "ticho"], emoji: "🫀", hint: "Hledej slovo, kde za T je ě (s háčkem) — ne e ani i.", solution: "Slovo 'tělo' obsahuje skupinu 'tě' — proto se píše 'tělo', ne 'telo'." },
+];
+
+// L2: Doplňování frekventovaných slov (krátká, běžná)
+const POOL_L2: PoolItem[] = [
   { question: "Doplň správně: 'd_ti'", correct: "děti", distractors: ["deti", "diti"], emoji: "👧", hint: "D následované měkkým E píšeme jako skupinu s háčkem — dě, tě, ně, bě, pě, vě, mě.", solution: "Správně je 'děti' — skupina 'dě' (ne 'de' ani 'di') — píšeme ě, aby bylo slovo správně." },
   { question: "Doplň správně: 't_lo'", correct: "tělo", distractors: ["telo", "tilo"], emoji: "🫀", hint: "T následované měkkým E píšeme jako skupinu — tě, dě, ně... Zkus doplnit.", solution: "Správně je 'tělo' — skupina 'tě' (ne 'te') — háček na ě říká, jak slovo vyslovíme." },
   { question: "Doplň správně: 'n_co'", correct: "něco", distractors: ["neco", "nico"], emoji: "❓", hint: "N následované měkkým E píšeme jako skupinu — ně, dě, tě... Zkus doplnit.", solution: "Správně je 'něco' — skupina 'ně' (ne 'ne') — háček na ě je součástí pravopisu slova." },
@@ -26,21 +39,24 @@ const POOL: PoolItem[] = [
   { question: "Doplň správně: 'p_t'", correct: "pět", distractors: ["pet", "pit"], emoji: "🖐️", hint: "P následované měkkým E píšeme jako skupinu — pě, bě, vě... Zkus doplnit.", solution: "Správně je 'pět' — skupina 'pě' (ne 'pe') — číslice pět se píše s háčkem na ě." },
   { question: "Doplň správně: 'v_c'", correct: "věc", distractors: ["vec", "vic"], emoji: "📦", hint: "V následované měkkým E píšeme jako skupinu — vě, bě, pě... Zkus doplnit.", solution: "Správně je 'věc' — skupina 'vě' (ne 've') — háček na ě je součástí pravopisu." },
   { question: "Doplň správně: 'm_sto'", correct: "město", distractors: ["mesto", "misto"], emoji: "🏙️", hint: "M následované měkkým E píšeme jako skupinu — mě, vě, bě... Zkus doplnit.", solution: "Správně je 'město' — skupina 'mě' (ne 'me') — háček na ě je součástí pravopisu." },
+  { question: "Doplň správně: 'd_lat'", correct: "dělat", distractors: ["delat", "dilat"], emoji: "🔧", hint: "D následované měkkým E píšeme jako skupinu — dě, tě, ně... Zkus doplnit.", solution: "Správně je 'dělat' — skupina 'dě' (ne 'de') — háček na ě je součástí pravopisu tohoto slovesa." },
+];
+
+// L3: Doplňování méně frekventovaných / delších slov
+const POOL_L3: PoolItem[] = [
   { question: "Doplň správně: 'm_síc'", correct: "měsíc", distractors: ["mesíc", "misíc"], emoji: "🌙", hint: "Slovo pro těleso na noční obloze i pro část roku — píšeme ho s mě nebo me?", solution: "Správně je 'měsíc' — skupina 'mě' (ne 'me') — háček na ě patří k pravopisu slova." },
   { question: "Doplň správně: 't_žký'", correct: "těžký", distractors: ["težký", "tižký"], emoji: "🏋️", hint: "T následované měkkým E píšeme jako skupinu — tě, dě, ně... Zkus doplnit.", solution: "Správně je 'těžký' — skupina 'tě' (ne 'te') — háček na ě je součástí pravopisu." },
   { question: "Doplň správně: 'n_kdo'", correct: "někdo", distractors: ["nekdo", "nikdo"], emoji: "🤷", hint: "N následované měkkým E píšeme jako skupinu — ně, dě, tě... Zkus doplnit.", solution: "Správně je 'někdo' — skupina 'ně' (ne 'ne' ani 'ni') — háček na ě je součástí pravopisu." },
   { question: "Doplň správně: 'p_kný'", correct: "pěkný", distractors: ["pekný", "pikný"], emoji: "😊", hint: "P následované měkkým E píšeme jako skupinu — pě, bě, vě... Zkus doplnit.", solution: "Správně je 'pěkný' — skupina 'pě' (ne 'pe') — háček na ě je součástí pravopisu." },
-  { question: "Doplň správně: 'd_lat'", correct: "dělat", distractors: ["delat", "dilat"], emoji: "🔧", hint: "D následované měkkým E píšeme jako skupinu — dě, tě, ně... Zkus doplnit.", solution: "Správně je 'dělat' — skupina 'dě' (ne 'de') — háček na ě je součástí pravopisu tohoto slovesa." },
   { question: "Doplň správně: 'v_ta'", correct: "věta", distractors: ["veta", "vita"], emoji: "📝", hint: "V následované měkkým E píšeme jako skupinu — vě, bě, pě... Zkus doplnit.", solution: "Správně je 'věta' — skupina 'vě' (ne 've') — háček na ě patří k pravopisu slova 'věta'." },
   { question: "Doplň správně: 'd_deček'", correct: "dědeček", distractors: ["dededeček", "dideček"], emoji: "👴", hint: "Začátek slova pro tatínkova tátu — píšeme ho s dě nebo de?", solution: "Správně je 'dědeček' — skupina 'dě' na začátku i uprostřed — háček na ě je součástí pravopisu." },
   { question: "Doplň správně: 'n_jaký'", correct: "nějaký", distractors: ["nejaký", "nijaký"], emoji: "🔍", hint: "N následované měkkým E píšeme jako skupinu — ně, dě, tě... Zkus doplnit.", solution: "Správně je 'nějaký' — skupina 'ně' (ne 'ne') — háček na ě patří k pravopisu." },
   { question: "Doplň správně: 't_šit se'", correct: "těšit se", distractors: ["tešit se", "tišit se"], emoji: "😁", hint: "T následované měkkým E píšeme jako skupinu — tě, dě, ně... Zkus doplnit.", solution: "Správně je 'těšit se' — skupina 'tě' (ne 'te') — háček na ě je součástí pravopisu." },
-  { question: "Které skupiny píšeme s háčkem (ě)?", correct: "dě, tě, ně, bě, pě, vě, mě", distractors: ["da, ta, na, ba, pa, va, ma", "dy, ty, ny, by, py, vy, my"], emoji: "📖", hint: "Tyto skupiny vznikají, když měkká hláska je za d, t, n, b, p, v, m — zkus vyjmenovat.", solution: "Skupiny s háčkem jsou: dě, tě, ně, bě, pě, vě, mě — ve všech se za souhláskou píše ě, ne e ani i." },
-  { question: "Ve kterém slově je skupina 'mě'?", correct: "město", distractors: ["metro", "mince"], emoji: "🏙️", hint: "Hledej slovo, kde za M je ě (s háčkem) — ne e ani i.", solution: "Slovo 'město' obsahuje skupinu 'mě' — proto se píše 'město', ne 'mesto'." },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 15).map(item => {
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool).map(item => {
     const options = shuffle([item.correct, ...item.distractors]);
     return {
       question: item.question,

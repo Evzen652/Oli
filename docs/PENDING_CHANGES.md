@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Gradace levelů grade-2 čeština — 12 souborů (2026-06-18)
+- Všech 12 souborů `src/content/grade-2/cjl/` převedeno z nefunkčního flat `POOL` + `gen(_level)` na disjunktní `POOL_L1/L2/L3` + `gen(level)`. Audit: **všech 12 témat 8/8/8, max L3** (dříve level systém u čj 2. tř. nefungoval). ~84 nových položek doplněno. tsc 0 chyb, generator-validation 0 grade-2 failů, true_false struktura + cyrilické exporty zachovány. Větev `feat/cjl-grade2-levely`. Detail v `PROJECT_STATUS.md` sekce 6.
+
 ## ✅ Disjunktní pooly grade-2 matematika (2026-06-18)
 - 6 kumulativních generátorů převedeno na `POOL_L1/L2/L3`: `scitaniAOdcitaniDo100`, `posloupnostiCisel`, `nasobeniJakoOpakovaneScitani`, `cteniZapisPorovnavaniCiselDo100`, `ciselnaOsaDo100`, `vztahNasobieniADeleni`. Audit 2× potvrzen (stabilní): `scitani 9/10/7`, `posloupnosti 7/7/7`, `nasobeni 10/10/8`, `cteni 7/7/7`, `ciselna-osa 7/7/7`, `vztah 9/9/9`. Všechna `max L3`. tsc 0 chyb.
 

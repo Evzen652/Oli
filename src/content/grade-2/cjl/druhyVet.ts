@@ -18,33 +18,45 @@ interface PoolItem {
   solution: string;
 }
 
-const POOL: PoolItem[] = [
-  // Definice znamének
+// L1: Rozpoznání druhu věty z věty samotné
+const POOL_L1: PoolItem[] = [
+  { question: "Jaký druh věty je 'Pes štěká.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "🐕", hint: "Věta sděluje informaci. Sdělování faktů = který druh?", solution: "'Pes štěká.' je oznamovací věta — říká, co pes dělá, a neklade otázku ani nevydává rozkaz. Končí tečkou." },
+  { question: "Jaký druh věty je 'Sněží.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "❄️", hint: "Věta říká, jaké je počasí. Sdělení faktů = který druh?", solution: "'Sněží.' je oznamovací věta — sděluje, jaké je počasí, a končí tečkou." },
+  { question: "Jaký druh věty je 'Ptáci letí na jih.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "🐦", hint: "Věta říká, kam ptáci letí. Sdělení informace = který druh?", solution: "'Ptáci letí na jih.' je oznamovací věta — sděluje informaci o ptácích a končí tečkou." },
+  { question: "Jaký druh věty je 'Jak se jmenuješ?'?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "❓", hint: "Věta klade otázku a čeká na odpověď. Ptaní se = který druh?", solution: "'Jak se jmenuješ?' je tázací věta — ptáme se na jméno a čekáme na odpověď. Končí otazníkem." },
+  { question: "Jaký druh věty je 'Půjdeš ven?'?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "🌳", hint: "Věta se ptá, zda někdo půjde ven. Ptaní se = který druh?", solution: "'Půjdeš ven?' je tázací věta — ptáme se a čekáme na odpověď. Končí otazníkem." },
+  { question: "Jaký druh věty je 'Pojď hrát!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "❗", hint: "Věta vyzývá k akci. Výzva nebo rozkaz = který druh?", solution: "'Pojď hrát!' je rozkazovací věta — vyzývá k akci a končí vykřičníkem." },
+  { question: "Jaký druh věty je 'Dej mi to!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "🤲", hint: "Věta přikazuje, co udělat. Rozkaz = který druh?", solution: "'Dej mi to!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
+  { question: "Jaký druh věty je 'Sedni si!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "🪑", hint: "Věta přikazuje, co udělat. Rozkaz nebo výzva = který druh?", solution: "'Sedni si!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
+];
+
+// L2: Přiřazení druhu k popisu / práce se znaménkem + výběr z výčtu vět
+const POOL_L2: PoolItem[] = [
   { question: "Čím končí oznamovací věta?", correct: "Tečkou (.)", distractors: ["Otazníkem (?)", "Vykřičníkem (!)"], emoji: "📝", hint: "Oznamovací věta něco sděluje a klidně se uzavírá — jakou značku má?", solution: "Oznamovací věta končí tečkou (.) — sděluje fakta a neklade otázky ani rozkazy." },
   { question: "Čím končí tázací věta?", correct: "Otazníkem (?)", distractors: ["Tečkou (.)", "Vykřičníkem (!)"], emoji: "❓", hint: "Tázací věta klade otázku — jakou značku má?", solution: "Tázací věta končí otazníkem (?) — ptáme se a očekáváme odpověď." },
   { question: "Čím končí rozkazovací věta?", correct: "Vykřičníkem (!)", distractors: ["Tečkou (.)", "Otazníkem (?)"], emoji: "❗", hint: "Rozkazovací věta dává příkaz nebo prosbu — jakou značku má?", solution: "Rozkazovací věta končí vykřičníkem (!) — vyjadřuje rozkaz nebo výzvu." },
-  // Klasifikace — oznamovací
-  { question: "Jaký druh věty je 'Pes štěká.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "🐕", hint: "Věta o psovi sděluje informaci. Oznamovací věty sdělují fakta — tázací se ptají, rozkazovací přikazují.", solution: "'Pes štěká.' je oznamovací věta — říká, co pes dělá, a neklade otázku ani nevydává rozkaz. Končí tečkou." },
-  { question: "Jaký druh věty je 'Mám ráda čokoládu.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "🍫", hint: "Věta sděluje, co někdo rád má. Sdělování faktů = který druh?", solution: "'Mám ráda čokoládu.' je oznamovací věta — říká, co mám ráda, a neklade otázku ani nevydává rozkaz." },
-  { question: "Jaký druh věty je 'Zítra je pátek.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "📅", hint: "Věta říká, který den bude zítra. Sdělení informace = který druh?", solution: "'Zítra je pátek.' je oznamovací věta — sděluje informaci o dni a končí tečkou." },
-  { question: "Jaký druh věty je 'Sněží.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "❄️", hint: "Věta říká, jaké je počasí. Sdělení faktů = který druh?", solution: "'Sněží.' je oznamovací věta — sděluje, jaké je počasí, a končí tečkou." },
-  { question: "Jaký druh věty je 'Ptáci letí na jih.'?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "🐦", hint: "Věta říká, kam ptáci letí. Sdělení informace = který druh?", solution: "'Ptáci letí na jih.' je oznamovací věta — sděluje informaci o ptácích a končí tečkou." },
-  // Klasifikace — tázací
-  { question: "Jaký druh věty je 'Jak se jmenuješ?'?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "❓", hint: "Věta klade otázku a čeká na odpověď. Ptaní se = který druh?", solution: "'Jak se jmenuješ?' je tázací věta — ptáme se na jméno a čekáme na odpověď. Končí otazníkem." },
-  { question: "Jaký druh věty je 'Máš hlad?'?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "🍽️", hint: "Věta se ptá na pocit. Ptaní se = který druh?", solution: "'Máš hlad?' je tázací věta — ptáme se a čekáme na odpověď. Končí otazníkem." },
-  { question: "Jaký druh věty je 'Kdy začíná škola?'?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "🏫", hint: "Věta se ptá, kdy něco začne. Ptaní se = který druh?", solution: "'Kdy začíná škola?' je tázací věta — ptáme se na čas a čekáme na odpověď. Končí otazníkem." },
-  { question: "Jaký druh věty je 'Půjdeš ven?'?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "🌳", hint: "Věta se ptá, zda někdo půjde ven. Ptaní se = který druh?", solution: "'Půjdeš ven?' je tázací věta — ptáme se a čekáme na odpověď. Končí otazníkem." },
-  // Klasifikace — rozkazovací
-  { question: "Jaký druh věty je 'Pojď hrát!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "❗", hint: "Věta vyzývá k akci. Výzva nebo rozkaz = který druh?", solution: "'Pojď hrát!' je rozkazovací věta — vyzývá k akci a končí vykřičníkem." },
-  { question: "Jaký druh věty je 'Dej mi to!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "🤲", hint: "Věta přikazuje, co udělat. Rozkaz = který druh?", solution: "'Dej mi to!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
-  { question: "Jaký druh věty je 'Vrať mi knihu!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "📚", hint: "Věta přikazuje, co mám vrátit. Rozkaz = který druh?", solution: "'Vrať mi knihu!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
-  { question: "Jaký druh věty je 'Uklid si pokoj!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "🧹", hint: "Věta přikazuje úklid. Rozkaz = který druh?", solution: "'Uklid si pokoj!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
-  { question: "Jaký druh věty je 'Sedni si!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "🪑", hint: "Věta přikazuje, co udělat. Rozkaz nebo výzva = který druh?", solution: "'Sedni si!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
-  { question: "Jaký druh věty je 'Otevři okno!'?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "🪟", hint: "Věta přikazuje otevřít okno. Rozkaz = který druh?", solution: "'Otevři okno!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem." },
+  { question: "Která z vět je tázací: 'Máš hlad?' / 'Pojď sem!' / 'Sněží.'?", correct: "Máš hlad?", distractors: ["Pojď sem!", "Sněží."], emoji: "🍽️", hint: "Tázací věta se ptá a čeká na odpověď — která z nich to je?", solution: "'Máš hlad?' je tázací věta — ptáme se na pocit a čekáme na odpověď. Ostatní jsou rozkazovací a oznamovací." },
+  { question: "Která z vět je rozkazovací: 'Vrať mi knihu!' / 'Kdy začíná škola?' / 'Zítra je pátek.'?", correct: "Vrať mi knihu!", distractors: ["Kdy začíná škola?", "Zítra je pátek."], emoji: "📚", hint: "Rozkazovací věta vydává rozkaz nebo výzvu — která z nich to je?", solution: "'Vrať mi knihu!' je rozkazovací věta — vydává rozkaz a končí vykřičníkem. Ostatní jsou tázací a oznamovací." },
+  { question: "Která z vět je oznamovací: 'Mám ráda čokoládu.' / 'Dej mi ji!' / 'Máš ji?'?", correct: "Mám ráda čokoládu.", distractors: ["Dej mi ji!", "Máš ji?"], emoji: "🍫", hint: "Oznamovací věta sděluje informaci — která z nich to je?", solution: "'Mám ráda čokoládu.' je oznamovací věta — sděluje, co mám ráda, a končí tečkou. Ostatní jsou rozkazovací a tázací." },
+  { question: "Která z vět je tázací: 'Otevři okno!' / 'Kdy přijdeš?' / 'Uklízím pokoj.'?", correct: "Kdy přijdeš?", distractors: ["Otevři okno!", "Uklízím pokoj."], emoji: "🏠", hint: "Tázací věta se ptá — která z nich to je?", solution: "'Kdy přijdeš?' je tázací věta — ptáme se na čas příchodu a čekáme na odpověď. Ostatní jsou rozkazovací a oznamovací." },
+  { question: "Která z vět je rozkazovací: 'Venku prší.' / 'Prší dnes?' / 'Vezmi si deštník!'?", correct: "Vezmi si deštník!", distractors: ["Venku prší.", "Prší dnes?"], emoji: "☂️", hint: "Rozkazovací věta dává pokyn nebo výzvu — která z nich to je?", solution: "'Vezmi si deštník!' je rozkazovací věta — dává pokyn a končí vykřičníkem. Ostatní jsou oznamovací a tázací." },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 15).map(item => {
+// L3: Určení podle interpunkce/kontextu + doplnění správného znaménka
+const POOL_L3: PoolItem[] = [
+  { question: "Věta končí otazníkem. Jaký je to druh věty?", correct: "Tázací", distractors: ["Oznamovací", "Rozkazovací"], emoji: "❓", hint: "Podle znaménka na konci věty poznáš druh — otazník patří ke kterému druhu?", solution: "Věta končící otazníkem (?) je tázací — ptáme se a čekáme na odpověď." },
+  { question: "Věta končí vykřičníkem. Jaký je to druh věty?", correct: "Rozkazovací", distractors: ["Oznamovací", "Tázací"], emoji: "❗", hint: "Vykřičník patří ke které větě — té, co přikazuje, nebo té, co sděluje?", solution: "Věta končící vykřičníkem (!) je rozkazovací — vyjadřuje rozkaz nebo výzvu." },
+  { question: "Věta končí tečkou. Jaký je to druh věty?", correct: "Oznamovací", distractors: ["Tázací", "Rozkazovací"], emoji: "📝", hint: "Tečka patří ke které větě — té, co sděluje, nebo té, co se ptá?", solution: "Věta končící tečkou (.) je oznamovací — sděluje fakta a neklade otázky ani rozkazy." },
+  { question: "Doplň správné znaménko na konec věty: 'Kolik je hodin___'", correct: "?", distractors: [".", "!"], emoji: "🕐", hint: "Věta se ptá na čas — jaké znaménko patří k otázkám?", solution: "'Kolik je hodin?' je tázací věta — ptáme se na čas, proto končí otazníkem (?)." },
+  { question: "Doplň správné znaménko na konec věty: 'Sbal si aktovku___'", correct: "!", distractors: [".", "?"], emoji: "🎒", hint: "Věta dává pokyn — jaké znaménko patří k rozkazům?", solution: "'Sbal si aktovku!' je rozkazovací věta — dává pokyn, proto končí vykřičníkem (!)." },
+  { question: "Doplň správné znaménko na konec věty: 'Venku svítí slunce___'", correct: ".", distractors: ["?", "!"], emoji: "☀️", hint: "Věta říká, jaké je počasí — jaké znaménko patří k oznamování?", solution: "'Venku svítí slunce.' je oznamovací věta — sděluje informaci, proto končí tečkou (.)." },
+  { question: "Doplň správné znaménko na konec věty: 'Kde jsi byl celý den___'", correct: "?", distractors: [".", "!"], emoji: "🏡", hint: "Věta zjišťuje, kde někdo byl — jaké znaménko patří k otázkám?", solution: "'Kde jsi byl celý den?' je tázací věta — ptáme se na místo pobytu, proto končí otazníkem (?)." },
+  { question: "Doplň správné znaménko na konec věty: 'Tiše čti___'", correct: "!", distractors: [".", "?"], emoji: "📖", hint: "Věta přikazuje, jak číst — jaké znaménko patří k rozkazům?", solution: "'Tiše čti!' je rozkazovací věta — vydává pokyn, proto končí vykřičníkem (!)." },
+];
+
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool).map(item => {
     const options = shuffle([item.correct, ...item.distractors]);
     return {
       question: item.question,
