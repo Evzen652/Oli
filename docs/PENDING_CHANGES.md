@@ -7,6 +7,10 @@
 
 ---
 
+## ✅ Scope zúžení na ročníky 2–4 (2026-06-18)
+- Aktivní scope = ročníky 2, 3 a 4. Ročník 4 jen matematika + čeština (vlastivěda/přírodověda odloženy kvůli nehotovému factual/conceptual obsahu). Ročníky 5+ parkovány, obsah zachován.
+- Zaznamenáno v `DECISIONS.md` (D9), `PROJECT_STATUS.md` (sekce 1), `grade-5/STATUS.md`, `grade-6/STATUS.md`, `grade-4/STATUS.md` (vlastivěda + přírodověda).
+
 ## CI/CD + E2E testy (přidáno)
 - GitHub Actions CI pipeline: .github/workflows/ci.yml
 - GitHub Actions PR check: .github/workflows/pr-check.yml  

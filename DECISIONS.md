@@ -161,3 +161,13 @@ mezi běhy.)
 (b) převést drag_order/match_pairs na samostatné categorize téma — mimo rozsah
 (nové téma, restrukturalizace); (c) `_HORY` zapojit generátorem — zbytečné, fakta
 už v poolech.
+
+## D9 — Aktivní scope zúžen na ročníky 2–4 (2026-06-18)
+
+**Rozhodnutí:** Aktivní scope zúžen na **ročníky 2, 3 a 4**. Ročník 4 jen **matematika + čeština** (vlastivěda/přírodověda odložena). Ročníky 5+ parkovány, obsah zachován.
+
+*Zdůvodnění:* Místo širokého, mělkého pokrytí 1.–9. ročníku se soustřeďujeme na kvalitní, otestovatelný produkt pro reálný test na dětech a rodičích. Hlavní hodnota — rodič sleduje a kontroluje výuku svého dítěte — se vrací do centra. Ročník 4 pouze algoritmické předměty (mat + čj), protože vlastivěda/přírodověda vyžadují dořešenou `factual`/`conceptual` architekturu (known blocker pro 5.+ ročník). Ročníky 5+ zůstávají v repo pro pozdější expanzi.
+
+*Co se nemění:* Žádný obsah se nemaže. Sdílené typy beze změny. Žádný velký refaktor.
+
+*Alternativy:* (a) Pokračovat v 5.+ ročníku — zamítnuto, rozmělňuje fokus před prvním reálným testem s dětmi; (b) Zamrznout i grade-4 úplně — zamítnuto, algoritmické předměty (mat+čj) jsou bez blokerů a hotové z 90 %.

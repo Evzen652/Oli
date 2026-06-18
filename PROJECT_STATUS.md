@@ -12,11 +12,18 @@
 
 ## 1. Co je OLI
 
-Vzdělávací aplikace pro děti 1.–9. třídy ZŠ (Česká republika). Pokrývá kompletní RVP ZV (Rámcový vzdělávací program pro základní vzdělávání). Rodič zadává úkoly a sleduje pokrok, dítě procvičuje.
+Vzdělávací aplikace pro děti ZŠ (Česká republika). Rodič zadává úkoly a sleduje pokrok, dítě procvičuje.
 
 **Produkční doména:** oli-edu.com
 **Vývoj:** solo developer (Evžen) + Claude Code + Claude Chat
 **Fáze:** aktivní vývoj, priorita funkčnost nad dokonalostí
+
+### Aktivní scope (2026-06-18, rozhodnutí D9)
+> **Aktivní vývoj: ročníky 2, 3 a 4** — kvalitní, otestovatelný produkt pro reálný test na dětech a rodičích.
+> - Ročník 4: jen **matematika + čeština** (vlastivěda/přírodověda odloženy — blocker `factual`/`conceptual` architektura)
+> - Ročníky 5+: ⏸️ **parkované** — obsah zachován v repo, žádné nové authoring práce
+>
+> *Cílová vize* (po pilotu 2–4): postupná expanze na celý 1. stupeň, pak 2. stupeň.
 
 ---
 

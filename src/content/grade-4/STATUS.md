@@ -66,7 +66,7 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_4_TOPICS)
 - [x] **Hlavní postavy a jejich charakteristika** `g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika`
 - [x] **Vlastní literární tvorba na dané téma** `g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema`
 
-## Vlastivěda (13)
+## Vlastivěda (13) ⏸️ PARKOVÁNO — mimo aktivní scope (2026-06-18). Nerozšiřovat.
 
 ### Lidé a čas
 
@@ -90,7 +90,7 @@ Stav: `[ ]` skelet · `[~]` rozpracováno · `[x]` hotovo (v GRADE_4_TOPICS)
 - [x] **Povrch ČR - nížiny, vrchoviny, hory (Krkonoše, Šumava aj.)** `g4-vlastiveda-misto-kde-zijeme-ceska-republika-povrch-cr-niziny-vrchoviny-hory-krkonose-sumava-aj`
 - [x] **Vodstvo ČR - hlavní řeky (Vltava, Labe, Morava, Odra), rybníky, přehrady** `g4-vlastiveda-misto-kde-zijeme-ceska-republika-vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr`
 
-## Přírodověda (13)
+## Přírodověda (13) ⏸️ PARKOVÁNO — mimo aktivní scope (2026-06-18). Nerozšiřovat.
 
 ### Rozmanitost přírody
 

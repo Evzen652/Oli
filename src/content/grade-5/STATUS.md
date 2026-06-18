@@ -1,4 +1,6 @@
-﻿# Grade 5 â€” STATUS
+﻿⏸️ PARKOVÁNO — mimo aktivní scope (2026-06-18). Nerozšiřovat.
+
+# Grade 5 â€” STATUS
 
 > Mapa vĹˇech 73 podtĂ©mat 5. roÄŤnĂ­ku z RVP datasetu.
 > Stav: [x] skelet Â· [~] rozpracovĂˇno Â· [x] hotovo

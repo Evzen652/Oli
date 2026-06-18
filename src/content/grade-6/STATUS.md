@@ -1,3 +1,5 @@
+⏸️ PARKOVÁNO — mimo aktivní scope (2026-06-18). Nerozšiřovat.
+
 # Grade 6 — STATUS (pilot 2. stupně)
 
 > Pilot: **Fyzika** (výpočetní vzor) + **Dějepis** (faktický vzor).
