@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Flow mezery — Blok 3: Navigace (2026-06-19)
+- N2 odkaz „Celá historie" na `/session-history` z dashboardu (byla mrtvá routa). N3 Report `navigate(-1)`→`/parent` + BackButton sjednocení (Report, SessionHistory). N1 (smazat demo) vynecháno dle pokynu. tsc/build OK. Zbývá Blok 4 (drobnosti: kód 48h vs text, onboarding disabled, anon „Nové téma", child grade=null).
+
 ## ✅ Flow mezery — Blok 2: Robustnost session (2026-06-19)
 - S1 empty-batch guard v `sessionOrchestrator.ts` (prázdný batch → END místo pádu; = bod A2 auditu). S2 (dedup recyklace) ověřeně non-issue → bez změny. tsc OK, testy beze změny. Větev `fix/flow-mezery-blok1-ucet` (pokračování). Zbývá Blok 3 (smazat demo, /session-history, sjednotit Zpět), Blok 4 (drobnosti).
 

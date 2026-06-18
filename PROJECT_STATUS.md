@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Flow mezery, Blok 3 (Navigace; demo vynecháno):
+- ✅ **N2 — `/session-history` zapojena.** Dříve plně funkční, ale bez vstupu z UI (mrtvá routa). Přidán odkaz „Celá historie →" v hlavičce karty „Samostatné procvičování" v `ParentDashboard.tsx` (jen pro reálné spárované děti, ne demo).
+- ✅ **N3 — sjednocení Zpět + oprava cíle.** `Report.tsx`: `navigate(-1)` (3×) → `navigate("/parent")` / `<BackButton to="/parent">` (chyba: při přímém odkazu na /report vyhazovalo mimo app). `SessionHistory.tsx`: custom ghost tlačítko → `<BackButton to="/parent">` (+ odebrán nepoužitý `useNavigate`).
+- ⏭️ **N1 — smazání demo: VYNECHÁNO** dle pokynu „demo už neřeš…nebude" (smaže se zvlášť). Demo routes/komponenty zůstávají jako osiřelý kód bez vstupu z Landing.
+- Ověřeno: tsc 0, vite build OK. 5 eslint nálezů v Report/ParentDashboard je předexistující mrtvý kód (netýká se změny; lint není v CI gate).
+
 ### Session 2026-06-19 — Flow mezery, Blok 2 (Robustnost session):
 - ✅ **S1 — empty-batch guard** v `sessionOrchestrator.ts` (PRACTICE): když generátor vrátí prázdný batch, `task` je undefined a `task.question` dosud shodil session do prázdné karty bez cesty dál (= bod A2 auditu fáze 1). Nově `if (!task) → transition END` s hláškou „Pro tuto úroveň zatím nejsou úlohy." Guard se spustí jen na prázdném batchi → žádná regrese (všechna témata teď vrací neprázdno).
 - ⏭️ **S2 — „Zopakovat" recykluje otázky: ZAMÍTNUTO jako non-issue.** Ověřeno čtením toku: pro témata s generátorem je `usedQuestions` při generování batche prázdné (batch se tvoří jednou v PRACTICE) a „Zopakovat" dělá `handleReset` → čerstvá session s prázdným `usedQuestions`. `deduplicateBatch` fallback se tak v praxi nespustí. Žádná změna kódu.

@@ -481,7 +481,16 @@ export default function ParentDashboard() {
                 <div className="px-5 py-4 border-b border-border/40">
                   <div className="flex items-center gap-2.5">
                     <span className="text-blue-500">🧩</span>
-                    <h2 className="font-bold text-base text-foreground">Samostatné procvičování</h2>
+                    <h2 className="flex-1 font-bold text-base text-foreground">Samostatné procvičování</h2>
+                    {!isDemo && child.is_paired && (
+                      <button
+                        className="h-8 rounded-xl bg-muted border border-border text-foreground font-semibold flex items-center gap-1.5 px-3 hover:bg-muted/80 active:scale-[0.98] transition-all text-xs shrink-0"
+                        onClick={() => navigate(`/session-history/${child.id}`)}
+                      >
+                        Celá historie
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičoval/a sám/a, bez vašeho zadání.</p>
                 </div>
