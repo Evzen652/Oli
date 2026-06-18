@@ -617,16 +617,38 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
     return [...ALL_KEYS, ...extra];
   }, [dynamicSubjectKeys, dynamicCategoryKeys, dynamicTopicKeys, codeTopicKeys]);
 
-  // Filtrování předmětů — statické + dynamické subjekty
-  const subjectFilterList = useMemo(
-    () => [
+  // Množina slugů předmětů, které reálně existují ve vybraném ročníku.
+  // null = bez filtru ročníku → zobraz všechny předměty.
+  const subjectsAtGrade = useMemo(() => {
+    if (filterGrade === "all") return null;
+    const set = new Set<string>();
+    for (const [key, grades] of Object.entries(gradeMap)) {
+      if (grades.includes(filterGrade as number)) {
+        set.add(toSlug(keyToSubject(key)));
+      }
+    }
+    return set;
+  }, [filterGrade, gradeMap]);
+
+  // Filtrování předmětů — statické + dynamické subjekty, omezené na vybraný ročník.
+  // 2. ročník nemá přírodovědu/vlastivědu/fyziku → jejich tlačítka se nezobrazí.
+  const subjectFilterList = useMemo(() => {
+    const full = [
       ...SUBJECTS,
       ...dbSubjects
         .filter((s) => !ALL_KEYS.includes(`subject-${s.slug}` as (typeof ALL_KEYS)[number]))
         .map((s) => ({ value: s.slug, label: s.name })),
-    ],
-    [dbSubjects]
-  );
+    ];
+    if (!subjectsAtGrade) return full;
+    return full.filter((s) => subjectsAtGrade.has(toSlug(s.value)));
+  }, [dbSubjects, subjectsAtGrade]);
+
+  // Když změna ročníku skryje aktuálně vybraný předmět → resetuj na "Všechny předměty"
+  useEffect(() => {
+    if (filterSubject !== "all" && subjectsAtGrade && !subjectsAtGrade.has(toSlug(filterSubject))) {
+      setFilterSubject("all");
+    }
+  }, [filterSubject, subjectsAtGrade]);
 
   // ── Logo state ───────────────────────────────────────────────────────────────
   const DEFAULT_LOGO_PROMPT = "a friendly chubby little owl mascot with big expressive round eyes, warm amber and orange feathers, wearing a small graduation cap tilted to one side, sitting upright with wings slightly open in a welcoming pose, smiling warmly";
