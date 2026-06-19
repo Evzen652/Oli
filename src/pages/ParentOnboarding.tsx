@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useT } from "@/lib/i18n";
 import type { Grade } from "@/lib/types";
 import { BackButton } from "@/components/BackButton";
+import { getAnonProgressSummary, migrateAnonProgress } from "@/lib/anonMigration";
+import { pad } from "@/lib/czechGrammar";
 
 const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -20,12 +22,17 @@ export default function ParentOnboarding() {
   const { addChild } = useChildren();
   const t = useT();
 
+  // Anon pokrok z téhož prohlížeče (rodič zkusil appku, teď se registruje).
+  const [anonSummary] = useState(() => getAnonProgressSummary());
+
   const [step, setStep] = useState(1);
   const [displayName, setDisplayName] = useState("");
   const [locale, setLocale] = useState("cs");
   const [childName, setChildName] = useState("");
-  const [grade, setGrade] = useState<Grade>(3);
+  const [grade, setGrade] = useState<Grade>((anonSummary?.grade as Grade) ?? 3);
   const [pairingCode, setPairingCode] = useState<string | null>(null);
+  const [newChildId, setNewChildId] = useState<string | null>(null);
+  const [claimState, setClaimState] = useState<"idle" | "claiming" | "done" | "error">("idle");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,11 +56,27 @@ export default function ParentOnboarding() {
     try {
       const child = await addChild(childName.trim(), grade);
       setPairingCode(child.pairing_code);
+      setNewChildId(child.id);
       setStep(3);
     } catch (e: any) {
       setError(e.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // F3: rodič zkusil appku anonymně ve stejném prohlížeči → převezme pokrok
+  // přímo na nově vytvořené dítě (bez párovacího kódu).
+  const handleClaimProgress = async () => {
+    if (!newChildId) return;
+    setClaimState("claiming");
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+      const res = await migrateAnonProgress(user.id, newChildId);
+      setClaimState(res.ok ? "done" : "error");
+    } catch {
+      setClaimState("error");
     }
   };
 
@@ -146,6 +169,22 @@ export default function ParentOnboarding() {
 
           {step === 3 && pairingCode && (
             <>
+              {anonSummary && (
+                <div className="rounded-xl border-2 border-violet-200 bg-violet-50 p-4 space-y-2 text-center">
+                  <p className="text-sm font-semibold text-violet-900">
+                    📈 Našli jsme pokrok z tvé zkoušky — {pad(anonSummary.completedCount, "ÚKOL")}.
+                  </p>
+                  {claimState === "done" ? (
+                    <p className="text-sm font-medium text-emerald-700">✓ Pokrok přidán pro {childName}.</p>
+                  ) : claimState === "error" ? (
+                    <p className="text-sm text-destructive">Přenos se teď nepovedl — zkus to později z přehledu.</p>
+                  ) : (
+                    <Button onClick={handleClaimProgress} disabled={claimState === "claiming"} size="sm" className="w-full">
+                      {claimState === "claiming" ? t("auth.loading") : `Převzít pokrok pro ${childName}`}
+                    </Button>
+                  )}
+                </div>
+              )}
               <p className="text-center text-muted-foreground">
                 {t("onboarding.step3.instruction")}
               </p>

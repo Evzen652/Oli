@@ -243,14 +243,20 @@ export default function AnonStudentPage() {
           </section>
         )}
 
-        {/* Nenápadné tlačítko "Sdílet pokrok s rodiči" */}
-        <div className="text-center pt-2">
+        {/* Vstupy pro rodiče — dítě sdílí pozvánku, nebo rodič jde rovnou na účet */}
+        <div className="text-center pt-2 space-y-1.5">
           <button
             onClick={() => setShowInviteParent(true)}
-            className="text-sm text-gray-400 hover:text-violet-600 transition-colors"
+            className="block mx-auto text-sm text-gray-400 hover:text-violet-600 transition-colors"
           >
             👪 Sdílet pokrok s rodiči
           </button>
+          <a
+            href="/auth?mode=register"
+            className="block text-sm text-gray-400 hover:text-violet-600 transition-colors"
+          >
+            Jsem rodič — založit účet →
+          </a>
         </div>
 
         {/* CTA po splnění všech 3 (freemium mode) */}

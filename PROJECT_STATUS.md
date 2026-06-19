@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Anon→registrovaný rodič, Fáze 1 (F1+F2+F3):
+- ✅ **F1** — nav „Registrace zdarma" (`LandingNav.tsx`, desktop+mobile) vedla na `/auth` v **login** módu → opraveno na `/auth?mode=register`.
+- ✅ **F2** — přímý rodičovský vstup: anon dashboard (`AnonStudentPage.tsx`) má nově „Jsem rodič — založit účet →" vedle „Sdílet s rodiči"; onboarding už „Jsem tady jako rodič →" měl. Rodič, který přišel přes „Začít zdarma", má jasný východ k vlastnímu účtu.
+- ✅ **F3 (hlavní zisk)** — „Převzít pokrok" v `ParentOnboarding`: když rodič zkusil appku anonymně **ve stejném prohlížeči** a teď se registruje, krok 3 nabídne převzetí anon pokroku přímo na nově vytvořené dítě (`migrateAnonProgress(user.id, childId)`) — **bez párovacího kódu**. Ročník v kroku 2 se předvyplní z anon zkoušky. Odpadá celý 5-krokový handshake pro nejčastější případ.
+- Ověřeno: tsc 0, build OK, E2E +2 (F1, F2) → **13 E2E + 12 integračních zelených**. Větev `feat/anon-to-parent-faze1`.
+- ⏭️ Zbývá Fáze 2 (pozvánka s tokenem `?invite=`, přerámování messagingu) a Fáze 3 (pokrok serverově místo localStorage) — viz analýza anon→rodič flow.
+
 ### Session 2026-06-19 — Ověření flow rodič/žák (integrační + E2E):
 - ✅ **Integrační testy** (mock-free, orchestrátor/funkce): `auth-errors.test.ts` (10 — `mapAuthError` mapování Supabase chyb → čeština), `session-loop-integration.test.ts` (2 — empty-batch guard: generátor `[]` → END místo pádu; happy-path: smyčka dojde od první do poslední úlohy → END). Pokrývají dosud netestovanou logiku z Blok 1–4 + Fáze 2.
 - ✅ **E2E (Playwright)** opraveno a rozšířeno: **port mismatch 8081→8080** (testy dosud vůbec neběžely), přepsány zastaralé asserce v `auth.spec.ts` (po Blok-1 přejmenování tlačítek). Nové `student-flow.spec.ts` (3 — anon onboarding → výběr ročníku → /student dashboard → trial banner → interaktivita) a `parent-flow.spec.ts` (3 — registrační formulář, reset hesla, ochrana /parent před nepřihlášeným). **11 E2E zelených.**
