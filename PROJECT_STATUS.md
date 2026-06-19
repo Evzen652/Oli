@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Flow mezery, Blok 4 (Drobnosti):
+- ✅ **D1** — text „Kód platí 24 hodin" → „48 hodin" (`ParentDashboard.tsx`), sjednoceno s reálnou expirací (`useChildren.ts` 48 h).
+- ✅ **D2** — onboarding krok 1: tlačítko `disabled` i bez vyplněného jména (`ParentOnboarding.tsx`); `display_name` se ukládá `.trim()` (dřív šlo projít s prázdným → gate se znovu aktivoval).
+- ✅ **D3** — anon „Nové téma" z konce sezení → vrací na anon dashboard (denní úkoly) přes existující event `oli-anon-exit-session` místo zamčeného TopicBrowseru (`SessionView.tsx`).
+- ✅ **D4** — `ChildLoadingFallback`: přesnější text (propojení NEBO chybějící ročník) + tlačítko „Zkusit znovu" (reload), timeout 5 s → 4 s.
+- ⏭️ **D5** — localStorage trial warning: odloženo do širšího anon→registrovaný flow (viz memory/TODO).
+- Ověřeno: tsc 0, vite build OK. Tím je série flow-mezery (Blok 1–4) hotová na větvi `fix/flow-mezery-blok1-ucet`.
+
+### Session 2026-06-19 — Flow mezery, Blok 3 (Navigace; demo vynecháno):
+- ✅ **N2 — `/session-history` zapojena.** Dříve plně funkční, ale bez vstupu z UI (mrtvá routa). Přidán odkaz „Celá historie →" v hlavičce karty „Samostatné procvičování" v `ParentDashboard.tsx` (jen pro reálné spárované děti, ne demo).
+- ✅ **N3 — sjednocení Zpět + oprava cíle.** `Report.tsx`: `navigate(-1)` (3×) → `navigate("/parent")` / `<BackButton to="/parent">` (chyba: při přímém odkazu na /report vyhazovalo mimo app). `SessionHistory.tsx`: custom ghost tlačítko → `<BackButton to="/parent">` (+ odebrán nepoužitý `useNavigate`).
+- ⏭️ **N1 — smazání demo: VYNECHÁNO** dle pokynu „demo už neřeš…nebude" (smaže se zvlášť). Demo routes/komponenty zůstávají jako osiřelý kód bez vstupu z Landing.
+- Ověřeno: tsc 0, vite build OK. 5 eslint nálezů v Report/ParentDashboard je předexistující mrtvý kód (netýká se změny; lint není v CI gate).
+
+### Session 2026-06-19 — Flow mezery, Blok 2 (Robustnost session):
+- ✅ **S1 — empty-batch guard** v `sessionOrchestrator.ts` (PRACTICE): když generátor vrátí prázdný batch, `task` je undefined a `task.question` dosud shodil session do prázdné karty bez cesty dál (= bod A2 auditu fáze 1). Nově `if (!task) → transition END` s hláškou „Pro tuto úroveň zatím nejsou úlohy." Guard se spustí jen na prázdném batchi → žádná regrese (všechna témata teď vrací neprázdno).
+- ⏭️ **S2 — „Zopakovat" recykluje otázky: ZAMÍTNUTO jako non-issue.** Ověřeno čtením toku: pro témata s generátorem je `usedQuestions` při generování batche prázdné (batch se tvoří jednou v PRACTICE) a „Zopakovat" dělá `handleReset` → čerstvá session s prázdným `usedQuestions`. `deduplicateBatch` fallback se tak v praxi nespustí. Žádná změna kódu.
+- Ověřeno: tsc 0, generator-validation beze změny (12 baseline failů = versRym + 3 prvouka, mimo scope). 8 eslint `no-explicit-any` ve souboru je předexistující dluh (`as any` casty), netýká se změny.
+
+### Session 2026-06-19 — Flow mezery, Blok 1 (Účet & role rodiče):
+- ✅ **R1 — role přes DB trigger, ne z klienta.** Migrace `20260619120000_auth_role_provisioning.sql` rozšiřuje `handle_new_user`: zakládá `profiles` i `user_roles` atomicky, roli bere z metadat signupu (`raw_user_meta_data->>'role'`, default `parent`; děti z `pair-child` mají `child`). Idempotentní (WHERE NOT EXISTS — remote `user_roles` nemá composite unique, ON CONFLICT padalo 42P10) + backfill pro existující účty bez role. `Auth.tsx` už roli nezakládá z klienta (mohlo tiše selhat → rodič bez role v žákovském UI). **✅ Migrace aplikována na Supabase (`supabase db push`, 2026-06-19).**
+- ✅ **R2 — `updateProfile` → upsert** (`useProfile.ts`). Dříve `.update()` tiše zasáhl 0 řádků, když profil chyběl → onboarding zacyklen. Pojistka: `useUserRole` nově řadí role deterministicky (enum order admin>parent>child) místo náhodného `.limit(1)`.
+- ✅ **R3 — signup UX + české chyby.** Nový `src/lib/authErrors.ts` (`mapAuthError`) překládá Supabase hlášky do češtiny (duplicitní e-mail, špatné heslo, …) — zapojeno v Auth/ForgotPassword/ResetPassword. Po registraci dedikovaná obrazovka „📧 Zkontroluj e-mail" místo šedého textu.
+- Ověřeno: tsc 0, eslint 0, vite build OK. Větev `fix/flow-mezery-blok1-ucet`. Zbývá Blok 2 (robustnost session), 3 (smazat demo + navigace), 4 (drobnosti).
+
+### Session 2026-06-19 — Audit fáze 1 (reality check, READ-ONLY):
+- ✅ **Proběhl audit fáze 1** — výstup [`AUDIT_PHASE1.md`](AUDIT_PHASE1.md). Scope zúžen na **čj + matematiku, ročníky 2–4** (prvouka/přírodověda/vlastivěda/informatika mimo). Žádné kódové změny — jen mapování blokerů do dvou kbelíků (A: rozbíjí smyčku / faktické chyby; B: polish).
+- Klíčové A-nálezy k řešení ve fázi 2: `g3-cjl/versRymPrirovnani.ts` (4 neřešitelné úlohy, correctAnswer ∉ options — prokázáno testem); latentní pád enginu na prázdném batchi; bodové faktické chyby (math 358+64=412→422; záporné „parkoviště" g3; neexistující slova v g4 `pravopisPredponVyVySZVz.ts`; g2 dělení „sluníčko"; g2 „čtvrt na devět" pro 8:45; g3 překlep „pojdeme"). Detail + návrhy oprav v `AUDIT_PHASE1.md`.
+
 ### Session 2026-06-18 — Gradace levelů grade-2 čeština (12 souborů):
 - ✅ **Všech 12 souborů `src/content/grade-2/cjl/` převedeno na disjunktní `POOL_L1/L2/L3`** — dříve měly jeden flat `POOL` + `gen(_level)` ignoroval úroveň (`shuffle(POOL).slice(0,15)`), takže **level systém u čj 2. třídy nefungoval vůbec**. Nyní `gen(level)` tahá z poolu dané úrovně. Pedagogická gradace L1 (rozpozná pravidlo/definici) → L2 (aplikuje na frekventovaná slova) → L3 (méně frekventovaná / složitější kontext / věta). Audit: **všech 12 témat 8/8/8, max L3** (dříve nefunkční). Soubory: `pravopisIY`, `slovesa`, `abecedaRazeni`, `druhyVet`, `orientaceVTextu`, `pohadkaRikankaBasen`, `skupinyDeTeNe`, `slabiky`, `slovaNadrazena`, `slovaProtikladna`, `spisovatelKniha`, `vlastniJmena`.
 - ✅ **Doplněno ~84 nových položek** (každý pool dorovnán na 8) — reálná čeština, ověřená diakritika i abecední/slabičná logika. `true_false` témata (orientaceVTextu, vlastniJmena) zachovala strukturu ANO/NE + `options: [ANO, NE]`. Cyrilické názvy exportů (`SKUPINYDЕТЕНЕ`, `ABECEDAAZENI`) zachovány přesně (jsou tak importované v `grade-2/index.ts`).

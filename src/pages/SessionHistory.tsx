@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { BackButton } from "@/components/BackButton";
 import { useT } from "@/lib/i18n";
-import { ArrowLeft, CheckCircle2, HelpCircle, XCircle } from "lucide-react";
+import { CheckCircle2, HelpCircle, XCircle } from "lucide-react";
 import { getTopicById } from "@/lib/contentRegistry";
 import { getTopicIllustrationUrl, getTopicEmoji } from "@/lib/prvoukaVisuals";
 
@@ -23,7 +23,6 @@ export default function SessionHistory() {
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [skillNames, setSkillNames] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const t = useT();
 
   useEffect(() => {
@@ -113,9 +112,7 @@ export default function SessionHistory() {
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card px-4 py-4">
         <div className="mx-auto flex max-w-2xl items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/parent")} className="gap-1.5">
-            <ArrowLeft className="h-4 w-4" /> {t("report.back")}
-          </Button>
+          <BackButton to="/parent" label={t("report.back")} size="sm" />
           <h1 className="text-xl font-semibold text-foreground">{t("history.title")}</h1>
         </div>
       </header>

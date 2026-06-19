@@ -7,6 +7,22 @@
 
 ---
 
+## ✅ Flow mezery — Blok 4: Drobnosti (2026-06-19)
+- D1 text kódu 24→48 h. D2 onboarding tlačítko disabled bez jména + trim. D3 anon „Nové téma" → dashboard (event). D4 ChildLoadingFallback text + reload, 5→4 s. D5 (localStorage warning) odloženo do anon→registrovaný flow. tsc/build OK. **Série flow-mezery (Blok 1–4) hotová** na `fix/flow-mezery-blok1-ucet`.
+
+## ✅ Flow mezery — Blok 3: Navigace (2026-06-19)
+- N2 odkaz „Celá historie" na `/session-history` z dashboardu (byla mrtvá routa). N3 Report `navigate(-1)`→`/parent` + BackButton sjednocení (Report, SessionHistory). N1 (smazat demo) vynecháno dle pokynu. tsc/build OK. Zbývá Blok 4 (drobnosti: kód 48h vs text, onboarding disabled, anon „Nové téma", child grade=null).
+
+## ✅ Flow mezery — Blok 2: Robustnost session (2026-06-19)
+- S1 empty-batch guard v `sessionOrchestrator.ts` (prázdný batch → END místo pádu; = bod A2 auditu). S2 (dedup recyklace) ověřeně non-issue → bez změny. tsc OK, testy beze změny. Větev `fix/flow-mezery-blok1-ucet` (pokračování). Zbývá Blok 3 (smazat demo, /session-history, sjednotit Zpět), Blok 4 (drobnosti).
+
+## ✅ Flow mezery — Blok 1: Účet & role rodiče (2026-06-19)
+- R1 role přes DB trigger (migrace `20260619120000_auth_role_provisioning.sql` — **✅ aplikována na Supabase 2026-06-19**, WHERE NOT EXISTS místo ON CONFLICT), klient roli nezakládá. R2 `updateProfile` upsert + `useUserRole` deterministické řazení. R3 `mapAuthError` (české chyby) + check-email obrazovka. tsc/eslint/build OK. Větev `fix/flow-mezery-blok1-ucet`. Detail v `PROJECT_STATUS.md` sekce 6. Navazuje audit flow rodič/žák (viz níže).
+- **Otevřené z flow auditu:** Blok 2 (empty-batch guard, „Zopakovat" dedup), Blok 3 (smazat demo, zapojit /session-history, sjednotit Zpět), Blok 4 (kód 48h vs text, onboarding disabled, anon „Nové téma", child grade=null).
+
+## ✅ Audit fáze 1 — reality check (2026-06-19)
+- Proběhl READ-ONLY audit, výstup `AUDIT_PHASE1.md` (root). Scope: čj + matematika, ročníky 2–4. Bez kódových změn. Nálezy rozděleny na A (rozbíjí smyčku / faktické chyby → fáze 2) a B (polish → fáze 3). Hlavní A-blokr: `g3-cjl/versRymPrirovnani.ts` (4 neřešitelné úlohy) + latentní pád enginu na prázdném batchi.
+
 ## ✅ Gradace levelů grade-2 čeština — 12 souborů (2026-06-18)
 - Všech 12 souborů `src/content/grade-2/cjl/` převedeno z nefunkčního flat `POOL` + `gen(_level)` na disjunktní `POOL_L1/L2/L3` + `gen(level)`. Audit: **všech 12 témat 8/8/8, max L3** (dříve level systém u čj 2. tř. nefungoval). ~84 nových položek doplněno. tsc 0 chyb, generator-validation 0 grade-2 failů, true_false struktura + cyrilické exporty zachovány. Větev `feat/cjl-grade2-levely`. Detail v `PROJECT_STATUS.md` sekce 6.
 

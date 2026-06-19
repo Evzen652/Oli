@@ -44,7 +44,7 @@ function ChildLoadingFallback() {
   const [showFallback, setShowFallback] = useState(false);
   const t = useT();
   useEffect(() => {
-    const timer = setTimeout(() => setShowFallback(true), 5000);
+    const timer = setTimeout(() => setShowFallback(true), 4000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -60,11 +60,16 @@ function ChildLoadingFallback() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm text-center">
         <CardContent className="pt-6 space-y-4">
-          <p className="text-muted-foreground">Tvůj účet ještě není propojený s rodičem.</p>
-          <Button variant="outline" onClick={() => supabase.auth.signOut()}>
-            <LogOut className="h-4 w-4 mr-2" />
-            {t("session.sign_out")}
-          </Button>
+          <p className="text-muted-foreground">
+            Nepodařilo se načíst tvoje procvičování. Možná účet ještě není propojený s rodičem nebo nemá nastavený ročník.
+          </p>
+          <div className="flex flex-col gap-2">
+            <Button onClick={() => window.location.reload()}>Zkusit znovu</Button>
+            <Button variant="outline" onClick={() => supabase.auth.signOut()}>
+              <LogOut className="h-4 w-4 mr-2" />
+              {t("session.sign_out")}
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
@@ -839,7 +844,15 @@ export function SessionView() {
                   s.handleTopicSelect(topic);
                 }
               }}
-              onNewTopic={s.handleReset}
+              onNewTopic={() => {
+                if (isAnonTrial) {
+                  // Anon: handleReset by skončil na zamčeném TopicBrowseru.
+                  // Vrať dítě na anon dashboard (denní úkoly) přes existující event.
+                  window.dispatchEvent(new CustomEvent("oli-anon-exit-session"));
+                } else {
+                  s.handleReset();
+                }
+              }}
             />
           )}
 

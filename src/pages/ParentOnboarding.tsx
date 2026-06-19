@@ -33,7 +33,7 @@ export default function ParentOnboarding() {
     setLoading(true);
     setError(null);
     try {
-      await updateProfile({ display_name: displayName || null, locale });
+      await updateProfile({ display_name: displayName.trim(), locale });
       setStep(2);
     } catch (e: any) {
       setError(e.message);
@@ -109,7 +109,7 @@ export default function ParentOnboarding() {
                 </Select>
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
-              <Button onClick={handleStep1} disabled={loading} className="w-full">
+              <Button onClick={handleStep1} disabled={loading || !displayName.trim()} className="w-full">
                 {loading ? t("auth.loading") : t("onboarding.step1.next")}
               </Button>
             </>

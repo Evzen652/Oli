@@ -14,10 +14,14 @@ export function useUserRole() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user || cancelled) { setLoading(false); return; }
 
-      const { data, error } = await supabase
+      // Pojistka pro případ víc rolí: enum app_role je definovaný v pořadí
+      // ('admin','parent','child'), takže ascending vrátí nejvýše privilegovanou
+      // jako první → deterministická volba místo náhodné.
+      const { data } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", user.id)
+        .order("role", { ascending: true })
         .limit(1)
         .maybeSingle();
 

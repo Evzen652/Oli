@@ -8,6 +8,7 @@ import { logoNoText } from "@/components/OlyLogo";
 import { useT } from "@/lib/i18n";
 import { CalendarDays, CalendarRange, History, ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/BackButton";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
 import type { ReportRange, ReportDetail } from "@/lib/weeklyReportGenerator";
 import { PositiveObservation } from "@/components/parent/PositiveObservation";
@@ -146,7 +147,7 @@ export default function Report() {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#fdf8f2] p-4">
         <p className="text-4xl">😕</p>
         <p className="text-destructive">{error}</p>
-        <Button variant="outline" onClick={() => navigate(-1)}>{t("report.back")}</Button>
+        <BackButton to="/parent" label={t("report.back")} />
       </div>
     );
   }
@@ -211,7 +212,8 @@ export default function Report() {
         {/* Header */}
         <div className="bg-white rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-black/[0.05]">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/parent")}
+            aria-label={t("report.back")}
             className="h-9 w-9 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-muted/80 transition-all shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -486,13 +488,7 @@ export default function Report() {
 
         {/* Zpět */}
         <div className="flex justify-center pt-2">
-          <button
-            className="h-11 rounded-2xl bg-white border border-border text-foreground font-semibold text-sm px-5 flex items-center gap-2 hover:bg-muted/50 active:scale-[0.98] transition-all shadow-sm"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Zpět na přehled
-          </button>
+          <BackButton to="/parent" label="Zpět na přehled" />
         </div>
 
       </div>
