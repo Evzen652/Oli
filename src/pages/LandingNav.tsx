@@ -66,7 +66,7 @@ export function LandingNav() {
           <Button
             size="sm"
             className="bg-[#F97316] hover:bg-[#EA580C] text-white rounded-full px-6"
-            onClick={() => navigate("/auth")}
+            onClick={() => navigate("/auth?mode=register")}
           >
             Registrace zdarma
           </Button>
@@ -87,7 +87,7 @@ export function LandingNav() {
                 ))}
                 <hr />
                 <Button variant="outline" className="w-full" onClick={() => { goToLogin(); setOpen(false); }}>Přihlásit se</Button>
-                <Button className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white" onClick={() => { navigate("/auth"); setOpen(false); }}>
+                <Button className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white" onClick={() => { navigate("/auth?mode=register"); setOpen(false); }}>
                   Registrace zdarma
                 </Button>
               </div>

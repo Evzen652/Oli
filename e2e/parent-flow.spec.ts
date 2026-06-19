@@ -18,6 +18,12 @@ test.describe('Rodičovský flow — veřejné (bez loginu)', () => {
     await expect(page.getByRole('button', { name: 'Odeslat odkaz' })).toBeVisible();
   });
 
+  test('nav „Registrace zdarma" vede na registraci (ne login) [F1]', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Registrace zdarma' }).first().click();
+    await expect(page.getByRole('button', { name: 'Vytvořit účet' })).toBeVisible();
+  });
+
   test('/parent bez přihlášení není přístupný (redirect na landing)', async ({ page }) => {
     await page.goto('/parent');
     // Nepřihlášený router přesměruje pryč z /parent na landing.

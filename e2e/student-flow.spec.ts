@@ -28,4 +28,11 @@ test.describe('Žákovský flow — anonymní trial', () => {
     // Dashboard nabízí akce (denní úkoly / vlastní téma) → existují klikací prvky
     expect(await page.getByRole('button').count()).toBeGreaterThan(0);
   });
+
+  test('anon dashboard má přímý rodičovský vstup → registrace [F2]', async ({ page }) => {
+    await startAnonTrial(page, 3);
+    const parentLink = page.getByRole('link', { name: /Jsem rodič/ });
+    await expect(parentLink).toBeVisible();
+    await expect(parentLink).toHaveAttribute('href', '/auth?mode=register');
+  });
 });

@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Anon→registrovaný rodič — Fáze 1 (2026-06-19)
+- F1 nav „Registrace zdarma" → register mód (byl login). F2 přímý „Jsem rodič — založit účet" v anon dashboardu. F3 „Převzít pokrok" v ParentOnboarding (migrace anon pokroku na nové dítě bez párovacího kódu, když rodič zkusil appku ve stejném prohlížeči) + předvyplnění ročníku. tsc/build OK, 13 E2E + 12 integračních zelených. Větev `feat/anon-to-parent-faze1`. **Zbývá:** Fáze 2 (pozvánka s `?invite=` tokenem, messaging), Fáze 3 (pokrok serverově).
+
 ## ✅ Ověření flow rodič/žák — integrační + E2E (2026-06-19)
 - Integrační: `auth-errors.test.ts` (mapAuthError), `session-loop-integration.test.ts` (empty-batch guard + happy-path smyčka). E2E: opraven port 8081→8080 (testy neběžely!), přepsány zastaralé asserce, nové `student-flow.spec.ts` + `parent-flow.spec.ts`. 12 integračních + 11 E2E zelených. Větev `test/flow-verifikace`. **Zbývá:** execution-directive 4 testy (zastaralý setup), kbelík B (gradace L2/L3).
 
