@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Fáze 3 (Možnost B) rollout 3a — serverové anon úložiště (2026-06-19)
+- Migrace `anon_progress`+`anon_trial` (RLS zamčeno, aplikováno), edge funkce `anon-progress` (deployed, smoke OK), klientský dual-write `anonServerSync.ts` (localStorage = zdroj pravdy, fire-and-forget). tsc 0, 31 unit + 13 E2E + live dual-write test zelené. Větev `feat/phase3-anon-server-3a`. **Zbývá:** 3b (adopce přes token), 3c (server = pravda + TTL úklid). Plán: `docs/PHASE3_SERVER_PROGRESS.md`.
+
 ## ✅ Anon→registrovaný rodič — Fáze 1 (2026-06-19)
 - F1 nav „Registrace zdarma" → register mód (byl login). F2 přímý „Jsem rodič — založit účet" v anon dashboardu. F3 „Převzít pokrok" v ParentOnboarding (migrace anon pokroku na nové dítě bez párovacího kódu, když rodič zkusil appku ve stejném prohlížeči) + předvyplnění ročníku. tsc/build OK, 13 E2E + 12 integračních zelených. Větev `feat/anon-to-parent-faze1`. **Zbývá:** Fáze 2 (pozvánka s `?invite=` tokenem, messaging), Fáze 3 (pokrok serverově).
 

@@ -4,6 +4,7 @@
  */
 
 import { getDailyTasksForGrade, getTodayDateString } from "./anonDailyTasks";
+import { serverRecordTask } from "./anonServerSync";
 
 const STORAGE_KEY = "oli_anon_progress";
 
@@ -83,6 +84,8 @@ export function markTaskCompleted(topicId: string, score: number): void {
   task.completed = true;
   task.score = Math.max(0, Math.min(1, score));
   writeProgress(progress);
+  // Fáze 3: dual-write na server (fire-and-forget, localStorage je zdroj pravdy).
+  serverRecordTask(topicId, progress.grade, task.score);
 }
 
 /** True pokud jsou všechny dnešní úkoly splněné. */
