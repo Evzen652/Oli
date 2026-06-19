@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { OlyLogo } from "@/components/OlyLogo";
 import { hasContentForGrade } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
+import { serverStartTrial } from "@/lib/anonServerSync";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
 import { useToast } from "@/hooks/use-toast";
@@ -117,6 +118,7 @@ export default function Onboarding() {
     localStorage.setItem("oli_anon_grade", String(grade));
     localStorage.setItem("oli_anon_started", new Date().toISOString());
     startTrial(grade);
+    serverStartTrial(grade); // Fáze 3: zrcadlení trialu na server (fire-and-forget)
     setTimeout(() => navigate("/student?anon=1"), 650);
   };
 

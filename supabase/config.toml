@@ -1,5 +1,8 @@
 project_id = "frxjmwmslxdrdhgcjicn"
 
+[functions.anon-progress]
+verify_jwt = false
+
 [functions.semantic-gate]
 verify_jwt = false
 

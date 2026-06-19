@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Fáze 3 (Možnost B), rollout 3a — serverové anon úložiště:
+- ✅ **Krok 1 — migrace** `20260619140000_anon_progress_server.sql`: tabulky `anon_progress` + `anon_trial`, RLS **zamčeno bez policy** (přístup jen přes service-role edge funkci). Aplikováno na Supabase.
+- ✅ **Krok 2 — edge funkce** `anon-progress` (akce `start-trial`/`get-trial`/`record`/`get`, service role, validace uuid). Deployed + smoke test (vše OK, invalid token → 400). `config.toml` `verify_jwt = false`.
+- ✅ **Krok 3 — klientský dual-write**: nový `src/lib/anonServerSync.ts` (token v localStorage `oli_anon_token`, fire-and-forget volání). `Onboarding` zrcadlí `start-trial`, `anonProgress.markTaskCompleted` zrcadlí `record`. **localStorage zůstává zdrojem pravdy → nulová změna chování.**
+- Ověřeno: tsc 0, 31 unit + 13 E2E zelených; **live test** (reálný prohlížeč → server) potvrdil doručení trialu. Větev `feat/phase3-anon-server-3a`.
+- ⏭️ Zbývá 3b (adopce přes token v pozvánce/párování — nahradí syntézu `migrateAnonProgress`) a 3c (server = zdroj pravdy + TTL úklid). Pozn.: testovací anon tokeny na serveru se uklidí TTL ve 3c. Detail v [docs/PHASE3_SERVER_PROGRESS.md](docs/PHASE3_SERVER_PROGRESS.md).
+
 ### Session 2026-06-19 — Anon→registrovaný rodič, Fáze 1 (F1+F2+F3):
 - ✅ **F1** — nav „Registrace zdarma" (`LandingNav.tsx`, desktop+mobile) vedla na `/auth` v **login** módu → opraveno na `/auth?mode=register`.
 - ✅ **F2** — přímý rodičovský vstup: anon dashboard (`AnonStudentPage.tsx`) má nově „Jsem rodič — založit účet →" vedle „Sdílet s rodiči"; onboarding už „Jsem tady jako rodič →" měl. Rodič, který přišel přes „Začít zdarma", má jasný východ k vlastnímu účtu.
