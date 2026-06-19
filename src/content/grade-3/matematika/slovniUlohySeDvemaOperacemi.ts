@@ -61,7 +61,8 @@ function makeUlohy(level: number): Uloha[] {
     },
     () => {
       const a = Math.floor(Math.random() * (level === 1 ? 30 : 60)) + 10;
-      const b = Math.floor(Math.random() * (level === 1 ? 20 : 40)) + 5;
+      // b musí být menší než a, aby mezivýsledek a−b nebyl záporný (3. třída nepočítá se zápornými čísly)
+      const b = Math.floor(Math.random() * Math.min(level === 1 ? 20 : 40, a - 1)) + 1;
       const c = Math.floor(Math.random() * (level === 1 ? 15 : 30)) + 3;
       const r = a - b + c;
       const autA = plural(a, "auto", "auta", "aut");

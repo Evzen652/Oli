@@ -144,6 +144,18 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Audit fáze 2: opravy kbelíku A (čj+math):
+- ✅ **A1** `g3-cjl/versRymPrirovnani.ts` — 4 neřešitelné úlohy (correct ∉ options) opraveny na jednu hodnotu z options + překlep „byk"→„býk". **generator-validation: versRym nově prochází všechny 3 úrovně** (faily 12→9, zbytek 3 prvouka mimo scope).
+- ✅ **A3** `g3-mat/scitaniAOdcitaniDo1000.ts` — commonMistake 358+64=412 → **422**.
+- ✅ **A4** `g3-mat/slovniUlohySeDvemaOperacemi.ts` — „parkoviště": `b < a` (žádný záporný mezivýsledek ve 3. tř.).
+- ✅ **A5** `g4-cjl/pravopisPredponVyVySZVz.ts` — 7 neexistujících slov (ztálo, sbredilo, zkulovitěl, zsilnil, fittovanější…) → reálná slova se stejnou předponou (změklo, ztuhlo, slévaly se, zkyslo, zrezivělo, zmohutněl, sběhly se). Počty 30/30/29 zachovány.
+- ✅ **A6** `g2-cjl/slabiky.ts` — „sluníčko" správně **slu-níč-ko**.
+- ✅ **A7** `g2-mat/mereniCasu.ts` — 8:45 = **třičtvrtě na devět**.
+- ✅ **A8** `g3-cjl/spojovaniVetSpojkami.ts` — „pojdeme" → **„půjdeme"**.
+- ✅ **Bonus:** opravena moje dřívější Blok-1 regrese v testu `hooks-supabase.test.tsx` (updateProfile mock `.update`→`.upsert`).
+- Ověřeno: tsc 0, build OK. Full suite 14 failů = **všechny předexistující** (9 prvouka mimo scope + 4 `execution-directive` ověřené na baselinu 4093f30 + 1 content-audit 68 %); Fáze 2 nepřidala regresi. Větev `fix/audit-faze2-kbelik-a`.
+- ⚠️ **Předexistující nález:** `execution-directive.test.ts` 4 „Povinné testy" (CHECK<60ms, 0 network/AI, batch not generated v CHECK) padají už od 4093f30 — k samostatnému prozkoumání.
+
 ### Session 2026-06-19 — Flow mezery, Blok 4 (Drobnosti):
 - ✅ **D1** — text „Kód platí 24 hodin" → „48 hodin" (`ParentDashboard.tsx`), sjednoceno s reálnou expirací (`useChildren.ts` 48 h).
 - ✅ **D2** — onboarding krok 1: tlačítko `disabled` i bez vyplněného jména (`ParentOnboarding.tsx`); `display_name` se ukládá `.trim()` (dřív šlo projít s prázdným → gate se znovu aktivoval).

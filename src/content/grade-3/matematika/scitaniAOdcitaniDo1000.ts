@@ -82,7 +82,7 @@ export const SCITANIAODCITANIDO1000: TopicMetadata[] = [
         "Sčítej/odčítej desítky (nezapomeň na přenos z jednotek).",
         "Sčítej/odčítej stovky.",
       ],
-      commonMistake: "Zapomenutí na přenos: 358 + 64 = 412 (ne 3112).",
+      commonMistake: "Zapomenutí na přenos: 358 + 64 = 422 (ne 3112).",
       example: "247 + 135: jednotky 7+5=12 (zapíšeme 2, přeneseme 1), desítky 4+3+1=8, stovky 2+1=3 → 382.",
     },
   },

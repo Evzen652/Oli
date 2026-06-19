@@ -36,7 +36,7 @@ const POOL: PoolItem[] = [
   { question: "Kolik sekund mají 2 minuty?", correct: "120", distractors: ["60", "200", "20"], hint: "1 minuta = 60 sekund. Kolik je 2 × 60?", solution: "2 minuty = 2 × 60 = 120 sekund." },
   { question: "Kolik minut je 1 hodina a 30 minut?", correct: "90", distractors: ["130", "60", "80"], hint: "1 hodina = 60 minut. Přidej ještě 30 minut. Kolik je 60 + 30?", solution: "1 hodina = 60 minut, + 30 minut = 90 minut celkem." },
   { question: "Kolik minut jsou 2 hodiny a 15 minut?", correct: "135", distractors: ["215", "120", "145"], hint: "2 hodiny = 120 minut. Přidej ještě 15 minut. Kolik je 120 + 15?", solution: "2 hodiny = 120 minut, + 15 minut = 135 minut celkem." },
-  { question: "Škola začíná v 8:00. Přestávka přijde za 45 minut. Ve kolik hodin je přestávka?", correct: "8:45", distractors: ["8:30", "9:00", "8:15"], hint: "8:00 + 45 minut — přidej 45 minut k osmé hodině.", solution: "8:00 + 45 minut = 8:45. Přestávka je ve čtvrt na devět." },
+  { question: "Škola začíná v 8:00. Přestávka přijde za 45 minut. Ve kolik hodin je přestávka?", correct: "8:45", distractors: ["8:30", "9:00", "8:15"], hint: "8:00 + 45 minut — přidej 45 minut k osmé hodině.", solution: "8:00 + 45 minut = 8:45. Přestávka je třičtvrtě na devět." },
 ];
 
 function gen(_level: number): PracticeTask[] {
