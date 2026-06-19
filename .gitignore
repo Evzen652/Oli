@@ -45,3 +45,7 @@ OLI-pitch-deck.pptx
 
 # author-batch pipeline — dočasné dumpy vzorků z brány 0 (per-machine)
 .audit-topic/
+
+# Playwright artefakty
+test-results/
+playwright-report/

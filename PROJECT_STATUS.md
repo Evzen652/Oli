@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Ověření flow rodič/žák (integrační + E2E):
+- ✅ **Integrační testy** (mock-free, orchestrátor/funkce): `auth-errors.test.ts` (10 — `mapAuthError` mapování Supabase chyb → čeština), `session-loop-integration.test.ts` (2 — empty-batch guard: generátor `[]` → END místo pádu; happy-path: smyčka dojde od první do poslední úlohy → END). Pokrývají dosud netestovanou logiku z Blok 1–4 + Fáze 2.
+- ✅ **E2E (Playwright)** opraveno a rozšířeno: **port mismatch 8081→8080** (testy dosud vůbec neběžely), přepsány zastaralé asserce v `auth.spec.ts` (po Blok-1 přejmenování tlačítek). Nové `student-flow.spec.ts` (3 — anon onboarding → výběr ročníku → /student dashboard → trial banner → interaktivita) a `parent-flow.spec.ts` (3 — registrační formulář, reset hesla, ochrana /parent před nepřihlášeným). **11 E2E zelených.**
+- Autentizovaný rodičovský flow (signup vyžaduje potvrzení e-mailu) kryjí integrační hooks testy (`hooks-supabase`: useProfile/useChildren/useUserRole), ne E2E.
+- Ověřeno: tsc 0, eslint 0, 12 integračních + 11 E2E zelených. Větev `test/flow-verifikace`.
+
 ### Session 2026-06-19 — Audit fáze 2: opravy kbelíku A (čj+math):
 - ✅ **A1** `g3-cjl/versRymPrirovnani.ts` — 4 neřešitelné úlohy (correct ∉ options) opraveny na jednu hodnotu z options + překlep „byk"→„býk". **generator-validation: versRym nově prochází všechny 3 úrovně** (faily 12→9, zbytek 3 prvouka mimo scope).
 - ✅ **A3** `g3-mat/scitaniAOdcitaniDo1000.ts` — commonMistake 358+64=412 → **422**.
