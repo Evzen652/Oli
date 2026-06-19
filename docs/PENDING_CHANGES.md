@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Ověření flow rodič/žák — integrační + E2E (2026-06-19)
+- Integrační: `auth-errors.test.ts` (mapAuthError), `session-loop-integration.test.ts` (empty-batch guard + happy-path smyčka). E2E: opraven port 8081→8080 (testy neběžely!), přepsány zastaralé asserce, nové `student-flow.spec.ts` + `parent-flow.spec.ts`. 12 integračních + 11 E2E zelených. Větev `test/flow-verifikace`. **Zbývá:** execution-directive 4 testy (zastaralý setup), kbelík B (gradace L2/L3).
+
 ## ✅ Audit fáze 2 — opravy kbelíku A, čj+math (2026-06-19)
 - 7 ověřených faktických chyb opraveno: A1 versRym (4 neřešitelné úlohy → test prochází), A3 358+64=422, A4 parkoviště b<a, A5 pravopis předpon (7 neexistujících slov), A6 sluníčko slu-níč-ko, A7 třičtvrtě na devět, A8 půjdeme. + opravena Blok-1 regrese v hooks-supabase testu. tsc/build OK, 14 zbylých failů předexistujících. Větev `fix/audit-faze2-kbelik-a`. **Zbývá:** kbelík B (gradace L2/L3 — versRym 15/0/0, g2-mat-jednotky atd.); předexistující execution-directive 4 faily.
 
