@@ -17,7 +17,7 @@
 - S1 empty-batch guard v `sessionOrchestrator.ts` (prázdný batch → END místo pádu; = bod A2 auditu). S2 (dedup recyklace) ověřeně non-issue → bez změny. tsc OK, testy beze změny. Větev `fix/flow-mezery-blok1-ucet` (pokračování). Zbývá Blok 3 (smazat demo, /session-history, sjednotit Zpět), Blok 4 (drobnosti).
 
 ## ✅ Flow mezery — Blok 1: Účet & role rodiče (2026-06-19)
-- R1 role přes DB trigger (migrace `20260619120000_auth_role_provisioning.sql` — **nutno aplikovat na Supabase**), klient roli nezakládá. R2 `updateProfile` upsert + `useUserRole` deterministické řazení. R3 `mapAuthError` (české chyby) + check-email obrazovka. tsc/eslint/build OK. Větev `fix/flow-mezery-blok1-ucet`. Detail v `PROJECT_STATUS.md` sekce 6. Navazuje audit flow rodič/žák (viz níže).
+- R1 role přes DB trigger (migrace `20260619120000_auth_role_provisioning.sql` — **✅ aplikována na Supabase 2026-06-19**, WHERE NOT EXISTS místo ON CONFLICT), klient roli nezakládá. R2 `updateProfile` upsert + `useUserRole` deterministické řazení. R3 `mapAuthError` (české chyby) + check-email obrazovka. tsc/eslint/build OK. Větev `fix/flow-mezery-blok1-ucet`. Detail v `PROJECT_STATUS.md` sekce 6. Navazuje audit flow rodič/žák (viz níže).
 - **Otevřené z flow auditu:** Blok 2 (empty-batch guard, „Zopakovat" dedup), Blok 3 (smazat demo, zapojit /session-history, sjednotit Zpět), Blok 4 (kód 48h vs text, onboarding disabled, anon „Nové téma", child grade=null).
 
 ## ✅ Audit fáze 1 — reality check (2026-06-19)
