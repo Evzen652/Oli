@@ -36,6 +36,8 @@ function mkQueryChain(returnValue: { data?: unknown; error?: unknown; count?: nu
   chain.update = vi.fn().mockReturnValue({
     eq: vi.fn().mockResolvedValue({ error: returnValue.error ?? null }),
   });
+  // .upsert() — useProfile.updateProfile nově dělá upsert na user_id
+  chain.upsert = vi.fn().mockResolvedValue({ error: returnValue.error ?? null });
   return chain;
 }
 

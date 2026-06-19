@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Audit fáze 2 — opravy kbelíku A, čj+math (2026-06-19)
+- 7 ověřených faktických chyb opraveno: A1 versRym (4 neřešitelné úlohy → test prochází), A3 358+64=422, A4 parkoviště b<a, A5 pravopis předpon (7 neexistujících slov), A6 sluníčko slu-níč-ko, A7 třičtvrtě na devět, A8 půjdeme. + opravena Blok-1 regrese v hooks-supabase testu. tsc/build OK, 14 zbylých failů předexistujících. Větev `fix/audit-faze2-kbelik-a`. **Zbývá:** kbelík B (gradace L2/L3 — versRym 15/0/0, g2-mat-jednotky atd.); předexistující execution-directive 4 faily.
+
 ## ✅ Flow mezery — Blok 4: Drobnosti (2026-06-19)
 - D1 text kódu 24→48 h. D2 onboarding tlačítko disabled bez jména + trim. D3 anon „Nové téma" → dashboard (event). D4 ChildLoadingFallback text + reload, 5→4 s. D5 (localStorage warning) odloženo do anon→registrovaný flow. tsc/build OK. **Série flow-mezery (Blok 1–4) hotová** na `fix/flow-mezery-blok1-ucet`.
 
