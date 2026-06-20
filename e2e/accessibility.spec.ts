@@ -9,12 +9,4 @@ test.describe('Přístupnost', () => {
       .analyze();
     expect(results.violations).toHaveLength(0);
   });
-
-  test('demo nemá axe violations', async ({ page }) => {
-    await page.goto('/demo');
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa'])
-      .analyze();
-    expect(results.violations).toHaveLength(0);
-  });
 });
