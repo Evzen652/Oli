@@ -11,7 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useT } from "@/lib/i18n";
 import type { Grade } from "@/lib/types";
 import { BackButton } from "@/components/BackButton";
-import { getAnonProgressSummary, migrateAnonProgress } from "@/lib/anonMigration";
+import { getAnonProgressSummary, migrateAnonProgress, clearAnonData } from "@/lib/anonMigration";
+import { peekAnonToken } from "@/lib/anonServerSync";
 import { pad } from "@/lib/czechGrammar";
 
 const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -71,6 +72,20 @@ export default function ParentOnboarding() {
     if (!newChildId) return;
     setClaimState("claiming");
     try {
+      // Preferuj serverovou adopci (Fáze 3) — funguje i kdyby localStorage pokrok
+      // chyběl, stačí token. Edge funkce ověří, že rodič dítě vlastní.
+      const token = peekAnonToken();
+      if (token) {
+        const { data } = await supabase.functions.invoke("anon-progress", {
+          body: { action: "adopt", childId: newChildId, token },
+        });
+        if ((data as { ok?: boolean } | null)?.ok) {
+          clearAnonData();
+          setClaimState("done");
+          return;
+        }
+      }
+      // Fallback: localStorage migrace (účty bez tokenu / pre-Fáze 3).
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
       const res = await migrateAnonProgress(user.id, newChildId);
