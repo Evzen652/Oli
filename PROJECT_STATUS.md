@@ -144,10 +144,17 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
-### Session 2026-06-21 — Fáze 3 (Možnost B), rollout 3c — server jako zdroj pravdy:
-- ✅ **3c-1 sync na startu** — `serverGetProgress()` v `anonServerSync.ts`; `AnonStudentPage` při mountu (když dnešní localStorage nemá splněné úkoly) obnoví pokrok ze serveru dle tokenu → **přežije smazání localStorage** (stejný prohlížeč/token). Klientské, bez deploye.
-- ⚠️ **3c-2 TTL cleanup** — `cleanup` akce v edge funkci `anon-progress` (maže anon data starší 44 dní). **Kód hotový, ale NENASAZEN** — CLI `supabase functions deploy` selhal `401 Unauthorized` (access token vypršel). **Nutné: re-auth `supabase login` + `supabase functions deploy anon-progress`.** Pak ještě nastavit periodické volání (Supabase scheduled trigger / cron).
-- Ověřeno: tsc 0, build OK, 4 student-flow E2E zelené. Větev `feat/phase3-anon-server-3c`. **Tím je Fáze 3 (3a+3b+3c) v kódu kompletní** — zbývá jen deploy cleanup + jeho scheduling.
+### Session 2026-06-22 — Auth UX + role flow:
+- ✅ **Auth role karty** — `/auth` (rodič) i `/auth/child` (žák) mají nahoře dvě role karty s Pollinations ilustracemi (`src/lib/roleImages.ts`, barevný placeholder při načítání). Rodičovský formulář vždy viditelný bez scrollu.
+- ✅ **Registrace = trial** — tlačítko „Vyzkoušet 14 dní zdarma" + podtitulek „Prvních 14 dní zdarma, bez platební karty". Tooltip (ℹ) vysvětluje propojení dítěte kódem.
+- ✅ **CTA jako tlačítka** — „Pokračovat bez přihlášení" (žák), „Vytvořit nový účet" / „Už mám účet" (amber), landing nav: zrušeno „Registrace zdarma", „Přihlásit se" jako oranžové tlačítko.
+- ✅ **Onboarding** — nadpis „Vyber svůj ročník" (tučně, větší); dlaždice ročníků beze změny.
+- ⚠️ **BLOKER — potvrzovací e-maily nechodí** — projekt nemá custom SMTP (`smtp_host: null`), výchozí Supabase limit `rate_limit_email_sent: 2`/hod. **Řešení: nastavit Resend SMTP** (čeká na API klíč + ověřenou doménu od uživatele). Pak zapojit přes management API.
+- ⏳ **Child re-login (Fáze B)** — `pair-child` generuje náhodné heslo, neukládá → dítě se po vymazání session nepřihlásí. Návrh: PIN v `children` tabulce. Neimplementováno.
+
+### Session 2026-06-21 — Fáze 3 (Možnost B), rollout 3c — server jako zdroj pravdy: ✅ KOMPLETNÍ
+- ✅ **3c-1 sync na startu** — `serverGetProgress()` v `anonServerSync.ts`; `AnonStudentPage` při mountu obnoví pokrok ze serveru → přežije smazání localStorage.
+- ✅ **3c-2 TTL cleanup** — edge funkce `anon-progress` nasazena (2026-06-21, token přes env). `pg_cron` job `anon-cleanup-daily` nastaven (každý den 3:00 UTC, `pg_net` HTTP POST na cleanup akci). **Fáze 3 (3a+3b+3c) KOMPLETNÍ včetně deploye.**
 
 ### Session 2026-06-19 — Fáze 3 (Možnost B), rollout 3b — adopce + token v pozvánce:
 - ✅ **Migrace** `20260619160000_invite_anon_token.sql` — `parent_invitations.anon_token` (token cestuje pozvánkou). Aplikováno.

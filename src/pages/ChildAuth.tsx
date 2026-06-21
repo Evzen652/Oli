@@ -9,6 +9,7 @@ import { AnonMigrationDialog } from "@/components/AnonMigrationDialog";
 import { hasAnonProgress, migrateAnonProgress, clearAnonData } from "@/lib/anonMigration";
 import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
+import { ROLE_IMAGES } from "@/lib/roleImages";
 
 export default function ChildAuth() {
   const [code, setCode] = useState("");
@@ -97,16 +98,20 @@ export default function ChildAuth() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => navigate("/auth")}
-              className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-4 text-left hover:border-emerald-200 hover:bg-emerald-50/50 transition-all"
+              className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-5 text-center hover:border-emerald-200 hover:bg-emerald-50/50 transition-all"
             >
-              <div className="text-2xl mb-1">👨‍👩‍👧</div>
+              <div className="flex justify-center mb-3">
+                <img src={ROLE_IMAGES.parent} alt="Rodič" className="w-16 h-16 rounded-xl object-cover bg-emerald-100" />
+              </div>
               <p className="font-bold text-sm text-slate-900">Jsem rodič</p>
               <p className="text-xs text-slate-500 mt-0.5">Sledovat pokrok dítěte</p>
             </button>
             <button
-              className="rounded-2xl border-2 border-violet-400 bg-violet-50 px-4 py-4 text-left shadow-md cursor-default"
+              className="rounded-2xl border-2 border-violet-400 bg-violet-50 px-4 py-5 text-center shadow-md cursor-default"
             >
-              <div className="text-2xl mb-1">🎒</div>
+              <div className="flex justify-center mb-3">
+                <img src={ROLE_IMAGES.child} alt="Žák" className="w-16 h-16 rounded-xl object-cover bg-violet-100" />
+              </div>
               <p className="font-bold text-sm text-slate-900">Jsem žák</p>
               <p className="text-xs text-violet-600 mt-0.5">Přihlásit se kódem</p>
             </button>
@@ -150,11 +155,10 @@ export default function ChildAuth() {
                 <p className="font-bold mb-1">Nemáš kód?</p>
                 <p className="text-amber-800 text-xs">Kód ti musí vygenerovat rodič v Oli. Požádej ho, ať se zaregistruje na <strong>oli-edu.com</strong>, přidá tě a ukáže ti kód.</p>
                 <Button
-                  variant="link"
-                  className="mt-1 h-auto p-0 text-sm text-amber-700 font-semibold"
+                  className="mt-2 w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
                   onClick={() => navigate("/student")}
                 >
-                  Zatím pokračovat bez přihlášení →
+                  Pokračovat bez přihlášení
                 </Button>
               </div>
             </CardContent>

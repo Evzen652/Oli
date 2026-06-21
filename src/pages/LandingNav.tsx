@@ -60,15 +60,8 @@ export function LandingNav() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-slate-600" onClick={goToLogin}>
+          <Button size="sm" className="bg-[#F97316] hover:bg-[#EA580C] text-white rounded-full px-6" onClick={goToLogin}>
             Přihlásit se
-          </Button>
-          <Button
-            size="sm"
-            className="bg-[#F97316] hover:bg-[#EA580C] text-white rounded-full px-6"
-            onClick={() => navigate("/auth?mode=register")}
-          >
-            Registrace zdarma
           </Button>
         </div>
 
@@ -87,9 +80,6 @@ export function LandingNav() {
                 ))}
                 <hr />
                 <Button variant="outline" className="w-full" onClick={() => { goToLogin(); setOpen(false); }}>Přihlásit se</Button>
-                <Button className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white" onClick={() => { navigate("/auth?mode=register"); setOpen(false); }}>
-                  Registrace zdarma
-                </Button>
               </div>
             </SheetContent>
           </Sheet>

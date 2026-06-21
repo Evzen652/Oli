@@ -9,9 +9,11 @@ import { useT } from "@/lib/i18n";
 import { mapAuthError } from "@/lib/authErrors";
 import { hasAnonProgress, getAnonProgressSummary } from "@/lib/anonMigration";
 import { pad } from "@/lib/czechGrammar";
-import { Mail } from "lucide-react";
+import { Mail, Info } from "lucide-react";
 import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
+import { ROLE_IMAGES } from "@/lib/roleImages";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Role = "parent" | "child" | null;
 
@@ -103,21 +105,25 @@ export default function Auth() {
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => { setRole("parent"); setError(null); }}
-              className={`rounded-2xl border-2 px-4 py-4 text-left transition-all ${
+              className={`rounded-2xl border-2 px-4 py-5 text-center transition-all ${
                 role === "parent"
                   ? "border-emerald-400 bg-emerald-50 shadow-md"
                   : "border-slate-200 bg-white hover:border-emerald-200 hover:bg-emerald-50/50"
               }`}
             >
-              <div className="text-2xl mb-1">👨‍👩‍👧</div>
+              <div className="flex justify-center mb-3">
+                <img src={ROLE_IMAGES.parent} alt="Rodič" className="w-16 h-16 rounded-xl object-cover bg-emerald-100" />
+              </div>
               <p className="font-bold text-sm text-slate-900">Jsem rodič</p>
               <p className="text-xs text-slate-500 mt-0.5">Sledovat pokrok dítěte</p>
             </button>
             <button
               onClick={() => navigate("/auth/child")}
-              className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-4 text-left hover:border-violet-200 hover:bg-violet-50/50 transition-all"
+              className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-5 text-center hover:border-violet-200 hover:bg-violet-50/50 transition-all"
             >
-              <div className="text-2xl mb-1">🎒</div>
+              <div className="flex justify-center mb-3">
+                <img src={ROLE_IMAGES.child} alt="Žák" className="w-16 h-16 rounded-xl object-cover bg-violet-100" />
+              </div>
               <p className="font-bold text-sm text-slate-900">Jsem žák</p>
               <p className="text-xs text-slate-500 mt-0.5">Přihlásit se kódem</p>
             </button>
@@ -131,9 +137,27 @@ export default function Auth() {
                   {isLogin ? t("auth.title.login") : "Registrace rodiče"}
                 </CardTitle>
                 {!isLogin && (
-                  <p className="text-center text-sm text-muted-foreground mt-1">
-                    Stačí e-mail a heslo. Dítě propojíte kódem po registraci.
+                  <>
+                  <p className="text-center text-sm font-medium text-emerald-700 mt-1">
+                    Prvních 14 dní zdarma, bez platební karty.
                   </p>
+                  <p className="text-center text-sm text-muted-foreground mt-1">
+                    Stačí e-mail a heslo.{" "}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="inline-flex items-center gap-1 cursor-help text-violet-600">
+                            Dítě propojíte kódem po registraci.
+                            <Info className="h-3.5 w-3.5 shrink-0" />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom" className="max-w-xs text-center">
+                          Po registraci přejděte do sekce <strong>Děti</strong>, přidejte dítě a zobrazí se vám 6místný kód. Ten dítě zadá v Oli na přihlašovací obrazovce žáka — a účty se propojí.
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </p>
+                  </>
                 )}
               </CardHeader>
               <CardContent className="space-y-4">
@@ -174,7 +198,7 @@ export default function Auth() {
                   </div>
                   {error && <p className="text-sm text-destructive">{error}</p>}
                   <Button type="submit" disabled={loading} className="w-full">
-                    {loading ? t("auth.loading") : isLogin ? t("auth.submit.login") : "Vytvořit účet"}
+                    {loading ? t("auth.loading") : isLogin ? t("auth.submit.login") : "Vyzkoušet 14 dní zdarma"}
                   </Button>
                 </form>
                 {isLogin && (
@@ -186,13 +210,21 @@ export default function Auth() {
                     {t("auth.forgot_password")}
                   </Button>
                 )}
-                <Button
-                  variant="link"
-                  className="w-full text-sm text-muted-foreground"
-                  onClick={() => { setIsLogin(!isLogin); setError(null); }}
-                >
-                  {isLogin ? "Ještě nemám účet — vytvořit nový" : "Už mám účet — přihlásit se"}
-                </Button>
+                {isLogin ? (
+                  <Button
+                    className="w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
+                    onClick={() => { setIsLogin(false); setError(null); }}
+                  >
+                    Vytvořit nový účet
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
+                    onClick={() => { setIsLogin(true); setError(null); }}
+                  >
+                    Už mám účet — přihlásit se
+                  </Button>
+                )}
               </CardContent>
             </Card>
           )}

@@ -163,7 +163,7 @@ export default function Onboarding() {
           </a>
 
           <div className="space-y-4">
-            <p className="text-slate-700 font-semibold text-base">Jsem dítě — vyber ročník</p>
+            <p className="text-slate-800 font-bold text-2xl">Vyber svůj ročník</p>
             <div className="grid grid-cols-3 gap-5">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
                 const hasContent = hasContentForGrade(grade);
