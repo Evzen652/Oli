@@ -144,6 +144,11 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-21 — Fáze 3 (Možnost B), rollout 3c — server jako zdroj pravdy:
+- ✅ **3c-1 sync na startu** — `serverGetProgress()` v `anonServerSync.ts`; `AnonStudentPage` při mountu (když dnešní localStorage nemá splněné úkoly) obnoví pokrok ze serveru dle tokenu → **přežije smazání localStorage** (stejný prohlížeč/token). Klientské, bez deploye.
+- ⚠️ **3c-2 TTL cleanup** — `cleanup` akce v edge funkci `anon-progress` (maže anon data starší 44 dní). **Kód hotový, ale NENASAZEN** — CLI `supabase functions deploy` selhal `401 Unauthorized` (access token vypršel). **Nutné: re-auth `supabase login` + `supabase functions deploy anon-progress`.** Pak ještě nastavit periodické volání (Supabase scheduled trigger / cron).
+- Ověřeno: tsc 0, build OK, 4 student-flow E2E zelené. Větev `feat/phase3-anon-server-3c`. **Tím je Fáze 3 (3a+3b+3c) v kódu kompletní** — zbývá jen deploy cleanup + jeho scheduling.
+
 ### Session 2026-06-19 — Fáze 3 (Možnost B), rollout 3b — adopce + token v pozvánce:
 - ✅ **Migrace** `20260619160000_invite_anon_token.sql` — `parent_invitations.anon_token` (token cestuje pozvánkou). Aplikováno.
 - ✅ **Edge `adopt`** — akce funkce `anon-progress`: ověří rodiče z JWT → vlastnictví dítěte → přesune `anon_progress` do reálných `session_logs` + spotřebuje anon data + označí pozvánku accepted. Redeployed. Guard ověřen (401 bez user JWT).

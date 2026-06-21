@@ -121,6 +121,15 @@ Deno.serve(async (req) => {
       return json({ ok: true, adopted: logs.length });
     }
 
+    // Úklid expirovaných anon dat (TTL = 14 dní trial + 30 dní = 44 dní).
+    // Maže jen staré řádky → bezpečné volat kdykoli (idempotentní).
+    if (action === "cleanup") {
+      const cutoff = new Date(Date.now() - 44 * 24 * 60 * 60 * 1000).toISOString();
+      const p = await supabase.from("anon_progress").delete().lt("created_at", cutoff).select("id");
+      const t = await supabase.from("anon_trial").delete().lt("started_at", cutoff).select("anon_token");
+      return json({ ok: true, deletedProgress: p.data?.length ?? 0, deletedTrial: t.data?.length ?? 0 });
+    }
+
     // Ostatní akce — pracují čistě s tokenem.
     if (!token || typeof token !== "string" || !UUID_RE.test(token)) {
       return json({ error: "Neplatný token" }, 400);
