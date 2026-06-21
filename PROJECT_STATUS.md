@@ -144,6 +144,15 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-06-19 — Fáze 3 (Možnost B), rollout 3b — adopce + token v pozvánce:
+- ✅ **Migrace** `20260619160000_invite_anon_token.sql` — `parent_invitations.anon_token` (token cestuje pozvánkou). Aplikováno.
+- ✅ **Edge `adopt`** — akce funkce `anon-progress`: ověří rodiče z JWT → vlastnictví dítěte → přesune `anon_progress` do reálných `session_logs` + spotřebuje anon data + označí pozvánku accepted. Redeployed. Guard ověřen (401 bez user JWT).
+- ✅ **Pozvánka nese token** — `send-parent-invite` ukládá `anon_token`, `InviteParentDialog` ho přibalí. Redeployed.
+- ✅ **ParentOnboarding F3** → preferuje server `adopt` (stačí token), localStorage `migrateAnonProgress` fallback.
+- ✅ **Test hygiena** — odstraněny E2E testy smazaného dema (landing/performance/accessibility), opraven stale landing assert („Začít zdarma" hero → /onboarding).
+- Ověřeno: tsc 0, build OK, 15 flow+landing E2E + 46 unit zelených. Zbylé E2E faily (landing axe/perf) jsou **předexistující** (mimo scope). Větev `feat/phase3-anon-server-3b`.
+- ⏭️ Zbývá **3c** (server = zdroj pravdy: sync na startu + TTL úklid anon dat).
+
 ### Session 2026-06-19 — Fáze 3 (Možnost B), rollout 3a — serverové anon úložiště:
 - ✅ **Krok 1 — migrace** `20260619140000_anon_progress_server.sql`: tabulky `anon_progress` + `anon_trial`, RLS **zamčeno bez policy** (přístup jen přes service-role edge funkci). Aplikováno na Supabase.
 - ✅ **Krok 2 — edge funkce** `anon-progress` (akce `start-trial`/`get-trial`/`record`/`get`, service role, validace uuid). Deployed + smoke test (vše OK, invalid token → 400). `config.toml` `verify_jwt = false`.
