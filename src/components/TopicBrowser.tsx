@@ -493,7 +493,7 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         </div>
                         <div className="space-y-1">
                           <h3 className="text-lg font-black text-slate-500 tracking-tight leading-tight line-clamp-2">{card.name}</h3>
-                          <p className="text-sm font-bold text-violet-600 leading-snug">🔓 Odemkni registrací →</p>
+                          <p className="text-sm font-bold text-violet-600 leading-snug">🔓 Přihlásit se →</p>
                         </div>
                       </button>
                     ) : (

@@ -145,6 +145,7 @@ export function SessionView() {
   const [showTopicBrowser, setShowTopicBrowser] = useState(
     () => !!sessionStorage.getItem("oli_anon_browse_subject"),
   );
+  const [showAnonGateModal, setShowAnonGateModal] = useState(false);
   const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(
     () => sessionStorage.getItem("oli_anon_browse_subject") ?? undefined,
   );
@@ -430,8 +431,32 @@ export function SessionView() {
           isAdmin={role === "admin" && !isStudentView}
           initialSubject={topicBrowserSubject}
           anonLocked={isAnonTrial}
-          onLockedClick={() => navigate("/auth?mode=register")}
+          onLockedClick={() => setShowAnonGateModal(true)}
         />
+
+        <Dialog open={showAnonGateModal} onOpenChange={setShowAnonGateModal}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="text-center text-xl">Přihlásit se</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col gap-3 pt-2">
+              <button
+                className="flex flex-col items-start gap-1 rounded-2xl border-2 border-violet-200 bg-violet-50 px-5 py-4 text-left hover:bg-violet-100 transition-colors"
+                onClick={() => { setShowAnonGateModal(false); navigate("/auth/child"); }}
+              >
+                <span className="font-bold text-base text-violet-900">Jsem žák</span>
+                <span className="text-sm text-violet-700">Mám párovací kód od rodiče</span>
+              </button>
+              <button
+                className="flex flex-col items-start gap-1 rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-5 py-4 text-left hover:bg-emerald-100 transition-colors"
+                onClick={() => { setShowAnonGateModal(false); navigate("/auth?mode=register"); }}
+              >
+                <span className="font-bold text-base text-emerald-900">Jsem rodič</span>
+                <span className="text-sm text-emerald-700">Chci sledovat pokrok dítěte</span>
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </>
     );
   }

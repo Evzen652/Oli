@@ -150,8 +150,20 @@ export default function Onboarding() {
           </div>
 
 
+          {/* Rodičovský vstup — viditelně před výběrem ročníku */}
+          <a
+            href="/auth?mode=register"
+            className="flex items-center justify-between rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-5 py-3.5 hover:bg-emerald-100 transition-colors text-left"
+          >
+            <div>
+              <p className="font-bold text-emerald-900 text-base">Jsem rodič</p>
+              <p className="text-sm text-emerald-700">Chci zadávat úkoly a sledovat pokrok dítěte</p>
+            </div>
+            <span className="text-emerald-500 text-xl shrink-0 ml-3">→</span>
+          </a>
+
           <div className="space-y-4">
-            <p className="text-slate-700 font-semibold text-base">Vyber ročník</p>
+            <p className="text-slate-700 font-semibold text-base">Jsem dítě — vyber ročník</p>
             <div className="grid grid-cols-3 gap-5">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
                 const hasContent = hasContentForGrade(grade);
