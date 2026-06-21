@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Fáze 3 (Možnost B) rollout 3c — server jako zdroj pravdy (2026-06-21)
+- 3c-1 sync na startu (`serverGetProgress` + obnova v `AnonStudentPage` → přežije smazání localStorage). 3c-2 `cleanup` akce (TTL 44 dní) — **kód hotový, NENASAZEN** (CLI 401 — vypršel access token). tsc/build OK, 4 E2E zelené. Větev `feat/phase3-anon-server-3c`. **AKCE:** `supabase login` + `supabase functions deploy anon-progress` + nastavit scheduling cleanup. Fáze 3 v kódu kompletní.
+
 ## ✅ Fáze 3 (Možnost B) rollout 3b — adopce + token v pozvánce (2026-06-19)
 - Migrace `parent_invitations.anon_token`, edge akce `adopt` (JWT ověření → vlastnictví dítěte → anon_progress→session_logs + úklid), pozvánka nese token, ParentOnboarding F3 přes server adopt (localStorage fallback). Migrace+edge nasazené. Test hygiena: odstraněny demo E2E + opraven stale landing. tsc/build OK, 15 flow+landing E2E + 46 unit zelené. Větev `feat/phase3-anon-server-3b`. **Zbývá:** 3c (server=pravda + TTL úklid). Pozn.: předexistující landing axe/perf E2E faily k samostatnému řešení.
 

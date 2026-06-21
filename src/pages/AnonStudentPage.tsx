@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SessionView } from "@/components/SessionView";
 import { getAllTopics } from "@/lib/contentRegistry";
-import { getTodayProgress, allTasksCompleted } from "@/lib/anonProgress";
+import { getTodayProgress, allTasksCompleted, markTaskCompleted } from "@/lib/anonProgress";
+import { serverGetProgress } from "@/lib/anonServerSync";
 import { getContentWarning } from "@/lib/contentAvailability";
 import {
   isTrialActive,
@@ -56,6 +57,29 @@ export default function AnonStudentPage() {
     window.addEventListener("oli-anon-task-completed", handler);
     return () => window.removeEventListener("oli-anon-task-completed", handler);
   }, []);
+
+  // Fáze 3c: obnova pokroku ze serveru po smazání localStorage (stejný token).
+  // Spustí se jen když dnešní localStorage nemá žádné splněné úkoly.
+  useEffect(() => {
+    if (isNaN(grade) || grade < 1 || grade > 9) return;
+    const local = getTodayProgress(grade);
+    if (local.tasks.some((t) => t.completed)) return; // localStorage je aktuální
+    const todayIds = new Set(local.tasks.map((t) => t.topicId));
+    let cancelled = false;
+    serverGetProgress().then((server) => {
+      if (cancelled || server.length === 0) return;
+      let restored = 0;
+      for (const item of server) {
+        if (item.completed && todayIds.has(item.topic_id)) {
+          markTaskCompleted(item.topic_id, item.score ?? 1);
+          restored++;
+        }
+      }
+      if (restored > 0) setRefreshTick((t) => t + 1);
+    });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [grade]);
 
   // "Zpět" z nejvyšší úrovně TopicBrowseru → zpět na dashboard (doporučení)
   useEffect(() => {

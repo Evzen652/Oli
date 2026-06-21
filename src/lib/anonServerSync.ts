@@ -57,3 +57,15 @@ export function serverStartTrial(grade: number): void {
 export function serverRecordTask(topicId: string, grade: number, score: number): void {
   void call("record", { topicId, grade, score });
 }
+
+export interface ServerProgressItem {
+  topic_id: string;
+  completed: boolean;
+  score: number | null;
+}
+
+/** Načte serverový pokrok pro aktuální token (pro obnovu po smazání localStorage). */
+export async function serverGetProgress(): Promise<ServerProgressItem[]> {
+  const data = (await call("get")) as { progress?: ServerProgressItem[] } | null;
+  return data?.progress ?? [];
+}
