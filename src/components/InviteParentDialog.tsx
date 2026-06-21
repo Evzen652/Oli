@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Loader2, Mail, MessageCircle } from "lucide-react";
+import { peekAnonToken } from "@/lib/anonServerSync";
 
 interface Props {
   onClose: () => void;
@@ -108,6 +109,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
           childName: childName ?? null,
           anonGrade: anonGrade ?? null,
           childId: childId ?? null,
+          anonToken: peekAnonToken(),
         }),
       });
       if (controller.signal.aborted) return;

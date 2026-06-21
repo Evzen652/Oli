@@ -130,7 +130,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email, childName, anonGrade, childId } = await req.json();
+    const { email, childName, anonGrade, childId, anonToken } = await req.json();
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return new Response(JSON.stringify({ error: "Neplatný email" }), {
@@ -170,6 +170,7 @@ Deno.serve(async (req) => {
         child_id: childId ?? null,
         child_name: childName ?? null,
         anon_grade: anonGrade ?? null,
+        anon_token: anonToken ?? null,
         status: "pending",
       })
       .select("id")

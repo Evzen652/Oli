@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Fáze 3 (Možnost B) rollout 3b — adopce + token v pozvánce (2026-06-19)
+- Migrace `parent_invitations.anon_token`, edge akce `adopt` (JWT ověření → vlastnictví dítěte → anon_progress→session_logs + úklid), pozvánka nese token, ParentOnboarding F3 přes server adopt (localStorage fallback). Migrace+edge nasazené. Test hygiena: odstraněny demo E2E + opraven stale landing. tsc/build OK, 15 flow+landing E2E + 46 unit zelené. Větev `feat/phase3-anon-server-3b`. **Zbývá:** 3c (server=pravda + TTL úklid). Pozn.: předexistující landing axe/perf E2E faily k samostatnému řešení.
+
 ## ✅ Fáze 3 (Možnost B) rollout 3a — serverové anon úložiště (2026-06-19)
 - Migrace `anon_progress`+`anon_trial` (RLS zamčeno, aplikováno), edge funkce `anon-progress` (deployed, smoke OK), klientský dual-write `anonServerSync.ts` (localStorage = zdroj pravdy, fire-and-forget). tsc 0, 31 unit + 13 E2E + live dual-write test zelené. Větev `feat/phase3-anon-server-3a`. **Zbývá:** 3b (adopce přes token), 3c (server = pravda + TTL úklid). Plán: `docs/PHASE3_SERVER_PROGRESS.md`.
 
