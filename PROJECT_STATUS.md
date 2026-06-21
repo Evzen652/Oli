@@ -149,7 +149,10 @@ src/
 - ✅ **Registrace = trial** — tlačítko „Vyzkoušet 14 dní zdarma" + podtitulek „Prvních 14 dní zdarma, bez platební karty". Tooltip (ℹ) vysvětluje propojení dítěte kódem.
 - ✅ **CTA jako tlačítka** — „Pokračovat bez přihlášení" (žák), „Vytvořit nový účet" / „Už mám účet" (amber), landing nav: zrušeno „Registrace zdarma", „Přihlásit se" jako oranžové tlačítko.
 - ✅ **Onboarding** — nadpis „Vyber svůj ročník" (tučně, větší); dlaždice ročníků beze změny.
-- ⚠️ **BLOKER — potvrzovací e-maily nechodí** — projekt nemá custom SMTP (`smtp_host: null`), výchozí Supabase limit `rate_limit_email_sent: 2`/hod. **Řešení: nastavit Resend SMTP** (čeká na API klíč + ověřenou doménu od uživatele). Pak zapojit přes management API.
+- ⚠️ **BLOKER — potvrzovací e-maily nechodí** — projekt nemá custom SMTP (`smtp_host: null`), výchozí Supabase limit `rate_limit_email_sent: 2`/hod.
+  - ❌ **Resend zamítnut** — DKIM ověřené, ale odesílání vyžaduje MX na `send.oli-edu.com`; Český hosting subdoménový MX přes UI neumí → Resend `403 domain not verified` (otestováno reálným sendem). Cesta opuštěna.
+  - ✅ **Plán: SMTP Českého hostingu** — doména `oli-edu.com` aktivována do poštovního systému. **DALŠÍ KROK: založit schránku `noreply@oli-edu.com` + heslo**, pak zapojit Supabase SMTP přes management API: host `smtp.cesky-hosting.cz`, port `465`, user = celá adresa, sender `Oli <noreply@oli-edu.com>`.
+  - ⏭️ **Po prvním testu**: pokud e-mail padá do spamu → zapnout Český hosting DKIM + root SPF (`include` cesky-hosting) v DNS. Resend DKIM/SPF TXT v DNS můžou zůstat (neškodí). Resend API klíč (Full-access) **smazat**.
 - ⏳ **Child re-login (Fáze B)** — `pair-child` generuje náhodné heslo, neukládá → dítě se po vymazání session nepřihlásí. Návrh: PIN v `children` tabulce. Neimplementováno.
 
 ### Session 2026-06-21 — Fáze 3 (Možnost B), rollout 3c — server jako zdroj pravdy: ✅ KOMPLETNÍ
