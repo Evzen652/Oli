@@ -144,6 +144,11 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-08 — Review export generátorů + handoff na opravy:
+- ✅ **`review-export.md`** — dump VŠECH úloh z generátorů 2.–4. ročník (bez informatiky): 154 témat, 6116 úloh, seskupeno předmět→třída→téma→úroveň (I/II/III přes `getTierTasks`). Skript `src/test/review-export.test.ts` (skipnutý, regenerace `EXPORT_REVIEW=1 npx vitest run …`).
+- ⏭️ **DALŠÍ VELKÝ ÚKOL — opravy generátorů** dle nezávislého review → plán v [`docs/GENERATOR_FIXES_HANDOFF.md`](docs/GENERATOR_FIXES_HANDOFF.md). **Spustit v nové session** (velký vícesouborový refaktor). Pořadí: snapshot+freeze → P1 (předpony) → P2 (dup možnosti) → P0 (hygiena) → PED-1..4 → P3 → audit invarianty.
+- 🔑 **Zjištěno:** P0 (case mismatch klíč vs možnost) **NENÍ prod bug** — runtime `stringExactValidator` normalizuje case/diakritiku/whitespace. Jen hygiena exportu/auditu.
+
 ### Session 2026-06-22 — Auth UX + role flow:
 - ✅ **Auth role karty** — `/auth` (rodič) i `/auth/child` (žák) mají nahoře dvě role karty s Pollinations ilustracemi (`src/lib/roleImages.ts`, barevný placeholder při načítání). Rodičovský formulář vždy viditelný bez scrollu.
 - ✅ **Registrace = trial** — tlačítko „Vyzkoušet 14 dní zdarma" + podtitulek „Prvních 14 dní zdarma, bez platební karty". Tooltip (ℹ) vysvětluje propojení dítěte kódem.
