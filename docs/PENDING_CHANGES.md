@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ PED-3: g2-mat-mereni-delky L2+L3 naplnění (2026-07-08)
+- Před: `gen(_level)` ignoroval level → L1==L2==L3, audit `20/0/0 max L1`. Teď disjunktní L1 (porovnání, 8), L2 (součet+rozdíl+polovina, 11), L3 (převody cm↔mm + třetina + prodloužení + slovní úlohy, 12). Audit `8/11/12 max L3`. Snapshot přegenerován.
+
 ## ✅ PED-3 rozšíření: g4-mat-magicke-ctverce (2026-07-08)
 - Před: L2==L3 (identický typ úloh), magic distraktor bug (= střed). Teď disjunktní: L1 (sums 15/18, aritmetické → next), L2 (21/24, aritmetické → missing middle), L3 (27/30, nelineární → 7. člen extrapolace). Audit `20/20/20 max L3` (bylo `20/20/0`). Používá buildUniqueOptions. Snapshot přegenerován.
 
