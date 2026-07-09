@@ -12,6 +12,8 @@ import { getTierTasks } from "@/lib/levelCoverage";
 import { GRADE_2_TOPICS } from "@/content/grade-2/index";
 import { GRADE_3_TOPICS } from "@/content/grade-3/index";
 import { GRADE_4_TOPICS } from "@/content/grade-4/index";
+import { GRADE_5_TOPICS } from "@/content/grade-5/index";
+import { GRADE_6_TOPICS } from "@/content/grade-6/index";
 
 /**
  * Přehledový export VŠECH úloh z generátorů (2.–4. ročník, bez informatiky).
@@ -26,6 +28,8 @@ const GRADES: { grade: number; topics: TopicMetadata[] }[] = [
   { grade: 2, topics: GRADE_2_TOPICS },
   { grade: 3, topics: GRADE_3_TOPICS },
   { grade: 4, topics: GRADE_4_TOPICS },
+  { grade: 5, topics: GRADE_5_TOPICS },
+  { grade: 6, topics: GRADE_6_TOPICS },
 ];
 
 // Předměty seřazené pro výstup (raw hodnoty subject, s diakritikou)
@@ -35,6 +39,11 @@ const SUBJECT_ORDER = [
   "prvouka",
   "přírodověda",
   "vlastivěda",
+  "dějepis",
+  "fyzika",
+  "chemie",
+  "přírodopis",
+  "zeměpis",
 ];
 
 function subjectLabel(s: string): string {
@@ -44,6 +53,11 @@ function subjectLabel(s: string): string {
     prvouka: "Prvouka",
     "přírodověda": "Přírodověda",
     "vlastivěda": "Vlastivěda",
+    "dějepis": "Dějepis",
+    fyzika: "Fyzika",
+    chemie: "Chemie",
+    "přírodopis": "Přírodopis",
+    "zeměpis": "Zeměpis",
   };
   return map[s] ?? s;
 }
@@ -166,7 +180,7 @@ function renderTask(
     const out: string[] = [];
     out.push("# Přehledový export úloh z generátorů");
     out.push("");
-    out.push("Rozsah: **2.–4. ročník, bez informatiky.**");
+    out.push("Rozsah: **2.–6. ročník, bez informatiky.**");
     out.push(
       "Úrovně I/II/III jsou odvozené rozdílovým pravidlem (`getTierTasks`) — stejně jako v runtime a adminu."
     );
