@@ -9,36 +9,70 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: { q: string; a: string; opts: string[]; e: string }[] = [
-  // Čas
-  { q: "Sloveso 'hrál' je v čase:", a: "Minulém", opts: ["Minulém", "Přítomném", "Budoucím", "Neurčitém"], e: "Slovo 'hrál' říká, že hraní už proběhlo — stalo se to dříve, ne teď. Vždy se zeptej: Kdy to bylo? 'Hrál' = bylo to v minulosti." },
-  { q: "Sloveso 'hraje' je v čase:", a: "Přítomném", opts: ["Přítomném", "Minulém", "Budoucím", "Neurčitém"], e: "Slovo 'hraje' znamená, že hraní se děje právě teď, v tuto chvíli. Přítomný čas poznáš tak, že se to děje teď." },
-  { q: "Sloveso 'bude hrát' je v čase:", a: "Budoucím", opts: ["Budoucím", "Přítomném", "Minulém", "Neurčitém"], e: "Slovo 'bude' nám napovídá, že hraní teprve přijde — ještě se nestalo. Budoucí čas vždy poznáš podle slova 'bude', 'budu', 'budeme' a podobných." },
-  { q: "Věta: 'Kluci šli domů.' — Sloveso je v čase:", a: "Minulém (šli)", opts: ["Minulém (šli)", "Přítomném", "Budoucím", "Neurčitém"], e: "Sloveso 'šli' říká, že chůze domů už proběhla. Minulý čas poznáme tak, že se děj stal dříve — kluci už doma jsou." },
-  { q: "Věta: 'Zítra půjdeme do kina.' — Čas:", a: "Budoucí (půjdeme)", opts: ["Budoucí (půjdeme)", "Přítomný", "Minulý", "Neurčitý"], e: "Slovo 'zítra' nám hned prozradí, že to ještě nenastalo. Sloveso 'půjdeme' je budoucí čas — do kina teprve půjdeme." },
-  // Osoba
-  { q: "Sloveso 'čtu' — která osoba?", a: "1. osoba (já čtu)", opts: ["1. osoba (já čtu)", "2. osoba (ty čteš)", "3. osoba (on čte)", "Neurčitá"], e: "Sloveso 'čtu' říká, že čtu já sám. Vždy, když mluvíš o sobě a použiješ tvar jako 'čtu, jdu, dělám', je to 1. osoba." },
-  { q: "Sloveso 'čteš' — která osoba?", a: "2. osoba (ty čteš)", opts: ["2. osoba (ty čteš)", "1. osoba (já čtu)", "3. osoba (on čte)", "Neurčitá"], e: "Tvar 'čteš' použijeme, když mluvíme s někým přímo — říkáme mu 'ty'. Kdykoli oslovuješ druhého a sloveso končí podobně, je to 2. osoba." },
-  { q: "Sloveso 'čte' — která osoba?", a: "3. osoba (on/ona čte)", opts: ["3. osoba (on/ona čte)", "1. osoba (já čtu)", "2. osoba (ty čteš)", "Neurčitá"], e: "Tvar 'čte' říká, že čte někdo jiný — on nebo ona. Třetí osoba je vždy o někom, kdo není ani já, ani ty." },
-  // Číslo
-  { q: "Sloveso 'jdeme' je v čísle:", a: "Množném (my jdeme)", opts: ["Množném (my jdeme)", "Jednotném (já jdu)", "Středním", "Neurčitém"], e: "Slovo 'jdeme' říká, že jde víc lidí najednou — my všichni. Množné číslo vždy značí, že dělá víc než jeden člověk." },
-  { q: "Sloveso 'jdu' je v čísle:", a: "Jednotné (já jdu)", opts: ["Jednotné (já jdu)", "Množné (my jdeme)", "Střední", "Neurčité"], e: "Slovo 'jdu' říká, že jde jen jedna osoba — já sám. Jednotné číslo poznáš tak, že děj dělá vždy jen jeden člověk." },
-  { q: "Ve větě 'Děti si hrají venku.' — Čas slovesa 'hrají'?", a: "Přítomný", opts: ["Přítomný", "Minulý", "Budoucí", "Neurčitý"], e: "Sloveso 'hrají' říká, že hraní se děje právě teď. Není tam žádné 'bude' ani 'hráli', takže víme, že je to přítomný čas." },
-  { q: "Ve větě 'Učila jsem se celý večer.' — Osoba?", a: "1. osoba, číslo jednotné (já)", opts: ["1. osoba, číslo jednotné (já)", "2. osoba (ty)", "3. osoba (ona)", "1. osoba množné"], e: "Slovíčko 'jsem' nám prozrazuje, kdo mluví — mluví o sobě, tedy je to já. Jedna osoba = jednotné číslo, mluvčí = 1. osoba." },
-  { q: "Jak tvoříme přítomný čas od 'číst'?", a: "čtu, čteš, čte, čteme, čtete, čtou", opts: ["čtu, čteš, čte, čteme, čtete, čtou", "čil, čila, číst, čtěme", "jsem číst, jsi číst, je číst", "budu číst, budeš číst"], e: "Přítomný čas tvoříme tak, že ke kořenu slova přidáváme různé koncovky: -u, -eš, -e, -eme, -ete, -ou. Tímto způsobem vyjádříme, kdo čte právě teď." },
-  { q: "Sloveso 'přišli' — číslo?", a: "Množné (oni přišli)", opts: ["Množné (oni přišli)", "Jednotné (on přišel)", "Střední", "Neurčité"], e: "Tvar 'přišli' říká, že přišlo více lidí — oni. Množné číslo poznáš, protože jde o víc osob najednou. Jeden člověk by 'přišel'." },
-  { q: "Věta: 'Budu studovat na vysoké škole.' — Čas?", a: "Budoucí", opts: ["Budoucí", "Přítomný", "Minulý", "Neurčitý"], e: "Slovíčko 'budu' nám hned říká, že studování ještě nezačalo — teprve přijde. Kdykoli vidíš 'budu, budeš, bude…', jde o budoucí čas." },
+/**
+ * PED-3 kalibrace L1<L2<L3.
+ * Před: L1 = POOL[0..9], L2 = L3 = celý POOL → getTierTasks L3 vyprazdňoval.
+ * Teď disjunktní: L1 (čas), L2 (osoba + číslo), L3 (aplikace v celé větě).
+ */
+
+type Item = { q: string; a: string; opts: string[]; e: string };
+
+const POOL_L1: Item[] = [
+  // Čas — základní rozlišení
+  { q: "Sloveso 'hrál' je v čase:", a: "Minulém", opts: ["Minulém", "Přítomném", "Budoucím", "Neurčitém"], e: "Slovo 'hrál' říká, že hraní už proběhlo — stalo se dříve." },
+  { q: "Sloveso 'hraje' je v čase:", a: "Přítomném", opts: ["Přítomném", "Minulém", "Budoucím", "Neurčitém"], e: "Slovo 'hraje' znamená, že hraní se děje právě teď." },
+  { q: "Sloveso 'bude hrát' je v čase:", a: "Budoucím", opts: ["Budoucím", "Přítomném", "Minulém", "Neurčitém"], e: "Slovo 'bude' napovídá, že hraní teprve přijde." },
+  { q: "Sloveso 'psal' je v čase:", a: "Minulém", opts: ["Minulém", "Přítomném", "Budoucím", "Neurčitém"], e: "'Psal' se odehrálo dřív — minulý čas." },
+  { q: "Sloveso 'zpívá' je v čase:", a: "Přítomném", opts: ["Přítomném", "Minulém", "Budoucím", "Neurčitém"], e: "'Zpívá' se děje právě teď — přítomný čas." },
+  { q: "Sloveso 'budeme číst' je v čase:", a: "Budoucím", opts: ["Budoucím", "Přítomném", "Minulém", "Neurčitém"], e: "'Budeme' říká, že čtení teprve nastane — budoucí čas." },
+  { q: "Které z těchto sloves je v přítomném čase?", a: "běhá", opts: ["běhá", "běhal", "poběží", "běžet"], e: "'Běhá' se děje teď — jediné v přítomném čase." },
+  { q: "Které z těchto sloves je v minulém čase?", a: "šel", opts: ["šel", "jde", "půjde", "jít"], e: "'Šel' se stalo dříve — minulý čas." },
+  { q: "Které z těchto sloves je v budoucím čase?", a: "napíše", opts: ["napíše", "psal", "píše", "psát"], e: "'Napíše' se stane až později — budoucí čas." },
 ];
 
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL.slice(0, 9) : POOL;
+const POOL_L2: Item[] = [
+  // Osoba a číslo — kdo dělá, kolik jich je
+  { q: "Sloveso 'čtu' — která osoba?", a: "1. osoba (já čtu)", opts: ["1. osoba (já čtu)", "2. osoba (ty čteš)", "3. osoba (on čte)", "Neurčitá"], e: "'Čtu' = mluvím o sobě → 1. osoba." },
+  { q: "Sloveso 'čteš' — která osoba?", a: "2. osoba (ty čteš)", opts: ["2. osoba (ty čteš)", "1. osoba (já čtu)", "3. osoba (on čte)", "Neurčitá"], e: "'Čteš' použijeme, když říkáme někomu 'ty' → 2. osoba." },
+  { q: "Sloveso 'čte' — která osoba?", a: "3. osoba (on/ona čte)", opts: ["3. osoba (on/ona čte)", "1. osoba (já čtu)", "2. osoba (ty čteš)", "Neurčitá"], e: "'Čte' říká, že čte on nebo ona → 3. osoba." },
+  { q: "Sloveso 'jdeme' je v čísle:", a: "Množném (my jdeme)", opts: ["Množném (my jdeme)", "Jednotném (já jdu)", "Středním", "Neurčitém"], e: "'Jdeme' → 'my' → množné číslo." },
+  { q: "Sloveso 'jdu' je v čísle:", a: "Jednotné (já jdu)", opts: ["Jednotné (já jdu)", "Množné (my jdeme)", "Střední", "Neurčité"], e: "'Jdu' → 'já' → jednotné číslo." },
+  { q: "Sloveso 'přišli' — číslo?", a: "Množné (oni přišli)", opts: ["Množné (oni přišli)", "Jednotné (on přišel)", "Střední", "Neurčité"], e: "'Přišli' → 'oni' → množné číslo." },
+  { q: "Sloveso 'nesete' — osoba a číslo?", a: "2. osoba, množné (vy)", opts: ["2. osoba, množné (vy)", "1. osoba, jednotné (já)", "3. osoba, množné (oni)", "2. osoba, jednotné (ty)"], e: "'Nesete' = mluvíte více lidem najednou (vy) → 2. os. mn. č." },
+  { q: "Sloveso 'píšou' — osoba a číslo?", a: "3. osoba, množné (oni)", opts: ["3. osoba, množné (oni)", "1. osoba, množné (my)", "2. osoba, množné (vy)", "3. osoba, jednotné (on)"], e: "'Píšou' → 'oni' → 3. os. mn. č." },
+  { q: "Jak tvoříme přítomný čas od 'číst'?", a: "čtu, čteš, čte, čteme, čtete, čtou", opts: ["čtu, čteš, čte, čteme, čtete, čtou", "čil, čila, číst, čtěme", "jsem číst, jsi číst, je číst", "budu číst, budeš číst"], e: "Přítomný čas: -u, -eš, -e, -eme, -ete, -ou." },
+];
+
+const POOL_L3: Item[] = [
+  // Aplikace v celé větě: určit vše najednou
+  { q: "Věta: 'Kluci šli domů.' — Sloveso je v čase:", a: "Minulém (šli)", opts: ["Minulém (šli)", "Přítomném", "Budoucím", "Neurčitém"], e: "'Šli' se stalo dříve — minulý čas." },
+  { q: "Věta: 'Zítra půjdeme do kina.' — Čas slovesa?", a: "Budoucí (půjdeme)", opts: ["Budoucí (půjdeme)", "Přítomný", "Minulý", "Neurčitý"], e: "'Zítra' + 'půjdeme' → budoucí čas." },
+  { q: "Ve větě 'Děti si hrají venku.' — Čas slovesa 'hrají'?", a: "Přítomný", opts: ["Přítomný", "Minulý", "Budoucí", "Neurčitý"], e: "'Hrají' se děje teď → přítomný čas." },
+  { q: "Ve větě 'Učila jsem se celý večer.' — Osoba a číslo?", a: "1. osoba, číslo jednotné (já)", opts: ["1. osoba, číslo jednotné (já)", "2. osoba (ty)", "3. osoba (ona)", "1. osoba množné"], e: "'Jsem' + 'učila' = mluvčí o sobě → 1. os. jed. č." },
+  { q: "Věta: 'Budu studovat na vysoké škole.' — Čas?", a: "Budoucí", opts: ["Budoucí", "Přítomný", "Minulý", "Neurčitý"], e: "'Budu' → budoucí čas." },
+  { q: "Věta: 'Sourozenci si postavili sněhuláka.' — Určíme?", a: "Minulý čas, 3. os., mn. č.", opts: ["Minulý čas, 3. os., mn. č.", "Přítomný, 1. os., jed. č.", "Budoucí, 2. os., mn. č.", "Minulý, 1. os., mn. č."], e: "'Postavili' se stalo dřív, dělali oni (více lidí) → minulý čas, 3. os., mn. č." },
+  { q: "Věta: 'Zpíváš krásně!' — Určíme?", a: "Přítomný, 2. os., jed. č.", opts: ["Přítomný, 2. os., jed. č.", "Přítomný, 1. os., mn. č.", "Minulý, 3. os., jed. č.", "Budoucí, 2. os., jed. č."], e: "'Zpíváš' se děje teď a mluvíš k jedné osobě → přítomný, 2. os., jed. č." },
+  { q: "Věta: 'Pojedeme na výlet.' — Určíme?", a: "Budoucí, 1. os., mn. č.", opts: ["Budoucí, 1. os., mn. č.", "Přítomný, 1. os., mn. č.", "Minulý, 3. os., mn. č.", "Budoucí, 2. os., mn. č."], e: "'Pojedeme' = my pojedeme → budoucí čas, 1. os., mn. č." },
+  { q: "V jaké osobě a čísle je sloveso ve větě 'Ptáci létají nad polem.'?", a: "3. os., mn. č.", opts: ["3. os., mn. č.", "3. os., jed. č.", "1. os., mn. č.", "2. os., mn. č."], e: "Ptáci = oni (více) → 3. os. mn. č." },
+  { q: "Věta 'Napíšu ti dopis.' — Čas, osoba, číslo?", a: "Budoucí, 1. os., jed. č.", opts: ["Budoucí, 1. os., jed. č.", "Přítomný, 1. os., jed. č.", "Minulý, 2. os., jed. č.", "Budoucí, 2. os., jed. č."], e: "'Napíšu' = já napíšu (budoucí) → budoucí, 1. os., jed. č." },
+];
+
+function pick(pool: Item[]): PracticeTask[] {
   return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Čas: bylo = minulý, je/jsou = přítomný, bude = budoucí.", "Osoba: já = 1., ty = 2., on/ona = 3. Číslo: já/ty/on = jednotné; my/vy/oni = množné."],
+    hints: [
+      "Čas: bylo = minulý, je/jsou = přítomný, bude = budoucí.",
+      "Osoba: já = 1., ty = 2., on/ona = 3. Číslo: já/ty/on = jednotné; my/vy/oni = množné.",
+    ],
     explanation: e,
   }));
+}
+
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return pick(pool);
 }
 
 export const SLOVESAOSOBACISELCAS: TopicMetadata[] = [
