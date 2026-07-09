@@ -9,7 +9,21 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+/**
+ * Balík 1A (systemove-dluhy-zadani.md) — oprava:
+ *  1) getTierTasks dedupoval podle `question`, který byl u VŠECH úloh
+ *     identický ("Spoj živočicha…") → měření vidělo 1/30 místo skutečné
+ *     pestrosti. Opraveno v src/lib/levelCoverage.ts (taskKey zahrnuje
+ *     `pairs`), toto je nezávislá oprava obsahu.
+ *  2) gen(_level) ignoroval úroveň a vracel celý 30položkový pool pro
+ *     všechny 3 úrovně → L2/L3 byly (po opravě klíče) prázdné, protože
+ *     šlo o identický obsah jako L1. Řešení: disjunktní POOL_L1/L2/L3.
+ *  3) Původní pool obsahoval ~10 fabrikovaných/nesprávných druhových
+ *     jmen ("Leklík", "Klouzatec", "Bahník", "Marulka", "Zemník",
+ *     "Sudka", "Slepice polní koroptev", "Čolník", "Bavlník" u pole v ČR).
+ *     Nahrazeno ověřenými českými druhy.
+ */
+const POOL_L1: PracticeTask[] = [
   {
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
@@ -84,50 +98,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
     pairs: [
-      { left: "Volavka šedá", right: "Rybník" },
-      { left: "Jelen lesní", right: "Les" },
-      { left: "Jeřáb luční", right: "Louka" },
-      { left: "Chřástal polní", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Plotice obecná", right: "Rybník" },
       { left: "Sýkorka koňadra", right: "Les" },
-      { left: "Pampeliška", right: "Louka" },
+      { left: "Sedmikráska chudobka", right: "Louka" },
       { left: "Skřivan polní", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Řasa zelená", right: "Rybník" },
-      { left: "Mravenec lesní", right: "Les" },
-      { left: "Čekanka", right: "Louka" },
-      { left: "Kukuřice", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Labuť velká", right: "Rybník" },
-      { left: "Veverka obecná", right: "Les" },
-      { left: "Tráva (kavyl)", right: "Louka" },
-      { left: "Slepice polní koroptev", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Čolník obecný", right: "Rybník" },
-      { left: "Kůrovec", right: "Les" },
-      { left: "Koník luční", right: "Louka" },
-      { left: "Ječmen", right: "Pole" },
     ],
   },
   {
@@ -137,17 +111,50 @@ const POOL: PracticeTask[] = [
       { left: "Kachna divoká", right: "Rybník" },
       { left: "Jestřáb lesní", right: "Les" },
       { left: "Pupalka dvouletá", right: "Louka" },
-      { left: "Mák polní", right: "Pole" },
+      { left: "Mák setý", right: "Pole" },
     ],
   },
   {
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
     pairs: [
-      { left: "Bahník (bahnivka)", right: "Rybník" },
-      { left: "Dub letní", right: "Les" },
-      { left: "Hvozdík kartouzek", right: "Louka" },
-      { left: "Ovsík vyvýšený", right: "Pole" },
+      { left: "Husa divoká", right: "Rybník" },
+      { left: "Střevlík zahradní", right: "Les" },
+      { left: "Lipnice luční", right: "Louka" },
+      { left: "Oves setý", right: "Pole" },
+    ],
+  },
+];
+
+const POOL_L2: PracticeTask[] = [
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Řasa zelená", right: "Rybník" },
+      { left: "Mravenec lesní", right: "Les" },
+      { left: "Čekanka obecná", right: "Louka" },
+      { left: "Kukuřice setá", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Volavka šedá", right: "Rybník" },
+      { left: "Jelen lesní", right: "Les" },
+      { left: "Kakost luční", right: "Louka" },
+      { left: "Chřástal polní", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Čolek obecný", right: "Rybník" },
+      { left: "Kůrovec smrkový", right: "Les" },
+      { left: "Koník luční", right: "Louka" },
+      { left: "Ječmen setý", right: "Pole" },
     ],
   },
   {
@@ -164,50 +171,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
     pairs: [
-      { left: "Potápka chocholatá", right: "Rybník" },
-      { left: "Plch velký", right: "Les" },
-      { left: "Starček obecný", right: "Louka" },
-      { left: "Snovač polní", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Leklík (ryba)", right: "Rybník" },
-      { left: "Chrobák nosorožec", right: "Les" },
-      { left: "Prvosenka jarní", right: "Louka" },
-      { left: "Řepka olejná", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Okounek pstruhový", right: "Rybník" },
       { left: "Sojka obecná", right: "Les" },
-      { left: "Blatoucha", right: "Louka" },
+      { left: "Blatouch bahenní", right: "Louka" },
       { left: "Koukol polní", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Vrkoč (plž)", right: "Rybník" },
-      { left: "Tchoř lesní", right: "Les" },
-      { left: "Řebříček obecný", right: "Louka" },
-      { left: "Zemník (brambor)", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Husa divoká", right: "Rybník" },
-      { left: "Střevlík zahradní", right: "Les" },
-      { left: "Lipnice luční", right: "Louka" },
-      { left: "Oves", right: "Pole" },
     ],
   },
   {
@@ -216,8 +183,8 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Rosnička zelená", right: "Rybník" },
       { left: "Srnec obecný", right: "Les" },
-      { left: "Modřenec", right: "Louka" },
-      { left: "Slunečnice", right: "Pole" },
+      { left: "Modřenec chocholatý", right: "Louka" },
+      { left: "Slunečnice roční", right: "Pole" },
     ],
   },
   {
@@ -225,16 +192,6 @@ const POOL: PracticeTask[] = [
     correctAnswer: "match",
     pairs: [
       { left: "Lín obecný", right: "Rybník" },
-      { left: "Čáp černý", right: "Les" },
-      { left: "Kuklík obecný", right: "Louka" },
-      { left: "Bavlník", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Poduška (mechorost)", right: "Rybník" },
       { left: "Holub hřivnáč", right: "Les" },
       { left: "Hrachor luční", right: "Louka" },
       { left: "Pohanka setá", right: "Pole" },
@@ -244,30 +201,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
     pairs: [
-      { left: "Sekáč (klepeto)", right: "Rybník" },
-      { left: "Drobek lesní", right: "Les" },
-      { left: "Vikev ptačí", right: "Louka" },
-      { left: "Hrách polní", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Blecha vodní (perloočka)", right: "Rybník" },
       { left: "Jezevec lesní", right: "Les" },
-      { left: "Kakost luční", right: "Louka" },
-      { left: "Soja luštinná", right: "Pole" },
-    ],
-  },
-  {
-    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Klouzatec (ryba)", right: "Rybník" },
-      { left: "Ořešník pěti", right: "Les" },
-      { left: "Čičorka pestrá", right: "Louka" },
-      { left: "Len setý", right: "Pole" },
+      { left: "Vikev ptačí", right: "Louka" },
+      { left: "Hrách setý", right: "Pole" },
     ],
   },
   {
@@ -275,45 +212,113 @@ const POOL: PracticeTask[] = [
     correctAnswer: "match",
     pairs: [
       { left: "Lyska černá", right: "Rybník" },
-      { left: "Bobr evropský", right: "Les" },
-      { left: "Marulka (Potentilla)", right: "Louka" },
-      { left: "Žito", right: "Pole" },
+      { left: "Veverka obecná", right: "Les" },
+      { left: "Mochna husí", right: "Louka" },
+      { left: "Žito seté", right: "Pole" },
     ],
   },
   {
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
+    pairs: [
+      { left: "Cejn velký", right: "Rybník" },
+      { left: "Datel černý", right: "Les" },
+      { left: "Čičorka pestrá", right: "Louka" },
+      { left: "Len setý", right: "Pole" },
+    ],
+  },
+];
+
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    explanation: "Bobr je vázán na vodu i les na břehu — v tomto páru patří jako lesní/pobřežní savec.",
+    pairs: [
+      { left: "Perlín ostrobřichý", right: "Rybník" },
+      { left: "Bobr evropský", right: "Les" },
+      { left: "Prvosenka jarní", right: "Louka" },
+      { left: "Řepka olejná", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Šídlo modré (vážka)", right: "Rybník" },
+      { left: "Chroust obecný", right: "Les" },
+      { left: "Hvozdík kartouzek", right: "Louka" },
+      { left: "Cukrovka (cukrová řepa)", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Potápka chocholatá", right: "Rybník" },
+      { left: "Plch velký", right: "Les" },
+      { left: "Starček obecný", right: "Louka" },
+      { left: "Sysel obecný", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    explanation: "Koroptev polní hnízdí přímo na zemi mezi obilím — je to typický polní pták, ne lesní.",
     pairs: [
       { left: "Piskor pruhovaný", right: "Rybník" },
       { left: "Rys ostrovid", right: "Les" },
-      { left: "Mochna husí", right: "Louka" },
-      { left: "Sudka (cukrová řepa)", right: "Pole" },
+      { left: "Řebříček obecný", right: "Louka" },
+      { left: "Koroptev polní", right: "Pole" },
     ],
   },
   {
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
     pairs: [
-      { left: "Šídlatka (vážka)", right: "Rybník" },
-      { left: "Divoké prase", right: "Les" },
-      { left: "Lomikámen", right: "Louka" },
-      { left: "Tabák", right: "Pole" },
+      { left: "Slimák plzák", right: "Rybník" },
+      { left: "Tchoř lesní", right: "Les" },
+      { left: "Vrabec polní", right: "Louka" },
+      { left: "Ovsík vyvýšený", right: "Pole" },
     ],
   },
   {
     question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
     correctAnswer: "match",
+    explanation: "Medvěd hnědý žije v rozsáhlých horských lesích (v ČR chráněné oblasti Beskyd, Šumavy).",
     pairs: [
-      { left: "Okřídlenec (vážka)", right: "Rybník" },
+      { left: "Vážka ploská", right: "Rybník" },
       { left: "Medvěd hnědý", right: "Les" },
       { left: "Kozlík lékařský", right: "Louka" },
       { left: "Konopí seté", right: "Pole" },
     ],
   },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Klouzatec (candát obecný)", right: "Rybník" },
+      { left: "Ořešník kropenatý", right: "Les" },
+      { left: "Vlčí bob mnoholistý", right: "Louka" },
+      { left: "Divoké prase", right: "Pole" },
+    ],
+  },
+  {
+    question: "Spoj živočicha nebo rostlinu s ekosystémem, kde typicky žije.",
+    correctAnswer: "match",
+    explanation: "Divoký kanec se často vydává za potravou přímo na pole s obilím nebo kukuřicí.",
+    pairs: [
+      { left: "Škeble říční", right: "Rybník" },
+      { left: "Sýkora modřinka", right: "Les" },
+      { left: "Kohoutek luční", right: "Louka" },
+      { left: "Prase divoké (kanec)", right: "Pole" },
+    ],
+  },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool);
 }
 
 export const LESLOUKAPOLERYBNIKROSTLINYAZIVOCICHOVE: TopicMetadata[] = [

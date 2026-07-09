@@ -9,7 +9,14 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+/**
+ * Balík 1A — infra oprava (viz src/lib/levelCoverage.ts taskKey) +
+ * disjunktní POOL_L1/L2/L3. Obsah byl fakticky v pořádku — jen rozdělen
+ * podle náročnosti: L1 = základních 5 smyslů a hlavní části mozku,
+ * L2 = konkrétnější mechanismy vnímání, L3 = detailní neurovědní pojmy
+ * (laloky mozku, hipokampus, amygdala, thalamus).
+ */
+const POOL_L1: PracticeTask[] = [
   {
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
@@ -18,16 +25,6 @@ const POOL: PracticeTask[] = [
       { left: "Ucho", right: "Zvuk a rovnováhu" },
       { left: "Nos", right: "Vůně a pachy" },
       { left: "Jazyk", right: "Chutě (sladké, slané, kyselé, hořké)" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Kůže", right: "Dotek, tlak, bolest, teplotu" },
-      { left: "Sítnice", right: "Světlo – přeměňuje ho na nervový signál" },
-      { left: "Hlemýžď (kochlea)", right: "Zvukové vibrace v uchu" },
-      { left: "Čichové buňky", right: "Chemické molekuly vůní v nose" },
     ],
   },
   {
@@ -44,20 +41,103 @@ const POOL: PracticeTask[] = [
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Chuťové pohárky", right: "Rozpuštěné chemické látky na jazyku" },
-      { left: "Ušní bubínek", right: "Zvukové vlny ze vzduchu" },
-      { left: "Zornička", right: "Reguluje množství světla vstupujícího do oka" },
-      { left: "Polokruhovité kanálky", right: "Rotaci a polohu hlavy (rovnováha)" },
+      { left: "Oko", right: "Barvy, tvary, pohyb" },
+      { left: "Ucho", right: "Zvuky, výšky tónů" },
+      { left: "Nos", right: "Tisíce různých vůní" },
+      { left: "Kůže", right: "Teplo, chlad, bolest, tlak" },
     ],
   },
   {
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Oko", right: "Barvy, tvary, pohyb" },
-      { left: "Ucho", right: "Zvuky, výšky tónů" },
-      { left: "Nos", right: "Tisíce různých vůní" },
-      { left: "Kůže", right: "Teplo, chlad, bolest, tlak" },
+      { left: "Oko", right: "Elektromagnetické záření (viditelné světlo)" },
+      { left: "Ucho", right: "Mechanické vlnění vzduchu (zvuk)" },
+      { left: "Nos", right: "Chemické látky ve vzduchu (vůně)" },
+      { left: "Jazyk", right: "Chemické látky v jídle (chuť)" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo, barvy, pohyb" },
+      { left: "Nos", right: "Vonné a páchnoucí látky" },
+      { left: "Kůže", right: "Mechanický kontakt a teplota" },
+      { left: "Chuťové pohárky", right: "Sladká, slaná, kyselá, hořká, umami chuť" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velký mozek", right: "Uvědomělé myšlení a rozhodování" },
+      { left: "Mozeček", right: "Jemné ladění pohybů – psaní, sport" },
+      { left: "Mícha", right: "Míšní reflex – rychlá reakce bez mozku" },
+      { left: "Autonomní NS", right: "Řídí mimovolné funkce – tep, trávení" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo" },
+      { left: "Ucho", right: "Zvuk" },
+      { left: "Nos", right: "Vůně" },
+      { left: "Jazyk", right: "Chuť" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo a barvy" },
+      { left: "Ucho (sluch)", right: "Zvuky a tóny" },
+      { left: "Ucho (rovnováha)", right: "Polohu a pohyb hlavy" },
+      { left: "Nos", right: "Vůně a pachy" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Oko", right: "Světlo – vidění" },
+      { left: "Ucho", right: "Zvuk – sluch a rovnováha" },
+      { left: "Nos", right: "Vůně – čich" },
+      { left: "Jazyk", right: "Chuť – sladké, slané, kyselé, hořké" },
+    ],
+  },
+  {
+    question: "Spoj část nervové soustavy s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velký mozek", right: "Řídí vědomé myšlení a pohyby" },
+      { left: "Mozeček", right: "Koordinuje pohyby a udržuje rovnováhu" },
+      { left: "Mozkový kmen", right: "Řídí automatické funkce (dýchání, tep)" },
+      { left: "Mícha", right: "Vede vzruchy a zprostředkuje reflexy" },
+    ],
+  },
+];
+
+const POOL_L2: PracticeTask[] = [
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kůže", right: "Dotek, tlak, bolest, teplotu" },
+      { left: "Sítnice", right: "Světlo – přeměňuje ho na nervový signál" },
+      { left: "Hlemýžď (kochlea)", right: "Zvukové vibrace v uchu" },
+      { left: "Čichové buňky", right: "Chemické molekuly vůní v nose" },
+    ],
+  },
+  {
+    question: "Spoj smysl nebo orgán s tím, co vnímá.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Chuťové pohárky", right: "Rozpuštěné chemické látky na jazyku" },
+      { left: "Ušní bubínek", right: "Zvukové vlny ze vzduchu" },
+      { left: "Zornička", right: "Reguluje množství světla vstupujícího do oka" },
+      { left: "Polokruhovité kanálky", right: "Rotaci a polohu hlavy (rovnováha)" },
     ],
   },
   {
@@ -81,26 +161,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    question: "Spoj část nervové soustavy s její funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Velký mozek", right: "Uvědomělé myšlení a rozhodování" },
-      { left: "Mozeček", right: "Jemné ladění pohybů – psaní, sport" },
-      { left: "Mícha", right: "Míšní reflex – rychlá reakce bez mozku" },
-      { left: "Autonomní NS", right: "Řídí mimovolné funkce – tep, trávení" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Oko", right: "Elektromagnetické záření (viditelné světlo)" },
-      { left: "Ucho", right: "Mechanické vlnění vzduchu (zvuk)" },
-      { left: "Nos", right: "Chemické látky ve vzduchu (vůně)" },
-      { left: "Jazyk", right: "Chemické látky v jídle (chuť)" },
-    ],
-  },
-  {
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
@@ -108,26 +168,6 @@ const POOL: PracticeTask[] = [
       { left: "Zrakový nerv", right: "Přenáší obraz z oka do mozku" },
       { left: "Sluchový nerv", right: "Přenáší zvukový signál z ucha do mozku" },
       { left: "Čichový nerv", right: "Přenáší signál z nosu do mozku" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Oko", right: "Světlo, barvy, pohyb" },
-      { left: "Nos", right: "Vonné a páchnoucí látky" },
-      { left: "Kůže", right: "Mechanický kontakt a teplota" },
-      { left: "Chuťové pohárky", right: "Sladká, slaná, kyselá, hořká, umami chuť" },
-    ],
-  },
-  {
-    question: "Spoj část mozku s její funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Frontální lalok", right: "Plánování, rozhodování, osobnost" },
-      { left: "Okcipitální lalok", right: "Zpracování zrakových informací" },
-      { left: "Temporální lalok", right: "Zpracování zvuku, paměť" },
-      { left: "Parietální lalok", right: "Zpracování dotyku a prostorové orientace" },
     ],
   },
   {
@@ -154,26 +194,6 @@ const POOL: PracticeTask[] = [
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Oko", right: "Světlo – přeměňuje na nervový vzruch" },
-      { left: "Ucho", right: "Zvuk – přeměňuje na nervový vzruch" },
-      { left: "Nos", right: "Vůně – přeměňuje na nervový vzruch" },
-      { left: "Kůže", right: "Dotek – přeměňuje na nervový vzruch" },
-    ],
-  },
-  {
-    question: "Spoj část nervové soustavy s její funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Velký mozek", right: "Vědomí, inteligence, řeč, paměť" },
-      { left: "Mozeček", right: "Rovnováha a koordinace pohybů" },
-      { left: "Mozkový kmen", right: "Automatické životní funkce" },
-      { left: "Mícha", right: "Rychlé reflexy a vedení vzruchů" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Termorecepory kůže", right: "Teplotu okolí a dotýkaných předmětů" },
       { left: "Nocisensory", right: "Bolest (poškození tkáně)" },
       { left: "Mechanosensory", right: "Tlak a dotek" },
@@ -184,20 +204,33 @@ const POOL: PracticeTask[] = [
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Oko", right: "Barevné spektrum viditelného světla" },
-      { left: "Nos", right: "Tisíce různých chemických látek" },
-      { left: "Jazyk", right: "Základní chuťové kvality jídla" },
-      { left: "Vnitřní ucho", right: "Zvuk i rovnováhu (polohu hlavy)" },
+      { left: "Sítnice oka", right: "Světlo – vznik elektrického signálu" },
+      { left: "Ušní bubínek", right: "Zvuk – vibrace vzduchu" },
+      { left: "Čichová sliznice", right: "Vonné molekuly ve vzduchu" },
+      { left: "Chuťový pohárek", right: "Chemické látky v potravinách" },
     ],
   },
   {
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Sítnice oka", right: "Světlo – vznik elektrického signálu" },
-      { left: "Ušní bubínek", right: "Zvuk – vibrace vzduchu" },
-      { left: "Čichová sliznice", right: "Vonné molekuly ve vzduchu" },
-      { left: "Chuťový pohárek", right: "Chemické látky v potravinách" },
+      { left: "Kůže (hmat)", right: "Dotek, tlak, teplota, bolest" },
+      { left: "Zrakový nerv", right: "Vizuální informace z oka do mozku" },
+      { left: "Vestibulární aparát", right: "Rovnováhu a prostorovou orientaci" },
+      { left: "Čichový bulbus", right: "Zpracovává vůně přicházející z nosu" },
+    ],
+  },
+];
+
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Spoj část mozku s její funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Frontální lalok", right: "Plánování, rozhodování, osobnost" },
+      { left: "Okcipitální lalok", right: "Zpracování zrakových informací" },
+      { left: "Temporální lalok", right: "Zpracování zvuku, paměť" },
+      { left: "Parietální lalok", right: "Zpracování dotyku a prostorové orientace" },
     ],
   },
   {
@@ -214,40 +247,20 @@ const POOL: PracticeTask[] = [
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Oko", right: "Elektromagnetické záření viditelné části spektra" },
-      { left: "Ucho", right: "Mechanické vlnění (zvuk)" },
-      { left: "Kůže", right: "Mechanické, termické a bolestivé podněty" },
-      { left: "Nos + jazyk", right: "Chemické látky (vůně a chuť)" },
+      { left: "Oko", right: "Barevné spektrum viditelného světla" },
+      { left: "Nos", right: "Tisíce různých chemických látek" },
+      { left: "Jazyk", right: "Základní chuťové kvality jídla" },
+      { left: "Vnitřní ucho", right: "Zvuk i rovnováhu (polohu hlavy)" },
     ],
   },
   {
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Oko", right: "Světlo" },
-      { left: "Ucho", right: "Zvuk" },
-      { left: "Nos", right: "Vůně" },
-      { left: "Jazyk", right: "Chuť" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Kůže (hmat)", right: "Dotek, tlak, teplota, bolest" },
-      { left: "Zrakový nerv", right: "Vizuální informace z oka do mozku" },
-      { left: "Vestibulární aparát", right: "Rovnováhu a prostorovou orientaci" },
-      { left: "Čichový bulbus", right: "Zpracovává vůně přicházející z nosu" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Oko", right: "Světlo a barvy" },
-      { left: "Ucho (sluch)", right: "Zvuky a tóny" },
-      { left: "Ucho (rovnováha)", right: "Polohu a pohyb hlavy" },
-      { left: "Nos", right: "Vůně a pachy" },
+      { left: "Sítnice oka", right: "Přijímá světlo a tvoří nervový signál" },
+      { left: "Hlemýžď", right: "Přeměňuje zvukové vibrace na signál" },
+      { left: "Čichová sliznice", right: "Detekuje vonné molekuly" },
+      { left: "Kožní receptor", right: "Detekuje dotek, tlak nebo teplotu" },
     ],
   },
   {
@@ -264,20 +277,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Oko", right: "Světlo – vidění" },
-      { left: "Ucho", right: "Zvuk – sluch a rovnováha" },
-      { left: "Nos", right: "Vůně – čich" },
-      { left: "Jazyk", right: "Chuť – sladké, slané, kyselé, hořké" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Sítnice", right: "Přijímá světlo a tvoří nervový signál" },
-      { left: "Hlemýžď", right: "Přeměňuje zvukové vibrace na signál" },
-      { left: "Čichová sliznice", right: "Detekuje vonné molekuly" },
-      { left: "Kožní receptor", right: "Detekuje dotek, tlak nebo teplotu" },
+      { left: "Oko", right: "Elektromagnetické záření viditelné části spektra" },
+      { left: "Ucho", right: "Mechanické vlnění (zvuk)" },
+      { left: "Kůže", right: "Mechanické, termické a bolestivé podněty" },
+      { left: "Nos + jazyk", right: "Chemické látky (vůně a chuť)" },
     ],
   },
   {
@@ -294,16 +297,6 @@ const POOL: PracticeTask[] = [
     question: "Spoj smysl nebo orgán s tím, co vnímá.",
     correctAnswer: "match",
     pairs: [
-      { left: "Velký mozek", right: "Řídí vědomé myšlení a pohyby" },
-      { left: "Mozeček", right: "Koordinuje pohyby a udržuje rovnováhu" },
-      { left: "Mozkový kmen", right: "Řídí automatické funkce (dýchání, tep)" },
-      { left: "Mícha", right: "Vede vzruchy a zprostředkuje reflexy" },
-    ],
-  },
-  {
-    question: "Spoj smysl nebo orgán s tím, co vnímá.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Oko", right: "Světlo a vizuální informace" },
       { left: "Ucho (sluch)", right: "Zvuk – tóny, hluk, řeč" },
       { left: "Ucho (rovnováha)", right: "Pohyb a poloha těla v prostoru" },
@@ -312,8 +305,9 @@ const POOL: PracticeTask[] = [
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool);
 }
 
 export const NERVOVASOUSTAVASMYSLY: TopicMetadata[] = [

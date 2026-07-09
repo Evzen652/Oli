@@ -9,7 +9,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+/**
+ * Balík 1A — infra oprava (viz src/lib/levelCoverage.ts taskKey) +
+ * disjunktní POOL_L1/L2/L3. Jedna oprava: "Muchovník (Amanita)" (nestandardní
+ * název) → "Muchomůrka panterová" (odlišný druh od již použitých
+ * "Muchomůrka červená"/"Muchomůrka zelená").
+ */
+const POOL_L1: PracticeTask[] = [
   {
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
@@ -101,6 +107,9 @@ const POOL: PracticeTask[] = [
       { name: "Živočich", items: ["Srnec obecný"] },
     ],
   },
+];
+
+const POOL_L2: PracticeTask[] = [
   {
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
@@ -132,19 +141,9 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Houba", items: ["Chorošek"] },
+      { name: "Houba", items: ["Choroš pravý"] },
       { name: "Rostlina", items: ["Bříza bradavičnatá", "Třešeň ptačí"] },
       { name: "Živočich", items: ["Veverka obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    explanation: "Penicilin (Penicillium) je houba — plíseň produkující antibiotikum. Řasa i mech jsou rostliny.",
-    categories: [
-      { name: "Houba", items: ["Penicilin (Penicillium)"] },
-      { name: "Rostlina", items: ["Řasa zelená", "Mech lesní"] },
-      { name: "Živočich", items: ["Hvězdice mořská"] },
     ],
   },
   {
@@ -201,11 +200,24 @@ const POOL: PracticeTask[] = [
       { name: "Živočich", items: ["Tchoř lesní"] },
     ],
   },
+];
+
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Zařaď každý organismus do správné říše.",
+    correctAnswer: "categorize",
+    explanation: "Penicilin (Penicillium) je houba — plíseň produkující antibiotikum. Řasa i mech jsou rostliny.",
+    categories: [
+      { name: "Houba", items: ["Penicilium (plíseň)"] },
+      { name: "Rostlina", items: ["Řasa zelená", "Mech lesní"] },
+      { name: "Živočich", items: ["Hvězdice mořská"] },
+    ],
+  },
   {
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Houba", items: ["Rudoušek"] },
+      { name: "Houba", items: ["Rudoušek prstnatý"] },
       { name: "Rostlina", items: ["Prvosenka jarní", "Bez černý"] },
       { name: "Živočich", items: ["Zajíc polní"] },
     ],
@@ -223,9 +235,9 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Houba", items: ["Chorošovec (Trametes)"] },
+      { name: "Houba", items: ["Choroš pestrý (Trametes)"] },
       { name: "Rostlina", items: ["Papratka samičí", "Kapradí orlí"] },
-      { name: "Živočich", items: ["Mlok skvrnatý"] },
+      { name: "Živočich", items: ["Mlok skvrnitý"] },
     ],
   },
   {
@@ -259,7 +271,7 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Houba", items: ["Korálovec"] },
+      { name: "Houba", items: ["Korálovec ježatý"] },
       { name: "Rostlina", items: ["Šťavel kyselý", "Líska obecná"] },
       { name: "Živočich", items: ["Bažant obecný"] },
     ],
@@ -267,8 +279,9 @@ const POOL: PracticeTask[] = [
   {
     question: "Zařaď každý organismus do správné říše.",
     correctAnswer: "categorize",
+    explanation: "Muchomůrka panterová je jedovatá houba, podobná muchomůrce červené i zelené — ale jde o třetí, samostatný druh.",
     categories: [
-      { name: "Houba", items: ["Muchovník (Amanita)"] },
+      { name: "Houba", items: ["Muchomůrka panterová"] },
       { name: "Rostlina", items: ["Jahodník obecný", "Malina obecná"] },
       { name: "Živočich", items: ["Labuť velká"] },
     ],
@@ -284,8 +297,9 @@ const POOL: PracticeTask[] = [
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool);
 }
 
 export const RISEROSTLINHUBZIVOCICHU: TopicMetadata[] = [

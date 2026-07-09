@@ -42,7 +42,35 @@ function safeGenerate(topic: TopicMetadata, level: number): PracticeTask[] {
 }
 
 /**
- * Vrátí úlohy rozdělené na úrovně I/II/III přes rozdíl množin (klíč = `question`).
+ * Klíč identity úlohy pro rozdílové pravidlo.
+ *
+ * Pro většinu typů (select_one, fill_blank, number, …) je klíč = `question`
+ * (beze změny — historické chování zachováno 1:1).
+ *
+ * Pro STRUKTUROVANÉ typy (match_pairs/categorize/drag_order/multi_select) je
+ * `question` často fixní instruktážní text ("Spoj…", "Zařaď…") napříč celým
+ * poolem — skutečná odlišnost úlohy je v `pairs`/`categories`/`items`/
+ * `correctAnswers`. Bez zahrnutí payloadu do klíče getTierTasks kolabuje
+ * celý pool na 1 "unikátní" otázku, i když je obsah po dvojicích/kategoriích
+ * zcela odlišný — což falešně ořízne `maxAvailableLevel` na 1 (runtime bug)
+ * a zkreslí audit pokrytí úrovní.
+ *
+ * Rozšíření je čistě ADITIVNÍ — pro tasky bez strukturovaného payloadu vrací
+ * identický klíč jako dřív (`question`), takže nemůže nic rozbít, jen opravit
+ * falešné duplicity.
+ */
+function taskKey(t: PracticeTask): string {
+  const parts: string[] = [String(t.question ?? "")];
+  if (t.pairs && t.pairs.length > 0) parts.push(JSON.stringify(t.pairs));
+  if (t.categories && t.categories.length > 0) parts.push(JSON.stringify(t.categories));
+  if (t.items && t.items.length > 0) parts.push(JSON.stringify(t.items));
+  if (t.correctAnswers && t.correctAnswers.length > 0) parts.push(JSON.stringify(t.correctAnswers));
+  return parts.join("||");
+}
+
+/**
+ * Vrátí úlohy rozdělené na úrovně I/II/III přes rozdíl množin (klíč = `taskKey`,
+ * viz výše — question + strukturovaný payload pro match_pairs/categorize/…).
  * Když generátor selže na kterékoli úrovni, ta úroveň zůstane prázdná.
  */
 export function getTierTasks(topic: TopicMetadata): TierTasks {
@@ -51,11 +79,11 @@ export function getTierTasks(topic: TopicMetadata): TierTasks {
     const l2raw = safeGenerate(topic, 2);
     const l3raw = safeGenerate(topic, 3);
 
-    const l1Keys = new Set(l1.map((t) => t.question));
-    const l2 = l2raw.filter((t) => !l1Keys.has(t.question));
+    const l1Keys = new Set(l1.map(taskKey));
+    const l2 = l2raw.filter((t) => !l1Keys.has(taskKey(t)));
 
-    const l2Keys = new Set(l2.map((t) => t.question));
-    const l3 = l3raw.filter((t) => !l1Keys.has(t.question) && !l2Keys.has(t.question));
+    const l2Keys = new Set(l2.map(taskKey));
+    const l3 = l3raw.filter((t) => !l1Keys.has(taskKey(t)) && !l2Keys.has(taskKey(t)));
 
     return { l1, l2, l3 };
   } catch {

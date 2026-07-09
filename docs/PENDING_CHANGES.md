@@ -49,6 +49,12 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy, Balík 1A — kořenová příčina + 6 topics (2026-07-10)
+- **Kořenová příčina**: `getTierTasks` dedupoval jen podle `question` — u match_pairs/categorize/drag_order je question fixní text, takže 30 odlišných úloh vypadalo jako 1. Toto NEBYLA jen chybná metrika — `maxAvailableLevel` na základě toho ořezával runtime na L1 pro tyto topics v produkci. Opraveno v `src/lib/levelCoverage.ts` (`taskKey` zahrnuje `pairs`/`categories`/`items`/`correctAnswers`).
+- **Balík 1A dokončen**: 6 topics (g4/g5 přírodověda) rozděleno na disjunktní POOL_L1/L2/L3. Fakt-check odhalil a opravil ~10 fabrikovaných druhových jmen v `lesLoukaPoleRybnik.ts`.
+- **Zbytek systémových dluhů** (1B-1E, 2A-2B — desítky dalších souborů) čeká, viz TaskList #43-49. Rozsah je na další samostatné session(s).
+- ⚠️ **Nalezena díra**: `contentSnapshot.ts` freeze mechanismus nezachytí změny v `pairs`/`categories` (hashuje jen question+correctAnswer, který je pro tyto typy fixní marker). K opravě později.
+
 ## ✅ Audit invarianty spec (kolo 2 spec) — kompletní (2026-07-10)
 - Přejmenování + NFC diakritika v normalize; „právě 1" match u klíče; K=12 + RATIO=0.6.
 - Nový `src/lib/auditInvariantConfig.ts` s TIER_EXCEPTIONS (12 slohových topics) a PREFIX_WHITELIST + `getGeneratedWordCheck` pro g4-cjl-předpony.

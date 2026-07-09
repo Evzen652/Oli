@@ -26,10 +26,16 @@ export const TIER_EXCEPTIONS: ReadonlySet<string> = new Set<string>([
   "g3-cjl-sebekontrola-projevu",
   "g3-cjl-reprodukce-textu",
   "g3-cjl-popis-predmetu",
-  "g3-cjl-proza-verse",
-  "g3-cjl-vers-rym-prirovnani",
   "g3-cjl-vypravovani-osnova",
-  "g3-cjl-pohadka-povidka-basen-bajka",
+  // g4-cjl — formální/slohová/tvořivá témata (systémové dluhy zadání, balík 2B)
+  "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor",
+  "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-osoby-a-pracovniho-postupu",
+  "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova",
+  "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema",
+  // POZN.: vers-rym-prirovnani, pohadka-povidka-basen-bajka, proza-verse
+  // NEJSOU výjimky — patří do balíku 2A (doplnit L3), viz systemove-dluhy-zadani.md.
+  // Odstraněny odsud po opravě chybné klasifikace z kola 2.
+  // POZN.: plynule-cteni-s-porozumeni NENÍ výjimka — dovednost, L3 doplněno v kole 2 (A5).
 ]);
 
 // ─────────────────────────────────────────────────────────────

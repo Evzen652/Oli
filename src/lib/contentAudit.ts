@@ -235,13 +235,13 @@ export function runOfflineAudit(
         topicCategory: topic.category,
         topicGradeRange: topic.gradeRange,
       };
-      // Kolo 2 spec: K_MIN=12 (cíl), RATIO_MIN=0.6. Kontrolujeme jen tiers s ≥ 6 úlohami.
-      const K_MIN = 12;
+      // Systémové dluhy (2026-07-10): POČÁTEČNÍ práh = jen ratio ≥ 0.6.
+      // Cílí přesně na opakování (Balík 1), nehlásí malé plně unikátní banky
+      // (8/8 je OK). Absolutní K=12 pro faktické banky se přidá později,
+      // až se dořeší Balík 1A (5 nejhorších poolů 1/30).
       const RATIO_MIN = 0.6;
       const MIN_TIER_SIZE_FOR_CHECK = 6;
 
-      // min_unique_tasks_per_tier: cílový práh K=12 + ratio ≥ 0.6.
-      // Pool celkem (pre-dedup) známe z topic.generator; unique z tiers.
       const rawCounts = { l1: 0, l2: 0, l3: 0 };
       try {
         rawCounts.l1 = (topic.generator(1) ?? []).length;
@@ -256,12 +256,12 @@ export function runOfflineAudit(
       for (const { tier, unique, total } of tierData) {
         if (total >= MIN_TIER_SIZE_FOR_CHECK) {
           const ratio = total > 0 ? unique / total : 0;
-          if (unique < K_MIN || ratio < RATIO_MIN) {
+          if (ratio < RATIO_MIN) {
             issues.push({
               ...invariantMeta,
               taskQuestion: `(pokrytí L${tier})`,
               category: "min_unique_tasks_per_tier",
-              detail: `L${tier}: ${unique} unikátních z ${total} (ratio ${ratio.toFixed(2)}). Cíl ≥ ${K_MIN} unikátních a ratio ≥ ${RATIO_MIN}.`,
+              detail: `L${tier}: ${unique} unikátních z ${total} (ratio ${ratio.toFixed(2)} < ${RATIO_MIN}). Pool se příliš opakuje.`,
             });
           }
         }

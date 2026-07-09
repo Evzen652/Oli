@@ -9,7 +9,12 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+/**
+ * Balík 1A — infra oprava (viz src/lib/levelCoverage.ts taskKey) +
+ * disjunktní POOL_L1/L2/L3. Jedna oprava faktu: "Žarloun" (nesprávný/
+ * neexistující český název ryby) → "Treska obecná".
+ */
+const POOL_L1: PracticeTask[] = [
   {
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
@@ -38,25 +43,6 @@ const POOL: PracticeTask[] = [
       { name: "Obojživelník", items: ["Mlok skvrnitý"] },
       { name: "Pták", items: ["Sýkorka koňadra"] },
       { name: "Savec", items: ["Jelen evropský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Velryba i delfín jsou savci — dýchají vzduch, kojí mládě mlékem. Nejsou to ryby.",
-    categories: [
-      { name: "Savec", items: ["Velryba modrá", "Delfín skákavý"] },
-      { name: "Ryba", items: ["Tuňák obecný"] },
-      { name: "Pták", items: ["Tučňák císařský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Lev africký"] },
-      { name: "Plaz", items: ["Krokodýl nilský", "Kaiman"] },
-      { name: "Pták", items: ["Orel skalní"] },
     ],
   },
   {
@@ -102,14 +88,33 @@ const POOL: PracticeTask[] = [
   {
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
-    explanation: "Ptakopysk je savec — kojí mládě mlékem, přestože snáší vejce.",
     categories: [
-      { name: "Savec", items: ["Ptakopysk"] },
-      { name: "Pták", items: ["Kachna"] },
-      { name: "Plaz", items: ["Iguana"] },
-      { name: "Ryba", items: ["Žarloun"] },
+      { name: "Savec", items: ["Pes domácí", "Kočka domácí"] },
+      { name: "Pták", items: ["Slepice domácí"] },
+      { name: "Ryba", items: ["Zlatá rybka"] },
     ],
   },
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    categories: [
+      { name: "Ryba", items: ["Kapr", "Lín obecný"] },
+      { name: "Savec", items: ["Netopýr"] },
+      { name: "Pták", items: ["Holub"] },
+    ],
+  },
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    categories: [
+      { name: "Savec", items: ["Kůň domácí"] },
+      { name: "Pták", items: ["Andulka vlnkovaná"] },
+      { name: "Plaz", items: ["Želva suchozemská", "Leguán zelený"] },
+    ],
+  },
+];
+
+const POOL_L2: PracticeTask[] = [
   {
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
@@ -122,40 +127,10 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Plaz", items: ["Hatérie novozélandská"] },
-      { name: "Pták", items: ["Kivi hnědý"] },
-      { name: "Savec", items: ["Vombat"] },
-      { name: "Ryba", items: ["Barakuda"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Mrož i tuleň jsou savci — přestože žijí ve vodě, dýchají vzduch a kojí mládě.",
-    categories: [
-      { name: "Savec", items: ["Lední medvěd", "Mrož", "Tuleň"] },
-      { name: "Pták", items: ["Tučňák"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
       { name: "Plaz", items: ["Zmije obecná"] },
       { name: "Obojživelník", items: ["Ropucha"] },
       { name: "Pták", items: ["Poštolka obecná"] },
       { name: "Savec", items: ["Zajíc polní"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Keporkak (velryba) je savec, ne ryba — dýchá plícemi, mládě kojí mlékem.",
-    categories: [
-      { name: "Ryba", items: ["Žralok bílý"] },
-      { name: "Savec", items: ["Keporkak"] },
-      { name: "Pták", items: ["Albatros"] },
-      { name: "Plaz", items: ["Mořská želva"] },
     ],
   },
   {
@@ -219,27 +194,83 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Ryba", items: ["Kapr", "Lín obecný"] },
-      { name: "Savec", items: ["Netopýr"] },
-      { name: "Pták", items: ["Holub"] },
+      { name: "Savec", items: ["Bobr evropský"] },
+      { name: "Pták", items: ["Volavka purpurová"] },
+      { name: "Obojživelník", items: ["Čolek horský"] },
+      { name: "Ryba", items: ["Piskor pruhovaný"] },
     ],
   },
   {
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Savec", items: ["Pes domácí", "Kočka domácí"] },
-      { name: "Pták", items: ["Slepice domácí"] },
-      { name: "Ryba", items: ["Zlatá rybka"] },
+      { name: "Savec", items: ["Ježek západní"] },
+      { name: "Obojživelník", items: ["Ropucha obecná"] },
+      { name: "Pták", items: ["Strnad obecný"] },
+      { name: "Ryba", items: ["Plotice obecná"] },
+    ],
+  },
+];
+
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    explanation: "Velryba i delfín jsou savci — dýchají vzduch, kojí mládě mlékem. Nejsou to ryby.",
+    categories: [
+      { name: "Savec", items: ["Velryba modrá", "Delfín skákavý"] },
+      { name: "Ryba", items: ["Tuňák obecný"] },
+      { name: "Pták", items: ["Tučňák císařský"] },
     ],
   },
   {
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Savec", items: ["Kůň domácí"] },
-      { name: "Pták", items: ["Andulka vlnkovaná"] },
-      { name: "Plaz", items: ["Želva suchozemská", "Leguán zelený"] },
+      { name: "Savec", items: ["Lev africký"] },
+      { name: "Plaz", items: ["Krokodýl nilský", "Kajman"] },
+      { name: "Pták", items: ["Orel skalní"] },
+    ],
+  },
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    explanation: "Ptakopysk je savec — kojí mládě mlékem, přestože snáší vejce.",
+    categories: [
+      { name: "Savec", items: ["Ptakopysk"] },
+      { name: "Pták", items: ["Kachna"] },
+      { name: "Plaz", items: ["Leguán"] },
+      { name: "Ryba", items: ["Treska obecná"] },
+    ],
+  },
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    categories: [
+      { name: "Plaz", items: ["Hatérie novozélandská"] },
+      { name: "Pták", items: ["Kivi hnědý"] },
+      { name: "Savec", items: ["Vombat"] },
+      { name: "Ryba", items: ["Barakuda"] },
+    ],
+  },
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    explanation: "Mrož i tuleň jsou savci — přestože žijí ve vodě, dýchají vzduch a kojí mládě.",
+    categories: [
+      { name: "Savec", items: ["Lední medvěd", "Mrož", "Tuleň"] },
+      { name: "Pták", items: ["Tučňák"] },
+    ],
+  },
+  {
+    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
+    correctAnswer: "categorize",
+    explanation: "Keporkak (druh velryby) je savec, ne ryba — dýchá plícemi, mládě kojí mlékem.",
+    categories: [
+      { name: "Ryba", items: ["Žralok bílý"] },
+      { name: "Savec", items: ["Keporkak"] },
+      { name: "Pták", items: ["Albatros"] },
+      { name: "Plaz", items: ["Mořská želva"] },
     ],
   },
   {
@@ -255,30 +286,10 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Savec", items: ["Bobr evropský"] },
-      { name: "Pták", items: ["Volavka purpurová"] },
-      { name: "Obojživelník", items: ["Čolek horský"] },
-      { name: "Ryba", items: ["Piskor pruhovaný"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Vlk šedý"] },
-      { name: "Pták", items: ["Holub skalní"] },
-      { name: "Plaz", items: ["Slepýš"] },
-      { name: "Ryba", items: ["Mník jednovousý"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
       { name: "Ryba", items: ["Losos obecný"] },
       { name: "Savec", items: ["Vydra mořská"] },
       { name: "Pták", items: ["Alka velká (vyhynulá)"] },
-      { name: "Plaz", items: ["Iguana mořská"] },
+      { name: "Plaz", items: ["Leguán mořský"] },
     ],
   },
   {
@@ -294,16 +305,17 @@ const POOL: PracticeTask[] = [
     question: "Zařaď každého živočicha do správné skupiny obratlovců.",
     correctAnswer: "categorize",
     categories: [
-      { name: "Savec", items: ["Ježek západní"] },
-      { name: "Obojživelník", items: ["Ropucha obecná"] },
-      { name: "Pták", items: ["Strnad obecný"] },
-      { name: "Ryba", items: ["Plotice obecná"] },
+      { name: "Savec", items: ["Vlk šedý"] },
+      { name: "Pták", items: ["Holub skalní"] },
+      { name: "Plaz", items: ["Slepýš"] },
+      { name: "Ryba", items: ["Mník jednovousý"] },
     ],
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool);
 }
 
 export const OBRATLOVCISAVCIPTACIPLAZIOBOJZIVELNICIRYBY: TopicMetadata[] = [

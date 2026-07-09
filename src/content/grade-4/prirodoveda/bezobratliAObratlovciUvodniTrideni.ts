@@ -9,7 +9,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+/**
+ * Balík 1A — stejná infra oprava jako lesLoukaPoleRybnik.ts (viz komentář
+ * tam). Obsah zde byl fakticky v pořádku, jen 1 chyba: item obsahoval
+ * "Řekněte, kam patří tasemnice?" jako název živočicha místo "Tasemnice" —
+ * opraveno. Rozděleno na disjunktní POOL_L1/L2/L3.
+ */
+const POOL_L1: PracticeTask[] = [
   {
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
@@ -110,6 +116,9 @@ const POOL: PracticeTask[] = [
       { left: "Srnec obecný", right: "Savec" },
     ],
   },
+];
+
+const POOL_L2: PracticeTask[] = [
   {
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
@@ -135,7 +144,7 @@ const POOL: PracticeTask[] = [
     correctAnswer: "match",
     pairs: [
       { left: "Moucha domácí", right: "Hmyz" },
-      { left: "Řekněte, kam patří tasemnice?", right: "Červi" },
+      { left: "Tasemnice", right: "Červi" },
       { left: "Čáp černý", right: "Pták" },
       { left: "Vydra říční", right: "Savec" },
     ],
@@ -156,7 +165,7 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Strnad obecný", right: "Pták" },
       { left: "Kuna skalní", right: "Savec" },
-      { left: "Pijavka", right: "Červi" },
+      { left: "Pijavka lékařská", right: "Červi" },
       { left: "Kameleon", right: "Plaz" },
     ],
   },
@@ -166,7 +175,7 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Veverka obecná", right: "Savec" },
       { left: "Cikáda", right: "Hmyz" },
-      { left: "Čolník obecný", right: "Obojživelníci" },
+      { left: "Čolek obecný", right: "Obojživelníci" },
       { left: "Mušle", right: "Měkkýši" },
     ],
   },
@@ -184,20 +193,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
     pairs: [
-      { left: "Čmelák skalní", right: "Hmyz" },
-      { left: "Skokanka štíhlá", right: "Obojživelníci" },
-      { left: "Bělozubka šedá", right: "Savec" },
-      { left: "Krab říční", right: "Korýši" },
-    ],
-  },
-  {
-    question: "Spoj živočicha s jeho skupinou.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Svišť horský", right: "Savec" },
       { left: "Tesařík obecný", right: "Hmyz" },
       { left: "Pelikán", right: "Pták" },
-      { left: "Horský had (asp)", right: "Plaz" },
+      { left: "Užovka stromová", right: "Plaz" },
     ],
   },
   {
@@ -220,6 +219,9 @@ const POOL: PracticeTask[] = [
       { left: "Želva bahenní", right: "Plaz" },
     ],
   },
+];
+
+const POOL_L3: PracticeTask[] = [
   {
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
@@ -234,10 +236,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
     pairs: [
-      { left: "Vlasatka (vlasovec)", right: "Červi" },
+      { left: "Vlasovec (parazitický červ)", right: "Červi" },
       { left: "Rys ostrovid", right: "Savec" },
       { left: "Čáp bílý", right: "Pták" },
-      { left: "Krabice modrá", right: "Korýši" },
+      { left: "Krab modrý", right: "Korýši" },
     ],
   },
   {
@@ -256,18 +258,19 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Jelenec (wapiti)", right: "Savec" },
       { left: "Komár pisklavý", right: "Hmyz" },
-      { left: "Geko domácí", right: "Plaz" },
+      { left: "Gekon domácí", right: "Plaz" },
       { left: "Olm jeskynní", right: "Obojživelníci" },
     ],
   },
   {
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
+    explanation: "Vrány jsou pták — obě jsou vrány, jen s různým označením (dravec zde je nepřesné, jde o všežravce z čeledi krkavcovitých).",
     pairs: [
       { left: "Dravec jestřáb", right: "Pták" },
       { left: "Závornatka lesní", right: "Měkkýši" },
       { left: "Vydra říční", right: "Savec" },
-      { left: "Vran obecný", right: "Pták" },
+      { left: "Vrána obecná", right: "Pták" },
     ],
   },
   {
@@ -310,10 +313,22 @@ const POOL: PracticeTask[] = [
       { left: "Rak bahenní", right: "Korýši" },
     ],
   },
+  {
+    question: "Spoj živočicha s jeho skupinou.",
+    correctAnswer: "match",
+    explanation: "Ptakopysk je jediný savec, který snáší vejce — přesto kojí mládě mlékem, proto patří k savcům.",
+    pairs: [
+      { left: "Ptakopysk", right: "Savec" },
+      { left: "Kachna divoká", right: "Pták" },
+      { left: "Leguán zelený", right: "Plaz" },
+      { left: "Losos obecný", right: "Ryby" },
+    ],
+  },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool);
 }
 
 export const BEZOBRATLIAOBRATLOVCIUVODNITRIDENI: TopicMetadata[] = [

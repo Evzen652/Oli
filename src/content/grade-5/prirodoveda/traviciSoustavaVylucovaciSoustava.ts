@@ -9,7 +9,14 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+/**
+ * Balík 1A — infra oprava (viz src/lib/levelCoverage.ts taskKey) +
+ * disjunktní POOL_L1/L2/L3. Obsah byl fakticky v pořádku — rozdělen podle
+ * náročnosti: L1 = základní orgány trávení/vylučování, L2 = konkrétnější
+ * mechanismy, L3 = detailní anatomické pojmy (dvanáctník, jejunum, ileum,
+ * glomerulus, tubulus).
+ */
+const POOL_L1: PracticeTask[] = [
   {
     question: "Spoj orgán s jeho funkcí v trávicím procesu.",
     correctAnswer: "match",
@@ -44,30 +51,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj orgán s jeho funkcí v trávicím procesu.",
     correctAnswer: "match",
     pairs: [
-      { left: "Žaludek", right: "Churning – míchání a trávení bílkovin" },
-      { left: "Tenké střevo", right: "Finální trávení tuků, cukrů, bílkovin" },
-      { left: "Slinivka", right: "Enzymy do střeva + inzulín do krve" },
-      { left: "Žlučník", right: "Zásobník žluče" },
-    ],
-  },
-  {
-    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Sliny", right: "Zvlhčují potravu a štěpí škrob (amyláza)" },
       { left: "Pepsin", right: "Enzym žaludku štěpící bílkoviny" },
       { left: "Žluč", right: "Emulguje tuky (produkují ji játra)" },
       { left: "Klky střeva", right: "Zvyšují plochu pro vstřebávání živin" },
-    ],
-  },
-  {
-    question: "Spoj orgán s jeho vylučovací nebo regulační funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Ledviny", right: "Regulují množství vody a solí v těle" },
-      { left: "Plíce", right: "Udržují pH krve výdejem CO₂" },
-      { left: "Inzulín", right: "Snižuje hladinu glukózy v krvi" },
-      { left: "Glukagon", right: "Zvyšuje hladinu glukózy v krvi" },
     ],
   },
   {
@@ -78,16 +65,6 @@ const POOL: PracticeTask[] = [
       { left: "Žaludek", right: "Kyselé prostředí (pH 2) – trávení bílkovin" },
       { left: "Tenké střevo", right: "Enzymatické trávení a vstřebávání živin" },
       { left: "Tlusté střevo", right: "Vstřebávání vody a tvorba výkalů" },
-    ],
-  },
-  {
-    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Játra", right: "Metabolizují živiny, produkují žluč, detoxikují" },
-      { left: "Slinivka", right: "Enzymy (lipáza, amyláza, proteáza) + inzulín" },
-      { left: "Žlučník", right: "Uchovává žluč a uvolňuje ji do střeva" },
-      { left: "Dvanáctník", right: "První část tenkého střeva přijímá enzymy" },
     ],
   },
   {
@@ -131,16 +108,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    question: "Spoj orgán s jeho funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Žaludek", right: "Mechanické a chemické trávení jídla" },
-      { left: "Jícen", right: "Transport potravy do žaludku" },
-      { left: "Dvanáctník", right: "Přijímá žluč a enzymy ze slinivky" },
-      { left: "Slepé střevo (appendix)", right: "Pozůstatek, imunitní funkce" },
-    ],
-  },
-  {
     question: "Spoj orgán s jeho funkcí v trávicím procesu.",
     correctAnswer: "match",
     pairs: [
@@ -150,24 +117,37 @@ const POOL: PracticeTask[] = [
       { left: "Ledviny", right: "Vylučování odpadních látek z krve" },
     ],
   },
+];
+
+const POOL_L2: PracticeTask[] = [
   {
-    question: "Spoj orgán s jeho funkcí.",
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
     correctAnswer: "match",
     pairs: [
-      { left: "Glomerulus ledviny", right: "Filtruje krev – malé molekuly procházejí" },
-      { left: "Tubulus ledviny", right: "Zpětně vstřebává glukózu a vodu" },
-      { left: "Ureter", right: "Vede moč z ledviny do močového měchýře" },
-      { left: "Močový měchýř", right: "Ukládá moč do vyprázdnění" },
+      { left: "Žaludek", right: "Churning – míchání a trávení bílkovin" },
+      { left: "Tenké střevo", right: "Finální trávení tuků, cukrů, bílkovin" },
+      { left: "Slinivka", right: "Enzymy do střeva + inzulín do krve" },
+      { left: "Žlučník", right: "Zásobník žluče" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací nebo regulační funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Regulují množství vody a solí v těle" },
+      { left: "Plíce", right: "Udržují pH krve výdejem CO₂" },
+      { left: "Inzulín", right: "Snižuje hladinu glukózy v krvi" },
+      { left: "Glukagon", right: "Zvyšuje hladinu glukózy v krvi" },
     ],
   },
   {
     question: "Spoj orgán s jeho funkcí v trávicím procesu.",
     correctAnswer: "match",
     pairs: [
-      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou a enzymy" },
-      { left: "Tenké střevo", right: "Vstřebání cukrů, tuků, bílkovin" },
-      { left: "Slinivka", right: "Enzymy do střeva, inzulín do krve" },
-      { left: "Játra", right: "Detoxikace a tvorba žluče" },
+      { left: "Játra", right: "Metabolizují živiny, produkují žluč, detoxikují" },
+      { left: "Slinivka", right: "Enzymy (lipáza, amyláza, proteáza) + inzulín" },
+      { left: "Žlučník", right: "Uchovává žluč a uvolňuje ji do střeva" },
+      { left: "Dvanáctník", right: "První část tenkého střeva přijímá enzymy" },
     ],
   },
   {
@@ -188,16 +168,6 @@ const POOL: PracticeTask[] = [
       { left: "HCl v žaludku", right: "Ničí bakterie a aktivuje pepsiny" },
       { left: "Lipáza (slinivka)", right: "Štěpí tuky na mastné kyseliny" },
       { left: "Střevní klky", right: "Mnohonásobně zvyšují plochu vstřebávání" },
-    ],
-  },
-  {
-    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Žaludek", right: "Kyselé prostředí rozkladu bílkovin" },
-      { left: "Duodenum (dvanáctník)", right: "Přijímá trávicí šťávy ze slinivky a jater" },
-      { left: "Jejunum (lačník)", right: "Hlavní část tenkého střeva pro vstřebávání" },
-      { left: "Ileum (kyčelník)", right: "Vstřebává vitamín B12 a žlučové kyseliny" },
     ],
   },
   {
@@ -224,10 +194,63 @@ const POOL: PracticeTask[] = [
     question: "Spoj orgán s jeho funkcí.",
     correctAnswer: "match",
     pairs: [
-      { left: "Žaludek", right: "Míchá a tráví potravu HCl a pepsimy" },
+      { left: "Žaludek", right: "Míchá a tráví potravu HCl a pepsinem" },
       { left: "Tenké střevo", right: "Vstřebává živiny do krve a lymfy" },
       { left: "Ledviny", right: "Odstraňují odpadní látky z krve do moče" },
       { left: "Kůže", right: "Vylučuje pot a ochlazuje tělo" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho vylučovací nebo metabolickou funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Ledviny", right: "Filtrují krev a regulují složení moče" },
+      { left: "Játra", right: "Metabolizují léky, alkohol a toxiny" },
+      { left: "Plíce", right: "Vydechují odpadní CO₂" },
+      { left: "Kůže (pot)", right: "Vylučují přebytek solí a vody" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou HCl" },
+      { left: "Játra", right: "Produkují žluč k emulgaci tuků" },
+      { left: "Slinivka", right: "Enzym lipáza štěpí tuky ve střevě" },
+      { left: "Tenké střevo", right: "Vstřebává tuky přes lymfatické cévy" },
+    ],
+  },
+];
+
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Kyselé prostředí rozkladu bílkovin" },
+      { left: "Duodenum (dvanáctník)", right: "Přijímá trávicí šťávy ze slinivky a jater" },
+      { left: "Jejunum (lačník)", right: "Hlavní část tenkého střeva pro vstřebávání" },
+      { left: "Ileum (kyčelník)", right: "Vstřebává vitamín B12 a žlučové kyseliny" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Glomerulus ledviny", right: "Filtruje krev – malé molekuly procházejí" },
+      { left: "Tubulus ledviny", right: "Zpětně vstřebává glukózu a vodu" },
+      { left: "Ureter", right: "Vede moč z ledviny do močového měchýře" },
+      { left: "Močový měchýř", right: "Ukládá moč do vyprázdnění" },
+    ],
+  },
+  {
+    question: "Spoj orgán s jeho funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Žaludek", right: "Mechanické a chemické trávení jídla" },
+      { left: "Jícen", right: "Transport potravy do žaludku" },
+      { left: "Dvanáctník", right: "Přijímá žluč a enzymy ze slinivky" },
+      { left: "Slepé střevo (appendix)", right: "Pozůstatek, imunitní funkce" },
     ],
   },
   {
@@ -264,26 +287,6 @@ const POOL: PracticeTask[] = [
     question: "Spoj orgán s jeho funkcí v trávicím procesu.",
     correctAnswer: "match",
     pairs: [
-      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou HCl" },
-      { left: "Játra", right: "Produkují žluč k emulgaci tuků" },
-      { left: "Slinivka", right: "Enzym lipáza štěpí tuky ve střevě" },
-      { left: "Tenké střevo", right: "Vstřebává tuky přes lymfatické cévy" },
-    ],
-  },
-  {
-    question: "Spoj orgán s jeho funkcí v trávicím nebo vylučovacím procesu.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Žaludek", right: "Trávení bílkovin" },
-      { left: "Tenké střevo", right: "Vstřebávání živin" },
-      { left: "Ledviny", right: "Filtrování krve a tvorba moče" },
-      { left: "Játra", right: "Detoxikace a tvorba žluče" },
-    ],
-  },
-  {
-    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Zuby", right: "Mechanické rozmělnění potravy" },
       { left: "Sliny", right: "Enzymatické štěpení škrobu v ústech" },
       { left: "Žaludek", right: "Chemické trávení bílkovin kyselinou" },
@@ -300,20 +303,11 @@ const POOL: PracticeTask[] = [
       { left: "Ledviny", right: "Vylučování dusíkatého odpadu (urea)" },
     ],
   },
-  {
-    question: "Spoj orgán s jeho funkcí v trávicím procesu.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Žaludek", right: "Rozkládá bílkoviny kyselinou a enzymy" },
-      { left: "Tenké střevo", right: "Vstřebává živiny do krve" },
-      { left: "Tlusté střevo", right: "Vstřebává vodu ze zbytků potravy" },
-      { left: "Ledviny", right: "Čistí krev a vylučují odpad moč" },
-    ],
-  },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+function gen(level: number): PracticeTask[] {
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool);
 }
 
 export const TRAVICISOUSTAVAVYLUCOVACISOUSTAVA: TopicMetadata[] = [
