@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ PED-3: g2-mat-jednotky L2+L3 naplnění (2026-07-08)
+- Před: gen(_level) ignoroval úroveň, audit `20/0/0 max L1`. Teď disjunktní L1 (základní vztah 1×), L2 (násobky), L3 (poloviny/čtvrtiny + porovnání dvou jednotek). Zachován `true_false` format. Audit `10/10/12 max L3`. Snapshot přegenerován.
+
 ## ✅ PED-3: g2-mat-mereni-delky L2+L3 naplnění (2026-07-08)
 - Před: `gen(_level)` ignoroval level → L1==L2==L3, audit `20/0/0 max L1`. Teď disjunktní L1 (porovnání, 8), L2 (součet+rozdíl+polovina, 11), L3 (převody cm↔mm + třetina + prodloužení + slovní úlohy, 12). Audit `8/11/12 max L3`. Snapshot přegenerován.
 
