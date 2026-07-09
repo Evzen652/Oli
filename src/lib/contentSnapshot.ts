@@ -63,6 +63,8 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g3-cjl-podstatna-jmena-rod-cislo-pad",
   // Systémové dluhy Balík 1B (2026-07-10) — rozšíření z 3 na 8 textů, disjunktní L1/L2/L3
   "g3-cjl-plynule-cteni-porozumeni",
+  // Systémové dluhy Balík 1C (2026-07-10) — parametrizace z rozsahu čísel místo pevného seznamu
+  "g2-mat-tabulky",
 ]);
 
 export interface TopicFingerprint {
