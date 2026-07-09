@@ -79,11 +79,148 @@ const POOL_L2: TFItem[] = [
   { q: "Čtení s porozuměním je základ pro úspěch ve všech školních předmětech.", a: "ano", hint: "Všechny předměty vyžadují čtení textů a porozumění jejich obsahu.", e: "Ať se učíš matematiku, přírodovědu nebo dějepis, všude musíš číst zadání a texty a rozumět jim. Proto je čtení s porozuměním základ úspěchu ve všech předmětech." },
 ];
 
+// A5 (kolo 2): L3 s výběrem ze 4 tvrzení — porozumění krátkému textu.
+// Nahrazuje binární Ano/Ne (50 % náhoda) skutečnou diagnostickou úlohou.
+interface ReadingItem { text: string; q: string; a: string; opts: string[]; e: string }
+const POOL_L3_TEXTY: ReadingItem[] = [
+  {
+    text: `Ježek Bodlinka žil ve staré zahradě u domu. Přes den spal schovaný v hromadě listí, ale v noci se vydával za lovem hlemýžďů a žížal. Když přišla zima, uložil se k dlouhému spánku pod kůlnu, kde bylo teplo.`,
+    q: `Které tvrzení o ježkovi Bodlinkovi platí?`,
+    a: "V noci hledá potravu, přes zimu spí.",
+    opts: [
+      "V noci hledá potravu, přes zimu spí.",
+      "V noci spí a přes den loví.",
+      "Přes celou zimu loví hlemýždě.",
+      "Bodlinka žije v lese daleko od lidí.",
+    ],
+    e: "Text říká: přes den spal, v noci lovil, na zimu se uložil ke spánku. Ostatní varianty protiřečí textu.",
+  },
+  {
+    text: `Anna má tři sourozence: staršího bratra Pavla, mladší dvojčata Kláru a Terezku. Nejstarší z nich je Pavel, kterému bude v květnu čtrnáct. Anna sama je o dva roky mladší.`,
+    q: `Kolik let bude Anně v květnu?`,
+    a: "Dvanáct.",
+    opts: [
+      "Dvanáct.",
+      "Deset.",
+      "Čtrnáct.",
+      "Osmnáct.",
+    ],
+    e: "Pavlovi bude 14, Anna je o 2 roky mladší → 14 − 2 = 12 let.",
+  },
+  {
+    text: `Když prší, cesta k babičce se stává neprůchodnou. Bahno je hluboké až po kotníky a tráva ve strouze pod stezkou skrývá hluboké výmoly. Proto tam chodíme jen za sucha.`,
+    q: `Proč se k babičce nechodí, když prší?`,
+    a: "Cesta je nebezpečná — hluboké bahno a skryté výmoly.",
+    opts: [
+      "Cesta je nebezpečná — hluboké bahno a skryté výmoly.",
+      "Babička není doma, když prší.",
+      "Rodiče to nedovolují bez ohledu na počasí.",
+      "Cesta je delší, když prší.",
+    ],
+    e: "Text uvádí: bahno po kotníky a skryté výmoly → nebezpečné. O babiččině nepřítomnosti ani zákazu rodičů text nemluví.",
+  },
+  {
+    text: `Slon africký patří k největším suchozemským zvířatům. Dospělý samec může vážit až 6 tun a být vysoký přes 3 metry. Slonice bývají menší a lehčí, kolem 3 tun.`,
+    q: `Co lze z textu bezpečně vyvodit?`,
+    a: "Slonice jsou v průměru přibližně o polovinu lehčí než samci.",
+    opts: [
+      "Slonice jsou v průměru přibližně o polovinu lehčí než samci.",
+      "Slonice žijí odděleně od samců.",
+      "Sloni afričtí žijí v Asii.",
+      "Slonice jsou vždy vyšší než 3 metry.",
+    ],
+    e: "Samec až 6 tun, slonice 3 tuny → slonice je o polovinu lehčí. Ostatní informace v textu nejsou.",
+  },
+  {
+    text: `Petr každý den ráno běžel do školy. Trvalo mu to deset minut, protože bydlel blízko. Jednou zaspal a musel do školy jet autobusem, aby to stihl.`,
+    q: `Co lze z textu vyvodit o Petrovi?`,
+    a: "Autobus je rychlejší než jeho běh.",
+    opts: [
+      "Autobus je rychlejší než jeho běh.",
+      "Petr každý den jede autobusem.",
+      "Petr nemá rád autobus.",
+      "Petr do školy vždy chodí pěšky pomalu.",
+    ],
+    e: "Když zaspal, jel autobusem, aby to STIHL. To znamená, že autobus mu ušetřil čas → je rychlejší.",
+  },
+  {
+    text: `Karel Čapek napsal mnoho slavných knih. Nejznámější jsou pohádky, například Devatero pohádek. Kromě pohádek psal i vážnější knihy pro dospělé.`,
+    q: `Které tvrzení o Karlu Čapkovi PLATÍ podle textu?`,
+    a: "Psal knihy pro děti i pro dospělé.",
+    opts: [
+      "Psal knihy pro děti i pro dospělé.",
+      "Psal pouze pohádky.",
+      "Nikdy nepsal vážné knihy.",
+      "Karel Čapek žil v 19. století.",
+    ],
+    e: "Text uvádí: pohádky pro děti + vážné knihy pro dospělé → obojí.",
+  },
+  {
+    text: `V naší třídě je 24 dětí. Polovina z nich chodí kroužek fotbalu, čtvrtina kroužek keramiky, zbytek nemá kroužek žádný.`,
+    q: `Kolik dětí ve třídě NEMÁ kroužek?`,
+    a: "Šest.",
+    opts: [
+      "Šest.",
+      "Dvanáct.",
+      "Osm.",
+      "Čtyři.",
+    ],
+    e: "24 dětí: polovina (12) fotbal + čtvrtina (6) keramika = 18. Zbývá 24 − 18 = 6 bez kroužku.",
+  },
+  {
+    text: `Blesková povodeň zaplavila vesnici během noci. Voda stoupala rychle a lidé se museli evakuovat na střechy domů. Naštěstí byla škoda na majetku, ne na životech — všichni se stihli zachránit.`,
+    q: `Co je hlavní myšlenkou textu?`,
+    a: "Přes rozsáhlé škody se nikdo nezranil.",
+    opts: [
+      "Přes rozsáhlé škody se nikdo nezranil.",
+      "Povodeň zničila celou vesnici a nikdo nepřežil.",
+      "Voda stoupala pomalu.",
+      "Lidé zůstali doma v ložnicích.",
+    ],
+    e: "Klíč textu: škoda jen na majetku, všichni se zachránili. Ostatní tvrzení jsou v rozporu s textem.",
+  },
+  {
+    text: `Když se řekne „lyška", většina lidí si vybaví rybu žijící v čistých potocích. Ve skutečnosti však lyška může znamenat i zvíře v lidových pohádkách — mazanou postavičku, která přechytračí slabší.`,
+    q: `Co o slově „lyška" text říká?`,
+    a: "Slovo má více významů — rybu i pohádkovou postavičku.",
+    opts: [
+      "Slovo má více významů — rybu i pohádkovou postavičku.",
+      "Lyška je jen jméno pro rybu.",
+      "V pohádkách se lyška nikdy neobjevuje.",
+      "Lyška je moderní vynález.",
+    ],
+    e: "Text explicitně říká: lyška = ryba I pohádková postavička. Mnohoznačné slovo.",
+  },
+  {
+    text: `Pračlověk vyráběl nástroje z pazourku — z pěkně tvrdého kamene, který se dá naostřit. Na maso používal škrabky, na kůže nože. Tyto nástroje mu pomohly přežít.`,
+    q: `Proč byl pazourek vhodný na výrobu nástrojů?`,
+    a: "Byl tvrdý a dal se dobře naostřit.",
+    opts: [
+      "Byl tvrdý a dal se dobře naostřit.",
+      "Byl měkký a lehko se lámal.",
+      "Byl vzácný a drahý.",
+      "Byl teplý a mohlo se z něj topit.",
+    ],
+    e: "Text říká: pazourek byl tvrdý + dal se naostřit → proto vhodný. Ostatní vlastnosti (měkký, vzácný, teplý) textu odporují.",
+  },
+];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : shuffle([...POOL_L1, ...POOL_L2]);
+  if (level === 3) {
+    return shuffle(POOL_L3_TEXTY).slice(0, 30).map(({ text, q, a, opts, e }) => ({
+      question: `Text:\n${text}\n\n${q}`,
+      correctAnswer: a,
+      options: shuffle([...opts]),
+      hints: [
+        "Přečti si text pozorně — odpověď se v něm skrývá (přímo nebo vyvození ze stop).",
+        "Vylučuj tvrzení, která textu odporují.",
+      ],
+      explanation: e,
+    }));
+  }
+  const pool = level === 1 ? POOL_L1 : POOL_L2;
   return shuffle(pool).slice(0, 30).map(({ q, a, hint, e }) => ({
     question: q,
-    // Sjednocení: klíč se musí shodovat s options literálně (velké Ano/Ne).
     correctAnswer: a === "ano" ? "Ano" : "Ne",
     options: ["Ano", "Ne"],
     hints: [

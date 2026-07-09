@@ -96,10 +96,22 @@ const ARITHMETIC_MID: Series[] = [
   { name: "aritmetická (+7)", seq: (n) => 1 + n * 7 },
 ];
 
+// A6 (kolo 2): L3 nelineární posloupnosti (n², trojúhelníková čísla,
+// geometrická ×2) jsou nad běžné RVP 4. ročníku — jde o zamýšlené
+// enrichment (rozšiřující obsah), ne standardní curriculum.
+// Fond rozšířen o Fibonacci, geometrickou ×3 a kvadratické rozdíly,
+// aby se řady v pouhých 10 L3 úlohách neopakovaly.
 const NONLINEAR: Series[] = [
   { name: "čtverce n²", seq: (n) => (n + 1) * (n + 1) },
   { name: "trojúhelníková čísla", seq: (n) => ((n + 1) * (n + 2)) / 2 },
   { name: "geometrická (×2)", seq: (n) => Math.pow(2, n + 1) },
+  // Rozšíření fondu — A6 doporučení
+  { name: "geometrická (×3)", seq: (n) => Math.pow(3, n) * 2 },
+  { name: "Fibonacci (posloupnost)", seq: (n) => {
+      const fib = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+      return fib[n] ?? fib[fib.length - 1];
+    } },
+  { name: "kubická čísla n³", seq: (n) => (n + 1) * (n + 1) * (n + 1) },
 ];
 
 function nextTermTask(sd: Series, seed: number): PracticeTask {
@@ -203,7 +215,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
     subject: "matematika",
     category: "Nestandardní aplikační úlohy a problémy",
     topic: "Logické úlohy",
-    briefDescription: "Najdeš chybějící čísla a odhalíš tajemství číselné řady.",
+    briefDescription: "Najdeš chybějící čísla a odhalíš tajemství číselné řady. (L3 obsahuje ENRICHMENT — čtverce n², trojúhelníková čísla, Fibonacci — nad rámec běžného RVP 4. ročníku.)",
     keywords: [
       "magický čtverec", "číselná řada", "vzor", "logická úloha",
       "aritmetická řada", "posloupnost", "extrapolace",

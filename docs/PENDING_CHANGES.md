@@ -49,6 +49,13 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Kolo 2 review — kompletní opravy (2026-07-09/10)
+- **P0** (A1-A4): vadné klíče v L3 poolech opraveny (viz commit `c83eafe`).
+- **P1** (A5-A7): reklama + čtení dostaly L3 se select_one ze 4 (10 úloh každý), magic čtverce enrichment + rozšířený fond, měření délky třetina jako challenge.
+- **P2** (A8-A9): předpony frekventovanější slova, mnohoznačná slova opravena.
+- **P3/Audit invarianty** (A10-A12): 3 nové topic-level invarianty (`min_unique_tasks_per_tier`, `tier_population`, `binary_tf_not_sole_l3`), pilot A10 na g3-prvouka-ekosystemy.
+- **Část B**: [`docs/CONTENT_AUTHORING.md`](docs/CONTENT_AUTHORING.md) — trvalá autorská norma pro každý nový generátor.
+
 ## ✅ P2 — neunikátní možnosti (2026-07-08)
 - Sdílený helper `src/lib/content/uniqueOptions.ts` (`buildUniqueOptions` + `shuffleOptions`) — dedup distraktorů + fallback pool + explicitní throw.
 - `g4-mat-zlomek-cast-celku-4`: L2 měla vždy duplicitní `smaller/den` (== druhý zlomek z otázky); L1/L3 kolize u `2·num == den` (doplněk == correct) a `2·num+1 == den` (doplněk == sousední čitatel). Přepsáno na `buildUniqueOptions` se sadou fallback distraktorů (num-1, den-1, den+1, …).

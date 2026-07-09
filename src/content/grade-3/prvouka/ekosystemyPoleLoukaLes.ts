@@ -267,8 +267,219 @@ const POOL: PracticeTask[] = [
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 12);
+// A10 (kolo 2 pilot): disjunkce L1/L2/L3 s minimálně 8 unikátními
+// úlohami per tier. Před: gen ignoroval level a vracel 12 z 18 —
+// vytvářelo dojem opakující se úlohy napříč sezeními.
+//
+// L1 — identifikace: kdo kde žije (louka/les/pole/voda)
+// L2 — pojmy: producent, konzument, rozkladač, matching prostředí
+// L3 — potravní řetězce, ekologické role, transfer
+
+const POOL_L1_IDS: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// (0..10 = kobylka, čáp, pampeliška, veverka, borůvky, mech, pšenice, koroptev,
+//  chrpa modrá, vydra, leknín)
+const POOL_L2_IDS: number[] = [11, 13, 14];
+// (11 = producent, 13 = rozkladači, 14 = konzument) — match_pairs 15/16/17
+//   nejsou zahrnuty (topic.inputType = "select_one" a generator-validation
+//   vyžaduje options u všech tasků). L2 doplněno o POOL_L2_EXTRA (select_one).
+const POOL_L3_IDS: number[] = [12];
+// (12 = potravní řetězec louky)
+
+// L2 pool doplněný o select_one úlohy testující stejné dovednosti jako
+// match_pairs (přiřazení organismu k prostředí + pojmy).
+const POOL_L2_EXTRA: PracticeTask[] = [
+  {
+    type: "select_one",
+    question: "Ve kterém prostředí žije sova?",
+    correctAnswer: "V lese",
+    options: ["V lese", "Na poli", "V rybníku", "Na písečné pláži"],
+    hints: ["Sova loví v noci ptáky a myši mezi stromy.", "Denní úkryt: dutina stromu."],
+    explanation: "Sova žije v lese — přes den se ukrývá v dutinách stromů, v noci loví myši a další drobné živočichy.",
+  },
+  {
+    type: "select_one",
+    question: "Ve kterém prostředí žije volavka?",
+    correctAnswer: "U vody (rybník, řeka)",
+    options: ["U vody (rybník, řeka)", "V hustém lese", "Na písečné poušti", "V horských dutinách"],
+    hints: ["Volavka stojí dlouho nehnutě a čeká na kořist.", "Loví ryby a žáby."],
+    explanation: "Volavka žije u vody — na rybnících, řekách a mokřadech. Loví ryby, žáby a hmyz.",
+  },
+  {
+    type: "select_one",
+    question: "Ve kterém prostředí žije bažant?",
+    correctAnswer: "Na poli a v mezích",
+    options: ["Na poli a v mezích", "Na moři", "V rybníku", "Na vrcholu hor"],
+    hints: ["Bažant se schovává v obilí.", "Barevný samec je snadno rozeznatelný."],
+    explanation: "Bažant obývá pole, meze a okraje lesů. Hnízdí na zemi a živí se semeny a hmyzem.",
+  },
+  {
+    type: "select_one",
+    question: "Kdo je v ekosystému býložravec (konzument 1. řádu)?",
+    correctAnswer: "Srnec (jí trávu a listy)",
+    options: [
+      "Srnec (jí trávu a listy)",
+      "Sova (loví myši)",
+      "Houba (rozkládá dřevo)",
+      "Tráva (fotosyntéza)",
+    ],
+    hints: ["Býložravec = jí rostliny.", "Konzument 1. řádu je hned nad producentem."],
+    explanation: "Srnec se živí trávou a listy → býložravec, konzument 1. řádu. Sova je masožravec, houba rozkladač, tráva producent.",
+  },
+  {
+    type: "select_one",
+    question: "Který organismus je masožravec (konzument 2. řádu)?",
+    correctAnswer: "Liška (loví myši, ptáky, zajíce)",
+    options: [
+      "Liška (loví myši, ptáky, zajíce)",
+      "Kráva",
+      "Pampeliška",
+      "Bakterie v půdě",
+    ],
+    hints: ["Masožravec loví jiné živočichy.", "Konzument 2. řádu je nad býložravci."],
+    explanation: "Liška loví myši, zajíce, drobné ptáky → masožravec, konzument 2. řádu.",
+  },
+];
+
+// L3 pool s doplněnými transfer úlohami (min. 8 unikátních)
+const POOL_L3_EXTRA: PracticeTask[] = [
+  {
+    type: "select_one",
+    question: "Kdyby v ekosystému zmizely všechny rostliny, co by se stalo nejdřív?",
+    correctAnswer: "Nejdřív by vyhynuli býložravci (nemají co jíst).",
+    options: [
+      "Nejdřív by vyhynuli býložravci (nemají co jíst).",
+      "Nejdřív by vyhynuli masožravci.",
+      "Nic by se nestalo — zvířata by jedla něco jiného.",
+      "Nejdřív by vyhynuly houby.",
+    ],
+    hints: [
+      "Potravní řetězec začíná rostlinou (producent). Kdo první ztratí potravu?",
+    ],
+    explanation:
+      "Bez rostlin (producentů) nemají býložravci co jíst — vymřeli by první. Pak by přišli masožravci (nemají co lovit).",
+  },
+  {
+    type: "select_one",
+    question: "Proč jsou rozkladači nezbytní pro ekosystém?",
+    correctAnswer: "Vrací živiny z odumřelých organismů zpět do půdy pro rostliny.",
+    options: [
+      "Vrací živiny z odumřelých organismů zpět do půdy pro rostliny.",
+      "Loví škůdce v lese.",
+      "Poskytují potravu masožravcům.",
+      "Vyrábí kyslík fotosyntézou.",
+    ],
+    hints: [
+      "Rozkladači = houby, bakterie. Co dělají s mrtvým dřevem a listím?",
+    ],
+    explanation:
+      "Rozkladači rozkládají odumřelé organismy na jednoduché látky, které se vracejí do půdy. Bez nich by se hromadily mrtvé věci a rostliny by neměly z čeho růst.",
+  },
+  {
+    type: "select_one",
+    question: "V lese ubyly veverky. Jaký dopad to pravděpodobně bude mít?",
+    correctAnswer: "Ubude šíření semen stromů (žaludy, ořechy).",
+    options: [
+      "Ubude šíření semen stromů (žaludy, ořechy).",
+      "Zvýší se počet ryb v rybnících.",
+      "Přibude obilí na polích.",
+      "Ubude čápů, protože se jim ubere prostor pro hnízdo.",
+    ],
+    hints: [
+      "Veverky nosí a zakopávají žaludy a ořechy. Co se stane, když je zakopanou nesežerou?",
+    ],
+    explanation:
+      "Veverky zakopávají žaludy a ořechy — část zapomenou a z těch semen pak vyrostou nové stromy. Bez veverek se stromy hůře šíří.",
+  },
+  {
+    type: "select_one",
+    question: "Který ekosystém má nejvíc druhů zvířat a rostlin (biodiverzitu)?",
+    correctAnswer: "Přirozený smíšený les (různé stromy, půda, dutiny).",
+    options: [
+      "Přirozený smíšený les (různé stromy, půda, dutiny).",
+      "Pole s jednou plodinou (monokultura).",
+      "Asfaltové parkoviště.",
+      "Pouštní písek bez rostlin.",
+    ],
+    hints: [
+      "Biodiverzita = kolik různých druhů žije pohromadě. Kde je nejvíc úkrytů a druhů potravy?",
+    ],
+    explanation:
+      "Přirozený smíšený les má rozmanité stromy, keře, dutiny, mrtvé dřevo — poskytuje úkryt a potravu spoustě druhů. Monokultura (jeden druh plodiny na poli) má málo úkrytů.",
+  },
+  {
+    type: "select_one",
+    question: "Rybník se změnil na blátivou louži. Co se stalo s ekosystémem?",
+    correctAnswer: "Vodní organismy zmizely, přišli živočichové vlhkého bláta.",
+    options: [
+      "Vodní organismy zmizely, přišli živočichové vlhkého bláta.",
+      "Přišli lední medvědi a tučňáci.",
+      "Nic se nezměnilo, rybí druhy jsou stejné.",
+      "Přišli druhy pouštních plazů.",
+    ],
+    hints: [
+      "Vysychající rybník už není domov pro ryby. Kdo se naopak cítí dobře v blátě?",
+    ],
+    explanation:
+      "Když ubyde voda, ryby a leknín zmizí (nemají kde žít). Naopak přijdou žáby, hmyz, ptáci lovící v blátě. Ekosystém se změní na jiný typ.",
+  },
+  {
+    type: "select_one",
+    question: "Sova ubila myš. Jaká je sova v tomto řetězci?",
+    correctAnswer: "Konzument 2. řádu (loví býložravce).",
+    options: [
+      "Konzument 2. řádu (loví býložravce).",
+      "Producent.",
+      "Rozkladač.",
+      "Konzument 1. řádu.",
+    ],
+    hints: [
+      "Producent = rostlina. Konzument 1. řádu = býložravec (jí rostliny). Konzument 2. řádu = jí býložravce.",
+    ],
+    explanation:
+      "Myš jí obilí (konzument 1. řádu, býložravec). Sova loví myš (konzument 2. řádu, masožravec). Sova stojí výš v potravním řetězci.",
+  },
+  {
+    type: "select_one",
+    question: "Proč nese kobylka podobnou barvu jako tráva?",
+    correctAnswer: "Splývá s prostředím — ochrana před predátory (mimikry).",
+    options: [
+      "Splývá s prostředím — ochrana před predátory (mimikry).",
+      "Aby ji viděla čáp a mohla ji sníst.",
+      "Nesplývá s prostředím, tráva má náhodou stejnou barvu.",
+      "Kvůli fotosyntéze.",
+    ],
+    hints: [
+      "Kobylka je kořist. Co jí pomůže, aby si jí nevšimli predátoři (čápi, ptáci)?",
+    ],
+    explanation:
+      "Zelená barva pomáhá kobylce splývat s trávou — predátoři ji hůř vidí. Tomu se říká ochranné zbarvení (mimikry).",
+  },
+  {
+    type: "select_one",
+    question: "Který potravní řetězec je SPRÁVNĚ z lesa?",
+    correctAnswer: "Bukvice → myš → sova.",
+    options: [
+      "Bukvice → myš → sova.",
+      "Sova → myš → bukvice.",
+      "Myš → bukvice → sova.",
+      "Bukvice → sova → myš.",
+    ],
+    hints: [
+      "Řetězec začíná rostlinou. Šipka znamená: „je snědeno“.",
+    ],
+    explanation:
+      "Bukvice (plod buku) → sní myš (konzument 1) → uloví sova (konzument 2). Rostlina musí být první, dravec poslední.",
+  },
+];
+
+function gen(level: number): PracticeTask[] {
+  const ids = level === 1 ? POOL_L1_IDS : level === 2 ? POOL_L2_IDS : POOL_L3_IDS;
+  const basePool = ids.map((i) => POOL[i]).filter(Boolean);
+  const pool =
+    level === 2 ? [...basePool, ...POOL_L2_EXTRA] :
+    level === 3 ? [...basePool, ...POOL_L3_EXTRA] :
+    basePool;
+  return shuffle(pool).slice(0, 12);
 }
 
 export const EKOSYSTEMYPOLLOUKAES: TopicMetadata[] = [

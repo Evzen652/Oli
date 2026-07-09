@@ -25,7 +25,13 @@ export type AuditCategory =
   /** Duplicitní možnosti v `options` (case-insensitive). Full coverage. */
   | "options_distinct"
   /** `correctAnswer` neodpovídá žádné z `options` (normalizovaně). Full coverage. */
-  | "answer_key_matches_option";
+  | "answer_key_matches_option"
+  /** Kolo 2: generátor×úroveň má < K unikátních otázek (K=8). */
+  | "min_unique_tasks_per_tier"
+  /** Kolo 2: tier (L1/L2/L3) je prázdný — chybí těžší obtížnost. */
+  | "tier_population"
+  /** Kolo 2: L3 je tvořeno výhradně binárním true_false (nízká diagnostika). */
+  | "binary_tf_not_sole_l3";
 
 export interface AuditIssue {
   topicId: string;
@@ -187,6 +193,73 @@ export function runOfflineAudit(
             });
             answerKeyReports++;
           }
+        }
+      }
+    }
+
+    // ── Kolo 2 topic-level invarianty (min_unique/tier_population/binary_tf_not_sole_l3) ──
+    // Řeší systémové vady dokumentované v kole 2 review (A10-A12).
+    {
+      const tiers = getTierTasks(topic);
+      const invariantMeta = {
+        topicId: topic.id,
+        topicTitle: topic.title,
+        topicSubject: topic.subject,
+        topicCategory: topic.category,
+        topicGradeRange: topic.gradeRange,
+      };
+      const MIN_UNIQUE_PER_TIER = 8;
+
+      // min_unique_tasks_per_tier: každý neprázdný tier má ≥ 8 unikátních
+      const tierCounts: { tier: 1 | 2 | 3; count: number }[] = [
+        { tier: 1, count: tiers.l1.length },
+        { tier: 2, count: tiers.l2.length },
+        { tier: 3, count: tiers.l3.length },
+      ];
+      for (const { tier, count } of tierCounts) {
+        if (count > 0 && count < MIN_UNIQUE_PER_TIER) {
+          issues.push({
+            ...invariantMeta,
+            taskQuestion: `(pokrytí L${tier})`,
+            category: "min_unique_tasks_per_tier",
+            detail: `L${tier} má jen ${count} unikátních úloh (< ${MIN_UNIQUE_PER_TIER}). Doplň banku otázek.`,
+          });
+        }
+      }
+
+      // tier_population: prázdné L2 nebo L3 = chybí těžší obtížnost.
+      // Výjimky (topic-y bez přirozené obtížnostní osy) NIC — allowlist můžeme
+      // později přidat pro sloh/psaní.
+      if (tiers.l1.length > 0 && tiers.l2.length === 0) {
+        issues.push({
+          ...invariantMeta,
+          taskQuestion: "(pokrytí L2)",
+          category: "tier_population",
+          detail: `Úroveň L2 je prázdná (L1 má ${tiers.l1.length} úloh). Aplikace pravidla chybí.`,
+        });
+      }
+      if ((tiers.l1.length > 0 || tiers.l2.length > 0) && tiers.l3.length === 0) {
+        issues.push({
+          ...invariantMeta,
+          taskQuestion: "(pokrytí L3)",
+          category: "tier_population",
+          detail: `Úroveň L3 je prázdná. Dovednostní téma musí mít transfer/aplikaci (nebo doložená výjimka).`,
+        });
+      }
+
+      // binary_tf_not_sole_l3: L3 se skládá jen z binárních Ano/Ne úloh (50 % náhoda)
+      if (tiers.l3.length >= 3) {
+        const isBinary = (t: PracticeTask) =>
+          t.options && t.options.length === 2 &&
+          t.options.every((o) => ["ano", "ne"].includes(o.trim().toLowerCase()));
+        const allBinary = tiers.l3.every(isBinary);
+        if (allBinary) {
+          issues.push({
+            ...invariantMeta,
+            taskQuestion: "(L3 binární TF)",
+            category: "binary_tf_not_sole_l3",
+            detail: `L3 obsahuje výhradně binární Ano/Ne úlohy (${tiers.l3.length}× — 50 % náhoda). Přidej alespoň některé s výběrem ze 4 možností.`,
+          });
         }
       }
     }
@@ -447,6 +520,9 @@ export function runOfflineAudit(
     czech_grammar: 0,
     options_distinct: 0,
     answer_key_matches_option: 0,
+    min_unique_tasks_per_tier: 0,
+    tier_population: 0,
+    binary_tf_not_sole_l3: 0,
   };
   const byTopic: Record<string, number> = {};
   for (const issue of issues) {
@@ -460,6 +536,9 @@ export function runOfflineAudit(
   const COVERAGE_CATEGORIES: ReadonlySet<AuditCategory> = new Set<AuditCategory>([
     "options_distinct",
     "answer_key_matches_option",
+    "min_unique_tasks_per_tier",
+    "tier_population",
+    "binary_tf_not_sole_l3",
   ]);
   const sampleIssueCount = issues.reduce(
     (n, i) => (COVERAGE_CATEGORIES.has(i.category) ? n : n + 1),
@@ -490,6 +569,9 @@ export const CATEGORY_LABELS: Record<AuditCategory, string> = {
   czech_grammar: "Česká gramatika",
   options_distinct: "Duplicitní možnosti",
   answer_key_matches_option: "Klíč ≠ žádná možnost",
+  min_unique_tasks_per_tier: "Málo unikátních úloh (< 8)",
+  tier_population: "Chybí těžší úroveň",
+  binary_tf_not_sole_l3: "L3 jen binární Ano/Ne",
 };
 
 /** Barva pro UI dle kategorie */
@@ -501,6 +583,9 @@ export const CATEGORY_COLORS: Record<AuditCategory, string> = {
   czech_grammar: "bg-blue-100 text-blue-800 border-blue-200",
   options_distinct: "bg-rose-100 text-rose-800 border-rose-200",
   answer_key_matches_option: "bg-red-100 text-red-800 border-red-200",
+  min_unique_tasks_per_tier: "bg-yellow-100 text-yellow-800 border-yellow-200",
+  tier_population: "bg-orange-100 text-orange-800 border-orange-200",
+  binary_tf_not_sole_l3: "bg-amber-100 text-amber-800 border-amber-200",
 };
 
 // ─────────────────────────────────────────────────────────

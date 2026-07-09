@@ -69,11 +69,39 @@ const POOL_L2: TFItem[] = [
   { q: "Dobrý reklamní trik nám může prodat i produkt, který nepotřebujeme.", a: "ano", hint: "Manipulativní reklama přesvědčuje i bez skutečné potřeby.", e: "Šikovná manipulace v nás vyvolá pocit, že výrobek chceme nebo musíme mít, i když ho doopravdy nepotřebujeme. Proto nás dobrý trik dokáže přimět ke koupi i bez skutečné potřeby — a právě proto je dobré ho umět odhalit." },
 ];
 
+// A5 (kolo 2): L3 s výběrem ze 4 možností — identifikace konkrétní
+// reklamní techniky. Nahrazuje binární Ano/Ne (50 % náhoda) skutečnou
+// diagnostickou úlohou.
+interface TechniqueItem { slogan: string; a: string; opts: string[]; e: string }
+const POOL_L3_TECHNIKY: TechniqueItem[] = [
+  { slogan: `Používá to už devět z deseti slavných hokejistů!`, a: "Slavná osobnost + bandwagon", opts: ["Slavná osobnost + bandwagon", "Falešná autorita", "Emocionální apel", "Falešná naléhavost"], e: "Slavná osobnost (hokejisté) plus tlak skupiny (devět z deseti to má) = bandwagon. Nejde o odbornou autoritu ani o strach či emoce." },
+  { slogan: `Jen dnes! Poslední tři kusy skladem!`, a: "Falešná naléhavost", opts: ["Falešná naléhavost", "Slavná osobnost", "Falešná autorita", "Opakování sloganu"], e: "Slova jako jen dnes a poslední kusy tlačí k rychlému rozhodnutí, i když zboží bývá k dostání i další dny — falešná naléhavost." },
+  { slogan: `Doporučeno devíti z deseti zubařů!`, a: "Falešná autorita (bez zdroje)", opts: ["Falešná autorita (bez zdroje)", "Falešná naléhavost", "Bandwagon", "Emocionální apel"], e: "Zubaři doporučují má zvýšit důvěru, ale nevíme, kolik jich bylo dotázáno ani kdo je vybral — jde o falešnou autoritu." },
+  { slogan: `Kupte našim dětem lásku.`, a: "Emocionální apel", opts: ["Emocionální apel", "Falešná autorita", "Bandwagon", "Falešná naléhavost"], e: "Slovo láska spojuje výrobek s emocí, kterou si přeneseme na produkt — emocionální apel." },
+  { slogan: `Náš vysavač je NEJLEPŠÍ na trhu!`, a: "Superlativ bez důkazu", opts: ["Superlativ bez důkazu", "Emocionální apel", "Falešná autorita", "Opakování"], e: "Slovo nejlepší bez uvedeného srovnání (nejlepší v čem, oproti komu?) je nedokazatelný superlativ." },
+  { slogan: `Zdarma (drobně: *při nákupu nad 1 500 Kč).`, a: "Skryté podmínky (hvězdičky)", opts: ["Skryté podmínky (hvězdičky)", "Superlativ", "Falešná naléhavost", "Emocionální apel"], e: "Velké ZDARMA má nalákat, důležitá podmínka schovaná pod hvězdičkou. Klasický trik skrytých podmínek." },
+  { slogan: `Vědci dokázali, že náš krém je o 50 % účinnější.`, a: "Falešná autorita bez zdroje", opts: ["Falešná autorita bez zdroje", "Superlativ", "Bandwagon", "Emocionální apel"], e: "Vědci dokázali bez uvedení, kdo a jak studie provedl — falešná autorita. Čísla bez zdroje jsou nedokazatelná." },
+  { slogan: `Kupte teď a získáte pocit klidu na celý týden.`, a: "Emocionální apel (klid)", opts: ["Emocionální apel (klid)", "Falešná autorita", "Bandwagon", "Falešná naléhavost"], e: "Pocit klidu spojuje produkt s pozitivní emocí — emocionální apel." },
+  { slogan: `Všechny šikovné maminky už používají naši mouku.`, a: "Bandwagon (tlak skupiny)", opts: ["Bandwagon (tlak skupiny)", "Falešná autorita", "Emocionální apel", "Skryté podmínky"], e: "Slova všechny šikovné maminky tlačí k pocitu, že nemít výrobek znamená nebýt šikovná máma. Tlak skupiny = bandwagon." },
+  { slogan: `Bez našeho krému budete stárnout dvakrát rychleji!`, a: "Apel na strach", opts: ["Apel na strach", "Superlativ", "Bandwagon", "Falešná naléhavost"], e: "Reklama vyvolá strach ze stárnutí a nabídne produkt jako záchranu — apel na strach." },
+];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : shuffle([...POOL_L1, ...POOL_L2]);
+  if (level === 3) {
+    return shuffle(POOL_L3_TECHNIKY).slice(0, 30).map(({ slogan, a, opts, e }) => ({
+      question: `Reklamní slogan: "${slogan}"\nKterou techniku manipulace tento slogan používá?`,
+      correctAnswer: a,
+      options: shuffle([...opts]),
+      hints: [
+        "Reklamní techniky: bandwagon (všichni to mají), emocionální apel, apel na strach, falešná autorita, superlativ bez důkazu, falešná naléhavost, skryté podmínky, slavná osobnost.",
+        "Ptej se: proč tenhle slogan zabírá? Bojím se? Cítím tlak? Věřím falešné autoritě?",
+      ],
+      explanation: e,
+    }));
+  }
+  const pool = level === 1 ? POOL_L1 : POOL_L2;
   return shuffle(pool).slice(0, 30).map(({ q, a, hint, e }) => ({
     question: q,
-    // Sjednocení: klíč se musí shodovat s options literálně (velké Ano/Ne).
     correctAnswer: a === "ano" ? "Ano" : "Ne",
     options: ["Ano", "Ne"],
     hints: [

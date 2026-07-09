@@ -68,8 +68,12 @@ const POOL_L3: PoolItem[] = [
   { question: "Úsečka AB = 5 cm. Prodloužíme ji o 3 cm. Jak dlouhá bude celkem?", correct: "8 cm", distractors: ["7 cm", "9 cm", "6 cm"], hint: "Prodloužení = přidat délku. Kolik je 5 + 3?", solution: "5 cm + 3 cm = 8 cm — úsečka bude celkem 8 cm dlouhá." },
   { question: "Úsečka je 9 cm. Zkrátíme ji o 4 cm. Kolik cm zbývá?", correct: "5 cm", distractors: ["4 cm", "6 cm", "13 cm"], hint: "Zkrátíme = odečteme. Kolik je 9 − 4?", solution: "9 cm − 4 cm = 5 cm — úsečka bude 5 cm dlouhá." },
   // Třetina
-  { question: "Úsečka je 21 cm dlouhá. Kolik cm je třetina?", correct: "7 cm", distractors: ["5 cm", "6 cm", "9 cm"], hint: "Třetina = rozděl na 3 stejné části. Kolik je 21 ÷ 3?", solution: "Třetina z 21 cm = 21 ÷ 3 = 7 cm." },
-  { question: "Úsečka je 15 cm dlouhá. Kolik cm je třetina?", correct: "5 cm", distractors: ["3 cm", "6 cm", "7 cm"], hint: "Třetina = rozděl na 3 stejné části. 15 ÷ 3 = ?", solution: "Třetina z 15 cm = 15 ÷ 3 = 5 cm." },
+  // POZN. (A7 kolo 2): „třetina" je na hraně 2. ročníku (dělení 3× obvykle
+  // až v 2. pololetí). Ponecháno jako L3 challenge — kdo neumí dělit 3×,
+  // může se svést algoritmem „hledej 3 stejné části z 21/15". Vizuální oporu
+  // (kresba úsečky rozdělené na 3) přidáme až s illustrationDesc systémem.
+  { question: "Úsečka je 21 cm dlouhá. Kolik cm je třetina? (L3 challenge)", correct: "7 cm", distractors: ["5 cm", "6 cm", "9 cm"], hint: "Třetina = rozděl na 3 stejné části. Kolik je 21 ÷ 3?", solution: "Třetina z 21 cm = 21 ÷ 3 = 7 cm." },
+  { question: "Úsečka je 15 cm dlouhá. Kolik cm je třetina? (L3 challenge)", correct: "5 cm", distractors: ["3 cm", "6 cm", "7 cm"], hint: "Třetina = rozděl na 3 stejné části. 15 ÷ 3 = ?", solution: "Třetina z 15 cm = 15 ÷ 3 = 5 cm." },
   // Slovní úlohy dvoukrokové
   { question: "Máme 3 úsečky za sebou, každá 4 cm. Jak dlouhá je celá?", correct: "12 cm", distractors: ["4 cm", "7 cm", "16 cm"], hint: "3 × 4 = ?", solution: "3 × 4 cm = 12 cm — celá úsečka má 12 cm." },
   { question: "Úsečka AB = 6 cm. Úsečka CD je dvakrát delší. Kolik cm má CD?", correct: "12 cm", distractors: ["3 cm", "8 cm", "16 cm"], hint: "Dvakrát delší = 2 × 6.", solution: "CD = 2 × 6 cm = 12 cm." },

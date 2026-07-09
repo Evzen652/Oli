@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-09/10 — Kolo 2 review + kompletní opravy:
+- ✅ **P0 kolo 2 (A1-A4)** — 4 vadné klíče v L3 poolech (`veta-jednoducha`, `spojky`, `dopis`, vzory×3 duplicity v options).
+- ✅ **P1 kolo 2 (A5-A7)** — reklama + čtení s porozuměním doplněny o L3 se select_one ze 4 (10 úloh každý), magic čtverce označeny jako enrichment + rozšířený fond (Fibonacci, kubická, ×3), měření délky s třetinou označena jako challenge.
+- ✅ **P2 kolo 2 (A8-A9)** — předpony (sklesla/vzkřikl → tekla/spadl/vznikl), mnohoznačná slova (Rukou svého bratra → mít páky, jednoslovné distraktory u kachna letecká/schránka).
+- ✅ **P3/Audit invarianty (A10-A12)** — 3 nové topic-level checks v `runOfflineAudit`: `min_unique_tasks_per_tier` (K=8), `tier_population` (L1/L2/L3 populace), `binary_tf_not_sole_l3` (L3 nesmí být jen Ano/Ne). Pilot A10 na `g3-prvouka-ekosystemy` — disjunkce L1/L2/L3, L2/L3 rozšířeny o po 5-8 nových select_one úloh.
+- ✅ **Část B — trvalá autorská pravidla** — nový [`docs/CONTENT_AUTHORING.md`](docs/CONTENT_AUTHORING.md) s Generator→Critic patternem, pravidly interpunkce (slučovací a/i/ani/nebo), distraktory (blízké chyby, pravopis 1. stupně jen grafém), kalibrace L1<L2<L3, přiměřenost ročníku + enrichment, variabilita ≥8 per tier / ≥12 fakt., formát vs cíl (binární TF jen L1), freeze&regrese, kompletní checklist před nasazením.
+
 ### Session 2026-07-08 — Review export generátorů + handoff na opravy:
 - ✅ **`review-export.md`** — dump VŠECH úloh z generátorů 2.–4. ročník (bez informatiky): 154 témat, 6116 úloh, seskupeno předmět→třída→téma→úroveň (I/II/III přes `getTierTasks`). Skript `src/test/review-export.test.ts` (skipnutý, regenerace `EXPORT_REVIEW=1 npx vitest run …`).
 - ✅ **Snapshot zamčeného obsahu + audit `frozen_content_unchanged`** — nový `src/lib/contentSnapshot.ts` (deterministický SHA1 nad páry `question|correctAnswer`, patched `Math.random` LCG) + `src/test/frozen-content-unchanged.test.ts` + snapshot v `src/test/fixtures/frozen-content.snapshot.json` (153 témat, informatika vyloučena). Distraktory a nápovědy se smí měnit bez blokace. Regenerace: `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`. `UNFROZEN_TOPIC_IDS` set drží aktivně opravovaná ID (aktuálně jen `g4-cjl-…-pravopis-predpon-vy-vy-s-z-vz`).
