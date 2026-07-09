@@ -7,6 +7,12 @@
 
 ---
 
+## ✅ PED-3 batch g2-mat + g3-cjl + g4-cjl pilot (2026-07-08)
+- **g2-mat L3 naplnění** (4 topics): `nasobilka-2345` (inverze `? × t = c`), `mereni-casu` (sloučené výpočty + slovní úlohy), `bod-primka-usecka` (aplikace geometrie), `slovni-ulohy-100` (dvoukrokové úlohy). Vše max L3.
+- **g3-cjl L3 naplnění** (5 topics): `spojovani-vet-spojkami`, `slovesa-osoba-cislo-cas` (určit vše v celé větě), `velka-pismena` (ulice/měsíce/oslovení), `veta-jednoducha-souveti` (souvětí ze 3 vět), `slova-jednoznacna-mnohoznacna` (přenesené významy). Vše max L3.
+- **g4-cjl pilot**: `dopis-psani-soukromeho-dopisu` (POOL_L3 s 10 aplikačními úlohami — analýza, tón podle adresáta, oprava chyby). Audit 16/16/10 max L3.
+- **Následně**: dalších 8 g4-cjl topics má stejný `gen(3) = union` bug — čeká na autorské doplnění POOL_L3.
+
 ## ✅ PED-3: g2-mat-jednotky L2+L3 naplnění (2026-07-08)
 - Před: gen(_level) ignoroval úroveň, audit `20/0/0 max L1`. Teď disjunktní L1 (základní vztah 1×), L2 (násobky), L3 (poloviny/čtvrtiny + porovnání dvou jednotek). Zachován `true_false` format. Audit `10/10/12 max L3`. Snapshot přegenerován.
 
