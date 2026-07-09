@@ -47,6 +47,7 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g4-mat-magicke-ctverce-ciselne-rady-4",
   "g2-mat-mereni-delky",
   "g2-mat-jednotky",
+  "g2-mat-nasobilka-2345",
 ]);
 
 export interface TopicFingerprint {

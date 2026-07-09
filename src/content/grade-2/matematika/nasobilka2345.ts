@@ -63,12 +63,50 @@ const POOL: PoolItem[] = [
   { question: "5 × 10 = ?", correct: "50", distractors: ["45", "55", "40"], hint: "5 desetkrát = 50.", level: 2 },
 ];
 
+/**
+ * PED-3 kalibrace L1<L2<L3.
+ *
+ * Před: L3 = celý POOL (L1+L2 union) → `getTierTasks` (rozdíl množin) L3
+ * vyprazdňoval, audit `9/9/0 max L2`. Nová L3 dovednost = INVERZE
+ * (najdi chybějící činitel: `? × t = c`), stejný pattern jako u
+ * `g3-mat-nasobilka-6-10`.
+ */
+
+function makeInverseTask(t: number, n: number): PracticeTask {
+  const c = t * n;
+  const distractors = Array.from(
+    new Set([
+      String(n + 1),
+      String(Math.max(1, n - 1)),
+      String(n + 2),
+      String(Math.max(1, n - 2)),
+    ]),
+  ).slice(0, 3);
+  return {
+    question: `? × ${t} = ${c}`,
+    correctAnswer: String(n),
+    options: shuffle([String(n), ...distractors]),
+    hints: [
+      `Zeptej se: kolikrát vezmu ${t}, abych dostal ${c}?`,
+      `Nebo obráceně: ${c} ÷ ${t} = ?`,
+    ],
+    solutionSteps: [
+      `Hledám číslo x tak, že x × ${t} = ${c}.`,
+      `x = ${c} ÷ ${t} = ${n}.`,
+    ],
+  };
+}
+
 function gen(level: number): PracticeTask[] {
-  const filtered = level === 3
-    ? POOL
-    : POOL.filter(item => item.level === (level as 1 | 2));
+  if (level === 3) {
+    // L3 — inverze: `? × t = c` pro t ∈ [2, 3, 4, 5], n ∈ [2..10]
+    const combos: { t: number; n: number }[] = [];
+    for (const t of [2, 3, 4, 5]) for (let n = 2; n <= 10; n++) combos.push({ t, n });
+    return shuffle(combos).slice(0, 20).map(({ t, n }) => makeInverseTask(t, n));
+  }
+  const filtered = POOL.filter((item) => item.level === (level as 1 | 2));
   const shuffled = shuffle(filtered);
-  return shuffled.slice(0, 20).map(item => ({
+  return shuffled.slice(0, 20).map((item) => ({
     question: item.question,
     correctAnswer: item.correct,
     options: shuffle([item.correct, ...item.distractors]),
@@ -93,6 +131,7 @@ export const NASOBILKA2345: TopicMetadata[] = [
       "Zpaměti ovládat násobilku 2 a 3.",
       "Zpaměti ovládat násobilku 4 a 5.",
       "Rychle odpovídat na příklady z násobilky 2–5.",
+      "Najít chybějící činitel v příkladu (? × 4 = 20).",
     ],
     boundaries: ["Pouze násobilka 2–5.", "Nezahrnuje dělení ani násobilku 6–10."],
     gradeRange: [2, 3],
