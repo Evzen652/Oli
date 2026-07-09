@@ -65,6 +65,7 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g3-cjl-plynule-cteni-porozumeni",
   // Systémové dluhy Balík 1C (2026-07-10) — parametrizace z rozsahu čísel místo pevného seznamu
   "g2-mat-tabulky",
+  "g3-mat-tabulky-diagramy",
 ]);
 
 export interface TopicFingerprint {
