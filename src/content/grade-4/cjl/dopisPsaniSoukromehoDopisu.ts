@@ -49,8 +49,26 @@ const POOL_L2: QA[] = [
   { q: "Slovo 'Ty' s velkým T v dopisu kamarádovi:", a: "správné — zdvořilejší forma oslovení blízkého", opts: ["správné — zdvořilejší forma oslovení blízkého", "chybné — musí být malé", "chybné — píšeme jen Vy", "jen v dopisech rodičům"], e: "I při tykání můžeme v dopise psát 'Ty' s velkým T, abychom dali najevo úctu a vřelost — je to správné. Není to chyba ani to neplatí jen pro dopisy rodičům." },
 ];
 
+/**
+ * PED-3: L3 pool s aplikačními úlohami (analyza konkrétních dopisů,
+ * volba stylu podle adresáta, oprava chyb). Před L3 = POOL_L1+POOL_L2
+ * (rozdíl množin = 0).
+ */
+const POOL_L3: QA[] = [
+  { q: "Který dopis je určen ŘEDITELI školy (formální styl)?", a: "Vážený pane řediteli, žádám Vás o možnost účastnit se soutěže. S pozdravem, Anna Nováková", opts: ["Vážený pane řediteli, žádám Vás o možnost účastnit se soutěže. S pozdravem, Anna Nováková", "Ahoj řediteli, jak se máš? Tvoje Anna.", "Milý řediteli, chci se přihlásit. Anna.", "Zdravím Vás! Anička."], e: "Řediteli píšeme formálně: 'Vážený pane', vykání, 'S pozdravem'. Ostatní jsou příliš neformální nebo neúplné." },
+  { q: "V dopise babičce chybí podpis. Doplň správný závěr:", a: "Tvoje vnučka Anička", opts: ["Tvoje vnučka Anička", "S úctou, JUDr. A. Nováková", "S pozdravem vedení", "Vážený pane"], e: "Babičce podepíšeme se osobně, například 'Tvoje vnučka Anička'. Ostatní jsou formální nebo špatná oslovení." },
+  { q: "V dopise je věta: 'Milý Tome ahoj já ti chci napsat o táboře.' Co je chybně?", a: "chybí čárka za oslovením a text má začít novým odstavcem", opts: ["chybí čárka za oslovením a text má začít novým odstavcem", "chybí velké písmeno u 'ahoj'", "chybí PSČ", "chybí datum"], e: "Za oslovením patří čárka a text pak pokračuje na novém řádku." },
+  { q: "V soukromém dopise kamarádovi napíšeš:", a: "Ahoj Petře, jak se máš? Já jsem byl minulý týden na výletě.", opts: ["Ahoj Petře, jak se máš? Já jsem byl minulý týden na výletě.", "Vážený pane Petře, sděluji Vám...", "Milý zákazníku, informujeme Vás...", "Dobrý den, jsem přítel..."], e: "Kamarádovi tykáme, mluvíme přátelsky — 'Ahoj Petře, jak se máš'." },
+  { q: "V dopise má být záhlaví, oslovení, text a závěr. Který dopis má VŠECHNY 4 části?", a: "'Praha, 1.6. Milá Evo, dnes ti píšu... Těším se, Tvůj Petr'", opts: ["'Praha, 1.6. Milá Evo, dnes ti píšu... Těším se, Tvůj Petr'", "'Milá Evo, jak se máš?'", "'Praha, 1.6. Milá Evo,'", "'Dnes ti píšu o výletě. Petr'"], e: "První varianta má všechny 4 části: místo+datum, oslovení, text, závěr+podpis." },
+  { q: "Kterou spojku použiješ v přechodu k dalšímu tématu v dopise?", a: "'A ještě něco...' / 'Chtěla bych ti napsat i o...'", opts: ["'A ještě něco...' / 'Chtěla bych ti napsat i o...'", "'Vzhledem k výše uvedenému...'", "'Za prvé... za druhé...'", "'S odkazem na váš dopis...'"], e: "V soukromém dopise používáme přátelské přechody. Formální fráze ('Vzhledem k...', 'S odkazem na...') do dopisu kamarádovi nepatří." },
+  { q: "Napíšeš dopis nemocnému kamarádovi. Jaký tón zvolíš?", a: "vřelý, povzbudivý, tykáš — 'Milý Honzo, brzy se uzdrav!'", opts: ["vřelý, povzbudivý, tykáš — 'Milý Honzo, brzy se uzdrav!'", "formální, vykáš — 'Vážený pane, přeji brzké uzdravení.'", "krátký, jen fakta", "pouze podpis"], e: "Nemocnému kamarádovi projevujeme účast a povzbuzujeme ho — vřelý, přátelský tón." },
+  { q: "Kdy použiješ v dopise 'Vy' s velkým V?", a: "v dopise osobě, které vykáme (učiteli, řediteli, cizímu)", opts: ["v dopise osobě, které vykáme (učiteli, řediteli, cizímu)", "vždy — je to gramatické pravidlo", "nikdy — je to chyba", "jen v dopise rodičům"], e: "Velké 'Vy' píšeme ze zdvořilosti tam, kde vykáme — učiteli, řediteli, cizímu. Rodičům obvykle tykáme." },
+  { q: "V dopise strýci píšeš: 'Chtěl jsem ...'. Jaký tvar zájmena doplníš, chceš-li se ho zeptat na jeho novinky?", a: "Ty (tykáš — 'Jak se má Ty a rodina?')", opts: ["Ty (tykáš — 'Jak se má Ty a rodina?')", "Vy (vykáš)", "on", "žádné"], e: "Strýci obvykle tykáme, proto použijeme tvar pro tykání ('Ty', 'tě', 'tobě'). Pokud v rodině strýci vykáme, použili bychom formální 'Vy'." },
+  { q: "Který začátek dopisu je pro babičku vhodný?", a: "'Praha, 5. května 2025 Milá babičko, ráda ti napíšu, jak se mi vede.'", opts: ["'Praha, 5. května 2025 Milá babičko, ráda ti napíšu, jak se mi vede.'", "'Vážená paní babičko, informuji Vás...'", "'S pozdravem babičce, doufám že...'", "'Dobrý den, tady je vaše vnučka.'"], e: "Babičce začneme záhlavím + oslovením 'Milá babičko,' a přátelským tónem." },
+];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : shuffle([...POOL_L1, ...POOL_L2]);
+  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
   return selected.map(({ q, a, opts, e }) => ({
     question: q,
