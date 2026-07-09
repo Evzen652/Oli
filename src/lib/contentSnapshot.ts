@@ -54,6 +54,7 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g3-cjl-spojovani-vet-spojkami",
   "g3-cjl-slovesa-osoba-cislo-cas",
   "g3-cjl-velka-pismena",
+  "g3-cjl-veta-jednoducha-souveti",
 ]);
 
 export interface TopicFingerprint {
