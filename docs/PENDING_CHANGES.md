@@ -49,6 +49,12 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy, Balík 1C — parametrizace tabulek (2026-07-10)
+- 3 topics přepsány z pevných seznamů na generátor z rozsahu čísel: `g2-mat-tabulky` (24 pevných vět → L1/L2/L3 z rozsahu), `g3-mat-tabulky-diagramy` (9 kombinací → 4 kategorie + jízdní řád s náhodnými hodnotami), `g4-mat-tabulky-diagramy-4` (`values()` vracelo natvrdo stejná čísla → `genValues()` s garancí jednoznačného max/min). Všechny audit `20/20/20 max L3`.
+- Doplněny `KULIČKA`/`KRABICE` do `czechGrammar.ts` NOUNS.
+- ⚠️ **Nález**: `getTierTasks` nededuplikuje L1 samo o sobě (`tier.l1` = raw generator output) → audit `min_unique_tasks_per_tier` je na L1 slepý vůči vnitřním duplicitám. Netýká se L2/L3. K opravě později (podobná díra jako u `contentSnapshot.ts`).
+- Zbývá 2A, 1D/1E (viz PROJECT_STATUS.md sekce 6).
+
 ## ✅ Systémové dluhy, Balík 1B — plynulé čtení s porozuměním (2026-07-10)
 - `g3-cjl-plynule-cteni-porozumeni`: rozšířeno z 3 na 8 textů, přepsáno na disjunktní POOL_L1/L2/L3 podle náročnosti otázky (přímé vyhledání / spojení dvou informací / hlavní myšlenka a odvozený závěr). Audit `12/12/12 max L3`. Dřív kumulativní `gen()` s 40 iteracemi produkoval hlavně duplicity.
 - Zbývá 1C, 2A, 1D/1E (viz PROJECT_STATUS.md sekce 6).
