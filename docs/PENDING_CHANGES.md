@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ BUG 3 ověřeno: přírodověda hints = záměr (2026-07-08)
+- Přírodověda topics nemají per-task `hints:` — je to **ZÁMĚR** (šablona), ne výpadek. `HelpButton` fallback pipeline: `task.hints → task.solutionSteps → topic.helpTemplate.hint`. Přírodověda topic-level `helpTemplate.hint` má vyplněný → runtime funguje. Případné doplnění per-task hints je pedagogické nice-to-have, ne blocker.
+
 ## ✅ PED-3 rozšíření: g3-mat-rysovani-usecky (2026-07-08)
 - Stejný antipattern jako kružnice (L1==L2, L3 přidávalo jen POOL_L2). Přepsáno na disjunktní L1/L2/L3 podle dovednosti (definice+jednotky / praxe rýsování / aplikace se součty a převody). Audit `8/8/12 max L3` (bylo `24/0/12`). Snapshot přegenerován.
 
