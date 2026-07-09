@@ -28,6 +28,52 @@ Pokud nové slovo není v rejstříku → přidej ho do `NOUNS` v `czechGrammar.
 
 ---
 
+## Authoring rules — tvorba cvičení (závazné)
+
+Platí pro každý nový/upravený generátor úloh. Než odešleš, projdi checklist dole.
+Plná verze: [`docs/CONTENT_AUTHORING.md`](docs/CONTENT_AUTHORING.md).
+
+**Správnost & jazyk**
+- Klíč ověř nezávisle: úlohu vyřeš odděleně, pak porovnej (Generator→Critic). Nespoléhej, že klíč z téže logiky je správný.
+- Každá věta v otázce i v klíči je gramaticky správná a idiomatická. Žádné vygenerované ne-slovo, žádná porušená shoda — po dosazení do šablony ověř výsledný tvar.
+- Interpunkce podle konkrétního pravidla. Past: před *a, i, ani, nebo* ve slučovacím poměru se čárka NEPÍŠE (i mezi větami hlavními); čárka patří před *ale, protože, když, aby, a proto*.
+
+**Distraktory**
+- Blízké, pravděpodobné chyby (typické miskoncepce), ne náhoda ani absurdita. 4 různé možnosti, právě 1 správná, žádný „také správně".
+- Pravopis 1. stupně: možnosti = jen sporný grafém (`i/í/y/ý`, `e/ě`), NIKDY chybně napsané celé slovo.
+- Dedup až PO vygenerování konkrétních tvarů (u skloňování/časování se distraktor po ohnutí může shodnout s klíčem).
+
+**Kalibrace úrovní** (L1 < L2 < L3, přísně vzestupně)
+- Úroveň = kognitivní náročnost, ne náhodný výběr. Ověř, že nejtěžší L3 > nejlehčí L1.
+- L1 rozpoznání pravidla · L2 aplikace · L3 nová dovednost/transfer (2 kroky, inverze, přenesený význam, extrapolace). Dovednostní téma musí mít naplněné L3.
+
+**Přiměřenost ročníku**
+- Drž se rozsahu RVP daného ročníku (číselný obor, zavedené pojmy). Nadstavbu označ jako rozšiřující, nedávej jako běžnou L3.
+
+**Variabilita**
+- ≥12 unikátních úloh na téma×úroveň; generuj z rozsahu/banky, ne z krátkého seznamu. Faktická témata = banka otázek, ne 1 opakovaná; čtení = rotuj více textů.
+
+**Formát vs cíl**
+- Pravopis a tvarosloví: preferuj produkci (doplň/napiš). select_one na pojmy. Binární Ano/Ne jen na L1, ne jako jediný formát L3.
+
+**Nápověda**
+- Navádí na strategii/pravidlo, NEprozrazuje výsledek. Obecné pravidlo není leak; doslovná odpověď ano.
+
+**Freeze & regrese**
+- Ověřený obsah je zmrazený — nepřepisuj. Po každé změně spusť `runOfflineAudit`; nový generátor neodesílej, dokud neprojde.
+
+### Checklist před nasazením (musí platit VŠE)
+- [ ] Klíč nezávisle ověřen; každá věta správná a idiomatická; interpunkce dle pravidla.
+- [ ] Distraktory = blízké chyby; 4 různé; právě 1 správná; u pravopisu 1. st. jen grafémy.
+- [ ] L1 < L2 < L3 obtížností; L3 naplněné (nebo doložená výjimka).
+- [ ] Obsah v rozsahu RVP; nadstavba označena.
+- [ ] ≥12 unikátních úloh na téma×úroveň; faktická z banky.
+- [ ] Formát odpovídá cíli; Ano/Ne jen na L1.
+- [ ] Nápověda navádí, neprozrazuje.
+- [ ] `runOfflineAudit` prošel (vč. `frozen_content_unchanged`).
+
+---
+
 ## ⚠️ TLAČÍTKO ZPĚT — POVINNĚ `<BackButton />`
 
 Pro každé tlačítko "Zpět" v aplikaci **VŽDY** použij komponentu `<BackButton />` z `src/components/BackButton.tsx`.
