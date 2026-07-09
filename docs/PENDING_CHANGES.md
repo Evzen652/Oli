@@ -7,6 +7,40 @@
 
 ---
 
+## ✅ PED-3 rozšíření: g3-mat-rysovani-usecky (2026-07-08)
+- Stejný antipattern jako kružnice (L1==L2, L3 přidávalo jen POOL_L2). Přepsáno na disjunktní L1/L2/L3 podle dovednosti (definice+jednotky / praxe rýsování / aplikace se součty a převody). Audit `8/8/12 max L3` (bylo `24/0/12`). Snapshot přegenerován.
+
+## ✅ PED-3: naplnit L3 + disjunktní pooly (g3-mat-kruznice-kruh) (2026-07-08)
+- Před: L1==L2 (`pool = level<=2 ? POOL_L1 : ...`), audit `24/0/15 max L3 ⚠`. Teď disjunktní L1/L2/L3 podle dovednosti (pojmy/vztahy/aplikace + soustředné + slovní úlohy). Audit `8/9/12 max L3`. Snapshot přegenerován.
+
+## ✅ PED-2 kalibrace L1<L2<L3 (2026-07-08)
+- `g3-mat-nasobilka-6-10` — disjunktní pooly: L1={6,7}×forward, L2={8,9}×forward, L3=10×forward + inverze (`? × t = c` pro t ∈ [6..10]). Dřív L3 pool zahrnoval L1+L2 → `getTierTasks` (rozdíl množin) L3 dost. Teď stabilně **20/20/20 max L3**. `buildUniqueOptions` + fallbacky pro distraktory. Snapshot přegenerován.
+
+## ✅ PED-1 finish: g3 slova příbuzná (2026-07-08)
+- `g3-cjl-slova-pribuzna-vyjmenovana` — stejný fill/which pattern. Odstraněno cca 18 antipattern distraktorů (`bidlení`, `Bistrý`, `mišlenka`, `pícha`, `pichla`, `zviknout`, `ližař`, `jazikový`, …) — nahrazeno skutečnými neyjm. slovy (`liška`, `milovat`, `pila`, `pilný`, `vlast`, `vítr`, `zima`, `zítra`). Snapshot přegenerován. tsc 0, generator-validation ✓.
+
+## ✅ PED-1 rozšíření: g3 vyjmenovaná slova (2026-07-08)
+- `g3-cjl-vyjmenovana-slova` — rozděleno na `fill` (grafém [y/ý/i/í]) a `which` (4 správně napsaná slova, 1 vyjmenované). Opraveno ~7 antipattern distraktorů (`mislet`, `sin`, `sinec`, `lisý`, `lísek`, `naziivat`, `nazívat` → skutečná slova jako `milovat`, `sen`, `silák`, `liška`, `namočit`). Kumulativní gen zachován (L1: 12, L2: 18, L3: 27 pool). Snapshot přegenerován.
+
+## ✅ PED-1 pilot: pravopis i/y — options = grafém (2026-07-08)
+- `g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-pravopis-tvrdych-a-mekkych-souhlasek-i-y-po-souhlaskach` — L2/L3 přepracovány: options už NEJSOU celá chybně napsaná slova (`riba, rýba, ryba`), ale sporný grafém (`y, ý, i, í`). Dítě si tak nezapamatuje chybný tvar. correctAnswer = grafém, otázka „Doplň chybějící písmeno do slova: 'r_ba'", explanation ukazuje správné celé slovo. L1 (Tvrdá/Měkká/Obojetná) zachován. Snapshot přegenerován (přidáno do `UNFROZEN_TOPIC_IDS`). tsc 0, generator-validation ✓.
+- Šablona pro další topics 1. stupně (vyjmenovaná slova, sebekontrola písemného projevu, …) — pattern: `GraphemeItem { stem, correct: Grapheme, word, emoji, consonant, consonantType }` + `makeGraphemeTask`.
+
+## ✅ P0 hygiena + audit invarianty (2026-07-08)
+- P0 case klíč↔možnost sjednocen ve 3 generátorech (171 úloh, 0 mismatches diagnostikou po fixu): `manipulativniKomunikaceVReklame.ts` a `plynuleCteniSPorozumenimPrimereneNarocnychTextu.ts` (klíč `ano/ne` → `Ano/Ne`), `pravopisPredponVyVySZVz.ts` (L1 velké prefix — `matched` z options přes case-insens lookup).
+- Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
+- Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
+
+## ✅ P2 — neunikátní možnosti (2026-07-08)
+- Sdílený helper `src/lib/content/uniqueOptions.ts` (`buildUniqueOptions` + `shuffleOptions`) — dedup distraktorů + fallback pool + explicitní throw.
+- `g4-mat-zlomek-cast-celku-4`: L2 měla vždy duplicitní `smaller/den` (== druhý zlomek z otázky); L1/L3 kolize u `2·num == den` (doplněk == correct) a `2·num+1 == den` (doplněk == sousední čitatel). Přepsáno na `buildUniqueOptions` se sadou fallback distraktorů (num-1, den-1, den+1, …).
+- `g3-mat-cisla-do-1000`: řazení čísel — 4 vstupy nyní přes `Set` (unikátní), takže distraktory `[sorted[1], sorted[0], …]` a `[sorted[0], sorted[2], …]` už nekolidují s `correct` ani mezi sebou.
+- Sanity: `src/test/p2-unique-options.smoke.test.ts` (6 kombinací × 20 běhů = 120 iterací) zelené. Snapshot přegenerován (obě ID v `UNFROZEN_TOPIC_IDS`, 151 zamčených témat).
+
+## ✅ Snapshot zamčeného obsahu + P1 oprava předpon (2026-07-08)
+- Nový freeze mechanismus: `src/lib/contentSnapshot.ts` (deterministický SHA1 páru question|correctAnswer, LCG seed) + audit `src/test/frozen-content-unchanged.test.ts` + `fixtures/frozen-content.snapshot.json` (153 témat, informatika out). Regenerace: `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`. `UNFROZEN_TOPIC_IDS` drží aktivně opravovaná ID.
+- P1 (BUG 4): `g4-cjl/pravopisPredponVyVySZVz.ts` — 19 vad opraveno (neexistující slova, dvojité prefixy, sémanticky vadné věty) → spisovné tvary; 30/30/30 zachováno, tsc 0 chyb, generator-validation prochází. Handoff: [`docs/GENERATOR_FIXES_HANDOFF.md`](docs/GENERATOR_FIXES_HANDOFF.md). Zbývá P2/P0/PED-1..4.
+
 ## ✅ Fáze 3 (Možnost B) rollout 3c — server jako zdroj pravdy (2026-06-21)
 - 3c-1 sync na startu (`serverGetProgress` + obnova v `AnonStudentPage` → přežije smazání localStorage). 3c-2 `cleanup` akce (TTL 44 dní) — **kód hotový, NENASAZEN** (CLI 401 — vypršel access token). tsc/build OK, 4 E2E zelené. Větev `feat/phase3-anon-server-3c`. **AKCE:** `supabase login` + `supabase functions deploy anon-progress` + nastavit scheduling cleanup. Fáze 3 v kódu kompletní.
 

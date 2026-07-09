@@ -1,5 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { phrase, pad } from "@/lib/czechGrammar";
+import { buildUniqueOptions, shuffleOptions } from "@/lib/content/uniqueOptions";
 
 // Otázky testují porozumění zlomku jako části celku.
 // Žádné obrázky — odpověď je slovní/číselná.
@@ -18,16 +19,26 @@ function gen(level: number): PracticeTask[] {
     const num = Math.floor(Math.random() * (den - 1)) + 1; // 1 až den-1
 
     if (level === 1) {
-      // "Kolik částí je zbarveno, pokud je celek rozdělen na {den} dílů a zbarveno je {num} dílů?"
       const correct = `${num}/${den}`;
-      const d1 = `${num + 1}/${den}`;
-      const d2 = `${num}/${den + 1}`;
-      const d3 = `${den}/${num}`;
+      // Distraktory: sousední čitatel, jiný jmenovatel, prohození čit/jmen.
+      const distractors = [
+        `${num + 1}/${den}`,
+        `${num}/${den + 1}`,
+        `${den}/${num}`,
+      ];
+      // Fallback distraktory pro případ kolize (např. num+1 == den, apod.)
+      const fallbacks = [
+        `${Math.max(1, num - 1)}/${den}`,
+        `${num}/${Math.max(2, den - 1)}`,
+        `${num + 1}/${den + 1}`,
+        `${den + 1}/${num}`,
+      ];
+      const { options } = buildUniqueOptions(correct, distractors, fallbacks, 4);
 
       tasks.push({
         question: `Celek je rozdělen na ${phrase(den, "STEJNÝ", "DÍL")}. Zbarveno ${num === 1 ? "je" : "jsou"} ${pad(num, "DÍL")}. Jaký zlomek představují zbarvené díly?`,
         correctAnswer: correct,
-        options: shuffle([correct, d1, d2, d3]),
+        options: shuffleOptions(options),
         hints: [
           `Zlomek = (počet zbarvených dílů) / (celkový počet dílů).`,
           `Čitatel je nahoře (zbarvené), jmenovatel dole (celkový počet).`,
@@ -43,11 +54,24 @@ function gen(level: number): PracticeTask[] {
       if (num2 === num) num2 = num === 1 ? 2 : num - 1;
       const [bigger, smaller] = num > num2 ? [num, num2] : [num2, num];
       const correct = `${bigger}/${den}`;
+      // Distraktor "smaller/den" je nutně jeden z (num/den, num2/den) → nezahrnovat.
+      // Distraktory: druhý zlomek z otázky (menší), prohození u většího, prohození u menšího.
+      const distractors = [
+        `${smaller}/${den}`,
+        `${den}/${bigger}`,
+        `${den}/${smaller}`,
+      ];
+      const fallbacks = [
+        `${bigger + 1}/${den}`,
+        `${bigger}/${den + 1}`,
+        `${smaller}/${den + 1}`,
+      ];
+      const { options } = buildUniqueOptions(correct, distractors, fallbacks, 4);
 
       tasks.push({
         question: `Který zlomek je větší: ${num}/${den} nebo ${num2}/${den}?`,
         correctAnswer: correct,
-        options: shuffle([`${num}/${den}`, `${num2}/${den}`, `${den}/${bigger}`, `${smaller}/${den}`]),
+        options: shuffleOptions(options),
         hints: [
           `Mají stejný jmenovatel (${den}) — srovnáváme jen čitatele.`,
           `Větší čitatel = větší část celku.`,
@@ -67,14 +91,26 @@ function gen(level: number): PracticeTask[] {
       ];
       const item = items[Math.floor(Math.random() * items.length)];
       const correct = `${num}/${den}`;
-      const d1 = `${den - num}/${den}`;
-      const d2 = `${num + 1}/${den}`;
-      const d3 = `${num}/${den + 1}`;
+      // Distraktory: doplněk k celku, sousední čitatel, jiný jmenovatel.
+      // Doplněk `(den-num)/den` může kolidovat s correct (2*num == den) → fallback.
+      // Sousední čitatel `(num+1)/den` může kolidovat s doplňkem (2*num+1 == den) → fallback.
+      const distractors = [
+        `${den - num}/${den}`,
+        `${num + 1}/${den}`,
+        `${num}/${den + 1}`,
+      ];
+      const fallbacks = [
+        `${Math.max(1, num - 1)}/${den}`,
+        `${den}/${num}`,
+        `${num + 1}/${den + 1}`,
+        `${num}/${Math.max(2, den - 1)}`,
+      ];
+      const { options } = buildUniqueOptions(correct, distractors, fallbacks, 4);
 
       tasks.push({
         question: `Petr ${item.action} ${pad(num, "DÍL")} ${item.name} ${num === 1 ? "rozdělený" : "rozdělené"} na ${phrase(den, "STEJNÝ", "DÍL")}. Jaký zlomek ${item.name} snědl?`,
         correctAnswer: correct,
-        options: shuffle([correct, d1, d2, d3]),
+        options: shuffleOptions(options),
         hints: [
           `Jaký je celkový počet dílů? Kolik z nich snědl?`,
           `Zlomek = snědené díly / celkový počet dílů.`,
@@ -88,15 +124,6 @@ function gen(level: number): PracticeTask[] {
   }
 
   return tasks;
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
 }
 
 export const ZLOMEK_CAST_CELKU: TopicMetadata[] = [

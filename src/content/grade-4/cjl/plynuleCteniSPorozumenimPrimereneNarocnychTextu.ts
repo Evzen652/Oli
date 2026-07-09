@@ -83,7 +83,8 @@ function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : shuffle([...POOL_L1, ...POOL_L2]);
   return shuffle(pool).slice(0, 30).map(({ q, a, hint, e }) => ({
     question: q,
-    correctAnswer: a,
+    // Sjednocení: klíč se musí shodovat s options literálně (velké Ano/Ne).
+    correctAnswer: a === "ano" ? "Ano" : "Ne",
     options: ["Ano", "Ne"],
     hints: [
       hint,

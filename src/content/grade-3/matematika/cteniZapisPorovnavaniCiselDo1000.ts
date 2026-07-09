@@ -69,8 +69,11 @@ function gen(level: number): PracticeTask[] {
         solutionSteps: [`${n}: číslice stovek = ${s}, číslice desítek = ${d}, číslice jednotek = ${j}.`],
       });
     } else {
-      // Řazení čísel
-      const nums = Array.from({ length: 4 }, () => Math.floor(Math.random() * max) + 1);
+      // Řazení čísel — potřebujeme 4 RŮZNÁ čísla (duplicitní vstupy generují
+      // shodné distraktory: swap prvních dvou = sorted, pokud sorted[0]==sorted[1]).
+      const numsSet = new Set<number>();
+      while (numsSet.size < 4) numsSet.add(Math.floor(Math.random() * max) + 1);
+      const nums = [...numsSet];
       const sorted = [...nums].sort((a, b) => a - b);
       // Shuffle musí produkovat jiné pořadí než seřazené — jinak je otázka triviální (giveaway)
       let shuffled = shuffle([...nums]);

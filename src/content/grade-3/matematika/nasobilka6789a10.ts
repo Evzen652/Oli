@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { buildUniqueOptions, shuffleOptions } from "@/lib/content/uniqueOptions";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -9,34 +10,108 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+/**
+ * PED-2 kalibrace L1 < L2 < L3.
+ *
+ * Před: L1 = tables [6,7], L2 = [8,9,10], L3 = celá [6..10] → L3 pool zahrnoval
+ * L1+L2, `getTierTasks` (rozdíl množin) často vyřadil většinu L3, gradace šla
+ * do háje.
+ *
+ * Teď: **disjunktní otázky**.
+ *   L1  — násobek **6 a 7**, prvně učené řady (množina otázek t × n, t∈{6,7}).
+ *   L2  — násobek **8 a 9**, těžší řady (množina otázek t × n, t∈{8,9}).
+ *   L3  — násobek **10** (technicky snadné, ale nová řada) + **INVERZE**
+ *         "? × t = c" pro t ∈ [6..10] — vyžaduje dělení / spojení dvou operací.
+ * Otázky se formou (`?` na začátku vs uprostřed) nikdy nepřekrývají mezi
+ * úrovněmi → rozdíl množin drží gradaci deterministicky.
+ */
+
+interface MulTask {
+  t: number;
+  n: number;
+}
+
+/** `t × n = ?` — standardní tvar. */
+function makeForward(t: number, n: number): PracticeTask {
+  const correct = t * n;
+  const distractors = [
+    String(correct + t),
+    String(Math.max(0, correct - t)),
+    String(correct + 1),
+  ];
+  const fallbacks = [
+    String(correct - 1),
+    String(correct + t + 1),
+    String(correct + 2),
+    String(t * (n + 1)),
+    String(t * Math.max(1, n - 1)),
+  ];
+  const { options } = buildUniqueOptions(String(correct), distractors, fallbacks, 4);
+  return {
+    question: `${t} × ${n} = ?`,
+    correctAnswer: String(correct),
+    options: shuffleOptions(options),
+    hints: [
+      `${t} × ${n} = ${n}× přičteš ${t}.`,
+      `Nebo: ${t} × ${n} = ${t} + ${t} + … (${n}×)`,
+    ],
+    solutionSteps: [
+      `${t} × ${n} = ${correct}`,
+      `(${Array.from({ length: n }, () => t).join(" + ")} = ${correct})`,
+    ],
+  };
+}
+
+/** `? × t = c` — inverzní tvar, nutí dítě dělit. */
+function makeInverse(t: number, n: number): PracticeTask {
+  const c = t * n;
+  const distractors = [
+    String(n + 1),
+    String(Math.max(1, n - 1)),
+    String(n + 2),
+  ];
+  const fallbacks = [
+    String(Math.max(1, n - 2)),
+    String(n + 3),
+    String(n + t),
+  ];
+  const { options } = buildUniqueOptions(String(n), distractors, fallbacks, 4);
+  return {
+    question: `? × ${t} = ${c}`,
+    correctAnswer: String(n),
+    options: shuffleOptions(options),
+    hints: [
+      `Zeptej se: kolikrát vezmu ${t}, abych dostal ${c}?`,
+      `To je totéž jako ${c} ÷ ${t}.`,
+    ],
+    solutionSteps: [
+      `Hledám číslo x tak, že x × ${t} = ${c}.`,
+      `x = ${c} ÷ ${t} = ${n}.`,
+    ],
+  };
+}
+
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  // level 1: 6 a 7, level 2: 8 a 9, level 3: celá násobilka 6-10
-  const tables = level === 1 ? [6, 7] : level === 2 ? [8, 9, 10] : [6, 7, 8, 9, 10];
-
-  for (let i = 0; i < 40; i++) {
-    const t = tables[i % tables.length];
-    const n = Math.floor(Math.random() * 10) + 1;
-    const correct = t * n;
-    const d1 = correct + t;
-    const d2 = correct - t > 0 ? correct - t : correct + t * 2;
-    const d3 = correct + 1;
-
-    tasks.push({
-      question: `${t} × ${n} = ?`,
-      correctAnswer: String(correct),
-      options: shuffle([String(correct), String(d1), String(d2), String(d3)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-      hints: [
-        `${t} × ${n} = ${n}× přičteš ${t}.`,
-        `Nebo: ${t} × ${n} = ${t} + ${t} + … (${n}×)`,
-      ],
-      solutionSteps: [
-        `${t} × ${n} = ${correct}`,
-        `(${Array.from({ length: n }, (_, i) => t).join(" + ")} = ${correct})`,
-      ],
-    });
+  const combos: MulTask[] = [];
+  if (level === 1) {
+    // L1 — řady 6 a 7 (prvně naučené, kotva)
+    for (const t of [6, 7]) for (let n = 1; n <= 10; n++) combos.push({ t, n });
+    return shuffle(combos).slice(0, 20).map(({ t, n }) => makeForward(t, n));
   }
-  return tasks;
+  if (level === 2) {
+    // L2 — řady 8 a 9 (těžší, méně vídané)
+    for (const t of [8, 9]) for (let n = 1; n <= 10; n++) combos.push({ t, n });
+    return shuffle(combos).slice(0, 20).map(({ t, n }) => makeForward(t, n));
+  }
+  // L3 — desítková řada (technicky snadná, ale nová) + INVERZE napříč 6-10
+  const tenSeries: MulTask[] = [];
+  for (let n = 1; n <= 10; n++) tenSeries.push({ t: 10, n });
+  const inverse: MulTask[] = [];
+  for (const t of [6, 7, 8, 9, 10]) for (let n = 2; n <= 10; n++) inverse.push({ t, n });
+  const out: PracticeTask[] = [];
+  for (const { t, n } of shuffle(tenSeries).slice(0, 6)) out.push(makeForward(t, n));
+  for (const { t, n } of shuffle(inverse).slice(0, 14)) out.push(makeInverse(t, n));
+  return shuffle(out);
 }
 
 export const NASOBILKA6789A10: TopicMetadata[] = [
@@ -54,8 +129,9 @@ export const NASOBILKA6789A10: TopicMetadata[] = [
       "Zpaměti ovládat násobilku 6 až 10.",
       "Rychle odpovídat na příklady typu 7 × 8.",
       "Rozpoznat výsledek v obou pořadích (8 × 7 = 7 × 8).",
+      "Najít chybějící činitel v příkladu (? × 7 = 56).",
     ],
-    boundaries: ["Pouze násobilka 6–10.", "Nezahrnuje dělení ani velkou násobilku."],
+    boundaries: ["Pouze násobilka 6–10.", "Nezahrnuje písemné násobení ani velkou násobilku."],
     gradeRange: [3, 3],
     inputType: "select_one",
     defaultLevel: 1,
@@ -63,11 +139,12 @@ export const NASOBILKA6789A10: TopicMetadata[] = [
     contentType: "algorithmic",
     generator: gen,
     helpTemplate: {
-      hint: "Každý příklad v násobilce se dá spočítat opakovaným sčítáním: 6 × 4 = 6+6+6+6 = 24.",
+      hint: "Každý příklad v násobilce se dá spočítat opakovaným sčítáním: 6 × 4 = 6+6+6+6 = 24. U inverzních úloh (? × 7 = 56) se ptej: kolikrát vezmu 7, abych dostal 56?",
       steps: [
         "Nauč se násobilku 6, pak 7, pak 8, 9, 10.",
         "Pomáhá rytmické odříkávání: 6, 12, 18, 24, 30…",
         "Záměnnost: 6 × 7 = 7 × 6 — vyber tu, co znáš lépe.",
+        "Inverze: ? × 7 = 56 → hledám ekvivalent 56 ÷ 7.",
       ],
       commonMistake: "Záměna výsledků 7×8=56 a 8×8=64 — jsou blízko u sebe.",
       example: "7 × 8: 7+7=14, 14+7=21, 21+7=28, 28+7=35, 35+7=42, 42+7=49, 49+7=56. Výsledek: 56.",

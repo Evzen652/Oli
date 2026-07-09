@@ -9,7 +9,8 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface PoolItem {
+// L1 zůstává klasické (Tvrdá/Měkká/Obojetná) — testuje znalost typů souhlásek.
+interface L1Item {
   question: string;
   correct: string;
   distractors: string[];
@@ -18,8 +19,24 @@ interface PoolItem {
   solution: string;
 }
 
+// L2/L3: PED-1 — možnosti jsou POUZE sporný grafém (i/í/y/ý), NE celá chybná slova.
+// Zobrazování chybných slov („riba", „šypek") je pedagogicky problematické —
+// dítě si je zapamatuje. Otázka teď má jen jeden neznámý grafém a možnosti [y, ý, i, í].
+type Grapheme = "y" | "ý" | "i" | "í";
+interface GraphemeItem {
+  /** Slovo s podtržítkem místo sporného grafému, např. "r_ba". */
+  stem: string;
+  correct: Grapheme;
+  /** Slovo celé pro vysvětlení, např. "ryba". */
+  word: string;
+  emoji: string;
+  /** Souhláska před grafémem (pro nápovědu), např. "R". */
+  consonant: string;
+  consonantType: "tvrdá" | "měkká";
+}
+
 // L1 — Identifikace souhlásek a pravidel
-const POOL_L1: PoolItem[] = [
+const POOL_L1: L1Item[] = [
   { question: "Jaká souhláska je 'r'?", correct: "Tvrdá", distractors: ["Měkká", "Obojetná"], emoji: "📝", hint: "Tvrdé souhlásky jsou: h, ch, k, r. Je R v tomto seznamu?", solution: "R je tvrdá souhláska — patří do skupiny h, ch, k, r. Po tvrdé souhlásce vždy píšeme Y, proto 'ryba', ne 'riba'." },
   { question: "Jaká souhláska je 'k'?", correct: "Tvrdá", distractors: ["Měkká", "Obojetná"], emoji: "📝", hint: "Tvrdé souhlásky jsou: h, ch, k, r. Je K v tomto seznamu?", solution: "K je tvrdá souhláska — patří do skupiny h, ch, k, r. Po K vždy píšeme Y, proto 'kytara', ne 'kitara'." },
   { question: "Jaká souhláska je 'č'?", correct: "Měkká", distractors: ["Tvrdá", "Obojetná"], emoji: "📝", hint: "Měkké souhlásky jsou: ž, š, č, ř, c, j. Je Č v tomto seznamu?", solution: "Č je měkká souhláska — patří do skupiny ž, š, č, ř, c, j. Po Č vždy píšeme I nebo Í, proto 'číst', ne 'čyst'." },
@@ -30,43 +47,65 @@ const POOL_L1: PoolItem[] = [
   { question: "Jaká souhláska je 'ž'?", correct: "Měkká", distractors: ["Tvrdá", "Obojetná"], emoji: "📝", hint: "Měkké souhlásky jsou: ž, š, č, ř, c, j. Je Ž v tomto seznamu?", solution: "Ž je měkká souhláska — patří do skupiny ž, š, č, ř, c, j. Po Ž vždy píšeme I nebo Í, proto 'žízeň', ne 'žyzeň'." },
 ];
 
-// L2 — Doplňování frekventovaných slov po tvrdých souhláskách
-const POOL_L2: PoolItem[] = [
-  { question: "Doplň správně: 'r_ba'", correct: "ryba", distractors: ["riba", "rýba"], emoji: "🐟", hint: "R je tvrdá souhláska. Co vždy píšeme po tvrdé souhlásce?", solution: "Správně je 'ryba' — R je tvrdá souhláska, proto po ní píšeme Y, ne I." },
-  { question: "Doplň správně: 'k_tara'", correct: "kytara", distractors: ["kitara", "kítara"], emoji: "🎸", hint: "K je tvrdá souhláska. Co vždy píšeme po K?", solution: "Správně je 'kytara' — K je tvrdá souhláska, proto po ní píšeme Y, ne I." },
-  { question: "Doplň správně: 'ch_ba'", correct: "chyba", distractors: ["chiba", "chíba"], emoji: "❌", hint: "CH je tvrdá souhláska. Co vždy píšeme po CH?", solution: "Správně je 'chyba' — CH je tvrdá souhláska, proto po ní píšeme Y, ne I." },
-  { question: "Doplň správně: 'k_blík'", correct: "kyblík", distractors: ["kiblík", "kíblík"], emoji: "🪣", hint: "K je tvrdá souhláska. Co vždy píšeme po K?", solution: "Správně je 'kyblík' — K je tvrdá souhláska, proto po ní píšeme Y, ne I." },
-  { question: "Doplň správně: 'ch_trý'", correct: "chytrý", distractors: ["chitrý", "chítrý"], emoji: "🦊", hint: "CH je tvrdá souhláska. Co vždy píšeme po CH?", solution: "Správně je 'chytrý' — CH je tvrdá souhláska, proto po ní píšeme Y, ne I." },
-  { question: "Doplň správně: 'r_že'", correct: "rýže", distractors: ["riže", "říže"], emoji: "🍚", hint: "R je tvrdá souhláska. Co vždy píšeme po R?", solution: "Správně je 'rýže' — R je tvrdá souhláska, proto po ní píšeme Y (zde dlouhé Ý)." },
-  { question: "Doplň správně: 'h_drant'", correct: "hydrant", distractors: ["hidrant", "hýdrant"], emoji: "🚒", hint: "H je tvrdá souhláska. Co vždy píšeme po H?", solution: "Správně je 'hydrant' — H je tvrdá souhláska, proto po ní píšeme Y, ne I." },
-  { question: "Doplň správně: 'k_nout'", correct: "kynout", distractors: ["kinout", "kínout"], emoji: "🙋", hint: "K je tvrdá souhláska. Co vždy píšeme po K?", solution: "Správně je 'kynout' — K je tvrdá souhláska, proto po ní píšeme Y, ne I." },
+// L2 — Doplňování Y/Ý po tvrdých souhláskách
+const POOL_L2: GraphemeItem[] = [
+  { stem: "r_ba", correct: "y", word: "ryba", emoji: "🐟", consonant: "R", consonantType: "tvrdá" },
+  { stem: "k_tara", correct: "y", word: "kytara", emoji: "🎸", consonant: "K", consonantType: "tvrdá" },
+  { stem: "ch_ba", correct: "y", word: "chyba", emoji: "❌", consonant: "CH", consonantType: "tvrdá" },
+  { stem: "k_blík", correct: "y", word: "kyblík", emoji: "🪣", consonant: "K", consonantType: "tvrdá" },
+  { stem: "ch_trý", correct: "y", word: "chytrý", emoji: "🦊", consonant: "CH", consonantType: "tvrdá" },
+  { stem: "r_že", correct: "ý", word: "rýže", emoji: "🍚", consonant: "R", consonantType: "tvrdá" },
+  { stem: "h_drant", correct: "y", word: "hydrant", emoji: "🚒", consonant: "H", consonantType: "tvrdá" },
+  { stem: "k_nout", correct: "y", word: "kynout", emoji: "🙋", consonant: "K", consonantType: "tvrdá" },
 ];
 
-// L3 — Doplňování slov po měkkých souhláskách
-const POOL_L3: PoolItem[] = [
-  { question: "Doplň správně: 'ž_zeň'", correct: "žízeň", distractors: ["žyzeň", "žizeň"], emoji: "💧", hint: "Ž je měkká souhláska. Co vždy píšeme po měkké souhlásce?", solution: "Správně je 'žízeň' — Ž je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'š_pek'", correct: "šípek", distractors: ["šypek", "šipek"], emoji: "🌹", hint: "Š je měkká souhláska. Co vždy píšeme po Š?", solution: "Správně je 'šípek' — Š je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'č_slo'", correct: "číslo", distractors: ["čyslo", "čislo"], emoji: "🔢", hint: "Č je měkká souhláska. Co vždy píšeme po Č?", solution: "Správně je 'číslo' — Č je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'j_st'", correct: "jíst", distractors: ["jyst", "jist"], emoji: "🍽️", hint: "J je měkká souhláska. Co vždy píšeme po J?", solution: "Správně je 'jíst' — J je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'c_l'", correct: "cíl", distractors: ["cyl", "cil"], emoji: "🎯", hint: "C je měkká souhláska. Co vždy píšeme po C?", solution: "Správně je 'cíl' — C je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'ř_ká'", correct: "říká", distractors: ["řyká", "říka"], emoji: "🗣️", hint: "Ř je měkká souhláska. Co vždy píšeme po Ř?", solution: "Správně je 'říká' — Ř je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'š_roký'", correct: "široký", distractors: ["šyroký", "široký"], emoji: "↔️", hint: "Š je měkká souhláska. Co vždy píšeme po Š?", solution: "Správně je 'široký' — Š je měkká souhláska, proto po ní píšeme Í, ne Y." },
-  { question: "Doplň správně: 'č_st'", correct: "číst", distractors: ["čyst", "čist"], emoji: "📖", hint: "Č je měkká souhláska. Co vždy píšeme po Č?", solution: "Správně je 'číst' — Č je měkká souhláska, proto po ní píšeme Í, ne Y." },
+// L3 — Doplňování I/Í po měkkých souhláskách
+const POOL_L3: GraphemeItem[] = [
+  { stem: "ž_zeň", correct: "í", word: "žízeň", emoji: "💧", consonant: "Ž", consonantType: "měkká" },
+  { stem: "š_pek", correct: "í", word: "šípek", emoji: "🌹", consonant: "Š", consonantType: "měkká" },
+  { stem: "č_slo", correct: "í", word: "číslo", emoji: "🔢", consonant: "Č", consonantType: "měkká" },
+  { stem: "j_st", correct: "í", word: "jíst", emoji: "🍽️", consonant: "J", consonantType: "měkká" },
+  { stem: "c_l", correct: "í", word: "cíl", emoji: "🎯", consonant: "C", consonantType: "měkká" },
+  { stem: "ř_ká", correct: "í", word: "říká", emoji: "🗣️", consonant: "Ř", consonantType: "měkká" },
+  { stem: "š_roký", correct: "i", word: "široký", emoji: "↔️", consonant: "Š", consonantType: "měkká" },
+  { stem: "č_st", correct: "í", word: "číst", emoji: "📖", consonant: "Č", consonantType: "měkká" },
 ];
+
+const ALL_GRAPHEMES: readonly Grapheme[] = ["y", "ý", "i", "í"] as const;
+
+function makeGraphemeTask(item: GraphemeItem): PracticeTask {
+  const rule =
+    item.consonantType === "tvrdá"
+      ? `${item.consonant} je tvrdá souhláska → píšeme Y/Ý.`
+      : `${item.consonant} je měkká souhláska → píšeme I/Í.`;
+  const graphemeLabel = item.correct.toUpperCase();
+  return {
+    question: `Doplň chybějící písmeno do slova: "${item.stem}"`,
+    correctAnswer: item.correct,
+    // Vždy stejná sada 4 grafémů → dítě vidí konzistentní volbu Y/Ý/I/Í.
+    options: [...ALL_GRAPHEMES],
+    emoji: item.emoji,
+    hints: [
+      rule,
+      `Ptej se: po ${item.consonant} patří tvrdé, nebo měkké písmeno? A je krátké, nebo dlouhé?`,
+    ],
+    explanation: `Správně je „${item.word}" (${graphemeLabel}). ${rule}`,
+  };
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).map(item => {
-    const options = shuffle([item.correct, ...item.distractors]);
-    return {
+  if (level === 1) {
+    return shuffle(POOL_L1).map((item) => ({
       question: item.question,
       correctAnswer: item.correct,
-      options,
+      options: shuffle([item.correct, ...item.distractors]),
       emoji: item.emoji,
       hints: [item.hint],
       explanation: item.solution,
-    };
-  });
+    }));
+  }
+  const pool = level === 2 ? POOL_L2 : POOL_L3;
+  return shuffle(pool).map(makeGraphemeTask);
 }
 
 export const PRAVOPISIY: TopicMetadata[] = [

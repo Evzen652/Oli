@@ -16,7 +16,16 @@ import { validateAnswer } from "./validators";
 import { getTierTasks } from "./levelCoverage";
 import { checkHintLeakage } from "../../supabase/functions/_shared/hintLeakage";
 
-export type AuditCategory = "format" | "self_validation" | "hint_leak" | "boundary" | "czech_grammar";
+export type AuditCategory =
+  | "format"
+  | "self_validation"
+  | "hint_leak"
+  | "boundary"
+  | "czech_grammar"
+  /** Duplicitní možnosti v `options` (case-insensitive). Full coverage. */
+  | "options_distinct"
+  /** `correctAnswer` neodpovídá žádné z `options` (normalizovaně). Full coverage. */
+  | "answer_key_matches_option";
 
 export interface AuditIssue {
   topicId: string;
@@ -125,6 +134,60 @@ export function runOfflineAudit(
           category: "format",
           detail: `displayName "${topic.displayName}" vypadá jako anglický název — musí být česky.`,
         });
+      }
+    }
+
+    // ── Full-coverage invarianty (levné, běží přes VŠECHNY tasks, ne jen sample) ──
+    // Cíl: odchytit random-generator bugy (kolize distraktorů, korektní klíč
+    // nedosažitelný v options), které sample 5 úloh z 40 propásne.
+    // Reportujeme max 3 hits per topic × category, aby se log nezaplavil.
+    {
+      const norm = (s: string) => s.trim().toLowerCase();
+      let optionsDistinctReports = 0;
+      let answerKeyReports = 0;
+      const MAX_PER_TOPIC = 3;
+      const invariantMeta = {
+        topicId: topic.id,
+        topicTitle: topic.title,
+        topicSubject: topic.subject,
+        topicCategory: topic.category,
+        topicGradeRange: topic.gradeRange,
+      };
+      for (const task of allTasks) {
+        // options_distinct — normalizovaně (case-insensitive)
+        if (task.options && task.options.length > 1 && optionsDistinctReports < MAX_PER_TOPIC) {
+          const normed = task.options.map(norm);
+          if (new Set(normed).size !== normed.length) {
+            const dup = normed.find((o, i) => normed.indexOf(o) !== i);
+            issues.push({
+              ...invariantMeta,
+              taskQuestion: (task.question ?? "").slice(0, 80),
+              category: "options_distinct",
+              detail: `Duplicitní možnost v options (normalizovaně): "${dup}" — [${task.options.join(", ")}]`,
+            });
+            optionsDistinctReports++;
+          }
+        }
+        // answer_key_matches_option — pouze select_one (jiné typy nejsou vs. options)
+        if (
+          topic.inputType === "select_one" &&
+          task.options && task.options.length > 0 &&
+          task.correctAnswer != null &&
+          answerKeyReports < MAX_PER_TOPIC
+        ) {
+          const key = norm(String(task.correctAnswer));
+          const found = task.options.some((o) => norm(o) === key);
+          if (!found) {
+            issues.push({
+              ...invariantMeta,
+              taskQuestion: (task.question ?? "").slice(0, 80),
+              category: "answer_key_matches_option",
+              detail: `Klíč "${task.correctAnswer}" neodpovídá žádné z možností [${task.options.join(", ")}] (normalizovaně).`,
+              correctAnswer: String(task.correctAnswer),
+            });
+            answerKeyReports++;
+          }
+        }
       }
     }
 
@@ -382,6 +445,8 @@ export function runOfflineAudit(
     hint_leak: 0,
     boundary: 0,
     czech_grammar: 0,
+    options_distinct: 0,
+    answer_key_matches_option: 0,
   };
   const byTopic: Record<string, number> = {};
   for (const issue of issues) {
@@ -389,7 +454,18 @@ export function runOfflineAudit(
     byTopic[issue.topicId] = (byTopic[issue.topicId] ?? 0) + 1;
   }
 
-  const okCount = totalTasksChecked - issues.length;
+  // passingPct = podíl sample úloh bez nálezu. Full-coverage invarianty
+  // (options_distinct, answer_key_matches_option) běží mimo sample loop a
+  // jejich issues by nespravedlivě snižovaly ratio → do okCount se nezapočítají.
+  const COVERAGE_CATEGORIES: ReadonlySet<AuditCategory> = new Set<AuditCategory>([
+    "options_distinct",
+    "answer_key_matches_option",
+  ]);
+  const sampleIssueCount = issues.reduce(
+    (n, i) => (COVERAGE_CATEGORIES.has(i.category) ? n : n + 1),
+    0,
+  );
+  const okCount = totalTasksChecked - sampleIssueCount;
   const passingPct = totalTasksChecked > 0
     ? Math.round((okCount / totalTasksChecked) * 100)
     : 0;
@@ -412,6 +488,8 @@ export const CATEGORY_LABELS: Record<AuditCategory, string> = {
   hint_leak: "Nápověda prozrazuje",
   boundary: "Mimo hranice tématu",
   czech_grammar: "Česká gramatika",
+  options_distinct: "Duplicitní možnosti",
+  answer_key_matches_option: "Klíč ≠ žádná možnost",
 };
 
 /** Barva pro UI dle kategorie */
@@ -421,6 +499,8 @@ export const CATEGORY_COLORS: Record<AuditCategory, string> = {
   hint_leak: "bg-amber-100 text-amber-800 border-amber-200",
   boundary: "bg-violet-100 text-violet-800 border-violet-200",
   czech_grammar: "bg-blue-100 text-blue-800 border-blue-200",
+  options_distinct: "bg-rose-100 text-rose-800 border-rose-200",
+  answer_key_matches_option: "bg-red-100 text-red-800 border-red-200",
 };
 
 // ─────────────────────────────────────────────────────────
