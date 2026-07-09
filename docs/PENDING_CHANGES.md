@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ PED-3 rozšíření: g4-mat-magicke-ctverce (2026-07-08)
+- Před: L2==L3 (identický typ úloh), magic distraktor bug (= střed). Teď disjunktní: L1 (sums 15/18, aritmetické → next), L2 (21/24, aritmetické → missing middle), L3 (27/30, nelineární → 7. člen extrapolace). Audit `20/20/20 max L3` (bylo `20/20/0`). Používá buildUniqueOptions. Snapshot přegenerován.
+
 ## ✅ BUG 3 ověřeno: přírodověda hints = záměr (2026-07-08)
 - Přírodověda topics nemají per-task `hints:` — je to **ZÁMĚR** (šablona), ne výpadek. `HelpButton` fallback pipeline: `task.hints → task.solutionSteps → topic.helpTemplate.hint`. Přírodověda topic-level `helpTemplate.hint` má vyplněný → runtime funguje. Případné doplnění per-task hints je pedagogické nice-to-have, ne blocker.
 

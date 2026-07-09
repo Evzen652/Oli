@@ -44,6 +44,7 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // PED-3 — naplnit L3 + disjunktní L1/L2/L3
   "g3-mat-kruznice-kruh",
   "g3-mat-rysovani-usecky",
+  "g4-mat-magicke-ctverce-ciselne-rady-4",
 ]);
 
 export interface TopicFingerprint {
