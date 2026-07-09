@@ -44,10 +44,27 @@ const POOL: QA[] = [
   { q: "Jak se pozná mnohoznačné slovo ve větě?", a: "podíváme se na větu kolem — kontext prozradí, jaký význam se myslí", opts: ["podíváme se na větu kolem — kontext prozradí, jaký význam se myslí", "mnohoznačná slova jsou vždy zvýrazněna", "mnohoznačná slova jsou vždy delší", "poznáme to podle velkého písmena"], e: "Mnohoznačné slovo samo o sobě nevypadá jinak než jiná slova — musíme se podívat na celou větu. Věta kolem nám řekne, v jakém smyslu se slovo použilo." },
 ];
 
-function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL.slice(0, 15) : level === 2 ? POOL.slice(15, 30) : POOL;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+/**
+ * PED-3 kalibrace L1<L2<L3.
+ * Před: L3 = celý POOL, L1∪L2 = POOL[0..30] → L3\(L1∪L2) = 1 úloha.
+ * Teď disjunktní: L1 (konkrétní věty), L2 (definice + rozpoznávání typu),
+ * L3 (přenesené významy, obrazné výrazy, srovnání).
+ */
+const POOL_L3_EXTRA: QA[] = [
+  { q: "Co znamená přenesený výraz 'ostrý jazyk'?", a: "člověk, který mluví ostře, kritizuje jedovatě", opts: ["člověk, který mluví ostře, kritizuje jedovatě", "jazyk s ostrým hrotem", "jazyk zvířete s bodlinami", "jazyk politiků"], e: "'Ostrý jazyk' je obrazný výraz — nemluvíme o skutečné ostrosti, ale o způsobu mluvy člověka." },
+  { q: "Co znamená přenesený výraz 'zlaté ruce'?", a: "šikovný člověk, který umí opravit cokoliv", opts: ["šikovný člověk, který umí opravit cokoliv", "ruce potažené zlatem", "boháč", "ruce ve zlatých šatech"], e: "'Zlaté ruce' popisují šikovnost — přenesený význam, ne skutečné zlato." },
+  { q: "Které slovo má přenesený význam ve větě 'Hlavu státu tvoří prezident'?", a: "hlavu", opts: ["hlavu", "státu", "tvoří", "prezident"], e: "'Hlava státu' = vedoucí — přenesený význam, ne fyzická hlava." },
+  { q: "Ve větě 'Pod větrem se ohnula koruna stromu' znamená 'koruna':", a: "vršek stromu (větve a listy)", opts: ["vršek stromu (větve a listy)", "královská ozdoba", "peněžní jednotka", "město"], e: "V kontextu stromu se 'koruna' vždy myslí vršek s větvemi." },
+  { q: "Vyber větu, kde má slovo 'list' PŘENESENÝ význam:", a: "Otočila jsem list a začala znovu.", opts: ["Otočila jsem list a začala znovu.", "Ze stromu spadl žlutý list.", "List papíru je čistý.", "Dubový list má tvar hvězdy."], e: "'Otočit list' = začít nově — přenesený význam (jako otočit stránku života)." },
+  { q: "Co znamená slovíčko 'zub' ve větě 'Zub času nahlodal starou zeď'?", a: "postupné opotřebení věcí časem", opts: ["postupné opotřebení věcí časem", "zub v ústech", "část klíče", "hřebík"], e: "'Zub času' = obrazné vyjádření pomalého ničení věcí stárnutím." },
+  { q: "Ve větě 'Rukou svého bratra vysvětlil situaci' — přeneseně znamená 'ruka':", a: "prostředníka, zprostředkovatele", opts: ["prostředníka, zprostředkovatele", "fyzická ruka", "rukavice", "nástroj"], e: "'Rukou' zde = přes něj, s jeho pomocí. Přenesený význam." },
+  { q: "Které z těchto slov je mnohoznačné?", a: "jazyk", opts: ["jazyk", "citron", "poštovní schránka", "kachna letecká"], e: "'Jazyk' = orgán v ústech, i řeč (český jazyk), i tenký kus (jazyk boty). Ostatní jsou jednoznačná/složená pojmenování." },
+  { q: "Ve větě 'V lese hučely velké borovice' má slovo 'les' význam:", a: "místo se stromy (jednoznačný, přímý)", opts: ["místo se stromy (jednoznačný, přímý)", "les rukou", "hodně věcí najednou", "město"], e: "'V lese' = na místě, kde rostou stromy — přímý význam." },
+  { q: "Co znamená obraz 'srdce z kamene'?", a: "chladný člověk bez soucitu", opts: ["chladný člověk bez soucitu", "kámen ve tvaru srdce", "srdce ze sochy", "starý šperk"], e: "'Srdce z kamene' = přenesený význam — člověk necítí soucit, jako by měl místo srdce kámen." },
+];
+
+function pick(pool: QA[]): PracticeTask[] {
+  return shuffle(pool).slice(0, Math.min(pool.length, 16)).map(({ q, a, opts, e }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
@@ -57,6 +74,12 @@ function gen(level: number): PracticeTask[] {
     ],
     explanation: e,
   }));
+}
+
+function gen(level: number): PracticeTask[] {
+  if (level === 1) return pick(POOL.slice(0, 15));
+  if (level === 2) return pick(POOL.slice(15, 31));
+  return pick(POOL_L3_EXTRA);
 }
 
 export const SLOVAJEDNOZNACNAMNOHO: TopicMetadata[] = [
