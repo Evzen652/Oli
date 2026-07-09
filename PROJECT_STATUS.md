@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-10 — Audit invarianty spec (kolo 2 spec):
+- ✅ **Přejmenování + upgrade**: `options_distinct → options_distinct_after_forms`, `answer_key_matches_option → answer_key_matches_one_option` (kontroluje **právě 1** match, chytá i 2+ shodné klíče). Normalize rozšířen o **NFC diakritiku** a sjednocení mezer.
+- ✅ **min_unique_tasks_per_tier**: K_MIN 8 → **12** + RATIO_MIN **0.6** (unique/total). Kontrola aktivní jen pro tiery s ≥6 úlohami.
+- ✅ **TIER_EXCEPTIONS** allowlist v novém `src/lib/auditInvariantConfig.ts` — 12 slohových/rukopisných topics bez přirozené obtížnostní osy (dialog, omluvenka, próza-verše, sebekontrola, tvořivé činnosti, popis, ...).
+- ✅ **generated_word_is_valid** (spec 6, **klíčová prevence**): whitelist spisovných tvarů + funkce `getGeneratedWordCheck(topicId)` pro `g4-cjl-pravopis-predpon-vy-vy-s-z-vz`. Kontroluje každý vytvořený tvar (prefix+základ); chytá „zdal", „vzstartovala", „spochodovala". Tolerance přes seznam známých kořenů, aby nefalšovala legitimní tvary.
+
 ### Session 2026-07-09/10 — Kolo 2 review + kompletní opravy:
 - ✅ **P0 kolo 2 (A1-A4)** — 4 vadné klíče v L3 poolech (`veta-jednoducha`, `spojky`, `dopis`, vzory×3 duplicity v options).
 - ✅ **P1 kolo 2 (A5-A7)** — reklama + čtení s porozuměním doplněny o L3 se select_one ze 4 (10 úloh každý), magic čtverce označeny jako enrichment + rozšířený fond (Fibonacci, kubická, ×3), měření délky s třetinou označena jako challenge.

@@ -49,6 +49,11 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Audit invarianty spec (kolo 2 spec) — kompletní (2026-07-10)
+- Přejmenování + NFC diakritika v normalize; „právě 1" match u klíče; K=12 + RATIO=0.6.
+- Nový `src/lib/auditInvariantConfig.ts` s TIER_EXCEPTIONS (12 slohových topics) a PREFIX_WHITELIST + `getGeneratedWordCheck` pro g4-cjl-předpony.
+- Chytá „zdal"/„vzstartovala" typ chyb předem, ne až v review.
+
 ## ✅ Kolo 2 review — kompletní opravy (2026-07-09/10)
 - **P0** (A1-A4): vadné klíče v L3 poolech opraveny (viz commit `c83eafe`).
 - **P1** (A5-A7): reklama + čtení dostaly L3 se select_one ze 4 (10 úloh každý), magic čtverce enrichment + rozšířený fond, měření délky třetina jako challenge.
