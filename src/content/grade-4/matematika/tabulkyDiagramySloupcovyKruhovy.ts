@@ -1,79 +1,35 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { buildUniqueOptions, shuffleOptions } from "@/lib/content/uniqueOptions";
 
 // Bez obrázků — úlohy jsou textové/číselné reprezentace dat z tabulek.
 
-const DATASETS = [
-  {
-    name: "oblíbené ovoce ve třídě",
-    items: ["Jablka", "Banány", "Pomeranče", "Jahody"],
-    values: () => [8, 5, 7, 10] as number[],
-  },
-  {
-    name: "počet knih přečtených za měsíc",
-    items: ["Leden", "Únor", "Březen", "Duben"],
-    values: () => [3, 5, 4, 6] as number[],
-  },
-  {
-    name: "způsob dopravy do školy",
-    items: ["Pěšky", "Autobusem", "Autem", "Na kole"],
-    values: () => [12, 8, 6, 4] as number[],
-  },
+/**
+ * Systémové dluhy Balík 1C (2026-07-10): `values()` vracelo vždy stejné 4 čísla
+ * pro každý dataset → reálně jen 3 datasety × pár otázkových vzorů, žádná
+ * parametrizace (CONTENT_AUTHORING.md 5.3). Teď se hodnoty generují náhodně
+ * (s garancí jednoznačného maxima/minima), disjunktní podle dovednosti:
+ *
+ *   L1 — celkový součet / přímé přečtení jedné hodnoty.
+ *   L2 — najdi položku s největší / nejmenší hodnotou.
+ *   L3 — rozdíl max−min NEBO "o kolik víc" mezi dvěma náhodnými položkami.
+ */
+
+interface Dataset {
+  name: string;
+  items: string[];
+  min: number;
+  max: number;
+}
+
+const DATASETS: Dataset[] = [
+  { name: "oblíbené ovoce ve třídě", items: ["Jablka", "Banány", "Pomeranče", "Jahody"], min: 3, max: 20 },
+  { name: "počet knih přečtených za měsíc", items: ["Leden", "Únor", "Březen", "Duben"], min: 2, max: 15 },
+  { name: "způsob dopravy do školy", items: ["Pěšky", "Autobusem", "Autem", "Na kole"], min: 2, max: 25 },
+  { name: "prodej vstupenek na koncert", items: ["Pondělí", "Úterý", "Středa", "Čtvrtek"], min: 5, max: 40 },
 ];
 
-function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-
-  for (let i = 0; i < 40; i++) {
-    const ds = DATASETS[i % DATASETS.length];
-    const vals = ds.values();
-    const total = vals.reduce((a, b) => a + b, 0);
-    const maxIdx = vals.indexOf(Math.max(...vals));
-    const minIdx = vals.indexOf(Math.min(...vals));
-
-    const qType = i % (level === 1 ? 2 : level === 2 ? 3 : 4);
-
-    if (qType === 0) {
-      // Celkový součet
-      tasks.push({
-        question: `Tabulka „${ds.name}" — hodnoty: ${ds.items.map((k, j) => `${k}: ${vals[j]}`).join(", ")}.\nJaký je celkový součet?`,
-        correctAnswer: String(total),
-        options: shuffle([String(total), String(total + 2), String(total - 1), String(total + 5)]
-          .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: ["Sečti všechna čísla v tabulce."],
-        solutionSteps: [`${vals.join(" + ")} = ${total}`],
-      });
-    } else if (qType === 1) {
-      // Největší hodnota
-      tasks.push({
-        question: `Tabulka „${ds.name}": ${ds.items.map((k, j) => `${k}: ${vals[j]}`).join(", ")}.\nKterá položka má největší hodnotu?`,
-        correctAnswer: ds.items[maxIdx],
-        options: shuffle(ds.items.slice()),
-        hints: ["Najdi největší číslo v tabulce."],
-        solutionSteps: [`Největší hodnota: ${vals[maxIdx]} → ${ds.items[maxIdx]}.`],
-      });
-    } else if (qType === 2) {
-      // Nejmenší hodnota
-      tasks.push({
-        question: `Tabulka „${ds.name}": ${ds.items.map((k, j) => `${k}: ${vals[j]}`).join(", ")}.\nKterá položka má nejmenší hodnotu?`,
-        correctAnswer: ds.items[minIdx],
-        options: shuffle(ds.items.slice()),
-        hints: ["Najdi nejmenší číslo v tabulce."],
-        solutionSteps: [`Nejmenší hodnota: ${vals[minIdx]} → ${ds.items[minIdx]}.`],
-      });
-    } else {
-      // Rozdíl mezi největší a nejmenší
-      const diff = vals[maxIdx] - vals[minIdx];
-      tasks.push({
-        question: `Tabulka „${ds.name}": ${ds.items.map((k, j) => `${k}: ${vals[j]}`).join(", ")}.\nJaký je rozdíl mezi největší a nejmenší hodnotou?`,
-        correctAnswer: String(diff),
-        options: shuffle([String(diff), String(diff + 1), String(diff - 1), String(diff + 2)]
-          .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: ["Největší − nejmenší = rozdíl."],
-        solutionSteps: [`${vals[maxIdx]} − ${vals[minIdx]} = ${diff}`],
-      });
-    }
-  }
-  return tasks;
+function randInt(min: number, max: number): number {
+  return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -83,6 +39,133 @@ function shuffle<T>(arr: T[]): T[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+/** Vygeneruje hodnoty s garantovaně jednoznačným maximem i minimem (bez remíz). */
+function genValues(ds: Dataset): number[] {
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const values = ds.items.map(() => randInt(ds.min, ds.max));
+    const max = Math.max(...values);
+    const min = Math.min(...values);
+    if (values.filter((v) => v === max).length === 1 && values.filter((v) => v === min).length === 1) {
+      return values;
+    }
+  }
+  // Fallback: vynutíme unikátnost drobnou úpravou.
+  const values = ds.items.map((_, i) => ds.min + i * Math.max(1, Math.floor((ds.max - ds.min) / ds.items.length)));
+  return values;
+}
+
+interface Table {
+  ds: Dataset;
+  values: number[];
+  context: string;
+}
+
+function makeTable(): Table {
+  const ds = DATASETS[randInt(0, DATASETS.length - 1)];
+  const values = genValues(ds);
+  const context = `Tabulka „${ds.name}": ${ds.items.map((k, j) => `${k}: ${values[j]}`).join(", ")}.`;
+  return { ds, values, context };
+}
+
+function makeNumberOptions(correct: number): string[] {
+  const distractors = [String(correct + 2), String(Math.max(0, correct - 1)), String(correct + 5)];
+  const fallbacks = [String(Math.max(0, correct - 5)), String(correct + 1), String(correct + 10), String(Math.max(0, correct - 2))];
+  const { options } = buildUniqueOptions(String(correct), distractors, fallbacks, 4);
+  return shuffleOptions(options);
+}
+
+// ── L1 — součet / přímé čtení ────────────────────────────────────────────────
+
+function makeSumTask(): PracticeTask {
+  const t = makeTable();
+  const total = t.values.reduce((a, b) => a + b, 0);
+  return {
+    question: `${t.context}\nJaký je celkový součet?`,
+    correctAnswer: String(total),
+    options: makeNumberOptions(total),
+    hints: ["Sečti všechna čísla v tabulce."],
+    solutionSteps: [`${t.values.join(" + ")} = ${total}`],
+  };
+}
+
+function makeReadTask(): PracticeTask {
+  const t = makeTable();
+  const idx = randInt(0, t.ds.items.length - 1);
+  const correct = t.values[idx];
+  return {
+    question: `${t.context}\nJaká je hodnota u položky „${t.ds.items[idx]}"?`,
+    correctAnswer: String(correct),
+    options: makeNumberOptions(correct),
+    hints: ["Najdi v tabulce správnou položku a přečti její hodnotu."],
+    solutionSteps: [`Položka „${t.ds.items[idx]}" má hodnotu ${correct}.`],
+  };
+}
+
+// ── L2 — maximum / minimum ───────────────────────────────────────────────────
+
+function makeMaxTask(): PracticeTask {
+  const t = makeTable();
+  const maxIdx = t.values.indexOf(Math.max(...t.values));
+  return {
+    question: `${t.context}\nKterá položka má největší hodnotu?`,
+    correctAnswer: t.ds.items[maxIdx],
+    options: shuffle(t.ds.items.slice()),
+    hints: ["Najdi největší číslo v tabulce."],
+    solutionSteps: [`Největší hodnota: ${t.values[maxIdx]} → ${t.ds.items[maxIdx]}.`],
+  };
+}
+
+function makeMinTask(): PracticeTask {
+  const t = makeTable();
+  const minIdx = t.values.indexOf(Math.min(...t.values));
+  return {
+    question: `${t.context}\nKterá položka má nejmenší hodnotu?`,
+    correctAnswer: t.ds.items[minIdx],
+    options: shuffle(t.ds.items.slice()),
+    hints: ["Najdi nejmenší číslo v tabulce."],
+    solutionSteps: [`Nejmenší hodnota: ${t.values[minIdx]} → ${t.ds.items[minIdx]}.`],
+  };
+}
+
+// ── L3 — rozdíl max−min / "o kolik víc" mezi dvěma náhodnými položkami ──────
+
+function makeMaxMinDiffTask(): PracticeTask {
+  const t = makeTable();
+  const maxIdx = t.values.indexOf(Math.max(...t.values));
+  const minIdx = t.values.indexOf(Math.min(...t.values));
+  const diff = t.values[maxIdx] - t.values[minIdx];
+  return {
+    question: `${t.context}\nJaký je rozdíl mezi největší a nejmenší hodnotou?`,
+    correctAnswer: String(diff),
+    options: makeNumberOptions(diff),
+    hints: ["Největší − nejmenší = rozdíl."],
+    solutionSteps: [`${t.values[maxIdx]} − ${t.values[minIdx]} = ${diff}`],
+  };
+}
+
+function makePairDiffTask(): PracticeTask {
+  const t = makeTable();
+  const i1 = randInt(0, t.ds.items.length - 1);
+  let i2 = randInt(0, t.ds.items.length - 1);
+  while (i2 === i1) i2 = randInt(0, t.ds.items.length - 1);
+  const [hiIdx, loIdx] = t.values[i1] >= t.values[i2] ? [i1, i2] : [i2, i1];
+  const diff = t.values[hiIdx] - t.values[loIdx];
+  return {
+    question: `${t.context}\nO kolik má „${t.ds.items[hiIdx]}" větší hodnotu než „${t.ds.items[loIdx]}"?`,
+    correctAnswer: String(diff),
+    options: makeNumberOptions(diff),
+    hints: [`Odečti: hodnota u „${t.ds.items[hiIdx]}" − hodnota u „${t.ds.items[loIdx]}".`],
+    solutionSteps: [`${t.values[hiIdx]} − ${t.values[loIdx]} = ${diff}`],
+  };
+}
+
+function gen(level: number): PracticeTask[] {
+  const count = 20;
+  if (level === 1) return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeSumTask() : makeReadTask()));
+  if (level === 2) return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeMaxTask() : makeMinTask()));
+  return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeMaxMinDiffTask() : makePairDiffTask()));
 }
 
 export const TABULKY_DIAGRAMY: TopicMetadata[] = [
