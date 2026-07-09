@@ -49,6 +49,10 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy, Balík 1B — plynulé čtení s porozuměním (2026-07-10)
+- `g3-cjl-plynule-cteni-porozumeni`: rozšířeno z 3 na 8 textů, přepsáno na disjunktní POOL_L1/L2/L3 podle náročnosti otázky (přímé vyhledání / spojení dvou informací / hlavní myšlenka a odvozený závěr). Audit `12/12/12 max L3`. Dřív kumulativní `gen()` s 40 iteracemi produkoval hlavně duplicity.
+- Zbývá 1C, 2A, 1D/1E (viz PROJECT_STATUS.md sekce 6).
+
 ## ✅ Systémové dluhy, Balík 1A — kořenová příčina + 6 topics (2026-07-10)
 - **Kořenová příčina**: `getTierTasks` dedupoval jen podle `question` — u match_pairs/categorize/drag_order je question fixní text, takže 30 odlišných úloh vypadalo jako 1. Toto NEBYLA jen chybná metrika — `maxAvailableLevel` na základě toho ořezával runtime na L1 pro tyto topics v produkci. Opraveno v `src/lib/levelCoverage.ts` (`taskKey` zahrnuje `pairs`/`categories`/`items`/`correctAnswers`).
 - **Balík 1A dokončen**: 6 topics (g4/g5 přírodověda) rozděleno na disjunktní POOL_L1/L2/L3. Fakt-check odhalil a opravil ~10 fabrikovaných druhových jmen v `lesLoukaPoleRybnik.ts`.
