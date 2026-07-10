@@ -67,6 +67,17 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g2-mat-tabulky",
   "g3-mat-tabulky-diagramy",
   "g4-mat-tabulky-diagramy-4",
+  // Systémové dluhy Balík 2A (2026-07-10) — doplnění L3 (+L2 u 2 topics) u čtenářských/
+  // literárních témat čeština 3.–4. tř., vyloučených z TIER_EXCEPTIONS
+  "g3-cjl-vers-rym-prirovnani",
+  "g3-cjl-proza-verse",
+  "g3-cjl-pohadka-povidka-basen-bajka",
+  "g3-cjl-vyhledavani-informaci",
+  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika",
+  "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika",
+  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
+  "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci",
+  "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky",
 ]);
 
 export interface TopicFingerprint {

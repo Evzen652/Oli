@@ -63,10 +63,6 @@
     "hash": "a3c731cff984692f2ceb8e34c2bfdadc4f947c15",
     "taskCount": 26
   },
-  "g2-mat-tabulky": {
-    "hash": "32364a86f74df48699159143d1e59919bd21a530",
-    "taskCount": 24
-  },
   "g2-mat-vztah-nasobeni-deleni": {
     "hash": "fc6bd8c48f450bd9413ba55edb7e5822f033cad3",
     "taskCount": 27
@@ -147,20 +143,8 @@
     "hash": "e735476889879e5721000645f984a90ea15380dd",
     "taskCount": 12
   },
-  "g3-cjl-plynule-cteni-porozumeni": {
-    "hash": "64756da5c8ae3bac7190ea004f783399f5f4f238",
-    "taskCount": 6
-  },
-  "g3-cjl-pohadka-povidka-basen-bajka": {
-    "hash": "b108af570808a6951f300185ff4443e2462da547",
-    "taskCount": 13
-  },
   "g3-cjl-popis-predmetu": {
     "hash": "101d2f5976dd470f8af7722876039ad6875dcfa8",
-    "taskCount": 12
-  },
-  "g3-cjl-proza-verse": {
-    "hash": "509b0b92d9a1040ea9e2cc39903f3c709c136b31",
     "taskCount": 12
   },
   "g3-cjl-reprodukce-textu": {
@@ -183,16 +167,8 @@
     "hash": "ebcc57e98b0f95d376b3761c60e37c0c8176612f",
     "taskCount": 10
   },
-  "g3-cjl-vers-rym-prirovnani": {
-    "hash": "9854161f108251db23c25017bb718fdaf8a1449b",
-    "taskCount": 15
-  },
   "g3-cjl-vlastni-vytvarny-doprovod": {
     "hash": "2958b7fcc335b74f46117f9fd0cd073a7acafe2b",
-    "taskCount": 10
-  },
-  "g3-cjl-vyhledavani-informaci": {
-    "hash": "e12a029af0a4911945a04f0d4ab64b0e8873092a",
     "taskCount": 10
   },
   "g3-cjl-vypravovani-osnova": {
@@ -226,10 +202,6 @@
   "g3-mat-slovni-ulohy-dve-operace": {
     "hash": "1b2628dd3cb6089ccd0f4d49c6e2521124bfd110",
     "taskCount": 119
-  },
-  "g3-mat-tabulky-diagramy": {
-    "hash": "182a0309b99efb0a0a3bae8c9b77544c3fc5a5dc",
-    "taskCount": 7
   },
   "g3-mat-zaokrouhlovani": {
     "hash": "bac8b4483429f30c02ac3a061d869eddcbecb956",
@@ -319,14 +291,6 @@
     "hash": "a1ff5a05f90d68dbb21ccbc8b9472c16e5b2b990",
     "taskCount": 48
   },
-  "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci": {
-    "hash": "a1338f6d087928723a69e8d8e42fddf56e499eeb",
-    "taskCount": 30
-  },
-  "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky": {
-    "hash": "a2b2106fe556020251ed0418783b51f89224b941",
-    "taskCount": 30
-  },
   "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor": {
     "hash": "78e508e8842fa1bed56ebca9fc92a81b24cfd1ae",
     "taskCount": 32
@@ -338,18 +302,6 @@
   "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova": {
     "hash": "e7a340c1e4b8f4e5c225877c6dcf65315c6e5441",
     "taskCount": 31
-  },
-  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika": {
-    "hash": "27ec8ec6a05ca9a4ecdd28a989edc7380914f2c1",
-    "taskCount": 32
-  },
-  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka": {
-    "hash": "123011207a11e275a232ea40f54302bee167f9fc",
-    "taskCount": 31
-  },
-  "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika": {
-    "hash": "3a959cfa6146af0349afd7742e0840b2f5dbeda9",
-    "taskCount": 30
   },
   "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema": {
     "hash": "c7299a28e0a2e63e9766c4dedb33e1b34e13800d",
@@ -386,10 +338,6 @@
   "g4-mat-rovnobezky-kolmice-4": {
     "hash": "30f294cca9c273a6cdcae7f52ff93c3d6c978cc7",
     "taskCount": 17
-  },
-  "g4-mat-tabulky-diagramy-4": {
-    "hash": "389cb3ed7db05099ad138c30a1e809401e85f6e5",
-    "taskCount": 12
   },
   "g4-mat-trojuhelnik-druhy-stran-4": {
     "hash": "656cbe08433a99ad82309a46ed058171e599d62e",

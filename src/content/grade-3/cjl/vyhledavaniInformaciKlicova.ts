@@ -28,6 +28,26 @@ const TEXTY = [
   },
 ];
 
+const TEXT_L3 = {
+  text: "Mravenci žijí ve velkých skupinách zvaných mraveniště. Jeden mraveniště může mít až milion mravenců. Mravenci si mezi sebou rozdělují práci — jedni hledají potravu, jiní hlídají mraveniště a královna klade vajíčka. Mravenec dokáže unést předmět, který je až 50krát těžší než on sám.",
+  otazky: [
+    { q: "Jaká jsou klíčová slova v textu o mravencích?", a: "mravenec, mraveniště, práce, královna, milion", opts: ["mravenec, mraveniště, práce, královna, milion", "hmyz, louka, tráva, léto", "zvíře, malý, silný, rychlý", "královna, král, princ, hrad"], e: "Klíčová slova vystihují téma textu: mravenec a mraveniště (o kom a kde), práce (dělba práce) a královna (role v mraveništi). Slova jako 'král' nebo 'hrad' evokují pohádku, ne fakta o mravencích." },
+    { q: "Kolik mravenců může mít jedno mraveniště?", a: "Až milion", opts: ["Až milion", "Až tisíc", "Až sto", "Až deset tisíc"], e: "Text uvádí přímo: 'Jeden mraveniště může mít až milion mravenců.'" },
+    { q: "Kolikrát těžší předmět dokáže mravenec unést, než sám váží?", a: "Až 50krát", opts: ["Až 50krát", "Až 5krát", "Až 500krát", "Až 15krát"], e: "Text říká: 'Mravenec dokáže unést předmět, který je až 50krát těžší než on sám.'" },
+    { q: "Které tvrzení text NEPODPORUJE?", a: "Mravenci žijí sami, ne ve skupinách", opts: ["Mravenci žijí sami, ne ve skupinách", "V mraveništi může být až milion mravenců", "Královna klade vajíčka", "Mravenci si dělí práci"], e: "Text naopak říká, že mravenci žijí ve velkých skupinách zvaných mraveniště — tvrzení, že žijí sami, textu odporuje." },
+    { q: "Pokud by dítě o hmotnosti 30 kg dokázalo unést 50krát víc, než samo váží (jako mravenec), kolik kilogramů by to bylo?", a: "1500 kg", opts: ["1500 kg", "150 kg", "500 kg", "5000 kg"], e: "30 kg × 50 = 1500 kg. Spojili jsme fakt z textu (50krát víc) s novým číslem (30 kg), abychom vypočítali odpověď." },
+  ],
+};
+
+const TEORIE_L3: { q: string; a: string; opts: string[]; e: string }[] = [
+  { q: "Jak nejrychleji najdeš konkrétní číslo v dlouhém textu?", a: "Přeletíš očima text a hledáš čísla nebo klíčová slova okolo nich", opts: ["Přeletíš očima text a hledáš čísla nebo klíčová slova okolo nich", "Čteš text odzadu", "Počítáš písmena v každém slově", "Hledáš nejdelší větu v textu"], e: "Při hledání konkrétního čísla nemusíme číst každé slovo — stačí přelétnout text očima a všímat si čísel a slov kolem nich." },
+  { q: "Text má nadpis 'Mravenci'. Co ti nadpis prozradí ještě předtím, než začneš číst?", a: "Hlavní téma textu", opts: ["Hlavní téma textu", "Přesný počet mravenců", "Autora textu", "Kolik má text vět"], e: "Nadpis obvykle prozradí hlavní téma, o kterém text bude — v tomto případě že text je o mravencích. Konkrétní čísla nebo autora z něj nezjistíme." },
+  { q: "Když najdeš v textu dvě různé informace o stejném tématu, co s nimi uděláš, abys odpověděl na složitější otázku?", a: "Spojíš je dohromady a odvodíš odpověď", opts: ["Spojíš je dohromady a odvodíš odpověď", "Použiješ jen tu první", "Použiješ jen tu poslední", "Obě zahodíš, protože jsou dvě"], e: "Někdy odpověď nenajdeme v jedné větě — musíme spojit dvě informace z textu dohromady, abychom si odpověď odvodili." },
+  { q: "Proč je důležité ověřit, že nalezená informace opravdu odpovídá na otázku, ne jen že obsahuje stejné slovo?", a: "Protože stejné slovo se může v textu objevit i v jiném kontextu, který otázku nezodpoví", opts: ["Protože stejné slovo se může v textu objevit i v jiném kontextu, který otázku nezodpoví", "Není to důležité, stačí najít stejné slovo", "Protože text má vždy jen jednu informaci", "Protože slova se v textu nikdy neopakují"], e: "Slovo z otázky se může v textu objevit vícekrát a v různém významu, proto musíme ověřit, že věta se slovem opravdu odpovídá na to, na co se ptáme." },
+  { q: "Jak se liší 'vyhledání konkrétní informace' od 'pochopení hlavní myšlenky' textu?", a: "Vyhledání = najdeš přesný fakt nebo číslo; pochopení hlavní myšlenky = shrneš, o čem text celkově je", opts: ["Vyhledání = najdeš přesný fakt nebo číslo; pochopení hlavní myšlenky = shrneš, o čem text celkově je", "Jsou to úplně stejné dovednosti", "Vyhledání je vždy těžší", "Hlavní myšlenka se hledá jen v nadpisu"], e: "Vyhledání je hledání konkrétního detailu (čísla, jména), kdežto pochopení hlavní myšlenky znamená umět celý text shrnout vlastními slovy." },
+  { q: "Když se tě zeptají 'Kolik' nebo 'Kdy', hledáš v textu především:", a: "Čísla a časové údaje", opts: ["Čísla a časové údaje", "Přídavná jména", "Jména osob", "Poslední větu textu"], e: "Otázky 'Kolik' a 'Kdy' se ptají na množství nebo čas, proto v textu hledáme čísla a časové údaje, ne přídavná jména nebo jména osob." },
+];
+
 const TEORIE: { q: string; a: string; opts: string[]; e: string }[] = [
   { q: "Co jsou klíčová slova v textu?", a: "Nejdůležitější slova, která vyjadřují hlavní téma", opts: ["Nejdůležitější slova, která vyjadřují hlavní téma", "Nejdelší slova v textu", "Slova, která neznáme", "První slova každé věty"], e: "Klíčová slova jsou ta nejdůležitější — říkají, o čem celý text je. Nejsou to nutně nejdelší slova ani slova, která neznáme." },
   { q: "Jak hledáme klíčová slova?", a: "Ptáme se: Co je v textu nejdůležitější?", opts: ["Ptáme se: Co je v textu nejdůležitější?", "Podtrhneme každé slovo", "Hledáme nejkratší slova", "Hledáme nejdéle ve slovníku"], e: "Správná otázka je: 'Co je v textu nejdůležitější?' Kdybys text musel popsat jedním slovem nebo dvěma, jaká by to byla? To jsou právě klíčová slova." },
@@ -37,12 +57,29 @@ const TEORIE: { q: string; a: string; opts: string[]; e: string }[] = [
 
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
+
+  if (level === 3) {
+    // L3: nový, náročnější text vyžadující syntézu dvou faktů / rozpoznání
+    // nepodpořeného tvrzení / mezipředmětovou aplikaci (matematika), a
+    // pokročilejší teorie vyhledávací strategie. Zcela disjunktní od L1/L2.
+    TEXT_L3.otazky.forEach((o) => {
+      tasks.push({
+        question: `Text:\n${TEXT_L3.text}\n\n${o.q}`,
+        correctAnswer: o.a,
+        options: shuffle([...o.opts]),
+        hints: ["Hledej odpověď přímo v textu.", "Někdy je potřeba spojit dvě informace z textu dohromady."],
+        explanation: o.e,
+      });
+    });
+    TEORIE_L3.forEach(({ q, a, opts, e }) => {
+      tasks.push({ question: q, correctAnswer: a, options: shuffle([...opts]), hints: ["Přemýšlej o strategii vyhledávání, ne jen o jednom faktu."], explanation: e });
+    });
+    return tasks;
+  }
+
   // Level 1: jen faktické otázky z prvního textu
   // Level 2: oba texty + klíčová slova
-  // Level 3: vše
-  const texty = level === 1 ? TEXTY.slice(0, 1)
-    : level === 2 ? TEXTY.slice(0, 2)
-    : TEXTY;
+  const texty = level === 1 ? TEXTY.slice(0, 1) : TEXTY.slice(0, 2);
   const getOtazky = (t: typeof TEXTY[0]) =>
     level === 1 ? t.otazky.slice(1) : t.otazky; // level 1: přeskočit klíčová slova
 
