@@ -78,6 +78,9 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
   "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci",
   "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky",
+  // Systémové dluhy Balík A (2026-07-12) — vlastivěda g4: gen(_level) ignoroval level
+  // (35/0/0 maxL1 → produkce ořezaná na L1), přepis na disjunktní POOL_L1/L2/L3
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-pravek-a-prvni-lide-na-nasem-uzemi",
 ]);
 
 export interface TopicFingerprint {

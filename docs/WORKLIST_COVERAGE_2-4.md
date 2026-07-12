@@ -19,7 +19,7 @@ gradace přes počet položek 3→4→5 + obtížnost událostí; kraje přes po
 - [ ] `g4-vlastiveda-...kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta` (match_pairs)
 - [ ] `g4-vlastiveda-...lucemburkove-karel-iv-a-jeho-doba` (drag_order)
 - [ ] `g4-vlastiveda-...husitstvi-mistr-jan-hus-husitske-valky` (drag_order)
-- [ ] `g4-vlastiveda-...pravek-a-prvni-lide-na-nasem-uzemi` (drag_order)
+- [x] `g4-vlastiveda-...pravek-a-prvni-lide-na-nasem-uzemi` (drag_order) ✅ 2026-07-12 pilot — 12/12/12 maxL3 (L1 3-pol. materiál, L2 4-pol. obživa+Keltové, L3 5-pol. národy neurčitelné materiálem)
 - [ ] `g4-vlastiveda-...premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii` (drag_order)
 - [ ] `g4-vlastiveda-...slovane-velkomoravska-rise-cyril-a-metodej` (drag_order)
 - [ ] `g4-vlastiveda-...vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr` (match_pairs)
