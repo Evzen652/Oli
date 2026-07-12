@@ -87,6 +87,10 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-slovane-velkomoravska-rise-cyril-a-metodej",
   "g4-vlastiveda-misto-kde-zijeme-kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta",
   "g4-vlastiveda-misto-kde-zijeme-ceska-republika-vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr",
+  // Systémové dluhy Balík B (2026-07-12) — přírodověda g4 stavba rostlin: gen(_level)
+  // ignoroval level (30/1/0), přepis na disjunktní POOL_L1/L2/L3 + fakt-check
+  // ("Bránice" jako synonymum "průduch" byl chybný — bránice je savčí orgán)
+  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-stavba-rostlin-rozsireni-druhy-rostlin",
 ]);
 
 export interface TopicFingerprint {

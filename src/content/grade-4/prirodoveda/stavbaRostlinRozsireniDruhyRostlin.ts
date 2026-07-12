@@ -9,7 +9,20 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+// ─────────────────────────────────────────────────────────
+// Disjunktní pooly obtížnosti (L1 < L2 < L3), match_pairs.
+//   L1 = rozpoznání: základní části rostliny a jejich funkce, základní
+//        šíření semen, typy listů, rostlina↔ekosystém
+//   L2 = aplikace:   konkrétnější mechanismy (opylení podle druhu, šíření
+//        semen s popisem), klasifikace (jednoděložné/dvouděložné), procesy
+//   L3 = transfer:   odborná terminologie NAD rámec RVP 4. ročníku (viz
+//        `boundaries`) — chloroplast, xylém/floém, anatomie květu, detailní
+//        anatomie kořene, ekologický transfer (přizpůsobení biotopu)
+// Fakt-check: "Bránice (průduch)" byl chybný — bránice je savčí orgán
+// (dýchací sval), rostlinný termín je jen "průduch". Opraveno.
+// ─────────────────────────────────────────────────────────
+
+const POOL_L1: PracticeTask[] = [
   {
     question: "Spoj části rostliny s jejich funkcí.",
     correctAnswer: "match",
@@ -21,16 +34,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    question: "Spoj části rostliny s jejich funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Plod", right: "Chrání semena a šíří je" },
-      { left: "Semeno", right: "Obsahuje zárodek nové rostliny" },
-      { left: "Chlorofyl", right: "Zelené barvivo v listech pro fotosyntézu" },
-      { left: "Kořenové vlášení", right: "Zvětšuje plochu pro příjem vody" },
-    ],
-  },
-  {
     question: "Spoj způsob šíření semen s příkladem rostliny.",
     correctAnswer: "match",
     pairs: [
@@ -38,16 +41,6 @@ const POOL: PracticeTask[] = [
       { left: "Živočichové (dužnatý plod)", right: "Třešeň" },
       { left: "Vítr (křídélko)", right: "Javor" },
       { left: "Voda (nepromokavý plod)", right: "Kokos" },
-    ],
-  },
-  {
-    question: "Spoj části rostliny s jejich funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Bránice (průduch)", right: "Reguluje výměnu plynů v listu" },
-      { left: "Dřevo", right: "Vede vodu a minerály nahoru" },
-      { left: "Lýko", right: "Vede cukry dolů ke kořenům" },
-      { left: "Zásobní kořen", right: "Ukládá zásoby živin (mrkev, řepa)" },
     ],
   },
   {
@@ -64,50 +57,10 @@ const POOL: PracticeTask[] = [
     question: "Spoj části rostliny s jejich funkcí.",
     correctAnswer: "match",
     pairs: [
-      { left: "Kořen", right: "Ukotvení v půdě" },
-      { left: "List", right: "Transpirace – výpar vody" },
-      { left: "Květ", right: "Přitahuje opylovače barvou a nektarem" },
-      { left: "Plod", right: "Láká živočichy k roznesení semen" },
-    ],
-  },
-  {
-    question: "Spoj způsob šíření semen s popisem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Háčky (lopuch)", right: "Zachytí se na srsti zvířat nebo oblečení" },
-      { left: "Voda", right: "Lehký nepromokavý plod se nechá unést proudem" },
-      { left: "Živočichové", right: "Sní plod a vylučují semena" },
-      { left: "Samovýstřel (boba)", right: "Tobolka praskne a semena vystřelí" },
-    ],
-  },
-  {
-    question: "Spoj části rostliny s jejich popisem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Děloha", right: "Zásobní list semene živící klíček" },
-      { left: "Apikální meristém", right: "Pletivo na špičce kořene zodpovídající za růst" },
-      { left: "Průduch", right: "Malý otvor v listu pro výměnu plynů" },
-      { left: "Chloroplast", right: "Buněčný orgán obsahující chlorofyl" },
-    ],
-  },
-  {
-    question: "Spoj části rostliny s jejich funkcí.",
-    correctAnswer: "match",
-    pairs: [
       { left: "Stonek", right: "Mechanická opora celé rostliny" },
       { left: "Kořen", right: "Příjem vody a minerálních látek" },
       { left: "List", right: "Výroba cukru pomocí světla a CO₂" },
       { left: "Semeno", right: "Zárodek s výživou pro klíček" },
-    ],
-  },
-  {
-    question: "Spoj rostlinu s typem opylení.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Pampeliška", right: "Hmyz (barevný květ s nektarem)" },
-      { left: "Vrba", right: "Hmyz (kvetoucí na jaře)" },
-      { left: "Bříza", right: "Vítr (velké množství drobného pylu)" },
-      { left: "Jetel", right: "Hmyz (čmelák)" },
     ],
   },
   {
@@ -121,46 +74,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    question: "Spoj části listu s jejich popisem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Pokožka listu", right: "Ochranná vnější vrstva" },
-      { left: "Průduch", right: "Otvor pro výměnu CO₂ a O₂" },
-      { left: "Žilnatina", right: "Vedení vody a cukrů v listu" },
-      { left: "Chloroplast", right: "Místo, kde probíhá fotosyntéza" },
-    ],
-  },
-  {
-    question: "Spoj způsob přizpůsobení rostliny s prostředím.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Trny místo listů", right: "Omezení výparu v poušti (kaktus)" },
-      { left: "Tlusté listy", right: "Zásobárna vody (sukulenty, aloe)" },
-      { left: "Barevné květy", right: "Přilákání opylovačů (hmyz)" },
-      { left: "Dlouhý kořen", right: "Dosažení spodní vody v suchu" },
-    ],
-  },
-  {
-    question: "Spoj typ rostliny s příkladem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Jednoděložná rostlina", right: "Tráva, pšenice, kukuřice" },
-      { left: "Dvouděložná rostlina", right: "Dub, fazol, jabloň" },
-      { left: "Sukulentní rostlina", right: "Kaktus, aloe, agáve" },
-      { left: "Vodní rostlina", right: "Leknín, rdest, rákos" },
-    ],
-  },
-  {
-    question: "Spoj části stonku s jejich funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Dřevo (xylém)", right: "Vede vodu a minerály od kořene nahoru" },
-      { left: "Lýko (floém)", right: "Vede cukry z listů dolů ke kořenům" },
-      { left: "Kambium", right: "Vrstva buněk produkující nové dřevo a lýko" },
-      { left: "Kůra stonku", right: "Ochrana stonku před poškozením" },
-    ],
-  },
-  {
     question: "Spoj části rostliny s jejich funkcí.",
     correctAnswer: "match",
     pairs: [
@@ -171,16 +84,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    question: "Spoj proces v rostlině s jeho popisem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Fotosyntéza", right: "Přeměna CO₂ + H₂O + světlo → cukr + O₂" },
-      { left: "Transpirace", right: "Výpar vody z listů průduchy" },
-      { left: "Klíčení", right: "Semeno nasaje vodu a vyroste kořínek" },
-      { left: "Opylení", right: "Přenos pylu na bliznu květu" },
-    ],
-  },
-  {
     question: "Spoj části rostliny s tím, co je jejich hlavní funkcí.",
     correctAnswer: "match",
     pairs: [
@@ -188,66 +91,6 @@ const POOL: PracticeTask[] = [
       { left: "Květ", right: "Rozmnožování" },
       { left: "Stonek", right: "Vedení látek a opora" },
       { left: "Kořen", right: "Příjem vody a ukotvení" },
-    ],
-  },
-  {
-    question: "Spoj způsob šíření semen s příkladem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Vítr", right: "Javor, pampeliška, borovice" },
-      { left: "Voda", right: "Kokos, olše" },
-      { left: "Živočichové (uvnitř plodu)", right: "Třešeň, malina, šípek" },
-      { left: "Živočichové (na povrchu)", right: "Lopuch, jehlice" },
-    ],
-  },
-  {
-    question: "Spoj části rostliny s jejich popisem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Hlíza", right: "Zásobní podzemní orgán (brambor)" },
-      { left: "Oddenek", right: "Podzemní stonek s pupeny (konvalinka)" },
-      { left: "Cibule", right: "Zásobní listy kolem poupěte (cibule, česnek)" },
-      { left: "Výhonek", right: "Nadzemní stonek sloužící k vegetativnímu rozmnožování (jahoda)" },
-    ],
-  },
-  {
-    question: "Spoj části rostliny s jejich funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Kořenová čepička", right: "Chrání kořen při prorůstání půdou" },
-      { left: "Kořenové vlášení", right: "Zvyšuje plochu pro příjem vody a živin" },
-      { left: "Hlavní kořen", right: "Ukotví rostlinu do hloubky" },
-      { left: "Postranní kořeny", right: "Rozvětvení pro příjem vody do šířky" },
-    ],
-  },
-  {
-    question: "Spoj látku s jejím pohybem v rostlině.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Voda", right: "Z kořene přes stonek do listů (nahoru)" },
-      { left: "Cukr (asimilát)", right: "Z listů přes stonek do kořene (dolů)" },
-      { left: "CO₂", right: "Vstupuje do listu průduchy z okolí" },
-      { left: "O₂", right: "Uniká z listu průduchy do okolí" },
-    ],
-  },
-  {
-    question: "Spoj typ rozmnožování s příkladem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Pohlavní rozmnožování (semena)", right: "Jabloň, hrušeň, obilí" },
-      { left: "Vegetativní (výhonky)", right: "Jahoda (plazivé výhonky)" },
-      { left: "Vegetativní (hlízy)", right: "Brambor" },
-      { left: "Vegetativní (řízky)", right: "Řeřicha, pelargonie" },
-    ],
-  },
-  {
-    question: "Spoj části květu s jejich funkcí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Tyčinka", right: "Mužský orgán – tvoří pyl" },
-      { left: "Pestík", right: "Ženský orgán – obsahuje vajíčka" },
-      { left: "Okvětní lístky", right: "Přilákání opylovačů barvou" },
-      { left: "Nektar", right: "Odměna pro opylovače (hmyz)" },
     ],
   },
   {
@@ -281,26 +124,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    question: "Spoj přizpůsobení rostliny s podmínkami prostředí.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Velké ploché listy", right: "Deštný prales – zachycení světla ve stínu" },
-      { left: "Jehličí", right: "Mírné pásmo – odolnost vůči mrazu a suchu" },
-      { left: "Vzdušné kořeny", right: "Mokřad – příjem kyslíku nad vodou" },
-      { left: "Trny", right: "Sucho – omezení výparu místo listů" },
-    ],
-  },
-  {
-    question: "Spoj části rostliny s jejich popisem.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "Blizna", right: "Lepkavá část pestíku zachytávající pyl" },
-      { left: "Čnělka", right: "Spojuje bliznu s vaječníkem" },
-      { left: "Vaječník", right: "Obsahuje vajíčka, ze kterých vznikají semena" },
-      { left: "Pylová láčka", right: "Vede pyl k vajíčku při oplodnění" },
-    ],
-  },
-  {
     question: "Spoj typ listu s jeho popisem.",
     correctAnswer: "match",
     pairs: [
@@ -322,8 +145,205 @@ const POOL: PracticeTask[] = [
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 30);
+const POOL_L2: PracticeTask[] = [
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Plod", right: "Chrání semena a šíří je" },
+      { left: "Semeno", right: "Obsahuje zárodek nové rostliny" },
+      { left: "Chlorofyl", right: "Zelené barvivo v listech pro fotosyntézu" },
+      { left: "Kořenové vlášení", right: "Zvětšuje plochu pro příjem vody" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořen", right: "Ukotvení v půdě" },
+      { left: "List", right: "Transpirace – výpar vody" },
+      { left: "Květ", right: "Přitahuje opylovače barvou a nektarem" },
+      { left: "Plod", right: "Láká živočichy k roznesení semen" },
+    ],
+  },
+  {
+    question: "Spoj způsob šíření semen s popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Háčky (lopuch)", right: "Zachytí se na srsti zvířat nebo oblečení" },
+      { left: "Voda", right: "Lehký nepromokavý plod se nechá unést proudem" },
+      { left: "Živočichové", right: "Sní plod a vylučují semena" },
+      { left: "Samovýstřel (boba)", right: "Tobolka praskne a semena vystřelí" },
+    ],
+  },
+  {
+    question: "Spoj rostlinu s typem opylení.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pampeliška", right: "Hmyz (barevný květ s nektarem)" },
+      { left: "Vrba", right: "Hmyz (kvetoucí na jaře)" },
+      { left: "Bříza", right: "Vítr (velké množství drobného pylu)" },
+      { left: "Jetel", right: "Hmyz (čmelák)" },
+    ],
+  },
+  {
+    question: "Spoj způsob přizpůsobení rostliny s prostředím.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Trny místo listů", right: "Omezení výparu v poušti (kaktus)" },
+      { left: "Tlusté listy", right: "Zásobárna vody (sukulenty, aloe)" },
+      { left: "Barevné květy", right: "Přilákání opylovačů (hmyz)" },
+      { left: "Dlouhý kořen", right: "Dosažení spodní vody v suchu" },
+    ],
+  },
+  {
+    question: "Spoj typ rostliny s příkladem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Jednoděložná rostlina", right: "Tráva, pšenice, kukuřice" },
+      { left: "Dvouděložná rostlina", right: "Dub, fazol, jabloň" },
+      { left: "Sukulentní rostlina", right: "Kaktus, aloe, agáve" },
+      { left: "Vodní rostlina", right: "Leknín, rdest, rákos" },
+    ],
+  },
+  {
+    question: "Spoj proces v rostlině s jeho popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Fotosyntéza", right: "Přeměna CO₂ + H₂O + světlo → cukr + O₂" },
+      { left: "Transpirace", right: "Výpar vody z listů průduchy" },
+      { left: "Klíčení", right: "Semeno nasaje vodu a vyroste kořínek" },
+      { left: "Opylení", right: "Přenos pylu na bliznu květu" },
+    ],
+  },
+  {
+    question: "Spoj způsob šíření semen s příkladem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Vítr", right: "Javor, pampeliška, borovice" },
+      { left: "Voda", right: "Kokos, olše" },
+      { left: "Živočichové (uvnitř plodu)", right: "Třešeň, malina, šípek" },
+      { left: "Živočichové (na povrchu)", right: "Lopuch, jehlice" },
+    ],
+  },
+  {
+    question: "Spoj látku s jejím pohybem v rostlině.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Voda", right: "Z kořene přes stonek do listů (nahoru)" },
+      { left: "Cukr (asimilát)", right: "Z listů přes stonek do kořene (dolů)" },
+      { left: "CO₂", right: "Vstupuje do listu průduchy z okolí" },
+      { left: "O₂", right: "Uniká z listu průduchy do okolí" },
+    ],
+  },
+  {
+    question: "Spoj typ rozmnožování s příkladem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pohlavní rozmnožování (semena)", right: "Jabloň, hrušeň, obilí" },
+      { left: "Vegetativní (výhonky)", right: "Jahoda (plazivé výhonky)" },
+      { left: "Vegetativní (hlízy)", right: "Brambor" },
+      { left: "Vegetativní (řízky)", right: "Řeřicha, pelargonie" },
+    ],
+  },
+  {
+    question: "Spoj části květu s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Tyčinka", right: "Mužský orgán – tvoří pyl" },
+      { left: "Pestík", right: "Ženský orgán – obsahuje vajíčka" },
+      { left: "Okvětní lístky", right: "Přilákání opylovačů barvou" },
+      { left: "Nektar", right: "Odměna pro opylovače (hmyz)" },
+    ],
+  },
+];
+
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Průduch", right: "Reguluje výměnu plynů v listu" },
+      { left: "Dřevo", right: "Vede vodu a minerály nahoru" },
+      { left: "Lýko", right: "Vede cukry dolů ke kořenům" },
+      { left: "Zásobní kořen", right: "Ukládá zásoby živin (mrkev, řepa)" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Děloha", right: "Zásobní list semene živící klíček" },
+      { left: "Apikální meristém", right: "Pletivo na špičce kořene zodpovídající za růst" },
+      { left: "Průduch", right: "Malý otvor v listu pro výměnu plynů" },
+      { left: "Chloroplast", right: "Buněčný orgán obsahující chlorofyl" },
+    ],
+  },
+  {
+    question: "Spoj části listu s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Pokožka listu", right: "Ochranná vnější vrstva" },
+      { left: "Průduch", right: "Otvor pro výměnu CO₂ a O₂" },
+      { left: "Žilnatina", right: "Vedení vody a cukrů v listu" },
+      { left: "Chloroplast", right: "Místo, kde probíhá fotosyntéza" },
+    ],
+  },
+  {
+    question: "Spoj části stonku s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Dřevo (xylém)", right: "Vede vodu a minerály od kořene nahoru" },
+      { left: "Lýko (floém)", right: "Vede cukry z listů dolů ke kořenům" },
+      { left: "Kambium", right: "Vrstva buněk produkující nové dřevo a lýko" },
+      { left: "Kůra stonku", right: "Ochrana stonku před poškozením" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Hlíza", right: "Zásobní podzemní orgán (brambor)" },
+      { left: "Oddenek", right: "Podzemní stonek s pupeny (konvalinka)" },
+      { left: "Cibule", right: "Zásobní listy kolem poupěte (cibule, česnek)" },
+      { left: "Výhonek", right: "Nadzemní stonek sloužící k vegetativnímu rozmnožování (jahoda)" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich funkcí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Kořenová čepička", right: "Chrání kořen při prorůstání půdou" },
+      { left: "Kořenové vlášení", right: "Zvyšuje plochu pro příjem vody a živin" },
+      { left: "Hlavní kořen", right: "Ukotví rostlinu do hloubky" },
+      { left: "Postranní kořeny", right: "Rozvětvení pro příjem vody do šířky" },
+    ],
+  },
+  {
+    question: "Spoj přizpůsobení rostliny s podmínkami prostředí.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Velké ploché listy", right: "Deštný prales – zachycení světla ve stínu" },
+      { left: "Jehličí", right: "Mírné pásmo – odolnost vůči mrazu a suchu" },
+      { left: "Vzdušné kořeny", right: "Mokřad – příjem kyslíku nad vodou" },
+      { left: "Trny", right: "Sucho – omezení výparu místo listů" },
+    ],
+  },
+  {
+    question: "Spoj části rostliny s jejich popisem.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "Blizna", right: "Lepkavá část pestíku zachytávající pyl" },
+      { left: "Čnělka", right: "Spojuje bliznu s vaječníkem" },
+      { left: "Vaječník", right: "Obsahuje vajíčka, ze kterých vznikají semena" },
+      { left: "Pylová láčka", right: "Vede pyl k vajíčku při oplodnění" },
+    ],
+  },
+];
+
+function gen(level: number): PracticeTask[] {
+  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  return shuffle(pool);
 }
 
 export const STAVBAROSTLINROZSIRENIDRUHYROSTLIN: TopicMetadata[] = [
@@ -343,7 +363,10 @@ export const STAVBAROSTLINROZSIRENIDRUHYROSTLIN: TopicMetadata[] = [
       "Uvést způsoby šíření semen (vítr, voda, živočichové)",
       "Rozlišit jednoděložné a dvouděložné rostliny",
     ],
-    boundaries: ["Podrobná buněčná biologie není náplní 4. ročníku"],
+    boundaries: [
+      "Podrobná buněčná biologie není náplní 4. ročníku",
+      "Odborné pojmy (chloroplast, xylém/floém, apikální meristém, anatomie květu) jsou rozšiřující nad rámec RVP — zařazeny jen na úrovni III pro zvídavé žáky",
+    ],
     gradeRange: [4, 4],
     inputType: "match_pairs",
     contentType: "factual",
@@ -358,8 +381,8 @@ export const STAVBAROSTLINROZSIRENIDRUHYROSTLIN: TopicMetadata[] = [
         "3. List: fotosyntéza + transpirace.",
         "4. Květ → plod → semeno → šíření (vítr, voda, živočich).",
       ],
-      commonMistake: "Fotosyntéza probíhá v listech (ne v kořenech ani stonku).",
-      example: "Pampeliška šíří semena větrem (chmýří). Třešeň živočichy (ptáci sní plod).",
+      commonMistake: "Žáci si pletou funkci kořene (příjem vody) s funkcí listu (výroba cukru fotosyntézou).",
+      example: "Kořen přijímá vodu → stonek ji vede do listu → list fotosyntézou vyrobí cukr → květ se opylí → vznikne plod se semeny.",
     },
   },
 ];

@@ -27,10 +27,13 @@ disjunktní `POOL_L1/L2/L3`. Všech 7 nyní **maxL3** (dřív 35/0/0 nebo 35/1/0
 > (je to rybník); vyhnuto se stejnoletým událostem v drag_order a duplicitní pravé straně v match_pairs
 > (Praha↔Středočeský). Freeze přegenerován (107 témat), 7 nových v `UNFROZEN_TOPIC_IDS`.
 
-## Balík B — Přírodověda g4 (1 téma)
+## ✅ Balík B HOTOVO (2026-07-12) — Přírodověda g4 (1 téma)
 
-- [ ] `g4-prirodoveda-...rostliny-stavba-rostlin-rozsireni-druhy-rostlin` (`30/1/0`) — míchané typy
-  tasků (souvisí s R2 auditem grade-5). Rozdělit na disjunktní L1/L2/L3.
+- [x] `g4-prirodoveda-...rostliny-stavba-rostlin-rozsireni-druhy-rostlin` ✅ 12/11/8 maxL3 (bylo 30/1/0).
+  Všech 31 úloh konzistentně `match_pairs` (žádné míchané typy, na rozdíl od obavy z R2 grade-5).
+  L1 základní části/funkce, L2 aplikace/klasifikace, L3 odborná terminologie nad RVP (chloroplast,
+  xylém/floém, anatomie květu) — nyní explicitně označena jako rozšiřující v `boundaries`.
+  **Fakt-check:** „Bránice (průduch)" byl chybný — bránice je savčí orgán, opraveno na „Průduch".
 
 ## Balík C — Prvouka g3 (chybí L2/L3)
 

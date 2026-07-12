@@ -49,6 +49,12 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy Balík B — přírodověda g4 stavba rostlin (2026-07-12)
+- `g4-prirodoveda-...stavba-rostlin-rozsireni-druhy-rostlin`: `gen(_level)` ignoroval level → `30/1/0 maxL1`. Přepis na disjunktní `POOL_L1/L2/L3` (bez rewrite faktů, jen reorganizace 31 existujících úloh) → **12/11/8 maxL3**.
+- Všech 31 úloh konzistentně `match_pairs` (žádné míchané typy — dřívější obava z R2 grade-5 auditu se netýkala tohoto tématu). Gradace: L1 základní části/funkce, L2 aplikace/klasifikace, L3 odborná terminologie nad RVP (chloroplast, xylém/floém, anatomie květu) — nově explicitně `boundaries` jako rozšiřující.
+- **Fakt-check:** „Bránice (průduch)" byl chybný pár (bránice = savčí dýchací sval, ne rostlinný pojem) → opraveno na „Průduch".
+- tsc 0, generator-validation jen 6 předexistujících prvouka failů (ověřeno čistým re-runem), freeze přegenerován (106 témat), content-audit 66–68 % (run-to-run šum, ne regrese). Zbývá Balík C (prvouka g3), D (prvouka g2) — viz `WORKLIST_COVERAGE_2-4.md`.
+
 ## ✅ Systémové dluhy Balík A — vlastivěda g4 disjunktní L1/L2/L3 (2026-07-12)
 - Všech **7 vlastivěda g4 témat** mělo `gen(_level)` s ignorovaným levelem → `35/0/0 maxL1` → v produkci ořezané na L1 (děti nikdy neviděly L2/L3; stejný bug jako Balík 1A). Přepsáno na disjunktní `POOL_L1/L2/L3`, nyní všech 7 **maxL3**.
 - Dějiny (drag_order): `pravek` (12/12/12), `lucemburkove`, `husitstvi`, `premyslovci`, `slovane` (10/10/10). Zeměpis (match_pairs): `kraje-14`, `vodstvo-cr` (10/10/10). Gradace L1 rozpoznání → L2 aplikace → L3 transfer (národy neurčitelné materiálem, těsné datové řady, miskoncepce Žižka †1424 ≠ Lipany 1434, past Přemysl Otakar I. vs II.).
