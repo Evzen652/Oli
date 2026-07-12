@@ -49,6 +49,10 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Fáze 0.3 — audit coverage pro prvouku/přír/vlast + worklist 2–4 (2026-07-12)
+- `runLevelCoverageReport` (v `contentAudit.ts`) bere libovolné ročníky/předměty — „audit nástroj" NEBYL omezen na mat+čj, jen ho nikdo pro tyto předměty nespustil. Temp scaffold z minulé session promotnut na trvalý **env-gated** test `src/test/level-coverage-report.test.ts` + `npm run audit:coverage` (wrapper `scripts/run-audit-coverage.mjs`, bez cross-env dep; default scope 2–4; `COVERAGE_GRADES`/`COVERAGE_SUBJECTS` env).
+- Worklist Fáze 1: [`docs/WORKLIST_COVERAGE_2-4.md`](WORKLIST_COVERAGE_2-4.md). **Nález:** vlastivěda g4 dějiny/zeměpis (7 témat) mají `gen(_level)` s ignorovaným levelem → `35/0/0 maxL1` → v produkci ořezané na L1 (bug jako Balík 1A). Priorita: Balík A vlastivěda → B přír g4 stavba-rostlin → C prvouka g3 → D prvouka g2. Čeština sloh = `TIER_EXCEPTIONS` (ne dluh).
+
 ## ✅ Zamknutí ročníků mimo aktivní scope (2026-07-12)
 - Aktivní scope pilotu = ročníky **2, 3, 4** (rozhodnutí: grade 5 zůstává parkovaný). Nový allowlist `ACTIVE_GRADES = [2,3,4]` v `src/lib/contentAvailability.ts` + `isGradeAvailable()` (jediný zdroj pravdy pro dostupnost ročníku žákovi).
 - **Bug**: `hasContentForGrade()` odemykal v onboardingu vše s ≥1 topic → ročníky 5 a 6 byly odemčené s **neauditovaným** obsahem (grade 5: hint leaky + 178× giveaway délkou; grade 6: rozpracovaný pilot 2. stupně). Teď zamčené („brzy" dlaždice + toast „Připravuje se"). `getBestAvailableGrade`/`getContentWarning` gate-ované přes `isGradeAvailable` (dítě s parkovaným ročníkem → banner + fallback na 4).
