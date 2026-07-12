@@ -49,6 +49,12 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy Balík A — vlastivěda g4 disjunktní L1/L2/L3 (2026-07-12)
+- Všech **7 vlastivěda g4 témat** mělo `gen(_level)` s ignorovaným levelem → `35/0/0 maxL1` → v produkci ořezané na L1 (děti nikdy neviděly L2/L3; stejný bug jako Balík 1A). Přepsáno na disjunktní `POOL_L1/L2/L3`, nyní všech 7 **maxL3**.
+- Dějiny (drag_order): `pravek` (12/12/12), `lucemburkove`, `husitstvi`, `premyslovci`, `slovane` (10/10/10). Zeměpis (match_pairs): `kraje-14`, `vodstvo-cr` (10/10/10). Gradace L1 rozpoznání → L2 aplikace → L3 transfer (národy neurčitelné materiálem, těsné datové řady, miskoncepce Žižka †1424 ≠ Lipany 1434, past Přemysl Otakar I. vs II.).
+- **Fakt-check (Generator→Critic):** opraveno Máchovo jezero (není „největší přirozené jezero" — je umělý rybník); vyhnuto se stejnoletým událostem v drag_order (nejednoznačné pořadí) a duplicitní pravé straně match_pairs (Praha i Středočeský → „Praha").
+- tsc 0, generator-validation jen 6 předexistujících prvouka failů, freeze přegenerován (107 témat, 7 nových v UNFROZEN_TOPIC_IDS), content-audit 68% baseline. Zbývá Balík B/C/D (viz WORKLIST_COVERAGE_2-4.md).
+
 ## ✅ Fáze 0.3 — audit coverage pro prvouku/přír/vlast + worklist 2–4 (2026-07-12)
 - `runLevelCoverageReport` (v `contentAudit.ts`) bere libovolné ročníky/předměty — „audit nástroj" NEBYL omezen na mat+čj, jen ho nikdo pro tyto předměty nespustil. Temp scaffold z minulé session promotnut na trvalý **env-gated** test `src/test/level-coverage-report.test.ts` + `npm run audit:coverage` (wrapper `scripts/run-audit-coverage.mjs`, bez cross-env dep; default scope 2–4; `COVERAGE_GRADES`/`COVERAGE_SUBJECTS` env).
 - Worklist Fáze 1: [`docs/WORKLIST_COVERAGE_2-4.md`](WORKLIST_COVERAGE_2-4.md). **Nález:** vlastivěda g4 dějiny/zeměpis (7 témat) mají `gen(_level)` s ignorovaným levelem → `35/0/0 maxL1` → v produkci ořezané na L1 (bug jako Balík 1A). Priorita: Balík A vlastivěda → B přír g4 stavba-rostlin → C prvouka g3 → D prvouka g2. Čeština sloh = `TIER_EXCEPTIONS` (ne dluh).

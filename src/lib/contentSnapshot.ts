@@ -81,6 +81,12 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // Systémové dluhy Balík A (2026-07-12) — vlastivěda g4: gen(_level) ignoroval level
   // (35/0/0 maxL1 → produkce ořezaná na L1), přepis na disjunktní POOL_L1/L2/L3
   "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-pravek-a-prvni-lide-na-nasem-uzemi",
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-lucemburkove-karel-iv-a-jeho-doba",
+  "g4-vlastiveda-lide-a-cas-husitstvi-mistr-jan-hus-husitske-valky",
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii",
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-slovane-velkomoravska-rise-cyril-a-metodej",
+  "g4-vlastiveda-misto-kde-zijeme-kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta",
+  "g4-vlastiveda-misto-kde-zijeme-ceska-republika-vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr",
 ]);
 
 export interface TopicFingerprint {

@@ -9,23 +9,23 @@
 > vzoru (chybí L2/L3), ne podle přesného čísla. Slohová/rukopisná témata čeština (`TIER_EXCEPTIONS`
 > v `auditInvariantConfig.ts`) se do dluhu **nepočítají** — nemají přirozenou obtížnostní osu.
 
-## Balík A (priorita) — Vlastivěda g4: `35/0/0` non-adaptivní (runtime L1 cap!)
+## ✅ Balík A HOTOVO (2026-07-12) — Vlastivěda g4: `35/0/0` non-adaptivní (runtime L1 cap!)
 
-Stejná třída bugu jako Balík 1A: `gen(_level)` **ignoruje úroveň** (podtržítko) → všechny 3 úrovně
-identické → `getTierTasks` vidí L2/L3 prázdné → `maxAvailableLevel` ořezává v **produkci na L1**.
-`drag_order` (dějiny, chronologie) + `match_pairs` (kraje). Nutná disjunkce L1/L2/L3 (např. dějiny
-gradace přes počet položek 3→4→5 + obtížnost událostí; kraje přes počet párů / míru nápovědy).
+Stejná třída bugu jako Balík 1A: `gen(_level)` **ignoroval úroveň** → všechny 3 úrovně identické →
+`getTierTasks` viděl L2/L3 prázdné → `maxAvailableLevel` ořezával v **produkci na L1**. Přepsáno na
+disjunktní `POOL_L1/L2/L3`. Všech 7 nyní **maxL3** (dřív 35/0/0 nebo 35/1/0).
 
-- [ ] `g4-vlastiveda-...kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta` (match_pairs)
-- [ ] `g4-vlastiveda-...lucemburkove-karel-iv-a-jeho-doba` (drag_order)
-- [ ] `g4-vlastiveda-...husitstvi-mistr-jan-hus-husitske-valky` (drag_order)
-- [x] `g4-vlastiveda-...pravek-a-prvni-lide-na-nasem-uzemi` (drag_order) ✅ 2026-07-12 pilot — 12/12/12 maxL3 (L1 3-pol. materiál, L2 4-pol. obživa+Keltové, L3 5-pol. národy neurčitelné materiálem)
-- [ ] `g4-vlastiveda-...premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii` (drag_order)
-- [ ] `g4-vlastiveda-...slovane-velkomoravska-rise-cyril-a-metodej` (drag_order)
-- [ ] `g4-vlastiveda-...vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr` (match_pairs)
+- [x] `g4-vlastiveda-...pravek-a-prvni-lide-na-nasem-uzemi` (drag_order) ✅ 12/12/12 — L1 materiál, L2 obživa+Keltové, L3 národy neurčitelné materiálem
+- [x] `g4-vlastiveda-...lucemburkove-karel-iv-a-jeho-doba` (drag_order) ✅ 10/10/10 — L3 těsná sekvence 1355→1356→1357
+- [x] `g4-vlastiveda-...husitstvi-mistr-jan-hus-husitske-valky` (drag_order) ✅ 10/10/10 — L3 miskoncepce Žižka †1424 ≠ Lipany 1434
+- [x] `g4-vlastiveda-...premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii` (drag_order) ✅ 10/10/10 — L3 past Otakar I. vs II., Václav II. vs III.
+- [x] `g4-vlastiveda-...slovane-velkomoravska-rise-cyril-a-metodej` (drag_order) ✅ 10/10/10 — L3 těsná sekvence 863→883→906
+- [x] `g4-vlastiveda-...kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta` (match_pairs) ✅ 10/10/10 — L1 samo-odvoditelné, L3 5 párů vč. Vysočina→Jihlava
+- [x] `g4-vlastiveda-...vodstvo-cr-hlavni-reky-...` (match_pairs) ✅ 10/10/10 — L3 obrácený směr + past Rožmberk/Lipno/Orlík
 
-> ⚠️ Fakt-check povinný (data, chronologie) — dějiny drag_order už měly opravu formulací
-> (2026-06-08 „Bohemia"). Ověřit klíč nezávisle (Generator→Critic).
+> Fakt-check proveden (Generator→Critic). Opravy: Máchovo jezero není „největší přirozené jezero“
+> (je to rybník); vyhnuto se stejnoletým událostem v drag_order a duplicitní pravé straně v match_pairs
+> (Praha↔Středočeský). Freeze přegenerován (107 témat), 7 nových v `UNFROZEN_TOPIC_IDS`.
 
 ## Balík B — Přírodověda g4 (1 téma)
 
