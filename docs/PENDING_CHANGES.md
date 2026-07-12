@@ -49,6 +49,14 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy Balík C — prvouka g3, 10/10 HOTOVO (2026-07-12)
+- Stejný `gen(_level)` L1-cap bug jako Balík A/B (audit `12/0/0` → produkce ořezaná na L1). Přepsáno na disjunktní `POOL_L1/L2/L3` (fact-check Generator→Critic) u všech 10 témat: `casovaPrimkaGenerace`, `crSymboly`, `krajeRegionyCr`, `komunikaceBezpecnost`, `skupinyZivocichu`, `vodaVzduchPuda`, `vztahyKonflikty`, `zivaNezivaPrivroda`, `mapaStranySveta`, `minulostRegionuPovesti`.
+- **Bonus nález a oprava** v `skupinyZivocichu.ts`: 4 úlohy měly `type: "select_one"` (neplatné pole, TS2353 — `type` v `PracticeTask` interface vůbec neexistuje) a chyběl jim `pairs`, přitom topic má `inputType: "match_pairs"` → `PracticeInputRouter` u nich renderoval `null` (žák viděl prázdnou obrazovku). Převedeno na `match_pairs`, pole `type` smazáno ze všech úloh.
+- **Bonus nález a oprava** v `komunikaceBezpecnost.ts`: nezavřený/neescapovaný uvozovkový znak v jednom `hints` řetězci (`„úmyslně" a „opakovaně".`) způsoboval syntax error a pád buildu celého souboru — opraveno na typografické uvozovky `„…“`.
+- `mapaStranySveta` (mezilehlé strany, měřítko s výpočtem skutečné vzdálenosti, otočení těla o 90°/180°) a `minulostRegionuPovesti` (pověsti + klasifikace hmotný/písemný/ústní pramen, bez letopočtů dle boundaries) dopsány přímo v této session bez subagentů — předchozí 2× selhání subagentů (API Overloaded, pak zaseklý běh) obejito.
+- **Finální ověření hotovo**: tsc 0, generator-validation jen 6 předexistujících prvouka failů (`stavbaRostlin`, `stavbaTelaaZdravi` — mimo scope Balíku C, nezměněny), audit:coverage — obě nová témata `maxL3`, bez CHYBÍ. Freeze snapshot přegenerován (96 témat, 10 nových v `UNFROZEN_TOPIC_IDS`).
+- Zbývá Balík D (prvouka g2) — viz `WORKLIST_COVERAGE_2-4.md`. **Ještě nutno commitnout.**
+
 ## ✅ Systémové dluhy Balík B — přírodověda g4 stavba rostlin (2026-07-12)
 - `g4-prirodoveda-...stavba-rostlin-rozsireni-druhy-rostlin`: `gen(_level)` ignoroval level → `30/1/0 maxL1`. Přepis na disjunktní `POOL_L1/L2/L3` (bez rewrite faktů, jen reorganizace 31 existujících úloh) → **12/11/8 maxL3**.
 - Všech 31 úloh konzistentně `match_pairs` (žádné míchané typy — dřívější obava z R2 grade-5 auditu se netýkala tohoto tématu). Gradace: L1 základní části/funkce, L2 aplikace/klasifikace, L3 odborná terminologie nad RVP (chloroplast, xylém/floém, anatomie květu) — nově explicitně `boundaries` jako rozšiřující.

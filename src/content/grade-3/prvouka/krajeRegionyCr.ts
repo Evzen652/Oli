@@ -9,7 +9,19 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+// ─────────────────────────────────────────────────────────
+// Disjunktní pooly obtížnosti (L1 < L2 < L3), select_one.
+//   L1 = rozpoznání: počet krajů, definice kraj vs region, Praha jako
+//        hlavní město i kraj zároveň, obecné otázky o smyslu kraje/regionu.
+//   L2 = aplikace:   přiřazení konkrétní krajské město ↔ kraj (12 párů,
+//        pokrývá 12 ze 14 krajů — Praha a Středočeský kraj vynechány,
+//        protože nejsou obyčejným párem kraj–stejnojmenné město).
+//   L3 = transfer:   kombinace dvou faktů (poloha + jiný rys), výjimka
+//        Vysočina/Jihlava, rozlišení podobných názvů (Jihočeský vs
+//        Jihomoravský), počet krajů včetně Prahy.
+// ─────────────────────────────────────────────────────────
+
+const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik krajů má Česká republika?",
     correctAnswer: "14 krajů",
@@ -53,6 +65,139 @@ const POOL: PracticeTask[] = [
     explanation:
       "Region je oblast, která má společné znaky — například stejnou přírodu, historii nebo kulturu. Region nemusí mít přesně dané hranice jako kraj. Například Haná nebo Chodsko jsou regiony.",
   },
+  {
+    question: "Kolik krajských měst má Česká republika?",
+    correctAnswer: "14",
+    options: ["14", "13", "12", "15"],
+    hints: [
+      "Každý kraj má právě jedno krajské město.",
+      "Krajských měst je stejně jako krajů.",
+    ],
+    explanation:
+      "Česká republika má 14 krajů a každý kraj má své krajské město — dohromady tedy 14 krajských měst. I kraj Vysočina má krajské město, i když se nejmenuje stejně jako kraj — je to Jihlava.",
+  },
+  {
+    question: "Které město je zároveň hlavním městem státu i samostatným krajem?",
+    correctAnswer: "Praha",
+    options: ["Praha", "Brno", "Ostrava", "Plzeň"],
+    hints: [
+      "Toto město je největší v České republice.",
+      "Sídlí zde prezident, vláda i parlament.",
+    ],
+    explanation:
+      "Praha je zároveň hlavním městem České republiky a samostatným krajem. Je největším městem státu a sídlí zde prezident, vláda, parlament i soudy.",
+  },
+  {
+    question: "Má každý kraj svůj krajský úřad?",
+    correctAnswer: "Ano",
+    options: ["Ano", "Ne"],
+    hints: [
+      "Krajský úřad je místo, kde se rozhoduje o věcech v kraji.",
+      "Bez úřadu by kraj nemohl fungovat.",
+    ],
+    explanation:
+      "Ano, každý kraj má svůj krajský úřad, kde sídlí krajská správa a zastupitelstvo. Úřad sídlí v krajském městě.",
+  },
+  {
+    question: "Je region to samé jako kraj?",
+    correctAnswer: "Ne",
+    options: ["Ano", "Ne"],
+    hints: [
+      "Kraj má přesné hranice a úřad, region ne.",
+      "Region se pozná podle společných znaků, ne podle úřadu.",
+    ],
+    explanation:
+      "Ne, region a kraj nejsou to samé. Kraj má přesně vymezené hranice a vlastní úřad. Region je jen oblast se společnými znaky, bez přesných hranic a bez vlastní správy.",
+  },
+  {
+    question: "Co je větší — kraj, nebo obec?",
+    correctAnswer: "Kraj je větší než obec",
+    options: [
+      "Kraj je větší než obec",
+      "Obec je větší než kraj",
+      "Kraj a obec jsou stejně velké",
+      "Obec a stát jsou stejně velké",
+    ],
+    hints: [
+      "Kraj se skládá z mnoha obcí.",
+      "Řazení podle velikosti: obec, kraj, stát.",
+    ],
+    explanation:
+      "Kraj je větší územní celek než obec — jeden kraj se skládá z mnoha obcí a měst. Nad krajem už je jen celý stát.",
+  },
+  {
+    question: "Kdo rozhoduje o věcech v kraji?",
+    correctAnswer: "Krajský úřad a zastupitelstvo",
+    options: [
+      "Krajský úřad a zastupitelstvo",
+      "Pouze obecní úřad",
+      "Parlament ČR",
+      "Vláda ČR",
+    ],
+    hints: [
+      "Hledej název úřadu, který patří přímo ke kraji.",
+      "Není to obecní úřad ani vláda — je to úřad na úrovni kraje.",
+    ],
+    explanation:
+      "O věcech v kraji rozhoduje krajský úřad a krajské zastupitelstvo. Sídlí v krajském městě a starají se o školství, zdravotnictví nebo silnice v kraji.",
+  },
+  {
+    question: "Co má kraj navíc oproti regionu?",
+    correctAnswer: "Přesné hranice a vlastní úřad",
+    options: [
+      "Přesné hranice a vlastní úřad",
+      "Vlastní jazyk",
+      "Vlastní měnu",
+      "Vlastní armádu",
+    ],
+    hints: [
+      "Region nemá ani jedno z toho, co kraj má.",
+      "Mysli na to, co dělá kraj úředně uznaným celkem.",
+    ],
+    explanation:
+      "Kraj má na rozdíl od regionu přesně vymezené hranice a vlastní krajský úřad. Region je jen oblast se společnými znaky, bez úřadu a bez přesných hranic.",
+  },
+  {
+    question: "Kde sídlí krajský úřad?",
+    correctAnswer: "V krajském městě",
+    options: [
+      "V krajském městě",
+      "Vždy v Praze, bez ohledu na kraj",
+      "V obci, kde bydlí nejvíc lidí v celé ČR",
+      "V hlavním městě sousedního státu",
+    ],
+    hints: [
+      "Každý kraj má jedno město, které je jeho centrem.",
+      "Toto město se obvykle jmenuje stejně jako kraj.",
+    ],
+    explanation:
+      "Krajský úřad sídlí v krajském městě — to je centrum kraje, kde se rozhoduje o jeho záležitostech.",
+  },
+  {
+    question: "Patří Praha do Středočeského kraje?",
+    correctAnswer: "Ne",
+    options: ["Ano", "Ne"],
+    hints: [
+      "Praha je sama samostatným krajem.",
+      "I když leží uprostřed Středočeského kraje, není jeho součástí.",
+    ],
+    explanation:
+      "Ne, Praha do Středočeského kraje nepatří. Praha je samostatný kraj, i když geograficky leží uprostřed území Středočeského kraje a je sídlem jeho úřadů.",
+  },
+  {
+    question: "Musí mít region přesně vymezené hranice jako kraj?",
+    correctAnswer: "Ne",
+    options: ["Ano", "Ne"],
+    hints: [
+      "Region se pozná podle společných znaků, ne podle hranic na mapě.",
+      "Přesné hranice a úřad má kraj, ne region.",
+    ],
+    explanation:
+      "Ne, region nemusí mít přesně vymezené hranice. Na rozdíl od kraje jde jen o oblast se společnými znaky — přírodou, historií nebo kulturou.",
+  },
+];
+
+const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Jihomoravského kraje?",
     correctAnswer: "Brno",
@@ -136,7 +281,7 @@ const POOL: PracticeTask[] = [
     options: ["Pardubice", "Chrudim", "Svitavy", "Ústí nad Orlicí"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
-      "Je to město ve východních Čechách, známé dostizích.",
+      "Je to město ve východních Čechách, známé dostihy.",
     ],
     explanation:
       "Pardubice jsou krajské město Pardubického kraje. Leží ve východních Čechách a jsou proslulé Velkou pardubickou — slavným dostihem.",
@@ -186,20 +331,192 @@ const POOL: PracticeTask[] = [
       "Ústí nad Labem je krajské město Ústeckého kraje. Leží na severu Čech u řeky Labe a hranic s Německem.",
   },
   {
-    question: "Které město je zároveň hlavním městem státu i samostatným krajem?",
-    correctAnswer: "Praha",
-    options: ["Praha", "Brno", "Ostrava", "Plzeň"],
+    question: "Ve kterém kraji leží město Brno?",
+    correctAnswer: "Jihomoravský kraj",
+    options: ["Jihomoravský kraj", "Moravskoslezský kraj", "Zlínský kraj", "Olomoucký kraj"],
     hints: [
-      "Toto město je největší v České republice.",
-      "Sídlí zde prezident, vláda i parlament.",
+      "Brno je krajské město tohoto kraje.",
+      "Kraj leží na jihu Moravy.",
     ],
     explanation:
-      "Praha je zároveň hlavním městem České republiky a samostatným krajem. Je největším městem státu a sídlí zde prezident, vláda, parlament i soudy.",
+      "Brno leží v Jihomoravském kraji a je jeho krajským městem.",
+  },
+  {
+    question: "Ve kterém kraji leží město Plzeň?",
+    correctAnswer: "Plzeňský kraj",
+    options: ["Plzeňský kraj", "Karlovarský kraj", "Jihočeský kraj", "Ústecký kraj"],
+    hints: [
+      "Plzeň je krajské město tohoto kraje.",
+      "Kraj leží v západních Čechách.",
+    ],
+    explanation:
+      "Plzeň leží v Plzeňském kraji a je jeho krajským městem.",
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 12);
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Který kraj je jedinou výjimkou — nemá krajské město se stejným názvem, jako je název kraje?",
+    correctAnswer: "Vysočina",
+    options: ["Vysočina", "Plzeňský kraj", "Zlínský kraj", "Olomoucký kraj"],
+    hints: [
+      "Tento kraj je pojmenován podle krajiny, ne podle města.",
+      "Jeho krajské město se jmenuje Jihlava.",
+    ],
+    explanation:
+      "Kraj Vysočina je jediný kraj, jehož krajské město (Jihlava) se nejmenuje stejně jako kraj. Ostatní kraje mají krajské město pojmenované stejně jako kraj.",
+  },
+  {
+    question: "Které krajské město je proslulé firmou Baťa a leží na východní Moravě?",
+    correctAnswer: "Zlín",
+    options: ["Zlín", "Olomouc", "Ostrava", "Brno"],
+    hints: [
+      "Toto město dalo jméno celému kraji.",
+      "Firma Baťa vyráběla boty.",
+    ],
+    explanation:
+      "Zlín leží na východní Moravě a je proslulý svou historií spojenou s obuvnickou firmou Baťa. Je krajským městem Zlínského kraje.",
+  },
+  {
+    question: "Které krajské město je lázeňské a leží v západních Čechách?",
+    correctAnswer: "Karlovy Vary",
+    options: ["Karlovy Vary", "Plzeň", "Ústí nad Labem", "Liberec"],
+    hints: [
+      "Toto město je známé minerálními prameny.",
+      "Je krajským městem Karlovarského kraje.",
+    ],
+    explanation:
+      "Karlovy Vary jsou slavné lázeňské město v západních Čechách, známé minerálními prameny. Jsou krajským městem Karlovarského kraje.",
+  },
+  {
+    question:
+      "Jihočeský kraj i Jihomoravský kraj mají v názvu slovo „Jiho-“. Které krajské město patří k Jihočeskému kraji (ne k Jihomoravskému)?",
+    correctAnswer: "České Budějovice",
+    options: ["České Budějovice", "Brno", "Plzeň", "Jihlava"],
+    hints: [
+      "Toto město leží na jihu Čech, ne na jihu Moravy.",
+      "Pozor na podobný název sousedního kraje — Jihomoravský.",
+    ],
+    explanation:
+      "České Budějovice jsou krajské město Jihočeského kraje, který leží na jihu Čech. Nezaměňuj ho s Jihomoravským krajem, jehož krajským městem je Brno.",
+  },
+  {
+    question:
+      "Jihočeský kraj i Jihomoravský kraj mají v názvu slovo „Jiho-“. Které krajské město patří k Jihomoravskému kraji (ne k Jihočeskému)?",
+    correctAnswer: "Brno",
+    options: ["Brno", "České Budějovice", "Zlín", "Olomouc"],
+    hints: [
+      "Toto město leží na jihu Moravy, ne na jihu Čech.",
+      "Pozor na podobný název sousedního kraje — Jihočeský.",
+    ],
+    explanation:
+      "Brno je krajské město Jihomoravského kraje, který leží na jihu Moravy. Nezaměňuj ho s Jihočeským krajem, jehož krajským městem jsou České Budějovice.",
+  },
+  {
+    question:
+      "Praha je hlavní město ČR a zároveň i samostatný kraj. Kolik krajů má Česká republika CELKEM, počítáme-li Prahu mezi ně?",
+    correctAnswer: "14 krajů",
+    options: ["14 krajů", "13 krajů", "15 krajů", "12 krajů"],
+    hints: [
+      "Praha se do celkového počtu krajů počítá jako jeden z nich.",
+      "Bez Prahy by krajů bylo 13 — ale Praha mezi ně patří.",
+    ],
+    explanation:
+      "Česká republika má 14 krajů a Praha je jedním z nich — je zároveň hlavním městem státu i samostatným krajem. Proto se do celkového počtu 14 krajů počítá.",
+  },
+  {
+    question: "Které krajské město je třetí největší v ČR a leží poblíž hranic s Polskem?",
+    correctAnswer: "Ostrava",
+    options: ["Ostrava", "Olomouc", "Zlín", "Brno"],
+    hints: [
+      "Toto město leží na severovýchodě Moravy.",
+      "Je krajským městem Moravskoslezského kraje.",
+    ],
+    explanation:
+      "Ostrava je třetí největší město České republiky a leží na severovýchodě Moravy poblíž hranic s Polskem. Je krajským městem Moravskoslezského kraje.",
+  },
+  {
+    question: "Které krajské město je druhé největší v ČR a leží na jihu Moravy?",
+    correctAnswer: "Brno",
+    options: ["Brno", "Ostrava", "Zlín", "Olomouc"],
+    hints: [
+      "Toto město je centrem celé jižní Moravy.",
+      "Je krajským městem Jihomoravského kraje.",
+    ],
+    explanation:
+      "Brno je druhé největší město České republiky a leží na jihu Moravy. Je krajským městem Jihomoravského kraje.",
+  },
+  {
+    question: "Které krajské město je čtvrté největší v ČR a leží v západních Čechách?",
+    correctAnswer: "Plzeň",
+    options: ["Plzeň", "Karlovy Vary", "České Budějovice", "Liberec"],
+    hints: [
+      "Toto město je krajským městem Plzeňského kraje.",
+      "Leží dál na západ než Karlovy Vary od Prahy směrem k hranicím.",
+    ],
+    explanation:
+      "Plzeň je čtvrté největší město České republiky a leží v západních Čechách. Je krajským městem Plzeňského kraje.",
+  },
+  {
+    question: "Které krajské město leží u řeky Labe poblíž hranic s Německem?",
+    correctAnswer: "Ústí nad Labem",
+    options: ["Ústí nad Labem", "Liberec", "Hradec Králové", "Karlovy Vary"],
+    hints: [
+      "Název tohoto města přímo obsahuje jméno řeky, u které leží.",
+      "Je krajským městem Ústeckého kraje na severu Čech.",
+    ],
+    explanation:
+      "Ústí nad Labem leží u řeky Labe na severu Čech poblíž hranic s Německem. Je krajským městem Ústeckého kraje.",
+  },
+  {
+    question: "Které krajské město leží tam, kde se stékají řeky Labe a Orlice, ve východních Čechách?",
+    correctAnswer: "Hradec Králové",
+    options: ["Hradec Králové", "Pardubice", "Liberec", "Jihlava"],
+    hints: [
+      "Název tohoto krajského města je skrytý v názvu kraje.",
+      "Je krajským městem Královéhradeckého kraje.",
+    ],
+    explanation:
+      "Hradec Králové leží ve východních Čechách, kde se setkávají řeky Labe a Orlice. Je krajským městem Královéhradeckého kraje.",
+  },
+  {
+    question: "Které krajské město je proslulé koňským dostihem Velká pardubická a leží ve východních Čechách?",
+    correctAnswer: "Pardubice",
+    options: ["Pardubice", "Hradec Králové", "Liberec", "Jihlava"],
+    hints: [
+      "Krajské město má stejné jméno jako kraj.",
+      "Dostih se jmenuje podle tohoto města.",
+    ],
+    explanation:
+      "Pardubice leží ve východních Čechách a jsou proslulé Velkou pardubickou — slavným koňským dostihem. Jsou krajským městem Pardubického kraje.",
+  },
+  {
+    question: "Které krajské město patří mezi nejstarší a historicky nejvýznamnější města na Moravě a leží na střední Moravě?",
+    correctAnswer: "Olomouc",
+    options: ["Olomouc", "Zlín", "Brno", "Ostrava"],
+    hints: [
+      "Toto město leží na střední Moravě, mezi Brnem a Ostravou.",
+      "Je krajským městem Olomouckého kraje.",
+    ],
+    explanation:
+      "Olomouc leží na střední Moravě a patří mezi nejstarší a historicky nejvýznamnější města Moravy. Je krajským městem Olomouckého kraje.",
+  },
+  {
+    question: "Které krajské město leží v severních Čechách pod horou Ještěd?",
+    correctAnswer: "Liberec",
+    options: ["Liberec", "Ústí nad Labem", "Hradec Králové", "Karlovy Vary"],
+    hints: [
+      "Ještěd je hora se známou televizní věží.",
+      "Je krajským městem Libereckého kraje.",
+    ],
+    explanation:
+      "Liberec leží v severních Čechách pod horou Ještěd. Je krajským městem Libereckého kraje.",
+  },
+];
+
+function gen(level: number): PracticeTask[] {
+  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  return shuffle(pool);
 }
 
 export const KRAJEREGIONYCR: TopicMetadata[] = [

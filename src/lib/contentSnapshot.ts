@@ -91,6 +91,18 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // ignoroval level (30/1/0), přepis na disjunktní POOL_L1/L2/L3 + fakt-check
   // ("Bránice" jako synonymum "průduch" byl chybný — bránice je savčí orgán)
   "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-stavba-rostlin-rozsireni-druhy-rostlin",
+  // Systémové dluhy Balík C (2026-07-12) — prvouka g3: L1=12, L2/L3 tenké nebo
+  // prázdné, přepis na disjunktní POOL_L1/L2/L3 + fakt-check
+  "g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine",
+  "g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly",
+  "g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region",
+  "g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas",
+  "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost",
+  "g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti",
+  "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz",
+  "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot",
+  "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu",
+  "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou",
 ]);
 
 export interface TopicFingerprint {

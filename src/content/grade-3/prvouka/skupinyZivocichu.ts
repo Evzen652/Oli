@@ -9,9 +9,16 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-const POOL: PracticeTask[] = [
+// ─────────────────────────────────────────────────────────
+// Disjunktní pooly obtížnosti (L1 < L2 < L3), match_pairs (4 páry/úloha).
+//   L1 = rozpoznání: nejběžnější/prototypická zvířata, žádné záludnosti
+//   L2 = aplikace:   méně běžná, ale standardní zvířata téže skupiny
+//   L3 = transfer:   typické miskoncepce (netopýr, slepýš, tučňák, mlok, úhoř —
+//                    zvířata, která vypadají/chovají se zavádějícím způsobem)
+// ─────────────────────────────────────────────────────────
+
+const POOL_L1: PracticeTask[] = [
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
@@ -26,7 +33,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
@@ -41,212 +47,492 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
-      { left: "netopýr", right: "savec" },
-      { left: "lín", right: "ryba" },
-      { left: "sova", right: "pták" },
+      { left: "liška", right: "savec" },
+      { left: "moucha", right: "hmyz" },
+      { left: "holub", right: "pták" },
       { left: "had", right: "plaz" },
     ],
     hints: [
-      "Netopýr létá, ale je to savec — má srst a kojí mláďata.",
+      "Hmyz má 6 noh a 3 části těla.",
       "Had nemá nohy, ale patří mezi plazy.",
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
+      { left: "kočka", right: "savec" },
       { left: "mravenec", right: "hmyz" },
-      { left: "čolek", right: "obojživelník" },
-      { left: "želva", right: "plaz" },
-      { left: "motýl", right: "hmyz" },
+      { left: "kachna", right: "pták" },
+      { left: "ropucha", right: "obojživelník" },
     ],
     hints: [
-      "Hmyz poznáš podle 6 noh a 3 částí těla.",
+      "Savci kojí mláďata mlékem.",
       "Obojživelníci žijí mládí ve vodě, dospělí i na souši.",
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
-      { left: "brouk", right: "hmyz" },
-      { left: "mlok", right: "obojživelník" },
-      { left: "pstruh", right: "ryba" },
-      { left: "jezevec", right: "savec" },
-    ],
-    hints: [
-      "Brouk má 6 noh — je to hmyz.",
-      "Mlok žije jako mladý ve vodě, dospělý i na souši.",
-    ],
-  },
-  {
-    type: "match_pairs",
-    question: "Spoj každé zvíře se správnou skupinou živočichů.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "vlaštovka", right: "pták" },
-      { left: "liška", right: "savec" },
-      { left: "rosnička", right: "obojživelník" },
-      { left: "krajta", right: "plaz" },
-    ],
-    hints: [
-      "Vlaštovka má peří a zobák — je to pták.",
-      "Liška má srst a kojí mláďata — je to savec.",
-    ],
-  },
-  {
-    type: "match_pairs",
-    question: "Spoj každé zvíře se správnou skupinou živočichů.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "včela", right: "hmyz" },
-      { left: "sumec", right: "ryba" },
-      { left: "slepýš", right: "plaz" },
+      { left: "kůň", right: "savec" },
+      { left: "motýl", right: "hmyz" },
       { left: "vrabec", right: "pták" },
+      { left: "pstruh", right: "ryba" },
+    ],
+    hints: [
+      "Motýl má 6 noh — je to hmyz.",
+      "Vrabec má peří a zobák — je to pták.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "ovce", right: "savec" },
+      { left: "včela", right: "hmyz" },
+      { left: "husa", right: "pták" },
+      { left: "želva", right: "plaz" },
     ],
     hints: [
       "Včela má 6 noh a 3 části těla — je to hmyz.",
-      "Slepýš vypadá jako had, ale je to plaz s nepatrnými nohami.",
+      "Želva má krunýř a je studenokrevní — je to plaz.",
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
-      { left: "jelen", right: "savec" },
-      { left: "komár", right: "hmyz" },
-      { left: "čolka velký", right: "obojživelník" },
+      { left: "zajíc", right: "savec" },
+      { left: "beruška", right: "hmyz" },
+      { left: "kos", right: "pták" },
+      { left: "žába", right: "obojživelník" },
+    ],
+    hints: [
+      "Beruška má 6 noh — je to hmyz.",
+      "Žába žije mládí ve vodě jako pulec, dospělá i na souši.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "medvěd", right: "savec" },
+      { left: "candát", right: "ryba" },
+      { left: "slepice", right: "pták" },
+      { left: "had", right: "plaz" },
+    ],
+    hints: [
+      "Medvěd má srst a kojí mláďata — je to savec.",
+      "Candát dýchá žábrami — je to ryba.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "koza", right: "savec" },
+      { left: "moucha", right: "hmyz" },
+      { left: "orel", right: "pták" },
+      { left: "ještěrka", right: "plaz" },
+    ],
+    hints: [
+      "Koza má srst a kojí mláďata — je to savec.",
+      "Orel má peří a zobák — je to pták.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "vlk", right: "savec" },
       { left: "losos", right: "ryba" },
+      { left: "labuť", right: "pták" },
+      { left: "ropucha", right: "obojživelník" },
     ],
     hints: [
-      "Jelen má srst — patří mezi savce.",
-      "Komár má 6 noh — patří mezi hmyz.",
+      "Losos dýchá žábrami — je to ryba.",
+      "Labuť má peří a zobák — je to pták.",
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
-      { left: "rorýs", right: "pták" },
-      { left: "chameleón", right: "plaz" },
-      { left: "vydra", right: "savec" },
-      { left: "světluška", right: "hmyz" },
+      { left: "prase", right: "savec" },
+      { left: "mravenec", right: "hmyz" },
+      { left: "čáp", right: "pták" },
+      { left: "krokodýl", right: "plaz" },
     ],
     hints: [
-      "Rorýs má peří a zobák — je to pták.",
-      "Chameleón má šupiny a je studenokrevní — je to plaz.",
+      "Prase má srst a kojí mláďata — je to savec.",
+      "Krokodýl má šupiny a je studenokrevní — je to plaz.",
     ],
   },
   {
-    type: "match_pairs",
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "myš", right: "savec" },
+      { left: "motýl", right: "hmyz" },
+      { left: "kachna", right: "pták" },
+      { left: "kapr", right: "ryba" },
+    ],
+    hints: [
+      "Myš má srst a kojí mláďata — je to savec.",
+      "Kapr dýchá žábrami a má šupiny — je to ryba.",
+    ],
+  },
+];
+
+const POOL_L2: PracticeTask[] = [
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "jezevec", right: "savec" },
+      { left: "sumec", right: "ryba" },
+      { left: "rorýs", right: "pták" },
+      { left: "čolek", right: "obojživelník" },
+    ],
+    hints: [
+      "Jezevec má srst a kojí mláďata — je to savec.",
+      "Čolek žije mládí ve vodě, dospělý i na souši — je to obojživelník.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "vydra", right: "savec" },
+      { left: "lín", right: "ryba" },
+      { left: "vlaštovka", right: "pták" },
+      { left: "gekon", right: "plaz" },
+    ],
+    hints: [
+      "Vydra má srst a kojí mláďata — je to savec.",
+      "Gekon má šupiny a je studenokrevní — je to plaz.",
+    ],
+  },
+  {
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
       { left: "hroch", right: "savec" },
-      { left: "tučňák", right: "pták" },
-      { left: "blatnice", right: "obojživelník" },
-      { left: "gekončík", right: "plaz" },
-    ],
-    hints: [
-      "Tučňák neumí létat, ale má peří a zobák — je to pták.",
-      "Blatnice žije na souši i ve vodě — je to obojživelník.",
-    ],
-  },
-  {
-    type: "match_pairs",
-    question: "Spoj každé zvíře se správnou skupinou živočichů.",
-    correctAnswer: "match",
-    pairs: [
-      { left: "cvrček", right: "hmyz" },
       { left: "plotice", right: "ryba" },
-      { left: "kos", right: "pták" },
-      { left: "veverka", right: "savec" },
+      { left: "sova", right: "pták" },
+      { left: "rosnička", right: "obojživelník" },
     ],
     hints: [
-      "Cvrček má 6 noh a 3 části těla — je to hmyz.",
-      "Kos má peří a zobák — je to pták.",
+      "Hroch má srst (řídkou) a kojí mláďata — je to savec.",
+      "Rosnička žije mládí ve vodě jako pulec — je to obojživelník.",
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře se správnou skupinou živočichů.",
     correctAnswer: "match",
     pairs: [
-      { left: "drak komodský", right: "plaz" },
-      { left: "žába skokavá", right: "obojživelník" },
-      { left: "moucha", right: "hmyz" },
+      { left: "ježek", right: "savec" },
       { left: "okoun", right: "ryba" },
+      { left: "straka", right: "pták" },
+      { left: "chameleón", right: "plaz" },
     ],
     hints: [
-      "Drak komodský je velký ještěr — plaz.",
-      "Moucha má 6 noh — je to hmyz.",
+      "Ježek má i pod bodlinami srst — je to savec.",
+      "Chameleón má šupiny a je studenokrevní — je to plaz.",
     ],
   },
   {
-    type: "select_one",
-    question: "Který znak patří SAVCŮM?",
-    correctAnswer: "Kojí mláďata mlékem",
-    options: [
-      "Kojí mláďata mlékem",
-      "Mají šupiny na těle",
-      "Mají 6 noh a 3 části těla",
-      "Snášejí vejce na souši",
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "rys", right: "savec" },
+      { left: "brouk", right: "hmyz" },
+      { left: "datel", right: "pták" },
+      { left: "varan", right: "plaz" },
     ],
     hints: [
-      "Savci se starají o mláďata a živí je mlékem.",
-      "Savci mají srst nebo chlupy.",
+      "Brouk má 6 noh a 3 části těla — je to hmyz.",
+      "Varan má šupiny a je studenokrevní — je to plaz.",
     ],
-    explanation:
-      "Savci kojí svá mláďata mlékem — to je jejich hlavní znak. Mají také srst nebo chlupy.",
   },
   {
-    type: "select_one",
-    question: "Jak dýchají RYBY?",
-    correctAnswer: "Žábrami",
-    options: ["Žábrami", "Plícemi", "Kůží", "Zobákem"],
-    hints: [
-      "Ryby celý život žijí ve vodě.",
-      "Podívej se na strany hlavy ryby — tam jsou žábry.",
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "kuna", right: "savec" },
+      { left: "cvrček", right: "hmyz" },
+      { left: "volavka", right: "pták" },
+      { left: "blatnice", right: "obojživelník" },
     ],
-    explanation:
-      "Ryby dýchají žábrami, které filtrují kyslík rozpuštěný ve vodě. Proto mohou žít celý život pod vodou.",
+    hints: [
+      "Cvrček má 6 noh — je to hmyz.",
+      "Blatnice žije mládí ve vodě, dospělá i na souši — je to obojživelník.",
+    ],
   },
   {
-    type: "select_one",
-    question: "Kolik noh má HMYZ?",
-    correctAnswer: "6 noh",
-    options: ["6 noh", "4 nohy", "8 noh", "2 nohy"],
-    hints: [
-      "Hmyz má tělo rozděleno na 3 části.",
-      "Spočítej nohy motýla nebo mravence.",
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "los", right: "savec" },
+      { left: "komár", right: "hmyz" },
+      { left: "sova", right: "pták" },
+      { left: "užovka", right: "plaz" },
     ],
-    explanation:
-      "Hmyz má vždy přesně 6 noh a tělo rozdělené na tři části: hlavu, hruď a zadeček. Podle toho ho poznáš.",
+    hints: [
+      "Komár má 6 noh — je to hmyz.",
+      "Užovka nemá nohy, ale patří mezi plazy.",
+    ],
   },
   {
-    type: "select_one",
-    question: "Kde kladou OBOJŽIVELNÍCI vajíčka?",
-    correctAnswer: "Do vody",
-    options: ["Do vody", "Na suché místo v lese", "Do hnízda na stromě", "Do písku"],
-    hints: [
-      "Mláďata obojživelníků potřebují vodu.",
-      "Malé pulce žab vídáme v rybnících a potocích.",
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "srnec", right: "savec" },
+      { left: "světluška", right: "hmyz" },
+      { left: "rorýs", right: "pták" },
+      { left: "zmije", right: "plaz" },
     ],
-    explanation:
-      "Obojživelníci kladou vajíčka do vody. Mláďata (např. pulci) žijí nejprve ve vodě a teprve dospělí vylézají na souš.",
+    hints: [
+      "Světluška má 6 noh — je to hmyz.",
+      "Zmije nemá nohy, ale patří mezi plazy.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "jezevec", right: "savec" },
+      { left: "vážka", right: "hmyz" },
+      { left: "straka", right: "pták" },
+      { left: "krajta", right: "plaz" },
+    ],
+    hints: [
+      "Vážka má 6 noh a 3 části těla — je to hmyz.",
+      "Krajta nemá nohy, ale patří mezi plazy stejně jako had.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "vydra", right: "savec" },
+      { left: "sumec", right: "ryba" },
+      { left: "vlaštovka", right: "pták" },
+      { left: "kuňka", right: "obojživelník" },
+    ],
+    hints: [
+      "Sumec dýchá žábrami — je to ryba.",
+      "Kuňka žije mládí ve vodě, dospělá i na souši — je to obojživelník.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "hroch", right: "savec" },
+      { left: "brouk", right: "hmyz" },
+      { left: "datel", right: "pták" },
+      { left: "gekon", right: "plaz" },
+    ],
+    hints: [
+      "Datel má peří a zobák — je to pták.",
+      "Gekon má šupiny a je studenokrevní — je to plaz.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "ježek", right: "savec" },
+      { left: "cvrček", right: "hmyz" },
+      { left: "volavka", right: "pták" },
+      { left: "rosnička", right: "obojživelník" },
+    ],
+    hints: [
+      "Volavka má peří a zobák — je to pták.",
+      "Rosnička žije mládí ve vodě jako pulec — je to obojživelník.",
+    ],
   },
 ];
 
-function gen(_level: number): PracticeTask[] {
-  return shuffle(POOL).slice(0, 12);
+const POOL_L3: PracticeTask[] = [
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "netopýr", right: "savec" },
+      { left: "tučňák", right: "pták" },
+      { left: "kapr", right: "ryba" },
+      { left: "žába", right: "obojživelník" },
+    ],
+    hints: [
+      "Netopýr létá, ale má srst a kojí mláďata mlékem — je to savec.",
+      "Tučňák neumí létat, ale má peří a zobák — je to pták.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "slepýš", right: "plaz" },
+      { left: "mlok", right: "obojživelník" },
+      { left: "pes", right: "savec" },
+      { left: "sýkora", right: "pták" },
+    ],
+    hints: [
+      "Slepýš vypadá jako had, ale má víčka a je to plaz s nepatrnými nožkami.",
+      "Mlok žije mládí ve vodě, dospělý i na souši — je to obojživelník, ne plaz.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "netopýr", right: "savec" },
+      { left: "úhoř", right: "ryba" },
+      { left: "had", right: "plaz" },
+      { left: "moucha", right: "hmyz" },
+    ],
+    hints: [
+      "Netopýr má srst a kojí mláďata — je to savec, i když létá.",
+      "Úhoř vypadá jako had, ale dýchá žábrami a žije ve vodě — je to ryba.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "tučňák", right: "pták" },
+      { left: "slepýš", right: "plaz" },
+      { left: "kráva", right: "savec" },
+      { left: "včela", right: "hmyz" },
+    ],
+    hints: [
+      "Tučňák má peří a zobák, i když neumí létat — je to pták.",
+      "Slepýš nemá nohy jako had, ale je to plaz.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "mlok", right: "obojživelník" },
+      { left: "netopýr", right: "savec" },
+      { left: "štika", right: "ryba" },
+      { left: "ještěrka", right: "plaz" },
+    ],
+    hints: [
+      "Mlok vypadá jako ještěrka, ale je to obojživelník, ne plaz.",
+      "Netopýr kojí mláďata mlékem — je to savec.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "slepýš", right: "plaz" },
+      { left: "tučňák", right: "pták" },
+      { left: "žába", right: "obojživelník" },
+      { left: "liška", right: "savec" },
+    ],
+    hints: [
+      "Slepýš je beznohý plaz, ne had.",
+      "Tučňák je pták, i když plave a neumí létat.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "netopýr", right: "savec" },
+      { left: "mlok", right: "obojživelník" },
+      { left: "kos", right: "pták" },
+      { left: "mravenec", right: "hmyz" },
+    ],
+    hints: [
+      "Netopýr je jediný létající savec.",
+      "Mlok žije mládí ve vodě, dospělý na souši — je to obojživelník.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "úhoř", right: "ryba" },
+      { left: "slepýš", right: "plaz" },
+      { left: "tučňák", right: "pták" },
+      { left: "kůň", right: "savec" },
+    ],
+    hints: [
+      "Úhoř dýchá žábrami — je to ryba, i když vypadá jako had.",
+      "Slepýš má víčka jako ještěrka — je to plaz.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "netopýr", right: "savec" },
+      { left: "tučňák", right: "pták" },
+      { left: "čolek", right: "obojživelník" },
+      { left: "had", right: "plaz" },
+    ],
+    hints: [
+      "Netopýr má srst a kojí mláďata — je to savec.",
+      "Čolek žije mládí ve vodě, dospělý i na souši — je to obojživelník.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "mlok", right: "obojživelník" },
+      { left: "slepýš", right: "plaz" },
+      { left: "veverka", right: "savec" },
+      { left: "vrabec", right: "pták" },
+    ],
+    hints: [
+      "Mlok vypadá jako plaz, ale je to obojživelník.",
+      "Slepýš nemá nohy, ale je to plaz, ne had.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "netopýr", right: "savec" },
+      { left: "úhoř", right: "ryba" },
+      { left: "tučňák", right: "pták" },
+      { left: "motýl", right: "hmyz" },
+    ],
+    hints: [
+      "Netopýr létá, ale kojí mláďata mlékem — je to savec.",
+      "Úhoř žije ve vodě a dýchá žábrami — je to ryba.",
+    ],
+  },
+  {
+    question: "Spoj každé zvíře se správnou skupinou živočichů.",
+    correctAnswer: "match",
+    pairs: [
+      { left: "slepýš", right: "plaz" },
+      { left: "mlok", right: "obojživelník" },
+      { left: "moucha", right: "hmyz" },
+      { left: "holub", right: "pták" },
+    ],
+    hints: [
+      "Slepýš je beznohý plaz, ne had.",
+      "Mlok je obojživelník, i když vypadá jako ještěrka.",
+    ],
+  },
+];
+
+function gen(level: number): PracticeTask[] {
+  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  return shuffle(pool);
 }
 
 export const SKUPINYZIVOCICHU: TopicMetadata[] = [

@@ -35,21 +35,25 @@ disjunktní `POOL_L1/L2/L3`. Všech 7 nyní **maxL3** (dřív 35/0/0 nebo 35/1/0
   xylém/floém, anatomie květu) — nyní explicitně označena jako rozšiřující v `boundaries`.
   **Fakt-check:** „Bránice (průduch)" byl chybný — bránice je savčí orgán, opraveno na „Průduch".
 
-## Balík C — Prvouka g3 (chybí L2/L3)
+## ✅ Balík C — Prvouka g3 (chybí L2/L3) — 10/10 HOTOVO (2026-07-12)
 
-Většina má L1=12, L2=1–4 (tenké), L3=0–1. Doplnit disjunktní L2/L3 dle náročnosti otázky.
+Většina měla L1=12, L2=1–4 (tenké), L3=0–1. Doplněny disjunktní L1/L2/L3.
 (`ekosystemy-pole-louka-les` = 11/8/9 už OK z Balíku 1A — mimo seznam.)
 
-- [ ] `g3-prvouka-...casova-primka-generace-v-rodine`
-- [ ] `g3-prvouka-...hlavni-mesto-statni-symboly`
-- [ ] `g3-prvouka-...kraje-a-regiony-cr-uvod-nas-region`
-- [ ] `g3-prvouka-...mapa-svetove-strany-plan-a-mapa-kompas`
-- [ ] `g3-prvouka-...komunikace-jednani-s-neznamymi-lidmi-bezpecnost`
-- [ ] `g3-prvouka-...minulost-naseho-regionu-povesti`
-- [ ] `g3-prvouka-...skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz`
-- [ ] `g3-prvouka-...voda-vzduch-puda-vyznam-pro-zivot`
-- [ ] `g3-prvouka-...vztahy-mezi-lidmi-reseni-konfliktu`
-- [ ] `g3-prvouka-...rozdily-mezi-zivou-a-nezivou-prirodou`
+✅ **Finální ověření proběhlo pro celý balík najednou**: tsc 0, generator-validation jen 6
+předexistujících prvouka failů (`stavbaRostlin`, `stavbaTelaaZdravi` — mimo scope, nezměněny),
+audit:coverage — všech 10 témat `maxL3` bez CHYBÍ, freeze snapshot přegenerován (96 témat).
+
+- [x] `g3-prvouka-...casova-primka-generace-v-rodine` ✅ disjunktní L1/L2/L3, fact-check hotov
+- [x] `g3-prvouka-...hlavni-mesto-statni-symboly` ✅ disjunktní L1/L2/L3, fact-check hotov
+- [x] `g3-prvouka-...kraje-a-regiony-cr-uvod-nas-region` ✅ disjunktní L1/L2/L3, fact-check hotov
+- [x] `g3-prvouka-...mapa-svetove-strany-plan-a-mapa-kompas` ✅ 13/16/14 maxL3 — L2 mezilehlé strany + rohy mapy, L3 výpočet skutečné vzdálenosti z měřítka + otočení těla o 90°/180°
+- [x] `g3-prvouka-...komunikace-jednani-s-neznamymi-lidmi-bezpecnost` ✅ disjunktní L1/L2/L3, fact-check hotov (+ oprava syntax erroru z neescapované uvozovky v hints)
+- [x] `g3-prvouka-...minulost-naseho-regionu-povesti` ✅ 13/12/12 maxL3 — L2 doplňkové detaily pověstí (Krok, Stadice), L3 klasifikace hmotný/písemný/ústní pramen (bez letopočtů dle boundaries)
+- [x] `g3-prvouka-...skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz` ✅ disjunktní L1/L2/L3 + oprava runtime bugu (4 rozbité úlohy bez `pairs`, neplatné pole `type`)
+- [x] `g3-prvouka-...voda-vzduch-puda-vyznam-pro-zivot` ✅ disjunktní L1/L2/L3, fact-check hotov
+- [x] `g3-prvouka-...vztahy-mezi-lidmi-reseni-konfliktu` ✅ disjunktní L1/L2/L3, fact-check hotov
+- [x] `g3-prvouka-...rozdily-mezi-zivou-a-nezivou-prirodou` ✅ disjunktní L1/L2/L3, fact-check hotov
 
 ## Balík D — Prvouka g2 (největší rozsah)
 
