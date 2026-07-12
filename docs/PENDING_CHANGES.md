@@ -284,10 +284,9 @@ Messaging zamčených okruhů („🔓 Odemkni registrací →" + tooltip „Zar
 - **E** (1): `i18n-completeness` — `parent.greeting` bez `{name}`.
 - **F** (~5): stale fixtures odkazují na smazaná legacy ID `cz-sloh-vypraveni`/`cz-sloh-popis` (nahrazena grade-N obsahem). Soubory: `sloh-topics`, `keyword-conflicts`, `security` sanity, `content-registry`.
 
-### 🔴 NOVÝ NÁLEZ (Cause B audit 2026-06-12): boundary pravidla nemigrována na grade-N ID
-- `src/lib/boundaryEnforcement.ts` `BOUNDARY_RULES` je klíčovaný **starými ID** (`math-compare-natural-numbers-100`, `math-add-sub-100`…), ale `matchTopic` teď vrací grade-N ID (`g3-mat-*`). → **runtime boundary enforcement (STOP_2 pro čísla mimo rozsah / zakázané operace) je pro aktuální grade-3 math obsah NEAKTIVNÍ.**
-- Projevuje se faily: `red-team` AC-S2 (4), `system-stress-test` boundary (3).
-- TODO: namapovat `BOUNDARY_RULES` na grade-N topic ID (+ ověřit `numericRange`/`forbiddenKeywords` per téma). Bezpečnostně relevantní — vlastní fokus task.
+### ✅ OBSOLETNÍ (ověřeno 2026-07-12): boundary enforcement na odpovědi byl ZRUŠEN designem
+- Nález z 2026-06-12 („`BOUNDARY_RULES` nemigrována na grade-N ID") je **neaktuální**. `src/lib/boundaryEnforcement.ts` už neexistuje; boundary enforcement na odpovědi žáka byl **vědomě vyřazen** (viz `sessionOrchestrator.ts:304,376` „boundary enforcement na odpovědi bylo vyřazeno" + `red-team.test.ts:127` „AC-S2 … ODSTRANĚNO"). Velké číslo v PRACTICE už session neukončuje jako `boundary_violation` — je to záměr, ne díra.
+- **Není co migrovat.** STOP_2 pro nesmyslný vstup / vypršení času zůstává a funguje grade-agnosticky. Ověřeno: `red-team` (23) + `system-stress-test` (29) + `preintent-boundaries` (5) = **57/57 zelených** (dřív hlášené faily AC-S2/boundary neexistují). Blocker 2.4 z plánu spustitelnosti tímto padá.
 
 ### Bezpečnostní nálezy z auditu 2026-06-08 (viz docs/AUDIT_2026-06-08_full.md)
 - 🔴 **C1 (vyžaduje akci uživatele):** Groq klíč `VITE_GROQ_API_KEY` je v klientském bundlu → rotovat v Groq dashboardu + přesunout volání do edge funkce. `src/lib/aiClient.ts`.
