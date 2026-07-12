@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { OlyLogo } from "@/components/OlyLogo";
-import { hasContentForGrade } from "@/lib/contentAvailability";
+import { isGradeAvailable } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
 import { serverStartTrial } from "@/lib/anonServerSync";
 import { LandingNav } from "@/pages/LandingNav";
@@ -110,7 +110,7 @@ export default function Onboarding() {
 
   const handleGradeSelect = (grade: number) => {
     if (selected !== null) return;
-    if (!hasContentForGrade(grade)) {
+    if (!isGradeAvailable(grade)) {
       toast({ title: "Připravuje se", description: `Obsah pro ${grade}. ročník brzy přidáme.` });
       return;
     }
@@ -166,7 +166,7 @@ export default function Onboarding() {
             <p className="text-slate-800 font-bold text-2xl">Vyber svůj ročník</p>
             <div className="grid grid-cols-3 gap-5">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
-                const hasContent = hasContentForGrade(grade);
+                const available = isGradeAvailable(grade);
                 const m = GRADE_META[grade];
                 const isSelected = selected === grade;
                 const isOther = selected !== null && selected !== grade;
@@ -189,11 +189,17 @@ export default function Onboarding() {
                       flex flex-col items-center justify-center shadow-md
                       ${selected === null ? "cursor-pointer hover:shadow-xl hover:rotate-0 hover:scale-105 active:scale-95 transition-all duration-200" : "cursor-default"}
                       ${m.gradient} ${m.border} ${m.text} ${selected === null ? m.rotate : ""}
+                      ${available ? "" : "saturate-[0.35] opacity-60"}
                     `}
                   >
                     <span className="text-[5rem] font-black leading-none opacity-60 select-none">
                       {grade}
                     </span>
+                    {!available && (
+                      <span className="absolute bottom-1.5 inset-x-0 text-center text-[0.65rem] font-bold uppercase tracking-wider select-none">
+                        brzy
+                      </span>
+                    )}
                     {isSelected && (
                       <span
                         className="absolute inset-0 rounded-2xl"

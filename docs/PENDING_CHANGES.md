@@ -49,6 +49,13 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Zamknutí ročníků mimo aktivní scope (2026-07-12)
+- Aktivní scope pilotu = ročníky **2, 3, 4** (rozhodnutí: grade 5 zůstává parkovaný). Nový allowlist `ACTIVE_GRADES = [2,3,4]` v `src/lib/contentAvailability.ts` + `isGradeAvailable()` (jediný zdroj pravdy pro dostupnost ročníku žákovi).
+- **Bug**: `hasContentForGrade()` odemykal v onboardingu vše s ≥1 topic → ročníky 5 a 6 byly odemčené s **neauditovaným** obsahem (grade 5: hint leaky + 178× giveaway délkou; grade 6: rozpracovaný pilot 2. stupně). Teď zamčené („brzy" dlaždice + toast „Připravuje se"). `getBestAvailableGrade`/`getContentWarning` gate-ované přes `isGradeAvailable` (dítě s parkovaným ročníkem → banner + fallback na 4).
+- Onboarding: obnoveno vizuální odlišení zamčených dlaždic (proměnná `hasContent` se dřív v UI vůbec nepoužívala — dlaždice vypadaly odemčené). Nový regresní test `src/test/content-availability.test.ts` (12/12): odemčení ročníku = vědomé přidání do allowlistu, ne vedlejší efekt registrace obsahu. tsc 0, anon-trial 19/19, ověřeno v prohlížeči.
+- Grade-4 vlastivěda + přírodověda **ponechány zapnuté** (už byly viditelné — „odloženo" z D9 nemělo runtime bránu); dotáhnou se kvalitativně dle auditu (Fáze 1).
+- Odemčení ročníku 5 v budoucnu = jen přidat `5` do `ACTIVE_GRADES` (až projde audit).
+
 ## ✅ Systémové dluhy, Balík 2A — doplnění L3 u čtenářských/literárních témat (2026-07-10)
 - 9 topics čeština 3.–4. tř. mimo `TIER_EXCEPTIONS` doplněno o skutečný disjunktní `POOL_L3` (u `vers-rym-prirovnani` a `proza-verse` i `POOL_L2`, dřív level úplně ignorováno): `g3-cjl-vers-rym-prirovnani`, `g3-cjl-proza-verse`, `g3-cjl-pohadka-povidka-basen-bajka`, `g3-cjl-vyhledavani-informaci` (nový 3. text „Mravenci"), `g4-cjl-encyklopedie-slovnik-periodika`, `g4-cjl-hlavni-postavy-a-jejich-charakteristika`, `g4-cjl-pohadka-povest-bajka-povidka`, `g4-cjl-rozliseni-podstatnych-a-okrajovych-informaci`, `g4-cjl-vyhledavani-klicovych-slov-a-hlavni-myslenky`. Pět g4 topics mělo stejný `gen(3)=union(L1,L2)` bug jako dřív `dopis-psani-soukromeho-dopisu`.
 - Audit: všech 9 nyní `max L3`. tsc 0, generator-validation bez regrese, freeze snapshot přegenerován (114 zamčených, 9 nových v `UNFROZEN_TOPIC_IDS`).
