@@ -17,7 +17,7 @@ function shuffle<T>(arr: T[]): T[] {
 //        zvířete podle popisu, kde zvíře bydlí (chlívek/kurník/úl/stáj).
 //   L3 = transfer (2 kroky, přiměřeně věku 7-8 let): kombinace dvou
 //        faktů zároveň (které zvíře dává X i Y), rozlišení blízkých /
-//        zaměnitelných mláďat a samců, řetězec „z čeho se vyrábí"
+//        zaměnitelných mláďat a samců, řetězec „z čeho se vyrábí“
 //        (mléko→sýr, vlna→svetr, peří→peřina).
 // ─────────────────────────────────────────────────────────
 
@@ -131,7 +131,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Kohout",
     options: ["Kohout", "Kráva", "Ovce", "Husa"],
     emoji: "🐓",
-    hints: ["Brzy ráno je na farmě slyšet hlasité „kykyryký" — kdo ho vydává?"],
+    hints: ["Brzy ráno je na farmě slyšet hlasité „kykyryký“ — kdo ho vydává?"],
     solutionSteps: ["Ráno kokrhá kohout — jeho volání oznamuje začátek dne."],
   },
   {
@@ -246,7 +246,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Kachna",
     options: ["Kachna", "Slepice", "Kohout", "Kůň"],
     emoji: "🦆",
-    hints: ["Poznej zvíře podle popisu — je to menší vodní pták, který dělá „ka ka ka"."],
+    hints: ["Poznej zvíře podle popisu — je to menší vodní pták, který dělá „ka ka ka“."],
     solutionSteps: ["Podle popisu je to kachna — plave na rybníku a kváká."],
   },
   {
@@ -428,7 +428,7 @@ export const DOMACIHOSPODARSKAZVIRATA: TopicMetadata[] = [
     boundaries: [
       "Pouze běžná domácí a hospodářská zvířata.",
       "Bez podrobností o chovu a péči.",
-      "Řetězce „z čeho se vyrábí" (mléko→sýr, vlna→svetr, peří→peřina) jsou rozšiřující — jen na L3.",
+      "Řetězce „z čeho se vyrábí“ (mléko→sýr, vlna→svetr, peří→peřina) jsou rozšiřující — jen na L3.",
     ],
     gradeRange: [2, 2],
     inputType: "select_one",

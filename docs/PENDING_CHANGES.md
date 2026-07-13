@@ -49,6 +49,20 @@
 - Audit invarianty: `options_distinct` (case-insens dedup) + `answer_key_matches_option` (case-insens match) v `runOfflineAudit` — full-coverage přes všechny úlohy, max 3 hits/topic/kategorie. Nezapočítávají se do `passingPct` (baseline 68% zachován).
 - Snapshot přegenerován (5 topics v `UNFROZEN_TOPIC_IDS`). tsc 0.
 
+## ✅ Systémové dluhy Balík D — prvouka g2, 15/15 HOTOVO (2026-07-14)
+- Stejný `gen(_level)` L1-cap bug jako Balík A/B/C. Všech 15 témat přepsáno na disjunktní `POOL_L1/L2/L3`. Vlny 1–3 (12 témat) na druhém PC (WIP `ee9c5d4`); tato session: **vlna 4** (`zmenyVPrirodePodzimZima` 16/12/12, `drobnaPoraneniTisnoveLinky` 13/12/13, `zdravyZivotniStyl` 15/12/13) + finální ověření celého balíku.
+- `true_false` témata mají L2/L3 4-možnostní úlohy (kvůli `binary_tf_not_sole_l3`); `prvni-pomoc` (`select_one`) povýšen ze 3 na 4 možnosti. Všech 15 `maxL3`, každý tier ≥12.
+- **Reálný build-breaker opraven:** `domaciHospodarskaZvirata.ts` měl v `hints`/`boundaries` český uvozovkový pár `„…"` s **rovnou ASCII zavírací uvozovkou** (`kykyryký"`, `ka ka ka"`, `z čeho se vyrábí"`) → string končil předčasně, SWC hlásil syntax error a padal build. Opraveno na `„…"` (U+201C), vč. 2 komentářů v `povolaniPraceDospelych.ts` a `tradiceAZvyky.ts`.
+- **Reálný obsahový bug opraven:** `pravidlaSlusnehoChovani.ts` — klíč „…řeknu mu na něm něco hezkého" ≠ možnost „…na něj…" → úloha bez vybratelné správné odpovědi (`answer_key_matches_one_option`); sjednoceno na „na něj" (klíč i explanation).
+- **Hint leaky:** mé 3 nové soubory čisté (0, ověřeno vyčerpávajícím deterministickým scanem). Navíc opraveno několik ve vlnách 1–3 (`hodiny-cas` „60"/„leden", `tradice` „mikuláš", `zima-zvirata` vlaštovka).
+- **Finální ověření:** tsc 0, generator-validation jen 2 předexistující g3 témata failují (`stavba-rostlin`, `stavba-lidskeho-tela` — mimo scope; počet 6↔7 kolísá nedeterminismem uvnitř nich), audit:coverage všech 15 `maxL3` bez CHYBÍ, 15 ID v `UNFROZEN_TOPIC_IDS`, freeze snapshot přegenerován (81 zamčených témat), freeze test zelený.
+- **Zbývá (nová položka, viz níže):** ~28 předexistujících hint_leaků ve vlnách 1–3 (druhé PC). **Ještě nutno commitnout.**
+
+### 🟡 Otevřené — hint_leaky prvouka g2 vlny 1–3 (~28)
+- Vyčerpávající scan (`checkHintLeakage` nad všemi úlohami) našel ~28 hint_leaků v již committnutých souborech vln 1–3 (`hodinyKalendarCas`, `tradiceAZvyky`, `lideVOkoliKamaradstvi`/sousedstvi, `pravidlaSlusnehoChovani`, `naseObecNazev`, `domaciHospodarskaZvirata`).
+- Dvě kategorie: (a) **skutečné giveaway** — sekvenční nápovědy `hodiny-cas` typu „…pondělí, úterý, středa…" u otázky „co přijde po pondělí?" (nápověda vyjmenuje odpověď); (b) **false-positives detektoru** u číselných odpovědí s jednotkou (odpověď „30 minut" → detektor matchuje slovo „minut" ve strategické nápovědě „Hodina má 60 minut. Půl hodiny je polovina", která číslo neprozrazuje).
+- Není blokující gate (hint_leak je informativní; předchozí balíky A–C shipnuty s leaky, codebase-wide baseline ~122). Doporučeno vyřídit samostatným průchodem, aby se nemíchalo s finalizací Balíku D.
+
 ## ✅ Systémové dluhy Balík C — prvouka g3, 10/10 HOTOVO (2026-07-12)
 - Stejný `gen(_level)` L1-cap bug jako Balík A/B (audit `12/0/0` → produkce ořezaná na L1). Přepsáno na disjunktní `POOL_L1/L2/L3` (fact-check Generator→Critic) u všech 10 témat: `casovaPrimkaGenerace`, `crSymboly`, `krajeRegionyCr`, `komunikaceBezpecnost`, `skupinyZivocichu`, `vodaVzduchPuda`, `vztahyKonflikty`, `zivaNezivaPrivroda`, `mapaStranySveta`, `minulostRegionuPovesti`.
 - **Bonus nález a oprava** v `skupinyZivocichu.ts`: 4 úlohy měly `type: "select_one"` (neplatné pole, TS2353 — `type` v `PracticeTask` interface vůbec neexistuje) a chyběl jim `pairs`, přitom topic má `inputType: "match_pairs"` → `PracticeInputRouter` u nich renderoval `null` (žák viděl prázdnou obrazovku). Převedeno na `match_pairs`, pole `type` smazáno ze všech úloh.

@@ -282,7 +282,7 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Kamarád ti ukazuje svůj nový výkres. Co je slušné udělat?",
-    correctAnswer: "Podívám se na něj a řeknu mu na něm něco hezkého",
+    correctAnswer: "Podívám se na něj a řeknu mu na něj něco hezkého",
     options: [
       "Podívám se na něj a řeknu mu na něj něco hezkého",
       "Ani se nepodívám a odejdu",
@@ -295,7 +295,7 @@ const POOL_L2: PracticeTask[] = [
       "I malá pochvala kamarádovi udělá radost.",
     ],
     explanation:
-      "Kamarádovu výkresu věnujeme pozornost a řekneme mu na něm něco hezkého. Ignorování nebo hrubá poznámka by ho zklamaly.",
+      "Kamarádovu výkresu věnujeme pozornost a řekneme mu na něj něco hezkého. Ignorování nebo hrubá poznámka by ho zklamaly.",
   },
   {
     question: "Vstupuješ do dveří a za tebou jde ještě někdo. Co je slušné udělat?",

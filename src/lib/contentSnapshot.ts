@@ -103,6 +103,25 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot",
   "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu",
   "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou",
+  // Systémové dluhy Balík D (2026-07-14) — prvouka g2: gen(_level) ignoroval level
+  // (L1=15, L2/L3 tenké/prázdné), přepis všech 15 na disjunktní POOL_L1/L2/L3
+  // + fakt-check. U true_false témat mají L2/L3 4-možnostní úlohy
+  // (binary_tf_not_sole_l3). Klíč snapshotu = topic.id (krátká forma g2-prv-*).
+  "g2-prv-hodiny-cas",
+  "g2-prv-tradice",
+  "g2-prv-sousedstvi",
+  "g2-prv-povolani",
+  "g2-prv-chovani",
+  "g2-prv-nase-obec",
+  "g2-prv-orientace-obec",
+  "g2-prv-plan-obce",
+  "g2-prv-zvirata-uzitek",
+  "g2-prv-jaro-rostliny-mladata",
+  "g2-prv-jaro-leto",
+  "g2-prv-zima-zvirata",
+  "g2-prv-podzim-zima",
+  "g2-prv-prvni-pomoc",
+  "g2-prv-zdravy-styl",
 ]);
 
 export interface TopicFingerprint {

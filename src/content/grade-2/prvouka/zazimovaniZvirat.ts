@@ -105,7 +105,7 @@ const POOL_L1: TrueFalseItem[] = [
     question: "Vlaštovka zůstává u nás celou zimu. Je to pravda?",
     correct: false,
     emoji: "🐦",
-    hint: "Vlaštovka potřebuje teplo a hmyz — v zimě u nás nic z toho není.",
+    hint: "Vlaštovka potřebuje teplo a hmyz — najde tohle u nás v zimě?",
     solution: "Vlaštovka u nás celou zimu nezůstává — na zimu odlétá do teplých krajů.",
   },
   {

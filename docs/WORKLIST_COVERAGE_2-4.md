@@ -55,16 +55,20 @@ audit:coverage — všech 10 témat `maxL3` bez CHYBÍ, freeze snapshot přegene
 - [x] `g3-prvouka-...vztahy-mezi-lidmi-reseni-konfliktu` ✅ disjunktní L1/L2/L3, fact-check hotov
 - [x] `g3-prvouka-...rozdily-mezi-zivou-a-nezivou-prirodou` ✅ disjunktní L1/L2/L3, fact-check hotov
 
-## Balík D — Prvouka g2 (největší rozsah) — 12/15 ROZPRACOVÁNO (WIP, necommitnutý freeze/audit)
+## ✅ Balík D HOTOVO (2026-07-14) — Prvouka g2 (15/15) — všech maxL3, tier ≥12
 
-Prakticky **všech 15 témat** má L1=15, L2=1–3 (pod prahem), L3=0–1. Nejde jen o L3 — i L2 je slabé.
-Přepsat na disjunktní pooly (vzor grade-2 čeština, 2026-06-18). Rozděleno na 4 vlny po ~4 tématech.
+Prakticky **všech 15 témat** mělo L1=15, L2=1–3 (pod prahem), L3=0–1. Přepsáno na disjunktní pooly.
+Vlny 1–3 (12) na druhém PC (WIP `ee9c5d4`); vlna 4 + finální ověření dokončeno v session 2026-07-14.
 
-⚠️ **STAV 2026-07-14 (přechod na druhý PC):** 12/15 témat přepsáno na disjunktní POOL_L1/L2/L3 a
-tsc-čisté (viz WIP commit). Vlny 1–3 hotové. **ZBÝVÁ:** vlna 4 (3 témata dole) + FINÁLNÍ OVĚŘENÍ
-CELÉHO BALÍKU (generator-validation, audit:coverage, doplnit 15 ID do `UNFROZEN_TOPIC_IDS`
-v `src/lib/contentSnapshot.ts`, přegenerovat freeze snapshot, dopsat PROJECT_STATUS/PENDING_CHANGES,
-finální commit). Freeze snapshot ani audit ZATÍM NEPROBĚHLY ani pro těch 12 hotových.
+✅ **Vlna 4** (`podzim-zima` 16/12/12, `prvni-pomoc` 13/12/13, `zdravy-styl` 15/12/13). ✅ **Finální
+ověření:** 15 ID v `UNFROZEN_TOPIC_IDS`, freeze snapshot přegenerován (81 témat), tsc 0,
+generator-validation jen 2 předexist. g3 faily (mimo scope), audit:coverage všech 15 `maxL3` bez CHYBÍ.
+
+> **Reálné bugy opravené při finálním auditu:** (1) build-breaker — rovná ASCII zavírací uvozovka
+> v českém páru `„…"` v `domaciHospodarskaZvirata.ts` (SWC syntax error, pád buildu); (2)
+> `answer_key_matches_one_option` v `pravidlaSlusnehoChovani.ts` („na něm" vs „na něj"); (3) hint leaky
+> v mých 3 nových souborech (0 po opravě) + několik ve vlnách 1–3.
+> **Zbývá follow-up:** ~28 předexist. hint_leaků ve vlnách 1–3 (druhé PC) — viz PENDING_CHANGES.
 
 Vlna 1 ✅: `g2-prv-hodiny-cas` · `g2-prv-tradice` · `g2-prv-sousedstvi` · `g2-prv-povolani`
 Vlna 2 ✅: `g2-prv-chovani` · `g2-prv-nase-obec` · `g2-prv-orientace-obec` · `g2-prv-plan-obce`
@@ -73,7 +77,7 @@ Vlna 3 ✅: `g2-prv-zvirata-uzitek` · `g2-prv-jaro-rostliny-mladata` · `g2-prv
 - [x] `g2-prv-hodiny-cas` · `g2-prv-tradice` · `g2-prv-sousedstvi` · `g2-prv-povolani` · `g2-prv-chovani`
 - [x] `g2-prv-nase-obec` · `g2-prv-orientace-obec` · `g2-prv-plan-obce`
 - [x] `g2-prv-zvirata-uzitek` · `g2-prv-jaro-rostliny-mladata` · `g2-prv-jaro-leto` · `g2-prv-zima-zvirata`
-- [ ] **VLNA 4 (zbývá):** `g2-prv-podzim-zima` · `g2-prv-prvni-pomoc` · `g2-prv-zdravy-styl`
+- [x] **VLNA 4 hotovo:** `g2-prv-podzim-zima` · `g2-prv-prvni-pomoc` · `g2-prv-zdravy-styl`
 
 > Pozn.: `podzim-zima`, `jaro-leto`, `sousedstvi`, `chovani`, `nase-obec`, `zima-zvirata`, `zdravy-styl`
 > mají `inputType: true_false` → L2/L3 musí mít 4-možnostní úlohy (ne jen Ano/Ne), jinak audit

@@ -18,7 +18,7 @@ function shuffle<T>(arr: T[]): T[] {
 //        roční období svátku, rozlišení podobných zvyků
 //   L3 = transfer (2 kroky): kombinace dvou faktů najednou (roční
 //        období + symbol), pořadí svátků v roce, rozlišení blízkých
-//        postav/svátků, jednoduché „proč"
+//        postav/svátků, jednoduché „proč“
 // ─────────────────────────────────────────────────────────
 
 const POOL_L1: PracticeTask[] = [
@@ -83,7 +83,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Mikuláš",
     options: ["Mikuláš", "Ježíšek", "Zajíc", "Kostelník"],
     emoji: "😇",
-    hints: ["Podle něj se jmenuje celý večerní zvyk — mikulášská nadílka."],
+    hints: ["Přichází večer s andělem a čertem a naděluje hodným dětem."],
     explanation: "5. prosince večer chodí Mikuláš spolu s čertem a andělem.",
   },
   {

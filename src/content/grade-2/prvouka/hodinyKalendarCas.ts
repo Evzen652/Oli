@@ -54,7 +54,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "60",
     options: ["60", "30", "100", "24"],
     emoji: "🕐",
-    hints: ["Na hodinách je 60 dílků — každý dílek je 1 minuta."],
+    hints: ["Velká ručička projde za hodinu celý ciferník — po jednom malém dílku za každou minutu."],
     solutionSteps: ["Hodina má 60 minut."],
   },
   {
@@ -102,7 +102,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Leden",
     options: ["Leden", "Prosinec", "Březen", "Únor"],
     emoji: "❄️",
-    hints: ["Rok začíná zimním měsícem — leden, únor…"],
+    hints: ["Rok začíná uprostřed zimy, hned po silvestrovské půlnoci — který měsíc to je?"],
     solutionSteps: ["První měsíc v roce je leden — rok začíná v lednu."],
   },
   {

@@ -18,7 +18,7 @@ function shuffle<T>(arr: T[]): T[] {
 //   L3 = transfer (2 kroky, přiměřeně věku 7-8 let): kombinace dvou
 //        faktů o povolání zároveň, rozlišení blízkých/zaměnitelných
 //        povolání (lékař vs. zubař vs. veterinář) a jednoduché scénáře
-//        „na koho se obrátit, když...".
+//        „na koho se obrátit, když…“.
 // ─────────────────────────────────────────────────────────
 
 const POOL_L1: PracticeTask[] = [

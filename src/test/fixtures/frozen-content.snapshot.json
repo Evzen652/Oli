@@ -67,66 +67,6 @@
     "hash": "fc6bd8c48f450bd9413ba55edb7e5822f033cad3",
     "taskCount": 27
   },
-  "g2-prv-chovani": {
-    "hash": "e2e5d3a8ce5a4de944a4e09a32db5600bda995ae",
-    "taskCount": 19
-  },
-  "g2-prv-hodiny-cas": {
-    "hash": "b9fd79605ed504daadf552164062d31875b99f3b",
-    "taskCount": 18
-  },
-  "g2-prv-jaro-leto": {
-    "hash": "34cff24667a180315c6fe3b03bd3243deed143c3",
-    "taskCount": 18
-  },
-  "g2-prv-jaro-rostliny-mladata": {
-    "hash": "886faf94dc1a8e49c100607cd17717383c4f49bf",
-    "taskCount": 18
-  },
-  "g2-prv-nase-obec": {
-    "hash": "3b7169573b98a3d50dfb5f471230c6548bd40611",
-    "taskCount": 18
-  },
-  "g2-prv-orientace-obec": {
-    "hash": "ae8dfeaa427a9bd70f828a5b6da84554e0d88c41",
-    "taskCount": 16
-  },
-  "g2-prv-plan-obce": {
-    "hash": "2551db2467c341b1491f48cc62795896f16d9486",
-    "taskCount": 16
-  },
-  "g2-prv-podzim-zima": {
-    "hash": "04a887e6768b35b84bed005703ff2e1b24b1c89b",
-    "taskCount": 18
-  },
-  "g2-prv-povolani": {
-    "hash": "9d2ef7d686ed95370635fa80b476483b5f8e4328",
-    "taskCount": 18
-  },
-  "g2-prv-prvni-pomoc": {
-    "hash": "de98419176234dd0ef7287d9891e9b41d0abdd6b",
-    "taskCount": 16
-  },
-  "g2-prv-sousedstvi": {
-    "hash": "e0aef8b9772326f9be91d63e2b3504bb931cab52",
-    "taskCount": 20
-  },
-  "g2-prv-tradice": {
-    "hash": "bacf4f0b40812c6b3cb61c3713e6e3b51fdec61b",
-    "taskCount": 16
-  },
-  "g2-prv-zdravy-styl": {
-    "hash": "1fe3c00e3e56d6c65449294b6665e77b709df423",
-    "taskCount": 18
-  },
-  "g2-prv-zima-zvirata": {
-    "hash": "0e9867c860fa25133ecb18e27275f492746edf40",
-    "taskCount": 18
-  },
-  "g2-prv-zvirata-uzitek": {
-    "hash": "293dbbbd71afe15329f07f629b1b006864323a0c",
-    "taskCount": 18
-  },
   "g3-cjl-dialog-pravidla": {
     "hash": "15e6fd9afe60935f44b37f028544d92381f47cde",
     "taskCount": 12
