@@ -122,6 +122,12 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g2-prv-podzim-zima",
   "g2-prv-prvni-pomoc",
   "g2-prv-zdravy-styl",
+  // Fix g3 stavba (2026-07-14) — poslední 2 prvouka g3 témata: 3 match_pairs úlohy
+  // uvnitř select_one topicu (prázdná obrazovka + fail generator-validation) +
+  // gen(_level) ignoroval level (maxL1). Převedeno na select_one, disjunktní
+  // POOL_L1/L2/L3 (maxL3), fakt-check, nápovědy bez leaků.
+  "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod",
+  "g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc",
 ]);
 
 export interface TopicFingerprint {

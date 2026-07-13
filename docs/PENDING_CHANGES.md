@@ -58,6 +58,15 @@
 - **Finální ověření:** tsc 0, generator-validation jen 2 předexistující g3 témata failují (`stavba-rostlin`, `stavba-lidskeho-tela` — mimo scope; počet 6↔7 kolísá nedeterminismem uvnitř nich), audit:coverage všech 15 `maxL3` bez CHYBÍ, 15 ID v `UNFROZEN_TOPIC_IDS`, freeze snapshot přegenerován (81 zamčených témat), freeze test zelený.
 - **Zbývá (nová položka, viz níže):** ~28 předexistujících hint_leaků ve vlnách 1–3 (druhé PC). **Ještě nutno commitnout.**
 
+## ✅ Fix g3 stavba — poslední 2 prvouka g3 témata (2026-07-14)
+- **Runtime bug + trvalé faily testů odstraněny.** `stavbaRostlin` a `stavbaTelaaZdravi` (poslední 2 prvouka g3 mimo standard) měly `inputType: "select_one"`, ale **3 úlohy v každém byly `match_pairs`** (s `pairs` místo `options` + neplatné pole `type`) → `PracticeInputRouter` je renderoval jako **prázdnou obrazovku**; `generator-validation` je hlásil jako 6 „předexistujících" failů, které kalily každé ověření obsahu (i moje předchozí balíky).
+- Navíc oba měly `gen(_level)` ignorující level → **maxL1** (coverage dluh jako balíky A–D).
+- **Oprava:** převedeno na čisté `select_one` a reorganizováno na disjunktní `POOL_L1/L2/L3` s gradací (L1 rozpoznání části/orgánu → L2 funkce/pojem → L3 řetězce, důsledky, miskoncepce). `stavbaRostlin` **11/10/10 maxL3**, `stavbaTelaaZdravi` **10/10/10 maxL3**. Fakt-check biologie/anatomie (Generator→Critic).
+- **Reálný build-breaker opraven** (stejný jako Balík D): `„chloro-"` v nápovědě — český otevírací `„` + rovná ASCII zavírací `"` předčasně ukončily JS string; tsc 0, ale SWC padal. Přeformulováno bez uvozovek.
+- **Nápovědy bez leaků:** vyčerpávající scan → 4 false-positives (unit-slova, generické fráze sdílené s otázkou) přeformulovány → **0 leaků**.
+- **Ověřeno:** tsc 0, **generator-validation nyní 912/912 (0 failů — dřív 6)**, audit:coverage oba `maxL3`, freeze snapshot přegenerován (79 zamčených, 2 nová ID v `UNFROZEN_TOPIC_IDS`), freeze test zelený.
+- **Zbývá (nová položka):** ještě 1 g3 prvouka topic má coverage dluh — `...bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden` (**12/3/0 maxL2**, L3 prázdné). Není to test-fail ani runtime bug (jen tenké tiery) — samostatná autorská položka.
+
 ## ✅ Hint_leaky prvouka g2 vlny 1–3 — vyřízeno (2026-07-14)
 - Vyčerpávající deterministický scan (`checkHintLeakage` nad všemi úlohami všech 15 prvouka g2 topics, patchnutý `Math.random`, dedup přes všechny 3 levely) našel **28** leaků. Roztříděno na (a) skutečné giveaway a (b) false-positives detektoru.
 - **Opraveno 23 skutečných giveaway** (jen `hints`, obsah otázek/klíčů beze změny — freeze nedotčen):
