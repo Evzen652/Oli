@@ -58,10 +58,14 @@
 - **Finální ověření:** tsc 0, generator-validation jen 2 předexistující g3 témata failují (`stavba-rostlin`, `stavba-lidskeho-tela` — mimo scope; počet 6↔7 kolísá nedeterminismem uvnitř nich), audit:coverage všech 15 `maxL3` bez CHYBÍ, 15 ID v `UNFROZEN_TOPIC_IDS`, freeze snapshot přegenerován (81 zamčených témat), freeze test zelený.
 - **Zbývá (nová položka, viz níže):** ~28 předexistujících hint_leaků ve vlnách 1–3 (druhé PC). **Ještě nutno commitnout.**
 
-### 🟡 Otevřené — hint_leaky prvouka g2 vlny 1–3 (~28)
-- Vyčerpávající scan (`checkHintLeakage` nad všemi úlohami) našel ~28 hint_leaků v již committnutých souborech vln 1–3 (`hodinyKalendarCas`, `tradiceAZvyky`, `lideVOkoliKamaradstvi`/sousedstvi, `pravidlaSlusnehoChovani`, `naseObecNazev`, `domaciHospodarskaZvirata`).
-- Dvě kategorie: (a) **skutečné giveaway** — sekvenční nápovědy `hodiny-cas` typu „…pondělí, úterý, středa…" u otázky „co přijde po pondělí?" (nápověda vyjmenuje odpověď); (b) **false-positives detektoru** u číselných odpovědí s jednotkou (odpověď „30 minut" → detektor matchuje slovo „minut" ve strategické nápovědě „Hodina má 60 minut. Půl hodiny je polovina", která číslo neprozrazuje).
-- Není blokující gate (hint_leak je informativní; předchozí balíky A–C shipnuty s leaky, codebase-wide baseline ~122). Doporučeno vyřídit samostatným průchodem, aby se nemíchalo s finalizací Balíku D.
+## ✅ Hint_leaky prvouka g2 vlny 1–3 — vyřízeno (2026-07-14)
+- Vyčerpávající deterministický scan (`checkHintLeakage` nad všemi úlohami všech 15 prvouka g2 topics, patchnutý `Math.random`, dedup přes všechny 3 levely) našel **28** leaků. Roztříděno na (a) skutečné giveaway a (b) false-positives detektoru.
+- **Opraveno 23 skutečných giveaway** (jen `hints`, obsah otázek/klíčů beze změny — freeze nedotčen):
+  - `hodinyKalendarCas` (13): sekvenční nápovědy „…leden, únor, březen…" / „…jaro, léto, podzim, zima…" u otázek „co přijde po X?" vyjmenovaly odpověď → přepsáno na strategické navádění (pořadí/vlastnost období bez jmenování). „dohromady 24 hodin" → „12 ve dne + 12 v noci, kolik dohromady?". „X se skládá z několika Y" → „ta delší jednotka se skládá z kratších".
+  - `pravidlaSlusnehoChovani` (3): nápovědy doslova pojmenovaly odpověď (`poděkovat`, „přijde řada", „platí pro všechny") → přeformulováno na otázku navádějící na hodnotu.
+  - `zmenyVPrirodeJaroLeto` (3), `zazimovaniZvirat` (1, „na dně rybníka se žába ukryje" → „schová se pod hladinu, kam nedosáhne mráz"), `tradiceAZvyky` (1, masopust), `naseObecNazev` (1, „jméno obce"), `lideVOkoliKamaradstvi` (1, „chce většina").
+- **Ponecháno 5 false-positives detektoru** (žádný obsahový leak): unit-slovo ve strategické nápovědě u číselné odpovědi (`hodin`/`měsíce`/`minut` — číslo neprozrazeno) + slovo už obsažené v otázce (`oba svátky`, `peří`). Zpřesnění detektoru (ignorovat jednotky) = nice-to-have, ne priorita při 5 zbylých.
+- Ověřeno: re-scan → 28→5 (jen dokumentované FP), tsc 0, generator-validation jen 2 předexistující g3 faily (`stavba-rostlin`, `stavba-lidskeho-tela` — mimo scope). Hint-only edity → freeze snapshot nedotčen (hashuje jen question+correctAnswer). Balík D (`c89875b`) pushnut na origin.
 
 ## ✅ Systémové dluhy Balík C — prvouka g3, 10/10 HOTOVO (2026-07-12)
 - Stejný `gen(_level)` L1-cap bug jako Balík A/B (audit `12/0/0` → produkce ořezaná na L1). Přepsáno na disjunktní `POOL_L1/L2/L3` (fact-check Generator→Critic) u všech 10 témat: `casovaPrimkaGenerace`, `crSymboly`, `krajeRegionyCr`, `komunikaceBezpecnost`, `skupinyZivocichu`, `vodaVzduchPuda`, `vztahyKonflikty`, `zivaNezivaPrivroda`, `mapaStranySveta`, `minulostRegionuPovesti`.

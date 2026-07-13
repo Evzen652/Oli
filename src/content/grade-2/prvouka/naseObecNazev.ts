@@ -178,7 +178,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "název obce",
     options: ["název obce", "barva vstupních dveří", "jméno rodinného mazlíčka", "počet oken v domě"],
     emoji: "📮",
-    hints: ["Adresa má několik částí — jedna z nich je přímo jméno obce."],
+    hints: ["Vzpomeň si, co všechno píšeme do adresy na obálku dopisu — ulici, číslo domu i město."],
     explanation: "Název obce je součástí adresy a říká, ve kterém místě člověk bydlí.",
   },
   {

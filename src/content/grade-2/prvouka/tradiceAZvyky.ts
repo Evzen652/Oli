@@ -385,7 +385,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Masopust",
     options: ["Masopust", "Velikonoce", "Slaví se ve stejný den", "Nelze to určit"],
     emoji: "📅",
-    hints: ["Masopust je ještě v zimě, Velikonoce až na jaře — co je v kalendáři dřív?"],
+    hints: ["Jeden z těch svátků je zimní a druhý jarní. Zima přichází v roce dřív než jaro."],
     explanation:
       "Masopust se slaví v zimě, ještě před jarními Velikonocemi, takže je v roce dřív.",
   },

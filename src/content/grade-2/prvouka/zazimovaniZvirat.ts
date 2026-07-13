@@ -351,7 +351,7 @@ const POOL_L2: PracticeTask[] = [
     emoji: "🐸",
     hints: [
       "Žába nesnese chlad a schovává se dolů do vody.",
-      "Na dně rybníka je bahno, do kterého se žába ukryje.",
+      "Schová se hluboko pod hladinu, kam přes zimu nedosáhne mráz.",
     ],
     explanation:
       "Žába přečkává zimu zahrabaná v bahně na dně rybníka. V budce, v Africe ani na stromě ji nenajdeme.",

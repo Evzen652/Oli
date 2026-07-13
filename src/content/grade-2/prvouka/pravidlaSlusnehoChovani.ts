@@ -172,7 +172,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "🙏",
     hints: [
-      "Za každou laskavost, i malou, se sluší poděkovat.",
+      "Když ti někdo prokáže laskavost, jak slušně dáš najevo, že si toho vážíš?",
       "Poděkování ukáže kamarádovi, že si jeho pomoci vážíme.",
     ],
     explanation:
@@ -189,7 +189,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "🧾",
     hints: [
-      "Ve frontě má každý stejné právo počkat, až na něj přijde řada.",
+      "Ve frontě má přednost ten, kdo přišel dřív. Jak se podle toho zachováš?",
       "Předbíhání je nefér ke všem, kdo už čekají déle.",
     ],
     explanation:
@@ -449,7 +449,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     emoji: "🍱",
     hints: [
-      "Pravidlo fronty platí pro všechny stejně, i pro kamarády.",
+      "Zamysli se, co by na to řekli ostatní, kdo ve frontě čekají stejně dlouho jako ty.",
       "Zvýhodnění kamaráda by bylo nefér k ostatním, kteří už čekají.",
     ],
     explanation:

@@ -225,7 +225,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "☀️",
     hints: [
-      "V létě svítí slunce nejdéle ze všech období.",
+      "Porovnej léto se zimou — kdy je den delší a kdy bývá nejtepleji?",
       "Krátké dny a mráz patří k zimě, ne k létu.",
     ],
     explanation:
@@ -267,7 +267,7 @@ const POOL_L2: PracticeTask[] = [
     emoji: "🐝",
     hints: [
       "Včely potřebují ke sběru pylu rozkvetlé květiny.",
-      "Kdy začínají kvést první květiny po zimě?",
+      "Ve kterém období se po zimě příroda probouzí a všechno začíná růst a kvést?",
     ],
     explanation:
       "Včely začínají sbírat pyl na jaře, když rozkvétají první květiny. V zimě květiny nekvetou, takže včely zůstávají v úlu.",
@@ -378,7 +378,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     emoji: "🏊",
     hints: [
-      "Porovnej teplotu na jaře a v létě — kdy je větší horko?",
+      "Porovnej počasí na jaře a v létě — kdy bývá nejvíc teplo?",
       "Do vody chodíme hlavně proto, abychom se v horku zchladili.",
     ],
     explanation:

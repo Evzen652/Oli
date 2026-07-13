@@ -343,7 +343,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "🎯",
     hints: [
-      "Ve skupině se někdy musíme přizpůsobit tomu, co chce většina.",
+      "Zamysli se, co je pro partu lepší — prosadit jen sebe, nebo se domluvit s ostatními?",
       "Přidání se ke společné hře je lepší než urážka nebo odchod.",
     ],
     explanation:

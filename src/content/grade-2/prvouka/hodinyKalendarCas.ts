@@ -46,7 +46,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "24",
     options: ["24", "12", "60", "10"],
     emoji: "⏰",
-    hints: ["Den má část denní a část noční — dohromady 24 hodin."],
+    hints: ["Ve dne je 12 hodin a v noci dalších 12 hodin — kolik je to dohromady?"],
     solutionSteps: ["Den má 24 hodin — 12 hodin dne a 12 hodin noci."],
   },
   {
@@ -70,7 +70,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Pondělí",
     options: ["Pondělí", "Neděle", "Středa", "Sobota"],
     emoji: "📆",
-    hints: ["Týden začíná pracovním dnem — pondělí, úterý…"],
+    hints: ["Týden začíná prvním pracovním dnem, hned po víkendu."],
     solutionSteps: ["Pondělí je první den v týdnu — každý týden začíná pondělím."],
   },
   {
@@ -78,7 +78,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Neděle",
     options: ["Neděle", "Sobota", "Pátek", "Pondělí"],
     emoji: "📆",
-    hints: ["Týden končí víkendem — sobota nebo neděle. Který je poslední?"],
+    hints: ["Týden končí víkendem. Poslední je ten den, po kterém začíná nový týden pondělím."],
     solutionSteps: ["Neděle je poslední den v týdnu."],
   },
   {
@@ -134,7 +134,7 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Ráno",
     options: ["Ráno", "Večer", "Noc", "Poledne"],
     emoji: "🌅",
-    hints: ["Slunce vychází na začátku dne — ráno, v poledne nebo večer?"],
+    hints: ["Slunce se objeví na obloze úplně na začátku dne, když se probouzíme."],
     solutionSteps: ["Slunce vychází ráno — na začátku každého dne."],
   },
 ];
@@ -145,7 +145,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Úterý",
     options: ["Úterý", "Neděle", "Pátek", "Středa"],
     emoji: "📆",
-    hints: ["Dny v týdnu jdou za sebou: pondělí, úterý, středa… Co přijde hned po pondělí?"],
+    hints: ["Pondělí je první den týdne. Který den je hned druhý v pořadí?"],
     solutionSteps: ["Po pondělí přijde úterý — je to druhý den v týdnu."],
   },
   {
@@ -153,7 +153,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Čtvrtek",
     options: ["Čtvrtek", "Pátek", "Úterý", "Pondělí"],
     emoji: "📆",
-    hints: ["Dny jdou za sebou: pondělí, úterý, středa, čtvrtek…"],
+    hints: ["Středa je uprostřed týdne. Který pracovní den následuje hned po ní?"],
     solutionSteps: ["Po středě přijde čtvrtek."],
   },
   {
@@ -169,7 +169,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Zima",
     options: ["Zima", "Léto", "Jaro", "Podzim"],
     emoji: "❄️",
-    hints: ["Čtyři roční období jdou za sebou: jaro, léto, podzim, zima — co přijde po podzimu?"],
+    hints: ["Po podzimu přichází nejchladnější období, kdy mrzne a padá sníh."],
     solutionSteps: ["Po podzimu přijde zima — rok má čtyři roční období: jaro, léto, podzim, zima."],
   },
   {
@@ -177,7 +177,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Podzim",
     options: ["Podzim", "Jaro", "Zima", "Léto"],
     emoji: "🍂",
-    hints: ["Čtyři roční období: jaro, léto, podzim, zima — co přijde po létě?"],
+    hints: ["Po nejteplejším období přichází čas, kdy začíná padat listí a chladne."],
     solutionSteps: ["Po létě přijde podzim — listí začne padat a ochladí se."],
   },
   {
@@ -193,7 +193,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Únor",
     options: ["Únor", "Březen", "Prosinec", "Duben"],
     emoji: "📆",
-    hints: ["Měsíce jdou za sebou: leden, únor, březen…"],
+    hints: ["Leden je první měsíc v roce. Který je hned druhý v pořadí?"],
     solutionSteps: ["Po lednu přijde únor — je to druhý měsíc v roce."],
   },
   {
@@ -209,7 +209,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Hodina",
     options: ["Hodina", "Minuta", "Jsou stejně dlouhé", "Nedá se to porovnat"],
     emoji: "⏳",
-    hints: ["Srovnej: vteřina, minuta, hodina — která z nich trvá nejdéle?"],
+    hints: ["Jedna z nich se skládá ze šedesáti těch druhých — a delší je ta větší."],
     solutionSteps: ["Hodina je delší než minuta — 1 hodina = 60 minut."],
   },
   {
@@ -217,7 +217,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Týden",
     options: ["Týden", "Den", "Jsou stejně dlouhé", "Nedá se to porovnat"],
     emoji: "📆",
-    hints: ["Týden se skládá z několika dní."],
+    hints: ["Ta delší jednotka se skládá z několika těch kratších."],
     solutionSteps: ["Týden je delší než den — týden má 7 dní."],
   },
   {
@@ -225,7 +225,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Měsíc",
     options: ["Měsíc", "Týden", "Jsou stejně dlouhé", "Nedá se to porovnat"],
     emoji: "📅",
-    hints: ["Měsíc se skládá z několika týdnů."],
+    hints: ["Ta delší jednotka se skládá z několika těch kratších."],
     solutionSteps: ["Měsíc je delší než týden — měsíc má obvykle čtyři týdny a něco navíc."],
   },
   {
@@ -366,7 +366,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Léto", "Zima", "Podzim", "Jaro"],
     emoji: "☀️",
     hints: [
-      "Roční období jdou v pevném pořadí: jaro, léto, podzim, zima.",
+      "Vzpomeň si na nejteplejší období roku, kdy jsou letní prázdniny.",
       "Které z nich leží přesně mezi jarem a podzimem?",
     ],
     solutionSteps: ["Pořadí ročních období je jaro → léto → podzim → zima. Mezi jarem a podzimem je léto."],
