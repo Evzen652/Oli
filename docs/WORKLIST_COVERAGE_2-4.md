@@ -55,15 +55,30 @@ audit:coverage — všech 10 témat `maxL3` bez CHYBÍ, freeze snapshot přegene
 - [x] `g3-prvouka-...vztahy-mezi-lidmi-reseni-konfliktu` ✅ disjunktní L1/L2/L3, fact-check hotov
 - [x] `g3-prvouka-...rozdily-mezi-zivou-a-nezivou-prirodou` ✅ disjunktní L1/L2/L3, fact-check hotov
 
-## Balík D — Prvouka g2 (největší rozsah)
+## Balík D — Prvouka g2 (největší rozsah) — 12/15 ROZPRACOVÁNO (WIP, necommitnutý freeze/audit)
 
 Prakticky **všech 15 témat** má L1=15, L2=1–3 (pod prahem), L3=0–1. Nejde jen o L3 — i L2 je slabé.
-Přepsat na disjunktní pooly (vzor grade-2 čeština, 2026-06-18). Rozdělit na 2–3 podbalíky.
+Přepsat na disjunktní pooly (vzor grade-2 čeština, 2026-06-18). Rozděleno na 4 vlny po ~4 tématech.
 
-- [ ] `g2-prv-hodiny-cas` · `g2-prv-tradice` · `g2-prv-sousedstvi` · `g2-prv-povolani` · `g2-prv-chovani`
-- [ ] `g2-prv-nase-obec` · `g2-prv-orientace-obec` · `g2-prv-plan-obce`
-- [ ] `g2-prv-zvirata-uzitek` · `g2-prv-jaro-rostliny-mladata` · `g2-prv-jaro-leto` · `g2-prv-zima-zvirata` · `g2-prv-podzim-zima`
-- [ ] `g2-prv-prvni-pomoc` · `g2-prv-zdravy-styl`
+⚠️ **STAV 2026-07-14 (přechod na druhý PC):** 12/15 témat přepsáno na disjunktní POOL_L1/L2/L3 a
+tsc-čisté (viz WIP commit). Vlny 1–3 hotové. **ZBÝVÁ:** vlna 4 (3 témata dole) + FINÁLNÍ OVĚŘENÍ
+CELÉHO BALÍKU (generator-validation, audit:coverage, doplnit 15 ID do `UNFROZEN_TOPIC_IDS`
+v `src/lib/contentSnapshot.ts`, přegenerovat freeze snapshot, dopsat PROJECT_STATUS/PENDING_CHANGES,
+finální commit). Freeze snapshot ani audit ZATÍM NEPROBĚHLY ani pro těch 12 hotových.
+
+Vlna 1 ✅: `g2-prv-hodiny-cas` · `g2-prv-tradice` · `g2-prv-sousedstvi` · `g2-prv-povolani`
+Vlna 2 ✅: `g2-prv-chovani` · `g2-prv-nase-obec` · `g2-prv-orientace-obec` · `g2-prv-plan-obce`
+Vlna 3 ✅: `g2-prv-zvirata-uzitek` · `g2-prv-jaro-rostliny-mladata` · `g2-prv-jaro-leto` · `g2-prv-zima-zvirata`
+
+- [x] `g2-prv-hodiny-cas` · `g2-prv-tradice` · `g2-prv-sousedstvi` · `g2-prv-povolani` · `g2-prv-chovani`
+- [x] `g2-prv-nase-obec` · `g2-prv-orientace-obec` · `g2-prv-plan-obce`
+- [x] `g2-prv-zvirata-uzitek` · `g2-prv-jaro-rostliny-mladata` · `g2-prv-jaro-leto` · `g2-prv-zima-zvirata`
+- [ ] **VLNA 4 (zbývá):** `g2-prv-podzim-zima` · `g2-prv-prvni-pomoc` · `g2-prv-zdravy-styl`
+
+> Pozn.: `podzim-zima`, `jaro-leto`, `sousedstvi`, `chovani`, `nase-obec`, `zima-zvirata`, `zdravy-styl`
+> mají `inputType: true_false` → L2/L3 musí mít 4-možnostní úlohy (ne jen Ano/Ne), jinak audit
+> `binary_tf_not_sole_l3` padne. Router (`PracticeInputRouter.tsx`) 4-možnostní `options` u těchto
+> topiců zobrazí správně (ověřeno).
 
 ## Pořadí
 
