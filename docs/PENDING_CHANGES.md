@@ -7,6 +7,10 @@
 
 ---
 
+## ✅ Admin editor cvičení — Fáze 2: varování v seznamu + gate schvalování (2026-07-14)
+- Náhled/varování propsány i do `SavedExercisesList` ([ExerciseTab.tsx](../src/components/admin/ExerciseTab.tsx)): amber badge ⚠ N s tooltipem na kartě úlohy + `approveWithGuard` (neblokující `window.confirm` při schvalování úlohy s varováním). Helper `warningsForRow()` znovupoužívá `detectExerciseWarnings` + `inferInputType` (nově exportovaný z `CreateExerciseDialog`).
+- Ověřeno v prohlížeči (badge + tooltip, confirm se správnou zprávou, zrušení nechá pending, testovací data uklizena). tsc 0. **Ještě nutno commitnout.**
+
 ## ✅ Admin editor cvičení — Fáze 1: náhled + varování (2026-07-14)
 - **Roadmap #2.** Editace uložených DB úloh už existovala (`EditExerciseDialog`); doplněny 2 reálné mezery pro ruční doladění: **živý náhled** a **obsahová varování**. Scope dle uživatele = nástroj pro admina na pár úloh (overlay strop `max 2/batch` beze změny, DB-only témata mimo scope).
 - Nový `src/lib/exerciseWarnings.ts` — `detectExerciseWarnings()`, neblokující: hint_leak (reuse `checkHintLeakage`), giveaway v otázce, giveaway délkou/meta-slovem možnosti (repliky detektorů z `contentAudit.ts`). Nový `src/components/admin/ExercisePreview.tsx` — poskládá `PracticeTask` a vykreslí přes reálný `PracticeInputRouter` + varování; vloženo do Create i Edit dialogu.

@@ -144,6 +144,10 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-14 (4. blok) — Admin editor cvičení (roadmap #2), Fáze 1 + 2:
+- ✅ **Fáze 2 — varování v seznamu uložených úloh + gate při schvalování.** Náhled/varování z Fáze 1 byly jen v editačním dialogu; admin ale nejdřív kouká na seznam `SavedExercisesList` ([ExerciseTab.tsx](src/components/admin/ExerciseTab.tsx)). Doplněno: (a) helper `warningsForRow()` (reuse `detectExerciseWarnings` + `inferInputType`, nově exportovaný z `CreateExerciseDialog`); (b) **amber badge ⚠ N** na kartě úlohy s tooltipem konkrétních varování; (c) **`approveWithGuard`** — při „Schválit" úlohy s varováním neblokující `window.confirm` („Schválit i tak? žáci ji uvidí"), zrušení nechá úlohu `pending`.
+- **Ověřeno v prohlížeči** (vytvořena testovací úloha s giveaway → badge „1" + tooltip „Praha … giveaway", Schválit → confirm se správnou zprávou, zrušení → zůstala pending → testovací úloha hard-deletnuta, DB čistá, 0 konzol. chyb). tsc 0.
+
 ### Session 2026-07-14 (4. blok) — Admin editor cvičení (roadmap #2), Fáze 1:
 - ✅ **Živý náhled + obsahová varování v editoru cvičení.** Průzkum ukázal, že velká část editoru už existuje (drill-down, `CreateExerciseDialog`, **`EditExerciseDialog`** vč. inline editace uložených DB úloh, schvalovací workflow `pending→approved→rejected`, soft-delete, hybrid overlay max 2/batch). Reálné mezery byly **náhled** a **validace pastí**. Scope po dohodě s uživatelem: nástroj na ruční doladění pár úloh (overlay strop se nemění, DB-only témata mimo scope).
 - ✅ **`src/lib/exerciseWarnings.ts`** (nový) — čistý validátor `detectExerciseWarnings()` vracející **neblokující** varování: hint_leak (znovupoužívá `checkHintLeakage` z `supabase/functions/_shared/hintLeakage.ts`), giveaway v otázce (replika `contentAudit.ts:404-418`, vč. guardu na čisté číslo+jednotku a skip pro comparison/drag_order/match_pairs/fill_blank/true_false), giveaway délkou/meta-slovem možnosti (replika `contentAudit.ts:368-388`, skip true_false). Záměrně jen varuje — detektory mají známé FP (paměť „reference_content_audit_gotchas").

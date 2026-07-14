@@ -532,7 +532,7 @@ export function CreateExerciseDialog({ skill, variant, onSaved }: Props) {
 // EditExerciseDialog — úprava již uloženého cvičení
 // ──────────────────────────────────────────────────────────
 
-function inferInputType(ex: {
+export function inferInputType(ex: {
   correct_answer: string;
   options?: string[];
   question: string;

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X, CheckCircle2, Circle, Pencil } from "lucide-react";
+import { Sparkles, RefreshCw, Download, Eye, Check, Trash2, RotateCw, X, CheckCircle2, Circle, Pencil, AlertTriangle } from "lucide-react";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
 import { hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { getTierTasks } from "@/lib/levelCoverage";
@@ -14,7 +14,8 @@ import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { friendlyEdgeFunctionError } from "@/lib/edgeFunctionError";
 import { ReformulateButtons } from "@/components/admin/ReformulateTaskDialog";
 import type { ReformField } from "@/components/admin/ReformulateTaskDialog";
-import { CreateExerciseDialog, EditExerciseDialog } from "@/components/admin/CreateExerciseDialog";
+import { CreateExerciseDialog, EditExerciseDialog, inferInputType } from "@/components/admin/CreateExerciseDialog";
+import { detectExerciseWarnings } from "@/lib/exerciseWarnings";
 import { hashString, withSeededRandom } from "@/lib/seededRandom";
 import { useExerciseReview, cardKey } from "@/hooks/useExerciseReview";
 
@@ -477,6 +478,30 @@ function CompactTaskCard({
 // ══════════════════════════════════════════════════════
 type ExerciseStatus = "pending" | "approved" | "rejected";
 
+/** Neblokující obsahová varování pro uloženou DB úlohu (stejný validátor jako editor). */
+function warningsForRow(ex: {
+  question?: string;
+  correct_answer?: string;
+  options?: string[];
+  hints?: string[];
+  pairs?: { left: string; right: string }[];
+  correct_answers?: string[];
+}) {
+  return detectExerciseWarnings({
+    inputType: inferInputType({
+      correct_answer: ex.correct_answer ?? "",
+      options: Array.isArray(ex.options) ? ex.options : [],
+      question: ex.question ?? "",
+      pairs: ex.pairs,
+      correct_answers: ex.correct_answers,
+    }),
+    question: ex.question ?? "",
+    correctAnswer: ex.correct_answer ?? "",
+    options: Array.isArray(ex.options) ? ex.options : [],
+    hints: Array.isArray(ex.hints) ? ex.hints : [],
+  });
+}
+
 function SavedExercisesList({
   skillId, source, colorClass, label, onCountsChanged, refreshTrigger,
 }: {
@@ -543,6 +568,20 @@ function SavedExercisesList({
     };
     toast({ description: labels[newStatus] });
     onCountsChanged?.();
+  };
+
+  /** Schválení s neblokujícím upozorněním, pokud úloha nese obsahová varování. */
+  const approveWithGuard = (ex: { id: string }) => {
+    const w = warningsForRow(ex as Parameters<typeof warningsForRow>[0]);
+    if (w.length > 0) {
+      const ok = window.confirm(
+        `Tato úloha má ${w.length} možné varování:\n\n` +
+        w.map((x) => `• ${x.message}`).join("\n") +
+        `\n\nSchválit i tak? (žáci ji pak uvidí)`,
+      );
+      if (!ok) return;
+    }
+    updateStatus(ex.id, "approved");
   };
 
   const handleDeletePermanently = async (id: string) => {
@@ -623,6 +662,7 @@ function SavedExercisesList({
             const status: ExerciseStatus = (ex.status as ExerciseStatus) ?? "pending";
             const tone = statusToneMap[status];
             const badge = statusBadgeMap[status];
+            const warnings = warningsForRow(ex);
             return (
               <div key={ex.id} className={`rounded-2xl border ${tone} p-4 space-y-3 shadow-soft-1`}>
                 {/* Header — index/status */}
@@ -630,9 +670,20 @@ function SavedExercisesList({
                   <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
                     #{ex.id?.slice(0, 6) ?? ""}
                   </span>
-                  <Badge className={`${badge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
-                    {badge.text}
-                  </Badge>
+                  <div className="flex items-center gap-1.5">
+                    {warnings.length > 0 && (
+                      <Badge
+                        className="bg-amber-100 text-amber-800 border-amber-300 text-[10px] whitespace-nowrap rounded-full px-2 py-0.5 gap-1"
+                        title={warnings.map((w) => w.message).join("\n")}
+                      >
+                        <AlertTriangle className="h-3 w-3" />
+                        {warnings.length}
+                      </Badge>
+                    )}
+                    <Badge className={`${badge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
+                      {badge.text}
+                    </Badge>
+                  </div>
                 </div>
 
                 {/* Question */}
@@ -706,7 +757,7 @@ function SavedExercisesList({
                       <Button
                         size="sm"
                         variant="default"
-                        onClick={() => updateStatus(ex.id, "approved")}
+                        onClick={() => approveWithGuard(ex)}
                         className="gap-1 text-xs h-7 bg-emerald-600 hover:bg-emerald-700 text-white"
                       >
                         <Check className="h-3 w-3" /> Schválit
