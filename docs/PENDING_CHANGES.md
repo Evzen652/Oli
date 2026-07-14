@@ -7,6 +7,12 @@
 
 ---
 
+## ✅ Poslední coverage dluh 2–4 — g3 prvouka „mimořádné události" (2026-07-14)
+- `g3-prvouka-...mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni` byl `12/3/0 maxL2` (poslední dluh v aktivním scope). `gen(_level)` ignoroval level → náhodný slice z jednoho poolu. Přepsáno na disjunktní `POOL_L1/L2/L3` s gradací L1 rozpoznání → L2 aplikace scénáře → L3 transfer/miskoncepce/past. Nyní **13/13/12 maxL3**; všech 14 prvouka g3 témat maxL3, chybí L2/L3: 0.
+- **Fakt-check HZS ČR:** opravena stávající nepřesnost — varovný signál je **kolísavý** tón (ne „přerušovaný"; přerušovaný = požární poplach). Sjednoceno v úlohách i `helpTemplate`.
+- **Nápovědy:** deterministický scan (`checkHintLeakage`, 38 úloh × 3 levely) našel 3 giveaway → přeformulovány → 0 leaků. Opraveny 2 překlepy.
+- Ověřeno: tsc 0, generator-validation 912/912, audit:coverage `13/13/12 maxL3`, freeze přegenerován (78 zamčených, ID v `UNFROZEN_TOPIC_IDS`), freeze test zelený. **Coverage dluh 2–4 uzavřen** (A–D + fix g3 stavba + tento topic). Ještě nutno commitnout/pushnout.
+
 ## ✅ PED-3 batch g2-mat + g3-cjl + g4-cjl pilot (2026-07-08)
 - **g2-mat L3 naplnění** (4 topics): `nasobilka-2345` (inverze `? × t = c`), `mereni-casu` (sloučené výpočty + slovní úlohy), `bod-primka-usecka` (aplikace geometrie), `slovni-ulohy-100` (dvoukrokové úlohy). Vše max L3.
 - **g3-cjl L3 naplnění** (5 topics): `spojovani-vet-spojkami`, `slovesa-osoba-cislo-cas` (určit vše v celé větě), `velka-pismena` (ulice/měsíce/oslovení), `veta-jednoducha-souveti` (souvětí ze 3 vět), `slova-jednoznacna-mnohoznacna` (přenesené významy). Vše max L3.
@@ -65,7 +71,7 @@
 - **Reálný build-breaker opraven** (stejný jako Balík D): `„chloro-"` v nápovědě — český otevírací `„` + rovná ASCII zavírací `"` předčasně ukončily JS string; tsc 0, ale SWC padal. Přeformulováno bez uvozovek.
 - **Nápovědy bez leaků:** vyčerpávající scan → 4 false-positives (unit-slova, generické fráze sdílené s otázkou) přeformulovány → **0 leaků**.
 - **Ověřeno:** tsc 0, **generator-validation nyní 912/912 (0 failů — dřív 6)**, audit:coverage oba `maxL3`, freeze snapshot přegenerován (79 zamčených, 2 nová ID v `UNFROZEN_TOPIC_IDS`), freeze test zelený.
-- **Zbývá (nová položka):** ještě 1 g3 prvouka topic má coverage dluh — `...bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden` (**12/3/0 maxL2**, L3 prázdné). Není to test-fail ani runtime bug (jen tenké tiery) — samostatná autorská položka.
+- ~~**Zbývá:** 1 g3 prvouka topic `...prvni-pomoc-mimoradne-udalosti-pozar-povoden` (12/3/0 maxL2).~~ ✅ **VYŘÍZENO 2026-07-14 (3. blok)** — viz záznam nahoře (13/13/12 maxL3).
 
 ## ✅ Hint_leaky prvouka g2 vlny 1–3 — vyřízeno (2026-07-14)
 - Vyčerpávající deterministický scan (`checkHintLeakage` nad všemi úlohami všech 15 prvouka g2 topics, patchnutý `Math.random`, dedup přes všechny 3 levely) našel **28** leaků. Roztříděno na (a) skutečné giveaway a (b) false-positives detektoru.

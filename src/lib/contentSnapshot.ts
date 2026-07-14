@@ -128,6 +128,10 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // POOL_L1/L2/L3 (maxL3), fakt-check, nápovědy bez leaků.
   "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod",
   "g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc",
+  // Coverage dluh (2026-07-14) — poslední prvouka g3 téma s gen(_level) → maxL1
+  // (12/3/0). Přepsáno na disjunktní POOL_L1/L2/L3 (13/13/12 maxL3), fakt-check
+  // dle metodiky HZS ČR (kolísavý vs rovný tón sirény), nápovědy bez leaků.
+  "g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni",
 ]);
 
 export interface TopicFingerprint {
