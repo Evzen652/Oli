@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { buildUniqueOptions } from "@/lib/content/uniqueOptions";
 
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
@@ -34,19 +35,42 @@ function gen(level: number): PracticeTask[] {
         ],
       });
     } else {
-      // Zpětná úloha: průměr n čísel je X, chybí jedno
+      // Zpětná úloha: průměr n čísel je X, chybí jedno.
+      // Retry dokud chybějící člen nevyjde v rozsahu [1, 99]. Dřívější fallback
+      // (`tasks[0] ?? {question:""}`) při i=0 vytvořil prázdnou úlohu a tu pak
+      // replikoval do dalších iterací → nevalidní batch (příčina flaky testu).
       const count = [3, 4][i % 2];
-      const avg = Math.floor(Math.random() * 20) + 5; // průměr 5–24
-      const knownNums = Array.from({ length: count - 1 }, () => Math.floor(Math.random() * (avg * 2)) + 1);
-      const sumKnown = knownNums.reduce((a, b) => a + b, 0);
-      const missing = avg * count - sumKnown;
-      if (missing < 1 || missing > 99) { tasks.push(tasks[0] ?? { question: "", correctAnswer: "0", options: ["0"] }); continue; }
+      let avg = 0;
+      let knownNums: number[] = [];
+      let sumKnown = 0;
+      let missing = 0;
+      do {
+        avg = Math.floor(Math.random() * 20) + 5; // průměr 5–24
+        knownNums = Array.from({ length: count - 1 }, () => Math.floor(Math.random() * (avg * 2)) + 1);
+        sumKnown = knownNums.reduce((a, b) => a + b, 0);
+        missing = avg * count - sumKnown;
+      } while (missing < 1 || missing > 99);
+
+      // Distraktory = typické chyby; buildUniqueOptions garantuje 4 různé kladné
+      // možnosti (dřív se u missing ∈ {1,2} člen missing−2 ≤ 0 odfiltroval → jen 3).
+      const rawDistractors = [
+        avg !== missing ? String(avg) : null,      // miskoncepce: dítě odpoví průměr místo chybějícího čísla
+        String(missing + 2),
+        missing - 2 > 0 ? String(missing - 2) : null,
+        String(missing + avg),
+      ].filter((v): v is string => v !== null);
+      const fallbackPool = [
+        String(missing + 1),
+        String(missing + 3),
+        String(missing * 2),
+        String(missing + avg + 1),
+      ];
+      const { options } = buildUniqueOptions(String(missing), rawDistractors, fallbackPool, 4);
 
       tasks.push({
         question: `Průměr ${count} čísel je ${avg}. Znáš ${count - 1} z nich: ${knownNums.join(", ")}. Jaké je chybějící číslo?`,
         correctAnswer: String(missing),
-        options: shuffle([String(missing), String(missing + 2), String(missing - 2), String(missing + avg)]
-          .filter((v, idx, arr) => arr.indexOf(v) === idx && parseInt(v) > 0).slice(0, 4)),
+        options: shuffle(options),
         hints: [
           "Nejdřív spočítej celkový součet: průměr × počet čísel.",
           "Od celkového součtu odečti známá čísla — to je chybějící.",

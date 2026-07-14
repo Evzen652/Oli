@@ -7,6 +7,10 @@
 
 ---
 
+## ✅ Fix flaky `g4-mat-aritmeticky-prumer-4` L3 (2026-07-14)
+- Generator-validation občas padal na L3. Reprodukční scan (200 000 běhů) odhalil pravou příčinu: fallback `tasks[0] ?? {question:""}` při `missing` mimo rozsah vytvořil při `i=0` prázdnou úlohu a replikoval ji dál. Nahrazeno retry smyčkou (`missing` vždy v [1,99]). Bonus: L3 options přes `buildUniqueOptions` (dřív u `missing∈{1,2}` jen 3 možnosti) + distraktor „průměr místo chybějícího čísla".
+- Ověřeno: scan 0/200 000, generator-validation 10× 0 selhání, tsc 0, freeze přegenerován (jen tento topic 115→120, izolovaný diff), 921/921. **Ještě nutno commitnout.**
+
 ## ✅ Admin editor cvičení — Fáze 2: varování v seznamu + gate schvalování (2026-07-14)
 - Náhled/varování propsány i do `SavedExercisesList` ([ExerciseTab.tsx](../src/components/admin/ExerciseTab.tsx)): amber badge ⚠ N s tooltipem na kartě úlohy + `approveWithGuard` (neblokující `window.confirm` při schvalování úlohy s varováním). Helper `warningsForRow()` znovupoužívá `detectExerciseWarnings` + `inferInputType` (nově exportovaný z `CreateExerciseDialog`).
 - Ověřeno v prohlížeči (badge + tooltip, confirm se správnou zprávou, zrušení nechá pending, testovací data uklizena). tsc 0. **Ještě nutno commitnout.**
