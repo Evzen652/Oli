@@ -7,6 +7,13 @@
 
 ---
 
+## ✅ Child re-login PIN (🔴 blocker pilotu 2–4) (2026-07-15)
+- **Díra:** `pair-child` dá dítěti účet s náhodným zahozeným heslem → po odhlášení se dítě nevrátí bez nového kódu. **Řešení:** zařízení si pamatuje dítě (localStorage) + 4místný PIN nastavovaný rodičem; fallback = párovací kód.
+- **Bezpečnost:** PIN = oddělený faktor, účet drží silné náhodné heslo, po ověření PINu server vydá session. PIN jen jako PBKDF2 hash se solí (`_shared/pin.ts`). Rate-limit 5 pokusů → 15 min zámek (per dítě).
+- **Nové:** migrace `20260715120000_child_pin.sql`, edge fce `set-child-pin` + `child-relogin`, `_shared/pin.ts`, `src/lib/rememberedChild.ts`, `ChildPinControl.tsx`. **Změněné:** `ChildAuth.tsx` (PIN/kód režimy), `ParentDashboard.tsx` (PIN tlačítka), `useChildren.ts`, `SessionView.tsx`, `cs.ts`.
+- Ověřeno v prohlížeči (client E2E): PIN režim, validace, volání funkce, „Nejsem X", rodičovský dialog + graceful české chyby. tsc 0, i18n 64/64.
+- 🔴 **AKCE EVŽEN (deploy):** aplikovat migraci + `supabase functions deploy set-child-pin child-relogin` + regen `types.ts`. **Ještě nutno commitnout.**
+
 ## ✅ i18n (roadmap #3) assessment + úklid mrtvého kódu (2026-07-14)
 - **Zjištění:** i18n příprava je fakticky hotová — infra `LocaleProvider`/`useT` namontovaná, 233 klíčů v `cs.ts`, 31 souborů migrováno, test suite 64/64. Reálný zbývající krok = pl/de překlady (business rozhodnutí, ne prep).
 - **Smazán mrtvý rozbitý kód:** `components/demo/Demo.tsx`, `components/report/Report.tsx`, `components/report/SessionHistory.tsx` — prototypy importující neexistující `@/app/LocaleProvider` + `@/components/shared/OlyLogo` a klíče mimo slovník (příčina „8 chybějících klíčů" warnu). Nikdo je neimportoval; náhrady v `pages/`.

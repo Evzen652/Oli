@@ -549,7 +549,17 @@ export function SessionView() {
               </a>
             )}
             {!isAnonTrial && (
-              <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()} title={t("session.sign_out")} className="text-base">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  // Žáka pošli rovnou na přihlášení (zařízení si ho pamatuje → zadá jen PIN).
+                  if (isStudentView) window.location.href = "/auth/child";
+                }}
+                title={t("session.sign_out")}
+                className="text-base"
+              >
                 {t("session.sign_out")}
               </Button>
             )}

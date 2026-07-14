@@ -26,6 +26,7 @@ import { ChildSessionLog, type SessionEntry } from "@/components/ChildSessionLog
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { logoNoText } from "@/components/OlyLogo";
 import { LandingNav } from "@/pages/LandingNav";
+import { ChildPinControl } from "@/components/parent/ChildPinControl";
 
 const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -105,7 +106,7 @@ function makeDemoSessions(): SessionEntry[] {
 const DEMO_SESSIONS = makeDemoSessions();
 
 export default function ParentDashboard() {
-  const { children, loading, addChild, regenerateCode, updateChild, deleteChild } = useChildren();
+  const { children, loading, addChild, regenerateCode, updateChild, deleteChild, refetch } = useChildren();
   const { profile } = useProfile();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
@@ -406,11 +407,12 @@ export default function ParentDashboard() {
                   ) : (
                     <>
                       <h2 className="font-bold text-3xl leading-tight text-white">{child.child_name}</h2>
-                      <div className="flex items-center gap-2 mt-1 mb-5">
+                      <div className="flex flex-wrap items-center gap-2 mt-1 mb-5">
                         <p className="text-white/70 text-sm">{child.grade}. ročník · aktivní</p>
                         <span className="inline-flex items-center gap-1 rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-[11px] font-semibold text-white">
                           <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
                         </span>
+                        {!isDemo && <ChildPinControl child={child} onChanged={refetch} tone="onDark" />}
                       </div>
                     </>
                   )}
@@ -593,6 +595,12 @@ export default function ParentDashboard() {
                     </Button>
                   )}
                 </div>
+                {!isDemo && (
+                  <div className="flex flex-col items-center gap-1.5 rounded-2xl border border-violet-200 bg-violet-50/50 p-4 text-center">
+                    <ChildPinControl child={child} onChanged={refetch} />
+                    <p className="text-xs text-muted-foreground max-w-xs">{t("parent.pin.hint_unpaired")}</p>
+                  </div>
+                )}
                 <div className="flex items-start gap-3 rounded-2xl bg-muted/40 p-4 border border-border">
                   <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><HelpCircle className="h-4 w-4" /></span>
                   <div>

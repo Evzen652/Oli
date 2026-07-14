@@ -196,9 +196,11 @@ Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 - Claude Code = developer (implementace)
 
 ## DB Column Notes
-- children table uses `name` (not child_name)
-- children has no `is_paired` column — derive from child_user_id != null
+- children table uses `child_name` (ověřeno proti auto-generovanému `types.ts` 2026-07-15; dřívější poznámka „name" byla chybná — `name` patří jiným tabulkám)
+- children **má** sloupec `is_paired` (i tak lze derivovat z `child_user_id != null`; helper `isPaired()` v `useChildren.ts` zvládá obojí)
+- children má PIN sloupce `pin_hash` / `pin_failed_attempts` / `pin_locked_until` (child re-login PIN; **migrace čeká na deploy** — do té doby `select` konkrétně `pin_hash` chybuje, `select("*")` je OK)
 - profiles uses `id` as PK referencing auth.users(id)
+- Zdroj pravdy o sloupcích = `src/integrations/supabase/types.ts` (auto-gen), NE `supabase/schema.sql` (u `children` zastaralý)
 
 ## Admin account
 - Email: eweigl@email.cz / Password: Admin123!

@@ -12,6 +12,7 @@ export interface Child {
   created_at: string;
   learning_notes: string | null;
   is_paired?: boolean;
+  pin_hash?: string | null;
 }
 
 // Derived from child_user_id presence

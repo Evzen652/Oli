@@ -10,9 +10,32 @@ import { hasAnonProgress, migrateAnonProgress, clearAnonData } from "@/lib/anonM
 import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
 import { ROLE_IMAGES } from "@/lib/roleImages";
+import { getRememberedChild, rememberChild, forgetChild } from "@/lib/rememberedChild";
+
+// Vytáhne českou hlášku z edge funkce. Non-2xx odpovědi supabase-js schová do
+// `error.context.json()` (ne do `data`), proto to čteme ručně; jinak by dítě
+// vidělo surové „Failed to send a request…" místo „Špatný PIN. Zbývá 3 pokusy.".
+async function readFnError(fnErr: unknown, data: { error?: string } | null, fallback: string): Promise<string> {
+  if (data?.error) return data.error;
+  const ctx = (fnErr as { context?: { json?: () => Promise<{ error?: string }> } })?.context;
+  if (ctx?.json) {
+    try {
+      const body = await ctx.json();
+      if (body?.error) return body.error;
+    } catch {
+      /* tělo nešlo přečíst — použij fallback */
+    }
+  }
+  return fallback;
+}
 
 export default function ChildAuth() {
+  const remembered = getRememberedChild();
+
+  // Když si zařízení pamatuje dítě, začni v PIN režimu; jinak zadání kódu.
+  const [mode, setMode] = useState<"pin" | "code">(remembered ? "pin" : "code");
   const [code, setCode] = useState("");
+  const [pin, setPin] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -34,7 +57,7 @@ export default function ChildAuth() {
       });
 
       if (fnErr || data?.error) {
-        setError(data?.error || fnErr?.message || "Něco se pokazilo.");
+        setError(await readFnError(fnErr, data, "Něco se pokazilo. Zkus to znovu."));
         setLoading(false);
         return;
       }
@@ -47,6 +70,11 @@ export default function ChildAuth() {
 
         const userId = data.session.user?.id ?? data.user?.id;
         const childId = data.child?.id ?? data.child_id;
+
+        // Zapamatuj dítě na tomto zařízení pro příští re-login přes PIN.
+        if (userId) {
+          rememberChild({ childUserId: userId, childName: data.child_name, grade: data.grade });
+        }
 
         if (userId && childId && hasAnonProgress()) {
           setPairedUserId(userId);
@@ -63,6 +91,53 @@ export default function ChildAuth() {
     } finally {
       if (!showMigration) setLoading(false);
     }
+  };
+
+  const handlePinSubmit = async () => {
+    if (!remembered || pin.length !== 4) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke("child-relogin", {
+        body: { child_user_id: remembered.childUserId, pin },
+      });
+
+      if (fnErr || data?.error) {
+        setError(await readFnError(fnErr, data, "Přihlášení se nepodařilo. Zkus to znovu, nebo se přihlas kódem."));
+        setPin("");
+        setLoading(false);
+        return;
+      }
+
+      if (data?.session) {
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        });
+        // Osvěž zapamatované údaje (rodič mohl změnit jméno/ročník).
+        rememberChild({
+          childUserId: remembered.childUserId,
+          childName: data.child_name ?? remembered.childName,
+          grade: data.grade ?? remembered.grade,
+        });
+        window.location.href = "/";
+      }
+    } catch {
+      setError("Nepodařilo se připojit k serveru.");
+      setLoading(false);
+    }
+  };
+
+  const switchToCode = () => {
+    setMode("code");
+    setError(null);
+    setPin("");
+  };
+
+  const handleNotMe = () => {
+    forgetChild();
+    switchToCode();
   };
 
   const handleMigrationConfirm = async () => {
@@ -113,56 +188,115 @@ export default function ChildAuth() {
                 <img src={ROLE_IMAGES.child} alt="Žák" className="w-16 h-16 rounded-xl object-cover bg-violet-100" />
               </div>
               <p className="font-bold text-sm text-slate-900">Jsem žák</p>
-              <p className="text-xs text-violet-600 mt-0.5">Přihlásit se kódem</p>
+              <p className="text-xs text-violet-600 mt-0.5">Přihlásit se</p>
             </button>
           </div>
 
-          {/* Formulář */}
-          <Card className="w-full shadow-xl border-violet-100/60">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-center text-xl font-bold">
-                {t("auth.child.title")}
-              </CardTitle>
-              <p className="text-center text-sm text-muted-foreground mt-1">
-                {t("auth.child.instruction")}
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex justify-center">
-                <InputOTP maxLength={6} value={code} onChange={setCode}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </div>
+          {mode === "pin" && remembered ? (
+            /* ── Re-login přes PIN (zařízení si pamatuje dítě) ── */
+            <Card className="w-full shadow-xl border-violet-100/60">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-center text-xl font-bold">
+                  {t("auth.child.pin.greeting").replace("{name}", remembered.childName)}
+                </CardTitle>
+                <p className="text-center text-sm text-muted-foreground mt-1">
+                  {t("auth.child.pin.instruction")}
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex justify-center">
+                  <InputOTP
+                    maxLength={4}
+                    value={pin}
+                    onChange={setPin}
+                    inputMode="numeric"
+                    pattern="\d*"
+                    onComplete={handlePinSubmit}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
 
-              {error && <p className="text-sm text-destructive text-center">{error}</p>}
+                {error && <p className="text-sm text-destructive text-center">{error}</p>}
 
-              <Button
-                onClick={handleSubmit}
-                disabled={code.length !== 6 || loading}
-                className="w-full"
-              >
-                {loading ? t("auth.loading") : t("auth.child.submit")}
-              </Button>
-
-              <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-900">
-                <p className="font-bold mb-1">Nemáš kód?</p>
-                <p className="text-amber-800 text-xs">Kód ti musí vygenerovat rodič v Oli. Požádej ho, ať se zaregistruje na <strong>oli-edu.com</strong>, přidá tě a ukáže ti kód.</p>
                 <Button
-                  className="mt-2 w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
-                  onClick={() => navigate("/student")}
+                  onClick={handlePinSubmit}
+                  disabled={pin.length !== 4 || loading}
+                  className="w-full"
                 >
-                  Pokračovat bez přihlášení
+                  {loading ? t("auth.loading") : t("auth.child.pin.submit")}
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
+
+                <button
+                  onClick={handleNotMe}
+                  className="w-full text-center text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                >
+                  {t("auth.child.pin.not_me").replace("{name}", remembered.childName)}
+                </button>
+              </CardContent>
+            </Card>
+          ) : (
+            /* ── Přihlášení párovacím kódem ── */
+            <Card className="w-full shadow-xl border-violet-100/60">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-center text-xl font-bold">
+                  {t("auth.child.title")}
+                </CardTitle>
+                <p className="text-center text-sm text-muted-foreground mt-1">
+                  {t("auth.child.instruction")}
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex justify-center">
+                  <InputOTP maxLength={6} value={code} onChange={setCode}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+
+                {error && <p className="text-sm text-destructive text-center">{error}</p>}
+
+                <Button
+                  onClick={handleSubmit}
+                  disabled={code.length !== 6 || loading}
+                  className="w-full"
+                >
+                  {loading ? t("auth.loading") : t("auth.child.submit")}
+                </Button>
+
+                {remembered && (
+                  <button
+                    onClick={() => { setMode("pin"); setError(null); }}
+                    className="w-full text-center text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                  >
+                    {t("auth.child.pin.back_to_pin").replace("{name}", remembered.childName)}
+                  </button>
+                )}
+
+                <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-900">
+                  <p className="font-bold mb-1">Nemáš kód?</p>
+                  <p className="text-amber-800 text-xs">Kód ti musí vygenerovat rodič v Oli. Požádej ho, ať se zaregistruje na <strong>oli-edu.com</strong>, přidá tě a ukáže ti kód.</p>
+                  <Button
+                    className="mt-2 w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
+                    onClick={() => navigate("/student")}
+                  >
+                    Pokračovat bez přihlášení
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
         </div>
       </div>
