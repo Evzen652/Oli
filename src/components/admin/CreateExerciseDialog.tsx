@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { TopicMetadata } from "@/lib/types";
 import type { ExerciseVariant } from "./ExerciseTab";
+import { ExercisePreview } from "./ExercisePreview";
 
 type FormInputType = "select_one" | "true_false" | "fill_blank" | "short_answer" | "match_pairs" | "multi_select";
 
@@ -500,6 +501,16 @@ export function CreateExerciseDialog({ skill, variant, onSaved }: Props) {
 
             <HintsFields hints={hints} onChange={setHints} />
             <ExplanationField value={explanation} onChange={setExplanation} />
+
+            <ExercisePreview
+              inputType={inputType}
+              question={question}
+              correctAnswer={correctAnswer}
+              distractors={distractors}
+              hints={hints}
+              pairs={pairs}
+              multiOptions={multiOptions}
+            />
           </div>
 
           <DialogFooter className="gap-2 pt-2">
@@ -804,6 +815,16 @@ export function EditExerciseDialog({ exercise, open, onOpenChange, onSaved }: Ed
 
           <HintsFields hints={hints} onChange={setHints} />
           <ExplanationField value={explanation} onChange={setExplanation} />
+
+          <ExercisePreview
+            inputType={inputType}
+            question={question}
+            correctAnswer={correctAnswer}
+            distractors={distractors}
+            hints={hints}
+            pairs={pairs}
+            multiOptions={multiOptions}
+          />
         </div>
 
         <DialogFooter className="gap-2 pt-2">

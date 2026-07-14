@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ Admin editor cvičení — Fáze 1: náhled + varování (2026-07-14)
+- **Roadmap #2.** Editace uložených DB úloh už existovala (`EditExerciseDialog`); doplněny 2 reálné mezery pro ruční doladění: **živý náhled** a **obsahová varování**. Scope dle uživatele = nástroj pro admina na pár úloh (overlay strop `max 2/batch` beze změny, DB-only témata mimo scope).
+- Nový `src/lib/exerciseWarnings.ts` — `detectExerciseWarnings()`, neblokující: hint_leak (reuse `checkHintLeakage`), giveaway v otázce, giveaway délkou/meta-slovem možnosti (repliky detektorů z `contentAudit.ts`). Nový `src/components/admin/ExercisePreview.tsx` — poskládá `PracticeTask` a vykreslí přes reálný `PracticeInputRouter` + varování; vloženo do Create i Edit dialogu.
+- Ověřeno: tsc 0, `src/test/exercise-warnings.test.ts` 8/8, ověřeno v prohlížeči (náhled + live varování, 0 konzol. chyb). Editor píše jen do `custom_exercises` → freeze/generátor kontrakt nedotčen. **Ještě nutno commitnout.**
+
 ## ✅ Poslední coverage dluh 2–4 — g3 prvouka „mimořádné události" (2026-07-14)
 - `g3-prvouka-...mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni` byl `12/3/0 maxL2` (poslední dluh v aktivním scope). `gen(_level)` ignoroval level → náhodný slice z jednoho poolu. Přepsáno na disjunktní `POOL_L1/L2/L3` s gradací L1 rozpoznání → L2 aplikace scénáře → L3 transfer/miskoncepce/past. Nyní **13/13/12 maxL3**; všech 14 prvouka g3 témat maxL3, chybí L2/L3: 0.
 - **Fakt-check HZS ČR:** opravena stávající nepřesnost — varovný signál je **kolísavý** tón (ne „přerušovaný"; přerušovaný = požární poplach). Sjednoceno v úlohách i `helpTemplate`.
