@@ -13,6 +13,11 @@
 - **Nápovědy:** deterministický scan (`checkHintLeakage`, 38 úloh × 3 levely) našel 3 giveaway → přeformulovány → 0 leaků. Opraveny 2 překlepy.
 - Ověřeno: tsc 0, generator-validation 912/912, audit:coverage `13/13/12 maxL3`, freeze přegenerován (78 zamčených, ID v `UNFROZEN_TOPIC_IDS`), freeze test zelený. **Coverage dluh 2–4 uzavřen** (A–D + fix g3 stavba + tento topic). Ještě nutno commitnout/pushnout.
 
+## ✅ Zpřesnění hint-leak detektoru — odstraněny 2 třídy false-positives (2026-07-14)
+- `checkHintLeakage` (`supabase/functions/_shared/hintLeakage.ts`) nově využívá `question` (dostával ji, ignoroval — signatura beze změny). (A) **Jednotka za číselnou odpovědí** („24 hodin", „10. století", „14 krajů") → testuje jen číselné jádro, jednotku smí hint zmínit. (B) **Slovo už v otázce** („peří", „oba svátky", „slovo" u „nadřazené slovo") → hint ho neprozrazuje.
+- **Adverzariálně ověřeno deterministickým auditem** (fixní seed, generátory nezměněny): hint_leak **113 → 105** (−8 FP), **0 odmaskovaných reálných leaků**, **0 nových FP**. Zachyceny a opraveny 2 pasti první verze: (1) mazání slov z otázky předem odmaskovalo reálný leak „plán textu (úvod → zápletka → …)" u `g4-cjl-vlastni-literarni-tvorba` → přeskok až v rozhodování a jen když je celá fráze/token v otázce; (2) číslo+jednotka větev zaváděla nový FP u porovnávacích úloh → `questionTokens.has(num)`.
+- Ověřeno: tsc 0, hint-leakage unit **26/26** (6 nových vč. regrese guardu), generator-validation 912/912, freeze zelený. `content-audit` OFFLINE PŘEHLED (práh ≥70 %) failuje **předexistujícně** (baseline 66–69 % šum, doloženo i bez změn). Ještě nutno commitnout.
+
 ## ✅ PED-3 batch g2-mat + g3-cjl + g4-cjl pilot (2026-07-08)
 - **g2-mat L3 naplnění** (4 topics): `nasobilka-2345` (inverze `? × t = c`), `mereni-casu` (sloučené výpočty + slovní úlohy), `bod-primka-usecka` (aplikace geometrie), `slovni-ulohy-100` (dvoukrokové úlohy). Vše max L3.
 - **g3-cjl L3 naplnění** (5 topics): `spojovani-vet-spojkami`, `slovesa-osoba-cislo-cas` (určit vše v celé větě), `velka-pismena` (ulice/měsíce/oslovení), `veta-jednoducha-souveti` (souvětí ze 3 vět), `slova-jednoznacna-mnohoznacna` (přenesené významy). Vše max L3.

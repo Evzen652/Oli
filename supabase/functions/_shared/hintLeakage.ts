@@ -51,7 +51,11 @@ function normalize(s: string): string {
  * - Pro číselné odpovědi: literál číslo (s pamětí na "5" vs "15")
  * - Pro textové: lowercase substring match s word boundaries
  */
-function hintContainsAnswer(hint: string, answer: string): { leaks: boolean; fragment?: string } {
+function hintContainsAnswer(
+  hint: string,
+  answer: string,
+  questionTokens: ReadonlySet<string> = new Set(),
+): { leaks: boolean; fragment?: string } {
   const normHint = normalize(hint);
   const normAnswer = normalize(answer);
 
@@ -75,19 +79,42 @@ function hintContainsAnswer(hint: string, answer: string): { leaks: boolean; fra
     return { leaks: false };
   }
 
-  // Text answer — split na slova a hledej významová
-  const answerTokens = normAnswer.split(/\s+/).filter((t) => t.length >= 3 && !HINT_NEUTRAL_WORDS.has(t));
+  // Číslo + jednotka (např. "24 hodin", "60 minut", "5 metrů") — informační
+  // jádro je číslo, jednotka je běžné slovo, které hint smí zmínit (navádí,
+  // neprozrazuje). Testuj proto jen číselnou část s word boundary.
+  const numUnit = normAnswer.match(/^(-?\d+(?:[.,]\d+)?)\s+\p{L}[\p{L}\s]*$/u);
+  if (numUnit) {
+    const num = numUnit[1];
+    // Když je číselné jádro už ve znění otázky (typicky porovnávací úlohy
+    // „2 cm nebo 11 cm?"), hint ho jen zopakuje — neprozrazuje nic navíc.
+    if (questionTokens.has(num)) return { leaks: false };
+    const numberPattern = new RegExp(`(^|[^\\d.,])${num.replace(".", "\\.")}([^\\d.,]|$)`);
+    if (numberPattern.test(normHint)) {
+      return { leaks: true, fragment: num };
+    }
+    return { leaks: false };
+  }
+
+  // Text answer — split na slova a hledej významová.
+  // POZOR: slova z otázky NEFILTRUJEME z answerTokens předem — u víceslovných
+  // odpovědí by to rozbilo prozrazující frázi (např. „textu" z otázky by
+  // rozbilo dvojici „plán textu", i když hint prozrazuje celou strukturu).
+  // Slovo/dvojici z otázky přeskočíme až v rozhodovacím kroku níže.
+  const answerTokens = normAnswer
+    .split(/\s+/)
+    .filter((t) => t.length >= 3 && !HINT_NEUTRAL_WORDS.has(t));
 
   if (answerTokens.length === 0) return { leaks: false };
 
   // Pro krátké odpovědi (1-2 významová slova) hledej kompletní match
   if (answerTokens.length <= 2) {
-    if (normHint.includes(normAnswer)) {
+    // Celá odpověď v hintu — leak, ledaže je celá jen převzatá ze zadání otázky
+    if (normHint.includes(normAnswer) && !answerTokens.every((t) => questionTokens.has(t))) {
       return { leaks: true, fragment: normAnswer };
     }
-    // Nebo hledej alespoň jedno významové slovo (pokud má >= 4 znaky)
+    // Nebo hledej alespoň jedno významové slovo (≥4 znaky), které NENÍ v otázce
     for (const tok of answerTokens) {
-      if (tok.length >= 4) {
+      if (tok.length >= 4 && !questionTokens.has(tok)) {
         const escapedTok = tok.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const pattern = new RegExp(`(^|[\\s])${escapedTok}([\\s]|$)`);
         if (pattern.test(normHint)) {
@@ -98,9 +125,13 @@ function hintContainsAnswer(hint: string, answer: string): { leaks: boolean; fra
     return { leaks: false };
   }
 
-  // Pro delší odpovědi (3+ slov) hledej alespoň 2 spolu jdoucí významová slova
+  // Pro delší odpovědi (3+ slov) hledej alespoň 2 spolu jdoucí významová slova.
+  // Dvojici přeskočíme jen tehdy, jsou-li OBA tokeny už ve znění otázky.
   for (let i = 0; i < answerTokens.length - 1; i++) {
-    const phrase = `${answerTokens[i]} ${answerTokens[i + 1]}`;
+    const a = answerTokens[i];
+    const b = answerTokens[i + 1];
+    if (questionTokens.has(a) && questionTokens.has(b)) continue;
+    const phrase = `${a} ${b}`;
     if (normHint.includes(phrase)) {
       return { leaks: true, fragment: phrase };
     }
@@ -133,12 +164,18 @@ export function checkHintLeakage(task: {
   if (!task.hints || task.hints.length === 0) return { ok: true };
   if (!task.correct_answer) return { ok: true };
 
+  // Slova ze znění otázky — hint je smí zopakovat, aniž by šlo o leak
+  // (dítě je čte přímo v zadání).
+  const questionTokens = new Set(
+    normalize(task.question || "").split(/\s+/).filter(Boolean),
+  );
+
   for (let i = 0; i < task.hints.length; i++) {
     const hint = task.hints[i];
     if (typeof hint !== "string" || !hint.trim()) continue;
 
     // Test 1: Doslovný výskyt odpovědi
-    const direct = hintContainsAnswer(hint, task.correct_answer);
+    const direct = hintContainsAnswer(hint, task.correct_answer, questionTokens);
     if (direct.leaks) {
       return {
         ok: false,

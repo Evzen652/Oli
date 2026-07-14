@@ -77,6 +77,98 @@ describe("checkHintLeakage — number leak detection", () => {
   });
 });
 
+describe("checkHintLeakage — číslo + jednotka (odpověď typu '24 hodin')", () => {
+  it("hint zmíní jen jednotku, ne číslo → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Kolik hodin má celý den?",
+      correct_answer: "24 hodin",
+      hints: ["Spočítej hodiny ve dne a v noci a sečti je."],
+    });
+    // "hodin" je jen jednotka; informační jádro (24) není v hintu → ne-leak
+    expect(r.ok).toBe(true);
+  });
+
+  it("hint prozradí číselné jádro odpovědi → leak", () => {
+    const r = checkHintLeakage({
+      question: "Kolik hodin má celý den?",
+      correct_answer: "24 hodin",
+      hints: ["Je to 24 dohromady."],
+    });
+    expect(r.ok).toBe(false);
+    expect(r.leakingFragment).toBe("24");
+  });
+
+  it("porovnávací úloha: číselné jádro je v otázce → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Která úsečka je delší: 2 cm nebo 11 cm?",
+      correct_answer: "11 cm",
+      hints: ["Srovnej čísla: 2 a 11 — které je větší?"],
+    });
+    // "11" je přímo v zadání, hint ho jen opakuje jako porovnávané číslo
+    expect(r.ok).toBe(true);
+  });
+
+  it("číslo jako součást většího čísla u odpovědi s jednotkou → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Kolik minut trvá?",
+      correct_answer: "5 minut",
+      hints: ["Hodnoty kolem 500 jsou velké."],
+    });
+    // 5 uvnitř 500 → number boundary → ne-leak
+    expect(r.ok).toBe(true);
+  });
+});
+
+describe("checkHintLeakage — slovo už obsažené v otázce", () => {
+  it("hint zopakuje slovo, které je i v otázce → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Čím je pokryté ptačí peří?",
+      correct_answer: "peří",
+      hints: ["Zamysli se, co má pták místo srsti — peří."],
+    });
+    // "peří" je už ve znění otázky, hint nepřidává novou informaci → ne-leak
+    expect(r.ok).toBe(true);
+  });
+
+  it("stejné slovo v hintu, ale NENÍ v otázce → leak (zpětná kompatibilita)", () => {
+    const r = checkHintLeakage({
+      question: "Čím je pokryté tělo ptáka?",
+      correct_answer: "peří",
+      hints: ["Je to peří."],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("víceslovná odpověď: obě slova v otázce → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Slaví se oba svátky ve stejný den?",
+      correct_answer: "oba svátky",
+      hints: ["Porovnej oba svátky v kalendáři."],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  it("víceslovná odpověď: slovo mimo otázku stále prozradí → leak", () => {
+    const r = checkHintLeakage({
+      question: "Jaký je to slovní druh?",
+      correct_answer: "podstatné jméno",
+      hints: ["Je to podstatné jméno."],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("víceslovná odpověď: jen ČÁST v otázce, hint prozradí zbytek fráze → leak", () => {
+    // Regrese: „textu" je v otázce, ale hint dává celou strukturu „plán textu…"
+    // — filtr otázky nesmí tento reálný leak zamaskovat.
+    const r = checkHintLeakage({
+      question: "Co je osnova vlastního textu?",
+      correct_answer: "Plán textu: úvod, zápletka, vyvrcholení, závěr",
+      hints: ["Osnova = plán textu (úvod, zápletka, vyvrcholení, závěr)"],
+    });
+    expect(r.ok).toBe(false);
+  });
+});
+
 describe("checkHintLeakage — equality pattern", () => {
   it("hint se vzorcem '= 36' → leak", () => {
     const r = checkHintLeakage({
