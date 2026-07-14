@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ i18n (roadmap #3) assessment + úklid mrtvého kódu (2026-07-14)
+- **Zjištění:** i18n příprava je fakticky hotová — infra `LocaleProvider`/`useT` namontovaná, 233 klíčů v `cs.ts`, 31 souborů migrováno, test suite 64/64. Reálný zbývající krok = pl/de překlady (business rozhodnutí, ne prep).
+- **Smazán mrtvý rozbitý kód:** `components/demo/Demo.tsx`, `components/report/Report.tsx`, `components/report/SessionHistory.tsx` — prototypy importující neexistující `@/app/LocaleProvider` + `@/components/shared/OlyLogo` a klíče mimo slovník (příčina „8 chybějících klíčů" warnu). Nikdo je neimportoval; náhrady v `pages/`.
+- Ověřeno: tsc 0, i18n testy 64/64, warn zmizel, 16 předexist. failů identických na HEAD i po smazání (0 regrese). **Ještě nutno commitnout.**
+
 ## ✅ Fix flaky `g4-mat-aritmeticky-prumer-4` L3 (2026-07-14)
 - Generator-validation občas padal na L3. Reprodukční scan (200 000 běhů) odhalil pravou příčinu: fallback `tasks[0] ?? {question:""}` při `missing` mimo rozsah vytvořil při `i=0` prázdnou úlohu a replikoval ji dál. Nahrazeno retry smyčkou (`missing` vždy v [1,99]). Bonus: L3 options přes `buildUniqueOptions` (dřív u `missing∈{1,2}` jen 3 možnosti) + distraktor „průměr místo chybějícího čísla".
 - Ověřeno: scan 0/200 000, generator-validation 10× 0 selhání, tsc 0, freeze přegenerován (jen tento topic 115→120, izolovaný diff), 921/921. **Ještě nutno commitnout.**
