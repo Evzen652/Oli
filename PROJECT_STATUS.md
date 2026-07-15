@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-15 (3. blok) — type debt: duplicitní klíče (34 → 30):
+- ✅ **Odbaveny 4 chyby `TS1117` (duplicitní klíče v object literálu = tichý přepis).** Nejde o kosmetiku — jde o reálné kolize.
+  - `contentRegistry.ts` `PREREQUISITE_MAP`: `frac_add_same_den` / `frac_sub_same_den` / `frac_expand_by` byly definované **2×** (blok grade-6 vnitřního řetězce ř. 25/26/31 vs blok grade-5 mostu ř. 65–67). JS bere poslední → grade-6 vnitřní prerekvizity se **tiše ztrácely**, zůstal jen most na grade-5/4. Sloučeno aditivně do jedné definice (`frac_add_same_den: ["frac_compare_same_den", "math-frac-same-den-5"]` atd.), duplicitní klíče z bloku mostu odstraněny. Fallback engine si tak zachová oba záměry. (Dopad je aktuálně na parkovaném grade-6, ale bug byl reálný.)
+  - `prvoukaVisuals.ts` `MATH_CATEGORY_VISUALS`: `"Úhly"` definováno 2× (4. i 6. ročník, identická hodnota) → odstraněna duplicita.
+- ✅ **Baseline guard snížen 34 → 30** v `scripts/typecheck.mjs` (guard zelený `30 = baseline 30`). Zbývá 30 = dokumentovaný dluh (DB-type `performanceTracker`/`skillLevel` 13 = **stale `types.ts`**, tabulky `student_skill_level`/`student_misconceptions` mají migrace v repu, ale nejsou v auto-gen `types.ts` → regenerace patří Evženovi, ne mně; ProposalReview 3, AnonStudentPage 2, …).
+- **Ověřeno:** content-registry + prvouka-visuals + skill-id-resolution **118/118** zelené; baseline guard zelený. Bez browser-verifikace (grade-6 parkovaný, `PREREQUISITE_MAP` = datová struktura).
+
 ### Session 2026-07-15 (2. blok) — Audit všech obrazovek (reality check):
 - ✅ **Systematický průchod všemi obrazovkami** (5 paralelních auditů + živý průchod v prohlížeči + reálný typecheck). Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](docs/AUDIT_SCREENS_2026-07-15.md).
 - ✅ **META VYŘEŠENO (částečně):** projekt byl fakticky netypechecknutý (root `tsconfig.json` `files:[]`+`references` → `tsc --noEmit` nekontroloval NIC; všechna dřívější „tsc 0" bezcenná). **Zavedeno:** `npm run typecheck` + `typecheck:ci` (baseline guard `scripts/typecheck.mjs`, selže na NOVÝCH chybách) → `ci.yml` + `pr-check.yml`. **Umazáno 94 → 34** bezpečnými mechanickými dávkami (ekosystemy `type` pole 31, grade-5 `contentType:"static"`→`"factual"` 13, verbatim type-importy 6, smazán mrtvý `content/contentRegistry.ts` 4, readonly Map/array, dead code). **Zbývá 34 = dokumentovaný dluh** (⚠️ NEUMAZÁVAT mechanicky — DB-type `performanceTracker`/`skillLevel` 13 = reálné bugy k prošetření, `contentRegistry` duplicitní `frac_*` klíče 3 = kolize skill-id, ProposalReview 3, …). Baseline snižovat po dávkách k 0.

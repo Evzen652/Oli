@@ -13,7 +13,7 @@
  */
 import { execSync } from "node:child_process";
 
-const BASELINE = 34; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94)
+const BASELINE = 30; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94; 34 → 30 po fixu duplicitních klíčů)
 
 let output = "";
 try {

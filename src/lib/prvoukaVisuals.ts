@@ -209,7 +209,7 @@ const MATH_TOPIC_VISUALS: Record<string, { emoji: string; imageKey: string; ext?
   "Čísla do 10 000": { emoji: "🔢", imageKey: "topic-math-porovnavani-prirozenych-cisel" },
   "Písemné sčítání a odčítání": { emoji: "✍️", imageKey: "topic-math-scitani-a-odcitani-do-100" },
   "Násobení a dělení (rozšíření)": { emoji: "✖️", imageKey: "topic-math-nasobeni-a-deleni" },
-  "Úhly": { emoji: "📐", imageKey: "topic-math-geometricke-tvary" },
+  // Pozn.: "Úhly" je společné pro 4. i 6. ročník — klíč definován výše (dřív duplicitní).
   "Osová souměrnost": { emoji: "🦋", imageKey: "topic-math-geometricke-tvary" },
 };
 

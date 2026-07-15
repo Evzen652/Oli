@@ -22,13 +22,13 @@ export const PREREQUISITE_MAP: Record<string, string[]> = {
   frac_compare_diff_den: ["frac_compare_same_den", "frac_expand_target"],
   frac_compare_whole: ["frac_compare_same_den"],
   frac_add_diff_den: ["frac_add_same_den", "frac_expand_target"],
-  frac_add_same_den: ["frac_compare_same_den"],
-  frac_sub_same_den: ["frac_add_same_den"],
+  frac_add_same_den: ["frac_compare_same_den", "math-frac-same-den-5"],
+  frac_sub_same_den: ["frac_add_same_den", "math-frac-same-den-5"],
   frac_sub_diff_den: ["frac_sub_same_den", "frac_expand_target"],
   frac_reduce_simple: ["frac_compare_same_den"],
   frac_reduce_full: ["frac_reduce_simple"],
   frac_is_reduced: ["frac_reduce_simple"],
-  frac_expand_by: ["frac_compare_same_den"],
+  frac_expand_by: ["frac_compare_same_den", "math-frac-intro-4", "math-multiply"],
   frac_expand_target: ["frac_expand_by"],
   frac_to_mixed: ["frac_compare_same_den"],
   frac_from_mixed: ["frac_to_mixed"],
@@ -61,10 +61,9 @@ export const PREREQUISITE_MAP: Record<string, string[]> = {
   "math-negative-intro-5": ["math-compare-natural-numbers-100"],
   "math-word-problems-5": ["math-add-sub-10k-4", "math-mult-written-4", "math-divide-remainder-4"],
   // Grade 6 — zlomky stejný jmenovatel stojí na 5. ročníku (most do 6.)
+  // Pozn.: frac_add_same_den / frac_sub_same_den / frac_expand_by mají most na
+  // grade-5/4 sloučený přímo do své definice výše (dřív duplicitní klíč = tichý přepis).
   "frac_compare_same_den": ["math-frac-same-den-5"],
-  "frac_add_same_den": ["math-frac-same-den-5"],
-  "frac_sub_same_den": ["math-frac-same-den-5"],
-  "frac_expand_by": ["math-frac-intro-4", "math-multiply"],
   // Grade 6 math (desetinná, dělitelnost, geometrie)
   "math-decimal-ops-6": ["math-decimal-read-5", "math-add-sub-10k-4"],
   "math-decimal-muldiv-6": ["math-decimal-ops-6", "math-multiply"],
