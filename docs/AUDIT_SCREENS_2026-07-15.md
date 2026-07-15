@@ -8,8 +8,8 @@
 
 ## 0. META — nejdůležitější systémový nález
 
-**🔴 Projekt fakticky netypechecknutý — reálný `tsc` hlásí 95 chyb, ale nikdo je nevidí.**
-Root `tsconfig.json` má `"files": []` + jen `references` → `tsc --noEmit` (i všechna dosavadní „tsc 0" v PROJECT_STATUS) **nekontroluje NIC**. Reálný typecheck `tsc -p tsconfig.app.json --noEmit` = **95 chyb** (build přesto projde, protože Vite/esbuild typy nekontroluje). Několik z nich jsou runtime bomby (viz níže). Doporučení: `npm run typecheck` = `tsc -p tsconfig.app.json --noEmit`, zapojit do CI, postupně vynulovat.
+**🔴 Projekt fakticky netypechecknutý — reálný `tsc` hlásí desítky chyb, ale nikdo je nevidí.**
+Root `tsconfig.json` má `"files": []` + jen `references` → `tsc --noEmit` (i všechna dosavadní „tsc 0" v PROJECT_STATUS) **nekontroluje NIC**. Reálný typecheck `tsc -p tsconfig.app.json --noEmit` = **94 chyb** (build přesto projde, protože Vite/esbuild typy nekontroluje; −3 opraveno touto sérií: 2× ParentDashboard null-guard + setAiFixes). Několik z nich jsou runtime bomby (viz níže). Doporučení: `npm run typecheck` = `tsc -p tsconfig.app.json --noEmit`, zapojit do CI, postupně vynulovat.
 Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistuje v `PracticeTask`), `performanceTracker.ts` (7), `supabase/skillLevel.ts` (6), `ChildHomePage.tsx` (3 — `child_name` vs `name`), `ProposalReview.tsx` (3), `ui/form.tsx`/`pagination`/`sidebar` (verbatimModuleSyntax type-import).
 
 ---
@@ -20,13 +20,12 @@ Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistu
 `useSessionDispatch.ts:495-505` (`handleReset`) nastaví pro přihlášené dítě `grade = null`. Znovunačtení ročníku (`SessionView.tsx:205-222`) bylo hlídané `!childGradeLoaded`, které se po prvním načtení zamklo na `true` a nikdy neresetovalo → `role==="child" && !grade` → `ChildLoadingFallback` („Nepodařilo se načíst tvoje procvičování"). Spouštělo: „Jiné téma", ✕, BackButton, klik na logo.
 **Fix:** `childGradeLoaded=true` se nastaví jen když dítě v DB ročník NEMÁ (ochrana proti nekonečné smyčce); má-li ho, zůstane odemčené → po resetu (grade=null) se ročník z DB znovu načte. **Ověřeno reprodukcí** (login `demo-child@oli.app`, aktivní sezení → session „Zpět" → návrat na výběr předmětů podle ročníku, ne fallback).
 
-**🔴 Reset hesla přes e-mailový odkaz je nedosažitelný.**
-`/reset-password` je route jen v neautentizované větvi (`App.tsx:171`). Supabase recovery odkaz ale při načtení sám vytvoří session (`detectSessionInUrl`) → App vyrenderuje `AuthenticatedRoutes`, kde `/reset-password` neexistuje → NotFound. Rodič, který klikne „obnovit heslo", se nikdy nedostane na formulář. (Latentní, dokud není nasazen SMTP — ale bug je reálný.)
-**Návrh fixu:** přidat `/reset-password` i do autentizovaných větví (nebo do samostatné always-on routy nad rozskokem podle role).
+**✅ OPRAVENO (2026-07-15) — Reset hesla přes e-mailový odkaz byl nedosažitelný.**
+`/reset-password` byl route jen v neautentizované větvi. Supabase recovery odkaz při načtení sám vytvoří session (`detectSessionInUrl`) → App vyrenderoval `AuthenticatedRoutes`, kde `/reset-password` neexistoval → NotFound → rodič se nikdy nedostal na formulář.
+**Fix:** `/reset-password` přidán do **všech 4 autentizovaných větví** (admin/parent/parent-bez-jména/child). Ověřeno: /reset-password jako přihlášený admin už není NotFound (ukazuje reset/recovery stav).
 
-**🔴 Admin „Technický audit" spadne (ReferenceError).**
-`AdminContentAudit.tsx:62` volá `setAiFixes(new Map())`, které nikde neexistuje (leftover po smazané AI-fix featuře; potvrzeno reálným tsc TS2304). Klik „Technický audit" → „Spustit audit" hodí výjimku, spinner visí, audit se nespustí.
-**Návrh fixu:** smazat řádek 62.
+**✅ OPRAVENO (2026-07-15) — Admin „Technický audit" padal (ReferenceError).**
+`AdminContentAudit.tsx:62` volal `setAiFixes(new Map())`, které nikde neexistovalo (leftover po smazané AI-fix featuře; byl to i 1 z 95 tsc chyb — TS2304). **Fix:** řádek smazán → tsc 95→94. Ověřeno v prohlížeči: „Spustit audit" proběhne, report „780 z 1140 úloh prošlo (68%)", 0 konzol. chyb.
 
 ---
 

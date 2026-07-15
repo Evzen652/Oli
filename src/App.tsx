@@ -52,6 +52,7 @@ function AuthenticatedRoutes() {
         <Route path="/onboarding" element={<ParentOnboarding />} />
         <Route path="/" element={<Landing />} />
         <Route path="/landing" element={<Landing />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Navigate to="/onboarding" replace />} />
       </Routes>
     );
@@ -70,6 +71,7 @@ function AuthenticatedRoutes() {
         <Route path="/student" element={<Index />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/auth" element={<Navigate to="/admin" replace />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -87,6 +89,7 @@ function AuthenticatedRoutes() {
         <Route path="/session-history/:childId" element={<SessionHistory />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/auth" element={<Navigate to="/parent" replace />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Navigate to="/parent" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -101,6 +104,7 @@ function AuthenticatedRoutes() {
       <Route path="/report" element={<Report />} />
       <Route path="/demo" element={<Demo />} />
       <Route path="/auth" element={<Navigate to="/" replace />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

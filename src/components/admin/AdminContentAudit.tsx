@@ -59,7 +59,6 @@ export function AdminContentAudit({ trigger }: Props) {
     setLoading(true);
     setProgress(0);
     setReport(null);
-    setAiFixes(new Map());
 
     await new Promise((r) => setTimeout(r, 50));
 
