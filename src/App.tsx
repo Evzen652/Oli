@@ -70,6 +70,7 @@ function AuthenticatedRoutes() {
         <Route path="/session-history/:childId" element={<SessionHistory />} />
         <Route path="/student" element={<Index />} />
         <Route path="/demo" element={<Demo />} />
+        <Route path="/landing" element={<Landing />} />
         <Route path="/auth" element={<Navigate to="/admin" replace />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
@@ -158,6 +159,7 @@ const App = () => {
               ) : (
                 <Routes>
                    <Route path="/" element={<Landing />} />
+                   <Route path="/landing" element={<Landing />} />
                    <Route path="/onboarding" element={<Onboarding />} />
                    <Route path="/student" element={<AnonStudentPage />} />
                    <Route path="/demo" element={<Demo />} />

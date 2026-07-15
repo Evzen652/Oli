@@ -144,6 +144,10 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-15 (3. blok) — LandingNav `/landing` 404 fix:
+- ✅ **Kotvy v `LandingNav` už nevedou na 404.** `LandingNav` je reused jako hlavička na mnoha stránkách (Onboarding, Demo, ParentDashboard, Auth, AnonStudentPage, SessionView…). Mimo Landing `document.querySelector("#sekce")` nic nenajde → fallback `navigate("/landing#…")`. Route `/landing` ale chyběla v **admin** větvi (`*` → `NotFound` = **404**) a v **odhlášené** větvi (`*` → `Navigate to="/"`, ztratil se hash → žádný scroll). Doplněn `<Route path="/landing" element={<Landing />} />` do obou v `App.tsx` (ostatní 3 větve ho už měly). Landing má hash-scroll useEffect na mountu (ř. 104–111), takže po navigaci odscrolluje na sekci.
+- **Ověřeno:** typecheck baseline 30 beze změny (žádné nové chyby). **Browser live-verifikace blokovaná** — port 8080 drží paralelní Claude session a vite `strictPort:false` desyncuje preview proxy (proxy míří na 8080, vite skočil na 8081). Fix je aditivní registrace route identická se 3 funkčními větvemi. Doporučeno doověřit v prohlížeči, až bude 8080 volný (admin → `/demo` → klik na „Ceník" v nav → má odscrollovat na Landing, ne 404).
+
 ### Session 2026-07-15 (3. blok) — type debt: duplicitní klíče (34 → 30):
 - ✅ **Odbaveny 4 chyby `TS1117` (duplicitní klíče v object literálu = tichý přepis).** Nejde o kosmetiku — jde o reálné kolize.
   - `contentRegistry.ts` `PREREQUISITE_MAP`: `frac_add_same_den` / `frac_sub_same_den` / `frac_expand_by` byly definované **2×** (blok grade-6 vnitřního řetězce ř. 25/26/31 vs blok grade-5 mostu ř. 65–67). JS bere poslední → grade-6 vnitřní prerekvizity se **tiše ztrácely**, zůstal jen most na grade-5/4. Sloučeno aditivně do jedné definice (`frac_add_same_den: ["frac_compare_same_den", "math-frac-same-den-5"]` atd.), duplicitní klíče z bloku mostu odstraněny. Fallback engine si tak zachová oba záměry. (Dopad je aktuálně na parkovaném grade-6, ale bug byl reálný.)
