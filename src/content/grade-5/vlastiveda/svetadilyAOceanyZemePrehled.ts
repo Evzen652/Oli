@@ -377,7 +377,7 @@ export const SVETADILYAOCEANYZEMEPREHLED: TopicMetadata[] = [
     inputType: "match_pairs",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "7 světadílů: Evropa, Asie, Afrika, SAmr, JAmr, Australie, Antarktida. 5 oceánů: Tichý, Atlantský, Indický, Severní Ledový, Jižní.",

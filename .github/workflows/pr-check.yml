@@ -17,6 +17,6 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - run: npm run typecheck || true
+      - run: npm run typecheck:ci
       - run: npm test -- --reporter=dot
       - run: npm run audit:content

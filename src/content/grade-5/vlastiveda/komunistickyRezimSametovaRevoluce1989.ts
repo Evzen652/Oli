@@ -405,7 +405,7 @@ export const KOMUNISTICKYREZIMSAMETOVAREVOLUCE1989: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Klíčová data: 1948 (převrat), 1968 (Pražské jaro + invaze), 1989 (Sametová revoluce).",

@@ -377,7 +377,7 @@ export const EVROPAPOLOHAPOVRCHVODSTVOPODNEBI: TopicMetadata[] = [
     inputType: "match_pairs",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Mont Blanc = nejvyšší hora Evropy (4808 m). Volha = nejdelší řeka (3531 km).",

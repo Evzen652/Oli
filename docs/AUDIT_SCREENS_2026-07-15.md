@@ -8,9 +8,11 @@
 
 ## 0. META — nejdůležitější systémový nález
 
-**🔴 Projekt fakticky netypechecknutý — reálný `tsc` hlásí desítky chyb, ale nikdo je nevidí.**
-Root `tsconfig.json` má `"files": []` + jen `references` → `tsc --noEmit` (i všechna dosavadní „tsc 0" v PROJECT_STATUS) **nekontroluje NIC**. Reálný typecheck `tsc -p tsconfig.app.json --noEmit` = **94 chyb** (build přesto projde, protože Vite/esbuild typy nekontroluje; −3 opraveno touto sérií: 2× ParentDashboard null-guard + setAiFixes). Několik z nich jsou runtime bomby (viz níže). Doporučení: `npm run typecheck` = `tsc -p tsconfig.app.json --noEmit`, zapojit do CI, postupně vynulovat.
-Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistuje v `PracticeTask`), `performanceTracker.ts` (7), `supabase/skillLevel.ts` (6), `ChildHomePage.tsx` (3 — `child_name` vs `name`), `ProposalReview.tsx` (3), `ui/form.tsx`/`pagination`/`sidebar` (verbatimModuleSyntax type-import).
+**✅ ČÁSTEČNĚ VYŘEŠENO (2026-07-15) — zaveden reálný typecheck + CI guard; 94 → 34 chyb.**
+Root `tsconfig.json` má `"files": []` + jen `references` → `tsc --noEmit` (i všechna dosavadní „tsc 0" v PROJECT_STATUS) **nekontrolovalo NIC**. Reálný typecheck `tsc -p tsconfig.app.json` odhalil **94 chyb** (build projde, esbuild typy nekontroluje).
+**Zavedeno:** `npm run typecheck` (surový) + `npm run typecheck:ci` (**baseline guard** `scripts/typecheck.mjs` — selže jen na NOVÝCH chybách, baseline 34) + zapojeno do `ci.yml` (`test` job) i `pr-check.yml`.
+**Umazáno 94 → 34** (−64 %) bezpečnými mechanickými dávkami: `ekosystemyPoleLoukaLes.ts` (31× neplatné pole `type`), grade-5 vlastiveda (13× `contentType:"static"` → `"factual"`), verbatimModuleSyntax type-importy (6), smazán mrtvý `content/contentRegistry.ts` (4), readonly Map/array, ReformulateTaskDialog dead code, `_level` anotace.
+**Zbývá 34 (dokumentovaný dluh, cíl 0):** ⚠️ **NEUMAZÁVAT mechanicky** — jsou to reálné bugy/rozhodnutí: DB-type chyby `performanceTracker.ts` (7) + `supabase/skillLevel.ts` (6) = dotazy na sloupce/tabulky mimo `types.ts` (buď mrtvý kód, nebo skutečné rozbité dotazy — nutno prošetřit); duplicitní `frac_*` klíče v `contentRegistry.ts` (3, kolize skill-id grade-6 mostu); `ProposalReview.tsx` (3, odcházející AI); `ChildHomePage`/`ChildActivityBadge`/`AnonStudentPage`/`sessionOrchestrator` narrowing; test soubory. Snižovat baseline po dávkách.
 
 ---
 

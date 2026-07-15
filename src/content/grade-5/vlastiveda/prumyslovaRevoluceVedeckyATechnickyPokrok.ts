@@ -404,7 +404,7 @@ export const PRUMYSLOVAREVOLUCEVEDECKYATECHNICKYPOKROK: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Pamatuj na čtyři vynálezce a roky: Bell 1876, Edison 1879, Benz 1885, Wright 1903.",

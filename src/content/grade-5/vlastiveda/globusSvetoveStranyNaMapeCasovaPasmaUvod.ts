@@ -377,7 +377,7 @@ export const GLOBUSSVETOVESTRANYNAMAPECASOVAPASMAUVOD: TopicMetadata[] = [
     inputType: "match_pairs",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Rovnoběžky jsou vodorovné (šířka), poledníky jsou svislé (délka). 15° = 1 hodina.",

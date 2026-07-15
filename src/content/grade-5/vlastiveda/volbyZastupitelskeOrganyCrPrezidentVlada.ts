@@ -319,7 +319,7 @@ export const VOLBYZASTUPITELSKEORGANYCRPREZIDENTVLADA: TopicMetadata[] = [
     inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Sněmovna má 200 poslanců (4 roky), Senát má 81 senátorů (6 let), prezident volen na 5 let.",

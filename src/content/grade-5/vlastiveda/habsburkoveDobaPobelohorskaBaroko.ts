@@ -409,7 +409,7 @@ export const HABSBURKOVEDOBAPOBELOHORSKABAROKO: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Vzpomeň si na rok 1620 — bitva na Bílé hoře změnila Čechy.",

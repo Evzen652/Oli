@@ -9,7 +9,7 @@
 
 ## 🔎 Audit obrazovek — reality check (2026-07-15) — otevřené nálezy
 Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md). Blockery jsou **předexistující**, čekají na rozhodnutí priority:
-- 🔴 **META:** projekt netypechecknutý (root tsconfig kontroluje nic) → reálný `tsc -p tsconfig.app.json` = **94 chyb** (bylo 95, −1 fix setAiFixes). Zavést `npm run typecheck` + CI.
+- ✅ **OPRAVENO (částečně)** — META: zaveden reálný typecheck (root tsconfig kontroloval nic). `npm run typecheck` + `typecheck:ci` (baseline guard `scripts/typecheck.mjs`, selže na NOVÝCH chybách) v `ci.yml` + `pr-check.yml`. Umazáno **94 → 34** mechanickými dávkami (ekosystemy `type` 31, grade-5 `static` 13, type-importy 6, mrtvý `content/contentRegistry` 4, …). Zbývá 34 = dokumentovaný dluh (DB-type performanceTracker/skillLevel 13 = reálné bugy k prošetření, ne mech. fix; contentRegistry duplicity 3; …). Baseline snižovat po dávkách k 0.
 - ✅ **OPRAVENO** — Spárované dítě uvízlo na chybové obrazovce po „Jiné téma"/„Zpět" (`useSessionDispatch.ts:495` grade→null, `childGradeLoaded` se nereseton). Fix: `childGradeLoaded` se zamkne jen když dítě v DB ročník nemá; jinak se po resetu znovu načte. Ověřeno reprodukcí (demo-child).
 - ✅ **OPRAVENO** — reset hesla přes e-mail nedosažitelný: `/reset-password` přidán do všech 4 autentizovaných větví (recovery link vytvoří session → dřív NotFound). Ověřeno.
 - ✅ **OPRAVENO** — admin „Technický audit" padal (`AdminContentAudit.tsx:62` `setAiFixes` smazán; tsc 95→94). Ověřeno: audit proběhne, report 780/1140.

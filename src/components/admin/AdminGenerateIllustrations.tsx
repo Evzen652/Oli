@@ -68,8 +68,8 @@ function buildKeyToTopicMap(topics: ReturnType<typeof getAllTopics>): Map<string
  * Sestaví mapu cat-key → seznam všech topics pod touto kategorií.
  * Umožňuje agregovat briefDescription všech podtémat pro bohatší prompt.
  */
-function buildCategoryToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>> {
-  const map = new Map<string, ReturnType<typeof getAllTopics>>();
+function buildCategoryToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>[number][]> {
+  const map = new Map<string, ReturnType<typeof getAllTopics>[number][]>();
   for (const t of topics) {
     const subjSlug = toSlug(t.subject);
     const catSlug = toSlug(t.category);
@@ -84,8 +84,8 @@ function buildCategoryToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<
 /**
  * Sestaví mapu subject-key → seznam všech topics v předmětu.
  */
-function buildSubjectToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>> {
-  const map = new Map<string, ReturnType<typeof getAllTopics>>();
+function buildSubjectToTopicsMap(topics: ReturnType<typeof getAllTopics>): Map<string, ReturnType<typeof getAllTopics>[number][]> {
+  const map = new Map<string, ReturnType<typeof getAllTopics>[number][]>();
   for (const t of topics) {
     const subjSlug = toSlug(t.subject);
     const subjKey = `subject-${subjSlug}`;

@@ -403,7 +403,7 @@ export const MARIETEREZIEJOSEFIIREFORMY: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Pamatuj: Marie Terezie zavedla školy (1774), Josef II. zrušil nevolnictví (1781).",

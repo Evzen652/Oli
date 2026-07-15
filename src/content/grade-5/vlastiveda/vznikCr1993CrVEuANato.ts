@@ -403,7 +403,7 @@ export const VZNIKCR1993CRVEUANATO: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Pamatuj: 1993 vznik ČR, 1999 NATO, 2004 EU, 2007 Schengen.",

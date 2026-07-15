@@ -383,9 +383,8 @@ export function ReformulateTaskDialog({
     setError(null);
     setLoading(true);
     try {
+      // AI přeformulování je odcházející featura (viz architektura) — zatím vypnuto.
       throw new Error("AI přeformulování není dostupné.");
-      if (parsed.length === 0) throw new Error("Nepodařilo se načíst varianty.");
-      setVariants(parsed);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Chyba při generování.");
     } finally {

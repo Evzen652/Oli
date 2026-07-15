@@ -377,7 +377,7 @@ export const EVROPSKESTATYAEUSOUSEDNIZEMECRPODROBNE: TopicMetadata[] = [
     inputType: "match_pairs",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "ČR má 4 sousedy: Německo (Z), Polsko (S), Slovensko (V), Rakousko (J).",

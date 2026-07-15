@@ -403,7 +403,7 @@ export const PRVNISVETOVAVALKAAVZNIKCESKOSLOVENSKA1918: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Klíčové datum: 28. října 1918 — vznik Československa.",

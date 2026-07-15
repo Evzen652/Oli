@@ -135,7 +135,7 @@ function makeTopic(overrides: Partial<TopicMetadata> = {}): TopicMetadata {
     category: "Čísla",
     gradeRange: [1, 3],
     inputType: "number",
-    generator: (_level) => [
+    generator: (_level: number) => [
       { question: "Kolik je 2+2?", correctAnswer: "4", hints: [] },
     ],
     helpTemplate: {

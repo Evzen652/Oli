@@ -11,7 +11,6 @@ function shuffle<T>(arr: T[]): T[] {
 
 const POOL: PracticeTask[] = [
   {
-    type: "select_one",
     question: "Kde žije kobylka?",
     correctAnswer: "Na louce",
     options: ["Na louce", "V lese", "Na poli", "V rybníku"],
@@ -23,7 +22,6 @@ const POOL: PracticeTask[] = [
       "Kobylka žije na louce, kde se živí trávou a bylinkami. Louka je její přirozené prostředí plné hmyzu.",
   },
   {
-    type: "select_one",
     question: "Které zvíře hledá potravu na loukách, i když hnízdí na komínech?",
     correctAnswer: "Čáp",
     options: ["Čáp", "Sova", "Liška", "Veverka"],
@@ -35,7 +33,6 @@ const POOL: PracticeTask[] = [
       "Čáp hnízdí na komínech nebo stromech, ale potravu hledá na loukách a mokřadech — loví žáby, myši, hmyz a červy.",
   },
   {
-    type: "select_one",
     question: "Která rostlina roste na louce a má žluté květy?",
     correctAnswer: "Pampeliška",
     options: ["Pampeliška", "Borůvka", "Mák", "Mech"],
@@ -47,7 +44,6 @@ const POOL: PracticeTask[] = [
       "Pampeliška je typická louková rostlina se žlutými květy, které se mění v bílou chmýrnatou kouli. Je důležitou potravou pro včely na jaře.",
   },
   {
-    type: "select_one",
     question: "Kdo v lese sbírá zásoby žaludů a ořechů na zimu?",
     correctAnswer: "Veverka",
     options: ["Veverka", "Srnec", "Volavka", "Bažant"],
@@ -59,7 +55,6 @@ const POOL: PracticeTask[] = [
       "Veverka žije v lese a ukládá zásoby žaludů, ořechů a šišek na zimu. Šplhá po stromech a staví hnízdo (drej) v korunách.",
   },
   {
-    type: "select_one",
     question: "Kde v lese najdeme borůvky?",
     correctAnswer: "Pod stromy na zemi",
     options: [
@@ -76,7 +71,6 @@ const POOL: PracticeTask[] = [
       "Borůvky rostou na nízkých keříčcích přímo pod stromy v lese. Mají rády stín a kyselou půdu. Jsou oblíbenou potravou ptáků, medvědů i lidí.",
   },
   {
-    type: "select_one",
     question: "Jaká rostlina pokrývá lesní půdu zeleným kobercem a zadržuje vláhu?",
     correctAnswer: "Mech",
     options: ["Mech", "Jetel", "Chrpa", "Rákos"],
@@ -88,7 +82,6 @@ const POOL: PracticeTask[] = [
       "Mech roste v lese na vlhkých místech, na kamenech i kmenech stromů. Zadržuje vodu v půdě a poskytuje úkryt malým živočichům.",
   },
   {
-    type: "select_one",
     question: "Které obilí roste na poli?",
     correctAnswer: "Pšenice",
     options: ["Pšenice", "Borůvka", "Pampeliška", "Rákos"],
@@ -100,7 +93,6 @@ const POOL: PracticeTask[] = [
       "Pšenice je nejdůležitější obilnina pěstovaná na polích. Z jejích zrn se mele mouka, ze které pečeme chleba a rohlíky.",
   },
   {
-    type: "select_one",
     question: "Jaký pták žije na polích a hnízdí přímo v zemi?",
     correctAnswer: "Koroptev",
     options: ["Koroptev", "Volavka", "Sova", "Čáp"],
@@ -112,7 +104,6 @@ const POOL: PracticeTask[] = [
       "Koroptev je polní pták, který hnízdí přímo na zemi v obilí nebo v mezích. Splývá s prostředím díky hnědému zbarvení.",
   },
   {
-    type: "select_one",
     question: "Která modrá rostlina roste na polích jako plevel?",
     correctAnswer: "Chrpa modrá",
     options: ["Chrpa modrá", "Jetel", "Borůvka", "Leknín"],
@@ -124,7 +115,6 @@ const POOL: PracticeTask[] = [
       "Chrpa modrá je typická polní rostlina s modrými květy. Roste v obilí jako plevel. V minulosti byla na polích běžná, dnes je vzácnější.",
   },
   {
-    type: "select_one",
     question: "Kde žije vydra?",
     correctAnswer: "U vody — v řekách a rybnících",
     options: [
@@ -141,7 +131,6 @@ const POOL: PracticeTask[] = [
       "Vydra říční žije u vody — v řekách, potocích a rybnících. Je to výborný plavec a loví ryby, raky a žáby. Staví si noru v břehu.",
   },
   {
-    type: "select_one",
     question: "Jak se jmenuje plovoucí rostlina s bílými nebo žlutými květy na rybníku?",
     correctAnswer: "Leknín",
     options: ["Leknín", "Jetel", "Pampeliška", "Mech"],
@@ -153,7 +142,6 @@ const POOL: PracticeTask[] = [
       "Leknín je vodní rostlina, jejíž listy a květy plavou na hladině rybníků a jezer. Kořeny má zapuštěny v bahnitém dně. Jsou domovem pro hmyz a žáby.",
   },
   {
-    type: "select_one",
     question: "Kdo je producent v potravním řetězci?",
     correctAnswer: "Rostlina, která vyrábí potravu fotosyntézou",
     options: [
@@ -170,7 +158,6 @@ const POOL: PracticeTask[] = [
       "Producent je organismus, který si sám vyrábí potravu fotosyntézou — jsou to rostliny. Tvoří základ každého potravního řetězce.",
   },
   {
-    type: "select_one",
     question: "Jaký je správný potravní řetězec na louce?",
     correctAnswer: "Tráva → kobylka → ježek → liška",
     options: [
@@ -187,7 +174,6 @@ const POOL: PracticeTask[] = [
       "Potravní řetězec na louce: tráva (producent) → kobylka (konzument 1. řádu) → ježek (konzument 2. řádu) → liška (konzument 3. řádu). Šipka znamená „je snědena\".",
   },
   {
-    type: "select_one",
     question: "Co jsou rozkladači v ekosystému?",
     correctAnswer: "Houby a bakterie, které rozkládají odumřelé organismy",
     options: [
@@ -204,7 +190,6 @@ const POOL: PracticeTask[] = [
       "Rozkladači (houby a bakterie) rozkládají odumřelé organismy na jednoduché látky, které se vracejí zpět do půdy. Jsou nezbytní pro koloběh látek v přírodě.",
   },
   {
-    type: "select_one",
     question: "Kdo je konzument v potravním řetězci?",
     correctAnswer: "Živočich, který se živí jinými organismy",
     options: [
@@ -221,7 +206,6 @@ const POOL: PracticeTask[] = [
       "Konzument je živočich, který musí přijímat potravu z jiných organizmů — sám ji nedokáže vyrobit. Patří sem býložravci, masožravci i všežravci.",
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře s prostředím, kde žije.",
     correctAnswer: "match",
     pairs: [
@@ -236,7 +220,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každé zvíře s prostředím, kde žije.",
     correctAnswer: "match",
     pairs: [
@@ -251,7 +234,6 @@ const POOL: PracticeTask[] = [
     ],
   },
   {
-    type: "match_pairs",
     question: "Spoj každý organismus s jeho rolí v ekosystému.",
     correctAnswer: "match",
     pairs: [
@@ -289,7 +271,6 @@ const POOL_L3_IDS: number[] = [12];
 // match_pairs (přiřazení organismu k prostředí + pojmy).
 const POOL_L2_EXTRA: PracticeTask[] = [
   {
-    type: "select_one",
     question: "Ve kterém prostředí žije sova?",
     correctAnswer: "V lese",
     options: ["V lese", "Na poli", "V rybníku", "Na písečné pláži"],
@@ -297,7 +278,6 @@ const POOL_L2_EXTRA: PracticeTask[] = [
     explanation: "Sova žije v lese — přes den se ukrývá v dutinách stromů, v noci loví myši a další drobné živočichy.",
   },
   {
-    type: "select_one",
     question: "Ve kterém prostředí žije volavka?",
     correctAnswer: "U vody (rybník, řeka)",
     options: ["U vody (rybník, řeka)", "V hustém lese", "Na písečné poušti", "V horských dutinách"],
@@ -305,7 +285,6 @@ const POOL_L2_EXTRA: PracticeTask[] = [
     explanation: "Volavka žije u vody — na rybnících, řekách a mokřadech. Loví ryby, žáby a hmyz.",
   },
   {
-    type: "select_one",
     question: "Ve kterém prostředí žije bažant?",
     correctAnswer: "Na poli a v mezích",
     options: ["Na poli a v mezích", "Na moři", "V rybníku", "Na vrcholu hor"],
@@ -313,7 +292,6 @@ const POOL_L2_EXTRA: PracticeTask[] = [
     explanation: "Bažant obývá pole, meze a okraje lesů. Hnízdí na zemi a živí se semeny a hmyzem.",
   },
   {
-    type: "select_one",
     question: "Kdo je v ekosystému býložravec (konzument 1. řádu)?",
     correctAnswer: "Srnec (jí trávu a listy)",
     options: [
@@ -326,7 +304,6 @@ const POOL_L2_EXTRA: PracticeTask[] = [
     explanation: "Srnec se živí trávou a listy → býložravec, konzument 1. řádu. Sova je masožravec, houba rozkladač, tráva producent.",
   },
   {
-    type: "select_one",
     question: "Který organismus je masožravec (konzument 2. řádu)?",
     correctAnswer: "Liška (loví myši, ptáky, zajíce)",
     options: [
@@ -343,7 +320,6 @@ const POOL_L2_EXTRA: PracticeTask[] = [
 // L3 pool s doplněnými transfer úlohami (min. 8 unikátních)
 const POOL_L3_EXTRA: PracticeTask[] = [
   {
-    type: "select_one",
     question: "Kdyby v ekosystému zmizely všechny rostliny, co by se stalo nejdřív?",
     correctAnswer: "Nejdřív by vyhynuli býložravci (nemají co jíst).",
     options: [
@@ -359,7 +335,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Bez rostlin (producentů) nemají býložravci co jíst — vymřeli by první. Pak by přišli masožravci (nemají co lovit).",
   },
   {
-    type: "select_one",
     question: "Proč jsou rozkladači nezbytní pro ekosystém?",
     correctAnswer: "Vrací živiny z odumřelých organismů zpět do půdy pro rostliny.",
     options: [
@@ -375,7 +350,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Rozkladači rozkládají odumřelé organismy na jednoduché látky, které se vracejí do půdy. Bez nich by se hromadily mrtvé věci a rostliny by neměly z čeho růst.",
   },
   {
-    type: "select_one",
     question: "V lese ubyly veverky. Jaký dopad to pravděpodobně bude mít?",
     correctAnswer: "Ubude šíření semen stromů (žaludy, ořechy).",
     options: [
@@ -391,7 +365,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Veverky zakopávají žaludy a ořechy — část zapomenou a z těch semen pak vyrostou nové stromy. Bez veverek se stromy hůře šíří.",
   },
   {
-    type: "select_one",
     question: "Který ekosystém má nejvíc druhů zvířat a rostlin (biodiverzitu)?",
     correctAnswer: "Přirozený smíšený les (různé stromy, půda, dutiny).",
     options: [
@@ -407,7 +380,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Přirozený smíšený les má rozmanité stromy, keře, dutiny, mrtvé dřevo — poskytuje úkryt a potravu spoustě druhů. Monokultura (jeden druh plodiny na poli) má málo úkrytů.",
   },
   {
-    type: "select_one",
     question: "Rybník se změnil na blátivou louži. Co se stalo s ekosystémem?",
     correctAnswer: "Vodní organismy zmizely, přišli živočichové vlhkého bláta.",
     options: [
@@ -423,7 +395,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Když ubyde voda, ryby a leknín zmizí (nemají kde žít). Naopak přijdou žáby, hmyz, ptáci lovící v blátě. Ekosystém se změní na jiný typ.",
   },
   {
-    type: "select_one",
     question: "Sova ubila myš. Jaká je sova v tomto řetězci?",
     correctAnswer: "Konzument 2. řádu (loví býložravce).",
     options: [
@@ -439,7 +410,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Myš jí obilí (konzument 1. řádu, býložravec). Sova loví myš (konzument 2. řádu, masožravec). Sova stojí výš v potravním řetězci.",
   },
   {
-    type: "select_one",
     question: "Proč nese kobylka podobnou barvu jako tráva?",
     correctAnswer: "Splývá s prostředím — ochrana před predátory (mimikry).",
     options: [
@@ -455,7 +425,6 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Zelená barva pomáhá kobylce splývat s trávou — predátoři ji hůř vidí. Tomu se říká ochranné zbarvení (mimikry).",
   },
   {
-    type: "select_one",
     question: "Který potravní řetězec je SPRÁVNĚ z lesa?",
     correctAnswer: "Bukvice → myš → sova.",
     options: [

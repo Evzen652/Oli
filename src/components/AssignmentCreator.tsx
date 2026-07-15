@@ -52,7 +52,7 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
   // All topics from code registry — filtered by grade if provided
   const allTopics = useMemo<TopicMetadata[]>(() => {
     const all = getAllTopics();
-    if (!grade) return all;
+    if (!grade) return [...all];
     return all.filter(t => grade >= t.gradeRange[0] && grade <= t.gradeRange[1]);
   }, [grade]);
 

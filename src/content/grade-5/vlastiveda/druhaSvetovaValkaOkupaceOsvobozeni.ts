@@ -405,7 +405,7 @@ export const DRUHASVETOVAVALKAOKUPACEOSVOBOZENI: TopicMetadata[] = [
     inputType: "drag_order",
     defaultLevel: 1,
     sessionTaskCount: 6,
-    contentType: "static",
+    contentType: "factual",
     generator: gen,
     helpTemplate: {
       hint: "Klíčová data: 15. 3. 1939 (Protektorát), 1942 (Heydrich + Lidice), 8. 5. 1945 (konec války).",
