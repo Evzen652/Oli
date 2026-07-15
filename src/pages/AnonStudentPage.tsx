@@ -98,7 +98,7 @@ export default function AnonStudentPage() {
         if (!topic) return null;
         return { topic, completed: task.completed, score: task.score };
       })
-      .filter((t): t is { topic: TopicMetadata; completed: boolean; score?: number } => !!t);
+      .filter((t): t is { topic: TopicMetadata; completed: boolean; score: number | undefined } => !!t);
     // refreshTick záměrně v deps — vynutí re-výpočet po dokončení úkolu
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grade, refreshTick]);

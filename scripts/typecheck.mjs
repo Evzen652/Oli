@@ -13,7 +13,7 @@
  */
 import { execSync } from "node:child_process";
 
-const BASELINE = 30; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94; 34 → 30 po fixu duplicitních klíčů)
+const BASELINE = 23; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94; 34 → 30 duplicitní klíče → 23 active-scope: ChildHomePage/AnonStudentPage/domaciHospodarskaZvirata)
 
 let output = "";
 try {

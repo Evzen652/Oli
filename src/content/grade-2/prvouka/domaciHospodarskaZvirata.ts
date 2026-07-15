@@ -406,7 +406,7 @@ const POOL_L3: PracticeTask[] = [
 
 function gen(level: number): PracticeTask[] {
   const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
-  return shuffle(pool).map((t) => ({ ...t, options: shuffle(t.options) }));
+  return shuffle(pool).map((t) => ({ ...t, options: t.options ? shuffle(t.options) : t.options }));
 }
 
 export const DOMACIHOSPODARSKAZVIRATA: TopicMetadata[] = [

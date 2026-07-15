@@ -330,7 +330,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         return;
       }
 
-      let child: { id: string; name: string } | null = null;
+      let child: { id: string; child_name: string } | null = null;
       const { data: childByUser } = await supabase.from("children").select("id, child_name")
         .eq("child_user_id", user.id).maybeSingle();
 
