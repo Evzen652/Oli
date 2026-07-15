@@ -10,7 +10,7 @@
 ## 🔎 Audit obrazovek — reality check (2026-07-15) — otevřené nálezy
 Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md). Blockery jsou **předexistující**, čekají na rozhodnutí priority:
 - 🔴 **META:** projekt netypechecknutý (root tsconfig kontroluje nic) → reálný `tsc -p tsconfig.app.json` = 95 chyb. Zavést `npm run typecheck` + CI.
-- 🔴 Spárované dítě uvízne na chybové obrazovce po „Jiné téma"/„Zpět" (`useSessionDispatch.ts:495` grade→null, `childGradeLoaded` se nereseton). **Nejvyšší dopad na žáka.**
+- ✅ **OPRAVENO** — Spárované dítě uvízlo na chybové obrazovce po „Jiné téma"/„Zpět" (`useSessionDispatch.ts:495` grade→null, `childGradeLoaded` se nereseton). Fix: `childGradeLoaded` se zamkne jen když dítě v DB ročník nemá; jinak se po resetu znovu načte. Ověřeno reprodukcí (demo-child).
 - 🔴 Reset hesla přes e-mail nedosažitelný (`/reset-password` jen v neautent. větvi).
 - 🔴 Admin „Technický audit" spadne (`AdminContentAudit.tsx:62` `setAiFixes`).
 - 🟠 Anon pokrok dítěte se při párování ztratí (`pair-child` nevrací `child_id`); `generateMockBatch` bez `filterValidTasks`; admin „Přeformulovat" vždy chybuje.

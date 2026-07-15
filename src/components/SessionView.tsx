@@ -215,8 +215,13 @@ export function SessionView() {
           .maybeSingle();
         if (data?.grade) {
           s.handleGradeSelect(data.grade as any);
+          // childGradeLoaded ZŮSTÁVÁ false: po handleReset (grade→null na konci sezení / „Zpět")
+          // se tento effect musí spustit znovu a ročník z DB opět načíst, jinak dítě uvízne
+          // na ChildLoadingFallback (grade je null a nikdo ho už nenačte).
+        } else {
+          // Dítě nemá v DB ročník → zamkni, ať se nefetchuje donekonečna (grade zůstane null).
+          setChildGradeLoaded(true);
         }
-        setChildGradeLoaded(true);
       })();
     }
   }, [role, grade, childGradeLoaded]);

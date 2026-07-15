@@ -16,9 +16,9 @@ Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistu
 
 ## 1. BLOCKERY (reálný dopad na uživatele / crash)
 
-**🔴 Spárované dítě uvízne na chybové obrazovce po každém konci sezení / „Zpět".**
-`useSessionDispatch.ts:495-505` (`handleReset`) nastaví pro přihlášené dítě `grade = null` (`getCurrentAnonGrade()` vrací null). Znovunačtení ročníku (`SessionView.tsx:205-222`) je hlídané `!childGradeLoaded`, které se po prvním načtení zamkne na `true` a nikdy neresetuje → `role==="child" && !grade` → `ChildLoadingFallback` (spinner → „Nepodařilo se načíst tvoje procvičování"). Spouští: „Jiné téma" na konci sezení, ✕, BackButton v hlavičce, klik na logo. Anon i admin jsou imunní; zasažen právě hlavní uživatel.
-**Návrh fixu:** v effektu nastavovat `childGradeLoaded=true` jen když dítě v DB ročník NEMÁ (aby se po resetu s grade=null znovu načetl); jinak nechat odemčené.
+**✅ OPRAVENO (2026-07-15) — Spárované dítě uvízlo na chybové obrazovce po každém konci sezení / „Zpět".**
+`useSessionDispatch.ts:495-505` (`handleReset`) nastaví pro přihlášené dítě `grade = null`. Znovunačtení ročníku (`SessionView.tsx:205-222`) bylo hlídané `!childGradeLoaded`, které se po prvním načtení zamklo na `true` a nikdy neresetovalo → `role==="child" && !grade` → `ChildLoadingFallback` („Nepodařilo se načíst tvoje procvičování"). Spouštělo: „Jiné téma", ✕, BackButton, klik na logo.
+**Fix:** `childGradeLoaded=true` se nastaví jen když dítě v DB ročník NEMÁ (ochrana proti nekonečné smyčce); má-li ho, zůstane odemčené → po resetu (grade=null) se ročník z DB znovu načte. **Ověřeno reprodukcí** (login `demo-child@oli.app`, aktivní sezení → session „Zpět" → návrat na výběr předmětů podle ročníku, ne fallback).
 
 **🔴 Reset hesla přes e-mailový odkaz je nedosažitelný.**
 `/reset-password` je route jen v neautentizované větvi (`App.tsx:171`). Supabase recovery odkaz ale při načtení sám vytvoří session (`detectSessionInUrl`) → App vyrenderuje `AuthenticatedRoutes`, kde `/reset-password` neexistuje → NotFound. Rodič, který klikne „obnovit heslo", se nikdy nedostane na formulář. (Latentní, dokud není nasazen SMTP — ale bug je reálný.)
