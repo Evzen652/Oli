@@ -554,8 +554,9 @@ export function SessionView() {
                 size="sm"
                 onClick={async () => {
                   await supabase.auth.signOut();
-                  // Žáka pošli rovnou na přihlášení (zařízení si ho pamatuje → zadá jen PIN).
-                  if (isStudentView) window.location.href = "/auth/child";
+                  // Skutečného žáka pošli rovnou na přihlášení (zařízení si ho pamatuje → zadá jen PIN).
+                  // NE admina v náhledu /student (isStudentView by ho zde chybně poslal na dětský login).
+                  if (role === "child") window.location.href = "/auth/child";
                 }}
                 title={t("session.sign_out")}
                 className="text-base"

@@ -234,7 +234,7 @@ export default function ParentDashboard() {
     setAddLoading(false);
   };
 
-  const isExpired = (c: Child) => !c.is_paired && new Date(c.pairing_code_expires_at) < new Date();
+  const isExpired = (c: Child) => !c.is_paired && !!c.pairing_code_expires_at && new Date(c.pairing_code_expires_at) < new Date();
 
   const getInitial = (name: string) => name.charAt(0).toUpperCase();
 
@@ -584,7 +584,7 @@ export default function ParentDashboard() {
                 <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-700">{t("parent.pairing_code_label")}</p>
                   <div className="mt-3 flex items-center justify-center gap-3">
-                    {child.pairing_code.split("").map((ch, i) => (
+                    {(child.pairing_code ?? "").split("").map((ch, i) => (
                       <span key={i} className="font-bold text-3xl text-primary tabular-nums">{ch}</span>
                     ))}
                   </div>

@@ -7,6 +7,16 @@
 
 ---
 
+## 🔎 Audit obrazovek — reality check (2026-07-15) — otevřené nálezy
+Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md). Blockery jsou **předexistující**, čekají na rozhodnutí priority:
+- 🔴 **META:** projekt netypechecknutý (root tsconfig kontroluje nic) → reálný `tsc -p tsconfig.app.json` = 95 chyb. Zavést `npm run typecheck` + CI.
+- 🔴 Spárované dítě uvízne na chybové obrazovce po „Jiné téma"/„Zpět" (`useSessionDispatch.ts:495` grade→null, `childGradeLoaded` se nereseton). **Nejvyšší dopad na žáka.**
+- 🔴 Reset hesla přes e-mail nedosažitelný (`/reset-password` jen v neautent. větvi).
+- 🔴 Admin „Technický audit" spadne (`AdminContentAudit.tsx:62` `setAiFixes`).
+- 🟠 Anon pokrok dítěte se při párování ztratí (`pair-child` nevrací `child_id`); `generateMockBatch` bez `filterValidTasks`; admin „Přeformulovat" vždy chybuje.
+- 🟡 `/demo/session` 404 (admin/child); mrtvá demo v1 (~900 řádků) ke smazání; záporné „správně" v demu; osiřelé admin stránky.
+- ✅ **Opraveno hned:** admin `/student` odhlášení (guard `role==="child"`), ChildAuth stale `remembered`, PIN „Přihlásit se kódem", ParentDashboard `pairing_code` null-guardy (tsc 97→95). **Ještě nutno commitnout.**
+
 ## ✅ Child re-login PIN (🔴 blocker pilotu 2–4) (2026-07-15)
 - **Díra:** `pair-child` dá dítěti účet s náhodným zahozeným heslem → po odhlášení se dítě nevrátí bez nového kódu. **Řešení:** zařízení si pamatuje dítě (localStorage) + 4místný PIN nastavovaný rodičem; fallback = párovací kód.
 - **Bezpečnost:** PIN = oddělený faktor, účet drží silné náhodné heslo, po ověření PINu server vydá session. PIN jen jako PBKDF2 hash se solí (`_shared/pin.ts`). Rate-limit 5 pokusů → 15 min zámek (per dítě).

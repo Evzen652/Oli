@@ -21,6 +21,7 @@ const cs = {
   "auth.child.pin.instruction": "Zadej svůj 4místný PIN.",
   "auth.child.pin.submit": "Přihlásit se",
   "auth.child.pin.not_me": "Nejsem {name} – přihlásit kódem",
+  "auth.child.pin.use_code": "Přihlásit se kódem",
   "auth.child.pin.back_to_pin": "Zpět na přihlášení PINem ({name})",
   "auth.forgot_password": "Zapomněl/a jsem heslo",
   "auth.reset.title": "Obnovení hesla",

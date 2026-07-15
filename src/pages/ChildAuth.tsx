@@ -30,7 +30,9 @@ async function readFnError(fnErr: unknown, data: { error?: string } | null, fall
 }
 
 export default function ChildAuth() {
-  const remembered = getRememberedChild();
+  // remembered je state, aby „Nejsem to já" (forgetChild) hned překreslil UI —
+  // jako const by zůstal truthy až do reloadu (stale) a code režim by dál nabízel návrat na PIN.
+  const [remembered, setRemembered] = useState(() => getRememberedChild());
 
   // Když si zařízení pamatuje dítě, začni v PIN režimu; jinak zadání kódu.
   const [mode, setMode] = useState<"pin" | "code">(remembered ? "pin" : "code");
@@ -122,6 +124,10 @@ export default function ChildAuth() {
           grade: data.grade ?? remembered.grade,
         });
         window.location.href = "/";
+      } else {
+        // Neočekávaná odpověď bez session i bez chyby — neuvázni v loading stavu.
+        setError("Přihlášení se nepodařilo. Zkus to znovu, nebo se přihlas kódem.");
+        setLoading(false);
       }
     } catch {
       setError("Nepodařilo se připojit k serveru.");
@@ -137,6 +143,7 @@ export default function ChildAuth() {
 
   const handleNotMe = () => {
     forgetChild();
+    setRemembered(null);
     switchToCode();
   };
 
@@ -231,6 +238,14 @@ export default function ChildAuth() {
                 >
                   {loading ? t("auth.loading") : t("auth.child.pin.submit")}
                 </Button>
+
+                {/* Ne-destruktivní přechod na kód (např. rodič PIN ještě nenastavil) — zařízení si dítě dál pamatuje. */}
+                <button
+                  onClick={switchToCode}
+                  className="w-full text-center text-sm font-medium text-violet-700 underline underline-offset-2 hover:text-violet-900"
+                >
+                  {t("auth.child.pin.use_code")}
+                </button>
 
                 <button
                   onClick={handleNotMe}
