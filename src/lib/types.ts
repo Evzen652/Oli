@@ -145,7 +145,7 @@ export interface PracticeTask {
    * Vizuální opora hlavně pro nejmladší ročníky (1.–2. třída), které
    * čtou pomalu — obrázek pomůže pochopit kontext otázky.
    * Příklad: "🐄" u otázky o krávě, "🌷" u jarní rostliny.
-   * Renderuje SessionView (question card) i DemoSession.
+   * Renderuje SessionView (question card).
    */
   emoji?: string;
   options?: string[]; // for select_one / true_false

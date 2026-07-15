@@ -48,7 +48,7 @@ Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistu
 
 **🟡 `/demo/session` = 404 pro admina i dítě** (živě potvrzeno). Route jen v unauth+parent větvi. Dnes latentní (jediný linker `DemoChildTab` je mrtvý kód), ale reálný nesoulad route setů.
 
-**🟡 Mrtvá demo v1 generace — ~900 řádků + orphan routy.** `DemoParentTab/ChildTab/AdminTab` nikde neimportované (jen navzájem + v docs). `/demo/session`+`DemoSession`, `/demo-report`+`DemoReport` nedosažitelné žádnou navigací. Aktuální demo = login `demo@oli.app` → reálný `ParentDashboard`/`ChildHomePage` s `isDemo` detekcí (v2). **Důsledek:** paměťové pravidlo „sync DemoParentTab + ParentDashboard" je zastaralé; správně je demo řešené přes `!isDemo` v reálných obrazovkách. Doporučení: smazat demo v1.
+**✅ OPRAVENO (2026-07-15) — Mrtvá demo v1 generace smazána (~900 řádků + orphan routy).** Smazáno 6 souborů: `DemoParentTab/ChildTab/AdminTab.tsx`, `components/demo/DemoSession.tsx`, `pages/DemoSession.tsx`, `pages/DemoReport.tsx`. Z `App.tsx` odstraněny importy + 6 rout (`/demo/session` ×2, `/demo-report` ×4). Zachován `/demo` + `Demo.tsx` (v2 login → reálné obrazovky s `isDemo`). Ověřeno: 0 visících referencí v `src`, tsc beze změny (95), app běží, `/demo` funguje, orphan routy padají přes catch-all (unauth→home, admin/child→NotFound), 0 konzol. chyb. Paměť `feedback_demo_prod_sync` aktualizována na v2.
 
 **🟡 Záporné „správně bez nápovědy" v demu.** `ChildSessionLog.tsx:254` `correctOnly = s.correct - s.help_used` → u demo session (correct 1, help 3) = **-2**; `SkillDetailModal` ukáže „-2 správně". Fix: `Math.max(0, …)` + srovnat demo data.
 

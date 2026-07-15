@@ -14,7 +14,8 @@ Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md).
 - 🔴 Reset hesla přes e-mail nedosažitelný (`/reset-password` jen v neautent. větvi).
 - 🔴 Admin „Technický audit" spadne (`AdminContentAudit.tsx:62` `setAiFixes`).
 - 🟠 Anon pokrok dítěte se při párování ztratí (`pair-child` nevrací `child_id`); `generateMockBatch` bez `filterValidTasks`; admin „Přeformulovat" vždy chybuje.
-- 🟡 `/demo/session` 404 (admin/child); mrtvá demo v1 (~900 řádků) ke smazání; záporné „správně" v demu; osiřelé admin stránky.
+- ✅ **OPRAVENO** — mrtvá demo v1 smazána (6 souborů ~900 řádků: `Demo{Parent,Child,Admin}Tab`, `DemoSession` page+komponenta, `DemoReport` page) + orphan routy `/demo/session`, `/demo-report` z App.tsx. `/demo` (v2) zachován. tsc beze změny, 0 visících ref, app běží.
+- 🟡 `/demo/session` 404 (admin/child) — vyřešeno smazáním routy; záporné „správně" v demu; osiřelé admin stránky.
 - ✅ **Opraveno hned:** admin `/student` odhlášení (guard `role==="child"`), ChildAuth stale `remembered`, PIN „Přihlásit se kódem", ParentDashboard `pairing_code` null-guardy (tsc 97→95). **Ještě nutno commitnout.**
 
 ## ✅ Child re-login PIN (🔴 blocker pilotu 2–4) (2026-07-15)

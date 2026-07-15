@@ -28,8 +28,6 @@ import Landing from "./pages/Landing";
 import Onboarding from "./pages/Onboarding";
 import AnonStudentPage from "./pages/AnonStudentPage";
 import Demo from "./pages/Demo";
-import DemoSessionPage from "./pages/DemoSession";
-import DemoReport from "./pages/DemoReport";
 
 const queryClient = new QueryClient();
 
@@ -71,7 +69,6 @@ function AuthenticatedRoutes() {
         <Route path="/session-history/:childId" element={<SessionHistory />} />
         <Route path="/student" element={<Index />} />
         <Route path="/demo" element={<Demo />} />
-        <Route path="/demo-report" element={<DemoReport />} />
         <Route path="/auth" element={<Navigate to="/admin" replace />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="*" element={<NotFound />} />
@@ -89,8 +86,6 @@ function AuthenticatedRoutes() {
         <Route path="/report" element={<Report />} />
         <Route path="/session-history/:childId" element={<SessionHistory />} />
         <Route path="/demo" element={<Demo />} />
-        <Route path="/demo/session" element={<DemoSessionPage />} />
-        <Route path="/demo-report" element={<DemoReport />} />
         <Route path="/auth" element={<Navigate to="/parent" replace />} />
         <Route path="/" element={<Navigate to="/parent" replace />} />
         <Route path="*" element={<NotFound />} />
@@ -105,7 +100,6 @@ function AuthenticatedRoutes() {
       <Route path="/landing" element={<Landing />} />
       <Route path="/report" element={<Report />} />
       <Route path="/demo" element={<Demo />} />
-      <Route path="/demo-report" element={<DemoReport />} />
       <Route path="/auth" element={<Navigate to="/" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -163,8 +157,6 @@ const App = () => {
                    <Route path="/onboarding" element={<Onboarding />} />
                    <Route path="/student" element={<AnonStudentPage />} />
                    <Route path="/demo" element={<Demo />} />
-                   <Route path="/demo/session" element={<DemoSessionPage />} />
-                   <Route path="/demo-report" element={<DemoReport />} />
                    <Route path="/auth" element={<Auth />} />
                    <Route path="/auth/child" element={<ChildAuth />} />
                    <Route path="/auth/forgot-password" element={<ForgotPassword />} />
