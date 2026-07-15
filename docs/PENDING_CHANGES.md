@@ -13,7 +13,7 @@ Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md).
 - ✅ **OPRAVENO** — Spárované dítě uvízlo na chybové obrazovce po „Jiné téma"/„Zpět" (`useSessionDispatch.ts:495` grade→null, `childGradeLoaded` se nereseton). Fix: `childGradeLoaded` se zamkne jen když dítě v DB ročník nemá; jinak se po resetu znovu načte. Ověřeno reprodukcí (demo-child).
 - 🔴 Reset hesla přes e-mail nedosažitelný (`/reset-password` jen v neautent. větvi).
 - 🔴 Admin „Technický audit" spadne (`AdminContentAudit.tsx:62` `setAiFixes`).
-- 🟠 Anon pokrok dítěte se při párování ztratí (`pair-child` nevrací `child_id`); `generateMockBatch` bez `filterValidTasks`; admin „Přeformulovat" vždy chybuje.
+- ✅ **OPRAVENO** — anon pokrok při párování (`pair-child` vrací `child_id` + ChildAuth fallback dohledáním, deploy-nezávislé); `generateMockBatch` má úzký `filterRenderableTasks` (render-safety, NE full validator — ten by false-positivně vyprázdnil zmrazený obsah; ověřeno 0 vyprázdnění napříč tématy). Zbývá: admin „Přeformulovat" vždy chybuje.
 - ✅ **OPRAVENO** — mrtvá demo v1 smazána (6 souborů ~900 řádků: `Demo{Parent,Child,Admin}Tab`, `DemoSession` page+komponenta, `DemoReport` page) + orphan routy `/demo/session`, `/demo-report` z App.tsx. `/demo` (v2) zachován. tsc beze změny, 0 visících ref, app běží.
 - 🟡 `/demo/session` 404 (admin/child) — vyřešeno smazáním routy.
 - ✅ **OPRAVENO** — záporné „−2 správně" v demu (`ChildSessionLog.tsx:254` clamp `Math.max(0,…)`).

@@ -105,6 +105,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({
         session: sessionData.session,
+        child_id: child.id,
         child_name: child.child_name,
         grade: child.grade,
       }),

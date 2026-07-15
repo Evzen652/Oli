@@ -120,3 +120,61 @@ export function filterValidTasks(tasks: PracticeTask[], inputType: InputType): P
   }
   return valid;
 }
+
+/**
+ * ÚZKÝ render-safety guard — zrcadlí PracticeInputRouter: vrací false JEN pro úlohu,
+ * kterou by router vyrenderoval jako `null` (karta bez vstupu = dítě uvízne).
+ *
+ * NA ROZDÍL od `validateTaskForInputType` NEřeší pedagogickou kvalitu (distraktory,
+ * i/y, dedup párů) — ta by na runtime false-positivně zahodila funkční zmrazený obsah
+ * (např. g4-mat-rovnobezky-kolmice-4 L2 má validní možnosti, jen „podobné" distraktory).
+ * Používá se v hlavní (deterministické) runtime cestě `generateMockBatch`.
+ */
+export function isRenderableTask(task: PracticeTask, inputType: InputType): boolean {
+  if (!task.question?.trim() || !task.correctAnswer?.trim()) return false;
+
+  // Per-task override typy (router je renderuje podle přítomnosti dat, nezávisle na topic.inputType)
+  if (task.essay && inputType === "essay") return true;
+  if (task.chemEquation) return true;
+  if (task.timelineEvents && task.timelineEvents.length > 0) return true;
+  if (task.formulaPool && task.formulaPool.length > 0) return true;
+  if (task.diagram) return true;
+  if (task.imageOptions && task.imageOptions.length > 0) return true;
+  if (task.categories && task.categories.length > 0) return true;
+  if (task.pairs && task.pairs.length > 0) return true;
+  if (task.correctAnswers && task.correctAnswers.length > 0 && !!task.options?.length) return true;
+  if (task.blanks && task.blanks.length > 0) return true;
+  if (task.items && task.items.length > 0 && inputType !== "drag_order") return true;
+  if (task.options && task.options.length > 0 && !["select_one", "multi_select"].includes(inputType) && !task.correctAnswers?.length) return true;
+
+  // Fallback dle topic.inputType (switch v routeru)
+  switch (inputType) {
+    case "comparison":
+    case "fraction":
+    case "number":
+    case "text":
+      return true; // vždy vyrenderuje nějaký vstup
+    case "select_one":
+    case "multi_select":
+      return !!task.options && task.options.length > 0;
+    case "drag_order":
+      return !!task.items && task.items.length > 0;
+    case "fill_blank":
+      return !!task.blanks && task.blanks.length > 0;
+    case "match_pairs":
+      return !!task.pairs && task.pairs.length > 0;
+    case "categorize":
+      return !!task.categories && task.categories.length > 0;
+    default:
+      return true; // default = textarea
+  }
+}
+
+/** Filter a batch, keeping only tasks the UI can actually render (proti „prázdné obrazovce"). */
+export function filterRenderableTasks(tasks: PracticeTask[], inputType: InputType): PracticeTask[] {
+  const ok = tasks.filter(t => isRenderableTask(t, inputType));
+  if (ok.length < tasks.length) {
+    console.warn(`[taskValidator] Vynecháno ${tasks.length - ok.length} nevykreslitelných úloh (inputType="${inputType}")`);
+  }
+  return ok;
+}

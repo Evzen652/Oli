@@ -71,19 +71,31 @@ export default function ChildAuth() {
         });
 
         const userId = data.session.user?.id ?? data.user?.id;
-        const childId = data.child?.id ?? data.child_id;
 
         // Zapamatuj dítě na tomto zařízení pro příští re-login přes PIN.
         if (userId) {
           rememberChild({ childUserId: userId, childName: data.child_name, grade: data.grade });
         }
 
-        if (userId && childId && hasAnonProgress()) {
-          setPairedUserId(userId);
-          setPairedChildId(childId);
-          setShowMigration(true);
-          setLoading(false);
-          return;
+        if (userId && hasAnonProgress()) {
+          // child_id vrací pair-child; fallback dohledáním podle child_user_id
+          // (funguje i před redeployem edge funkce; RLS „Children can view own record").
+          let childId: string | undefined = data.child_id;
+          if (!childId) {
+            const { data: childRow } = await supabase
+              .from("children")
+              .select("id")
+              .eq("child_user_id", userId)
+              .maybeSingle();
+            childId = childRow?.id ?? undefined;
+          }
+          if (childId) {
+            setPairedUserId(userId);
+            setPairedChildId(childId);
+            setShowMigration(true);
+            setLoading(false);
+            return;
+          }
         }
 
         window.location.href = "/";

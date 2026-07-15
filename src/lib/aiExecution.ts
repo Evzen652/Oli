@@ -1,5 +1,5 @@
 import type { AIRequest, AIResponse, PracticeTask } from "./types";
-import { filterValidTasks } from "./taskValidator";
+import { filterValidTasks, filterRenderableTasks } from "./taskValidator";
 
 /**
  * AI EXECUTION LAYER
@@ -128,8 +128,15 @@ export function generateMockBatch(request: AIRequest, levelOverride?: number): P
   const level = levelOverride ?? request.topic.defaultLevel ?? 2;
   const allTasks = request.topic.generator(level);
 
+  // Render-safety guard na hlavní (deterministické) runtime cestě: zahoď JEN úlohy,
+  // které by PracticeInputRouter vyrenderoval jako null (karta bez vstupu = dítě uvízne).
+  // ÚMYSLNĚ ne full validateTaskForInputType — ten řeší i pedagogickou kvalitu (distraktory,
+  // i/y, dedup) a false-positivně by zahodil funkční zmrazený obsah (ověřeno: rovnobezky L2,
+  // velka-pismena L1 mají validní možnosti, jen „podobné" distraktory → 40→0 / 9→0).
+  const renderable = filterRenderableTasks(allTasks, request.topic.inputType);
+
   const taskCount = request.topic.sessionTaskCount ?? 6;
-  return allTasks.slice(0, taskCount);
+  return renderable.slice(0, taskCount);
 }
 
 // ── MOCK SINGLE RESPONSE (for EXPLAIN) – exported for deterministic orchestrator use ──

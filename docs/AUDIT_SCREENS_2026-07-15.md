@@ -32,12 +32,13 @@ Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistu
 
 ## 2. HIGH
 
-**🟠 Anon pokrok dítěte se při párování kódem tiše ztratí.** *(předexistující)*
-`ChildAuth.tsx` počítá `childId = data.child?.id ?? data.child_id`, ale `pair-child` vrací jen `{session, child_name, grade}` → `childId` vždy `undefined` → `AnonMigrationDialog` se nikdy nezobrazí, migrace anon pokroku nefunguje.
-**Návrh fixu:** `pair-child` vrátí i `child_id: child.id`, ChildAuth čte `data.child_id`.
+**✅ OPRAVENO (2026-07-15) — Anon pokrok dítěte se při párování kódem tiše ztratil.** *(předexistující)*
+`ChildAuth.tsx` počítal `childId = data.child?.id ?? data.child_id`, ale `pair-child` vracel jen `{session, child_name, grade}` → `childId` vždy `undefined` → `AnonMigrationDialog` se nikdy nezobrazil.
+**Fix:** `pair-child` nově vrací `child_id: child.id`; ChildAuth čte `data.child_id` **+ fallback** dohledáním `children.id` podle `child_user_id` (RLS „Children can view own record") → funguje i před redeployem edge funkce. tsc čistý.
 
-**🟠 `generateMockBatch` (hlavní runtime cesta) neprochází `filterValidTasks`.**
-`aiExecution.ts:127-133` — deterministický generátor se nevaliduje. Malformovaná úloha (`select_one` bez `options`, `match_pairs` <2 páry…) → `PracticeInputRouter` vrátí `null` → karta bez vstupu = „prázdná obrazovka". Orchestrátor hlídá jen úplně prázdný batch, ne jednotlivou vadnou úlohu. Chybí obranná vrstva na hlavní cestě.
+**✅ OPRAVENO (2026-07-15) — `generateMockBatch` (hlavní runtime cesta) neměl render-safety guard.**
+`aiExecution.ts` — deterministický generátor se nevalidoval; malformovaná úloha (`select_one` bez `options`…) → `PracticeInputRouter` vrátí `null` → karta bez vstupu = „prázdná obrazovka".
+**Fix:** nový **úzký** `filterRenderableTasks` (zrcadlí router — zahodí JEN úlohy renderující se jako null). ÚMYSLNĚ ne full `validateTaskForInputType` — ten řeší i pedagogickou kvalitu (distraktory/i-y/dedup) a **false-positivně by zahodil funkční zmrazený obsah** (ověřeno: `g4-mat-rovnobezky-kolmice-4` L2 40→0, `g3-cjl-velka-pismena` L1 9→0 přes full validator). Ověřeno napříč všemi tématy × L1–3: guard **nic nevyprázdní ani nezkrátí**; živá session funguje.
 
 **🟠 Admin „Přeformulovat" vždy skončí chybou + mrtvý kód.** *(předexistující)*
 `ReformulateTaskDialog.tsx:386-388` — bezpodmínečný `throw new Error("AI přeformulování není dostupné.")`, za ním nedosažitelný `parsed` (neexistuje, TS2304 ×2). Tlačítko je vykreslené u většiny grade-4 podtémat. Buď featuru dodělat, nebo tlačítko skrýt.
