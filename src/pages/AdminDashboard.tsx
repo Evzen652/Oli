@@ -396,7 +396,10 @@ export default function AdminDashboard() {
             <div className="flex flex-col items-end gap-1 ml-auto">
               <p className="text-[11px] text-muted-foreground/70 hidden md:block pr-0.5">
                 <span className="font-medium text-muted-foreground">Pracovní postup:</span>
-                {" "}Pedagogický audit <span className="italic">(pedagogika, jazyk)</span> → Technický audit <span className="italic">(technické chyby)</span> → Ilustrace
+                {FEATURES.adminAiContentCreator && (
+                  <>{" "}Pedagogický audit <span className="italic">(pedagogika, jazyk)</span> →</>
+                )}
+                {" "}Technický audit <span className="italic">(technické chyby)</span> → Ilustrace
               </p>
             <div className="flex items-center gap-2">
 
@@ -429,7 +432,8 @@ export default function AdminDashboard() {
                 </Tooltip>
               )}
 
-              {/* KROK 1 — Pedagogický audit */}
+              {/* KROK 1 — Pedagogický audit (odcházející AI — skryto za feature flag) */}
+              {FEATURES.adminAiContentCreator && (
               <Tooltip delayDuration={150}>
                 <TooltipTrigger asChild>
                   <span className="inline-flex">
@@ -466,6 +470,7 @@ export default function AdminDashboard() {
                   </div>
                 </TooltipContent>
               </Tooltip>
+              )}
 
               {/* KROK 2 — Technický audit */}
               <Tooltip delayDuration={150}>
@@ -1085,13 +1090,17 @@ export default function AdminDashboard() {
                     <div className="space-y-1">
                       <p className="text-lg font-semibold text-foreground">Zatím žádná podtémata</p>
                       <p className="text-sm text-muted-foreground">
-                        Použijte AI asistenta k vytvoření podtémat pro toto téma.
+                        {FEATURES.adminAiContentCreator
+                          ? "Použijte AI asistenta k vytvoření podtémat pro toto téma."
+                          : "Obsah se přidává přes Claude Chat + Claude Code."}
                       </p>
                     </div>
-                    <Button onClick={() => setAiChatOpen(true)} className="gap-2 rounded-xl">
-                      <Sparkles className="h-4 w-4" />
-                      Vytvořit s AI
-                    </Button>
+                    {FEATURES.adminAiContentCreator && (
+                      <Button onClick={() => setAiChatOpen(true)} className="gap-2 rounded-xl">
+                        <Sparkles className="h-4 w-4" />
+                        Vytvořit s AI
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               )}
@@ -1392,6 +1401,7 @@ function QuickAddCard({
               </div>
             </button>
 
+            {FEATURES.adminAiContentCreator && (
             <button
               onClick={() => setMode("ai")}
               className="flex items-center gap-2.5 w-full rounded-xl border border-primary/30 bg-primary/5 px-3 py-2.5 text-left hover:border-primary/60 hover:bg-primary/10 transition-colors group"
@@ -1404,6 +1414,7 @@ function QuickAddCard({
                 <p className="text-[10px] text-muted-foreground">AI navrhne obsah dle RVP ZV</p>
               </div>
             </button>
+            )}
           </div>
 
         </CardContent>

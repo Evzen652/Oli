@@ -54,7 +54,7 @@ Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistu
 
 **✅ OPRAVENO (2026-07-15) — Osiřelé admin stránky smazány.** `AdminCategories/Topics/Skills.tsx` (neroutované) smazány + odebrány osiřelé exporty `useParentName`+`toSlug` wrapper z `AdminLayout.tsx` (component sám zůstává — používá ho `AdminDashboard`+`AdminRvpTree`) + trimnut blok `useParentName` z `admin.test.ts`. Pozn.: 2 padající testy `runOfflineAudit — čistý topic` jsou **předexistující** (audit-threshold drift), netýkají se úklidu.
 
-**🟡 Odstraněné AI featury stále zadrátované.** UI volá `ai-curriculum` („Navrhnout s AI"), `exercise-validator` („Pedagogický audit") — dle architektury „Odchází". Fungují jen dokud Evžen nesmaže edge funkce; pak tiše selžou.
+**✅ ČÁSTEČNĚ VYŘEŠENO (2026-07-15) — vstupní body odcházejících AI featur skryty za flag.** UI volalo `ai-curriculum` („Navrhnout s AI"/„Vytvořit s AI"), `exercise-validator` („Pedagogický audit") — dle architektury „Odchází". Dle rozhodnutí uživatele „**jen skrýt vstupní body**" (ne rip-out — živý provázaný subsystém ~25 souborů, ne mrtvý kód): tlačítka gated za `FEATURES.adminAiContentCreator` (default false), workflow popisek sjednocen; komponenty i edge funkce zachovány (vratné přes localStorage `oli_features`). „Technický audit" (lokální `runOfflineAudit`, ne AI) ponechán. Ověřeno v prohlížeči (AI tlačítka skrytá, admin renderuje, 0 konzol. chyb). Plný rip-out odložen na plánovaný refaktor.
 
 **🟡 LandingNav kotvy z /auth vedou na neexistující `/landing`.** `LandingNav.tsx:42` `scrollTo` fallback `navigate("/landing"+id)`; neautentizovaná sada nemá `/landing` → catch-all zahodí hash. „Ceník"/„Jak to funguje" z přihlašovací stránky nescrolluje.
 

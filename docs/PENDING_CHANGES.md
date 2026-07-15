@@ -18,7 +18,7 @@ Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md).
 - 🟡 `/demo/session` 404 (admin/child) — vyřešeno smazáním routy.
 - ✅ **OPRAVENO** — záporné „−2 správně" v demu (`ChildSessionLog.tsx:254` clamp `Math.max(0,…)`).
 - ✅ **OPRAVENO** — osiřelé admin stránky `AdminCategories/Topics/Skills` smazány + odebrány osiřelé exporty `useParentName`/`toSlug` z `AdminLayout` (component zůstává) + trim testu.
-- 🟠 Odcházející AI featury v UI (`ai-curriculum`/`exercise-validator`/`ai-tutor`) — velký provázaný subsystém (25 souborů); scoped plán řešen zvlášť.
+- ✅ **OPRAVENO (částečně)** — odcházející AI featury v UI: vstupní body („Navrhnout s AI", „Vytvořit s AI", „Pedagogický audit") skryty za `FEATURES.adminAiContentCreator` (default false). Komponenty + edge funkce zachovány (vratné). Plný rip-out subsystému (~25 souborů) odložen na plánovaný refaktor.
 - ✅ **Opraveno hned:** admin `/student` odhlášení (guard `role==="child"`), ChildAuth stale `remembered`, PIN „Přihlásit se kódem", ParentDashboard `pairing_code` null-guardy (tsc 97→95). **Ještě nutno commitnout.**
 
 ## ✅ Child re-login PIN (🔴 blocker pilotu 2–4) (2026-07-15)

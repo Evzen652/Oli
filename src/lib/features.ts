@@ -11,9 +11,11 @@
 
 const DEFAULTS = {
   /**
-   * AI pomocník "Tvořit obsah" v admin panelu.
-   * Zastaralé — obsah se tvoří přes Claude Chat + CC, ne za běhu.
-   * Zachováno v kódu pro případ, že se vrátí v jiné podobě.
+   * Odcházející AI featury v admin panelu — vstupní body skryté za tímto flagem:
+   * „Tvořit obsah" / „Vytvořit s AI" / „Navrhnout s AI" (ai-curriculum, Curriculum
+   * Wizard) a „Pedagogický audit" (exercise-validator). Zastaralé — obsah se tvoří
+   * přes Claude Chat + Claude Code, ne za běhu. Kód i edge funkce zachovány pro
+   * případ návratu; zapnutí: localStorage oli_features {"adminAiContentCreator":true}.
    */
   adminAiContentCreator: false,
 
