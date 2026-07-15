@@ -5,7 +5,6 @@ import { renderHook, waitFor } from "@testing-library/react";
  * Admin testy — pokrývá:
  *  - useAdminCurriculum: fetch hierarchie (subjects → categories → topics)
  *  - runOfflineAudit: čistý audit cvičení bez sítě
- *  - useParentName: fetch názvu z curriculum tabulky
  */
 
 // ─────────────────────────────────────────────────────────
@@ -255,42 +254,5 @@ describe("runOfflineAudit — prázdný seznam", () => {
     expect(report.totalTasksChecked).toBe(0);
     expect(report.passingPct).toBe(0);
     expect(report.issues).toHaveLength(0);
-  });
-});
-
-// ─────────────────────────────────────────────────────────
-// useParentName (AdminLayout)
-// ─────────────────────────────────────────────────────────
-
-describe("useParentName", () => {
-  it("id=undefined → vrátí null, nezavolá supabase", async () => {
-    const { useParentName } = await import("@/components/AdminLayout");
-    const { result } = renderHook(() => useParentName("curriculum_subjects", undefined));
-    await waitFor(() => expect(result.current).toBeNull());
-    expect(supabaseMock.from).not.toHaveBeenCalled();
-  });
-
-  it("s platným id → vrátí name z DB", async () => {
-    const chain = mkChain({ data: { name: "Matematika" } });
-    supabaseMock.from.mockReturnValue(chain);
-
-    const { useParentName } = await import("@/components/AdminLayout");
-    const { result } = renderHook(() =>
-      useParentName("curriculum_subjects", "s1"),
-    );
-    await waitFor(() => expect(result.current).toBe("Matematika"));
-  });
-
-  it("DB vrátí null → name zůstane null", async () => {
-    const chain = mkChain({ data: null });
-    supabaseMock.from.mockReturnValue(chain);
-
-    const { useParentName } = await import("@/components/AdminLayout");
-    const { result } = renderHook(() =>
-      useParentName("curriculum_subjects", "neexistuje"),
-    );
-    // Čekáme krátce — name se nemá změnit
-    await new Promise((r) => setTimeout(r, 50));
-    expect(result.current).toBeNull();
   });
 });

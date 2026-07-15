@@ -1,10 +1,9 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogOut, ChevronRight, Home, Shield, Users, GraduationCap, HelpCircle, BookOpenCheck } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { toSlug as _toSlug } from "@/lib/slugify";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export interface Breadcrumb {
@@ -15,23 +14,6 @@ export interface Breadcrumb {
 interface AdminLayoutProps {
   breadcrumbs: Breadcrumb[];
   children: ReactNode;
-}
-
-/** Fetch a single field from a curriculum table by ID. */
-export function useParentName(table: string, id: string | undefined) {
-  const [name, setName] = useState<string | null>(null);
-  useEffect(() => {
-    if (!id) return;
-    (supabase as any)
-      .from(table)
-      .select("name")
-      .eq("id", id)
-      .single()
-      .then(({ data }: any) => {
-        if (data?.name) setName(data.name);
-      });
-  }, [table, id]);
-  return name;
 }
 
 export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
@@ -138,9 +120,4 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
       </main>
     </div>
   );
-}
-
-/** Auto-generate slug from name. */
-export function toSlug(name: string): string {
-  return _toSlug(name);
 }

@@ -15,7 +15,10 @@ Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md).
 - 🔴 Admin „Technický audit" spadne (`AdminContentAudit.tsx:62` `setAiFixes`).
 - 🟠 Anon pokrok dítěte se při párování ztratí (`pair-child` nevrací `child_id`); `generateMockBatch` bez `filterValidTasks`; admin „Přeformulovat" vždy chybuje.
 - ✅ **OPRAVENO** — mrtvá demo v1 smazána (6 souborů ~900 řádků: `Demo{Parent,Child,Admin}Tab`, `DemoSession` page+komponenta, `DemoReport` page) + orphan routy `/demo/session`, `/demo-report` z App.tsx. `/demo` (v2) zachován. tsc beze změny, 0 visících ref, app běží.
-- 🟡 `/demo/session` 404 (admin/child) — vyřešeno smazáním routy; záporné „správně" v demu; osiřelé admin stránky.
+- 🟡 `/demo/session` 404 (admin/child) — vyřešeno smazáním routy.
+- ✅ **OPRAVENO** — záporné „−2 správně" v demu (`ChildSessionLog.tsx:254` clamp `Math.max(0,…)`).
+- ✅ **OPRAVENO** — osiřelé admin stránky `AdminCategories/Topics/Skills` smazány + odebrány osiřelé exporty `useParentName`/`toSlug` z `AdminLayout` (component zůstává) + trim testu.
+- 🟠 Odcházející AI featury v UI (`ai-curriculum`/`exercise-validator`/`ai-tutor`) — velký provázaný subsystém (25 souborů); scoped plán řešen zvlášť.
 - ✅ **Opraveno hned:** admin `/student` odhlášení (guard `role==="child"`), ChildAuth stale `remembered`, PIN „Přihlásit se kódem", ParentDashboard `pairing_code` null-guardy (tsc 97→95). **Ještě nutno commitnout.**
 
 ## ✅ Child re-login PIN (🔴 blocker pilotu 2–4) (2026-07-15)

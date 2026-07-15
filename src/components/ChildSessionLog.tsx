@@ -250,8 +250,10 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                       className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
                       onClick={() => {
                         if (mockSessions) {
-                          // s.correct = vše správně (včetně nápovědy) — DB konvence
-                          const correctOnly = s.correct - s.help_used;
+                          // s.correct = vše správně (včetně nápovědy) — DB konvence.
+                          // clamp: help_used nemusí být podmnožina correct (dítě může použít
+                          // nápovědu a přesto odpovědět špatně) → bez clampu vznikne záporné číslo.
+                          const correctOnly = Math.max(0, s.correct - s.help_used);
                           const wrong = s.total - s.correct;
                           const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
                           setDetailData({ skillId: s.skill_id, mock: { correct: correctOnly, helpUsed: s.help_used, wrong, total: s.total, date: s.date, pct } });

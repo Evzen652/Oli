@@ -50,9 +50,9 @@ Top zasažené soubory: `ekosystemyPoleLoukaLes.ts` (31 — pole `type` neexistu
 
 **✅ OPRAVENO (2026-07-15) — Mrtvá demo v1 generace smazána (~900 řádků + orphan routy).** Smazáno 6 souborů: `DemoParentTab/ChildTab/AdminTab.tsx`, `components/demo/DemoSession.tsx`, `pages/DemoSession.tsx`, `pages/DemoReport.tsx`. Z `App.tsx` odstraněny importy + 6 rout (`/demo/session` ×2, `/demo-report` ×4). Zachován `/demo` + `Demo.tsx` (v2 login → reálné obrazovky s `isDemo`). Ověřeno: 0 visících referencí v `src`, tsc beze změny (95), app běží, `/demo` funguje, orphan routy padají přes catch-all (unauth→home, admin/child→NotFound), 0 konzol. chyb. Paměť `feedback_demo_prod_sync` aktualizována na v2.
 
-**🟡 Záporné „správně bez nápovědy" v demu.** `ChildSessionLog.tsx:254` `correctOnly = s.correct - s.help_used` → u demo session (correct 1, help 3) = **-2**; `SkillDetailModal` ukáže „-2 správně". Fix: `Math.max(0, …)` + srovnat demo data.
+**✅ OPRAVENO (2026-07-15) — Záporné „správně bez nápovědy" v demu.** `ChildSessionLog.tsx:254` `correctOnly = s.correct - s.help_used` → u demo session (correct 1, help 3) = -2. Fix: `Math.max(0, …)` (nápověda nemusí být podmnožina správných). Fix je robustní pro jakákoli data.
 
-**🟡 Osiřelé admin stránky.** `AdminCategories.tsx`/`AdminTopics.tsx`/`AdminSkills.tsx` nikde neroutované (App importuje jen `AdminDashboard`+`AdminRvpTree`). Mrtvý kód navázaný na starý navigační model.
+**✅ OPRAVENO (2026-07-15) — Osiřelé admin stránky smazány.** `AdminCategories/Topics/Skills.tsx` (neroutované) smazány + odebrány osiřelé exporty `useParentName`+`toSlug` wrapper z `AdminLayout.tsx` (component sám zůstává — používá ho `AdminDashboard`+`AdminRvpTree`) + trimnut blok `useParentName` z `admin.test.ts`. Pozn.: 2 padající testy `runOfflineAudit — čistý topic` jsou **předexistující** (audit-threshold drift), netýkají se úklidu.
 
 **🟡 Odstraněné AI featury stále zadrátované.** UI volá `ai-curriculum` („Navrhnout s AI"), `exercise-validator` („Pedagogický audit") — dle architektury „Odchází". Fungují jen dokud Evžen nesmaže edge funkce; pak tiše selžou.
 
