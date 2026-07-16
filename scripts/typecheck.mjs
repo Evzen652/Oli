@@ -13,7 +13,7 @@
  */
 import { execSync } from "node:child_process";
 
-const BASELINE = 23; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94; 34 → 30 duplicitní klíče → 23 active-scope: ChildHomePage/AnonStudentPage/domaciHospodarskaZvirata)
+const BASELINE = 13; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94, postupně 34→30→23→13). Zbylých 13 = performanceTracker.ts + skillLevel.ts, DB-stale `types.ts` (student_skill_level/student_misconceptions mají migrace v repu, ale chybí v auto-gen types.ts — čeká na `supabase login` + deploy, needit se needituje).
 
 let output = "";
 try {

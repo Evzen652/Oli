@@ -11,6 +11,7 @@ import { Check, X, Loader2, ChevronDown, ChevronUp, Sparkles, Trash2, Eye, EyeOf
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { CurriculumProposal } from "./AdminAIChat";
+import type { TablesUpdate } from "@/integrations/supabase/types";
 
 interface ProposalReviewProps {
   proposals: CurriculumProposal[];
@@ -1053,7 +1054,7 @@ function SkillPreview({ data }: { data: Record<string, unknown> }) {
         )}
         <div className="flex items-center gap-2 pt-2">
           <Badge variant="outline" className="text-[10px]">Typ odpovědi: {inputType}</Badge>
-          {data.grade_min && data.grade_max && (
+          {Boolean(data.grade_min) && Boolean(data.grade_max) && (
             <Badge variant="outline" className="text-[10px]">
               {String(data.grade_min)}–{String(data.grade_max)}. ročník
             </Badge>
@@ -1247,7 +1248,7 @@ async function saveProposalToDb(item: ProposalItem) {
     }
     case "skill": {
       if (isUpdate) {
-        const updatePayload: Record<string, unknown> = {};
+        const updatePayload: TablesUpdate<"curriculum_skills"> = {};
         if (data.name) updatePayload.name = String(data.name);
         if (data.code_skill_id) updatePayload.code_skill_id = String(data.code_skill_id);
         if (data.brief_description) updatePayload.brief_description = String(data.brief_description);

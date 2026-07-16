@@ -16,9 +16,11 @@ interface Props {
  */
 export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) {
   const hookStats = useChildStats(childId);
+  // assignedTasks/selfTasks split je zatím jen demo metrika — useChildStats
+  // (reálná data) ji netrackuje, proto 0 (dřív bylo undefined, chovalo se stejně: undefined > 0 === false).
   const { tasks, accuracy, assignedTasks, selfTasks, loading } = mockStats
     ? { ...mockStats, assignedTasks: mockStats.assignedTasks ?? 0, selfTasks: mockStats.selfTasks ?? 0, loading: false }
-    : hookStats;
+    : { ...hookStats, assignedTasks: 0, selfTasks: 0 };
   const days = mockStats ? mockStats.days : hookStats.daysActive;
 
   if (loading) return null;

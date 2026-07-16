@@ -4,7 +4,7 @@ import { ROVNOBEZKY_KOLMICE } from "../matematika/rovnobezkyAKolmice";
 import { TROJUHELNIK_DRUHY } from "../matematika/trojuhelnikDruhyPodleStran";
 import { OSOVA_SOUMERNOST } from "../matematika/osovaSoumernostOsaSoumerneUtvary";
 
-function baseCheck(meta: ReturnType<typeof OBVOD_OBSAH>[0]) {
+function baseCheck(meta: (typeof OBVOD_OBSAH)[number]) {
   expect(meta.id).toBeTruthy();
   expect(meta.subject).toBe("matematika");
   expect(meta.category).toBe("Geometrie v rovině a v prostoru");

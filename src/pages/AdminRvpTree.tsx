@@ -10,6 +10,7 @@ import { getNodesByGrade } from "@/content/curriculum";
 import { GRADE_4_TOPICS } from "@/content/grade-4";
 import type { CurriculumNode } from "@/content/curriculum";
 import type { TopicMetadata } from "@/lib/types";
+import type { Grade } from "@/content/types";
 
 // ── Implementovaný obsah per ročník ───────────────────────────────────
 // Až přibydou další ročníky, stačí sem přidat import a záznam do mapy.
@@ -316,12 +317,12 @@ function Legend() {
 
 // ── Přepínač ročníku ───────────────────────────────────────────────────
 
-function GradePicker({ grade, onChange }: { grade: number; onChange: (g: number) => void }) {
+function GradePicker({ grade, onChange }: { grade: Grade; onChange: (g: Grade) => void }) {
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <span className="text-sm font-medium text-muted-foreground shrink-0">Ročník:</span>
       <div className="flex gap-1 flex-wrap">
-        {Array.from({ length: 9 }, (_, i) => i + 1).map((g) => {
+        {(Array.from({ length: 9 }, (_, i) => i + 1) as Grade[]).map((g) => {
           const hasContent = !!TOPICS_BY_GRADE[g];
           const active = g === grade;
           return (
@@ -396,7 +397,7 @@ function ExpandableTree({ tree }: { tree: SubjectGroup[] }) {
 // ── Hlavní stránka ────────────────────────────────────────────────────
 
 export default function AdminRvpTree() {
-  const [grade, setGrade] = useState(4);
+  const [grade, setGrade] = useState<Grade>(4);
 
   const topics = TOPICS_BY_GRADE[grade] ?? [];
   const nodes  = useMemo(() => getNodesByGrade(grade), [grade]);

@@ -291,7 +291,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
       s = transition(s, "EXPLAIN");
       const response = generateMockExplain({
         type: "explain",
-        topic: s.matchedTopic,
+        topic: s.matchedTopic!,
         grade: s.grade,
         childInput: s.childInput,
         previousErrors: s.errorCount,

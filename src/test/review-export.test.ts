@@ -142,10 +142,10 @@ function renderTask(
   // Správná odpověď (hlavní)
   lines.push(`- **Správná odpověď:** ${esc(task.correctAnswer)}`);
 
-  // text_input — poznámka o akceptovaných variantách
-  if (topic.inputType === "text_input") {
+  // short_answer — poznámka o akceptovaných variantách
+  if (topic.inputType === "short_answer") {
     lines.push(
-      `- **Akceptované varianty (text_input):** řídí validátor při kontrole (normalizace: velikost písmen, mezery, desetinná čárka/tečka \`0,5\`≈\`0.5\`, diakritika). V datech úlohy uložena jen kanonická odpověď výše.`
+      `- **Akceptované varianty (short_answer):** řídí validátor při kontrole (normalizace: velikost písmen, mezery, desetinná čárka/tečka \`0,5\`≈\`0.5\`, diakritika). V datech úlohy uložena jen kanonická odpověď výše.`
     );
   }
 

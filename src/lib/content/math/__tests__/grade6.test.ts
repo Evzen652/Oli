@@ -103,7 +103,7 @@ describe("divisibility — dělitelé/prvočísla/znaky", () => {
         // Prvočísla
         if (task.question.includes("prvočísla")) {
           hasPrime = true;
-          const pool = task.options.map(Number);
+          const pool = task.options!.map(Number);
           const expected = pool.filter(isPrime);
           expect(task.correctAnswer).toBe(expected.join(","));
         }
