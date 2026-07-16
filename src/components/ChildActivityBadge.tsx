@@ -1,6 +1,7 @@
 import { useChildStats } from "@/hooks/useChildStats";
 import { Sparkles, Flame, CheckCircle2, Star } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
+import { plural, form } from "@/lib/czechGrammar";
 
 interface Props {
   childId?: string;
@@ -27,22 +28,20 @@ export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) 
 
   // Kompaktní mód — bílé číslice pro tmavé/gradientní pozadí
   if (compact) {
-    const pl = (n: number, one: string, few: string, many: string) =>
-      n === 1 ? one : n >= 2 && n <= 4 ? few : many;
-
     let summaryText: string;
     if (tasks === 0) {
       summaryText = "Za poslední týden žádná aktivita. Zkuste zadat malý úkol — třeba jen 5 minut denně stačí.";
     } else {
       const splitPart = assignedTasks > 0 && selfTasks > 0
-        ? ` (${assignedTasks} ${pl(assignedTasks, "ze zadání", "ze zadání", "ze zadání")}, ${selfTasks} samostatně)`
+        ? ` (${assignedTasks} ze zadání, ${selfTasks} samostatně)`
         : assignedTasks > 0
         ? " — vše ze zadání"
         : selfTasks > 0
         ? " — vše samostatně"
         : "";
 
-      const base = `Za poslední týden splnil/a ${tasks} ${pl(tasks, "úlohu", "úlohy", "úloh")} za ${days} ${pl(days, "den", "dny", "dní")}${splitPart} s ${accuracy}% úspěšností.`;
+      // Akuzativ (4. pád) — "splnil 1 úlohu / 2 úlohy / 5 úloh" (stejný pattern jako ChildHomePage.pluralTasks)
+      const base = `Za poslední týden splnil/a ${tasks} ${plural(tasks, "úlohu", "úlohy", "úloh")} za ${days} ${form(days, "DEN")}${splitPart} s ${accuracy}% úspěšností.`;
 
       const tip =
         accuracy >= 80 ? " Skvělé výsledky — klidně přidejte nové téma!" :
@@ -60,7 +59,7 @@ export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) 
             <Flame className="h-5 w-5 text-orange-300 shrink-0" />
             <div>
               <p className="text-xl font-extrabold text-white tabular-nums leading-none">{days}</p>
-              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">{days === 1 ? "DEN" : days >= 2 && days <= 4 ? "DNY" : "DNÍ"}</p>
+              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
@@ -151,7 +150,7 @@ function StatGrid({
   return (
     <div className="grid grid-cols-3 gap-2">
       <StatCard value={tasks} label="ÚLOH" tone="indigo" />
-      <StatCard value={days} label={days === 1 ? "DEN" : days >= 2 && days <= 4 ? "DNY" : "DNÍ"} tone="emerald" />
+      <StatCard value={days} label={form(days, "DEN").toUpperCase()} tone="emerald" />
       <StatCard value={`${accuracy}%`} label="ÚSPĚŠNOST" tone={highlight ? "emerald" : "indigo"} />
     </div>
   );

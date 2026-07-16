@@ -29,7 +29,14 @@ export function LandingNav() {
   }
 
   async function goToLogin() {
-    await supabase.auth.signOut();
+    // Odhlásit jen anonymní/demo návštěvníky — u reálně přihlášeného
+    // rodiče/admina/dítěte (LandingNav se renderuje i na /landing v jejich
+    // větvi) by "Přihlásit se" jinak vždy odhlásilo, i když o to nežádali.
+    // Jejich vlastní /auth route je stejně přesměruje zpět na dashboard.
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session || session.user.email === "demo@oli.app") {
+      await supabase.auth.signOut();
+    }
     navigate("/auth");
   }
 

@@ -14,7 +14,21 @@ export default function Demo() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  // Přihlášený uživatel (jiný než demo účet) by demem tiše přišel o vlastní
+  // relaci — potvrdit, než ho přepneme (viz audit: "footgun, žádný odkaz").
+  async function confirmSwitchIfLoggedIn(): Promise<boolean> {
+    const { data: { session } } = await supabase.auth.getSession();
+    const email = session?.user.email;
+    if (email && email !== DEMO_PARENT_EMAIL && email !== DEMO_CHILD_EMAIL) {
+      return window.confirm(
+        `Jsi přihlášený/á jako ${email}. Spuštěním dema se odhlásíš a přepneš na demo účet. Pokračovat?`
+      );
+    }
+    return true;
+  }
+
   async function handleParentDemo() {
+    if (!(await confirmSwitchIfLoggedIn())) return;
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: DEMO_PARENT_EMAIL,
@@ -29,6 +43,7 @@ export default function Demo() {
   }
 
   async function handleChildDemo() {
+    if (!(await confirmSwitchIfLoggedIn())) return;
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: DEMO_CHILD_EMAIL,

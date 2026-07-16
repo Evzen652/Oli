@@ -7,6 +7,7 @@ import { IllustrationImg } from "@/components/IllustrationImg";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { pad } from "@/lib/czechGrammar";
 
 interface Props {
   childId?: string;
@@ -43,10 +44,9 @@ export function ChildMisconceptions({ childId = "", childName, mockData }: Props
         description:
           analyzed === 0
             ? "Zatím nemáme dost dat na analýzu."
-            : `Analýza dokončena: ${analyzed} ${analyzed === 1 ? "téma" : analyzed < 5 ? "témata" : "témat"}, detekováno ${detected}, vyřešeno ${resolved}.`,
+            : `Analýza dokončena: ${pad(analyzed, "TÉMA")}, detekováno ${detected}, vyřešeno ${resolved}.`,
       });
-      // Force reload — useEffect by se mělo resync
-      window.location.reload();
+      hookResult.refetch();
     } catch (e: any) {
       toast({
         description: e?.message ?? "Analýza selhala.",

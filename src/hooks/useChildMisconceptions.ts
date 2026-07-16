@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface Misconception {
@@ -20,6 +20,7 @@ export interface Misconception {
 export function useChildMisconceptions(childId: string | null) {
   const [data, setData] = useState<Misconception[]>([]);
   const [loading, setLoading] = useState(false);
+  const [reloadToken, setReloadToken] = useState(0);
 
   useEffect(() => {
     if (!childId) {
@@ -41,7 +42,9 @@ export function useChildMisconceptions(childId: string | null) {
       setLoading(false);
     })();
     return () => { cancelled = true; };
-  }, [childId]);
+  }, [childId, reloadToken]);
 
-  return { data, loading };
+  const refetch = useCallback(() => setReloadToken((t) => t + 1), []);
+
+  return { data, loading, refetch };
 }
