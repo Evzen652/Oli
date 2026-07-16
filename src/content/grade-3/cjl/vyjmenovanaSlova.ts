@@ -72,7 +72,7 @@ const POOL: PoolItem[] = [
   { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po V?", correct: "výskat", distractors: ["vidět", "vítr", "vítat"], e: "'Výskat' je vyjmenované slovo po V — výskat znamená radostně křičet. 'Vidět', 'vítr' i 'vítat' mezi vyjmenovaná slova nepatří." },
   // ── Z ─────────────────────────────────────────────────────
   { kind: "fill", q: "Doplň: 'Přijď brz_, čekám na tebe.'", correct: "y", word: "brzy", e: "'Brzy' je vyjmenované slovo po Z, proto píšeme Y. Brzy znamená za chvíli nebo co nejdříve." },
-  { kind: "fill", q: "Doplň: 'Plazí j_zyk je rozdvojený.'", correct: "y", word: "jazyk", e: "'Jazyk' je vyjmenované slovo po Z, proto píšeme Y. Jazyk je orgán v ústech — a hadi mají rozdvojený jazyk!" },
+  { kind: "fill", q: "Doplň: 'Plazí jaz_k je rozdvojený.'", correct: "y", word: "jazyk", e: "'Jazyk' je vyjmenované slovo po Z, proto píšeme Y. Jazyk je orgán v ústech — a hadi mají rozdvojený jazyk!" },
   { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po Z?", correct: "nazývat", distractors: ["namočit", "napsat", "nakoupit"], e: "'Nazývat' je vyjmenované slovo po Z — nazývat něco znamená pojmenovat to. 'Namočit', 'napsat' ani 'nakoupit' vyjmenovaná nejsou." },
 ];
 

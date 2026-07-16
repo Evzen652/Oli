@@ -361,7 +361,7 @@ export const SLOVANEVELKOMORAVSKARISECYRILAMETODEJ: TopicMetadata[] = [
     subject: "vlastivěda",
     category: "Lidé a čas",
     topic: "Lidé a čas",
-    briefDescription: "Poznáš první Slovany u nás — Sámovu říši, Velkou Moravu i Cyrila a Metoděje.",
+    briefDescription: "Poznáš první Slovany u nás: Sámovu říši, Velkou Moravu, Cyrila a Metoděje.",
     keywords: ["Slované", "Sámova říše", "Velká Morava", "Cyril a Metoděj", "hlaholice", "Bořivoj", "906"],
     goals: [
       "Vědět, kdy přišli Slované do střední Evropy",

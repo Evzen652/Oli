@@ -7,6 +7,12 @@
 
 ---
 
+## ✅ Autonomní úklid — 4 skryté testovací regrese (2026-07-16)
+- Spuštěna celá `npx vitest run` (místo spoléhání na historické poznámky) → odhalila 16 selhávajících testů v 6 souborech, 12 z nich nezdokumentovaných (jen `execution-directive.test.ts` 4× bylo známé). Detail v `PROJECT_STATUS.md` sekce 6.
+- **Skutečný obsahový bug**: šablona „j_zyk" pro slovo „jazyk" měla mezeru na špatné pozici (2 soubory grade-3 vyjmenovaná slova) → opraveno na „jaz_k". Odhaleno díky přepisu `vyjmenovana-canon.test.ts` na nový formát generátoru (correctAnswer = grafém, ne celé slovo, po PED-1 refaktoru).
+- **Zastaralé prahy**: `dataALogika.test.ts` (≥30→≥20 po disjunktním pool redesignu), `language.test.ts` briefDescription (magicke-ctverce dev-poznámka přesunuta do `boundaries`; vlastivěda-slované zkráceno na 12 slov), `admin.test.ts` fixture (generator ignorující level = přesně to, co má `tier_population` odhalit).
+- Ověřeno: 4683/4692 testů, typecheck baseline 13 beze změny, freeze/audit:coverage/generator-validation zelené.
+
 ## 🔎 Audit obrazovek — reality check (2026-07-15) — otevřené nálezy
 Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md). Blockery jsou **předexistující**, čekají na rozhodnutí priority:
 - ✅ **PROŠETŘENO — 3 SUSPICION nálezy ze sekce 5 auditu, 0 oprav kódu potřeba.** Nový rodič bez role → falešný poplach (migrace `20260619120000_auth_role_provisioning.sql`, aplikovaná měsíc před auditem, řeší atomicky v DB triggeru). `useUserRole`/`useProfile` prázdné deps → potvrzena křehkost, ale nereprodukovatelná (každá dnešní cesta má null-mezistav nebo hard reload) — ponecháno jako dluh. Demo „Podrobné hodnocení" → není bug, `seed_demo.sql` sype reálná DB data. Detail v `docs/AUDIT_SCREENS_2026-07-15.md` sekce 5.

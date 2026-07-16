@@ -8,6 +8,11 @@ import { getAllTopics } from "@/lib/contentRegistry";
  * odpovědi ("byk" místo "býk") učí dítě CHYBU. Tento test pinuje každou
  * correctAnswer témat vyjmenovaných slov na kurátorovaný seznam správných
  * českých tvarů. Přidáš-li do POOLu nové slovo, přidej ho i sem — vědomě.
+ *
+ * PED-1 refaktor (2026-07-08) změnil "fill" úlohy tak, že correctAnswer je
+ * jen sporný grafém (y/ý/i/í), ne celé slovo — proto se u nich slovo musí
+ * nejdřív rekonstruovat z otázky (token s "_" + grafém) a teprve to se ověří
+ * proti kánonu. "which" úlohy mají correctAnswer pořád celé slovo.
  */
 
 // Správné tvary používané v generátorech (vyjmenovaná slova + příbuzná, vč. skloňování)
@@ -39,6 +44,18 @@ function collectAllTasks(generator: (level: number) => { question: string; corre
   return [...byQuestion.values()];
 }
 
+const GRAPHEME_ANSWER = /^[yýií]$/;
+
+/** "fill" úlohy: dosadí grafém do tokenu s "_" v citované větě a vrátí holé slovo. */
+function reconstructFillWord(question: string, grapheme: string): string {
+  const quoted = question.match(/'([^']*)'/)?.[1] ?? question;
+  const blankToken = quoted.split(/\s+/).find(tok => tok.includes("_")) ?? "";
+  return blankToken
+    .replace("_", grapheme)
+    .replace(/^[^\p{L}]+|[^\p{L}]+$/gu, "")
+    .toLowerCase();
+}
+
 describe("Vyjmenovaná slova — slovníkový strážce správných odpovědí", () => {
   const topics = getAllTopics().filter(t => TOPIC_IDS.includes(t.id));
 
@@ -54,7 +71,13 @@ describe("Vyjmenovaná slova — slovníkový strážce správných odpovědí",
       expect(tasks.length).toBeGreaterThan(5);
 
       const offenders = tasks
-        .filter(t => !CANON.has(String(t.correctAnswer).trim().toLowerCase()))
+        .filter(t => {
+          const answer = String(t.correctAnswer).trim();
+          const word = GRAPHEME_ANSWER.test(answer)
+            ? reconstructFillWord(t.question, answer)
+            : answer.toLowerCase();
+          return !CANON.has(word);
+        })
         .map(t => `"${t.correctAnswer}" (otázka: ${t.question.slice(0, 50)})`);
 
       expect(offenders, `Odpovědi mimo kánon — překlep, nebo přidej do CANON:\n${offenders.join("\n")}`).toEqual([]);

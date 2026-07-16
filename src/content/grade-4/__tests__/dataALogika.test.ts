@@ -44,9 +44,11 @@ describe("tabulkyDiagramy – metadata", () => {
 describe("tabulkyDiagramy – generator", () => {
   const meta = TABULKY_DIAGRAMY[0];
   for (const level of [1, 2, 3] as const) {
-    it(`level ${level}: ≥30 úloh, correctAnswer v options`, () => {
+    // Balík 1C (2026-07-10): přepsáno na disjunktní pool 4 datasety × 5 úloh
+    // = 20/level (dřív kumulativní pool s pevnými hodnotami, ≥30 duplicit).
+    it(`level ${level}: ≥20 úloh, correctAnswer v options`, () => {
       const tasks = meta.generator(level);
-      expect(tasks.length).toBeGreaterThanOrEqual(30);
+      expect(tasks.length).toBeGreaterThanOrEqual(20);
       for (const t of tasks) {
         expect(t.correctAnswer).toBeTruthy();
         expect(t.options).toContain(t.correctAnswer);
@@ -68,9 +70,11 @@ describe("magickeCtverce – metadata", () => {
 describe("magickeCtverce – generator", () => {
   const meta = MAGICKE_CTVERCE_RADY[0];
   for (const level of [1, 2, 3] as const) {
-    it(`level ${level}: ≥30 úloh, correctAnswer v options`, () => {
+    // PED-3 kalibrace (2026-07-08): disjunktní L1/L2/L3 pooly = 20/level
+    // (dřív L2/L3 sdílely vzory a getTierTasks je ořezával, viz komentář nahoře).
+    it(`level ${level}: ≥20 úloh, correctAnswer v options`, () => {
       const tasks = meta.generator(level);
-      expect(tasks.length).toBeGreaterThanOrEqual(30);
+      expect(tasks.length).toBeGreaterThanOrEqual(20);
       for (const t of tasks) {
         expect(t.correctAnswer).toBeTruthy();
         expect(t.options).toContain(t.correctAnswer);

@@ -135,8 +135,11 @@ function makeTopic(overrides: Partial<TopicMetadata> = {}): TopicMetadata {
     category: "Čísla",
     gradeRange: [1, 3],
     inputType: "number",
-    generator: (_level: number) => [
-      { question: "Kolik je 2+2?", correctAnswer: "4", hints: [] },
+    // Otázka se liší podle levelu, aby getTierTasks nededupoval L2/L3 na
+    // prázdno (tier_population invariant) — generátor ignorující level je
+    // přesně ten antipattern, který má tento test ověřovat jako "čistý".
+    generator: (level: number) => [
+      { question: `Kolik je 2+${level}?`, correctAnswer: String(2 + level), hints: [] },
     ],
     helpTemplate: {
       title: "Jak sčítat",

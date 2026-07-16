@@ -65,7 +65,7 @@ const POOL: PoolItem[] = [
   // ── po Z ──────────────────────────────────────────────
   { kind: "fill", q: "Doplň: 'Přijď brz_.'", correct: "y", word: "brzy", e: "Slovo 'brzy' je vyjmenované po Z, proto píšeme Y. Brzy znamená za chvíli nebo co nejdříve." },
   { kind: "which", q: "Příbuzné slovo k 'jazyk' je:", correct: "jazykový", distractors: ["zima", "zítra", "zametat"], e: "'Jazykový' patří do rodiny 'jazyk → jazykový → jazykověda'. 'Zima', 'zítra' a 'zametat' vyjmenovaná nejsou — píší se s I nebo Í." },
-  { kind: "fill", q: "Doplň: 'Lékař zkoumal můj j_zyk.'", correct: "y", word: "jazyk", e: "Slovo 'jazyk' je vyjmenované po Z — jazykem mluvíme a ochutnáváme. Vyjmenovaná slova po Z píšeme s Y." },
+  { kind: "fill", q: "Doplň: 'Lékař zkoumal můj jaz_k.'", correct: "y", word: "jazyk", e: "Slovo 'jazyk' je vyjmenované po Z — jazykem mluvíme a ochutnáváme. Vyjmenovaná slova po Z píšeme s Y." },
 ];
 
 const GRAPHEMES: readonly Grapheme[] = ["y", "ý", "i", "í"] as const;

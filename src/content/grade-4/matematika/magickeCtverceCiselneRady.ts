@@ -215,7 +215,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
     subject: "matematika",
     category: "Nestandardní aplikační úlohy a problémy",
     topic: "Logické úlohy",
-    briefDescription: "Najdeš chybějící čísla a odhalíš tajemství číselné řady. (L3 obsahuje ENRICHMENT — čtverce n², trojúhelníková čísla, Fibonacci — nad rámec běžného RVP 4. ročníku.)",
+    briefDescription: "Najdeš chybějící čísla a odhalíš tajemství číselné řady.",
     keywords: [
       "magický čtverec", "číselná řada", "vzor", "logická úloha",
       "aritmetická řada", "posloupnost", "extrapolace",
@@ -230,6 +230,7 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
       "Pouze magické čtverce 3×3.",
       "Číselné řady: aritmetické, geometrické, čtverce, trojúhelníková čísla.",
       "Nezahrnuje sudoku ani jiné logické hry.",
+      "L3 obsahuje enrichment (čtverce n², trojúhelníková čísla, Fibonacci) nad rámec běžného RVP 4. ročníku.",
     ],
     gradeRange: [4, 4],
     inputType: "select_one",
