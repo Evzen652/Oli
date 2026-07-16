@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ Testová sada 100 % zelená — content-audit šum + execution-directive dluh (2026-07-16)
+- `runOfflineAudit` kontroloval jen prvních 5 úloh na téma z `[...gen(1),...gen(2),...gen(3)]` → u témat s L1 poolem ≥5 fakticky auditoval jen L1, nikdy L2/L3, a vzorek se navíc měnil mezi běhy (generátory shuffle-ují) → passingPct kolísal 66-69 % kolem prahu 70 %. Default `maxSamplesPerTopic` → `Infinity` (plné pokrytí). Výsledek: stabilně 72-73 %. Týká se i admin UI (`AdminContentAudit.tsx`), teď důkladnější audit.
+- `execution-directive.test.ts` (4 testy, měsíc dokumentovaný dluh) — fixture používal parkovaný grade 6 + téma, které tam už neexistuje. Přepnuto na grade 4 + přesný keyword tvar.
+- Ověřeno: **114/114 souborů, 4687/4687 testů zelených**, 0 failů. Typecheck baseline 13 beze změny.
+
 ## ✅ Autonomní úklid — 4 skryté testovací regrese (2026-07-16)
 - Spuštěna celá `npx vitest run` (místo spoléhání na historické poznámky) → odhalila 16 selhávajících testů v 6 souborech, 12 z nich nezdokumentovaných (jen `execution-directive.test.ts` 4× bylo známé). Detail v `PROJECT_STATUS.md` sekce 6.
 - **Skutečný obsahový bug**: šablona „j_zyk" pro slovo „jazyk" měla mezeru na špatné pozici (2 soubory grade-3 vyjmenovaná slova) → opraveno na „jaz_k". Odhaleno díky přepisu `vyjmenovana-canon.test.ts` na nový formát generátoru (correctAnswer = grafém, ne celé slovo, po PED-1 refaktoru).

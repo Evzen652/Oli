@@ -65,7 +65,14 @@ export interface AuditReport {
 }
 
 export interface AuditOptions {
-  /** Max samples per topic (default 5) */
+  /**
+   * Max samples per topic (default: bez omezení — zkontroluje se celý
+   * vygenerovaný pool). Nižší hodnota = rychlejší, ale zaujatý vzorek: allTasks
+   * je [...gen(1), ...gen(2), ...gen(3)], takže malé maxSamplesPerTopic (u
+   * topiců s L1 poolem ≥ hodnota) fakticky kontroluje jen L1 a výsledek se
+   * navíc mění mezi běhy (generátory interně shuffle-ují). Nastav explicitně
+   * jen pro rychlý namátkový scan, ne pro rozhodný "OK/není OK" report.
+   */
   maxSamplesPerTopic?: number;
   /** Filter — jen tyto subjekty (default všechny) */
   subjectFilter?: string[];
@@ -84,7 +91,7 @@ export function runOfflineAudit(
   options: AuditOptions = {},
 ): AuditReport {
   const {
-    maxSamplesPerTopic = 5,
+    maxSamplesPerTopic = Infinity,
     subjectFilter,
     gradeFilter,
     onProgress,

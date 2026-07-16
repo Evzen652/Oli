@@ -5,14 +5,20 @@ import { getHelpForSkill } from "../lib/helpEngine";
 import { getPrerequisites, getAllTopics } from "../lib/contentRegistry";
 import type { SessionData, Grade } from "../lib/types";
 
-async function startSession(grade: Grade = 6): Promise<{ session: SessionData; output: string }> {
+// Ročník 6 je parkovaný (D9, ACTIVE_GRADES = [2,3,4] v contentAvailability.ts)
+// a odpovídající téma pro grade 6 v registry neexistuje — classifyIntent vrací
+// "wrong_grade" a session nikdy nedosáhne PRACTICE. Grade 4 má aktivní
+// ekvivalent (g4-mat-zlomek-cast-celku-4). Fráze musí přesně sedět na keyword
+// (matchesAnyKeyword je na hranici slova, ne fuzzy/stemming) — topic má
+// "porovnání zlomků", ne "porovnávání zlomků".
+async function startSession(grade: Grade = 4): Promise<{ session: SessionData; output: string }> {
   const s = createSession(grade);
   return processState(s);
 }
 
 async function reachPractice(): Promise<{ session: SessionData; output: string; practiceQuestion?: string }> {
-  let { session } = await startSession(6);
-  return processState(session, "porovnávání zlomků");
+  let { session } = await startSession(4);
+  return processState(session, "porovnání zlomků");
 }
 
 describe("EXECUTION DIRECTIVE – Povinné testy", () => {
@@ -80,7 +86,7 @@ describe("EXECUTION DIRECTIVE – Povinné testy", () => {
   it("7. AI failure does not block UI (mock fallback)", async () => {
     // The system uses mock fallbacks for all AI operations
     const { session } = await startSession();
-    const result = await processState(session, "porovnávání zlomků");
+    const result = await processState(session, "porovnání zlomků");
     expect(result.session.state).toBe("PRACTICE");
     expect(result.session.practiceBatch.length).toBeGreaterThanOrEqual(5);
   });
