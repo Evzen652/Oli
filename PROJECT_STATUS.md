@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-15 (3. blok) — SUSPICION nálezy prošetřeny (0 oprav kódu potřeba):
+- ✅ **Nový rodič bez role → žákovské UI: falešný poplach.** Migrace `20260619120000_auth_role_provisioning.sql` (aplikovaná na Supabase 2026-06-19, měsíc před tímto auditem) zakládá `user_roles` atomicky v `handle_new_user` triggeru → race condition strukturálně neexistuje. Ověřeno: klient nikde neinsertuje do `user_roles` (jen SELECT v `useUserRole.ts`).
+- 🔵 **`useUserRole`/`useProfile` prázdné deps — potvrzena křehkost, ne aktivní bug.** Prošetřeny všechny současné login/logout/demo-switch cesty: každá projde buď `session=null` mezistavem (remount `AuthenticatedRoutes`) nebo tvrdým reloadem (`Demo.tsx`, `ChildAuth`). Žádná dnešní cesta kódem nemá session-to-session swap bez jednoho z těchto dvou — nereprodukovatelné. Ponecháno jako dokumentovaný dluh, ne opraveno (přepis dvou napříč-appkou hooků bez konkrétní reprodukce = spekulativní robustnost).
+- ✅ **Demo „Podrobné hodnocení" — není bug.** `supabase/seed_demo.sql` sype pro demo dítě reálná `session_logs`/`skill_profiles` data do DB → `/report?child=<demo id>` čte skutečná seed data stejně jako pro libovolného reálného rodiče. Žádný mock-fallback nechybí.
+- **Aktualizováno:** `docs/AUDIT_SCREENS_2026-07-15.md` sekce 5 (SUSPICION) — všechny 3 položky označeny jako prošetřené, ať se znovu neotvírají v budoucí session.
+
 ### Session 2026-07-15 (3. blok) — LOW úklidy z auditu (gramatika, signOut footgun, demo footgun):
 - ✅ **Porušení CLAUDE.md pravidla o gramatice (`ChildMisconceptions.tsx`, `ChildActivityBadge.tsx`).** Inline ternáry nahrazeny helpery z `czechGrammar.ts` (`pad`, `plural`, `form`). `ChildActivityBadge` měl navíc **vlastní duplicitní `pl()` funkci** místo importu `plural`/`form` — smazána. Akuzativní tvar „úlohu/úlohy/úloh" zachován (stejný pattern jako existující `ChildHomePage.pluralTasks`, `NOUNS` registr je nominativní, tenhle tvar do něj nesedí).
 - ✅ **`ChildMisconceptions.tsx` — `window.location.reload()` nahrazeno skutečným refetchem.** `useChildMisconceptions` dostal `refetch()` (interní `reloadToken` state, zachovává původní `cancelled`-guard proti race podmínce) — po AI analýze se data znovu načtou bez tvrdého reloadu celé stránky.

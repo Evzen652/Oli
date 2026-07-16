@@ -76,11 +76,11 @@ Root `tsconfig.json` má `"files": []` + jen `references` → `tsc --noEmit` (i 
 
 ---
 
-## 5. SUSPICION (nutno ověřit backend/reprodukcí)
+## 5. SUSPICION (nutno ověřit backend/reprodukcí) — **prošetřeno 2026-07-15 (3. blok), žádné neopravuje kód**
 
-- 🔵 Nově registrovaný rodič bez řádku v `user_roles` (nebo se zpožděním triggeru) → `role=null` → App ho směruje do **žákovské** praxe místo rodičovského onboardingu (`App.tsx:101-112`). Ověřit trigger `handle_new_user` timing.
-- 🔵 `useUserRole`/`useProfile` se nefetchují znovu při změně auth stavu (prázdné deps) — zakryto full-reloady při login/logout; křehké pro budoucí in-app přechody.
-- 🔵 Demo rodič „Podrobné hodnocení" → reálný `/report?child=<demo id>` — ověřit, zda Report má mock-fallback.
+- ✅ **FALEŠNÝ POPLACH** — Nově registrovaný rodič bez role. Migrace `20260619120000_auth_role_provisioning.sql` (aplikovaná na Supabase **2026-06-19**, měsíc před tímto auditem) zakládá `user_roles` atomicky v DB triggeru `handle_new_user` spolu s `auth.users` insertem → race condition strukturálně neexistuje (trigger běží ve stejné transakci, klient nikdy neuvidí session bez role). Ověřeno: klient nikde `user_roles` INSERT nedělá (jen `useUserRole.ts` SELECT). Auditor v tomto bloku zjevně nekontroloval historii `PROJECT_STATUS.md` sekce 6 dost hluboko.
+- 🔵 **Potvrzeno jako dokumentovaná křehkost, ne aktivní bug** — `useUserRole`/`useProfile` mají prázdné deps, nereagují na auth state change v rámci stejné mount. Prošetřeno: každý současný login/logout/demo-switch flow v kódu buď projde přes `session=null` mezistav (→ `App.tsx` ternary remountne `AuthenticatedRoutes` jako nový komponent, hooky se fetchnou znovu) nebo končí tvrdým `window.location.href`/`.reload()` (Demo.tsx, ChildAuth), který stav obnoví jinak. Žádná současná cesta kódem nemá session-to-session swap BEZ null mezistavu a BEZ hard reloadu → nereprodukovatelné dnes. Ponecháno jako tech-debt poznámka pro budoucí in-app (bez-reload) přechody, ne jako oprava (přepis dvou hooků napříč celou appkou bez konkrétní reprodukce by byl spekulativní).
+- ✅ **NENÍ BUG** — Demo „Podrobné hodnocení" → `/report?child=<demo id>`. `supabase/seed_demo.sql` sype pro demo dítě **reálná** `session_logs`/`skill_profiles`/`parent_assignments` data do DB (ne frontend mock) → `generateWeeklyReport()` čte skutečné seed řádky stejně jako pro libovolného reálného rodiče. Žádný mock-fallback nechybí, funguje podle návrhu.
 
 ---
 
