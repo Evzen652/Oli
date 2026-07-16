@@ -1381,26 +1381,28 @@ export function ExerciseTab({
                             <><Circle className="h-3.5 w-3.5" /> Označit OK</>
                           )}
                         </Button>
-                        <ReformulateButtons
-                          task={task}
-                          skill={skill}
-                          help={help}
-                          onApply={(field: ReformField, value: unknown) => {
-                            setGenTasks((prev) => {
-                              const next = [...prev];
-                              const t = { ...next[i] };
-                              if (field === "question") t.question = value as string;
-                              else if (field === "correctAnswer") t.correctAnswer = value as string;
-                              else if (field === "hints") t.hints = value as string[];
-                              else if (field === "options") t.options = value as string[];
-                              else if (field === "solutionSteps") t.solutionSteps = value as string[];
-                              next[i] = t;
-                              return next;
-                            });
-                            setModifiedGenIndices((prev) => new Set([...prev, i]));
-                            setSavedGenIndices((prev) => { const s = new Set(prev); s.delete(i); return s; });
-                          }}
-                        />
+                        {FEATURES.adminAiContentCreator && (
+                          <ReformulateButtons
+                            task={task}
+                            skill={skill}
+                            help={help}
+                            onApply={(field: ReformField, value: unknown) => {
+                              setGenTasks((prev) => {
+                                const next = [...prev];
+                                const t = { ...next[i] };
+                                if (field === "question") t.question = value as string;
+                                else if (field === "correctAnswer") t.correctAnswer = value as string;
+                                else if (field === "hints") t.hints = value as string[];
+                                else if (field === "options") t.options = value as string[];
+                                else if (field === "solutionSteps") t.solutionSteps = value as string[];
+                                next[i] = t;
+                                return next;
+                              });
+                              setModifiedGenIndices((prev) => new Set([...prev, i]));
+                              setSavedGenIndices((prev) => { const s = new Set(prev); s.delete(i); return s; });
+                            }}
+                          />
+                        )}
                       </div>
                       {modifiedGenIndices.has(i) && (
                         <Button
