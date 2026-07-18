@@ -147,6 +147,7 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
           "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-pravopis-tvrdych-a-mekkych-souhlasek-i-y-po-souhlaskach",
           "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-skupiny-de-te-ne-be-pe-ve-me",
           "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky",
+          "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku",
         ],
       },
       {

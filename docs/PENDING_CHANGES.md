@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ RVP průzkum 2–4 + nové téma g2-cjl „Dělení slov na konci řádku" (2026-07-16/17)
+- Přímý průzkum (bez subagenta) `data/rvp_data.json` vs. `rvpNodeId` v kódu pro grades 2-4: obsah je prakticky kompletní, ~20 „chybějících" byl jen bookkeeping drift (starší kategorizace RVP, obsah existuje). 1 reálná mezera nalezena a doplněna: nové téma [`deleniSlovNaKonciRadku.ts`](../src/content/grade-2/cjl/deleniSlovNaKonciRadku.ts) (10/10/10 maxL3), zaregistrováno do `index.ts` + `navigation.ts`.
+- Ověřeno: 114/114 souborů testů, 0 audit issues, coverage 10/10/10 maxL3, freeze přegenerován (78→79), typecheck baseline beze změny.
+- Zbývá (nízká priorita, kosmetika, netýká se žáka): přemapovat ~20 `rvpNodeId` u starších grade-2/3 témat na aktuální RVP kategorizaci — jen admin RVP strom, ne blokující.
+
 ## ✅ Testová sada 100 % zelená — content-audit šum + execution-directive dluh (2026-07-16)
 - `runOfflineAudit` kontroloval jen prvních 5 úloh na téma z `[...gen(1),...gen(2),...gen(3)]` → u témat s L1 poolem ≥5 fakticky auditoval jen L1, nikdy L2/L3, a vzorek se navíc měnil mezi běhy (generátory shuffle-ují) → passingPct kolísal 66-69 % kolem prahu 70 %. Default `maxSamplesPerTopic` → `Infinity` (plné pokrytí). Výsledek: stabilně 72-73 %. Týká se i admin UI (`AdminContentAudit.tsx`), teď důkladnější audit.
 - `execution-directive.test.ts` (4 testy, měsíc dokumentovaný dluh) — fixture používal parkovaný grade 6 + téma, které tam už neexistuje. Přepnuto na grade 4 + přesný keyword tvar.
@@ -124,7 +129,7 @@ Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md).
 - **Reálný obsahový bug opraven:** `pravidlaSlusnehoChovani.ts` — klíč „…řeknu mu na něm něco hezkého" ≠ možnost „…na něj…" → úloha bez vybratelné správné odpovědi (`answer_key_matches_one_option`); sjednoceno na „na něj" (klíč i explanation).
 - **Hint leaky:** mé 3 nové soubory čisté (0, ověřeno vyčerpávajícím deterministickým scanem). Navíc opraveno několik ve vlnách 1–3 (`hodiny-cas` „60"/„leden", `tradice` „mikuláš", `zima-zvirata` vlaštovka).
 - **Finální ověření:** tsc 0, generator-validation jen 2 předexistující g3 témata failují (`stavba-rostlin`, `stavba-lidskeho-tela` — mimo scope; počet 6↔7 kolísá nedeterminismem uvnitř nich), audit:coverage všech 15 `maxL3` bez CHYBÍ, 15 ID v `UNFROZEN_TOPIC_IDS`, freeze snapshot přegenerován (81 zamčených témat), freeze test zelený.
-- **Zbývá (nová položka, viz níže):** ~28 předexistujících hint_leaků ve vlnách 1–3 (druhé PC). **Ještě nutno commitnout.**
+- ✅ **~28 hint_leaků ve vlnách 1–3 vyřízeno** (viz „Hint_leaky prvouka g2 vlny 1–3 — vyřízeno" níže). Ověřeno znovu 2026-07-16: plný scan `g2-prv-*` (604 úloh) našel jen 1 hit, a to už zdokumentovaný false-positive detektoru („oba svátky" — fráze z otázky). Tento řádek byl zastaralý zbytek zápisu — reálně dořešeno stejný den.
 
 ## ✅ Fix g3 stavba — poslední 2 prvouka g3 témata (2026-07-14)
 - **Runtime bug + trvalé faily testů odstraněny.** `stavbaRostlin` a `stavbaTelaaZdravi` (poslední 2 prvouka g3 mimo standard) měly `inputType: "select_one"`, ale **3 úlohy v každém byly `match_pairs`** (s `pairs` místo `options` + neplatné pole `type`) → `PracticeInputRouter` je renderoval jako **prázdnou obrazovku**; `generator-validation` je hlásil jako 6 „předexistujících" failů, které kalily každé ověření obsahu (i moje předchozí balíky).
