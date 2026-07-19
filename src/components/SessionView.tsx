@@ -133,7 +133,7 @@ export function SessionView() {
   const s = useSessionDispatch();
   const {
     grade, session, practiceQuestion, userInput, isLocked, loading,
-    checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask, selectedAnswer,
+    checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask, answeredTaskIndex, selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
   } = s;
 
@@ -904,7 +904,7 @@ export function SessionView() {
           {session.matchedTopic && session.state === "PRACTICE" && session.practiceBatch.length > 0 && (
             <div className="pb-4">
               <ProgressIndicator
-                current={answeredTask ? Math.max(session.currentTaskIndex - 1, 0) : session.currentTaskIndex}
+                current={answeredTask && answeredTaskIndex !== null ? answeredTaskIndex : session.currentTaskIndex}
                 total={session.practiceBatch.length}
                 results={taskResults}
                 dotAccentClass={subjectColors.dotAccent}

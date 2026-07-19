@@ -95,6 +95,9 @@ export interface SessionDispatchState {
   aiEvalLoading: boolean;
   evalMinReached: boolean;
   answeredTask: PracticeTask | null;
+  /** Index `answeredTask` v `practiceBatch` v okamžiku odpovědi — session.currentTaskIndex
+   *  má jinou hodnotu podle toho, jestli šlo o poslední (terminální) úlohu, viz handleAnswerSubmit. */
+  answeredTaskIndex: number | null;
   /** Poslední odpověď zvolená žákem — pro cílený feedback v CheckFeedbackCard. */
   selectedAnswer: string;
   questionTitle: string;
@@ -153,6 +156,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
   const [aiEvalLoading, setAiEvalLoading] = useState(false);
   const [evalMinReached, setEvalMinReached] = useState(true);
   const [answeredTask, setAnsweredTask] = useState<PracticeTask | null>(null);
+  const [answeredTaskIndex, setAnsweredTaskIndex] = useState<number | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [questionTitle, setQuestionTitle] = useState(getNextQuestionTitle());
   const [questionIcon, setQuestionIcon] = useState(getNextQuestionIcon());
@@ -394,8 +398,10 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     try {
       const s = { ...session, elapsedSeconds: Math.floor((Date.now() - session.startTime) / 1000) };
       const answeredTaskSnapshot = session.practiceBatch[session.currentTaskIndex];
+      const answeredTaskIdx = session.currentTaskIndex;
       const result = await processState(s, answer);
       setAnsweredTask(answeredTaskSnapshot);
+      setAnsweredTaskIndex(answeredTaskIdx);
       setSelectedAnswer(answer);
       setUserInput("");
       const wasCorrect = result.lastAnswerCorrect === true;
@@ -438,6 +444,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setLastAnswerCorrect(null);
     setRevealedAnswer(null);
     setAnsweredTask(null);
+    setAnsweredTaskIndex(null);
     setSelectedAnswer("");
     setQuestionTitle(getNextQuestionTitle());
     setQuestionIcon(getNextQuestionIcon());
@@ -512,6 +519,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setLastAnswerCorrect(null);
     setRevealedAnswer(null);
     setAnsweredTask(null);
+    setAnsweredTaskIndex(null);
     setSelectedAnswer("");
     setExplanation(null);
     setAiEvaluation(null);
@@ -526,6 +534,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     grade, session, output, practiceQuestion, userInput, isLocked, loading,
     checkFeedback, lastAnswerCorrect, pendingEndSession, revealedAnswer,
     explanation, aiEvaluation, aiEvalLoading, evalMinReached, answeredTask,
+    answeredTaskIndex,
     selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
     setGrade, setSession, setOutput, setUserInput, setIsLocked,

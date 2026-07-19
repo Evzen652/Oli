@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ Live verifikace nového tématu + oprava progress-counter bugu (2026-07-17)
+- Reálný anon žákovský flow (ne admin náhled), 2× kompletní session — odhalil reprodukovatelný bug: na POSLEDNÍ úloze session feedback obrazovka ukazovala „Úloha 5 z 6" místo „6 z 6" (obecná chyba `SessionView`/`useSessionDispatch`, postihuje libovolné téma, ne jen nové). Kořen: `SessionView.tsx:907` odečítal `-1` od `currentTaskIndex`, což je špatně u poslední (terminální) úlohy, kde `useSessionDispatch` drží needekrementovanou session v `pendingEndSession`.
+- Oprava: nový `answeredTaskIndex` state v `useSessionDispatch.ts` (zachycen před dispatchem, ne odvozen zpětně). Ověřeno živě (bug reprodukován 2×, po opravě správně „6 z 6"), 114/114 test souborů beze změny.
+- 🟡 Vedlejší nález (nefixováno): admin „Náhled jako žák" (`/student`) nemá grade 1/2 ve výběru (jen 3–9).
+
 ## ✅ RVP průzkum 2–4 + nové téma g2-cjl „Dělení slov na konci řádku" (2026-07-16/17)
 - Přímý průzkum (bez subagenta) `data/rvp_data.json` vs. `rvpNodeId` v kódu pro grades 2-4: obsah je prakticky kompletní, ~20 „chybějících" byl jen bookkeeping drift (starší kategorizace RVP, obsah existuje). 1 reálná mezera nalezena a doplněna: nové téma [`deleniSlovNaKonciRadku.ts`](../src/content/grade-2/cjl/deleniSlovNaKonciRadku.ts) (10/10/10 maxL3), zaregistrováno do `index.ts` + `navigation.ts`.
 - Ověřeno: 114/114 souborů testů, 0 audit issues, coverage 10/10/10 maxL3, freeze přegenerován (78→79), typecheck baseline beze změny.
