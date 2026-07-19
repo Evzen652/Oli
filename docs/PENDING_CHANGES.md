@@ -7,6 +7,9 @@
 
 ---
 
+## ✅ Admin „Náhled jako žák" — doplněn grade 2 do výběru (2026-07-17)
+- `SessionView.tsx` `GRADES` pole nenabízelo ročník 1 ani 2 (jen 3-9). Doplněn grade 2 (grade 1 vynechán záměrně — žádný obsah v `src/content/grade-1/`). Ověřeno živě v adminu.
+
 ## ✅ Live verifikace nového tématu + oprava progress-counter bugu (2026-07-17)
 - Reálný anon žákovský flow (ne admin náhled), 2× kompletní session — odhalil reprodukovatelný bug: na POSLEDNÍ úloze session feedback obrazovka ukazovala „Úloha 5 z 6" místo „6 z 6" (obecná chyba `SessionView`/`useSessionDispatch`, postihuje libovolné téma, ne jen nové). Kořen: `SessionView.tsx:907` odečítal `-1` od `currentTaskIndex`, což je špatně u poslední (terminální) úlohy, kde `useSessionDispatch` drží needekrementovanou session v `pendingEndSession`.
 - Oprava: nový `answeredTaskIndex` state v `useSessionDispatch.ts` (zachycen před dispatchem, ne odvozen zpětně). Ověřeno živě (bug reprodukován 2×, po opravě správně „6 z 6"), 114/114 test souborů beze změny.

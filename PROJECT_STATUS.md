@@ -144,6 +144,11 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-07-17 (pokračování) — doplněn grade 2 do admin „Náhled jako žák":
+- **Kontext:** vedlejší nález z předchozí live verifikace — admin `/student` náhled nenabízel ročník 1 ani 2 (jen 3–9), takže admin nemohl rychle otestovat obsah nejnižších ročníků bez odhlášení a použití reálného anon flow.
+- ✅ **Oprava** — [`SessionView.tsx:249`](src/components/SessionView.tsx:249) `const GRADES = [3,4,5,6,7,8,9]` → `[2,3,4,5,6,7,8,9]`. Grade 1 záměrně nedoplněn — `src/content/grade-1/` neexistuje (0 obsahu), přidání by jen ukázalo prázdnou obrazovku.
+- **Ověřeno živě** (admin login → `/student`): dropdown nabízí `2. ročník` jako první možnost, výběr korektně zobrazí 3 předměty grade 2 (Matematika 6 okruhů, Čeština 5 okruhů, Prvouka 5 okruhů). Typecheck baseline 13 beze změny.
+
 ### Session 2026-07-17 (pokračování) — live end-to-end verifikace nového tématu + oprava progress-counter bugu:
 - **Kontext:** uživatel požádal „otestuj každou obrazovku a její interakci s dalšími kroky" pro nové téma „Dělení slov" — provedena `verify` skill metodika (reálný anonymní žákovský flow, ne admin náhled): odhlášení z adminu → onboarding grade 2 → Čeština → Hlásky a pravopis → Dělení slov → 2× kompletní session (12 úloh), včetně probe testů (špatná odpověď, nápověda, restart, exit).
 - ✅ **Nalezen a opraven reprodukovatelný bug v `SessionView`/`useSessionDispatch` (mimo scope diffu, obecná chyba postihující KAŽDÉ téma, ne jen nové):** na poslední úloze session ukazovala feedback obrazovka „Úloha 5 z 6" místo „Úloha 6 z 6" (emoji trail měl správně 6 ikon, jen číselný popisek byl o 1 nižší). **Kořen:** [`SessionView.tsx:907`](src/components/SessionView.tsx:907) počítal zobrazované číslo jako `session.currentTaskIndex - 1`, což předpokládalo, že index se před vykreslením feedbacku už posunul na další úlohu — pravda pro úlohy 1 až N-1, ale u POSLEDNÍ (terminální) úlohy `useSessionDispatch.ts` drží starou (needekrementovanou) verzi session v `pendingEndSession`, dokud uživatel neklikne Pokračovat, takže odečtení -1 bylo dvojité.
