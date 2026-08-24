@@ -32,6 +32,21 @@ const FALLBACK_NAMES: Record<string, string> = {
   "frac-compare-same-den": "Porovnávání zlomků (stejný jmenovatel)",
   "frac-compare-diff-den": "Porovnávání zlomků (různý jmenovatel)",
   "frac-compare-whole": "Porovnávání zlomků s celým číslem",
+  // Legacy ID z demo/seed dat (nejsou v registry — bez těchto záznamů by
+  // humanizeId() vrátil anglický tvar, např. "Multiply" / "Plant parts").
+  "math-multiply": "Násobilka",
+  "math-add-sub-100": "Sčítání a odčítání do 100",
+  "math-compare-natural-numbers-100": "Porovnávání čísel do 100",
+  "math-rounding": "Zaokrouhlování",
+  "cz-vyjmenovana-slova-b": "Vyjmenovaná slova po B",
+  "cz-vyjmenovana-slova-l": "Vyjmenovaná slova po L",
+  "cz-slovni-druhy": "Slovní druhy",
+  "cz-tvrde-mekke": "Tvrdé a měkké souhlásky",
+  "cz-velka-pismena": "Velká písmena",
+  "pr-plant-parts": "Části rostlin",
+  "pr-animals": "Zvířata a jejich mláďata",
+  "pr-body-parts": "Lidské tělo",
+  "pr-seasons": "Roční období",
 };
 
 /** Konvertuje kebab/snake_case ID na čitelný název jako poslední záchrana. */

@@ -10,6 +10,13 @@
 ## ✅ Admin „Náhled jako žák" — doplněn grade 2 do výběru (2026-07-17)
 - `SessionView.tsx` `GRADES` pole nenabízelo ročník 1 ani 2 (jen 3-9). Doplněn grade 2 (grade 1 vynechán záměrně — žádný obsah v `src/content/grade-1/`). Ověřeno živě v adminu.
 
+## ✅ QA průchod rizikových typů cvičení — 3 reálné bugy (2026-07-19)
+- Cílený QA na `match_pairs` / `drag_order` / `fill_blank` (dosud živě netestované — mají vlastní UI i validátory).
+- **BUG 1:** ladicí popisek „(sada I 8)" v zadání pro dítě u match_pairs (kraje, vodstvo). Pozůstatek z doby před opravou `getTierTasks` — dnes zbytečný. Odstraněn, coverage 10/10/10 maxL3 beze změny.
+- **BUG 2:** anglické názvy v historii („Multiply", „Plant parts") — legacy demo/seed ID nepokrytá ve `FALLBACK_NAMES`, propadala na `humanizeId()`. Týkalo se demo prohlídky (první dojem rodiče), ne reálných dětí. Doplněno 13 ID.
+- **BUG 3 (nejzávažnější):** `fill_blank` hodnotil správné odpovědi jako chybné — validovalo se proti `correctAnswer` („vý-") místo proti `blanks` („vý"). `resolveTaskValidation` neznal `blanks`. Opraveno systémově + nový `blankTextValidator` tolerující pomlčku (nápovědy ji samy používají).
+- Ověřeno: živě v prohlížeči (před/po u všech 3), 114/114 souborů a 4703 testů zelených (7 nových regresních), typecheck baseline beze změny, freeze nedotčen.
+
 ## ✅ Live verifikace nového tématu + oprava progress-counter bugu (2026-07-17)
 - Reálný anon žákovský flow (ne admin náhled), 2× kompletní session — odhalil reprodukovatelný bug: na POSLEDNÍ úloze session feedback obrazovka ukazovala „Úloha 5 z 6" místo „6 z 6" (obecná chyba `SessionView`/`useSessionDispatch`, postihuje libovolné téma, ne jen nové). Kořen: `SessionView.tsx:907` odečítal `-1` od `currentTaskIndex`, což je špatně u poslední (terminální) úlohy, kde `useSessionDispatch` drží needekrementovanou session v `pendingEndSession`.
 - Oprava: nový `answeredTaskIndex` state v `useSessionDispatch.ts` (zachycen před dispatchem, ne odvozen zpětně). Ověřeno živě (bug reprodukován 2×, po opravě správně „6 z 6"), 114/114 test souborů beze změny.

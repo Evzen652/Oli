@@ -68,13 +68,13 @@ const SKUPINY_L3: number[][] = [
   [9, 7, 10, 13, 2], [0, 2, 9, 5, 10], [1, 2, 9, 7, 13], [9, 5, 7, 10, 13], [0, 9, 2, 7, 13],
 ];
 
-function buildTasks(groups: number[][], levelLabel: string): PracticeTask[] {
+function buildTasks(groups: number[][]): PracticeTask[] {
   return groups.map((idxs, i) => {
     const pairs = idxs.map((idx) => ({ left: KRAJE[idx].kraj, right: KRAJE[idx].mesto }));
     const prvniKraj = KRAJE[idxs[0]].kraj;
     const fakt = KRAJ_FAKTA[prvniKraj] ?? "Krajské město je sídlo krajského úřadu.";
     return {
-      question: `Spoj každý kraj s jeho krajským městem. (${levelLabel} ${i + 1})`,
+      question: "Spoj každý kraj s jeho krajským městem.",
       correctAnswer: "match",
       pairs,
       hints: [
@@ -86,9 +86,9 @@ function buildTasks(groups: number[][], levelLabel: string): PracticeTask[] {
   });
 }
 
-const POOL_L1 = buildTasks(SKUPINY_L1, "sada I");
-const POOL_L2 = buildTasks(SKUPINY_L2, "sada II");
-const POOL_L3 = buildTasks(SKUPINY_L3, "sada III");
+const POOL_L1 = buildTasks(SKUPINY_L1);
+const POOL_L2 = buildTasks(SKUPINY_L2);
+const POOL_L3 = buildTasks(SKUPINY_L3);
 
 function gen(level: number): PracticeTask[] {
   const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;

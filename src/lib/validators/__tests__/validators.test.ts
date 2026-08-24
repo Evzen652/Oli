@@ -12,6 +12,7 @@ import {
   validateAnswer,
   getDefaultValidator,
   resolveTaskValidation,
+  blankTextValidator,
 } from "../index";
 
 describe("stringExactValidator", () => {
@@ -253,5 +254,43 @@ describe("fractionValidator", () => {
   it("whitespace tolerated", () => {
     expect(fractionValidator.validate(" 1/2 ", "1/2").correct).toBe(true);
     expect(fractionValidator.validate("3 / 8", "3/8").correct).toBe(false); // mezery uvnitř — restriktivní
+  });
+});
+
+
+describe("blankTextValidator — fill_blank tolerantní k pomlčce", () => {
+  it("přijme holý tvar bez pomlčky", () => {
+    expect(blankTextValidator.validate("vý", "vý").correct).toBe(true);
+  });
+
+  it("přijme i tvar s pomlčkou (nápovědy píší předpony jako 'vy-')", () => {
+    expect(blankTextValidator.validate("vý-", "vý").correct).toBe(true);
+    expect(blankTextValidator.validate("vý", "vý-").correct).toBe(true);
+  });
+
+  it("zůstává přísný na skutečně jiný tvar", () => {
+    expect(blankTextValidator.validate("vy", "vý").correct).toBe(false);
+    expect(blankTextValidator.validate("xyz", "vý").correct).toBe(false);
+  });
+});
+
+describe("resolveTaskValidation — fill_blank čte blanks, ne correctAnswer", () => {
+  it("jedna mezera → expected z blanks (co žák reálně píše)", () => {
+    // Regrese: generátor předpon má correctAnswer "vý-" (didaktický zápis
+    // s pomlčkou), ale žák doplňuje do slova "___tah" holé "vý".
+    const r = resolveTaskValidation({ correctAnswer: "vý-", blanks: ["vý"] });
+    expect(r.expected).toBe("vý");
+    expect(r.validatorId).toBe("blank_text");
+  });
+
+  it("shodné blanks i correctAnswer → beze změny chování", () => {
+    const r = resolveTaskValidation({ correctAnswer: "s", blanks: ["s"] });
+    expect(r.expected).toBe("s");
+  });
+
+  it("bez blanks zůstává correctAnswer", () => {
+    const r = resolveTaskValidation({ correctAnswer: "Praha" });
+    expect(r.expected).toBe("Praha");
+    expect(r.validatorId).toBeUndefined();
   });
 });

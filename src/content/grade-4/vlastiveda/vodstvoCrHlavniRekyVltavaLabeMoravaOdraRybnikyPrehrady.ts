@@ -68,13 +68,13 @@ const SADY_L3: number[][] = [
   [12, 13, 14, 8, 9], [5, 6, 4, 11, 13], [13, 14, 15, 9, 10], [4, 5, 6, 12, 15], [10, 11, 9, 14, 13],
 ];
 
-function buildTasks(groups: number[][], levelLabel: string): PracticeTask[] {
+function buildTasks(groups: number[][]): PracticeTask[] {
   return groups.map((idxs, i) => {
     const pairs = idxs.map((idx) => ({ left: VSECHNY_PARY[idx].left, right: VSECHNY_PARY[idx].right }));
     const prvni = VSECHNY_PARY[idxs[0]].left;
     const fakt = VODNI_FAKTA[prvni] ?? "Vody ČR odtékají do tří moří: Severního (Labe), Černého (Morava→Dunaj) a Baltského (Odra).";
     return {
-      question: `Spoj vodní prvky s jejich popisem. (${levelLabel} ${i + 1})`,
+      question: "Spoj vodní prvky s jejich popisem.",
       correctAnswer: "match",
       pairs,
       hints: [
@@ -86,9 +86,9 @@ function buildTasks(groups: number[][], levelLabel: string): PracticeTask[] {
   });
 }
 
-const POOL_L1 = buildTasks(SADY_L1, "sada I");
-const POOL_L2 = buildTasks(SADY_L2, "sada II");
-const POOL_L3 = buildTasks(SADY_L3, "sada III");
+const POOL_L1 = buildTasks(SADY_L1);
+const POOL_L2 = buildTasks(SADY_L2);
+const POOL_L3 = buildTasks(SADY_L3);
 
 function gen(level: number): PracticeTask[] {
   const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;

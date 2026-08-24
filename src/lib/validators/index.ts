@@ -48,6 +48,23 @@ export const stringExactValidator: Validator = {
   },
 };
 
+// ─── Blank Text (fill_blank — tolerantní k zápisu předpony/přípony) ──────
+// Žák doplňuje část slova ("Přečetl ___tah"). Nápovědy i výklad ale píší
+// předpony s pomlčkou ("vy- = dokončení děje"), takže dítě ji přirozeně
+// opíše. Obojí ukazuje stejné porozumění → pomlčka na okraji se ignoruje.
+export const blankTextValidator: Validator = {
+  id: "blank_text",
+  validate(answer, expected) {
+    const norm = (s: string) =>
+      s.trim().toLowerCase().replace(/\s+/g, " ").normalize("NFC")
+        .replace(/^[-–—]+/, "").replace(/[-–—]+$/, "");
+    const ok = norm(answer) === norm(expected);
+    return ok
+      ? { correct: true }
+      : { correct: false, errorType: "wrong_string" };
+  },
+};
+
 // ─── Numeric Tolerance (matika s desetinnými čísly) ──────────────────────
 export const numericToleranceValidator: Validator = {
   id: "numeric_tolerance",
@@ -703,6 +720,7 @@ export const essayValidator: Validator = {
 // ─── Registry ────────────────────────────────────────────────────────────
 const VALIDATORS: Record<string, Validator> = {
   string_exact: stringExactValidator,
+  blank_text: blankTextValidator,
   numeric_tolerance: numericToleranceValidator,
   numeric_range: numericRangeValidator,
   short_answer: shortAnswerValidator,
@@ -788,6 +806,7 @@ export function resolveTaskValidation(task: {
   pairs?: { left: string; right: string }[];
   categories?: { name: string; items: string[] }[];
   correctAnswers?: string[];
+  blanks?: string[];
 }): { expected: string; validatorId?: string } {
   if (task.categories && task.categories.length > 0) {
     return { expected: JSON.stringify(task.categories), validatorId: "categorize_groups" };
@@ -800,6 +819,14 @@ export function resolveTaskValidation(task: {
   }
   if (task.correctAnswers && task.correctAnswers.length > 0) {
     return { expected: task.correctAnswers.join(","), validatorId: "set_match" };
+  }
+  // fill_blank s jednou mezerou: `blanks[0]` je to, co žák reálně píše do pole,
+  // zatímco `correctAnswer` může nést didaktický zápis (např. předpona "vý-"
+  // s pomlčkou). Bez této větve by správně vyplněné "vý" bylo hodnoceno chybně.
+  // Víc mezer ponecháno na `correctAnswer` — FillBlankInput pro ně posílá JSON
+  // pole a žádné téma je zatím nepoužívá.
+  if (task.blanks && task.blanks.length === 1 && task.blanks[0].trim()) {
+    return { expected: task.blanks[0].trim(), validatorId: "blank_text" };
   }
   return { expected: task.correctAnswer.trim() };
 }
