@@ -17,6 +17,14 @@ export function mapAuthError(raw: string | null | undefined): string {
     return "Příliš mnoho pokusů. Zkus to prosím za chvíli.";
   if (m.includes("network") || m.includes("failed to fetch"))
     return "Chyba sítě. Zkontroluj připojení a zkus to znovu.";
+  // Serverová/DB chyba (500, porušený constraint, selhaný trigger). Uživatel
+  // s tím nic nezmůže — je důležité mu říct, že chyba NENÍ v jeho vstupu,
+  // aby zbytečně nezkoušel jiný e-mail nebo heslo dokola.
+  if (
+    m.includes("database error") || m.includes("unexpected_failure") ||
+    m.includes("violates") || m.includes("constraint")
+  )
+    return "Registrace se nezdařila kvůli chybě na naší straně. Zkus to prosím za chvíli — pokud potíže potrvají, dej nám vědět.";
 
   return "Něco se nepovedlo. Zkus to prosím znovu.";
 }

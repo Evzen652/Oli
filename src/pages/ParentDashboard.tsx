@@ -458,7 +458,8 @@ export default function ParentDashboard() {
                     <span className="text-rose-500">❤️</span>
                     <h2 className="font-bold text-base text-foreground">Zadané úkoly</h2>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste {child.child_name} zadali k procvičení.</p>
+                  {/* 1. pád — viz poznámka o skloňování u `assign.title` v cs.ts. */}
+                  <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste zadali k procvičení ({child.child_name}).</p>
                 </div>
                 <div className="p-4 h-[460px]">
                   <AssignmentList
@@ -605,7 +606,7 @@ export default function ParentDashboard() {
                   <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><HelpCircle className="h-4 w-4" /></span>
                   <div>
                     <p className="text-sm font-semibold">Jak propojit?</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Otevři Oly na tabletu nebo telefonu {child.child_name} a zadej kód výše.</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Otevři Oli na tabletu nebo telefonu, který používá {child.child_name}, a zadej kód výše.</p>
                   </div>
                 </div>
               </div>

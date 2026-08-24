@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BarChart2 } from "lucide-react";
-import { getTopicById } from "@/lib/contentRegistry";
-import { getSkillSubject } from "@/lib/skillReadableName";
+import { getSkillSubject, getReadableSkillName } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
@@ -207,8 +206,12 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
             const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
             const grade = pctToGrade(pct);
             const gMeta = GRADE_META[grade];
-            const topic = getTopicById(s.skill_id);
-            const name = topic?.title ?? s.skill_id.replace(/[-_]/g, " ");
+            // Pozor: NEpoužívat vlastní fallback `skill_id.replace(/[-_]/g," ")` —
+            // u legacy ID (math-add-sub-100) vyrobí "math add sub 100", tedy
+            // anglický technický zápis viditelný rodiči. `getReadableSkillName`
+            // má curated mapu i alias resolution a drží názvy konzistentní
+            // s ostatními obrazovkami.
+            const name = getReadableSkillName(s.skill_id);
             const subject = getSkillSubject(s.skill_id);
             const subjectMeta = subject ? getSubjectMeta(subject) : null;
 

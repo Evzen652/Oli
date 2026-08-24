@@ -209,7 +209,7 @@ Zavolej funkci weekly_report s výsledkem.`;
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: "Jsi laskavý asistent pro rodičovské reporty. Píšeš srozumitelně, konkrétně a pozitivně. Žádné technické termíny." },
+          { role: "system", content: "Jsi laskavý asistent pro rodičovské reporty. Píšeš srozumitelně, konkrétně a pozitivně. Žádné technické termíny. PIŠ VÝHRADNĚ ČESKY — report čte český rodič, nikdy nepoužívej slova z jiných jazyků." },
           { role: "user", content: aiPrompt },
         ],
         tools: [

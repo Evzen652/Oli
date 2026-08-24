@@ -189,13 +189,14 @@ export default function ParentOnboarding() {
                   <p className="text-sm font-semibold text-violet-900">
                     📈 Našli jsme pokrok z tvé zkoušky — {pad(anonSummary.completedCount, "ÚKOL")}.
                   </p>
+                  {/* Jméno drženo v 1. pádu — viz poznámka o skloňování v cs.ts `assign.title`. */}
                   {claimState === "done" ? (
-                    <p className="text-sm font-medium text-emerald-700">✓ Pokrok přidán pro {childName}.</p>
+                    <p className="text-sm font-medium text-emerald-700">✓ Pokrok přidán — {childName}.</p>
                   ) : claimState === "error" ? (
                     <p className="text-sm text-destructive">Přenos se teď nepovedl — zkus to později z přehledu.</p>
                   ) : (
                     <Button onClick={handleClaimProgress} disabled={claimState === "claiming"} size="sm" className="w-full">
-                      {claimState === "claiming" ? t("auth.loading") : `Převzít pokrok pro ${childName}`}
+                      {claimState === "claiming" ? t("auth.loading") : `Převzít pokrok — ${childName}`}
                     </Button>
                   )}
                 </div>

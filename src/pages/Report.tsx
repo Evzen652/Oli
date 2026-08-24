@@ -468,7 +468,8 @@ export default function Report() {
                 className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-between px-4 shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm"
                 onClick={() => navigate(childId ? `/parent#assign-${childId}` : "/parent")}
               >
-                Zadat úkol {childName ? `pro ${childName}` : ""}
+                {/* 1. pád — „pro" by vyžadovalo 4. pád, viz cs.ts `assign.title`. */}
+                Zadat úkol {childName ? `— ${childName}` : ""}
                 <ArrowRight className="h-4 w-4 shrink-0" />
               </button>
             </div>

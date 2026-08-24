@@ -43,7 +43,8 @@ export function NextWeekPlan({
         </h2>
         {childName && (
           <p className="text-sm text-violet-700 mt-0.5">
-            Pro {childName}
+            {/* 1. pád — „Pro" by vyžadovalo 4. pád, viz cs.ts `assign.title`. */}
+            {childName}
           </p>
         )}
       </div>

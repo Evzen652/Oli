@@ -219,7 +219,10 @@ Pokud ne, vrať confidence < 0.4.
             {
               role: "system",
               content:
-                "Jsi pedagogický analytik. Z chyb žáka rozpoznáš systematický nepředpokládaný vzor (misconception). Buď konkrétní a stručný. Pokud chyby vypadají náhodně, vrať nízké confidence.",
+                "Jsi pedagogický analytik. Z chyb žáka rozpoznáš systematický nepředpokládaný vzor (misconception). Buď konkrétní a stručný. Pokud chyby vypadají náhodně, vrať nízké confidence. " +
+                // Výstup čte rodič v české aplikaci. Bez explicitního pokynu model
+                // občas propustí cizojazyčné slovo (pozorováno „части“ místo „části“).
+                "PIŠ VÝHRADNĚ ČESKY — celý výstup čte český rodič. Nikdy nepoužívej slova z jiných jazyků.",
             },
             { role: "user", content: userPrompt },
           ],

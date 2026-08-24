@@ -166,7 +166,10 @@ const cs = {
 
   // Assignments
   "assign.create": "Chci zadat úkol(y)",
-  "assign.title": "Úkol pro {name}",
+  // Pozor na pád: „pro" vyžaduje 4. pád („pro Tondu"), ale jméno dosazujeme
+  // syrové z DB a české skloňování nelze spolehlivě odvodit (Tonda→Tondu,
+  // Jiří→Jiřího, Anna→Annu). Proto formulace, kde jméno zůstává v 1. pádu.
+  "assign.title": "Úkol — {name}",
   "assign.subject": "Předmět",
   "assign.category": "Okruh",
   "assign.topic": "Téma",

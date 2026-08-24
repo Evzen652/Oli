@@ -72,6 +72,10 @@ function AuthenticatedRoutes() {
         <Route path="/demo" element={<Demo />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/auth" element={<Navigate to="/admin" replace />} />
+        {/* Sdílené zařízení: rodič/admin je přihlášený a předává tablet dítěti,
+            aby zadalo párovací kód. Bez této routy spadne /auth/child na 404 —
+            přitom rodičovský dashboard sám vybízí „otevři Oli a zadej kód". */}
+        <Route path="/auth/child" element={<ChildAuth />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="*" element={<NotFound />} />
@@ -90,6 +94,8 @@ function AuthenticatedRoutes() {
         <Route path="/session-history/:childId" element={<SessionHistory />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/auth" element={<Navigate to="/parent" replace />} />
+        {/* Viz komentář v admin větvi — rodič předává zařízení dítěti. */}
+        <Route path="/auth/child" element={<ChildAuth />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={<Navigate to="/parent" replace />} />
         <Route path="*" element={<NotFound />} />
@@ -105,6 +111,8 @@ function AuthenticatedRoutes() {
       <Route path="/report" element={<Report />} />
       <Route path="/demo" element={<Demo />} />
       <Route path="/auth" element={<Navigate to="/" replace />} />
+      {/* Přepnutí na jiné dítě na sdíleném zařízení (sourozenci). */}
+      <Route path="/auth/child" element={<ChildAuth />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
