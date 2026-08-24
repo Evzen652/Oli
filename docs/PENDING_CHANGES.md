@@ -10,6 +10,11 @@
 ## ✅ Admin „Náhled jako žák" — doplněn grade 2 do výběru (2026-07-17)
 - `SessionView.tsx` `GRADES` pole nenabízelo ročník 1 ani 2 (jen 3-9). Doplněn grade 2 (grade 1 vynechán záměrně — žádný obsah v `src/content/grade-1/`). Ověřeno živě v adminu.
 
+## ✅ QA ročníků 2 a 3 — čistý průchod, 0 nových bugů (2026-07-19, 2. dávka)
+- Dokončeno pokrytí typů: `true_false` (g2) a `match_pairs` (g3) — obojí funguje včetně chybové cesty.
+- Prošetřeno: 14 témat bez per-task `explanation` (2× g3 mat, 1× g3 prvouka, 11× g4 přírodověda). **Není to bug** — UI má fallback `task.hints → solutionSteps → topic.helpTemplate.hint` a dítě vysvětlení dostane (ověřeno živě). U `match_pairs` se po chybě navíc vypíšou správné páry.
+- 🟡 Otevřené nice-to-have (autorská práce, ne blocker): per-task `explanation` u těch 14 témat by bylo bohatší než sdílený topic-level fallback. Stovky úloh + nutný fakt-check — nezahájeno bez zadání.
+
 ## ✅ QA průchod rizikových typů cvičení — 3 reálné bugy (2026-07-19)
 - Cílený QA na `match_pairs` / `drag_order` / `fill_blank` (dosud živě netestované — mají vlastní UI i validátory).
 - **BUG 1:** ladicí popisek „(sada I 8)" v zadání pro dítě u match_pairs (kraje, vodstvo). Pozůstatek z doby před opravou `getTierTasks` — dnes zbytečný. Odstraněn, coverage 10/10/10 maxL3 beze změny.
