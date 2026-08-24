@@ -7,6 +7,39 @@
 
 ---
 
+## 🔴 BLOCKERY PILOTU — nalezeno end-to-end testem flow (2026-07-19)
+
+> Bez těchto dvou věcí **aplikace nezíská ani jednoho reálného uživatele** —
+> rodič se nezaregistruje a dítě se nepřipojí. Obojí vyžaduje deploy (akce Evžen).
+
+### 1. Registrace rodiče vrací 500 — migrace připravena
+- `/auth/v1/signup` končí `23502 null value in column "id" of relation "profiles"`.
+- Příčina: remote schéma se rozešlo s migracemi. Repo má **dvě neslučitelné definice** `profiles`
+  (`schema.sql`: `id` PK → auth.users bez defaultu; migrace `20260219195831`: `id` PK
+  `DEFAULT gen_random_uuid()` + `user_id`). Ostrá DB má tu první, ale `handle_new_user`
+  i klientský upsert vkládají jen `user_id` a spoléhají na default, který tam není.
+- **Řešení:** [`20260719120000_fix_profile_provisioning.sql`](../supabase/migrations/20260719120000_fix_profile_provisioning.sql) —
+  vkládá `id` explicitně (`NEW.id`), funguje pro obě varianty schématu, + backfill chybějících profilů.
+- **AKCE:** `supabase db push`
+
+### 2. `pair-child` není nasazená (404) — dítě se nepřipojí
+Průběžný test **všech** edge funkcí proti ostrému projektu:
+
+| Nasazené ✓ | Nenasazené ✗ (404) |
+|---|---|
+| anon-progress, analyze-misconceptions, send-parent-invite, generate-image, ai-tutor, ai-curriculum, generate-prvouka-images | **pair-child** 🔴, child-relogin 🔴, set-child-pin 🔴, **session-evaluation** 🟠, **weekly-report** 🟠, evaluate-essay, inactivity-reminder, tutor-chat, semantic-gate, exercise-validator, generate-logo, seed-curriculum |
+
+- **AKCE:** `supabase functions deploy pair-child child-relogin set-child-pin session-evaluation weekly-report`
+- Pozn.: nasazené jsou naopak *odcházející* AI funkce (ai-tutor, ai-curriculum) — deploy zjevně proběhl kdysi dávno a novější funkce se nikdy nenahrály.
+
+### Opraveno v kódu (funkční bez deploye)
+- `/auth/child` vracelo **404 pro kohokoli přihlášeného** → scénář sdíleného zařízení (rodič na tabletu předává dítěti) končil 404 bez vysvětlení, přestože dashboard sám vybízí „otevři Oli a zadej kód". Route doplněna do všech přihlášených větví.
+- Chybné skloňování jmen v textech pro rodiče („Úkol pro Tonda", „Témata, která jste Tonda zadali", „Převzít pokrok pro Tonda") → přeformulováno tak, aby jméno zůstalo v 1. pádu (české skloňování nelze spolehlivě odvodit).
+- „Otevři **Oly**" → „Oli" (aplikace se jmenuje Oli) + doplněna chybějící předložka.
+- `ChildSessionLog` obcházel `getReadableSkillName` vlastním fallbackem → rodič viděl „math add sub 100", „pr czech republic".
+- AI prompty pro rodičovské texty nevynucovaly češtinu → v ostré DB je uloženo ruské „части" místo „části". Opraveno pro nově generované texty.
+- `mapAuthError` nerozlišoval serverovou chybu od chyby ve vstupu — rodič u 500 hledal chybu u sebe.
+
 ## ✅ Admin „Náhled jako žák" — doplněn grade 2 do výběru (2026-07-17)
 - `SessionView.tsx` `GRADES` pole nenabízelo ročník 1 ani 2 (jen 3-9). Doplněn grade 2 (grade 1 vynechán záměrně — žádný obsah v `src/content/grade-1/`). Ověřeno živě v adminu.
 
