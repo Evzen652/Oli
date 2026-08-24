@@ -19,8 +19,15 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 32% 18%;
 
-    --primary: 245 75% 58%;          /* #4F46E5 indigo */
+    /* Primární barva značky = oranžová z loga (OliLogo gradient #F97316→#EA580C).
+       Sjednoceno 2026-07-19: dřív byla primary indigo, ale prakticky ji nikdo
+       nepoužíval (13 výskytů) — landing jel na oranžové, žákovské i rodičovské
+       UI na fialové. Uživatel tak procházel třemi různě barevnými produkty.
+       Interaktivní prvky (CTA, aktivní stavy, odkazy) teď patří sem;
+       dekorativní gradienty a předmětové/sémantické barvy zůstávají vlastní. */
+    --primary: 25 95% 53%;            /* #F97316 orange-500 — shodné s logem */
     --primary-foreground: 0 0% 100%;
+    --primary-hover: 21 90% 48%;      /* #EA580C orange-600 — konec gradientu loga */
 
     --secondary: 48 18% 96%;
     --secondary-foreground: 222 32% 18%;
@@ -28,8 +35,8 @@ All colors MUST be HSL.
     --muted: 48 18% 96%;
     --muted-foreground: 222 12% 45%;
 
-    --accent: 245 75% 96%;            /* indigo-50 tint */
-    --accent-foreground: 245 60% 35%;
+    --accent: 25 95% 96%;             /* orange-50 tint — ladí s primary */
+    --accent-foreground: 21 80% 35%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
@@ -40,7 +47,7 @@ All colors MUST be HSL.
 
     --border: 42 22% 90%;             /* #ECEAE0 warm beige */
     --input: 42 22% 90%;
-    --ring: 245 75% 58%;
+    --ring: 25 95% 53%;               /* focus ring = primary */
 
     --radius: 0.875rem;               /* 14px — buttons/inputs base */
 

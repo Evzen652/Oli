@@ -212,14 +212,16 @@ export default function Auth() {
                 )}
                 {isLogin ? (
                   <Button
-                    className="w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
+                    variant="outline"
+                    className="w-full font-semibold"
                     onClick={() => { setIsLogin(false); setError(null); }}
                   >
                     Vytvořit nový účet
                   </Button>
                 ) : (
                   <Button
-                    className="w-full bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold"
+                    variant="outline"
+                    className="w-full font-semibold"
                     onClick={() => { setIsLogin(true); setError(null); }}
                   >
                     Už mám účet — přihlásit se

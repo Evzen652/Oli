@@ -290,7 +290,7 @@ export default function AnonStudentPage() {
             <p className="text-violet-700">Zítra tě čekají nové. Chceš si uložit pokrok?</p>
             <a
               href="/auth?mode=register"
-              className="inline-flex items-center gap-2 rounded-xl bg-violet-600 text-white px-5 py-3 font-semibold hover:bg-violet-700 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-3 font-semibold hover:bg-primary-hover transition-colors"
             >
               Zaregistrovat se zdarma <ArrowRight className="h-4 w-4" />
             </a>
@@ -361,7 +361,7 @@ function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
               ) : (
                 <button
                   onClick={() => onStart(topic.id)}
-                  className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-violet-600 text-white px-3 py-2.5 text-sm font-semibold hover:bg-violet-700 active:scale-95 transition-all"
+                  className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-primary text-primary-foreground px-3 py-2.5 text-sm font-semibold hover:bg-primary-hover active:scale-95 transition-all"
                 >
                   Začít <ArrowRight className="h-4 w-4" />
                 </button>
