@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { OlyLogo } from "@/components/OlyLogo";
+import { OliLogo } from "@/components/OliLogo";
 import { isGradeAvailable } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
 import { serverStartTrial } from "@/lib/anonServerSync";
@@ -137,7 +137,7 @@ export default function Onboarding() {
         <div className="max-w-lg w-full space-y-10 text-center">
 
           <div className="flex flex-col items-center gap-4">
-            <OlyLogo size="md" variant="notext" />
+            <OliLogo size="md" variant="notext" />
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                 Ahoj! Já jsem Oli.

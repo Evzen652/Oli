@@ -24,7 +24,7 @@ import { AssignmentCreator } from "@/components/AssignmentCreator";
 import { AssignmentList } from "@/components/AssignmentList";
 import { ChildSessionLog, type SessionEntry } from "@/components/ChildSessionLog";
 import { DewhiteImg } from "@/components/DewhiteImg";
-import { logoNoText } from "@/components/OlyLogo";
+import { logoNoText } from "@/components/OliLogo";
 import { LandingNav } from "@/pages/LandingNav";
 import { ChildPinControl } from "@/components/parent/ChildPinControl";
 

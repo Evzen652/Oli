@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CalendarIcon, Plus, Loader2, ArrowRight, CheckCircle2 } from "lucide-react";
-import { logoNoText } from "@/components/OlyLogo";
+import { logoNoText } from "@/components/OliLogo";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import { cn } from "@/lib/utils";

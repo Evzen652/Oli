@@ -12,7 +12,7 @@ import { ArrowRight, BarChart2, Calendar, ChevronDown, Link2 } from "lucide-reac
 import { toast } from "sonner";
 import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
-import { logoNoText } from "@/components/OlyLogo";
+import { logoNoText } from "@/components/OliLogo";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { toGreeting } from "@/lib/czechNames";

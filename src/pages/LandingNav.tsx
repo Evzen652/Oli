@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import { OlyLogo } from "@/components/OlyLogo";
+import { OliLogo } from "@/components/OliLogo";
 import { supabase } from "@/integrations/supabase/client";
 
 const NAV_LINKS = [
@@ -52,7 +52,7 @@ export function LandingNav() {
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <OlyLogo size="xs" onClick={handleLogoClick} />
+        <OliLogo size="xs" onClick={handleLogoClick} />
 
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (

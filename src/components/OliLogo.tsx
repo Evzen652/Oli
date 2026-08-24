@@ -2,7 +2,7 @@ import owlSrc from "@/assets/oli-owl.png";
 
 export { owlSrc as logoNoText };
 
-interface OlyLogoProps {
+interface OliLogoProps {
   size?: "xs" | "sm" | "md";
   variant?: "text" | "notext";
   onClick?: () => void;
@@ -14,7 +14,7 @@ const SIZE = {
   md: { owl: "h-20 w-20", text: "text-5xl" },
 };
 
-export function OlyLogo({ size = "md", variant = "text", onClick }: OlyLogoProps) {
+export function OliLogo({ size = "md", variant = "text", onClick }: OliLogoProps) {
   const s = SIZE[size];
   return (
     <button

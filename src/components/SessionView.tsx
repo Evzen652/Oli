@@ -37,7 +37,7 @@ import { DewhiteImg } from "@/components/DewhiteImg";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { LandingNav } from "@/pages/LandingNav";
-import { OlyLogo } from "@/components/OlyLogo";
+import { OliLogo } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
 
 function ChildLoadingFallback() {
@@ -523,7 +523,7 @@ export function SessionView() {
       <header className="relative border-b px-4 pt-4 pb-3">
         <div className={`absolute top-0 left-0 right-0 h-1 ${subjectColors.accent}`} />
         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-          <OlyLogo size="sm" onClick={s.handleReset} />
+          <OliLogo size="sm" onClick={s.handleReset} />
         </div>
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <div className="flex items-center gap-3">

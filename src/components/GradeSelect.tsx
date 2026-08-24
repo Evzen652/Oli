@@ -3,7 +3,7 @@ import type { Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { OlyLogo } from "@/components/OlyLogo";
+import { OliLogo } from "@/components/OliLogo";
 
 interface GradeSelectProps {
   onSelect: (grade: Grade) => void;
@@ -20,7 +20,7 @@ export function GradeSelect({ onSelect, isAdmin }: GradeSelectProps) {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background p-4" style={isAdmin ? { paddingTop: "2.5rem" } : undefined}>
       <div className={`absolute ${isAdmin ? "top-[4.5rem]" : "top-4"} left-4 z-10`}>
-        <OlyLogo />
+        <OliLogo />
       </div>
       <Button
         variant="ghost"

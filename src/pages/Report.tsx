@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { logoNoText } from "@/components/OlyLogo";
+import { logoNoText } from "@/components/OliLogo";
 import { useT } from "@/lib/i18n";
 import { CalendarDays, CalendarRange, History, ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
