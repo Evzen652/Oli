@@ -219,8 +219,8 @@ function SubjectSection({ subject, id, expandAll }: { subject: SubjectGroup; id?
           />
         </div>
         <div className="flex items-center gap-1.5 shrink-0 text-caption font-semibold">
-          {done > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-emerald-100 text-emerald-700 border-emerald-200"><CheckCircle2 className="h-3 w-3" />{done}</span>}
-          {skeleton > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-amber-100 text-amber-700 border-amber-200"><Circle className="h-3 w-3" />{skeleton}</span>}
+          {done > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-success-muted text-success border-success/30"><CheckCircle2 className="h-3 w-3" />{done}</span>}
+          {skeleton > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-warning-muted text-warning border-warning/30"><Circle className="h-3 w-3" />{skeleton}</span>}
           {missing > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-gray-100 text-gray-400 border-gray-200"><MinusCircle className="h-3 w-3" />{missing}</span>}
         </div>
       </button>
@@ -335,7 +335,7 @@ function GradePicker({ grade, onChange }: { grade: Grade; onChange: (g: Grade) =
             >
               {g}
               {hasContent && (
-                <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 border-2 border-background" />
+                <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-success border-2 border-background" />
               )}
             </button>
           );
@@ -449,7 +449,7 @@ export default function AdminRvpTree() {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
-              <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${pct}%` }} />
+              <div className="h-full rounded-full bg-success transition-all" style={{ width: `${pct}%` }} />
             </div>
             <span className="text-sm font-semibold text-foreground shrink-0 tabular-nums">{pct} % hotovo</span>
           </div>

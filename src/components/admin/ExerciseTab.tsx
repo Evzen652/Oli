@@ -416,8 +416,8 @@ function CompactTaskCard({
 
       {/* Pokud nejsou options → samostatný emerald pill se správnou odpovědí */}
       {(!options || options.length === 0) && (
-        <div className="rounded-full border-2 border-emerald-400 bg-emerald-50/70 px-4 py-1.5 text-sm font-medium text-emerald-800 inline-flex items-center gap-1.5 max-w-fit">
-          <Check className="h-3.5 w-3.5 text-emerald-600" />
+        <div className="rounded-full border-2 border-success/40 bg-success-muted px-4 py-1.5 text-sm font-medium text-success inline-flex items-center gap-1.5 max-w-fit">
+          <Check className="h-3.5 w-3.5 text-success" />
           {correctAnswer}
         </div>
       )}
@@ -673,7 +673,7 @@ function SavedExercisesList({
                   <div className="flex items-center gap-1.5">
                     {warnings.length > 0 && (
                       <Badge
-                        className="bg-amber-100 text-amber-800 border-amber-300 text-caption whitespace-nowrap rounded-full px-2 py-0.5 gap-1"
+                        variant="warning" className="whitespace-nowrap px-2 py-0.5 gap-1"
                         title={warnings.map((w) => w.message).join("\n")}
                       >
                         <AlertTriangle className="h-3 w-3" />
@@ -850,12 +850,12 @@ function AITaskRow({
   const headerBadges = (
     <div className="flex items-center gap-1">
       {task._grade_rewritten && (
-        <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-caption rounded-full">
+        <Badge variant="warning">
           🔄 Přeformulováno
         </Badge>
       )}
       {(task._grade_validated || task._grade_rewritten) && (
-        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-caption rounded-full">
+        <Badge variant="success">
           ✅ Ověřeno pro ročník
         </Badge>
       )}
@@ -1326,7 +1326,7 @@ export function ExerciseTab({
               <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
                 Ukázky ze šablony
               </p>
-              <Badge className="bg-emerald-500 text-white rounded-full px-2.5 py-0.5 text-caption font-bold">
+              <Badge className="bg-success text-success-foreground px-2.5 py-0.5 font-bold">
                 {genTasks.length}
               </Badge>
             </div>

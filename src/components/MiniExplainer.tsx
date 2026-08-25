@@ -41,23 +41,23 @@ export function MiniExplainer({ topic, resetKey }: Props) {
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 gap-1.5 rounded-full text-xs text-muted-foreground hover:text-amber-700 hover:bg-amber-50"
+          className="h-8 gap-1.5 rounded-full text-xs text-muted-foreground hover:text-warning hover:bg-warning-muted"
         >
-          <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
+          <Lightbulb className="h-3.5 w-3.5 text-warning" />
           <span>{open ? "Skrýt mini-příklad" : "Mini-příklad"}</span>
           {open ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="mt-2 rounded-xl border border-amber-200 bg-amber-50/40 p-3 animate-fade-in">
+      <CollapsibleContent className="mt-2 rounded-lg border border-warning/30 bg-warning-muted/50 p-3 animate-fade-in">
         {first.label && (
-          <p className="text-caption font-semibold uppercase tracking-wide text-amber-700 mb-2">
+          <p className="text-caption font-semibold uppercase tracking-wide text-warning mb-2">
             {first.label}
           </p>
         )}
         {first.fractionBars && first.fractionBars.length > 0 ? (
           <FractionBarVisual bars={first.fractionBars} conclusion={first.conclusion} />
         ) : first.illustration ? (
-          <pre className="text-xs font-mono bg-card border border-amber-200 rounded-lg p-2 overflow-x-auto whitespace-pre-wrap">
+          <pre className="text-xs font-mono bg-card border border-warning/30 rounded-md p-2 overflow-x-auto whitespace-pre-wrap">
             {first.illustration}
           </pre>
         ) : null}

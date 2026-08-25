@@ -73,7 +73,7 @@ export function AdminLayout({ breadcrumbs, children }: AdminLayoutProps) {
               size="icon"
               onClick={() => supabase.auth.signOut()}
               title={t("admin.sign_out")}
-              className="h-9 w-9 rounded-full bg-amber-100 text-amber-900 hover:bg-amber-200 font-semibold text-sm"
+              className="h-9 w-9 rounded-full bg-warning-muted text-warning hover:bg-warning-muted/70 font-semibold text-sm"
             >
               <span className="sr-only">{t("admin.sign_out")}</span>
               <LogOut className="h-4 w-4" />

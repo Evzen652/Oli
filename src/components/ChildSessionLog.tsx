@@ -250,7 +250,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
+                      className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
                       onClick={() => {
                         if (mockSessions) {
                           // s.correct = vše správně (včetně nápovědy) — DB konvence.

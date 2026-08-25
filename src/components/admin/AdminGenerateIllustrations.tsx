@@ -1714,7 +1714,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                     }}
                     disabled={!!regenerating || running}
                     title="Regenerovat"
-                    className="flex-1 flex items-center justify-center gap-1 rounded-full border border-border/60 bg-muted px-2 py-1 text-xs text-muted-foreground hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 transition-all disabled:opacity-40"
+                    className="flex-1 flex items-center justify-center gap-1 rounded-full border border-border/60 bg-muted px-2 py-1 text-xs text-muted-foreground hover:bg-destructive-muted hover:border-destructive/40 hover:text-destructive transition-all disabled:opacity-40"
                   >
                     {regenerating === key
                       ? <Loader2 className="h-3 w-3 animate-spin" />

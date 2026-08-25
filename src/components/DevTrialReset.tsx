@@ -90,7 +90,7 @@ export function DevTrialReset() {
       ) : (
         <button
           onClick={() => setOpen(true)}
-          className="rounded-full border border-dashed border-amber-400 bg-amber-50/95 px-3 py-1 text-amber-900 shadow-md hover:bg-amber-100"
+          className="rounded-full border border-dashed border-warning/50 bg-warning-muted/95 px-3 py-1 text-warning shadow-e1 hover:bg-warning-muted"
           title="Dev: reset trialu"
         >
           🛠 {label}

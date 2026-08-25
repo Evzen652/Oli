@@ -392,7 +392,7 @@ function AssignmentCard({
           </Badge>
         )}
         {isPending && isOverdue && (
-          <Badge className="h-6 px-2.5 border-transparent bg-[#FDEAEA] text-destructive">
+          <Badge variant="danger" className="h-6 px-2.5">
             Po termínu
           </Badge>
         )}
@@ -400,7 +400,7 @@ function AssignmentCard({
           <Button
             variant="outline"
             size="sm"
-            className="h-7 px-2.5 rounded-full text-xs text-blue-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 flex items-center gap-1 font-semibold"
+            className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
             onClick={onDetail}
           >
             <BarChart2 className="h-3.5 w-3.5" />
@@ -411,7 +411,7 @@ function AssignmentCard({
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50"
+            className="h-7 w-7 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive-muted"
             onClick={() => onDelete(a.id)}
             title="Zrušit úkol"
           >

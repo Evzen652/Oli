@@ -192,7 +192,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <Badge
             variant="outline"
-            className="rounded-full bg-violet-100/80 border-violet-300 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 px-3 py-0.5 text-caption font-bold uppercase tracking-[0.1em] gap-1"
+            className="rounded-full bg-accent border-primary/30 text-accent-foreground px-3 py-0.5 text-caption font-bold uppercase tracking-[0.1em] gap-1"
           >
             <Plus className="h-3 w-3" />
             Podtéma · {skill.category}
@@ -574,7 +574,7 @@ function LevelCard({
         {pending > 0 && (
           <Badge
             variant="outline"
-            className="ml-auto rounded-full bg-amber-100 border-amber-300 text-amber-800 text-caption font-bold tabular-nums"
+            className="ml-auto rounded-full bg-warning-muted border-warning/30 text-warning text-caption font-bold tabular-nums"
             title={`${pending} čeká na schválení`}
           >
             +{pending}

@@ -28,6 +28,12 @@ const badgeVariants = cva(
         warning: "border-transparent bg-warning-muted text-warning",
         /** Neutrální doplněk. Borůvkový tint #F3F1FE + #3B2A9E (9,36:1). */
         info: "border-transparent bg-accent text-accent-foreground",
+        /**
+         * Chyba, po termínu, propadlé. Tint #FDEAEA + #DC2626 — na rozdíl od
+         * `destructive` to NENÍ plná červená plocha. U dětí je plná červená
+         * trest, ne informace (viz DESIGN_SYSTEM.md).
+         */
+        danger: "border-transparent bg-destructive-muted text-destructive",
       },
     },
     defaultVariants: {

@@ -156,7 +156,7 @@ export default function AnonStudentPage() {
                     <span className="text-xs text-slate-500">z {TRIAL_DAYS}</span>
                     <span className="text-xs text-violet-600 font-medium ml-1">— 1 okruh v každém předmětu zdarma</span>
                   </div>
-                  <div className="mt-1.5 h-1.5 w-full max-w-xs rounded-full bg-violet-100 overflow-hidden">
+                  <div className="mt-1.5 h-1.5 w-full max-w-xs rounded-full bg-accent overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-500"
                       style={{ width: `${(currentDay / TRIAL_DAYS) * 100}%` }}

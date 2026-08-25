@@ -333,7 +333,7 @@ function VariantCard({
     >
       {content}
       <div className="flex justify-end">
-        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="inline-flex items-center gap-1 rounded-full bg-success px-3 py-1 text-xs font-semibold text-success-foreground opacity-0 group-hover:opacity-100 transition-opacity">
           <Check className="h-3 w-3" /> Použít
         </span>
       </div>
@@ -537,7 +537,7 @@ export function ReformulateButtons({
       <div className="pt-0.5">
         <button
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-purple-300 bg-purple-50/60 px-3 py-1 text-caption font-medium text-purple-700 hover:bg-purple-100 hover:border-purple-400 transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-primary/40 bg-accent px-3 py-1 text-caption font-medium text-primary hover:bg-accent/70 hover:border-primary/60 transition-colors"
         >
           <Wand2 className="h-3 w-3" />
           Přeformulovat

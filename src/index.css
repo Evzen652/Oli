@@ -42,6 +42,7 @@ All colors MUST be HSL.
 
     --destructive: 0 72% 51%;         /* #DC2626 — 4,83:1 */
     --destructive-foreground: 0 0% 100%;
+    --destructive-muted: 0 83% 95%;   /* #FDEAEA tint chyby (nikdy plocha pod bílým textem) */
 
     --success: 142 72% 29%;           /* #15803D — 5,02:1 */
     --success-foreground: 0 0% 100%;

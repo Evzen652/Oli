@@ -63,7 +63,7 @@ export function ChildPinControl({ child, onChanged, tone = "default" }: Props) {
         className={
           tone === "onDark"
             ? "gap-1 rounded-full bg-white/15 border-white/40 text-white hover:bg-white/25 hover:text-white"
-            : "gap-1 rounded-full border-violet-300 text-violet-800 hover:bg-violet-100"
+            : "gap-1 rounded-full border-primary/30 text-primary hover:bg-accent"
         }
         onClick={() => { setPin(""); setOpen(true); }}
       >

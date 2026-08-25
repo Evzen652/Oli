@@ -1055,7 +1055,7 @@ export default function AdminDashboard() {
                         {isDbOnly && (
                           <Badge
                             variant="outline"
-                            className="rounded-full border-amber-300 text-amber-700 bg-amber-50/90 px-2.5 py-0.5 text-caption"
+                            className="rounded-full border-warning/30 text-warning bg-warning-muted px-2.5 py-0.5 text-caption"
                           >
                             Bez šablony
                           </Badge>

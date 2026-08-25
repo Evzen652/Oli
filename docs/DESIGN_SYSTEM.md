@@ -208,13 +208,24 @@ slugy bez diakritiky z RVP datasetu a admin DB (`cjl`, `cesky-jazyk`,
 Neznámý předmět dostane **neutrální** paletu, ne náhodnou barvu z hashe.
 Všech 13 předmětů má navzájem odlišný odstín.
 
+### Stavové pilulky a semafor zpětné vazby (dokončeno)
+
+Všech ~30 ručně psaných pilulek je převedeno na `Badge` varianty nebo tokeny;
+grep na `rounded-full` + `bg-{barva}-{50|100|500}` napříč `src/` vrací **0**.
+Přibyla varianta `danger` (tint `#FDEAEA` + `#DC2626`) — na rozdíl od
+`destructive` to není plná červená plocha. K ní token
+`--destructive-muted`, ať se hex nepíše na tři místa natvrdo.
+
+`ProgressIndicator` měl chybu **oranžovou** a nápovědu **modrou**. Oranžová
+je barva sovy, takže dítě vidělo maskota ve stejném odstínu jako svoji chybu —
+přesně kolize, kvůli které se oranžová zavrhla jako značková barva. Modrá zase
+kolidovala s matematikou. Nově platí semafor z tabulky sémantických barev:
+**správně zelená, chyba červená, nápověda jantarová** — a tečky jsou tinty
+s prstencem, ne syté plochy.
+
 ## Co zbývá dodělat
 
-- [ ] Migrovat zbylých ~30 ručně psaných stavových pilulek na `Badge`
-      varianty (většina je v adminu; uživatelsky viditelné v `AssignmentList`,
-      `ParentDashboard` a `ChildHomePage` jsou už převedené)
-- [ ] `ProgressIndicator`, `MiniExplainer` a dekorativní tečky pořád píšou
-      barvy natvrdo (`bg-green-500`, `hover:bg-amber-50`)
+Nic z původního seznamu. Zbývají jen vědomě odložené věci níže.
 
 Odloženo: dark mode (dnes nepoužitelný — `soft-*` stíny mají natvrdo studené
 `rgba(15,23,42)`, předmětové proměnné nemají `.dark` override), admin

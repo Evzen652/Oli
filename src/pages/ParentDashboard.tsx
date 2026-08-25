@@ -557,13 +557,13 @@ export default function ParentDashboard() {
                     <span className="font-bold text-lg text-foreground">{child.child_name}</span>
                     <span className="text-sm text-muted-foreground">· {child.grade}. {t("parent.grade_label")}</span>
                     {isExpired(child)
-                      ? <Badge className="gap-1 border-transparent bg-[#FDEAEA] text-destructive"><Clock className="h-3 w-3" />{t("parent.code_expired")}</Badge>
+                      ? <Badge variant="danger" className="gap-1"><Clock className="h-3 w-3" />{t("parent.code_expired")}</Badge>
                       : <Badge variant="warning" className="gap-1"><Clock className="h-3 w-3" />{t("parent.not_paired")}</Badge>}
                     {!isDemo && <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>}
                     {!isDemo && (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-destructive hover:bg-[#FDEAEA]"><Trash2 className="h-3 w-3" /></Button>
+                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-destructive hover:bg-destructive-muted"><Trash2 className="h-3 w-3" /></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>

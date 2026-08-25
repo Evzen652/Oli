@@ -181,7 +181,7 @@ export function SelfPracticeList({ childId }: Props) {
                       <div className="flex items-center gap-3 text-caption text-muted-foreground">
                         {g.independent > 0 && (
                           <span className="flex items-center gap-1">
-                            <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
+                            <span className="inline-block w-2 h-2 rounded-full bg-success" />
                             {g.independent} sam.
                           </span>
                         )}
