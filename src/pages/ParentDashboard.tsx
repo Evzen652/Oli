@@ -27,6 +27,7 @@ import { DewhiteImg } from "@/components/DewhiteImg";
 import { logoNoText } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
 import { GradeSelectItems } from "@/components/GradeSelectItems";
+import { cn } from "@/lib/utils";
 import { LandingNav } from "@/pages/LandingNav";
 import { ChildPinControl } from "@/components/parent/ChildPinControl";
 
@@ -121,6 +122,7 @@ export default function ParentDashboard() {
   const [editNotes, setEditNotes] = useState("");
   const [editLoading, setEditLoading] = useState(false);
   const [assignmentRefresh, setAssignmentRefresh] = useState(0);
+  const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
   const [newAssignment, setNewAssignment] = useState<{ childId: string; skillId: string } | null>(null);
   const [demoStaticAssignments] = useState(() => makeDemoStaticAssignments());
   const [demoPendingAssignments, setDemoPendingAssignments] = useState<Array<{
@@ -224,7 +226,11 @@ export default function ParentDashboard() {
     if (!newName.trim()) return;
     setAddLoading(true);
     try {
-      await addChild(newName.trim(), newGrade, newNotes.trim());
+      const created = await addChild(newName.trim(), newGrade, newNotes.trim());
+      // Přepnout na právě přidané dítě. Bez toho by rodič po přidání DRUHÉHO
+      // dítěte viděl pořád to první — přepínač se zrovna objevil a nové dítě
+      // by zůstalo schované, což vypadá, jako by se přidání nepovedlo.
+      if (created?.id) setSelectedChildId(created.id);
       setNewName("");
       setNewNotes("");
       setShowAdd(false);
@@ -238,6 +244,19 @@ export default function ParentDashboard() {
   const isExpired = (c: Child) => !c.is_paired && !!c.pairing_code_expires_at && new Date(c.pairing_code_expires_at) < new Date();
 
   const getInitial = (name: string) => name.charAt(0).toUpperCase();
+
+  /**
+   * Přepínač dětí (UX audit 2026-08-25).
+   *
+   * Dashboard renderoval sekce 3–6 uvnitř `children.map()`, takže se pro
+   * KAŽDÉ dítě opakovaly celé: 1 dítě ≈ 2 100 px svislého scrollu, 3 děti
+   * (plán „Rodinný") ≈ 6 000 px, a to bez jediné kotvy nebo tabu.
+   * Od druhého dítěte se proto zobrazuje jen jedno naráz.
+   * S jedním dítětem se nic nemění — přepínač by byl zbytečný.
+   */
+  const activeChildId = children.length > 1
+    ? (children.some((c) => c.id === selectedChildId) ? selectedChildId : children[0]?.id ?? null)
+    : null;
 
   const avatarColors = [
     "bg-gradient-to-br from-violet-500 to-violet-700",
@@ -331,8 +350,40 @@ export default function ParentDashboard() {
 
         {loading && <p className="text-muted-foreground text-center py-8">{t("loading")}</p>}
 
-        {/* ── Karta pro každé dítě — 3 sloupce ── */}
+        {/* ── Přepínač dětí — až od druhého dítěte ── */}
+        {children.length > 1 && (
+          <div className="flex flex-wrap items-center gap-1.5 rounded-full border bg-card p-1.5 shadow-e1 w-fit">
+            {children.map((child, idx) => {
+              const active = child.id === activeChildId;
+              return (
+                <button
+                  key={child.id}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setSelectedChildId(child.id)}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+                    active
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                  )}
+                >
+                  <span className={cn(
+                    "flex h-6 w-6 items-center justify-center rounded-full text-caption font-bold text-white",
+                    avatarColors[idx % avatarColors.length],
+                  )}>
+                    {getInitial(child.child_name)}
+                  </span>
+                  {child.child_name}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ── Karta pro každé dítě — zobrazuje se jen aktivní ── */}
         {children.map((child, idx) => (
+          activeChildId && child.id !== activeChildId ? null : (
           <div key={child.id} className="flex flex-col gap-5">
 
 
@@ -613,6 +664,7 @@ export default function ParentDashboard() {
               </div>
             )}
           </div>
+          )
         ))}
 
         {/* ── Přidat dítě ── */}

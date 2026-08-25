@@ -40,6 +40,12 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - AI prompty pro rodičovské texty nevynucovaly češtinu → v ostré DB je uloženo ruské „части" místo „části". Opraveno pro nově generované texty.
 - `mapAuthError` nerozlišoval serverovou chybu od chyby ve vstupu — rodič u 500 hledal chybu u sebe.
 
+## ✅ Rodičovský dashboard — přepínač dětí (2026-08-25)
+- Sekce 3–6 se renderovaly uvnitř `children.map()`, takže se opakovaly pro každé dítě: 1 dítě ≈ 2 100 px svislého scrollu, 3 děti (plán „Rodinný") ≈ 6 000 px bez jediné kotvy nebo tabu. Od druhého dítěte se teď nahoře zobrazí přepínač (pilulky s iniciálou a jménem) a naráz se renderuje jen vybrané dítě.
+- S jedním dítětem se nic nemění — přepínač by byl zbytečný. `idx` pro barvu avataru se bere pořád z plného pole `children`, takže se barvy nepřehází.
+- **Ověřeno živě** na účtu se dvěma dětmi: přepnutí funguje, stránka měří 3 003 px pro spárované dítě a 1 020 px pro nespárované místo součtu obou; na mobilu (375 px) bez vodorovného přetečení.
+- 🟡 **Zbývá:** dvě sekce mají pořád `h-[460px]` s vnitřním scrollem. S jedním dítětem na stránce je scroll-trap mírnější, ale nezmizel. Není to jednořádková oprava — `AssignmentList` i `ChildSessionLog` uvnitř spoléhají na `h-full` + `flex-1 overflow-y-auto`, takže prostá záměna za `max-h` jim rozbije výpočet výšky. Chce to úpravu těch komponent, ne obalu.
+
 ## ✅ Navigace a onboarding — 4 nálezy z UX auditu (2026-08-25)
 - **Rodič už nemůže dítěti nastavit ročník, který aplikace neumí.** Čtyři rodičovské výběry (onboarding + tři v dashboardu) psaly 1.–9. natvrdo, takže rodič nastavil sedmičku a dětská aplikace na ni odpověděla „brzy" — chybu uviděl až u dítěte. Nová sdílená [`GradeSelectItems`](../src/components/GradeSelectItems.tsx) čte `isGradeAvailable`, tedy **stejný zdroj pravdy jako dětský onboarding**; nedostupné ročníky zůstávají vidět, ale nejdou vybrat („5. ročník — připravujeme"). Odemčení v `ACTIVE_GRADES` se propíše na obě strany naráz.
 - **Sjednoceno chování 404.** Nepřihlášený dostával tichý `Navigate to="/"`, přihlášený `NotFound`. Tichý redirect schová rozbitý odkaz před uživatelem i před námi (žádná chyba v konzoli) → obě větve teď ukazují `NotFound`, který navíc dostal `<BackButton />`.
