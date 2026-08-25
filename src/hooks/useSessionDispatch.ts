@@ -121,6 +121,8 @@ export interface SessionDispatchActions {
   setEvalMinReached: (b: boolean) => void;
   setAnsweredTask: (t: PracticeTask | null) => void;
   setPendingDiktatTopic: (t: TopicMetadata | null) => void;
+  /** Jen pro obnovu sezení ze zálohy — jinak si výsledky spravuje smyčka sama. */
+  setTaskResults: (r: ("correct" | "wrong" | "help")[]) => void;
   handleGradeSelect: (g: Grade) => void;
   handleTopicSelect: (topic: TopicMetadata) => Promise<void>;
   handleDiktatFilterConfirm: (types: DiktatType[]) => Promise<void>;
@@ -131,7 +133,7 @@ export interface SessionDispatchActions {
   handleTimeExpired: () => Promise<void>;
   handleContinueAfterCheck: () => Promise<void>;
   handleRevealAnswer: () => void;
-  handleReset: () => void;
+  handleReset: (opts?: { keepBackup?: boolean }) => void;
 }
 
 export function useSessionDispatch(): SessionDispatchState & SessionDispatchActions {
@@ -499,8 +501,17 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setCheckFeedback(null);
   }, [session]);
 
-  const handleReset = useCallback(() => {
-    clearPersistedSession();
+  /**
+   * Zahodí běžící sezení a vrátí uživatele o úroveň výš.
+   *
+   * `keepBackup` nechá zálohu v localStorage naživu — použij ho vždy, když
+   * dítě jen ODCHÁZÍ (logo, Zpět, ✕, odhlášení). Rozdělaná práce se pak
+   * nabídne k obnovení, až se vrátí. Bez něj se 8 z 10 rozpracovaných úloh
+   * smaže bez varování jediným kliknutím, což byl nález z UX auditu.
+   * Zálohu maže jen dokončené sezení nebo výslovné „Začít znovu".
+   */
+  const handleReset = useCallback((opts?: { keepBackup?: boolean }) => {
+    if (!opts?.keepBackup) clearPersistedSession();
     setSession(null);
     // Anon trial: zachovej grade z localStorage (jinak by GradeSelect ukázal jako bug
     // viz "Zpět" z cvičení = neztratit kontext, ve kterém ročníku dítě je)
@@ -537,6 +548,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     answeredTaskIndex,
     selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
+    setTaskResults,
     setGrade, setSession, setOutput, setUserInput, setIsLocked,
     setCheckFeedback, setLastAnswerCorrect, setRevealedAnswer,
     setExplanation, setAiEvaluation, setAiEvalLoading, setEvalMinReached,

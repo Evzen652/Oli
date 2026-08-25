@@ -30,6 +30,7 @@ import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getCategoryInfo } from "@/lib/categoryInfo";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
+import { ExitSessionDialog } from "@/components/ExitSessionDialog";
 import goodToKnowImg from "@/assets/good-to-know.png";
 import { useT } from "@/lib/i18n";
 import { LogOut, Eye } from "lucide-react";
@@ -179,6 +180,11 @@ export function SessionView() {
   const [recoveryData, setRecoveryData] = useState<ReturnType<typeof getPersistedSession>>(null);
   const [recoveryChecked, setRecoveryChecked] = useState(false);
 
+  // Potvrzení před odchodem z rozdělaného cvičení (UX audit 2026-08-25).
+  // Uchováváme akci, kterou má odchod provést — hlavička jich má čtyři
+  // (logo, Zpět, Odhlásit se, ✕) a všechny mají projít stejnou branou.
+  const [pendingExit, setPendingExit] = useState<(() => void) | null>(null);
+
   // For paired children: auto-load grade from children table
   const [childGradeLoaded, setChildGradeLoaded] = useState(false);
   const [isDemoChild, setIsDemoChild] = useState(false);
@@ -206,15 +212,21 @@ export function SessionView() {
     }
   }, [role, grade, childGradeLoaded]);
 
+  // Nabídka obnovení rozdělané práce.
+  // Dřív byla podmínka `!session && !grade`, jenže ANI JEDNA ze skutečných
+  // žákovských cílovek ji nesplní: anonymní dítě má `grade` naplněný
+  // synchronně z localStorage a přihlášené dítě s `!grade` skončí na
+  // `ChildLoadingFallback`. Dialog tak nikdy neviděl nikdo, komu byl určen.
+  // Stačí, že neběží žádné sezení — tedy že dítě stojí ve výběru tématu.
   useEffect(() => {
-    if (!recoveryChecked && !session && !grade) {
+    if (!recoveryChecked && !session) {
       const persisted = getPersistedSession();
       if (persisted) {
         setRecoveryData(persisted);
       }
       setRecoveryChecked(true);
     }
-  }, [recoveryChecked, session, grade]);
+  }, [recoveryChecked, session]);
 
   // Admin: obnov naposledy testovaný ročník (zapamatovaný v localStorage), fallback 4
   useEffect(() => {
@@ -256,6 +268,29 @@ export function SessionView() {
     </div>
   ) : null;
 
+  // Recovery dialog se renderuje ve VŠECH větvích returnu — dřív visel jen
+  // v parent fallbacku, kam se dítě nikdy nedostane.
+  const recoveryDialog = (
+    <SessionRecoveryDialog
+      open={!!recoveryData}
+      topicTitle={recoveryData?.session?.matchedTopic ? getFullTopicTitle(recoveryData.session.matchedTopic) : ""}
+      onRecover={() => {
+        if (recoveryData) {
+          s.setGrade(recoveryData.session.grade);
+          s.setSession(recoveryData.session);
+          // Bez tohohle se sezení obnovilo, ale ukazatel průběhu byl prázdný —
+          // dítě vidělo „Úloha 3 z 6" a přitom nulu hotových teček.
+          s.setTaskResults(recoveryData.taskResults ?? []);
+          setRecoveryData(null);
+        }
+      }}
+      onDiscard={() => {
+        clearPersistedSession();
+        setRecoveryData(null);
+      }}
+    />
+  );
+
   if (!grade && roleLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
@@ -267,28 +302,14 @@ export function SessionView() {
   if (!grade) {
     // Children never see grade select – grade comes from children table
     if (role === "child") {
-      return <ChildLoadingFallback />;
+      return <>{recoveryDialog}<ChildLoadingFallback /></>;
     }
 
     // Non-admin, non-child: show grade select (parent fallback)
     if (role !== "admin") {
       return (
         <>
-          <SessionRecoveryDialog
-            open={!!recoveryData}
-            topicTitle={recoveryData?.session?.matchedTopic ? getFullTopicTitle(recoveryData.session.matchedTopic) : ""}
-            onRecover={() => {
-              if (recoveryData) {
-                s.setGrade(recoveryData.session.grade);
-                s.setSession(recoveryData.session);
-                setRecoveryData(null);
-              }
-            }}
-            onDiscard={() => {
-              clearPersistedSession();
-              setRecoveryData(null);
-            }}
-          />
+          {recoveryDialog}
           <GradeSelect onSelect={s.handleGradeSelect} />
         </>
       );
@@ -373,6 +394,7 @@ export function SessionView() {
     if (isStudentView && !showTopicBrowser && !isAnonTrial) {
       return (
         <>
+          {recoveryDialog}
           {DemoHeader}
           {AdminBanner}
           <div style={isDemoChild ? { paddingTop: "7rem" } : role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
@@ -388,6 +410,7 @@ export function SessionView() {
     }
     return (
       <>
+        {recoveryDialog}
         {DemoHeader}
         {AdminBanner}
         <TopicBrowser
@@ -440,6 +463,24 @@ export function SessionView() {
   }
 
   const isTerminal = TERMINAL_STATES.includes(session.state);
+
+  // Rozdělaná práce = běžící sezení, které dítě už začalo řešit.
+  // Na nulté úloze není co chránit → odchod proběhne rovnou, bez dialogu.
+  const answeredCount = taskResults.length;
+  const hasWorkInProgress = !isTerminal && answeredCount > 0;
+
+  /**
+   * Jediná brána pro všechny čtyři odchodové prvky v hlavičce.
+   * `keepBackup: true` je záměr — odchod práci NEMAŽE, jen ji odloží;
+   * `SessionRecoveryDialog` ji při návratu nabídne zpět.
+   */
+  // Zálohu má smysl držet jen když je co obnovovat — odchod z ještě
+  // nezačaté úlohy by jinak při návratu nabízel prázdné „Pokračovat".
+  const leaveSession = () => s.handleReset({ keepBackup: hasWorkInProgress });
+  const requestExit = (action: () => void) => {
+    if (hasWorkInProgress) setPendingExit(() => action);
+    else action();
+  };
   const showTextInput = !isTerminal && !isLocked && session.state === "INPUT_CAPTURE";
   const showPracticeInput = !isTerminal && !isLocked && session.state === "PRACTICE" && !checkFeedback && !revealedAnswer;
   const currentTask: PracticeTask | undefined = session.practiceBatch[session.currentTaskIndex];
@@ -495,17 +536,25 @@ export function SessionView() {
         />
       )}
       {AdminBanner}
+      <ExitSessionDialog
+        open={!!pendingExit}
+        done={answeredCount}
+        total={session.practiceBatch.length}
+        onStay={() => setPendingExit(null)}
+        onLeave={() => { const go = pendingExit; setPendingExit(null); go?.(); }}
+      />
       {/* Header */}
       <header className="relative border-b px-4 pt-4 pb-3">
         <div className={`absolute top-0 left-0 right-0 h-1 ${subjectPalette.accentClass}`} />
         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-          <OliLogo size="sm" onClick={s.handleReset} />
+          <OliLogo size="sm" onClick={() => requestExit(leaveSession)} />
         </div>
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <div className="flex items-center gap-3">
-            {!isAnonTrial && (
-              <BackButton size="sm" onClick={s.handleReset} />
-            )}
+            {/* Zobrazeno i anonymnímu dítěti. Dřív bylo schované za
+                `!isAnonTrial`, takže jediný klikací prvek v hlavičce bylo logo —
+                a to sezení mazalo. Odchod má mít popisek, ne se hádat. */}
+            <BackButton size="sm" onClick={() => requestExit(leaveSession)} />
             {session.matchedTopic && (
               <span className="text-lg font-bold text-foreground">
                 {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
@@ -533,12 +582,12 @@ export function SessionView() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={async () => {
+                onClick={() => requestExit(async () => {
                   await supabase.auth.signOut();
                   // Skutečného žáka pošli rovnou na přihlášení (zařízení si ho pamatuje → zadá jen PIN).
                   // NE admina v náhledu /student (isStudentView by ho zde chybně poslal na dětský login).
                   if (role === "child") window.location.href = "/auth/child";
-                }}
+                })}
                 title={t("session.sign_out")}
                 className="text-base"
               >
@@ -546,7 +595,7 @@ export function SessionView() {
               </Button>
             )}
             {!isAnonTrial && (
-              <Button variant="ghost" size="sm" onClick={s.handleReset} className="text-base">
+              <Button variant="ghost" size="sm" onClick={() => requestExit(leaveSession)} className="text-base">
                 ✕
               </Button>
             )}

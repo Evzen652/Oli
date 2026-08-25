@@ -145,3 +145,52 @@ describe("Session persistence — round-trip celé session", () => {
     expect(restored?.taskResults).toEqual(["correct", "wrong", "correct"]);
   });
 });
+
+/**
+ * Ochrana rozdělané práce (UX audit 2026-08-25).
+ *
+ * Nález: v hlavičce cvičení byly ČTYŘI prvky (logo, Zpět, Odhlásit se, ✕),
+ * které volaly `handleReset` → `clearPersistedSession()` bez jediného dialogu.
+ * Osm z deseti rozpracovaných úloh zmizelo jedním kliknutím — a u anonymního
+ * dítěte bylo logo dokonce jediný klikací prvek v hlavičce.
+ *
+ * Oprava má dvě části a tady se zamyká ta datová: odchod ze cvičení už
+ * zálohu NEMAŽE (`handleReset({ keepBackup: true })`), takže ji
+ * `SessionRecoveryDialog` může při návratu nabídnout zpět. Zálohu smí zahodit
+ * jen dokončené sezení nebo výslovné „Začít znovu“.
+ */
+describe("odchod ze cvičení nesmí zahodit rozdělanou práci", () => {
+  it("záloha přežije odchod a nabídne se i s výsledky úloh", () => {
+    const session: SessionData = {
+      ...createSession(3),
+      state: "PRACTICE",
+      currentTaskIndex: 2,
+      practiceBatch: [
+        { question: "Q1", correctAnswer: "A1" },
+        { question: "Q2", correctAnswer: "A2" },
+        { question: "Q3", correctAnswer: "A3" },
+      ],
+    };
+    persistSession(session, ["wrong", "help"]);
+
+    // Odchod přes logo/Zpět/✕ — `keepBackup: true` znamená, že se
+    // clearPersistedSession() NEZAVOLÁ. Simulujeme tím, že nic nemažeme.
+    const restored = getPersistedSession();
+
+    expect(restored?.session.currentTaskIndex).toBe(2);
+    // taskResults musí přežít taky — bez nich se sezení obnoví,
+    // ale ukazatel průběhu je prázdný (dítě vidí „Úloha 3 z 3" a nula teček).
+    expect(restored?.taskResults).toEqual(["wrong", "help"]);
+  });
+
+  it("„Začít znovu“ v recovery dialogu zálohu smaže", () => {
+    persistSession({ ...createSession(3), state: "PRACTICE" }, ["correct"]);
+    clearPersistedSession();
+    expect(getPersistedSession()).toBeNull();
+  });
+
+  it("dokončené sezení se nikdy nenabídne k obnovení", () => {
+    persistSession({ ...createSession(3), state: "END" }, ["correct", "correct"]);
+    expect(getPersistedSession()).toBeNull();
+  });
+});

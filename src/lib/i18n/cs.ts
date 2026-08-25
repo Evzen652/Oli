@@ -247,6 +247,12 @@ const cs = {
   "recovery.resume": "Pokračovat",
   "recovery.discard": "Začít znovu",
 
+  // Odchod z rozdělaného cvičení
+  "exit.title": "Chceš odejít ze cvičení?",
+  "exit.description": "Zvládl/a jsi {done} z {total} {noun}. Postup ti uložíme, takže můžeš pokračovat, až se vrátíš.",
+  "exit.stay": "Zůstat a dokončit",
+  "exit.leave": "Odejít",
+
   // Session history
   "history.title": "Historie procvičování",
   "history.focus_label": "Cvičení zaměřené na:",
