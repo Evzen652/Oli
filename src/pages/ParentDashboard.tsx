@@ -341,7 +341,7 @@ export default function ParentDashboard() {
               {/* Hero karta — horizontální, full width */}
               <div className="rounded-3xl overflow-hidden shadow-sm border border-violet-200">
                 {/* Gradient hlavička — jméno + hvězdičky */}
-                <div className="relative overflow-hidden bg-gradient-to-br from-orange-600 via-orange-700 to-rose-700 px-8 pt-8 pb-6 text-white">
+                <div className="relative overflow-hidden bg-gradient-to-br from-violet-600 via-violet-700 to-violet-800 px-8 pt-8 pb-6 text-white">
                   <span className="absolute top-4 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
                   <span className="absolute top-6 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>
                   <span className="absolute bottom-3 right-12 text-white text-lg pointer-events-none select-none" style={{ animation: 'oli-star-3 15s ease-in-out infinite', animationDelay: '-3s' }}>✦</span>

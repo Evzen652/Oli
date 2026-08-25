@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,14 +33,21 @@ import {
 } from "lucide-react";
 
 /* ── helpers ── */
+/**
+ * Landing měl vlastní privátní paletu s natvrdo psanými hexy — proto zůstával
+ * oranžový, i když se zbytek aplikace sjednotil na značkovou borůvkovou.
+ * Rodič tak přišel na oranžový web a po registraci se ocitl ve fialové
+ * aplikaci. Hodnoty teď odpovídají tokenům z `index.css`.
+ */
 const C = {
-  orange: "#F97316",
-  teal: "#14B8A6",
-  dark: "#0F172A",
-  bgBlue: "#EAF2FF",
-  bgGreen: "#CCFBF1",
-  bgOrange: "#FFF1E6",
-  bgGray: "#F8FAFC",
+  brand: "#5A45E0",     /* --primary  borůvková, bílý text 6,25:1 */
+  brandHover: "#4A37C4",/* --primary-hover */
+  teal: "#0F766E",      /* předmětová prvouka — 5,47:1 na bílé */
+  dark: "#1C1917",      /* --foreground  teplá, ne studená slate */
+  bgBlue: "#F3F1FE",    /* --accent  borůvkový tint */
+  bgGreen: "#E3F3E8",   /* --success-muted */
+  bgOrange: "#FFF1E6",  /* tint sovy/maskota */
+  bgGray: "#F2F0EA",    /* --muted  teplá plocha */
 };
 
 function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
@@ -127,7 +134,7 @@ export default function Landing() {
                 Oli učí, pomáhá, procvičuje — krok za krokem
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-lg shadow-orange-200 w-full sm:w-auto bg-orange-500 hover:bg-orange-600 active:bg-orange-700 transition-colors duration-150" onClick={() => navigate("/onboarding")}>
+                <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-e2 w-full sm:w-auto bg-primary hover:bg-primary-hover transition-colors duration-150" onClick={() => navigate("/onboarding")}>
                   Začít zdarma <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
@@ -230,7 +237,7 @@ export default function Landing() {
             <Card key={item.step} className="rounded-3xl border-0 shadow-lg text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: item.bg }}>
               <CardContent className="p-8 space-y-4">
                 <DewhiteImg src={item.img} alt={item.title} className="mx-auto h-20 w-20 object-contain drop-shadow-md" />
-                <div className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: C.orange }}>
+                <div className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: C.brand }}>
                   {item.step}
                 </div>
                 <h3 className="text-lg font-semibold font-heading" style={{ color: C.dark }}>{item.title}</h3>
@@ -251,7 +258,7 @@ export default function Landing() {
             { step: 3, img: imgPrehled, title: "Přehled o úspěchu", desc: "S rodičovským účtem je vidět, co se daří a kde je co zlepšit.", bg: C.bgGreen },
           ].map((item) => (
             <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
-              <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.orange }}>
+              <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.brand }}>
                 {item.step}
               </div>
               <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain drop-shadow-sm" />
@@ -272,7 +279,7 @@ export default function Landing() {
             { step: 3, img: imgPrehled, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
           ].map((item) => (
             <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
-              <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.orange }}>
+              <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.brand }}>
                 {item.step}
               </div>
               <DewhiteImg src={item.img} alt={item.title} className="h-14 w-14 object-contain drop-shadow-sm" />
@@ -315,9 +322,9 @@ export default function Landing() {
           </Card>
 
           {/* Standard */}
-          <Card className="rounded-3xl shadow-2xl relative sm:-mt-4 sm:mb-4" style={{ border: `2px solid ${C.orange}` }}>
+          <Card className="rounded-3xl shadow-2xl relative sm:-mt-4 sm:mb-4" style={{ border: `2px solid ${C.brand}` }}>
             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-              <Badge className="text-white text-xs px-4 py-1 rounded-full" style={{ background: C.orange }}>Nejčastější volba</Badge>
+              <Badge className="text-white text-xs px-4 py-1 rounded-full" style={{ background: C.brand }}>Nejčastější volba</Badge>
             </div>
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-slate-400 mt-1">Pro pravidelný posun a přehled</p></div>
@@ -336,7 +343,7 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full rounded-full text-white gap-2" style={{ background: C.orange }} onClick={() => navigate("/auth?mode=register")}>
+              <Button className="w-full rounded-full text-white gap-2" style={{ background: C.brand }} onClick={() => navigate("/auth?mode=register")}>
                 Zkusit 14 dní zdarma <ArrowRight className="h-4 w-4" />
               </Button>
             </CardContent>
@@ -369,7 +376,7 @@ export default function Landing() {
             Začněte mít přehled o učení vašeho dítěte
           </h2>
           <p className="text-lg text-slate-500">Registrace trvá minutu. Prvních 14 dní je zdarma.</p>
-          <Button size="lg" className="text-base px-10 h-13 gap-2 rounded-full shadow-lg shadow-orange-200 text-white" style={{ background: C.orange }} onClick={() => navigate("/auth?mode=register")}>
+          <Button size="lg" className="text-base px-10 h-13 gap-2 rounded-full shadow-lg shadow-e2 text-white" style={{ background: C.brand }} onClick={() => navigate("/auth?mode=register")}>
             Vytvořit účet zdarma <ArrowRight className="h-4 w-4" />
           </Button>
         </div>

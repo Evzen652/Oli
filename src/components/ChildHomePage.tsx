@@ -533,12 +533,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
 
         {/* ── Hero: Procvičovat samostatně ── */}
-        {/* Hero gradient v teplé brand paletě (navazuje na oranžové logo).
-            Dřív fialovo-růžový — appka pak působila jako jiný produkt než landing.
-            Odstíny 700 jsou zvolené kvůli kontrastu bílého textu: světlejší
-            varianty (orange-500 2.8:1, amber-500 2.2:1) i původní violet-500
-            (4.2:1) jsou POD limitem WCAG AA 4.5:1. Tyhle mají 5.2–6.3:1. */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-600 via-orange-700 to-rose-700 px-8 py-8 text-white flex flex-col min-h-[180px]">
+        {/* Hero ve značkové borůvkové. Odstíny 600–800 kvůli kontrastu bílého
+            textu (≥6,25:1) — světlejší varianty i původní violet-500 (4,2:1)
+            byly pod limitem WCAG AA. */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-violet-700 to-violet-800 px-8 py-8 text-white flex flex-col min-h-[180px]">
           {/* Plovoucí hvězdičky — každá má vlastní dráhu */}
           <span className="absolute top-5 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
           <span className="absolute top-8 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>

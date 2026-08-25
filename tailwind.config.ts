@@ -1,4 +1,33 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
+
+/**
+ * Design systém Oli — sjednoceno 2026-08-25 podle designového auditu.
+ *
+ * Klíčová myšlenka: aplikace měla ~1700 natvrdo psaných barevných tříd a
+ * paralelně běželo 5 šedých / 4 zelené / 4 fialové rampy, 7 rádiusů a 2
+ * stínové škály. Místo přepisování stovek komponent se rampy PŘEMAPUJÍ tady:
+ * `bg-slate-100` tak vykreslí teplou stone, `bg-violet-600` značkovou
+ * borůvkovou atd. Jeden soubor srovná celou aplikaci a nic se nerozbije.
+ *
+ * Až se komponenty budou psát nově, používej rovnou tokeny (bg-primary,
+ * bg-card, text-muted-foreground) — tyhle aliasy jsou most, ne cíl.
+ */
+
+/** Značková borůvková — primární barva Oli. `600` = --primary (bílý text 6,25:1). */
+const blueberry = {
+  50: "#F3F1FE",
+  100: "#E8E4FD",
+  200: "#D3CCFB",
+  300: "#B3A8F5",
+  400: "#8E7DEE",
+  500: "#705CE6",
+  600: "#5A45E0",
+  700: "#4A37C4",
+  800: "#3B2A9E",
+  900: "#2E2078",
+  950: "#1F1554",
+};
 
 export default {
   darkMode: ["class"],
@@ -14,16 +43,51 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Baloo 2", "Nunito", "ui-sans-serif", "sans-serif"],
-        display: ["Baloo 2", "Nunito", "ui-sans-serif", "sans-serif"],
+        // Pozn.: dřívější `["Baloo 2", …]` bez vnitřních uvozovek generovalo
+        // nevalidní CSS (font-family: Baloo 2) → prohlížeč deklaraci zahodil
+        // a Baloo 2 se NIKDY nevykreslil, jen se stahoval. Jedno písmo stačí —
+        // Nunito má kulaté terminály a dětskou vlídnost nese samo.
+        heading: ["Nunito", "ui-sans-serif", "sans-serif"],
+        display: ["Nunito", "ui-sans-serif", "sans-serif"],
         sans: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
       },
+      // Dvě úrovně stínu: e1 = „dá se na mě kliknout", e2 = „vznáším se"
+      // (modal, dropdown, hover). Statické plochy stín nemají — dělí je border.
+      // Teple neutrální (rgba(41,37,36)) — studený modrošedý stín působí na
+      // krémovém podkladu špinavě. Staré názvy jsou aliasy, ať se nemusí
+      // editovat ~230 existujících volání.
       boxShadow: {
-        "soft-1": "0 1px 2px rgba(15,23,42,0.04)",
-        "soft-2": "0 1px 2px rgba(15,23,42,0.04), 0 4px 16px rgba(15,23,42,0.05)",
-        "soft-3": "0 2px 4px rgba(15,23,42,0.05), 0 8px 24px rgba(15,23,42,0.06)",
+        e1: "0 1px 2px rgba(41,37,36,.06), 0 2px 6px rgba(41,37,36,.04)",
+        e2: "0 4px 10px rgba(41,37,36,.08), 0 12px 28px rgba(41,37,36,.07)",
+        sm: "0 1px 2px rgba(41,37,36,.06), 0 2px 6px rgba(41,37,36,.04)",
+        DEFAULT: "0 1px 2px rgba(41,37,36,.06), 0 2px 6px rgba(41,37,36,.04)",
+        md: "0 1px 2px rgba(41,37,36,.06), 0 2px 6px rgba(41,37,36,.04)",
+        lg: "0 4px 10px rgba(41,37,36,.08), 0 12px 28px rgba(41,37,36,.07)",
+        xl: "0 4px 10px rgba(41,37,36,.08), 0 12px 28px rgba(41,37,36,.07)",
+        "2xl": "0 4px 10px rgba(41,37,36,.08), 0 12px 28px rgba(41,37,36,.07)",
+        "soft-1": "0 1px 2px rgba(41,37,36,.06), 0 2px 6px rgba(41,37,36,.04)",
+        "soft-2": "0 1px 2px rgba(41,37,36,.06), 0 2px 6px rgba(41,37,36,.04)",
+        "soft-3": "0 4px 10px rgba(41,37,36,.08), 0 12px 28px rgba(41,37,36,.07)",
       },
       colors: {
+        // ── Přemapování ramp na kanonické (viz hlavička souboru) ──
+        // 5 šedých → 1 teplá stone (zabíjí studenou/teplou kolizi na /parent)
+        slate: colors.stone,
+        gray: colors.stone,
+        zinc: colors.stone,
+        neutral: colors.stone,
+        // 4 zelené → 1 (green); teal necháváme — používá ho prvouka jako předmětovou
+        emerald: colors.green,
+        lime: colors.green,
+        // růžovočervené → 1 červená
+        rose: colors.red,
+        // žlutá → jantarová (sémantika nápovědy)
+        yellow: colors.amber,
+        // 4 fialové → značková borůvková
+        violet: blueberry,
+        purple: blueberry,
+        indigo: blueberry,
+        fuchsia: blueberry,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -74,10 +138,19 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      // Pravidlo: karta i tlačítko = 16px, menší ovládací prvek = 10px,
+      // kulaté = full, 24px jen landing/hero. `xl` a `2xl` jsou zámerně
+      // aliasy 16px — sjednotí ~250 existujících volání bez editace komponent.
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        none: "0",
+        sm: "6px",
+        DEFAULT: "10px",
+        md: "10px",
+        lg: "16px",
+        xl: "16px",
+        "2xl": "16px",
+        "3xl": "24px",
+        full: "9999px",
       },
       keyframes: {
         "accordion-down": {

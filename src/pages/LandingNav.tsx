@@ -67,7 +67,7 @@ export function LandingNav() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button size="sm" className="bg-[#F97316] hover:bg-[#EA580C] text-white rounded-full px-6" onClick={goToLogin}>
+          <Button size="sm" className="bg-primary hover:bg-primary-hover text-primary-foreground rounded-full px-6" onClick={goToLogin}>
             Přihlásit se
           </Button>
         </div>
@@ -81,7 +81,7 @@ export function LandingNav() {
               <div className="flex flex-col gap-6 pt-8">
                 {NAV_LINKS.map((link) => (
                   <button key={link.href} onClick={() => { scrollTo(link.href); setOpen(false); }}
-                    className="text-left text-lg font-medium text-slate-800 hover:text-[#F97316] transition-colors">
+                    className="text-left text-lg font-medium text-foreground hover:text-primary transition-colors">
                     {link.label}
                   </button>
                 ))}

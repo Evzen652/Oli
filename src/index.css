@@ -10,44 +10,51 @@ All colors MUST be HSL.
   :root {
     /* Admin redesign — light, airy, Notion/Linear vibe.
        Surface #FFFFFF, page bg #FAFAF7, border #ECEAE0, primary #4F46E5 (indigo) */
-    --background: 48 18% 98%;       /* #FAFAF7 page bg */
-    --foreground: 222 32% 18%;      /* slate-800 */
+    --background: 45 29% 97%;       /* #FAF9F6 teplý krémový papír */
+    --foreground: 24 10% 10%;       /* #1C1917 — 16,6:1 */
+    --foreground-soft: 30 6% 25%;   /* #44403C běžný text — 9,76:1 */
 
     --card: 0 0% 100%;              /* #FFFFFF surface */
-    --card-foreground: 222 32% 18%;
+    --card-foreground: 24 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 32% 18%;
+    --popover-foreground: 24 10% 10%;
 
-    /* Primární barva značky = oranžová z loga (OliLogo gradient #F97316→#EA580C).
-       Sjednoceno 2026-07-19: dřív byla primary indigo, ale prakticky ji nikdo
-       nepoužíval (13 výskytů) — landing jel na oranžové, žákovské i rodičovské
-       UI na fialové. Uživatel tak procházel třemi různě barevnými produkty.
-       Interaktivní prvky (CTA, aktivní stavy, odkazy) teď patří sem;
-       dekorativní gradienty a předmětové/sémantické barvy zůstávají vlastní. */
-    --primary: 25 95% 53%;            /* #F97316 orange-500 — shodné s logem */
+    /* Primární = borůvková #5A45E0 (design audit 2026-08-25).
+       Proč ne oranžová (zkoušena a zavržena): na bílé má kontrast jen 2,80:1
+       (norma 4,5:1) a v cvičení je oranžová zároveň barvou CHYBNÉ odpovědi —
+       dítě by vidělo stejnou barvu jako „chyba" i jako barvu produktu.
+       Proč borůvková: aplikace už fialová de facto byla (309 tříd), splňuje
+       kontrast a je jediné velké místo na kruhu nekolidující se sémantikou
+       (zelená správně / červená chyba / jantarová nápověda / oranžová sova). */
+    --primary: 248 71% 57%;           /* #5A45E0 — bílý text 6,25:1 */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 21 90% 48%;      /* #EA580C orange-600 — konec gradientu loga */
+    --primary-hover: 248 56% 49%;     /* #4A37C4 — 7,97:1 */
 
-    --secondary: 48 18% 96%;
-    --secondary-foreground: 222 32% 18%;
+    --secondary: 45 24% 93%;          /* #F2F0EA */
+    --secondary-foreground: 24 10% 10%;
 
-    --muted: 48 18% 96%;
-    --muted-foreground: 222 12% 45%;
+    --muted: 45 24% 93%;              /* #F2F0EA klidná plocha */
+    --muted-foreground: 25 5% 45%;    /* #78716C — 4,56:1 */
 
-    --accent: 25 95% 96%;             /* orange-50 tint — ladí s primary */
-    --accent-foreground: 21 80% 35%;
+    --accent: 249 87% 97%;            /* #F3F1FE borůvkový tint */
+    --accent-foreground: 249 58% 39%; /* #3B2A9E — 9,36:1 na tintu */
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 51%;         /* #DC2626 — 4,83:1 */
     --destructive-foreground: 0 0% 100%;
 
-    --success: 142 64% 42%;
+    --success: 142 72% 29%;           /* #15803D — 5,02:1 */
     --success-foreground: 0 0% 100%;
-    --success-muted: 142 64% 93%;
+    --success-muted: 139 40% 92%;     /* #E3F3E8 */
 
-    --border: 42 22% 90%;             /* #ECEAE0 warm beige */
-    --input: 42 22% 90%;
-    --ring: 25 95% 53%;               /* focus ring = primary */
+    /* Nápověda/upozornění. Jantarová ani oranžová NIKDY nenesou bílý text
+       (ani #EA580C má jen 3,56:1) — smí být jen tint s tmavým textem. */
+    --warning: 26 90% 37%;            /* #B45309 — 5,02:1 */
+    --warning-muted: 39 92% 95%;      /* #FEF6E7 */
+
+    --border: 39 23% 88%;             /* #E7E2D9 dekorativní vlas */
+    --input: 32 7% 49%;               /* #857D74 okraj ovl. prvku — 4,05:1 */
+    --ring: 248 71% 57%;              /* focus ring = primary */
 
     --radius: 0.875rem;               /* 14px — buttons/inputs base */
 
@@ -145,8 +152,9 @@ All colors MUST be HSL.
     font-feature-settings: "ss01", "cv11";
   }
 
+  /* font-family se dědí z `body` (Nunito) — dřív tu bylo explicitní pravidlo,
+     které navíc přebíjelo utility `font-heading`/`font-display`. */
   h1, h2, h3, h4 {
-    font-family: "Nunito", ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
   }
 }
