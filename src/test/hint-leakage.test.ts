@@ -335,6 +335,37 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(false);
   });
 
+  // Práh: dva zmíněné distraktory stačí. Úplný výčet vyžadovat nejde —
+  // mezi možnostmi bývá vymyšlený distraktor, který v katalogu pravidel
+  // nemá co dělat („neurčitý" čas mezi minulý/přítomný/budoucí).
+  it("rejstřík zmiňující 2 ze 3 distraktorů → není leak", () => {
+    const r = checkHintLeakage({
+      question: "Jaký čas má sloveso 'čtu'?",
+      correct_answer: "přítomný",
+      hints: [
+        "Osoba: 1. já/my, 2. ty/vy, 3. on/ona/ono/oni/ony",
+        "Čas: minulý (byl), přítomný (je), budoucí (bude)",
+      ],
+      options: ["neurčitý", "minulý", "přítomný", "budoucí"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  // Závorky v zadání rozbíjely výjimku „slovo už je v otázce": token vycházel
+  // jako „zbytek)" a neshodl se. Přitom „zbytek" je jen tvar odpovědi
+  // („2 zbytek 0"), ne její hodnota — dítě se z něj nedozví ani podíl.
+  it("slovo z odpovědi je v otázce v závorce → není leak", () => {
+    const r = checkHintLeakage({
+      question: "8 ÷ 4 = ? (může být zbytek)",
+      correct_answer: "2 zbytek 0",
+      hints: [
+        "Hledej největší násobek 4, který se vejde do 8.",
+        "Spočítej kolik celých násobků 4 se vejde, pak odečti od 8 — co zbyde je zbytek.",
+      ],
+    });
+    expect(r.ok).toBe(true);
+  });
+
   it("číselná odpověď už ve znění otázky → není leak", () => {
     const r = checkHintLeakage({
       question: "Které číslo je největší: 50, 15, 51?",

@@ -41,7 +41,12 @@ const HINT_NEUTRAL_WORDS = new Set([
 function normalize(s: string): string {
   return s
     .toLowerCase()
-    .replace(/[.,;:!?"'„"]/g, " ")
+    // Závorky patří mezi interpunkci — bez nich vznikaly tokeny jako
+    // „zbytek)" ze zadání „8 ÷ 4 = ? (může být zbytek)", které se pak
+    // neshodly se slovem „zbytek" v nápovědě, a výjimka „slovo už je
+    // v otázce" nezabrala. Hlásilo se to jako leak, přestože „zbytek"
+    // je jen tvar odpovědi („2 zbytek 0"), ne její hodnota.
+    .replace(/[.,;:!?"'„"()]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -222,7 +227,12 @@ function hintsEnumerateOptions(
     .filter((h) => typeof h === "string" && h.trim())
     .map((h) => normalize(h));
 
-  return others.every((o) => normHints.some((h) => hintMentions(h, o)));
+  const mentioned = others.filter((o) => normHints.some((h) => hintMentions(h, o))).length;
+  // Práh 2 (u binárních možností všechny): jeden zmíněný distraktor ještě
+  // rejstřík nedělá — viz „Plzeň"/„Dole" v komentáři výše. Dva a víc už ano;
+  // úplný výčet vyžadovat nejde, protože mezi možnostmi bývá vymyšlený
+  // distraktor, který v katalogu pravidel nemá co dělat („neurčitý" čas).
+  return mentioned >= Math.min(2, others.length);
 }
 
 /**
