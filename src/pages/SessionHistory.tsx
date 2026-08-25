@@ -43,6 +43,9 @@ export default function SessionHistory() {
       // Build skill name map
       const nameMap: Record<string, string> = {};
       for (const s of skillsRes.data ?? []) {
+        // `code_skill_id` je v DB nullable. Bez guardu by z null vznikl klíč
+        // "null" a všechny takové dovednosti by sdílely jeden název.
+        if (!s.code_skill_id) continue;
         nameMap[s.code_skill_id] = s.name;
       }
       setSkillNames(nameMap);
@@ -56,18 +59,21 @@ export default function SessionHistory() {
       // Group by session_id
       const map = new Map<string, SessionSummary>();
       for (const row of data) {
-        let s = map.get(row.session_id);
+        // Řádek bez `session_id` nejde přiřadit k sezení — sloupec je nullable.
+        if (!row.session_id) continue;
+        const sessionId = row.session_id;
+        let s = map.get(sessionId);
         if (!s) {
           s = {
-            session_id: row.session_id,
-            date: row.created_at,
+            session_id: sessionId,
+            date: row.created_at ?? "",
             skill_id: row.skill_id,
             total: 0,
             correct: 0,
             wrong: 0,
             help_used: 0,
           };
-          map.set(row.session_id, s);
+          map.set(sessionId, s);
         }
         s.total++;
         if (row.correct) s.correct++;

@@ -69,6 +69,12 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
       .finally(() => setAiEvalLoading(false));
 
     return () => { clearTimeout(timer); };
+    // Prázdné deps jsou ZÁMĚR, ne opomenutí: hodnocení se má vygenerovat
+    // právě jednou při zobrazení shrnutí. Komponenta se montuje až s finálním
+    // sezením, takže `answered`/`correctAlone`/`wrong` už se nemění — doplnění
+    // závislostí by jen spouštělo AI volání znovu při každé změně identity
+    // `session`.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const pct = answered > 0 ? Math.round((correctAlone / answered) * 100) : 0;

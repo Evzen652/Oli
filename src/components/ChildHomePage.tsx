@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
 import { getContentWarning } from "@/lib/contentAvailability";
@@ -298,7 +298,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   const [assignmentDateFilter, setAssignmentDateFilter] = useState<"all" | "today" | "week" | "older" | "completed">("all");
   const [isDemoUser, setIsDemoUser] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState<{ skillId: string; mock?: { correct: number; helpUsed: number; wrong: number; total: number; date: string; pct: number } } | null>(null);
-  const demoSkillsForPeriod = (() => {
+  const demoSkillsForPeriod = useMemo(() => {
     const now = Date.now();
     if (statsPeriod === "today") {
       const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
@@ -307,8 +307,14 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     if (statsPeriod === "7d")  return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= new Date(now - 7  * 86400_000));
     if (statsPeriod === "30d") return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= new Date(now - 30 * 86400_000));
     return DEMO_SKILLS; // "all"
-  })();
-  const DEMO_STATS = { tasks: 41, daysActive: 8, accuracy: 66, sessions: 12, helpUsed: 8, wrong: 14, skills: demoSkillsForPeriod };
+  }, [statsPeriod]);
+  // Memoizované schválně: `useChildStats` má `mock` v závislostech efektu.
+  // Nový objekt na každý render by efekt spouštěl pořád dokola a `setStats`
+  // uvnitř by demo režim uzavřel do nekonečné smyčky renderů.
+  const DEMO_STATS = useMemo(
+    () => ({ tasks: 41, daysActive: 8, accuracy: 66, sessions: 12, helpUsed: 8, wrong: 14, skills: demoSkillsForPeriod }),
+    [demoSkillsForPeriod],
+  );
   const stats = useChildStats(childId, statsPeriod, isDemoUser ? DEMO_STATS : undefined);
 
   const [assignmentRefreshKey, setAssignmentRefreshKey] = useState(0);
@@ -357,7 +363,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       // Demo žák — načti reálné pending úkoly filtrované podle IP hashe
       const isDemoChildAccount = user.email === "demo-child@oli.app";
 
-      let rawAll: Array<{ id: string; skill_id: string; note: string | null; due_date: string | null; assigned_date: string; status: string }> | null = null;
+      // `status` je v DB enum a nullable — anotace musí sedět s vygenerovanými typy.
+      let rawAll: Array<{ id: string; skill_id: string; note: string | null; due_date: string | null; assigned_date: string; status: "pending" | "completed" | null }> | null = null;
 
       if (isDemoChildAccount) {
         setIsDemoUser(true);
@@ -397,6 +404,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           .select("code_skill_id, name, curriculum_topics(name, curriculum_categories(name, curriculum_subjects(slug, name)))")
           .in("code_skill_id", needDbLookup);
         if (skills) for (const sk of skills) {
+          // `code_skill_id` je nullable — bez guardu klíč "null".
+          if (!sk.code_skill_id) continue;
           const cat = (sk.curriculum_topics as any)?.curriculum_categories;
           const subj = cat?.curriculum_subjects;
           dbNameMap[sk.code_skill_id] = {
@@ -417,7 +426,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           assigned_date: a.assigned_date,
           skillName: topic?.displayName ?? topic?.title ?? db?.name ?? a.skill_id,
           subject: topic?.subject ?? db?.subject ?? "",
-          status: a.status,
+          status: a.status ?? undefined,
           topic: topic ?? (db ? { category: db.category, subject: db.subject, _dbOnly: true, generator: () => [] } as any : undefined),
         };
       };

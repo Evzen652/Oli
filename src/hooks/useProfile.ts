@@ -36,9 +36,14 @@ export function useProfile() {
     // Upsert (ne update) — kdyby řádek profiles ještě neexistoval (timing po signupu
     // nebo účet z doby před DB triggerem), update by tiše zasáhl 0 řádků a onboarding
     // by se zacyklil. Upsert na user_id řádek vždy vytvoří/aktualizuje.
+    // `id` se musí posílat explicitně: v ostrém schématu je `profiles.id`
+    // primární klíč odkazující na `auth.users(id)` BEZ defaultu, takže upsert
+    // bez něj skončí na `null value in column "id"`. Je to stejná příčina jako
+    // 500 při registraci rodiče (viz blocker v docs/PENDING_CHANGES.md) —
+    // migrace ji opravuje na straně triggeru, tady na straně klienta.
     const { error } = await supabase
       .from("profiles")
-      .upsert({ user_id: user.id, ...updates }, { onConflict: "user_id" });
+      .upsert({ id: user.id, user_id: user.id, ...updates }, { onConflict: "user_id" });
 
     if (error) throw error;
     await fetchProfile();

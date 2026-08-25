@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
   const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
 
-  const fetchAssignments = async () => {
+  const fetchAssignments = useCallback(async () => {
     const { data } = await supabase
       .from("parent_assignments")
       .select("id, skill_id, assigned_date, due_date, status, note")
@@ -126,7 +126,9 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
       return cm ? { ...a, completedDate: cm.date, completionCorrect: cm.correct, completionHelpUsed: cm.helpUsed, completionTotal: cm.total } : a;
     }));
     setLoading(false);
-  };
+    // Obalené `useCallback`, ať se dá poctivě uvést v závislostech efektu —
+    // jinak by se funkce vytvářela na každý render a efekt by běžel pořád.
+  }, [childId]);
 
   useEffect(() => {
     if (mockAssignments) {
@@ -134,7 +136,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
       return;
     }
     fetchAssignments();
-  }, [childId, refreshKey, mockAssignments]);
+  }, [childId, refreshKey, mockAssignments, fetchAssignments]);
 
   const handleDelete = async (id: string) => {
     if (onMockDelete) { onMockDelete(id); return; }

@@ -133,6 +133,10 @@ export function SessionView() {
     grade, session, practiceQuestion, userInput, isLocked, loading,
     checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask, answeredTaskIndex, selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
+    // Vytažené zvlášť kvůli závislostem efektů níž: `s` je nový objekt na každý
+    // render, takže by ho do deps dát nešlo. `handleGradeSelect` je stabilní
+    // (`useCallback` s prázdnými deps), tedy do deps patřit může.
+    handleGradeSelect,
   } = s;
 
   // For child role: show ChildHomePage by default, TopicBrowser on demand
@@ -217,7 +221,7 @@ export function SessionView() {
           .eq("child_user_id", user.id)
           .maybeSingle();
         if (data?.grade) {
-          s.handleGradeSelect(data.grade as any);
+          handleGradeSelect(data.grade as any);
           // childGradeLoaded ZŮSTÁVÁ false: po handleReset (grade→null na konci sezení / „Zpět")
           // se tento effect musí spustit znovu a ročník z DB opět načíst, jinak dítě uvízne
           // na ChildLoadingFallback (grade je null a nikdo ho už nenačte).
@@ -227,7 +231,7 @@ export function SessionView() {
         }
       })();
     }
-  }, [role, grade, childGradeLoaded]);
+  }, [role, grade, childGradeLoaded, handleGradeSelect]);
 
   // Nabídka obnovení rozdělané práce.
   // Dřív byla podmínka `!session && !grade`, jenže ANI JEDNA ze skutečných
@@ -250,9 +254,9 @@ export function SessionView() {
     if (role === "admin" && !grade) {
       const saved = Number(localStorage.getItem("oli_admin_preview_grade"));
       const g = saved >= 1 && saved <= 9 ? saved : 4;
-      s.handleGradeSelect(g as any);
+      handleGradeSelect(g as any);
     }
-  }, [role, grade]);
+  }, [role, grade, handleGradeSelect]);
 
   // Admin floating banner component with grade dropdown
   const GRADES = [2, 3, 4, 5, 6, 7, 8, 9];

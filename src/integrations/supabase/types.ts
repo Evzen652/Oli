@@ -10,85 +10,179 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
+    PostgrestVersion: "14.17"
+  }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
+      admin_reviewed_cards: {
+        Row: {
+          card_key: string
+          reviewed_at: string
+          reviewed_by: string | null
+          skill_id: string
+        }
+        Insert: {
+          card_key: string
+          reviewed_at?: string
+          reviewed_by?: string | null
+          skill_id: string
+        }
+        Update: {
+          card_key?: string
+          reviewed_at?: string
+          reviewed_by?: string | null
+          skill_id?: string
+        }
+        Relationships: []
+      }
+      anon_progress: {
+        Row: {
+          anon_token: string
+          completed: boolean
+          created_at: string
+          grade: number | null
+          id: string
+          score: number | null
+          topic_id: string
+        }
+        Insert: {
+          anon_token: string
+          completed?: boolean
+          created_at?: string
+          grade?: number | null
+          id?: string
+          score?: number | null
+          topic_id: string
+        }
+        Update: {
+          anon_token?: string
+          completed?: boolean
+          created_at?: string
+          grade?: number | null
+          id?: string
+          score?: number | null
+          topic_id?: string
+        }
+        Relationships: []
+      }
+      anon_trial: {
+        Row: {
+          anon_token: string
+          grade: number | null
+          started_at: string
+        }
+        Insert: {
+          anon_token: string
+          grade?: number | null
+          started_at?: string
+        }
+        Update: {
+          anon_token?: string
+          grade?: number | null
+          started_at?: string
+        }
+        Relationships: []
+      }
       children: {
         Row: {
           child_name: string
           child_user_id: string | null
-          created_at: string
+          created_at: string | null
           grade: number
           id: string
           is_paired: boolean
           last_reminder_sent_at: string | null
           learning_notes: string | null
-          pairing_code: string
-          pairing_code_expires_at: string
+          pairing_code: string | null
+          pairing_code_expires_at: string | null
           parent_user_id: string
+          updated_at: string | null
         }
         Insert: {
           child_name: string
           child_user_id?: string | null
-          created_at?: string
-          grade?: number
+          created_at?: string | null
+          grade: number
           id?: string
           is_paired?: boolean
           last_reminder_sent_at?: string | null
           learning_notes?: string | null
-          pairing_code?: string
-          pairing_code_expires_at?: string
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
           parent_user_id: string
+          updated_at?: string | null
         }
         Update: {
           child_name?: string
           child_user_id?: string | null
-          created_at?: string
+          created_at?: string | null
           grade?: number
           id?: string
           is_paired?: boolean
           last_reminder_sent_at?: string | null
           learning_notes?: string | null
-          pairing_code?: string
-          pairing_code_expires_at?: string
+          pairing_code?: string | null
+          pairing_code_expires_at?: string | null
           parent_user_id?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
       curriculum_categories: {
         Row: {
-          created_at: string
+          created_at: string | null
           description: string | null
           fun_fact: string | null
           id: string
           name: string
           slug: string
-          sort_order: number
+          sort_order: number | null
           subject_id: string
-          updated_at: string
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           fun_fact?: string | null
           id?: string
           name: string
           slug: string
-          sort_order?: number
+          sort_order?: number | null
           subject_id: string
-          updated_at?: string
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           fun_fact?: string | null
           id?: string
           name?: string
           slug?: string
-          sort_order?: number
+          sort_order?: number | null
           subject_id?: string
-          updated_at?: string
         }
         Relationships: [
           {
@@ -102,79 +196,76 @@ export type Database = {
       }
       curriculum_skills: {
         Row: {
-          boundaries: Json
+          boundaries: Json | null
           brief_description: string | null
-          code_skill_id: string
-          created_at: string
-          default_level: number
+          code_skill_id: string | null
+          created_at: string | null
+          default_level: number | null
           fun_fact: string | null
-          goals: Json
-          grade_max: number
-          grade_min: number
+          goals: Json | null
+          grade_max: number | null
+          grade_min: number | null
           help_common_mistake: string | null
           help_example: string | null
           help_hint: string | null
-          help_steps: Json
-          help_visual_examples: Json
+          help_steps: Json | null
+          help_visual_examples: Json | null
           id: string
-          input_type: string
+          input_type: string | null
           is_active: boolean
-          keywords: Json
+          keywords: Json | null
           name: string
-          session_task_count: number
-          sort_order: number
+          session_task_count: number | null
+          sort_order: number | null
           topic_id: string
-          updated_at: string
         }
         Insert: {
-          boundaries?: Json
+          boundaries?: Json | null
           brief_description?: string | null
-          code_skill_id: string
-          created_at?: string
-          default_level?: number
+          code_skill_id?: string | null
+          created_at?: string | null
+          default_level?: number | null
           fun_fact?: string | null
-          goals?: Json
-          grade_max?: number
-          grade_min?: number
+          goals?: Json | null
+          grade_max?: number | null
+          grade_min?: number | null
           help_common_mistake?: string | null
           help_example?: string | null
           help_hint?: string | null
-          help_steps?: Json
-          help_visual_examples?: Json
+          help_steps?: Json | null
+          help_visual_examples?: Json | null
           id?: string
-          input_type?: string
+          input_type?: string | null
           is_active?: boolean
-          keywords?: Json
+          keywords?: Json | null
           name: string
-          session_task_count?: number
-          sort_order?: number
+          session_task_count?: number | null
+          sort_order?: number | null
           topic_id: string
-          updated_at?: string
         }
         Update: {
-          boundaries?: Json
+          boundaries?: Json | null
           brief_description?: string | null
-          code_skill_id?: string
-          created_at?: string
-          default_level?: number
+          code_skill_id?: string | null
+          created_at?: string | null
+          default_level?: number | null
           fun_fact?: string | null
-          goals?: Json
-          grade_max?: number
-          grade_min?: number
+          goals?: Json | null
+          grade_max?: number | null
+          grade_min?: number | null
           help_common_mistake?: string | null
           help_example?: string | null
           help_hint?: string | null
-          help_steps?: Json
-          help_visual_examples?: Json
+          help_steps?: Json | null
+          help_visual_examples?: Json | null
           id?: string
-          input_type?: string
+          input_type?: string | null
           is_active?: boolean
-          keywords?: Json
+          keywords?: Json | null
           name?: string
-          session_task_count?: number
-          sort_order?: number
+          session_task_count?: number | null
+          sort_order?: number | null
           topic_id?: string
-          updated_at?: string
         }
         Relationships: [
           {
@@ -188,64 +279,79 @@ export type Database = {
       }
       curriculum_subjects: {
         Row: {
-          created_at: string
-          icon_url: string | null
+          ai_prompt_extra: string | null
+          color_hue: number | null
+          created_at: string | null
+          description: string | null
+          emoji: string | null
+          grade_max: number | null
+          grade_min: number | null
+          hook: string | null
           id: string
+          image_url: string | null
           name: string
           slug: string
-          sort_order: number
-          updated_at: string
+          sort_order: number | null
         }
         Insert: {
-          created_at?: string
-          icon_url?: string | null
+          ai_prompt_extra?: string | null
+          color_hue?: number | null
+          created_at?: string | null
+          description?: string | null
+          emoji?: string | null
+          grade_max?: number | null
+          grade_min?: number | null
+          hook?: string | null
           id?: string
+          image_url?: string | null
           name: string
           slug: string
-          sort_order?: number
-          updated_at?: string
+          sort_order?: number | null
         }
         Update: {
-          created_at?: string
-          icon_url?: string | null
+          ai_prompt_extra?: string | null
+          color_hue?: number | null
+          created_at?: string | null
+          description?: string | null
+          emoji?: string | null
+          grade_max?: number | null
+          grade_min?: number | null
+          hook?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           slug?: string
-          sort_order?: number
-          updated_at?: string
+          sort_order?: number | null
         }
         Relationships: []
       }
       curriculum_topics: {
         Row: {
           category_id: string
-          created_at: string
+          created_at: string | null
           description: string | null
           id: string
           name: string
           slug: string
-          sort_order: number
-          updated_at: string
+          sort_order: number | null
         }
         Insert: {
           category_id: string
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           id?: string
           name: string
           slug: string
-          sort_order?: number
-          updated_at?: string
+          sort_order?: number | null
         }
         Update: {
           category_id?: string
-          created_at?: string
+          created_at?: string | null
           description?: string | null
           id?: string
           name?: string
           slug?: string
-          sort_order?: number
-          updated_at?: string
+          sort_order?: number | null
         }
         Relationships: [
           {
@@ -259,46 +365,133 @@ export type Database = {
       }
       custom_exercises: {
         Row: {
+          blanks: Json | null
+          categories: Json | null
           correct_answer: string
-          created_at: string
-          created_by: string
-          hints: Json
+          correct_answers: Json | null
+          created_at: string | null
+          hints: Json | null
           id: string
-          is_active: boolean
-          options: Json
+          is_active: boolean | null
+          items: Json | null
+          options: Json | null
+          pairs: Json | null
           question: string
           skill_id: string
-          solution_steps: Json
-          source: string
+          solution_steps: Json | null
+          source: string | null
+          status: string
+        }
+        Insert: {
+          blanks?: Json | null
+          categories?: Json | null
+          correct_answer: string
+          correct_answers?: Json | null
+          created_at?: string | null
+          hints?: Json | null
+          id?: string
+          is_active?: boolean | null
+          items?: Json | null
+          options?: Json | null
+          pairs?: Json | null
+          question: string
+          skill_id: string
+          solution_steps?: Json | null
+          source?: string | null
+          status?: string
+        }
+        Update: {
+          blanks?: Json | null
+          categories?: Json | null
+          correct_answer?: string
+          correct_answers?: Json | null
+          created_at?: string | null
+          hints?: Json | null
+          id?: string
+          is_active?: boolean | null
+          items?: Json | null
+          options?: Json | null
+          pairs?: Json | null
+          question?: string
+          skill_id?: string
+          solution_steps?: Json | null
+          source?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      custom_illustrations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string
+          full_prompt: string | null
+          generations: number
+          key: string
           updated_at: string
         }
         Insert: {
-          correct_answer: string
           created_at?: string
-          created_by: string
-          hints?: Json
-          id?: string
-          is_active?: boolean
-          options?: Json
-          question: string
-          skill_id: string
-          solution_steps?: Json
-          source?: string
+          created_by?: string | null
+          description: string
+          full_prompt?: string | null
+          generations?: number
+          key: string
           updated_at?: string
         }
         Update: {
-          correct_answer?: string
           created_at?: string
-          created_by?: string
-          hints?: Json
+          created_by?: string | null
+          description?: string
+          full_prompt?: string | null
+          generations?: number
+          key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      exercise_assets: {
+        Row: {
+          alt_text: string
+          created_at: string
+          created_by: string | null
+          generation_prompt: string | null
+          id: string
+          is_active: boolean
+          skill_id: string | null
+          source: string
+          status: string
+          tags: string[]
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          alt_text: string
+          created_at?: string
+          created_by?: string | null
+          generation_prompt?: string | null
           id?: string
           is_active?: boolean
-          options?: Json
-          question?: string
-          skill_id?: string
-          solution_steps?: Json
+          skill_id?: string | null
           source?: string
+          status?: string
+          tags?: string[]
           updated_at?: string
+          url: string
+        }
+        Update: {
+          alt_text?: string
+          created_at?: string
+          created_by?: string | null
+          generation_prompt?: string | null
+          id?: string
+          is_active?: boolean
+          skill_id?: string | null
+          source?: string
+          status?: string
+          tags?: string[]
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }
@@ -306,35 +499,38 @@ export type Database = {
         Row: {
           assigned_date: string
           child_id: string
-          created_at: string
+          created_at: string | null
           due_date: string | null
           id: string
           note: string | null
-          parent_user_id: string
+          parent_user_id: string | null
           skill_id: string
-          status: string
+          status: Database["public"]["Enums"]["assignment_status"] | null
+          updated_at: string | null
         }
         Insert: {
           assigned_date?: string
           child_id: string
-          created_at?: string
+          created_at?: string | null
           due_date?: string | null
           id?: string
           note?: string | null
-          parent_user_id: string
+          parent_user_id?: string | null
           skill_id: string
-          status?: string
+          status?: Database["public"]["Enums"]["assignment_status"] | null
+          updated_at?: string | null
         }
         Update: {
           assigned_date?: string
           child_id?: string
-          created_at?: string
+          created_at?: string | null
           due_date?: string | null
           id?: string
           note?: string | null
-          parent_user_id?: string
+          parent_user_id?: string | null
           skill_id?: string
-          status?: string
+          status?: Database["public"]["Enums"]["assignment_status"] | null
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -346,104 +542,141 @@ export type Database = {
           },
         ]
       }
-      profiles: {
+      parent_invitations: {
         Row: {
-          created_at: string
-          display_name: string | null
+          accepted_at: string | null
+          anon_grade: number | null
+          anon_token: string | null
+          child_id: string | null
+          child_name: string | null
+          email: string
           id: string
-          locale: string
-          user_id: string
+          invited_at: string
+          status: string
         }
         Insert: {
-          created_at?: string
-          display_name?: string | null
+          accepted_at?: string | null
+          anon_grade?: number | null
+          anon_token?: string | null
+          child_id?: string | null
+          child_name?: string | null
+          email: string
           id?: string
-          locale?: string
-          user_id: string
+          invited_at?: string
+          status?: string
         }
         Update: {
-          created_at?: string
+          accepted_at?: string | null
+          anon_grade?: number | null
+          anon_token?: string | null
+          child_id?: string | null
+          child_name?: string | null
+          email?: string
+          id?: string
+          invited_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          display_name: string | null
+          id: string
+          locale: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+          locale?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
           display_name?: string | null
           id?: string
-          locale?: string
-          user_id?: string
+          locale?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
       report_settings: {
         Row: {
-          child_id: string
-          child_reports_enabled: boolean
-          created_at: string
+          child_reports_enabled: boolean | null
+          created_at: string | null
+          frequency: string | null
           id: string
-          parent_frequency: string
+          user_id: string
         }
         Insert: {
-          child_id: string
-          child_reports_enabled?: boolean
-          created_at?: string
+          child_reports_enabled?: boolean | null
+          created_at?: string | null
+          frequency?: string | null
           id?: string
-          parent_frequency?: string
+          user_id: string
         }
         Update: {
-          child_id?: string
-          child_reports_enabled?: boolean
-          created_at?: string
+          child_reports_enabled?: boolean | null
+          created_at?: string | null
+          frequency?: string | null
           id?: string
-          parent_frequency?: string
+          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "report_settings_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: true
-            referencedRelation: "children"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       session_logs: {
         Row: {
           child_id: string | null
           correct: boolean
-          created_at: string
+          correct_answer: string | null
+          created_at: string | null
           error_type: string | null
           example_id: string | null
-          help_used: boolean
+          help_used: boolean | null
           id: string
           level: number
+          question_text: string | null
           response_time_ms: number | null
           session_id: string
           skill_id: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           child_id?: string | null
           correct: boolean
-          created_at?: string
+          correct_answer?: string | null
+          created_at?: string | null
           error_type?: string | null
           example_id?: string | null
-          help_used?: boolean
+          help_used?: boolean | null
           id?: string
           level?: number
+          question_text?: string | null
           response_time_ms?: number | null
           session_id: string
           skill_id: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           child_id?: string | null
           correct?: boolean
-          created_at?: string
+          correct_answer?: string | null
+          created_at?: string | null
           error_type?: string | null
           example_id?: string | null
-          help_used?: boolean
+          help_used?: boolean | null
           id?: string
           level?: number
+          question_text?: string | null
           response_time_ms?: number | null
           session_id?: string
           skill_id?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -457,49 +690,49 @@ export type Database = {
       }
       skill_profiles: {
         Row: {
-          attempts_total: number
+          attempts_total: number | null
           child_id: string | null
           correct_total: number
-          created_at: string
-          error_streak: number
+          created_at: string | null
+          error_streak: number | null
           id: string
-          last_practiced_at: string
-          mastery_score: number
+          last_practiced_at: string | null
+          mastery_score: number | null
           skill_id: string
-          success_streak: number
-          updated_at: string
-          user_id: string
-          weak_pattern_flags: Json
+          success_streak: number | null
+          updated_at: string | null
+          user_id: string | null
+          weak_pattern_flags: Json | null
         }
         Insert: {
-          attempts_total?: number
+          attempts_total?: number | null
           child_id?: string | null
           correct_total?: number
-          created_at?: string
-          error_streak?: number
+          created_at?: string | null
+          error_streak?: number | null
           id?: string
-          last_practiced_at?: string
-          mastery_score?: number
+          last_practiced_at?: string | null
+          mastery_score?: number | null
           skill_id: string
-          success_streak?: number
-          updated_at?: string
-          user_id: string
-          weak_pattern_flags?: Json
+          success_streak?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          weak_pattern_flags?: Json | null
         }
         Update: {
-          attempts_total?: number
+          attempts_total?: number | null
           child_id?: string | null
           correct_total?: number
-          created_at?: string
-          error_streak?: number
+          created_at?: string | null
+          error_streak?: number | null
           id?: string
-          last_practiced_at?: string
-          mastery_score?: number
+          last_practiced_at?: string | null
+          mastery_score?: number | null
           skill_id?: string
-          success_streak?: number
-          updated_at?: string
-          user_id?: string
-          weak_pattern_flags?: Json
+          success_streak?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          weak_pattern_flags?: Json | null
         }
         Relationships: [
           {
@@ -511,21 +744,171 @@ export type Database = {
           },
         ]
       }
+      student_misconceptions: {
+        Row: {
+          child_id: string | null
+          confidence: number
+          description: string | null
+          detected_at: string
+          evidence_count: number
+          id: string
+          pattern_label: string
+          resolved_at: string | null
+          skill_id: string
+          status: string
+          suggestion: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          child_id?: string | null
+          confidence?: number
+          description?: string | null
+          detected_at?: string
+          evidence_count?: number
+          id?: string
+          pattern_label: string
+          resolved_at?: string | null
+          skill_id: string
+          status?: string
+          suggestion?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          child_id?: string | null
+          confidence?: number
+          description?: string | null
+          detected_at?: string
+          evidence_count?: number
+          id?: string
+          pattern_label?: string
+          resolved_at?: string | null
+          skill_id?: string
+          status?: string
+          suggestion?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      student_skill_level: {
+        Row: {
+          consecutive_bad: number
+          consecutive_good: number
+          last_score: number | null
+          level: number
+          sessions_at_level: number
+          student_id: string
+          topic_id: string
+          updated_at: string
+        }
+        Insert: {
+          consecutive_bad?: number
+          consecutive_good?: number
+          last_score?: number | null
+          level?: number
+          sessions_at_level?: number
+          student_id: string
+          topic_id: string
+          updated_at?: string
+        }
+        Update: {
+          consecutive_bad?: number
+          consecutive_good?: number
+          last_score?: number | null
+          level?: number
+          sessions_at_level?: number
+          student_id?: string
+          topic_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string | null
+          current_period_end: string | null
+          id: string
+          plan: Database["public"]["Enums"]["subscription_plan"] | null
+          status: Database["public"]["Enums"]["subscription_status"] | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_period_end?: string | null
+          id?: string
+          plan?: Database["public"]["Enums"]["subscription_plan"] | null
+          status?: Database["public"]["Enums"]["subscription_status"] | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_period_end?: string | null
+          id?: string
+          plan?: Database["public"]["Enums"]["subscription_plan"] | null
+          status?: Database["public"]["Enums"]["subscription_status"] | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      usage_tracking: {
+        Row: {
+          ai_tutor_calls: number | null
+          children_count: number | null
+          created_at: string | null
+          id: string
+          month: string
+          sessions_count: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_tutor_calls?: number | null
+          children_count?: number | null
+          created_at?: string | null
+          id?: string
+          month: string
+          sessions_count?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_tutor_calls?: number | null
+          children_count?: number | null
+          created_at?: string | null
+          id?: string
+          month?: string
+          sessions_count?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
-          created_at: string
+          created_at: string | null
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           id?: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
@@ -537,17 +920,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      generate_pairing_code: { Args: never; Returns: string }
+      get_my_role: {
+        Args: never
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
       has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
+        Args: { required_role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean
       }
     }
     Enums: {
       app_role: "admin" | "parent" | "child"
+      assignment_status: "pending" | "completed"
+      subscription_plan: "free" | "premium" | "school"
+      subscription_status: "active" | "canceled" | "past_due" | "trialing"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -673,9 +1059,15 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       app_role: ["admin", "parent", "child"],
+      assignment_status: ["pending", "completed"],
+      subscription_plan: ["free", "premium", "school"],
+      subscription_status: ["active", "canceled", "past_due", "trialing"],
     },
   },
 } as const

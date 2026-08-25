@@ -99,7 +99,9 @@ export function useChildStats(childId: string | null, period: StatsPeriod = "7d"
     })();
 
     return () => { cancelled = true; };
-  }, [childId, period]);
+    // `mock` v závislostech: volající (`ChildHomePage`) ho memoizuje, jinak by
+    // nový objekt na každý render efekt spouštěl donekonečna.
+  }, [childId, period, mock]);
 
   return stats;
 }

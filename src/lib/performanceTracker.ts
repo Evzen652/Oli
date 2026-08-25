@@ -90,14 +90,18 @@ async function persistResult(result: CheckResult): Promise<void> {
     .maybeSingle();
 
   if (existing) {
-    const newAttempts = existing.attempts_total + 1;
-    const newCorrect = existing.correct_total + (result.correct ? 1 : 0);
-    const newErrorStreak = result.correct ? 0 : existing.error_streak + 1;
-    const newSuccessStreak = result.correct ? existing.success_streak + 1 : 0;
+    // Sloupce jsou v DB nullable. JS by null v aritmetice tiše převedl na 0,
+    // takže se chování nemění — jen se ten předpoklad říká nahlas.
+    // U `mastery_score` to není kosmetika: `(1-alpha) * null` = 0, tedy null
+    // by zvládnutí neviditelně vynuloval.
+    const newAttempts = (existing.attempts_total ?? 0) + 1;
+    const newCorrect = (existing.correct_total ?? 0) + (result.correct ? 1 : 0);
+    const newErrorStreak = result.correct ? 0 : (existing.error_streak ?? 0) + 1;
+    const newSuccessStreak = result.correct ? (existing.success_streak ?? 0) + 1 : 0;
 
     // Exponential weighted mastery: new = alpha * latest + (1-alpha) * old
     const latestScore = result.correct ? 1.0 : 0.0;
-    const newMastery = MASTERY_ALPHA * latestScore + (1 - MASTERY_ALPHA) * existing.mastery_score;
+    const newMastery = MASTERY_ALPHA * latestScore + (1 - MASTERY_ALPHA) * (existing.mastery_score ?? 0);
 
     // Update weak patterns
     const patterns: string[] = Array.isArray(existing.weak_pattern_flags)

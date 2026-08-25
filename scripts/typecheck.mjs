@@ -13,7 +13,7 @@
  */
 import { execSync } from "node:child_process";
 
-const BASELINE = 13; // reálný `tsc -p tsconfig.app.json` k 2026-07-15 (start auditu byl 94, postupně 34→30→23→13). Zbylých 13 = performanceTracker.ts + skillLevel.ts, DB-stale `types.ts` (student_skill_level/student_misconceptions mají migrace v repu, ale chybí v auto-gen types.ts — čeká na `supabase login` + deploy, needit se needituje).
+const BASELINE = 0; // 2026-08-25: dotaženo na 0 (start auditu 94 → 34 → 30 → 23 → 13 → 0). Posledních 13 nebyly bugy v kódu, ale zastaralý `types.ts` (generovaný 2026-04-11, migrace pro student_misconceptions a student_skill_level jsou z 30. 4. a 21. 5.). Po přegenerování typů se ukázalo 18 skutečných nullability chyb — ty staré typy maskovaly. Od teď je guard tvrdý gate: JAKÁKOLI nová chyba shodí CI.
 
 let output = "";
 try {

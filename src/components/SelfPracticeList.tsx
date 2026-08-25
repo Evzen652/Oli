@@ -90,14 +90,14 @@ export function SelfPracticeList({ childId }: Props) {
           independent: 0,
           withHelp: 0,
           wrong: 0,
-          lastDate: log.created_at,
+          lastDate: log.created_at ?? "",
           subject: detectSubject(log.skill_id),
         };
         g.count++;
         if (log.correct && !log.help_used) g.independent++;
         else if (log.correct && log.help_used) g.withHelp++;
         else g.wrong++;
-        if (log.created_at > g.lastDate) g.lastDate = log.created_at;
+        if ((log.created_at ?? "") > g.lastDate) g.lastDate = log.created_at ?? "";
         map.set(log.skill_id, g);
       }
 

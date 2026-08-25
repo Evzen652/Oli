@@ -201,6 +201,10 @@ Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 - children má PIN sloupce `pin_hash` / `pin_failed_attempts` / `pin_locked_until` (child re-login PIN; **migrace čeká na deploy** — do té doby `select` konkrétně `pin_hash` chybuje, `select("*")` je OK)
 - profiles uses `id` as PK referencing auth.users(id)
 - Zdroj pravdy o sloupcích = `src/integrations/supabase/types.ts` (auto-gen), NE `supabase/schema.sql` (u `children` zastaralý)
+- **`types.ts` přegenerovaný 2026-08-25** (předtím 2026-04-11, tedy starší než migrace z 30. 4. a 21. 5.). Needituj ho ručně — přegeneruj:
+  `SUPABASE_ACCESS_TOKEN=<PAT z .env.admin> npx supabase gen types typescript --project-id uusaczibimqvaazpaopy > src/integrations/supabase/types.ts`
+  Po přegenerování očekávej nové nullability chyby: staré typy jich maskovaly 18.
+- `profiles.id` je PK odkazující na `auth.users(id)` **bez defaultu** → do každého insertu/upsertu ho posílej explicitně (`id: user.id`), jinak `null value in column "id"`.
 
 ## Admin account
 - Email: eweigl@email.cz / Password: Admin123!

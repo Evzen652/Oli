@@ -175,23 +175,56 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
   useEffect(() => { latestSessionRef.current = session; }, [session]);
   useEffect(() => { latestTaskResultsRef.current = taskResults; }, [taskResults]);
 
+  /**
+   * Zapíše výsledek úlohy do stavu I do refu naráz.
+   *
+   * Ref musí být aktuální synchronně — `dispatch` je stabilní callback
+   * (deps `[markAssignmentCompleted]`), takže by `taskResults` ze closure
+   * viděl navždy prázdné pole z prvního renderu.
+   */
+  const appendTaskResult = useCallback((r: "correct" | "wrong" | "help") => {
+    latestTaskResultsRef.current = [...latestTaskResultsRef.current, r];
+    setTaskResults(latestTaskResultsRef.current);
+  }, []);
+
+  /** Přepíše výsledky (reset sezení, obnova ze zálohy) — opět stav i ref. */
+  const replaceTaskResults = useCallback((next: ("correct" | "wrong" | "help")[]) => {
+    latestTaskResultsRef.current = next;
+    setTaskResults(next);
+  }, []);
+
+  /**
+   * Označí anonymní denní úkol za splněný. JEDINÉ místo, kde se počítá skóre.
+   *
+   * Dřív se počítalo na třech místech a dvě z nich četla `taskResults` ze
+   * closure. Unmount cleanup měl ref správně, `handleAnswerSubmit` vycházel
+   * správně jen náhodou (recreatuje se na každou změnu `session`, která jde
+   * v páru s výsledkem), ale `dispatch` četl vždy prázdné pole — a zapisoval
+   * tedy anonymnímu dítěti **skóre 0** pokaždé, když sezení skončilo jinou
+   * cestou než odpovědí na poslední úlohu.
+   *
+   * `requireCorrect` používá jen cleanup na unmount: předčasný odchod bez
+   * jediné správné odpovědi se za splněný úkol počítat nemá.
+   */
+  const completeAnonTask = useCallback((topicId: string | undefined, opts?: { requireCorrect?: boolean }) => {
+    if (!topicId) return;
+    if (getCurrentAnonGrade() === null) return;
+    const results = latestTaskResultsRef.current;
+    if (results.length === 0) return;
+    const correct = results.filter((r) => r === "correct").length;
+    if (opts?.requireCorrect && correct === 0) return;
+    markAnonTaskCompleted(topicId, correct / results.length);
+    window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+    completedRef.current = true;
+  }, []);
+
   useEffect(() => {
     return () => {
-      // Cleanup na unmount — pokud anon mode + máme alespoň 1 správnou odpověď
-      // a task nebyl už markován v END handleru, ulož částečný pokrok.
+      // Cleanup na unmount — částečný pokrok při předčasném odchodu.
       if (completedRef.current) return;
-      if (getCurrentAnonGrade() === null) return;
-      const sess = latestSessionRef.current;
-      const results = latestTaskResultsRef.current;
-      const topicId = sess?.matchedTopic?.id;
-      if (!topicId || results.length === 0) return;
-      const correct = results.filter(r => r === "correct").length;
-      if (correct === 0) return; // ani jedna správná → nemarkovat
-      const score = correct / results.length;
-      markAnonTaskCompleted(topicId, score);
-      window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
+      completeAnonTask(latestSessionRef.current?.matchedTopic?.id, { requireCorrect: true });
     };
-  }, []);
+  }, [completeAnonTask]);
 
   const markAssignmentCompleted = useCallback(async (skillId: string) => {
     try {
@@ -248,14 +281,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
 
         if (result.session.matchedTopic?.id) {
           markAssignmentCompleted(result.session.matchedTopic.id);
-          // Anon mód: označ úkol jako splněný v localStorage
-          if (getCurrentAnonGrade() !== null) {
-            const correct = taskResults.filter(r => r === "correct").length;
-            const score = taskResults.length > 0 ? correct / taskResults.length : 0;
-            markAnonTaskCompleted(result.session.matchedTopic.id, score);
-            window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
-            completedRef.current = true; // brání duplicitnímu markování při unmount
-          }
+          completeAnonTask(result.session.matchedTopic.id);
         }
       }
       return result;
@@ -265,7 +291,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     } finally {
       setLoading(false);
     }
-  }, [markAssignmentCompleted]);
+  }, [markAssignmentCompleted, completeAnonTask]);
 
   const handleGradeSelect = useCallback((g: Grade) => {
     setGrade(g);
@@ -296,7 +322,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setLoading(true);
     try {
       setDiktatFilter(null);
-      setTaskResults([]);
+      replaceTaskResults([]);
       const enrichedTopic = await enrichTopicFromDb(topic);
 
       // Check if this is a DB-only topic (no code generator)
@@ -362,13 +388,13 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     } finally {
       setLoading(false);
     }
-  }, [grade, enrichTopicFromDb]);
+  }, [grade, enrichTopicFromDb, replaceTaskResults]);
 
   const handleDiktatFilterConfirm = useCallback(async (types: DiktatType[]) => {
     if (!grade || !pendingDiktatTopic) return;
     setDiktatFilter(types);
     setPendingDiktatTopic(null);
-    setTaskResults([]);
+    replaceTaskResults([]);
     const enrichedTopic = await enrichTopicFromDb(pendingDiktatTopic);
     const newSession = createSession(grade);
     newSession.matchedTopic = enrichedTopic;
@@ -378,7 +404,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     if (result?.output) {
       setExplanation(result.output);
     }
-  }, [grade, pendingDiktatTopic, dispatch, enrichTopicFromDb]);
+  }, [grade, pendingDiktatTopic, dispatch, enrichTopicFromDb, replaceTaskResults]);
 
   const handleInputSubmit = useCallback(async () => {
     if (!session || isLocked || loading) return;
@@ -408,7 +434,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       setUserInput("");
       const wasCorrect = result.lastAnswerCorrect === true;
       const taskResult: "correct" | "wrong" | "help" = session.helpUsedOnCurrent ? "help" : wasCorrect ? "correct" : "wrong";
-      setTaskResults(prev => [...prev, taskResult]);
+      appendTaskResult(taskResult);
       if (TERMINAL_STATES.includes(result.session.state)) {
         setLastAnswerCorrect(wasCorrect);
         const feedbackMsg = wasCorrect ? getNextPraise() : getNextIncorrect();
@@ -416,15 +442,9 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         setOutput(feedbackMsg);
         setPracticeQuestion(undefined);
         setPendingEndSession(result.session);
-        // Anon mód: označ úkol jako splněný v localStorage
-        if (result.session.matchedTopic?.id && getCurrentAnonGrade() !== null) {
-          const allResults = [...taskResults, taskResult];
-          const correct = allResults.filter(r => r === "correct").length;
-          const score = allResults.length > 0 ? correct / allResults.length : 0;
-          markAnonTaskCompleted(result.session.matchedTopic.id, score);
-          window.dispatchEvent(new CustomEvent("oli-anon-task-completed"));
-          completedRef.current = true;
-        }
+        // `appendTaskResult` výše už ref aktualizoval, takže helper vidí
+        // i právě zodpovězenou úlohu.
+        completeAnonTask(result.session.matchedTopic?.id);
         return;
       }
       setSession(result.session);
@@ -438,7 +458,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     } finally {
       setLoading(false);
     }
-  }, [session, isLocked, loading]);
+  }, [session, isLocked, loading, appendTaskResult, completeAnonTask]);
 
   const handleContinueAfterCheck = useCallback(async () => {
     if (!session || loading) return;
@@ -464,7 +484,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     }
     if (isLocked) return;
     await dispatch(session);
-  }, [session, isLocked, loading, dispatch, pendingEndSession]);
+  }, [session, isLocked, loading, dispatch, pendingEndSession, markAssignmentCompleted]);
 
   const handleRevealAnswer = useCallback(() => {
     if (!session || !session.matchedTopic) return;
@@ -538,8 +558,8 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setPendingEndSession(null);
     setPendingDiktatTopic(null);
     setDiktatFilter(null);
-    setTaskResults([]);
-  }, []);
+    replaceTaskResults([]);
+  }, [replaceTaskResults]);
 
   return {
     grade, session, output, practiceQuestion, userInput, isLocked, loading,
@@ -548,7 +568,7 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     answeredTaskIndex,
     selectedAnswer,
     questionTitle, questionIcon, taskResults, pendingDiktatTopic,
-    setTaskResults,
+    setTaskResults: replaceTaskResults,
     setGrade, setSession, setOutput, setUserInput, setIsLocked,
     setCheckFeedback, setLastAnswerCorrect, setRevealedAnswer,
     setExplanation, setAiEvaluation, setAiEvalLoading, setEvalMinReached,

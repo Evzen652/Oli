@@ -106,6 +106,10 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
       toast({ description: `Téma "${prefillSkillCode}" nelze předvyplnit — vyberte ho prosím ručně.` });
     }
     onPrefillConsumed?.();
+    // Jednorázová „spotřeba" předvyplnění — má proběhnout jen při změně kódu
+    // nebo otevření dialogu. `onPrefillConsumed` chodí jako inline funkce,
+    // takže v závislostech by efekt spouštěl na každý render rodiče.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prefillSkillCode, open]);
 
   const selectedSkillMeta = skills.find(s => s.id === selectedSkillId);
