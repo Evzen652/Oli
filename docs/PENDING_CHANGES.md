@@ -40,6 +40,16 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - AI prompty pro rodičovské texty nevynucovaly češtinu → v ostré DB je uloženo ruské „части" místo „části". Opraveno pro nově generované texty.
 - `mapAuthError` nerozlišoval serverovou chybu od chyby ve vstupu — rodič u 500 hledal chybu u sebe.
 
+## ✅ Autoring: Claude jediným autorem, sloh odstraněn (2026-08-25, pokračování 7)
+> Produktové rozhodnutí uživatele: cvičení už nenavrhuje Grok/AI — autorem je Claude včetně kompletní dokumentace. Starý obsah se nemaže, ale musí projít auditem. Sloh v aplikaci nebude.
+
+- ✅ **Sloh pryč i s poslední AI cestou na práci dítěte.** `evaluate-essay` posílala dětské texty na Groq (llama-3.3-70b) a vracela známku 0–100. Odstraněna témata `cz-sloh-vypraveni`/`cz-sloh-popis`, `EssayInput`, `inputType: "essay"`, `essayValidator` i edge funkce. RVP slohová výchova v grade-2/3/4 **zůstává** — jsou to běžná cvičení s výběrem odpovědi, ne volný text.
+- 🔎 **Korekce dřívějšího tvrzení:** „Groq je mrtvý" platilo jen pro klienta. `_shared/aiCall.ts` je aktivní klient (Google AI → Groq → Lovable) a `evaluate-essay` přes něj běžela **nezaflagovaná**.
+- ✅ **Mrtvá AI cesta generování smazána** — `generateResponse`/`generatePracticeBatch` byly v `sessionOrchestrator` jen importované, nikdy volané. Smazána i edge funkce `seed-curriculum` (nulový volající).
+- ✅ **Pedagogika sklizena PŘED mazáním** do `CONTENT_AUTHORING.md` §0: dvoustupňový kontrakt nápověd (obě unikátní pro konkrétní úlohu), „vysvětlení říká PROČ, ne CO", `optionFeedback` jako diagnostika chyby. Dosud žilo jen v promptech mazaných funkcí.
+- 📊 **Retro-audit změřen:** 229 témat / 10 572 úloh, **73 % OK**, 2 938 problémů (formát 1 553 · nápověda prozrazuje 785 · validace odpovědi 529). `optionFeedback` má jen **3 soubory z 340**.
+- 🟡 **Zbývá:** (a) admin AI panel + edge funkce `ai-tutor`/`exercise-validator` — nutné živé ověření adminu, které sandbox neumí (proxy blokuje Supabase); (b) vynutit povinná pole auditem (tvrdý gate pro nová témata, warning pro stávající); (c) retro-audit 2 938 problémů po vlnách, `hint_leak` první.
+
 ## ✅ Technický dluh: reálný bug ve skóre + typecheck baseline 13 → 0 (2026-08-25)
 - 🐞 **Anonymní dítě dostávalo skóre 0, když mu vypršel čas sezení.** `useSessionDispatch` počítal skóre na TŘECH místech. `dispatch` je stabilní callback (deps `[markAssignmentCompleted]`), takže četl `taskResults` zmrazené z prvního renderu — vždy prázdné pole. Cesta je reálná: `evaluateStop` vrací STOP_2 při vyčerpání času (8 min pro 2.–3. ročník), takže dítě, které se do limitu nevejde, mělo úkol zapsaný s nulou bez ohledu na výsledky. Sjednoceno do jednoho helperu nad refem (ten v souboru už existoval — přesně kvůli téhle pasti, jen ho `dispatch` nepoužíval). **2 regresní testy ověřeny i proti staré verzi: `expected 0 to be greater than 0`.**
 - ✅ **exhaustive-deps 18 → 9.** Opraveny všechny uživatelsky viditelné. `SessionView` dostal destrukturovaný stabilní `handleGradeSelect`; `AssignmentList.fetchAssignments` obalen `useCallback`; `useChildStats` má `mock` v deps a `ChildHomePage` ho memoizuje (bez toho by demo režim spadl do nekonečné smyčky renderů). U `SessionEndSummary` a `AssignmentCreator` jsou prázdné deps ZÁMĚR — doplněny disable komentáře s vysvětlením místo falešné opravy. Zbylých 9 je admin-only.

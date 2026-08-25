@@ -129,6 +129,22 @@ Toto upozornění dej vždy po velkém tasku nebo pokud máš pocit, že kontext
 - No gamification — no points, badges, streaks, leaderboards
 - Efficiency principle — "the less time child spends in system, the better"
 
+## ⚠️ AUTOR OBSAHU = CLAUDE (rozhodnuto 2026-08-25)
+
+**Žádný model negeneruje cvičení — ani za běhu, ani offline, ani v adminu.**
+Autorem je Claude v session, výstupem je **kód** (`TopicMetadata.generator`),
+tedy čistá funkce, kterou lze auditovat, zamrazit a diffnout.
+
+Ke každé úloze patří **kompletní dokumentace**, ne jen klíč:
+`hints[0]` + `hints[1]` (obě unikátní pro tu úlohu), `explanation`/`solutionSteps`
+vysvětlující PROČ, a `optionFeedback` u výběrových typů.
+Závazná pravidla: [`docs/CONTENT_AUTHORING.md`](docs/CONTENT_AUTHORING.md) §0.
+
+Starý obsah se nemaže, ale musí projít auditem (`runOfflineAudit`).
+
+**Sloh (volný text) v aplikaci není** — `inputType: "essay"` neexistuje.
+RVP „komunikační a slohová výchova" je něco jiného: běžná cvičení s výběrem odpovědi.
+
 ## AI Models — NOVÁ ARCHITEKTURA (rozhodnuto 2026-05-20)
 Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 
