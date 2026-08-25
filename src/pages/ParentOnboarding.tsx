@@ -11,11 +11,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useT } from "@/lib/i18n";
 import type { Grade } from "@/lib/types";
 import { BackButton } from "@/components/BackButton";
+import { GradeSelectItems } from "@/components/GradeSelectItems";
 import { getAnonProgressSummary, migrateAnonProgress, clearAnonData } from "@/lib/anonMigration";
 import { peekAnonToken } from "@/lib/anonServerSync";
 import { pad } from "@/lib/czechGrammar";
 
-const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function ParentOnboarding() {
   const navigate = useNavigate();
@@ -169,9 +169,7 @@ export default function ParentOnboarding() {
                 <Select value={String(grade)} onValueChange={(v) => setGrade(Number(v) as Grade)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {GRADES.map((g) => (
-                      <SelectItem key={g} value={String(g)}>{g}. {t("parent.grade_label")}</SelectItem>
-                    ))}
+                    <GradeSelectItems label={t("parent.grade_label")} />
                   </SelectContent>
                 </Select>
               </div>

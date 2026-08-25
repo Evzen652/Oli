@@ -448,18 +448,22 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         type="button"
                         onClick={() => onLockedClick?.()}
                         title="Zaregistruj se zdarma a odemkni všechny okruhy"
-                        className="group aspect-square relative text-left rounded-3xl border-2 border-slate-200 bg-slate-100/80 shadow-soft-1 transition-all hover:border-violet-300 hover:shadow-md p-4 flex flex-col"
+                        className="group aspect-square relative text-left rounded-3xl border-2 border-border bg-muted/60 shadow-e1 transition-all duration-150 hover:border-primary/40 hover:shadow-e2 hover:-translate-y-px p-4 flex flex-col"
                       >
                         {/* Zámek v rohu — ilustrace ztlumená (zašedlá), ať je jasné že je zamčeno */}
-                        <div className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm z-10">
-                          <Lock className="h-4 w-4 text-slate-500" />
+                        <div className="absolute top-3 right-3 h-8 w-8 rounded-full bg-card border border-border flex items-center justify-center shadow-e1 z-10">
+                          <Lock className="h-4 w-4 text-muted-foreground" />
                         </div>
                         <div className="flex-1 flex items-center justify-center grayscale opacity-55">
                           <PrvoukaImage imageUrl={card.imageUrl} fallbackEmoji={card.emoji} size="lg" />
                         </div>
                         <div className="space-y-1">
-                          <h3 className="text-lg font-black text-slate-500 tracking-tight leading-tight line-clamp-2">{card.name}</h3>
-                          <p className="text-sm font-bold text-violet-600 leading-snug">🔓 Přihlásit se →</p>
+                          <h3 className="text-lg font-black text-muted-foreground tracking-tight leading-tight line-clamp-2">{card.name}</h3>
+                          {/* Dřív tu bylo „🔓 Přihlásit se →" — otevřený zámek přímo pod
+                              zavřeným <Lock> ikonou, tedy dva protichůdné signály. A dítě
+                              bez účtu se nemá čím přihlásit; klik otevírá nabídku „Jsem žák /
+                              Jsem rodič", takže správné sloveso je „odemknout". */}
+                          <p className="text-sm font-bold text-primary leading-snug">Odemknout →</p>
                         </div>
                       </button>
                     ) : (

@@ -175,7 +175,10 @@ const App = () => {
                    <Route path="/auth/child" element={<ChildAuth />} />
                    <Route path="/auth/forgot-password" element={<ForgotPassword />} />
                    <Route path="/reset-password" element={<ResetPassword />} />
-                   <Route path="*" element={<Navigate to="/" replace />} />
+                   {/* Dřív tichý `Navigate to="/"`, zatímco přihlášené větve ukazují
+                       NotFound. Tichý redirect schová rozbitý odkaz před uživatelem
+                       i před námi (žádná chyba v konzoli) — 404 se má přiznat. */}
+                   <Route path="*" element={<NotFound />} />
                 </Routes>
               )}
             </BrowserRouter>

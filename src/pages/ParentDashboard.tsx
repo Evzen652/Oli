@@ -26,10 +26,10 @@ import { ChildSessionLog, type SessionEntry } from "@/components/ChildSessionLog
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { logoNoText } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
+import { GradeSelectItems } from "@/components/GradeSelectItems";
 import { LandingNav } from "@/pages/LandingNav";
 import { ChildPinControl } from "@/components/parent/ChildPinControl";
 
-const GRADES: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
 import { pad as czPad } from "@/lib/czechGrammar";
@@ -388,7 +388,7 @@ export default function ParentDashboard() {
                           <SelectTrigger className="h-8 w-28 bg-white/20 border-white/30 text-white [&>svg]:text-white hover:bg-white/30 focus:ring-white/30">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. třída</SelectItem>)}</SelectContent>
+                          <SelectContent><GradeSelectItems /></SelectContent>
                         </Select>
                         <button
                           onClick={handleSaveEdit}
@@ -547,7 +547,7 @@ export default function ParentDashboard() {
                       />
                       <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
                         <SelectTrigger className="h-8 w-24"><SelectValue /></SelectTrigger>
-                        <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. třída</SelectItem>)}</SelectContent>
+                        <SelectContent><GradeSelectItems /></SelectContent>
                       </Select>
                       <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="h-8 gap-1"><Check className="h-3 w-3" /> Uložit</Button>
                       <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-8"><X className="h-3 w-3" /></Button>
@@ -640,7 +640,7 @@ export default function ParentDashboard() {
               <Label>{t("onboarding.step2.grade")}</Label>
               <Select value={String(newGrade)} onValueChange={(v) => setNewGrade(Number(v) as Grade)}>
                 <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                <SelectContent>{GRADES.map((g) => <SelectItem key={g} value={String(g)}>{g}. {t("parent.grade_label")}</SelectItem>)}</SelectContent>
+                <SelectContent><GradeSelectItems label={t("parent.grade_label")} /></SelectContent>
               </Select>
             </div>
             <div className="space-y-2"><Label>Poznámky k učení</Label><Textarea value={newNotes} onChange={(e) => setNewNotes(e.target.value)} placeholder="Např. ADHD, dyslexie…" className="min-h-[60px] text-xs rounded-xl" /></div>
