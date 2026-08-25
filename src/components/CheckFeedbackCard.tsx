@@ -8,7 +8,6 @@ interface CheckFeedbackCardProps {
   lastAnswerCorrect: boolean | null;
   answeredTask: PracticeTask | null;
   topic: TopicMetadata | null;
-  subjectColors: { border: string; bg: string };
   loading: boolean;
   isTerminal: boolean;
   onContinue: () => void;
@@ -136,7 +135,6 @@ export function CheckFeedbackCard({
   lastAnswerCorrect,
   answeredTask,
   topic,
-  subjectColors,
   loading,
   isTerminal,
   onContinue,
@@ -149,9 +147,16 @@ export function CheckFeedbackCard({
       : null;
   return (
     <>
-      <Card className={`rounded-2xl overflow-hidden bg-gradient-to-br ${subjectColors.bg} ${lastAnswerCorrect ? "animate-pop-in" : "animate-shake"}`}>
+      {/* Design systém: „špatně" NENÍ červená plocha. Karta zůstává bílá,
+          stav nese jen okraj a barva nadpisu — plná červená plocha je pro
+          dítě trest, ne informace. Oranžová je vyhrazená sově, ne chybě. */}
+      <Card
+        className={`overflow-hidden border-2 ${
+          lastAnswerCorrect ? "border-success/40 animate-pop-in" : "border-destructive/40 animate-shake"
+        }`}
+      >
         <CardContent className="p-6">
-          <h2 className={`text-2xl font-bold mb-3 ${lastAnswerCorrect ? "text-green-600" : "text-orange-600"}`}>
+          <h2 className={`text-2xl font-bold mb-3 ${lastAnswerCorrect ? "text-success" : "text-destructive"}`}>
             {checkFeedback}
           </h2>
           {lastAnswerCorrect && (
@@ -162,11 +167,11 @@ export function CheckFeedbackCard({
             </div>
           )}
           {answeredTask && topic && (
-            <div className="mt-4 rounded-xl bg-white p-5 text-base text-secondary-foreground space-y-3 shadow-md">
+            <div className="mt-4 rounded-lg bg-muted/60 p-5 text-base text-secondary-foreground space-y-3">
               {/* Cílené vysvětlení konkrétní chyby — jen když je zvolená možnost diagnostikovaná */}
               {targetedFeedback && (
-                <div className="rounded-lg bg-orange-50 border border-orange-200 p-3">
-                  <p className="text-base font-semibold text-orange-800 leading-relaxed">
+                <div className="rounded-md bg-warning-muted border border-warning/30 p-3">
+                  <p className="text-base font-semibold text-warning leading-relaxed">
                     {targetedFeedback}
                   </p>
                 </div>
@@ -186,7 +191,7 @@ export function CheckFeedbackCard({
 
       {!isTerminal && (
         <div className="text-center">
-          <Button onClick={onContinue} disabled={loading} className="w-full text-lg h-14 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200">
+          <Button onClick={onContinue} disabled={loading} variant="success" size="child" className="w-full text-lg">
             {loading ? t("session.processing") : t("session.continue")}
           </Button>
         </div>

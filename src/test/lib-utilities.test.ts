@@ -22,8 +22,10 @@ describe("subjectRegistry — known subjects", () => {
       const meta = getSubjectMeta(subject);
       expect(meta.label).toBeTruthy();
       expect(meta.emoji).toBeTruthy();
-      expect(meta.gradientClass).toBeTruthy();
+      expect(meta.tintClass).toBeTruthy();
       expect(meta.borderClass).toBeTruthy();
+      expect(meta.color).toBeTruthy();
+      expect(meta.accentClass).toBeTruthy();
     }
   );
 
@@ -41,22 +43,22 @@ describe("subjectRegistry — dynamic fallback pro neznámý subject", () => {
     const meta = getSubjectMeta("hudebka");
     expect(meta.label).toBe("Hudebka"); // Capitalized
     expect(meta.emoji).toBeTruthy();
-    expect(meta.gradientClass).toContain("bg-gradient-to-r");
+    expect(meta.tintClass).toContain("bg-");
     expect(meta.borderClass).toContain("border-");
   });
 
   it("deterministic fallback: stejný subject → stejný emoji + hue", () => {
-    const a = getSubjectMeta("dejepis");
-    const b = getSubjectMeta("dejepis");
+    const a = getSubjectMeta("xx-neznamy");
+    const b = getSubjectMeta("xx-neznamy");
     expect(a.emoji).toBe(b.emoji);
-    expect(a.gradientClass).toBe(b.gradientClass);
+    expect(a.tintClass).toBe(b.tintClass);
   });
 
   it("různé subjects mají různé hue", () => {
     const a = getSubjectMeta("xx-aaa");
     const b = getSubjectMeta("xx-bbb");
     // Possibly stejný (hash collision), ale typicky jiný
-    expect([a.gradientClass !== b.gradientClass, a.emoji !== b.emoji].some(Boolean)).toBe(true);
+    expect([a.tintClass !== b.tintClass, a.emoji !== b.emoji].some(Boolean)).toBe(true);
   });
 
   it("fallback emoji je z sady fallback emojis", () => {
@@ -79,7 +81,7 @@ describe("subjectRegistry — SUBJECTS constant", () => {
     Object.entries(SUBJECTS).forEach(([key, meta]) => {
       expect(meta.label, key).toBeTruthy();
       expect(meta.emoji, key).toBeTruthy();
-      expect(meta.gradientClass, key).toContain("bg-gradient");
+      expect(meta.tintClass, key).toContain("bg-");
     });
   });
 });

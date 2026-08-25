@@ -368,11 +368,11 @@ function CompactTaskCard({
       {/* Header — index + topic chip vlevo, status/action vpravo */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
+          <span className="text-caption font-mono text-muted-foreground tabular-nums">
             {indexLabel}
           </span>
           {topicLabel && (
-            <span className="grid place-items-center h-5 min-w-[20px] px-1.5 rounded-md bg-emerald-100 text-emerald-700 text-[10px] font-bold">
+            <span className="grid place-items-center h-5 min-w-[20px] px-1.5 rounded-md bg-emerald-100 text-emerald-700 text-caption font-bold">
               {topicLabel}
             </span>
           )}
@@ -380,7 +380,7 @@ function CompactTaskCard({
         <div className="flex items-center gap-2">
           {rightAction}
           {statusBadge && (
-            <Badge className={`${statusBadge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
+            <Badge className={`${statusBadge.cls} text-caption whitespace-nowrap rounded-full px-2 py-0.5`}>
               {statusBadge.text}
             </Badge>
           )}
@@ -425,7 +425,7 @@ function CompactTaskCard({
       {/* NÁPOVĚDY — rozepsané (jako v mockupu, ne jen počet) */}
       {hints && hints.length > 0 && (
         <div className="space-y-1">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
             Nápovědy
           </p>
           <ol className="text-sm text-foreground/80 space-y-0.5">
@@ -642,7 +642,7 @@ function SavedExercisesList({
             >
               <span>{meta.text.split(" ")[0]}</span>
               <span>{s === "pending" ? "Čeká" : s === "approved" ? "Schváleno" : "Odmítnuto"}</span>
-              <Badge variant="outline" className="text-[10px] h-4 px-1 ml-0.5 font-mono">
+              <Badge variant="outline" className="text-caption h-4 px-1 ml-0.5 font-mono">
                 {counts[s]}
               </Badge>
             </Button>
@@ -667,20 +667,20 @@ function SavedExercisesList({
               <div key={ex.id} className={`rounded-2xl border ${tone} p-4 space-y-3 shadow-soft-1`}>
                 {/* Header — index/status */}
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
+                  <span className="text-caption font-mono text-muted-foreground tabular-nums">
                     #{ex.id?.slice(0, 6) ?? ""}
                   </span>
                   <div className="flex items-center gap-1.5">
                     {warnings.length > 0 && (
                       <Badge
-                        className="bg-amber-100 text-amber-800 border-amber-300 text-[10px] whitespace-nowrap rounded-full px-2 py-0.5 gap-1"
+                        className="bg-amber-100 text-amber-800 border-amber-300 text-caption whitespace-nowrap rounded-full px-2 py-0.5 gap-1"
                         title={warnings.map((w) => w.message).join("\n")}
                       >
                         <AlertTriangle className="h-3 w-3" />
                         {warnings.length}
                       </Badge>
                     )}
-                    <Badge className={`${badge.cls} text-[10px] whitespace-nowrap rounded-full px-2 py-0.5`}>
+                    <Badge className={`${badge.cls} text-caption whitespace-nowrap rounded-full px-2 py-0.5`}>
                       {badge.text}
                     </Badge>
                   </div>
@@ -721,7 +721,7 @@ function SavedExercisesList({
                 {/* NÁPOVĚDY — rozepsané */}
                 {Array.isArray(ex.hints) && ex.hints.length > 0 && (
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
                       Nápovědy
                     </p>
                     <ol className="text-sm text-foreground/80 space-y-0.5">
@@ -850,12 +850,12 @@ function AITaskRow({
   const headerBadges = (
     <div className="flex items-center gap-1">
       {task._grade_rewritten && (
-        <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-[10px] rounded-full">
+        <Badge className="bg-amber-100 text-amber-700 border-amber-200 text-caption rounded-full">
           🔄 Přeformulováno
         </Badge>
       )}
       {(task._grade_validated || task._grade_rewritten) && (
-        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[10px] rounded-full">
+        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-caption rounded-full">
           ✅ Ověřeno pro ročník
         </Badge>
       )}
@@ -1225,7 +1225,7 @@ export function ExerciseTab({
             </div>
           </div>
           <div className="space-y-1.5">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
               Zadání
             </p>
             <Textarea
@@ -1270,13 +1270,13 @@ export function ExerciseTab({
               <p className="text-3xl font-black text-emerald-600 tabular-nums">
                 {hasGenerator ? tierTaskCount : "—"}
               </p>
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
+              <p className="text-caption uppercase tracking-wider text-muted-foreground mt-0.5">
                 úloh
               </p>
             </div>
             <div className="text-center">
               <p className="text-3xl font-black text-sky-600 tabular-nums">1</p>
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
+              <p className="text-caption uppercase tracking-wider text-muted-foreground mt-0.5">
                 typ vstupu
               </p>
             </div>
@@ -1284,7 +1284,7 @@ export function ExerciseTab({
               <p className="text-3xl font-black text-violet-600 tabular-nums">
                 {hasGenerator ? "100 %" : "—"}
               </p>
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
+              <p className="text-caption uppercase tracking-wider text-muted-foreground mt-0.5">
                 ověřeno
               </p>
             </div>
@@ -1323,10 +1323,10 @@ export function ExerciseTab({
           {/* Header — label + count badge + (placeholder) sort */}
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+              <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
                 Ukázky ze šablony
               </p>
-              <Badge className="bg-emerald-500 text-white rounded-full px-2.5 py-0.5 text-[11px] font-bold">
+              <Badge className="bg-emerald-500 text-white rounded-full px-2.5 py-0.5 text-caption font-bold">
                 {genTasks.length}
               </Badge>
             </div>
@@ -1434,11 +1434,11 @@ export function ExerciseTab({
         <div className="space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+              <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
                 <Sparkles className={`h-3.5 w-3.5 ${config.color.icon}`} />
                 AI návrhy {config.shortLabel}
               </p>
-              <Badge className={`${config.color.badge} rounded-full px-2.5 py-0.5 text-[11px] font-bold`}>
+              <Badge className={`${config.color.badge} rounded-full px-2.5 py-0.5 text-caption font-bold`}>
                 {aiTasks.length}
               </Badge>
             </div>
@@ -1475,7 +1475,7 @@ export function ExerciseTab({
 
       {/* Ruční tvorba cvičení */}
       <div className="flex items-center justify-between py-1">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+        <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
           Ruční tvorba
         </p>
         <CreateExerciseDialog

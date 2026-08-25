@@ -91,7 +91,7 @@ export function ChildMisconceptions({ childId = "", childName, mockData }: Props
               />
               <div className="min-w-0">
                 {subjectMeta?.label && (
-                  <p className="text-[10px] font-bold text-amber-700/70 uppercase tracking-[0.12em] leading-none mb-0.5">{subjectMeta.label}</p>
+                  <p className="text-caption font-bold text-amber-700/70 uppercase tracking-[0.12em] leading-none mb-0.5">{subjectMeta.label}</p>
                 )}
                 <p className="text-sm font-bold text-foreground leading-tight truncate">{skillName}</p>
               </div>
@@ -100,13 +100,13 @@ export function ChildMisconceptions({ childId = "", childName, mockData }: Props
             <div className="px-4 py-3 space-y-3 bg-card">
               {m.description && (
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground">Kde chybuje</p>
+                  <p className="text-caption font-bold uppercase tracking-[0.1em] text-muted-foreground">Kde chybuje</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">{sub(m.description)}</p>
                 </div>
               )}
               {m.suggestion && (
                 <div className="space-y-1 pt-2 border-t border-border/50">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-amber-700/80">Návrh</p>
+                  <p className="text-caption font-bold uppercase tracking-[0.1em] text-amber-700/80">Návrh</p>
                   <div className="flex items-start gap-2">
                     <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
                     <p className="text-sm text-foreground/85 leading-relaxed">{sub(m.suggestion)}</p>

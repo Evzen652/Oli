@@ -62,14 +62,14 @@ describe("Scalability smoke test – fake subject 'testověda'", () => {
     const meta = getSubjectMeta("testověda");
     expect(meta.label).toBeTruthy();
     expect(meta.emoji).toBeTruthy();
-    expect(meta.gradientClass).toContain("bg-gradient");
+    expect(meta.tintClass).toContain("bg-");
     expect(meta.borderClass).toContain("border-");
   });
 
   it("fallback colors are deterministic", () => {
     const a = getSubjectMeta("testověda");
     const b = getSubjectMeta("testověda");
-    expect(a.gradientClass).toBe(b.gradientClass);
+    expect(a.tintClass).toBe(b.tintClass);
     expect(a.borderClass).toBe(b.borderClass);
     expect(a.emoji).toBe(b.emoji);
   });
@@ -77,7 +77,7 @@ describe("Scalability smoke test – fake subject 'testověda'", () => {
   it("different subjects get different hues", () => {
     const a = getSubjectMeta("přírodověda");
     const b = getSubjectMeta("dějepis");
-    expect(a.gradientClass).not.toBe(b.gradientClass);
+    expect(a.tintClass).not.toBe(b.tintClass);
   });
 
   it("visual functions return null gracefully for unknown subject", () => {

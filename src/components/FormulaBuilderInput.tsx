@@ -75,7 +75,7 @@ export function FormulaBuilderInput({ pool, onSubmit, disabled }: Props) {
 
       {/* Pool */}
       <div className="rounded-2xl border border-border bg-card p-4 shadow-soft-1">
-        <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">
+        <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground mb-2">
           Dostupné díly
         </p>
         <div className="flex flex-wrap gap-2">

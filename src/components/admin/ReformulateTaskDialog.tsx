@@ -205,14 +205,14 @@ function OriginalExercisePanel({
     <div className="space-y-2.5">
       {/* Question */}
       <div className={`rounded-xl p-3 border-2 transition-all ${hl("question")}`}>
-        <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">❓ Otázka</p>
+        <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-1">❓ Otázka</p>
         <p className="text-sm font-medium leading-snug">{task.question}</p>
       </div>
 
       {/* Correct answer — jen pokud task nemá options (jinak je označená v mřížce) */}
       {(!task.options || task.options.length === 0) && (
         <div className={`rounded-xl p-3 border-2 transition-all ${hl("correctAnswer")}`}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">✅ Správná odpověď</p>
+          <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-1">✅ Správná odpověď</p>
           <p className="text-sm font-semibold text-emerald-700">✓ {task.correctAnswer}</p>
         </div>
       )}
@@ -220,7 +220,7 @@ function OriginalExercisePanel({
       {/* Options */}
       {task.options && task.options.length > 0 && (
         <div className={`rounded-xl p-3 border-2 transition-all ${hl("options")}`}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">🔤 Možnosti odpovědí</p>
+          <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-2">🔤 Možnosti odpovědí</p>
           <div className="grid grid-cols-2 gap-1.5">
             {task.options.map((opt, i) => (
               <div
@@ -242,7 +242,7 @@ function OriginalExercisePanel({
       {/* Hints */}
       {task.hints && task.hints.length > 0 && (
         <div className={`rounded-xl p-3 border-2 transition-all ${hl("hints")}`}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">💡 Nápovědy</p>
+          <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-1">💡 Nápovědy</p>
           <ol className="text-xs space-y-1 list-decimal list-inside text-foreground/80">
             {task.hints.map((h, i) => <li key={i}>{h}</li>)}
           </ol>
@@ -258,7 +258,7 @@ function OriginalExercisePanel({
         if (!steps) return null;
         return (
           <div className={`rounded-xl p-3 border-2 transition-all ${hl("solutionSteps")}`}>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">📋 Postup řešení</p>
+            <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-1">📋 Postup řešení</p>
             <ol className="text-xs space-y-1 list-decimal list-inside text-foreground/80">
               {steps.map((s, i) => <li key={i}>{s}</li>)}
             </ol>
@@ -269,7 +269,7 @@ function OriginalExercisePanel({
       {/* Items (drag_order) */}
       {task.items && task.items.length > 0 && (
         <div className="rounded-xl p-3 border-2 border-border/50 bg-muted/20">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Správné pořadí</p>
+          <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-1">Správné pořadí</p>
           <ol className="text-xs space-y-0.5 list-decimal list-inside text-foreground/80">
             {task.items.map((item, i) => <li key={i}>{item}</li>)}
           </ol>
@@ -417,7 +417,7 @@ export function ReformulateTaskDialog({
 
           {/* LEFT — original exercise (sticky, scrollable internally) */}
           <div className="w-72 shrink-0 border-r bg-muted/10 p-4 overflow-y-auto">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-3">
+            <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground mb-3">
               Původní cvičení
             </p>
             <OriginalExercisePanel task={task} activeField={activeField} help={help} />
@@ -428,7 +428,7 @@ export function ReformulateTaskDialog({
 
             {/* Field selector */}
             <div className="space-y-1.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
                 Co chceš přeformulovat?
               </p>
               <div className="grid grid-cols-4 gap-1.5">
@@ -443,7 +443,7 @@ export function ReformulateTaskDialog({
                     }`}
                   >
                     <span className="block text-lg mb-0.5">{def.emoji}</span>
-                    <span className="text-[11px] font-medium leading-tight">{def.label}</span>
+                    <span className="text-caption font-medium leading-tight">{def.label}</span>
                   </button>
                 ))}
               </div>
@@ -451,7 +451,7 @@ export function ReformulateTaskDialog({
 
             {/* Style selector */}
             <div className="space-y-1.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
                 Jak přeformulovat?
               </p>
               <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
@@ -491,7 +491,7 @@ export function ReformulateTaskDialog({
             {/* Variants */}
             {variants.length > 0 && !loading && (
               <div className="space-y-1.5">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                <p className="text-caption font-bold uppercase tracking-wider text-muted-foreground">
                   Vyber variantu — kliknutím ji aplikuješ na cvičení
                 </p>
                 <div className="space-y-2">
@@ -537,7 +537,7 @@ export function ReformulateButtons({
       <div className="pt-0.5">
         <button
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-purple-300 bg-purple-50/60 px-3 py-1 text-[11px] font-medium text-purple-700 hover:bg-purple-100 hover:border-purple-400 transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-purple-300 bg-purple-50/60 px-3 py-1 text-caption font-medium text-purple-700 hover:bg-purple-100 hover:border-purple-400 transition-colors"
         >
           <Wand2 className="h-3 w-3" />
           Přeformulovat

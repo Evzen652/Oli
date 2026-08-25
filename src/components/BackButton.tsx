@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface BackButtonProps {
@@ -17,7 +18,11 @@ interface BackButtonProps {
 
 /**
  * Sjednocené tlačítko Zpět pro celou aplikaci.
- * Pill-shaped, lehký border, hover scale + posun šipky.
+ *
+ * Postaveno na `buttonVariants({ variant: "outline" })` — dřív mělo vlastní
+ * rádius, vlastní studenou šeď (`slate-200`/`slate-600`) i vlastní oranžový
+ * focus ring, takže se nikde ve zbytku aplikace neshodovalo. Tvar zůstává
+ * pilulka (`rounded-full` = povolený tvar pro pilulky a ikonová tlačítka).
  *
  * Použití:
  *   <BackButton />                              // navigate(-1), label "Zpět"
@@ -34,10 +39,6 @@ export function BackButton({ to, onClick, label = "Zpět", size = "md", classNam
     navigate(-1);
   };
 
-  const sizeClasses = size === "sm"
-    ? "px-3 py-1.5 text-xs gap-1.5"
-    : "px-4 py-2 text-sm gap-2";
-
   const iconSize = size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4";
 
   return (
@@ -45,12 +46,8 @@ export function BackButton({ to, onClick, label = "Zpět", size = "md", classNam
       type="button"
       onClick={handleClick}
       className={cn(
-        "group inline-flex items-center rounded-full font-medium",
-        "bg-white border border-slate-200 shadow-sm text-slate-600",
-        "hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 hover:shadow-md",
-        "active:scale-95 transition-all duration-150",
-        "focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-offset-2",
-        sizeClasses,
+        buttonVariants({ variant: "outline", size: size === "sm" ? "sm" : "default" }),
+        "group rounded-full text-muted-foreground shadow-e1 hover:text-foreground",
         className,
       )}
     >

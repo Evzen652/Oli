@@ -98,28 +98,26 @@ function buildTree(nodes: CurriculumNode[], topics: TopicMetadata[]): SubjectGro
 
 // ── Barvy předmětů ────────────────────────────────────────────────────
 
-const SUBJECT_COLORS: Record<string, {
-  border: string;   // left border předmětu
-  areaBg: string;   // pozadí okruhu
-  areaText: string; // text okruhu
-  dot: string;      // tečka v overview
-}> = {
-  matematika:   { border: "border-l-blue-500",   areaBg: "bg-blue-50/60 border-blue-100",    areaText: "text-blue-800",   dot: "bg-blue-500"   },
-  "cesky-jazyk":{ border: "border-l-rose-500",   areaBg: "bg-rose-50/60 border-rose-100",    areaText: "text-rose-800",   dot: "bg-rose-500"   },
-  vlastiveda:   { border: "border-l-amber-500",  areaBg: "bg-amber-50/60 border-amber-100",  areaText: "text-amber-800",  dot: "bg-amber-500"  },
-  prirodoveda:  { border: "border-l-teal-500",   areaBg: "bg-teal-50/60 border-teal-100",    areaText: "text-teal-800",   dot: "bg-teal-500"   },
-  informatika:  { border: "border-l-violet-500", areaBg: "bg-violet-50/60 border-violet-100",areaText: "text-violet-800", dot: "bg-violet-500" },
-};
-
-const DEFAULT_COLOR = { border: "border-l-gray-400", areaBg: "bg-gray-50/60 border-gray-100", areaText: "text-gray-700", dot: "bg-gray-400" };
-
+/**
+ * Barvy RVP stromu se odvozují z rejstříku předmětů — `subjectRegistry`
+ * umí i slugy bez diakritiky („cesky-jazyk", „prirodoveda"), které RVP
+ * dataset používá. Dřív tu byla pátá nezávislá mapa, kde měla informatika
+ * fialovou (dnes je grafitová) a přírodověda teal (dnes olivová).
+ */
 function subjectColor(slug: string) {
-  return SUBJECT_COLORS[slug] ?? DEFAULT_COLOR;
+  const p = getSubjectPalette(slug);
+  return {
+    border: p.edgeClass,
+    areaBg: `${p.tintClass} ${p.borderClass}`,
+    areaText: p.color,
+    dot: p.accentClass,
+  };
 }
 
 // ── Česká pluralizace ──────────────────────────────────────────────────
 
 import { pluralWithNumber as plural } from "@/lib/czechGrammar";
+import { getSubjectPalette } from "@/lib/subjectRegistry";
 
 // ── UI komponenty ──────────────────────────────────────────────────────
 
@@ -130,7 +128,7 @@ function ProgressBar({ done, total, colorClass = "bg-emerald-500" }: { done: num
       <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
         <div className={`h-full rounded-full transition-all ${colorClass}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-[11px] tabular-nums text-muted-foreground shrink-0">{done}/{total}</span>
+      <span className="text-caption tabular-nums text-muted-foreground shrink-0">{done}/{total}</span>
     </div>
   );
 }
@@ -159,7 +157,7 @@ function TopicSection({ topic, defaultOpen = false }: { topic: TopicGroup; defau
         <span className="text-[13px] font-medium text-foreground/75 group-hover:text-foreground transition-colors flex-1">
           {topic.topicLabel}
         </span>
-        <span className="text-[11px] tabular-nums text-muted-foreground/60">{done}/{topic.subtopics.length}</span>
+        <span className="text-caption tabular-nums text-muted-foreground/60">{done}/{topic.subtopics.length}</span>
       </button>
       {open && (
         <div className="mt-0.5 ml-3 space-y-0.5">
@@ -184,7 +182,7 @@ function AreaSection({ area, color, defaultOpen = false }: { area: AreaGroup; co
           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </span>
         <span className={`flex-1 text-[13px] font-semibold ${color.areaText}`}>{area.areaLabel}</span>
-        <span className="text-[11px] tabular-nums text-muted-foreground">{done}/{allSubs.length}</span>
+        <span className="text-caption tabular-nums text-muted-foreground">{done}/{allSubs.length}</span>
       </button>
       {open && (
         <div className="px-4 pb-3 pt-1 space-y-3 border-t border-black/5 bg-white/50">
@@ -220,7 +218,7 @@ function SubjectSection({ subject, id, expandAll }: { subject: SubjectGroup; id?
             colorClass={done === total && total > 0 ? "bg-emerald-500" : done > 0 ? "bg-amber-400" : "bg-gray-300"}
           />
         </div>
-        <div className="flex items-center gap-1.5 shrink-0 text-[11px] font-semibold">
+        <div className="flex items-center gap-1.5 shrink-0 text-caption font-semibold">
           {done > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-emerald-100 text-emerald-700 border-emerald-200"><CheckCircle2 className="h-3 w-3" />{done}</span>}
           {skeleton > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-amber-100 text-amber-700 border-amber-200"><Circle className="h-3 w-3" />{skeleton}</span>}
           {missing > 0 && <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 bg-gray-100 text-gray-400 border-gray-200"><MinusCircle className="h-3 w-3" />{missing}</span>}
@@ -254,7 +252,7 @@ function SubjectOverview({ tree }: { tree: SubjectGroup[] }) {
             className="flex flex-col gap-2 rounded-xl border border-border/60 bg-card px-4 py-3 hover:bg-muted/30 transition-colors no-underline"
           >
             <span className="text-[13px] font-semibold text-foreground leading-tight">{subject.subjectLabel}</span>
-            <div className="flex flex-col gap-1 text-[11px] text-muted-foreground">
+            <div className="flex flex-col gap-1 text-caption text-muted-foreground">
               <span className="flex items-center gap-1.5"><span className={`h-2 w-2 rounded-full shrink-0 ${subjectColor(subject.subjectSlug).dot}`} />{plural(subject.areas.length, "okruh", "okruhy", "okruhů")}</span>
               <span className="flex items-center gap-1.5"><span className={`h-2 w-2 rounded-full shrink-0 opacity-70 ${subjectColor(subject.subjectSlug).dot}`} />{plural(subject.areas.flatMap(a => a.topics).length, "téma", "témata", "témat")}</span>
               <span className="flex items-center gap-1.5"><span className={`h-2 w-2 rounded-full shrink-0 opacity-40 ${subjectColor(subject.subjectSlug).dot}`} />{plural(total, "podtéma", "podtémata", "podtémat")}</span>
@@ -265,7 +263,7 @@ function SubjectOverview({ tree }: { tree: SubjectGroup[] }) {
                 style={{ width: `${Math.max(pct, pct > 0 ? 4 : 0)}%` }}
               />
             </div>
-            <span className="text-[11px] tabular-nums text-muted-foreground font-medium">{done}/{total} hotovo · {pct} %</span>
+            <span className="text-caption tabular-nums text-muted-foreground font-medium">{done}/{total} hotovo · {pct} %</span>
           </a>
         );
       })}

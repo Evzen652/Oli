@@ -117,7 +117,7 @@ export function OnboardingHero({ gradeFilter, onStartWithPrompt, onOpenWizard }:
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="font-semibold text-foreground">{tpl.label}</p>
-                      <Badge variant="outline" className="text-[10px] font-normal">
+                      <Badge variant="outline" className="text-caption font-normal">
                         {tpl.grades}
                       </Badge>
                     </div>

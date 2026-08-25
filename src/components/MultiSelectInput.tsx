@@ -30,20 +30,22 @@ export function MultiSelectInput({ options, onSubmit, disabled }: MultiSelectInp
       <p className="text-base text-muted-foreground">Vyber všechny správné odpovědi.</p>
       <div className="grid grid-cols-2 gap-3">
         {options.map((option) => (
-          <button
+          // `variant="answer"` = stejná bílá karta jako u výběru jedné odpovědi
+          // (dřív to bylo syrové <button> mimo design systém, s vlastním
+          // rádiusem i stínem). Vybraný stav přebíjí jen barvu, ne tvar.
+          <Button
             key={option}
+            variant="answer"
             onClick={() => toggle(option)}
             disabled={disabled}
             className={cn(
-              "p-4 rounded-xl border-2 text-left font-medium transition-all",
-              selected.has(option)
-                ? "border-primary bg-primary/10 shadow-md ring-2 ring-primary/30"
-                : "border-border bg-card hover:border-primary/50 hover:shadow"
+              "justify-start text-left text-base font-medium",
+              selected.has(option) && "border-primary bg-accent ring-2 ring-primary/30",
             )}
           >
             <span className="flex items-center gap-3">
               <span className={cn(
-                "w-5 h-5 rounded border-2 flex items-center justify-center text-xs transition-all",
+                "w-5 h-5 rounded-sm border-2 flex items-center justify-center text-caption transition-colors",
                 selected.has(option)
                   ? "bg-primary border-primary text-primary-foreground"
                   : "border-muted-foreground"
@@ -52,10 +54,10 @@ export function MultiSelectInput({ options, onSubmit, disabled }: MultiSelectInp
               </span>
               {option}
             </span>
-          </button>
+          </Button>
         ))}
       </div>
-      <Button onClick={handleSubmit} disabled={selected.size === 0 || disabled} className="w-full text-lg h-12 rounded-xl">
+      <Button onClick={handleSubmit} disabled={selected.size === 0 || disabled} size="child" className="w-full">
         {disabled ? "Zpracovávám…" : "Odeslat odpověď ✏️"}
       </Button>
     </div>

@@ -17,6 +17,7 @@ import { IllustrationImg } from "@/components/IllustrationImg";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { toGreeting } from "@/lib/czechNames";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
+import { Badge } from "@/components/ui/badge";
 
 interface Assignment {
   id: string;
@@ -547,7 +548,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
           {/* Horní část — roste a tlačí spodní řadu dolů */}
           <div className="flex-1">
-            <p className="text-[11px] font-bold tracking-[0.15em] text-white/60 flex items-center gap-1.5 mb-3">
+            <p className="text-caption font-bold tracking-[0.15em] text-white/60 flex items-center gap-1.5 mb-3">
               <span>✦</span> HLAVNÍ AKCE
             </p>
             <h2 className="font-display text-3xl font-extrabold leading-tight mb-2">Procvičovat samostatně</h2>
@@ -586,7 +587,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               <p className="text-xs text-muted-foreground leading-tight">Tady jsou cvičení, která ti zadali doma. Snaž se je splnit do termínu!</p>
             </div>
             {assignments.filter(a => a.status === "pending").length > 0 && (
-              <span className="rounded-full bg-primary text-primary-foreground text-[10px] font-bold px-2.5 py-1 leading-none shrink-0">
+              <span className="rounded-full bg-primary text-primary-foreground text-caption font-bold px-2.5 py-1 leading-none shrink-0">
                 {assignments.filter(a => a.status === "pending").length}&nbsp;nové
               </span>
             )}
@@ -624,7 +625,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                     className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${assignmentSubject === subj ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"}`}
                   >
                     <span className="h-5 w-5 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
-                      <IllustrationImg src={meta?.image ?? ""} className="h-4 w-4 object-contain" fallback={<span className="text-[11px]">{meta?.emoji ?? "📚"}</span>} />
+                      <IllustrationImg src={meta?.image ?? ""} className="h-4 w-4 object-contain" fallback={<span className="text-caption">{meta?.emoji ?? "📚"}</span>} />
                     </span>
                     {meta?.label ?? subj}
                   </button>
@@ -658,7 +659,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                         <Calendar className="h-3 w-3 shrink-0" /> Zadáno {assignedFormatted}
                       </span>
                       {a.due_date && !isCompleted && (
-                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${isOverdue ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"}`}>
+                        <span className={`rounded-full px-2 py-0.5 text-caption font-bold ${isOverdue ? "bg-rose-100 text-rose-700" : "bg-amber-100 text-amber-700"}`}>
                           do {formatDueDate(a.due_date)}
                         </span>
                       )}
@@ -666,9 +667,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                     </div>
                   </div>
                   {isCompleted ? (
-                    <span className="shrink-0 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 flex items-center gap-1">
+                    <Badge variant="success" className="shrink-0 px-3 py-1.5 gap-1">
                       ✓ Splněno
-                    </span>
+                    </Badge>
                   ) : (
                     <button
                       onClick={() => handleStartAssignment(a)}
@@ -722,7 +723,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                     className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${skillSubject === subj ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"}`}
                   >
                     <span className="h-5 w-5 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
-                      <IllustrationImg src={meta?.image ?? ""} className="h-4 w-4 object-contain" fallback={<span className="text-[11px]">{meta?.emoji ?? "📚"}</span>} />
+                      <IllustrationImg src={meta?.image ?? ""} className="h-4 w-4 object-contain" fallback={<span className="text-caption">{meta?.emoji ?? "📚"}</span>} />
                     </span>
                     {meta?.label ?? subj}
                   </button>
@@ -776,7 +777,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                       <span className="text-emerald-600 font-semibold">✓ {correct} správně</span>
                       {wrong > 0 && <span className="text-rose-500 font-semibold">✗ {wrong} špatně</span>}
                       {gMeta && grade && (
-                        <span className={`inline-flex items-center justify-center h-6 w-6 rounded-full text-[11px] font-bold border shrink-0 ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
+                        <span className={`inline-flex items-center justify-center h-6 w-6 rounded-full text-caption font-bold border shrink-0 ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
                           {grade}
                         </span>
                       )}
@@ -905,7 +906,7 @@ function PeriodSelect({ value, onChange }: { value: StatsPeriod; onChange: (v: S
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium hover:text-foreground transition-colors"
+        className="flex items-center gap-1 text-caption text-muted-foreground font-medium hover:text-foreground transition-colors"
       >
         {label}
         <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
@@ -963,7 +964,7 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
         </div>
         <p className="font-bold text-sm text-foreground leading-snug">{skillName}</p>
         {lastPracticed && (
-          <p className="text-[11px] text-muted-foreground mt-0.5">{formatLastPracticed(lastPracticed)}</p>
+          <p className="text-caption text-muted-foreground mt-0.5">{formatLastPracticed(lastPracticed)}</p>
         )}
       </div>
     </div>

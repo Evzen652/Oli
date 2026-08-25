@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { CurriculumProposal } from "./AdminAIChat";
 import type { TablesUpdate } from "@/integrations/supabase/types";
+import { BackButton } from "@/components/BackButton";
 
 interface ProposalReviewProps {
   proposals: CurriculumProposal[];
@@ -111,7 +112,7 @@ function ProposalTree({ items }: { items: ProposalItem[] }) {
       {topicRows.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {topicRows.map(({ top, skillCount }, ti) => (
-            <span key={ti} className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[10px] font-medium border ${
+            <span key={ti} className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-caption font-medium border ${
               top.saved
                 ? "bg-green-100 border-green-200 text-green-700 line-through"
                 : p.chip
@@ -123,7 +124,7 @@ function ProposalTree({ items }: { items: ProposalItem[] }) {
         </div>
       )}
       {topicRows.length > 0 && (
-        <p className="mt-1.5 text-[10px] text-muted-foreground/40">
+        <p className="mt-1.5 text-caption text-muted-foreground/40">
           {topicRows.length} témat
           {topicRows.reduce((a, r) => a + r.skillCount, 0) > 0 &&
             ` · ${topicRows.reduce((a, r) => a + r.skillCount, 0)} podtémat`}
@@ -143,7 +144,7 @@ function ProposalTree({ items }: { items: ProposalItem[] }) {
               {subj.saved && "✓ "}{String(subj.data.name)}
             </span>
             {catRows.length > 0 && (
-              <span className="text-[10px] text-muted-foreground/50">{catRows.length} okruhů</span>
+              <span className="text-caption text-muted-foreground/50">{catRows.length} okruhů</span>
             )}
           </div>
           {catRows.length > 0 && (
@@ -365,7 +366,7 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
                     type="button"
                     disabled={!clickable && !active}
                     onClick={() => clickable ? setStepIdx(i) : undefined}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all ${
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-caption font-medium transition-all ${
                       done ? "bg-green-100 text-green-700" :
                       active ? "bg-primary text-white" :
                       "bg-muted text-muted-foreground"
@@ -386,7 +387,7 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
           <>
             {/* Hlavička kroku */}
             <div className="px-5 py-3 border-b-2 border-border bg-muted/40">
-              <p className="text-[11px] text-muted-foreground uppercase tracking-wide font-medium">
+              <p className="text-caption text-muted-foreground uppercase tracking-wide font-medium">
                 Krok {safeStepIdx + 1} z {steps.length}
               </p>
               <p className="text-[14px] font-semibold text-foreground mt-0.5">
@@ -444,14 +445,7 @@ export function ProposalReview({ proposals, explanation, onDone, onDismiss, onNe
             {/* Akce kroku */}
             <div className="px-5 py-4 border-t border-border flex items-center justify-between gap-3 bg-muted/20">
               {safeStepIdx > 0 && (
-                <Button
-                  variant="ghost" size="sm" className="text-xs gap-1.5 text-muted-foreground"
-                  onClick={goBack}
-                  disabled={savingAll}
-                  title="Vrátit se na předchozí krok a upravit"
-                >
-                  ← Zpět
-                </Button>
+                <BackButton size="sm" onClick={goBack} />
               )}
               <Button
                 size="sm" className="gap-1.5"
@@ -568,7 +562,7 @@ function ConfirmCard({ item, parentName, allItems, onConfirm, onEdit, onChange, 
             <button
               type="button"
               onClick={() => setImgCheckKey(k => k + 1)}
-              className="text-[9px] text-muted-foreground/50 hover:text-muted-foreground leading-none"
+              className="text-caption text-muted-foreground/50 hover:text-muted-foreground leading-none"
               title="Znovu načíst ilustraci"
             >
               ↺
@@ -585,7 +579,7 @@ function ConfirmCard({ item, parentName, allItems, onConfirm, onEdit, onChange, 
       {/* Název + breadcrumb rodiče */}
       <div className="flex-1 min-w-0">
         {parentName && (
-          <p className="text-[11px] text-muted-foreground/70 mb-0.5">
+          <p className="text-caption text-muted-foreground/70 mb-0.5">
             v: <span className="font-medium text-muted-foreground">{parentName}</span>
           </p>
         )}
@@ -617,7 +611,7 @@ function ConfirmCard({ item, parentName, allItems, onConfirm, onEdit, onChange, 
               {item.saved && "✓ "}{String(item.data.name || "?")}
             </span>
             {item.type === "subject" && imgExists === false && !item.saved && (
-              <p className="text-[11px] text-amber-600 mt-0.5">
+              <p className="text-caption text-amber-600 mt-0.5">
                 ⚠ Chybí ilustrace — vygeneruj ji v panelu Ilustrace, pak klikni na rámeček vlevo pro obnovení.
               </p>
             )}
@@ -628,11 +622,11 @@ function ConfirmCard({ item, parentName, allItems, onConfirm, onEdit, onChange, 
       {/* Akce */}
       {item.saved ? (
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-[11px] text-green-600 font-medium">✓ Potvrzeno</span>
+          <span className="text-caption text-green-600 font-medium">✓ Potvrzeno</span>
           {onUnsave && (
             <Button
               size="sm" variant="ghost"
-              className="h-6 text-[11px] px-2 text-muted-foreground hover:text-foreground"
+              className="h-6 text-caption px-2 text-muted-foreground hover:text-foreground"
               onClick={onUnsave}
               title="Vrátit do editace"
             >
@@ -700,16 +694,16 @@ function ProposalCard({
                   {String(item.data.name || "Bez názvu")}
                 </span>
                 {/* Informační štítky — nejsou tlačítka, jen popis akce a typu */}
-                <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded ${
+                <span className={`text-caption font-medium px-1.5 py-0.5 rounded ${
                   isDelete ? "bg-red-100 text-red-700" : isUpdate ? "bg-blue-100 text-blue-700" : "bg-emerald-100 text-emerald-700"
                 }`}>
                   {isDelete ? "smazat" : isUpdate ? "upravit" : "vytvořit"}
                 </span>
-                <span className="text-[11px] text-muted-foreground">
+                <span className="text-caption text-muted-foreground">
                   {getTypeLabel(item.type)}
                 </span>
                 {item.saved && (
-                  <span className="text-[11px] font-medium text-green-700">
+                  <span className="text-caption font-medium text-green-700">
                     ✓ {isDelete ? "Smazáno" : "Uloženo"}
                   </span>
                 )}
@@ -843,7 +837,7 @@ function ArrayField({ label, value, onChange, disabled, placeholder }: {
     <div className="space-y-1">
       <div className="flex items-center justify-between">
         <Label className="text-xs text-muted-foreground">{label}</Label>
-        {arr.length > 0 && <span className="text-[10px] text-muted-foreground">{arr.length} pol.</span>}
+        {arr.length > 0 && <span className="text-caption text-muted-foreground">{arr.length} pol.</span>}
       </div>
       <Textarea
         value={arr.join("\n")}
@@ -861,7 +855,7 @@ function ArrayField({ label, value, onChange, disabled, placeholder }: {
 function SlugRow({ label, value, onChange, disabled }: { label: string; value: unknown; onChange: (v: string) => void; disabled: boolean }) {
   return (
     <details className="group">
-      <summary className="text-[11px] text-muted-foreground/60 cursor-pointer select-none hover:text-muted-foreground list-none flex items-center gap-1">
+      <summary className="text-caption text-muted-foreground/60 cursor-pointer select-none hover:text-muted-foreground list-none flex items-center gap-1">
         <span className="group-open:hidden">▸</span>
         <span className="hidden group-open:inline">▾</span>
         {label} <span className="italic">(technické ID — není třeba měnit)</span>
@@ -1053,9 +1047,9 @@ function SkillPreview({ data }: { data: Record<string, unknown> }) {
           </div>
         )}
         <div className="flex items-center gap-2 pt-2">
-          <Badge variant="outline" className="text-[10px]">Typ odpovědi: {inputType}</Badge>
+          <Badge variant="outline" className="text-caption">Typ odpovědi: {inputType}</Badge>
           {Boolean(data.grade_min) && Boolean(data.grade_max) && (
-            <Badge variant="outline" className="text-[10px]">
+            <Badge variant="outline" className="text-caption">
               {String(data.grade_min)}–{String(data.grade_max)}. ročník
             </Badge>
           )}

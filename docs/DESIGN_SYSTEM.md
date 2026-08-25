@@ -164,17 +164,57 @@ Zůstává:
 | Vlastivěda | `#92400E` | `#FAEEE2` |
 | Angličtina | `#7E22CE` | `#F5E9FD` |
 
+## Hotovo (2026-08-25, 2. etapa)
+
+- [x] `ui/button.tsx` — base `rounded-lg`, varianty `success`/`warning`/`answer` (min-h 56) a size `child`
+- [x] `ui/card.tsx` — bez stínu default, prop `interactive` (stín e1 + jednotný hover)
+- [x] `ui/badge.tsx` — varianty `success`/`warning`/`info`
+- [x] Odstraněny inline přepisy v `SessionView`, `SessionEndSummary`, `CheckFeedbackCard`, `TopicBrowser`
+- [x] `BackButton` postaven na `buttonVariants` (zmizel vlastní rádius, studená šeď i oranžový focus ring)
+- [x] Typografická škála v `tailwind.config.ts` + písmo v `/parent` a `/admin` zvednuté
+- [x] `subjectRegistry.ts` je jediná mapa předmětů; doplněna angličtina i informatika
+- [x] Landing: pastelové karty → bílé karty s tintovou dlaždicí ikony
+- [x] Logo: gradientní text nahrazen plnou barvou, varianty `ink` / `inverse`
+
+### Jak používat typografickou škálu
+
+Pojmenované stupně (`text-display`, `text-h1`, …, `text-caption`) nesou
+velikost **i váhu** — `text-h2` je celý styl, ne jen velikost.
+
+> ⚠️ Když přidáš nový stupeň do `tailwind.config.ts`, přidej ho **taky** do
+> `FONT_SIZE_SCALE` v [`src/lib/utils.ts`](../src/lib/utils.ts). tailwind-merge
+> zná jen výchozí Tailwind škálu — neznámé `text-h2` zařadí mezi *barvy textu*
+> a první další `text-*` barva ho beze stopy odstraní. Přesně to se stalo
+> `Badge`: `text-caption` (12 px) zmizelo a pilulka se vykreslila na 16 px.
+
+Číselné stupně jsou zároveň posunuté o ~1 px nahoru (`text-sm` 14→15,
+`text-base` 16→17, `text-lg` 18→19, `text-xl` 20→21, `text-2xl` 24→26).
+Tím se zvedlo písmo v rodičovské i admin části bez editace stovek call-sitů.
+Všech 190 tříd pod 12 px (`text-[9px]`/`[10px]`/`[11px]`) je nahrazeno
+`text-caption`; ověřeno v prohlížeči, že na `/parent` i `/landing` je
+nejmenší vykreslené písmo přesně 12 px.
+
+### Předmětová paleta — jediný zdroj
+
+[`src/lib/subjectRegistry.ts`](../src/lib/subjectRegistry.ts) nahradil **šest**
+nezávislých map (`getSubjectColor` v `SessionView`, `SUBJECT_CARD_STYLES`
+v `TopicBrowser`, `SUBJECT_META` v `SelfPracticeList`, `SUBJECT_DOT` v admin
+sidebaru, `SUBJECT_COLORS` v `AdminContentAudit` i `AdminRvpTree`).
+
+Každý předmět má šest tříd: `color` (ink), `tintClass`, `borderClass`,
+`accentClass`, `ringClass` a `edgeClass`. `resolveSubjectKey()` navíc překládá
+slugy bez diakritiky z RVP datasetu a admin DB (`cjl`, `cesky-jazyk`,
+`prirodoveda`, `vko`, …), takže admin i žák vidí stejnou barvu.
+Neznámý předmět dostane **neutrální** paletu, ne náhodnou barvu z hashe.
+Všech 13 předmětů má navzájem odlišný odstín.
+
 ## Co zbývá dodělat
 
-- [ ] `ui/button.tsx` — base `rounded-lg`, přidat varianty `success`/`warning`/`answer` (min-h 56) a size `child`
-- [ ] `ui/card.tsx` — `rounded-lg`, bez stínu default, prop `interactive`
-- [ ] `ui/badge.tsx` — varianty `success`/`warning`/`info` (zmizí důvod pro 63 ručních pilulek)
-- [ ] Odstranit inline přepisy v `SessionView`, `SessionEndSummary`, `CheckFeedbackCard`, `TopicBrowser`
-- [ ] `BackButton` postavit na `buttonVariants` (má vlastní rádius, šeď i focus ring)
-- [ ] Typografická škála do `tailwind.config.ts` + zvednout písmo v `/parent` a `/admin`
-- [ ] `subjectRegistry.ts` jako **jediná** mapa předmětů (smazat `SUBJECT_DOT`, `SUBJECT_COLORS`, `SUBJECT_META`, `SUBJECT_CARD_STYLES`, `FALLBACK_PALETTES`); doplnit angličtinu/informatiku (dnes náhodná barva z hashe)
-- [ ] Landing: 6 pastelových karet → bílé karty s ikonovým akcentem
-- [ ] Logo: zrušit gradientní text (`-webkit-text-fill-color: transparent` bez `color` fallbacku — při nenačtení fontu nápis **zmizí**), dvě varianty plnou barvou
+- [ ] Migrovat zbylých ~30 ručně psaných stavových pilulek na `Badge`
+      varianty (většina je v adminu; uživatelsky viditelné v `AssignmentList`,
+      `ParentDashboard` a `ChildHomePage` jsou už převedené)
+- [ ] `ProgressIndicator`, `MiniExplainer` a dekorativní tečky pořád píšou
+      barvy natvrdo (`bg-green-500`, `hover:bg-amber-50`)
 
 Odloženo: dark mode (dnes nepoužitelný — `soft-*` stíny mají natvrdo studené
 `rgba(15,23,42)`, předmětové proměnné nemají `.dark` override), admin

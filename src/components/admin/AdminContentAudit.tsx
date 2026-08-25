@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { getAllTopics } from "@/lib/contentRegistry";
+import { getSubjectPalette } from "@/lib/subjectRegistry";
 import {
   runOfflineAudit,
   CATEGORY_LABELS,
@@ -26,13 +27,11 @@ const SUBJECT_LABELS: Record<string, string> = {
   vlastivěda: "Vlastivěda",
 };
 
-const SUBJECT_COLORS: Record<string, string> = {
-  matematika: "bg-blue-100 text-blue-800",
-  "čeština": "bg-violet-100 text-violet-800",
-  prvouka: "bg-green-100 text-green-800",
-  přírodověda: "bg-emerald-100 text-emerald-800",
-  vlastivěda: "bg-amber-100 text-amber-800",
-};
+/** Chip předmětu = tint + ink z rejstříku, ne vlastní mapa. */
+function subjectChip(subject: string): string {
+  const p = getSubjectPalette(subject);
+  return `${p.tintClass} ${p.color}`;
+}
 
 interface Props {
   trigger?: React.ReactNode;
@@ -267,26 +266,26 @@ export function AdminContentAudit({ trigger }: Props) {
                       <Card key={idx} className="border rounded-xl overflow-hidden">
                         <CardContent className="p-0">
                           <div className="flex items-center gap-2 px-3 py-2 bg-muted/40 border-b flex-wrap">
-                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                              SUBJECT_COLORS[issue.topicSubject] ?? "bg-slate-100 text-slate-700"
+                            <span className={`text-caption font-semibold px-2 py-0.5 rounded-full ${
+                              subjectChip(issue.topicSubject)
                             }`}>
                               {SUBJECT_LABELS[issue.topicSubject] ?? issue.topicSubject}
                             </span>
-                            <span className="text-[10px] text-muted-foreground font-medium">
+                            <span className="text-caption text-muted-foreground font-medium">
                               {issue.topicCategory}
                             </span>
-                            <span className="text-[10px] text-muted-foreground">·</span>
-                            <span className="text-[10px] text-muted-foreground font-medium">
+                            <span className="text-caption text-muted-foreground">·</span>
+                            <span className="text-caption text-muted-foreground font-medium">
                               {issue.topicGradeRange[0] === issue.topicGradeRange[1]
                                 ? `${issue.topicGradeRange[0]}. ročník`
                                 : `${issue.topicGradeRange[0]}–${issue.topicGradeRange[1]}. ročník`}
                             </span>
-                            <span className="text-[10px] text-muted-foreground">·</span>
-                            <code className="text-[10px] text-muted-foreground font-mono">{issue.topicId}</code>
+                            <span className="text-caption text-muted-foreground">·</span>
+                            <code className="text-caption text-muted-foreground font-mono">{issue.topicId}</code>
                           </div>
                           <div className="p-3 space-y-1">
                             <Badge variant="outline"
-                              className={`text-[10px] ${CATEGORY_COLORS[issue.category]} mb-1`}>
+                              className={`text-caption ${CATEGORY_COLORS[issue.category]} mb-1`}>
                               {CATEGORY_LABELS[issue.category]}
                             </Badge>
                             <p className="text-sm text-foreground font-medium leading-snug">
@@ -297,9 +296,9 @@ export function AdminContentAudit({ trigger }: Props) {
                             </p>
                             {issue.failingHints && issue.failingHints.length > 0 && (
                               <div className="mt-2 space-y-1">
-                                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Aktuální nápovědy:</p>
+                                <p className="text-caption font-semibold text-muted-foreground uppercase tracking-wide">Aktuální nápovědy:</p>
                                 {issue.failingHints.map((h, hi) => (
-                                  <p key={hi} className="text-[11px] text-slate-600 bg-slate-100 rounded px-2 py-1">
+                                  <p key={hi} className="text-caption text-slate-600 bg-slate-100 rounded px-2 py-1">
                                     <span className="font-bold text-slate-400 mr-1">{hi + 1}.</span>
                                     {h}
                                   </p>
@@ -337,17 +336,17 @@ export function AdminContentAudit({ trigger }: Props) {
                         </p>
                       </div>
                       <div className="border-t border-emerald-200 pt-3 space-y-1.5">
-                        <p className="text-[10px] font-semibold text-emerald-700 uppercase tracking-wide">Co bylo zkontrolováno:</p>
+                        <p className="text-caption font-semibold text-emerald-700 uppercase tracking-wide">Co bylo zkontrolováno:</p>
                         {Object.entries(bySubject).map(([subj, count]) => (
                           <div key={subj} className="flex items-center justify-between text-sm">
-                            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${SUBJECT_COLORS[subj] ?? "bg-slate-100 text-slate-700"}`}>
+                            <span className={`text-caption font-semibold px-2 py-0.5 rounded-full ${subjectChip(subj)}`}>
                               {SUBJECT_LABELS[subj] ?? subj}
                             </span>
                             <span className="text-xs text-muted-foreground">{count} témat · {count * 5} úloh</span>
                           </div>
                         ))}
                         {gradeFilter !== null && (
-                          <p className="text-[11px] text-muted-foreground pt-1">Filtr: {gradeFilter}. ročník</p>
+                          <p className="text-caption text-muted-foreground pt-1">Filtr: {gradeFilter}. ročník</p>
                         )}
                       </div>
                     </CardContent>

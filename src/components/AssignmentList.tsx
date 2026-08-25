@@ -234,7 +234,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
                     <IllustrationImg
                       src={meta?.image ?? ""}
                       className="h-4 w-4 object-contain"
-                      fallback={<span className="text-[11px]">{meta?.emoji ?? "📚"}</span>}
+                      fallback={<span className="text-caption">{meta?.emoji ?? "📚"}</span>}
                     />
                   </span>
                   {label}
@@ -335,9 +335,9 @@ function AssignmentCard({
         />
       </div>
       <div className="flex-1 min-w-0">
-        {subjectLabel && <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">{subjectLabel}</p>}
+        {subjectLabel && <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">{subjectLabel}</p>}
         <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
-        <p className="text-[11px] text-muted-foreground mt-0.5">
+        <p className="text-caption text-muted-foreground mt-0.5">
           zadáno {formatCzDate(a.assigned_date)}
           {hasTerminus && !isCompleted && ` · do ${formatCzDate(a.due_date!)}`}
           {isCompleted && a.completedDate && (
@@ -350,7 +350,7 @@ function AssignmentCard({
       </div>
       <div className="flex flex-col items-end gap-3 shrink-0">
         {isCompleted && (
-          <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[11px] gap-1 h-6 rounded-full font-semibold px-2.5">
+          <Badge variant="success" className="gap-1 h-6 px-2.5">
             <CheckCircle2 className="h-3 w-3" /> Splněno
           </Badge>
         )}
@@ -370,29 +370,29 @@ function AssignmentCard({
               </span>
             )}
             {gMeta && (
-              <span className={`inline-flex items-center justify-center h-5 w-5 rounded-full text-[10px] font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
+              <span className={`inline-flex items-center justify-center h-5 w-5 rounded-full text-caption font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
                 {grade}
               </span>
             )}
           </div>
         )}
         {isSkipped && (
-          <Badge variant="secondary" className="text-[11px] gap-1 h-6 rounded-full font-semibold px-2.5">
+          <Badge variant="secondary" className="gap-1 h-6 px-2.5">
             <XCircle className="h-3 w-3" /> Přeskočeno
           </Badge>
         )}
         {isPending && !isOverdue && !isNew && (
-          <Badge className="bg-amber-50 text-amber-700 border-amber-200 text-[11px] h-6 rounded-full font-semibold px-2.5">
+          <Badge variant="warning" className="h-6 px-2.5">
             K procvičení
           </Badge>
         )}
         {isPending && isNew && (
-          <Badge className="bg-violet-100 text-violet-700 border-violet-300 text-[11px] h-6 rounded-full font-semibold px-2.5">
+          <Badge variant="info" className="h-6 px-2.5">
             ✨ Právě zadáno
           </Badge>
         )}
         {isPending && isOverdue && (
-          <Badge className="bg-rose-50 text-rose-700 border-rose-200 text-[11px] h-6 rounded-full font-semibold px-2.5">
+          <Badge className="h-6 px-2.5 border-transparent bg-[#FDEAEA] text-destructive">
             Po termínu
           </Badge>
         )}

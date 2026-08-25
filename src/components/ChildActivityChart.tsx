@@ -213,12 +213,12 @@ export function ChildActivityChart({ childId }: Props) {
                   : "border-transparent bg-muted/30 cursor-default opacity-60"
               }`}
             >
-              <span className={`text-[10px] font-medium capitalize ${
+              <span className={`text-caption font-medium capitalize ${
                 isSelected ? "text-primary" : d.isToday ? "text-primary" : "text-muted-foreground"
               }`}>
                 {d.day}
               </span>
-              <span className="text-[10px] text-muted-foreground/70">{d.dateLabel}</span>
+              <span className="text-caption text-muted-foreground/70">{d.dateLabel}</span>
 
               <div className="h-16 flex items-end justify-center w-full my-1.5">
                 {active ? (
@@ -261,7 +261,7 @@ export function ChildActivityChart({ childId }: Props) {
                     <span className="flex-1 truncate font-medium text-foreground">{skillDisplayName(skillId)}</span>
                     <span className="text-xs text-muted-foreground">{stats.count}×</span>
                   </div>
-                  <div className="flex items-center gap-3 pl-7 text-[11px]">
+                  <div className="flex items-center gap-3 pl-7 text-caption">
                     {(stats.independent + stats.withHelp) > 0 && (
                       <span className="flex items-center gap-1 text-green-600 font-semibold">
                         ✓ {stats.independent + stats.withHelp} správně
@@ -285,7 +285,7 @@ export function ChildActivityChart({ childId }: Props) {
       )}
 
       {/* Legend */}
-      <div className="flex items-center gap-4 text-[10px] text-muted-foreground justify-center pt-1">
+      <div className="flex items-center gap-4 text-caption text-muted-foreground justify-center pt-1">
         <span className="flex items-center gap-1">
           <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-500" /> samostatně
         </span>

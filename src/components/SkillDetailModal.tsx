@@ -466,7 +466,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
             )}
             <div>
               {subjectMeta?.label && (
-                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
+                <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
                   {subjectMeta.label}
                 </p>
               )}
@@ -542,7 +542,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
                     const gm = GRADE_META[g];
                     return (
                       <div key={s.sessionId} className={`rounded-xl border px-3 py-2 flex items-center gap-3 ${gm.bg} ${gm.border}`}>
-                        <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] font-bold border bg-white shrink-0 ${gm.color} ${gm.border}`}>
+                        <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-caption font-bold border bg-white shrink-0 ${gm.color} ${gm.border}`}>
                           {g}
                         </span>
                         <span className={`font-semibold text-sm ${gm.color}`}>{s.pct} %</span>
@@ -573,7 +573,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
                 dotCls: string,
               ) => items.length === 0 ? null : (
                 <div className="space-y-1">
-                  <p className={`text-[11px] font-bold uppercase tracking-wide flex items-center gap-1 ${dotCls}`}>
+                  <p className={`text-caption font-bold uppercase tracking-wide flex items-center gap-1 ${dotCls}`}>
                     {icon} {label} ({items.length})
                   </p>
                   {items.map((l, idx) => {

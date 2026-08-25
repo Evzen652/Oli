@@ -185,7 +185,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                     <IllustrationImg
                       src={meta?.image ?? ""}
                       className="h-4 w-4 object-contain"
-                      fallback={<span className="text-[11px]">{meta?.emoji ?? "📋"}</span>}
+                      fallback={<span className="text-caption">{meta?.emoji ?? "📋"}</span>}
                     />
                   </span>
                   {SUBJECT_LABELS[s] ?? (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)}
@@ -226,12 +226,12 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                 </div>
                 <div className="flex-1 min-w-0">
                   {subjectMeta?.label && (
-                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
+                    <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
                       {subjectMeta.label}
                     </p>
                   )}
                   <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
-                  <p className="text-muted-foreground text-[11px] mt-0.5">
+                  <p className="text-muted-foreground text-caption mt-0.5">
                     {new Date(s.date).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" })}
                     {" "}
                     {new Date(s.date).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}
@@ -242,7 +242,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                     <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct} správně</span>
                     {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">{s.help_used} s nápov.</span>}
                     {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">✗ {s.total - s.correct} špatně</span>}
-                    <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-[11px] font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
+                    <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-caption font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
                       {grade}
                     </span>
                   </div>

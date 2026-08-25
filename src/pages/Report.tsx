@@ -257,19 +257,19 @@ export default function Report() {
             <div className="grid grid-cols-3 divide-x divide-border/40">
               <div className="px-5 py-5 text-center">
                 <p className="text-3xl font-extrabold text-foreground tabular-nums">{report.stats.days}</p>
-                <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-1">DNY</p>
+                <p className="text-caption font-bold tracking-[0.12em] text-muted-foreground mt-1">DNY</p>
               </div>
               <div className="px-5 py-5 text-center">
                 <p className="text-3xl font-extrabold text-foreground tabular-nums">{report.stats.attempts}</p>
-                <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-1">ÚLOH</p>
+                <p className="text-caption font-bold tracking-[0.12em] text-muted-foreground mt-1">ÚLOH</p>
               </div>
               <div className="px-5 py-5 text-center">
                 <p className={`text-3xl font-extrabold tabular-nums ${accColor}`}>{acc} %</p>
-                <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-1">ÚSPĚŠNOST</p>
+                <p className="text-caption font-bold tracking-[0.12em] text-muted-foreground mt-1">ÚSPĚŠNOST</p>
               </div>
             </div>
             <div className="border-t border-border/40 px-5 py-4 space-y-2.5">
-              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${accBg} ${accColor}`}>
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-caption font-semibold ${accBg} ${accColor}`}>
                 {accLabel}
               </span>
               <p className="text-sm text-foreground leading-relaxed">{subName(report.summary, childName)}</p>
@@ -372,7 +372,7 @@ export default function Report() {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-              <div className="flex items-center justify-center gap-5 pt-1 pb-2 text-[11px] text-muted-foreground flex-wrap">
+              <div className="flex items-center justify-center gap-5 pt-1 pb-2 text-caption text-muted-foreground flex-wrap">
                 <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-emerald-500 inline-block shrink-0" />Zvládnuto (≥ 80 %)</span>
                 <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-amber-400 inline-block shrink-0" />Zlepšuje se (50–79 %)</span>
                 <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-rose-500 inline-block shrink-0" />Potřebuje pomoc</span>
@@ -433,7 +433,7 @@ export default function Report() {
                               <p className="text-sm font-semibold text-foreground truncate">{getReadableSkillName(s.skill)}</p>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
-                              <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.source === "assigned" ? "bg-violet-100 text-violet-700" : "bg-sky-100 text-sky-700"}`}>
+                              <span className={`text-caption font-semibold px-2 py-0.5 rounded-full ${s.source === "assigned" ? "bg-violet-100 text-violet-700" : "bg-sky-100 text-sky-700"}`}>
                                 {s.source === "assigned" ? "Zadáno" : "Samostatně"}
                               </span>
                               <span className="text-xs text-muted-foreground">{s.correct}/{s.attempts}</span>

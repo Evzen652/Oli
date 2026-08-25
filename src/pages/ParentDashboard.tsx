@@ -25,6 +25,7 @@ import { AssignmentList } from "@/components/AssignmentList";
 import { ChildSessionLog, type SessionEntry } from "@/components/ChildSessionLog";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { logoNoText } from "@/components/OliLogo";
+import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
 import { ChildPinControl } from "@/components/parent/ChildPinControl";
 
@@ -257,7 +258,7 @@ export default function ParentDashboard() {
       {role === "admin" && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur text-primary-foreground px-5 py-2.5 flex items-center justify-between text-sm shadow-soft-2">
           <span className="font-medium inline-flex items-center gap-2"><Eye className="h-3.5 w-3.5" />Náhled rodičovského pohledu</span>
-          <Button variant="secondary" size="sm" className="h-7 text-xs rounded-full bg-white/15 hover:bg-white/25 text-primary-foreground border border-white/20" onClick={() => navigate("/admin")}>← Zpět do Adminu</Button>
+          <BackButton to="/admin" label="Zpět do Adminu" size="sm" />
         </div>
       )}
       {isDemo && role !== "admin" && (
@@ -372,7 +373,7 @@ export default function ParentDashboard() {
                     </div>
                   )}
 
-                  <p className="text-[11px] font-bold tracking-[0.15em] text-white/60 mb-1">✦ PŘEHLED DÍTĚTE</p>
+                  <p className="text-caption font-bold tracking-[0.15em] text-white/60 mb-1">✦ PŘEHLED DÍTĚTE</p>
                   {editingId === child.id ? (
                     <>
                       <input
@@ -409,7 +410,7 @@ export default function ParentDashboard() {
                       <h2 className="font-bold text-3xl leading-tight text-white">{child.child_name}</h2>
                       <div className="flex flex-wrap items-center gap-2 mt-1 mb-5">
                         <p className="text-white/70 text-sm">{child.grade}. ročník · aktivní</p>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-[11px] font-semibold text-white">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-caption font-semibold text-white">
                           <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
                         </span>
                         {!isDemo && <ChildPinControl child={child} onChanged={refetch} tone="onDark" />}
@@ -556,13 +557,13 @@ export default function ParentDashboard() {
                     <span className="font-bold text-lg text-foreground">{child.child_name}</span>
                     <span className="text-sm text-muted-foreground">· {child.grade}. {t("parent.grade_label")}</span>
                     {isExpired(child)
-                      ? <Badge className="bg-rose-50 text-rose-700 border-rose-200 gap-1 rounded-full text-xs"><Clock className="h-3 w-3" />{t("parent.code_expired")}</Badge>
-                      : <Badge className="bg-amber-50 text-amber-700 border-amber-200 gap-1 rounded-full text-xs"><Clock className="h-3 w-3" />{t("parent.not_paired")}</Badge>}
+                      ? <Badge className="gap-1 border-transparent bg-[#FDEAEA] text-destructive"><Clock className="h-3 w-3" />{t("parent.code_expired")}</Badge>
+                      : <Badge variant="warning" className="gap-1"><Clock className="h-3 w-3" />{t("parent.not_paired")}</Badge>}
                     {!isDemo && <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>}
                     {!isDemo && (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-rose-500 hover:bg-rose-50"><Trash2 className="h-3 w-3" /></Button>
+                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-destructive hover:bg-[#FDEAEA]"><Trash2 className="h-3 w-3" /></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
@@ -583,15 +584,15 @@ export default function ParentDashboard() {
                   )}
                 </div>
                 <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-700">{t("parent.pairing_code_label")}</p>
+                  <p className="text-caption font-bold uppercase tracking-[0.16em] text-amber-700">{t("parent.pairing_code_label")}</p>
                   <div className="mt-3 flex items-center justify-center gap-3">
                     {(child.pairing_code ?? "").split("").map((ch, i) => (
                       <span key={i} className="font-bold text-3xl text-primary tabular-nums">{ch}</span>
                     ))}
                   </div>
-                  <p className="mt-2 text-xs text-amber-700/80">Zadej kód v aplikaci na zařízení dítěte. Kód platí 48 hodin.</p>
+                  <p className="mt-2 text-xs text-warning">Zadej kód v aplikaci na zařízení dítěte. Kód platí 48 hodin.</p>
                   {isExpired(child) && (
-                    <Button variant="outline" size="sm" className="mt-3 gap-1 rounded-full border-amber-300 hover:bg-amber-100 text-amber-800" onClick={() => regenerateCode(child.id)}>
+                    <Button variant="warning" size="sm" className="mt-3 gap-1 rounded-full" onClick={() => regenerateCode(child.id)}>
                       <RefreshCw className="h-3 w-3" />{t("parent.regenerate_code")}
                     </Button>
                   )}

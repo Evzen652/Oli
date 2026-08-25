@@ -192,7 +192,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <Badge
             variant="outline"
-            className="rounded-full bg-violet-100/80 border-violet-300 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 px-3 py-0.5 text-[11px] font-bold uppercase tracking-[0.1em] gap-1"
+            className="rounded-full bg-violet-100/80 border-violet-300 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 px-3 py-0.5 text-caption font-bold uppercase tracking-[0.1em] gap-1"
           >
             <Plus className="h-3 w-3" />
             Podtéma · {skill.category}
@@ -246,7 +246,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
       {/* Metadata grid — 3 karty */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="rounded-2xl border-2 border-border/60 bg-card px-4 py-3.5 shadow-soft-1">
-          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground">
             Ročník
           </p>
           <p className="mt-1 text-xl font-bold text-foreground tabular-nums">
@@ -255,7 +255,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
         </div>
 
         <div className="rounded-2xl border-2 border-border/60 bg-card px-4 py-3.5 shadow-soft-1">
-          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground">
             Typ odpovědi
           </p>
           <p className="mt-1 text-xl font-bold text-foreground">
@@ -264,7 +264,7 @@ export function SkillDetail({ skill }: { skill: TopicMetadata }) {
         </div>
 
         <div className="rounded-2xl border-2 border-border/60 bg-card px-4 py-3.5 shadow-soft-1">
-          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground">
             Úloh v procvičování
           </p>
           {editing ? (
@@ -562,7 +562,7 @@ function LevelCard({
     >
       <Badge
         variant="outline"
-        className={`rounded-md ${colorClass} px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide`}
+        className={`rounded-md ${colorClass} px-2 py-0.5 text-caption font-bold uppercase tracking-wide`}
       >
         {label}
       </Badge>
@@ -574,7 +574,7 @@ function LevelCard({
         {pending > 0 && (
           <Badge
             variant="outline"
-            className="ml-auto rounded-full bg-amber-100 border-amber-300 text-amber-800 text-[10px] font-bold tabular-nums"
+            className="ml-auto rounded-full bg-amber-100 border-amber-300 text-amber-800 text-caption font-bold tabular-nums"
             title={`${pending} čeká na schválení`}
           >
             +{pending}

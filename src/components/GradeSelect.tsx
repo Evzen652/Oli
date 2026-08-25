@@ -56,7 +56,7 @@ export function GradeSelect({ onSelect, isAdmin }: GradeSelectProps) {
               >
                 {g}.
                 {!isActive && (
-                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground font-normal whitespace-nowrap">
+                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-caption text-muted-foreground font-normal whitespace-nowrap">
                     Již brzy
                   </span>
                 )}

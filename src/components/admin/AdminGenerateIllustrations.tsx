@@ -1270,7 +1270,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
         </DialogHeader>
         <div className="space-y-3">
           <div>
-            <p className="text-[11px] font-medium text-muted-foreground mb-1.5">Popis obrázku (co má zobrazovat):</p>
+            <p className="text-caption font-medium text-muted-foreground mb-1.5">Popis obrázku (co má zobrazovat):</p>
             <Textarea
               rows={4}
               value={promptDialog?.desc ?? ""}
@@ -1283,8 +1283,8 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           {/* Náhled výsledného promptu */}
           {promptDialog?.desc.trim() && (
             <div className="rounded-lg bg-muted/50 border border-border/60 p-3 space-y-1">
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Výsledný prompt (anglicky):</p>
-              <p className="text-[11px] text-muted-foreground leading-relaxed break-words">
+              <p className="text-caption font-semibold text-muted-foreground uppercase tracking-wide">Výsledný prompt (anglicky):</p>
+              <p className="text-caption text-muted-foreground leading-relaxed break-words">
                 <span className="text-muted-foreground/60">{PROMPT_PREFIX} </span>
                 <span className="text-foreground font-medium">{promptDialog.desc.trim()}</span>
                 <span className="text-muted-foreground/60">{PROMPT_SUFFIX.slice(0, 60)}…</span>
@@ -1340,7 +1340,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
           </div>
           <div className="space-y-2">
             <div>
-              <p className="text-[11px] font-medium text-muted-foreground mb-1">Klíč (diakritika a mezery se automaticky převedou na slug):</p>
+              <p className="text-caption font-medium text-muted-foreground mb-1">Klíč (diakritika a mezery se automaticky převedou na slug):</p>
               <input
                 type="text"
                 value={customKey}
@@ -1349,11 +1349,11 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                 className="w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
               {customKey.trim() && (
-                <p className="text-[11px] text-muted-foreground mt-1">→ uloží se jako <code className="bg-muted px-1 rounded">{toSlug(customKey)}</code></p>
+                <p className="text-caption text-muted-foreground mt-1">→ uloží se jako <code className="bg-muted px-1 rounded">{toSlug(customKey)}</code></p>
               )}
             </div>
             <div>
-              <p className="text-[11px] font-medium text-muted-foreground mb-1">Popis (co má obrázek zobrazovat):</p>
+              <p className="text-caption font-medium text-muted-foreground mb-1">Popis (co má obrázek zobrazovat):</p>
               <Textarea
                 rows={3}
                 value={customDesc}
@@ -1364,8 +1364,8 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             </div>
             {customDesc.trim() && (
               <div className="rounded-lg bg-muted/50 border border-border/60 p-2.5 space-y-1">
-                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Výsledný prompt:</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed break-words">
+                <p className="text-caption font-semibold text-muted-foreground uppercase tracking-wide">Výsledný prompt:</p>
+                <p className="text-caption text-muted-foreground leading-relaxed break-words">
                   <span className="text-muted-foreground/60">{PROMPT_PREFIX} </span>
                   <span className="text-foreground font-medium">{customDesc.trim()}</span>
                   <span className="text-muted-foreground/60">{PROMPT_SUFFIX.slice(0, 50)}…</span>
@@ -1377,8 +1377,8 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
             <div className="flex items-center gap-4">
               <img src={customPreviewUrl} alt="náhled" className="h-24 w-24 object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply shrink-0" />
               <div className="space-y-1">
-                {customSaved && <p className="text-xs text-emerald-600 font-medium">✓ Uloženo jako <code className="bg-muted px-1 rounded text-[11px]">{toSlug(customKey)}</code></p>}
-                <p className="text-[11px] text-muted-foreground">Klíč použij v kódu: <code className="bg-muted px-1 rounded">{`si("${toSlug(customKey)}")`}</code></p>
+                {customSaved && <p className="text-xs text-emerald-600 font-medium">✓ Uloženo jako <code className="bg-muted px-1 rounded text-caption">{toSlug(customKey)}</code></p>}
+                <p className="text-caption text-muted-foreground">Klíč použij v kódu: <code className="bg-muted px-1 rounded">{`si("${toSlug(customKey)}")`}</code></p>
               </div>
             </div>
           )}
@@ -1409,7 +1409,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-6 px-2 text-[11px]"
+                  className="h-6 px-2 text-caption"
                   onClick={loadCustomList}
                   disabled={customListLoading}
                 >
@@ -1428,9 +1428,9 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                         className="w-full aspect-square object-contain rounded-lg bg-white"
                       />
                       <div className="space-y-0.5">
-                        <p className="text-[10px] font-mono text-foreground break-all" title={it.key}>{it.key}</p>
-                        <p className="text-[10px] text-muted-foreground line-clamp-2" title={it.description}>{it.description}</p>
-                        <p className="text-[9px] text-muted-foreground/70">
+                        <p className="text-caption font-mono text-foreground break-all" title={it.key}>{it.key}</p>
+                        <p className="text-caption text-muted-foreground line-clamp-2" title={it.description}>{it.description}</p>
+                        <p className="text-caption text-muted-foreground/70">
                           {new Date(it.updated_at).toLocaleDateString("cs-CZ")} · {it.generations}× generováno
                         </p>
                       </div>
@@ -1438,7 +1438,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-6 px-1.5 text-[10px] gap-1 flex-1"
+                          className="h-6 px-1.5 text-caption gap-1 flex-1"
                           onClick={() => handleRegenerateCustom(it.key, it.description)}
                           title="Upravit a přegenerovat"
                         >
@@ -1447,7 +1447,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-6 px-1.5 text-[10px] gap-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                          className="h-6 px-1.5 text-caption gap-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
                           onClick={() => handleDeleteCustom(it.key)}
                           title="Smazat z registru (soubor ve storage zůstává)"
                         >
@@ -1478,7 +1478,7 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                 className="resize-none text-xs"
                 placeholder="Popiš, jak má logo vypadat…"
               />
-              <p className="text-[10px] text-muted-foreground italic">
+              <p className="text-caption text-muted-foreground italic">
                 Bude obaleno: „{PROMPT_PREFIX} … {PROMPT_SUFFIX.slice(0, 40)}…"
               </p>
               <Button
@@ -1498,13 +1498,13 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                 {logoPreviewUrl && (
                   <div className="text-center space-y-1">
                     <img src={logoPreviewUrl} alt="Bez textu" className="h-24 w-24 mx-auto object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply" />
-                    <p className="text-[10px] text-muted-foreground font-medium">Bez textu</p>
+                    <p className="text-caption text-muted-foreground font-medium">Bez textu</p>
                   </div>
                 )}
                 {logoTextPreviewUrl && (
                   <div className="text-center space-y-1">
                     <img src={logoTextPreviewUrl} alt="S textem Oli" className="h-24 w-24 mx-auto object-contain rounded-xl border border-border/60 bg-white mix-blend-multiply" />
-                    <p className="text-[10px] text-muted-foreground font-medium">S textem „Oli"</p>
+                    <p className="text-caption text-muted-foreground font-medium">S textem „Oli"</p>
                   </div>
                 )}
               </div>
@@ -1683,18 +1683,18 @@ export function AdminGenerateIllustrations({ trigger }: { trigger?: React.ReactN
                             {label}
                           </p>
                           {breadcrumb && (
-                            <p className="text-[10px] text-muted-foreground leading-tight line-clamp-1" title={breadcrumb}>
+                            <p className="text-caption text-muted-foreground leading-tight line-clamp-1" title={breadcrumb}>
                               {typeLabel && <span className="font-medium">{typeLabel}: </span>}{breadcrumb}
                             </p>
                           )}
                           {!breadcrumb && typeLabel && (
-                            <p className="text-[10px] text-muted-foreground leading-tight">{typeLabel}</p>
+                            <p className="text-caption text-muted-foreground leading-tight">{typeLabel}</p>
                           )}
                         </>
                       ) : (
                         <p className="text-xs font-semibold text-foreground leading-tight line-clamp-2 font-mono" title={key}>{key}</p>
                       )}
-                      <p className="text-[9px] text-muted-foreground/60 font-mono leading-tight line-clamp-1 pt-0.5" title={key}>
+                      <p className="text-caption text-muted-foreground/60 font-mono leading-tight line-clamp-1 pt-0.5" title={key}>
                         {key}
                       </p>
                     </div>

@@ -501,9 +501,9 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
                                 {isApplied ? (
-                                  <Badge className="bg-green-600 text-white text-[10px] px-1.5">Opraveno</Badge>
+                                  <Badge className="bg-green-600 text-white text-caption px-1.5">Opraveno</Badge>
                                 ) : (
-                                  <Badge variant="destructive" className="text-[10px] px-1.5">Úprava</Badge>
+                                  <Badge variant="destructive" className="text-caption px-1.5">Úprava</Badge>
                                 )}
                               </div>
                               {/* Original question displayed prominently */}
@@ -517,7 +517,7 @@ export function ExerciseValidator({ open, onOpenChange, grade, hideSheet }: Exer
                                   Odpověď: <span className="font-medium text-foreground">{result.originalAnswer}</span>
                                 </p>
                               )}
-                              <span className="text-[10px] text-muted-foreground/60 block mt-0.5">
+                              <span className="text-caption text-muted-foreground/60 block mt-0.5">
                                 {result.exercise_id.slice(0, 8)}…
                               </span>
                               <ul className="mt-1 space-y-0.5">

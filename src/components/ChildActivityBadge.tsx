@@ -59,21 +59,21 @@ export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) 
             <Flame className="h-5 w-5 text-orange-300 shrink-0" />
             <div>
               <p className="text-xl font-extrabold text-white tabular-nums leading-none">{days}</p>
-              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
+              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
             <CheckCircle2 className="h-5 w-5 text-emerald-300 shrink-0" />
             <div>
               <p className="text-xl font-extrabold text-white tabular-nums leading-none">{tasks}</p>
-              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">ÚLOH</p>
+              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">ÚLOH</p>
             </div>
           </div>
           <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
             <Star className="h-5 w-5 text-yellow-300 shrink-0" />
             <div>
               <p className="text-xl font-extrabold text-white tabular-nums leading-none">{accuracy}%</p>
-              <p className="text-white/60 text-[10px] font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
+              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@ function StatCard({ value, label, tone }: { value: number | string; label: strin
   return (
     <div className={`rounded-2xl border border-border bg-card shadow-soft-1 px-3 py-3.5 text-center ${colors[tone]}`}>
       <p className="font-display text-2xl font-extrabold tabular-nums">{value}</p>
-      <p className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground mt-0.5">{label}</p>
+      <p className="text-caption font-bold tracking-[0.12em] text-muted-foreground mt-0.5">{label}</p>
     </div>
   );
 }

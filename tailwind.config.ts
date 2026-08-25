@@ -51,6 +51,36 @@ export default {
         display: ["Nunito", "ui-sans-serif", "sans-serif"],
         sans: ["Nunito", "ui-sans-serif", "system-ui", "sans-serif"],
       },
+      // ── Typografická škála ──
+      // Jedno písmo (Nunito), jedna škála. Pojmenované tokeny nesou i váhu,
+      // takže `text-h2` je celý typografický styl, ne jen velikost.
+      //
+      // Číselné stupně jsou zároveň PŘEMAPOVANÉ o ~1 px nahoru: rodičovská
+      // a admin část měly základní text 11–14 px, což je pod hranicí komfortu
+      // u produktu, který má prodat důvěryhodnost. Posun v konfiguraci zvedne
+      // písmo všude naráz — jinak by šlo o editaci stovek call-sitů.
+      // `3xl` a výš se nemění (hero škála, řeší ji token `display`).
+      fontSize: {
+        xs: ["12px", { lineHeight: "1.45" }], // absolutní minimum
+        sm: ["15px", { lineHeight: "1.55" }], // ← 14px; default rodič/admin
+        base: ["17px", { lineHeight: "1.6" }], // ← 16px; default dětská část
+        lg: ["19px", { lineHeight: "1.5" }], // ← 18px
+        xl: ["21px", { lineHeight: "1.4" }], // ← 20px
+        "2xl": ["26px", { lineHeight: "1.25" }], // ← 24px
+        "3xl": ["30px", { lineHeight: "1.2" }],
+        "4xl": ["36px", { lineHeight: "1.15" }],
+        "5xl": ["48px", { lineHeight: "1.1" }],
+        "6xl": ["60px", { lineHeight: "1" }],
+        "7xl": ["72px", { lineHeight: "1" }],
+        display: ["34px", { lineHeight: "1.15", fontWeight: "800" }],
+        h1: ["26px", { lineHeight: "1.2", fontWeight: "800" }],
+        h2: ["21px", { lineHeight: "1.3", fontWeight: "700" }],
+        h3: ["17px", { lineHeight: "1.4", fontWeight: "700" }],
+        "body-lg": ["17px", { lineHeight: "1.6", fontWeight: "400" }],
+        body: ["15px", { lineHeight: "1.55", fontWeight: "400" }],
+        label: ["13px", { lineHeight: "1.4", fontWeight: "600" }],
+        caption: ["12px", { lineHeight: "1.4", fontWeight: "500" }],
+      },
       // Dvě úrovně stínu: e1 = „dá se na mě kliknout", e2 = „vznáším se"
       // (modal, dropdown, hover). Statické plochy stín nemají — dělí je border.
       // Teple neutrální (rgba(41,37,36)) — studený modrošedý stín působí na
@@ -110,6 +140,13 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
           muted: "hsl(var(--success-muted))",
+        },
+        // Nápověda/upozornění. Záměrně BEZ `foreground` — jantarová ani
+        // oranžová nesmí nést bílý text (#B45309 s bílou = 3,4:1). Používej
+        // `bg-warning-muted text-warning` (tint + tmavý text, 5,02:1).
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          muted: "hsl(var(--warning-muted))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

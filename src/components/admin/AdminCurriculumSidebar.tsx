@@ -10,43 +10,12 @@ import { isSubjectVisibleForGrade } from "@/lib/curriculumSubjectFilter";
 import { getDisplayCategory, getDisplayTopic, getDisplayTitle } from "@/lib/displayNames";
 import { plural } from "@/lib/czechGrammar";
 import type { Grade } from "@/lib/types";
+import { getSubjectPalette } from "@/lib/subjectRegistry";
 
-// Barva pro vizuální dot per předmět — Notion-vibe minimal indikátor
-const SUBJECT_DOT: Record<string, string> = {
-  matematika: "bg-violet-500",
-  "čeština": "bg-rose-500",
-  cestina: "bg-rose-500",
-  cesky: "bg-rose-500",
-  "česky": "bg-rose-500",
-  prvouka: "bg-emerald-500",
-  "přírodověda": "bg-amber-500",
-  prirodoveda: "bg-amber-500",
-  "vlastivěda": "bg-fuchsia-500",
-  vlastiveda: "bg-fuchsia-500",
-  biologie: "bg-green-500",
-  chemie: "bg-cyan-500",
-  fyzika: "bg-blue-500",
-  "dějepis": "bg-orange-500",
-  dejepis: "bg-orange-500",
-  "zeměpis": "bg-teal-500",
-  zemeopis: "bg-teal-500",
-  zemeris: "bg-teal-500",
-  informatika: "bg-indigo-500",
-  hudebni: "bg-pink-500",
-  "hudební výchova": "bg-pink-500",
-  "výtvarná výchova": "bg-yellow-500",
-  vytvarnahm: "bg-yellow-500",
-  "tělesná výchova": "bg-red-500",
-  telesna: "bg-red-500",
-  obcanska: "bg-lime-500",
-  "občanská výchova": "bg-lime-500",
-  anglictina: "bg-sky-500",
-  "anglický jazyk": "bg-sky-500",
-  nemcina: "bg-purple-500",
-  "německý jazyk": "bg-purple-500",
-};
-const dotFor = (subject: string) =>
-  SUBJECT_DOT[subject.toLowerCase()] ?? "bg-slate-400";
+// Tečka předmětu čte barvu z rejstříku (`subjectRegistry`). Dřív tu byla
+// vlastní 35řádková mapa, kde měla matematika fialovou a čeština růžovou —
+// přesně opačně než v žákovské části.
+const dotFor = (subject: string) => getSubjectPalette(subject).accentClass;
 
 export interface CurriculumContext {
   subject: string | null;
@@ -255,13 +224,13 @@ export function AdminCurriculumSidebar({
       {/* Header — minimální Notion-vibe */}
       <div className="px-4 pt-4 pb-3">
         <div className="flex items-center justify-between">
-          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground">
             Kurikulum
           </p>
           {hasAnySelection && (
             <button
               onClick={handleHomeClick}
-              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-caption font-medium text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
               title="Zrušit výběr a vrátit se na úvod"
             >
               <RotateCcw className="h-2.5 w-2.5" />
@@ -270,7 +239,7 @@ export function AdminCurriculumSidebar({
           )}
         </div>
         {gradeFilter != null && (
-          <p className="mt-0.5 text-[11px] text-muted-foreground">
+          <p className="mt-0.5 text-caption text-muted-foreground">
             {gradeFilter}. ročník · <span className="font-medium text-foreground">{totalSkills}</span>{" "}
             {plural(totalSkills, "podtéma", "podtémata", "podtémat")}
           </p>
@@ -324,7 +293,7 @@ export function AdminCurriculumSidebar({
                   <span className="break-words text-left flex-1 leading-tight font-display font-semibold text-[14px]">
                     {fmtName(subject)}
                   </span>
-                  <span className="text-[11px] font-medium text-muted-foreground tabular-nums">
+                  <span className="text-caption font-medium text-muted-foreground tabular-nums">
                     {Object.values(tree[subject]).reduce((acc, cat) => acc + Object.values(cat).reduce((a, b) => a + b.length, 0), 0)}
                   </span>
                 </button>
@@ -357,7 +326,7 @@ export function AdminCurriculumSidebar({
                               <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
                             )}
                             <span className="break-words text-left flex-1 leading-tight">{getDisplayCategory(category, (gradeFilter ?? null) as Grade | null)}</span>
-                            <span className="text-[11px] font-normal text-muted-foreground tabular-nums">
+                            <span className="text-caption font-normal text-muted-foreground tabular-nums">
                               {catSkillCount}
                             </span>
                           </button>
@@ -394,7 +363,7 @@ export function AdminCurriculumSidebar({
                                       <span className="break-words flex-1 text-left leading-tight">
                                         {getDisplayTopic(topic, (gradeFilter ?? null) as Grade | null)}
                                       </span>
-                                      <span className="text-[11px] text-muted-foreground tabular-nums">
+                                      <span className="text-caption text-muted-foreground tabular-nums">
                                         {skills.length}
                                       </span>
                                     </button>

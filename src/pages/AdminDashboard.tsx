@@ -377,7 +377,7 @@ export default function AdminDashboard() {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 px-2 text-[11px] gap-1 text-muted-foreground rounded-full hover:text-foreground"
+                  className="h-7 px-2 text-caption gap-1 text-muted-foreground rounded-full hover:text-foreground"
                   onClick={() => handleGradeChange(null)}
                   title="Zrušit filtr"
                 >
@@ -394,7 +394,7 @@ export default function AdminDashboard() {
 
             {/* Workflow akce — vpravo, v logickém pořadí: Tvořit → Zkontrolovat AI → Audit → Ilustrace */}
             <div className="flex flex-col items-end gap-1 ml-auto">
-              <p className="text-[11px] text-muted-foreground/70 hidden md:block pr-0.5">
+              <p className="text-caption text-muted-foreground/70 hidden md:block pr-0.5">
                 <span className="font-medium text-muted-foreground">Pracovní postup:</span>
                 {FEATURES.adminAiContentCreator && (
                   <>{" "}Pedagogický audit <span className="italic">(pedagogika, jazyk)</span> →</>
@@ -620,7 +620,8 @@ export default function AdminDashboard() {
                 return (
                   <Card
                     key={subject}
-                    className={`group relative cursor-pointer overflow-hidden border-2 rounded-3xl transition-all hover:shadow-lg hover:-translate-y-0.5 ${meta.gradientClass} ${meta.borderClass}`}
+                    interactive
+                    className={`group relative overflow-hidden border-2 border-t-4 rounded-3xl ${meta.borderClass}`}
                     onClick={() => handleSubjectClick(subject)}
                   >
                     {/* Polkadot decorations — 4 rohy */}
@@ -655,19 +656,19 @@ export default function AdminDashboard() {
                       <div className="flex flex-wrap gap-1.5">
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                         >
                           {categoryCount} {categoryCount === 1 ? "okruh" : categoryCount < 5 ? "okruhy" : "okruhů"}
                         </Badge>
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                         >
                           {topicCount} {topicCount === 1 ? "téma" : topicCount < 5 ? "témata" : "témat"}
                         </Badge>
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                         >
                           {subtopicCount} {subtopicCount === 1 ? "podtéma" : subtopicCount < 5 ? "podtémata" : "podtémat"}
                         </Badge>
@@ -775,7 +776,7 @@ export default function AdminDashboard() {
                           // Navigation mode: zobraz jen počet skills přímo jako "témata" (žádná téma/podtéma hierarchie)
                           <Badge
                             variant="outline"
-                            className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                            className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                           >
                             {subtopicCount} {subtopicCount === 1 ? "téma" : subtopicCount < 5 ? "témata" : "témat"}
                           </Badge>
@@ -783,14 +784,14 @@ export default function AdminDashboard() {
                           <>
                             <Badge
                               variant="outline"
-                              className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                              className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                             >
                               {count} {count === 1 ? "téma" : count < 5 ? "témata" : "témat"}
                             </Badge>
                             {subtopicCount > 0 && (
                               <Badge
                                 variant="outline"
-                                className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                                className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                               >
                                 {subtopicCount} {subtopicCount === 1 ? "podtéma" : subtopicCount < 5 ? "podtémata" : "podtémat"}
                               </Badge>
@@ -798,7 +799,7 @@ export default function AdminDashboard() {
                           </>
                         )}
                         {isEmpty && (
-                          <Badge variant="outline" className="rounded-full border-dashed text-[11px]">
+                          <Badge variant="outline" className="rounded-full border-dashed text-caption">
                             Prázdné
                           </Badge>
                         )}
@@ -922,12 +923,12 @@ export default function AdminDashboard() {
                       <div className="flex flex-wrap gap-1.5">
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                         >
                           {count} {count === 1 ? "podtéma" : count < 5 ? "podtémata" : "podtémat"}
                         </Badge>
                         {isEmpty && (
-                          <Badge variant="outline" className="rounded-full border-dashed text-[11px]">
+                          <Badge variant="outline" className="rounded-full border-dashed text-caption">
                             Prázdné
                           </Badge>
                         )}
@@ -1041,20 +1042,20 @@ export default function AdminDashboard() {
                       <div className="flex flex-wrap gap-1.5">
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                         >
                           {skill.gradeRange[0]}–{skill.gradeRange[1]}. ročník
                         </Badge>
                         <Badge
                           variant="outline"
-                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-[11px] font-medium text-foreground border-border/60"
+                          className="rounded-full bg-white/70 px-2.5 py-0.5 text-caption font-medium text-foreground border-border/60"
                         >
                           {INPUT_TYPE_LABELS[skill.inputType] ?? skill.inputType}
                         </Badge>
                         {isDbOnly && (
                           <Badge
                             variant="outline"
-                            className="rounded-full border-amber-300 text-amber-700 bg-amber-50/90 px-2.5 py-0.5 text-[11px]"
+                            className="rounded-full border-amber-300 text-amber-700 bg-amber-50/90 px-2.5 py-0.5 text-caption"
                           >
                             Bez šablony
                           </Badge>
@@ -1275,7 +1276,7 @@ function ContextBreadcrumb({
           </>
         )}
         {grade && (
-          <Badge variant="secondary" className="ml-auto text-[10px] h-5 shrink-0">
+          <Badge variant="secondary" className="ml-auto text-caption h-5 shrink-0">
             {grade}. ročník
           </Badge>
         )}
@@ -1379,7 +1380,7 @@ function QuickAddCard({
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">Přidat {label}</p>
-              <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">{hint}</p>
+              <p className="text-caption text-muted-foreground leading-snug mt-0.5">{hint}</p>
             </div>
           </div>
 
@@ -1397,7 +1398,7 @@ function QuickAddCard({
               </div>
               <div>
                 <p className="text-xs font-semibold text-foreground">Přidat ručně</p>
-                <p className="text-[10px] text-muted-foreground">Zadej název a popis sám</p>
+                <p className="text-caption text-muted-foreground">Zadej název a popis sám</p>
               </div>
             </button>
 
@@ -1411,7 +1412,7 @@ function QuickAddCard({
               </div>
               <div>
                 <p className="text-xs font-semibold text-primary">Navrhnout s AI</p>
-                <p className="text-[10px] text-muted-foreground">AI navrhne obsah dle RVP ZV</p>
+                <p className="text-caption text-muted-foreground">AI navrhne obsah dle RVP ZV</p>
               </div>
             </button>
             )}
@@ -1486,12 +1487,12 @@ function QuickAddCard({
 
             {/* Výběr ročníku přímo v kartě */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] text-muted-foreground font-medium">Ročník:</span>
+              <span className="text-caption text-muted-foreground font-medium">Ročník:</span>
               {[1,2,3,4,5,6,7,8,9].map((g) => (
                 <button
                   key={g}
                   onClick={() => handleLocalGradeChange(localGrade === g ? null : g)}
-                  className={`h-6 w-6 rounded-full text-[11px] font-medium transition-colors ${
+                  className={`h-6 w-6 rounded-full text-caption font-medium transition-colors ${
                     localGrade === g
                       ? "bg-primary text-white"
                       : "bg-muted text-foreground/70 hover:bg-muted/80"
@@ -1501,17 +1502,17 @@ function QuickAddCard({
                 </button>
               ))}
               {localGrade && (
-                <button onClick={() => handleLocalGradeChange(null)} className="text-[11px] text-muted-foreground hover:text-foreground">✕</button>
+                <button onClick={() => handleLocalGradeChange(null)} className="text-caption text-muted-foreground hover:text-foreground">✕</button>
               )}
             </div>
 
             {!localGrade && (
-              <p className="text-[11px] text-amber-600 bg-amber-50 rounded-lg px-2 py-1">
+              <p className="text-caption text-amber-600 bg-amber-50 rounded-lg px-2 py-1">
                 ⚠ Vyber ročník — AI jinak navrhne obsah pro celou ZŠ bez konkrétní úrovně.
               </p>
             )}
 
-            <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide pt-1">
+            <p className="text-caption text-muted-foreground font-medium uppercase tracking-wide pt-1">
               Pokyn pro AI — uprav dle potřeby:
             </p>
             <textarea
@@ -1521,7 +1522,7 @@ function QuickAddCard({
               rows={5}
               className="w-full rounded-xl border border-primary/30 bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 resize-none leading-relaxed text-foreground/80"
             />
-            <p className="text-[10px] text-muted-foreground/60">
+            <p className="text-caption text-muted-foreground/60">
               {sourceNote
                 ? `Zdroj: ${sourceNote}. AI čerpá z oficiálního kurikula.`
                 : "AI čerpá z oficiálního kurikula."}
@@ -1534,7 +1535,7 @@ function QuickAddCard({
                   <Loader2 className="h-5 w-5 animate-spin" />
                   <span className="text-sm font-medium">AI generuje návrhy…</span>
                 </div>
-                <p className="text-[11px] text-muted-foreground text-center">
+                <p className="text-caption text-muted-foreground text-center">
                   Obvykle trvá 5–15 sekund. Návrhy se zobrazí přímo pod touto kartou.
                 </p>
               </div>

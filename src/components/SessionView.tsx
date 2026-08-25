@@ -35,7 +35,7 @@ import { useT } from "@/lib/i18n";
 import { LogOut, Eye } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
 import { LandingNav } from "@/pages/LandingNav";
 import { OliLogo } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
@@ -88,26 +88,6 @@ const STATE_LABELS: Record<SessionState, string> = {
   STOP_2: "Ukončení",
   END: "Konec",
 };
-
-/** Get subject accent color class */
-function getSubjectColor(subject?: string): { bg: string; border: string; cardBorder: string; badge: string; accent: string; dotAccent: string } {
-  switch (subject) {
-    case "matematika":
-      return { bg: "from-sky-50 to-blue-100", border: "border-l-blue-400", cardBorder: "border-blue-300", badge: "bg-blue-500 text-white border-blue-600", accent: "bg-blue-500", dotAccent: "bg-blue-100 ring-2 ring-blue-400" };
-    case "čeština":
-      return { bg: "from-purple-100 to-purple-200", border: "border-l-purple-400", cardBorder: "border-purple-300", badge: "bg-purple-500 text-white border-purple-600", accent: "bg-purple-500", dotAccent: "bg-purple-100 ring-2 ring-purple-400" };
-    case "prvouka":
-      return { bg: "from-green-100 to-green-200", border: "border-l-green-400", cardBorder: "border-green-300", badge: "bg-green-500 text-white border-green-600", accent: "bg-green-500", dotAccent: "bg-green-100 ring-2 ring-green-400" };
-    case "přírodověda":
-      return { bg: "from-emerald-100 to-emerald-200", border: "border-l-emerald-400", cardBorder: "border-emerald-300", badge: "bg-emerald-500 text-white border-emerald-600", accent: "bg-emerald-500", dotAccent: "bg-emerald-100 ring-2 ring-emerald-400" };
-    case "vlastivěda":
-      return { bg: "from-amber-100 to-amber-200", border: "border-l-amber-400", cardBorder: "border-amber-300", badge: "bg-amber-500 text-white border-amber-600", accent: "bg-amber-500", dotAccent: "bg-amber-100 ring-2 ring-amber-400" };
-    case "informatika":
-      return { bg: "from-sky-100 to-sky-200", border: "border-l-sky-400", cardBorder: "border-sky-300", badge: "bg-sky-500 text-white border-sky-600", accent: "bg-sky-500", dotAccent: "bg-sky-100 ring-2 ring-sky-400" };
-    default:
-      return { bg: "from-slate-100 to-slate-200", border: "border-l-primary", cardBorder: "border-slate-300", badge: "bg-secondary text-secondary-foreground", accent: "bg-primary", dotAccent: "bg-primary/10 ring-2 ring-primary/40" };
-  }
-}
 
 /** Vrátí dětský název tématu — pro student view, jinak RVP */
 function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string; studentTitle?: string }, grade: number | null, isStudentView: boolean): string {
@@ -272,14 +252,7 @@ export function SessionView() {
           ))}
         </select>
       </div>
-      <Button
-        variant="secondary"
-        size="sm"
-        className="h-7 text-xs rounded-full bg-white/15 hover:bg-white/25 text-primary-foreground border border-white/20"
-        onClick={() => navigate("/admin")}
-      >
-        ← Zpět do Adminu
-      </Button>
+      <BackButton to="/admin" label="Zpět do Adminu" size="sm" />
     </div>
   ) : null;
 
@@ -350,7 +323,7 @@ export function SessionView() {
   const DemoChildSwitcher = isDemoChild ? (
     <div className="grid sm:grid-cols-2 gap-4 mx-auto max-w-5xl px-4 pt-6 sm:px-8">
       <button
-        className="rounded-3xl border-2 border-blue-200 bg-blue-50/60 hover:border-blue-400 hover:bg-blue-50 hover:shadow-lg p-6 flex items-center gap-4 text-left transition-all active:scale-[0.98]"
+        className="rounded-3xl border-2 bg-card shadow-e1 hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] p-6 flex items-center gap-4 text-left transition-all duration-150"
         onClick={async () => {
           await supabase.auth.signInWithPassword({ email: "demo@oli.app", password: "Demo123demo" });
           window.location.href = "/parent";
@@ -363,11 +336,11 @@ export function SessionView() {
           threshold={240}
         />
         <div className="flex-1">
-          <p className="font-bold text-lg text-blue-900">Jsem rodič</p>
-          <p className="text-xs text-blue-600 mt-0.5">Přepnout na rodičovský pohled →</p>
+          <p className="font-bold text-lg text-foreground">Jsem rodič</p>
+          <p className="text-label text-muted-foreground mt-0.5">Přepnout na rodičovský pohled →</p>
         </div>
       </button>
-      <div className="rounded-3xl border-2 border-orange-300 bg-orange-50/80 p-6 flex items-center gap-4">
+      <div className="rounded-3xl border-2 border-[#9A3412]/25 bg-[#FFF1E6] p-6 flex items-center gap-4">
         <DewhiteImg
           src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/ui-child-desk.png"
           alt=""
@@ -375,8 +348,8 @@ export function SessionView() {
           threshold={240}
         />
         <div>
-          <p className="font-bold text-lg text-orange-900">Jsem žák</p>
-          <p className="text-xs text-orange-600 mt-0.5">Aktuální pohled</p>
+          <p className="font-bold text-lg text-[#9A3412]">Jsem žák</p>
+          <p className="text-label text-[#9A3412]/80 mt-0.5">Aktuální pohled</p>
         </div>
       </div>
     </div>
@@ -446,18 +419,18 @@ export function SessionView() {
             </DialogHeader>
             <div className="flex flex-col gap-3 pt-2">
               <button
-                className="flex flex-col items-start gap-1 rounded-2xl border-2 border-violet-200 bg-violet-50 px-5 py-4 text-left hover:bg-violet-100 transition-colors"
+                className="flex flex-col items-start gap-1 rounded-lg border-2 border-primary/30 bg-card px-5 py-4 text-left transition-all duration-150 hover:bg-accent hover:shadow-e2 hover:-translate-y-px"
                 onClick={() => { setShowAnonGateModal(false); navigate("/auth/child"); }}
               >
-                <span className="font-bold text-base text-violet-900">Jsem žák</span>
-                <span className="text-sm text-violet-700">Mám párovací kód od rodiče</span>
+                <span className="font-bold text-base text-foreground">Jsem žák</span>
+                <span className="text-sm text-muted-foreground">Mám párovací kód od rodiče</span>
               </button>
               <button
-                className="flex flex-col items-start gap-1 rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-5 py-4 text-left hover:bg-emerald-100 transition-colors"
+                className="flex flex-col items-start gap-1 rounded-lg border-2 border-success/30 bg-card px-5 py-4 text-left transition-all duration-150 hover:bg-success-muted hover:shadow-e2 hover:-translate-y-px"
                 onClick={() => { setShowAnonGateModal(false); navigate("/auth?mode=register"); }}
               >
-                <span className="font-bold text-base text-emerald-900">Jsem rodič</span>
-                <span className="text-sm text-emerald-700">Chci sledovat pokrok dítěte</span>
+                <span className="font-bold text-base text-foreground">Jsem rodič</span>
+                <span className="text-sm text-muted-foreground">Chci sledovat pokrok dítěte</span>
               </button>
             </div>
           </DialogContent>
@@ -470,7 +443,10 @@ export function SessionView() {
   const showTextInput = !isTerminal && !isLocked && session.state === "INPUT_CAPTURE";
   const showPracticeInput = !isTerminal && !isLocked && session.state === "PRACTICE" && !checkFeedback && !revealedAnswer;
   const currentTask: PracticeTask | undefined = session.practiceBatch[session.currentTaskIndex];
-  const subjectColors = getSubjectColor(session.matchedTopic?.subject);
+  // Předmětová barva JEN z rejstříku — dřív tu byla šestá nezávislá mapa
+  // (`getSubjectColor`), kvůli které měla matematika jiný odstín modré ve
+  // cvičení než v přehledu předmětů.
+  const subjectPalette = getSubjectPalette(session.matchedTopic?.subject);
 
   // Dekorace pozadí — zobrazí se jen během PRACTICE/EXPLAIN, fixní vlevo dole
   const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
@@ -521,7 +497,7 @@ export function SessionView() {
       {AdminBanner}
       {/* Header */}
       <header className="relative border-b px-4 pt-4 pb-3">
-        <div className={`absolute top-0 left-0 right-0 h-1 ${subjectColors.accent}`} />
+        <div className={`absolute top-0 left-0 right-0 h-1 ${subjectPalette.accentClass}`} />
         <div className="absolute left-4 top-1/2 -translate-y-1/2">
           <OliLogo size="sm" onClick={s.handleReset} />
         </div>
@@ -619,8 +595,8 @@ export function SessionView() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
-                    variant="outline"
-                    className="w-full text-base border-2 gap-2 px-5 py-3 h-auto rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-300 text-amber-800 shadow-sm hover:from-amber-100 hover:to-yellow-100 hover:border-amber-400 hover:shadow-lg hover:scale-[1.01] transition-all duration-200 font-semibold"
+                    variant="warning"
+                    className="w-full h-auto border-2 gap-2 px-5 py-3 text-base"
                   >
                     {t("session.good_to_know")}
                   </Button>
@@ -676,20 +652,20 @@ export function SessionView() {
                           })()}
                         </div>
                       )}
-                      <div className="rounded-xl bg-emerald-50 border-2 border-emerald-200 p-5 space-y-2">
-                        <p className="font-bold text-emerald-800">{t("session.example_label")}</p>
-                        <p className="text-emerald-900">{session.matchedTopic.helpTemplate.example}</p>
+                      <div className="rounded-lg bg-success-muted border border-success/30 p-5 space-y-2">
+                        <p className="font-bold text-success">{t("session.example_label")}</p>
+                        <p className="text-foreground">{session.matchedTopic.helpTemplate.example}</p>
                       </div>
-                      <div className="rounded-xl border-2 border-red-300 bg-red-50 p-5 space-y-2">
-                        <p className="font-bold text-red-800">{t("session.common_mistake")}</p>
-                        <p className="text-red-900">{session.matchedTopic.helpTemplate.commonMistake}</p>
+                      <div className="rounded-lg border border-destructive/30 bg-card p-5 space-y-2">
+                        <p className="font-bold text-destructive">{t("session.common_mistake")}</p>
+                        <p className="text-foreground">{session.matchedTopic.helpTemplate.commonMistake}</p>
                       </div>
                       {(() => {
                         const catInfo = getCategoryInfo(session.matchedTopic!.subject, session.matchedTopic!.category, session.matchedTopic!.topic);
                         return catInfo?.funFact ? (
-                          <div className="rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 p-5 space-y-2">
-                            <p className="font-semibold text-amber-900 text-lg">{t("session.fun_fact")}</p>
-                            <p className="text-amber-800 italic">{catInfo.funFact}</p>
+                          <div className="rounded-lg bg-warning-muted border border-warning/30 p-5 space-y-2">
+                            <p className="font-semibold text-warning text-lg">{t("session.fun_fact")}</p>
+                            <p className="text-foreground italic">{catInfo.funFact}</p>
                           </div>
                         ) : null;
                       })()}
@@ -702,7 +678,8 @@ export function SessionView() {
 
           {/* Question card (EXPLAIN / PRACTICE without feedback) */}
           {session.state !== "INPUT_CAPTURE" && !isTerminal && !checkFeedback && (
-            <Card className={`border-2 rounded-2xl overflow-hidden shadow-lg ${subjectColors.cardBorder} bg-gradient-to-br ${subjectColors.bg}`}>
+            // Karta je vždy bílá; předmět nese jen okraj (design systém).
+            <Card className={`border-2 overflow-hidden shadow-e1 ${subjectPalette.borderClass}`}>
               <CardContent className="p-6">
                 {session.state === "EXPLAIN" && (
                   <>
@@ -756,7 +733,6 @@ export function SessionView() {
               lastAnswerCorrect={lastAnswerCorrect}
               answeredTask={answeredTask}
               topic={session.matchedTopic}
-              subjectColors={subjectColors}
               loading={loading}
               isTerminal={isTerminal}
               onContinue={s.handleContinueAfterCheck}
@@ -826,7 +802,7 @@ export function SessionView() {
                   <p className="text-base text-muted-foreground">{revealedAnswer.hint}</p>
                 </CardContent>
               </Card>
-              <Button onClick={s.handleContinueAfterCheck} disabled={loading} className="w-full text-lg h-14 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200">
+              <Button onClick={s.handleContinueAfterCheck} disabled={loading} variant="success" size="child" className="w-full text-lg">
                 {loading ? t("session.processing") : t("session.continue")}
               </Button>
             </div>
@@ -907,7 +883,7 @@ export function SessionView() {
                 current={answeredTask && answeredTaskIndex !== null ? answeredTaskIndex : session.currentTaskIndex}
                 total={session.practiceBatch.length}
                 results={taskResults}
-                dotAccentClass={subjectColors.dotAccent}
+                dotAccentClass={`${subjectPalette.tintClass} ring-2 ${subjectPalette.ringClass}`}
               />
             </div>
           )}

@@ -237,7 +237,7 @@ export function CurriculumWizard({
             <div className="h-9 flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-3">
               <span className="text-sm font-medium text-amber-800 flex-1 truncate">
                 {subject.charAt(0).toUpperCase() + subject.slice(1)}
-                <span className="ml-1.5 text-[10px] font-semibold uppercase tracking-wide bg-amber-200 text-amber-700 rounded px-1 py-0.5">nový</span>
+                <span className="ml-1.5 text-caption font-semibold uppercase tracking-wide bg-amber-200 text-amber-700 rounded px-1 py-0.5">nový</span>
               </span>
               <button
                 onClick={() => { setSubject(null); setTask("create"); }}
@@ -271,7 +271,7 @@ export function CurriculumWizard({
       {/* Rychlá akce: Generovat předměty */}
       {!subject && (
         <div className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-3 space-y-2">
-          <p className="text-[11px] font-semibold text-primary">
+          <p className="text-caption font-semibold text-primary">
             🎯 Rychlá akce
           </p>
           <Button
@@ -299,7 +299,7 @@ export function CurriculumWizard({
         <Label className="text-xs text-muted-foreground">Úkol</Label>
         {/* Pokud je vybrán chybějící předmět, jen "Vytvořit" dává smysl */}
         {subject && missingSubjects.includes(subject) && (
-          <p className="text-[11px] text-amber-600 flex items-center gap-1">
+          <p className="text-caption text-amber-600 flex items-center gap-1">
             ⚠ Pro nový předmět je dostupná pouze možnost „Vytvořit nový obsah".
           </p>
         )}

@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, Sparkles } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
+import { getSubjectMeta, NEUTRAL_PALETTE, type SubjectMeta } from "@/lib/subjectRegistry";
 
 interface Props {
   childId: string;
@@ -18,14 +19,22 @@ interface SkillGroup {
   subject: string;
 }
 
-const SUBJECT_META: Record<string, { emoji: string; label: string; color: string }> = {
-  matematika: { emoji: "🔢", label: "Matematika", color: "text-blue-700" },
-  "čeština": { emoji: "📝", label: "Čeština", color: "text-purple-700" },
-  prvouka: { emoji: "🌍", label: "Prvouka", color: "text-green-700" },
-  "přírodověda": { emoji: "🌿", label: "Přírodověda", color: "text-emerald-700" },
-  "vlastivěda": { emoji: "🗺️", label: "Vlastivěda", color: "text-amber-700" },
-  ostatní: { emoji: "📚", label: "Ostatní", color: "text-slate-700" },
+/**
+ * „ostatní" je interní kbelík (viz `detectSubject`), ne skutečný předmět —
+ * proto má vlastní popisek. Všechno ostatní čte `subjectRegistry`, aby
+ * matematika měla stejnou modrou tady i ve cvičení. Dřív tu byla vlastní
+ * mapa s `text-purple-700` pro češtinu, zatímco jinde byla růžová.
+ */
+const OTHER_SUBJECT: SubjectMeta = {
+  ...getSubjectMeta("ostatní"),
+  label: "Ostatní",
+  emoji: "📚",
+  ...NEUTRAL_PALETTE,
 };
+
+function subjectMetaFor(subject: string): SubjectMeta {
+  return subject === "ostatní" ? OTHER_SUBJECT : getSubjectMeta(subject);
+}
 
 function detectSubject(skillId: string): string {
   // Nejdřív zkus skillReadableName.getSkillSubject
@@ -141,10 +150,10 @@ export function SelfPracticeList({ childId }: Props) {
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="rounded-xl border bg-card p-4 space-y-4 mt-2">
-          <p className="text-[11px] text-muted-foreground -mt-1">Za posledních 14 dní</p>
+          <p className="text-caption text-muted-foreground -mt-1">Za posledních 14 dní</p>
 
           {sortedSubjects.map((subject) => {
-            const meta = SUBJECT_META[subject] ?? SUBJECT_META.ostatní;
+            const meta = subjectMetaFor(subject);
             const items = bySubject.get(subject)!;
             const subjectTotal = items.reduce((s, g) => s + g.count, 0);
 
@@ -169,7 +178,7 @@ export function SelfPracticeList({ childId }: Props) {
                         </span>
                         <span className="text-xs text-muted-foreground">{g.count}×</span>
                       </div>
-                      <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <div className="flex items-center gap-3 text-caption text-muted-foreground">
                         {g.independent > 0 && (
                           <span className="flex items-center gap-1">
                             <span className="inline-block w-2 h-2 rounded-full bg-green-500" />

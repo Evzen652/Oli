@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BackButton } from "@/components/BackButton";
-import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
 import { useImageVersions } from "@/lib/imageVersions";
 import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
@@ -277,40 +277,6 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               ? ""  // "all topics" mode
               : t("topic.select_subtopic");
 
-  // Subject-level visual config — barva karty per subject (Lovable mockup styl)
-  const SUBJECT_CARD_STYLES: Record<string, { bg: string; border: string; chipBg: string; chipText: string }> = {
-    matematika: {
-      bg: "bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-50",
-      border: "border-indigo-200/70",
-      chipBg: "bg-white/80 text-indigo-700",
-      chipText: "text-indigo-700",
-    },
-    "čeština": {
-      bg: "bg-gradient-to-br from-rose-100 via-pink-50 to-red-50",
-      border: "border-rose-200/70",
-      chipBg: "bg-white/80 text-rose-700",
-      chipText: "text-rose-700",
-    },
-    prvouka: {
-      bg: "bg-gradient-to-br from-emerald-100 via-green-50 to-teal-50",
-      border: "border-emerald-200/70",
-      chipBg: "bg-white/80 text-emerald-700",
-      chipText: "text-emerald-700",
-    },
-    "přírodověda": {
-      bg: "bg-gradient-to-br from-teal-100 via-emerald-50 to-cyan-50",
-      border: "border-teal-200/70",
-      chipBg: "bg-white/80 text-teal-700",
-      chipText: "text-teal-700",
-    },
-    "vlastivěda": {
-      bg: "bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-50",
-      border: "border-amber-200/70",
-      chipBg: "bg-white/80 text-amber-700",
-      chipText: "text-amber-700",
-    },
-  };
-
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-background to-muted/20 p-4 sm:p-6" style={isAdmin ? { paddingTop: "2.5rem" } : undefined}>
       {level === "subject" ? (
@@ -338,23 +304,23 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
               const cats = [...new Set(subjectTopics.map((t) => t.category))];
               const count = getSubjectOkruhy(subject)?.length ?? cats.length;
               const meta = getSubjectMeta(subject);
-              const cardStyle = SUBJECT_CARD_STYLES[subject] ?? {
-                bg: meta.gradientClass,
-                border: meta.borderClass,
-                chipBg: "bg-white/80 text-foreground",
-                chipText: "text-foreground",
-              };
 
               return (
+                // Karta je bílá; předmět nese jen tintová dlaždice pod ilustrací
+                // a barevná linka. Dřív byla celá karta trojbarevný gradient
+                // (`from-indigo-100 via-purple-50 to-blue-50`), který přebíjel
+                // samotnou ilustraci — a v každé ze šesti map jinak.
                 <button
                   key={subject}
                   type="button"
                   onClick={() => handleSubjectClick(subject)}
-                  className={`group aspect-square relative text-left rounded-3xl border-2 ${cardStyle.bg} ${cardStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
+                  className={`group aspect-square relative text-left rounded-3xl border-2 border-t-4 bg-card ${meta.borderClass} shadow-e1 transition-all duration-150 hover:shadow-e2 hover:-translate-y-px active:translate-y-0 p-4 flex flex-col`}
                 >
-                  <span className={`absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-white/90 ${cardStyle.chipText} shadow-soft-1 transition-transform group-hover:translate-x-0.5`} aria-hidden>›</span>
+                  <span className={`absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full ${meta.tintClass} ${meta.color} transition-transform group-hover:translate-x-0.5`} aria-hidden>›</span>
                   <div className="flex-1 flex items-center justify-center">
-                    <PrvoukaImage imageUrl={meta.image || null} fallbackEmoji={meta.emoji} size="lg" />
+                    <div className={`grid place-items-center rounded-2xl ${meta.tintClass} p-3`}>
+                      <PrvoukaImage imageUrl={meta.image || null} fallbackEmoji={meta.emoji} size="lg" />
+                    </div>
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-lg font-black text-foreground tracking-tight leading-tight">
@@ -372,12 +338,12 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
       ) : (
         // ── ŽÁKOVSKÝ POHLED — category / topic / subtopic (Lovable styl) ──
         (() => {
-          const subjectStyle = (selectedSubject && SUBJECT_CARD_STYLES[selectedSubject]) || {
-            bg: "bg-gradient-to-br from-muted via-muted/50 to-background",
-            border: "border-border/60",
-            chipBg: "bg-white/80 text-foreground",
-            chipText: "text-foreground",
-          };
+          const subjectPalette = getSubjectPalette(selectedSubject);
+          // Jedna třída pro všechny tři dlaždicové mřížky (okruh / téma /
+          // podtéma) — dřív byl ten samý řetězec zkopírovaný 3× a lišil se
+          // jen v tom, kterou verzi gradientu zrovna zachytil.
+          const browseCardClass =
+            `group aspect-square relative text-left rounded-3xl border-2 border-t-4 bg-card ${subjectPalette.borderClass} shadow-e1 transition-all duration-150 hover:shadow-e2 hover:-translate-y-px active:translate-y-0 p-4 flex flex-col`;
           const subjectMeta = selectedSubject ? getSubjectMeta(selectedSubject) : null;
           const infoForLevel =
             level === "topic" && selectedSubject && selectedCategory
@@ -389,10 +355,10 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
           return (
             <div className="mx-auto w-full max-w-5xl space-y-6">
               {/* Welcome header card — barva podle aktuálního předmětu */}
-              <div className={`relative rounded-3xl border-2 ${subjectStyle.border} ${subjectStyle.bg} p-5 shadow-soft-1`}>
+              <div className={`relative rounded-3xl border-2 border-t-4 bg-card ${subjectPalette.borderClass} p-5 shadow-e1`}>
                 <div className="flex items-center gap-4">
                   {subjectMeta && (
-                    <div className="shrink-0 hidden sm:block">
+                    <div className={`shrink-0 hidden sm:grid place-items-center rounded-2xl p-2 ${subjectPalette.tintClass}`}>
                       <PrvoukaImage
                         imageUrl={subjectMeta.image || null}
                         fallbackEmoji={subjectMeta.emoji}
@@ -501,9 +467,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         key={card.id}
                         type="button"
                         onClick={card.onClick}
-                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
+                        className={browseCardClass}
                       >
-                        <div className="flex-1 flex items-center justify-center">
+                        <div className={`flex-1 flex items-center justify-center my-1 rounded-2xl ${subjectPalette.tintClass}`}>
                           <PrvoukaImage imageUrl={card.imageUrl} fallbackEmoji={card.emoji} size="lg" />
                         </div>
                         <div className="space-y-1">
@@ -536,9 +502,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         key={topicName}
                         type="button"
                         onClick={() => handleTopicClick(topicName)}
-                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col`}
+                        className={browseCardClass}
                       >
-                        <div className="flex-1 flex items-center justify-center">
+                        <div className={`flex-1 flex items-center justify-center my-1 rounded-2xl ${subjectPalette.tintClass}`}>
                           <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topicName, category: selectedCategory! })} fallbackEmoji={topicEmoji} size="lg" />
                         </div>
                         <div className="space-y-1">
@@ -569,9 +535,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         key={topic.id}
                         type="button"
                         onClick={() => onSelectTopic(topic)}
-                        className={`group aspect-square relative text-left rounded-3xl border-2 ${subjectStyle.bg} ${subjectStyle.border} shadow-soft-1 transition-all hover:shadow-lg hover:-translate-y-0.5 p-4 flex flex-col ${isDbOnly ? "opacity-80" : ""}`}
+                        className={`${browseCardClass} ${isDbOnly ? "opacity-80" : ""}`}
                       >
-                        <div className="flex-1 flex items-center justify-center">
+                        <div className={`flex-1 flex items-center justify-center my-1 rounded-2xl ${subjectPalette.tintClass}`}>
                           <PrvoukaImage imageUrl={getTopicIllustrationUrl({ subject: selectedSubject!, topic: topic.title, category: rvpCategory })} fallbackEmoji={getTopicEmoji(selectedSubject!, rvpCategory, topic.title) || subEmoji} size="lg" />
                         </div>
                         <div className="space-y-1">

@@ -50,7 +50,7 @@ export function MiniExplainer({ topic, resetKey }: Props) {
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-2 rounded-xl border border-amber-200 bg-amber-50/40 p-3 animate-fade-in">
         {first.label && (
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-amber-700 mb-2">
+          <p className="text-caption font-semibold uppercase tracking-wide text-amber-700 mb-2">
             {first.label}
           </p>
         )}

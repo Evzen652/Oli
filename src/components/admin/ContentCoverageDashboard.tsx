@@ -208,7 +208,7 @@ export function ContentCoverageDashboard() {
                     <td className="py-1.5 pr-3">
                       <span className="mr-1">{subj.emoji}</span>
                       <span className="font-medium text-foreground">{subj.label}</span>
-                      <Badge variant="outline" className="ml-2 text-[10px]">
+                      <Badge variant="outline" className="ml-2 text-caption">
                         {subj.gradeRange[0]}–{subj.gradeRange[1]}
                       </Badge>
                     </td>
@@ -226,7 +226,7 @@ export function ContentCoverageDashboard() {
                             title={`${stats.skills} skill(ů), ${stats.validatedCount} ověřených, ${stats.aiValidatedCount} AI-val, ${stats.factsCount} faktů`}
                           >
                             <div className="text-base leading-none">{CELL_ICONS[cls]}</div>
-                            <div className="text-[10px] leading-none mt-0.5">{stats.skills}</div>
+                            <div className="text-caption leading-none mt-0.5">{stats.skills}</div>
                           </div>
                         </td>
                       );

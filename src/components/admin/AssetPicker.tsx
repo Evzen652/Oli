@@ -156,7 +156,7 @@ export function AssetPicker({ skillId, onSelect, trigger }: Props) {
 
         {/* Generate mode */}
         <div className="border-b border-border bg-muted/30 p-4 space-y-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground">
             Vygenerovat AI obrázek
           </p>
           <Textarea
@@ -241,7 +241,7 @@ export function AssetPicker({ skillId, onSelect, trigger }: Props) {
                     <img src={a.url} alt={a.alt_text} className="w-full h-full object-cover" loading="lazy" />
                   </button>
                   <div className="p-2 space-y-1.5">
-                    <p className="text-[11px] text-foreground/80 line-clamp-2 leading-tight" title={a.alt_text}>
+                    <p className="text-caption text-foreground/80 line-clamp-2 leading-tight" title={a.alt_text}>
                       {a.alt_text}
                     </p>
                     {a.status === "pending" && (
@@ -250,7 +250,7 @@ export function AssetPicker({ skillId, onSelect, trigger }: Props) {
                           size="sm"
                           variant="default"
                           onClick={() => handleApprove(a.id)}
-                          className="flex-1 h-7 text-[11px] gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700"
+                          className="flex-1 h-7 text-caption gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700"
                         >
                           <Check className="h-3 w-3" /> Schválit
                         </Button>
@@ -258,14 +258,14 @@ export function AssetPicker({ skillId, onSelect, trigger }: Props) {
                           size="sm"
                           variant="ghost"
                           onClick={() => handleReject(a.id)}
-                          className="h-7 px-2 text-[11px] rounded-lg text-rose-600 hover:bg-rose-50"
+                          className="h-7 px-2 text-caption rounded-lg text-rose-600 hover:bg-rose-50"
                         >
                           <X className="h-3 w-3" />
                         </Button>
                       </div>
                     )}
                     {a.status === "approved" && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700">
+                      <span className="inline-flex items-center gap-1 text-caption font-semibold text-emerald-700">
                         <Check className="h-2.5 w-2.5" /> Schváleno
                       </span>
                     )}
