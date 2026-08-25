@@ -513,7 +513,7 @@ export default function ParentDashboard() {
                   {/* 1. pád — viz poznámka o skloňování u `assign.title` v cs.ts. */}
                   <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste zadali k procvičení ({child.child_name}).</p>
                 </div>
-                <div className="p-4 h-[460px]">
+                <div className="p-4">
                   <AssignmentList
                     childId={child.id}
                     childName={child.child_name}
@@ -549,7 +549,7 @@ export default function ParentDashboard() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičoval/a sám/a, bez vašeho zadání.</p>
                 </div>
-                <div className="px-4 h-[460px]">
+                <div className="px-4 pb-4">
                   <ChildSessionLog
                     childId={child.id}
                     childName={child.child_name}
