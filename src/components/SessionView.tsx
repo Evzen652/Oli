@@ -40,6 +40,7 @@ import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
 import { LandingNav } from "@/pages/LandingNav";
 import { OliLogo } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
+import { isTrialActive } from "@/lib/anonTrial";
 
 function ChildLoadingFallback() {
   const [showFallback, setShowFallback] = useState(false);
@@ -108,9 +109,25 @@ export function SessionView() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { role, loading: roleLoading } = useUserRole();
-  // Anonymní trial-active uživatel = student view (ChildHomePage místo TopicBrowser)
-  const isAnonTrial = pathname === "/student" && !!localStorage.getItem("oli_anon_trial");
-  const isStudentView = role === "child" || (role === "admin" && pathname === "/student") || isAnonTrial;
+  /**
+   * Dítě bez účtu. Řídí jen VZHLED (schované odhlášení, ✕, časovač) —
+   * NE přístup k obsahu. Podmínka `role === null` je tu proto, že klíč
+   * `oli_anon_trial` v localStorage přežije registraci i přihlášení admina
+   * (maže ho jen migrace anonymního pokroku), takže samotná jeho existence
+   * o anonymitě nic neříká.
+   */
+  const isAnonymous = pathname === "/student" && role === null && !!localStorage.getItem("oli_anon_trial");
+  const isStudentView = role === "child" || (role === "admin" && pathname === "/student") || isAnonymous;
+
+  /**
+   * Zámek obsahu. Platí AŽ PO vypršení trialu — během 14 dnů má dítě plný
+   * přístup, přesně jak slibuje landing i hlavička `anonTrial.ts`.
+   *
+   * Dřív se sem předávalo `isAnonymous`, tedy „je anonymní" ve významu
+   * „je zamčeno": zámek proto platil od první minuty a stejně tak 20. den.
+   * Trial se přitom celou dobu správně počítal, jen ho tenhle řádek nečetl.
+   */
+  const isContentLocked = isAnonymous && !isTrialActive();
   const s = useSessionDispatch();
   const {
     grade, session, practiceQuestion, userInput, isLocked, loading,
@@ -391,7 +408,7 @@ export function SessionView() {
     }
 
     // Child role: show home page with assignments first (anon trial přeskočí rovnou na TopicBrowser)
-    if (isStudentView && !showTopicBrowser && !isAnonTrial) {
+    if (isStudentView && !showTopicBrowser && !isAnonymous) {
       return (
         <>
           {recoveryDialog}
@@ -418,7 +435,7 @@ export function SessionView() {
           grade={grade}
           onSelectTopic={(topic) => { setIsStarting(true); s.handleTopicSelect(topic); }}
           onBack={() => {
-            if (isAnonTrial) {
+            if (isAnonymous) {
               // Anon: ChildHomePage je přeskočena → "zpět" na nejvyšší úrovni
               // musí zavřít celou session a vrátit na anon dashboard (doporučení).
               window.dispatchEvent(new CustomEvent("oli-anon-exit-session"));
@@ -431,7 +448,7 @@ export function SessionView() {
           }}
           isAdmin={role === "admin" && !isStudentView}
           initialSubject={topicBrowserSubject}
-          anonLocked={isAnonTrial}
+          anonLocked={isContentLocked}
           onLockedClick={() => setShowAnonGateModal(true)}
         />
 
@@ -552,7 +569,7 @@ export function SessionView() {
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Zobrazeno i anonymnímu dítěti. Dřív bylo schované za
-                `!isAnonTrial`, takže jediný klikací prvek v hlavičce bylo logo —
+                `!isAnonymous`, takže jediný klikací prvek v hlavičce bylo logo —
                 a to sezení mazalo. Odchod má mít popisek, ne se hádat. */}
             <BackButton size="sm" onClick={() => requestExit(leaveSession)} />
             {session.matchedTopic && (
@@ -578,7 +595,7 @@ export function SessionView() {
                 Report
               </a>
             )}
-            {!isAnonTrial && (
+            {!isAnonymous && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -594,7 +611,7 @@ export function SessionView() {
                 {t("session.sign_out")}
               </Button>
             )}
-            {!isAnonTrial && (
+            {!isAnonymous && (
               <Button variant="ghost" size="sm" onClick={() => requestExit(leaveSession)} className="text-base">
                 ✕
               </Button>
@@ -911,7 +928,7 @@ export function SessionView() {
                 }
               }}
               onNewTopic={() => {
-                if (isAnonTrial) {
+                if (isAnonymous) {
                   // Anon: handleReset by skončil na zamčeném TopicBrowseru.
                   // Vrať dítě na anon dashboard (denní úkoly) přes existující event.
                   window.dispatchEvent(new CustomEvent("oli-anon-exit-session"));

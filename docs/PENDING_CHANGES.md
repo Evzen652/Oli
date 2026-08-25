@@ -40,6 +40,17 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - AI prompty pro rodičovské texty nevynucovaly češtinu → v ostré DB je uloženo ruské „части" místo „části". Opraveno pro nově generované texty.
 - `mapAuthError` nerozlišoval serverovou chybu od chyby ve vstupu — rodič u 500 hledal chybu u sebe.
 
+## ✅ Trial: dodržet slib místo přepsat copy (2026-08-25)
+> Produktové rozhodnutí uživatele: landing zůstává, produkt se srovná pod něj. Ceník se označí jako připravovaný.
+
+- 🐞 **Trial nebyl rozbitý — jen ho zámek nečetl.** `anonTrial.ts` počítal dny správně a jeho hlavička popisovala přesně to, co slibuje landing („den 1–14 plný přístup, den 15+ freemium"). Jenže `SessionView` předával do `TopicBrowseru` `anonLocked={isAnonTrial}`, kde `isAnonTrial` byla pouhá existence klíče v localStorage. „Je anonymní" se tak používalo ve významu „je zamčeno" → zámek platil od první minuty a stejně tak 20. den. Obrácená sémantika na jednom řádku, ne chybějící funkce.
+- ✅ **Flag rozdělen na dva:** `isAnonymous` (řídí jen vzhled hlavičky — schované odhlášení, ✕, časovač) a `isContentLocked = isAnonymous && !isTrialActive()`. Ověřeno živě: den 1 → všech 5 okruhů matematiky odemčených; den 20 → 1 odemčený, 4 s „Odemknout →".
+- ✅ **Vedlejší efekt téhož rozdělení:** `oli_anon_trial` přežívá registraci i přihlášení admina (maže ho jen migrace anonymního pokroku), takže `/student` se komukoli s tím klíčem tvářil jako anonymní. `isAnonymous` teď vyžaduje i `role === null`. Narazil jsem na to při dřívějším ověřování.
+- ✅ **Ceník už nepředstírá nákup.** Placené plány mají badge „Připravujeme", tlačítka „Založit účet zdarma" místo „Zkusit 14 dní zdarma", pod každým věta, že se zatím neplatí nic. Patička „Zrušit můžete kdykoliv" (není co rušit) nahrazena vysvětlením, proč ceny ukazujeme dopředu.
+- ✅ **3 vs. 4 sjednoceno.** `DEFAULT_DAILY_COUNT` exportovaná, obě místa s natvrdo psanou trojkou ji interpolují přes `czechGrammar`. Text po expiraci přeformulován — `pad()` umí jen 1. pád, takže „Pokračuj v 4 úkoly denně" by byl špatný tvar.
+- **Ověřeno:** 5 nových regresních testů v `anon-trial.test.ts` zamyká pravidlo zámku (den 1, poslední den, den 15+, přihlášené dítě, chybějící trial). Typecheck baseline 13 beze změny.
+- 🟡 **Vědomě neřešeno:** trial se pořád obejde smazáním localStorage. Serverové hlídání dává smysl až s platbou — do té doby by jen potrestalo poctivé uživatele měnící zařízení. Pro pilot přijatelné.
+
 ## ✅ Rodičovský dashboard — přepínač dětí (2026-08-25)
 - Sekce 3–6 se renderovaly uvnitř `children.map()`, takže se opakovaly pro každé dítě: 1 dítě ≈ 2 100 px svislého scrollu, 3 děti (plán „Rodinný") ≈ 6 000 px bez jediné kotvy nebo tabu. Od druhého dítěte se teď nahoře zobrazí přepínač (pilulky s iniciálou a jménem) a naráz se renderuje jen vybrané dítě.
 - S jedním dítětem se nic nemění — přepínač by byl zbytečný. `idx` pro barvu avataru se bere pořád z plného pole `children`, takže se barvy nepřehází.

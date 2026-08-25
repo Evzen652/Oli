@@ -21,6 +21,7 @@ import { InviteParentDialog } from "@/components/InviteParentDialog";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
 import { pad } from "@/lib/czechGrammar";
+import { DEFAULT_DAILY_COUNT } from "@/lib/anonDailyTasks";
 import type { TopicMetadata } from "@/lib/types";
 
 /**
@@ -154,7 +155,7 @@ export default function AnonStudentPage() {
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm font-bold text-slate-800">Den {currentDay}</span>
                     <span className="text-xs text-slate-500">z {TRIAL_DAYS}</span>
-                    <span className="text-xs text-violet-600 font-medium ml-1">— 1 okruh v každém předmětu zdarma</span>
+                    <span className="text-xs text-violet-600 font-medium ml-1">— plný přístup ke všem tématům</span>
                   </div>
                   <div className="mt-1.5 h-1.5 w-full max-w-xs rounded-full bg-accent overflow-hidden">
                     <div
@@ -220,7 +221,7 @@ export default function AnonStudentPage() {
           <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 space-y-2">
             <p className="font-bold text-amber-900 text-lg">Tvých {TRIAL_DAYS} dní skončilo.</p>
             <p className="text-sm text-amber-800">
-              Pokračuj v 3 úkolech denně — <strong>zdarma navždy</strong>.<br />
+              Dál dostaneš každý den {pad(DEFAULT_DAILY_COUNT, "ÚKOL")} — <strong>zdarma navždy</strong>.<br />
               Pro plný přístup ti rodič může založit účet.
             </p>
             <button

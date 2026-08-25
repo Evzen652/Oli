@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { pad } from "@/lib/czechGrammar";
+import { DEFAULT_DAILY_COUNT } from "@/lib/anonDailyTasks";
 import { LandingNav } from "./LandingNav";
 import imgUceni from "@/assets/good-to-know.png";
 import imgVysvetleni from "@/assets/help-hint.png";
@@ -327,7 +329,7 @@ export default function Landing() {
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Zdarma</h3><p className="text-sm text-muted-foreground mt-1">Na vyzkoušení a první pokroky</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>0 Kč</span><span className="text-muted-foreground text-sm">/měsíc</span></div>
               <ul className="space-y-3 text-sm text-slate-600">
-                {["Anonymní vstup bez registrace", "14 dní plný přístup zdarma", "Po 14 dnech: 3 cvičení denně navždy", "Veškerý hotový obsah"].map((f) => (
+                {["Anonymní vstup bez registrace", "14 dní plný přístup zdarma", `Po 14 dnech: ${pad(DEFAULT_DAILY_COUNT, "CVIČENÍ")} denně navždy`, "Veškerý hotový obsah"].map((f) => (
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
@@ -338,7 +340,7 @@ export default function Landing() {
           {/* Standard */}
           <Card className="rounded-3xl shadow-2xl relative sm:-mt-4 sm:mb-4" style={{ border: `2px solid ${C.brand}` }}>
             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-              <Badge className="text-white text-xs px-4 py-1 rounded-full" style={{ background: C.brand }}>Nejčastější volba</Badge>
+              <Badge variant="warning" className="px-4 py-1">Připravujeme</Badge>
             </div>
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-muted-foreground mt-1">Pro pravidelný posun a přehled</p></div>
@@ -358,15 +360,16 @@ export default function Landing() {
                 ))}
               </ul>
               <Button className="w-full rounded-full text-white gap-2" style={{ background: C.brand }} onClick={() => navigate("/auth?mode=register")}>
-                Zkusit 14 dní zdarma <ArrowRight className="h-4 w-4" />
+                Založit účet zdarma <ArrowRight className="h-4 w-4" />
               </Button>
+              <p className="text-caption text-muted-foreground text-center">Placené plány zatím nespouštíme — účet i obsah jsou teď zdarma.</p>
             </CardContent>
           </Card>
 
           {/* Family */}
           <Card className="rounded-3xl shadow-e1 relative" style={{ border: `2px solid ${C.teal}` }}>
             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-              <Badge className="text-white text-xs px-4 py-1 rounded-full" style={{ background: C.teal }}>Pro celou rodinu</Badge>
+              <Badge variant="warning" className="px-4 py-1">Připravujeme</Badge>
             </div>
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Rodinný</h3><p className="text-sm text-muted-foreground mt-1">Pro více dětí</p></div>
@@ -376,11 +379,15 @@ export default function Landing() {
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
               </ul>
-              <Button variant="outline" className="w-full rounded-full" onClick={() => navigate("/auth?mode=register")}>Zkusit 14 dní zdarma</Button>
+              <Button variant="outline" className="w-full rounded-full" onClick={() => navigate("/auth?mode=register")}>Založit účet zdarma</Button>
+              <p className="text-caption text-muted-foreground text-center">Placené plány zatím nespouštíme — účet i obsah jsou teď zdarma.</p>
             </CardContent>
           </Card>
         </div>
-        <p className="text-center text-sm text-muted-foreground mt-8">14 dní zdarma · Bez zadání karty · Zrušit můžete kdykoliv</p>
+        <p className="text-center text-sm text-muted-foreground mt-8">
+          Ceny ukazujeme dopředu, ať víte, s čím počítat. Zatím se neplatí nic —
+          registrace i veškerý obsah jsou zdarma a kartu po vás nikdo nechce.
+        </p>
       </Section>
 
       {/* ═══════ FINAL CTA ═══════ */}

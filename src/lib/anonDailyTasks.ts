@@ -7,7 +7,14 @@ import type { TopicMetadata } from "@/lib/types";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getBestAvailableGrade } from "./contentAvailability";
 
-const DEFAULT_DAILY_COUNT = 4;
+/**
+ * Kolik úloh dostane dítě po vypršení trialu (freemium režim).
+ *
+ * Exportované schválně: texty na landingu i v dashboardu dřív psaly „3"
+ * natvrdo, zatímco konstanta byla 4 — uživatel četl „4 cvičení" a hned pod
+ * tím „3 úkolech denně". Kdo číslo mění, mění ho na jednom místě.
+ */
+export const DEFAULT_DAILY_COUNT = 4;
 
 function hashString(str: string): number {
   let hash = 0;

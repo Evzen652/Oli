@@ -169,3 +169,50 @@ describe("restartTrial — dev reset", () => {
     expect(isTrialExpired()).toBe(true);
   });
 });
+
+/**
+ * Zámek obsahu vs. trial (UX audit 2026-08-25).
+ *
+ * Landing slibuje „14 dní plný přístup zdarma" a hlavička `anonTrial.ts`
+ * totéž. Zámek v `SessionView` ale dostával `isAnonTrial`, tedy pouhou
+ * existenci klíče v localStorage ve významu „je zamčeno" — platil proto
+ * od první minuty a stejně tak 20. den. Trial se přitom celou dobu počítal
+ * správně, jen ho ten řádek nečetl.
+ *
+ * Tady se zamyká pravidlo, ze kterého `SessionView` počítá `isContentLocked`:
+ * zamčeno == anonymní A ZÁROVEŇ trial NEBĚŽÍ.
+ */
+describe("zámek obsahu se řídí trialem, ne existencí klíče", () => {
+  /** Stejný výraz jako `isContentLocked` v SessionView. */
+  const contentLocked = (isAnonymous: boolean) => isAnonymous && !isTrialActive();
+
+  it("den 1 — anonymní dítě má plný přístup", () => {
+    restartTrial(3, 0);
+    expect(isTrialActive()).toBe(true);
+    expect(contentLocked(true)).toBe(false);
+  });
+
+  it("poslední den trialu je pořád odemčeno", () => {
+    restartTrial(3, TRIAL_DAYS - 1);
+    expect(isTrialActive()).toBe(true);
+    expect(contentLocked(true)).toBe(false);
+  });
+
+  it("den 15+ — zámek se zapne", () => {
+    restartTrial(3, TRIAL_DAYS + 5);
+    expect(isTrialExpired()).toBe(true);
+    expect(contentLocked(true)).toBe(true);
+  });
+
+  it("přihlášené dítě není nikdy zamčené, ani po expiraci", () => {
+    restartTrial(3, TRIAL_DAYS + 5);
+    // isAnonymous = false (má roli), takže na stavu trialu nezáleží
+    expect(contentLocked(false)).toBe(false);
+  });
+
+  it("bez trialu (klíč neexistuje) je zamčeno — dítě onboarding přeskočilo", () => {
+    clearTrial();
+    expect(isTrialActive()).toBe(false);
+    expect(contentLocked(true)).toBe(true);
+  });
+});
