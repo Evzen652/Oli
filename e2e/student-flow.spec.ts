@@ -11,7 +11,7 @@ async function startAnonTrial(page: Page, grade = 3) {
 test.describe('Žákovský flow — anonymní trial', () => {
   test('onboarding: výběr ročníku → přesměrování na /student', async ({ page }) => {
     await page.goto('/onboarding');
-    await expect(page.getByText('Vyber ročník')).toBeVisible();
+    await expect(page.getByText('Vyber svůj ročník')).toBeVisible();
     await page.getByRole('button', { name: '3', exact: true }).click();
     await page.waitForURL(/\/student/, { timeout: 6000 });
     await expect(page).toHaveURL(/\/student/);
