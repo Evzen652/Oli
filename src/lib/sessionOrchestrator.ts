@@ -2,7 +2,7 @@ import type { SessionData, SessionState, Grade, PracticeTask } from "./types";
 import { getFullTopicTitle } from "./types";
 import { getRulesForGrade, evaluateStop } from "./ruleEngine";
 import { matchTopic, getPrerequisites, getTopicById } from "./contentRegistry";
-import { generateResponse, generatePracticeBatch, generateMockExplain, generateMockBatch } from "./aiExecution";
+import { generateMockExplain, generateMockBatch } from "./aiExecution";
 import { logSession } from "./logger";
 import { classifyIntent, CONFUSION_THRESHOLD } from "./preIntent";
 import { classifySemanticInput } from "./semanticGate";

@@ -5,6 +5,16 @@
 > v kolech 1 a 2 (2026-07). Není to doporučení — je to checklist,
 > který musí splňovat každá úloha před tím, než se dostane před dítě.
 
+## Kdo je autor (rozhodnuto 2026-08-25)
+
+**Obsah tvoří Claude, ne AI za běhu.** Žádný model negeneruje cvičení v aplikaci
+— ani v adminu, ani v edge funkci. Autorem je Claude v offline session, výstupem
+je **kód** (`TopicMetadata.generator`), který je čistá funkce a dá se auditovat,
+zamrazit a diffnout.
+
+Autor dodává ke každé úloze **kompletní dokumentaci**, ne jen klíč. Viz
+[§0 Povinná dokumentace úlohy](#0-povinná-dokumentace-úlohy).
+
 ## Základní princip: Generator → Critic
 
 Nejlepší garancí správnosti je **oddělení generátoru a kritika**:
@@ -15,6 +25,42 @@ Nejlepší garancí správnosti je **oddělení generátoru a kritika**:
 
 Nikdy nespoléhej, že „když jsem to psal, znám odpověď". Vždy si úlohu vyřeš
 nezávisle — jako kdybys ji nikdy nepsal.
+
+**Kritik řeší pomalu a krok za krokem** a je **přísný**: když si není 100% jistý,
+úlohu zamítne. Falešně zamítnutá úloha stojí autora pár minut, propuštěná chyba
+stojí dítě důvěru ve vlastní správnou odpověď. U `select_one` navíc ověř, že klíč
+je skutečně v `options`, a že **žádná další možnost není také správně**.
+
+## 0. Povinná dokumentace úlohy
+
+Úloha bez dokumentace je neúplná — dítě po chybě nedostane nic než „špatně".
+Každá úloha nese čtyři artefakty:
+
+| Pole | Co to je | Kdy povinné |
+|---|---|---|
+| `correctAnswer` | klíč | vždy |
+| `hints[0]` / `hints[1]` | malá a velká nápověda | vždy |
+| `explanation` nebo `solutionSteps` | proč je odpověď správná | vždy |
+| `optionFeedback` | diagnostika konkrétní chyby | u výběrových typů |
+
+### 0.1 Dvoustupňová nápověda — `hints[0]` a `hints[1]`
+- **`hints[0]` (malá)** — jemně nasměruje, neprozradí. Krátká, motivující.
+  **Unikátní pro tu úlohu** — odkazuje na konkrétní čísla/slova ze zadání.
+- **`hints[1]` (velká)** — výrazně pomůže: postup nebo rozklad **pro tenhle
+  konkrétní příklad**. Navazuje na malou. Pořád neříká výsledek.
+- Generická nápověda použitelná na celý pool je vada, ne úspora.
+
+### 0.2 Vysvětlení říká PROČ, ne CO
+- ❌ „Správná odpověď je 42."  ← to dítě už vidí
+- ✅ „Šest sedmiček je 42, protože 6 × 7 znamená sečíst 7 šestkrát."
+- Krokové, srozumitelné v jazyce ročníku, **unikátní** — žádné generické fráze.
+
+### 0.3 `optionFeedback` — diagnostika, ne omluva
+Klíč = přesný text možnosti, hodnota = vysvětlení **té konkrétní chyby**
+(„Vybral jsi obvod, ne obsah."). Když distraktory stavíš z chybového modelu
+(§2.1), máš feedback skoro zadarmo — u každého distraktoru už víš, jakou
+miskoncepci reprezentuje. Právě proto se píše **zároveň s distraktorem**, ne
+dodatečně.
 
 ## 1. Správnost klíče
 
@@ -185,6 +231,8 @@ briefDescription: "…. (L3 obsahuje ENRICHMENT — nad rámec RVP.)"
 - Přírodověda/vlastivěda/dějepis se spoléhá na `topic.helpTemplate` (fallback).
 - Ostatní topics dávají `task.hints` per úloha (pole).
 - `HelpButton` má fallback: `task.hints → task.solutionSteps → topic.helpTemplate`.
+- Fallback je **záchranná síť, ne cíl**: sdílená topic-level nápověda nemůže
+  odkázat na konkrétní čísla té úlohy. Dvoustupňový kontrakt viz [§0.1](#01-dvoustupňová-nápověda--hints0-a-hints1).
 
 ## 8. Freeze & regrese
 
@@ -210,7 +258,9 @@ Nový generátor **neodesílej**, dokud `runOfflineAudit` neprojde:
 
 Před tím, než merge/pushneš nový nebo upravený generátor, musí platit VŠE:
 
-- [ ] Klíč nezávisle ověřen (Generator → Critic pattern).
+- [ ] Klíč nezávisle ověřen (Generator → Critic pattern), kritik řešil krok za krokem.
+- [ ] **Kompletní dokumentace**: `hints[0]` + `hints[1]` (obě unikátní pro úlohu),
+      `explanation`/`solutionSteps` vysvětlující PROČ, `optionFeedback` u výběrových typů.
 - [ ] Každá věta v otázce i klíči je gramaticky správná a idiomatická.
 - [ ] Interpunkce ověřena podle konkrétního pravidla (zvlášť čárka × slučovací `a/i/ani/nebo`).
 - [ ] Distraktory jsou blízké chyby, 4 různé, právě 1 správná, žádný „také správně".
