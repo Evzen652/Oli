@@ -46,7 +46,10 @@ function normalize(s: string): string {
     // neshodly se slovem „zbytek" v nápovědě, a výjimka „slovo už je
     // v otázce" nezabrala. Hlásilo se to jako leak, přestože „zbytek"
     // je jen tvar odpovědi („2 zbytek 0"), ne její hodnota.
-    .replace(/[.,;:!?"'„"()]/g, " ")
+    // Čárka mezi číslicemi je desetinná — česká čísla („0,9") se jinak
+    // rozpadnou na „0 9" a žádná číselná větev je pak nepozná.
+    .replace(/(?<!\d),(?!\d)/g, " ")
+    .replace(/[.;:!?"'„"()]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -92,7 +95,10 @@ function hintContainsAnswer(
   // Číslo + jednotka (např. "24 hodin", "60 minut", "5 metrů") — informační
   // jádro je číslo, jednotka je běžné slovo, které hint smí zmínit (navádí,
   // neprozrazuje). Testuj proto jen číselnou část s word boundary.
-  const numUnit = normAnswer.match(/^(-?\d+(?:[.,]\d+)?)\s+\p{L}[\p{L}\s]*$/u);
+  // Jednotka smí obsahovat i lomítko a exponent („g/cm³", „m/s", „cm²") —
+  // bez nich propadaly fyzikální odpovědi do textové větve a hlásilo se jako
+  // leak, že nápověda zmínila JEDNOTKU, ne hodnotu.
+  const numUnit = normAnswer.match(/^(-?\d+(?:[.,]\d+)?)\s+\p{L}[\p{L}\s/²³°]*$/u);
   if (numUnit) {
     const num = numUnit[1];
     // Když je číselné jádro už ve znění otázky (typicky porovnávací úlohy
@@ -241,6 +247,10 @@ function hintsEnumerateOptions(
  */
 function hintShowsEquality(hint: string, answer: string): boolean {
   const normAnswer = answer.trim().replace(/,/g, ".");
+  // U krátkých nečíselných odpovědí (grafémy, předložky) je test rovnosti
+  // nesmyslný: v nápovědě „z/ze = pohyb z vnitřku (ze školy = z vnitřku)"
+  // se „= z" trefí do výkladového příkladu, ne do prozrazení odpovědi „z".
+  if (!/^-?\d/.test(normAnswer) && normAnswer.length < 3) return false;
   const escapedAnswer = normAnswer.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // Hledej "= 36" nebo "= 36." apod.
   const patterns = [

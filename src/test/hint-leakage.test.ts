@@ -366,6 +366,46 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(true);
   });
 
+  // Jednotka se smí zmínit — informační jádro je hodnota. Bez lomítka
+  // a exponentu v regexu propadaly fyzikální odpovědi do textové větve.
+  it("jednotka se symboly (g/cm³) není leak, hodnota ano", () => {
+    const hustota = {
+      question: "Hmotnost 45 g, objem 50 cm³. Jaká je hustota?",
+      correct_answer: "0,9 g/cm³",
+    };
+    expect(checkHintLeakage({
+      ...hustota,
+      hints: ["Vyděl hmotnost objemem. Výsledek vyjde v g/cm³."],
+    }).ok).toBe(true);
+    expect(checkHintLeakage({
+      ...hustota,
+      hints: ["Vyjde ti 0,9 g/cm³."],
+    }).ok).toBe(false);
+  });
+
+  // Desetinná čárka se v normalizaci nesmí zahodit — „0,9" by se rozpadlo
+  // na „0 9" a žádná číselná větev by odpověď nepoznala.
+  it("desetinná čárka přežije normalizaci", () => {
+    const r = checkHintLeakage({
+      question: "Kolik je 1,8 ÷ 2?",
+      correct_answer: "0,9",
+      hints: ["Polovina z 1,8 je 0,9."],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("krátká nečíselná odpověď: '=' ve výkladovém příkladu není rovnost s odpovědí", () => {
+    const r = checkHintLeakage({
+      question: 'Doplň správnou předložku: "Sjel ___ kopce."',
+      correct_answer: "z",
+      hints: [
+        "s/se = pohyb z povrchu nebo dohromady s někým",
+        "z/ze = pohyb z vnitřku (ze školy = z vnitřku budovy)",
+      ],
+    });
+    expect(r.ok).toBe(true);
+  });
+
   it("číselná odpověď už ve znění otázky → není leak", () => {
     const r = checkHintLeakage({
       question: "Které číslo je největší: 50, 15, 51?",
