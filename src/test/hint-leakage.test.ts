@@ -275,3 +275,73 @@ describe("checkHintLeakage — robustness", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+// ─── Rejstříkové nápovědy (vyjmenování možností) ─────────────────────────
+// Regrese k nálezu 2026-08-25: detektor dostával jen question/answer/hints,
+// nikdy `options`, takže hlásil jako leak každý katalog pravidel. Šlo o
+// stovky případů — a přepsat je by znamenalo zakázat rejstřík pravidel,
+// tedy přesně tu nápovědu, kterou norma chce (CONTENT_AUTHORING.md §7.2).
+describe("checkHintLeakage — rejstřík možností", () => {
+  const PREFIX_HINTS = [
+    "vy- = dokončení děje nebo pohyb ven (vyletět, vypracovat)",
+    "vý- = přízvučná první slabika (výhra, výborný, výtah)",
+    "s- = pohyb dolů nebo sloučení (sjet, spalit)",
+    "z- = změna stavu (ztuhnout, zbohatnout, zlepšit)",
+  ];
+
+  it("sada vyjmenovává VŠECHNY možnosti → není leak", () => {
+    const r = checkHintLeakage({
+      question: 'Doplň správnou předponu: "Kluk ___koukl z okna."',
+      correct_answer: "vy-",
+      hints: PREFIX_HINTS,
+      options: ["vy-", "vý-", "s-", "z-"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  it("bez `options` se stejná sada pořád hlásí (options jsou nutný vstup)", () => {
+    const r = checkHintLeakage({
+      question: 'Doplň správnou předponu: "Kluk ___koukl z okna."',
+      correct_answer: "vy-",
+      hints: PREFIX_HINTS,
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Past, do které spadla první verze pravidla: stačilo, aby sada zavadila
+  // o JEDEN distraktor, a umlčela se i nápověda, která odpověď říká rovnou.
+  it("zmínka jediného distraktoru NEstačí — odpověď řečená rovnou je leak", () => {
+    const r = checkHintLeakage({
+      question: "Které krajské město je čtvrté největší v ČR?",
+      correct_answer: "Plzeň",
+      hints: [
+        "Toto město je krajským městem Plzeňského kraje.",
+        "Leží dál na západ než Karlovy Vary.",
+      ],
+      options: ["Plzeň", "Karlovy Vary", "České Budějovice", "Liberec"],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Druhá past: číselná řada přirozeně obsahuje distraktory, ale končí
+  // odpovědí — dítěti stačí přečíst poslední člen.
+  it("číselná odpověď: rejstřík NEPLATÍ, řada končící odpovědí je leak", () => {
+    const r = checkHintLeakage({
+      question: "3 × 8 = ?",
+      correct_answer: "24",
+      hints: ["Počítej po 3: 3, 6, 9, 12, 15, 18, 21, 24."],
+      options: ["22", "24", "27", "21"],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("číselná odpověď už ve znění otázky → není leak", () => {
+    const r = checkHintLeakage({
+      question: "Které číslo je největší: 50, 15, 51?",
+      correct_answer: "51",
+      hints: ["Obě 50 a 51 mají 5 desítek — srovnej jedničky."],
+      options: ["15", "50", "51"],
+    });
+    expect(r.ok).toBe(true);
+  });
+});

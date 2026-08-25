@@ -61,6 +61,7 @@ export function detectExerciseWarnings(input: ExerciseWarningInput): ExerciseWar
       question,
       correct_answer: correct,
       hints: input.hints.filter((h) => h && h.trim()),
+      options,
     });
     if (!leak.ok) {
       warnings.push({

@@ -432,6 +432,7 @@ export function runOfflineAudit(
           question: task.question,
           correct_answer: task.correctAnswer,
           hints: task.hints,
+          options: task.options,
         });
         if (!leak.ok) {
           issues.push({
