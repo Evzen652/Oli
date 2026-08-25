@@ -132,13 +132,6 @@ function renderTask(
     lines.push(`- **Díly vzorce:** ${task.formulaPool.map((f) => esc(f.token)).join(" | ")}`);
   }
 
-  // essay
-  if (task.essay) {
-    lines.push(
-      `- **Essay:** min. slov ${task.essay.minWords ?? 30}, práh úspěchu ${esc(task.correctAnswer)}`
-    );
-  }
-
   // Správná odpověď (hlavní)
   lines.push(`- **Správná odpověď:** ${esc(task.correctAnswer)}`);
 

@@ -426,8 +426,8 @@ export function runOfflineAudit(
         }
       }
 
-      // d) Hint leak (skip pro essay)
-      if (topic.inputType !== "essay" && task.hints && task.hints.length > 0) {
+      // d) Hint leak
+      if (task.hints && task.hints.length > 0) {
         const leak = checkHintLeakage({
           question: task.question,
           correct_answer: task.correctAnswer,
@@ -463,16 +463,6 @@ export function runOfflineAudit(
             });
           }
         }
-      }
-
-      // d2) Essay: musí mít hints (correctAnswer je numerický threshold, ne rubric — délkový check přeskočen)
-      if (topic.inputType === "essay" && (!task.hints || task.hints.length === 0)) {
-        issues.push({
-          ...issueMeta,
-          taskQuestion: task.question.slice(0, 80),
-          category: "format",
-          detail: "Essay: chybí hints — žák potřebuje vodítko pro psaní",
-        });
       }
 
       // d3) step_based: min 2 kroky, žádný krok nesmí obsahovat correctAnswer
@@ -540,8 +530,8 @@ export function runOfflineAudit(
         }
       }
 
-      // e) Self-validation (skip pro essay — tam je correctAnswer threshold)
-      if (topic.inputType !== "essay") {
+      // e) Self-validation
+      {
         const result = validateAnswer(task.correctAnswer, task.correctAnswer, {
           inputType: topic.inputType,
         });
@@ -1047,7 +1037,7 @@ export function runPedagogicalAudit(
     // ── 9) Difficulty delta — průměrná délka odpovědí level 1 vs 3 ───────
     // Jen pro text inputTypes kde délka koreluje s obtížností
     if (
-      (topic.inputType === "short_answer" || topic.inputType === "essay") &&
+      topic.inputType === "short_answer" &&
       lvl1Tasks.length >= 3 &&
       lvl3Tasks.length >= 3
     ) {

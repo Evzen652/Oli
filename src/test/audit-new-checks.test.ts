@@ -161,28 +161,6 @@ describe("validateTaskForInputType — match_pairs nové checky", () => {
   });
 });
 
-// ─── runOfflineAudit — essay hints ────────────────────────────────────────
-
-describe("runOfflineAudit — essay missing hints", () => {
-  it("essay bez hints → format issue", () => {
-    const topic = makeTopic({
-      inputType: "essay",
-      generator: () => [task("Napiš příběh o psovi.", "60")],
-    });
-    const report = runOfflineAudit([topic]);
-    expect(report.issues.some(i => i.category === "format" && i.detail.includes("hints"))).toBe(true);
-  });
-
-  it("essay s hints → žádný issue pro hints", () => {
-    const topic = makeTopic({
-      inputType: "essay",
-      generator: () => [task("Napiš příběh o psovi.", "60", { hints: ["Piš o tom co psi dělají", "Zkus popsat psa a jeho den včetně toho co jí a kde spí"] })],
-    });
-    const report = runOfflineAudit([topic]);
-    expect(report.issues.filter(i => i.category === "format" && i.detail.includes("hints"))).toHaveLength(0);
-  });
-});
-
 // ─── runOfflineAudit — duplicitní options ──────────────────────────────────
 
 describe("runOfflineAudit — duplicitní options", () => {

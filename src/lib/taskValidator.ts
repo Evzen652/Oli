@@ -134,7 +134,6 @@ export function isRenderableTask(task: PracticeTask, inputType: InputType): bool
   if (!task.question?.trim() || !task.correctAnswer?.trim()) return false;
 
   // Per-task override typy (router je renderuje podle přítomnosti dat, nezávisle na topic.inputType)
-  if (task.essay && inputType === "essay") return true;
   if (task.chemEquation) return true;
   if (task.timelineEvents && task.timelineEvents.length > 0) return true;
   if (task.formulaPool && task.formulaPool.length > 0) return true;
