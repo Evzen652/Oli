@@ -62,7 +62,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Podívej se na oblohu — co tam vidíš bílé nebo šedé?",
-      "Pára se ochladí a mění skupenství zpět na drobné kapičky.",
+      "Pára se ochladí a mění skupenství zpět na velmi malé částečky vody, které se vznášejí ve vzduchu.",
     ],
     explanation: "Vysoko v atmosféře je chladno, a tak se vodní pára mění zpět na drobné kapičky vody. Ty se shlukují a tvoří oblaka.",
   },
@@ -157,7 +157,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Dusík", "Kyslík", "Oxid uhličitý", "Vodní pára"],
     hints: [
       "Kyslík tvoří jen asi pětinu vzduchu.",
-      "Dusík je neviditelný plyn, který s naším tělem nereaguje.",
+      "Tenhle plyn je neviditelný a s naším tělem skoro vůbec nereaguje — nedýcháme ho aktivně jako kyslík.",
     ],
     explanation: "Vzduch tvoří asi ze čtyř pětin dusík a z jedné pětiny kyslík. Zbytek jsou jiné plyny, například oxid uhličitý.",
   },
@@ -200,7 +200,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Koloběh vody", "Eroze půdy", "Fotosyntéza", "Znečištění vzduchu"],
     hints: [
       "Voda v přírodě stále koluje — výpar, oblaka, srážky, řeky, moře, a znovu dokola.",
-      "Hledáš název pro opakující se cyklus vody v přírodě.",
+      "Hledáš název pro opakující se cyklus, kterým tahle tekutina prochází v přírodě (výpar, oblaka, srážky, řeky).",
     ],
     explanation: "Voda se vypařuje z moří a řek, stoupá jako pára, tvoří oblaka, padá jako srážky a řekami se vrací zpět do moře. Celý tento opakující se sled dějů se nazývá koloběh vody.",
   },
@@ -402,7 +402,7 @@ const POOL_L3: PracticeTask[] = [
       "Déšť půdu jen umyje, ale nic neodnese",
     ],
     hints: [
-      "Kořeny stromů a rostlin běžně brání odnosu půdy.",
+      "Přemýšlej, co běžně drží zeminu na svahu na místě, když prší — a co se stane, když to chybí.",
       "Bez rostlinného pokryvu má voda snadnou cestu půdu odnést pryč.",
     ],
     explanation: "Kořeny stromů a rostlin drží půdu pohromadě. Bez nich silný déšť půdu snadno odplaví — tomuto jevu se říká eroze. Proto je vykácení lesa na svahu rizikové.",
@@ -418,7 +418,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     hints: [
       "Co je úplně prvním krokem koloběhu vody, který způsobuje teplo ze slunce?",
-      "Bez výparu nemohou vzniknout oblaka, a tedy ani srážky.",
+      "Bez výparu se řetězec zastaví hned na začátku — bez oblak logicky nemůže následovat ani to, co z nich padá dolů.",
     ],
     explanation: "Bez slunečního tepla by se voda z moří a řek nevypařovala. Bez výparu by nevznikala vodní pára, tedy ani oblaka, a bez oblaků by nepršelo. Celý koloběh vody by se zastavil.",
   },
@@ -448,7 +448,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     hints: [
       "Žížaly a mikroorganismy provzdušňují půdu a rozkládají odumřelé látky na živiny.",
-      "Bez nich by půda časem přestala být úrodná.",
+      "Bez nich už půda časem nezůstane tak kyprá a plná živin jako předtím.",
     ],
     explanation: "Žížaly prokopávají a provzdušňují půdu, mikroorganismy rozkládají odumřelé zbytky na živiny. Bez nich by půda přestala být kyprá a úrodná a rostlinám by se v ní hůře dařilo.",
   },
@@ -463,7 +463,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     hints: [
       "Vzduch se šíří všude okolo, ne jen tam, kde jsou lidé.",
-      "Rostliny i zvířata jsou na čistém vzduchu závislé stejně jako lidé.",
+      "Rostliny i zvířata potřebují ke svému zdraví čistý vzduch úplně stejnou měrou jako lidé — dýchají ten samý vzduch.",
     ],
     explanation: "Znečištěný vzduch se šíří do celého okolí a škodí všem živým organismům, které ho dýchají nebo jsou na něm závislé — nejen lidem, ale i zvířatům a rostlinám.",
   },
