@@ -68,8 +68,8 @@ function gen(level: number): PracticeTask[] {
     correctAnswer: a,
     options: shuffle(opts),
     hints: [
-      "Hlavní postava = střed příběhu, nejvíce se vyskytuje",
-      "Fyzické vlastnosti = jak vypadá; psychické = jak se chová",
+      "Ta postava, kolem které se točí většina děje a objevuje se nejčastěji, bývá ústřední.",
+      "To, co je na postavě vidět zvenčí, je jeden typ vlastností; to, co dělá a jaká je uvnitř, je typ druhý.",
       "Přímá charakteristika = autor říká přímo; nepřímá = z jednání a řeči postavy",
     ],
     explanation: e,

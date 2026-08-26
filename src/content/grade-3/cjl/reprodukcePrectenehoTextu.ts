@@ -27,7 +27,7 @@ function gen(level: number): PracticeTask[] {
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Reprodukce = vlastními slovy převyprávět hlavní obsah textu.", "Zachovej: kdo, co se stalo, jak to dopadlo."],
+    hints: ["Reprodukce = převyprávět hlavní obsah textu tak, jak by sis to pamatoval a řekl to sám, ne opsat text doslova.", "Zachovej: kdo, co se stalo, jak to dopadlo."],
     explanation: e,
   }));
 }

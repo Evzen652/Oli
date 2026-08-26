@@ -56,9 +56,9 @@ function gen(level: number): PracticeTask[] {
     correctAnswer: a,
     options: shuffle(opts),
     hints: [
-      "Popis předmětu: tvar, barva, materiál, velikost, účel — od celku k detailu",
+      "Popis předmětu: tvar, barva, materiál, velikost, účel — postupuj od toho, co vidíš jako první, k menším podrobnostem.",
       "Popis osoby: fyzické vlastnosti (vzhled) + psychické (povaha, chování)",
-      "Popis pracovního postupu: chronologické kroky, slovesa jako 'přidáme, smíchejte'",
+      "Popis pracovního postupu: chronologické kroky, typická slovesa činnosti v přítomném čase nebo rozkazovacím způsobu.",
     ],
     explanation: e,
   }));

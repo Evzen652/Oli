@@ -56,7 +56,7 @@ const POOL_L1: PracticeTask[] = [
       "přeložení textu do jiného jazyka",
       "zkrácení textu na jedno slovo",
     ],
-    hints: ["Reprodukce = vlastními slovy, ale smysl stejný."],
+    hints: ["Reprodukce = svými výrazy, ale smysl zůstává stejný."],
   },
   {
     question: "Co se v reprodukci NESMÍ změnit?",
@@ -290,7 +290,7 @@ const POOL_L2: PracticeTask[] = [
       "záleží jen na délce",
       "přepíšeme jen zajímavé části",
     ],
-    hints: ["Každý odstavec → jedna klíčová věta."],
+    hints: ["Jednu část textu shrň do jedné výstižné věty — a totéž udělej pro každou další část."],
   },
   {
     question: "Přečti: 'Bouřky vznikají při srážce teplého a studeného vzduchu. Doprovázejí je blesky a hrom.' Která reprodukce je chybná?",
@@ -301,7 +301,7 @@ const POOL_L2: PracticeTask[] = [
       "Bouřky vznikají jen v létě a hrom je způsoben vlhkostí.",
       "Bouřky jsou způsobeny rozdílem teplot vzduchu.",
     ],
-    hints: ["Chybná reprodukce: 'jen v létě' a 'hrom způsoben vlhkostí' není v originálu."],
+    hints: ["Tato reprodukce mění, kdy bouřky vznikají, a vymýšlí příčinu hromu, o které originál nic neříká."],
   },
   {
     question: "Co je abstrakce v reprodukci?",
