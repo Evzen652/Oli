@@ -30,7 +30,7 @@ const POOL_L1: PracticeTask[] = [
       "ano – v SMS je to dost",
       "záleží na situaci",
     ],
-    hints: ["Chybí: proč? jak pozdě? → neúplná."],
+    hints: ["Kdybys tohle dostal/a, věděl/a bys, o kolik minut se máš zpozdit, nebo z jakého důvodu?"],
   },
   {
     question: "Je tato zpráva úplná? 'Schůzka v úterý v 15:00 ve škole.'",
@@ -41,7 +41,7 @@ const POOL_L1: PracticeTask[] = [
       "zcela neúplná",
       "záleží na adresátovi",
     ],
-    hints: ["Máme kdy, kde, ale chybí: co (předmět schůzky)."],
+    hints: ["Zkontroluj: víš KDY a KDE se to koná. Ale víš taky, O ČEM to bude?"],
   },
   {
     question: "Co chybí ve vzkazu: 'Zavolej mi!'?",
@@ -96,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
       "záleží na délce",
       "záleží na adresátovi",
     ],
-    hints: ["Pozvánka musí obsahovat: kdo slaví, kdy, kde."],
+    hints: ["Zkus si představit, že tuhle pozvánku dostaneš — věděl/a bys, kam a v kolik hodin máš přijít, a o čí oslavu jde?"],
   },
   {
     question: "Co musí obsahovat úplná pozvánka na narozeninovou oslavu?",
@@ -198,7 +198,7 @@ const POOL_L2: PracticeTask[] = [
       "zcela neúplné",
       "záleží na obchodě",
     ],
-    hints: ["Kolik? Jaký druh? (plnotučné, polotučné) → upřesnění chybí."],
+    hints: ["Kdybys šel/šla podle týhle zprávy nakoupit, věděl/a bys přesně, kolik kusů a který konkrétní typ máš vzít?"],
   },
   {
     question: "Proč může být sdělení úplné pro jednoho adresáta, ale ne pro druhého?",
@@ -297,7 +297,7 @@ const POOL_L2: PracticeTask[] = [
       "jen čas",
       "jen jméno učitele",
     ],
-    hints: ["Suplování: kdy? která třída? kdo? – vše chybí."],
+    hints: ["Kdybys tohle oznámení četl/a, věděl/a bys, jestli se to týká tvých hodin a tvé třídy, a kdo bude učit místo tvého učitele?"],
   },
   {
     question: "Sdělení je přiměřeně úplné, pokud:",
@@ -410,7 +410,7 @@ const POOL_L3: PracticeTask[] = [
       "jen název aerolinky",
       "záleží na letiště",
     ],
-    hints: ["Cestující potřebuje: nový čas + kde čekat."],
+    hints: ["Kdybys byl/a ten cestující, věděl/a bys, jak dlouho máš čekat a na kterém místě letiště máš být?"],
   },
   {
     question: "Proč neúplné sdělení může způsobit problémy?",
