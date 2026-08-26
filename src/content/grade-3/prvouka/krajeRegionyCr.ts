@@ -28,7 +28,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["14 krajů", "12 krajů", "16 krajů", "10 krajů"],
     hints: [
       "Počet krajů je mezi 10 a 16.",
-      "Hlavní město Praha je také kraj — jeden ze 14.",
+      "Hlavní město Praha je taky jeden z krajů — zkus si je spočítat na mapě.",
     ],
     explanation:
       "Česká republika se dělí na 14 krajů. Každý kraj má své krajské město, kde sídlí krajský úřad. Praha je zároveň hlavním městem státu i samostatným krajem.",
@@ -336,7 +336,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Jihomoravský kraj", "Moravskoslezský kraj", "Zlínský kraj", "Olomoucký kraj"],
     hints: [
       "Brno je krajské město tohoto kraje.",
-      "Kraj leží na jihu Moravy.",
+      "Tahle oblast leží na jihu Moravy.",
     ],
     explanation:
       "Brno leží v Jihomoravském kraji a je jeho krajským městem.",
@@ -347,7 +347,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Plzeňský kraj", "Karlovarský kraj", "Jihočeský kraj", "Ústecký kraj"],
     hints: [
       "Plzeň je krajské město tohoto kraje.",
-      "Kraj leží v západních Čechách.",
+      "Tahle oblast leží v západních Čechách.",
     ],
     explanation:
       "Plzeň leží v Plzeňském kraji a je jeho krajským městem.",
@@ -451,7 +451,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Plzeň",
     options: ["Plzeň", "Karlovy Vary", "České Budějovice", "Liberec"],
     hints: [
-      "Toto město je krajským městem Plzeňského kraje.",
+      "Toto město je krajským městem kraje, který se jmenuje stejně jako ono samo.",
       "Leží dál na západ než Karlovy Vary od Prahy směrem k hranicím.",
     ],
     explanation:
@@ -496,7 +496,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Olomouc", "Zlín", "Brno", "Ostrava"],
     hints: [
       "Toto město leží na střední Moravě, mezi Brnem a Ostravou.",
-      "Je krajským městem Olomouckého kraje.",
+      "Je krajským městem kraje, který se jmenuje stejně jako ono samo.",
     ],
     explanation:
       "Olomouc leží na střední Moravě a patří mezi nejstarší a historicky nejvýznamnější města Moravy. Je krajským městem Olomouckého kraje.",
@@ -507,7 +507,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Liberec", "Ústí nad Labem", "Hradec Králové", "Karlovy Vary"],
     hints: [
       "Ještěd je hora se známou televizní věží.",
-      "Je krajským městem Libereckého kraje.",
+      "Je krajským městem kraje, který se jmenuje stejně jako ono samo.",
     ],
     explanation:
       "Liberec leží v severních Čechách pod horou Ještěd. Je krajským městem Libereckého kraje.",
