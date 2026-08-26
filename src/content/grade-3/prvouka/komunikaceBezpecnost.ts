@@ -23,7 +23,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["150", "155", "158", "112"],
     hints: [
       "Hasiči hasí požáry. Jejich číslo začíná na 15.",
-      "150 = hasiči, 155 = záchranná služba, 158 = policie, 112 = tísňová linka.",
+      "Popros doma rodiče, ať ti ukážou, kde máte napsaná důležitá telefonní čísla — třeba na lednici nebo v mobilu.",
     ],
     explanation: "Hasiči mají číslo 150. Pamatuj si: 150 = hasiči (oheň), 155 = záchranná služba (nemoc), 158 = policie (zločin), 112 = evropská tísňová linka pro všechno.",
   },
@@ -33,7 +33,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["155", "150", "158", "112"],
     hints: [
       "Záchranná služba pomáhá nemocným a zraněným lidem.",
-      "150 = hasiči, 155 = záchranná služba, 158 = policie, 112 = tísňová linka.",
+      "Zkus se doma zeptat, jestli máte důležitá telefonní čísla napsaná někde na viditelném místě.",
     ],
     explanation: "Záchranná služba má číslo 155. Jezdí k lidem, kteří jsou nemocní, zranění nebo potřebují rychlou lékařskou pomoc.",
   },
@@ -43,7 +43,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["158", "150", "155", "112"],
     hints: [
       "Policie řeší zločiny a chrání pořádek.",
-      "150 = hasiči, 155 = záchranná služba, 158 = policie, 112 = tísňová linka.",
+      "Nejlepší způsob, jak si důležitá čísla zapamatovat, je zeptat se doma a pak si je párkrát zopakovat nahlas.",
     ],
     explanation: "Policie má číslo 158. Voláme ji, když jsme svědky trestného činu nebo potřebujeme pomoc s bezpečností.",
   },
@@ -98,7 +98,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Důvěryhodný = takový, komu věříme a koho dobře známe.",
-      "Může to být rodič, prarodič, učitel, trenér — někdo z blízkého okolí.",
+      "Přemýšlej o dospělých, které dítě dobře zná ze svého každodenního života — doma, ve škole, na kroužku.",
     ],
     explanation: "Důvěryhodný dospělý je člověk, kterého dobře znáš a kterému věříš — rodič, prarodič, učitel, trenér nebo soused. Nemusí to být jen rodič.",
   },
@@ -220,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
       "Zavolám kamaráda, ať jde taky",
     ],
     hints: [
-      "Odlehlé místo = místo, kde nejsou další lidé.",
+      "Přemýšlej, proč by tě neznámý dospělý chtěl vzít právě tam, kde není nikdo jiný, kdo by ti mohl pomoct.",
       "Dospělí si cestu mohou zjistit sami, nepotřebují doprovod od dítěte.",
     ],
     explanation: "S neznámou osobou na odlehlé nebo opuštěné místo nikdy nechoď. Dospělý, který potřebuje opravdovou pomoc, se zeptá jiného dospělého, ne dítěte.",
@@ -291,7 +291,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Šikana", "Jednorázový žert", "Přátelské škádlení", "Normální chování mezi kamarády"],
     hints: [
       "Klíčové slovo: opakuje se to každý den.",
-      "Šikana = úmyslné a opakované ubližování.",
+      "Jak se nazývá situace, kdy někdo někomu úmyslně a opakovaně ubližuje? Znáš ten pojem z jiných lekcí.",
     ],
     explanation: "Šikana je úmyslné a opakované ubližování — fyzické (strkání) nebo psychické (nadávky). Opakování a záměr ublížit ji odlišují od žertu.",
   },
@@ -498,8 +498,8 @@ const POOL_L3: PracticeTask[] = [
       "Ať mu pošle svou adresu, aby věděl, kam přijít",
     ],
     hints: [
-      "Nejdřív si uvědom, že setkání s cizím člověkem z internetu je vždy rizikové, i s kamarádkou.",
-      "Pak zvol správnou reakci: nešetkávat se a informovat rodiče.",
+      "Nejdřív si uvědom, že setkání naživo s někým, koho znáš jen z internetu, je vždy rizikové — i pro kamarádku.",
+      "Kdo by měl o takové situaci vědět, aby mohl pomoct posoudit riziko a rozhodnout?",
     ],
     explanation: "S cizím člověkem, kterého znáš jen z internetu, se osobně nesetkáváme, ani ve dvou. Správný postup je říct to rodičům, kteří pomohou situaci vyřešit.",
   },
