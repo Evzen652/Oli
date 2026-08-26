@@ -45,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Respekt neznamená souhlas — můžeš mít jiný názor a přesto respektovat druhého.",
-      "Respektovat = brát ohled, přistupovat s úctou.",
+      "Respekt není to samé jako poslušnost ani lhostejnost — je to o tom, jak se k druhému chováš navzdory rozdílnému názoru.",
     ],
     explanation:
       "Respekt znamená, že bereme ohled na pocity, názory a potřeby druhého. Nemusíme vždy souhlasit, ale přistupujeme k druhým s úctou a neubližujeme jim.",
@@ -109,7 +109,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Konflikt není totéž co rvačka — je to neshoda v názoru.",
-      "Konflikt lze vyřešit klidným rozhovorem a dohodou, aniž by někdo někomu ublížil.",
+      "Konflikt nemusí skončit hádkou ani rvačkou — přemýšlej, jakým klidnějším způsobem může skončit, aniž by někdo někomu ublížil.",
     ],
     explanation:
       "Konflikt je neshoda nebo spor mezi lidmi, například různý názor na to, co dělat. Na rozdíl od násilí lze konflikt vyřešit klidnou dohodou, aniž by někomu ublížil.",
@@ -220,7 +220,7 @@ const POOL_L1: PracticeTask[] = [
       "Konec kamarádství kvůli sporu",
     ],
     hints: [
-      "Dohoda funguje jen tehdy, když s ní souhlasí obě strany.",
+      "Dohoda nefunguje, když je spokojená jen jedna strana a druhá musí prostě ustoupit — přemýšlej, kdo všechno by s ní měl být spokojený.",
       "Není to vítězství jednoho, ale společné řešení.",
     ],
     explanation:
@@ -299,7 +299,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Spolupráce", "Soutěž", "Kompromis", "Konflikt"],
     hints: [
       "Každý přispívá svou částí ke společnému cíli.",
-      "Spolupráce = spolu + práce.",
+      "Zamysli se, jak se nazývá situace, kdy víc lidí dělá různé části jednoho společného díla, aby ho dohromady dokončili.",
     ],
     explanation:
       "Když lidé společně pracují na jednom cíli a každý přispívá svou částí, jde o spolupráci. Výsledek je lepší, než kdyby to dělal jeden sám.",
@@ -310,7 +310,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Respekt",
     options: ["Respekt", "Souhlas se vším, co řekne", "Lhostejnost", "Nadřazenost"],
     hints: [
-      "Respekt neznamená souhlasit — znamená brát ohled na názor druhého.",
+      "Vyslechnout někoho a nezesměšňovat ho, i když s ním nesouhlasíš, je projevem jedné důležité vlastnosti — jak bys jí říkal/a?",
       "Můžeš mít jiný názor a přesto se chovat s úctou.",
     ],
     explanation:
@@ -363,7 +363,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Upřímnost",
     options: ["Upřímnost", "Zbabělost", "Lhostejnost", "Vychloubání"],
     hints: [
-      "Upřímnost znamená říct pravdu, i když je nepříjemná.",
+      "Přiznat chybu, i když víš, že z toho bude nepříjemná reakce, ukazuje vlastnost, která je opakem lhaní.",
       "Přiznat chybu je těžší, ale správnější než lhát.",
     ],
     explanation:
@@ -409,7 +409,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Konflikt", "Násilí", "Kamarádství", "Spolupráce"],
     hints: [
       "Jde jen o neshodu v názoru, ne o ubližování.",
-      "Konflikt se dá vyřešit klidnou dohodou.",
+      "Přemýšlej, jak se obecně nazývá stav, kdy se dva lidé neshodnou v názoru, ale nikdo druhému neubližuje.",
     ],
     explanation:
       "Neshoda v názoru bez ubližování je konflikt. Na rozdíl od násilí ho lze vyřešit klidným rozhovorem a dohodou.",
@@ -635,7 +635,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     hints: [
       "Opakované vyčleňování a urážky nejsou drobná neshoda — je to dlouhodobé ubližování.",
-      "Dlouhodobé úmyslné ubližování slovy nebo vyčleňováním je třeba nahlásit dospělému.",
+      "Opakované a úmyslné vyčleňování i urážky patří mezi věci, které dítě nemá řešit samo — komu by ses měl/a v takové situaci svěřit?",
     ],
     explanation:
       "Opakované záměrné vyčleňování a ponižování spolužáka není konflikt, ale forma násilí (šikana). Takovou situaci je vždy třeba nahlásit dospělému, ne ji přecházet.",
