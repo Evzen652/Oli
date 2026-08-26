@@ -53,7 +53,9 @@ function makeForward(t: number, n: number): PracticeTask {
     options: shuffleOptions(options),
     hints: [
       `${t} × ${n} = ${n}× přičteš ${t}.`,
-      `Nebo: ${t} × ${n} = ${t} + ${t} + … (${n}×)`,
+      n === 1
+        ? "Násobení jedničkou nic nemění — číslo zůstane úplně stejné."
+        : `Nebo: ${t} × ${n} = ${t} + ${t} + … (${n}×)`,
     ],
     solutionSteps: [
       `${t} × ${n} = ${correct}`,
