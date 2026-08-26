@@ -9,20 +9,32 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
-  { q: "Jaká je předpona ve slově 'nedobrý'?", a: "ne-", opts: ["ne-", "dobr-", "-ý", "žádná"], e: "Předpona stojí na začátku slova před kořenem. Kořen slova je 'dobr-' (jako v 'dobrý') a před ním je 'ne-', které mění význam na opačný. 'Dobr-' je kořen a '-ý' je koncovka, ne předpona." },
+  { q: "Jaká je předpona ve slově 'nedobrý'?", a: "ne-", opts: ["ne-", "dobr-", "-ý", "žádná"], e: "Předpona stojí na začátku slova před kořenem. Kořen slova je 'dobr-' (jako v 'dobrý') a před ním je 'ne-', které mění význam na opačný. 'Dobr-' je kořen a '-ý' je koncovka, ne předpona.", hints: [
+    "Odděl od slova tu část, která stojí úplně na začátku, před kořenem 'dobr-'.",
+    "Tahle část mění význam slova na opačný — dobrý se stává jeho protikladem.",
+  ] },
   { q: "Jaký je kořen slova 'zahrada'?", a: "zahrad-", opts: ["zahrad-", "za-", "-a", "zahr-"], e: "Kořen je společná část příbuzných slov: zahrad-a, zahrad-ník, zahrad-ní. Ve slově 'zahrada' už 'za-' není předpona, ale patří přímo do kořene. Koncovka je jen '-a'." },
   { q: "Jaká je koncovka slova 'dobré'?", a: "-é", opts: ["-é", "dobr-", "-ý", "-á"], e: "Koncovka je část na konci slova, která se mění při skloňování: dobr-ý, dobr-é, dobr-ou. Tady je to '-é'. 'Dobr-' je kořen a '-ý' ani '-á' v tomto tvaru slova nejsou." },
   { q: "Které slovo má předponu 'pod-'?", a: "podzemní", opts: ["podzemní", "podlaha", "západ", "nadace"], e: "V 'podzemní' poznáme kořen 'zem-' a před ním předponu 'pod-' (něco pod zemí). U 'podlaha' je 'pod-' součástí kořene, 'západ' má předponu 'za-' a 'nadace' žádnou předponu 'pod-' nemá." },
-  { q: "Jaká je předpona ve slově 'přijít'?", a: "při-", opts: ["při-", "pro-", "pře-", "pří-"], e: "Předpona 'při-' znamená přiblížení (přijít = dojít až sem). Píše se s krátkým 'i', protože předpona 'pří-' s dlouhým 'í' v češtině neexistuje. 'Pro-' a 'pře-' mají jiný význam." },
+  { q: "Jaká je předpona ve slově 'přijít'?", a: "při-", opts: ["při-", "pro-", "pře-", "pří-"], e: "Předpona 'při-' znamená přiblížení (přijít = dojít až sem). Píše se s krátkým 'i', protože předpona 'pří-' s dlouhým 'í' v češtině neexistuje. 'Pro-' a 'pře-' mají jiný význam.", hints: [
+    "Odděl od slova tu část, která stojí úplně na začátku, před kořenem '-jít'.",
+    "Ta část znamená přiblížení (dojít až sem) — a v češtině se píše s krátkou samohláskou.",
+  ] },
   { q: "Jaký je kořen slova 'domácí'?", a: "dom-", opts: ["dom-", "do-", "domác-", "-í"], e: "Kořen je společná část příbuzných slov: dom-ov, dom-ácí, dom-eček. Tou částí je 'dom-'. 'Do-' není kořen, '-í' je koncovka a 'domác-' obsahuje navíc příponu." },
   { q: "Které slovo nemá předponu?", a: "stůl", opts: ["stůl", "přijít", "odejít", "vylézt"], e: "Předpona stojí před kořenem a dá se oddělit. 'Stůl' je celé kořen, nic se před ním oddělit nedá. Naopak při-jít, od-ejít, vy-lézt předponu mají." },
   { q: "Jaká je přípona ve slově 'zahradník'?", a: "-ník", opts: ["-ník", "za-", "zahrad-", "-a"], e: "Přípona stojí za kořenem a tvoří nové slovo. Z kořene 'zahrad-' vznikne příponou '-ník' nové slovo zahradník (člověk, který pracuje na zahradě). 'Zahrad-' je kořen, ne přípona." },
   { q: "Jaký je kořen slova 'přijít'?", a: "-jít", opts: ["-jít", "při-", "pří-", "-í"], e: "Kořen nese hlavní význam — tady je to '-jít' (pohyb), společné se slovy jít, odejít, vyjít. 'Při-' je předpona stojící před kořenem, a 'pří-' s dlouhým 'í' v této předponě neexistuje." },
-  { q: "Jaká je předpona ve slově 'vylézat'?", a: "vy-", opts: ["vy-", "vý-", "vz-", "-at"], e: "Předpona 'vy-' vyjadřuje pohyb ven nebo nahoru (vylézat = lézt ven). Píše se krátce, protože jde o předponu před slovesem. 'Vý-' s dlouhým 'ý' bývá u podstatných jmen (výlet), tady nepatří." },
-  { q: "Co je předpona?", a: "část slova před kořenem", opts: ["část slova před kořenem", "část slova za kořenem", "základ slova", "změna tvaru"], e: "Předpona je morfém, který stojí před kořenem a často mění význam slova (jít → odejít). Část za kořenem je přípona, základ slova je kořen a změna tvaru je úkol koncovky." },
+  { q: "Jaká je předpona ve slově 'vylézat'?", a: "vy-", opts: ["vy-", "vý-", "vz-", "-at"], e: "Předpona 'vy-' vyjadřuje pohyb ven nebo nahoru (vylézat = lézt ven). Píše se krátce, protože jde o předponu před slovesem. 'Vý-' s dlouhým 'ý' bývá u podstatných jmen (výlet), tady nepatří.", hints: [
+    "Odděl od slova tu část, která stojí úplně na začátku, před kořenem '-léz-'.",
+    "Předpony u sloves se obvykle píší s krátkou samohláskou, dlouhá varianta bývá spíš u podstatných jmen (výlet).",
+  ] },
+  { q: "Co je předpona?", a: "část slova před kořenem", opts: ["část slova před kořenem", "část slova za kořenem", "základ slova", "změna tvaru"], e: "Předpona je morfém, který stojí před kořenem a často mění význam slova (jít → odejít). Část za kořenem je přípona, základ slova je kořen a změna tvaru je úkol koncovky.", hints: [
+    "Porovnej slova 'jít' a 'odejít' — přibylá část se objevila na kterém konci slova?",
+    "Ta přibylá část mění význam slova (jít → odejít, pryč).",
+  ] },
   { q: "Co je kořen slova?", a: "základní část nesoucí hlavní význam", opts: ["základní část nesoucí hlavní význam", "část před kořenem", "část za kořenem", "koncová část"], e: "Kořen je nejdůležitější část slova, společná všem příbuzným slovům (les, lesník, lesní). Část před ním je předpona, část za ním přípona a koncová část je koncovka." },
   { q: "Jaká je koncovka slova 'pán'?", a: "nulová", opts: ["nulová", "-á", "-ý", "-e"], e: "U 'pán' není na konci žádné slyšitelné písmeno koncovky, ale při skloňování se objeví (pán, pán-a, pán-ovi). Proto říkáme, že koncovka je nulová — existuje, ale nepíše se." },
   { q: "Jaká je koncovka slova 'páni'?", a: "-i", opts: ["-i", "-y", "-é", "-a"], e: "Koncovka se mění podle čísla a pádu: pán (jeden), pán-i (více). U mužských životných jmen má 1. pád množného čísla měkké '-i'. Tvrdé '-y' by tady bylo chybně." },
@@ -31,7 +43,10 @@ const POOL_L1: QA[] = [
 ];
 
 const POOL_L2: QA[] = [
-  { q: "Urči předponu ve slově 'podzemní'.", a: "pod-", opts: ["pod-", "zem-", "-ní", "podz-"], e: "Kořen slova je 'zem-' (souvisí se zemí) a před ním stojí předpona 'pod-' (něco pod zemí). '-ní' je přípona a 'zem-' je kořen, ne předpona." },
+  { q: "Urči předponu ve slově 'podzemní'.", a: "pod-", opts: ["pod-", "zem-", "-ní", "podz-"], e: "Kořen slova je 'zem-' (souvisí se zemí) a před ním stojí předpona 'pod-' (něco pod zemí). '-ní' je přípona a 'zem-' je kořen, ne předpona.", hints: [
+    "Odděl od slova tu část, která stojí úplně na začátku, před kořenem souvisejícím se slovem 'zem'.",
+    "Ta část vyjadřuje polohu — něco se nachází dole, ne nahoře.",
+  ] },
   { q: "Urči kořen slova 'zahradník'.", a: "zahrad-", opts: ["zahrad-", "za-", "-ník", "zahr-"], e: "Kořen je společný příbuzným slovům zahrad-a, zahrad-ní, zahrad-ník — tedy 'zahrad-'. '-ník' je přípona, která z kořene vytvořila název člověka, a 'za-' už je součástí kořene." },
   { q: "Jaká je přípona ve slově 'domácí'?", a: "-í (domác-í)", opts: ["-í (domác-í)", "dom-", "domác-", "do-"], e: "Z kořene 'dom-' vzniklo přídavné jméno příponou, na konci je '-í'. 'Dom-' je kořen a 'domác-' obsahuje kořen i přípony dohromady, takže samotná přípona to není." },
   { q: "Které slovo má předponu 'vz-'?", a: "vzlétnout", opts: ["vzlétnout", "výlet", "vylézt", "vzor"], e: "Předpona 'vz-' vyjadřuje pohyb vzhůru (vzlétnout = vznést se nahoru). 'Výlet' a 'vylézt' mají předponu 'vy-' a u 'vzor' je 'vz-' součástí kořene, ne předpona." },
@@ -53,12 +68,21 @@ const POOL_L3: QA[] = [
   { q: "Rozeber slovo 'přestaveníčko' na části: předpona, kořen, přípona, koncovka.", a: "pře- + stav- + -eníčk- + -o", opts: ["pře- + stav- + -eníčk- + -o", "přestav- + -eníčko", "pře- + stavení- + -čko", "přes- + tav- + -eníčko"] , e: "Kořen je 'stav-' (jako stavět), před ním předpona 'pře-' a za ním přípony, které tvoří zdrobnělinu, zakončené koncovkou '-o'. Předpona je 'pře-', ne 'přes-', a kořen 'stav-' nelze rozdělit na 'tav-'." },
   { q: "Jaký je kořen slova 'nejkrásnější'?", a: "krásn-", opts: ["krásn-", "nej-", "-ější", "krásnějš-"], e: "Kořen nese hlavní význam — tady 'krásn-' (jako krása, krásný). 'Nej-' je předpona pro třetí stupeň a '-ější' je přípona stupňování, takže do kořene nepatří." },
   { q: "Urči všechny morfémy ve slově 'zahradníkův'.", a: "za- + hrad- + -ník- + -ův", opts: ["za- + hrad- + -ník- + -ův", "zahrad- + -ník- + -ův", "za- + zahrad- + -ův", "zahradník- + -ův"], e: "Slovo se skládá z předpony 'za-', kořene 'hrad-', přípony '-ník-' (zahradník) a další přípony '-ův' (čí). Kořen je 'hrad-', proto 'zahrad-' není samostatný kořen, ale předpona + kořen." },
-  { q: "Která přípona tvoří podstatná jména označující osoby podle povolání?", a: "-ník, -tel, -ář", opts: ["-ník, -tel, -ář", "-ost, -ání, -í", "-ný, -ský, -ový", "-ko, -ce, -dlo"], e: "Přípony '-ník, -tel, -ář' tvoří názvy lidí podle činnosti: zahradník, učitel, lékař. '-ost' tvoří vlastnosti (radost), '-ný, -ský' přídavná jména a '-ko, -dlo' názvy věcí." },
+  { q: "Která přípona tvoří podstatná jména označující osoby podle povolání?", a: "-ník, -tel, -ář", opts: ["-ník, -tel, -ář", "-ost, -ání, -í", "-ný, -ský, -ový", "-ko, -ce, -dlo"], e: "Přípony '-ník, -tel, -ář' tvoří názvy lidí podle činnosti: zahradník, učitel, lékař. '-ost' tvoří vlastnosti (radost), '-ný, -ský' přídavná jména a '-ko, -dlo' názvy věcí.", hints: [
+    "Přemýšlej o slovech jako zahradník, učitel, lékař, pekař — jaké mají společné, čím jsou tahle slova?",
+    "Tři z možností tvoří vlastnosti, přídavná jména nebo věci — jen jedna tvoří označení ČLOVĚKA podle jeho práce.",
+  ] },
   { q: "Urči, zda slovo 'nebeský' má předponu.", a: "ne- není předpona, slovo patří k 'nebe'", opts: ["ne- není předpona, slovo patří k 'nebe'", "má předponu ne-", "má předponu nebe-", "má předponu n-"], e: "Slovo souvisí s 'nebe', takže 'neb-' je část kořene a nedá se oddělit. Předpona 'ne-' by měnila význam na opačný (jako u nedobrý), ale tady by 'beský' nedávalo smysl." },
-  { q: "Jaký je rozdíl mezi příponou a koncovkou?", a: "přípona tvoří nová slova, koncovka mění tvar", opts: ["přípona tvoří nová slova, koncovka mění tvar", "přípona mění tvar, koncovka tvoří nová slova", "obě tvoří nová slova", "obě mění tvar"], e: "Přípona vytvoří z jednoho slova nové (les → lesník), kdežto koncovka jen mění tvar téhož slova při skloňování (pán, pán-a). Proto úlohy přípony a koncovky nelze zaměnit." },
+  { q: "Jaký je rozdíl mezi příponou a koncovkou?", a: "přípona tvoří nová slova, koncovka mění tvar", opts: ["přípona tvoří nová slova, koncovka mění tvar", "přípona mění tvar, koncovka tvoří nová slova", "obě tvoří nová slova", "obě mění tvar"], e: "Přípona vytvoří z jednoho slova nové (les → lesník), kdežto koncovka jen mění tvar téhož slova při skloňování (pán, pán-a). Proto úlohy přípony a koncovky nelze zaměnit.", hints: [
+    "Porovnej dvojici 'les → lesník' s dvojicí 'pán → pána' — ve které dvojici vzniklo úplně jiné slovo s novým významem, a ve které je to pořád totéž slovo?",
+    "Jedna z těch dvou částí slova dělá první věc, druhá tu druhou — nikdy ne obě najednou.",
+  ] },
   { q: "Urči kořen ve slovech: voda, vodník, vodopád.", a: "vod-", opts: ["vod-", "voda-", "vodn-", "vo-"], e: "Kořen je společná část všech příbuzných slov — tady 'vod-' (vod-a, vod-ník, vod-opád). '-a' u 'voda' je už koncovka, takže do kořene nepatří." },
   { q: "Které slovo je odvozeno předponou od slova 'jít'?", a: "přijít, odejít, vyjít", opts: ["přijít, odejít, vyjít", "jít, jdeme, půjdu", "jítí, jdoucí, jšedší", "jízdní, jezdec, jezdit"], e: "Odvození předponou znamená přidání předpony před kořen '-jít': při-jít, ode-jít, vy-jít. 'Jdeme, půjdu' jsou jen jiné tvary slovesa jít a 'jezdec' patří k jinému kořeni (jezdit)." },
-  { q: "Urči příponu v přídavném jménu 'lesní'.", a: "-ní", opts: ["-ní", "les-", "-í", "lesn-"], e: "Z kořene 'les-' vzniklo přídavné jméno příponou '-ní' (lesní zvíře). 'Les-' je kořen, takže příponou je '-ní', ne samotné '-í'." },
+  { q: "Urči příponu v přídavném jménu 'lesní'.", a: "-ní", opts: ["-ní", "les-", "-í", "lesn-"], e: "Z kořene 'les-' vzniklo přídavné jméno příponou '-ní' (lesní zvíře). 'Les-' je kořen, takže příponou je '-ní', ne samotné '-í'.", hints: [
+    "Odděl od slova kořen 'les-' — kolik písmen zbyde za ním a kde přesně kořen končí?",
+    "Nezastavuj se u první samohlásky za kořenem — zkontroluj, jestli přípona nemá ještě jedno písmeno navíc.",
+  ] },
   { q: "Jaká předpona ve slově 'sběratel' znamená 'sbírání dohromady'?", a: "s-", opts: ["s-", "z-", "vy-", "od-"], e: "Předpona 's-' vyjadřuje spojení dohromady (sbírat = dávat na jednu hromadu). Píše se 's', protože znamená 'dohromady'. Předpona 'z-' by znamenala dokončení děje, což sem nepatří." },
   { q: "Urči kořen ve slově 'spisovatel'.", a: "pis-/pís-", opts: ["pis-/pís-", "spis-", "pisa-", "spisovatel-"], e: "Kořen souvisí s psaním — 'pis-/pís-' (jako psát, píše, spis). Před ním je předpona 's-' a za ním přípony, takže 'spis-' obsahuje navíc předponu a kořenem samo o sobě není." },
   { q: "Které slovo má dvě přípony?", a: "zahradníkův (-ník- + -ův)", opts: ["zahradníkův (-ník- + -ův)", "stromek (-ek)", "přechod (-chod)", "nebeský (-ský)"], e: "Ve 'zahradníkův' jsou za kořenem 'hrad-' dvě přípony za sebou: '-ník-' (zahradník) a '-ův' (čí). 'Stromek' i 'nebeský' mají jen jednu příponu a 'přechod' má jen předponu a kořen." },
@@ -71,11 +95,11 @@ const POOL_L3: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Předpona stojí před kořenem: ne-, pod-, za-, při-, vy-...",
       "Kořen je základní část slova, která nese hlavní význam.",
       "Přípona stojí za kořenem a tvoří nová slova: -ník, -tel, -ost...",
