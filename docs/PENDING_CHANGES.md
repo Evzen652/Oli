@@ -54,12 +54,12 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 > Priorita z bodu (c) výše — `hint_leak` škodí dítěti přímo (nápověda prozrazuje výsledek). Uživatel schválil postup "ano".
 
 - ✅ **6 zobecnění detektoru** (`supabase/functions/_shared/hintLeakage.ts`) kryto 40 regresními testy (`src/test/hint-leakage.test.ts`, z 26): rejstřík = enumerace všech kandidátů NENÍ leak (práh ≥2 zmíněných možností), word-fallback (≥5 znaků, vyloučená slova z klíče), fallback na řadové číslovky, `"pojem ="` jako silný signál definice.
-- ✅ **51 témat opraveno** (`hints?: string[]` override v `gen()`, nebo přímá úprava `hints[]`): viz plný seznam v `PROJECT_STATUS.md` §6 (nejnověji přidané: `podnebiCrOvzdusiPocasi`, `vznikAVyvojStatuDemokraciePravniStat`, `horninyANerostyDruhyVlastnostiVznik`, `magnetyElektrinaJednoducheObvodyUvod`, `obnovitelneANeobnovitelneZdrojeEnergie`, `rozmnozovaciSoustavaVyvojClovekaUvod`).
+- ✅ **56 témat opraveno** (`hints?: string[]` override v `gen()`, nebo přímá úprava `hints[]`): viz plný seznam v `PROJECT_STATUS.md` §6 (nejnověji přidané: `minulostRegionuPovesti`, `slovaSouznacnaAProtikladna`, `sebekontrolaPisemnehoProjevu`, `popisPredmetuZvireteOsoby`, `vypravovaniOsnova`).
 - ✅ **7. zobecnění detektoru**: „Krok N:" pořadí kroku už nekoliduje s číselnou odpovědí (viz `PROJECT_STATUS.md` §6) — samo o sobě −23 nálezů napříč korpusem.
 - 🔎 **Nové poznatek**: u algoritmických (náhodných) generátorů matematiky může šablona nápovědy náhodně kolidovat s odpovědí jen pro některé vygenerované hodnoty — ověřování vyžaduje opakované běhy auditu (15–40×), ne jeden. Detail v `PROJECT_STATUS.md` §6.
 - 🔎 **Nový poznatek**: u kategorických otázek (etapy/kategorie), kde sdílená nápověda pojmenovává hledaný pojem přímo, funguje lépe katalogová výjimka (rejstřík VŠECH kandidátů s rozlišujícím údajem) než opis — viz `etapyLidskehoZivotaDospivani`, `horninyANerostyDruhyVlastnostiVznik`.
 - 🐞 **Vlastní regrese odhalena a opravena** (`velkaPismenaVlastniJmena`): oprava jednoho leaku („hora") omylem zavedla druhý (druhé slovo odpovědi „obecně" v nové nápovědě). `audit-topic.mjs` (GATE, 10× opakovaně) to nezachytilo, korpusový žebříček (`runOfflineAudit` přes `getAllTopics()`) ano. **Workflow doplněn:** po opravě ověřovat i korpusovým žebříčkem, ne jen jednotlivým GATE testem. Detail v `PROJECT_STATUS.md` §6.
-- 📊 **Postup:** `hint_leak` 804 → **~82** (−90 %), témat 91 → **44** (měřeno opakovaně, robustnější než jednorázový běh). Zbývá manuální práce téma po tématu dle žebříčku v `PROJECT_STATUS.md` §6.
+- 📊 **Postup:** `hint_leak` 804 → **~68** (−92 %), témat 91 → **39** (měřeno opakovaně, robustnější než jednorázový běh). Zbývá manuální práce téma po tématu dle žebříčku v `PROJECT_STATUS.md` §6.
 - ⏭️ **Pokračuje** — po dokončení `hint_leak` následuje vlna validace odpovědi (529 problémů), pak tvrdý gate pro nová/změněná témata.
 
 ## ✅ Technický dluh: reálný bug ve skóre + typecheck baseline 13 → 0 (2026-08-25)
