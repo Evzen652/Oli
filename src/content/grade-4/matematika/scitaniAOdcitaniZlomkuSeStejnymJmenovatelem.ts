@@ -53,9 +53,11 @@ function gen(level: number): PracticeTask[] {
       options: shuffle([correctStr, d1, d2, d3].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
       hints: [
         `Jmenovatel (${den}) zůstane stejný — pracujeme jen s čitateli.`,
-        isAdd
-          ? `Sečteme čitatele: ${num1} + ${num2} = ${resultNum}.`
-          : `Odečteme čitatele: ${num1} − ${num2} = ${resultNum}.`,
+        correctStr === "1"
+          ? "Když čitatelé po sečtení dají dohromady přesně jmenovatele, zlomek se rovná celku."
+          : isAdd
+            ? `Sečteme čitatele: ${num1} + ${num2} = ${resultNum}.`
+            : `Odečteme čitatele: ${num1} − ${num2} = ${resultNum}.`,
       ],
       solutionSteps: [
         `${num1}/${den} ${op} ${num2}/${den}`,
