@@ -131,7 +131,7 @@ const POOL_L1: PracticeTask[] = [
       "buďto",
       "být je správně",
     ],
-    hints: ["Obecná čeština mění 'ý' na 'ej': být → bejt, dobrý → dobrej."],
+    hints: ["Obecná čeština mění dlouhé 'ý' na 'ej' — zkus ten princip aplikovat na tohle sloveso (podobně jako 'dobrý' → 'dobrej')."],
   },
   {
     question: "Slovo 'brácha' (místo 'bratr') je:",
@@ -206,7 +206,7 @@ const POOL_L2: PracticeTask[] = [
       "ženská",
       "babička",
     ],
-    hints: ["'Holka' je hovorový výraz, ve formálním textu použijeme 'dívka'."],
+    hints: ["'Holka' je hovorový výraz — jak by ses o mladé osobě ženského rodu vyjádřil/a ve formálním textu, třeba v úřední zprávě?"],
   },
   {
     question: "Slovo 'kluk' versus 'chlapec' – který výraz je spisovnější?",
@@ -305,7 +305,7 @@ const POOL_L2: PracticeTask[] = [
       "archaická čeština",
       "poetická čeština",
     ],
-    hints: ["Hovorová čeština je přirozená v běžné mluvě, ale ne ve formálních textech."],
+    hints: ["Přemýšlej o vrstvě jazyka, kterou používáme v běžné, neformální mluvě — ne v oficiálních dokumentech, ale ani v místním nářečí jedné oblasti."],
   },
   {
     question: "Slovo 'mobil' (telefon) je:",
@@ -363,7 +363,7 @@ const POOL_L3: PracticeTask[] = [
       "nespisovná literatura",
       "dialektismus",
     ],
-    hints: ["Obecná čeština = nadnářeční nespisovná vrstva, typická pro Čechy."],
+    hints: ["Přemýšlej o nespisovné, ale nadnářeční vrstvě jazyka, kterou v běžné mluvě používá velká část lidí v Čechách."],
   },
   {
     question: "Přepiš do nespisovné podoby: 'Chtěl jsem jít do kina.'",
@@ -396,7 +396,7 @@ const POOL_L3: PracticeTask[] = [
       "telefon",
       "du – jdu",
     ],
-    hints: ["Telefon je neutrální – není slang ani nespisovný výraz."],
+    hints: ["Hledej slovo, které by ses nebál/a použít úplně stejně v rozhovoru s kamarádem i v oficiálním dopise — bez rozdílu."],
   },
   {
     question: "Má čeština jeden nebo více standardů (norem) pro správný jazyk?",
@@ -484,7 +484,7 @@ const POOL_L3: PracticeTask[] = [
       "ale / jenže",
       "tak / tedy",
     ],
-    hints: ["'Šak víš!' = 'Přece víš!' nebo 'Však víš!' v moravském nářečí."],
+    hints: ["Slovo 'šak' na Moravě zdůrazňuje to, co druhý už dávno ví — jaká dvě spisovná slovíčka mají podobný odstín ujištění?"],
   },
   {
     question: "Jak poznáš, že slovo je nespisovné, když nevíš jistě?",
