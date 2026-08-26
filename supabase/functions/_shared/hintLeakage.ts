@@ -50,6 +50,11 @@ function normalize(s: string): string {
     // rozpadnou na „0 9" a žádná číselná větev je pak nepozná.
     .replace(/(?<!\d),(?!\d)/g, " ")
     .replace(/[.;:!?"'„"()]/g, " ")
+    // "Krok N:" je jen pořadové číslo kroku v postupu, ne obsah nápovědy —
+    // bez odstranění kolidovalo s číselnou odpovědí, kdykoli se shodovala
+    // s pořadím kroku (např. hint "Krok 3: Vyděl číslo 1000." u odpovědi
+    // "3 dm³" falešně vypadal jako prozrazení hodnoty "3").
+    .replace(/^krok \d+\s*/, "")
     .replace(/\s+/g, " ")
     .trim();
 }

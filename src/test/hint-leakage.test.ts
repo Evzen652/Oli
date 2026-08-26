@@ -117,6 +117,31 @@ describe("checkHintLeakage — číslo + jednotka (odpověď typu '24 hodin')", 
     // 5 uvnitř 500 → number boundary → ne-leak
     expect(r.ok).toBe(true);
   });
+
+  it("'Krok N:' pořadové číslo kroku shodné s odpovědí → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Převeď 3000 cm³ na dm³.",
+      correct_answer: "3 dm³",
+      hints: [
+        "Krok 1: Jdeš z menší jednotky (cm³) na větší (dm³) — budeš dělit.",
+        "Krok 2: Připomeň si vztah: 1 dm³ = 1000 cm³.",
+        "Krok 3: Vyděl zadané číslo 1000. Výsledek bude menší než původní číslo.",
+      ],
+    });
+    // "Krok 3:" je jen pořadí kroku v postupu, náhodou shodné s hodnotou
+    // odpovědi (3) — neprozrazuje ji.
+    expect(r.ok).toBe(true);
+  });
+
+  it("'Krok N:' ale hint i tak prozradí hodnotu jinde → leak", () => {
+    const r = checkHintLeakage({
+      question: "Převeď 3000 cm³ na dm³.",
+      correct_answer: "3 dm³",
+      hints: ["Krok 1: Výsledek je 3, protože 3000 děleno 1000 je 3."],
+    });
+    // Číslo 3 se v hintu objevuje i mimo "Krok N:" prefix → pořád leak
+    expect(r.ok).toBe(false);
+  });
 });
 
 describe("checkHintLeakage — slovo už obsažené v otázce", () => {
