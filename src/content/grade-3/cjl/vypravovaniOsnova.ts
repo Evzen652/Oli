@@ -29,7 +29,7 @@ function gen(level: number): PracticeTask[] {
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Vypravování = příběh. 3 části: úvod (kde/kdy/kdo), zápletka (co se stalo), závěr (jak to skončilo).", "Slůvka pořadí: nejdříve, potom, nakonec..."],
+    hints: ["Vypravování = příběh. 3 části: úvod (kde/kdy/kdo), zápletka (co se stalo), závěr (jak to skončilo).", "Taková slova ti řeknou, jestli se něco stalo jako první, uprostřed, nebo jako poslední."],
     explanation: e,
   }));
 }

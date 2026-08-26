@@ -27,7 +27,7 @@ function gen(level: number): PracticeTask[] {
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Sebekontrola = znovu přečíst a opravit chyby.", "Kontroluj: pravopis, velká písmena, tečky, čárky, srozumitelnost."],
+    hints: ["Sebekontrola = znovu přečíst a opravit chyby.", "Kontroluj: pravopis, psaní velkých počátečních písmen, tečky, čárky, srozumitelnost."],
     explanation: e,
   }));
 }

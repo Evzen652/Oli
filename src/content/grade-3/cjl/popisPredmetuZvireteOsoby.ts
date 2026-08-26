@@ -29,7 +29,7 @@ function gen(level: number): PracticeTask[] {
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Popis = jak to vypadá (tvar, barva, velikost, vlastnosti).", "Postupuj od celku k detailu."],
+    hints: ["Popis = jak to vypadá (barva, tvar, velikost, vlastnosti).", "Postupuj od celku k detailu."],
     explanation: e,
   }));
 }

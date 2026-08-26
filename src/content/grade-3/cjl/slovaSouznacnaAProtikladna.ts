@@ -57,8 +57,8 @@ function gen(level: number): PracticeTask[] {
     correctAnswer: a,
     options: shuffle(opts),
     hints: [
-      "Synonyma = slova s podobným významem (radost = štěstí).",
-      "Antonyma = slova s opačným významem (velký × malý).",
+      "Synonyma = slova s podobným významem (pes = pejsek).",
+      "Antonyma = slova s opačným významem (světlo × tma).",
     ],
     explanation: e,
   }));

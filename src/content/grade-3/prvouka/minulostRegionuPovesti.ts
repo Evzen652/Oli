@@ -194,7 +194,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Přímý svědek události je nejcennější zdroj — byl u toho.",
-      "Starší lidé mohou vyprávět o věcech, které sami zažili.",
+      "Kdo z nabízených možností mohl sám zažít věci z dávnější minulosti obce?",
     ],
     explanation:
       "Starší lidé jsou živými historickými prameny — mohou nám přímo vyprávět, jak to v obci nebo městě vypadalo, co se změnilo a jak se žilo dříve. Jejich vzpomínky jsou nenahraditelné.",
@@ -340,7 +340,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Mniši v klášterech", "Vojáci na hradech", "Kupci na tržišti", "Rolníci na poli"],
     hints: [
       "Tito lidé uměli číst a psát, což byla ve středověku vzácná dovednost.",
-      "Žili a pracovali v klášterech, kde měli knihy a čas na psaní.",
+      "Žili společně v budovách, kde měli knihy a klid i čas na psaní.",
     ],
     explanation:
       "Ve středověku bývali kronikáři nejčastěji mniši, protože v klášterech se uchovávaly knihy a mniši uměli číst a psát — což tehdy nebylo samozřejmostí.",
@@ -521,7 +521,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     hints: [
       "Pověst se od historické zprávy liší tím, že obsahuje něco, co se nedá doložit fakty.",
-      "Libušina schopnost věštit budoucnost je právě ten nadpřirozený prvek.",
+      "Libušina schopnost věštit budoucnost je něco, co se v realitě prostě nestává.",
     ],
     explanation:
       "Příběh o Libuši je pověst, protože kromě historického jádra (existence knížecího rodu) obsahuje i nadpřirozený prvek — schopnost věštit budoucnost —, který nelze doložit jako fakt.",
