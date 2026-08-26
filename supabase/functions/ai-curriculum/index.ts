@@ -3,12 +3,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // AI provider URLs
 const GEMINI_URL  = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const GROQ_URL    = "https://api.groq.com/openai/v1/chat/completions";
 const LOVABLE_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 
 // Models per provider
 const GEMINI_MODEL  = "gemini-2.0-flash-lite";
-const GROQ_MODEL    = "llama-3.3-70b-versatile";
 const LOVABLE_MODEL = "google/gemini-3-flash-preview";
 
 function getGeminiKey(): string | undefined {
@@ -33,23 +31,21 @@ async function tryProvider(
 }
 
 /**
- * 3-úrovňový AI fallback chain:
- *   Gemini  → Groq  → Lovable Gateway
+ * 2-úrovňový AI fallback chain:
+ *   Gemini → Lovable Gateway
  * Pokud první selže (4xx/5xx), zkusíme další. Vrátíme úspěšnou odpověď
  * nebo posledně neúspěšnou (s provider info).
  */
 async function callAI(messages: Array<{ role: string; content: string }>): Promise<AICallResult> {
   const geminiKey  = getGeminiKey();
-  const groqKey    = Deno.env.get("GROQ_API_KEY");
   const lovableKey = Deno.env.get("LOVABLE_API_KEY");
 
-  if (!geminiKey && !groqKey && !lovableKey) {
-    throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY, GROQ_API_KEY nebo LOVABLE_API_KEY).");
+  if (!geminiKey && !lovableKey) {
+    throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY nebo LOVABLE_API_KEY).");
   }
 
   const chain: Array<{ name: string; url: string; key: string; model: string }> = [];
   if (geminiKey)  chain.push({ name: "Gemini",  url: GEMINI_URL,  key: geminiKey,  model: GEMINI_MODEL  });
-  if (groqKey)    chain.push({ name: "Groq",    url: GROQ_URL,    key: groqKey,    model: GROQ_MODEL    });
   if (lovableKey) chain.push({ name: "Lovable", url: LOVABLE_URL, key: lovableKey, model: LOVABLE_MODEL });
 
   let lastResult: AICallResult | null = null;
@@ -84,11 +80,9 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       gemini_api_key:  !!Deno.env.get("GEMINI_API_KEY"),
       google_ai_key:   !!Deno.env.get("GOOGLE_AI_KEY"),
-      groq_api_key:    !!Deno.env.get("GROQ_API_KEY"),
       lovable_api_key: !!Deno.env.get("LOVABLE_API_KEY"),
       providers_chain: [
         getGeminiKey()                       ? "Gemini"  : null,
-        Deno.env.get("GROQ_API_KEY")         ? "Groq"    : null,
         Deno.env.get("LOVABLE_API_KEY")      ? "Lovable" : null,
       ].filter(Boolean),
       keyPrefix: (Deno.env.get("GEMINI_API_KEY") ?? Deno.env.get("GOOGLE_AI_KEY"))?.slice(0, 8) ?? "not set",
@@ -227,8 +221,8 @@ serve(async (req) => {
       detailContext += `- **Podtéma ID:** ${skillId}\n`;
     }
 
-    if (!getGeminiKey() && !Deno.env.get("GROQ_API_KEY")) {
-      throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY nebo GROQ_API_KEY).");
+    if (!getGeminiKey() && !Deno.env.get("LOVABLE_API_KEY")) {
+      throw new Error("Žádný AI provider není nakonfigurován (GEMINI_API_KEY nebo LOVABLE_API_KEY).");
     }
 
     const systemPrompt = `Jsi pedagogický asistent pro české kurikulum (RVP ZV, 3.-9. ročník). Píšeš česky.
@@ -257,11 +251,11 @@ ${detailContext ? `\n## Aktuální kontext\n${detailContext}` : ""}`;
     if (!response.ok) {
       const errText = await response.text();
       console.error(`[ai-curriculum] ${provider} ${response.status}: ${errText.slice(0, 300)}`);
-      // Extrahuj čitelnou zprávu — formát se liší mezi Gemini a Groq
+      // Extrahuj čitelnou zprávu — formát se liší mezi Gemini a Lovable
       let aiMsg = errText.slice(0, 400);
       try {
         const parsed = JSON.parse(errText);
-        // Groq: { error: { message: "..." } }
+        // Lovable: { error: { message: "..." } }
         // Gemini: [{ error: { message: "..." } }]
         aiMsg = parsed?.error?.message
           ?? parsed?.[0]?.error?.message

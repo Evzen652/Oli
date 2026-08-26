@@ -496,7 +496,7 @@ ${tasksJson}
 Zavolej funkci correctness_check.`;
 
   try {
-    // Druhý model nezávisle ověří správnost — Groq Llama 70B nebo GPT přes Lovable.
+    // Druhý model nezávisle ověří správnost — GPT přes Lovable Gateway.
     const response = await aiCall({
       messages: [
         { role: "system", content: "Jsi expertní matematický a jazykový kontrolor pro ZŠ." },
@@ -505,8 +505,6 @@ Zavolej funkci correctness_check.`;
       tools: correctnessTools,
       toolChoice: { type: "function", function: { name: "correctness_check" } },
       model: {
-        // Pro Layer 3 stačí stejný model jako generator (cross-check je při toolu, ne při modelu)
-        groq: "llama-3.3-70b-versatile",
         lovable: "openai/gpt-5-mini",
       },
     });
@@ -553,7 +551,6 @@ async function validateTasksForGrade(tasks: any[], gradeMin: number, _apiKey: st
       tools: validationTools,
       toolChoice: { type: "function", function: { name: "grade_validation" } },
       model: {
-        groq: "llama-3.3-70b-versatile",
         lovable: "google/gemini-3-flash-preview",
       },
     });
@@ -649,7 +646,7 @@ serve(async (req) => {
 
     if (!hasAnyAiProvider()) {
       throw new Error(
-        "Žádný AI provider není nakonfigurován. Nastavte GROQ_API_KEY (preferováno) " +
+        "Žádný AI provider není nakonfigurován. Nastavte GOOGLE_AI_KEY (preferováno) " +
         "nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
       );
     }
@@ -711,7 +708,6 @@ serve(async (req) => {
       tools,
       toolChoice,
       model: {
-        groq: "llama-3.3-70b-versatile",
         lovable: "google/gemini-3-flash-preview",
       },
     });

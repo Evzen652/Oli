@@ -2,9 +2,10 @@
  * Sdílený AI provider router pro edge funkce.
  *
  * Volby:
- *  • GROQ_API_KEY (preferred)  — direct Groq (Llama 3.3 70B), nezávislé,
- *                                rychlé, dobré tool calling.
- *  • LOVABLE_API_KEY (fallback) — Lovable AI Gateway (Gemini / GPT).
+ *  • GOOGLE_AI_KEY / GEMINI_API_KEY (preferred) — přímé Google AI.
+ *  • LOVABLE_API_KEY (fallback)                  — Lovable AI Gateway (Gemini / GPT).
+ *
+ * Groq byl odstraněn (2026-08-26) — pro tyhle úkoly nedostatečná kvalita.
  *
  * Klíče se čtou Z DENO ENVIRONMENT (Supabase secrets) — NIKDY ne z klienta.
  *
@@ -15,16 +16,14 @@
  *     messages: [...],
  *     tools: [...],
  *     toolChoice: { type: "function", function: { name: "..." } },
- *     model: { groq: "llama-3.3-70b-versatile", lovable: "google/gemini-3-flash-preview" }
+ *     model: { google: "gemini-2.0-flash", lovable: "google/gemini-3-flash-preview" }
  *   });
  *
- * Response je OpenAI-compatible (Groq i Lovable Gateway vrací stejný shape),
+ * Response je OpenAI-compatible (oba providery vrací stejný shape),
  * takže parsing kódu zůstává beze změny.
  */
 
 export interface AiModelMap {
-  /** Groq model ID — např. "llama-3.3-70b-versatile" */
-  groq: string;
   /** Lovable Gateway model ID — např. "google/gemini-3-flash-preview" */
   lovable: string;
   /** Google AI model ID — např. "gemini-2.0-flash" */
@@ -36,18 +35,15 @@ export interface AiCallOptions {
   tools?: unknown[];
   toolChoice?: unknown;
   model: AiModelMap;
-  /** Volitelně override; default true */
-  preferGroq?: boolean;
   temperature?: number;
   maxTokens?: number;
 }
 
 export interface AiProviderInfo {
-  provider: "groq" | "lovable";
+  provider: "google" | "lovable";
   model: string;
 }
 
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const LOVABLE_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const GOOGLE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
 
@@ -60,13 +56,9 @@ function getGoogleKey(): string | undefined {
  * Vyhodnotí, který provider se použije, BEZ volání AI.
  * Užitečné pro logování / debugging.
  */
-export function getActiveProvider(preferGroq = true): AiProviderInfo | null {
-  const groqKey = Deno.env.get("GROQ_API_KEY");
-  const lovableKey = Deno.env.get("LOVABLE_API_KEY");
-
-  if (preferGroq && groqKey) return { provider: "groq", model: "" };
-  if (lovableKey) return { provider: "lovable", model: "" };
-  if (groqKey) return { provider: "groq", model: "" };
+export function getActiveProvider(): AiProviderInfo | null {
+  if (getGoogleKey()) return { provider: "google", model: "" };
+  if (Deno.env.get("LOVABLE_API_KEY")) return { provider: "lovable", model: "" };
   return null;
 }
 
@@ -76,9 +68,8 @@ export function getActiveProvider(preferGroq = true): AiProviderInfo | null {
  * Vrací native fetch Response — caller si parsuje JSON sám.
  */
 export async function aiCall(opts: AiCallOptions): Promise<Response> {
-  const { messages, tools, toolChoice, model, preferGroq = true, temperature, maxTokens } = opts;
+  const { messages, tools, toolChoice, model, temperature, maxTokens } = opts;
 
-  const groqKey = Deno.env.get("GROQ_API_KEY");
   const lovableKey = Deno.env.get("LOVABLE_API_KEY");
   const googleKey = getGoogleKey();
 
@@ -98,26 +89,15 @@ export async function aiCall(opts: AiCallOptions): Promise<Response> {
       body: JSON.stringify(buildBody(modelId)),
     });
 
-  // Priorita: Google AI (pokud je klíč a model) → Groq (preferGroq) → Lovable → Groq fallback
+  // Priorita: Google AI (pokud je klíč a model) → Lovable Gateway (i jako fallback při chybě Google)
   if (googleKey && model.google) {
     console.log(`[aiCall] Provider: Google AI, model: ${model.google}`);
     const res = await doFetch(GOOGLE_URL, googleKey, model.google);
     if (res.ok) return res;
     const errBody = await res.clone().text();
     console.error(`[aiCall] Google returned ${res.status}: ${errBody.slice(0, 200)}`);
-    // Fallback na Groq při jakékoli chybě
-    if (groqKey) {
-      console.log(`[aiCall] Google failed (${res.status}), falling back to Groq`);
-      return await doFetch(GROQ_URL, groqKey, model.groq);
-    }
-    return res;
-  }
-
-  if (preferGroq && groqKey) {
-    console.log(`[aiCall] Provider: Groq, model: ${model.groq}`);
-    const res = await doFetch(GROQ_URL, groqKey, model.groq);
-    if ((res.status === 429 || res.status >= 500) && lovableKey) {
-      console.log(`[aiCall] Groq returned ${res.status}, falling back to Lovable`);
+    if (lovableKey) {
+      console.log(`[aiCall] Google failed (${res.status}), falling back to Lovable`);
       return await doFetch(LOVABLE_URL, lovableKey, model.lovable);
     }
     return res;
@@ -125,25 +105,15 @@ export async function aiCall(opts: AiCallOptions): Promise<Response> {
 
   if (lovableKey) {
     console.log(`[aiCall] Provider: Lovable, model: ${model.lovable}`);
-    const res = await doFetch(LOVABLE_URL, lovableKey, model.lovable);
-    if ((res.status === 429 || res.status >= 500) && groqKey) {
-      console.log(`[aiCall] Lovable returned ${res.status}, falling back to Groq`);
-      return await doFetch(GROQ_URL, groqKey, model.groq);
-    }
-    return res;
-  }
-
-  if (groqKey) {
-    console.log(`[aiCall] Provider: Groq (last resort), model: ${model.groq}`);
-    return await doFetch(GROQ_URL, groqKey, model.groq);
+    return await doFetch(LOVABLE_URL, lovableKey, model.lovable);
   }
 
   throw new Error(
-    "Žádný AI provider není nakonfigurován. Nastavte GOOGLE_AI_KEY, GROQ_API_KEY nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
+    "Žádný AI provider není nakonfigurován. Nastavte GOOGLE_AI_KEY nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
   );
 }
 
 /** Vrátí true, pokud je nakonfigurován alespoň jeden provider. */
 export function hasAnyAiProvider(): boolean {
-  return !!(getGoogleKey() || Deno.env.get("GROQ_API_KEY") || Deno.env.get("LOVABLE_API_KEY"));
+  return !!(getGoogleKey() || Deno.env.get("LOVABLE_API_KEY"));
 }
