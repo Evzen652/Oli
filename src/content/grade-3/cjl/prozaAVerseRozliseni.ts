@@ -9,11 +9,20 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Co je próza?", a: "Text psaný v odstavcích a větách (ne ve verších)", opts: ["Text psaný v odstavcích a větách (ne ve verších)", "Text psaný v krátkých řádcích s rýmy", "Popis přírody", "Divadelní hra"], e: "Próza vypadá jako normální text — věty jdou za sebou a jsou seskupeny do odstavců. Takto jsou napsány pohádky, příběhy nebo třeba dopisy." },
-  { q: "Co jsou verše?", a: "Krátké řádky v básni, které mají rytmus", opts: ["Krátké řádky v básni, které mají rytmus", "Odstavce v próze", "Věty v povídce", "Části pohádky"], e: "Verše jsou krátké řádky, ze kterých se skládá báseň. Každý verš začíná na novém řádku a při čtení cítíš rytmus." },
+  {
+    q: "Co jsou verše?",
+    a: "Krátké řádky v básni, které mají rytmus",
+    opts: ["Krátké řádky v básni, které mají rytmus", "Odstavce v próze", "Věty v povídce", "Části pohádky"],
+    e: "Verše jsou krátké řádky, ze kterých se skládá báseň. Každý verš začíná na novém řádku a při čtení cítíš rytmus.",
+    hints: [
+      "Báseň se neskládá z odstavců ani vět jako povídka — skládá se z něčeho jiného.",
+      "Každý takový úsek začíná na novém řádku a společně dávají básni rytmus.",
+    ],
+  },
   { q: "Pohádka je napsána v:", a: "Próze (odstavce a věty)", opts: ["Próze (odstavce a věty)", "Verších (básni)", "Dialogu", "Odrážkách"], e: "Pohádky jsou psány prózou, protože vypravují příběh v normálních větách a odstavcích — například 'Bylo jednou jedno malé kotě...'." },
   { q: "Co je strofa?", a: "Skupina veršů v básni (jako odstavec v próze)", opts: ["Skupina veršů v básni (jako odstavec v próze)", "Rým na konci verše", "Celá báseň", "Jeden verš"], e: "Strofa je skupina několika veršů, které k sobě patří — jsou odděleny mezerou od další skupiny. Je to stejné jako odstavec v próze, jen pro básně." },
   { q: "Příklad prózy je:", a: "Pohádka, povídka, román", opts: ["Pohádka, povídka, román", "Báseň, říkanka, sonet", "Rým, rytmus, verš", "Strofa, rýmové schéma"], e: "Pohádka, povídka i román jsou příběhy psané normálními větami a odstavci — to je próza. Básně, říkanky a sonety jsou naopak psány ve verších." },
@@ -23,7 +32,16 @@ const POOL_L1: QA[] = [
 ];
 
 const POOL_L2: QA[] = [
-  { q: "Jak poznáme báseň (verše)?", a: "Krátké řádky, rýmy na konci, rytmus při čtení", opts: ["Krátké řádky, rýmy na konci, rytmus při čtení", "Dlouhé odstavce", "Dialogy postav", "Nadpis a obsah"], e: "Báseň poznáš snadno — řádky jsou krátké, slova na konci řádků se rýmují (například 'pes–les') a při čtení cítíš pravidelný rytmus." },
+  {
+    q: "Jak poznáme báseň (verše)?",
+    a: "Krátké řádky, rýmy na konci, rytmus při čtení",
+    opts: ["Krátké řádky, rýmy na konci, rytmus při čtení", "Dlouhé odstavce", "Dialogy postav", "Nadpis a obsah"],
+    e: "Báseň poznáš snadno — řádky jsou krátké, slova na konci řádků se rýmují (například 'pes–les') a při čtení cítíš pravidelný rytmus.",
+    hints: [
+      "Všímej si délky řádků a toho, jestli se slova na jejich koncích rýmují.",
+      "Když si to řekneš nahlas, uslyšíš pravidelné opakování — to je rytmus.",
+    ],
+  },
   { q: "Jak poznáme prózu?", a: "Dlouhé věty a odstavce, jako v příběhu nebo pohádce", opts: ["Dlouhé věty a odstavce, jako v příběhu nebo pohádce", "Krátké řádky s rýmy", "Jen přímá řeč", "Jen popis"], e: "Próza vypadá jako příběh — věty jsou dlouhé a navazují na sebe, text se skládá do odstavců. Žádné rýmy ani krátké řádky." },
   { q: "Báseň 'Skákal pes přes oves...' je napsána:", a: "Ve verších (báseň)", opts: ["Ve verších (báseň)", "V próze", "V dialogu", "V odstavcích"], e: "'Skákal pes přes oves' je říkanka — text se skládá z krátkých řádků, slova se rýmují a při čtení cítíš rytmus. To jsou přesné znaky veršů." },
   { q: "Jak se odlišuje zápis básně od prózy?", a: "Báseň: každý verš na novém řádku. Próza: věty za sebou.", opts: ["Báseň: každý verš na novém řádku. Próza: věty za sebou.", "Žádný rozdíl v zápisu", "Próza má nadpis, báseň ne", "Báseň má tečky, próza ne"], e: "Zápis ti napoví hned na první pohled — v básni každý řádek (verš) začíná znovu, kdežto v próze věty jdou za sebou a zalomí se až na konci řádku." },
@@ -35,7 +53,16 @@ const POOL_L2: QA[] = [
 
 const POOL_L3: QA[] = [
   { q: "Adresa na obálce je napsána v krátkých řádcích: 'Jana Nováková / Hlavní 12 / Praha'. Je to báseň?", a: "Ne — je to adresa, nemá rým ani rytmus, jen seznam údajů", opts: ["Ne — je to adresa, nemá rým ani rytmus, jen seznam údajů", "Ano, protože má krátké řádky", "Ano, protože nemá odstavec", "Ano, protože je to psáno na obálce"], e: "Krátké řádky samy o sobě báseň nedělají — musí mít i rým nebo rytmus. Adresa je jen seznam údajů pod sebou, ne verše." },
-  { q: "Text A: 'Bylo jednou jedno kotě. Žilo v lese u potoka.' Text B: 'V lese žil kmotr liška, / vedle skákala myška.' Který text je psán ve verších?", a: "Text B (krátké řádky, rým liška–myška)", opts: ["Text B (krátké řádky, rým liška–myška)", "Text A (dlouhé věty)", "Oba texty jsou verše", "Ani jeden text není verše"], e: "Text B má krátké řádky a slova 'liška' a 'myška' se rýmují (obě končí na '-iška') — to jsou verše. Text A jsou souvislé věty bez rýmu, tedy próza." },
+  {
+    q: "Text A: 'Bylo jednou jedno kotě. Žilo v lese u potoka.' Text B: 'V lese žil kmotr liška, / vedle skákala myška.' Který text je psán ve verších?",
+    a: "Text B (krátké řádky, rým liška–myška)",
+    opts: ["Text B (krátké řádky, rým liška–myška)", "Text A (dlouhé věty)", "Oba texty jsou verše", "Ani jeden text není verše"],
+    e: "Text B má krátké řádky a slova 'liška' a 'myška' se rýmují (obě končí na '-iška') — to jsou verše. Text A jsou souvislé věty bez rýmu, tedy próza.",
+    hints: [
+      "Podívej se, který text má na konci řádků slova, co se rýmují.",
+      "Text napsaný ve verších nemá dlouhé souvislé věty jako vyprávění.",
+    ],
+  },
   { q: "Báseň má 12 veršů rozdělených po 3 verších do strof. Kolik strof báseň má?", a: "4 strofy", opts: ["4 strofy", "3 strofy", "12 strof", "6 strof"], e: "Když 12 veršů rozdělíme po třech, dostaneme 12 : 3 = 4 skupiny — tedy 4 strofy." },
   { q: "Pohádka je rozdělena na 3 odstavce. Je stále prózou?", a: "Ano — rozdělení na odstavce prózu nemění", opts: ["Ano — rozdělení na odstavce prózu nemění", "Ne — teď je to báseň", "Ne — teď je to seznam", "Ano, ale jen pokud má rým"], e: "Odstavce jsou přirozenou součástí prózy a jejich počet na tom nic nemění — pořád jde o věty seskupené do odstavců, ne o verše s rýmem." },
   { q: "Báseň má 15 veršů rozdělených po 5 verších do strof. Kolik strof báseň má?", a: "3 strofy", opts: ["3 strofy", "5 strof", "15 strof", "2 strofy"], e: "Když 15 veršů rozdělíme po pěti, dostaneme 15 : 5 = 3 skupiny — tedy 3 strofy." },
@@ -48,11 +75,11 @@ const POOL_L3: QA[] = [
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
+  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Verše = krátké řádky s rytmem a rýmy. Próza = normální věty a odstavce.", "Báseň → verše → krátké řádky. Pohádka/příběh → próza → odstavce."],
+    hints: hints ?? ["Verše = krátké řádky s rytmem a rýmy. Próza = normální věty a odstavce.", "Báseň → verše → krátké řádky. Pohádka/příběh → próza → odstavce."],
     explanation: e,
   }));
 }
