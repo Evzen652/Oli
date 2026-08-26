@@ -54,9 +54,10 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 > Priorita z bodu (c) výše — `hint_leak` škodí dítěti přímo (nápověda prozrazuje výsledek). Uživatel schválil postup "ano".
 
 - ✅ **6 zobecnění detektoru** (`supabase/functions/_shared/hintLeakage.ts`) kryto 40 regresními testy (`src/test/hint-leakage.test.ts`, z 26): rejstřík = enumerace všech kandidátů NENÍ leak (práh ≥2 zmíněných možností), word-fallback (≥5 znaků, vyloučená slova z klíče), fallback na řadové číslovky, `"pojem ="` jako silný signál definice.
-- ✅ **33 témat opraveno** (`hints?: string[]` override v `gen()`, nebo přímá úprava `hints[]`): viz plný seznam v `PROJECT_STATUS.md` §6 (nejnověji přidané: `shodaPrisudkuSPodmetem`, `slovaSpisovnaANespisovna`).
+- ✅ **37 témat opraveno** (`hints?: string[]` override v `gen()`, nebo přímá úprava `hints[]`): viz plný seznam v `PROJECT_STATUS.md` §6 (nejnověji přidané: 3 algoritmické generátory matematiky — `scitaniAOdcitaniZlomkuSeStejnymJmenovatelem`, `nasobilka6789a10`, `nasobeniADeleniMalaNasobilka` — a `casovaPrimkaGenerace`).
 - ✅ **7. zobecnění detektoru**: „Krok N:" pořadí kroku už nekoliduje s číselnou odpovědí (viz `PROJECT_STATUS.md` §6) — samo o sobě −23 nálezů napříč korpusem.
-- 📊 **Postup:** `hint_leak` 804 → **154** (−81 %), témat 91 → **62** (číslo kolísá run-to-run kvůli shuffle v pool generátorech — každé opravené téma ověřeno izolovaně na 0). Zbývá manuální práce téma po tématu dle žebříčku v `PROJECT_STATUS.md` §6.
+- 🔎 **Nové poznatek**: u algoritmických (náhodných) generátorů matematiky může šablona nápovědy náhodně kolidovat s odpovědí jen pro některé vygenerované hodnoty — ověřování vyžaduje opakované běhy auditu (15–40×), ne jeden. Detail v `PROJECT_STATUS.md` §6.
+- 📊 **Postup:** `hint_leak` 804 → **~130** (−84 %), témat 91 → **~58** (měřeno opakovaně, robustnější než jednorázový běh). Zbývá manuální práce téma po tématu dle žebříčku v `PROJECT_STATUS.md` §6.
 - ⏭️ **Pokračuje** — po dokončení `hint_leak` následuje vlna validace odpovědi (529 problémů), pak tvrdý gate pro nová/změněná témata.
 
 ## ✅ Technický dluh: reálný bug ve skóre + typecheck baseline 13 → 0 (2026-08-25)
