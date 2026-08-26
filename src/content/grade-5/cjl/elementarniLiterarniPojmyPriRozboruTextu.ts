@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
       "skupina řádků",
       "rýmující se slova",
     ],
-    hints: ["Verš = jeden řádek. Strofa = skupina veršů."],
+    hints: ["Přemýšlej o tom, jak je báseň fyzicky rozdělená na papíře — na jakou nejmenší jednotku je rozdělená?"],
   },
   {
     question: "Co je strofa v básni?",
@@ -140,7 +140,7 @@ const POOL_L1: PracticeTask[] = [
       "3. osobě – on/ona/oni",
       "záleží na díle",
     ],
-    hints: ["'Er' je německé zájmeno pro třetí osobu. Vypravěč stojí mimo příběh a popisuje ostatní — v které osobě tedy vypráví?"],
+    hints: ["Vypravěč u 'er-formy' stojí mimo příběh a mluví o postavách zvenčí — sám sebe neoznačuje jako 'já' a postavy neoslovuje jako 'ty'."],
   },
   {
     question: "Ich-forma vypravěče znamená:",
@@ -173,7 +173,7 @@ const POOL_L1: PracticeTask[] = [
       "vedlejší postava",
       "záleží na žánru",
     ],
-    hints: ["Antagonista = protivník. Záporák nebo překážka hrdinovi."],
+    hints: ["Antagonista stojí hrdinovi (protagonistovi) v cestě — může to být jiná osoba, ale klidně i něco jiného, co mu překáží."],
   },
 ];
 
@@ -275,7 +275,7 @@ const POOL_L2: PracticeTask[] = [
       "opakování slova",
       "záleží na textu",
     ],
-    hints: ["Přirovnání = X jako Y. 'Jako lev' = přirovnání."],
+    hints: ["Věta 'Utíkal rychle jako blesk' srovnává dvě věci pomocí spojovacího slova — všimni si, které slovo to srovnání spojuje."],
   },
   {
     question: "Co je metafora v literárním textu?",
@@ -286,7 +286,7 @@ const POOL_L2: PracticeTask[] = [
       "opakování slova",
       "záleží na textu",
     ],
-    hints: ["Metafora = X je Y. 'Lev boje' = metafora (bez jako)."],
+    hints: ["Věta 'Moře slz' spojuje dvě věci beze slova 'jako' — takové obrazné spojení se používá, když nechceme mluvit doslova."],
   },
   {
     question: "Co je personifikace?",
@@ -388,7 +388,7 @@ const POOL_L3: PracticeTask[] = [
       "záleží na textu",
       "metafora",
     ],
-    hints: ["'Slyším barvu.' 'Cítím hudbu.' = prolínání smyslů."],
+    hints: ["'Slyším barvu' nebo 'cítím hudbu' míchají dohromady dva různé smysly, které normálně fungují odděleně — jak by ses tomu rozhodl/a říkat?"],
   },
   {
     question: "Co je oxymóron?",
@@ -465,7 +465,7 @@ const POOL_L3: PracticeTask[] = [
       "záleží na žánru",
       "příběh bez chronologie",
     ],
-    hints: ["Retrospektiva = zpětný pohled. Začínáme v přítomnosti, vracíme se."],
+    hints: ["Retro- znamená 'zpět' — přemýšlej, jestli vyprávění postupuje čas jen dopředu, nebo se v určité chvíli vrací k dřívějším událostem."],
   },
 ];
 
