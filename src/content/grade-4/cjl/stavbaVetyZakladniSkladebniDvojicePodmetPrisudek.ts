@@ -9,7 +9,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Urči podmět ve větě: 'Petr čte knihu.'", a: "Petr", opts: ["Petr", "čte", "knihu", "žádný"], e: "Podmět je ten, kdo koná děj. Zeptáme se KDO čte? — Petr. Slovo 'čte' je přísudek (děj) a 'knihu' je to, co Petr čte, tedy předmět, ne podmět." },
@@ -22,12 +22,24 @@ const POOL_L1: QA[] = [
   { q: "Co je přísudek ve větě: 'Maminka vaří oběd'?", a: "vaří", opts: ["vaří", "maminka", "oběd", "dnes"], e: "CO DĚLÁ maminka? — vaří, to je přísudek. 'Maminka' je podmět a 'oběd' je to, co vaří, tedy předmět." },
   { q: "Urči podmět ve větě: 'Žáci odpovídají na otázky.'", a: "Žáci", opts: ["Žáci", "odpovídají", "otázky", "na"], e: "KDO odpovídá? — žáci, proto jsou žáci podmět. 'Odpovídají' je přísudek a 'na otázky' doplňuje, na co odpovídají." },
   { q: "Co je přísudek ve větě: 'Ryba plave ve vodě'?", a: "plave", opts: ["plave", "ryba", "vodě", "ve"], e: "Přísudek je sloveso vyjadřující děj — CO DĚLÁ ryba? — plave. 'Ryba' je podmět a 've vodě' říká, kde plave." },
-  { q: "Na co se ptáme na podmět?", a: "Kdo? Co?", opts: ["Kdo? Co?", "Co dělá?", "Kde? Kdy?", "Jaký? Jaká?"], e: "Na podmět se ptáme otázkou KDO? nebo CO?, protože hledáme původce děje. Otázka 'Co dělá?' patří k přísudku a 'Kde? Kdy?' k příslovečnému určení." },
-  { q: "Na co se ptáme na přísudek?", a: "Co dělá? Co je?", opts: ["Co dělá? Co je?", "Kdo? Co?", "Kde? Kdy?", "Čí? Jaký?"], e: "Na přísudek se ptáme CO DĚLÁ? nebo CO JE?, protože hledáme děj nebo stav podmětu. Otázka 'Kdo? Co?' patří k podmětu a 'Čí? Jaký?' k přívlastku." },
+  { q: "Na co se ptáme na podmět?", a: "Kdo? Co?", opts: ["Kdo? Co?", "Co dělá?", "Kde? Kdy?", "Jaký? Jaká?"], e: "Na podmět se ptáme otázkou KDO? nebo CO?, protože hledáme původce děje. Otázka 'Co dělá?' patří k přísudku a 'Kde? Kdy?' k příslovečnému určení.", hints: [
+    "Podmět je ten, kdo nebo co koná děj — hledej otázku, na kterou odpovídá právě původce děje, ne jeho činnost, místo nebo čas.",
+    "Ze čtyř možností vyřaď tu, co se ptá na činnost (patří k přísudku), a tu, co se ptá na místo/čas — zbyde otázka na podmět.",
+  ] },
+  { q: "Na co se ptáme na přísudek?", a: "Co dělá? Co je?", opts: ["Co dělá? Co je?", "Kdo? Co?", "Kde? Kdy?", "Čí? Jaký?"], e: "Na přísudek se ptáme CO DĚLÁ? nebo CO JE?, protože hledáme děj nebo stav podmětu. Otázka 'Kdo? Co?' patří k podmětu a 'Čí? Jaký?' k přívlastku.", hints: [
+    "Přísudek vyjadřuje děj nebo stav podmětu — hledej otázku, která zjišťuje, co se s podmětem děje nebo jaký je, ne kdo/co on sám je.",
+    "Ze čtyř možností vyřaď tu, co se ptá přímo na osobu/věc (patří k podmětu), a tu na vlastnost (přívlastek) — zbyde otázka na přísudek.",
+  ] },
   { q: "Urči podmět ve větě: 'Tomáš hraje fotbal.'", a: "Tomáš", opts: ["Tomáš", "hraje", "fotbal", "hřiště"], e: "KDO hraje? — Tomáš, to je podmět. 'Hraje' je přísudek a 'fotbal' je to, co Tomáš hraje, tedy předmět." },
   { q: "Co je přísudek ve větě: 'Vlaštovky se vrátily z jihu'?", a: "vrátily se", opts: ["vrátily se", "vlaštovky", "jihu", "z"], e: "Přísudek tu tvoří sloveso se zvratným 'se' — CO UDĚLALY vlaštovky? — vrátily se. 'Vlaštovky' jsou podmět a 'z jihu' říká, odkud se vrátily." },
-  { q: "Co je podmět?", a: "kdo nebo co vykonává děj", opts: ["kdo nebo co vykonává děj", "co se děje", "kde se děj odehrává", "kdy se děj odehrává"], e: "Podmět je větný člen, který označuje původce děje — kdo nebo co něco dělá. Možnost 'co se děje' popisuje přísudek a zbylé možnosti se týkají místa a času." },
-  { q: "Co je přísudek?", a: "co podmět dělá nebo jaký je", opts: ["co podmět dělá nebo jaký je", "kdo koná děj", "kde se děj odehrává", "jakou má podmět vlastnost"], e: "Přísudek vyjadřuje, co podmět dělá nebo jaký je — je to děj nebo stav věty. Možnost 'kdo koná děj' je podmět a zbylé možnosti se týkají místa a vlastnosti." },
+  { q: "Co je podmět?", a: "kdo nebo co vykonává děj", opts: ["kdo nebo co vykonává děj", "co se děje", "kde se děj odehrává", "kdy se děj odehrává"], e: "Podmět je větný člen, který označuje původce děje — kdo nebo co něco dělá. Možnost 'co se děje' popisuje přísudek a zbylé možnosti se týkají místa a času.", hints: [
+    "Hledej definici PŮVODCE děje — ne samotný děj, a ne kdy nebo kde se odehrává.",
+    "Ze čtyř možností tři popisují okolnosti děje (co se stalo, kde, kdy) — jen jedna mluví o tom, KDO nebo CO za dějem stojí.",
+  ] },
+  { q: "Co je přísudek?", a: "co podmět dělá nebo jaký je", opts: ["co podmět dělá nebo jaký je", "kdo koná děj", "kde se děj odehrává", "jakou má podmět vlastnost"], e: "Přísudek vyjadřuje, co podmět dělá nebo jaký je — je to děj nebo stav věty. Možnost 'kdo koná děj' je podmět a zbylé možnosti se týkají místa a vlastnosti.", hints: [
+    "Hledej definici, která popisuje DĚJ nebo STAV — ne toho, kdo ho koná, a ne místo.",
+    "Jedna možnost pojmenovává původce (to je jiný větný člen), další mluví jen o místě nebo jen o vlastnosti zvlášť — správná definice spojuje děj i stav dohromady.",
+  ] },
 ];
 
 const POOL_L2: QA[] = [
@@ -43,7 +55,10 @@ const POOL_L2: QA[] = [
   { q: "Co je přísudek ve větě: 'Honza se stal kapitánem'?", a: "stal se", opts: ["stal se", "Honza", "kapitánem", "se"], e: "Přísudek tu tvoří sloveso se zvratným 'se' — CO UDĚLAL Honza? — stal se. 'Honza' je podmět a 'kapitánem' doplňuje, čím se stal." },
   { q: "Urči podmět ve větě: 'Sníh pokryl střechy domů.'", a: "Sníh", opts: ["Sníh", "pokryl", "střechy", "domů"], e: "Podmět nemusí být jen člověk — KDO nebo CO pokryl střechy? — sníh. 'Pokryl' je přísudek a 'střechy' je to, co sníh pokryl." },
   { q: "Co je přísudek ve větě: 'Vlak přijel přesně na čas'?", a: "přijel", opts: ["přijel", "vlak", "čas", "přesně"], e: "CO UDĚLAL vlak? — přijel, to je přísudek. 'Vlak' je podmět a slova 'přesně na čas' jen říkají, kdy přijel." },
-  { q: "Základní skladební dvojice tvoří:", a: "podmět + přísudek", opts: ["podmět + přísudek", "podmět + předmět", "přísudek + příslovce", "přívlastek + podstatné jméno"], e: "Základní skladební dvojice je dvojice podmět a přísudek, na které stojí každá věta. Předmět ani příslovce do základní dvojice nepatří, jsou to jen rozvíjející členy." },
+  { q: "Základní skladební dvojice tvoří:", a: "podmět + přísudek", opts: ["podmět + přísudek", "podmět + předmět", "přísudek + příslovce", "přívlastek + podstatné jméno"], e: "Základní skladební dvojice je dvojice podmět a přísudek, na které stojí každá věta. Předmět ani příslovce do základní dvojice nepatří, jsou to jen rozvíjející členy.", hints: [
+    "Věta vždy stojí na dvou hlavních částech: na tom, KDO/CO něco dělá, a na tom, CO DĚLÁ nebo JAKÝ JE — ostatní členy jen rozvíjejí tuto dvojici.",
+    "Tři možnosti obsahují jen jeden z těchto dvou hlavních členů (a k němu nějaký rozvíjející) — jen jedna spojuje oba hlavní členy dohromady.",
+  ] },
   { q: "Urči podmět ve větě: 'Starší sestra pomáhá s úkoly.'", a: "sestra", opts: ["sestra", "pomáhá", "úkoly", "starší"], e: "KDO pomáhá? — sestra, proto je sestra podmět. 'Starší' je jen přívlastek, 'pomáhá' je přísudek a 's úkoly' doplňuje, s čím pomáhá." },
   { q: "Co je přísudek ve větě: 'Kniha leží na stole'?", a: "leží", opts: ["leží", "kniha", "stole", "na"], e: "CO DĚLÁ kniha? — leží, to je přísudek. 'Kniha' je podmět a 'na stole' říká, kde leží." },
   { q: "Urči podmět ve větě: 'Komu pomáháme?' (z věty: Pomáháme sousedce.)", a: "my (nevyjádřený)", opts: ["my (nevyjádřený)", "sousedce", "pomáháme", "já"], e: "Podmět není vyslovený, ale koncovka slovesa 'pomáháme' ukazuje na MY. 'Sousedce' je ten, komu pomáháme, tedy předmět, ne podmět." },
@@ -71,14 +86,14 @@ const POOL_L3: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Podmět = kdo nebo co vykonává děj → ptáme se KDO? CO?",
       "Přísudek = co podmět dělá nebo jaký je → ptáme se CO DĚLÁ?",
-      "Podmět může být nevyjádřený (schovaný v koncovce slovesa)",
+      "Podmět nemusí být ve větě vyslovený jako samostatné slovo — často ho poznáš jen podle koncovky slovesa (jdeme = my).",
     ],
     explanation: e,
   }));
