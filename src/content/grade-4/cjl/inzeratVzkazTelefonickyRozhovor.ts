@@ -57,9 +57,9 @@ function gen(level: number): PracticeTask[] {
     correctAnswer: a,
     options: shuffle(opts),
     hints: [
-      "Inzerát: stručný, konkrétní, s kontaktem; nabídka (prodávám) nebo poptávka (hledám)",
+      "Inzerát: stručný, konkrétní, s kontaktem — buď něco nabízíš (chceš prodat), anebo něco sháníš (chceš koupit).",
       "Vzkaz: kdo — komu — co — kdy; čitelný a stručný",
-      "Telefonní hovor: pozdrav → představení → věc hovoru → rozloučení",
+      "Telefonní hovor: pozdrav → představení → důvod volání → rozloučení",
     ],
     explanation: e,
   }));

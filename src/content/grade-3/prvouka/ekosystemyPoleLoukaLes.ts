@@ -15,7 +15,7 @@ const POOL: PracticeTask[] = [
     correctAnswer: "Na louce",
     options: ["Na louce", "V lese", "Na poli", "V rybníku"],
     hints: [
-      "Kobylka skáče v trávě a chytáme ji v létě na louce.",
+      "Kobylka žije tam, kde je hodně vysoké trávy a divokých bylin, ne mezi stromy.",
       "Louka je prostředí s vysokou travou a bylinkami.",
     ],
     explanation:
@@ -151,7 +151,7 @@ const POOL: PracticeTask[] = [
       "Liška, která loví ježka",
     ],
     hints: [
-      "Producent = ten, kdo vyrábí potravu. Kdo si sám vyrábí jídlo?",
+      "Producent = ten, kdo si dokáže sám zajistit jídlo, aniž by musel něco lovit nebo rozkládat.",
       "Rostliny využívají sluneční světlo k výrobě potravy — fotosyntéza.",
     ],
     explanation:
