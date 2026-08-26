@@ -44,7 +44,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["První generace", "Druhá generace", "Třetí generace", "Čtvrtá generace"],
     hints: [
       "Generace se počítají od nejstarších k nejmladším.",
-      "Prarodiče jsou nejstarší v rodině — jsou tedy první.",
+      "Prarodiče jsou v rodině nejstarší — když bychom pokolení řadili podle věku od nejstaršího, na kterém místě by stáli?",
     ],
     explanation: "Prarodiče (babička a děda) patří do první (nejstarší) generace v rodině. Jsou rodiči tvých rodičů.",
   },
@@ -54,7 +54,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Druhá generace", "První generace", "Třetí generace", "Nultá generace"],
     hints: [
       "Rodiče jsou mladší než prarodiče, ale starší než ty.",
-      "Druhá generace stojí uprostřed — mezi prarodiči a dětmi.",
+      "Rodiče přišli na svět hned po prarodičích, ale dřív než ty — kolikátí jsou tedy v pořadí, když prarodiče počítáme jako první?",
     ],
     explanation: "Rodiče patří do druhé generace. Jsou mladší než prarodiče (1. generace), ale starší než jejich vlastní děti (3. generace).",
   },
@@ -203,7 +203,7 @@ const POOL_L1: PracticeTask[] = [
       "Jiné slovo pro rodokmen",
     ],
     hints: [
-      "Generace odděluje rodinu na skupiny podle věku — prarodiče, rodiče, děti.",
+      "Generace odděluje lidi v rodině do skupin podle toho, jak jsou staří — kolik takových skupin dokážeš ve své rodině najít?",
       "Prarodiče a rodiče jsou dvě různé generace.",
     ],
     explanation: "Generace je skupina lidí přibližně stejného věku v rodině. V rodině rozlišujeme tři generace: prarodiče, rodiče a děti.",
@@ -297,7 +297,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     hints: [
       "Generace jdou od nejstarších k nejmladším.",
-      "Kdo se narodil jako první — prarodiče, rodiče nebo děti?",
+      "Přemýšlej, ve kterém pořadí lidé v rodině přicházejí na svět — kdo je časem nejstarší?",
     ],
     explanation: "Správné pořadí generací od nejstarší po nejmladší je: prarodiče (1. generace) → rodiče (2. generace) → děti (3. generace). Prarodiče se narodili jako první.",
   },
@@ -534,7 +534,7 @@ const POOL_L3: PracticeTask[] = [
       "Protože ukazují jen to, jaké bylo zrovna počasí",
     ],
     hints: [
-      "Kronika a fotografie jsou doklady o tom, jak žili naši předci.",
+      "Kronika a fotografie jsou doklady o životě našich předků — k čemu je dobré mít takový doklad, když chceme něco porovnat?",
       "Bez záznamů bychom nevěděli, jak se věci v čase změnily.",
     ],
     explanation: "Kroniky a staré fotografie zaznamenávají, jak žili lidé v jednotlivých generacích. Díky nim můžeme porovnat minulost se současností a vidět, co se změnilo.",
