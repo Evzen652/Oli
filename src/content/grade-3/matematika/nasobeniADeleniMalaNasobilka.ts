@@ -26,7 +26,7 @@ function gen(level: number): PracticeTask[] {
         question: `${product} ÷ ${t} = ?`,
         correctAnswer: String(n),
         options: shuffle([String(n), String(d1), String(d2), String(n + 2 <= 10 ? n + 2 : 1)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [`Vzpomeň si na násobilku ${t}.`, `Ptáme se: ${t} × ? = ${product}. Projdi: ${t}×1, ${t}×2 … dokud nedostaneš ${product}.`],
+        hints: [`Vzpomeň si na násobilku ${t}.`, `Ptáme se: ${t} × ? = ${product}. Zkoušej násobitele od nejmenšího, dokud nenarazíš přesně na ${product}.`],
         solutionSteps: [`${product} ÷ ${t} = ?`, `${t} × ${n} = ${product}`, `Výsledek: ${n}`],
       });
     } else {
