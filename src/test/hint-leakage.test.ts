@@ -394,6 +394,20 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(false);
   });
 
+  // Past objevená při adverzariálním ověření výše: u odpovědi složené
+  // z víc slov („Vpravo nahoře") dostal distraktor „Vpravo dole" falešný
+  // kredit jen proto, že sdílí slovo „vpravo" se SPRÁVNOU odpovědí — to
+  // slovo je potřeba k odvození správné odpovědi, ne k pokrytí jiné.
+  it("slova sdílená se správnou odpovědí se do pokrytí distraktorů nepočítají", () => {
+    const r = checkHintLeakage({
+      question: "Ve kterém rohu mapy najdeš severovýchod (SV)?",
+      correct_answer: "Vpravo nahoře",
+      hints: ["Sever je nahoře, východ je vpravo — spoj obě polohy."],
+      options: ["Vpravo nahoře", "Vlevo nahoře", "Vpravo dole", "Vlevo dole"],
+    });
+    expect(r.ok).toBe(false);
+  });
+
   // Fallback: víceslovná možnost je pokrytá i bez doslovné celé fráze,
   // stačí jedno výrazné slovo — vyžadovat celou frázi doslova je nereálné
   // (žádný autor takhle nápovědu nepíše).

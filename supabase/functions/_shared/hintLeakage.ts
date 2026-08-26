@@ -159,7 +159,7 @@ function hintContainsAnswer(
  * Zmiňuje hint daný text (možnost) doslova? Bez filtrování slov z otázky —
  * pro detekci rejstříku nás zajímá holý výskyt.
  */
-function hintMentions(normHint: string, option: string): boolean {
+function hintMentions(normHint: string, option: string, correctWords: ReadonlySet<string>): boolean {
   const norm = normalize(option);
   if (norm.length < 2) return false;
 
@@ -179,7 +179,12 @@ function hintMentions(normHint: string, option: string): boolean {
   // jednoznačné) slovo z možnosti — typicky u možností složených z pojmů,
   // které hint definuje jinde („ani rovnoběžky, ani kolmice" je pokryté,
   // když hint zvlášť definuje „rovnoběžky" i „kolmice").
-  const words = norm.split(/\s+/).filter((w) => w.length >= 5);
+  //
+  // Slova sdílená se SPRÁVNOU odpovědí se ale nepočítají — jinak u odpovědí
+  // složených z více slov („Vpravo nahoře") dostane distraktor „Vpravo dole"
+  // falešný kredit jen proto, že sdílí „vpravo" se správnou odpovědí. Ta
+  // slova jsou potřeba k odvození SPRÁVNÉ odpovědi, ne k pokrytí JINÉ.
+  const words = norm.split(/\s+/).filter((w) => w.length >= 5 && !correctWords.has(w));
   return words.some((w) => {
     const escW = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     return new RegExp(`(^|[\\s(,;])${escW}`).test(normHint);
@@ -244,8 +249,9 @@ function hintsEnumerateOptions(
   const normHints = hints
     .filter((h) => typeof h === "string" && h.trim())
     .map((h) => normalize(h));
+  const correctWords = new Set(normCorrect.split(/\s+/));
 
-  const mentioned = others.filter((o) => normHints.some((h) => hintMentions(h, o))).length;
+  const mentioned = others.filter((o) => normHints.some((h) => hintMentions(h, o, correctWords))).length;
   // Práh 2 (u binárních možností všechny): jeden zmíněný distraktor ještě
   // rejstřík nedělá — viz „Plzeň"/„Dole" v komentáři výše. Dva a víc už ano;
   // úplný výčet vyžadovat nejde, protože mezi možnostmi bývá vymyšlený

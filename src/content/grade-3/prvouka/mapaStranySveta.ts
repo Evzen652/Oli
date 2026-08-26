@@ -42,7 +42,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Dole", "Nahoře", "Vlevo", "Vpravo"],
     hints: [
       "Jih je opak severu. Sever je nahoře, jih je tedy...",
-      "Na mapě je jih vždy dole.",
+      "Jih je přesně na opačném okraji mapy než sever.",
     ],
     explanation:
       "Na standardní mapě je jih dole. Je to přesně naproti severu, který je nahoře.",
@@ -52,8 +52,8 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Vpravo",
     options: ["Vpravo", "Vlevo", "Nahoře", "Dole"],
     hints: [
-      "Pomůcka: 'Sever Nahoře, Východ Vpravo' — SN, VV.",
-      "Slunce vychází na východě — vychází zprava na mapě.",
+      "Slunce ráno vychází na východě.",
+      "Sever je nahoře. Pokud se díváš na mapu a slunce ráno vychází napravo od tebe... kde na mapě je východ?",
     ],
     explanation:
       "Na mapě je východ vpravo. Slunce vychází na východě — proto se někdy říká 'východ slunce'. Na mapě ho najdeme na pravé straně.",
@@ -64,7 +64,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Vlevo", "Vpravo", "Dole", "Nahoře"],
     hints: [
       "Západ je naproti východu. Východ je vpravo, západ je tedy...",
-      "Slunce zapadá na západě — na mapě vlevo.",
+      "Slunce večer zapadá na západě.",
     ],
     explanation:
       "Na mapě je západ vlevo. Slunce každý večer zapadá na západě, který na mapách najdeme na levé straně.",
@@ -80,7 +80,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Kompas nás naviguje — ručička vždy ukazuje jedním pevným směrem.",
-      "Magnetická ručička reaguje na zemské magnetické pole a míří na sever.",
+      "Magnetická ručička reaguje na zemské magnetické pole — ať kompasem otočíš jakkoli, vrátí se pořád stejným směrem. Zkus si vzpomenout, kam ukazují magnety na Zemi.",
     ],
     explanation:
       "Magnetická ručička kompasu vždy ukazuje na magnetický sever. Využívá zemské magnetické pole. Proto se kompas používá k orientaci v přírodě.",
@@ -182,7 +182,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Měřítko se týká velikosti, ne významu značek.",
-      "Číslo za dvojtečkou v měřítku říká, kolikrát je mapa zmenšená.",
+      "Měřítko 1:100 000 znamená, že 1 cm na mapě odpovídá 100 000 cm ve skutečnosti — to je informace o velikosti, ne o významu značek.",
     ],
     explanation:
       "Měřítko mapy prozradí, o kolik je mapa zmenšená oproti skutečnosti. Co znamenají značky a barvy, to naopak řekne legenda.",
@@ -211,8 +211,8 @@ const POOL_L2: PracticeTask[] = [
       "Světová strana pod jihem",
     ],
     hints: [
-      "Severovýchod je mezi severem a východem — zkombinuj první písmena.",
-      "SV = Sever + Východ = strana mezi nimi, nahoře vpravo na mapě.",
+      "SV vzniklo spojením dvou písmen. Kterých dvou světových stran jsou to první písmena?",
+      "SV = Sever + Východ. Najdeš ho v pravém horním rohu mapy.",
     ],
     explanation:
       "Severovýchod (SV) je mezilehlá světová strana ležící přesně mezi severem a východem. Na mapě ji najdeme v pravém horním rohu.",
@@ -270,7 +270,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Vpravo nahoře",
     options: ["Vpravo nahoře", "Vlevo nahoře", "Vpravo dole", "Vlevo dole"],
     hints: [
-      "Sever je nahoře, východ je vpravo — spoj obě polohy.",
+      "Kde je na mapě sever a kde východ? Spoj obě polohy dohromady a najdeš severovýchod.",
       "Hledej roh, kde se potkává horní a pravý okraj mapy.",
     ],
     explanation:
@@ -281,7 +281,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Vlevo dole",
     options: ["Vlevo dole", "Vpravo dole", "Vlevo nahoře", "Vpravo nahoře"],
     hints: [
-      "Jih je dole, západ je vlevo — spoj obě polohy.",
+      "Kde je na mapě jih a kde západ? Spoj obě polohy dohromady a najdeš jihozápad.",
       "Hledej roh, kde se potkává dolní a levý okraj mapy.",
     ],
     explanation:
@@ -292,7 +292,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Vpravo dole",
     options: ["Vpravo dole", "Vlevo dole", "Vpravo nahoře", "Vlevo nahoře"],
     hints: [
-      "Jih je dole, východ je vpravo — spoj obě polohy.",
+      "Kde je na mapě jih a kde východ? Spoj obě polohy dohromady a najdeš jihovýchod.",
       "Hledej roh, kde se potkává dolní a pravý okraj mapy.",
     ],
     explanation:
@@ -303,7 +303,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Vlevo nahoře",
     options: ["Vlevo nahoře", "Vpravo nahoře", "Vlevo dole", "Vpravo dole"],
     hints: [
-      "Sever je nahoře, západ je vlevo — spoj obě polohy.",
+      "Kde je na mapě sever a kde západ? Spoj obě polohy dohromady a najdeš severozápad.",
       "Hledej roh, kde se potkává horní a levý okraj mapy.",
     ],
     explanation:
@@ -353,7 +353,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     hints: [
       "Ulice a cesta ke škole jsou malé území.",
-      "Plán zobrazuje malou plochu podrobně, mapa velkou plochu.",
+      "Plán ti ukáže třeba jednu ulici do detailu, mapa celý kraj najednou.",
     ],
     explanation:
       "Pro popis cesty v rámci jedné ulice je vhodnější plán — zobrazuje malou plochu podrobně. Mapa státu by ulice ani nezobrazila.",
@@ -385,7 +385,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     hints: [
       "Na fyzické mapě barvy ukazují výšku terénu. Zelená = nízko nad mořem.",
-      "Nížiny bývají zelené — luhy, louky, pole.",
+      "Louky, pole a jiná nízko položená území bývají na fyzické mapě zelená.",
     ],
     explanation:
       "Na fyzické mapě zelená barva označuje nížiny — oblasti ležící nízko nad mořem. Čím vyšší terén, tím přechází barva do žluté, hnědé a nakonec fialové.",
@@ -461,7 +461,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Jihozápad", "Severozápad", "Jihovýchod", "Severovýchod"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: sever se změní na jih A východ na západ.",
-      "Přesný opak severovýchodu (SV) je jihozápad (JZ) — leží v protilehlém rohu mapy.",
+      "Hledej roh mapy, který leží úhlopříčně naproti severovýchodu — přes střed mapy na druhou stranu.",
     ],
     explanation:
       "Otočka o 180° obrátí obě části mezilehlého směru najednou: sever ↔ jih a východ ↔ západ. Opakem severovýchodu (SV) je proto jihozápad (JZ).",
@@ -472,7 +472,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Severovýchod", "Severozápad", "Jihovýchod", "Jihozápad"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: jih se změní na sever A západ na východ.",
-      "Přesný opak jihozápadu (JZ) je severovýchod (SV) — leží v protilehlém rohu mapy.",
+      "Hledej roh mapy, který leží úhlopříčně naproti jihozápadu — přes střed mapy na druhou stranu.",
     ],
     explanation:
       "Otočka o 180° obrátí obě části mezilehlého směru najednou: jih ↔ sever a západ ↔ východ. Opakem jihozápadu (JZ) je proto severovýchod (SV).",
@@ -483,7 +483,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Jihovýchod", "Severovýchod", "Jihozápad", "Severozápad"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: sever se změní na jih A západ na východ.",
-      "Přesný opak severozápadu (SZ) je jihovýchod (JV) — leží v protilehlém rohu mapy.",
+      "Hledej roh mapy, který leží úhlopříčně naproti severozápadu — přes střed mapy na druhou stranu.",
     ],
     explanation:
       "Otočka o 180° obrátí obě části mezilehlého směru najednou: sever ↔ jih a západ ↔ východ. Opakem severozápadu (SZ) je proto jihovýchod (JV).",
@@ -494,7 +494,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Severozápad", "Jihozápad", "Severovýchod", "Jihovýchod"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: jih se změní na sever A východ na západ.",
-      "Přesný opak jihovýchodu (JV) je severozápad (SZ) — leží v protilehlém rohu mapy.",
+      "Hledej roh mapy, který leží úhlopříčně naproti jihovýchodu — přes střed mapy na druhou stranu.",
     ],
     explanation:
       "Otočka o 180° obrátí obě části mezilehlého směru najednou: jih ↔ sever a východ ↔ západ. Opakem jihovýchodu (JV) je proto severozápad (SZ).",
@@ -506,7 +506,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Na sever", "Na jih", "Na východ", "Na západ"],
     hints: [
       "Hnědá barva na fyzické mapě znamená horu nebo vrchovinu.",
-      "Hora je nakreslená v horní části mapy — a nahoře na mapě je sever.",
+      "Hora je nakreslená v horní části mapy. Vzpomeň si, který světový směr je na mapě vždy nahoře.",
     ],
     explanation:
       "Hnědá barva prozradí, že jde o horu. Poloha v horní části mapy prozradí směr — nahoře na mapě je vždy sever, takže hora leží na sever od středu mapy.",
