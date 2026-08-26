@@ -36,25 +36,25 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký typ textu je báseň?",
     correctAnswer: "umělecký",
     options: ["věcný", "umělecký", "odborný", "záleží na básni"],
-    hints: ["Báseň = literatura = umělecký text."],
+    hints: ["Báseň pracuje s obrazy, rytmem a citem — chce tě to hlavně informovat, nebo v tobě vyvolat prožitek?"],
   },
   {
     question: "Jaký typ textu je návod k pračce?",
     correctAnswer: "věcný – neumělecký",
     options: ["umělecký", "poetický", "věcný – neumělecký", "záleží na výrobci"],
-    hints: ["Návod = informace a instrukce = věcný text."],
+    hints: ["Návod k pračce tě má naučit, jak něco udělat — jde mu o přesnost instrukcí, nebo o krásu jazyka?"],
   },
   {
     question: "Jaký typ textu je encyklopedie?",
     correctAnswer: "věcný – odborný",
     options: ["umělecký", "poetický", "věcný – odborný", "záleží na tématu"],
-    hints: ["Encyklopedie = fakta, definice, odborné informace = věcný text."],
+    hints: ["Encyklopedie ti má podat ověřená fakta a definice — chce tě to pobavit příběhem, nebo poučit informací?"],
   },
   {
     question: "Jaký typ textu je pohádka?",
     correctAnswer: "umělecký",
     options: ["věcný", "odborný", "umělecký", "záleží na pohádce"],
-    hints: ["Pohádka = příběh s fantazií = umělecký text."],
+    hints: ["Pohádka vypráví smyšlený příběh s kouzly a fantazií — má tě to informovat, nebo vtáhnout do prožitku?"],
   },
   {
     question: "Jaký typ textu je novinový článek o fotbale?",
@@ -72,7 +72,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký typ textu je jízdní řád autobusu?",
     correctAnswer: "věcný – funkční",
     options: ["umělecký", "věcný – funkční", "poetický", "záleží na dopravci"],
-    hints: ["Jízdní řád = informace pro cestující = věcný funkční text."],
+    hints: ["Jízdní řád jen sděluje časy odjezdů — chce tě to pobavit příběhem, nebo tě to jen informuje?"],
   },
   {
     question: "Co je cílem uměleckého textu?",
@@ -83,7 +83,7 @@ const POOL_L1: PracticeTask[] = [
       "instrukce k provedení",
       "záleží na autorovi",
     ],
-    hints: ["Umělecký = krásy, pocity, příběhy = estetický zážitek."],
+    hints: ["Umělecký text nechce jen přesně informovat ani dávat návod — co v tobě tedy chce vyvolat, když čteš báseň nebo příběh?"],
   },
   {
     question: "Co je cílem věcného textu?",
@@ -100,7 +100,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký typ textu je učebnice matematiky?",
     correctAnswer: "věcný – odborný",
     options: ["umělecký", "poetický", "věcný – odborný", "záleží na nakladatelství"],
-    hints: ["Učebnice = fakta a výuka = věcný odborný text."],
+    hints: ["Učebnice má žáka něco naučit pomocí faktů a přesných pojmů — jde jí o krásu jazyka, nebo o přesnost?"],
   },
   {
     question: "Jak se liší styl uměleckého a věcného textu?",
@@ -202,7 +202,7 @@ const POOL_L2: PracticeTask[] = [
       "věcný má vždy čísla",
       "záleží jen na délce",
     ],
-    hints: ["Obrazný jazyk, emoce, příběh = umělecký. Fakta, přesnost = věcný."],
+    hints: ["Zkus najít v textu metafory nebo přirovnání a všimni si, jestli v něm převažují city, nebo čísla a přesná fakta."],
   },
   {
     question: "Co je cestopis?",
@@ -224,7 +224,7 @@ const POOL_L2: PracticeTask[] = [
       "poetický",
       "záleží na kuchyni",
     ],
-    hints: ["Recept = instrukce k vaření = věcný funkční text."],
+    hints: ["Recept ti krok za krokem říká, co udělat — jde mu o přesný postup, nebo o krásu jazyka?"],
   },
   {
     question: "Co je memoáry?",
@@ -301,7 +301,7 @@ const POOL_L2: PracticeTask[] = [
       "autobiografie je vždy kratší",
       "záleží na osobě",
     ],
-    hints: ["Biografie = jiný author o jiné osobě. Autobiografie = sám o sobě."],
+    hints: ["Rozlož si slovo 'auto-' (sám) — kdo v každém z těch dvou pojmů píše a o kom?"],
   },
 ];
 
