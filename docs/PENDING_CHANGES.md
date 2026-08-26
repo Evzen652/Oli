@@ -54,9 +54,9 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 > Priorita z bodu (c) výše — `hint_leak` škodí dítěti přímo (nápověda prozrazuje výsledek). Uživatel schválil postup "ano".
 
 - ✅ **6 zobecnění detektoru** (`supabase/functions/_shared/hintLeakage.ts`) kryto 40 regresními testy (`src/test/hint-leakage.test.ts`, z 26): rejstřík = enumerace všech kandidátů NENÍ leak (práh ≥2 zmíněných možností), word-fallback (≥5 znaků, vyloučená slova z klíče), fallback na řadové číslovky, `"pojem ="` jako silný signál definice.
-- ✅ **31 témat opraveno** (`hints?: string[]` override v `gen()`, nebo přímá úprava `hints[]`): viz plný seznam v `PROJECT_STATUS.md` §6 (nejnověji přidané: `dopisUredniZadostTiskopisyPrihlaskaDotaznik`, `popisSubjektivneZabarvenyPopisPracovnihoPostupu`, `posuzovaniUplnostiSdeleni`).
+- ✅ **33 témat opraveno** (`hints?: string[]` override v `gen()`, nebo přímá úprava `hints[]`): viz plný seznam v `PROJECT_STATUS.md` §6 (nejnověji přidané: `shodaPrisudkuSPodmetem`, `slovaSpisovnaANespisovna`).
 - ✅ **7. zobecnění detektoru**: „Krok N:" pořadí kroku už nekoliduje s číselnou odpovědí (viz `PROJECT_STATUS.md` §6) — samo o sobě −23 nálezů napříč korpusem.
-- 📊 **Postup:** `hint_leak` 804 → **174** (−78 %), témat 91 → **64** (číslo kolísá run-to-run kvůli shuffle v pool generátorech — každé opravené téma ověřeno izolovaně na 0). Zbývá manuální práce téma po tématu dle žebříčku v `PROJECT_STATUS.md` §6.
+- 📊 **Postup:** `hint_leak` 804 → **154** (−81 %), témat 91 → **62** (číslo kolísá run-to-run kvůli shuffle v pool generátorech — každé opravené téma ověřeno izolovaně na 0). Zbývá manuální práce téma po tématu dle žebříčku v `PROJECT_STATUS.md` §6.
 - ⏭️ **Pokračuje** — po dokončení `hint_leak` následuje vlna validace odpovědi (529 problémů), pak tvrdý gate pro nová/změněná témata.
 
 ## ✅ Technický dluh: reálný bug ve skóre + typecheck baseline 13 → 0 (2026-08-25)
