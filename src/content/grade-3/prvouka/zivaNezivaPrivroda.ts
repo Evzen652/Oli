@@ -28,7 +28,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Strom", "Kámen", "Vzduch", "Voda"],
     hints: [
       "Živé věci rostou, dýchají a rozmnožují se.",
-      "Strom roste, přijímá živiny a rozmnožuje se semeny.",
+      "Tato rostlina roste, přijímá živiny a rozmnožuje se semeny.",
     ],
     explanation:
       "Strom patří do živé přírody, protože dýchá, roste, přijímá živiny a rozmnožuje se. Kámen, vzduch a voda jsou neživá příroda — nesplňují znaky živých organizmů.",
@@ -39,7 +39,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Kámen", "Housenka", "Houba", "Tráva"],
     hints: [
       "Neživé věci neroste, nedýchají a nerozmnožují se.",
-      "Kámen je hornina — nevzniká z živých organizmů, nepohybuje se samo.",
+      "Je to tvrdý kus horniny — nevzniká z živých organizmů, nepohybuje se samo.",
     ],
     explanation:
       "Kámen patří do neživé přírody. Sám od sebe neroste, nedýchá ani se nerozmnožuje. Housenka, houba i tráva jsou živé organismy.",
@@ -61,7 +61,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Pes", "Písek", "Mrak", "Sníh"],
     hints: [
       "Živý organismus dýchá, přijímá potravu a rozmnožuje se.",
-      "Pes je zvíře — dýchá, roste a má štěňata.",
+      "Je to zvíře, které dýchá, roste a má mláďata.",
     ],
     explanation:
       "Pes patří do živé přírody — dýchá, přijímá potravu, roste a rozmnožuje se. Písek, mrak a sníh jsou neživá příroda.",
@@ -72,7 +72,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Písek", "Motýl", "Bříza", "Žížala"],
     hints: [
       "Neživá věc neroste, nedýchá a nerozmnožuje se.",
-      "Písek jsou drobná zrnka horniny.",
+      "Jsou to drobná zrnka horniny.",
     ],
     explanation:
       "Písek patří do neživé přírody — je to drobná rozdrcená hornina, sám neroste ani se nerozmnožuje. Motýl, bříza i žížala jsou živé organismy.",
@@ -83,7 +83,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Kočka", "Hora", "Řeka", "Oblak"],
     hints: [
       "Živočich dýchá, roste a rozmnožuje se.",
-      "Kočka má koťata, dýchá a přijímá potravu.",
+      "Toto zvíře má mláďata, dýchá a přijímá potravu.",
     ],
     explanation:
       "Kočka je živočich — dýchá, roste, přijímá potravu a rozmnožuje se. Hora, řeka a oblak patří do neživé přírody.",
@@ -94,7 +94,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Sníh", "Ryba", "Strom", "Brouk"],
     hints: [
       "Neživá věc nedýchá, neroste ani se nerozmnožuje.",
-      "Sníh je zmrzlá voda.",
+      "Je to zmrzlá voda.",
     ],
     explanation:
       "Sníh patří do neživé přírody — je to zmrzlá voda, sama o sobě nedýchá ani se nerozmnožuje. Ryba, strom a brouk jsou živé organismy.",
@@ -132,7 +132,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Oblak", "Včela", "Dub", "Ježek"],
     hints: [
       "Neživá věc nedýchá, neroste ani se nerozmnožuje.",
-      "Oblak je shluk kapiček vody nebo krystalků ledu ve vzduchu.",
+      "Je to shluk kapiček vody nebo krystalků ledu vysoko na obloze.",
     ],
     explanation:
       "Oblak patří do neživé přírody — je to shluk vodních kapiček nebo ledových krystalků, sám nedýchá ani se nerozmnožuje. Včela, dub a ježek jsou živé organismy.",
@@ -154,7 +154,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Skála", "Liška", "Muchomůrka", "Kopřiva"],
     hints: [
       "Neživá věc neroste, nedýchá ani se nerozmnožuje.",
-      "Skála je velký kus horniny.",
+      "Je to velký, pevně usazený kus horniny.",
     ],
     explanation:
       "Skála patří do neživé přírody — je to velký kus horniny, sama neroste ani se nerozmnožuje. Liška, muchomůrka i kopřiva jsou živé organismy.",
@@ -221,7 +221,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     hints: [
       "Potravní řetězec začíná organizmem, který si sám vyrábí potravu.",
-      "Rostliny fotosyntézou vyrábějí potravu — ostatní je konzumují.",
+      "Ten organismus si fotosyntézou vyrábí potravu sám — ostatní na něm závisí.",
     ],
     explanation:
       "Základ potravního řetězce tvoří rostliny, protože samy si vyrábějí potravu fotosyntézou. Ostatní organismy — býložravci, masožravci — závisí na rostlinách přímo nebo nepřímo.",
@@ -317,7 +317,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     hints: [
       "Fotosyntéza potřebuje světlo, ale i další dvě látky.",
-      "Rostlina bere vodu kořeny a oxid uhličitý ze vzduchu.",
+      "Jednu z nich rostlina nasává kořeny ze země, druhou přijímá listy ze vzduchu.",
     ],
     explanation:
       "K fotosyntéze rostlina potřebuje světlo, vodu (z půdy) a oxid uhličitý (ze vzduchu). Z těchto tří věcí vyrobí cukr jako potravu a jako vedlejší produkt vzniká kyslík.",
@@ -402,7 +402,7 @@ const POOL_L3: PracticeTask[] = [
       "Protože má stejnou barvu jako listy stromu",
     ],
     hints: [
-      "Semeno nesplňuje najednou všechny znaky života — ale proč to nevadí?",
+      "Semeno teď zrovna nedělá nic z toho, co dělá živý tvor — ale proč to není důvod považovat ho za neživé?",
       "Jde o dočasný klidový (dormantní) stav, ne o to, že by semeno bylo neživé.",
     ],
     explanation:
