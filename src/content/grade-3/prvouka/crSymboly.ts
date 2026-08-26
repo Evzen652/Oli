@@ -87,7 +87,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Prezident", "Premiér", "Starosta Prahy", "Předseda Senátu"],
     hints: [
       "Hlava státu je nejvyšší ústavní činitel — volí ho občané.",
-      "Prezident sídlí na Pražském hradě.",
+      "Tato hlava státu sídlí na Pražském hradě.",
     ],
     explanation:
       "Hlavou státu v České republice je prezident. Sídlí na Pražském hradě, je volen občany a zastupuje Českou republiku navenek. Jmenuje například vládu nebo podepisuje zákony.",
@@ -103,7 +103,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     hints: [
       "Parlament má dvě části — jednu s poslanci a druhou se senátory.",
-      "Dolní komora se jmenuje Poslanecká sněmovna, horní komora je Senát.",
+      "Odvoď názvy komor od slov 'poslanec' a 'senátor' — jedna dostala navíc i slovo 'sněmovna'.",
     ],
     explanation:
       "Český parlament se skládá ze dvou komor: Poslanecké sněmovny (200 poslanců) a Senátu (81 senátorů). Obě komory schvalují zákony, ale mají různé pravomoci a různé délky volebního období.",
@@ -129,7 +129,7 @@ const POOL_L1: PracticeTask[] = [
       "Nový rok",
     ],
     hints: [
-      "Je to den, kdy v roce 1918 vznikl nový stát na mapě Evropy.",
+      "Je to den, kdy roku 1918 vznikl nový stát na mapě Evropy.",
       "Tehdy přestal existovat Rakousko-Uherský stát a vzniklo Československo.",
     ],
     explanation:
@@ -240,7 +240,7 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Rakousko",
     options: ["Rakousko", "Slovensko", "Polsko", "Maďarsko"],
     hints: [
-      "Jde o stát, který byl dříve součástí Rakousko-Uherské říše.",
+      "Jde o stát, s nímž jsme byli dříve součástí jedné habsburské monarchie.",
       "Hlavní město tohoto souseda je Vídeň.",
     ],
     explanation:

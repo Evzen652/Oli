@@ -9,18 +9,45 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
-  { q: "Co patří do záhlaví dopisu?", a: "Místo a datum (vpravo nahoře)", opts: ["Místo a datum (vpravo nahoře)", "Oslovení adresáta", "Podpis odesílatele", "Text dopisu"], e: "Záhlaví je úplně nahoře a říká, odkud a kdy dopis píšeme — proto do něj patří místo a datum. Oslovení, podpis i samotný text dopisu jsou jiné části, které přijdou až pod záhlavím." },
+  {
+    q: "Co patří do záhlaví dopisu?",
+    a: "Místo a datum (vpravo nahoře)",
+    opts: ["Místo a datum (vpravo nahoře)", "Oslovení adresáta", "Podpis odesílatele", "Text dopisu"],
+    e: "Záhlaví je úplně nahoře a říká, odkud a kdy dopis píšeme — proto do něj patří místo a datum. Oslovení, podpis i samotný text dopisu jsou jiné části, které přijdou až pod záhlavím.",
+    hints: [
+      "Záhlaví říká čtenáři, odkud a kdy dopis přišel — přemýšlej, jaké dva údaje k tomu potřebuješ.",
+      "Tyto dva údaje se obvykle píšou v jednom z horních rohů stránky.",
+    ],
+  },
   { q: "Jak oslovíme přítele v dopisu?", a: "Milý Petře,", opts: ["Milý Petře,", "Vážený pane Petře,", "Dobrý den Petře,", "Ahoj Petře:"], e: "Kamarádovi tykáme a oslovujeme ho vřele, proto použijeme 'Milý Petře,' s čárkou na konci. 'Vážený pane' je příliš formální pro kamaráda a za oslovením se píše čárka, ne dvojtečka." },
-  { q: "Kde se v dopisu nachází záhlaví?", a: "vpravo nahoře", opts: ["vpravo nahoře", "vlevo nahoře", "uprostřed", "dole pod podpisem"], e: "Záhlaví s místem a datem se tradičně píše vpravo nahoře, ještě nad oslovení. Dole pod podpisem ani uprostřed dopisu by ho čtenář nehledal." },
+  {
+    q: "Kde se v dopisu nachází záhlaví?",
+    a: "vpravo nahoře",
+    opts: ["vpravo nahoře", "vlevo nahoře", "uprostřed", "dole pod podpisem"],
+    e: "Záhlaví s místem a datem se tradičně píše vpravo nahoře, ještě nad oslovení. Dole pod podpisem ani uprostřed dopisu by ho čtenář nehledal.",
+    hints: [
+      "Záhlaví je úplně na začátku dopisu — hledej ho v jednom z horních rohů stránky.",
+      "Přemýšlej, na kterou stranu obvykle píšeme datum, když si vzpomeneš na dopisy, které jsi viděl.",
+    ],
+  },
   { q: "Co píšeme v závěru dopisu?", a: "rozloučení a podpis (S pozdravem, Tvůj...)", opts: ["rozloučení a podpis (S pozdravem, Tvůj...)", "datum a místo", "oslovení adresáta", "téma dopisu"], e: "Závěr dopisu slouží k rozloučení a podpisu, abychom poznali, kdo dopis poslal. Datum a místo patří do záhlaví na začátku a oslovení přichází hned za záhlaví, ne na konec." },
   { q: "V soukromém dopise blízkým:", a: "tykáme", opts: ["tykáme", "vykáme s velkým V", "vykáme s malým v", "píšeme jen s velkým V"], e: "Lidem, které dobře známe a máme rádi, v dopise tykáme — píšeme jim jako v běžném hovoru. Vykání s velkým V si necháváme pro formální dopisy úřadům nebo lidem, které neznáme." },
   { q: "Ve formálním dopise (úřadu, řediteli):", a: "vykáme a píšeme 'Vy' s velkým V", opts: ["vykáme a píšeme 'Vy' s velkým V", "tykáme", "nemusíme oslovovat", "píšeme 'vy' s malým v"], e: "Ve formálním dopise vyjadřujeme úctu, proto vykáme a zájmeno 'Vy' píšeme s velkým V. Tykat řediteli by bylo nezdvořilé a malé 'vy' se ve zdvořilém dopise nehodí." },
   { q: "Jak se píše oslovení v dopisu?", a: "Milá Evo, / Vážený pane řediteli,", opts: ["Milá Evo, / Vážený pane řediteli,", "Milá Evo: / Vážený pane řediteli:", "Milá Evo. / Vážený pane řediteli.", "Milá Evo! / Vážený pane řediteli!"], e: "Za oslovením v dopise se píše čárka a text pak pokračuje na novém řádku malým písmenem. Tečka, dvojtečka ani vykřičník za oslovení nepatří." },
   { q: "Jaký interpunkční znaménko se píše za oslovením v dopisu?", a: "čárka (,)", opts: ["čárka (,)", "tečka (.)", "vykřičník (!)", "dvojtečka (:)"], e: "Za oslovením v dopise se podle pravidel píše čárka, protože věta tu ještě nekončí — pokračuje dál. Tečka by oslovení ukončila a vykřičník nebo dvojtečka sem nepatří." },
-  { q: "Kolik hlavních částí má dopis?", a: "4 (záhlaví, oslovení, text, závěr+podpis)", opts: ["4 (záhlaví, oslovení, text, závěr+podpis)", "2", "3", "5"], e: "Dopis má čtyři hlavní části, které jdou za sebou: záhlaví, oslovení, text a závěr s podpisem. Když některou z nich vynecháme, dopis bude neúplný." },
+  {
+    q: "Kolik hlavních částí má dopis?",
+    a: "4 (záhlaví, oslovení, text, závěr+podpis)",
+    opts: ["4 (záhlaví, oslovení, text, závěr+podpis)", "2", "3", "5"],
+    e: "Dopis má čtyři hlavní části, které jdou za sebou: záhlaví, oslovení, text a závěr s podpisem. Když některou z nich vynecháme, dopis bude neúplný.",
+    hints: [
+      "Dopis má několik oddělených částí, které jdou vždy ve stejném pořadí od začátku dopisu až po rozloučení.",
+      "Spočítej, kolik různých úseků textu dopis obvykle má – od údaje o místě a čase až po podpis na konci.",
+    ],
+  },
   { q: "Co tvoří první část textu dopisu?", a: "Pozdrav nebo věc, o které chceme psát", opts: ["Pozdrav nebo věc, o které chceme psát", "Záhlaví s datem", "Oslovení adresáta", "Rozloučení a podpis"], e: "Vlastní text dopisu obvykle začíná pozdravem nebo tím, proč píšeme. Záhlaví, oslovení i podpis jsou samostatné části dopisu, ne začátek textu." },
   { q: "Adresa příjemce se na obálce píše:", a: "doprostřed nebo vpravo", opts: ["doprostřed nebo vpravo", "vlevo nahoře", "na zadní stranu", "pod poštovní zásilkou"], e: "Adresa toho, komu dopis posíláme, patří na přední stranu obálky doprostřed nebo vpravo, aby ji pošta dobře přečetla. Vlevo nahoře se píše adresa odesílatele." },
   { q: "Co obsahuje adresa na obálce?", a: "jméno, ulici, město, PSČ", opts: ["jméno, ulici, město, PSČ", "jen jméno a město", "jen PSČ a jméno", "jen telefon a e-mail"], e: "Aby dopis došel správně, musí adresa obsahovat jméno, ulici s číslem, město a PSČ. Jen jméno a město by nestačilo a telefon ani e-mail pošta k doručení nepoužívá." },
@@ -36,7 +63,16 @@ const POOL_L2: QA[] = [
   { q: "Seřaď části dopisu: 1) Text, 2) Záhlaví, 3) Podpis, 4) Oslovení", a: "2 → 4 → 1 → 3", opts: ["2 → 4 → 1 → 3", "1 → 2 → 3 → 4", "4 → 2 → 1 → 3", "2 → 1 → 4 → 3"], e: "Dopis jde odshora dolů: nejdřív záhlaví (2), pak oslovení (4), poté text (1) a nakonec podpis (3). Proto je správné pořadí 2 → 4 → 1 → 3." },
   { q: "Který text odpovídá správnému záhlaví soukromého dopisu?", a: "Praha, 15. března 2025", opts: ["Praha, 15. března 2025", "Milý Petře,", "S pozdravem Jana", "Chci ti napsat o výletě"], e: "Záhlaví obsahuje místo a datum, proto sem patří 'Praha, 15. března 2025'. 'Milý Petře,' je oslovení, 'S pozdravem Jana' je závěr a věta o výletě je už součást textu." },
   { q: "Příjemcem dopisu je babička. Jak ji oslovíš?", a: "Milá babičko,", opts: ["Milá babičko,", "Vážená paní babičko,", "Dobrý den babičko:", "Ahoj babičko!"], e: "Babička je blízká osoba, proto ji oslovíme vřele 'Milá babičko,' s čárkou. 'Vážená paní' je příliš formální a za oslovení nepatří dvojtečka ani vykřičník." },
-  { q: "Co se NESMÍ vynechat v soukromém dopisu?", a: "záhlaví, oslovení, podpis", opts: ["záhlaví, oslovení, podpis", "jen text", "jen podpis", "datum a podpis"], e: "Aby byl dopis úplný, musí mít všechny své části — záhlaví, oslovení i podpis. Kdybychom vynechali jen jednu z nich, dopis by byl neúplný, proto nestačí hlídat třeba jen podpis." },
+  {
+    q: "Co se NESMÍ vynechat v soukromém dopisu?",
+    a: "záhlaví, oslovení, podpis",
+    opts: ["záhlaví, oslovení, podpis", "jen text", "jen podpis", "datum a podpis"],
+    e: "Aby byl dopis úplný, musí mít všechny své části — záhlaví, oslovení i podpis. Kdybychom vynechali jen jednu z nich, dopis by byl neúplný, proto nestačí hlídat třeba jen podpis.",
+    hints: [
+      "Přemýšlej, které části dopisu jsou tak důležité, že bez nich čtenář nepozná, od koho, komu a kdy dopis je.",
+      "Vynechání i jediné z těchto klíčových částí by dopis udělalo neúplným — je jich víc než jedna.",
+    ],
+  },
   { q: "Jak se správně loučíš v soukromém dopisu kamarádovi?", a: "Tvůj / Tvoje + jméno nebo 'S pozdravem Honza'", opts: ["Tvůj / Tvoje + jméno nebo 'S pozdravem Honza'", "S úctou a pozdravem", "Vyhrazuji si právo neodpovídat", "Yours sincerely"], e: "Kamarádovi se loučíme osobně a vřele, třeba 'Tvůj Honza' nebo 'S pozdravem Honza'. 'S úctou' patří do formálního dopisu a cizojazyčné rozloučení do českého dopisu nepatří." },
   { q: "Proč se vykání v dopise řediteli píše s velkým V?", a: "znak úcty — velké 'Vy' je zdvořilejší než 'vy'", opts: ["znak úcty — velké 'Vy' je zdvořilejší než 'vy'", "gramatické pravidlo pro všechna zájmena", "protože je to začátek věty", "protože je to vlastní jméno"], e: "Velké V u 'Vy' v dopise je projev úcty k tomu, komu píšeme. Není to pravidlo pro všechna zájmena ani to nesouvisí se začátkem věty nebo vlastním jménem." },
   { q: "Kamarád ti napsal dopis z tábora. Jak začneš odpověď?", a: "Milý Tome, / Ahoj Tome,", opts: ["Milý Tome, / Ahoj Tome,", "Vážený příteli,", "Dobrý den, pane Tome,", "Zdravím Vás,"], e: "Kamarádovi odpovíme přátelsky a tykáme mu, proto 'Milý Tome,' nebo 'Ahoj Tome,'. 'Vážený příteli' i 'Zdravím Vás' jsou příliš formální oslovení, která ke kamarádovi nepatří." },
@@ -70,11 +106,11 @@ const POOL_L3: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Dopis má 4 části: záhlaví, oslovení, text, závěr+podpis",
       "Záhlaví = místo a datum (vpravo nahoře)",
       "Soukromý dopis = tykáme; formální dopis = vykáme s velkým V",

@@ -107,19 +107,19 @@ const POOL_L2: PracticeTask[] = [
     question: "Tvoř rozkazovací způsob: 'číst' (ty) →",
     correctAnswer: "čti",
     options: ["čteš", "čti", "čtěte", "čti bys"],
-    hints: ["Rozkazovací způsob 2. os. j. č.: čti."],
+    hints: ["Rozkazovací způsob pro 'ty' vznikne ze základu slovesa v přítomném čase, často jen s krátkou koncovkou (srovnej: píšeš → piš!)."],
   },
   {
     question: "Tvoř rozkazovací způsob: 'číst' (vy) →",
     correctAnswer: "čtěte",
     options: ["čtěte", "čtete", "čtěti", "čti"],
-    hints: ["Rozkazovací způsob 2. os. mn. č.: čtěte."],
+    hints: ["Rozkazovací způsob pro 'vy' se tvoří příponou k základu slovesa (srovnej: píšeš → pište!)."],
   },
   {
     question: "Tvoř podmiňovací způsob: 'jít' (já) →",
     correctAnswer: "šel/šla bych",
     options: ["jdu", "jdi", "šel/šla bych", "jít bych"],
-    hints: ["Podmiňovací = příčestí minulé + bych."],
+    hints: ["Podmiňovací způsob = příčestí minulé + pomocné slůvko pro osobu 'já' (stejné jako v 'Kdybych to věděl')."],
   },
   {
     question: "Tvoř podmiňovací způsob: 'přijít' (oni) →",
@@ -268,7 +268,7 @@ const POOL_L3: PracticeTask[] = [
       "1. osobu jednotného čísla – nemohu rozkázat sám sobě formálně",
       "záporné tvary",
     ],
-    hints: ["Zkus si rozkázat sám sobě (1. osoba). Jde to?"],
+    hints: ["Rozkazy dáváme jiným lidem. Dokážeš formálně rozkázat i sobě samotnému?"],
   },
   {
     question: "Jak se tvoří záporný rozkazovací způsob?",
@@ -318,7 +318,7 @@ const POOL_L3: PracticeTask[] = [
     question: "Tvoř podmiňovací způsob 2. osoby množného čísla od slovesa 'dělat':",
     correctAnswer: "dělali byste",
     options: ["dělali by", "dělali byste", "dělejte", "dělali bychom"],
-    hints: ["2. os. mn. č. podmiňovacího = příčestí + byste."],
+    hints: ["Podmiňovací způsob pro 2. osobu množného čísla přidává ke příčestí minulému pomocné slovo pro 'vy' (stejné jako ve větě 'Kdybyste chtěli')."],
   },
   {
     question: "Ve větě 'Nechte ho mluvit!' – jaký způsob?",

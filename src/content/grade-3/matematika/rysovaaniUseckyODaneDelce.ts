@@ -25,17 +25,42 @@ interface Item {
   q: string;
   a: string;
   opts: string[];
+  hints?: string[];
 }
 
 const POOL_L1: Item[] = [
   { q: "Co potřebuješ k narýsování úsečky?", a: "Pravítko a tužku", opts: ["Pravítko a tužku", "Kružítko", "Úhloměr", "Jen tužku"] },
-  { q: "Jak se označuje délka úsečky AB?", a: "|AB|", opts: ["|AB|", "AB", "∠AB", "(AB)"] },
+  {
+    q: "Jak se označuje délka úsečky AB?",
+    a: "|AB|",
+    opts: ["|AB|", "AB", "∠AB", "(AB)"],
+    hints: [
+      "Délku měříme v cm nebo mm, vždy od nuly. 1 cm = 10 mm.",
+      "Zápis délky úsečky se píše se dvěma svislými čarami kolem názvů krajních bodů, ne jen holými písmeny.",
+    ],
+  },
   { q: "Co jsou krajní body úsečky?", a: "Body A a B na obou koncích", opts: ["Body A a B na obou koncích", "Střed úsečky", "Délka úsečky", "Pravítko"] },
   { q: "Úsečka má délku 3 cm. Jaká je délka v mm?", a: "30 mm", opts: ["30 mm", "3 mm", "300 mm", "0,3 mm"] },
   { q: "Úsečka CD má délku 45 mm. Kolik je to cm?", a: "4,5 cm", opts: ["4,5 cm", "45 cm", "4 cm", "0,45 cm"] },
-  { q: "Kolik milimetrů má 1 centimetr?", a: "10 mm", opts: ["10 mm", "100 mm", "1 mm", "1000 mm"] },
+  {
+    q: "Kolik milimetrů má 1 centimetr?",
+    a: "10 mm",
+    opts: ["10 mm", "100 mm", "1 mm", "1000 mm"],
+    hints: [
+      "Přemýšlej, kolikrát se menší jednotka (mm) vejde do té větší (cm).",
+      "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
+    ],
+  },
   { q: "Dvě úsečky jsou stejně dlouhé. Říkáme, že jsou:", a: "Shodné (kongruentní)", opts: ["Shodné (kongruentní)", "Rovnoběžné", "Kolmé", "Různoběžné"] },
-  { q: "Úsečka je část přímky ohraničená:", a: "Dvěma body", opts: ["Dvěma body", "Jedním bodem", "Třemi body", "Kružnicí"] },
+  {
+    q: "Úsečka je část přímky ohraničená:",
+    a: "Dvěma body",
+    opts: ["Dvěma body", "Jedním bodem", "Třemi body", "Kružnicí"],
+    hints: [
+      "Délku měříme v cm nebo mm, vždy od nuly. 1 cm = 10 mm.",
+      "Kolik bodů potřebuješ, aby jimi byla úsečka na obou koncích ohraničená?",
+    ],
+  },
 ];
 
 const POOL_L2: Item[] = [
@@ -44,7 +69,15 @@ const POOL_L2: Item[] = [
   { q: "Jak zjistíš délku narýsované úsečky?", a: "Přiložím pravítko a odečtu vzdálenost bodů", opts: ["Přiložím pravítko a odečtu vzdálenost bodů", "Odhadem", "Spočítám mm na papíru", "Porovnám s jinou úsečkou"] },
   { q: "Úsečka EF je 8 cm. Úsečka GH je 5 cm. O kolik je EF delší?", a: "3 cm", opts: ["3 cm", "13 cm", "2 cm", "4 cm"] },
   { q: "Narýsuj úsečku délky 5 cm. Jaký krok uděláš první?", a: "Označím bod A a přiložím pravítko", opts: ["Označím bod A a přiložím pravítko", "Hned začnu kreslit", "Změřím papír", "Označím střed úsečky"] },
-  { q: "Chceš úsečku 7 cm. Na pravítku odměříš:", a: "70 mm (nebo 7 cm)", opts: ["70 mm (nebo 7 cm)", "7 mm", "0,7 mm", "700 mm"] },
+  {
+    q: "Chceš úsečku 7 cm. Na pravítku odměříš:",
+    a: "70 mm (nebo 7 cm)",
+    opts: ["70 mm (nebo 7 cm)", "7 mm", "0,7 mm", "700 mm"],
+    hints: [
+      "Délku měříme v centimetrech i milimetrech, vždy od nuly. 1 cm = 10 mm.",
+      "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
+    ],
+  },
   { q: "Úsečka má 12 cm. Kolik je to mm?", a: "120 mm", opts: ["120 mm", "12 mm", "1,2 mm", "1200 mm"] },
   { q: "Chceme přesně 3 cm 2 mm. Kolik mm celkem odměříme?", a: "32 mm", opts: ["32 mm", "23 mm", "5 mm", "302 mm"] },
 ];
@@ -70,11 +103,11 @@ const POOL_L3: Item[] = [
 ];
 
 function pick(pool: Item[]): PracticeTask[] {
-  return shuffle(pool).map((item) => ({
-    question: item.q,
-    correctAnswer: item.a,
-    options: shuffle([...item.opts]),
-    hints: [
+  return shuffle(pool).map(({ q, a, opts, hints }) => ({
+    question: q,
+    correctAnswer: a,
+    options: shuffle([...opts]),
+    hints: hints ?? [
       "Délku měříme v cm nebo mm, vždy od nuly. 1 cm = 10 mm.",
       "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
     ],
