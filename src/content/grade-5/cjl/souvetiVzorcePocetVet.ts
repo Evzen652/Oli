@@ -19,7 +19,7 @@ const POOL_L1: PracticeTask[] = [
       "věta s mnoha přídavnými jmény",
       "věta s otazníkem",
     ],
-    hints: ["Souvětí = více vět spojených dohromady."],
+    hints: ["Zkus spočítat, kolik sloves v určitém tvaru (přísudků) má typické souvětí — je to jen jedno, nebo klidně víc?"],
   },
   {
     question: "Kolik vět obsahuje souvětí 'Šel domů, protože byl unavený.'?",
@@ -53,7 +53,7 @@ const POOL_L1: PracticeTask[] = [
       "příslovce",
       "citoslovce",
     ],
-    hints: ["'Protože' uvádí důvod – vedlejší větu příčinnou."],
+    hints: ["'Protože' uvádí důvod pro to, co říká první věta — jsou si ty dvě věty rovnocenné, nebo jedna z nich na druhé závisí?"],
   },
   {
     question: "Spojka 'ale' je:",
@@ -136,7 +136,7 @@ const POOL_L1: PracticeTask[] = [
       "před spojkami podřadícími a některými souřadícími – ale, proto",
       "za každým slovesem",
     ],
-    hints: ["Před 'že, aby, protože, ale, proto' píšeme čárku."],
+    hints: ["Čárka souvisí s TYPEM spojky, ne s pozicí ve větě — je vůbec možné, aby platilo 'nikdy' nebo 'jen na konci' u souvětí s různými druhy spojek?"],
   },
   {
     question: "Kolik vět je v souvětí 'Vím, že přijdeš, když budeš mít čas.'?",
@@ -206,7 +206,7 @@ const POOL_L2: PracticeTask[] = [
       "PV + HV",
       "HV a HV",
     ],
-    hints: ["Protože = podřadící → hlavní věta + vedlejší věta."],
+    hints: ["'Protože' je podřadící spojka — spojuje dvě věty NEROVNOCENNĚ, jedna stojí samostatně a druhá na ní závisí. Který vzorec tenhle vztah zachycuje?"],
   },
   {
     question: "Ve větě 'Sněžilo, a přesto šli na procházku.' – kolik vět?",
@@ -245,7 +245,7 @@ const POOL_L2: PracticeTask[] = [
       "příčinná",
       "podmínková",
     ],
-    hints: ["Vím co? Kam jdeš. – vedlejší věta předmětná."],
+    hints: ["Vím CO? → Kam jdeš. Ta otázka 'co?' je stejná, na jakou odpovídá přímý předmět slovesa."],
   },
   {
     question: "Které z těchto souvětí je souřadící?",
@@ -290,7 +290,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Nevěděl, zda přijde, nebo ne.' kolik vět?",
     correctAnswer: "2 věty",
     options: ["1 věta", "2 věty", "3 věty", "4 věty"],
-    hints: ["Nevěděl = 1. věta. Zda přijde nebo ne = 2. věta (rozvitá)."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) — kolik jich napočítáš?"],
   },
   {
     question: "Jaká je funkce souřadících souvětí slučovacích (a, i, ani)?",
@@ -321,7 +321,7 @@ const POOL_L3: PracticeTask[] = [
     question: "Kolik vět je v souvětí 'Jakmile dorazili, začali pracovat, ačkoli byli unaveni.'?",
     correctAnswer: "3 věty",
     options: ["2 věty", "3 věty", "4 věty", "5 vět"],
-    hints: ["Dorazili – začali pracovat – ačkoli unaveni = 3 věty."],
+    hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je."],
   },
   {
     question: "Jak se nazývá vedlejší věta ve větě 'Věřím, že uspěješ.'?",
@@ -387,7 +387,7 @@ const POOL_L3: PracticeTask[] = [
       "3 vedlejší věty",
       "žádná vedlejší věta",
     ],
-    hints: ["Že + i když = dvě podřadící spojky = dvě vedlejší věty."],
+    hints: ["Najdi v souvětí podřadící spojky, které uvádějí samostatnou závislou část — kolik jich napočítáš?"],
   },
   {
     question: "Jak se nazývá vedlejší věta 'jak to udělal' ve větě 'Viděl jsem, jak to udělal.'?",
