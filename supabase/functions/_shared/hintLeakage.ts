@@ -185,10 +185,22 @@ function hintMentions(normHint: string, option: string, correctWords: ReadonlySe
   // falešný kredit jen proto, že sdílí „vpravo" se správnou odpovědí. Ta
   // slova jsou potřeba k odvození SPRÁVNÉ odpovědi, ne k pokrytí JINÉ.
   const words = norm.split(/\s+/).filter((w) => w.length >= 5 && !correctWords.has(w));
-  return words.some((w) => {
+  if (words.some((w) => {
     const escW = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     return new RegExp(`(^|[\\s(,;])${escW}`).test(normHint);
-  });
+  })) return true;
+
+  // Fallback pro číslované položky („1. osoba", „2. pád"): rozlišující prvek
+  // je krátké pořadové číslo, které předchozí fallback (délka ≥5) nevidí,
+  // a slovní pořadí bývá v hintu obrácené („Osoba: 1. já/my, 2. ty/vy…"
+  // vs. možnost „1. osoba"). Stačí, že hint vyjmenovává STEJNÉ číslo jako
+  // položku seznamu — přesně tak, jak rejstřík gramatických kategorií
+  // (osoba, pád, stupeň) v praxi vypadá.
+  const ordinal = norm.match(/^(\d{1,2})\b/)?.[1];
+  if (ordinal && !correctWords.has(ordinal)) {
+    return new RegExp(`(^|[\\s(,;])${ordinal}[.,\\s]`).test(normHint);
+  }
+  return false;
 }
 
 /**

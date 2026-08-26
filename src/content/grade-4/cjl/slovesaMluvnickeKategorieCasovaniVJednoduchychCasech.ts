@@ -77,7 +77,7 @@ function gen(level: number): PracticeTask[] {
     options: shuffle(opts),
     hints: [
       "Osoba: 1. já/my, 2. ty/vy, 3. on/ona/ono/oni/ony",
-      "Číslo: jednotné (já, ty, on) nebo množné (my, vy, oni)",
+      "Číslo: jednotné (já, ty, on) nebo množné (my, vy, oni) — v dnešní češtině duál (trojí číslo) neexistuje a číslo slovesa lze vždy určit.",
       "Čas: minulý (byl), přítomný (je), budoucí (bude)",
       "Způsob: oznamovací (chodí), rozkazovací (choď!), podmiňovací (chodil by)",
     ],

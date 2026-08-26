@@ -421,6 +421,19 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(true);
   });
 
+  // Číslované kategorie („1. osoba", „2. pád"): rozlišující prvek je krátké
+  // pořadové číslo pod hranicí slovního fallbacku (délka ≥5), navíc slovosled
+  // bývá v hintu obrácený („Osoba: 1. já/my…" vs. možnost „1. osoba").
+  it("rejstřík číslovaných kategorií (1./2./3. osoba) pokrývá i obrácený slovosled", () => {
+    const r = checkHintLeakage({
+      question: "Urči osobu: 'ty čteš'",
+      correct_answer: "2. osoba",
+      hints: ["Osoba: 1. já/my, 2. ty/vy, 3. on/ona/ono/oni/ony"],
+      options: ["2. osoba", "1. osoba", "3. osoba", "neosobní"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
   it("krátká nečíselná odpověď: '=' ve výkladovém příkladu není rovnost s odpovědí", () => {
     const r = checkHintLeakage({
       question: 'Doplň správnou předložku: "Sjel ___ kopce."',
