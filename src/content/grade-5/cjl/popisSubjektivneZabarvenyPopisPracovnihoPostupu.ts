@@ -19,7 +19,7 @@ const POOL_L1: PracticeTask[] = [
       "pracovní postup",
       "vyprávění",
     ],
-    hints: ["Objektivní = jen fakta bez hodnocení nebo emocí."],
+    hints: ["Přemýšlej: obsahuje tahle věta nějaké pocity nebo hodnocení (krásné, lahodné), nebo jen měřitelné údaje?"],
   },
   {
     question: "Jaký typ popisu je: 'Jablko voní jako zahrada po dešti a jeho šťavnatost je jako polibek léta.'?",
@@ -41,7 +41,7 @@ const POOL_L1: PracticeTask[] = [
       "pracovní postup – chronologické kroky",
       "pohádka",
     ],
-    hints: ["Recept = kroky v pořadí = pracovní postup."],
+    hints: ["Recept ti krok za krokem říká, co udělat v jakém pořadí — jak se takovému typu textu obecně říká?"],
   },
   {
     question: "Pracovní postup používá slovesa v:",
@@ -52,7 +52,7 @@ const POOL_L1: PracticeTask[] = [
       "minulém čase",
       "přítomném čase bez rozkazů",
     ],
-    hints: ["Přidej, smíchej, posekej – rozkazy pro čtenáře postupu."],
+    hints: ["Postup ti přikazuje, co máš udělat — v jakém slovesném způsobu se takové příkazy vyjadřují?"],
   },
   {
     question: "Subjektivně zabarvený popis obsahuje:",
@@ -209,7 +209,7 @@ const POOL_L2: PracticeTask[] = [
       "poetický popis",
       "vyprávění příběhu",
     ],
-    hints: ["Návod = kroky k provedení = pracovní postup."],
+    hints: ["Návod ti krok za krokem říká, co udělat — jak se takovému typu textu obecně říká?"],
   },
   {
     question: "Jaký styl je vhodný pro turistického průvodce (popis hradu)?",
@@ -388,7 +388,7 @@ const POOL_L3: PracticeTask[] = [
       "opakování zvuku",
       "záporné hodnocení",
     ],
-    hints: ["Metafora = přenesený obraz bez 'jako' (přirovnání používá 'jako')."],
+    hints: ["Přemýšlej, jestli tenhle typ obrazného vyjádření používá spojovací slovo pro srovnání, nebo věci rovnou přejmenuje jinak."],
   },
   {
     question: "Co je personifikace v subjektivním popisu?",
@@ -399,7 +399,7 @@ const POOL_L3: PracticeTask[] = [
       "přirovnání ke zvířeti",
       "záporná charakteristika",
     ],
-    hints: ["Les šeptá = les dostává lidskou vlastnost = personifikace."],
+    hints: ["Zkus si vybavit jiný příklad, kdy neživá věc (třeba vítr nebo slunce) dělá něco, co normálně umí jen lidé nebo zvířata."],
   },
   {
     question: "Jak se liší pracovní postup od návodu k použití?",
