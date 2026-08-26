@@ -96,7 +96,7 @@ function gen(level: number): PracticeTask[] {
     });
   }
   shuffle(TEORIE).slice(0, 20).forEach(({ q, a, opts, e }) => {
-    tasks.push({ question: q, correctAnswer: a, options: shuffle([...opts]), hints: ["Klíčová slova vyjadřují hlavní téma textu."], explanation: e });
+    tasks.push({ question: q, correctAnswer: a, options: shuffle([...opts]), hints: ["Klíčová slova ti prozradí, o čem se text týká, i když ho nepřečteš celý."], explanation: e });
   });
   return tasks.slice(0, 40);
 }
