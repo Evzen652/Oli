@@ -122,7 +122,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Skloňuj: mladý pes (2. pád, singuár)",
     correctAnswer: "mladého psa",
     options: ["mladého psa", "mladém psu", "mladý pes", "mladému psu"],
-    hints: ["2. pád = koho/čeho? → mladého (vzor mladý, rod mužský živý)."],
+    hints: ["2. pád = koho/čeho? U tvrdého vzoru (mladý) má mužský rod životný v tomto pádě koncovku -ého. Aplikuj ji na 'mladý'."],
   },
   {
     question: "Skloňuj: jarní vítr (3. pád, singulár)",
@@ -134,7 +134,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Skloňuj: maminčina kabelka (4. pád, singulár)",
     correctAnswer: "maminčinu kabelku",
     options: ["maminčinu kabelku", "maminčiny kabelky", "maminčinou kabelkou", "maminčina kabelka"],
-    hints: ["4. pád = koho/co? → kabelku (ženský rod, vzor žena)."],
+    hints: ["4. pád ženského rodu (vzor žena) má koncovku -u. Aplikuj ji na obě slova ve spojení 'maminčina kabelka'."],
   },
   {
     question: "Ve větě 'Viděl jsem starého muže.' přídavné jméno 'starého' je v:",
@@ -145,7 +145,7 @@ const POOL_L2: PracticeTask[] = [
       "4. pádu, mužský životný",
       "7. pádu",
     ],
-    hints: ["Viděl jsem koho? → 4. pád. Muže = mužský životný."],
+    hints: ["Zkus na větu položit postupně pádové otázky (kdo/co, koho/čeho, komu/čemu, koho/co, o kom/čem, kým/čím) — která z nich sedí na 'muže'? A je 'muž' bytost, nebo věc?"],
   },
   {
     question: "Tvrdé přídavné jméno v 6. pádu množného čísla má koncovku:",
@@ -163,7 +163,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve větě 'Chodím po ranní procházce.' je přídavné jméno v:",
     correctAnswer: "6. pádu, ženský rod",
     options: ["1. pádu", "3. pádu", "6. pádu, ženský rod", "4. pádu"],
-    hints: ["Po čem? = 6. pád. Procházce = ženský rod."],
+    hints: ["Zkus doplnit otázku 'po čem?' do vzorce pádových otázek (kdo/co, koho/čeho, komu/čemu, koho/co, o kom/čem, kým/čím) a najdi, který pád tomu odpovídá. Jaký rod má slovo 'procházka'?"],
   },
   {
     question: "Přívlastňovací přídavné jméno vzoru 'otcův' je v 1. pádu mužského rodu:",
@@ -209,7 +209,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Přídavné jméno 'bratrův' je v 1. pádu žen. rodu:",
     correctAnswer: "bratrova – sestra",
     options: ["bratrův – sestra", "bratrova – sestra", "bratrové – sestra", "bratruvou"],
-    hints: ["Vzor otcův: ženský rod 1. pádu = -ova (otcova, bratrova)."],
+    hints: ["Vzor otcův: ženský rod 1. pádu má koncovku -ova (např. otcova). Aplikuj stejnou koncovku na 'bratrův'."],
   },
   {
     question: "Jak se liší skloňování tvrdých a měkkých přídavných jmen?",
@@ -220,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
       "měkká jsou jen v množném čísle",
       "tvrdá mají jen jeden rod",
     ],
-    hints: ["Jarní vítr / jarní noc / jarní ráno – měkká mají vždy -í."],
+    hints: ["Jarní vítr / jarní noc / jarní ráno — všimni si, jestli se koncovka mění podle rodu, nebo zůstává pořád stejná. Porovnej to s 'mladý pes / mladá liška / mladé kotě'."],
   },
   {
     question: "Skloňuj: Petrův (1. pád) → Petrovi (3. pád) → Petra (2. pád) → čeho se zde mění?",
@@ -256,7 +256,7 @@ const POOL_L3: PracticeTask[] = [
       "2. pád, střední rod",
       "6. pád, ženský rod",
     ],
-    hints: ["Hledala co? → 4. pád. Domeček = mužský neživotný."],
+    hints: ["Hledala co? Zjisti, který pád na tuhle otázku odpovídá, a pak zkontroluj: je 'domeček' bytost, nebo věc?"],
   },
   {
     question: "Ve větě 'Mluvil o otcových plánech.' je 'otcových' ve:",
@@ -284,7 +284,7 @@ const POOL_L3: PracticeTask[] = [
       "7. pádu, ženský rod – čím? cestou",
       "4. pádu, ženský rod",
     ],
-    hints: ["Šel čím? = 7. pád. Cestou = ženský rod."],
+    hints: ["Šel čím? Zjisti, který pád na tuhle otázku odpovídá, a jaký rod má slovo 'cesta' — mužský, ženský, nebo střední?"],
   },
   {
     question: "Přídavné jméno 'Kateřinin' je vzoru:",
@@ -301,7 +301,7 @@ const POOL_L3: PracticeTask[] = [
     question: "Jak se skloňuje 'kuchař' → 'kuchařův' (přivlastňovací)? Ve 2. pádu: kuchařova ___ (polévka)?",
     correctAnswer: "kuchařovy polévky",
     options: ["kuchařovou polévkou", "kuchařovy polévky", "kuchařovým polévky", "kuchařovy polévce"],
-    hints: ["2. pád ženský vzor matky: polévky → kuchařovy polévky."],
+    hints: ["Ženský vzor 'matky' má ve 2. pádu koncovku -y. Zkus tuhle koncovku aplikovat na 'polévka' i na přivlastňovací přídavné jméno."],
   },
   {
     question: "Ve větě 'Zhlédl jsem několik ranních zpráv.' je 'ranních' ve:",
