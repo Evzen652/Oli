@@ -80,9 +80,9 @@ function gen(level: number): PracticeTask[] {
       "Přivlastňovací: můj, tvůj, jeho, náš, váš, jejich",
       "Ukazovací: ten, tento, onen, tamten",
       "Tázací: kdo, co, jaký, který — ptáme se",
-      "Vztažná: který, jenž, co — uvozují větu vedlejší",
-      "Neurčitá: někdo, něco, leckdo, kdekdo",
-      "Záporná: nikdo, nic, žádný, nijaký",
+      "Vztažné: který, jenž, co — uvozují větu vedlejší",
+      "Neurčité: někdo, něco, leckdo, kdekdo",
+      "Záporné: nikdo, nic, žádný, nijaký",
     ],
     explanation: e,
   }));
