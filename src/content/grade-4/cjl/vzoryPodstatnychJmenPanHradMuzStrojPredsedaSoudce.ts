@@ -9,7 +9,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Ke kterému vzoru patří 'výtah'?", a: "hrad (neživý, tvrdý základ)", opts: ["hrad (neživý, tvrdý základ)", "pán", "muž", "stroj"], e: "Výtah je věc, ne živá bytost, a jeho základ končí tvrdou souhláskou. Neživé slovo s tvrdým základem patří ke vzoru hrad, ne k živým vzorům pán nebo muž." },
@@ -38,14 +38,29 @@ const POOL_L2: QA[] = [
   { q: "Jaký tvar má 'předseda' v 3. pádu jednotného čísla?", a: "předsedovi", opts: ["předsedovi", "předsedou", "předsedě", "předsedu"], e: "Třetí pád jednotného čísla odpovídá na 'komu, čemu' — předsedovi. Vzor předseda má v tomto pádě koncovku -ovi. Tvar předsedou je 7. pád a předsedu je 4. pád." },
   { q: "Jaký tvar má 'soudce' v 2. pádu jednotného čísla?", a: "soudce", opts: ["soudce", "soudci", "soudcovi", "soudcům"], e: "Ve 2. pádě jednotného čísla (bez koho — bez soudce) zůstává tvar stejný jako v 1. pádě: soudce. Tvar soudci je 3. nebo 6. pád a soudcovi rovněž 3. pád." },
   { q: "Urči vzor a pád slova 'muži' (jako podmět).", a: "vzor muž, 1. nebo 5. pád", opts: ["vzor muž, 1. nebo 5. pád", "vzor pán, 1. pád", "vzor muž, 3. pád", "vzor pán, 3. pád"], e: "Muž je živé slovo s měkkým základem, tedy vzor muž. Jako podmět (kdo dělá) stojí v 1. pádě, případně v 5. pádě při oslovení. Tvar muži tu není 3. pád." },
-  { q: "Urči vzor slova 'červi'.", a: "vzor muž (červ – živý, měkký základ)", opts: ["vzor muž (červ – živý, měkký základ)", "vzor hrad", "vzor pán", "vzor stroj"], e: "Červ je živý a jeho základ končí měkkou souhláskou -v. Živé slovo s měkkým základem se skloňuje podle vzoru muž, ne podle pán s tvrdým základem." },
-  { q: "Urči vzor slova 'pokoj'.", a: "vzor stroj (neživý, měkký základ -j)", opts: ["vzor stroj (neživý, měkký základ -j)", "vzor hrad", "vzor muž", "vzor pán"], e: "Pokoj je věc a končí měkkou souhláskou -j. Neživé slovo s měkkým základem patří ke vzoru stroj, kdežto hrad by měl základ tvrdý." },
-  { q: "Urči vzor slova 'dům'.", a: "vzor hrad (neživý, tvrdý základ)", opts: ["vzor hrad (neživý, tvrdý základ)", "vzor pán", "vzor muž", "vzor stroj"], e: "Dům je věc s tvrdým základem. Neživé slovo s tvrdým základem se skloňuje podle vzoru hrad; vzory pán a muž jsou jen pro živé bytosti." },
+  { q: "Urči vzor slova 'červi'.", a: "vzor muž (červ – živý, měkký základ)", opts: ["vzor muž (červ – živý, měkký základ)", "vzor hrad", "vzor pán", "vzor stroj"], e: "Červ je živý a jeho základ končí měkkou souhláskou -v. Živé slovo s měkkým základem se skloňuje podle vzoru muž, ne podle pán s tvrdým základem.", hints: [
+    "Je 'červ' živá bytost, nebo věc? A poslední souhláska základu (-v) — zní spíš tvrdě, nebo měkce?",
+    "Ze čtyř vzorů vyřaď nejdřív ty pro neživé věci, pak ty s opačnou tvrdostí základu.",
+  ] },
+  { q: "Urči vzor slova 'pokoj'.", a: "vzor stroj (neživý, měkký základ -j)", opts: ["vzor stroj (neživý, měkký základ -j)", "vzor hrad", "vzor muž", "vzor pán"], e: "Pokoj je věc a končí měkkou souhláskou -j. Neživé slovo s měkkým základem patří ke vzoru stroj, kdežto hrad by měl základ tvrdý.", hints: [
+    "Je 'pokoj' živá bytost, nebo věc? A poslední souhláska základu (-j) — zní spíš tvrdě, nebo měkce?",
+    "Ze čtyř vzorů vyřaď nejdřív ty pro živé bytosti, pak ten s opačnou tvrdostí základu.",
+  ] },
+  { q: "Urči vzor slova 'dům'.", a: "vzor hrad (neživý, tvrdý základ)", opts: ["vzor hrad (neživý, tvrdý základ)", "vzor pán", "vzor muž", "vzor stroj"], e: "Dům je věc s tvrdým základem. Neživé slovo s tvrdým základem se skloňuje podle vzoru hrad; vzory pán a muž jsou jen pro živé bytosti.", hints: [
+    "Je 'dům' živá bytost, nebo věc? A poslední souhláska základu (-m) — zní spíš tvrdě, nebo měkce?",
+    "Ze čtyř vzorů vyřaď nejdřív ty pro živé bytosti, pak ten s opačnou tvrdostí základu.",
+  ] },
   { q: "Jaký tvar má 'pan' (zkrácené pán) ve 4. pádu? Slovo 'pan' je zkrácenou formou:", a: "pana (4. pád jm. 'pán')", opts: ["pana (4. pád jm. 'pán')", "pána", "pánu", "pánem"], e: "Čtvrtý pád odpovídá na 'koho, co' — vidím pana Nováka. U životných jmen vzoru pán je 4. pád stejný jako 2. pád s koncovkou -a, tedy pana. Tvar pánem je 7. pád." },
   { q: "Jaký tvar má 'hrad' ve 4. pádu množného čísla?", a: "hrady", opts: ["hrady", "hradů", "hradům", "hradem"], e: "Čtvrtý pád množného čísla (vidím co — hrady) má u neživého vzoru hrad koncovku -y, stejně jako 1. pád. Tvar hradů je 2. pád mn. č., hradům 3. pád mn. č., hradem 7. pád jednotného čísla." },
-  { q: "Urči vzor slova 'nos'.", a: "vzor hrad (neživý, tvrdý základ)", opts: ["vzor hrad (neživý, tvrdý základ)", "vzor pán", "vzor muž", "vzor stroj"], e: "Nos je věc (část těla) s tvrdým základem -s. Neživé slovo s tvrdým základem patří ke vzoru hrad, ne k živým vzorům pán nebo muž." },
+  { q: "Urči vzor slova 'nos'.", a: "vzor hrad (neživý, tvrdý základ)", opts: ["vzor hrad (neživý, tvrdý základ)", "vzor pán", "vzor muž", "vzor stroj"], e: "Nos je věc (část těla) s tvrdým základem -s. Neživé slovo s tvrdým základem patří ke vzoru hrad, ne k živým vzorům pán nebo muž.", hints: [
+    "Je 'nos' živá bytost, nebo věc? A poslední souhláska základu (-s) — zní spíš tvrdě, nebo měkce?",
+    "Ze čtyř vzorů vyřaď nejdřív ty pro živé bytosti, pak ten s opačnou tvrdostí základu.",
+  ] },
   { q: "Jaký tvar má 'stroj' v 6. pádu množného čísla?", a: "strojích", opts: ["strojích", "strojů", "strojím", "strojemi"], e: "Šestý pád odpovídá na 'o kom, o čem' — o strojích. Vzor stroj má v množném čísle koncovku -ích. Tvar strojů je 2. pád a strojím je 3. pád." },
-  { q: "Urči vzor slova 'průvodce'.", a: "vzor soudce", opts: ["vzor soudce", "vzor muž", "vzor pán", "vzor předseda"], e: "Průvodce je mužská osoba zakončená na -ce. Pro toto zakončení slouží vzor soudce, ne muž ani předseda, který je pro zakončení na -a." },
+  { q: "Urči vzor slova 'průvodce'.", a: "vzor soudce", opts: ["vzor soudce", "vzor muž", "vzor pán", "vzor předseda"], e: "Průvodce je mužská osoba zakončená na -ce. Pro toto zakončení slouží vzor soudce, ne muž ani předseda, který je pro zakončení na -a.", hints: [
+    "Podívej se na poslední dvě písmena slova 'průvodce' — na co přesně slovo končí?",
+    "Jeden ze čtyř vzorů je vyhrazený právě pro mužské osoby s tímto konkrétním zakončením, jiný pro zakončení na -a.",
+  ] },
   { q: "Jaký tvar má 'předseda' v 1. pádu množného čísla?", a: "předsedové", opts: ["předsedové", "předsedy", "předsedů", "předsedi"], e: "V 1. pádě množného čísla (kdo — ti předsedové) má vzor předseda u osob koncovku -ové. Tvar předsedy je 4. pád a předsedů je 2. pád." },
 ];
 
@@ -59,11 +74,20 @@ const POOL_L3: QA[] = [
   { q: "Jaký tvar má 'stroj' v 7. pádu množného čísla?", a: "stroji", opts: ["stroji", "strojemi", "strojů", "strojích"], e: "Sedmý pád odpovídá na 'kým, čím' — stroji. Vzor stroj má v množném čísle koncovku -i. Tvar strojů je 2. pád a strojích je 6. pád." },
   { q: "Urči vzor slova 'herec'.", a: "vzor muž (živý, měkký základ -c)", opts: ["vzor muž (živý, měkký základ -c)", "vzor soudce", "vzor předseda", "vzor pán"], e: "Herec je živá osoba a končí měkkou souhláskou -c. Živé slovo s měkkým základem patří ke vzoru muž; vzor soudce by měl zakončení na -ce." },
   { q: "Jaký tvar má 'soudce' v 1. pádu množného čísla?", a: "soudci / soudcové", opts: ["soudci / soudcové", "soudce", "soudců", "soudcem"], e: "V 1. pádě množného čísla (kdo — ti soudci) má vzor soudce koncovku -i, u osob i variantu -ové. Tvar soudce je jednotné číslo a soudců je 2. pád." },
-  { q: "Urči vzor slova 'průřez'.", a: "vzor hrad (neživý, tvrdý základ)", opts: ["vzor hrad (neživý, tvrdý základ)", "vzor stroj", "vzor muž", "vzor pán"], e: "Průřez je věc s tvrdým základem -z. Neživé slovo s tvrdým základem patří ke vzoru hrad, vzor stroj by měl základ měkký." },
-  { q: "Urči vzor slova 'lesník'.", a: "vzor pán (živý, tvrdý základ)", opts: ["vzor pán (živý, tvrdý základ)", "vzor hrad", "vzor muž", "vzor stroj"], e: "Lesník je živá osoba a končí tvrdou souhláskou -k. Živé slovo s tvrdým základem se skloňuje podle vzoru pán, ne podle neživého hradu." },
+  { q: "Urči vzor slova 'průřez'.", a: "vzor hrad (neživý, tvrdý základ)", opts: ["vzor hrad (neživý, tvrdý základ)", "vzor stroj", "vzor muž", "vzor pán"], e: "Průřez je věc s tvrdým základem -z. Neživé slovo s tvrdým základem patří ke vzoru hrad, vzor stroj by měl základ měkký.", hints: [
+    "Je 'průřez' živá bytost, nebo věc? A poslední souhláska základu (-z) — zní spíš tvrdě, nebo měkce?",
+    "Ze čtyř vzorů vyřaď nejdřív ty pro živé bytosti, pak ten s opačnou tvrdostí základu.",
+  ] },
+  { q: "Urči vzor slova 'lesník'.", a: "vzor pán (živý, tvrdý základ)", opts: ["vzor pán (živý, tvrdý základ)", "vzor hrad", "vzor muž", "vzor stroj"], e: "Lesník je živá osoba a končí tvrdou souhláskou -k. Živé slovo s tvrdým základem se skloňuje podle vzoru pán, ne podle neživého hradu.", hints: [
+    "Je 'lesník' živá bytost, nebo věc? A poslední souhláska základu (-k) — zní spíš tvrdě, nebo měkce?",
+    "Ze čtyř vzorů vyřaď nejdřív ty pro neživé věci, pak ten s opačnou tvrdostí základu.",
+  ] },
   { q: "Jaký tvar má 'průvodce' v 6. pádu jednotného čísla?", a: "průvodci", opts: ["průvodci", "průvodce", "průvodcem", "průvodcům"], e: "Průvodce se skloňuje podle vzoru soudce. V 6. pádě (o kom — o průvodci) má koncovku -i. Tvar průvodce je 1., 2. nebo 4. pád, průvodcem je 7. pád j. č., průvodcům 3. pád mn. č." },
   { q: "Jaký tvar má 'pán' v 7. pádu množného čísla?", a: "pány", opts: ["pány", "páni", "pánů", "pánech"], e: "Sedmý pád odpovídá na 'kým, čím' — pány. Vzor pán má v množném čísle koncovku -y. Tvar páni je 1. pád a pánů je 2. pád." },
-  { q: "Urči vzor slova 'prodavač'.", a: "vzor muž (živý, měkký základ -č)", opts: ["vzor muž (živý, měkký základ -č)", "vzor pán", "vzor soudce", "vzor hrad"], e: "Prodavač je živá osoba a končí měkkou souhláskou -č. Živé slovo s měkkým základem se skloňuje podle vzoru muž, ne podle pán s tvrdým základem." },
+  { q: "Urči vzor slova 'prodavač'.", a: "vzor muž (živý, měkký základ -č)", opts: ["vzor muž (živý, měkký základ -č)", "vzor pán", "vzor soudce", "vzor hrad"], e: "Prodavač je živá osoba a končí měkkou souhláskou -č. Živé slovo s měkkým základem se skloňuje podle vzoru muž, ne podle pán s tvrdým základem.", hints: [
+    "Je 'prodavač' živá bytost, nebo věc? A poslední souhláska základu (-č) — zní spíš tvrdě, nebo měkce?",
+    "Slovo nekončí na -ce ani -dce, takže vyřaď i tenhle zvláštní vzor pro mužské osoby.",
+  ] },
   { q: "Jaký tvar má 'muž' v 7. pádu jednotného čísla?", a: "mužem", opts: ["mužem", "muži", "mužů", "mužích"], e: "Sedmý pád jednotného čísla (kým, čím — mužem) má u vzoru muž koncovku -em. Tvar muži je 3. nebo 6. pád a mužů je 2. pád množného čísla." },
   { q: "Urči vzor slova 'hajný' (osoba).", a: "adjektivní vzor (skloňuje se jako přídavné jméno)", opts: ["adjektivní vzor (skloňuje se jako přídavné jméno)", "vzor pán", "vzor muž", "vzor soudce"], e: "Některá podstatná jména vznikla z přídavných jmen (hajný, vrátný) a skloňují se jako ona: hajného, hajnému. Proto nepatří k běžným vzorům pán nebo muž, ale ke vzoru adjektivnímu." },
 ];
@@ -71,11 +95,11 @@ const POOL_L3: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "pán = živý, tvrdý základ; hrad = neživý, tvrdý základ",
       "muž = živý, měkký základ; stroj = neživý, měkký základ",
       "předseda = mužský, na -a; soudce = mužský, na -ce/-dce",
