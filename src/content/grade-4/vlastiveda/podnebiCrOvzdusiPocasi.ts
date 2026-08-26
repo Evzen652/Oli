@@ -136,7 +136,7 @@ const POOL_L2: PracticeTask[] = [
       "V horách je méně slunce",
       "V horách je méně lidí",
     ],
-    hints: ["Teplota vzduchu klesá přibližně o 0,6°C na každých 100 m výšky."],
+    hints: ["Vzduch se ochlazuje přibližně o 0,6 °C na každých 100 m nadmořské výšky."],
     solutionSteps: ["Čím výše, tím chladněji — teplota klesá s výškou přibližně o 0,6°C na 100 m."],
   },
   {
@@ -215,7 +215,7 @@ const POOL_L2: PracticeTask[] = [
       "Vlhký vzduch je zdravější vždy",
       "Suchý vzduch obsahuje více kyslíku",
     ],
-    hints: ["Vlhkost vzduchu závisí na obsahu vodní páry."],
+    hints: ["Vlhkost vzduchu souvisí s tím, kolik vody se v něm vznáší v podobě páry."],
     solutionSteps: ["Vlhkost vzduchu = množství vodní páry. Vlhký vzduch (u moří a řek) × suchý vzduch (v kontinentálním klimatu)."],
   },
 ];
@@ -314,7 +314,7 @@ const POOL_L3: PracticeTask[] = [
       "Nejtepleji v září, nejchladněji v březnu",
       "Mírné pásmo nemá zimní období",
     ],
-    hints: ["Mírné pásmo = střídají se 4 roční období."],
+    hints: ["Mírné pásmo prochází čtyřmi zřetelně odlišnými obdobími roku."],
     solutionSteps: ["V mírném pásmu je nejtepleji v červenci, nejchladněji v lednu — 4 výrazná roční období."],
   },
   {
@@ -338,7 +338,7 @@ const POOL_L3: PracticeTask[] = [
       "Leží u hranice s Polskem",
       "V horách je více oblačnosti kvůli nadmořské výšce",
     ],
-    hints: ["Vlhký vzduch stoupá po svahu hor — co se stane, když se vzduch ochlazuje?"],
+    hints: ["Vzduch nesoucí vlhkost stoupá po svahu hor — co se stane, když se ochlazuje?"],
     solutionSteps: ["Vlhký vzduch stoupá po svahu hor, ochlazuje se a vydešťuje — proto jsou hory srážkově nejbohatší."],
   },
 ];

@@ -50,14 +50,14 @@ const POOL_L1: PracticeTask[] = [
     question: "Kdy byla přijata Ústava ČR?",
     correctAnswer: "V roce 1993",
     options: ["V roce 1993", "V roce 1918", "V roce 1968", "V roce 1989"],
-    hints: ["ČR vznikla v roce 1993."],
+    hints: ["Tento rok je stejný jako rok vzniku samostatné České republiky (ne Československa)."],
     solutionSteps: ["Ústava ČR byla přijata roku 1993, kdy vznikla samostatná Česká republika."],
   },
   {
     question: "Jaký je typ vlády v ČR?",
     correctAnswer: "Parlamentní republika",
     options: ["Parlamentní republika", "Monarchie", "Diktatura", "Federace"],
-    hints: ["ČR nemá krále — je to republika."],
+    hints: ["ČR nemá krále — nejvyšší moc má zvolený parlament."],
     solutionSteps: ["ČR je parlamentní republika — nejvyšší moc má parlament volený občany."],
   },
   {
@@ -83,7 +83,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Kdo vede vládu ČR?",
     correctAnswer: "Předseda vlády – premiér",
     options: ["Předseda vlády – premiér", "Prezident", "Ministr financí", "Předseda sněmovny"],
-    hints: ["Předseda vlády = premiér."],
+    hints: ["Tuto osobu jmenuje prezident a řídí jednotlivá ministerstva."],
     solutionSteps: ["Vládu ČR vede předseda vlády (premiér) — jmenuje ho prezident."],
   },
   {
@@ -242,7 +242,7 @@ const POOL_L3: PracticeTask[] = [
       "V demokracii rozhoduje prezident, v diktatuře parlament",
       "Diktatury existovaly jen ve starověku",
     ],
-    hints: ["Diktatura = koncentrace moci v jedněch rukou bez kontroly."],
+    hints: ["Diktatura = koncentrace moci v jedněch rukou, kterou nikdo nekontroluje ani neomezuje."],
     solutionSteps: ["Demokracie: svobodné volby + práva + dělba moci. Diktatura: moc jedné strany/osoby, bez voleb a práv."],
   },
   {
