@@ -9,23 +9,28 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
-  { q: "Kolik přísudků má věta 'Petr hraje a zpívá'?", a: "2 — je to souvětí", opts: ["2 — je to souvětí", "1 — věta jednoduchá", "3", "0"], e: "Přísudek je sloveso, které říká, co někdo dělá. Tady máme slovesa 'hraje' a 'zpívá', to jsou dva přísudky, a proto je z toho souvětí. Kdyby tu bylo jen jedno sloveso, šlo by o větu jednoduchou." },
+  { q: "Kolik přísudků má věta 'Petr hraje a zpívá'?", a: "2 — je to souvětí", opts: ["2 — je to souvětí", "1 — věta jednoduchá", "3", "0"], e: "Přísudek je sloveso, které říká, co někdo dělá. Tady máme slovesa 'hraje' a 'zpívá', to jsou dva přísudky, a proto je z toho souvětí. Kdyby tu bylo jen jedno sloveso, šlo by o větu jednoduchou.",
+    hints: ["Najdi ve větě všechna slovesa (přísudky).", "Kolik jsi jich napočítal — jedno, nebo víc?"] },
   { q: "Urči druh věty: 'Šli jsme domů.'", a: "věta jednoduchá", opts: ["věta jednoduchá", "souvětí", "souvětí se dvěma větami", "nelze určit"], e: "Najdeme jen jedno sloveso 'šli jsme', tedy jeden přísudek. Jeden přísudek znamená věta jednoduchá. Pro souvětí bychom potřebovali alespoň dvě slovesa." },
   { q: "Urči druh: 'Pršelo a děti nemohly ven.'", a: "souvětí", opts: ["souvětí", "věta jednoduchá", "věta s přívlastkem", "věta rozvinutá"], e: "Ve větě jsou dvě slovesa — 'pršelo' a 'nemohly' — spojená spojkou 'a'. Dva přísudky znamenají souvětí. Věta jednoduchá by měla jen jeden přísudek." },
   { q: "Kolik vět tvoří souvětí 'Přišel jsem domů, dal jsem si svačinu a šel jsem spát.'?", a: "3 věty", opts: ["3 věty", "1 věta", "2 věty", "4 věty"], e: "Počet vět v souvětí poznáme podle počtu přísudků (sloves). Tady jsou tři: 'přišel jsem', 'dal jsem si' a 'šel jsem'. Proto jsou to tři věty." },
-  { q: "Věta jednoduchá má:", a: "jeden přísudek", opts: ["jeden přísudek", "dva přísudky", "žádný přísudek", "tři přísudky"], e: "Věta jednoduchá má vždy právě jeden přísudek, tedy jedno sloveso jako základ. Jakmile přibude druhý přísudek, vznikne souvětí." },
+  { q: "Věta jednoduchá má:", a: "jeden přísudek", opts: ["jeden přísudek", "dva přísudky", "žádný přísudek", "tři přísudky"], e: "Věta jednoduchá má vždy právě jeden přísudek, tedy jedno sloveso jako základ. Jakmile přibude druhý přísudek, vznikne souvětí.",
+    hints: ["Souvětí vzniká spojením dvou a více vět.", "Věta jednoduchá je pravý opak — je to jen JEDNA věta. Kolik přísudků taková věta má?"] },
   { q: "Souvětí má:", a: "dva nebo více přísudků", opts: ["dva nebo více přísudků", "jeden přísudek", "žádný přísudek", "vždy tři přísudky"], e: "Souvětí vznikne spojením dvou nebo více vět, a každá věta má svůj přísudek. Proto má souvětí dva a více přísudků. Není pravda, že jich musí být vždy přesně tři." },
   { q: "Urči druh: 'Kočka spí.'", a: "věta jednoduchá", opts: ["věta jednoduchá", "souvětí", "nelze určit", "věta rozvitá"], e: "Je tu jen jedno sloveso 'spí', tedy jeden přísudek. Jeden přísudek znamená věta jednoduchá. Pro souvětí by chyběl druhý přísudek." },
   { q: "Urči druh: 'Slunce svítí, ale je chladno.'", a: "souvětí", opts: ["souvětí", "věta jednoduchá", "věta s přívlastkem", "věta rozšířená"], e: "Slovesa 'svítí' a 'je' jsou dva přísudky spojené spojkou 'ale'. Dva přísudky tvoří souvětí. Věta jednoduchá by měla jen jedno sloveso." },
-  { q: "Kolik přísudků má věta 'Sedím a čtu'?", a: "2", opts: ["2", "1", "3", "0"], e: "Přísudek je sloveso. Tady jsou dvě slovesa — 'sedím' a 'čtu' — spojená spojkou 'a', takže jsou to dva přísudky. Proto je to vlastně souvětí." },
+  { q: "Kolik přísudků má věta 'Sedím a čtu'?", a: "2", opts: ["2", "1", "3", "0"], e: "Přísudek je sloveso. Tady jsou dvě slovesa — 'sedím' a 'čtu' — spojená spojkou 'a', takže jsou to dva přísudky. Proto je to vlastně souvětí.",
+    hints: ["Najdi ve větě všechna slovesa (přísudky).", "Kolik jsi jich našel — jeden, nebo víc?"] },
   { q: "Urči druh: 'Babička peče koláč a dědeček čte noviny.'", a: "souvětí", opts: ["souvětí", "věta jednoduchá", "věta s předmětem", "věta přísudková"], e: "Najdeme dvě slovesa — 'peče' a 'čte' — spojená spojkou 'a'. Dva přísudky znamenají souvětí. Slova 'koláč' a 'noviny' jsou předměty, ne přísudky." },
-  { q: "Jak se nazývají jednotlivé části souvětí?", a: "věty (věta hlavní, věta vedlejší)", opts: ["věty (věta hlavní, věta vedlejší)", "odstavce", "části", "úseky"], e: "Souvětí se skládá z vět — bývá v něm věta hlavní a věta vedlejší. Odstavce jsou větší celky textu a slova 'části' nebo 'úseky' nejsou mluvnické názvy." },
+  { q: "Jak se nazývají jednotlivé části souvětí?", a: "věty (věta hlavní, věta vedlejší)", opts: ["věty (věta hlavní, věta vedlejší)", "odstavce", "části", "úseky"], e: "Souvětí se skládá z vět — bývá v něm věta hlavní a věta vedlejší. Odstavce jsou větší celky textu a slova 'části' nebo 'úseky' nejsou mluvnické názvy.",
+    hints: ["Souvětí se skládá z několika samostatných VĚT spojených dohromady.", "Jedna z těch vět dává smysl sama o sobě, druhá na ní závisí — jak se který typ jmenuje?"] },
   { q: "Urči druh: 'Bratr hraje počítač.'", a: "věta jednoduchá", opts: ["věta jednoduchá", "souvětí", "věta s předmětem", "věta vedlejší"], e: "Je tu jen jedno sloveso 'hraje', tedy jeden přísudek, a to je věta jednoduchá. Slovo 'počítač' je předmět, ale druhé sloveso ve větě není, proto nejde o souvětí." },
   { q: "Urči druh: 'Nevím, kde jsou moje klíče.'", a: "souvětí", opts: ["souvětí", "věta jednoduchá", "věta tázací", "věta s příslovcem"], e: "Ve větě jsou dvě slovesa — 'nevím' a 'jsou' — oddělená čárkou, takže jde o souvětí. I když se ptáme nepřímo, počet přísudků rozhoduje o tom, že je to souvětí, ne věta jednoduchá." },
-  { q: "Kolik přísudků má věta 'Ptáci zpívají.'?", a: "1", opts: ["1", "2", "3", "0"], e: "Najdeme jediné sloveso 'zpívají', a to je jeden přísudek. Jeden přísudek znamená věta jednoduchá. Slovo 'ptáci' je podmět, ne přísudek." },
+  { q: "Kolik přísudků má věta 'Ptáci zpívají.'?", a: "1", opts: ["1", "2", "3", "0"], e: "Najdeme jediné sloveso 'zpívají', a to je jeden přísudek. Jeden přísudek znamená věta jednoduchá. Slovo 'ptáci' je podmět, ne přísudek.",
+    hints: ["Najdi ve větě všechna slovesa (přísudky).", "Podmět 'ptáci' nepočítej — hledej jen sloveso (přísudek)."] },
   { q: "Urči druh: 'Šel do obchodu, protože neměl chléb.'", a: "souvětí", opts: ["souvětí", "věta jednoduchá", "věta dvojdílná", "věta s předmětem"], e: "Slovesa 'šel' a 'neměl' jsou dva přísudky spojené spojkou 'protože'. Dva přísudky tvoří souvětí. Věta jednoduchá by měla jen jedno sloveso." },
   { q: "Co spojuje věty v souvětí?", a: "spojky (a, ale, nebo, protože, když, že...)", opts: ["spojky (a, ale, nebo, protože, když, že...)", "přídavná jména", "příslovce", "předložky"], e: "Věty v souvětí spojují spojky jako 'a', 'ale', 'protože' nebo 'že'. Předložky (na, v, do) spojují slova, ne věty, a přídavná jména ani příslovce věty nespojují." },
 ];
@@ -65,17 +70,23 @@ const POOL_L3: QA[] = [
   { q: "Urči druh věty vedlejší: 'Ačkoliv byl unavený, dál pracoval.'", a: "příslovečná přípustková", opts: ["příslovečná přípustková", "příslovečná příčinná", "příslovečná časová", "podmínková"], e: "Spojka 'ačkoliv' naznačuje, že se něco děje i přes překážku — 'ačkoliv byl unavený, přesto pracoval'. To je věta přípustková. Příčinná by spojkou 'protože' vysvětlovala důvod." },
   { q: "Urči druh věty vedlejší: 'Kdybys přišel, byl bych rád.'", a: "příslovečná podmínková", opts: ["příslovečná podmínková", "příslovečná přípustková", "předmětná", "časová"], e: "Spojka 'kdyby' vyjadřuje podmínku — 'pokud bys přišel'. To je věta příslovečná podmínková. Přípustková by spojkou 'ačkoliv' připouštěla překážku." },
   { q: "Věta vedlejší podmětná uvozena 'kdo': příklad:", a: "Kdo nezkoumá, neobjeví.", opts: ["Kdo nezkoumá, neobjeví.", "Přišel, kdo chtěl.", "Myslím, kdo přijde.", "Řekl mi, kdo to byl."], e: "Podmětná věta zastupuje podmět hlavní věty — ptáme se 'kdo neobjeví?' a odpovídáme 'kdo nezkoumá'. V ostatních příkladech věta s 'kdo' doplňuje jiné sloveso jako předmět, ne jako podmět." },
-  { q: "Vzorec podřadného souvětí 'Vím, že přijdete.' ukazuje:", a: "věta hlavní + věta vedlejší", opts: ["věta hlavní + věta vedlejší", "věta vedlejší + věta hlavní", "dvě věty hlavní", "dvě věty vedlejší"], e: "Na začátku stojí věta hlavní 'vím', za ní následuje věta vedlejší 'že přijdete'. V podřadném souvětí je vždy jedna věta hlavní a alespoň jedna vedlejší, která na ní závisí." },
+  { q: "Vzorec podřadného souvětí 'Vím, že přijdete.' ukazuje:", a: "věta hlavní + věta vedlejší", opts: ["věta hlavní + věta vedlejší", "věta vedlejší + věta hlavní", "dvě věty hlavní", "dvě věty vedlejší"], e: "Na začátku stojí věta hlavní 'vím', za ní následuje věta vedlejší 'že přijdete'. V podřadném souvětí je vždy jedna věta hlavní a alespoň jedna vedlejší, která na ní závisí.",
+    hints: ["Na začátku souvětí je věta, která dává smysl sama o sobě — 'Vím'.", "Za ní následuje věta, která na první závisí a začíná spojkou 'že' — jak se která z nich jmenuje?"] },
 ];
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    // Sdílený rejstřík sedí na klasifikační otázky ("Urči druh: ..."), kde
+    // dítě musí spočítat přísudky v KONKRÉTNÍ větě — rejstřík jen připomíná
+    // pravidlo, nedělá tu práci za něj. Pár úloh se ale ptá přímo na
+    // definici nebo na číslo, které je zároveň hranicí v pravidle (např.
+    // odpověď "2" u pravidla "2 a více přísudků") — ty mají vlastní `hints`.
+    hints: hints ?? [
       "Věta jednoduchá = 1 přísudek (1 sloveso jako základ)",
       "Souvětí = 2 a více přísudků (slovese spojených spojkami)",
       "Věta hlavní může stát sama, vedlejší závisí na hlavní",

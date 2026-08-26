@@ -434,6 +434,23 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(true);
   });
 
+  // Silný signál: možnost DEFINOVANÁ za "=" stačí sama, i bez druhého
+  // zmíněného distraktoru — na rozdíl od "Plzeň"/"Dole" (kde šlo o
+  // mimochodem zmíněnou souřadnici, ne definici), tady je "Věta jednoduchá"
+  // přímo definována stejně jako správná odpověď "Souvětí".
+  it("možnost definovaná za '=' stačí sama i s vymyšlenými distraktory navíc", () => {
+    const r = checkHintLeakage({
+      question: "Urči druh: 'Slunce svítí, ale je chladno.'",
+      correct_answer: "souvětí",
+      hints: [
+        "Věta jednoduchá = 1 přísudek (1 sloveso jako základ)",
+        "Souvětí = 2 a více přísudků (slovese spojených spojkami)",
+      ],
+      options: ["souvětí", "věta jednoduchá", "věta s přívlastkem", "věta rozšířená"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
   it("krátká nečíselná odpověď: '=' ve výkladovém příkladu není rovnost s odpovědí", () => {
     const r = checkHintLeakage({
       question: 'Doplň správnou předložku: "Sjel ___ kopce."',

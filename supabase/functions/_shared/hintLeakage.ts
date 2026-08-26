@@ -268,7 +268,26 @@ function hintsEnumerateOptions(
   // rejstřík nedělá — viz „Plzeň"/„Dole" v komentáři výše. Dva a víc už ano;
   // úplný výčet vyžadovat nejde, protože mezi možnostmi bývá vymyšlený
   // distraktor, který v katalogu pravidel nemá co dělat („neurčitý" čas).
-  return mentioned >= Math.min(2, others.length);
+  if (mentioned >= Math.min(2, others.length)) return true;
+
+  // Silnější signál: možnost VYSVĚTLENÁ za „=" stačí sama, i jen jedna.
+  // Binární klasifikace („Urči druh: 'Slunce svítí, ale je chladno.'" →
+  // souvětí) se často vyskytuje s vymyšlenými distraktory navíc pro count
+  // („věta s přívlastkem", „věta rozšířená") — ty žádný rejstřík krýt
+  // nepotřebuje, protože nikdo rozumný je nepovažuje za skutečnou alternativu.
+  // Klíčový rozdíl od „Plzeň"/„Dole": tam byla druhá možnost zmíněná JEN
+  // jako vedlejší souřadnice ve vysvětlující větě („leží dál na západ než
+  // Karlovy Vary"), tady je přímo DEFINOVANÁ („Věta jednoduchá = 1
+  // přísudek"). Marker „=" tenhle rozdíl spolehlivě pozná.
+  return others.some((o) => normHints.some((h) => hintDefinesOption(h, o)));
+}
+
+/** Je možnost v hintu přímo DEFINOVANÁ (za „=", ne jen mimochodem zmíněná)? */
+function hintDefinesOption(normHint: string, option: string): boolean {
+  const norm = normalize(option);
+  if (norm.length < 2) return false;
+  const escaped = norm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^|[\\s(,;])${escaped}\\s*=`).test(normHint);
 }
 
 /**
