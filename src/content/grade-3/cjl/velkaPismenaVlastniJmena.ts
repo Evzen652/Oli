@@ -41,7 +41,7 @@ const POOL_L2: Item[] = [
     e: "'Hora' obecně = každá hora → malé h. Krkonoše, Vltava, Karel jsou vlastní jména.",
     hints: [
       "Vlastní jméno = jméno konkrétní osoby, místa, řeky, hory → velké písmeno.",
-      "Když mluvíme o kopci obecně, bez konkrétního názvu, píšeme ho s malým písmenem.",
+      "Když mluvíme o kopci bez uvedení jeho konkrétního názvu, píšeme ho s malým písmenem.",
     ],
   },
   { q: "Věta: 'Jana a tomáš jdou do školy.' Které slovo je napsáno ŠPATNĚ?", a: "tomáš", opts: ["tomáš", "Jana", "školy", "jdou"], e: "Tomáš je jméno člověka → musí mít velké T. 'Školy' je obecné (malé s)." },
