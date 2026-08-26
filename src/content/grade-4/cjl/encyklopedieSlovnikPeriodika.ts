@@ -9,14 +9,20 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Co je encyklopedie?", a: "Příručka s abecedně seřazenými fakty o světě", opts: ["Příručka s abecedně seřazenými fakty o světě", "Příručka s výkladem slov", "Novinový deník", "Sbírka pohádek"], e: "Encyklopedie shromažďuje fakta o světě — o přírodě, dějinách, lidech — a hesla řadí podle abecedy, aby se snadno hledala. Výklad slov najdeme ve slovníku a pohádky ve sbírce příběhů, ne v encyklopedii." },
   { q: "Co je slovník?", a: "Příručka s výkladem nebo překladem slov", opts: ["Příručka s výkladem nebo překladem slov", "Příručka s fakty o světě", "Novinový deník", "Sbírka básní"], e: "Slovník se zabývá slovy — buď vysvětluje, co znamenají, nebo je překládá do jiného jazyka. Fakta o světě uvádí encyklopedie, ne slovník." },
   { q: "Co jsou periodika?", a: "Tiskoviny vycházející opakovaně (noviny, časopisy)", opts: ["Tiskoviny vycházející opakovaně (noviny, časopisy)", "Jednorázové knihy", "Encyklopedie", "Slovníky"], e: "Slovo periodikum souvisí se slovem perioda neboli pravidelný úsek — periodika proto vycházejí opakovaně, třeba každý den nebo týden. Kniha, encyklopedie ani slovník nevycházejí pravidelně znovu a znovu." },
-  { q: "Jak jsou hesla v encyklopedii seřazena?", a: "abecedně", opts: ["abecedně", "podle velikosti tématu", "chronologicky", "tematicky vždy na skupiny"], e: "Hesla jsou seřazena podle abecedy, abys je našel stejně rychle jako slovo ve slovníku. Kdyby byla řazena podle velikosti nebo času, musel bys listovat celou knihou, než bys heslo objevil." },
-  { q: "Jak často vycházejí noviny?", a: "Denně", opts: ["Denně", "Týdně", "Měsíčně", "Ročně"], e: "Noviny přinášejí čerstvé zprávy o tom, co se právě stalo, proto vycházejí každý den. Časopisy vycházejí řidčeji (týdně nebo měsíčně), protože nepřinášejí tak rychle se měnící zprávy." },
+  { q: "Jak jsou hesla v encyklopedii seřazena?", a: "abecedně", opts: ["abecedně", "podle velikosti tématu", "chronologicky", "tematicky vždy na skupiny"], e: "Hesla jsou seřazena podle abecedy, abys je našel stejně rychle jako slovo ve slovníku. Kdyby byla řazena podle velikosti nebo času, musel bys listovat celou knihou, než bys heslo objevil.", hints: [
+    "Přemýšlej, jaký systém řazení používáme i ve slovníku nebo v telefonním seznamu — něco, co jde snadno najít podle prvního písmene.",
+    "Řazení podle velikosti tématu nebo podle času by ti nepomohlo najít konkrétní heslo rychle.",
+  ] },
+  { q: "Jak často vycházejí noviny?", a: "Denně", opts: ["Denně", "Týdně", "Měsíčně", "Ročně"], e: "Noviny přinášejí čerstvé zprávy o tom, co se právě stalo, proto vycházejí každý den. Časopisy vycházejí řidčeji (týdně nebo měsíčně), protože nepřinášejí tak rychle se měnící zprávy.", hints: [
+    "Noviny přinášejí čerstvé zprávy o tom, co se PRÁVĚ stalo — jak často se svět kolem nás mění natolik, aby to stálo za nové vydání?",
+    "Časopisy vycházejí řidčeji než noviny — o kolik častěji tedy musí vycházet noviny?",
+  ] },
   { q: "Jak často vycházejí časopisy?", a: "Týdně nebo měsíčně", opts: ["Týdně nebo měsíčně", "Denně", "Ročně", "Jednou za 10 let"], e: "Časopis vychází méně často než noviny — obvykle jednou za týden nebo měsíc — a věnuje se tématu podrobněji. Denně vycházejí noviny, ne časopisy." },
   { q: "K čemu slouží výkladový slovník?", a: "Vysvětluje, co slova znamenají", opts: ["Vysvětluje, co slova znamenají", "Překládá slova do jiného jazyka", "Uvádí fakta o světě", "Poskytuje synonyma"], e: "Výkladový slovník u každého slova napíše, co znamená — jako bys ho někomu vysvětloval. Překlad do cizího jazyka dělá slovník překladový a fakta o světě najdeš v encyklopedii." },
   { q: "K čemu slouží překladový slovník?", a: "Překládá slova z jednoho jazyka do druhého", opts: ["Překládá slova z jednoho jazyka do druhého", "Vysvětluje, co slova znamenají", "Uvádí fakta o světě", "Uvádí synonyma a antonyma"], e: "Překladový slovník u slova v jednom jazyce uvádí, jak se řekne v jazyce druhém — třeba česky 'pes' a anglicky 'dog'. Význam slova ve stejném jazyce vysvětluje slovník výkladový." },
@@ -31,7 +37,10 @@ const POOL_L1: QA[] = [
 ];
 
 const POOL_L2: QA[] = [
-  { q: "Jaký je rozdíl mezi encyklopedií a slovníkem?", a: "Encyklopedie = fakty o světě; slovník = výklad nebo překlad slov", opts: ["Encyklopedie = fakty o světě; slovník = výklad nebo překlad slov", "Jsou to stejné věci", "Encyklopedie je menší; slovník větší", "Slovník má abecední řazení, encyklopedie ne"], e: "Encyklopedie vypráví o věcech a jevech ve světě, zatímco slovník se zabývá samotnými slovy — vysvětluje je nebo překládá. Nejde o velikost ani o řazení, abecedně bývají obě." },
+  { q: "Jaký je rozdíl mezi encyklopedií a slovníkem?", a: "Encyklopedie = fakty o světě; slovník = výklad nebo překlad slov", opts: ["Encyklopedie = fakty o světě; slovník = výklad nebo překlad slov", "Jsou to stejné věci", "Encyklopedie je menší; slovník větší", "Slovník má abecední řazení, encyklopedie ne"], e: "Encyklopedie vypráví o věcech a jevech ve světě, zatímco slovník se zabývá samotnými slovy — vysvětluje je nebo překládá. Nejde o velikost ani o řazení, abecedně bývají obě.", hints: [
+    "Jedna z těch dvou knih vypráví o věcech a jevech ve světě, druhá se zabývá samotnými slovy — jejich významem nebo převodem do jiného jazyka.",
+    "Není to o velikosti knihy ani o tom, jestli mají abecední řazení — obě ho mívají.",
+  ] },
   { q: "Jaký zdroj použijeme pro překlad slova 'house' z angličtiny?", a: "Překladový slovník (anglicko-český)", opts: ["Překladový slovník (anglicko-český)", "Encyklopedie", "Noviny", "Výkladový slovník češtiny"], e: "Když chceme slovo z cizího jazyka říct česky, potřebujeme překladový slovník, který spojuje dva jazyky. Výkladový slovník češtiny by 'house' nenašel a encyklopedie ani noviny slova nepřekládají." },
   { q: "Jaký je rozdíl mezi novinami a časopisem?", a: "Noviny = denní tisk; časopisy = týdenní nebo měsíční", opts: ["Noviny = denní tisk; časopisy = týdenní nebo měsíční", "Jsou to stejné věci", "Noviny jsou větší; časopisy menší", "Časopisy jsou denní; noviny týdenní"], e: "Hlavní rozdíl je v tom, jak často vycházejí: noviny každý den, časopisy obvykle jednou za týden nebo měsíc. Nejde o velikost a pořadí v poslední možnosti je obrácené." },
   { q: "Co je Slovník spisovné češtiny?", a: "Výkladový slovník s normativními tvary a pravidly", opts: ["Výkladový slovník s normativními tvary a pravidly", "Překladový slovník", "Encyklopedie českých autorů", "Sbírka básní"], e: "Slovník spisovné češtiny vysvětluje význam českých slov a ukazuje jejich správné spisovné tvary — je to slovník výkladový. Nepřekládá do cizích jazyků ani nepopisuje autory jako encyklopedie." },
@@ -56,20 +65,29 @@ const POOL_L3: QA[] = [
   { q: "Proč se může časopis věnovat tématu podrobněji než noviny?", a: "Vychází méně často, takže má víc času na přípravu obsahu", opts: ["Vychází méně často, takže má víc času na přípravu obsahu", "Je menší, takže se do něj vejde méně", "Nemá redaktory", "Nepíše o aktuálních věcech"], e: "Časopis vychází jen jednou za týden nebo měsíc, proto může redakce věnovat víc času přípravě hlubších článků než denní noviny." },
   { q: "Kniha vychází v nových vydáních každý rok s novými objevy, ale pořád má formu abecedních hesel. Je to spíš:", a: "Encyklopedie (forma zůstává — abecední hesla o faktech)", opts: ["Encyklopedie (forma zůstává — abecední hesla o faktech)", "Periodikum, protože vychází pravidelně", "Slovník, protože má hesla", "Noviny, protože je aktuální"], e: "O tom, zda je něco encyklopedie, rozhoduje forma (abecední hesla s fakty), ne to, jak často vychází nové vydání." },
   { q: "Hledáš recept na dnešní večeři a chceš vědět aktuální ceny potravin v obchodě. Kam se podíváš?", a: "Do novin nebo časopisu (aktuální, pravidelně vycházející informace)", opts: ["Do novin nebo časopisu (aktuální, pravidelně vycházející informace)", "Do encyklopedie", "Do překladového slovníku", "Do výkladového slovníku"], e: "Aktuální ceny a novinky hledáme v periodikách, protože ta vycházejí pravidelně a přinášejí čerstvé informace." },
-  { q: "Máš dvě knihy: jednu s výkladem 50 000 českých slov, druhou s fakty o všech státech světa. Který zdroj použiješ, když nevíš, co znamená slovo 'monzun'?", a: "Slovník s výkladem slov (výkladový slovník)", opts: ["Slovník s výkladem slov (výkladový slovník)", "Knihu s fakty o státech (encyklopedii)", "Obě knihy stejně", "Ani jednu, hledal bys v novinách"], e: "Když nevíš, co slovo znamená, potřebuješ výkladový slovník. Encyklopedie s fakty o státech by ti význam slova nevysvětlila." },
+  { q: "Máš dvě knihy: jednu s výkladem 50 000 českých slov, druhou s fakty o všech státech světa. Který zdroj použiješ, když nevíš, co znamená slovo 'monzun'?", a: "Slovník s výkladem slov (výkladový slovník)", opts: ["Slovník s výkladem slov (výkladový slovník)", "Knihu s fakty o státech (encyklopedii)", "Obě knihy stejně", "Ani jednu, hledal bys v novinách"], e: "Když nevíš, co slovo znamená, potřebuješ výkladový slovník. Encyklopedie s fakty o státech by ti význam slova nevysvětlila.", hints: [
+    "Potřebuješ vysvětlit VÝZNAM slova, ne zjistit fakta o zemích — která z těch dvou knih ti to umožní?",
+    "Noviny by ti definici slova taky nedaly — vyřaď tuhle možnost hned.",
+  ] },
   { q: "Proč encyklopedie řadí hesla abecedně, i když by šlo řadit podle témat (příroda, historie, věda)?", a: "Abecední řazení je rychlejší a jednodušší pro vyhledávání konkrétního hesla", opts: ["Abecední řazení je rychlejší a jednodušší pro vyhledávání konkrétního hesla", "Abeceda je jediné možné řazení", "Témata se nedají řadit", "Abecední řazení je zákonem povinné"], e: "Když známe první písmeno hesla, najdeme ho rychle, i když neznáme přesné téma, do kterého patří." },
-  { q: "Chceš vědět, jak se anglicky řekne 'strom', a taky, co slovo 'strom' znamená v biologii. Které dva zdroje potřebuješ?", a: "Překladový slovník (anglicky) a výkladový slovník nebo encyklopedii (biologický význam)", opts: ["Překladový slovník (anglicky) a výkladový slovník nebo encyklopedii (biologický význam)", "Jen překladový slovník", "Jen výkladový slovník", "Jen noviny"], e: "Na překlad slova potřebuješ překladový slovník, na biologický výklad výkladový slovník nebo encyklopedii — každý úkol vyžaduje jiný zdroj." },
-  { q: "Proč jsou noviny periodikum, ale kniha, i když má 500 stran, periodikum není?", a: "Noviny vycházejí opakovaně (denně), kniha vyjde jednou", opts: ["Noviny vycházejí opakovaně (denně), kniha vyjde jednou", "Noviny jsou kratší než kniha", "Kniha nemá abecední řazení", "Noviny mají barevné obrázky"], e: "O periodiku rozhoduje opakované vydávání, ne délka nebo vzhled — noviny vycházejí znovu a znovu, kniha jen jednou." },
+  { q: "Chceš vědět, jak se anglicky řekne 'strom', a taky, co slovo 'strom' znamená v biologii. Které dva zdroje potřebuješ?", a: "Překladový slovník (anglicky) a výkladový slovník nebo encyklopedii (biologický význam)", opts: ["Překladový slovník (anglicky) a výkladový slovník nebo encyklopedii (biologický význam)", "Jen překladový slovník", "Jen výkladový slovník", "Jen noviny"], e: "Na překlad slova potřebuješ překladový slovník, na biologický výklad výkladový slovník nebo encyklopedii — každý úkol vyžaduje jiný zdroj.", hints: [
+    "Máš tu dva různé úkoly — přeložit slovo do jiného jazyka a zjistit jeho odborný význam. Zvládne to jeden jediný typ zdroje, nebo potřebuješ dva různé?",
+    "Noviny by ti ani jeden z těch úkolů nesplnily — vyřaď tuhle možnost hned.",
+  ] },
+  { q: "Proč jsou noviny periodikum, ale kniha, i když má 500 stran, periodikum není?", a: "Noviny vycházejí opakovaně (denně), kniha vyjde jednou", opts: ["Noviny vycházejí opakovaně (denně), kniha vyjde jednou", "Noviny jsou kratší než kniha", "Kniha nemá abecední řazení", "Noviny mají barevné obrázky"], e: "O periodiku rozhoduje opakované vydávání, ne délka nebo vzhled — noviny vycházejí znovu a znovu, kniha jen jednou.", hints: [
+    "Přemýšlej, kolikrát každá z těch dvou věcí vůbec vznikne — jednou navždy, nebo se pořád tiskne nové vydání?",
+    "Není to o délce ani o vzhledu — to je jen rozptylující detail.",
+  ] },
 ];
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Encyklopedie = fakta o světě, abecedně; Slovník = výklad nebo překlad slov",
       "Periodika = vycházejí opakovaně (noviny denně, časopisy týdně/měsíčně)",
       "Výkladový slovník = co slovo znamená; překladový = jak se řekne v jiném jazyce",
