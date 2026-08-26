@@ -16,7 +16,7 @@ export interface AiCallShape {
   messages: Array<{ role: string; content: string }>;
   tools?: unknown[];
   toolChoice?: unknown;
-  model: { groq: string; lovable: string };
+  model: { lovable: string };
   temperature?: number;
   maxTokens?: number;
 }
@@ -124,7 +124,7 @@ export function createTutorChatHandler(deps: TutorChatDeps) {
 
       const response = await deps.aiCall({
         messages,
-        model: { groq: "llama-3.3-70b-versatile", lovable: "google/gemini-3-flash-preview" },
+        model: { lovable: "google/gemini-3-flash-preview" },
         temperature: 0.4,
         maxTokens: 300,
       });

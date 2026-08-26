@@ -1,9 +1,8 @@
 // generate-image — vyrobí obrázek pro vizuální cvičení (image_select, diagram_label).
 //
 // Provider routing:
-//   1) GROQ — nemá image generation, skip
-//   2) LOVABLE_API_KEY — Lovable Gateway (DALL-E 3 / OpenAI image)
-//   3) OPENAI_API_KEY — fallback přímý OpenAI
+//   1) LOVABLE_API_KEY — Lovable Gateway (DALL-E 3 / OpenAI image)
+//   2) OPENAI_API_KEY — fallback přímý OpenAI
 //
 // Vstup:
 //   { prompt: string, skill_id?: string, tags?: string[], size?: "1024x1024" }

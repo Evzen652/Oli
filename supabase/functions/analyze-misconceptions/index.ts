@@ -228,9 +228,11 @@ Pokud ne, vrať confidence < 0.4.
           ],
           tools: [detectionTool],
           toolChoice: { type: "function", function: { name: "report_misconception" } },
+          // Ostatní hodnotící AI funkce (session-evaluation, weekly-report) jedou
+          // na Gemini a Groq vůbec nevolají — sjednoceno, Groq je z projektu
+          // pryč úplně (2026-08-26, produktové rozhodnutí — slabý na tyhle úkoly).
           model: {
-            groq: "llama-3.3-70b-versatile",
-            lovable: "openai/gpt-5-mini",
+            lovable: "google/gemini-2.5-flash",
           },
         });
 

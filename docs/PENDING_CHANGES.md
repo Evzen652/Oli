@@ -40,6 +40,14 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - AI prompty pro rodičovské texty nevynucovaly češtinu → v ostré DB je uloženo ruské „части" místo „části". Opraveno pro nově generované texty.
 - `mapAuthError` nerozlišoval serverovou chybu od chyby ve vstupu — rodič u 500 hledal chybu u sebe.
 
+## ✅ Groq odstraněn z projektu — produktové rozhodnutí (2026-08-26)
+> Rozhodnutí uživatele: „grok už nechci dále používat...je slabý na tyto úkoly." PR #21.
+
+- ✅ **Groq odstraněn ze všech aktivních cest**: sdílený router `_shared/aiCall.ts` (importovaly `ai-tutor`, `tutor-chat`, `analyze-misconceptions`), i vlastní nezávislý fallback řetězec v `ai-curriculum`. Zůstává Google AI → Lovable Gateway, stejně jako u `session-evaluation`/`weekly-report`.
+- 🔎 **Zjištění před opravou**: jediná Groq-cesta běžící bez feature flagu byla `analyze-misconceptions` (rodičovský dashboard) — `ai-tutor`/`tutor-chat`/`ai-curriculum` jsou dnes vypnuté flagem.
+- 🟡 **Vědomě nedotčeno**: `evaluate-essay/handler.ts` (mizí celý s #20 — oprava by byla zahozená práce), `GROQ_API_KEY` secret v Supabase (bezpečné smazat, ale mimo repo).
+- **Ověřeno**: typecheck 0, `npx vitest run` 115/118 souborů, 4713/4718 testů, beze změny oproti `main`.
+
 ## ✅ Technický dluh: reálný bug ve skóre + typecheck baseline 13 → 0 (2026-08-25)
 - 🐞 **Anonymní dítě dostávalo skóre 0, když mu vypršel čas sezení.** `useSessionDispatch` počítal skóre na TŘECH místech. `dispatch` je stabilní callback (deps `[markAssignmentCompleted]`), takže četl `taskResults` zmrazené z prvního renderu — vždy prázdné pole. Cesta je reálná: `evaluateStop` vrací STOP_2 při vyčerpání času (8 min pro 2.–3. ročník), takže dítě, které se do limitu nevejde, mělo úkol zapsaný s nulou bez ohledu na výsledky. Sjednoceno do jednoho helperu nad refem (ten v souboru už existoval — přesně kvůli téhle pasti, jen ho `dispatch` nepoužíval). **2 regresní testy ověřeny i proti staré verzi: `expected 0 to be greater than 0`.**
 - ✅ **exhaustive-deps 18 → 9.** Opraveny všechny uživatelsky viditelné. `SessionView` dostal destrukturovaný stabilní `handleGradeSelect`; `AssignmentList.fetchAssignments` obalen `useCallback`; `useChildStats` má `mock` v deps a `ChildHomePage` ho memoizuje (bez toho by demo režim spadl do nekonečné smyčky renderů). U `SessionEndSummary` a `AssignmentCreator` jsou prázdné deps ZÁMĚR — doplněny disable komentáře s vysvětlením místo falešné opravy. Zbylých 9 je admin-only.

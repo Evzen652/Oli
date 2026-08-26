@@ -4,14 +4,17 @@
 
 Sdílený wrapper pro volání AI bran. Podporuje dva providery:
 
-| Provider | Klíč v Supabase secrets | Endpoint                                          | Default model            |
-| -------- | ----------------------- | ------------------------------------------------- | ------------------------ |
-| Groq     | `GROQ_API_KEY`          | `https://api.groq.com/openai/v1/chat/completions` | `llama-3.3-70b-versatile`|
-| Lovable  | `LOVABLE_API_KEY`       | `https://ai.gateway.lovable.dev/v1/chat/completions` | `google/gemini-3-flash-preview` |
+| Provider  | Klíč v Supabase secrets            | Endpoint                                             | Default model                   |
+| --------- | ----------------------------------- | ----------------------------------------------------- | -------------------------------- |
+| Google AI | `GEMINI_API_KEY` / `GOOGLE_AI_KEY`  | `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions` | podle volajícího (`model.google`) |
+| Lovable   | `LOVABLE_API_KEY`                   | `https://ai.gateway.lovable.dev/v1/chat/completions`  | `google/gemini-3-flash-preview`  |
+
+> Groq byl z projektu odstraněn (2026-08-26, produktové rozhodnutí — slabý na tyhle úkoly).
+> Pokud narazíš na starý `GROQ_API_KEY` secret v Supabase, je bezpečné ho smazat.
 
 ### Routing pravidla
 
-1. Pokud je nastaven `GROQ_API_KEY` → Groq (preferred — rychlejší, často levnější)
+1. Pokud je nastaven `GEMINI_API_KEY`/`GOOGLE_AI_KEY` A volající zadá `model.google` → Google AI (fallback na Lovable při chybě)
 2. Else `LOVABLE_API_KEY` → Lovable Gateway
 3. Else throw — žádný provider
 
@@ -25,7 +28,7 @@ Tím je API klíč chráněn — admin vidí jen edge function URL.
 Přes Supabase CLI:
 
 ```bash
-npx supabase secrets set GROQ_API_KEY=gsk_...
+npx supabase secrets set GEMINI_API_KEY=...
 # nebo
 npx supabase secrets set LOVABLE_API_KEY=lov_...
 ```
@@ -50,8 +53,8 @@ const response = await aiCall({
   tools: myTools,
   toolChoice: { type: "function", function: { name: "..." } },
   model: {
-    groq: "llama-3.3-70b-versatile",
     lovable: "openai/gpt-5-mini",
+    // google: "gemini-2.0-flash", // volitelně, pokud chceš Google AI jako primární
   },
 });
 
@@ -76,6 +79,6 @@ Použij:
 ```ts
 const r = await aiCall({
   messages, tools, toolChoice,
-  model: { groq: "llama-3.3-70b-versatile", lovable: "openai/gpt-5-mini" }
+  model: { lovable: "openai/gpt-5-mini" }
 });
 ```

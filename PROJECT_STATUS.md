@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-26 — Groq odstraněn z projektu (produktové rozhodnutí):
+- **Rozhodnutí uživatele:** „grok už nechci dále používat...je slabý na tyto úkoly." → PR #21 (`fix/analyze-misconceptions-drop-groq`, z `main`).
+- ✅ **Zjištění před opravou:** Groq nebyl po smazání `evaluate-essay` (#20) úplně mimo hru. Sdílený router `_shared/aiCall.ts` (Groq výchozí preferovaný provider) pořád importovaly `ai-tutor`, `tutor-chat`, `analyze-misconceptions`; `ai-curriculum` měl navíc vlastní nezávislý Groq fallback řetězec. Jediná z nich běžící **bez feature flagu** (rodičovský dashboard, `ChildMisconceptions`) byla `analyze-misconceptions` — ostatní dvě jsou dnes vypnuté (`adminRuntimeAiGenerator`, `studentChat`).
+- ✅ **Groq odstraněn ze všech aktivních cest:** `aiCall.ts` (Google AI → Lovable Gateway, žádný Groq), `ai-tutor` (3 volání), `tutor-chat/handler.ts`, `ai-curriculum` (vlastní řetězec zkrácen na Gemini → Lovable), `analyze-misconceptions` (model sjednocen na `google/gemini-2.5-flash`, stejně jako `weekly-report`). Aktualizovány i `_shared/README.md` a komentář v `generate-image`.
+- 🟡 **Vědomě nedotčeno:** `evaluate-essay/handler.ts` pořád má Groq v model mapě, ale celá funkce mizí s #20 — oprava by byla zahozená práce. `GROQ_API_KEY` secret v Supabase teď nikdo v repu nepoužívá — bezpečné smazat, ale to je akce mimo repo (Supabase dashboard).
+- **Ověřeno:** typecheck 0 chyb, `npx vitest run` 115/118 souborů, 4713/4718 testů — beze změny oproti `main` (žádný test nezávisel na tvaru `model.groq`).
+
 ### Session 2026-08-25 (pokračování 5) — technický dluh: reálný bug ve skóre + typecheck na 0:
 - 🐞 **Anonymní dítě dostávalo skóre 0, když mu vypršel čas sezení.** `useSessionDispatch` počítal skóre anonymního denního úkolu na TŘECH místech: cleanup na unmount používal ref (správně), `handleAnswerSubmit` vycházel správně jen náhodou (recreatuje se na každou změnu `session`, která jde v páru se zápisem výsledku), ale `dispatch` je stabilní callback (deps `[markAssignmentCompleted]`) a četl proto `taskResults` zmrazené z prvního renderu — **vždy prázdné pole**. Cesta je reálná, ne teoretická: `evaluateStop` vrací STOP_2 při vyčerpání času sezení (8 min pro 2.–3. ročník), takže dítě, které se do limitu nevejde, mělo úkol zapsaný s nulou bez ohledu na to, kolik úloh vyřešilo správně. Sjednoceno do jediného helperu `completeAnonTask` nad refem — ten ref v souboru **už existoval**, zavedený přesně kvůli téhle pasti („cleanup vidí jen stale closure"), jen ho `dispatch` nepoužíval.
   - **Regresní testy ověřeny proti staré verzi**: po dočasném vrácení původního kódu hlásí `expected 0 to be greater than 0` a `expected +0 to be close to 0.75`. Test bez tohohle ověření by nic nehlídal.
