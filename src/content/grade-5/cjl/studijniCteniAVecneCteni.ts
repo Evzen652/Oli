@@ -118,7 +118,7 @@ const POOL_L1: PracticeTask[] = [
       "čtení pro zábavu",
       "přehledové přehlédnutí",
     ],
-    hints: ["Referát = musím pochopit a zapamatovat hodně = studijní čtení."],
+    hints: ["Referát vyžaduje, abys hodně informací pochopil/a do hloubky a zapamatoval/a si je — stačí k tomu jen rychlé vyhledání jedné informace?"],
   },
   {
     question: "Jak se liší studijní a věcné čtení v rychlosti?",
@@ -140,7 +140,7 @@ const POOL_L1: PracticeTask[] = [
       "přehledové čtení celého webu",
       "čtení nahlas",
     ],
-    hints: ["Recept = konkrétní informace → věcné čtení."],
+    hints: ["Potřebuješ pochopit a zapamatovat si celý text, nebo jen najít konkrétní údaje (ingredience, množství)?"],
   },
   {
     question: "Jak podtrháváme při studijním čtení?",
@@ -173,7 +173,7 @@ const POOL_L1: PracticeTask[] = [
       "čtení pro zábavu",
       "záleží na délce definice",
     ],
-    hints: ["Slovník = vyhledávám konkrétní informaci = věcné čtení."],
+    hints: ["Potřebuješ přečíst celý slovník od začátku, nebo jen najít a přečíst jedno konkrétní heslo?"],
   },
 ];
 
@@ -187,7 +187,7 @@ const POOL_L2: PracticeTask[] = [
       "přečtu jen první větu každého odstavce",
       "záleží na délce článku",
     ],
-    hints: ["Test = musím to znát = studijní čtení s poznámkami."],
+    hints: ["Na test musíš informace pochopit a zapamatovat si je dlouhodobě — stačí k tomu rychlé přelétnutí nadpisů, nebo první věty?"],
   },
   {
     question: "Hledám, ve které kapitole učebnice je téma 'zlomky'. Jak postupuji?",
@@ -198,7 +198,7 @@ const POOL_L2: PracticeTask[] = [
       "zeptám se kamaráda",
       "záleží na předmětu",
     ],
-    hints: ["Obsah učebnice = rychlé vyhledání → věcné čtení."],
+    hints: ["Nemusíš číst celou učebnici, abys našel/našla jednu kapitolu — jaký nástroj v knize ti pomůže rychle najít stránku?"],
   },
   {
     question: "Jaký je účel opakovaného čtení při studiu?",
@@ -264,7 +264,7 @@ const POOL_L2: PracticeTask[] = [
       "přehledové čtení",
       "záleží na tématu",
     ],
-    hints: ["Encyklopedie = vyhledávám konkrétní informaci = věcné čtení."],
+    hints: ["Chceš přečíst celou encyklopedii od začátku, nebo jen vyhledat a přečíst jedno jediné vybrané slovo pomocí rejstříku?"],
   },
   {
     question: "Co je SQ3R metoda studijního čtení?",
@@ -286,7 +286,7 @@ const POOL_L2: PracticeTask[] = [
       "přehledové čtení celého webu",
       "záleží na webu",
     ],
-    hints: ["Telefonní číslo = konkrétní informace → věcné čtení."],
+    hints: ["Potřebuješ pochopit celý obsah stránky, nebo jen najít jeden konkrétní údaj?"],
   },
   {
     question: "Co je myšlenková mapa a jak pomáhá při studijním čtení?",
@@ -465,7 +465,7 @@ const POOL_L3: PracticeTask[] = [
       "vzorkování je vždy pomalejší",
       "záleží na délce",
     ],
-    hints: ["Vzorkování = náhodně. Skimming = systematicky celý text."],
+    hints: ["Jedna z těch dvou metod čte jen NÁHODNĚ vybrané kousky, druhá prochází text METODICKY od začátku do konce — která je která?"],
   },
 ];
 
