@@ -41,7 +41,7 @@ const POOL_L1: PracticeTask[] = [
       "Dobrý den příteli,",
       "Hej,",
     ],
-    hints: ["Úřední oslovení: Vážený pane řediteli, / Vážená paní učitelko,..."],
+    hints: ["Úřední dopis je formální — jak bys zdvořile oslovil/a cizího dospělého, ne jako kamaráda?"],
   },
   {
     question: "Co musí obsahovat závěr úředního dopisu?",
@@ -74,7 +74,7 @@ const POOL_L1: PracticeTask[] = [
       "jen datum",
       "jen pozdrav",
     ],
-    hints: ["Přihláška: kdo se hlásí, kam, kdy – osobní data + záměr."],
+    hints: ["Přemýšlej, co všechno potřebuje vědět ten, kdo přihlášku dostane, aby poznal, kdo se hlásí a na co se hlásí."],
   },
   {
     question: "Kde se uvádí datum v úředním dopisu?",
@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
       "v závěru za podpisem",
       "datum se neuvádí",
     ],
-    hints: ["Datum = v pravé části záhlaví nebo pod adresou odesilatele."],
+    hints: ["Datum bývá v horní části dopisu, blízko údajů o tom, kdo dopis píše — zkus si vybavit, kde přesně to bývá napsané."],
   },
   {
     question: "Jaký tón (styl) má úřední dopis?",
@@ -286,7 +286,7 @@ const POOL_L2: PracticeTask[] = [
       "podpis → záhlaví → text",
       "záleží na osobě",
     ],
-    hints: ["Pořadí: záhlaví, předmět, oslovení, obsah, závěr, podpis."],
+    hints: ["Přemýšlej, co logicky přijde jako první (kdo komu píše) a co jako úplně poslední (kdo dopis napsal)."],
   },
   {
     question: "Co uvádíme v záhlaví na levé straně?",
@@ -366,7 +366,7 @@ const POOL_L3: PracticeTask[] = [
       "Pane starosta!",
       "Dobrý den pane,",
     ],
-    hints: ["Vážený pane + funkce v 5. pádě (vokativ)."],
+    hints: ["Přemýšlej, jak zdvořile oslovit muže ve veřejné funkci — jaký přívlastek se v úředních dopisech používá, a v jakém pádě se jeho funkce skloňuje?"],
   },
   {
     question: "Jak zakončit žádost profesionálně?",
@@ -465,7 +465,7 @@ const POOL_L3: PracticeTask[] = [
       "volná žádost nemá strukturu",
       "tiskopis neobsahuje podpis",
     ],
-    hints: ["Tiskopis = políčka k vyplnění. Volná žádost = vlastní formulace."],
+    hints: ["Jeden z těch dvou dokumentů má už předem připravená políčka k vyplnění, druhý musíš napsat celý sám od začátku svými slovy."],
   },
 ];
 
