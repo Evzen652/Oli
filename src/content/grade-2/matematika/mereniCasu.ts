@@ -25,13 +25,13 @@ interface PoolItem {
  */
 
 const POOL_L1: PoolItem[] = [
-  { question: "Kolik minut má 1 hodina?", correct: "60", distractors: ["30", "100", "24"], hint: "Na hodinách je 60 dílků — každý dílek je 1 minuta.", solution: "1 hodina má 60 minut — ručičky projdou všech 60 dílků." },
-  { question: "Kolik hodin má 1 den?", correct: "24", distractors: ["12", "60", "48"], hint: "Den má část denní a část noční — dohromady 24 hodin.", solution: "1 den má 24 hodin — 12 hodin dne a 12 hodin noci." },
+  { question: "Kolik minut má 1 hodina?", correct: "60", distractors: ["30", "100", "24"], hint: "Spočítej všechny malé dílky na ciferníku hodin dokola — kolik jich je celkem?", solution: "1 hodina má 60 minut — ručičky projdou všech 60 dílků." },
+  { question: "Kolik hodin má 1 den?", correct: "24", distractors: ["12", "60", "48"], hint: "Den má část denní a část noční — kolik hodin dohromady uplyne, než se ciferník oběhne dvakrát?", solution: "1 den má 24 hodin — 12 hodin dne a 12 hodin noci." },
   { question: "Ve kolik hodin je poledne?", correct: "12", distractors: ["11", "24", "6"], hint: "Poledne je uprostřed dne — kdy je slunce nejvýš?", solution: "Poledne je v 12 hodin — přesně uprostřed dne." },
   { question: "Ve kolik hodin je půlnoc?", correct: "0", distractors: ["12", "24", "6"], hint: "Půlnoc je uprostřed noci — na hranici mezi dvěma dny.", solution: "Půlnoc je v 0 hodin — začíná nový den." },
   { question: "Kolik sekund má 1 minuta?", correct: "60", distractors: ["100", "30", "10"], hint: "Minuta má stejný počet sekund jako hodina má minut.", solution: "1 minuta má 60 sekund." },
-  { question: "60 minut je kolik hodin?", correct: "1", distractors: ["2", "6", "10"], hint: "1 hodina = 60 minut. Takže 60 minut = právě 1 hodina.", solution: "60 minut = 1 hodina — ručičky udělaly celé kolo." },
-  { question: "Kolik dopoledních hodin je do poledne?", correct: "12", distractors: ["6", "24", "10"], hint: "Od 0 do 12 — kolik hodin uběhne?", solution: "Od půlnoci do poledne uběhne 12 hodin." },
+  { question: "60 minut je kolik hodin?", correct: "1", distractors: ["2", "6", "10"], hint: "Zkus si vzpomenout, kolik minut má celá jedna hodina — pak porovnej se zadáním.", solution: "60 minut = 1 hodina — ručičky udělaly celé kolo." },
+  { question: "Kolik dopoledních hodin je do poledne?", correct: "12", distractors: ["6", "24", "10"], hint: "Ciferník hodin má čísla napsaná kolem dokola od jedné do dvanácti — od půlnoci do poledne uplyne přesně jeden celý oběh malé ručičky.", solution: "Od půlnoci do poledne uběhne 12 hodin." },
   { question: "Co je delší: 1 minuta nebo 1 sekunda?", correct: "1 minuta", distractors: ["1 sekunda", "stejně dlouhé", "nelze porovnat"], hint: "Kolik sekund má 1 minuta?", solution: "1 minuta = 60 sekund, takže je delší než 1 sekunda." },
 ];
 
@@ -39,9 +39,9 @@ const POOL_L2: PoolItem[] = [
   { question: "Kolik minut je půl hodiny?", correct: "30", distractors: ["15", "60", "45"], hint: "Půl hodiny = polovina z 60 minut. Kolik je 60 ÷ 2?", solution: "Půl hodiny = 60 ÷ 2 = 30 minut." },
   { question: "Kolik minut je čtvrt hodiny?", correct: "15", distractors: ["30", "20", "10"], hint: "Čtvrt hodiny = čtvrtina z 60 minut. Kolik je 60 ÷ 4?", solution: "Čtvrt hodiny = 60 ÷ 4 = 15 minut." },
   { question: "Kolik minut je třičtvrtě hodiny?", correct: "45", distractors: ["30", "60", "40"], hint: "Třičtvrtě = 3 čtvrthodiny. Každá má 15 minut. Kolik je 3 × 15?", solution: "Třičtvrtě hodiny = 3 × 15 = 45 minut." },
-  { question: "30 minut je...?", correct: "půl hodiny", distractors: ["čtvrt hodiny", "celá hodina", "třičtvrtě hodiny"], hint: "30 minut = polovina z 60 minut. Jak se říká polovině hodiny?", solution: "30 minut = půl hodiny — to je polovina z 60 minut." },
+  { question: "30 minut je...?", correct: "půl hodiny", distractors: ["čtvrt hodiny", "celá hodina", "třičtvrtě hodiny"], hint: "30 minut je polovina z 60 minut — jak se česky říká polovině tohoto času?", solution: "30 minut = půl hodiny — to je polovina z 60 minut." },
   { question: "45 minut je kolik čtvrtin hodiny?", correct: "3", distractors: ["4", "2", "45"], hint: "Každá čtvrthodina má 15 minut. Kolikrát se vejde 15 do 45?", solution: "45 minut = 3 čtvrthodiny, protože 3 × 15 = 45." },
-  { question: "15 minut je kolik čtvrtin hodiny?", correct: "1", distractors: ["2", "4", "15"], hint: "1 čtvrthodina = 15 minut. Kolik čtvrtin je 15 minut?", solution: "15 minut = 1 čtvrthodina." },
+  { question: "15 minut je kolik čtvrtin hodiny?", correct: "1", distractors: ["2", "4", "15"], hint: "Čtvrthodina má 15 minut. Zeptej se: kolikrát se čtvrthodina vejde do zadaného počtu minut?", solution: "15 minut = 1 čtvrthodina." },
   { question: "Kolik minut mají 2 hodiny?", correct: "120", distractors: ["60", "200", "100"], hint: "1 hodina = 60 minut. Kolik je 2 × 60?", solution: "2 hodiny = 2 × 60 = 120 minut." },
   { question: "Kolik minut mají 3 hodiny?", correct: "180", distractors: ["150", "200", "130"], hint: "1 hodina = 60 minut. Kolik je 3 × 60?", solution: "3 hodiny = 3 × 60 = 180 minut." },
   { question: "120 minut je kolik hodin?", correct: "2", distractors: ["1", "3", "12"], hint: "1 hodina = 60 minut. Kolikrát se vejde 60 do 120?", solution: "120 minut = 2 hodiny, protože 2 × 60 = 120." },
