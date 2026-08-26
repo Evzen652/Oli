@@ -14,37 +14,37 @@ const POOL_L1: PracticeTask[] = [
     question: "Jaký druh číslovky je 'pět'?",
     correctAnswer: "základní – kolik?",
     options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
-    hints: ["Zeptej se: kolik? Pokud otázka dává smysl, jde o jeden z druhů číslovek, který vyjadřuje samotný počet."],
+    hints: ["Zkus na 'pět' postupně všechny čtyři otázky: kolik? kolikátý? koliker? kolikrát? — jen jedna z nich dává smysl."],
   },
   {
     question: "Jaký druh číslovky je 'třetí'?",
     correctAnswer: "řadová – kolikátý?",
     options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
-    hints: ["Zeptej se: kolikátý? Pokud otázka sedí, jde o druh číslovky vyjadřující pořadí."],
+    hints: ["Zkus na 'třetí' postupně všechny čtyři otázky: kolik? kolikátý? koliker? kolikrát? — jen jedna z nich dává smysl."],
   },
   {
     question: "Jaký druh číslovky je 'dvoje'?",
     correctAnswer: "druhová – koliker?",
     options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
-    hints: ["Zeptej se: koliker? nebo kolikery? Tato číslovka označuje druh nebo sadu věcí, ne pouhý počet."],
+    hints: ["Zkus na 'dvoje' postupně všechny čtyři otázky: kolik? kolikátý? koliker? kolikrát? — jen jedna z nich dává smysl."],
   },
   {
     question: "Jaký druh číslovky je 'třikrát'?",
     correctAnswer: "násobná – kolikrát?",
     options: ["základní – kolik?", "řadová – kolikátý?", "druhová – koliker?", "násobná – kolikrát?"],
-    hints: ["Zeptej se: kolikrát? Pokud otázka sedí, jde o druh číslovky vyjadřující opakování děje."],
+    hints: ["Zkus na 'třikrát' postupně všechny čtyři otázky: kolik? kolikátý? koliker? kolikrát? — jen jedna z nich dává smysl."],
   },
   {
     question: "Jaký druh číslovky je 'druhý'?",
     correctAnswer: "řadová – kolikátý?",
     options: ["základní", "řadová – kolikátý?", "druhová", "násobná"],
-    hints: ["Zkus se zeptat na toto číslo otázkou. Která z otázek (kolik? / kolikátý? / koliker? / kolikrát?) sem pasuje?"],
+    hints: ["Tohle číslo říká POŘADÍ, ne přesný počet ani kolikrát se něco opakuje — zkus na něj zformulovat vhodnou otázku."],
   },
   {
     question: "Jaký druh číslovky je 'jednou'?",
     correctAnswer: "násobná – kolikrát?",
     options: ["základní", "řadová", "druhová", "násobná – kolikrát?"],
-    hints: ["Zkus se zeptat: kolikrát? Pokud otázka sedí, víš, o jaký druh jde."],
+    hints: ["Tohle slovo říká, KOLIK OPAKOVÁNÍ děje proběhlo — zkus na něj zformulovat vhodnou otázku."],
   },
   {
     question: "Jaký druh číslovky je 'jedny' (například jedny dveře)?",
@@ -92,7 +92,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Na jakou otázku odpovídají násobné číslovky?",
     correctAnswer: "kolikrát?",
     options: ["kolik?", "kolikátý?", "kolikery?", "kolikrát?"],
-    hints: ["Násobné číslovky vyjadřují, kolikrát se děj opakuje (jednou, dvakrát, trojnásobně). Jakou otázkou se na ně ptáme?"],
+    hints: ["Násobné číslovky říkají, kolik opakování děje proběhlo (jednou, dvakrát, trojnásobně) — zkus zformulovat otázku, na kterou tahle čísla odpovídají."],
   },
   {
     question: "Jaký druh číslovky je 'trojnásobný'?",
@@ -141,7 +141,7 @@ const POOL_L2: PracticeTask[] = [
       "tři je přídavné jméno",
       "troje je příslovce",
     ],
-    hints: ["Tři jablka (počet). Troje dveře (sada/druh věcí)."],
+    hints: ["Jedno z těch dvou slov říká, kolik KUSŮ něčeho je, druhé říká, kolik SAD dohromady tvoří danou věc (dveře mají dvě křídla, boty dva kusy) — zkus rozhodnout, které je které."],
   },
   {
     question: "Jaký druh číslovky je 'stonásobně'?",
@@ -195,7 +195,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Použij správný druh číslovky: 'Přeložil to do ___ jazyků.' (počet = 5)",
     correctAnswer: "pěti – nebo pěti jazyků – základní číslovka",
     options: ["pátých", "pětkrát", "pěti – nebo pěti jazyků – základní číslovka", "patery"],
-    hints: ["Do kolika jazyků? = počet = základní číslovka."],
+    hints: ["Do kolika jazyků? Hledáš tvar, který vyjadřuje prostý počet — ne pořadí, ne kolikrát se to opakovalo."],
   },
   {
     question: "Použij správný druh číslovky: 'Dostal se na ___ místo.' (pořadí = 5)",
@@ -271,7 +271,7 @@ const POOL_L3: PracticeTask[] = [
       "neskloňují se",
       "slovesa",
     ],
-    hints: ["Zkus skloňovat 'jeden, jednoho, jednomu...' — připomíná to skloňování podstatného jména, přídavného jména, nebo zájmena?"],
+    hints: ["Zkus tyhle číslovky ohnout do všech pádů a porovnej vzniklé koncovky se třemi možnými vzory ohýbání — kterému slovnímu druhu se to nejvíc podobá?"],
   },
   {
     question: "Základní číslovky 5+ (pět, šest...) se skloňují jako:",
@@ -282,7 +282,7 @@ const POOL_L3: PracticeTask[] = [
       "neskloňují se",
       "zájmena",
     ],
-    hints: ["Zkus skloňovat 'pět, pěti, pěti...' — tvary v nepřímých pádech jsou shodné. Ke vzoru jakého slovního druhu to připomíná?"],
+    hints: ["Zkus skloňovat 'pět, pěti, pěti...' — všimni si, že se tvar u několika pádů vůbec nemění. Ke vzoru jakého slovního druhu takové skloňování připomíná?"],
   },
   {
     question: "Ve větě 'Přišel poprvé.' jaký druh číslovky je 'poprvé'?",
