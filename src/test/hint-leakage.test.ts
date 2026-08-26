@@ -394,6 +394,19 @@ describe("checkHintLeakage — rejstřík možností", () => {
     expect(r.ok).toBe(false);
   });
 
+  // Fallback: víceslovná možnost je pokrytá i bez doslovné celé fráze,
+  // stačí jedno výrazné slovo — vyžadovat celou frázi doslova je nereálné
+  // (žádný autor takhle nápovědu nepíše).
+  it("rejstřík pokrývá i víceslovnou možnost přes jedno výrazné slovo", () => {
+    const r = checkHintLeakage({
+      question: 'Jaký vztah mají přímky v tomto příkladu: "koleje"?',
+      correct_answer: "Rovnoběžky",
+      hints: ["Rovnoběžky = nikdy se neprotnou. Kolmice = protínají se pod 90°. Různoběžky = kříží se pod jiným úhlem."],
+      options: ["Rovnoběžky", "Kolmice", "Ani rovnoběžky, ani kolmice", "Různoběžky – svírají jiný úhel"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
   it("krátká nečíselná odpověď: '=' ve výkladovém příkladu není rovnost s odpovědí", () => {
     const r = checkHintLeakage({
       question: 'Doplň správnou předložku: "Sjel ___ kopce."',

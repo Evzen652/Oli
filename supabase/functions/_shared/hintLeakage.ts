@@ -171,7 +171,19 @@ function hintMentions(normHint: string, option: string): boolean {
   const escaped = norm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // Hranice: začátek/konec nebo nealfanumerický znak. Pomlčka u předpon
   // („vy-") je součástí tokenu, proto se nesmí brát jako hranice zprava.
-  return new RegExp(`(^|[\\s(,;])${escaped}([\\s),;.:=]|$)`).test(normHint);
+  if (new RegExp(`(^|[\\s(,;])${escaped}([\\s),;.:=]|$)`).test(normHint)) return true;
+
+  // Fallback pro víceslovné možnosti („Různoběžky – svírají jiný úhel"):
+  // vyžadovat celou frázi doslova je nereálné, žádný autor takhle nepíše
+  // nápovědu. Stačí, když se v hintu objeví jedno dost výrazné (a tedy
+  // jednoznačné) slovo z možnosti — typicky u možností složených z pojmů,
+  // které hint definuje jinde („ani rovnoběžky, ani kolmice" je pokryté,
+  // když hint zvlášť definuje „rovnoběžky" i „kolmice").
+  const words = norm.split(/\s+/).filter((w) => w.length >= 5);
+  return words.some((w) => {
+    const escW = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(^|[\\s(,;])${escW}`).test(normHint);
+  });
 }
 
 /**
