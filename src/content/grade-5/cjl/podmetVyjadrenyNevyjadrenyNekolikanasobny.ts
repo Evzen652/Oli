@@ -180,7 +180,7 @@ const POOL_L2: PracticeTask[] = [
       "protože jsou dva podmět",
       "tatínek rozhoduje vždy",
     ],
-    hints: ["Pravidlo: je-li mezi podměty alespoň jeden mužský životný, je přísudek v mužském rodě. Který z nich to je?"],
+    hints: ["Pravidlo: je-li mezi podměty alespoň jedna osoba mužského pohlaví, je přísudek v mužském rodě. Který z nich to je?"],
   },
   {
     question: "Ve větě 'Ryby a ptáci jsou obratlovci.' je přísudek 'jsou'. Proč?",
@@ -302,7 +302,7 @@ const POOL_L3: PracticeTask[] = [
       "jen v básních",
       "jen v rozkazovacích větách",
     ],
-    hints: ["Najdi podmět ve větě 'Kdo chce, může jít.' Je to jen jedno slovo?"],
+    hints: ["Zkus najít, na co se ptáš 'kdo?' nebo 'co?' v téhle větě — je to jen jedno slovo, nebo víc?"],
   },
   {
     question: "Ve větě 'Tři chlapci přišli.' slovo 'tři' je:",

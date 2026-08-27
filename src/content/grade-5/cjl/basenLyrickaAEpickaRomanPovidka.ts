@@ -140,7 +140,7 @@ const POOL_L1: PracticeTask[] = [
       "instruuje čtenáře, co dělat",
       "vypráví pohádku",
     ],
-    hints: ["Lyrika = vnitřní svět autora. Pocity, nálady, dojmy."],
+    hints: ["Lyrika = vnitřní svět autora — jak se autor uvnitř cítí a co prožívá."],
   },
   {
     question: "Jaký literární žánr psal Arthur Conan Doyle (Sherlock Holmes)?",
@@ -399,7 +399,7 @@ const POOL_L3: PracticeTask[] = [
       "básně o přírodě",
       "záleží na autorovi",
     ],
-    hints: ["Próza = bez verše. Báseň = s veršem."],
+    hints: ["Próza se píše obyčejnými větami za sebou, ne v řádcích, které se rýmují."],
   },
   {
     question: "Co je lyrický subjekt v básni?",
