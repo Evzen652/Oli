@@ -9,12 +9,30 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Co je rým?", a: "Stejně nebo podobně znějící konec slov (pes – les)", opts: ["Stejně nebo podobně znějící konec slov (pes – les)", "Rytmus básně", "Délka verše", "Opakování slov"], e: "Rým vzniká, když dvě slova mají stejné nebo podobné zakončení — třeba 'pes' a 'les' obě končí na '-es'. Rytmus, délka nebo opakování slov nejsou rým." },
-  { q: "Co je verš?", a: "Jeden řádek v básni", opts: ["Jeden řádek v básni", "Celá báseň", "Skupina řádků", "Rýmové slovo"], e: "Verš je jeden řádek básně — jako jeden řádek v sešitě, jenže v básni. Celá báseň má více veršů a skupina veršů se nazývá strofa." },
-  { q: "Co je strofa?", a: "Skupina veršů v básni (jako odstavec v próze)", opts: ["Skupina veršů v básni (jako odstavec v próze)", "Rým na konci verše", "Celá báseň", "Jeden verš"], e: "Strofa je skupina několika veršů, které k sobě patří a jsou odděleny mezerou od další skupiny — je to podobné odstavci v próze. Rým je zvuk na konci slov, ne skupina veršů." },
+  {
+    q: "Co je verš?",
+    a: "Jeden řádek v básni",
+    opts: ["Jeden řádek v básni", "Celá báseň", "Skupina řádků", "Rýmové slovo"],
+    e: "Verš je jeden řádek básně — jako jeden řádek v sešitě, jenže v básni. Celá báseň má více veršů a skupina veršů se nazývá strofa.",
+    hints: [
+      "Rým = stejné/podobné zakončení slov. Přirovnání = jako + co porovnáváme.",
+      "Když čteš báseň nahlas, po každém takovém úseku se zastavíš a začneš nový na dalším řádku.",
+    ],
+  },
+  {
+    q: "Co je strofa?",
+    a: "Skupina veršů v básni (jako odstavec v próze)",
+    opts: ["Skupina veršů v básni (jako odstavec v próze)", "Rým na konci verše", "Celá báseň", "Jeden verš"],
+    e: "Strofa je skupina několika veršů, které k sobě patří a jsou odděleny mezerou od další skupiny — je to podobné odstavci v próze. Rým je zvuk na konci slov, ne skupina veršů.",
+    hints: [
+      "Rým = stejné/podobné zakončení slov. Přirovnání = jako + co porovnáváme.",
+      "V próze má podobnou funkci odstavec — několik řádků básně oddělených mezerou od dalšího celku.",
+    ],
+  },
   { q: "Co je přirovnání?", a: "Porovnání dvou věcí pomocí slova 'jako'", opts: ["Porovnání dvou věcí pomocí slova 'jako'", "Rým ve verši", "Název básně", "Ponaučení z bajky"], e: "Přirovnání vždy používá slovo 'jako' — například 'silný jako lev'. Tím říkáme, že se jedna věc podobá druhé. Rým, název básně ani ponaučení přirovnání nejsou." },
   { q: "Co se rýmuje se slovem 'pes'?", a: "les", opts: ["les", "kočka", "ryba", "okno"], e: "'Pes' a 'les' obě končí na '-es', takže se rýmují. Slova 'kočka', 'ryba' ani 'okno' nemají stejné zakončení jako 'pes'." },
   { q: "Co se rýmuje se slovem 'strom'?", a: "dům", opts: ["dům", "hora", "louka", "voda"], e: "'Strom' a 'dům' obě končí na '-om' / '-ům' — zvuk na konci je velmi podobný. Hora, louka ani voda takové zakončení nemají." },
@@ -52,11 +70,11 @@ const POOL_L3: QA[] = [
 
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
+  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Rým = stejné/podobné zakončení slov. Přirovnání = jako + co porovnáváme.", "Verš = jeden řádek básně. Strofa = skupina veršů."],
+    hints: hints ?? ["Rým = stejné/podobné zakončení slov. Přirovnání = jako + co porovnáváme.", "Verš = jeden řádek básně. Strofa = skupina veršů."],
     explanation: e,
   }));
 }
