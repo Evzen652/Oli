@@ -33,7 +33,7 @@ function gen(level: number): PracticeTask[] {
         question: `Zapiš číslo: ${slovy.trim()}`,
         correctAnswer: String(n),
         options: shuffle([String(n), String(n + 10), String(n + 100), String(n - 1 > 0 ? n - 1 : n + 1)]),
-        hints: ["Sečti všechny části dohromady.", "Stovky × 100 + desítky × 10 + jednotky = výsledné číslo."],
+        hints: ["Sečti všechny části dohromady.", "Vynásob počet stovek stem, počet desítek deseti a přičti jednotky — pak dostaneš celé číslo."],
         solutionSteps: [`Stovky: ${stovky} × 100 = ${stovky * 100}`, `Desítky: ${desitky} × 10 = ${desitky * 10}`, `Jednotky: ${jednotky}`, `Celkem: ${n}`],
       });
     } else if (type === 1) {

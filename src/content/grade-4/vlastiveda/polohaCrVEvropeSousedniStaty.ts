@@ -298,7 +298,7 @@ const POOL_L3: PracticeTask[] = [
       "Šumavou a Krušnými horami",
       "Beskydami a Tatrami",
     ],
-    hints: ["Sudetský oblouk obklopuje Čechy ze tří stran."],
+    hints: ["Tyto hory tvoří jeden dlouhý horský oblouk, který obepíná Čechy od severozápadu přes sever až na severovýchod."],
     solutionSteps: ["Sudetský oblouk (Krkonoše, Jizerské, Orlické hory, Jeseníky) odděluje ČR od Polska."],
   },
 ];

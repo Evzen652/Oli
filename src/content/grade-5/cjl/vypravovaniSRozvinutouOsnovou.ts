@@ -96,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
       "minulý čas – byl, přišel, stalo se",
       "podmiňovací způsob",
     ],
-    hints: ["Vyprávění = to, co se stalo → minulý čas."],
+    hints: ["Vyprávění popisuje to, co se už odehrálo — proto slovesa bývají v tvaru, který ukazuje, že už je to za námi."],
   },
   {
     question: "Co pomáhá vyprávění udělat živým a napínavým?",

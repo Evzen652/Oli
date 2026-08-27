@@ -242,7 +242,7 @@ const POOL_L2: PracticeTask[] = [
       "záleží na tématu",
       "bez dialogů",
     ],
-    hints: ["Napětí = krátké věty, rychlé tempo. Čtenář drží dech."],
+    hints: ["Aby čtenář cítil napětí, věty nesmí být dlouhé a popisné — mají znít, jako by se to dělo rychle, teď hned."],
   },
   {
     question: "Jak správně napsat klidnou, idylickou scénu?",

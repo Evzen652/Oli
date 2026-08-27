@@ -15,7 +15,7 @@ function shuffle<T>(arr: T[]): T[] {
  * Teď disjunktní: L1 (čas), L2 (osoba + číslo), L3 (aplikace v celé větě).
  */
 
-type Item = { q: string; a: string; opts: string[]; e: string };
+type Item = { q: string; a: string; opts: string[]; e: string; hints?: string[] };
 
 const POOL_L1: Item[] = [
   // Čas — základní rozlišení
@@ -36,7 +36,16 @@ const POOL_L2: Item[] = [
   { q: "Sloveso 'čteš' — která osoba?", a: "2. osoba (ty čteš)", opts: ["2. osoba (ty čteš)", "1. osoba (já čtu)", "3. osoba (on čte)", "Neurčitá"], e: "'Čteš' použijeme, když říkáme někomu 'ty' → 2. osoba." },
   { q: "Sloveso 'čte' — která osoba?", a: "3. osoba (on/ona čte)", opts: ["3. osoba (on/ona čte)", "1. osoba (já čtu)", "2. osoba (ty čteš)", "Neurčitá"], e: "'Čte' říká, že čte on nebo ona → 3. osoba." },
   { q: "Sloveso 'jdeme' je v čísle:", a: "Množném (my jdeme)", opts: ["Množném (my jdeme)", "Jednotném (já jdu)", "Středním", "Neurčitém"], e: "'Jdeme' → 'my' → množné číslo." },
-  { q: "Sloveso 'jdu' je v čísle:", a: "Jednotné (já jdu)", opts: ["Jednotné (já jdu)", "Množné (my jdeme)", "Střední", "Neurčité"], e: "'Jdu' → 'já' → jednotné číslo." },
+  {
+    q: "Sloveso 'jdu' je v čísle:",
+    a: "Jednotné (já jdu)",
+    opts: ["Jednotné (já jdu)", "Množné (my jdeme)", "Střední", "Neurčité"],
+    e: "'Jdu' → 'já' → jednotné číslo.",
+    hints: [
+      "Zeptej se: dělá to jedna osoba, nebo víc najednou?",
+      "Sloveso 'jdu' patří k 'já' — a 'já' je vždycky jen jeden.",
+    ],
+  },
   { q: "Sloveso 'přišli' — číslo?", a: "Množné (oni přišli)", opts: ["Množné (oni přišli)", "Jednotné (on přišel)", "Střední", "Neurčité"], e: "'Přišli' → 'oni' → množné číslo." },
   { q: "Sloveso 'nesete' — osoba a číslo?", a: "2. osoba, množné (vy)", opts: ["2. osoba, množné (vy)", "1. osoba, jednotné (já)", "3. osoba, množné (oni)", "2. osoba, jednotné (ty)"], e: "'Nesete' = mluvíte více lidem najednou (vy) → 2. os. mn. č." },
   { q: "Sloveso 'píšou' — osoba a číslo?", a: "3. osoba, množné (oni)", opts: ["3. osoba, množné (oni)", "1. osoba, množné (my)", "2. osoba, množné (vy)", "3. osoba, jednotné (on)"], e: "'Píšou' → 'oni' → 3. os. mn. č." },
@@ -58,11 +67,11 @@ const POOL_L3: Item[] = [
 ];
 
 function pick(pool: Item[]): PracticeTask[] {
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
+  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: [
+    hints: hints ?? [
       "Čas: bylo = minulý, je/jsou = přítomný, bude = budoucí.",
       "Osoba: já = 1., ty = 2., on/ona = 3. Číslo: já/ty/on = jednotné; my/vy/oni = množné.",
     ],

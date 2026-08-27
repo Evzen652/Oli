@@ -316,7 +316,7 @@ const POOL_L3: PracticeTask[] = [
       "jejím je vždy špatně",
       "jím = přivlastňovací",
     ],
-    hints: ["Jedno přivlastňuje (čí?), druhé je pád osobního zájmena."],
+    hints: ["Jedno vyjadřuje, čí to je (přivlastňuje) — druhé je osobní zájmeno v jiném tvaru, po předložce nebo slovese."],
     explanation: "'jejím' je přivlastňovací zájmeno (jejím autem = patří jí). 'jím' je 7. pád osobního zájmena 'on/ono' (pohrdá jím).",
   },
   {

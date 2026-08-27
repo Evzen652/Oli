@@ -186,7 +186,7 @@ const POOL_L2: PracticeTask[] = [
       "část silnice",
       "větev stromu",
     ],
-    hints: ["Komu? Ptě. Rameno jako část těla člověka."],
+    hints: ["Ve větě je 'jí' — mluvíme o osobě. Rameno tu patří k člověku, ne k řece, silnici ani stromu."],
   },
   {
     question: "Ve větě 'Řeka se rozdělila na dvě ramena.' slovo 'rameno' znamená:",
