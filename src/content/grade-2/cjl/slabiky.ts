@@ -20,7 +20,7 @@ interface PoolItem {
 
 // L1: Co je slabika + počítání slabik v jednoduchých 1–2slabičných slovech
 const POOL_L1: PoolItem[] = [
-  { question: "Co je slabika?", correct: "Část slova s jednou samohláskou", distractors: ["Celé slovo", "Skupina souhlásek"], emoji: "📖", hint: "Slabiku poznáš tak, že při říkání slova jednou 'otevřeš' ústa — kolik samohlásek, tolik slabik.", solution: "Slabika je část slova s jednou samohláskou — kolik samohlásek slovo má, tolik slabik." },
+  { question: "Co je slabika?", correct: "Část slova s jednou samohláskou", distractors: ["Celé slovo", "Skupina souhlásek"], emoji: "📖", hint: "Zkus slovo vyslovit pomalu — pokaždé, když 'otevřeš' pusu, uplyne jedna slabika.", solution: "Slabika je část slova s jednou samohláskou — kolik samohlásek slovo má, tolik slabik." },
   { question: "Kolik slabik má slovo 'pes'?", correct: "1", distractors: ["2", "3"], emoji: "🐕", hint: "Řekni 'pes' pomalu a tleskni u každé části. Kolik tlesknutí, tolik slabik.", solution: "Slovo 'pes' má 1 slabiku — je tam jedna samohláska E, proto jen 1 slabika." },
   { question: "Kolik slabik má slovo 'les'?", correct: "1", distractors: ["2", "3"], emoji: "🌲", hint: "Řekni 'les' pomalu a tleskni u každé části. Kolik tlesknutí, tolik slabik.", solution: "Slovo 'les' má 1 slabiku — je tam jen jedna samohláska E, proto 1 slabika." },
   { question: "Kolik slabik má slovo 'klíč'?", correct: "1", distractors: ["2", "3"], emoji: "🔑", hint: "Řekni 'klíč' pomalu a tleskni u každé části. Kolik tlesknutí, tolik slabik.", solution: "Slovo 'klíč' má 1 slabiku — je tam jen jedna samohláska Í, proto 1 slabika." },

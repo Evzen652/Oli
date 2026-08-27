@@ -9,7 +9,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Co je téma ve vlastním textu?", a: "O čem chceme psát — základní myšlenka příběhu", opts: ["O čem chceme psát — základní myšlenka příběhu", "Jak dlouhý bude text", "Kdo napsal text", "Kde text vyjde"], e: "Téma je to hlavní, o čem příběh vypráví — jeho základní myšlenka. Délka textu, jméno autora ani místo vydání nám neřeknou, o čem text vlastně je." },
@@ -17,7 +17,17 @@ const POOL_L1: QA[] = [
   { q: "Proč si před psaním sestavíme osnovu?", a: "Abychom věděli, co a v jakém pořadí napíšeme", opts: ["Abychom věděli, co a v jakém pořadí napíšeme", "Abychom text zkrátili", "Abychom opravili pravopis", "Abychom zjistili téma"], e: "Osnova je plán, který nám předem ukáže, co a v jakém pořadí napsat, aby text dával smysl. Pravopis opravujeme až v hotovém textu a téma si volíme ještě dřív než osnovu." },
   { q: "Co je styl autora?", a: "Způsob, jakým autor píše — volba slov, délka vět, tón", opts: ["Způsob, jakým autor píše — volba slov, délka vět, tón", "Délka textu", "Téma textu", "Jméno autora"], e: "Styl je to, jak autor píše — jaká slova volí, jak dlouhé tvoří věty a jakým tónem mluví. Není to téma (o čem píše) ani jeho jméno, ale jeho osobitý způsob psaní." },
   { q: "Čím text oživíme?", a: "Přídavnými jmény, přímou řečí, živým popisem", opts: ["Přídavnými jmény, přímou řečí, živým popisem", "Mnoha daty a čísly", "Jen podstatnými jmény", "Bez jakýchkoli přívlastků"], e: "Text ožije, když přidáme přídavná jména, přímou řeč postav a živý popis — čtenář si pak vše lépe představí. Spousta čísel nebo holá podstatná jména bez přívlastků naopak text ochudí." },
-  { q: "Co je osnova vlastního textu?", a: "Plán textu: úvod, zápletka, vyvrcholení, závěr", opts: ["Plán textu: úvod, zápletka, vyvrcholení, závěr", "Výsledný text celý napsaný", "Jen závěr textu", "Jen téma a název"], e: "Osnova je stručný plán, který rozdělí příběh na úvod, zápletku, vyvrcholení a závěr. Není to hotový text ani jen jeho část — je to kostra, podle které teprve píšeme." },
+  {
+    q: "Co je osnova vlastního textu?",
+    a: "Plán textu: úvod, zápletka, vyvrcholení, závěr",
+    opts: ["Plán textu: úvod, zápletka, vyvrcholení, závěr", "Výsledný text celý napsaný", "Jen závěr textu", "Jen téma a název"],
+    e: "Osnova je stručný plán, který rozdělí příběh na úvod, zápletku, vyvrcholení a závěr. Není to hotový text ani jen jeho část — je to kostra, podle které teprve píšeme.",
+    hints: [
+      "Téma = o čem text je; motiv = opakující se prvek",
+      "Osnova je jako kostra příběhu — rozvrhne, co bude na začátku, uprostřed a na konci, ještě než začneš psát.",
+      "Text oživíme: přídavná jména, přímá řeč, živý popis",
+    ],
+  },
   { q: "Jak napsat dobrý začátek příběhu?", a: "Zaujmout čtenáře otázkou, popisem nebo přímou řečí", opts: ["Zaujmout čtenáře otázkou, popisem nebo přímou řečí", "Začít dlouhým popisem počasí", "Uvést všechny postavy najednou", "Začít závěrem příběhu"], e: "Dobrý začátek čtenáře hned zaujme — třeba otázkou, zajímavým popisem nebo přímou řečí. Dlouhé líčení počasí nebo výčet všech postav najednou čtenáře spíš unaví." },
   { q: "Jak napsat dobrý konec příběhu?", a: "Uzavřít příběh a splnit příslib úvodu (rozuzlení)", opts: ["Uzavřít příběh a splnit příslib úvodu (rozuzlení)", "Přestat psát uprostřed věty", "Začít nový příběh", "Opakovat úvod doslova"], e: "Dobrý konec příběh uzavře a vyřeší to, co úvod naznačil — tomu říkáme rozuzlení. Přerušit text uprostřed, začínat nový příběh nebo jen zopakovat úvod by čtenáře nechalo na rozpacích." },
   { q: "Co je přídavné jméno a proč ho používat v textu?", a: "Zpřesňuje popis — 'starý dům' je konkrétnější než 'dům'", opts: ["Zpřesňuje popis — 'starý dům' je konkrétnější než 'dům'", "Nahrazuje podstatné jméno", "Vyjadřuje děj", "Vyjadřuje místo"], e: "Přídavné jméno popisuje vlastnost a zpřesňuje představu — 'starý dům' řekne víc než pouhý 'dům'. Děj vyjadřuje sloveso, proto přídavné jméno není od toho, aby nahrazovalo podstatné jméno." },
@@ -50,11 +60,11 @@ const POOL_L2: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : shuffle([...POOL_L1, ...POOL_L2]);
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Téma = o čem text je; motiv = opakující se prvek",
       "Osnova = plán textu (úvod → zápletka → vyvrcholení → závěr)",
       "Text oživíme: přídavná jména, přímá řeč, živý popis",
