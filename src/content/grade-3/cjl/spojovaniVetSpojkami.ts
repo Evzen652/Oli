@@ -15,7 +15,7 @@ function shuffle<T>(arr: T[]): T[] {
  * Teď disjunktní pooly podle typu úlohy.
  */
 
-type Item = { q: string; a: string; opts: string[]; e: string };
+type Item = { q: string; a: string; opts: string[]; e: string; hints?: string[] };
 
 const POOL_L1: Item[] = [
   // Doplňování jednoduchých spojek do věty
@@ -34,7 +34,16 @@ const POOL_L1: Item[] = [
 const POOL_L2: Item[] = [
   // Identifikace typu spojky a jejího významu
   { q: "Co je 'ale' ve větě?", a: "Spojka (spojuje věty s protikladem)", opts: ["Spojka (spojuje věty s protikladem)", "Příslovce", "Podstatné jméno", "Přídavné jméno"], e: "Slovo 'ale' je spojka — spojuje věty a vyjadřuje protiklad." },
-  { q: "Které slovo je spojka?", a: "nebo", opts: ["nebo", "velký", "běžet", "rychle"], e: "Slovo 'nebo' je spojka, protože slouží ke spojování dvou vět či slov a vyjadřuje výběr." },
+  {
+    q: "Které slovo je spojka?",
+    a: "nebo",
+    opts: ["nebo", "velký", "běžet", "rychle"],
+    e: "Slovo 'nebo' je spojka, protože slouží ke spojování dvou vět či slov a vyjadřuje výběr.",
+    hints: [
+      "Spojky spojují věty či jejich části — hledej slovo, které nic nepopisuje ani nedělá.",
+      "Toto slovo vyjadřuje výběr mezi dvěma možnostmi — buď jedno, či druhé.",
+    ],
+  },
   { q: "Spojka 'protože' vyjadřuje:", a: "Příčinu (proč se něco stalo)", opts: ["Příčinu (proč se něco stalo)", "Protiklad", "Výběr", "Podmínku"], e: "Spojka 'protože' vysvětluje příčinu — PROČ se něco stalo." },
   { q: "Spojka 'nebo' vyjadřuje:", a: "Výběr mezi dvěma možnostmi", opts: ["Výběr mezi dvěma možnostmi", "Protiklad", "Příčinu", "Podmínku"], e: "Spojka 'nebo' vždy nabízí výběr — buď jedno, nebo druhé." },
   { q: "Spojka 'když' vyjadřuje:", a: "Čas nebo podmínku", opts: ["Čas nebo podmínku", "Protiklad", "Příčinu", "Výběr"], e: "Spojka 'když' říká, za jakých okolností nebo kdy se něco stane." },
@@ -59,13 +68,13 @@ const POOL_L3: Item[] = [
 ];
 
 function pick(pool: Item[]): PracticeTask[] {
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
+  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: [
-      "Spojky spojují věty nebo části věty.",
-      "a = přidání, ale = protiklad, nebo = výběr, protože = příčina, když/až = čas, aby = účel.",
+    hints: hints ?? [
+      "Spojky spojují dvě věty do jednoho smysluplného celku.",
+      "Zjisti vztah mezi větami: přidává informaci, staví ji do protikladu, dává na výběr, vysvětluje příčinu, určuje čas, případně vyjadřuje účel či přání.",
     ],
     explanation: e,
   }));

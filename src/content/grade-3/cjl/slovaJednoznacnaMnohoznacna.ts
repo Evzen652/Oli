@@ -9,7 +9,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL: QA[] = [
   { q: "Co znamená slovo 'koruna' ve větě 'Král nosí zlatou korunu'?", a: "ozdoba hlavy krále", opts: ["ozdoba hlavy krále", "česká měna", "horní část stromu", "starý pozdrav"], e: "Ve větě se mluví o králi — a král nosí korunu jako symbol moci na hlavě. Ostatní významy (peníze, strom) by tu nedávaly smysl." },
@@ -23,7 +23,16 @@ const POOL: QA[] = [
   { q: "Co znamená slovo 'hlava' ve větě 'Je to hlava naší skupiny'?", a: "vedoucí, šéf skupiny", opts: ["vedoucí, šéf skupiny", "část těla", "záhlaví stránky", "číslo stránky"], e: "Věta mluví o skupině a jejím vedení. 'Hlava skupiny' tu znamená vedoucího — toho, kdo skupinu řídí. Je to přenesený (obrazný) význam slova." },
   { q: "Je slovo 'hlava' jednoznačné nebo mnohoznačné?", a: "mnohoznačné — má více významů", opts: ["mnohoznačné — má více významů", "jednoznačné — má jen jeden význam", "pouze zeměpisný termín", "zastaralé slovo"], e: "Slovo 'hlava' může znamenat část těla, vedoucího skupiny nebo záhlaví stránky — má více různých významů, a proto je mnohoznačné." },
   { q: "Co znamená slovo 'hřbet' ve větě 'Pohladil jsem koně po hřbetu'?", a: "záda zvířete", opts: ["záda zvířete", "vrchol hory", "záda knihy (hřeben)", "část nohy"], e: "Ve větě hladíme koně — a hřbet je u zvířat záda, horní část těla. Kůň nemá vrchol hory ani záda knihy, takže jde o záda zvířete." },
-  { q: "Které slovo je jednoznačné (má jen jeden běžný význam)?", a: "klokan", opts: ["klokan", "hlava", "koruna", "list"], e: "Klokan je jen jedno konkrétní zvíře — australský skokavec. Naopak slova hlava, koruna a list mají více různých významů, takže jsou mnohoznačná." },
+  {
+    q: "Které slovo je jednoznačné (má jen jeden běžný význam)?",
+    a: "klokan",
+    opts: ["klokan", "hlava", "koruna", "list"],
+    e: "Klokan je jen jedno konkrétní zvíře — australský skokavec. Naopak slova hlava, koruna a list mají více různých významů, takže jsou mnohoznačná.",
+    hints: [
+      "Jedna z možností pojmenovává jen jedno konkrétní zvíře a nic jiného.",
+      "Mnohoznačné slovo = má více různých významů (koruna: na hlavě, peníze, strom).",
+    ],
+  },
   { q: "Co znamená slovo 'pero' ve větě 'Psal jsem perem'?", a: "nástroj na psaní", opts: ["nástroj na psaní", "ptačí pero", "jarní pero (péro)", "pero v závodech"], e: "Psaní je jasný kontext — 'pero' tu znamená nástroj, kterým píšeme. Ptačí pero by se k psaní hodilo jen v pohádce, v dnešní době jde o pero plnicí nebo kuličkové." },
   { q: "Co znamená slovo 'pero' ve větě 'Ptáček ztratil pero'?", a: "část ptačího opeření", opts: ["část ptačího opeření", "nástroj na psaní", "pero v závodech", "jarní péro"], e: "Věta mluví o ptáčkovi — a ptáci mají peří. 'Pero' je jedna jednotlivá část ptačího opeření, kterou ptáčci ztrácí při přepeřování." },
   { q: "Jak poznáme, který význam slova je správný?", a: "podle věty (kontextu), ve které se slovo nachází", opts: ["podle věty (kontextu), ve které se slovo nachází", "podle délky slova", "podle toho, kdo mluví", "podle abecedy"], e: "Slovo samo o sobě může mít více významů, ale věta kolem nám vždy prozradí, co se myslí. Kontext (= okolní věta) je nejlepší vodítko pro správné pochopení." },
@@ -64,11 +73,11 @@ const POOL_L3_EXTRA: QA[] = [
 ];
 
 function pick(pool: QA[]): PracticeTask[] {
-  return shuffle(pool).slice(0, Math.min(pool.length, 16)).map(({ q, a, opts, e }) => ({
+  return shuffle(pool).slice(0, Math.min(pool.length, 16)).map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Jednoznačné slovo = má jen jeden hlavní význam (např. klokan).",
       "Mnohoznačné slovo = má více různých významů (koruna: na hlavě, peníze, strom).",
     ],
