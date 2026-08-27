@@ -30,7 +30,7 @@ const POOL_L1: PracticeTask[] = [
       "kdo volal, kdy, proč a co má příjemce udělat",
       "jen telefonní číslo",
     ],
-    hints: ["Kompletní vzkaz: kdo, kdy, proč, co se má stát."],
+    hints: ["Kompletní vzkaz obsahuje totožnost volajícího, čas volání, důvod hovoru a co má příjemce udělat."],
   },
   {
     question: "Jak správně ukončíme telefonický hovor?",
@@ -151,7 +151,7 @@ const POOL_L1: PracticeTask[] = [
       "způsob přepojení hovoru",
       "druh telefonu",
     ],
-    hints: ["Záznamník = necháme vzkaz, když volaný nezvedne."],
+    hints: ["Ten přístroj za tebe zapíše, co ti chtěl volající sdělit, pokud to nestihneš zvednout."],
   },
   {
     question: "Jak říkáme, že chceme být přepojeni?",
