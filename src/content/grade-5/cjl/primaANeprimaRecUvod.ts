@@ -299,7 +299,7 @@ const POOL_L2: PracticeTask[] = [
       "záleží na tiskárně",
       "vždy jednoduché apostrofy",
     ],
-    hints: ["Česká typografická norma: otevírací uvozovka je dole, zavírací nahoře."],
+    hints: ["Čeština má jiný typografický tvar uvozovek než třeba angličtina — všimni si jejich směru nahoře a dole."],
   },
   {
     question: "Přepiš do přímé řeči: Táta nám řekl, abychom šli spát.",
@@ -346,7 +346,7 @@ const POOL_L3: PracticeTask[] = [
       "chybí tečka za 'dívka'",
       "chybí vykřičník",
     ],
-    hints: ["Při otázce v přímé řeči: otazník nahrazuje čárku."],
+    hints: ["Když jsou citovaná slova otázkou, otazník nahrazuje čárku před uvozovací větou."],
   },
   {
     question: "Proč v nepřímé řeči časujeme sloveso jinak než v přímé?",
