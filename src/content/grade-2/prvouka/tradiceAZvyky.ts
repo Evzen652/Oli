@@ -344,7 +344,7 @@ const POOL_L3: PracticeTask[] = [
       "Při obou svátcích malujeme vajíčka",
     ],
     emoji: "❄️",
-    hints: ["Zamysli se, ve kterém ročním období oba svátky slavíme."],
+    hints: ["Zamysli se, v jakém ročním období tyto dva svátky probíhají."],
     explanation:
       "Vánoce i Mikuláš se slaví v zimě, na konci roku — Mikuláš 5. prosince, Vánoce koncem prosince.",
   },
