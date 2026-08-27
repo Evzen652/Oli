@@ -61,7 +61,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Jak se jmenuje nejvyšší hora Jeseníků?",
     correctAnswer: "Praděd – 1492 m",
     options: ["Praděd – 1492 m", "Sněžka – 1603 m", "Lysá hora – 1323 m", "Plechý – 1378 m"],
-    hints: ["Praděd leží v severní Moravě."],
+    hints: ["Tahle hora leží v pohoří na severní Moravě a je jen o málo nižší než Sněžka."],
     solutionSteps: ["Nejvyšší hora Jeseníků je Praděd s výškou 1492 m n. m."],
   },
   {
@@ -171,7 +171,7 @@ const POOL_L2: PracticeTask[] = [
     question: "Ve které pohoří leží Klínovec?",
     correctAnswer: "V Krušných horách",
     options: ["V Krušných horách", "V Jeseníkách", "V Beskydech", "V Šumavě"],
-    hints: ["Klínovec je nejvyšší hora Krušných hor."],
+    hints: ["Klínovec je nejvyšší vrchol pohoří na severozápadě Čech, u hranice s Německem."],
     solutionSteps: ["Klínovec (1244 m) je nejvyšší hora Krušných hor na severozápadě Čech."],
   },
   {

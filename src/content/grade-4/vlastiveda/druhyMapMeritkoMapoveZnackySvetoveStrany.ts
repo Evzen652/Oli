@@ -224,7 +224,7 @@ const POOL_L3: PracticeTask[] = [
       "Aby mapa vypadala hezky",
       "Kvůli barvoslepým turistům",
     ],
-    hints: ["Barvy pomáhají odlišit různé trasy v lese."],
+    hints: ["Barvy pomáhají odlišit jednotlivé stezky v lese."],
     solutionSteps: ["Různobarevné značky odlišují trasy a pomohou turistovi sledovat konkrétní cestu bez zabloudění."],
   },
   {
@@ -267,7 +267,7 @@ const POOL_L3: PracticeTask[] = [
       "Polárka je nejblíže Zemi ze všech hvězd",
       "Polárka svítí pouze v noci na severu",
     ],
-    hints: ["Polárka = Severka, nachází se nad severním pólem."],
+    hints: ["Polárka = Severka, je vidět skoro přesně tam, kde je sever."],
     solutionSteps: ["Polárka (Severka) je umístěna téměř nad severním zemským pólem a ukazuje sever s přesností asi 1°."],
   },
   {
