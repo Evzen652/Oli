@@ -9,13 +9,22 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "V textu o slonech je hlavní myšlenkou:", a: "Sloni jsou největší suchozemská zvířata.", opts: ["Sloni jsou největší suchozemská zvířata.", "Sloni mají šedou kůži.", "Sloni žijí v Africe i Asii.", "Sloni jedí přibližně 150 kg potravy denně."], e: "Hlavní myšlenka shrnuje to nejdůležitější, co text o slonech říká — že jsou největší suchozemská zvířata. Barva kůže, místo výskytu nebo množství potravy jsou jen doplňující detaily, které by mohly chybět a text by stále dával smysl." },
   { q: "Jaká informace je podstatná pro celý text o požáru?", a: "Vypukl velký požár a hasiči zasahovali.", opts: ["Vypukl velký požár a hasiči zasahovali.", "Jeden z hasičů měl červenou helmu.", "Hasičské auto bylo umyté.", "Psi v okolí štěkali."], e: "Podstatná informace nese hlavní obsah textu — že vypukl požár a hasiči zasahovali. Barva helmy, čisté auto nebo štěkající psi jsou drobnosti, bez kterých by smysl textu zůstal stejný." },
   { q: "Jaká informace je okrajová v textu o přírodní katastrofě?", a: "Záchranáři měli oranžové vesty.", opts: ["Záchranáři měli oranžové vesty.", "Záplava poškodila 200 domů.", "Tisíce lidí musely opustit domovy.", "Voda dosáhla výšky dvou metrů."], e: "Okrajová informace text jen zpestřuje, ale nemění jeho smysl — barva vest záchranářů s katastrofou nesouvisí. Počet poškozených domů, lidé bez domova nebo výška vody naopak ukazují, jak vážná katastrofa byla, a jsou tedy podstatné." },
-  { q: "Co je podstatná informace?", a: "Informace, bez které by text nedával smysl", opts: ["Informace, bez které by text nedával smysl", "Každá informace v textu", "Detail, který text zpestřuje", "Informace v závorce"], e: "Podstatná informace je ta, kterou nelze vynechat — bez ní by text ztratil smysl nebo hlavní myšlenku. Detail, který text jen zpestřuje, ani umístění v závorce o důležitosti nerozhodují." },
+  {
+    q: "Co je podstatná informace?",
+    a: "Informace, bez které by text nedával smysl",
+    opts: ["Informace, bez které by text nedával smysl", "Každá informace v textu", "Detail, který text zpestřuje", "Informace v závorce"],
+    e: "Podstatná informace je ta, kterou nelze vynechat — bez ní by text ztratil smysl nebo hlavní myšlenku. Detail, který text jen zpestřuje, ani umístění v závorce o důležitosti nerozhodují.",
+    hints: [
+      "Zkus si tuhle informaci z textu odmyslet — dal by text stále dohromady stejný celkový příběh?",
+      "Jedna z možností popisuje něco, co je pro pochopení textu naprosto klíčové.",
+    ],
+  },
   { q: "Co je okrajová informace?", a: "Doplňující detail, který text nezásadně mění", opts: ["Doplňující detail, který text nezásadně mění", "Hlavní téma textu", "Nejdůležitější sdělení", "Závěr textu"], e: "Okrajová informace je jen doplňující detail — když ji vynecháme, text se nezmění v tom hlavním. Hlavní téma i nejdůležitější sdělení jsou naopak podstatné a závěr nemusí být okrajový vůbec." },
   { q: "V textu o výletě do zoo: Která informace je podstatná?", a: "Navštívili jsme zoo a viděli mnoho zvířat.", opts: ["Navštívili jsme zoo a viděli mnoho zvířat.", "Autobus měl klimatizaci.", "Jedna ze spolužaček zapomněla svačinu.", "Průvodce byl vysoký pán s brýlemi."], e: "Podstatná je věta o samotném výletu — že jsme byli v zoo a viděli zvířata. Klimatizace v autobuse, zapomenutá svačina nebo vzhled průvodce jsou jen vedlejší detaily, které s hlavním tématem výletu přímo nesouvisí." },
   { q: "Jak poznáme podstatnou informaci?", a: "Ptáme se: Co by chybělo, kdybych ji vynechal?", opts: ["Ptáme se: Co by chybělo, kdybych ji vynechal?", "Je to nejdelší věta v textu", "Je to první věta odstavce", "Je to věta s vykřičníkem"], e: "Podstatnou informaci poznáme tak, že si ji zkusíme odmyslet — pokud bez ní text ztratí smysl, je podstatná. Délka věty, její pořadí ani vykřičník o důležitosti nerozhodují." },
@@ -40,7 +49,16 @@ const POOL_L2: QA[] = [
   { q: "Jak napsat stručné shrnutí textu?", a: "Vybrat jen podstatné informace — téma + hlavní myšlenka", opts: ["Vybrat jen podstatné informace — téma + hlavní myšlenka", "Opsat text doslova", "Napsat jen okrajové detaily", "Přidat vlastní myšlenky"], e: "Shrnutí zachytí téma a hlavní myšlenku vlastními slovy a okrajové detaily vynechá. Není to doslovný opis textu ani místo pro vlastní nápady — ty do shrnutí nepatří." },
   { q: "V novinovém článku o závodu: 'Závod vyhrál Jan Novák. Startovní číslo měl 47.' — podstatná informace:", a: "Závod vyhrál Jan Novák.", opts: ["Závod vyhrál Jan Novák.", "Startovní číslo bylo 47.", "Obě jsou stejně podstatné.", "Ani jedna není podstatná."], e: "Hlavní zprávou článku je, kdo závod vyhrál — tedy Jan Novák. Jeho startovní číslo je jen doplňující detail, který výsledek závodu nijak nemění." },
   { q: "Při psaní referátu vybíráme:", a: "podstatné informace, okrajové vynecháváme", opts: ["podstatné informace, okrajové vynecháváme", "jen nejzajímavější okrajové detaily", "vše, co najdeme", "jen první a poslední větu každého odstavce"], e: "Referát má posluchače poučit o hlavních věcech, proto vybíráme podstatné informace a okrajové vynecháme. Kdybychom dali jen zajímavé detaily nebo opsali vše, referát by ztratil jasné téma." },
-  { q: "Jak zjistíme, co je v textu okrajové?", a: "Ptáme se: Dá text smysl i bez této informace?", opts: ["Ptáme se: Dá text smysl i bez této informace?", "Okrajové je vždy v závorce", "Okrajové je vždy podtržené", "Okrajové je kratší věta"], e: "Stačí si informaci odmyslet — pokud text i bez ní dává smysl, je okrajová. Okrajovou informaci nepoznáme podle závorky, podtržení ani podle délky věty." },
+  {
+    q: "Jak zjistíme, co je v textu okrajové?",
+    a: "Ptáme se: Dá text smysl i bez této informace?",
+    opts: ["Ptáme se: Dá text smysl i bez této informace?", "Okrajové je vždy v závorce", "Okrajové je vždy podtržené", "Okrajové je kratší věta"],
+    e: "Stačí si informaci odmyslet — pokud text i bez ní dává smysl, je okrajová. Okrajovou informaci nepoznáme podle závorky, podtržení ani podle délky věty.",
+    hints: [
+      "Zkus si tuhle informaci z textu vyškrtnout — zůstane po vyškrtnutí zbytek srozumitelný?",
+      "Okrajovou informaci nepoznáme podle formátování (závorka, podtržení) ani podle délky věty.",
+    ],
+  },
   { q: "Přečti: 'Chobotnice má 8 chapadel. Má modrou krev.' — podstatnější informace pro téma 'zvláštní vlastnosti chobotnice'?", a: "Má modrou krev — výjimečnější a méně známá vlastnost", opts: ["Má modrou krev — výjimečnější a méně známá vlastnost", "8 chapadel — všichni to vědí", "Obě jsou stejně podstatné", "Ani jedna není podstatná"], e: "Téma je o zvláštních vlastnostech, a modrá krev je opravdu neobvyklá a překvapivá. Osm chapadel sice platí, ale skoro každý to ví, takže pro toto téma je to méně podstatné." },
   { q: "Co je 'shrnutí' textu?", a: "Stručná výpověď o hlavních myšlenkách bez okrajových detailů", opts: ["Stručná výpověď o hlavních myšlenkách bez okrajových detailů", "Opis celého textu", "Výpis klíčových slov", "Celý text napsaný jiným stylem"], e: "Shrnutí krátce řekne hlavní myšlenky a okrajové detaily vypustí. Není to opis celého textu, ani jen výčet slov — má dát rychlý a srozumitelný přehled o tom nejdůležitějším." },
   { q: "Okrajová informace je v textu:", a: "doplňující, zajímavá, ale pro pochopení nutná není", opts: ["doplňující, zajímavá, ale pro pochopení nutná není", "nejdůležitější", "nejdelší", "vždy na konci odstavce"], e: "Okrajová informace text obohacuje a může být zajímavá, ale pro pochopení hlavní myšlenky nutná není. Nejdůležitější bývá informace podstatná a okrajová není ani nejdelší, ani vázaná na konec odstavce." },
@@ -63,11 +81,11 @@ const POOL_L3: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "Podstatná informace: bez ní text nedává smysl",
       "Okrajová informace: text dává smysl i bez ní — jen doplňuje",
       "Ptej se: Dá text smysl bez této informace? Ano → okrajová; Ne → podstatná",

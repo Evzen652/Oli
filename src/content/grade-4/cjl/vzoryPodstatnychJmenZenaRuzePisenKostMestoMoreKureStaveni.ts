@@ -9,7 +9,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
 
 const POOL_L1: QA[] = [
   { q: "Ke kterému vzoru patří 'teta'?", a: "žena (ženský, tvrdý základ)", opts: ["žena (ženský, tvrdý základ)", "růže", "píseň", "kost"], e: "Slovo 'teta' je rodu ženského (ta teta) a v 1. pádu končí na tvrdé -a, stejně jako vzor žena. Proto se skloňuje podle vzoru žena, ne podle růže, která končí na měkké -e." },
@@ -31,7 +31,16 @@ const POOL_L1: QA[] = [
 ];
 
 const POOL_L2: QA[] = [
-  { q: "Jaký tvar má 'žena' v 2. pádu množného čísla?", a: "žen", opts: ["žen", "ženy", "ženám", "ženách"], e: "Ve 2. pádu množného čísla (koho, čeho) ztratí vzor žena koncovku úplně — zbyde holý základ 'žen' (mnoho žen). Tvary jako 'ženám' nebo 'ženách' patří k jiným pádům (3. a 6.)." },
+  {
+    q: "Jaký tvar má 'žena' v 2. pádu množného čísla?",
+    a: "žen",
+    opts: ["žen", "ženy", "ženám", "ženách"],
+    e: "Ve 2. pádu množného čísla (koho, čeho) ztratí vzor žena koncovku úplně — zbyde holý základ 'žen' (mnoho žen). Tvary jako 'ženám' nebo 'ženách' patří k jiným pádům (3. a 6.).",
+    hints: [
+      "Tento vzor ve 2. pádu množného čísla ztrácí koncovku úplně — zůstává jen holý základ slova.",
+      "Zkus doplnit: 'mnoho ___' — jak by to znělo bez koncovky?",
+    ],
+  },
   { q: "Jaký tvar má 'růže' v 2. pádu množného čísla?", a: "růží", opts: ["růží", "růže", "růžím", "růžích"], e: "Vzor růže má ve 2. pádu množného čísla koncovku -í (mnoho růží). Tvar 'růžím' patří do 3. pádu a 'růžích' do 6. pádu, proto je správně 'růží'." },
   { q: "Jaký tvar má 'píseň' v 7. pádu jednotného čísla?", a: "písní", opts: ["písní", "písni", "písněmi", "písněm"], e: "V 7. pádu jednotného čísla (s kým, čím) má vzor píseň koncovku -í (s písní). Tvar 'písněmi' je 7. pád množného čísla, proto je u jednotného čísla správně 'písní'." },
   { q: "Jaký tvar má 'kost' v 7. pádu jednotného čísla?", a: "kostí", opts: ["kostí", "kosti", "kostím", "kostem"], e: "Vzor kost má v 7. pádu jednotného čísla koncovku -í (s kostí). Právě tahle koncovka -í odlišuje kost od vzoru žena, který by měl -ou (ženou)." },
@@ -44,7 +53,16 @@ const POOL_L2: QA[] = [
   { q: "Jaký tvar má 'píseň' v 2. pádu množného čísla?", a: "písní", opts: ["písní", "písně", "písněm", "písních"], e: "Vzor píseň má ve 2. pádu množného čísla koncovku -í (mnoho písní). Tvar 'písní' je shodný s 7. pádem jednotného čísla, ale 'písněm' a 'písních' patří k jiným pádům." },
   { q: "Jaký tvar má 'kost' v 1. pádu množného čísla?", a: "kosti", opts: ["kosti", "kostí", "kost", "kostem"], e: "V 1. pádu množného čísla (ty kosti) má vzor kost koncovku -i. Tvar 'kostí' patří do 2. pádu množného čísla, proto je u 1. pádu správně 'kosti'." },
   { q: "Urči vzor slova 'chodba'.", a: "žena (ženský, tvrdý základ)", opts: ["žena (ženský, tvrdý základ)", "růže", "kost", "píseň"], e: "Slovo 'chodba' je rodu ženského a v 1. pádu končí na tvrdé -a, stejně jako vzor žena. Vzor růže má měkké -e, proto chodba patří k ženě." },
-  { q: "Jaký tvar má 'město' v 2. pádu množného čísla?", a: "měst", opts: ["měst", "městu", "městech", "městům"], e: "Ve 2. pádu množného čísla (mnoho měst) ztratí vzor město koncovku úplně a zbyde holý základ 'měst'. Tvar 'městu' je 3. pád jednotného čísla, 'městech' je 6. pád mn. č. a 'městům' 3. pád mn. č." },
+  {
+    q: "Jaký tvar má 'město' v 2. pádu množného čísla?",
+    a: "měst",
+    opts: ["měst", "městu", "městech", "městům"],
+    e: "Ve 2. pádu množného čísla (mnoho měst) ztratí vzor město koncovku úplně a zbyde holý základ 'měst'. Tvar 'městu' je 3. pád jednotného čísla, 'městech' je 6. pád mn. č. a 'městům' 3. pád mn. č.",
+    hints: [
+      "Tento vzor ve 2. pádu množného čísla taky ztrácí koncovku úplně — zůstává jen holý základ slova.",
+      "Zkus doplnit: 'mnoho ___' — jak by to znělo bez koncovky?",
+    ],
+  },
   { q: "Urči vzor slova 'mládě'.", a: "kuře (střední, živý, na -e)", opts: ["kuře (střední, živý, na -e)", "moře", "město", "stavení"], e: "Slovo 'mládě' je rodu středního a označuje mládě (živé). Mláďata zakončená na -ě se skloňují podle vzoru kuře, protože přibírají vsuvku -et- (mláděte) jako kuře." },
   { q: "Jaký tvar má 'stavení' v 1. pádu množného čísla?", a: "stavení (beze změny)", opts: ["stavení (beze změny)", "staveních", "staveními", "stavením"], e: "Vzor stavení má v 1. pádu množného čísla stejný tvar jako v jednotném — 'stavení' se nemění (jedno stavení, dvě stavení). Tvary 'staveních' a 'staveními' patří k jiným pádům." },
 ];
@@ -71,11 +89,11 @@ const POOL_L3: QA[] = [
 function gen(level: number): PracticeTask[] {
   const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
   const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
+  return selected.map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle(opts),
-    hints: [
+    hints: hints ?? [
       "žena = ženský tvrdý (-a); růže = ženský měkký (-e/-ě)",
       "píseň = ženský na -eň/-oň/-ň; kost = ženský na -ost/-est/-i",
       "město = střední tvrdý; moře = střední měkký",
