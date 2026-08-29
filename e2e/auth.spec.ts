@@ -11,8 +11,8 @@ test.describe('Auth — rodičovský login/registrace', () => {
   test('mode=register zobrazí registraci rodiče', async ({ page }) => {
     await page.goto('/auth?mode=register');
     await expect(page.getByText('Registrace rodiče')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Vytvořit účet' })).toBeVisible();
-    await expect(page.getByText('S účtem rodiče můžete:')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Vyzkoušet 14 dní zdarma' })).toBeVisible();
+    await expect(page.getByText('Prvních 14 dní zdarma, bez platební karty.')).toBeVisible();
   });
 
   test('email pole je prázdné (žádná dev data)', async ({ page }) => {
@@ -22,8 +22,12 @@ test.describe('Auth — rodičovský login/registrace', () => {
 
   test('přepínání login ↔ registrace funguje', async ({ page }) => {
     await page.goto('/auth');
-    await page.getByRole('button', { name: /Ještě nemám účet/ }).click();
-    await expect(page.getByRole('button', { name: 'Vytvořit účet' })).toBeVisible();
+    await page.getByRole('button', { name: 'Vytvořit nový účet' }).click();
+    await expect(page.getByRole('button', { name: 'Vyzkoušet 14 dní zdarma' })).toBeVisible();
+    await page.getByRole('button', { name: /Už mám účet/ }).click();
+    // „Přihlásit se" je na stránce 3× (nav, dlaždice žáka, submit) → locator
+    // musí mířit na submit ve formuláři, jinak spadne na strict mode.
+    await expect(page.locator('form').getByRole('button', { name: 'Přihlásit se' })).toBeVisible();
   });
 
   test('žák bez kódu vidí vysvětlení', async ({ page }) => {
