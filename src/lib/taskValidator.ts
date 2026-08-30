@@ -56,10 +56,43 @@ export function validateTaskForInputType(task: PracticeTask, inputType: InputTyp
       // Numerické/jednotkové odpovědi vyjmuty — "8 cm" vs "8 cm²" či "5 °C" vs "−5 °C"
       // jsou legitimní distraktory. Shoda na hranicích slov (containsAsPhrase), ne substring —
       // "přímá řeč" vs "nepřímá řeč", "umělecký" vs "neumělecký" jsou legitimní.
+      //
+      // DVĚ VÝJIMKY (2026-08-30) — bez nich pravidlo hlásilo 58 falešných nálezů:
+      //
+      // 1) PRAVOPISNÉ VARIANTY. U velkých písmen jsou možnosti záměrně tvary
+      //    téhož slova lišící se JEN velikostí ("Brně" / "brně" / "BRNĚ").
+      //    Porovnání přes toLowerCase() přesně tu vlastnost zahodí a označí
+      //    cvičení za vadné — přitom je to jeho podstata.
+      //
+      // 2) SOUHRNNÁ MOŽNOST. Distraktor typu „Ani rovnoběžky, ani kolmice"
+      //    nebo „Obojí" musí názvy ostatních možností obsahovat, jinak by
+      //    nedával smysl. Poznáme ho podle toho, že cituje ≥2 jiné možnosti —
+      //    stejný práh jako u výčtových otázek a katalogové výjimky hint_leak.
       if (task.correctAnswer.length > 3 && !/\d/.test(task.correctAnswer)) {
         const correct = task.correctAnswer.trim().toLowerCase();
         const wrongOpts = task.options.filter(o => o !== task.correctAnswer);
+
+        const isCaseVariant = (opt: string) =>
+          opt.trim().toLowerCase() === task.correctAnswer.trim().toLowerCase();
+
+        const citesOtherOptions = (opt: string) => {
+          const o = opt.trim().toLowerCase();
+          let n = 0;
+          for (const other of task.options ?? []) {
+            const x = other.trim().toLowerCase();
+            if (x === o || x.length <= 3) continue;
+            if (containsAsPhrase(o, x)) n++;
+          }
+          return n >= 2;
+        };
+
+        // Souhrnnou možností může být i sám klíč („Ani rovnoběžky, ani
+        // kolmice" jako správná odpověď) — pak je obsažení ostatních možností
+        // rovněž záměr, ne vada. Bez téhle symetrie zůstávalo 13 nálezů.
+        const correctIsSummary = citesOtherOptions(task.correctAnswer);
+
         for (const opt of wrongOpts) {
+          if (correctIsSummary || isCaseVariant(opt) || citesOtherOptions(opt)) continue;
           const o = opt.trim().toLowerCase();
           if (o.length > 3 && !/\d/.test(o) && (containsAsPhrase(correct, o) || containsAsPhrase(o, correct))) return false;
         }

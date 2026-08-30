@@ -83,10 +83,23 @@ export const numericToleranceValidator: Validator = {
 export const setMatchValidator: Validator = {
   id: "set_match",
   validate(answer, expected) {
-    const toSet = (s: string) =>
-      new Set(
-        s.split(",").map((x) => x.trim().toLowerCase()).filter(Boolean),
-      );
+    // `MultiSelectInput` posílá JSON pole (`["pes","kočka"]`), zatímco
+    // `resolveTaskValidation` skládá očekávanou hodnotu přes `join(",")`.
+    // Bez JSON větve by se rozdělením podle čárek zachovaly závorky a
+    // uvozovky (`["pes"` vs `pes`) a žák by za správnou odpověď dostal
+    // „špatně" — stejná třída chyby jako BUG 3 u `fill_blank` (2026-07-19).
+    const toSet = (s: string) => {
+      const t = s.trim();
+      if (t.startsWith("[")) {
+        try {
+          const arr = JSON.parse(t);
+          if (Array.isArray(arr)) {
+            return new Set(arr.map((x) => String(x).trim().toLowerCase()).filter(Boolean));
+          }
+        } catch { /* není validní JSON — spadni na dělení čárkami */ }
+      }
+      return new Set(t.split(",").map((x) => x.trim().toLowerCase()).filter(Boolean));
+    };
     const a = toSet(answer);
     const e = toSet(expected);
     if (a.size !== e.size) return { correct: false, errorType: "wrong_count" };
