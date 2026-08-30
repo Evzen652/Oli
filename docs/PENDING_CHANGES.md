@@ -66,7 +66,13 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🔎 **Třída B se opravuje opačně než třída A:** klíč zůstává, prodlužují se distraktory. Zmizely tím výplňové možnosti „záleží na žánru/textu/délce" a nahradily je **zrcadlové distraktory** (prohozená definice), které testují skutečnou miskoncepci.
 - 🐞 **Cizojazyčné vsuvky potřetí:** „len" (slovensky), „prose" a „cleverly" (anglicky), „historia" (latinsky). Dál „Jarlav Foglar", „by jsi", „Co je memoáry", „allegorie", „lyricka", „roman", „zápleku", „záporaci", „hercové".
 - 🐞 **Porušená přiměřenost ročníku:** L3 tří témat stavělo otázky na `unreliable narrator`, `stream of consciousness`, `show, don't tell`, `cliffhanger`, `world-building`, `character arc`, `metatextualita`, `pikareskní román` — anglické termíny pro 5. ročník, navzdory vlastním `boundaries`. Přepsáno do češtiny; zbylé rozšiřující pojmy jsou nově uvedené v `boundaries`.
-- ⏭️ **Zbývá:** 912 nálezů ve 101 tématech.
+- ✅ **4. dávka: 4 témata slohové výchovy a čtení 5. ročníku** (úřední dopis, vyprávění s osnovou, studijní a věcné čtení, telefonování), **110 → 0** nálezů. Korpus **1 062 → 945**.
+- 🐞 **`„Vec:"` místo `„Věc:"` v celém tématu úředního dopisu** (8 výskytů včetně `helpTemplate`).
+- 🐞 **Cizojazyčné vsuvky počtvrté a nejhustší:** `skimming`, `scanning`, `SQ3R`, `preview`, `sampling`, `stop and think`, `„Today: 01.06.2026"`, `call back`, `etikett`. Přepsáno do češtiny.
+- 🐞 **Přiměřenost ročníku:** L3 studijního čtení řešilo primární/sekundární zdroje a **diplomovou práci**. Nahrazeno situacemi pro páťáka.
+- 🐞 **Významové chyby:** „uvedeme, kdo voláme" (komu), „Mohu vás zavolat zpět?" (vám), „se netelefon" (uťaté slovo), „opisuje prostředí" (popisuje), „kostru textu", „rovnou výhodu volání".
+- 🔎 **Výplňové distraktory:** „záleží na žánru/délce/situaci" se v těchto tématech objevilo 40+×. Nahrazení skutečnými miskoncepcemi je větší pedagogický zisk než samotné odstranění tellu.
+- ⏭️ **Zbývá:** 794 nálezů v 97 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
