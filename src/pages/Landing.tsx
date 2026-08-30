@@ -6,28 +6,26 @@ import { Badge } from "@/components/ui/badge";
 import { pad } from "@/lib/czechGrammar";
 import { DEFAULT_DAILY_COUNT } from "@/lib/anonDailyTasks";
 import { LandingNav } from "./LandingNav";
-import imgUceni from "@/assets/good-to-know.png";
 import imgVysvetleni from "@/assets/help-hint.png";
-import imgStarosti from "@/assets/category-info.png";
-
-// Nově generované ilustrace ze Supabase storage
-const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
-const si = (key: string) => `${S}/${key}.png`;
-
-const imgPisemka     = si("subject-cestina");
-const imgDiktat      = si("topic-cz-diktat");
-const imgZlomky      = si("landing-zlomky") + "?v=2";
-const imgProcvicovani = si("landing-kazdenodni-vyucovani");
-const imgRodina      = si("landing-vstup-bez-barier");
-const imgZdraviHygiena = si("landing-rodic-propojeni");
-const imgRocniObdobi = si("landing-samostatne-spolecne");
-const imgBarChart    = si("cat-math-cisla-a-operace");
-const imgSkola       = si("cat-cz-pravopis");
-const imgPodpora     = si("topic-rostliny");
-const imgProstredi   = si("topic-zvirata");
-const imgProcvic     = si("subject-prvouka");
-const imgPrehled     = si("cat-math-zlomky");
-const imgCilene      = si("subject-cestina");
+import imgDiktat from "@/assets/landing-diktat.png";
+import imgPisemka from "@/assets/landing-priprava-na-pisemku.png";
+import imgZlomky from "@/assets/landing-zlomky-torta.png";
+import imgProcvicovani from "@/assets/landing-kazdodenni-vyucovani.png";
+import imgRodina from "@/assets/landing-vstup-bez-barier.png";
+import imgZdraviHygiena from "@/assets/landing-propojeni-s-rodicem.png";
+import imgRocniObdobi from "@/assets/landing-samostatne-nebo-spolecne.png";
+import imgVyberTematu from "@/assets/landing-vyber-tematu.png";
+import imgKrokZaKrokem from "@/assets/landing-krok-za-krokem.png";
+import imgPrehledUspechu from "@/assets/landing-prehled-o-uspechu.png";
+import imgPrehledPokroku from "@/assets/landing-prehled-o-pokroku.png";
+import imgMaleKroky from "@/assets/landing-male-kroky.png";
+import imgPripravaPisemka from "@/assets/landing-priprava-pisemka.png";
+import imgBezStresu from "@/assets/landing-bez-stresu.png";
+import imgBezpecneProstredi from "@/assets/landing-bezpecne-prostredi.png";
+import imgPravidelnyNavyk from "@/assets/landing-pravidelny-navyk.png";
+import imgKratkeProcvicovani from "@/assets/landing-kratke-procvicovani.png";
+import imgCileneProcvicovani from "@/assets/landing-cilene-procvicovani.png";
+import imgPrehledProRodice from "@/assets/landing-prehled-pro-rodice.png";
 import {
   BookOpen, BarChart3, Target, Shield, Clock, Sparkles,
   UserPlus, KeyRound, TrendingUp, CheckCircle2, Eye, Zap,
@@ -36,22 +34,30 @@ import {
 
 /* ── helpers ── */
 /**
- * Landing měl vlastní privátní paletu s natvrdo psanými hexy — proto zůstával
- * oranžový, i když se zbytek aplikace sjednotil na značkovou borůvkovou.
- * Rodič tak přišel na oranžový web a po registraci se ocitl ve fialové
- * aplikaci. Hodnoty teď odpovídají tokenům z `index.css`.
+ * Privátní paleta landingu. `brand` drží značkovou oranžovou z loga; `bg*` jsou
+ * DEKORATIVNÍ tinty dlaždic, ne odvozeniny primární barvy — střídají se jako
+ * trojice modrá / oranžová / zelená, aby po sobě jdoucí karty šly rozeznat.
+ * Nesjednocovat je s `--accent`: tím by modrá i oranžová splynuly v jednu.
  */
 const C = {
-  brand: "#5A45E0",     /* --primary  borůvková, bílý text 6,25:1 */
-  brandHover: "#4A37C4",/* --primary-hover */
+  brand: "#F97316",     /* --primary  značková oranžová, shodná s logem */
+  brandHover: "#EA580C",/* --primary-hover */
   teal: "#0F766E",      /* předmětová prvouka — 5,47:1 na bílé */
   dark: "#1C1917",      /* --foreground  teplá, ne studená slate */
-  bgBlue: "#F3F1FE",    /* --accent  borůvkový tint */
-  bgGreen: "#E3F3E8",   /* --success-muted */
+  bgBlue: "#EAF2FF",    /* dekorativní modrý tint */
+  bgGreen: "#CCFBF1",   /* dekorativní mátový tint */
   bgOrange: "#FFF1E6",  /* tint sovy/maskota */
   bgGray: "#F2F0EA",    /* --muted  teplá plocha */
   bgWarning: "#FEF6E7", /* --warning-muted  jantarový tint */
 };
+
+/**
+ * Stín ilustrací. Tailwindí `drop-shadow-lg` má krytí 0,04 / 0,1 — na akvarelu
+ * s měkkým, poloprůhledným okrajem se přes něj rozprostře do neviditelna.
+ * Proto vlastní hodnota: kratší rozostření a výrazně vyšší krytí, v teplém
+ * odstínu (rgba(41,37,36)) shodném se stínovými tokeny v `tailwind.config.ts`.
+ */
+const IMG_SHADOW = "drop-shadow-[0_6px_5px_rgba(41,37,36,0.30)]";
 
 function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return <section id={id} className={`py-20 sm:py-28 ${className}`}><div className="mx-auto max-w-6xl px-4 sm:px-6">{children}</div></section>;
@@ -66,18 +72,14 @@ function SectionHead({ title, sub }: { title: string; sub?: string }) {
   );
 }
 
-/**
- * Karta je bílá, barvu nese jen dlaždice pod ilustrací (`bg`).
- * Dřív bylo pastelové pozadí přes celou kartu — šest různých pastelů vedle
- * sebe přehlušilo samotné ilustrace, kvůli kterým tam ty karty jsou.
- */
-function FeatureCard({ img, title, desc, bg }: { img: string; title: string; desc: string; bg?: string }) {
+/** Pastelová plocha nese celou kartu — barva je podklad, ne jen dlaždice ikony. */
+function FeatureCard({ img, title, desc, bg, preprocessed }: { img: string; title: string; desc: string; bg?: string; preprocessed?: boolean }) {
   return (
-    <Card interactive className="rounded-3xl">
+    <Card className="rounded-3xl border-0 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: bg || "#fff" }}>
       <CardContent className="p-7 space-y-3">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl" style={{ background: bg || C.bgGray }}>
-          <DewhiteImg src={img} alt={title} className="h-12 w-12 object-contain" />
-        </div>
+        {/* Jednotná výška, volná šířka — kresby mají poměr stran od 0,84 do 2,48
+            a ve čtverci by se ty široké zmenšily nejvíc. */}
+        <DewhiteImg preprocessed={preprocessed} src={img} alt={title} className={`h-16 w-auto max-w-full object-contain ${IMG_SHADOW}`} />
         <h3 className="text-lg font-semibold font-heading" style={{ color: C.dark }}>{title}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
       </CardContent>
@@ -86,9 +88,17 @@ function FeatureCard({ img, title, desc, bg }: { img: string; title: string; des
 }
 
 /* ── page ── */
-function DewhiteImg({ src, alt, className, style, threshold = 245 }: { src: string; alt: string; className?: string; style?: React.CSSProperties; threshold?: number }) {
+/**
+ * Odstraní bílé pozadí v prohlížeči (canvas). POZOR: na rozdíl od serverového
+ * `dewhiteBackground` NEMÁ flood-fill od okrajů — maže podle jasu kdekoli, i
+ * uvnitř kresby. U akvarelu to sežere pleť a odlesky (naměřeno 11 % krycích
+ * pixelů). Proto `preprocessed` u obrázků, které už průhledné jsou: druhý
+ * průchod by je jen poškodil.
+ */
+function DewhiteImg({ src, alt, className, style, threshold = 245, preprocessed = false }: { src: string; alt: string; className?: string; style?: React.CSSProperties; threshold?: number; preprocessed?: boolean }) {
   const [out, setOut] = useState(src);
   useEffect(() => {
+    if (preprocessed) { setOut(src); return; }
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
@@ -111,7 +121,7 @@ function DewhiteImg({ src, alt, className, style, threshold = 245 }: { src: stri
       } catch { /* CORS blokuje canvas — mix-blend-multiply zajistí vizuální transparentnost */ }
     };
     img.src = src;
-  }, [src, threshold]);
+  }, [src, threshold, preprocessed]);
   return <img src={out} alt={alt} className={className} style={style} />;
 }
 
@@ -160,6 +170,7 @@ export default function Landing() {
                   bg: "linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%)",
                   border: "border-purple-200/60",
                   rotate: "-rotate-1",
+                  imgClass: "max-h-44",
                 },
                 {
                   title: "Příprava na písemku",
@@ -169,7 +180,7 @@ export default function Landing() {
                   border: "border-blue-200/60",
                   rotate: "rotate-1",
                   mt: "mt-6",
-                  threshold: 220,
+                  imgClass: "max-h-44",
                 },
                 {
                   title: "Zlomky",
@@ -179,6 +190,7 @@ export default function Landing() {
                   border: "border-teal-200/60",
                   rotate: "rotate-1",
                   mt: "mt-4",
+                  imgClass: "max-h-44",
                 },
                 {
                   title: "Každodenní vyučování",
@@ -188,21 +200,27 @@ export default function Landing() {
                   border: "border-orange-200/60",
                   rotate: "-rotate-1",
                   mt: "-mt-2",
-                  imgClass: "h-44 w-44",
+                  // Batoh je předmět, ne postava — při stejné výšce jako dítě
+                  // u „Diktátu" působil předimenzovaně. Nižší strop ho srovná
+                  // s dortem, aniž by ostatní dlaždice musely zmenšovat.
+                  imgClass: "max-h-36",
                 },
               ].map((tile) => (
                 <div
                   key={tile.title}
-                  className={`group rounded-3xl shadow-e1 hover:shadow-e2 hover:-translate-y-px hover:rotate-0 transition-all duration-500 ease-out p-6 flex flex-col justify-between min-h-[230px] cursor-default border ${tile.border} ${tile.rotate} ${tile.mt ?? ""}`}
+                  className={`group rounded-3xl shadow-e1 hover:shadow-e2 hover:scale-[1.05] hover:-translate-y-2 hover:rotate-0 transition-all duration-500 ease-out p-6 flex flex-col justify-between min-h-[230px] cursor-default border ${tile.border} ${tile.rotate} ${tile.mt ?? ""}`}
                   style={{ background: tile.bg }}
                 >
-                  {/* Illustration — large, dominant */}
+                  {/* Illustration — large, dominant.
+                      Šířka na celou dlaždici (ne čtverec): ilustrace jsou různě
+                      široké a ve čtvercovém boxu by se ty na šířku zmenšily
+                      podle své nejdelší strany, tedy na půlku výšky. */}
                   <div className="flex-1 flex items-center justify-center mb-3">
                     <DewhiteImg
+                      preprocessed
                       src={tile.img}
                       alt={tile.title}
-                      className={`${tile.imgClass ?? "h-36 w-36"} object-contain group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500 ease-out drop-shadow-lg`}
-                      threshold={tile.threshold}
+                      className={`w-full ${tile.imgClass} object-contain group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500 ease-out ${IMG_SHADOW}`}
                     />
                   </div>
                   {/* Text */}
@@ -225,7 +243,7 @@ export default function Landing() {
                 { title: "Každodenní vyučování", desc: "Krátké úkoly na míru", img: imgProcvicovani, bg: C.bgOrange },
               ].map((tile) => (
                 <div key={tile.title} className="rounded-2xl shadow-e1 p-4 flex flex-col gap-2 items-center text-center" style={{ background: tile.bg }}>
-                  <DewhiteImg src={tile.img} alt={tile.title} className="h-16 w-16 object-contain drop-shadow-sm" />
+                  <DewhiteImg preprocessed src={tile.img} alt={tile.title} className={`w-full max-h-20 object-contain ${IMG_SHADOW}`} />
                   <h3 className="text-sm font-bold font-heading" style={{ color: C.dark }}>{tile.title}</h3>
                   <p className="text-xs text-muted-foreground">{tile.desc}</p>
                 </div>
@@ -244,11 +262,12 @@ export default function Landing() {
             { img: imgZdraviHygiena, step: "2", title: "Propojení s rodičem", desc: "Volitelné. Když rodič vytvoří účet, vidí pokrok dítěte a může zadávat úkoly.", bg: C.bgOrange },
             { img: imgRocniObdobi, step: "3", title: "Samostatně nebo společně", desc: "Aplikace funguje jen pro děti, ale s rodičem dává úžasné možnosti.", bg: C.bgGreen },
           ].map((item) => (
-            <Card key={item.step} className="rounded-3xl text-center shadow-e1">
+            <Card key={item.step} className="rounded-3xl border-0 shadow-lg text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300" style={{ background: item.bg }}>
               <CardContent className="p-8 space-y-4">
-                <div className="mx-auto grid h-24 w-24 place-items-center rounded-3xl" style={{ background: item.bg }}>
-                  <DewhiteImg src={item.img} alt={item.title} className="h-20 w-20 object-contain" />
-                </div>
+                {/* Jednotná VÝŠKA, ne čtverec: tyhle tři kresby mají různý poměr
+                    stran (0,86 / 1,11 / 1,38) a ve čtvercovém boxu by se ta
+                    nejširší zmenšila podle šířky, tedy opticky nejvíc. */}
+                <DewhiteImg preprocessed src={item.img} alt={item.title} className={`mx-auto h-28 w-auto max-w-full object-contain ${IMG_SHADOW}`} />
                 <div className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: C.brand }}>
                   {item.step}
                 </div>
@@ -265,17 +284,15 @@ export default function Landing() {
         <SectionHead title="Příprava na písemku bez stresu" sub="Stačí vybrat téma a aplikace připraví cvičení krok za krokem." />
         <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {[
-            { step: 1, img: imgZlomky, title: "Výběr tématu", desc: "Vyjmenovaná slova, zlomky, dělení — cokoli, co se zrovna učí ve škole.", bg: C.bgBlue },
-            { step: 2, img: imgUceni, title: "Procvičování krok za krokem", desc: "Aplikace začíná lehčími úlohami a postupuje k obtížnějším. Nápověda je k dispozici, žádný stres.", bg: C.bgOrange },
-            { step: 3, img: imgPrehled, title: "Přehled o úspěchu", desc: "S rodičovským účtem je vidět, co se daří a kde je co zlepšit.", bg: C.bgGreen },
+            { step: 1, img: imgVyberTematu, title: "Výběr tématu", desc: "Vyjmenovaná slova, zlomky, dělení — cokoli, co se zrovna učí ve škole.", bg: C.bgBlue },
+            { step: 2, img: imgKrokZaKrokem, title: "Procvičování krok za krokem", desc: "Aplikace začíná lehčími úlohami a postupuje k obtížnějším. Nápověda je k dispozici, žádný stres.", bg: C.bgOrange },
+            { step: 3, img: imgPrehledUspechu, title: "Přehled o úspěchu", desc: "S rodičovským účtem je vidět, co se daří a kde je co zlepšit.", bg: C.bgGreen },
           ].map((item) => (
-            <div key={item.step} className="relative rounded-3xl border bg-card p-6 shadow-e1 flex flex-col gap-3">
+            <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
               <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.brand }}>
                 {item.step}
               </div>
-              <div className="grid h-16 w-16 place-items-center rounded-2xl" style={{ background: item.bg }}>
-                <DewhiteImg src={item.img} alt={item.title} className="h-12 w-12 object-contain" />
-              </div>
+              <DewhiteImg preprocessed src={item.img} alt={item.title} className={`h-20 w-auto max-w-full object-contain ${IMG_SHADOW}`} />
               <h3 className="text-base font-semibold font-heading pr-8" style={{ color: C.dark }}>{item.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
@@ -288,17 +305,15 @@ export default function Landing() {
         <SectionHead title="Každodenní vyučování" sub="Pár minut denně — pravidelný návyk místo nárazového učení." />
         <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {[
-            { step: 1, img: imgProcvic, title: "Krátké procvičování každý den", desc: "Aplikace postupně přidává obtížnost — pár minut denně místo dlouhého sezení.", bg: C.bgOrange },
-            { step: 2, img: imgCilene, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a aplikace vede dítě krok za krokem.", bg: C.bgBlue },
-            { step: 3, img: imgPrehled, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
+            { step: 1, img: imgKratkeProcvicovani, title: "Krátké procvičování každý den", desc: "Aplikace postupně přidává obtížnost — pár minut denně místo dlouhého sezení.", bg: C.bgOrange },
+            { step: 2, img: imgCileneProcvicovani, title: "Cílené procvičování", desc: "Při přípravě na písemku zvolíte téma a aplikace vede dítě krok za krokem.", bg: C.bgBlue },
+            { step: 3, img: imgPrehledProRodice, title: "Přehled pro rodiče", desc: "Vidíte, co dítě procvičovalo, jak se mu dařilo a kde se posouvá.", bg: C.bgGreen },
           ].map((item) => (
-            <div key={item.step} className="relative rounded-3xl border bg-card p-6 shadow-e1 flex flex-col gap-3">
+            <div key={item.step} className="relative rounded-3xl p-6 shadow-md flex flex-col gap-3" style={{ background: item.bg }}>
               <div className="absolute top-4 right-4 h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0" style={{ background: C.brand }}>
                 {item.step}
               </div>
-              <div className="grid h-16 w-16 place-items-center rounded-2xl" style={{ background: item.bg }}>
-                <DewhiteImg src={item.img} alt={item.title} className="h-12 w-12 object-contain" />
-              </div>
+              <DewhiteImg preprocessed src={item.img} alt={item.title} className={`h-20 w-auto max-w-full object-contain ${IMG_SHADOW}`} />
               <h3 className="text-base font-semibold font-heading pr-8" style={{ color: C.dark }}>{item.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
@@ -310,12 +325,12 @@ export default function Landing() {
       <Section id="prinosy" className="bg-[#F8FAFC]">
         <SectionHead title="Co vám Oli přinese" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <FeatureCard img={imgBarChart} title="Přehled o pokroku" desc="Každý den vidíte, co dítě procvičilo a jak se mu dařilo." bg={C.bgOrange} />
-          <FeatureCard img={imgUceni} title="Učení po malých krocích" desc="Krátké úlohy místo dlouhých sezení." bg={C.bgBlue} />
-          <FeatureCard img={imgSkola} title="Příprava na konkrétní písemku" desc="Možnost zadat téma předem." bg={C.bgBlue} />
-          <FeatureCard img={imgPodpora} title="Bez stresu a známkování" desc="Žádné 1–5. Pozitivní zpětná vazba." bg={C.bgGreen} />
-          <FeatureCard img={imgStarosti} title="Pravidelný návyk" desc="Pár minut denně místo nárazového učení." bg={C.bgWarning} />
-          <FeatureCard img={imgProstredi} title="Bezpečné prostředí" desc="Žádné reklamy, žádné odkazy ven z aplikace." bg={C.bgOrange} />
+          <FeatureCard img={imgPrehledPokroku} preprocessed title="Přehled o pokroku" desc="Každý den vidíte, co dítě procvičilo a jak se mu dařilo." bg={C.bgOrange} />
+          <FeatureCard img={imgMaleKroky} preprocessed title="Učení po malých krocích" desc="Krátké úlohy místo dlouhých sezení." bg={C.bgBlue} />
+          <FeatureCard img={imgPripravaPisemka} preprocessed title="Příprava na konkrétní písemku" desc="Možnost zadat téma předem." bg={C.bgBlue} />
+          <FeatureCard img={imgBezStresu} preprocessed title="Bez stresu a známkování" desc="Žádné 1–5. Pozitivní zpětná vazba." bg={C.bgGreen} />
+          <FeatureCard img={imgPravidelnyNavyk} preprocessed title="Pravidelný návyk" desc="Pár minut denně místo nárazového učení." bg={C.bgWarning} />
+          <FeatureCard img={imgBezpecneProstredi} preprocessed title="Bezpečné prostředí" desc="Žádné reklamy, žádné odkazy ven z aplikace." bg={C.bgOrange} />
         </div>
       </Section>
 
