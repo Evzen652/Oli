@@ -50,6 +50,24 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 📊 **Retro-audit změřen:** 229 témat / 10 572 úloh, **73 % OK**, 2 938 problémů (formát 1 553 · nápověda prozrazuje 785 · validace odpovědi 529). `optionFeedback` má jen **3 soubory z 340**.
 - 🟡 **Zbývá:** (a) admin AI panel + edge funkce `ai-tutor`/`exercise-validator` — nutné živé ověření adminu, které sandbox neumí (proxy blokuje Supabase); (b) vynutit povinná pole auditem (tvrdý gate pro nová témata, warning pro stávající); (c) retro-audit 2 938 problémů po vlnách, `hint_leak` první.
 
+## ✅ Wave B — giveaway délkou možnosti, 1. dávka (2026-08-30)
+> Navazuje na audit „zbylých cvičení". Uživatel z nabídky zvolil třídu A (meta-text v klíči) a postup téma po tématu.
+
+- 🔎 **Na rozdíl od Wave A nejsou nálezy falešné.** 1 282 nálezů / 113 témat = **610 třída A** (klíč má navíc závorku nebo pomlčku), **313 třída B** (definiční otázka), **359 třída C** (smíšené, část nefixovatelná — vlastní jména, ustálené fráze).
+- ✅ **4 témata hotová, 92 → 0 nálezů; korpus 1 404 → 1 296.** Vzory podstatných jmen (g4, obě), podmět (g5), druhy číslovek (g5).
+- 🐞 **6 věcných chyb v klíčích**, které žádný detektor nehlídá: `lékař` i `zelenář` řazeny ke vzoru pán s tvrzením, že „-ř je tvrdá souhláska" (je měkká → vzor muž); `nůž` ke vzoru muž místo stroj (je neživotný) včetně celé L3 úlohy postavené na tom omylu; `hajný` ke vzoru pán, ačkoli L3 téhož tématu mělo správně „adjektivní vzor"; neúplný výčet pádů u vzoru stavení; chybný `commonMistake`; gramaticky vadné distraktory v tématu podmět.
+- 🐞 **Vlastní regrese (2×), obě odchyceny před commitem:** zkrácení klíče na holý název vzoru zapnulo leak ve sdílené nápovědě (rejstřík vzorů) — přepsáno na metodu; druhá verze nápovědy kolidovala číslovkami s odpověďmi „7. pád".
+- 🔎 **Poznatek:** zkrácení klíče umí giveaway jen přesunout z délky do znění otázky — distraktory je potřeba brát ze slov dané věty, aby se uplatnila výjimka pro výčtové otázky (práh ≥2).
+- ✅ Obě témata vzorů podstatných jmen **znovu zamrazena** (v `UNFROZEN_TOPIC_IDS` visela nedokončená od 2026-07-09).
+- ✅ **2. dávka: 4 témata slohové a literární výchovy 3. ročníku** (popis předmětu, omluvenka, vypravování, tvořivé činnosti), **105 → 0** nálezů. Korpus **1 296 → 1 199**.
+- 🐞 **Další 4 chyby viditelné dítěti:** „Nikому" se **třemi písmeny azbukou**; „s úvodem, zápletkOU a závěrem" v popisku tématu; „obrázkový osnova"; „Jablko je kulatý ovoce" a „přednès" v `helpTemplate`.
+- 🐞 **Vlastní regrese potřetí ze stejné příčiny** → zobecněné pravidlo: **každé zkrácení klíče vyžaduje kontrolu sdílené nápovědy téhož tématu**, protože ta klíč často vyjmenovává.
+- ✅ **3. dávka: 4 témata literární výchovy 5. ročníku** (báseň/román/povídka, vlastní literární text, literární pojmy, umělecké a věcné texty), **132 → 0** nálezů. Korpus **1 199 → 1 062**.
+- 🔎 **Třída B se opravuje opačně než třída A:** klíč zůstává, prodlužují se distraktory. Zmizely tím výplňové možnosti „záleží na žánru/textu/délce" a nahradily je **zrcadlové distraktory** (prohozená definice), které testují skutečnou miskoncepci.
+- 🐞 **Cizojazyčné vsuvky potřetí:** „len" (slovensky), „prose" a „cleverly" (anglicky), „historia" (latinsky). Dál „Jarlav Foglar", „by jsi", „Co je memoáry", „allegorie", „lyricka", „roman", „zápleku", „záporaci", „hercové".
+- 🐞 **Porušená přiměřenost ročníku:** L3 tří témat stavělo otázky na `unreliable narrator`, `stream of consciousness`, `show, don't tell`, `cliffhanger`, `world-building`, `character arc`, `metatextualita`, `pikareskní román` — anglické termíny pro 5. ročník, navzdory vlastním `boundaries`. Přepsáno do češtiny; zbylé rozšiřující pojmy jsou nově uvedené v `boundaries`.
+- ⏭️ **Zbývá:** 912 nálezů ve 101 tématech.
+
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
 

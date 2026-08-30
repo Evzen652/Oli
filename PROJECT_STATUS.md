@@ -144,6 +144,43 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-30 (pokr.) — Wave B: giveaway délkou možnosti, 1. dávka 4 témat:
+- **Zadání uživatele:** „pokračujeme" → z nabídky zvolena **třída A, téma po tématu**.
+- 🔎 **Měření nejdřív (poučení z Wave A): tentokrát nálezy falešné NEJSOU.** 1 282 nálezů ve 113 tématech se rozpadá na tři třídy s různou opravou: **A) 610** — klíč nese navíc závorku/pomlčku, kterou distraktory nemají („Souvětí *(dvě věty spojené spojkou)*" vs „Věta jednoduchá"); **B) 313** — definiční otázka, kde je klíč plná definice a distraktory krátké; **C) 359** — smíšené, část nefixovatelná už z podstaty („České Budějovice" vs „Brno").
+- ✅ **4 témata dokončena, 92 nálezů délkového giveaway → 0.** Korpus **1 404 → 1 296** problémů, `format/length` **1 240 → 1 148**.
+  - `g4-cjl-…vzory-podstatnych-jmen-pan-hrad-…` (26 → 0), `…zena-ruze-…` (26 → 0), `g5-cjl-…podmet-vyjadreny-…` (29 → 0), `g5-cjl-…cislovky-druhy-…` (21 → 0).
+- 🐞 **6 věcných chyb v klíčích odhaleno při ověřování (ne detektorem):**
+  - **`lékař` → vzor pán** s odůvodněním „souhláska -ř je tvrdá". `ř` je měkká, `lékař` se skloňuje podle **muž** (bez lékaře). Táž chyba u **`zelenář`**. Dítě se učilo pravidlo, které si odporuje se 3. ročníkem.
+  - **`nůž` → vzor muž** s odůvodněním „rozhoduje koncovka, ne životnost". `nůž` je neživotné (vidím nůž = 1. pád), patří ke vzoru **stroj**. Na tom stál i celý úkol v L3 („Proč se nůž skloňuje podle muž?"), jehož distraktor „řadí se k vzoru stroj" byl ve skutečnosti správná odpověď.
+  - **`hajný` → vzor pán**, přičemž vysvětlení samo přiznávalo, že se skloňuje jako přídavné jméno — a L3 téhož tématu mělo správný klíč „adjektivní vzor". Téma si protiřečilo samo se sebou.
+  - **`stavení` — „tvar se nemění v 1., 4. a 5. pádu"** je neúplné: v jednotném čísle je „stavení" ve **všech** pádech kromě 7. Otázka tak měla víc správných odpovědí, než nabízela.
+  - `commonMistake` u vzorů tvrdil „učitel = pán" (správně muž) a znovu „-ř je tvrdé".
+  - `podmet…`: gramaticky vadné distraktory („dva podmět", „tři různé podmět", „tři podmety", „pořadí podmetu"), dvakrát mezera před čárkou.
+- 🐞 **Vlastní regrese, oba odchycené korpusovým ověřením před commitem:** (1) po zkrácení klíče na holé „pán"/„muž" začal **sdílený výchozí hint prozrazovat odpověď** — rejstřík vzorů v nápovědě byl dřív neškodný jen proto, že klíč měl navíc závorku. Nápovědy přepsány na **metodu** (urči rod → zkus 2. pád) místo výčtu vzorů; `topic-gate` šel 18 blokujících → 0. (2) Nová metodická nápověda obsahovala „2. pádem" a „7. pádu", což kolidovalo s odpověďmi typu „7. pád" — číslovky z nápovědy odstraněny.
+- 🔎 **Nový poznatek k výjimce „výčtová otázka":** zkrácení klíče může giveaway jen přesunout — z délky do znění otázky. Výjimka se aktivuje až při ≥2 zmíněných možnostech, takže distraktory je potřeba volit **také ze slov dané věty** („babička"/„děda" místo „jen babička"/„jen děda").
+- ⚠️ **Zbývají 2 nálezy, které jsou z podstaty nefixovatelné:** u otázky „Jaký tvar má 'soudce' ve 2. pádu j. č.?" je odpověď „soudce" — lemma v zadání být musí. Totéž „stavení". Kandidát na katalogovou výjimku v detektoru, ne na autorskou opravu.
+- ✅ **Obě vzorová témata znovu zamrazena** — byla v `UNFROZEN_TOPIC_IDS` od 2026-07-09 („Kolo 2 P0"), fix nikdy nedokončen. Odebrána, snapshot přegenerován.
+- **Ověřeno:** typecheck 0, `audit-topic` GATE 3× po sobě čistý u všech 4 témat, obsahové testy **1027 zelených**, freeze prošel.
+- ✅ **2. dávka: další 4 témata slohové a literární výchovy 3. ročníku, 105 nálezů → 0.** Korpus **1 296 → 1 199**, `format/length` **1 148 → 1 045**, zbývá **105 témat**.
+  - `g3-cjl-popis-predmetu` (33 → 0), `g3-cjl-omluvenka-zprava` (24 → 0), `g3-cjl-vypravovani-osnova` (24 → 0), `g3-cjl-tvorive-cinnosti` (24 → 0).
+- 🐞 **Další 4 chyby viditelné dítěti, žádnou z nich detektor nehlásí:**
+  - `„Nikому"` v distraktoru u omluvenky — **tři písmena azbukou** (о, м, у) místo latinky. Stejná třída jako ruské „части" nalezené 25. 8. v ostré DB.
+  - `briefDescription` u vypravování: **„s úvodem, zápletkOU a závěrem"** — verzálky uprostřed slova v textu, který dítě vidí na kartě tématu.
+  - `„Co je obrázkový osnova?"` (chybná shoda, správně obrázková) a `„co se se postavami stalo"` (zdvojené se).
+  - `helpTemplate`: „Jablko je **kulatý** ovoce" a „recituj (**přednès**)".
+- 🐞 **Vlastní regrese potřetí ze stejné příčiny:** zkrácení klíčů na „Úvod"/„Zápletka"/„Závěr" a „Od celku k detailu" zapnulo leak ve sdílených nápovědách, které ty pojmy vyjmenovávaly. Nápovědy přepsány na metodu (přirovnání k cestě, otázka „čím se to vyjadřuje"). **Zobecněné pravidlo: každé zkrácení klíče vyžaduje kontrolu sdílené nápovědy téhož tématu.**
+- ⏭️ **Poznámka k tempu:** všechna 4 témata mají jediný `POOL` pro L1–L3, takže `min_unique_tasks_per_tier` a `difficulty_progression` u nich zůstávají — to je jiná položka (43 v korpusu), ne součást téhle vlny.
+- ✅ **3. dávka: 4 témata literární výchovy 5. ročníku, 132 nálezů → 0.** Korpus **1 199 → 1 062**, `format/length` **912**, zbývá **101 témat**.
+  - `…basen-lyricka-a-epicka-roman-povidka` (35 → 0), `…vlastni-literarni-text-na-dane-tema` (35 → 0), `…elementarni-literarni-pojmy-pri-rozboru-textu` (32 → 0), `…umelecke-a-neumelecke-texty` (30 → 0).
+- 🔎 **Jiná třída, jiná oprava.** U těchhle témat nešlo zkrátit klíč (definiční otázka), ale **prodloužit distraktory na plnohodnotné definice**. Vedlejší efekt je pedagogicky podstatnější než samotné odstranění tellu: mizí výplňové možnosti typu „záleží na žánru", „záleží na textu", „záleží na délce", které nebyly blízkou chybou, ale prázdným místem. Nahrazeny **zrcadlovými distraktory** (prohozená definice: „balada je próza, povídka báseň"), které testují právě tu miskoncepci, o kterou v úloze jde.
+- 🐞 **Další cizojazyčné vsuvky v českém textu — třetí výskyt téhle třídy:** distraktor „**len** chronologický seznam" (slovensky), klíč „kratší **prose** text" a nápověda „**cleverly** zakončený závěr" (anglicky), „literatura o faktech – biografie, **historia**, věda" (latinsky). Žádný detektor tuhle třídu nehlídá.
+- 🐞 **Vlastní jméno s překlepem:** „román od **Jarlava** Foglara".
+- 🐞 **Gramatika:** „Jaký žánr **by jsi** vybral" (správně bys), „**Co je** memoáry" (jsou), „vypravěč bez **jméno**", „**lyricka** báseň", „vědeckofantastický **roman**", „**zápleku**", „**záporaci**", „**allegorie**" (jedno l), „scénická **poznámky**, **hercové**", „**v** smyšleném světě" (ve), „odborné informace **podány**" (podané).
+- 🐞 **Přiměřenost ročníku porušená v L3 tří témat.** Pooly obsahovaly `unreliable narrator`, `stream of consciousness`, `show, don't tell`, `cliffhanger`, `world-building`, `character arc`, `pikareskní román`, `metatextualita` — **anglické termíny jako předmět otázky pro 5. ročník**, přičemž `boundaries` téhož tématu tvrdily „Neprobíráme pokročilé techniky tvůrčího psaní". Přepsáno do češtiny na pojmy, které dítě unese (kompoziční oblouk, nespolehlivý vypravěč, vnitřní a vnější konflikt, vývoj postavy, literatura faktu), zbytek nahrazen. U témat, kde rozšiřující pojmy zůstávají, je to nově **uvedeno v `boundaries`**, jak vyžaduje CLAUDE.md.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat (0 nálezů, ne jen 0 blokujících), obsahové testy 1087 zelených.
+- ⏭️ **Zbývá:** 912 délkových nálezů ve 101 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
+
+
 ### Session 2026-08-30 — audit „zbylých cvičení": 97 % nálezů byla vada detektoru, ne obsahu:
 - **Zadání uživatele:** „spusť testy na zbylé cvičení, kde potřeba oprav". Testová sada byla zelená (4606), takže práce se přesunula na obsahový audit: 229 témat, 10 572 úloh, 2 150 problémů.
 - 🔎 **Zásadní zjištění: dvě kategorie tvořily 97 % nálezů a obě měly vadu v DETEKTORU.** Stejný vzorec jako u Wave A — před opravou obsahu vždy ověřit, jestli nález není falešný.
