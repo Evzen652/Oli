@@ -196,7 +196,15 @@ src/
 - 🐞 **Vlastní chyba při dávkovém patchování — odchycena a vrácena.** Skript hledal úlohu podle textu otázky, jenže tentýž text je v souboru i jako konstanta `TEXT_B` nad pooly. Patch se trefil do jiné úlohy a při druhém pokusu ukousl celou úlohu o knihovně. Soubor vrácen přes `git checkout`, patcher přepsán na kotvu podle **unikátní hodnoty klíče** + pojistku na délku bloku + běh nasucho. Ověřeno počtem úloh (41 před i po).
 - 🔎 **Poučení:** u dávkových úprav obsahu nekotvit na text otázky — ten se v souboru může opakovat i mimo úlohu. Kotvit na hodnotu, která je unikátní, a vždy nejdřív pustit nasucho a porovnat počet úloh.
 - **Ověřeno:** typecheck 0, GATE 3× čistý u všech 3 témat (u reprodukce zůstává jen `sentence_complexity` — otázka do sebe vkládá zdrojový text, je tedy nutně dlouhá), obsahové testy 1087 zelených.
-- ⏭️ **Zbývá:** 730 délkových nálezů v 94 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
+- ✅ **6. dávka: 2 témata přírodovědy g4 + čtenářské téma g3, 58 nálezů → 0.** Korpus **879 → 820**, `format/length` **672**, zbývá **91 témat**.
+  - `g4-prirodoveda-…vzduch` (21 → 0), `g4-prirodoveda-…slunce` (19 → 0), `g3-cjl-vyhledavani-informaci` (18 → 0).
+- 🐞 **Věcná chyba ve fyzice:** „V létě dopadají paprsky **šikměji**" — v létě dopadají naopak **strměji**, a právě proto je tepleji. Klíč učil opak toho, co má vysvětlit.
+- 🐞 **`„Jeden mraveniště"`** 2× ve čtenářském textu pro 3. ročník (mraveniště je střední rod → „Jedno mraveniště").
+- 🔎 **Poznatek k metodě: jeden výpis vadných úloh nestačí.** U témat s poolem větším než `slice(0, N)` ukáže jeden běh generátoru jen podmnožinu. U `vzduch` se po opravě 16 nálezů objevilo dalších 5, které v prvním losování nebyly. **Nově se výpis pouští 6× a deduplikuje podle klíče.**
+- 🔎 **Tři různé formáty souborů, tři varianty patcheru.** Víceřádkové `PracticeTask` objekty (g5 slohová výchova), jednořádkové `{ question, correctAnswer, options }` (g4 přírodověda) a kompaktní `{ q, a, opts, e }` (g3 čeština). Patcher má proto tři varianty podle kotvy; každá běží nejdřív nasucho a po aplikaci kontroluje, že se **nezměnil počet úloh** — pojistka zavedená po chybě z 5. dávky.
+- ⚠️ **Zbývá u obou přírodovědných témat `missing_hints`** (0 z 10 vzorových úloh má nápovědu) — předexistující dluh vedený zvlášť, není součástí téhle vlny.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 3 témat, obsahové testy 1109 zelených, freeze přegenerován pro 2 změněná g4 témata.
+- ⏭️ **Zbývá:** 672 délkových nálezů v 91 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
 
 
 ### Session 2026-08-30 — audit „zbylých cvičení": 97 % nálezů byla vada detektoru, ne obsahu:

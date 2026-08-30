@@ -75,7 +75,11 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - ✅ **5. dávka: 3 témata komunikační a slohové výchovy 5. ročníku** (úplnost sdělení, druhy popisu, reprodukce), **69 → 0** nálezů. Korpus **945 → 879**.
 - 🐞 **Věcná chyba v zadání:** „úloha **spojek** jako *nejprve*, *poté*, *nakonec*" — jsou to příslovce. Dál „velká uši" 5×, „Griceovy maxima" jako otázka pro páťáka, „topic sentence", „datasheet", „len foto", „ze spomoci mléka", „omluvelce", „Teplá barva huby".
 - 🐞 **Vlastní chyba při patchování odchycena a vrácena:** skript kotvil na text otázky, který je v souboru i jako konstanta nad pooly → trefil jinou úlohu a pak jednu ukousl. Soubor vrácen přes `git checkout`, patcher přepsán na unikátní kotvu + běh nasucho + kontrolu počtu úloh.
-- ⏭️ **Zbývá:** 730 nálezů v 94 tématech.
+- ✅ **6. dávka: 2 témata přírodovědy g4 + čtenářské téma g3**, **58 → 0** nálezů. Korpus **879 → 820**.
+- 🐞 **Věcná chyba ve fyzice:** „V létě dopadají paprsky šikměji" — v létě dopadají **strměji**, a proto je tepleji. Dál „Jeden mraveniště" 2× v textu pro 3. ročník.
+- 🔎 **Jeden výpis vadných úloh nestačí:** u poolů větších než `slice(0, N)` ukáže jeden běh jen podmnožinu (u `vzduch` se po opravě 16 objevilo dalších 5). Výpis se nově pouští 6× s dedup podle klíče.
+- 🔎 **Tři formáty souborů = tři varianty patcheru** (víceřádkový `PracticeTask`, jednořádkový, kompaktní `{q,a,opts,e}`). Každá běží nasucho a po aplikaci kontroluje neměnný počet úloh.
+- ⏭️ **Zbývá:** 672 nálezů v 91 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
