@@ -50,6 +50,19 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 📊 **Retro-audit změřen:** 229 témat / 10 572 úloh, **73 % OK**, 2 938 problémů (formát 1 553 · nápověda prozrazuje 785 · validace odpovědi 529). `optionFeedback` má jen **3 soubory z 340**.
 - 🟡 **Zbývá:** (a) admin AI panel + edge funkce `ai-tutor`/`exercise-validator` — nutné živé ověření adminu, které sandbox neumí (proxy blokuje Supabase); (b) vynutit povinná pole auditem (tvrdý gate pro nová témata, warning pro stávající); (c) retro-audit 2 938 problémů po vlnách, `hint_leak` první.
 
+## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
+> Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
+
+- 🔎 **Hlavní zjištění:** dvě kategorie tvořily 97 % nálezů a **obě měly vadu v detektoru, ne v obsahu**. Stejný vzorec jako Wave A — před opravou obsahu vždy nejdřív změřit, kolik nálezů je falešných.
+- ✅ **`self_validation` 529 → 0.** Sonda `validateAnswer(klíč, klíč)` dává smysl jen u textové odpovědi; u strukturovaných typů je `correctAnswer` marker a formát odpovědi se liší od formátu klíče. Přepsáno na **round-trip** — odpověď se sestaví tak, jak ji pošle vstupní komponenta, a projde produkční cestou. Kontrola tím poprvé ověřuje to podstatné: *projde bezchybně vyřešená úloha?* (0 selhání z 10 572). V téhle podobě by chytila i BUG 3.
+- 🐞 **Systémová příčina napříč detektory: `` a `\w` v JS jsou ASCII.** `škola` se v české větě nenajde → detektory míjely odpovědi s diakritikou. Táž příčina za 22 falešnými gramatickými nálezy („balení" → fragment „balen"). Nahrazeno `\p{L}` s unicode lookaroundem.
+- ✅ **Ostatní kategorie:** giveaway v otázce 165 → ~18 (výjimka pro výčtové otázky, práh ≥2 jako u hint_leak); `czech_grammar` 22 → 0 (+ znalost předložek, „ze 3 bodů" je správně); struktura 65 → 6 (výjimky pro pravopisné varianty velikosti písmen a pro souhrnnou možnost „ani A, ani B").
+- 🐞 **Latentní bug ve `set_match` opraven:** `MultiSelectInput` posílá JSON pole, očekávaná hodnota je `join(",")` → dítě by za správnou odpověď dostalo „špatně". Dnes latentní (žádné téma multi_select nepoužívá), stejná třída jako BUG 3.
+- ✅ **3 skutečné obsahové bugy:** duplicitní pravá položka ve spojovačce + věcně chybné vysvětlení (`bezobratliAObratlovci…`); dvě správné odpovědi u 5. pádu („předsedo" i „předsedo!") v rozporu se závazným pravidlem „právě 1 správná"; „3 čtverečků" → „čtverečky" a **tři anglická slova v české větě** („8 m wide"), které žádný detektor nehlídá.
+- 🐞 **Vlastní regrese:** round-trip zpomalil audit 2,5× → sada padala na 60s timeout. Po přeuspořádání filtrů běží **3,9 s** (dřív 13,7 s).
+- 📊 **Průchodnost 80 % → 87 %, problémů 2 150 → 1 401.** Testy 4615 zelených (+9 regresních), typecheck 0, freeze nedotčen.
+- ⏭️ **Zbývá — skutečná autorská práce, nezahájeno bez zadání:** **1 243** „správná možnost ≥2× delší než distraktory" (tell „nejdelší je správně"), 78 meta-text v možnosti, 41 opakující se pool, 6 strukturálních, ~18 giveaway k individuálnímu posouzení.
+
 ## ✅ Wave A — retro-audit hint_leak, téma po tématu — DOKONČENO (2026-08-26/27, PR #20 na `chore/remove-essay-and-ai-authoring`)
 > Priorita z bodu (c) výše — `hint_leak` škodí dítěti přímo (nápověda prozrazuje výsledek). Uživatel schválil postup "ano".
 
