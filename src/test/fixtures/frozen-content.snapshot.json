@@ -84,11 +84,11 @@
     "taskCount": 33
   },
   "g3-cjl-omluvenka-zprava": {
-    "hash": "e735476889879e5721000645f984a90ea15380dd",
+    "hash": "cb31364d0ef6f682d65717d3fff39c2ddb1e722b",
     "taskCount": 12
   },
   "g3-cjl-popis-predmetu": {
-    "hash": "101d2f5976dd470f8af7722876039ad6875dcfa8",
+    "hash": "b5b542cc62953f9113c96c20ced5425ec2526d40",
     "taskCount": 12
   },
   "g3-cjl-reprodukce-textu": {
@@ -104,7 +104,7 @@
     "taskCount": 16
   },
   "g3-cjl-tvorive-cinnosti": {
-    "hash": "09c2a3eb9fd3423761d40fc1b18aeac4e8c8544f",
+    "hash": "bafbd92f05933f48918de992e6a789e47d001097",
     "taskCount": 10
   },
   "g3-cjl-uhledne-psani": {
@@ -116,7 +116,7 @@
     "taskCount": 10
   },
   "g3-cjl-vypravovani-osnova": {
-    "hash": "b57703f24febe72a55ba58f6aa31d77d1698d7ed",
+    "hash": "1065a259bc7c9391127e3fd2b50b8c172825fb36",
     "taskCount": 12
   },
   "g3-mat-nasobeni-10-100-zbytkem": {
@@ -177,6 +177,14 @@
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech": {
     "hash": "8abd917e1235fb7ce873bf01420f7ee8f519a891",
+    "taskCount": 48
+  },
+  "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce": {
+    "hash": "ea56dfd56f550e2b37165980e7a6036fe863d2a4",
+    "taskCount": 48
+  },
+  "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure": {
+    "hash": "d2693e63671740d42b553526ca029b56609d89e4",
     "taskCount": 48
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-zajmena-druhy-zajmen": {
