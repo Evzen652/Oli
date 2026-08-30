@@ -186,7 +186,17 @@ src/
 - 🐞 **Gramatika a významové chyby:** `„uvedeme, kdo voláme"` (komu), `„Mohu vás zavolat zpět?"` (vám), `„do nemocnice se netelefon"` (uťaté slovo), `„ve které části se opisuje prostředí"` (popisuje), `„Osnova = kostru textu"`, `„dialog se rozepisuji"`, `„pišeme"`, `„mezery v vědomostech"`, `„prázdnou řádkou"`, `„Baj."`, `„Halo?"`, `„rovnou výhodu volání"` (nesmysl), `„Jak říkáme telefonnímu číslu, které si ověřujeme?"` (nesmyslná otázka).
 - 🔎 **Poznatek k třídě B:** u těchto témat byly distraktory často jen výplň (`„záleží na žánru"`, `„záleží na délce"`, `„záleží na situaci"` — 40+ výskytů). Nahrazení skutečnými miskoncepcemi je pedagogicky větší zisk než samotné odstranění tellu; dítě teď musí vědět, **proč** ostatní možnosti neplatí.
 - **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat, obsahové testy 1087 zelených.
-- ⏭️ **Zbývá:** 794 délkových nálezů v 97 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
+- ✅ **5. dávka: 3 témata komunikační a slohové výchovy 5. ročníku, 69 nálezů → 0.** Korpus **945 → 879**, `format/length` **730**, zbývá **94 témat**.
+  - `…posuzovani-uplnosti-sdeleni` (24 → 0), `…popis-subjektivne-zabarveny` (23 → 0), `…reprodukce-primerene-sloziteho-sdeleni` (22 → 0).
+- 🐞 **Věcná chyba přímo v češtinářském zadání:** otázka se ptala na „úlohu **spojek** jako *nejprve*, *poté*, *nakonec*" — to jsou příslovce, ne spojky. Dítě se učilo špatné zařazení slovního druhu v předmětu, který slovní druhy vyučuje.
+- 🐞 **`„velká uši"` a `„malá uši"` celkem 5×** + `„uši, která používají"`. Ucho má v množném čísle ženský rod (vzor kost), tedy „velké uši, které…".
+- 🐞 **Cizojazyčné vsuvky popáté:** `„len foto z místa"` (slovensky), `„tématická věta (topic sentence)"` a `„technický datasheet"` (anglicky), `„dress code"`. Dál nesmyslné `„Čokoláda se vyrábí ze spomoci mléka."`.
+- 🐞 **Přiměřenost ročníku:** otázka „Jak se nazývá komunikační princip…?" s klíčem **„Griceovy maxima"** — pojem z filozofie jazyka pro páťáka, a k tomu špatně skloňovaný. Nahrazeno otázkou na míru informací.
+- 🐞 **Další překlepy a chyby:** `„školní omluvelce"`, `„Popstal bych"`, `„s hebkou srsti"`, `„Teplá barva huby"` (hudby), `„mezi parafrázi"`, `„shrnem do jedné věty"`, `„záleží na letiště"`, `„korozivní látka"` místo žíraviny, `„gate"`, mezera před čárkou.
+- 🐞 **Vlastní chyba při dávkovém patchování — odchycena a vrácena.** Skript hledal úlohu podle textu otázky, jenže tentýž text je v souboru i jako konstanta `TEXT_B` nad pooly. Patch se trefil do jiné úlohy a při druhém pokusu ukousl celou úlohu o knihovně. Soubor vrácen přes `git checkout`, patcher přepsán na kotvu podle **unikátní hodnoty klíče** + pojistku na délku bloku + běh nasucho. Ověřeno počtem úloh (41 před i po).
+- 🔎 **Poučení:** u dávkových úprav obsahu nekotvit na text otázky — ten se v souboru může opakovat i mimo úlohu. Kotvit na hodnotu, která je unikátní, a vždy nejdřív pustit nasucho a porovnat počet úloh.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 3 témat (u reprodukce zůstává jen `sentence_complexity` — otázka do sebe vkládá zdrojový text, je tedy nutně dlouhá), obsahové testy 1087 zelených.
+- ⏭️ **Zbývá:** 730 délkových nálezů v 94 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
 
 
 ### Session 2026-08-30 — audit „zbylých cvičení": 97 % nálezů byla vada detektoru, ne obsahu:

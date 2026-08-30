@@ -72,7 +72,10 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Přiměřenost ročníku:** L3 studijního čtení řešilo primární/sekundární zdroje a **diplomovou práci**. Nahrazeno situacemi pro páťáka.
 - 🐞 **Významové chyby:** „uvedeme, kdo voláme" (komu), „Mohu vás zavolat zpět?" (vám), „se netelefon" (uťaté slovo), „opisuje prostředí" (popisuje), „kostru textu", „rovnou výhodu volání".
 - 🔎 **Výplňové distraktory:** „záleží na žánru/délce/situaci" se v těchto tématech objevilo 40+×. Nahrazení skutečnými miskoncepcemi je větší pedagogický zisk než samotné odstranění tellu.
-- ⏭️ **Zbývá:** 794 nálezů v 97 tématech.
+- ✅ **5. dávka: 3 témata komunikační a slohové výchovy 5. ročníku** (úplnost sdělení, druhy popisu, reprodukce), **69 → 0** nálezů. Korpus **945 → 879**.
+- 🐞 **Věcná chyba v zadání:** „úloha **spojek** jako *nejprve*, *poté*, *nakonec*" — jsou to příslovce. Dál „velká uši" 5×, „Griceovy maxima" jako otázka pro páťáka, „topic sentence", „datasheet", „len foto", „ze spomoci mléka", „omluvelce", „Teplá barva huby".
+- 🐞 **Vlastní chyba při patchování odchycena a vrácena:** skript kotvil na text otázky, který je v souboru i jako konstanta nad pooly → trefil jinou úlohu a pak jednu ukousl. Soubor vrácen přes `git checkout`, patcher přepsán na unikátní kotvu + běh nasucho + kontrolu počtu úloh.
+- ⏭️ **Zbývá:** 730 nálezů v 94 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
