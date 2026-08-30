@@ -20,16 +20,14 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 24 10% 10%;
 
-    /* Primární = borůvková #5A45E0 (design audit 2026-08-25).
-       Proč ne oranžová (zkoušena a zavržena): na bílé má kontrast jen 2,80:1
-       (norma 4,5:1) a v cvičení je oranžová zároveň barvou CHYBNÉ odpovědi —
-       dítě by vidělo stejnou barvu jako „chyba" i jako barvu produktu.
-       Proč borůvková: aplikace už fialová de facto byla (309 tříd), splňuje
-       kontrast a je jediné velké místo na kruhu nekolidující se sémantikou
-       (zelená správně / červená chyba / jantarová nápověda / oranžová sova). */
-    --primary: 248 71% 57%;           /* #5A45E0 — bílý text 6,25:1 */
+    /* Primární = značková oranžová #F97316, shodná s logem (rozhodnutí uživatele
+       2026-08-30, návrat po borůvkové epizodě z 2026-08-25).
+       Pozn. k přístupnosti: bílý text na této ploše má 2,80:1, tedy pod WCAG AA
+       (4,5:1) — vědomě přijato ve prospěch značky. Kdyby se to někdy revidovalo,
+       tmavší #C2410C (orange-700) drží stejný dojem a měří 5,18:1. */
+    --primary: 25 95% 53%;            /* #F97316 — shodné s logem */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 248 56% 49%;     /* #4A37C4 — 7,97:1 */
+    --primary-hover: 21 90% 48%;      /* #EA580C — tmavší konec značkové oranžové */
 
     --secondary: 45 24% 93%;          /* #F2F0EA */
     --secondary-foreground: 24 10% 10%;
@@ -37,8 +35,8 @@ All colors MUST be HSL.
     --muted: 45 24% 93%;              /* #F2F0EA klidná plocha */
     --muted-foreground: 25 5% 45%;    /* #78716C — 4,56:1 */
 
-    --accent: 249 87% 97%;            /* #F3F1FE borůvkový tint */
-    --accent-foreground: 249 58% 39%; /* #3B2A9E — 9,36:1 na tintu */
+    --accent: 25 95% 96%;             /* #FFF3EA oranžový tint */
+    --accent-foreground: 21 80% 35%;  /* #9A3412 — 7,38:1 na tintu */
 
     --destructive: 0 72% 51%;         /* #DC2626 — 4,83:1 */
     --destructive-foreground: 0 0% 100%;
@@ -55,7 +53,7 @@ All colors MUST be HSL.
 
     --border: 39 23% 88%;             /* #E7E2D9 dekorativní vlas */
     --input: 32 7% 49%;               /* #857D74 okraj ovl. prvku — 4,05:1 */
-    --ring: 248 71% 57%;              /* focus ring = primary */
+    --ring: 25 95% 53%;               /* focus ring = primary */
 
     --radius: 0.875rem;               /* 14px — buttons/inputs base */
 

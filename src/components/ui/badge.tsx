@@ -26,7 +26,7 @@ const badgeVariants = cva(
         success: "border-transparent bg-success-muted text-success",
         /** Nápověda, pozor, čeká na akci. Tint #FEF6E7 + #B45309 (5,02:1). */
         warning: "border-transparent bg-warning-muted text-warning",
-        /** Neutrální doplněk. Borůvkový tint #F3F1FE + #3B2A9E (9,36:1). */
+        /** Neutrální doplněk. Oranžový tint #FFF3EA + #9A3412 (7,38:1). */
         info: "border-transparent bg-accent text-accent-foreground",
         /**
          * Chyba, po termínu, propadlé. Tint #FDEAEA + #DC2626 — na rozdíl od

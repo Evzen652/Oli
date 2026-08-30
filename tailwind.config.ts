@@ -14,19 +14,19 @@ import colors from "tailwindcss/colors";
  * bg-card, text-muted-foreground) — tyhle aliasy jsou most, ne cíl.
  */
 
-/** Značková borůvková — primární barva Oli. `600` = --primary (bílý text 6,25:1). */
-const blueberry = {
-  50: "#F3F1FE",
-  100: "#E8E4FD",
-  200: "#D3CCFB",
-  300: "#B3A8F5",
-  400: "#8E7DEE",
-  500: "#705CE6",
-  600: "#5A45E0",
-  700: "#4A37C4",
-  800: "#3B2A9E",
-  900: "#2E2078",
-  950: "#1F1554",
+/** Značková oranžová — primární barva Oli, shodná s logem. `500` = --primary. */
+const brandOrange = {
+  50: "#FFF7ED",
+  100: "#FFEDD5",
+  200: "#FED7AA",
+  300: "#FDBA74",
+  400: "#FB923C",
+  500: "#F97316",
+  600: "#EA580C",
+  700: "#C2410C",
+  800: "#9A3412",
+  900: "#7C2D12",
+  950: "#431407",
 };
 
 export default {
@@ -113,11 +113,11 @@ export default {
         rose: colors.red,
         // žlutá → jantarová (sémantika nápovědy)
         yellow: colors.amber,
-        // 4 fialové → značková borůvková
-        violet: blueberry,
-        purple: blueberry,
-        indigo: blueberry,
-        fuchsia: blueberry,
+        // 4 fialové → značková oranžová
+        violet: brandOrange,
+        purple: brandOrange,
+        indigo: brandOrange,
+        fuchsia: brandOrange,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

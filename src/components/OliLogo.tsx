@@ -8,7 +8,7 @@ interface OliLogoProps {
   variant?: "text" | "notext";
   /**
    * Barevná varianta nápisu:
-   *  - `ink` (default) — tmavě oranžová na světlém podkladu (7,4:1 na bílé)
+   *  - `ink` (default) — značková oranžová na světlém podkladu
    *  - `inverse` — bílá pro tmavý/fotografický podklad
    */
   tone?: "ink" | "inverse";
@@ -28,8 +28,10 @@ const SIZE = {
  * background-clip nepodpořil, nápis „Oli" **zmizel úplně** (průhledný text
  * nad průhledným pozadím). Značka se nesmí spoléhat na nepovinnou vlastnost.
  *
- * Tmavě oranžová `#9A3412` drží vazbu na sovu a přitom splňuje kontrast —
- * značková `#F97316` má na bílé jen 2,3:1 a jako text by byla nečitelná.
+ * Barva je značková oranžová `#F97316`, shodná se sovou i s `--primary`
+ * (rozhodnutí uživatele 2026-08-30). Na bílé má 2,3:1, tedy pod WCAG AA —
+ * vědomě přijato u loga jako grafického prvku značky. Kdyby bylo potřeba
+ * kontrast dohnat, `#9A3412` drží stejný dojem a měří 7,4:1.
  */
 export function OliLogo({ size = "md", variant = "text", tone = "ink", onClick }: OliLogoProps) {
   const s = SIZE[size];
@@ -41,7 +43,7 @@ export function OliLogo({ size = "md", variant = "text", tone = "ink", onClick }
           className={cn(
             s.text,
             "font-extrabold leading-none select-none tracking-tight",
-            tone === "inverse" ? "text-white" : "text-[#9A3412]",
+            tone === "inverse" ? "text-white" : "text-[#F97316]",
           )}
         >
           Oli
