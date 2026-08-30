@@ -204,7 +204,15 @@ src/
 - 🔎 **Tři různé formáty souborů, tři varianty patcheru.** Víceřádkové `PracticeTask` objekty (g5 slohová výchova), jednořádkové `{ question, correctAnswer, options }` (g4 přírodověda) a kompaktní `{ q, a, opts, e }` (g3 čeština). Patcher má proto tři varianty podle kotvy; každá běží nejdřív nasucho a po aplikaci kontroluje, že se **nezměnil počet úloh** — pojistka zavedená po chybě z 5. dávky.
 - ⚠️ **Zbývá u obou přírodovědných témat `missing_hints`** (0 z 10 vzorových úloh má nápovědu) — předexistující dluh vedený zvlášť, není součástí téhle vlny.
 - **Ověřeno:** typecheck 0, GATE 3× čistý u všech 3 témat, obsahové testy 1109 zelených, freeze přegenerován pro 2 změněná g4 témata.
-- ⏭️ **Zbývá:** 672 délkových nálezů v 91 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
+- ✅ **7. dávka: 4 témata (3× g4 čeština, 1× g3 čeština), 68 nálezů → 0.** Korpus **820 → 754**, `format/length` **605**, zbývá **87 témat**.
+  - `g4-cjl-…vlastni-literarni-tvorba` (19 → 0), `g4-cjl-…inzerat-vzkaz-telefonicky-rozhovor` (17 → 0), `g3-cjl-pohadka-povidka-basen-bajka` (16 → 0), `g4-cjl-…sklonovani-podle-vzoru` (16 → 0).
+- 🐞 **Nejzávažnější nález vlny: 12 ze 14 úloh se ptalo na vzor slova, které samo tím vzorem je.** „Ke kterému vzoru patří slovo *pán*?" → odpověď „vzor pán". Dítě jen zopakovalo slovo ze zadání, úloha netestovala nic. Závorka v klíči („vzor pán (mužský živý, tvrdý základ)") to navíc maskovala. Slova nahrazena skutečnými zástupci vzorů: student → pán, les → hrad, škola → žena, slunce → moře, pokoj → stroj, učitel → muž, ulice → růže, kotě → kuře, nádraží → stavení, kolega → předseda, průvodce → soudce, báseň → píseň. Vysvětlení přepsána.
+- 🐞 **15 blokujících `hint_leak` v témže tématu, předexistujících** (ověřeno `git stash` proti HEAD): sdílená nápověda „Rod poznáme dosazením: ten (mužský), ta (ženský), to (střední)" jmenovala všechny tři možné odpovědi. Přepsána na metodu.
+- 🐞 **Cizojazyčná vsuvka pošesté:** `„přirovnání (simile)"`. Dál `„Příklad správného vzkazku"` (vzkazu) a klíč `„konkrétní technické parametry — správně"`, kde meta-text prozrazoval odpověď.
+- 🔎 **Šipka `→` v možnosti spouští detektor meta-textu i tam, kde ji mají všechny čtyři možnosti** (úloha na pořadí částí hovoru). Formálně falešný poplach, ale nahradit šipku čárkou je čitelnější a nález mizí.
+- 🐞 **Vlastní regrese, potřetí ze stejné příčiny:** zkrácení klíčů na holé názvy (žánrů, vzorů) zaplo leak ve sdílených nápovědách, které ty názvy vyjmenovávaly — u pohádek 7 blokujících, u vzorů 15. **Pravidlo z 2. dávky platí i tady: po každém zkrácení klíče zkontrolovat sdílenou nápověda tématu.**
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat, obsahové testy 1087 zelených, freeze přegenerován pro 3 změněná g4 témata.
+- ⏭️ **Zbývá:** 605 délkových nálezů v 87 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
 
 
 ### Session 2026-08-30 — audit „zbylých cvičení": 97 % nálezů byla vada detektoru, ne obsahu:

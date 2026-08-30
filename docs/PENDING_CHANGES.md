@@ -79,7 +79,11 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Věcná chyba ve fyzice:** „V létě dopadají paprsky šikměji" — v létě dopadají **strměji**, a proto je tepleji. Dál „Jeden mraveniště" 2× v textu pro 3. ročník.
 - 🔎 **Jeden výpis vadných úloh nestačí:** u poolů větších než `slice(0, N)` ukáže jeden běh jen podmnožinu (u `vzduch` se po opravě 16 objevilo dalších 5). Výpis se nově pouští 6× s dedup podle klíče.
 - 🔎 **Tři formáty souborů = tři varianty patcheru** (víceřádkový `PracticeTask`, jednořádkový, kompaktní `{q,a,opts,e}`). Každá běží nasucho a po aplikaci kontroluje neměnný počet úloh.
-- ⏭️ **Zbývá:** 672 nálezů v 91 tématech.
+- ✅ **7. dávka: 4 témata**, **68 → 0** nálezů. Korpus **820 → 754**.
+- 🐞 **12 ze 14 úloh se ptalo na vzor slova, které samo tím vzorem je** („Ke kterému vzoru patří *pán*?" → „vzor pán"). Úloha netestovala nic, závorka v klíči to maskovala. Slova nahrazena skutečnými zástupci (student → pán, les → hrad, učitel → muž, kotě → kuře…).
+- 🐞 **15 blokujících `hint_leak` v témže tématu, předexistujících** (ověřeno `git stash`): nápověda jmenovala všechny tři možné rody. Dál „simile", „vzkazku", meta-text „— správně" v klíči.
+- 🔎 Šipka `→` v možnosti spouští detektor meta-textu i tam, kde ji mají všechny čtyři možnosti — falešný poplach, ale čárka je čitelnější.
+- ⏭️ **Zbývá:** 605 nálezů v 87 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
