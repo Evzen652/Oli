@@ -190,7 +190,7 @@ export default function Landing() {
                   border: "border-teal-200/60",
                   rotate: "rotate-1",
                   mt: "mt-4",
-                  imgClass: "max-h-40 max-w-[74%] mx-auto",
+                  imgClass: "max-h-40",
                 },
                 {
                   title: "Každodenní vyučování",
