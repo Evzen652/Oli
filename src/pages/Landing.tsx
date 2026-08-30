@@ -9,7 +9,7 @@ import { LandingNav } from "./LandingNav";
 import imgVysvetleni from "@/assets/help-hint.png";
 import imgDiktat from "@/assets/landing-diktat.png";
 import imgPisemka from "@/assets/landing-priprava-na-pisemku.png";
-import imgZlomky from "@/assets/landing-zlomky-torta.png";
+import imgZlomky from "@/assets/landing-zlomky-kruh.png";
 import imgProcvicovani from "@/assets/landing-kazdodenni-vyucovani.png";
 import imgRodina from "@/assets/landing-vstup-bez-barier.png";
 import imgZdraviHygiena from "@/assets/landing-propojeni-s-rodicem.png";
