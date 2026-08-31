@@ -21,13 +21,13 @@ type Item = { q: string; a: string; opts: string[]; e: string; hints?: string[] 
 const POOL_L1: Item[] = [
   // Identifikace typu (jednoduchá vs souvětí)
   { q: "'Pes štěká.' — Je to věta jednoduchá nebo souvětí?", a: "Věta jednoduchá (jedno sloveso)", opts: ["Věta jednoduchá (jedno sloveso)", "Souvětí", "Ani jedno", "Souvětí o dvou větách"], e: "'Štěká' = 1 sloveso → věta jednoduchá." },
-  { q: "'Pes štěká a kočka mňouká.' — Je to věta jednoduchá nebo souvětí?", a: "Souvětí (dvě věty spojené spojkou)", opts: ["Souvětí (dvě věty spojené spojkou)", "Věta jednoduchá", "Jeden výraz", "Tři věty"], e: "'Štěká' + 'mňouká' = 2 slovesa spojená 'a' → souvětí." },
+  { q: "'Pes štěká a kočka mňouká.' — o jaký typ věty jde?", a: "Souvětí", opts: ["Věta jednoduchá", "Souvětí", "Tři věty", "Jeden výraz"], e: "'Štěká' + 'mňouká' = 2 slovesa spojená 'a' → souvětí." },
   { q: "Kolik vět je v souvětí: 'Šel jsem do školy, ale zapomněl jsem sešit.'?", a: "Dvě věty", opts: ["Dvě věty", "Jedna věta", "Tři věty", "Čtyři věty"], e: "2 slovesa ('šel jsem', 'zapomněl jsem') → 2 věty." },
   { q: "Jak poznáme souvětí?", a: "Má více sloves (více dějů) a spojku", opts: ["Má více sloves (více dějů) a spojku", "Má více podstatných jmen", "Má více přídavných jmen", "Je delší než 5 slov"], e: "Souvětí = 2+ sloves + spojka.", hints: [
     "Spočítej, kolik dějů (sloves) věta popisuje najednou — je to jen jeden, nebo víc?",
     "Délka věty ani počet podstatných či přídavných jmen o tom nerozhoduje — hledej, co je spojuje dohromady.",
   ] },
-  { q: "Kolik sloves je ve větě jednoduché?", a: "Jedno (jeden děj)", opts: ["Jedno (jeden děj)", "Dvě", "Tři", "Žádné"], e: "Věta jednoduchá = 1 sloveso.", hints: [
+  { q: "Kolik sloves je ve větě jednoduché?", a: "Jedno", opts: ["Žádné", "Jedno", "Dvě", "Tři"], e: "Věta jednoduchá = 1 sloveso.", hints: [
     "Věta jednoduchá popisuje jen jednu věc, která se děje — kolik takových dějů (sloves) to tedy je?",
     "Porovnej to se souvětím, kde dějů bývá víc a jsou spojené spojkou.",
   ] },
@@ -40,12 +40,12 @@ const POOL_L2: Item[] = [
   // Pravidla — spojky, čárka, výčet
   { q: "Věta: 'Přišel jsem domů a umyl si ruce.' Najdi spojku:", a: "a", opts: ["a", "jsem", "domů", "si"], e: "'A' spojuje 2 věty. 'Jsem', 'domů', 'si' spojkami nejsou." },
   { q: "Které souvětí je správně zapsané?", a: "Šel jsem ven, protože bylo hezky.", opts: ["Šel jsem ven, protože bylo hezky.", "Šel jsem ven. Protože bylo hezky.", "Šel jsem ven protože bylo hezky", "Šel jsem ven ale protože bylo hezky."], e: "Před spojkou 'protože' píšeme čárku." },
-  { q: "Jak se zapisuje souvětí?", a: "Věty oddělujeme čárkou před spojkou (ale, protože, když…)", opts: ["Věty oddělujeme čárkou před spojkou (ale, protože, když…)", "Věty oddělujeme tečkou", "Věty píšeme bez čárky", "Každou větu na nový řádek"], e: "Čárka před spojkou. Tečka věty rozdělí na samostatné." },
+  { q: "Jak se zapisuje souvětí?", a: "Věty oddělujeme čárkou před spojkou (ale, protože, když…)", opts: ["Každou větu píšeme na nový řádek", "Věty oddělujeme čárkou před spojkou (ale, protože, když…)", "Věty píšeme za sebou zcela bez čárky", "Věty oddělujeme tečkou uprostřed"], e: "Čárka před spojkou. Tečka věty rozdělí na samostatné." },
   { q: "Věta: 'Koupili jsme chleba, máslo a sýr.' je:", a: "Věta jednoduchá (výčet, ne souvětí)", opts: ["Věta jednoduchá (výčet, ne souvětí)", "Souvětí o třech větách", "Souvětí o dvou větách", "Nelze určit"], e: "Jen 1 sloveso 'koupili', ostatní jsou předměty ve výčtu.", hints: [
     "Najdi ve větě všechna slovesa — kolik jich je?",
     "'Chleba, máslo a sýr' je jen výčet věcí, které se koupily, ne další děje.",
   ] },
-  { q: "Věta 'Velký hnědý medvěd spí v jeskyni.' je:", a: "Věta jednoduchá (jedno sloveso: spí)", opts: ["Věta jednoduchá (jedno sloveso: spí)", "Souvětí", "Tři věty", "Nelze určit"], e: "Dlouhá věta, ale 1 sloveso 'spí' → jednoduchá.", hints: [
+  { q: "Věta 'Velký hnědý medvěd spí v jeskyni.' je:", a: "Věta jednoduchá", opts: ["Tři věty", "Věta jednoduchá", "Nelze určit", "Souvětí"], e: "Dlouhá věta, ale 1 sloveso 'spí' → jednoduchá.", hints: [
     "Délka věty neurčuje, jestli je souvětí — počítej slovesa, ne slova.",
     "'Velký', 'hnědý' a 'v jeskyni' popisují medvěda a místo, ale neděj navíc.",
   ] },
@@ -68,7 +68,7 @@ const POOL_L3: Item[] = [
   { q: "Věta: 'Petr četl knihu, ale usnul u ní.' — Určíme spojku:", a: "ale", opts: ["ale", "u", "ní", "knihu"], e: "'Ale' je spojka mezi 'Petr četl' a 'usnul'." },
   { q: "Kolik vět má souvětí: 'Když jsem se probudil, snídal jsem a šel jsem do školy.'?", a: "Tři věty", opts: ["Tři věty", "Dvě věty", "Čtyři věty", "Jedna věta"], e: "3 slovesa: 'probudil jsem se', 'snídal jsem', 'šel jsem' → 3 věty." },
   { q: "Věta: 'Anna si čte a Bára píše úkol.' Jaký typ vět je toto?", a: "Souvětí ze 2 vět jednoduchých", opts: ["Souvětí ze 2 vět jednoduchých", "Věta jednoduchá s výčtem", "Souvětí ze 3 vět", "Věta jednoduchá s podmětem 'Anna a Bára'"], e: "Dvě různá slovesa a dva různé podměty → 2 věty spojené 'a'." },
-  { q: "Která věta je nejsložitější (nejvíc vět)?", a: "Napsal jsem úkol, potom jsem si četl a nakonec jsem šel spát.", opts: ["Napsal jsem úkol, potom jsem si četl a nakonec jsem šel spát.", "Napsal jsem úkol a šel spát.", "Šel jsem spát.", "Napsal jsem úkol."], e: "První má 3 slovesa → souvětí ze 3 vět. Druhá 2, čtvrtá 1, třetí 1." },
+  { q: "Která věta je nejsložitější (nejvíc vět)?", a: "Napsal jsem úkol, potom jsem si četl a nakonec jsem šel spát.", opts: ["Napsal jsem si dlouhý domácí úkol z matematiky.", "Napsal jsem úkol, potom jsem si četl a nakonec jsem šel spát.", "Po večeři jsem si v pokoji četl novou knihu.", "Večer jsem šel spát a hned jsem usnul."], e: "Nejvíc vět má ta možnost, kde napočítáš nejvíc sloves: napsal jsem, četl jsem, šel jsem." },
   { q: "Kolik čárek má správně souvětí 'Přišel Petr a Anna zpívala a Bára tancovala'?", a: "Žádnou čárku", opts: ["Žádnou čárku", "Dvě čárky (před oběma 'a')", "Jednu čárku (jen před 2. 'a')", "Tři čárky"], e: "Před spojkou 'a' ve slučovacím poměru se čárka NEPÍŠE — ani mezi větami hlavními. Čárku píšeme před 'ale', 'protože', 'když', 'aby' apod., ale ne před 'a', 'i', 'ani', 'nebo' ve slučovacím poměru." },
   { q: "Ve větě 'Když prší, vezmeme si deštníky a půjdeme.' je:", a: "Souvětí ze 3 vět", opts: ["Souvětí ze 3 vět", "Souvětí ze 2 vět", "Věta jednoduchá s výčtem", "Věta jednoduchá"], e: "3 slovesa: 'prší', 'vezmeme si', 'půjdeme' → 3 věty souvětí." },
   { q: "Věta: 'Slyšel jsem hudbu, protože zpívali ptáci.' — jaká je hlavní věta?", a: "Slyšel jsem hudbu", opts: ["Slyšel jsem hudbu", "protože zpívali ptáci", "zpívali ptáci", "hudbu"], e: "Hlavní věta má hlavní myšlenku. Věta se spojkou 'protože' vysvětluje důvod (vedlejší věta)." },
@@ -80,8 +80,8 @@ function pick(pool: Item[]): PracticeTask[] {
     correctAnswer: a,
     options: shuffle([...opts]),
     hints: hints ?? [
-      "Věta jednoduchá = jeden děj (jedno sloveso).",
-      "Souvětí = více dějů (více sloves) spojených spojkou.",
+      "Nejdřív najdi všechna slovesa — říkají, co se děje.",
+      "Kolik sloves napočítáš, tolik dějů ve větě je.",
     ],
     explanation: e,
   }));

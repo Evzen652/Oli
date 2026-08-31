@@ -7,6 +7,13 @@
 
 ---
 
+## 🔴 Přiměřenost ročníku — dvě témata 5. ročníku (2026-09-01)
+Nalezeno při Wave B, dávka 20. **Nejde opravit úpravou možností, chce to přepis tématu.**
+- `g5-prirodoveda-…etapy-lidskeho-zivota-dospivani` — nucleus accumbens, prefrontální kůra, cirkadiánní rytmus, konsolidace paměti, Eriksonových 8 fází psychosociálního vývoje.
+- `g5-prirodoveda-…navykove-latky-alkohol-nikotin-drogy` — acetylcholinové receptory, endokanabinoidy, hipokampus, opioidní receptory, THC.
+- Termín **„sebeobrázek"** je kalk z anglického *self-image*; česky *sebepojetí*. Je v otázkách i distraktorech napříč tématem, takže přejmenování je samostatná změna.
+- V dávce 20 jsem opravil délky, gramatiku a šipky v klíčích; zkrácené klíče jsou psané srozumitelně pro 11 let. **Otázky samotné ale zůstávají nad rámec RVP 5. ročníku.**
+
 ## ✅ Ručně kreslená šipka v celé aplikaci (2026-08-31)
 
 - ✅ `src/components/icons/PaintedArrow.tsx` — varianta „skica", drop-in náhrada

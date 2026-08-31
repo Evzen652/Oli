@@ -1,4 +1,4 @@
-# Wave B — předání práce (stav k 2026-08-31)
+# Wave B — předání práce (stav k 2026-09-01)
 
 Cíl vlny: odstranit nález `format/length` — **„správná možnost je ≥ 2× delší než všechny
 distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď bez znalosti učiva.
@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **109** |
-| dotčených témat | **39** |
-| hotovo dávek | **19** (celkem 1210 nálezů → 0) |
+| `format/length` nálezů | **86** |
+| dotčených témat | **35** |
+| hotovo dávek | **20** (celkem 1210 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
