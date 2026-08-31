@@ -228,10 +228,10 @@ const POOL_L2: PracticeTask[] = [
     question: "K čemu slouží květ rostliny?",
     correctAnswer: "Přitahuje opylovače (hmyz) a po opylení vznikají semena",
     options: [
+      "Přijímá dešťovou vodu pro rostlinu",
       "Přitahuje opylovače (hmyz) a po opylení vznikají semena",
-      "Přijímá vodu z deště",
-      "Vyrábí kyslík místo listu",
-      "Upevňuje rostlinu v půdě",
+      "Vyrábí kyslík místo listů",
+      "Upevňuje rostlinu pevně v půdě",
     ],
     emoji: "🌸",
     hints: [
@@ -245,10 +245,10 @@ const POOL_L2: PracticeTask[] = [
     question: "Co je opylení?",
     correctAnswer: "Přenos pylu z jednoho květu na druhý, po němž vznikají semena",
     options: [
+      "Rozkvétání rostliny během jara",
       "Přenos pylu z jednoho květu na druhý, po němž vznikají semena",
-      "Kvetení rostliny na jaře",
-      "Klíčení semene v půdě",
-      "Odkvétání a opadávání lístků",
+      "Klíčení semene ve vlhké půdě",
+      "Odkvétání a opadávání okvětních lístků",
     ],
     emoji: "🐝",
     hints: [
@@ -313,10 +313,10 @@ const POOL_L2: PracticeTask[] = [
     question: "Co je klíčení semene?",
     correctAnswer: "Probuzení zárodku v semeni, ze kterého začne růst nová rostlina",
     options: [
+      "Přenos pylu mezi dvěma květy",
       "Probuzení zárodku v semeni, ze kterého začne růst nová rostlina",
-      "Přenos pylu mezi květy",
-      "Výroba cukru v listu",
-      "Opadávání listů na podzim",
+      "Výroba cukru v zelených listech rostliny",
+      "Opadávání listů během podzimu",
     ],
     emoji: "🌱",
     hints: [

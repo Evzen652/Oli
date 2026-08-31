@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 3) — Wave B, dávka 23 (4 témata, 51 → 39 nálezů):
+- ✅ **Dávka 23 hotová**, `format/length` **51 → 39**, témat **27 → 23**. Témata: `g3-mat-rysovani-usecky` (3), `g3-prvouka-casova-primka-generace` (3), `g3-prvouka-ekosystemy-pole-louka-les` (3), `g3-prvouka-stavba-rostlin` (3). GATE 3× čistý u všech.
+- 🔎 **Předexistující hint_leak potvrzen postupem z pasti č. 8.** GATE u `casova-primka-generace` hlásil `invarianty: 1` — nápověda „**Kronikář** zaznamenává vše důležité" obsahovala klíč „Kronikář" doslova. Ověřeno proti HEAD (dočasné `git checkout HEAD -- <soubor>`, ne `git stash`, kvůli sdílenému stashi mezi worktrees): **nález tam byl už předtím**, moje úprava naopak snížila heuristické nálezy z 5 na 2. Opraveno i tak, aby GATE prošel.
+- 🐞 **Šipky `→` v klíči** (past č. 6) u „Prarodiče → rodiče → děti" spouštěly detektor meta-textu. Nahrazeny čárkami ve všech čtyřech možnostech, aby zůstaly srovnatelné.
+- 🐞 **„Sova ubila myš"** → *ulovila*. Není to běžné české spojení a v zadání pro 3. ročník působí násilně.
+- ⚠️ **Rejstříkové nápovědy potřetí.** `ekosystemy` měly „Producent = rostlina. Konzument 1. řádu = býložravec. **Konzument 2. řádu = jí býložravce**" u úlohy, jejíž klíč se po zkrácení stal „Konzument 2. řádu." Přepsáno na metodu.
+- **Pozn. k nástrojům:** jeden soubor může mít oba formáty naráz — `rysovaaniUseckyODaneDelce.ts` má většinu úloh v `a`/`opts` na jednom řádku, ale jednu s víceřádkovým `opts`, na které `pv3` spadne. Postup: patcher na to, co zvládne, zbytek ruční náhradou s kontrolou počtu výskytů.
 ### Session 2026-09-01 (pokr. 2) — Wave B, dávka 22 (4 témata, 67 → 51 nálezů):
 - ✅ **Dávka 22 hotová**, `format/length` **67 → 51**, témat **31 → 27**. Témata: `g3-prvouka-minulost-regionu-povesti` (4), `g3-cjl-velka-pismena` (4), `g3-cjl-podstatna-jmena-rod-cislo-pad` (4), `g5-cjl-zajmena-sklonovani` (4). GATE 3× čistý u všech.
 - 🐞 **Distraktory, které nejsou česká slova.** `velka-pismena` nabízela u otázky na velké písmeno možnosti „**západiště**" a „**zapádat**" — vymyšlené nesmysly, které CLAUDE.md zakazuje („distraktory = blízké, pravděpodobné chyby, ne absurdita"). Nahrazeno smysluplnými tvary (`západ slunce`, `západní vítr`, `cesta na západ`), takže dítě musí rozlišit Západ jako oblast od obecného západu. Totéž u zájmen: distraktor „**one**" nahrazen tvary „vždycky jen ony / vždycky jen oni / oni pro všechny rody".

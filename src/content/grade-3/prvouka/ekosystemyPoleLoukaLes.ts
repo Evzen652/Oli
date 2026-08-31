@@ -305,10 +305,10 @@ const POOL_L2_EXTRA: PracticeTask[] = [
   },
   {
     question: "Který organismus je masožravec (konzument 2. řádu)?",
-    correctAnswer: "Liška (loví myši, ptáky, zajíce)",
+    correctAnswer: "Liška",
     options: [
-      "Liška (loví myši, ptáky, zajíce)",
       "Kráva",
+      "Liška",
       "Pampeliška",
       "Bakterie v půdě",
     ],
@@ -338,10 +338,10 @@ const POOL_L3_EXTRA: PracticeTask[] = [
     question: "Proč jsou rozkladači nezbytní pro ekosystém?",
     correctAnswer: "Vrací živiny z odumřelých organismů zpět do půdy pro rostliny.",
     options: [
+      "Loví v lese a na poli drobné škůdce.",
       "Vrací živiny z odumřelých organismů zpět do půdy pro rostliny.",
-      "Loví škůdce v lese.",
-      "Poskytují potravu masožravcům.",
-      "Vyrábí kyslík fotosyntézou.",
+      "Poskytují potravu velkým masožravcům.",
+      "Vyrábějí kyslík pomocí fotosyntézy.",
     ],
     hints: [
       "Rozkladači = houby, bakterie. Co dělají s mrtvým dřevem a listím?",
@@ -395,16 +395,16 @@ const POOL_L3_EXTRA: PracticeTask[] = [
       "Když ubyde voda, ryby a leknín zmizí (nemají kde žít). Naopak přijdou žáby, hmyz, ptáci lovící v blátě. Ekosystém se změní na jiný typ.",
   },
   {
-    question: "Sova ubila myš. Jaká je sova v tomto řetězci?",
-    correctAnswer: "Konzument 2. řádu (loví býložravce).",
+    question: "Sova ulovila myš. Jaká je sova v tomto řetězci?",
+    correctAnswer: "Konzument 2. řádu.",
     options: [
-      "Konzument 2. řádu (loví býložravce).",
       "Producent.",
+      "Konzument 2. řádu.",
       "Rozkladač.",
       "Konzument 1. řádu.",
     ],
     hints: [
-      "Producent = rostlina. Konzument 1. řádu = býložravec (jí rostliny). Konzument 2. řádu = jí býložravce.",
+      "Zeptej se, co sova ulovila — a čím se to zvíře samo živilo.",
     ],
     explanation:
       "Myš jí obilí (konzument 1. řádu, býložravec). Sova loví myš (konzument 2. řádu, masožravec). Sova stojí výš v potravním řetězci.",

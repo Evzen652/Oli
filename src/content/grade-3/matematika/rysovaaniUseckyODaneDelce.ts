@@ -39,7 +39,7 @@ const POOL_L1: Item[] = [
       "Zápis délky úsečky se píše se dvěma svislými čarami kolem názvů krajních bodů, ne jen holými písmeny.",
     ],
   },
-  { q: "Co jsou krajní body úsečky?", a: "Body A a B na obou koncích", opts: ["Body A a B na obou koncích", "Střed úsečky", "Délka úsečky", "Pravítko"] },
+  { q: "Co jsou krajní body úsečky?", a: "Body A a B na obou koncích", opts: ["Střed úsečky uprostřed", "Body A a B na obou koncích", "Pravítko s měřítkem", "Celková délka úsečky"] },
   { q: "Úsečka má délku 3 cm. Jaká je délka v mm?", a: "30 mm", opts: ["30 mm", "3 mm", "300 mm", "0,3 mm"] },
   { q: "Úsečka CD má délku 45 mm. Kolik je to cm?", a: "4,5 cm", opts: ["4,5 cm", "45 cm", "4 cm", "0,45 cm"] },
   {
@@ -51,7 +51,7 @@ const POOL_L1: Item[] = [
       "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
     ],
   },
-  { q: "Dvě úsečky jsou stejně dlouhé. Říkáme, že jsou:", a: "Shodné (kongruentní)", opts: ["Shodné (kongruentní)", "Rovnoběžné", "Kolmé", "Různoběžné"] },
+  { q: "Dvě úsečky jsou stejně dlouhé. Říkáme, že jsou:", a: "Shodné", opts: ["Rovnoběžné", "Shodné", "Různoběžné", "Kolmé"] },
   {
     q: "Úsečka je část přímky ohraničená:",
     a: "Dvěma body",
@@ -71,8 +71,8 @@ const POOL_L2: Item[] = [
   { q: "Narýsuj úsečku délky 5 cm. Jaký krok uděláš první?", a: "Označím bod A a přiložím pravítko", opts: ["Označím bod A a přiložím pravítko", "Hned začnu kreslit", "Změřím papír", "Označím střed úsečky"] },
   {
     q: "Chceš úsečku 7 cm. Na pravítku odměříš:",
-    a: "70 mm (nebo 7 cm)",
-    opts: ["70 mm (nebo 7 cm)", "7 mm", "0,7 mm", "700 mm"],
+    a: "70 mm",
+    opts: ["70 mm", "7 mm", "0,7 mm", "700 mm"],
     hints: [
       "Délku měříme v centimetrech i milimetrech, vždy od nuly. 1 cm = 10 mm.",
       "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",

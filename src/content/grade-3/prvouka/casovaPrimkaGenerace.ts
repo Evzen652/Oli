@@ -130,10 +130,10 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je to kronika?",
-    correctAnswer: "Kniha, do které se zapisují důležité události v pořadí, jak šly za sebou",
+    correctAnswer: "Kniha, kam se zapisují události tak, jak se staly",
     options: [
-      "Kniha, do které se zapisují důležité události v pořadí, jak šly za sebou",
       "Strom příbuzenských vztahů rodiny",
+      "Kniha, kam se zapisují události tak, jak se staly",
       "Mapa zobrazující historická místa",
       "Časová přímka v podobě číselné osy",
     ],
@@ -243,10 +243,10 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se změnila doprava za posledních sto let?",
-    correctAnswer: "Dříve jezdily koňské povozy a parní vlaky, dnes jezdí auta, rychlovlaky a létají letadla",
+    correctAnswer: "Dřív koňské povozy a parní vlaky, dnes auta, vlaky a letadla",
     options: [
-      "Dříve jezdily koňské povozy a parní vlaky, dnes jezdí auta, rychlovlaky a létají letadla",
       "Dříve se létalo letadlem více než dnes",
+      "Dřív koňské povozy a parní vlaky, dnes auta, vlaky a letadla",
       "Doprava se vůbec nezměnila",
       "Dříve bylo více aut než dnes",
     ],
@@ -288,12 +288,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaké je správné pořadí generací od nejstarší po nejmladší?",
-    correctAnswer: "Prarodiče → rodiče → děti",
+    correctAnswer: "Prarodiče, rodiče, děti",
     options: [
-      "Prarodiče → rodiče → děti",
-      "Děti → rodiče → prarodiče",
-      "Rodiče → prarodiče → děti",
-      "Děti → prarodiče → rodiče",
+      "Prarodiče, rodiče, děti",
+      "Děti, rodiče, prarodiče",
+      "Rodiče, prarodiče, děti",
+      "Děti, prarodiče, rodiče",
     ],
     hints: [
       "Generace jdou od nejstarších k nejmladším.",
@@ -348,10 +348,10 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se změnila komunikace mezi lidmi od doby prarodičů do dnes?",
-    correctAnswer: "Dříve se psaly dopisy a čekalo se na ně několik dní, dnes si lidé píší zprávy okamžitě přes mobil",
+    correctAnswer: "Dřív se psaly dopisy a čekalo se dny, dnes zprávy dorazí hned",
     options: [
-      "Dříve se psaly dopisy a čekalo se na ně několik dní, dnes si lidé píší zprávy okamžitě přes mobil",
       "Dříve lidé komunikovali rychleji než dnes",
+      "Dřív se psaly dopisy a čekalo se dny, dnes zprávy dorazí hned",
       "Komunikace se vůbec nezměnila",
       "Dopisy se používají čím dál víc a mobily méně",
     ],
@@ -367,7 +367,7 @@ const POOL_L2: PracticeTask[] = [
     options: ["Kronikář", "Archivář", "Kterýkoliv žák ze školy", "Nikdo, do kroniky se zapisují jen narození"],
     hints: [
       "Do kroniky zapisuje důležité události ten, kdo ji vede.",
-      "Kronikář zaznamenává vše důležité, co se v obci stane — i stavbu školy.",
+      "Není to náhodný člověk ani archivář — obec má pro tenhle úkol svou funkci.",
     ],
     explanation: "Postavení nové školy je důležitá událost v obci, a proto ji zapíše kronikář — člověk, který vede kroniku.",
   },
