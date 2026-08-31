@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **67** |
-| dotčených témat | **31** |
-| hotovo dávek | **21** (celkem 1210 nálezů → 0) |
+| `format/length` nálezů | **51** |
+| dotčených témat | **27** |
+| hotovo dávek | **22** (celkem 1210 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).

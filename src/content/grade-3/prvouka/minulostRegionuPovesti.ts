@@ -126,12 +126,12 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je kronika?",
-    correctAnswer: "Kniha, do které se zapisovaly důležité události v pořadí, jak šly za sebou",
+    correctAnswer: "Kniha, kam se zapisovaly události tak, jak se staly",
     options: [
-      "Kniha, do které se zapisovaly důležité události v pořadí, jak šly za sebou",
-      "Sborník pohádek a pověstí",
-      "Mapa starého města",
-      "Jídelní lístek ze středověku",
+      "Sborník pohádek a pověstí z okolí",
+      "Kniha, kam se zapisovaly události tak, jak se staly",
+      "Mapa starého města s ulicemi",
+      "Jídelní lístek ze středověké hospody",
     ],
     hints: [
       "Kronika zaznamenávala historii — co se stalo, kdy a kde.",
@@ -187,10 +187,10 @@ const POOL_L1: PracticeTask[] = [
     question: "Kdo je pro nás živým historickým pramenem o místní minulosti?",
     correctAnswer: "Starší lidé, kteří si pamatují, jak to tady bývalo",
     options: [
+      "Malé děti, které chodí do školky",
       "Starší lidé, kteří si pamatují, jak to tady bývalo",
-      "Malé děti ve školce",
-      "Pracovníci supermarketu",
-      "Řidiči autobusů",
+      "Prodavači v místním supermarketu",
+      "Řidiči autobusů z jiného města",
     ],
     hints: [
       "Přímý svědek události je nejcennější zdroj — byl u toho.",
@@ -236,15 +236,15 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší pověst od pohádky?",
-    correctAnswer: "Pověst je vázána na skutečné místo nebo postavu z historie, pohádka ne",
+    correctAnswer: "Pověst se váže ke skutečnému místu nebo osobě, pohádka ne",
     options: [
-      "Pověst je vázána na skutečné místo nebo postavu z historie, pohádka ne",
-      "Pohádka je vždy delší než pověst",
-      "Pověst se vždy šťastně končí",
-      "Pohádka nemá žádné postavy",
+      "Pohádka je vždycky delší než pověst",
+      "Pověst se váže ke skutečnému místu nebo osobě, pohádka ne",
+      "Pověst se vždycky šťastně končí",
+      "Pohádka nemá žádné hlavní postavy",
     ],
     hints: [
-      "Přemysl Oráč byl skutečný historický rod, pohádkový princ je vymyšlený.",
+      "Zkus si vzpomenout, jestli se příběh odehrává na místě, které opravdu existuje.",
       "Pověst se váže ke konkrétní hoře, hradu nebo městu.",
     ],
     explanation:
@@ -274,12 +274,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co Libuše podle pověsti prorokovala, když stála na skále nad Vltavou?",
-    correctAnswer: "Vznik slavného města, které bude sahat slávou až ke hvězdám",
+    correctAnswer: "Vznik slavného města, jehož sláva bude sahat ke hvězdám",
     options: [
-      "Vznik slavného města, které bude sahat slávou až ke hvězdám",
-      "Příchod Blanických rytířů",
-      "Konec vlády Přemyslovců",
-      "Narození Krakonoše",
+      "Příchod Blanických rytířů na pomoc",
+      "Vznik slavného města, jehož sláva bude sahat ke hvězdám",
+      "Konec vlády rodu Přemyslovců",
+      "Narození Krakonoše v horách",
     ],
     hints: [
       "Její věštba se týkala místa, kde později vyrostl hrad a hlavní město.",

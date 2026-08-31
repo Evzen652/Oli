@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 2) — Wave B, dávka 22 (4 témata, 67 → 51 nálezů):
+- ✅ **Dávka 22 hotová**, `format/length` **67 → 51**, témat **31 → 27**. Témata: `g3-prvouka-minulost-regionu-povesti` (4), `g3-cjl-velka-pismena` (4), `g3-cjl-podstatna-jmena-rod-cislo-pad` (4), `g5-cjl-zajmena-sklonovani` (4). GATE 3× čistý u všech.
+- 🐞 **Distraktory, které nejsou česká slova.** `velka-pismena` nabízela u otázky na velké písmeno možnosti „**západiště**" a „**zapádat**" — vymyšlené nesmysly, které CLAUDE.md zakazuje („distraktory = blízké, pravděpodobné chyby, ne absurdita"). Nahrazeno smysluplnými tvary (`západ slunce`, `západní vítr`, `cesta na západ`), takže dítě musí rozlišit Západ jako oblast od obecného západu. Totéž u zájmen: distraktor „**one**" nahrazen tvary „vždycky jen ony / vždycky jen oni / oni pro všechny rody".
+- 🐞 **Věcná chyba v nápovědě:** „Přemysl Oráč byl **skutečný historický rod**" — Přemysl Oráč je legendární postava, rod jsou Přemyslovci; navíc tvrzení protiřečilo tomu, co má úloha učit. Přepsáno na metodickou otázku.
+- ⚠️ **Past č. 1 znovu, tentokrát nejostřeji.** `podstatna-jmena` měla sdílenou nápovědu „Pád poznáme otázkou: kdo/co = 1. pád; **koho/čeho = 2. pád**; …" a jedna z úloh se ptala přesně „Otázka 'Koho? Čeho?' patří k pádu:". Nápověda dávala odpověď doslova. Přepsáno na metodu („Pádové otázky si říkej popořadě a počítej, kolikátá sedí."). Stejný zásah u rejstříku vlastní/obecné jméno.
+- ⚠️ **Formát se liší i uvnitř jednoho souboru.** `velka-pismena` má většinu úloh jednořádkových, ale „Co je vlastní jméno?" má `opts` na více řádcích — `pv3.mjs` na ní spadl s „NEAPLIKOVANO". Řešeno rozdělením: patcher na jednořádkové, ruční náhrada na tu jednu. Zapsáno do handoffu.
+- **Pozn. k výběru patcheru:** `zajmena-sklonovani` používá `correctAnswer`/`options`, ne `a`/`opts` — `pv3` hlásí „nenalezeno" u všech kotev, správný je `pv4`. Rychlá diagnostika: `grep -n "correctAnswer\|opts:" <soubor> | head -3`.
 ### Session 2026-09-01 (pokr.) — Wave B, dávka 21 (4 témata, 86 → 67 nálezů):
 - ✅ **Dávka 21 hotová**, `format/length` **86 → 67**, témat **35 → 31**. Témata: `g5-matematika-konstrukce-trojuhelniku` (5), `g5-prirodoveda-obnovitelne-zdroje-energie` (7), `g5-prirodoveda-potravni-retezec` (6), `g2-cjl-literarni-zanry` (4). GATE 3× čistý u všech.
 - ✅ **Zkrácené klíče v geometrii nezahodily odůvodnění.** Klíče typu „Ne – součet dvou stran musí být větší než třetí" se zkrátily na „Ne", ale soubor neměl pole `explanation`, takže by se vysvětlení ztratilo. Doplněno ke čtyřem úlohám, aby dítě po odpovědi vidělo proč.
