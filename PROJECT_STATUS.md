@@ -144,6 +144,16 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 14) — Ručně kreslená šipka `PaintedArrow`:
+- ✅ **Nová komponenta `src/components/icons/PaintedArrow.tsx`** (varianta „skica" — inkoustová kontura, zvlněný dřík, hlava ze dvou tahů, slabší doprovodný tah pod dříkem). Drop-in náhrada za `ArrowRight`/`ArrowLeft` z lucide: velikost přes `className`, směr přes `direction`.
+- 🔎 **Proč SVG a ne malovaný rastr:** šipka se objevuje na oranžovém tlačítku (bílá), na bílém (oranžová) i v tlumeném textu. `currentColor` se přebarví sám; PNG by musel existovat v několika verzích a stejně by nešel obarvit podle stavu.
+- ⚠️ **Směr se otáčí atributem `transform` na `<g>`, ne přes CSS.** Inline `style.transform` by přebil Tailwind třídy typu `group-hover:translate-x-0.5`, které se u těchhle šipek běžně používají.
+- ✅ **Nahrazeno 17 šipek v 8 souborech:** `BackButton` (propisuje se do celé aplikace), `Landing` (3 CTA), `AnonStudentPage` (4), `ParentDashboard` (2), `Report` (2), `ChildHomePage` (2), `AssignmentCreator` (1), `Demo` (2 — tam byly jako textový znak `→`).
+- **Vědomě NEnahrazeno:** `src/components/ui/**` (carousel, calendar, pagination, dropdown, menubar, context-menu, breadcrumb) — systémové ovládací prvky, kde se čeká standardní vzhled a změna by rozjela soulad s upstreamem shadcn. Dál admin (interní) a `Chevron*` u rozbalování / stránkování, což nejsou obsahové šipky.
+- ✅ Ověřeno v běžící appce: na landingu 3 malované šipky 16 × 16 v bílé na oranžovém CTA, `BackButton` se vykresluje bez chyby. Typecheck 0.
+- ℹ️ Chybové hlášky v konzoli během práce byly **zastaralé** — vznikly v okamžiku mezi dvěma úpravami, kdy už byl import pryč, ale JSX ještě ne. Konzole si je drží i po přechodu na jinou stránku; ověřovat je nutné po reloadu.
+- ⚠️ **Nález mimo zadání:** `DiktatFilterSelect.tsx:41` má vlastní tlačítko „Zpět" s `ChevronLeft` místo `<BackButton />`, což CLAUDE.md výslovně zakazuje. Nepřepsal jsem to, protože by se změnil vzhled (BackButton je pill s rámečkem) — čeká na rozhodnutí.
+
 ### Session 2026-08-31 (pokr. 13) — Avatar rodiče přegenerován, už čte jako dospělá:
 - ✅ **Vyřešeno.** Druhá kresba z Gemini nasazena (`role-rodic.png`, `role-zak.png`, 256 × 256). Maminka má delší oválný obličej, výraznější čelist a **barevné puntíkované brýle** — tytéž jako na `landing-prehled-pro-rodice.png`, takže rodičovská role je propojená napříč aplikací. I na 64 px už čte jako dospělá.
 - 🔎 **Co v promptu rozhodlo:** (a) vypuštění „rosy cheeks" u dospělé postavy — velké růžové tváře jsou dětský signál a minule hrály přímo proti věku; (b) popis **proporcí obličeje** místo pouhého čísla věku („early thirties" model ignoroval); (c) explicitní negativy „NOT a teenager", „no freckles".

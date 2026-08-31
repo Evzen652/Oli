@@ -29,8 +29,9 @@ import imgPrehledProRodice from "@/assets/landing-prehled-pro-rodice.png";
 import {
   BookOpen, BarChart3, Target, Shield, Clock, Sparkles,
   UserPlus, KeyRound, TrendingUp, CheckCircle2, Eye, Zap,
-  ArrowRight, GraduationCap, Heart
+  GraduationCap, Heart
 } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 
 /* ── helpers ── */
 /**
@@ -155,7 +156,7 @@ export default function Landing() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-e2 w-full sm:w-auto bg-primary hover:bg-primary-hover transition-colors duration-150" onClick={() => navigate("/onboarding")}>
-                  Začít zdarma <ArrowRight className="h-4 w-4" />
+                  Začít zdarma <PaintedArrow className="h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -375,7 +376,7 @@ export default function Landing() {
                 ))}
               </ul>
               <Button className="w-full rounded-full text-white gap-2" style={{ background: C.brand }} onClick={() => navigate("/auth?mode=register")}>
-                Založit účet zdarma <ArrowRight className="h-4 w-4" />
+                Založit účet zdarma <PaintedArrow className="h-4 w-4" />
               </Button>
               <p className="text-caption text-muted-foreground text-center">Placené plány zatím nespouštíme — účet i obsah jsou teď zdarma.</p>
             </CardContent>
@@ -417,7 +418,7 @@ export default function Landing() {
               a tlačítko spadlo na `h-11` ze `size="lg"`. Inline `background`
               navíc přebíjel `hover:bg-primary-hover`, takže hover nefungoval. */}
           <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-e2 w-full sm:w-auto bg-primary hover:bg-primary-hover transition-colors duration-150" onClick={() => navigate("/auth?mode=register")}>
-            Vytvořit účet zdarma <ArrowRight className="h-4 w-4" />
+            Vytvořit účet zdarma <PaintedArrow className="h-4 w-4" />
           </Button>
         </div>
       </section>

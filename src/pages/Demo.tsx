@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { LandingNav } from "./LandingNav";
 import { Loader2 } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 
 const DEMO_PARENT_EMAIL = "demo@oli.app";
 const DEMO_CHILD_EMAIL  = "demo-child@oli.app";
@@ -93,7 +94,7 @@ export default function Demo() {
             </div>
             {loading
               ? <Loader2 className="h-5 w-5 text-blue-400 animate-spin" />
-              : <span className="text-blue-400 text-lg group-hover:translate-x-1 transition-transform inline-block">→</span>
+              : <PaintedArrow className="h-5 w-5 text-blue-400 group-hover:translate-x-1 transition-transform" />
             }
           </button>
 
@@ -117,7 +118,7 @@ export default function Demo() {
             </div>
             {loading
               ? <Loader2 className="h-5 w-5 text-orange-400 animate-spin" />
-              : <span className="text-orange-400 text-lg group-hover:translate-x-1 transition-transform inline-block">→</span>
+              : <PaintedArrow className="h-5 w-5 text-orange-400 group-hover:translate-x-1 transition-transform" />
             }
           </button>
         </div>

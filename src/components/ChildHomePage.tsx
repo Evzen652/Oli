@@ -8,7 +8,8 @@ import { FEATURES } from "@/lib/features";
 import { useChildStats, type StatsPeriod, type SkillBreakdown } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, BarChart2, Calendar, ChevronDown, Link2 } from "lucide-react";
+import { BarChart2, Calendar, ChevronDown, Link2 } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { toast } from "sonner";
 import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -582,7 +583,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
             </div>
             <button onClick={() => onBrowseTopics()}
               className="shrink-0 h-12 rounded-2xl bg-white font-bold text-primary hover:bg-white/95 active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-md whitespace-nowrap">
-              Začít procvičovat <ArrowRight className="h-4 w-4 shrink-0" />
+              Začít procvičovat <PaintedArrow className="h-4 w-4 shrink-0" />
             </button>
           </div>
         </div>
@@ -685,7 +686,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                       disabled={!a.topic}
                       className="shrink-0 h-10 rounded-xl bg-primary hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50 text-primary-foreground font-bold px-4 flex items-center gap-1.5 text-sm transition-all"
                     >
-                      Začít <ArrowRight className="h-3.5 w-3.5" />
+                      Začít <PaintedArrow className="h-3.5 w-3.5" />
                     </button>
                   )}
                 </div>

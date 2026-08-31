@@ -7,6 +7,30 @@
 
 ---
 
+## ✅ Ručně kreslená šipka v celé aplikaci (2026-08-31)
+
+- ✅ `src/components/icons/PaintedArrow.tsx` — varianta „skica", drop-in náhrada
+  za `ArrowRight`/`ArrowLeft` z lucide (velikost přes `className`, směr přes
+  `direction`). SVG s `currentColor`, ne rastr — šipka je na oranžovém tlačítku
+  bílá, na bílém oranžová, v textu tlumená.
+- ✅ Nahrazeno **17 šipek v 8 souborech**: `BackButton` (propisuje se všude),
+  `Landing`, `AnonStudentPage`, `ParentDashboard`, `Report`, `ChildHomePage`,
+  `AssignmentCreator`, `Demo`.
+- ⏭️ **Vědomě nenahrazeno:** `src/components/ui/**` (systémové prvky shadcn),
+  admin a `Chevron*` u rozbalování/stránkování. Kdyby to mělo být i tam, je to
+  samostatné rozhodnutí.
+
+## ⏭️ `DiktatFilterSelect` nepoužívá `<BackButton />` (2026-08-31)
+
+`src/components/DiktatFilterSelect.tsx:41` má vlastní tlačítko „Zpět"
+s `ChevronLeft`. CLAUDE.md přitom říká: „Pro každé tlačítko Zpět v aplikaci
+**VŽDY** použij komponentu `<BackButton />`."
+
+Nepřepsáno, protože by se změnil vzhled (BackButton je pill s rámečkem
+a bílým pozadím). **Čeká na rozhodnutí**, jestli sjednotit.
+
+---
+
 ## ✅ Registrace rodiče — text nad formulářem (2026-08-31)
 
 - ✅ `Auth.tsx:142`: „Prvních 14 dní zdarma, bez platební karty." →

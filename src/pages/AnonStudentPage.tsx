@@ -16,7 +16,8 @@ import {
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { getDisplayCategory } from "@/lib/displayNames";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { ArrowRight, Check, Sparkles, Heart, BookOpen } from "lucide-react";
+import { Check, Sparkles, Heart, BookOpen } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
@@ -171,7 +172,7 @@ export default function AnonStudentPage() {
               >
                 <Heart className="h-3.5 w-3.5 fill-current" />
                 Sdílet s rodiči
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                <PaintedArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </button>
             </div>
           </div>
@@ -192,7 +193,7 @@ export default function AnonStudentPage() {
             >
               <Heart className="h-3.5 w-3.5 fill-current" />
               Sdílet s rodiči
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              <PaintedArrow className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
         )}
@@ -293,7 +294,7 @@ export default function AnonStudentPage() {
               href="/auth?mode=register"
               className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-3 font-semibold hover:bg-primary-hover transition-colors"
             >
-              Zaregistrovat se zdarma <ArrowRight className="h-4 w-4" />
+              Zaregistrovat se zdarma <PaintedArrow className="h-4 w-4" />
             </a>
             <p className="text-sm text-violet-500/80">Nebo se vrať zítra pro nové úkoly.</p>
           </div>
@@ -364,7 +365,7 @@ function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
                   onClick={() => onStart(topic.id)}
                   className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-primary text-primary-foreground px-3 py-2.5 text-sm font-semibold hover:bg-primary-hover active:scale-95 transition-all"
                 >
-                  Začít <ArrowRight className="h-4 w-4" />
+                  Začít <PaintedArrow className="h-4 w-4" />
                 </button>
               )}
             </div>

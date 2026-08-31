@@ -1,5 +1,5 @@
-import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,7 @@ export function BackButton({ to, onClick, label = "Zpět", size = "md", classNam
         className,
       )}
     >
-      <ArrowLeft className={cn(iconSize, "transition-transform duration-150 group-hover:-translate-x-0.5")} />
+      <PaintedArrow direction="left" className={cn(iconSize, "transition-transform duration-150 group-hover:-translate-x-0.5")} />
       {label}
     </button>
   );

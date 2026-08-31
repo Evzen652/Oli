@@ -6,7 +6,8 @@ import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { logoNoText } from "@/components/OliLogo";
 import { useT } from "@/lib/i18n";
-import { CalendarDays, CalendarRange, History, ArrowLeft, ArrowRight } from "lucide-react";
+import { CalendarDays, CalendarRange, History } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/BackButton";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
@@ -216,7 +217,7 @@ export default function Report() {
             aria-label={t("report.back")}
             className="h-9 w-9 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-muted/80 transition-all shrink-0"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <PaintedArrow direction="left" className="h-4 w-4" />
           </button>
           <img src={logoNoText} alt="Oli" className="h-10 w-10 object-contain shrink-0" />
           <div className="flex-1 min-w-0">
@@ -470,7 +471,7 @@ export default function Report() {
               >
                 {/* 1. pád — „pro" by vyžadovalo 4. pád, viz cs.ts `assign.title`. */}
                 Zadat úkol {childName ? `— ${childName}` : ""}
-                <ArrowRight className="h-4 w-4 shrink-0" />
+                <PaintedArrow className="h-4 w-4 shrink-0" />
               </button>
             </div>
           </div>

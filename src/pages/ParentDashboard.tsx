@@ -12,7 +12,8 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { LogOut, Plus, RefreshCw, Clock, Pencil, Check, X, Trash2, CheckCircle2, HelpCircle, XCircle, Eye, ArrowRight } from "lucide-react";
+import { LogOut, Plus, RefreshCw, Clock, Pencil, Check, X, Trash2, CheckCircle2, HelpCircle, XCircle, Eye } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { useNavigate } from "react-router-dom";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useT } from "@/lib/i18n";
@@ -543,7 +544,7 @@ export default function ParentDashboard() {
                         onClick={() => navigate(`/session-history/${child.id}`)}
                       >
                         Celá historie
-                        <ArrowRight className="h-3.5 w-3.5" />
+                        <PaintedArrow className="h-3.5 w-3.5" />
                       </button>
                     )}
                   </div>
@@ -572,7 +573,7 @@ export default function ParentDashboard() {
                     onClick={() => navigate(`/report?child=${child.id}`)}
                   >
                     Podrobné hodnocení
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <PaintedArrow className="h-3.5 w-3.5" />
                   </button>
                 </div>
                 <div className="p-4">

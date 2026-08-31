@@ -7,7 +7,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CalendarIcon, Plus, Loader2, ArrowRight, CheckCircle2 } from "lucide-react";
+import { CalendarIcon, Plus, Loader2, CheckCircle2 } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { logoNoText } from "@/components/OliLogo";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
@@ -161,7 +162,7 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
       <DialogTrigger asChild>
         <button className={cn("w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center justify-between px-4 shadow-md hover:shadow-lg active:scale-[0.98] transition-all text-sm", buttonClassName)}>
           {t("assign.create")}
-          <ArrowRight className="h-4 w-4 shrink-0" />
+          <PaintedArrow className="h-4 w-4 shrink-0" />
         </button>
       </DialogTrigger>
       <DialogContent className="overflow-y-auto max-h-[90vh] sm:max-w-xl p-0 gap-0">
