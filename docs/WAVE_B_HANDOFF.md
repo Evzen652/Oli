@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **86** |
-| dotčených témat | **35** |
-| hotovo dávek | **20** (celkem 1210 nálezů → 0) |
+| `format/length` nálezů | **67** |
+| dotčených témat | **31** |
+| hotovo dávek | **21** (celkem 1210 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -111,6 +111,11 @@ paprsky šikměji", „nůž je životný"), **úlohy bez odpovědi** (klíč s�
 neexistuje), **nápovědy patřící k jiné úloze**, vykání dítěti v tykajícím tématu a
 **přiměřenost ročníku** (L3 čtvrťáků na anemochorii, mikrobiomu, GMO, imprintingu).
 **Čti klíče, ne jen délky.**
+
+10. **`pq.mjs` neumí formát `{ correct, distractors }`.** Grade-2 literární žánry
+   mají místo `correctAnswer`/`options` dvojici `correct`/`distractors` (a jen 2
+   distraktory). `pq.mjs` na nich skončí na „NEAPLIKOVANO, oprav kotvy". Řeš
+   regexem kotvícím na text otázky s `assert` na jednu shodu.
 
 ## Nástroje v `scripts/wave-b/`
 

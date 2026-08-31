@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr.) — Wave B, dávka 21 (4 témata, 86 → 67 nálezů):
+- ✅ **Dávka 21 hotová**, `format/length` **86 → 67**, témat **35 → 31**. Témata: `g5-matematika-konstrukce-trojuhelniku` (5), `g5-prirodoveda-obnovitelne-zdroje-energie` (7), `g5-prirodoveda-potravni-retezec` (6), `g2-cjl-literarni-zanry` (4). GATE 3× čistý u všech.
+- ✅ **Zkrácené klíče v geometrii nezahodily odůvodnění.** Klíče typu „Ne – součet dvou stran musí být větší než třetí" se zkrátily na „Ne", ale soubor neměl pole `explanation`, takže by se vysvětlení ztratilo. Doplněno ke čtyřem úlohám, aby dítě po odpovědi vidělo proč.
+- 🐞 **Věcné a jazykové chyby nalezené čtením klíčů:** „ekologická **nicha**" → *nika* (v otázce i nápovědě); „Z každého **kW** přijaté energie" (kW je výkon, ne energie); „Historicky **nebyla zahrnuty** náklady"; „škodlivá pro **klimat**" → *klimatu*; zkomolená nápověda „DDT způsobilo snižování **popularity spolu orla**" (mělo být *populace orla*); „Pohádkový začátek **uvádí nás**" → *nás uvádí*.
+- ⚠️ **`pq.mjs` neumí formát `{ correct, distractors }`** (grade-2 literární žánry) — skončil na „NEAPLIKOVANO, oprav kotvy". Řešeno regexem kotvícím na text otázky s kontrolou jednoznačnosti. Zapsáno do handoffu.
+- 🔎 **Nápovědy s chemickými vzorci a odbornými termíny** (`H₂ + O₂ → H₂O`, „Externality = náklady, které nenese výrobce", „Pravidlo 10 %") přepsány na metodické — po zkrácení klíčů buď prozrazovaly odpověď, nebo byly nad rámec 5. ročníku.
+- 🟡 **Nález k rozhodnutí:** grade-2 `literarni-zanry` má úlohy jen se **3 možnostmi** (`distractors` má 2 prvky), zatímco CLAUDE.md předepisuje 4. Vypadá to jako záměr pro 2. ročník, ale není to nikde doloženo — nechal jsem beze změny.
 ### Session 2026-09-01 — Wave B, dávka 20 (4 témata, 109 → 86 nálezů):
 - ✅ **Dávka 20 hotová**, `format/length` **109 → 86**, dotčených témat **39 → 35**. Témata: `g5-cjl-slova-spisovna-a-nespisovna` (6), `g5-prirodoveda-etapy-lidskeho-zivota-dospivani` (8), `g5-prirodoveda-navykove-latky` (9), `g3-cjl-veta-jednoducha-souveti` (5). Každé prošlo GATE 3× po sobě s `invarianty: 0`.
 - **Obě třídy oprav v jedné dávce.** U `slova-spisovna-a-nespisovna` šlo o třídu B (krátké distraktory u definiční otázky) → prodloužení na plnohodnotné definice. U `veta-jednoducha-souveti` o třídu A (klíč nesl meta-text: „Souvětí *(dvě věty spojené spojkou)*") → zkrácení klíče.
