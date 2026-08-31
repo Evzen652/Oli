@@ -28,9 +28,11 @@
   ale `<img>` sám (`bg-emerald-100` / `bg-violet-100` + `rounded-xl` z doby
   krycích obrázků). Odebráno ve všech 4 výskytech, `object-cover` →
   `object-contain`.
-- ⚠️ **K rozhodnutí:** „maminka" vypadá spíš jako dospívající dívka než rodič —
-  vedle chlapce čte jako starší sestra. Doporučení pro přegenerování je
-  v `docs/ILLUSTRATION_STYLE.md` §5.
+- ✅ **Vyřešeno napodruhé:** „maminka" z prvního pokusu vypadala jako dospívající
+  dívka. Přegenerováno — delší oválný obličej, výraznější čelist a barevné
+  puntíkované brýle (tytéž jako na `landing-prehled-pro-rodice.png`).
+  Rozhodlo vypuštění „rosy cheeks" u dospělé, popis proporcí obličeje místo
+  čísla věku a explicitní negativy. Rozbor v `docs/ILLUSTRATION_STYLE.md` §5.
 
 ---
 

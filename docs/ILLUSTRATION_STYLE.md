@@ -132,10 +132,13 @@ rezervu a soubor ~107 kB; 512 px je zbytečných ~410 kB na dlaždici.
 > grey clothing, no text, no letters, no border, no frame, no drop shadow, no
 > vignette. Wide 2:1 landscape format.
 
-### ⚠️ Past: „maminka" vyšla jako dospívající dívka
+### Past: „maminka" vyšla jako dospívající dívka (vyřešeno napodruhé)
 
 První pokus dal na kartě „Jsem rodič" obličej, který čte jako starší sestra.
-Dvě příčiny, obě se opakují:
+Druhý pokus s opravou níže už sedí — nasazené soubory jsou z něj.
+Souřadnice hlav pro reprodukci: `role-rodic:368:78:330;role-zak:1106:109:270`.
+
+Dvě příčiny, obě se budou opakovat:
 
 1. **Reference sama je mladistvá.** Na `landing-propojeni-s-rodicem.png` čte
    maminka jako dospělá hlavně proto, že je **větší než dítě vedle ní**. V

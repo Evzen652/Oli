@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 13) — Avatar rodiče přegenerován, už čte jako dospělá:
+- ✅ **Vyřešeno.** Druhá kresba z Gemini nasazena (`role-rodic.png`, `role-zak.png`, 256 × 256). Maminka má delší oválný obličej, výraznější čelist a **barevné puntíkované brýle** — tytéž jako na `landing-prehled-pro-rodice.png`, takže rodičovská role je propojená napříč aplikací. I na 64 px už čte jako dospělá.
+- 🔎 **Co v promptu rozhodlo:** (a) vypuštění „rosy cheeks" u dospělé postavy — velké růžové tváře jsou dětský signál a minule hrály přímo proti věku; (b) popis **proporcí obličeje** místo pouhého čísla věku („early thirties" model ignoroval); (c) explicitní negativy „NOT a teenager", „no freckles".
+- ✅ **Rukopis se nerozjel** — chlapec vyšel prakticky identicky jako v prvním pokusu (hlava opět 270 px, střed x 1105 vs 1110), což potvrzuje, že přegenerování celé dvojice je správný postup. Souřadnice hlav: `role-rodic:368:78:330;role-zak:1106:109:270`.
+- ✅ Ověřeno v běžící appce: oba avatary načtené, `background-color` `rgba(0,0,0,0)`, **0 externích požadavků**.
+
 ### Session 2026-08-31 (pokr. 12) — Registrace rodiče: text nad formulářem:
 - ✅ `Auth.tsx:142` „Prvních 14 dní zdarma, bez platební karty." → **„Prvních 14 dní zdarma, ať víte, do čeho jdete."** Ověřeno v běžící appce.
 - ℹ️ Slib „bez karty" se tím **neztratil** — žije dál v ceníku na landing page (`Landing.tsx:404`: „registrace i veškerý obsah jsou zdarma a kartu po vás nikdo nechce", + „Placené plány zatím nespouštíme"). Jde tedy o změnu tónu, ne o věcnou opravu, a nevznikl nesoulad mezi stránkami.
