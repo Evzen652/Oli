@@ -93,7 +93,9 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 ---
 
 ## Multi-PC workflow
-- User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull` (na branchi `claude/cranky-shirley`), abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
+- User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull`, abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
+- **Pracovní branch je `chore/remove-essay-and-ai-authoring`** (aktualizováno 2026-08-31). Na `main` ani na `claude/cranky-shirley` práce posledních session NENÍ — `main` je za ní o víc než 100 commitů. Na druhém PC tedy nejdřív `git fetch origin && git checkout chore/remove-essay-and-ai-authoring`, teprve pak `git pull`.
+- **Když se na druhém PC „nezobrazují změny", zkontroluj nejdřív branch** (`git status -sb`), ne cache. Tahle záměna už jednou stála čas.
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.
 - Pro jednoduchý start je v repo skript `scripts/oli-start.ps1` (Windows) — dělá `git pull` + `npm install` (jen když je třeba) + `npm run dev`. User ho spouští dvojklikem.
 

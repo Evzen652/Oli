@@ -115,7 +115,7 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Tautologie:** „volný okraj na okraji stránky".
 - 🐞 **Katalogová nápověda posedmé a poosmé**; v podmětu navíc „jdeme = my", kde „my" je nově klíč.
 - 🔧 **Nový patcher `pq.mjs`** — kotva na text otázky, univerzální pro všechny formáty. Nutný proto, že tři různé úlohy sdílely tentýž klíč; zpevněný `pv3` to odmítl místo tichého přepsání špatné úlohy.
-- ⏭️ **Zbývá:** 342 nálezů v 67 tématech.
+- ⏭️ **Zbývá:** 342 nálezů v 67 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).

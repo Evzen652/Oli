@@ -1,0 +1,36 @@
+// Vypis vadnych uloh JEDNOHO tematu. Zkopiruj do src/test/_wave-b-dump.test.ts a spust:
+//   TF=<cast-id-tematu> npx vitest run src/test/_wave-b-dump.test.ts --reporter=basic
+// Generator se pousti 6x kvuli michani poolu — jeden beh ukaze jen podmnozinu.
+// Po pouziti SMAZ (nesmi zustat v commitu).
+import { describe, it } from "vitest";
+import { getAllTopics } from "@/lib/contentRegistry";
+
+describe("wave-b", () => {
+  it("dump", () => {
+    const f = process.env.TF!;
+    const t = getAllTopics().find((x: any) => x.id.includes(f))!;
+    const seen = new Map<string, any>();
+    for (let r = 0; r < 6; r++) {
+      for (const lv of [1, 2, 3]) {
+        for (const task of (t as any).generator(lv) ?? []) {
+          if (!task?.options || !task.correctAnswer) continue;
+          if (!seen.has(task.correctAnswer)) seen.set(task.correctAnswer, task);
+        }
+      }
+    }
+    let n = 0;
+    for (const task of seen.values()) {
+      const c = task.correctAnswer as string;
+      const ds = (task.options as string[]).filter((o) => o !== c);
+      const mx = Math.max(...ds.map((d) => d.length));
+      if (c.length > 15 && c.length >= 2 * mx) {
+        n++;
+        console.log(">> " + task.question);
+        console.log("   OK (" + c.length + ") " + c);
+        for (const d of ds) console.log("   -- (" + d.length + ") " + d);
+        console.log("");
+      }
+    }
+    console.log("CELKEM", n);
+  });
+});
