@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 9) — Landing: finální CTA tlačítko bylo tiše rozbité:
+- 🐞 **Příčina nebyla estetická, ale nefunkční třída.** Tlačítko „Vytvořit účet zdarma" mělo `h-13` — Tailwind takovou třídu **nemá** (13 není v jeho škále) a v `tailwind.config.ts` není žádné vlastní `spacing`. Třída se tiše zahodila a tlačítko spadlo na `h-11` (44 px) ze `size="lg"` místo zamýšlených 52 px. Žádná chyba buildu, jen vizuálně nižší tlačítko.
+- 🐞 **Druhá vada v témže řádku:** inline `style={{ background: C.brand }}` přebíjel `hover:bg-primary-hover` z variantu, takže tlačítko na najetí myší **vůbec nereagovalo**.
+- ✅ Sjednoceno s hero CTA (řádek 157): `px-12 h-14`, barva přes `bg-primary` + `hover:bg-primary-hover`, doplněno `w-full sm:w-auto` pro mobil. Naměřeno v běžící appce: **44 → 56 px**, inline styl pryč, hover pravidlo nově na tlačítko sedí.
+- ✅ **Prohledán zbytek `src/`** na další neexistující rozměrové třídy (`h-13/15/17/18/19/21/22/23` a totéž pro `w/p/m/gap`) — **žádná další není**. Typecheck 0 chyb.
+- ℹ️ Panel prohlížeče byl v této session **skrytý**, takže `computer screenshot` vracel prázdné snímky. Ověřovat v takovém případě přes `javascript_tool` / `read_page` (změřit `getBoundingClientRect` a `getComputedStyle`), ne screenshotem.
+
 ### Session 2026-08-31 (pokr. 8) — Landing: opraven rozežraný alfa kanál ilustrací (5 z 19):
 - 🐞 **Nalezena systémová vada všech akvarelových ilustrací.** Serverový „dewhite" mazal pixely podle **jasu kdekoli v kresbě**, ne flood-fillem od okrajů. Světlá akvarelová pleť má jas těsně pod prahem → prokousal ji. Naměřeno na `landing-samostatne-nebo-spolecne.png`: pixely tváře mají zachovanou barvu pleti (`R=253 G=205 B=159`), ale alfu 88–214 místo 255 → obličeje na barevných kartách **prosvítají pozadím**. Poškozenou alfu má 17 z 19 ilustrací (nejvíc `bez-stresu` 102 657 px, `samostatne` 61 358 px, `propojeni-s-rodicem` 52 726 px).
 - ✅ **Opraveno 5 ilustrací**, obě protichůdné varianty vady:

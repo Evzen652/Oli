@@ -412,7 +412,11 @@ export default function Landing() {
             Začněte mít přehled o učení vašeho dítěte
           </h2>
           <p className="text-lg text-muted-foreground">Registrace trvá minutu. Prvních 14 dní je zdarma.</p>
-          <Button size="lg" className="text-base px-10 h-13 gap-2 rounded-full shadow-e2 text-white" style={{ background: C.brand }} onClick={() => navigate("/auth?mode=register")}>
+          {/* Stejný tvar jako hero CTA. Dřív tu bylo `h-13` — Tailwind takovou
+              třídu nemá a v configu není vlastní `spacing`, takže se zahodila
+              a tlačítko spadlo na `h-11` ze `size="lg"`. Inline `background`
+              navíc přebíjel `hover:bg-primary-hover`, takže hover nefungoval. */}
+          <Button size="lg" className="text-base px-12 h-14 gap-2 rounded-full shadow-e2 w-full sm:w-auto bg-primary hover:bg-primary-hover transition-colors duration-150" onClick={() => navigate("/auth?mode=register")}>
             Vytvořit účet zdarma <ArrowRight className="h-4 w-4" />
           </Button>
         </div>

@@ -7,6 +7,21 @@
 
 ---
 
+## ✅ Landing — finální CTA tlačítko bylo tiše rozbité (2026-08-31)
+
+Nahlásil Evžen: „tlačítko je moc úzké, nehezké".
+
+- ✅ **Příčina: `h-13` není platná Tailwind třída** (13 chybí v jeho škále, vlastní
+  `spacing` v configu není). Tiše se zahodila → tlačítko mělo `h-11` = 44 px
+  místo zamýšlených 52 px. Build ani typecheck na to neupozorní.
+- ✅ **Druhá vada:** inline `style={{ background }}` přebíjel `hover:bg-primary-hover`,
+  takže hover nefungoval.
+- ✅ Sjednoceno s hero CTA: `px-12 h-14` + `bg-primary hover:bg-primary-hover`.
+  Ověřeno měřením v běžící appce: 44 → 56 px, hover funguje.
+- ✅ Zbytek `src/` prohledán na další neexistující rozměrové třídy — žádná není.
+
+---
+
 ## ✅ Landing — rozežraný alfa kanál ilustrací (2026-08-31)
 
 Nahlásil Evžen ze screenshotu: „obličej prosvítá a jsou tam bílá pozadí",
