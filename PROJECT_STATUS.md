@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 4) — Wave B, 16. dávka (4 témata): 224 → 191 nálezů:
+- ✅ **4 témata opravena, 33 nálezů `format/length` → 0.** `g5-cjl-…slova-jednoznacna-mnohoznacna-vicevyznamova` (9), `g4-vlastiveda-…podnebi-cr-ovzdusi-pocasi` (8), `g4-vlastiveda-…poloha-cr-v-evrope-sousedni-staty` (8), `g5-cjl-…prima-a-neprima-rec-uvod` (9). Korpus `format/length` **224 → 191**, dotčených témat **55 → 51**.
+- Všechna 4 témata bez explanation/solutionSteps u dotčených úloh → výhradně třída B (prodloužené distraktory), obsah beze změny.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou; 2 zcela čistá, 2 s REVIZE nálezy typu meta-text/šipka, nesouvisejícími s touto dávkou). Žádné z témat není v zamrzlém registru, freeze nepotřeba.
+- **Zbývá 51 témat** (~13 dalších dávek po 4).
+
 ### Session 2026-08-31 (pokr. 3) — Wave B, 15. dávka (4 témata): 260 → 224 nálezů:
 - ✅ **4 témata opravena, 32 nálezů `format/length` → 0** (+4 skryté duplicitní instance stejného vzorce jako v 14. dávce). Korpus `format/length` **260 → 224**, dotčených témat **59 → 55**.
 - 🔎 **Nález mimo rozsah dávky, zapsán a NEřešen teď:** `g4-prirodoveda-…prvni-pomoc-tisnove-volani-mimoradne-udalosti` má `boundaries: ["Pokročilé záchranářské postupy nejsou náplní 4. ročníku"]`, ale L3 pool (a částečně L2) obsahuje profesionální záchranářské postupy — škrtidlo/tourniquet, ABCDE primární průzkum, rozlišení tepenného a žilního krvácení, triáž při hromadném neštěstí, defibrilace, anafylaktický šok s EpiPenem. Přímý rozpor s vlastním `boundaries` tématu, stejný vzorec jako opakovaně zdokumentovaná „přiměřenost ročníku" (batch 9, 11). Opravil jsem jen nahlášený délkový nález (třída B, distraktory beze změny obsahu) — **plné přepsání L3 poolu na úroveň 4. ročníku je samostatná autorská práce**, ne jednořádková oprava, proto nezahájena bez zadání. Zapsáno i do `docs/PENDING_CHANGES.md`.
