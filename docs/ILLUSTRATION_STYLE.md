@@ -132,10 +132,36 @@ rezervu a soubor ~107 kB; 512 px je zbytečných ~410 kB na dlaždici.
 > grey clothing, no text, no letters, no border, no frame, no drop shadow, no
 > vignette. Wide 2:1 landscape format.
 
-⚠️ **Otevřené:** vygenerovaná „maminka" vypadá spíš jako dospívající dívka než
-jako rodič — vedle chlapce čte jako starší sestra. Na kartě „Jsem rodič" to
-mate. Při přegenerování zdůraznit věk (vrásky u očí, dospělé proporce obličeje,
-ne dětské tváře) a případně přidat brýle.
+### ⚠️ Past: „maminka" vyšla jako dospívající dívka
+
+První pokus dal na kartě „Jsem rodič" obličej, který čte jako starší sestra.
+Dvě příčiny, obě se opakují:
+
+1. **Reference sama je mladistvá.** Na `landing-propojeni-s-rodicem.png` čte
+   maminka jako dospělá hlavně proto, že je **větší než dítě vedle ní**. V
+   portrétu po ramena měřítko zmizí a zbude mladá tvář. „Same character as in
+   the reference" tedy dospělost NEPŘENESE — u obličeje se musí reference
+   vědomě přebít.
+2. **„Rosy cheeks" je dětský signál.** Napsané u obou postav; u dospělé
+   vyrobilo velké kulaté tváře. U rodiče vynechat, stejně jako pihy.
+
+Opravený popis dospělé postavy (zbytek promptu pro dvojici zůstává):
+
+> LEFT portrait: a woman aged about 38, clearly an adult — longer oval face,
+> defined cheekbones and jawline, fine laugh lines at the corners of the eyes,
+> eyes normally sized and set at the vertical midpoint of the head. NOT a teenager,
+> NOT a young girl, no freckles, no big round blushed cheeks, no large childlike
+> eyes. Shoulder-length chestnut brown hair as in the reference, oversized mint
+> green knitted sweater as in the reference, warm calm smile, facing the viewer.
+
+**Tip na čitelnost role:** dát mamince stejné **barevné puntíkované brýle**,
+jaké jsou na `landing-prehled-pro-rodice.png` (karta „Přehled pro rodiče").
+Brýle jsou srozumitelný signál dospělosti a zároveň propojí rodičovskou roli
+napříč aplikací.
+
+**Přegenerovat vždy celou dvojici**, ne jen jednu postavu — jinak se rozejde
+rukopis. Chlapec z prvního pokusu je v pořádku, takže slouží jako kontrola:
+když nový vyjde jinak, něco se v promptu rozjelo.
 
 ### Prompt — rodič (samostatně)
 
