@@ -21,6 +21,10 @@ později „přesýpací hodiny mají bílé pozadí, třetí obrázek prosvít�
   (opačná vada — deska knihy byla průhledná, vylita zpět), `prehled-o-pokroku`
   (čočka lupy byla krycí bílý kotouč).
 - 🔧 Nástroj `scripts/fix-landing-alpha.ps1` — dokumentovaný, opakovaně použitelný.
+- 🎨 **Deska knihy v `prehled-pro-rodice` přebarvena na oranžovou #F97316 / 70 %**
+  (nástroj `scripts/tint-illustration.ps1`, obarvení násobením přes jas, takže
+  akvarelová textura zůstává). Zahrnuje i skla brýlí a haló kolem obrouček —
+  bez zaplnění děr zůstaly bílé.
 - ✅ **Zbývajících 13 prověřeno na barvách svých karet — v pořádku, neopravuje se.**
   Postavu z nich má jedině `diktat` (poškození 727 px, neviditelné). Ostatní jsou
   objekty, kde nižší alfa dělá měkký akvarelový okraj — zákrok by ho jen ztvrdil.
