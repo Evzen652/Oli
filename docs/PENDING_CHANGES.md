@@ -7,6 +7,15 @@
 
 ---
 
+## ✅ Registrace rodiče — text nad formulářem (2026-08-31)
+
+- ✅ `Auth.tsx:142`: „Prvních 14 dní zdarma, bez platební karty." →
+  „Prvních 14 dní zdarma, ať víte, do čeho jdete."
+- ℹ️ Slib „bez karty" zůstává v ceníku na landing page (`Landing.tsx:404`),
+  takže se neztratil a stránky si neodporují.
+
+---
+
 ## ✅ Avatary výběru role — nasazeny jako lokální assety (2026-08-31)
 
 - ✅ Kresby z Gemini zpracovány: `src/assets/role-rodic.png` + `role-zak.png`,

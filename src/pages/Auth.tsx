@@ -139,7 +139,7 @@ export default function Auth() {
                 {!isLogin && (
                   <>
                   <p className="text-center text-sm font-medium text-emerald-700 mt-1">
-                    Prvních 14 dní zdarma, bez platební karty.
+                    Prvních 14 dní zdarma, ať víte, do čeho jdete.
                   </p>
                   <p className="text-center text-sm text-muted-foreground mt-1">
                     Stačí e-mail a heslo.{" "}

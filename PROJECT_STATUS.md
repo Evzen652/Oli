@@ -144,6 +144,10 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 12) — Registrace rodiče: text nad formulářem:
+- ✅ `Auth.tsx:142` „Prvních 14 dní zdarma, bez platební karty." → **„Prvních 14 dní zdarma, ať víte, do čeho jdete."** Ověřeno v běžící appce.
+- ℹ️ Slib „bez karty" se tím **neztratil** — žije dál v ceníku na landing page (`Landing.tsx:404`: „registrace i veškerý obsah jsou zdarma a kartu po vás nikdo nechce", + „Placené plány zatím nespouštíme"). Jde tedy o změnu tónu, ne o věcnou opravu, a nevznikl nesoulad mezi stránkami.
+
 ### Session 2026-08-31 (pokr. 11) — Avatary výběru role nasazeny jako lokální assety:
 - ✅ **Kresby z Gemini zpracovány a zapojeny.** `src/assets/role-rodic.png` + `role-zak.png`, 256 × 256, průhledné pozadí. `src/lib/roleImages.ts` nově jen importuje — **runtime volání `image.pollinations.ai` z přihlašovací stránky je pryč** (ověřeno v běžící appce: 0 externích požadavků).
 - 🔎 **Model hlavy nesrovnal, i když si o to prompt výslovně řekl.** Naměřeno: maminčina hlava 330 px, chlapcova 270 px → o 22 % menší. Prosté rozříznutí listu by dalo v dlaždicích viditelně různě velké obličeje. Výřez je proto vedený **podle velikosti hlavy** (čtverec 1,75 × výška hlavy, vystředěný na hlavu) — v obou má hlava 57 % výšky.
