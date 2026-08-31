@@ -75,26 +75,69 @@ obrázky `preprocessed`.
 
 ---
 
-## 5. Zadání: avatary výběru role (čeká se na kresby)
+## 5. Avatary výběru role — HOTOVO (2026-08-31)
 
-Dnešní stav v `src/lib/roleImages.ts`: styl „Pixar 3D cartoon", generováno
-**za běhu z cizí domény** přímo na přihlašovací stránce.
+`src/assets/role-rodic.png` + `role-zak.png`, lokální assety, 256 × 256.
+Dřív se generovaly za běhu z `image.pollinations.ai` ve stylu „Pixar 3D cartoon".
 
-> Přepsat jen prompt v tom souboru **nestačí** — vyzkoušeno. Flux na 256 px
-> zadání neudrží: ignoroval pohlaví, barvu vlasů i oblečení, přimaloval bílé
-> tričko s nápisem a rámeček. Kresby musí vzniknout stejnou cestou jako
-> těch 19 na landing page (Gemini).
+> Přepsat jen prompt u té runtime služby **nestačilo** — vyzkoušeno a zavrženo.
+> Flux na 256 px zadání neudržel: ignoroval pohlaví, barvu vlasů i oblečení,
+> přimaloval bílé tričko s nápisem a rámeček. Kresby musí vzniknout stejnou
+> cestou jako těch 19 na landing page, tedy v **Gemini**.
 
-**Nejdůležitější krok: přiložit referenci.** Do Gemini dát jako vzor stylu
-`src/assets/landing-propojeni-s-rodicem.png` — je na ní jak maminka, tak
-chlapec, tedy obě postavy i celý rukopis najednou.
+**Klíčové kroky, které rozhodly o výsledku:**
 
-**Formát:** čtverec, portrét po ramena (dlaždice je 64 × 64 px, celá postava
-by se v ní ztratila), **čistě bílé pozadí** s okrajem kolem postavy.
-Vyříznutí pozadí pak udělá `scripts/fix-landing-alpha.ps1` — ručně
-neodstraňovat, prokousalo by to pleť.
+1. **Přiložit referenci stylu** — `src/assets/landing-propojeni-s-rodicem.png`
+   (je na ní maminka i chlapec, tedy obě postavy a rukopis najednou).
+2. **Obě postavy na jednom listu**, ne dvě samostatná generování. Jinak se
+   rozejde sytost, tloušťka kontury i odstín pleti.
+3. **Výřez podle velikosti hlavy, ne podle obsahu.** Model hlavy nesrovnal ani
+   když si o to prompt řekl — maminčina byla 330 px, chlapcova 270 px, tedy
+   o 22 % menší. Prosté rozříznutí listu by dalo v dlaždicích viditelně různě
+   velké obličeje.
 
-### Prompt — rodič
+**Reprodukce** (skript dá bit po bitu totéž, co je nasazené):
+
+```powershell
+scripts\split-portrait-sheet.ps1 -In <list.jpg> -Measure   # zmerit hlavy
+scripts\split-portrait-sheet.ps1 -In <list.jpg> -OutDir out `
+  -Subjects "role-rodic:366:79:330;role-zak:1110:109:270" -Size 256
+scripts\fix-landing-alpha.ps1 -In out\role-rodic.png -Out src\assets\role-rodic.png
+```
+
+**Velikost:** dlaždice je 64 px, na 3× retinu stačí 192 px. 256 px dává 4×
+rezervu a soubor ~107 kB; 512 px je zbytečných ~410 kB na dlaždici.
+
+### Prompt — dvojice na jednom listu (použitý)
+
+> Watercolour and ink children's picture-book illustration, in exactly the style
+> of the attached reference image: hand-painted on rough cold-pressed paper, fine
+> uneven ink contour line, transparent pastel washes, visible paper grain, muted
+> pastel palette.
+>
+> Two separate head-and-shoulders portraits side by side on one sheet, NOT
+> interacting, NOT touching, with a wide band of empty white paper between them
+> and around all four edges.
+>
+> LEFT portrait: the same mother character as in the reference — early thirties,
+> shoulder-length chestnut brown hair, oversized mint green knitted sweater, rosy
+> cheeks, warm calm smile, facing the viewer.
+>
+> RIGHT portrait: the same boy character as in the reference — about eight years
+> old, tousled light brown hair, round rosy cheeks, coral red hoodie, cheerful
+> open smile, facing the viewer.
+>
+> Both heads exactly the same size and at the same eye level. Pure flat white
+> background across the whole sheet, nothing else in the frame. No white or pale
+> grey clothing, no text, no letters, no border, no frame, no drop shadow, no
+> vignette. Wide 2:1 landscape format.
+
+⚠️ **Otevřené:** vygenerovaná „maminka" vypadá spíš jako dospívající dívka než
+jako rodič — vedle chlapce čte jako starší sestra. Na kartě „Jsem rodič" to
+mate. Při přegenerování zdůraznit věk (vrásky u očí, dospělé proporce obličeje,
+ne dětské tváře) a případně přidat brýle.
+
+### Prompt — rodič (samostatně)
 
 > Watercolour and ink children's picture-book illustration in exactly the style
 > of the attached reference: hand-painted on rough cold-pressed paper, fine

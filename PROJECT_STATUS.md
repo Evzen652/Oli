@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 11) — Avatary výběru role nasazeny jako lokální assety:
+- ✅ **Kresby z Gemini zpracovány a zapojeny.** `src/assets/role-rodic.png` + `role-zak.png`, 256 × 256, průhledné pozadí. `src/lib/roleImages.ts` nově jen importuje — **runtime volání `image.pollinations.ai` z přihlašovací stránky je pryč** (ověřeno v běžící appce: 0 externích požadavků).
+- 🔎 **Model hlavy nesrovnal, i když si o to prompt výslovně řekl.** Naměřeno: maminčina hlava 330 px, chlapcova 270 px → o 22 % menší. Prosté rozříznutí listu by dalo v dlaždicích viditelně různě velké obličeje. Výřez je proto vedený **podle velikosti hlavy** (čtverec 1,75 × výška hlavy, vystředěný na hlavu) — v obou má hlava 57 % výšky.
+- ✅ **Velikost zvolena podle čísel, ne od oka:** dlaždice je 64 px, na 3× retinu stačí 192 px. 256 px = 4× rezerva a ~107 kB; 512 px by bylo ~410 kB na dlaždici, tedy 820 kB navíc na přihlašovací stránce.
+- 🔧 Nástroj `scripts/split-portrait-sheet.ps1` (`-Measure` vypíše profil šířek pro odečtení hlav, pak rozřeže). Ověřeno, že z původního listu **reprodukuje nasazené soubory bit po bitu**.
+- ⚠️ **Otevřené k rozhodnutí:** vygenerovaná „maminka" vypadá spíš jako dospívající dívka než jako rodič — vedle chlapce čte jako starší sestra a na kartě „Jsem rodič" to mate. Zapsáno do `docs/ILLUSTRATION_STYLE.md` §5 včetně doporučení, co v promptu zdůraznit při přegenerování.
+
 ### Session 2026-08-31 (pokr. 10) — Avatary výběru role: styl + externí závislost:
 - 🐞 **Dva problémy v `src/lib/roleImages.ts`.** (a) Styl „Pixar 3D cartoon" nesedí k akvarelovým ilustracím na landing page. (b) Závažnější: obrázky se **generují za běhu z `image.pollinations.ai`**, tedy prohlížeč uživatele volá cizí doménu přímo na přihlašovací stránce. Výsledek se může kdykoli změnit, a landing přitom slibuje „Bezpečné prostředí — žádné reklamy, žádné odkazy ven z aplikace".
 - ❌ **Přepsání promptu nestačí — vyzkoušeno a zavrženo.** Flux na 256 px zadání neudrží: ve dvou iteracích ignoroval pohlaví, barvu vlasů i oblečení, přimaloval bílé tričko s nápisem a rámeček — tedy přesně to, co prompt zakazoval. Změnu jsem **vrátil**, aby v mezidobí neběželo něco horšího než původní avatary. Kresby udělá Evžen v Gemini, stejnou cestou jako těch 19 na landing page.

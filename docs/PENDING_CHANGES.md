@@ -7,7 +7,21 @@
 
 ---
 
-## ⏭️ Avatary výběru role — čeká se na kresby z Gemini (2026-08-31)
+## ✅ Avatary výběru role — nasazeny jako lokální assety (2026-08-31)
+
+- ✅ Kresby z Gemini zpracovány: `src/assets/role-rodic.png` + `role-zak.png`,
+  256 × 256, průhledné pozadí. `roleImages.ts` už jen importuje →
+  **runtime volání cizí domény z přihlašovací stránky je pryč** (0 externích
+  požadavků, ověřeno v běžící appce).
+- 🔎 Model hlavy nesrovnal (330 px vs 270 px, o 22 % menší) → výřez veden podle
+  velikosti hlavy, ne obsahu. Nástroj `scripts/split-portrait-sheet.ps1`.
+- ⚠️ **K rozhodnutí:** „maminka" vypadá spíš jako dospívající dívka než rodič —
+  vedle chlapce čte jako starší sestra. Doporučení pro přegenerování je
+  v `docs/ILLUSTRATION_STYLE.md` §5.
+
+---
+
+## ⏭️ (vyřízeno výše) Avatary výběru role — zadání pro Gemini (2026-08-31)
 
 Nahlásil Evžen: „obě ilustrace nezapadají do konceptu s ilustracemi z home page".
 
