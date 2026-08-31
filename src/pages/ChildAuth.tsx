@@ -195,7 +195,7 @@ export default function ChildAuth() {
               className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-5 text-center hover:border-emerald-200 hover:bg-emerald-50/50 transition-all"
             >
               <div className="flex justify-center mb-3">
-                <img src={ROLE_IMAGES.parent} alt="Rodič" className="w-16 h-16 rounded-xl object-cover bg-emerald-100" />
+                <img src={ROLE_IMAGES.parent} alt="Rodič" className="w-16 h-16 object-contain" />
               </div>
               <p className="font-bold text-sm text-slate-900">Jsem rodič</p>
               <p className="text-xs text-slate-500 mt-0.5">Sledovat pokrok dítěte</p>
@@ -204,7 +204,7 @@ export default function ChildAuth() {
               className="rounded-2xl border-2 border-violet-400 bg-violet-50 px-4 py-5 text-center shadow-md cursor-default"
             >
               <div className="flex justify-center mb-3">
-                <img src={ROLE_IMAGES.child} alt="Žák" className="w-16 h-16 rounded-xl object-cover bg-violet-100" />
+                <img src={ROLE_IMAGES.child} alt="Žák" className="w-16 h-16 object-contain" />
               </div>
               <p className="font-bold text-sm text-slate-900">Jsem žák</p>
               <p className="text-xs text-violet-600 mt-0.5">Přihlásit se</p>

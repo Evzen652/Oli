@@ -15,6 +15,10 @@
   požadavků, ověřeno v běžící appce).
 - 🔎 Model hlavy nesrovnal (330 px vs 270 px, o 22 % menší) → výřez veden podle
   velikosti hlavy, ne obsahu. Nástroj `scripts/split-portrait-sheet.ps1`.
+- 🐞 Průhlednost se nejdřív neprojevila — čtverec kolem avatarů nedělal obrázek,
+  ale `<img>` sám (`bg-emerald-100` / `bg-violet-100` + `rounded-xl` z doby
+  krycích obrázků). Odebráno ve všech 4 výskytech, `object-cover` →
+  `object-contain`.
 - ⚠️ **K rozhodnutí:** „maminka" vypadá spíš jako dospívající dívka než rodič —
   vedle chlapce čte jako starší sestra. Doporučení pro přegenerování je
   v `docs/ILLUSTRATION_STYLE.md` §5.
