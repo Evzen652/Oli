@@ -336,10 +336,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "V čem se liší, kdy voláš 150 a kdy 155?",
-    correctAnswer: "150 voláme hasičům, když hoří; 155 záchrance, když je někdo zraněný nebo nemocný",
+    correctAnswer: "150 jsou hasiči, 155 je záchranka",
     options: [
-      "150 voláme hasičům, když hoří; 155 záchrance, když je někdo zraněný nebo nemocný",
       "150 i 155 je to samé číslo",
+      "150 jsou hasiči, 155 je záchranka",
       "150 je záchranka a 155 hasiči",
       "Obě čísla voláme jen při krádeži",
     ],
@@ -368,10 +368,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Kamarád říká, že na krvácející ranu je nejlepší nasypat písek. Jak to opravíš?",
-    correctAnswer: "Písek ránu zanese špínou; ránu je potřeba opláchnout čistou vodou a přitlačit čistý kapesník",
+    correctAnswer: "Písek ránu zanese špínou, je potřeba ji opláchnout vodou",
     options: [
-      "Písek ránu zanese špínou; ránu je potřeba opláchnout čistou vodou a přitlačit čistý kapesník",
       "Kamarád má pravdu, písek je nejlepší",
+      "Písek ránu zanese špínou, je potřeba ji opláchnout vodou",
       "Na ránu je nejlepší nasypat hlínu",
       "Ránu je nejlepší nechat úplně bez ošetření",
     ],

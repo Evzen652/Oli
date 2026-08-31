@@ -265,12 +265,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč si myjeme ruce?",
-    correctAnswer: "Protože na rukou jsou bakterie a viry, které by nás mohly roznemocnit",
+    correctAnswer: "Na rukou jsou bakterie a viry, které nás můžou nakazit",
     options: [
-      "Protože na rukou jsou bakterie a viry, které by nás mohly roznemocnit",
-      "Protože ruce pak lépe drží tužku",
-      "Protože voda posiluje kůži",
-      "Protože to tak říká učitel",
+      "Protože pak lépe udržíme tužku",
+      "Na rukou jsou bakterie a viry, které nás můžou nakazit",
+      "Protože voda posiluje pokožku",
+      "Protože to tak říká paní učitelka",
     ],
     emoji: "🧼",
     hints: [
@@ -299,12 +299,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "K čemu slouží očkování?",
-    correctAnswer: "Chrání tělo před nebezpečnými nemocemi — trénuje imunitní systém",
+    correctAnswer: "Trénuje imunitní systém, aby nemoc poznal předem",
     options: [
-      "Chrání tělo před nebezpečnými nemocemi — trénuje imunitní systém",
-      "Léčí nemoci, které už máme",
+      "Léčí nemoci, které v těle už máme",
+      "Trénuje imunitní systém, aby nemoc poznal předem",
       "Dodává tělu vitamíny a minerály",
-      "Posiluje svaly a kosti",
+      "Posiluje svaly a kosti při růstu",
     ],
     emoji: "💉",
     hints: [
@@ -404,11 +404,11 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč nás očkování chrání, i když zrovna nejsme nemocní?",
-    correctAnswer: "Předem naučí imunitní systém nemoc rozpoznat a rychle ji porazit",
+    correctAnswer: "Předem naučí tělo nemoc poznat a rychle ji porazit",
     options: [
-      "Předem naučí imunitní systém nemoc rozpoznat a rychle ji porazit",
       "Zabije všechny bakterie na kůži",
-      "Dodá tělu energii z cukru",
+      "Předem naučí tělo nemoc poznat a rychle ji porazit",
+      "Dodá tělu rychlou energii z cukru",
       "Posílí kosti, aby se nezlomily",
     ],
     emoji: "💉",

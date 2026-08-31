@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 4) — Wave B, dávka 24 (4 témata, 39 → 28 nálezů):
+- ✅ **Dávka 24 hotová**, `format/length` **39 → 28**, témat **23 → 19**. Témata: `g3-prvouka-stavba-lidskeho-tela` (3), `g4-cjl-vzorec-souveti` (3), `g4-vlastiveda-druhy-map` (3), `g2-prv-prvni-pomoc` (2). GATE 3× čistý u všech.
+- 🐞 **Nevhodný distraktor:** u otázky „Jakou hvězdou se na mapě označuje sever?" byla mezi možnostmi „**Hvězdou Davidovou**". Náboženský symbol jako náhodná chybná možnost v úloze o mapových značkách nemá co dělat — nahrazeno „Pěticípou hvězdičkou v rohu".
+- 🐞 **Jazykové chyby:** „mohly nás **roznemocnit**" (není české slovo) → *nakazit*; „155 **záchrance**" → *záchranka*; překlep v nápovědě „2 a více přísudků (**slovese** spojených spojkami)" → přeformulováno.
+- ⚠️ **Zkrácení klíče na „spojky" by zapnulo hint_leak** — sdílená nápověda končila slovy „…spojených **spojkami**". Přepsána zároveň se zkrácením, ne až po GATE.
+- 🔎 **Distraktor jako nadmnožina klíče.** U „Nevím, jestli přijdeš. — jaký typ?" se klíč zkracoval na „podřadné", jenže mezi distraktory bylo „podřadné podmětné". Po zkrácení by byl klíč podřetězcem distraktoru a úloha by šla uhodnout vylučovací metodou. Distraktor nahrazen za „spojení dvou hlavních vět".
 ### Session 2026-09-01 (pokr. 3) — Wave B, dávka 23 (4 témata, 51 → 39 nálezů):
 - ✅ **Dávka 23 hotová**, `format/length` **51 → 39**, témat **27 → 23**. Témata: `g3-mat-rysovani-usecky` (3), `g3-prvouka-casova-primka-generace` (3), `g3-prvouka-ekosystemy-pole-louka-les` (3), `g3-prvouka-stavba-rostlin` (3). GATE 3× čistý u všech.
 - 🔎 **Předexistující hint_leak potvrzen postupem z pasti č. 8.** GATE u `casova-primka-generace` hlásil `invarianty: 1` — nápověda „**Kronikář** zaznamenává vše důležité" obsahovala klíč „Kronikář" doslova. Ověřeno proti HEAD (dočasné `git checkout HEAD -- <soubor>`, ne `git stash`, kvůli sdílenému stashi mezi worktrees): **nález tam byl už předtím**, moje úprava naopak snížila heuristické nálezy z 5 na 2. Opraveno i tak, aby GATE prošel.
