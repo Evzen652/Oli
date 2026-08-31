@@ -144,6 +144,14 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr.) — Wave B, 13. dávka (4 témata): 342 → 300 nálezů:
+- **Kontext:** navázáno na `docs/WAVE_B_HANDOFF.md` (viz sekce "Předání práce" výše) po synchronizaci tohoto worktree na správnou pracovní branch `chore/remove-essay-and-ai-authoring` (worktree byl omylem na `main`, 108 commitů pozadu).
+- ✅ **4 témata opravena, 42 nálezů `format/length` → 0.** `g4-vlastiveda-…demokracie-pravni-stat` (12), `g5-vlastiveda-…prezident-vlada` (7), `g4-cjl-…zajmena-druhy-zajmen` (10), `g4-cjl-…dopis-psani-soukromeho-dopisu` (10) — dva definiční okruhy (třída B, prodloužené distraktory) a dva se smíšeným vzorem (číselné/kategoriální odpovědi, třída A — zkrácení klíče). Korpus `format/length` **342 → 300**, dotčených témat **67 → 63**.
+- 🐞 **2 vedlejší nálezy `hint_leak` odhaleny při ověřování brány, 1 předexistující:** zkrácení klíče `"který, jenž, co (ve větě vedlejší)"` → `"který, jenž, co"` v `zajmenaDruhyZajmen.ts` nově zapnulo leak (klíč se stal doslovnou podmnožinou sdílené nápovědy) — past č. 1 z handoffu, potvrzeno. Sdílené nápovědy (7 kategorií zájmen) přepsány z výčtu příkladových slov na popis metody rozpoznání. Při té příležitosti našel i **předexistující** leak u úlohy „Která zájmena jsou záporná?" (ověřeno 5× na HEAD přes `git stash`, nesouvisí s touto dávkou) a stejný vzorec v `dopisPsaniSoukromehoDopisu.ts` (fallback nápověda „Soukromý dopis = tykáme…" doslovně obsahovala odpověď „tykáme") — oba opraveny stejným způsobem (metoda místo výčtu).
+- 🔎 **Ověřeno, že zbylé REVIZE nálezy (meta-text se šipkou `→`, `min_unique_tasks_per_tier`, `hint_progression`) jsou předexistující**, ne způsobené touto dávkou — potvrzeno přes `git stash` na HEAD u každého dotčeného tématu (past č. 8 z handoffu). Mimo rozsah dávky, neopravováno.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3–5× za sebou), frozen snapshot přegenerován pro `zajmenaDruhyZajmen` (jediné z dotčených, které bylo v zamčeném registru), `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 63 témat** (~16 dalších dávek po 4). Další v pořadí dle `docs/WAVE_B_HANDOFF.md` — přeměřit znovu před 14. dávkou (pořadí se mezi běhy mírně mění).
+
 ### Session 2026-08-30 (pokr.) — Wave B: giveaway délkou možnosti, 1. dávka 4 témat:
 - **Zadání uživatele:** „pokračujeme" → z nabídky zvolena **třída A, téma po tématu**.
 - 🔎 **Měření nejdřív (poučení z Wave A): tentokrát nálezy falešné NEJSOU.** 1 282 nálezů ve 113 tématech se rozpadá na tři třídy s různou opravou: **A) 610** — klíč nese navíc závorku/pomlčku, kterou distraktory nemají („Souvětí *(dvě věty spojené spojkou)*" vs „Věta jednoduchá"); **B) 313** — definiční otázka, kde je klíč plná definice a distraktory krátké; **C) 359** — smíšené, část nefixovatelná už z podstaty („České Budějovice" vs „Brno").

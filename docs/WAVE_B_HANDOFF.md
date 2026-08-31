@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **342** |
-| dotčených témat | **67** |
-| hotovo dávek | **12** (celkem 972 nálezů → 0) |
+| `format/length` nálezů | **300** |
+| dotčených témat | **63** |
+| hotovo dávek | **13** (celkem 1014 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -19,14 +19,16 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | nálezů | téma |
 |---|---|
-| 11 | `g4-vlastiveda-…vznik-a-vyvoj-statu-demokracie-pravni-stat` |
-| 11 | `g5-vlastiveda-…demokracie-a-stat-volby-zastupitelske-organy-cr-prezident-vlada` |
-| 10 | `g4-cjl-…tvaroslovi-zajmena-druhy-zajmen` |
-| 10 | `g4-cjl-…slohova-vychova-dopis-psani-soukromeho-dopisu` |
-| 10 | `g5-matematika-…soumernost-osova-soumernost` |
+| 10 | `g5-matematika-…soumernost-osova-soumernost-sestrojeni-obrazu-urceni-osy` |
 | 10 | `g5-cjl-…slovesa-zpusob-oznamovaci-rozkazovaci-podminovaci` |
 | 10 | `g5-cjl-…skladba-souveti-vzorce-pocet-vet` |
-| 10 | `g5-prirodoveda-…horniny-a-nerosty` |
+| 10 | `g5-prirodoveda-…horniny-a-nerosty-druhy-vlastnosti-vznik` |
+| 9 | `g3-cjl-sebekontrola-projevu` |
+| 9 | `g4-cjl-…cteni-rozliseni-podstatnych-a-okrajovych-informaci` |
+| 9 | `g4-cjl-…hlavni-postavy-a-jejich-charakteristika` |
+| 9 | `g4-prirodoveda-…bezpecnost-prvni-pomoc-tisnove-volani-mimoradne-udalosti` |
+| 9 | `g5-cjl-…slova-jednoznacna-mnohoznacna-vicevyznamova` |
+| 8 | `g4-vlastiveda-…podnebi-cr-ovzdusi-pocasi` |
 
 Dávka = **4 témata**. Aktuální pořadí si vždy ověř znovu (krok 1).
 

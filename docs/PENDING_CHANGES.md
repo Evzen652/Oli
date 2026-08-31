@@ -115,7 +115,10 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Tautologie:** „volný okraj na okraji stránky".
 - 🐞 **Katalogová nápověda posedmé a poosmé**; v podmětu navíc „jdeme = my", kde „my" je nově klíč.
 - 🔧 **Nový patcher `pq.mjs`** — kotva na text otázky, univerzální pro všechny formáty. Nutný proto, že tři různé úlohy sdílely tentýž klíč; zpevněný `pv3` to odmítl místo tichého přepsání špatné úlohy.
-- ⏭️ **Zbývá:** 342 nálezů v 67 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
+- ✅ **13. dávka (po předání na druhý PC): 4 témata**, **42 → 0** nálezů. Korpus `format/length` **342 → 300**, témata **67 → 63**.
+- 🐞 **1 nová regrese vlastním zkrácením klíče + 2 předexistující stejného typu, všechny opraveny:** zkrácení `"který, jenž, co (ve větě vedlejší)"` → `"který, jenž, co"` zapnulo `hint_leak`, protože klíč se stal doslovnou podmnožinou sdílené nápovědy (past už zdokumentovaná, potvrzena počtvrté). Při ověřování brány (`git stash` na HEAD, 5×) se ukázalo, že **stejný vzorec byl už dřív rozbitý na 2 místech nesouvisejících s touto dávkou** — úloha „Která zájmena jsou záporná?" a fallback nápověda „Soukromý dopis = tykáme…" v jiném tématu. Všechny tři sdílené nápovědy přepsány z výčtu příkladových slov na popis metody rozpoznání.
+- 🔎 **Potvrzeno, že zbylé REVIZE nálezy (šipka `→` v klíči, `min_unique_tasks_per_tier`, `hint_progression`) jsou předexistující**, ne způsobené touto dávkou — ověřeno `git stash` na HEAD u každého dotčeného tématu. Mimo rozsah dávky.
+- ⏭️ **Zbývá:** 300 nálezů v 63 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
