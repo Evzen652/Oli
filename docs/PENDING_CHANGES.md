@@ -128,7 +128,9 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Předexistující BLOK 17/17 nalezen a opraven** (nesouvisel s dávkou, potvrzeno `git stash` na HEAD): sdílená fallback nápověda v `slovesaMluvnickeKategorie…` vypisovala doslova všechny hodnoty kategorií („Čas: minulý…, přítomný…, budoucí…") — kolidovalo s téměř polovinou úloh tématu. Přepsáno na popis metody.
 - ✅ **18. dávka: 4 témata**, **34 → 0** nálezů. Korpus `format/length` **160 → 133**, témata **47 → 43**.
 - 🔧 **Nový formát souboru:** `spisovatelKniha.ts` (g2) má jiná jména polí (`correct`/`distractors`, jen 2 distraktory) — žádný patcher nesedí, opraveno ručně. Pokud se formát objeví znovu, chce to nový patcher.
-- ⏭️ **Zbývá:** 133 nálezů v 43 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
+- ✅ **19. dávka: 4 témata (vše g3)**, **20 → 0** nálezů. Korpus `format/length` **133 → 109**, témata **43 → 39**.
+- 🔧 **Bash tool měl tuto session dočasně rozbité PATH** (chybělo `Git\usr\bin`, `node`/`npm` nedohledatelné) — dávka dokončena přes PowerShell tool místo Bash, workflow funguje stejně (`node scripts/wave-b/*.mjs`, `npx vitest`, `npx tsc`).
+- ⏭️ **Zbývá:** 109 nálezů v 39 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).

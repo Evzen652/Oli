@@ -33,7 +33,7 @@ const POOL_L1: Item[] = [
 
 const POOL_L2: Item[] = [
   // Identifikace typu spojky a jejího významu
-  { q: "Co je 'ale' ve větě?", a: "Spojka (spojuje věty s protikladem)", opts: ["Spojka (spojuje věty s protikladem)", "Příslovce", "Podstatné jméno", "Přídavné jméno"], e: "Slovo 'ale' je spojka — spojuje věty a vyjadřuje protiklad." },
+  { q: "Co je 'ale' ve větě?", a: "Spojka (spojuje věty s protikladem)", opts: ["Příslovce vyjadřující způsob", "Spojka (spojuje věty s protikladem)", "Podstatné jméno pojmenovávající věc", "Přídavné jméno popisující vlastnost"], e: "Slovo 'ale' je spojka — spojuje věty a vyjadřuje protiklad." },
   {
     q: "Které slovo je spojka?",
     a: "nebo",
@@ -44,13 +44,13 @@ const POOL_L2: Item[] = [
       "Toto slovo vyjadřuje výběr mezi dvěma možnostmi — buď jedno, či druhé.",
     ],
   },
-  { q: "Spojka 'protože' vyjadřuje:", a: "Příčinu (proč se něco stalo)", opts: ["Příčinu (proč se něco stalo)", "Protiklad", "Výběr", "Podmínku"], e: "Spojka 'protože' vysvětluje příčinu — PROČ se něco stalo." },
-  { q: "Spojka 'nebo' vyjadřuje:", a: "Výběr mezi dvěma možnostmi", opts: ["Výběr mezi dvěma možnostmi", "Protiklad", "Příčinu", "Podmínku"], e: "Spojka 'nebo' vždy nabízí výběr — buď jedno, nebo druhé." },
+  { q: "Spojka 'protože' vyjadřuje:", a: "Příčinu (proč se něco stalo)", opts: ["Výběr mezi dvěma možnostmi", "Příčinu (proč se něco stalo)", "Podmínku, za které něco platí", "Protiklad vůči první větě"], e: "Spojka 'protože' vysvětluje příčinu — PROČ se něco stalo." },
+  { q: "Spojka 'nebo' vyjadřuje:", a: "Výběr mezi dvěma možnostmi", opts: ["Podmínku, za jaké se něco stane", "Výběr mezi dvěma možnostmi", "Příčinu toho, co se stalo", "Protiklad vůči první větě"], e: "Spojka 'nebo' vždy nabízí výběr — buď jedno, nebo druhé." },
   { q: "Spojka 'když' vyjadřuje:", a: "Čas nebo podmínku", opts: ["Čas nebo podmínku", "Protiklad", "Příčinu", "Výběr"], e: "Spojka 'když' říká, za jakých okolností nebo kdy se něco stane." },
   { q: "Spojka 'aby' vyjadřuje:", a: "Účel nebo přání", opts: ["Účel nebo přání", "Protiklad", "Výběr", "Čas"], e: "Spojka 'aby' říká, k čemu něco slouží nebo co si někdo přeje." },
-  { q: "Spojka 'a' vyjadřuje:", a: "Přidávání (další informace)", opts: ["Přidávání (další informace)", "Protiklad", "Příčinu", "Účel"], e: "Spojka 'a' přidává druhou věc k první — obě informace platí zároveň." },
+  { q: "Spojka 'a' vyjadřuje:", a: "Přidávání (další informace)", opts: ["Účel, tedy proč to děláme", "Přidávání (další informace)", "Protiklad k první větě", "Příčinu toho, co se stalo"], e: "Spojka 'a' přidává druhou věc k první — obě informace platí zároveň." },
   { q: "Které slovo NENÍ spojka?", a: "hodně", opts: ["hodně", "a", "protože", "ale"], e: "'Hodně' je příslovce (vyjadřuje míru). 'A', 'protože' a 'ale' jsou spojky." },
-  { q: "Jakou spojkou spojíme věty: 'Bylo horko. Šli jsme se koupat.'", a: "a (Bylo horko, a šli jsme se koupat.)", opts: ["a (Bylo horko, a šli jsme se koupat.)", "ale", "nebo", "aby"], e: "Spojka 'a' přidává druhý děj, který přirozeně navazuje na horko." },
+  { q: "Jakou spojkou spojíme věty: 'Bylo horko. Šli jsme se koupat.'", a: "a (Bylo horko, a šli jsme se koupat.)", opts: ["ale (Bylo horko, ale šli jsme se koupat.)", "a (Bylo horko, a šli jsme se koupat.)", "aby (Bylo horko, aby šli jsme se koupat.)", "nebo (Bylo horko, nebo šli jsme se koupat.)"], e: "Spojka 'a' přidává druhý děj, který přirozeně navazuje na horko." },
 ];
 
 const POOL_L3: Item[] = [
@@ -61,7 +61,7 @@ const POOL_L3: Item[] = [
   { q: "Doplň spojku: 'Sněžilo, ___ jsme šli sáňkovat.'", a: "a proto", opts: ["a proto", "ale", "nebo", "aby"], e: "Sněžení bylo důvod k sáňkování — spojka 'a proto' vyjadřuje důsledek." },
   { q: "Doplň spojku: 'Půjdu ven, ___ dodělám úkol.'", a: "až", opts: ["až", "protože", "nebo", "ale"], e: "'Až' vyjadřuje čas — půjdu poté, co dodělám úkol." },
   { q: "Doplň spojku: 'Anna se učila celou noc, ___ zkoušku nezvládla.'", a: "ale", opts: ["ale", "protože", "a", "když"], e: "Očekávané by bylo, že úsilí přinese úspěch. Protože se stalo něco opačného, použijeme 'ale' — protiklad." },
-  { q: "Kterou spojkou lze nahradit 'a proto': 'Foukalo, a proto jsme se vrátili.'", a: "protože (Vrátili jsme se, protože foukalo.)", opts: ["protože (Vrátili jsme se, protože foukalo.)", "ale", "nebo", "aby"], e: "Věta 'a proto' popisuje důsledek, který lze přepsat příčinou pomocí 'protože' — vrátili jsme se z toho důvodu, že foukalo." },
+  { q: "Kterou spojkou lze nahradit 'a proto': 'Foukalo, a proto jsme se vrátili.'", a: "protože (Vrátili jsme se, protože foukalo.)", opts: ["aby (Vrátili jsme se, aby foukalo.)", "protože (Vrátili jsme se, protože foukalo.)", "nebo (Vrátili jsme se, nebo foukalo.)", "ale (Vrátili jsme se, ale foukalo.)"], e: "Věta 'a proto' popisuje důsledek, který lze přepsat příčinou pomocí 'protože' — vrátili jsme se z toho důvodu, že foukalo." },
   { q: "Doplň dvě spojky: 'Bude déšť, ___ svítí sluníčko. Vezmi si pláštěnku, ___ nenastydl.'", a: "ale / abys", opts: ["ale / abys", "a / protože", "nebo / když", "protože / aby"], e: "První spojka spojuje dvě protikladné informace ('ale' — protiklad). Druhá spojka 'abys' vyjadřuje účel: proč si vezmeš pláštěnku? Abys nenastydl." },
   { q: "Doplň spojku: 'Nezapomeň na klíč, ___ nebudeš mít, jak zamknout.'", a: "jinak", opts: ["jinak", "protože", "aby", "nebo"], e: "Spojka 'jinak' vyjadřuje důsledek zápornice — pokud nesplníš to první, nastane nemilý důsledek." },
   { q: "Vyber vhodnou dvojici spojek: 'Přišla domů, ___ si udělala svačinu a ___ si četla knihu.'", a: "nejdřív / potom", opts: ["nejdřív / potom", "protože / ale", "když / nebo", "aby / až"], e: "Jde o časovou posloupnost dvou činností. Spojení 'nejdřív…, potom…' ukazuje pořadí." },

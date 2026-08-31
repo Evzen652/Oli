@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **133** |
-| dotčených témat | **43** |
-| hotovo dávek | **18** (celkem 1190 nálezů → 0) |
+| `format/length` nálezů | **109** |
+| dotčených témat | **39** |
+| hotovo dávek | **19** (celkem 1210 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -19,16 +19,16 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | nálezů | téma |
 |---|---|
-| 6 | `g3-cjl-…vyznam-slova-slova-jednoznacna-a-mnohoznacna` |
-| 6 | `g3-cjl-spojovani-vet-spojkami` |
-| 6 | `g3-cjl-reprodukce-textu` |
-| 6 | `g3-cjl-vers-rym-prirovnani` |
 | 6 | `g5-cjl-…slova-spisovna-a-nespisovna` |
 | 6 | `g5-prirodoveda-…vyvoj-cloveka-a-rozmnozovani-etapy-lidskeho-zivota-dospivani` |
 | 6 | `g5-prirodoveda-…navyky-a-prevence-navykove-latky-alkohol-nikotin-drogy` |
 | 5 | `g3-cjl-veta-jednoducha-souveti` |
 | 5 | `g5-matematika-…konstrukce-a-obsah-konstrukce-trojuhelniku-kolmice-rovnobezky` |
 | 5 | `g5-prirodoveda-…energie-a-jeji-zdroje-obnovitelne-a-neobnovitelne-zdroje-energie` |
+| 5 | `g5-prirodoveda-…ekosystemy-a-zivotni-prostredi-potravni-retezec-vztahy-v-ekosystemu` |
+| 4 | `g2-cjl-…literarni-zanry-pohadka-rikanky-basen-hadanka` |
+| 4 | `g3-prvouka-…minulost-a-soucasnost-minulost-naseho-regionu-povesti` |
+| 4 | `g3-cjl-velka-pismena` |
 
 Dávka = **4 témata**. Aktuální pořadí si vždy ověř znovu (krok 1).
 

@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 7) — Wave B, 19. dávka (4 témata, vše g3): 133 → 109 nálezů:
+- ✅ **4 témata opravena, 20 nálezů `format/length` → 0.** `g3-cjl-…slova-jednoznacna-a-mnohoznacna` (6), `g3-cjl-spojovani-vet-spojkami` (6), `g3-cjl-reprodukce-textu` (2), `g3-cjl-vers-rym-prirovnani` (6). Korpus `format/length` **133 → 109**, dotčených témat **43 → 39**.
+- 🔎 **Poznámka k nástrojům:** ve dvou souborech (`slovaJednoznacnaMnohoznacna.ts`, `reprodukcePrectenehoTextu.ts`) se stejný klíč opakoval ve dvou různých úlohách → `pv3.mjs` odmítl nejednoznačnou kotvu, přešlo se na `pq.mjs` (kotva na text otázky). Bash tool měl tuto session dočasně rozbité PATH (chybělo `Git\usr\bin`, `node`/`npm` nedohledatelné) — přešel jsem na PowerShell tool, který fungoval bez problémů; zbytek dávky proběhl v PowerShellu.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou). Žádné z témat není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 39 témat** (~10 dalších dávek po 4).
+
 ### Session 2026-08-31 (pokr. 6) — Wave B, 18. dávka (4 témata): 160 → 133 nálezů:
 - ✅ **4 témata opravena, 34 nálezů `format/length` → 0** (korpusový úbytek 27 kvůli běžnému kolísání auditu mezi běhy — dotčená témata **47 → 43** souhlasí přesně). `g4-prirodoveda-…chranene-rostliny-a-zivocichove-ohrozene-druhy` (8), `g5-prirodoveda-…magnety-elektrina-jednoduche-obvody-uvod` (9), `g5-prirodoveda-…rozmnozovaci-soustava-vyvoj-cloveka-uvod` (11), `g2-cjl-…spisovatel-ilustrator-knihovna` (6).
 - 🔎 **Nový formát souboru objeven:** `spisovatelKniha.ts` (2. ročník) používá jiná jména polí (`correct`/`distractors`, jen 2 distraktory místo obvyklých 3) — žádný patcher z `scripts/wave-b/` na to nesedí, opraveno ručně přes `Edit`.
