@@ -45,18 +45,21 @@ export function PaintedArrow({ className, direction = "right" }: Props) {
         transform={TRANSFORM[direction]}
         stroke="currentColor"
         strokeLinecap="round"
-        strokeWidth={2.1}
+        strokeWidth={2.7}
       >
         {/* dřík — mírně zvlněný, ne rovná čára */}
         <path d="M3.4 12.6 C 8.2 12.0, 12.8 12.4, 18.9 11.8" />
         {/* hlava, dva samostatné tahy */}
         <path d="M14.2 7.2 C 16.1 8.8, 17.7 10.4, 19.1 11.8" />
         <path d="M19.1 12.0 C 17.5 13.6, 15.9 15.3, 14.0 16.6" />
-        {/* slabší doprovodný tah — dojem skici */}
+        {/* Slabší doprovodný tah — dojem skici. Posazený níž a světlejší
+            než dřík; při tloušťce 2,7 by se jinak s dříkem slil v jednu
+            šmouhu. Nad ~3,0 se navíc u 16 px zavírá mezera mezi dříkem
+            a hlavou a ze šipky se stává klín. */}
         <path
-          d="M4.6 13.9 C 9.0 13.4, 13.0 13.6, 17.4 13.1"
-          strokeWidth={0.9}
-          opacity={0.4}
+          d="M4.9 14.4 C 9.0 13.9, 13.0 14.1, 17.2 13.6"
+          strokeWidth={1.1}
+          opacity={0.35}
         />
       </g>
     </svg>
