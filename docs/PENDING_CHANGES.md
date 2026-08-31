@@ -93,7 +93,15 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Úloha bez odpovědi:** „Rozdíl mezi stěhovavým a tažným ptákem?" s klíčem „jsou to synonyma, pojmy se překrývají".
 - 🐞 **Přiměřenost ročníku, největší zásah dosud:** L3 stálo na anemochorii, sukcesi, klimaxovém lese, rosném bodu, sublimaci, fairtrade, agrolesnictví, GMO, imprintingu, altriálních mláďatech, monotrematech a placentě. Přepsáno na otázky pro čtvrťáka.
 - 🐞 **Kotva patchru se trefila do distraktoru jiné úlohy** → patcher opraven: kotva musí stát hned za `correctAnswer: "`, nejednoznačná kotva se odmítá, vypisuje se číslo řádku.
-- ⏭️ **Zbývá:** 487 nálezů v 79 tématech.
+- ✅ **10. dávka: 4 témata**, **51 → 0** nálezů. Korpus **630 → 579**.
+- 🐞 **Neslovo „preventovat"** 2× (klíč i zadání), „Parazité v střevech", „fakty o světě".
+- 🐞 **Přiměřenost ročníku počtvrté:** L3 zdravovědy na BMI, mikrobiomu, omega-3, bazálním metabolismu, aerobním vs. anaerobním pohybu, patogenech a protilátkách. Přepsáno pro čtvrťáka.
+- 🐞 **Vykání dítěti:** „Popište polohu detailu…" v jinak tykajícím tématu.
+- 🐞 **Katalogová nápověda popáté**, poprvé u tématu, které bylo **na HEAD už FAIL** (2 předexistující blokující `hint_leak`, ověřeno `git stash`). Po přepsání na metodu je GATE čistý.
+- 🔎 **`hint_leak` matchuje i jednotlivá slova z odpovědí**, ne jen celé odpovědi: „od celku k podrobnostem" spadlo na „od celku k detailu", „krok za krokem" na „Chybí krok číslo 3".
+- 🔎 **`hint_progression` nelze vždy opravit prohozením** — kratší druhá nápověda bývá konkrétnější; prohození by ji posunulo dopředu. Správně se prodlužuje.
+- 🐞 **Falešný poplach detektoru:** `displayName „Popis a postup" vypadá jako anglický název`. Je česky — k opravě v detektoru.
+- ⏭️ **Zbývá:** 435 nálezů v 75 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
