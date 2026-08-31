@@ -87,7 +87,13 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Celá úloha bez diakritiky** — `„Veta: (uvozovka)Pojd si hrat!(uvozovka) rekla Anicka.“`, tedy úloha na uvozovky, která uvozovky neměla; dál 3× „Prominete“.
 - 🐞 **Přírodověda:** `bioindicátor`, „Jakou funkci **mají** kořenové vlášení“, neslóvko „nevzlepšuje“.
 - 🔎 **Zrcadlový distraktor** (prohozená dvojice) nahrazuje výplňové „Jsou to stejné žánry“ a zároveň vyrovnává délky.
-- ⏭️ **Zbývá:** 541 nálezů v 83 tématech.
+- ✅ **9. dávka: 4 témata přírodovědy g4**, **58 → 0** nálezů. Korpus **688 → 630**.
+- 🐞 **Cizojazyčné vsuvky posedmé:** „Koža savců", „karfiol" 3×, „čekanec".
+- 🐞 **Uťatá slova v klíčích:** „si zapamato", „zajíčci jsou hned vidění", „zajíc je divočák králíka", „žádní žijí", „Voda se tuhne", „Les zvyšuje transpirace", „Jednoletá trávy".
+- 🐞 **Úloha bez odpovědi:** „Rozdíl mezi stěhovavým a tažným ptákem?" s klíčem „jsou to synonyma, pojmy se překrývají".
+- 🐞 **Přiměřenost ročníku, největší zásah dosud:** L3 stálo na anemochorii, sukcesi, klimaxovém lese, rosném bodu, sublimaci, fairtrade, agrolesnictví, GMO, imprintingu, altriálních mláďatech, monotrematech a placentě. Přepsáno na otázky pro čtvrťáka.
+- 🐞 **Kotva patchru se trefila do distraktoru jiné úlohy** → patcher opraven: kotva musí stát hned za `correctAnswer: "`, nejednoznačná kotva se odmítá, vypisuje se číslo řádku.
+- ⏭️ **Zbývá:** 487 nálezů v 79 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
