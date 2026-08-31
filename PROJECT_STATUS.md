@@ -144,6 +144,18 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 8) — Landing: opraven rozežraný alfa kanál ilustrací (5 z 19):
+- 🐞 **Nalezena systémová vada všech akvarelových ilustrací.** Serverový „dewhite" mazal pixely podle **jasu kdekoli v kresbě**, ne flood-fillem od okrajů. Světlá akvarelová pleť má jas těsně pod prahem → prokousal ji. Naměřeno na `landing-samostatne-nebo-spolecne.png`: pixely tváře mají zachovanou barvu pleti (`R=253 G=205 B=159`), ale alfu 88–214 místo 255 → obličeje na barevných kartách **prosvítají pozadím**. Poškozenou alfu má 17 z 19 ilustrací (nejvíc `bez-stresu` 102 657 px, `samostatne` 61 358 px, `propojeni-s-rodicem` 52 726 px).
+- ✅ **Opraveno 5 ilustrací**, obě protichůdné varianty vady:
+  - *prosvítající pleť* → `vstup-bez-barier`, `propojeni-s-rodicem`, `samostatne-nebo-spolecne`
+  - *zbylé krycí bílé fleky* → `samostatne-nebo-spolecne` (pod stoličkou, mezery mezi svlaky opěradla), `kratke-procvicovani` (bílá výplň uvnitř rámu přesýpacích hodin)
+  - *opačný případ — vyříznutá bílá, která do kresby patří* → `prehled-pro-rodice`: deska knihy i skla brýlí byly průhledné, prosvítala jimi mátová. Vylito zpět paint-bucketem ze seedu.
+- 🔎 **Klíčové zjištění: RGB je i u alfa 0 zachované**, takže se dá alfa přepočítat a originály nejsou potřeba. Podmínka je číst pixely přes `LockBits` — `Graphics.DrawImage` premultiplikuje a u alfa 0 **vynuluje RGB** (nejdřív mi tím vyšla deska knihy černá).
+- ⚠️ **Pravidlo, které stálo jeden falešný pokus:** plně průhledné pixely se musí nechat být (jsou vyříznuté záměrně — pozadí pod stolem, mezi nohami židle). Obnovuje se **jen rozežraná částečná alfa**; první verze zakryla i tyhle plochy bíle.
+- 🔧 Nástroj uložen jako `scripts/fix-landing-alpha.ps1` (`-ScanOnly` vypíše uzavřené kapsy s id/bbox, `-ClearIds` je zprůhlední, `-FillSeeds` naopak vylije zpět, `-Preview` složí náhled na barvě karty).
+- **Zbývá 14 ilustrací** se stejnou vadou. U dekorativních kreseb bez postav (slunce, batoh, štít) je zákrok sporný — plné zkrytí ztvrdí měkké akvarelové okraje, proto jsem je zatím nechal být a čekám na rozhodnutí.
+- ℹ️ Přidán lokální `.claude/launch.json` (dev server `npm run dev`, port 8080) — je v `.gitignore`, necommituje se.
+
 ### Session 2026-08-31 (pokr. 7) — Wave B, 19. dávka (4 témata, vše g3): 133 → 109 nálezů:
 - ✅ **4 témata opravena, 20 nálezů `format/length` → 0.** `g3-cjl-…slova-jednoznacna-a-mnohoznacna` (6), `g3-cjl-spojovani-vet-spojkami` (6), `g3-cjl-reprodukce-textu` (2), `g3-cjl-vers-rym-prirovnani` (6). Korpus `format/length` **133 → 109**, dotčených témat **43 → 39**.
 - 🔎 **Poznámka k nástrojům:** ve dvou souborech (`slovaJednoznacnaMnohoznacna.ts`, `reprodukcePrectenehoTextu.ts`) se stejný klíč opakoval ve dvou různých úlohách → `pv3.mjs` odmítl nejednoznačnou kotvu, přešlo se na `pq.mjs` (kotva na text otázky). Bash tool měl tuto session dočasně rozbité PATH (chybělo `Git\usr\bin`, `node`/`npm` nedohledatelné) — přešel jsem na PowerShell tool, který fungoval bez problémů; zbytek dávky proběhl v PowerShellu.

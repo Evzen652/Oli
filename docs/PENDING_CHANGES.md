@@ -7,6 +7,25 @@
 
 ---
 
+## ✅ Landing — rozežraný alfa kanál ilustrací (2026-08-31)
+
+Nahlásil Evžen ze screenshotu: „obličej prosvítá a jsou tam bílá pozadí",
+později „přesýpací hodiny mají bílé pozadí, třetí obrázek prosvítá".
+
+- ✅ **Příčina nalezena a doložena měřením.** Serverový „dewhite" mazal podle jasu
+  kdekoli v kresbě místo flood-fillu od okrajů. Světlá pleť má jas těsně pod prahem →
+  alfa 88–214 místo 255 při zachované barvě pleti. Poškozeno **17 z 19** ilustrací.
+- ✅ **Opraveno 5:** `vstup-bez-barier`, `propojeni-s-rodicem`,
+  `samostatne-nebo-spolecne` (+ bílé fleky pod stoličkou a mezi svlaky opěradla),
+  `kratke-procvicovani` (bílá výplň v rámu hodin), `prehled-pro-rodice`
+  (opačná vada — deska knihy byla průhledná, vylita zpět).
+- 🔧 Nástroj `scripts/fix-landing-alpha.ps1` — dokumentovaný, opakovaně použitelný.
+- ⏭️ **Zbývá 14 ilustrací.** U dekorativních kreseb bez postav (slunce, batoh, štít)
+  je oprava sporná: plné zkrytí ztvrdí měkké akvarelové okraje a odebere pastelový
+  ráz. **Čeká na rozhodnutí, jestli je opravovat taky.**
+
+---
+
 ## 🔴 BLOCKERY PILOTU — nalezeno end-to-end testem flow (2026-07-19)
 
 > Bez těchto dvou věcí **aplikace nezíská ani jednoho reálného uživatele** —
