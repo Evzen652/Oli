@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 10) — Avatary výběru role: styl + externí závislost:
+- 🐞 **Dva problémy v `src/lib/roleImages.ts`.** (a) Styl „Pixar 3D cartoon" nesedí k akvarelovým ilustracím na landing page. (b) Závažnější: obrázky se **generují za běhu z `image.pollinations.ai`**, tedy prohlížeč uživatele volá cizí doménu přímo na přihlašovací stránce. Výsledek se může kdykoli změnit, a landing přitom slibuje „Bezpečné prostředí — žádné reklamy, žádné odkazy ven z aplikace".
+- ❌ **Přepsání promptu nestačí — vyzkoušeno a zavrženo.** Flux na 256 px zadání neudrží: ve dvou iteracích ignoroval pohlaví, barvu vlasů i oblečení, přimaloval bílé tričko s nápisem a rámeček — tedy přesně to, co prompt zakazoval. Změnu jsem **vrátil**, aby v mezidobí neběželo něco horšího než původní avatary. Kresby udělá Evžen v Gemini, stejnou cestou jako těch 19 na landing page.
+- ✅ **Založen `docs/ILLUSTRATION_STYLE.md`** — rukopis (akvarel + inkoustová kontura, paleta, opakující se postavy: chlapec v korálové mikině, maminka v mátovém svetru) a hlavně **technická pravidla pro prompt**, každé odvozené z konkrétní vady opravené dnes: bílé ploché pozadí, objekt se nesmí dotýkat okraje, žádná bílá uvnitř kresby, sytá pleť, bez propletených děr, jeden objekt uprostřed. V §5 hotové zadání pro Gemini včetně doporučení **přiložit `landing-propojeni-s-rodicem.png` jako referenci stylu** (je na ní maminka i chlapec zároveň).
+- ⏭️ **Čeká se na kresby.** Pak: uložit do `src/assets/`, vyříznout pozadí přes `scripts/fix-landing-alpha.ps1`, nahradit runtime URL importy — tím padne i ta externí závislost.
+- ℹ️ Zjištěno mimochodem: `supabase/functions/generate-prvouka-images` používá pořád starší styl „3D Pixar illustration" (obrázky témat prvouky). V aplikaci tedy běží **dva soupeřící vizuální jazyky**; zatím needitováno, není součástí zadání.
+
 ### Session 2026-08-31 (pokr. 9) — Landing: finální CTA tlačítko bylo tiše rozbité:
 - 🐞 **Příčina nebyla estetická, ale nefunkční třída.** Tlačítko „Vytvořit účet zdarma" mělo `h-13` — Tailwind takovou třídu **nemá** (13 není v jeho škále) a v `tailwind.config.ts` není žádné vlastní `spacing`. Třída se tiše zahodila a tlačítko spadlo na `h-11` (44 px) ze `size="lg"` místo zamýšlených 52 px. Žádná chyba buildu, jen vizuálně nižší tlačítko.
 - 🐞 **Druhá vada v témže řádku:** inline `style={{ background: C.brand }}` přebíjel `hover:bg-primary-hover` z variantu, takže tlačítko na najetí myší **vůbec nereagovalo**.

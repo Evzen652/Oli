@@ -7,6 +7,29 @@
 
 ---
 
+## ⏭️ Avatary výběru role — čeká se na kresby z Gemini (2026-08-31)
+
+Nahlásil Evžen: „obě ilustrace nezapadají do konceptu s ilustracemi z home page".
+
+- 🐞 `src/lib/roleImages.ts`: styl „Pixar 3D cartoon" **a navíc** obrázky
+  tažené za běhu z `image.pollinations.ai` — cizí doména volaná z prohlížeče
+  uživatele přímo na přihlašovací stránce, ačkoli landing slibuje „žádné
+  odkazy ven z aplikace".
+- ❌ Přepsání promptu vyzkoušeno a **zavrženo**: flux na 256 px zadání neudrží.
+  Změna vrácena, ať mezitím neběží něco horšího.
+- ✅ Založen **`docs/ILLUSTRATION_STYLE.md`** — rukopis + technická pravidla
+  pro prompt (každé odvozené z dnes opravené vady). V §5 hotové zadání pro
+  Gemini vč. doporučení přiložit `landing-propojeni-s-rodicem.png` jako
+  referenci stylu.
+- ⏭️ **Akce Evžen:** vygenerovat obě kresby v Gemini. Pak uložit do
+  `src/assets/`, vyříznout pozadí přes `scripts/fix-landing-alpha.ps1`
+  a nahradit runtime URL importy.
+- 🔎 Mimochodem: `supabase/functions/generate-prvouka-images` používá pořád
+  starší styl „3D Pixar illustration" → v aplikaci běží dva soupeřící
+  vizuální jazyky. Neřešeno, mimo zadání.
+
+---
+
 ## ✅ Landing — finální CTA tlačítko bylo tiše rozbité (2026-08-31)
 
 Nahlásil Evžen: „tlačítko je moc úzké, nehezké".
