@@ -121,7 +121,9 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - ✅ **14. dávka: 4 témata**, **40 → 0** nálezů. Korpus `format/length` **300 → 260**, témata **63 → 59**.
 - 🐞 **Skrytá duplicitní instance:** dump dedupuje podle `correctAnswer`, takže dvojče úlohy se stejným klíčem („Má číslo 8…" vs „Má písmeno H…") se v dump výpisu neukázalo, ale v korpusu se počítalo zvlášť — dohledáno a opraveno spolu s prvním výskytem.
 - 🐛 **Nový poznatek pro patchery:** `pv2`/`pv4`/`pv3` hledají konec options pole naivně přes první `]` — pokud text MOŽNOSTI sám obsahuje `]` (např. souřadnice „[3; −2]"), patcher pole ukousne. Typecheck to okamžitě odhalí (syntax error), oprava je pak ruční. Zatím jediný výskyt, neřešeno univerzálně ve skriptu.
-- ⏭️ **Zbývá:** 260 nálezů v 59 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
+- ✅ **15. dávka: 4 témata**, **32 → 0** nálezů (+4 skryté duplicitní instance). Korpus `format/length` **260 → 224**, témata **59 → 55**.
+- 🔎 **Nález mimo rozsah dávky, čeká na rozhodnutí:** `g4-prirodoveda-…prvni-pomoc-tisnove-volani-mimoradne-udalosti` má `boundaries: ["Pokročilé záchranářské postupy nejsou náplní 4. ročníku"]`, ale L3 pool (a část L2) obsahuje škrtidlo/tourniquet, ABCDE primární průzkum, rozdíl tepenného a žilního krvácení, triáž, defibrilaci, EpiPen — přímo v rozporu s vlastním `boundaries`. Oprava délky hotová (obsah beze změny), **plné přepsání L3 poolu na úroveň 4. ročníku je samostatná autorská práce**, nezahájena bez zadání.
+- ⏭️ **Zbývá:** 224 nálezů v 55 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).

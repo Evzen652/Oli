@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 3) — Wave B, 15. dávka (4 témata): 260 → 224 nálezů:
+- ✅ **4 témata opravena, 32 nálezů `format/length` → 0** (+4 skryté duplicitní instance stejného vzorce jako v 14. dávce). Korpus `format/length` **260 → 224**, dotčených témat **59 → 55**.
+- 🔎 **Nález mimo rozsah dávky, zapsán a NEřešen teď:** `g4-prirodoveda-…prvni-pomoc-tisnove-volani-mimoradne-udalosti` má `boundaries: ["Pokročilé záchranářské postupy nejsou náplní 4. ročníku"]`, ale L3 pool (a částečně L2) obsahuje profesionální záchranářské postupy — škrtidlo/tourniquet, ABCDE primární průzkum, rozlišení tepenného a žilního krvácení, triáž při hromadném neštěstí, defibrilace, anafylaktický šok s EpiPenem. Přímý rozpor s vlastním `boundaries` tématu, stejný vzorec jako opakovaně zdokumentovaná „přiměřenost ročníku" (batch 9, 11). Opravil jsem jen nahlášený délkový nález (třída B, distraktory beze změny obsahu) — **plné přepsání L3 poolu na úroveň 4. ročníku je samostatná autorská práce**, ne jednořádková oprava, proto nezahájena bez zadání. Zapsáno i do `docs/PENDING_CHANGES.md`.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou), zbylé REVIZE nálezy (šipka `→` v klíči, `min_unique_tasks_per_tier`) ověřeny jako předexistující přes `git stash` na HEAD. Žádné z tématu není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 55 témat** (~14 dalších dávek po 4).
+
 ### Session 2026-08-31 (pokr. 2) — Wave B, 14. dávka (4 témata): 300 → 260 nálezů:
 - ✅ **4 témata opravena, 40 nálezů `format/length` → 0.** `g5-matematika-…osova-soumernost-…urceni-osy` (9+1 duplicitní instance), `g5-cjl-…slovesa-zpusob-…` (10), `g5-cjl-…souveti-vzorce-pocet-vet` (10), `g5-prirodoveda-…horniny-a-nerosty-…` (10). Korpus `format/length` **300 → 260**, dotčených témat **63 → 59**.
 - 🐞 **Skrytá duplicitní instance nálezu:** dump skript dedupuje podle `correctAnswer`, takže úloha „Má číslo 8 osu souměrnosti?" (stejný klíč i možnosti jako „Má písmeno H…") se v dump výpisu neukázala, ale v korpusovém měření se počítala zvlášť — opravena společně s tou první, jinak by zbyl 1 nález navíc.

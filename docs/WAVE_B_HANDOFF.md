@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **260** |
-| dotčených témat | **59** |
-| hotovo dávek | **14** (celkem 1054 nálezů → 0) |
+| `format/length` nálezů | **224** |
+| dotčených témat | **55** |
+| hotovo dávek | **15** (celkem 1090 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -19,16 +19,16 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | nálezů | téma |
 |---|---|
-| 9 | `g3-cjl-sebekontrola-projevu` |
-| 9 | `g4-cjl-…cteni-rozliseni-podstatnych-a-okrajovych-informaci` |
-| 9 | `g4-cjl-…hlavni-postavy-a-jejich-charakteristika` |
-| 9 | `g4-prirodoveda-…bezpecnost-prvni-pomoc-tisnove-volani-mimoradne-udalosti` |
 | 9 | `g5-cjl-…slova-jednoznacna-mnohoznacna-vicevyznamova` |
 | 8 | `g4-vlastiveda-…podnebi-cr-ovzdusi-pocasi` |
 | 8 | `g4-vlastiveda-…poloha-cr-v-evrope-sousedni-staty` |
 | 8 | `g5-cjl-…skladba-prima-a-neprima-rec-uvod` |
 | 8 | `g5-cjl-…slovni-druhy-urcovani-vsech-deseti-ohebne-a-neohebne` |
 | 8 | `g5-prirodoveda-…trideni-organismu-bezobratli-hmyz-pavouci-mekkysi-cervi` |
+| 8 | `g5-prirodoveda-…ekosystemy-a-zivotni-prostredi-ochrana-prirody-narodni-parky-chko-v-cr` |
+| 7 | `g4-cjl-…slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech` |
+| 7 | `g4-prirodoveda-…ochrana-prirody-chranene-rostliny-a-zivocichove-ohrozene-druhy` |
+| 7 | `g5-prirodoveda-…energie-a-jeji-zdroje-magnety-elektrina-jednoduche-obvody-uvod` |
 
 Dávka = **4 témata**. Aktuální pořadí si vždy ověř znovu (krok 1).
 
