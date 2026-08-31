@@ -15,14 +15,16 @@ později „přesýpací hodiny mají bílé pozadí, třetí obrázek prosvít�
 - ✅ **Příčina nalezena a doložena měřením.** Serverový „dewhite" mazal podle jasu
   kdekoli v kresbě místo flood-fillu od okrajů. Světlá pleť má jas těsně pod prahem →
   alfa 88–214 místo 255 při zachované barvě pleti. Poškozeno **17 z 19** ilustrací.
-- ✅ **Opraveno 5:** `vstup-bez-barier`, `propojeni-s-rodicem`,
+- ✅ **Opraveno 6:** `vstup-bez-barier`, `propojeni-s-rodicem`,
   `samostatne-nebo-spolecne` (+ bílé fleky pod stoličkou a mezi svlaky opěradla),
   `kratke-procvicovani` (bílá výplň v rámu hodin), `prehled-pro-rodice`
-  (opačná vada — deska knihy byla průhledná, vylita zpět).
+  (opačná vada — deska knihy byla průhledná, vylita zpět), `prehled-o-pokroku`
+  (čočka lupy byla krycí bílý kotouč).
 - 🔧 Nástroj `scripts/fix-landing-alpha.ps1` — dokumentovaný, opakovaně použitelný.
-- ⏭️ **Zbývá 14 ilustrací.** U dekorativních kreseb bez postav (slunce, batoh, štít)
-  je oprava sporná: plné zkrytí ztvrdí měkké akvarelové okraje a odebere pastelový
-  ráz. **Čeká na rozhodnutí, jestli je opravovat taky.**
+- ✅ **Zbývajících 13 prověřeno na barvách svých karet — v pořádku, neopravuje se.**
+  Postavu z nich má jedině `diktat` (poškození 727 px, neviditelné). Ostatní jsou
+  objekty, kde nižší alfa dělá měkký akvarelový okraj — zákrok by ho jen ztvrdil.
+  **Uzavřeno.**
 
 ---
 

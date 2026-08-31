@@ -152,8 +152,10 @@ src/
   - *opačný případ — vyříznutá bílá, která do kresby patří* → `prehled-pro-rodice`: deska knihy i skla brýlí byly průhledné, prosvítala jimi mátová. Vylito zpět paint-bucketem ze seedu.
 - 🔎 **Klíčové zjištění: RGB je i u alfa 0 zachované**, takže se dá alfa přepočítat a originály nejsou potřeba. Podmínka je číst pixely přes `LockBits` — `Graphics.DrawImage` premultiplikuje a u alfa 0 **vynuluje RGB** (nejdřív mi tím vyšla deska knihy černá).
 - ⚠️ **Pravidlo, které stálo jeden falešný pokus:** plně průhledné pixely se musí nechat být (jsou vyříznuté záměrně — pozadí pod stolem, mezi nohami židle). Obnovuje se **jen rozežraná částečná alfa**; první verze zakryla i tyhle plochy bíle.
+  - *bílá čočka lupy* → `prehled-o-pokroku`: čočka byla krycí bílý kotouč, kartou přes sklo neprosvítalo. Zprůhledněna, graf uvnitř zůstal.
 - 🔧 Nástroj uložen jako `scripts/fix-landing-alpha.ps1` (`-ScanOnly` vypíše uzavřené kapsy s id/bbox, `-ClearIds` je zprůhlední, `-FillSeeds` naopak vylije zpět, `-Preview` složí náhled na barvě karty).
-- **Zbývá 14 ilustrací** se stejnou vadou. U dekorativních kreseb bez postav (slunce, batoh, štít) je zákrok sporný — plné zkrytí ztvrdí měkké akvarelové okraje, proto jsem je zatím nechal být a čekám na rozhodnutí.
+- ✅ **Zbývajících 13 ilustrací prověřeno a je v pořádku** — složeny na skutečné barvy svých karet a projity. Postavu z nich má jedině `diktat` a ta je poškozená zanedbatelně (727 px). Ostatní jsou objekty (štít, slunce, kompas, batoh, kostky, lístky, květináč, graf, knihy, terč, sešit, koláč); jejich nižší alfa je měkký akvarelový okraj, ne vada — plné zkrytí by ho zbytečně ztvrdilo. **Nic dalšího se opravovat nebude.**
+- ⚠️ Pozor při psaní pomocných PowerShell skriptů: proměnné **nerozlišují velikost písmen**, takže `$w` v cyklu přepíše `$W`. Chvíli mě to mátlo u rozměrů kontaktního listu.
 - ℹ️ Přidán lokální `.claude/launch.json` (dev server `npm run dev`, port 8080) — je v `.gitignore`, necommituje se.
 
 ### Session 2026-08-31 (pokr. 7) — Wave B, 19. dávka (4 témata, vše g3): 133 → 109 nálezů:
