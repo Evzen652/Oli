@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 6) — Wave B, 18. dávka (4 témata): 160 → 133 nálezů:
+- ✅ **4 témata opravena, 34 nálezů `format/length` → 0** (korpusový úbytek 27 kvůli běžnému kolísání auditu mezi běhy — dotčená témata **47 → 43** souhlasí přesně). `g4-prirodoveda-…chranene-rostliny-a-zivocichove-ohrozene-druhy` (8), `g5-prirodoveda-…magnety-elektrina-jednoduche-obvody-uvod` (9), `g5-prirodoveda-…rozmnozovaci-soustava-vyvoj-cloveka-uvod` (11), `g2-cjl-…spisovatel-ilustrator-knihovna` (6).
+- 🔎 **Nový formát souboru objeven:** `spisovatelKniha.ts` (2. ročník) používá jiná jména polí (`correct`/`distractors`, jen 2 distraktory místo obvyklých 3) — žádný patcher z `scripts/wave-b/` na to nesedí, opraveno ručně přes `Edit`.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou). Žádné z témat není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 43 témat** (~11 dalších dávek po 4).
+
 ### Session 2026-08-31 (pokr. 5) — Wave B, 17. dávka (4 témata): 191 → 160 nálezů:
 - ✅ **4 témata opravena, 33 nálezů `format/length` → 0.** `g5-cjl-…slovni-druhy-…ohebne-a-neohebne` (8), `g5-prirodoveda-…bezobratli-hmyz-pavouci-mekkysi-cervi` (10), `g5-prirodoveda-…ochrana-prirody-narodni-parky-chko-v-cr` (8), `g4-cjl-…slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech` (7). Korpus `format/length` **191 → 160**, dotčených témat **51 → 47**.
 - 🔎 **Poučení: zkrácení klíče vs. per-task nápověda, ne jen sdílená.** V `slovniDruhyUrcovaniVsechDesetiOhebneANeohebne.ts` má každá úloha VLASTNÍ nápovědu (ne sdílenou), a většina z nich končí přesně vzorcem „… = <slovní druh>." — zkrácení klíče na holý název druhu by okamžitě zapnulo `hint_leak` u 6 z 8 úloh. Zvolena třída B (prodloužené distraktory), klíče i nápovědy beze změny.

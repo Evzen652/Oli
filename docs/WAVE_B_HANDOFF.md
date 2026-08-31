@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **160** |
-| dotčených témat | **47** |
-| hotovo dávek | **17** (celkem 1156 nálezů → 0) |
+| `format/length` nálezů | **133** |
+| dotčených témat | **43** |
+| hotovo dávek | **18** (celkem 1190 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -19,16 +19,16 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | nálezů | téma |
 |---|---|
-| 7 | `g4-prirodoveda-…ochrana-prirody-chranene-rostliny-a-zivocichove-ohrozene-druhy` |
-| 7 | `g5-prirodoveda-…energie-a-jeji-zdroje-magnety-elektrina-jednoduche-obvody-uvod` |
-| 7 | `g5-prirodoveda-…vyvoj-cloveka-a-rozmnozovani-rozmnozovaci-soustava-vyvoj-cloveka-uvod` |
-| 6 | `g2-cjl-…prace-s-knihou-spisovatel-ilustrator-knihovna` |
 | 6 | `g3-cjl-…vyznam-slova-slova-jednoznacna-a-mnohoznacna` |
 | 6 | `g3-cjl-spojovani-vet-spojkami` |
 | 6 | `g3-cjl-reprodukce-textu` |
 | 6 | `g3-cjl-vers-rym-prirovnani` |
 | 6 | `g5-cjl-…slova-spisovna-a-nespisovna` |
 | 6 | `g5-prirodoveda-…vyvoj-cloveka-a-rozmnozovani-etapy-lidskeho-zivota-dospivani` |
+| 6 | `g5-prirodoveda-…navyky-a-prevence-navykove-latky-alkohol-nikotin-drogy` |
+| 5 | `g3-cjl-veta-jednoducha-souveti` |
+| 5 | `g5-matematika-…konstrukce-a-obsah-konstrukce-trojuhelniku-kolmice-rovnobezky` |
+| 5 | `g5-prirodoveda-…energie-a-jeji-zdroje-obnovitelne-a-neobnovitelne-zdroje-energie` |
 
 Dávka = **4 témata**. Aktuální pořadí si vždy ověř znovu (krok 1).
 

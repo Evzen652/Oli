@@ -126,7 +126,9 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - ✅ **16. dávka: 4 témata**, **33 → 0** nálezů. Korpus `format/length` **224 → 191**, témata **55 → 51**.
 - ✅ **17. dávka: 4 témata**, **33 → 0** nálezů. Korpus `format/length` **191 → 160**, témata **51 → 47**.
 - 🐞 **Předexistující BLOK 17/17 nalezen a opraven** (nesouvisel s dávkou, potvrzeno `git stash` na HEAD): sdílená fallback nápověda v `slovesaMluvnickeKategorie…` vypisovala doslova všechny hodnoty kategorií („Čas: minulý…, přítomný…, budoucí…") — kolidovalo s téměř polovinou úloh tématu. Přepsáno na popis metody.
-- ⏭️ **Zbývá:** 160 nálezů v 47 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
+- ✅ **18. dávka: 4 témata**, **34 → 0** nálezů. Korpus `format/length` **160 → 133**, témata **47 → 43**.
+- 🔧 **Nový formát souboru:** `spisovatelKniha.ts` (g2) má jiná jména polí (`correct`/`distractors`, jen 2 distraktory) — žádný patcher nesedí, opraveno ručně. Pokud se formát objeví znovu, chce to nový patcher.
+- ⏭️ **Zbývá:** 133 nálezů v 43 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
