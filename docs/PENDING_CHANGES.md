@@ -101,7 +101,14 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🔎 **`hint_leak` matchuje i jednotlivá slova z odpovědí**, ne jen celé odpovědi: „od celku k podrobnostem" spadlo na „od celku k detailu", „krok za krokem" na „Chybí krok číslo 3".
 - 🔎 **`hint_progression` nelze vždy opravit prohozením** — kratší druhá nápověda bývá konkrétnější; prohození by ji posunulo dopředu. Správně se prodlužuje.
 - 🐞 **Falešný poplach detektoru:** `displayName „Popis a postup" vypadá jako anglický název`. Je česky — k opravě v detektoru.
-- ⏭️ **Zbývá:** 435 nálezů v 75 tématech.
+- ✅ **11. dávka: 4 témata napříč předměty**, **49 → 0** nálezů. Korpus **579 → 535**.
+- 🐞 **Chybný mluvnický termín v celém tématu:** „Přívlastňovací" místo **při**vlastňovací (2×).
+- 🐞 **Chybný vzorový tvar:** vzor *otcův* ilustrován slovem „bratranců" (to je 2. p. mn. č. od *bratranec*, ne přivlastňovací tvar *bratrancův*).
+- 🐞 **Rozpadlá úloha** „Skloňuj: Petrův → Petrovi → Petra → čeho se zde mění?" — tvary nepatří k jednomu slovu, pořadí pádů 1–3–2, vazba „čeho se mění" neexistuje.
+- 🐞 **Otázka říkající opak:** „Proč vidíme **z Měsíce** vždy stejnou stranu?" (vidíme ji ze Země). Dál „mohl by začít jaderná fúze", „jmena", „s dolly", „v Šumavě", „singulár" 3×.
+- 🔎 **Zkrácení klíče umí zapnout i jiný detektor než `hint_leak`** — u vzoru *jarní* je 7. p. ž. r. tvarově shodný s 1. pádem, takže klíč spadl do pravidla „odpověď je ve znění otázky". Řeší se jen přeformulováním zadání.
+- 🔧 **Nový patcher `pv4.mjs`** pro víceřádkový formát; pokryty všechny čtyři formáty obsahu v repu.
+- ⏭️ **Zbývá:** 388 nálezů v 71 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
