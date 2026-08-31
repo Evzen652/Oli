@@ -220,25 +220,25 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Nevím, zda přijde.' – jaký slovní druh je 'zda'?",
     correctAnswer: "spojka – podřadící",
-    options: ["příslovce", "částice", "zájmeno", "spojka – podřadící"],
+    options: ["příslovce způsobu", "spojka – podřadící", "částice vyjadřující postoj", "zájmeno zastupující jméno"],
     hints: ["Bez 'zda' by věta 'Nevím, zda přijde' nedávala smysl jako celek — napojuje vedlejší větu na hlavní. Který slovní druh spojuje věty?"],
   },
   {
     question: "Jaký slovní druh je slovo 'totiž' (ve větě 'Přišel pozdě, přišel totiž pěšky.')?",
     correctAnswer: "spojka – souřadící vysvětlovací",
-    options: ["příslovce", "citoslovce", "spojka – souřadící vysvětlovací", "částice"],
+    options: ["příslovce vyjadřující míru", "spojka – souřadící vysvětlovací", "citoslovce vyjadřující cit", "částice vyjadřující postoj"],
     hints: ["'Totiž' vysvětluje předchozí větu = spojka."],
   },
   {
     question: "Ve větě 'Bohu dík.' – jaký slovní druh je 'dík'?",
     correctAnswer: "citoslovce – vyjadřuje poděkování",
-    options: ["podstatné jméno", "citoslovce – vyjadřuje poděkování", "příslovce", "sloveso"],
+    options: ["podstatné jméno, protože pojmenovává věc", "citoslovce – vyjadřuje poděkování", "příslovce vyjadřující způsob", "sloveso vyjadřující děj"],
     hints: ["'Dík' jako vykřičník poděkování = citoslovce."],
   },
   {
     question: "Ve větě 'Není to vůbec pravda.' – jaký slovní druh je 'vůbec'?",
     correctAnswer: "příslovce – záporné zesílení",
-    options: ["částice", "příslovce – záporné zesílení", "spojka", "citoslovce"],
+    options: ["částice zdůrazňující výrok", "příslovce – záporné zesílení", "spojka spojující dvě věty", "citoslovce vyjadřující cit"],
     hints: ["'Vůbec' modifikuje záporný výrok = příslovce."],
   },
   {
@@ -256,17 +256,17 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Řekni mi, co to je.' – jaký slovní druh je 'co'?",
     correctAnswer: "zájmeno – tázací / vztažné",
-    options: ["spojka", "příslovce", "citoslovce", "zájmeno – tázací / vztažné"],
+    options: ["spojka spojující dvě věty", "zájmeno – tázací / vztažné", "příslovce vyjadřující způsob", "citoslovce vyjadřující cit"],
     hints: ["'Co' může být tázací zájmeno nebo vztažné zájmeno."],
   },
   {
     question: "Ve větě 'Šel jsem spát, i když jsem nebyl unavený.' – jaký slovní druh je 'i'?",
     correctAnswer: "spojka – součást složené spojky 'i když'",
     options: [
-      "číslovka – = 1",
-      "citoslovce",
+      "číslovka, protože znamená přesně 1",
       "spojka – součást složené spojky 'i když'",
-      "příslovce",
+      "citoslovce vyjadřující cit",
+      "příslovce vyjadřující míru",
     ],
     hints: ["'I když' spojuje dvě věty dohromady jako jeden celek — samo 'i' tu číslo neznamená. Který slovní druh spojuje věty?"],
   },
@@ -286,10 +286,10 @@ const POOL_L3: PracticeTask[] = [
     question: "Ve větě 'Rád pomáhám.' – jaký slovní druh je 'rád'?",
     correctAnswer: "příslovce – ve funkci příslovce způsobu k slovesu",
     options: [
-      "přídavné jméno",
+      "přídavné jméno, protože popisuje osobu",
       "příslovce – ve funkci příslovce způsobu k slovesu",
-      "sloveso",
-      "zájmeno",
+      "sloveso, protože vyjadřuje děj",
+      "zájmeno, protože zastupuje jméno",
     ],
     hints: ["'Rád' modifikuje sloveso pomáhám = příslovce."],
   },
@@ -308,7 +308,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Přišel, čili se pozdravili.' – jaký slovní druh je 'čili'?",
     correctAnswer: "spojka – souřadící vysvětlovací nebo alternativní",
-    options: ["příslovce", "citoslovce", "částice", "spojka – souřadící vysvětlovací nebo alternativní"],
+    options: ["příslovce vyjadřující způsob", "spojka – souřadící vysvětlovací nebo alternativní", "citoslovce vyjadřující cit", "částice vyjadřující postoj"],
     hints: ["'Čili' = nebo jinak řečeno; jinak = spojka."],
   },
 ];

@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 5) — Wave B, 17. dávka (4 témata): 191 → 160 nálezů:
+- ✅ **4 témata opravena, 33 nálezů `format/length` → 0.** `g5-cjl-…slovni-druhy-…ohebne-a-neohebne` (8), `g5-prirodoveda-…bezobratli-hmyz-pavouci-mekkysi-cervi` (10), `g5-prirodoveda-…ochrana-prirody-narodni-parky-chko-v-cr` (8), `g4-cjl-…slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech` (7). Korpus `format/length` **191 → 160**, dotčených témat **51 → 47**.
+- 🔎 **Poučení: zkrácení klíče vs. per-task nápověda, ne jen sdílená.** V `slovniDruhyUrcovaniVsechDesetiOhebneANeohebne.ts` má každá úloha VLASTNÍ nápovědu (ne sdílenou), a většina z nich končí přesně vzorcem „… = <slovní druh>." — zkrácení klíče na holý název druhu by okamžitě zapnulo `hint_leak` u 6 z 8 úloh. Zvolena třída B (prodloužené distraktory), klíče i nápovědy beze změny.
+- 🐞 **Předexistující BLOK na 17/17 (celý gate), objeveno a opraveno:** `slovesaMluvnickeKategorieCasovaniVJednoduchychCasech.ts` má sdílenou fallback nápovědu vypisující doslova všechny hodnoty kategorie („Čas: minulý (byl), přítomný (je), budoucí (bude)"; „Způsob: oznamovací (chodí), rozkazovací (choď!), podmiňovací (chodil by)") — kolidovalo s bezmála polovinou úloh tématu (17 z ~30 vzorků), potvrzeno jako předexistující přes `git stash` na HEAD, nesouviselo s touto dávkou. Nápověda přepsána na popis metody bez doslovného výčtu hodnot.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3–5× za sebou). Žádné z témat není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 47 témat** (~12 dalších dávek po 4).
+
 ### Session 2026-08-31 (pokr. 4) — Wave B, 16. dávka (4 témata): 224 → 191 nálezů:
 - ✅ **4 témata opravena, 33 nálezů `format/length` → 0.** `g5-cjl-…slova-jednoznacna-mnohoznacna-vicevyznamova` (9), `g4-vlastiveda-…podnebi-cr-ovzdusi-pocasi` (8), `g4-vlastiveda-…poloha-cr-v-evrope-sousedni-staty` (8), `g5-cjl-…prima-a-neprima-rec-uvod` (9). Korpus `format/length` **224 → 191**, dotčených témat **55 → 51**.
 - Všechna 4 témata bez explanation/solutionSteps u dotčených úloh → výhradně třída B (prodloužené distraktory), obsah beze změny.

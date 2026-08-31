@@ -124,7 +124,9 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - ✅ **15. dávka: 4 témata**, **32 → 0** nálezů (+4 skryté duplicitní instance). Korpus `format/length` **260 → 224**, témata **59 → 55**.
 - 🔎 **Nález mimo rozsah dávky, čeká na rozhodnutí:** `g4-prirodoveda-…prvni-pomoc-tisnove-volani-mimoradne-udalosti` má `boundaries: ["Pokročilé záchranářské postupy nejsou náplní 4. ročníku"]`, ale L3 pool (a část L2) obsahuje škrtidlo/tourniquet, ABCDE primární průzkum, rozdíl tepenného a žilního krvácení, triáž, defibrilaci, EpiPen — přímo v rozporu s vlastním `boundaries`. Oprava délky hotová (obsah beze změny), **plné přepsání L3 poolu na úroveň 4. ročníku je samostatná autorská práce**, nezahájena bez zadání.
 - ✅ **16. dávka: 4 témata**, **33 → 0** nálezů. Korpus `format/length` **224 → 191**, témata **55 → 51**.
-- ⏭️ **Zbývá:** 191 nálezů v 51 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
+- ✅ **17. dávka: 4 témata**, **33 → 0** nálezů. Korpus `format/length` **191 → 160**, témata **51 → 47**.
+- 🐞 **Předexistující BLOK 17/17 nalezen a opraven** (nesouvisel s dávkou, potvrzeno `git stash` na HEAD): sdílená fallback nápověda v `slovesaMluvnickeKategorie…` vypisovala doslova všechny hodnoty kategorií („Čas: minulý…, přítomný…, budoucí…") — kolidovalo s téměř polovinou úloh tématu. Přepsáno na popis metody.
+- ⏭️ **Zbývá:** 160 nálezů v 47 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).

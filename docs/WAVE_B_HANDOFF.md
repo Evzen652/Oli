@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **191** |
-| dotčených témat | **51** |
-| hotovo dávek | **16** (celkem 1123 nálezů → 0) |
+| `format/length` nálezů | **160** |
+| dotčených témat | **47** |
+| hotovo dávek | **17** (celkem 1156 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -19,16 +19,16 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | nálezů | téma |
 |---|---|
-| 8 | `g5-cjl-…slovni-druhy-urcovani-vsech-deseti-ohebne-a-neohebne` |
-| 8 | `g5-prirodoveda-…trideni-organismu-bezobratli-hmyz-pavouci-mekkysi-cervi` |
-| 8 | `g5-prirodoveda-…ekosystemy-a-zivotni-prostredi-ochrana-prirody-narodni-parky-chko-v-cr` |
-| 7 | `g4-cjl-…slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech` |
 | 7 | `g4-prirodoveda-…ochrana-prirody-chranene-rostliny-a-zivocichove-ohrozene-druhy` |
 | 7 | `g5-prirodoveda-…energie-a-jeji-zdroje-magnety-elektrina-jednoduche-obvody-uvod` |
 | 7 | `g5-prirodoveda-…vyvoj-cloveka-a-rozmnozovani-rozmnozovaci-soustava-vyvoj-cloveka-uvod` |
 | 6 | `g2-cjl-…prace-s-knihou-spisovatel-ilustrator-knihovna` |
 | 6 | `g3-cjl-…vyznam-slova-slova-jednoznacna-a-mnohoznacna` |
 | 6 | `g3-cjl-spojovani-vet-spojkami` |
+| 6 | `g3-cjl-reprodukce-textu` |
+| 6 | `g3-cjl-vers-rym-prirovnani` |
+| 6 | `g5-cjl-…slova-spisovna-a-nespisovna` |
+| 6 | `g5-prirodoveda-…vyvoj-cloveka-a-rozmnozovani-etapy-lidskeho-zivota-dospivani` |
 
 Dávka = **4 témata**. Aktuální pořadí si vždy ověř znovu (krok 1).
 
