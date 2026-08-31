@@ -10,20 +10,20 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const POOL: { q: string; a: string; opts: string[]; e: string; hints?: string[] }[] = [
-  { q: "Co je ilustrace ke knize?", a: "Obrázek, který zobrazuje nebo doplňuje text", opts: ["Obrázek, který zobrazuje nebo doplňuje text", "Titulní strana", "Obsah knihy", "Autor knihy"], e: "Ilustrace je obrázek, který patří k textu — ukazuje nám, co se v příběhu děje, nebo pomáhá lépe si ho představit. Titulní strana, obsah ani autor obrázkem nejsou." },
+  { q: "Co je ilustrace ke knize?", a: "Obrázek doplňující text", opts: ["Autor celé knihy", "Obrázek doplňující text", "Titulní strana knihy", "Obsah na začátku knihy"], e: "Ilustrace je obrázek, který patří k textu — ukazuje nám, co se v příběhu děje, nebo pomáhá lépe si ho představit. Titulní strana, obsah ani autor obrázkem nejsou." },
   { q: "Co by měla zobrazovat ilustrace k příběhu?", a: "Důležitou scénu nebo postavu z textu", opts: ["Důležitou scénu nebo postavu z textu", "Něco, co v textu není", "Jen krajinu", "Jen zvířata"], e: "Ilustrace musí být propojená s příběhem — kreslíme to, co se v textu skutečně stalo nebo kdo v něm je. Kdybychom kreslili něco, co v textu není, čtenáře by to zmátlo." },
   { q: "Jak vybrat, co nakreslit k textu?", a: "Vyberu nejzajímavější nebo nejdůležitější moment příběhu", opts: ["Vyberu nejzajímavější nebo nejdůležitější moment příběhu", "Nakreslím cokoliv", "Nakreslím jen postavy bez pozadí", "Nakreslím text slovo od slova"], e: "Dobrá ilustrace zachycuje klíčový okamžik příběhu — ten, který čtenáře zaujme nebo který je pro příběh nejdůležitější. Kreslit cokoliv nebo jen kopírovat slova nestačí.", hints: [
     "Ilustrace = obrázek k textu.",
     "Přemýšlej, která chvíle příběhu je nejvíc napínavá nebo klíčová pro děj — ta stojí za nakreslení.",
   ] },
-  { q: "Kdo tvoří ilustrace v knížkách pro děti?", a: "Ilustrátor / výtvarník", opts: ["Ilustrátor / výtvarník", "Spisovatel", "Tiskař", "Překladatel"], e: "Ilustrátor (výtvarník) je umělec, jehož prací je kreslit obrázky k textům. Spisovatel píše příběh, ale ne vždy umí kreslit — proto spolu spolupracují." },
-  { q: "Co pomáhá ilustrace čtenáři?", a: "Lépe si představit příběh a postavy", opts: ["Lépe si představit příběh a postavy", "Přečíst text rychleji", "Naučit se pravopis", "Zjistit, kdo napsal knihu"], e: "Obrázky nám pomáhají vidět v hlavě, jak postavy vypadají a kde se příběh odehrává. Čtení rychleji nepomáhají a pravopis s autorem v ilustraci nejsou." },
-  { q: "Jak by měla ilustrace souviset s textem?", a: "Zobrazovat to, co text popisuje — ne něco jiného", opts: ["Zobrazovat to, co text popisuje — ne něco jiného", "Může zobrazovat cokoliv", "Musí být abstraktní", "Nemusí vůbec souviset"], e: "Ilustrace a text tvoří pár — obrázek ukazuje to, co slova popisují. Kdyby obrázek zobrazoval něco úplně jiného, čtenář by byl zmaten a ilustrace by neplnila svůj účel.", hints: [
-    "Ilustrace a text by měly tvořit pár — přemýšlej, co by se stalo, kdyby obrázek ukazoval něco úplně odlišného od příběhu.",
-    "Vyber nejdůležitější moment příběhu.",
+  { q: "Kdo tvoří ilustrace v knížkách pro děti?", a: "Ilustrátor", opts: ["Tiskař knihy", "Ilustrátor", "Spisovatel textu", "Překladatel do češtiny"], e: "Ilustrátor (výtvarník) je umělec, jehož prací je kreslit obrázky k textům. Spisovatel píše příběh, ale ne vždy umí kreslit — proto spolu spolupracují." },
+  { q: "V čem ilustrace pomáhá čtenáři?", a: "Lépe si představit příběh a postavy", opts: ["Lépe si představit příběh a postavy", "Přečíst text rychleji", "Naučit se pravopis", "Zjistit, kdo napsal knihu"], e: "Obrázky nám pomáhají vidět v hlavě, jak postavy vypadají a kde se příběh odehrává. Čtení rychleji nepomáhají a pravopis s autorem v ilustraci nejsou." },
+  { q: "Jak by měla ilustrace souviset s textem?", a: "Zobrazovat to, co text popisuje", opts: ["Může zobrazovat cokoliv", "Zobrazovat to, co text popisuje", "Nemusí vůbec souviset", "Musí být abstraktní"], e: "Ilustrace a text tvoří pár — obrázek ukazuje to, co slova popisují. Kdyby obrázek zobrazoval něco úplně jiného, čtenář by byl zmaten a ilustrace by neplnila svůj účel.", hints: [
+    "Obrázek a text patří k sobě — zkus si představit, co by se stalo, kdyby ukazovaly každý něco jiného.",
+    "Kdyby obrázek ukazoval něco jiného než text, čtenář by se v knize ztratil a nevěděl by, ke které části příběhu se má dívat.",
   ] },
   { q: "Co je titulní ilustrace?", a: "Obrázek na obálce knihy, který láká ke čtení", opts: ["Obrázek na obálce knihy, který láká ke čtení", "Poslední obrázek v knize", "Obrázek autora", "Mapa příběhu"], e: "Titulní ilustrace je první obrázek, který vidíme — je na obálce a má nás nalákat, abychom si knihu vzali a začali číst. Je to jako výloha obchodu — musí zaujmout." },
-  { q: "Proč mívají dětské knihy hodně obrázků?", a: "Obrázky pomáhají dětem lépe pochopit a prožít příběh", opts: ["Obrázky pomáhají dětem lépe pochopit a prožít příběh", "Aby byly knihy dražší", "Aby byly knihy tlustší", "Obrázky nahrazují text"], e: "Pro děti jsou obrázky důležitou pomůckou — pomáhají jim rozumět textu a vcítit se do příběhu. Obrázky text nedoplňují, ale nenahrazují — čtení je stále hlavní." },
+  { q: "Proč mívají dětské knihy hodně obrázků?", a: "Pomáhají pochopit příběh", opts: ["Aby byly knihy tlustší", "Pomáhají pochopit příběh", "Obrázky nahrazují text", "Aby byly knihy dražší"], e: "Pro děti jsou obrázky důležitou pomůckou — pomáhají jim rozumět textu a vcítit se do příběhu. Obrázky text nedoplňují, ale nenahrazují — čtení je stále hlavní." },
   { q: "Co byste nakreslili jako ilustraci k větě 'Červená Karkulka šla lesem a zpívala'?", a: "Dívku s košíčkem v lese", opts: ["Dívku s košíčkem v lese", "Prázdný les", "Babičku doma", "Vlka samotného"], e: "Věta popisuje Červenou Karkulku (dívku s košíčkem), jak jde lesem — proto kreslíme přesně to. Babička ani vlk v té větě nejsou, a prázdný les by byl bez hlavní postavy." },
   { q: "Jak poznáme, zda je ilustrace vhodná k textu?", a: "Obrázek zobrazuje to, co text říká", opts: ["Obrázek zobrazuje to, co text říká", "Obrázek je barevný", "Obrázek je velký", "Obrázek se nám líbí"], e: "Správná ilustrace musí odpovídat obsahu textu — to je hlavní podmínka. Barva, velikost ani to, jestli se nám obrázek líbí, nezajistí, že ilustrace k textu skutečně patří." },
 ];
@@ -33,7 +33,7 @@ function gen(level: number): PracticeTask[] {
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: hints ?? ["Ilustrace = obrázek k textu. Zobrazuj to, co text popisuje.", "Vyber nejdůležitější moment příběhu."],
+    hints: hints ?? ["Přemýšlej, k čemu je obrázek v knize vlastně dobrý.", "Čtenář by měl mít z obrázku pocit, že se dívá přímo na to, o čem právě četl — a nejlíp na tu chvíli, která je v celém příběhu nejdůležitější."],
     explanation: e,
   }));
 }

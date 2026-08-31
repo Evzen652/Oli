@@ -108,7 +108,14 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **Otázka říkající opak:** „Proč vidíme **z Měsíce** vždy stejnou stranu?" (vidíme ji ze Země). Dál „mohl by začít jaderná fúze", „jmena", „s dolly", „v Šumavě", „singulár" 3×.
 - 🔎 **Zkrácení klíče umí zapnout i jiný detektor než `hint_leak`** — u vzoru *jarní* je 7. p. ž. r. tvarově shodný s 1. pádem, takže klíč spadl do pravidla „odpověď je ve znění otázky". Řeší se jen přeformulováním zadání.
 - 🔧 **Nový patcher `pv4.mjs`** pro víceřádkový formát; pokryty všechny čtyři formáty obsahu v repu.
-- ⏭️ **Zbývá:** 388 nálezů v 71 tématech.
+- ✅ **12. dávka: 4 témata**, **46 → 0** nálezů. Korpus **535 → 482**. Tři ze čtyř témat mají GATE úplně čistý.
+- 🐞 **Nápověda patřící k jiné úloze** („Vyber nejdůležitější moment příběhu." u otázky na souvislost ilustrace s textem).
+- 🐞 **Absurdní distraktor:** oprava chybného slova „Přelepíme náplastí".
+- 🐞 **Tvarosloví:** „muzejí" → muzeí, „s vzácnou" → se vzácnou, „Co pomáhá ilustrace čtenáři?", zamotané zadání „Urči podmět ve větě: 'Komu pomáháme?' (z věty: Pomáháme sousedce.)".
+- 🐞 **Tautologie:** „volný okraj na okraji stránky".
+- 🐞 **Katalogová nápověda posedmé a poosmé**; v podmětu navíc „jdeme = my", kde „my" je nově klíč.
+- 🔧 **Nový patcher `pq.mjs`** — kotva na text otázky, univerzální pro všechny formáty. Nutný proto, že tři různé úlohy sdílely tentýž klíč; zpevněný `pv3` to odmítl místo tichého přepsání špatné úlohy.
+- ⏭️ **Zbývá:** 342 nálezů v 67 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).
