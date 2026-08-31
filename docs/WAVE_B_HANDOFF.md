@@ -7,9 +7,9 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **300** |
-| dotčených témat | **63** |
-| hotovo dávek | **13** (celkem 1014 nálezů → 0) |
+| `format/length` nálezů | **260** |
+| dotčených témat | **59** |
+| hotovo dávek | **14** (celkem 1054 nálezů → 0) |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
@@ -19,16 +19,16 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | nálezů | téma |
 |---|---|
-| 10 | `g5-matematika-…soumernost-osova-soumernost-sestrojeni-obrazu-urceni-osy` |
-| 10 | `g5-cjl-…slovesa-zpusob-oznamovaci-rozkazovaci-podminovaci` |
-| 10 | `g5-cjl-…skladba-souveti-vzorce-pocet-vet` |
-| 10 | `g5-prirodoveda-…horniny-a-nerosty-druhy-vlastnosti-vznik` |
 | 9 | `g3-cjl-sebekontrola-projevu` |
 | 9 | `g4-cjl-…cteni-rozliseni-podstatnych-a-okrajovych-informaci` |
 | 9 | `g4-cjl-…hlavni-postavy-a-jejich-charakteristika` |
 | 9 | `g4-prirodoveda-…bezpecnost-prvni-pomoc-tisnove-volani-mimoradne-udalosti` |
 | 9 | `g5-cjl-…slova-jednoznacna-mnohoznacna-vicevyznamova` |
 | 8 | `g4-vlastiveda-…podnebi-cr-ovzdusi-pocasi` |
+| 8 | `g4-vlastiveda-…poloha-cr-v-evrope-sousedni-staty` |
+| 8 | `g5-cjl-…skladba-prima-a-neprima-rec-uvod` |
+| 8 | `g5-cjl-…slovni-druhy-urcovani-vsech-deseti-ohebne-a-neohebne` |
+| 8 | `g5-prirodoveda-…trideni-organismu-bezobratli-hmyz-pavouci-mekkysi-cervi` |
 
 Dávka = **4 témata**. Aktuální pořadí si vždy ověř znovu (krok 1).
 
@@ -95,6 +95,11 @@ Klíč pod 16 znaků detektor neřeší vůbec (práh je `> 15`).
 8. **Před psaním doc-poznámek ověř, co je předexistující.** `git stash` + GATE na HEAD.
    Dvakrát se ukázalo, že téma bylo rozbité už předtím (a jednou naopak, že jsem to
    způsobil sám).
+9. **Hranatá závorka v textu MOŽNOSTI láme patchery.** `pv2`/`pv3`/`pv4` hledají konec
+   `options` pole naivně přes první `]` v řádku — pokud samotná možnost obsahuje `]`
+   (typicky souřadnice, např. „P' = [3; −2]"), patcher pole ukousne uprostřed. Projeví se
+   okamžitě jako syntax error v `npm run typecheck` (ne jako tichá chyba) — oprav ručně
+   přes `Edit`. Zatím jediný výskyt (geometrie se souřadnicemi bodů).
 
 ## Co detektory nehlídají a stejně to najdeš
 

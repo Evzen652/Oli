@@ -118,7 +118,10 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - ✅ **13. dávka (po předání na druhý PC): 4 témata**, **42 → 0** nálezů. Korpus `format/length` **342 → 300**, témata **67 → 63**.
 - 🐞 **1 nová regrese vlastním zkrácením klíče + 2 předexistující stejného typu, všechny opraveny:** zkrácení `"který, jenž, co (ve větě vedlejší)"` → `"který, jenž, co"` zapnulo `hint_leak`, protože klíč se stal doslovnou podmnožinou sdílené nápovědy (past už zdokumentovaná, potvrzena počtvrté). Při ověřování brány (`git stash` na HEAD, 5×) se ukázalo, že **stejný vzorec byl už dřív rozbitý na 2 místech nesouvisejících s touto dávkou** — úloha „Která zájmena jsou záporná?" a fallback nápověda „Soukromý dopis = tykáme…" v jiném tématu. Všechny tři sdílené nápovědy přepsány z výčtu příkladových slov na popis metody rozpoznání.
 - 🔎 **Potvrzeno, že zbylé REVIZE nálezy (šipka `→` v klíči, `min_unique_tasks_per_tier`, `hint_progression`) jsou předexistující**, ne způsobené touto dávkou — ověřeno `git stash` na HEAD u každého dotčeného tématu. Mimo rozsah dávky.
-- ⏭️ **Zbývá:** 300 nálezů v 63 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
+- ✅ **14. dávka: 4 témata**, **40 → 0** nálezů. Korpus `format/length` **300 → 260**, témata **63 → 59**.
+- 🐞 **Skrytá duplicitní instance:** dump dedupuje podle `correctAnswer`, takže dvojče úlohy se stejným klíčem („Má číslo 8…" vs „Má písmeno H…") se v dump výpisu neukázalo, ale v korpusu se počítalo zvlášť — dohledáno a opraveno spolu s prvním výskytem.
+- 🐛 **Nový poznatek pro patchery:** `pv2`/`pv4`/`pv3` hledají konec options pole naivně přes první `]` — pokud text MOŽNOSTI sám obsahuje `]` (např. souřadnice „[3; −2]"), patcher pole ukousne. Typecheck to okamžitě odhalí (syntax error), oprava je pak ruční. Zatím jediný výskyt, neřešeno univerzálně ve skriptu.
+- ⏭️ **Zbývá:** 260 nálezů v 59 tématech. Postup, nástroje a všechny pasti jsou v [`docs/WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md); patchery v `scripts/wave-b/`.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).

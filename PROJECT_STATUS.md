@@ -144,6 +144,14 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-08-31 (pokr. 2) — Wave B, 14. dávka (4 témata): 300 → 260 nálezů:
+- ✅ **4 témata opravena, 40 nálezů `format/length` → 0.** `g5-matematika-…osova-soumernost-…urceni-osy` (9+1 duplicitní instance), `g5-cjl-…slovesa-zpusob-…` (10), `g5-cjl-…souveti-vzorce-pocet-vet` (10), `g5-prirodoveda-…horniny-a-nerosty-…` (10). Korpus `format/length` **300 → 260**, dotčených témat **63 → 59**.
+- 🐞 **Skrytá duplicitní instance nálezu:** dump skript dedupuje podle `correctAnswer`, takže úloha „Má číslo 8 osu souměrnosti?" (stejný klíč i možnosti jako „Má písmeno H…") se v dump výpisu neukázala, ale v korpusovém měření se počítala zvlášť — opravena společně s tou první, jinak by zbyl 1 nález navíc.
+- 🐛 **Vlastní chyba patcheru odchycena typecheckem:** `pv2.mjs` u úlohy s bodem `P [3; 2]` uřízl options pole na první `]`, která se objevila uvnitř textu možnosti („P' = [3; −2]" obsahuje vlastní hranatou závorku) — patcher hledá KONEC pole naivně přes `indexOf("]")`, ne přes počítání závorek. Opraveno ručně (`Edit`), zbytek dávky beze změny formátu.
+- 🔎 **Grade 5 obsah není v zamrzlém registru** (na rozdíl od 13. dávky, kde `zajmenaDruhyZajmen` g4 vyžadovalo freeze) — `frozen-content-unchanged` prošel bez potřeby regenerace.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou; 3 témata úplně čistá, 1 s předexistujícím `missing_hints` REVIZE nesouvisejícím s dávkou), `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 59 témat** (~15 dalších dávek po 4).
+
 ### Session 2026-08-31 (pokr.) — Wave B, 13. dávka (4 témata): 342 → 300 nálezů:
 - **Kontext:** navázáno na `docs/WAVE_B_HANDOFF.md` (viz sekce "Předání práce" výše) po synchronizaci tohoto worktree na správnou pracovní branch `chore/remove-essay-and-ai-authoring` (worktree byl omylem na `main`, 108 commitů pozadu).
 - ✅ **4 témata opravena, 42 nálezů `format/length` → 0.** `g4-vlastiveda-…demokracie-pravni-stat` (12), `g5-vlastiveda-…prezident-vlada` (7), `g4-cjl-…zajmena-druhy-zajmen` (10), `g4-cjl-…dopis-psani-soukromeho-dopisu` (10) — dva definiční okruhy (třída B, prodloužené distraktory) a dva se smíšeným vzorem (číselné/kategoriální odpovědi, třída A — zkrácení klíče). Korpus `format/length` **342 → 300**, dotčených témat **67 → 63**.
