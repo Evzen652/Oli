@@ -83,7 +83,11 @@ Průběžný test **všech** edge funkcí proti ostrému projektu:
 - 🐞 **12 ze 14 úloh se ptalo na vzor slova, které samo tím vzorem je** („Ke kterému vzoru patří *pán*?" → „vzor pán"). Úloha netestovala nic, závorka v klíči to maskovala. Slova nahrazena skutečnými zástupci (student → pán, les → hrad, učitel → muž, kotě → kuře…).
 - 🐞 **15 blokujících `hint_leak` v témže tématu, předexistujících** (ověřeno `git stash`): nápověda jmenovala všechny tři možné rody. Dál „simile", „vzkazku", meta-text „— správně" v klíči.
 - 🔎 Šipka `→` v možnosti spouští detektor meta-textu i tam, kde ji mají všechny čtyři možnosti — falešný poplach, ale čárka je čitelnější.
-- ⏭️ **Zbývá:** 605 nálezů v 87 tématech.
+- ✅ **8. dávka: 4 témata**, **61 → 0** nálezů. Korpus **754 → 688**.
+- 🐞 **Celá úloha bez diakritiky** — `„Veta: (uvozovka)Pojd si hrat!(uvozovka) rekla Anicka.“`, tedy úloha na uvozovky, která uvozovky neměla; dál 3× „Prominete“.
+- 🐞 **Přírodověda:** `bioindicátor`, „Jakou funkci **mají** kořenové vlášení“, neslóvko „nevzlepšuje“.
+- 🔎 **Zrcadlový distraktor** (prohozená dvojice) nahrazuje výplňové „Jsou to stejné žánry“ a zároveň vyrovnává délky.
+- ⏭️ **Zbývá:** 541 nálezů v 83 tématech.
 
 ## ✅ Audit „zbylých cvičení" — 97 % nálezů byla vada detektoru (2026-08-30)
 > Zadání: „spusť testy na zbylé cvičení, kde potřeba oprav." Testová sada byla zelená, práce se přesunula na obsahový audit (229 témat / 10 572 úloh / 2 150 problémů).

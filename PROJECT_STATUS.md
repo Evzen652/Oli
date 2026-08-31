@@ -210,6 +210,11 @@ src/
 - 🐞 **15 blokujících `hint_leak` v témže tématu, předexistujících** (ověřeno `git stash` proti HEAD): sdílená nápověda „Rod poznáme dosazením: ten (mužský), ta (ženský), to (střední)" jmenovala všechny tři možné odpovědi. Přepsána na metodu.
 - 🐞 **Cizojazyčná vsuvka pošesté:** `„přirovnání (simile)"`. Dál `„Příklad správného vzkazku"` (vzkazu) a klíč `„konkrétní technické parametry — správně"`, kde meta-text prozrazoval odpověď.
 - 🔎 **Šipka `→` v možnosti spouští detektor meta-textu i tam, kde ji mají všechny čtyři možnosti** (úloha na pořadí částí hovoru). Formálně falešný poplach, ale nahradit šipku čárkou je čitelnější a nález mizí.
+- ✅ **8. dávka: 4 témata (2× g4 čeština, 1× g3 čeština, 1× g4 přírodověda), 61 nálezů → 0.** Korpus **754 → 688**, `format/length` **541**, zbývá **83 témat**.
+  - `g4-cjl-…pohadka-povest-bajka-povidka` (16 → 0), `g3-cjl-dialog-pravidla-rozhovoru` (15 → 0), `g4-cjl-…vyhledavani-klicovych-slov` (15 → 0), `g4-prirodoveda-…puda-vznik-slozeni` (15 → 0).
+- 🐞 **Celá úloha bez diakritiky, včetně zástupných textových značek:** `„Veta: (uvozovka)Pojd si hrat!(uvozovka) rekla Anicka. — Kde jsou uvozovky?“` s klíčem `„Kolem prime reci“`. Ironicky promárněná úloha na uvozovky, která žádné uvozovky neobsahovala. Další 3× `„Prominete“` místo `„Promiňte“`.
+- 🐞 **Věcné chyby v přírodovědě:** `bioindicátor` (správně bioindikátor), `„Jakou funkci **mají** kořenové vlášení“` (střední rod → má) a neslóvko `„nevzlepšuje“` v klíči o hnojení.
+- 🔎 **Zrcadlový distraktor jako náhrada za „Jsou to stejné žánry“:** u srovnávacích otázek („povídka vs. bajka“) stačí klíč i distraktor prohodit — délky se vyrovnají samy a distraktor testuje právě tu záměnu, o kterou v úloze jde.
 - 🐞 **Vlastní regrese, potřetí ze stejné příčiny:** zkrácení klíčů na holé názvy (žánrů, vzorů) zaplo leak ve sdílených nápovědách, které ty názvy vyjmenovávaly — u pohádek 7 blokujících, u vzorů 15. **Pravidlo z 2. dávky platí i tady: po každém zkrácení klíče zkontrolovat sdílenou nápověda tématu.**
 - **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat, obsahové testy 1087 zelených, freeze přegenerován pro 3 změněná g4 témata.
 - ⏭️ **Zbývá:** 605 délkových nálezů v 87 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
