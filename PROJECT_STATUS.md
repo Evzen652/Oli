@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 5) — Wave B, dávka 25 (9 témat, 28 → 11 nálezů):
+- ✅ **Dávka 25 hotová**, `format/length` **28 → 11**, témat **19 → 11**. Devět témat s dvěma nálezy najednou: `g3-prvouka-komunikace-bezpecnost`, `vztahy-konflikty`, `kraje-regiony`, `ziva-neziva-priroda`, `g3-cjl-slovni-druhy`, `plynule-cteni`, `g4-cjl-stavba-slova`, `g5-mat-obsah-obrazce`, `g5-mat-pisemne-deleni`. GATE 3× čistý u všech.
+- 🐞 **Úloha bez jednoznačné odpovědi.** „Na záhon (2 m × 3 m) sázíme rostliny každých 25 cm. **Kolik řad?**" měla jako klíč „Záhon má 6 m² — záleží na uspořádání". Otázka se ptá na počet, klíč odpovídá plochou a vyhne se. Přeformulováno na „Na záhon široký 2 m sázíme rostliny do řad vzdálených 25 cm. Kolik řad se vejde?" s klíčem „8 řad" a výpočtem v `explanation`.
+- 🐞 **Distraktor, který byl částečně správný.** U „Která slova mají předponu 'ne-'?" byl mezi možnostmi pár „nepít, nést" — jenže *nepít* předponu **má**. Distraktory přepsány tak, aby žádné z uvedených slov předponu nemělo (`nemoc, nebe, nehet` apod.).
+- 🔎 **Čtyři předexistující hint_leaky** odhalené až po zkrácení klíčů, všechny ověřené proti HEAD: nápověda „**Rostlina** roste, přijímá živiny…" u klíče *Rostlina*; „Je to **zvíře**…" u klíče *Pes* (jediné zvíře mezi možnostmi); „**Zájmeno** nahrazuje jméno…" u otázky na slovní druh slova *on*; „Přípona … : **-ník**, -tel, -ost" u otázky na příponu ve slově *zahradník*. Všechny byly na HEAD už předtím.
+- **Pozn. k patcherům:** výběr se řídí formátem úlohy, ne souborem. `pv2` = vše na jednom řádku s `correctAnswer`, `pv3` = jednořádkové `a`/`opts`, `pv4` = víceřádkové. Když má `correctAnswer:` hodnotu až na dalším řádku, neuspěje žádný — nahrazuje se přímo řetězec s kontrolou počtu výskytů (typicky 2: klíč + tentýž text v `options`).
 ### Session 2026-09-01 (pokr. 4) — Wave B, dávka 24 (4 témata, 39 → 28 nálezů):
 - ✅ **Dávka 24 hotová**, `format/length` **39 → 28**, témat **23 → 19**. Témata: `g3-prvouka-stavba-lidskeho-tela` (3), `g4-cjl-vzorec-souveti` (3), `g4-vlastiveda-druhy-map` (3), `g2-prv-prvni-pomoc` (2). GATE 3× čistý u všech.
 - 🐞 **Nevhodný distraktor:** u otázky „Jakou hvězdou se na mapě označuje sever?" byla mezi možnostmi „**Hvězdou Davidovou**". Náboženský symbol jako náhodná chybná možnost v úloze o mapových značkách nemá co dělat — nahrazeno „Pěticípou hvězdičkou v rohu".

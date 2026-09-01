@@ -28,7 +28,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Strom", "Kámen", "Vzduch", "Voda"],
     hints: [
       "Živé věci rostou, dýchají a rozmnožují se.",
-      "Tato rostlina roste, přijímá živiny a rozmnožuje se semeny.",
+      "Podívej se, která z možností sama roste a časem se mění.",
     ],
     explanation:
       "Strom patří do živé přírody, protože dýchá, roste, přijímá živiny a rozmnožuje se. Kámen, vzduch a voda jsou neživá příroda — nesplňují znaky živých organizmů.",
@@ -61,7 +61,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Pes", "Písek", "Mrak", "Sníh"],
     hints: [
       "Živý organismus dýchá, přijímá potravu a rozmnožuje se.",
-      "Je to zvíře, které dýchá, roste a má mláďata.",
+      "Jedna z těch možností se sama pohybuje, potřebuje jíst a mívá mláďata.",
     ],
     explanation:
       "Pes patří do živé přírody — dýchá, přijímá potravu, roste a rozmnožuje se. Písek, mrak a sníh jsou neživá příroda.",
@@ -120,8 +120,8 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Rostlina",
     options: ["Rostlina", "Kov", "Plast", "Sklo"],
     hints: [
-      "Rostlina roste, přijímá živiny a rozmnožuje se semeny.",
-      "Kov, plast a sklo jsou vyrobené neživé materiály.",
+      "Živé věci rostou, přijímají živiny a rozmnožují se.",
+      "Kov, plast i sklo člověk vyrobil, samy od sebe nikdy nerostou.",
     ],
     explanation:
       "Rostlina patří do živé přírody — roste, přijímá vodu a živiny a rozmnožuje se. Kov, plast a sklo jsou neživé materiály.",
@@ -325,9 +325,9 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč se houby neřadí mezi rostliny, přestože jsou obě živé?",
     correctAnswer:
-      "Houby nemají chlorofyl a nevyrábějí si potravu fotosyntézou jako rostliny",
+      "Nemají chlorofyl a nevyrábějí si potravu fotosyntézou",
     options: [
-      "Houby nemají chlorofyl a nevyrábějí si potravu fotosyntézou jako rostliny",
+      "Nemají chlorofyl a nevyrábějí si potravu fotosyntézou",
       "Houby se nikdy nerozmnožují",
       "Houby nejsou vůbec živé organismy",
       "Houby nepotřebují žádné živiny",
@@ -394,9 +394,9 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Proč je semeno klasifikováno jako živé, přestože právě neroste, nedýchá viditelně a nerozmnožuje se?",
     correctAnswer:
-      "Protože obsahuje živý zárodek v klidovém stavu — všechny znaky života začne plnit, jakmile dostane vodu, teplo a světlo",
+      "Obsahuje živý zárodek, který se probudí, až dostane vodu a teplo",
     options: [
-      "Protože obsahuje živý zárodek v klidovém stavu — všechny znaky života začne plnit, jakmile dostane vodu, teplo a světlo",
+      "Obsahuje živý zárodek, který se probudí, až dostane vodu a teplo",
       "Protože je tvrdé jako kámen, a kámen taky vydrží dlouho",
       "Semeno vlastně živé není, jen to tak vypadá",
       "Protože má stejnou barvu jako listy stromu",

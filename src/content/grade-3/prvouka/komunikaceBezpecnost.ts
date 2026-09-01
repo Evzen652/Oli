@@ -49,10 +49,10 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je číslo 112?",
-    correctAnswer: "Evropská tísňová linka — funguje všude v Evropě",
-    options: ["Evropská tísňová linka — funguje všude v Evropě", "Číslo jen pro děti", "Číslo hasičů v Praze", "Informační linka"],
+    correctAnswer: "Tísňová linka platná v celé Evropě",
+    options: ["Číslo určené jen pro děti", "Tísňová linka platná v celé Evropě", "Číslo hasičů v Praze", "Informační linka pro turisty"],
     hints: [
-      "Toto číslo funguje v celé Evropě, nejen v Česku.",
+      "Tohle číslo si můžeš vzít i na dovolenou za hranice.",
       "Lze volat i ze zahraničí nebo bez kreditu na mobilu.",
     ],
     explanation: "Číslo 112 je evropská tísňová linka. Funguje ve všech zemích EU, i bez kreditu a SIM karty. Operátor tě přepojí na hasiče, záchranku nebo policii podle toho, co potřebuješ.",
@@ -89,11 +89,11 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Kdo je pro dítě důvěryhodný dospělý?",
-    correctAnswer: "Rodič, učitel nebo jiný blízký dospělý, kterého dítě zná",
+    correctAnswer: "Rodič, učitel nebo jiný blízký dospělý",
     options: [
-      "Rodič, učitel nebo jiný blízký dospělý, kterého dítě zná",
-      "Kdokoliv starší 18 let",
-      "Jen rodič, nikdo jiný",
+      "Kdokoliv starší osmnácti let",
+      "Rodič, učitel nebo jiný blízký dospělý",
+      "Jen rodič a nikdo další",
       "Cizí člověk s hodnou tváří",
     ],
     hints: [

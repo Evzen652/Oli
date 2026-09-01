@@ -349,7 +349,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Tvůj kamarád leží nemocný doma a nemůže do školy. Ty mu po vyučování zajdeš přinést sešity a zápisky. Co tím projevuješ?",
     correctAnswer: "Věrnost a ochotu pomoct",
-    options: ["Věrnost a ochotu pomoct", "Zvědavost", "Soutěživost", "Lhostejnost"],
+    options: ["Zvědavost a všetečnost", "Věrnost a ochotu pomoct", "Soutěživost za každou cenu", "Lhostejnost k druhým"],
     hints: [
       "Pravý kamarád je oporou i v těžkých chvílích.",
       "Pomoc nemocnému kamarádovi ukazuje, že nám na něm záleží.",
@@ -573,15 +573,15 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Čtyři kamarádi chtějí hrát čtyři různé hry. Tři z nich se dohodnou, že budou hrát jen tu hru, kterou chce jeden nejhlasitější kluk, a ostatní tři návrhy úplně zavrhnou. Je to kompromis?",
     correctAnswer:
-      "Ne, protože ustoupili jen tři, ne ten nejhlasitější — správný kompromis by zohlednil přání všech, třeba střídáním her",
+      "Ne, ustoupili jen tři — kompromis by zohlednil přání všech",
     options: [
-      "Ne, protože ustoupili jen tři, ne ten nejhlasitější — správný kompromis by zohlednil přání všech, třeba střídáním her",
+      "Ne, ustoupili jen tři — kompromis by zohlednil přání všech",
       "Ano, protože se nakonec na něčem dohodli",
       "Ano, protože hlasitější názor má vždy přednost",
       "Ne, protože se vůbec nedohodli",
     ],
     hints: [
-      "Kompromis znamená, že ustoupí VÍCE stran, ne jen některé.",
+      "Zamysli se, kdo všechno musel ze svého přání slevit.",
       "Fér řešení pro čtyři kamarády by mohlo být střídání her, aby si zahrál každý.",
     ],
     explanation:

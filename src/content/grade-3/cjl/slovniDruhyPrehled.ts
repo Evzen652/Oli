@@ -22,8 +22,8 @@ const POOL: { q: string; a: string; opts: string[]; e: string }[] = [
   { q: "Jaký slovní druh je slovo 'ne' ve větě 'Ne, to není pravda.'?", a: "Částice", opts: ["Částice", "Citoslovce", "Příslovce", "Spojka"], e: "Slovo 'ne' vyjadřuje postoj mluvčího — popírá nebo odmítá. Částice nevyjadřují děj ani vlastnost, ale dávají větě zvláštní nádech jako popření, výzva nebo pochybnost." },
   { q: "Kolik slovních druhů existuje v češtině?", a: "Deset", opts: ["Deset", "Osm", "Dvanáct", "Šest"], e: "V češtině existuje přesně deset slovních druhů: podstatné jméno, přídavné jméno, zájmeno, číslovka, sloveso, příslovce, předložka, spojka, částice a citoslovce." },
   { q: "Podstatná jména označují:", a: "Osoby, věci, zvířata, jevy (kdo? co?)", opts: ["Osoby, věci, zvířata, jevy (kdo? co?)", "Vlastnosti (jaký?)", "Děje (co dělá?)", "Okolnosti (kde? kdy? jak?)"], e: "Podstatná jména pojmenovávají vše, na co se můžeme zeptat 'Kdo?' nebo 'Co?' — třeba maminka, stůl, pes nebo déšť." },
-  { q: "Přídavná jména označují:", a: "Vlastnosti (jaký? jaká? jaké?)", opts: ["Vlastnosti (jaký? jaká? jaké?)", "Osoby a věci", "Děje a stavy", "Počty"], e: "Přídavná jména popisují vlastnosti — říkají, jaký něco je. Ptáme se na ně otázkou 'Jaký? Jaká? Jaké?' — třeba velký, krásná, modré." },
-  { q: "Slovesa označují:", a: "Děje a stavy (co dělá? co je?)", opts: ["Děje a stavy (co dělá? co je?)", "Vlastnosti", "Osoby a věci", "Okolnosti"], e: "Slovesa říkají, co se děje nebo jaký stav nastává — ptáme se 'Co dělá?' nebo 'Co se děje?'. Třeba běží, spí, je nebo svítí." },
+  { q: "Přídavná jména označují:", a: "Vlastnosti", opts: ["Osoby a věci", "Vlastnosti", "Děje a stavy", "Počty"], e: "Přídavná jména popisují vlastnosti — říkají, jaký něco je. Ptáme se na ně otázkou 'Jaký? Jaká? Jaké?' — třeba velký, krásná, modré." },
+  { q: "Slovesa označují:", a: "Děje a stavy", opts: ["Vlastnosti", "Děje a stavy", "Osoby a věci", "Okolnosti"], e: "Slovesa říkají, co se děje nebo jaký stav nastává — ptáme se 'Co dělá?' nebo 'Co se děje?'. Třeba běží, spí, je nebo svítí." },
   { q: "Slovo 'tři' v 'Mám tři psy.' je:", a: "Číslovka", opts: ["Číslovka", "Přídavné jméno", "Podstatné jméno", "Příslovce"], e: "Slovo 'tři' říká, kolik psů mám — vyjadřuje počet. Číslovky odpovídají na otázku 'Kolik?' nebo 'Kolikátý?', proto to není přídavné jméno." },
   { q: "Slovo 'on' nahrazuje:", a: "Podstatné jméno (zájmeno)", opts: ["Podstatné jméno (zájmeno)", "Sloveso", "Přídavné jméno", "Příslovce"], e: "Zájmeno 'on' zastupuje podstatné jméno, aby se ve větě nemuselo stále opakovat — místo 'Tomáš šel, Tomáš spal' řekneme 'Tomáš šel, on spal'." },
 ];
@@ -34,7 +34,7 @@ function gen(level: number): PracticeTask[] {
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: ["Otázky: kdo/co = podst. jm., jaký = příd. jm., co dělá = sloveso, jak/kde/kdy = příslovce.", "Zájmeno nahrazuje jméno, číslovka vyjadřuje počet."],
+    hints: ["Ke každému slovnímu druhu patří otázka — zkus si ji položit.", "Některá slova jméno jen zastupují, jiná vyjadřují počet."],
     explanation: e,
   }));
 }

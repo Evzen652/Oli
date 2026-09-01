@@ -145,10 +145,10 @@ const POOL_L1: PracticeTask[] = [
     question: "Co má kraj navíc oproti regionu?",
     correctAnswer: "Přesné hranice a vlastní úřad",
     options: [
+      "Vlastní úřední jazyk",
       "Přesné hranice a vlastní úřad",
-      "Vlastní jazyk",
-      "Vlastní měnu",
-      "Vlastní armádu",
+      "Vlastní platnou měnu",
+      "Vlastní stálou armádu",
     ],
     hints: [
       "Region nemá ani jedno z toho, co kraj má.",

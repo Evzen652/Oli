@@ -23,7 +23,7 @@ const POOL_L1: PracticeTask[] = [
   { question: "Obsah čtverce se stranou 6 cm = ?", correctAnswer: "36 cm²", options: ["36 cm²", "24 cm", "12 cm²", "36 cm"] },
   { question: "Obrazec pokrývá 15 čtverečků (každý 1 m²). Jaký je jeho obsah?", correctAnswer: "15 m²", options: ["15 m²", "15 m", "15 km²", "15 cm²"] },
   { question: "Obdélník 7 × 4 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "28", options: ["28", "22", "11", "14"] },
-  { question: "Co je obsah obrazce?", correctAnswer: "Plocha, kterou obrazec pokrývá", options: ["Plocha, kterou obrazec pokrývá", "Délka obvodu", "Výška obrazce", "Počet vrcholů"] },
+  { question: "Co je obsah obrazce?", correctAnswer: "Plocha, kterou obrazec pokrývá", options: ["Délka obvodu obrazce", "Plocha, kterou obrazec pokrývá", "Výška obrazce v centimetrech", "Počet vrcholů obrazce"] },
   { question: "Obsah obdélníku 10 cm × 4 cm = ?", correctAnswer: "40 cm²", options: ["40 cm²", "28 cm", "14 cm²", "40 cm"] },
   { question: "Čtverec ve čtvercové síti má stranu 5 čtverečků. Kolik čtverečků pokrývá?", correctAnswer: "25", options: ["25", "20", "10", "5"] },
   { question: "Obdélník 8 × 2 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "16", options: ["16", "20", "10", "6"] },
@@ -56,7 +56,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   { question: "Zahrádka je 12 m dlouhá a 8 m široká. Jaký má obsah?", correctAnswer: "96 m²", options: ["96 m²", "40 m", "80 m²", "48 m²"] },
   { question: "Místnost 5 m × 4 m. Kolik cm² dlaždic potřebujeme?", correctAnswer: "200 000 cm²", options: ["200 000 cm²", "20 000 cm²", "2 000 000 cm²", "2 000 cm²"] },
-  { question: "Na záhon (2 m × 3 m) sázíme rostliny každých 25 cm. Kolik řad?", correctAnswer: "Záhon má 6 m² — záleží na uspořádání", options: ["Záhon má 6 m² — záleží na uspořádání", "24 rostlin", "12 rostlin", "6 rostlin"] },
+  { question: "Na záhon široký 2 m sázíme rostliny do řad vzdálených 25 cm. Kolik řad se vejde?", correctAnswer: "8 řad", options: ["8 řad", "6 řad", "9 řad", "12 řad"], explanation: "2 m jsou 200 cm. 200 : 25 = 8 řad." },
   { question: "Čtverec má obsah 49 cm². Jak dlouhá je jeho strana?", correctAnswer: "7 cm", options: ["7 cm", "12,25 cm", "24,5 cm", "49 cm"] },
   { question: "Čtverec má obsah 64 cm². Jak dlouhá je jeho strana?", correctAnswer: "8 cm", options: ["8 cm", "16 cm", "32 cm", "64 cm"] },
   { question: "Obdélník má obsah 72 cm² a výšku 8 cm. Jak je široký?", correctAnswer: "9 cm", options: ["9 cm", "8 cm", "10 cm", "64 cm"] },
