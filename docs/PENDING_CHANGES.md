@@ -13,7 +13,7 @@ dítěti umožňoval uhodnout odpověď podle délky. **Hotovo: 0 nálezů, 0 do
 39 témat prošlo GATE 3× s `invarianty: 0`, testy 4615/4615.
 Detail postupu a nalezené pasti v [`WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md).
 
-## 🟡 Přiměřenost ročníku — sken korpusu, 1 ze 7 témat hotovo (2026-09-01)
+## ✅ Přiměřenost ročníku — sken korpusu, 7 ze 7 témat hotovo (2026-09-01)
 Cílený sken 277 souborů proti `boundaries` a rozsahu RVP. **Vzorec potvrzen, ale jiný, než se čekalo:**
 u pěti ze sedmi témat si `boundaries` protiřečí s vlastním obsahem — soubor sám deklaruje hranici,
 kterou o pár řádků výš překračuje. To je strojově detekovatelné, ne věc jednorázové revize.
@@ -32,25 +32,70 @@ kterou o pár řádků výš překračuje. To je strojově detekovatelné, ne v�
   Upraveny i `goals` (obsahovaly „Popsat KPR (poměr 30:2)"), `boundaries` a `helpTemplate`.
   GATE 3× `invarianty: 0`, položek k revizi **3 → 1**, testy 4615/4615, typecheck 0. Snapshot přegenerován.
 
-**Zbývá 6 témat** (odhad ~1,5 h):
-- `g5-…etapy-lidskeho-zivota-dospivani` — Erikson (8 fází psychosociálního vývoje), prefrontální kůra,
-  dopamin/serotonin. Termín **„sebeobrázek"** je kalk z *self-image*, česky *sebepojetí*. **Přepis poolu.**
-- `g4-…voda-skupenstvi-kolobeh` — polarita molekuly, „obklopit a oddělovat ionty" proti vlastnímu
-  `boundaries` („Molekulární struktura vody není náplní 4. ročníku"). ~3 úlohy.
-- `g5-…horniny-a-nerosty` — „atomy uhlíku vázány do pevné sítě, každý se 4 sousedy" proti
-  `boundaries` („Neprobírá chemické složení nerostů do hloubky"). ~3 úlohy.
-- `g5-…rozmnozovaci-soustava` — dopamin/serotonin jako distraktor u pohlavních hormonů. ~2 úlohy.
-- `g4-…savci-ptaci` — „velká mozková kůra – neokortex". 1 úloha.
-- `g5-…kostra-a-svaly` — „nos → plíce → alveoly → krev". 1 řádek.
+**Zbývajících 6 témat dokončeno (2026-09-01).** ⚠️ **Skutečný rozsah byl výrazně větší, než sken hlásil.**
+Slovník skenu uměl anatomii, farmakologii a medicínu, ale neznal **evoluční a psychologickou
+terminologii** — proto u tří témat ohlásil jednu úlohu tam, kde byla mimo ročník celá úroveň L3:
+
+- ✅ `g5-…etapy-lidskeho-zivota-dospivani` — L2 i L3 přepsány (5 a 4 úlohy). Ven: Erikson a identitní
+  krize, prefrontální kůra a její zrání do 25 let, centrum odměny, zánik spojů mezi neurony,
+  endorfiny/serotonin/dopamin, narcismus. Kalk **„sebeobrázek“** nahrazen českým **„sebepojetí“**.
+- ✅ `g4-…savci-ptaci` — L3 přepsán celý (9 → 12 úloh). Sken hlásil jen „neokortex“, ve skutečnosti tam
+  byly **konvergentní evoluce, adaptivní radiace, ekologické niky, metabolismus a echolokace přes melon**.
+  Navíc ne-slovo **„rychlé evoluční většení“** ve dvou klíčích. Nové úlohy jsou transfer v rozsahu tématu
+  (velryba a netopýr jako savci, tvar zobáku → potrava, stěhovaví vs. stálí ptáci).
+- ✅ `g5-…rozmnozovaci-soustava` — L2 i L3 přepsány (6 a 4). Sken hlásil dva distraktory, ven šly
+  **epigenetika, trizomie 21, evoluční výhoda puberty, HIV a antivirotika, chromozomy XX/XY, kyselina
+  listová**. Opraven rozbitý úsek „spermie – varlata přenášené při pohlavním styku“.
+- ✅ `g5-…horniny-a-nerosty` — L2 i L3 přepsány (7 a 5). Ven: stavba z atomů se 4 sousedy, hydrotermální
+  roztoky, `CaO`, „chemicky homogenní“. Opraveno „jiné **od** hornin“ → „jiné **než**“.
+  GATE zcela bez nálezů.
+- ✅ `g4-…voda-skupenstvi-kolobeh` — nahrazena úloha o polárních vazbách a iontech.
+- ✅ `g5-…kostra-a-svaly` — terminologie na úroveň ročníku: **alveola → plicní sklípek**, glotis → hlasivky,
+  odstraněna *trachea*. Šlo o 11 míst napříč souborem, ne o jeden řádek.
+
+U čtyř témat nahrazeny vágní jednořádkové `boundaries` konkrétními hranicemi, doplněny nápovědy.
+Ověření: GATE u všech šesti `invarianty: 0` (horniny, rozmnožovací soustava i dospívání **zcela čisté**),
+testy **4615/4615**, typecheck 0, snapshot přegenerován.
+
+**Zbytkové nálezy skenu u těchto témat jsou šum slovníku** — „hormon“ (10×) a „adolescence“ jsou
+u dospívání a rozmnožovací soustavy **náplní** ročníku, ne přešlapem. Váhy ve slovníku jsou globální,
+nezohledňují téma.
 
 **Informatika ze skenu vynechána** podle stálého pokynu.
+
+### Nově nalezeno, mimo rozsah tohoto zadání
+- 🟡 `g5-…navykove-latky` — zbývá **„hepatitida“** a **„LSD“** (score 8). Jiná váha než ostatní, ale nedořešeno.
+- 🟡 **Pooly pod prahem `K_MIN = 12`** — `horniny` L2/L3 má 7/5, `dospivani` 5/4, `rozmnozovaci` 6/4.
+  **Předchází mým zásahům** (počty jsem zachoval, jen vyměnil obsah). Při `sessionTaskCount: 6` a pěti
+  unikátních úlohách se dítěti opakuje skoro celý pool.
+- 🟡 `g5-…kostra-a-svaly` má `gen(_level)`, který vrací **pro všechny tři úrovně tentýž POOL** —
+  odtud `tier_population: L3 prázdná` a „100 % otázek L3 je shodných s L1“. Vyžaduje přestavbu tématu.
+- 🟡 **Výplňové „prý“ v distraktorech** — 12 souborů, 90 výskytů (nejvíc `magnetyElektrina` 9×,
+  `rozmnozovaci` 8×). Distraktor psaný jako „Oba systémy jsou **prý** naprosto stejné“ se pozná bez
+  znalosti látky. Část výskytů je ale legitimní obsah (podmiňovací způsob), takže **plošná náhrada nejde**.
+  V přepsaných souborech odstraněno.
 
 ## 🔴 Pozice správné odpovědi je předvídatelná — celý korpus (2026-09-01)
 Nalezeno při přepisu první pomoci. Původní pool měl klíč **26× na 1. pozici, 9× na 2., nikdy na 3. ani 4.**
 `gen()` míchá pořadí úloh, ale **ne pořadí možností** — takže dítě může uhodnout bez znalosti látky:
-„ber první nebo druhou". V přepsaném tématu je rozložení 10/10/10/9, ale **zbytek korpusu neověřen**.
+„ber první nebo druhou“.
+
+**Změřeno na celém korpusu (2026-09-01): 3552 úloh se 4 možnostmi.**
+
+| pozice klíče | podíl |
+|---|---|
+| 1. | **66 %** |
+| 2. | 29 % |
+| 3. | 4 % |
+| 4. | 1 % |
+
+**Ve 49 souborech je klíč na 1. pozici u více než 80 % úloh.** Strategie „ber vždy první“ má napříč
+celou aplikací úspěšnost ~66 % bez jakékoli znalosti látky — u čtyř možností je náhoda 25 %.
+- V sedmi přepsaných tématech je rozložení srovnané (skript prohazuje jen pořadí v `options`,
+  textů se nedotýká, a přeskakuje úlohy s možnostmi typu „všechny výše uvedené“).
 - Systémové řešení by bylo míchat `options` v `gen()` u `select_one`. Riziko: typy, kde na pořadí záleží
-  (`drag_order`, `comparison`), takže to nesmí být plošné. **Čeká na rozhodnutí.**
+  (`drag_order`, `comparison`), takže to nesmí být plošné. **Čeká na rozhodnutí** — ale čísla výše
+  ukazují, že jde o vážnější vadu než většina nálezů z Wave B.
 
 ## ✅ Ručně kreslená šipka v celé aplikaci (2026-08-31)
 

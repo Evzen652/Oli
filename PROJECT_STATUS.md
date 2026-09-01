@@ -144,6 +144,31 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 8) — přiměřenost ročníku dokončena (7 ze 7 témat):
+- ✅ **Zbylých 6 témat přepsáno** (dospívání, savci, rozmnožovací soustava, horniny, voda, kostra).
+  GATE u všech `invarianty: 0`, u tří **zcela bez nálezů**. Testy **4615/4615**, typecheck 0.
+- ⚠️ **Sken podhodnotil rozsah — a je jasné proč.** Slovník uměl anatomii, farmakologii a medicínu,
+  ale neznal **evoluční a psychologickou terminologii**. Proto u tří témat ohlásil jednu úlohu tam,
+  kde byla mimo ročník **celá úroveň L3**: savci stáli na konvergentní evoluci, adaptivní radiaci
+  a echolokaci; rozmnožovací soustava na epigenetice a trizomii 21; dospívání na Eriksonovi
+  a prefrontální kůře. **Poučení: skenu se dá věřit, že něco našel, ne že našel všechno.**
+- 🐞 **Dvě ne-slova a rozbité věty v klíčích.** „Rychlé evoluční **většení** z jednoho předka" (2× u savců)
+  a „spermie – varlata **přenášené při pohlavním styku**" (rozmnožovací soustava). Obojí bylo ve
+  správné odpovědi, tedy v textu, který se dítě má naučit jako vzor.
+- 🐞 **`boundaries` si odporovaly s obsahem u 5 ze 7 témat** — potvrzeno na celé sedmici. Voda si
+  zakazovala molekulovou stavbu a ptala se na polární vazby a ionty; horniny si zakazovaly chemické
+  složení a stavěly úlohu na atomu uhlíku se 4 sousedy. Nahrazeno konkrétními hranicemi.
+- 📊 **Zkosení pozice odpovědi změřeno na celém korpusu:** 3552 úloh, klíč **66 % na 1. pozici**,
+  29 % na 2., 4 % na 3., 1 % na 4. **Ve 49 souborech je klíč první u >80 % úloh.** Strategie
+  „ber vždy první" má úspěšnost ~66 % bez znalosti látky (náhoda u 4 možností je 25 %).
+  V přepsaných tématech srovnáno; plošné řešení čeká na rozhodnutí (nesmí zasáhnout `drag_order`).
+- 🔎 **Nově zapsáno k rozhodnutí:** pooly pod prahem `K_MIN = 12` (předchází mým zásahům),
+  `kostra-a-svaly` má `gen(_level)` vracející tentýž POOL pro všechny úrovně, a výplňové „prý"
+  v distraktorech (12 souborů, 90 výskytů — část je ale legitimní obsah, plošně nejde).
+- 🔧 **Past prostředí potvrzena a rozšířena.** Heredoc v Bash ničí zpětná lomítka v regexech
+  (`[^"\\]` → `[^"\]`), a navíc: `\b` je ASCII, takže `/\bprý\b/` **nikdy nesedne** (končí na „ý").
+  Skripty psát přes Write, ne heredocem. Doc soubory jsou CRLF — vzorce pro náhradu to musí ctít.
+
 ### Session 2026-09-01 (pokr. 7) — sken přiměřenosti ročníku + přepis první pomoci:
 - 🔎 **Cílený sken korpusu (277 souborů) na obsah nad rámec RVP.** Nehledal délku, ale termíny mimo obor ročníku:
   slovník odborných výrazů (anatomie, farmakologie, medicínské postupy, vývojová psychologie) + morfologické vzory.
@@ -166,7 +191,7 @@ src/
   jinak by metadata slibovala něco, co pool záměrně neučí. Totéž `helpTemplate` (nápověda i kroky obsahovaly KPR).
 - ✅ GATE 3× `invarianty: 0`, položek k revizi **3 → 1** (`missing_hints` je předexistující, ověřeno proti HEAD).
   Testy **4615/4615**, typecheck 0. Frozen snapshot přegenerován se souhlasem uživatele — freeze zafungoval správně.
-- 🟡 **Zbývá 6 témat** ze skenu (dospívání, voda, horniny, rozmnožovací soustava, savci, kostra), odhad ~1,5 h.
+- ✅ **Zbývajících 6 témat dokončeno** v pokr. 8 (viz výše).
 
 ### Session 2026-09-01 (pokr. 6) — Wave B DOKONČENA, dávka 26 (11 témat, 11 → 0):
 - ✅ **Wave B uzavřena.** `format/length` **0** ve třech po sobě jdoucích korpusových měřeních, všech **39 témat** prošlo GATE 3× s `invarianty: 0`. Postup napříč session: **109 → 86 → 67 → 51 → 39 → 28 → 11 → 0**. Celá testová sada **4615/4615**, typecheck 0.
