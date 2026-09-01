@@ -39,7 +39,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde je na mapě světová strana jih?",
     correctAnswer: "Dole",
-    options: ["Dole", "Nahoře", "Vlevo", "Vpravo"],
+    options: ["Nahoře", "Dole", "Vlevo", "Vpravo"],
     hints: [
       "Jih je opak severu. Sever je nahoře, jih je tedy...",
       "Jih je přesně na opačném okraji mapy než sever.",
@@ -50,7 +50,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde je na mapě světová strana východ?",
     correctAnswer: "Vpravo",
-    options: ["Vpravo", "Vlevo", "Nahoře", "Dole"],
+    options: ["Vlevo", "Nahoře", "Vpravo", "Dole"],
     hints: [
       "Slunce ráno vychází na východě.",
       "Sever je nahoře. Pokud se díváš na mapu a slunce ráno vychází napravo od tebe... kde na mapě je východ?",
@@ -61,7 +61,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde je na mapě světová strana západ?",
     correctAnswer: "Vlevo",
-    options: ["Vlevo", "Vpravo", "Dole", "Nahoře"],
+    options: ["Vpravo", "Dole", "Nahoře", "Vlevo"],
     hints: [
       "Západ je naproti východu. Východ je vpravo, západ je tedy...",
       "Slunce večer zapadá na západě.",
@@ -88,7 +88,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký přístroj používáme k určení světových stran v terénu?",
     correctAnswer: "Kompas",
-    options: ["Kompas", "Teploměr", "Dalekohled", "Barometr"],
+    options: ["Teploměr", "Kompas", "Dalekohled", "Barometr"],
     hints: [
       "Tento přístroj má magnetickou ručičku.",
       "Používají ho turisté k orientaci v přírodě.",
@@ -99,12 +99,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je kompas?",
     correctAnswer: "Přístroj s magnetickou ručičkou, která vždy ukazuje na sever",
-    options: [
-      "Přístroj s magnetickou ručičkou, která vždy ukazuje na sever",
-      "Přístroj na měření vzdálenosti mezi městy",
-      "Přístroj na měření teploty vzduchu",
-      "Přístroj na kreslení map",
-    ],
+    options: ["Přístroj na měření vzdálenosti mezi městy", "Přístroj na měření teploty vzduchu", "Přístroj s magnetickou ručičkou, která vždy ukazuje na sever", "Přístroj na kreslení map"],
     hints: [
       "Kompas má ručičku — a ta reaguje na zemský magnetismus.",
       "Nepočítá vzdálenosti ani teplotu, jen ukazuje směr.",
@@ -115,7 +110,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jinak říká kompasu?",
     correctAnswer: "Buzola",
-    options: ["Buzola", "Barometr", "Teploměr", "Dalekohled"],
+    options: ["Barometr", "Teploměr", "Dalekohled", "Buzola"],
     hints: [
       "Toto slovo turisté často používají místo 'kompas'.",
       "Oba výrazy znamenají přístroj s magnetickou ručičkou pro určení severu.",
@@ -142,12 +137,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "K čemu legenda na mapě slouží?",
     correctAnswer: "Abychom poznali, co znamenají značky a barvy použité na mapě",
-    options: [
-      "Abychom poznali, co znamenají značky a barvy použité na mapě",
-      "Abychom zjistili, kolik obyvatel má daný stát",
-      "Abychom si spočítali skutečnou vzdálenost dvou míst",
-      "Abychom poznali, kdo mapu nakreslil",
-    ],
+    options: ["Abychom zjistili, kolik obyvatel má daný stát", "Abychom poznali, co znamenají značky a barvy použité na mapě", "Abychom si spočítali skutečnou vzdálenost dvou míst", "Abychom poznali, kdo mapu nakreslil"],
     hints: [
       "Legenda je jako slovníček ke značkám na mapě.",
       "Bez ní bychom nevěděli, co znamená konkrétní symbol.",
@@ -158,12 +148,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je měřítko mapy?",
     correctAnswer: "Poměr, o kolik je mapa zmenšená oproti skutečnosti",
-    options: [
-      "Poměr, o kolik je mapa zmenšená oproti skutečnosti",
-      "Název oblasti zobrazené na mapě",
-      "Tabulka s výškami hor",
-      "Popis hranice státu",
-    ],
+    options: ["Název oblasti zobrazené na mapě", "Tabulka s výškami hor", "Poměr, o kolik je mapa zmenšená oproti skutečnosti", "Popis hranice státu"],
     hints: [
       "Mapa nemůže být stejně velká jako skutečný kraj — musí se zmenšit.",
       "Měřítko říká, kolik centimetrů na mapě odpovídá kilometrům ve skutečnosti.",
@@ -174,12 +159,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co ti prozradí měřítko mapy?",
     correctAnswer: "O kolik je mapa zmenšená oproti skutečnosti",
-    options: [
-      "O kolik je mapa zmenšená oproti skutečnosti",
-      "Co znamenají barvy a značky na mapě",
-      "Kdo mapu nakreslil a kdy",
-      "Kolik měst je na mapě zakresleno",
-    ],
+    options: ["Co znamenají barvy a značky na mapě", "Kdo mapu nakreslil a kdy", "Kolik měst je na mapě zakresleno", "O kolik je mapa zmenšená oproti skutečnosti"],
     hints: [
       "Měřítko se týká velikosti, ne významu značek.",
       "Měřítko 1:100 000 znamená, že 1 cm na mapě odpovídá 100 000 cm ve skutečnosti — to je informace o velikosti, ne o významu značek.",
@@ -204,12 +184,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je severovýchod (SV)?",
     correctAnswer: "Mezilehlá světová strana mezi severem a východem",
-    options: [
-      "Mezilehlá světová strana mezi severem a východem",
-      "Mezilehlá světová strana mezi severem a západem",
-      "Jiný název pro sever",
-      "Světová strana pod jihem",
-    ],
+    options: ["Mezilehlá světová strana mezi severem a západem", "Mezilehlá světová strana mezi severem a východem", "Jiný název pro sever", "Světová strana pod jihem"],
     hints: [
       "SV vzniklo spojením dvou písmen. Kterých dvou světových stran jsou to první písmena?",
       "SV = Sever + Východ. Najdeš ho v pravém horním rohu mapy.",
@@ -220,12 +195,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je jihozápad (JZ)?",
     correctAnswer: "Mezilehlá světová strana mezi jihem a západem",
-    options: [
-      "Mezilehlá světová strana mezi jihem a západem",
-      "Mezilehlá světová strana mezi jihem a východem",
-      "Jiný název pro západ",
-      "Světová strana naproti severu",
-    ],
+    options: ["Mezilehlá světová strana mezi jihem a východem", "Jiný název pro západ", "Mezilehlá světová strana mezi jihem a západem", "Světová strana naproti severu"],
     hints: [
       "JZ = Jih + Západ. Podívej se na mapu dolů doleva.",
       "Jihozápad je v levém dolním rohu mapy.",
@@ -236,12 +206,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je jihovýchod (JV)?",
     correctAnswer: "Mezilehlá světová strana mezi jihem a východem",
-    options: [
-      "Mezilehlá světová strana mezi jihem a východem",
-      "Mezilehlá světová strana mezi jihem a západem",
-      "Mezilehlá světová strana mezi severem a východem",
-      "Jiný název pro jih",
-    ],
+    options: ["Mezilehlá světová strana mezi jihem a západem", "Mezilehlá světová strana mezi severem a východem", "Jiný název pro jih", "Mezilehlá světová strana mezi jihem a východem"],
     hints: [
       "JV = Jih + Východ. Podívej se na mapu dolů doprava.",
       "Jihovýchod je v pravém dolním rohu mapy.",
@@ -268,7 +233,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém rohu mapy najdeš severovýchod (SV)?",
     correctAnswer: "Vpravo nahoře",
-    options: ["Vpravo nahoře", "Vlevo nahoře", "Vpravo dole", "Vlevo dole"],
+    options: ["Vlevo nahoře", "Vpravo nahoře", "Vpravo dole", "Vlevo dole"],
     hints: [
       "Kde je na mapě sever a kde východ? Spoj obě polohy dohromady a najdeš severovýchod.",
       "Hledej roh, kde se potkává horní a pravý okraj mapy.",
@@ -279,7 +244,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém rohu mapy najdeš jihozápad (JZ)?",
     correctAnswer: "Vlevo dole",
-    options: ["Vlevo dole", "Vpravo dole", "Vlevo nahoře", "Vpravo nahoře"],
+    options: ["Vpravo dole", "Vlevo nahoře", "Vlevo dole", "Vpravo nahoře"],
     hints: [
       "Kde je na mapě jih a kde západ? Spoj obě polohy dohromady a najdeš jihozápad.",
       "Hledej roh, kde se potkává dolní a levý okraj mapy.",
@@ -290,7 +255,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém rohu mapy najdeš jihovýchod (JV)?",
     correctAnswer: "Vpravo dole",
-    options: ["Vpravo dole", "Vlevo dole", "Vpravo nahoře", "Vlevo nahoře"],
+    options: ["Vlevo dole", "Vpravo nahoře", "Vlevo nahoře", "Vpravo dole"],
     hints: [
       "Kde je na mapě jih a kde východ? Spoj obě polohy dohromady a najdeš jihovýchod.",
       "Hledej roh, kde se potkává dolní a pravý okraj mapy.",
@@ -312,12 +277,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je plán (například plán třídy nebo města)?",
     correctAnswer: "Zobrazení malé plochy, například jedné budovy nebo města",
-    options: [
-      "Zobrazení malé plochy, například jedné budovy nebo města",
-      "Zobrazení celého státu nebo kontinentu",
-      "Fotografie krajiny z letadla",
-      "Seznam ulic bez žádného obrázku",
-    ],
+    options: ["Zobrazení celého státu nebo kontinentu", "Zobrazení malé plochy, například jedné budovy nebo města", "Fotografie krajiny z letadla", "Seznam ulic bez žádného obrázku"],
     hints: [
       "Plán se používá pro menší území — místnost, školu, město.",
       "Na plánu vidíš podrobně jednotlivé ulice nebo místnosti.",
@@ -328,12 +288,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je mapa (například mapa kraje nebo státu)?",
     correctAnswer: "Zobrazení velké plochy, například kraje nebo státu",
-    options: [
-      "Zobrazení velké plochy, například kraje nebo státu",
-      "Zobrazení jedné třídy ve škole",
-      "Fotografie mraků z družice",
-      "Seznam měst bez žádného obrázku",
-    ],
+    options: ["Zobrazení jedné třídy ve škole", "Fotografie mraků z družice", "Zobrazení velké plochy, například kraje nebo státu", "Seznam měst bez žádného obrázku"],
     hints: [
       "Mapa zobrazuje velké území — kraj, stát, kontinent.",
       "Na mapě státu nejsou vidět jednotlivé ulice, jen města a hranice.",
@@ -345,12 +300,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Kamarád ti chce popsat cestu ke škole ve vaší ulici. Použije k tomu spíš plán, nebo mapu státu?",
     correctAnswer: "Plán — protože jde o malou plochu s podrobnými ulicemi",
-    options: [
-      "Plán — protože jde o malou plochu s podrobnými ulicemi",
-      "Mapu státu — protože je přesnější",
-      "Oboje je stejně vhodné",
-      "Ani jedno, cestu nelze zakreslit",
-    ],
+    options: ["Mapu státu — protože je přesnější", "Oboje je stejně vhodné", "Ani jedno, cestu nelze zakreslit", "Plán — protože jde o malou plochu s podrobnými ulicemi"],
     hints: [
       "Ulice a cesta ke škole jsou malé území.",
       "Plán ti ukáže třeba jednu ulici do detailu, mapa celý kraj najednou.",
@@ -377,12 +327,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co znamená zelená barva na fyzické mapě?",
     correctAnswer: "Nížiny a roviny",
-    options: [
-      "Nížiny a roviny",
-      "Hory a vrchoviny",
-      "Pouště a suché oblasti",
-      "Lesy kolem měst",
-    ],
+    options: ["Hory a vrchoviny", "Nížiny a roviny", "Pouště a suché oblasti", "Lesy kolem měst"],
     hints: [
       "Na fyzické mapě barvy ukazují výšku terénu. Zelená = nízko nad mořem.",
       "Louky, pole a jiná nízko položená území bývají na fyzické mapě zelená.",
@@ -393,7 +338,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na fyzické mapě vidíš vysoké pohoří. Jakou barvou bude nejspíš vybarveno?",
     correctAnswer: "Hnědou",
-    options: ["Hnědou", "Modrou", "Zelenou", "Bílou jako sníh"],
+    options: ["Modrou", "Zelenou", "Hnědou", "Bílou jako sníh"],
     hints: [
       "Na fyzické mapě barva ukazuje výšku terénu.",
       "Čím vyšší terén, tím tmavší odstín této barvy.",
@@ -404,7 +349,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Chceš na plán svého města zakreslit potok. Jakou barvou ho nakreslíš?",
     correctAnswer: "Modrou",
-    options: ["Modrou", "Zelenou", "Hnědou", "Žlutou"],
+    options: ["Zelenou", "Hnědou", "Žlutou", "Modrou"],
     hints: [
       "Vzpomeň si, jakou barvu má na mapách voda.",
       "Barva by měla odpovídat skutečnému vzhledu vody.",
@@ -435,7 +380,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Je poledne, slunce máš přímo před sebou — stojíš tedy čelem k jihu. Co máš po pravici?",
     correctAnswer: "Západ",
-    options: ["Západ", "Východ", "Sever", "Jih"],
+    options: ["Východ", "Západ", "Sever", "Jih"],
     hints: [
       "Když stojíš čelem k severu, po pravici máš východ. Teď jsi ale otočený o 180° — čelem k jihu.",
       "Při otočce o 180° se pravá a levá strana prohodí: co bylo napravo, je teď nalevo, a naopak.",
@@ -447,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Je poledne, slunce máš přímo před sebou — stojíš tedy čelem k jihu. Co máš po levici?",
     correctAnswer: "Východ",
-    options: ["Východ", "Západ", "Sever", "Jih"],
+    options: ["Západ", "Sever", "Východ", "Jih"],
     hints: [
       "Když stojíš čelem k severu, po levici máš západ. Teď jsi ale otočený o 180° — čelem k jihu.",
       "Při otočce o 180° se pravá a levá strana prohodí: co bylo nalevo, je teď napravo, a naopak.",
@@ -458,7 +403,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jdeš na severovýchod (SV) a otočíš se o 180°. Kterým směrem teď jdeš?",
     correctAnswer: "Jihozápad",
-    options: ["Jihozápad", "Severozápad", "Jihovýchod", "Severovýchod"],
+    options: ["Severozápad", "Jihovýchod", "Severovýchod", "Jihozápad"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: sever se změní na jih A východ na západ.",
       "Hledej roh mapy, který leží úhlopříčně naproti severovýchodu — přes střed mapy na druhou stranu.",
@@ -480,7 +425,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jdeš na severozápad (SZ) a otočíš se o 180°. Kterým směrem teď jdeš?",
     correctAnswer: "Jihovýchod",
-    options: ["Jihovýchod", "Severovýchod", "Jihozápad", "Severozápad"],
+    options: ["Severovýchod", "Jihovýchod", "Jihozápad", "Severozápad"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: sever se změní na jih A západ na východ.",
       "Hledej roh mapy, který leží úhlopříčně naproti severozápadu — přes střed mapy na druhou stranu.",
@@ -491,7 +436,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jdeš na jihovýchod (JV) a otočíš se o 180°. Kterým směrem teď jdeš?",
     correctAnswer: "Severozápad",
-    options: ["Severozápad", "Jihozápad", "Severovýchod", "Jihovýchod"],
+    options: ["Jihozápad", "Severovýchod", "Severozápad", "Jihovýchod"],
     hints: [
       "Otočka o 180° obrátí OBĚ složky směru: jih se změní na sever A východ na západ.",
       "Hledej roh mapy, který leží úhlopříčně naproti jihovýchodu — přes střed mapy na druhou stranu.",
@@ -503,7 +448,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Na fyzické mapě vidíš vysokou horu (hnědá barva) v severní části mapy. Stojíš uprostřed mapy — kterým směrem od tebe hora leží?",
     correctAnswer: "Na sever",
-    options: ["Na sever", "Na jih", "Na východ", "Na západ"],
+    options: ["Na jih", "Na východ", "Na západ", "Na sever"],
     hints: [
       "Hnědá barva na fyzické mapě znamená horu nebo vrchovinu.",
       "Hora je nakreslená v horní části mapy. Vzpomeň si, který světový směr je na mapě vždy nahoře.",
@@ -527,12 +472,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Mapa má měřítko 1:100 000. Co ti řekne LEGENDA a co ti měřítko NEŘEKNE?",
     correctAnswer: "Co znamenají značky a barvy na mapě",
-    options: [
-      "Co znamenají značky a barvy na mapě",
-      "Jak daleko jsou od sebe dvě místa",
-      "Kolik má mapa stránek",
-      "Jméno autora mapy",
-    ],
+    options: ["Jak daleko jsou od sebe dvě místa", "Co znamenají značky a barvy na mapě", "Kolik má mapa stránek", "Jméno autora mapy"],
     hints: [
       "Měřítko se týká jen velikosti a vzdáleností, ne významu značek.",
       "Legenda vysvětluje symboly a barvy — to je práce, kterou měřítko nedělá.",
@@ -544,12 +484,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Z měřítka mapy zjistíš vzdálenost mezi dvěma vesnicemi. Co ti měřítko NEŘEKNE a musíš to zjistit z legendy?",
     correctAnswer: "Co znamenají barvy a značky na mapě",
-    options: [
-      "Co znamenají barvy a značky na mapě",
-      "Kolik centimetrů má mapa na šířku",
-      "Jak moc je mapa zmenšená",
-      "Zda je mapa fyzická, nebo politická",
-    ],
+    options: ["Kolik centimetrů má mapa na šířku", "Jak moc je mapa zmenšená", "Co znamenají barvy a značky na mapě", "Zda je mapa fyzická, nebo politická"],
     hints: [
       "Měřítko slouží k přepočtu vzdáleností, ne k vysvětlení symbolů.",
       "Vysvětlivky ke značkám a barvám najdeš vždy v legendě.",
@@ -561,7 +496,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Stojíš čelem k severu. Otočíš se o 90° doprava (ve směru hodinových ručiček). Kterým směrem se teď díváš?",
     correctAnswer: "Na východ",
-    options: ["Na východ", "Na západ", "Na jih", "Na sever"],
+    options: ["Na západ", "Na jih", "Na sever", "Na východ"],
     hints: [
       "Čtvrt otáčky doprava od severu tě posune o jednu světovou stranu ve směru hodinových ručiček.",
       "Pořadí po směru hodinových ručiček je: sever → východ → jih → západ.",
@@ -585,7 +520,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Stojíš čelem k východu. Otočíš se o 90° doprava (ve směru hodinových ručiček). Kterým směrem se teď díváš?",
     correctAnswer: "Na jih",
-    options: ["Na jih", "Na sever", "Na východ", "Na západ"],
+    options: ["Na sever", "Na jih", "Na východ", "Na západ"],
     hints: [
       "Čtvrt otáčky doprava tě posune o jednu světovou stranu dál v pořadí sever → východ → jih → západ.",
       "Z východu je dalším směrem po směru hodinových ručiček jih.",
@@ -597,7 +532,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Stojíš čelem k východu. Otočíš se o 90° doleva (proti směru hodinových ručiček). Kterým směrem se teď díváš?",
     correctAnswer: "Na sever",
-    options: ["Na sever", "Na jih", "Na východ", "Na západ"],
+    options: ["Na jih", "Na východ", "Na sever", "Na západ"],
     hints: [
       "Čtvrt otáčky doleva je opačný pohyb než doprava — vrátíš se o jednu světovou stranu zpět.",
       "Pořadí proti směru hodinových ručiček od východu je: východ → sever → západ → jih.",
