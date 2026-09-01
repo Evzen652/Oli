@@ -80,22 +80,27 @@ Nalezeno při přepisu první pomoci. Původní pool měl klíč **26× na 1. po
 `gen()` míchá pořadí úloh, ale **ne pořadí možností** — takže dítě může uhodnout bez znalosti látky:
 „ber první nebo druhou“.
 
-**Změřeno na celém korpusu (2026-09-01): 3552 úloh se 4 možnostmi.**
+**Změřeno na celém korpusu (2026-09-01), 3585 úloh se 4 možnostmi:**
 
 | pozice klíče | podíl |
 |---|---|
-| 1. | **66 %** |
+| 1. | **64 %** |
 | 2. | 29 % |
-| 3. | 4 % |
-| 4. | 1 % |
+| 3. | 5 % |
+| 4. | 2 % |
 
 **Ve 49 souborech je klíč na 1. pozici u více než 80 % úloh.** Strategie „ber vždy první“ má napříč
-celou aplikací úspěšnost ~66 % bez jakékoli znalosti látky — u čtyř možností je náhoda 25 %.
-- V sedmi přepsaných tématech je rozložení srovnané (skript prohazuje jen pořadí v `options`,
-  textů se nedotýká, a přeskakuje úlohy s možnostmi typu „všechny výše uvedené“).
-- Systémové řešení by bylo míchat `options` v `gen()` u `select_one`. Riziko: typy, kde na pořadí záleží
-  (`drag_order`, `comparison`), takže to nesmí být plošné. **Čeká na rozhodnutí** — ale čísla výše
-  ukazují, že jde o vážnější vadu než většina nálezů z Wave B.
+celou aplikací úspěšnost ~64 % bez jakékoli znalosti látky — u čtyř možností je náhoda 25 %.
+Reprodukovatelné: `node scripts/answer-position-report.mjs --files`.
+
+- V sedmi přepsaných tématech je rozložení srovnané pomocí
+  `node scripts/rebalance-answer-positions.mjs <soubor> [--dry]`. Skript prohazuje **jen pořadí
+  v `options`**, textů se nedotýká, přeskakuje úlohy s možnostmi typu „všechny výše uvedené“
+  a je idempotentní. **Pouštěj ho až jako poslední krok** úprav souboru — po něm přestanou sedět
+  doslovné náhrady kotvené na starý tvar `options: [...]`.
+- Systémové řešení by bylo míchat `options` přímo v `gen()` u `select_one`. Riziko: typy, kde na
+  pořadí záleží (`drag_order`, `comparison`), takže to nesmí být plošné. **Čeká na rozhodnutí** —
+  ale čísla výše ukazují, že jde o vážnější vadu než většina nálezů z Wave B.
 
 ## ✅ Ručně kreslená šipka v celé aplikaci (2026-08-31)
 
