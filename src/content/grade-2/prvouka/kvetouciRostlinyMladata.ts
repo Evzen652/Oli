@@ -26,7 +26,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě kočky?",
     correctAnswer: "Kotě",
-    options: ["Štěně", "Kotě", "Tele", "Kuře"],
+    options: ["Kotě", "Štěně", "Tele", "Kuře"],
     emoji: "🐱",
     hints: ["Malé roztomilé zvířátko, které kočka odkojí — jak se mu říká?"],
     solutionSteps: ["Mládě kočky je kotě — malá kočička, která si ráda hraje."],
@@ -34,7 +34,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě psa?",
     correctAnswer: "Štěně",
-    options: ["Štěně", "Kotě", "Hříbě", "Sele"],
+    options: ["Kotě", "Štěně", "Hříbě", "Sele"],
     emoji: "🐶",
     hints: ["Malý pejsek, který se teprve učí chodit a štěká — jak se jmenuje?"],
     solutionSteps: ["Mládě psa je štěně — malý pejsek, který se právě narodil."],
@@ -50,7 +50,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě koně?",
     correctAnswer: "Hříbě",
-    options: ["Tele", "Hříbě", "Štěně", "Jehně"],
+    options: ["Tele", "Štěně", "Jehně", "Hříbě"],
     emoji: "🐴",
     hints: ["Malý kůň na dlouhých tenkých nožkách — jak se jmenuje?"],
     solutionSteps: ["Mládě koně je hříbě — brzy po narození se postaví na nohy."],
@@ -58,7 +58,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě prasete?",
     correctAnswer: "Sele",
-    options: ["Kuře", "Tele", "Sele", "Kotě"],
+    options: ["Sele", "Kuře", "Tele", "Kotě"],
     emoji: "🐷",
     hints: ["Malé růžové prasátko, které chrochtá u maminky — jak se jmenuje?"],
     solutionSteps: ["Mládě prasete je sele — malé růžové prasátko."],
@@ -66,7 +66,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě slepice?",
     correctAnswer: "Kuře",
-    options: ["Kuře", "Sele", "House", "Kotě"],
+    options: ["Sele", "Kuře", "House", "Kotě"],
     emoji: "🐔",
     hints: ["Žluté chlupaté ptáče, které pípá a běhá za slepicí — jak se jmenuje?"],
     solutionSteps: ["Mládě slepice je kuře — žluté pípající ptáče."],
@@ -82,7 +82,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě kozy?",
     correctAnswer: "Kůzle",
-    options: ["Jehně", "Kůzle", "Sele", "Štěně"],
+    options: ["Jehně", "Sele", "Štěně", "Kůzle"],
     emoji: "🐐",
     hints: ["Malá kozička, která ráda poskakuje — jak se jmenuje?"],
     solutionSteps: ["Mládě kozy je kůzle — malá kozička, co poskakuje a mečí."],
@@ -90,7 +90,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě husy?",
     correctAnswer: "House",
-    options: ["Kuře", "House", "Káče", "Tele"],
+    options: ["House", "Kuře", "Káče", "Tele"],
     emoji: "🦢",
     hints: ["Malá husa, která chodí za maminkou v řadě — jak se jmenuje?"],
     solutionSteps: ["Mládě husy je house — chodí za husou husí maminkou."],
@@ -98,7 +98,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě kachny?",
     correctAnswer: "Káče",
-    options: ["Kuře", "House", "Káče", "Sele"],
+    options: ["Kuře", "Káče", "House", "Sele"],
     emoji: "🦆",
     hints: ["Malé žluté ptáče, které umí hned plavat na rybníku — jak se jmenuje?"],
     solutionSteps: ["Mládě kachny je káče — malé kachňátko, které plave hned po narození."],
@@ -106,7 +106,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Malá bílá květina, která kvete jako první na jaře, často ještě ve sněhu, je?",
     correctAnswer: "Sněženka",
-    options: ["Slunečnice", "Sněženka", "Růže", "Pampeliška"],
+    options: ["Slunečnice", "Růže", "Sněženka", "Pampeliška"],
     emoji: "🌼",
     hints: ["Hledej bílou květinu, které nevadí ani sníh a kvete úplně první."],
     solutionSteps: ["Jako první kvete sněženka — má bílé kvítky a objeví se ještě ve sněhu."],
@@ -114,7 +114,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Žlutá kytička na louce, ze které se stane bílá chmýřová kulička na foukání, je?",
     correctAnswer: "Pampeliška",
-    options: ["Sněženka", "Tulipán", "Pampeliška", "Konvalinka"],
+    options: ["Sněženka", "Tulipán", "Konvalinka", "Pampeliška"],
     emoji: "🌼",
     hints: ["Hledej žlutou louční kytičku, jejíž chmýří se dá rozfoukat."],
     solutionSteps: ["Na louce kvete pampeliška — její žlutý květ se změní v bílý míček ze semen."],
@@ -122,7 +122,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Barevná jarní květina s pohárkovitým květem, kterou pěstujeme na zahradě a v truhlíku, je?",
     correctAnswer: "Tulipán",
-    options: ["Kopřiva", "Pampeliška", "Tulipán", "Sněženka"],
+    options: ["Tulipán", "Kopřiva", "Pampeliška", "Sněženka"],
     emoji: "🌷",
     hints: ["Hledej zahradní květinu s pohárkovitým květem, která bývá červená, žlutá i jiná."],
     solutionSteps: ["Na zahradě na jaře kvete tulipán — má pohárkovitý květ různých barev."],
@@ -130,7 +130,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Žlutá nebo bílá jarní zahradní květina, která má uprostřed květu trubičku, je?",
     correctAnswer: "Narcis",
-    options: ["Tulipán", "Růže", "Narcis", "Pampeliška"],
+    options: ["Tulipán", "Narcis", "Růže", "Pampeliška"],
     emoji: "🌼",
     hints: ["Hledej zahradní jarní květinu, která má uprostřed nápadnou trubičku."],
     solutionSteps: ["V zahradě kvete narcis — má okvětní lístky a uprostřed žlutou trubičku."],
@@ -149,7 +149,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je kotě?",
     correctAnswer: "Kočky",
-    options: ["Psa", "Kočky", "Krávy", "Kozy"],
+    options: ["Psa", "Krávy", "Kozy", "Kočky"],
     emoji: "🐱",
     hints: ["Vzpomeň si, které dospělé zvíře má mládě, kterému se říká kotě."],
     solutionSteps: ["Kotě je mládě kočky — z kotěte vyroste dospělá kočka."],
@@ -165,7 +165,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je tele?",
     correctAnswer: "Krávy",
-    options: ["Kozy", "Ovce", "Krávy", "Koně"],
+    options: ["Kozy", "Krávy", "Ovce", "Koně"],
     emoji: "🐄",
     hints: ["Které velké zvíře na statku bučí a dává mléko, a jeho mládě je tele?"],
     solutionSteps: ["Tele je mládě krávy — z telete vyroste dospělá kráva."],
@@ -173,7 +173,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je hříbě?",
     correctAnswer: "Koně",
-    options: ["Krávy", "Koně", "Ovce", "Prasete"],
+    options: ["Krávy", "Ovce", "Koně", "Prasete"],
     emoji: "🐴",
     hints: ["Které zvíře umí běhat a vozit jezdce, a jeho mládě je hříbě?"],
     solutionSteps: ["Hříbě je mládě koně — z hříběte vyroste dospělý kůň."],
@@ -181,7 +181,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je sele?",
     correctAnswer: "Prasete",
-    options: ["Ovce", "Kozy", "Prasete", "Krávy"],
+    options: ["Ovce", "Kozy", "Krávy", "Prasete"],
     emoji: "🐷",
     hints: ["Které růžové zvíře na statku chrochtá a jeho mládě je sele?"],
     solutionSteps: ["Sele je mládě prasete — z malého selete vyroste dospělé prase."],
@@ -189,7 +189,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je jehně?",
     correctAnswer: "Ovce",
-    options: ["Kozy", "Krávy", "Ovce", "Koně"],
+    options: ["Ovce", "Kozy", "Krávy", "Koně"],
     emoji: "🐑",
     hints: ["Které zvíře má vlnu, ze které se dělá svetr, a jeho mládě je jehně?"],
     solutionSteps: ["Jehně je mládě ovce — z jehněte vyroste dospělá ovce."],
@@ -197,7 +197,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je kůzle?",
     correctAnswer: "Kozy",
-    options: ["Kozy", "Ovce", "Krávy", "Prasete"],
+    options: ["Ovce", "Kozy", "Krávy", "Prasete"],
     emoji: "🐐",
     hints: ["Které zvíře mečí, rádo šplhá a jeho mládě je kůzle?"],
     solutionSteps: ["Kůzle je mládě kozy — z kůzlete vyroste dospělá koza."],
@@ -213,7 +213,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je pulec?",
     correctAnswer: "Žáby",
-    options: ["Ryby", "Žáby", "Hada", "Ještěrky"],
+    options: ["Ryby", "Hada", "Ještěrky", "Žáby"],
     emoji: "🐸",
     hints: ["Malé zvířátko s ocáskem plave v rybníku a vyroste z něj skákavé zvíře."],
     solutionSteps: ["Pulec je mládě žáby — pulci žijí ve vodě a postupně z nich vyroste žába."],
@@ -221,7 +221,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí mládě je králíče?",
     correctAnswer: "Králíka",
-    options: ["Zajíce", "Králíka", "Kočky", "Psa"],
+    options: ["Králíka", "Zajíce", "Kočky", "Psa"],
     emoji: "🐰",
     hints: ["Které chované zvíře s dlouhýma ušima žije v kotci a jeho mládě je králíče?"],
     solutionSteps: ["Králíče je mládě králíka — pozor, mládě zajíce je zajíče, to je jiné zvíře."],
@@ -248,7 +248,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na rybníku plave žluté chlupaté mládě hned za maminkou kachnou. Které mládě to je?",
     correctAnswer: "Káče",
-    options: ["Kuře", "Káče", "House", "Sele"],
+    options: ["Kuře", "House", "Sele", "Káče"],
     emoji: "🦆",
     hints: ["Kuře je taky žluté, ale neplave. Hledej mládě, které plave a patří ke kachně."],
     solutionSteps: [
@@ -258,7 +258,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na louce poskakuje mládě s bílou vlněnou srstí a jeho maminka bečí „bééé“. Které mládě to je?",
     correctAnswer: "Jehně",
-    options: ["Kůzle", "Jehně", "Tele", "Sele"],
+    options: ["Jehně", "Kůzle", "Tele", "Sele"],
     emoji: "🐑",
     hints: ["Vlněnou srst a bečení „bééé“ má ovce. Jak se jmenuje mládě ovce?"],
     solutionSteps: [
@@ -288,7 +288,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kuře je mládě slepice. Až kuře vyroste, stane se z něj dospělá...?",
     correctAnswer: "Slepice",
-    options: ["Kachna", "Slepice", "Husa", "Koza"],
+    options: ["Kachna", "Husa", "Koza", "Slepice"],
     emoji: "🐔",
     hints: ["Když víš, čí mládě je kuře, víš i to, co z něj vyroste."],
     solutionSteps: [
@@ -298,7 +298,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jehně je mládě ovce. Až jehně vyroste, stane se z něj dospělá...?",
     correctAnswer: "Ovce",
-    options: ["Koza", "Ovce", "Kráva", "Prase"],
+    options: ["Ovce", "Koza", "Kráva", "Prase"],
     emoji: "🐑",
     hints: ["Vzpomeň si, čí mládě je jehně — z něj potom vyroste."],
     solutionSteps: [
@@ -308,7 +308,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kotě je mládě kočky. Až kotě vyroste, stane se z něj dospělá...?",
     correctAnswer: "Kočka",
-    options: ["Koza", "Ovce", "Kočka", "Slepice"],
+    options: ["Koza", "Kočka", "Ovce", "Slepice"],
     emoji: "🐱",
     hints: ["Když víš, čí mládě je kotě, víš i to, jaké zvíře z něj vyroste."],
     solutionSteps: [
@@ -328,7 +328,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Koza mečí a šplhá. Její mládě se jmenuje...?",
     correctAnswer: "Kůzle",
-    options: ["Jehně", "Kůzle", "Tele", "Sele"],
+    options: ["Jehně", "Tele", "Sele", "Kůzle"],
     emoji: "🐐",
     hints: ["Pozor, ať kozu nezaměníš za ovci. Ovce má jehně, koza má jiné mládě."],
     solutionSteps: [
@@ -338,7 +338,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Sněženka i pampeliška kvetou na jaře. Která z nich kvete jako první, ještě když leží sníh?",
     correctAnswer: "Sněženka",
-    options: ["Pampeliška", "Sněženka", "Tulipán", "Narcis"],
+    options: ["Sněženka", "Pampeliška", "Tulipán", "Narcis"],
     emoji: "🌼",
     hints: ["Jedna z nich je bílá a nevadí jí sníh, druhá je žlutá a kvete až na louce."],
     solutionSteps: [
@@ -358,7 +358,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Tulipán i narcis se pěstují na zahradě. Která z těchto květin má uprostřed květu žlutou trubičku?",
     correctAnswer: "Narcis",
-    options: ["Tulipán", "Narcis", "Sněženka", "Pampeliška"],
+    options: ["Tulipán", "Sněženka", "Narcis", "Pampeliška"],
     emoji: "🌼",
     hints: ["Obě jsou zahradní jarní květiny, ale jen jedna má uprostřed nápadnou trubičku."],
     solutionSteps: [
