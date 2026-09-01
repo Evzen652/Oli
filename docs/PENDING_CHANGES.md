@@ -75,32 +75,56 @@ nezohledňují téma.
   znalosti látky. Část výskytů je ale legitimní obsah (podmiňovací způsob), takže **plošná náhrada nejde**.
   V přepsaných souborech odstraněno.
 
-## 🔴 Pozice správné odpovědi je předvídatelná — celý korpus (2026-09-01)
-Nalezeno při přepisu první pomoci. Původní pool měl klíč **26× na 1. pozici, 9× na 2., nikdy na 3. ani 4.**
-`gen()` míchá pořadí úloh, ale **ne pořadí možností** — takže dítě může uhodnout bez znalosti látky:
-„ber první nebo druhou“.
+## ✅ Pozice správné odpovědi je předvídatelná — vyřešeno mimo informatiku (2026-09-01)
+Nalezeno při přepisu první pomoci, změřeno na celém korpusu, opraveno v šesti dávkách.
+`gen()` míchá pořadí úloh, ale **ne pořadí možností** — dítě tedy mohlo uhodnout bez znalosti
+látky strategií „ber vždy tu samou pozici".
 
-**Změřeno na celém korpusu (2026-09-01), 3585 úloh se 4 možnostmi:**
+**Výsledek (3585 úloh se 4 možnostmi):**
 
-| pozice klíče | podíl |
-|---|---|
-| 1. | **64 %** |
-| 2. | 29 % |
-| 3. | 5 % |
-| 4. | 2 % |
+| pozice klíče | před | po (bez informatiky) |
+|---|---|---|
+| 1. | **64 %** | 26 % |
+| 2. | 29 % | 25 % |
+| 3. | 5 % | 25 % |
+| 4. | 2 % | 24 % |
 
-**Ve 49 souborech je klíč na 1. pozici u více než 80 % úloh.** Strategie „ber vždy první“ má napříč
-celou aplikací úspěšnost ~64 % bez jakékoli znalosti látky — u čtyř možností je náhoda 25 %.
-Reprodukovatelné: `node scripts/answer-position-report.mjs --files`.
+Zpracováno **82 souborů / 3 075 úloh**: `4d0a57b` (pilot 5), `01d81ad` (10), `429ce43` (16),
+`b8a7de3` (8 smíšených), `cdf9d00` (21 čeština g5), `6de3c9e` (22 přírodověda/vlastivěda).
+Souborů se zkosením nad 40 % je mimo informatiku **nula**.
 
-- V sedmi přepsaných tématech je rozložení srovnané pomocí
-  `node scripts/rebalance-answer-positions.mjs <soubor> [--dry]`. Skript prohazuje **jen pořadí
-  v `options`**, textů se nedotýká, přeskakuje úlohy s možnostmi typu „všechny výše uvedené“
-  a je idempotentní. **Pouštěj ho až jako poslední krok** úprav souboru — po něm přestanou sedět
-  doslovné náhrady kotvené na starý tvar `options: [...]`.
-- Systémové řešení by bylo míchat `options` přímo v `gen()` u `select_one`. Riziko: typy, kde na
-  pořadí záleží (`drag_order`, `comparison`), takže to nesmí být plošné. **Čeká na rozhodnutí** —
-  ale čísla výše ukazují, že jde o vážnější vadu než většina nálezů z Wave B.
+**Každá dávka ověřena strojově proti HEAD** — u všech úloh musel sedět `question`, `correctAnswer`
+i **množina** `options`; měnilo se výhradně pořadí. Testy 4615/4615, typecheck 0, `audit:content`
+prošel po každé dávce. Freeze zásahem ohrožen není: otisk v `contentSnapshot.ts` pokrývá jen
+`question` a `correctAnswer`, nikoli `options`.
+
+### 🐞 Klíč na DRUHÉ pozici — nález, který report neuměl ukázat
+Třináct témat `grade-5/cjl` mělo klíč **druhý u 88–100 %** úloh (pět z nich přesně 100 %).
+Strategie „ber vždy druhý" tam procházela se stoprocentní úspěšností. Původní report hlídal
+**výhradně první pozici**, takže tahle skupina byla celou dobu neviditelná — **slepé místo
+nástroje, ne obsahu**, tedy stejná třída chyby jako slovník v `rvp-scan.mjs`.
+
+Opraveno v `cf394c2`: `answer-position-report.mjs` nyní hodnotí maximum přes všechny čtyři pozice
+a hlásí, **která** se vymyká. Práh 80 % → 40 %, nový přepínač `--no-inf`.
+
+### ⚠️ Past, kterou si musí ohlídat každý, kdo skript pustí
+`rebalance-answer-positions.mjs` **nekontroluje `inputType`**. V hlavičce si říká „spouštěj jen na
+`select_one`", ale regex chytá jakoukoli dvojici `correctAnswer` + `options` — jediná ochrana je
+textová heuristika na „všechny výše uvedené". **Typy je nutné ověřit před spuštěním**, jinak hrozí
+tiché rozbití `drag_order` a `comparison`. V této session ověřeno u všech 82 souborů.
+
+### Zbývá
+- 🟡 **Informatika** — 10 souborů, 323 úloh, **100 % klíčů na 1. pozici**. Vynechána podle stálého
+  pokynu uživatele. Je to jediná zbývající skupina se zkosením; až pokyn padne, je to jedna dávka.
+- 🟡 **Výplňové možnosti** snižují počet reálných voleb pod čtyři. U úloh „Platí: 2,5 > 2,3?" jsou
+  možnosti `["Ano", "Ne", "Nevím", "Záleží na situaci"]` — dítě fakticky volí ze dvou, takže hádání
+  má **50 %** i po srovnání pozic. Samostatná úloha stejné třídy, rebalance na ni nesahá.
+- 🟡 **Šest témat prvouky g2 má `inputType: "true_false"`, ale pooly obsahují i čtyřmožnostní úlohy.**
+  Binární jdou přes helper (`options: [ANO, NE]`), takže je rebalance nevidí, ale nekonzistence
+  metadat zůstává — stojí za prověření, jak se to renderuje.
+- ⏭️ **Systémové míchání `options` v `gen()`** je stále otevřená možnost pro nově psaný obsah.
+  Nesmí být plošné (`drag_order`, `comparison`), a výjimkový seznam je tichá past — nový typ
+  cvičení se do něj zapomene přidat a chyba se projeví až u dítěte.
 
 ## ✅ Ručně kreslená šipka v celé aplikaci (2026-08-31)
 

@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-01 (15:40)
+# Předání práce — stav k 2026-09-01 (17:05)
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -41,6 +41,9 @@ Metoda a pasti v [`WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md).
 
 **Přiměřenost ročníku uzavřena — 7 ze 7 témat** (commity `75949b1`, `1879b3f`, `750382a`).
 
+**Pozice správných odpovědí srovnány — 82 souborů, 3 075 úloh** (`4d0a57b` … `6de3c9e`).
+Korpus bez informatiky **26/25/25/24 %**, dřív 64 % klíčů na první pozici. Detail a pasti v §2.
+
 | téma | zásah |
 |---|---|
 | `g4-…prvni-pomoc-tisnove-volani` | pool přepsán, 35 → 39 úloh |
@@ -80,18 +83,32 @@ Bez nich se rodič nezaregistruje a dítě nepřipojí. Detail v `PENDING_CHANGE
 supabase db push && supabase functions deploy pair-child child-relogin set-child-pin session-evaluation weekly-report
 ```
 
-### 🔴 Pozice správné odpovědi je předvídatelná — čeká na rozhodnutí
-Změřeno na celém korpusu: **64 % klíčů je na 1. pozici**, 29 % na 2., 5 % na 3., 2 % na 4.
-Ve **49 souborech** je klíč první u víc než 80 % úloh. Strategie „ber vždy první" má tedy
-napříč aplikací úspěšnost ~64 % **bez jakékoli znalosti látky** (náhoda u 4 možností je 25 %).
+### 🟡 Pozice správné odpovědi — vyřešeno mimo informatiku
+Bylo 64 % klíčů na 1. pozici; po zásahu je korpus **bez informatiky na 26/25/25/24 %**, tedy
+na úrovni náhody. Zpracováno **82 souborů / 3 075 úloh** v šesti dávkách (`4d0a57b` … `6de3c9e`).
 
 ```bash
-node scripts/answer-position-report.mjs --files
+node scripts/answer-position-report.mjs --no-inf --files
 ```
 
-Sedm přepsaných témat je srovnaných. Zbytek ne. Systémové řešení by bylo míchat `options`
-v `gen()`, ale **nesmí být plošné** — `drag_order` a `comparison` na pořadí stojí.
-Pro jednotlivé soubory je `scripts/rebalance-answer-positions.mjs` (viz §4).
+**Co z toho stojí za zapamatování:**
+
+Report měl **stejné slepé místo jako `rvp-scan.mjs`**. Hlídal výhradně zkosení na PRVNÍ pozici,
+takže třináct témat `grade-5/cjl`, kde byl klíč na DRUHÉ pozici u 88–100 % úloh, nikdy neukázal —
+strategie „ber vždy druhý" tam procházela se stoprocentní úspěšností. Opraveno (`cf394c2`): hodnotí
+se maximum přes všechny čtyři pozice. **Poučení se opakuje: nástroj řekne, že něco našel, ne že
+našel všechno.**
+
+`rebalance-answer-positions.mjs` **nekontroluje `inputType`**, přestože si to v hlavičce říká.
+Regex chytá jakoukoli dvojici `correctAnswer` + `options`; jediná ochrana je textová heuristika.
+**Typy ověř před spuštěním** — jinak tiše rozbiješ `drag_order` a `comparison`.
+
+Freeze zásahem ohrožen není: otisk v `contentSnapshot.ts` pokrývá jen `question` a `correctAnswer`,
+nikoli `options`. Ověřeno čtením mechanismu, ne jen zeleným testem.
+
+**Zbývá:** informatika (10 souborů, 323 úloh, 100 % na 1. pozici) — vynechána podle stálého pokynu,
+je to práce na jednu dávku. A výplňové možnosti typu `["Ano", "Ne", "Nevím", "Záleží na situaci"]`,
+kde dítě fakticky volí ze dvou, takže hádání má 50 % i po srovnání pozic — samostatná úloha.
 
 ### 🟡 Zděděný dluh, který jsem záměrně nechal být
 Držel jsem se zadání a **počty úloh v poolech nezvětšoval** — jen vyměnil obsah.
@@ -122,12 +139,12 @@ Ani jedno neblokuje GATE.
 | skript | k čemu |
 |---|---|
 | `scripts/rvp-scan.mjs` | sken korpusu na obsah nad rámec RVP ročníku |
-| `scripts/answer-position-report.mjs` | měření zkosení pozice odpovědi |
+| `scripts/answer-position-report.mjs` | měření zkosení pozice odpovědi (všechny 4 pozice, `--no-inf`) |
 | `scripts/rebalance-answer-positions.mjs` | srovnání pozic v jednom souboru |
 
 ```bash
 node scripts/rvp-scan.mjs . 6
-node scripts/answer-position-report.mjs --files
+node scripts/answer-position-report.mjs --no-inf --files
 node scripts/rebalance-answer-positions.mjs <soubor.ts> --dry
 ```
 
@@ -151,3 +168,8 @@ doslovné náhrady kotvené na starý tvar `options: [...]`. Je idempotentní.
   že popneš práci jiné session.
 - **Worktree nemá `.env`** (je v `.gitignore`). Bez něj aplikace spadne na
   `supabaseUrl is required`; zkopíruj z `C:/Users/weigle/Oli/.env`.
+- **Dev server startuje z worktree, ve kterém session ZAČALA.** `preview_start` si drží pracovní
+  adresář z doby startu — přepnutí do jiného worktree na to nemá vliv, a čte i cizí `launch.json`.
+  Projeví se to bílou stránkou (`supabaseUrl is required`, protože tam chybí `.env`) a tím, že
+  aplikace ukazuje starý kód. Ověříš změnou portu v místním `launch.json`: pokud dostaneš původní
+  port, čte se cizí konfigurace. **Řešení: pustit `npm run dev` přímo z worktree.**

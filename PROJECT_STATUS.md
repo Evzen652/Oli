@@ -144,6 +144,39 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 9) — pozice správných odpovědí srovnány (82 souborů):
+- ✅ **Zkosení pozice odpovědi vyřešeno mimo informatiku.** Korpus **bez informatiky: 26/25/25/24 %**
+  (před zásahem 64 % klíčů na 1. pozici). Strategie „ber vždy tu samou pozici" má nyní úspěšnost
+  na úrovni náhody. Zpracováno **82 souborů / 3 075 úloh** v šesti dávkách (`4d0a57b`, `01d81ad`,
+  `429ce43`, `b8a7de3`, `cdf9d00`, `6de3c9e`).
+- 🐞 **Nový nález, který report neuměl vidět: klíč na DRUHÉ pozici.** Třináct témat `grade-5/cjl`
+  mělo klíč druhý u **88–100 %** úloh (pět z nich přesně 100 %). Strategie „ber vždy druhý" tam
+  procházela se stoprocentní úspěšností. Původní report hlídal **výhradně první pozici**, takže
+  tahle skupina byla celou dobu neviditelná. **Slepé místo nástroje, ne obsahu** — stejná třída
+  chyby jako u slovníku v `rvp-scan.mjs`.
+- 🔧 **`scripts/answer-position-report.mjs` opraven** (`cf394c2`): hodnotí maximum přes všechny
+  čtyři pozice a hlásí, **která** se vymyká. Práh snížen 80 % → 40 %, přibyl přepínač `--no-inf`.
+  Slepé místo je popsané v hlavičce skriptu.
+- ⚠️ **`rebalance-answer-positions.mjs` nekontroluje `inputType`.** V hlavičce si říká „spouštěj jen
+  na `select_one`", ale regex chytá jakoukoli dvojici `correctAnswer` + `options`; jediná ochrana je
+  textová heuristika. **Typy je nutné ověřit před spuštěním**, jinak hrozí tiché rozbití `drag_order`
+  a `comparison`. Pro tuhle session ověřeno u všech 82 souborů.
+- 🔎 **Šest témat prvouky g2 má v metadatech `inputType: "true_false"`, ale pooly obsahují i úlohy
+  se čtyřmi možnostmi.** Binární úlohy jdou přes helper (`options: [ANO, NE]`), takže je rebalance
+  nevidí — ale ta nekonzistence metadat zůstává a **stojí za prověření, jak se to renderuje**.
+- ✅ **Freeze zásahem ohrožen není** — otisk v `contentSnapshot.ts` pokrývá jen `question`
+  a `correctAnswer`, nikoli `options`. Ověřeno čtením mechanismu, ne jen zeleným testem.
+- 🟡 **Informatika vynechána** podle stálého pokynu (10 souborů, 323 úloh, **100 % klíčů na 1. pozici**).
+  Je to jediná zbývající skupina se zkosením; až pokyn padne, je to práce na jednu dávku.
+- 🟡 **Výplňové možnosti snižují počet reálných voleb.** U úloh typu „Platí: 2,5 > 2,3?" jsou možnosti
+  `["Ano", "Ne", "Nevím", "Záleží na situaci"]` — dítě fakticky volí ze dvou, takže hádání má **50 %**
+  i po srovnání pozic. Rebalance na to nesahá; je to samostatná úloha stejné třídy.
+- ⚠️ **Past prostředí: dev server běžel z cizího worktree.** `preview_start` startuje proces
+  s pracovním adresářem, který session měla **při startu** — přepnutí do jiného worktree na to nemá
+  vliv. Výsledek: na `localhost:8080` běžela verze z `main` a k tomu bílá stránka, protože tam chybí
+  `.env` (je v `.gitignore`). Ověřeno změnou portu v místním `launch.json` — server ji ignoroval.
+  **Řešení: spustit dev server přímo z worktree, ne přes preview_start.**
+
 ### Session 2026-09-01 (pokr. 8) — přiměřenost ročníku dokončena (7 ze 7 témat):
 - ✅ **Zbylých 6 témat přepsáno** (dospívání, savci, rozmnožovací soustava, horniny, voda, kostra).
   GATE u všech `invarianty: 0`, u tří **zcela bez nálezů**. Testy **4615/4615**, typecheck 0.
