@@ -13,12 +13,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je souvětí?",
     correctAnswer: "věta složená ze dvou nebo více vět",
-    options: [
-      "jedna krátká věta",
-      "věta složená ze dvou nebo více vět",
-      "věta s mnoha přídavnými jmény",
-      "věta s otazníkem",
-    ],
+    options: ["věta složená ze dvou nebo více vět", "jedna krátká věta", "věta s mnoha přídavnými jmény", "věta s otazníkem"],
     hints: ["Zkus spočítat, kolik sloves v určitém tvaru (přísudků) má typické souvětí — je to jen jedno, nebo klidně víc?"],
   },
   {
@@ -30,29 +25,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které slovo spojuje věty v souvětí 'Přišel a sedl si.'?",
     correctAnswer: "a",
-    options: ["přišel", "a", "sedl", "si"],
+    options: ["přišel", "sedl", "a", "si"],
     hints: ["Spojka 'a' pojí obě věty."],
   },
   {
     question: "Která z těchto vět je souvětí?",
     correctAnswer: "Přišel domů a šel spát.",
-    options: [
-      "Přišel domů.",
-      "Přišel domů a šel spát.",
-      "Velmi rychle.",
-      "Pes a kočka.",
-    ],
+    options: ["Přišel domů.", "Velmi rychle.", "Pes a kočka.", "Přišel domů a šel spát."],
     hints: ["Souvětí obsahuje dvě slovesa (přišel + šel)."],
   },
   {
     question: "Spojka 'protože' je:",
     correctAnswer: "podřadící – spojuje hlavní a vedlejší větu",
-    options: [
-      "souřadící – spojuje dvě rovnocenné věty",
-      "podřadící – spojuje hlavní a vedlejší větu",
-      "příslovce",
-      "citoslovce",
-    ],
+    options: ["podřadící – spojuje hlavní a vedlejší větu", "souřadící – spojuje dvě rovnocenné věty", "příslovce", "citoslovce"],
     hints: ["'Protože' uvádí důvod pro to, co říká první věta — jsou si ty dvě věty rovnocenné, nebo jedna z nich na druhé závisí?"],
   },
   {
@@ -69,29 +54,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik vět je v souvětí 'Jedl, pil a zpíval, dokud mu nezbyly síly.'?",
     correctAnswer: "2 věty",
-    options: ["2 věty", "3 věty", "4 věty", "1 věta"],
+    options: ["3 věty", "4 věty", "2 věty", "1 věta"],
     hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je. Pozor: 'jedl, pil a zpíval' — jsou to tři různé věty, nebo několikanásobný přísudek jedné věty?"],
   },
   {
     question: "Spojka 'nebo' spojuje:",
     correctAnswer: "dvě možnosti – souřadící věty vylučovací",
-    options: [
-      "příčinu a jejich důsledek ve větě",
-      "dvě možnosti – souřadící věty vylučovací",
-      "čas a podmínku zároveň",
-      "přirovnání jedné věci k druhé",
-    ],
+    options: ["příčinu a jejich důsledek ve větě", "čas a podmínku zároveň", "přirovnání jedné věci k druhé", "dvě možnosti – souřadící věty vylučovací"],
     hints: ["'Nebo' = výběr mezi možnostmi."],
   },
   {
     question: "Spojka 'když' je:",
     correctAnswer: "podřadící – uvádí vedlejší větu časovou nebo podmínkovou",
-    options: [
-      "souřadící – spojuje rovnocenné věty",
-      "podřadící – uvádí vedlejší větu časovou nebo podmínkovou",
-      "příslovce",
-      "citoslovce",
-    ],
+    options: ["podřadící – uvádí vedlejší větu časovou nebo podmínkovou", "souřadící – spojuje rovnocenné věty", "příslovce", "citoslovce"],
     hints: ["'Když přijdeš...' = vedlejší věta."],
   },
   {
@@ -108,34 +83,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Podřadící spojky v souvětí jsou například:",
     correctAnswer: "že, aby, protože, když, který",
-    options: [
-      "a, ale, nebo, proto",
-      "že, aby, protože, když, který",
-      "nad, pod, před",
-      "já, ty, on",
-    ],
+    options: ["a, ale, nebo, proto", "nad, pod, před", "že, aby, protože, když, který", "já, ty, on"],
     hints: ["Podřadící = jedna věta závisí na druhé (je podřazena)."],
   },
   {
     question: "Jaký vzorec odpovídá souvětí 'Přišel, ale nezdravil.'?",
     correctAnswer: "V1, ale V2 – souřadící souvětí",
-    options: [
-      "V1, že V2 – podřadící",
-      "V1, ale V2 – souřadící souvětí",
-      "V1 + V2 + V3",
-      "jen jedna věta",
-    ],
+    options: ["V1, že V2 – podřadící", "V1 + V2 + V3", "jen jedna věta", "V1, ale V2 – souřadící souvětí"],
     hints: ["Ale = souřadící → obě věty jsou rovnocenné."],
   },
   {
     question: "Čárka v souvětí se píše:",
     correctAnswer: "před spojkami podřadícími a některými souřadícími – ale, proto",
-    options: [
-      "nikdy, čárka se v souvětí vůbec nepíše",
-      "před spojkami podřadícími a některými souřadícími – ale, proto",
-      "jen na úplném konci celého souvětí",
-      "za každým slovesem, bez ohledu na spojku",
-    ],
+    options: ["před spojkami podřadícími a některými souřadícími – ale, proto", "nikdy, čárka se v souvětí vůbec nepíše", "jen na úplném konci celého souvětí", "za každým slovesem, bez ohledu na spojku"],
     hints: ["Čárka souvisí s TYPEM spojky, ne s pozicí ve větě — je vůbec možné, aby platilo 'nikdy' nebo 'jen na konci' u souvětí s různými druhy spojek?"],
   },
   {
@@ -161,23 +121,13 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaký je rozdíl mezi souřadícím a podřadícím souvětím?",
     correctAnswer: "souřadící = dvě rovnocenné věty; podřadící = jedna závisí na druhé",
-    options: [
-      "souřadící má více vět, podřadící jen dvě",
-      "souřadící = dvě rovnocenné věty; podřadící = jedna závisí na druhé",
-      "v souřadícím není spojka",
-      "podřadící se píše bez čárky",
-    ],
+    options: ["souřadící má více vět, podřadící jen dvě", "v souřadícím není spojka", "podřadící se píše bez čárky", "souřadící = dvě rovnocenné věty; podřadící = jedna závisí na druhé"],
     hints: ["Souřadí = vedle sebe. Podřadí = jedna pod druhou (závislá)."],
   },
   {
     question: "Ve větě 'Šel do školy, ačkoli byl nemocný.' je spojka 'ačkoli':",
     correctAnswer: "podřadící – přípustková spojka",
-    options: [
-      "souřadící spojka",
-      "podřadící – přípustková spojka",
-      "příslovce, ne spojka",
-      "předložka, ne spojka",
-    ],
+    options: ["podřadící – přípustková spojka", "souřadící spojka", "příslovce, ne spojka", "předložka, ne spojka"],
     hints: ["'Ačkoli' = přestože – uvádí přípustkovou vedlejší větu."],
   },
   {
@@ -194,24 +144,19 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kolik vět je v souvětí 'Doma bylo ticho, protože všichni spali a nikdo nerušil.'?",
     correctAnswer: "3 věty",
-    options: ["2 věty", "3 věty", "4 věty", "5 vět"],
+    options: ["2 věty", "4 věty", "3 věty", "5 vět"],
     hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je — kolik přísudků, tolik vět."],
   },
   {
     question: "Napište vzorec souvětí 'Nešel ven, protože pršelo.':",
     correctAnswer: "HV, PV – hlavní věta, vedlejší věta příčinná",
-    options: [
-      "V1 + V2 – dvě souřadící hlavní věty",
-      "HV, PV – hlavní věta, vedlejší věta příčinná",
-      "PV + HV – vedlejší věta je první",
-      "HV a HV – dvě rovnocenné hlavní věty",
-    ],
+    options: ["V1 + V2 – dvě souřadící hlavní věty", "PV + HV – vedlejší věta je první", "HV a HV – dvě rovnocenné hlavní věty", "HV, PV – hlavní věta, vedlejší věta příčinná"],
     hints: ["'Protože' je podřadící spojka — spojuje dvě věty NEROVNOCENNĚ, jedna stojí samostatně a druhá na ní závisí. Který vzorec tenhle vztah zachycuje?"],
   },
   {
     question: "Ve větě 'Sněžilo, a přesto šli na procházku.' – kolik vět?",
     correctAnswer: "2 věty",
-    options: ["1 věta", "2 věty", "3 věty", "4 věty"],
+    options: ["2 věty", "1 věta", "3 věty", "4 věty"],
     hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je — kolik přísudků, tolik vět."],
   },
   {
@@ -228,34 +173,19 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jakou spojkou je spojena vedlejší věta příslovečná podmínková?",
     correctAnswer: "kdyby / jestli / pokud",
-    options: [
-      "protože / jelikož",
-      "kdyby / jestli / pokud",
-      "ačkoli / přestože",
-      "než / jakmile",
-    ],
+    options: ["protože / jelikož", "ačkoli / přestože", "kdyby / jestli / pokud", "než / jakmile"],
     hints: ["Podmínka: Jestli budeš hodný... / Kdyby přišel..."],
   },
   {
     question: "Ve větě 'Vím, kam jdeš.' je 'kam jdeš' vedlejší věta:",
     correctAnswer: "předmětná",
-    options: [
-      "časová",
-      "předmětná",
-      "příčinná",
-      "podmínková",
-    ],
+    options: ["časová", "příčinná", "podmínková", "předmětná"],
     hints: ["Vím CO? → Kam jdeš. Ta otázka 'co?' je stejná, na jakou odpovídá přímý předmět slovesa."],
   },
   {
     question: "Které z těchto souvětí je souřadící?",
     correctAnswer: "Jana zpívá a Pavel hraje na kytaru.",
-    options: [
-      "Vím, že přijdeš.",
-      "Jana zpívá a Pavel hraje na kytaru.",
-      "Šel domů, protože byl unavený.",
-      "Pokud přijdeš, budeme hrát.",
-    ],
+    options: ["Jana zpívá a Pavel hraje na kytaru.", "Vím, že přijdeš.", "Šel domů, protože byl unavený.", "Pokud přijdeš, budeme hrát."],
     hints: ["Spojka 'a' = souřadící → obě věty rovnocenné."],
   },
   {
@@ -272,24 +202,19 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kolik vět je v souvětí 'Zima přišla, sníh napadl a děti se radovaly.'?",
     correctAnswer: "3 věty",
-    options: ["2 věty", "3 věty", "4 věty", "1 věta"],
+    options: ["2 věty", "4 věty", "3 věty", "1 věta"],
     hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je — kolik přísudků, tolik vět."],
   },
   {
     question: "Čárka před spojkou 'a' se píše:",
     correctAnswer: "zpravidla ne, ale záleží na kontextu – nevylučuje se",
-    options: [
-      "vždy, bez výjimky před každým 'a'",
-      "zpravidla ne, ale záleží na kontextu – nevylučuje se",
-      "nikdy, čárka před 'a' se nepíše vůbec",
-      "jen před úplně posledním 'a' ve větě",
-    ],
+    options: ["vždy, bez výjimky před každým 'a'", "nikdy, čárka před 'a' se nepíše vůbec", "jen před úplně posledním 'a' ve větě", "zpravidla ne, ale záleží na kontextu – nevylučuje se"],
     hints: ["Před 'a' zpravidla čárku nepíšeme (na rozdíl od 'ale', 'proto')."],
   },
   {
     question: "Ve větě 'Nevěděl, zda přijde, nebo ne.' kolik vět?",
     correctAnswer: "2 věty",
-    options: ["1 věta", "2 věty", "3 věty", "4 věty"],
+    options: ["2 věty", "1 věta", "3 věty", "4 věty"],
     hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) — kolik jich napočítáš?"],
   },
   {
@@ -309,29 +234,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se nazývá souvětí, kde věty mají vztah příčiny a důsledku spojen souřadící spojkou?",
     correctAnswer: "souřadící souvětí důsledkové – proto, tedy, tudíž",
-    options: [
-      "podřadící souvětí příčinné",
-      "souřadící souvětí důsledkové – proto, tedy, tudíž",
-      "souřadící souvětí odporovací",
-      "podřadící souvětí podmínkové",
-    ],
+    options: ["podřadící souvětí příčinné", "souřadící souvětí odporovací", "souřadící souvětí důsledkové – proto, tedy, tudíž", "podřadící souvětí podmínkové"],
     hints: ["Proto/tudíž → důsledek z předchozí věty, ale obě věty jsou rovnocenné."],
   },
   {
     question: "Kolik vět je v souvětí 'Jakmile dorazili, začali pracovat, ačkoli byli unaveni.'?",
     correctAnswer: "3 věty",
-    options: ["2 věty", "3 věty", "4 věty", "5 vět"],
+    options: ["2 věty", "4 věty", "5 vět", "3 věty"],
     hints: ["Najdi v souvětí všechna slovesa v určitém tvaru (přísudky) a spočítej je."],
   },
   {
     question: "Jak se nazývá vedlejší věta ve větě 'Věřím, že uspěješ.'?",
     correctAnswer: "vedlejší věta předmětná",
-    options: [
-      "vedlejší věta přívlastková",
-      "vedlejší věta předmětná",
-      "vedlejší věta časová",
-      "vedlejší věta podmínková",
-    ],
+    options: ["vedlejší věta předmětná", "vedlejší věta přívlastková", "vedlejší věta časová", "vedlejší věta podmínková"],
     hints: ["Věřím čemu? Že uspěješ. – předmět = předmětná věta."],
   },
   {
@@ -348,34 +263,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Napište vzorec souvětí: 'Nevím, kdy přijde, protože mi nic neřekl.'",
     correctAnswer: "HV – PV(kdy) – PV – protože",
-    options: [
-      "HV + HV + HV",
-      "HV – PV(kdy) – PV – protože",
-      "PV – HV – PV",
-      "HV + PV souřadící",
-    ],
+    options: ["HV + HV + HV", "PV – HV – PV", "HV – PV(kdy) – PV – protože", "HV + PV souřadící"],
     hints: ["Nevím = HV. Kdy přijde = PV předmětná. Protože = PV příčinná."],
   },
   {
     question: "Proč dáváme čárku před 'protože', 'ačkoli', 'aby', 'když'?",
     correctAnswer: "tyto spojky uvádějí vedlejší větu, která se odděluje čárkou",
-    options: [
-      "protože jsou delší",
-      "tyto spojky uvádějí vedlejší větu, která se odděluje čárkou",
-      "pravidlo neexistuje – záleží na autorovi",
-      "proto, aby věta byla hezčí",
-    ],
+    options: ["protože jsou delší", "pravidlo neexistuje – záleží na autorovi", "proto, aby věta byla hezčí", "tyto spojky uvádějí vedlejší větu, která se odděluje čárkou"],
     hints: ["Před podřadícími spojkami píšeme čárku."],
   },
   {
     question: "Ve větě 'Dej mi vědět, přijde-li vlak včas.' je 'přijde-li' spojena:",
     correctAnswer: "podmínkově – -li připojuje vedlejší větu podmínkovou",
-    options: [
-      "souřadící spojkou, jako by tam bylo 'a'",
-      "podmínkově – -li připojuje vedlejší větu podmínkovou",
-      "příslovcem vyjadřujícím způsob",
-      "záporovou částicí jako v 'nepůjde'",
-    ],
+    options: ["podmínkově – -li připojuje vedlejší větu podmínkovou", "souřadící spojkou, jako by tam bylo 'a'", "příslovcem vyjadřujícím způsob", "záporovou částicí jako v 'nepůjde'"],
     hints: ["'-li' = starší forma podmínkové spojky (pokud přijde = přijde-li)."],
   },
   {
@@ -392,34 +292,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se nazývá vedlejší věta 'jak to udělal' ve větě 'Viděl jsem, jak to udělal.'?",
     correctAnswer: "vedlejší věta předmětná – viděl co? jak to udělal",
-    options: [
-      "vedlejší věta způsobová",
-      "vedlejší věta předmětná – viděl co? jak to udělal",
-      "vedlejší věta časová",
-      "vedlejší věta přívlastková",
-    ],
+    options: ["vedlejší věta způsobová", "vedlejší věta časová", "vedlejší věta předmětná – viděl co? jak to udělal", "vedlejší věta přívlastková"],
     hints: ["Viděl co? Jak to udělal = předmět = předmětná."],
   },
   {
     question: "Ve složeném souvětí s více vedlejšími větami – jak se vyznačuje řazení vět?",
     correctAnswer: "čísly nebo symboly: HV, PV1, PV2...",
-    options: [
-      "písmeny abecedy",
-      "čísly nebo symboly: HV, PV1, PV2...",
-      "závorkami",
-      "v češtině se to nevyznačuje",
-    ],
+    options: ["písmeny abecedy", "závorkami", "v češtině se to nevyznačuje", "čísly nebo symboly: HV, PV1, PV2..."],
     hints: ["Při rozboru souvětí označujeme věty čísly a typy."],
   },
   {
     question: "Co je rozvité souvětí?",
     correctAnswer: "souvětí se třemi a více větami",
-    options: [
-      "souvětí s dlouhými slovy",
-      "souvětí se třemi a více větami",
-      "souvětí s přídavnými jmény",
-      "souvětí s více podměty",
-    ],
+    options: ["souvětí se třemi a více větami", "souvětí s dlouhými slovy", "souvětí s přídavnými jmény", "souvětí s více podměty"],
     hints: ["Rozvité = rozvinuté = hodně vět."],
   },
 ];

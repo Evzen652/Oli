@@ -17,12 +17,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: `Přečti sdělení: "${TEXT_A}" Která reprodukce nejlépe vystihuje smysl?`,
     correctAnswer: "Sloni váží až 6 tun a žijí v Africe a Asii.",
-    options: [
-      "Sloni jsou malá zvířata z Afriky.",
-      "Sloni váží až 6 tun a žijí v Africe a Asii.",
-      "Sloni jedí jen trávu v Americe.",
-      "Slon africký váží až 10 tun.",
-    ],
+    options: ["Sloni váží až 6 tun a žijí v Africe a Asii.", "Sloni jsou malá zvířata z Afriky.", "Sloni jedí jen trávu v Americe.", "Slon africký váží až 10 tun."],
     hints: ["Reprodukce zachovává klíčové informace – váhu, místo, potravu."],
   },
   {
@@ -39,34 +34,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: `Přečti sdělení: "${TEXT_C}" Která reprodukce je správná?`,
     correctAnswer: "Pavel chodí každé ráno pěšky do školy, cesta trvá 15 minut a cestou potkává kamarády.",
-    options: [
-      "Pavel jezdí do školy autobusem každé ráno.",
-      "Pavel chodí každé ráno pěšky do školy, cesta trvá 15 minut a cestou potkává kamarády.",
-      "Pavel chodí do školy odpoledne, cesta trvá hodinu.",
-      "Pavel chodí sám do školy, nikoho nepotkává.",
-    ],
+    options: ["Pavel jezdí do školy autobusem každé ráno.", "Pavel chodí do školy odpoledne, cesta trvá hodinu.", "Pavel chodí každé ráno pěšky do školy, cesta trvá 15 minut a cestou potkává kamarády.", "Pavel chodí sám do školy, nikoho nepotkává."],
     hints: ["Reprodukce musí zachovat fakta: pěšky, 15 minut, kamarádi."],
   },
   {
     question: "Co je reprodukce sdělení?",
     correctAnswer: "převyprávění vlastními slovy",
-    options: [
-      "doslovné opakování textu",
-      "převyprávění vlastními slovy",
-      "přeložení do jiného jazyka",
-      "zkrácení na jedno slovo",
-    ],
+    options: ["doslovné opakování textu", "přeložení do jiného jazyka", "zkrácení na jedno slovo", "převyprávění vlastními slovy"],
     hints: ["Reprodukce = svými výrazy, ale smysl zůstává stejný."],
   },
   {
     question: "Co se v reprodukci NESMÍ změnit?",
     correctAnswer: "hlavní smysl a klíčové informace",
-    options: [
-      "slova musí být stejná",
-      "hlavní smysl a klíčové informace",
-      "délka textu",
-      "pořadí vět",
-    ],
+    options: ["hlavní smysl a klíčové informace", "slova musí být stejná", "délka textu", "pořadí vět"],
     hints: ["Smysl musí zůstat. Slova mohou být jiná."],
   },
   {
@@ -83,34 +63,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Při reprodukci NESMÍME:",
     correctAnswer: "přidat, co v originálu není",
-    options: [
-      "použít vlastní slova",
-      "přidat, co v originálu není",
-      "zkrátit původní text",
-      "změnit pořadí informací",
-    ],
+    options: ["použít vlastní slova", "zkrátit původní text", "přidat, co v originálu není", "změnit pořadí informací"],
     hints: ["Reprodukce = zachovat, ne vymýšlet."],
   },
   {
     question: "Jak poznáme dobrou reprodukci?",
     correctAnswer: "má vše podstatné a nic navíc",
-    options: [
-      "je kratší než originál",
-      "má vše podstatné a nic navíc",
-      "je delší než originál",
-      "je psaná stejnými slovy",
-    ],
+    options: ["je kratší než originál", "je delší než originál", "je psaná stejnými slovy", "má vše podstatné a nic navíc"],
     hints: ["Dobrá reprodukce = věrná a úplná, ale vlastními slovy."],
   },
   {
     question: "Proč je reprodukce užitečná dovednost?",
     correctAnswer: "pomáhá ověřit, zda jsme textu porozuměli",
-    options: [
-      "jen kvůli memorování",
-      "pomáhá ověřit, zda jsme textu porozuměli",
-      "záleží na délce textu",
-      "jen kvůli překladu",
-    ],
+    options: ["pomáhá ověřit, zda jsme textu porozuměli", "jen kvůli memorování", "záleží na délce textu", "jen kvůli překladu"],
     hints: ["Reprodukce = důkaz porozumění textu."],
   },
   {
@@ -127,34 +92,19 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která z reprodukcí textu 'Sloni mají šedou barvu a velké uši. Ušima se chladí.' je správná?",
     correctAnswer: "Sloni jsou šedí a mají velké uši, které používají k chlazení.",
-    options: [
-      "Sloni jsou černí a mají malé uši.",
-      "Sloni jsou šedí a mají velké uši, které používají k chlazení.",
-      "Sloni mají malé uši a jsou zelení.",
-      "Sloni se chladí vodou.",
-    ],
+    options: ["Sloni jsou černí a mají malé uši.", "Sloni mají malé uši a jsou zelení.", "Sloni jsou šedí a mají velké uši, které používají k chlazení.", "Sloni se chladí vodou."],
     hints: ["Správná reprodukce zachovává: barvu, velikost uší, funkci."],
   },
   {
     question: "Která z reprodukcí je špatná? Originál: 'Psi jsou věrná zvířata. Žijí s lidmi tisíce let.'",
     correctAnswer: "Psi jsou nebezpečná zvířata a žijí jen ve volné přírodě.",
-    options: [
-      "Psi jsou věrní a s lidmi žijí tisíce let.",
-      "Psi patří k nejdéle domestikovaným zvířatům.",
-      "Psi jsou nebezpečná zvířata a žijí jen ve volné přírodě.",
-      "Psi jsou přátelé lidí od pradávna.",
-    ],
+    options: ["Psi jsou věrní a s lidmi žijí tisíce let.", "Psi patří k nejdéle domestikovaným zvířatům.", "Psi jsou přátelé lidí od pradávna.", "Psi jsou nebezpečná zvířata a žijí jen ve volné přírodě."],
     hints: ["Špatná reprodukce mění smysl originálu."],
   },
   {
     question: "Jak hledat klíčové informace pro reprodukci?",
     correctAnswer: "ptáme se: kdo? co? kde? kdy? proč? jak?",
-    options: [
-      "počítáme slova",
-      "ptáme se: kdo? co? kde? kdy? proč? jak?",
-      "hledáme nejdelší větu",
-      "záleží na autorovi",
-    ],
+    options: ["ptáme se: kdo? co? kde? kdy? proč? jak?", "počítáme slova", "hledáme nejdelší větu", "záleží na autorovi"],
     hints: ["Klíčové informace = odpovědi na základní otázky."],
   },
   {
@@ -171,12 +121,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Při reprodukci delšího textu je vhodné:",
     correctAnswer: "najít hlavní myšlenky a přeformulovat je",
-    options: [
-      "přečíst text jen jednou",
-      "najít hlavní myšlenky a přeformulovat je",
-      "napsat jen první větu",
-      "opsat nejdelší odstavec",
-    ],
+    options: ["přečíst text jen jednou", "napsat jen první větu", "najít hlavní myšlenky a přeformulovat je", "opsat nejdelší odstavec"],
     hints: ["Krok 1: co je hlavní? Krok 2: jak to říct jinak?"],
   },
 ];
@@ -185,23 +130,13 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Přečti: 'Čokoláda se vyrábí z kakaových bobů. Kakaovník roste v tropech. Z bobů se lisuje máslo a prášek.' Která reprodukce je nejlepší?",
     correctAnswer: "Čokoláda je z kakaových bobů z tropů.",
-    options: [
-      "Čokoláda se vyrábí z obilí.",
-      "Čokoláda je z kakaových bobů z tropů.",
-      "Kakaovník roste jen v Africe.",
-      "Čokoláda je hlavně z mléka.",
-    ],
+    options: ["Čokoláda se vyrábí z obilí.", "Kakaovník roste jen v Africe.", "Čokoláda je hlavně z mléka.", "Čokoláda je z kakaových bobů z tropů."],
     hints: ["Zachovej: původ, místo pěstování, způsob výroby."],
   },
   {
     question: "Přečti: 'Knihovna v našem městě nabízí přes 50 tisíc titulů. Otevřeno je denně kromě neděle.' Která reprodukce je správná?",
     correctAnswer: "Knihovna má 50 000 knih, zavřeno v neděli.",
-    options: [
-      "Knihovna je otevřena jen v neděli.",
-      "Knihovna má 50 000 knih, zavřeno v neděli.",
-      "Knihovna má přes 100 000 knih.",
-      "Knihovna je zavřena celý týden.",
-    ],
+    options: ["Knihovna má 50 000 knih, zavřeno v neděli.", "Knihovna je otevřena jen v neděli.", "Knihovna má přes 100 000 knih.", "Knihovna je zavřena celý týden."],
     hints: ["Fakta: počet knih + zavírací den. Musí být přesně zachovány."],
   },
   {
@@ -218,12 +153,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je tematická věta?",
     correctAnswer: "shrnuje myšlenku odstavce",
-    options: [
-      "je poslední větou odstavce",
-      "shrnuje myšlenku odstavce",
-      "je nejkratší větou textu",
-      "je vždy otázkou",
-    ],
+    options: ["je poslední větou odstavce", "je nejkratší větou textu", "shrnuje myšlenku odstavce", "je vždy otázkou"],
     hints: ["Topic sentence = věta-shrnutí. Zbytek ji rozvíjí."],
   },
   {
@@ -240,12 +170,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč se reprodukce liší od doslova opakování?",
     correctAnswer: "ukazuje, že jsi porozuměl",
-    options: [
-      "je vždy delší než originál",
-      "ukazuje, že jsi porozuměl",
-      "je přesnější než originál",
-      "opakování je vždy kratší",
-    ],
+    options: ["ukazuje, že jsi porozuměl", "je vždy delší než originál", "je přesnější než originál", "opakování je vždy kratší"],
     hints: ["Porozuměl/a jsi → dokážeš říct jinak. Jen si zapamatoval/a → opakuješ doslova."],
   },
   {
@@ -262,78 +187,43 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je hlavní smysl sdělení?",
     correctAnswer: "myšlenka celého textu",
-    options: [
-      "první věta textu",
-      "myšlenka celého textu",
-      "poslední věta textu",
-      "nejdelší věta textu",
-    ],
+    options: ["první věta textu", "poslední věta textu", "myšlenka celého textu", "nejdelší věta textu"],
     hints: ["Ptej se: o čem je celý text? To je hlavní smysl."],
   },
   {
     question: "Jak víme, že naše reprodukce je věrná?",
     correctAnswer: "porovnáme s originálem – jsou klíčové informace všechny?",
-    options: [
-      "je stejně dlouhá jako originál",
-      "porovnáme s originálem – jsou klíčové informace všechny?",
-      "použili jsme stejná slova",
-      "záleží na délce",
-    ],
+    options: ["je stejně dlouhá jako originál", "použili jsme stejná slova", "záleží na délce", "porovnáme s originálem – jsou klíčové informace všechny?"],
     hints: ["Ověření: znovu přečti originál a zkontroluj."],
   },
   {
     question: "Jak správně strukturujeme reprodukci delšího textu?",
     correctAnswer: "každý odstavec originálu shrneme do jedné věty reprodukce",
-    options: [
-      "napíšeme jen první a poslední odstavec",
-      "každý odstavec originálu shrneme do jedné věty reprodukce",
-      "záleží jen na délce",
-      "přepíšeme jen zajímavé části",
-    ],
+    options: ["každý odstavec originálu shrneme do jedné věty reprodukce", "napíšeme jen první a poslední odstavec", "záleží jen na délce", "přepíšeme jen zajímavé části"],
     hints: ["Jednu část textu shrň do jedné výstižné věty — a totéž udělej pro každou další část."],
   },
   {
     question: "Přečti: 'Bouřky vznikají při srážce teplého a studeného vzduchu. Doprovázejí je blesky a hrom.' Která reprodukce je chybná?",
     correctAnswer: "Bouřky vznikají jen v létě a hrom je způsoben vlhkostí.",
-    options: [
-      "Bouřky nastávají při srážce teplého a studeného vzduchu a provází je blesky.",
-      "Při bouřkách dochází ke srážce vzdušných mas a ke vzniku blesků.",
-      "Bouřky vznikají jen v létě a hrom je způsoben vlhkostí.",
-      "Bouřky jsou způsobeny rozdílem teplot vzduchu.",
-    ],
+    options: ["Bouřky nastávají při srážce teplého a studeného vzduchu a provází je blesky.", "Bouřky vznikají jen v létě a hrom je způsoben vlhkostí.", "Při bouřkách dochází ke srážce vzdušných mas a ke vzniku blesků.", "Bouřky jsou způsobeny rozdílem teplot vzduchu."],
     hints: ["Tato reprodukce mění, kdy bouřky vznikají, a vymýšlí příčinu hromu, o které originál nic neříká."],
   },
   {
     question: "Co je abstrakce v reprodukci?",
     correctAnswer: "shrnutí konkrétních detailů do obecné myšlenky",
-    options: [
-      "přeložení textu",
-      "shrnutí konkrétních detailů do obecné myšlenky",
-      "doplnění nových informací",
-      "záleží na tématu",
-    ],
+    options: ["přeložení textu", "doplnění nových informací", "shrnutí konkrétních detailů do obecné myšlenky", "záleží na tématu"],
     hints: ["'Sloni jedí trávu, listy a větve.' → 'Sloni se živí rostlinami.' = abstrakce."],
   },
   {
     question: "Při reprodukci odborného textu je důležité:",
     correctAnswer: "zachovat klíčové termíny a přesná čísla",
-    options: [
-      "použít jednodušší slova bez termínů",
-      "zachovat klíčové termíny a přesná čísla",
-      "zkrátit na polovinu",
-      "záleží na adresátovi",
-    ],
+    options: ["použít jednodušší slova bez termínů", "zkrátit na polovinu", "záleží na adresátovi", "zachovat klíčové termíny a přesná čísla"],
     hints: ["Odborné termíny a čísla nelze nahradit – jsou přesné."],
   },
   {
     question: "Jak se liší shrnutí od analýzy textu?",
     correctAnswer: "shrnutí říká co, rozbor proč",
-    options: [
-      "rozbor říká co, shrnutí proč",
-      "shrnutí říká co, rozbor proč",
-      "obojí znamená totéž",
-      "rozbor je vždy kratší",
-    ],
+    options: ["shrnutí říká co, rozbor proč", "rozbor říká co, shrnutí proč", "obojí znamená totéž", "rozbor je vždy kratší"],
     hints: ["Shrnutí = obsah. Analýza = záměr, styl, struktura."],
   },
   {
@@ -353,34 +243,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se liší reprodukce faktografického textu od reprodukce literárního textu?",
     correctAnswer: "u faktů přesnost, u příběhu nálada",
-    options: [
-      "u faktů nálada, u příběhu přesnost",
-      "u faktů přesnost, u příběhu nálada",
-      "obojí je úplně stejné",
-      "literární je vždy delší",
-    ],
+    options: ["u faktů nálada, u příběhu přesnost", "obojí je úplně stejné", "u faktů přesnost, u příběhu nálada", "literární je vždy delší"],
     hints: ["Fakta = přesná čísla a termíny. Literatura = příběh a emoce."],
   },
   {
     question: "Co je citátová reprodukce (doslova)?",
     correctAnswer: "doslovné znění v uvozovkách",
-    options: [
-      "volná vlastní formulace",
-      "doslovné znění v uvozovkách",
-      "zkrácená verze textu",
-      "překlad do jiného jazyka",
-    ],
+    options: ["volná vlastní formulace", "zkrácená verze textu", "překlad do jiného jazyka", "doslovné znění v uvozovkách"],
     hints: ["Citace = doslova, uvozovky. Reprodukce = vlastní slova."],
   },
   {
     question: "Při reprodukci básně je důležité:",
     correctAnswer: "zachovat téma a náladu",
-    options: [
-      "zachovat rým a rytmus",
-      "zachovat téma a náladu",
-      "přepsat báseň doslova",
-      "zkrátit ji na jednu větu",
-    ],
+    options: ["zachovat téma a náladu", "zachovat rým a rytmus", "přepsat báseň doslova", "zkrátit ji na jednu větu"],
     hints: ["Báseň se reprodukuje prózou – zachováme téma a pocit."],
   },
   {
@@ -397,34 +272,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co je interpretační chyba v reprodukci?",
     correctAnswer: "přidání vlastního názoru",
-    options: [
-      "změna pořadí informací",
-      "přidání vlastního názoru",
-      "zkrácení celého textu",
-      "použití vlastních slov",
-    ],
+    options: ["změna pořadí informací", "zkrácení celého textu", "přidání vlastního názoru", "použití vlastních slov"],
     hints: ["Interpretace = vlastní výklad. Reprodukce by měla být neutrální."],
   },
   {
     question: "Přečti: 'Vítr vzniká pohybem vzdušných mas způsobeným rozdílem tlaků. Čím větší je rozdíl, tím silnější vítr.' Která reprodukce je nejpřesnější?",
     correctAnswer: "Vítr vzniká rozdílem tlaku vzduchu.",
-    options: [
-      "Vítr je způsoben teplotou slunce.",
-      "Vítr vzniká rozdílem tlaku vzduchu.",
-      "Vítr vždy fouká ze severu.",
-      "Tlak nemá na vítr vliv.",
-    ],
+    options: ["Vítr je způsoben teplotou slunce.", "Vítr vždy fouká ze severu.", "Tlak nemá na vítr vliv.", "Vítr vzniká rozdílem tlaku vzduchu."],
     hints: ["Zachovej: příčina (rozdíl tlaků), vztah (větší rozdíl = silnější vítr)."],
   },
   {
     question: "Jak pomáhá osnova při reprodukci dlouhého textu?",
     correctAnswer: "osnova zachycuje klíčové body – reprodukujeme každý bod zvlášť",
-    options: [
-      "osnova je pro reprodukci zbytečná",
-      "osnova zachycuje klíčové body – reprodukujeme každý bod zvlášť",
-      "záleží jen na délce",
-      "osnova se tvoří po reprodukci",
-    ],
+    options: ["osnova zachycuje klíčové body – reprodukujeme každý bod zvlášť", "osnova je pro reprodukci zbytečná", "záleží jen na délce", "osnova se tvoří po reprodukci"],
     hints: ["Osnova = mapa textu. Reprodukce bodu po bodu = přehledná reprodukce."],
   },
   {
@@ -441,34 +301,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se liší shrnutí od rozšířené reprodukce?",
     correctAnswer: "shrnutí = jen hlavní body; rozšířená = zachovány i detaily",
-    options: [
-      "jsou totéž",
-      "shrnutí = jen hlavní body; rozšířená = zachovány i detaily",
-      "rozšířená je vždy delší než originál",
-      "záleží na adresátovi",
-    ],
+    options: ["jsou totéž", "rozšířená je vždy delší než originál", "shrnutí = jen hlavní body; rozšířená = zachovány i detaily", "záleží na adresátovi"],
     hints: ["Shrnutí = stručné. Rozšířená reprodukce = podrobnější."],
   },
   {
     question: "Přečti a reprodukuj vlastními slovy: 'Voda tvoří 71 % povrchu Země. Přesto je pitná voda vzácná.'",
     correctAnswer: "Ačkoli voda pokrývá přes 70 % zemského povrchu, pitné vody je málo.",
-    options: [
-      "Celá Země je pokryta vodou.",
-      "Ačkoli voda pokrývá přes 70 % zemského povrchu, pitné vody je málo.",
-      "Pitná voda tvoří 71 % Země.",
-      "Voda je vzácná, proto Země je suchá.",
-    ],
+    options: ["Celá Země je pokryta vodou.", "Pitná voda tvoří 71 % Země.", "Voda je vzácná, proto Země je suchá.", "Ačkoli voda pokrývá přes 70 % zemského povrchu, pitné vody je málo."],
     hints: ["Zachovej: 71 % a paradox = hodně vody, ale málo pitné."],
   },
   {
     question: "Co je kritická reprodukce?",
     correctAnswer: "hodnotíme i kvalitu originálu",
-    options: [
-      "doslova opakujeme cizí text",
-      "hodnotíme i kvalitu originálu",
-      "jen zkrátíme původní text",
-      "přeložíme text do cizího jazyka",
-    ],
+    options: ["hodnotíme i kvalitu originálu", "doslova opakujeme cizí text", "jen zkrátíme původní text", "přeložíme text do cizího jazyka"],
     hints: ["Kritická = reprodukuji + hodnotím: je to pravda? Je to logické?"],
   },
 ];

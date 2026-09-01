@@ -13,7 +13,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik slovních druhů je v češtině?",
     correctAnswer: "10",
-    options: ["6", "8", "10", "12"],
+    options: ["10", "6", "8", "12"],
     hints: ["Vzpomeň si na všechny skupiny: jména, slovesa, zájmena, číslovky, příslovce, neohebné — kolik to celkem dá?"],
   },
   {
@@ -25,25 +25,25 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký slovní druh je slovo 'krásný'?",
     correctAnswer: "přídavné jméno",
-    options: ["podstatné jméno", "přídavné jméno", "sloveso", "příslovce"],
+    options: ["podstatné jméno", "sloveso", "přídavné jméno", "příslovce"],
     hints: ["Přídavná jména vyjadřují vlastnosti."],
   },
   {
     question: "Jaký slovní druh je slovo 'běžet'?",
     correctAnswer: "sloveso",
-    options: ["podstatné jméno", "přídavné jméno", "sloveso", "příslovce"],
+    options: ["podstatné jméno", "přídavné jméno", "příslovce", "sloveso"],
     hints: ["Slovesa vyjadřují činnost nebo stav."],
   },
   {
     question: "Jaký slovní druh je slovo 'rychle'?",
     correctAnswer: "příslovce",
-    options: ["přídavné jméno", "sloveso", "příslovce", "předložka"],
+    options: ["příslovce", "přídavné jméno", "sloveso", "předložka"],
     hints: ["Zeptej se: běžel jak? Rychle. Slovo, které odpovídá na 'jak', patří do které skupiny?"],
   },
   {
     question: "Jaký slovní druh je slovo 'já'?",
     correctAnswer: "zájmeno",
-    options: ["podstatné jméno", "přídavné jméno", "zájmeno", "citoslovce"],
+    options: ["podstatné jméno", "zájmeno", "přídavné jméno", "citoslovce"],
     hints: ["Zájmena zastupují podstatná nebo přídavná jména."],
   },
   {
@@ -55,47 +55,37 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaký slovní druh je slovo 'na' (ve větě 'Jdu na hřiště.')?",
     correctAnswer: "předložka",
-    options: ["příslovce", "spojka", "předložka", "citoslovce"],
+    options: ["příslovce", "spojka", "citoslovce", "předložka"],
     hints: ["Předložky se pojí s podstatnými jmény a určují vztahy."],
   },
   {
     question: "Jaký slovní druh je slovo 'a' (ve větě 'Petr a Pavel.')?",
     correctAnswer: "spojka",
-    options: ["citoslovce", "předložka", "příslovce", "spojka"],
+    options: ["spojka", "citoslovce", "předložka", "příslovce"],
     hints: ["Spojky spojují slova nebo věty."],
   },
   {
     question: "Jaký slovní druh je slovo 'ano'?",
     correctAnswer: "částice",
-    options: ["citoslovce", "spojka", "příslovce", "částice"],
+    options: ["citoslovce", "částice", "spojka", "příslovce"],
     hints: ["'Ano' vyjadřuje postoj mluvčího a nic neoznačuje ani nezastupuje. Který slovní druh to je?"],
   },
   {
     question: "Jaký slovní druh je slovo 'au'?",
     correctAnswer: "citoslovce",
-    options: ["příslovce", "citoslovce", "částice", "spojka"],
+    options: ["příslovce", "částice", "citoslovce", "spojka"],
     hints: ["'Au' napodobuje zvuk bolesti a nezapojuje se do věty jako její člen. Který slovní druh to je?"],
   },
   {
     question: "Ohebné slovní druhy jsou ty, které:",
     correctAnswer: "se mění – skloňují nebo časují",
-    options: [
-      "se nikdy nemění",
-      "se mění – skloňují nebo časují",
-      "jsou vždy krátká",
-      "jsou jen podstatná jména",
-    ],
+    options: ["se nikdy nemění", "jsou vždy krátká", "jsou jen podstatná jména", "se mění – skloňují nebo časují"],
     hints: ["Ohebné = mění se v pádech, osobách atd."],
   },
   {
     question: "Neohebné slovní druhy jsou:",
     correctAnswer: "příslovce, předložka, spojka, částice, citoslovce",
-    options: [
-      "podstatná jména, přídavná jména, zájmena",
-      "příslovce, předložka, spojka, částice, citoslovce",
-      "slovesa, číslovky, zájmena",
-      "jen předložky a spojky",
-    ],
+    options: ["příslovce, předložka, spojka, částice, citoslovce", "podstatná jména, přídavná jména, zájmena", "slovesa, číslovky, zájmena", "jen předložky a spojky"],
     hints: ["Neohebné = nemění se v pádech ani osobách. Patří sem příslovce a dále čtyři skupiny slov, která slouží jako 'spojovací' nebo 'doplňující' — dokážeš je vyjmenovat?"],
   },
   {
@@ -107,7 +97,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Ve větě 'Ahoj, jak se máš?' – jaký slovní druh je 'ahoj'?",
     correctAnswer: "citoslovce",
-    options: ["příslovce", "spojka", "podstatné jméno", "citoslovce"],
+    options: ["příslovce", "spojka", "citoslovce", "podstatné jméno"],
     hints: ["'Ahoj' vyjadřuje citový nebo sociální postoj — nemění se, netvoří větné sklady. Který slovní druh vyjadřuje city a zvuky?"],
   },
 ];
@@ -116,25 +106,25 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve větě 'Ten velký pes rychle utekl.' – jaký slovní druh je 'ten'?",
     correctAnswer: "zájmeno – ukazovací",
-    options: ["přídavné jméno", "číslovka", "zájmeno – ukazovací", "podstatné jméno"],
+    options: ["přídavné jméno", "číslovka", "podstatné jméno", "zájmeno – ukazovací"],
     hints: ["Ten = ukazovací zájmeno, zastupuje nebo upřesňuje jméno."],
   },
   {
     question: "Ve větě 'Tři ptáci odletěli.' – jaký slovní druh je 'tři'?",
     correctAnswer: "číslovka – základní",
-    options: ["přídavné jméno", "příslovce", "číslovka – základní", "podstatné jméno"],
+    options: ["číslovka – základní", "přídavné jméno", "příslovce", "podstatné jméno"],
     hints: ["Kolik ptáků? Tři. Slovo, které odpovídá na 'kolik', patří do které skupiny?"],
   },
   {
     question: "Ve větě 'Byl jsem v lese.' – jaký slovní druh je 'v'?",
     correctAnswer: "předložka",
-    options: ["spojka", "příslovce", "částice", "předložka"],
+    options: ["spojka", "předložka", "příslovce", "částice"],
     hints: ["'V' se pojí s podstatným jménem a určuje vztah (kde?) — samo o sobě nic neznamená. Který slovní druh takhle funguje?"],
   },
   {
     question: "Ve větě 'Prý bude pršet.' – jaký slovní druh je 'prý'?",
     correctAnswer: "částice",
-    options: ["příslovce", "spojka", "citoslovce", "částice"],
+    options: ["příslovce", "spojka", "částice", "citoslovce"],
     hints: ["'Prý' naznačuje, že informace je od někoho jiného, a nezastupuje jméno ani neurčuje děj. Který slovní druh vyjadřuje postoj mluvčího?"],
   },
   {
@@ -146,13 +136,13 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve větě 'Ona je moje sestra.' – jaký slovní druh je 'ona'?",
     correctAnswer: "zájmeno – osobní",
-    options: ["podstatné jméno", "přídavné jméno", "zájmeno – osobní", "citoslovce"],
+    options: ["zájmeno – osobní", "podstatné jméno", "přídavné jméno", "citoslovce"],
     hints: ["Ona zastupuje jméno – osobní zájmeno."],
   },
   {
     question: "Ve větě 'Hups, to bylo rychlé!' – jaký slovní druh je 'hups'?",
     correctAnswer: "citoslovce",
-    options: ["příslovce", "částice", "citoslovce", "zájmeno"],
+    options: ["příslovce", "citoslovce", "částice", "zájmeno"],
     hints: ["'Hups' vyjadřuje překvapení, ale netvoří se s ním věta — stojí samo o sobě. Který slovní druh to je?"],
   },
   {
@@ -164,48 +154,43 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve větě 'Každý to ví.' – jaký slovní druh je 'každý'?",
     correctAnswer: "zájmeno – neurčité",
-    options: ["přídavné jméno", "číslovka", "zájmeno – neurčité", "podstatné jméno"],
+    options: ["přídavné jméno", "číslovka", "podstatné jméno", "zájmeno – neurčité"],
     hints: ["Každý zastupuje podstatné jméno – neurčité zájmeno."],
   },
   {
     question: "Ohebné slovní druhy jsou (5 z 10):",
     correctAnswer: "podstatná jména, přídavná jména, zájmena, číslovky, slovesa",
-    options: [
-      "příslovce, předložky, spojky, citoslovce, částice",
-      "podstatná jména, přídavná jména, zájmena, číslovky, slovesa",
-      "jen podstatná jména a slovesa",
-      "jen zájmena a číslovky",
-    ],
+    options: ["podstatná jména, přídavná jména, zájmena, číslovky, slovesa", "příslovce, předložky, spojky, citoslovce, částice", "jen podstatná jména a slovesa", "jen zájmena a číslovky"],
     hints: ["Pět ohebných druhů = skloňují se nebo časují."],
   },
   {
     question: "Ve větě 'Bez práce nejsou koláče.' – jaký slovní druh je 'bez'?",
     correctAnswer: "předložka",
-    options: ["spojka", "příslovce", "předložka", "částice"],
+    options: ["spojka", "předložka", "příslovce", "částice"],
     hints: ["'Bez' se pojí s podstatným jménem ve 2. pádě a samo o sobě nic neznamená. Který slovní druh takhle funguje?"],
   },
   {
     question: "Ve větě 'Snad přijde.' – jaký slovní druh je 'snad'?",
     correctAnswer: "částice",
-    options: ["příslovce", "citoslovce", "spojka", "částice"],
+    options: ["příslovce", "citoslovce", "částice", "spojka"],
     hints: ["'Snad' vyjadřuje nejistotu mluvčího a nic neoznačuje ani neurčuje děj. Který slovní druh to je?"],
   },
   {
     question: "Ve větě 'Psal jsem celé odpoledne.' – jaký slovní druh je 'celé'?",
     correctAnswer: "přídavné jméno",
-    options: ["příslovce", "přídavné jméno", "zájmeno", "číslovka"],
+    options: ["příslovce", "zájmeno", "číslovka", "přídavné jméno"],
     hints: ["Odpoledne jaké? Celé. Slovo, které odpovídá na otázku 'jaký/jaká/jaké', patří do které skupiny?"],
   },
   {
     question: "Ve větě 'Zpívala jsem nahlas.' – jaký slovní druh je 'nahlas'?",
     correctAnswer: "příslovce – způsobu",
-    options: ["přídavné jméno", "příslovce – způsobu", "podstatné jméno", "předložka"],
+    options: ["příslovce – způsobu", "přídavné jméno", "podstatné jméno", "předložka"],
     hints: ["Zpívala jak? Nahlas. Slovo, které odpovídá na 'jak', patří do které skupiny?"],
   },
   {
     question: "Ve větě 'Oba chlapci přišli.' – jaký slovní druh je 'oba'?",
     correctAnswer: "číslovka – druhová/základní",
-    options: ["přídavné jméno", "zájmeno", "číslovka – druhová/základní", "příslovce"],
+    options: ["přídavné jméno", "číslovka – druhová/základní", "zájmeno", "příslovce"],
     hints: ["Kolik chlapců? Oba. Slovo, které odpovídá na 'kolik', patří do které skupiny?"],
   },
 ];
@@ -220,13 +205,13 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Nevím, zda přijde.' – jaký slovní druh je 'zda'?",
     correctAnswer: "spojka – podřadící",
-    options: ["příslovce způsobu", "spojka – podřadící", "částice vyjadřující postoj", "zájmeno zastupující jméno"],
+    options: ["příslovce způsobu", "částice vyjadřující postoj", "zájmeno zastupující jméno", "spojka – podřadící"],
     hints: ["Bez 'zda' by věta 'Nevím, zda přijde' nedávala smysl jako celek — napojuje vedlejší větu na hlavní. Který slovní druh spojuje věty?"],
   },
   {
     question: "Jaký slovní druh je slovo 'totiž' (ve větě 'Přišel pozdě, přišel totiž pěšky.')?",
     correctAnswer: "spojka – souřadící vysvětlovací",
-    options: ["příslovce vyjadřující míru", "spojka – souřadící vysvětlovací", "citoslovce vyjadřující cit", "částice vyjadřující postoj"],
+    options: ["spojka – souřadící vysvětlovací", "příslovce vyjadřující míru", "citoslovce vyjadřující cit", "částice vyjadřující postoj"],
     hints: ["'Totiž' vysvětluje předchozí větu = spojka."],
   },
   {
@@ -238,7 +223,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Není to vůbec pravda.' – jaký slovní druh je 'vůbec'?",
     correctAnswer: "příslovce – záporné zesílení",
-    options: ["částice zdůrazňující výrok", "příslovce – záporné zesílení", "spojka spojující dvě věty", "citoslovce vyjadřující cit"],
+    options: ["částice zdůrazňující výrok", "spojka spojující dvě věty", "příslovce – záporné zesílení", "citoslovce vyjadřující cit"],
     hints: ["'Vůbec' modifikuje záporný výrok = příslovce."],
   },
   {
@@ -250,7 +235,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Šel tam a zpět.' – jaký slovní druh je 'zpět'?",
     correctAnswer: "příslovce – místa",
-    options: ["předložka", "částice", "příslovce – místa", "spojka"],
+    options: ["příslovce – místa", "předložka", "částice", "spojka"],
     hints: ["Šel kam? Zpět. Slovo, které odpovídá na 'kam/kde', patří do které skupiny?"],
   },
   {
@@ -262,24 +247,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Šel jsem spát, i když jsem nebyl unavený.' – jaký slovní druh je 'i'?",
     correctAnswer: "spojka – součást složené spojky 'i když'",
-    options: [
-      "číslovka, protože znamená přesně 1",
-      "spojka – součást složené spojky 'i když'",
-      "citoslovce vyjadřující cit",
-      "příslovce vyjadřující míru",
-    ],
+    options: ["číslovka, protože znamená přesně 1", "citoslovce vyjadřující cit", "spojka – součást složené spojky 'i když'", "příslovce vyjadřující míru"],
     hints: ["'I když' spojuje dvě věty dohromady jako jeden celek — samo 'i' tu číslo neznamená. Který slovní druh spojuje věty?"],
   },
   {
     question: "Ve větě 'Třetí závod dopadl nejlépe.' – jaký slovní druh je 'třetí'?",
     correctAnswer: "číslovka – řadová",
-    options: ["přídavné jméno", "příslovce", "číslovka – řadová", "zájmeno"],
+    options: ["přídavné jméno", "příslovce", "zájmeno", "číslovka – řadová"],
     hints: ["Kolikátý závod? Třetí. Slovo, které odpovídá na 'kolikátý', patří do které skupiny?"],
   },
   {
     question: "Ve větě 'Sedí tamhle.' – jaký slovní druh je 'tamhle'?",
     correctAnswer: "příslovce – místa",
-    options: ["zájmeno", "citoslovce", "příslovce – místa", "předložka"],
+    options: ["příslovce – místa", "zájmeno", "citoslovce", "předložka"],
     hints: ["Kde sedí? Tamhle. Slovo, které odpovídá na 'kde', patří do které skupiny?"],
   },
   {
@@ -296,19 +276,19 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve větě 'Kéž by přišel!' – jaký slovní druh je 'kéž'?",
     correctAnswer: "částice – přací",
-    options: ["spojka", "citoslovce", "příslovce", "částice – přací"],
+    options: ["spojka", "citoslovce", "částice – přací", "příslovce"],
     hints: ["'Kéž' vyjadřuje přání mluvčího a nic neoznačuje ani neurčuje děj. Který slovní druh to je?"],
   },
   {
     question: "Ve větě 'Nic neřekl.' – jaký slovní druh je 'nic'?",
     correctAnswer: "zájmeno – záporné",
-    options: ["příslovce", "podstatné jméno", "zájmeno – záporné", "citoslovce"],
+    options: ["příslovce", "podstatné jméno", "citoslovce", "zájmeno – záporné"],
     hints: ["'Nic' stojí místo podstatného jména (neřekl žádnou věc) — samo věc nepojmenovává. Který slovní druh zastupuje jména?"],
   },
   {
     question: "Ve větě 'Přišel, čili se pozdravili.' – jaký slovní druh je 'čili'?",
     correctAnswer: "spojka – souřadící vysvětlovací nebo alternativní",
-    options: ["příslovce vyjadřující způsob", "spojka – souřadící vysvětlovací nebo alternativní", "citoslovce vyjadřující cit", "částice vyjadřující postoj"],
+    options: ["spojka – souřadící vysvětlovací nebo alternativní", "příslovce vyjadřující způsob", "citoslovce vyjadřující cit", "částice vyjadřující postoj"],
     hints: ["'Čili' = nebo jinak řečeno; jinak = spojka."],
   },
 ];
