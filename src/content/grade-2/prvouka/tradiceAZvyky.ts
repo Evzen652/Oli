@@ -33,7 +33,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdy malujeme velikonoční vajíčka?",
     correctAnswer: "Velikonoce",
-    options: ["Velikonoce", "Vánoce", "Mikuláš", "Dušičky"],
+    options: ["Vánoce", "Velikonoce", "Mikuláš", "Dušičky"],
     emoji: "🥚",
     hints: ["Vajíčka malujeme na jarní svátek, ne v zimě."],
     explanation: "Vajíčka malujeme o Velikonocích, které slavíme na jaře.",
@@ -41,7 +41,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co jíme tradičně na Štědrý den k večeři?",
     correctAnswer: "Kapr",
-    options: ["Kapr", "Beránek", "Koblihy", "Perník"],
+    options: ["Beránek", "Koblihy", "Kapr", "Perník"],
     emoji: "🐟",
     hints: ["Je to ryba, která žije ve vodě."],
     explanation: "Na Štědrý den se tradičně jí kapr — sváteční vánoční ryba.",
@@ -49,7 +49,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co dáváme pod vánoční stromeček?",
     correctAnswer: "Dárky",
-    options: ["Dárky", "Vajíčka", "Masky", "Svíčky na hrob"],
+    options: ["Vajíčka", "Masky", "Svíčky na hrob", "Dárky"],
     emoji: "🎁",
     hints: ["Jsou to balíčky, které rozbalujeme o Vánocích."],
     explanation: "Pod stromeček dáváme dárky, které si o Vánocích rozbalujeme.",
@@ -65,7 +65,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře nosí podle tradice o Velikonocích vajíčka?",
     correctAnswer: "Zajíc",
-    options: ["Zajíc", "Beránek", "Kapr", "Čert"],
+    options: ["Beránek", "Zajíc", "Kapr", "Čert"],
     emoji: "🐰",
     hints: ["Je to zvíře s dlouhýma ušima, které rychle skáče."],
     explanation: "O Velikonocích nosí podle tradice vajíčka zajíc.",
@@ -73,7 +73,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co si chlapci pletou na Velikonoce z vrbových proutků?",
     correctAnswer: "Pomlázku",
-    options: ["Pomlázku", "Adventní věnec", "Betlém", "Koledu"],
+    options: ["Adventní věnec", "Betlém", "Pomlázku", "Koledu"],
     emoji: "🌿",
     hints: ["S touto věcí chodí chlapci o Velikonočním pondělí po domech."],
     explanation: "Chlapci si na Velikonoce pletou pomlázku z vrbových proutků.",
@@ -81,7 +81,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo chodí 5. prosince večer spolu s čertem?",
     correctAnswer: "Mikuláš",
-    options: ["Mikuláš", "Ježíšek", "Zajíc", "Kostelník"],
+    options: ["Ježíšek", "Zajíc", "Kostelník", "Mikuláš"],
     emoji: "😇",
     hints: ["Přichází večer s andělem a čertem a naděluje hodným dětem."],
     explanation: "5. prosince večer chodí Mikuláš spolu s čertem a andělem.",
@@ -97,7 +97,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je typické pro masopustní průvod?",
     correctAnswer: "Masky",
-    options: ["Masky", "Malovaná vajíčka", "Vánoční ozdoby", "Svíčky na hrob"],
+    options: ["Malovaná vajíčka", "Masky", "Vánoční ozdoby", "Svíčky na hrob"],
     emoji: "🎭",
     hints: ["Lidé si je nasadí na obličej a přestrojí se za různé postavy."],
     explanation: "Pro masopustní průvod jsou typické masky, do kterých se lidé přestrojují.",
@@ -105,7 +105,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co lidé zapalují o Dušičkách na hrobech?",
     correctAnswer: "Svíčky",
-    options: ["Svíčky", "Adventní věnec", "Cukroví", "Pomlázku"],
+    options: ["Adventní věnec", "Cukroví", "Svíčky", "Pomlázku"],
     emoji: "🕯️",
     hints: ["Je to malý plamínek, který svítí ve tmě."],
     explanation: "O Dušičkách lidé zapalují na hrobech svíčky a vzpomínají na zemřelé.",
@@ -113,7 +113,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co zpíváme o Vánocích?",
     correctAnswer: "Koledy",
-    options: ["Koledy", "Hymny", "Básničky", "Hádanky"],
+    options: ["Hymny", "Básničky", "Hádanky", "Koledy"],
     emoji: "🎶",
     hints: ["Jsou to písničky o Ježíškovi a betlémské hvězdě."],
     explanation: "O Vánocích zpíváme koledy, například Narodil se Kristus Pán.",
@@ -129,7 +129,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co svítí na vánočním stromečku?",
     correctAnswer: "Svíčky",
-    options: ["Svíčky", "Vajíčka", "Pomlázky", "Masky"],
+    options: ["Vajíčka", "Svíčky", "Pomlázky", "Masky"],
     emoji: "🕯️",
     hints: ["Na stromečku svítí ozdoby — plamenem nebo elektřinou."],
     explanation: "Na vánočním stromečku svítí svíčky nebo elektrická světýlka.",
@@ -140,7 +140,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ke kterému svátku patří malování vajíček a pletení pomlázky?",
     correctAnswer: "Velikonoce",
-    options: ["Velikonoce", "Vánoce", "Mikuláš", "Masopust"],
+    options: ["Vánoce", "Mikuláš", "Velikonoce", "Masopust"],
     emoji: "🥚",
     hints: ["Oba zvyky patří ke svátku, který slavíme na jaře."],
     explanation:
@@ -149,7 +149,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ke kterému svátku patří ozdobený stromeček, kapr a cukroví?",
     correctAnswer: "Vánoce",
-    options: ["Vánoce", "Velikonoce", "Dušičky", "Masopust"],
+    options: ["Velikonoce", "Dušičky", "Masopust", "Vánoce"],
     emoji: "🎄",
     hints: ["Všechny tři věci patří ke svátku na konci prosince."],
     explanation:
@@ -166,7 +166,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "V jakém ročním období slavíme Vánoce?",
     correctAnswer: "V zimě",
-    options: ["V zimě", "Na jaře", "V létě", "Na podzim"],
+    options: ["Na jaře", "V zimě", "V létě", "Na podzim"],
     emoji: "❄️",
     hints: ["Tehdy bývá sníh a nejkratší dny v roce."],
     explanation: "Vánoce slavíme v zimě, na konci prosince.",
@@ -174,7 +174,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdo chodí spolu s Mikulášem a čertem a rozdává hodným dětem sladkosti?",
     correctAnswer: "Anděl",
-    options: ["Anděl", "Zajíc", "Kapr", "Ježíšek"],
+    options: ["Zajíc", "Kapr", "Anděl", "Ježíšek"],
     emoji: "😇",
     hints: ["Tato postava má bílé křídla a je oblečená v bílém."],
     explanation:
@@ -183,7 +183,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké tradiční jídlo se peče a smaží o Masopustu?",
     correctAnswer: "Koblihy",
-    options: ["Koblihy", "Cukroví", "Mazanec", "Beránek"],
+    options: ["Cukroví", "Mazanec", "Beránek", "Koblihy"],
     emoji: "🍩",
     hints: ["Je to kulaté smažené pečivo, často plněné marmeládou."],
     explanation: "O Masopustu se tradičně pečou a smaží koblihy.",
@@ -199,12 +199,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělají lidé o Dušičkách?",
     correctAnswer: "Navštěvují hroby a zapalují svíčky",
-    options: [
-      "Navštěvují hroby a zapalují svíčky",
-      "Zdobí vánoční stromeček",
-      "Malují velikonoční vajíčka",
-      "Chodí v maskách v průvodu",
-    ],
+    options: ["Zdobí vánoční stromeček", "Navštěvují hroby a zapalují svíčky", "Malují velikonoční vajíčka", "Chodí v maskách v průvodu"],
     emoji: "🕯️",
     hints: ["Vzpomínají na příbuzné, kteří už nežijí."],
     explanation:
@@ -213,7 +208,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém měsíci chodí Mikuláš s čertem a andělem?",
     correctAnswer: "V prosinci",
-    options: ["V prosinci", "V březnu", "V červnu", "V září"],
+    options: ["V březnu", "V červnu", "V prosinci", "V září"],
     emoji: "📅",
     hints: ["Je to stejný měsíc, ve kterém jsou i Vánoce."],
     explanation:
@@ -222,12 +217,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "K čemu slouží adventní věnec se čtyřmi svíčkami?",
     correctAnswer: "K odpočítávání týdnů do Vánoc",
-    options: [
-      "K odpočítávání týdnů do Vánoc",
-      "K odpočítávání dnů do Velikonoc",
-      "Je to ozdoba na Masopust",
-      "Je to dárek pro Mikuláše",
-    ],
+    options: ["K odpočítávání dnů do Velikonoc", "Je to ozdoba na Masopust", "Je to dárek pro Mikuláše", "K odpočítávání týdnů do Vánoc"],
     emoji: "🕯️",
     hints: ["Každý týden před Vánoci se zapálí jedna další svíčka."],
     explanation:
@@ -244,7 +234,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který zimní svátek má za symbol Ježíška?",
     correctAnswer: "Vánoce",
-    options: ["Vánoce", "Velikonoce", "Masopust", "Dušičky"],
+    options: ["Velikonoce", "Vánoce", "Masopust", "Dušičky"],
     emoji: "⭐",
     hints: ["Je to svátek se stromečkem a dárky."],
     explanation: "Ježíšek je symbolem Vánoc — zimního svátku s dárky.",
@@ -252,12 +242,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co si lidé o Masopustu oblékají a v čem chodí v průvodu po vesnici?",
     correctAnswer: "Masky a kostýmy",
-    options: [
-      "Masky a kostýmy",
-      "Sváteční šaty na Velikonoce",
-      "Zimní kabáty na Mikuláše",
-      "Bílé oblečení na Dušičky",
-    ],
+    options: ["Sváteční šaty na Velikonoce", "Zimní kabáty na Mikuláše", "Masky a kostýmy", "Bílé oblečení na Dušičky"],
     emoji: "🎭",
     hints: ["Přestrojí se za zvířata, čarodějnice nebo jiné postavy — tvář často zakrývá maska."],
     explanation:
@@ -269,7 +254,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co přijde v roce dřív — mikulášská nadílka, nebo vánoční dárky?",
     correctAnswer: "Mikulášská nadílka",
-    options: ["Mikulášská nadílka", "Vánoční dárky", "Obojí ve stejný den", "Nelze to určit"],
+    options: ["Vánoční dárky", "Obojí ve stejný den", "Nelze to určit", "Mikulášská nadílka"],
     emoji: "📅",
     hints: [
       "Mikuláš chodí 5. prosince, Vánoce slavíme až koncem prosince — co je dřív v kalendáři?",
@@ -291,7 +276,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který svátek slavíme v zimě a při kterém dětem nosí dárky Ježíšek?",
     correctAnswer: "Vánoce",
-    options: ["Vánoce", "Velikonoce", "Mikuláš", "Masopust"],
+    options: ["Velikonoce", "Vánoce", "Mikuláš", "Masopust"],
     emoji: "🎄",
     hints: ["Hledej svátek, který splňuje obě podmínky zároveň — je v zimě a nosí dárky Ježíšek."],
     explanation:
@@ -300,7 +285,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který svátek slavíme na jaře a patří k němu pomlázka z vrbových proutků?",
     correctAnswer: "Velikonoce",
-    options: ["Velikonoce", "Vánoce", "Mikuláš", "Dušičky"],
+    options: ["Vánoce", "Mikuláš", "Velikonoce", "Dušičky"],
     emoji: "🌿",
     hints: ["Hledej svátek, který je zároveň jarní a má pomlázku."],
     explanation:
@@ -309,7 +294,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který svátek připadá na 5. prosince a chodí při něm čert s andělem?",
     correctAnswer: "Mikuláš",
-    options: ["Mikuláš", "Vánoce", "Velikonoce", "Masopust"],
+    options: ["Vánoce", "Velikonoce", "Masopust", "Mikuláš"],
     emoji: "😇",
     hints: ["Hledej svátek, který je zároveň na začátku prosince a má čerta i anděla."],
     explanation:
@@ -328,7 +313,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který svátek je na podzim a lidé při něm navštěvují hroby a zapalují svíčky?",
     correctAnswer: "Dušičky",
-    options: ["Dušičky", "Vánoce", "Velikonoce", "Mikuláš"],
+    options: ["Vánoce", "Dušičky", "Velikonoce", "Mikuláš"],
     emoji: "🕯️",
     hints: ["Hledej svátek, který je zároveň na podzim a souvisí se vzpomínkou na zemřelé."],
     explanation:
@@ -337,12 +322,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co mají Vánoce i Mikuláš společné?",
     correctAnswer: "Oba svátky se slaví v zimě",
-    options: [
-      "Oba svátky se slaví v zimě",
-      "Při obou svátcích chodí zajíc",
-      "Oba svátky se slaví na jaře",
-      "Při obou svátcích malujeme vajíčka",
-    ],
+    options: ["Při obou svátcích chodí zajíc", "Oba svátky se slaví na jaře", "Oba svátky se slaví v zimě", "Při obou svátcích malujeme vajíčka"],
     emoji: "❄️",
     hints: ["Zamysli se, v jakém ročním období tyto dva svátky probíhají."],
     explanation:
@@ -351,7 +331,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kterou postavu nepotkáš o Vánocích, ale potkáš ji 5. prosince?",
     correctAnswer: "Čert",
-    options: ["Čert", "Ježíšek", "Zajíc", "Beránek"],
+    options: ["Ježíšek", "Zajíc", "Beránek", "Čert"],
     emoji: "👹",
     hints: ["Hledej postavu, která patří jen k mikulášské nadílce."],
     explanation:
@@ -369,12 +349,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč si na Velikonoce pletou chlapci pomlázku právě z vrbových proutků?",
     correctAnswer: "Protože vrbové proutky jsou pružné a dají se dobře splétat",
-    options: [
-      "Protože vrbové proutky jsou pružné a dají se dobře splétat",
-      "Protože vrba kvete až v zimě",
-      "Protože proutky jsou tvrdé jako dřevo",
-      "Protože se pomlázka jí jako cukroví",
-    ],
+    options: ["Protože vrba kvete až v zimě", "Protože vrbové proutky jsou pružné a dají se dobře splétat", "Protože proutky jsou tvrdé jako dřevo", "Protože se pomlázka jí jako cukroví"],
     emoji: "🌿",
     hints: ["Zamysli se, jakou vlastnost musí mít proutky, aby se z nich dalo něco uplést."],
     explanation:
@@ -383,7 +358,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který ze svátků slavíme dřív v roce — Masopust, nebo Velikonoce?",
     correctAnswer: "Masopust",
-    options: ["Masopust", "Velikonoce", "Slaví se ve stejný den", "Nelze to určit"],
+    options: ["Velikonoce", "Slaví se ve stejný den", "Masopust", "Nelze to určit"],
     emoji: "📅",
     hints: ["Jeden z těch svátků je zimní a druhý jarní. Zima přichází v roce dřív než jaro."],
     explanation:
@@ -392,7 +367,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který svátek najdeš na podzim, a ne na jaře ani v zimě?",
     correctAnswer: "Dušičky",
-    options: ["Dušičky", "Vánoce", "Velikonoce", "Mikuláš"],
+    options: ["Vánoce", "Velikonoce", "Mikuláš", "Dušičky"],
     emoji: "🍂",
     hints: ["Vylučuj postupně: Vánoce a Mikuláš jsou v zimě, Velikonoce na jaře. Co zbývá?"],
     explanation:

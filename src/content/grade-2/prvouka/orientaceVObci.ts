@@ -37,12 +37,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá v obchodě?",
     correctAnswer: "Nakupuje se tam jídlo a zboží",
-    options: [
-      "Nakupuje se tam jídlo a zboží",
-      "Posílají se tam dopisy a balíky",
-      "Cvičí se tam sportovci uvnitř budovy",
-      "Modlí se tam lidé",
-    ],
+    options: ["Posílají se tam dopisy a balíky", "Nakupuje se tam jídlo a zboží", "Cvičí se tam sportovci uvnitř budovy", "Modlí se tam lidé"],
     emoji: "🏪",
     hints: ["Přemýšlej, kam jdete s rodiči, když doma dojde jídlo."],
     solutionSteps: ["V obchodě se nakupuje jídlo, pití a další věci na běžný den."],
@@ -50,12 +45,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na poště?",
     correctAnswer: "Posílají a vyzvedávají se tam dopisy a balíky",
-    options: [
-      "Posílají a vyzvedávají se tam dopisy a balíky",
-      "Půjčují se tam knihy",
-      "Vyřizují se tam záležitosti obce",
-      "Nastupuje a vystupuje se tam z vlaku",
-    ],
+    options: ["Půjčují se tam knihy", "Vyřizují se tam záležitosti obce", "Posílají a vyzvedávají se tam dopisy a balíky", "Nastupuje a vystupuje se tam z vlaku"],
     emoji: "📮",
     hints: ["Přemýšlej, kam bys šel/šla, kdybys chtěl/a někomu poslat dopis."],
     solutionSteps: ["Na poště se odesílají a vyzvedávají dopisy a balíky."],
@@ -63,12 +53,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá v knihovně?",
     correctAnswer: "Půjčují se tam knihy",
-    options: [
-      "Půjčují se tam knihy",
-      "Posílají a vyzvedávají se tam dopisy a balíky",
-      "Děti se tam učí",
-      "Nakupuje se tam jídlo a zboží",
-    ],
+    options: ["Posílají a vyzvedávají se tam dopisy a balíky", "Děti se tam učí", "Nakupuje se tam jídlo a zboží", "Půjčují se tam knihy"],
     emoji: "📚",
     hints: ["Přemýšlej, kam jít, když chceš knihu jen na chvíli a nechceš ji koupit."],
     solutionSteps: ["V knihovně si lidé zdarma půjčují knihy a zase je vracejí."],
@@ -89,12 +74,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá v lékárně?",
     correctAnswer: "Vydávají se tam léky předepsané lékařem",
-    options: [
-      "Vydávají se tam léky předepsané lékařem",
-      "Léčí se tam těžce nemocní lidé",
-      "Nakupuje se tam jídlo a zboží",
-      "Vyřizují se tam záležitosti obce",
-    ],
+    options: ["Léčí se tam těžce nemocní lidé", "Vydávají se tam léky předepsané lékařem", "Nakupuje se tam jídlo a zboží", "Vyřizují se tam záležitosti obce"],
     emoji: "💊",
     hints: ["Přemýšlej, kam jdeme, když nám lékař napíše recept na lék."],
     solutionSteps: ["V lékárně vydávají léky, které předepsal lékař."],
@@ -102,12 +82,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na hasičské stanici?",
     correctAnswer: "Připravují se tam hasiči na hašení požárů",
-    options: [
-      "Připravují se tam hasiči na hašení požárů",
-      "Pracují tam policisté, kteří chrání pořádek",
-      "Léčí se tam těžce nemocní lidé",
-      "Vyřizují se tam záležitosti obce",
-    ],
+    options: ["Pracují tam policisté, kteří chrání pořádek", "Léčí se tam těžce nemocní lidé", "Připravují se tam hasiči na hašení požárů", "Vyřizují se tam záležitosti obce"],
     emoji: "🚒",
     hints: ["Přemýšlej, odkud vyjíždí auto s hadicí, když někde hoří."],
     solutionSteps: ["Na hasičské stanici jsou připravení hasiči a hasičská auta pro případ požáru."],
@@ -115,12 +90,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na policejní stanici?",
     correctAnswer: "Pracují tam policisté, kteří chrání pořádek",
-    options: [
-      "Pracují tam policisté, kteří chrání pořádek",
-      "Připravují se tam hasiči na hašení požárů",
-      "Vyřizují se tam záležitosti obce",
-      "Léčí se tam těžce nemocní lidé",
-    ],
+    options: ["Připravují se tam hasiči na hašení požárů", "Vyřizují se tam záležitosti obce", "Léčí se tam těžce nemocní lidé", "Pracují tam policisté, kteří chrání pořádek"],
     emoji: "👮",
     hints: ["Přemýšlej, kde pracují lidé v uniformě, kteří hlídají bezpečnost."],
     solutionSteps: ["Na policejní stanici pracují policisté, kteří chrání lidi a pořádek v obci."],
@@ -141,12 +111,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá v kostele?",
     correctAnswer: "Lidé se tam modlí a scházejí na bohoslužby",
-    options: [
-      "Lidé se tam modlí a scházejí na bohoslužby",
-      "Vyřizují se tam záležitosti obce",
-      "Děti se tam učí",
-      "Půjčují se tam knihy",
-    ],
+    options: ["Vyřizují se tam záležitosti obce", "Lidé se tam modlí a scházejí na bohoslužby", "Děti se tam učí", "Půjčují se tam knihy"],
     emoji: "⛪",
     hints: ["Přemýšlej, kam chodí lidé, kteří věří v Boha, a jaká stavba má věž se zvony."],
     solutionSteps: ["V kostele se lidé modlí a scházejí na bohoslužby."],
@@ -154,12 +119,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na nádraží?",
     correctAnswer: "Nastupuje a vystupuje se tam z vlaku",
-    options: [
-      "Nastupuje a vystupuje se tam z vlaku",
-      "Posílají a vyzvedávají se tam dopisy a balíky",
-      "Děti si tam venku hrají",
-      "Lidé se tam modlí a scházejí na bohoslužby",
-    ],
+    options: ["Posílají a vyzvedávají se tam dopisy a balíky", "Děti si tam venku hrají", "Nastupuje a vystupuje se tam z vlaku", "Lidé se tam modlí a scházejí na bohoslužby"],
     emoji: "🚉",
     hints: ["Přemýšlej, kam jdeš, když s rodinou jedete na výlet vlakem."],
     solutionSteps: ["Na nádraží vlaky přijíždějí a odjíždějí a cestující tam nastupují a vystupují."],
@@ -167,12 +127,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se dělá na hřišti?",
     correctAnswer: "Děti si tam venku hrají",
-    options: [
-      "Děti si tam venku hrají",
-      "Cvičí se tam sportovci uvnitř budovy",
-      "Naučíš se tam plavat",
-      "Nastupuje a vystupuje se tam z vlaku",
-    ],
+    options: ["Cvičí se tam sportovci uvnitř budovy", "Naučíš se tam plavat", "Nastupuje a vystupuje se tam z vlaku", "Děti si tam venku hrají"],
     emoji: "🛝",
     hints: ["Přemýšlej, kam jdeš odpoledne ven na houpačky a prolézačky."],
     solutionSteps: ["Na hřišti si děti venku hrají, houpou se a lezou po prolézačkách."],
@@ -191,7 +146,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš, když máš vysokou horečku a rodiče chtějí, aby tě vyšetřil lékař?",
     correctAnswer: "Lékař",
-    options: ["Lékař", "Nemocnice", "Lékárna", "Škola"],
+    options: ["Nemocnice", "Lékař", "Lékárna", "Škola"],
     emoji: "👩‍⚕️",
     hints: ["Hledej místo, kam jdeš na běžné vyšetření, když jsi nemocný, ale nezůstáváš tam přes noc."],
     solutionSteps: ["Na vyšetření kvůli horečce jdeš k lékaři — prohlédne tě a řekne, co dál."],
@@ -199,7 +154,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš, když chceš poslat dopis babičce?",
     correctAnswer: "Pošta",
-    options: ["Pošta", "Knihovna", "Radnice", "Nádraží"],
+    options: ["Knihovna", "Radnice", "Pošta", "Nádraží"],
     emoji: "📮",
     hints: ["Hledej místo, které se stará o doručování dopisů a balíků."],
     solutionSteps: ["Dopis babičce pošleš na poště — tam dopisy přijímají a doručují dál."],
@@ -207,7 +162,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš, když si chceš přečíst novou knihu, ale nechceš ji kupovat?",
     correctAnswer: "Knihovna",
-    options: ["Knihovna", "Pošta", "Obchod", "Škola"],
+    options: ["Pošta", "Obchod", "Škola", "Knihovna"],
     emoji: "📚",
     hints: ["Hledej místo, kde si knihu jen na čas půjčíš a pak ji vrátíš."],
     solutionSteps: ["Knihu si zdarma půjčíš v knihovně, koupit bys ji musel/a v obchodě s knihami."],
@@ -223,7 +178,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Odkud vyjedou hasiči, když v sousedním domě hoří?",
     correctAnswer: "Hasičská stanice",
-    options: ["Hasičská stanice", "Policejní stanice", "Nemocnice", "Radnice"],
+    options: ["Policejní stanice", "Hasičská stanice", "Nemocnice", "Radnice"],
     emoji: "🚒",
     hints: ["Hledej místo, kde hasiči a jejich auta stále čekají připravená na výjezd."],
     solutionSteps: ["Hasiči vyjíždějí k požáru z hasičské stanice."],
@@ -231,7 +186,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš nahlásit, že ti někdo ukradl kolo?",
     correctAnswer: "Policejní stanice",
-    options: ["Policejní stanice", "Hasičská stanice", "Radnice", "Nemocnice"],
+    options: ["Hasičská stanice", "Radnice", "Policejní stanice", "Nemocnice"],
     emoji: "👮",
     hints: ["Hledej místo, kam se hlásí krádeže a jiné podobné případy."],
     solutionSteps: ["Krádež kola nahlásíš na policejní stanici — policisté ji budou vyšetřovat."],
@@ -239,7 +194,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdou rodiče, když chtějí vyřídit nový občanský průkaz?",
     correctAnswer: "Radnice",
-    options: ["Radnice", "Pošta", "Policejní stanice", "Škola"],
+    options: ["Pošta", "Policejní stanice", "Škola", "Radnice"],
     emoji: "🏛️",
     hints: ["Hledej místo, kde se vyřizují úřední záležitosti obce."],
     solutionSteps: ["Úřední doklady jako občanský průkaz se vyřizují na radnici."],
@@ -255,7 +210,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš, když se chceš naučit plavat?",
     correctAnswer: "Bazén",
-    options: ["Bazén", "Hřiště", "Tělocvična", "Nemocnice"],
+    options: ["Hřiště", "Bazén", "Tělocvična", "Nemocnice"],
     emoji: "🏊",
     hints: ["Hledej místo s velkou nádrží plnou vody."],
     solutionSteps: ["Plavat se naučíš v bazénu — je tam voda a plavčík, který na děti dohlíží."],
@@ -263,7 +218,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš, když chceš vidět nový film na velkém plátně?",
     correctAnswer: "Kino",
-    options: ["Kino", "Škola", "Knihovna", "Restaurace"],
+    options: ["Škola", "Knihovna", "Kino", "Restaurace"],
     emoji: "🎬",
     hints: ["Hledej sál s velkým plátnem, kde se promítají filmy."],
     solutionSteps: ["Nový film na velkém plátně uvidíš v kině."],
@@ -271,7 +226,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam půjdeš cvičit, když venku prší?",
     correctAnswer: "Tělocvična",
-    options: ["Tělocvična", "Hřiště", "Bazén", "Kino"],
+    options: ["Hřiště", "Bazén", "Kino", "Tělocvična"],
     emoji: "🤸",
     hints: ["Hledej místo pro sport, které je uvnitř budovy, takže tam déšť nevadí."],
     solutionSteps: ["Když prší, jde se cvičit do tělocvičny — je to sportoviště uvnitř budovy."],
@@ -297,7 +252,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád spadl ze schodů, nemůže hýbat nohou a možná bude muset zůstat přes noc na pozorování. Kam ho rodiče odvezou?",
     correctAnswer: "Nemocnice",
-    options: ["Nemocnice", "Lékárna", "Lékař", "Hasičská stanice"],
+    options: ["Lékárna", "Nemocnice", "Lékař", "Hasičská stanice"],
     emoji: "🏥",
     hints: [
       "Přemýšlej, které místo má lůžka pro pacienty, kteří tam musí zůstat déle.",
@@ -311,7 +266,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Bolí tě v krku a máš rýmu, ale nemusíš zůstat přes noc — stačí tě vyšetřit a poslat domů s receptem. Kam půjdeš?",
     correctAnswer: "Lékař",
-    options: ["Lékař", "Nemocnice", "Lékárna", "Škola"],
+    options: ["Nemocnice", "Lékárna", "Lékař", "Škola"],
     emoji: "👩‍⚕️",
     hints: [
       "Přemýšlej, kam se chodí na běžné vyšetření, když nejde o vážný případ s přespáním.",
@@ -325,7 +280,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád viděl souseda, jak si bez dovolení vzal cizí kolo a odjel s ním pryč. Nejde o požár ani o nemoc, ale o čin, který se má nahlásit. Kam se obrátí?",
     correctAnswer: "Policejní stanice",
-    options: ["Policejní stanice", "Hasičská stanice", "Nemocnice", "Radnice"],
+    options: ["Hasičská stanice", "Nemocnice", "Radnice", "Policejní stanice"],
     emoji: "👮",
     hints: [
       "Nejdřív vylouči místa pro požár a pro nemoc — zbyde ti jen jedno vhodné místo.",
@@ -353,7 +308,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Chceš poslat babičce dopis, ale nemáš doma známku a nevíš, kde si ji koupit. Kam půjdeš, abys vyřídil/a obojí najednou — koupil/a známku i odeslal/a dopis?",
     correctAnswer: "Pošta",
-    options: ["Pošta", "Obchod", "Radnice", "Knihovna"],
+    options: ["Obchod", "Pošta", "Radnice", "Knihovna"],
     emoji: "📮",
     hints: [
       "Hledej jedno místo, kde koupíš známku i rovnou odešleš dopis.",
@@ -367,7 +322,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Rodiče potřebují potvrdit, že bydlíte v této obci, a zároveň se zeptat, kdy se opraví děravá silnice před domem. Kam se rodiče vydají vyřídit obě věci?",
     correctAnswer: "Radnice",
-    options: ["Radnice", "Pošta", "Policejní stanice", "Škola"],
+    options: ["Pošta", "Policejní stanice", "Radnice", "Škola"],
     emoji: "🏛️",
     hints: [
       "Hledej místo, kde se řeší úřední doklady i běžné záležitosti celé obce, jako jsou silnice.",
@@ -381,7 +336,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "V neděli ráno slyšíš zvonit zvony a vidíš, jak lidé z okolí společně míří na mši. Kam jdou?",
     correctAnswer: "Kostel",
-    options: ["Kostel", "Radnice", "Škola", "Knihovna"],
+    options: ["Radnice", "Škola", "Knihovna", "Kostel"],
     emoji: "⛪",
     hints: [
       "Přemýšlej, která stavba má věž se zvony a kam se chodí na mši.",
@@ -409,7 +364,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Doma se dnes nevaří a chcete, aby vám hotové jídlo přinesla obsluha přímo ke stolu. Kam půjdete?",
     correctAnswer: "Restaurace",
-    options: ["Restaurace", "Obchod", "Pekárna", "Škola"],
+    options: ["Obchod", "Restaurace", "Pekárna", "Škola"],
     emoji: "🍽️",
     hints: [
       "V obchodě by sis musel/a jídlo koupit syrové a doma ho uvařit — hledej místo, kde je jídlo hotové a přinesou ho.",
@@ -423,7 +378,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Chceš si koupit rohlíky upečené přímo ten den ráno, ne balené v sáčku jako v obchodě. Kam půjdeš?",
     correctAnswer: "Pekárna",
-    options: ["Pekárna", "Obchod", "Restaurace", "Škola"],
+    options: ["Obchod", "Restaurace", "Pekárna", "Škola"],
     emoji: "🥐",
     hints: [
       "Hledej místo, kde pečivo přímo pečou a hned prodávají čerstvé.",
@@ -437,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Chceš se naučit plavat, ale venku je zima a hřiště ani tělocvična vodu nemají. Kam půjdeš?",
     correctAnswer: "Bazén",
-    options: ["Bazén", "Hřiště", "Tělocvična", "Nemocnice"],
+    options: ["Hřiště", "Tělocvična", "Nemocnice", "Bazén"],
     emoji: "🏊",
     hints: [
       "Vylouč místa, která vodu na plavání vůbec nemají.",
