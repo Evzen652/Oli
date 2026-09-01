@@ -102,6 +102,7 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 ## ⚠️ ZAČÁTEK KAŽDÉ SESSION — POVINNÉ
 
 Po `git pull` vždy zobraz stručné shrnutí stavu projektu:
+0. **Nejdřív ověř větev a worktree** — [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) sekce 0. Práce neběží na `main`; čistý strom shodný s `origin/main` NENÍ důkaz aktuálnosti.
 1. **Kde jsme skončili** — přečti sekci 6 z `PROJECT_STATUS.md` (Otevřené / poslední session hotovo)
 2. **Co je rozděláno** — přečti otevřené položky z `docs/PENDING_CHANGES.md`
 3. Zobraz jako 2–3 věty + bullet list „Doporučené další kroky" (priorita dle PENDING_CHANGES)
