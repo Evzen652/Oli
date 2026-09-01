@@ -26,7 +26,7 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Tepna", right: "Vede krev od srdce do těla" },
       { left: "Žíla", right: "Vede krev od těla k srdci" },
-      { left: "Alveola (plicní sklípek)", right: "Místo výměny kyslíku a CO₂ v plicích" },
+      { left: "Plicní sklípek", right: "Místo výměny kyslíku a CO₂ v plicích" },
       { left: "Kloub", right: "Pohyblivý spoj dvou kostí" },
     ],
   },
@@ -146,8 +146,8 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Srdce", right: "Vytváří krevní tlak pro oběh krve" },
       { left: "Kapiláry", right: "Nejtenčí cévy, kde probíhá výměna látek s tkáněmi" },
-      { left: "Alveoly", right: "Miliony váčků s velkým povrchem pro výměnu plynů" },
-      { left: "Průdušnice", right: "Vede vzduch do plic (trachea)" },
+      { left: "Plicní sklípky", right: "Miliony váčků s velkým povrchem pro výměnu plynů" },
+      { left: "Průdušnice", right: "Vede vzduch do plic" },
     ],
   },
   {
@@ -216,7 +216,7 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Lebka", right: "Chrání mozek před poraněním" },
       { left: "Srdeční sval", right: "Nepřetržitě bije bez vědomé kontroly" },
-      { left: "Alveola", right: "Váček v plicích pro výměnu plynů" },
+      { left: "Plicní sklípek", right: "Váček v plicích pro výměnu plynů" },
       { left: "Červená kostní dřeň", right: "Tvoří červené a bílé krvinky" },
     ],
   },
@@ -256,7 +256,7 @@ const POOL: PracticeTask[] = [
     pairs: [
       { left: "Dýchání nosem", right: "Filtruje, ohřívá a zvlhčuje vzduch" },
       { left: "Výdech CO₂", right: "Odpad buněčného dýchání opouštějící plíce" },
-      { left: "Vdech O₂", right: "Kyslík vstupující do krve v alveolách" },
+      { left: "Vdech O₂", right: "Kyslík vstupující do krve v plicních sklípcích" },
       { left: "Bránice", right: "Stahem dolů rozepíná plíce při vdechu" },
     ],
   },
@@ -305,9 +305,9 @@ const POOL: PracticeTask[] = [
     correctAnswer: "match",
     pairs: [
       { left: "Nosohltán", right: "Propojuje nos s hrtanem" },
-      { left: "Glotis", right: "Hlasová štěrbina v hrtanu" },
+      { left: "Hlasivky", right: "Chvějí se v hrtanu a vytvářejí hlas" },
       { left: "Plicní povrch", right: "Celkem 70–100 m² pro výměnu plynů" },
-      { left: "Kapilára plicní", right: "Tenká céva opletená kolem alveoly" },
+      { left: "Kapilára plicní", right: "Tenká céva opletená kolem plicního sklípku" },
     ],
   },
   {
@@ -336,7 +336,7 @@ export const KOSTRAASVALYDYCHACIAOBEHOVASOUSTAVA: TopicMetadata[] = [
     category: "Člověk a jeho zdraví",
     topic: "Lidské tělo - soustavy",
     briefDescription: "Pochopíš, jak funguje kostra, svaly, plíce a srdce.",
-    keywords: ["kostra", "svaly", "srdce", "plíce", "krev", "alveoly", "tepny", "žíly", "klouby"],
+    keywords: ["kostra", "svaly", "srdce", "plíce", "krev", "plicní sklípky", "tepny", "žíly", "klouby"],
     goals: ["Popsat funkce kostry a svalů", "Vysvětlit princip dýchání a výměny plynů", "Popsat malý a velký krevní oběh"],
     boundaries: ["Neprobírá biochemii krve", "Neprobírá kardiovaskulární choroby do hloubky"],
     gradeRange: [5, 5],
@@ -346,11 +346,11 @@ export const KOSTRAASVALYDYCHACIAOBEHOVASOUSTAVA: TopicMetadata[] = [
     sessionTaskCount: 6,
     generator: gen,
     helpTemplate: {
-      hint: "Kostra: 206 kostí. Dýchání: nos → plíce → alveoly → krev. Srdce: malý (plíce) + velký (tělo) oběh.",
+      hint: "Kostra: 206 kostí. Dýchání: nos → plíce → plicní sklípky → krev. Srdce: malý (plíce) + velký (tělo) oběh.",
       steps: [
         "1. Kostra: opora + ochrana + pohyb + krvetvorba.",
-        "2. Dýchání: nos → hrtan → průdušnice → plíce → alveoly.",
-        "3. Alveoly: O₂ do krve, CO₂ ven.",
+        "2. Dýchání: nos → hrtan → průdušnice → plíce → plicní sklípky.",
+        "3. Plicní sklípky: O₂ do krve, CO₂ ven.",
         "4. Srdce: malý oběh (plíce), velký oběh (tělo).",
         "5. Krev: červené (O₂), bílé (imunita), destičky (srážení).",
       ],
