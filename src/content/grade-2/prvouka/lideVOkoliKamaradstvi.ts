@@ -165,12 +165,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Potkáš souseda na chodbě domu. Co je slušné udělat?",
     correctAnswer: "Pozdravím ho",
-    options: [
-      "Pozdravím ho",
-      "Předstírám, že ho nevidím",
-      "Rychle utíkám pryč",
-      "Mluvím jen s kamarády, sousedy nezdravím",
-    ],
+    options: ["Předstírám, že ho nevidím", "Pozdravím ho", "Rychle utíkám pryč", "Mluvím jen s kamarády, sousedy nezdravím"],
     emoji: "👋",
     hints: [
       "Pozdrav patří ke slušnému chování ke všem, které potkáme, i k sousedům.",
@@ -182,12 +177,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarád ti půjčí svou oblíbenou hračku. Jak se o ni budeš starat?",
     correctAnswer: "Budu s ní zacházet opatrně a vrátím mu ji v pořádku",
-    options: [
-      "Budu s ní zacházet opatrně a vrátím mu ji v pořádku",
-      "Nechám ji ležet venku v dešti",
-      "Půjčím ji dál někomu jinému bez dovolení",
-      "Budu si s ní hrát tak drsně, že se rozbije",
-    ],
+    options: ["Nechám ji ležet venku v dešti", "Půjčím ji dál někomu jinému bez dovolení", "Budu s ní zacházet opatrně a vrátím mu ji v pořádku", "Budu si s ní hrát tak drsně, že se rozbije"],
     emoji: "🧸",
     hints: [
       "Půjčenou věc si opatruj tak, jako bys chtěl, aby si opatroval tvoji věc kamarád.",
@@ -199,12 +189,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Do třídy přijde nový spolužák, který tam ještě nikoho nezná. Co můžeš udělat?",
     correctAnswer: "Pozvu ho, aby si hrál s námi",
-    options: [
-      "Pozvu ho, aby si hrál s námi",
-      "Budu se mu smát, že je nový",
-      "Budu ho úplně ignorovat",
-      "Řeknu ostatním, ať si s ním nehrají",
-    ],
+    options: ["Budu se mu smát, že je nový", "Budu ho úplně ignorovat", "Řeknu ostatním, ať si s ním nehrají", "Pozvu ho, aby si hrál s námi"],
     emoji: "🙋",
     hints: [
       "Nový spolužák je ve třídě sám a nikoho nezná — čím mu pomůžeš?",
@@ -233,12 +218,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarád ti svěří tajemství a poprosí tě, ať to nikomu neříkáš. Co uděláš?",
     correctAnswer: "Tajemství si nechám pro sebe, jak jsem slíbil",
-    options: [
-      "Tajemství si nechám pro sebe, jak jsem slíbil",
-      "Hned to řeknu celé třídě",
-      "Napíšu to na papírek a nechám ho ve třídě",
-      "Řeknu to aspoň jednomu dalšímu kamarádovi",
-    ],
+    options: ["Hned to řeknu celé třídě", "Tajemství si nechám pro sebe, jak jsem slíbil", "Napíšu to na papírek a nechám ho ve třídě", "Řeknu to aspoň jednomu dalšímu kamarádovi"],
     emoji: "🤫",
     hints: [
       "Slib je slib — když kamarádovi něco slíbíme, měli bychom to dodržet.",
@@ -250,12 +230,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve třídě je jen jedna nová hra a všichni ji chtějí hrát najednou. Co uděláš?",
     correctAnswer: "Domluvíme se, kdo bude hrát první, a pak se vystřídáme",
-    options: [
-      "Domluvíme se, kdo bude hrát první, a pak se vystřídáme",
-      "Vezmu si hru sám a nikomu ji nepůjčím",
-      "Budu křičet, ať mi hru dají první",
-      "Hru schovám, aby ji neměl nikdo",
-    ],
+    options: ["Vezmu si hru sám a nikomu ji nepůjčím", "Budu křičet, ať mi hru dají první", "Domluvíme se, kdo bude hrát první, a pak se vystřídáme", "Hru schovám, aby ji neměl nikdo"],
     emoji: "🎲",
     hints: [
       "Když věc chce víc lidí najednou, pomůže domluva a střídání.",
@@ -267,12 +242,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vidíš dva kamarády, jak si hrají, a jeden z nich pláče, protože prohrál. Co je vhodné udělat?",
     correctAnswer: "Utěším ho a řeknu mu, že příště to může dopadnout líp",
-    options: [
-      "Utěším ho a řeknu mu, že příště to může dopadnout líp",
-      "Budu se mu smát, že prohrál",
-      "Řeknu mu, že je špatný hráč",
-      "Odejdu, ať si to vyřeší sám",
-    ],
+    options: ["Budu se mu smát, že prohrál", "Řeknu mu, že je špatný hráč", "Odejdu, ať si to vyřeší sám", "Utěším ho a řeknu mu, že příště to může dopadnout líp"],
     emoji: "😢",
     hints: [
       "Smutnému kamarádovi pomůže laskavé slovo, ne posměch.",
@@ -301,12 +271,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarád udělal chybu a upřímně se ti omluvil. Co uděláš?",
     correctAnswer: "Omluvu přijmu a odpustím mu",
-    options: [
-      "Omluvu přijmu a odpustím mu",
-      "Budu se na něj zlobit navždy",
-      "Řeknu mu, že už s ním nikdy nebudu kamarád",
-      "Budu mu tu chybu připomínat pořád dokola",
-    ],
+    options: ["Budu se na něj zlobit navždy", "Omluvu přijmu a odpustím mu", "Řeknu mu, že už s ním nikdy nebudu kamarád", "Budu mu tu chybu připomínat pořád dokola"],
     emoji: "🙏",
     hints: [
       "Když se kamarád upřímně omluví, co bys od něj čekal ty, kdyby ses omluvil sám?",
@@ -318,12 +283,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vidíš souseda, jak se s plnýma rukama snaží otevřít dveře. Co uděláš?",
     correctAnswer: "Přidržím mu dveře",
-    options: [
-      "Přidržím mu dveře",
-      "Projdu kolem a nevšímám si ho",
-      "Zabouchnu dveře ještě rychleji",
-      "Počkám, až si poradí úplně sám",
-    ],
+    options: ["Projdu kolem a nevšímám si ho", "Zabouchnu dveře ještě rychleji", "Přidržím mu dveře", "Počkám, až si poradí úplně sám"],
     emoji: "🚪",
     hints: [
       "Malá pomoc, jako přidržení dveří, sousedovi hodně usnadní situaci.",
@@ -335,12 +295,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarádi se rozhodují, jakou hru budou hrát, a ty bys chtěl jinou. Co je vhodné udělat?",
     correctAnswer: "Přidám se ke hře, kterou chce většina, i když jsem chtěl jinou",
-    options: [
-      "Přidám se ke hře, kterou chce většina, i když jsem chtěl jinou",
-      "Budu křičet, dokud nezmění názor",
-      "Odejdu urazeně pryč",
-      "Řeknu, že si s nimi už nikdy nebudu hrát",
-    ],
+    options: ["Budu křičet, dokud nezmění názor", "Odejdu urazeně pryč", "Řeknu, že si s nimi už nikdy nebudu hrát", "Přidám se ke hře, kterou chce většina, i když jsem chtěl jinou"],
     emoji: "🎯",
     hints: [
       "Zamysli se, co je pro partu lepší — prosadit jen sebe, nebo se domluvit s ostatními?",
@@ -369,12 +324,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na chodbě potkáš souseda, kterého neznáš jménem. Co je slušné udělat?",
     correctAnswer: "I tak ho pozdravím",
-    options: [
-      "I tak ho pozdravím",
-      "Pozdravím jen sousedy, které znám jménem",
-      "Budu se tvářit, že ho nevidím",
-      "Zeptám se ho, proč tam vlastně bydlí",
-    ],
+    options: ["Pozdravím jen sousedy, které znám jménem", "I tak ho pozdravím", "Budu se tvářit, že ho nevidím", "Zeptám se ho, proč tam vlastně bydlí"],
     emoji: "🏘️",
     hints: [
       "Ke zdravení nepotřebujeme znát jméno souseda.",
@@ -389,12 +339,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád tě poprosí o pomoc, ale ty zrovna spěcháš domů. Co je nejlepší řešení?",
     correctAnswer: "Aspoň na chvilku mu pomůžu, i když trochu spěchám",
-    options: [
-      "Aspoň na chvilku mu pomůžu, i když trochu spěchám",
-      "Řeknu mu, že nemám vůbec čas, a odejdu",
-      "Budu předstírat, že ho neslyším",
-      "Pomůžu mu, ale řeknu mu, že je otravný",
-    ],
+    options: ["Řeknu mu, že nemám vůbec čas, a odejdu", "Budu předstírat, že ho neslyším", "Aspoň na chvilku mu pomůžu, i když trochu spěchám", "Pomůžu mu, ale řeknu mu, že je otravný"],
     emoji: "⏰",
     hints: [
       "Přemýšlej, co by udělal opravdový kamarád, i když se mu to zrovna nehodí.",
@@ -406,12 +351,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který z popisů nejlépe sedí na opravdového kamaráda?",
     correctAnswer: "Pomáhá ti, i když nemusí, a raduje se z tvých úspěchů",
-    options: [
-      "Pomáhá ti, i když nemusí, a raduje se z tvých úspěchů",
-      "Směje se ti, když se ti něco nepovede",
-      "Bere ti věci bez dovolení a neomlouvá se",
-      "Mluví o tobě ošklivě, když u toho nejsi",
-    ],
+    options: ["Směje se ti, když se ti něco nepovede", "Bere ti věci bez dovolení a neomlouvá se", "Mluví o tobě ošklivě, když u toho nejsi", "Pomáhá ti, i když nemusí, a raduje se z tvých úspěchů"],
     emoji: "👫",
     hints: [
       "Spoj dohromady dvě věci, které dělá dobrý kamarád — pomoc i radost z tvého úspěchu.",
@@ -440,12 +380,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Omylem jsi rozbil kamarádovu půjčenou hračku. Co je správné udělat?",
     correctAnswer: "Omluvit se a upřímně mu říct, co se stalo",
-    options: [
-      "Omluvit se a upřímně mu říct, co se stalo",
-      "Schovat rozbitou hračku a tvářit se, že o ničem nevím",
-      "Svést to na někoho jiného",
-      "Hračku hodit pryč, aby si ničeho nevšiml",
-    ],
+    options: ["Schovat rozbitou hračku a tvářit se, že o ničem nevím", "Omluvit se a upřímně mu říct, co se stalo", "Svést to na někoho jiného", "Hračku hodit pryč, aby si ničeho nevšiml"],
     emoji: "💔",
     hints: [
       "Spoj dvě věci: přiznání toho, co se stalo, a omluvu.",
@@ -457,12 +392,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Dva kamarádi se pohádali kvůli jedné hračce. Jak se to dá vyřešit nejlépe?",
     correctAnswer: "Domluví se, že se v hračce budou střídat",
-    options: [
-      "Domluví se, že se v hračce budou střídat",
-      "Jeden z nich hračku schová, aby ji neměl nikdo",
-      "Přestanou spolu kamarádit úplně",
-      "Hračku rozbijí, aby ji neměl žádný z nich",
-    ],
+    options: ["Jeden z nich hračku schová, aby ji neměl nikdo", "Přestanou spolu kamarádit úplně", "Domluví se, že se v hračce budou střídat", "Hračku rozbijí, aby ji neměl žádný z nich"],
     emoji: "🧸",
     hints: [
       "Řešení musí být spravedlivé pro oba kamarády zároveň.",
@@ -474,12 +404,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Soused si stěžuje, že jste s kamarády v parku moc hlasitě křičeli. Co uděláš?",
     correctAnswer: "Omluvím se a budeme si hrát tišeji",
-    options: [
-      "Omluvím se a budeme si hrát tišeji",
-      "Budu křičet ještě víc, park je přece pro všechny",
-      "Řeknu sousedovi, ať si nevšímá",
-      "Přestaneme si hrát úplně a odejdeme naštvaní",
-    ],
+    options: ["Budu křičet ještě víc, park je přece pro všechny", "Řeknu sousedovi, ať si nevšímá", "Přestaneme si hrát úplně a odejdeme naštvaní", "Omluvím se a budeme si hrát tišeji"],
     emoji: "🔉",
     hints: [
       "Hledej řešení, které bude v pořádku pro tebe i pro souseda zároveň.",
@@ -553,12 +478,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Vidíš sousedku, jak nese těžké tašky, a zároveň tě kamarád zve na hru, která může počkat. Co uděláš nejdřív?",
     correctAnswer: "Nejdřív pomůžu sousedce s taškami, hra počká",
-    options: [
-      "Nejdřív pomůžu sousedce s taškami, hra počká",
-      "Nejdřív půjdu hrát, sousedka si poradí sama",
-      "Neudělám nic a jen odejdu",
-      "Řeknu sousedce, ať počká, dokud si nedohraju",
-    ],
+    options: ["Nejdřív půjdu hrát, sousedka si poradí sama", "Nejdřív pomůžu sousedce s taškami, hra počká", "Neudělám nic a jen odejdu", "Řeknu sousedce, ať počká, dokud si nedohraju"],
     emoji: "🛍️",
     hints: [
       "Porovnej, co je naléhavější — těžké tašky právě teď, nebo hra, která může počkat.",
@@ -571,12 +491,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Do třídy přišel kamarád, který se nedávno přistěhoval a nezná pravidla vaší oblíbené hry. Co uděláš?",
     correctAnswer: "Vysvětlím mu pravidla, aby si mohl hrát s námi",
-    options: [
-      "Vysvětlím mu pravidla, aby si mohl hrát s námi",
-      "Řeknu mu, že pravidla jsou tajná",
-      "Budu se mu smát, že je nezná",
-      "Nechám ho hrát podle svého a nic mu nevysvětlím",
-    ],
+    options: ["Řeknu mu, že pravidla jsou tajná", "Budu se mu smát, že je nezná", "Vysvětlím mu pravidla, aby si mohl hrát s námi", "Nechám ho hrát podle svého a nic mu nevysvětlím"],
     emoji: "🆕",
     hints: [
       "Pomysli na to, jak by ses cítil ty, kdyby ses přistěhoval a nikdo ti nic nevysvětlil.",
@@ -588,12 +503,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Máš dva kamarády, kteří se spolu nekamarádí. Když jste spolu všichni tři, co je nejlepší?",
     correctAnswer: "Snažím se, aby si spolu rozuměli, a nikoho proti druhému nepodněcuji",
-    options: [
-      "Snažím se, aby si spolu rozuměli, a nikoho proti druhému nepodněcuji",
-      "Poštvu je proti sobě, aby to bylo zajímavější",
-      "Řeknu jednomu, že ten druhý je špatný kamarád",
-      "Budu si hrát jen s jedním a druhého budu ignorovat",
-    ],
+    options: ["Poštvu je proti sobě, aby to bylo zajímavější", "Řeknu jednomu, že ten druhý je špatný kamarád", "Budu si hrát jen s jedním a druhého budu ignorovat", "Snažím se, aby si spolu rozuměli, a nikoho proti druhému nepodněcuji"],
     emoji: "⚖️",
     hints: [
       "Přemýšlej, jak se zachovat spravedlivě k oběma kamarádům najednou.",

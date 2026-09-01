@@ -168,7 +168,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který z těchto ptáků na zimu odlétá do teplých krajů?",
     correctAnswer: "Vlaštovka",
-    options: ["Vlaštovka", "Sýkorka", "Vrabec", "Kos"],
+    options: ["Sýkorka", "Vlaštovka", "Vrabec", "Kos"],
     emoji: "🐦",
     hints: [
       "Hledej tažného ptáka, který u nás v zimě nezůstává.",
@@ -180,7 +180,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který z těchto ptáků u nás zůstává celou zimu?",
     correctAnswer: "Sýkorka",
-    options: ["Sýkorka", "Vlaštovka", "Čáp", "Špaček"],
+    options: ["Vlaštovka", "Čáp", "Sýkorka", "Špaček"],
     emoji: "🐦",
     hints: [
       "Kterého ptáka vídáme v zimě u krmítka?",
@@ -192,12 +192,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čím správně přikrmujeme ptáky v krmítku?",
     correctAnswer: "Slunečnicovými semínky",
-    options: [
-      "Slunečnicovými semínky",
-      "Slanými brambůrky",
-      "Plesnivým chlebem",
-      "Bonbony",
-    ],
+    options: ["Slanými brambůrky", "Plesnivým chlebem", "Bonbony", "Slunečnicovými semínky"],
     emoji: "🌻",
     hints: [
       "Ptákům svědčí semínka a nesolený tuk, ne lidské pochutiny.",
@@ -221,12 +216,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá medvěd v zimě?",
     correctAnswer: "Spí ve svém doupěti",
-    options: [
-      "Spí ve svém doupěti",
-      "Odlétá do Afriky",
-      "Staví si hnízdo na stromě",
-      "Loví ryby v ledové řece",
-    ],
+    options: ["Odlétá do Afriky", "Spí ve svém doupěti", "Staví si hnízdo na stromě", "Loví ryby v ledové řece"],
     emoji: "🐻",
     hints: [
       "Medvěd nemá křídla ani nezůstává v zimě aktivní.",
@@ -238,12 +228,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá vlaštovka, když přijde zima?",
     correctAnswer: "Odlétá do teplých krajů",
-    options: [
-      "Odlétá do teplých krajů",
-      "Spí v pelíšku z listí",
-      "Zůstává celou zimu u krmítka",
-      "Dělá si zásoby oříšků",
-    ],
+    options: ["Spí v pelíšku z listí", "Zůstává celou zimu u krmítka", "Odlétá do teplých krajů", "Dělá si zásoby oříšků"],
     emoji: "🐦",
     hints: [
       "Vlaštovka potřebuje hmyz, kterého je v zimě nedostatek.",
@@ -255,12 +240,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam se ježek ukládá k zimnímu spánku?",
     correctAnswer: "Do pelíšku z listí",
-    options: [
-      "Do pelíšku z listí",
-      "Na větev vysokého stromu",
-      "Do ptačí budky",
-      "Do teplých krajů",
-    ],
+    options: ["Na větev vysokého stromu", "Do ptačí budky", "Do teplých krajů", "Do pelíšku z listí"],
     emoji: "🦔",
     hints: [
       "Ježek hledá suché a teplé místo blízko země.",
@@ -284,7 +264,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Poznáš zvíře: „V zimě spí v jeskyni nebo na půdě zavěšené hlavou dolů.“",
     correctAnswer: "Netopýr",
-    options: ["Netopýr", "Sýkorka", "Zajíc", "Liška"],
+    options: ["Sýkorka", "Netopýr", "Zajíc", "Liška"],
     emoji: "🦇",
     hints: [
       "Které zvíře umí viset hlavou dolů a přes zimu spí?",
@@ -296,12 +276,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co ptákům do krmítka NEDÁVÁME?",
     correctAnswer: "Slané a kořeněné zbytky jídla",
-    options: [
-      "Slané a kořeněné zbytky jídla",
-      "Slunečnicová semínka",
-      "Nesolený lůj",
-      "Zrní",
-    ],
+    options: ["Slunečnicová semínka", "Nesolený lůj", "Slané a kořeněné zbytky jídla", "Zrní"],
     emoji: "🧂",
     hints: [
       "Které jídlo je pro ptáky nezdravé a škodí jim?",
@@ -313,7 +288,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který pták přilétá v zimě ke krmítku pro semínka?",
     correctAnswer: "Sýkorka",
-    options: ["Sýkorka", "Vlaštovka", "Čáp", "Jiřička"],
+    options: ["Vlaštovka", "Čáp", "Jiřička", "Sýkorka"],
     emoji: "🐦",
     hints: [
       "Kterého ptáka vídáme u krmítka i v mrazu?",
@@ -342,12 +317,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kde přečkává žába zimu?",
     correctAnswer: "Zahrabaná v bahně na dně rybníka",
-    options: [
-      "Zahrabaná v bahně na dně rybníka",
-      "V ptačí budce",
-      "V teplých krajích v Africe",
-      "Na větvi vysokého stromu",
-    ],
+    options: ["V ptačí budce", "Zahrabaná v bahně na dně rybníka", "V teplých krajích v Africe", "Na větvi vysokého stromu"],
     emoji: "🐸",
     hints: [
       "Žába nesnese chlad a schovává se dolů do vody.",
@@ -363,7 +333,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Které zvíře v zimě NEspí zimním spánkem ani neodlétá, ale zůstává venku aktivní?",
     correctAnswer: "Liška",
-    options: ["Liška", "Ježek", "Vlaštovka", "Netopýr"],
+    options: ["Ježek", "Vlaštovka", "Liška", "Netopýr"],
     emoji: "🦊",
     hints: [
       "Rozliš tři strategie: spánek, odlet a aktivní zima.",
@@ -375,12 +345,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč vlaštovka na zimu odlétá do teplých krajů?",
     correctAnswer: "V zimě u nás nenajde dost hmyzu, kterým se živí",
-    options: [
-      "V zimě u nás nenajde dost hmyzu, kterým se živí",
-      "Protože je jí v zimě jenom zima",
-      "Protože se chce podívat do Afriky",
-      "Protože v teple se jí líp spí zimní spánek",
-    ],
+    options: ["Protože je jí v zimě jenom zima", "Protože se chce podívat do Afriky", "Protože v teple se jí líp spí zimní spánek", "V zimě u nás nenajde dost hmyzu, kterým se živí"],
     emoji: "🐦",
     hints: [
       "Přemýšlej, co vlaštovka jí a jestli to v zimě u nás najde.",
@@ -409,12 +374,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která dvě zvířata patří k sobě, protože obě v zimě spí zimním spánkem?",
     correctAnswer: "Ježek a netopýr",
-    options: [
-      "Ježek a netopýr",
-      "Liška a zajíc",
-      "Vlaštovka a čáp",
-      "Sýkorka a vrabec",
-    ],
+    options: ["Liška a zajíc", "Ježek a netopýr", "Vlaštovka a čáp", "Sýkorka a vrabec"],
     emoji: "🦔",
     hints: [
       "Hledej dvojici, kde obě zvířata přes zimu spí.",
@@ -426,12 +386,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kteří dva ptáci patří k sobě, protože oba na zimu odlétají?",
     correctAnswer: "Vlaštovka a čáp",
-    options: [
-      "Vlaštovka a čáp",
-      "Sýkorka a vrabec",
-      "Kos a strakapoud",
-      "Sýkorka a vlaštovka",
-    ],
+    options: ["Sýkorka a vrabec", "Kos a strakapoud", "Vlaštovka a čáp", "Sýkorka a vlaštovka"],
     emoji: "🐦",
     hints: [
       "Hledej dvojici, kde oba ptáci jsou tažní a odlétají.",
@@ -443,12 +398,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Čím se liší chování medvěda a vlaštovky v zimě?",
     correctAnswer: "Medvěd spí, kdežto vlaštovka odlétá do teplých krajů",
-    options: [
-      "Medvěd spí, kdežto vlaštovka odlétá do teplých krajů",
-      "Medvěd odlétá, kdežto vlaštovka spí v doupěti",
-      "Oba dva odlétají na zimu do Afriky",
-      "Oba dva spí přes celou zimu zimním spánkem",
-    ],
+    options: ["Medvěd odlétá, kdežto vlaštovka spí v doupěti", "Oba dva odlétají na zimu do Afriky", "Oba dva spí přes celou zimu zimním spánkem", "Medvěd spí, kdežto vlaštovka odlétá do teplých krajů"],
     emoji: "🐻",
     hints: [
       "Přiřaď každému zvířeti jeho vlastní strategii přezimování.",
@@ -478,7 +428,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Které zvíře v zimě přespí jen část času a jinak žije ze zásob, které si nashromáždilo na podzim?",
     correctAnswer: "Veverka",
-    options: ["Veverka", "Ježek", "Netopýr", "Vlaštovka"],
+    options: ["Ježek", "Veverka", "Netopýr", "Vlaštovka"],
     emoji: "🐿️",
     hints: [
       "Hledej zvíře, které si dělá zásoby a v zimě se z nich krmí.",
@@ -513,12 +463,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které jídlo je pro ptáky v krmítku nejlepší a neuškodí jim?",
     correctAnswer: "Slunečnicová semínka a nesolený lůj",
-    options: [
-      "Slunečnicová semínka a nesolený lůj",
-      "Slané tyčinky a brambůrky",
-      "Plesnivé pečivo",
-      "Zbytky jídla se solí a kořením",
-    ],
+    options: ["Slané tyčinky a brambůrky", "Plesnivé pečivo", "Slunečnicová semínka a nesolený lůj", "Zbytky jídla se solí a kořením"],
     emoji: "🌻",
     hints: [
       "Spoj dvě zdravé věci, které ptákům svědčí.",
@@ -530,12 +475,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč ježek před zimou hodně žere a ztloustne?",
     correctAnswer: "Aby měl zásobu tuku na dlouhý zimní spánek",
-    options: [
-      "Aby měl zásobu tuku na dlouhý zimní spánek",
-      "Aby doletěl až do teplých krajů",
-      "Aby se vešel do ptačího krmítka",
-      "Aby ho bylo ve sněhu lépe vidět",
-    ],
+    options: ["Aby doletěl až do teplých krajů", "Aby se vešel do ptačího krmítka", "Aby ho bylo ve sněhu lépe vidět", "Aby měl zásobu tuku na dlouhý zimní spánek"],
     emoji: "🦔",
     hints: [
       "Během spánku ježek nic nejí — z čeho tedy žije?",

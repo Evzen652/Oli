@@ -159,7 +159,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Je horko, děti mají prázdniny a chodí se koupat. Které je to roční období?",
     correctAnswer: "Léto",
-    options: ["Léto", "Jaro", "Podzim", "Zima"],
+    options: ["Jaro", "Léto", "Podzim", "Zima"],
     emoji: "🏖️",
     hints: [
       "Kdy je největší teplo a děti nechodí do školy?",
@@ -171,12 +171,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co z toho patří k létu?",
     correctAnswer: "Zrání jahod na zahradě",
-    options: [
-      "Zrání jahod na zahradě",
-      "Pučení prvních listů na holých stromech",
-      "Padání barevného listí ze stromů",
-      "Zamrzání rybníka",
-    ],
+    options: ["Pučení prvních listů na holých stromech", "Padání barevného listí ze stromů", "Zrání jahod na zahradě", "Zamrzání rybníka"],
     emoji: "🍓",
     hints: [
       "Hledej to, co se děje, když je největší teplo.",
@@ -188,12 +183,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělají stromy na jaře?",
     correctAnswer: "Raší jim nové zelené listy",
-    options: [
-      "Raší jim nové zelené listy",
-      "Opadává jim všechno listí",
-      "Zůstávají úplně holé bez pupenů",
-      "Jsou pokryté sněhem a ledem",
-    ],
+    options: ["Opadává jim všechno listí", "Zůstávají úplně holé bez pupenů", "Jsou pokryté sněhem a ledem", "Raší jim nové zelené listy"],
     emoji: "🌳",
     hints: [
       "Co se stane s holými stromy, když se na jaře oteplí?",
@@ -217,12 +207,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který znak je typický pro letní den?",
     correctAnswer: "Je dlouhý, teplý a svítí slunce dlouho do večera",
-    options: [
-      "Je dlouhý, teplý a svítí slunce dlouho do večera",
-      "Je krátký a brzy se stmívá",
-      "Celý den mrzne a padá sníh",
-      "Ráno bývá jinovatka a led na kalužích",
-    ],
+    options: ["Je krátký a brzy se stmívá", "Je dlouhý, teplý a svítí slunce dlouho do večera", "Celý den mrzne a padá sníh", "Ráno bývá jinovatka a led na kalužích"],
     emoji: "☀️",
     hints: [
       "Porovnej léto se zimou — kdy je den delší a kdy bývá nejtepleji?",
@@ -234,7 +219,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Sníh z minulé zimy taje a potůčky jsou plné vody. Které je to období?",
     correctAnswer: "Jaro",
-    options: ["Jaro", "Léto", "Podzim", "Zima"],
+    options: ["Léto", "Podzim", "Jaro", "Zima"],
     emoji: "💧",
     hints: [
       "Kdy se otepluje tak, že sníh taje a mizí?",
@@ -246,7 +231,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ke kterému období patří dozrávání třešní a meruněk?",
     correctAnswer: "K létu",
-    options: ["K létu", "K zimě", "K podzimu", "K jaru"],
+    options: ["K zimě", "K podzimu", "K jaru", "K létu"],
     emoji: "🍒",
     hints: [
       "Ovoce dozrává, když je hodně tepla a slunce.",
@@ -275,12 +260,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co si vezmeš na sebe za horkého letního dne?",
     correctAnswer: "Lehké tričko, kraťasy a čepici proti slunci",
-    options: [
-      "Lehké tričko, kraťasy a čepici proti slunci",
-      "Zimní bundu, rukavice a šálu",
-      "Silný kabát a zimní boty",
-      "Pláštěnku a gumáky do sněhu",
-    ],
+    options: ["Zimní bundu, rukavice a šálu", "Lehké tričko, kraťasy a čepici proti slunci", "Silný kabát a zimní boty", "Pláštěnku a gumáky do sněhu"],
     emoji: "👕",
     hints: [
       "V horku nám je dobře v lehkém oblečení.",
@@ -292,7 +272,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na loukách kvetou pampelišky a sedmikrásky. Které období právě začalo?",
     correctAnswer: "Jaro",
-    options: ["Jaro", "Zima", "Podzim", "Léto"],
+    options: ["Zima", "Podzim", "Jaro", "Léto"],
     emoji: "🌼",
     hints: [
       "Kdy se louky poprvé po zimě zazelenají a rozkvetou?",
@@ -304,7 +284,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdy jsou dny nejdelší a slunce svítí nejdéle?",
     correctAnswer: "V létě",
-    options: ["V létě", "V zimě", "Na podzim", "Vždy stejně dlouho"],
+    options: ["V zimě", "Na podzim", "Vždy stejně dlouho", "V létě"],
     emoji: "🌅",
     hints: [
       "V kterém období je ještě večer dlouho světlo?",
@@ -336,12 +316,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč na jaře rozkvétají květiny a stromům raší listy?",
     correctAnswer: "Protože se otepluje a přibývá světla",
-    options: [
-      "Protože se otepluje a přibývá světla",
-      "Protože je čím dál větší zima a mráz",
-      "Protože dny jsou čím dál kratší",
-      "Protože začíná padat sníh",
-    ],
+    options: ["Protože je čím dál větší zima a mráz", "Protože se otepluje a přibývá světla", "Protože dny jsou čím dál kratší", "Protože začíná padat sníh"],
     emoji: "🌱",
     hints: [
       "Přemýšlej, co se s počasím na jaře mění oproti zimě.",
@@ -353,12 +328,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která dvojice znaků patří dohromady k jaru?",
     correctAnswer: "Pučí listy a rodí se mláďata",
-    options: [
-      "Pučí listy a rodí se mláďata",
-      "Je horko a zrají jahody",
-      "Padá listí a fouká studený vítr",
-      "Mrzne a zamrzá rybník",
-    ],
+    options: ["Je horko a zrají jahody", "Padá listí a fouká studený vítr", "Pučí listy a rodí se mláďata", "Mrzne a zamrzá rybník"],
     emoji: "🐣",
     hints: [
       "Obě věci se musí dít ve stejném období.",
@@ -370,12 +340,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč se v létě chodíme koupat mnohem častěji než na jaře?",
     correctAnswer: "Protože v létě bývá větší horko a voda nás příjemně ochladí",
-    options: [
-      "Protože v létě bývá větší horko a voda nás příjemně ochladí",
-      "Protože v létě je voda zamrzlá na led",
-      "Protože v létě je zima a chceme se zahřát",
-      "Protože v létě nikdy nesvítí slunce",
-    ],
+    options: ["Protože v létě je voda zamrzlá na led", "Protože v létě je zima a chceme se zahřát", "Protože v létě nikdy nesvítí slunce", "Protože v létě bývá větší horko a voda nás příjemně ochladí"],
     emoji: "🏊",
     hints: [
       "Porovnej počasí na jaře a v létě — kdy bývá nejvíc teplo?",
@@ -404,12 +369,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na začátku jara ještě může přijít chladno, ale kterým směrem se počasí celkově mění?",
     correctAnswer: "Postupně se otepluje a dní přibývá světla",
-    options: [
-      "Postupně se otepluje a dní přibývá světla",
-      "Postupně se ochlazuje a dny se zkracují",
-      "Počasí se vůbec nemění, zůstává jako v zimě",
-      "Padá čím dál víc sněhu",
-    ],
+    options: ["Postupně se ochlazuje a dny se zkracují", "Postupně se otepluje a dní přibývá světla", "Počasí se vůbec nemění, zůstává jako v zimě", "Padá čím dál víc sněhu"],
     emoji: "🌤️",
     hints: [
       "Jaro je přechod mezi zimou a létem — kam počasí míří?",
@@ -421,12 +381,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád tvrdí, že jahody dozrávají v zimě. Jak to opravíš?",
     correctAnswer: "Jahody dozrávají v létě, protože potřebují hodně tepla a slunce",
-    options: [
-      "Jahody dozrávají v létě, protože potřebují hodně tepla a slunce",
-      "Kamarád má pravdu, jahody dozrávají v zimě na sněhu",
-      "Jahody dozrávají v zimě, protože je zima nejteplejší",
-      "Jahody vůbec nedozrávají, rostou stále stejné",
-    ],
+    options: ["Kamarád má pravdu, jahody dozrávají v zimě na sněhu", "Jahody dozrávají v zimě, protože je zima nejteplejší", "Jahody dozrávají v létě, protože potřebují hodně tepla a slunce", "Jahody vůbec nedozrávají, rostou stále stejné"],
     emoji: "🍓",
     hints: [
       "Kdy je nejvíc tepla a slunce, které ovoce potřebuje ke zrání?",
@@ -438,12 +393,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na jaře stromy kvetou. Proč na nich potom v létě najdeme ovoce?",
     correctAnswer: "Z jarních květů se během tepla vyvinou plody, které v létě dozrají",
-    options: [
-      "Z jarních květů se během tepla vyvinou plody, které v létě dozrají",
-      "Ovoce spadne na strom z nebe hotové",
-      "Ovoce na stromě bylo celou zimu a jen roztálo",
-      "Květy a ovoce spolu vůbec nesouvisí",
-    ],
+    options: ["Ovoce spadne na strom z nebe hotové", "Ovoce na stromě bylo celou zimu a jen roztálo", "Květy a ovoce spolu vůbec nesouvisí", "Z jarních květů se během tepla vyvinou plody, které v létě dozrají"],
     emoji: "🍎",
     hints: [
       "Spoj dvě věci: nejdřív květ na jaře, potom plod v létě.",
