@@ -33,7 +33,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo léčí lidi, když jsou nemocní?",
     correctAnswer: "Lékař",
-    options: ["Lékař", "Řidič", "Kuchař", "Pošťák"],
+    options: ["Řidič", "Lékař", "Kuchař", "Pošťák"],
     emoji: "👩‍⚕️",
     hints: ["Když jsme nemocní, jdeme se nechat vyšetřit — ke komu?"],
     solutionSteps: ["Lidi léčí lékař — vyšetřuje pacienty a předepisuje léky."],
@@ -41,7 +41,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo učí děti ve škole číst a počítat?",
     correctAnswer: "Učitel",
-    options: ["Učitel", "Hasič", "Pekař", "Zedník"],
+    options: ["Hasič", "Pekař", "Učitel", "Zedník"],
     emoji: "👨‍🏫",
     hints: ["Ve škole nás někdo naučí číst, psát a počítat — kdo to je?"],
     solutionSteps: ["Děti učí učitel — ve škole nás naučí číst, psát, počítat a spoustu dalšího."],
@@ -49,7 +49,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo peče chleba a rohlíky?",
     correctAnswer: "Pekař",
-    options: ["Pekař", "Lékař", "Policista", "Kadeřník"],
+    options: ["Lékař", "Policista", "Kadeřník", "Pekař"],
     emoji: "🍞",
     hints: ["Chléb se peče v peci — kdo s tím pracuje?"],
     solutionSteps: ["Chléb a rohlíky peče pekař — vstává velmi brzy ráno, aby bylo pečivo čerstvé."],
@@ -65,7 +65,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo řídí autobus a veze cestující?",
     correctAnswer: "Řidič",
-    options: ["Řidič", "Pekař", "Lékař", "Zedník"],
+    options: ["Pekař", "Řidič", "Lékař", "Zedník"],
     emoji: "🚌",
     hints: ["Autobus potřebuje někoho za volantem — kdo ho řídí?"],
     solutionSteps: ["Autobus řídí řidič — stará se o bezpečnou přepravu cestujících."],
@@ -73,7 +73,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo chrání lidi a hlídá pořádek?",
     correctAnswer: "Policista",
-    options: ["Policista", "Kuchař", "Pekař", "Herec"],
+    options: ["Kuchař", "Pekař", "Policista", "Herec"],
     emoji: "👮",
     hints: ["Bezpečnost lidí a dodržování pravidel zajišťuje..."],
     solutionSteps: ["Lidi chrání policista — hlídá pořádek a bezpečnost."],
@@ -81,7 +81,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo roznáší dopisy a balíky do schránek?",
     correctAnswer: "Pošťák",
-    options: ["Pošťák", "Hasič", "Lékař", "Malíř"],
+    options: ["Hasič", "Lékař", "Malíř", "Pošťák"],
     emoji: "📬",
     hints: ["Dopisy a balíky přicházejí do naší schránky — kdo je přinese?"],
     solutionSteps: ["Dopisy a balíky roznáší pošťák — chodí dům od domu a doručuje zásilky."],
@@ -97,7 +97,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo stříhá lidem vlasy?",
     correctAnswer: "Kadeřník",
-    options: ["Kadeřník", "Kuchař", "Učitel", "Zubař"],
+    options: ["Kuchař", "Kadeřník", "Učitel", "Zubař"],
     emoji: "💇",
     hints: ["Vlasy nám rostou a potřebujeme je stříhat — kdo to dělá?"],
     solutionSteps: ["Vlasy stříhá kadeřník — v kadeřnictví nám ostříhá nebo upraví účes."],
@@ -105,7 +105,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo staví domy z cihel?",
     correctAnswer: "Zedník",
-    options: ["Zedník", "Pekař", "Pošťák", "Malíř"],
+    options: ["Pekař", "Pošťák", "Zedník", "Malíř"],
     emoji: "🧱",
     hints: ["Domy jsou postavené z cihel a betonu — kdo je staví?"],
     solutionSteps: ["Domy staví zedník — skládá cihly a lije beton."],
@@ -113,7 +113,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo opravuje porouchaná auta?",
     correctAnswer: "Mechanik",
-    options: ["Mechanik", "Lékař", "Učitel", "Zedník"],
+    options: ["Lékař", "Učitel", "Zedník", "Mechanik"],
     emoji: "🔧",
     hints: ["Když auto porouchá a nejede, je potřeba ho opravit — kdo to umí?"],
     solutionSteps: ["Auta opravuje mechanik — v autoservisu zjistí závadu a opraví ji."],
@@ -129,7 +129,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo prodává zboží v obchodě?",
     correctAnswer: "Prodavač",
-    options: ["Prodavač", "Hasič", "Lékař", "Zedník"],
+    options: ["Hasič", "Prodavač", "Lékař", "Zedník"],
     emoji: "🏪",
     hints: ["V obchodě nám někdo pomáhá vybrat a zaplatit — kdo to je?"],
     solutionSteps: ["V obchodě prodává prodavač — pomáhá zákazníkům a přijímá platby."],
@@ -137,7 +137,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo opravuje lidem zuby?",
     correctAnswer: "Zubař",
-    options: ["Zubař", "Pekař", "Řidič", "Veterinář"],
+    options: ["Pekař", "Řidič", "Zubař", "Veterinář"],
     emoji: "🦷",
     hints: ["Kazy v zubech potřebují ošetření — ke komu jdeme?"],
     solutionSteps: ["Zuby opravuje zubař — ošetřuje kazy a stará se o zdraví zubů."],
@@ -145,7 +145,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo hraje postavy v divadelním představení?",
     correctAnswer: "Herec",
-    options: ["Herec", "Pekař", "Řidič", "Malíř"],
+    options: ["Pekař", "Řidič", "Malíř", "Herec"],
     emoji: "🎭",
     hints: ["V divadle lidé hrají různé role v příbězích — jak se jim říká?"],
     solutionSteps: ["V divadle hraje herec — učí se role a vystupuje před diváky."],
@@ -164,7 +164,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co má lékař na sobě, když vyšetřuje pacienty?",
     correctAnswer: "Bílý plášť",
-    options: ["Bílý plášť", "Hasičskou přilbu", "Zástěru zedníka", "Uniformu policisty"],
+    options: ["Hasičskou přilbu", "Bílý plášť", "Zástěru zedníka", "Uniformu policisty"],
     emoji: "👩‍⚕️",
     hints: ["Lékař nosí typický oděv, podle kterého ho v ordinaci hned poznáš."],
     solutionSteps: ["Lékař při vyšetřování nosí bílý plášť — je to jeho typický pracovní oděv."],
@@ -172,7 +172,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kde pekař peče chléb a rohlíky?",
     correctAnswer: "V pekárně",
-    options: ["V pekárně", "V kuchyni restaurace", "V lékárně", "Na poli"],
+    options: ["V kuchyni restaurace", "V lékárně", "V pekárně", "Na poli"],
     emoji: "🍞",
     hints: ["Mysli na místo, kde jsou velké pece na pečivo a vůně čerstvého chleba."],
     solutionSteps: ["Pekař peče chléb a rohlíky v pekárně — tam má pece na pečivo."],
@@ -180,7 +180,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké nástroje potřebuje kadeřník ke stříhání vlasů?",
     correctAnswer: "Nůžky a hřeben",
-    options: ["Nůžky a hřeben", "Kladivo a hřebíky", "Vařečku a hrnec", "Štětec a barvy"],
+    options: ["Kladivo a hřebíky", "Vařečku a hrnec", "Štětec a barvy", "Nůžky a hřeben"],
     emoji: "💇",
     hints: ["Mysli na nástroje, kterými se dají vlasy zastřihnout a učesat."],
     solutionSteps: ["Kadeřník používá nůžky a hřeben — nůžkami stříhá, hřebenem vlasy upravuje."],
@@ -196,7 +196,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čím si veterinář prohlíží nemocné zvíře?",
     correctAnswer: "Stetoskopem",
-    options: ["Stetoskopem", "Vařečkou", "Kladivem", "Nůžkami na vlasy"],
+    options: ["Vařečkou", "Stetoskopem", "Kladivem", "Nůžkami na vlasy"],
     emoji: "🐕",
     hints: ["Tímto nástrojem se poslouchá tlukot srdce a dech — visí lékařům kolem krku."],
     solutionSteps: ["Veterinář si zvíře prohlíží stetoskopem — poslouchá jím srdce a dech."],
@@ -204,7 +204,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co drží řidič v rukou, aby autobus jel správným směrem?",
     correctAnswer: "Volant",
-    options: ["Volant", "Kormidlo lodi", "Řídítka kola", "Vařečku"],
+    options: ["Kormidlo lodi", "Řídítka kola", "Volant", "Vařečku"],
     emoji: "🚌",
     hints: ["Tímto se v autě nebo autobuse otáčí doleva a doprava."],
     solutionSteps: ["Řidič drží volant — otáčením volantu určuje směr jízdy autobusu."],
@@ -212,7 +212,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kam jdeš, když tě bolí zub?",
     correctAnswer: "K zubaři",
-    options: ["K zubaři", "K veterináři", "K pekaři", "K zedníkovi"],
+    options: ["K veterináři", "K pekaři", "K zedníkovi", "K zubaři"],
     emoji: "🦷",
     hints: ["Hledej povolání, které se stará přímo o zdraví zubů."],
     solutionSteps: ["Když bolí zub, jdeme k zubaři — prohlédne a ošetří zub."],
@@ -228,7 +228,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co pěstuje zemědělec na poli?",
     correctAnswer: "Obilí a zeleninu",
-    options: ["Obilí a zeleninu", "Chleba a rohlíky", "Cihly a maltu", "Léky"],
+    options: ["Chleba a rohlíky", "Obilí a zeleninu", "Cihly a maltu", "Léky"],
     emoji: "🚜",
     hints: ["Mysli na to, co roste přímo na poli, ne na to, co se z toho později vyrábí."],
     solutionSteps: ["Zemědělec pěstuje na poli obilí a zeleninu — z obilí se pak mimo jiné peče chléb."],
@@ -236,7 +236,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá prodavač v obchodě?",
     correctAnswer: "Prodává zboží a vybírá peníze",
-    options: ["Peče chleba a rohlíky", "Prodává zboží a vybírá peníze", "Léčí nemocná zvířata", "Staví domy a mosty"],
+    options: ["Peče chleba a rohlíky", "Léčí nemocná zvířata", "Prodává zboží a vybírá peníze", "Staví domy a mosty"],
     emoji: "🏪",
     hints: ["Mysli na to, co dělá člověk za pokladnou, když si u něj něco kupuješ."],
     solutionSteps: ["Prodavač v obchodě prodává zboží zákazníkům a vybírá od nich peníze."],
@@ -244,7 +244,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co doručuje pošťák do naší schránky?",
     correctAnswer: "Dopisy a balíky",
-    options: ["Dopisy a balíky", "Léky", "Chléb", "Cihly"],
+    options: ["Léky", "Chléb", "Cihly", "Dopisy a balíky"],
     emoji: "📬",
     hints: ["Mysli na to, co najdeš ve schránce u dveří domu."],
     solutionSteps: ["Pošťák doručuje do schránky dopisy a balíky."],
@@ -260,7 +260,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čím opravuje mechanik porouchané auto?",
     correctAnswer: "Klíči a nářadím v autoservisu",
-    options: ["Klíči a nářadím v autoservisu", "Vařečkou v kuchyni", "Nůžkami v kadeřnictví", "Štětcem v ateliéru"],
+    options: ["Vařečkou v kuchyni", "Klíči a nářadím v autoservisu", "Nůžkami v kadeřnictví", "Štětcem v ateliéru"],
     emoji: "🔧",
     hints: ["Mysli na místo a nástroje, kterými se šroubuje a rozebírá motor."],
     solutionSteps: ["Mechanik opravuje auto klíči a dalším nářadím v autoservisu."],
@@ -271,7 +271,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo hasí oheň a k tomu nosí ochrannou helmu s hadicí?",
     correctAnswer: "Hasič",
-    options: ["Hasič", "Zedník", "Policista", "Zahradník"],
+    options: ["Zedník", "Policista", "Hasič", "Zahradník"],
     emoji: "👨‍🚒",
     hints: ["Hledej povolání, které má zároveň OBOJÍ — helmu i hadici na hašení ohně."],
     solutionSteps: [
@@ -281,7 +281,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo staví domy a k tomu pracuje s cihlami a maltou?",
     correctAnswer: "Zedník",
-    options: ["Zedník", "Malíř", "Mechanik", "Zemědělec"],
+    options: ["Malíř", "Mechanik", "Zemědělec", "Zedník"],
     emoji: "🧱",
     hints: ["Hledej povolání, které staví domy PŘÍMO z cihel slepených maltou."],
     solutionSteps: [
@@ -301,7 +301,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo peče chléb a k tomu pracuje brzy ráno v pekárně?",
     correctAnswer: "Pekař",
-    options: ["Pekař", "Kuchař", "Prodavač", "Zemědělec"],
+    options: ["Kuchař", "Pekař", "Prodavač", "Zemědělec"],
     emoji: "🍞",
     hints: ["Kuchař taky vaří jídlo, ale hledej toho, kdo peče PŘÍMO chléb v pekárně."],
     solutionSteps: [
@@ -311,7 +311,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo vaří jídlo a k tomu pracuje v kuchyni restaurace nebo jídelny?",
     correctAnswer: "Kuchař",
-    options: ["Kuchař", "Pekař", "Prodavač", "Učitel"],
+    options: ["Pekař", "Prodavač", "Kuchař", "Učitel"],
     emoji: "👨‍🍳",
     hints: ["Pekař taky něco připravuje, ale hledej toho, kdo vaří obědy v kuchyni."],
     solutionSteps: [
@@ -321,7 +321,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo pěstuje obilí a k tomu sklízí úrodu na velkém poli?",
     correctAnswer: "Zemědělec",
-    options: ["Zemědělec", "Pekař", "Kuchař", "Prodavač"],
+    options: ["Pekař", "Kuchař", "Prodavač", "Zemědělec"],
     emoji: "🚜",
     hints: ["Pekař z obilí jen peče pečivo — hledej toho, kdo obilí PĚSTUJE přímo na poli."],
     solutionSteps: [
@@ -341,7 +341,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Bolí tě zub, ale jinak jsi úplně zdravý. Ke komu půjdeš?",
     correctAnswer: "K zubaři",
-    options: ["K zubaři", "K lékaři", "K veterináři", "K kadeřníkovi"],
+    options: ["K lékaři", "K zubaři", "K veterináři", "K kadeřníkovi"],
     emoji: "🦷",
     hints: ["Hledej povolání, které se stará JEN o zuby, ne o celé tělo."],
     solutionSteps: [
@@ -351,7 +351,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Tvému psovi je špatně a navíc ho bolí zoubek. Ke komu ho zavezeš?",
     correctAnswer: "K veterináři",
-    options: ["K veterináři", "K zubaři", "K lékaři", "K zahradníkovi"],
+    options: ["K zubaři", "K lékaři", "K veterináři", "K zahradníkovi"],
     emoji: "🐕",
     hints: ["Hledej povolání, které se stará o VŠECHNA zvířata, včetně jejich zoubků."],
     solutionSteps: [
@@ -361,7 +361,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V domě začal hořet oheň! Koho zavoláš jako prvního?",
     correctAnswer: "Hasiče",
-    options: ["Hasiče", "Policistu", "Lékaře", "Pošťáka"],
+    options: ["Policistu", "Lékaře", "Pošťáka", "Hasiče"],
     emoji: "🚒",
     hints: ["Hledej povolání, které je vybavené přímo na hašení ohně."],
     solutionSteps: [
@@ -381,7 +381,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo prodává zboží v obchodě a k tomu vybírá od zákazníků peníze?",
     correctAnswer: "Prodavač",
-    options: ["Prodavač", "Pošťák", "Pekař", "Kuchař"],
+    options: ["Pošťák", "Prodavač", "Pekař", "Kuchař"],
     emoji: "🏪",
     hints: ["Pošťák taky přichází k lidem, ale hledej toho, kdo stojí PŘÍMO za pokladnou v obchodě."],
     solutionSteps: [
@@ -391,7 +391,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo doručuje dopisy a k tomu chodí s taškou od domu k domu?",
     correctAnswer: "Pošťák",
-    options: ["Pošťák", "Prodavač", "Hasič", "Zemědělec"],
+    options: ["Prodavač", "Hasič", "Pošťák", "Zemědělec"],
     emoji: "📬",
     hints: ["Prodavač zboží prodává v obchodě — hledej toho, kdo dopisy nosí přímo k lidem domů."],
     solutionSteps: [
@@ -401,7 +401,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdo stříhá vlasy a k tomu pracuje s nůžkami a hřebenem v kadeřnictví?",
     correctAnswer: "Kadeřník",
-    options: ["Kadeřník", "Zubař", "Lékař", "Malíř"],
+    options: ["Zubař", "Lékař", "Malíř", "Kadeřník"],
     emoji: "💇",
     hints: ["Zubař taky používá nástroje u člověka, ale hledej toho, kdo pracuje s VLASY."],
     solutionSteps: [

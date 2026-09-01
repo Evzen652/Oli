@@ -37,12 +37,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená respektovat druhého člověka?",
     correctAnswer: "Brát ohled na jeho pocity a názory",
-    options: [
-      "Brát ohled na jeho pocity a názory",
-      "Vždy s ním souhlasit",
-      "Ignorovat, co říká",
-      "Dělat vše, co si přeje",
-    ],
+    options: ["Vždy s ním souhlasit", "Brát ohled na jeho pocity a názory", "Ignorovat, co říká", "Dělat vše, co si přeje"],
     hints: [
       "Respekt neznamená souhlas — můžeš mít jiný názor a přesto respektovat druhého.",
       "Respekt není to samé jako poslušnost ani lhostejnost — je to o tom, jak se k druhému chováš navzdory rozdílnému názoru.",
@@ -53,12 +48,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je kompromis?",
     correctAnswer: "Řešení, kdy každý trochu ustoupí, aby se dohodli",
-    options: [
-      "Řešení, kdy každý trochu ustoupí, aby se dohodli",
-      "Jeden vyhraje a druhý prohraje",
-      "Hádka, která neskončí",
-      "Přijmout rozhodnutí dospělého",
-    ],
+    options: ["Jeden vyhraje a druhý prohraje", "Hádka, která neskončí", "Řešení, kdy každý trochu ustoupí, aby se dohodli", "Přijmout rozhodnutí dospělého"],
     hints: [
       "Kompromis hledá cestu, která vyhovuje oběma stranám — ne jen jedné.",
       "Každý musí trochu ustoupit od toho, co chce.",
@@ -69,12 +59,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je spolupráce?",
     correctAnswer: "Společná práce na jednom cíli",
-    options: [
-      "Společná práce na jednom cíli",
-      "Dělat vše sám bez pomoci",
-      "Závodit, kdo bude rychlejší",
-      "Ignorovat spolužáky",
-    ],
+    options: ["Dělat vše sám bez pomoci", "Závodit, kdo bude rychlejší", "Ignorovat spolužáky", "Společná práce na jednom cíli"],
     hints: [
       "Spolupráce = spolu + práce. Jde o společné úsilí.",
       "Když táhnou všichni za jeden provaz, dosáhnou cíle snadněji.",
@@ -101,12 +86,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je konflikt?",
     correctAnswer: "Neshoda mezi lidmi, kterou lze vyřešit dohodou",
-    options: [
-      "Neshoda mezi lidmi, kterou lze vyřešit dohodou",
-      "Vždy velká rvačka",
-      "Kamarádství, které trvá navždy",
-      "Soutěž o nejlepší výsledek",
-    ],
+    options: ["Vždy velká rvačka", "Neshoda mezi lidmi, kterou lze vyřešit dohodou", "Kamarádství, které trvá navždy", "Soutěž o nejlepší výsledek"],
     hints: [
       "Konflikt není totéž co rvačka — je to neshoda v názoru.",
       "Konflikt nemusí skončit hádkou ani rvačkou — přemýšlej, jakým klidnějším způsobem může skončit, aniž by někdo někomu ublížil.",
@@ -117,12 +97,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je násilí?",
     correctAnswer: "Záměrné ubližování slovem nebo fyzicky",
-    options: [
-      "Záměrné ubližování slovem nebo fyzicky",
-      "Hádka, která skončí dohodou",
-      "Rozdílné názory na jednu věc",
-      "Soutěž o nejlepší výsledek",
-    ],
+    options: ["Hádka, která skončí dohodou", "Rozdílné názory na jednu věc", "Záměrné ubližování slovem nebo fyzicky", "Soutěž o nejlepší výsledek"],
     hints: [
       "Konflikt lze vyřešit dohodou. Násilí ubližuje záměrně.",
       "Mluvit o problému = konflikt. Bít nebo urážet = násilí.",
@@ -133,12 +108,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená naslouchat druhému člověku?",
     correctAnswer: "Pozorně poslouchat, co říká, a snažit se mu porozumět",
-    options: [
-      "Pozorně poslouchat, co říká, a snažit se mu porozumět",
-      "Čekat, až budu moct mluvit já",
-      "Dělat u toho jinou činnost",
-      "Poslouchat jen polovinu věty",
-    ],
+    options: ["Čekat, až budu moct mluvit já", "Dělat u toho jinou činnost", "Poslouchat jen polovinu věty", "Pozorně poslouchat, co říká, a snažit se mu porozumět"],
     hints: [
       "Naslouchání není totéž jako slyšet zvuk — jde o porozumění.",
       "Pozorný posluchač se dívá na mluvčího a nepřerušuje ho.",
@@ -165,12 +135,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená být upřímný ke kamarádovi?",
     correctAnswer: "Říkat mu pravdu, i když je nepříjemná",
-    options: [
-      "Říkat mu pravdu, i když je nepříjemná",
-      "Říkat mu jen to, co chce slyšet",
-      "Lhát, aby se necítil špatně",
-      "Nic mu neříkat a mlčet",
-    ],
+    options: ["Říkat mu jen to, co chce slyšet", "Říkat mu pravdu, i když je nepříjemná", "Lhát, aby se necítil špatně", "Nic mu neříkat a mlčet"],
     hints: [
       "Upřímnost znamená pravdu, ne vždy příjemnou zprávu.",
       "Skutečný kamarád raději řekne pravdu, než by lhal.",
@@ -181,12 +146,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "K čemu slouží pravidla třídy?",
     correctAnswer: "Pomáhají, aby se všichni cítili bezpečně a mohli se učit",
-    options: [
-      "Pomáhají, aby se všichni cítili bezpečně a mohli se učit",
-      "Jsou tu jen na obtěžování žáků",
-      "Platí jen pro některé žáky",
-      "Slouží k trestání za každou maličkost",
-    ],
+    options: ["Jsou tu jen na obtěžování žáků", "Platí jen pro některé žáky", "Pomáhají, aby se všichni cítili bezpečně a mohli se učit", "Slouží k trestání za každou maličkost"],
     hints: [
       "Pravidla platí pro všechny stejně — i pro učitele.",
       "Bez pravidel by ve třídě vládl chaos.",
@@ -197,12 +157,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená pomoci kamarádovi v nesnázích?",
     correctAnswer: "Podpořit ho a udělat něco, co mu situaci ulehčí",
-    options: [
-      "Podpořit ho a udělat něco, co mu situaci ulehčí",
-      "Počkat, až problém vyřeší sám",
-      "Smát se mu, že to nezvládá",
-      "Říct mu, ať se s tím nikomu nesvěřuje",
-    ],
+    options: ["Počkat, až problém vyřeší sám", "Smát se mu, že to nezvládá", "Říct mu, ať se s tím nikomu nesvěřuje", "Podpořit ho a udělat něco, co mu situaci ulehčí"],
     hints: [
       "Pomoc znamená aktivně něco udělat, ne jen přihlížet.",
       "Kamarád v nouzi ocení, když mu někdo nabídne pomoc.",
@@ -233,7 +188,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Jana a Tomáš se hádají o to, jakou hru hrát. Nakonec se domluví, že hodinu hrají Janinu hru a hodinu Tomášovu. Jak se tomuto řešení říká?",
     correctAnswer: "Kompromis",
-    options: ["Kompromis", "Násilí", "Ignorování problému", "Trest"],
+    options: ["Násilí", "Kompromis", "Ignorování problému", "Trest"],
     hints: [
       "Oba trochu ustoupili od svého přání.",
       "Řešení vyhovuje oběma stranám.",
@@ -245,12 +200,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Petr a Lukáš se pohádali a oba na sebe křičí. Co by měli udělat jako úplně první krok?",
     correctAnswer: "Uklidnit se",
-    options: [
-      "Uklidnit se",
-      "Křičet ještě hlasitěji",
-      "Okamžitě si přestat navždy povídat",
-      "Zavolat si na pomoc další spolužáky do hádky",
-    ],
+    options: ["Křičet ještě hlasitěji", "Okamžitě si přestat navždy povídat", "Uklidnit se", "Zavolat si na pomoc další spolužáky do hádky"],
     hints: [
       "Ve vzteku se nedá pořádně domluvit.",
       "Teprve po zklidnění lze klidně mluvit.",
@@ -262,12 +212,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Do třídy přišel nový spolužák, který mluví s jiným přízvukem. Jak se k němu zachováš?",
     correctAnswer: "Přivítám ho a pomůžu mu zapadnout do třídy",
-    options: [
-      "Přivítám ho a pomůžu mu zapadnout do třídy",
-      "Budu se mu smát kvůli přízvuku",
-      "Budu ho ignorovat, dokud nezačne mluvit sám",
-      "Řeknu ostatním, ať si s ním nepovídají",
-    ],
+    options: ["Budu se mu smát kvůli přízvuku", "Budu ho ignorovat, dokud nezačne mluvit sám", "Řeknu ostatním, ať si s ním nepovídají", "Přivítám ho a pomůžu mu zapadnout do třídy"],
     hints: [
       "Nový spolužák se cítí nejistě — vlídnost mu pomůže.",
       "Tolerance znamená přijímat to, že je někdo jiný.",
@@ -296,7 +241,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Skupina žáků má společně postavit model hradu z papíru. Každý dělá jinou část — jeden věž, druhý bránu, třetí hradby. Jak se tomuto společnému postupu říká?",
     correctAnswer: "Spolupráce",
-    options: ["Spolupráce", "Soutěž", "Kompromis", "Konflikt"],
+    options: ["Soutěž", "Spolupráce", "Kompromis", "Konflikt"],
     hints: [
       "Každý přispívá svou částí ke společnému cíli.",
       "Zamysli se, jak se nazývá situace, kdy víc lidí dělá různé části jednoho společného díla, aby ho dohromady dokončili.",
@@ -308,7 +253,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Kamarádka má jiný názor na to, jaký film je nejlepší. Ty s ní nesouhlasíš, ale vyslechneš ji a neposmíváš se jí. Co tím projevuješ?",
     correctAnswer: "Respekt",
-    options: ["Respekt", "Souhlas se vším, co řekne", "Lhostejnost", "Nadřazenost"],
+    options: ["Souhlas se vším, co řekne", "Lhostejnost", "Respekt", "Nadřazenost"],
     hints: [
       "Vyslechnout někoho a nezesměšňovat ho, i když s ním nesouhlasíš, je projevem jedné důležité vlastnosti — jak bys jí říkal/a?",
       "Můžeš mít jiný názor a přesto se chovat s úctou.",
@@ -320,7 +265,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Při hádce s bratrem ho necháš domluvit celou větu, díváš se na něj a nepřerušuješ ho. Co tím děláš?",
     correctAnswer: "Nasloucháš mu",
-    options: ["Nasloucháš mu", "Ignoruješ ho", "Přerušuješ ho", "Předstíráš, že posloucháš"],
+    options: ["Ignoruješ ho", "Přerušuješ ho", "Předstíráš, že posloucháš", "Nasloucháš mu"],
     hints: [
       "Naslouchání znamená nechat druhého domluvit.",
       "Pozorný posluchač se soustředí na mluvčího.",
@@ -361,7 +306,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Omylem jsi rozbil kamarádovu hračku. Přiznáš mu to a omluvíš se, i když víš, že bude smutný. Co tím projevuješ?",
     correctAnswer: "Upřímnost",
-    options: ["Upřímnost", "Zbabělost", "Lhostejnost", "Vychloubání"],
+    options: ["Zbabělost", "Lhostejnost", "Upřímnost", "Vychloubání"],
     hints: [
       "Přiznat chybu, i když víš, že z toho bude nepříjemná reakce, ukazuje vlastnost, která je opakem lhaní.",
       "Přiznat chybu je těžší, ale správnější než lhát.",
@@ -372,12 +317,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Spolužák tě o přestávce fyzicky uhodí. Jak správně zareaguješ?",
     correctAnswer: "Řeknu to učiteli nebo jinému dospělému",
-    options: [
-      "Řeknu to učiteli nebo jinému dospělému",
-      "Uhodím ho zpátky",
-      "Nic neřeknu a budu se schovávat",
-      "Budu si myslet, že jsem si to zasloužil",
-    ],
+    options: ["Uhodím ho zpátky", "Nic neřeknu a budu se schovávat", "Budu si myslet, že jsem si to zasloužil", "Řeknu to učiteli nebo jinému dospělému"],
     hints: [
       "Fyzické ubližování je vždy vážná věc, kterou má řešit dospělý.",
       "Oplácení by situaci jen zhoršilo.",
@@ -406,7 +346,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Dva spolužáci se neshodnou na tom, kterou básničku recitovat na besídce. Nikdo z nich druhému neublížil, jen mají jiný názor. Jak se tato situace nazývá?",
     correctAnswer: "Konflikt",
-    options: ["Konflikt", "Násilí", "Kamarádství", "Spolupráce"],
+    options: ["Násilí", "Konflikt", "Kamarádství", "Spolupráce"],
     hints: [
       "Jde jen o neshodu v názoru, ne o ubližování.",
       "Přemýšlej, jak se obecně nazývá stav, kdy se dva lidé neshodnou v názoru, ale nikdo druhému neubližuje.",
@@ -418,7 +358,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Spolužák má jiné zájmy než ty — sbírá známky, zatímco ty máš rád fotbal. Přesto se s ním bavíš a nezesměšňuješ jeho koníček. Co tím projevuješ?",
     correctAnswer: "Toleranci",
-    options: ["Toleranci", "Kompromis", "Násilí", "Lhostejnost"],
+    options: ["Kompromis", "Násilí", "Toleranci", "Lhostejnost"],
     hints: [
       "Tolerance znamená přijímat, že lidé mají různé zájmy.",
       "Nikdo nemusí mít stejné koníčky, aby si mohli rozumět.",
@@ -433,12 +373,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Spolužák tě už několik dnů opakovaně schválně strkal a nadával ti, i když jsi mu řekl, ať přestane. Je to ještě konflikt, nebo už jde o něco jiného, a jak správně zareaguješ?",
     correctAnswer: "Jde už o násilí — řeknu to učiteli nebo rodičům",
-    options: [
-      "Jde už o násilí — řeknu to učiteli nebo rodičům",
-      "Je to jen konflikt — počkám, až ho to přestane bavit",
-      "Je to jen konflikt — musím mu to oplatit",
-      "Jde už o násilí — nikomu to neřeknu, abych nebyl žalobníček",
-    ],
+    options: ["Je to jen konflikt — počkám, až ho to přestane bavit", "Je to jen konflikt — musím mu to oplatit", "Jde už o násilí — nikomu to neřeknu, abych nebyl žalobníček", "Jde už o násilí — řeknu to učiteli nebo rodičům"],
     hints: [
       "Opakované záměrné ubližování (strkání, nadávky) už není jen neshoda.",
       "Když se ubližování opakuje a bolí, je třeba přivolat pomoc dospělého.",
@@ -468,12 +403,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Nový spolužák má jiné náboženství a jiné zvyky u jídla. Ty ho bez problémů necháš být, jaký je, ALE navíc se ho zeptáš na jeho zvyky a bereš vážně, co ti řekne. Co k toleranci navíc přidáváš?",
     correctAnswer: "Respekt — aktivně beru ohled na jeho názory a potřeby",
-    options: [
-      "Respekt — aktivně beru ohled na jeho názory a potřeby",
-      "Nic — tolerance a respekt jsou úplně to samé",
-      "Kompromis — musím se vzdát svých zvyků",
-      "Násilí — nutím ho, aby se přizpůsobil",
-    ],
+    options: ["Nic — tolerance a respekt jsou úplně to samé", "Respekt — aktivně beru ohled na jeho názory a potřeby", "Kompromis — musím se vzdát svých zvyků", "Násilí — nutím ho, aby se přizpůsobil"],
     hints: [
       "Tolerance = přijmout, že je jiný. Respekt = navíc brát ohled na jeho potřeby a názory.",
       "Zeptat se a brát vážně jeho odpovědi je krok navíc oproti pouhému přijetí.",
@@ -485,12 +415,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád chce hrát jinou hru než ty. Hledáte řešení, které bude fér pro oba. Jak se takové řešení jmenuje, A co k jeho nalezení POTŘEBUJETE nejdřív udělat?",
     correctAnswer: "Kompromis — nejdřív si musíme navzájem naslouchat",
-    options: [
-      "Kompromis — nejdřív si musíme navzájem naslouchat",
-      "Násilí — nejdřív musí jeden ustoupit násilím",
-      "Kompromis — nejdřív musíme přestat kamarádit",
-      "Soutěž — nejdřív musíme zjistit, kdo je silnější",
-    ],
+    options: ["Násilí — nejdřív musí jeden ustoupit násilím", "Kompromis — nejdřív musíme přestat kamarádit", "Kompromis — nejdřív si musíme navzájem naslouchat", "Soutěž — nejdřív musíme zjistit, kdo je silnější"],
     hints: [
       "Fér řešení pro oba se nazývá kompromis.",
       "Bez naslouchání nezjistíte, co ten druhý vlastně chce.",
@@ -503,12 +428,7 @@ const POOL_L3: PracticeTask[] = [
       "Kamarádi si o přestávce navzájem dělají legraci a smějí se všichni včetně toho, o kom je vtip. Jeden den si ale jeden ze spolužáků všimne, že se určitému spolužákovi vtipy už nelíbí a je z nich smutný, ale ostatní pokračují dál. Co by měli udělat?",
     correctAnswer:
       "Přestat, protože škádlení, které ubližuje, už není zábava, ale násilí",
-    options: [
-      "Přestat, protože škádlení, které ubližuje, už není zábava, ale násilí",
-      "Pokračovat, protože si to začali všichni společně",
-      "Smát se ještě víc, aby to nebylo nápadné",
-      "Nic neříkat, protože si za to smutný spolužák může sám",
-    ],
+    options: ["Pokračovat, protože si to začali všichni společně", "Smát se ještě víc, aby to nebylo nápadné", "Nic neříkat, protože si za to smutný spolužák může sám", "Přestat, protože škádlení, které ubližuje, už není zábava, ale násilí"],
     hints: [
       "Škádlení je v pořádku, jen dokud se u něj baví všichni — i ten, koho se týká.",
       "Když někomu vtipy ubližují a on je smutný, přestává jít o zábavu.",
@@ -538,12 +458,7 @@ const POOL_L3: PracticeTask[] = [
       "Kamarád ti řekl ošklivé slovo jednou v afektu a hned se omluvil. Jiný den tě spolužák opakovaně bije o přestávkách. Liší se tyto dvě situace, a pokud ano, jak s nimi naložíš?",
     correctAnswer:
       "Ano — první je konflikt (domluvíme se), druhé je násilí (řeknu dospělému)",
-    options: [
-      "Ano — první je konflikt (domluvíme se), druhé je násilí (řeknu dospělému)",
-      "Ne — obě situace jsou stejně vážné a řeším je stejně",
-      "Ano — obě jsou násilí, obě oplatím stejně",
-      "Ne — obě jsou jen legrace, nemusím nic řešit",
-    ],
+    options: ["Ne — obě situace jsou stejně vážné a řeším je stejně", "Ano — první je konflikt (domluvíme se), druhé je násilí (řeknu dospělému)", "Ano — obě jsou násilí, obě oplatím stejně", "Ne — obě jsou jen legrace, nemusím nic řešit"],
     hints: [
       "Jednorázové slovo v afektu s omluvou je jiné než opakované fyzické ubližování.",
       "Závažnější a opakované ubližování patří vždy dospělému k řešení.",
@@ -556,12 +471,7 @@ const POOL_L3: PracticeTask[] = [
       "Všimneš si, že spolužák sedí o přestávce sám a vypadá smutně. Co uděláš NEJDŘÍV a co POTOM?",
     correctAnswer:
       "Nejdřív se ho zeptám, co se děje, a pak mu nabídnu, ať si sedne k nám",
-    options: [
-      "Nejdřív se ho zeptám, co se děje, a pak mu nabídnu, ať si sedne k nám",
-      "Nejdřív ho obejdu, potom si o něm budu povídat s ostatními",
-      "Nejdřív se mu vysměju, potom ho pozvu mezi nás",
-      "Nejdřív nic neudělám, potom počkám, jestli si někdo jiný všimne",
-    ],
+    options: ["Nejdřív ho obejdu, potom si o něm budu povídat s ostatními", "Nejdřív se mu vysměju, potom ho pozvu mezi nás", "Nejdřív se ho zeptám, co se děje, a pak mu nabídnu, ať si sedne k nám", "Nejdřív nic neudělám, potom počkám, jestli si někdo jiný všimne"],
     hints: [
       "Empatie začíná všimnutím si a zeptáním se.",
       "Po zjištění, co se děje, následuje konkrétní pomoc — třeba pozvání mezi ostatní.",
@@ -574,12 +484,7 @@ const POOL_L3: PracticeTask[] = [
       "Čtyři kamarádi chtějí hrát čtyři různé hry. Tři z nich se dohodnou, že budou hrát jen tu hru, kterou chce jeden nejhlasitější kluk, a ostatní tři návrhy úplně zavrhnou. Je to kompromis?",
     correctAnswer:
       "Ne, ustoupili jen tři — kompromis by zohlednil přání všech",
-    options: [
-      "Ne, ustoupili jen tři — kompromis by zohlednil přání všech",
-      "Ano, protože se nakonec na něčem dohodli",
-      "Ano, protože hlasitější názor má vždy přednost",
-      "Ne, protože se vůbec nedohodli",
-    ],
+    options: ["Ano, protože se nakonec na něčem dohodli", "Ano, protože hlasitější názor má vždy přednost", "Ne, protože se vůbec nedohodli", "Ne, ustoupili jen tři — kompromis by zohlednil přání všech"],
     hints: [
       "Zamysli se, kdo všechno musel ze svého přání slevit.",
       "Fér řešení pro čtyři kamarády by mohlo být střídání her, aby si zahrál každý.",
@@ -610,12 +515,7 @@ const POOL_L3: PracticeTask[] = [
       "Spolužák tvrdí něco, o čem víš, že to není pravda (například že Země je placatá). Být tolerantní znamená, že...",
     correctAnswer:
       "Nechám ho domluvit a slušně mu vysvětlím fakta, ale neurážím ho",
-    options: [
-      "Nechám ho domluvit a slušně mu vysvětlím fakta, ale neurážím ho",
-      "Musím s ním souhlasit, i když vím, že nemá pravdu",
-      "Vysměju se mu, že říká nesmysly",
-      "Řeknu, že s ním kvůli tomu už nechci kamarádit",
-    ],
+    options: ["Musím s ním souhlasit, i když vím, že nemá pravdu", "Nechám ho domluvit a slušně mu vysvětlím fakta, ale neurážím ho", "Vysměju se mu, že říká nesmysly", "Řeknu, že s ním kvůli tomu už nechci kamarádit"],
     hints: [
       "Tolerance neznamená souhlasit se vším, i s fakticky nesprávnou věcí.",
       "Slušně vysvětlit fakta a respektovat člověka jsou dvě různé věci.",
@@ -627,12 +527,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Skupina spolužáků záměrně nikoho nezve, aby si s nimi hrál, a jednomu spolužáku dlouhodobě říkají, že je hloupý. Je to jen konflikt, a co bys měl/a udělat?",
     correctAnswer: "Ne, je to psychické násilí (šikana) — je třeba to nahlásit dospělému",
-    options: [
-      "Ne, je to psychické násilí (šikana) — je třeba to nahlásit dospělému",
-      "Ano, je to jen běžný konflikt, časem to samo přejde",
-      "Ne, je to jen legrace, kterou si dělají všichni",
-      "Ano, je to konflikt — ten spolužák si za to může sám",
-    ],
+    options: ["Ano, je to jen běžný konflikt, časem to samo přejde", "Ne, je to jen legrace, kterou si dělají všichni", "Ne, je to psychické násilí (šikana) — je třeba to nahlásit dospělému", "Ano, je to konflikt — ten spolužák si za to může sám"],
     hints: [
       "Opakované vyčleňování a urážky nejsou drobná neshoda — je to dlouhodobé ubližování.",
       "Opakované a úmyslné vyčleňování i urážky patří mezi věci, které dítě nemá řešit samo — komu by ses měl/a v takové situaci svěřit?",

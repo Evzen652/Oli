@@ -32,7 +32,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké je tísňové číslo hasičů?",
     correctAnswer: "150",
-    options: ["150", "155", "158", "112"],
+    options: ["155", "150", "158", "112"],
     emoji: "🚒",
     hints: ["Hasiči hasí požáry — na které číslo je voláme?"],
     solutionSteps: ["Hasiči mají číslo 150 — voláme ho, když hoří nebo hrozí jiné nebezpečí."],
@@ -40,7 +40,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké je tísňové číslo policie?",
     correctAnswer: "158",
-    options: ["158", "150", "155", "112"],
+    options: ["150", "155", "158", "112"],
     emoji: "👮",
     hints: ["Policie chrání lidi a řeší krádeže a nehody — na které číslo ji voláme?"],
     solutionSteps: ["Policie má číslo 158 — voláme ho, když potřebujeme policejní pomoc."],
@@ -48,7 +48,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké tísňové číslo platí ve všech zemích Evropy?",
     correctAnswer: "112",
-    options: ["112", "155", "150", "158"],
+    options: ["155", "150", "158", "112"],
     emoji: "📞",
     hints: ["Jedno společné číslo funguje v celé Evropě — které to je?"],
     solutionSteps: ["Tísňové číslo 112 platí v celé Evropě — dovoláš se jím pomoci ve všech zemích EU."],
@@ -64,7 +64,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Koho voláme, když hoří?",
     correctAnswer: "Hasiče",
-    options: ["Hasiče", "Pekaře", "Učitele", "Řidiče"],
+    options: ["Pekaře", "Hasiče", "Učitele", "Řidiče"],
     emoji: "🚒",
     hints: ["Oheň je nebezpečný — kdo ho umí uhasit?"],
     solutionSteps: ["Když hoří, voláme hasiče — přijedou a oheň uhasí."],
@@ -72,7 +72,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Koho voláme, když se někdo vážně zraní?",
     correctAnswer: "Záchrannou službu",
-    options: ["Záchrannou službu", "Pošťáka", "Kuchaře", "Prodavače"],
+    options: ["Pošťáka", "Kuchaře", "Záchrannou službu", "Prodavače"],
     emoji: "🚑",
     hints: ["Vážné zranění potřebuje zdravotní pomoc — kdo ji poskytne?"],
     solutionSteps: ["Při vážném úrazu voláme záchrannou službu — přijedou záchranáři a zraněného ošetří."],
@@ -80,7 +80,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Čím umyjeme špinavou ranku?",
     correctAnswer: "Čistou vodou",
-    options: ["Čistou vodou", "Blátem", "Pískem", "Sněhem z cesty"],
+    options: ["Blátem", "Pískem", "Sněhem z cesty", "Čistou vodou"],
     emoji: "💧",
     hints: ["Ranku je potřeba zbavit nečistot — čím ji opláchneme?"],
     solutionSteps: ["Ranku umyjeme čistou vodou — smyjeme nečistoty, aby se dobře hojila."],
@@ -96,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co přiložíme na bouli od nárazu?",
     correctAnswer: "Studený obklad",
-    options: ["Studený obklad", "Horkou vodu", "Bonbon", "Hrst písku"],
+    options: ["Horkou vodu", "Studený obklad", "Bonbon", "Hrst písku"],
     emoji: "🧊",
     hints: ["Boule bolí a otéká — pomůže spíš chlad, nebo teplo?"],
     solutionSteps: ["Na bouli přiložíme studený obklad — chlad zmírní otok i bolest."],
@@ -104,7 +104,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Koho voláme, když nám někdo ukradne kolo?",
     correctAnswer: "Policii",
-    options: ["Policii", "Hasiče", "Pekaře", "Zubaře"],
+    options: ["Hasiče", "Pekaře", "Policii", "Zubaře"],
     emoji: "🚓",
     hints: ["Krádež je práce pro jednu určitou složku — kterou?"],
     solutionSteps: ["Při krádeži voláme policii — ta krádeže vyšetřuje."],
@@ -112,7 +112,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kam jdeme, když je zranění vážné a musí ho ošetřit lékař?",
     correctAnswer: "Do nemocnice",
-    options: ["Do nemocnice", "Do obchodu", "Na hřiště", "Do kina"],
+    options: ["Do obchodu", "Na hřiště", "Do kina", "Do nemocnice"],
     emoji: "🏥",
     hints: ["Malou ranku zvládneme doma, ale vážné zranění patří k lékaři — kam?"],
     solutionSteps: ["Vážné zranění ošetří v nemocnici — jsou tam lékaři a vybavení pro vážnější úrazy."],
@@ -131,12 +131,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Spadl jsi z kola a odřel si koleno, které trochu krvácí. Co uděláš nejdřív?",
     correctAnswer: "Opláchnu ranku čistou vodou a řeknu to dospělému",
-    options: [
-      "Opláchnu ranku čistou vodou a řeknu to dospělému",
-      "Zasypu ranku pískem a hraju si dál",
-      "Ranku si nechám a nikomu nic neřeknu",
-      "Namažu koleno blátem",
-    ],
+    options: ["Zasypu ranku pískem a hraju si dál", "Opláchnu ranku čistou vodou a řeknu to dospělému", "Ranku si nechám a nikomu nic neřeknu", "Namažu koleno blátem"],
     emoji: "🚲",
     hints: [
       "Nejdřív ranku vyčistíme a pak to řekneme dospělému.",
@@ -147,12 +142,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "V lese vidíš, že od ohniště začíná hořet suchá tráva a oheň se šíří. Koho zavoláš?",
     correctAnswer: "Hasiče na číslo 150",
-    options: [
-      "Hasiče na číslo 150",
-      "Záchrannou službu na číslo 155",
-      "Policii na číslo 158",
-      "Nikoho, oheň uhasím sám",
-    ],
+    options: ["Záchrannou službu na číslo 155", "Policii na číslo 158", "Hasiče na číslo 150", "Nikoho, oheň uhasím sám"],
     emoji: "🔥",
     hints: [
       "Kdo umí uhasit šířící se oheň?",
@@ -163,12 +153,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarád spadl, drží se za nohu, nemůže vstát a hodně ho to bolí. Co uděláš?",
     correctAnswer: "Zavolám dospělého, případně záchrannou službu 155",
-    options: [
-      "Zavolám dospělého, případně záchrannou službu 155",
-      "Zavolám hasiče na 150",
-      "Přinutím ho vstát a běžet",
-      "Nechám ho tam a odejdu",
-    ],
+    options: ["Zavolám hasiče na 150", "Přinutím ho vstát a běžet", "Nechám ho tam a odejdu", "Zavolám dospělého, případně záchrannou službu 155"],
     emoji: "🚑",
     hints: [
       "Kdo pomůže se zraněním, které bolí a člověk nemůže vstát?",
@@ -195,12 +180,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Když voláš na tísňovou linku, co je nejdůležitější říct?",
     correctAnswer: "Co se stalo a kde přesně jsme",
-    options: [
-      "Co se stalo a kde přesně jsme",
-      "Jak se jmenuje naše morče",
-      "Jakou barvu máme nejraději",
-      "Co jsme dnes snídali",
-    ],
+    options: ["Jak se jmenuje naše morče", "Co se stalo a kde přesně jsme", "Jakou barvu máme nejraději", "Co jsme dnes snídali"],
     emoji: "📞",
     hints: [
       "Pomoc musí vědět, proč jede a kam.",
@@ -211,12 +191,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Máš malou odřeninu, která skoro nekrvácí. Jak ji ošetříš?",
     correctAnswer: "Umyji ji čistou vodou a přelepím náplastí",
-    options: [
-      "Umyji ji čistou vodou a přelepím náplastí",
-      "Zavolám kvůli ní záchrannou službu 155",
-      "Nechám ji špinavou a přikryji blátem",
-      "Posypu ji pískem",
-    ],
+    options: ["Zavolám kvůli ní záchrannou službu 155", "Nechám ji špinavou a přikryji blátem", "Umyji ji čistou vodou a přelepím náplastí", "Posypu ji pískem"],
     emoji: "🩹",
     hints: [
       "Malou ranku zvládneme ošetřit sami — umýt a přelepit.",
@@ -227,7 +202,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kterou tísňovou linku zavoláš, když jsi v cizí zemi a nevíš tamní čísla?",
     correctAnswer: "112",
-    options: ["112", "150", "155", "158"],
+    options: ["150", "155", "158", "112"],
     emoji: "🌍",
     hints: [
       "Které číslo funguje v celé Evropě?",
@@ -254,12 +229,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co NEPATŘÍ na čerstvou ranku?",
     correctAnswer: "Bláto nebo písek",
-    options: [
-      "Bláto nebo písek",
-      "Opláchnutí čistou vodou",
-      "Čistá náplast",
-      "Čistý obvaz",
-    ],
+    options: ["Opláchnutí čistou vodou", "Bláto nebo písek", "Čistá náplast", "Čistý obvaz"],
     emoji: "🚫",
     hints: [
       "Co by ranku zaneslo špínou a bakteriemi?",
@@ -270,12 +240,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarádovi teče z nosu krev. Co je správné udělat?",
     correctAnswer: "Posadit ho, naklonit hlavu mírně dopředu a stisknout měkkou část nosu",
-    options: [
-      "Posadit ho, naklonit hlavu mírně dopředu a stisknout měkkou část nosu",
-      "Zaklonit mu hlavu úplně dozadu a nechat krev téct do krku",
-      "Nechat ho běhat a skákat",
-      "Strčit mu do nosu písek",
-    ],
+    options: ["Zaklonit mu hlavu úplně dozadu a nechat krev téct do krku", "Nechat ho běhat a skákat", "Posadit ho, naklonit hlavu mírně dopředu a stisknout měkkou část nosu", "Strčit mu do nosu písek"],
     emoji: "🩸",
     hints: [
       "Hlavu nakláníme dopředu, ne dozadu, a nos jemně stiskneme.",
@@ -286,12 +251,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na dětském hřišti pláče malý kluk, že se ztratil a neví, kde má maminku. Co uděláš?",
     correctAnswer: "Zavedu ho k dospělému, který pomůže najít rodiče",
-    options: [
-      "Zavedu ho k dospělému, který pomůže najít rodiče",
-      "Nechám ho tam samotného plakat",
-      "Odvedu ho pryč z hřiště sám neznámo kam",
-      "Zavolám hasiče na 150",
-    ],
+    options: ["Nechám ho tam samotného plakat", "Odvedu ho pryč z hřiště sám neznámo kam", "Zavolám hasiče na 150", "Zavedu ho k dospělému, který pomůže najít rodiče"],
     emoji: "🧒",
     hints: [
       "Kdo dokáže pomoct ztracené dítě spojit s rodiči?",
@@ -321,12 +281,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád tvrdí, že záchrannou službu voláš na číslo 158. Jak to opravíš?",
     correctAnswer: "Záchranná služba je 155; 158 je číslo policie",
-    options: [
-      "Záchranná služba je 155; 158 je číslo policie",
-      "Kamarád má pravdu, záchranka je 158",
-      "Záchranná služba je 150, ne 155",
-      "Záchranka žádné číslo nemá",
-    ],
+    options: ["Kamarád má pravdu, záchranka je 158", "Záchranná služba je 155; 158 je číslo policie", "Záchranná služba je 150, ne 155", "Záchranka žádné číslo nemá"],
     emoji: "🚑",
     hints: [
       "Rozliš dvě blízká čísla — jedno je záchranka, druhé policie.",
@@ -337,12 +292,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V čem se liší, kdy voláš 150 a kdy 155?",
     correctAnswer: "150 jsou hasiči, 155 je záchranka",
-    options: [
-      "150 i 155 je to samé číslo",
-      "150 jsou hasiči, 155 je záchranka",
-      "150 je záchranka a 155 hasiči",
-      "Obě čísla voláme jen při krádeži",
-    ],
+    options: ["150 i 155 je to samé číslo", "150 je záchranka a 155 hasiči", "150 jsou hasiči, 155 je záchranka", "Obě čísla voláme jen při krádeži"],
     emoji: "🆘",
     hints: [
       "Jedno číslo je k ohni, druhé ke zdraví.",
@@ -353,12 +303,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč je při volání pomoci důležité umět říct, kde přesně se nacházíme?",
     correctAnswer: "Aby záchranáři věděli, kam mají přijet a našli nás",
-    options: [
-      "Aby záchranáři věděli, kam mají přijet a našli nás",
-      "Aby si mohli cestou koupit svačinu",
-      "Není to důležité, pomoc nás najde sama",
-      "Aby věděli, jakou barvu má náš dům, kvůli soutěži",
-    ],
+    options: ["Aby si mohli cestou koupit svačinu", "Není to důležité, pomoc nás najde sama", "Aby věděli, jakou barvu má náš dům, kvůli soutěži", "Aby záchranáři věděli, kam mají přijet a našli nás"],
     emoji: "📍",
     hints: [
       "Bez místa by pomoc nevěděla, kam jet.",
@@ -369,12 +314,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád říká, že na krvácející ranu je nejlepší nasypat písek. Jak to opravíš?",
     correctAnswer: "Písek ránu zanese špínou, je potřeba ji opláchnout vodou",
-    options: [
-      "Kamarád má pravdu, písek je nejlepší",
-      "Písek ránu zanese špínou, je potřeba ji opláchnout vodou",
-      "Na ránu je nejlepší nasypat hlínu",
-      "Ránu je nejlepší nechat úplně bez ošetření",
-    ],
+    options: ["Písek ránu zanese špínou, je potřeba ji opláchnout vodou", "Kamarád má pravdu, písek je nejlepší", "Na ránu je nejlepší nasypat hlínu", "Ránu je nejlepší nechat úplně bez ošetření"],
     emoji: "🩸",
     hints: [
       "Přemýšlej, co se s ranou stane, když do ní dáme písek.",
@@ -385,12 +325,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč na hlubokou nebo velkou ránu nestačí jen náplast doma?",
     correctAnswer: "Vážné zranění musí odborně ošetřit lékař v nemocnici",
-    options: [
-      "Vážné zranění musí odborně ošetřit lékař v nemocnici",
-      "Protože náplasti dojdou",
-      "Protože velká rána se sama zahojí za chvilku",
-      "Není to pravda, náplast stačí vždy",
-    ],
+    options: ["Protože náplasti dojdou", "Vážné zranění musí odborně ošetřit lékař v nemocnici", "Protože velká rána se sama zahojí za chvilku", "Není to pravda, náplast stačí vždy"],
     emoji: "🏥",
     hints: [
       "Malá ranka = náplast doma; velká a hluboká rána potřebuje víc.",
@@ -401,12 +336,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád se hodně zranil a teče mu krev. Co uděláš správně jako první?",
     correctAnswer: "Přivolám dospělého a na ránu přitlačím čistý kapesník",
-    options: [
-      "Přivolám dospělého a na ránu přitlačím čistý kapesník",
-      "Nejdřív si dojdu domů pro svačinu",
-      "Nechám ho být a jdu si hrát",
-      "Ránu posypu pískem a odejdu",
-    ],
+    options: ["Nejdřív si dojdu domů pro svačinu", "Nechám ho být a jdu si hrát", "Přivolám dospělého a na ránu přitlačím čistý kapesník", "Ránu posypu pískem a odejdu"],
     emoji: "🚑",
     hints: [
       "Spoj dvě věci: přivolat pomoc a zastavit krvácení.",
@@ -417,12 +347,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Číslo 112 funguje v celé Evropě, kdežto 155 hlavně u nás. Proč je dobré 112 znát?",
     correctAnswer: "Protože jím dovoláš pomoc i v cizí zemi, kde místní čísla neznáš",
-    options: [
-      "Protože jím dovoláš pomoc i v cizí zemi, kde místní čísla neznáš",
-      "Protože 112 je zadarmo jen o víkendu",
-      "Protože 112 funguje jen u nás doma",
-      "Není k tomu žádný důvod, stačí 155",
-    ],
+    options: ["Protože 112 je zadarmo jen o víkendu", "Protože 112 funguje jen u nás doma", "Není k tomu žádný důvod, stačí 155", "Protože jím dovoláš pomoc i v cizí zemi, kde místní čísla neznáš"],
     emoji: "🌍",
     hints: [
       "Kde všude 112 platí a kde bys jinak čísla neznal?",
@@ -449,12 +374,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád spadl, nehýbe se a je mu špatně. Je to malá, nebo vážná věc a co uděláš?",
     correctAnswer: "Je to vážné — hned přivolám dospělého a záchrannou službu 155",
-    options: [
-      "Je to vážné — hned přivolám dospělého a záchrannou službu 155",
-      "Je to maličkost — jen mu dám náplast",
-      "Je to maličkost — počkám, až se to zítra zlepší",
-      "Je to vážné, ale nikomu nic neřeknu",
-    ],
+    options: ["Je to maličkost — jen mu dám náplast", "Je to vážné — hned přivolám dospělého a záchrannou službu 155", "Je to maličkost — počkám, až se to zítra zlepší", "Je to vážné, ale nikomu nic neřeknu"],
     emoji: "🆘",
     hints: [
       "Když se někdo nehýbe a je mu zle, není to drobnost.",
@@ -465,12 +385,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč nejdřív sháníme dospělého, i když sami známe tísňová čísla?",
     correctAnswer: "Dospělý líp posoudí, co se stalo, a dokáže pomoc lépe zvládnout",
-    options: [
-      "Dospělý líp posoudí, co se stalo, a dokáže pomoc lépe zvládnout",
-      "Protože děti nesmí nikdy nikomu pomáhat",
-      "Protože tísňová čísla fungují jen dospělým",
-      "Není důvod, dospělý je zbytečný",
-    ],
+    options: ["Protože děti nesmí nikdy nikomu pomáhat", "Protože tísňová čísla fungují jen dospělým", "Dospělý líp posoudí, co se stalo, a dokáže pomoc lépe zvládnout", "Není důvod, dospělý je zbytečný"],
     emoji: "🧑‍🚒",
     hints: [
       "Kdo dokáže líp odhadnout, jak vážná situace je?",
@@ -481,12 +396,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kterou složku voláš, když zároveň hoří a je i zraněný člověk, a nevíš, co dřív?",
     correctAnswer: "Zavolám 112 — jedno číslo, přes které pošlou hasiče i záchranku",
-    options: [
-      "Zavolám 112 — jedno číslo, přes které pošlou hasiče i záchranku",
-      "Nezavolám nikam a počkám, co se stane",
-      "Zavolám jen pekaře, ať poradí",
-      "Budu volat pořád dokola jen jedno číslo a druhé neřeším",
-    ],
+    options: ["Nezavolám nikam a počkám, co se stane", "Zavolám jen pekaře, ať poradí", "Budu volat pořád dokola jen jedno číslo a druhé neřeším", "Zavolám 112 — jedno číslo, přes které pošlou hasiče i záchranku"],
     emoji: "📞",
     hints: [
       "Existuje jedno číslo, které umí poslat víc složek najednou.",
@@ -513,12 +423,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Odřel sis koleno a ranka je zanesená hlínou. V jakém pořadí to uděláš správně?",
     correctAnswer: "Nejdřív ranku opláchnu čistou vodou, pak přelepím náplastí a řeknu to dospělému",
-    options: [
-      "Nejdřív ranku opláchnu čistou vodou, pak přelepím náplastí a řeknu to dospělému",
-      "Nejdřív přelepím náplastí i s hlínou, mýt netřeba",
-      "Ranku nechám špinavou a zasypu ji pískem",
-      "Nejdřív ji umažu blátem a pak přelepím",
-    ],
+    options: ["Nejdřív přelepím náplastí i s hlínou, mýt netřeba", "Nejdřív ranku opláchnu čistou vodou, pak přelepím náplastí a řeknu to dospělému", "Ranku nechám špinavou a zasypu ji pískem", "Nejdřív ji umažu blátem a pak přelepím"],
     emoji: "🧴",
     hints: [
       "Špínu z rány je potřeba nejdřív odstranit — čím?",

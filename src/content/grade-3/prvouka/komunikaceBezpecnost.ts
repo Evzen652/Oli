@@ -30,7 +30,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké je telefonní číslo záchranné služby?",
     correctAnswer: "155",
-    options: ["155", "150", "158", "112"],
+    options: ["150", "155", "158", "112"],
     hints: [
       "Záchranná služba pomáhá nemocným a zraněným lidem.",
       "Zkus se doma zeptat, jestli máte důležitá telefonní čísla napsaná někde na viditelném místě.",
@@ -40,7 +40,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké je telefonní číslo policie?",
     correctAnswer: "158",
-    options: ["158", "150", "155", "112"],
+    options: ["150", "155", "158", "112"],
     hints: [
       "Policie řeší zločiny a chrání pořádek.",
       "Nejlepší způsob, jak si důležitá čísla zapamatovat, je zeptat se doma a pak si je párkrát zopakovat nahlas.",
@@ -50,7 +50,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je číslo 112?",
     correctAnswer: "Tísňová linka platná v celé Evropě",
-    options: ["Číslo určené jen pro děti", "Tísňová linka platná v celé Evropě", "Číslo hasičů v Praze", "Informační linka pro turisty"],
+    options: ["Číslo určené jen pro děti", "Číslo hasičů v Praze", "Informační linka pro turisty", "Tísňová linka platná v celé Evropě"],
     hints: [
       "Tohle číslo si můžeš vzít i na dovolenou za hranice.",
       "Lze volat i ze zahraničí nebo bez kreditu na mobilu.",
@@ -70,7 +70,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená slovo šikana?",
     correctAnswer: "Úmyslné a opakované ubližování druhému",
-    options: ["Úmyslné a opakované ubližování druhému", "Jednorázová hádka mezi kamarády", "Hlasitý smích ve třídě", "Soutěž mezi spolužáky"],
+    options: ["Jednorázová hádka mezi kamarády", "Úmyslné a opakované ubližování druhému", "Hlasitý smích ve třídě", "Soutěž mezi spolužáky"],
     hints: [
       "Klíčová slova jsou „úmyslně“ a „opakovaně“.",
       "Šikana se neděje jen jednou — trvá a opakuje se.",
@@ -80,7 +80,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Je jednorázový žert mezi kamarády totéž co šikana?",
     correctAnswer: "Ne — šikaně chybí opakování a záměr ublížit",
-    options: ["Ne — šikaně chybí opakování a záměr ublížit", "Ano, je to úplně stejné", "Ano, pokud se někdo zasměje", "Ne, protože šikana neexistuje"],
+    options: ["Ano, je to úplně stejné", "Ano, pokud se někdo zasměje", "Ne — šikaně chybí opakování a záměr ublížit", "Ne, protože šikana neexistuje"],
     hints: [
       "Šikana se pozná podle opakování a úmyslu ublížit.",
       "Jednorázový žert bez záměru ublížit šikana není.",
@@ -90,12 +90,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo je pro dítě důvěryhodný dospělý?",
     correctAnswer: "Rodič, učitel nebo jiný blízký dospělý",
-    options: [
-      "Kdokoliv starší osmnácti let",
-      "Rodič, učitel nebo jiný blízký dospělý",
-      "Jen rodič a nikdo další",
-      "Cizí člověk s hodnou tváří",
-    ],
+    options: ["Kdokoliv starší osmnácti let", "Jen rodič a nikdo další", "Cizí člověk s hodnou tváří", "Rodič, učitel nebo jiný blízký dospělý"],
     hints: [
       "Důvěryhodný = takový, komu věříme a koho dobře známe.",
       "Přemýšlej o dospělých, které dítě dobře zná ze svého každodenního života — doma, ve škole, na kroužku.",
@@ -120,7 +115,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Smíš poslat svou fotku cizímu člověku, kterého znáš jen z internetu?",
     correctAnswer: "Ne — nikdy neposílám fotky cizím lidem",
-    options: ["Ne — nikdy neposílám fotky cizím lidem", "Ano, pokud si píšeme dlouho", "Ano, když o to hezky poprosí", "Ano, ale jen jednu fotku"],
+    options: ["Ano, pokud si píšeme dlouho", "Ne — nikdy neposílám fotky cizím lidem", "Ano, když o to hezky poprosí", "Ano, ale jen jednu fotku"],
     hints: [
       "Fotky jsou osobní — cizí člověk by je mohl zneužít.",
       "Cizí člověk na internetu může být ve skutečnosti úplně jiný, než tvrdí.",
@@ -130,12 +125,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Proč je dobré znát tísňová čísla 150, 155, 158 a 112?",
     correctAnswer: "Abych mohl rychle zavolat pomoc v nebezpečné situaci",
-    options: [
-      "Abych mohl rychle zavolat pomoc v nebezpečné situaci",
-      "Jen pro případ školního testu",
-      "Abych mohl volat zdarma",
-      "Jsou povinná pro všechny od 6 let",
-    ],
+    options: ["Jen pro případ školního testu", "Abych mohl volat zdarma", "Abych mohl rychle zavolat pomoc v nebezpečné situaci", "Jsou povinná pro všechny od 6 let"],
     hints: [
       "Tísňová čísla fungují i bez kreditu na mobilu.",
       "V nebezpečí je každá sekunda důležitá.",
@@ -145,7 +135,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké číslo funguje i v zahraničí a bez kreditu na mobilu?",
     correctAnswer: "112",
-    options: ["112", "150", "155", "158"],
+    options: ["150", "155", "158", "112"],
     hints: [
       "Toto číslo funguje ve všech zemích EU.",
       "Je to evropská tísňová linka.",
@@ -168,7 +158,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Hoří odpadkový koš na dvoře vašeho domu. Koho zavoláš?",
     correctAnswer: "Hasiče — 150",
-    options: ["Hasiče — 150", "Záchrannou službu — 155", "Policii — 158", "Nikoho, počkám, až to samo zhasne"],
+    options: ["Záchrannou službu — 155", "Hasiče — 150", "Policii — 158", "Nikoho, počkám, až to samo zhasne"],
     hints: [
       "Jde o požár — kdo hasí oheň?",
       "150 = hasiči.",
@@ -178,7 +168,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Spolužák spadl na hřišti a nemůže vstát, hodně ho bolí noha. Koho zavoláš?",
     correctAnswer: "Záchrannou službu — 155",
-    options: ["Záchrannou službu — 155", "Hasiče — 150", "Policii — 158", "Rodiče spolužáka, ale nikoho jiného"],
+    options: ["Hasiče — 150", "Policii — 158", "Záchrannou službu — 155", "Rodiče spolužáka, ale nikoho jiného"],
     hints: [
       "Jde o zdravotní příhodu — potřebujeme lékaře.",
       "Záchranná služba má číslo 155.",
@@ -188,7 +178,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vidíš cizího muže, jak se snaží vypáčit dveře zaparkovaného auta. Co uděláš?",
     correctAnswer: "Zavolám policii — 158",
-    options: ["Zavolám policii — 158", "Zavolám hasiče — 150", "Půjdu se na to podívat blíž", "Nebudu si toho všímat"],
+    options: ["Zavolám hasiče — 150", "Půjdu se na to podívat blíž", "Nebudu si toho všímat", "Zavolám policii — 158"],
     hints: [
       "Vypáčení auta je trestná činnost — kdo ji řeší?",
       "Policie chrání pořádek a řeší zločiny.",
@@ -213,12 +203,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Cizí žena tě žádá, abys jí ukázal cestu na opuštěné parkoviště na kraji města. Co uděláš?",
     correctAnswer: "Odmítnu — s neznámou osobou na odlehlé místo nechodím",
-    options: [
-      "Odmítnu — s neznámou osobou na odlehlé místo nechodím",
-      "Půjdu, protože to potřebuje",
-      "Půjdu, ale budu se jí bát",
-      "Zavolám kamaráda, ať jde taky",
-    ],
+    options: ["Půjdu, protože to potřebuje", "Odmítnu — s neznámou osobou na odlehlé místo nechodím", "Půjdu, ale budu se jí bát", "Zavolám kamaráda, ať jde taky"],
     hints: [
       "Přemýšlej, proč by tě neznámý dospělý chtěl vzít právě tam, kde není nikdo jiný, kdo by ti mohl pomoct.",
       "Dospělí si cestu mohou zjistit sami, nepotřebují doprovod od dítěte.",
@@ -228,12 +213,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ztratil ses v obchodním domě. Koho požádáš o pomoc?",
     correctAnswer: "Prodavače nebo ochranku v obchodě",
-    options: [
-      "Prodavače nebo ochranku v obchodě",
-      "Prvního cizího muže na ulici",
-      "Nikoho — počkám sám",
-      "Náhodné dítě stejného věku",
-    ],
+    options: ["Prvního cizího muže na ulici", "Nikoho — počkám sám", "Prodavače nebo ochranku v obchodě", "Náhodné dítě stejného věku"],
     hints: [
       "V obchodě jsou dospělí, kteří tam pracují — znají prostředí a mohou zavolat rodiče.",
       "Zaměstnanci jsou bezpečnější volba než náhodný cizinec.",
@@ -243,12 +223,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ztratil ses na náměstí ve městě. Koho požádáš o pomoc?",
     correctAnswer: "Policistu nebo strážníka v uniformě",
-    options: [
-      "Policistu nebo strážníka v uniformě",
-      "Kohokoliv, kdo vypadá hodně",
-      "Jen mládež na skateboardu",
-      "Nikoho cizího",
-    ],
+    options: ["Kohokoliv, kdo vypadá hodně", "Jen mládež na skateboardu", "Nikoho cizího", "Policistu nebo strážníka v uniformě"],
     hints: [
       "Uniforma označuje osobu, která má povinnost pomáhat.",
       "Policista má služební číslo a musí se prokázat.",
@@ -273,12 +248,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Cizí člověk na internetu tě žádá, abys mu poslal svou fotku. Co uděláš?",
     correctAnswer: "Neposílám — řeknu to rodiči nebo učiteli",
-    options: [
-      "Neposílám — řeknu to rodiči nebo učiteli",
-      "Pošlu, když vypadá přátelsky",
-      "Pošlu anonymní fotku",
-      "Pošlu fotku kamaráda místo sebe",
-    ],
+    options: ["Pošlu, když vypadá přátelsky", "Neposílám — řeknu to rodiči nebo učiteli", "Pošlu anonymní fotku", "Pošlu fotku kamaráda místo sebe"],
     hints: [
       "Fotky jsou osobní — cizí člověk by je mohl zneužít.",
       "Pokud tě někdo na internetu žádá o fotky, vždy to řekni dospělému.",
@@ -288,7 +258,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Spolužák ti každý den o přestávce schválně strčí a nadává ti před ostatními. Co to je?",
     correctAnswer: "Šikana",
-    options: ["Šikana", "Jednorázový žert", "Přátelské škádlení", "Normální chování mezi kamarády"],
+    options: ["Jednorázový žert", "Přátelské škádlení", "Šikana", "Normální chování mezi kamarády"],
     hints: [
       "Klíčové slovo: opakuje se to každý den.",
       "Jak se nazývá situace, kdy někdo někomu úmyslně a opakovaně ubližuje? Znáš ten pojem z jiných lekcí.",
@@ -298,7 +268,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vidíš, že silnější spolužák už po několikáté bere mladšímu svačinu a nadává mu. Co bys měl udělat?",
     correctAnswer: "Říct to učiteli nebo jinému dospělému",
-    options: ["Říct to učiteli nebo jinému dospělému", "Nic, není to moje věc", "Počkat, jestli přestane sám", "Vzít mladšímu svačinu taky"],
+    options: ["Nic, není to moje věc", "Počkat, jestli přestane sám", "Vzít mladšímu svačinu taky", "Říct to učiteli nebo jinému dospělému"],
     hints: [
       "Opakované ubližování je šikana, kterou má řešit dospělý.",
       "Přihlížet mlčky šikaně situaci neřeší.",
@@ -323,12 +293,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Neznámý muž ti nabízí bonbony a zve tě k sobě domů podívat se na štěňata. Co uděláš?",
     correctAnswer: "Odmítnu a odejdu pryč, případně to řeknu dospělému",
-    options: [
-      "Odmítnu a odejdu pryč, případně to řeknu dospělému",
-      "Půjdu se jen podívat na štěňata",
-      "Vezmu si bonbony, ale dovnitř nepůjdu",
-      "Zeptám se, jestli tam budou i jiné děti",
-    ],
+    options: ["Půjdu se jen podívat na štěňata", "Odmítnu a odejdu pryč, případně to řeknu dospělému", "Vezmu si bonbony, ale dovnitř nepůjdu", "Zeptám se, jestli tam budou i jiné děti"],
     hints: [
       "Nabídky od cizích lidí, i lákavé, je bezpečnější odmítnout.",
       "K cizímu člověku domů nikdy nechodíme.",
@@ -341,12 +306,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Dva spolužáci si spolu hrají na honěnou, smějí se a občas do sebe žertem strčí. Je to šikana?",
     correctAnswer: "Ne — chybí opakované a úmyslné ubližování",
-    options: [
-      "Ne — chybí opakované a úmyslné ubližování",
-      "Ano, protože do sebe strkají",
-      "Ano, protože jsou dva proti jednomu",
-      "Ne, protože šikana může být jen mezi dospělými",
-    ],
+    options: ["Ano, protože do sebe strkají", "Ano, protože jsou dva proti jednomu", "Ne — chybí opakované a úmyslné ubližování", "Ne, protože šikana může být jen mezi dospělými"],
     hints: [
       "Nejdřív rozpoznej, o jakou situaci jde — je to hra, nebo ubližování?",
       "Šikana potřebuje opakování a záměr ublížit, obyčejná hra ne.",
@@ -356,12 +316,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád ti řekne, že mu spolužák bere svačinu úplně každý den a vyhrožuje mu, že mu ublíží, když to řekne. Co to je a co má udělat jako první?",
     correctAnswer: "Je to šikana — měl by to hned říct dospělému",
-    options: [
-      "Je to šikana — měl by to hned říct dospělému",
-      "Je to jen legrace — nemusí nic dělat",
-      "Je to šikana, ale musí to vyřešit sám",
-      "Není to šikana, protože jde jen o svačinu",
-    ],
+    options: ["Je to jen legrace — nemusí nic dělat", "Je to šikana, ale musí to vyřešit sám", "Není to šikana, protože jde jen o svačinu", "Je to šikana — měl by to hned říct dospělému"],
     hints: [
       "Nejdřív rozpoznej: opakuje se to a je tam vyhrožování — to je šikana.",
       "Pak zvol správnou reakci: sám ji řešit nemá, potřebuje dospělého.",
@@ -386,12 +341,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád ti pošle odkaz na neznámou hru a tvrdí, že je úplně bezpečná, protože ji dostal od svého bratra. Co uděláš jako první?",
     correctAnswer: "Nejdřív se zeptám dospělého, jestli je stránka bezpečná",
-    options: [
-      "Nejdřív se zeptám dospělého, jestli je stránka bezpečná",
-      "Hned kliknu, protože to poslal kamarád",
-      "Pošlu odkaz dál celé třídě",
-      "Kliknu, ale nezadám žádné heslo",
-    ],
+    options: ["Hned kliknu, protože to poslal kamarád", "Nejdřív se zeptám dospělého, jestli je stránka bezpečná", "Pošlu odkaz dál celé třídě", "Kliknu, ale nezadám žádné heslo"],
     hints: [
       "Nejdřív si uvědom, že i důvěryhodný kamarád může nevědomky poslat nebezpečný odkaz.",
       "Pak zvol správnou reakci: ověření u dospělého, ne kliknutí.",
@@ -401,12 +351,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Neznámá paní čeká před školou a řekne ti, že ji poslala maminka, protože měla nehodu, a máš jít s ní. Co uděláš?",
     correctAnswer: "Neodejdu s ní — ověřím to u učitele nebo zavolám rodičům",
-    options: [
-      "Neodejdu s ní — ověřím to u učitele nebo zavolám rodičům",
-      "Půjdu s ní, protože zná jméno mojí maminky",
-      "Půjdu s ní, ale budu se bát",
-      "Řeknu jí, kde bydlím, ať mě tam odveze",
-    ],
+    options: ["Půjdu s ní, protože zná jméno mojí maminky", "Půjdu s ní, ale budu se bát", "Neodejdu s ní — ověřím to u učitele nebo zavolám rodičům", "Řeknu jí, kde bydlím, ať mě tam odveze"],
     hints: [
       "Nejdřív si uvědom, že tvrzení cizího člověka nemusí být pravdivé, i když zní naléhavě.",
       "Pak zvol bezpečnou reakci: ověřit u známého dospělého, ne jít s cizí osobou.",
@@ -416,12 +361,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na internetu ti píše někdo, kdo tvrdí, že je stejně starý jako ty, a chce vědět, do jaké školy chodíš a kde bydlíš, abyste se mohli kamarádit.",
     correctAnswer: "Neřeknu mu to a řeknu to dospělému",
-    options: [
-      "Neřeknu mu to a řeknu to dospělému",
-      "Řeknu mu jen školu, ne adresu",
-      "Řeknu mu to, protože je to jen dítě jako já",
-      "Zeptám se ho nejdřív na jeho adresu",
-    ],
+    options: ["Řeknu mu jen školu, ne adresu", "Řeknu mu to, protože je to jen dítě jako já", "Zeptám se ho nejdřív na jeho adresu", "Neřeknu mu to a řeknu to dospělému"],
     hints: [
       "Nejdřív si uvědom, že na internetu nikdy nevíš jistě, kdo s tebou opravdu píše.",
       "Pak zvol pravidlo: osobní údaje nesdílet a situaci nahlásit dospělému.",
@@ -446,12 +386,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ztratil ses ve městě a jediný dospělý poblíž je muž bez uniformy, který nabízí, že tě odvede na policii. Co je nejbezpečnější?",
     correctAnswer: "Radši dojdu sám do nejbližšího obchodu nebo za policistou v uniformě",
-    options: [
-      "Radši dojdu sám do nejbližšího obchodu nebo za policistou v uniformě",
-      "Půjdu s ním, protože nabízí pomoc",
-      "Počkám na místě a nikoho neoslovím",
-      "Půjdu s ním, ale budu si dávat pozor",
-    ],
+    options: ["Půjdu s ním, protože nabízí pomoc", "Radši dojdu sám do nejbližšího obchodu nebo za policistou v uniformě", "Počkám na místě a nikoho neoslovím", "Půjdu s ním, ale budu si dávat pozor"],
     hints: [
       "Nejdřív si uvědom, že nabídka pomoci od cizího člověka bez uniformy není jistota bezpečí.",
       "Pak zvol bezpečnější variantu: obchod nebo osoba v uniformě.",
@@ -461,12 +396,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V lese hoří ohniště a zároveň je jeden z kamarádů popálený na ruce. Nevíš, koho zavolat dřív.",
     correctAnswer: "Zavolám 112 — operátor zajistí hasiče i záchranku najednou",
-    options: [
-      "Zavolám 112 — operátor zajistí hasiče i záchranku najednou",
-      "Zavolám nejdřív 150, pak zkusím 155",
-      "Počkám, až přijde dospělý",
-      "Zavolám kamarádovi domů",
-    ],
+    options: ["Zavolám nejdřív 150, pak zkusím 155", "Počkám, až přijde dospělý", "Zavolám 112 — operátor zajistí hasiče i záchranku najednou", "Zavolám kamarádovi domů"],
     hints: [
       "Nejdřív si uvědom, že jde o dvě různé situace najednou — požár i zranění.",
       "Univerzální číslo dokáže zajistit obě pomoci současně.",
@@ -476,12 +406,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Spolužák ti ukáže modřiny a řekne, že mu je dělá stejný kluk už potřetí a že mu vyhrožuje, že to bude horší, když to řekne. Co má udělat jako první?",
     correctAnswer: "Říct to co nejdřív důvěryhodnému dospělému",
-    options: [
-      "Říct to co nejdřív důvěryhodnému dospělému",
-      "Počkat, jestli přestane sám",
-      "Vyřešit si to s tím klukem sám",
-      "Nic neříkat, aby nebylo hůř",
-    ],
+    options: ["Počkat, jestli přestane sám", "Vyřešit si to s tím klukem sám", "Nic neříkat, aby nebylo hůř", "Říct to co nejdřív důvěryhodnému dospělému"],
     hints: [
       "Nejdřív rozpoznej, že opakované ubližování s výhrůžkami je šikana.",
       "Pak zvol správnou první reakci — pomoc dospělého, ne mlčení.",
@@ -506,12 +431,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Starší spolužák tě požádá, abys mu jako srandu pomohl schovat penál mladšímu klukovi. Když se to stane už podruhé a ten mladší kvůli tomu brečí, co to je a co uděláš?",
     correctAnswer: "Je to šikana — odmítnu pomáhat a řeknu to dospělému",
-    options: [
-      "Je to šikana — odmítnu pomáhat a řeknu to dospělému",
-      "Je to jen legrace, tak mu pomůžu",
-      "Je to šikana, ale nemám se do toho plést",
-      "Není to šikana, protože jde jen o penál",
-    ],
+    options: ["Je to jen legrace, tak mu pomůžu", "Je to šikana — odmítnu pomáhat a řeknu to dospělému", "Je to šikana, ale nemám se do toho plést", "Není to šikana, protože jde jen o penál"],
     hints: [
       "Nejdřív rozpoznej: opakování a slzy mladšího ukazují, že nejde o neškodnou legraci.",
       "Pak zvol správnou reakci: nepomáhat a nahlásit to dospělému.",

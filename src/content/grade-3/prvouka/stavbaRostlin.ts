@@ -36,7 +36,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která část rostliny vyrábí potravu (cukr)?",
     correctAnswer: "List",
-    options: ["List", "Kořen", "Stonek", "Plod"],
+    options: ["Kořen", "List", "Stonek", "Plod"],
     emoji: "🍃",
     hints: [
       "Potrava vzniká fotosyntézou — vzpomeň si, kde v rostlině probíhá.",
@@ -48,7 +48,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje zelené barvivo v listech?",
     correctAnswer: "Chlorofyl",
-    options: ["Chlorofyl", "Fotosyntéza", "Kyslík", "Pylník"],
+    options: ["Fotosyntéza", "Kyslík", "Chlorofyl", "Pylník"],
     emoji: "🟢",
     hints: [
       "Je to název barviva, ne názvu děje ani plynu.",
@@ -60,7 +60,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která část rostliny přijímá vodu z půdy?",
     correctAnswer: "Kořen",
-    options: ["Kořen", "List", "Květ", "Plod"],
+    options: ["List", "Květ", "Plod", "Kořen"],
     emoji: "💧",
     hints: [
       "Voda je v půdě — která část tam sahá?",
@@ -84,7 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Ve které části rostliny probíhá fotosyntéza?",
     correctAnswer: "V listech",
-    options: ["V listech", "V kořeni", "V květu", "V plodu"],
+    options: ["V kořeni", "V listech", "V květu", "V plodu"],
     emoji: "🍃",
     hints: [
       "Fotosyntéza potřebuje zelené barvivo — kde ho je nejvíc?",
@@ -96,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Ze které části rostliny po opylení vznikají semena?",
     correctAnswer: "Z květu",
-    options: ["Z květu", "Z kořene", "Z listu", "Ze stonku"],
+    options: ["Z kořene", "Z listu", "Z květu", "Ze stonku"],
     emoji: "🌷",
     hints: [
       "Semena vznikají tam, kde předtím sedal hmyz.",
@@ -108,7 +108,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která část rostliny chrání semena?",
     correctAnswer: "Plod",
-    options: ["Plod", "Kořen", "List", "Stonek"],
+    options: ["Kořen", "List", "Stonek", "Plod"],
     emoji: "🍎",
     hints: [
       "Jablko nebo šípek — jak se takové části říká?",
@@ -132,7 +132,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jakou barvu mají zdravé listy díky chlorofylu?",
     correctAnswer: "Zelenou",
-    options: ["Zelenou", "Červenou", "Modrou", "Hnědou"],
+    options: ["Červenou", "Zelenou", "Modrou", "Hnědou"],
     emoji: "🌿",
     hints: [
       "Podívej se na trávu nebo listy stromů v létě.",
@@ -144,7 +144,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která část rostliny nese listy, květy a plody a drží je nahoře?",
     correctAnswer: "Stonek",
-    options: ["Stonek", "Kořen", "Semeno", "Chlorofyl"],
+    options: ["Kořen", "Semeno", "Stonek", "Chlorofyl"],
     emoji: "🌾",
     hints: [
       "U stromu se této části říká kmen.",
@@ -159,12 +159,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaká je hlavní funkce kořene?",
     correctAnswer: "Přijímat vodu a minerální látky z půdy a upevňovat rostlinu",
-    options: [
-      "Přijímat vodu a minerální látky z půdy a upevňovat rostlinu",
-      "Vyrábět cukr pomocí slunečního světla",
-      "Přitahovat hmyz k opylení",
-      "Chránit semena před poškozením",
-    ],
+    options: ["Vyrábět cukr pomocí slunečního světla", "Přitahovat hmyz k opylení", "Chránit semena před poškozením", "Přijímat vodu a minerální látky z půdy a upevňovat rostlinu"],
     emoji: "🌱",
     hints: [
       "Kořen roste pod zemí — co odtud může brát a k čemu rostlinu drží?",
@@ -193,12 +188,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč jsou listy zelené?",
     correctAnswer: "Protože obsahují chlorofyl — zelené barvivo potřebné k fotosyntéze",
-    options: [
-      "Protože obsahují chlorofyl — zelené barvivo potřebné k fotosyntéze",
-      "Protože přijímají vodu, která je zelená",
-      "Protože na nich sedá zelený hmyz",
-      "Protože jsou blíž slunci než kořen",
-    ],
+    options: ["Protože přijímají vodu, která je zelená", "Protože obsahují chlorofyl — zelené barvivo potřebné k fotosyntéze", "Protože na nich sedá zelený hmyz", "Protože jsou blíž slunci než kořen"],
     emoji: "🍃",
     hints: [
       "Barvu způsobuje látka uvnitř listu, ne voda ani hmyz.",
@@ -210,12 +200,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je fotosyntéza?",
     correctAnswer: "Výroba cukru v listu ze světla, vody a oxidu uhličitého",
-    options: [
-      "Výroba cukru v listu ze světla, vody a oxidu uhličitého",
-      "Přijímání vody kořenem z půdy",
-      "Rozkvétání květu na jaře",
-      "Klíčení semene po zasazení do půdy",
-    ],
+    options: ["Přijímání vody kořenem z půdy", "Rozkvétání květu na jaře", "Výroba cukru v listu ze světla, vody a oxidu uhličitého", "Klíčení semene po zasazení do půdy"],
     emoji: "☀️",
     hints: [
       "Foto = světlo. Co rostlina se světlem v listu vytvoří?",
@@ -227,12 +212,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "K čemu slouží květ rostliny?",
     correctAnswer: "Přitahuje opylovače (hmyz) a po opylení vznikají semena",
-    options: [
-      "Přijímá dešťovou vodu pro rostlinu",
-      "Přitahuje opylovače (hmyz) a po opylení vznikají semena",
-      "Vyrábí kyslík místo listů",
-      "Upevňuje rostlinu pevně v půdě",
-    ],
+    options: ["Přijímá dešťovou vodu pro rostlinu", "Vyrábí kyslík místo listů", "Upevňuje rostlinu pevně v půdě", "Přitahuje opylovače (hmyz) a po opylení vznikají semena"],
     emoji: "🌸",
     hints: [
       "Přemýšlej, proč jsou květy barevné a voní.",
@@ -244,12 +224,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je opylení?",
     correctAnswer: "Přenos pylu z jednoho květu na druhý, po němž vznikají semena",
-    options: [
-      "Rozkvétání rostliny během jara",
-      "Přenos pylu z jednoho květu na druhý, po němž vznikají semena",
-      "Klíčení semene ve vlhké půdě",
-      "Odkvétání a opadávání okvětních lístků",
-    ],
+    options: ["Přenos pylu z jednoho květu na druhý, po němž vznikají semena", "Rozkvétání rostliny během jara", "Klíčení semene ve vlhké půdě", "Odkvétání a opadávání okvětních lístků"],
     emoji: "🐝",
     hints: [
       "Pyl je žlutý prášek na tyčinkách — přemýšlej, co se s ním musí stát.",
@@ -261,12 +236,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaká je funkce plodu?",
     correctAnswer: "Chrání semena a pomáhá jejich šíření (ptáky, zvířaty, větrem)",
-    options: [
-      "Chrání semena a pomáhá jejich šíření (ptáky, zvířaty, větrem)",
-      "Přijímá vodu z půdy pro celou rostlinu",
-      "Vyrábí potravu pro kořen",
-      "Přitahuje hmyz k opylení",
-    ],
+    options: ["Přijímá vodu z půdy pro celou rostlinu", "Chrání semena a pomáhá jejich šíření (ptáky, zvířaty, větrem)", "Vyrábí potravu pro kořen", "Přitahuje hmyz k opylení"],
     emoji: "🍎",
     hints: [
       "Co je uvnitř jablka, třešně nebo šípku a co je obaluje?",
@@ -278,12 +248,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kde rostlina přijímá minerální látky?",
     correctAnswer: "Z půdy pomocí kořene",
-    options: [
-      "Z půdy pomocí kořene",
-      "Ze vzduchu pomocí listů",
-      "Ze světla pomocí chlorofylu",
-      "Z plodů jiných rostlin",
-    ],
+    options: ["Ze vzduchu pomocí listů", "Ze světla pomocí chlorofylu", "Z půdy pomocí kořene", "Z plodů jiných rostlin"],
     emoji: "🪨",
     hints: [
       "Minerální látky jsou rozpuštěné v půdní vodě.",
@@ -295,12 +260,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co list nutně potřebuje, aby mohl dělat fotosyntézu?",
     correctAnswer: "Světlo, vodu a oxid uhličitý",
-    options: [
-      "Světlo, vodu a oxid uhličitý",
-      "Tmu a chladno",
-      "Jen vodu z deště",
-      "Jen půdu bez světla",
-    ],
+    options: ["Tmu a chladno", "Jen vodu z deště", "Jen půdu bez světla", "Světlo, vodu a oxid uhličitý"],
     emoji: "☀️",
     hints: [
       "Vzpomeň si, co dává do fotosyntézy slunce, kořen a vzduch.",
@@ -312,12 +272,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je klíčení semene?",
     correctAnswer: "Probuzení zárodku v semeni, ze kterého začne růst nová rostlina",
-    options: [
-      "Přenos pylu mezi dvěma květy",
-      "Probuzení zárodku v semeni, ze kterého začne růst nová rostlina",
-      "Výroba cukru v zelených listech rostliny",
-      "Opadávání listů během podzimu",
-    ],
+    options: ["Probuzení zárodku v semeni, ze kterého začne růst nová rostlina", "Přenos pylu mezi dvěma květy", "Výroba cukru v zelených listech rostliny", "Opadávání listů během podzimu"],
     emoji: "🌱",
     hints: [
       "Co se děje se semínkem fazole, které zaseješ a zaléváš?",
@@ -332,12 +287,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co se stane s rostlinou, když dlouho nemá dost světla?",
     correctAnswer: "Nemůže dělat fotosyntézu, žloutne a chřadne",
-    options: [
-      "Nemůže dělat fotosyntézu, žloutne a chřadne",
-      "Roste rychleji, protože šetří energii",
-      "Přestane přijímat vodu kořenem",
-      "Přestane kvést, ale jinak je v pořádku",
-    ],
+    options: ["Roste rychleji, protože šetří energii", "Nemůže dělat fotosyntézu, žloutne a chřadne", "Přestane přijímat vodu kořenem", "Přestane kvést, ale jinak je v pořádku"],
     emoji: "🥀",
     hints: [
       "Světlo je jeden ze tří vstupů fotosyntézy — co se stane, když chybí?",
@@ -349,12 +299,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Zaseješ fazoli a zaléváš ji v teple. Co se se semenem stane nejdřív?",
     correctAnswer: "Vyklíčí — zárodek se probudí a vyroste kořínek a lístky",
-    options: [
-      "Vyklíčí — zárodek se probudí a vyroste kořínek a lístky",
-      "Rovnou se z něj stane květ",
-      "Okamžitě vytvoří plod se semeny",
-      "Rozpustí se ve vodě a zmizí",
-    ],
+    options: ["Rovnou se z něj stane květ", "Okamžitě vytvoří plod se semeny", "Vyklíčí — zárodek se probudí a vyroste kořínek a lístky", "Rozpustí se ve vodě a zmizí"],
     emoji: "🌱",
     hints: [
       "Semeno vypadá neživě, ale uvnitř je zárodek, který čeká na vodu a teplo.",
@@ -366,12 +311,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se dostane voda z půdy až do listů na vrcholku rostliny?",
     correctAnswer: "Kořen ji nasaje z půdy a stonek ji vede vzhůru do listů",
-    options: [
-      "Kořen ji nasaje z půdy a stonek ji vede vzhůru do listů",
-      "List ji nasaje přímo ze vzduchu",
-      "Květ ji nasbírá z deště a pošle dolů",
-      "Plod ji vyrobí a rozvede po rostlině",
-    ],
+    options: ["List ji nasaje přímo ze vzduchu", "Květ ji nasbírá z deště a pošle dolů", "Plod ji vyrobí a rozvede po rostlině", "Kořen ji nasaje z půdy a stonek ji vede vzhůru do listů"],
     emoji: "💧",
     hints: [
       "Jde o spolupráci dvou částí — jedna vodu bere, druhá ji dopraví nahoru.",
@@ -400,12 +340,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co by se stalo, kdyby květy žádné rostliny nikdo neopyloval?",
     correctAnswer: "Nevznikla by semena ani plody",
-    options: [
-      "Nevznikla by semena ani plody",
-      "Rostliny by rostly rychleji",
-      "Kořeny by přestaly nasávat vodu",
-      "Listy by přestaly být zelené",
-    ],
+    options: ["Rostliny by rostly rychleji", "Nevznikla by semena ani plody", "Kořeny by přestaly nasávat vodu", "Listy by přestaly být zelené"],
     emoji: "🐝",
     hints: [
       "Přemýšlej, k čemu opylení vede — co po něm v květu vzniká.",
@@ -417,12 +352,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Semeno javoru má křidélka. K čemu rostlině pomáhají?",
     correctAnswer: "Aby ho vítr odnesl dál od mateřské rostliny",
-    options: [
-      "Aby ho vítr odnesl dál od mateřské rostliny",
-      "Aby přitáhla včely k opylení",
-      "Aby vyráběla cukr místo listů",
-      "Aby nasávala vodu ze vzduchu",
-    ],
+    options: ["Aby přitáhla včely k opylení", "Aby vyráběla cukr místo listů", "Aby ho vítr odnesl dál od mateřské rostliny", "Aby nasávala vodu ze vzduchu"],
     emoji: "🍁",
     hints: [
       "Křidélka roztočí vítr — kam tím semeno posune?",
@@ -434,12 +364,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která věta je správná?",
     correctAnswer: "Cukr vyrábí list, kořen přijímá vodu z půdy",
-    options: [
-      "Cukr vyrábí list, kořen přijímá vodu z půdy",
-      "Cukr vyrábí kořen, list přijímá vodu z půdy",
-      "Cukr i vodu vyrábí květ",
-      "Cukr vyrábí plod, list nasává vodu ze vzduchu",
-    ],
+    options: ["Cukr vyrábí kořen, list přijímá vodu z půdy", "Cukr i vodu vyrábí květ", "Cukr vyrábí plod, list nasává vodu ze vzduchu", "Cukr vyrábí list, kořen přijímá vodu z půdy"],
     emoji: "🧠",
     hints: [
       "Vzpomeň si, kde je chlorofyl a která část sahá do půdy.",
@@ -468,12 +393,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Rostlina na okně se naklání listy ke sklu. Proč to dělá?",
     correctAnswer: "Roste za světlem, které potřebuje k fotosyntéze",
-    options: [
-      "Roste za světlem, které potřebuje k fotosyntéze",
-      "Utíká před vodou, které má moc",
-      "Hledá u okna víc oxidu uhličitého k pití",
-      "Snaží se dostat blíž ke kořenu",
-    ],
+    options: ["Utíká před vodou, které má moc", "Roste za světlem, které potřebuje k fotosyntéze", "Hledá u okna víc oxidu uhličitého k pití", "Snaží se dostat blíž ke kořenu"],
     emoji: "🪟",
     hints: [
       "Co u okna rostlina získá víc než v rohu místnosti?",
@@ -485,12 +405,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V jakém pořadí jdou za sebou děje v životě rostliny?",
     correctAnswer: "Klíčení → růst → kvetení → opylení → vznik plodu se semeny",
-    options: [
-      "Klíčení → růst → kvetení → opylení → vznik plodu se semeny",
-      "Kvetení → klíčení → opylení → růst → plod",
-      "Opylení → klíčení → plod → kvetení → růst",
-      "Plod → semeno → kvetení → klíčení → růst",
-    ],
+    options: ["Kvetení → klíčení → opylení → růst → plod", "Opylení → klíčení → plod → kvetení → růst", "Klíčení → růst → kvetení → opylení → vznik plodu se semeny", "Plod → semeno → kvetení → klíčení → růst"],
     emoji: "🔄",
     hints: [
       "Začni tím, co dělá zaseté semínko, a skonči novými semeny.",
