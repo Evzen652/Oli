@@ -55,7 +55,7 @@ const POOL_L2: Item[] = [
 const POOL_L3: Item[] = [
   // Aplikace v celé větě: určit vše najednou
   { q: "Věta: 'Kluci šli domů.' — Sloveso je v čase:", a: "Minulém (šli)", opts: ["Minulém (šli)", "Přítomném", "Budoucím", "Neurčitém"], e: "'Šli' se stalo dříve — minulý čas." },
-  { q: "Věta: 'Zítra půjdeme do kina.' — Čas slovesa?", a: "Budoucí (půjdeme)", opts: ["Budoucí (půjdeme)", "Přítomný", "Minulý", "Neurčitý"], e: "'Zítra' + 'půjdeme' → budoucí čas." },
+  { q: "Věta: 'Zítra půjdeme do kina.' — Čas slovesa?", a: "Budoucí", opts: ["Neurčitý", "Budoucí", "Přítomný", "Minulý"], e: "'Zítra' + 'půjdeme' → budoucí čas." },
   { q: "Ve větě 'Děti si hrají venku.' — Čas slovesa 'hrají'?", a: "Přítomný", opts: ["Přítomný", "Minulý", "Budoucí", "Neurčitý"], e: "'Hrají' se děje teď → přítomný čas." },
   { q: "Ve větě 'Učila jsem se celý večer.' — Osoba a číslo?", a: "1. osoba, číslo jednotné (já)", opts: ["1. osoba, číslo jednotné (já)", "2. osoba (ty)", "3. osoba (ona)", "1. osoba množné"], e: "'Jsem' + 'učila' = mluvčí o sobě → 1. os. jed. č." },
   { q: "Věta: 'Budu studovat na vysoké škole.' — Čas?", a: "Budoucí", opts: ["Budoucí", "Přítomný", "Minulý", "Neurčitý"], e: "'Budu' → budoucí čas." },
@@ -72,7 +72,7 @@ function pick(pool: Item[]): PracticeTask[] {
     correctAnswer: a,
     options: shuffle([...opts]),
     hints: hints ?? [
-      "Čas: bylo = minulý, je/jsou = přítomný, bude = budoucí.",
+      "Zeptej se, jestli se děj už stal, právě probíhá, nebo teprve nastane.",
       "Osoba: já = 1., ty = 2., on/ona = 3. Číslo: já/ty/on = jednotné; my/vy/oni = množné.",
     ],
     explanation: e,

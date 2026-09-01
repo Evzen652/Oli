@@ -101,7 +101,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Je region to samé jako kraj?",
     correctAnswer: "Ne",
-    options: ["Ano", "Ne"],
+    options: ["Ano", "Ne", "Jen v některých krajích"],
     hints: [
       "Kraj má přesné hranice a úřad, region ne.",
       "Region se pozná podle společných znaků, ne podle úřadu.",
@@ -392,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Jihočeský kraj i Jihomoravský kraj mají v názvu slovo „Jiho-“. Které krajské město patří k Jihočeskému kraji (ne k Jihomoravskému)?",
     correctAnswer: "České Budějovice",
-    options: ["České Budějovice", "Brno", "Plzeň", "Jihlava"],
+    options: ["České Budějovice", "Brno", "Karlovy Vary", "Ústí nad Labem"],
     hints: [
       "Toto město leží na jihu Čech, ne na jihu Moravy.",
       "Pozor na podobný název sousedního kraje — Jihomoravský.",

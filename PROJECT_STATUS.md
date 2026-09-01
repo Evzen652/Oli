@@ -144,6 +144,13 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 6) — Wave B DOKONČENA, dávka 26 (11 témat, 11 → 0):
+- ✅ **Wave B uzavřena.** `format/length` **0** ve třech po sobě jdoucích korpusových měřeních, všech **39 témat** prošlo GATE 3× s `invarianty: 0`. Postup napříč session: **109 → 86 → 67 → 51 → 39 → 28 → 11 → 0**. Celá testová sada **4615/4615**, typecheck 0.
+- 🔧 **Nový patcher `scripts/wave-b/pcd.mjs`.** Grade-2 používá formát `{ question, correct, distractors }`, na kterém všechny stávající patchery hlásí „NEAPLIKOVANO — oprav kotvy" (past č. 10). Kotví na text otázky, protože v tomhle formátu se klíč — na rozdíl od ostatních — v souboru neopakuje i v poli možností.
+- 🐞 **Dvacet nápověd prozrazovalo odpověď v závorce.** V `abeceda-a-razeni` měly nápovědy tvar „Porovnej druhé písmeno: Á **(kára)** nebo O (kolo)" — závorka opakovala celé slovo včetně klíče. Odstraněním závorek padlo naráz **5 předexistujících hint_leaků** a metodická hodnota nápovědy zůstala.
+- 🐞 **Druhá úloha bez jednoznačné odpovědi.** „Přeložíme čtverec napůl. Vznikne:" — přehyb podél strany dá obdélník, podél úhlopříčky trojúhelník, a **obojí bylo mezi možnostmi**. Zadání zpřesněno na „napůl podél strany", do `explanation` doplněn i druhý případ.
+- 🔎 **Poslední nález se schovával před dumpem.** Korpusové měření hlásilo 1 nález u `kraje-a-regiony`, ale `dump.test.ts` ho v 6 bězích nezachytil ani jednou. Důvod: dump si drží úlohy v `Map` klíčované podle `correctAnswer`, takže úlohu se stejným klíčem přepíše jiná. Nalezeno až vlastním hledáním se 40 běhy a klíčem `otázka + odpověď`. Šlo o „České Budějovice" (16 zn.) proti „Brno", „Plzeň", „Jihlava" (max 7).
+- 🟡 **Ponecháno k rozhodnutí:** heuristické nálezy (`REVIZE`) se neřešily — Wave B mířila jen na `format/length` a blokující invarianty. Napříč korpusem jich zbývá kolem 140, mimo jiné `hint_progression` a `min_unique_tasks_per_tier`.
 ### Session 2026-09-01 (pokr. 5) — Wave B, dávka 25 (9 témat, 28 → 11 nálezů):
 - ✅ **Dávka 25 hotová**, `format/length` **28 → 11**, témat **19 → 11**. Devět témat s dvěma nálezy najednou: `g3-prvouka-komunikace-bezpecnost`, `vztahy-konflikty`, `kraje-regiony`, `ziva-neziva-priroda`, `g3-cjl-slovni-druhy`, `plynule-cteni`, `g4-cjl-stavba-slova`, `g5-mat-obsah-obrazce`, `g5-mat-pisemne-deleni`. GATE 3× čistý u všech.
 - 🐞 **Úloha bez jednoznačné odpovědi.** „Na záhon (2 m × 3 m) sázíme rostliny každých 25 cm. **Kolik řad?**" měla jako klíč „Záhon má 6 m² — záleží na uspořádání". Otázka se ptá na počet, klíč odpovídá plochou a vyhne se. Přeformulováno na „Na záhon široký 2 m sázíme rostliny do řad vzdálených 25 cm. Kolik řad se vejde?" s klíčem „8 řad" a výpočtem v `explanation`.

@@ -236,7 +236,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá prodavač v obchodě?",
     correctAnswer: "Prodává zboží a vybírá peníze",
-    options: ["Prodává zboží a vybírá peníze", "Peče chleba", "Léčí zvířata", "Staví domy"],
+    options: ["Peče chleba a rohlíky", "Prodává zboží a vybírá peníze", "Léčí nemocná zvířata", "Staví domy a mosty"],
     emoji: "🏪",
     hints: ["Mysli na to, co dělá člověk za pokladnou, když si u něj něco kupuješ."],
     solutionSteps: ["Prodavač v obchodě prodává zboží zákazníkům a vybírá od nich peníze."],

@@ -60,7 +60,7 @@ const POOL_L3: PracticeTask[] = [
   { question: "Banka: máš −500 Kč (dluh). Kamarád má 200 Kč. Kdo má více peněz?", correctAnswer: "Kamarád – 200 Kč", options: ["Kamarád – 200 Kč", "Ty – −500 Kč je větší číslo", "jste na tom stejně", "nelze porovnat"] },
   { question: "Teploměr ukázal −15 °C ráno a −8 °C v poledne. Je v poledne tepleji?", correctAnswer: "Ano – −8 > −15", options: ["Ano – −8 > −15", "Ne – −15 je větší záporné číslo", "je stejně", "záleží na místě"] },
   { question: "Platí: −|−5| = −5?", correctAnswer: "Ano", options: ["Ano", "Ne", "Pouze přibližně", "Záleží"] },
-  { question: "Které dva body jsou na číselné ose stejně daleko od nuly: −7 a 7?", correctAnswer: "Ano, oba jsou 7 kroků od nuly", options: ["Ano, oba jsou 7 kroků od nuly", "Ne, −7 je dál", "Ne, 7 je dál", "Nelze porovnat"] },
+  { question: "Které dva body jsou na číselné ose stejně daleko od nuly: −7 a 7?", correctAnswer: "Ano, oba jsou 7 kroků od nuly", options: ["Ne, −7 je od nuly dál", "Ano, oba jsou 7 kroků od nuly", "Ne, 7 je od nuly dál", "Nelze je vůbec porovnat"] },
   { question: "Výtah je v poschodí −2 (2. podzemní). Musí jet do 5. patra. O kolik pater jede?", correctAnswer: "7 pater", options: ["7 pater", "3 patra", "5 pater", "−7 pater"] },
   { question: "Teploměr ukazuje −20 °C. Oteplí se o 35 °C. Jaká bude teplota?", correctAnswer: "15 °C", options: ["15 °C", "−15 °C", "55 °C", "−55 °C"] },
   { question: "Platí: čím více vlevo na číselné ose, tím menší číslo?", correctAnswer: "Ano", options: ["Ano", "Ne", "Záleží na čísle", "Záleží na měřítku"] },

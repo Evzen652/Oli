@@ -426,7 +426,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který z pojmů NEPATŘÍ mezi části jedné obce?",
     correctAnswer: "úplně jiná, vzdálená obec",
-    options: ["úplně jiná, vzdálená obec", "sídliště", "náves", "ulice s domy"],
+    options: ["sídliště s paneláky", "úplně jiná, vzdálená obec", "náves uprostřed obce", "ulice s rodinnými domy"],
     emoji: "🚫",
     hints: ["Tři možnosti jsou přímo částmi jedné obce, jedna je něco úplně jiného."],
     explanation:

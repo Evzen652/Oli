@@ -1,4 +1,4 @@
-# Wave B — předání práce (stav k 2026-09-01)
+# Wave B — DOKONČENO (2026-09-01)
 
 Cíl vlny: odstranit nález `format/length` — **„správná možnost je ≥ 2× delší než všechny
 distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď bez znalosti učiva.
@@ -7,13 +7,24 @@ distraktory"**. Nejdelší možnost je pak správná a dítě uhodne odpověď b
 
 | metrika | hodnota |
 |---|---|
-| `format/length` nálezů | **11** |
-| dotčených témat | **11** |
-| hotovo dávek | **25** (celkem 1210 nálezů → 0) |
+| `format/length` nálezů | **0** ✅ |
+| dotčených témat | **0** ✅ |
+| hotovo dávek | **26** — vlna uzavřena |
 | branch | `chore/remove-essay-and-ai-authoring` |
 
 > Celkový počet nálezů v korpusu kolísá mezi běhy (pooly se míchají, audit vzorkuje).
 > **Stabilní metrika je počet `format/length` a počet témat** — ta se mezi běhy nemění.
+
+## ✅ Vlna uzavřena
+
+Nález `format/length` je **0** ve třech po sobě jdoucích korpusových měřeních.
+Všech 39 dotčených témat prošlo GATE 3× s `invarianty: 0`.
+
+Postup napříč session 2026-09-01: 109 → 86 → 67 → 51 → 39 → 28 → 11 → **0**.
+
+Sekce níže je ponechána jako popis metody — pro případnou další vlnu.
+
+---
 
 ## Další v pořadí (nejvíc nálezů)
 

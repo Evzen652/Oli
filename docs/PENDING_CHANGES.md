@@ -7,6 +7,12 @@
 
 ---
 
+## ✅ Wave B dokončena — `format/length` 109 → 0 (2026-09-01)
+Vlna mířila na nález „správná možnost je ≥ 2× delší než všechny distraktory", který
+dítěti umožňoval uhodnout odpověď podle délky. **Hotovo: 0 nálezů, 0 dotčených témat**,
+39 témat prošlo GATE 3× s `invarianty: 0`, testy 4615/4615.
+Detail postupu a nalezené pasti v [`WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md).
+
 ## 🔴 Přiměřenost ročníku — dvě témata 5. ročníku (2026-09-01)
 Nalezeno při Wave B, dávka 20. **Nejde opravit úpravou možností, chce to přepis tématu.**
 - `g5-prirodoveda-…etapy-lidskeho-zivota-dospivani` — nucleus accumbens, prefrontální kůra, cirkadiánní rytmus, konsolidace paměti, Eriksonových 8 fází psychosociálního vývoje.

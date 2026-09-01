@@ -266,12 +266,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Za tmy nebo za špatného počasí jdeš do školy pěšky. Co ti pomůže, aby tě řidiči lépe viděli?",
-    correctAnswer: "Reflexní prvky, například reflexní páska nebo přívěsek",
+    correctAnswer: "Reflexní prvky, třeba páska nebo přívěsek",
     options: [
-      "Reflexní prvky, například reflexní páska nebo přívěsek",
-      "Tmavé oblečení",
+      "Tmavé oblečení bez potisku",
+      "Reflexní prvky, třeba páska nebo přívěsek",
       "Deštník zakrývající obličej",
-      "Sluneční brýle",
+      "Sluneční brýle s tmavými skly",
     ],
     emoji: "🦺",
     hints: [

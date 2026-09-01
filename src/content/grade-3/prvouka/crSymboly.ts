@@ -155,10 +155,10 @@ const POOL_L1: PracticeTask[] = [
     question: "Co slavíme 5. července?",
     correctAnswer: "Příchod Cyrila a Metoděje na Moravu",
     options: [
+      "Svátek mistra Jana Husa",
       "Příchod Cyrila a Metoděje na Moravu",
-      "Svátek Jana Husa",
-      "Vznik státu",
-      "Konec války",
+      "Vznik samostatného státu",
+      "Konec druhé světové války",
     ],
     hints: [
       "5. července připomínáme dva věrozvěsty, kteří přišli z Byzance.",

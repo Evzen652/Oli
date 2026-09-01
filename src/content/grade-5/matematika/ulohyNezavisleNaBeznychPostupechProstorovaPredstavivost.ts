@@ -40,7 +40,7 @@ const POOL_L2: PracticeTask[] = [
   { question: "Kostka 3×3×3 = 27 kostek. Kolik kostek je v prostředku (nevidíme je)?", correctAnswer: "1", options: ["1", "0", "8", "3"] },
   { question: "Čtverec rozstřihneme jedním řezem. Kolik částí dostaneme?", correctAnswer: "2", options: ["2", "1", "3", "4"] },
   { question: "Čtverec rozstřihneme dvěma řezy rovnoběžně. Kolik části dostaneme?", correctAnswer: "3", options: ["3", "2", "4", "6"] },
-  { question: "Přeložíme čtverec napůl. Vznikne:", correctAnswer: "Obdélník – poloviční obsah", options: ["Obdélník – poloviční obsah", "Čtverec", "Trojúhelník", "Trapéz"] },
+  { question: "Přeložíme čtverec napůl podél strany. Vznikne:", correctAnswer: "Obdélník", options: ["Obdélník", "Čtverec", "Trojúhelník", "Trapéz"], explanation: "Přehyb podél strany rozdělí čtverec na dva obdélníky, každý s polovičním obsahem. Přehyb podél úhlopříčky by dal trojúhelník." },
   { question: "Přeložíme čtverec přes úhlopříčku. Vznikne:", correctAnswer: "Rovnoramenný pravoúhlý trojúhelník", options: ["Rovnoramenný pravoúhlý trojúhelník", "Obdélník", "Rovnostranný trojúhelník", "Čtverec"] },
   { question: "Do čtverce 4×4 nakreslíme všechny úhlopříčky malých čtverečků. Jaký tvar vznikne uprostřed?", correctAnswer: "Čtverec – otočený o 45°", options: ["Čtverec – otočený o 45°", "Trojúhelník", "Šestiúhelník", "Kružnice"] },
   { question: "Celkový počet kostek 2×2×2 = ?", correctAnswer: "8", options: ["8", "6", "4", "12"] },
