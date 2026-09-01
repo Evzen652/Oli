@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-01 (pokr. 7) — sken přiměřenosti ročníku + přepis první pomoci:
+- 🔎 **Cílený sken korpusu (277 souborů) na obsah nad rámec RVP.** Nehledal délku, ale termíny mimo obor ročníku:
+  slovník odborných výrazů (anatomie, farmakologie, medicínské postupy, vývojová psychologie) + morfologické vzory.
+  Nalezeno **7 reálných témat** (informatika vynechána podle stálého pokynu), ne 3, jak uváděl handoff.
+- 🔎 **Vzorec je konkrétnější, než se čekalo:** u pěti ze sedmi témat si `boundaries` **protiřečí s vlastním obsahem**.
+  Soubor deklaruje „Molekulární struktura vody není náplní 4. ročníku" a o kus výš se ptá na polaritu a ionty.
+  To jde kontrolovat strojově a trvale — stojí za zvážení přidat do auditu jako invariant.
+- ⚠️ **Handoff byl ve dvou bodech zastaralý.** `navykove-latky` už acetylcholin ani endokanabinoidy neobsahuje —
+  odstranila je Wave B, dávka 20 (`d078e38`). `nucleus accumbens` u dospívání **nikdy neexistoval** (`git log -S` nenašel nic).
+  Poučení: nálezy z handoffu ověřovat proti kódu, ne přebírat.
+- ✅ **`g4-…prvni-pomoc-tisnove-volani` přepsáno** (35 → 39 úloh, 13/13/13). Ven šlo KPR 30:2, defibrilace/AED,
+  komorová fibrilace, ABCDE, triáž, škrtidlo, EpiPen, anafylaxe, infarkt, krevní tlak, hypotermie, tepenné vs. žilní krvácení.
+  **Kalibrace doložena z RVP datasetu:** tenhle obsah má vlastní uzel o čtyři ročníky výš
+  (`g8-prirodopis-…civilizacni-choroby-prevence-prvni-pomoc`). Dovnitř přibyly mimořádné události
+  (siréna, povodeň, únik plynu), které jsou v názvu uzlu, ale měly jedinou úlohu.
+- 🐞 **Pozice správné odpovědi byla předvídatelná.** Původní pool: klíč **26× první, 9× druhý, nikdy třetí ani čtvrtý**.
+  `gen()` míchá úlohy, ale ne možnosti — dítě mohlo uhodnout vylučovací strategií „ber první nebo druhou".
+  Nový pool má 10/10/10/9. **Zbytek korpusu tímhle neprošel** — zapsáno do PENDING_CHANGES k rozhodnutí.
+- ⚠️ **`goals` rozporovaly nová `boundaries`.** Cíl „Popsat KPR (poměr 30:2)" musel pryč zároveň s obsahem,
+  jinak by metadata slibovala něco, co pool záměrně neučí. Totéž `helpTemplate` (nápověda i kroky obsahovaly KPR).
+- ✅ GATE 3× `invarianty: 0`, položek k revizi **3 → 1** (`missing_hints` je předexistující, ověřeno proti HEAD).
+  Testy **4615/4615**, typecheck 0. Frozen snapshot přegenerován se souhlasem uživatele — freeze zafungoval správně.
+- 🟡 **Zbývá 6 témat** ze skenu (dospívání, voda, horniny, rozmnožovací soustava, savci, kostra), odhad ~1,5 h.
+
 ### Session 2026-09-01 (pokr. 6) — Wave B DOKONČENA, dávka 26 (11 témat, 11 → 0):
 - ✅ **Wave B uzavřena.** `format/length` **0** ve třech po sobě jdoucích korpusových měřeních, všech **39 témat** prošlo GATE 3× s `invarianty: 0`. Postup napříč session: **109 → 86 → 67 → 51 → 39 → 28 → 11 → 0**. Celá testová sada **4615/4615**, typecheck 0.
 - 🔧 **Nový patcher `scripts/wave-b/pcd.mjs`.** Grade-2 používá formát `{ question, correct, distractors }`, na kterém všechny stávající patchery hlásí „NEAPLIKOVANO — oprav kotvy" (past č. 10). Kotví na text otázky, protože v tomhle formátu se klíč — na rozdíl od ostatních — v souboru neopakuje i v poli možností.

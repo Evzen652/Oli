@@ -13,12 +13,44 @@ dítěti umožňoval uhodnout odpověď podle délky. **Hotovo: 0 nálezů, 0 do
 39 témat prošlo GATE 3× s `invarianty: 0`, testy 4615/4615.
 Detail postupu a nalezené pasti v [`WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md).
 
-## 🔴 Přiměřenost ročníku — dvě témata 5. ročníku (2026-09-01)
-Nalezeno při Wave B, dávka 20. **Nejde opravit úpravou možností, chce to přepis tématu.**
-- `g5-prirodoveda-…etapy-lidskeho-zivota-dospivani` — nucleus accumbens, prefrontální kůra, cirkadiánní rytmus, konsolidace paměti, Eriksonových 8 fází psychosociálního vývoje.
-- `g5-prirodoveda-…navykove-latky-alkohol-nikotin-drogy` — acetylcholinové receptory, endokanabinoidy, hipokampus, opioidní receptory, THC.
-- Termín **„sebeobrázek"** je kalk z anglického *self-image*; česky *sebepojetí*. Je v otázkách i distraktorech napříč tématem, takže přejmenování je samostatná změna.
-- V dávce 20 jsem opravil délky, gramatiku a šipky v klíčích; zkrácené klíče jsou psané srozumitelně pro 11 let. **Otázky samotné ale zůstávají nad rámec RVP 5. ročníku.**
+## 🟡 Přiměřenost ročníku — sken korpusu, 1 ze 7 témat hotovo (2026-09-01)
+Cílený sken 277 souborů proti `boundaries` a rozsahu RVP. **Vzorec potvrzen, ale jiný, než se čekalo:**
+u pěti ze sedmi témat si `boundaries` protiřečí s vlastním obsahem — soubor sám deklaruje hranici,
+kterou o pár řádků výš překračuje. To je strojově detekovatelné, ne věc jednorázové revize.
+
+**Dvě položky z původního zadání neplatily:**
+- `…navykove-latky` — acetylcholin, endokanabinoidy, opioidní receptory a hipokampus **v souboru nejsou**;
+  odstranila je Wave B, dávka 20 (`d078e38`). Zbývá jen „hepatitida" a „LSD", což je jiná váha.
+- `nucleus accumbens` a `cirkadiánní rytmus` u dospívání **nikdy neexistovaly** — `git log -S` nenašel commit, který by je zavedl.
+
+**Hotovo:**
+- ✅ `g4-prirodoveda-…prvni-pomoc-tisnove-volani` — pool přepsán (35 → 39 úloh, 13/13/13).
+  Ven: KPR 30:2, defibrilace/AED, komorová fibrilace, ABCDE, triáž, škrtidlo, EpiPen, anafylaxe,
+  infarkt, krevní tlak, hypotermie, tepenné vs. žilní krvácení. Všechno má vlastní RVP uzel v **g8**
+  (`g8-prirodopis-…civilizacni-choroby-prevence-prvni-pomoc`). Dovnitř přibyly **mimořádné události**
+  (siréna, povodeň, únik plynu, evakuace), které jsou v názvu uzlu, ale měly jedinou úlohu.
+  Upraveny i `goals` (obsahovaly „Popsat KPR (poměr 30:2)"), `boundaries` a `helpTemplate`.
+  GATE 3× `invarianty: 0`, položek k revizi **3 → 1**, testy 4615/4615, typecheck 0. Snapshot přegenerován.
+
+**Zbývá 6 témat** (odhad ~1,5 h):
+- `g5-…etapy-lidskeho-zivota-dospivani` — Erikson (8 fází psychosociálního vývoje), prefrontální kůra,
+  dopamin/serotonin. Termín **„sebeobrázek"** je kalk z *self-image*, česky *sebepojetí*. **Přepis poolu.**
+- `g4-…voda-skupenstvi-kolobeh` — polarita molekuly, „obklopit a oddělovat ionty" proti vlastnímu
+  `boundaries` („Molekulární struktura vody není náplní 4. ročníku"). ~3 úlohy.
+- `g5-…horniny-a-nerosty` — „atomy uhlíku vázány do pevné sítě, každý se 4 sousedy" proti
+  `boundaries` („Neprobírá chemické složení nerostů do hloubky"). ~3 úlohy.
+- `g5-…rozmnozovaci-soustava` — dopamin/serotonin jako distraktor u pohlavních hormonů. ~2 úlohy.
+- `g4-…savci-ptaci` — „velká mozková kůra – neokortex". 1 úloha.
+- `g5-…kostra-a-svaly` — „nos → plíce → alveoly → krev". 1 řádek.
+
+**Informatika ze skenu vynechána** podle stálého pokynu.
+
+## 🔴 Pozice správné odpovědi je předvídatelná — celý korpus (2026-09-01)
+Nalezeno při přepisu první pomoci. Původní pool měl klíč **26× na 1. pozici, 9× na 2., nikdy na 3. ani 4.**
+`gen()` míchá pořadí úloh, ale **ne pořadí možností** — takže dítě může uhodnout bez znalosti látky:
+„ber první nebo druhou". V přepsaném tématu je rozložení 10/10/10/9, ale **zbytek korpusu neověřen**.
+- Systémové řešení by bylo míchat `options` v `gen()` u `select_one`. Riziko: typy, kde na pořadí záleží
+  (`drag_order`, `comparison`), takže to nesmí být plošné. **Čeká na rozhodnutí.**
 
 ## ✅ Ručně kreslená šipka v celé aplikaci (2026-08-31)
 
