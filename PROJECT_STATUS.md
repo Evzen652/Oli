@@ -144,6 +144,171 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-02 — pózy maskota a dotažené šipky:
+
+- ✅ **Dlaždice ročníků přebarveny.** Zadání mělo dvě půlky, které jdou proti sobě: mají
+  působit jako **jedna sada** a zároveň **vesele**. Řeší to dělba rolí — o „jedné sadě"
+  rozhoduje **společná světlost** (85 % nahoře, 77 % dole), o veselosti **sytost** (75 %).
+  Mění se jen tón. Klíčové zjištění: původní Tailwind dlaždice nevadily proto, že byly syté,
+  ale proto, že měly **nízkou světlost** (~52 %). Sytost 75 % při světlosti 85 % je veselá
+  a přitom drží pohromadě.
+- 🔎 **Tři zavržené verze cestou, každá selhala na něčem jiném:**
+  (1) původní Tailwind `-400/-500` (S přes 90 %) — vedle akvarelů křičely;
+  (2) tlumená (S 40 %, L 66–76 %) — ke kresbám seděla, ale devět sytých odstínů vedle sebe
+  četlo jako duha. Rozsah vzešel z měření akvarelů (`landing-*.png`: S 13–58 %, L 50–82 %)
+  — správné číslo, ale na tenhle účel špatná otázka: kresba smí být sytá, protože je jedna;
+  (3) skoro jednotná (S 30 %, L 86–92 %) — jedna sada ano, ale bez života.
+- ✅ **Odbarvení nedostupných ročníků zjemněno z 0,35 na 0,55.** Šest z devíti dlaždic je
+  „brzy", takže o celkovém dojmu ze stránky rozhodují hlavně ony — na 0,35 zůstávaly šedivé
+  i na veselé paletě. Na finální paletě barevnost dlaždice stoupla **z 19,0 na 35,3**
+  (průměrný rozdíl nejsvětlejšího a nejtmavšího kanálu), kontrast čísla drží **3,69**.
+- 🐞 **Počítadlo mělo bílé pozadí a já ho odškrtl jako ověřené.** Mezery mezi řadami kuliček
+  jsou **uzavřené díry**, do kterých se flood-fill od okrajů nedostane — zůstalo tam
+  **11 449 krycích bílých pixelů, tedy 25 % kresby**. Složil jsem to tehdy na sytou oranžovou,
+  podíval se a napsal, že díry jsou v pořádku. **Nezměřil jsem to.** Opraveno
+  `fix-landing-alpha.ps1 -ClearIds 0..27` (28 kapes, 11 220 px odstraněno, nově 0 %).
+  Kniha (`grade-3`) a sova na knihách mají bílou taky, ale tam jsou to **stránky**, tedy
+  kresba — ponecháno.
+- ✅ **Aby to příště nestálo na paměti, vznikl `scripts/check-white-pockets.ps1`** — hlásí
+  podíl krycích skoro bílých pixelů, největší souvislou oblast a její bbox. Odkaz na něj je
+  nově přímo v `ILLUSTRATION_STYLE` §2.5 jako **povinný krok**, ne doporučení.
+- 📋 **Připraveny prompty pro zbývající ročníky** (1., 5.–9.) v
+  [`docs/GRADE_TILE_PROMPTS.md`](docs/GRADE_TILE_PROMPTS.md), dva listy po třech motivech.
+  Motivy odvozeny z `data/rvp_data.json` — vždy téma, které se v daném ročníku objevuje
+  **poprvé** proti všem nižším. Globus u 6. a chemická baňka u 8. nesou navíc informaci,
+  která dítě zajímá: v šestce začíná druhý stupeň, v osmičce přibývá chemie.
+- ⚠️ **Až budou kresby i pro neaktivní ročníky, zanikne dnešní signál** „kresba = ročník má
+  obsah". Dostupnost pak ponese jen odbarvení a popisek BRZY — je otázka, jestli to stačí.
+- 🐞 **`opacity-60` na nedostupné dlaždici se NIKDY neuplatnilo.** Inline `style` obsahuje
+  `opacity: isOther ? 0.35 : 1`, což Tailwind třídu přebíjí — dlaždice „brzy" se tedy jen
+  odbarvovaly, nikdy neztlumily. **Odhalilo to až čtení `getComputedStyle` z vykreslené
+  stránky**, v kódu to vypadalo správně. Ztlumení přesunuto do `style`
+  (`available ? 1 : 0.7`), mrtvá třída odstraněna.
+- 🔎 **Hexy místo Tailwind tříd.** Tailwind kombinaci nízké sytosti a vysoké světlosti
+  systematicky nemá. Gradient i okraj se nastavují inline z `GRADE_META`.
+- 🐞 **Kontrast čísla musel jít nahoru — odhalilo to jen počítání přes všechny vrstvy.**
+  Dlaždice nedostupného ročníku na sebe skládá `saturate-[0.35]` **i** `opacity-60`, číslo mělo
+  navíc `opacity-60`. Na finálních tintech vychází při krytí 0,6 na levandulové dlaždici
+  **2,98**, tedy těsně pod prahem 3,0 pro velký text; při **0,8** je nejhorší případ **4,75**.
+  (U zavržené střední verze to bylo dokonce 2,47 a nespravil to ani nejtmavší inkoust —
+  viníkem bylo krytí, ne barva.)
+  **Poučení: kontrast se musí počítat proti SKUTEČNÉ barvě po filtrech, ne proti hexu z kódu.**
+- ✅ **Číslo je nově tmavý inkoust `#4A4038`** místo bílé/barevné — stejná rodina jako kontura
+  kreseb. Bílá na světlejších dlaždicích nedržela (nejlepší případ 3,20, nejhorší 1,78).
+- **Ověřeno z vykreslené stránky**, ne jen z kódu: `getComputedStyle` na všech devíti
+  dlaždicích vrací nové tinty, `color: rgb(74,64,56)` a krytí čísla 0,8.
+
+- ✅ **Dlaždice výběru ročníku mají motiv stěžejního učiva.** `Onboarding` — ročníky s obsahem
+  (2–4) dostaly kresbu, ostatní zůstávají u holého čísla. **Číslo z dlaždice nezmizelo**:
+  kresba nedokáže říct „šestý ročník", dítě hledá číslo, takže je vedle motivu jako odznak.
+  Motiv navíc dělá dvojí práci — kde je kresba, tam je obsah; kde holé číslo, tam se chystá.
+  Přiřazení vzato z prvního okruhu v `src/content/grade-N/navigation.ts`, ne od boku:
+  2. „Počítání do 100" → počítadlo, 3. „Vyjmenovaná slova" → kniha s Y, 4. „Zlomky" → koláč.
+  Modul [`src/lib/gradeIllustrations.ts`](src/lib/gradeIllustrations.ts).
+- 🐞 **Stávající ilustrace předmětů se pro tohle nedají použít — vyzkoušeno a zavrženo.**
+  Všechny `cat-*.png` a `topic-*.png` mají **bílé pozadí**, takže na barevné dlaždici z nich
+  je bílý čtverec (`ILLUSTRATION_STYLE` §3). Po odstranění bílé vyleze druhý problém: jsou to
+  **bledé pastely na syté dlaždici** — „Čísla do 100" se na oranžové prakticky ztratí. A jsou
+  kreslené pro velké karty, na 130 px čtou jako změť (zlomky = pizza a dort).
+- 🔎 **Krémové kolečko pod motivem vyzkoušeno a nakonec nepoužito.** Kontrast řeší spolehlivě
+  na jakékoli barvě dlaždice, ale nové motivy mají tmavou konturu a syté barvy, takže ho
+  nepotřebují — a širší kresby z něj vyčnívaly. Zůstává jako doložená záloha, kdyby se někdy
+  sázel motiv, který sám o sobě neudrží.
+- ⚠️ **Portréty dětí (první pokus) nahrazeny.** Byly na jednom listu, hlavy srovnané na 57 %
+  výšky (`split-portrait-sheet.ps1`), ale v dlaždicích nefungovaly. Reprodukovatelné z
+  `D:\weigle\plocha\Oli_ILUSTRACE\Gemini_Generated_Image_bj4lve…jpg`:
+  `-Subjects "grade-2:311:101:330;grade-3:898:67:330;grade-4:1477:73:330" -Size 512`,
+  pak `make-logo.ps1 -NoCrop -Thr 230`.
+- 🔧 **`scripts/make-logo.ps1` má nově `-NoCrop`** — nechá výřez beze změny a jen převede bílou
+  na alfu. Vzniklo pro portréty srovnané podle hlavy: běžný ořez na obsah by to srovnání
+  zahodil a v dlaždicích by zase byly různě velké obličeje.
+- 🔎 **Nový nástroj na dělení listů:** `scratchpad/find-gaps.ps1` najde libovolný počet kreseb
+  na jednom listu. **Nesmí hledat úplně prázdné sloupce** — zrno akvarelového papíru dává
+  ojedinělé tmavé pixely i uprostřed mezery, takže u listu s dětmi hlásil šest kreseb místo
+  tří. Řeší to tolerance pár pixelů na sloupec (`-Tol`), ne snížení prahu (to by ukouslo
+  světlá místa kreseb).
+- ⚠️ **Nález mimo zadání, neopraveno:** `src/components/GradeSelect.tsx` má natvrdo
+  `DEMO_MODE = true` a `DEMO_GRADE = 3`, takže v **druhé** mřížce výběru ročníku (renderuje se
+  z `SessionView.tsx:335` pro přihlášeného uživatele bez ročníku) lze vybrat **jen 3. třídu**.
+  Onboarding vedle toho nabízí 2., 3. i 4. Je to od úvodního commitu. Vyžaduje rozhodnutí,
+  jestli tu druhou mřížku vůbec zachovat — proto samostatný úkol.
+- ✅ **Pózy maskota — a) pozdrav a b) tip dne zapojeny.** Sova byla ve všech devíti místech
+  aplikace **týž obrázek**. Nová [`src/lib/oliPoses.ts`](src/lib/oliPoses.ts) drží pózy odděleně
+  od loga; `oli-owl.png` (sova na knihách) zůstává vyhrazená značce. Zapojeno v `Onboarding`,
+  `ChildHomePage` (uvítací lišta + Tip dne). Zadání a pasti v [`docs/LOGO_PROMPT.md`](docs/LOGO_PROMPT.md).
+- ⚠️ **Póza c) zamítnuta — je to měřitelně jiná sova.** Šířka brýlí v boxu 96 px **42 px**
+  proti 31–33 u ostatních (o třetinu větší hlava), peří `#B06840` místo `#C88050`, brýle
+  `#081820` místo `#000000`, duhovky jantarové místo červených. Póza d) (tužka) sedí a čeká
+  na zapojení spolu s opravenou c), ať se do týchž souborů nesahá dvakrát.
+- 🔎 **Poučení k měření: práh „nad 8 % posunu palety je to jiná sova" platí jen na lokální
+  opravu při zachované póze.** U změny pózy vyhodil obě správné kresby (15,9 a 22,2 %), protože
+  zvednuté křídlo legitimně mění **podíly** ploch, ne odstíny. Správný nástroj je porovnání
+  konkrétních odstínů po skupinách (`scratchpad/check-palette.ps1`) a šířka brýlí jako zástupce
+  velikosti hlavy (`head-size.ps1`).
+- 🔎 **Dvakrát podezření, které měření vyvrátilo:** v „tipu dne" chyběl konec šály (kryje ho
+  křídlo na hrudi) a v c) to vypadalo na lidskou ruku držící ceduli (je to křídlo s pery).
+  Skutečná vada byla pokaždé jinde, než kam mířil první pohled.
+- ✅ **Dotaženy ručně psané šipky `→` na `<PaintedArrow />`** — 10 míst, která zůstala
+  z dřívějšího sjednocení: `Onboarding` (2×), `AnonMigrationDialog`, `InviteParentDialog` (2×),
+  `SessionView`, `TopicBrowser`, `ParentDashboard`, `AnonStudentPage` (2×). Záměrně ponecháno:
+  adminské obrazovky, šipka chemické reakce v `ChemicalBalanceInput` a odrážka `→ {reason}`
+  v `NextWeekPlan` (není to navigační prvek).
+- ⚠️ **Neověřeno očima:** uvítací lišta dítěte a blok „Tip dne" — `ChildHomePage` se anonymnímu
+  uživateli nezobrazuje a přihlášení dítěte vyžaduje heslo. Kryto typecheckem, buildem a testy.
+- Testy **4615/4615**, typecheck 0, `vite build` prošel.
+
+### Session 2026-09-01 (pokr. 10) — nové logo, favikona a barva nápisu:
+- ✅ **Hotovo. Logo = sova na knihách, favikona = hlava, nápis `#1E293B`** (tmavá barva brýlí).
+- 🐞 **Skutečná příčina byla jinde, než se zdálo — a stálo to jedno kolo navíc.** Zadání znělo
+  „sova má být ve značkové oranžové". Sova se tedy nechala překreslit do `#F97316` (Gemini
+  zadání splnil přesně, viz [`docs/LOGO_PROMPT.md`](docs/LOGO_PROMPT.md)) — a **výsledek se
+  zamítl hned po nasazení**: celooranžová sova je monotónní, protože kresba držela pohromadě
+  kontrastem hnědého peří proti krémovému obličeji a po přebarvení do jednoho odstínu ta
+  stavba zmizela. **Nesedící prvek byl nápis, ne sova.** Měřením potvrzeno: `#F97316` se
+  v kresbě nevyskytuje vůbec (peří `#C07848` a `#A86030`, obličej krémový, brýle černé,
+  knihy `#1890A8`). Oprava tří znaků v `OliLogo.tsx` místo překreslení celé značky.
+- ⚠️ **Poučení k metodě:** naměřené kontrasty u oranžové varianty **seděly** — problém byl
+  v kompozici barev, ne v jejich jasu. Měření hlídá čitelnost, ne to, jestli kresba drží
+  pohromadě. Na to je potřeba se podívat.
+- ✅ **`--primary` zůstává `#F97316`.** Logo se od ní nově odchyluje, protože jako jediné
+  sousedí s kresbou; tlačítka a odkazy ne. Stálo to opravu **tří komentářů v kódu**
+  (`index.css` 2×, `Landing.tsx`), které tvrdily „shodná s logem" a nově by lhaly.
+  Vedlejší zisk: nápis má na bílé **14,6:1** místo 2,3:1, tedy WCAG AAA.
+- ✅ **Logo = celá sova, favikona = hlava.** `src/assets/oli-owl.png` (260 × 320) a
+  `public/favicon.png` (256 × 256) — dvě různá ořezání téže postavy z podkladů v
+  `D:\weigle\plocha\Oli_ILUSTRACE`. Dosud byly oba soubory **bit po bitu totožné** (844 kB
+  3D sovy s absolventským kloboukem); nově má každý ořez, který dává smysl pro svou velikost.
+- ✅ **Zdvižený prst odstraněn** (`Gemini_Generated_Image_bcjduf…`). Nebylo to ani křídlo, ale
+  **lidská ruka s prsty**; s brýlemi a knihou četla celá kompozice jako kárající učitel.
+  Ověřeno strojově, že šlo o lokální opravu: paleta se posunula o 6,2 %, krycí plocha klesla
+  o 4,1 % — sedí na odebranou ruku. (Jemné dělení histogramu hlásilo 14,6 %, ale byly to
+  sousední přihrádky `#1890A8`→`#189090` a `#D83048`→`#D81848`, tedy artefakt kvantizace.)
+- 🔎 **O výběru rozhodlo měření, ne dojem.** Logo se renderuje v boxu **36 px** (`LandingNav`),
+  48 px (`SessionView`), 80 px (`GradeSelect`, `Onboarding`) a 40–64 px v dalších pěti místech.
+  Kandidáti byly proto vykresleny přesně v těchto velikostech vedle sebe: **dosavadní 3D sova se
+  na 36 px slévá do skvrny a černý klobouk přebije obličej**, plochá sova zůstane čitelná.
+- 🔎 **Přirozený poměr stran místo čtvercového vypodložení.** `OliLogo` má box `h-20 w-20` +
+  `object-contain`; kdyby se sova (poměr 0,81) vypodložila do čtverce, zmenšila by se o dalších
+  ~19 %. Uložena proto v přirozeném poměru, takže vyplní celou výšku boxu.
+- ⚠️ **Vědomý ústupek: nová sova je plochá vektorová, ne akvarel.** V aplikaci tím zůstávají tři
+  vizuální jazyky (akvarel na landingu, 3D Pixar u obrázků prvouky, plochý vektor u značky).
+  Pro **značku** je to obhajitelné — akvarel se na 36 px rozpadne a logo je grafický znak, ne
+  ilustrace. Pro nové **ilustrace** platí `docs/ILLUSTRATION_STYLE.md` beze změny.
+- 🔧 **Vyříznutí pozadí:** `scripts/make-logo.ps1` — flood-fill od okrajů (ne podle jasu),
+  takže bílé odlesky v očích zůstaly krycí. Zmenšuje se zvlášť RGB složené na bílé
+  a zvlášť maska, barva se pak z bílého podkladu odpočítá `C = (C_bílá − (1−a)·255) / a`.
+  Bez toho vzniká na tmavém podkladu bílý lem. Ověřeno na bílé, na `#F97316` i na tmavé.
+- ✅ **Vedlejší efekt: 844 kB → 127 kB (logo) a 75 kB (favikona)**, tedy o 85 % méně.
+  Dosavadní favikona byla 844kB PNG kvůli tomu, že to byl doslova týž soubor jako logo.
+- **Ověřeno v běžící aplikaci:** landing (36 px), onboarding (80 px), dětský rozcestník (48 px),
+  hlavička cvičení (48 px) — bez bílého rámečku a bez chyb v konzoli. Favikona ověřena porovnáním
+  SHA-256 servírovaného `/favicon.png` s repem. `tsc --noEmit` 0 chyb, `vite build` prošel.
+- 🔎 **Kontrast palety změřen předem, ne odhadnut** (pro případ, že by se sova někdy přebarvovala):
+  karmínová šála má vůči značkové oranžové kontrast **1,68** a teal-600 dokonce **1,34** — jiný
+  odstín, ale skoro stejný **jas**, takže by na 36 px splynuly. Světlé břicho má vůči bílé jen
+  **1,69**, takže nesmí sahat až k obrysu. Brýle jsou jediný prvek, který drží čitelnost nejmenší
+  velikosti.
+
 ### Session 2026-09-01 (pokr. 9) — pozice správných odpovědí srovnány (82 souborů):
 - ✅ **Zkosení pozice odpovědi vyřešeno mimo informatiku.** Korpus **bez informatiky: 26/25/25/24 %**
   (před zásahem 64 % klíčů na 1. pozici). Strategie „ber vždy tu samou pozici" má nyní úspěšnost

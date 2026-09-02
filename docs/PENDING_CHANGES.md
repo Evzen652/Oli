@@ -7,6 +7,93 @@
 
 ---
 
+## ✅ Dlaždice ročníků mají motiv stěžejního učiva (2026-09-02)
+Ročníky s obsahem (2–4) mají kresbu, ostatní zůstávají u holého čísla — rozdíl „hotové /
+chystá se" je tím vidět, ne jen ze šedivého nápisu BRZY. **Číslo zůstává**, kresba nedokáže
+říct „šestý ročník". Přiřazení vzato z prvního okruhu v `src/content/grade-N/navigation.ts`:
+2. počítadlo · 3. kniha s Y · 4. koláč na čtvrtiny.
+
+**Dvě slepé uličky, obě doložené** (ať je nikdo neopakuje):
+- 🐞 **Stávající `cat-*.png` / `topic-*.png` se použít nedají.** Bílé pozadí → bílý čtverec
+  na barevné dlaždici; po odstranění bílé jsou to bledé pastely, které se na syté dlaždici
+  ztratí. A na 130 px čtou jako změť — jsou kreslené pro velké karty.
+- 🔎 **Krémové kolečko pod motivem** kontrast spolehlivě řeší, ale nové motivy ho nepotřebují
+  (tmavá kontura, syté barvy) a širší kresby z něj vyčnívaly. Ponecháno jako záloha.
+
+**Nástroje:** `scripts/make-logo.ps1` má nově `-NoCrop` (nechá výřez beze změny, jen převede
+bílou na alfu — nutné u portrétů srovnaných podle hlavy). `scratchpad/find-gaps.ps1` dělí list
+na libovolný počet kreseb; **musí tolerovat pár tmavých pixelů na sloupec**, protože zrno
+akvarelového papíru jinak hlásí kresby tam, kde je prázdná mezera.
+
+⚠️ **Uzavřené díry se kontrolují složením na SYTOU barvu, ne na bílou** — bílý flek v mezerách
+mezi kuličkami počítadla by se na bílém pozadí neprojevil (`ILLUSTRATION_STYLE` §2.5).
+U těchto tří motivů ověřeno, díry jsou správně průhledné.
+
+## 🔴 GradeSelect umí vybrat jen 3. třídu (nalezeno 2026-09-02, neopraveno)
+`src/components/GradeSelect.tsx` má natvrdo `DEMO_MODE = true` a `DEMO_GRADE: Grade = 3`,
+takže `isActive` je pravda jen pro trojku. Komponenta se renderuje z `SessionView.tsx:335`
+jako fallback pro přihlášeného uživatele bez nastaveného ročníku — **dítě ve 2. nebo 4. třídě
+si tam nemá jak vybrat svůj ročník**, ačkoli obsah pro ně existuje a `Onboarding` je nabízí.
+
+Je to od úvodního commitu. Zdroj pravdy má být `isGradeAvailable()` z `contentAvailability.ts`,
+jako v `Onboarding.tsx`. Součástí opravy je rozhodnout, jestli má vůbec existovat **druhá,
+vizuálně odlišná mřížka** výběru ročníku vedle té v onboardingu.
+
+## ✅ Pózy maskota + šipky dotaženy (2026-09-02)
+- ✅ **a) pozdrav a b) tip dne zapojeny** přes novou `src/lib/oliPoses.ts`. Sova byla dosud
+  ve všech devíti místech aplikace týž obrázek.
+- ⚠️ **c) přehled zamítnuta** — brýle 42 px proti 31–33 u ostatních (o třetinu větší hlava),
+  tmavší peří, namodralé brýle, jantarové duhovky. Prompt na druhý pokus je v `LOGO_PROMPT.md`.
+- ⏭️ **d) tužka je v pořádku**, čeká na zapojení spolu s opravenou c) — ať se do týchž
+  souborů nesáhá dvakrát.
+- ✅ **10 ručně psaných šipek `→` nahrazeno `<PaintedArrow />`.** Zbytek dřívějšího sjednocení;
+  našlo se to až tím, že si toho všiml uživatel na kartě „Jsem rodič“.
+
+⚠️ **Neověřeno očima:** uvítací lišta dítěte a blok „Tip dne“ — `ChildHomePage` se anonymnímu
+uživateli nezobrazuje a přihlášení dítěte vyžaduje heslo. Kryto typecheckem, buildem a testy.
+
+## ✅ Logo, favikona a barva nápisu — hotovo (2026-09-01)
+Dosud byly `src/assets/oli-owl.png` a `public/favicon.png` **bit po bitu totožný soubor**
+(844 kB 3D sovy s absolventským kloboukem). Nově jsou to dva různé ořezy: **logo = sova
+na knihách** (274 × 320), **favikona = hlava** (256 × 256), **nápis `#1E293B`** (tmavá barva brýlí).
+
+### 🐞 Slepá ulička, která stála jedno kolo — stojí za zapamatování
+Zadání znělo „sova má být ve značkové oranžové". Sova se tedy nechala překreslit do `#F97316`
+(Gemini zadání splnil přesně — oranžové peří, teal šála, žádný zdvižený prst, čisté okraje;
+prompt v [`LOGO_PROMPT.md`](LOGO_PROMPT.md)) a **výsledek se zamítl hned po nasazení**.
+
+**Celooranžová sova je monotónní.** Kresba držela pohromadě kontrastem hnědého peří proti
+krémovému obličeji; po přebarvení do jednoho odstínu ta stavba zmizela a zbyla oranžová hmota.
+
+**Nesedící prvek byl nápis, ne sova.** Měřením potvrzeno: `#F97316` se v kresbě nevyskytuje
+vůbec — peří je `#C07848` a `#A86030`, obličej krémový, brýle černé, knihy `#1890A8`.
+Řešením byla oprava **tří znaků** v `OliLogo.tsx`, ne překreslení celé značky.
+
+⚠️ **Poučení k metodě:** naměřené kontrasty u oranžové varianty **seděly**. Problém byl
+v kompozici barev, ne v jejich jasu. **Měření hlídá čitelnost, ne to, jestli kresba drží
+pohromadě** — na to je pořád potřeba se podívat.
+
+`--primary` zůstává `#F97316` (tlačítka, odkazy). Logo se od ní odchyluje, protože jako jediné
+sousedí s kresbou. Vyžádalo si to opravu **tří komentářů v kódu** (`index.css` 2×,
+`Landing.tsx`), které tvrdily „shodná s logem" a nově by lhaly. Vedlejší zisk: nápis má
+na bílé **14,6:1** místo 2,3:1, tedy WCAG AAA.
+
+**Co dál platí:**
+- ✅ **Rozměry a poměr stran.** Logo v přirozeném poměru (0,86), ne vypodložené do čtverce —
+  `OliLogo` má box `h-20 w-20` + `object-contain`, čtverec by sovu zmenšil o dalších ~21 %.
+- ✅ **Postup vyříznutí pozadí** (`scripts/make-logo.ps1`): flood-fill od okrajů, zmenšení
+  RGB a masky zvlášť, odpočet bílého podkladu `C = (C_bílá − (1−a)·255) / a`. Bez toho vzniká
+  na tmavém podkladu bílý lem.
+- ✅ **Kontrast palety změřen** — čísla a odůvodnění v `LOGO_PROMPT.md`. Karmín ani teal-600
+  jako barva šály neprojdou (1,68 a 1,34 vůči oranžové: jiný odstín, skoro stejný jas).
+- ✅ **Vedlejší efekt: 844 kB → 118 kB (logo) + 75 kB (favikona)**, o 89 % méně.
+  Dosavadní favikona byla 844kB PNG jen proto, že to byl doslova týž soubor jako logo.
+
+⚠️ **Vědomý ústupek k rozhodnutí:** sova je plochá vektorová, ne akvarel. V aplikaci tím
+zůstávají tři vizuální jazyky (akvarel na landingu, 3D Pixar u obrázků prvouky, plochý vektor
+u značky). Pro **značku** je to obhajitelné — akvarel se na 36 px rozpadne a logo je grafický
+znak, ne ilustrace. Pro nové **ilustrace** platí `ILLUSTRATION_STYLE.md` beze změny.
+
 ## ✅ Wave B dokončena — `format/length` 109 → 0 (2026-09-01)
 Vlna mířila na nález „správná možnost je ≥ 2× delší než všechny distraktory", který
 dítěti umožňoval uhodnout odpověď podle délky. **Hotovo: 0 nálezů, 0 dotčených témat**,

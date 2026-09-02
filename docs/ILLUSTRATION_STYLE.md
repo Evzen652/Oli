@@ -47,6 +47,22 @@ Kresby se vyřezávají z bílého papíru (průhledné PNG). Automat hledá poz
 5. **Bez propletených děr.** Svlaky opěradla, ucho hrnku, mezery mezi končetinou
    a tělem — každá uzavřená díra je ruční rozhodnutí, jestli je pozadí, nebo
    kresba. Portrét po ramena je tím pádem bezpečnější než celá scéna.
+
+   > ⚠️ **Tohle se NEDÁ zkontrolovat okem — musí se to změřit.**
+   > Na bílém náhledu se bílý flek neprojeví vůbec a na barevném podkladu ho
+   > při velikosti dlaždice oko přehlédne. U počítadla (`grade-2.png`) takhle
+   > prošlo **11 449 krycích bílých pixelů, tedy 25 % kresby** — mezery mezi
+   > řadami kuliček — přestože složení na sytou oranžovou vypadalo v pořádku
+   > a bylo odškrtnuté jako ověřené.
+   >
+   > ```powershell
+   > scripts\check-white-pockets.ps1 -Files (Get-ChildItem src\assets\*.png).FullName
+   > ```
+   >
+   > Podíl nad ~1 % krycí plochy = prověřit. Skript nic nemaže, jen hlásí —
+   > rozhodnout, jestli je bílá pozadí (mezery v počítadle) nebo kresba
+   > (stránky knihy), musí člověk podle bbox. Oprava pak přes
+   > `fix-landing-alpha.ps1 -ScanOnly` → `-ClearIds`.
 6. **Jeden objekt uprostřed, nic navíc po straně.** Prázdná židle vedle
    chlapce udělala kompozici 1,38 : 1, postava se scvrkla na třetinu šířky a
    karta působila nevyváženě vedle ostatních.
