@@ -34,7 +34,7 @@ import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
 import { ExitSessionDialog } from "@/components/ExitSessionDialog";
 import goodToKnowImg from "@/assets/good-to-know.png";
 import { useT } from "@/lib/i18n";
-import { LogOut, Eye } from "lucide-react";
+import { LogOut, Eye, Lightbulb } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
@@ -513,52 +513,20 @@ export function SessionView() {
   // cvičení než v přehledu předmětů.
   const subjectPalette = getSubjectPalette(session.matchedTopic?.subject);
 
-  // Dekorace pozadí — zobrazí se jen během PRACTICE/EXPLAIN, fixní vlevo dole
-  const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
-  const showDecor = session.state === "PRACTICE" || session.state === "EXPLAIN";
 
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
-      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop.
-          Page má radial krémový gradient v levém dolním rohu (viz session-bg-gradient).
-          Maska je radial fade kolem objektů (knihy + globus), krémové pozadí kresby
-          se rozpustí do krémového pozadí stránky → bez viditelného přechodu. */}
-      {showDecor && (
-        <img
-          src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
-          alt=""
-          aria-hidden="true"
-          className="hidden lg:block fixed bottom-0 left-0 w-72 xl:w-96 h-auto object-contain pointer-events-none select-none z-0"
-          style={{
-            opacity: 1,
-            // Radial fade kolem objektů (lampa, knihy, globus, sukulent — vystředěné lehce vlevo dole)
-            WebkitMaskImage:
-              "radial-gradient(ellipse 70% 70% at 40% 70%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 90%)",
-            maskImage:
-              "radial-gradient(ellipse 70% 70% at 40% 70%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 90%)",
-          }}
-        />
-      )}
-
-      {/* Letící kniha s pohádkovými hvězdičkami vpravo nahoře — tematický protějšek
-          ke knihám+globusu vlevo dole (dole studovna, nahoře vzlétající fantazie). */}
-      {showDecor && (
-        <img
-          src={`${SUPABASE_STORAGE}/practice-decor-flying-book.png`}
-          alt=""
-          aria-hidden="true"
-          className="hidden lg:block fixed top-0 right-0 w-72 xl:w-96 h-auto object-contain pointer-events-none select-none z-0"
-          style={{
-            opacity: 0.85,
-            mixBlendMode: "multiply",
-            // Fade levého a spodního okraje — kresba se rozplyne do stránky
-            WebkitMaskImage:
-              "radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 90%)",
-            maskImage:
-              "radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 90%)",
-          }}
-        />
-      )}
+      {/* Dekorace v rozích (3D glóbus s knihami vlevo dole, letící kniha vpravo
+          nahoře) SMAZÁNY 2026-09-03. Čtyři důvody, každý sám o sobě stačí:
+          1. byly ve stylu „3D Pixar“, který `ILLUSTRATION_STYLE.md` výslovně
+             označuje za nepatřičný vedle akvarelu — a byly to největší grafické
+             prvky na obrazovce (288–384 px, `fixed` v obou rozích);
+          2. na širokém monitoru orámovaly obsah jako tapeta šablony;
+          3. tahaly se za běhu ze Supabase storage — síťová závislost pro
+             čistou dekoraci;
+          4. letící kniha měla `mixBlendMode: multiply` nad radiálním gradientem,
+             takže se jí odstín měnil podle pozice na stránce.
+          Prázdné okraje se nemá čím zaplňovat — klid kolem karty je záměr. */}
       {AdminBanner}
       <ExitSessionDialog
         open={!!pendingExit}
@@ -667,10 +635,15 @@ export function SessionView() {
               </div>
               <Dialog>
                 <DialogTrigger asChild>
+                  {/* Dřív plná jantarová lišta přes celou šířku, pak tichý odkaz
+                      — ten ale nevypadal klikatelně. Nově kompaktní tlačítko
+                      s okrajem: má tvar ovládacího prvku, ale nezabírá celou
+                      šířku a nekřičí jako původní lišta. */}
                   <Button
-                    variant="warning"
-                    className="w-full h-auto border-2 gap-2 px-5 py-3 text-base"
+                    variant="outline"
+                    className="h-auto w-fit gap-2 rounded-full border-border bg-card px-4 py-2 text-[15px] font-semibold text-foreground shadow-e1 hover:border-warning/50 hover:bg-warning-muted"
                   >
+                    <Lightbulb className="h-4 w-4 text-warning" />
                     {t("session.good_to_know")}
                   </Button>
                 </DialogTrigger>
@@ -752,7 +725,13 @@ export function SessionView() {
           {/* Question card (EXPLAIN / PRACTICE without feedback) */}
           {session.state !== "INPUT_CAPTURE" && !isTerminal && !checkFeedback && (
             // Karta je vždy bílá; předmět nese jen okraj (design systém).
-            <Card className={`border-2 overflow-hidden shadow-e1 ${subjectPalette.borderClass}`}>
+            // Tvarosloví převzaté z landing page: rádius 24 px a okraj 1 px
+            // v předmětovém tintu — ne `border-2` kolem dokola, to čte jako
+            // Material Design. Předmět nese rozmytý akvarelový tah v horní hraně.
+            // Rozmytý akvarelový tah v horní hraně byl zavržen: `blur` prosákl
+            // přes zaoblený roh a četl se jako nechtěný stín nad kartou.
+            // Předmět nese samotný okraj 1 px v tintu — to stačí.
+            <Card className={`relative rounded-3xl border overflow-hidden shadow-e1 ${subjectPalette.borderClass}`}>
               <CardContent className="p-6">
                 {session.state === "EXPLAIN" && (
                   <>
@@ -778,22 +757,27 @@ export function SessionView() {
                     <p className="mt-4 text-base text-muted-foreground">{t("session.explain.one_way")}</p>
                   </>
                 )}
+                {/* Rotující pobídka („Poradíš si?", „Tvůj tah!") je jen náladová
+                    vata — byla ale `text-2xl` (24 px), tedy VĚTŠÍ než samotná
+                    otázka (20 px). Hierarchie naruby: dítě četlo nejdřív pozdrav.
+                    Degradováno na tichý nadtitulek v barvě předmětu. */}
                 {session.state === "PRACTICE" && (
-                  <div className="mb-4">
-                    <h2 className="text-2xl font-heading font-bold text-foreground">{questionTitle}</h2>
-                  </div>
+                  <p className={`text-[13px] font-extrabold uppercase tracking-[0.07em] ${subjectPalette.color}`}>
+                    {questionTitle}
+                  </p>
                 )}
+                {/* Otázka je hrdina obrazovky — bez obalu a bez emoji.
+                    Dřív tu byl vnořený `rounded-xl bg-background/70 p-5`, jenže
+                    #FAF9F6 při 70 % na bílé dá ~#FCFBF9, tedy rozdíl v jasu
+                    1,5 % — neviditelný obal za 20 px paddingu.
+                    Nad otázkou navíc stálo emoji `text-6xl` (60 px), největší
+                    objekt na obrazovce: mimo paletu, mimo akvarelový rukopis
+                    a na každé platformě jinak kreslené. Pole `emoji` v obsahu
+                    zůstává (1 061 výskytů), jen se tady nevykresluje. */}
                 {practiceQuestion && (
-                  <div className="mt-5 rounded-xl bg-background/70 p-5">
-                    {currentTask?.emoji && (
-                      <div className="mb-3 text-center text-6xl leading-none" aria-hidden="true">
-                        {currentTask.emoji}
-                      </div>
-                    )}
-                    <p className="text-xl font-semibold text-foreground">
-                      {practiceQuestion}
-                    </p>
-                  </div>
+                  <p className="mt-4 text-[29px] leading-[1.3] font-extrabold text-foreground">
+                    {practiceQuestion}
+                  </p>
                 )}
               </CardContent>
             </Card>

@@ -1,4 +1,8 @@
 import { Badge } from "@/components/ui/badge";
+import icoCurrent from "@/assets/progress/progress-current.png";
+import icoCorrect from "@/assets/progress/progress-correct.png";
+import icoWrong from "@/assets/progress/progress-wrong.png";
+import icoHelp from "@/assets/progress/progress-help.png";
 
 interface ProgressIndicatorProps {
   current: number;
@@ -15,11 +19,20 @@ interface ProgressIndicatorProps {
  * chybu. Modrá zase kolidovala s matematikou. Tečky navíc nejsou plné syté
  * plochy, ale tinty s prstencem: plná červená je pro dítě trest, ne
  * informace (viz `docs/DESIGN_SYSTEM.md`).
+ *
+ * Ikony byly do 2026-09-03 **systémová emoji** (✏️ 😊 😕 🤔). Nahrazeny
+ * akvarelovými kresbami ze stejného rukopisu jako zbytek aplikace — emoji
+ * se na každé platformě kreslí jinak a na 28 px se z obličeje stejně stane
+ * šedá kaše. Proto ani nové ikony nejsou obličeje: nesou je siluety, které
+ * se poznají z jedné barevné plochy.
+ *
+ * Chyba je **kroužící šipka „zkus to znovu"**, ne smutný smajlík — design
+ * systém říká, že plná červená je pro dítě trest, ne informace.
  */
 const DOT = {
-  correct: { cls: "bg-success-muted ring-1 ring-success/40", emoji: "😊" },
-  wrong: { cls: "bg-destructive-muted ring-1 ring-destructive/40", emoji: "😕" },
-  help: { cls: "bg-warning-muted ring-1 ring-warning/40", emoji: "🤔" },
+  correct: { cls: "bg-success-muted ring-1 ring-success/40", icon: icoCorrect, alt: "správně" },
+  wrong: { cls: "bg-destructive-muted ring-1 ring-destructive/40", icon: icoWrong, alt: "zkus to příště" },
+  help: { cls: "bg-warning-muted ring-1 ring-warning/40", icon: icoHelp, alt: "s nápovědou" },
 } as const;
 
 export function ProgressIndicator({ current, total, results = [], dotAccentClass }: ProgressIndicatorProps) {
@@ -30,25 +43,39 @@ export function ProgressIndicator({ current, total, results = [], dotAccentClass
       </p>
       <div className="flex items-center justify-center gap-2 flex-wrap">
         {Array.from({ length: total }).map((_, i) => {
-          const base = "rounded-full transition-all duration-300 flex items-center justify-center text-sm ";
+          const base = "rounded-full transition-all duration-300 flex items-center justify-center ";
           const result = results[i];
           const done = result ? DOT[result] : null;
 
           if (done) {
-            return <div key={i} className={`${base} w-7 h-7 ${done.cls}`}>{done.emoji}</div>;
+            return (
+              <div key={i} className={`${base} w-7 h-7 ${done.cls}`}>
+                <img src={done.icon} alt={done.alt} className="w-[18px] h-[18px] object-contain" />
+              </div>
+            );
           }
           if (i === current) {
             const accent = dotAccentClass ?? "bg-accent ring-2 ring-primary/50";
-            return <div key={i} className={`${base} w-8 h-8 ${accent} scale-110`}>✏️</div>;
+            return (
+              <div key={i} className={`${base} w-8 h-8 ${accent} scale-110`}>
+                <img src={icoCurrent} alt="" className="w-[20px] h-[20px] object-contain" />
+              </div>
+            );
           }
           return <div key={i} className={`${base} w-7 h-7 bg-muted-foreground/20`} />;
         })}
       </div>
       {results.length > 0 && (
         <div className="flex items-center justify-center gap-4">
-          <Badge variant="success" className="gap-1">😊 správně</Badge>
-          <Badge variant="danger" className="gap-1">😕 zkus to příště</Badge>
-          <Badge variant="warning" className="gap-1">🤔 s nápovědou</Badge>
+          <Badge variant="success" className="gap-1.5">
+            <img src={icoCorrect} alt="" className="w-3.5 h-3.5 object-contain" /> správně
+          </Badge>
+          <Badge variant="danger" className="gap-1.5">
+            <img src={icoWrong} alt="" className="w-3.5 h-3.5 object-contain" /> zkus to příště
+          </Badge>
+          <Badge variant="warning" className="gap-1.5">
+            <img src={icoHelp} alt="" className="w-3.5 h-3.5 object-contain" /> s nápovědou
+          </Badge>
         </div>
       )}
     </div>

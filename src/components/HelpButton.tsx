@@ -45,11 +45,19 @@ export function HelpButton({ skillId, topic, currentTask, onHelpOpened }: HelpBu
         <Button
           variant="outline"
           size="lg"
-          className={`w-full text-base font-bold border-2 gap-2 rounded-xl shadow-md transition-all duration-200 ${
-            open
-              ? "bg-violet-200 border-violet-400 text-violet-900 hover:bg-violet-300 hover:text-violet-950"
-              : "bg-violet-200 border-violet-400 text-violet-900 hover:bg-violet-300 hover:border-violet-500 hover:shadow-lg hover:scale-[1.02]"
-          }`}
+          /**
+           * 🐞 Tady byla `bg-violet-200 border-violet-400 text-violet-900`.
+           * Jenže `tailwind.config.ts` mapuje `violet → brandOrange`, takže se
+           * to renderovalo jako **meruňková placka přes celou šířku** —
+           * nejsytější prvek obrazovky. Autor psal fialovou, obrazovka
+           * ukazovala oranžovou. Nápověda tím byla vizuálně hlasitější než
+           * samotné odpovědi, což je přesně naruby.
+           *
+           * Nově tichá pilulka s okrajem: nabídne se, ale nekřičí. Zmizel
+           * i `hover:scale-[1.02]` — design systém povoluje jediný hover
+           * pohyb, zvednutí o 1 px, a tohle bylo poslední místo, kde přežil.
+           */
+          className="w-full justify-start gap-2 rounded-full border border-warning/40 bg-warning-muted px-5 text-[15px] font-semibold text-warning-foreground shadow-e1 transition-colors duration-150 hover:border-warning/70 hover:bg-warning-muted/70"
         >
           {open ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           {open ? t("help.close") : t("help.open")}

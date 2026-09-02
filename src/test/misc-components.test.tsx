@@ -41,15 +41,18 @@ describe("ProgressIndicator", () => {
     expect(dots.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("results array s 'correct' → 😊 emoji", () => {
+  // Emoji (😊 😕 🤔) nahrazena akvarelovými ikonami 2026-09-03 — test proto
+  // kontroluje `alt` obrázku, ne text glyfu. Alt zároveň nese informaci pro
+  // odečítač obrazovky, což emoji ve `<div>` nedělalo.
+  it("results array s 'correct' → ikona správně i zkus to příště", () => {
     render(<ProgressIndicator current={2} total={3} results={["correct", "wrong"]} />);
-    expect(screen.getByText("😊")).toBeInTheDocument();
-    expect(screen.getByText("😕")).toBeInTheDocument();
+    expect(screen.getByAltText("správně")).toBeInTheDocument();
+    expect(screen.getByAltText("zkus to příště")).toBeInTheDocument();
   });
 
-  it("'help' výsledek → 🤔 emoji", () => {
+  it("'help' výsledek → ikona s nápovědou", () => {
     render(<ProgressIndicator current={1} total={2} results={["help"]} />);
-    expect(screen.getByText("🤔")).toBeInTheDocument();
+    expect(screen.getByAltText("s nápovědou")).toBeInTheDocument();
   });
 
   it("legendu zobrazí jen pokud existují results", () => {
