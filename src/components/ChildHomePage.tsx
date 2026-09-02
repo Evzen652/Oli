@@ -13,7 +13,7 @@ import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { toast } from "sonner";
 import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
-import { logoNoText } from "@/components/OliLogo";
+import { oliPozdrav, oliTip } from "@/lib/oliPoses";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { toGreeting } from "@/lib/czechNames";
@@ -516,7 +516,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         {/* ── Greeting bar ── */}
         <div className="bg-white rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-sm border border-black/[0.05]">
           <div className="h-14 w-14 flex items-center justify-center shrink-0">
-            <img src={logoNoText} alt="Oli" className="h-14 w-14 object-contain" />
+            <img src={oliPozdrav} alt="" className="h-14 w-14 object-contain" />
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="font-bold text-2xl text-foreground leading-tight">
@@ -823,7 +823,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         {/* ── Tip dne ── */}
         <div className="bg-white rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-black/[0.05]">
           <div className="h-12 w-12 flex items-center justify-center shrink-0">
-            <img src={logoNoText} alt="Oli" className="h-12 w-12 object-contain" />
+            <img src={oliTip} alt="" className="h-12 w-12 object-contain" />
           </div>
           <div>
             <p className="text-xs font-bold text-orange-500 mb-1">Tip dne</p>
