@@ -10,6 +10,7 @@ import { TopicBrowser } from "@/components/TopicBrowser";
 import { ChildHomePage } from "@/components/ChildHomePage";
 import { DiktatFilterSelect } from "@/components/DiktatFilterSelect";
 import { HelpButton } from "@/components/HelpButton";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { TutorChat } from "@/components/TutorChat";
 import { FEATURES } from "@/lib/features";
 import { MiniExplainer } from "@/components/MiniExplainer";
@@ -379,7 +380,9 @@ export function SessionView() {
         />
         <div className="flex-1">
           <p className="font-bold text-lg text-foreground">Jsem rodič</p>
-          <p className="text-label text-muted-foreground mt-0.5">Přepnout na rodičovský pohled →</p>
+          <p className="text-label text-muted-foreground mt-0.5 inline-flex items-center gap-1.5">
+            Přepnout na rodičovský pohled <PaintedArrow className="h-3.5 w-3.5" />
+          </p>
         </div>
       </button>
       <div className="rounded-3xl border-2 border-[#9A3412]/25 bg-[#FFF1E6] p-6 flex items-center gap-4">

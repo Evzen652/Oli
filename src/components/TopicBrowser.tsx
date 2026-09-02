@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { IllustrationImg } from "@/components/IllustrationImg";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { getTopicsForGrade, getAllTopics } from "@/lib/contentRegistry";
 import { getCategoryInfo } from "@/lib/categoryInfo";
@@ -463,7 +464,9 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                               zavřeným <Lock> ikonou, tedy dva protichůdné signály. A dítě
                               bez účtu se nemá čím přihlásit; klik otevírá nabídku „Jsem žák /
                               Jsem rodič", takže správné sloveso je „odemknout". */}
-                          <p className="text-sm font-bold text-primary leading-snug">Odemknout →</p>
+                          <p className="text-sm font-bold text-primary leading-snug inline-flex items-center gap-1.5">
+                            Odemknout <PaintedArrow className="h-3.5 w-3.5" />
+                          </p>
                         </div>
                       </button>
                     ) : (

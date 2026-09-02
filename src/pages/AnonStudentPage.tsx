@@ -227,9 +227,9 @@ export default function AnonStudentPage() {
             </p>
             <button
               onClick={() => setShowInviteParent(true)}
-              className="mt-2 text-sm font-semibold text-amber-900 hover:underline"
+              className="mt-2 text-sm font-semibold text-amber-900 hover:underline inline-flex items-center gap-1.5"
             >
-              👪 Chci plný přístup — řekni rodičům →
+              👪 Chci plný přístup — řekni rodičům <PaintedArrow className="h-4 w-4" />
             </button>
           </div>
         )}
@@ -279,9 +279,9 @@ export default function AnonStudentPage() {
           </button>
           <a
             href="/auth?mode=register"
-            className="block text-sm text-gray-400 hover:text-violet-600 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-violet-600 transition-colors"
           >
-            Jsem rodič — založit účet →
+            Jsem rodič — založit účet <PaintedArrow className="h-4 w-4" />
           </a>
         </div>
 

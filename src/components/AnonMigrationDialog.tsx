@@ -1,5 +1,6 @@
 import { getAnonProgressSummary } from "@/lib/anonMigration";
 import { Loader2 } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 
 interface Props {
   onConfirm: () => void;
@@ -55,7 +56,7 @@ export function AnonMigrationDialog({ onConfirm, onSkip, loading }: Props) {
                 <Loader2 className="h-4 w-4 animate-spin" /> Přenáším pokrok…
               </>
             ) : (
-              <>Přenést pokrok →</>
+              <>Přenést pokrok <PaintedArrow className="h-4 w-4" /></>
             )}
           </button>
           <button

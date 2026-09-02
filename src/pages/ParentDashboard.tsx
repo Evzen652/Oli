@@ -322,7 +322,9 @@ export default function ParentDashboard() {
               />
               <div className="flex-1">
                 <p className="font-bold text-lg text-orange-900">Jsem žák</p>
-                <p className="text-xs text-orange-600 mt-0.5">Přepnout na žákovský pohled →</p>
+                <p className="text-xs text-orange-600 mt-0.5 inline-flex items-center gap-1.5">
+                  Přepnout na žákovský pohled <PaintedArrow className="h-3.5 w-3.5" />
+                </p>
               </div>
             </button>
           </div>

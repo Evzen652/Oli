@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Loader2, Mail, MessageCircle } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { peekAnonToken } from "@/lib/anonServerSync";
 
 interface Props {
@@ -212,7 +213,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
                          transition-colors flex items-center justify-center gap-2"
             >
               <MessageCircle className="h-4 w-4" />
-              Otevřít WhatsApp →
+              Otevřít WhatsApp <PaintedArrow className="h-4 w-4" />
             </button>
             <p className="text-xs text-gray-400 text-center">
               Otevře se WhatsApp s předvyplněnou zprávou — jen ji pošleš.
@@ -249,7 +250,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
               {emailLoading ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> Ukládám…</>
               ) : (
-                <>Uložit email →</>
+                <>Uložit email <PaintedArrow className="h-4 w-4" /></>
               )}
             </button>
           </div>
