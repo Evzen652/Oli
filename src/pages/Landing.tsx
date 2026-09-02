@@ -41,7 +41,7 @@ import { PaintedArrow } from "@/components/icons/PaintedArrow";
  * Nesjednocovat je s `--accent`: tím by modrá i oranžová splynuly v jednu.
  */
 const C = {
-  brand: "#F97316",     /* --primary  značková oranžová, shodná s logem */
+  brand: "#F97316",     /* --primary  značková oranžová (nápis v logu je #1E293B) */
   brandHover: "#EA580C",/* --primary-hover */
   teal: "#0F766E",      /* předmětová prvouka — 5,47:1 na bílé */
   dark: "#1C1917",      /* --foreground  teplá, ne studená slate */

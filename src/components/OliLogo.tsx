@@ -28,10 +28,22 @@ const SIZE = {
  * background-clip nepodpořil, nápis „Oli" **zmizel úplně** (průhledný text
  * nad průhledným pozadím). Značka se nesmí spoléhat na nepovinnou vlastnost.
  *
- * Barva je značková oranžová `#F97316`, shodná se sovou i s `--primary`
- * (rozhodnutí uživatele 2026-08-30). Na bílé má 2,3:1, tedy pod WCAG AA —
- * vědomě přijato u loga jako grafického prvku značky. Kdyby bylo potřeba
- * kontrast dohnat, `#9A3412` drží stejný dojem a měří 7,4:1.
+ * Barva byla do 2026-09-01 značková oranžová `#F97316`, protože se shodovala
+ * s tehdejší sovou. Po výměně kresby už neplatí: v nové sově se `#F97316`
+ * nevyskytuje vůbec (změřeno — peří je `#C07848` a `#A86030`, obličej krémový,
+ * brýle černé, knihy `#1890A8`), takže nápis vedle ní vyčníval jako cizí prvek.
+ *
+ * Nově `#1E293B` — tmavá barva brýlí, tedy nejvýraznějšího prvku kresby.
+ * Na bílé měří **14,6:1** (oranžová měla 2,3:1), takže je to jediná varianta,
+ * která projde WCAG AAA.
+ *
+ * Pozn.: brýle v kresbě jsou ve skutečnosti čistě černé (`#000000`, změřeno).
+ * `#1E293B` je o stupeň měkčí a vedle teplé kresby nepůsobí tak tvrdě jako
+ * plná čerň; čte se ale jako táž barva. Teplá alternativa, kdyby se to
+ * revidovalo: `#9A3412` (7,38:1), leží v téže řadě jako peří `#A86030`.
+ *
+ * Pozor: `--primary` zůstává `#F97316` (tlačítka, odkazy) — logo se od ní
+ * záměrně odchyluje, protože sousedí s kresbou, kdežto tlačítka ne.
  */
 export function OliLogo({ size = "md", variant = "text", tone = "ink", onClick }: OliLogoProps) {
   const s = SIZE[size];
@@ -43,7 +55,7 @@ export function OliLogo({ size = "md", variant = "text", tone = "ink", onClick }
           className={cn(
             s.text,
             "font-extrabold leading-none select-none tracking-tight",
-            tone === "inverse" ? "text-white" : "text-[#F97316]",
+            tone === "inverse" ? "text-white" : "text-[#1E293B]",
           )}
         >
           Oli
