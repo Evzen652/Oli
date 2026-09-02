@@ -7,6 +7,75 @@
 
 ---
 
+## 🔴 Pro příští audit obsahu — zadáno 2026-09-03, ZATÍM NEŘEŠIT
+
+### 1. Shoda slovesa s číslovkou — nová třída chyby
+
+Nalezeno v běžícím cvičení (2. ročník, matematika):
+
+> „Ve třídě bylo 11 žáků, ve vedlejší třídě **bylo 4 žáci**. Kolik žáků bylo celkem?"
+
+Správně je **„byli 4 žáci"**. České pravidlo je stejné jako u podstatných jmen,
+ale platí i pro **sloveso**:
+
+| počet | podstatné jméno | sloveso |
+|---|---|---|
+| 1 | žák | **byl** |
+| 2–4 | žáci | **byli** |
+| 5+ | žáků | **bylo** |
+
+Věta míchá dva vzorce: `bylo` patří ke genitivu (`bylo 5 žáků`), `byli`
+k nominativu (`byli 4 žáci`). Generátor evidentně sestavuje sloveso natvrdo
+jako `bylo` a mění jen tvar podstatného jména.
+
+**Zdroj:** `src/content/grade-2/matematika/tabulkyAJednoduchaSchema.ts`
+(jediný soubor s frází „vedlejší třídě" — ověřeno grepem).
+
+⚠️ **Podezření na systémovou chybu, ne ojedinělou.** `src/lib/czechGrammar.ts`
+řeší tvar podstatného jména (`pad`, `plural`, `phrase`, `form`), ale **shodu
+slovesa nikoli**. Kdekoli generátor skládá „bylo/byl/byli + číslovka", může být
+tentýž problém. Audit má projít celý korpus, ne jen tenhle soubor, a zvážit
+doplnění helperu do `czechGrammar.ts` (např. `verbPast(n, "byl")`).
+
+### 2. Rotující pobídky nad otázkou se pořád opakují
+
+`QUESTION_TITLES` v `src/hooks/useSessionDispatch.ts:50` má **jen 6 hlášek**:
+„Zkus si to!", „Tvůj tah!", „A teď ty!", „Poradíš si?", „Co myslíš?",
+„Jdeme na to!". Při 6 úlohách v sezení je dítě uvidí všechny hned napoprvé.
+
+**Zadání: doplnit alespoň 20 dalších.** Musí sedět k tónu aplikace (vlídný
+průvodce, ne soutěž) a být v rozsahu slovní zásoby 1. stupně.
+
+Pozn.: pobídka je od 2026-09-03 už jen tichý nadtitulek v barvě předmětu
+
+### 3. Hlášky a popisky musí začínat velkým písmenem
+
+Zadáno 2026-09-03. Platí pro **celou aplikaci**, ne jen pro nalezené místo.
+
+Nalezeno v legendě průběhu cvičení: „✓ **s**právně", „↻ **z**kus to příště",
+„💡 **s** nápovědou" (`ProgressIndicator.tsx`). Stejná chyba je v grafu aktivity
+dítěte — „samostatně", „s nápovědou", „chybně" (`ChildActivityChart.tsx`).
+
+⚠️ **NENÍ to plošné „velké písmeno všude" — tím by se to rozbilo.** Změřeno:
+v `src/lib/i18n/cs.ts` je 253 řetězců, z toho **16 začíná malým písmenem**,
+ale většina z nich jsou **přípony za číslovkou**, kde malé písmeno patří:
+
+| musí zůstat malé | musí být velké |
+|---|---|
+| „ročník", „dní", „úloh", „pokusů" | „Správně" |
+| „okruh / okruhy / okruhů" | „Zkus to příště" |
+| „téma / témata / témat" | „S nápovědou" |
+| „úspěšnost", „nebo" (spojka ve větě) | „Samostatně", „Chybně" |
+
+Tedy: *„5 úloh"* ano, *„5 Úloh"* ne. Rozhodovat se musí podle toho, jestli
+řetězec stojí **samostatně jako popisek či hlášení**, nebo je **součástí věty
+či číselného spojení**.
+
+**Rozsah:** kromě `cs.ts` je řada popisků natvrdo v komponentách — hrubý sken
+JSX textových uzlů dal ~45 kandidátů, po odečtení falešných nálezů (útržky kódu)
+jich zbývá řádově 10–15. Audit má projít obojí.
+(13 px), ne nadpis přes celou kartu — takže i opakování je míň nápadné než dřív.
+
 ## ✅ Dlaždice ročníků mají motiv stěžejního učiva (2026-09-02)
 Ročníky s obsahem (2–4) mají kresbu, ostatní zůstávají u holého čísla — rozdíl „hotové /
 chystá se" je tím vidět, ne jen ze šedivého nápisu BRZY. **Číslo zůstává**, kresba nedokáže

@@ -1,3 +1,42 @@
+# Zadání ilustrací pro Gemini — dlaždice ročníků a ikony průběhu
+
+## Ikony průběhu cvičení (`ProgressIndicator`)
+
+Nahrazují systémová emoji ✏️ 😊 😕 🤔 v řádku „Úloha X z 6".
+
+⚠️ **Renderují se na 28–32 px.** To je hlavní omezení: detail v té velikosti
+zanikne, čitelnost nese **tvar siluety a barevná plocha**. Proto žádné obličeje —
+mimika se na 28 px rozpadne v šedou kaši, což byl přesně problém emoji.
+
+Barvy drží sémantiku z `docs/DESIGN_SYSTEM.md`: správně zelená `#15803D`,
+chyba červená `#DC2626`, nápověda jantarová `#B45309`.
+
+**Přilož** `src/assets/landing-zlomky-kruh.png` jako styl (medián sytosti 67 %).
+
+> Watercolour and ink children's picture-book illustration, in exactly the style of the
+> attached reference image: hand-painted on rough cold-pressed paper, fine uneven ink
+> contour line, visible paper grain.
+>
+> Four separate simple icons in a row on one sheet, NOT touching, with a wide band of
+> empty white paper between them and around all four edges.
+>
+> 1. A short chunky pencil, pointing down-left, warm yellow body with a dark tip.
+> 2. A bold check mark, deep green, painted with one confident brush stroke.
+> 3. A circular arrow curving back on itself, warm terracotta red, suggesting "try again".
+> 4. A small light bulb, glowing amber, with a simple filament.
+>
+> Each icon bold, simple and centred, drawn large and filling its area. These will be
+> displayed at only 28 pixels, so every icon must read from its silhouette and one strong
+> block of colour alone. No faces, no thin lines, no small details, no text, no numbers,
+> no background scenery, no shadows. Deep saturated colours, NOT pale pastels. Pure flat
+> white background across the whole sheet. Wide 4:1 landscape format.
+
+Zpracování: rozřezat `find-gaps.ps1`, každou ikonu `make-logo.ps1 -Size 128 -Thr 242`
+(renderuje se na 32 px, 128 pokryje i 3× retinu), pak **povinně**
+`check-white-pockets.ps1` — kolečko šipky a žárovka mají uzavřené díry.
+
+---
+
 # Motivy na dlaždicích ročníků — zadání pro Gemini
 
 Dlaždice výběru ročníku ([`Onboarding.tsx`](../src/pages/Onboarding.tsx)) nesou motiv

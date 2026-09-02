@@ -144,6 +144,60 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 — obrazovka cvičení a ilustrace předmětů:
+- 🐞 **Nejhlasitější prvek obrazovky vznikl přehlédnutím v aliasu palety.** `HelpButton.tsx`
+  měl napsáno `bg-violet-200 border-violet-400 text-violet-900`, jenže `tailwind.config.ts`
+  mapuje `violet → brandOrange` — renderovalo se to jako **meruňková placka přes celou
+  šířku**. Autor psal fialovou, obrazovka ukazovala oranžovou. Nápověda tím byla vizuálně
+  hlasitější než odpovědi. Nově jantarová pilulka podle sémantiky nápovědy; zmizel i
+  `hover:scale-[1.02]`, poslední místo v aplikaci, kde přežil zakázaný hover pohyb.
+- 🐞 **Rotující pobídka byla větší než otázka.** „Zkus si to!" mělo `text-2xl` (24 px),
+  samotná otázka `text-xl` (20 px) — hierarchie naruby, dítě četlo nejdřív pozdrav.
+  Pobídka je nově tichý nadtitulek 13 px v barvě předmětu, otázka 29 px.
+- ✅ **Smazán neviditelný obal.** Vnořený `rounded-xl bg-background/70 p-5` uvnitř bílé
+  karty měl proti ní rozdíl v jasu **1,5 %** (#FAF9F6 při 70 % na bílé dá ~#FCFBF9).
+  20 px paddingu za nic.
+- ✅ **Smazána obě dekorace v rozích** (3D glóbus s knihami, letící kniha; `fixed`,
+  288–384 px, tažené za běhu ze storage). Byly ve stylu, který `ILLUSTRATION_STYLE.md`
+  sám označuje za nepatřičný vedle akvarelu, a orámovaly obsah jako tapeta.
+- ✅ **Tvarosloví převzato z landing page** — změřeno, ne odhadnuto: karty tam mají
+  `rounded-3xl` (24 px) a okraj **1 px v tintu**, ne `border-2` v šedé. Na obrazovce
+  cvičení měla dosud stejně silnou linku úplně všechna (karta, odpovědi, dvě lišty);
+  jednotně silná obrysovka na všem je hlavní důvod, proč to působilo amatérsky.
+- ✅ **Nula systémových emoji na obrazovce cvičení.** Pryč 60px emoji nad otázkou
+  (pole `emoji` v obsahu zůstává — 1 061 výskytů ve 323 druzích, nahradit kresbami nelze),
+  ✏️ 😊 😕 🤔 v průběhu i 💡 v liště. Ikony průběhu jsou nově akvarelové kresby;
+  `alt` navíc čte odečítač obrazovky, což emoji ve `<div>` nedělalo.
+- 🔎 **Zavržený mezikrok: kroužící šipka jako ikona „zkus to příště".** Vybral jsem ji,
+  abych se vyhnul smutnému smajlíkovi, jenže v rozhraní je to univerzálně „načíst znovu" —
+  uživatel hlásil, že láká na kliknutí. **Pravidlo: stavová ikona nesmí mít tvarosloví
+  ovládacího prvku.** Nahrazeno křížkem v terakotě (plná signální červená je podle design
+  systému pro dítě trest, ne informace).
+- 🔎 **Zavržený mezikrok: rozmytý akvarelový tah v horní hraně karty.** `blur` prosákl přes
+  zaoblený roh a četl se jako nechtěný stín nad kartou. Předmět nese samotný okraj v tintu.
+- ⚠️ **Cesta k paletě dlaždic i k překreslení předmětů vedla přes špatnou referenci.**
+  Do promptu jsem dal `landing-priprava-na-pisemku.png` — **nejbledší akvarel v repu**
+  (medián sytosti 40 %). Model ho napodobil na procento přesně (41 %) a výsledek byl
+  bez života. Správná reference je `landing-zlomky-kruh.png` (67 %), tedy stejná sytost
+  jako staré 3D kresby. **Sytost výsledku vždy změřit** (`scratchpad/sat-compare.ps1`).
+- ✅ **Ilustrace předmětů přesunuty ze Supabase storage do projektu** (`src/assets/subjects/`,
+  importy v `subjectRegistry.ts`). Uživatel admin regeneraci nikdy nepoužil, takže jediné,
+  co storage přinášel, byla závislost na nasazení. **18,3 MB → 2,0 MB.** `SubjectMeta.image`
+  je nově volitelné — předmět bez kresby ho nemá a zobrazí se emoji; dřív se skládala URL,
+  která vracela 404.
+- 🐞 **Dvě stažené kresby měly rozbité pozadí a našel to až audit**: chemie měla kolem sebe
+  **modrošedý čtverec** `#E0E5E9` (práh na bílou ho minul), vlastivěda bílou skvrnu kolem
+  hradu. Přeříznuto nižším prahem.
+- 🔎 **Detail k prahu, který stál několik pokusů:** u `make-logo.ps1` znamená VYŠŠÍ práh
+  VÍC obsahu, ne míň. U kreseb na zrnitém papíře je proto potřeba jít DOLŮ (u křížku až
+  na 200), jinak se do obsahového rámečku započítá zrno a kresba se po zasazení do čtverce
+  zbytečně zmenší.
+- ⚠️ **Latentní nesoulad:** admin obrazovka „Generovat ilustrace" pořád zapisuje předmětové
+  kresby do storage, ale aplikace je odtud už nečte. Kategoriové a tématové ilustrace ve
+  storage zůstávají, takže obrazovku nelze jen tak vypnout — chce to rozhodnout zvlášť.
+- Testy **4615/4615** (dva přepsány z `getByText("😊")` na `getByAltText`), typecheck 0,
+  build prošel.
+
 ### Session 2026-09-02 — pózy maskota a dotažené šipky:
 
 - ✅ **Dlaždice ročníků přebarveny.** Zadání mělo dvě půlky, které jdou proti sobě: mají
