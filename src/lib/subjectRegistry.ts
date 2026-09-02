@@ -13,6 +13,14 @@
  * NIKDY podle pozadí celé karty. Karta je vždy bílá, barvu nesou ilustrace.
  */
 
+import imgMatematika from "@/assets/subjects/subject-matematika.png";
+import imgCestina from "@/assets/subjects/subject-cestina.png";
+import imgPrvouka from "@/assets/subjects/subject-prvouka.png";
+import imgPrirodoveda from "@/assets/subjects/subject-prirodoveda.png";
+import imgVlastiveda from "@/assets/subjects/subject-vlastiveda.png";
+import imgDejepis from "@/assets/subjects/subject-dejepis.png";
+import imgChemie from "@/assets/subjects/subject-chemie.png";
+
 export interface SubjectPalette {
   /** Ink — text, ikona, číslo. Kontrast ≥4,5:1 na bílé i na vlastním tintu. */
   color: string;
@@ -31,7 +39,7 @@ export interface SubjectPalette {
 export interface SubjectMeta extends SubjectPalette {
   label: string;
   emoji: string;
-  image: string;
+  image?: string;
   hook?: string;
 }
 
@@ -167,63 +175,68 @@ export const NEUTRAL_PALETTE: SubjectPalette = {
   edgeClass: "border-l-border",
 };
 
-// Supabase storage URL pro dynamické ilustrace předmětů (subject-{slug}.png)
-const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
-
 // Klíč v SUBJECTS MUSÍ přesně odpovídat poli `subject` v TopicMetadata
-// (malé písmeno, s diakritikou). VŠECHNY předměty čtou ilustraci ze Supabase
-// storage (subject-{slug}.png) — STEJNÝ zdroj, kam je generuje admin panel
-// (AdminGenerateIllustrations), takže žákovský pohled vždy ukáže aktuální
-// admin ilustraci a regenerace se propíšou samy. Dokud soubor neexistuje,
-// IllustrationImg zobrazí emoji fallback.
+// (malé písmeno, s diakritikou).
+//
+// Ilustrace jsou od 2026-09-02 **lokální assety**, ne Supabase storage.
+// Důvod: uživatel admin regeneraci ilustrací nikdy nepoužil, takže jediné,
+// co storage přinášel, byla závislost na nasazení — kresby tam uměl nahrát
+// jen on. Lokálně je lze měnit stejně jako zbytek kódu a odpadá i stahování
+// z cizí domény při každém načtení.
+//
+// Vedlejší zisk: soubory ze storage vážily **18,3 MB** (subject-matematika
+// 4,2 MB na kartu velkou 112 px). Po vyříznutí pozadí a zmenšení na 512 px
+// je to **2,0 MB**.
+//
+// `image` je volitelné — předmět bez kresby (angličtina, informatika, fyzika,
+// přírodopis, zeměpis, výchova k občanství) ho prostě nemá a `IllustrationImg`
+// zobrazí emoji. Dřív se pro ně skládala URL, která vracela 404.
 export const SUBJECTS: Record<string, SubjectMeta> = {
   matematika: {
     ...PALETTE.modra,
     label: "Matematika",
     emoji: "🔢",
-    image: `${SUPABASE_STORAGE}/subject-matematika.png`,
+    image: imgMatematika,
     hook: "Matematika tě naučí počítat, porovnávat a řešit úlohy — v obchodě, ve hře i v životě!",
   },
   čeština: {
     ...PALETTE.ruzova,
     label: "Čeština",
     emoji: "📝",
-    image: `${SUPABASE_STORAGE}/subject-cestina.png`,
+    image: imgCestina,
     hook: "Čeština je klíč ke správnému psaní, čtení a porozumění — ve škole i na internetu!",
   },
   prvouka: {
     ...PALETTE.teal,
     label: "Prvouka",
     emoji: "🌍",
-    image: `${SUPABASE_STORAGE}/subject-prvouka.png`,
+    image: imgPrvouka,
     hook: "Prvouka ti ukáže, jak funguje příroda, lidské tělo i svět kolem tebe!",
   },
   přírodověda: {
     ...PALETTE.olivova,
     label: "Přírodověda",
     emoji: "🌿",
-    image: `${SUPABASE_STORAGE}/subject-prirodoveda.png`,
+    image: imgPrirodoveda,
     hook: "Přírodověda ti ukáže, jak fungují ekosystémy, koloběh vody i svět hornin!",
   },
   vlastivěda: {
     ...PALETTE.hneda,
     label: "Vlastivěda",
     emoji: "🗺️",
-    image: `${SUPABASE_STORAGE}/subject-vlastiveda.png`,
+    image: imgVlastiveda,
     hook: "Vlastivěda tě provede kraji Česka, jeho historií a státními symboly!",
   },
   angličtina: {
     ...PALETTE.fialova,
     label: "Angličtina",
     emoji: "🇬🇧",
-    image: `${SUPABASE_STORAGE}/subject-anglictina.png`,
     hook: "Angličtina ti otevře filmy, hry i kamarády po celém světě!",
   },
   informatika: {
     ...PALETTE.grafit,
     label: "Informatika",
     emoji: "💻",
-    image: `${SUPABASE_STORAGE}/subject-informatika.png`,
     hook: "Informatika tě naučí, jak myslí počítač — a jak ho přimět dělat, co chceš.",
   },
 
@@ -232,42 +245,38 @@ export const SUBJECTS: Record<string, SubjectMeta> = {
     ...PALETTE.zlatohneda,
     label: "Dějepis",
     emoji: "🏛️",
-    image: `${SUPABASE_STORAGE}/subject-dejepis.png`,
+    image: imgDejepis,
     hook: "Dějepis tě provede minulostí — od pravěku po moderní dějiny.",
   },
   fyzika: {
     ...PALETTE.tmavemodra,
     label: "Fyzika",
     emoji: "⚛️",
-    image: `${SUPABASE_STORAGE}/subject-fyzika.png`,
     hook: "Fyzika vysvětluje, jak funguje svět — od pohybu po elektřinu.",
   },
   chemie: {
     ...PALETTE.azurova,
     label: "Chemie",
     emoji: "🧪",
-    image: `${SUPABASE_STORAGE}/subject-chemie.png`,
+    image: imgChemie,
     hook: "Chemie odhaluje, z čeho jsou věci kolem nás a jak spolu reagují.",
   },
   přírodopis: {
     ...PALETTE.zelena,
     label: "Přírodopis",
     emoji: "🌱",
-    image: `${SUPABASE_STORAGE}/subject-prirodopis.png`,
     hook: "Přírodopis tě zavede do světa rostlin, zvířat i lidského těla.",
   },
   zeměpis: {
     ...PALETTE.petrolejova,
     label: "Zeměpis",
     emoji: "🌍",
-    image: `${SUPABASE_STORAGE}/subject-zemepis.png`,
     hook: "Zeměpis ti ukáže Zemi — krajiny, státy i přírodní jevy.",
   },
   "výchova k občanství": {
     ...PALETTE.vinova,
     label: "Občanská výchova",
     emoji: "⚖️",
-    image: `${SUPABASE_STORAGE}/subject-vychova-k-obcanstvi.png`,
     hook: "Občanská výchova tě připraví na život ve společnosti.",
   },
 };
@@ -363,14 +372,10 @@ function buildFallback(subject: string): SubjectMeta {
   const hash = hashString(subject);
   const emoji = FALLBACK_EMOJIS[hash % FALLBACK_EMOJIS.length];
   const palette = FALLBACK_PALETTES[hash % FALLBACK_PALETTES.length];
-  const slug = subject.toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // diakritika
-    .replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   return {
     ...palette,
     label: subject.charAt(0).toUpperCase() + subject.slice(1),
     emoji,
-    image: `${SUPABASE_STORAGE}/subject-${slug}.png`,
   };
 }
 
