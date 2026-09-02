@@ -26,13 +26,17 @@ interface ProgressIndicatorProps {
  * šedá kaše. Proto ani nové ikony nejsou obličeje: nesou je siluety, které
  * se poznají z jedné barevné plochy.
  *
- * Chyba je **kroužící šipka „zkus to znovu"**, ne smutný smajlík — design
- * systém říká, že plná červená je pro dítě trest, ne informace.
+ * Chyba je **křížek v terakotě**, ne smutný smajlík ani plná signální červená —
+ * ta je podle design systému pro dítě trest, ne informace.
+ *
+ * Mezikrok, který neprošel: kroužící šipka „zkus to znovu". Významově seděla,
+ * ale v rozhraní je to univerzálně „načíst znovu", takže jako stavová ikona
+ * lákala na kliknutí. **Stavová ikona nesmí mít tvarosloví ovládacího prvku.**
  */
 const DOT = {
-  correct: { cls: "bg-success-muted ring-1 ring-success/40", icon: icoCorrect, alt: "správně" },
-  wrong: { cls: "bg-destructive-muted ring-1 ring-destructive/40", icon: icoWrong, alt: "zkus to příště" },
-  help: { cls: "bg-warning-muted ring-1 ring-warning/40", icon: icoHelp, alt: "s nápovědou" },
+  correct: { cls: "bg-success-muted ring-1 ring-success/40", icon: icoCorrect, alt: "Správně" },
+  wrong: { cls: "bg-destructive-muted ring-1 ring-destructive/40", icon: icoWrong, alt: "Zkus to příště" },
+  help: { cls: "bg-warning-muted ring-1 ring-warning/40", icon: icoHelp, alt: "S nápovědou" },
 } as const;
 
 export function ProgressIndicator({ current, total, results = [], dotAccentClass }: ProgressIndicatorProps) {
@@ -68,13 +72,13 @@ export function ProgressIndicator({ current, total, results = [], dotAccentClass
       {results.length > 0 && (
         <div className="flex items-center justify-center gap-4">
           <Badge variant="success" className="gap-1.5">
-            <img src={icoCorrect} alt="" className="w-3.5 h-3.5 object-contain" /> správně
+            <img src={icoCorrect} alt="" className="w-3.5 h-3.5 object-contain" /> Správně
           </Badge>
           <Badge variant="danger" className="gap-1.5">
-            <img src={icoWrong} alt="" className="w-3.5 h-3.5 object-contain" /> zkus to příště
+            <img src={icoWrong} alt="" className="w-3.5 h-3.5 object-contain" /> Zkus to příště
           </Badge>
           <Badge variant="warning" className="gap-1.5">
-            <img src={icoHelp} alt="" className="w-3.5 h-3.5 object-contain" /> s nápovědou
+            <img src={icoHelp} alt="" className="w-3.5 h-3.5 object-contain" /> S nápovědou
           </Badge>
         </div>
       )}

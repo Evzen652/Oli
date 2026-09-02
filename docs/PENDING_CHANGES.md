@@ -48,9 +48,11 @@ průvodce, ne soutěž) a být v rozsahu slovní zásoby 1. stupně.
 
 Pozn.: pobídka je od 2026-09-03 už jen tichý nadtitulek v barvě předmětu
 
-### 3. Hlášky a popisky musí začínat velkým písmenem
+### 3. ~~Hlášky a popisky musí začínat velkým písmenem~~ ✅ HOTOVO 2026-09-03
 
-Zadáno 2026-09-03. Platí pro **celou aplikaci**, ne jen pro nalezené místo.
+Opraveno: legenda průběhu cvičení (`ProgressIndicator`) a legenda grafu aktivity
+(`ChildActivityChart`) — „Správně“, „Zkus to příště“, „S nápovědou“, „Samostatně“,
+„Chybně“. Zbytek aplikace **je čistý** — dočitováno, viz níže.
 
 Nalezeno v legendě průběhu cvičení: „✓ **s**právně", „↻ **z**kus to příště",
 „💡 **s** nápovědou" (`ProgressIndicator.tsx`). Stejná chyba je v grafu aktivity

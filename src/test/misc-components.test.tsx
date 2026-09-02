@@ -46,20 +46,22 @@ describe("ProgressIndicator", () => {
   // odečítač obrazovky, což emoji ve `<div>` nedělalo.
   it("results array s 'correct' → ikona správně i zkus to příště", () => {
     render(<ProgressIndicator current={2} total={3} results={["correct", "wrong"]} />);
-    expect(screen.getByAltText("správně")).toBeInTheDocument();
-    expect(screen.getByAltText("zkus to příště")).toBeInTheDocument();
+    expect(screen.getByAltText("Správně")).toBeInTheDocument();
+    expect(screen.getByAltText("Zkus to příště")).toBeInTheDocument();
   });
 
   it("'help' výsledek → ikona s nápovědou", () => {
     render(<ProgressIndicator current={1} total={2} results={["help"]} />);
-    expect(screen.getByAltText("s nápovědou")).toBeInTheDocument();
+    expect(screen.getByAltText("S nápovědou")).toBeInTheDocument();
   });
 
+  // Popisek je od 2026-09-03 „Správně" s velkým Ř — hlášky a popisky začínají
+  // velkým písmenem. Regex je case-sensitive, takže `/správně/` by neprošel.
   it("legendu zobrazí jen pokud existují results", () => {
     const { rerender } = render(<ProgressIndicator current={0} total={3} />);
-    expect(screen.queryByText(/správně/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Správně/)).not.toBeInTheDocument();
     rerender(<ProgressIndicator current={1} total={3} results={["correct"]} />);
-    expect(screen.getByText(/správně/)).toBeInTheDocument();
+    expect(screen.getByText(/Správně/)).toBeInTheDocument();
   });
 });
 
