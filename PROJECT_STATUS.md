@@ -144,6 +144,43 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (3) — připomínky z dokumentu (6 bodů):
+
+- 🐞 **Největší nález: celá vrstva „proč se to učíme" byla roky mrtvý kód.**
+  `categoryInfo.ts` má 73 ručně psaných hesel (`hook`, `whyWeUseIt`, `funFact`).
+  Změřeno: **73 ze 73 klíčů se neshoduje s ničím** — jsou ze staré taxonomie
+  („matematika::Zlomky"), obsah mezitím přešel na RVP názvy („matematika::Číslo
+  a početní operace::Zlomky"). `getCategoryInfo` tedy vracel `null` pro všech
+  229 témat. Zmizel tím box „Zajímavost" v dialogu i celý panel „K čemu jsou
+  čísla?" v prohlížeči témat. **Nic to nenahlásilo** — kód se kompiloval, testy
+  procházely. Nahrazeno `topicInsight.ts` (75 témat + 20 kategorií jako záchranná
+  síť) a pojištěno testem `topic-insight-coverage`, který spadne, jakmile se
+  přejmenuje kategorie.
+- 🐞 **Shrnutí ukazovalo katalogový název místo dětského.** „Číselný obor
+  0–1 000 000 – zaokrouhlování čísel" je RVP záznam. Přitom **všech 229 témat**
+  má vyplněné `studentTitle` — jen po něm shrnutí nesáhlo. `getChildTopicTitle`
+  přesunut ze `SessionView` do `displayNames.ts` a použit i ve shrnutí, včetně
+  textu hodnocení.
+- ✅ **Hodnocení mluví v 1. os. mn. č.** („projdeme si to spolu", ne „procvič
+  si to"). Přepsáno všech pět povzbuzení podle předmětu a všechny varianty
+  pochval i slabších výsledků. Výkon patří dítěti, další krok děláme společně.
+- ✅ **Boxy v „Co je dobré vědět" mají ikony** — akvarelové, tytéž jako
+  u úloh: tužka (jak na to), fajfka (příklad), křížek (častá chyba), žárovka
+  (zajímavost). „K čemu ti to je" schválně NENÍ pátý box, ale úvodní věta
+  dialogu: kdo neví proč, nebude číst návod.
+- ✅ **Rozbalená nápověda pod design homepage.** Bílý list s okrajem v tintu
+  místo plné žluté plochy, emoji 💡 nahrazeno akvarelovou žárovkou, plochý
+  klipart `help-hint.png` odstraněn.
+- ✅ **Zbytečná karta kolem názvu předmětu smazána** (nenesla akci, jen
+  zopakovala barvu, kterou o pár pixelů níž nese každá dlaždice).
+- ✅ **Poslední dvě tlačítka mimo `<BackButton />` srovnána.**
+  `DiktatFilterSelect` měl vlastní ghost tlačítko s `ChevronLeft`;
+  `MatchPairsInput` používal slovo „Zpět" pro vrácení tahu — přejmenováno
+  na „Vrátit tah", protože „Zpět" v celé aplikaci znamená navigaci.
+- ⏭️ **Čeká na Gemini:** akvarelový pohár do shlukové hlavičky, náhrada za
+  plochý klipart `good-to-know.png` v hlavičce dialogu. Prompty v
+  `docs/ICON_PROMPTS.md`.
+- Testy **4619/4619**, typecheck 0, build prošel.
 ### Session 2026-09-03 (2) — zbytek průběhu cvičení pod stejný design:
 
 Uživatel: „jsou to i tyhle stránky. musí respektovat design homepage." Šlo o kartu

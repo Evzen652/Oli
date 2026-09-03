@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { SessionData, TopicMetadata } from "@/lib/types";
-import { getFullTopicTitle } from "@/lib/types";
+import { getChildTopicTitle } from "@/lib/displayNames";
 import { generateAiEvaluation } from "@/lib/sessionEvaluator";
 import { Button } from "@/components/ui/button";
 import { Trophy, Sparkles, RotateCcw } from "lucide-react";
@@ -56,7 +56,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
 
     // Generate evaluation — AI with local fallback
     generateAiEvaluation({
-      topicTitle: getFullTopicTitle(session.matchedTopic),
+      topicTitle: getChildTopicTitle(session.matchedTopic, session.grade),
       totalTasks: answered,
       correctCount: correctAlone,
       wrongCount: wrong,
@@ -103,7 +103,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
           </h2>
           {session.matchedTopic && (
             <span className="inline-block mt-1 px-4 py-1.5 rounded-full bg-card text-foreground text-sm font-semibold shadow-e1">
-              {getFullTopicTitle(session.matchedTopic)}
+              {getChildTopicTitle(session.matchedTopic, session.grade)}
             </span>
           )}
         </div>

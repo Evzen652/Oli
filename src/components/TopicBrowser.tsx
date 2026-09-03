@@ -3,23 +3,14 @@ import { IllustrationImg } from "@/components/IllustrationImg";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { getTopicsForGrade, getAllTopics } from "@/lib/contentRegistry";
-import { getCategoryInfo } from "@/lib/categoryInfo";
+import { getTopicInsight } from "@/lib/topicInsight";
 import { getCategoryVisual, getTopicEmoji, getTopicVisual, getCategoryIllustrationUrl, getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { BackButton } from "@/components/BackButton";
 import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
 import { useImageVersions } from "@/lib/imageVersions";
-import categoryInfoImg from "@/assets/category-info.png";
 import { useT } from "@/lib/i18n";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { getDisplayCategory, getDisplayCategoryDescription, getDisplayTopic, getDisplayTopicDescription } from "@/lib/displayNames";
@@ -346,37 +337,40 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
           const browseCardClass =
             `group aspect-square relative text-left rounded-3xl border-2 border-t-4 bg-card ${subjectPalette.borderClass} shadow-e1 transition-all duration-150 hover:shadow-e2 hover:-translate-y-px active:translate-y-0 p-4 flex flex-col`;
           const subjectMeta = selectedSubject ? getSubjectMeta(selectedSubject) : null;
+          // K čemu je okruh/téma dobré. Dřív to viselo na `getCategoryInfo`,
+          // který od přechodu na RVP taxonomii vracel `null` pro všechno —
+          // panel „K čemu jsou čísla?" byl roky mrtvý kód (viz `topicInsight.ts`).
           const infoForLevel =
             level === "topic" && selectedSubject && selectedCategory
-              ? getCategoryInfo(selectedSubject, selectedCategory)
+              ? getTopicInsight(selectedSubject, selectedCategory)
               : level === "subtopic" && selectedSubject && selectedCategory && selectedTopic
-                ? getCategoryInfo(selectedSubject, selectedCategory, selectedTopic)
+                ? getTopicInsight(selectedSubject, selectedCategory, selectedTopic)
                 : null;
 
           return (
             <div className="mx-auto w-full max-w-5xl space-y-6">
-              {/* Welcome header card — barva podle aktuálního předmětu */}
-              <div className={`relative rounded-3xl border-2 border-t-4 bg-card ${subjectPalette.borderClass} p-5 shadow-e1`}>
-                <div className="flex items-center gap-4">
-                  {subjectMeta && (
-                    <div className={`shrink-0 hidden sm:grid place-items-center rounded-2xl p-2 ${subjectPalette.tintClass}`}>
-                      <PrvoukaImage
-                        imageUrl={subjectMeta.image || null}
-                        fallbackEmoji={subjectMeta.emoji}
-                        size="md"
-                      />
-                    </div>
+              {/* Hlavička předmětu — jen kresba a název, bez karty.
+                  Karta kolem toho byla prázdný obal: nenesla žádnou akci ani
+                  volbu, jen zopakovala barvu předmětu, kterou o pár pixelů níž
+                  nese každá dlaždice. Dvojitý rám (`border-2 border-t-4`) navíc
+                  soutěžil s dlaždicemi o pozornost. */}
+              <div className="flex items-center gap-4">
+                {subjectMeta && (
+                  <PrvoukaImage
+                    imageUrl={subjectMeta.image || null}
+                    fallbackEmoji={subjectMeta.emoji}
+                    size="md"
+                  />
+                )}
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+                    {capitalize(selectedSubject ?? title)}
+                  </h1>
+                  {subtitle && (
+                    <p className="text-sm text-foreground/70">
+                      {subtitle}
+                    </p>
                   )}
-                  <div className="flex-1 min-w-0">
-                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                      {capitalize(selectedSubject ?? title)}
-                    </h1>
-                    {subtitle && (
-                      <p className="text-sm text-foreground/70">
-                        {subtitle}
-                      </p>
-                    )}
-                  </div>
                 </div>
               </div>
 
@@ -403,8 +397,14 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                 <BackButton onClick={handleBack} />
               </div>
 
-              {/* Info dialog — pokud existuje pro tuto úroveň */}
-              {infoForLevel && <CategoryInfoDialog info={infoForLevel} />}
+              {/* K čemu to je. Dřív schované pod tlačítkem, které otevíralo
+                  postranní panel — dítě, které neví proč, ho ale neotevře.
+                  Proto to stojí rovnou na stránce, nad výběrem. */}
+              {infoForLevel && (
+                <p className="text-lg font-semibold leading-snug text-primary">
+                  {infoForLevel.useful}
+                </p>
+              )}
 
               {/* CATEGORY level — okruhy (grade-3) i RVP kategorie (ostatní) ve stejném gridu */}
               {level === "category" && (() => {
@@ -589,47 +589,3 @@ function PrvoukaImage({ imageUrl, fallbackEmoji, size = "md" }: { imageUrl: stri
 
 // ── Extracted dialog components ─────────────────────────────
 
-function CategoryInfoDialog({ info }: { info: ReturnType<typeof getCategoryInfo> & {} }) {
-  return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" className="w-full gap-3 border-2 text-base py-7 bg-gradient-to-r from-white to-accent hover:shadow-md transition-all">
-          <img src={categoryInfoImg} alt="" className="w-10 h-10 object-contain shrink-0 mix-blend-multiply" />
-          <span className="font-medium">{info.buttonLabel}</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-none p-0">
-        <ScrollArea className="h-full">
-          <div className="p-6 space-y-5 text-base max-w-2xl mx-auto">
-            <SheetHeader>
-              <SheetTitle className="text-2xl">{info.title}</SheetTitle>
-            </SheetHeader>
-            <p className="text-lg font-medium text-primary">{info.hook}</p>
-            <div className="space-y-1">
-              <h3 className="font-semibold text-foreground">Co to je?</h3>
-              <p className="text-muted-foreground">{info.whatIsIt}</p>
-            </div>
-            <div className="space-y-1">
-              <h3 className="font-semibold text-foreground">Proč se to učíme?</h3>
-              <p className="text-muted-foreground">{info.whyWeUseIt}</p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-semibold text-foreground">Jak to vypadá?</h3>
-              {info.visualExamples.map((ex, i) => (
-                <div key={i} className="rounded-lg border-2 bg-secondary/50 p-4 space-y-2">
-                  <p className="font-medium text-sm text-foreground">{ex.label}</p>
-                  <pre className="whitespace-pre-wrap font-mono text-sm text-muted-foreground leading-relaxed">
-                    {ex.illustration}
-                  </pre>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-lg bg-accent p-4">
-              <p className="text-base text-accent-foreground">{info.funFact}</p>
-            </div>
-          </div>
-        </ScrollArea>
-      </SheetContent>
-    </Sheet>
-  );
-}

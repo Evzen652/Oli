@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
 import { getFullTopicTitle } from "@/lib/types";
-import { getDisplayTopic, getDisplayCategory } from "@/lib/displayNames";
+import { getDisplayCategory, getChildTopicTitle } from "@/lib/displayNames";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { GradeSelect } from "@/components/GradeSelect";
@@ -28,11 +28,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { FractionBarVisual } from "@/components/FractionBarVisual";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
-import { getCategoryInfo } from "@/lib/categoryInfo";
+import { getTopicInsight } from "@/lib/topicInsight";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
 import { ExitSessionDialog } from "@/components/ExitSessionDialog";
 import goodToKnowImg from "@/assets/good-to-know.png";
+/**
+ * Ikony boxů v „Co je dobré vědět". Jedna sada, tatáž jako u úloh
+ * v průběhu cvičení (`ProgressIndicator`) — dítě ty tvary už zná.
+ * Tužka = jak na to, fajfka = takhle to vypadá správně, křížek = past,
+ * žárovka = zajímavost.
+ */
+import icoHowTo from "@/assets/progress/progress-current.png";
+import icoExample from "@/assets/progress/progress-correct.png";
+import icoMistake from "@/assets/progress/progress-wrong.png";
+import icoFunFact from "@/assets/progress/progress-help.png";
 import { useT } from "@/lib/i18n";
 import { LogOut, Eye, Lightbulb } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
@@ -91,19 +101,6 @@ const STATE_LABELS: Record<SessionState, string> = {
   STOP_2: "Ukončení",
   END: "Konec",
 };
-
-/** Vrátí dětský název tématu — pro student view, jinak RVP */
-function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string; studentTitle?: string }, grade: number | null, isStudentView: boolean): string {
-  if (!isStudentView) return getFullTopicTitle(topic as any);
-  // studentTitle je krátký, samostatný dětský název (např. „Násobilka 2–5") → použij přímo
-  if (topic.studentTitle) return topic.studentTitle;
-  const g = grade ?? 4;
-  const displayGroup = getDisplayTopic(topic.topic ?? "", g as any);
-  const displaySub = topic.displayName ?? topic.title ?? "";
-  if (!displaySub || topic.topic === topic.title) return displayGroup;
-  const sub = displaySub.charAt(0).toLowerCase() + displaySub.slice(1);
-  return `${displayGroup} – ${sub}`;
-}
 
 export function SessionView() {
   const t = useT();
@@ -513,6 +510,17 @@ export function SessionView() {
   // cvičení než v přehledu předmětů.
   const subjectPalette = getSubjectPalette(session.matchedTopic?.subject);
 
+  /**
+   * K čemu to je + zajímavost. Dřív se bralo z `getCategoryInfo`, jenže ten
+   * mapuje klíče staré taxonomie a od přechodu na RVP názvy vracel `null`
+   * pro všech 229 témat — box se zajímavostí se tedy nezobrazil nikdy.
+   * `getTopicInsight` má fallback na kategorii, takže se to nemůže opakovat;
+   * hlídá to test `topic-insight-coverage`.
+   */
+  const insight = session.matchedTopic
+    ? getTopicInsight(session.matchedTopic.subject, session.matchedTopic.category, session.matchedTopic.topic)
+    : null;
+
 
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
@@ -657,11 +665,25 @@ export function SessionView() {
                   <ScrollArea className="flex-1 px-6 pb-6">
                     <div className="space-y-6 text-base pt-4">
                       <p className="text-muted-foreground">{session.matchedTopic.briefDescription}</p>
+                      {/* K čemu to je stojí PŘED postupem a schválně NENÍ box:
+                          dítě, které neví proč, se návod učit nechce, takže tohle
+                          není kapitola mezi ostatními, ale úvodní věta dialogu.
+                          Boxy pod ní tvoří čtveřici, na kterou přesně sedí čtyři
+                          akvarelové ikony — pátá by musela vzniknout jen kvůli
+                          symetrii. */}
+                      {insight && (
+                        <p className="text-lg font-semibold leading-snug text-primary">
+                          {insight.useful}
+                        </p>
+                      )}
                       <div className="rounded-2xl border border-border bg-card p-5 space-y-3 shadow-e1">
-                        <p className="font-bold text-foreground text-lg">{t("session.how_to")}</p>
-                        <p className="text-blue-900">{session.matchedTopic.helpTemplate.hint}</p>
+                        <p className="flex items-center gap-2 font-bold text-foreground text-lg">
+                          <img src={icoHowTo} alt="" className="h-6 w-6 object-contain" />
+                          {t("session.how_to")}
+                        </p>
+                        <p className="text-foreground">{session.matchedTopic.helpTemplate.hint}</p>
                         {session.matchedTopic.helpTemplate.steps.length > 0 && (
-                          <ol className="list-decimal list-inside space-y-2 text-blue-900">
+                          <ol className="list-decimal list-inside space-y-2 text-foreground">
                             {session.matchedTopic.helpTemplate.steps.map((step, i) => (
                               <li key={i}>{step}</li>
                             ))}
@@ -676,7 +698,7 @@ export function SessionView() {
                             const hasStrings = examples.some((ex) => typeof ex === "string");
                             if (hasStrings) {
                               return (
-                                <div className="rounded-lg border-2 bg-secondary/50 p-4">
+                                <div className="rounded-2xl border border-border bg-card p-4 shadow-e1">
                                   <pre className="whitespace-pre-wrap font-mono text-sm text-muted-foreground leading-relaxed">
                                     {examples.filter((ex) => typeof ex === "string").join("\n\n")}
                                   </pre>
@@ -684,7 +706,7 @@ export function SessionView() {
                               );
                             }
                             return examples.map((ex: any, i: number) => (
-                              <div key={i} className="rounded-lg border-2 bg-secondary/50 p-4 space-y-3">
+                              <div key={i} className="rounded-2xl border border-border bg-card p-4 space-y-3 shadow-e1">
                                 <p className="font-medium text-sm text-foreground">{ex.label}</p>
                                 {ex.fractionBars ? (
                                   <FractionBarVisual bars={ex.fractionBars} conclusion={ex.conclusion} />
@@ -699,22 +721,28 @@ export function SessionView() {
                         </div>
                       )}
                       <div className="rounded-2xl border border-success/30 bg-card p-5 space-y-2 shadow-e1">
-                        <p className="font-bold text-success">{t("session.example_label")}</p>
+                        <p className="flex items-center gap-2 font-bold text-success">
+                          <img src={icoExample} alt="" className="h-6 w-6 object-contain" />
+                          {t("session.example_label")}
+                        </p>
                         <p className="text-foreground">{session.matchedTopic.helpTemplate.example}</p>
                       </div>
                       <div className="rounded-2xl border border-destructive/30 bg-card p-5 space-y-2 shadow-e1">
-                        <p className="font-bold text-destructive">{t("session.common_mistake")}</p>
+                        <p className="flex items-center gap-2 font-bold text-destructive">
+                          <img src={icoMistake} alt="" className="h-6 w-6 object-contain" />
+                          {t("session.common_mistake")}
+                        </p>
                         <p className="text-foreground">{session.matchedTopic.helpTemplate.commonMistake}</p>
                       </div>
-                      {(() => {
-                        const catInfo = getCategoryInfo(session.matchedTopic!.subject, session.matchedTopic!.category, session.matchedTopic!.topic);
-                        return catInfo?.funFact ? (
-                          <div className="rounded-2xl border border-warning/30 bg-card p-5 space-y-2 shadow-e1">
-                            <p className="font-semibold text-warning text-lg">{t("session.fun_fact")}</p>
-                            <p className="text-foreground italic">{catInfo.funFact}</p>
-                          </div>
-                        ) : null;
-                      })()}
+                      {insight && (
+                        <div className="rounded-2xl border border-warning/30 bg-card p-5 space-y-2 shadow-e1">
+                          <p className="flex items-center gap-2 font-semibold text-warning text-lg">
+                            <img src={icoFunFact} alt="" className="h-6 w-6 object-contain" />
+                            {t("session.fun_fact")}
+                          </p>
+                          <p className="text-foreground">{insight.funFact}</p>
+                        </div>
+                      )}
                     </div>
                   </ScrollArea>
                 </DialogContent>

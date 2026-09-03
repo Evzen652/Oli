@@ -7,6 +7,38 @@
 
 ---
 
+## ✅ Připomínky z dokumentu — 6 bodů (2026-09-03)
+
+- ✅ **Hodnocení mluví v 1. os. mn. č.** — „projdeme si to spolu od základů".
+- ✅ **Nudný katalogový název** ve shrnutí nahrazen dětským `studentTitle`
+  (má ho všech 229 témat; jen se po něm nesahalo).
+- ✅ **Box „Zajímavost" je zpátky** a „K čemu ti to je" stojí jako úvodní věta
+  dialogu. Zdroj: nový `src/lib/topicInsight.ts`.
+- ✅ **Ikony u všech boxů** dialogu, akvarelové.
+- ✅ **Rozbalená nápověda** pod design homepage.
+- ✅ **Karta kolem názvu předmětu** smazána, `<BackButton />` sjednocen i tam,
+  kde ho ještě nebylo (`DiktatFilterSelect`).
+
+### 🔴 Nález, který je potřeba rozhodnout: `categoryInfo.ts` je mrtvý
+
+1 440 řádků ručně psaného obsahu (73 hesel s `hook`, `whatIsIt`, `whyWeUseIt`,
+`visualExamples`, `funFact`). **Všech 73 klíčů je ze staré taxonomie**, takže
+`getCategoryInfo` vrací `null` pro všechna témata. Soubor jsem nechal být —
+je v něm práce, kterou by šlo zachránit — ale importuje ho ještě
+`ProposalReview`, `useAdminCurriculum` a `curriculumPromptBuilder`.
+**Rozhodnout: překlíčovat na RVP názvy, nebo smazat?**
+
+### ⏭️ Čeká na Gemini
+
+Prompty připravené v [`ICON_PROMPTS.md`](ICON_PROMPTS.md):
+- akvarelový **pohár** do hlavičky shrnutí (dnes lucide `Trophy`)
+- **sovička bez zdviženého prstu** místo plochého klipartu `good-to-know.png`
+- volitelně **lupa** pro „Zajímavost", aby nesdílela žárovku s nápovědou
+
+Ve starém plochém stylu zůstávají ještě `oli-tip.png`, `oli-pozdrav.png`
+a `category-info.png` — ty ale nejsou na obrazovce cvičení.
+
+---
 ## ✅ Zpětná vazba, dialog a shrnutí pod design homepage (2026-09-03)
 
 Zadání: „ta zelená se tam vůbec nehodí. ty ikony nejsou souměrné s grafikou homepage"
