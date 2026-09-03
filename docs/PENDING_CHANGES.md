@@ -37,6 +37,27 @@ clusteru hera (`ChildPinControl` varianta `tone="icon"`); (4) mobil — statisti
 svisle vycentrované, „ÚSPĚŠNOST" se neořezává. Ověřeno v prohlížeči (760×620).
 
 ---
+
+## 🟠 Modal „Ukázat výsledky a hodnocení" (`SkillDetailModal`) — test + nálezy (2026-09-04)
+
+**Kontext:** vyčištěna demo data (Tonda 187+8, Tomáš 84 → 0/0; `session_logs` maže
+jen service_role/`sb_secret` klíč, RLS blokuje rodiče). Prošel jsem žákovský flow
+jako dítě a ověřil modal na reálných datech — **funguje přesně**. Dřívější „duplikace
++ smyšlené otázky" byl artefakt starých dat bez `question_text` (fallback `FALLBACK_QB`).
+
+**✅ Balík A opraveno (2026-09-04, frontend, ověřeno naživo, build OK):**
+2. „HISTORIE · N cvičení" → `sessions.length - 1` (počet = řádky). Ověřeno „1 cvičení / 1 řádek".
+3. Sekce „Správně (N)" nyní **sbalená do `<details>`** („— rozbalit/sbalit"); chyby + nápověda rozbalené.
+4. `FALLBACK_QB` banka smyšlených otázek **odstraněna** → neutrální placeholder u dat bez `question_text`.
+6. Gramatika „`${last.total} otázek`" → `pad(last.total, "OTÁZKA")`.
+
+**🟠 Krok B + drobnost — čeká na rozhodnutí:**
+1. 🔴 Modal neukazuje, **co dítě odpovědělo špatně** — jen správnou odpověď. Data se
+   neukládají (`session_logs` nemá odpověď žáka; `error_type`=`"wrong_answer"`,
+   `response_time_ms`=0). → sloupec `student_answer` + doplnit ukládání v `performanceTracker`.
+5. 🟡 Doporučení generická (jen z %), ne z konkrétních chyb/tématu.
+
+---
 ## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03
 
 **Výsledek: cílený zásah, ne plošný.** Tyhle ročníky už byly dřív dobře

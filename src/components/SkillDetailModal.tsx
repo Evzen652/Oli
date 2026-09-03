@@ -229,92 +229,6 @@ function getRecommendations(sessions: SessionSummary[], overallPct: number, grad
   return tips.slice(0, 1);
 }
 
-// ── Fallback question bank — použije se, když session_log nemá question_text ──
-const FALLBACK_QB: Record<string, { q: string; a: string }[]> = {
-  "math-multiply": [
-    { q: "7 × 8 = ?", a: "56" }, { q: "6 × 9 = ?", a: "54" }, { q: "4 × 7 = ?", a: "28" },
-    { q: "8 × 8 = ?", a: "64" }, { q: "3 × 9 = ?", a: "27" }, { q: "9 × 6 = ?", a: "54" },
-    { q: "5 × 8 = ?", a: "40" }, { q: "9 × 9 = ?", a: "81" }, { q: "7 × 6 = ?", a: "42" },
-    { q: "4 × 9 = ?", a: "36" }, { q: "8 × 6 = ?", a: "48" }, { q: "9 × 7 = ?", a: "63" },
-  ],
-  "math-add-sub-100": [
-    { q: "47 + 36 = ?", a: "83" }, { q: "82 − 25 = ?", a: "57" }, { q: "63 + 28 = ?", a: "91" },
-    { q: "74 − 37 = ?", a: "37" }, { q: "55 + 19 = ?", a: "74" }, { q: "91 − 44 = ?", a: "47" },
-    { q: "38 + 47 = ?", a: "85" }, { q: "67 − 29 = ?", a: "38" }, { q: "29 + 53 = ?", a: "82" },
-    { q: "77 − 48 = ?", a: "29" }, { q: "46 + 35 = ?", a: "81" }, { q: "88 − 33 = ?", a: "55" },
-  ],
-  "math-compare-100": [
-    { q: "54 ○ 45 (>, <, =?)", a: ">" }, { q: "73 ○ 73", a: "=" }, { q: "28 ○ 82", a: "<" },
-    { q: "61 ○ 16", a: ">" }, { q: "99 ○ 100", a: "<" }, { q: "47 ○ 47", a: "=" },
-  ],
-  "cz-vyjmenovana-slova-b": [
-    { q: "Doplň y/i: b_dlení", a: "bydlení" }, { q: "Doplň y/i: r_ba", a: "ryba" },
-    { q: "Doplň y/i: ob_čej", a: "obyčej" }, { q: "Doplň y/i: zb_tek", a: "zbytek" },
-    { q: "Doplň y/i: b_t nebo být?", a: "být" }, { q: "Doplň y/i: přib_žně", a: "přibližně" },
-    { q: "Doplň y/i: b_stré oko", a: "bystré" }, { q: "Doplň y/i: b_dlišče", a: "bydliště" },
-    { q: "Doplň y/i: zb_vat čas", a: "zbývat" }, { q: "Doplň y/i: b_tosti", a: "bytosti" },
-  ],
-  "cz-vyjmenovana-slova-l": [
-    { q: "Doplň y/i: l_žice", a: "lžíce" }, { q: "Doplň y/i: l_ška", a: "liška" },
-    { q: "Doplň y/i: sl_šet", a: "slyšet" }, { q: "Doplň y/i: l_pa", a: "lípa" },
-    { q: "Doplň y/i: ml_kárna", a: "mlékárna" }, { q: "Doplň y/i: l_tovat", a: "litovat" },
-    { q: "Doplň y/i: l_žko", a: "lůžko" }, { q: "Doplň y/i: bl_zkost", a: "blízkost" },
-  ],
-  "cz-slovni-druhy": [
-    { q: 'Jaký slovní druh je: „rychlý”?', a: "přídavné jméno" },
-    { q: 'Jaký slovní druh je: „běžet”?', a: "sloveso" },
-    { q: 'Jaký slovní druh je: „Tomáš”?', a: "podstatné jméno" },
-    { q: 'Jaký slovní druh je: „velmi”?', a: "příslovce" },
-    { q: 'Jaký slovní druh je: „a“?', a: "spojka" },
-    { q: 'Jaký slovní druh je: „já“?', a: "zájmeno" },
-    { q: 'Jaký slovní druh je: „pět“?', a: "číslovka" },
-    { q: 'Jaký slovní druh je: „hej“?', a: "citoslovce" },
-    { q: 'Jaký slovní druh je: „na“?', a: "předložka" },
-    { q: 'Jaký slovní druh je: „krásný“?', a: "přídavné jméno" },
-  ],
-  "cz-tvrde-mekke": [
-    { q: "Tvrdé nebo měkké y/i? — n_t", a: "nit (i — n je měkká)" },
-    { q: "Tvrdé nebo měkké? — t_gřice", a: "tygřice (y — t je tvrdá)" },
-    { q: "Doplň y/i: s_la", a: "síla" }, { q: "Doplň y/i: t_den", a: "týden" },
-    { q: "Doplň y/i: d_ra", a: "díra" }, { q: "Doplň y/i: h_bat", a: "hýbat" },
-    { q: "Doplň y/i: z_ma", a: "zima" }, { q: "Doplň y/i: n_t", a: "nit" },
-    { q: 'Tvrdá nebo měkká souhláska: „d"?', a: "měkká" },
-    { q: 'Tvrdá nebo měkká souhláska: „h"?', a: "tvrdá" },
-  ],
-  "pr-plant-parts": [
-    { q: "Která část rostliny přijímá vodu ze země?", a: "kořen" },
-    { q: "Která část rostliny provádí fotosyntézu?", a: "list" },
-    { q: "Z čeho vyroste nová rostlina?", a: "semeno" },
-    { q: "Jak se jmenuje část rostliny, která nese listy?", a: "stonek / stéblo" },
-    { q: "Co vzniká z květu po opylení?", a: "plod" },
-    { q: "Která část rostliny upevňuje rostlinu v půdě?", a: "kořen" },
-    { q: "Jak se jmenuje zeleně zbarvená část listu?", a: "čepel" },
-    { q: "Co je funkce stonku?", a: "vést vodu a živiny" },
-    { q: "Jak se nazývá šťáva, která proudí v rostlině?", a: "míza" },
-    { q: "Odkud rostlina získává světlo pro fotosyntézu?", a: "ze slunce" },
-  ],
-  "pr-animals": [
-    { q: "Jak se nazývají mláďata krávy?", a: "telata" },
-    { q: "Které zvíře dává vlnu?", a: "ovce" },
-    { q: "Jak se jmenuje samec kachny?", a: "kačer" },
-    { q: "Která zvířata jsou savci?", a: "např. kráva, kůň, pes" },
-    { q: "Jak se nazývají vajíčka, z nichž se líhnou ptáci?", a: "vejce" },
-    { q: "Které domácí zvíře dává mléko?", a: "kráva / koza" },
-    { q: "Jak se jmenuje mládě koně?", a: "hříbě" },
-    { q: "Jak dýchají ryby?", a: "žábrami" },
-    { q: "Které zvíře zimuje v doupěti?", a: "medvěd, ježek…" },
-    { q: "Jak se nazývá samice kohouta?", a: "slepice" },
-  ],
-};
-
-function getFallbackQuestion(skillId: string, idx: number): { q: string; a: string } | null {
-  // Zkus přesnou shodu, pak prefix
-  const bank = FALLBACK_QB[skillId]
-    ?? Object.entries(FALLBACK_QB).find(([k]) => skillId.startsWith(k.replace(/-[^-]+$/, "")))?.[1];
-  if (!bank || bank.length === 0) return null;
-  return bank[idx % bank.length];
-}
-
 function formatCzDate(dateStr: string): string {
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return "";
@@ -446,15 +360,15 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
                 <p className="text-sm text-slate-600 leading-snug">
                   {childName
                     ? (lastGrade <= 2
-                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
+                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
                         : lastGrade === 3
-                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek průměrný (${last.pct} %).`
-                        : `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
+                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek průměrný (${last.pct} %).`
+                        : `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
                     : (lastGrade <= 2
-                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek výborný (${last.pct} %).`
+                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
                         : lastGrade === 3
-                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek průměrný (${last.pct} %).`
-                        : `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${last.total} otázek. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
+                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek průměrný (${last.pct} %).`
+                        : `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
                   }
                 </p>
                 {/* Hodnotící karta */}
@@ -491,7 +405,7 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
             {sessions.length > 1 && (
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Historie · {sessionCountLabel(sessions.length)}
+                  Historie · {sessionCountLabel(sessions.length - 1)}
                 </p>
                 <div className="space-y-1.5">
                   {sessions.slice(1).map(s => {
@@ -528,45 +442,56 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
                 label: string,
                 rowCls: string,
                 dotCls: string,
-              ) => items.length === 0 ? null : (
-                <div className="space-y-1">
-                  <p className={`text-caption font-bold uppercase tracking-wide flex items-center gap-1 ${dotCls}`}>
-                    {icon} {label} ({items.length})
-                  </p>
-                  {items.map((l, idx) => {
-                    const dq = !l.question ? getFallbackQuestion(skillId, idx) : null;
-                    return (
-                      <div key={l.id} className={`rounded-xl px-3 py-2 text-xs ${rowCls}`}>
-                        {l.question
-                          ? <><span className="font-medium">{l.question}</span>
-                              {l.correctAnswer && (
-                                <span className="block text-muted-foreground mt-0.5">
-                                  Správná odpověď: <span className="font-semibold">{l.correctAnswer}</span>
-                                </span>
-                              )}
-                            </>
-                          : dq
-                            ? <><span className="font-medium">{dq.q}</span>
-                                <span className="block text-muted-foreground mt-0.5">
-                                  Správná odpověď: <span className="font-semibold">{dq.a}</span>
-                                </span>
-                              </>
-                            : <span className="text-muted-foreground italic">
-                                {!l.correct ? "Chybná odpověď" : l.helpUsed ? "Správně s nápovědou" : "Správně"}
-                              </span>
-                        }
-                      </div>
-                    );
-                  })}
-                </div>
-              );
+                collapsible = false,
+              ) => {
+                if (items.length === 0) return null;
+                const rows = items.map((l) => (
+                  <div key={l.id} className={`rounded-xl px-3 py-2 text-xs ${rowCls}`}>
+                    {l.question
+                      ? <><span className="font-medium">{l.question}</span>
+                          {l.correctAnswer && (
+                            <span className="block text-muted-foreground mt-0.5">
+                              Správná odpověď: <span className="font-semibold">{l.correctAnswer}</span>
+                            </span>
+                          )}
+                        </>
+                      : <span className="text-muted-foreground italic">
+                          {!l.correct ? "Chybná odpověď" : l.helpUsed ? "Správně s nápovědou" : "Správně"}
+                        </span>
+                    }
+                  </div>
+                ));
+                // Chyby a nápověda jsou pro rodiče nejdůležitější → vždy rozbalené.
+                // Správné odpovědi zabírají nejvíc místa a mají nejmenší hodnotu →
+                // defaultně sbalené do <details>, rodič si je může rozkliknout.
+                if (collapsible) {
+                  return (
+                    <details className="group space-y-1">
+                      <summary className={`text-caption font-bold uppercase tracking-wide flex items-center gap-1 cursor-pointer list-none select-none ${dotCls}`}>
+                        {icon} {label} ({items.length})
+                        <span className="ml-1 font-normal normal-case text-muted-foreground group-open:hidden">— rozbalit</span>
+                        <span className="ml-1 font-normal normal-case text-muted-foreground hidden group-open:inline">— sbalit</span>
+                      </summary>
+                      <div className="space-y-1 mt-1">{rows}</div>
+                    </details>
+                  );
+                }
+                return (
+                  <div className="space-y-1">
+                    <p className={`text-caption font-bold uppercase tracking-wide flex items-center gap-1 ${dotCls}`}>
+                      {icon} {label} ({items.length})
+                    </p>
+                    {rows}
+                  </div>
+                );
+              };
 
               return (
                 <div className="space-y-3">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Jak si vedl(a)</p>
                   {renderGroup(wrong,   <XCircle className="h-3 w-3" />,      "Chybně",         "bg-red-50 border border-red-100 text-red-800",      "text-red-500")}
                   {renderGroup(helped,  <HelpCircle className="h-3 w-3" />,   "S nápovědou",    "bg-amber-50 border border-amber-100 text-amber-800", "text-amber-500")}
-                  {renderGroup(correct, <CheckCircle2 className="h-3 w-3" />, "Správně",        "bg-green-50 border border-green-100 text-green-800", "text-green-600")}
+                  {renderGroup(correct, <CheckCircle2 className="h-3 w-3" />, "Správně",        "bg-green-50 border border-green-100 text-green-800", "text-green-600", true)}
                 </div>
               );
             })()}
