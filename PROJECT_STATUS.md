@@ -144,6 +144,33 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (7) — názvy 3.–5. ročníku + gramatická kontrola:
+
+Uživatel: „projdi i ročníky 3–5" + „projdi pak celou aplikaci, aby byla
+gramaticky správně".
+
+- ✅ **Ročníky 3–5: cílený zásah, ne plošné přejmenování.** Na rozdíl od
+  2. ročníku už byly tyhle názvy dřív dobře udělané (otázky, 1. osoba,
+  konkrétní situace). Přejmenováno jen 5 dry/žargonových: „Žánry literatury"
+  a „Literární žánry" → **„Druhy příběhů"** (slovo „žánr" je pro dítě cizí),
+  „Čtení tabulek" → **„Co říká tabulka?"**, „Slovní úlohy" (g3) → **„Příběhy
+  s čísly"** (shoda s 2. roč.), „Úplnost sdělení" (g5) → **„Řekl jsem
+  všechno?"**.
+- 🐞 **Grade-3 okruhy měly RVP názvy** — dítě vidělo doslova „Místo, kde
+  žijeme", „Rozmanitost přírody", „Lidé a čas". Nově „Naše vlast",
+  „Příroda kolem nás", „Čas a minulost". Zároveň srovnány `navigation.ts`
+  a `displayNames.ts`, které si u dvou okruhů protiřečily.
+- 🔎 **Starší děti (10–11) nechány u faktických názvů.** „2. světová válka",
+  „Marie Terezie", „Vesmír", „Přemyslovci" jsou pro páťáka atraktivní samy
+  o sobě; dětinštit je by bylo horší.
+- ✅ **Gramatická kontrola celé aplikace — čistá.** Sken statických UI
+  řetězců (i18n + komponenty + stránky): 0 reálných nálezů (85 zásahů byly
+  ternáry v classNames, 5 „ascii" bylo slovo „heslo", 5 dvojmezer v CSS).
+  Sken obsahu na shodu přísudku s číslovkou (celý korpus): 14 nálezů, všech
+  14 správně (matematické „Kolik je 3+4?", teplota „bylo −5 °C" ve středním
+  rodě, „je 48 aut" s genitivem po číslovce ≥5). `audit:content` prošel.
+- Testy **4628/4628**, typecheck 0, build prošel. Ověřeno v prohlížeči
+  pro 3. ročník (matematika i prvouka).
 ### Session 2026-09-03 (6) — názvy témat pro 2. ročník:
 
 Uživatel: „název tabulky je pro druháka opravdu nezajímavé".

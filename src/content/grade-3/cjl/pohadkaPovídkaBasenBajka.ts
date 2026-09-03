@@ -98,7 +98,7 @@ export const POHADKAPOVIDKA: TopicMetadata[] = [
     id: "g3-cjl-pohadka-povidka-basen-bajka",
     rvpNodeId: "g3-cjl-literarni-vychova-literarni-druhy-a-zanry-pohadka-povidka-basen-bajka",
     title: "Pohádka, povídka, báseň, bajka",
-    studentTitle: "Žánry literatury",
+    studentTitle: "Druhy příběhů",
     subject: "čeština",
     category: "Literární výchova",
     topic: "Literární druhy a žánry",

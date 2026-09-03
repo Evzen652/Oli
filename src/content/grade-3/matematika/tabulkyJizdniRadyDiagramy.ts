@@ -242,7 +242,7 @@ export const TABULKYJIZDNIRADYDIAGRAMY: TopicMetadata[] = [
     id: "g3-mat-tabulky-diagramy",
     rvpNodeId: "g3-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-jizdni-rady-jednoduche-diagramy",
     title: "Tabulky, jízdní řády, jednoduché diagramy",
-    studentTitle: "Čtení tabulek",
+    studentTitle: "Co říká tabulka?",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",

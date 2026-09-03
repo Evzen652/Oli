@@ -106,7 +106,7 @@ export const SLOVNIULOHYSEDVEMAOPERACEMI: TopicMetadata[] = [
     id: "g3-mat-slovni-ulohy-dve-operace",
     rvpNodeId: "g3-matematika-nestandardni-aplikacni-ulohy-a-problemy-slovni-a-logicke-ulohy-slovni-ulohy-se-dvema-a-vice-pocetnimi-operacemi",
     title: "Slovní úlohy se dvěma a více početními operacemi",
-    studentTitle: "Slovní úlohy",
+    studentTitle: "Příběhy s čísly",
     subject: "matematika",
     category: "Nestandardní aplikační úlohy a problémy",
     topic: "Slovní a logické úlohy",

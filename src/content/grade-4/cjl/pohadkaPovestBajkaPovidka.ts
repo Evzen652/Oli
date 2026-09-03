@@ -103,7 +103,7 @@ export const POHADKAPOVESTBAJKAPOVIDKA: TopicMetadata[] = [
     rvpNodeId: "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
     displayName: "Literární žánry",
     title: "Pohádka, pověst, bajka, povídka",
-    studentTitle: "Literární žánry",
+    studentTitle: "Druhy příběhů",
     subject: "čeština",
     category: "Literární výchova",
     topic: "Literární výchova",

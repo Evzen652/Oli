@@ -365,7 +365,7 @@ export const POSUZOVANIUPLNOSTISDELENI: TopicMetadata[] = [
     id: "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-posuzovani-uplnosti-sdeleni",
     rvpNodeId: "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-posuzovani-uplnosti-sdeleni",
     title: "Posuzování úplnosti sdělení",
-    studentTitle: "Úplnost sdělení",
+    studentTitle: "Řekl jsem všechno?",
     subject: "čeština",
     category: "Komunikační a slohová výchova",
     topic: "Čtení a naslouchání",

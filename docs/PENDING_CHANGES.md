@@ -7,7 +7,13 @@
 
 ---
 
-## ⏭️ Názvy témat pro ročníky 3–5 (zadáno 2026-09-03)
+## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03
+
+**Výsledek: cílený zásah, ne plošný.** Tyhle ročníky už byly dřív dobře
+udělané. Přejmenováno 5 dry názvů („Druhy příběhů" 2×, „Co říká tabulka?",
+„Příběhy s čísly", „Řekl jsem všechno?") + 3 RVP okruhy 3. ročníku
+(„Naše vlast", „Příroda kolem nás", „Čas a minulost"). Faktické názvy pro
+páťáky („2. světová válka", „Vesmír") ponechány záměrně.
 
 2. ročník přejmenovaný (26 ze 41 témat + jargon v `displayNames.ts`).
 Ročníky 3–5 mají tentýž problém — katalogové názvy typu „Tabulky",

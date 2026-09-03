@@ -44,8 +44,8 @@ export const DISPLAY_NAMES: DisplayMap = {
     },
     // Prvouka — Člověk a jeho svět
     "Místo, kde žijeme": {
-      name: "Domov a okolí",
-      description: "Poznáš svůj domov, obec a cestu do školy podle mapy.",
+      name: "Naše vlast",
+      description: "Poznáš kraje České republiky, mapu a státní symboly.",
     },
     "Lidé kolem nás": {
       name: "Lidé kolem nás",
