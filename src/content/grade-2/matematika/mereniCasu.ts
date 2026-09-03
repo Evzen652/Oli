@@ -85,7 +85,7 @@ export const MERENICASU: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-zavislosti-vztahy-a-prace-s-daty-mereni-a-jednotky-mereni-casu-hodina-minuta",
     title: "Měření času (hodina, minuta)",
-    studentTitle: "Hodiny a minuty",
+    studentTitle: "Kolik je hodin?",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Měření a jednotky",

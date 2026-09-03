@@ -420,7 +420,7 @@ export const POVOLANIPRACEDOSPELYCH: TopicMetadata[] = [
     id: "g2-prv-povolani",
     rvpNodeId: "g2-prvouka-lide-kolem-nas-souziti-lidi-povolani-prace-dospelych",
     title: "Povolání a práce dospělých",
-    studentTitle: "Povolání",
+    studentTitle: "Čím budu?",
     subject: "prvouka",
     category: "Lidé kolem nás",
     topic: "Soužití lidí",

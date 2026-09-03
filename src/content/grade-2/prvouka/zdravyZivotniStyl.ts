@@ -492,7 +492,7 @@ export const ZDRAVYZIVOTNISTYL: TopicMetadata[] = [
     id: "g2-prv-zdravy-styl",
     rvpNodeId: "g2-prvouka-clovek-a-jeho-zdravi-zdravy-zivotni-styl-pohyb-odpocinek-spanek-pitny-rezim",
     title: "Zdravý životní styl – pohyb, odpočinek, spánek, pitný režim",
-    studentTitle: "Zdravý život",
+    studentTitle: "Jak zůstat zdravý",
     subject: "prvouka",
     category: "Člověk a jeho zdraví",
     topic: "Zdravý životní styl",

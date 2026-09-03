@@ -74,7 +74,7 @@ export const SLOVAPROTIKLADNA: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna",
     rvpNodeId: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna",
     title: "Slova protikladná a souznačná",
-    studentTitle: "Protiklady a synonyma",
+    studentTitle: "Opak a to samé",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Slovní zásoba",

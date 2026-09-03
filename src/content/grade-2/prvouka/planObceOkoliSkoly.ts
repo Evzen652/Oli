@@ -524,7 +524,7 @@ export const PLANOBCEOKOLISKOLY: TopicMetadata[] = [
     id: "g2-prv-plan-obce",
     rvpNodeId: "g2-prvouka-misto-kde-zijeme-obec-a-okoli-plan-obce-okoli-skoly",
     title: "Plán obce a okolí školy",
-    studentTitle: "Plán obce",
+    studentTitle: "Mapa naší obce",
     subject: "prvouka",
     category: "Místo, kde žijeme",
     topic: "Obec a okolí",

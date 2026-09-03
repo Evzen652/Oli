@@ -144,6 +144,31 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (6) — názvy témat pro 2. ročník:
+
+Uživatel: „název tabulky je pro druháka opravdu nezajímavé".
+
+- ✅ **26 ze 41 témat 2. ročníku přejmenováno.** Katalogové názvy nahrazeny
+  otázkou nebo obrazem, který dítě zná: „Tabulky" → **„Kolik dohromady?"**,
+  „Slovesa" → **„Co dělá?"** (školní diagnostická otázka), „Slabiky" →
+  **„Tleskej slabiky"** (jak se to fakticky učí), „Dělení slov" → **„Slovo
+  se nevejde"**, „Povolání" → **„Čím budu?"**.
+- 🔎 **Patnáct názvů zůstalo beze změny** — „Y nebo I?", „Násobilka 2–5",
+  „Zvířata v zimě", „První pomoc" a další už fungují. Přejmenovat všechno
+  by znamenalo zhoršit to, co bylo dobré.
+- 🐞 **Názvy jsou ve čtyřech vrstvách a tři z nich mluvily jinak.**
+  `navigation.ts` (okruhy, co dítě vidí první), `displayNames.ts` (kategorie
+  a témata), `studentTitle` v metadatech a RVP `title`. V `displayNames`
+  stálo na druháka doslova **„Jazyková výchova"** a **„Sloh"** →
+  „Slova a písmena", „Mluvíme a píšeme".
+- 🐞 **Dialog o rozdělané práci ukazoval RVP název**: „nedokončil/a jsi
+  procvičování (Práce s daty – tabulky a jednoduchá schémata)". Nově
+  „(Kolik dohromady?)" — stejná záměna `getFullTopicTitle` za
+  `getChildTopicTitle` jako u shrnutí.
+- Testy **4628/4628**, typecheck 0, build prošel. Ověřeno v prohlížeči
+  v anonymním režimu pro 2. ročník.
+- ⏭️ **Ročníky 3–5 mají stejný problém** a čekají na rozhodnutí, jestli
+  je přejmenovat ve stejném duchu.
 ### Session 2026-09-03 (5) — shoda přísudku s číslovkou:
 
 Nález z běžícího cvičení: „ve vedlejší třídě **bylo 3 žáci**" (správně „byli").

@@ -89,7 +89,7 @@ export const BODPRIMKAUSECKA: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-geometrie-v-rovine-a-v-prostoru-body-primky-usecky-bod-primka-poloprimka-usecka",
     title: "Bod, přímka, polopřímka, úsečka",
-    studentTitle: "Bod, přímka, úsečka",
+    studentTitle: "Body a čáry",
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Body, přímky, úsečky",

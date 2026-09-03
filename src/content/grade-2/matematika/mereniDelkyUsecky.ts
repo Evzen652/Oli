@@ -104,7 +104,7 @@ export const MERIENIDELIVKYUSECKY: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-geometrie-v-rovine-a-v-prostoru-body-primky-usecky-mereni-delky-usecky",
     title: "Měření délky úsečky",
-    studentTitle: "Délka úsečky",
+    studentTitle: "Jak dlouhá je čára?",
     subject: "matematika",
     category: "Geometrie v rovině a v prostoru",
     topic: "Body, přímky, úsečky",

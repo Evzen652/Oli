@@ -103,7 +103,7 @@ export const SLOVNIULOHYDO100: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-nestandardni-aplikacni-ulohy-a-problemy-slovni-ulohy-slovni-ulohy-se-vsemi-typy-operaci-do-100",
     title: "Slovní úlohy se všemi typy operací do 100",
-    studentTitle: "Slovní úlohy",
+    studentTitle: "Příběhy s čísly",
     subject: "matematika",
     category: "Nestandardní aplikační úlohy a problémy",
     topic: "Slovní úlohy",

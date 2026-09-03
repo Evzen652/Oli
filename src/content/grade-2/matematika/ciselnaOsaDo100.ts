@@ -62,7 +62,7 @@ export const CISELNAOSADO100: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-cislo-a-pocetni-operace-ciselny-obor-0-100-ciselna-osa-do-100",
     title: "Číselná osa do 100",
-    studentTitle: "Číselná osa",
+    studentTitle: "Kam patří číslo?",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–100",

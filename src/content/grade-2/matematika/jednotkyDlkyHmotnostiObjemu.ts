@@ -101,7 +101,7 @@ export const JEDNOTKYDLKYHMOTNOSTIOBJEMU: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-zavislosti-vztahy-a-prace-s-daty-mereni-a-jednotky-jednotky-delky-cm-m-hmotnosti-kg-objemu-l",
     title: "Jednotky délky (cm, m), hmotnosti (kg) a objemu (l)",
-    studentTitle: "Míry a váhy",
+    studentTitle: "Metry, kila, litry",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Měření a jednotky",

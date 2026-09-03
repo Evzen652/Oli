@@ -74,7 +74,7 @@ export const SLABIKY: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky",
     rvpNodeId: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky",
     title: "Slabika, rozdělení na slabiky",
-    studentTitle: "Slabiky",
+    studentTitle: "Tleskej slabiky",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Zvuková stránka jazyka",

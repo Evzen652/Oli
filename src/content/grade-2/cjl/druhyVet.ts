@@ -74,7 +74,7 @@ export const DRUHYVET: TopicMetadata[] = [
     id: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci",
     rvpNodeId: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci",
     title: "Druhy vět (oznamovací, tázací, rozkazovací)",
-    studentTitle: "Druhy vět",
+    studentTitle: "Jaká je to věta?",
     subject: "čeština",
     category: "Komunikační a slohová výchova",
     topic: "Práce s textem",

@@ -74,7 +74,7 @@ export const ABECEDAAZENI: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
     rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
     title: "Abeceda a řazení",
-    studentTitle: "Abeceda",
+    studentTitle: "Abeceda od A do Z",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Tvarosloví",

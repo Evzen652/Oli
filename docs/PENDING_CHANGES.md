@@ -7,6 +7,27 @@
 
 ---
 
+## ⏭️ Názvy témat pro ročníky 3–5 (zadáno 2026-09-03)
+
+2. ročník přejmenovaný (26 ze 41 témat + jargon v `displayNames.ts`).
+Ročníky 3–5 mají tentýž problém — katalogové názvy typu „Tabulky",
+„Slovní úlohy", „Orientace v textu".
+
+**Vzor, podle kterého se přejmenovávalo:**
+- otázka, kterou si dítě samo klade („Co je víc?", „Čím budu?")
+- školní formulka, kterou zná od učitele („Co dělá?" u sloves,
+  „Tleskej slabiky", „Dě, tě, ně, bě, pě, vě, mě")
+- konkrétní situace místo pojmu („Slovo se nevejde" místo „Dělení slov")
+- **klíčové slovo zůstává**, aby téma rodič našel („Násobilka 2–5",
+  „Plus a minus do 100")
+- co už fungovalo, se nechalo být
+
+**Pozor na čtyři vrstvy názvů:** `navigation.ts` (okruhy — to vidí dítě
+první), `displayNames.ts` (kategorie + témata), `studentTitle`
+v `TopicMetadata` a RVP `title`. Pro 2. ročník je primární `navigation.ts`;
+`displayNames` se pro procházení nepoužívá.
+
+---
 ## 🔴 Audit 2026-09-03 — seznam A hotový, B a C čekají na rozhodnutí
 
 Plné znění: [`AUDIT_REPORT.md`](../AUDIT_REPORT.md).

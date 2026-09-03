@@ -492,7 +492,7 @@ export const PRAVIDLASLUSNEHOCHOVANI: TopicMetadata[] = [
     id: "g2-prv-chovani",
     rvpNodeId: "g2-prvouka-lide-kolem-nas-souziti-lidi-pravidla-slusneho-chovani-a-souziti",
     title: "Pravidla slušného chování a soužití",
-    studentTitle: "Slušné chování",
+    studentTitle: "Kouzelná slovíčka",
     subject: "prvouka",
     category: "Lidé kolem nás",
     topic: "Soužití lidí",

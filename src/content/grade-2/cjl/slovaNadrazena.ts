@@ -74,7 +74,7 @@ export const SLOVANADRAZENA: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena",
     rvpNodeId: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena",
     title: "Slova nadřazená a podřazená",
-    studentTitle: "Skupiny slov",
+    studentTitle: "Co kam patří",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Slovní zásoba",

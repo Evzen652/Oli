@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
-import { getFullTopicTitle } from "@/lib/types";
 import { getDisplayCategory, getChildTopicTitle } from "@/lib/displayNames";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -293,7 +292,9 @@ export function SessionView() {
   const recoveryDialog = (
     <SessionRecoveryDialog
       open={!!recoveryData}
-      topicTitle={recoveryData?.session?.matchedTopic ? getFullTopicTitle(recoveryData.session.matchedTopic) : ""}
+      // Dětský název, ne RVP. Dialog vidí dítě, a „Práce s daty – tabulky
+      // a jednoduchá schémata" mu neřekne nic o tom, co má rozdělané.
+      topicTitle={recoveryData?.session?.matchedTopic ? getChildTopicTitle(recoveryData.session.matchedTopic, grade, isStudentView) : ""}
       onRecover={() => {
         if (recoveryData) {
           s.setGrade(recoveryData.session.grade);

@@ -405,7 +405,7 @@ export const HODINYKALENDARCAS: TopicMetadata[] = [
     id: "g2-prv-hodiny-cas",
     rvpNodeId: "g2-prvouka-lide-a-cas-mereni-casu-a-tradice-hodiny-kalendar-cas",
     title: "Hodiny, kalendář a čas",
-    studentTitle: "Hodiny a čas",
+    studentTitle: "Co je dnes za den?",
     subject: "prvouka",
     category: "Lidé a čas",
     topic: "Měření času a tradice",

@@ -36,7 +36,7 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
       },
       {
         id: "slovni-ulohy",
-        name: "Slovní úlohy",
+        name: "Příběhy s čísly",
         description: "Krátké příklady ze života.",
         emoji: "📖",
         topicIds: [

@@ -179,7 +179,7 @@ export const TABULKYAJEDNODUCHASHEMA: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-a-jednoducha-schemata",
     title: "Tabulky a jednoduchá schémata",
-    studentTitle: "Tabulky",
+    studentTitle: "Kolik dohromady?",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",
