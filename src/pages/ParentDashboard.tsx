@@ -294,13 +294,23 @@ export default function ParentDashboard() {
                   ) : (
                     <>
                       <h2 className="font-bold text-3xl leading-tight text-foreground mt-1">{child.child_name}</h2>
-                      <div className="flex flex-wrap items-center gap-2 mt-1.5 mb-5">
+                      <div className="flex flex-wrap items-center gap-2 mt-1.5">
                         <p className="text-muted-foreground text-sm">{child.grade}. ročník · aktivní</p>
                         <span className="inline-flex items-center gap-1 rounded-full border border-success/30 bg-success-muted px-2.5 py-0.5 text-caption font-semibold text-success">
                           <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
                         </span>
                         {<ChildPinControl child={child} onChanged={refetch} />}
                       </div>
+                      {/* Bez PINu rodič netuší, k čemu je, když už dítě spároval —
+                          párovací kód je jednorázový, PIN je pro návraty. Nápověda
+                          se ukáže jen dokud PIN není nastavený. */}
+                      {!child.pin_hash ? (
+                        <p className="text-xs text-muted-foreground mt-2 mb-5 max-w-xl">
+                          {t("parent.pin.hint_paired").replace("{name}", child.child_name)}
+                        </p>
+                      ) : (
+                        <div className="mb-5" />
+                      )}
                     </>
                   )}
 
