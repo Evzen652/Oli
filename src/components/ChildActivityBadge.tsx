@@ -51,27 +51,25 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
     // jen ikona a tenký okraj v tintu — stejné tvarosloví jako shrnutí sezení.
     return (
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-3">
-          <div className="flex items-center gap-2.5 rounded-2xl border border-primary/25 bg-card px-4 py-2.5 shadow-e1">
-            <Flame className="h-5 w-5 text-primary shrink-0" />
-            <div>
-              <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
-              <p className="text-muted-foreground text-caption font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
-            </div>
+        {/* Svislé vycentrované karty (ikona nahoře) — vodorovná řada
+            „ikona | číslo/popisek" se na mobilu (375 px) nevešla a „ÚSPĚŠNOST"
+            se ořezávala. Takhle šířku drží krátký popisek, ne řada vedle sebe.
+            Stejné tvarosloví jako statistiky ve shrnutí sezení. */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center">
+            <Flame className="h-5 w-5 mx-auto mb-1.5 text-primary" />
+            <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
+            <p className="text-muted-foreground text-caption font-bold mt-1">{form(days, "DEN").toUpperCase()}</p>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl border border-success/30 bg-card px-4 py-2.5 shadow-e1">
-            <CheckCircle2 className="h-5 w-5 text-success shrink-0" />
-            <div>
-              <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{tasks}</p>
-              <p className="text-muted-foreground text-caption font-bold tracking-wide mt-0.5">ÚLOH</p>
-            </div>
+          <div className="rounded-2xl border border-success/30 bg-card px-2 py-3 shadow-e1 text-center">
+            <CheckCircle2 className="h-5 w-5 mx-auto mb-1.5 text-success" />
+            <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{tasks}</p>
+            <p className="text-muted-foreground text-caption font-bold mt-1">ÚLOH</p>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl border border-warning/30 bg-card px-4 py-2.5 shadow-e1">
-            <Star className="h-5 w-5 text-warning shrink-0" />
-            <div>
-              <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{accuracy}%</p>
-              <p className="text-muted-foreground text-caption font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
-            </div>
+          <div className="rounded-2xl border border-warning/30 bg-card px-2 py-3 shadow-e1 text-center">
+            <Star className="h-5 w-5 mx-auto mb-1.5 text-warning" />
+            <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{accuracy}%</p>
+            <p className="text-muted-foreground text-caption font-bold mt-1">ÚSPĚŠNOST</p>
           </div>
         </div>
         <p className="text-muted-foreground text-sm leading-snug max-w-xl">{summaryText}</p>
