@@ -144,6 +144,20 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (10) — redesign rodičovského dashboardu:
+
+Zadání (screeny): příliš oranžové/nekonzistentní, zjednodušit, proklik na sekce.
+Ověřeno v prohlížeči přes admin → /parent (má reálné dítě Tonda s daty).
+
+- 🐞 **Kořen „příliš oranžové":** hero byl `from-violet-600…`, ale
+  `violet→brandOrange` → plná oranžová plocha s bílým textem, kontrast 2,8:1.
+  Nově bílá karta s tenkým oranžovým proužkem, tmavá čísla, světlé statistiky.
+- ✅ **„Na co se zaměřit" zjednodušeno:** návrh (akce) vede ve zvýrazněném
+  pruhu, popis chyby je tichý druhý řádek (dřív dva labelované odstavce).
+- ✅ **Proklik z hera na sekce** (bod c) — tři pilulky sjedou na kotvy.
+- ✅ **Emoji hlaviček** (❤️🧩🎯) → lucide ikony v tintu; karty na tokeny.
+- ⏭️ Zbývá app-wide kontrast oranžového CTA (B1).
+- Testy 4628/4628, typecheck 0, build prošel.
 ### Session 2026-09-03 (9) — odstranění demo režimu:
 
 Uživatel: „demo je úplně zrušeno. už nebude. pokud jsou pozůstatky, smaž je."

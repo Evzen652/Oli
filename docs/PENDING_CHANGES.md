@@ -19,13 +19,15 @@ Demo zrušeno úplně. −660 řádků. Detail v commitu `chore: odstranit demo 
 - Supabase účty `demo@oli.app` / `demo-child@oli.app` v DB zůstávají
   (smazán jen kód). Smazat je může jen Evžen přes Supabase.
 
-### ⏭️ Rozdělaný redesign rodičovského dashboardu (přerušeno)
+### ✅ Redesign rodičovského dashboardu — HOTOVO 2026-09-03
 Zadání (screeny 2026-09-03): a) příliš oranžové a nekonzistentní s homepage,
 b) „Na co se zaměřit" zjednodušit, c) oranžové statistiky mají být
 proklikávací na sekce níž, d) projít. Kořen „příliš oranžové": hero je
 `from-violet-600…` gradient, ale `violet→brandOrange` v tailwind configu →
 plná oranžová s bílým textem (kontrast 2,8:1). Po odstranění dema je
-`ParentDashboard` výrazně menší — pokračovat redesignem podle homepage.
+`ParentDashboard` výrazně menší.
+
+**Hotovo a ověřeno v prohlížeči (admin → /parent):** hero = bílá karta s oranžovým proužkem (konec „příliš oranžové", konec kontrastu 2,8:1); statistiky světlé; „Na co se zaměřit" zjednodušeno (návrh vede, popis chyby tichý druhý řádek); hero má proklik na sekce (kotvy); emoji hlaviček → lucide ikony. Zbývá jen app-wide kontrast oranžového CTA (bod B1).
 
 ---
 ## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03
