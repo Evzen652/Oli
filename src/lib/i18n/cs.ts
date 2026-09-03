@@ -51,6 +51,7 @@ const cs = {
   // Session
   "session.back": "← Zpět",
   "session.sign_out": "Odhlásit",
+  "session.exit": "Ukončit procvičování",
   "session.topic_label": "Téma: ",
   // Bez emoji — na obrazovce cvičení se sjednocuje výtvarný jazyk a systémová
   // emoji se na každé platformě kreslí jinak. Ikonu nese lucide `Lightbulb`.

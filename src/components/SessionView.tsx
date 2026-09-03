@@ -29,6 +29,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { FractionBarVisual } from "@/components/FractionBarVisual";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getTopicInsight } from "@/lib/topicInsight";
+import { readLocal, writeLocal } from "@/lib/safeStorage";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
 import { ExitSessionDialog } from "@/components/ExitSessionDialog";
@@ -114,7 +115,7 @@ export function SessionView() {
    * (maže ho jen migrace anonymního pokroku), takže samotná jeho existence
    * o anonymitě nic neříká.
    */
-  const isAnonymous = pathname === "/student" && role === null && !!localStorage.getItem("oli_anon_trial");
+  const isAnonymous = pathname === "/student" && role === null && !!readLocal("oli_anon_trial");
   const isStudentView = role === "child" || (role === "admin" && pathname === "/student") || isAnonymous;
 
   /**
@@ -250,7 +251,7 @@ export function SessionView() {
   // Admin: obnov naposledy testovaný ročník (zapamatovaný v localStorage), fallback 4
   useEffect(() => {
     if (role === "admin" && !grade) {
-      const saved = Number(localStorage.getItem("oli_admin_preview_grade"));
+      const saved = Number(readLocal("oli_admin_preview_grade"));
       const g = saved >= 1 && saved <= 9 ? saved : 4;
       handleGradeSelect(g as any);
     }
@@ -269,7 +270,7 @@ export function SessionView() {
           value={grade ?? 4}
           onChange={(e) => {
             const g = Number(e.target.value);
-            localStorage.setItem("oli_admin_preview_grade", String(g));
+            writeLocal("oli_admin_preview_grade", String(g));
             s.setSession(null as any);
             // Reset výběru — jinak zůstane předmět z minulého ročníku (prázdná stránka)
             setShowTopicBrowser(false);
@@ -595,8 +596,18 @@ export function SessionView() {
               </Button>
             )}
             {!isAnonymous && (
-              <Button variant="ghost" size="sm" onClick={() => requestExit(leaveSession)} className="text-base">
-                ✕
+              // Glyf ✕ sám o sobě není přístupný název — odečítač obrazovky
+              // z něj přečte „krát" nebo nic. Přitom je to tlačítko, které
+              // ukončuje sezení, tedy nejzávažnější akce na obrazovce.
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => requestExit(leaveSession)}
+                aria-label={t("session.exit")}
+                title={t("session.exit")}
+                className="text-base"
+              >
+                <span aria-hidden>✕</span>
               </Button>
             )}
           </div>

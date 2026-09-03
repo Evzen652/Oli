@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { readLocal, writeLocal } from "@/lib/safeStorage";
 import { useChildren, type Child } from "@/hooks/useChildren";
 import { useProfile } from "@/hooks/useProfile";
 import { Button } from "@/components/ui/button";
@@ -59,7 +60,7 @@ function makeDemoStaticAssignments() {
 
 /** Generuje nebo načte hash IP adresy z localStorage pro demo izolaci */
 async function getOrCreateDemoHash(): Promise<string> {
-  const stored = localStorage.getItem("oli_demo_hash");
+  const stored = readLocal("oli_demo_hash");
   if (stored) return stored;
   try {
     const res = await fetch("https://api.ipify.org?format=json");
@@ -68,12 +69,16 @@ async function getOrCreateDemoHash(): Promise<string> {
     let h = 0;
     for (let i = 0; i < ip.length; i++) { h = (Math.imul(31, h) + ip.charCodeAt(i)) | 0; }
     const hash = Math.abs(h).toString(36).padStart(6, "0").slice(0, 8);
-    localStorage.setItem("oli_demo_hash", hash);
+    // Pozor na past: dřív tu byl přímý `setItem` uvnitř `try`. Když úložiště
+    // zápis odmítlo, skočilo se do `catch` — a tam byl DRUHÝ přímý `setItem`,
+    // který spadl znovu, tentokrát už bez záchytu. Funkce tedy v prohlížeči
+    // se zakázanými daty stránek odmítla promise.
+    writeLocal("oli_demo_hash", hash);
     return hash;
   } catch {
     // Fallback — náhodný hash pokud selže fetch
     const fallback = Math.random().toString(36).slice(2, 10);
-    localStorage.setItem("oli_demo_hash", fallback);
+    writeLocal("oli_demo_hash", fallback);
     return fallback;
   }
 }

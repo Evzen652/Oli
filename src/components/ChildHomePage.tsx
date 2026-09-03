@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { readLocal } from "@/lib/safeStorage";
 import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
 import { getContentWarning } from "@/lib/contentAvailability";
 import type { TopicMetadata, Grade } from "@/lib/types";
@@ -369,7 +370,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
       if (isDemoChildAccount) {
         setIsDemoUser(true);
-        const hash = localStorage.getItem("oli_demo_hash");
+        const hash = readLocal("oli_demo_hash");
         if (hash) {
           const prefix = `__demo:${hash}`;
           const { data } = await supabase.from("parent_assignments")

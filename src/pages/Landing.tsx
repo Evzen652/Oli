@@ -95,8 +95,16 @@ function FeatureCard({ img, title, desc, bg, preprocessed }: { img: string; titl
  * uvnitř kresby. U akvarelu to sežere pleť a odlesky (naměřeno 11 % krycích
  * pixelů). Proto `preprocessed` u obrázků, které už průhledné jsou: druhý
  * průchod by je jen poškodil.
+ *
+ * `loading` je ve výchozím stavu „lazy". Ilustrace landingu váží kolem 800 kB
+ * za kus a naprostá většina jich leží pod ohybem — bez odloženého načítání
+ * se stahovaly všechny naráz. Dlaždice „Jak to funguje" jsou nad ohybem,
+ * ty proto dostávají `eager`: líné načítání by u nich jen zdrželo vykreslení.
+ *
+ * Odložení funguje jen u `preprocessed` obrázků. Bez něj si efekt výš stahuje
+ * obrázek sám přes `new Image()` a atribut na `<img>` už s tím nic nenadělá.
  */
-function DewhiteImg({ src, alt, className, style, threshold = 245, preprocessed = false }: { src: string; alt: string; className?: string; style?: React.CSSProperties; threshold?: number; preprocessed?: boolean }) {
+function DewhiteImg({ src, alt, className, style, threshold = 245, preprocessed = false, loading = "lazy" }: { src: string; alt: string; className?: string; style?: React.CSSProperties; threshold?: number; preprocessed?: boolean; loading?: "lazy" | "eager" }) {
   const [out, setOut] = useState(src);
   useEffect(() => {
     if (preprocessed) { setOut(src); return; }
@@ -123,7 +131,7 @@ function DewhiteImg({ src, alt, className, style, threshold = 245, preprocessed 
     };
     img.src = src;
   }, [src, threshold, preprocessed]);
-  return <img src={out} alt={alt} className={className} style={style} />;
+  return <img src={out} alt={alt} className={className} style={style} loading={loading} decoding="async" />;
 }
 
 export default function Landing() {
@@ -219,6 +227,7 @@ export default function Landing() {
                   <div className="flex-1 flex items-center justify-center mb-3">
                     <DewhiteImg
                       preprocessed
+                      loading="eager"
                       src={tile.img}
                       alt={tile.title}
                       className={`w-full ${tile.imgClass} object-contain group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500 ease-out ${IMG_SHADOW}`}

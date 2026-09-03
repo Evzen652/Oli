@@ -7,6 +7,40 @@
 
 ---
 
+## 🔴 Audit 2026-09-03 — seznam A hotový, B a C čekají na rozhodnutí
+
+Plné znění: [`AUDIT_REPORT.md`](../AUDIT_REPORT.md).
+
+### ✅ Hotovo (seznam A — bez vlivu na logiku)
+A1 `aria-label` na ✕ · A2 lazy loading landingu · A3 meta description + OG ·
+A4 odstraněn `Baloo 2` · A5 bezpečnostní hlavičky · A6 `lib/safeStorage.ts` ·
+A7 příznak `u` u emoji regexů · A8 odinstalace `zod` + `@hookform/resolvers` ·
+A9 oprava popisu stacku v `CLAUDE.md`.
+
+### 🔴 Čeká na rozhodnutí (seznam B)
+| # | Věc | Otázka |
+|---|---|---|
+| B1 | Kontrast tlačítek (2,80 : 1) | ztmavit oranžovou na `#C55405`, nebo tmavý text na stávající? |
+| B2 | `--muted-foreground` → `#736D68` | souhlas s nepatrným ztmavením? |
+| B3 | Komprese ilustrací (14,9 MB → ~1,8 MB) | WebP, nebo jen zmenšit PNG? |
+| B4 | Code splitting admin/rodič/ročníky | souhlas s `React.lazy`? |
+| B5 | react-router 6 → 7 | jediná zranitelnost, která se dostane k uživateli |
+| B6 | `prvoukaVisuals` přestat skládat URL naslepo | 43 chybných dotazů |
+| B7 | `categoryInfo.ts` (1 443 řádků mrtvého obsahu) | překlíčovat, nebo smazat? |
+| B8 | Zrušit alias `violet → brandOrange` | 633 změn ve 43 souborech |
+| B9 | Sdílený `shuffle` místo 239 kopií | sahá do zmrazeného obsahu |
+| B10 | 44 MB nepoužitých obrázků v repu | smazat, nebo `git lfs`? |
+| B11 | Zapnout `noUnusedLocals` | odhalí 137 kusů mrtvého kódu, build začne padat |
+
+### ⏭️ Drobnost k dořešení
+- **`og:image` chybí** — náhledový obrázek 1200 × 630 neexistuje a staré logo už
+  není aktuální značka. Až vznikne, přidat do `index.html` a přepnout
+  `twitter:card` na `summary_large_image`.
+- **`Content-Security-Policy` jsem do `vercel.json` nedal** — musela by propustit
+  Supabase, Google Fonts, `data:` URL z canvasu a inline styly Radixu. Špatná CSP
+  rozbije aplikaci potichu až v produkci.
+
+---
 ## ✅ Připomínky z dokumentu — 6 bodů (2026-09-03)
 
 - ✅ **Hodnocení mluví v 1. os. mn. č.** — „projdeme si to spolu od základů".

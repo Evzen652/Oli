@@ -114,10 +114,21 @@ Pokud session trvá déle (mnoho zpráv / velké soubory), proaktivně upozorni:
 Toto upozornění dej vždy po velkém tasku nebo pokud máš pocit, že kontext přesahuje ~70 % kapacity.
 
 ## Stack
-- React 19 + Vite 5 + TypeScript + Tailwind CSS 3 + shadcn/ui + Supabase
-- State: React hooks + Zustand (implicit)
-- Data: @tanstack/react-query + Supabase client
-- Charts: Recharts
+
+> Ověřeno proti `package.json` a kódu 2026-09-03. Předchozí verze téhle sekce
+> uváděla React 19, Zustand a react-query jako zdroj dat — ani jedno neplatilo.
+> Podle téhle sekce se rozhoduje, co v kódu jde použít, takže nepřesnost tady
+> je dražší než jinde.
+
+- **React 18.3.1** + Vite 5 + TypeScript + Tailwind CSS 3 + shadcn/ui + Supabase
+  (React 19 v projektu **není** — API jako `use()` tedy k dispozici nemáš)
+- State: **jen React hooks**. Zustand není nainstalovaný ani použitý.
+- Data: **přímý Supabase klient**. `@tanstack/react-query` je sice nainstalovaný
+  a `QueryClientProvider` namontovaný v `App.tsx`, ale v celé aplikaci není
+  jediné volání `useQuery` ani `useMutation` — provider zatím jen zabírá místo.
+- Charts: Recharts (používá je jen `pages/Report.tsx`)
+- Formuláře: `react-hook-form` je nainstalovaný, ale používá ho jen
+  `components/ui/form.tsx`, který se nikde neimportuje.
 
 ## Supabase
 - URL: https://uusaczibimqvaazpaopy.supabase.co

@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (4) — hloubkový audit + bezrizikové opravy:
+
+Kompletní výstup je v [`AUDIT_REPORT.md`](AUDIT_REPORT.md). Audit sám proběhl
+**bez zásahu do kódu**; provedl se z něj jen seznam A (devět položek bez rizika).
+
+- 🔴 **Landing page váží 14,9 MB v PNG** — 20 obrázků, žádný neměl `loading="lazy"`,
+  21 z 24 předimenzovaných víc než 2,5×. Po A2 se při načtení stáhne **12 z 24**.
+  Samotná komprese (→ ~1,8 MB) čeká na rozhodnutí (B3).
+- 🔴 **Bílý text na `#F97316` má kontrast 2,80 : 1**, norma je 4,5. Týká se všech
+  hlavních tlačítek. Projekt to pravidlo sám zná — komentář v `SessionEndSummary`
+  uvádí „pod bílým textem by měla jen 2,8:1". Řešení je rozhodnutí o barvě (B1).
+- 🔴 **Selhaný dotaz na roli tiše přepne rodiče do dětského rozhraní.** Supabase
+  při chybě dotazu nevyhazuje výjimku a `useUserRole` `error` vůbec nečte (B/C).
+- 🔴 **43 z 94 URL ilustrací vrací 400** — `prvoukaVisuals` skládá URL ze slugu
+  i pro obrázky, které nikdy nevznikly (B6).
+- ✅ **A6 odhalil chybu navíc:** `getOrCreateDemoHash` měl přímý `setItem` v `try`
+  a **druhý v `catch`** — při zakázaném úložišti tedy odmítl promise. Opraveno.
+- ✅ Hotovo A1–A9: `aria-label` na ✕, lazy loading, meta description + OG,
+  odstraněn nepoužívaný `Baloo 2`, bezpečnostní hlavičky, `lib/safeStorage.ts`
+  místo 9 přímých volání `localStorage`, příznak `u` u emoji regexů, odinstalace
+  `zod` + `@hookform/resolvers`, oprava popisu stacku v `CLAUDE.md`.
+- 📌 **`CLAUDE.md` lhal o stacku:** uváděl React 19 (běží 18.3.1), Zustand
+  (není nainstalovaný) a react-query jako zdroj dat (nula volání `useQuery`).
+- Testy **4619/4619**, `npm run typecheck` 0, build prošel.
 ### Session 2026-09-03 (3) — připomínky z dokumentu (6 bodů):
 
 - 🐞 **Největší nález: celá vrstva „proč se to učíme" byla roky mrtvý kód.**

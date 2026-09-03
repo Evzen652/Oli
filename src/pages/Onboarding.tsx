@@ -6,6 +6,7 @@ import { gradeIllustration } from "@/lib/gradeIllustrations";
 import { isGradeAvailable } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
 import { serverStartTrial } from "@/lib/anonServerSync";
+import { writeLocal } from "@/lib/safeStorage";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
 import { useToast } from "@/hooks/use-toast";
@@ -149,8 +150,11 @@ export default function Onboarding() {
       return;
     }
     setSelected(grade);
-    localStorage.setItem("oli_anon_grade", String(grade));
-    localStorage.setItem("oli_anon_started", new Date().toISOString());
+    // Zápis smí selhat (anonymní režim, zakázaná data stránek) — trial se
+    // pak neuloží, ale dítě se do procvičování dostane. Dřív tu výjimka
+    // zabila první klik nového návštěvníka.
+    writeLocal("oli_anon_grade", String(grade));
+    writeLocal("oli_anon_started", new Date().toISOString());
     startTrial(grade);
     serverStartTrial(grade); // Fáze 3: zrcadlení trialu na server (fire-and-forget)
     setTimeout(() => navigate("/student?anon=1"), 650);
