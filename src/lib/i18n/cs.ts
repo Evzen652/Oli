@@ -158,7 +158,7 @@ const cs = {
   "parent.pin.change": "Změnit PIN",
   "parent.pin.save": "Uložit PIN",
   "parent.pin.clear": "Smazat PIN",
-  "parent.pin.dialog_title": "PIN pro {name}",
+  "parent.pin.dialog_title": "PIN – {name}",
   "parent.pin.dialog_desc": "4místný PIN, kterým se dítě po odhlášení vrátí do svého účtu bez nového párovacího kódu.",
   "parent.pin.hint_unpaired": "Volitelné: nastav PIN teď, ať se dítě po prvním přihlášení kódem příště vrací už jen PINem.",
   "parent.pin.hint_paired": "Párovací kód platí jen na jedno propojení. Nastav PIN, aby se {name} po odhlášení vrátil/a do svého účtu bez nového kódu.",
