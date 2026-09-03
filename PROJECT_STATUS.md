@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (2) — zbytek průběhu cvičení pod stejný design:
+
+Uživatel: „jsou to i tyhle stránky. musí respektovat design homepage." Šlo o kartu
+zpětné vazby, dialog „Co je dobré vědět" a shrnutí sezení — obrazovka cvičení už
+předělaná byla, tyhle tři na ni nenavazovaly.
+
+- ✅ **Zelené plochy pryč ze shrnutí.** `bg-success-muted` a `bg-accent` byly plné syté
+  plochy pod textem; na landingu je vzor **bílý list + 1px okraj v tintu**. Stejná
+  záměna proběhla i v dialogu „Co je dobré vědět", kde navíc modrá plocha kolidovala
+  s barvou matematiky.
+- ✅ **Systémová emoji pryč z celého průběhu cvičení.** 🏆 nad shrnutím, obíhající
+  📖 ✏️ ⭐ kolem sovičky, konfety `🎉⭐✨🌟🎊` v kartě zpětné vazby a emoji na konci
+  **všech 25 pochval a 25 nepovedených odpovědí** (`useSessionDispatch.ts`) i v osmi
+  řetězcích `cs.ts`. Text hlášek zůstal — mizí jen glyf, který se na každé platformě
+  kreslí jinak.
+- ✅ **Ikony statistik jsou tytéž akvarelové kresby jako v `ProgressIndicator`.** Dítě
+  vidí u každé úlohy tužku/fajfku/žárovku/křížek — na shrnutí dosud dostalo lucide sadu
+  ve stejném významu. Tohle je ta „nesouměrnost s grafikou homepage" z hlášení.
+- ✅ **Tlačítko „Pokračovat" srovnáno s landing CTA** (značková oranžová, `rounded-full`);
+  dosud bylo `variant="success"`, tedy tmavě zelené. Šipku už nenese znak `→` v překladu,
+  ale `<PaintedArrow />` — pravidlo pro šipky platilo, jen na tohle místo nedosáhlo,
+  protože arrow byl schovaný v řetězci `cs.ts`.
+- ✅ **Smazána mrtvá CSS** — `@keyframes confetti-burst / float-up / orbit` a jejich
+  třídy. Po odstranění konfet a obíhajících emoji už je nic nepoužívalo.
+- 🔎 **Zdržení, které stojí za zápis:** preview server se nedal nastartovat nad tímto
+  worktree — harness čte `launch.json` z *jiného* worktree a Vite pak servíruje cizí
+  strom. Poznalo se to až `curl`em na `/src/...` (konzole ukazovala zastaralé chyby
+  `SUPABASE_STORAGE`). Funkční server běžel na 8080; ověřovat je potřeba tam.
+- Testy **4615/4615**, typecheck 0, build prošel.
 ### Session 2026-09-03 — obrazovka cvičení a ilustrace předmětů:
 - 🐞 **Nejhlasitější prvek obrazovky vznikl přehlédnutím v aliasu palety.** `HelpButton.tsx`
   měl napsáno `bg-violet-200 border-violet-400 text-violet-900`, jenže `tailwind.config.ts`

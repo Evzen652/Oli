@@ -7,6 +7,31 @@
 
 ---
 
+## ✅ Zpětná vazba, dialog a shrnutí pod design homepage (2026-09-03)
+
+Zadání: „ta zelená se tam vůbec nehodí. ty ikony nejsou souměrné s grafikou homepage"
+→ „jsou to i tyhle stránky."
+
+- ✅ `CheckFeedbackCard` — bílá karta `rounded-3xl` s 1px okrajem, pryč konfety,
+  vnitřní šedý box na bílý, tlačítko značkovou oranžovou `rounded-full`.
+- ✅ `SessionView` — boxy v dialogu „Co je dobré vědět" na bílé s okrajem v tintu
+  (modrá kolidovala s barvou matematiky), karta odhalené odpovědi `rounded-3xl`,
+  druhé „Pokračovat" srovnáno s prvním.
+- ✅ `SessionEndSummary` — 🏆 a obíhající 📖 ✏️ ⭐ pryč, zelené plochy na bílé karty,
+  statistiky `rounded-3xl` a s akvarelovými ikonami z `ProgressIndicator`, tlačítko
+  „Procvičit znovu" ze zelené na značkovou oranžovou.
+- ✅ `useSessionDispatch` + `cs.ts` — emoji pryč z 25 pochval, 25 nepovedených hlášek
+  a 8 řetězců; `session.continue` už nenese znak `→`, šipku kreslí `<PaintedArrow />`.
+- ✅ `index.css` — smazány nepoužívané `confetti-burst`, `float-up`, `orbit`.
+
+### Zbývá k tomuhle tématu
+- ⏭️ **Trofej nad shrnutím je pořád lucide ikona.** Akvarelová verze neexistuje;
+  patří do příští dávky kreseb spolu se zbývajícími předměty.
+- ⏭️ **Druhá vlna návrhu obrazovky cvičení** (papírové zrno, tlumený
+  `session-bg-gradient`, sovička jako spouštěč nápovědy, sloučení dvou hlaviček)
+  zatím neudělaná.
+
+---
 ## 🔴 Pro příští audit obsahu — zadáno 2026-09-03, ZATÍM NEŘEŠIT
 
 ### 1. Shoda slovesa s číslovkou — nová třída chyby

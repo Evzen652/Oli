@@ -14,13 +14,13 @@ import { toast } from "sonner";
 const TERMINAL_STATES: SessionState[] = ["END", "STOP_2"];
 
 const PRAISE_VARIANTS = [
-  "Správně! 🎉", "Výborně! ⭐", "Skvělá práce! 💪", "Tak to má být! 👏",
-  "Přesně tak! 🌟", "Bezchybně! ✨", "Paráda! 🎊", "Super! 🙌",
-  "Máš to! 💯", "Perfektní! 🏆", "Jedničková práce! 🥇", "Dobře to jde! 👍",
-  "Jen tak dál! 🚀", "To sedí! ✅", "Správná odpověď! 🎯", "Zvládáš to! 💪",
-  "Prima! 😊", "Fajn, správně! 👌", "Ano, přesně! ✔️", "Bezvadně! 🌈",
-  "To je ono! 🎉", "Máš pravdu! ⭐", "Skvěle zvládnuto! 🏅", "Bravo! 👏",
-  "Žádná chyba! ✨",
+  "Správně!", "Výborně!", "Skvělá práce!", "Tak to má být!",
+  "Přesně tak!", "Bezchybně!", "Paráda!", "Super!",
+  "Máš to!", "Perfektní!", "Jedničková práce!", "Dobře to jde!",
+  "Jen tak dál!", "To sedí!", "Správná odpověď!", "Zvládáš to!",
+  "Prima!", "Fajn, správně!", "Ano, přesně!", "Bezvadně!",
+  "To je ono!", "Máš pravdu!", "Skvěle zvládnuto!", "Bravo!",
+  "Žádná chyba!",
 ];
 let praiseIndex = 0;
 function getNextPraise(): string {
@@ -30,14 +30,14 @@ function getNextPraise(): string {
 }
 
 const INCORRECT_VARIANTS = [
-  "To není ono 🤔", "Zkus to ještě jednou 💪", "Tentokrát ne 🙃",
-  "Ještě to není správně", "Není to úplně přesné", "Trochu jinak 🔄",
-  "To nesedí", "Tak to nebude", "Ještě zkus přemýšlet 🧐",
+  "To není ono", "Zkus to ještě jednou", "Tentokrát ne",
+  "Ještě to není správně", "Není to úplně přesné", "Trochu jinak",
+  "To nesedí", "Tak to nebude", "Ještě zkus přemýšlet",
   "Ne tak docela", "Skoro, ale ne úplně", "To není správná odpověď",
   "Máš to jinak", "Tady je chybka", "Tohle to není",
-  "Zatím ne", "Ještě to zkus 💪", "Blízko, ale ne",
-  "Podívej se na to znovu 👀", "To úplně nevychází",
-  "Zkus jiný postup", "Ještě nad tím popřemýšlej 🤔",
+  "Zatím ne", "Ještě to zkus", "Blízko, ale ne",
+  "Podívej se na to znovu", "To úplně nevychází",
+  "Zkus jiný postup", "Ještě nad tím popřemýšlej",
   "Není to ono", "Tentokrát se to nepovedlo", "Odpověď je jiná",
 ];
 let incorrectIndex = 0;

@@ -3,8 +3,12 @@ import type { SessionData, TopicMetadata } from "@/lib/types";
 import { getFullTopicTitle } from "@/lib/types";
 import { generateAiEvaluation } from "@/lib/sessionEvaluator";
 import { Button } from "@/components/ui/button";
-import { ClipboardList, CheckCircle, Lightbulb, XCircle, Sparkles, RotateCcw } from "lucide-react";
+import { Trophy, Sparkles, RotateCcw } from "lucide-react";
 import categoryInfoImg from "@/assets/category-info.png";
+import icoTotal from "@/assets/progress/progress-current.png";
+import icoCorrect from "@/assets/progress/progress-correct.png";
+import icoHelp from "@/assets/progress/progress-help.png";
+import icoWrong from "@/assets/progress/progress-wrong.png";
 import { useT } from "@/lib/i18n";
 
 /* Owl loading animation */
@@ -87,10 +91,13 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Trophy banner. Oranžová smí být tint s tmavým textem (6,60:1) —
-          jako plocha pod bílým textem by měla jen 2,8:1. */}
+          jako plocha pod bílým textem by měla jen 2,8:1.
+          Trofej i obíhající symboly byly do 2026-09-03 systémová emoji.
+          Kreslí se na každé platformě jinak a vedle akvarelových ikon
+          působily jako cizí těleso — viz `ProgressIndicator`. */}
       <div className="relative rounded-3xl border border-[#9A3412]/20 bg-[#FFF1E6] p-7 text-center overflow-hidden">
         <div className="relative z-10 flex flex-col items-center gap-2">
-          <span className="text-5xl" aria-hidden>🏆</span>
+          <Trophy className="w-11 h-11 text-[#9A3412]" aria-hidden />
           <h2 className="text-display text-[#9A3412] tracking-tight">
             {t("summary.title")}
           </h2>
@@ -104,40 +111,39 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
 
       {/* Statistiky. Karta je bílá, stav nese ikona a číslo — čtyři plné
           pastelové plochy vedle sebe dřív působily jako čtyři různé značky
-          a „chybně" bylo červenou plochou, tedy trestem místo informace. */}
+          a „chybně" bylo červenou plochou, tedy trestem místo informace.
+
+          Ikony jsou tytéž akvarelové kresby jako v `ProgressIndicator`, ne
+          lucide. Dítě je vidí u každé úlohy během cvičení — na shrnutí tak
+          pozná stejný tvar, ne jinou sadu ve stejném významu. */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-        <div className="rounded-lg border bg-card p-5 shadow-e1 animate-pop-in">
-          <ClipboardList className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
+        <div className="rounded-3xl border bg-card p-5 shadow-e1 animate-pop-in">
+          <img src={icoTotal} alt="" className="w-7 h-7 mx-auto mb-2 object-contain" />
           <p className="text-4xl font-extrabold text-foreground">{answered}</p>
           <p className="text-label text-muted-foreground mt-1">{t("summary.total")}</p>
         </div>
-        <div className="rounded-lg border border-success/30 bg-card p-5 shadow-e1 animate-pop-in" style={{ animationDelay: '0.1s' }}>
-          <CheckCircle className="w-6 h-6 mx-auto mb-2 text-success" />
+        <div className="rounded-3xl border border-success/30 bg-card p-5 shadow-e1 animate-pop-in" style={{ animationDelay: '0.1s' }}>
+          <img src={icoCorrect} alt="" className="w-7 h-7 mx-auto mb-2 object-contain" />
           <p className="text-4xl font-extrabold text-success">{correctAlone}</p>
           <p className="text-label text-muted-foreground mt-1">{t("summary.correct")}</p>
         </div>
-        <div className="rounded-lg border border-warning/30 bg-card p-5 shadow-e1 animate-pop-in" style={{ animationDelay: '0.2s' }}>
-          <Lightbulb className="w-6 h-6 mx-auto mb-2 text-warning" />
+        <div className="rounded-3xl border border-warning/30 bg-card p-5 shadow-e1 animate-pop-in" style={{ animationDelay: '0.2s' }}>
+          <img src={icoHelp} alt="" className="w-7 h-7 mx-auto mb-2 object-contain" />
           <p className="text-4xl font-extrabold text-warning">{helpUsed}</p>
           <p className="text-label text-muted-foreground mt-1">{t("summary.help_used")}</p>
         </div>
-        <div className="rounded-lg border border-destructive/30 bg-card p-5 shadow-e1 animate-pop-in" style={{ animationDelay: '0.3s' }}>
-          <XCircle className="w-6 h-6 mx-auto mb-2 text-destructive" />
+        <div className="rounded-3xl border border-destructive/30 bg-card p-5 shadow-e1 animate-pop-in" style={{ animationDelay: '0.3s' }}>
+          <img src={icoWrong} alt="" className="w-7 h-7 mx-auto mb-2 object-contain" />
           <p className="text-4xl font-extrabold text-destructive">{wrong}</p>
           <p className="text-label text-muted-foreground mt-1">{t("summary.wrong")}</p>
         </div>
       </div>
 
-      {/* AI evaluation — bright mint panel */}
+      {/* Hodnocení od sovičky */}
       <div className="pt-1">
         {(aiEvalLoading || !evalMinReached) && (
-          <div className="rounded-3xl bg-success-muted border border-success/25 p-7 flex flex-col items-center gap-3">
-            <div className="relative w-32 h-32 flex items-center justify-center">
-              <img src={categoryInfoImg} alt="Sovička" className="w-20 h-20 animate-pulse-scale mix-blend-multiply object-contain" />
-              <span className="absolute inset-0 flex items-center justify-center animate-orbit text-2xl pointer-events-none">📖</span>
-              <span className="absolute inset-0 flex items-center justify-center animate-orbit-delayed-1 text-2xl pointer-events-none">✏️</span>
-              <span className="absolute inset-0 flex items-center justify-center animate-orbit-delayed-2 text-2xl pointer-events-none">⭐</span>
-            </div>
+          <div className="rounded-3xl border border-success/25 bg-card shadow-e1 p-7 flex flex-col items-center gap-3">
+            <img src={categoryInfoImg} alt="Sovička" className="w-24 h-24 animate-pulse-scale mix-blend-multiply object-contain" />
             <OwlLoadingText texts={[
               "Sovička přemýšlí nad tvou prací…",
               "Píšu ti hodnocení…",
@@ -147,7 +153,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
           </div>
         )}
         {evalMinReached && !aiEvalLoading && aiEvaluation && (
-          <div className="rounded-3xl bg-success-muted border border-success/25 p-5 animate-fade-in">
+          <div className="rounded-3xl border border-success/25 bg-card shadow-e1 p-5 animate-fade-in">
             <p className="text-base text-foreground flex items-start gap-2">
               <Sparkles className="w-5 h-5 text-success shrink-0 mt-0.5" />
               <span className="text-lg font-semibold leading-snug">{aiEvaluation}</span>
@@ -155,7 +161,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
           </div>
         )}
         {evalMinReached && !aiEvalLoading && !aiEvaluation && (
-          <div className="rounded-3xl bg-accent border border-primary/20 p-5">
+          <div className="rounded-3xl border border-primary/20 bg-card shadow-e1 p-5">
             <p className="text-base text-accent-foreground flex items-start gap-2">
               <Sparkles className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <span className="font-semibold">{fallbackEval}</span>
@@ -167,7 +173,6 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
       {/* Action buttons — pill style */}
       <div className="grid grid-cols-2 gap-3">
         <Button
-          variant="success"
           size="child"
           className="text-lg rounded-full gap-2 font-bold"
           onClick={onRepeat}
@@ -177,7 +182,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
         <Button
           variant="outline"
           size="child"
-          className="text-lg rounded-full gap-2 border-2 border-primary/30 text-primary font-bold"
+          className="text-lg rounded-full gap-2 border border-primary/30 text-primary font-bold"
           onClick={onNewTopic}
         >
           <Sparkles className="w-5 h-5" /> {t("summary.new_topic")}

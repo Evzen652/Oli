@@ -657,8 +657,8 @@ export function SessionView() {
                   <ScrollArea className="flex-1 px-6 pb-6">
                     <div className="space-y-6 text-base pt-4">
                       <p className="text-muted-foreground">{session.matchedTopic.briefDescription}</p>
-                      <div className="rounded-xl bg-blue-50 border-2 border-blue-200 p-5 space-y-3">
-                        <p className="font-bold text-blue-800 text-lg">{t("session.how_to")}</p>
+                      <div className="rounded-2xl border border-border bg-card p-5 space-y-3 shadow-e1">
+                        <p className="font-bold text-foreground text-lg">{t("session.how_to")}</p>
                         <p className="text-blue-900">{session.matchedTopic.helpTemplate.hint}</p>
                         {session.matchedTopic.helpTemplate.steps.length > 0 && (
                           <ol className="list-decimal list-inside space-y-2 text-blue-900">
@@ -698,18 +698,18 @@ export function SessionView() {
                           })()}
                         </div>
                       )}
-                      <div className="rounded-lg bg-success-muted border border-success/30 p-5 space-y-2">
+                      <div className="rounded-2xl border border-success/30 bg-card p-5 space-y-2 shadow-e1">
                         <p className="font-bold text-success">{t("session.example_label")}</p>
                         <p className="text-foreground">{session.matchedTopic.helpTemplate.example}</p>
                       </div>
-                      <div className="rounded-lg border border-destructive/30 bg-card p-5 space-y-2">
+                      <div className="rounded-2xl border border-destructive/30 bg-card p-5 space-y-2 shadow-e1">
                         <p className="font-bold text-destructive">{t("session.common_mistake")}</p>
                         <p className="text-foreground">{session.matchedTopic.helpTemplate.commonMistake}</p>
                       </div>
                       {(() => {
                         const catInfo = getCategoryInfo(session.matchedTopic!.subject, session.matchedTopic!.category, session.matchedTopic!.topic);
                         return catInfo?.funFact ? (
-                          <div className="rounded-lg bg-warning-muted border border-warning/30 p-5 space-y-2">
+                          <div className="rounded-2xl border border-warning/30 bg-card p-5 space-y-2 shadow-e1">
                             <p className="font-semibold text-warning text-lg">{t("session.fun_fact")}</p>
                             <p className="text-foreground italic">{catInfo.funFact}</p>
                           </div>
@@ -851,7 +851,7 @@ export function SessionView() {
           {/* Revealed answer */}
           {revealedAnswer && session.state === "PRACTICE" && !checkFeedback && (
             <div className="space-y-5">
-              <Card className="border-2 rounded-2xl shadow-sm">
+              <Card className="rounded-3xl border shadow-e1">
                 <CardContent className="p-6 space-y-4">
                   <p className="text-lg font-medium text-foreground">
                     {t("session.correct_answer")}<span className="font-bold">{revealedAnswer.answer}</span>
@@ -859,8 +859,9 @@ export function SessionView() {
                   <p className="text-base text-muted-foreground">{revealedAnswer.hint}</p>
                 </CardContent>
               </Card>
-              <Button onClick={s.handleContinueAfterCheck} disabled={loading} variant="success" size="child" className="w-full text-lg">
+              <Button onClick={s.handleContinueAfterCheck} disabled={loading} size="child" className="group w-full gap-2 rounded-full text-lg font-bold">
                 {loading ? t("session.processing") : t("session.continue")}
+                {!loading && <PaintedArrow className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />}
               </Button>
             </div>
           )}
