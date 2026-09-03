@@ -79,9 +79,11 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
         const subjectMeta = subject ? getSubjectMeta(subject) : null;
         const skillName = getReadableSkillName(m.skill_id);
         return (
-          <div key={m.id} className="rounded-2xl border border-amber-200/70 overflow-hidden">
-            {/* Hlavička: předmět + téma */}
-            <div className="flex items-center gap-2.5 px-4 py-3 bg-amber-50/60 border-b border-amber-200/50">
+          // Zjednodušeno (bod b): dřív dva odstavce s labely „Kde chybuje" /
+          // „Návrh". Rodič potřebuje hlavně akci — návrh je proto zvýrazněný,
+          // popis chyby je jen tichý druhý řádek.
+          <div key={m.id} className="rounded-2xl border border-border bg-card p-4 shadow-e1 space-y-2.5">
+            <div className="flex items-center gap-2.5">
               <IllustrationImg
                 src={subjectMeta?.image ?? ""}
                 className="h-7 w-7 object-contain shrink-0"
@@ -89,29 +91,20 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
               />
               <div className="min-w-0">
                 {subjectMeta?.label && (
-                  <p className="text-caption font-bold text-amber-700/70 uppercase tracking-[0.12em] leading-none mb-0.5">{subjectMeta.label}</p>
+                  <p className="text-caption font-bold text-muted-foreground uppercase tracking-[0.12em] leading-none mb-0.5">{subjectMeta.label}</p>
                 )}
                 <p className="text-sm font-bold text-foreground leading-tight truncate">{skillName}</p>
               </div>
             </div>
-            {/* Tělo */}
-            <div className="px-4 py-3 space-y-3 bg-card">
-              {m.description && (
-                <div className="space-y-1">
-                  <p className="text-caption font-bold uppercase tracking-[0.1em] text-muted-foreground">Kde chybuje</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{sub(m.description)}</p>
-                </div>
-              )}
-              {m.suggestion && (
-                <div className="space-y-1 pt-2 border-t border-border/50">
-                  <p className="text-caption font-bold uppercase tracking-[0.1em] text-amber-700/80">Návrh</p>
-                  <div className="flex items-start gap-2">
-                    <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
-                    <p className="text-sm text-foreground/85 leading-relaxed">{sub(m.suggestion)}</p>
-                  </div>
-                </div>
-              )}
-            </div>
+            {m.suggestion && (
+              <div className="flex items-start gap-2 rounded-xl border border-warning/30 bg-warning-muted px-3 py-2">
+                <Lightbulb className="h-4 w-4 text-warning shrink-0 mt-0.5" />
+                <p className="text-sm text-foreground leading-snug">{sub(m.suggestion)}</p>
+              </div>
+            )}
+            {m.description && (
+              <p className="text-xs text-muted-foreground leading-relaxed">{sub(m.description)}</p>
+            )}
           </div>
         );
       })}

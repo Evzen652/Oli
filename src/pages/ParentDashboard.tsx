@@ -12,7 +12,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
-import { LogOut, Plus, RefreshCw, Clock, Pencil, Check, X, Trash2, CheckCircle2, HelpCircle, XCircle, Eye } from "lucide-react";
+import { LogOut, Plus, RefreshCw, Clock, Pencil, Check, X, Trash2, CheckCircle2, HelpCircle, Eye, ClipboardList, Activity, Target } from "lucide-react";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { useNavigate } from "react-router-dom";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -139,6 +139,11 @@ export default function ParentDashboard() {
 
   const getInitial = (name: string) => name.charAt(0).toUpperCase();
 
+  /** Plynulé sjetí na sekci — rychlá navigace z přehledu (bod c). */
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   /**
    * Přepínač dětí (UX audit 2026-08-25).
    *
@@ -174,7 +179,7 @@ export default function ParentDashboard() {
 
 
         {/* ── Greeting bar ── */}
-        <div className="bg-white rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-sm border border-black/[0.05]">
+        <div className="bg-card rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-e1 border border-border">
           <img src={logoNoText} alt="Oli" className="h-14 w-14 object-contain shrink-0" />
           <div className="flex-1 min-w-0">
             <h1 className="font-bold text-2xl text-foreground leading-tight">
@@ -236,22 +241,20 @@ export default function ParentDashboard() {
             {/* Jednosloupcový layout */}
             {child.is_paired ? (
               <>
-              {/* Hero karta — horizontální, full width */}
-              <div className="rounded-3xl overflow-hidden shadow-sm border border-violet-200">
-                {/* Gradient hlavička — jméno + hvězdičky */}
-                <div className="relative overflow-hidden bg-gradient-to-br from-violet-600 via-violet-700 to-violet-800 px-8 pt-8 pb-6 text-white">
-                  <span className="absolute top-4 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
-                  <span className="absolute top-6 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>
-                  <span className="absolute bottom-3 right-12 text-white text-lg pointer-events-none select-none" style={{ animation: 'oli-star-3 15s ease-in-out infinite', animationDelay: '-3s' }}>✦</span>
-                  <span className="absolute top-3 left-1/3  text-white text-sm pointer-events-none select-none" style={{ animation: 'oli-star-1 25s ease-in-out infinite', animationDelay: '-14s' }}>✦</span>
-
-                  {/* Edit/delete — pravý horní roh */}
-                  {(
-                    <div className="absolute top-3 right-3 flex gap-1">
-                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-white/60 hover:text-white hover:bg-white/20" onClick={() => startEdit(child)}><Pencil className="h-3 w-3" /></Button>
+              {/* Hero — přehled dítěte. Bílá karta s tenkým oranžovým akcentem,
+                  ne plná oranžová plocha: bílý text na brandOrange měl kontrast
+                  2,8:1 (WCAG fail) a působil „příliš oranžově". Barvu nese jen
+                  horní proužek a ikony statistik. */}
+              <div className="rounded-3xl border border-border bg-card shadow-e1 overflow-hidden">
+                <div className="h-1.5 bg-gradient-to-r from-primary via-primary/70 to-primary/40" />
+                <div className="relative p-6 sm:p-7">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-caption font-bold tracking-[0.15em] text-muted-foreground">PŘEHLED DÍTĚTE</p>
+                    <div className="flex gap-1 shrink-0">
+                      <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-foreground" onClick={() => startEdit(child)}><Pencil className="h-3.5 w-3.5" /></Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-white/60 hover:text-white hover:bg-white/20"><Trash2 className="h-3 w-3" /></Button>
+                          <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full text-muted-foreground hover:text-destructive"><Trash2 className="h-3.5 w-3.5" /></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
@@ -268,9 +271,8 @@ export default function ParentDashboard() {
                         </AlertDialogContent>
                       </AlertDialog>
                     </div>
-                  )}
+                  </div>
 
-                  <p className="text-caption font-bold tracking-[0.15em] text-white/60 mb-1">✦ PŘEHLED DÍTĚTE</p>
                   {editingId === child.id ? (
                     <>
                       <input
@@ -278,47 +280,46 @@ export default function ParentDashboard() {
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
                         onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") setEditingId(null); }}
-                        className="font-bold text-3xl leading-tight text-white bg-white/20 border border-white/40 rounded-xl px-3 py-1 w-full max-w-xs outline-none placeholder:text-white/40 mb-2"
+                        className="font-bold text-3xl leading-tight text-foreground bg-background border border-input rounded-xl px-3 py-1 w-full max-w-xs outline-none focus:ring-2 focus:ring-ring mt-1 mb-2"
                       />
                       <div className="flex items-center gap-2 mb-5">
                         <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
-                          <SelectTrigger className="h-8 w-28 bg-white/20 border-white/30 text-white [&>svg]:text-white hover:bg-white/30 focus:ring-white/30">
-                            <SelectValue />
-                          </SelectTrigger>
+                          <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
                           <SelectContent><GradeSelectItems /></SelectContent>
                         </Select>
-                        <button
-                          onClick={handleSaveEdit}
-                          disabled={editLoading || !editName.trim()}
-                          className="flex items-center gap-1 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 px-3 py-1 text-xs font-semibold text-white transition-colors disabled:opacity-50"
-                        >
-                          <Check className="h-3 w-3" /> Uložit
-                        </button>
-                        <button
-                          onClick={() => setEditingId(null)}
-                          className="flex items-center gap-1 rounded-full hover:bg-white/20 border border-white/30 px-3 py-1 text-xs font-semibold text-white/70 hover:text-white transition-colors"
-                        >
-                          <X className="h-3 w-3" /> Zrušit
-                        </button>
+                        <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="h-8 gap-1 rounded-full"><Check className="h-3 w-3" /> Uložit</Button>
+                        <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-8 gap-1 rounded-full"><X className="h-3 w-3" /> Zrušit</Button>
                       </div>
                     </>
                   ) : (
                     <>
-                      <h2 className="font-bold text-3xl leading-tight text-white">{child.child_name}</h2>
-                      <div className="flex flex-wrap items-center gap-2 mt-1 mb-5">
-                        <p className="text-white/70 text-sm">{child.grade}. ročník · aktivní</p>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-caption font-semibold text-white">
+                      <h2 className="font-bold text-3xl leading-tight text-foreground mt-1">{child.child_name}</h2>
+                      <div className="flex flex-wrap items-center gap-2 mt-1.5 mb-5">
+                        <p className="text-muted-foreground text-sm">{child.grade}. ročník · aktivní</p>
+                        <span className="inline-flex items-center gap-1 rounded-full border border-success/30 bg-success-muted px-2.5 py-0.5 text-caption font-semibold text-success">
                           <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
                         </span>
-                        {<ChildPinControl child={child} onChanged={refetch} tone="onDark" />}
+                        {<ChildPinControl child={child} onChanged={refetch} />}
                       </div>
                     </>
                   )}
 
-                  {/* Stats + tlačítko — bílá barva přes child selector */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-                    <div className="[&_*]:!text-white [&_*]:!border-white/30 flex-1 min-w-0">
-                      <ChildActivityBadge childId={child.id} compact />
+                  {/* Statistiky */}
+                  <ChildActivityBadge childId={child.id} compact />
+
+                  {/* Rychlá navigace do sekcí + hlavní akce. Bod (c): z přehledu
+                      se rodič proklikne na všechny části stránky. */}
+                  <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="flex flex-wrap gap-2 flex-1">
+                      <button type="button" onClick={() => scrollToSection("ukoly")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
+                        Zadané úkoly <PaintedArrow direction="down" className="h-3.5 w-3.5" />
+                      </button>
+                      <button type="button" onClick={() => scrollToSection("procvicovani")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
+                        Procvičování <PaintedArrow direction="down" className="h-3.5 w-3.5" />
+                      </button>
+                      <button type="button" onClick={() => scrollToSection("zamerit")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
+                        Na co se zaměřit <PaintedArrow direction="down" className="h-3.5 w-3.5" />
+                      </button>
                     </div>
                     {editingId !== child.id && (
                       <div className="shrink-0 w-full sm:w-auto">
@@ -333,7 +334,6 @@ export default function ParentDashboard() {
                           }}
                           prefillSkillCode={prefillSkillCode && (!prefillForChildId || prefillForChildId === child.id) ? prefillSkillCode : null}
                           onPrefillConsumed={consumePrefill}
-                          buttonClassName="bg-white text-primary hover:bg-white/90"
                         />
                       </div>
                     )}
@@ -342,10 +342,10 @@ export default function ParentDashboard() {
               </div>
 
               {/* Zadané úkoly — full width */}
-              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] flex flex-col overflow-hidden">
-                <div className="px-5 py-4 border-b border-border/40">
+              <div id="ukoly" className="scroll-mt-6 bg-card rounded-3xl shadow-e1 border border-border flex flex-col overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/60">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-rose-500">❤️</span>
+                    <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><ClipboardList className="h-4 w-4" /></span>
                     <h2 className="font-bold text-base text-foreground">Zadané úkoly</h2>
                   </div>
                   {/* 1. pád — viz poznámka o skloňování u `assign.title` v cs.ts. */}
@@ -362,10 +362,10 @@ export default function ParentDashboard() {
               </div>
 
               {/* Samostatné procvičování — full width */}
-              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] flex flex-col overflow-hidden">
-                <div className="px-5 py-4 border-b border-border/40">
+              <div id="procvicovani" className="scroll-mt-6 bg-card rounded-3xl shadow-e1 border border-border flex flex-col overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/60">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-blue-500">🧩</span>
+                    <span className="grid h-8 w-8 place-items-center rounded-xl bg-success/10 text-success shrink-0"><Activity className="h-4 w-4" /></span>
                     <h2 className="flex-1 font-bold text-base text-foreground">Samostatné procvičování</h2>
                     {child.is_paired && (
                       <button
@@ -389,9 +389,9 @@ export default function ParentDashboard() {
               </div>
 
               {/* Na co se zaměřit — full width */}
-              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] flex flex-col overflow-hidden">
-                <div className="px-5 py-4 border-b border-border/40 flex items-center gap-2.5">
-                  <span className="text-violet-500">🎯</span>
+              <div id="zamerit" className="scroll-mt-6 bg-card rounded-3xl shadow-e1 border border-border flex flex-col overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/60 flex items-center gap-2.5">
+                  <span className="grid h-8 w-8 place-items-center rounded-xl bg-warning/10 text-warning shrink-0"><Target className="h-4 w-4" /></span>
                   <div className="flex-1 min-w-0">
                     <h2 className="font-bold text-base text-foreground">Na co se zaměřit</h2>
                     <p className="text-xs text-muted-foreground mt-0.5">Opakující se chyby z posledních cvičení, na které stojí za to reagovat.</p>
@@ -411,7 +411,7 @@ export default function ParentDashboard() {
               </>
             ) : (
               /* Nepropojené dítě — jednoduchá karta */
-              <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-6 space-y-4">
+              <div className="bg-card rounded-3xl shadow-e1 border border-border p-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold text-white shrink-0 ${avatarColors[idx % avatarColors.length]}`}>
                     {getInitial(editingId === child.id ? editName : child.child_name)}
@@ -498,7 +498,7 @@ export default function ParentDashboard() {
 
         {/* ── Přidat dítě ── */}
         {showAdd ? (
-          <div className="bg-white rounded-3xl border-2 border-dashed border-border shadow-sm p-6 space-y-4">
+          <div className="bg-card rounded-3xl border-2 border-dashed border-border shadow-e1 p-6 space-y-4">
             <div className="space-y-2"><Label>{t("onboarding.step2.child_name")}</Label><Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Péťa" className="rounded-xl" /></div>
             <div className="space-y-2">
               <Label>{t("onboarding.step2.grade")}</Label>
@@ -514,7 +514,7 @@ export default function ParentDashboard() {
             </div>
           </div>
         ) : (
-          <button onClick={() => setShowAdd(true)} className="w-full rounded-3xl border-2 border-dashed border-border bg-white/60 hover:bg-white hover:border-primary/40 transition-all py-10 px-4 text-center group">
+          <button onClick={() => setShowAdd(true)} className="w-full rounded-3xl border-2 border-dashed border-border bg-card/60 hover:bg-card hover:border-primary/40 transition-all py-10 px-4 text-center group">
             <span className="grid h-12 w-12 mx-auto place-items-center rounded-2xl bg-primary/10 text-primary group-hover:scale-105 transition-transform"><Plus className="h-5 w-5" /></span>
             <p className="mt-3 font-bold text-foreground">{t("parent.add_child")}</p>
             <p className="mt-1 text-sm text-muted-foreground">Každé dítě má vlastní profil, kód a pokrok.</p>

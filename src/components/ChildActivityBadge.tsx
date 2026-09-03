@@ -46,33 +46,35 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
       summaryText = base + tip;
     }
 
+    // Světlá varianta — karta rodičovského dashboardu je bílá (dřív oranžový
+    // gradient s bílým textem, kontrast 2,8:1). Čísla jsou tmavá, barvu nese
+    // jen ikona a tenký okraj v tintu — stejné tvarosloví jako shrnutí sezení.
     return (
       <div className="space-y-4">
-        {/* Stats — 3 bílé karty s ikonkou */}
-        <div className="flex gap-3">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
-            <Flame className="h-5 w-5 text-orange-300 shrink-0" />
+        <div className="grid grid-cols-3 gap-3">
+          <div className="flex items-center gap-2.5 rounded-2xl border border-primary/25 bg-card px-4 py-2.5 shadow-e1">
+            <Flame className="h-5 w-5 text-primary shrink-0" />
             <div>
-              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{days}</p>
-              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
+              <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
+              <p className="text-muted-foreground text-caption font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
-            <CheckCircle2 className="h-5 w-5 text-emerald-300 shrink-0" />
+          <div className="flex items-center gap-2.5 rounded-2xl border border-success/30 bg-card px-4 py-2.5 shadow-e1">
+            <CheckCircle2 className="h-5 w-5 text-success shrink-0" />
             <div>
-              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{tasks}</p>
-              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">ÚLOH</p>
+              <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{tasks}</p>
+              <p className="text-muted-foreground text-caption font-bold tracking-wide mt-0.5">ÚLOH</p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
-            <Star className="h-5 w-5 text-yellow-300 shrink-0" />
+          <div className="flex items-center gap-2.5 rounded-2xl border border-warning/30 bg-card px-4 py-2.5 shadow-e1">
+            <Star className="h-5 w-5 text-warning shrink-0" />
             <div>
-              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{accuracy}%</p>
-              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
+              <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{accuracy}%</p>
+              <p className="text-muted-foreground text-caption font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
             </div>
           </div>
         </div>
-        <p className="text-white/70 text-sm leading-snug max-w-sm">{summaryText}</p>
+        <p className="text-muted-foreground text-sm leading-snug max-w-xl">{summaryText}</p>
       </div>
     );
   }
