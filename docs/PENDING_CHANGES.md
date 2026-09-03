@@ -100,7 +100,7 @@ Zadání: „ta zelená se tam vůbec nehodí. ty ikony nejsou souměrné s graf
 ---
 ## 🔴 Pro příští audit obsahu — zadáno 2026-09-03, ZATÍM NEŘEŠIT
 
-### 1. Shoda slovesa s číslovkou — nová třída chyby
+### 1. ~~Shoda slovesa s číslovkou~~ ✅ HOTOVO 2026-09-03
 
 Nalezeno v běžícím cvičení (2. ročník, matematika):
 
@@ -127,6 +127,34 @@ jako `bylo` a mění jen tvar podstatného jména.
 slovesa nikoli**. Kdekoli generátor skládá „bylo/byl/byli + číslovka", může být
 tentýž problém. Audit má projít celý korpus, ne jen tenhle soubor, a zvážit
 doplnění helperu do `czechGrammar.ts` (např. `verbPast(n, "byl")`).
+
+**Vyřešeno.** Do `czechGrammar.ts` přibyl rejstřík rodů (`GENDER`, včetně
+životnosti) a helpery `agree()`, `isAre()`, `wasCount()`, `genderOf()`.
+Sloveso se odvozuje z tvaru ve středním rodě jednotného čísla („bylo", „stálo",
+„přijelo"), takže helper zvládne libovolné sloveso, ne jen „být".
+
+**Podezření na systémovou chybu se potvrdilo jen zčásti.** Sken celého korpusu
+našel 23 míst, kde sloveso v minulém čase sousedí s číslem — z toho ale většina
+byla v pořádku (pevná čísla ≥ 5 ve statických bankách otázek, nebo teplota,
+kde je střední rod správně). Skutečné chyby byly ve **třech** souborech:
+
+| Soubor | Co bylo špatně |
+|---|---|
+| `grade-2/matematika/tabulkyAJednoduchaSchema.ts` | 5 kontextů se slovesem natvrdo; rozsah 2–12, takže ~čtvrtina úloh |
+| `grade-3/matematika/slovniUlohySeDvemaOperacemi.ts` | „Odjelo 1 aut" — chybný tvar slovesa **i** natvrdo napsaný genitiv „aut" místo „auta"; navíc „V košíku je 3 jablka" místo „jsou" |
+| `lib/content/math/wordProblems5.ts` | „Lenka koupila **kniha**" (chybí 4. pád) a „**Sešit stála**" (rod) — 3 z 6 variant u obojího |
+
+Nálezy, které sken vyhodil a **chybou nejsou**: „Ráno bylo −5 °C" (teplota je
+střední rod, správně) a citované ukázkové věty v učivu o podmětu.
+
+Pojistka: test `czech-grammar.test.ts` hlídá, že **každé** slovo v `NOUNS` má
+vyplněný rod — jinak by nové substantivum tiše propadlo na sloveso beze změny.
+`DÍTĚ` má rod rozepsaný zvlášť pro jednotné a množné číslo („bylo 1 dítě",
+ale „byly 3 děti").
+
+Zamčený snapshot `g3-mat-slovni-ulohy-dve-operace` přegenerován (jediná změna).
+
+---
 
 ### 2. Rotující pobídky nad otázkou se pořád opakují
 

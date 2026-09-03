@@ -144,6 +144,27 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (5) — shoda přísudku s číslovkou:
+
+Nález z běžícího cvičení: „ve vedlejší třídě **bylo 3 žáci**" (správně „byli").
+
+- ✅ **`czechGrammar.ts` umí shodu přísudku.** Přibyl rejstřík rodů `GENDER`
+  (s rozlišením životnosti — „byli 3 žáci" × „byly 3 body") a helpery
+  `agree()`, `isAre()`, `wasCount()`, `genderOf()`. Sloveso se odvozuje
+  z tvaru ve středním rodě j. č., takže helper zvládne „bylo", „stálo"
+  i „přijelo", ne jen sponu.
+- 🔎 **Podezření na systémovou chybu se potvrdilo jen zčásti.** Sken korpusu
+  našel 23 míst, kde sloveso sousedí s číslem, ale většina byla správně
+  (pevná čísla ≥ 5, teplota ve středním rodě). Skutečně vadné byly **tři**
+  soubory — u dvou z nich šlo o jiné chyby, než co hlásil původní nález:
+  natvrdo napsaný genitiv („Odjelo 1 **aut**"), přítomná spona („V košíku
+  **je** 3 jablka") a chybějící 4. pád („Lenka koupila **kniha**").
+- ✅ **Pojistka testem:** `czech-grammar.test.ts` hlídá, že každé slovo
+  v `NOUNS` má vyplněný rod. Bez ní by nové substantivum tiše propadlo
+  na „vrať sloveso beze změny" a chyba by se ukázala až u dítěte.
+- 📌 `DÍTĚ` má rod zvlášť pro j. č. a mn. č.: „bylo 1 dítě", ale „byly 3 děti".
+- Testy **4628/4628**, typecheck 0, `audit:content` prošel, build prošel.
+  Zamčený snapshot `g3-mat-slovni-ulohy-dve-operace` přegenerován.
 ### Session 2026-09-03 (4) — hloubkový audit + bezrizikové opravy:
 
 Kompletní výstup je v [`AUDIT_REPORT.md`](AUDIT_REPORT.md). Audit sám proběhl

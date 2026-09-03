@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad, form } from "@/lib/czechGrammar";
+import { pad, form, agree } from "@/lib/czechGrammar";
 import { buildUniqueOptions, shuffleOptions } from "@/lib/content/uniqueOptions";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -44,20 +44,46 @@ function randInt(min: number, max: number): number {
 
 // ── L1 — součet dvou hodnot ──────────────────────────────────────────────────
 
-const L1_CONTEXTS: { label1: string; label2: string; noun: string }[] = [
-  { label1: "V pondělí bylo", label2: "v úterý", noun: "JABLKO" },
-  { label1: "Ve třídě bylo", label2: "ve vedlejší třídě bylo", noun: "ŽÁK" },
-  { label1: "Na parkovišti stálo", label2: "přijelo ještě", noun: "AUTO" },
-  { label1: "V krabici bylo", label2: "přidali jsme ještě", noun: "KOSTKA" },
-  { label1: "V pytlíku bylo", label2: "dokoupili jsme ještě", noun: "KULIČKA" },
+/**
+ * Šablony vět s dvěma zástupnými značkami:
+ *   `{V}` — přísudek, dosadí `agree()` podle počtu a rodu
+ *   `{N}` — číslo se substantivem, dosadí `pad()`
+ *
+ * `verb` je vždy tvar ve **středním rodě jednotného čísla** („bylo", „stálo",
+ * „přijelo"). Dřív bylo sloveso natvrdo v textu, takže při počtu 2–4 vznikaly
+ * věty jako **„Ve třídě bylo 3 žáci"** místo „Ve třídě byli 3 žáci". Počet je
+ * v rozsahu 2–12, špatně tedy byla zhruba čtvrtina úloh.
+ *
+ * Šablona bez `{V}` je záměr: „přidali jsme ještě 3 kostky" má podmět „my",
+ * takže se sloveso s číslovkou neshoduje a měnit se nesmí.
+ */
+const L1_CONTEXTS: {
+  tpl1: string;
+  verb1: string;
+  tpl2: string;
+  verb2?: string;
+  noun: string;
+}[] = [
+  { tpl1: "V pondělí {V} {N}", verb1: "bylo", tpl2: "v úterý {N}", noun: "JABLKO" },
+  { tpl1: "Ve třídě {V} {N}", verb1: "bylo", tpl2: "ve vedlejší třídě {V} {N}", verb2: "bylo", noun: "ŽÁK" },
+  { tpl1: "Na parkovišti {V} {N}", verb1: "stálo", tpl2: "{V} ještě {N}", verb2: "přijelo", noun: "AUTO" },
+  { tpl1: "V krabici {V} {N}", verb1: "bylo", tpl2: "přidali jsme ještě {N}", noun: "KOSTKA" },
+  { tpl1: "V pytlíku {V} {N}", verb1: "bylo", tpl2: "dokoupili jsme ještě {N}", noun: "KULIČKA" },
 ];
+
+/** Dosadí do šablony přísudek ve správném tvaru a číslo se substantivem. */
+function fillTemplate(tpl: string, n: number, noun: string, verb?: string): string {
+  return tpl.replace("{V}", verb ? agree(n, noun, verb) : "").replace("{N}", pad(n, noun));
+}
 
 function makeL1Task(): PracticeTask {
   const ctx = L1_CONTEXTS[randInt(0, L1_CONTEXTS.length - 1)];
   const a = randInt(2, 12);
   const b = randInt(2, 12);
   const correct = a + b;
-  const question = `${ctx.label1} ${pad(a, ctx.noun)}, ${ctx.label2} ${pad(b, ctx.noun)}. Kolik ${form(5, ctx.noun)} bylo celkem?`;
+  const part1 = fillTemplate(ctx.tpl1, a, ctx.noun, ctx.verb1);
+  const part2 = fillTemplate(ctx.tpl2, b, ctx.noun, ctx.verb2);
+  const question = `${part1}, ${part2}. Kolik ${form(5, ctx.noun)} bylo celkem?`;
   return {
     question,
     correctAnswer: String(correct),

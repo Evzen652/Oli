@@ -1,5 +1,10 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { plural } from "@/lib/czechGrammar";
+import { plural, pad, agree, isAre } from "@/lib/czechGrammar";
+
+/** První písmeno velké — pro sloveso, které začíná větu. */
+function cap(w: string): string {
+  return w.charAt(0).toUpperCase() + w.slice(1);
+}
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -25,10 +30,10 @@ function makeUlohy(level: number): Uloha[] {
       const jablkaB = plural(b, "jablko", "jablka", "jablek");
       const jablkaR = plural(r, "jablko", "jablka", "jablek");
       return {
-        q: `V košíku bylo ${a} ${jablkaA}. Přidali jsme ${b} ${jablkaB} a pak ${c} snědli. Kolik jablek je v košíku?`,
+        q: `V košíku ${agree(a, "JABLKO", "bylo")} ${a} ${jablkaA}. Přidali jsme ${b} ${jablkaB} a pak ${c} snědli. Kolik jablek je v košíku?`,
         a: r,
         steps: [`${a} + ${b} = ${a + b}`, `${a + b} − ${c} = ${r}`],
-        e: `Nejdřív spočítáme, kolik jablek je po přidání: ${a} + ${b} = ${a + b}. Pak odečteme snědená: ${a + b} − ${c} = ${r}. V košíku je ${r} ${jablkaR}.`,
+        e: `Nejdřív spočítáme, kolik jablek je po přidání: ${a} + ${b} = ${a + b}. Pak odečteme snědená: ${a + b} − ${c} = ${r}. V košíku ${isAre(r)} ${r} ${jablkaR}.`,
       };
     },
     () => {
@@ -68,10 +73,13 @@ function makeUlohy(level: number): Uloha[] {
       const autA = plural(a, "auto", "auta", "aut");
       const autR = plural(r, "auto", "auta", "aut");
       return {
-        q: `Na parkovišti stálo ${a} ${autA}. Odjelo ${b} aut a přijelo ${c} nových. Kolik aut je teď na parkovišti?`,
+        // `odjelo` začíná větu, takže velké písmeno. Sloveso nesmí zůstat
+        // napevno: „Odjelo 3 aut" bylo špatně dvakrát — tvarem slovesa
+        // i natvrdo napsaným genitivem „aut" místo „auta".
+        q: `Na parkovišti ${agree(a, "AUTO", "stálo")} ${a} ${autA}. ${cap(agree(b, "AUTO", "odjelo"))} ${pad(b, "AUTO")} a ${agree(c, "AUTO", "přijelo")} ${pad(c, "AUTO")}. Kolik aut je teď na parkovišti?`,
         a: r,
         steps: [`${a} − ${b} = ${a - b}`, `${a - b} + ${c} = ${r}`],
-        e: `Nejdřív odečteme auta, která odjela: ${a} − ${b} = ${a - b}. Pak přičteme nová: ${a - b} + ${c} = ${r}. Na parkovišti je teď ${r} ${autR}.`,
+        e: `Nejdřív odečteme auta, která odjela: ${a} − ${b} = ${a - b}. Pak přičteme nová: ${a - b} + ${c} = ${r}. Na parkovišti ${isAre(r)} teď ${r} ${autR}.`,
       };
     },
   ];

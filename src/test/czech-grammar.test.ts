@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { plural, pluralWithNumber, pad, form, adj, phrase, pastTense, pastTenseInclusive } from "@/lib/czechGrammar";
+import { plural, pluralWithNumber, pad, form, adj, phrase, pastTense, pastTenseInclusive, agree, isAre, wasCount, genderOf } from "@/lib/czechGrammar";
 
 describe("plural — základní pravidlo 1/2-4/5+", () => {
   it("vrací one pro 1", () => expect(plural(1, "díl", "díly", "dílů")).toBe("díl"));
@@ -97,5 +97,95 @@ describe("pastTenseInclusive — rod nezjištěn → -(a)", () => {
   it("přidá -(a) u sloves končících -l", () => {
     expect(pastTenseInclusive("splnil")).toBe("splnil(a)");
     expect(pastTenseInclusive("zvládl")).toBe("zvládl(a)");
+  });
+});
+
+/**
+ * Shoda přísudku s číslovkou — nejčastější chyba v generovaném obsahu.
+ * Nález z 2026-09-03: „Ve třídě bylo 3 žáci" (správně „byli 3 žáci").
+ */
+describe("agree — shoda přísudku s číslovkou", () => {
+  it("1 → tvar podle rodu", () => {
+    expect(agree(1, "ŽÁK", "bylo")).toBe("byl");
+    expect(agree(1, "KOSTKA", "bylo")).toBe("byla");
+    expect(agree(1, "JABLKO", "bylo")).toBe("bylo");
+    expect(agree(1, "BOD", "bylo")).toBe("byl");
+  });
+
+  it("2–4 → množné číslo, životnost rozhoduje", () => {
+    for (const n of [2, 3, 4]) {
+      expect(agree(n, "ŽÁK", "bylo")).toBe("byli");    // mužský ŽIVOTNÝ
+      expect(agree(n, "BOD", "bylo")).toBe("byly");    // mužský neživotný
+      expect(agree(n, "KOSTKA", "bylo")).toBe("byly"); // ženský
+      expect(agree(n, "JABLKO", "bylo")).toBe("byla"); // střední
+    }
+  });
+
+  it("0 a 5+ → vždy střední rod jednotného čísla", () => {
+    for (const n of [0, 5, 7, 12, 100]) {
+      expect(agree(n, "ŽÁK", "bylo")).toBe("bylo");
+      expect(agree(n, "KOSTKA", "bylo")).toBe("bylo");
+    }
+  });
+
+  it("odvodí i jiná slovesa než být", () => {
+    expect(agree(3, "AUTO", "stálo")).toBe("stála");
+    expect(agree(3, "AUTO", "přijelo")).toBe("přijela");
+    expect(agree(8, "AUTO", "stálo")).toBe("stálo");
+    expect(agree(1, "AUTO", "stálo")).toBe("stálo");
+  });
+
+  it("DÍTĚ má jiný rod v jednotném a množném čísle", () => {
+    expect(agree(1, "DÍTĚ", "bylo")).toBe("bylo"); // střední
+    expect(agree(3, "DÍTĚ", "bylo")).toBe("byly"); // množné se skloňuje jako ženské
+    expect(genderOf("DÍTĚ", 1)).toBe("n");
+    expect(genderOf("DÍTĚ", 3)).toBe("f");
+  });
+
+  it("neznámé slovo vrátí sloveso beze změny", () => {
+    expect(agree(3, "NEEXISTUJE", "bylo")).toBe("bylo");
+    expect(genderOf("NEEXISTUJE")).toBeNull();
+  });
+});
+
+describe("isAre — spona v přítomném čase", () => {
+  it("2–4 → jsou, jinak je", () => {
+    expect(isAre(1)).toBe("je");
+    expect(isAre(2)).toBe("jsou");
+    expect(isAre(4)).toBe("jsou");
+    expect(isAre(5)).toBe("je");
+    expect(isAre(0)).toBe("je");
+  });
+});
+
+describe("wasCount — sloveso i podstatné jméno najednou", () => {
+  it("skládá celou frázi", () => {
+    expect(wasCount(1, "ŽÁK")).toBe("byl 1 žák");
+    expect(wasCount(3, "ŽÁK")).toBe("byli 3 žáci");
+    expect(wasCount(7, "ŽÁK")).toBe("bylo 7 žáků");
+    expect(wasCount(3, "AUTO", "stálo")).toBe("stála 3 auta");
+  });
+});
+
+/**
+ * Pojistka: každé slovo v NOUNS musí mít rod. Bez ní by nové substantivum
+ * tiše propadlo na „vrať sloveso beze změny" a chyba by se objevila až
+ * v úloze u dítěte.
+ */
+describe("úplnost rejstříku rodů", () => {
+  it("každé podstatné jméno z NOUNS má rod", () => {
+    const KEYS = [
+      "ÚKOL", "ÚLOHA", "CVIČENÍ", "OTÁZKA", "ODPOVĚĎ", "TÉMA", "PODTÉMA", "PŘEDMĚT",
+      "ROČNÍK", "TŘÍDA", "ŽÁK", "DÍTĚ", "RODIČ", "CHYBA", "BOD", "NÁPOVĚDA", "POKUS",
+      "SEKUNDA", "MINUTA", "HODINA", "DEN", "TÝDEN", "MĚSÍC", "ROK",
+      "DÍL", "ČÁST", "STRANA", "ÚHEL", "TROJÚHELNÍK", "ČTVEREC", "ZLOMEK", "ČÍSLO",
+      "KOSTKA", "JABLKO", "KNÍŽKA", "MÍSTO", "AUTO", "KORUNA", "KULIČKA", "KRABICE",
+      "STOVKA", "DESÍTKA", "JEDNOTKA", "SLOUPEC", "ŘÁDEK",
+      "NULA", "DESETINA", "SETINA", "TISÍCINA", "TISÍCOVKA", "SKUPINKA",
+      "METR", "CENTIMETR", "MILIMETR", "KILOMETR", "GRAM", "KILOGRAM", "LITR",
+      "MILILITR", "KOLO",
+    ];
+    const bezRodu = KEYS.filter(k => genderOf(k) === null);
+    expect(bezRodu).toEqual([]);
   });
 });
