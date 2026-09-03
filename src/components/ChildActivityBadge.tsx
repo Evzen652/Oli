@@ -21,12 +21,29 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
 
   if (loading) return null;
 
-  // Kompaktní mód — bílé číslice pro tmavé/gradientní pozadí
+  // Kompaktní mód — světlé karty do bílého přehledu rodiče.
   if (compact) {
-    let summaryText: string;
+    // První návštěva (žádná aktivita): tři nuly „DNÍ / ÚLOH / ÚSPĚŠNOST" nikomu
+    // neřeknou, co znamenají ani za jaké období. Místo nich vysvětlíme, co se
+    // tu objeví, jakmile dítě začne — a rovnou nabídneme první krok.
     if (tasks === 0) {
-      summaryText = "Za poslední týden žádná aktivita. Zkuste zadat malý úkol — třeba jen 5 minut denně stačí.";
-    } else {
+      return (
+        <div className="rounded-2xl border border-border bg-muted/30 p-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Zatím žádná aktivita. Jakmile dítě začne procvičovat, uvidíte tady{" "}
+            <span className="font-semibold text-foreground">kolik dní v řadě</span> trénuje,{" "}
+            <span className="font-semibold text-foreground">kolik úloh</span> za týden splnilo a s jakou{" "}
+            <span className="font-semibold text-foreground">úspěšností</span>.
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed mt-1.5">
+            Zkuste zadat malý úkol — třeba jen 5 minut denně stačí.
+          </p>
+        </div>
+      );
+    }
+
+    let summaryText: string;
+    {
       const splitPart = assignedTasks > 0 && selfTasks > 0
         ? ` (${assignedTasks} ze zadání, ${selfTasks} samostatně)`
         : assignedTasks > 0
@@ -56,17 +73,17 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
             se ořezávala. Takhle šířku drží krátký popisek, ne řada vedle sebe.
             Stejné tvarosloví jako statistiky ve shrnutí sezení. */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center">
+          <div title="Kolik dní za sebou dítě procvičuje" className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
             <Flame className="h-5 w-5 mx-auto mb-1.5 text-primary" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">{form(days, "DEN").toUpperCase()}</p>
           </div>
-          <div className="rounded-2xl border border-success/30 bg-card px-2 py-3 shadow-e1 text-center">
+          <div title="Splněných úloh za poslední týden" className="rounded-2xl border border-success/30 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
             <CheckCircle2 className="h-5 w-5 mx-auto mb-1.5 text-success" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{tasks}</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">ÚLOH</p>
           </div>
-          <div className="rounded-2xl border border-warning/30 bg-card px-2 py-3 shadow-e1 text-center">
+          <div title="Podíl správných odpovědí za poslední týden" className="rounded-2xl border border-warning/30 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
             <Star className="h-5 w-5 mx-auto mb-1.5 text-warning" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{accuracy}%</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">ÚSPĚŠNOST</p>

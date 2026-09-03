@@ -144,6 +144,21 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (11) — první návštěva rodiče + PIN doladění:
+
+- ✅ **Tři nuly „DNÍ/ÚLOH/ÚSPĚŠNOST“ při první návštěvě** nikomu neřeknou,
+  co znamenají. `ChildActivityBadge` (compact) při `tasks===0` místo nich
+  vysvětlí, co se objeví, až dítě začne — a nabídne první krok. Ověřeno
+  v prohlížeči (Tonda má 0 úloh) na 760×620.
+- ✅ **Tooltipy u statistik** (`title` + `cursor-help`) — co každé číslo
+  znamená a za jaké období.
+- ✅ **PIN tlačítko přesunuto** z overview boxu do rohového clusteru hera
+  (klíč + tužka + koš), varianta `tone="icon"`.
+- ✅ **Mobil** — statistiky svisle vycentrované (ikona nahoře), „ÚSPĚŠNOST“
+  se již neořezává.
+- Migrace PIN (`pin_hash`/`pin_failed_attempts`/`pin_locked_until`) nasazena
+  na produkční Supabase, `config.toml` opraven na správný ref.
+
 ### Session 2026-09-03 (10) — redesign rodičovského dashboardu:
 
 Zadání (screeny): příliš oranžové/nekonzistentní, zjednodušit, proklik na sekce.

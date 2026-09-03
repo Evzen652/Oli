@@ -29,6 +29,13 @@ plná oranžová s bílým textem (kontrast 2,8:1). Po odstranění dema je
 
 **Hotovo a ověřeno v prohlížeči (admin → /parent):** hero = bílá karta s oranžovým proužkem (konec „příliš oranžové", konec kontrastu 2,8:1); statistiky světlé; „Na co se zaměřit" zjednodušeno (návrh vede, popis chyby tichý druhý řádek); hero má proklik na sekce (kotvy); emoji hlaviček → lucide ikony. Zbývá jen app-wide kontrast oranžového CTA (bod B1).
 
+**Navazující doladění 2026-09-04:** (1) první návštěva — `ChildActivityBadge`
+compact při `tasks===0` už neukazuje tři matoucí nuly, ale vysvětlí, co se
+objeví, až dítě začne, a nabídne první krok; (2) tooltipy `title`+`cursor-help`
+u tří statistik; (3) PIN tlačítko přesunuto z overview boxu do rohového
+clusteru hera (`ChildPinControl` varianta `tone="icon"`); (4) mobil — statistiky
+svisle vycentrované, „ÚSPĚŠNOST" se neořezává. Ověřeno v prohlížeči (760×620).
+
 ---
 ## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03
 
@@ -839,7 +846,7 @@ Plný report: [`docs/AUDIT_SCREENS_2026-07-15.md`](AUDIT_SCREENS_2026-07-15.md).
 - **Bezpečnost:** PIN = oddělený faktor, účet drží silné náhodné heslo, po ověření PINu server vydá session. PIN jen jako PBKDF2 hash se solí (`_shared/pin.ts`). Rate-limit 5 pokusů → 15 min zámek (per dítě).
 - **Nové:** migrace `20260715120000_child_pin.sql`, edge fce `set-child-pin` + `child-relogin`, `_shared/pin.ts`, `src/lib/rememberedChild.ts`, `ChildPinControl.tsx`. **Změněné:** `ChildAuth.tsx` (PIN/kód režimy), `ParentDashboard.tsx` (PIN tlačítka), `useChildren.ts`, `SessionView.tsx`, `cs.ts`.
 - Ověřeno v prohlížeči (client E2E): PIN režim, validace, volání funkce, „Nejsem X", rodičovský dialog + graceful české chyby. tsc 0, i18n 64/64.
-- 🔴 **AKCE EVŽEN (deploy):** aplikovat migraci + `supabase functions deploy set-child-pin child-relogin` + regen `types.ts`. **Ještě nutno commitnout.**
+- ✅ **NASAZENO 2026-09-04:** migrace `20260715120000_child_pin.sql` aplikována na produkční Supabase přes Management API (`pin_hash`/`pin_failed_attempts`/`pin_locked_until` ověřeny), `set-child-pin` + `child-relogin` deployed, `config.toml` opraven na správný ref `uusaczibimqvaazpaopy`. PIN ověřen v prohlížeči (uložení funguje).
 
 ## ✅ i18n (roadmap #3) assessment + úklid mrtvého kódu (2026-07-14)
 - **Zjištění:** i18n příprava je fakticky hotová — infra `LocaleProvider`/`useT` namontovaná, 233 klíčů v `cs.ts`, 31 souborů migrováno, test suite 64/64. Reálný zbývající krok = pl/de překlady (business rozhodnutí, ne prep).
