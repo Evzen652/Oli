@@ -144,6 +144,26 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (8) — AI v aplikaci: mapa + strategický závěr:
+
+Plné znění: [`docs/AI_TO_CLAUDE_PLAN.md`](docs/AI_TO_CLAUDE_PLAN.md). **Bez zásahu do kódu.**
+
+- 🔑 **Mapa:** všechna text-AI edge funkce teče přes jediný router
+  `_shared/aiCall.ts` (OpenAI-tvar), takže Claude by šlo přidat na jednom místě.
+  K dítěti reálně tečou jen `analyze-misconceptions` a `semantic-gate`; zbytek
+  živých je admin, tutor je vypnutý, eval/report už běží lokálně bez AI.
+- 🧭 **Strategický závěr (po diskuzi):** podstata appky je adaptivní učení a to
+  už je hotové a správné — `adaptiveEngine.ts` je „Pure algorithmic… No AI. No
+  network", realtime smyčka jen čte předpočítané `misconceptionConfidence`.
+  **Runtime AI appku adaptivní nedělá** — tou je engine + kvalita obsahu,
+  obojí Claude offline. „Všechno na Claude" tedy není páka, je to vedlejší úklid.
+- ✅ **Doporučená cesta = štíhlá:** jen `analyze-misconceptions` na Claude
+  (jediné runtime AI, co adaptivitě slouží), `semantic-gate` determinizovat
+  lokálně, `exercise-validator` + `ai-curriculum` + mrtvé `session-evaluation`/
+  `weekly-report` smazat, obrázky = produktové rozhodnutí, tutor parkovat.
+  Vzorem, který uživatel už použil u eval/report (Gemini → lokální kód).
+- ⏭️ **Nejmenší krok** po odsouhlasení: Fáze 1 (Claude provider v `aiCall.ts`
+  s testem) + přepnout `analyze-misconceptions`. Nasazení edge funkcí = Evžen.
 ### Session 2026-09-03 (7) — názvy 3.–5. ročníku + gramatická kontrola:
 
 Uživatel: „projdi i ročníky 3–5" + „projdi pak celou aplikaci, aby byla

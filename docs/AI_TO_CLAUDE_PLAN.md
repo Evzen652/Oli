@@ -1,18 +1,64 @@
-# Převod AI na Claude — mapa a plán
+# AI v aplikaci — kde je, a co s ní
 
 **Datum:** 2026-09-03 · **Stav:** návrh, čeká na rozhodnutí · **Kódu se zatím nedotklo**
 
-> Zadání: „zmapuj zbývající místa a připrav plán převodu na Claude." Aplikace dnes
-> volá na cizí AI (Gemini / Groq-Llama / GPT přes Lovable Gateway) na několika
-> místech. Runtime hodnocení a report pro rodiče už **cizí AI nepoužívají** —
-> běží lokálně, bez sítě. Tenhle dokument mapuje, co zbývá, a jak to převést.
+> Zadání znělo „připrav plán převodu na Claude". Při mapování ale vyšlo najevo,
+> že převod na Claude **není ta správná otázka** — a tenhle dokument to říká
+> rovnou. Aplikace dnes volá cizí AI (Gemini / Groq-Llama / GPT přes Lovable
+> Gateway) na několika místech, ale žádné z nich není to, co dělá appku
+> adaptivní.
 >
 > **Edge funkce nasazuje Evžen** (Supabase login). Nic z toho tedy nedělám bez
 > tvého pokynu — je to plán, ne provedení.
 
 ---
 
-## Shrnutí: převod je menší, než vypadá
+## Závěr napřed: adaptivita je jádro, runtime AI je periferie
+
+Podstatou aplikace je **adaptivní učení**. Klíčové zjištění auditu: adaptivní
+učení už je hotové a postavené správně — a **neběží na runtime AI, ani nikdy
+nemělo.**
+
+- Co reálně adaptuje (obtížnost L1/L2/L3, kdy nabídnout nápovědu, řízení podle
+  miskoncepcí) je **čistý lokální kód** — `src/lib/adaptiveEngine.ts` má
+  v hlavičce doslova *„Pure algorithmic difficulty scaling. No AI. No network
+  calls."* Realtime smyčka jen synchronně čte předpočítané číslo
+  `misconceptionConfidence` (0–1).
+- Je to tak schválně — invarianty v `CLAUDE.md`: *„CHECK < 60ms — no network/AI
+  calls in realtime loop"* a *„AI is stateless — no control over session flow."*
+
+**Adaptivitu pohání dvě věci, obě Claude, obě offline:**
+1. **Engine** — logika řízení obtížnosti (kód, který napsal Claude).
+2. **Kvalita obsahu** — to je ten pravý motor. Distraktor cílený na konkrétní
+   miskoncepci je to, co dává sledování miskoncepcí smysl; odstupňované
+   L1<L2<L3; nápověda, co navádí a neprozradí. Claudova silná stránka, děje se
+   offline.
+
+**Runtime AI (Gemini/Claude) appku adaptivní nedělá.** Sedí na okraji: pojmenuje
+chybu, klasifikuje vstup, pomáhá v adminu. Proto „převést všechno na Claude"
+není páka — je to vedlejší úklid.
+
+### Co z toho plyne pro rozhodování
+
+| | Doporučení |
+|---|---|
+| **Engine + lokální eval/report** | nechat být — je to správně, žádné AI |
+| **`analyze-misconceptions`** | jediné runtime AI, které adaptivitě reálně slouží (pojmenuje *proč* je dítě vedle → krmí řízení i vhled pro rodiče). Není v 60ms smyčce. **Tohle jediné na Claude přepnout.** |
+| **`semantic-gate`, `exercise-validator`, `ai-curriculum`** | periferie → zdeterminovat lokálně nebo smazat (viz níže), ne „převádět na Claude" |
+| **Nejvyšší páka pro adaptivní učení** | **obsah**, ne vendor — víc témat, distraktory na miskoncepce, naplněné L3, variabilita. Claude offline, jak už to děláme. |
+| **Tutor** (vypnutý) | jediná skutečná hranice adaptivity, kde by živý model pomohl (dítě řekne „nechápu" → vysvětlení na míru). Samostatná feature, ne konverze. Pořádně, s Claude, až se rozhodneš. |
+
+**Jednou větou:** adaptivní učení máš vyřešené v jádru; „všechno na Claude" je
+vedlejší úklid, ne to, co appku dělá chytrou — tou je obsah a engine, a oba už
+Claude dělá offline.
+
+Zbytek dokumentu je technická mapa a *jak* by převod vypadal, kdyby se dělal —
+ale s vědomím závěru výše: dělá se z toho **málo** (jen `analyze-misconceptions`
+na Claude), zbytek se **maže nebo determinizuje**.
+
+---
+
+## Technická mapa: převod, kdyby se dělal celý
 
 Klíčové architektonické zjištění: **existuje jediný sdílený router
 `supabase/functions/_shared/aiCall.ts`.** Volá cizí providery (Google / Groq /
@@ -189,15 +235,44 @@ který **kreslí obrázky**. Claude image generation nemá. Možnosti:
 
 ---
 
+## Doporučená cesta (podle závěru nahoře) — štíhlá, ne plošná
+
+Ne „všechno na Claude". Podle závěru je adaptivita v jádru hotová, takže:
+
+1. **`analyze-misconceptions` → Claude** (Haiku). Jediné runtime AI, které
+   adaptivitě slouží. Přes Fázi 1 (Claude provider v `aiCall.ts`) + doplnit
+   `model.anthropic`. Fallback na staré providery ponechat.
+2. **`semantic-gate` → lokálně**, stejným vzorem jako eval/report: porovnat
+   vstup s korpusem témat (je v kódu) + jednoduchá heuristika. Lokální fallback
+   tam už je. Runtime AI volání odpadá úplně.
+3. **`exercise-validator` → smazat.** Obsah je dnes Claude-kód a `runOfflineAudit`
+   ho už kontroluje; validátor je z časů runtime generování. Redundantní.
+4. **`ai-curriculum` → smazat / nechat ležet.** Authoring se dělá s Claude
+   v session, ne tlačítkem v adminu.
+5. **`session-evaluation`, `weekly-report` → smazat.** Mrtvé, nahrazené lokálem.
+6. **Obrázky → produktové rozhodnutí** (nechat / zrušit runtime; ilustrace jsou
+   už lokální). Mimo „na Claude" — Claude obrázky neumí.
+7. **Tutor → parkovat** jako budoucí feature; tam Claude živě dává smysl.
+
+Výsledek: z aplikace zmizí cizí AI skoro úplně — ne přidáním dalšího vendora,
+ale zúžením runtime AI na jeden smysluplný bod (na Claude) a determinizací/
+smazáním zbytku. Přesně vzorem, který jsi už použil u hodnocení a reportu.
+
+---
+
 ## Otevřená rozhodnutí
 
 | # | Rozhodnutí | Doporučení |
 |---|---|---|
-| 1 | Modely: Haiku na klasifikaci, Sonnet na authoring/tutor? | ano |
-| 2 | Nechat fallback na staré providery, nebo Claude-only tvrdě? | nechat fallback, aspoň zpočátku |
-| 3 | Generování obrázků: nechat, nebo zrušit runtime? | zrušit runtime (ilustrace jsou už lokální) |
-| 4 | Mrtvé `session-evaluation` a `weekly-report`: smazat? | smazat |
-| 5 | Kdo nasadí a přidá secret? | Evžen |
+| 1 | `analyze-misconceptions`: na Claude (Haiku)? | ano — jediné runtime AI, co slouží adaptivitě |
+| 2 | `semantic-gate`: determinizovat lokálně místo AI? | ano — vzorem eval/report |
+| 3 | `exercise-validator`: smazat (redundantní s runOfflineAudit)? | ano |
+| 4 | `ai-curriculum`: smazat / nechat ležet? | authoring je v session; smazat, až se potvrdí, že se nepoužívá |
+| 5 | Mrtvé `session-evaluation` a `weekly-report`: smazat? | ano |
+| 6 | Generování obrázků: nechat, nebo zrušit runtime? | zrušit runtime (ilustrace jsou už lokální) |
+| 7 | Tutor: parkovat jako budoucí feature? | ano |
+| 8 | Kdo nasadí a přidá secret? | Evžen |
 
-Až tohle odsouhlasíš, umím Fázi 1 (Claude provider v `aiCall.ts`) napsat
-i s testem — je to izolovaný soubor a nasazení edge funkcí zůstává na Evženovi.
+Až tohle odsouhlasíš, nejmenší smysluplný krok je: **Fáze 1** (Claude provider
+v `aiCall.ts`, s testem) + přepnout `analyze-misconceptions`. Je to izolovaný
+soubor; nasazení edge funkcí zůstává na Evženovi.
