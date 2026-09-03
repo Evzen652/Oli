@@ -26,7 +26,6 @@ interface Props {
   onCreated?: (skillId: string) => void;
   prefillSkillCode?: string | null;
   onPrefillConsumed?: () => void;
-  demoNotePrefix?: string;
   buttonClassName?: string;
 }
 
@@ -34,7 +33,7 @@ function cap(s: string) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }
 
-export function AssignmentCreator({ childId, childName, grade, onCreated, prefillSkillCode, onPrefillConsumed, demoNotePrefix, buttonClassName }: Props) {
+export function AssignmentCreator({ childId, childName, grade, onCreated, prefillSkillCode, onPrefillConsumed, buttonClassName }: Props) {
   const t = useT();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -121,9 +120,7 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setSaving(false); return; }
 
-    const noteValue = demoNotePrefix
-      ? `${demoNotePrefix}${note.trim() ? ' ' + note.trim() : ''}`
-      : (note.trim() || null);
+    const noteValue = note.trim() || null;
 
     const { error } = await supabase.from("parent_assignments").insert({
       child_id: childId,

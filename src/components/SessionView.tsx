@@ -45,10 +45,8 @@ import icoMistake from "@/assets/progress/progress-wrong.png";
 import icoFunFact from "@/assets/progress/progress-help.png";
 import { useT } from "@/lib/i18n";
 import { LogOut, Eye, Lightbulb } from "lucide-react";
-import { DewhiteImg } from "@/components/DewhiteImg";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
-import { LandingNav } from "@/pages/LandingNav";
 import { OliLogo } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
 import { isTrialActive } from "@/lib/anonTrial";
@@ -206,13 +204,11 @@ export function SessionView() {
 
   // For paired children: auto-load grade from children table
   const [childGradeLoaded, setChildGradeLoaded] = useState(false);
-  const [isDemoChild, setIsDemoChild] = useState(false);
   useEffect(() => {
     if (role === "child" && !grade && !childGradeLoaded) {
       (async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        if (user.id === "705f7c4a-9f32-4efb-9c55-e8043f0ede5e") setIsDemoChild(true);
         const { data } = await supabase
           .from("children")
           .select("grade")
@@ -353,51 +349,7 @@ export function SessionView() {
     );
   }
 
-  const DemoHeader = isDemoChild ? (
-    <div className="fixed top-0 left-0 right-0 z-50 shadow-soft-2">
-      <div className="bg-[#F97316] text-white px-5 py-2 text-sm text-center font-medium">
-        Demo — prohlídka bez registrace
-      </div>
-      <LandingNav />
-    </div>
-  ) : null;
 
-  const DemoChildSwitcher = isDemoChild ? (
-    <div className="grid sm:grid-cols-2 gap-4 mx-auto max-w-5xl px-4 pt-6 sm:px-8">
-      <button
-        className="rounded-3xl border-2 bg-card shadow-e1 hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] p-6 flex items-center gap-4 text-left transition-all duration-150"
-        onClick={async () => {
-          await supabase.auth.signInWithPassword({ email: "demo@oli.app", password: "Demo123demo" });
-          window.location.href = "/parent";
-        }}
-      >
-        <DewhiteImg
-          src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/topic-rodina-a-spolecnost.png"
-          alt=""
-          className="h-16 w-16 object-contain drop-shadow-md shrink-0"
-          threshold={240}
-        />
-        <div className="flex-1">
-          <p className="font-bold text-lg text-foreground">Jsem rodič</p>
-          <p className="text-label text-muted-foreground mt-0.5 inline-flex items-center gap-1.5">
-            Přepnout na rodičovský pohled <PaintedArrow className="h-3.5 w-3.5" />
-          </p>
-        </div>
-      </button>
-      <div className="rounded-3xl border-2 border-[#9A3412]/25 bg-[#FFF1E6] p-6 flex items-center gap-4">
-        <DewhiteImg
-          src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/ui-child-desk.png"
-          alt=""
-          className="h-16 w-16 object-contain drop-shadow-md shrink-0"
-          threshold={240}
-        />
-        <div>
-          <p className="font-bold text-lg text-[#9A3412]">Jsem žák</p>
-          <p className="text-label text-[#9A3412]/80 mt-0.5">Aktuální pohled</p>
-        </div>
-      </div>
-    </div>
-  ) : null;
 
   if (!session) {
     // Během zakládání session — spinner místo ChildHomePage/TopicBrowser
@@ -418,10 +370,8 @@ export function SessionView() {
       return (
         <>
           {recoveryDialog}
-          {DemoHeader}
           {AdminBanner}
-          <div style={isDemoChild ? { paddingTop: "7rem" } : role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
-            {DemoChildSwitcher}
+          <div style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
             <ChildHomePage
               grade={grade}
               onSelectTopic={(topic) => { setIsStarting(true); s.handleTopicSelect(topic); }}
@@ -434,7 +384,6 @@ export function SessionView() {
     return (
       <>
         {recoveryDialog}
-        {DemoHeader}
         {AdminBanner}
         <TopicBrowser
           key={grade}

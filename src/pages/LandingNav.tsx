@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { OliLogo } from "@/components/OliLogo";
-import { supabase } from "@/integrations/supabase/client";
 
 const NAV_LINKS = [
   { label: "Jak to funguje", href: "#jak-to-funguje" },
@@ -28,15 +27,10 @@ export function LandingNav() {
     }
   }
 
-  async function goToLogin() {
-    // Odhlásit jen anonymní/demo návštěvníky — u reálně přihlášeného
-    // rodiče/admina/dítěte (LandingNav se renderuje i na /landing v jejich
-    // větvi) by "Přihlásit se" jinak vždy odhlásilo, i když o to nežádali.
-    // Jejich vlastní /auth route je stejně přesměruje zpět na dashboard.
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session || session.user.email === "demo@oli.app") {
-      await supabase.auth.signOut();
-    }
+  function goToLogin() {
+    // Přihlášeného rodiče/admina/dítě neodhlašovat — LandingNav se renderuje
+    // i na /landing v jejich větvi a jejich /auth route je přesměruje zpět.
+    // Anonymní návštěvník žádnou auth session nemá, takže není co odhlašovat.
     navigate("/auth");
   }
 

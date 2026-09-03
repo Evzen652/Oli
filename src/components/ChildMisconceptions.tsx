@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useChildMisconceptions, type Misconception } from "@/hooks/useChildMisconceptions";
+import { useChildMisconceptions } from "@/hooks/useChildMisconceptions";
 import { Lightbulb, Sparkles, Loader2 } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -13,20 +13,18 @@ interface Props {
   childId?: string;
   /** Jméno dítěte — nahradí "žák/Žák" v AI-generovaných textech */
   childName?: string;
-  /** Demo/mock mode — přeskočí Supabase fetch */
-  mockData?: Misconception[];
 }
 
 /**
  * Zobrazí AI-detekované vzorce chyb dítěte (misconceptions).
  * Pokud žádné aktivní → nezobrazí nic (skrytá sekce).
  */
-export function ChildMisconceptions({ childId = "", childName, mockData }: Props) {
+export function ChildMisconceptions({ childId = "", childName }: Props) {
   const sub = (text: string) =>
     childName ? text.replace(/[Žž]ák/g, childName) : text;
-  const hookResult = useChildMisconceptions(mockData ? null : childId);
-  const data = mockData ?? hookResult.data;
-  const loading = mockData ? false : hookResult.loading;
+  const hookResult = useChildMisconceptions(childId);
+  const data = hookResult.data;
+  const loading = hookResult.loading;
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState(false);
 

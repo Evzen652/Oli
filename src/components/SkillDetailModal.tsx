@@ -229,8 +229,8 @@ function getRecommendations(sessions: SessionSummary[], overallPct: number, grad
   return tips.slice(0, 1);
 }
 
-// ── Demo question bank — zobrazí se když session_log nemá question_text ───────
-const DEMO_QB: Record<string, { q: string; a: string }[]> = {
+// ── Fallback question bank — použije se, když session_log nemá question_text ──
+const FALLBACK_QB: Record<string, { q: string; a: string }[]> = {
   "math-multiply": [
     { q: "7 × 8 = ?", a: "56" }, { q: "6 × 9 = ?", a: "54" }, { q: "4 × 7 = ?", a: "28" },
     { q: "8 × 8 = ?", a: "64" }, { q: "3 × 9 = ?", a: "27" }, { q: "9 × 6 = ?", a: "54" },
@@ -307,10 +307,10 @@ const DEMO_QB: Record<string, { q: string; a: string }[]> = {
   ],
 };
 
-function getDemoQuestion(skillId: string, idx: number): { q: string; a: string } | null {
+function getFallbackQuestion(skillId: string, idx: number): { q: string; a: string } | null {
   // Zkus přesnou shodu, pak prefix
-  const bank = DEMO_QB[skillId]
-    ?? Object.entries(DEMO_QB).find(([k]) => skillId.startsWith(k.replace(/-[^-]+$/, "")))?.[1];
+  const bank = FALLBACK_QB[skillId]
+    ?? Object.entries(FALLBACK_QB).find(([k]) => skillId.startsWith(k.replace(/-[^-]+$/, "")))?.[1];
   if (!bank || bank.length === 0) return null;
   return bank[idx % bank.length];
 }
@@ -325,24 +325,14 @@ function sessionCountLabel(n: number): string {
   return `${n} cvičení`;
 }
 
-export interface MockSessionForModal {
-  correct: number;   // správně bez nápovědy
-  helpUsed: number;  // správně s nápovědou
-  wrong: number;     // chybně
-  total: number;
-  date: string;
-  pct: number;       // předpočítané % (musí souhlasit se seznamem)
-}
-
 interface Props {
   childId: string;
   skillId: string;
   onClose: () => void;
-  mockSession?: MockSessionForModal;
   childName?: string;
 }
 
-export function SkillDetailModal({ childId, skillId, onClose, mockSession, childName }: Props) {
+export function SkillDetailModal({ childId, skillId, onClose, childName }: Props) {
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [logItems, setLogItems] = useState<LogItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -351,39 +341,6 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
   const subjectMeta = subject ? getSubjectMeta(subject) : null;
 
   useEffect(() => {
-    // ── Demo mock: přeskočí DB, použije dodaná data ───────────────
-    if (mockSession) {
-      const s: SessionSummary = {
-        sessionId: "mock-session",
-        date: mockSession.date,
-        correct: mockSession.correct,
-        helpUsed: mockSession.helpUsed,
-        wrong: mockSession.wrong,
-        total: mockSession.total,
-        pct: mockSession.pct,
-      };
-      setSessions([s]);
-
-      // Vygeneruj log položky z DEMO_QB
-      const items: LogItem[] = [];
-      let qi = 0;
-      for (let i = 0; i < mockSession.wrong; i++, qi++) {
-        const dq = getDemoQuestion(skillId, qi);
-        items.push({ id: `mock-w-${i}`, correct: false, helpUsed: false, errorType: null, question: dq?.q, correctAnswer: dq?.a });
-      }
-      for (let i = 0; i < mockSession.helpUsed; i++, qi++) {
-        const dq = getDemoQuestion(skillId, qi);
-        items.push({ id: `mock-h-${i}`, correct: true, helpUsed: true, errorType: null, question: dq?.q, correctAnswer: dq?.a });
-      }
-      for (let i = 0; i < mockSession.correct; i++, qi++) {
-        const dq = getDemoQuestion(skillId, qi);
-        items.push({ id: `mock-c-${i}`, correct: true, helpUsed: false, errorType: null, question: dq?.q, correctAnswer: dq?.a });
-      }
-      setLogItems(items);
-      setLoading(false);
-      return;
-    }
-
     // ── Reálná DB ─────────────────────────────────────────────────
     let cancelled = false;
     async function load() {
@@ -439,7 +396,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
     }
     load();
     return () => { cancelled = true; };
-  }, [childId, skillId, mockSession]);
+  }, [childId, skillId]);
 
   // Souhrnný panel = pouze poslední sezení
   const last = sessions[0] ?? null;
@@ -577,7 +534,7 @@ export function SkillDetailModal({ childId, skillId, onClose, mockSession, child
                     {icon} {label} ({items.length})
                   </p>
                   {items.map((l, idx) => {
-                    const dq = !l.question ? getDemoQuestion(skillId, idx) : null;
+                    const dq = !l.question ? getFallbackQuestion(skillId, idx) : null;
                     return (
                       <div key={l.id} className={`rounded-xl px-3 py-2 text-xs ${rowCls}`}>
                         {l.question

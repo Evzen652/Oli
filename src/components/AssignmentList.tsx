@@ -7,7 +7,7 @@ import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
+import { SkillDetailModal } from "@/components/SkillDetailModal";
 
 interface Assignment {
   id: string;
@@ -27,8 +27,6 @@ interface Props {
   childId?: string;
   childName?: string;
   refreshKey?: number;
-  mockAssignments?: Assignment[];
-  onMockDelete?: (id: string) => void;
   highlightSkillId?: string | null;
 }
 
@@ -64,12 +62,12 @@ function isToday(dateStr: string): boolean {
     d.getDate() === today.getDate();
 }
 
-export function AssignmentList({ childId = "", childName, refreshKey, mockAssignments, onMockDelete, highlightSkillId }: Props) {
-  const [assignments, setAssignments] = useState<Assignment[]>(mockAssignments ?? []);
-  const [loading, setLoading] = useState(!mockAssignments);
+export function AssignmentList({ childId = "", childName, refreshKey, highlightSkillId }: Props) {
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
-  const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
+  const [detailData, setDetailData] = useState<{ skillId: string } | null>(null);
 
   const fetchAssignments = useCallback(async () => {
     const { data } = await supabase
@@ -131,15 +129,10 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
   }, [childId]);
 
   useEffect(() => {
-    if (mockAssignments) {
-      setAssignments(mockAssignments.map(a => ({ ...a, subject: a.subject ?? getSkillSubject(a.skill_id) ?? undefined })));
-      return;
-    }
     fetchAssignments();
-  }, [childId, refreshKey, mockAssignments, fetchAssignments]);
+  }, [childId, refreshKey, fetchAssignments]);
 
   const handleDelete = async (id: string) => {
-    if (onMockDelete) { onMockDelete(id); return; }
     await supabase.from("parent_assignments").delete().eq("id", id);
     setAssignments(prev => prev.filter(a => a.id !== id));
   };
@@ -151,7 +144,6 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
   const subjects = [...new Set(assignments.map(a => a.subject).filter(Boolean) as string[])];
 
   // Aplikuj filtry
-  const isDemo = !!mockAssignments;
   const filtered = assignments.filter(a => {
     const isPending = a.status === "pending";
     const isCompleted = a.status === "completed" || a.status === "skipped";
@@ -160,9 +152,6 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
 
     // "Splněné" vždy jen splněné
     if (statusFilter === "completed") return isCompleted;
-
-    // Demo: ostatní záložky vždy zobrazí všechna pending (bez datového filtru)
-    if (isDemo) return isPending;
 
     // Ostrý provoz — datové a stavové filtry
     if (statusFilter === "today") return isToday(a.assigned_date);
@@ -260,15 +249,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
                 onDelete={handleDelete}
                 isNew={!!highlightSkillId && a.skill_id === highlightSkillId}
                 onDetail={childId ? () => {
-                  if (mockAssignments && a.completionTotal != null) {
-                    const correct = a.completionCorrect ?? 0;
-                    const helpUsed = a.completionHelpUsed ?? 0;
-                    const wrong = (a.completionTotal ?? 0) - correct - helpUsed;
-                    const pct = Math.round(correct / (a.completionTotal || 1) * 100);
-                    setDetailData({ skillId: a.skill_id, mock: { correct, helpUsed, wrong, total: a.completionTotal ?? 0, date: a.completedDate ?? new Date().toISOString(), pct } });
-                  } else {
                     setDetailData({ skillId: a.skill_id });
-                  }
                 } : undefined}
               />
             ))}
@@ -280,7 +261,6 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
         <SkillDetailModal
           childId={childId}
           skillId={detailData.skillId}
-          mockSession={detailData.mock}
           childName={childName}
           onClose={() => setDetailData(null)}
         />

@@ -4,7 +4,7 @@ import { BarChart2 } from "lucide-react";
 import { getSkillSubject, getReadableSkillName } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
+import { SkillDetailModal } from "@/components/SkillDetailModal";
 import { Button } from "@/components/ui/button";
 
 export interface SessionEntry {
@@ -27,7 +27,6 @@ interface Props {
   childId?: string;
   childName?: string;
   grade?: number;
-  mockSessions?: SessionEntry[];
 }
 
 // Převod % úspěšnosti na školní známku
@@ -55,15 +54,14 @@ const SUBJECT_LABELS: Record<string, string> = {
   "vlastivěda": "Vlastivěda",
 };
 
-export function ChildSessionLog({ childId = "", childName, grade, mockSessions }: Props) {
-  const [sessions, setSessions] = useState<SessionEntry[]>(mockSessions ?? []);
-  const [loading, setLoading] = useState(!mockSessions);
+export function ChildSessionLog({ childId = "", childName, grade }: Props) {
+  const [sessions, setSessions] = useState<SessionEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
   const [gradeFilter, setGradeFilter] = useState<number | null>(null);
-  const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
+  const [detailData, setDetailData] = useState<{ skillId: string } | null>(null);
 
   useEffect(() => {
-    if (mockSessions) { setSessions(mockSessions); return; }
     if (!childId) { setLoading(false); return; }
 
     (async () => {
@@ -97,7 +95,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
       }
       setLoading(false);
     })();
-  }, [childId, mockSessions]);
+  }, [childId]);
 
   if (loading) return <p className="text-xs text-muted-foreground text-center py-4">Načítám…</p>;
   if (sessions.length === 0) return <p className="text-xs text-muted-foreground text-center py-4">Zatím žádné samostatné procvičování</p>;
@@ -251,19 +249,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                       variant="outline"
                       size="sm"
                       className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
-                      onClick={() => {
-                        if (mockSessions) {
-                          // s.correct = vše správně (včetně nápovědy) — DB konvence.
-                          // clamp: help_used nemusí být podmnožina correct (dítě může použít
-                          // nápovědu a přesto odpovědět špatně) → bez clampu vznikne záporné číslo.
-                          const correctOnly = Math.max(0, s.correct - s.help_used);
-                          const wrong = s.total - s.correct;
-                          const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
-                          setDetailData({ skillId: s.skill_id, mock: { correct: correctOnly, helpUsed: s.help_used, wrong, total: s.total, date: s.date, pct } });
-                        } else {
-                          setDetailData({ skillId: s.skill_id });
-                        }
-                      }}
+                      onClick={() => setDetailData({ skillId: s.skill_id })}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
                       Ukázat výsledky a hodnocení
@@ -281,7 +267,6 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
         <SkillDetailModal
           childId={childId}
           skillId={detailData.skillId}
-          mockSession={detailData.mock}
           childName={childName}
           onClose={() => setDetailData(null)}
         />

@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { readLocal } from "@/lib/safeStorage";
 import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
 import { getContentWarning } from "@/lib/contentAvailability";
 import type { TopicMetadata, Grade } from "@/lib/types";
 import { useT } from "@/lib/i18n";
 import { FEATURES } from "@/lib/features";
-import { useChildStats, type StatsPeriod, type SkillBreakdown } from "@/hooks/useChildStats";
+import { useChildStats, type StatsPeriod } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart2, Calendar, ChevronDown, Link2 } from "lucide-react";
@@ -16,7 +15,6 @@ import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { oliPozdrav, oliTip } from "@/lib/oliPoses";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { DewhiteImg } from "@/components/DewhiteImg";
 import { toGreeting } from "@/lib/czechNames";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
 import { Badge } from "@/components/ui/badge";
@@ -31,50 +29,6 @@ interface Assignment {
   subject: string;
   status?: string;
   topic?: TopicMetadata;
-}
-
-const DEMO_PARENT_ID = "f0b2bf8b-39f1-4d12-a47b-46691d8472a9";
-
-const today = new Date();
-const dStr = (daysAgo: number) => {
-  const d = new Date(today); d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().slice(0, 10);
-};
-
-const DEMO_CHILD_ASSIGNMENTS: Assignment[] = [
-  // Pending — vše v rozsahu "tento týden" (1–5 dní zpět), střídání předmětů
-  { id: "dc1", skill_id: "math-multiply",          note: null, due_date: null, assigned_date: dStr(1),  skillName: "Násobilka",              subject: "matematika", status: "pending" },
-  { id: "dc2", skill_id: "cz-vyjmenovana-slova-b", note: null, due_date: null, assigned_date: dStr(3),  skillName: "Vyjmenovaná slova po B",  subject: "čeština",    status: "pending" },
-  { id: "dc3", skill_id: "pr-plant-parts",         note: null, due_date: null, assigned_date: dStr(5),  skillName: "Části rostlin",           subject: "prvouka",    status: "pending" },
-  // Splněné — střídání předmětů (3 ks)
-  { id: "dc4", skill_id: "math-add-sub-100", note: null, due_date: null, assigned_date: dStr(14), skillName: "Sčítání a odčítání do 100", subject: "matematika", status: "completed" },
-  { id: "dc5", skill_id: "cz-slovni-druhy",  note: null, due_date: null, assigned_date: dStr(18), skillName: "Slovní druhy",            subject: "čeština",    status: "completed" },
-  { id: "dc6", skill_id: "pr-animals",       note: null, due_date: null, assigned_date: dStr(22), skillName: "Zvířata a jejich mláďata", subject: "prvouka",    status: "completed" },
-];
-
-const DEMO_CHILD_PENDING: Assignment[] = DEMO_CHILD_ASSIGNMENTS.filter(a => a.status === "pending");
-const DEMO_CHILD_COMPLETED: Assignment[] = DEMO_CHILD_ASSIGNMENTS.filter(a => a.status === "completed");
-
-const _dt = (daysAgo: number) => { const d = new Date(); d.setDate(d.getDate() - daysAgo); return d.toISOString(); };
-
-const DEMO_SKILLS: SkillBreakdown[] = [
-  // Dnes — všechny tři předměty
-  { skillId: "math-multiply",          attempts: 10, correct: 9,  helpUsed: 0, wrong: 1, lastPracticed: _dt(0)  },
-  { skillId: "cz-vyjmenovana-slova-b", attempts: 10, correct: 10, helpUsed: 0, wrong: 0, lastPracticed: _dt(0)  },
-  { skillId: "pr-plant-parts",         attempts: 10, correct: 9,  helpUsed: 0, wrong: 1, lastPracticed: _dt(0)  },
-  // Posledních 7 dní (navíc) — všechny tři předměty
-  { skillId: "math-add-sub-100",       attempts: 10, correct: 8,  helpUsed: 1, wrong: 1, lastPracticed: _dt(4)  },
-  { skillId: "cz-slovni-druhy",        attempts: 9,  correct: 7,  helpUsed: 1, wrong: 1, lastPracticed: _dt(5)  },
-  { skillId: "pr-animals",             attempts: 9,  correct: 5,  helpUsed: 2, wrong: 2, lastPracticed: _dt(6)  },
-  // Poslední měsíc (navíc)
-  { skillId: "cz-tvrde-mekke",         attempts: 8,  correct: 4,  helpUsed: 2, wrong: 2, lastPracticed: _dt(14) },
-];
-
-/** Odstraní demo prefix z poznámky (např. "__demo:abc123 Pozn." → "Pozn." nebo null) */
-function stripDemoNotePrefix(note: string | null): string | null {
-  if (!note) return null;
-  const cleaned = note.replace(/^__demo:[a-z0-9]+\s?/, "").trim();
-  return cleaned || null;
 }
 
 function pctToGrade(pct: number): 1 | 2 | 3 | 4 | 5 {
@@ -298,26 +252,8 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   const [skillGradeFilter, setSkillGradeFilter] = useState<1 | 2 | 3 | 4 | 5 | null>(null);
   const [assignmentSubject, setAssignmentSubject] = useState<string | null>(null);
   const [assignmentDateFilter, setAssignmentDateFilter] = useState<"all" | "today" | "week" | "older" | "completed">("all");
-  const [isDemoUser, setIsDemoUser] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState<{ skillId: string; mock?: { correct: number; helpUsed: number; wrong: number; total: number; date: string; pct: number } } | null>(null);
-  const demoSkillsForPeriod = useMemo(() => {
-    const now = Date.now();
-    if (statsPeriod === "today") {
-      const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
-      return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= startOfDay);
-    }
-    if (statsPeriod === "7d")  return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= new Date(now - 7  * 86400_000));
-    if (statsPeriod === "30d") return DEMO_SKILLS.filter(s => new Date(s.lastPracticed) >= new Date(now - 30 * 86400_000));
-    return DEMO_SKILLS; // "all"
-  }, [statsPeriod]);
-  // Memoizované schválně: `useChildStats` má `mock` v závislostech efektu.
-  // Nový objekt na každý render by efekt spouštěl pořád dokola a `setStats`
-  // uvnitř by demo režim uzavřel do nekonečné smyčky renderů.
-  const DEMO_STATS = useMemo(
-    () => ({ tasks: 41, daysActive: 8, accuracy: 66, sessions: 12, helpUsed: 8, wrong: 14, skills: demoSkillsForPeriod }),
-    [demoSkillsForPeriod],
-  );
-  const stats = useChildStats(childId, statsPeriod, isDemoUser ? DEMO_STATS : undefined);
+  const [selectedSkill, setSelectedSkill] = useState<{ skillId: string } | null>(null);
+  const stats = useChildStats(childId, statsPeriod);
 
   const [assignmentRefreshKey, setAssignmentRefreshKey] = useState(0);
 
@@ -354,41 +290,11 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       setChildName(child.child_name);
       setChildId(child.id);
 
-      // Admin/dev preview — inject mock data, neptat se DB
-      if (user.email === "eweigl@email.cz") {
-        setIsDemoUser(true);
-        setAssignments(DEMO_CHILD_ASSIGNMENTS);
-        setLoading(false);
-        return;
-      }
-
-      // Demo žák — načti reálné pending úkoly filtrované podle IP hashe
-      const isDemoChildAccount = user.email === "demo-child@oli.app";
-
       // `status` je v DB enum a nullable — anotace musí sedět s vygenerovanými typy.
-      let rawAll: Array<{ id: string; skill_id: string; note: string | null; due_date: string | null; assigned_date: string; status: "pending" | "completed" | null }> | null = null;
-
-      if (isDemoChildAccount) {
-        setIsDemoUser(true);
-        const hash = readLocal("oli_demo_hash");
-        if (hash) {
-          const prefix = `__demo:${hash}`;
-          const { data } = await supabase.from("parent_assignments")
-            .select("id, skill_id, note, due_date, assigned_date, status")
-            .eq("child_id", child.id)
-            .like("note", `${prefix}%`)
-            .order("due_date", { ascending: true, nullsFirst: false })
-            .order("assigned_date", { ascending: true });
-          rawAll = data;
-        }
-        // Pokud není hash (přímý vstup bez rodičovské session), zobrazíme prázdný seznam pending
-      } else {
-        const { data } = await supabase.from("parent_assignments")
-          .select("id, skill_id, note, due_date, assigned_date, status").eq("child_id", child.id)
-          .order("due_date", { ascending: true, nullsFirst: false })
-          .order("assigned_date", { ascending: true });
-        rawAll = data;
-      }
+      const { data: rawAll } = await supabase.from("parent_assignments")
+        .select("id, skill_id, note, due_date, assigned_date, status").eq("child_id", child.id)
+        .order("due_date", { ascending: true, nullsFirst: false })
+        .order("assigned_date", { ascending: true });
 
       const rawList = rawAll ?? [];
 
@@ -421,8 +327,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
       const resolveAssignment = (a: typeof rawList[0]): Assignment => {
         const topic = topicMap[a.skill_id];
         const db = dbNameMap[a.skill_id];
-        // U demo žáka vyčistíme prefix z poznámky
-        const note = isDemoChildAccount ? stripDemoNotePrefix(a.note) : a.note;
+        const note = a.note;
         return {
           id: a.id, skill_id: a.skill_id, note, due_date: a.due_date,
           assigned_date: a.assigned_date,
@@ -435,13 +340,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
       const resolved = rawList.map(resolveAssignment);
 
-      // U demo žáka: reálné pending z DB (tato IP) + vždy 3 statická pending + 2 statická splněná
-      if (isDemoChildAccount) {
-        const realPending = resolved.filter(a => a.status === "pending");
-        setAssignments([...realPending, ...DEMO_CHILD_PENDING, ...DEMO_CHILD_COMPLETED]);
-      } else {
-        setAssignments(resolved);
-      }
+      setAssignments(resolved);
       setLoading(false);
     })();
   }, [assignmentRefreshKey]);
@@ -475,8 +374,6 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     if (assignmentSubject && a.subject !== assignmentSubject) return false;
     if (assignmentDateFilter === "completed") return a.status === "completed";
     if (a.status !== "pending") return false;
-    // Demo: datové filtry přeskočíme — vždy zobrazíme všechna 3 pending
-    if (isDemoUser) return true;
     const d = new Date(a.assigned_date + "T00:00:00");
     if (assignmentDateFilter === "today") return d >= today;
     if (assignmentDateFilter === "week") return d >= weekAgo && d < today;
@@ -799,17 +696,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                       variant="outline"
                       size="sm"
                       className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
-                      onClick={() => {
-                        const mock = isDemoUser ? {
-                          correct,
-                          helpUsed: s.helpUsed,
-                          wrong,
-                          total: s.attempts,
-                          date: s.lastPracticed ?? new Date().toISOString(),
-                          pct: sAcc,
-                        } : undefined;
-                        setSelectedSkill({ skillId: s.skillId, mock });
-                      }}
+                      onClick={() => setSelectedSkill({ skillId: s.skillId })}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
                       Ukázat moje výsledky
@@ -839,7 +726,6 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         <SkillDetailModal
           childId={childId}
           skillId={selectedSkill.skillId}
-          mockSession={selectedSkill.mock}
           childName={childName || undefined}
           onClose={() => setSelectedSkill(null)}
         />

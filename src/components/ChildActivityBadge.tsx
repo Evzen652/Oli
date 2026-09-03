@@ -5,8 +5,6 @@ import { plural, form } from "@/lib/czechGrammar";
 
 interface Props {
   childId?: string;
-  /** Demo/mock mode — přeskočí Supabase fetch */
-  mockStats?: { tasks: number; days: number; accuracy: number; assignedTasks?: number; selfTasks?: number };
   /** Kompaktní mód pro tmavé/gradientní pozadí — bílé číslice, žádné bílé boxy */
   compact?: boolean;
 }
@@ -15,14 +13,11 @@ interface Props {
  * Status banner + 3-stat grid v Notion vibe.
  * Layout: žluto-zelený banner s ikonou a popisem, pod ním 3 velké stat boxy.
  */
-export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) {
+export function ChildActivityBadge({ childId = "", compact }: Props) {
   const hookStats = useChildStats(childId);
-  // assignedTasks/selfTasks split je zatím jen demo metrika — useChildStats
-  // (reálná data) ji netrackuje, proto 0 (dřív bylo undefined, chovalo se stejně: undefined > 0 === false).
-  const { tasks, accuracy, assignedTasks, selfTasks, loading } = mockStats
-    ? { ...mockStats, assignedTasks: mockStats.assignedTasks ?? 0, selfTasks: mockStats.selfTasks ?? 0, loading: false }
-    : { ...hookStats, assignedTasks: 0, selfTasks: 0 };
-  const days = mockStats ? mockStats.days : hookStats.daysActive;
+  // assignedTasks/selfTasks split useChildStats netrackuje → 0 (undefined > 0 === false).
+  const { tasks, accuracy, assignedTasks, selfTasks, loading } = { ...hookStats, assignedTasks: 0, selfTasks: 0 };
+  const days = hookStats.daysActive;
 
   if (loading) return null;
 
