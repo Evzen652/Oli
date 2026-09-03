@@ -7,6 +7,27 @@
 
 ---
 
+## ✅ Demo režim odstraněn z celé aplikace (2026-09-03)
+
+Demo zrušeno úplně. −660 řádků. Detail v commitu `chore: odstranit demo režim`.
+
+**Zůstává k rozhodnutí zvlášť:**
+- `GradeSelect.tsx` `DEMO_MODE = true` / `DEMO_GRADE = 3` — gate, který pouští
+  jen 3. třídu (viz starší nález „GradeSelect umí vybrat jen 3. třídu").
+  Není to preview-demo, ale jmenuje se to „DEMO". Flipnout na `false` =
+  zpřístupní všechny ročníky v `GradeSelect` — rozhodnout, jestli chceme.
+- Supabase účty `demo@oli.app` / `demo-child@oli.app` v DB zůstávají
+  (smazán jen kód). Smazat je může jen Evžen přes Supabase.
+
+### ⏭️ Rozdělaný redesign rodičovského dashboardu (přerušeno)
+Zadání (screeny 2026-09-03): a) příliš oranžové a nekonzistentní s homepage,
+b) „Na co se zaměřit" zjednodušit, c) oranžové statistiky mají být
+proklikávací na sekce níž, d) projít. Kořen „příliš oranžové": hero je
+`from-violet-600…` gradient, ale `violet→brandOrange` v tailwind configu →
+plná oranžová s bílým textem (kontrast 2,8:1). Po odstranění dema je
+`ParentDashboard` výrazně menší — pokračovat redesignem podle homepage.
+
+---
 ## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03
 
 **Výsledek: cílený zásah, ne plošný.** Tyhle ročníky už byly dřív dobře

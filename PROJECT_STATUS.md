@@ -144,6 +144,27 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-03 (9) — odstranění demo režimu:
+
+Uživatel: „demo je úplně zrušeno. už nebude. pokud jsou pozůstatky, smaž je."
+
+- ✅ **Demo pryč z celé aplikace, −660 řádků.** Smazaný `Demo.tsx` + `/demo`
+  routy; ze `SessionView` žákovské demo (`demo@oli.app`); z `ParentDashboard`
+  a `ChildHomePage` všechen `isDemo`/mock kód, banner, přepínač, mock data.
+- ✅ **Mock props odstraněny** z `AssignmentCreator`, `AssignmentList`,
+  `ChildActivityBadge`, `ChildMisconceptions`, `ChildSessionLog`,
+  `SkillDetailModal` a `useChildStats` — jen kvůli demu je měly.
+- 🔎 **Zachováno záměrně:** `FALLBACK_QB` (přejmenováno z `DEMO_QB`) = reálný
+  fallback pro logy bez `question_text`; anonymní trial (`oli_anon_trial`);
+  `GradeSelect` `DEMO_MODE` = **jiná věc** (gate ročníků na 3. třídu, ne
+  preview) — nechává se, řeší se zvlášť.
+- 🗑️ Smazána obsoletní paměť `feedback_demo_prod_sync` (DemoParentTab už
+  neexistuje).
+- Testy **4628/4628**, typecheck 0, build prošel.
+- ⏭️ **Nedokončený redesign rodičovského dashboardu** (příliš oranžový hero =
+  `violet→brandOrange` gradient s bílým textem 2,8:1, složité „Na co se
+  zaměřit", statistiky nejsou proklikávací) — přerušeno kvůli odstranění dema,
+  teď je `ParentDashboard` o 218 řádků menší a připravený na ten redesign.
 ### Session 2026-09-03 (8) — AI v aplikaci: mapa + strategický závěr:
 
 Plné znění: [`docs/AI_TO_CLAUDE_PLAN.md`](docs/AI_TO_CLAUDE_PLAN.md). **Bez zásahu do kódu.**
