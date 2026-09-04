@@ -15,6 +15,27 @@ import { FormulaBuilderInput } from "@/components/FormulaBuilderInput";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
+/**
+ * Záchranná hláška, když úloze chybí data pro její typ vstupu.
+ *
+ * Do 2026-09-04 vracelo sedm větví tohohle routeru `null`. Dítě pak vidělo
+ * zadání a POD NÍM NIC — žádné tlačítko, žádné pole, žádné vysvětlení. Slepá
+ * ulička uprostřed cvičení, ze které vede jen odchod přes hlavičku.
+ *
+ * `filterRenderableTasks` sice takové úlohy odfiltrovává, takže to má být
+ * nedosažitelné. Jenže „má být nedosažitelné" je přesně ten předpoklad, kvůli
+ * kterému se dítě umí zaseknout na obrazovce, o které nikdo neví, že existuje.
+ * Radši viditelná chyba než tichá díra.
+ */
+function MissingTaskData() {
+  return (
+    <div className="rounded-2xl border border-warning/30 bg-warning-muted px-5 py-4 text-base text-foreground">
+      Tuhle úlohu se nepodařilo načíst. Není to tvoje chyba — vrať se prosím
+      tlačítkem „Zpět" nahoře a zkus jiné téma.
+    </div>
+  );
+}
+
 interface PracticeInputRouterProps {
   topic: TopicMetadata;
   currentTask: PracticeTask | undefined;
@@ -124,7 +145,7 @@ export function PracticeInputRouter({
           onSubmit={onAnswerSubmit}
           disabled={loading}
         />
-      ) : null;
+      ) : <MissingTaskData />;
 
     case "drag_order":
       return currentTask?.items ? (
@@ -133,7 +154,7 @@ export function PracticeInputRouter({
           onSubmit={onAnswerSubmit}
           disabled={loading}
         />
-      ) : null;
+      ) : <MissingTaskData />;
 
     case "fill_blank":
       return currentTask?.blanks ? (
@@ -143,7 +164,7 @@ export function PracticeInputRouter({
           onSubmit={onAnswerSubmit}
           disabled={loading}
         />
-      ) : null;
+      ) : <MissingTaskData />;
 
     case "match_pairs":
       return currentTask?.pairs ? (
@@ -152,7 +173,7 @@ export function PracticeInputRouter({
           onSubmit={onAnswerSubmit}
           disabled={loading}
         />
-      ) : null;
+      ) : <MissingTaskData />;
 
     case "multi_select":
       return currentTask?.options ? (
@@ -161,7 +182,7 @@ export function PracticeInputRouter({
           onSubmit={onAnswerSubmit}
           disabled={loading}
         />
-      ) : null;
+      ) : <MissingTaskData />;
 
     case "categorize":
       return currentTask?.categories ? (
@@ -170,7 +191,7 @@ export function PracticeInputRouter({
           onSubmit={onAnswerSubmit}
           disabled={loading}
         />
-      ) : null;
+      ) : <MissingTaskData />;
 
     case "text":
     default:

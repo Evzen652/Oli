@@ -160,9 +160,13 @@ describe("SelectOneInput", () => {
     expect(onSubmit).toHaveBeenCalledWith("jablko");
   });
 
-  it("prázdné options → null render", () => {
+  it("prázdné options → vysvětlení, ne prázdno", () => {
+    // Dřív se tu očekával `null`. Jenže bez možností nemá dítě čím odpovědět:
+    // vidělo zadání a POD NÍM NIC — slepá ulička uprostřed cvičení, ze které
+    // vede jen odchod přes hlavičku. Test tehdy to chování zamykal jako správné.
     const { container } = render(<SelectOneInput options={[]} onSubmit={vi.fn()} />);
-    expect(container.firstChild).toBeNull();
+    expect(container.firstChild).not.toBeNull();
+    expect(screen.getByText(/nepodařilo načíst/i)).toBeInTheDocument();
   });
 
   it("disabled disabluje všechny options", () => {

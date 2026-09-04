@@ -4,15 +4,22 @@ import { useT } from "@/lib/i18n";
 import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { OliLogo } from "@/components/OliLogo";
+import { isGradeAvailable } from "@/lib/contentAvailability";
 
 interface GradeSelectProps {
   onSelect: (grade: Grade) => void;
   isAdmin?: boolean;
 }
 
-const DEMO_MODE = true; // Set to false to show all grades
-const DEMO_GRADE: Grade = 3;
-
+/**
+ * Dostupnost ročníků čteme z `isGradeAvailable`, tedy ze STEJNÉHO zdroje jako
+ * dětský onboarding (`Onboarding.tsx`) a rodičovské výběry (`GradeSelectItems`).
+ *
+ * Do 2026-09-04 tu byl vlastní gate `DEMO_MODE = true` / `DEMO_GRADE = 3`, takže
+ * tahle obrazovka pouštěla dál JEN třetí ročník a u druhého i čtvrtého psala
+ * „Již brzy" — přestože `ACTIVE_GRADES` je `[2, 3, 4]` a obsah pro ně existuje.
+ * Druhák i čtvrťák se tudy nedostali ke svému ročníku vůbec.
+ */
 const grades: Grade[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export function GradeSelect({ onSelect, isAdmin }: GradeSelectProps) {
@@ -42,7 +49,7 @@ export function GradeSelect({ onSelect, isAdmin }: GradeSelectProps) {
         </div>
         <div className="grid grid-cols-4 gap-4">
           {grades.map((g) => {
-            const isActive = !DEMO_MODE || g === DEMO_GRADE;
+            const isActive = isGradeAvailable(g);
             return (
               <Button
                 key={g}

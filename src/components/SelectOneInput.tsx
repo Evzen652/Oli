@@ -7,7 +7,16 @@ interface SelectOneInputProps {
 }
 
 export function SelectOneInput({ options, onSubmit, disabled }: SelectOneInputProps) {
-  if (!options || options.length === 0) return null;
+  // Bez možností nemá dítě čím odpovědět — tichý `null` by z toho udělal slepou
+  // uličku. Viz `MissingTaskData` v `PracticeInputRouter`.
+  if (!options || options.length === 0) {
+    return (
+      <div className="rounded-2xl border border-warning/30 bg-warning-muted px-5 py-4 text-base text-foreground">
+        Tuhle úlohu se nepodařilo načíst. Není to tvoje chyba — vrať se prosím
+        tlačítkem „Zpět" nahoře a zkus jiné téma.
+      </div>
+    );
+  }
 
   const maxLen = Math.max(...options.map(o => o.length));
   const isLong = maxLen > 20;

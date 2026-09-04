@@ -313,8 +313,12 @@ export const RULES = [
         const [pattern] = node.arguments;
         if (!pattern || !ts.isRegularExpressionLiteral(pattern)) return;
         const src = pattern.getText();
-        if (!/[Žž]ák|[Žž]ačk|dít[ěe]/.test(src)) return;
         if (src.includes("\\b")) return; // hranice slova už tam je
+        // Znakové třídy je nutné odstranit, než se v ZDROJI regexu hledá slovo:
+        // v textu `/[Žž]ák/g` po `ž` následuje `]`, ne `ák`, takže naivní test
+        // nikdy nepadne. (Přesně na tohle první verze pravidla doplatila.)
+        const norm = src.replace(/[[\]]/g, "");
+        if (!/[Žž]ák|[Žž]ačk|d[ií]t[ěe]/.test(norm)) return;
         report(node, `\`replace(${src}, …)\` nahrazuje i uvnitř slova — „žáka\" se změní na ne-slovo.`);
       });
     },
@@ -348,6 +352,62 @@ export const RULES = [
         const hit = PHRASES.find((p) => text.includes(p));
         if (!hit) return;
         report(node, `Text obsahuje „${hit}\" v souboru, který pracuje s počtem dnů — ověř, že jde opravdu o dny po sobě.`);
+      });
+    },
+  },
+
+  {
+    id: "hardcoded-grade-gate",
+    title: "Dostupnost ročníku rozhodnutá natvrdo",
+    why:
+      "Který ročník je pro žáka otevřený, má rozhodovat jediné místo — `isGradeAvailable` " +
+      "(`ACTIVE_GRADES`). Vlastní gate v komponentě se rozejde s obsahem a žák se ke svému " +
+      "ročníku nedostane, i když pro něj obsah existuje.",
+    suggestion:
+      "Použij `isGradeAvailable(g)` z `src/lib/contentAvailability.ts`. Odemknutí ročníku se pak " +
+      "propíše všude naráz — dětský onboarding, rodičovské výběry i tahle obrazovka.",
+    origin:
+      "`GradeSelect` (nalezeno 2026-09-04) — mělo `DEMO_MODE = true` / `DEMO_GRADE = 3`, takže " +
+      "pouštělo dál JEN třetí ročník a u druhého i čtvrtého psalo „Již brzy\", přestože " +
+      "`ACTIVE_GRADES` je `[2, 3, 4]` a obsah pro ně existuje.",
+    check(file, project, report) {
+      if (/contentAvailability|\.test\./.test(file.rel)) return;
+      if (/isGradeAvailable/.test(file.text)) return; // rejstřík se používá → v pořádku
+      walk(file.sf, (node) => {
+        if (!ts.isVariableDeclaration(node) || !ts.isIdentifier(node.name)) return;
+        const name = node.name.text;
+        if (!/^(DEMO_GRADE|DEMO_MODE|ALLOWED_GRADES?|ENABLED_GRADES?)$/.test(name)) return;
+        report(node.name, `\`${name}\` rozhoduje o ročnících mimo \`isGradeAvailable\`.`);
+      });
+    },
+  },
+
+  {
+    id: "raw-id-fallback",
+    title: "Uživateli se může zobrazit holé ID",
+    why:
+      "Poslední článek fallbacku na `skill_id` znamená, že se uživateli u nedohledatelného tématu " +
+      "ukáže technický slug („cz-vyjmenovana-slova-b\"). Vypadá to jako rozbitá aplikace a v jedné " +
+      "části produktu se to stane, zatímco v jiné ne.",
+    suggestion:
+      "Ukonči fallback `getReadableSkillName(id)` — má curated mapu i alias resolution, takže vrátí " +
+      "čitelný název i pro legacy ID.",
+    origin:
+      "`ChildHomePage` (2026-09-04) — dítě u úkolu četlo „cz vyjmenovana slova b\", zatímco rodič " +
+      "na téže věci viděl „Vyjmenovaná slova po B\". Nalezeno až živě v prohlížeči.",
+    check(file, project, report) {
+      if (/skillReadableName/.test(file.rel)) return;
+      walk(file.sf, (node) => {
+        if (!ts.isBinaryExpression(node)) return;
+        const op = node.operatorToken.kind;
+        if (op !== ts.SyntaxKind.QuestionQuestionToken && op !== ts.SyntaxKind.BarBarToken) return;
+        const right = node.right;
+        if (!ts.isPropertyAccessExpression(right)) return;
+        if (!/^(skill_id|skillId)$/.test(right.name.text)) return;
+        // Fallback uvnitř samotného resolveru je v pořádku — ten holé ID zušlechťuje.
+        const fn = enclosingFunction(node);
+        if (fn && /humanizeId|getReadableSkillName/.test(fn.getText())) return;
+        report(node, `\`… ${op === ts.SyntaxKind.QuestionQuestionToken ? "??" : "||"} ${right.getText()}\` — poslední fallback je holé ID, ne čitelný název.`);
       });
     },
   },

@@ -7,6 +7,29 @@
 
 ---
 
+## ✅ Detektor na dětské části — 3 nálezy, 3 nová pravidla (2026-09-04)
+
+- 🐞 **`GradeSelect` pouštěl dál JEN 3. ročník.** Měl vlastní gate `DEMO_MODE = true` /
+  `DEMO_GRADE = 3`, zatímco zbytek aplikace řídí ročníky přes `isGradeAvailable`
+  (`ACTIVE_GRADES = [2,3,4]`). Druhák i čtvrťák u svého ročníku četli „Již brzy",
+  přestože obsah existuje. Obrazovka se renderuje v `SessionView` pro každého bez
+  role a bez ročníku. Napojeno na rejstřík; 3 testy porovnávají s `ACTIVE_GRADES`,
+  ne s natvrdo psaným seznamem, aby po odemčení ročníku nehlídaly starou pravdu.
+  (Bod byl v PENDING veden jako „zůstává k rozhodnutí" od odstranění demo režimu.)
+- 🐞 **Sedm typů vstupu vracelo `null`** při chybějících datech úlohy — dítě vidělo
+  zadání a pod ním nic. Slepá ulička uprostřed cvičení, ze které vede jen odchod
+  hlavičkou. Nově `MissingTaskData` s vysvětlením a cestou ven.
+- 🐞 **Dítě četlo holé ID** u nedohledatelného tématu, rodič na téže věci čitelný
+  název. Fallback ukončen `getReadableSkillName`.
+- ✅ **Pravidla: 10 → 13** (`hardcoded-grade-gate`, `raw-id-fallback`, opravené
+  `name-in-word`), všech 13 ověřeno proti stromu před opravami.
+- ⚠️ **Metodická past:** `name-in-word` v první verzi nemohlo padnout nikdy —
+  hledalo `[Žž]ák` ve *zdrojovém textu* regexu `/[Žž]ák/g`, kde po `ž` následuje `]`.
+  Nula nálezů vypadala jako úspěch. **Nové pravidlo se musí nejdřív pustit proti
+  stromu, kde ta chyba ještě je** (`--root` + starý commit), teprve pak se opravuje.
+- 🩹 **Test zamykal vadu jako správné chování** (`SelectOneInput → null render`) —
+  přepsán, s komentářem co se tím stvrzovalo.
+
 ## ✅ UI audit — detektor chyb „slibuje něco, co nedělá" (2026-09-04)
 
 Plný rozbor: [`docs/UI_AUDIT.md`](UI_AUDIT.md). Spuštění: `npm run audit:ui`.

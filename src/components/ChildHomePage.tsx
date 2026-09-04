@@ -340,7 +340,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         return {
           id: a.id, skill_id: a.skill_id, note, due_date: a.due_date,
           assigned_date: a.assigned_date,
-          skillName: topic?.displayName ?? topic?.title ?? db?.name ?? a.skill_id,
+          // Poslední článek je `getReadableSkillName`, ne holé `skill_id`. Bez
+          // toho dítě u nedohledatelného tématu četlo „cz vyjmenovana slova b"
+          // — zatímco rodič na téže věci vidí „Vyjmenovaná slova po B", protože
+          // rodičovská strana ten fallback používá (a sebepraktikování o dva
+          // bloky níž taky).
+          skillName: topic?.displayName ?? topic?.title ?? db?.name ?? getReadableSkillName(a.skill_id),
           subject: topic?.subject ?? db?.subject ?? "",
           status: a.status ?? undefined,
           topic: topic ?? (db ? { category: db.category, subject: db.subject, _dbOnly: true, generator: () => [] } as any : undefined),

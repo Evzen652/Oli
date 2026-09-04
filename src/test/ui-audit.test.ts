@@ -261,6 +261,83 @@ describe("unused-import", () => {
   });
 });
 
+describe("hardcoded-grade-gate — dostupnost ročníku natvrdo", () => {
+  it("odhalí vlastní gate místo `isGradeAvailable`", () => {
+    // Tvar z GradeSelect: pouštělo dál jen 3. ročník, ačkoli ACTIVE_GRADES = [2,3,4].
+    const f = audit({
+      "src/components/Pick.tsx": `
+        const DEMO_MODE = true;
+        const DEMO_GRADE = 3;
+        export function Pick({ onSelect }: any) {
+          return <div>{[1,2,3].map(g => (
+            <button key={g} disabled={DEMO_MODE && g !== DEMO_GRADE} onClick={() => onSelect(g)}>{g}</button>
+          ))}</div>;
+        }`,
+    });
+    expect(rulesHit(f)).toContain("hardcoded-grade-gate");
+  });
+
+  it("komponenta čtoucí rejstřík se nehlásí", () => {
+    const f = audit({
+      "src/components/Pick.tsx": `
+        import { isGradeAvailable } from "@/lib/contentAvailability";
+        export function Pick({ onSelect }: any) {
+          return <div>{[1,2,3].map(g => (
+            <button key={g} disabled={!isGradeAvailable(g)} onClick={() => onSelect(g)}>{g}</button>
+          ))}</div>;
+        }`,
+    });
+    expect(rulesHit(f)).not.toContain("hardcoded-grade-gate");
+  });
+});
+
+describe("raw-id-fallback — uživateli se může ukázat holé ID", () => {
+  it("odhalí `?? a.skill_id` jako poslední článek fallbacku", () => {
+    const f = audit({
+      "src/components/Row.tsx": `
+        export function Row({ a, topic }: any) {
+          const name = topic?.title ?? a.skill_id;
+          return <p>{name}</p>;
+        }`,
+    });
+    expect(rulesHit(f)).toContain("raw-id-fallback");
+  });
+
+  it("fallback zakončený `getReadableSkillName` se nehlásí", () => {
+    const f = audit({
+      "src/components/Row.tsx": `
+        import { getReadableSkillName } from "@/lib/skillReadableName";
+        export function Row({ a, topic }: any) {
+          const name = topic?.title ?? getReadableSkillName(a.skill_id);
+          return <p>{name}</p>;
+        }`,
+    });
+    expect(rulesHit(f)).not.toContain("raw-id-fallback");
+  });
+});
+
+describe("name-in-word — náhrada jména rozbíjí slovo", () => {
+  it("odhalí `replace(/[Žž]ák/g, jmeno)` bez hranic slova", () => {
+    const f = audit({
+      "src/components/T.tsx": `
+        export function T({ text, name }: any) {
+          return <p>{text.replace(/[Žž]ák/g, name)}</p>;
+        }`,
+    });
+    expect(rulesHit(f)).toContain("name-in-word");
+  });
+
+  it("s hranicemi slova (`\\b`) se nehlásí", () => {
+    const f = audit({
+      "src/components/T.tsx": `
+        export function T({ text, name }: any) {
+          return <p>{text.replace(/\\b[Žž]ák\\b/g, name)}</p>;
+        }`,
+    });
+    expect(rulesHit(f)).not.toContain("name-in-word");
+  });
+});
+
 describe("každé pravidlo nese návrh řešení a původ", () => {
   it("žádné pravidlo není bez odůvodnění", () => {
     for (const r of RULES as { id: string; why: string; suggestion: string; origin: string }[]) {

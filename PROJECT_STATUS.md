@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (18) — detektor na dětskou část: 3 nálezy, 3 nová pravidla:
+
+- 🐞 **`GradeSelect` pouštěl dál JEN 3. ročník.** Vlastní gate `DEMO_MODE = true` /
+  `DEMO_GRADE = 3`, zatímco zbytek aplikace řídí ročníky přes `isGradeAvailable`
+  (`ACTIVE_GRADES = [2,3,4]`). Druhák i čtvrťák viděli u svého ročníku „Již brzy",
+  přestože obsah existuje. Renderuje se v `SessionView` pro každého bez role a bez
+  ročníku. Napojeno na rejstřík + 3 testy, které porovnávají s `ACTIVE_GRADES`,
+  ne s natvrdo psaným seznamem.
+- 🐞 **Sedm typů vstupu vracelo `null`**, když úloze chyběla data. Dítě vidělo
+  zadání a POD NÍM NIC — žádné tlačítko, žádné pole, žádné vysvětlení. Slepá ulička
+  uprostřed cvičení. Nově `MissingTaskData` s vysvětlením a cestou ven. (Filtr
+  `filterRenderableTasks` to má činit nedosažitelným — ale „má být nedosažitelné"
+  je přesně ten předpoklad, kvůli kterému se dítě umí zaseknout.)
+- 🐞 **Dítě četlo holé ID** („cz vyjmenovana slova b") u úkolu, jehož téma nešlo
+  dohledat — rodič na téže věci vidí „Vyjmenovaná slova po B". Fallback ukončen
+  `getReadableSkillName`.
+- ✅ **3 nová pravidla** z těchto nálezů (`hardcoded-grade-gate`, `raw-id-fallback`,
+  plus opravené `name-in-word`) → **13 pravidel, všech 13 ověřeno** proti stromu
+  před opravami.
+- ⚠️ **Poučení zapsané do docs:** `name-in-word` v první verzi **nemohlo padnout
+  nikdy** — hledalo `[Žž]ák` ve zdrojovém textu regexu `/[Žž]ák/g`, kde po `ž`
+  následuje `]`. Nula nálezů vypadala jako úspěch, protože jsem obě místa opravil
+  dřív, než jsem pravidlo pustil. **Nové pravidlo se musí nejdřív spustit proti
+  stromu, kde ta chyba ještě je.**
+- 🩹 **Test zamykal vadu jako správné chování** (`SelectOneInput → null render`).
+  Přepsán; komentář vysvětluje, co se tím dřív stvrzovalo.
+- **Ověřeno:** typecheck 0, **117/117 souborů a 4686 testů**, build prošel, anonymní
+  dětské sezení živě (2. ročník → cvičení s odpověďmi), konzole čistá.
+
 ### Session 2026-09-04 (17) — UI audit: detektor chyb „slibuje něco, co nedělá":
 
 Nástroj, který hlídá třídu chyb, na kterou dnes došlo pětkrát. Detail

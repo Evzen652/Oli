@@ -42,6 +42,8 @@ umí najít vymyšlené vzory, ale že by byl našel skutečné chyby dřív ne�
 | `adhoc-subject-map` | předmět odvozený z prefixu místo z rejstříku | `subjectEmoji()` v grafu |
 | `streak-language` | „v řadě" nad `daysActive` | „🔥 8 dní v řadě" |
 | `name-in-word` | `replace(/[Žž]ák/g, jméno)` bez hranic slova | `ChildMisconceptions`, `Report` |
+| `hardcoded-grade-gate` | dostupnost ročníku mimo `isGradeAvailable` | `GradeSelect` pouštěl jen 3. ročník |
+| `raw-id-fallback` | `?? skill_id` jako poslední článek fallbacku | dítě četlo „cz vyjmenovana slova b" |
 | `unused-import` | import, který se v souboru nepoužívá | `useT` v `AssignmentList` |
 
 Každé pravidlo nese v kódu pole `why`, `suggestion` a `origin`. Test to vynucuje —
@@ -92,3 +94,11 @@ poplachů tři první verze pravidel:
 
 Každý z nich stál jedno zpřesnění pravidla. Ten čas se vyplatí — hlučný detektor
 je horší než žádný, protože vypadá, že hlídá.
+
+A jedna past z druhé strany: `name-in-word` v první verzi **nemohlo padnout nikdy**.
+Hledalo `[Žž]ák` ve *zdrojovém textu* regexu `/[Žž]ák/g`, kde po `ž` následuje `]`,
+ne `ák`. Nevšiml jsem si toho, protože jsem obě chybná místa opravil dřív, než jsem
+pravidlo poprvé pustil — nula nálezů vypadala jako úspěch. **Nové pravidlo proto
+vždy nejdřív spusť proti stromu, kde ta chyba ještě je** (`--root` + starý commit),
+teprve pak ji oprav. Pravidlo, které nikdy nic nenašlo, není totéž co pravidlo,
+které nic najít nemá.
