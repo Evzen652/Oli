@@ -12,7 +12,7 @@ test.describe('Auth — rodičovský login/registrace', () => {
     await page.goto('/auth?mode=register');
     await expect(page.getByText('Registrace rodiče')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Vyzkoušet 14 dní zdarma' })).toBeVisible();
-    await expect(page.getByText('Prvních 14 dní zdarma, bez platební karty.')).toBeVisible();
+    await expect(page.getByText('Prvních 14 dní zdarma, ať víte, do čeho jdete.')).toBeVisible();
   });
 
   test('email pole je prázdné (žádná dev data)', async ({ page }) => {

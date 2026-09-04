@@ -200,7 +200,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       {/* Filtry — fixní, nescrollují */}
       <div className="flex-shrink-0 space-y-2 mb-3">
         {/* Status filtry — pill group */}
@@ -261,8 +261,8 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
         )}
       </div>
 
-      {/* Seznam — scrolluje */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Seznam — roste s obsahem, scrolluje jen nad max výškou */}
+      <div className="max-h-[420px] overflow-y-auto">
         {filtered.length === 0 ? (
           <p className="text-xs text-center text-muted-foreground py-4">Žádné úkoly odpovídající filtru.</p>
         ) : (

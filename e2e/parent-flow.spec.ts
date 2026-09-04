@@ -8,7 +8,7 @@ test.describe('Rodičovský flow — veřejné (bez loginu)', () => {
     await expect(page.getByLabel('E-mail')).toBeVisible();
     await expect(page.getByLabel('Heslo')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Vyzkoušet 14 dní zdarma' })).toBeVisible();
-    await expect(page.getByText('Prvních 14 dní zdarma, bez platební karty.')).toBeVisible();
+    await expect(page.getByText('Prvních 14 dní zdarma, ať víte, do čeho jdete.')).toBeVisible();
   });
 
   test('zapomenuté heslo — stránka se zobrazí', async ({ page }) => {
