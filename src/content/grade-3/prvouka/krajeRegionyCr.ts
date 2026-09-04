@@ -28,7 +28,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["14 krajů", "12 krajů", "16 krajů", "10 krajů"],
     hints: [
       "Počet krajů je mezi 10 a 16.",
-      "Hlavní město Praha je také kraj — jeden ze 14.",
+      "Hlavní město Praha je taky jeden z krajů — zkus si je spočítat na mapě.",
     ],
     explanation:
       "Česká republika se dělí na 14 krajů. Každý kraj má své krajské město, kde sídlí krajský úřad. Praha je zároveň hlavním městem státu i samostatným krajem.",
@@ -36,12 +36,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je kraj?",
     correctAnswer: "Územní celek, který spravuje část státu",
-    options: [
-      "Územní celek, který spravuje část státu",
-      "Název pro velkou vesnici",
-      "Jiné označení pro stát",
-      "Část ulice ve městě",
-    ],
+    options: ["Název pro velkou vesnici", "Územní celek, který spravuje část státu", "Jiné označení pro stát", "Část ulice ve městě"],
     hints: [
       "Kraj je větší než obec, ale menší než stát.",
       "Každý kraj má svůj úřad a zastupitele.",
@@ -52,12 +47,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je region?",
     correctAnswer: "Oblast se společnými znaky — přírodou, historií nebo kulturou",
-    options: [
-      "Oblast se společnými znaky — přírodou, historií nebo kulturou",
-      "Přesně vymezená část státu s úřadem",
-      "Jiný název pro hlavní město",
-      "Část kraje bez vlastní správy",
-    ],
+    options: ["Přesně vymezená část státu s úřadem", "Jiný název pro hlavní město", "Oblast se společnými znaky — přírodou, historií nebo kulturou", "Část kraje bez vlastní správy"],
     hints: [
       "Region nemusí mít přesné hranice — jde o podobné rysy oblasti.",
       "Lidé v regionu mají podobnou kulturu, přírodní podmínky nebo historii.",
@@ -68,7 +58,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik krajských měst má Česká republika?",
     correctAnswer: "14",
-    options: ["14", "13", "12", "15"],
+    options: ["13", "12", "15", "14"],
     hints: [
       "Každý kraj má právě jedno krajské město.",
       "Krajských měst je stejně jako krajů.",
@@ -101,7 +91,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Je region to samé jako kraj?",
     correctAnswer: "Ne",
-    options: ["Ano", "Ne"],
+    options: ["Ano", "Ne", "Jen v některých krajích"],
     hints: [
       "Kraj má přesné hranice a úřad, region ne.",
       "Region se pozná podle společných znaků, ne podle úřadu.",
@@ -112,12 +102,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je větší — kraj, nebo obec?",
     correctAnswer: "Kraj je větší než obec",
-    options: [
-      "Kraj je větší než obec",
-      "Obec je větší než kraj",
-      "Kraj a obec jsou stejně velké",
-      "Obec a stát jsou stejně velké",
-    ],
+    options: ["Obec je větší než kraj", "Kraj je větší než obec", "Kraj a obec jsou stejně velké", "Obec a stát jsou stejně velké"],
     hints: [
       "Kraj se skládá z mnoha obcí.",
       "Řazení podle velikosti: obec, kraj, stát.",
@@ -128,12 +113,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo rozhoduje o věcech v kraji?",
     correctAnswer: "Krajský úřad a zastupitelstvo",
-    options: [
-      "Krajský úřad a zastupitelstvo",
-      "Pouze obecní úřad",
-      "Parlament ČR",
-      "Vláda ČR",
-    ],
+    options: ["Pouze obecní úřad", "Parlament ČR", "Krajský úřad a zastupitelstvo", "Vláda ČR"],
     hints: [
       "Hledej název úřadu, který patří přímo ke kraji.",
       "Není to obecní úřad ani vláda — je to úřad na úrovni kraje.",
@@ -144,12 +124,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co má kraj navíc oproti regionu?",
     correctAnswer: "Přesné hranice a vlastní úřad",
-    options: [
-      "Přesné hranice a vlastní úřad",
-      "Vlastní jazyk",
-      "Vlastní měnu",
-      "Vlastní armádu",
-    ],
+    options: ["Vlastní úřední jazyk", "Vlastní platnou měnu", "Vlastní stálou armádu", "Přesné hranice a vlastní úřad"],
     hints: [
       "Region nemá ani jedno z toho, co kraj má.",
       "Mysli na to, co dělá kraj úředně uznaným celkem.",
@@ -201,7 +176,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Jihomoravského kraje?",
     correctAnswer: "Brno",
-    options: ["Brno", "Zlín", "Jihlava", "Olomouc"],
+    options: ["Zlín", "Brno", "Jihlava", "Olomouc"],
     hints: [
       "Je to druhé největší město České republiky.",
       "Leží na jihu Moravy a je centrem celé oblasti.",
@@ -212,7 +187,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Moravskoslezského kraje?",
     correctAnswer: "Ostrava",
-    options: ["Ostrava", "Opava", "Brno", "Olomouc"],
+    options: ["Opava", "Brno", "Ostrava", "Olomouc"],
     hints: [
       "Je to třetí největší město České republiky.",
       "Leží na severu Moravy, poblíž hranic s Polskem.",
@@ -223,7 +198,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Plzeňského kraje?",
     correctAnswer: "Plzeň",
-    options: ["Plzeň", "České Budějovice", "Liberec", "Karlovy Vary"],
+    options: ["České Budějovice", "Liberec", "Karlovy Vary", "Plzeň"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
       "Je to velké město v západních Čechách.",
@@ -245,7 +220,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Libereckého kraje?",
     correctAnswer: "Liberec",
-    options: ["Liberec", "Jablonec nad Nisou", "Česká Lípa", "Frýdlant"],
+    options: ["Jablonec nad Nisou", "Liberec", "Česká Lípa", "Frýdlant"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
       "Leží v severních Čechách, pod Ještědem.",
@@ -256,7 +231,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Olomouckého kraje?",
     correctAnswer: "Olomouc",
-    options: ["Olomouc", "Přerov", "Prostějov", "Šumperk"],
+    options: ["Přerov", "Prostějov", "Olomouc", "Šumperk"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
       "Je to historické město na střední Moravě.",
@@ -267,7 +242,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Zlínského kraje?",
     correctAnswer: "Zlín",
-    options: ["Zlín", "Uherské Hradiště", "Vsetín", "Kroměříž"],
+    options: ["Uherské Hradiště", "Vsetín", "Kroměříž", "Zlín"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
       "Leží na východní Moravě a je znám historií obuvnické továrny Baťa.",
@@ -289,7 +264,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Královéhradeckého kraje?",
     correctAnswer: "Hradec Králové",
-    options: ["Hradec Králové", "Náchod", "Trutnov", "Jičín"],
+    options: ["Náchod", "Hradec Králové", "Trutnov", "Jičín"],
     hints: [
       "Název krajského města je skryt v názvu kraje.",
       "Leží ve východních Čechách při řece Labi.",
@@ -300,7 +275,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město kraje Vysočina?",
     correctAnswer: "Jihlava",
-    options: ["Jihlava", "Havlíčkův Brod", "Třebíč", "Žďár nad Sázavou"],
+    options: ["Havlíčkův Brod", "Třebíč", "Jihlava", "Žďár nad Sázavou"],
     hints: [
       "Leží přibližně uprostřed České republiky.",
       "Kraj Vysočina je pojmenován podle krajiny — vysočiny, nikoliv podle města.",
@@ -311,7 +286,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jaké je krajské město Karlovarského kraje?",
     correctAnswer: "Karlovy Vary",
-    options: ["Karlovy Vary", "Cheb", "Sokolov", "Mariánské Lázně"],
+    options: ["Cheb", "Sokolov", "Mariánské Lázně", "Karlovy Vary"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
       "Je to lázeňské město v západních Čechách.",
@@ -333,10 +308,10 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém kraji leží město Brno?",
     correctAnswer: "Jihomoravský kraj",
-    options: ["Jihomoravský kraj", "Moravskoslezský kraj", "Zlínský kraj", "Olomoucký kraj"],
+    options: ["Moravskoslezský kraj", "Jihomoravský kraj", "Zlínský kraj", "Olomoucký kraj"],
     hints: [
       "Brno je krajské město tohoto kraje.",
-      "Kraj leží na jihu Moravy.",
+      "Tahle oblast leží na jihu Moravy.",
     ],
     explanation:
       "Brno leží v Jihomoravském kraji a je jeho krajským městem.",
@@ -344,10 +319,10 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém kraji leží město Plzeň?",
     correctAnswer: "Plzeňský kraj",
-    options: ["Plzeňský kraj", "Karlovarský kraj", "Jihočeský kraj", "Ústecký kraj"],
+    options: ["Karlovarský kraj", "Jihočeský kraj", "Plzeňský kraj", "Ústecký kraj"],
     hints: [
       "Plzeň je krajské město tohoto kraje.",
-      "Kraj leží v západních Čechách.",
+      "Tahle oblast leží v západních Čechách.",
     ],
     explanation:
       "Plzeň leží v Plzeňském kraji a je jeho krajským městem.",
@@ -358,7 +333,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který kraj je jedinou výjimkou — nemá krajské město se stejným názvem, jako je název kraje?",
     correctAnswer: "Vysočina",
-    options: ["Vysočina", "Plzeňský kraj", "Zlínský kraj", "Olomoucký kraj"],
+    options: ["Plzeňský kraj", "Zlínský kraj", "Olomoucký kraj", "Vysočina"],
     hints: [
       "Tento kraj je pojmenován podle krajiny, ne podle města.",
       "Jeho krajské město se jmenuje Jihlava.",
@@ -380,7 +355,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město je lázeňské a leží v západních Čechách?",
     correctAnswer: "Karlovy Vary",
-    options: ["Karlovy Vary", "Plzeň", "Ústí nad Labem", "Liberec"],
+    options: ["Plzeň", "Karlovy Vary", "Ústí nad Labem", "Liberec"],
     hints: [
       "Toto město je známé minerálními prameny.",
       "Je krajským městem Karlovarského kraje.",
@@ -392,7 +367,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Jihočeský kraj i Jihomoravský kraj mají v názvu slovo „Jiho-“. Které krajské město patří k Jihočeskému kraji (ne k Jihomoravskému)?",
     correctAnswer: "České Budějovice",
-    options: ["České Budějovice", "Brno", "Plzeň", "Jihlava"],
+    options: ["Brno", "Karlovy Vary", "České Budějovice", "Ústí nad Labem"],
     hints: [
       "Toto město leží na jihu Čech, ne na jihu Moravy.",
       "Pozor na podobný název sousedního kraje — Jihomoravský.",
@@ -404,7 +379,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Jihočeský kraj i Jihomoravský kraj mají v názvu slovo „Jiho-“. Které krajské město patří k Jihomoravskému kraji (ne k Jihočeskému)?",
     correctAnswer: "Brno",
-    options: ["Brno", "České Budějovice", "Zlín", "Olomouc"],
+    options: ["České Budějovice", "Zlín", "Olomouc", "Brno"],
     hints: [
       "Toto město leží na jihu Moravy, ne na jihu Čech.",
       "Pozor na podobný název sousedního kraje — Jihočeský.",
@@ -427,7 +402,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město je třetí největší v ČR a leží poblíž hranic s Polskem?",
     correctAnswer: "Ostrava",
-    options: ["Ostrava", "Olomouc", "Zlín", "Brno"],
+    options: ["Olomouc", "Ostrava", "Zlín", "Brno"],
     hints: [
       "Toto město leží na severovýchodě Moravy.",
       "Je krajským městem Moravskoslezského kraje.",
@@ -438,7 +413,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město je druhé největší v ČR a leží na jihu Moravy?",
     correctAnswer: "Brno",
-    options: ["Brno", "Ostrava", "Zlín", "Olomouc"],
+    options: ["Ostrava", "Zlín", "Brno", "Olomouc"],
     hints: [
       "Toto město je centrem celé jižní Moravy.",
       "Je krajským městem Jihomoravského kraje.",
@@ -449,9 +424,9 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město je čtvrté největší v ČR a leží v západních Čechách?",
     correctAnswer: "Plzeň",
-    options: ["Plzeň", "Karlovy Vary", "České Budějovice", "Liberec"],
+    options: ["Karlovy Vary", "České Budějovice", "Liberec", "Plzeň"],
     hints: [
-      "Toto město je krajským městem Plzeňského kraje.",
+      "Toto město je krajským městem kraje, který se jmenuje stejně jako ono samo.",
       "Leží dál na západ než Karlovy Vary od Prahy směrem k hranicím.",
     ],
     explanation:
@@ -471,7 +446,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město leží tam, kde se stékají řeky Labe a Orlice, ve východních Čechách?",
     correctAnswer: "Hradec Králové",
-    options: ["Hradec Králové", "Pardubice", "Liberec", "Jihlava"],
+    options: ["Pardubice", "Hradec Králové", "Liberec", "Jihlava"],
     hints: [
       "Název tohoto krajského města je skrytý v názvu kraje.",
       "Je krajským městem Královéhradeckého kraje.",
@@ -482,7 +457,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město je proslulé koňským dostihem Velká pardubická a leží ve východních Čechách?",
     correctAnswer: "Pardubice",
-    options: ["Pardubice", "Hradec Králové", "Liberec", "Jihlava"],
+    options: ["Hradec Králové", "Liberec", "Pardubice", "Jihlava"],
     hints: [
       "Krajské město má stejné jméno jako kraj.",
       "Dostih se jmenuje podle tohoto města.",
@@ -493,10 +468,10 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které krajské město patří mezi nejstarší a historicky nejvýznamnější města na Moravě a leží na střední Moravě?",
     correctAnswer: "Olomouc",
-    options: ["Olomouc", "Zlín", "Brno", "Ostrava"],
+    options: ["Zlín", "Brno", "Ostrava", "Olomouc"],
     hints: [
       "Toto město leží na střední Moravě, mezi Brnem a Ostravou.",
-      "Je krajským městem Olomouckého kraje.",
+      "Je krajským městem kraje, který se jmenuje stejně jako ono samo.",
     ],
     explanation:
       "Olomouc leží na střední Moravě a patří mezi nejstarší a historicky nejvýznamnější města Moravy. Je krajským městem Olomouckého kraje.",
@@ -507,7 +482,7 @@ const POOL_L3: PracticeTask[] = [
     options: ["Liberec", "Ústí nad Labem", "Hradec Králové", "Karlovy Vary"],
     hints: [
       "Ještěd je hora se známou televizní věží.",
-      "Je krajským městem Libereckého kraje.",
+      "Je krajským městem kraje, který se jmenuje stejně jako ono samo.",
     ],
     explanation:
       "Liberec leží v severních Čechách pod horou Ještěd. Je krajským městem Libereckého kraje.",

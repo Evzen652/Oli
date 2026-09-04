@@ -27,7 +27,7 @@ const POOL_L1: PoolItem[] = [
   { question: "Které slovo je v abecedě první: 'auto', 'dům', 'bok'?", correct: "auto", distractors: ["dům", "bok"], emoji: "📚", hint: "Porovnej první písmena: A, D, B — které písmeno je v abecedě nejdřív?", solution: "První slovo v abecedě je 'auto' — začíná na A, které je v abecedě před B a D." },
   { question: "Které slovo je v abecedě první: 'stůl', 'kolo', 'mísa'?", correct: "kolo", distractors: ["stůl", "mísa"], emoji: "📚", hint: "Porovnej první písmena: S, K, M — které písmeno je v abecedě nejdřív?", solution: "První slovo v abecedě je 'kolo' — začíná na K, které je v abecedě před M a S." },
   { question: "Které slovo je v abecedě jako poslední: 'vůz', 'ryba', 'zákon'?", correct: "zákon", distractors: ["vůz", "ryba"], emoji: "📚", hint: "Porovnej první písmena: V, R, Z — které písmeno je v abecedě nejpozději?", solution: "Poslední slovo v abecedě je 'zákon' — začíná na Z, které je v abecedě za R a V." },
-  { question: "K čemu slouží abeceda?", correct: "K řazení slov (ve slovníku, seznamu)", distractors: ["K počítání", "K měření"], emoji: "🔤", hint: "Díky abecedě víme, že 'auto' patří před 'dům' — k čemu to využijeme?", solution: "Abeceda slouží k řazení slov — ve slovníku, rejstříku nebo jmenném seznamu hledáme slova v abecedním pořadí." },
+  { question: "K čemu slouží abeceda?", correct: "K řazení slov", distractors: ["K počítání", "K měření"], emoji: "🔤", hint: "Díky abecedě víme, že 'auto' patří před 'dům' — k čemu to využijeme?", solution: "Abeceda slouží k řazení slov — ve slovníku, rejstříku nebo jmenném seznamu hledáme slova v abecedním pořadí." },
 ];
 
 // L2: Řazení slov začínajících blízkými / sousedními písmeny (K/L, P/R, S/T, B/D)
@@ -44,13 +44,13 @@ const POOL_L2: PoolItem[] = [
 
 // L3: Řazení podle DRUHÉHO nebo TŘETÍHO písmene + delší sekvence + kde ve slovníku hledat
 const POOL_L3: PoolItem[] = [
-  { question: "Pokud seřadíme slova abecedně, které přijde první: 'holka', 'hora'?", correct: "holka", distractors: ["hora", "obě současně"], emoji: "📋", hint: "Obě slova začínají na H a O. Porovnej třetí písmeno: L (holka) nebo R (hora) — které písmeno je v abecedě dřív?", solution: "První přijde 'holka' — obě začínají HO, ale třetí písmeno je L (holka) vs. R (hora). L je v abecedě před R." },
-  { question: "Které slovo přijde abecedně první: 'kára', 'kolo'?", correct: "kára", distractors: ["kolo", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají na K. Porovnej druhé písmeno: Á (kára) nebo O (kolo) — které písmeno je v abecedě dřív?", solution: "První přijde 'kára' — obě začínají K, ale druhé písmeno je Á (kára) vs. O (kolo). A/Á je v abecedě před O." },
-  { question: "Které slovo přijde abecedně první: 'malý', 'měkký'?", correct: "malý", distractors: ["měkký", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají na M. Porovnej druhé písmeno: A (malý) nebo Ě (měkký) — které písmeno je v abecedě dřív?", solution: "První přijde 'malý' — obě začínají M, ale druhé písmeno je A (malý) vs. Ě (měkký). A je v abecedě před E/Ě." },
+  { question: "Pokud seřadíme slova abecedně, které přijde první: 'holka', 'hora'?", correct: "holka", distractors: ["hora", "obě současně"], emoji: "📋", hint: "Obě slova začínají na H a O. Porovnej třetí písmeno: L nebo R — které písmeno je v abecedě dřív?", solution: "První přijde 'holka' — obě začínají HO, ale třetí písmeno je L vs. R. L je v abecedě před R." },
+  { question: "Které slovo přijde abecedně první: 'kára', 'kolo'?", correct: "kára", distractors: ["kolo", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají na K. Porovnej druhé písmeno: Á nebo O — které písmeno je v abecedě dřív?", solution: "První přijde 'kára' — obě začínají K, ale druhé písmeno je Á vs. O. A/Á je v abecedě před O." },
+  { question: "Které slovo přijde abecedně první: 'malý', 'měkký'?", correct: "malý", distractors: ["měkký", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají na M. Porovnej druhé písmeno: A nebo Ě — které písmeno je v abecedě dřív?", solution: "První přijde 'malý' — obě začínají M, ale druhé písmeno je A vs. Ě. A je v abecedě před E/Ě." },
   { question: "Seřaď slova abecedně: 'slon', 'pes', 'kráva', 'had'. Které slovo je první?", correct: "had", distractors: ["pes", "slon"], emoji: "📚", hint: "Porovnej první písmena: S, P, K, H — které z těchto písmen je v abecedě nejdřív?", solution: "První v abecedě je 'had' — začíná na H, které je v abecedě před K, P i S." },
-  { question: "Které slovo přijde abecedně první: 'párek', 'párky'?", correct: "párek", distractors: ["párky", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají PÁR. Porovnej čtvrté písmeno: E (párek) nebo K (párky) — které písmeno je v abecedě dřív?", solution: "První přijde 'párek' — obě začínají PÁR, ale čtvrté písmeno je E (párek) vs. K (párky). E je v abecedě před K." },
-  { question: "Kde ve slovníku hledáme slovo 'švestka'?", correct: "Za 'S', blízko konce (u Š)", distractors: ["Hned za začátkem (u B)", "Uprostřed (u M)"], emoji: "📖", hint: "Slovo 'švestka' začíná na Š — Š je za S. Je to blíž začátku, nebo konce abecedy?", solution: "Slovo 'švestka' hledáme blízko konce slovníku — Š je v abecedě za S, blízko konce (S, Š, T, U, V, Z, Ž)." },
-  { question: "Které slovo přijde abecedně první: 'chodba', 'chvíle'?", correct: "chodba", distractors: ["chvíle", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají na CH. Porovnej třetí písmeno: O (chodba) nebo V (chvíle) — které písmeno je v abecedě dřív?", solution: "První přijde 'chodba' — obě začínají CH, ale třetí písmeno je O (chodba) vs. V (chvíle). O je v abecedě před V." },
+  { question: "Které slovo přijde abecedně první: 'párek', 'párky'?", correct: "párek", distractors: ["párky", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají PÁR. Porovnej čtvrté písmeno: E nebo K — které písmeno je v abecedě dřív?", solution: "První přijde 'párek' — obě začínají PÁR, ale čtvrté písmeno je E vs. K. E je v abecedě před K." },
+  { question: "Kde ve slovníku hledáme slovo 'švestka'?", correct: "Za 'S', blízko konce (u Š)", distractors: ["Hned za začátkem (u B)", "Uprostřed (u M)"], emoji: "📖", hint: "Slovo 'švestka' začíná na Š — Š je za S. Je to blíž písmenu A, nebo písmenu Z?", solution: "Slovo 'švestka' hledáme blízko konce slovníku — Š je v abecedě za S, blízko konce (S, Š, T, U, V, Z, Ž)." },
+  { question: "Které slovo přijde abecedně první: 'chodba', 'chvíle'?", correct: "chodba", distractors: ["chvíle", "obě jsou stejně"], emoji: "📋", hint: "Obě slova začínají na CH. Porovnej třetí písmeno: O nebo V — které písmeno je v abecedě dřív?", solution: "První přijde 'chodba' — obě začínají CH, ale třetí písmeno je O vs. V. O je v abecedě před V." },
   { question: "Seřaď slova abecedně: 'žába', 'vlak', 'tygr', 'sova'. Které slovo je poslední?", correct: "žába", distractors: ["vlak", "tygr"], emoji: "📚", hint: "Porovnej první písmena: Ž, V, T, S — které z těchto písmen je v abecedě nejpozději?", solution: "Poslední v abecedě je 'žába' — začíná na Ž, které je úplně poslední písmeno české abecedy." },
 ];
 
@@ -74,7 +74,7 @@ export const ABECEDAAZENI: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
     rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
     title: "Abeceda a řazení",
-    studentTitle: "Abeceda",
+    studentTitle: "Abeceda od A do Z",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Tvarosloví",

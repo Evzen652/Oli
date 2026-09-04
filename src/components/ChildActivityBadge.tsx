@@ -1,12 +1,12 @@
 import { useChildStats } from "@/hooks/useChildStats";
-import { Sparkles, Flame, CheckCircle2, Star } from "lucide-react";
+// CalendarDays, ne Flame: `days` je počet různých dnů s procvičováním,
+// ne série. Plamínek z toho dělal streak, který invariant projektu zakazuje.
+import { Sparkles, CalendarDays, CheckCircle2, Star } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { plural, form } from "@/lib/czechGrammar";
 
 interface Props {
   childId?: string;
-  /** Demo/mock mode — přeskočí Supabase fetch */
-  mockStats?: { tasks: number; days: number; accuracy: number; assignedTasks?: number; selfTasks?: number };
   /** Kompaktní mód pro tmavé/gradientní pozadí — bílé číslice, žádné bílé boxy */
   compact?: boolean;
 }
@@ -15,23 +15,40 @@ interface Props {
  * Status banner + 3-stat grid v Notion vibe.
  * Layout: žluto-zelený banner s ikonou a popisem, pod ním 3 velké stat boxy.
  */
-export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) {
+export function ChildActivityBadge({ childId = "", compact }: Props) {
   const hookStats = useChildStats(childId);
-  // assignedTasks/selfTasks split je zatím jen demo metrika — useChildStats
-  // (reálná data) ji netrackuje, proto 0 (dřív bylo undefined, chovalo se stejně: undefined > 0 === false).
-  const { tasks, accuracy, assignedTasks, selfTasks, loading } = mockStats
-    ? { ...mockStats, assignedTasks: mockStats.assignedTasks ?? 0, selfTasks: mockStats.selfTasks ?? 0, loading: false }
-    : { ...hookStats, assignedTasks: 0, selfTasks: 0 };
-  const days = mockStats ? mockStats.days : hookStats.daysActive;
+  // assignedTasks/selfTasks split useChildStats netrackuje → 0 (undefined > 0 === false).
+  const { tasks, accuracy, assignedTasks, selfTasks, loading } = { ...hookStats, assignedTasks: 0, selfTasks: 0 };
+  const days = hookStats.daysActive;
 
   if (loading) return null;
 
-  // Kompaktní mód — bílé číslice pro tmavé/gradientní pozadí
+  // Kompaktní mód — světlé karty do bílého přehledu rodiče.
   if (compact) {
-    let summaryText: string;
+    // První návštěva (žádná aktivita): tři nuly „DNÍ / ÚLOH / ÚSPĚŠNOST" nikomu
+    // neřeknou, co znamenají ani za jaké období. Místo nich vysvětlíme, co se
+    // tu objeví, jakmile dítě začne — a rovnou nabídneme první krok.
     if (tasks === 0) {
-      summaryText = "Za poslední týden žádná aktivita. Zkuste zadat malý úkol — třeba jen 5 minut denně stačí.";
-    } else {
+      return (
+        <div className="rounded-2xl border border-border bg-muted/30 p-4">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {/* `daysActive` je počet různých dnů s procvičováním, ne série po
+                sobě — „kolik dní v řadě" slibovalo rodiči metriku, kterou
+                aplikace nepočítá (a počítat nemá, viz invariant „no gamification"). */}
+            Zatím žádná aktivita. Jakmile dítě začne procvičovat, uvidíte tady{" "}
+            <span className="font-semibold text-foreground">v kolika dnech</span> trénovalo,{" "}
+            <span className="font-semibold text-foreground">kolik úloh</span> za týden splnilo a s jakou{" "}
+            <span className="font-semibold text-foreground">úspěšností</span>.
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed mt-1.5">
+            Zkuste zadat malý úkol — třeba jen 5 minut denně stačí.
+          </p>
+        </div>
+      );
+    }
+
+    let summaryText: string;
+    {
       const splitPart = assignedTasks > 0 && selfTasks > 0
         ? ` (${assignedTasks} ze zadání, ${selfTasks} samostatně)`
         : assignedTasks > 0
@@ -51,33 +68,33 @@ export function ChildActivityBadge({ childId = "", mockStats, compact }: Props) 
       summaryText = base + tip;
     }
 
+    // Světlá varianta — karta rodičovského dashboardu je bílá (dřív oranžový
+    // gradient s bílým textem, kontrast 2,8:1). Čísla jsou tmavá, barvu nese
+    // jen ikona a tenký okraj v tintu — stejné tvarosloví jako shrnutí sezení.
     return (
       <div className="space-y-4">
-        {/* Stats — 3 bílé karty s ikonkou */}
-        <div className="flex gap-3">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
-            <Flame className="h-5 w-5 text-orange-300 shrink-0" />
-            <div>
-              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{days}</p>
-              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">{form(days, "DEN").toUpperCase()}</p>
-            </div>
+        {/* Svislé vycentrované karty (ikona nahoře) — vodorovná řada
+            „ikona | číslo/popisek" se na mobilu (375 px) nevešla a „ÚSPĚŠNOST"
+            se ořezávala. Takhle šířku drží krátký popisek, ne řada vedle sebe.
+            Stejné tvarosloví jako statistiky ve shrnutí sezení. */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div title="V kolika různých dnech dítě za poslední týden procvičovalo" className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+            <CalendarDays className="h-5 w-5 mx-auto mb-1.5 text-primary" />
+            <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
+            <p className="text-muted-foreground text-caption font-bold mt-1">{form(days, "DEN").toUpperCase()}</p>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
-            <CheckCircle2 className="h-5 w-5 text-emerald-300 shrink-0" />
-            <div>
-              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{tasks}</p>
-              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">ÚLOH</p>
-            </div>
+          <div title="Splněných úloh za poslední týden" className="rounded-2xl border border-success/30 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+            <CheckCircle2 className="h-5 w-5 mx-auto mb-1.5 text-success" />
+            <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{tasks}</p>
+            <p className="text-muted-foreground text-caption font-bold mt-1">ÚLOH</p>
           </div>
-          <div className="flex items-center gap-2.5 rounded-2xl bg-white/20 border border-white/25 px-4 py-2.5 flex-1">
-            <Star className="h-5 w-5 text-yellow-300 shrink-0" />
-            <div>
-              <p className="text-xl font-extrabold text-white tabular-nums leading-none">{accuracy}%</p>
-              <p className="text-white/60 text-caption font-bold tracking-wide mt-0.5">ÚSPĚŠNOST</p>
-            </div>
+          <div title="Podíl správných odpovědí za poslední týden" className="rounded-2xl border border-warning/30 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+            <Star className="h-5 w-5 mx-auto mb-1.5 text-warning" />
+            <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{accuracy}%</p>
+            <p className="text-muted-foreground text-caption font-bold mt-1">ÚSPĚŠNOST</p>
           </div>
         </div>
-        <p className="text-white/70 text-sm leading-snug max-w-sm">{summaryText}</p>
+        <p className="text-muted-foreground text-sm leading-snug max-w-xl">{summaryText}</p>
       </div>
     );
   }

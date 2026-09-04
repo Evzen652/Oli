@@ -172,7 +172,7 @@ const L2: PracticeTask[] = [
     ],
     {
       hints: [
-        "Rozhodni: jde o samotnou UDÁLOST, která proběhla, nebo o vědu, která ji zkoumá?",
+        "Rozhodni: mluvíme tu o tom, co se stalo, nebo o vědě, jež to zkoumá?",
         "Něco, co se v určitém roce stalo, patří mezi dějiny (události).",
       ],
       explanation:
@@ -285,7 +285,7 @@ const L3: PracticeTask[] = [
     {
       hints: [
         "Tři z možností míří do minulosti, jedna do budoucnosti — ta je mimo dějepis.",
-        "Historik umí vysvětlit, co se STALO; budoucnost přesně předpovědět neumí nikdo.",
+        "Historik umí vysvětlit, co se STALO; co teprve nastane, to s jistotou neví nikdo.",
       ],
       explanation:
         "Historik zkoumá MINULOST — prameny, příčiny, život lidí. Budoucnost přesně předpovědět nedokáže (to není úkol žádné vědy o minulosti), proto tahle činnost do dějepisu nepatří.",

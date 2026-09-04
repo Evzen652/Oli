@@ -39,12 +39,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co se stane s vodou v louži po dešti, když na ni celé odpoledne svítí slunce?",
     correctAnswer: "Postupně se vypaří a promění se v páru",
-    options: [
-      "Postupně se vypaří a promění se v páru",
-      "Zůstane stejně velká",
-      "Promění se v led",
-      "Změní se na sníh",
-    ],
+    options: ["Zůstane stejně velká", "Postupně se vypaří a promění se v páru", "Promění se v led", "Změní se na sníh"],
     hints: [
       "Louže po pár hodinách na slunci mizí — kam se voda poděla?",
       "Voda se nemůže ztratit, jen změní skupenství na páru.",
@@ -54,22 +49,17 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co vznikne, když se stoupající vodní pára vysoko v atmosféře ochladí?",
     correctAnswer: "Oblaka — drobné kapičky vody",
-    options: [
-      "Oblaka — drobné kapičky vody",
-      "Rovnou déšť bez oblaků",
-      "Sníh, i v létě",
-      "Duha",
-    ],
+    options: ["Rovnou déšť bez oblaků", "Sníh, i v létě", "Oblaka — drobné kapičky vody", "Duha"],
     hints: [
       "Podívej se na oblohu — co tam vidíš bílé nebo šedé?",
-      "Pára se ochladí a mění skupenství zpět na drobné kapičky.",
+      "Pára se ochladí a mění skupenství zpět na velmi malé částečky vody, které se vznášejí ve vzduchu.",
     ],
     explanation: "Vysoko v atmosféře je chladno, a tak se vodní pára mění zpět na drobné kapičky vody. Ty se shlukují a tvoří oblaka.",
   },
   {
     question: "Jak nazýváme drobné kapičky vody, které se vznášejí vysoko na obloze?",
     correctAnswer: "Oblaka",
-    options: ["Oblaka", "Srážky", "Ledovce", "Mlha nad zemí"],
+    options: ["Srážky", "Ledovce", "Mlha nad zemí", "Oblaka"],
     hints: [
       "Je to to bílé nebo šedé na obloze.",
       "Vzniká z ochlazené vodní páry.",
@@ -94,12 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Ve kterém skupenství je led?",
     correctAnswer: "V pevném skupenství",
-    options: [
-      "V pevném skupenství",
-      "V kapalném skupenství",
-      "V plynném skupenství",
-      "V žádném skupenství",
-    ],
+    options: ["V kapalném skupenství", "V pevném skupenství", "V plynném skupenství", "V žádném skupenství"],
     hints: [
       "Led můžeš vzít do ruky a drží tvar.",
       "Pevná látka drží svůj tvar, na rozdíl od kapaliny nebo plynu.",
@@ -109,12 +94,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Ve kterém skupenství je vodní pára?",
     correctAnswer: "V plynném skupenství",
-    options: [
-      "V plynném skupenství",
-      "V pevném skupenství",
-      "V kapalném skupenství",
-      "Není to skupenství vody",
-    ],
+    options: ["V pevném skupenství", "V kapalném skupenství", "V plynném skupenství", "Není to skupenství vody"],
     hints: [
       "Pára nemá vlastní tvar a šíří se do prostoru.",
       "Plynné skupenství nevidíme, ale cítíme třeba vlhkost.",
@@ -124,12 +104,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je pitná voda?",
     correctAnswer: "Voda čistá a bezpečná, kterou můžeme pít",
-    options: [
-      "Voda čistá a bezpečná, kterou můžeme pít",
-      "Voda z moře, která je slaná",
-      "Voda, která teče jen z kohoutku",
-      "Jakákoli voda v přírodě",
-    ],
+    options: ["Voda z moře, která je slaná", "Voda, která teče jen z kohoutku", "Jakákoli voda v přírodě", "Voda čistá a bezpečná, kterou můžeme pít"],
     hints: [
       "Pitná voda nesmí obsahovat škodlivé látky.",
       "Mořskou vodu pít nemůžeme — je slaná.",
@@ -154,22 +129,17 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která složka vzduchu tvoří jeho největší část?",
     correctAnswer: "Dusík",
-    options: ["Dusík", "Kyslík", "Oxid uhličitý", "Vodní pára"],
+    options: ["Kyslík", "Dusík", "Oxid uhličitý", "Vodní pára"],
     hints: [
       "Kyslík tvoří jen asi pětinu vzduchu.",
-      "Dusík je neviditelný plyn, který s naším tělem nereaguje.",
+      "Tenhle plyn je neviditelný a s naším tělem skoro vůbec nereaguje — nedýcháme ho aktivně jako kyslík.",
     ],
     explanation: "Vzduch tvoří asi ze čtyř pětin dusík a z jedné pětiny kyslík. Zbytek jsou jiné plyny, například oxid uhličitý.",
   },
   {
     question: "Jak vzniká půda?",
     correctAnswer: "Rozkladem hornin a odumřelých rostlin a živočichů",
-    options: [
-      "Rozkladem hornin a odumřelých rostlin a živočichů",
-      "Vysycháním mořské vody",
-      "Smícháním písku s vodou",
-      "Rostliny ji vyrábějí z listů",
-    ],
+    options: ["Vysycháním mořské vody", "Smícháním písku s vodou", "Rozkladem hornin a odumřelých rostlin a živočichů", "Rostliny ji vyrábějí z listů"],
     hints: [
       "Půda vzniká velmi pomalu — trvá to tisíce let.",
       "Co se děje s kameny, listím a mrtvými živočichy v přírodě?",
@@ -179,12 +149,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo žije v půdě a pomáhá ji kypřit?",
     correctAnswer: "Žížaly a drobné mikroorganismy",
-    options: [
-      "Žížaly a drobné mikroorganismy",
-      "Ryby a raci",
-      "Ptáci a motýli",
-      "Houby a lišejníky na kamenech",
-    ],
+    options: ["Ryby a raci", "Ptáci a motýli", "Houby a lišejníky na kamenech", "Žížaly a drobné mikroorganismy"],
     hints: [
       "Po dešti je vidíš na chodníku — jsou růžové a dlouhé.",
       "Mikroorganismy jsou tak malé, že je nevidíme pouhým okem.",
@@ -200,19 +165,14 @@ const POOL_L2: PracticeTask[] = [
     options: ["Koloběh vody", "Eroze půdy", "Fotosyntéza", "Znečištění vzduchu"],
     hints: [
       "Voda v přírodě stále koluje — výpar, oblaka, srážky, řeky, moře, a znovu dokola.",
-      "Hledáš název pro opakující se cyklus vody v přírodě.",
+      "Hledáš název pro opakující se cyklus, kterým tahle tekutina prochází v přírodě (výpar, oblaka, srážky, řeky).",
     ],
     explanation: "Voda se vypařuje z moří a řek, stoupá jako pára, tvoří oblaka, padá jako srážky a řekami se vrací zpět do moře. Celý tento opakující se sled dějů se nazývá koloběh vody.",
   },
   {
     question: "Sníh na horách taje, voda stéká potokem do řeky a řeka teče do moře. Co bude s touto vodou dál?",
     correctAnswer: "Vypaří se, vytvoří oblaka a znovu spadne jako srážky",
-    options: [
-      "Vypaří se, vytvoří oblaka a znovu spadne jako srážky",
-      "Navždy zůstane jen v moři",
-      "Promění se v led na dně moře",
-      "Zmizí beze stopy",
-    ],
+    options: ["Navždy zůstane jen v moři", "Vypaří se, vytvoří oblaka a znovu spadne jako srážky", "Promění se v led na dně moře", "Zmizí beze stopy"],
     hints: [
       "Voda z moře nikde nemizí — co se s ní děje díky slunci?",
       "Vzpomeň si na celý koloběh vody, ne jen na jeho jednu část.",
@@ -222,12 +182,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které pořadí správně popisuje koloběh vody?",
     correctAnswer: "Výpar → oblaka → srážky (déšť/sníh) → řeky → moře",
-    options: [
-      "Výpar → oblaka → srážky (déšť/sníh) → řeky → moře",
-      "Srážky → výpar → moře → oblaka → řeky",
-      "Oblaka → moře → výpar → řeky → srážky",
-      "Řeky → srážky → moře → výpar → oblaka",
-    ],
+    options: ["Srážky → výpar → moře → oblaka → řeky", "Oblaka → moře → výpar → řeky → srážky", "Výpar → oblaka → srážky (déšť/sníh) → řeky → moře", "Řeky → srážky → moře → výpar → oblaka"],
     hints: [
       "Vše začíná teplem slunce, které vodu mění na páru.",
       "Pára stoupá, ochladí se, a pak teprve padá dolů jako srážky.",
@@ -237,12 +192,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Při čištění zubů necháváš zbytečně téct vodu z kohoutku. Jak šetříš vodou správně?",
     correctAnswer: "Zavřu kohoutek, dokud si čistím zuby kartáčkem",
-    options: [
-      "Zavřu kohoutek, dokud si čistím zuby kartáčkem",
-      "Nechám kohoutek pořád téct, ať mi nic neuteče",
-      "Pustím vodu naplno, ať to rychle skončí",
-      "Čistím si zuby déle, aby voda víc odtekla",
-    ],
+    options: ["Nechám kohoutek pořád téct, ať mi nic neuteče", "Pustím vodu naplno, ať to rychle skončí", "Čistím si zuby déle, aby voda víc odtekla", "Zavřu kohoutek, dokud si čistím zuby kartáčkem"],
     hints: [
       "Voda teče zbytečně, i když ji zrovna nepotřebuješ.",
       "Kohoutek stačí pustit jen na opláchnutí kartáčku.",
@@ -267,12 +217,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdy je nejlepší zalévat zahradu, aby se šetřilo vodou?",
     correctAnswer: "Ráno nebo večer, kdy voda tolik nevysychá",
-    options: [
-      "Ráno nebo večer, kdy voda tolik nevysychá",
-      "V poledne na plném slunci",
-      "Kdykoli, na tom nezáleží",
-      "Jen když prší",
-    ],
+    options: ["V poledne na plném slunci", "Ráno nebo večer, kdy voda tolik nevysychá", "Kdykoli, na tom nezáleží", "Jen když prší"],
     hints: [
       "V poledne slunce vodu z půdy rychle odpaří, než ji rostliny stihnou využít.",
       "Chladnější části dne jsou pro zálivku výhodnější.",
@@ -282,12 +227,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Doma ti kape kohoutek, i když je zavřený. Co bys měl udělat, abys šetřil vodou?",
     correctAnswer: "Upozornit dospělé, aby kohoutek opravili",
-    options: [
-      "Upozornit dospělé, aby kohoutek opravili",
-      "Nechat to tak, kapka přece nic neznamená",
-      "Pustit kohoutek naplno, ať přestane kapat",
-      "Podložit umyvadlo kbelíkem a dál nic neřešit",
-    ],
+    options: ["Nechat to tak, kapka přece nic neznamená", "Pustit kohoutek naplno, ať přestane kapat", "Upozornit dospělé, aby kohoutek opravili", "Podložit umyvadlo kbelíkem a dál nic neřešit"],
     hints: [
       "Kapající kohoutek ztratí za den hodně vody, i když to tak nevypadá.",
       "Nejlepší řešení je odstranit příčinu, ne jen sbírat kapající vodu.",
@@ -297,12 +237,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Rostlina přijímá ze vzduchu oxid uhličitý, vodu z kořenů a energii ze slunečního světla. K čemu jí to všechno slouží?",
     correctAnswer: "K fotosyntéze — výrobě vlastní potravy a kyslíku",
-    options: [
-      "K fotosyntéze — výrobě vlastní potravy a kyslíku",
-      "K dýchání stejně jako u lidí",
-      "K ochlazování listů v horku",
-      "K nasávání živin z kamenů",
-    ],
+    options: ["K dýchání stejně jako u lidí", "K ochlazování listů v horku", "K nasávání živin z kamenů", "K fotosyntéze — výrobě vlastní potravy a kyslíku"],
     hints: [
       "Rostliny si na rozdíl od lidí umí vyrábět vlastní potravu.",
       "Tento proces se jmenuje fotosyntéza.",
@@ -322,12 +257,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve velkém městě je vzduch často znečištěný. Co ho znečišťuje nejvíc?",
     correctAnswer: "Výfukové plyny z aut a kouř z továren",
-    options: [
-      "Výfukové plyny z aut a kouř z továren",
-      "Zpívání ptáků a šelest stromů",
-      "Déšť a mlha",
-      "Dýchání lidí a zvířat",
-    ],
+    options: ["Zpívání ptáků a šelest stromů", "Výfukové plyny z aut a kouř z továren", "Déšť a mlha", "Dýchání lidí a zvířat"],
     hints: [
       "Zamysli se, co vidíš stoupat nad rušnou silnicí nebo komínem.",
       "Auta a továrny při spalování paliva vypouštějí škodlivé plyny.",
@@ -337,12 +267,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč rostlina bez úrodné půdy dobře neroste?",
     correctAnswer: "Protože v půdě má kořeny, kterými čerpá vodu a živiny",
-    options: [
-      "Protože v půdě má kořeny, kterými čerpá vodu a živiny",
-      "Protože půda rostlině dodává sluneční světlo",
-      "Protože půda chrání rostlinu před deštěm",
-      "Protože rostlina v půdě přes zimu spí",
-    ],
+    options: ["Protože půda rostlině dodává sluneční světlo", "Protože půda chrání rostlinu před deštěm", "Protože v půdě má kořeny, kterými čerpá vodu a živiny", "Protože rostlina v půdě přes zimu spí"],
     hints: [
       "Co dělají kořeny rostliny v zemi?",
       "Bez živin a vody z půdy by rostlina neměla co jíst.",
@@ -352,7 +277,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na kopci vykáceli les a přišel silný déšť. Půda se začala odplavovat pryč. Jak se tomuto jevu říká?",
     correctAnswer: "Eroze",
-    options: ["Eroze", "Fotosyntéza", "Koloběh vody", "Znečištění"],
+    options: ["Fotosyntéza", "Koloběh vody", "Znečištění", "Eroze"],
     hints: [
       "Je to odnášení půdy větrem nebo vodou.",
       "Stromy a jejich kořeny přitom obvykle půdu drží na místě.",
@@ -380,12 +305,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V akváriu jsou rybičky i vodní rostliny. Proč rostliny rybičkám ve dne pomáhají dýchat?",
     correctAnswer: "Protože ve dne díky fotosyntéze uvolňují do vody kyslík",
-    options: [
-      "Protože ve dne díky fotosyntéze uvolňují do vody kyslík",
-      "Protože rostliny v noci vydávají víc kyslíku než ve dne",
-      "Protože rostliny čistí vodu jako filtr, ale kyslík nevytvářejí",
-      "Protože rybičky dýchají jen vzduch nad hladinou",
-    ],
+    options: ["Protože rostliny v noci vydávají víc kyslíku než ve dne", "Protože ve dne díky fotosyntéze uvolňují do vody kyslík", "Protože rostliny čistí vodu jako filtr, ale kyslík nevytvářejí", "Protože rybičky dýchají jen vzduch nad hladinou"],
     hints: [
       "Vzpomeň si, co rostliny vyrábí, když na ně svítí světlo.",
       "Fotosyntéza probíhá jen za světla, ne ve tmě.",
@@ -395,14 +315,9 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na svahu vykáceli les a pole nechali holé. Přišel silný déšť. Co se s půdou nejspíš stane a proč?",
     correctAnswer: "Půda se odplaví, protože chybí kořeny stromů, které by ji držely na místě",
-    options: [
-      "Půda se odplaví, protože chybí kořeny stromů, které by ji držely na místě",
-      "Nic se nestane, protože kořeny stromů erozi vůbec neovlivňují",
-      "Půda se rychle vsákne do země a zmizí tam navždy",
-      "Déšť půdu jen umyje, ale nic neodnese",
-    ],
+    options: ["Nic se nestane, protože kořeny stromů erozi vůbec neovlivňují", "Půda se rychle vsákne do země a zmizí tam navždy", "Půda se odplaví, protože chybí kořeny stromů, které by ji držely na místě", "Déšť půdu jen umyje, ale nic neodnese"],
     hints: [
-      "Kořeny stromů a rostlin běžně brání odnosu půdy.",
+      "Přemýšlej, co běžně drží zeminu na svahu na místě, když prší — a co se stane, když to chybí.",
       "Bez rostlinného pokryvu má voda snadnou cestu půdu odnést pryč.",
     ],
     explanation: "Kořeny stromů a rostlin drží půdu pohromadě. Bez nich silný déšť půdu snadno odplaví — tomuto jevu se říká eroze. Proto je vykácení lesa na svahu rizikové.",
@@ -410,15 +325,10 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co by se stalo s koloběhem vody, kdyby slunce vůbec nehřálo?",
     correctAnswer: "Voda by se nevypařovala, nevznikala by oblaka ani srážky",
-    options: [
-      "Voda by se nevypařovala, nevznikala by oblaka ani srážky",
-      "Koloběh vody by fungoval úplně stejně jako předtím",
-      "Pršelo by ještě víc než obvykle",
-      "Všechna voda by rovnou zmrzla na led",
-    ],
+    options: ["Koloběh vody by fungoval úplně stejně jako předtím", "Pršelo by ještě víc než obvykle", "Všechna voda by rovnou zmrzla na led", "Voda by se nevypařovala, nevznikala by oblaka ani srážky"],
     hints: [
       "Co je úplně prvním krokem koloběhu vody, který způsobuje teplo ze slunce?",
-      "Bez výparu nemohou vzniknout oblaka, a tedy ani srážky.",
+      "Bez výparu se řetězec zastaví hned na začátku — bez oblak logicky nemůže následovat ani to, co z nich padá dolů.",
     ],
     explanation: "Bez slunečního tepla by se voda z moří a řek nevypařovala. Bez výparu by nevznikala vodní pára, tedy ani oblaka, a bez oblaků by nepršelo. Celý koloběh vody by se zastavil.",
   },
@@ -440,42 +350,27 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kdyby v půdě vyhynuly všechny žížaly a mikroorganismy, co by se stalo s rostlinami na poli?",
     correctAnswer: "Rostlo by jim hůř, protože půda by přestala být kypřená a bohatá na živiny",
-    options: [
-      "Rostlo by jim hůř, protože půda by přestala být kypřená a bohatá na živiny",
-      "Rostlinám by to vůbec nevadilo",
-      "Rostliny by najednou rostly rychleji",
-      "Půda by zůstala úplně stejně úrodná jako předtím",
-    ],
+    options: ["Rostlinám by to vůbec nevadilo", "Rostlo by jim hůř, protože půda by přestala být kypřená a bohatá na živiny", "Rostliny by najednou rostly rychleji", "Půda by zůstala úplně stejně úrodná jako předtím"],
     hints: [
       "Žížaly a mikroorganismy provzdušňují půdu a rozkládají odumřelé látky na živiny.",
-      "Bez nich by půda časem přestala být úrodná.",
+      "Bez nich už půda časem nezůstane tak kyprá a plná živin jako předtím.",
     ],
     explanation: "Žížaly prokopávají a provzdušňují půdu, mikroorganismy rozkládají odumřelé zbytky na živiny. Bez nich by půda přestala být kyprá a úrodná a rostlinám by se v ní hůře dařilo.",
   },
   {
     question: "Továrna vypouští do vzduchu hodně škodlivých zplodin. Proč to škodí i rostlinám a zvířatům v okolí, ne jen lidem ve městě?",
     correctAnswer: "Protože znečištěný vzduch dýchají i rostliny a zvířata a škodí jim stejně jako lidem",
-    options: [
-      "Protože znečištěný vzduch dýchají i rostliny a zvířata a škodí jim stejně jako lidem",
-      "Protože rostliny a zvířata žádný vzduch nedýchají",
-      "Protože znečištění zůstává jen uvnitř továrny",
-      "Protože jen lidé mají plíce, které to poškozuje",
-    ],
+    options: ["Protože rostliny a zvířata žádný vzduch nedýchají", "Protože znečištění zůstává jen uvnitř továrny", "Protože znečištěný vzduch dýchají i rostliny a zvířata a škodí jim stejně jako lidem", "Protože jen lidé mají plíce, které to poškozuje"],
     hints: [
       "Vzduch se šíří všude okolo, ne jen tam, kde jsou lidé.",
-      "Rostliny i zvířata jsou na čistém vzduchu závislé stejně jako lidé.",
+      "Rostliny i zvířata potřebují ke svému zdraví čistý vzduch úplně stejnou měrou jako lidé — dýchají ten samý vzduch.",
     ],
     explanation: "Znečištěný vzduch se šíří do celého okolí a škodí všem živým organismům, které ho dýchají nebo jsou na něm závislé — nejen lidem, ale i zvířatům a rostlinám.",
   },
   {
     question: "Kdyby lidé vykáceli velkou část lesů na celé planetě, co by se pravděpodobně stalo s množstvím srážek?",
     correctAnswer: "Srážek by ubylo, protože stromy pomáhají vodě z půdy odpařovat se do vzduchu",
-    options: [
-      "Srážek by ubylo, protože stromy pomáhají vodě z půdy odpařovat se do vzduchu",
-      "Srážek by přibylo, protože by nic nebránilo dešti padat",
-      "Množství srážek by se vůbec nezměnilo",
-      "Srážky by byly úplně stejné, protože počasí dělá jen slunce",
-    ],
+    options: ["Srážek by přibylo, protože by nic nebránilo dešti padat", "Množství srážek by se vůbec nezměnilo", "Srážky by byly úplně stejné, protože počasí dělá jen slunce", "Srážek by ubylo, protože stromy pomáhají vodě z půdy odpařovat se do vzduchu"],
     hints: [
       "Stromy nasávají vodu z půdy a část jí uvolňují do vzduchu listy.",
       "Méně vody ve vzduchu znamená méně oblaků a méně srážek.",
@@ -500,12 +395,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Znečištěná půda na poli se při dešti splachuje do potoka. Proč to znamená problém i pro pitnou vodu?",
     correctAnswer: "Protože škodliviny z půdy se dostanou do vody, kterou lidé později používají jako pitnou",
-    options: [
-      "Protože škodliviny z půdy se dostanou do vody, kterou lidé později používají jako pitnou",
-      "Protože voda z potoků se nikdy nedostane do studní ani vodáren",
-      "Protože znečištěná půda vodu naopak automaticky čistí",
-      "Protože to na kvalitu vody nemá žádný vliv",
-    ],
+    options: ["Protože voda z potoků se nikdy nedostane do studní ani vodáren", "Protože škodliviny z půdy se dostanou do vody, kterou lidé později používají jako pitnou", "Protože znečištěná půda vodu naopak automaticky čistí", "Protože to na kvalitu vody nemá žádný vliv"],
     hints: [
       "Voda z potoků a řek často končí ve studních nebo úpravnách vody.",
       "Co je v půdě, se při dešti může dostat i do vody.",
@@ -515,12 +405,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč se říká, že voda, vzduch a půda jsou navzájem propojené, a ne tři oddělené věci?",
     correctAnswer: "Protože změna v jedné z nich ovlivňuje i další dvě, například sucho ovlivní růst rostlin i množství kyslíku",
-    options: [
-      "Protože změna v jedné z nich ovlivňuje i další dvě, například sucho ovlivní růst rostlin i množství kyslíku",
-      "Protože voda, vzduch a půda spolu vůbec nesouvisí",
-      "Protože sucho ovlivní jen rostliny, na vzduch nemá žádný vliv",
-      "Protože propojené jsou jen voda se vzduchem, půda s nimi nesouvisí",
-    ],
+    options: ["Protože voda, vzduch a půda spolu vůbec nesouvisí", "Protože sucho ovlivní jen rostliny, na vzduch nemá žádný vliv", "Protože změna v jedné z nich ovlivňuje i další dvě, například sucho ovlivní růst rostlin i množství kyslíku", "Protože propojené jsou jen voda se vzduchem, půda s nimi nesouvisí"],
     hints: [
       "Zamysli se, co se stane s rostlinami, když je sucho a v půdě chybí voda.",
       "Méně rostlin znamená méně fotosyntézy, a tedy méně kyslíku ve vzduchu.",
@@ -530,12 +415,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Bez stromů na kopci odplavil silný déšť ornici do potoka. Jak to postupně ovlivní i život v potoce?",
     correctAnswer: "Splavená hlína zakalí vodu a rybám i rostlinám v potoce se bude hůř žít",
-    options: [
-      "Splavená hlína zakalí vodu a rybám i rostlinám v potoce se bude hůř žít",
-      "Potok bude čistší, protože hlína ho pročistí",
-      "Rybám to nijak nevadí, hlína ve vodě jim nevadí",
-      "Hlína se hned usadí na dně a na vodu už dál nepůsobí",
-    ],
+    options: ["Potok bude čistší, protože hlína ho pročistí", "Rybám to nijak nevadí, hlína ve vodě jim nevadí", "Hlína se hned usadí na dně a na vodu už dál nepůsobí", "Splavená hlína zakalí vodu a rybám i rostlinám v potoce se bude hůř žít"],
     hints: [
       "Zakalená voda propouští méně světla a mění podmínky pro život ve vodě.",
       "Eroze na poli může ovlivnit i to, co se děje daleko od pole — v potoce.",

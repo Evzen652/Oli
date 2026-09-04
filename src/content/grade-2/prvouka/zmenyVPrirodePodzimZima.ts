@@ -173,7 +173,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Padá sníh, mrzne a rybníky jsou zamrzlé. Které je to roční období?",
     correctAnswer: "Zima",
-    options: ["Zima", "Podzim", "Jaro", "Léto"],
+    options: ["Podzim", "Zima", "Jaro", "Léto"],
     emoji: "❄️",
     hints: [
       "Kdy je největší mráz a voda zamrzá v led?",
@@ -185,12 +185,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co z toho patří k zimě?",
     correctAnswer: "Stavění sněhuláka na zahradě",
-    options: [
-      "Stavění sněhuláka na zahradě",
-      "Sklízení brambor ze země",
-      "Rašení nových zelených listů",
-      "Zrání jahod na záhonu",
-    ],
+    options: ["Sklízení brambor ze země", "Rašení nových zelených listů", "Stavění sněhuláka na zahradě", "Zrání jahod na záhonu"],
     emoji: "⛄",
     hints: [
       "Hledej to, co jde dělat jen když napadne sníh.",
@@ -202,12 +197,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělají listnaté stromy na podzim?",
     correctAnswer: "Listí jim žloutne a opadává",
-    options: [
-      "Listí jim žloutne a opadává",
-      "Raší jim nové zelené listy",
-      "Kvetou jim bílé a růžové květy",
-      "Zrají na nich zralé jahody",
-    ],
+    options: ["Raší jim nové zelené listy", "Kvetou jim bílé a růžové květy", "Zrají na nich zralé jahody", "Listí jim žloutne a opadává"],
     emoji: "🍁",
     hints: [
       "Co se stane s listím, než přijde zima?",
@@ -231,12 +221,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který znak je typický pro zimní den?",
     correctAnswer: "Je krátký, mrzne a leží sníh",
-    options: [
-      "Je krátký, mrzne a leží sníh",
-      "Je dlouhý, horký a svítí slunce dlouho do večera",
-      "Stromy kvetou a vracejí se ptáci",
-      "Zrají jahody a chodíme se koupat",
-    ],
+    options: ["Je dlouhý, horký a svítí slunce dlouho do večera", "Je krátký, mrzne a leží sníh", "Stromy kvetou a vracejí se ptáci", "Zrají jahody a chodíme se koupat"],
     emoji: "🌨️",
     hints: [
       "V zimě je den nejkratší a je největší zima.",
@@ -248,7 +233,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na stromech je barevné listí, které pomalu opadává, a fouká chladný vítr. Které je to období?",
     correctAnswer: "Podzim",
-    options: ["Podzim", "Zima", "Jaro", "Léto"],
+    options: ["Zima", "Jaro", "Podzim", "Léto"],
     emoji: "🌬️",
     hints: [
       "Kdy stromy shazují zežloutlé a zčervenalé listí?",
@@ -260,7 +245,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ke kterému období patří sáňkování a bruslení na zamrzlém rybníku?",
     correctAnswer: "K zimě",
-    options: ["K zimě", "K podzimu", "K jaru", "K létu"],
+    options: ["K podzimu", "K jaru", "K létu", "K zimě"],
     emoji: "🛷",
     hints: [
       "K čemu potřebujeme sníh a led?",
@@ -289,12 +274,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Veverka si na podzim schovává oříšky a žaludy. Proč to dělá?",
     correctAnswer: "Dělá si zásoby jídla na zimu",
-    options: [
-      "Dělá si zásoby jídla na zimu",
-      "Chce si s nimi jen hrát",
-      "Rozdává je ostatním zvířatům",
-      "Sází je, aby z nich vyrostly stromy",
-    ],
+    options: ["Chce si s nimi jen hrát", "Dělá si zásoby jídla na zimu", "Rozdává je ostatním zvířatům", "Sází je, aby z nich vyrostly stromy"],
     emoji: "🐿️",
     hints: [
       "V zimě je venku málo potravy — co si zvíře musí připravit dopředu?",
@@ -306,12 +286,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ráno je na trávě jinovatka a v kalužích tenký led, ale sníh ještě neleží. Které období právě začíná?",
     correctAnswer: "Konec podzimu, blíží se zima",
-    options: [
-      "Konec podzimu, blíží se zima",
-      "Začátek léta, blíží se prázdniny",
-      "Vrcholné léto s velkým horkem",
-      "Začátek jara, vše rozkvétá",
-    ],
+    options: ["Začátek léta, blíží se prázdniny", "Vrcholné léto s velkým horkem", "Konec podzimu, blíží se zima", "Začátek jara, vše rozkvétá"],
     emoji: "🌫️",
     hints: [
       "První mrazíky a led přicházejí, když končí podzim.",
@@ -323,7 +298,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdy jsou dny nejkratší a slunce svítí nejméně hodin?",
     correctAnswer: "V zimě",
-    options: ["V zimě", "V létě", "Na jaře", "Vždy stejně dlouho"],
+    options: ["V létě", "Na jaře", "Vždy stejně dlouho", "V zimě"],
     emoji: "🌇",
     hints: [
       "Kdy se stmívá už odpoledne?",
@@ -355,12 +330,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč stromy na podzim shazují listí, než přijde zima?",
     correctAnswer: "V zimě by přes listy ztrácely vodu, kterou nemohou z promrzlé půdy doplnit",
-    options: [
-      "V zimě by přes listy ztrácely vodu, kterou nemohou z promrzlé půdy doplnit",
-      "Protože je listí v zimě obtěžuje při kvetení",
-      "Protože jim listí na jaře už znovu nenaraší",
-      "Protože se chtějí podobat jehličnatým stromům",
-    ],
+    options: ["Protože je listí v zimě obtěžuje při kvetení", "V zimě by přes listy ztrácely vodu, kterou nemohou z promrzlé půdy doplnit", "Protože jim listí na jaře už znovu nenaraší", "Protože se chtějí podobat jehličnatým stromům"],
     emoji: "🍂",
     hints: [
       "V zimě je půda zmrzlá, takže strom nedokáže doplňovat vodu — k čemu by mu pak byly holé větve?",
@@ -372,12 +342,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která dvojice znaků patří dohromady k podzimu?",
     correctAnswer: "Padá barevné listí a sklízí se ovoce",
-    options: [
-      "Padá barevné listí a sklízí se ovoce",
-      "Leží sníh a zamrzají rybníky",
-      "Raší listy a rodí se mláďata",
-      "Je horko a chodíme se koupat",
-    ],
+    options: ["Leží sníh a zamrzají rybníky", "Raší listy a rodí se mláďata", "Padá barevné listí a sklízí se ovoce", "Je horko a chodíme se koupat"],
     emoji: "🍁",
     hints: [
       "Obě věci se musí dít ve stejném období.",
@@ -389,12 +354,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč ptáci jako vlaštovky odlétají na podzim do teplých krajů?",
     correctAnswer: "V zimě by u nás nenašli dost hmyzu a potravy a byla by jim zima",
-    options: [
-      "V zimě by u nás nenašli dost hmyzu a potravy a byla by jim zima",
-      "Chtějí se v teplých krajích jen koupat v moři",
-      "V teplých krajích je v zimě sníh a to mají rádi",
-      "Odlétají náhodně, bez důvodu",
-    ],
+    options: ["Chtějí se v teplých krajích jen koupat v moři", "V teplých krajích je v zimě sníh a to mají rádi", "Odlétají náhodně, bez důvodu", "V zimě by u nás nenašli dost hmyzu a potravy a byla by jim zima"],
     emoji: "🐦",
     hints: [
       "Čím se vlaštovky živí a bude toho v zimě dost?",
@@ -423,12 +383,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Na podzim se počasí den ode dne mění. Kterým směrem?",
     correctAnswer: "Postupně se ochlazuje a dny se zkracují",
-    options: [
-      "Postupně se ochlazuje a dny se zkracují",
-      "Postupně se otepluje a dny se prodlužují",
-      "Počasí se vůbec nemění, zůstává jako v létě",
-      "Je čím dál větší horko",
-    ],
+    options: ["Postupně se otepluje a dny se prodlužují", "Postupně se ochlazuje a dny se zkracují", "Počasí se vůbec nemění, zůstává jako v létě", "Je čím dál větší horko"],
     emoji: "🌤️",
     hints: [
       "Podzim je přechod mezi létem a zimou — kam počasí míří?",
@@ -440,12 +395,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád tvrdí, že houby v lese rostou nejvíc v zimě na sněhu. Jak to opravíš?",
     correctAnswer: "Houby rostou nejvíc na podzim, kdy je vlhko a ještě teplo; v zimě mráz jim nesvědčí",
-    options: [
-      "Houby rostou nejvíc na podzim, kdy je vlhko a ještě teplo; v zimě mráz jim nesvědčí",
-      "Kamarád má pravdu, houby rostou hlavně ve sněhu",
-      "Houby rostou nejvíc v zimě, protože mají rády mráz",
-      "Houby v lese nerostou vůbec nikdy",
-    ],
+    options: ["Kamarád má pravdu, houby rostou hlavně ve sněhu", "Houby rostou nejvíc v zimě, protože mají rády mráz", "Houby rostou nejvíc na podzim, kdy je vlhko a ještě teplo; v zimě mráz jim nesvědčí", "Houby v lese nerostou vůbec nikdy"],
     emoji: "🍄",
     hints: [
       "Kdy je v lese vlhko po deštích a přitom ještě není mráz?",
@@ -457,12 +407,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Medvěd i ježek se na podzim hodně nakrmí a pak přes zimu spí. Proč to dělají?",
     correctAnswer: "V zimě je málo potravy, a tak zimu prospí a šetří nastřádanou energii",
-    options: [
-      "V zimě je málo potravy, a tak zimu prospí a šetří nastřádanou energii",
-      "V zimě je moc jídla, a tak nemusí nic dělat",
-      "Spí, protože se v zimě nudí",
-      "Spí proto, aby jim narostl nový kožich",
-    ],
+    options: ["V zimě je moc jídla, a tak nemusí nic dělat", "Spí, protože se v zimě nudí", "Spí proto, aby jim narostl nový kožich", "V zimě je málo potravy, a tak zimu prospí a šetří nastřádanou energii"],
     emoji: "🐻",
     hints: [
       "Spoj dvě věci: v zimě není co jíst a spánek šetří sílu.",

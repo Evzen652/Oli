@@ -265,12 +265,12 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Spoj živočicha s jeho skupinou.",
     correctAnswer: "match",
-    explanation: "Vrány jsou pták — obě jsou vrány, jen s různým označením (dravec zde je nepřesné, jde o všežravce z čeledi krkavcovitých).",
+    explanation: "Jestřáb je pták (dravec s ostrými drápy), závornatka měkkýš se schránkou, vydra savec žijící u vody a ropucha obojživelník — část života tráví ve vodě, část na souši.",
     pairs: [
       { left: "Dravec jestřáb", right: "Pták" },
       { left: "Závornatka lesní", right: "Měkkýši" },
       { left: "Vydra říční", right: "Savec" },
-      { left: "Vrána obecná", right: "Pták" },
+      { left: "Ropucha obecná", right: "Obojživelníci" },
     ],
   },
   {

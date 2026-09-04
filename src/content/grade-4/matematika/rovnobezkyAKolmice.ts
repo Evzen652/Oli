@@ -49,7 +49,7 @@ function gen(level: number): PracticeTask[] {
             "Svírají úhel 45°.",
             "Nikdy se neprotnou.",
           ]),
-          hints: ["Kolmice = dvě přímky, které se protínají pod pravým úhlem."],
+          hints: ["Kolmice — myslíš na roh čtverce nebo písmeno T."],
           solutionSteps: ["Kolmice svírají úhel 90°. Označujeme: p ⊥ q."],
         });
       } else {
@@ -77,7 +77,7 @@ function gen(level: number): PracticeTask[] {
         question: `Jaký vztah mají přímky v tomto příkladu: „${pool.example}"?`,
         correctAnswer: pool.correct,
         options: ["Rovnoběžky", "Kolmice", "Ani rovnoběžky, ani kolmice", "Různoběžky – svírají jiný úhel"],
-        hints: ["Rovnoběžky = nikdy se neprotnou. Kolmice = protínají se pod 90°."],
+        hints: ["Rovnoběžky = nikdy se neprotnou. Kolmice = protínají se pod 90°. Různoběžky = kříží se pod jiným úhlem."],
         solutionSteps: [`„${pool.example}" → ${pool.correct}.`],
       });
     } else {

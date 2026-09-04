@@ -24,7 +24,7 @@ export const DISPLAY_NAMES: DisplayMap = {
       description: "Měříš délku, čas a čteš z jednoduchých tabulek.",
     },
     "Nestandardní aplikační úlohy a problémy": {
-      name: "Slovní úlohy",
+      name: "Příběhy s čísly",
       description: "Vyřešíš krátké příklady ze života.",
     },
 
@@ -52,11 +52,11 @@ export const DISPLAY_NAMES: DisplayMap = {
 
     // ── Čeština (CJL) ──
     "Jazyková výchova": {
-      name: "Jazyková výchova",
+      name: "Slova a písmena",
       description: "Pravopis, slovní druhy a slovní zásoba.",
     },
     "Komunikační a slohová výchova": {
-      name: "Sloh",
+      name: "Mluvíme a píšeme",
       description: "Věty, text a způsoby komunikace.",
     },
     "Literární výchova": {
@@ -88,7 +88,7 @@ export const DISPLAY_NAMES: DisplayMap = {
       description: "Čteš z tabulek a doplňuješ řady čísel.",
     },
     "Slovní úlohy": {
-      name: "Slovní úlohy",
+      name: "Příběhy s čísly",
       description: "Vyřešíš krátký příklad ze života.",
     },
 
@@ -136,19 +136,19 @@ export const DISPLAY_NAMES: DisplayMap = {
       description: "Vlastní jména, slovesa a abeceda.",
     },
     "Slovní zásoba": {
-      name: "Slovní zásoba",
+      name: "Význam slov",
       description: "Protiklady, synonyma a skupiny slov.",
     },
     "Práce s textem": {
-      name: "Práce s textem",
+      name: "Rozumím textu",
       description: "Věty, odstavce a druhy vět.",
     },
     "Literární žánry": {
-      name: "Literární žánry",
+      name: "Pohádky a básničky",
       description: "Pohádka, říkanka, báseň a hádanka.",
     },
     "Práce s knihou": {
-      name: "Práce s knihou",
+      name: "Svět knih",
       description: "Spisovatel, ilustrátor a knihovna.",
     },
   },

@@ -37,7 +37,14 @@ const buttonVariants = cva(
          * Možnost odpovědi ve cvičení. Bílá karta, 56 px minimální výška
          * (dětský cíl dotyku), text se smí zalomit na víc řádků.
          */
-        answer: `min-h-14 h-auto whitespace-normal border-2 border-border bg-card py-3 text-center text-lg font-bold text-foreground shadow-e1 hover:border-primary/40 hover:bg-accent/40 ${LIFT}`,
+        /**
+         * Odpověď. Tvarosloví převzaté z dlaždic na landing page: rádius 24 px
+         * a okraj **1 px v tintu**, ne `border-2` v šedé. Dřív měla na obrazovce
+         * cvičení stejně silnou linku úplně všechna — karta, odpovědi i obě
+         * lišty; jednotně silná obrysovka na všem je hlavní důvod, proč to
+         * působilo amatérsky. Hierarchii nese tloušťka tahu, ne barva výplně.
+         */
+        answer: `min-h-16 h-auto whitespace-normal rounded-3xl border border-border bg-card py-4 text-center text-lg font-bold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 hover:shadow-e2 ${LIFT}`,
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -74,7 +74,7 @@ export const SLOVESA: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu",
     rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu",
     title: "Slovesa (rozlišení slovesného druhu)",
-    studentTitle: "Slovesa",
+    studentTitle: "Co dělá?",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Tvarosloví",

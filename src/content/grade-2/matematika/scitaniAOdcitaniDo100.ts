@@ -69,7 +69,7 @@ export const SCITANIAODCITANIDO100: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-cislo-a-pocetni-operace-ciselny-obor-0-100-scitani-a-odcitani-do-100-bez-i-s-prechodem-desitky",
     title: "Sčítání a odčítání do 100 (bez i s přechodem desítky)",
-    studentTitle: "Počítám do 100",
+    studentTitle: "Plus a minus do 100",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–100",

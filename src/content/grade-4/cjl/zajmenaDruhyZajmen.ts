@@ -31,12 +31,12 @@ const POOL_L1: QA[] = [
 ];
 
 const POOL_L2: QA[] = [
-  { q: "Která zájmena jsou osobní?", a: "já, ty, on, ona, ono, my, vy, oni, ony", opts: ["já, ty, on, ona, ono, my, vy, oni, ony", "ten, tento, onen", "někdo, něco, nějaký", "kdo, co, jaký"], e: "Osobní zájmena zastupují osoby — toho, kdo mluví (já, my), s kým mluvíme (ty, vy) i o kom mluvíme (on, ona, oni). Řada 'ten, tento' ukazuje a 'kdo, co' se ptá, proto to osobní nejsou." },
-  { q: "Která zájmena jsou přivlastňovací?", a: "můj, tvůj, jeho, její, náš, váš, jejich", opts: ["můj, tvůj, jeho, její, náš, váš, jejich", "já, ty, on, ona", "ten, tento, tamten", "nikdo, nic, žádný"], e: "Přivlastňovací zájmena říkají, komu věc patří (můj, náš, jejich). Řada 'já, ty, on' jen označuje osoby (osobní) a 'nikdo, nic' něco popírá (záporná)." },
+  { q: "Která zájmena jsou osobní?", a: "já, ty, on, ona, ono, my, vy, oni, ony", opts: ["kdo, co, jaký, čí (tázací)", "já, ty, on, ona, ono, my, vy, oni, ony", "ten, tento, onen, tenhle (ukazovací)", "někdo, něco, nějaký, kdosi (neurčité)"], e: "Osobní zájmena zastupují osoby — toho, kdo mluví (já, my), s kým mluvíme (ty, vy) i o kom mluvíme (on, ona, oni). Řada 'ten, tento' ukazuje a 'kdo, co' se ptá, proto to osobní nejsou." },
+  { q: "Která zájmena jsou přivlastňovací?", a: "můj, tvůj, jeho, její, náš, váš, jejich", opts: ["já, ty, on, ona, ono, my (osobní)", "můj, tvůj, jeho, její, náš, váš, jejich", "nikdo, nic, žádný, ničí (záporné)", "ten, tento, tamten, onen (ukazovací)"], e: "Přivlastňovací zájmena říkají, komu věc patří (můj, náš, jejich). Řada 'já, ty, on' jen označuje osoby (osobní) a 'nikdo, nic' něco popírá (záporná)." },
   { q: "Která zájmena jsou ukazovací?", a: "ten, tento, tenhle, onen, tamten", opts: ["ten, tento, tenhle, onen, tamten", "já, ty, on", "kdo, co, jaký", "někdo, něco, nějaký"], e: "Ukazovacími zájmeny na věc ukazujeme a určujeme, o kterou jde (ten, tento, onen). Řada 'kdo, co' se ptá (tázací) a 'někdo, něco' je nejistá (neurčitá)." },
   { q: "Která zájmena jsou záporná?", a: "nikdo, nic, žádný, nijaký", opts: ["nikdo, nic, žádný, nijaký", "někdo, něco, nějaký", "kdo, co, jaký", "ten, tento, onen"], e: "Záporná zájmena popírají — říkají, že tu nikdo a nic není. Poznáš je podle začátku ni-/žá- (nikdo, žádný). Pozor na neurčitá 'někdo, něco', která naopak připouštějí, že někdo je." },
   { q: "Která zájmena jsou tázací?", a: "kdo, co, jaký, který, čí", opts: ["kdo, co, jaký, který, čí", "jenž, který, co", "někdo, něco, nějaký", "nikdo, nic, žádný"], e: "Tázací zájmena se používají v otázkách, ptáme se jimi (Kdo? Co? Jaký? Čí?). Řada 'jenž, který' spojuje věty (vztažná) a 'někdo, něco' je neurčitá." },
-  { q: "Která zájmena jsou vztažná?", a: "který, jenž, co (ve větě vedlejší)", opts: ["který, jenž, co (ve větě vedlejší)", "kdo, co (tázací)", "ten, tento", "někdo, něco"], e: "Vztažná zájmena spojují větu hlavní s vedlejší ('dům, který stojí na kopci'). Stejná slova jako 'co' nebo 'který' mohou být i tázací — záleží, zda se ptáme, nebo spojujeme věty." },
+  { q: "Která zájmena jsou vztažná?", a: "který, jenž, co", opts: ["kdo, co (tázací)", "který, jenž, co", "ten, tento", "někdo, něco"], e: "Vztažná zájmena spojují větu hlavní s vedlejší ('dům, který stojí na kopci'). Stejná slova jako 'co' nebo 'který' mohou být i tázací — záleží, zda se ptáme, nebo spojujeme věty." },
   { q: "Urči druh zájmena 'co' ve větě: 'Co děláš?'", a: "tázací", opts: ["tázací", "vztažné", "neurčité", "záporné"], e: "Věta je otázka — ptáme se slovem 'co', proto je zde tázací. Kdyby 'co' spojovalo dvě věty ('udělal, co slíbil'), bylo by vztažné. Rozhoduje, jak je slovo ve větě použité." },
   { q: "Urči druh zájmena 'co' ve větě: 'Přišel, co slíbil.'", a: "vztažné", opts: ["vztažné", "tázací", "neurčité", "záporné"], e: "Zde 'co' spojuje hlavní větu s vedlejší a odkazuje k tomu, co bylo slíbeno — je vztažné. Nejde o otázku, takže to není tázací 'co' jako ve větě 'Co děláš?'." },
   { q: "Urči druh zájmena 'jaký' ve větě: 'Jaký je to člověk?'", a: "tázací", opts: ["tázací", "vztažné", "neurčité", "ukazovací"], e: "Věta je otázka — ptáme se slovem 'jaký', proto je tázací. Kdyby 'jaký' uvozovalo vedlejší větu ('nevím, jaký je'), bylo by vztažné. Otazník napovídá, že jde o tázací zájmeno." },
@@ -50,22 +50,22 @@ const POOL_L2: QA[] = [
 ];
 
 const POOL_L3: QA[] = [
-  { q: "V jakém pádu je zájmeno 'mě' ve větě: 'Neviděl mě.'?", a: "4. pád (koho neviděl? mě)", opts: ["4. pád (koho neviděl? mě)", "2. pád", "3. pád", "6. pád"], e: "Pád určíme pádovou otázkou: 'Neviděl koho? mě.' Otázka 'koho, co?' patří ke 4. pádu. Proto je zájmeno 'mě' ve 4. pádu, ne ve druhém ('bez koho') ani třetím ('komu')." },
+  { q: "V jakém pádu je zájmeno 'mě' ve větě: 'Neviděl mě.'?", a: "4. pád", opts: ["2. pád", "4. pád", "3. pád", "6. pád"], e: "Pád určíme pádovou otázkou: 'Neviděl koho? mě.' Otázka 'koho, co?' patří ke 4. pádu. Proto je zájmeno 'mě' ve 4. pádu, ne ve druhém ('bez koho') ani třetím ('komu')." },
   { q: "Urči druh a pád zájmena 'sobě' ve větě: 'Koupila si to pro sebe.'", a: "osobní zvratné, 4. pád (sebe)", opts: ["osobní zvratné, 4. pád (sebe)", "přivlastňovací, 2. pád", "osobní, 3. pád", "neurčité, 4. pád"], e: "Zájmeno 'sebe' míří zpět na toho, kdo koupil — je osobní zvratné. Pádovou otázkou 'pro koho? pro sebe' zjistíme 4. pád. Nepřivlastňuje, takže přivlastňovací být nemůže." },
   { q: "Urči druh: 'všechno' ve větě: 'Zvládl všechno.'", a: "neurčité", opts: ["neurčité", "záporné", "ukazovací", "tázací"], e: "Slovo 'všechno' označuje celý, blíže neurčený rozsah věcí — řadí se k neurčitým zájmenům. Nic nepopírá (není záporné) a neukazuje na konkrétní věc jako 'ten'." },
   { q: "Urči druh: 'leckdo' ve větě: 'Leckdo by se divil.'", a: "neurčité", opts: ["neurčité", "záporné", "osobní", "tázací"], e: "Slovo 'leckdo' znamená 'kdekdo, mnohý' — osobu přesně neurčuje, proto je neurčité. Předpona lec- je typickým znakem neurčitých zájmen, podobně jako lec-co, lec-jaký." },
   { q: "Urči druh zájmena v souvětí: 'Přišel chlapec, který byl hodný.'", a: "vztažné (který)", opts: ["vztažné (který)", "tázací (který)", "ukazovací", "neurčité"], e: "Slovo 'který' zde spojuje hlavní větu s vedlejší a odkazuje na chlapce — je vztažné. Není to otázka, proto nejde o tázací 'který' jako ve větě 'Který přišel?'." },
   { q: "Urči druh: 'málokdo' ve větě: 'Málokdo o tom ví.'", a: "neurčité", opts: ["neurčité", "záporné", "tázací", "osobní"], e: "Slovo 'málokdo' znamená 'jen někdo, jen pár lidí' — osobu neurčuje přesně, proto je neurčité. Pozor: i když říká 'málo', stále někoho připouští, takže není záporné jako 'nikdo'." },
-  { q: "Urči druh a pád zájmena 'jejich' ve větě: 'To je jejich dům.'", a: "přivlastňovací, přívlastek (gen.)", opts: ["přivlastňovací, přívlastek (gen.)", "osobní, 2. pád", "ukazovací", "vztažné"], e: "Slovo 'jejich' říká, komu dům patří — je přivlastňovací a ve větě rozvíjí podstatné jméno 'dům' jako přívlastek. Liší se od osobního 'oni', které by jen označovalo osoby." },
-  { q: "Urči druh: 'nikterak' ve větě: 'Nikterak se nespěchá.'", a: "záporné příslovce (od záporného zájmena)", opts: ["záporné příslovce (od záporného zájmena)", "záporné zájmeno", "neurčité zájmeno", "tázací příslovce"], e: "Slovo 'nikterak' vyjadřuje způsob ('nijak'), a slova vyjadřující způsob jsou příslovce. Vzniklo ze záporného zájmena, proto je to záporné příslovce, ne samotné zájmeno." },
-  { q: "Urči druh: 'tentýž' ve větě: 'Přišel tentýž člověk.'", a: "ukazovací (totožnostní)", opts: ["ukazovací (totožnostní)", "neurčité", "osobní", "tázací"], e: "Slovo 'tentýž' ukazuje na to, že jde o stejnou, totožnou osobu — je ukazovací. Vychází ze zájmena 'ten', jen zdůrazňuje shodnost. Nepojmenovává osobu samu jako osobní zájmena." },
+  { q: "Urči druh a pád zájmena 'jejich' ve větě: 'To je jejich dům.'", a: "přivlastňovací, přívlastek (gen.)", opts: ["osobní, 2. pád (kdo, co)", "přivlastňovací, přívlastek (gen.)", "vztažné, uvozuje větu vedlejší", "ukazovací, ukazuje na věc"], e: "Slovo 'jejich' říká, komu dům patří — je přivlastňovací a ve větě rozvíjí podstatné jméno 'dům' jako přívlastek. Liší se od osobního 'oni', které by jen označovalo osoby." },
+  { q: "Urči druh: 'nikterak' ve větě: 'Nikterak se nespěchá.'", a: "záporné příslovce", opts: ["záporné zájmeno", "záporné příslovce", "neurčité zájmeno", "tázací příslovce"], e: "Slovo 'nikterak' vyjadřuje způsob ('nijak'), a slova vyjadřující způsob jsou příslovce. Vzniklo ze záporného zájmena, proto je to záporné příslovce, ne samotné zájmeno." },
+  { q: "Urči druh: 'tentýž' ve větě: 'Přišel tentýž člověk.'", a: "ukazovací", opts: ["neurčité", "ukazovací", "osobní", "tázací"], e: "Slovo 'tentýž' ukazuje na to, že jde o stejnou, totožnou osobu — je ukazovací. Vychází ze zájmena 'ten', jen zdůrazňuje shodnost. Nepojmenovává osobu samu jako osobní zájmena." },
   { q: "Urči druh: 'kdekdo' ve větě: 'O tom věděl kdekdo.'", a: "neurčité", opts: ["neurčité", "záporné", "tázací", "osobní"], e: "Slovo 'kdekdo' znamená 'kdokoli, leckdo' — osobu neurčuje přesně, proto je neurčité. Vzniklo z tázacího 'kdo', ale v této větě se neptáme, jen mluvíme o blíže neznámých lidech." },
   { q: "Urči druh: 'sebe' ve větě: 'Myslí jen na sebe.'", a: "osobní zvratné", opts: ["osobní zvratné", "přivlastňovací", "záporné", "neurčité"], e: "Zájmeno 'sebe' míří zpět na toho, kdo myslí — vztahuje děj k samotnému konateli, proto je osobní zvratné. Nepřivlastňuje (to by bylo 'svůj') ani nic nepopírá." },
   { q: "Urči druh: 'jiný' ve větě: 'Přijel jiný vlak.'", a: "neurčité", opts: ["neurčité", "ukazovací", "záporné", "tázací"], e: "Slovo 'jiný' znamená 'nějaký další, odlišný' — který přesně, nevíme, proto je neurčité. Neukazuje na konkrétní vlak jako 'ten' a nic nepopírá jako 'žádný'." },
-  { q: "Urči druh zájmena 'jaký' ve větě: 'Nevím, jaký bude výsledek.'", a: "vztažné (uvozuje větu vedlejší)", opts: ["vztažné (uvozuje větu vedlejší)", "tázací", "neurčité", "ukazovací"], e: "Slovo 'jaký' zde uvozuje vedlejší větu a spojuje ji s hlavní — je vztažné. I když věta mluví o nejistotě, není to přímá otázka, proto nejde o tázací 'jaký' jako v 'Jaký bude?'." },
+  { q: "Urči druh zájmena 'jaký' ve větě: 'Nevím, jaký bude výsledek.'", a: "vztažné", opts: ["ukazovací", "vztažné", "tázací", "neurčité"], e: "Slovo 'jaký' zde uvozuje vedlejší větu a spojuje ji s hlavní — je vztažné. I když věta mluví o nejistotě, není to přímá otázka, proto nejde o tázací 'jaký' jako v 'Jaký bude?'." },
   { q: "Urči druh: 'kdosi' ve větě: 'Kdosi zavolal z neznámého čísla.'", a: "neurčité", opts: ["neurčité", "záporné", "osobní", "tázací"], e: "Slovo 'kdosi' označuje osobu, kterou neznáme. Přípona -si je typickým znakem neurčitých zájmen (kdosi, cosi, jakýsi). Nepopírá, takže není záporné." },
-  { q: "Urči druh: 'veškerý' ve větě: 'Využil veškerý čas.'", a: "neurčité (totalizační)", opts: ["neurčité (totalizační)", "ukazovací", "záporné", "tázací"], e: "Slovo 'veškerý' znamená 'všechen, celý' — vyjadřuje úplný, blíže neurčený rozsah, proto patří k neurčitým zájmenům. Neukazuje na konkrétní věc a nic nepopírá." },
-  { q: "Urči, co zájmena nahrazují v textu.", a: "jména (podstatná, přídavná) — zabraňují opakování", opts: ["jména (podstatná, přídavná) — zabraňují opakování", "slovesa", "příslovce", "předložky"], e: "Zájmena zastupují jména (podstatná i přídavná), abychom je nemuseli stále opakovat — místo 'Petr' řekneme 'on'. Nezastupují slovesa (děje) ani příslovce, ta mají vlastní druhy slov." },
+  { q: "Urči druh: 'veškerý' ve větě: 'Využil veškerý čas.'", a: "neurčité", opts: ["ukazovací", "neurčité", "záporné", "tázací"], e: "Slovo 'veškerý' znamená 'všechen, celý' — vyjadřuje úplný, blíže neurčený rozsah, proto patří k neurčitým zájmenům. Neukazuje na konkrétní věc a nic nepopírá." },
+  { q: "Urči, co zájmena nahrazují v textu.", a: "jména", opts: ["slovesa", "jména", "příslovce", "předložky"], e: "Zájmena zastupují jména (podstatná i přídavná), abychom je nemuseli stále opakovat — místo 'Petr' řekneme 'on'. Nezastupují slovesa (děje) ani příslovce, ta mají vlastní druhy slov." },
 ];
 
 function gen(level: number): PracticeTask[] {
@@ -76,13 +76,13 @@ function gen(level: number): PracticeTask[] {
     correctAnswer: a,
     options: shuffle(opts),
     hints: [
-      "Osobní: já, ty, on, ona, my, vy, oni",
-      "Přivlastňovací: můj, tvůj, jeho, náš, váš, jejich",
-      "Ukazovací: ten, tento, onen, tamten",
-      "Tázací: kdo, co, jaký, který — ptáme se",
-      "Vztažná: který, jenž, co — uvozují větu vedlejší",
-      "Neurčitá: někdo, něco, leckdo, kdekdo",
-      "Záporná: nikdo, nic, žádný, nijaký",
+      "Popisuje mluvčího, posluchače nebo osobu, o které se mluví.",
+      "Vyjadřuje, komu daná věc patří.",
+      "Ukazuje na určitou, konkrétní věc nebo osobu.",
+      "Objevuje se, když se na něco ptáme.",
+      "Spojuje větu hlavní s vedlejší, aniž by se ptalo.",
+      "Označuje osobu nebo věc, kterou přesně neznáme.",
+      "Vyjadřuje zápor — obvykle popírá, že něco existuje nebo platí.",
     ],
     explanation: e,
   }));

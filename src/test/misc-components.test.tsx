@@ -10,7 +10,7 @@ import type { TopicMetadata, PracticeTask } from "@/lib/types";
  *
  * Pokrývá:
  *  - ProgressIndicator (visual progress bar pro session)
- *  - SessionTimer (countdown / count-up režim, expiry callback)
+ *  - SessionTimer (headless hlídač limitu: expiry + varování před koncem)
  *  - HelpButton (collapsible nápověda, hint reveal, fallback chain)
  */
 
@@ -41,22 +41,27 @@ describe("ProgressIndicator", () => {
     expect(dots.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("results array s 'correct' → 😊 emoji", () => {
+  // Emoji (😊 😕 🤔) nahrazena akvarelovými ikonami 2026-09-03 — test proto
+  // kontroluje `alt` obrázku, ne text glyfu. Alt zároveň nese informaci pro
+  // odečítač obrazovky, což emoji ve `<div>` nedělalo.
+  it("results array s 'correct' → ikona správně i zkus to příště", () => {
     render(<ProgressIndicator current={2} total={3} results={["correct", "wrong"]} />);
-    expect(screen.getByText("😊")).toBeInTheDocument();
-    expect(screen.getByText("😕")).toBeInTheDocument();
+    expect(screen.getByAltText("Správně")).toBeInTheDocument();
+    expect(screen.getByAltText("Zkus to příště")).toBeInTheDocument();
   });
 
-  it("'help' výsledek → 🤔 emoji", () => {
+  it("'help' výsledek → ikona s nápovědou", () => {
     render(<ProgressIndicator current={1} total={2} results={["help"]} />);
-    expect(screen.getByText("🤔")).toBeInTheDocument();
+    expect(screen.getByAltText("S nápovědou")).toBeInTheDocument();
   });
 
+  // Popisek je od 2026-09-03 „Správně" s velkým Ř — hlášky a popisky začínají
+  // velkým písmenem. Regex je case-sensitive, takže `/správně/` by neprošel.
   it("legendu zobrazí jen pokud existují results", () => {
     const { rerender } = render(<ProgressIndicator current={0} total={3} />);
-    expect(screen.queryByText(/správně/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Správně/)).not.toBeInTheDocument();
     rerender(<ProgressIndicator current={1} total={3} results={["correct"]} />);
-    expect(screen.getByText(/správně/)).toBeInTheDocument();
+    expect(screen.getByText(/Správně/)).toBeInTheDocument();
   });
 });
 
@@ -68,21 +73,8 @@ describe("SessionTimer", () => {
     vi.useRealTimers();
   });
 
-  it("count-up režim zobrazí 'M:SS' format", () => {
-    render(
-      <SessionTimer
-        startTime={Date.now()}
-        maxSeconds={1000}
-        isActive
-        onTimeExpired={vi.fn()}
-        countUp
-      />
-    );
-    expect(screen.getByText(/0:00/)).toBeInTheDocument();
-  });
-
-  it("countdown zobrazí remaining time + progress bar", () => {
-    render(
+  it("nic nevykresluje — limit se hlídá na pozadí, dítě odpočet nevidí", () => {
+    const { container } = render(
       <SessionTimer
         startTime={Date.now()}
         maxSeconds={300}
@@ -90,8 +82,7 @@ describe("SessionTimer", () => {
         onTimeExpired={vi.fn()}
       />
     );
-    // 5:00 = 300s
-    expect(screen.getByText(/5:00/)).toBeInTheDocument();
+    expect(container).toBeEmptyDOMElement();
   });
 
   it("po uplynutí času volá onTimeExpired", () => {
@@ -128,21 +119,50 @@ describe("SessionTimer", () => {
     expect(onExpired).not.toHaveBeenCalled();
   });
 
-  it("count-up režim NE-volá onTimeExpired ani po překročení maxSeconds", () => {
-    const onExpired = vi.fn();
+  it("minutu před koncem zavolá onWarning se startTime sezení", () => {
+    const onWarning = vi.fn();
+    const start = Date.now() - 250_000; // 250 s z 300 s limitu → zbývá 50 s
     render(
       <SessionTimer
-        startTime={Date.now() - 100_000}
-        maxSeconds={10}
+        startTime={start}
+        maxSeconds={300}
         isActive
-        onTimeExpired={onExpired}
-        countUp
+        onTimeExpired={vi.fn()}
+        onWarning={onWarning}
       />
     );
-    act(() => {
-      vi.advanceTimersByTime(2000);
-    });
-    expect(onExpired).not.toHaveBeenCalled();
+    act(() => { vi.advanceTimersByTime(1500); });
+    expect(onWarning).toHaveBeenCalledWith(start);
+  });
+
+  it("onWarning padne právě jednou, ne na každý tik", () => {
+    const onWarning = vi.fn();
+    render(
+      <SessionTimer
+        startTime={Date.now() - 250_000}
+        maxSeconds={300}
+        isActive
+        onTimeExpired={vi.fn()}
+        onWarning={onWarning}
+      />
+    );
+    act(() => { vi.advanceTimersByTime(10_000); });
+    expect(onWarning).toHaveBeenCalledTimes(1);
+  });
+
+  it("dřív než warnSeconds před koncem se neupozorňuje", () => {
+    const onWarning = vi.fn();
+    render(
+      <SessionTimer
+        startTime={Date.now()}
+        maxSeconds={300}
+        isActive
+        onTimeExpired={vi.fn()}
+        onWarning={onWarning}
+      />
+    );
+    act(() => { vi.advanceTimersByTime(5000); });
+    expect(onWarning).not.toHaveBeenCalled();
   });
 });
 

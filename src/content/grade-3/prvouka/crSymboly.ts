@@ -41,12 +41,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znázorňuje velký státní znak České republiky?",
     correctAnswer: "Českého lva, moravskou orlici a slezskou orlici",
-    options: [
-      "Českého lva, moravskou orlici a slezskou orlici",
-      "Tři české lvy ve třech polích",
-      "Dvě orlice a jednoho orla",
-      "Českého lva, polského orla a slovenský štít",
-    ],
+    options: ["Tři české lvy ve třech polích", "Českého lva, moravskou orlici a slezskou orlici", "Dvě orlice a jednoho orla", "Českého lva, polského orla a slovenský štít"],
     hints: [
       "Velký státní znak má tři části — každá představuje jednu historickou zemi.",
       "Česká země má ve znaku lva, Morava a Slezsko mají orlici.",
@@ -57,12 +52,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje státní hymna České republiky?",
     correctAnswer: "Kde domov můj",
-    options: [
-      "Kde domov můj",
-      "Óda na radost",
-      "Má vlast",
-      "Čechy krásné, Čechy mé",
-    ],
+    options: ["Óda na radost", "Má vlast", "Kde domov můj", "Čechy krásné, Čechy mé"],
     hints: [
       "Název hymny je zároveň její první slova — je to otázka.",
       "Píseň popsal spisovatel Josef Kajetán Tyl a složil ji František Škroup.",
@@ -73,7 +63,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje hlavní město České republiky?",
     correctAnswer: "Praha",
-    options: ["Praha", "Brno", "Ostrava", "Plzeň"],
+    options: ["Brno", "Ostrava", "Plzeň", "Praha"],
     hints: [
       "Hlavní město leží na řece Vltavě.",
       "Je to největší město v České republice.",
@@ -87,7 +77,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Prezident", "Premiér", "Starosta Prahy", "Předseda Senátu"],
     hints: [
       "Hlava státu je nejvyšší ústavní činitel — volí ho občané.",
-      "Prezident sídlí na Pražském hradě.",
+      "Tato hlava státu sídlí na Pražském hradě.",
     ],
     explanation:
       "Hlavou státu v České republice je prezident. Sídlí na Pražském hradě, je volen občany a zastupuje Českou republiku navenek. Jmenuje například vládu nebo podepisuje zákony.",
@@ -95,15 +85,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenují obě komory českého parlamentu?",
     correctAnswer: "Poslanecká sněmovna a Senát",
-    options: [
-      "Poslanecká sněmovna a Senát",
-      "Sněmovna a Duma",
-      "Dolní sněmovna a Horní sněmovna",
-      "Rada a Kongres",
-    ],
+    options: ["Sněmovna a Duma", "Poslanecká sněmovna a Senát", "Dolní sněmovna a Horní sněmovna", "Rada a Kongres"],
     hints: [
       "Parlament má dvě části — jednu s poslanci a druhou se senátory.",
-      "Dolní komora se jmenuje Poslanecká sněmovna, horní komora je Senát.",
+      "Odvoď názvy komor od slov 'poslanec' a 'senátor' — jedna dostala navíc i slovo 'sněmovna'.",
     ],
     explanation:
       "Český parlament se skládá ze dvou komor: Poslanecké sněmovny (200 poslanců) a Senátu (81 senátorů). Obě komory schvalují zákony, ale mají různé pravomoci a různé délky volebního období.",
@@ -111,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik komor má český parlament?",
     correctAnswer: "Dvě",
-    options: ["Dvě", "Jednu", "Tři", "Čtyři"],
+    options: ["Jednu", "Tři", "Dvě", "Čtyři"],
     hints: [
       "Komora je jedna část parlamentu — spočítej, kolik jich český parlament má.",
       "Jedna komora je Poslanecká sněmovna, druhá je Senát.",
@@ -122,14 +107,9 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co slavíme 28. října?",
     correctAnswer: "Vznik Československa v roce 1918",
-    options: [
-      "Vznik Československa v roce 1918",
-      "Konec druhé světové války",
-      "Příchod Cyrila a Metoděje",
-      "Nový rok",
-    ],
+    options: ["Konec druhé světové války", "Příchod Cyrila a Metoděje", "Nový rok", "Vznik Československa v roce 1918"],
     hints: [
-      "Je to den, kdy v roce 1918 vznikl nový stát na mapě Evropy.",
+      "Je to den, kdy roku 1918 vznikl nový stát na mapě Evropy.",
       "Tehdy přestal existovat Rakousko-Uherský stát a vzniklo Československo.",
     ],
     explanation:
@@ -155,10 +135,10 @@ const POOL_L1: PracticeTask[] = [
     question: "Co slavíme 5. července?",
     correctAnswer: "Příchod Cyrila a Metoděje na Moravu",
     options: [
+      "Svátek mistra Jana Husa",
       "Příchod Cyrila a Metoděje na Moravu",
-      "Svátek Jana Husa",
-      "Vznik státu",
-      "Konec války",
+      "Vznik samostatného státu",
+      "Konec druhé světové války",
     ],
     hints: [
       "5. července připomínáme dva věrozvěsty, kteří přišli z Byzance.",
@@ -170,12 +150,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co slavíme 6. července?",
     correctAnswer: "Den upálení mistra Jana Husa",
-    options: [
-      "Den upálení mistra Jana Husa",
-      "Svátek Cyrila a Metoděje",
-      "Vznik Česko-Slovenské federace",
-      "Den české státnosti",
-    ],
+    options: ["Svátek Cyrila a Metoděje", "Vznik Česko-Slovenské federace", "Den upálení mistra Jana Husa", "Den české státnosti"],
     hints: [
       "6. července připomínáme kazatele, který bojoval za pravdu a byl za to potrestán.",
       "Jan Hus byl upálen v roce 1415 v Kostnici.",
@@ -186,7 +161,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik států sousedí s Českou republikou?",
     correctAnswer: "Čtyři státy",
-    options: ["Čtyři státy", "Tři státy", "Pět států", "Dva státy"],
+    options: ["Tři státy", "Pět států", "Dva státy", "Čtyři státy"],
     hints: [
       "Přepočítej: na severu, na jihu, na východě a na západě.",
       "Jedna ze sousedních zemí byla dříve součástí Československa.",
@@ -213,7 +188,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "V jakém roce vznikla píseň Kde domov můj?",
     correctAnswer: "V roce 1834",
-    options: ["V roce 1834", "V roce 1918", "V roce 1848", "V roce 1793"],
+    options: ["V roce 1918", "V roce 1834", "V roce 1848", "V roce 1793"],
     hints: [
       "Píseň vznikla v 19. století, dávno předtím, než se stala hymnou samostatného státu.",
       "Autoři byli Josef Kajetán Tyl a František Škroup.",
@@ -227,7 +202,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který stát sousedí s Českou republikou na severu?",
     correctAnswer: "Polsko",
-    options: ["Polsko", "Německo", "Slovensko", "Maďarsko"],
+    options: ["Německo", "Slovensko", "Polsko", "Maďarsko"],
     hints: [
       "Severní soused je velká slovanská země.",
       "Hlavní město tohoto státu je Varšava.",
@@ -238,9 +213,9 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který stát sousedí s Českou republikou na jihu?",
     correctAnswer: "Rakousko",
-    options: ["Rakousko", "Slovensko", "Polsko", "Maďarsko"],
+    options: ["Slovensko", "Polsko", "Maďarsko", "Rakousko"],
     hints: [
-      "Jde o stát, který byl dříve součástí Rakousko-Uherské říše.",
+      "Jde o stát, s nímž jsme byli dříve součástí jedné habsburské monarchie.",
       "Hlavní město tohoto souseda je Vídeň.",
     ],
     explanation:
@@ -260,7 +235,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který stát sousedí s Českou republikou na západě?",
     correctAnswer: "Německo",
-    options: ["Německo", "Francie", "Polsko", "Rakousko"],
+    options: ["Francie", "Německo", "Polsko", "Rakousko"],
     hints: [
       "Tento soused leží na západ od nás a je jednou z největších zemí v Evropě.",
       "Hlavní město tohoto státu je Berlín.",
@@ -272,7 +247,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Kterou historickou zemi ve státním znaku představuje bílý lev na červeném poli?",
     correctAnswer: "Čechy",
-    options: ["Čechy", "Moravu", "Slezsko", "Slovensko"],
+    options: ["Moravu", "Slezsko", "Čechy", "Slovensko"],
     hints: [
       "Lev je nejznámější část státního znaku — najdeš ho i na erbu Prahy.",
       "Toto pole zabírá ve znaku dvě ze čtyř částí.",
@@ -284,7 +259,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Kterou historickou zemi ve státním znaku představuje stříbrno-červeně šachovaná orlice?",
     correctAnswer: "Moravu",
-    options: ["Moravu", "Čechy", "Slezsko", "Rakousko"],
+    options: ["Čechy", "Slezsko", "Rakousko", "Moravu"],
     hints: [
       "Tato orlice má na sobě šachovnicový vzor.",
       "Najdeš ji i na moravských vlajkách a znacích měst, jako je Brno.",
@@ -307,7 +282,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kolik poslanců zasedá v Poslanecké sněmovně?",
     correctAnswer: "200 poslanců",
-    options: ["200 poslanců", "81 poslanců", "150 poslanců", "300 poslanců"],
+    options: ["81 poslanců", "200 poslanců", "150 poslanců", "300 poslanců"],
     hints: [
       "Je to kulaté číslo, které se snadno pamatuje.",
       "Senát má mnohem méně členů — 81.",
@@ -318,7 +293,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kolik senátorů zasedá v Senátu?",
     correctAnswer: "81 senátorů",
-    options: ["81 senátorů", "200 senátorů", "150 senátorů", "100 senátorů"],
+    options: ["200 senátorů", "150 senátorů", "81 senátorů", "100 senátorů"],
     hints: [
       "Senát má mnohem méně členů než Poslanecká sněmovna.",
       "Je to liché číslo, které se nedá jednoduše zaokrouhlit.",
@@ -329,12 +304,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdo napsal slova státní hymny Kde domov můj?",
     correctAnswer: "Josef Kajetán Tyl",
-    options: [
-      "Josef Kajetán Tyl",
-      "František Škroup",
-      "Bedřich Smetana",
-      "Antonín Dvořák",
-    ],
+    options: ["František Škroup", "Bedřich Smetana", "Antonín Dvořák", "Josef Kajetán Tyl"],
     hints: [
       "Byl to spisovatel a divadelník, autor slavné divadelní hry.",
       "Píseň pochází z jeho divadelní hry Fidlovačka.",
@@ -361,7 +331,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém sousedním státě leží hlavní město Vídeň?",
     correctAnswer: "Rakousko",
-    options: ["Rakousko", "Německo", "Slovensko", "Polsko"],
+    options: ["Německo", "Rakousko", "Slovensko", "Polsko"],
     hints: [
       "Tento stát sousedí s ČR na jihu.",
       "Ve Vídni sídlí rakouská vláda a prezident.",
@@ -372,7 +342,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve kterém sousedním státě leží hlavní město Berlín?",
     correctAnswer: "Německo",
-    options: ["Německo", "Rakousko", "Polsko", "Slovensko"],
+    options: ["Rakousko", "Polsko", "Německo", "Slovensko"],
     hints: [
       "Tento stát sousedí s ČR na západě.",
       "Je to jedna z největších zemí Evropy.",
@@ -471,12 +441,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Který svátek je v kalendářním roce dřív — svátek Cyrila a Metoděje (5. července), nebo den upálení mistra Jana Husa (6. července)?",
     correctAnswer: "Svátek Cyrila a Metoděje (5. července)",
-    options: [
-      "Svátek Cyrila a Metoděje (5. července)",
-      "Den upálení mistra Jana Husa (6. července)",
-      "Oba svátky připadají na stejný den",
-      "Nelze to určit",
-    ],
+    options: ["Den upálení mistra Jana Husa (6. července)", "Oba svátky připadají na stejný den", "Nelze to určit", "Svátek Cyrila a Metoděje (5. července)"],
     hints: [
       "Porovnej čísla dnů — 5. je před 6.",
       "Oba svátky jsou v červenci, jdou hned po sobě.",
@@ -505,12 +470,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Co bylo dřív — příchod Cyrila a Metoděje na Velkou Moravu (863 n. l.), nebo vznik Československa (1918)?",
     correctAnswer: "Příchod Cyrila a Metoděje (863 n. l.)",
-    options: [
-      "Příchod Cyrila a Metoděje (863 n. l.)",
-      "Vznik Československa (1918)",
-      "Obě události se staly ve stejném století",
-      "Nelze to určit",
-    ],
+    options: ["Vznik Československa (1918)", "Příchod Cyrila a Metoděje (863 n. l.)", "Obě události se staly ve stejném století", "Nelze to určit"],
     hints: [
       "Porovnej letopočty — 863 je mnohem menší číslo než 1918.",
       "Mezi oběma událostmi uplynulo více než tisíc let.",
@@ -522,7 +482,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Který sousední stát ČR byl s naší zemí až do roku 1993 součástí společného státu a zároveň leží na východě od České republiky?",
     correctAnswer: "Slovensko",
-    options: ["Slovensko", "Rakousko", "Polsko", "Německo"],
+    options: ["Rakousko", "Polsko", "Slovensko", "Německo"],
     hints: [
       "Hledej souseda, který splňuje obě podmínky zároveň.",
       "Společný stát s ČR se rozdělil 1. ledna 1993.",
@@ -534,7 +494,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Který sousední stát ČR leží na severu a zároveň má hlavní město Varšavu?",
     correctAnswer: "Polsko",
-    options: ["Polsko", "Německo", "Rakousko", "Slovensko"],
+    options: ["Německo", "Rakousko", "Slovensko", "Polsko"],
     hints: [
       "Hledej souseda, který splňuje obě podmínky zároveň.",
       "Tento stát leží nad Krkonošemi a Jeseníky.",

@@ -33,7 +33,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře snáší vejce?",
     correctAnswer: "Slepice",
-    options: ["Slepice", "Ovce", "Kráva", "Prase"],
+    options: ["Ovce", "Slepice", "Kráva", "Prase"],
     emoji: "🐔",
     hints: ["K snídani si někdy uvaříme vajíčko — které zvíře ho snese?"],
     solutionSteps: ["Vejce snáší slepice — snáší je téměř každý den."],
@@ -41,7 +41,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře nám dává vlnu?",
     correctAnswer: "Ovce",
-    options: ["Ovce", "Kráva", "Včela", "Kůň"],
+    options: ["Kráva", "Včela", "Ovce", "Kůň"],
     emoji: "🐑",
     hints: ["Z vlny se pletou teplé svetry — od kterého zvířete pochází?"],
     solutionSteps: ["Vlnu nám dává ovce — jednou za rok ji zemědělec ostříhá."],
@@ -49,7 +49,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře nám dává med?",
     correctAnswer: "Včela",
-    options: ["Včela", "Slepice", "Koza", "Husa"],
+    options: ["Slepice", "Koza", "Husa", "Včela"],
     emoji: "🐝",
     hints: ["Med je sladký a vzniká z květového pylu — které zvíře ho dělá?"],
     solutionSteps: ["Med nám dává včela — sbírá pyl z květů a v úlu z něj vyrábí med."],
@@ -65,7 +65,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě ovce?",
     correctAnswer: "Jehně",
-    options: ["Jehně", "Tele", "Kůzle", "Sele"],
+    options: ["Tele", "Jehně", "Kůzle", "Sele"],
     emoji: "🐑",
     hints: ["Malé bílé mládě ovce má své vlastní jméno — jaké?"],
     solutionSteps: ["Mládě ovce je jehně — ovce, beran a jehně patří k sobě."],
@@ -73,7 +73,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě prasete?",
     correctAnswer: "Sele",
-    options: ["Sele", "Jehně", "Kuře", "Tele"],
+    options: ["Jehně", "Kuře", "Sele", "Tele"],
     emoji: "🐖",
     hints: ["Malé růžové mládě prasete má krátké jméno — jaké?"],
     solutionSteps: ["Mládě prasete je sele — prase, kanec a sele patří k sobě."],
@@ -81,7 +81,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě slepice?",
     correctAnswer: "Kuře",
-    options: ["Kuře", "House", "Káče", "Sele"],
+    options: ["House", "Káče", "Sele", "Kuře"],
     emoji: "🐤",
     hints: ["Ze slepičího vejce se vylíhne malé žluté mládě — jak se jmenuje?"],
     solutionSteps: ["Mládě slepice je kuře — slepice, kohout a kuře patří k sobě."],
@@ -97,7 +97,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje mládě kozy?",
     correctAnswer: "Kůzle",
-    options: ["Kůzle", "Jehně", "Tele", "Hříbě"],
+    options: ["Jehně", "Kůzle", "Tele", "Hříbě"],
     emoji: "🐐",
     hints: ["Mládě kozy se snadno splete s mládětem ovce — pozor, má jiné jméno."],
     solutionSteps: ["Mládě kozy je kůzle — koza, kozel a kůzle patří k sobě."],
@@ -105,7 +105,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje samec krávy?",
     correctAnswer: "Býk",
-    options: ["Býk", "Beran", "Kohout", "Kozel"],
+    options: ["Beran", "Kohout", "Býk", "Kozel"],
     emoji: "🐂",
     hints: ["Kráva je samice — jak říkáme velkému samci s rohy u téhož druhu?"],
     solutionSteps: ["Samec krávy je býk — kráva, býk a tele patří k sobě."],
@@ -113,7 +113,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje samice kohouta?",
     correctAnswer: "Slepice",
-    options: ["Slepice", "Kachna", "Husa", "Koza"],
+    options: ["Kachna", "Husa", "Koza", "Slepice"],
     emoji: "🐔",
     hints: ["Kohout ráno kokrhá — jak se jmenuje samice, která snáší vejce?"],
     solutionSteps: ["Samice kohouta je slepice — kohout, slepice a kuře patří k sobě."],
@@ -129,7 +129,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře ráno kokrhá?",
     correctAnswer: "Kohout",
-    options: ["Kohout", "Kráva", "Ovce", "Husa"],
+    options: ["Kráva", "Kohout", "Ovce", "Husa"],
     emoji: "🐓",
     hints: ["Brzy ráno je na farmě slyšet hlasité „kykyryký“ — kdo ho vydává?"],
     solutionSteps: ["Ráno kokrhá kohout — jeho volání oznamuje začátek dne."],
@@ -137,7 +137,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře hlídá dům a štěká?",
     correctAnswer: "Pes",
-    options: ["Pes", "Kočka", "Kůň", "Ovce"],
+    options: ["Kočka", "Kůň", "Pes", "Ovce"],
     emoji: "🐕",
     hints: ["Toto zvíře štěká na cizí lidi a hlídá domov — které to je?"],
     solutionSteps: ["Dům hlídá pes — štěká na cizí lidi a chrání domov."],
@@ -145,7 +145,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře chytá myši?",
     correctAnswer: "Kočka",
-    options: ["Kočka", "Pes", "Slepice", "Kráva"],
+    options: ["Pes", "Slepice", "Kráva", "Kočka"],
     emoji: "🐈",
     hints: ["Toto zvíře tiše loví hlodavce v domě i na dvoře — které to je?"],
     solutionSteps: ["Myši chytá kočka — je to šikovný lovec hlodavců."],
@@ -164,7 +164,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co nám dává včela?",
     correctAnswer: "Med",
-    options: ["Med", "Vlnu", "Vejce", "Mléko"],
+    options: ["Vlnu", "Med", "Vejce", "Mléko"],
     emoji: "🐝",
     hints: ["Přiřaď užitek ke správnému zvířeti — co sladkého vyrábí včela?"],
     solutionSteps: ["Včela nám dává med — vyrábí ho v úlu z květového pylu."],
@@ -172,7 +172,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co nám dává slepice?",
     correctAnswer: "Vejce",
-    options: ["Vejce", "Mléko", "Vlnu", "Med"],
+    options: ["Mléko", "Vlnu", "Vejce", "Med"],
     emoji: "🐔",
     hints: ["Přiřaď užitek ke slepici — co snáší téměř každý den?"],
     solutionSteps: ["Slepice nám dává vejce — snáší je do hnízda v kurníku."],
@@ -180,7 +180,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "K čemu hlavně chováme krávu?",
     correctAnswer: "Kvůli mléku",
-    options: ["Kvůli mléku", "Kvůli vlně", "Kvůli medu", "Kvůli peří"],
+    options: ["Kvůli vlně", "Kvůli medu", "Kvůli peří", "Kvůli mléku"],
     emoji: "🐄",
     hints: ["Přemýšlej, co z krávy získáváme každý den, když ji podojíme."],
     solutionSteps: ["Krávu chováme hlavně kvůli mléku — dojí se každý den."],
@@ -196,7 +196,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kde bydlí slepice?",
     correctAnswer: "V kurníku",
-    options: ["V kurníku", "V úlu", "V chlívku", "Ve stáji"],
+    options: ["V úlu", "V kurníku", "V chlívku", "Ve stáji"],
     emoji: "🐔",
     hints: ["Přemýšlej, jak se jmenuje domek pro slepice, kam večer zalezou spát."],
     solutionSteps: ["Slepice bydlí v kurníku — tam spí a snáší vejce do hnízd."],
@@ -204,7 +204,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kde bydlí kůň?",
     correctAnswer: "Ve stáji",
-    options: ["Ve stáji", "V úlu", "V kurníku", "V boudě"],
+    options: ["V úlu", "V kurníku", "Ve stáji", "V boudě"],
     emoji: "🐴",
     hints: ["Přemýšlej, kde na statku spí velký kůň — jak se to místo jmenuje?"],
     solutionSteps: ["Kůň bydlí ve stáji — má tam sucho, seno a klid."],
@@ -212,7 +212,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které zvíře má rohy, bradku a dává mléko?",
     correctAnswer: "Koza",
-    options: ["Koza", "Slepice", "Prase", "Husa"],
+    options: ["Slepice", "Prase", "Husa", "Koza"],
     emoji: "🐐",
     hints: ["Poznej zvíře podle popisu — má malé rohy, bradku a dojí se jako kráva."],
     solutionSteps: ["Podle popisu je to koza — má rohy, bradku a dává kozí mléko."],
@@ -228,7 +228,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které zvíře nosí lidi na hřbetě a tahá vozy?",
     correctAnswer: "Kůň",
-    options: ["Kůň", "Prase", "Slepice", "Včela"],
+    options: ["Prase", "Kůň", "Slepice", "Včela"],
     emoji: "🐴",
     hints: ["Poznej zvíře podle popisu — lidé na něm jezdí a zapřahají ho do vozu."],
     solutionSteps: ["Podle popisu je to kůň — nosí jezdce na hřbetě a tahá vozy."],
@@ -236,7 +236,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které zvíře se rádo válí v bahně a chová se hlavně pro maso?",
     correctAnswer: "Prase",
-    options: ["Prase", "Ovce", "Kůň", "Kočka"],
+    options: ["Ovce", "Kůň", "Prase", "Kočka"],
     emoji: "🐖",
     hints: ["Poznej zvíře podle popisu — je růžové, chrochtá a rádo se válí v bahně."],
     solutionSteps: ["Podle popisu je to prase — chová se hlavně pro maso."],
@@ -244,7 +244,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které zvíře plave na rybníku a kváká?",
     correctAnswer: "Kachna",
-    options: ["Kachna", "Slepice", "Kohout", "Kůň"],
+    options: ["Slepice", "Kohout", "Kůň", "Kachna"],
     emoji: "🦆",
     hints: ["Poznej zvíře podle popisu — je to menší vodní pták, který dělá „ka ka ka“."],
     solutionSteps: ["Podle popisu je to kachna — plave na rybníku a kváká."],
@@ -260,7 +260,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ke kterému zvířeti patří úl?",
     correctAnswer: "Ke včele",
-    options: ["Ke včele", "Ke krávě", "K praseti", "Ke koze"],
+    options: ["Ke krávě", "Ke včele", "K praseti", "Ke koze"],
     emoji: "🐝",
     hints: ["Přemýšlej, jaké zvíře bydlí v úlu, a přiřaď ho zpět k domku."],
     solutionSteps: ["Úl patří ke včele — bydlí v něm celá včelí rodina a vyrábí med."],
@@ -271,7 +271,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které zvíře nám dává zároveň mléko i maso?",
     correctAnswer: "Kráva",
-    options: ["Kráva", "Slepice", "Včela", "Kůň"],
+    options: ["Slepice", "Včela", "Kráva", "Kůň"],
     emoji: "🐄",
     hints: ["Hledej zvíře, které splňuje OBOJÍ najednou — mléko i maso."],
     solutionSteps: [
@@ -281,7 +281,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které zvíře nám dává zároveň vlnu i mléko?",
     correctAnswer: "Ovce",
-    options: ["Ovce", "Kráva", "Slepice", "Včela"],
+    options: ["Kráva", "Slepice", "Včela", "Ovce"],
     emoji: "🐑",
     hints: ["Hledej zvíře, které splňuje OBOJÍ najednou — vlnu i mléko."],
     solutionSteps: [
@@ -299,7 +299,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Z čeho se plete teplý svetr?",
     correctAnswer: "Z vlny",
-    options: ["Z vlny", "Z mléka", "Z medu", "Z peří"],
+    options: ["Z mléka", "Z vlny", "Z medu", "Z peří"],
     emoji: "🧶",
     hints: ["Přemýšlej po krocích — svetr se plete z materiálu, který ostříháme ovci."],
     solutionSteps: ["Teplý svetr se plete z vlny — a vlnu nám dává ovce."],
@@ -307,7 +307,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Sýr se vyrábí z mléka. Které zvíře nám tedy mléko na sýr dá?",
     correctAnswer: "Kráva",
-    options: ["Kráva", "Slepice", "Včela", "Husa"],
+    options: ["Slepice", "Včela", "Kráva", "Husa"],
     emoji: "🧀",
     hints: ["Nejdřív si vzpomeň, z čeho je sýr, a pak najdi zvíře, které to dává."],
     solutionSteps: [
@@ -317,7 +317,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ke snídani máš vajíčko a lžičku medu. Která dvě zvířata ti to dala?",
     correctAnswer: "Slepice a včela",
-    options: ["Slepice a včela", "Kráva a ovce", "Prase a kůň", "Koza a pes"],
+    options: ["Kráva a ovce", "Prase a kůň", "Koza a pes", "Slepice a včela"],
     emoji: "🍯",
     hints: ["Rozděl si to na dvě části — kdo dává vejce a kdo dává med?"],
     solutionSteps: ["Vajíčko snesla slepice a med vyrobila včela — proto je to slepice a včela."],
@@ -335,7 +335,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kráva má mládě tele. Jak se jmenuje mládě koně?",
     correctAnswer: "Hříbě",
-    options: ["Hříbě", "Tele", "Sele", "Kůzle"],
+    options: ["Tele", "Hříbě", "Sele", "Kůzle"],
     emoji: "🐴",
     hints: ["Nezaměň mláďata — každý druh má své vlastní jméno pro mládě."],
     solutionSteps: [
@@ -345,7 +345,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se jmenuje samec ovce?",
     correctAnswer: "Beran",
-    options: ["Beran", "Býk", "Kozel", "Kanec"],
+    options: ["Býk", "Kozel", "Beran", "Kanec"],
     emoji: "🐑",
     hints: ["Pozor na záměnu samců — hledej samce právě u ovce, ne u krávy nebo kozy."],
     solutionSteps: [
@@ -355,7 +355,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se jmenuje samec kozy?",
     correctAnswer: "Kozel",
-    options: ["Kozel", "Beran", "Býk", "Kohout"],
+    options: ["Beran", "Býk", "Kohout", "Kozel"],
     emoji: "🐐",
     hints: ["Pozor na záměnu samců — koza a ovce jsou podobné, ale jejich samci se jmenují jinak."],
     solutionSteps: [
@@ -375,7 +375,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které zvíře bydlí v úlu a zároveň vyrábí med?",
     correctAnswer: "Včela",
-    options: ["Včela", "Slepice", "Kráva", "Koza"],
+    options: ["Slepice", "Včela", "Kráva", "Koza"],
     emoji: "🐝",
     hints: ["Hledej zvíře, které splňuje OBOJÍ — bydlí v úlu a k tomu dělá med."],
     solutionSteps: [
@@ -385,7 +385,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Z čeho se plní péřová peřina, a které zvíře nám to peří dá?",
     correctAnswer: "Z peří husy",
-    options: ["Z peří husy", "Z vlny ovce", "Z mléka krávy", "Z medu včely"],
+    options: ["Z vlny ovce", "Z mléka krávy", "Z peří husy", "Z medu včely"],
     emoji: "🪶",
     hints: ["Peřina je z jemného peří — vzpomeň si, který velký pták nám peří dává."],
     solutionSteps: [
@@ -395,7 +395,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Máslo i sýr se vyrábějí z mléka. Které zvíře nám mléko dává?",
     correctAnswer: "Kráva",
-    options: ["Kráva", "Slepice", "Prase", "Včela"],
+    options: ["Slepice", "Prase", "Včela", "Kráva"],
     emoji: "🥛",
     hints: ["Nejdřív si vzpomeň, z čeho je máslo a sýr, a pak najdi zvíře, které to dává."],
     solutionSteps: [

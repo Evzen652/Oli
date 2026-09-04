@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft } from "lucide-react";
+import { BackButton } from "@/components/BackButton";
 
 export type DiktatType = "vyjmenovana" | "parove" | "tvrde_mekke" | "velka_pismena";
 
@@ -38,10 +38,7 @@ export function DiktatFilterSelect({ onConfirm, onBack }: DiktatFilterSelectProp
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-lg space-y-8">
-        <Button variant="ghost" size="sm" onClick={onBack} className="gap-1 text-base text-muted-foreground">
-          <ChevronLeft className="h-5 w-5" />
-          Zpět
-        </Button>
+        <BackButton onClick={onBack} />
 
         <div className="space-y-3 text-center">
           <h1 className="text-4xl font-semibold tracking-tight text-foreground">

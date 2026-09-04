@@ -4,8 +4,9 @@ import { BarChart2 } from "lucide-react";
 import { getSkillSubject, getReadableSkillName } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
+import { SkillDetailModal } from "@/components/SkillDetailModal";
 import { Button } from "@/components/ui/button";
+import { buildAssignmentWindows, isAssignedSession } from "@/lib/assignmentBinding";
 
 export interface SessionEntry {
   session_id: string;
@@ -27,7 +28,6 @@ interface Props {
   childId?: string;
   childName?: string;
   grade?: number;
-  mockSessions?: SessionEntry[];
 }
 
 // Převod % úspěšnosti na školní známku
@@ -55,23 +55,25 @@ const SUBJECT_LABELS: Record<string, string> = {
   "vlastivěda": "Vlastivěda",
 };
 
-export function ChildSessionLog({ childId = "", childName, grade, mockSessions }: Props) {
-  const [sessions, setSessions] = useState<SessionEntry[]>(mockSessions ?? []);
-  const [loading, setLoading] = useState(!mockSessions);
+export function ChildSessionLog({ childId = "", childName, grade }: Props) {
+  const [sessions, setSessions] = useState<SessionEntry[]>([]);
+  const [loading, setLoading] = useState(true);
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
   const [gradeFilter, setGradeFilter] = useState<number | null>(null);
-  const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
+  const [detailData, setDetailData] = useState<{ skillId: string } | null>(null);
 
   useEffect(() => {
-    if (mockSessions) { setSessions(mockSessions); return; }
     if (!childId) { setLoading(false); return; }
 
     (async () => {
       const { data: assignments } = await supabase
         .from("parent_assignments")
-        .select("skill_id")
+        .select("skill_id, assigned_date, status, created_at, updated_at")
         .eq("child_id", childId);
-      const assignedSkills = new Set((assignments ?? []).map(a => a.skill_id));
+      // Filtrujeme podle času sezení, ne podle „téma bylo někdy zadáno".
+      // Ta stará podmínka znamenala, že zadáním tématu rodič zpětně smazal
+      // z historie i sezení, která proběhla dávno před zadáním.
+      const windows = buildAssignmentWindows(assignments ?? []);
 
       const { data } = await supabase
         .from("session_logs")
@@ -83,7 +85,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
       if (data) {
         const map = new Map<string, SessionEntry>();
         for (const row of data) {
-          if (assignedSkills.has(row.skill_id)) continue;
+          if (isAssignedSession(row.skill_id, row.created_at, windows)) continue;
           let s = map.get(row.session_id);
           if (!s) {
             s = { session_id: row.session_id, date: row.created_at as string, skill_id: row.skill_id as string, total: 0, correct: 0, help_used: 0 };
@@ -91,13 +93,15 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
           }
           s.total++;
           if (row.correct) s.correct++;
-          if (row.help_used) s.help_used++;
+          // help_used = jen SPRÁVNĚ s nápovědou (disjunktní kategorie pro zobrazení).
+          // Špatná odpověď s nápovědou spadá do „špatně", ne do „s nápovědou".
+          if (row.correct && row.help_used) s.help_used++;
         }
         setSessions(Array.from(map.values()));
       }
       setLoading(false);
     })();
-  }, [childId, mockSessions]);
+  }, [childId]);
 
   if (loading) return <p className="text-xs text-muted-foreground text-center py-4">Načítám…</p>;
   if (sessions.length === 0) return <p className="text-xs text-muted-foreground text-center py-4">Zatím žádné samostatné procvičování</p>;
@@ -239,7 +243,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                 </div>
                 <div className="flex flex-col items-end gap-3 shrink-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct} správně</span>
+                    {s.correct - s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct - s.help_used} správně</span>}
                     {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">{s.help_used} s nápov.</span>}
                     {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">✗ {s.total - s.correct} špatně</span>}
                     <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-caption font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
@@ -251,19 +255,7 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
                       variant="outline"
                       size="sm"
                       className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
-                      onClick={() => {
-                        if (mockSessions) {
-                          // s.correct = vše správně (včetně nápovědy) — DB konvence.
-                          // clamp: help_used nemusí být podmnožina correct (dítě může použít
-                          // nápovědu a přesto odpovědět špatně) → bez clampu vznikne záporné číslo.
-                          const correctOnly = Math.max(0, s.correct - s.help_used);
-                          const wrong = s.total - s.correct;
-                          const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
-                          setDetailData({ skillId: s.skill_id, mock: { correct: correctOnly, helpUsed: s.help_used, wrong, total: s.total, date: s.date, pct } });
-                        } else {
-                          setDetailData({ skillId: s.skill_id });
-                        }
-                      }}
+                      onClick={() => setDetailData({ skillId: s.skill_id })}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
                       Ukázat výsledky a hodnocení
@@ -281,7 +273,6 @@ export function ChildSessionLog({ childId = "", childName, grade, mockSessions }
         <SkillDetailModal
           childId={childId}
           skillId={detailData.skillId}
-          mockSession={detailData.mock}
           childName={childName}
           onClose={() => setDetailData(null)}
         />

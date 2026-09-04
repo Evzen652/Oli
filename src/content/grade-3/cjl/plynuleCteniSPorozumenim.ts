@@ -45,9 +45,9 @@ const TEXTY_L1: Text[] = [
   {
     text: "V zimě přišla do zahrady liška. Byla červená s bílým ocasem. Hledala jídlo, protože měla hlad. Zahradník ji uviděl a dal jí kousek chleba. Liška vzala chléb a utekla do lesa.",
     otazky: [
-      { q: "Co hledala liška v zahradě?", a: "Jídlo, protože měla hlad", opts: ["Jídlo, protože měla hlad", "Noru", "Kamaráda", "Vodu"], e: "Text přímo říká 'Hledala jídlo, protože měla hlad' — důvod i odpověď jsou jasně napsané. Noru, kamaráda ani vodu liška nehledala." },
+      { q: "Co hledala liška v zahradě?", a: "Jídlo, protože měla hlad", opts: ["Nového kamaráda na hraní", "Jídlo, protože měla hlad", "Noru, kde by přespala", "Vodu k napití"], e: "Text přímo říká 'Hledala jídlo, protože měla hlad' — důvod i odpověď jsou jasně napsané. Noru, kamaráda ani vodu liška nehledala." },
       { q: "Kdo dal lišce chleba?", a: "Zahradník", opts: ["Zahradník", "Dítě", "Farmář", "Pes"], e: "V textu je napsáno 'Zahradník ji uviděl a dal jí kousek chleba' — chléb dala lišce zahradník, ne dítě ani farmář." },
-      { q: "Jakou barvu měla liška?", a: "Červenou s bílým ocasem", opts: ["Červenou s bílým ocasem", "Hnědou", "Šedou", "Černobílou"], e: "Text popisuje lišku jako 'červenou s bílým ocasem' — to jsou dvě barvy najednou. Hnědá, šedá ani černobílá v textu nejsou." },
+      { q: "Jakou barvu měla liška?", a: "Červenou s bílým ocasem", opts: ["Šedou jako myška", "Červenou s bílým ocasem", "Hnědou s černými skvrnami", "Černobílou jako straka"], e: "Text popisuje lišku jako 'červenou s bílým ocasem' — to jsou dvě barvy najednou. Hnědá, šedá ani černobílá v textu nejsou." },
       { q: "Kam liška s chlebem utekla?", a: "Do lesa", opts: ["Do lesa", "Do nory pod zahradou", "Na pole", "K sousedům"], e: "Text končí větou 'Liška vzala chléb a utekla do lesa' — přesně tam liška odešla. Nora, pole ani sousedé v textu nejsou." },
     ],
   },

@@ -69,10 +69,6 @@ describe("Security — XSS payloads v žákově odpovědi (validátory)", () => 
     it(`fraction validator nesmí crashnout na XSS payload`, () => {
       expect(() => validateAnswer(payload, "1/2", { inputType: "fraction" })).not.toThrow();
     });
-    it(`essay validator parses XSS na NaN → no_score`, () => {
-      const r = validateAnswer(payload, "60", { inputType: "essay" });
-      expect(r.correct).toBe(false);
-    });
   });
 });
 
@@ -91,7 +87,6 @@ describe("Security — SQL injection patterns (validátory)", () => {
       expect(() => validateAnswer(payload, "test", { inputType: "text" })).not.toThrow();
       expect(() => validateAnswer(payload, "5", { inputType: "number" })).not.toThrow();
       expect(() => validateAnswer(payload, "1/2", { inputType: "fraction" })).not.toThrow();
-      expect(() => validateAnswer(payload, "60", { inputType: "essay" })).not.toThrow();
     });
   });
 });
@@ -102,8 +97,8 @@ describe("Security — DOS přes oversize inputy", () => {
     expect(() => classifyIntent(giant, 3)).not.toThrow();
   });
 
-  it("essay validator zvládne ohromné číslo", () => {
-    expect(() => validateAnswer("9".repeat(1000), "60", { inputType: "essay" })).not.toThrow();
+  it("číselný validátor zvládne ohromné číslo", () => {
+    expect(() => validateAnswer("9".repeat(1000), "60", { inputType: "number" })).not.toThrow();
   });
 
   it("validátory zvládají ohromné stringy bez crash", () => {
@@ -186,13 +181,12 @@ describe("Security — anti-leak NESMÍ blokovat legitimní hint", () => {
 });
 
 describe("Security — rate limiting / fail-closed posture", () => {
-  it("invalid score format ('NaN') → false (ne crash, ne true)", () => {
-    const r = validateAnswer("NaN", "60", { inputType: "essay" });
+  it("invalid číselný formát ('NaN') → false (ne crash, ne true)", () => {
+    const r = validateAnswer("NaN", "60", { inputType: "number" });
     expect(r.correct).toBe(false);
   });
-  it("Infinity score → fallback k bezpečnému clampu", () => {
-    const r = validateAnswer("Infinity", "60", { inputType: "essay" });
-    // parseInt("Infinity") = NaN → no_score
+  it("Infinity → fail-closed, ne shoda", () => {
+    const r = validateAnswer("Infinity", "60", { inputType: "number" });
     expect(r.correct).toBe(false);
   });
 });

@@ -175,7 +175,7 @@ export const GRADE3_NAVIGATION: Grade3SubjectNav[] = [
     okruhy: [
       {
         id: "lide-a-cas",
-        name: "Lidé a čas",
+        name: "Čas a minulost",
         description: "Poznáš historii svého regionu, pověsti a práci s časovou přímkou.",
         emoji: "🕰️",
         topicIds: [
@@ -195,7 +195,7 @@ export const GRADE3_NAVIGATION: Grade3SubjectNav[] = [
       },
       {
         id: "misto-kde-zijeme",
-        name: "Místo, kde žijeme",
+        name: "Naše vlast",
         description: "Kraje ČR, mapa, světové strany a státní symboly.",
         emoji: "🗺️",
         topicIds: [
@@ -206,7 +206,7 @@ export const GRADE3_NAVIGATION: Grade3SubjectNav[] = [
       },
       {
         id: "priroda",
-        name: "Rozmanitost přírody",
+        name: "Příroda kolem nás",
         description: "Ekosystémy, zvířata, rostliny, živá a neživá příroda.",
         emoji: "🌿",
         topicIds: [

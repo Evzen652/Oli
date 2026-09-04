@@ -144,6 +144,948 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (14) — vazba sezení↔úkol, streak, časovač:
+
+Tři otevřené body z auditu (13) uzavřeny.
+
+- ✅ **Vazba sezení ↔ úkol** — nový [`assignmentBinding.ts`](src/lib/assignmentBinding.ts)
+  zavádí **okno úkolu** (od `assigned_date` do okamžiku splnění). Sezení patří k úkolu,
+  jen když do okna spadne. Tím: (a) skóre splněného úkolu je **zmrazené** na sezení,
+  které ho splnilo — dřív se bralo „poslední sezení na tom skill_id", takže si dítě
+  pozdějším opakováním zpětně přepsalo známku; (b) „Samostatné procvičování" už
+  nemizí — dřív zadání tématu retroaktivně smazalo z historie i starší samostatná
+  sezení. Bez migrace: čas splnění = `updated_at`, který klient posílá explicitně.
+- ✅ **Streak přeznačen na fakt** — `daysActive` je počet RŮZNÝCH dnů s aktivitou, ne
+  série. UI z toho dělalo „🔥 8 dní **v řadě**" + tooltip „za sebou bez přerušení",
+  tedy nepravdu i zakázanou gamifikaci. Nyní 📅 „8 dní / s procvičováním"; ze všech
+  motivačních vět zmizelo „v řadě / za sebou / bez přerušení / vytrvalost"; plamínek
+  pryč i z rodičovské karty (`ChildActivityBadge`), včetně textu „kolik dní v řadě
+  trénuje". Tooltipy nově respektují zvolené období (dřív „tento týden" natvrdo).
+- ✅ **Časovač** — 🐞 **`SessionTimer` byl schovaný za `!isStudentView`, což je KAŽDÉ
+  dítě.** Hlídač limitu tedy běžel jedině rodiči/adminovi v náhledu. Dětem se limit
+  uplatnil jen náhodou přes `evaluateStop` po **chybné** odpovědi: kdo odpovídal
+  správně, neskončil nikdy, kdo chyboval v 8:01, spadl uprostřed úlohy — a uviděl
+  🏆 „Shrnutí procvičování", nikde ani slovo o čase. Nyní: hlídač běží všem
+  a **nic nevykresluje** (odpočet s červenou poslední minutou zrušen — pro dítě to
+  byl tlak bez možnosti reakce), minutu před koncem přijde jedna klidná hláška
+  a po vypršení jiná koncová obrazovka („Pro dnešek to stačí"). Limity 8/10/12 min
+  dle ročníku beze změny.
+- 🐞 **Nález z toho plynoucí:** sezení teď může skončit s **0 odpovědmi** (dítě jen
+  sedí). `SessionEndSummary` v tom případě točil „Píšu ti hodnocení…" donekonečna —
+  efekt se u nuly úloh vrací dřív, než nastaví `evalMinReached`. Panel se u nuly úloh
+  nezobrazí.
+- 🩹 **Pre-existující rozbitý test** `hooks-supabase.test.tsx` (očekával starou
+  definici úspěšnosti z doby před `65a2603`) srovnán — sada byla červená už před
+  touto session.
+- **Ověřeno:** typecheck baseline 0, **114/114 souborů a 4649 testů**, `vite build`
+  prošel; živě v prohlížeči celý dětský tok (hlavička bez odpočtu, varování minutu
+  před koncem, koncová obrazovka s odpovědmi i bez nich).
+- 🟡 **Vědomě neřešeno:** explicitní provázání „tohle sezení běží kvůli úkolu X"
+  (protažení `assignmentId` přes `onSelectTopic → handleTopicSelect → session`) —
+  okno úkolu pokrývá obě uživatelsky viditelné vady i bez něj. Limit zůstává **na
+  sezení, ne na den**: „Procvičit znovu" nastartuje nový limit.
+
+### Session 2026-09-04 (13) — audit rodičovských + dětských obrazovek:
+
+Dva paralelní auditní agenti (rodič / dítě) + vlastní ověření. Opraveno (3 commity):
+
+- ✅ **Jednotný výpočet úspěšnosti** (`65a2603`) — napříč obrazovkami nebyla stejná
+  definice „správně". Rozhodnuto (uživatel): **úspěšnost = všechny správné (i s
+  nápovědou) / celkem**, nápověda zvlášť, netrestá se. Sjednoceno v `SkillDetailModal`,
+  `AssignmentList`, `useChildStats`, `ChildSessionLog`, `SessionHistory`,
+  `weeklyReportGenerator`, `Report`. Opraven i záporný `wrongCount` v reportu,
+  vlastní `<button>` zpět → `<BackButton/>`, shoda rodu „procvičoval/a".
+- ✅ **Dětský tok** (`0c43f5b`) — (a) startovní level: `handleTopicSelect` obcházel
+  `TOPIC_MATCH` → sezení vždy L1, `defaultLevel`/uložený level ignorován; extrahováno
+  do `prepareMatchedTopic()`. (b) obnova sezení se hned ukončovala (`startTime` se
+  neresetoval → STOP_2); nyní posun `startTime` o odehraný čas. (c) „Zopakovat" po
+  obnově padalo (generator ztracen serializací) → rehydratace z registru. (d) prázdný
+  batch z generátoru → toast „připravuje se" místo trofeje za 0 úloh.
+- ✅ **Timezone** — „dní aktivních" počítáno přes UTC půlnoc → lokální datum
+  (`useChildStats`, `weeklyReportGenerator`).
+- ✅ **RLS ověřeno** — `session_logs`/`skill_profiles`/`parent_assignments`/
+  `student_misconceptions` mají SELECT/ALL scoped na vlastníka → IDOR přes `childId`
+  z URL reálně nehrozí. Není co opravovat.
+
+🟠 **Zbývá z auditu (čeká na rozhodnutí / větší zásah):**
+- ✅ ~~**Přiřazení sezení k úkolu**~~ — vyřešeno v session (14), viz výše.
+- **`ChildSessionLog` `limit(200)`** může rozseknout nejstarší sezení (aktivní dítě).
+- **`ChildActivityChart` je nepoužitý** — buď napojit (nejhezčí rozpad aktivit), nebo smazat.
+- ✅ ~~**Skrytý časovač u dětí**~~ — vyřešeno v session (14), viz výše.
+- ✅ ~~**„🔥 dní v řadě" na dětské ploše**~~ — vyřešeno v session (14), viz výše.
+- Latentní křehkosti (chráněné zmrazeným obsahem): `fill_blank` s víc mezerami,
+  `drag_order` čárka v položce, `true_false` bez `options`. Mrtvý kód:
+  `handleRevealAnswer`, `ChildActivityBadge` split.
+- 5. Doporučení v modalu generická (jen z %), ne z konkrétních chyb/tématu.
+
+### Session 2026-09-04 (12) — úklid demo dat + test modalu „Ukázat výsledky a hodnocení“:
+
+- ✅ **Smazána demo data** z produkční DB (přes nový `sb_secret` klíč / `.env.admin`):
+  Tonda 187 `session_logs` + 8 `parent_assignments`, Tomáš 84 `session_logs` → 0/0.
+  (Rodič/admin nemá RLS právo mazat `session_logs` — nutný service_role/secret klíč.)
+- ✅ **Prošel jsem žákovský flow jako dítě** (`/student`, samostatné procvičování,
+  Vyjmenovaná slova) a ověřil, že rodičovský modal `SkillDetailModal` s **reálnými
+  daty funguje přesně** (kategorie správně/nápověda/chybně, otázky, odpovědi, známka,
+  historie 2 sezení). Předchozí „duplikace + smyšlené otázky“ byl **artefakt demo dat**
+  bez uloženého `question_text` → fallback banka `FALLBACK_QB`.
+- ✅ **Balík A opraveno v `SkillDetailModal`** (frontend, ověřeno naživo, build OK):
+  2. „HISTORIE · N cvičení“ → počítá `sessions.length - 1` (= počet řádků). Ověřeno „1 cvičení / 1 řádek“.
+  3. Sekce „Správně (N)“ je nyní **sbalená do `<details>`** („— rozbalit/sbalit“), chyby a nápověda zůstávají rozbalené.
+  4. `FALLBACK_QB` banka smyšlených otázek **odstraněna** → u dat bez `question_text` neutrální placeholder.
+  6. Gramatika „`${last.total} otázek`“ → `pad(last.total, "OTÁZKA")`.
+- ✅ **Krok B hotový (2026-09-04, ověřeno naživo na 8090):** modal u chybných úloh
+  ukazuje **„Dítě odpovědělo: … "** (přeškrtnuté, červené) nad správnou odpovědí.
+  Migrace `student_answer` do `session_logs` nasazena; `performanceTracker` +
+  `sessionOrchestrator` ukládají skutečnou odpověď žáka (`answer` z CHECK).
+  Guard: zobrazí se jen u chyb a jen když se liší od klíče. Ověřeno seedem (DOM +
+  screenshot), unit testy `session-student-answer.test.ts` (2/2), regrese 31/31.
+- 🟠 **Zbývá (drobnost):**
+  5. Doporučení jsou generická (jen z %), ne z konkrétních chyb/tématu.
+
+### Session 2026-09-04 (11) — první návštěva rodiče + PIN doladění:
+
+- ✅ **Tři nuly „DNÍ/ÚLOH/ÚSPĚŠNOST“ při první návštěvě** nikomu neřeknou,
+  co znamenají. `ChildActivityBadge` (compact) při `tasks===0` místo nich
+  vysvětlí, co se objeví, až dítě začne — a nabídne první krok. Ověřeno
+  v prohlížeči (Tonda má 0 úloh) na 760×620.
+- ✅ **Tooltipy u statistik** (`title` + `cursor-help`) — co každé číslo
+  znamená a za jaké období.
+- ✅ **PIN tlačítko přesunuto** z overview boxu do rohového clusteru hera
+  (klíč + tužka + koš), varianta `tone="icon"`.
+- ✅ **Mobil** — statistiky svisle vycentrované (ikona nahoře), „ÚSPĚŠNOST“
+  se již neořezává.
+- Migrace PIN (`pin_hash`/`pin_failed_attempts`/`pin_locked_until`) nasazena
+  na produkční Supabase, `config.toml` opraven na správný ref.
+
+### Session 2026-09-03 (10) — redesign rodičovského dashboardu:
+
+Zadání (screeny): příliš oranžové/nekonzistentní, zjednodušit, proklik na sekce.
+Ověřeno v prohlížeči přes admin → /parent (má reálné dítě Tonda s daty).
+
+- 🐞 **Kořen „příliš oranžové":** hero byl `from-violet-600…`, ale
+  `violet→brandOrange` → plná oranžová plocha s bílým textem, kontrast 2,8:1.
+  Nově bílá karta s tenkým oranžovým proužkem, tmavá čísla, světlé statistiky.
+- ✅ **„Na co se zaměřit" zjednodušeno:** návrh (akce) vede ve zvýrazněném
+  pruhu, popis chyby je tichý druhý řádek (dřív dva labelované odstavce).
+- ✅ **Proklik z hera na sekce** (bod c) — tři pilulky sjedou na kotvy.
+- ✅ **Emoji hlaviček** (❤️🧩🎯) → lucide ikony v tintu; karty na tokeny.
+- ⏭️ Zbývá app-wide kontrast oranžového CTA (B1).
+- Testy 4628/4628, typecheck 0, build prošel.
+### Session 2026-09-03 (9) — odstranění demo režimu:
+
+Uživatel: „demo je úplně zrušeno. už nebude. pokud jsou pozůstatky, smaž je."
+
+- ✅ **Demo pryč z celé aplikace, −660 řádků.** Smazaný `Demo.tsx` + `/demo`
+  routy; ze `SessionView` žákovské demo (`demo@oli.app`); z `ParentDashboard`
+  a `ChildHomePage` všechen `isDemo`/mock kód, banner, přepínač, mock data.
+- ✅ **Mock props odstraněny** z `AssignmentCreator`, `AssignmentList`,
+  `ChildActivityBadge`, `ChildMisconceptions`, `ChildSessionLog`,
+  `SkillDetailModal` a `useChildStats` — jen kvůli demu je měly.
+- 🔎 **Zachováno záměrně:** `FALLBACK_QB` (přejmenováno z `DEMO_QB`) = reálný
+  fallback pro logy bez `question_text`; anonymní trial (`oli_anon_trial`);
+  `GradeSelect` `DEMO_MODE` = **jiná věc** (gate ročníků na 3. třídu, ne
+  preview) — nechává se, řeší se zvlášť.
+- 🗑️ Smazána obsoletní paměť `feedback_demo_prod_sync` (DemoParentTab už
+  neexistuje).
+- Testy **4628/4628**, typecheck 0, build prošel.
+- ⏭️ **Nedokončený redesign rodičovského dashboardu** (příliš oranžový hero =
+  `violet→brandOrange` gradient s bílým textem 2,8:1, složité „Na co se
+  zaměřit", statistiky nejsou proklikávací) — přerušeno kvůli odstranění dema,
+  teď je `ParentDashboard` o 218 řádků menší a připravený na ten redesign.
+### Session 2026-09-03 (8) — AI v aplikaci: mapa + strategický závěr:
+
+Plné znění: [`docs/AI_TO_CLAUDE_PLAN.md`](docs/AI_TO_CLAUDE_PLAN.md). **Bez zásahu do kódu.**
+
+- 🔑 **Mapa:** všechna text-AI edge funkce teče přes jediný router
+  `_shared/aiCall.ts` (OpenAI-tvar), takže Claude by šlo přidat na jednom místě.
+  K dítěti reálně tečou jen `analyze-misconceptions` a `semantic-gate`; zbytek
+  živých je admin, tutor je vypnutý, eval/report už běží lokálně bez AI.
+- 🧭 **Strategický závěr (po diskuzi):** podstata appky je adaptivní učení a to
+  už je hotové a správné — `adaptiveEngine.ts` je „Pure algorithmic… No AI. No
+  network", realtime smyčka jen čte předpočítané `misconceptionConfidence`.
+  **Runtime AI appku adaptivní nedělá** — tou je engine + kvalita obsahu,
+  obojí Claude offline. „Všechno na Claude" tedy není páka, je to vedlejší úklid.
+- ✅ **Doporučená cesta = štíhlá:** jen `analyze-misconceptions` na Claude
+  (jediné runtime AI, co adaptivitě slouží), `semantic-gate` determinizovat
+  lokálně, `exercise-validator` + `ai-curriculum` + mrtvé `session-evaluation`/
+  `weekly-report` smazat, obrázky = produktové rozhodnutí, tutor parkovat.
+  Vzorem, který uživatel už použil u eval/report (Gemini → lokální kód).
+- ⏭️ **Nejmenší krok** po odsouhlasení: Fáze 1 (Claude provider v `aiCall.ts`
+  s testem) + přepnout `analyze-misconceptions`. Nasazení edge funkcí = Evžen.
+### Session 2026-09-03 (7) — názvy 3.–5. ročníku + gramatická kontrola:
+
+Uživatel: „projdi i ročníky 3–5" + „projdi pak celou aplikaci, aby byla
+gramaticky správně".
+
+- ✅ **Ročníky 3–5: cílený zásah, ne plošné přejmenování.** Na rozdíl od
+  2. ročníku už byly tyhle názvy dřív dobře udělané (otázky, 1. osoba,
+  konkrétní situace). Přejmenováno jen 5 dry/žargonových: „Žánry literatury"
+  a „Literární žánry" → **„Druhy příběhů"** (slovo „žánr" je pro dítě cizí),
+  „Čtení tabulek" → **„Co říká tabulka?"**, „Slovní úlohy" (g3) → **„Příběhy
+  s čísly"** (shoda s 2. roč.), „Úplnost sdělení" (g5) → **„Řekl jsem
+  všechno?"**.
+- 🐞 **Grade-3 okruhy měly RVP názvy** — dítě vidělo doslova „Místo, kde
+  žijeme", „Rozmanitost přírody", „Lidé a čas". Nově „Naše vlast",
+  „Příroda kolem nás", „Čas a minulost". Zároveň srovnány `navigation.ts`
+  a `displayNames.ts`, které si u dvou okruhů protiřečily.
+- 🔎 **Starší děti (10–11) nechány u faktických názvů.** „2. světová válka",
+  „Marie Terezie", „Vesmír", „Přemyslovci" jsou pro páťáka atraktivní samy
+  o sobě; dětinštit je by bylo horší.
+- ✅ **Gramatická kontrola celé aplikace — čistá.** Sken statických UI
+  řetězců (i18n + komponenty + stránky): 0 reálných nálezů (85 zásahů byly
+  ternáry v classNames, 5 „ascii" bylo slovo „heslo", 5 dvojmezer v CSS).
+  Sken obsahu na shodu přísudku s číslovkou (celý korpus): 14 nálezů, všech
+  14 správně (matematické „Kolik je 3+4?", teplota „bylo −5 °C" ve středním
+  rodě, „je 48 aut" s genitivem po číslovce ≥5). `audit:content` prošel.
+- Testy **4628/4628**, typecheck 0, build prošel. Ověřeno v prohlížeči
+  pro 3. ročník (matematika i prvouka).
+### Session 2026-09-03 (6) — názvy témat pro 2. ročník:
+
+Uživatel: „název tabulky je pro druháka opravdu nezajímavé".
+
+- ✅ **26 ze 41 témat 2. ročníku přejmenováno.** Katalogové názvy nahrazeny
+  otázkou nebo obrazem, který dítě zná: „Tabulky" → **„Kolik dohromady?"**,
+  „Slovesa" → **„Co dělá?"** (školní diagnostická otázka), „Slabiky" →
+  **„Tleskej slabiky"** (jak se to fakticky učí), „Dělení slov" → **„Slovo
+  se nevejde"**, „Povolání" → **„Čím budu?"**.
+- 🔎 **Patnáct názvů zůstalo beze změny** — „Y nebo I?", „Násobilka 2–5",
+  „Zvířata v zimě", „První pomoc" a další už fungují. Přejmenovat všechno
+  by znamenalo zhoršit to, co bylo dobré.
+- 🐞 **Názvy jsou ve čtyřech vrstvách a tři z nich mluvily jinak.**
+  `navigation.ts` (okruhy, co dítě vidí první), `displayNames.ts` (kategorie
+  a témata), `studentTitle` v metadatech a RVP `title`. V `displayNames`
+  stálo na druháka doslova **„Jazyková výchova"** a **„Sloh"** →
+  „Slova a písmena", „Mluvíme a píšeme".
+- 🐞 **Dialog o rozdělané práci ukazoval RVP název**: „nedokončil/a jsi
+  procvičování (Práce s daty – tabulky a jednoduchá schémata)". Nově
+  „(Kolik dohromady?)" — stejná záměna `getFullTopicTitle` za
+  `getChildTopicTitle` jako u shrnutí.
+- Testy **4628/4628**, typecheck 0, build prošel. Ověřeno v prohlížeči
+  v anonymním režimu pro 2. ročník.
+- ⏭️ **Ročníky 3–5 mají stejný problém** a čekají na rozhodnutí, jestli
+  je přejmenovat ve stejném duchu.
+### Session 2026-09-03 (5) — shoda přísudku s číslovkou:
+
+Nález z běžícího cvičení: „ve vedlejší třídě **bylo 3 žáci**" (správně „byli").
+
+- ✅ **`czechGrammar.ts` umí shodu přísudku.** Přibyl rejstřík rodů `GENDER`
+  (s rozlišením životnosti — „byli 3 žáci" × „byly 3 body") a helpery
+  `agree()`, `isAre()`, `wasCount()`, `genderOf()`. Sloveso se odvozuje
+  z tvaru ve středním rodě j. č., takže helper zvládne „bylo", „stálo"
+  i „přijelo", ne jen sponu.
+- 🔎 **Podezření na systémovou chybu se potvrdilo jen zčásti.** Sken korpusu
+  našel 23 míst, kde sloveso sousedí s číslem, ale většina byla správně
+  (pevná čísla ≥ 5, teplota ve středním rodě). Skutečně vadné byly **tři**
+  soubory — u dvou z nich šlo o jiné chyby, než co hlásil původní nález:
+  natvrdo napsaný genitiv („Odjelo 1 **aut**"), přítomná spona („V košíku
+  **je** 3 jablka") a chybějící 4. pád („Lenka koupila **kniha**").
+- ✅ **Pojistka testem:** `czech-grammar.test.ts` hlídá, že každé slovo
+  v `NOUNS` má vyplněný rod. Bez ní by nové substantivum tiše propadlo
+  na „vrať sloveso beze změny" a chyba by se ukázala až u dítěte.
+- 📌 `DÍTĚ` má rod zvlášť pro j. č. a mn. č.: „bylo 1 dítě", ale „byly 3 děti".
+- Testy **4628/4628**, typecheck 0, `audit:content` prošel, build prošel.
+  Zamčený snapshot `g3-mat-slovni-ulohy-dve-operace` přegenerován.
+### Session 2026-09-03 (4) — hloubkový audit + bezrizikové opravy:
+
+Kompletní výstup je v [`AUDIT_REPORT.md`](AUDIT_REPORT.md). Audit sám proběhl
+**bez zásahu do kódu**; provedl se z něj jen seznam A (devět položek bez rizika).
+
+- 🔴 **Landing page váží 14,9 MB v PNG** — 20 obrázků, žádný neměl `loading="lazy"`,
+  21 z 24 předimenzovaných víc než 2,5×. Po A2 se při načtení stáhne **12 z 24**.
+  Samotná komprese (→ ~1,8 MB) čeká na rozhodnutí (B3).
+- 🔴 **Bílý text na `#F97316` má kontrast 2,80 : 1**, norma je 4,5. Týká se všech
+  hlavních tlačítek. Projekt to pravidlo sám zná — komentář v `SessionEndSummary`
+  uvádí „pod bílým textem by měla jen 2,8:1". Řešení je rozhodnutí o barvě (B1).
+- 🔴 **Selhaný dotaz na roli tiše přepne rodiče do dětského rozhraní.** Supabase
+  při chybě dotazu nevyhazuje výjimku a `useUserRole` `error` vůbec nečte (B/C).
+- 🔴 **43 z 94 URL ilustrací vrací 400** — `prvoukaVisuals` skládá URL ze slugu
+  i pro obrázky, které nikdy nevznikly (B6).
+- ✅ **A6 odhalil chybu navíc:** `getOrCreateDemoHash` měl přímý `setItem` v `try`
+  a **druhý v `catch`** — při zakázaném úložišti tedy odmítl promise. Opraveno.
+- ✅ Hotovo A1–A9: `aria-label` na ✕, lazy loading, meta description + OG,
+  odstraněn nepoužívaný `Baloo 2`, bezpečnostní hlavičky, `lib/safeStorage.ts`
+  místo 9 přímých volání `localStorage`, příznak `u` u emoji regexů, odinstalace
+  `zod` + `@hookform/resolvers`, oprava popisu stacku v `CLAUDE.md`.
+- 📌 **`CLAUDE.md` lhal o stacku:** uváděl React 19 (běží 18.3.1), Zustand
+  (není nainstalovaný) a react-query jako zdroj dat (nula volání `useQuery`).
+- Testy **4619/4619**, `npm run typecheck` 0, build prošel.
+### Session 2026-09-03 (3) — připomínky z dokumentu (6 bodů):
+
+- 🐞 **Největší nález: celá vrstva „proč se to učíme" byla roky mrtvý kód.**
+  `categoryInfo.ts` má 73 ručně psaných hesel (`hook`, `whyWeUseIt`, `funFact`).
+  Změřeno: **73 ze 73 klíčů se neshoduje s ničím** — jsou ze staré taxonomie
+  („matematika::Zlomky"), obsah mezitím přešel na RVP názvy („matematika::Číslo
+  a početní operace::Zlomky"). `getCategoryInfo` tedy vracel `null` pro všech
+  229 témat. Zmizel tím box „Zajímavost" v dialogu i celý panel „K čemu jsou
+  čísla?" v prohlížeči témat. **Nic to nenahlásilo** — kód se kompiloval, testy
+  procházely. Nahrazeno `topicInsight.ts` (75 témat + 20 kategorií jako záchranná
+  síť) a pojištěno testem `topic-insight-coverage`, který spadne, jakmile se
+  přejmenuje kategorie.
+- 🐞 **Shrnutí ukazovalo katalogový název místo dětského.** „Číselný obor
+  0–1 000 000 – zaokrouhlování čísel" je RVP záznam. Přitom **všech 229 témat**
+  má vyplněné `studentTitle` — jen po něm shrnutí nesáhlo. `getChildTopicTitle`
+  přesunut ze `SessionView` do `displayNames.ts` a použit i ve shrnutí, včetně
+  textu hodnocení.
+- ✅ **Hodnocení mluví v 1. os. mn. č.** („projdeme si to spolu", ne „procvič
+  si to"). Přepsáno všech pět povzbuzení podle předmětu a všechny varianty
+  pochval i slabších výsledků. Výkon patří dítěti, další krok děláme společně.
+- ✅ **Boxy v „Co je dobré vědět" mají ikony** — akvarelové, tytéž jako
+  u úloh: tužka (jak na to), fajfka (příklad), křížek (častá chyba), žárovka
+  (zajímavost). „K čemu ti to je" schválně NENÍ pátý box, ale úvodní věta
+  dialogu: kdo neví proč, nebude číst návod.
+- ✅ **Rozbalená nápověda pod design homepage.** Bílý list s okrajem v tintu
+  místo plné žluté plochy, emoji 💡 nahrazeno akvarelovou žárovkou, plochý
+  klipart `help-hint.png` odstraněn.
+- ✅ **Zbytečná karta kolem názvu předmětu smazána** (nenesla akci, jen
+  zopakovala barvu, kterou o pár pixelů níž nese každá dlaždice).
+- ✅ **Poslední dvě tlačítka mimo `<BackButton />` srovnána.**
+  `DiktatFilterSelect` měl vlastní ghost tlačítko s `ChevronLeft`;
+  `MatchPairsInput` používal slovo „Zpět" pro vrácení tahu — přejmenováno
+  na „Vrátit tah", protože „Zpět" v celé aplikaci znamená navigaci.
+- ⏭️ **Čeká na Gemini:** akvarelový pohár do shlukové hlavičky, náhrada za
+  plochý klipart `good-to-know.png` v hlavičce dialogu. Prompty v
+  `docs/ICON_PROMPTS.md`.
+- Testy **4619/4619**, typecheck 0, build prošel.
+### Session 2026-09-03 (2) — zbytek průběhu cvičení pod stejný design:
+
+Uživatel: „jsou to i tyhle stránky. musí respektovat design homepage." Šlo o kartu
+zpětné vazby, dialog „Co je dobré vědět" a shrnutí sezení — obrazovka cvičení už
+předělaná byla, tyhle tři na ni nenavazovaly.
+
+- ✅ **Zelené plochy pryč ze shrnutí.** `bg-success-muted` a `bg-accent` byly plné syté
+  plochy pod textem; na landingu je vzor **bílý list + 1px okraj v tintu**. Stejná
+  záměna proběhla i v dialogu „Co je dobré vědět", kde navíc modrá plocha kolidovala
+  s barvou matematiky.
+- ✅ **Systémová emoji pryč z celého průběhu cvičení.** 🏆 nad shrnutím, obíhající
+  📖 ✏️ ⭐ kolem sovičky, konfety `🎉⭐✨🌟🎊` v kartě zpětné vazby a emoji na konci
+  **všech 25 pochval a 25 nepovedených odpovědí** (`useSessionDispatch.ts`) i v osmi
+  řetězcích `cs.ts`. Text hlášek zůstal — mizí jen glyf, který se na každé platformě
+  kreslí jinak.
+- ✅ **Ikony statistik jsou tytéž akvarelové kresby jako v `ProgressIndicator`.** Dítě
+  vidí u každé úlohy tužku/fajfku/žárovku/křížek — na shrnutí dosud dostalo lucide sadu
+  ve stejném významu. Tohle je ta „nesouměrnost s grafikou homepage" z hlášení.
+- ✅ **Tlačítko „Pokračovat" srovnáno s landing CTA** (značková oranžová, `rounded-full`);
+  dosud bylo `variant="success"`, tedy tmavě zelené. Šipku už nenese znak `→` v překladu,
+  ale `<PaintedArrow />` — pravidlo pro šipky platilo, jen na tohle místo nedosáhlo,
+  protože arrow byl schovaný v řetězci `cs.ts`.
+- ✅ **Smazána mrtvá CSS** — `@keyframes confetti-burst / float-up / orbit` a jejich
+  třídy. Po odstranění konfet a obíhajících emoji už je nic nepoužívalo.
+- 🔎 **Zdržení, které stojí za zápis:** preview server se nedal nastartovat nad tímto
+  worktree — harness čte `launch.json` z *jiného* worktree a Vite pak servíruje cizí
+  strom. Poznalo se to až `curl`em na `/src/...` (konzole ukazovala zastaralé chyby
+  `SUPABASE_STORAGE`). Funkční server běžel na 8080; ověřovat je potřeba tam.
+- Testy **4615/4615**, typecheck 0, build prošel.
+### Session 2026-09-03 — obrazovka cvičení a ilustrace předmětů:
+- 🐞 **Nejhlasitější prvek obrazovky vznikl přehlédnutím v aliasu palety.** `HelpButton.tsx`
+  měl napsáno `bg-violet-200 border-violet-400 text-violet-900`, jenže `tailwind.config.ts`
+  mapuje `violet → brandOrange` — renderovalo se to jako **meruňková placka přes celou
+  šířku**. Autor psal fialovou, obrazovka ukazovala oranžovou. Nápověda tím byla vizuálně
+  hlasitější než odpovědi. Nově jantarová pilulka podle sémantiky nápovědy; zmizel i
+  `hover:scale-[1.02]`, poslední místo v aplikaci, kde přežil zakázaný hover pohyb.
+- 🐞 **Rotující pobídka byla větší než otázka.** „Zkus si to!" mělo `text-2xl` (24 px),
+  samotná otázka `text-xl` (20 px) — hierarchie naruby, dítě četlo nejdřív pozdrav.
+  Pobídka je nově tichý nadtitulek 13 px v barvě předmětu, otázka 29 px.
+- ✅ **Smazán neviditelný obal.** Vnořený `rounded-xl bg-background/70 p-5` uvnitř bílé
+  karty měl proti ní rozdíl v jasu **1,5 %** (#FAF9F6 při 70 % na bílé dá ~#FCFBF9).
+  20 px paddingu za nic.
+- ✅ **Smazána obě dekorace v rozích** (3D glóbus s knihami, letící kniha; `fixed`,
+  288–384 px, tažené za běhu ze storage). Byly ve stylu, který `ILLUSTRATION_STYLE.md`
+  sám označuje za nepatřičný vedle akvarelu, a orámovaly obsah jako tapeta.
+- ✅ **Tvarosloví převzato z landing page** — změřeno, ne odhadnuto: karty tam mají
+  `rounded-3xl` (24 px) a okraj **1 px v tintu**, ne `border-2` v šedé. Na obrazovce
+  cvičení měla dosud stejně silnou linku úplně všechna (karta, odpovědi, dvě lišty);
+  jednotně silná obrysovka na všem je hlavní důvod, proč to působilo amatérsky.
+- ✅ **Nula systémových emoji na obrazovce cvičení.** Pryč 60px emoji nad otázkou
+  (pole `emoji` v obsahu zůstává — 1 061 výskytů ve 323 druzích, nahradit kresbami nelze),
+  ✏️ 😊 😕 🤔 v průběhu i 💡 v liště. Ikony průběhu jsou nově akvarelové kresby;
+  `alt` navíc čte odečítač obrazovky, což emoji ve `<div>` nedělalo.
+- 🔎 **Zavržený mezikrok: kroužící šipka jako ikona „zkus to příště".** Vybral jsem ji,
+  abych se vyhnul smutnému smajlíkovi, jenže v rozhraní je to univerzálně „načíst znovu" —
+  uživatel hlásil, že láká na kliknutí. **Pravidlo: stavová ikona nesmí mít tvarosloví
+  ovládacího prvku.** Nahrazeno křížkem v terakotě (plná signální červená je podle design
+  systému pro dítě trest, ne informace).
+- 🔎 **Zavržený mezikrok: rozmytý akvarelový tah v horní hraně karty.** `blur` prosákl přes
+  zaoblený roh a četl se jako nechtěný stín nad kartou. Předmět nese samotný okraj v tintu.
+- ⚠️ **Cesta k paletě dlaždic i k překreslení předmětů vedla přes špatnou referenci.**
+  Do promptu jsem dal `landing-priprava-na-pisemku.png` — **nejbledší akvarel v repu**
+  (medián sytosti 40 %). Model ho napodobil na procento přesně (41 %) a výsledek byl
+  bez života. Správná reference je `landing-zlomky-kruh.png` (67 %), tedy stejná sytost
+  jako staré 3D kresby. **Sytost výsledku vždy změřit** (`scratchpad/sat-compare.ps1`).
+- ✅ **Ilustrace předmětů přesunuty ze Supabase storage do projektu** (`src/assets/subjects/`,
+  importy v `subjectRegistry.ts`). Uživatel admin regeneraci nikdy nepoužil, takže jediné,
+  co storage přinášel, byla závislost na nasazení. **18,3 MB → 2,0 MB.** `SubjectMeta.image`
+  je nově volitelné — předmět bez kresby ho nemá a zobrazí se emoji; dřív se skládala URL,
+  která vracela 404.
+- 🐞 **Dvě stažené kresby měly rozbité pozadí a našel to až audit**: chemie měla kolem sebe
+  **modrošedý čtverec** `#E0E5E9` (práh na bílou ho minul), vlastivěda bílou skvrnu kolem
+  hradu. Přeříznuto nižším prahem.
+- 🔎 **Detail k prahu, který stál několik pokusů:** u `make-logo.ps1` znamená VYŠŠÍ práh
+  VÍC obsahu, ne míň. U kreseb na zrnitém papíře je proto potřeba jít DOLŮ (u křížku až
+  na 200), jinak se do obsahového rámečku započítá zrno a kresba se po zasazení do čtverce
+  zbytečně zmenší.
+- ⚠️ **Latentní nesoulad:** admin obrazovka „Generovat ilustrace" pořád zapisuje předmětové
+  kresby do storage, ale aplikace je odtud už nečte. Kategoriové a tématové ilustrace ve
+  storage zůstávají, takže obrazovku nelze jen tak vypnout — chce to rozhodnout zvlášť.
+- Testy **4615/4615** (dva přepsány z `getByText("😊")` na `getByAltText`), typecheck 0,
+  build prošel.
+
+### Session 2026-09-02 — pózy maskota a dotažené šipky:
+
+- ✅ **Dlaždice ročníků přebarveny.** Zadání mělo dvě půlky, které jdou proti sobě: mají
+  působit jako **jedna sada** a zároveň **vesele**. Řeší to dělba rolí — o „jedné sadě"
+  rozhoduje **společná světlost** (85 % nahoře, 77 % dole), o veselosti **sytost** (75 %).
+  Mění se jen tón. Klíčové zjištění: původní Tailwind dlaždice nevadily proto, že byly syté,
+  ale proto, že měly **nízkou světlost** (~52 %). Sytost 75 % při světlosti 85 % je veselá
+  a přitom drží pohromadě.
+- 🔎 **Tři zavržené verze cestou, každá selhala na něčem jiném:**
+  (1) původní Tailwind `-400/-500` (S přes 90 %) — vedle akvarelů křičely;
+  (2) tlumená (S 40 %, L 66–76 %) — ke kresbám seděla, ale devět sytých odstínů vedle sebe
+  četlo jako duha. Rozsah vzešel z měření akvarelů (`landing-*.png`: S 13–58 %, L 50–82 %)
+  — správné číslo, ale na tenhle účel špatná otázka: kresba smí být sytá, protože je jedna;
+  (3) skoro jednotná (S 30 %, L 86–92 %) — jedna sada ano, ale bez života.
+- ✅ **Odbarvení nedostupných ročníků zjemněno z 0,35 na 0,55.** Šest z devíti dlaždic je
+  „brzy", takže o celkovém dojmu ze stránky rozhodují hlavně ony — na 0,35 zůstávaly šedivé
+  i na veselé paletě. Na finální paletě barevnost dlaždice stoupla **z 19,0 na 35,3**
+  (průměrný rozdíl nejsvětlejšího a nejtmavšího kanálu), kontrast čísla drží **3,69**.
+- 🐞 **Počítadlo mělo bílé pozadí a já ho odškrtl jako ověřené.** Mezery mezi řadami kuliček
+  jsou **uzavřené díry**, do kterých se flood-fill od okrajů nedostane — zůstalo tam
+  **11 449 krycích bílých pixelů, tedy 25 % kresby**. Složil jsem to tehdy na sytou oranžovou,
+  podíval se a napsal, že díry jsou v pořádku. **Nezměřil jsem to.** Opraveno
+  `fix-landing-alpha.ps1 -ClearIds 0..27` (28 kapes, 11 220 px odstraněno, nově 0 %).
+  Kniha (`grade-3`) a sova na knihách mají bílou taky, ale tam jsou to **stránky**, tedy
+  kresba — ponecháno.
+- ✅ **Aby to příště nestálo na paměti, vznikl `scripts/check-white-pockets.ps1`** — hlásí
+  podíl krycích skoro bílých pixelů, největší souvislou oblast a její bbox. Odkaz na něj je
+  nově přímo v `ILLUSTRATION_STYLE` §2.5 jako **povinný krok**, ne doporučení.
+- 📋 **Připraveny prompty pro zbývající ročníky** (1., 5.–9.) v
+  [`docs/GRADE_TILE_PROMPTS.md`](docs/GRADE_TILE_PROMPTS.md), dva listy po třech motivech.
+  Motivy odvozeny z `data/rvp_data.json` — vždy téma, které se v daném ročníku objevuje
+  **poprvé** proti všem nižším. Globus u 6. a chemická baňka u 8. nesou navíc informaci,
+  která dítě zajímá: v šestce začíná druhý stupeň, v osmičce přibývá chemie.
+- ⚠️ **Až budou kresby i pro neaktivní ročníky, zanikne dnešní signál** „kresba = ročník má
+  obsah". Dostupnost pak ponese jen odbarvení a popisek BRZY — je otázka, jestli to stačí.
+- 🐞 **`opacity-60` na nedostupné dlaždici se NIKDY neuplatnilo.** Inline `style` obsahuje
+  `opacity: isOther ? 0.35 : 1`, což Tailwind třídu přebíjí — dlaždice „brzy" se tedy jen
+  odbarvovaly, nikdy neztlumily. **Odhalilo to až čtení `getComputedStyle` z vykreslené
+  stránky**, v kódu to vypadalo správně. Ztlumení přesunuto do `style`
+  (`available ? 1 : 0.7`), mrtvá třída odstraněna.
+- 🔎 **Hexy místo Tailwind tříd.** Tailwind kombinaci nízké sytosti a vysoké světlosti
+  systematicky nemá. Gradient i okraj se nastavují inline z `GRADE_META`.
+- 🐞 **Kontrast čísla musel jít nahoru — odhalilo to jen počítání přes všechny vrstvy.**
+  Dlaždice nedostupného ročníku na sebe skládá `saturate-[0.35]` **i** `opacity-60`, číslo mělo
+  navíc `opacity-60`. Na finálních tintech vychází při krytí 0,6 na levandulové dlaždici
+  **2,98**, tedy těsně pod prahem 3,0 pro velký text; při **0,8** je nejhorší případ **4,75**.
+  (U zavržené střední verze to bylo dokonce 2,47 a nespravil to ani nejtmavší inkoust —
+  viníkem bylo krytí, ne barva.)
+  **Poučení: kontrast se musí počítat proti SKUTEČNÉ barvě po filtrech, ne proti hexu z kódu.**
+- ✅ **Číslo je nově tmavý inkoust `#4A4038`** místo bílé/barevné — stejná rodina jako kontura
+  kreseb. Bílá na světlejších dlaždicích nedržela (nejlepší případ 3,20, nejhorší 1,78).
+- **Ověřeno z vykreslené stránky**, ne jen z kódu: `getComputedStyle` na všech devíti
+  dlaždicích vrací nové tinty, `color: rgb(74,64,56)` a krytí čísla 0,8.
+
+- ✅ **Dlaždice výběru ročníku mají motiv stěžejního učiva.** `Onboarding` — ročníky s obsahem
+  (2–4) dostaly kresbu, ostatní zůstávají u holého čísla. **Číslo z dlaždice nezmizelo**:
+  kresba nedokáže říct „šestý ročník", dítě hledá číslo, takže je vedle motivu jako odznak.
+  Motiv navíc dělá dvojí práci — kde je kresba, tam je obsah; kde holé číslo, tam se chystá.
+  Přiřazení vzato z prvního okruhu v `src/content/grade-N/navigation.ts`, ne od boku:
+  2. „Počítání do 100" → počítadlo, 3. „Vyjmenovaná slova" → kniha s Y, 4. „Zlomky" → koláč.
+  Modul [`src/lib/gradeIllustrations.ts`](src/lib/gradeIllustrations.ts).
+- 🐞 **Stávající ilustrace předmětů se pro tohle nedají použít — vyzkoušeno a zavrženo.**
+  Všechny `cat-*.png` a `topic-*.png` mají **bílé pozadí**, takže na barevné dlaždici z nich
+  je bílý čtverec (`ILLUSTRATION_STYLE` §3). Po odstranění bílé vyleze druhý problém: jsou to
+  **bledé pastely na syté dlaždici** — „Čísla do 100" se na oranžové prakticky ztratí. A jsou
+  kreslené pro velké karty, na 130 px čtou jako změť (zlomky = pizza a dort).
+- 🔎 **Krémové kolečko pod motivem vyzkoušeno a nakonec nepoužito.** Kontrast řeší spolehlivě
+  na jakékoli barvě dlaždice, ale nové motivy mají tmavou konturu a syté barvy, takže ho
+  nepotřebují — a širší kresby z něj vyčnívaly. Zůstává jako doložená záloha, kdyby se někdy
+  sázel motiv, který sám o sobě neudrží.
+- ⚠️ **Portréty dětí (první pokus) nahrazeny.** Byly na jednom listu, hlavy srovnané na 57 %
+  výšky (`split-portrait-sheet.ps1`), ale v dlaždicích nefungovaly. Reprodukovatelné z
+  `D:\weigle\plocha\Oli_ILUSTRACE\Gemini_Generated_Image_bj4lve…jpg`:
+  `-Subjects "grade-2:311:101:330;grade-3:898:67:330;grade-4:1477:73:330" -Size 512`,
+  pak `make-logo.ps1 -NoCrop -Thr 230`.
+- 🔧 **`scripts/make-logo.ps1` má nově `-NoCrop`** — nechá výřez beze změny a jen převede bílou
+  na alfu. Vzniklo pro portréty srovnané podle hlavy: běžný ořez na obsah by to srovnání
+  zahodil a v dlaždicích by zase byly různě velké obličeje.
+- 🔎 **Nový nástroj na dělení listů:** `scratchpad/find-gaps.ps1` najde libovolný počet kreseb
+  na jednom listu. **Nesmí hledat úplně prázdné sloupce** — zrno akvarelového papíru dává
+  ojedinělé tmavé pixely i uprostřed mezery, takže u listu s dětmi hlásil šest kreseb místo
+  tří. Řeší to tolerance pár pixelů na sloupec (`-Tol`), ne snížení prahu (to by ukouslo
+  světlá místa kreseb).
+- ⚠️ **Nález mimo zadání, neopraveno:** `src/components/GradeSelect.tsx` má natvrdo
+  `DEMO_MODE = true` a `DEMO_GRADE = 3`, takže v **druhé** mřížce výběru ročníku (renderuje se
+  z `SessionView.tsx:335` pro přihlášeného uživatele bez ročníku) lze vybrat **jen 3. třídu**.
+  Onboarding vedle toho nabízí 2., 3. i 4. Je to od úvodního commitu. Vyžaduje rozhodnutí,
+  jestli tu druhou mřížku vůbec zachovat — proto samostatný úkol.
+- ✅ **Pózy maskota — a) pozdrav a b) tip dne zapojeny.** Sova byla ve všech devíti místech
+  aplikace **týž obrázek**. Nová [`src/lib/oliPoses.ts`](src/lib/oliPoses.ts) drží pózy odděleně
+  od loga; `oli-owl.png` (sova na knihách) zůstává vyhrazená značce. Zapojeno v `Onboarding`,
+  `ChildHomePage` (uvítací lišta + Tip dne). Zadání a pasti v [`docs/LOGO_PROMPT.md`](docs/LOGO_PROMPT.md).
+- ⚠️ **Póza c) zamítnuta — je to měřitelně jiná sova.** Šířka brýlí v boxu 96 px **42 px**
+  proti 31–33 u ostatních (o třetinu větší hlava), peří `#B06840` místo `#C88050`, brýle
+  `#081820` místo `#000000`, duhovky jantarové místo červených. Póza d) (tužka) sedí a čeká
+  na zapojení spolu s opravenou c), ať se do týchž souborů nesahá dvakrát.
+- 🔎 **Poučení k měření: práh „nad 8 % posunu palety je to jiná sova" platí jen na lokální
+  opravu při zachované póze.** U změny pózy vyhodil obě správné kresby (15,9 a 22,2 %), protože
+  zvednuté křídlo legitimně mění **podíly** ploch, ne odstíny. Správný nástroj je porovnání
+  konkrétních odstínů po skupinách (`scratchpad/check-palette.ps1`) a šířka brýlí jako zástupce
+  velikosti hlavy (`head-size.ps1`).
+- 🔎 **Dvakrát podezření, které měření vyvrátilo:** v „tipu dne" chyběl konec šály (kryje ho
+  křídlo na hrudi) a v c) to vypadalo na lidskou ruku držící ceduli (je to křídlo s pery).
+  Skutečná vada byla pokaždé jinde, než kam mířil první pohled.
+- ✅ **Dotaženy ručně psané šipky `→` na `<PaintedArrow />`** — 10 míst, která zůstala
+  z dřívějšího sjednocení: `Onboarding` (2×), `AnonMigrationDialog`, `InviteParentDialog` (2×),
+  `SessionView`, `TopicBrowser`, `ParentDashboard`, `AnonStudentPage` (2×). Záměrně ponecháno:
+  adminské obrazovky, šipka chemické reakce v `ChemicalBalanceInput` a odrážka `→ {reason}`
+  v `NextWeekPlan` (není to navigační prvek).
+- ⚠️ **Neověřeno očima:** uvítací lišta dítěte a blok „Tip dne" — `ChildHomePage` se anonymnímu
+  uživateli nezobrazuje a přihlášení dítěte vyžaduje heslo. Kryto typecheckem, buildem a testy.
+- Testy **4615/4615**, typecheck 0, `vite build` prošel.
+
+### Session 2026-09-01 (pokr. 10) — nové logo, favikona a barva nápisu:
+- ✅ **Hotovo. Logo = sova na knihách, favikona = hlava, nápis `#1E293B`** (tmavá barva brýlí).
+- 🐞 **Skutečná příčina byla jinde, než se zdálo — a stálo to jedno kolo navíc.** Zadání znělo
+  „sova má být ve značkové oranžové". Sova se tedy nechala překreslit do `#F97316` (Gemini
+  zadání splnil přesně, viz [`docs/LOGO_PROMPT.md`](docs/LOGO_PROMPT.md)) — a **výsledek se
+  zamítl hned po nasazení**: celooranžová sova je monotónní, protože kresba držela pohromadě
+  kontrastem hnědého peří proti krémovému obličeji a po přebarvení do jednoho odstínu ta
+  stavba zmizela. **Nesedící prvek byl nápis, ne sova.** Měřením potvrzeno: `#F97316` se
+  v kresbě nevyskytuje vůbec (peří `#C07848` a `#A86030`, obličej krémový, brýle černé,
+  knihy `#1890A8`). Oprava tří znaků v `OliLogo.tsx` místo překreslení celé značky.
+- ⚠️ **Poučení k metodě:** naměřené kontrasty u oranžové varianty **seděly** — problém byl
+  v kompozici barev, ne v jejich jasu. Měření hlídá čitelnost, ne to, jestli kresba drží
+  pohromadě. Na to je potřeba se podívat.
+- ✅ **`--primary` zůstává `#F97316`.** Logo se od ní nově odchyluje, protože jako jediné
+  sousedí s kresbou; tlačítka a odkazy ne. Stálo to opravu **tří komentářů v kódu**
+  (`index.css` 2×, `Landing.tsx`), které tvrdily „shodná s logem" a nově by lhaly.
+  Vedlejší zisk: nápis má na bílé **14,6:1** místo 2,3:1, tedy WCAG AAA.
+- ✅ **Logo = celá sova, favikona = hlava.** `src/assets/oli-owl.png` (260 × 320) a
+  `public/favicon.png` (256 × 256) — dvě různá ořezání téže postavy z podkladů v
+  `D:\weigle\plocha\Oli_ILUSTRACE`. Dosud byly oba soubory **bit po bitu totožné** (844 kB
+  3D sovy s absolventským kloboukem); nově má každý ořez, který dává smysl pro svou velikost.
+- ✅ **Zdvižený prst odstraněn** (`Gemini_Generated_Image_bcjduf…`). Nebylo to ani křídlo, ale
+  **lidská ruka s prsty**; s brýlemi a knihou četla celá kompozice jako kárající učitel.
+  Ověřeno strojově, že šlo o lokální opravu: paleta se posunula o 6,2 %, krycí plocha klesla
+  o 4,1 % — sedí na odebranou ruku. (Jemné dělení histogramu hlásilo 14,6 %, ale byly to
+  sousední přihrádky `#1890A8`→`#189090` a `#D83048`→`#D81848`, tedy artefakt kvantizace.)
+- 🔎 **O výběru rozhodlo měření, ne dojem.** Logo se renderuje v boxu **36 px** (`LandingNav`),
+  48 px (`SessionView`), 80 px (`GradeSelect`, `Onboarding`) a 40–64 px v dalších pěti místech.
+  Kandidáti byly proto vykresleny přesně v těchto velikostech vedle sebe: **dosavadní 3D sova se
+  na 36 px slévá do skvrny a černý klobouk přebije obličej**, plochá sova zůstane čitelná.
+- 🔎 **Přirozený poměr stran místo čtvercového vypodložení.** `OliLogo` má box `h-20 w-20` +
+  `object-contain`; kdyby se sova (poměr 0,81) vypodložila do čtverce, zmenšila by se o dalších
+  ~19 %. Uložena proto v přirozeném poměru, takže vyplní celou výšku boxu.
+- ⚠️ **Vědomý ústupek: nová sova je plochá vektorová, ne akvarel.** V aplikaci tím zůstávají tři
+  vizuální jazyky (akvarel na landingu, 3D Pixar u obrázků prvouky, plochý vektor u značky).
+  Pro **značku** je to obhajitelné — akvarel se na 36 px rozpadne a logo je grafický znak, ne
+  ilustrace. Pro nové **ilustrace** platí `docs/ILLUSTRATION_STYLE.md` beze změny.
+- 🔧 **Vyříznutí pozadí:** `scripts/make-logo.ps1` — flood-fill od okrajů (ne podle jasu),
+  takže bílé odlesky v očích zůstaly krycí. Zmenšuje se zvlášť RGB složené na bílé
+  a zvlášť maska, barva se pak z bílého podkladu odpočítá `C = (C_bílá − (1−a)·255) / a`.
+  Bez toho vzniká na tmavém podkladu bílý lem. Ověřeno na bílé, na `#F97316` i na tmavé.
+- ✅ **Vedlejší efekt: 844 kB → 127 kB (logo) a 75 kB (favikona)**, tedy o 85 % méně.
+  Dosavadní favikona byla 844kB PNG kvůli tomu, že to byl doslova týž soubor jako logo.
+- **Ověřeno v běžící aplikaci:** landing (36 px), onboarding (80 px), dětský rozcestník (48 px),
+  hlavička cvičení (48 px) — bez bílého rámečku a bez chyb v konzoli. Favikona ověřena porovnáním
+  SHA-256 servírovaného `/favicon.png` s repem. `tsc --noEmit` 0 chyb, `vite build` prošel.
+- 🔎 **Kontrast palety změřen předem, ne odhadnut** (pro případ, že by se sova někdy přebarvovala):
+  karmínová šála má vůči značkové oranžové kontrast **1,68** a teal-600 dokonce **1,34** — jiný
+  odstín, ale skoro stejný **jas**, takže by na 36 px splynuly. Světlé břicho má vůči bílé jen
+  **1,69**, takže nesmí sahat až k obrysu. Brýle jsou jediný prvek, který drží čitelnost nejmenší
+  velikosti.
+
+### Session 2026-09-01 (pokr. 9) — pozice správných odpovědí srovnány (82 souborů):
+- ✅ **Zkosení pozice odpovědi vyřešeno mimo informatiku.** Korpus **bez informatiky: 26/25/25/24 %**
+  (před zásahem 64 % klíčů na 1. pozici). Strategie „ber vždy tu samou pozici" má nyní úspěšnost
+  na úrovni náhody. Zpracováno **82 souborů / 3 075 úloh** v šesti dávkách (`4d0a57b`, `01d81ad`,
+  `429ce43`, `b8a7de3`, `cdf9d00`, `6de3c9e`).
+- 🐞 **Nový nález, který report neuměl vidět: klíč na DRUHÉ pozici.** Třináct témat `grade-5/cjl`
+  mělo klíč druhý u **88–100 %** úloh (pět z nich přesně 100 %). Strategie „ber vždy druhý" tam
+  procházela se stoprocentní úspěšností. Původní report hlídal **výhradně první pozici**, takže
+  tahle skupina byla celou dobu neviditelná. **Slepé místo nástroje, ne obsahu** — stejná třída
+  chyby jako u slovníku v `rvp-scan.mjs`.
+- 🔧 **`scripts/answer-position-report.mjs` opraven** (`cf394c2`): hodnotí maximum přes všechny
+  čtyři pozice a hlásí, **která** se vymyká. Práh snížen 80 % → 40 %, přibyl přepínač `--no-inf`.
+  Slepé místo je popsané v hlavičce skriptu.
+- ⚠️ **`rebalance-answer-positions.mjs` nekontroluje `inputType`.** V hlavičce si říká „spouštěj jen
+  na `select_one`", ale regex chytá jakoukoli dvojici `correctAnswer` + `options`; jediná ochrana je
+  textová heuristika. **Typy je nutné ověřit před spuštěním**, jinak hrozí tiché rozbití `drag_order`
+  a `comparison`. Pro tuhle session ověřeno u všech 82 souborů.
+- 🔎 **Šest témat prvouky g2 má v metadatech `inputType: "true_false"`, ale pooly obsahují i úlohy
+  se čtyřmi možnostmi.** Binární úlohy jdou přes helper (`options: [ANO, NE]`), takže je rebalance
+  nevidí — ale ta nekonzistence metadat zůstává a **stojí za prověření, jak se to renderuje**.
+- ✅ **Freeze zásahem ohrožen není** — otisk v `contentSnapshot.ts` pokrývá jen `question`
+  a `correctAnswer`, nikoli `options`. Ověřeno čtením mechanismu, ne jen zeleným testem.
+- 🟡 **Informatika vynechána** podle stálého pokynu (10 souborů, 323 úloh, **100 % klíčů na 1. pozici**).
+  Je to jediná zbývající skupina se zkosením; až pokyn padne, je to práce na jednu dávku.
+- 🟡 **Výplňové možnosti snižují počet reálných voleb.** U úloh typu „Platí: 2,5 > 2,3?" jsou možnosti
+  `["Ano", "Ne", "Nevím", "Záleží na situaci"]` — dítě fakticky volí ze dvou, takže hádání má **50 %**
+  i po srovnání pozic. Rebalance na to nesahá; je to samostatná úloha stejné třídy.
+- ⚠️ **Past prostředí: dev server běžel z cizího worktree.** `preview_start` startuje proces
+  s pracovním adresářem, který session měla **při startu** — přepnutí do jiného worktree na to nemá
+  vliv. Výsledek: na `localhost:8080` běžela verze z `main` a k tomu bílá stránka, protože tam chybí
+  `.env` (je v `.gitignore`). Ověřeno změnou portu v místním `launch.json` — server ji ignoroval.
+  **Řešení: spustit dev server přímo z worktree, ne přes preview_start.**
+
+### Session 2026-09-01 (pokr. 8) — přiměřenost ročníku dokončena (7 ze 7 témat):
+- ✅ **Zbylých 6 témat přepsáno** (dospívání, savci, rozmnožovací soustava, horniny, voda, kostra).
+  GATE u všech `invarianty: 0`, u tří **zcela bez nálezů**. Testy **4615/4615**, typecheck 0.
+- ⚠️ **Sken podhodnotil rozsah — a je jasné proč.** Slovník uměl anatomii, farmakologii a medicínu,
+  ale neznal **evoluční a psychologickou terminologii**. Proto u tří témat ohlásil jednu úlohu tam,
+  kde byla mimo ročník **celá úroveň L3**: savci stáli na konvergentní evoluci, adaptivní radiaci
+  a echolokaci; rozmnožovací soustava na epigenetice a trizomii 21; dospívání na Eriksonovi
+  a prefrontální kůře. **Poučení: skenu se dá věřit, že něco našel, ne že našel všechno.**
+- 🐞 **Dvě ne-slova a rozbité věty v klíčích.** „Rychlé evoluční **většení** z jednoho předka" (2× u savců)
+  a „spermie – varlata **přenášené při pohlavním styku**" (rozmnožovací soustava). Obojí bylo ve
+  správné odpovědi, tedy v textu, který se dítě má naučit jako vzor.
+- 🐞 **`boundaries` si odporovaly s obsahem u 5 ze 7 témat** — potvrzeno na celé sedmici. Voda si
+  zakazovala molekulovou stavbu a ptala se na polární vazby a ionty; horniny si zakazovaly chemické
+  složení a stavěly úlohu na atomu uhlíku se 4 sousedy. Nahrazeno konkrétními hranicemi.
+- 📊 **Zkosení pozice odpovědi změřeno na celém korpusu:** 3552 úloh, klíč **66 % na 1. pozici**,
+  29 % na 2., 4 % na 3., 1 % na 4. **Ve 49 souborech je klíč první u >80 % úloh.** Strategie
+  „ber vždy první" má úspěšnost ~66 % bez znalosti látky (náhoda u 4 možností je 25 %).
+  V přepsaných tématech srovnáno; plošné řešení čeká na rozhodnutí (nesmí zasáhnout `drag_order`).
+- 🔎 **Nově zapsáno k rozhodnutí:** pooly pod prahem `K_MIN = 12` (předchází mým zásahům),
+  `kostra-a-svaly` má `gen(_level)` vracející tentýž POOL pro všechny úrovně, a výplňové „prý"
+  v distraktorech (12 souborů, 90 výskytů — část je ale legitimní obsah, plošně nejde).
+- 🔧 **Past prostředí potvrzena a rozšířena.** Heredoc v Bash ničí zpětná lomítka v regexech
+  (`[^"\\]` → `[^"\]`), a navíc: `\b` je ASCII, takže `/\bprý\b/` **nikdy nesedne** (končí na „ý").
+  Skripty psát přes Write, ne heredocem. Doc soubory jsou CRLF — vzorce pro náhradu to musí ctít.
+
+### Session 2026-09-01 (pokr. 7) — sken přiměřenosti ročníku + přepis první pomoci:
+- 🔎 **Cílený sken korpusu (277 souborů) na obsah nad rámec RVP.** Nehledal délku, ale termíny mimo obor ročníku:
+  slovník odborných výrazů (anatomie, farmakologie, medicínské postupy, vývojová psychologie) + morfologické vzory.
+  Nalezeno **7 reálných témat** (informatika vynechána podle stálého pokynu), ne 3, jak uváděl handoff.
+- 🔎 **Vzorec je konkrétnější, než se čekalo:** u pěti ze sedmi témat si `boundaries` **protiřečí s vlastním obsahem**.
+  Soubor deklaruje „Molekulární struktura vody není náplní 4. ročníku" a o kus výš se ptá na polaritu a ionty.
+  To jde kontrolovat strojově a trvale — stojí za zvážení přidat do auditu jako invariant.
+- ⚠️ **Handoff byl ve dvou bodech zastaralý.** `navykove-latky` už acetylcholin ani endokanabinoidy neobsahuje —
+  odstranila je Wave B, dávka 20 (`d078e38`). `nucleus accumbens` u dospívání **nikdy neexistoval** (`git log -S` nenašel nic).
+  Poučení: nálezy z handoffu ověřovat proti kódu, ne přebírat.
+- ✅ **`g4-…prvni-pomoc-tisnove-volani` přepsáno** (35 → 39 úloh, 13/13/13). Ven šlo KPR 30:2, defibrilace/AED,
+  komorová fibrilace, ABCDE, triáž, škrtidlo, EpiPen, anafylaxe, infarkt, krevní tlak, hypotermie, tepenné vs. žilní krvácení.
+  **Kalibrace doložena z RVP datasetu:** tenhle obsah má vlastní uzel o čtyři ročníky výš
+  (`g8-prirodopis-…civilizacni-choroby-prevence-prvni-pomoc`). Dovnitř přibyly mimořádné události
+  (siréna, povodeň, únik plynu), které jsou v názvu uzlu, ale měly jedinou úlohu.
+- 🐞 **Pozice správné odpovědi byla předvídatelná.** Původní pool: klíč **26× první, 9× druhý, nikdy třetí ani čtvrtý**.
+  `gen()` míchá úlohy, ale ne možnosti — dítě mohlo uhodnout vylučovací strategií „ber první nebo druhou".
+  Nový pool má 10/10/10/9. **Zbytek korpusu tímhle neprošel** — zapsáno do PENDING_CHANGES k rozhodnutí.
+- ⚠️ **`goals` rozporovaly nová `boundaries`.** Cíl „Popsat KPR (poměr 30:2)" musel pryč zároveň s obsahem,
+  jinak by metadata slibovala něco, co pool záměrně neučí. Totéž `helpTemplate` (nápověda i kroky obsahovaly KPR).
+- ✅ GATE 3× `invarianty: 0`, položek k revizi **3 → 1** (`missing_hints` je předexistující, ověřeno proti HEAD).
+  Testy **4615/4615**, typecheck 0. Frozen snapshot přegenerován se souhlasem uživatele — freeze zafungoval správně.
+- ✅ **Zbývajících 6 témat dokončeno** v pokr. 8 (viz výše).
+
+### Session 2026-09-01 (pokr. 6) — Wave B DOKONČENA, dávka 26 (11 témat, 11 → 0):
+- ✅ **Wave B uzavřena.** `format/length` **0** ve třech po sobě jdoucích korpusových měřeních, všech **39 témat** prošlo GATE 3× s `invarianty: 0`. Postup napříč session: **109 → 86 → 67 → 51 → 39 → 28 → 11 → 0**. Celá testová sada **4615/4615**, typecheck 0.
+- 🔧 **Nový patcher `scripts/wave-b/pcd.mjs`.** Grade-2 používá formát `{ question, correct, distractors }`, na kterém všechny stávající patchery hlásí „NEAPLIKOVANO — oprav kotvy" (past č. 10). Kotví na text otázky, protože v tomhle formátu se klíč — na rozdíl od ostatních — v souboru neopakuje i v poli možností.
+- 🐞 **Dvacet nápověd prozrazovalo odpověď v závorce.** V `abeceda-a-razeni` měly nápovědy tvar „Porovnej druhé písmeno: Á **(kára)** nebo O (kolo)" — závorka opakovala celé slovo včetně klíče. Odstraněním závorek padlo naráz **5 předexistujících hint_leaků** a metodická hodnota nápovědy zůstala.
+- 🐞 **Druhá úloha bez jednoznačné odpovědi.** „Přeložíme čtverec napůl. Vznikne:" — přehyb podél strany dá obdélník, podél úhlopříčky trojúhelník, a **obojí bylo mezi možnostmi**. Zadání zpřesněno na „napůl podél strany", do `explanation` doplněn i druhý případ.
+- 🔎 **Poslední nález se schovával před dumpem.** Korpusové měření hlásilo 1 nález u `kraje-a-regiony`, ale `dump.test.ts` ho v 6 bězích nezachytil ani jednou. Důvod: dump si drží úlohy v `Map` klíčované podle `correctAnswer`, takže úlohu se stejným klíčem přepíše jiná. Nalezeno až vlastním hledáním se 40 běhy a klíčem `otázka + odpověď`. Šlo o „České Budějovice" (16 zn.) proti „Brno", „Plzeň", „Jihlava" (max 7).
+- 🟡 **Ponecháno k rozhodnutí:** heuristické nálezy (`REVIZE`) se neřešily — Wave B mířila jen na `format/length` a blokující invarianty. Napříč korpusem jich zbývá kolem 140, mimo jiné `hint_progression` a `min_unique_tasks_per_tier`.
+### Session 2026-09-01 (pokr. 5) — Wave B, dávka 25 (9 témat, 28 → 11 nálezů):
+- ✅ **Dávka 25 hotová**, `format/length` **28 → 11**, témat **19 → 11**. Devět témat s dvěma nálezy najednou: `g3-prvouka-komunikace-bezpecnost`, `vztahy-konflikty`, `kraje-regiony`, `ziva-neziva-priroda`, `g3-cjl-slovni-druhy`, `plynule-cteni`, `g4-cjl-stavba-slova`, `g5-mat-obsah-obrazce`, `g5-mat-pisemne-deleni`. GATE 3× čistý u všech.
+- 🐞 **Úloha bez jednoznačné odpovědi.** „Na záhon (2 m × 3 m) sázíme rostliny každých 25 cm. **Kolik řad?**" měla jako klíč „Záhon má 6 m² — záleží na uspořádání". Otázka se ptá na počet, klíč odpovídá plochou a vyhne se. Přeformulováno na „Na záhon široký 2 m sázíme rostliny do řad vzdálených 25 cm. Kolik řad se vejde?" s klíčem „8 řad" a výpočtem v `explanation`.
+- 🐞 **Distraktor, který byl částečně správný.** U „Která slova mají předponu 'ne-'?" byl mezi možnostmi pár „nepít, nést" — jenže *nepít* předponu **má**. Distraktory přepsány tak, aby žádné z uvedených slov předponu nemělo (`nemoc, nebe, nehet` apod.).
+- 🔎 **Čtyři předexistující hint_leaky** odhalené až po zkrácení klíčů, všechny ověřené proti HEAD: nápověda „**Rostlina** roste, přijímá živiny…" u klíče *Rostlina*; „Je to **zvíře**…" u klíče *Pes* (jediné zvíře mezi možnostmi); „**Zájmeno** nahrazuje jméno…" u otázky na slovní druh slova *on*; „Přípona … : **-ník**, -tel, -ost" u otázky na příponu ve slově *zahradník*. Všechny byly na HEAD už předtím.
+- **Pozn. k patcherům:** výběr se řídí formátem úlohy, ne souborem. `pv2` = vše na jednom řádku s `correctAnswer`, `pv3` = jednořádkové `a`/`opts`, `pv4` = víceřádkové. Když má `correctAnswer:` hodnotu až na dalším řádku, neuspěje žádný — nahrazuje se přímo řetězec s kontrolou počtu výskytů (typicky 2: klíč + tentýž text v `options`).
+### Session 2026-09-01 (pokr. 4) — Wave B, dávka 24 (4 témata, 39 → 28 nálezů):
+- ✅ **Dávka 24 hotová**, `format/length` **39 → 28**, témat **23 → 19**. Témata: `g3-prvouka-stavba-lidskeho-tela` (3), `g4-cjl-vzorec-souveti` (3), `g4-vlastiveda-druhy-map` (3), `g2-prv-prvni-pomoc` (2). GATE 3× čistý u všech.
+- 🐞 **Nevhodný distraktor:** u otázky „Jakou hvězdou se na mapě označuje sever?" byla mezi možnostmi „**Hvězdou Davidovou**". Náboženský symbol jako náhodná chybná možnost v úloze o mapových značkách nemá co dělat — nahrazeno „Pěticípou hvězdičkou v rohu".
+- 🐞 **Jazykové chyby:** „mohly nás **roznemocnit**" (není české slovo) → *nakazit*; „155 **záchrance**" → *záchranka*; překlep v nápovědě „2 a více přísudků (**slovese** spojených spojkami)" → přeformulováno.
+- ⚠️ **Zkrácení klíče na „spojky" by zapnulo hint_leak** — sdílená nápověda končila slovy „…spojených **spojkami**". Přepsána zároveň se zkrácením, ne až po GATE.
+- 🔎 **Distraktor jako nadmnožina klíče.** U „Nevím, jestli přijdeš. — jaký typ?" se klíč zkracoval na „podřadné", jenže mezi distraktory bylo „podřadné podmětné". Po zkrácení by byl klíč podřetězcem distraktoru a úloha by šla uhodnout vylučovací metodou. Distraktor nahrazen za „spojení dvou hlavních vět".
+### Session 2026-09-01 (pokr. 3) — Wave B, dávka 23 (4 témata, 51 → 39 nálezů):
+- ✅ **Dávka 23 hotová**, `format/length` **51 → 39**, témat **27 → 23**. Témata: `g3-mat-rysovani-usecky` (3), `g3-prvouka-casova-primka-generace` (3), `g3-prvouka-ekosystemy-pole-louka-les` (3), `g3-prvouka-stavba-rostlin` (3). GATE 3× čistý u všech.
+- 🔎 **Předexistující hint_leak potvrzen postupem z pasti č. 8.** GATE u `casova-primka-generace` hlásil `invarianty: 1` — nápověda „**Kronikář** zaznamenává vše důležité" obsahovala klíč „Kronikář" doslova. Ověřeno proti HEAD (dočasné `git checkout HEAD -- <soubor>`, ne `git stash`, kvůli sdílenému stashi mezi worktrees): **nález tam byl už předtím**, moje úprava naopak snížila heuristické nálezy z 5 na 2. Opraveno i tak, aby GATE prošel.
+- 🐞 **Šipky `→` v klíči** (past č. 6) u „Prarodiče → rodiče → děti" spouštěly detektor meta-textu. Nahrazeny čárkami ve všech čtyřech možnostech, aby zůstaly srovnatelné.
+- 🐞 **„Sova ubila myš"** → *ulovila*. Není to běžné české spojení a v zadání pro 3. ročník působí násilně.
+- ⚠️ **Rejstříkové nápovědy potřetí.** `ekosystemy` měly „Producent = rostlina. Konzument 1. řádu = býložravec. **Konzument 2. řádu = jí býložravce**" u úlohy, jejíž klíč se po zkrácení stal „Konzument 2. řádu." Přepsáno na metodu.
+- **Pozn. k nástrojům:** jeden soubor může mít oba formáty naráz — `rysovaaniUseckyODaneDelce.ts` má většinu úloh v `a`/`opts` na jednom řádku, ale jednu s víceřádkovým `opts`, na které `pv3` spadne. Postup: patcher na to, co zvládne, zbytek ruční náhradou s kontrolou počtu výskytů.
+### Session 2026-09-01 (pokr. 2) — Wave B, dávka 22 (4 témata, 67 → 51 nálezů):
+- ✅ **Dávka 22 hotová**, `format/length` **67 → 51**, témat **31 → 27**. Témata: `g3-prvouka-minulost-regionu-povesti` (4), `g3-cjl-velka-pismena` (4), `g3-cjl-podstatna-jmena-rod-cislo-pad` (4), `g5-cjl-zajmena-sklonovani` (4). GATE 3× čistý u všech.
+- 🐞 **Distraktory, které nejsou česká slova.** `velka-pismena` nabízela u otázky na velké písmeno možnosti „**západiště**" a „**zapádat**" — vymyšlené nesmysly, které CLAUDE.md zakazuje („distraktory = blízké, pravděpodobné chyby, ne absurdita"). Nahrazeno smysluplnými tvary (`západ slunce`, `západní vítr`, `cesta na západ`), takže dítě musí rozlišit Západ jako oblast od obecného západu. Totéž u zájmen: distraktor „**one**" nahrazen tvary „vždycky jen ony / vždycky jen oni / oni pro všechny rody".
+- 🐞 **Věcná chyba v nápovědě:** „Přemysl Oráč byl **skutečný historický rod**" — Přemysl Oráč je legendární postava, rod jsou Přemyslovci; navíc tvrzení protiřečilo tomu, co má úloha učit. Přepsáno na metodickou otázku.
+- ⚠️ **Past č. 1 znovu, tentokrát nejostřeji.** `podstatna-jmena` měla sdílenou nápovědu „Pád poznáme otázkou: kdo/co = 1. pád; **koho/čeho = 2. pád**; …" a jedna z úloh se ptala přesně „Otázka 'Koho? Čeho?' patří k pádu:". Nápověda dávala odpověď doslova. Přepsáno na metodu („Pádové otázky si říkej popořadě a počítej, kolikátá sedí."). Stejný zásah u rejstříku vlastní/obecné jméno.
+- ⚠️ **Formát se liší i uvnitř jednoho souboru.** `velka-pismena` má většinu úloh jednořádkových, ale „Co je vlastní jméno?" má `opts` na více řádcích — `pv3.mjs` na ní spadl s „NEAPLIKOVANO". Řešeno rozdělením: patcher na jednořádkové, ruční náhrada na tu jednu. Zapsáno do handoffu.
+- **Pozn. k výběru patcheru:** `zajmena-sklonovani` používá `correctAnswer`/`options`, ne `a`/`opts` — `pv3` hlásí „nenalezeno" u všech kotev, správný je `pv4`. Rychlá diagnostika: `grep -n "correctAnswer\|opts:" <soubor> | head -3`.
+### Session 2026-09-01 (pokr.) — Wave B, dávka 21 (4 témata, 86 → 67 nálezů):
+- ✅ **Dávka 21 hotová**, `format/length` **86 → 67**, témat **35 → 31**. Témata: `g5-matematika-konstrukce-trojuhelniku` (5), `g5-prirodoveda-obnovitelne-zdroje-energie` (7), `g5-prirodoveda-potravni-retezec` (6), `g2-cjl-literarni-zanry` (4). GATE 3× čistý u všech.
+- ✅ **Zkrácené klíče v geometrii nezahodily odůvodnění.** Klíče typu „Ne – součet dvou stran musí být větší než třetí" se zkrátily na „Ne", ale soubor neměl pole `explanation`, takže by se vysvětlení ztratilo. Doplněno ke čtyřem úlohám, aby dítě po odpovědi vidělo proč.
+- 🐞 **Věcné a jazykové chyby nalezené čtením klíčů:** „ekologická **nicha**" → *nika* (v otázce i nápovědě); „Z každého **kW** přijaté energie" (kW je výkon, ne energie); „Historicky **nebyla zahrnuty** náklady"; „škodlivá pro **klimat**" → *klimatu*; zkomolená nápověda „DDT způsobilo snižování **popularity spolu orla**" (mělo být *populace orla*); „Pohádkový začátek **uvádí nás**" → *nás uvádí*.
+- ⚠️ **`pq.mjs` neumí formát `{ correct, distractors }`** (grade-2 literární žánry) — skončil na „NEAPLIKOVANO, oprav kotvy". Řešeno regexem kotvícím na text otázky s kontrolou jednoznačnosti. Zapsáno do handoffu.
+- 🔎 **Nápovědy s chemickými vzorci a odbornými termíny** (`H₂ + O₂ → H₂O`, „Externality = náklady, které nenese výrobce", „Pravidlo 10 %") přepsány na metodické — po zkrácení klíčů buď prozrazovaly odpověď, nebo byly nad rámec 5. ročníku.
+- 🟡 **Nález k rozhodnutí:** grade-2 `literarni-zanry` má úlohy jen se **3 možnostmi** (`distractors` má 2 prvky), zatímco CLAUDE.md předepisuje 4. Vypadá to jako záměr pro 2. ročník, ale není to nikde doloženo — nechal jsem beze změny.
+### Session 2026-09-01 — Wave B, dávka 20 (4 témata, 109 → 86 nálezů):
+- ✅ **Dávka 20 hotová**, `format/length` **109 → 86**, dotčených témat **39 → 35**. Témata: `g5-cjl-slova-spisovna-a-nespisovna` (6), `g5-prirodoveda-etapy-lidskeho-zivota-dospivani` (8), `g5-prirodoveda-navykove-latky` (9), `g3-cjl-veta-jednoducha-souveti` (5). Každé prošlo GATE 3× po sobě s `invarianty: 0`.
+- **Obě třídy oprav v jedné dávce.** U `slova-spisovna-a-nespisovna` šlo o třídu B (krátké distraktory u definiční otázky) → prodloužení na plnohodnotné definice. U `veta-jednoducha-souveti` o třídu A (klíč nesl meta-text: „Souvětí *(dvě věty spojené spojkou)*") → zkrácení klíče.
+- ⚠️ **Past č. 3 potvrzena znovu:** zkrácení klíče na „Souvětí" by spustilo detektor „odpověď je ve znění otázky", protože otázka zněla „…je to věta jednoduchá nebo souvětí?". Nutné bylo **přeformulovat zadání** na „o jaký typ věty jde?", ne jen zkrátit klíč.
+- ⚠️ **Past č. 1 potvrzena:** sdílená nápověda v `veta-jednoducha-souveti` byla rejstřík („Věta jednoduchá = jeden děj; Souvětí = více dějů…"), neškodný jen dokud měly klíče navíc závorku. Po zkrácení obsahovala obě odpovědi doslova → přepsáno na metodu („Nejdřív najdi všechna slovesa…"). Stejný zásah u 6 nápověd v `etapy-lidskeho-zivota` a 7 v `navykove-latky`.
+- 🐞 **Úloha, kde délka byla součástí správnosti.** „Která věta je nejsložitější (nejvíc vět)?" — klíč byl nutně nejdelší, protože otázka se ptala na nejvíc vět. Vyvážit délky nešlo jinak než **prodloužit distraktory na stejně dlouhé věty s méně slovesy**. Vedlejší zisk: dítě už nemůže uhodnout podle délky a musí slovesa opravdu spočítat, což je přesně cíl úlohy. Její `explanation` navíc odkazovala na pořadí možností („První má 3 slovesa, druhá 2…"), jenže `pick()` možnosti míchá — přepsáno bez odkazu na pořadí.
+- 🐞 **Chyby, které detektory nehlídají** (nalezeny čtením klíčů): „Spisovatel jazyk je společný základ" → *Spisovný*; „závislost na nikotin" → *na nikotinu*; „relaps je časté" → *návraty jsou časté*; „Mozek na ně spoléhá v vývoji" → *ve vývoji*; „lazení se pozdě", „pozdnější čas"; mezery před tečkou; šipky `→` v klíčích (past č. 6).
+- 🔴 **Eskalace — přiměřenost ročníku u dvou témat 5. ročníku.** `etapy-lidskeho-zivota-dospivani` a `navykove-latky` stojí na vysokoškolské neurobiologii: nucleus accumbens, prefrontální kůra, cirkadiánní rytmus, acetylcholinové receptory, endokanabinoidy, Eriksonových 8 fází psychosociálního vývoje. Zkrácené klíče jsem psal tak, aby jim jedenáctileté dítě rozumělo, ale **otázky samotné zůstávají nad rámec RVP** a chce to přepis tématu, ne úpravu možností. Navíc termín „sebeobrázek" je kalk z *self-image* — česky *sebepojetí*.
+### Session 2026-08-31 (pokr. 14) — Ručně kreslená šipka `PaintedArrow`:
+- ✅ **Nová komponenta `src/components/icons/PaintedArrow.tsx`** (varianta „skica" — inkoustová kontura, zvlněný dřík, hlava ze dvou tahů, slabší doprovodný tah pod dříkem). Drop-in náhrada za `ArrowRight`/`ArrowLeft` z lucide: velikost přes `className`, směr přes `direction`.
+- 🔎 **Proč SVG a ne malovaný rastr:** šipka se objevuje na oranžovém tlačítku (bílá), na bílém (oranžová) i v tlumeném textu. `currentColor` se přebarví sám; PNG by musel existovat v několika verzích a stejně by nešel obarvit podle stavu.
+- ⚠️ **Směr se otáčí atributem `transform` na `<g>`, ne přes CSS.** Inline `style.transform` by přebil Tailwind třídy typu `group-hover:translate-x-0.5`, které se u těchhle šipek běžně používají.
+- ✅ **Nahrazeno 17 šipek v 8 souborech:** `BackButton` (propisuje se do celé aplikace), `Landing` (3 CTA), `AnonStudentPage` (4), `ParentDashboard` (2), `Report` (2), `ChildHomePage` (2), `AssignmentCreator` (1), `Demo` (2 — tam byly jako textový znak `→`).
+- **Vědomě NEnahrazeno:** `src/components/ui/**` (carousel, calendar, pagination, dropdown, menubar, context-menu, breadcrumb) — systémové ovládací prvky, kde se čeká standardní vzhled a změna by rozjela soulad s upstreamem shadcn. Dál admin (interní) a `Chevron*` u rozbalování / stránkování, což nejsou obsahové šipky.
+- ✅ **Ztučněno na žádost:** tah `2,1 → 2,7`, doprovodný `0,9 → 1,1` (posazený níž a ztlumený na 0,35, jinak se s tlustším dříkem slévá v jednu šmouhu). **Nad ~3,0 už to nejde** — u 16 px se zavírá mezera mezi dříkem a hlavou a ze šipky se stává klín; zapsáno v komentáři komponenty.
+- ✅ Ověřeno v běžící appce: na landingu 3 malované šipky 16 × 16 v bílé na oranžovém CTA, `BackButton` se vykresluje bez chyby. Typecheck 0.
+- ℹ️ Chybové hlášky v konzoli během práce byly **zastaralé** — vznikly v okamžiku mezi dvěma úpravami, kdy už byl import pryč, ale JSX ještě ne. Konzole si je drží i po přechodu na jinou stránku; ověřovat je nutné po reloadu.
+- ⚠️ **Nález mimo zadání:** `DiktatFilterSelect.tsx:41` má vlastní tlačítko „Zpět" s `ChevronLeft` místo `<BackButton />`, což CLAUDE.md výslovně zakazuje. Nepřepsal jsem to, protože by se změnil vzhled (BackButton je pill s rámečkem) — čeká na rozhodnutí.
+
+### Session 2026-08-31 (pokr. 13) — Avatar rodiče přegenerován, už čte jako dospělá:
+- ✅ **Vyřešeno.** Druhá kresba z Gemini nasazena (`role-rodic.png`, `role-zak.png`, 256 × 256). Maminka má delší oválný obličej, výraznější čelist a **barevné puntíkované brýle** — tytéž jako na `landing-prehled-pro-rodice.png`, takže rodičovská role je propojená napříč aplikací. I na 64 px už čte jako dospělá.
+- 🔎 **Co v promptu rozhodlo:** (a) vypuštění „rosy cheeks" u dospělé postavy — velké růžové tváře jsou dětský signál a minule hrály přímo proti věku; (b) popis **proporcí obličeje** místo pouhého čísla věku („early thirties" model ignoroval); (c) explicitní negativy „NOT a teenager", „no freckles".
+- ✅ **Rukopis se nerozjel** — chlapec vyšel prakticky identicky jako v prvním pokusu (hlava opět 270 px, střed x 1105 vs 1110), což potvrzuje, že přegenerování celé dvojice je správný postup. Souřadnice hlav: `role-rodic:368:78:330;role-zak:1106:109:270`.
+- ✅ Ověřeno v běžící appce: oba avatary načtené, `background-color` `rgba(0,0,0,0)`, **0 externích požadavků**.
+
+### Session 2026-08-31 (pokr. 12) — Registrace rodiče: text nad formulářem:
+- ✅ `Auth.tsx:142` „Prvních 14 dní zdarma, bez platební karty." → **„Prvních 14 dní zdarma, ať víte, do čeho jdete."** Ověřeno v běžící appce.
+- ℹ️ Slib „bez karty" se tím **neztratil** — žije dál v ceníku na landing page (`Landing.tsx:404`: „registrace i veškerý obsah jsou zdarma a kartu po vás nikdo nechce", + „Placené plány zatím nespouštíme"). Jde tedy o změnu tónu, ne o věcnou opravu, a nevznikl nesoulad mezi stránkami.
+
+### Session 2026-08-31 (pokr. 11) — Avatary výběru role nasazeny jako lokální assety:
+- ✅ **Kresby z Gemini zpracovány a zapojeny.** `src/assets/role-rodic.png` + `role-zak.png`, 256 × 256, průhledné pozadí. `src/lib/roleImages.ts` nově jen importuje — **runtime volání `image.pollinations.ai` z přihlašovací stránky je pryč** (ověřeno v běžící appce: 0 externích požadavků).
+- 🔎 **Model hlavy nesrovnal, i když si o to prompt výslovně řekl.** Naměřeno: maminčina hlava 330 px, chlapcova 270 px → o 22 % menší. Prosté rozříznutí listu by dalo v dlaždicích viditelně různě velké obličeje. Výřez je proto vedený **podle velikosti hlavy** (čtverec 1,75 × výška hlavy, vystředěný na hlavu) — v obou má hlava 57 % výšky.
+- ✅ **Velikost zvolena podle čísel, ne od oka:** dlaždice je 64 px, na 3× retinu stačí 192 px. 256 px = 4× rezerva a ~107 kB; 512 px by bylo ~410 kB na dlaždici, tedy 820 kB navíc na přihlašovací stránce.
+- 🔧 Nástroj `scripts/split-portrait-sheet.ps1` (`-Measure` vypíše profil šířek pro odečtení hlav, pak rozřeže). Ověřeno, že z původního listu **reprodukuje nasazené soubory bit po bitu**.
+- 🐞 **Průhlednost se po nasazení neprojevila** — kolem avatarů byl vidět barevný čtverec. Nedělal ho obrázek (ověřeno: 55 % pixelů má alfu 0, rohy taky), ale **`<img>` samotný**: měl `bg-emerald-100` / `bg-violet-100` + `rounded-xl` z doby, kdy byly obrázky krycí. Odebráno ve všech 4 výskytech (`Auth.tsx`, `ChildAuth.tsx`), `object-cover` → `object-contain`. Ověřeno: `background-color` je nově `rgba(0,0,0,0)`. Kresba teď sedí přímo na kartě jako ilustrace na landingu.
+- ℹ️ Mimochodem: `bg-violet-100` v tomhle projektu **nevrací fialovou, ale oranžovou** — `tailwind.config.ts:117` mapuje `violet/purple/indigo/fuchsia` na značkovou oranžovou. Je to **záměr** design systému (přemapování ramp místo přepisování ~1700 tříd), ne chyba; jen to při čtení tříd mate.
+- ⚠️ **Otevřené k rozhodnutí:** vygenerovaná „maminka" vypadá spíš jako dospívající dívka než jako rodič — vedle chlapce čte jako starší sestra a na kartě „Jsem rodič" to mate. Zapsáno do `docs/ILLUSTRATION_STYLE.md` §5 včetně doporučení, co v promptu zdůraznit při přegenerování.
+
+### Session 2026-08-31 (pokr. 10) — Avatary výběru role: styl + externí závislost:
+- 🐞 **Dva problémy v `src/lib/roleImages.ts`.** (a) Styl „Pixar 3D cartoon" nesedí k akvarelovým ilustracím na landing page. (b) Závažnější: obrázky se **generují za běhu z `image.pollinations.ai`**, tedy prohlížeč uživatele volá cizí doménu přímo na přihlašovací stránce. Výsledek se může kdykoli změnit, a landing přitom slibuje „Bezpečné prostředí — žádné reklamy, žádné odkazy ven z aplikace".
+- ❌ **Přepsání promptu nestačí — vyzkoušeno a zavrženo.** Flux na 256 px zadání neudrží: ve dvou iteracích ignoroval pohlaví, barvu vlasů i oblečení, přimaloval bílé tričko s nápisem a rámeček — tedy přesně to, co prompt zakazoval. Změnu jsem **vrátil**, aby v mezidobí neběželo něco horšího než původní avatary. Kresby udělá Evžen v Gemini, stejnou cestou jako těch 19 na landing page.
+- ✅ **Založen `docs/ILLUSTRATION_STYLE.md`** — rukopis (akvarel + inkoustová kontura, paleta, opakující se postavy: chlapec v korálové mikině, maminka v mátovém svetru) a hlavně **technická pravidla pro prompt**, každé odvozené z konkrétní vady opravené dnes: bílé ploché pozadí, objekt se nesmí dotýkat okraje, žádná bílá uvnitř kresby, sytá pleť, bez propletených děr, jeden objekt uprostřed. V §5 hotové zadání pro Gemini včetně doporučení **přiložit `landing-propojeni-s-rodicem.png` jako referenci stylu** (je na ní maminka i chlapec zároveň).
+- ⏭️ **Čeká se na kresby.** Pak: uložit do `src/assets/`, vyříznout pozadí přes `scripts/fix-landing-alpha.ps1`, nahradit runtime URL importy — tím padne i ta externí závislost.
+- ℹ️ Zjištěno mimochodem: `supabase/functions/generate-prvouka-images` používá pořád starší styl „3D Pixar illustration" (obrázky témat prvouky). V aplikaci tedy běží **dva soupeřící vizuální jazyky**; zatím needitováno, není součástí zadání.
+
+### Session 2026-08-31 (pokr. 9) — Landing: finální CTA tlačítko bylo tiše rozbité:
+- 🐞 **Příčina nebyla estetická, ale nefunkční třída.** Tlačítko „Vytvořit účet zdarma" mělo `h-13` — Tailwind takovou třídu **nemá** (13 není v jeho škále) a v `tailwind.config.ts` není žádné vlastní `spacing`. Třída se tiše zahodila a tlačítko spadlo na `h-11` (44 px) ze `size="lg"` místo zamýšlených 52 px. Žádná chyba buildu, jen vizuálně nižší tlačítko.
+- 🐞 **Druhá vada v témže řádku:** inline `style={{ background: C.brand }}` přebíjel `hover:bg-primary-hover` z variantu, takže tlačítko na najetí myší **vůbec nereagovalo**.
+- ✅ Sjednoceno s hero CTA (řádek 157): `px-12 h-14`, barva přes `bg-primary` + `hover:bg-primary-hover`, doplněno `w-full sm:w-auto` pro mobil. Naměřeno v běžící appce: **44 → 56 px**, inline styl pryč, hover pravidlo nově na tlačítko sedí.
+- ✅ **Prohledán zbytek `src/`** na další neexistující rozměrové třídy (`h-13/15/17/18/19/21/22/23` a totéž pro `w/p/m/gap`) — **žádná další není**. Typecheck 0 chyb.
+- ℹ️ Panel prohlížeče byl v této session **skrytý**, takže `computer screenshot` vracel prázdné snímky. Ověřovat v takovém případě přes `javascript_tool` / `read_page` (změřit `getBoundingClientRect` a `getComputedStyle`), ne screenshotem.
+
+### Session 2026-08-31 (pokr. 8) — Landing: opraven rozežraný alfa kanál ilustrací (5 z 19):
+- 🐞 **Nalezena systémová vada všech akvarelových ilustrací.** Serverový „dewhite" mazal pixely podle **jasu kdekoli v kresbě**, ne flood-fillem od okrajů. Světlá akvarelová pleť má jas těsně pod prahem → prokousal ji. Naměřeno na `landing-samostatne-nebo-spolecne.png`: pixely tváře mají zachovanou barvu pleti (`R=253 G=205 B=159`), ale alfu 88–214 místo 255 → obličeje na barevných kartách **prosvítají pozadím**. Poškozenou alfu má 17 z 19 ilustrací (nejvíc `bez-stresu` 102 657 px, `samostatne` 61 358 px, `propojeni-s-rodicem` 52 726 px).
+- ✅ **Opraveno 5 ilustrací**, obě protichůdné varianty vady:
+  - *prosvítající pleť* → `vstup-bez-barier`, `propojeni-s-rodicem`, `samostatne-nebo-spolecne`
+  - *zbylé krycí bílé fleky* → `samostatne-nebo-spolecne` (pod stoličkou, mezery mezi svlaky opěradla), `kratke-procvicovani` (bílá výplň uvnitř rámu přesýpacích hodin)
+  - *opačný případ — vyříznutá bílá, která do kresby patří* → `prehled-pro-rodice`: deska knihy i skla brýlí byly průhledné, prosvítala jimi mátová. Vylito zpět paint-bucketem ze seedu.
+- 🔎 **Klíčové zjištění: RGB je i u alfa 0 zachované**, takže se dá alfa přepočítat a originály nejsou potřeba. Podmínka je číst pixely přes `LockBits` — `Graphics.DrawImage` premultiplikuje a u alfa 0 **vynuluje RGB** (nejdřív mi tím vyšla deska knihy černá).
+- ⚠️ **Pravidlo, které stálo jeden falešný pokus:** plně průhledné pixely se musí nechat být (jsou vyříznuté záměrně — pozadí pod stolem, mezi nohami židle). Obnovuje se **jen rozežraná částečná alfa**; první verze zakryla i tyhle plochy bíle.
+  - *bílá čočka lupy* → `prehled-o-pokroku`: čočka byla krycí bílý kotouč, kartou přes sklo neprosvítalo. Zprůhledněna, graf uvnitř zůstal.
+- 🔧 Nástroj uložen jako `scripts/fix-landing-alpha.ps1` (`-ScanOnly` vypíše uzavřené kapsy s id/bbox, `-ClearIds` je zprůhlední, `-FillSeeds` naopak vylije zpět, `-Preview` složí náhled na barvě karty).
+- ✅ **Zbývajících 13 ilustrací prověřeno a je v pořádku** — složeny na skutečné barvy svých karet a projity. Postavu z nich má jedině `diktat` a ta je poškozená zanedbatelně (727 px). Ostatní jsou objekty (štít, slunce, kompas, batoh, kostky, lístky, květináč, graf, knihy, terč, sešit, koláč); jejich nižší alfa je měkký akvarelový okraj, ne vada — plné zkrytí by ho zbytečně ztvrdilo. **Nic dalšího se opravovat nebude.**
+- ⚠️ Pozor při psaní pomocných PowerShell skriptů: proměnné **nerozlišují velikost písmen**, takže `$w` v cyklu přepíše `$W`. Chvíli mě to mátlo u rozměrů kontaktního listu.
+- 🎨 **Deska knihy v `prehled-pro-rodice` přebarvena na značkovou oranžovou #F97316 na 70 %** (zadání: „dej té knížce nějakou výraznou barvu"). Oranžová je doplňková k mátové kartě, takže nejvíc vynikne, a ladí s oranžovým číslem 3 na kartě i s logem. Obarvení jde **násobením přes jas**, takže zůstává akvarelová textura i stínování — plná sytota už působila jako plocha z vektoru.
+- 🔧 Nástroj `scripts/tint-illustration.ps1`. Klíčová část je **zaplnění děr**: bez něj zůstala skla brýlí a bílé haló kolem obrouček neobarvené (uživatel to hned viděl — „a brýle mají bílé pozadí"). Co je uzavřené uvnitř vybrané plochy, patří k ní taky; barevné obroučky, inkoust, hrnek ani bílé stránky se nedotknou, protože neprojdou testem na papír. Vedlejším ziskem zmizely i drobné průhledné tečky na přední hraně desky, které byly na bílé neviditelné a proti oranžové vylezly.
+- ℹ️ Přidán lokální `.claude/launch.json` (dev server `npm run dev`, port 8080) — je v `.gitignore`, necommituje se.
+
+### Session 2026-08-31 (pokr. 7) — Wave B, 19. dávka (4 témata, vše g3): 133 → 109 nálezů:
+- ✅ **4 témata opravena, 20 nálezů `format/length` → 0.** `g3-cjl-…slova-jednoznacna-a-mnohoznacna` (6), `g3-cjl-spojovani-vet-spojkami` (6), `g3-cjl-reprodukce-textu` (2), `g3-cjl-vers-rym-prirovnani` (6). Korpus `format/length` **133 → 109**, dotčených témat **43 → 39**.
+- 🔎 **Poznámka k nástrojům:** ve dvou souborech (`slovaJednoznacnaMnohoznacna.ts`, `reprodukcePrectenehoTextu.ts`) se stejný klíč opakoval ve dvou různých úlohách → `pv3.mjs` odmítl nejednoznačnou kotvu, přešlo se na `pq.mjs` (kotva na text otázky). Bash tool měl tuto session dočasně rozbité PATH (chybělo `Git\usr\bin`, `node`/`npm` nedohledatelné) — přešel jsem na PowerShell tool, který fungoval bez problémů; zbytek dávky proběhl v PowerShellu.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou). Žádné z témat není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 39 témat** (~10 dalších dávek po 4).
+
+### Session 2026-08-31 (pokr. 6) — Wave B, 18. dávka (4 témata): 160 → 133 nálezů:
+- ✅ **4 témata opravena, 34 nálezů `format/length` → 0** (korpusový úbytek 27 kvůli běžnému kolísání auditu mezi běhy — dotčená témata **47 → 43** souhlasí přesně). `g4-prirodoveda-…chranene-rostliny-a-zivocichove-ohrozene-druhy` (8), `g5-prirodoveda-…magnety-elektrina-jednoduche-obvody-uvod` (9), `g5-prirodoveda-…rozmnozovaci-soustava-vyvoj-cloveka-uvod` (11), `g2-cjl-…spisovatel-ilustrator-knihovna` (6).
+- 🔎 **Nový formát souboru objeven:** `spisovatelKniha.ts` (2. ročník) používá jiná jména polí (`correct`/`distractors`, jen 2 distraktory místo obvyklých 3) — žádný patcher z `scripts/wave-b/` na to nesedí, opraveno ručně přes `Edit`.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou). Žádné z témat není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 43 témat** (~11 dalších dávek po 4).
+
+### Session 2026-08-31 (pokr. 5) — Wave B, 17. dávka (4 témata): 191 → 160 nálezů:
+- ✅ **4 témata opravena, 33 nálezů `format/length` → 0.** `g5-cjl-…slovni-druhy-…ohebne-a-neohebne` (8), `g5-prirodoveda-…bezobratli-hmyz-pavouci-mekkysi-cervi` (10), `g5-prirodoveda-…ochrana-prirody-narodni-parky-chko-v-cr` (8), `g4-cjl-…slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech` (7). Korpus `format/length` **191 → 160**, dotčených témat **51 → 47**.
+- 🔎 **Poučení: zkrácení klíče vs. per-task nápověda, ne jen sdílená.** V `slovniDruhyUrcovaniVsechDesetiOhebneANeohebne.ts` má každá úloha VLASTNÍ nápovědu (ne sdílenou), a většina z nich končí přesně vzorcem „… = <slovní druh>." — zkrácení klíče na holý název druhu by okamžitě zapnulo `hint_leak` u 6 z 8 úloh. Zvolena třída B (prodloužené distraktory), klíče i nápovědy beze změny.
+- 🐞 **Předexistující BLOK na 17/17 (celý gate), objeveno a opraveno:** `slovesaMluvnickeKategorieCasovaniVJednoduchychCasech.ts` má sdílenou fallback nápovědu vypisující doslova všechny hodnoty kategorie („Čas: minulý (byl), přítomný (je), budoucí (bude)"; „Způsob: oznamovací (chodí), rozkazovací (choď!), podmiňovací (chodil by)") — kolidovalo s bezmála polovinou úloh tématu (17 z ~30 vzorků), potvrzeno jako předexistující přes `git stash` na HEAD, nesouviselo s touto dávkou. Nápověda přepsána na popis metody bez doslovného výčtu hodnot.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3–5× za sebou). Žádné z témat není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 47 témat** (~12 dalších dávek po 4).
+
+### Session 2026-08-31 (pokr. 4) — Wave B, 16. dávka (4 témata): 224 → 191 nálezů:
+- ✅ **4 témata opravena, 33 nálezů `format/length` → 0.** `g5-cjl-…slova-jednoznacna-mnohoznacna-vicevyznamova` (9), `g4-vlastiveda-…podnebi-cr-ovzdusi-pocasi` (8), `g4-vlastiveda-…poloha-cr-v-evrope-sousedni-staty` (8), `g5-cjl-…prima-a-neprima-rec-uvod` (9). Korpus `format/length` **224 → 191**, dotčených témat **55 → 51**.
+- Všechna 4 témata bez explanation/solutionSteps u dotčených úloh → výhradně třída B (prodloužené distraktory), obsah beze změny.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou; 2 zcela čistá, 2 s REVIZE nálezy typu meta-text/šipka, nesouvisejícími s touto dávkou). Žádné z témat není v zamrzlém registru, freeze nepotřeba.
+- **Zbývá 51 témat** (~13 dalších dávek po 4).
+
+### Session 2026-08-31 (pokr. 3) — Wave B, 15. dávka (4 témata): 260 → 224 nálezů:
+- ✅ **4 témata opravena, 32 nálezů `format/length` → 0** (+4 skryté duplicitní instance stejného vzorce jako v 14. dávce). Korpus `format/length` **260 → 224**, dotčených témat **59 → 55**.
+- 🔎 **Nález mimo rozsah dávky, zapsán a NEřešen teď:** `g4-prirodoveda-…prvni-pomoc-tisnove-volani-mimoradne-udalosti` má `boundaries: ["Pokročilé záchranářské postupy nejsou náplní 4. ročníku"]`, ale L3 pool (a částečně L2) obsahuje profesionální záchranářské postupy — škrtidlo/tourniquet, ABCDE primární průzkum, rozlišení tepenného a žilního krvácení, triáž při hromadném neštěstí, defibrilace, anafylaktický šok s EpiPenem. Přímý rozpor s vlastním `boundaries` tématu, stejný vzorec jako opakovaně zdokumentovaná „přiměřenost ročníku" (batch 9, 11). Opravil jsem jen nahlášený délkový nález (třída B, distraktory beze změny obsahu) — **plné přepsání L3 poolu na úroveň 4. ročníku je samostatná autorská práce**, ne jednořádková oprava, proto nezahájena bez zadání. Zapsáno i do `docs/PENDING_CHANGES.md`.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou), zbylé REVIZE nálezy (šipka `→` v klíči, `min_unique_tasks_per_tier`) ověřeny jako předexistující přes `git stash` na HEAD. Žádné z tématu není v zamrzlém registru, freeze nepotřeba. `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 55 témat** (~14 dalších dávek po 4).
+
+### Session 2026-08-31 (pokr. 2) — Wave B, 14. dávka (4 témata): 300 → 260 nálezů:
+- ✅ **4 témata opravena, 40 nálezů `format/length` → 0.** `g5-matematika-…osova-soumernost-…urceni-osy` (9+1 duplicitní instance), `g5-cjl-…slovesa-zpusob-…` (10), `g5-cjl-…souveti-vzorce-pocet-vet` (10), `g5-prirodoveda-…horniny-a-nerosty-…` (10). Korpus `format/length` **300 → 260**, dotčených témat **63 → 59**.
+- 🐞 **Skrytá duplicitní instance nálezu:** dump skript dedupuje podle `correctAnswer`, takže úloha „Má číslo 8 osu souměrnosti?" (stejný klíč i možnosti jako „Má písmeno H…") se v dump výpisu neukázala, ale v korpusovém měření se počítala zvlášť — opravena společně s tou první, jinak by zbyl 1 nález navíc.
+- 🐛 **Vlastní chyba patcheru odchycena typecheckem:** `pv2.mjs` u úlohy s bodem `P [3; 2]` uřízl options pole na první `]`, která se objevila uvnitř textu možnosti („P' = [3; −2]" obsahuje vlastní hranatou závorku) — patcher hledá KONEC pole naivně přes `indexOf("]")`, ne přes počítání závorek. Opraveno ručně (`Edit`), zbytek dávky beze změny formátu.
+- 🔎 **Grade 5 obsah není v zamrzlém registru** (na rozdíl od 13. dávky, kde `zajmenaDruhyZajmen` g4 vyžadovalo freeze) — `frozen-content-unchanged` prošel bez potřeby regenerace.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3× za sebou; 3 témata úplně čistá, 1 s předexistujícím `missing_hints` REVIZE nesouvisejícím s dávkou), `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 59 témat** (~15 dalších dávek po 4).
+
+### Session 2026-08-31 (pokr.) — Wave B, 13. dávka (4 témata): 342 → 300 nálezů:
+- **Kontext:** navázáno na `docs/WAVE_B_HANDOFF.md` (viz sekce "Předání práce" výše) po synchronizaci tohoto worktree na správnou pracovní branch `chore/remove-essay-and-ai-authoring` (worktree byl omylem na `main`, 108 commitů pozadu).
+- ✅ **4 témata opravena, 42 nálezů `format/length` → 0.** `g4-vlastiveda-…demokracie-pravni-stat` (12), `g5-vlastiveda-…prezident-vlada` (7), `g4-cjl-…zajmena-druhy-zajmen` (10), `g4-cjl-…dopis-psani-soukromeho-dopisu` (10) — dva definiční okruhy (třída B, prodloužené distraktory) a dva se smíšeným vzorem (číselné/kategoriální odpovědi, třída A — zkrácení klíče). Korpus `format/length` **342 → 300**, dotčených témat **67 → 63**.
+- 🐞 **2 vedlejší nálezy `hint_leak` odhaleny při ověřování brány, 1 předexistující:** zkrácení klíče `"který, jenž, co (ve větě vedlejší)"` → `"který, jenž, co"` v `zajmenaDruhyZajmen.ts` nově zapnulo leak (klíč se stal doslovnou podmnožinou sdílené nápovědy) — past č. 1 z handoffu, potvrzeno. Sdílené nápovědy (7 kategorií zájmen) přepsány z výčtu příkladových slov na popis metody rozpoznání. Při té příležitosti našel i **předexistující** leak u úlohy „Která zájmena jsou záporná?" (ověřeno 5× na HEAD přes `git stash`, nesouvisí s touto dávkou) a stejný vzorec v `dopisPsaniSoukromehoDopisu.ts` (fallback nápověda „Soukromý dopis = tykáme…" doslovně obsahovala odpověď „tykáme") — oba opraveny stejným způsobem (metoda místo výčtu).
+- 🔎 **Ověřeno, že zbylé REVIZE nálezy (meta-text se šipkou `→`, `min_unique_tasks_per_tier`, `hint_progression`) jsou předexistující**, ne způsobené touto dávkou — potvrzeno přes `git stash` na HEAD u každého dotčeného tématu (past č. 8 z handoffu). Mimo rozsah dávky, neopravováno.
+- ✅ **Ověřeno:** typecheck 0 chyb, `audit-topic.mjs` BLOK 0 na všech 4 tématech (3–5× za sebou), frozen snapshot přegenerován pro `zajmenaDruhyZajmen` (jediné z dotčených, které bylo v zamčeném registru), `frozen-content-unchanged` + `content-audit` testy zelené.
+- **Zbývá 63 témat** (~16 dalších dávek po 4). Další v pořadí dle `docs/WAVE_B_HANDOFF.md` — přeměřit znovu před 14. dávkou (pořadí se mezi běhy mírně mění).
+
+### Session 2026-08-30 (pokr.) — Wave B: giveaway délkou možnosti, 1. dávka 4 témat:
+- **Zadání uživatele:** „pokračujeme" → z nabídky zvolena **třída A, téma po tématu**.
+- 🔎 **Měření nejdřív (poučení z Wave A): tentokrát nálezy falešné NEJSOU.** 1 282 nálezů ve 113 tématech se rozpadá na tři třídy s různou opravou: **A) 610** — klíč nese navíc závorku/pomlčku, kterou distraktory nemají („Souvětí *(dvě věty spojené spojkou)*" vs „Věta jednoduchá"); **B) 313** — definiční otázka, kde je klíč plná definice a distraktory krátké; **C) 359** — smíšené, část nefixovatelná už z podstaty („České Budějovice" vs „Brno").
+- ✅ **4 témata dokončena, 92 nálezů délkového giveaway → 0.** Korpus **1 404 → 1 296** problémů, `format/length` **1 240 → 1 148**.
+  - `g4-cjl-…vzory-podstatnych-jmen-pan-hrad-…` (26 → 0), `…zena-ruze-…` (26 → 0), `g5-cjl-…podmet-vyjadreny-…` (29 → 0), `g5-cjl-…cislovky-druhy-…` (21 → 0).
+- 🐞 **6 věcných chyb v klíčích odhaleno při ověřování (ne detektorem):**
+  - **`lékař` → vzor pán** s odůvodněním „souhláska -ř je tvrdá". `ř` je měkká, `lékař` se skloňuje podle **muž** (bez lékaře). Táž chyba u **`zelenář`**. Dítě se učilo pravidlo, které si odporuje se 3. ročníkem.
+  - **`nůž` → vzor muž** s odůvodněním „rozhoduje koncovka, ne životnost". `nůž` je neživotné (vidím nůž = 1. pád), patří ke vzoru **stroj**. Na tom stál i celý úkol v L3 („Proč se nůž skloňuje podle muž?"), jehož distraktor „řadí se k vzoru stroj" byl ve skutečnosti správná odpověď.
+  - **`hajný` → vzor pán**, přičemž vysvětlení samo přiznávalo, že se skloňuje jako přídavné jméno — a L3 téhož tématu mělo správný klíč „adjektivní vzor". Téma si protiřečilo samo se sebou.
+  - **`stavení` — „tvar se nemění v 1., 4. a 5. pádu"** je neúplné: v jednotném čísle je „stavení" ve **všech** pádech kromě 7. Otázka tak měla víc správných odpovědí, než nabízela.
+  - `commonMistake` u vzorů tvrdil „učitel = pán" (správně muž) a znovu „-ř je tvrdé".
+  - `podmet…`: gramaticky vadné distraktory („dva podmět", „tři různé podmět", „tři podmety", „pořadí podmetu"), dvakrát mezera před čárkou.
+- 🐞 **Vlastní regrese, oba odchycené korpusovým ověřením před commitem:** (1) po zkrácení klíče na holé „pán"/„muž" začal **sdílený výchozí hint prozrazovat odpověď** — rejstřík vzorů v nápovědě byl dřív neškodný jen proto, že klíč měl navíc závorku. Nápovědy přepsány na **metodu** (urči rod → zkus 2. pád) místo výčtu vzorů; `topic-gate` šel 18 blokujících → 0. (2) Nová metodická nápověda obsahovala „2. pádem" a „7. pádu", což kolidovalo s odpověďmi typu „7. pád" — číslovky z nápovědy odstraněny.
+- 🔎 **Nový poznatek k výjimce „výčtová otázka":** zkrácení klíče může giveaway jen přesunout — z délky do znění otázky. Výjimka se aktivuje až při ≥2 zmíněných možnostech, takže distraktory je potřeba volit **také ze slov dané věty** („babička"/„děda" místo „jen babička"/„jen děda").
+- ⚠️ **Zbývají 2 nálezy, které jsou z podstaty nefixovatelné:** u otázky „Jaký tvar má 'soudce' ve 2. pádu j. č.?" je odpověď „soudce" — lemma v zadání být musí. Totéž „stavení". Kandidát na katalogovou výjimku v detektoru, ne na autorskou opravu.
+- ✅ **Obě vzorová témata znovu zamrazena** — byla v `UNFROZEN_TOPIC_IDS` od 2026-07-09 („Kolo 2 P0"), fix nikdy nedokončen. Odebrána, snapshot přegenerován.
+- **Ověřeno:** typecheck 0, `audit-topic` GATE 3× po sobě čistý u všech 4 témat, obsahové testy **1027 zelených**, freeze prošel.
+- ✅ **2. dávka: další 4 témata slohové a literární výchovy 3. ročníku, 105 nálezů → 0.** Korpus **1 296 → 1 199**, `format/length` **1 148 → 1 045**, zbývá **105 témat**.
+  - `g3-cjl-popis-predmetu` (33 → 0), `g3-cjl-omluvenka-zprava` (24 → 0), `g3-cjl-vypravovani-osnova` (24 → 0), `g3-cjl-tvorive-cinnosti` (24 → 0).
+- 🐞 **Další 4 chyby viditelné dítěti, žádnou z nich detektor nehlásí:**
+  - `„Nikому"` v distraktoru u omluvenky — **tři písmena azbukou** (о, м, у) místo latinky. Stejná třída jako ruské „части" nalezené 25. 8. v ostré DB.
+  - `briefDescription` u vypravování: **„s úvodem, zápletkOU a závěrem"** — verzálky uprostřed slova v textu, který dítě vidí na kartě tématu.
+  - `„Co je obrázkový osnova?"` (chybná shoda, správně obrázková) a `„co se se postavami stalo"` (zdvojené se).
+  - `helpTemplate`: „Jablko je **kulatý** ovoce" a „recituj (**přednès**)".
+- 🐞 **Vlastní regrese potřetí ze stejné příčiny:** zkrácení klíčů na „Úvod"/„Zápletka"/„Závěr" a „Od celku k detailu" zapnulo leak ve sdílených nápovědách, které ty pojmy vyjmenovávaly. Nápovědy přepsány na metodu (přirovnání k cestě, otázka „čím se to vyjadřuje"). **Zobecněné pravidlo: každé zkrácení klíče vyžaduje kontrolu sdílené nápovědy téhož tématu.**
+- ⏭️ **Poznámka k tempu:** všechna 4 témata mají jediný `POOL` pro L1–L3, takže `min_unique_tasks_per_tier` a `difficulty_progression` u nich zůstávají — to je jiná položka (43 v korpusu), ne součást téhle vlny.
+- ✅ **3. dávka: 4 témata literární výchovy 5. ročníku, 132 nálezů → 0.** Korpus **1 199 → 1 062**, `format/length` **912**, zbývá **101 témat**.
+  - `…basen-lyricka-a-epicka-roman-povidka` (35 → 0), `…vlastni-literarni-text-na-dane-tema` (35 → 0), `…elementarni-literarni-pojmy-pri-rozboru-textu` (32 → 0), `…umelecke-a-neumelecke-texty` (30 → 0).
+- 🔎 **Jiná třída, jiná oprava.** U těchhle témat nešlo zkrátit klíč (definiční otázka), ale **prodloužit distraktory na plnohodnotné definice**. Vedlejší efekt je pedagogicky podstatnější než samotné odstranění tellu: mizí výplňové možnosti typu „záleží na žánru", „záleží na textu", „záleží na délce", které nebyly blízkou chybou, ale prázdným místem. Nahrazeny **zrcadlovými distraktory** (prohozená definice: „balada je próza, povídka báseň"), které testují právě tu miskoncepci, o kterou v úloze jde.
+- 🐞 **Další cizojazyčné vsuvky v českém textu — třetí výskyt téhle třídy:** distraktor „**len** chronologický seznam" (slovensky), klíč „kratší **prose** text" a nápověda „**cleverly** zakončený závěr" (anglicky), „literatura o faktech – biografie, **historia**, věda" (latinsky). Žádný detektor tuhle třídu nehlídá.
+- 🐞 **Vlastní jméno s překlepem:** „román od **Jarlava** Foglara".
+- 🐞 **Gramatika:** „Jaký žánr **by jsi** vybral" (správně bys), „**Co je** memoáry" (jsou), „vypravěč bez **jméno**", „**lyricka** báseň", „vědeckofantastický **roman**", „**zápleku**", „**záporaci**", „**allegorie**" (jedno l), „scénická **poznámky**, **hercové**", „**v** smyšleném světě" (ve), „odborné informace **podány**" (podané).
+- 🐞 **Přiměřenost ročníku porušená v L3 tří témat.** Pooly obsahovaly `unreliable narrator`, `stream of consciousness`, `show, don't tell`, `cliffhanger`, `world-building`, `character arc`, `pikareskní román`, `metatextualita` — **anglické termíny jako předmět otázky pro 5. ročník**, přičemž `boundaries` téhož tématu tvrdily „Neprobíráme pokročilé techniky tvůrčího psaní". Přepsáno do češtiny na pojmy, které dítě unese (kompoziční oblouk, nespolehlivý vypravěč, vnitřní a vnější konflikt, vývoj postavy, literatura faktu), zbytek nahrazen. U témat, kde rozšiřující pojmy zůstávají, je to nově **uvedeno v `boundaries`**, jak vyžaduje CLAUDE.md.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat (0 nálezů, ne jen 0 blokujících), obsahové testy 1087 zelených.
+- ✅ **4. dávka: 4 témata slohové výchovy a čtení 5. ročníku, 110 nálezů → 0.** Korpus **1 062 → 945**, `format/length` **794**, zbývá **97 témat**.
+  - `…dopis-uredni-zadost-tiskopisy` (30 → 0), `…vypravovani-s-rozvinutou-osnovou` (29 → 0), `…studijni-cteni-a-vecne-cteni` (26 → 0), `…telefonicky-rozhovor-zanechani-vzkazu` (25 → 0).
+- 🐞 **`„Vec:"` místo `„Věc:"` napříč celým tématem úředního dopisu** — 8 výskytů v otázkách, možnostech i `helpTemplate`. Dítě se učilo psát do úředního dopisu neexistující slovo.
+- 🐞 **Cizojazyčné vsuvky počtvrté, tentokrát nejhustší:** téma studijního čtení stálo na `skimming`, `scanning`, `SQ3R (Survey–Question–Read–Recite–Review)`, `preview`, `sampling`, `stop and think`. Dál `„Today: 01.06.2026"` jako distraktor v českém dopisu, `„call back"` a `„etikett"` (německy). Přepsáno do češtiny (přehledové / vyhledávací čtení, zpětné zavolání, etiketa).
+- 🐞 **Přiměřenost ročníku:** téma studijního čtení mělo v L3 `primární a sekundární zdroj`, `anotace`, `marginální poznámky` a otázku o studiu historického dokumentu **pro diplomovou práci**. Nahrazeno situacemi, které páťák zná (ověření ve druhém zdroji, poznámka na okraj, převyprávění textu).
+- 🐞 **Gramatika a významové chyby:** `„uvedeme, kdo voláme"` (komu), `„Mohu vás zavolat zpět?"` (vám), `„do nemocnice se netelefon"` (uťaté slovo), `„ve které části se opisuje prostředí"` (popisuje), `„Osnova = kostru textu"`, `„dialog se rozepisuji"`, `„pišeme"`, `„mezery v vědomostech"`, `„prázdnou řádkou"`, `„Baj."`, `„Halo?"`, `„rovnou výhodu volání"` (nesmysl), `„Jak říkáme telefonnímu číslu, které si ověřujeme?"` (nesmyslná otázka).
+- 🔎 **Poznatek k třídě B:** u těchto témat byly distraktory často jen výplň (`„záleží na žánru"`, `„záleží na délce"`, `„záleží na situaci"` — 40+ výskytů). Nahrazení skutečnými miskoncepcemi je pedagogicky větší zisk než samotné odstranění tellu; dítě teď musí vědět, **proč** ostatní možnosti neplatí.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat, obsahové testy 1087 zelených.
+- ✅ **5. dávka: 3 témata komunikační a slohové výchovy 5. ročníku, 69 nálezů → 0.** Korpus **945 → 879**, `format/length` **730**, zbývá **94 témat**.
+  - `…posuzovani-uplnosti-sdeleni` (24 → 0), `…popis-subjektivne-zabarveny` (23 → 0), `…reprodukce-primerene-sloziteho-sdeleni` (22 → 0).
+- 🐞 **Věcná chyba přímo v češtinářském zadání:** otázka se ptala na „úlohu **spojek** jako *nejprve*, *poté*, *nakonec*" — to jsou příslovce, ne spojky. Dítě se učilo špatné zařazení slovního druhu v předmětu, který slovní druhy vyučuje.
+- 🐞 **`„velká uši"` a `„malá uši"` celkem 5×** + `„uši, která používají"`. Ucho má v množném čísle ženský rod (vzor kost), tedy „velké uši, které…".
+- 🐞 **Cizojazyčné vsuvky popáté:** `„len foto z místa"` (slovensky), `„tématická věta (topic sentence)"` a `„technický datasheet"` (anglicky), `„dress code"`. Dál nesmyslné `„Čokoláda se vyrábí ze spomoci mléka."`.
+- 🐞 **Přiměřenost ročníku:** otázka „Jak se nazývá komunikační princip…?" s klíčem **„Griceovy maxima"** — pojem z filozofie jazyka pro páťáka, a k tomu špatně skloňovaný. Nahrazeno otázkou na míru informací.
+- 🐞 **Další překlepy a chyby:** `„školní omluvelce"`, `„Popstal bych"`, `„s hebkou srsti"`, `„Teplá barva huby"` (hudby), `„mezi parafrázi"`, `„shrnem do jedné věty"`, `„záleží na letiště"`, `„korozivní látka"` místo žíraviny, `„gate"`, mezera před čárkou.
+- 🐞 **Vlastní chyba při dávkovém patchování — odchycena a vrácena.** Skript hledal úlohu podle textu otázky, jenže tentýž text je v souboru i jako konstanta `TEXT_B` nad pooly. Patch se trefil do jiné úlohy a při druhém pokusu ukousl celou úlohu o knihovně. Soubor vrácen přes `git checkout`, patcher přepsán na kotvu podle **unikátní hodnoty klíče** + pojistku na délku bloku + běh nasucho. Ověřeno počtem úloh (41 před i po).
+- 🔎 **Poučení:** u dávkových úprav obsahu nekotvit na text otázky — ten se v souboru může opakovat i mimo úlohu. Kotvit na hodnotu, která je unikátní, a vždy nejdřív pustit nasucho a porovnat počet úloh.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 3 témat (u reprodukce zůstává jen `sentence_complexity` — otázka do sebe vkládá zdrojový text, je tedy nutně dlouhá), obsahové testy 1087 zelených.
+- ✅ **6. dávka: 2 témata přírodovědy g4 + čtenářské téma g3, 58 nálezů → 0.** Korpus **879 → 820**, `format/length` **672**, zbývá **91 témat**.
+  - `g4-prirodoveda-…vzduch` (21 → 0), `g4-prirodoveda-…slunce` (19 → 0), `g3-cjl-vyhledavani-informaci` (18 → 0).
+- 🐞 **Věcná chyba ve fyzice:** „V létě dopadají paprsky **šikměji**" — v létě dopadají naopak **strměji**, a právě proto je tepleji. Klíč učil opak toho, co má vysvětlit.
+- 🐞 **`„Jeden mraveniště"`** 2× ve čtenářském textu pro 3. ročník (mraveniště je střední rod → „Jedno mraveniště").
+- 🔎 **Poznatek k metodě: jeden výpis vadných úloh nestačí.** U témat s poolem větším než `slice(0, N)` ukáže jeden běh generátoru jen podmnožinu. U `vzduch` se po opravě 16 nálezů objevilo dalších 5, které v prvním losování nebyly. **Nově se výpis pouští 6× a deduplikuje podle klíče.**
+- 🔎 **Tři různé formáty souborů, tři varianty patcheru.** Víceřádkové `PracticeTask` objekty (g5 slohová výchova), jednořádkové `{ question, correctAnswer, options }` (g4 přírodověda) a kompaktní `{ q, a, opts, e }` (g3 čeština). Patcher má proto tři varianty podle kotvy; každá běží nejdřív nasucho a po aplikaci kontroluje, že se **nezměnil počet úloh** — pojistka zavedená po chybě z 5. dávky.
+- ⚠️ **Zbývá u obou přírodovědných témat `missing_hints`** (0 z 10 vzorových úloh má nápovědu) — předexistující dluh vedený zvlášť, není součástí téhle vlny.
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 3 témat, obsahové testy 1109 zelených, freeze přegenerován pro 2 změněná g4 témata.
+- ✅ **7. dávka: 4 témata (3× g4 čeština, 1× g3 čeština), 68 nálezů → 0.** Korpus **820 → 754**, `format/length` **605**, zbývá **87 témat**.
+  - `g4-cjl-…vlastni-literarni-tvorba` (19 → 0), `g4-cjl-…inzerat-vzkaz-telefonicky-rozhovor` (17 → 0), `g3-cjl-pohadka-povidka-basen-bajka` (16 → 0), `g4-cjl-…sklonovani-podle-vzoru` (16 → 0).
+- 🐞 **Nejzávažnější nález vlny: 12 ze 14 úloh se ptalo na vzor slova, které samo tím vzorem je.** „Ke kterému vzoru patří slovo *pán*?" → odpověď „vzor pán". Dítě jen zopakovalo slovo ze zadání, úloha netestovala nic. Závorka v klíči („vzor pán (mužský živý, tvrdý základ)") to navíc maskovala. Slova nahrazena skutečnými zástupci vzorů: student → pán, les → hrad, škola → žena, slunce → moře, pokoj → stroj, učitel → muž, ulice → růže, kotě → kuře, nádraží → stavení, kolega → předseda, průvodce → soudce, báseň → píseň. Vysvětlení přepsána.
+- 🐞 **15 blokujících `hint_leak` v témže tématu, předexistujících** (ověřeno `git stash` proti HEAD): sdílená nápověda „Rod poznáme dosazením: ten (mužský), ta (ženský), to (střední)" jmenovala všechny tři možné odpovědi. Přepsána na metodu.
+- 🐞 **Cizojazyčná vsuvka pošesté:** `„přirovnání (simile)"`. Dál `„Příklad správného vzkazku"` (vzkazu) a klíč `„konkrétní technické parametry — správně"`, kde meta-text prozrazoval odpověď.
+- 🔎 **Šipka `→` v možnosti spouští detektor meta-textu i tam, kde ji mají všechny čtyři možnosti** (úloha na pořadí částí hovoru). Formálně falešný poplach, ale nahradit šipku čárkou je čitelnější a nález mizí.
+- ✅ **8. dávka: 4 témata (2× g4 čeština, 1× g3 čeština, 1× g4 přírodověda), 61 nálezů → 0.** Korpus **754 → 688**, `format/length` **541**, zbývá **83 témat**.
+  - `g4-cjl-…pohadka-povest-bajka-povidka` (16 → 0), `g3-cjl-dialog-pravidla-rozhovoru` (15 → 0), `g4-cjl-…vyhledavani-klicovych-slov` (15 → 0), `g4-prirodoveda-…puda-vznik-slozeni` (15 → 0).
+- 🐞 **Celá úloha bez diakritiky, včetně zástupných textových značek:** `„Veta: (uvozovka)Pojd si hrat!(uvozovka) rekla Anicka. — Kde jsou uvozovky?“` s klíčem `„Kolem prime reci“`. Ironicky promárněná úloha na uvozovky, která žádné uvozovky neobsahovala. Další 3× `„Prominete“` místo `„Promiňte“`.
+- 🐞 **Věcné chyby v přírodovědě:** `bioindicátor` (správně bioindikátor), `„Jakou funkci **mají** kořenové vlášení“` (střední rod → má) a neslóvko `„nevzlepšuje“` v klíči o hnojení.
+- 🔎 **Zrcadlový distraktor jako náhrada za „Jsou to stejné žánry“:** u srovnávacích otázek („povídka vs. bajka“) stačí klíč i distraktor prohodit — délky se vyrovnají samy a distraktor testuje právě tu záměnu, o kterou v úloze jde.
+- ✅ **9. dávka: 4 témata přírodovědy g4, 58 nálezů → 0.** Korpus **688 → 630**, `format/length` **487**, zbývá **79 témat**.
+  - `…dreviny-stromy-a-kere` (15 → 0), `…voda-skupenstvi-kolobeh-vody` (13 → 0), `…hospodarske-rostliny-obilniny-ovoce-zelenina` (13 → 0), `…zivocichove-savci-ptaci-znaky-zastupci` (13 → 0).
+- 🐞 **Cizojazyčné vsuvky posedmé:** `„Koža savců"` (chorvatsky/slovensky místo kůže), `„karfiol"` 3× (slovakismus, správně květák), `„čekanec"` (správně čekanka).
+- 🐞 **Uťatá a nesmyslná slova v klíčích:** `„si zapamato tvar rodiče"`, `„zajíčci jsou hned vidění"`, `„zajíc je divočák králíka"`, `„Monotremata jsou vyhynulá — žádní žijí"`, `„Voda se tuhne na led"`, `„Les zvyšuje transpirace"`, `„Jednoletá trávy"`, `„Brodivé ptáci"`, `„Všechny ptáky mají"`, `„létí s větrem"`, `„trnistými větvemi"`, `„červené drobné jablíčka"`.
+- 🐞 **Úloha bez odpovědi:** „Jaký je rozdíl mezi stěhovavým a tažným ptákem?" měla klíč `„Tažný = přesnější synonymum – oba pojmy se překrývají"`. Otázka se ptala na rozdíl, který podle vlastního klíče neexistuje. Nahrazena otázkou „Proč někteří ptáci odlétají na zimu?".
+- 🐞 **Přiměřenost ročníku — nejrozsáhlejší zásah dosud.** L3 čtyř témat stálo na `anemochorie`/`ornitochorie`/`myrmekochorie`/`hydrochorie`, `sukcese`, `klimaxový les`, `primární vs. sekundární les`, `biodiverzita`, `evaporace`, `transpirační proud`, `rosný bod`, `sublimace`, `agrotechnika`, `fairtrade`, `agrolesnictví`, `GMO`, `imprinting`, `altriální vs. prekociální mládě`, `monotremata`, `placenta`. Přepsáno na otázky pro čtvrťáka se stejným kognitivním nárokem („Proč zemědělci nechávají mezi poli stromořadí?", „Čím se liší mládě kachny od mláděte kosa?", „Jak se les sám obnoví na vykácené pasece?").
+- 🐞 **Vlastní chyba při patchování podruhé — a tentokrát opravena v nástroji, ne jen v datech.** Kotva `„Salát, špenát, čekanec"` se trefila do jiné úlohy, kde tentýž řetězec figuroval jako **distraktor**. Patcher nově vyžaduje, aby kotva stála **hned za `correctAnswer: "`**, odmítá nejednoznačnou kotvu (≥2 shody) a vypisuje číslo řádku ke kontrole. Soubor vrácen přes `git checkout` před aplikací.
+- ✅ **10. dávka: 4 témata (2× čeština g4, 1× čeština g3, 1× přírodověda g4), 51 nálezů → 0.** Korpus **630 → 579**, `format/length` **435**, zbývá **75 témat**.
+  - `g3-cjl-proza-verse` (13 → 0), `g4-cjl-…encyklopedie-slovnik-periodika` (13 → 0), `g4-prirodoveda-…strava-pohyb-spanek-prevence` (13 → 0), `g4-cjl-…popis-predmetu-osoby-a-pracovniho-postupu` (12 → 0).
+- 🐞 **Neslovo v klíči i v zadání:** „Diabetes mellitus a jak ji **preventovat**?" a distraktor „Cukrovka nelze preventovat". Dál „Parazité **v** střevech" a „Encyklopedie = **fakty** o světě".
+- 🐞 **Přiměřenost ročníku počtvrté:** L3 zdravovědy stálo na `BMI`, `mikrobiom střev`, `omega-3 mastné kyseliny`, `bazální metabolismus`, `aerobní vs. anaerobní pohyb`, `patogen`, `protilátky`, `fermentované potraviny`. Přepsáno na otázky pro čtvrťáka („Proč se doporučuje jíst ryby?", „Jak pohyb ovlivňuje spalování energie?").
+- 🐞 **Vykání dítěti** v jinak tykajícím tématu: „Popište polohu detailu v popisu předmětu:".
+- 🐞 **Katalogová nápověda popáté** — a poprvé u tématu, které bylo **na HEAD už ve stavu FAIL**. `popis-predmetu…` mělo 2 předexistující blokující `hint_leak` (ověřeno `git stash`), protože sdílená nápověda doslova vyjmenovávala „tvar, barva, materiál, velikost, účel" a „vzhled". Přepsána na metodu; téma je nově GATE-čisté. Táž oprava u `proza-verse` („Verše = … Próza = …") a `encyklopedie…` („Encyklopedie = …; Slovník = …; Periodika = …").
+- 🔎 **Detektor `hint_leak` nematchuje jen celé odpovědi, ale i jednotlivá slova z nich.** Nápověda „od celku k podrobnostem" spadla na odpověď „od celku k detailu", „krok za krokem" na „Chybí krok číslo 3". Metodická nápověda se proto musí vyhnout i běžným slovům, která v odpovědích náhodou figurují.
+- 🔎 **`hint_progression` se v tomhle tématu nedal opravit prohozením** — druhá nápověda byla kratší, ale zároveň konkrétnější (zužovala výběr). Prohození by ji posunulo dopředu a prozradilo víc, takže byla místo toho **prodloužena**. Prohození je správné jen tam, kde delší nápověda není i návodnější.
+- 🐞 **Falešný poplach detektoru:** `displayName „Popis a postup" vypadá jako anglický název`. Je česky; heuristika si plete krátký název bez diakritiky s angličtinou. Předexistující, k opravě v detektoru, ne v obsahu.
+- ✅ **11. dávka: 4 témata napříč předměty (čeština g4/g5, vlastivěda g4, přírodověda g5), 49 nálezů → 0.** Korpus **579 → 535**, `format/length` **388**, zbývá **71 témat**.
+  - `g4-cjl-…vypravovani-s-casovou-posloupnosti-osnova` (13 → 0), `g4-vlastiveda-…povrch-cr` (12 → 0), `g5-cjl-…pridavna-jmena-druhy` (12 → 0), `g5-prirodoveda-…vesmir-slunecni-soustava` (12 → 0).
+- 🐞 **Chybný mluvnický termín v celém tématu:** `„Přívlastňovací přídavné jméno"` 2× — správně **při**vlastňovací (od *přivlastnit*). Téma o přivlastňovacích přídavných jménech mělo špatně jejich vlastní název.
+- 🐞 **Chybný tvar uvedený jako vzorový:** vzor *otcův* ilustrován slovem `„bratranců"`. To je 2. pád množného čísla podstatného jména *bratranec*; přivlastňovací tvar je *bratrancův*. Dítě si mělo z chybného příkladu odvodit pravidlo.
+- 🐞 **Rozpadlá úloha:** `„Skloňuj: Petrův (1. pád) → Petrovi (3. pád) → Petra (2. pád) → čeho se zde mění?"`. Tvary nepatří k jednomu slovu (*Petrovi*/*Petra* jsou tvary podstatného jména *Petr*, ne přídavného *Petrův*), pořadí pádů je 1–3–2 a zadání končí neexistující vazbou „čeho se mění". Přeformulováno.
+- 🐞 **Otázka, která říká opak toho, co se ptá:** `„Proč vidíme z Měsíce vždy stejnou stranu?"` — vidíme ji **ze Země**. Dál `„mohl by začít jaderná fúze"` (rod), `„jmena"`, `„s dolly"` místo *s doly*, `„v Šumavě"` místo *na Šumavě* a latinismus `„singulár"` 3× v učivu 5. ročníku.
+- 🐞 **Katalogová nápověda pošesté** (`vypravovani…`, osnova) — po zkrácení klíče na „zápletka" začala sdílená nápověda vyjmenovávat celou osnovu. Přepsána na metodu (plynutí času).
+- 🔎 **Zkrácení klíče umí zapnout i jiný detektor než `hint_leak`.** U vzoru *jarní* je 7. pád ženského rodu tvarově shodný s 1. pádem, takže klíč „domácí" spadl do pravidla **„odpověď se doslova vyskytuje ve znění otázky"**. Neopravitelné zkrácením ani prodloužením — jediná cesta je **přeformulovat zadání tak, aby slovo neobsahovalo** („Doplň: *Chlubila se ___ kuchyní.*"). Táž třída jako „soudce"/„stavení" z 1. dávky.
+- ✅ **`pridavna-jmena…` bylo na HEAD PASS a zůstalo PASS** (ověřeno `git stash`) — obě blokující položky, které jsem po cestě způsobil, jsou opravené a heuristických výhrad ubylo **13 → 5**.
+- 🔧 **Nový patcher `pv4.mjs` pro víceřádkový formát** (`correctAnswer` a `options` na samostatných řádcích) — se stejnými pojistkami jako `pv2`/`pv3` (jednoznačná kotva, kontrola počtu možností i úloh) a s variantou pro klíč na vlastním řádku + `options` inline. Tím jsou pokryté všechny čtyři formáty obsahu v repozitáři.
+- ✅ **12. dávka: 4 témata (2× čeština g3, 1× čeština g4, 1× vlastivěda g4), 46 nálezů → 0.** Korpus **535 → 482**, `format/length` **342**, zbývá **67 témat**. **Tři ze čtyř témat mají GATE úplně čistý.**
+  - `g3-cjl-uhledne-psani` (12 → 0), `g3-cjl-vlastni-vytvarny-doprovod` (12 → 0), `g4-cjl-…podmet-prisudek` (11 → 0), `g4-vlastiveda-…nas-kraj` (11 → 0).
+- 🐞 **Nápověda patřící k jiné úloze:** u otázky „Jak by měla ilustrace souviset s textem?" stála druhá nápověda „Vyber nejdůležitější moment příběhu." — to je odpověď na úplně jinou otázku téhož tématu. Dítě dostalo radu, která k zadání nesedí.
+- 🐞 **Absurdní distraktor místo blízké chyby:** „Jak opravíme chybné slovo? → **Přelepíme náplastí**". Porušuje pravidlo o distraktorech jako pravděpodobných chybách. Nahrazeno „Zamažeme to celé propiskou".
+- 🐞 **Tvarosloví:** `„návštěvy muzejí"` (správně **muzeí**), `„s vzácnou přírodou"` (→ se vzácnou), `„Co pomáhá ilustrace čtenáři?"` (negramatická vazba) a zamotané zadání „Urči podmět ve větě: 'Komu pomáháme?' (z věty: Pomáháme sousedce.)", kde se ptáme na jednu větu a odpověď se hledá v jiné.
+- 🐞 **Tautologie v klíči:** „Zleva i zprava (volný **okraj na okraji** stránky)".
+- 🐞 **Katalogová nápověda posedmé a poosmé** (úhledné psaní, výtvarný doprovod) a v `podmet-prisudek` navíc nápověda `„jdeme = my"`, kde „my" je po zkrácení nově klíčem. Vše přepsáno na metodu.
+- 🔧 **Nový patcher `pq.mjs` — kotva na text otázky, univerzální pro všechny formáty.** Vznikl proto, že v `podmet-prisudek` mají **tři různé úlohy tentýž klíč** („my (nevyjádřený)"), takže kotva na klíč je principiálně nejednoznačná; zpevněný `pv3` to správně odmítl místo tichého přepsání špatné úlohy. `pq.mjs` sám pozná, jestli je úloha na jednom řádku, rozepsaná na víc řádků, nebo smíšená.
+- 📄 **Předání na druhý PC:** vznikl [`docs/WAVE_B_HANDOFF.md`](docs/WAVE_B_HANDOFF.md) — stav, další témata v pořadí, 11krokový postup na dávku, 8 pastí a přehled nástrojů. Patchery přesunuty ze scratchpadu do **`scripts/wave-b/`**, aby existovaly i mimo tuhle session. V `CLAUDE.md` opravena zastaralá poznámka o multi-PC branchi (uváděla `claude/cranky-shirley`, kde ale práce posledních session není).
+- 🐞 **Vlastní regrese, potřetí ze stejné příčiny:** zkrácení klíčů na holé názvy (žánrů, vzorů) zaplo leak ve sdílených nápovědách, které ty názvy vyjmenovávaly — u pohádek 7 blokujících, u vzorů 15. **Pravidlo z 2. dávky platí i tady: po každém zkrácení klíče zkontrolovat sdílenou nápověda tématu.**
+- **Ověřeno:** typecheck 0, GATE 3× čistý u všech 4 témat, obsahové testy 1087 zelených, freeze přegenerován pro 3 změněná g4 témata.
+- ⏭️ **Zbývá:** 605 délkových nálezů v 87 tématech. Nejhustší: `g5-cjl` literární a slohová výchova (22–35 na téma) — ty jsou ale převážně **třída B** (definiční otázky), tedy pomalejší práce než dnešní dávka.
+
+
+### Session 2026-08-30 — audit „zbylých cvičení": 97 % nálezů byla vada detektoru, ne obsahu:
+- **Zadání uživatele:** „spusť testy na zbylé cvičení, kde potřeba oprav". Testová sada byla zelená (4606), takže práce se přesunula na obsahový audit: 229 témat, 10 572 úloh, 2 150 problémů.
+- 🔎 **Zásadní zjištění: dvě kategorie tvořily 97 % nálezů a obě měly vadu v DETEKTORU.** Stejný vzorec jako u Wave A — před opravou obsahu vždy ověřit, jestli nález není falešný.
+- ✅ **`self_validation` 529 → 0, všechny falešné.** Sonda volala `validateAnswer(klíč, klíč)`. To dává smysl jen u textové odpovědi; u strukturovaných typů je `correctAnswer` jen marker („match"/„order"/„categorize") a formát odeslané odpovědi se navíc LIŠÍ od formátu klíče (`CategorizeInput` posílá mapu `{kategorie: [položky]}`, klíč je pole `[{name, items}]`). Přepsáno na **round-trip**: `buildPerfectAnswer()` sestaví odpověď přesně tak, jak ji pošle vstupní komponenta, a projde stejnou cestou jako `sessionOrchestrator` (`resolveTaskValidation` → `validateAnswer`). Kontrola tím poprvé odpovídá na otázku, na které záleží: *dostane dítě za bezchybně vyřešenou úlohu opravdu „správně"?* Ověřeno **0 selhání z 10 572 úloh**. V téhle podobě by zachytila i BUG 3 z 2026-07-19.
+- ✅ **`format`/giveaway v otázce 165 → ~18.** Detektor hlásil jako prozrazení, že u „Co je delší: 1 minuta nebo 1 sekunda?" je odpověď v zadání — jenže u výčtové otázky tam BÝT MUSÍ. Doplněna stejná výjimka jako katalogová u `hint_leak`: zmiňuje-li zadání ≥2 nabízené možnosti, jde o výčet, ne prozrazení.
+- 🐞 **`` v JavaScriptu neumí diakritiku — systémová vada napříč detektory.** Hranice slova je definovaná přes ASCII `\w`, takže `škola` se v „…sloveso: škola, učit…" NENAJDE. Detektory tím dlouhodobě míjely každou odpověď začínající háčkem. Nahrazeno unicode lookaroundem (`\p{L}`). Táž příčina stála i za **22 falešnými gramatickými nálezy**: ze slova „balení" zbyl ASCII fragment „balen" a pravidlo (2–4 + genitiv plurálu) ho označilo za chybu, ačkoli „4 balení" je správně — a naopak MÍJELO skutečné případy s diakritikou („3 dílů").
+- ✅ **`czech_grammar` 22 → 0.** Regex opraven na `\p{L}` + doplněna znalost předložek („ze 3 bodů" je genitiv správně, pravidlo se týká holého počtu).
+- ✅ **`format`/struktura 65 → 6.** Dvě systematické výjimky v `taskValidator.ts`, obě na osvědčeném prahu ≥2: (a) **pravopisné varianty** — u velkých písmen jsou možnosti záměrně tvary lišící se jen velikostí („Brně"/„brně"/„BRNĚ") a porovnání přes `toLowerCase()` přesně tu vlastnost zahodilo; (b) **souhrnná možnost** — distraktor „Ani rovnoběžky, ani kolmice" musí názvy ostatních možností obsahovat, jinak nedává smysl (včetně symetrie, kdy je souhrnnou možností sám klíč).
+- 🐞 **Latentní chyba ve validátoru `set_match` (opravena).** `MultiSelectInput` posílá JSON pole, ale očekávaná hodnota se skládá přes `join(",")` — po dělení podle čárek by zůstaly uvozovky a závorky a **dítě by za správnou odpověď dostalo „špatně"**. Stejná třída jako BUG 3. Dnes latentní (multi_select nepoužívá žádné téma), opraveno preventivně.
+- ✅ **Skutečné obsahové bugy nalezené a opravené (3):** (1) `bezobratliAObratlovciUvodniTrideni` — spojovačka měla **duplicitní pravou položku** („Pták" 2×), což validátor přímo zakazuje; navíc její vysvětlení bylo věcně chybné („obě jsou vrány", ačkoli jestřáb vrána není). Nahrazeno ropuchou/obojživelníky + přepsané vysvětlení. (2) `podstatnaJmenaSklonovani…` — u 5. pádu byly v nabídce „předsedo" i „předsedo!", tedy **dvě správné odpovědi** pro tvar slova (porušení závazného pravidla „právě 1 správná"); nahrazeno 7. pádem. (3) `obsahObrazceVeCtvercoveSiti…` — „Obdélník 6 × 3 čtverečků" → „čtverečky" (4×) a **tři anglická slova v české větě** („5 čtverečků wide", „8 m wide", „Jak je wide?"), které žádný detektor nehlídá.
+- 🐞 **Vlastní regrese odhalena a opravena:** nová round-trip kontrola zpomalila audit 2,5× a celá sada padala na 60s timeout. Příčina byla v pořadí — výčet možností se počítal pro každou úlohu, i když se giveaway netestoval. Po přesunu za levné filtry + předfiltr přes `includes()` běží audit **3,9 s**, tedy rychleji než původních 13,7 s.
+- 📊 **Výsledek: průchodnost 80 % → 87 %, problémů 2 150 → 1 401.** Testy **4615 zelených** (+9 regresních v `audit-new-checks.test.ts`), typecheck 0, lint bez nových nálezů, freeze snapshot nedotčen.
+- 🟡 **Zbývá (skutečná autorská práce, nezahájeno bez zadání):** **1 243** nálezů „správná možnost ≥2× delší než distraktory" — klasický tell „nejdelší je správně". Dál 78 meta-text v možnosti, 41 opakující se pool, 6 strukturálních a ~18 giveaway k individuálnímu posouzení.
+- **Poučení pro další vlny:** u velkého počtu nálezů nejdřív změřit, kolik z nich zmizí opravou detektoru. Ve dvou po sobě jdoucích vlnách (Wave A i tato) tvořily falešné poplachy většinu — a hlavní systémovou příčinou je ASCII ``/`\w` v regexech nad českým textem.
+
+### Session 2026-08-26 — Wave A retro-audit: hint_leak topic-by-topic (PR #20, na `chore/remove-essay-and-ai-authoring`):
+- **Kontext:** navazuje na retro-audit z 2026-08-25 (2 938 problémů, `hint_leak` 785 zvolen jako priorita — přímo škodí dítěti). Uživatel schválil vlnu oprav "ano" → postup téma po tématu, ověřovat detektor i obsah adversariálně před commitem.
+- ✅ **6 generalizací detektoru** v `supabase/functions/_shared/hintLeakage.ts` (rejstřík = enumerace VŠECH kandidátů NENÍ leak, viz `docs/CONTENT_AUTHORING.md` §7.2): práh ≥2 zmíněných možností, word-fallback (≥5 znaků, vyloučená slova ze správné odpovědi), fallback na řadové číslovky ("1. osoba"), `"pojem ="` jako silný signál explicitní definice. Kryto **40 regresními testy** v `src/test/hint-leakage.test.ts` (z 26).
+- ✅ **37 témat opraveno** (per-úlohový `hints?: string[]` override tam, kde `gen()` sdílí nápovědy; jinak přímá úprava `hints[]`): `nasobilka2345`, `rovnobezkyAKolmice`, `slovniDruhyUrcovaniVsechDesetiOhebneANeohebne`, `mapaStranySveta`, `slovesaMluvnickeKategorieCasovaniVJednoduchychCasech`, `vetaJednoduchaASouvetiVzorecSouveti`, `vypravovaniSCasovouPosloupnostiOsnova`, `stavbaVetyZakladniSkladebniDvojicePodmetPrisudek`, `zivaNezivaPrivroda`, `cislovkyDruhyZakladniRadoveDruhoveNasobne`, `umeleckeANeumeleckeTexty`, `omluvenkaZpravaOznameniPozvanka`, `pridavnaJmenaDruhyTvrdaMekkaPrivlastnovaciSklonovani`, `vztahyKonflikty`, `predponaKorenPriponaKoncovka`, `vzoryPodstatnychJmenPanHradMuzStrojPredsedaSoudce`, `vyhledavaniKlicovychSlovAHlavniMyslenky`, `souvetiVzorcePocetVet`, `studijniCteniAVecneCteni`, `komunikaceBezpecnost`, `vodaVzduchPuda`, `pohadkaPovestBajkaPovidka`, `elementarniLiterarniPojmyPriRozboruTextu`, `mereniCasu` (g2), `krajeRegionyCr`, `vlastniVytvarnyDoprovod`, `encyklopedieSlovnikPeriodika`, `dopisUredniZadostTiskopisyPrihlaskaDotaznik`, `popisSubjektivneZabarvenyPopisPracovnihoPostupu`, `posuzovaniUplnostiSdeleni`, `shodaPrisudkuSPodmetem`, `slovaSpisovnaANespisovna`, `scitaniAOdcitaniZlomkuSeStejnymJmenovatelem` (g4-mat), `nasobilka6789a10` (g3-mat), `nasobeniADeleniMalaNasobilka` (g3-mat), `casovaPrimkaGenerace` (g3-prvouka), `vetaJednoduchaSouveti` (g3-cjl), `zajmenaDruhyZajmen` (g4-cjl).
+- ✅ **7. zobecnění detektoru**: `normalize()` v `hintLeakage.ts` teď odstraní úvodní label „Krok N:" před číselným porovnáním — pořadí kroku v postupu (např. „Krok 3: …") se dřív falešně shodovalo s číselnou odpovědí, když se hodnota náhodou rovnala pořadí kroku (`g6-fyz-mereni-objemu-6`). Kryto 2 novými testy (40 → 42 v `hint-leakage.test.ts`). Dopad napříč korpusem: −23 nálezů jen tímto zobecněním.
+- 🔎 **Vzorec „skloněný tvar obsahuje základní tvar jako podřetězec"** — u zeměpisných jmen (Olomouc → Olomouckého, Liberec → Libereckého) detektor správně chytá substring shodu; oprava byla obsahová (opis „kraj, který se jmenuje stejně jako ono samo"), ne detektorová — týká se jen menšiny podobných jmen.
+- 🔎 **Nová třída nálezů u algoritmických (náhodných) generátorů** (`scitaniAOdcitaniZlomkuSeStejnymJmenovatelem`, `nasobilka6789a10`, `nasobeniADeleniMalaNasobilka`): problém nebyl ve statickém textu, ale v ŠABLONĚ nápovědy, která pro určité náhodně vygenerované hodnoty (násobitel/podíl rovný 1 nebo 2, čitatel rovný 1) náhodou vypsala číslo shodné s odpovědí (např. „Sečteme čitatele: 1 + 2 = 3." u odpovědi „1"; „Projdi: 4×1, 4×2…" u odpovědi „2"). Řešení: nahradit pevně vypsaná čísla obecným popisem metody nezávislým na konkrétní hodnotě. **Ověřování těchto témat vyžaduje opakované běhy auditu (15–40×)**, ne jeden — jednorázová kontrola snadno mine vzácnou kombinaci, protože `gen()` volá `Math.random()`.
+- 🔎 **Nová třída nálezu — chybná shoda rodu ruší katalogovou výjimku**: `zajmenaDruhyZajmen` mělo sdílený rejstřík všech 7 druhů zájmen, ale 3 položky používaly špatný rod ("Vztažná/Neurčitá/Záporná" místo "Vztažné/Neurčité/Záporné" — zájmeno je střední rod). Detektor pozná rejstřík jen podle DOSLOVNÉ shody s textem možností, takže špatný tvar znemožnil rozpoznání a 5 úloh se hlásilo jako leak. Oprava 3 slov (gramatika) vyřešila obojí najednou.
+- ✅ **12 dalších témat opraveno** (stejný vzorec — sdílená nápověda pro celý pool náhodou obsahovala doslovnou odpověď konkrétní úlohy): `slovesaZpusobOznamovaciRozkazovaciPodminovaci` (g5-cjl, 5×), `etapyLidskehoZivotaDospivani` (g5-prirodoveda, 5× — u kategorických otázek použita katalogová výjimka: rejstřík všech etap s věkem místo jmenování jedné), `rysovaaniUseckyODaneDelce` (g3-mat, 4×), `crSymboly` (g3-prvouka, 4×), `velkaPismenaVlastniJmena` (g3-cjl, 4×), `dopisPsaniSoukromehoDopisu` (g4-cjl, 4×), `podnebiCrOvzdusiPocasi` (g4-vlastiveda, 4×), `vznikAVyvojStatuDemokraciePravniStat` (g4-vlastiveda, 4×), `horninyANerostyDruhyVlastnostiVznik` (g5-prirodoveda, 4× — katalogová výjimka i zde), `magnetyElektrinaJednoducheObvodyUvod` (g5-prirodoveda, 4×), `obnovitelneANeobnovitelneZdrojeEnergie` (g5-prirodoveda, 4×), `rozmnozovaciSoustavaVyvojClovekaUvod` (g5-prirodoveda, 4×).
+- 🐞 **Vlastní regrese odhalena a opravena:** oprava u `velkaPismenaVlastniJmena` („hora obecně") nahradila leak slova „hora" novou nápovědou, která ale obsahovala DRUHÉ slovo odpovědi („obecně"). 10 opakování `audit-topic.mjs` (GATE test) to nezachytilo — jiný vzorkovací mechanismus než plný `runOfflineAudit` použitý pro korpusový žebříček. Odhaleno až přepočtem celkového počtu po kole oprav, opraveno, ověřeno 20× přímo přes `runOfflineAudit`. **Poučení pro další témata:** korpusový žebříček (`runOfflineAudit` přes `getAllTopics()`) je spolehlivější kontrola než jen `audit-topic.mjs` na jedno téma — použít oba.
+- ✅ **15 dalších témat opraveno**: `minulostRegionuPovesti`, `slovaSouznacnaAProtikladna` (sdílená nápověda používala jako příklad přesně ty dvojice slov, které byly odpovědí jiných úloh ve stejném poolu — nahrazeno neutrálním příkladem mimo pool), `sebekontrolaPisemnehoProjevu`, `popisPredmetuZvireteOsoby`, `vypravovaniOsnova`, `reprodukcePrectenehoTextu`, `popisPredmetuOsobyAPracovnihoPostupu`, `hlavniPostavyAJejichCharakteristika`, `reprodukcePrimereneSlozitehoSdeleni`, `inzeratVzkazTelefonickyRozhovor`, `pravopisIY` (g2), `ekosystemyPoleLoukaLes`, `vyhledavaniInformaciKlicova`, `pohadkaPovidkaBasenBajka`, `prozaAVerseRozliseni`.
+- 🐞 **Vlastní regrese odhaleny ve stejném kole (3×)** — vzorec se opakuje dost na to, aby byl pravidlem, ne výjimkou: `hlavniPostavyAJejichCharakteristika` ("jak postava"), `pravopisIY` ("nebo" po odstranění "vždy" — vyřešeno použitím "anebo", jiné slovo se stejným významem, které neprojde word-boundary regexí), `vyhledavaniInformaciKlicova` ("čem text"), `prozaAVerseRozliseni` (2× — "krátké řádky" se objevovalo ve 3. i 4. úloze poolu, a náhradní hint pak sám zavedl "při čtení"). Všechny zachyceny HNED korpusovým ověřením před commitem, žádná se nedostala do gitu jako samostatná regrese.
+- 🔎 **Nový poznatek — dvě různé kontroly, ne jedna**: `topic-gate.test.ts` má vlastní, PŘÍSNĚJŠÍ blokující invariant (`h.includes(t.correctAnswer)` — prostá case-sensitive shoda podřetězce, ŽÁDNÁ katalogová výjimka), oddělený od měkčí `checkHintLeakage` heuristiky, kterou sleduje `hint_leak` metrika. Narazilo na to `pohadkaPovidkaBasenBajka`: katalogový hint legitimně obchází heuristiku (rejstřík vyjmenovává všechny žánry), ale STÁLE spadne na přísný invariant, pokud correctAnswer je bare název („Pohádka“) a ten se doslova vyskytuje v hintu. Řešení: per-úlohový override, který se slovu vyhne úplně, funguje pro obě kontroly zároveň.
+- ✅ **Dokončeno 9 dalších témat** (poslední úsek žebříčku): `slovaJednoznacnaMnohoznacna` (g3-cjl — sdílený hint1 jmenoval "klokan" jako příklad přesně v úloze, kde "klokan" byl odpovědí), `spojovaniVetSpojkami` (g3-cjl), `slovesaOsobaCisloCas` (g3-cjl), `polohaCrVEvropeSousedniStaty` (g4-vlastiveda), `slovaJednoznacnaMnohoznacnaVicevyznamova` (g5-cjl), `vlastniLiterarniTextNaDaneTema` (g5-cjl), `vypravovaniSRozvinutouOsnovou` (g5-cjl), `zajmenaSklonovaniOsobnichZajmen` (g5-cjl), `ochranaPrirodyNarodniParkyChkoVCr` (g5-prirodoveda).
+- 🐞 **Nový vzorec bugu odhalen na `spojovaniVetSpojkami`**: náhrada "nebo" → "anebo" (osvědčený trik pro word-boundary regex) NEFUNGOVALA, když je "nebo" celá odpověď samotná (ne jen jedno slovo z víceslovné fráze). Root cause: `hintContainsAnswer()` pro odpovědi s ≤2 významovými slovy nejdřív testuje CELOU frázi prostým `.includes()` (bez word boundary) — a "anebo" obsahuje "nebo" jako podřetězec, takže test prošel i tak. Trik s předponou funguje jen pro word-boundary větev (b), ne pro plnou-frázi větev (a). **Poučení: když je odpověď = jedno krátké slovo, jediná bezpečná oprava je slovo z nápovědy úplně vypustit, ne obalit prefixem/sufixem.**
+- 🐞 **Druhý nález na stejném tématu, mnohem větší** — po opravě jedné úlohy `node scripts/audit-topic.mjs` odhalil, že sdílený výchozí hint2 celého poolu byl doslovný slovníček `"a = přidání, ale = protiklad, nebo = výběr, protože = příčina, když/až = čas, aby = účel."`, který prozrazoval TÉMĚŘ KAŽDOU odpověď v POOL_L1 i POOL_L3 (přísná brána `topic-gate.test.ts` na to reagovala 11 blokujícími invarianty najednou, měkká heuristika to díky katalogové výjimce neviděla vůbec). Oprava: oba výchozí hinty přepsány na popis VZTAHU mezi větami (přidává/staví do protikladu/nabízí výběr/vysvětluje příčinu…) bez vyjmenování konkrétních spojek. **Poučení potvrzené znovu: `audit-topic.mjs` (přísná brána) a `runOfflineAudit` (měkká heuristika) chytají RŮZNÉ věci — vždy oba, u sdílených výchozích nápověd obzvlášť, protože jedna kolize se může týkat desítek úloh najednou.**
+- 🐞 **Třetí nález — nedeterministický leak u generátoru** (`cteniZapisPorovnavaniCiselDo1000`, g3-mat): sdílený hint `"Stovky × 100 + desítky × 10 + jednotky = výsledné číslo."` obsahoval doslovné číslice 100 a 10 — leak nastal jen když `Math.random()` náhodou vygenerovalo odpověď přesně "10" nebo "100" (~2/15 běhů). Oprava: přepsáno slovně ("stem", "deseti") bez číslic — vzorec zůstal stejný, ale bez kolize s jakoukoli generovanou hodnotou. Odhaleno až finálním 15× korpusovým během přes CELÝ obsah (ne jen cílené téma) — potvrzuje, že finální ověření po dokončení žebříčku musí běžet přes všechna témata, ne jen ta opravovaná.
+- 📊 **Postup: DOKONČENO.** `hint_leak` 804 → **0** (−100 %). Ověřeno 20× `runOfflineAudit` přes CELÝ korpus (`getAllTopics()`) bez jediného nálezu.
+- **Workflow (finální, pro budoucí vlny):** dočasný test s `runOfflineAudit`/`checkHintLeakage` na 1 téma (u algoritmických generátorů opakovaně 15–40×, union unikátních nálezů) → dedup (otázka, nápověda) → posouzení, zda jde o mezeru v detektoru (zobecnit + regresní test) nebo skutečný leak v obsahu (přepsat nápovědu na Sokratovskou otázku/eliminaci, ne oznámkovat definici) → smazat temp testy → **znovu ověřit celý soubor korpusovým žebříčkem** (ne jen `audit-topic.mjs`) → `npm run typecheck` + `npx vitest run` (celá sada) + freeze snapshot nedotčen → commit (česky, root cause → oprava → čísla) → push. Po dokončení žebříčku: finální 15-20× běh přes CELÝ `getAllTopics()`, ne jen opravená témata (chytí nedeterministické generátorové leaky, které se v cíleném běhu neprojeví vždy).
+- 🟡 **Další vlna:** druhá vlna (529 problémů s validací odpovědi), pak tvrdý gate pro nová/změněná témata + warning pro existující obsah.
+
+### Session 2026-08-25 (pokračování 7) — autoring: Claude jediným autorem, sloh pryč:
+- **Produktové rozhodnutí uživatele:** cvičení už nenavrhuje Grok/AI — autorem je Claude, včetně kompletní dokumentace (klíč, zdůvodnění, nápovědy, diagnostika chyby). Starý obsah se nemaže, ale musí projít auditem. **Sloh v aplikaci nebude vůbec.**
+- ✅ **Sloh odstraněn** — s ním padla poslední cesta, kde AI sahala na práci dítěte: `evaluate-essay` posílala dětské texty na Groq a vracela známku 0–100. Pryč jsou témata `cz-sloh-vypraveni`/`cz-sloh-popis`, `EssayInput`, `inputType: "essay"`, `essayValidator` i edge funkce. **RVP „komunikační a slohová výchova" v grade-2/3/4 zůstává** — to jsou běžná cvičení s výběrem odpovědi, ne volný text (ověřeno, že žádné nemá `inputType: "essay"`).
+- 🔎 **Oprava vlastní dřívější diagnózy:** tvrdil jsem, že Groq je mrtvý. Byla to pravda jen pro klienta — `supabase/functions/_shared/aiCall.ts` je aktivní klient s řetězem Google AI → **Groq** → Lovable a `evaluate-essay` přes něj běžela nezaflagovaná.
+- ✅ **Mrtvá AI cesta generování úloh smazána** — `generateResponse`/`generatePracticeBatch` byly v `sessionOrchestrator` jen importované, nikdy volané. `generateMockBatch` zůstává: je to dnes jediný a produkční zdroj úloh, ne fallback.
+- ✅ **Pedagogika sklizena PŘED mazáním** do `docs/CONTENT_AUTHORING.md` §0 — dvoustupňový kontrakt nápověd (obě unikátní pro konkrétní úlohu), „vysvětlení říká PROČ, ne CO", `optionFeedback` jako diagnostika. Ta pravidla dosud žila jen v promptech `ai-tutor`/`exercise-validator`.
+- 📊 **Rozsah retro-auditu změřen:** 229 témat, 10 572 úloh, **73 % projde**, 2 938 problémů (formát 1 553 · nápověda prozrazuje 785 · validace odpovědi 529). Dokumentace je děravá: `explanation` má 109 z 340 souborů, **`optionFeedback` jen 3**.
+- 🟡 **Zbývá:** (a) odstranit admin AI panel + edge funkce `ai-tutor`/`exercise-validator` — vyžaduje živé ověření adminu, které sandbox neumí (proxy blokuje Supabase); (b) vynutit povinná pole auditem (tvrdý gate pro nová témata, warning pro stávající); (c) retro-audit 2 938 problémů po vlnách, `hint_leak` první.
 ### Session 2026-08-25 (pokračování 6) — rodičovský dashboard: odstraněn scroll-trap `h-[460px]`:
 - ✅ **Vyřešen dluh zapsaný v pokračování 3.** `AssignmentList` a `ChildSessionLog` měly `flex flex-col h-full` + `flex-1 overflow-y-auto` uvnitř, což vyžadovalo pevnou výšku obalu — `ParentDashboard` je obaloval do `h-[460px]`. Výsledek: krátký seznam (2 úkoly) měl kartu uměle nataženou na 460 px prázdna, dlouhý seznam měl vnořený scroll bez ohledu na to, kolik místa stránka měla. Oprava je v komponentách, ne v obalu (jak už předchozí session poznamenala, že to bude potřeba): vnitřní scroll kontejner je teď `max-h-[420px] overflow-y-auto` místo `flex-1`, vnější `div` ztratil `h-full`. Obal v `ParentDashboard` ztratil `h-[460px]` úplně (`AssignmentList` obal zůstal `p-4`; `ChildSessionLog` obal dřív neměl žádné vertikální odsazení kromě té pevné výšky, doplněno `pb-4`).
 - **Ověřeno izolovaným renderem obou komponent s mock daty** (2 vs. 12 položek, bez nutnosti Supabase — sandbox nemá síťový přístup k produkční DB, proxy vrací 403 na `supabase.co`): krátký seznam se zmenší na výšku obsahu (228 px / 404 px) bez scrollbaru; dlouhý seznam se ořízne na 420 px vnitřního scroll boxu (`scrollHeight` 1024/2026 > `clientHeight` 420) — scroll se aktivuje jen když obsah skutečně přeteče, ne podle pevného počtu dětí na stránce.

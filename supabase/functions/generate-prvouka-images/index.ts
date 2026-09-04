@@ -213,8 +213,6 @@ const IMAGE_KEYS: Record<string, string> = {
   "topic-cz-slovesa-urcovani": edu("colorful grid of six cells in two rows, each cell different color"),
   "topic-cz-zaklad-vety": edu("horizontal line with blue underlined segment and red circled segment"),
   "topic-cz-diktat": kid("holding a pencil, ready to write, looking focused"),
-  "topic-cz-sloh-vypraveni": kid("gesturing excitedly with speech bubble showing castle and dragon"),
-  "topic-cz-sloh-popis": edu("magnifying glass over a red apple with descriptive arrows"),
 };
 
 /**

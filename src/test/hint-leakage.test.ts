@@ -117,6 +117,31 @@ describe("checkHintLeakage — číslo + jednotka (odpověď typu '24 hodin')", 
     // 5 uvnitř 500 → number boundary → ne-leak
     expect(r.ok).toBe(true);
   });
+
+  it("'Krok N:' pořadové číslo kroku shodné s odpovědí → ne-leak", () => {
+    const r = checkHintLeakage({
+      question: "Převeď 3000 cm³ na dm³.",
+      correct_answer: "3 dm³",
+      hints: [
+        "Krok 1: Jdeš z menší jednotky (cm³) na větší (dm³) — budeš dělit.",
+        "Krok 2: Připomeň si vztah: 1 dm³ = 1000 cm³.",
+        "Krok 3: Vyděl zadané číslo 1000. Výsledek bude menší než původní číslo.",
+      ],
+    });
+    // "Krok 3:" je jen pořadí kroku v postupu, náhodou shodné s hodnotou
+    // odpovědi (3) — neprozrazuje ji.
+    expect(r.ok).toBe(true);
+  });
+
+  it("'Krok N:' ale hint i tak prozradí hodnotu jinde → leak", () => {
+    const r = checkHintLeakage({
+      question: "Převeď 3000 cm³ na dm³.",
+      correct_answer: "3 dm³",
+      hints: ["Krok 1: Výsledek je 3, protože 3000 děleno 1000 je 3."],
+    });
+    // Číslo 3 se v hintu objevuje i mimo "Krok N:" prefix → pořád leak
+    expect(r.ok).toBe(false);
+  });
 });
 
 describe("checkHintLeakage — slovo už obsažené v otázce", () => {
@@ -271,6 +296,204 @@ describe("checkHintLeakage — robustness", () => {
       question: "?",
       correct_answer: "5",
       hints: ["", "  ", "OK"],
+    });
+    expect(r.ok).toBe(true);
+  });
+});
+
+// ─── Rejstříkové nápovědy (vyjmenování možností) ─────────────────────────
+// Regrese k nálezu 2026-08-25: detektor dostával jen question/answer/hints,
+// nikdy `options`, takže hlásil jako leak každý katalog pravidel. Šlo o
+// stovky případů — a přepsat je by znamenalo zakázat rejstřík pravidel,
+// tedy přesně tu nápovědu, kterou norma chce (CONTENT_AUTHORING.md §7.2).
+describe("checkHintLeakage — rejstřík možností", () => {
+  const PREFIX_HINTS = [
+    "vy- = dokončení děje nebo pohyb ven (vyletět, vypracovat)",
+    "vý- = přízvučná první slabika (výhra, výborný, výtah)",
+    "s- = pohyb dolů nebo sloučení (sjet, spalit)",
+    "z- = změna stavu (ztuhnout, zbohatnout, zlepšit)",
+  ];
+
+  it("sada vyjmenovává VŠECHNY možnosti → není leak", () => {
+    const r = checkHintLeakage({
+      question: 'Doplň správnou předponu: "Kluk ___koukl z okna."',
+      correct_answer: "vy-",
+      hints: PREFIX_HINTS,
+      options: ["vy-", "vý-", "s-", "z-"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  it("bez `options` se stejná sada pořád hlásí (options jsou nutný vstup)", () => {
+    const r = checkHintLeakage({
+      question: 'Doplň správnou předponu: "Kluk ___koukl z okna."',
+      correct_answer: "vy-",
+      hints: PREFIX_HINTS,
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Past, do které spadla první verze pravidla: stačilo, aby sada zavadila
+  // o JEDEN distraktor, a umlčela se i nápověda, která odpověď říká rovnou.
+  it("zmínka jediného distraktoru NEstačí — odpověď řečená rovnou je leak", () => {
+    const r = checkHintLeakage({
+      question: "Které krajské město je čtvrté největší v ČR?",
+      correct_answer: "Plzeň",
+      hints: [
+        "Toto město je krajským městem Plzeňského kraje.",
+        "Leží dál na západ než Karlovy Vary.",
+      ],
+      options: ["Plzeň", "Karlovy Vary", "České Budějovice", "Liberec"],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Druhá past: číselná řada přirozeně obsahuje distraktory, ale končí
+  // odpovědí — dítěti stačí přečíst poslední člen.
+  it("číselná odpověď: rejstřík NEPLATÍ, řada končící odpovědí je leak", () => {
+    const r = checkHintLeakage({
+      question: "3 × 8 = ?",
+      correct_answer: "24",
+      hints: ["Počítej po 3: 3, 6, 9, 12, 15, 18, 21, 24."],
+      options: ["22", "24", "27", "21"],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Práh: dva zmíněné distraktory stačí. Úplný výčet vyžadovat nejde —
+  // mezi možnostmi bývá vymyšlený distraktor, který v katalogu pravidel
+  // nemá co dělat („neurčitý" čas mezi minulý/přítomný/budoucí).
+  it("rejstřík zmiňující 2 ze 3 distraktorů → není leak", () => {
+    const r = checkHintLeakage({
+      question: "Jaký čas má sloveso 'čtu'?",
+      correct_answer: "přítomný",
+      hints: [
+        "Osoba: 1. já/my, 2. ty/vy, 3. on/ona/ono/oni/ony",
+        "Čas: minulý (byl), přítomný (je), budoucí (bude)",
+      ],
+      options: ["neurčitý", "minulý", "přítomný", "budoucí"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  // Závorky v zadání rozbíjely výjimku „slovo už je v otázce": token vycházel
+  // jako „zbytek)" a neshodl se. Přitom „zbytek" je jen tvar odpovědi
+  // („2 zbytek 0"), ne její hodnota — dítě se z něj nedozví ani podíl.
+  it("slovo z odpovědi je v otázce v závorce → není leak", () => {
+    const r = checkHintLeakage({
+      question: "8 ÷ 4 = ? (může být zbytek)",
+      correct_answer: "2 zbytek 0",
+      hints: [
+        "Hledej největší násobek 4, který se vejde do 8.",
+        "Spočítej kolik celých násobků 4 se vejde, pak odečti od 8 — co zbyde je zbytek.",
+      ],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  // Jednotka se smí zmínit — informační jádro je hodnota. Bez lomítka
+  // a exponentu v regexu propadaly fyzikální odpovědi do textové větve.
+  it("jednotka se symboly (g/cm³) není leak, hodnota ano", () => {
+    const hustota = {
+      question: "Hmotnost 45 g, objem 50 cm³. Jaká je hustota?",
+      correct_answer: "0,9 g/cm³",
+    };
+    expect(checkHintLeakage({
+      ...hustota,
+      hints: ["Vyděl hmotnost objemem. Výsledek vyjde v g/cm³."],
+    }).ok).toBe(true);
+    expect(checkHintLeakage({
+      ...hustota,
+      hints: ["Vyjde ti 0,9 g/cm³."],
+    }).ok).toBe(false);
+  });
+
+  // Desetinná čárka se v normalizaci nesmí zahodit — „0,9" by se rozpadlo
+  // na „0 9" a žádná číselná větev by odpověď nepoznala.
+  it("desetinná čárka přežije normalizaci", () => {
+    const r = checkHintLeakage({
+      question: "Kolik je 1,8 ÷ 2?",
+      correct_answer: "0,9",
+      hints: ["Polovina z 1,8 je 0,9."],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Past objevená při adverzariálním ověření výše: u odpovědi složené
+  // z víc slov („Vpravo nahoře") dostal distraktor „Vpravo dole" falešný
+  // kredit jen proto, že sdílí slovo „vpravo" se SPRÁVNOU odpovědí — to
+  // slovo je potřeba k odvození správné odpovědi, ne k pokrytí jiné.
+  it("slova sdílená se správnou odpovědí se do pokrytí distraktorů nepočítají", () => {
+    const r = checkHintLeakage({
+      question: "Ve kterém rohu mapy najdeš severovýchod (SV)?",
+      correct_answer: "Vpravo nahoře",
+      hints: ["Sever je nahoře, východ je vpravo — spoj obě polohy."],
+      options: ["Vpravo nahoře", "Vlevo nahoře", "Vpravo dole", "Vlevo dole"],
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  // Fallback: víceslovná možnost je pokrytá i bez doslovné celé fráze,
+  // stačí jedno výrazné slovo — vyžadovat celou frázi doslova je nereálné
+  // (žádný autor takhle nápovědu nepíše).
+  it("rejstřík pokrývá i víceslovnou možnost přes jedno výrazné slovo", () => {
+    const r = checkHintLeakage({
+      question: 'Jaký vztah mají přímky v tomto příkladu: "koleje"?',
+      correct_answer: "Rovnoběžky",
+      hints: ["Rovnoběžky = nikdy se neprotnou. Kolmice = protínají se pod 90°. Různoběžky = kříží se pod jiným úhlem."],
+      options: ["Rovnoběžky", "Kolmice", "Ani rovnoběžky, ani kolmice", "Různoběžky – svírají jiný úhel"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  // Číslované kategorie („1. osoba", „2. pád"): rozlišující prvek je krátké
+  // pořadové číslo pod hranicí slovního fallbacku (délka ≥5), navíc slovosled
+  // bývá v hintu obrácený („Osoba: 1. já/my…" vs. možnost „1. osoba").
+  it("rejstřík číslovaných kategorií (1./2./3. osoba) pokrývá i obrácený slovosled", () => {
+    const r = checkHintLeakage({
+      question: "Urči osobu: 'ty čteš'",
+      correct_answer: "2. osoba",
+      hints: ["Osoba: 1. já/my, 2. ty/vy, 3. on/ona/ono/oni/ony"],
+      options: ["2. osoba", "1. osoba", "3. osoba", "neosobní"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  // Silný signál: možnost DEFINOVANÁ za "=" stačí sama, i bez druhého
+  // zmíněného distraktoru — na rozdíl od "Plzeň"/"Dole" (kde šlo o
+  // mimochodem zmíněnou souřadnici, ne definici), tady je "Věta jednoduchá"
+  // přímo definována stejně jako správná odpověď "Souvětí".
+  it("možnost definovaná za '=' stačí sama i s vymyšlenými distraktory navíc", () => {
+    const r = checkHintLeakage({
+      question: "Urči druh: 'Slunce svítí, ale je chladno.'",
+      correct_answer: "souvětí",
+      hints: [
+        "Věta jednoduchá = 1 přísudek (1 sloveso jako základ)",
+        "Souvětí = 2 a více přísudků (slovese spojených spojkami)",
+      ],
+      options: ["souvětí", "věta jednoduchá", "věta s přívlastkem", "věta rozšířená"],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  it("krátká nečíselná odpověď: '=' ve výkladovém příkladu není rovnost s odpovědí", () => {
+    const r = checkHintLeakage({
+      question: 'Doplň správnou předložku: "Sjel ___ kopce."',
+      correct_answer: "z",
+      hints: [
+        "s/se = pohyb z povrchu nebo dohromady s někým",
+        "z/ze = pohyb z vnitřku (ze školy = z vnitřku budovy)",
+      ],
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  it("číselná odpověď už ve znění otázky → není leak", () => {
+    const r = checkHintLeakage({
+      question: "Které číslo je největší: 50, 15, 51?",
+      correct_answer: "51",
+      hints: ["Obě 50 a 51 mají 5 desítek — srovnej jedničky."],
+      options: ["15", "50", "51"],
     });
     expect(r.ok).toBe(true);
   });

@@ -135,8 +135,9 @@ describe("MatchPairsInput", () => {
     render(<MatchPairsInput pairs={pairs} onSubmit={vi.fn()} disabled={false} />);
     fireEvent.click(screen.getByRole("button", { name: /Praha/ }));
     fireEvent.click(screen.getByRole("button", { name: /Česko/ }));
-    // Undo button se objeví po 1 matchi
-    expect(screen.getByRole("button", { name: /Zpět/i })).toBeInTheDocument();
+    // Undo button se objeví po 1 matchi. Od 2026-09-03 se jmenuje „Vrátit tah",
+    // ne „Zpět" — to slovo je v celé aplikaci vyhrazené pro navigaci.
+    expect(screen.getByRole("button", { name: /Vrátit tah/i })).toBeInTheDocument();
   });
 
   it("po vytvoření všech párů emituje JSON", () => {

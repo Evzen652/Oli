@@ -78,7 +78,9 @@ export default function SessionHistory() {
         s.total++;
         if (row.correct) s.correct++;
         else s.wrong++;
-        if (row.help_used) s.help_used++;
+        // Jen SPRÁVNĚ s nápovědou → jinak `independent = correct - help_used`
+        // podhodnotí samostatné odpovědi (špatná-s-nápovědou nepatří do correct).
+        if (row.correct && row.help_used) s.help_used++;
       }
 
       setSessions(Array.from(map.values()));

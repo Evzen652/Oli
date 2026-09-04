@@ -28,7 +28,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Strom", "Kámen", "Vzduch", "Voda"],
     hints: [
       "Živé věci rostou, dýchají a rozmnožují se.",
-      "Strom roste, přijímá živiny a rozmnožuje se semeny.",
+      "Podívej se, která z možností sama roste a časem se mění.",
     ],
     explanation:
       "Strom patří do živé přírody, protože dýchá, roste, přijímá živiny a rozmnožuje se. Kámen, vzduch a voda jsou neživá příroda — nesplňují znaky živých organizmů.",
@@ -36,10 +36,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co patří do neživé přírody?",
     correctAnswer: "Kámen",
-    options: ["Kámen", "Housenka", "Houba", "Tráva"],
+    options: ["Housenka", "Kámen", "Houba", "Tráva"],
     hints: [
       "Neživé věci neroste, nedýchají a nerozmnožují se.",
-      "Kámen je hornina — nevzniká z živých organizmů, nepohybuje se samo.",
+      "Je to tvrdý kus horniny — nevzniká z živých organizmů, nepohybuje se samo.",
     ],
     explanation:
       "Kámen patří do neživé přírody. Sám od sebe neroste, nedýchá ani se nerozmnožuje. Housenka, houba i tráva jsou živé organismy.",
@@ -47,7 +47,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který ze znaků NEPLATÍ pro živé organismy?",
     correctAnswer: "Jsou tvrdé jako horniny",
-    options: ["Jsou tvrdé jako horniny", "Dýchají", "Rostou", "Rozmnožují se"],
+    options: ["Dýchají", "Rostou", "Jsou tvrdé jako horniny", "Rozmnožují se"],
     hints: [
       "Živé organismy mají společné vlastnosti — dýchání, růst a rozmnožování.",
       "Tvrdost nemá se životem nic společného — i měkké organismy jsou živé.",
@@ -58,10 +58,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co patří do živé přírody?",
     correctAnswer: "Pes",
-    options: ["Pes", "Písek", "Mrak", "Sníh"],
+    options: ["Písek", "Mrak", "Sníh", "Pes"],
     hints: [
       "Živý organismus dýchá, přijímá potravu a rozmnožuje se.",
-      "Pes je zvíře — dýchá, roste a má štěňata.",
+      "Jedna z těch možností se sama pohybuje, potřebuje jíst a mívá mláďata.",
     ],
     explanation:
       "Pes patří do živé přírody — dýchá, přijímá potravu, roste a rozmnožuje se. Písek, mrak a sníh jsou neživá příroda.",
@@ -72,7 +72,7 @@ const POOL_L1: PracticeTask[] = [
     options: ["Písek", "Motýl", "Bříza", "Žížala"],
     hints: [
       "Neživá věc neroste, nedýchá a nerozmnožuje se.",
-      "Písek jsou drobná zrnka horniny.",
+      "Jsou to drobná zrnka horniny.",
     ],
     explanation:
       "Písek patří do neživé přírody — je to drobná rozdrcená hornina, sám neroste ani se nerozmnožuje. Motýl, bříza i žížala jsou živé organismy.",
@@ -80,10 +80,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které zvíře patří do živé přírody?",
     correctAnswer: "Kočka",
-    options: ["Kočka", "Hora", "Řeka", "Oblak"],
+    options: ["Hora", "Kočka", "Řeka", "Oblak"],
     hints: [
       "Živočich dýchá, roste a rozmnožuje se.",
-      "Kočka má koťata, dýchá a přijímá potravu.",
+      "Toto zvíře má mláďata, dýchá a přijímá potravu.",
     ],
     explanation:
       "Kočka je živočich — dýchá, roste, přijímá potravu a rozmnožuje se. Hora, řeka a oblak patří do neživé přírody.",
@@ -91,10 +91,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co patří do neživé přírody?",
     correctAnswer: "Sníh",
-    options: ["Sníh", "Ryba", "Strom", "Brouk"],
+    options: ["Ryba", "Strom", "Sníh", "Brouk"],
     hints: [
       "Neživá věc nedýchá, neroste ani se nerozmnožuje.",
-      "Sníh je zmrzlá voda.",
+      "Je to zmrzlá voda.",
     ],
     explanation:
       "Sníh patří do neživé přírody — je to zmrzlá voda, sama o sobě nedýchá ani se nerozmnožuje. Ryba, strom a brouk jsou živé organismy.",
@@ -102,12 +102,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jaké jsou znaky živých organizmů? Vyber správnou skupinu.",
     correctAnswer: "Dýchání, výživa, růst, rozmnožování",
-    options: [
-      "Dýchání, výživa, růst, rozmnožování",
-      "Tvrdost, barva, tvar, váha",
-      "Pohyb, chlad, tvrdost, lesk",
-      "Světlo, teplo, vzduch, voda",
-    ],
+    options: ["Tvrdost, barva, tvar, váha", "Pohyb, chlad, tvrdost, lesk", "Světlo, teplo, vzduch, voda", "Dýchání, výživa, růst, rozmnožování"],
     hints: [
       "Znaky živých organizmů jsou biologické projevy — co dělá každý živý tvor?",
       "Tvrdost, barva a lesk popisují neživé látky, ne živé organismy.",
@@ -120,8 +115,8 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Rostlina",
     options: ["Rostlina", "Kov", "Plast", "Sklo"],
     hints: [
-      "Rostlina roste, přijímá živiny a rozmnožuje se semeny.",
-      "Kov, plast a sklo jsou vyrobené neživé materiály.",
+      "Živé věci rostou, přijímají živiny a rozmnožují se.",
+      "Kov, plast i sklo člověk vyrobil, samy od sebe nikdy nerostou.",
     ],
     explanation:
       "Rostlina patří do živé přírody — roste, přijímá vodu a živiny a rozmnožuje se. Kov, plast a sklo jsou neživé materiály.",
@@ -129,10 +124,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co patří do neživé přírody?",
     correctAnswer: "Oblak",
-    options: ["Oblak", "Včela", "Dub", "Ježek"],
+    options: ["Včela", "Oblak", "Dub", "Ježek"],
     hints: [
       "Neživá věc nedýchá, neroste ani se nerozmnožuje.",
-      "Oblak je shluk kapiček vody nebo krystalků ledu ve vzduchu.",
+      "Je to shluk kapiček vody nebo krystalků ledu vysoko na obloze.",
     ],
     explanation:
       "Oblak patří do neživé přírody — je to shluk vodních kapiček nebo ledových krystalků, sám nedýchá ani se nerozmnožuje. Včela, dub a ježek jsou živé organismy.",
@@ -140,7 +135,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které z těchto věcí je živý organismus?",
     correctAnswer: "Brouk",
-    options: ["Brouk", "Cihla", "Sklenice", "Mince"],
+    options: ["Cihla", "Sklenice", "Brouk", "Mince"],
     hints: [
       "Živý organismus dýchá, roste a rozmnožuje se.",
       "Cihla, sklenice a mince jsou vyrobené neživé předměty.",
@@ -151,10 +146,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co patří do neživé přírody?",
     correctAnswer: "Skála",
-    options: ["Skála", "Liška", "Muchomůrka", "Kopřiva"],
+    options: ["Liška", "Muchomůrka", "Kopřiva", "Skála"],
     hints: [
       "Neživá věc neroste, nedýchá ani se nerozmnožuje.",
-      "Skála je velký kus horniny.",
+      "Je to velký, pevně usazený kus horniny.",
     ],
     explanation:
       "Skála patří do neživé přírody — je to velký kus horniny, sama neroste ani se nerozmnožuje. Liška, muchomůrka i kopřiva jsou živé organismy.",
@@ -181,12 +176,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Houba v lese — je to živý organismus?",
     correctAnswer: "Ano, houba je živý organismus",
-    options: [
-      "Ano, houba je živý organismus",
-      "Ne, houba je neživá, protože nemá listy",
-      "Ne, houba je neživá, protože nefotosyntézuje",
-      "Záleží na tom, jak velká houba je",
-    ],
+    options: ["Ne, houba je neživá, protože nemá listy", "Ano, houba je živý organismus", "Ne, houba je neživá, protože nefotosyntézuje", "Záleží na tom, jak velká houba je"],
     hints: [
       "Houba roste, rozmnožuje se výtrusy a přijímá živiny.",
       "Houby netvoří chlorofyl, ale to neznamená, že jsou neživé.",
@@ -197,12 +187,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je fotosyntéza?",
     correctAnswer: "Způsob, jak si rostliny vyrábějí potravu ze světla a vody",
-    options: [
-      "Způsob, jak si rostliny vyrábějí potravu ze světla a vody",
-      "Způsob, jak se rozmnožují živočichové",
-      "Způsob, jak horniny mění svůj tvar",
-      "Způsob, jak vzduch vzniká v půdě",
-    ],
+    options: ["Způsob, jak se rozmnožují živočichové", "Způsob, jak horniny mění svůj tvar", "Způsob, jak si rostliny vyrábějí potravu ze světla a vody", "Způsob, jak vzduch vzniká v půdě"],
     hints: [
       "Foto = světlo. Rostliny potřebují světlo k výrobě potravy.",
       "Rostliny přijímají vodu z půdy a oxid uhličitý ze vzduchu, pak vyrobí cukr.",
@@ -213,15 +198,10 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co tvoří základ potravního řetězce?",
     correctAnswer: "Rostliny (producenti)",
-    options: [
-      "Rostliny (producenti)",
-      "Dravci — lvi a vlci",
-      "Kameny a horniny",
-      "Houby a bakterie",
-    ],
+    options: ["Dravci — lvi a vlci", "Kameny a horniny", "Houby a bakterie", "Rostliny (producenti)"],
     hints: [
       "Potravní řetězec začíná organizmem, který si sám vyrábí potravu.",
-      "Rostliny fotosyntézou vyrábějí potravu — ostatní je konzumují.",
+      "Ten organismus si fotosyntézou vyrábí potravu sám — ostatní na něm závisí.",
     ],
     explanation:
       "Základ potravního řetězce tvoří rostliny, protože samy si vyrábějí potravu fotosyntézou. Ostatní organismy — býložravci, masožravci — závisí na rostlinách přímo nebo nepřímo.",
@@ -245,12 +225,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Voda patří do živé nebo neživé přírody?",
     correctAnswer: "Do neživé přírody",
-    options: [
-      "Do neživé přírody",
-      "Do živé přírody",
-      "Do živé přírody, protože v ní žijí ryby",
-      "Záleží na tom, zda je čistá nebo znečištěná",
-    ],
+    options: ["Do živé přírody", "Do neživé přírody", "Do živé přírody, protože v ní žijí ryby", "Záleží na tom, zda je čistá nebo znečištěná"],
     hints: [
       "Voda sama o sobě neroste, nedýchá ani se nerozmnožuje.",
       "Ryby ve vodě jsou živé — ale samotná voda je neživá látka.",
@@ -261,12 +236,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Potřebují živé organismy neživou přírodu?",
     correctAnswer: "Ano, potřebují vodu, vzduch, světlo a půdu",
-    options: [
-      "Ano, potřebují vodu, vzduch, světlo a půdu",
-      "Ne, živé organismy nepotřebují nic z neživé přírody",
-      "Jen živočichové potřebují vzduch, rostliny nepotřebují nic",
-      "Jen rostliny potřebují světlo, živočichové ne",
-    ],
+    options: ["Ne, živé organismy nepotřebují nic z neživé přírody", "Jen živočichové potřebují vzduch, rostliny nepotřebují nic", "Ano, potřebují vodu, vzduch, světlo a půdu", "Jen rostliny potřebují světlo, živočichové ne"],
     hints: [
       "Představ si rostlinu bez vody nebo bez světla — co se stane?",
       "Zvířata dýchají vzduch, pijí vodu a potřebují potravu — to vše souvisí i s neživou přírodou.",
@@ -277,12 +247,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč rostliny potřebují světlo?",
     correctAnswer: "Ke fotosyntéze — výrobě potravy",
-    options: [
-      "Ke fotosyntéze — výrobě potravy",
-      "Aby se mohly pohybovat",
-      "Aby mohly dýchat",
-      "Aby se rozmnožovaly",
-    ],
+    options: ["Aby se mohly pohybovat", "Aby mohly dýchat", "Aby se rozmnožovaly", "Ke fotosyntéze — výrobě potravy"],
     hints: [
       "Rostliny vyrábějí potravu ze světla — jak se ten proces jmenuje?",
       "Bez světla rostliny žloutnou a chřadnou.",
@@ -309,15 +274,10 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co vše potřebuje rostlina k fotosyntéze?",
     correctAnswer: "Světlo, vodu a oxid uhličitý",
-    options: [
-      "Světlo, vodu a oxid uhličitý",
-      "Jen sluneční světlo",
-      "Jen vodu z půdy",
-      "Teplo a tmu",
-    ],
+    options: ["Jen sluneční světlo", "Světlo, vodu a oxid uhličitý", "Jen vodu z půdy", "Teplo a tmu"],
     hints: [
       "Fotosyntéza potřebuje světlo, ale i další dvě látky.",
-      "Rostlina bere vodu kořeny a oxid uhličitý ze vzduchu.",
+      "Jednu z nich rostlina nasává kořeny ze země, druhou přijímá listy ze vzduchu.",
     ],
     explanation:
       "K fotosyntéze rostlina potřebuje světlo, vodu (z půdy) a oxid uhličitý (ze vzduchu). Z těchto tří věcí vyrobí cukr jako potravu a jako vedlejší produkt vzniká kyslík.",
@@ -325,13 +285,8 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč se houby neřadí mezi rostliny, přestože jsou obě živé?",
     correctAnswer:
-      "Houby nemají chlorofyl a nevyrábějí si potravu fotosyntézou jako rostliny",
-    options: [
-      "Houby nemají chlorofyl a nevyrábějí si potravu fotosyntézou jako rostliny",
-      "Houby se nikdy nerozmnožují",
-      "Houby nejsou vůbec živé organismy",
-      "Houby nepotřebují žádné živiny",
-    ],
+      "Nemají chlorofyl a nevyrábějí si potravu fotosyntézou",
+    options: ["Houby se nikdy nerozmnožují", "Houby nejsou vůbec živé organismy", "Nemají chlorofyl a nevyrábějí si potravu fotosyntézou", "Houby nepotřebují žádné živiny"],
     hints: [
       "Rostliny mají v listech zelené barvivo, které jim umožňuje fotosyntézu.",
       "Houby získávají živiny jinak — rozkladem organických látek.",
@@ -342,12 +297,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co znamená, že rostliny jsou v potravním řetězci „producenti“?",
     correctAnswer: "Že si samy vyrábějí potravu fotosyntézou, a ostatní na nich závisí",
-    options: [
-      "Že si samy vyrábějí potravu fotosyntézou, a ostatní na nich závisí",
-      "Že vyrábějí potravu pro sebe i pro kameny",
-      "Že jsou to jediné živé organismy na Zemi",
-      "Že se nikdy nerozmnožují",
-    ],
+    options: ["Že vyrábějí potravu pro sebe i pro kameny", "Že jsou to jediné živé organismy na Zemi", "Že se nikdy nerozmnožují", "Že si samy vyrábějí potravu fotosyntézou, a ostatní na nich závisí"],
     hints: [
       "Producent = ten, kdo něco vyrábí — v tomto případě potravu.",
       "Býložravci jedí rostliny, masožravci jedí býložravce — vše navazuje na rostliny.",
@@ -377,12 +327,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který příklad DOKAZUJE, že pohyb není rozhodujícím znakem živého organismu?",
     correctAnswer: "Strom stojí na místě, ale je živý; vítr se pohybuje, ale je neživý",
-    options: [
-      "Strom stojí na místě, ale je živý; vítr se pohybuje, ale je neživý",
-      "Pes běhá po zahradě, protože je živý",
-      "Kámen se nehýbe, protože je neživý",
-      "Ryba plave, protože žije ve vodě",
-    ],
+    options: ["Pes běhá po zahradě, protože je živý", "Strom stojí na místě, ale je živý; vítr se pohybuje, ale je neživý", "Kámen se nehýbe, protože je neživý", "Ryba plave, protože žije ve vodě"],
     hints: [
       "Potřebuješ příklad, který ukazuje OBĚ strany: nehybnou živou věc i pohyblivou neživou věc.",
       "Strom se nepohybuje z místa, přesto dýchá, roste a rozmnožuje se.",
@@ -394,15 +339,10 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Proč je semeno klasifikováno jako živé, přestože právě neroste, nedýchá viditelně a nerozmnožuje se?",
     correctAnswer:
-      "Protože obsahuje živý zárodek v klidovém stavu — všechny znaky života začne plnit, jakmile dostane vodu, teplo a světlo",
-    options: [
-      "Protože obsahuje živý zárodek v klidovém stavu — všechny znaky života začne plnit, jakmile dostane vodu, teplo a světlo",
-      "Protože je tvrdé jako kámen, a kámen taky vydrží dlouho",
-      "Semeno vlastně živé není, jen to tak vypadá",
-      "Protože má stejnou barvu jako listy stromu",
-    ],
+      "Obsahuje živý zárodek, který se probudí, až dostane vodu a teplo",
+    options: ["Protože je tvrdé jako kámen, a kámen taky vydrží dlouho", "Semeno vlastně živé není, jen to tak vypadá", "Obsahuje živý zárodek, který se probudí, až dostane vodu a teplo", "Protože má stejnou barvu jako listy stromu"],
     hints: [
-      "Semeno nesplňuje najednou všechny znaky života — ale proč to nevadí?",
+      "Semeno teď zrovna nedělá nic z toho, co dělá živý tvor — ale proč to není důvod považovat ho za neživé?",
       "Jde o dočasný klidový (dormantní) stav, ne o to, že by semeno bylo neživé.",
     ],
     explanation:
@@ -411,12 +351,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co se stane s rostlinou, když ji přestaneme zalévat?",
     correctAnswer: "Usychá a hyne, protože voda je nezbytná pro její život",
-    options: [
-      "Usychá a hyne, protože voda je nezbytná pro její život",
-      "Nic se nestane — rostliny nepotřebují vodu",
-      "Začne přijímat vodu ze vzduchu a přežije bez problémů",
-      "Přestane růst, ale jinak ji to neovlivní",
-    ],
+    options: ["Nic se nestane — rostliny nepotřebují vodu", "Začne přijímat vodu ze vzduchu a přežije bez problémů", "Přestane růst, ale jinak ji to neovlivní", "Usychá a hyne, protože voda je nezbytná pro její život"],
     hints: [
       "Vzpomeň si, co potřebuje rostlina k životu.",
       "Živé organismy závisí na neživé přírodě — voda je nezbytná.",
@@ -443,12 +378,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které z níže uvedených věcí patří VŠECHNY do živé přírody?",
     correctAnswer: "Dub, žížala, muchomůrka",
-    options: [
-      "Dub, žížala, muchomůrka",
-      "Dub, kámen, žížala",
-      "Žížala, voda, muchomůrka",
-      "Dub, vzduch, muchomůrka",
-    ],
+    options: ["Dub, kámen, žížala", "Dub, žížala, muchomůrka", "Žížala, voda, muchomůrka", "Dub, vzduch, muchomůrka"],
     hints: [
       "Zkontroluj KAŽDOU položku ve skupině — stačí jedna neživá věc a skupina nesedí.",
       "Dub je strom, žížala je živočich, muchomůrka je houba — všechny dýchají, rostou a rozmnožují se.",
@@ -461,12 +391,7 @@ const POOL_L3: PracticeTask[] = [
       "Houby nefotosyntetizují jako rostliny. Odkud tedy houby získávají živiny, a proč to neznamená, že jsou neživé?",
     correctAnswer:
       "Rozkládají odumřelé organismy a přijímají tak živiny — je to jiný způsob výživy, ale houby stále rostou a rozmnožují se",
-    options: [
-      "Rozkládají odumřelé organismy a přijímají tak živiny — je to jiný způsob výživy, ale houby stále rostou a rozmnožují se",
-      "Houby energii nepotřebují, protože jsou napůl neživé",
-      "Houby čerpají energii přímo ze slunce úplně stejně jako rostliny",
-      "Houby jsou vlastně kameny, které pomalu rostou",
-    ],
+    options: ["Houby energii nepotřebují, protože jsou napůl neživé", "Houby čerpají energii přímo ze slunce úplně stejně jako rostliny", "Rozkládají odumřelé organismy a přijímají tak živiny — je to jiný způsob výživy, ale houby stále rostou a rozmnožují se", "Houby jsou vlastně kameny, které pomalu rostou"],
     hints: [
       "Výživa fotosyntézou není jediný způsob, jak organismus může žít.",
       "I bez chlorofylu houba splňuje ostatní znaky života — roste a rozmnožuje se výtrusy.",
@@ -478,12 +403,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "V rybníce je voda, ve které žije okoun a roste vodní tráva. Co z toho patří do neživé přírody?",
     correctAnswer: "Pouze voda v rybníce",
-    options: [
-      "Pouze voda v rybníce",
-      "Voda i okoun, protože okoun ve vodě žije",
-      "Okoun i vodní tráva, protože oba potřebují vodu",
-      "Nic — všechno v rybníce je živé",
-    ],
+    options: ["Voda i okoun, protože okoun ve vodě žije", "Okoun i vodní tráva, protože oba potřebují vodu", "Nic — všechno v rybníce je živé", "Pouze voda v rybníce"],
     hints: [
       "Odděl nositele (prostředí) od organismů, které v něm žijí.",
       "Okoun a vodní tráva dýchají, rostou a rozmnožují se — voda sama ne.",
@@ -513,12 +433,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Při fotosyntéze rostliny spotřebovávají oxid uhličitý a vodu a vyrábějí kyslík a cukr. Co díky tomu dýchají živočichové?",
     correctAnswer: "Kyslík, který rostliny vyrábějí při fotosyntéze",
-    options: [
-      "Kyslík, který rostliny vyrábějí při fotosyntéze",
-      "Oxid uhličitý, který rostliny vyrábějí při fotosyntéze",
-      "Cukr, který se mění na vzduch",
-      "Vodu, kterou rostliny vypouštějí do vzduchu",
-    ],
+    options: ["Oxid uhličitý, který rostliny vyrábějí při fotosyntéze", "Kyslík, který rostliny vyrábějí při fotosyntéze", "Cukr, který se mění na vzduch", "Vodu, kterou rostliny vypouštějí do vzduchu"],
     hints: [
       "Fotosyntéza má dva výsledky — cukr jako potravu a jeden plyn navíc.",
       "Ten plyn potřebují k dýchání živočichové i lidé.",
@@ -531,12 +446,7 @@ const POOL_L3: PracticeTask[] = [
       "Rampouch na okapu se pomalu prodlužuje, jak na něj namrzá další voda. Je rampouch živý organismus?",
     correctAnswer:
       "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen na něj namrzá další voda",
-    options: [
-      "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen na něj namrzá další voda",
-      "Ano, protože roste stejně jako rostlina",
-      "Ano, protože má protáhlý tvar jako živý organismus",
-      "Záleží na tom, jak dlouhý rampouch je",
-    ],
+    options: ["Ano, protože roste stejně jako rostlina", "Ano, protože má protáhlý tvar jako živý organismus", "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen na něj namrzá další voda", "Záleží na tom, jak dlouhý rampouch je"],
     hints: [
       "Prodlužování samo o sobě neznamená, že něco žije — musí splňovat i ostatní znaky.",
       "Zkontroluj: dýchá rampouch? Přijímá živiny? Rozmnožuje se?",
@@ -549,12 +459,7 @@ const POOL_L3: PracticeTask[] = [
       "Krápník v jeskyni pomalu roste, jak se na něj usazuje vápenec z kapající vody. Je krápník živý organismus?",
     correctAnswer:
       "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen se na něj usazuje vápenec",
-    options: [
-      "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen se na něj usazuje vápenec",
-      "Ano, protože roste jako rostlina v zemi",
-      "Ano, protože má pravidelný tvar jako živé organismy",
-      "Záleží na tom, jak starý krápník je",
-    ],
+    options: ["Ano, protože roste jako rostlina v zemi", "Ano, protože má pravidelný tvar jako živé organismy", "Záleží na tom, jak starý krápník je", "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen se na něj usazuje vápenec"],
     hints: [
       "I krápník se zvětšuje — ale znamená to totéž, co u živého organismu?",
       "Zkontroluj všechny znaky života najednou, ne jen jeden.",

@@ -41,27 +41,27 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která generace jsou prarodiče (babička a děda)?",
     correctAnswer: "První generace",
-    options: ["První generace", "Druhá generace", "Třetí generace", "Čtvrtá generace"],
+    options: ["Druhá generace", "První generace", "Třetí generace", "Čtvrtá generace"],
     hints: [
       "Generace se počítají od nejstarších k nejmladším.",
-      "Prarodiče jsou nejstarší v rodině — jsou tedy první.",
+      "Prarodiče jsou v rodině nejstarší — když bychom pokolení řadili podle věku od nejstaršího, na kterém místě by stáli?",
     ],
     explanation: "Prarodiče (babička a děda) patří do první (nejstarší) generace v rodině. Jsou rodiči tvých rodičů.",
   },
   {
     question: "Která generace jsou rodiče (máma a táta)?",
     correctAnswer: "Druhá generace",
-    options: ["Druhá generace", "První generace", "Třetí generace", "Nultá generace"],
+    options: ["První generace", "Třetí generace", "Druhá generace", "Nultá generace"],
     hints: [
       "Rodiče jsou mladší než prarodiče, ale starší než ty.",
-      "Druhá generace stojí uprostřed — mezi prarodiči a dětmi.",
+      "Rodiče přišli na svět hned po prarodičích, ale dřív než ty — kolikátí jsou tedy v pořadí, když prarodiče počítáme jako první?",
     ],
     explanation: "Rodiče patří do druhé generace. Jsou mladší než prarodiče (1. generace), ale starší než jejich vlastní děti (3. generace).",
   },
   {
     question: "Do které generace patříš ty (dítě)?",
     correctAnswer: "Třetí generace",
-    options: ["Třetí generace", "Druhá generace", "První generace", "Nultá generace"],
+    options: ["Druhá generace", "První generace", "Nultá generace", "Třetí generace"],
     hints: [
       "Ty jsi nejmladší — prarodiče, rodiče a pak ty.",
       "Počítej: 1. prarodiče, 2. rodiče, 3. děti.",
@@ -86,12 +86,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená slovo 'přítomnost'?",
     correctAnswer: "Čas, který právě prožíváme — co se děje teď",
-    options: [
-      "Čas, který právě prožíváme — co se děje teď",
-      "Čas, který už proběhl — co se stalo dříve",
-      "Čas, který teprve přijde — co se stane",
-      "Část časové přímky pro nejstarší události",
-    ],
+    options: ["Čas, který už proběhl — co se stalo dříve", "Čas, který právě prožíváme — co se děje teď", "Čas, který teprve přijde — co se stane", "Část časové přímky pro nejstarší události"],
     hints: [
       "Přítomnost = teď, v tuto chvíli.",
       "Co děláš právě teď, to je přítomnost.",
@@ -101,12 +96,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená slovo 'budoucnost'?",
     correctAnswer: "Čas, který teprve přijde — co se stane",
-    options: [
-      "Čas, který teprve přijde — co se stane",
-      "Čas, který právě prožíváme — co se děje teď",
-      "Čas, který už proběhl — co se stalo dříve",
-      "Nejstarší část rodokmenu",
-    ],
+    options: ["Čas, který právě prožíváme — co se děje teď", "Čas, který už proběhl — co se stalo dříve", "Čas, který teprve přijde — co se stane", "Nejstarší část rodokmenu"],
     hints: [
       "Budoucnost je před námi — ještě nenastala.",
       "Co budeš dělat zítra? To je budoucnost.",
@@ -116,12 +106,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je to rodokmen?",
     correctAnswer: "Strom (nebo tabulka) zobrazující členy rodiny a jejich příbuzenské vztahy",
-    options: [
-      "Strom (nebo tabulka) zobrazující členy rodiny a jejich příbuzenské vztahy",
-      "Čára zobrazující historické události v čase",
-      "Kniha, do které se zapisují důležité události ve škole",
-      "Mapa starého města",
-    ],
+    options: ["Čára zobrazující historické události v čase", "Kniha, do které se zapisují důležité události ve škole", "Mapa starého města", "Strom (nebo tabulka) zobrazující členy rodiny a jejich příbuzenské vztahy"],
     hints: [
       "Rodokmen vypadá jako strom — nahoře jsou nejstarší předci, dole nejmladší.",
       "Slovo „rod“ znamená rodina, „kmen“ je hlavní část stromu.",
@@ -130,13 +115,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je to kronika?",
-    correctAnswer: "Kniha, do které se zapisují důležité události v pořadí, jak šly za sebou",
-    options: [
-      "Kniha, do které se zapisují důležité události v pořadí, jak šly za sebou",
-      "Strom příbuzenských vztahů rodiny",
-      "Mapa zobrazující historická místa",
-      "Časová přímka v podobě číselné osy",
-    ],
+    correctAnswer: "Kniha, kam se zapisují události tak, jak se staly",
+    options: ["Kniha, kam se zapisují události tak, jak se staly", "Strom příbuzenských vztahů rodiny", "Mapa zobrazující historická místa", "Časová přímka v podobě číselné osy"],
     hints: [
       "Kroniku vedla například každá vesnice nebo škola.",
       "Kronika je jako deník — ale pro celou obec nebo skupinu.",
@@ -146,12 +126,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo je kronikář?",
     correctAnswer: "Člověk, který zapisuje důležité události do kroniky",
-    options: [
-      "Člověk, který zapisuje důležité události do kroniky",
-      "Člověk, který uchovává staré dokumenty v archivu",
-      "Nejstarší člen rodiny",
-      "Člověk, který kreslí rodokmen",
-    ],
+    options: ["Člověk, který uchovává staré dokumenty v archivu", "Člověk, který zapisuje důležité události do kroniky", "Nejstarší člen rodiny", "Člověk, který kreslí rodokmen"],
     hints: [
       "Kronikář je jako „zapisovatel“ historie obce nebo školy.",
       "Bez kronikáře by kronika zůstala prázdná.",
@@ -161,12 +136,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je to archiv?",
     correctAnswer: "Místo, kde se uchovávají staré dokumenty, fotografie a záznamy",
-    options: [
-      "Místo, kde se uchovávají staré dokumenty, fotografie a záznamy",
-      "Místo, kde se vystavují moderní obrazy",
-      "Budova, kde žijí prarodiče",
-      "Jiný název pro rodokmen",
-    ],
+    options: ["Místo, kde se vystavují moderní obrazy", "Budova, kde žijí prarodiče", "Místo, kde se uchovávají staré dokumenty, fotografie a záznamy", "Jiný název pro rodokmen"],
     hints: [
       "V archivu najdeš staré listiny, matriky nebo fotografie.",
       "Archiv je jako velká knihovna pro historické záznamy.",
@@ -176,7 +146,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik generací obvykle rozlišujeme v jedné rodině (prarodiče, rodiče, děti)?",
     correctAnswer: "Tři generace",
-    options: ["Tři generace", "Dvě generace", "Čtyři generace", "Pět generací"],
+    options: ["Dvě generace", "Čtyři generace", "Pět generací", "Tři generace"],
     hints: [
       "Vyjmenuj je: prarodiče, rodiče, děti.",
       "Spočítej skupiny, ne jednotlivé lidi.",
@@ -196,14 +166,9 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená slovo 'generace'?",
     correctAnswer: "Skupina lidí podobného věku v rodině, například prarodiče, rodiče nebo děti",
-    options: [
-      "Skupina lidí podobného věku v rodině, například prarodiče, rodiče nebo děti",
-      "Kniha, do které se zapisují události",
-      "Místo, kde se uchovávají staré fotografie",
-      "Jiné slovo pro rodokmen",
-    ],
+    options: ["Kniha, do které se zapisují události", "Skupina lidí podobného věku v rodině, například prarodiče, rodiče nebo děti", "Místo, kde se uchovávají staré fotografie", "Jiné slovo pro rodokmen"],
     hints: [
-      "Generace odděluje rodinu na skupiny podle věku — prarodiče, rodiče, děti.",
+      "Generace odděluje lidi v rodině do skupin podle toho, jak jsou staří — kolik takových skupin dokážeš ve své rodině najít?",
       "Prarodiče a rodiče jsou dvě různé generace.",
     ],
     explanation: "Generace je skupina lidí přibližně stejného věku v rodině. V rodině rozlišujeme tři generace: prarodiče, rodiče a děti.",
@@ -214,12 +179,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se změnily telefony od doby prarodičů do dnes?",
     correctAnswer: "Dříve byly velké a pevně připojené ke zdi, dnes jsou malé a přenosné",
-    options: [
-      "Dříve byly velké a pevně připojené ke zdi, dnes jsou malé a přenosné",
-      "Dříve byly malé a přenosné, dnes jsou velké a těžké",
-      "Telefony se vůbec nezměnily",
-      "Dříve neexistovaly, vymysleli je teprve nedávno",
-    ],
+    options: ["Dříve byly malé a přenosné, dnes jsou velké a těžké", "Telefony se vůbec nezměnily", "Dříve byly velké a pevně připojené ke zdi, dnes jsou malé a přenosné", "Dříve neexistovaly, vymysleli je teprve nedávno"],
     hints: [
       "Přemýšlej, jak vypadal telefon, který viděl na starých fotkách.",
       "Dnes máme chytrý telefon, který se vejde do kapsy.",
@@ -229,12 +189,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se změnila škola od doby prarodičů do dnes?",
     correctAnswer: "Dříve se psalo perem a inkoustem do sešitů, dnes se používají i počítače a tablety",
-    options: [
-      "Dříve se psalo perem a inkoustem do sešitů, dnes se používají i počítače a tablety",
-      "Dříve byly školy modernější než dnes",
-      "Ve škole se nic nezměnilo, vždy bylo úplně stejné",
-      "Dříve se nechodilo do školy vůbec",
-    ],
+    options: ["Dříve byly školy modernější než dnes", "Ve škole se nic nezměnilo, vždy bylo úplně stejné", "Dříve se nechodilo do školy vůbec", "Dříve se psalo perem a inkoustem do sešitů, dnes se používají i počítače a tablety"],
     hints: [
       "Pomysli, jaké pomůcky mají dnes děti ve škole.",
       "Prarodiče neměli počítače — psali perem a tužkou.",
@@ -243,13 +198,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se změnila doprava za posledních sto let?",
-    correctAnswer: "Dříve jezdily koňské povozy a parní vlaky, dnes jezdí auta, rychlovlaky a létají letadla",
-    options: [
-      "Dříve jezdily koňské povozy a parní vlaky, dnes jezdí auta, rychlovlaky a létají letadla",
-      "Dříve se létalo letadlem více než dnes",
-      "Doprava se vůbec nezměnila",
-      "Dříve bylo více aut než dnes",
-    ],
+    correctAnswer: "Dřív koňské povozy a parní vlaky, dnes auta, vlaky a letadla",
+    options: ["Dřív koňské povozy a parní vlaky, dnes auta, vlaky a letadla", "Dříve se létalo letadlem více než dnes", "Doprava se vůbec nezměnila", "Dříve bylo více aut než dnes"],
     hints: [
       "Přemýšlej, jak se lidé přepravovali, když ještě nebyly silnice a benzínové motory.",
       "Koně, kola a parní stroje — to byl začátek.",
@@ -259,12 +209,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Do které generace patří teta (sestra maminky nebo tatínka)?",
     correctAnswer: "Do druhé generace, protože je to sourozenec rodičů",
-    options: [
-      "Do druhé generace, protože je to sourozenec rodičů",
-      "Do první generace, protože je stejně stará jako babička",
-      "Do třetí generace, protože je mladší než rodiče",
-      "Generace tety se nepočítá",
-    ],
+    options: ["Do první generace, protože je stejně stará jako babička", "Do druhé generace, protože je to sourozenec rodičů", "Do třetí generace, protože je mladší než rodiče", "Generace tety se nepočítá"],
     hints: [
       "Teta je sourozenec maminky nebo tatínka — je tedy stejná generace jako oni.",
       "Sourozenci patří vždy do stejné generace.",
@@ -274,12 +219,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Do které generace patří bratranec (syn strýce nebo tety)?",
     correctAnswer: "Do třetí generace, protože je to dítě stejně jako ty",
-    options: [
-      "Do třetí generace, protože je to dítě stejně jako ty",
-      "Do druhé generace, protože je synem rodičova sourozence",
-      "Do první generace, protože je nejstarší v rodině",
-      "Bratranec nepatří do žádné generace",
-    ],
+    options: ["Do druhé generace, protože je synem rodičova sourozence", "Do první generace, protože je nejstarší v rodině", "Do třetí generace, protože je to dítě stejně jako ty", "Bratranec nepatří do žádné generace"],
     hints: [
       "Bratranec je dítě tety nebo strýce — je tedy stejná generace jako ty.",
       "Děti sourozenců rodičů patří do stejné generace jako ty.",
@@ -288,16 +228,11 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jaké je správné pořadí generací od nejstarší po nejmladší?",
-    correctAnswer: "Prarodiče → rodiče → děti",
-    options: [
-      "Prarodiče → rodiče → děti",
-      "Děti → rodiče → prarodiče",
-      "Rodiče → prarodiče → děti",
-      "Děti → prarodiče → rodiče",
-    ],
+    correctAnswer: "Prarodiče, rodiče, děti",
+    options: ["Děti, rodiče, prarodiče", "Rodiče, prarodiče, děti", "Děti, prarodiče, rodiče", "Prarodiče, rodiče, děti"],
     hints: [
       "Generace jdou od nejstarších k nejmladším.",
-      "Kdo se narodil jako první — prarodiče, rodiče nebo děti?",
+      "Přemýšlej, ve kterém pořadí lidé v rodině přicházejí na svět — kdo je časem nejstarší?",
     ],
     explanation: "Správné pořadí generací od nejstarší po nejmladší je: prarodiče (1. generace) → rodiče (2. generace) → děti (3. generace). Prarodiče se narodili jako první.",
   },
@@ -314,7 +249,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Přemýšlíš, kam pojedeš příští léto na dovolenou. Do jaké části času tato úvaha patří?",
     correctAnswer: "Do budoucnosti",
-    options: ["Do budoucnosti", "Do minulosti", "Do přítomnosti", "Do žádné z těchto možností"],
+    options: ["Do minulosti", "Do budoucnosti", "Do přítomnosti", "Do žádné z těchto možností"],
     hints: [
       "Příští léto ještě nenastalo.",
       "Plány na dovolenou se týkají něčeho, co teprve přijde.",
@@ -324,7 +259,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Právě teď píšeš úkol do sešitu. Do jaké části času tato činnost patří?",
     correctAnswer: "Do přítomnosti",
-    options: ["Do přítomnosti", "Do minulosti", "Do budoucnosti", "Do žádné z těchto možností"],
+    options: ["Do minulosti", "Do budoucnosti", "Do přítomnosti", "Do žádné z těchto možností"],
     hints: [
       "Slovo „právě teď“ napovídá, o jaký čas jde.",
       "Co děláš v tuto chvíli, to je vždy přítomnost.",
@@ -334,12 +269,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se změnilo oblékání od doby prarodičů do dnes?",
     correctAnswer: "Dříve se lidé oblékali formálněji a šili si oblečení sami, dnes se oblečení hlavně kupuje hotové",
-    options: [
-      "Dříve se lidé oblékali formálněji a šili si oblečení sami, dnes se oblečení hlavně kupuje hotové",
-      "Oblékání se za tu dobu vůbec nezměnilo",
-      "Dříve nosili lidé více moderních značkových oděvů než dnes",
-      "Dříve se oblečení vůbec nenosilo",
-    ],
+    options: ["Oblékání se za tu dobu vůbec nezměnilo", "Dříve nosili lidé více moderních značkových oděvů než dnes", "Dříve se oblečení vůbec nenosilo", "Dříve se lidé oblékali formálněji a šili si oblečení sami, dnes se oblečení hlavně kupuje hotové"],
     hints: [
       "Podívej se na staré fotografie prarodičů — jak byli oblečení?",
       "Dnes si oblečení většinou kupujeme v obchodě.",
@@ -348,13 +278,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se změnila komunikace mezi lidmi od doby prarodičů do dnes?",
-    correctAnswer: "Dříve se psaly dopisy a čekalo se na ně několik dní, dnes si lidé píší zprávy okamžitě přes mobil",
-    options: [
-      "Dříve se psaly dopisy a čekalo se na ně několik dní, dnes si lidé píší zprávy okamžitě přes mobil",
-      "Dříve lidé komunikovali rychleji než dnes",
-      "Komunikace se vůbec nezměnila",
-      "Dopisy se používají čím dál víc a mobily méně",
-    ],
+    correctAnswer: "Dřív se psaly dopisy a čekalo se dny, dnes zprávy dorazí hned",
+    options: ["Dřív se psaly dopisy a čekalo se dny, dnes zprávy dorazí hned", "Dříve lidé komunikovali rychleji než dnes", "Komunikace se vůbec nezměnila", "Dopisy se používají čím dál víc a mobily méně"],
     hints: [
       "Přemýšlej, jak dlouho trvalo, než dopis dorazil k adresátovi.",
       "Dnes odešleš zprávu a druhá osoba ji přečte během pár vteřin.",
@@ -364,17 +289,17 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdo by měl do obecní kroniky zapsat, že se ve vesnici postavila nová škola?",
     correctAnswer: "Kronikář",
-    options: ["Kronikář", "Archivář", "Kterýkoliv žák ze školy", "Nikdo, do kroniky se zapisují jen narození"],
+    options: ["Archivář", "Kronikář", "Kterýkoliv žák ze školy", "Nikdo, do kroniky se zapisují jen narození"],
     hints: [
       "Do kroniky zapisuje důležité události ten, kdo ji vede.",
-      "Kronikář zaznamenává vše důležité, co se v obci stane — i stavbu školy.",
+      "Není to náhodný člověk ani archivář — obec má pro tenhle úkol svou funkci.",
     ],
     explanation: "Postavení nové školy je důležitá událost v obci, a proto ji zapíše kronikář — člověk, který vede kroniku.",
   },
   {
     question: "Kam se obrátíš, když chceš najít staré fotografie vesnice z doby, kdy tam žili tvoji prarodiče?",
     correctAnswer: "Do archivu",
-    options: ["Do archivu", "Do rodokmenu", "Do budoucnosti", "Na časovou přímku"],
+    options: ["Do rodokmenu", "Do budoucnosti", "Do archivu", "Na časovou přímku"],
     hints: [
       "Staré fotografie a dokumenty se uchovávají na jednom konkrétním místě.",
       "Archiv je jako knihovna pro historické záznamy.",
@@ -384,12 +309,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se změnily hračky od doby prarodičů do dnes?",
     correctAnswer: "Dříve byly hračky hlavně dřevěné a ruční výroby, dnes jsou často elektronické a na baterky",
-    options: [
-      "Dříve byly hračky hlavně dřevěné a ruční výroby, dnes jsou často elektronické a na baterky",
-      "Hračky se za tu dobu vůbec nezměnily",
-      "Dříve byly hračky elektronické, dnes jsou dřevěné",
-      "Dříve děti hračky vůbec neměly",
-    ],
+    options: ["Hračky se za tu dobu vůbec nezměnily", "Dříve byly hračky elektronické, dnes jsou dřevěné", "Dříve děti hračky vůbec neměly", "Dříve byly hračky hlavně dřevěné a ruční výroby, dnes jsou často elektronické a na baterky"],
     hints: [
       "Přemýšlej, z čeho byly vyrobeny hračky, které měla babička jako malá.",
       "Dnes mnoho hraček svítí, hraje nebo jezdí na baterky.",
@@ -412,7 +332,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Babička se narodila v roce 1960. Kolik jí bylo v roce 2000, kdy se narodila její první vnučka?",
     correctAnswer: "40 let",
-    options: ["40 let", "30 let", "35 let", "45 let"],
+    options: ["30 let", "40 let", "35 let", "45 let"],
     hints: [
       "Odečti rok narození babičky od roku 2000.",
       "2000 − 1960 = ?",
@@ -422,7 +342,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Táta se narodil v roce 1980. V jakém roce mu bylo 25 let?",
     correctAnswer: "V roce 2005",
-    options: ["V roce 2005", "V roce 2000", "V roce 2010", "V roce 1995"],
+    options: ["V roce 2000", "V roce 2010", "V roce 2005", "V roce 1995"],
     hints: [
       "K roku narození přičti 25 let.",
       "1980 + 25 = ?",
@@ -432,7 +352,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Maminka se narodila v roce 1985. Kolik jí bude v roce 2030?",
     correctAnswer: "45 let",
-    options: ["45 let", "40 let", "50 let", "35 let"],
+    options: ["40 let", "50 let", "35 let", "45 let"],
     hints: [
       "Odečti rok narození maminky od roku 2030.",
       "2030 − 1985 = ?",
@@ -452,7 +372,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Děda se narodil v roce 1948. V jakém roce mu bylo 60 let?",
     correctAnswer: "V roce 2008",
-    options: ["V roce 2008", "V roce 2000", "V roce 2010", "V roce 1998"],
+    options: ["V roce 2000", "V roce 2008", "V roce 2010", "V roce 1998"],
     hints: [
       "K roku narození přičti 60 let.",
       "1948 + 60 = ?",
@@ -462,7 +382,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Teta (sestra maminky) se narodila v roce 1978. Kolik jí bylo v roce 2010?",
     correctAnswer: "32 let",
-    options: ["32 let", "30 let", "35 let", "40 let"],
+    options: ["30 let", "35 let", "32 let", "40 let"],
     hints: [
       "Odečti rok narození tety od roku 2010.",
       "2010 − 1978 = ?",
@@ -472,7 +392,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Rodiče se vzali v roce 2000. Ty ses narodil/a v roce 2017. Kolik let po svatbě rodičů ses narodil/a?",
     correctAnswer: "17 let",
-    options: ["17 let", "15 let", "20 let", "10 let"],
+    options: ["15 let", "20 let", "10 let", "17 let"],
     hints: [
       "Odečti rok svatby od roku tvého narození.",
       "2017 − 2000 = ?",
@@ -497,12 +417,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která z těchto událostí se stala nejblíže přítomnosti (je nejnovější)?",
     correctAnswer: "Narození bratra před 2 lety",
-    options: [
-      "Narození bratra před 2 lety",
-      "Narození sestry před 6 lety",
-      "Svatba rodičů před 12 lety",
-      "Narození maminky před 33 lety",
-    ],
+    options: ["Narození sestry před 6 lety", "Narození bratra před 2 lety", "Svatba rodičů před 12 lety", "Narození maminky před 33 lety"],
     hints: [
       "Nejblíže přítomnosti je událost s nejmenším počtem let.",
       "Porovnej čísla: 2, 6, 12, 33 — které je nejmenší?",
@@ -512,12 +427,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která z těchto fotografií je nejstarší?",
     correctAnswer: "Fotka z narození dědy před 70 lety",
-    options: [
-      "Fotka z narození dědy před 70 lety",
-      "Fotka ze svatby rodičů před 15 lety",
-      "Fotka z tvých narozenin před 9 lety",
-      "Fotka ze začátku školy před 4 lety",
-    ],
+    options: ["Fotka ze svatby rodičů před 15 lety", "Fotka z tvých narozenin před 9 lety", "Fotka z narození dědy před 70 lety", "Fotka ze začátku školy před 4 lety"],
     hints: [
       "Nejstarší fotka je ta s největším počtem let.",
       "Porovnej čísla: 70, 15, 9, 4 — které je největší?",
@@ -527,14 +437,9 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč jsou pro poznání historie důležité kroniky a staré fotografie napříč generacemi?",
     correctAnswer: "Protože zaznamenávají, jak žili lidé v minulosti, a pomáhají nám to porovnat se současností",
-    options: [
-      "Protože zaznamenávají, jak žili lidé v minulosti, a pomáhají nám to porovnat se současností",
-      "Protože jsou vzácné a dají se výhodně prodat",
-      "Protože to škole nařizuje zákon",
-      "Protože ukazují jen to, jaké bylo zrovna počasí",
-    ],
+    options: ["Protože jsou vzácné a dají se výhodně prodat", "Protože to škole nařizuje zákon", "Protože ukazují jen to, jaké bylo zrovna počasí", "Protože zaznamenávají, jak žili lidé v minulosti, a pomáhají nám to porovnat se současností"],
     hints: [
-      "Kronika a fotografie jsou doklady o tom, jak žili naši předci.",
+      "Kronika a fotografie jsou doklady o životě našich předků — k čemu je dobré mít takový doklad, když chceme něco porovnat?",
       "Bez záznamů bychom nevěděli, jak se věci v čase změnily.",
     ],
     explanation: "Kroniky a staré fotografie zaznamenávají, jak žili lidé v jednotlivých generacích. Díky nim můžeme porovnat minulost se současností a vidět, co se změnilo.",
@@ -557,12 +462,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč je užitečné povídat si s prarodiči o tom, jak žili, když byli malí?",
     correctAnswer: "Dozvíme se o minulosti přímo od někoho, kdo ji sám zažil",
-    options: [
-      "Dozvíme se o minulosti přímo od někoho, kdo ji sám zažil",
-      "Protože si stejně nic jiného nepamatují",
-      "Protože nám tím musí půjčit peníze",
-      "Protože je to povinný úkol do kroniky",
-    ],
+    options: ["Protože si stejně nic jiného nepamatují", "Dozvíme se o minulosti přímo od někoho, kdo ji sám zažil", "Protože nám tím musí půjčit peníze", "Protože je to povinný úkol do kroniky"],
     hints: [
       "Prarodiče jsou svědci minulosti, kterou ty sám/sama nezažil/a.",
       "Vyprávění je jeden ze způsobů, jak se dozvídáme o historii rodiny.",

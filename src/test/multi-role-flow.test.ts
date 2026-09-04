@@ -96,23 +96,6 @@ describe("Multi-role — Admin: content registry je konzistentní", () => {
     });
   });
 
-  it("self-validation: task.correctAnswer projde svým vlastním validátorem", () => {
-    // Pokud topic.correctAnswer pro sloh="60", essay validator má clamp na 0-100
-    // → správný self-test musí dát correct=true
-    topics.forEach((t) => {
-      const tasks = t.generator(2);
-      // Jen pro topics které mají číselnou nebo deterministicky validovatelnou odpověď
-      if (t.inputType === "essay") {
-        tasks.forEach((task) => {
-          // Pro essay, score=correctAnswer by mělo passout (rovnost s threshold)
-          const r = validateAnswer(task.correctAnswer, task.correctAnswer, {
-            inputType: "essay",
-          });
-          expect(r.correct, `topic=${t.id}, task.correctAnswer=${task.correctAnswer}`).toBe(true);
-        });
-      }
-    });
-  });
 });
 
 describe("Multi-role — Rodič: assignment-able skills (sanity)", () => {
@@ -148,11 +131,6 @@ describe("Multi-role — Rodič: assignment-able skills (sanity)", () => {
 describe("Multi-role — content type matrix", () => {
   const topics = getAllTopics();
 
-  it("essay topics mají contentType conceptual (ne algorithmic)", () => {
-    topics.filter((t) => t.inputType === "essay").forEach((t) => {
-      expect(t.contentType, t.id).toBe("conceptual");
-    });
-  });
 
   it("number/comparison/fraction topics jsou algorithmic nebo undefined (default)", () => {
     const algorithmicCandidates = ["number", "comparison", "fraction"];
@@ -191,14 +169,8 @@ describe("Multi-role — keyword matching pro topic discovery", () => {
 describe("Multi-role — sessionTaskCount per topic", () => {
   const topics = getAllTopics();
 
-  it("essay topics mají sessionTaskCount = 1 (drahá AI evaluace)", () => {
-    topics.filter((t) => t.inputType === "essay").forEach((t) => {
-      expect(t.sessionTaskCount, t.id).toBe(1);
-    });
-  });
-
-  it("ostatní topics mají sessionTaskCount default (undefined → 6) nebo override", () => {
-    topics.filter((t) => t.inputType !== "essay").forEach((t) => {
+  it("topics mají sessionTaskCount default (undefined → 6) nebo override", () => {
+    topics.forEach((t) => {
       const count = t.sessionTaskCount ?? 6;
       expect(count, t.id).toBeGreaterThanOrEqual(1);
       expect(count, t.id).toBeLessThanOrEqual(20);

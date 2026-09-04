@@ -4,6 +4,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, Sparkles } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta, NEUTRAL_PALETTE, type SubjectMeta } from "@/lib/subjectRegistry";
+import { buildAssignmentWindows, isAssignedSession } from "@/lib/assignmentBinding";
 
 interface Props {
   childId: string;
@@ -68,18 +69,19 @@ export function SelfPracticeList({ childId }: Props) {
           .limit(200),
         supabase
           .from("parent_assignments")
-          .select("skill_id")
+          .select("skill_id, assigned_date, status, created_at, updated_at")
           .eq("child_id", childId),
       ]);
 
       if (cancelled) return;
 
-      const assignedSkills = new Set(
-        (assignRes.data ?? []).map((a) => a.skill_id)
-      );
+      // Vyřazujeme sezení, která spadají do okna zadaného úkolu — ne všechna
+      // sezení na tématu, které bylo někdy zadané. Jinak rodič zadáním tématu
+      // zpětně vymazal i dřívější samostatné procvičování téhož tématu.
+      const windows = buildAssignmentWindows(assignRes.data ?? []);
 
       const logs = (logsRes.data ?? []).filter(
-        (l) => !assignedSkills.has(l.skill_id)
+        (l) => !isAssignedSession(l.skill_id, l.created_at, windows)
       );
 
       const map = new Map<string, SkillGroup>();

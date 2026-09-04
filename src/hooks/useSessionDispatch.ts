@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { SessionData, SessionState, PracticeTask, TopicMetadata, Grade } from "@/lib/types";
-import { createSession, processState } from "@/lib/sessionOrchestrator";
+import { createSession, processState, prepareMatchedTopic } from "@/lib/sessionOrchestrator";
 import { setDiktatFilter } from "@/lib/content";
 import { supabase } from "@/integrations/supabase/client";
 import { useSessionPersistence, clearPersistedSession } from "@/hooks/useSessionPersistence";
@@ -14,13 +14,13 @@ import { toast } from "sonner";
 const TERMINAL_STATES: SessionState[] = ["END", "STOP_2"];
 
 const PRAISE_VARIANTS = [
-  "Správně! 🎉", "Výborně! ⭐", "Skvělá práce! 💪", "Tak to má být! 👏",
-  "Přesně tak! 🌟", "Bezchybně! ✨", "Paráda! 🎊", "Super! 🙌",
-  "Máš to! 💯", "Perfektní! 🏆", "Jedničková práce! 🥇", "Dobře to jde! 👍",
-  "Jen tak dál! 🚀", "To sedí! ✅", "Správná odpověď! 🎯", "Zvládáš to! 💪",
-  "Prima! 😊", "Fajn, správně! 👌", "Ano, přesně! ✔️", "Bezvadně! 🌈",
-  "To je ono! 🎉", "Máš pravdu! ⭐", "Skvěle zvládnuto! 🏅", "Bravo! 👏",
-  "Žádná chyba! ✨",
+  "Správně!", "Výborně!", "Skvělá práce!", "Tak to má být!",
+  "Přesně tak!", "Bezchybně!", "Paráda!", "Super!",
+  "Máš to!", "Perfektní!", "Jedničková práce!", "Dobře to jde!",
+  "Jen tak dál!", "To sedí!", "Správná odpověď!", "Zvládáš to!",
+  "Prima!", "Fajn, správně!", "Ano, přesně!", "Bezvadně!",
+  "To je ono!", "Máš pravdu!", "Skvěle zvládnuto!", "Bravo!",
+  "Žádná chyba!",
 ];
 let praiseIndex = 0;
 function getNextPraise(): string {
@@ -30,14 +30,14 @@ function getNextPraise(): string {
 }
 
 const INCORRECT_VARIANTS = [
-  "To není ono 🤔", "Zkus to ještě jednou 💪", "Tentokrát ne 🙃",
-  "Ještě to není správně", "Není to úplně přesné", "Trochu jinak 🔄",
-  "To nesedí", "Tak to nebude", "Ještě zkus přemýšlet 🧐",
+  "To není ono", "Zkus to ještě jednou", "Tentokrát ne",
+  "Ještě to není správně", "Není to úplně přesné", "Trochu jinak",
+  "To nesedí", "Tak to nebude", "Ještě zkus přemýšlet",
   "Ne tak docela", "Skoro, ale ne úplně", "To není správná odpověď",
   "Máš to jinak", "Tady je chybka", "Tohle to není",
-  "Zatím ne", "Ještě to zkus 💪", "Blízko, ale ne",
-  "Podívej se na to znovu 👀", "To úplně nevychází",
-  "Zkus jiný postup", "Ještě nad tím popřemýšlej 🤔",
+  "Zatím ne", "Ještě to zkus", "Blízko, ale ne",
+  "Podívej se na to znovu", "To úplně nevychází",
+  "Zkus jiný postup", "Ještě nad tím popřemýšlej",
   "Není to ono", "Tentokrát se to nepovedlo", "Odpověď je jiná",
 ];
 let incorrectIndex = 0;
@@ -249,9 +249,14 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         if (childByParent) child = childByParent;
       }
       if (!child) return;
+      // `updated_at` posíláme explicitně, ne přes DB trigger: je to jediné
+      // časové razítko splnění, které máme bez migrace, a rodičovský seznam
+      // podle něj páruje úkol s konkrétním sezením (viz `assignmentBinding.ts`).
+      // Kdyby trigger v ostré DB chyběl, zůstal by čas splnění nezjistitelný
+      // a skóre úkolu by zase přepisovalo pozdější procvičování téhož tématu.
       const { data: updated } = await supabase
         .from("parent_assignments")
-        .update({ status: "completed" })
+        .update({ status: "completed", updated_at: new Date().toISOString() })
         .eq("child_id", child.id)
         .eq("skill_id", skillId)
         .eq("status", "pending")
@@ -352,6 +357,13 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       newSession.childInput = enrichedTopic.title;
       newSession.state = "EXPLAIN" as SessionState;
 
+      // Startovní level: přímý dětský tok obchází TOPIC_MATCH, takže bez tohoto
+      // by sezení vždy startovalo na L1 a defaultLevel/uložený level by se
+      // ignorovaly. Jen pro generátorová témata (DB-only řídí batch jinak).
+      if (!isDbOnly) {
+        await prepareMatchedTopic(newSession);
+      }
+
       // Pre-load custom exercises into the session batch (DB-only topics)
       if (preloadedBatch.length > 0) {
         const taskCount = enrichedTopic.sessionTaskCount ?? 6;
@@ -369,20 +381,26 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       // jinak by probliknul EXPLAIN screen mezi výběrem tématu a procvičováním.
       const s1 = { ...newSession, elapsedSeconds: 0 };
       const r1 = await processState(s1);
+      let final = r1;
       if (r1.session.state === "EXPLAIN") {
         setExplanation(r1.output);
         const s2 = { ...r1.session, elapsedSeconds: 0 };
-        const r2 = await processState(s2);
-        setSession(r2.session);
-        setOutput(r2.output ?? "");
-        setPracticeQuestion(r2.practiceQuestion ?? "");
-        setUserInput("");
-      } else {
-        setSession(r1.session);
-        setOutput(r1.output ?? "");
-        setPracticeQuestion(r1.practiceQuestion ?? "");
-        setUserInput("");
+        final = await processState(s2);
       }
+
+      // Prázdný batch z generátoru (téma bez úloh na dané úrovni) → stejné
+      // chování jako u prázdného DB-only tématu: nabídnout jiné, ne „trofej"
+      // v shrnutí za 0 zodpovězených úloh.
+      if (final.session.practiceBatch.length === 0) {
+        setOutput("Toto cvičení se připravuje. Zkus jiné téma.");
+        toast.error("Toto cvičení se připravuje. Zkus jiné téma.");
+        return;
+      }
+
+      setSession(final.session);
+      setOutput(final.output ?? "");
+      setPracticeQuestion(final.practiceQuestion ?? "");
+      setUserInput("");
     } catch (err) {
       console.error("[handleTopicSelect] error:", err);
     } finally {

@@ -6,8 +6,9 @@ import { CheckCircle2, XCircle, Trash2, BarChart2 } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { pickCompletingSessionId, toAssignmentWindow } from "@/lib/assignmentBinding";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { SkillDetailModal, type MockSessionForModal } from "@/components/SkillDetailModal";
+import { SkillDetailModal } from "@/components/SkillDetailModal";
 
 interface Assignment {
   id: string;
@@ -16,6 +17,8 @@ interface Assignment {
   due_date: string | null;
   status: string;
   note: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
   subject?: string;
   completedDate?: string;
   completionCorrect?: number;
@@ -27,8 +30,6 @@ interface Props {
   childId?: string;
   childName?: string;
   refreshKey?: number;
-  mockAssignments?: Assignment[];
-  onMockDelete?: (id: string) => void;
   highlightSkillId?: string | null;
 }
 
@@ -64,17 +65,17 @@ function isToday(dateStr: string): boolean {
     d.getDate() === today.getDate();
 }
 
-export function AssignmentList({ childId = "", childName, refreshKey, mockAssignments, onMockDelete, highlightSkillId }: Props) {
-  const [assignments, setAssignments] = useState<Assignment[]>(mockAssignments ?? []);
-  const [loading, setLoading] = useState(!mockAssignments);
+export function AssignmentList({ childId = "", childName, refreshKey, highlightSkillId }: Props) {
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [subjectFilter, setSubjectFilter] = useState<string | null>(null);
-  const [detailData, setDetailData] = useState<{ skillId: string; mock?: MockSessionForModal } | null>(null);
+  const [detailData, setDetailData] = useState<{ skillId: string } | null>(null);
 
   const fetchAssignments = useCallback(async () => {
     const { data } = await supabase
       .from("parent_assignments")
-      .select("id, skill_id, assigned_date, due_date, status, note")
+      .select("id, skill_id, assigned_date, due_date, status, note, created_at, updated_at")
       .eq("child_id", childId)
       .order("assigned_date", { ascending: false })
       .limit(100);
@@ -84,45 +85,55 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
       subject: getSkillSubject(a.skill_id) ?? undefined,
     }));
 
-    // Pro splněné úkoly dohledej datum a skóre z session_logs
-    const completedSkillIds = rawList.filter(a => a.status === "completed").map(a => a.skill_id);
+    // Skóre splněného úkolu = sezení, které ho splnilo, a to natrvalo.
+    // Dřív se bralo „poslední sezení na tom skill_id", takže si dítě pozdějším
+    // procvičováním téhož tématu zpětně přepsalo známku u dávno hotového úkolu.
+    // Klíčem je proto ID úkolu, ne skill_id — jedno téma může být zadáno vícekrát.
+    const completed = rawList.filter(a => a.status === "completed");
     const completionMap = new Map<string, { date: string; correct: number; helpUsed: number; total: number }>();
 
-    if (completedSkillIds.length > 0 && childId) {
+    if (completed.length > 0 && childId) {
       const { data: logs } = await supabase
         .from("session_logs")
         .select("skill_id, session_id, correct, help_used, created_at")
         .eq("child_id", childId)
-        .in("skill_id", completedSkillIds)
+        .in("skill_id", [...new Set(completed.map(a => a.skill_id))])
         .order("created_at", { ascending: false })
         .limit(1000);
 
       if (logs) {
-        const lastSessionId = new Map<string, string>();
+        const bySkill = new Map<string, typeof logs>();
         for (const log of logs) {
-          const sid = log.skill_id as string;
-          if (!lastSessionId.has(sid)) lastSessionId.set(sid, log.session_id as string);
+          const list = bySkill.get(log.skill_id as string);
+          if (list) list.push(log);
+          else bySkill.set(log.skill_id as string, [log]);
         }
-        const cCorrect = new Map<string, number>();
-        const cHelp = new Map<string, number>();
-        const cTotal = new Map<string, number>();
-        const cDate = new Map<string, string>();
-        for (const log of logs) {
-          const sid = log.skill_id as string;
-          if (log.session_id !== lastSessionId.get(sid)) continue;
-          cTotal.set(sid, (cTotal.get(sid) ?? 0) + 1);
-          if (log.correct && !log.help_used) cCorrect.set(sid, (cCorrect.get(sid) ?? 0) + 1);
-          if (log.correct && log.help_used) cHelp.set(sid, (cHelp.get(sid) ?? 0) + 1);
-          if (!cDate.has(sid)) cDate.set(sid, log.created_at as string);
-        }
-        for (const [sid, date] of cDate) {
-          completionMap.set(sid, { date, correct: cCorrect.get(sid) ?? 0, helpUsed: cHelp.get(sid) ?? 0, total: cTotal.get(sid) ?? 0 });
+
+        for (const a of completed) {
+          const skillLogs = bySkill.get(a.skill_id) ?? [];
+          const sessionId = pickCompletingSessionId(
+            skillLogs.map(l => ({ session_id: l.session_id as string, created_at: l.created_at })),
+            toAssignmentWindow(a),
+          );
+          // Bez dohledaného sezení raději neukazuj žádné skóre než cizí.
+          if (!sessionId) continue;
+
+          const rows = skillLogs.filter(l => l.session_id === sessionId);
+          if (rows.length === 0) continue;
+          completionMap.set(a.id, {
+            // `logs` jsou řazené sestupně, takže rows[0] je poslední odpověď
+            // sezení — tedy okamžik, kdy dítě úkol dokončilo.
+            date: rows[0].created_at as string,
+            correct: rows.filter(l => l.correct && !l.help_used).length,
+            helpUsed: rows.filter(l => l.correct && l.help_used).length,
+            total: rows.length,
+          });
         }
       }
     }
 
     setAssignments(rawList.map(a => {
-      const cm = completionMap.get(a.skill_id);
+      const cm = completionMap.get(a.id);
       return cm ? { ...a, completedDate: cm.date, completionCorrect: cm.correct, completionHelpUsed: cm.helpUsed, completionTotal: cm.total } : a;
     }));
     setLoading(false);
@@ -131,15 +142,10 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
   }, [childId]);
 
   useEffect(() => {
-    if (mockAssignments) {
-      setAssignments(mockAssignments.map(a => ({ ...a, subject: a.subject ?? getSkillSubject(a.skill_id) ?? undefined })));
-      return;
-    }
     fetchAssignments();
-  }, [childId, refreshKey, mockAssignments, fetchAssignments]);
+  }, [childId, refreshKey, fetchAssignments]);
 
   const handleDelete = async (id: string) => {
-    if (onMockDelete) { onMockDelete(id); return; }
     await supabase.from("parent_assignments").delete().eq("id", id);
     setAssignments(prev => prev.filter(a => a.id !== id));
   };
@@ -151,7 +157,6 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
   const subjects = [...new Set(assignments.map(a => a.subject).filter(Boolean) as string[])];
 
   // Aplikuj filtry
-  const isDemo = !!mockAssignments;
   const filtered = assignments.filter(a => {
     const isPending = a.status === "pending";
     const isCompleted = a.status === "completed" || a.status === "skipped";
@@ -160,9 +165,6 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
 
     // "Splněné" vždy jen splněné
     if (statusFilter === "completed") return isCompleted;
-
-    // Demo: ostatní záložky vždy zobrazí všechna pending (bez datového filtru)
-    if (isDemo) return isPending;
 
     // Ostrý provoz — datové a stavové filtry
     if (statusFilter === "today") return isToday(a.assigned_date);
@@ -260,15 +262,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
                 onDelete={handleDelete}
                 isNew={!!highlightSkillId && a.skill_id === highlightSkillId}
                 onDetail={childId ? () => {
-                  if (mockAssignments && a.completionTotal != null) {
-                    const correct = a.completionCorrect ?? 0;
-                    const helpUsed = a.completionHelpUsed ?? 0;
-                    const wrong = (a.completionTotal ?? 0) - correct - helpUsed;
-                    const pct = Math.round(correct / (a.completionTotal || 1) * 100);
-                    setDetailData({ skillId: a.skill_id, mock: { correct, helpUsed, wrong, total: a.completionTotal ?? 0, date: a.completedDate ?? new Date().toISOString(), pct } });
-                  } else {
                     setDetailData({ skillId: a.skill_id });
-                  }
                 } : undefined}
               />
             ))}
@@ -280,7 +274,6 @@ export function AssignmentList({ childId = "", childName, refreshKey, mockAssign
         <SkillDetailModal
           childId={childId}
           skillId={detailData.skillId}
-          mockSession={detailData.mock}
           childName={childName}
           onClose={() => setDetailData(null)}
         />
@@ -323,7 +316,9 @@ function AssignmentCard({
   const correct = a.completionCorrect ?? 0;
   const helpUsed = a.completionHelpUsed ?? 0;
   const wrong = total - correct - helpUsed;
-  const acc = total > 0 ? Math.round((correct / total) * 100) : null;
+  // Úspěšnost = všechny správné (i s nápovědou) / celkem. Nápověda se ukazuje
+  // zvlášť, netrestá se ve známce (shodné se SkillDetailModal a ChildSessionLog).
+  const acc = total > 0 ? Math.round(((correct + helpUsed) / total) * 100) : null;
   const grade = acc !== null ? pctToGrade(acc) : null;
   const gMeta = grade !== null ? GRADE_META[grade] : null;
 

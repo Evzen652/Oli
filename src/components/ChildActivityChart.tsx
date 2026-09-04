@@ -287,13 +287,13 @@ export function ChildActivityChart({ childId }: Props) {
       {/* Legend */}
       <div className="flex items-center gap-4 text-caption text-muted-foreground justify-center pt-1">
         <span className="flex items-center gap-1">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-success" /> samostatně
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-success" /> Samostatně
         </span>
         <span className="flex items-center gap-1">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-400" /> s nápovědou
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-amber-400" /> S nápovědou
         </span>
         <span className="flex items-center gap-1">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-400" /> chybně
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-400" /> Chybně
         </span>
       </div>
         </div>

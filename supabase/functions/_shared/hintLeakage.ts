@@ -41,7 +41,20 @@ const HINT_NEUTRAL_WORDS = new Set([
 function normalize(s: string): string {
   return s
     .toLowerCase()
-    .replace(/[.,;:!?"'„"]/g, " ")
+    // Závorky patří mezi interpunkci — bez nich vznikaly tokeny jako
+    // „zbytek)" ze zadání „8 ÷ 4 = ? (může být zbytek)", které se pak
+    // neshodly se slovem „zbytek" v nápovědě, a výjimka „slovo už je
+    // v otázce" nezabrala. Hlásilo se to jako leak, přestože „zbytek"
+    // je jen tvar odpovědi („2 zbytek 0"), ne její hodnota.
+    // Čárka mezi číslicemi je desetinná — česká čísla („0,9") se jinak
+    // rozpadnou na „0 9" a žádná číselná větev je pak nepozná.
+    .replace(/(?<!\d),(?!\d)/g, " ")
+    .replace(/[.;:!?"'„"()]/g, " ")
+    // "Krok N:" je jen pořadové číslo kroku v postupu, ne obsah nápovědy —
+    // bez odstranění kolidovalo s číselnou odpovědí, kdykoli se shodovala
+    // s pořadím kroku (např. hint "Krok 3: Vyděl číslo 1000." u odpovědi
+    // "3 dm³" falešně vypadal jako prozrazení hodnoty "3").
+    .replace(/^krok \d+\s*/, "")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -63,6 +76,11 @@ function hintContainsAnswer(
 
   // Pure number/fraction answer
   if (/^-?\d+(?:[.,]\d+)?$/.test(normAnswer)) {
+    // Když je odpověď už ve znění otázky (typicky výběr z vypsaných čísel,
+    // „Které číslo je největší: 50, 15, 51?"), hint ji jen zopakuje —
+    // dítě ji čte přímo v zadání. Stejná výjimka, jakou má větev
+    // číslo+jednotka níž; tady chyběla.
+    if (questionTokens.has(normAnswer)) return { leaks: false };
     // Hledej s word boundary (aby "5" nematchovalo v "15")
     const numberPattern = new RegExp(`(^|[^\\d.,])${normAnswer.replace(".", "\\.")}([^\\d.,]|$)`);
     if (numberPattern.test(normHint)) {
@@ -82,7 +100,10 @@ function hintContainsAnswer(
   // Číslo + jednotka (např. "24 hodin", "60 minut", "5 metrů") — informační
   // jádro je číslo, jednotka je běžné slovo, které hint smí zmínit (navádí,
   // neprozrazuje). Testuj proto jen číselnou část s word boundary.
-  const numUnit = normAnswer.match(/^(-?\d+(?:[.,]\d+)?)\s+\p{L}[\p{L}\s]*$/u);
+  // Jednotka smí obsahovat i lomítko a exponent („g/cm³", „m/s", „cm²") —
+  // bez nich propadaly fyzikální odpovědi do textové větve a hlásilo se jako
+  // leak, že nápověda zmínila JEDNOTKU, ne hodnotu.
+  const numUnit = normAnswer.match(/^(-?\d+(?:[.,]\d+)?)\s+\p{L}[\p{L}\s/²³°]*$/u);
   if (numUnit) {
     const num = numUnit[1];
     // Když je číselné jádro už ve znění otázky (typicky porovnávací úlohy
@@ -140,11 +161,150 @@ function hintContainsAnswer(
 }
 
 /**
+ * Zmiňuje hint daný text (možnost) doslova? Bez filtrování slov z otázky —
+ * pro detekci rejstříku nás zajímá holý výskyt.
+ */
+function hintMentions(normHint: string, option: string, correctWords: ReadonlySet<string>): boolean {
+  const norm = normalize(option);
+  if (norm.length < 2) return false;
+
+  // Čistě číselná možnost — word boundary, ať "5" nematchuje uvnitř "15".
+  if (/^-?\d+(?:[.,]\d+)?$/.test(norm)) {
+    return new RegExp(`(^|[^\\d.,])${norm.replace(".", "\\.")}([^\\d.,]|$)`).test(normHint);
+  }
+
+  const escaped = norm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // Hranice: začátek/konec nebo nealfanumerický znak. Pomlčka u předpon
+  // („vy-") je součástí tokenu, proto se nesmí brát jako hranice zprava.
+  if (new RegExp(`(^|[\\s(,;])${escaped}([\\s),;.:=]|$)`).test(normHint)) return true;
+
+  // Fallback pro víceslovné možnosti („Různoběžky – svírají jiný úhel"):
+  // vyžadovat celou frázi doslova je nereálné, žádný autor takhle nepíše
+  // nápovědu. Stačí, když se v hintu objeví jedno dost výrazné (a tedy
+  // jednoznačné) slovo z možnosti — typicky u možností složených z pojmů,
+  // které hint definuje jinde („ani rovnoběžky, ani kolmice" je pokryté,
+  // když hint zvlášť definuje „rovnoběžky" i „kolmice").
+  //
+  // Slova sdílená se SPRÁVNOU odpovědí se ale nepočítají — jinak u odpovědí
+  // složených z více slov („Vpravo nahoře") dostane distraktor „Vpravo dole"
+  // falešný kredit jen proto, že sdílí „vpravo" se správnou odpovědí. Ta
+  // slova jsou potřeba k odvození SPRÁVNÉ odpovědi, ne k pokrytí JINÉ.
+  const words = norm.split(/\s+/).filter((w) => w.length >= 5 && !correctWords.has(w));
+  if (words.some((w) => {
+    const escW = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(^|[\\s(,;])${escW}`).test(normHint);
+  })) return true;
+
+  // Fallback pro číslované položky („1. osoba", „2. pád"): rozlišující prvek
+  // je krátké pořadové číslo, které předchozí fallback (délka ≥5) nevidí,
+  // a slovní pořadí bývá v hintu obrácené („Osoba: 1. já/my, 2. ty/vy…"
+  // vs. možnost „1. osoba"). Stačí, že hint vyjmenovává STEJNÉ číslo jako
+  // položku seznamu — přesně tak, jak rejstřík gramatických kategorií
+  // (osoba, pád, stupeň) v praxi vypadá.
+  const ordinal = norm.match(/^(\d{1,2})\b/)?.[1];
+  if (ordinal && !correctWords.has(ordinal)) {
+    return new RegExp(`(^|[\\s(,;])${ordinal}[.,\\s]`).test(normHint);
+  }
+  return false;
+}
+
+/**
+ * REJSTŘÍKOVÉ PRAVIDLO — nápověda, která vyjmenovává možnosti, neprozrazuje.
+ *
+ * Spousta témat dává jako nápovědu katalog pravidel pro VŠECHNY možnosti:
+ *
+ *   Q: Doplň předponu: „___dělal jsem úkol."   A: „vy-"
+ *   H1: vy- = dokončení děje nebo pohyb ven
+ *   H2: vý- = přízvučná první slabika
+ *   H3: s- = pohyb dolů …
+ *
+ * Odpověď v takové nápovědě nutně je — ale jsou tam i všechny ostatní, takže
+ * dítěti neřekne, kterou zvolit; pořád musí použít pravidlo. Zakázat to by
+ * znamenalo zakázat rejstřík pravidel, což je přesně ta nápověda, kterou
+ * norma chce (viz CONTENT_AUTHORING.md §7.2 „obecné pravidlo NENÍ leak").
+ *
+ * Rozhoduje se nad CELOU sadou nápověd, ne nad jednou: dítě je vidí postupně
+ * všechny, takže katalog rozprostřený přes H1..H5 je pořád katalog.
+ *
+ * NEPLATÍ PRO ČÍSELNÉ ODPOVĚDI — a je to podstatné. U násobilky vypadá
+ * nápověda takhle:
+ *
+ *   Q: 3 × 8 = ?   A: 24   Možnosti: 22 | 24 | 27 | 21
+ *   H1: Počítej po 3: 3, 6, 9, 12, 15, 18, 21, 24.
+ *
+ * Řada končí odpovědí, takže dítěti stačí přečíst poslední číslo — to je
+ * skutečný leak. Že řada cestou obsahuje i distraktor (21), je náhoda
+ * číselné posloupnosti, ne vyjmenování možností. Rejstřík proto povolujeme
+ * jen u nečíselných odpovědí (pojmy, grafémy, tvary).
+ *
+ * Vyžadujeme, aby sada zmiňovala VŠECHNY možnosti, ne jen jednu navíc.
+ * Volnější varianta („zmiňuje aspoň jeden distraktor") při ověřování umlčela
+ * spoustu skutečných leaků, které jen náhodou zavadily o distraktor:
+ *
+ *   A: „Plzeň"  H1: „Toto město je krajským městem Plzeňského kraje."
+ *   A: „Dole"   H2: „Na mapě je jih vždy dole."
+ *
+ * Obě odpověď říkají rovnou; že jinde padlo „Karlovy Vary" nebo „nahoře",
+ * z nich rejstřík nedělá. Až úplný výčet znamená, že si dítě pořád musí
+ * vybrat samo.
+ *
+ * Kompromis i tak zůstává: nechytí konstrukci „není to Kolmice, je to
+ * Rovnoběžky". Kontrola rovnosti (`hintShowsEquality`) platí dál.
+ */
+function hintsEnumerateOptions(
+  hints: string[],
+  correctAnswer: string,
+  options?: string[],
+): boolean {
+  if (!options || options.length < 2) return false;
+  const normCorrect = normalize(correctAnswer);
+  // Číselná odpověď → viz komentář výše, rejstřík neplatí.
+  if (/^-?\d+(?:[.,]\d+)?$/.test(normCorrect)) return false;
+  const others = options.filter((o) => normalize(o) !== normCorrect);
+  if (others.length === 0) return false;
+
+  const normHints = hints
+    .filter((h) => typeof h === "string" && h.trim())
+    .map((h) => normalize(h));
+  const correctWords = new Set(normCorrect.split(/\s+/));
+
+  const mentioned = others.filter((o) => normHints.some((h) => hintMentions(h, o, correctWords))).length;
+  // Práh 2 (u binárních možností všechny): jeden zmíněný distraktor ještě
+  // rejstřík nedělá — viz „Plzeň"/„Dole" v komentáři výše. Dva a víc už ano;
+  // úplný výčet vyžadovat nejde, protože mezi možnostmi bývá vymyšlený
+  // distraktor, který v katalogu pravidel nemá co dělat („neurčitý" čas).
+  if (mentioned >= Math.min(2, others.length)) return true;
+
+  // Silnější signál: možnost VYSVĚTLENÁ za „=" stačí sama, i jen jedna.
+  // Binární klasifikace („Urči druh: 'Slunce svítí, ale je chladno.'" →
+  // souvětí) se často vyskytuje s vymyšlenými distraktory navíc pro count
+  // („věta s přívlastkem", „věta rozšířená") — ty žádný rejstřík krýt
+  // nepotřebuje, protože nikdo rozumný je nepovažuje za skutečnou alternativu.
+  // Klíčový rozdíl od „Plzeň"/„Dole": tam byla druhá možnost zmíněná JEN
+  // jako vedlejší souřadnice ve vysvětlující větě („leží dál na západ než
+  // Karlovy Vary"), tady je přímo DEFINOVANÁ („Věta jednoduchá = 1
+  // přísudek"). Marker „=" tenhle rozdíl spolehlivě pozná.
+  return others.some((o) => normHints.some((h) => hintDefinesOption(h, o)));
+}
+
+/** Je možnost v hintu přímo DEFINOVANÁ (za „=", ne jen mimochodem zmíněná)? */
+function hintDefinesOption(normHint: string, option: string): boolean {
+  const norm = normalize(option);
+  if (norm.length < 2) return false;
+  const escaped = norm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^|[\\s(,;])${escaped}\\s*=`).test(normHint);
+}
+
+/**
  * Kontrola, zda hint obsahuje "rovnost s odpovědí" — typický pattern
  * "X = 36" kde 36 je odpověď.
  */
 function hintShowsEquality(hint: string, answer: string): boolean {
   const normAnswer = answer.trim().replace(/,/g, ".");
+  // U krátkých nečíselných odpovědí (grafémy, předložky) je test rovnosti
+  // nesmyslný: v nápovědě „z/ze = pohyb z vnitřku (ze školy = z vnitřku)"
+  // se „= z" trefí do výkladového příkladu, ne do prozrazení odpovědi „z".
+  if (!/^-?\d/.test(normAnswer) && normAnswer.length < 3) return false;
   const escapedAnswer = normAnswer.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // Hledej "= 36" nebo "= 36." apod.
   const patterns = [
@@ -160,6 +320,8 @@ export function checkHintLeakage(task: {
   question: string;
   correct_answer: string;
   hints?: string[];
+  /** Možnosti u výběrových typů — bez nich nelze poznat rejstříkovou nápovědu. */
+  options?: string[];
 }): HintLeakageResult {
   if (!task.hints || task.hints.length === 0) return { ok: true };
   if (!task.correct_answer) return { ok: true };
@@ -170,12 +332,17 @@ export function checkHintLeakage(task: {
     normalize(task.question || "").split(/\s+/).filter(Boolean),
   );
 
+  // Vyjmenovává sada nápověd i jiné možnosti? Pak výskyt odpovědi neprozrazuje.
+  const isCatalogue = hintsEnumerateOptions(task.hints, task.correct_answer, task.options);
+
   for (let i = 0; i < task.hints.length; i++) {
     const hint = task.hints[i];
     if (typeof hint !== "string" || !hint.trim()) continue;
 
-    // Test 1: Doslovný výskyt odpovědi
-    const direct = hintContainsAnswer(hint, task.correct_answer, questionTokens);
+    // Test 1: Doslovný výskyt odpovědi (neplatí pro rejstřík možností)
+    const direct = isCatalogue
+      ? { leaks: false as const }
+      : hintContainsAnswer(hint, task.correct_answer, questionTokens);
     if (direct.leaks) {
       return {
         ok: false,

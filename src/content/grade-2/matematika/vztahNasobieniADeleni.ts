@@ -69,7 +69,7 @@ export const VZTAHNASOBENIADELENI: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-cislo-a-pocetni-operace-nasobeni-a-deleni-vztah-nasobeni-a-deleni",
     title: "Vztah násobení a dělení",
-    studentTitle: "Násobení a dělení",
+    studentTitle: "Krát a děleno",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Násobení a dělení",

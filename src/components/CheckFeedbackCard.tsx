@@ -1,6 +1,7 @@
 import type { PracticeTask, TopicMetadata } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { useT } from "@/lib/i18n";
 
 interface CheckFeedbackCardProps {
@@ -151,7 +152,7 @@ export function CheckFeedbackCard({
           stav nese jen okraj a barva nadpisu — plná červená plocha je pro
           dítě trest, ne informace. Oranžová je vyhrazená sově, ne chybě. */}
       <Card
-        className={`overflow-hidden border-2 ${
+        className={`overflow-hidden rounded-3xl border shadow-e1 ${
           lastAnswerCorrect ? "border-success/40 animate-pop-in" : "border-destructive/40 animate-shake"
         }`}
       >
@@ -159,15 +160,8 @@ export function CheckFeedbackCard({
           <h2 className={`text-2xl font-bold mb-3 ${lastAnswerCorrect ? "text-success" : "text-destructive"}`}>
             {checkFeedback}
           </h2>
-          {lastAnswerCorrect && (
-            <div className="flex justify-center gap-2 mb-2">
-              {["🎉", "⭐", "✨", "🌟", "🎊"].map((emoji, i) => (
-                <span key={i} className="animate-float-up text-2xl" style={{ animationDelay: `${i * 0.1}s` }}>{emoji}</span>
-              ))}
-            </div>
-          )}
           {answeredTask && topic && (
-            <div className="mt-4 rounded-lg bg-muted/60 p-5 text-base text-secondary-foreground space-y-3">
+            <div className="mt-4 rounded-2xl border border-border bg-card p-5 text-base text-secondary-foreground space-y-3">
               {/* Cílené vysvětlení konkrétní chyby — jen když je zvolená možnost diagnostikovaná */}
               {targetedFeedback && (
                 <div className="rounded-md bg-warning-muted border border-warning/30 p-3">
@@ -191,8 +185,9 @@ export function CheckFeedbackCard({
 
       {!isTerminal && (
         <div className="text-center">
-          <Button onClick={onContinue} disabled={loading} variant="success" size="child" className="w-full text-lg">
+          <Button onClick={onContinue} disabled={loading} size="child" className="group w-full gap-2 rounded-full text-lg font-bold">
             {loading ? t("session.processing") : t("session.continue")}
+            {!loading && <PaintedArrow className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />}
           </Button>
         </div>
       )}

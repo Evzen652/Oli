@@ -171,7 +171,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je nejlepší pít, když máš žízeň?",
     correctAnswer: "Vodu",
-    options: ["Vodu", "Sladkou limonádu", "Kolu", "Energetický nápoj"],
+    options: ["Sladkou limonádu", "Vodu", "Kolu", "Energetický nápoj"],
     emoji: "💧",
     hints: [
       "Který nápoj tělu nejvíc prospívá a neobsahuje cukr?",
@@ -183,12 +183,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co pomáhá tělu, aby bylo silné a zdravé?",
     correctAnswer: "Pravidelný pohyb a sport",
-    options: [
-      "Pravidelný pohyb a sport",
-      "Celodenní sezení u počítače",
-      "Přejídání se sladkostmi",
-      "Vynechávání spánku",
-    ],
+    options: ["Celodenní sezení u počítače", "Přejídání se sladkostmi", "Pravidelný pohyb a sport", "Vynechávání spánku"],
     emoji: "🏃",
     hints: [
       "Co posiluje svaly a srdce?",
@@ -200,12 +195,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdy si máme čistit zuby?",
     correctAnswer: "Ráno a večer",
-    options: [
-      "Ráno a večer",
-      "Jen jednou za týden",
-      "Nikdy, není to potřeba",
-      "Jen když nás bolí",
-    ],
+    options: ["Jen jednou za týden", "Nikdy, není to potřeba", "Jen když nás bolí", "Ráno a večer"],
     emoji: "🦷",
     hints: [
       "Zuby čistíme na začátku i na konci dne.",
@@ -234,12 +224,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá tělo, když v noci spíme?",
     correctAnswer: "Odpočívá a nabírá novou energii",
-    options: [
-      "Odpočívá a nabírá novou energii",
-      "Pracuje víc než přes den",
-      "Nic se s ním neděje",
-      "Ztrácí sílu a slábne",
-    ],
+    options: ["Pracuje víc než přes den", "Odpočívá a nabírá novou energii", "Nic se s ním neděje", "Ztrácí sílu a slábne"],
     emoji: "😴",
     hints: [
       "Jak se cítíme ráno po dobrém spánku?",
@@ -251,12 +236,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Která z těchto věcí zubům škodí nejvíc?",
     correctAnswer: "Jíst hodně sladkostí a nečistit si zuby",
-    options: [
-      "Jíst hodně sladkostí a nečistit si zuby",
-      "Čistit si zuby ráno a večer",
-      "Jíst mrkev a jablka",
-      "Pít vodu",
-    ],
+    options: ["Čistit si zuby ráno a večer", "Jíst mrkev a jablka", "Jíst hodně sladkostí a nečistit si zuby", "Pít vodu"],
     emoji: "🍭",
     hints: [
       "Co na zubech zůstane po sladkém a způsobí kaz?",
@@ -268,12 +248,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co patří ke zdravému dni dítěte?",
     correctAnswer: "Pohyb venku, zdravé jídlo a dost spánku",
-    options: [
-      "Pohyb venku, zdravé jídlo a dost spánku",
-      "Celý den u televize a samé sladkosti",
-      "Žádný pohyb a spánek jednu hodinu",
-      "Jen sezení a slazené nápoje",
-    ],
+    options: ["Celý den u televize a samé sladkosti", "Žádný pohyb a spánek jednu hodinu", "Jen sezení a slazené nápoje", "Pohyb venku, zdravé jídlo a dost spánku"],
     emoji: "🌞",
     hints: [
       "Zdravý den spojuje víc dobrých návyků najednou, ne jen jeden.",
@@ -302,12 +277,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč je dobré jíst ovoce a zeleninu?",
     correctAnswer: "Obsahují vitamíny, které tělo potřebuje",
-    options: [
-      "Obsahují vitamíny, které tělo potřebuje",
-      "Obsahují hodně cukru a barviv",
-      "Nemají pro tělo žádný význam",
-      "Škodí zubům víc než bonbony",
-    ],
+    options: ["Obsahují hodně cukru a barviv", "Obsahují vitamíny, které tělo potřebuje", "Nemají pro tělo žádný význam", "Škodí zubům víc než bonbony"],
     emoji: "🥗",
     hints: [
       "Co dobrého ovoce a zelenina tělu dodávají?",
@@ -319,12 +289,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co je zdravější způsob trávení odpoledne?",
     correctAnswer: "Jít si zahrát ven na hřiště",
-    options: [
-      "Jít si zahrát ven na hřiště",
-      "Celé odpoledne sedět u obrazovky",
-      "Ležet a jíst chipsy",
-      "Nehýbat se a pít limonádu",
-    ],
+    options: ["Celé odpoledne sedět u obrazovky", "Ležet a jíst chipsy", "Jít si zahrát ven na hřiště", "Nehýbat se a pít limonádu"],
     emoji: "🤸",
     hints: [
       "Kdy je v odpoledni nejvíc pohybu?",
@@ -336,12 +301,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "K čemu je dobrá pravidelná hygiena, třeba mytí rukou a sprchování?",
     correctAnswer: "Chrání nás před bakteriemi a nemocemi",
-    options: [
-      "Chrání nás před bakteriemi a nemocemi",
-      "Nemá vůbec žádný smysl",
-      "Slouží jen k tomu, abychom voněli",
-      "Škodí zdraví a oslabuje tělo",
-    ],
+    options: ["Nemá vůbec žádný smysl", "Slouží jen k tomu, abychom voněli", "Škodí zdraví a oslabuje tělo", "Chrání nás před bakteriemi a nemocemi"],
     emoji: "🚿",
     hints: [
       "Co z těla a rukou odstraníme, když se myjeme?",
@@ -373,12 +333,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Kamarád tvrdí, že je zdravější pít celý den kolu než vodu. Jak to opravíš?",
     correctAnswer: "Zdravější je voda — kola má hodně cukru, který škodí zubům i tělu",
-    options: [
-      "Zdravější je voda — kola má hodně cukru, který škodí zubům i tělu",
-      "Kamarád má pravdu, kola je nejzdravější nápoj",
-      "Voda i kola jsou úplně stejně zdravé",
-      "Nejzdravější je nepít vůbec nic",
-    ],
+    options: ["Kamarád má pravdu, kola je nejzdravější nápoj", "Zdravější je voda — kola má hodně cukru, který škodí zubům i tělu", "Voda i kola jsou úplně stejně zdravé", "Nejzdravější je nepít vůbec nic"],
     emoji: "💧",
     hints: [
       "Porovnej vodu a kolu podle množství cukru.",
@@ -390,12 +345,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které dvě věci k sobě patří jako zdravé návyky?",
     correctAnswer: "Pravidelný pohyb a dostatek spánku",
-    options: [
-      "Pravidelný pohyb a dostatek spánku",
-      "Celodenní televize a samé bonbony",
-      "Málo vody a žádná hygiena",
-      "Přejídání a nulový pohyb",
-    ],
+    options: ["Celodenní televize a samé bonbony", "Málo vody a žádná hygiena", "Pravidelný pohyb a dostatek spánku", "Přejídání a nulový pohyb"],
     emoji: "💪",
     hints: [
       "Obě věci musí tělu prospívat.",
@@ -407,12 +357,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč se cítíme unavení a nesoustředění, když se v noci moc nevyspíme?",
     correctAnswer: "Tělo si přes krátký spánek nestihlo odpočinout a nabrat energii",
-    options: [
-      "Tělo si přes krátký spánek nestihlo odpočinout a nabrat energii",
-      "Protože jsme přes noc příliš odpočatí",
-      "Protože málo spánku dodá tělu moc energie",
-      "S únavou spánek vůbec nesouvisí",
-    ],
+    options: ["Protože jsme přes noc příliš odpočatí", "Protože málo spánku dodá tělu moc energie", "S únavou spánek vůbec nesouvisí", "Tělo si přes krátký spánek nestihlo odpočinout a nabrat energii"],
     emoji: "😪",
     hints: [
       "K čemu tělu spánek slouží?",
@@ -441,12 +386,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč nestačí ke zdraví jen zdravě jíst, ale je potřeba se i hýbat?",
     correctAnswer: "Pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
-    options: [
-      "Pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
-      "Protože po jídle se člověk nesmí ani pohnout",
-      "Protože zdravé jídlo tělu naopak škodí",
-      "Pohyb se zdravím vůbec nesouvisí",
-    ],
+    options: ["Protože po jídle se člověk nesmí ani pohnout", "Pohyb posiluje svaly a srdce, které samotné jídlo neposílí", "Protože zdravé jídlo tělu naopak škodí", "Pohyb se zdravím vůbec nesouvisí"],
     emoji: "🏃",
     hints: [
       "Co dělá s tělem pohyb, co jídlo samo neumí?",
@@ -458,12 +398,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Petr sní k obědu jen tabulku čokolády. Co mu chybí, aby byl oběd zdravý?",
     correctAnswer: "Zelenina, pečivo nebo maso a k pití voda — čokoláda je samý cukr",
-    options: [
-      "Zelenina, pečivo nebo maso a k pití voda — čokoláda je samý cukr",
-      "Nic, čokoláda je úplně vyvážený oběd",
-      "Ještě víc čokolády a sladká limonáda",
-      "Jen další bonbony jako zákusek",
-    ],
+    options: ["Nic, čokoláda je úplně vyvážený oběd", "Ještě víc čokolády a sladká limonáda", "Zelenina, pečivo nebo maso a k pití voda — čokoláda je samý cukr", "Jen další bonbony jako zákusek"],
     emoji: "🍽️",
     hints: [
       "Co zdravému obědu chybí, když je v něm jen sladké?",
@@ -475,12 +410,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč je lepší svačina jablko než sáček bonbonů, i když obojí zasytí?",
     correctAnswer: "Jablko má vitamíny a neškodí zubům, bonbony jsou skoro jen cukr",
-    options: [
-      "Jablko má vitamíny a neškodí zubům, bonbony jsou skoro jen cukr",
-      "Jablko i bonbony jsou úplně stejně zdravé",
-      "Bonbony jsou zdravější, protože jsou sladší",
-      "Jablko škodí zubům víc než bonbony",
-    ],
+    options: ["Jablko i bonbony jsou úplně stejně zdravé", "Bonbony jsou zdravější, protože jsou sladší", "Jablko škodí zubům víc než bonbony", "Jablko má vitamíny a neškodí zubům, bonbony jsou skoro jen cukr"],
     emoji: "🍏",
     hints: [
       "Porovnej, co dobrého tělu dodá jablko a co bonbony.",
@@ -562,7 +492,7 @@ export const ZDRAVYZIVOTNISTYL: TopicMetadata[] = [
     id: "g2-prv-zdravy-styl",
     rvpNodeId: "g2-prvouka-clovek-a-jeho-zdravi-zdravy-zivotni-styl-pohyb-odpocinek-spanek-pitny-rezim",
     title: "Zdravý životní styl – pohyb, odpočinek, spánek, pitný režim",
-    studentTitle: "Zdravý život",
+    studentTitle: "Jak zůstat zdravý",
     subject: "prvouka",
     category: "Člověk a jeho zdraví",
     topic: "Zdravý životní styl",

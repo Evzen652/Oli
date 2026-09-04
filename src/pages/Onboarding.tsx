@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { OliLogo } from "@/components/OliLogo";
+import { oliPozdrav } from "@/lib/oliPoses";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
+import { gradeIllustration } from "@/lib/gradeIllustrations";
 import { isGradeAvailable } from "@/lib/contentAvailability";
 import { startTrial } from "@/lib/anonTrial";
 import { serverStartTrial } from "@/lib/anonServerSync";
+import { writeLocal } from "@/lib/safeStorage";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
 import { useToast } from "@/hooks/use-toast";
@@ -89,19 +92,51 @@ function BouncingDots() {
   return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0" aria-hidden="true" />;
 }
 
+/**
+ * Barvy dlaždic ročníků — **tlumená akvarelová paleta, ne Tailwind duha**.
+ *
+ * Dvě věci naráz, které jdou proti sobě: dlaždice mají působit jako **jedna
+ * sada**, a zároveň **vesele**. Řeší to dělba rolí — o „jedné sadě" rozhoduje
+ * **společná světlost** (85 % nahoře, 77 % dole), o veselosti **sytost**
+ * (75 %). Mění se jen tón; kdyby se lišila i světlost, rozpadne se to na
+ * devět nesouvisejících barev.
+ *
+ * Cesta sem vedla přes tři zavržené verze — každá selhala na něčem jiném:
+ *  1. Tailwind `-400/-500` (S přes 90 %, L ~52 %) — vedle akvarelů křičely,
+ *     protože měly nízkou světlost, ne proto, že byly syté;
+ *  2. tlumená (S 40 %, L 66–76 %) — ke kresbám seděla, ale devět sytých
+ *     odstínů vedle sebe pořád četlo jako duha;
+ *  3. skoro jednotná (S 30 %, L 86–92 %) — jedna sada ano, ale bez života.
+ *
+ * Hexy, ne Tailwind třídy: Tailwind tuhle kombinaci sytosti a světlosti
+ * v paletě systematicky nemá.
+ */
 const GRADE_META: Record<number, {
-  gradient: string; border: string; text: string; rotate: string;
+  from: string; to: string; border: string; rotate: string;
 }> = {
-  1: { gradient: "from-red-400 to-rose-500",       border: "border-red-500",     text: "text-white",       rotate: "-rotate-3"  },
-  2: { gradient: "from-orange-400 to-amber-500",   border: "border-orange-500",  text: "text-white",       rotate: "rotate-2"   },
-  3: { gradient: "from-yellow-300 to-amber-400",   border: "border-yellow-500",  text: "text-yellow-900",  rotate: "-rotate-2"  },
-  4: { gradient: "from-lime-400 to-green-500",     border: "border-green-600",   text: "text-green-900",   rotate: "rotate-3"   },
-  5: { gradient: "from-emerald-400 to-teal-500",   border: "border-teal-600",    text: "text-white",       rotate: "-rotate-1"  },
-  6: { gradient: "from-cyan-400 to-sky-500",       border: "border-sky-600",     text: "text-white",       rotate: "rotate-2"   },
-  7: { gradient: "from-blue-400 to-indigo-500",    border: "border-indigo-600",  text: "text-white",       rotate: "-rotate-3"  },
-  8: { gradient: "from-violet-400 to-purple-600",  border: "border-violet-700",  text: "text-white",       rotate: "rotate-1"   },
-  9: { gradient: "from-fuchsia-400 to-pink-600",   border: "border-fuchsia-600", text: "text-white",       rotate: "-rotate-2"  },
+  1: { from: "#F5C9BC", to: "#F2AC97", border: "#ED8768", rotate: "-rotate-3" },  // korálová
+  2: { from: "#F5DBBC", to: "#F2C797", border: "#EDAF68", rotate: "rotate-2"  },  // okrová
+  3: { from: "#F5EABC", to: "#F2DF97", border: "#EDD368", rotate: "-rotate-2" },  // hořčicová
+  4: { from: "#D7F5BC", to: "#C1F297", border: "#A6ED68", rotate: "rotate-3"  },  // šalvějová
+  5: { from: "#BCF5DE", to: "#97F2CC", border: "#68EDB6", rotate: "-rotate-1" },  // mátová
+  6: { from: "#BCEEF5", to: "#97E5F2", border: "#68DCED", rotate: "rotate-2"  },  // petrolejová
+  7: { from: "#BCD5F5", to: "#97BEF2", border: "#68A2ED", rotate: "-rotate-3" },  // zaprášená modrá
+  8: { from: "#CDBCF5", to: "#B297F2", border: "#9068ED", rotate: "rotate-1"  },  // levandulová
+  9: { from: "#F5BCCF", to: "#F297B5", border: "#ED6895", rotate: "-rotate-2" },  // růžová
 };
+
+/**
+ * Číslo na dlaždici „brzy" — tmavý inkoust, stejná rodina jako kontura kreseb.
+ *
+ * Krytí je **0,8, ne 0,6**. Dlaždice nedostupného ročníku se navíc odbarvuje
+ * a ztlumuje, takže se výsledná barva posune ke světlé. Na finální paletě
+ * vychází nejhorší případ (levandulová) **3,69**; u zavržené skoro jednotné
+ * verze spadl při krytí 0,6 na **2,98**, tedy pod práh 3,0 pro velký text.
+ *
+ * Kontrast se počítá proti barvě PO filtrech, ne proti hexu z `GRADE_META` —
+ * ten je znatelně sytější a dal by falešně příznivé číslo.
+ */
+const GRADE_INK = "#4A4038";
 
 export default function Onboarding() {
   const navigate = useNavigate();
@@ -115,8 +150,11 @@ export default function Onboarding() {
       return;
     }
     setSelected(grade);
-    localStorage.setItem("oli_anon_grade", String(grade));
-    localStorage.setItem("oli_anon_started", new Date().toISOString());
+    // Zápis smí selhat (anonymní režim, zakázaná data stránek) — trial se
+    // pak neuloží, ale dítě se do procvičování dostane. Dřív tu výjimka
+    // zabila první klik nového návštěvníka.
+    writeLocal("oli_anon_grade", String(grade));
+    writeLocal("oli_anon_started", new Date().toISOString());
     startTrial(grade);
     serverStartTrial(grade); // Fáze 3: zrcadlení trialu na server (fire-and-forget)
     setTimeout(() => navigate("/student?anon=1"), 650);
@@ -137,7 +175,8 @@ export default function Onboarding() {
         <div className="max-w-lg w-full space-y-10 text-center">
 
           <div className="flex flex-col items-center gap-4">
-            <OliLogo size="md" variant="notext" />
+            {/* Mávající póza, ne logo — nadpis pod ní je „Ahoj! Já jsem Oli." */}
+            <img src={oliPozdrav} alt="" className="h-20 w-20 object-contain" />
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                 Ahoj! Já jsem Oli.
@@ -159,7 +198,7 @@ export default function Onboarding() {
               <p className="font-bold text-emerald-900 text-base">Jsem rodič</p>
               <p className="text-sm text-emerald-700">Chci zadávat úkoly a sledovat pokrok dítěte</p>
             </div>
-            <span className="text-emerald-500 text-xl shrink-0 ml-3">→</span>
+            <PaintedArrow className="h-5 w-5 text-emerald-500 shrink-0 ml-3" />
           </a>
 
           <div className="space-y-4">
@@ -170,6 +209,7 @@ export default function Onboarding() {
                 const m = GRADE_META[grade];
                 const isSelected = selected === grade;
                 const isOther = selected !== null && selected !== grade;
+                const illustration = gradeIllustration(grade);
                 return (
                   <button
                     key={grade}
@@ -181,20 +221,53 @@ export default function Onboarding() {
                         : isOther
                         ? "scale(0.82)"
                         : undefined,
-                      opacity: isOther ? 0.35 : 1,
+                      // Ztlumení nedostupného ročníku MUSÍ být tady, ne třídou.
+                      // Inline `style` přebíjí Tailwind, takže `opacity-60`
+                      // v `className` se nikdy neuplatnilo — ověřeno přes
+                      // `getComputedStyle`, vracelo 1. Dlaždice „brzy" se tedy
+                      // jen odbarvovaly, nikdy neztlumily.
+                      opacity: isOther ? 0.35 : available ? 1 : 0.7,
                       boxShadow: isSelected ? "0 0 0 6px rgba(255,255,255,0.7), 0 8px 32px rgba(0,0,0,0.18)" : undefined,
+                      // Hexy z GRADE_META, ne Tailwind třídy — tlumené odstíny
+                      // akvarelů Tailwind v paletě nemá.
+                      backgroundImage: `linear-gradient(to bottom right, ${m.from}, ${m.to})`,
+                      borderColor: m.border,
+                      color: GRADE_INK,
                     }}
                     className={`
-                      relative overflow-hidden aspect-square rounded-2xl border-2 bg-gradient-to-br
+                      relative overflow-hidden aspect-square rounded-2xl border-2
                       flex flex-col items-center justify-center shadow-md
                       ${selected === null ? "cursor-pointer hover:shadow-xl hover:rotate-0 hover:scale-105 active:scale-95 transition-all duration-200" : "cursor-default"}
-                      ${m.gradient} ${m.border} ${m.text} ${selected === null ? m.rotate : ""}
-                      ${available ? "" : "saturate-[0.35] opacity-60"}
+                      ${selected === null ? m.rotate : ""}
+                      ${/* Šest z devíti ročníků je „brzy", takže o dojmu ze
+                            stránky rozhoduje hlavně odbarvení. Původní 0,35
+                            z nich dělalo šedivé placky i na veselé paletě.
+                            Zjemněno na 0,55: barevnost dlaždice stoupla
+                            z 11,7 na 21,4 a kontrast čísla drží 4,10.
+                            Ztlumení (opacity) je v `style` — třídou se
+                            neuplatní, viz komentář výše. */
+                        available ? "" : "saturate-[0.55]"}
                     `}
                   >
-                    <span className="text-[5rem] font-black leading-none opacity-60 select-none">
-                      {grade}
-                    </span>
+                    {/* Ročník s obsahem dostane portrét + číslo jako odznak;
+                        ročník „brzy" zůstává u holého čísla. Rozdíl mezi
+                        hotovým a chystaným je tím vidět, ne jen z popisku. */}
+                    {illustration ? (
+                      <>
+                        <img
+                          src={illustration}
+                          alt=""
+                          className="h-[72%] w-[72%] object-contain drop-shadow-sm select-none"
+                        />
+                        <span className="absolute top-1.5 left-1.5 h-8 w-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-slate-800 text-base font-black leading-none select-none">
+                          {grade}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-[5rem] font-black leading-none opacity-80 select-none">
+                        {grade}
+                      </span>
+                    )}
                     {!available && (
                       <span className="absolute bottom-1.5 inset-x-0 text-center text-[0.65rem] font-bold uppercase tracking-wider select-none">
                         brzy
@@ -227,9 +300,9 @@ export default function Onboarding() {
             </p>
             <a
               href="/auth?mode=register"
-              className="text-sm font-medium text-orange-500 hover:text-orange-600 hover:underline transition-colors inline-flex"
+              className="text-sm font-medium text-orange-500 hover:text-orange-600 hover:underline transition-colors inline-flex items-center gap-1.5"
             >
-              Jsem tady jako rodič →
+              Jsem tady jako rodič <PaintedArrow className="h-4 w-4" />
             </a>
           </div>
 

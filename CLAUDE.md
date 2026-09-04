@@ -93,13 +93,17 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 ---
 
 ## Multi-PC workflow
-- User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull` (na branchi `claude/cranky-shirley`), abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
+- User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull`, abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
+- **Pracovní branch je `main`** (od 2026-09-04). Do té doby se pracovalo na `chore/remove-essay-and-ai-authoring`; ta je teď fast-forwardnutá do `main` a **dosloužila — už do ní necommituj**.
+- **Proč se to sjednotilo:** dokud práce běžela mimo `main`, každá nová session i každý nástroj startoval od `main` a dostal několik měsíců starý kód. Varování o tom přitom leželo v CLAUDE.md **na té odbočené větvi**, takže ho ten, kdo začal od `main`, nikdy neviděl. Jednou to stálo celý rozdělaný task napsaný proti neexistujícímu kódu. Kdyby se práce zase odklonila mimo `main`, patří upozornění na **obě** větve, ne jen na tu novou.
+- **Když se na druhém PC „nezobrazují změny", zkontroluj nejdřív branch** (`git status -sb`), ne cache. Tahle záměna už jednou stála čas.
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.
 - Pro jednoduchý start je v repo skript `scripts/oli-start.ps1` (Windows) — dělá `git pull` + `npm install` (jen když je třeba) + `npm run dev`. User ho spouští dvojklikem.
 
 ## ⚠️ ZAČÁTEK KAŽDÉ SESSION — POVINNÉ
 
 Po `git pull` vždy zobraz stručné shrnutí stavu projektu:
+0. **Nejdřív ověř větev a worktree** — [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) sekce 0. Od 2026-09-04 se pracuje na `main`, takže shoda s `origin/main` je v pořádku — ale `git fetch` si udělej, ať to ověřuješ proti čerstvému stavu, ne proti tomu, co máš z minule.
 1. **Kde jsme skončili** — přečti sekci 6 z `PROJECT_STATUS.md` (Otevřené / poslední session hotovo)
 2. **Co je rozděláno** — přečti otevřené položky z `docs/PENDING_CHANGES.md`
 3. Zobraz jako 2–3 věty + bullet list „Doporučené další kroky" (priorita dle PENDING_CHANGES)
@@ -111,10 +115,21 @@ Pokud session trvá déle (mnoho zpráv / velké soubory), proaktivně upozorni:
 Toto upozornění dej vždy po velkém tasku nebo pokud máš pocit, že kontext přesahuje ~70 % kapacity.
 
 ## Stack
-- React 19 + Vite 5 + TypeScript + Tailwind CSS 3 + shadcn/ui + Supabase
-- State: React hooks + Zustand (implicit)
-- Data: @tanstack/react-query + Supabase client
-- Charts: Recharts
+
+> Ověřeno proti `package.json` a kódu 2026-09-03. Předchozí verze téhle sekce
+> uváděla React 19, Zustand a react-query jako zdroj dat — ani jedno neplatilo.
+> Podle téhle sekce se rozhoduje, co v kódu jde použít, takže nepřesnost tady
+> je dražší než jinde.
+
+- **React 18.3.1** + Vite 5 + TypeScript + Tailwind CSS 3 + shadcn/ui + Supabase
+  (React 19 v projektu **není** — API jako `use()` tedy k dispozici nemáš)
+- State: **jen React hooks**. Zustand není nainstalovaný ani použitý.
+- Data: **přímý Supabase klient**. `@tanstack/react-query` je sice nainstalovaný
+  a `QueryClientProvider` namontovaný v `App.tsx`, ale v celé aplikaci není
+  jediné volání `useQuery` ani `useMutation` — provider zatím jen zabírá místo.
+- Charts: Recharts (používá je jen `pages/Report.tsx`)
+- Formuláře: `react-hook-form` je nainstalovaný, ale používá ho jen
+  `components/ui/form.tsx`, který se nikde neimportuje.
 
 ## Supabase
 - URL: https://uusaczibimqvaazpaopy.supabase.co
@@ -128,6 +143,22 @@ Toto upozornění dej vždy po velkém tasku nebo pokud máš pocit, že kontext
 - Fire-and-forget persistence — never blocks UI
 - No gamification — no points, badges, streaks, leaderboards
 - Efficiency principle — "the less time child spends in system, the better"
+
+## ⚠️ AUTOR OBSAHU = CLAUDE (rozhodnuto 2026-08-25)
+
+**Žádný model negeneruje cvičení — ani za běhu, ani offline, ani v adminu.**
+Autorem je Claude v session, výstupem je **kód** (`TopicMetadata.generator`),
+tedy čistá funkce, kterou lze auditovat, zamrazit a diffnout.
+
+Ke každé úloze patří **kompletní dokumentace**, ne jen klíč:
+`hints[0]` + `hints[1]` (obě unikátní pro tu úlohu), `explanation`/`solutionSteps`
+vysvětlující PROČ, a `optionFeedback` u výběrových typů.
+Závazná pravidla: [`docs/CONTENT_AUTHORING.md`](docs/CONTENT_AUTHORING.md) §0.
+
+Starý obsah se nemaže, ale musí projít auditem (`runOfflineAudit`).
+
+**Sloh (volný text) v aplikaci není** — `inputType: "essay"` neexistuje.
+RVP „komunikační a slohová výchova" je něco jiného: běžná cvičení s výběrem odpovědi.
 
 ## AI Models — NOVÁ ARCHITEKTURA (rozhodnuto 2026-05-20)
 Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.

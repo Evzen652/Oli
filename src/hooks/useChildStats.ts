@@ -34,16 +34,12 @@ export interface ChildStats {
   loading: boolean;
 }
 
-export function useChildStats(childId: string | null, period: StatsPeriod = "7d", mock?: Partial<ChildStats>): ChildStats {
+export function useChildStats(childId: string | null, period: StatsPeriod = "7d"): ChildStats {
   const [stats, setStats] = useState<ChildStats>({
     sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: true,
   });
 
   useEffect(() => {
-    if (mock) {
-      setStats({ sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: false, ...mock });
-      return;
-    }
     if (!childId) {
       setStats({ sessions: 0, tasks: 0, accuracy: 0, helpUsed: 0, wrong: 0, daysActive: 0, skills: [], loading: false });
       return;
@@ -72,10 +68,14 @@ export function useChildStats(childId: string | null, period: StatsPeriod = "7d"
       const independent = data.filter((r) => r.correct && !r.help_used).length;
       const helpUsed = data.filter((r) => r.correct && r.help_used).length;
       const wrong = data.filter((r) => !r.correct).length;
-      const accuracy = tasks > 0 ? Math.round((independent / tasks) * 100) : 0;
+      // Úspěšnost = všechny správné (samostatně i s nápovědou) / celkem.
+      // Nápověda se vykazuje zvlášť (helpUsed), netrestá se v úspěšnosti —
+      // shodně se SkillDetailModal / AssignmentList / ChildSessionLog.
+      const accuracy = tasks > 0 ? Math.round(((independent + helpUsed) / tasks) * 100) : 0;
 
-      // Počet různých dnů s aktivitou
-      const dayKey = (iso: string) => new Date(iso).toISOString().slice(0, 10);
+      // Počet různých dnů s aktivitou — lokální datum (en-CA = YYYY-MM-DD),
+      // ne UTC. Jinak by večerní procvičování v ČR (UTC+1/+2) spadlo do jiného dne.
+      const dayKey = (iso: string) => new Date(iso).toLocaleDateString("en-CA");
       const days = new Set(data.map((r) => dayKey(r.created_at as string)));
       const daysActive = days.size;
 
@@ -99,9 +99,7 @@ export function useChildStats(childId: string | null, period: StatsPeriod = "7d"
     })();
 
     return () => { cancelled = true; };
-    // `mock` v závislostech: volající (`ChildHomePage`) ho memoizuje, jinak by
-    // nový objekt na každý render efekt spouštěl donekonečna.
-  }, [childId, period, mock]);
+  }, [childId, period]);
 
   return stats;
 }

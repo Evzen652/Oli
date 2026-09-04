@@ -64,7 +64,7 @@ export const POSLOUPNOSTICISEL: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-posloupnosti-cisel",
     title: "Posloupnosti čísel",
-    studentTitle: "Řady čísel",
+    studentTitle: "Co přijde dál?",
     subject: "matematika",
     category: "Závislosti, vztahy a práce s daty",
     topic: "Práce s daty",

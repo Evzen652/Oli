@@ -266,8 +266,6 @@ const DEFAULT_DESCS: Partial<Record<string, string>> = {
   "topic-cz-slovesa-urcovani": "tabulka časování sloves s osobou a časem",
   "topic-cz-zaklad-vety": "jednoduchá věta s podtrženým podmětem a zakroužkovaným přísudkem",
   "topic-cz-diktat": "dítě doplňuje chybějící písmena do mezer ve větách",
-  "topic-cz-sloh-vypraveni": "dítě vypráví příběh, bublina s postavičkami a dobrodružstvím",
-  "topic-cz-sloh-popis": "dítě popisuje předmět — lupa, kolem létají popisná slova, paleta barev",
 };
 
 function getDefaultDesc(key: string): string {

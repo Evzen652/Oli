@@ -64,7 +64,7 @@ export const CTENIZAPISPOROVNAVANICISELDO100: TopicMetadata[] = [
     rvpNodeId:
       "g2-matematika-cislo-a-pocetni-operace-ciselny-obor-0-100-cteni-zapis-a-porovnavani-cisel-do-100",
     title: "Čtení, zápis a porovnávání čísel do 100",
-    studentTitle: "Čísla do 100",
+    studentTitle: "Co je víc?",
     subject: "matematika",
     category: "Číslo a početní operace",
     topic: "Číselný obor 0–100",

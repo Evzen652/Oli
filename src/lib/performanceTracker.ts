@@ -19,6 +19,7 @@ export interface CheckResult {
   helpUsed?: boolean;
   questionText?: string;
   correctAnswer?: string;
+  studentAnswer?: string;
 }
 
 /** Mastery score exponential weighting factor (recent results matter more). */
@@ -79,6 +80,7 @@ async function persistResult(result: CheckResult): Promise<void> {
     child_id: childId,
     question_text: result.questionText ?? null,
     correct_answer: result.correctAnswer ?? null,
+    student_answer: result.studentAnswer ?? null,
   } as any);
 
   // 2. Upsert skill profile

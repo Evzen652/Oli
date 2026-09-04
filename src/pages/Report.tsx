@@ -6,7 +6,8 @@ import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { logoNoText } from "@/components/OliLogo";
 import { useT } from "@/lib/i18n";
-import { CalendarDays, CalendarRange, History, ArrowLeft, ArrowRight } from "lucide-react";
+import { CalendarDays, CalendarRange, History } from "lucide-react";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/BackButton";
 import { BarChart, Bar, XAxis, YAxis, Cell, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
@@ -211,13 +212,7 @@ export default function Report() {
 
         {/* Header */}
         <div className="bg-white rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-black/[0.05]">
-          <button
-            onClick={() => navigate("/parent")}
-            aria-label={t("report.back")}
-            className="h-9 w-9 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:bg-muted/80 transition-all shrink-0"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
+          <BackButton to="/parent" label={t("report.back")} size="sm" />
           <img src={logoNoText} alt="Oli" className="h-10 w-10 object-contain shrink-0" />
           <div className="flex-1 min-w-0">
             <h1 className="font-bold text-lg text-foreground leading-tight">{title}</h1>
@@ -284,7 +279,7 @@ export default function Report() {
               {range === "all" && "Zatím žádná aktivita"}
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-              {childName ?? "Dítě"} {report.rangeLabel ?? ""} ještě neprocvičovalo. Zkuste zadat první úkol.
+              {childName ? `${childName} ${report.rangeLabel ?? ""} ještě neprocvičoval/a.` : `Dítě ${report.rangeLabel ?? ""} ještě neprocvičovalo.`} Zkuste zadat první úkol.
             </p>
             {range !== "all" && (
               <Button variant="outline" size="sm" onClick={() => handleRangeChange("all")}>
@@ -395,7 +390,8 @@ export default function Report() {
                       const dotColor = a >= 80 ? "bg-emerald-500" : a >= 50 ? "bg-amber-400" : "bg-rose-500";
                       const nm = childName ?? "Dítě";
                       const helpRatio = s.attempts > 0 ? Math.round((s.helpUsed / s.attempts) * 100) : 0;
-                      const wrongCount = s.attempts - s.correct - s.helpUsed;
+                      // s.correct = všechny správné → chybné = celkem − správné (helpUsed je podmnožina správných).
+                      const wrongCount = s.attempts - s.correct;
                       const translated = translatePatterns(s.weak_patterns ?? []);
 
                       let evalText: string;
@@ -470,7 +466,7 @@ export default function Report() {
               >
                 {/* 1. pád — „pro" by vyžadovalo 4. pád, viz cs.ts `assign.title`. */}
                 Zadat úkol {childName ? `— ${childName}` : ""}
-                <ArrowRight className="h-4 w-4 shrink-0" />
+                <PaintedArrow className="h-4 w-4 shrink-0" />
               </button>
             </div>
           </div>

@@ -36,7 +36,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik dní má týden?",
     correctAnswer: "7",
-    options: ["7", "5", "10", "6"],
+    options: ["5", "7", "10", "6"],
     emoji: "📆",
     hints: ["Spočítej dny: pondělí, úterý, středa, čtvrtek, pátek, sobota, neděle."],
     solutionSteps: ["Týden má 7 dní — od pondělí do neděle."],
@@ -44,7 +44,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik hodin má den?",
     correctAnswer: "24",
-    options: ["24", "12", "60", "10"],
+    options: ["12", "60", "24", "10"],
     emoji: "⏰",
     hints: ["Ve dne je 12 hodin a v noci dalších 12 hodin — kolik je to dohromady?"],
     solutionSteps: ["Den má 24 hodin — 12 hodin dne a 12 hodin noci."],
@@ -52,7 +52,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik minut má hodina?",
     correctAnswer: "60",
-    options: ["60", "30", "100", "24"],
+    options: ["30", "100", "24", "60"],
     emoji: "🕐",
     hints: ["Velká ručička projde za hodinu celý ciferník — po jednom malém dílku za každou minutu."],
     solutionSteps: ["Hodina má 60 minut."],
@@ -68,7 +68,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který den je první v týdnu?",
     correctAnswer: "Pondělí",
-    options: ["Pondělí", "Neděle", "Středa", "Sobota"],
+    options: ["Neděle", "Pondělí", "Středa", "Sobota"],
     emoji: "📆",
     hints: ["Týden začíná prvním pracovním dnem, hned po víkendu."],
     solutionSteps: ["Pondělí je první den v týdnu — každý týden začíná pondělím."],
@@ -76,7 +76,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který den je poslední v týdnu?",
     correctAnswer: "Neděle",
-    options: ["Neděle", "Sobota", "Pátek", "Pondělí"],
+    options: ["Sobota", "Pátek", "Neděle", "Pondělí"],
     emoji: "📆",
     hints: ["Týden končí víkendem. Poslední je ten den, po kterém začíná nový týden pondělím."],
     solutionSteps: ["Neděle je poslední den v týdnu."],
@@ -84,7 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Čím měříme čas?",
     correctAnswer: "Hodiny",
-    options: ["Hodiny", "Metr", "Váha", "Teploměr"],
+    options: ["Metr", "Váha", "Teploměr", "Hodiny"],
     emoji: "⏰",
     hints: ["Co visí na zdi a ukazuje, kolik je hodin?"],
     solutionSteps: ["Čas měříme hodinami."],
@@ -100,7 +100,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který měsíc je první v roce?",
     correctAnswer: "Leden",
-    options: ["Leden", "Prosinec", "Březen", "Únor"],
+    options: ["Prosinec", "Leden", "Březen", "Únor"],
     emoji: "❄️",
     hints: ["Rok začíná uprostřed zimy, hned po silvestrovské půlnoci — který měsíc to je?"],
     solutionSteps: ["První měsíc v roce je leden — rok začíná v lednu."],
@@ -108,7 +108,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který měsíc je poslední v roce?",
     correctAnswer: "Prosinec",
-    options: ["Prosinec", "Leden", "Červen", "Listopad"],
+    options: ["Leden", "Červen", "Prosinec", "Listopad"],
     emoji: "🎄",
     hints: ["Rok končí vánočním měsícem — kdy slavíme Vánoce?"],
     solutionSteps: ["Poslední měsíc v roce je prosinec — v prosinci slavíme Vánoce."],
@@ -116,7 +116,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kolik ručiček mají hodiny?",
     correctAnswer: "Dvě",
-    options: ["Dvě", "Jedna", "Tři", "Čtyři"],
+    options: ["Jedna", "Tři", "Čtyři", "Dvě"],
     emoji: "🕐",
     hints: ["Hodiny mají hodinovou ručičku (kratší) a minutovou ručičku (delší)."],
     solutionSteps: ["Hodiny mají dvě hlavní ručičky — hodinovou a minutovou."],
@@ -132,7 +132,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdy vychází slunce?",
     correctAnswer: "Ráno",
-    options: ["Ráno", "Večer", "Noc", "Poledne"],
+    options: ["Večer", "Ráno", "Noc", "Poledne"],
     emoji: "🌅",
     hints: ["Slunce se objeví na obloze úplně na začátku dne, když se probouzíme."],
     solutionSteps: ["Slunce vychází ráno — na začátku každého dne."],
@@ -143,7 +143,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který den přijde po pondělí?",
     correctAnswer: "Úterý",
-    options: ["Úterý", "Neděle", "Pátek", "Středa"],
+    options: ["Neděle", "Pátek", "Úterý", "Středa"],
     emoji: "📆",
     hints: ["Pondělí je první den týdne. Který den je hned druhý v pořadí?"],
     solutionSteps: ["Po pondělí přijde úterý — je to druhý den v týdnu."],
@@ -151,7 +151,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který den přijde po středě?",
     correctAnswer: "Čtvrtek",
-    options: ["Čtvrtek", "Pátek", "Úterý", "Pondělí"],
+    options: ["Pátek", "Úterý", "Pondělí", "Čtvrtek"],
     emoji: "📆",
     hints: ["Středa je uprostřed týdne. Který pracovní den následuje hned po ní?"],
     solutionSteps: ["Po středě přijde čtvrtek."],
@@ -167,7 +167,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které roční období přijde po podzimu?",
     correctAnswer: "Zima",
-    options: ["Zima", "Léto", "Jaro", "Podzim"],
+    options: ["Léto", "Zima", "Jaro", "Podzim"],
     emoji: "❄️",
     hints: ["Po podzimu přichází nejchladnější období, kdy mrzne a padá sníh."],
     solutionSteps: ["Po podzimu přijde zima — rok má čtyři roční období: jaro, léto, podzim, zima."],
@@ -175,7 +175,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které roční období přijde po létě?",
     correctAnswer: "Podzim",
-    options: ["Podzim", "Jaro", "Zima", "Léto"],
+    options: ["Jaro", "Zima", "Podzim", "Léto"],
     emoji: "🍂",
     hints: ["Po nejteplejším období přichází čas, kdy začíná padat listí a chladne."],
     solutionSteps: ["Po létě přijde podzim — listí začne padat a ochladí se."],
@@ -183,7 +183,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které roční období přijde po zimě?",
     correctAnswer: "Jaro",
-    options: ["Jaro", "Léto", "Podzim", "Zima"],
+    options: ["Léto", "Podzim", "Zima", "Jaro"],
     emoji: "🌱",
     hints: ["Po zimě se oteplí a začnou kvést první květiny."],
     solutionSteps: ["Po zimě přijde jaro — příroda se probouzí k životu."],
@@ -199,7 +199,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Který měsíc je hned před prosincem?",
     correctAnswer: "Listopad",
-    options: ["Listopad", "Říjen", "Leden", "Září"],
+    options: ["Říjen", "Listopad", "Leden", "Září"],
     emoji: "📆",
     hints: ["Prosinec je poslední měsíc v roce. Který měsíc je těsně před ním?"],
     solutionSteps: ["Před prosincem je listopad — je to jedenáctý měsíc v roce."],
@@ -207,7 +207,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co trvá déle — minuta, nebo hodina?",
     correctAnswer: "Hodina",
-    options: ["Hodina", "Minuta", "Jsou stejně dlouhé", "Nedá se to porovnat"],
+    options: ["Minuta", "Jsou stejně dlouhé", "Hodina", "Nedá se to porovnat"],
     emoji: "⏳",
     hints: ["Jedna z nich se skládá ze šedesáti těch druhých — a delší je ta větší."],
     solutionSteps: ["Hodina je delší než minuta — 1 hodina = 60 minut."],
@@ -215,7 +215,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co trvá déle — den, nebo týden?",
     correctAnswer: "Týden",
-    options: ["Týden", "Den", "Jsou stejně dlouhé", "Nedá se to porovnat"],
+    options: ["Den", "Jsou stejně dlouhé", "Nedá se to porovnat", "Týden"],
     emoji: "📆",
     hints: ["Ta delší jednotka se skládá z několika těch kratších."],
     solutionSteps: ["Týden je delší než den — týden má 7 dní."],
@@ -231,7 +231,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kolik hodin ukazují hodiny v poledne?",
     correctAnswer: "12",
-    options: ["12", "6", "24", "9"],
+    options: ["6", "12", "24", "9"],
     emoji: "🕛",
     hints: ["Poledne je uprostřed dne — obě ručičky jsou nahoře na dvanáctce."],
     solutionSteps: ["V poledne je 12 hodin — obě ručičky jsou nahoře."],
@@ -239,7 +239,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Které dny v týdnu tvoří víkend?",
     correctAnswer: "Sobota a neděle",
-    options: ["Sobota a neděle", "Pátek a sobota", "Neděle a pondělí", "Středa a čtvrtek"],
+    options: ["Pátek a sobota", "Neděle a pondělí", "Sobota a neděle", "Středa a čtvrtek"],
     emoji: "🎉",
     hints: ["Víkend jsou poslední dva dny týdne, kdy se obvykle nechodí do školy."],
     solutionSteps: ["Víkend tvoří sobota a neděle — poslední dva dny v týdnu."],
@@ -247,7 +247,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Je úterý pracovní den, nebo víkendový den?",
     correctAnswer: "Pracovní den",
-    options: ["Pracovní den", "Víkendový den", "Ani jedno", "Státní svátek"],
+    options: ["Víkendový den", "Ani jedno", "Státní svátek", "Pracovní den"],
     emoji: "🏫",
     hints: ["Víkend tvoří jen sobota a neděle. Úterý mezi ně nepatří."],
     solutionSteps: ["Úterý je pracovní (školní) den — víkend jsou jen sobota a neděle."],
@@ -278,7 +278,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Anička má narozeniny v posledním měsíci roku. Ve kterém ročním období to nejspíš je?",
     correctAnswer: "V zimě",
-    options: ["V zimě", "Na podzim", "V létě", "Na jaře"],
+    options: ["Na podzim", "V zimě", "V létě", "Na jaře"],
     emoji: "🎂",
     hints: [
       "Nejdřív si vzpomeň, který měsíc je poslední v roce.",
@@ -291,7 +291,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Petr má narozeniny v prvním měsíci roku. Ve kterém ročním období to nejspíš je?",
     correctAnswer: "V zimě",
-    options: ["V zimě", "Na jaře", "V létě", "Na podzim"],
+    options: ["Na jaře", "V létě", "V zimě", "Na podzim"],
     emoji: "🎂",
     hints: [
       "Nejdřív si vzpomeň, který měsíc je první v roce.",
@@ -304,7 +304,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jarda říká: „Den přede mnou je sobota a den po mně je pondělí.“ Jaký je dnes den?",
     correctAnswer: "Neděle",
-    options: ["Neděle", "Sobota", "Pondělí", "Pátek"],
+    options: ["Sobota", "Pondělí", "Pátek", "Neděle"],
     emoji: "🧩",
     hints: [
       "Hledej den, který leží přesně mezi sobotou a pondělím.",
@@ -352,7 +352,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Vánoce slavíme v prosinci. V jakém ročním období tedy slavíme Vánoce?",
     correctAnswer: "V zimě",
-    options: ["V zimě", "Na podzim", "V létě", "Na jaře"],
+    options: ["Na podzim", "V zimě", "V létě", "Na jaře"],
     emoji: "🎄",
     hints: [
       "Nejdřív si vzpomeň, jaké roční období patří k prosinci.",
@@ -363,7 +363,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které roční období je mezi jarem a podzimem (v pořadí jaro → léto → podzim)?",
     correctAnswer: "Léto",
-    options: ["Léto", "Zima", "Podzim", "Jaro"],
+    options: ["Zima", "Podzim", "Léto", "Jaro"],
     emoji: "☀️",
     hints: [
       "Vzpomeň si na nejteplejší období roku, kdy jsou letní prázdniny.",
@@ -405,7 +405,7 @@ export const HODINYKALENDARCAS: TopicMetadata[] = [
     id: "g2-prv-hodiny-cas",
     rvpNodeId: "g2-prvouka-lide-a-cas-mereni-casu-a-tradice-hodiny-kalendar-cas",
     title: "Hodiny, kalendář a čas",
-    studentTitle: "Hodiny a čas",
+    studentTitle: "Co je dnes za den?",
     subject: "prvouka",
     category: "Lidé a čas",
     topic: "Měření času a tradice",

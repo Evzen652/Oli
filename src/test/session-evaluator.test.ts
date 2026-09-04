@@ -124,7 +124,9 @@ describe("generateLocalEvaluation — content rules", () => {
     const r = generateLocalEvaluation(mkInput());
     // Common emojis
     expect(r).not.toMatch(/[\u{1F300}-\u{1F9FF}]/u);
-    expect(r).not.toMatch(/[😊😀💡⭐🎉]/);
+    // Bez příznaku `u` se třída znaků rozpadne na jednotlivé surrogaty,
+    // takže vzor chytá i emoji, o která vůbec nejde.
+    expect(r).not.toMatch(/[😊😀💡⭐🎉]/u);
   });
 
   it("žádné hvězdičky / markdown bullets", () => {

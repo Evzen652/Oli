@@ -105,7 +105,7 @@ export const DELENISLOVNAKONCIRADKU: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku",
     rvpNodeId: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku",
     title: "Dělení slov na konci řádku",
-    studentTitle: "Dělení slov",
+    studentTitle: "Slovo se nevejde",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Zvuková stránka jazyka",

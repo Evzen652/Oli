@@ -79,8 +79,10 @@ describe("useChildStats — happy path s logs", () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.sessions).toBe(2);
     expect(result.current.tasks).toBe(4);
-    // independent (correct + !help_used) = 2 / 4 = 50%
-    expect(result.current.accuracy).toBe(50);
+    // Úspěšnost = VŠECHNY správné (samostatně i s nápovědou) / celkem.
+    // Nápověda se vykazuje zvlášť (`helpUsed`), netrestá se v úspěšnosti —
+    // sjednoceno napříč obrazovkami. Tady: (2 samostatně + 1 s nápovědou) / 4 = 75 %.
+    expect(result.current.accuracy).toBe(75);
     expect(result.current.helpUsed).toBe(1);
     expect(result.current.wrong).toBe(1);
     expect(result.current.daysActive).toBe(2);

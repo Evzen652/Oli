@@ -55,13 +55,25 @@ const NAKUP_TEMPLATES: WordProblemTemplate[] = [
       const price = randBetween(8, level === 1 ? 40 : 80) * 5; // dělitelné 5 (celá čísla Kč)
       const given = Math.ceil((price + 50) / 100) * 100; // zaplatí 100-nás.
       const back = given - price;
-      const item = pick(["kniha", "hračka", "svačina", "pravítko", "sešit", "tričko"]);
+      // Slovo se ve větě objeví ve dvou různých tvarech, takže nestačí jeden
+      // řetězec: po „koupila" musí být 4. pád („koupila knihu", ne „koupila
+      // kniha") a přísudek „stál/stála/stálo" se řídí rodem. Dřív tu byl
+      // jeden nominativ a natvrdo ženské „stála", takže polovina variant
+      // byla česky špatně.
+      const item = pick([
+        { nom: "kniha", acc: "knihu", verb: "stála" },
+        { nom: "hračka", acc: "hračku", verb: "stála" },
+        { nom: "svačina", acc: "svačinu", verb: "stála" },
+        { nom: "pravítko", acc: "pravítko", verb: "stálo" },
+        { nom: "sešit", acc: "sešit", verb: "stál" },
+        { nom: "tričko", acc: "tričko", verb: "stálo" },
+      ]);
       return {
-        question: `Lenka koupila ${item} za ${price} Kč a zaplatila bankovkou za ${given} Kč. Kolik dostala zpátky?`,
+        question: `Lenka koupila ${item.acc} za ${price} Kč a zaplatila bankovkou za ${given} Kč. Kolik dostala zpátky?`,
         answer: back,
         steps: [
           `Celkem zaplatila ${given} Kč.`,
-          `${item.charAt(0).toUpperCase() + item.slice(1)} stála ${price} Kč.`,
+          `${item.nom.charAt(0).toUpperCase() + item.nom.slice(1)} ${item.verb} ${price} Kč.`,
           `Vrácení = ${given} − ${price} = ${back} Kč.`,
         ],
         hints: [

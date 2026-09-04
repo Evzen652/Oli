@@ -12,7 +12,7 @@
 
 import type { TopicMetadata, PracticeTask } from "./types";
 import { validateTaskForInputType } from "./taskValidator";
-import { validateAnswer } from "./validators";
+import { validateAnswer, resolveTaskValidation } from "./validators";
 import { getTierTasks } from "./levelCoverage";
 import { checkHintLeakage } from "../../supabase/functions/_shared/hintLeakage";
 import { TIER_EXCEPTIONS, getGeneratedWordCheck } from "./auditInvariantConfig";
@@ -80,6 +80,58 @@ export interface AuditOptions {
   gradeFilter?: number;
   /** Progress callback (0-1) — pro UI progress bar */
   onProgress?: (progress: number) => void;
+}
+
+/**
+ * Obsahuje text `haystack` výraz `needle` jako celé slovo?
+ *
+ * NEPOUŽÍVAT `\b` — v JS je hranice slova definovaná přes ASCII `\w`, takže
+ * `\bškola\b` se v „…sloveso: škola, učit…" NENAJDE (před „š" není přechod
+ * mezi \w a ne-\w). Detektor kvůli tomu míjel každou odpověď začínající nebo
+ * končící diakritikou. Unicode lookaround pracuje s písmeny všech abeced.
+ */
+function containsWholeWord(haystack: string, needle: string): boolean {
+  // Levný předfiltr: bez prostého výskytu nemůže projít ani hranice slova.
+  // Ušetří kompilaci regexu u drtivé většiny dvojic (audit jede přes 10k úloh).
+  if (!haystack.toLowerCase().includes(needle.toLowerCase())) return false;
+  const esc = needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  try {
+    return new RegExp(`(?<![\\p{L}\\p{N}])${esc}(?![\\p{L}\\p{N}])`, "iu").test(haystack);
+  } catch {
+    // Prostředí bez lookbehind — degraduj na prostý výskyt, ať kontrola nezmizí.
+    return haystack.toLowerCase().includes(needle.toLowerCase());
+  }
+}
+
+/**
+ * Sestaví odpověď PŘESNĚ v tom tvaru, v jakém ji odesílá příslušná vstupní
+ * komponenta při bezchybném vyřešení úlohy. Tvar úlohy (ne `topic.inputType`)
+ * rozhoduje, která komponenta se vykreslí — viz `PracticeInputRouter`.
+ *
+ * Zdroje tvarů (drž synchronizované, jinak audit ztratí smysl):
+ *   CategorizeInput   → JSON mapa   {kategorie: [položky]}
+ *   MatchPairsInput   → JSON pole   [{left, right}]
+ *   DragOrderInput    → items.join(",")
+ *   MultiSelectInput  → JSON pole seřazených možností
+ *   FillBlankInput    → 1 mezera: holý text; víc mezer: JSON pole
+ */
+export function buildPerfectAnswer(task: PracticeTask): string {
+  if (task.categories?.length) {
+    const rec: Record<string, string[]> = {};
+    task.categories.forEach((c) => { rec[c.name] = [...c.items]; });
+    return JSON.stringify(rec);
+  }
+  if (task.pairs?.length) {
+    return JSON.stringify(task.pairs.map((p) => ({ left: p.left, right: p.right })));
+  }
+  if (task.items?.length) return task.items.join(",");
+  if (task.correctAnswers?.length) return JSON.stringify([...task.correctAnswers].sort());
+  if (task.blanks?.length) {
+    return task.blanks.length === 1
+      ? task.blanks[0].trim()
+      : JSON.stringify(task.blanks.map((b) => b.trim()));
+  }
+  return task.correctAnswer;
 }
 
 /**
@@ -411,27 +463,42 @@ export function runOfflineAudit(
         if (!skipType && !isComprehension) {
           const correctStr = String(task.correctAnswer).trim();
           if (correctStr.length >= 3 && !/^\d+([.,]\d+)?(\s*(cm|m|kg|l|°C|km|mm))?$/.test(correctStr)) {
-            const escaped = correctStr.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            const re = new RegExp(`\\b${escaped}\\b`, "i");
-            if (re.test(task.question)) {
-              issues.push({
-                ...issueMeta,
-                taskQuestion: task.question.slice(0, 80),
-                category: "format",
-                detail: `Správná odpověď "${correctStr.slice(0, 40)}" se doslova vyskytuje ve znění otázky — giveaway`,
-                correctAnswer: correctStr,
-              });
+            if (containsWholeWord(task.question, correctStr)) {
+              // Teprve když klíč v otázce OPRAVDU je, ověř, jestli nejde
+              // o výčtovou otázku. Pořadí je i výkonové: tenhle regexový
+              // průchod přes všechny možnosti se tak spustí pro ~1 % úloh
+              // místo pro všechny (jinak audit padal na 60s timeout).
+              //
+              // Výčtová otázka není giveaway: když zadání samo vyjmenuje
+              // kandidáty („Co je delší: 1 minuta nebo 1 sekunda?"), MUSÍ
+              // v něm správná odpověď být — jinak by úloha nešla položit.
+              // Stejná úvaha jako katalogová výjimka u hint_leak
+              // (CONTENT_AUTHORING §7.2): rejstřík všech kandidátů neprozrazuje.
+              const mentionedOptions = (task.options ?? []).filter((o) => {
+                const s = String(o).trim();
+                return s.length >= 3 && containsWholeWord(task.question, s);
+              }).length;
+              if (mentionedOptions < 2) {
+                issues.push({
+                  ...issueMeta,
+                  taskQuestion: task.question.slice(0, 80),
+                  category: "format",
+                  detail: `Správná odpověď "${correctStr.slice(0, 40)}" se doslova vyskytuje ve znění otázky — giveaway`,
+                  correctAnswer: correctStr,
+                });
+              }
             }
           }
         }
       }
 
-      // d) Hint leak (skip pro essay)
-      if (topic.inputType !== "essay" && task.hints && task.hints.length > 0) {
+      // d) Hint leak
+      if (task.hints && task.hints.length > 0) {
         const leak = checkHintLeakage({
           question: task.question,
           correct_answer: task.correctAnswer,
           hints: task.hints,
+          options: task.options,
         });
         if (!leak.ok) {
           issues.push({
@@ -463,16 +530,6 @@ export function runOfflineAudit(
             });
           }
         }
-      }
-
-      // d2) Essay: musí mít hints (correctAnswer je numerický threshold, ne rubric — délkový check přeskočen)
-      if (topic.inputType === "essay" && (!task.hints || task.hints.length === 0)) {
-        issues.push({
-          ...issueMeta,
-          taskQuestion: task.question.slice(0, 80),
-          category: "format",
-          detail: "Essay: chybí hints — žák potřebuje vodítko pro psaní",
-        });
       }
 
       // d3) step_based: min 2 kroky, žádný krok nesmí obsahovat correctAnswer
@@ -527,10 +584,21 @@ export function runOfflineAudit(
       // d6) Česká gramatika — čísla 2–4 nesmí stát před genitiv-plurálovým tvarem
       // Detekuje vzor "2 jablek", "3 dílů", "4 knížek" atd. — správně: "2 jablka", "3 díly"
       {
-        const genitivPlural = /\b[234]\s+\w+(?:ů|ek|en)\b/g;
+        // `\w` je v JS jen ASCII, takze ze slova "baleni" zbyl fragment
+        // "balen" a pravidlo ho oznacilo za genitiv pluralu — 22 falesnych
+        // nalezu na SPRAVNEM tvaru ("4 baleni" je spravne cesky). Opacne
+        // pravidlo MIJELO skutecne pripady s diakritikou ("3 dilu"), protoze
+        // se o "i" zastavilo. `\p{L}` s priznakem `u` cte cele slovo.
+        const genitivPlural = /(?<![\p{L}\p{N}])[234]\s+\p{L}+(?:ů|ek|en)(?![\p{L}])/gu;
         const questionText = task.question;
-        const matches = questionText.match(genitivPlural);
-        if (matches) {
+        // Po předložce je genitiv SPRÁVNĚ („ze 3 bodů", „do 4 hodin",
+        // „u 2 domů") — pravidlo se týká holého počtu („3 bodů vede…").
+        const PREPOSITIONS = /(?:^|[^\p{L}])(?:ze|z|do|od|u|bez|kolem|podle|vedle|okolo|během|kromě|místo)\s+$/iu;
+        const matches = (questionText.match(genitivPlural) ?? []).filter((m) => {
+          const at = questionText.indexOf(m);
+          return !PREPOSITIONS.test(questionText.slice(0, at));
+        });
+        if (matches.length > 0) {
           issues.push({
             ...issueMeta,
             taskQuestion: task.question.slice(0, 80),
@@ -540,9 +608,27 @@ export function runOfflineAudit(
         }
       }
 
-      // e) Self-validation (skip pro essay — tam je correctAnswer threshold)
-      if (topic.inputType !== "essay") {
-        const result = validateAnswer(task.correctAnswer, task.correctAnswer, {
+      // e) Self-validation — ROUND-TRIP.
+      //
+      // Dřív se tu volalo `validateAnswer(correctAnswer, correctAnswer)`. To dává
+      // smysl jen u textové odpovědi. U strukturovaných typů je `correctAnswer`
+      // pouhý marker ("match"/"order"/"categorize") a formát odeslané odpovědi
+      // se navíc LIŠÍ od formátu klíče (CategorizeInput posílá mapu
+      // {kategorie: [položky]}, zatímco klíč je pole [{name, items}]). Sonda
+      // proto hlásila 529 falešných poplachů — všechny strukturované úlohy.
+      //
+      // Nově se sestaví odpověď PŘESNĚ tak, jak ji odešle vstupní komponenta,
+      // a projde stejnou cestou jako v `sessionOrchestrator` (resolveTaskValidation
+      // → validateAnswer). Kontrola tím odpovídá na otázku, na které záleží:
+      // „dostane dítě za bezchybně vyřešenou úlohu skutečně "správně"?"
+      // Tahle podoba by odhalila i BUG 3 z 2026-07-19 (fill_blank hodnotil
+      // správné odpovědi jako chybné, protože se validovalo proti didaktickému
+      // zápisu s pomlčkou místo proti `blanks`).
+      {
+        const answer = buildPerfectAnswer(task);
+        const { expected, validatorId } = resolveTaskValidation(task);
+        const result = validateAnswer(answer, expected, {
+          validatorId,
           inputType: topic.inputType,
         });
         if (!result.correct) {
@@ -550,7 +636,7 @@ export function runOfflineAudit(
             ...issueMeta,
             taskQuestion: task.question.slice(0, 80),
             category: "self_validation",
-            detail: `Odpověď "${task.correctAnswer}" neprojde svým validátorem (${result.errorType})`,
+            detail: `Bezchybně vyplněná úloha neprojde validátorem (${result.errorType}); odesláno "${answer.slice(0, 60)}", čekáno "${String(expected).slice(0, 60)}"`,
           });
         }
       }
@@ -1047,7 +1133,7 @@ export function runPedagogicalAudit(
     // ── 9) Difficulty delta — průměrná délka odpovědí level 1 vs 3 ───────
     // Jen pro text inputTypes kde délka koreluje s obtížností
     if (
-      (topic.inputType === "short_answer" || topic.inputType === "essay") &&
+      topic.inputType === "short_answer" &&
       lvl1Tasks.length >= 3 &&
       lvl3Tasks.length >= 3
     ) {

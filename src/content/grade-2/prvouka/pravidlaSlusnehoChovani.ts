@@ -164,12 +164,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarád ti něco půjčí. Co je slušné udělat?",
     correctAnswer: "Poděkovat mu",
-    options: [
-      "Poděkovat mu",
-      "Nic neříct a odejít",
-      "Vzít si to bez jediného slova",
-      "Říct mu, že to mělo být samozřejmé",
-    ],
+    options: ["Nic neříct a odejít", "Poděkovat mu", "Vzít si to bez jediného slova", "Říct mu, že to mělo být samozřejmé"],
     emoji: "🙏",
     hints: [
       "Když ti někdo prokáže laskavost, jak slušně dáš najevo, že si toho vážíš?",
@@ -181,12 +176,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ve frontě u pokladny stojí před tebou několik lidí. Co uděláš?",
     correctAnswer: "Počkám, až na mě přijde řada",
-    options: [
-      "Počkám, až na mě přijde řada",
-      "Protlačím se dopředu, protože spěchám",
-      "Postavím se hned za pokladní",
-      "Řeknu ostatním, ať mě pustí, protože jsem menší",
-    ],
+    options: ["Protlačím se dopředu, protože spěchám", "Postavím se hned za pokladní", "Počkám, až na mě přijde řada", "Řeknu ostatním, ať mě pustí, protože jsem menší"],
     emoji: "🧾",
     hints: [
       "Ve frontě má přednost ten, kdo přišel dřív. Jak se podle toho zachováš?",
@@ -198,12 +188,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Spolužák ti něco vypráví o svém výletu. Co je slušné udělat?",
     correctAnswer: "Pozorně ho poslouchám a nepřerušuji ho",
-    options: [
-      "Pozorně ho poslouchám a nepřerušuji ho",
-      "Skočím mu do řeči se svým vyprávěním",
-      "Začnu si povídat s někým jiným",
-      "Řeknu mu, ať už mlčí, protože mě to nezajímá",
-    ],
+    options: ["Skočím mu do řeči se svým vyprávěním", "Začnu si povídat s někým jiným", "Řeknu mu, ať už mlčí, protože mě to nezajímá", "Pozorně ho poslouchám a nepřerušuji ho"],
     emoji: "👂",
     hints: [
       "Poslouchat druhého bez přerušování je základ slušného rozhovoru.",
@@ -232,12 +217,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "V jídelně dojídáš oběd a chceš vstát od stolu. Co je slušné udělat?",
     correctAnswer: "Utřu si pusu ubrouskem a uklidím po sobě talíř",
-    options: [
-      "Utřu si pusu ubrouskem a uklidím po sobě talíř",
-      "Odejdu a nechám talíř na stole",
-      "Otřu si pusu do rukávu",
-      "Nechám drobky rozházené po stole",
-    ],
+    options: ["Odejdu a nechám talíř na stole", "Utřu si pusu ubrouskem a uklidím po sobě talíř", "Otřu si pusu do rukávu", "Nechám drobky rozházené po stole"],
     emoji: "🍽️",
     hints: [
       "Po jídle patří k slušnému stolování úklid po sobě a čistá pusa.",
@@ -249,12 +229,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vidíš, že staršímu pánovi v autobuse není kde sednout. Co uděláš?",
     correctAnswer: "Uvolním mu své místo",
-    options: [
-      "Uvolním mu své místo",
-      "Budu se tvářit, že spím",
-      "Zůstanu sedět, protože jsem přišel dřív",
-      "Řeknu mu, ať se zeptá někoho jiného",
-    ],
+    options: ["Budu se tvářit, že spím", "Zůstanu sedět, protože jsem přišel dřív", "Uvolním mu své místo", "Řeknu mu, ať se zeptá někoho jiného"],
     emoji: "🚌",
     hints: [
       "Starším lidem v dopravě uvolňujeme místo z úcty k nim.",
@@ -266,12 +241,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kýchneš nebo kašleš. Co je slušné udělat?",
     correctAnswer: "Zakryji si ústa rukou nebo loktem",
-    options: [
-      "Zakryji si ústa rukou nebo loktem",
-      "Kýchnu přímo na spolužáka vedle sebe",
-      "Nic nedělám, kýchnutí je normální",
-      "Odvrátím se, ale nezakryji si ústa",
-    ],
+    options: ["Kýchnu přímo na spolužáka vedle sebe", "Nic nedělám, kýchnutí je normální", "Odvrátím se, ale nezakryji si ústa", "Zakryji si ústa rukou nebo loktem"],
     emoji: "🤧",
     hints: [
       "Zakrytí úst při kýchání chrání ostatní kolem nás.",
@@ -300,12 +270,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vstupuješ do dveří a za tebou jde ještě někdo. Co je slušné udělat?",
     correctAnswer: "Přidržím mu dveře",
-    options: [
-      "Přidržím mu dveře",
-      "Pustím dveře, ať si poradí sám",
-      "Zabouchnu dveře co nejrychleji",
-      "Počkám, až projde, a pak teprve vejdu já",
-    ],
+    options: ["Pustím dveře, ať si poradí sám", "Přidržím mu dveře", "Zabouchnu dveře co nejrychleji", "Počkám, až projde, a pak teprve vejdu já"],
     emoji: "🚪",
     hints: [
       "Přidržení dveří je malá, ale hezká pomoc druhému člověku.",
@@ -317,12 +282,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Omylem šlápneš spolužákovi na nohu. Co uděláš?",
     correctAnswer: "Hned se omluvím",
-    options: [
-      "Hned se omluvím",
-      "Tvářím se, že se nic nestalo",
-      "Řeknu mu, že si za to může sám",
-      "Zasměju se a jdu dál",
-    ],
+    options: ["Tvářím se, že se nic nestalo", "Řeknu mu, že si za to může sám", "Hned se omluvím", "Zasměju se a jdu dál"],
     emoji: "🦶",
     hints: [
       "I když jsme něco udělali omylem, patří se za to omluvit.",
@@ -334,12 +294,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Chceš se do rozhovoru dospělých na chvíli zapojit. Co je slušné udělat?",
     correctAnswer: "Počkám, až domluví, nebo slušně řeknu „promiňte“",
-    options: [
-      "Počkám, až domluví, nebo slušně řeknu „promiňte“",
-      "Skočím jim rovnou do řeči",
-      "Křičím, dokud si mě nevšimnou",
-      "Taham dospělého za rukáv a mluvím přes něj",
-    ],
+    options: ["Skočím jim rovnou do řeči", "Křičím, dokud si mě nevšimnou", "Taham dospělého za rukáv a mluvím přes něj", "Počkám, až domluví, nebo slušně řeknu „promiňte“"],
     emoji: "🗨️",
     hints: [
       "Do řeči dospělým neskáčeme — počkáme na vhodnou chvíli.",
@@ -372,12 +327,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád tě prosí o pomoc s úkolem přesně ve chvíli, kdy chceš jít hrát ven. Co je nejlepší řešení?",
     correctAnswer: "Aspoň chvíli mu pomůžu a pak jdu ven",
-    options: [
-      "Aspoň chvíli mu pomůžu a pak jdu ven",
-      "Řeknu mu, že nemám čas, a hned odejdu ven",
-      "Budu předstírat, že jsem ho neslyšel",
-      "Pomůžu mu, ale celou dobu mu budu nadávat, že mě zdržuje",
-    ],
+    options: ["Řeknu mu, že nemám čas, a hned odejdu ven", "Aspoň chvíli mu pomůžu a pak jdu ven", "Budu předstírat, že jsem ho neslyšel", "Pomůžu mu, ale celou dobu mu budu nadávat, že mě zdržuje"],
     emoji: "⏰",
     hints: [
       "Spoj dvě věci: ochotu pomoci a to, že si i tak splníš svůj plán.",
@@ -389,12 +339,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které chování NEODPOVÍDÁ pravidlům slušného stolování?",
     correctAnswer: "Mlaskat a mluvit s plnou pusou",
-    options: [
-      "Mlaskat a mluvit s plnou pusou",
-      "Poprosit o podání soli",
-      "Utřít si pusu ubrouskem",
-      "Poděkovat za jídlo",
-    ],
+    options: ["Poprosit o podání soli", "Utřít si pusu ubrouskem", "Mlaskat a mluvit s plnou pusou", "Poděkovat za jídlo"],
     emoji: "🍽️",
     hints: [
       "Hledej chování, které ostatní u stolu ruší, ne to, které je zdvořilé.",
@@ -406,12 +351,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Ve třídě vidíš, jak se spolužák snaží zasunout těžké židle po hodině. Co uděláš?",
     correctAnswer: "Nabídnu mu pomoc, i když to není moje povinnost",
-    options: [
-      "Nabídnu mu pomoc, i když to není moje povinnost",
-      "Řeknu mu, ať si poradí sám",
-      "Budu se mu smát, že mu to trvá",
-      "Odejdu, protože to není moje práce",
-    ],
+    options: ["Řeknu mu, ať si poradí sám", "Budu se mu smát, že mu to trvá", "Odejdu, protože to není moje práce", "Nabídnu mu pomoc, i když to není moje povinnost"],
     emoji: "🪑",
     hints: [
       "Pomoc nemusíme nabízet jen tehdy, když je to naše povinnost.",
@@ -441,12 +381,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Ve frontě na oběd stojíš už dlouho a tvůj kamarád tě prosí, ať ho pustíš dopředu. Co je správné?",
     correctAnswer: "Vysvětlím mu, že fronta platí pro všechny, a nepustím ho",
-    options: [
-      "Vysvětlím mu, že fronta platí pro všechny, a nepustím ho",
-      "Pustím ho, protože je to kamarád",
-      "Pustím ho, ale budu se zlobit na ostatní ve frontě",
-      "Přestanu čekat a odejdu bez oběda",
-    ],
+    options: ["Pustím ho, protože je to kamarád", "Vysvětlím mu, že fronta platí pro všechny, a nepustím ho", "Pustím ho, ale budu se zlobit na ostatní ve frontě", "Přestanu čekat a odejdu bez oběda"],
     emoji: "🍱",
     hints: [
       "Zamysli se, co by na to řekli ostatní, kdo ve frontě čekají stejně dlouho jako ty.",
@@ -458,12 +393,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Soused si stěžuje, že jste s kamarády na dvoře moc hlasitě křičeli. Co uděláš?",
     correctAnswer: "Omluvím se a budeme si hrát tišeji",
-    options: [
-      "Omluvím se a budeme si hrát tišeji",
-      "Budu křičet ještě víc, dvůr je přece pro všechny",
-      "Řeknu sousedovi, ať si nevšímá",
-      "Přestaneme si hrát úplně a odejdeme naštvaní",
-    ],
+    options: ["Budu křičet ještě víc, dvůr je přece pro všechny", "Řeknu sousedovi, ať si nevšímá", "Omluvím se a budeme si hrát tišeji", "Přestaneme si hrát úplně a odejdeme naštvaní"],
     emoji: "🔉",
     hints: [
       "Hledej řešení, které bude v pořádku pro tebe i pro souseda zároveň.",
@@ -476,12 +406,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád ti řekne něco, co ho mrzí, a zároveň ti prozradí tajemství, které jsi slíbil nikomu neříct. Co uděláš?",
     correctAnswer: "Vyslechnu ho, utěším ho a tajemství si nechám pro sebe",
-    options: [
-      "Vyslechnu ho, utěším ho a tajemství si nechám pro sebe",
-      "Vyslechnu ho, ale tajemství hned někomu prozradím",
-      "Řeknu mu, že mě to nezajímá",
-      "Vysmívám se mu, že je smutný",
-    ],
+    options: ["Vyslechnu ho, ale tajemství hned někomu prozradím", "Řeknu mu, že mě to nezajímá", "Vysmívám se mu, že je smutný", "Vyslechnu ho, utěším ho a tajemství si nechám pro sebe"],
     emoji: "🤫",
     hints: [
       "Spoj dvě pravidla najednou: naslouchání smutnému kamarádovi a dodržení slibu.",
@@ -533,12 +458,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Který popis nejlépe sedí na slušné chování ke všem lidem kolem nás?",
     correctAnswer: "Zdravíme, děkujeme a pomáháme, i když nás nikdo nechválí",
-    options: [
-      "Zdravíme, děkujeme a pomáháme, i když nás nikdo nechválí",
-      "Jsme zdvořilí jen tehdy, když se na nás někdo dívá",
-      "Pomáháme jen tomu, kdo nám dá za pomoc odměnu",
-      "Zdravíme jen ty, které dobře známe",
-    ],
+    options: ["Jsme zdvořilí jen tehdy, když se na nás někdo dívá", "Zdravíme, děkujeme a pomáháme, i když nás nikdo nechválí", "Pomáháme jen tomu, kdo nám dá za pomoc odměnu", "Zdravíme jen ty, které dobře známe"],
     emoji: "🤝",
     hints: [
       "Spoj dohromady víc pravidel slušného chování najednou — zdravení, poděkování i pomoc.",
@@ -551,12 +471,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád ti chce ve třídě něco poprosit, ale zrovna mluví paní učitelka. Co je nejlepší udělat?",
     correctAnswer: "Počkáme, až paní učitelka domluví, a pak si to řekneme",
-    options: [
-      "Počkáme, až paní učitelka domluví, a pak si to řekneme",
-      "Budeme si šuškat, i když paní učitelka mluví",
-      "Kamarád na mě zakřičí přes celou třídu",
-      "Skočíme paní učitelce do řeči, ať to máme rychle za sebou",
-    ],
+    options: ["Budeme si šuškat, i když paní učitelka mluví", "Kamarád na mě zakřičí přes celou třídu", "Počkáme, až paní učitelka domluví, a pak si to řekneme", "Skočíme paní učitelce do řeči, ať to máme rychle za sebou"],
     emoji: "🤐",
     hints: [
       "Spoj dvě pravidla najednou: neskákat do řeči a počkat na vhodnou chvíli.",
@@ -577,7 +492,7 @@ export const PRAVIDLASLUSNEHOCHOVANI: TopicMetadata[] = [
     id: "g2-prv-chovani",
     rvpNodeId: "g2-prvouka-lide-kolem-nas-souziti-lidi-pravidla-slusneho-chovani-a-souziti",
     title: "Pravidla slušného chování a soužití",
-    studentTitle: "Slušné chování",
+    studentTitle: "Kouzelná slovíčka",
     subject: "prvouka",
     category: "Lidé kolem nás",
     topic: "Soužití lidí",

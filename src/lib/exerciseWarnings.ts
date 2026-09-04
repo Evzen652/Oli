@@ -55,13 +55,13 @@ export function detectExerciseWarnings(input: ExerciseWarningInput): ExerciseWar
   const correct = (input.correctAnswer ?? "").trim();
   const options = (input.options ?? []).filter((o) => o && o.trim());
 
-  // 1) Hint leak — znovupoužij sdílený detektor (skip essay se zde neuplatní,
-  //    editor essay netvoří).
+  // 1) Hint leak — znovupoužij sdílený detektor.
   if (input.hints && input.hints.some((h) => h && h.trim())) {
     const leak = checkHintLeakage({
       question,
       correct_answer: correct,
       hints: input.hints.filter((h) => h && h.trim()),
+      options,
     });
     if (!leak.ok) {
       warnings.push({

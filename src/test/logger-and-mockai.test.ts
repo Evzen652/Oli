@@ -221,8 +221,8 @@ describe("generateMockBatch — task generation + cap", () => {
     expect(tasks.length).toBe(3);
   });
 
-  it("topic.sessionTaskCount=1 (essay) → jen 1 task", () => {
-    const topic = mkTopic({ sessionTaskCount: 1, inputType: "essay" });
+  it("topic.sessionTaskCount=1 → jen 1 task", () => {
+    const topic = mkTopic({ sessionTaskCount: 1 });
     const tasks = generateMockBatch({ ...baseRequest, topic });
     expect(tasks.length).toBe(1);
   });

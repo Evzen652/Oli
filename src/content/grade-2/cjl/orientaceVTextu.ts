@@ -73,7 +73,7 @@ export const ORIENTACEVTEXTU: TopicMetadata[] = [
     id: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
     rvpNodeId: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
     title: "Orientace v textu (věta, odstavec, nadpis)",
-    studentTitle: "Orientace v textu",
+    studentTitle: "Vyznej se v textu",
     subject: "čeština",
     category: "Komunikační a slohová výchova",
     topic: "Práce s textem",

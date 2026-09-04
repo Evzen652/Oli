@@ -36,7 +36,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co chrání žebra?",
     correctAnswer: "Srdce a plíce",
-    options: ["Srdce a plíce", "Mozek", "Žaludek a střeva", "Páteř"],
+    options: ["Mozek", "Srdce a plíce", "Žaludek a střeva", "Páteř"],
     emoji: "🫁",
     hints: [
       "Žebra tvoří klec kolem hrudi — přemýšlej, co je tam uvnitř.",
@@ -48,7 +48,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který orgán přečerpává krev po celém těle?",
     correctAnswer: "Srdce",
-    options: ["Srdce", "Plíce", "Mozek", "Žaludek"],
+    options: ["Plíce", "Mozek", "Srdce", "Žaludek"],
     emoji: "❤️",
     hints: [
       "Polož si ruku na hrudník — co tam pravidelně bije?",
@@ -60,7 +60,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který orgán řídí celé tělo, myšlení a pohyby?",
     correctAnswer: "Mozek",
-    options: ["Mozek", "Srdce", "Žaludek", "Ledviny"],
+    options: ["Srdce", "Žaludek", "Ledviny", "Mozek"],
     emoji: "🧠",
     hints: [
       "Je to velitelské centrum, které dobře chráníme lebkou.",
@@ -84,7 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Který orgán čistí krev a tvoří moč?",
     correctAnswer: "Ledviny",
-    options: ["Ledviny", "Srdce", "Plíce", "Mozek"],
+    options: ["Srdce", "Ledviny", "Plíce", "Mozek"],
     emoji: "🩸",
     hints: [
       "Tento orgán funguje jako filtr krve.",
@@ -96,7 +96,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Která kost drží tělo vzpřímené a chrání míchu?",
     correctAnswer: "Páteř",
-    options: ["Páteř", "Lebka", "Žebra", "Kosti ruky"],
+    options: ["Lebka", "Žebra", "Páteř", "Kosti ruky"],
     emoji: "🦴",
     hints: [
       "Táhne se od krku dolů uprostřed zad.",
@@ -108,7 +108,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Čím jsou svaly připojené ke kostem?",
     correctAnswer: "Šlachami",
-    options: ["Šlachami", "Cévami", "Nervy", "Kůží"],
+    options: ["Cévami", "Nervy", "Kůží", "Šlachami"],
     emoji: "💪",
     hints: [
       "Je to pevné vlákno jako silný provázek.",
@@ -132,7 +132,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak dlouho by se děti měly každý den hýbat?",
     correctAnswer: "Alespoň 60 minut",
-    options: ["Alespoň 60 minut", "Alespoň 10 minut", "Alespoň 3 hodiny", "Pohyb není nutný"],
+    options: ["Alespoň 10 minut", "Alespoň 60 minut", "Alespoň 3 hodiny", "Pohyb není nutný"],
     emoji: "🏃",
     hints: [
       "Mělo by to být opravdu hodně — víc než jen krátká chvilka denně.",
@@ -147,12 +147,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "K čemu slouží kostra?",
     correctAnswer: "Dává tělu tvar, chrání vnitřní orgány a umožňuje pohyb",
-    options: [
-      "Dává tělu tvar, chrání vnitřní orgány a umožňuje pohyb",
-      "Přepravuje krev po celém těle",
-      "Tráví potravu a vstřebává živiny",
-      "Řídí myšlení a pohyby těla",
-    ],
+    options: ["Přepravuje krev po celém těle", "Tráví potravu a vstřebává živiny", "Dává tělu tvar, chrání vnitřní orgány a umožňuje pohyb", "Řídí myšlení a pohyby těla"],
     emoji: "🦴",
     hints: [
       "Přemýšlej, co by se s tělem stalo, kdybys neměl žádné kosti.",
@@ -164,12 +159,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "K čemu slouží svaly?",
     correctAnswer: "Umožňují pohyb — stahují se a uvolňují, tím hýbou kostmi",
-    options: [
-      "Umožňují pohyb — stahují se a uvolňují, tím hýbou kostmi",
-      "Chrání mozek a míchu před poraněním",
-      "Přenášejí kyslík z plic do celého těla",
-      "Tráví potravu v žaludku",
-    ],
+    options: ["Chrání mozek a míchu před poraněním", "Přenášejí kyslík z plic do celého těla", "Tráví potravu v žaludku", "Umožňují pohyb — stahují se a uvolňují, tím hýbou kostmi"],
     emoji: "💪",
     hints: [
       "Co cítíš napínat v ruce, když zvedáš těžkou tašku?",
@@ -198,12 +188,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co se děje v plicích?",
     correctAnswer: "Přijímají kyslík ze vzduchu a odevzdávají oxid uhličitý",
-    options: [
-      "Přijímají kyslík ze vzduchu a odevzdávají oxid uhličitý",
-      "Filtrují krev a tvoří moč",
-      "Rozkládají potravu na živiny",
-      "Vyrábějí hormony pro růst těla",
-    ],
+    options: ["Filtrují krev a tvoří moč", "Přijímají kyslík ze vzduchu a odevzdávají oxid uhličitý", "Rozkládají potravu na živiny", "Vyrábějí hormony pro růst těla"],
     emoji: "🫁",
     hints: [
       "Přemýšlej, co dýcháš dovnitř a co vydechuješ ven.",
@@ -215,12 +200,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá mozek?",
     correctAnswer: "Řídí celé tělo, myšlení, pohyby i smysly",
-    options: [
-      "Řídí celé tělo, myšlení, pohyby i smysly",
-      "Vyrábí krev pro srdce",
-      "Tráví potravu a vstřebává vitamíny",
-      "Čistí krev od odpadních látek",
-    ],
+    options: ["Vyrábí krev pro srdce", "Tráví potravu a vstřebává vitamíny", "Řídí celé tělo, myšlení, pohyby i smysly", "Čistí krev od odpadních látek"],
     emoji: "🧠",
     hints: [
       "Proč tak dobře chráníme právě tuto část v hlavě?",
@@ -232,12 +212,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělají ledviny?",
     correctAnswer: "Čistí krev a tvoří moč, kterou se z těla odstraňují odpadní látky",
-    options: [
-      "Čistí krev a tvoří moč, kterou se z těla odstraňují odpadní látky",
-      "Vyrábějí trávicí šťávy pro žaludek",
-      "Přenášejí kyslík do svalů",
-      "Regulují tep srdce",
-    ],
+    options: ["Vyrábějí trávicí šťávy pro žaludek", "Přenášejí kyslík do svalů", "Regulují tep srdce", "Čistí krev a tvoří moč, kterou se z těla odstraňují odpadní látky"],
     emoji: "🩸",
     hints: [
       "Ledviny fungují jako filtr — přemýšlej, co odstraňují.",
@@ -265,12 +240,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Proč si myjeme ruce?",
-    correctAnswer: "Protože na rukou jsou bakterie a viry, které by nás mohly roznemocnit",
+    correctAnswer: "Na rukou jsou bakterie a viry, které nás můžou nakazit",
     options: [
-      "Protože na rukou jsou bakterie a viry, které by nás mohly roznemocnit",
-      "Protože ruce pak lépe drží tužku",
-      "Protože voda posiluje kůži",
-      "Protože to tak říká učitel",
+      "Protože pak lépe udržíme tužku",
+      "Na rukou jsou bakterie a viry, které nás můžou nakazit",
+      "Protože voda posiluje pokožku",
+      "Protože to tak říká paní učitelka",
     ],
     emoji: "🧼",
     hints: [
@@ -283,12 +258,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co patří do vyvážené stravy?",
     correctAnswer: "Ovoce, zelenina, bílkoviny, sacharidy a dostatek tekutin",
-    options: [
-      "Ovoce, zelenina, bílkoviny, sacharidy a dostatek tekutin",
-      "Pouze maso a mléčné výrobky",
-      "Sladkosti a slané pochutiny v každém jídle",
-      "Jen zelenina a voda",
-    ],
+    options: ["Pouze maso a mléčné výrobky", "Sladkosti a slané pochutiny v každém jídle", "Ovoce, zelenina, bílkoviny, sacharidy a dostatek tekutin", "Jen zelenina a voda"],
     emoji: "🥗",
     hints: [
       "Vyvážená strava znamená jíst od každé skupiny potravin trochu.",
@@ -299,13 +269,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "K čemu slouží očkování?",
-    correctAnswer: "Chrání tělo před nebezpečnými nemocemi — trénuje imunitní systém",
-    options: [
-      "Chrání tělo před nebezpečnými nemocemi — trénuje imunitní systém",
-      "Léčí nemoci, které už máme",
-      "Dodává tělu vitamíny a minerály",
-      "Posiluje svaly a kosti",
-    ],
+    correctAnswer: "Trénuje imunitní systém, aby nemoc poznal předem",
+    options: ["Léčí nemoci, které v těle už máme", "Dodává tělu vitamíny a minerály", "Posiluje svaly a kosti při růstu", "Trénuje imunitní systém, aby nemoc poznal předem"],
     emoji: "💉",
     hints: [
       "Očkování je prevence — chrání dřív, než nemoc přijde.",
@@ -337,12 +302,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Která věta o orgánech je správná?",
     correctAnswer: "Srdce přečerpává krev, ledviny ji čistí",
-    options: [
-      "Srdce přečerpává krev, ledviny ji čistí",
-      "Srdce čistí krev, ledviny ji přečerpávají",
-      "Plíce přečerpávají krev, srdce dýchá",
-      "Mozek přečerpává krev, srdce řídí myšlení",
-    ],
+    options: ["Srdce čistí krev, ledviny ji přečerpávají", "Srdce přečerpává krev, ledviny ji čistí", "Plíce přečerpávají krev, srdce dýchá", "Mozek přečerpává krev, srdce řídí myšlení"],
     emoji: "🧠",
     hints: [
       "Vzpomeň si, který orgán je pumpa a který je filtr.",
@@ -354,12 +314,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak se kyslík ze vzduchu dostane až ke svalům?",
     correctAnswer: "Plíce ho předají krvi a srdce krev rozvede po celém těle",
-    options: [
-      "Plíce ho předají krvi a srdce krev rozvede po celém těle",
-      "Žaludek ho stráví a pošle rovnou do svalů",
-      "Ledviny ho vyfiltrují a dopraví do kostí",
-      "Mozek ho vyrobí a rozešle nervy",
-    ],
+    options: ["Žaludek ho stráví a pošle rovnou do svalů", "Ledviny ho vyfiltrují a dopraví do kostí", "Plíce ho předají krvi a srdce krev rozvede po celém těle", "Mozek ho vyrobí a rozešle nervy"],
     emoji: "🫁",
     hints: [
       "Kyslík se nejdřív dostane do krve — kde to je?",
@@ -371,12 +326,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Dítě chodí spát pozdě a spí jen 5 hodin. Jak se to na něm nejspíš projeví?",
     correctAnswer: "Bude unavené, hůř se soustředí a tělo se hůř zotaví",
-    options: [
-      "Bude unavené, hůř se soustředí a tělo se hůř zotaví",
-      "Bude rychleji růst, protože ušetří čas",
-      "Bude zdravější, protože je víc vzhůru",
-      "Nijak — na spánku nezáleží",
-    ],
+    options: ["Bude rychleji růst, protože ušetří čas", "Bude zdravější, protože je víc vzhůru", "Nijak — na spánku nezáleží", "Bude unavené, hůř se soustředí a tělo se hůř zotaví"],
     emoji: "😴",
     hints: [
       "Vzpomeň si, co tělo a mozek během spánku dělají.",
@@ -404,11 +354,11 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč nás očkování chrání, i když zrovna nejsme nemocní?",
-    correctAnswer: "Předem naučí imunitní systém nemoc rozpoznat a rychle ji porazit",
+    correctAnswer: "Předem naučí tělo nemoc poznat a rychle ji porazit",
     options: [
-      "Předem naučí imunitní systém nemoc rozpoznat a rychle ji porazit",
       "Zabije všechny bakterie na kůži",
-      "Dodá tělu energii z cukru",
+      "Předem naučí tělo nemoc poznat a rychle ji porazit",
+      "Dodá tělu rychlou energii z cukru",
       "Posílí kosti, aby se nezlomily",
     ],
     emoji: "💉",
@@ -422,12 +372,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jak vznikne pohyb ruky, když chceš zvednout tašku?",
     correctAnswer: "Mozek vyšle signál, sval se stáhne a přes šlachu pohne kostí",
-    options: [
-      "Mozek vyšle signál, sval se stáhne a přes šlachu pohne kostí",
-      "Kost se sama rozhodne a zvedne sval",
-      "Krev zatlačí na kost a ta se pohne",
-      "Šlacha vyšle signál mozku, aby kost ztvrdla",
-    ],
+    options: ["Kost se sama rozhodne a zvedne sval", "Krev zatlačí na kost a ta se pohne", "Mozek vyšle signál, sval se stáhne a přes šlachu pohne kostí", "Šlacha vyšle signál mozku, aby kost ztvrdla"],
     emoji: "💪",
     hints: [
       "Kdo dává povel a co se pak se svalem stane?",
@@ -439,12 +384,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč jíme od více skupin potravin, a ne jen jednu?",
     correctAnswer: "Každá skupina dodá tělu něco jiného — energii, stavební látky i vitamíny",
-    options: [
-      "Každá skupina dodá tělu něco jiného — energii, stavební látky i vitamíny",
-      "Aby jídlo trvalo déle a nudili jsme se méně",
-      "Protože jedna skupina potravin je jedovatá",
-      "Aby tělo nemuselo vůbec trávit",
-    ],
+    options: ["Aby jídlo trvalo déle a nudili jsme se méně", "Protože jedna skupina potravin je jedovatá", "Aby tělo nemuselo vůbec trávit", "Každá skupina dodá tělu něco jiného — energii, stavební látky i vitamíny"],
     emoji: "🍽️",
     hints: [
       "Přemýšlej, co dává ovoce, co maso a co pečivo.",
@@ -473,12 +413,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Když si při pádu narazíš koleno a nemůžeš nohu ohnout, které dvě spolupracující části k pohybu potřebuješ?",
     correctAnswer: "Svaly a kosti, které jsou spojené šlachou",
-    options: [
-      "Svaly a kosti, které jsou spojené šlachou",
-      "Plíce a srdce, které pohánějí nohu",
-      "Ledviny a žaludek, které tvoří pohyb",
-      "Mozek a kůži, které ohýbají kost",
-    ],
+    options: ["Plíce a srdce, které pohánějí nohu", "Svaly a kosti, které jsou spojené šlachou", "Ledviny a žaludek, které tvoří pohyb", "Mozek a kůži, které ohýbají kost"],
     emoji: "🦵",
     hints: [
       "Vzpomeň si, co se musí stáhnout a co se díky tomu pohne.",

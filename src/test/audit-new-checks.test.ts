@@ -161,28 +161,6 @@ describe("validateTaskForInputType — match_pairs nové checky", () => {
   });
 });
 
-// ─── runOfflineAudit — essay hints ────────────────────────────────────────
-
-describe("runOfflineAudit — essay missing hints", () => {
-  it("essay bez hints → format issue", () => {
-    const topic = makeTopic({
-      inputType: "essay",
-      generator: () => [task("Napiš příběh o psovi.", "60")],
-    });
-    const report = runOfflineAudit([topic]);
-    expect(report.issues.some(i => i.category === "format" && i.detail.includes("hints"))).toBe(true);
-  });
-
-  it("essay s hints → žádný issue pro hints", () => {
-    const topic = makeTopic({
-      inputType: "essay",
-      generator: () => [task("Napiš příběh o psovi.", "60", { hints: ["Piš o tom co psi dělají", "Zkus popsat psa a jeho den včetně toho co jí a kde spí"] })],
-    });
-    const report = runOfflineAudit([topic]);
-    expect(report.issues.filter(i => i.category === "format" && i.detail.includes("hints"))).toHaveLength(0);
-  });
-});
-
 // ─── runOfflineAudit — duplicitní options ──────────────────────────────────
 
 describe("runOfflineAudit — duplicitní options", () => {
@@ -526,5 +504,135 @@ describe("runPedagogicalAudit — hint_progression", () => {
     });
     const report = runPedagogicalAudit([topic]);
     expect(report.issues.filter(i => i.category === "hint_progression")).toHaveLength(0);
+  });
+});
+
+// ─── self_validation: ROUND-TRIP (oprava 2026-08-30) ───────────────────────
+//
+// Dřív se volalo validateAnswer(correctAnswer, correctAnswer). U strukturovaných
+// typů je correctAnswer jen marker ("match"/"order"/"categorize") a formát
+// odeslané odpovědi se navíc liší od formátu klíče → 529 falešných poplachů
+// napříč korpusem. Nově se sestaví odpověď tak, jak ji pošle vstupní komponenta.
+
+describe("runOfflineAudit — self_validation round-trip", () => {
+  const selfVal = (t: TopicMetadata) =>
+    runOfflineAudit([t]).issues.filter(i => i.category === "self_validation");
+
+  it("match_pairs s korektními pairs → žádný issue (dřív falešný poplach)", () => {
+    const topic = makeTopic({
+      inputType: "match_pairs",
+      generator: makeGenFromTasks([
+        task("Spoj zvíře se skupinou.", "match", {
+          pairs: [{ left: "vlk", right: "savec" }, { left: "losos", right: "ryba" }],
+        }),
+      ]),
+    });
+    expect(selfVal(topic)).toHaveLength(0);
+  });
+
+  it("categorize s korektními categories → žádný issue (formát mapy vs. pole)", () => {
+    const topic = makeTopic({
+      inputType: "categorize",
+      generator: makeGenFromTasks([
+        task("Roztřiď zvířata.", "categorize", {
+          categories: [
+            { name: "Savec", items: ["pes"] },
+            { name: "Ryba", items: ["kapr"] },
+          ],
+        }),
+      ]),
+    });
+    expect(selfVal(topic)).toHaveLength(0);
+  });
+
+  it("drag_order s korektními items → žádný issue", () => {
+    const topic = makeTopic({
+      inputType: "drag_order",
+      generator: makeGenFromTasks([
+        task("Seřaď čísla.", "order", { items: ["1", "2", "3"] }),
+      ]),
+    });
+    expect(selfVal(topic)).toHaveLength(0);
+  });
+
+  it("fill_blank validuje proti blanks, ne proti didaktickému zápisu s pomlčkou", () => {
+    // Regrese na BUG 3 (2026-07-19): correctAnswer "vý-", žák píše "vý".
+    const topic = makeTopic({
+      inputType: "fill_blank",
+      generator: makeGenFromTasks([
+        task("Přečetl ___tah", "vý-", { blanks: ["vý"] }),
+      ]),
+    });
+    expect(selfVal(topic)).toHaveLength(0);
+  });
+
+  it("multi_select: JSON pole z komponenty projde proti join(\",\") klíči", () => {
+    // Round-trip odhalil rozpor: MultiSelectInput posílá JSON pole, ale
+    // resolveTaskValidation skládá očekávanou hodnotu přes join(","). Bez
+    // opravy set_match by dítě za správnou odpověď dostalo „špatně".
+    const topic = makeTopic({
+      inputType: "multi_select",
+      generator: makeGenFromTasks([
+        task("Vyber savce.", "multi", {
+          options: ["pes", "kočka", "kapr", "orel"],
+          correctAnswers: ["pes", "kočka"],
+        }),
+      ]),
+    });
+    expect(selfVal(topic)).toHaveLength(0);
+  });
+
+  it("skutečně rozbitá úloha se STÁLE odhalí (kontrola nezměkla)", () => {
+    // Číselné téma s nečíselným klíčem: numericTolerance ho neumí naparsovat,
+    // takže by ani dokonalá odpověď nikdy neprošla. Kontrola to musí zachytit.
+    const broken = makeTopic({
+      inputType: "number",
+      generator: makeGenFromTasks([
+        task("Kolik je 2+2?", "čtyři"),
+      ]),
+    });
+    expect(selfVal(broken).length).toBeGreaterThan(0);
+  });
+});
+
+// ─── format/giveaway: výčtová otázka není prozrazení ───────────────────────
+
+describe("runOfflineAudit — giveaway v otázce vs. výčtová otázka", () => {
+  const giveaway = (t: TopicMetadata) =>
+    runOfflineAudit([t]).issues.filter(
+      i => i.category === "format" && i.detail.includes("ve znění otázky"),
+    );
+
+  it("otázka vyjmenuje ≥2 nabízené možnosti → NENÍ giveaway", () => {
+    const topic = makeTopic({
+      generator: makeGenFromTasks([
+        task("Co je delší: 1 minuta nebo 1 sekunda?", "1 minuta", {
+          options: ["1 minuta", "1 sekunda"],
+        }),
+      ]),
+    });
+    expect(giveaway(topic)).toHaveLength(0);
+  });
+
+  it("otázka vyjmenuje tři kandidáty → NENÍ giveaway", () => {
+    const topic = makeTopic({
+      generator: makeGenFromTasks([
+        task("Které slovo je sloveso: škola, učit, velký?", "učit", {
+          options: ["škola", "učit", "velký"],
+        }),
+      ]),
+    });
+    expect(giveaway(topic)).toHaveLength(0);
+  });
+
+  it("klíč v otázce BEZ výčtu možností → giveaway se stále hlásí", () => {
+    const topic = makeTopic({
+      generator: makeGenFromTasks([
+        task("Hlavní město Praha leží na řece Vltavě. Které je hlavní město?", "Praha", {
+          options: ["Praha", "Brno", "Ostrava", "Plzeň"],
+        }),
+      ]),
+    });
+    expect(giveaway(topic).length).toBeGreaterThan(0);
   });
 });

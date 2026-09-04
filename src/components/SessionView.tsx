@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
-import { getFullTopicTitle } from "@/lib/types";
-import { getDisplayTopic, getDisplayCategory } from "@/lib/displayNames";
+import { getDisplayCategory, getChildTopicTitle } from "@/lib/displayNames";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { GradeSelect } from "@/components/GradeSelect";
@@ -10,6 +9,7 @@ import { TopicBrowser } from "@/components/TopicBrowser";
 import { ChildHomePage } from "@/components/ChildHomePage";
 import { DiktatFilterSelect } from "@/components/DiktatFilterSelect";
 import { HelpButton } from "@/components/HelpButton";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { TutorChat } from "@/components/TutorChat";
 import { FEATURES } from "@/lib/features";
 import { MiniExplainer } from "@/components/MiniExplainer";
@@ -27,17 +27,27 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { FractionBarVisual } from "@/components/FractionBarVisual";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
-import { getCategoryInfo } from "@/lib/categoryInfo";
+import { getTopicInsight } from "@/lib/topicInsight";
+import { readLocal, writeLocal } from "@/lib/safeStorage";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
+import { getTopicById } from "@/lib/contentRegistry";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
 import { ExitSessionDialog } from "@/components/ExitSessionDialog";
 import goodToKnowImg from "@/assets/good-to-know.png";
+/**
+ * Ikony boxů v „Co je dobré vědět". Jedna sada, tatáž jako u úloh
+ * v průběhu cvičení (`ProgressIndicator`) — dítě ty tvary už zná.
+ * Tužka = jak na to, fajfka = takhle to vypadá správně, křížek = past,
+ * žárovka = zajímavost.
+ */
+import icoHowTo from "@/assets/progress/progress-current.png";
+import icoExample from "@/assets/progress/progress-correct.png";
+import icoMistake from "@/assets/progress/progress-wrong.png";
+import icoFunFact from "@/assets/progress/progress-help.png";
 import { useT } from "@/lib/i18n";
-import { LogOut, Eye } from "lucide-react";
-import { DewhiteImg } from "@/components/DewhiteImg";
+import { LogOut, Eye, Lightbulb, Hourglass } from "lucide-react";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
-import { LandingNav } from "@/pages/LandingNav";
 import { OliLogo } from "@/components/OliLogo";
 import { BackButton } from "@/components/BackButton";
 import { isTrialActive } from "@/lib/anonTrial";
@@ -91,19 +101,6 @@ const STATE_LABELS: Record<SessionState, string> = {
   END: "Konec",
 };
 
-/** Vrátí dětský název tématu — pro student view, jinak RVP */
-function getChildTopicTitle(topic: { topic: string; title: string; displayName?: string; studentTitle?: string }, grade: number | null, isStudentView: boolean): string {
-  if (!isStudentView) return getFullTopicTitle(topic as any);
-  // studentTitle je krátký, samostatný dětský název (např. „Násobilka 2–5") → použij přímo
-  if (topic.studentTitle) return topic.studentTitle;
-  const g = grade ?? 4;
-  const displayGroup = getDisplayTopic(topic.topic ?? "", g as any);
-  const displaySub = topic.displayName ?? topic.title ?? "";
-  if (!displaySub || topic.topic === topic.title) return displayGroup;
-  const sub = displaySub.charAt(0).toLowerCase() + displaySub.slice(1);
-  return `${displayGroup} – ${sub}`;
-}
-
 export function SessionView() {
   const t = useT();
   const navigate = useNavigate();
@@ -116,7 +113,7 @@ export function SessionView() {
    * (maže ho jen migrace anonymního pokroku), takže samotná jeho existence
    * o anonymitě nic neříká.
    */
-  const isAnonymous = pathname === "/student" && role === null && !!localStorage.getItem("oli_anon_trial");
+  const isAnonymous = pathname === "/student" && role === null && !!readLocal("oli_anon_trial");
   const isStudentView = role === "child" || (role === "admin" && pathname === "/student") || isAnonymous;
 
   /**
@@ -206,15 +203,22 @@ export function SessionView() {
   // (logo, Zpět, Odhlásit se, ✕) a všechny mají projít stejnou branou.
   const [pendingExit, setPendingExit] = useState<(() => void) | null>(null);
 
+  // Klidné upozornění minutu před vypršením limitu. Drží `startTime` sezení,
+  // ne boolean — po „Procvičit znovu" začíná nové sezení s novým `startTime`,
+  // takže hláška sama zhasne a příště se ukáže znovu.
+  const [timeWarningFor, setTimeWarningFor] = useState<number | null>(null);
+  // Prázdné deps jsou nutnost, ne pohodlí: `SessionTimer` má callback
+  // v závislostech svého intervalu, takže nestabilní identita by interval
+  // restartovala při každém renderu a tikot by se nikdy nedopočítal.
+  const handleTimeWarning = useCallback((startTime: number) => setTimeWarningFor(startTime), []);
+
   // For paired children: auto-load grade from children table
   const [childGradeLoaded, setChildGradeLoaded] = useState(false);
-  const [isDemoChild, setIsDemoChild] = useState(false);
   useEffect(() => {
     if (role === "child" && !grade && !childGradeLoaded) {
       (async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        if (user.id === "705f7c4a-9f32-4efb-9c55-e8043f0ede5e") setIsDemoChild(true);
         const { data } = await supabase
           .from("children")
           .select("grade")
@@ -252,7 +256,7 @@ export function SessionView() {
   // Admin: obnov naposledy testovaný ročník (zapamatovaný v localStorage), fallback 4
   useEffect(() => {
     if (role === "admin" && !grade) {
-      const saved = Number(localStorage.getItem("oli_admin_preview_grade"));
+      const saved = Number(readLocal("oli_admin_preview_grade"));
       const g = saved >= 1 && saved <= 9 ? saved : 4;
       handleGradeSelect(g as any);
     }
@@ -271,7 +275,7 @@ export function SessionView() {
           value={grade ?? 4}
           onChange={(e) => {
             const g = Number(e.target.value);
-            localStorage.setItem("oli_admin_preview_grade", String(g));
+            writeLocal("oli_admin_preview_grade", String(g));
             s.setSession(null as any);
             // Reset výběru — jinak zůstane předmět z minulého ročníku (prázdná stránka)
             setShowTopicBrowser(false);
@@ -294,11 +298,25 @@ export function SessionView() {
   const recoveryDialog = (
     <SessionRecoveryDialog
       open={!!recoveryData}
-      topicTitle={recoveryData?.session?.matchedTopic ? getFullTopicTitle(recoveryData.session.matchedTopic) : ""}
+      // Dětský název, ne RVP. Dialog vidí dítě, a „Práce s daty – tabulky
+      // a jednoduchá schémata" mu neřekne nic o tom, co má rozdělané.
+      topicTitle={recoveryData?.session?.matchedTopic ? getChildTopicTitle(recoveryData.session.matchedTopic, grade, isStudentView) : ""}
       onRecover={() => {
         if (recoveryData) {
-          s.setGrade(recoveryData.session.grade);
-          s.setSession(recoveryData.session);
+          const rec = recoveryData.session;
+          // Čas strávený mimo aktivní sezení se nepočítá — jinak by se obnovené
+          // sezení při první odpovědi hned ukončilo do STOP_2 („čas vypršel"),
+          // což ruší celý smysl obnovy. Posuň startTime o dosud odehraný čas.
+          rec.startTime = Date.now() - (rec.elapsedSeconds ?? 0) * 1000;
+          // matchedTopic.generator je funkce → JSON.stringify ji ze zálohy zahodí.
+          // Přehrání uloženého batche to nevadí, ale „Zopakovat" po obnově volá
+          // topic.generator → TypeError. Rehydratuj generátor z registru.
+          if (rec.matchedTopic) {
+            const fresh = getTopicById(rec.matchedTopic.id);
+            if (fresh) rec.matchedTopic = { ...rec.matchedTopic, generator: fresh.generator };
+          }
+          s.setGrade(rec.grade);
+          s.setSession(rec);
           // Bez tohohle se sezení obnovilo, ale ukazatel průběhu byl prázdný —
           // dítě vidělo „Úloha 3 z 6" a přitom nulu hotových teček.
           s.setTaskResults(recoveryData.taskResults ?? []);
@@ -353,49 +371,7 @@ export function SessionView() {
     );
   }
 
-  const DemoHeader = isDemoChild ? (
-    <div className="fixed top-0 left-0 right-0 z-50 shadow-soft-2">
-      <div className="bg-[#F97316] text-white px-5 py-2 text-sm text-center font-medium">
-        Demo — prohlídka bez registrace
-      </div>
-      <LandingNav />
-    </div>
-  ) : null;
 
-  const DemoChildSwitcher = isDemoChild ? (
-    <div className="grid sm:grid-cols-2 gap-4 mx-auto max-w-5xl px-4 pt-6 sm:px-8">
-      <button
-        className="rounded-3xl border-2 bg-card shadow-e1 hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] p-6 flex items-center gap-4 text-left transition-all duration-150"
-        onClick={async () => {
-          await supabase.auth.signInWithPassword({ email: "demo@oli.app", password: "Demo123demo" });
-          window.location.href = "/parent";
-        }}
-      >
-        <DewhiteImg
-          src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/topic-rodina-a-spolecnost.png"
-          alt=""
-          className="h-16 w-16 object-contain drop-shadow-md shrink-0"
-          threshold={240}
-        />
-        <div className="flex-1">
-          <p className="font-bold text-lg text-foreground">Jsem rodič</p>
-          <p className="text-label text-muted-foreground mt-0.5">Přepnout na rodičovský pohled →</p>
-        </div>
-      </button>
-      <div className="rounded-3xl border-2 border-[#9A3412]/25 bg-[#FFF1E6] p-6 flex items-center gap-4">
-        <DewhiteImg
-          src="https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images/ui-child-desk.png"
-          alt=""
-          className="h-16 w-16 object-contain drop-shadow-md shrink-0"
-          threshold={240}
-        />
-        <div>
-          <p className="font-bold text-lg text-[#9A3412]">Jsem žák</p>
-          <p className="text-label text-[#9A3412]/80 mt-0.5">Aktuální pohled</p>
-        </div>
-      </div>
-    </div>
-  ) : null;
 
   if (!session) {
     // Během zakládání session — spinner místo ChildHomePage/TopicBrowser
@@ -416,10 +392,8 @@ export function SessionView() {
       return (
         <>
           {recoveryDialog}
-          {DemoHeader}
           {AdminBanner}
-          <div style={isDemoChild ? { paddingTop: "7rem" } : role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
-            {DemoChildSwitcher}
+          <div style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
             <ChildHomePage
               grade={grade}
               onSelectTopic={(topic) => { setIsStarting(true); s.handleTopicSelect(topic); }}
@@ -432,7 +406,6 @@ export function SessionView() {
     return (
       <>
         {recoveryDialog}
-        {DemoHeader}
         {AdminBanner}
         <TopicBrowser
           key={grade}
@@ -510,52 +483,31 @@ export function SessionView() {
   // cvičení než v přehledu předmětů.
   const subjectPalette = getSubjectPalette(session.matchedTopic?.subject);
 
-  // Dekorace pozadí — zobrazí se jen během PRACTICE/EXPLAIN, fixní vlevo dole
-  const SUPABASE_STORAGE = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
-  const showDecor = session.state === "PRACTICE" || session.state === "EXPLAIN";
+  /**
+   * K čemu to je + zajímavost. Dřív se bralo z `getCategoryInfo`, jenže ten
+   * mapuje klíče staré taxonomie a od přechodu na RVP názvy vracel `null`
+   * pro všech 229 témat — box se zajímavostí se tedy nezobrazil nikdy.
+   * `getTopicInsight` má fallback na kategorii, takže se to nemůže opakovat;
+   * hlídá to test `topic-insight-coverage`.
+   */
+  const insight = session.matchedTopic
+    ? getTopicInsight(session.matchedTopic.subject, session.matchedTopic.category, session.matchedTopic.topic)
+    : null;
+
 
   return (
     <div className={`relative flex min-h-screen flex-col ${isTerminal || session.state === "PRACTICE" || session.state === "EXPLAIN" ? "session-bg-gradient" : "bg-background"}`} style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
-      {/* Dekorativní ilustrace vlevo dole — fixní, jen desktop.
-          Page má radial krémový gradient v levém dolním rohu (viz session-bg-gradient).
-          Maska je radial fade kolem objektů (knihy + globus), krémové pozadí kresby
-          se rozpustí do krémového pozadí stránky → bez viditelného přechodu. */}
-      {showDecor && (
-        <img
-          src={`${SUPABASE_STORAGE}/practice-decor-globe.png`}
-          alt=""
-          aria-hidden="true"
-          className="hidden lg:block fixed bottom-0 left-0 w-72 xl:w-96 h-auto object-contain pointer-events-none select-none z-0"
-          style={{
-            opacity: 1,
-            // Radial fade kolem objektů (lampa, knihy, globus, sukulent — vystředěné lehce vlevo dole)
-            WebkitMaskImage:
-              "radial-gradient(ellipse 70% 70% at 40% 70%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 90%)",
-            maskImage:
-              "radial-gradient(ellipse 70% 70% at 40% 70%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, rgba(0,0,0,0) 90%)",
-          }}
-        />
-      )}
-
-      {/* Letící kniha s pohádkovými hvězdičkami vpravo nahoře — tematický protějšek
-          ke knihám+globusu vlevo dole (dole studovna, nahoře vzlétající fantazie). */}
-      {showDecor && (
-        <img
-          src={`${SUPABASE_STORAGE}/practice-decor-flying-book.png`}
-          alt=""
-          aria-hidden="true"
-          className="hidden lg:block fixed top-0 right-0 w-72 xl:w-96 h-auto object-contain pointer-events-none select-none z-0"
-          style={{
-            opacity: 0.85,
-            mixBlendMode: "multiply",
-            // Fade levého a spodního okraje — kresba se rozplyne do stránky
-            WebkitMaskImage:
-              "radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 90%)",
-            maskImage:
-              "radial-gradient(ellipse 80% 80% at 70% 30%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 90%)",
-          }}
-        />
-      )}
+      {/* Dekorace v rozích (3D glóbus s knihami vlevo dole, letící kniha vpravo
+          nahoře) SMAZÁNY 2026-09-03. Čtyři důvody, každý sám o sobě stačí:
+          1. byly ve stylu „3D Pixar“, který `ILLUSTRATION_STYLE.md` výslovně
+             označuje za nepatřičný vedle akvarelu — a byly to největší grafické
+             prvky na obrazovce (288–384 px, `fixed` v obou rozích);
+          2. na širokém monitoru orámovaly obsah jako tapeta šablony;
+          3. tahaly se za běhu ze Supabase storage — síťová závislost pro
+             čistou dekoraci;
+          4. letící kniha měla `mixBlendMode: multiply` nad radiálním gradientem,
+             takže se jí odstín měnil podle pozice na stránce.
+          Prázdné okraje se nemá čím zaplňovat — klid kolem karty je záměr. */}
       {AdminBanner}
       <ExitSessionDialog
         open={!!pendingExit}
@@ -584,15 +536,23 @@ export function SessionView() {
             )}
           </div>
           <div className="flex items-center gap-3">
-            {!isTerminal && !isStudentView && (
-              <div className="w-48">
-                <SessionTimer
-                  startTime={session.startTime}
-                  maxSeconds={session.rules.maxDurationSeconds}
-                  isActive={!isLocked}
-                  onTimeExpired={s.handleTimeExpired}
-                />
-              </div>
+            {/* `SessionTimer` nic nevykresluje — jen hlídá limit na pozadí
+                a minutu před koncem pošle jednu klidnou hlášku.
+
+                Podmínka `!isStudentView` je pryč záměrně: `isStudentView` je
+                pravda pro KAŽDÉ dítě (viz jeho definice výše), takže hlídač
+                běžel jedině rodiči/adminovi v náhledu — tedy nikomu, komu
+                limit platí. Dětem se limit uplatnil jen náhodou přes
+                `evaluateStop` po chybné odpovědi: kdo odpovídal správně,
+                neskončil nikdy, a kdo chyboval v 8:01, spadl uprostřed úlohy. */}
+            {!isTerminal && (
+              <SessionTimer
+                startTime={session.startTime}
+                maxSeconds={session.rules.maxDurationSeconds}
+                isActive={!isLocked}
+                onTimeExpired={s.handleTimeExpired}
+                onWarning={handleTimeWarning}
+              />
             )}
             {!isStudentView && (
               <a href="/report" className="text-base text-muted-foreground hover:text-foreground">
@@ -616,8 +576,18 @@ export function SessionView() {
               </Button>
             )}
             {!isAnonymous && (
-              <Button variant="ghost" size="sm" onClick={() => requestExit(leaveSession)} className="text-base">
-                ✕
+              // Glyf ✕ sám o sobě není přístupný název — odečítač obrazovky
+              // z něj přečte „krát" nebo nic. Přitom je to tlačítko, které
+              // ukončuje sezení, tedy nejzávažnější akce na obrazovce.
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => requestExit(leaveSession)}
+                aria-label={t("session.exit")}
+                title={t("session.exit")}
+                className="text-base"
+              >
+                <span aria-hidden>✕</span>
               </Button>
             )}
           </div>
@@ -626,6 +596,18 @@ export function SessionView() {
 
       <main className="flex flex-1 flex-col items-center justify-center p-4">
         <div className="w-full max-w-2xl flex flex-col space-y-6">
+          {/* Blížící se konec limitu — jedna klidná věta, žádný odpočet.
+              Jantarová, ne červená: není to chyba ani trest, jen informace. */}
+          {!isTerminal && timeWarningFor === session.startTime && (
+            <div
+              role="status"
+              className="rounded-2xl border border-warning/30 bg-warning-muted px-5 py-3 flex items-start gap-2.5 text-base text-foreground"
+            >
+              <Hourglass className="h-5 w-5 shrink-0 text-warning mt-0.5" aria-hidden />
+              <span>{t("session.time_warning")}</span>
+            </div>
+          )}
+
           {/* Topic info */}
           {session.matchedTopic && !isTerminal && (
             <div className="space-y-3">
@@ -664,10 +646,15 @@ export function SessionView() {
               </div>
               <Dialog>
                 <DialogTrigger asChild>
+                  {/* Dřív plná jantarová lišta přes celou šířku, pak tichý odkaz
+                      — ten ale nevypadal klikatelně. Nově kompaktní tlačítko
+                      s okrajem: má tvar ovládacího prvku, ale nezabírá celou
+                      šířku a nekřičí jako původní lišta. */}
                   <Button
-                    variant="warning"
-                    className="w-full h-auto border-2 gap-2 px-5 py-3 text-base"
+                    variant="outline"
+                    className="h-auto w-fit gap-2 rounded-full border-border bg-card px-4 py-2 text-[15px] font-semibold text-foreground shadow-e1 hover:border-warning/50 hover:bg-warning-muted"
                   >
+                    <Lightbulb className="h-4 w-4 text-warning" />
                     {t("session.good_to_know")}
                   </Button>
                 </DialogTrigger>
@@ -681,11 +668,25 @@ export function SessionView() {
                   <ScrollArea className="flex-1 px-6 pb-6">
                     <div className="space-y-6 text-base pt-4">
                       <p className="text-muted-foreground">{session.matchedTopic.briefDescription}</p>
-                      <div className="rounded-xl bg-blue-50 border-2 border-blue-200 p-5 space-y-3">
-                        <p className="font-bold text-blue-800 text-lg">{t("session.how_to")}</p>
-                        <p className="text-blue-900">{session.matchedTopic.helpTemplate.hint}</p>
+                      {/* K čemu to je stojí PŘED postupem a schválně NENÍ box:
+                          dítě, které neví proč, se návod učit nechce, takže tohle
+                          není kapitola mezi ostatními, ale úvodní věta dialogu.
+                          Boxy pod ní tvoří čtveřici, na kterou přesně sedí čtyři
+                          akvarelové ikony — pátá by musela vzniknout jen kvůli
+                          symetrii. */}
+                      {insight && (
+                        <p className="text-lg font-semibold leading-snug text-primary">
+                          {insight.useful}
+                        </p>
+                      )}
+                      <div className="rounded-2xl border border-border bg-card p-5 space-y-3 shadow-e1">
+                        <p className="flex items-center gap-2 font-bold text-foreground text-lg">
+                          <img src={icoHowTo} alt="" className="h-6 w-6 object-contain" />
+                          {t("session.how_to")}
+                        </p>
+                        <p className="text-foreground">{session.matchedTopic.helpTemplate.hint}</p>
                         {session.matchedTopic.helpTemplate.steps.length > 0 && (
-                          <ol className="list-decimal list-inside space-y-2 text-blue-900">
+                          <ol className="list-decimal list-inside space-y-2 text-foreground">
                             {session.matchedTopic.helpTemplate.steps.map((step, i) => (
                               <li key={i}>{step}</li>
                             ))}
@@ -700,7 +701,7 @@ export function SessionView() {
                             const hasStrings = examples.some((ex) => typeof ex === "string");
                             if (hasStrings) {
                               return (
-                                <div className="rounded-lg border-2 bg-secondary/50 p-4">
+                                <div className="rounded-2xl border border-border bg-card p-4 shadow-e1">
                                   <pre className="whitespace-pre-wrap font-mono text-sm text-muted-foreground leading-relaxed">
                                     {examples.filter((ex) => typeof ex === "string").join("\n\n")}
                                   </pre>
@@ -708,7 +709,7 @@ export function SessionView() {
                               );
                             }
                             return examples.map((ex: any, i: number) => (
-                              <div key={i} className="rounded-lg border-2 bg-secondary/50 p-4 space-y-3">
+                              <div key={i} className="rounded-2xl border border-border bg-card p-4 space-y-3 shadow-e1">
                                 <p className="font-medium text-sm text-foreground">{ex.label}</p>
                                 {ex.fractionBars ? (
                                   <FractionBarVisual bars={ex.fractionBars} conclusion={ex.conclusion} />
@@ -722,23 +723,29 @@ export function SessionView() {
                           })()}
                         </div>
                       )}
-                      <div className="rounded-lg bg-success-muted border border-success/30 p-5 space-y-2">
-                        <p className="font-bold text-success">{t("session.example_label")}</p>
+                      <div className="rounded-2xl border border-success/30 bg-card p-5 space-y-2 shadow-e1">
+                        <p className="flex items-center gap-2 font-bold text-success">
+                          <img src={icoExample} alt="" className="h-6 w-6 object-contain" />
+                          {t("session.example_label")}
+                        </p>
                         <p className="text-foreground">{session.matchedTopic.helpTemplate.example}</p>
                       </div>
-                      <div className="rounded-lg border border-destructive/30 bg-card p-5 space-y-2">
-                        <p className="font-bold text-destructive">{t("session.common_mistake")}</p>
+                      <div className="rounded-2xl border border-destructive/30 bg-card p-5 space-y-2 shadow-e1">
+                        <p className="flex items-center gap-2 font-bold text-destructive">
+                          <img src={icoMistake} alt="" className="h-6 w-6 object-contain" />
+                          {t("session.common_mistake")}
+                        </p>
                         <p className="text-foreground">{session.matchedTopic.helpTemplate.commonMistake}</p>
                       </div>
-                      {(() => {
-                        const catInfo = getCategoryInfo(session.matchedTopic!.subject, session.matchedTopic!.category, session.matchedTopic!.topic);
-                        return catInfo?.funFact ? (
-                          <div className="rounded-lg bg-warning-muted border border-warning/30 p-5 space-y-2">
-                            <p className="font-semibold text-warning text-lg">{t("session.fun_fact")}</p>
-                            <p className="text-foreground italic">{catInfo.funFact}</p>
-                          </div>
-                        ) : null;
-                      })()}
+                      {insight && (
+                        <div className="rounded-2xl border border-warning/30 bg-card p-5 space-y-2 shadow-e1">
+                          <p className="flex items-center gap-2 font-semibold text-warning text-lg">
+                            <img src={icoFunFact} alt="" className="h-6 w-6 object-contain" />
+                            {t("session.fun_fact")}
+                          </p>
+                          <p className="text-foreground">{insight.funFact}</p>
+                        </div>
+                      )}
                     </div>
                   </ScrollArea>
                 </DialogContent>
@@ -749,7 +756,13 @@ export function SessionView() {
           {/* Question card (EXPLAIN / PRACTICE without feedback) */}
           {session.state !== "INPUT_CAPTURE" && !isTerminal && !checkFeedback && (
             // Karta je vždy bílá; předmět nese jen okraj (design systém).
-            <Card className={`border-2 overflow-hidden shadow-e1 ${subjectPalette.borderClass}`}>
+            // Tvarosloví převzaté z landing page: rádius 24 px a okraj 1 px
+            // v předmětovém tintu — ne `border-2` kolem dokola, to čte jako
+            // Material Design. Předmět nese rozmytý akvarelový tah v horní hraně.
+            // Rozmytý akvarelový tah v horní hraně byl zavržen: `blur` prosákl
+            // přes zaoblený roh a četl se jako nechtěný stín nad kartou.
+            // Předmět nese samotný okraj 1 px v tintu — to stačí.
+            <Card className={`relative rounded-3xl border overflow-hidden shadow-e1 ${subjectPalette.borderClass}`}>
               <CardContent className="p-6">
                 {session.state === "EXPLAIN" && (
                   <>
@@ -775,22 +788,27 @@ export function SessionView() {
                     <p className="mt-4 text-base text-muted-foreground">{t("session.explain.one_way")}</p>
                   </>
                 )}
+                {/* Rotující pobídka („Poradíš si?", „Tvůj tah!") je jen náladová
+                    vata — byla ale `text-2xl` (24 px), tedy VĚTŠÍ než samotná
+                    otázka (20 px). Hierarchie naruby: dítě četlo nejdřív pozdrav.
+                    Degradováno na tichý nadtitulek v barvě předmětu. */}
                 {session.state === "PRACTICE" && (
-                  <div className="mb-4">
-                    <h2 className="text-2xl font-heading font-bold text-foreground">{questionTitle}</h2>
-                  </div>
+                  <p className={`text-[13px] font-extrabold uppercase tracking-[0.07em] ${subjectPalette.color}`}>
+                    {questionTitle}
+                  </p>
                 )}
+                {/* Otázka je hrdina obrazovky — bez obalu a bez emoji.
+                    Dřív tu byl vnořený `rounded-xl bg-background/70 p-5`, jenže
+                    #FAF9F6 při 70 % na bílé dá ~#FCFBF9, tedy rozdíl v jasu
+                    1,5 % — neviditelný obal za 20 px paddingu.
+                    Nad otázkou navíc stálo emoji `text-6xl` (60 px), největší
+                    objekt na obrazovce: mimo paletu, mimo akvarelový rukopis
+                    a na každé platformě jinak kreslené. Pole `emoji` v obsahu
+                    zůstává (1 061 výskytů), jen se tady nevykresluje. */}
                 {practiceQuestion && (
-                  <div className="mt-5 rounded-xl bg-background/70 p-5">
-                    {currentTask?.emoji && (
-                      <div className="mb-3 text-center text-6xl leading-none" aria-hidden="true">
-                        {currentTask.emoji}
-                      </div>
-                    )}
-                    <p className="text-xl font-semibold text-foreground">
-                      {practiceQuestion}
-                    </p>
-                  </div>
+                  <p className="mt-4 text-[29px] leading-[1.3] font-extrabold text-foreground">
+                    {practiceQuestion}
+                  </p>
                 )}
               </CardContent>
             </Card>
@@ -864,7 +882,7 @@ export function SessionView() {
           {/* Revealed answer */}
           {revealedAnswer && session.state === "PRACTICE" && !checkFeedback && (
             <div className="space-y-5">
-              <Card className="border-2 rounded-2xl shadow-sm">
+              <Card className="rounded-3xl border shadow-e1">
                 <CardContent className="p-6 space-y-4">
                   <p className="text-lg font-medium text-foreground">
                     {t("session.correct_answer")}<span className="font-bold">{revealedAnswer.answer}</span>
@@ -872,8 +890,9 @@ export function SessionView() {
                   <p className="text-base text-muted-foreground">{revealedAnswer.hint}</p>
                 </CardContent>
               </Card>
-              <Button onClick={s.handleContinueAfterCheck} disabled={loading} variant="success" size="child" className="w-full text-lg">
+              <Button onClick={s.handleContinueAfterCheck} disabled={loading} size="child" className="group w-full gap-2 rounded-full text-lg font-bold">
                 {loading ? t("session.processing") : t("session.continue")}
+                {!loading && <PaintedArrow className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />}
               </Button>
             </div>
           )}

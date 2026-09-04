@@ -44,7 +44,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenují pojmenované cesty v obci, podél kterých stojí domy?",
     correctAnswer: "Ulice",
-    options: ["Ulice", "Louky", "Zahrady", "Hřiště"],
+    options: ["Louky", "Ulice", "Zahrady", "Hřiště"],
     emoji: "🏘️",
     hints: [
       "Každý dům má adresu, ve které je napsaný název této cesty.",
@@ -56,7 +56,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Po čem jezdí auta?",
     correctAnswer: "Silnice",
-    options: ["Silnice", "Chodník", "Tráva", "Hřiště"],
+    options: ["Chodník", "Tráva", "Silnice", "Hřiště"],
     emoji: "🛣️",
     hints: [
       "Auta nejezdí tam, kudy chodí lidé.",
@@ -67,7 +67,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Po čem chodíme, když jdeme podél silnice?",
     correctAnswer: "Chodník",
-    options: ["Chodník", "Silnice", "Parkoviště", "Koleje"],
+    options: ["Silnice", "Parkoviště", "Koleje", "Chodník"],
     emoji: "🚶",
     hints: [
       "Chodci mají svou vlastní cestu, oddělenou od silnice.",
@@ -90,7 +90,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co svítí na semaforu, když chodci nesmí přejít silnici?",
     correctAnswer: "Červená",
-    options: ["Červená", "Zelená", "Modrá", "Žlutá"],
+    options: ["Zelená", "Červená", "Modrá", "Žlutá"],
     emoji: "🚦",
     hints: [
       "Tato barva znamená stůj.",
@@ -101,7 +101,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co svítí na semaforu, když chodci smí přejít silnici?",
     correctAnswer: "Zelená",
-    options: ["Zelená", "Červená", "Modrá", "Oranžová"],
+    options: ["Červená", "Modrá", "Zelená", "Oranžová"],
     emoji: "🚦",
     hints: [
       "Tato barva znamená jdi.",
@@ -112,7 +112,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde čekáme na autobus?",
     correctAnswer: "Zastávka",
-    options: ["Zastávka", "Křižovatka", "Přechod", "Parkoviště"],
+    options: ["Křižovatka", "Přechod", "Parkoviště", "Zastávka"],
     emoji: "🚏",
     hints: [
       "Autobus staví jen na jednom určeném a označeném místě.",
@@ -134,7 +134,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co u cesty ukazuje, kudy máme jít nebo jet, případně na co si dát pozor?",
     correctAnswer: "Dopravní značka",
-    options: ["Dopravní značka", "Lavička", "Plot", "Strom"],
+    options: ["Lavička", "Dopravní značka", "Plot", "Strom"],
     emoji: "🪧",
     hints: [
       "Toto najdeš u silnice nebo chodníku — má obrázek nebo nápis.",
@@ -145,7 +145,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde si děti hrají venku na prolézačkách a houpačkách?",
     correctAnswer: "Hřiště",
-    options: ["Hřiště", "Parkoviště", "Zastávka", "Křižovatka"],
+    options: ["Parkoviště", "Zastávka", "Hřiště", "Křižovatka"],
     emoji: "🛝",
     hints: [
       "Toto místo má pískoviště, houpačky a prolézačky.",
@@ -156,7 +156,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde stojí zaparkovaná auta, když zrovna nikam nejedou?",
     correctAnswer: "Parkoviště",
-    options: ["Parkoviště", "Chodník", "Hřiště", "Zastávka"],
+    options: ["Chodník", "Hřiště", "Zastávka", "Parkoviště"],
     emoji: "🅿️",
     hints: [
       "Auta potřebují místo, kde mohou stát, aniž by komukoliv překážela.",
@@ -178,7 +178,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co roste v parku a v létě dává stín?",
     correctAnswer: "Stromy",
-    options: ["Stromy", "Auta", "Značky", "Lavičky"],
+    options: ["Auta", "Stromy", "Značky", "Lavičky"],
     emoji: "🌳",
     hints: [
       "V parku je hodně zeleně.",
@@ -192,12 +192,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jdeš do školy a chceš přejít silnici. Co uděláš nejdřív?",
     correctAnswer: "Podívám se na obě strany, jestli nejede auto",
-    options: [
-      "Podívám se na obě strany, jestli nejede auto",
-      "Rozeběhnu se přes silnici",
-      "Zavřu oči a přeběhnu",
-      "Počkám, až uvidím kamaráda na druhé straně",
-    ],
+    options: ["Rozeběhnu se přes silnici", "Zavřu oči a přeběhnu", "Podívám se na obě strany, jestli nejede auto", "Počkám, až uvidím kamaráda na druhé straně"],
     emoji: "🚸",
     hints: [
       "Než vstoupíš na silnici, musíš se ujistit, že je bezpečno.",
@@ -209,12 +204,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Na přechodu svítí semafor pro chodce červeně. Co uděláš?",
     correctAnswer: "Počkám, až se rozsvítí zelená",
-    options: [
-      "Počkám, až se rozsvítí zelená",
-      "Rychle přeběhnu, dokud nejede žádné auto",
-      "Přejdu, protože spěchám do školy",
-      "Přejdu jen kousek a počkám uprostřed silnice",
-    ],
+    options: ["Rychle přeběhnu, dokud nejede žádné auto", "Přejdu, protože spěchám do školy", "Přejdu jen kousek a počkám uprostřed silnice", "Počkám, až se rozsvítí zelená"],
     emoji: "🚦",
     hints: [
       "Červená na semaforu platí i pro chodce, ne jen pro auta.",
@@ -238,12 +228,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Chceš přejít silnici tam, kde není ani přechod, ani semafor. Co je nejbezpečnější?",
     correctAnswer: "Najít místo s dobrým výhledem na obě strany",
-    options: [
-      "Najít místo s dobrým výhledem na obě strany",
-      "Přejít okamžitě tam, kde stojím",
-      "Přeběhnout mezi stojícími auty",
-      "Přejít, jen když jde přede mnou kamarád",
-    ],
+    options: ["Přejít okamžitě tam, kde stojím", "Najít místo s dobrým výhledem na obě strany", "Přeběhnout mezi stojícími auty", "Přejít, jen když jde přede mnou kamarád"],
     emoji: "🚸",
     hints: [
       "I bez přechodu platí to samé pravidlo jako s přechodem — hledej bezpečné podmínky.",
@@ -255,7 +240,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jedeš do školy autobusem. Kde na něj bezpečně počkáš?",
     correctAnswer: "Na zastávce, dál od okraje vozovky",
-    options: ["Na zastávce, dál od okraje vozovky", "Uprostřed silnice", "Na přechodu pro chodce", "Na parkovišti"],
+    options: ["Uprostřed silnice", "Na přechodu pro chodce", "Na zastávce, dál od okraje vozovky", "Na parkovišti"],
     emoji: "🚏",
     hints: [
       "Autobus staví jen na jednom označeném místě u silnice.",
@@ -266,13 +251,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Za tmy nebo za špatného počasí jdeš do školy pěšky. Co ti pomůže, aby tě řidiči lépe viděli?",
-    correctAnswer: "Reflexní prvky, například reflexní páska nebo přívěsek",
-    options: [
-      "Reflexní prvky, například reflexní páska nebo přívěsek",
-      "Tmavé oblečení",
-      "Deštník zakrývající obličej",
-      "Sluneční brýle",
-    ],
+    correctAnswer: "Reflexní prvky, třeba páska nebo přívěsek",
+    options: ["Tmavé oblečení bez potisku", "Deštník zakrývající obličej", "Sluneční brýle s tmavými skly", "Reflexní prvky, třeba páska nebo přívěsek"],
     emoji: "🦺",
     hints: [
       "Řidiči tě uvidí lépe, pokud na tobě něco zasvítí ve světle jejich reflektorů.",
@@ -296,12 +276,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Blíží se křižovatka bez semaforu. Co uděláš, než přejdeš?",
     correctAnswer: "Rozhlédnu se na obě strany a počkám, až bude volno",
-    options: [
-      "Rozhlédnu se na obě strany a počkám, až bude volno",
-      "Přejdu, protože na křižovatce mají chodci vždy přednost",
-      "Zavolám na řidiče, ať zastaví",
-      "Přeběhnu rychle mezi projíždějícími auty",
-    ],
+    options: ["Přejdu, protože na křižovatce mají chodci vždy přednost", "Rozhlédnu se na obě strany a počkám, až bude volno", "Zavolám na řidiče, ať zastaví", "Přeběhnu rychle mezi projíždějícími auty"],
     emoji: "🚧",
     hints: [
       "Bez semaforu si bezpečnost musíš ohlídat sám.",
@@ -313,12 +288,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jdeš skupinou spolužáků do školy. Co je bezpečnější?",
     correctAnswer: "Jít v řadě za sebou po chodníku",
-    options: [
-      "Jít v řadě za sebou po chodníku",
-      "Jít v houfu přes celou šířku chodníku i silnici",
-      "Běhat kolem sebe",
-      "Jít po silnici vedle sebe",
-    ],
+    options: ["Jít v houfu přes celou šířku chodníku i silnici", "Běhat kolem sebe", "Jít v řadě za sebou po chodníku", "Jít po silnici vedle sebe"],
     emoji: "👫",
     hints: [
       "Na chodníku je omezené místo.",
@@ -330,12 +300,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vystupuješ z autobusu na zastávce a potřebuješ přejít silnici. Co uděláš?",
     correctAnswer: "Počkám, až autobus odjede, a pak se rozhlédnu",
-    options: [
-      "Počkám, až autobus odjede, a pak se rozhlédnu",
-      "Přeběhnu hned před přijíždějícím autobusem",
-      "Přeběhnu hned za odjíždějícím autobusem",
-      "Přejdu, dokud autobus stojí, protože mě schová",
-    ],
+    options: ["Přeběhnu hned před přijíždějícím autobusem", "Přeběhnu hned za odjíždějícím autobusem", "Přejdu, dokud autobus stojí, protože mě schová", "Počkám, až autobus odjede, a pak se rozhlédnu"],
     emoji: "🚌",
     hints: [
       "Zamysli se, co ti stojící nebo odjíždějící autobus dočasně brání vidět.",
@@ -364,12 +329,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč je nejbezpečnější přecházet silnici právě na přechodu pro chodce?",
     correctAnswer: "Protože tam řidiči počítají s chodci a musí je pustit",
-    options: [
-      "Protože tam řidiči počítají s chodci a musí je pustit",
-      "Protože je to vždy nejkratší cesta",
-      "Protože tam bývá nejméně aut",
-      "Protože tam je hezčí výhled",
-    ],
+    options: ["Protože je to vždy nejkratší cesta", "Protože tam řidiči počítají s chodci a musí je pustit", "Protože tam bývá nejméně aut", "Protože tam je hezčí výhled"],
     emoji: "🚸",
     hints: [
       "Přechod je místo, kde auta počítají s tím, že přes silnici mohou jít lidé.",
@@ -385,12 +345,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Blížíš se k přechodu, ale semafor pro chodce je rozbitý a nesvítí, i když bílé pruhy na silnici jsou vidět. Co je nejbezpečnější?",
     correctAnswer: "Rozhlédnout se na obě strany jako na přechodu bez semaforu a přejít, až bude bezpečno",
-    options: [
-      "Rozhlédnout se na obě strany jako na přechodu bez semaforu a přejít, až bude bezpečno",
-      "Přejít bez rozhlížení, protože přechod chodce vždy ochrání",
-      "Počkat, až semafor znovu začne svítit, i kdyby to trvalo dlouho",
-      "Přejít jen tehdy, když tam bude dospělý",
-    ],
+    options: ["Přejít bez rozhlížení, protože přechod chodce vždy ochrání", "Počkat, až semafor znovu začne svítit, i kdyby to trvalo dlouho", "Rozhlédnout se na obě strany jako na přechodu bez semaforu a přejít, až bude bezpečno", "Přejít jen tehdy, když tam bude dospělý"],
     emoji: "🚦",
     hints: [
       "Spoj dva fakty: přechod ukazuje bezpečné místo k přecházení, ale nefunkční semafor ti nedá žádný pokyn.",
@@ -403,12 +358,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Máš na výběr dvě cesty do školy: kratší podél rušné silnice bez chodníku a o kousek delší po chodníku. Kterou zvolíš?",
     correctAnswer: "Delší cestu po chodníku",
-    options: [
-      "Delší cestu po chodníku",
-      "Kratší cestu podél silnice, protože ušetří čas",
-      "Kratší cestu, protože po silnici se dá jít, když nejedou auta",
-      "Je to jedno, hlavně abych nepřišel pozdě",
-    ],
+    options: ["Kratší cestu podél silnice, protože ušetří čas", "Kratší cestu, protože po silnici se dá jít, když nejedou auta", "Je to jedno, hlavně abych nepřišel pozdě", "Delší cestu po chodníku"],
     emoji: "🏫",
     hints: [
       "Porovnej dva fakty: kratší cesta nemá chodník, delší cesta ho má.",
@@ -439,12 +389,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Na plánu obce vidíš dvě stejně dlouhé cesty do školy: jedna vede kolem parkoviště s auty, druhá kolem parku se stromy. Která je bezpečnější?",
     correctAnswer: "Cesta kolem parku",
-    options: [
-      "Cesta kolem parku",
-      "Cesta kolem parkoviště, protože auta tam stojí a nikam nejedou",
-      "Obě jsou stejně bezpečné, záleží jen na délce",
-      "Cesta kolem parkoviště, protože je tam víc lidí",
-    ],
+    options: ["Cesta kolem parkoviště, protože auta tam stojí a nikam nejedou", "Cesta kolem parku", "Obě jsou stejně bezpečné, záleží jen na délce", "Cesta kolem parkoviště, protože je tam víc lidí"],
     emoji: "🗺️",
     hints: [
       "Vzpomeň si, jaké nebezpečí hrozí na parkovišti, a porovnej ho s tím, co hrozí v parku.",
@@ -457,12 +402,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Jdeš se skupinou kamarádů k přechodu, kde právě svítí zelená pro auta (červená pro chodce). Kamarád navrhuje přeběhnout, že prý auto stihne zastavit. Co je správně?",
     correctAnswer: "Počkat na zelenou pro chodce",
-    options: [
-      "Počkat na zelenou pro chodce",
-      "Poslechnout kamaráda a přeběhnout, protože je jich víc",
-      "Přeběhnout, protože přechod chodce vždy ochrání",
-      "Počkat jen já a nechat kamarády jít",
-    ],
+    options: ["Poslechnout kamaráda a přeběhnout, protože je jich víc", "Přeběhnout, protože přechod chodce vždy ochrání", "Počkat na zelenou pro chodce", "Počkat jen já a nechat kamarády jít"],
     emoji: "🚦",
     hints: [
       "Pravidlo o červené platí bez ohledu na to, co navrhují kamarádi.",
@@ -475,12 +415,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Ráno je hustá mlha a je špatně vidět do dálky. Jdeš do školy stejnou cestou jako obvykle. Co uděláš jinak než za jasného počasí?",
     correctAnswer: "Budu se rozhlížet déle a pečlivěji",
-    options: [
-      "Budu se rozhlížet déle a pečlivěji",
-      "Nebudu se rozhlížet vůbec, protože mlha auta stejně schová",
-      "Půjdu rychleji, abych byl v mlze co nejkratší dobu na silnici",
-      "Nebudu nic měnit, mlha na chůzi nemá vliv",
-    ],
+    options: ["Nebudu se rozhlížet vůbec, protože mlha auta stejně schová", "Půjdu rychleji, abych byl v mlze co nejkratší dobu na silnici", "Nebudu nic měnit, mlha na chůzi nemá vliv", "Budu se rozhlížet déle a pečlivěji"],
     emoji: "🌫️",
     hints: [
       "Spoj dva fakty: za mlhy je vidět na kratší vzdálenost a auta se objeví později, než čekáš.",
@@ -511,12 +446,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kamarád tvrdí, že dopravní značka s obrázkem znamená úplně totéž co semafor. Má pravdu?",
     correctAnswer: "Ne, značka stále ukazuje stejný pokyn, ale nesvítí střídavě jako semafor",
-    options: [
-      "Ne, značka stále ukazuje stejný pokyn, ale nesvítí střídavě jako semafor",
-      "Ano, obě věci dávají chodcům úplně stejný pokyn",
-      "Ano, protože obě jsou u silnice",
-      "Ne, protože značka je jen na plánu, ne ve skutečnosti",
-    ],
+    options: ["Ano, obě věci dávají chodcům úplně stejný pokyn", "Ne, značka stále ukazuje stejný pokyn, ale nesvítí střídavě jako semafor", "Ano, protože obě jsou u silnice", "Ne, protože značka je jen na plánu, ne ve skutečnosti"],
     emoji: "🪧",
     hints: [
       "Porovnej, jak se chová značka a jak se chová semafor.",
@@ -529,12 +459,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Cesta do školy vede kolem řeky s mostem a kolem hřiště. Na co si dáš pozor na obou těchto místech zároveň?",
     correctAnswer: "U mostu na okraj a hloubku vody, na hřišti na to, aby mě hraní nerozptýlilo od cesty",
-    options: [
-      "U mostu na okraj a hloubku vody, na hřišti na to, aby mě hraní nerozptýlilo od cesty",
-      "Na obou místech se můžu zastavit a hrát si, škola počká",
-      "Řeka i hřiště jsou bezpečná místa, není třeba na nic dávat pozor",
-      "Stačí dávat pozor jen na hřišti, řeka žádné nebezpečí nemá",
-    ],
+    options: ["Na obou místech se můžu zastavit a hrát si, škola počká", "Řeka i hřiště jsou bezpečná místa, není třeba na nic dávat pozor", "U mostu na okraj a hloubku vody, na hřišti na to, aby mě hraní nerozptýlilo od cesty", "Stačí dávat pozor jen na hřišti, řeka žádné nebezpečí nemá"],
     emoji: "🌉",
     hints: [
       "Spoj dvě různá nebezpečí — jedno u vody, druhé na hřišti — a mysli na obě zároveň.",
@@ -547,12 +472,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Na plánu vidíš, že škola leží hned vedle rušné křižovatky bez přechodu, ale o kousek dál je přechod se semaforem. Kudy raději půjdeš?",
     correctAnswer: "O kousek dál k přechodu se semaforem",
-    options: [
-      "O kousek dál k přechodu se semaforem",
-      "Rovnou přes křižovatku, protože je to nejblíž ke škole",
-      "Rovnou přes křižovatku, protože tam bývá málo aut",
-      "Je jedno kudy, hlavně přijít do školy včas",
-    ],
+    options: ["Rovnou přes křižovatku, protože je to nejblíž ke škole", "Rovnou přes křižovatku, protože tam bývá málo aut", "Je jedno kudy, hlavně přijít do školy včas", "O kousek dál k přechodu se semaforem"],
     emoji: "🚧",
     hints: [
       "Porovnej, co je důležitější — pár kroků navíc, nebo bezpečnější přecházení.",
@@ -583,12 +503,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Na chodníku před tebou jde dospělý s kočárkem, který zabírá skoro celou šířku chodníku, a vedle chodníku jede po silnici auto. Co uděláš?",
     correctAnswer: "Počkám za kočárkem na volnější místo chodníku",
-    options: [
-      "Počkám za kočárkem na volnější místo chodníku",
-      "Seběhnu na silnici, abych kočárek objel co nejrychleji",
-      "Protlačím se kolem kočárku těsně u okraje silnice",
-      "Zůstanu stát a nepůjdu dál, dokud kočárek nezmizí",
-    ],
+    options: ["Seběhnu na silnici, abych kočárek objel co nejrychleji", "Počkám za kočárkem na volnější místo chodníku", "Protlačím se kolem kočárku těsně u okraje silnice", "Zůstanu stát a nepůjdu dál, dokud kočárek nezmizí"],
     emoji: "🚶",
     hints: [
       "Přemýšlej, co ti hrozí, pokud kvůli objetí překážky vstoupíš na silnici, i jen na chvíli.",
@@ -609,7 +524,7 @@ export const PLANOBCEOKOLISKOLY: TopicMetadata[] = [
     id: "g2-prv-plan-obce",
     rvpNodeId: "g2-prvouka-misto-kde-zijeme-obec-a-okoli-plan-obce-okoli-skoly",
     title: "Plán obce a okolí školy",
-    studentTitle: "Plán obce",
+    studentTitle: "Mapa naší obce",
     subject: "prvouka",
     category: "Místo, kde žijeme",
     topic: "Obec a okolí",

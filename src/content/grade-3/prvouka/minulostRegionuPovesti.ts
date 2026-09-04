@@ -41,12 +41,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo byla Libuše podle pověsti?",
     correctAnswer: "Česká kněžna a věštkyně, zakladatelka Prahy",
-    options: [
-      "Česká kněžna a věštkyně, zakladatelka Prahy",
-      "Dcera Krakonoše ze Sudet",
-      "Česká učitelka, která psala kroniky",
-      "Selka z Moravy, která vynikala v zemědělství",
-    ],
+    options: ["Dcera Krakonoše ze Sudet", "Česká kněžna a věštkyně, zakladatelka Prahy", "Česká učitelka, která psala kroniky", "Selka z Moravy, která vynikala v zemědělství"],
     hints: [
       "Libuše byla dcera knížete Kroka a měla dar věštění.",
       "Podle pověsti zahlédla místo, kde vyrostl slavný hrad.",
@@ -57,12 +52,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo byl Přemysl Oráč podle pověsti?",
     correctAnswer: "Prostý rolník, kterého si Libuše vybrala za muže a zakladatel rodu Přemyslovců",
-    options: [
-      "Prostý rolník, kterého si Libuše vybrala za muže a zakladatel rodu Přemyslovců",
-      "Rytíř, který porazil draka a stal se knížetem",
-      "Syn Krakonoše, vládce Krkonoš",
-      "Kupec z Bavorska, který přišel do Čech",
-    ],
+    options: ["Rytíř, který porazil draka a stal se knížetem", "Syn Krakonoše, vládce Krkonoš", "Prostý rolník, kterého si Libuše vybrala za muže a zakladatel rodu Přemyslovců", "Kupec z Bavorska, který přišel do Čech"],
     hints: [
       "Přemysl přišel z pole — oral půdu, když pro něj přijeli Libušini poslové.",
       "Z Přemysla a Libuše vznikl slavný vládnoucí rod.",
@@ -73,7 +63,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Jak se jmenuje rod, který podle pověsti založili Libuše a Přemysl?",
     correctAnswer: "Přemyslovci",
-    options: ["Přemyslovci", "Lucemburkové", "Habsburkové", "Slavníkovci"],
+    options: ["Lucemburkové", "Habsburkové", "Slavníkovci", "Přemyslovci"],
     hints: [
       "Název rodu vychází ze jména Přemysl.",
       "Tento rod vládl Čechám po dlouhou dobu.",
@@ -100,12 +90,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo je Krakonoš?",
     correctAnswer: "Duch hor, vládce Krkonoš",
-    options: [
-      "Duch hor, vládce Krkonoš",
-      "Český král ze středověku",
-      "Blanický rytíř, který se probudil",
-      "Syn Přemysla Oráče",
-    ],
+    options: ["Český král ze středověku", "Duch hor, vládce Krkonoš", "Blanický rytíř, který se probudil", "Syn Přemysla Oráče"],
     hints: [
       "Krakonoš patří k nejvyššímu pohoří v Čechách.",
       "Ovládá počasí a přírodu v horách.",
@@ -116,7 +101,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kde Krakonoš podle pověstí žije a vládne?",
     correctAnswer: "V Krkonoších",
-    options: ["V Krkonoších", "V Šumavě", "V Tatrách", "Na Blaníku"],
+    options: ["V Šumavě", "V Tatrách", "V Krkonoších", "Na Blaníku"],
     hints: [
       "Název hory je skryt v jeho jménu.",
       "Krkonoše jsou nejvyšší pohoří v Čechách.",
@@ -126,13 +111,8 @@ const POOL_L1: PracticeTask[] = [
   },
   {
     question: "Co je kronika?",
-    correctAnswer: "Kniha, do které se zapisovaly důležité události v pořadí, jak šly za sebou",
-    options: [
-      "Kniha, do které se zapisovaly důležité události v pořadí, jak šly za sebou",
-      "Sborník pohádek a pověstí",
-      "Mapa starého města",
-      "Jídelní lístek ze středověku",
-    ],
+    correctAnswer: "Kniha, kam se zapisovaly události tak, jak se staly",
+    options: ["Sborník pohádek a pověstí z okolí", "Mapa starého města s ulicemi", "Jídelní lístek ze středověké hospody", "Kniha, kam se zapisovaly události tak, jak se staly"],
     hints: [
       "Kronika zaznamenávala historii — co se stalo, kdy a kde.",
       "Kroniky psali kronikáři, například ve vesnicích nebo klášterech.",
@@ -154,12 +134,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je archiv?",
     correctAnswer: "Místo, kde se uchovávají staré dokumenty a listiny",
-    options: [
-      "Místo, kde se uchovávají staré dokumenty a listiny",
-      "Místo, kde se prodávají noviny",
-      "Škola pro budoucí kronikáře",
-      "Sklad potravin ve středověkém hradu",
-    ],
+    options: ["Místo, kde se prodávají noviny", "Místo, kde se uchovávají staré dokumenty a listiny", "Škola pro budoucí kronikáře", "Sklad potravin ve středověkém hradu"],
     hints: [
       "Archiv uchovává hlavně papíry — smlouvy, listiny, staré zápisy.",
       "Liší se od muzea tím, že sbírá spíš dokumenty než předměty.",
@@ -170,12 +145,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je muzeum?",
     correctAnswer: "Místo, kde se uchovávají staré předměty a fotografie",
-    options: [
-      "Místo, kde se uchovávají staré předměty a fotografie",
-      "Místo, kde se píší nové kroniky",
-      "Sklad map a plánů měst",
-      "Budova, kde bydlí kronikář",
-    ],
+    options: ["Místo, kde se píší nové kroniky", "Sklad map a plánů měst", "Místo, kde se uchovávají staré předměty a fotografie", "Budova, kde bydlí kronikář"],
     hints: [
       "Muzeum sbírá spíš věci — oblečení, nástroje, hračky z minulosti.",
       "Na rozdíl od archivu tam vidíš skutečné předměty, ne jen papíry.",
@@ -186,15 +156,10 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdo je pro nás živým historickým pramenem o místní minulosti?",
     correctAnswer: "Starší lidé, kteří si pamatují, jak to tady bývalo",
-    options: [
-      "Starší lidé, kteří si pamatují, jak to tady bývalo",
-      "Malé děti ve školce",
-      "Pracovníci supermarketu",
-      "Řidiči autobusů",
-    ],
+    options: ["Malé děti, které chodí do školky", "Prodavači v místním supermarketu", "Řidiči autobusů z jiného města", "Starší lidé, kteří si pamatují, jak to tady bývalo"],
     hints: [
       "Přímý svědek události je nejcennější zdroj — byl u toho.",
-      "Starší lidé mohou vyprávět o věcech, které sami zažili.",
+      "Kdo z nabízených možností mohl sám zažít věci z dávnější minulosti obce?",
     ],
     explanation:
       "Starší lidé jsou živými historickými prameny — mohou nám přímo vyprávět, jak to v obci nebo městě vypadalo, co se změnilo a jak se žilo dříve. Jejich vzpomínky jsou nenahraditelné.",
@@ -221,12 +186,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdy podle pověsti vyjdou Blaničtí rytíři z hory?",
     correctAnswer: "Když bude Česká země v největší nouzi a nebezpečí",
-    options: [
-      "Když bude Česká země v největší nouzi a nebezpečí",
-      "Každý rok na Vánoce",
-      "Jakmile se probudí Krakonoš",
-      "Na příkaz českého krále",
-    ],
+    options: ["Každý rok na Vánoce", "Když bude Česká země v největší nouzi a nebezpečí", "Jakmile se probudí Krakonoš", "Na příkaz českého krále"],
     hints: [
       "Rytíři spí a čekají na okamžik, kdy budou opravdu zapotřebí.",
       "Jejich probuzení je spojeno s obranou vlasti.",
@@ -236,15 +196,10 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Jak se liší pověst od pohádky?",
-    correctAnswer: "Pověst je vázána na skutečné místo nebo postavu z historie, pohádka ne",
-    options: [
-      "Pověst je vázána na skutečné místo nebo postavu z historie, pohádka ne",
-      "Pohádka je vždy delší než pověst",
-      "Pověst se vždy šťastně končí",
-      "Pohádka nemá žádné postavy",
-    ],
+    correctAnswer: "Pověst se váže ke skutečnému místu nebo osobě, pohádka ne",
+    options: ["Pohádka je vždycky delší než pověst", "Pověst se vždycky šťastně končí", "Pověst se váže ke skutečnému místu nebo osobě, pohádka ne", "Pohádka nemá žádné hlavní postavy"],
     hints: [
-      "Přemysl Oráč byl skutečný historický rod, pohádkový princ je vymyšlený.",
+      "Zkus si vzpomenout, jestli se příběh odehrává na místě, které opravdu existuje.",
       "Pověst se váže ke konkrétní hoře, hradu nebo městu.",
     ],
     explanation:
@@ -253,7 +208,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Čí dcerou byla podle pověsti kněžna Libuše?",
     correctAnswer: "Knížete Kroka",
-    options: ["Knížete Kroka", "Krále Přemysla", "Vévody Krakonoše", "Kronikáře Kosmy"],
+    options: ["Krále Přemysla", "Vévody Krakonoše", "Kronikáře Kosmy", "Knížete Kroka"],
     hints: [
       "Její otec byl jedním z prvních vládnoucích knížat.",
       "Libuše byla jeho nejmladší a nejmoudřejší dcera.",
@@ -274,12 +229,12 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Co Libuše podle pověsti prorokovala, když stála na skále nad Vltavou?",
-    correctAnswer: "Vznik slavného města, které bude sahat slávou až ke hvězdám",
+    correctAnswer: "Vznik slavného města, jehož sláva bude sahat ke hvězdám",
     options: [
-      "Vznik slavného města, které bude sahat slávou až ke hvězdám",
-      "Příchod Blanických rytířů",
-      "Konec vlády Přemyslovců",
-      "Narození Krakonoše",
+      "Příchod Blanických rytířů na pomoc",
+      "Vznik slavného města, jehož sláva bude sahat ke hvězdám",
+      "Konec vlády rodu Přemyslovců",
+      "Narození Krakonoše v horách",
     ],
     hints: [
       "Její věštba se týkala místa, kde později vyrostl hrad a hlavní město.",
@@ -291,7 +246,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se Krakonoš podle pověstí zachová k pyšnému nebo lakomému člověku?",
     correctAnswer: "Potrestá ho",
-    options: ["Potrestá ho", "Obdaruje ho pokladem", "Nevšímá si ho", "Stane se jeho přítelem"],
+    options: ["Obdaruje ho pokladem", "Nevšímá si ho", "Potrestá ho", "Stane se jeho přítelem"],
     hints: [
       "Krakonoš odměňuje dobré vlastnosti a trestá ty špatné.",
       "Pýcha a lakota patří mezi vlastnosti, které Krakonoš netoleruje.",
@@ -302,7 +257,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se Krakonoš podle pověstí zachová k chudému a poctivému poutníkovi?",
     correctAnswer: "Pomůže mu",
-    options: ["Pomůže mu", "Potrestá ho", "Zažene ho z hor", "Promění ho v kámen"],
+    options: ["Potrestá ho", "Zažene ho z hor", "Promění ho v kámen", "Pomůže mu"],
     hints: [
       "Krakonoš je přísný na zlé, ale laskavý na dobré lidi.",
       "Chudoba a poctivost jsou vlastnosti, které si Krakonoš cení.",
@@ -326,7 +281,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Kde spíš najdeš staré předměty a fotografie tvého města — v muzeu, nebo v archivu?",
     correctAnswer: "V muzeu",
-    options: ["V muzeu", "V archivu", "V obou stejně", "Ani v jednom"],
+    options: ["V archivu", "V muzeu", "V obou stejně", "Ani v jednom"],
     hints: [
       "Muzeum vystavuje věci, které si můžeš prohlédnout — ne jen papíry.",
       "Archiv se specializuje spíš na dokumenty a listiny.",
@@ -337,10 +292,10 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kdo bývali ve středověku nejčastěji kronikáři?",
     correctAnswer: "Mniši v klášterech",
-    options: ["Mniši v klášterech", "Vojáci na hradech", "Kupci na tržišti", "Rolníci na poli"],
+    options: ["Vojáci na hradech", "Kupci na tržišti", "Mniši v klášterech", "Rolníci na poli"],
     hints: [
       "Tito lidé uměli číst a psát, což byla ve středověku vzácná dovednost.",
-      "Žili a pracovali v klášterech, kde měli knihy a čas na psaní.",
+      "Žili společně v budovách, kde měli knihy a klid i čas na psaní.",
     ],
     explanation:
       "Ve středověku bývali kronikáři nejčastěji mniši, protože v klášterech se uchovávaly knihy a mniši uměli číst a psát — což tehdy nebylo samozřejmostí.",
@@ -348,12 +303,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jak se pověsti šířily dřív, než se začaly zapisovat do knih?",
     correctAnswer: "Vyprávěly se ústně z generace na generaci",
-    options: [
-      "Vyprávěly se ústně z generace na generaci",
-      "Posílaly se poštou mezi vesnicemi",
-      "Vysílaly se v rozhlase",
-      "Tiskly se v novinách",
-    ],
+    options: ["Posílaly se poštou mezi vesnicemi", "Vysílaly se v rozhlase", "Tiskly se v novinách", "Vyprávěly se ústně z generace na generaci"],
     hints: [
       "Než existoval tisk, informace se předávaly hlavně mluveným slovem.",
       "Babičky a dědečkové vyprávěli pověsti dětem, ty je pak vyprávěly dál.",
@@ -379,7 +329,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kroniku, vyprávění praprababičky a starý hrnec z vykopávek máme roztřídit podle typu pramene. Kam patří kronika?",
     correctAnswer: "Písemný pramen",
-    options: ["Písemný pramen", "Hmotný pramen", "Ústní pramen", "Žádný z pramenů"],
+    options: ["Hmotný pramen", "Písemný pramen", "Ústní pramen", "Žádný z pramenů"],
     hints: [
       "Kronika je text zapsaný na papíře.",
       "Rozliš: text = písemný, předmět = hmotný, vyprávění = ústní.",
@@ -391,7 +341,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kroniku, vyprávění praprababičky a starý hrnec z vykopávek máme roztřídit podle typu pramene. Kam patří starý hrnec?",
     correctAnswer: "Hmotný pramen",
-    options: ["Hmotný pramen", "Písemný pramen", "Ústní pramen", "Žádný z pramenů"],
+    options: ["Písemný pramen", "Ústní pramen", "Hmotný pramen", "Žádný z pramenů"],
     hints: [
       "Hrnec je skutečný předmět, který si můžeš vzít do ruky.",
       "Rozliš: text = písemný, předmět = hmotný, vyprávění = ústní.",
@@ -403,7 +353,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kroniku, vyprávění praprababičky a starý hrnec z vykopávek máme roztřídit podle typu pramene. Kam patří vyprávění praprababičky?",
     correctAnswer: "Ústní pramen",
-    options: ["Ústní pramen", "Písemný pramen", "Hmotný pramen", "Žádný z pramenů"],
+    options: ["Písemný pramen", "Hmotný pramen", "Žádný z pramenů", "Ústní pramen"],
     hints: [
       "Vyprávění je mluvené slovo, ne text ani předmět.",
       "Rozliš: text = písemný, předmět = hmotný, vyprávění = ústní.",
@@ -432,12 +382,7 @@ const POOL_L3: PracticeTask[] = [
       "V čem je hlavní rozdíl mezi Krakonošem a Blanickými rytíři, i když oba žijí v horách?",
     correctAnswer:
       "Krakonoš stále vládne horám a jedná s lidmi, rytíři jen spí a čekají na chvíli velké nouze",
-    options: [
-      "Krakonoš stále vládne horám a jedná s lidmi, rytíři jen spí a čekají na chvíli velké nouze",
-      "Krakonoš spí v hoře, rytíři aktivně vládnou Krkonoším",
-      "Oba dělají úplně totéž, jen v jiném pohoří",
-      "Krakonoš je člověk, rytíři jsou duchové hor",
-    ],
+    options: ["Krakonoš spí v hoře, rytíři aktivně vládnou Krkonoším", "Krakonoš stále vládne horám a jedná s lidmi, rytíři jen spí a čekají na chvíli velké nouze", "Oba dělají úplně totéž, jen v jiném pohoří", "Krakonoš je člověk, rytíři jsou duchové hor"],
     hints: [
       "Jeden z nich je stále aktivní duch hor, druzí čekají skrytě na budoucí okamžik.",
       "Rytíři se probudí jen v největší nouzi, Krakonoš jedná s lidmi průběžně.",
@@ -449,12 +394,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Chceš zjistit, jak vypadala tvá ulice před padesáti lety, ale nemáš žádné staré fotografie ani dokumenty. Koho se nejspíš zeptáš?",
     correctAnswer: "Nejstaršího souseda, který si to pamatuje",
-    options: [
-      "Nejstaršího souseda, který si to pamatuje",
-      "Kronikáře ze středověku",
-      "Krakonoše",
-      "Nikoho — bez fotografie se to zjistit nedá",
-    ],
+    options: ["Kronikáře ze středověku", "Krakonoše", "Nejstaršího souseda, který si to pamatuje", "Nikoho — bez fotografie se to zjistit nedá"],
     hints: [
       "Když chybí písemný i hmotný pramen, zůstává ještě jeden typ pramene.",
       "Živým historickým pramenem jsou lidé, kteří danou dobu sami zažili.",
@@ -466,7 +406,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Píšeš do školního sešitu, co se dnes stalo ve třídě, aby si to za sto let mohli přečíst budoucí žáci. Jaký typ pramene tím vytváříš?",
     correctAnswer: "Písemný pramen",
-    options: ["Písemný pramen", "Hmotný pramen", "Ústní pramen", "Žádný, sešit není pramen"],
+    options: ["Hmotný pramen", "Ústní pramen", "Žádný, sešit není pramen", "Písemný pramen"],
     hints: [
       "Přemýšlej, čím se tvůj zápis nejvíc podobá — vyprávění, předmětu, nebo textu?",
       "Děláš vlastně to samé, co dřív dělal kronikář.",
@@ -495,12 +435,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Muzeum vystavuje starý kočár, archiv má listinu o jeho majiteli a praprababička si pamatuje, jak se v něm jezdilo na trh. Kolik různých typů historických pramenů tu je popsáno?",
     correctAnswer: "Tři — hmotný, písemný i ústní",
-    options: [
-      "Tři — hmotný, písemný i ústní",
-      "Dva — jen hmotný a písemný",
-      "Jeden — všechno je to jen vyprávění",
-      "Žádný — kočár není historický pramen",
-    ],
+    options: ["Dva — jen hmotný a písemný", "Tři — hmotný, písemný i ústní", "Jeden — všechno je to jen vyprávění", "Žádný — kočár není historický pramen"],
     hints: [
       "Spočítej: předmět v muzeu, dokument v archivu, vyprávění pamětníka.",
       "Každý z popsaných zdrojů patří do jiné kategorie pramene.",
@@ -513,15 +448,10 @@ const POOL_L3: PracticeTask[] = [
       "Proč se příběh o Libušině věštbě řadí mezi pověsti, a ne mezi doložené historické zprávy?",
     correctAnswer:
       "Protože obsahuje nadpřirozený prvek (věštění budoucnosti), který nelze historicky doložit",
-    options: [
-      "Protože obsahuje nadpřirozený prvek (věštění budoucnosti), který nelze historicky doložit",
-      "Protože se odehrává v horách",
-      "Protože v něm nevystupuje žádná skutečná postava",
-      "Protože je moc krátký na to, aby byl historickou zprávou",
-    ],
+    options: ["Protože se odehrává v horách", "Protože v něm nevystupuje žádná skutečná postava", "Protože obsahuje nadpřirozený prvek (věštění budoucnosti), který nelze historicky doložit", "Protože je moc krátký na to, aby byl historickou zprávou"],
     hints: [
       "Pověst se od historické zprávy liší tím, že obsahuje něco, co se nedá doložit fakty.",
-      "Libušina schopnost věštit budoucnost je právě ten nadpřirozený prvek.",
+      "Libušina schopnost věštit budoucnost je něco, co se v realitě prostě nestává.",
     ],
     explanation:
       "Příběh o Libuši je pověst, protože kromě historického jádra (existence knížecího rodu) obsahuje i nadpřirozený prvek — schopnost věštit budoucnost —, který nelze doložit jako fakt.",
@@ -530,12 +460,7 @@ const POOL_L3: PracticeTask[] = [
     question:
       "Kterou informaci bys hledal v archivu, kdybys chtěl zjistit přesné jméno majitele domu z roku, kdy ho postavili?",
     correctAnswer: "Starou stavební listinu nebo smlouvu",
-    options: [
-      "Starou stavební listinu nebo smlouvu",
-      "Vyprávění souseda, který dům nikdy neviděl",
-      "Fotografii jiného domu z muzea",
-      "Pověst o založení domu",
-    ],
+    options: ["Vyprávění souseda, který dům nikdy neviděl", "Fotografii jiného domu z muzea", "Pověst o založení domu", "Starou stavební listinu nebo smlouvu"],
     hints: [
       "Přesné jméno a datum najdeš spíš v úředním dokumentu než ve vyprávění.",
       "Archiv uchovává právě takové listiny a smlouvy.",

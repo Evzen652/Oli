@@ -178,6 +178,110 @@ export function pastTenseInclusive(masc: string): string {
   return masc;
 }
 
+// ── Shoda přísudku s číslovkou ───────────────────────────────────
+
+/**
+ * Mluvnický rod. `ma` = mužský životný, `mi` = mužský neživotný.
+ * Životnost se v množném čísle projeví na slovese: „byli 3 žáci" × „byly 3 body".
+ */
+export type Gender = "ma" | "mi" | "f" | "n";
+
+/**
+ * Rod pro každé substantivum z `NOUNS`. Úplnost hlídá test
+ * `czech-grammar-agreement` — bez něj by nové slovo tiše spadlo na výchozí tvar.
+ *
+ * `DÍTĚ` má rozdílný rod v čísle jednotném a množném: „bylo 1 dítě" (střední),
+ * ale „byly 3 děti" (množné číslo se skloňuje jako ženské). Proto dvojice.
+ */
+const GENDER: Record<string, Gender | { sg: Gender; pl: Gender }> = {
+  ÚKOL: "mi", ÚLOHA: "f", CVIČENÍ: "n", OTÁZKA: "f", ODPOVĚĎ: "f",
+  TÉMA: "n", PODTÉMA: "n", PŘEDMĚT: "mi", ROČNÍK: "mi", TŘÍDA: "f",
+  ŽÁK: "ma", DÍTĚ: { sg: "n", pl: "f" }, RODIČ: "ma", CHYBA: "f", BOD: "mi",
+  NÁPOVĚDA: "f", POKUS: "mi",
+
+  SEKUNDA: "f", MINUTA: "f", HODINA: "f", DEN: "mi", TÝDEN: "mi",
+  MĚSÍC: "mi", ROK: "mi",
+
+  DÍL: "mi", ČÁST: "f", STRANA: "f", ÚHEL: "mi", TROJÚHELNÍK: "mi",
+  ČTVEREC: "mi", ZLOMEK: "mi", ČÍSLO: "n", KOSTKA: "f", JABLKO: "n",
+  KNÍŽKA: "f", MÍSTO: "n", AUTO: "n", KORUNA: "f", KULIČKA: "f", KRABICE: "f",
+
+  STOVKA: "f", DESÍTKA: "f", JEDNOTKA: "f", SLOUPEC: "mi", ŘÁDEK: "mi",
+  NULA: "f", DESETINA: "f", SETINA: "f", TISÍCINA: "f",
+  TISÍCOVKA: "f", SKUPINKA: "f",
+
+  METR: "mi", CENTIMETR: "mi", MILIMETR: "mi", KILOMETR: "mi",
+  GRAM: "mi", KILOGRAM: "mi", LITR: "mi", MILILITR: "mi", KOLO: "n",
+};
+
+/** Rod slova pro daný počet (řeší `DÍTĚ`, kde se sg a pl liší). */
+export function genderOf(key: string, n = 2): Gender | null {
+  const g = GENDER[key];
+  if (!g) return null;
+  if (typeof g === "string") return g;
+  return Math.abs(n) === 1 ? g.sg : g.pl;
+}
+
+/**
+ * Shoda přísudku v minulém čase s číslovkou.
+ *
+ * Tohle je nejčastější česká chyba v generovaných úlohách: číslovku někdo
+ * dosadí proměnnou, ale sloveso nechá napevno. Vznikne „Ve třídě **bylo**
+ * 3 žáci" — správně je „byli 3 žáci". Pravidlo má tři větve, ne dvě:
+ *
+ * | počet | tvar                             |
+ * |-------|----------------------------------|
+ * | 1     | podle rodu: byl / byla / bylo    |
+ * | 2–4   | množné číslo: byli / byly / byla |
+ * | 0, 5+ | vždy střední rod j. č.: bylo     |
+ *
+ * U pěti a víc řídí číslovka genitiv, přísudek proto zůstává neutrální.
+ *
+ * @param verbN sloveso ve **středním rodě jednotného čísla** — „bylo",
+ *              „stálo", „zbylo", „přijelo". Z něj se odvodí ostatní tvary.
+ *
+ * @example agree(3, "ŽÁK", "bylo")    → "byli"  (byli 3 žáci)
+ * @example agree(3, "AUTO", "stálo")  → "stála" (stála 3 auta)
+ * @example agree(7, "ŽÁK", "bylo")    → "bylo"  (bylo 7 žáků)
+ * @example agree(1, "KOSTKA", "bylo")  → "byla"  (byla 1 kostka)
+ */
+export function agree(n: number, key: string, verbN: string): string {
+  const stem = verbN.endsWith("o") ? verbN.slice(0, -1) : verbN;
+  const g = genderOf(key, n);
+  if (!g) {
+    if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.warn(`[czechGrammar] Neznámý rod pro "${key}". Přidej ho do GENDER.`);
+    }
+    return verbN;
+  }
+  const abs = Math.abs(n);
+  if (abs === 1) return g === "f" ? `${stem}a` : g === "n" ? `${stem}o` : stem;
+  if (abs >= 2 && abs <= 4) {
+    if (g === "ma") return `${stem}i`;
+    if (g === "n") return `${stem}a`;
+    return `${stem}y`;
+  }
+  return `${stem}o`;
+}
+
+/**
+ * Totéž pro sponu v přítomném čase: „je 1 auto", „**jsou** 3 auta", „je 5 aut".
+ * Rod tu roli nehraje, jen počet.
+ */
+export function isAre(n: number): string {
+  const abs = Math.abs(n);
+  return abs >= 2 && abs <= 4 ? "jsou" : "je";
+}
+
+/**
+ * Složené: „bylo 7 žáků" / „byli 3 žáci" / „byl 1 žák".
+ * @example wasCount(3, "ŽÁK") → "byli 3 žáci"
+ */
+export function wasCount(n: number, key: string, verbN = "bylo"): string {
+  return `${agree(n, key, verbN)} ${pad(n, key)}`;
+}
+
 // ── Adjektiva po čísle ──────────────────────────────────────────────────────
 // "1 stejný díl" / "2 stejné díly" / "5 stejných dílů"
 // Tabulka pokrývá běžná přídavná jména v nominativu, mužský neživotný rod

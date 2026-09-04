@@ -34,7 +34,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které tísňové číslo patří záchranné službě (sanitce)?",
     correctAnswer: "155",
-    options: ["155", "150", "158", "112"],
+    options: ["150", "155", "158", "112"],
     hints: [
       "Záchranná služba přijíždí k lidem, kterým je špatně nebo se zranili.",
       "Není to číslo hasičů ani policie.",
@@ -44,7 +44,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které tísňové číslo patří policii?",
     correctAnswer: "158",
-    options: ["158", "150", "155", "112"],
+    options: ["150", "155", "158", "112"],
     hints: [
       "Policie řeší krádeže, nehody a jiné trestné činy.",
       "Není to číslo hasičů ani sanitky.",
@@ -54,7 +54,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které jediné tísňové číslo funguje ve všech zemích Evropské unie?",
     correctAnswer: "112",
-    options: ["112", "150", "155", "158"],
+    options: ["150", "155", "158", "112"],
     hints: [
       "Použiješ ho i na dovolené v cizině, i když nemáš kredit.",
       "Ostatní tři čísla platí hlavně v Česku.",
@@ -74,12 +74,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co znamená pojem „místo srazu“ při požáru?",
     correctAnswer: "předem dohodnuté místo venku, kde se všichni sejdou po opuštění budovy",
-    options: [
-      "předem dohodnuté místo venku, kde se všichni sejdou po opuštění budovy",
-      "místo, kde je uschovaná voda na hašení",
-      "místo, odkud se vždy volá na tísňovou linku",
-      "místnost, do které se při požáru všichni schovají",
-    ],
+    options: ["místo, kde je uschovaná voda na hašení", "předem dohodnuté místo venku, kde se všichni sejdou po opuštění budovy", "místo, odkud se vždy volá na tísňovou linku", "místnost, do které se při požáru všichni schovají"],
     hints: [
       "Slouží k tomu, aby se zjistilo, kdo už je venku a kdo možná zůstal uvnitř.",
       "Domlouvá se dopředu, ještě než se něco stane.",
@@ -89,12 +84,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Co je stabilizovaná (zotavovací) poloha?",
     correctAnswer: "poloha na boku, do které uložíme člověka v bezvědomí, který sám dýchá",
-    options: [
-      "poloha na boku, do které uložíme člověka v bezvědomí, který sám dýchá",
-      "poloha vsedě pro člověka, kterého bolí hlava",
-      "poloha na zádech s nohama nahoře pro odpočinek",
-      "poloha vestoje s oporou o zeď",
-    ],
+    options: ["poloha vsedě pro člověka, kterého bolí hlava", "poloha na zádech s nohama nahoře pro odpočinek", "poloha na boku, do které uložíme člověka v bezvědomí, který sám dýchá", "poloha vestoje s oporou o zeď"],
     hints: [
       "Zamysli se nad situací, kdy někdo nereaguje na oslovení, ale hrudník se mu stále zvedá.",
       "Na které straně těla nemůže jazyk ani zvratky ucpat cestu vzduchu?",
@@ -104,12 +94,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Kdy se koná pravidelná zkouška sirén?",
     correctAnswer: "každou první středu v měsíci ve 12 hodin",
-    options: [
-      "každou první středu v měsíci ve 12 hodin",
-      "každé ráno v 7 hodin",
-      "první pondělí v měsíci o půlnoci",
-      "jen na Nový rok",
-    ],
+    options: ["každé ráno v 7 hodin", "první pondělí v měsíci o půlnoci", "jen na Nový rok", "každou první středu v měsíci ve 12 hodin"],
     hints: [
       "Koná se jednou za měsíc, vždy v poledne.",
       "Připadá na jeden konkrétní den v týdnu na začátku měsíce.",
@@ -134,12 +119,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "V jaké situaci voláš záchrannou službu na čísle 155?",
     correctAnswer: "když je někdo zraněný nebo náhle onemocněl",
-    options: [
-      "když je někdo zraněný nebo náhle onemocněl",
-      "když v lese vypukl požár",
-      "když někdo ukradl kolo",
-      "když ti doma nejde internet",
-    ],
+    options: ["když v lese vypukl požár", "když je někdo zraněný nebo náhle onemocněl", "když někdo ukradl kolo", "když ti doma nejde internet"],
     hints: [
       "Toto číslo vytáčíš kvůli zdraví člověka.",
       "Nejde o oheň ani o krádež.",
@@ -149,12 +129,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "V jaké situaci voláš hasiče na čísle 150?",
     correctAnswer: "když někde hoří nebo hrozí požár",
-    options: [
-      "když někde hoří nebo hrozí požár",
-      "když tě bolí v krku",
-      "když ztratíš klíče od domu",
-      "když se pohádáš s kamarádem",
-    ],
+    options: ["když tě bolí v krku", "když ztratíš klíče od domu", "když někde hoří nebo hrozí požár", "když se pohádáš s kamarádem"],
     hints: [
       "Toto číslo souvisí s ohněm a kouřem.",
       "Nemoc ani ztracená věc sem nepatří.",
@@ -164,12 +139,7 @@ const POOL_L1: PracticeTask[] = [
   {
     question: "Které tři informace potřebuje dispečink slyšet při každém tísňovém volání?",
     correctAnswer: "kde jsem, co se stalo a kolik je zraněných",
-    options: [
-      "kde jsem, co se stalo a kolik je zraněných",
-      "jak se jmenuji, kolik mi je let a do jaké chodím školy",
-      "kolik je hodin a jaké je počasí",
-      "jaké mám telefonní číslo a číslo pojišťovny",
-    ],
+    options: ["jak se jmenuji, kolik mi je let a do jaké chodím školy", "kolik je hodin a jaké je počasí", "jaké mám telefonní číslo a číslo pojišťovny", "kde jsem, co se stalo a kolik je zraněných"],
     hints: [
       "Nejdůležitější je, aby záchranáři věděli, kam mají jet.",
       "Zapamatuj si tři slova: KDE, CO, KOLIK.",
@@ -197,7 +167,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Hoří byt u sousedů v paneláku a valí se z něj kouř. Které číslo vytočíš?",
     correctAnswer: "150",
-    options: ["150", "155", "158", "156"],
+    options: ["155", "150", "158", "156"],
     hints: [
       "Rozhoduje to, co se děje — tady jde o oheň.",
       "Potřebuješ ty, kdo umí hasit.",
@@ -207,12 +177,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Saháš na dveře a jsou horké, kolem rámu se plazí kouř. Co uděláš?",
     correctAnswer: "dveře neotevřu a hledám jiný únikový východ",
-    options: [
-      "dveře neotevřu a hledám jiný únikový východ",
-      "otevřu je dokořán, ať se místnost vyvětrá",
-      "otevřu je jen kousek a podívám se dovnitř",
-      "opřu se do nich a proběhnu skrz",
-    ],
+    options: ["otevřu je dokořán, ať se místnost vyvětrá", "otevřu je jen kousek a podívám se dovnitř", "dveře neotevřu a hledám jiný únikový východ", "opřu se do nich a proběhnu skrz"],
     hints: [
       "Horko na dveřích prozrazuje, co je za nimi.",
       "Přísun vzduchu by ohni jen pomohl.",
@@ -222,12 +187,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "V zakouřené chodbě se snažíš dostat ven. Jak se pohybuješ?",
     correctAnswer: "plazím se nízko u podlahy a ústa si zakryju tričkem",
-    options: [
-      "plazím se nízko u podlahy a ústa si zakryju tričkem",
-      "běžím vzpřímeně co nejrychleji",
-      "vylezu si na skříň, co nejvýš to jde",
-      "lehnu si a počkám, až kouř zmizí",
-    ],
+    options: ["běžím vzpřímeně co nejrychleji", "vylezu si na skříň, co nejvýš to jde", "lehnu si a počkám, až kouř zmizí", "plazím se nízko u podlahy a ústa si zakryju tričkem"],
     hints: [
       "Kde v zakouřené místnosti zůstává vzduch, který se dá dýchat?",
       "Nahoře u stropu je kouře nejvíc.",
@@ -252,12 +212,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Voláš na tísňovou linku. Kterou informaci musíš říct úplně jako první?",
     correctAnswer: "kde jsem — adresu nebo popis místa",
-    options: [
-      "kde jsem — adresu nebo popis místa",
-      "jak se jmenuji",
-      "kolik mi je let",
-      "jaké mám doma zvíře",
-    ],
+    options: ["jak se jmenuji", "kde jsem — adresu nebo popis místa", "kolik mi je let", "jaké mám doma zvíře"],
     hints: [
       "Bez této informace za tebou pomoc nemůže vyrazit.",
       "Napověz orientační body — ulici, číslo domu, blízké hřiště nebo obchod.",
@@ -267,7 +222,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kamarád na hřišti náhle omdlel a nereaguje. Které číslo vytočíš?",
     correctAnswer: "155",
-    options: ["155", "150", "158", "156"],
+    options: ["150", "158", "155", "156"],
     hints: [
       "Jde o zdraví člověka, ne o oheň ani o zločin.",
       "Přijet má sanitka se záchranáři.",
@@ -277,7 +232,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Vidíš, jak cizí člověk páčí dveře zaparkovaného auta a bere z něj věci. Které číslo vytočíš?",
     correctAnswer: "158",
-    options: ["158", "150", "155", "112"],
+    options: ["150", "155", "112", "158"],
     hints: [
       "Děje se něco protiprávního — krádež.",
       "Nejde o oheň ani o zraněného člověka.",
@@ -302,12 +257,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Utíkáš z hořícího domu ven. Na co nesmíš zapomenout?",
     correctAnswer: "jít na dohodnuté místo srazu a nevracet se dovnitř",
-    options: [
-      "jít na dohodnuté místo srazu a nevracet se dovnitř",
-      "vzít si s sebou všechny hračky",
-      "vrátit se pro nabíječku k telefonu",
-      "schovat se pod postel a počkat tam",
-    ],
+    options: ["vzít si s sebou všechny hračky", "jít na dohodnuté místo srazu a nevracet se dovnitř", "vrátit se pro nabíječku k telefonu", "schovat se pod postel a počkat tam"],
     hints: [
       "Věci se dají nahradit — na čem záleží nejvíc?",
       "Hasiči potřebují vědět, kdo je už venku.",
@@ -317,7 +267,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Jsi s rodiči na dovolené v Itálii a stane se vážná nehoda. Které číslo zavoláš?",
     correctAnswer: "112",
-    options: ["112", "150", "155", "158"],
+    options: ["150", "155", "112", "158"],
     hints: [
       "Česká čísla v cizině nemusí fungovat.",
       "Existuje jedno číslo pro celou Evropu.",
@@ -327,12 +277,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Ulicí se po povodni valí voda. Kamarád navrhuje, ať ji přebrodíte. Co uděláš?",
     correctAnswer: "do vody nevstoupím a najdu vyšší suchou cestu",
-    options: [
-      "do vody nevstoupím a najdu vyšší suchou cestu",
-      "vejdu do vody, vypadá jen po kotníky",
-      "půjdu první, ať to kamarád vidí",
-      "přeskákám po viditelných kamenech",
-    ],
+    options: ["vejdu do vody, vypadá jen po kotníky", "půjdu první, ať to kamarád vidí", "přeskákám po viditelných kamenech", "do vody nevstoupím a najdu vyšší suchou cestu"],
     hints: [
       "Zaplavená ulice vypadá klidně, ale proud je silný.",
       "Pod hladinou nevidíš, co tam je.",
@@ -357,12 +302,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Po povodni máš žízeň a z kohoutku teče voda. Co uděláš?",
     correctAnswer: "napiju se jen balené vody nebo počkám, až dospělí řeknou, že je bezpečná",
-    options: [
-      "napiju se jen balené vody nebo počkám, až dospělí řeknou, že je bezpečná",
-      "napiju se z kohoutku, voda přece teče",
-      "naberu si vodu z kaluže na dvoře",
-      "napiju se ze studny za domem",
-    ],
+    options: ["napiju se z kohoutku, voda přece teče", "napiju se jen balené vody nebo počkám, až dospělí řeknou, že je bezpečná", "naberu si vodu z kaluže na dvoře", "napiju se ze studny za domem"],
     hints: [
       "Povodňová voda se dostane i do potrubí a studní.",
       "Bezpečná je jen voda, o které to jistě víš.",
@@ -375,12 +315,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Zaplavená ulice vypadá klidně a voda sahá jen po kotníky. Proč je i tak nebezpečné do ní vejít?",
     correctAnswer: "proud může strhnout i dítě a pod vodou nevidíš otevřené kanály a předměty",
-    options: [
-      "proud může strhnout i dítě a pod vodou nevidíš otevřené kanály a předměty",
-      "voda je studená a mohl bys dostat rýmu",
-      "namočil by sis boty a byly by špinavé",
-      "voda by ti mohla zničit hodinky",
-    ],
+    options: ["voda je studená a mohl bys dostat rýmu", "namočil by sis boty a byly by špinavé", "proud může strhnout i dítě a pod vodou nevidíš otevřené kanály a předměty", "voda by ti mohla zničit hodinky"],
     hints: [
       "Přemýšlej o dvou skrytých nebezpečích najednou: síla proudu a to, co nevidíš.",
       "Klidná hladina ještě neznamená, že je pod ní bezpečno.",
@@ -390,12 +325,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč se po povodni nesmí pít voda z kohoutku ani ze studny v zatopené oblasti?",
     correctAnswer: "povodeň smíchá vodu s kanalizací a chemikáliemi, takže může být jedovatá",
-    options: [
-      "povodeň smíchá vodu s kanalizací a chemikáliemi, takže může být jedovatá",
-      "voda je po povodni jen příliš studená",
-      "voda by měla nezvyklou chuť, jinak nevadí",
-      "je to zbytečné varování, voda je v pořádku",
-    ],
+    options: ["voda je po povodni jen příliš studená", "voda by měla nezvyklou chuť, jinak nevadí", "je to zbytečné varování, voda je v pořádku", "povodeň smíchá vodu s kanalizací a chemikáliemi, takže může být jedovatá"],
     hints: [
       "Kam všude se povodňová voda dostane, než doteče k tobě?",
       "Smíchá se s věcmi, které do pitné vody nepatří.",
@@ -420,12 +350,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Člověk je v bezvědomí a NEdýchá. Je správné dát ho do stabilizované polohy na bok?",
     correctAnswer: "ne — hned volám 155 a řídím se pokyny záchranáře",
-    options: [
-      "ne — hned volám 155 a řídím se pokyny záchranáře",
-      "ano, poloha na boku pomůže vždy",
-      "ano, ale nejdřív mu dám napít",
-      "ne, počkám, jestli se sám neprobere",
-    ],
+    options: ["ano, poloha na boku pomůže vždy", "ne — hned volám 155 a řídím se pokyny záchranáře", "ano, ale nejdřív mu dám napít", "ne, počkám, jestli se sám neprobere"],
     hints: [
       "Stabilizovaná poloha pomáhá jen tomu, kdo sám dýchá.",
       "Když člověk nedýchá, je každá vteřina důležitá — kdo poradí přesně?",
@@ -435,12 +360,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Při požáru někdo navrhne otevřít všechna okna, ať kouř odejde. Proč je to špatný nápad?",
     correctAnswer: "čerstvý vzduch oheň rozdmýchá a plameny zesílí",
-    options: [
-      "čerstvý vzduch oheň rozdmýchá a plameny zesílí",
-      "oknem by mohla přiletět moucha",
-      "průvan by rozházel papíry po pokoji",
-      "otevřít okno je při požáru vždy správné",
-    ],
+    options: ["oknem by mohla přiletět moucha", "průvan by rozházel papíry po pokoji", "čerstvý vzduch oheň rozdmýchá a plameny zesílí", "otevřít okno je při požáru vždy správné"],
     hints: [
       "Co potřebuje oheň, aby hořel víc? Zamysli se nad vzduchem.",
       "Přivést k ohni vzduch není totéž jako ho zahnat.",
@@ -450,12 +370,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V kuchyni začne hořet hrnec a zároveň babička upadla a nemůže vstát. Které volání přivolá pomoc nejrychleji?",
     correctAnswer: "112 — jedním voláním přivolám pomoc k požáru i ke zraněné babičce",
-    options: [
-      "112 — jedním voláním přivolám pomoc k požáru i ke zraněné babičce",
-      "zavolám jen 150 a o babičce se nezmíním",
-      "zavolám jen 155 a hořící hrnec nechám být",
-      "nevolám nikam, zvládnu obojí sám",
-    ],
+    options: ["zavolám jen 150 a o babičce se nezmíním", "zavolám jen 155 a hořící hrnec nechám být", "nevolám nikam, zvládnu obojí sám", "112 — jedním voláním přivolám pomoc k požáru i ke zraněné babičce"],
     hints: [
       "Děje se víc věcí najednou — potřebuješ hasiče i záchranku.",
       "Které jediné číslo umí přivolat všechny složky zároveň?",
@@ -480,12 +395,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Právě jsi utekl z hořícího bytu, ale uvědomíš si, že tam zůstal tvůj telefon. Vrátíš se pro něj?",
     correctAnswer: "ne — věci se dají nahradit a kouř omámí během chvilky; řeknu to hasičům",
-    options: [
-      "ne — věci se dají nahradit a kouř omámí během chvilky; řeknu to hasičům",
-      "ano, telefon je drahý, rychle si pro něj doběhnu",
-      "ano, ale nejdřív se nadechnu a zadržím dech",
-      "pošlu pro něj mladšího sourozence",
-    ],
+    options: ["ano, telefon je drahý, rychle si pro něj doběhnu", "ne — věci se dají nahradit a kouř omámí během chvilky; řeknu to hasičům", "ano, ale nejdřív se nadechnu a zadržím dech", "pošlu pro něj mladšího sourozence"],
     hints: [
       "Co je cennější — věc, nebo tvoje bezpečí?",
       "Kouř dokáže omámit rychleji, než stihneš doběhnout zpět.",
@@ -495,12 +405,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Voláš 155, už jsi řekl, co se stalo, ale operátor se pořád ptá. Kdy hovor ukončíš?",
     correctAnswer: "až když to řekne operátor — nikdy nezavěšuji první",
-    options: [
-      "až když to řekne operátor — nikdy nezavěšuji první",
-      "hned, jak řeknu, co se stalo",
-      "když mě otázky začnou unavovat",
-      "jakmile uslyším v dálce sanitku",
-    ],
+    options: ["hned, jak řeknu, co se stalo", "když mě otázky začnou unavovat", "až když to řekne operátor — nikdy nezavěšuji první", "jakmile uslyším v dálce sanitku"],
     hints: [
       "Operátor se ptá dál, protože potřebuje víc informací.",
       "Rozhoduje ten, kdo řídí pomoc na druhé straně.",
@@ -510,12 +415,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jaký je rozdíl mezi rovným a kolísavým tónem sirény?",
     correctAnswer: "rovný tón je jen zkouška, kolísavý tón je skutečné varování",
-    options: [
-      "rovný tón je jen zkouška, kolísavý tón je skutečné varování",
-      "rovný tón je varování, kolísavý tón je zkouška",
-      "oba tóny znamenají to samé",
-      "rovný tón hlásí počasí, kolísavý začátek školy",
-    ],
+    options: ["rovný tón je varování, kolísavý tón je zkouška", "oba tóny znamenají to samé", "rovný tón hlásí počasí, kolísavý začátek školy", "rovný tón je jen zkouška, kolísavý tón je skutečné varování"],
     hints: [
       "Spoj si dohromady dvě věci: který tón znamená klid a který nebezpečí.",
       "Neměnný zvuk = běžná měsíční zkouška.",
@@ -540,12 +440,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč se při požáru plazíš u země místo toho, abys běžel vzpřímeně?",
     correctAnswer: "horký a jedovatý kouř stoupá ke stropu, u podlahy zůstává vzduch s kyslíkem",
-    options: [
-      "horký a jedovatý kouř stoupá ke stropu, u podlahy zůstává vzduch s kyslíkem",
-      "u podlahy se běží rychleji než vestoje",
-      "aby tě přes kouř nebylo vidět",
-      "protože vestoje bys uklouzl",
-    ],
+    options: ["u podlahy se běží rychleji než vestoje", "horký a jedovatý kouř stoupá ke stropu, u podlahy zůstává vzduch s kyslíkem", "aby tě přes kouř nebylo vidět", "protože vestoje bys uklouzl"],
     hints: [
       "Kam se v místnosti hromadí kouř — nahoru, nebo dolů?",
       "Kde se dá líp dýchat — dole při zemi, nebo nahoře?",

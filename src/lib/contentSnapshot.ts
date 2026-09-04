@@ -57,9 +57,7 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g3-cjl-veta-jednoducha-souveti",
   "g3-cjl-jazykova-vychova-nauka-o-slove-vyznam-slova-slova-jednoznacna-a-mnohoznacna",
   "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu",
-  // Kolo 2 P0 opravy (2026-07-09)
-  "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure",
-  "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce",
+  // Kolo 2 P0 opravy (2026-07-09) — oba vzorové topics dokončeny a znovu zamrazeny 2026-08-30
   "g3-cjl-podstatna-jmena-rod-cislo-pad",
   // Systémové dluhy Balík 1B (2026-07-10) — rozšíření z 3 na 8 textů, disjunktní L1/L2/L3
   "g3-cjl-plynule-cteni-porozumeni",

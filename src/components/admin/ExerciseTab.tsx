@@ -1294,7 +1294,7 @@ export function ExerciseTab({
           <ul className="space-y-1.5 pt-2">
             <li className="text-xs text-foreground/80 flex items-start gap-2">
               <Check className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
-              <span>{config.description.replace(/^[📗📘📕]\s*/, "").split(".")[0]}.</span>
+              <span>{config.description.replace(/^[📗📘📕]\s*/u, "").split(".")[0]}.</span>
             </li>
             {hasGenerator && (
               <li className="text-xs text-foreground/80 flex items-start gap-2">

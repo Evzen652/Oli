@@ -29,10 +29,11 @@ interface Item {
   q: string;
   a: string;
   opts: string[];
+  hints?: string[];
 }
 
 const POOL_L1: Item[] = [
-  { q: "Co je kružnice?", a: "Čára, jejíž každý bod je stejně daleko od středu", opts: ["Čára, jejíž každý bod je stejně daleko od středu", "Vyplněný kulatý tvar", "Čtverec zaoblený", "Polovina koule"] },
+  { q: "Co je kružnice?", a: "Čára, jejíž body jsou stejně daleko od středu", opts: ["Polovina koule v prostoru", "Čára, jejíž body jsou stejně daleko od středu", "Celý vyplněný kulatý tvar", "Čtverec se zaoblenými rohy"] },
   { q: "Co je kruh?", a: "Plocha ohraničená kružnicí (vyplněný)", opts: ["Plocha ohraničená kružnicí (vyplněný)", "Jen obvod kruhu", "Čtverec se zaoblenými rohy", "Polovina kružnice"] },
   { q: "Jaký nástroj použijeme k narýsování kružnice?", a: "Kružítko", opts: ["Kružítko", "Pravítko", "Úhloměr", "Šablonu"] },
   { q: "Co je poloměr kružnice?", a: "Vzdálenost od středu ke kružnici", opts: ["Vzdálenost od středu ke kružnici", "Délka celé kružnice", "Vzdálenost dvou bodů na kružnici", "Polovina kružnice"] },
@@ -46,11 +47,19 @@ const POOL_L2: Item[] = [
   { q: "Kolik středů může mít kružnice?", a: "Jeden", opts: ["Jeden", "Dva", "Tři", "Nekonečně mnoho"] },
   { q: "Jak se nazývá úsečka spojující dva body kružnice?", a: "Tětiva", opts: ["Tětiva", "Průměr", "Poloměr", "Oblouk"] },
   { q: "Průměr d = 14 cm. Poloměr r = ?", a: "7 cm", opts: ["7 cm", "14 cm", "28 cm", "3,5 cm"] },
-  { q: "Co platí: průměr = ?", a: "2 × poloměr", opts: ["2 × poloměr", "poloměr ÷ 2", "3 × poloměr", "poloměr + 1"] },
+  {
+    q: "Co platí: průměr = ?",
+    a: "2 × poloměr",
+    opts: ["2 × poloměr", "poloměr ÷ 2", "3 × poloměr", "poloměr + 1"],
+    hints: [
+      "Uvažuj vzdálenost ze středu kruhu k jeho okraji — kolikrát se tahle vzdálenost vejde do průměru, který jde napříč celým kruhem?",
+      "Kružnice je jen čára (obvod). Kruh je celá plocha uvnitř kružnice.",
+    ],
+  },
   { q: "Kružnice o poloměru 5 cm a kružnice o poloměru 5 cm jsou:", a: "Stejně velké (shodné)", opts: ["Stejně velké (shodné)", "Různě velké", "Soustředné", "Různoběžné"] },
   { q: "Průměr d = 8 cm. Poloměr r = ?", a: "4 cm", opts: ["4 cm", "16 cm", "8 cm", "2 cm"] },
   { q: "Poloměr r = 9 cm. Průměr d = ?", a: "18 cm", opts: ["18 cm", "4,5 cm", "9 cm", "27 cm"] },
-  { q: "Nejdelší tětiva v kružnici je:", a: "Průměr", opts: ["Průměr", "Poloměr", "Oblouk", "Tečna"] },
+  { q: "Nejdelší tětiva v kružnici je:", a: "Průměr", opts: ["Průměr", "Poloměr", "Oblouk", "Tečna"], hints: ["Tětiva spojuje dva body na kružnici.", "Zkus si představit, kudy musí taková čára vést, aby byla co nejdelší."] },
   { q: "Dvě kružnice se stejným středem, ale různým poloměrem, se nazývají:", a: "Soustředné", opts: ["Soustředné", "Shodné", "Různoběžné", "Souhlasné"] },
 ];
 
@@ -78,7 +87,7 @@ function pick(pool: Item[]): PracticeTask[] {
     question: item.q,
     correctAnswer: item.a,
     options: shuffle([...item.opts]),
-    hints: [
+    hints: item.hints ?? [
       "Poloměr = polovina průměru (r = d ÷ 2). Průměr = 2 × poloměr (d = 2r).",
       "Kružnice je jen čára (obvod). Kruh je celá plocha uvnitř kružnice. Poloměr jde ze středu k obvodu.",
     ],

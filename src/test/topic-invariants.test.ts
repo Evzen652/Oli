@@ -48,7 +48,6 @@ describe("Topic metadata invariants", () => {
           "table_fill", "sequence_step",
           "image_select", "diagram_label",
           "chemical_balance", "timeline", "formula_builder",
-          "essay",
         ]).toContain(topic.inputType);
       });
 

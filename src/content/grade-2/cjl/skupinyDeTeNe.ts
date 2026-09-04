@@ -74,7 +74,7 @@ export const SKUPINYDЕТЕНЕ: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-skupiny-de-te-ne-be-pe-ve-me",
     rvpNodeId: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-skupiny-de-te-ne-be-pe-ve-me",
     title: "Skupiny dě-tě-ně-bě-pě-vě-mě",
-    studentTitle: "Skupiny s háčkem",
+    studentTitle: "Dě, tě, ně, bě, pě, vě, mě",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Zvuková stránka jazyka",

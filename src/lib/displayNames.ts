@@ -11,6 +11,7 @@
  */
 
 import type { Grade, TopicMetadata } from "./types";
+import { getFullTopicTitle } from "./types";
 
 // ─── Per-grade datová struktura (export pro typování v grade-N/displayNames.ts) ───
 
@@ -104,4 +105,30 @@ export function getDisplayTitle(t: Pick<TopicMetadata, "title" | "studentTitle">
  */
 export function inferGradeForDisplay(t: Pick<TopicMetadata, "gradeRange">): Grade {
   return t.gradeRange[0];
+}
+
+/**
+ * Celý název tématu tak, jak ho má vidět DÍTĚ.
+ *
+ * `getFullTopicTitle` z `types.ts` skládá název z RVP taxonomie a vyleze
+ * z něj „Číselný obor 0–1 000 000 – zaokrouhlování čísel". To je katalogový
+ * záznam, ne něco, u čeho by dítě cítilo, k čemu mu to je. Každé téma má
+ * `studentTitle` (ověřeno: 229 z 229), takže sáhnout po něm je vždycky
+ * možné — jen se to na některých obrazovkách nedělalo.
+ *
+ * `isStudentView === false` (rodič, admin) naopak RVP název chce: hledá
+ * podle něj v osnovách.
+ */
+export function getChildTopicTitle(
+  topic: Pick<TopicMetadata, "topic" | "title"> & { displayName?: string; studentTitle?: string },
+  grade: number | null,
+  isStudentView = true,
+): string {
+  if (!isStudentView) return getFullTopicTitle(topic as TopicMetadata);
+  if (topic.studentTitle) return topic.studentTitle;
+  const displayGroup = getDisplayTopic(topic.topic ?? "", (grade ?? 4) as Grade);
+  const displaySub = topic.displayName ?? topic.title ?? "";
+  if (!displaySub || topic.topic === topic.title) return displayGroup;
+  const sub = displaySub.charAt(0).toLowerCase() + displaySub.slice(1);
+  return `${displayGroup} – ${sub}`;
 }

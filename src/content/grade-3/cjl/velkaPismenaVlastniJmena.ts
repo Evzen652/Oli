@@ -16,7 +16,7 @@ function shuffle<T>(arr: T[]): T[] {
  * obecné), L3 (obtížné případy — ulice, měsíce, oslovení, obtížné oblasti).
  */
 
-type Item = { q: string; a: string; opts: string[]; e: string };
+type Item = { q: string; a: string; opts: string[]; e: string; hints?: string[] };
 
 const POOL_L1: Item[] = [
   // Základní vlastní jména — jak napsat konkrétní jméno
@@ -34,14 +34,55 @@ const POOL_L1: Item[] = [
 const POOL_L2: Item[] = [
   // Rozlišování vlastní vs obecné jméno
   { q: "Které slovo se píše s velkým písmenem?", a: "Jiří (jméno člověka)", opts: ["Jiří (jméno člověka)", "jiřina (květ)", "jiný", "jihovýchod"], e: "Jiří = jméno konkrétního člověka → velké J. Jiřina (květ) je obecné jméno." },
-  { q: "Které slovo se píše s malým písmenem?", a: "hora (obecně)", opts: ["hora (obecně)", "Krkonoše", "Vltava", "Karel"], e: "'Hora' obecně = každá hora → malé h. Krkonoše, Vltava, Karel jsou vlastní jména." },
+  {
+    q: "Které slovo se píše s malým písmenem?",
+    a: "hora (obecně)",
+    opts: ["hora (obecně)", "Krkonoše", "Vltava", "Karel"],
+    e: "'Hora' obecně = každá hora → malé h. Krkonoše, Vltava, Karel jsou vlastní jména.",
+    hints: [
+      "Zeptej se, jestli slovo označuje jednu určitou věc, nebo celý druh.",
+      "Když mluvíme o kopci bez uvedení jeho konkrétního názvu, píšeme ho s malým písmenem.",
+    ],
+  },
   { q: "Věta: 'Jana a tomáš jdou do školy.' Které slovo je napsáno ŠPATNĚ?", a: "tomáš", opts: ["tomáš", "Jana", "školy", "jdou"], e: "Tomáš je jméno člověka → musí mít velké T. 'Školy' je obecné (malé s)." },
   { q: "Které slovo MUSÍ mít velké písmeno?", a: "Morava (řeka)", opts: ["Morava (řeka)", "modrý", "mokrý", "moudrý"], e: "Morava = vlastní jméno řeky. Ostatní jsou přídavná jména = malé písmeno." },
-  { q: "Které z těchto slov se píše s MALÝM písmenem?", a: "pes (obecné jméno)", opts: ["pes (obecné jméno)", "Azor (jméno psa)", "Nora (jméno)", "Praha"], e: "Pes obecně = malé p. Azor = jméno konkrétního psa → velké A." },
-  { q: "Co je vlastní jméno?", a: "Jméno konkrétní osoby, místa nebo věci (Praha, Vltava, Karel)", opts: ["Jméno konkrétní osoby, místa nebo věci (Praha, Vltava, Karel)", "Slovo, které patří vlastníkovi", "Jméno napsané malými písmeny", "Slovo z první věty odstavce"], e: "Vlastní jméno = pojmenování konkrétní jedinečné osoby, místa, věci → vždy velké písmeno." },
-  { q: "Co je obecné jméno?", a: "Slovo, které pojmenovává druh věcí obecně (kočka, škola, řeka)", opts: ["Slovo, které pojmenovává druh věcí obecně (kočka, škola, řeka)", "Jméno psané velkými písmeny", "Cizí jméno", "Jméno města v cizině"], e: "Obecné jméno = pojmenování druhu (každá kočka, každá škola, každá řeka) → malé písmeno." },
-  { q: "Které slovo píšeme s velkým písmenem?", a: "Karel (jméno)", opts: ["Karel (jméno)", "karta", "kámen", "koupit"], e: "Karel = jméno konkrétního člověka → velké K. Ostatní jsou obecná / slovesa → malé." },
-  { q: "Věta: 'V zoo jsme viděli lva Simbu.' Které slovo je vlastní jméno?", a: "Simbu (jméno lva)", opts: ["Simbu (jméno lva)", "lva", "zoo", "viděli"], e: "Simba je jméno konkrétního lva → vlastní jméno, velké S." },
+  {
+    q: "Které z těchto slov se píše s MALÝM písmenem?",
+    a: "pes (obecné jméno)",
+    opts: ["pes (obecné jméno)", "Azor (jméno psa)", "Nora (jméno)", "Praha"],
+    e: "Pes obecně = malé p. Azor = jméno konkrétního psa → velké A.",
+    hints: [
+      "Zeptej se, jestli slovo označuje jednu určitou věc, nebo celý druh.",
+      "Když mluvíme o zvířeti obecně, bez konkrétního jména, píšeme ho s malým písmenem.",
+    ],
+  },
+  {
+    q: "Co je vlastní jméno?",
+    a: "Jméno konkrétní osoby, místa nebo věci (Praha, Vltava, Karel)",
+    opts: [
+      "Jméno konkrétní osoby, místa nebo věci (Praha, Vltava, Karel)",
+      "Slovo, které patří nějakému vlastníkovi",
+      "Jméno, které se píše malými písmeny",
+      "První slovo na začátku odstavce",
+    ],
+    e: "Vlastní jméno = pojmenování konkrétní jedinečné osoby, místa, věci → vždy velké písmeno.",
+    hints: [
+      "Takové slovo patří jen jedné konkrétní bytosti, místu, nebo taky věci — a ne kterékoli jiné.",
+      "Když je takových věcí na světě mnoho, píše se malé písmeno.",
+    ],
+  },
+  { q: "Co je obecné jméno?", a: "Slovo, které pojmenovává druh věcí obecně (kočka, škola, řeka)", opts: ["Jméno, které se píše velkými písmeny", "Slovo, které pojmenovává druh věcí obecně (kočka, škola, řeka)", "Jméno nějakého města v cizině", "Slovo přejaté z cizího jazyka"], e: "Obecné jméno = pojmenování druhu (každá kočka, každá škola, každá řeka) → malé písmeno." },
+  {
+    q: "Které slovo píšeme s velkým písmenem?",
+    a: "Karel (jméno)",
+    opts: ["Karel (jméno)", "karta", "kámen", "koupit"],
+    e: "Karel = jméno konkrétního člověka → velké K. Ostatní jsou obecná / slovesa → malé.",
+    hints: [
+      "Toto slovo označuje jednu konkrétní osobu → píšeme ho s velkým písmenem.",
+      "Slova, která platí obecně pro kohokoli nebo cokoli, píšeme s malým písmenem.",
+    ],
+  },
+  { q: "Věta: 'V zoo jsme viděli lva Simbu.' Které slovo je vlastní jméno?", a: "Simbu", opts: ["lva", "Simbu", "zoo", "viděli"], e: "Simba je jméno konkrétního lva → vlastní jméno, velké S." },
 ];
 
 const POOL_L3: Item[] = [
@@ -49,7 +90,7 @@ const POOL_L3: Item[] = [
   { q: "Jak napíšeme: 'Bydlím v ulici Na _____' (kopec)?", a: "Kopci", opts: ["Kopci", "kopci", "KOPCI", "kOpci"], e: "Součást názvu ulice 'Na Kopci' → velké K." },
   { q: "Jak napíšeme název měsíce ve větě '28. _____ máme svátek'?", a: "října", opts: ["října", "Října", "ŘÍJNA", "říJna"], e: "Názvy měsíců se v češtině píší MALÝM písmenem." },
   { q: "Jak správně: 'Učitelka se jmenuje ___ Nováková.'", a: "paní Nováková", opts: ["paní Nováková", "Paní Nováková", "paní nováková", "PANÍ NOVÁKOVÁ"], e: "'Paní' = obecné oslovení (malé p). 'Nováková' = příjmení (velké N)." },
-  { q: "Které z těchto píšeme s velkým písmenem?", a: "Západ (část světa jako název oblasti)", opts: ["Západ (část světa jako název oblasti)", "západ slunce", "západiště", "zapádat"], e: "'Západ' jako název oblasti (Západ Evropy) → velké. 'Západ slunce' (obecný děj) → malé." },
+  { q: "Které z těchto píšeme s velkým písmenem?", a: "Západ", opts: ["západ slunce", "Západ", "západní vítr", "cesta na západ"], e: "'Západ' jako název oblasti (Západ Evropy) → velké. 'Západ slunce' (obecný děj) → malé." },
   { q: "Věta: 'V pondělí jedeme do Prahy.' Kolik slov s velkým písmenem má být?", a: "Dvě (V + Prahy)", opts: ["Dvě (V + Prahy)", "Jedno (jen V)", "Tři (V + pondělí + Prahy)", "Jedno (Prahy)"], e: "'V' na začátku věty a 'Prahy' jako vlastní jméno města. 'Pondělí' (den v týdnu) → malé p." },
   { q: "Jak píšeme 'ulice Karlova' ve větě?", a: "ulice Karlova", opts: ["ulice Karlova", "Ulice Karlova", "ulice karlova", "ULICE KARLOVA"], e: "'Ulice' je obecné (malé u), 'Karlova' je vlastní jméno ulice (velké K)." },
   { q: "Jak napíšeme název svátku 'vánoce'?", a: "Vánoce", opts: ["Vánoce", "vánoce", "VÁNOCE", "vÁnoce"], e: "Vánoce jako název svátku píšeme s velkým V." },
@@ -59,13 +100,13 @@ const POOL_L3: Item[] = [
 ];
 
 function pick(pool: Item[]): PracticeTask[] {
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
+  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e, hints }) => ({
     question: q,
     correctAnswer: a,
     options: shuffle([...opts]),
-    hints: [
-      "Vlastní jméno = jméno konkrétní osoby, místa, řeky, hory → velké písmeno.",
-      "Obecné jméno = každý pes, každá hora → malé písmeno.",
+    hints: hints ?? [
+      "Zeptej se, jestli slovo označuje jednu určitou věc, nebo celý druh.",
+      "Když je takových věcí na světě mnoho, píše se malé písmeno.",
     ],
     explanation: e,
   }));

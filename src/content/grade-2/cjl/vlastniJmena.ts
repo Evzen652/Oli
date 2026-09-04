@@ -73,7 +73,7 @@ export const VLASTNIJMENA: TopicMetadata[] = [
     id: "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno",
     rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno",
     title: "Vlastní jména a velké písmeno",
-    studentTitle: "Vlastní jména",
+    studentTitle: "Jména s velkým písmenem",
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Tvarosloví",

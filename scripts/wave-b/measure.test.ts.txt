@@ -1,0 +1,19 @@
+// Zkopiruj do src/test/_wave-b-measure.test.ts a spust:
+//   npx vitest run src/test/_wave-b-measure.test.ts --reporter=basic
+// Po pouziti SMAZ (nesmi zustat v commitu).
+import { describe, it } from "vitest";
+import { getAllTopics } from "@/lib/contentRegistry";
+import { runOfflineAudit } from "@/lib/contentAudit";
+
+describe("wave-b", () => {
+  it("measure", () => {
+    const all = ((runOfflineAudit(getAllTopics()) as any).issues ?? []) as any[];
+    const len = all.filter((x) => /≥ 2× delší/.test(x.detail));
+    const by = new Map<string, number>();
+    for (const i of len) by.set(i.topicId, (by.get(i.topicId) ?? 0) + 1);
+    console.log("CELKEM", all.length, "| delka", len.length, "| temat", by.size);
+    for (const [t, n] of [...by.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10)) {
+      console.log("TOP", n, t);
+    }
+  });
+});

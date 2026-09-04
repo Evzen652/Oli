@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { cn } from "@/lib/utils";
 
 interface MatchPairsInputProps {
@@ -115,12 +116,15 @@ export function MatchPairsInput({ pairs, onSubmit, disabled }: MatchPairsInputPr
       </div>
       <div className="flex gap-2">
         {matched.length > 0 && (
-          <Button variant="outline" onClick={handleUndo} disabled={disabled} className="rounded-xl">
-            ↩ Zpět
+          // Vrací poslední spojení, nenaviguje — proto ne BackButton
+          // a ne slovo „Zpět", které v celé aplikaci znamená návrat.
+          <Button variant="outline" onClick={handleUndo} disabled={disabled} className="gap-2 rounded-full">
+            <PaintedArrow direction="left" className="h-4 w-4" />
+            Vrátit tah
           </Button>
         )}
         <Button onClick={handleSubmit} disabled={!allMatched || disabled} className="flex-1 text-lg h-12 rounded-xl">
-          {disabled ? "Zpracovávám…" : "Odeslat odpověď ✏️"}
+          {disabled ? "Zpracovávám…" : "Odeslat odpověď"}
         </Button>
       </div>
     </div>

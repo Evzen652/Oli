@@ -11,6 +11,9 @@
  *   pravopis, diktát: speciální).
  * - Nápovědu zmiňuje jemně, nikdy jako výtku.
  * - Povzbudivý tón, tykání, žádné emotikony.
+ * - **Co dál je vždy v 1. osobě množného čísla** („projdeme si to spolu",
+ *   ne „procvič si to"). Dítě má cítit, že na to nezůstalo samo — výkon
+ *   patří jemu, další krok děláme společně.
  * - Vždy konkrétní: počet správně, využití nápovědy, tip co dál.
  */
 
@@ -61,7 +64,7 @@ function getSubjectTerms(subject: string, isDiktat: boolean): SubjectTerms {
     return {
       activity: "doplňování",
       thing: "pravopis",
-      encouragement: "Přečti si krátký text a všímej si pravopisných pravidel",
+      encouragement: "Přečteme si krátký text a budeme si spolu všímat pravopisných pravidel",
     };
   }
 
@@ -70,26 +73,26 @@ function getSubjectTerms(subject: string, isDiktat: boolean): SubjectTerms {
       return {
         activity: "počítání",
         thing: "příklady",
-        encouragement: "Projdi si postup řešení a zkus pár podobných příkladů",
+        encouragement: "Projdeme si spolu postup řešení a zkusíme pár podobných příkladů",
       };
     case "cestina":
     case "čeština":
       return {
         activity: "doplňování",
         thing: "pravopis",
-        encouragement: "Připomeň si pravidla a projdi pár podobných cvičení",
+        encouragement: "Připomeneme si pravidla a projdeme spolu pár podobných cvičení",
       };
     case "prvouka":
       return {
         activity: "odpovídání",
         thing: "otázky",
-        encouragement: "Přečti si o tématu něco víc a pak to zkus znovu",
+        encouragement: "Přečteme si o tématu něco víc a pak to zkusíme znovu",
       };
     default:
       return {
         activity: "procvičování",
         thing: "úlohy",
-        encouragement: "Zkus to příště znovu, určitě se zlepšíš",
+        encouragement: "Zkusíme to spolu znovu, určitě se zlepšíš",
       };
   }
 }
@@ -106,28 +109,28 @@ function buildGreatEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean)
   if (isYoung) {
     if (helpUsedCount === 0) {
       return pick([
-        `Skvělé! Zvládl/a jsi ${correctCount} z ${totalTasks} správně, a úplně sám/sama.`,
-        `Paráda! ${topicTitle} ti jde výborně, jen tak dál!`,
-        `Výborně, skoro všechno bylo správně — můžeš na sebe být hrdý/á!`,
+        `Skvělé! Zvládl/a jsi ${correctCount} z ${totalTasks} správně, a úplně sám/sama. Příště si dáme něco těžšího.`,
+        `Paráda! ${topicTitle} ti jde výborně. Jdeme dál!`,
+        `Výborně, skoro všechno bylo správně — můžeš na sebe být hrdý/á. Tohle už umíme.`,
       ]);
     }
     return pick([
-      `Pěkně ti to šlo! Máš ${correctCount} z ${totalTasks} správně. Příště to zkus víc sám/sama.`,
-      `Hezky! ${topicTitle} už ti jde. Příště nápovědu skoro nebudeš potřebovat.`,
+      `Pěkně ti to šlo! Máš ${correctCount} z ${totalTasks} správně. Příště to zkusíme s menší nápovědou.`,
+      `Hezky! ${topicTitle} už ti jde. Nápovědu budeme brzy potřebovat míň.`,
     ]);
   }
 
   // Grade 4+: 2-3 věty
   if (helpUsedCount === 0) {
     return pick([
-      `Výborně zvládnuto! V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně, a to bez jediné nápovědy. Ukazuješ velkou samostatnost — jen tak dál.`,
-      `Skvělý výkon v ${terms.activity}! ${correctCount} z ${totalTasks} správně a bez pomoci, to je na jedničku.`,
-      `${topicTitle} ti evidentně jde. ${correctCount} správných z ${totalTasks} bez nápovědy je vynikající výsledek.`,
+      `Výborně zvládnuto! V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně, a to bez jediné nápovědy. Ukazuješ velkou samostatnost — příště si můžeme dát něco těžšího.`,
+      `Skvělý výkon v ${terms.activity}! ${correctCount} z ${totalTasks} správně a bez pomoci, to je na jedničku. Jdeme dál.`,
+      `${topicTitle} ti evidentně jde. ${correctCount} správných z ${totalTasks} bez nápovědy je vynikající výsledek — posuneme se o kus dál.`,
     ]);
   }
   return pick([
-    `Dobře ti to šlo! V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně.${helpNote(helpUsedCount)} Příště zkus víc spoléhat na sebe a uvidíš, že to půjde.`,
-    `Solidní výkon v ${terms.activity}. ${correctCount} z ${totalTasks} je výborný základ.${helpNote(helpUsedCount)} Příště se zkus obejít bez nápovědy.`,
+    `Dobře ti to šlo! V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně.${helpNote(helpUsedCount)} Příště zkusíme míň nápovědy a uvidíš, že to půjde.`,
+    `Solidní výkon v ${terms.activity}. ${correctCount} z ${totalTasks} je výborný základ.${helpNote(helpUsedCount)} Příště se bez nápovědy obejdeme.`,
   ]);
 }
 
@@ -137,19 +140,19 @@ function buildGoodEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean):
   if (isYoung) {
     if (helpUsedCount > 0) {
       return pick([
-        `Není to špatné! Máš ${correctCount} z ${totalTasks} správně. Ještě jednou to zkus a půjde to líp.`,
-        `Dobře! ${topicTitle} ještě chvilku procvič a bude to lepší.`,
+        `Není to špatné! Máš ${correctCount} z ${totalTasks} správně. Ještě si to spolu projdeme a půjde to líp.`,
+        `Dobře! ${topicTitle} ještě chvilku procvičíme a bude to lepší.`,
       ]);
     }
     return pick([
-      `Dobře! Máš ${correctCount} z ${totalTasks} správně. Ještě si to procvič a brzy ti to půjde samo.`,
-      `Ujde to! Ještě to chce trochu tréninku, ale jdeš správným směrem. Jen vydrž!`,
+      `Dobře! Máš ${correctCount} z ${totalTasks} správně. Ještě si to procvičíme a brzy ti to půjde samo.`,
+      `Ujde to! Ještě to chce trochu tréninku, ale jdeš správným směrem. Vydržíme to spolu.`,
     ]);
   }
 
   return pick([
     `V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně — solidní základ, na kterém se dá stavět.${helpNote(helpUsedCount)} ${terms.encouragement}.`,
-    `${correctCount} z ${totalTasks} v ${terms.activity} — není to špatné, jen kousek tě dělí od jistoty.${helpUsedCount > 0 ? " Příště se zkus víc spolehnout na sebe." : ""} ${terms.encouragement}.`,
+    `${correctCount} z ${totalTasks} v ${terms.activity} — není to špatné, jen kousek tě dělí od jistoty.${helpUsedCount > 0 ? " Příště se bez nápovědy obejdeme." : ""} ${terms.encouragement}.`,
   ]);
 }
 
@@ -158,13 +161,13 @@ function buildWeakEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean):
 
   if (isYoung) {
     return pick([
-      `Nevadí! ${topicTitle} ještě chce procvičit. Zkus to znovu, určitě ti to půjde líp.`,
-      `Tohle ještě není ono, a to vůbec nevadí — učíš se. Zkus to příště ještě jednou.`,
+      `Nevadí! ${topicTitle} ještě chce procvičit. Projdeme si to spolu od začátku a půjde to.`,
+      `Tohle ještě není ono, a to vůbec nevadí — učíš se. Zkusíme to spolu ještě jednou.`,
     ]);
   }
 
   return pick([
-    `V tématu ${topicTitle} to zatím není úplně jisté — máš ${correctCount} z ${totalTasks} správně.${helpNote(helpUsedCount)} Nic se neděje, koukni se na téma znovu a v klidu si procvič základy.`,
+    `V tématu ${topicTitle} to zatím není úplně jisté — máš ${correctCount} z ${totalTasks} správně.${helpNote(helpUsedCount)} Nic se neděje, koukneme se na téma znovu a v klidu si to projdeme od základů.`,
     `${topicTitle} ti zatím dělá potíže — máš ${correctCount} z ${totalTasks}. Vůbec nevadí, každý potřebuje trochu víc času. ${terms.encouragement}.`,
   ]);
 }

@@ -384,7 +384,6 @@ describe("getDefaultValidator — coverage", () => {
     ["chemical_balance", "chemical_balance"],
     ["timeline", "timeline"],
     ["formula_builder", "formula_builder"],
-    ["essay", "essay"],
     ["multi_select", "set_match"],
     ["drag_order", "ordered_sequence"],
     ["match_pairs", "pairs_match"],
