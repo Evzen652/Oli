@@ -93,6 +93,19 @@ function startOfLocalDayMs(dayKey: string): number | null {
   return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 0, 0, 0, 0).getTime();
 }
 
+/**
+ * Táž půlnoc jako `startOfLocalDayMs`, ale jako ISO řetězec pro DB dotaz.
+ *
+ * Existuje proto, aby se dolní mez dotazu počítala **stejně** jako dolní mez
+ * okna. Naivní `${den}T00:00:00Z` by v ČR (UTC+1/+2) usekl logy mezi místní
+ * půlnocí a druhou ranní, které do okna patří — a u úkolu procvičeného pozdě
+ * večer by pak zmizelo skóre.
+ */
+export function startOfLocalDayIso(dayKey: string): string | null {
+  const ms = startOfLocalDayMs(dayKey);
+  return ms === null ? null : new Date(ms).toISOString();
+}
+
 /** Převede řádek úkolu na časové okno, ve kterém k němu sezení patří. */
 export function toAssignmentWindow(row: AssignmentRowLike): AssignmentWindow {
   const assignedDate = (row.assigned_date ?? "").slice(0, 10);
