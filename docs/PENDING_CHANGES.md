@@ -7,6 +7,12 @@
 
 ---
 
+## ✅ ChildActivityChart — tlačítko "Skrýt" nefunkční při aktivitě (2026-09-04)
+
+- 🐞 **Nahlásil uživatel živě** (`localhost:8082/parent`): panel "Aktivita za 7 dní" nešel skrýt tlačítkem "Skrýt", jakmile mělo dítě za posledních 7 dní jakoukoli aktivitu.
+- ✅ **Root cause:** `open={open || shouldDefaultOpen}`, kde `shouldDefaultOpen = hasAnyActivity` — OR s `true` je vždy `true`, takže manuální toggle (`onOpenChange={setOpen}`) neměl šanci panel zavřít. Opraveno přes `useEffect` nastavující výchozí `open` jen při změně dat, ne na každý render.
+- ✅ Přidány 2 regresní testy (`src/test/child-activity-chart.test.tsx`), adversariálně ověřeno proti vrácené staré logice.
+
 ## ✅ Useknutá sezení na hraně limitu + úklid mrtvého kódu (2026-09-04)
 
 - 🐞 **Sezení rozseknuté limitem ukazovalo špatná čísla.** Obrazovky skládají sezení

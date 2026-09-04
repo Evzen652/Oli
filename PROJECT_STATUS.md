@@ -144,6 +144,12 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (16) — oprava: "Skrýt" u Aktivity za 7 dní nešlo použít:
+- ✅ **`ChildActivityChart` — tlačítko Skrýt bylo natrvalo nefunkční, kdykoli byla aktivita.** `open={open || shouldDefaultOpen}`, kde `shouldDefaultOpen = hasAnyActivity` (odvozené z dat, ne z uživatelské akce) — OR s `true` je vždy `true`, takže rodič panel nikdy nezavřel, pokud dítě mělo za posledních 7 dní jakoukoli aktivitu. Nahlásil uživatel živým testem (`localhost:8082/parent`).
+- ✅ **Oprava:** výchozí stav (`open`/zavřeno podle `hasAnyActivity`) se teď nastavuje přes `useEffect` jen při změně dat (nová aktivita / změna týdne), ne na každý render — poté má uživatelský toggle (`onOpenChange={setOpen}`) plnou kontrolu. Zachovává původní záměr ("otevřít defaultně, když je co ukázat") i komentářem slíbené "reset při weekOffset change".
+- ✅ **2 nové regresní testy** (`src/test/child-activity-chart.test.tsx`) — s aktivitou i bez ní, včetně kliku na toggle. Adversariálně ověřeno: s vrácenou starou (rozbitou) logikou test "s aktivitou" spolehlivě spadne přesně na tomhle chování.
+- **Ověřeno:** typecheck 0 chyb, `npx vitest run` 116/119 souborů (3 skipped), 4658/4663 testů, `npm run build` prošel.
+
 ### Session 2026-09-04 (15) — poslední dva body auditu + sjednocení větví:
 
 - ✅ **Sjednoceno na `main`.** `chore/remove-essay-and-ai-authoring` fast-forwardnuta

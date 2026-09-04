@@ -164,15 +164,20 @@ export function ChildActivityChart({ childId }: Props) {
   const hasAnyActivity = data.some(d => d.total > 0);
   const [open, setOpen] = useState(false);
 
+  // Pokud žádná aktivita za 7 dní — collapsed by default (graf nedominuje).
+  // Pokud aktivita — open by default (rodič ji chce vidět). Reaguje jen na
+  // změnu dat (nová hodnota `hasAnyActivity` po načtení/změně weekOffset),
+  // ne na každý render — jinak by `open || hasAnyActivity` udělalo tlačítko
+  // "Skrýt" nefunkční natrvalo, kdykoli je nějaká aktivita (nešlo by ho
+  // nikdy zavřít, protože OR s `true` je vždy `true`).
+  useEffect(() => {
+    setOpen(hasAnyActivity);
+  }, [hasAnyActivity]);
+
   if (loading) return null;
 
-  // Pokud žádná aktivita za 7 dní — collapsed by default (graf nedominuje)
-  // Pokud aktivita — open by default (rodič ji chce vidět)
-  // Open state je resetnut při weekOffset change
-  const shouldDefaultOpen = hasAnyActivity;
-
   return (
-    <Collapsible open={open || shouldDefaultOpen} onOpenChange={setOpen}>
+    <Collapsible open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger asChild>
         <button className="w-full flex items-center justify-between gap-2 rounded-2xl border border-border bg-card hover:bg-muted/40 px-4 py-3 text-sm font-medium text-foreground transition-colors shadow-soft-1">
           <span className="flex items-center gap-2.5">
@@ -185,8 +190,8 @@ export function ChildActivityChart({ childId }: Props) {
             </span>
           </span>
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span>{(open || shouldDefaultOpen) ? "Skrýt" : "Zobrazit"}</span>
-            <ChevronDown className={`h-4 w-4 transition-transform ${(open || shouldDefaultOpen) ? "rotate-180" : ""}`} />
+            <span>{open ? "Skrýt" : "Zobrazit"}</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
           </span>
         </button>
       </CollapsibleTrigger>
