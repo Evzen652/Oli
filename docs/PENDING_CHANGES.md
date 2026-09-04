@@ -7,6 +7,51 @@
 
 ---
 
+## ✅ Audit rodičovského dashboardu — 4 opravené nálezy (2026-09-04)
+
+Cílené hledání vad třídy „prvek slibuje něco, co nedělá" po nálezu nefunkčního
+tlačítka „Skrýt" u grafu. Prošel kód dashboardu i všech osm podkomponent
+a naklikal je na reálných datech.
+
+- 🐞 **„Poznámky k učení" byly slepá ulička.** Rodič je vyplnil při zakládání
+  dítěte (placeholder rovnou navádí „Např. ADHD, dyslexie…"), uložily se do
+  `children.learning_notes` — a tím to skončilo. Nikde se nezobrazovaly,
+  editační formulář pro ně **neměl pole** (takže `editNotes` jen recykloval
+  starou hodnotu) a `grep` po `learning_notes` nenašel jediné místo, které by je
+  četlo. Nově jsou vidět na kartě dítěte (klik = editace) a mají pole v obou
+  editačních formulářích. Popisek pod polem říká na rovinu, že jde o poznámku
+  pro rodiče — 🟡 **napojení na AI hodnocení je samostatné rozhodnutí.**
+- 🐞 **AI analýzu chyb nešlo přegenerovat.** Tlačítko „Spustit AI analýzu chyb"
+  se renderovalo **jen ve větvi „žádné nálezy"**; jakmile první vznikl, zmizelo
+  navždy. Konkrétní dopad: v ostré DB je uložený nález s ruským „**части**"
+  místo „části" (z doby, kdy prompt nevynucoval češtinu) a rodič ho neměl jak
+  obnovit. Tlačítko je nově v obou stavech („Přepočítat analýzu chyb").
+- 🐞 **Prázdná 460px díra místo „zatím žádné úkoly".** `AssignmentList` vracel
+  při nule úkolů `null`, ale obal měl napevno `h-[460px]` → pod nadpisem
+  „Zadané úkoly" zela půlobrazovka bílé plochy bez vysvětlení a bez akce.
+  Doplněn prázdný stav. **Zároveň zavřen dokumentovaný dluh se `h-[460px]`:**
+  `AssignmentList` i `ChildSessionLog` už neřídí výšku přes `h-full`, ale
+  scrolluje jen samotný seznam (`max-h-[420px]`) — karta se tedy smrskne na
+  obsah a scroll-trap uvnitř scrollující stránky zmizel.
+- 🐞 **Jeden úkol šlo zadat dvakrát.** `AssignmentCreator` neměl kontrolu
+  duplicit — a nebyla to teorie: v ostré DB už dva páry duplicit vznikly přes
+  UI (`cz-vyjmenovana-slova-m` ×2, `pr-seasons` ×2). Dítě vidělo totéž zadání
+  dvakrát a jedno sezení odškrtlo oba řádky naráz. Blokuje se jen **nesplněný**
+  duplikát; zadat téma znovu po splnění je legitimní (opakování s odstupem)
+  a okno úkolu to odliší.
+- **Ověřeno živě** na ostrých datech pro všechny čtyři: prázdný stav místo díry,
+  „Přepočítat analýzu chyb" vedle karet, poznámka uložena → zobrazena → znovu
+  editovatelná, druhý pokus o týž úkol odmítnut hláškou a v DB zůstal 1 řádek.
+  Testovací data uklizena, DB ověřena zpět v původním stavu.
+
+**🟡 Nalezeno, neopraveno** (dohodnutý rozsah byl body 1–4):
+- `SelfPracticeList` je mrtvý kód — nikdo ho nerenderuje. Pozn.: dostal dnes
+  dvě opravy (okno úkolu, guard proti useknutému sezení), které nikdo nevidí.
+- `ChildMisconceptions` nahrazuje `/[Žž]ák/g` jménem dítěte, takže trefí i
+  vnitřek slova: „žáka" → „Tondaa", „žákyně" → „Tondayně". Teď nehoří (všechny
+  4 uložené texty mají „Žák" v 1. pádu), ale prompt nominativ nevynucuje.
+- `ChildSessionLog` má tichý strop `slice(0, 30)` bez indikace pro rodiče.
+
 ## ✅ Useknutá sezení na hraně limitu + úklid mrtvého kódu (2026-09-04)
 
 - 🐞 **Sezení rozseknuté limitem ukazovalo špatná čísla.** Obrazovky skládají sezení

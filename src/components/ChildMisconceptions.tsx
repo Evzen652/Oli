@@ -57,20 +57,28 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
 
   if (loading) return null;
 
-  // Pokud žádné misconceptions, ukáž jen tichý analyzovat button
-  if (data.length === 0) {
-    return (
-      <button
-        onClick={handleAnalyze}
-        disabled={analyzing}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-card/40 hover:bg-card hover:border-primary/40 px-4 py-2.5 text-xs font-medium text-muted-foreground transition-colors disabled:opacity-60"
-        title="AI analyzuje chyby z posledních 30 dní a hledá vzorce"
-      >
-        {analyzing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
-        {analyzing ? "Analyzuji…" : "Spustit AI analýzu chyb"}
-      </button>
-    );
-  }
+  /**
+   * Tlačítko pro (pře)spuštění analýzy.
+   *
+   * Do 2026-09-04 se renderovalo POUZE ve větvi „žádné nálezy". Jakmile první
+   * nález vznikl, zmizelo navždy a rodič neměl jak si analýzu nechat spočítat
+   * znovu — i kdyby byly nálezy měsíce staré nebo poškozené (v ostré DB je
+   * uložený text s ruským „части" místo „části" z doby, kdy prompt nevynucoval
+   * češtinu). Proto je dostupné v obou stavech.
+   */
+  const analyzeButton = (
+    <button
+      onClick={handleAnalyze}
+      disabled={analyzing}
+      className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-card/40 hover:bg-card hover:border-primary/40 px-4 py-2.5 text-xs font-medium text-muted-foreground transition-colors disabled:opacity-60"
+      title="AI znovu projde chyby z posledních 30 dní a hledá v nich vzorce"
+    >
+      {analyzing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+      {analyzing ? "Analyzuji…" : data.length === 0 ? "Spustit AI analýzu chyb" : "Přepočítat analýzu chyb"}
+    </button>
+  );
+
+  if (data.length === 0) return analyzeButton;
 
   return (
     <div className="space-y-3">
@@ -108,6 +116,7 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
           </div>
         );
       })}
+      {analyzeButton}
     </div>
   );
 }

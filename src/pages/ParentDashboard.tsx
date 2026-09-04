@@ -37,6 +37,53 @@ import { pad as czPad } from "@/lib/czechGrammar";
 
 function pluralDays(n: number) { return czPad(n, "DEN"); }
 
+/**
+ * Poznámky k učení — pole, které do 2026-09-04 nikam nevedlo.
+ *
+ * Rodič ho vyplnil při zakládání dítěte (placeholder „Např. ADHD, dyslexie…"),
+ * hodnota se uložila do `children.learning_notes` — a tím to skončilo. Nikde se
+ * nezobrazovala, editační formulář pro ni neměl pole (takže `editNotes` jen
+ * recykloval starou hodnotu) a `grep` po `learning_notes` nenašel jediné místo,
+ * které by ji četlo. Rodič psal do prázdna.
+ *
+ * Text pod polem proto říká na rovinu, že jde o poznámku pro rodiče —
+ * dokud ji nečte ani AI hodnocení, nemá smysl budit dojem, že látku ovlivní.
+ */
+function LearningNotesField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <div className="mt-3 space-y-1.5">
+      <Label className="text-xs text-muted-foreground">Poznámky k učení</Label>
+      <Textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Např. ADHD, dyslexie…"
+        className="min-h-[60px] text-sm rounded-xl"
+      />
+      <p className="text-caption text-muted-foreground">
+        Poznámka jen pro vás — aplikace podle ní zatím cvičení nepřizpůsobuje.
+      </p>
+    </div>
+  );
+}
+
+function LearningNotesDisplay({ notes, onEdit }: { notes: string | null; onEdit: () => void }) {
+  if (!notes?.trim()) return null;
+  return (
+    <button
+      type="button"
+      onClick={onEdit}
+      title="Upravit poznámky"
+      className="mt-3 w-full text-left flex items-start gap-2 rounded-2xl border border-border bg-muted/30 px-4 py-2.5 hover:border-primary/40 hover:bg-muted/50 transition-colors"
+    >
+      <Pencil className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />
+      <span className="min-w-0">
+        <span className="block text-caption font-bold uppercase tracking-wide text-muted-foreground">Poznámky k učení</span>
+        <span className="block text-sm text-foreground leading-snug">{notes}</span>
+      </span>
+    </button>
+  );
+}
+
 
 
 
@@ -284,11 +331,14 @@ export default function ParentDashboard() {
                         onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") setEditingId(null); }}
                         className="font-bold text-3xl leading-tight text-foreground bg-background border border-input rounded-xl px-3 py-1 w-full max-w-xs outline-none focus:ring-2 focus:ring-ring mt-1 mb-2"
                       />
-                      <div className="flex items-center gap-2 mb-5">
+                      <div className="flex items-center gap-2 mt-2">
                         <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
                           <SelectTrigger className="h-8 w-28"><SelectValue /></SelectTrigger>
                           <SelectContent><GradeSelectItems /></SelectContent>
                         </Select>
+                      </div>
+                      <LearningNotesField value={editNotes} onChange={setEditNotes} />
+                      <div className="flex items-center gap-2 mb-5 mt-3">
                         <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="h-8 gap-1 rounded-full"><Check className="h-3 w-3" /> Uložit</Button>
                         <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-8 gap-1 rounded-full"><X className="h-3 w-3" /> Zrušit</Button>
                       </div>
@@ -296,12 +346,13 @@ export default function ParentDashboard() {
                   ) : (
                     <>
                       <h2 className="font-bold text-3xl leading-tight text-foreground mt-1">{child.child_name}</h2>
-                      <div className="flex flex-wrap items-center gap-2 mt-1.5 mb-5">
+                      <div className="flex flex-wrap items-center gap-2 mt-1.5">
                         <p className="text-muted-foreground text-sm">{child.grade}. ročník · aktivní</p>
                         <span className="inline-flex items-center gap-1 rounded-full border border-success/30 bg-success-muted px-2.5 py-0.5 text-caption font-semibold text-success">
                           <CheckCircle2 className="h-3 w-3" />{t("parent.paired")}
                         </span>
                       </div>
+                      <LearningNotesDisplay notes={child.learning_notes} onEdit={() => startEdit(child)} />
                     </>
                   )}
 
@@ -363,7 +414,7 @@ export default function ParentDashboard() {
                   {/* 1. pád — viz poznámka o skloňování u `assign.title` v cs.ts. */}
                   <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste zadali k procvičení ({child.child_name}).</p>
                 </div>
-                <div className="p-4 h-[460px]">
+                <div className="p-4">
                   <AssignmentList
                     childId={child.id}
                     childName={child.child_name}
@@ -391,7 +442,7 @@ export default function ParentDashboard() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">Co {child.child_name} procvičoval/a sám/a, bez vašeho zadání.</p>
                 </div>
-                <div className="px-4 h-[460px]">
+                <div className="px-4 pb-4">
                   <ChildSessionLog
                     childId={child.id}
                     childName={child.child_name}
@@ -429,20 +480,23 @@ export default function ParentDashboard() {
                     {getInitial(editingId === child.id ? editName : child.child_name)}
                   </div>
                   {editingId === child.id ? (
-                    <div className="flex items-center gap-2 flex-wrap flex-1">
-                      <Input
-                        autoFocus
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") setEditingId(null); }}
-                        className="h-8 w-36 font-bold text-base"
-                      />
-                      <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
-                        <SelectTrigger className="h-8 w-24"><SelectValue /></SelectTrigger>
-                        <SelectContent><GradeSelectItems /></SelectContent>
-                      </Select>
-                      <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="h-8 gap-1"><Check className="h-3 w-3" /> Uložit</Button>
-                      <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-8"><X className="h-3 w-3" /></Button>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Input
+                          autoFocus
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") handleSaveEdit(); if (e.key === "Escape") setEditingId(null); }}
+                          className="h-8 w-36 font-bold text-base"
+                        />
+                        <Select value={String(editGrade)} onValueChange={(v) => setEditGrade(Number(v) as Grade)}>
+                          <SelectTrigger className="h-8 w-24"><SelectValue /></SelectTrigger>
+                          <SelectContent><GradeSelectItems /></SelectContent>
+                        </Select>
+                        <Button size="sm" onClick={handleSaveEdit} disabled={editLoading || !editName.trim()} className="h-8 gap-1"><Check className="h-3 w-3" /> Uložit</Button>
+                        <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-8"><X className="h-3 w-3" /></Button>
+                      </div>
+                      <LearningNotesField value={editNotes} onChange={setEditNotes} />
                     </div>
                   ) : (
                   <div className="flex items-center gap-2 flex-wrap">
@@ -475,6 +529,9 @@ export default function ParentDashboard() {
                   </div>
                   )}
                 </div>
+                {editingId !== child.id && (
+                  <LearningNotesDisplay notes={child.learning_notes} onEdit={() => startEdit(child)} />
+                )}
                 <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-5 text-center">
                   <p className="text-caption font-bold uppercase tracking-[0.16em] text-amber-700">{t("parent.pairing_code_label")}</p>
                   <div className="mt-3 flex items-center justify-center gap-3">

@@ -120,6 +120,29 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setSaving(false); return; }
 
+    // Nezadávat totéž téma dvakrát, dokud ho dítě nemá splněné. Kontrola dřív
+    // chyběla úplně a v ostré DB kvůli tomu vznikly duplicity: dítě vidí
+    // stejné zadání dvakrát a jedno sezení pak odškrtne oba řádky naráz
+    // (`markAssignmentCompleted` páruje přes skill_id, ne přes konkrétní úkol).
+    //
+    // Blokuje se JEN nesplněný duplikát — zadat téma znovu po jeho splnění je
+    // legitimní (opakování s odstupem) a okno úkolu to odliší.
+    const { data: existing } = await supabase
+      .from("parent_assignments")
+      .select("id")
+      .eq("child_id", childId)
+      .eq("skill_id", selectedSkillId)
+      .eq("status", "pending")
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      setSaving(false);
+      toast({
+        description: `Tohle téma už ${childName} zadané má a zatím ho nesplnil/a. Najdete ho v „Zadaných úkolech".`,
+      });
+      return;
+    }
+
     const noteValue = note.trim() || null;
 
     const { error } = await supabase.from("parent_assignments").insert({

@@ -144,6 +144,28 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (16) — audit rodičovského dashboardu, 4 opravy:
+
+Cílené hledání vad třídy „prvek slibuje něco, co nedělá" (po nálezu nefunkčního
+„Skrýt" u grafu). Kód dashboardu + osmi podkomponent, ověřeno naklikáním na
+ostrých datech. Detail v [`docs/PENDING_CHANGES.md`](docs/PENDING_CHANGES.md).
+
+- 🐞 **„Poznámky k učení" byly slepá ulička** — rodič je vyplnil při zakládání
+  dítěte, uložily se do DB a nikde se nezobrazily, nešly upravit (editace neměla
+  pole) a nic je nečetlo. Nově vidět na kartě + editovatelné, s poctivým
+  popiskem. 🟡 Napojení na AI je samostatné rozhodnutí.
+- 🐞 **AI analýzu chyb nešlo přegenerovat** — tlačítko existovalo jen ve větvi
+  „žádné nálezy". V ostré DB proto trvale svítí nález s ruským „части".
+- 🐞 **Prázdná 460px díra** místo „zatím žádné úkoly". Při té příležitosti
+  **zavřen dokumentovaný dluh se `h-[460px]`** — oba seznamy si teď řídí výšku
+  samy, scrolluje jen seznam.
+- 🐞 **Jeden úkol šlo zadat dvakrát** (v ostré DB už dva páry duplicit vznikly).
+- **Ověřeno:** typecheck baseline 0, 115/115 souborů a 4656 testů, build prošel,
+  všechny čtyři opravy naklikané živě, testovací data uklizena.
+- 🟡 **Nalezeno, neopraveno** (rozsah byl 1–4): `SelfPracticeList` je mrtvý kód;
+  `ChildMisconceptions` nahrazuje `[Žž]ák` i uvnitř slova („žáka" → „Tondaa"),
+  zatím nehoří; `ChildSessionLog` má tichý strop `slice(0, 30)`.
+
 ### Session 2026-09-04 (15) — poslední dva body auditu + sjednocení větví:
 
 - ✅ **Sjednoceno na `main`.** `chore/remove-essay-and-ai-authoring` fast-forwardnuta

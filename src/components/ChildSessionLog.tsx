@@ -130,7 +130,9 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
   });
 
   return (
-    <div className="flex flex-col h-full">
+    // Viz stejná změna v `AssignmentList` — výšku řídí komponenta, ne obal
+    // s napevno danými 460 px.
+    <div className="flex flex-col">
       {/* Filtry — fixní, nescrollují */}
       <div className="flex-shrink-0 space-y-2 pt-1 mb-2">
         {/* Hodnocení — pill group */}
@@ -206,7 +208,7 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
       </div>
 
       {/* Seznam — scrolluje */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="overflow-y-auto max-h-[420px]">
       {filtered.length === 0 ? (
         <p className="text-xs text-center text-muted-foreground py-3">Žádné záznamy odpovídající filtru.</p>
       ) : (

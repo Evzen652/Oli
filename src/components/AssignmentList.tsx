@@ -66,6 +66,9 @@ function isToday(dateStr: string): boolean {
 }
 
 export function AssignmentList({ childId = "", childName, refreshKey, highlightSkillId }: Props) {
+  // `useT` se sem importovalo, ale nikdy nevolalo — prázdný stav odkazuje na
+  // popisek tlačítka, takže ho čteme ze stejného zdroje jako to tlačítko.
+  const t = useT();
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -163,7 +166,22 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
   };
 
   if (loading) return null;
-  if (assignments.length === 0) return null;
+
+  // Prázdný stav, ne `return null`. Obal měl napevno `h-[460px]`, takže rodič
+  // bez jediného zadaného úkolu koukal pod nadpis „Zadané úkoly" na 460 px
+  // prázdné bílé plochy — bez vysvětlení a bez akce.
+  if (assignments.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border bg-muted/20 px-5 py-8 text-center">
+        <p className="text-sm font-semibold text-foreground">Zatím jste nic nezadali</p>
+        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+          Tlačítkem „{t("assign.create")}" nahoře vyberete téma, které má
+          {childName ? ` ${childName} ` : " dítě "}
+          procvičit. Zadané úkoly se pak objeví tady.
+        </p>
+      </div>
+    );
+  }
 
   // Unikátní předměty přítomné v seznamu
   const subjects = [...new Set(assignments.map(a => a.subject).filter(Boolean) as string[])];
@@ -200,7 +218,12 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
   };
 
   return (
-    <div className="flex flex-col h-full">
+    // Výšku si řídí komponenta sama, ne obal. Dřív měl obal napevno
+    // `h-[460px]` a tenhle kořen `h-full` — karta tedy měla pořád 460 px bez
+    // ohledu na obsah: u jednoho úkolu zbytek prázdný, u dvaceti scroll-trap
+    // uvnitř stránky, která scrolluje taky. Scrolluje teď jen seznam, a to až
+    // když přeteče.
+    <div className="flex flex-col">
       {/* Filtry — fixní, nescrollují */}
       <div className="flex-shrink-0 space-y-2 mb-3">
         {/* Status filtry — pill group */}
@@ -262,7 +285,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
       </div>
 
       {/* Seznam — scrolluje */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="overflow-y-auto max-h-[420px]">
         {filtered.length === 0 ? (
           <p className="text-xs text-center text-muted-foreground py-4">Žádné úkoly odpovídající filtru.</p>
         ) : (
