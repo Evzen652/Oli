@@ -30,6 +30,9 @@ jobs:
       - name: Typecheck (baseline guard — fails on NEW type errors)
         run: npm run typecheck:ci
 
+      - name: UI audit (baseline guard — fails on NEW findings)
+        run: npm run audit:ui
+
       - name: Run tests
         run: npm test
 

@@ -1,14 +1,7 @@
 import { useState, useMemo } from "react";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { getSubjectPalette } from "@/lib/subjectRegistry";
-import {
-  runOfflineAudit,
-  CATEGORY_LABELS,
-  CATEGORY_COLORS,
-  type AuditReport,
-  type AuditCategory,
-  type AuditIssue,
-} from "@/lib/contentAudit";
+import { runOfflineAudit, CATEGORY_LABELS, CATEGORY_COLORS, type AuditReport, type AuditCategory } from "@/lib/contentAudit";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";

@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { BarChart2, Calendar, ChevronDown, Link2 } from "lucide-react";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { toast } from "sonner";
-import { getReadableSkillName, getSkillIcon } from "@/lib/skillReadableName";
+import { getReadableSkillName } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { oliPozdrav, oliTip } from "@/lib/oliPoses";
 import { IllustrationImg } from "@/components/IllustrationImg";

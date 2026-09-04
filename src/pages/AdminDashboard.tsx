@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { useImageVersions } from "@/lib/imageVersions";
-import { getAllTopics } from "@/lib/contentRegistry";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { useDbCurriculum, hasCodeGenerator } from "@/hooks/useDbCurriculum";
 import { useAdminCurriculum } from "@/hooks/useAdminCurriculum";

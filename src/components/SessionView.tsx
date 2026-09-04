@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
-import { getDisplayCategory, getChildTopicTitle } from "@/lib/displayNames";
+import { getChildTopicTitle } from "@/lib/displayNames";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRole } from "@/hooks/useUserRole";
 import { GradeSelect } from "@/components/GradeSelect";
@@ -21,7 +21,6 @@ import { SessionEndSummary } from "@/components/SessionEndSummary";
 import { useSessionDispatch, TERMINAL_STATES } from "@/hooks/useSessionDispatch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";

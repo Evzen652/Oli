@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getAllTopics } from "@/lib/contentRegistry";
 import { canonicalSubjectName } from "@/lib/subjectSlugMap";
-import type { TopicMetadata, Grade, InputType, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, Grade, InputType } from "@/lib/types";
 
 /** A DB skill record joined with its hierarchy */
 export interface DbSkillRow {

@@ -9,6 +9,22 @@ Po dokončení každého tasku (velkého i malého) VŽDY:
 
 ---
 
+## ⚠️ UI AUDIT — spusť před odevzdáním UI změny
+
+```bash
+npm run audit:ui
+```
+
+Hlídá chyby typu **„prvek slibuje něco, co nedělá"** — tlačítko, které nic
+nedělá; pole, které nikdo nečte; text tvrdící sérii, kterou kód nepočítá; mrtvá
+komponenta; prázdná díra místo prázdného stavu. Typecheck ani testy je nechytí.
+
+Běží i v CI s baseline (selže jen na NOVÉM nálezu). `-- --fix` opraví jen
+prokazatelně bezpečnou podmnožinu; u zbytku je oprava produktové rozhodnutí.
+Pravidla a jejich původ: [`docs/UI_AUDIT.md`](docs/UI_AUDIT.md).
+
+---
+
 ## ⚠️ ČESKÁ GRAMATIKA — POVINNÉ pro uživatelsky viditelný text
 
 Každý string s **číslem + podstatným jménem** MUSÍ použít helpery z `src/lib/czechGrammar.ts`.

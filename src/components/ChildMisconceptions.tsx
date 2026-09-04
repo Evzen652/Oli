@@ -4,7 +4,6 @@ import { Lightbulb, Sparkles, Loader2 } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { pad } from "@/lib/czechGrammar";
@@ -20,8 +19,12 @@ interface Props {
  * Pokud žádné aktivní → nezobrazí nic (skrytá sekce).
  */
 export function ChildMisconceptions({ childId = "", childName }: Props) {
+  // Hranice slova jsou nutnost, ne kosmetika: bez nich `replace` trefí i vnitřek
+  // slova a „žáka" se změní na „Tondaa", „žákyně" na „Tondayně". Skloňované tvary
+  // proto necháváme být — obecné „žáka" je lepší než ne-slovo. České skloňování
+  // jmen nejde spolehlivě odvodit (viz dřívější „Úkol pro Tonda").
   const sub = (text: string) =>
-    childName ? text.replace(/[Žž]ák/g, childName) : text;
+    childName ? text.replace(/\b[Žž]ák\b/g, childName) : text;
   const hookResult = useChildMisconceptions(childId);
   const data = hookResult.data;
   const loading = hookResult.loading;

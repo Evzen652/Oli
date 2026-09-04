@@ -7,6 +7,37 @@
 
 ---
 
+## ✅ UI audit — detektor chyb „slibuje něco, co nedělá" (2026-09-04)
+
+Plný rozbor: [`docs/UI_AUDIT.md`](UI_AUDIT.md). Spuštění: `npm run audit:ui`.
+
+- **Proč vznikl:** dnešní opravy měly společný tvar — prvek slibuje něco, co nedělá.
+  Tlačítko „Skrýt", které neskryje. Pole „Poznámky k učení", které nikdo nepřečte.
+  „🔥 8 dní v řadě" bez dnů v řadě. Hotová komponenta, kterou nikdo nerenderuje.
+  Prázdná půlobrazovka místo „zatím žádné úkoly". **Typecheck ani testy nic z toho
+  nechytí** — kód je validní, jen neznamená, co tvrdí.
+- ✅ **10 pravidel nad AST** (TypeScript compiler API). Každé nese `why` / `suggestion` /
+  `origin` s konkrétní chybou, ze které vzniklo — test to vynucuje, aby bylo vidět,
+  co se vypnutím pravidla pouští zpátky.
+- ✅ **Validace, která rozhoduje:** spuštěno proti stromu **před** dnešními opravami
+  (`feed2bf`) → nástroj znovu našel **všech 9** ručně řešených chyb, včetně
+  `open={open || shouldDefaultOpen}`, kterou v kódu nikdo nenašel a nahlásil ji až
+  uživatel z běžícího UI.
+- ✅ **Zapojeno do CI** s baseline guardem (selže jen na NOVÉM nálezu, jako typecheck):
+  `npm run audit:ui`, `-- --fix`, kroky v `ci.yml` i `pr-check.yml`, odkaz v `CLAUDE.md`.
+- ✅ **Opraveno při stavbě:** 51 nepoužitých importů automaticky. A **nález, který
+  ruční audit minul**: `Report.subName()` měl tentýž `replace(/[Žž]ák/g, …)` bug jako
+  `ChildMisconceptions` — „žáka" → „Tondaa". Obě místa mají nově hranice slova
+  (`\b`), skloňované tvary zůstávají obecné.
+- 🟡 **Baseline: 11 přijatých nálezů** (3 mrtvé komponenty, 6× `return null` místo
+  prázdného stavu, 1 akce jen v jedné větvi, 1 write-only stav) — vesměs admin.
+  **Seznam jen zkracovat**, jinak z guardu zbude ozdoba.
+- ⚠️ **Poznámka pro autory nových pravidel:** tři první verze byly hlučné —
+  `branch-only-action` hlásilo každý `handleSubmit` (33 nálezů, 32 v pořádku),
+  `stuck-toggle` hlásilo `value={x || "all"}` (správný Radix idiom),
+  `adhoc-subject-map` hlásilo `Report.detectSubject`, který rejstřík volá první.
+  Proto má každé pravidlo i **negativní** testy: hlučný detektor je horší než žádný.
+
 ## ✅ Audit rodičovského dashboardu — 4 opravené nálezy (2026-09-04)
 
 Cílené hledání vad třídy „prvek slibuje něco, co nedělá" po nálezu nefunkčního

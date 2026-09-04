@@ -1,12 +1,10 @@
 import type { SessionData, SessionState, Grade, PracticeTask } from "./types";
-import { getFullTopicTitle } from "./types";
 import { getRulesForGrade, evaluateStop } from "./ruleEngine";
-import { matchTopic, getPrerequisites, getTopicById } from "./contentRegistry";
+import { matchTopic } from "./contentRegistry";
 import { generateMockExplain, generateMockBatch } from "./aiExecution";
 import { logSession } from "./logger";
 import { classifyIntent, CONFUSION_THRESHOLD } from "./preIntent";
 import { classifySemanticInput } from "./semanticGate";
-import type { SemanticGateResult } from "./semanticGate";
 import { recordCheckResult } from "./performanceTracker";
 import { computeAdaptiveDecision, clampLevel, type SkillSnapshot } from "./adaptiveEngine";
 import { maxAvailableLevel } from "./levelCoverage";

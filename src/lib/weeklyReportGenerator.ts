@@ -5,9 +5,8 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
-import { getTopicById } from "@/lib/contentRegistry";
 import { getReadableSkillName } from "@/lib/skillReadableName";
-import { pad, form } from "@/lib/czechGrammar";
+import { pad } from "@/lib/czechGrammar";
 
 export type ReportRange = "week" | "month" | "all";
 

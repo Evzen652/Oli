@@ -1,10 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { SUBJECT_METADATA, ContentType, QualityTier } from "@/lib/content/taxonomy";
+import { SUBJECT_METADATA, ContentType } from "@/lib/content/taxonomy";
 import type { Grade } from "@/lib/types";
 import { Loader2, BookOpen, FileText } from "lucide-react";
 

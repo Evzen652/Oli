@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
@@ -73,7 +72,9 @@ function detectSubject(skillId: string): string {
 
 function subName(text: string, name?: string | null): string {
   if (!name) return text;
-  return text.replace(/[Žž]ák/g, name);
+  // Viz `ChildMisconceptions.sub()` — bez `\b` by se nahradil i vnitřek slova
+  // („žáka" → „Tondaa"). Skloňované tvary radši necháme obecné.
+  return text.replace(/\b[Žž]ák\b/g, name);
 }
 
 const ERROR_LABELS: Record<string, string> = {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { SessionData, TopicMetadata } from "@/lib/types";
+import type { SessionData } from "@/lib/types";
 import { getChildTopicTitle } from "@/lib/displayNames";
 import { generateAiEvaluation } from "@/lib/sessionEvaluator";
 import { Button } from "@/components/ui/button";

@@ -13,6 +13,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "audit:ui": "node scripts/ui-audit.mjs",
+    "audit:ui:fix": "node scripts/ui-audit.mjs --fix",
     "audit:content": "vitest run src/test/content-audit.test.ts --reporter=verbose",
     "audit:coverage": "node scripts/run-audit-coverage.mjs",
     "audit:pedagogical": "node scripts/run-audit-pedagogical.mjs",

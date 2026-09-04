@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
+import { createContext, useContext, useState, useMemo, useCallback } from "react";
 import React from "react";
 import cs, { type LocaleKey } from "./cs";
 

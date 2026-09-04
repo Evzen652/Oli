@@ -144,6 +144,36 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (17) — UI audit: detektor chyb „slibuje něco, co nedělá":
+
+Nástroj, který hlídá třídu chyb, na kterou dnes došlo pětkrát. Detail
+v [`docs/UI_AUDIT.md`](docs/UI_AUDIT.md), pravidla v `scripts/uiAudit/rules.mjs`.
+
+- **Proč:** tlačítko „Skrýt", které neskryje; pole „Poznámky k učení", které nikdo
+  nečte; „🔥 8 dní v řadě" bez dnů v řadě; mrtvá komponenta; prázdná díra místo
+  prázdného stavu. Typecheck ani testy nic z toho nechytí — kód je validní, jen
+  neznamená, co tvrdí. Většinu našel uživatel nebo náhoda při čtení sousedního řádku.
+- ✅ **10 pravidel nad AST** (TypeScript compiler API, ne regexy). Každé nese `why`,
+  `suggestion` a `origin` s konkrétní chybou, ze které vzniklo; test to vynucuje.
+- ✅ **Ověřeno proti stromu PŘED opravami** (`feed2bf`): nástroj znovu našel **všech
+  9 dnešních chyb** včetně `open={open || shouldDefaultOpen}`, kterou v kódu nikdo
+  nenašel a nahlásil ji až uživatel z běžícího UI. To je jediná validace, která
+  u takového nástroje něco znamená.
+- ✅ **Zapojeno:** `npm run audit:ui` (+ `--fix`), baseline guard jako u typechecku,
+  krok v `ci.yml` i `pr-check.yml`, odkaz v `CLAUDE.md`.
+- ✅ **Opraveno při tom:** 51 nepoužitých importů automaticky (`--fix`) a **nový
+  nález, který ruční audit minul** — `Report.subName()` měl tentýž `[Žž]ák` bug
+  jako `ChildMisconceptions`, tedy „žáka" → „Tondaa". Obojí opraveno hranicí slova.
+- 🟡 **Baseline 11 přijatých nálezů** — 3 mrtvé komponenty, 6× `return null` místo
+  prázdného stavu, 1 akce jen v jedné větvi, 1 write-only stav. Vesměs v adminu.
+  Seznam jen zkracovat.
+- **Poučení zapsané do docs:** tři první verze pravidel byly hlučné (33 falešných
+  poplachů u `branch-only-action`, `value={x || "all"}` u Selectu, `Report.detectSubject`
+  s korektním fallbackem, „máš za sebou 12 úloh"). Hlučný detektor je horší než
+  žádný, protože vypadá, že hlídá — proto má každé pravidlo i negativní testy.
+- **Ověřeno:** typecheck 0, **116/116 souborů a 4677 testů**, build prošel, landing
+  i obě role živě bez chyb v konzoli.
+
 ### Session 2026-09-04 (16) — audit rodičovského dashboardu, 4 opravy:
 
 Cílené hledání vad třídy „prvek slibuje něco, co nedělá" (po nálezu nefunkčního

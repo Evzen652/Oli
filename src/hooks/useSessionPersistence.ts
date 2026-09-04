@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect } from "react";
 import type { SessionData } from "@/lib/types";
 
 const STORAGE_KEY = "sovicka_session_backup";

@@ -26,11 +26,7 @@ import imgPravidelnyNavyk from "@/assets/landing-pravidelny-navyk.png";
 import imgKratkeProcvicovani from "@/assets/landing-kratke-procvicovani.png";
 import imgCileneProcvicovani from "@/assets/landing-cilene-procvicovani.png";
 import imgPrehledProRodice from "@/assets/landing-prehled-pro-rodice.png";
-import {
-  BookOpen, BarChart3, Target, Shield, Clock, Sparkles,
-  UserPlus, KeyRound, TrendingUp, CheckCircle2, Eye, Zap,
-  GraduationCap, Heart
-} from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 
 /* ── helpers ── */

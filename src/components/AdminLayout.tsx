@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, ChevronRight, Home, Shield, Users, GraduationCap, HelpCircle, BookOpenCheck } from "lucide-react";
+import { LogOut, ChevronRight, Home, Shield, Users, GraduationCap, BookOpenCheck } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
