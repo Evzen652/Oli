@@ -82,6 +82,8 @@ export function ChildActivityChart({ childId }: Props) {
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
+  /** `null` = rodič zatím neklikl → řídí se tím, jestli je co ukázat. */
+  const [open, setOpen] = useState<boolean | null>(null);
   const t = useT();
 
   useEffect(() => {
@@ -162,17 +164,20 @@ export function ChildActivityChart({ childId }: Props) {
   );
 
   const hasAnyActivity = data.some(d => d.total > 0);
-  const [open, setOpen] = useState(false);
 
   if (loading) return null;
 
-  // Pokud žádná aktivita za 7 dní — collapsed by default (graf nedominuje)
-  // Pokud aktivita — open by default (rodič ji chce vidět)
-  // Open state je resetnut při weekOffset change
-  const shouldDefaultOpen = hasAnyActivity;
+  // Výchozí stav: rozbaleno, když je co ukázat; sbaleno, když ne (ať prázdný
+  // graf nedominuje přehledu). Rozhodnutí rodiče má ale přednost.
+  //
+  // Dřív tu bylo `open={open || hasAnyActivity}`, což znamenalo, že při
+  // jakékoli aktivitě byl výraz natrvalo `true` — klik sice přepnul `open` na
+  // false, ale vykreslená hodnota se nezměnila, takže tlačítko „Skrýt" nešlo
+  // použít. `null` proto znamená „rodič zatím nerozhodl".
+  const isOpen = open ?? hasAnyActivity;
 
   return (
-    <Collapsible open={open || shouldDefaultOpen} onOpenChange={setOpen}>
+    <Collapsible open={isOpen} onOpenChange={setOpen}>
       <CollapsibleTrigger asChild>
         <button className="w-full flex items-center justify-between gap-2 rounded-2xl border border-border bg-card hover:bg-muted/40 px-4 py-3 text-sm font-medium text-foreground transition-colors shadow-soft-1">
           <span className="flex items-center gap-2.5">
@@ -185,8 +190,8 @@ export function ChildActivityChart({ childId }: Props) {
             </span>
           </span>
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span>{(open || shouldDefaultOpen) ? "Skrýt" : "Zobrazit"}</span>
-            <ChevronDown className={`h-4 w-4 transition-transform ${(open || shouldDefaultOpen) ? "rotate-180" : ""}`} />
+            <span>{isOpen ? "Skrýt" : "Zobrazit"}</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
           </span>
         </button>
       </CollapsibleTrigger>
