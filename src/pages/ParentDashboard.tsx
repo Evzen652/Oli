@@ -20,6 +20,7 @@ import { useT } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
 import type { Grade } from "@/lib/types";
 import { ChildActivityBadge } from "@/components/ChildActivityBadge";
+import { ChildActivityChart } from "@/components/ChildActivityChart";
 import { ChildMisconceptions } from "@/components/ChildMisconceptions";
 import { AssignmentCreator } from "@/components/AssignmentCreator";
 import { AssignmentList } from "@/components/AssignmentList";
@@ -306,6 +307,17 @@ export default function ParentDashboard() {
 
                   {/* Statistiky */}
                   <ChildActivityBadge childId={child.id} compact />
+
+                  {/* Denní rozpad těch tří čísel nad ním. Patří sem, ne do
+                      „Samostatného procvičování" — graf počítá VŠECHNU aktivitu
+                      včetně zadaných úkolů, takže pod tím nadpisem by tvrdil
+                      něco jiného, než ukazuje. Sám se sbalí, když není co
+                      ukázat, takže prázdnému přehledu nepřekáží. */}
+                  {child.is_paired && (
+                    <div className="mt-4">
+                      <ChildActivityChart childId={child.id} />
+                    </div>
+                  )}
 
                   {/* Rychlá navigace do sekcí + hlavní akce. Bod (c): z přehledu
                       se rodič proklikne na všechny části stránky. */}

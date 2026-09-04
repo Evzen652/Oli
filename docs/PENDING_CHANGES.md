@@ -25,12 +25,21 @@
   a mohl vytlačit sezení, které úkol splnilo, takže by u karty zmizelo skóre. Mez se
   počítá přes nový `startOfLocalDayIso`, tedy **stejně jako dolní mez okna**: naivní
   `${den}T00:00:00Z` by v ČR (UTC+1/+2) usekl logy mezi místní půlnocí a druhou ranní.
-- 🗑 **`ChildActivityChart` smazán** (303 řádků). Nikdo ho neimportoval, přežil jako
-  mrtvý kód i celý redesign rodičovského dashboardu a nesl tři vady, které by se před
-  nasazením musely opravit: vlastní mapu předmětů (systém je má sjednocené
-  v `subjectRegistry`), `toISOString().slice(0,10)` na klíče dnů (UTC bug opravený
-  jinde v `feed2bf`) a legendu „samostatně" bez filtrování zadaných úkolů. Kdyby ten
-  týdenní rozpad někdy chtěl: `git show 8bea0b7:src/components/ChildActivityChart.tsx`.
+- ✅ **`ChildActivityChart` napojen na rodičovský dashboard.** Nejdřív smazán jako mrtvý
+  kód (nikdo ho neimportoval, přežil i celý redesign dashboardu), na pokyn uživatele
+  obnoven a opraven. Sedí pod třemi čísly přehledu jako jejich denní rozpad — ne pod
+  „Samostatným procvičováním", protože počítá i zadané úkoly. Před napojením opraveno:
+  - 🐞 **Předmět se nepoznal u žádného reálného tématu.** `subjectEmoji()` porovnávala
+    prefixy `math…`, `cz-`, `prv-`, tedy jen legacy demo ID — reálná témata jsou
+    `g4-mat-…`, `g4-cjl-…`, takže všechna propadla na obecné 📚. Nahrazeno
+    `getSkillSubject` + `subjectRegistry` (byla to sedmá nezávislá mapa předmětů).
+  - 🐞 **Klíče dnů z UTC** (3×) — večerní procvičování by v ČR vyskočilo o den vedle.
+    Ověřeno živě sezením ve 23:30 místního času.
+  - Legenda „Samostatně" → „Správně bez nápovědy" (na dashboardu koliduje se sekcí
+    „Samostatné procvičování", kde to znamená pravý opak) + barvy na semafor design
+    systému; dřív puntík v legendě neodpovídal barvě sloupce, kterou vysvětloval.
+  - 🟡 **Pozn.:** `subjectEmoji` nebyla „legenda bez filtrování zadaných úkolů", jak
+    tvrdil dřívější zápis — „samostatně" tam znamenalo „bez nápovědy", ne „bez zadání".
 - **Ověřeno:** 7 nových testů, typecheck baseline 0, celá sada zelená, `vite build` prošel.
 
 ## ✅ Vazba sezení ↔ úkol, streak a časovač (2026-09-04)

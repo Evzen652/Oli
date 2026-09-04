@@ -165,12 +165,23 @@ src/
   vytlačit sezení, které úkol splnilo (→ karta bez skóre). Mez se počítá přes nový
   `startOfLocalDayIso`, tedy **stejně** jako dolní mez okna — naivní `T00:00:00Z` by
   v ČR usekl logy z brzkých ranních hodin, které do okna patří.
-- 🗑 **`ChildActivityChart` smazán** (303 řádků). Nikdo ho neimportoval, přežil jako
-  mrtvý kód i celý redesign rodičovského dashboardu, a nesl tři vady, které by se
-  před nasazením musely opravit: vlastní mapu předmětů (systém je má sjednocené
-  v `subjectRegistry`), `toISOString().slice(0,10)` na klíče dnů (tedy UTC bug
-  opravený jinde v `feed2bf`) a legendu „samostatně" bez filtrování zadaných úkolů.
-  Obnovitelný: `git show 8bea0b7:src/components/ChildActivityChart.tsx`.
+- ✅ **`ChildActivityChart` napojen na rodičovský dashboard** (nejdřív smazán jako mrtvý
+  kód, na pokyn uživatele obnoven a opraven). Sedí pod třemi čísly přehledu jako jejich
+  denní rozpad — **ne** pod „Samostatným procvičováním", protože počítá i zadané úkoly.
+  Opraveno před napojením:
+  - 🐞 **Předmět se nepoznal u žádného reálného tématu.** `subjectEmoji()` porovnávala
+    prefixy `math…`, `cz-`, `prv-`, tedy jen legacy demo ID; reálná témata jsou
+    `g4-mat-…`, `g4-cjl-…`, takže **všechna** propadla na obecné 📚 a rozpad dne měl
+    u každé dovednosti stejnou ikonu. Nahrazeno `getSkillSubject` + `subjectRegistry`
+    (byla to sedmá nezávislá mapa předmětů).
+  - 🐞 **Klíče dnů z UTC** (`toISOString().slice(0,10)`, 3×) — večerní procvičování by
+    v ČR vyskočilo o den vedle. Tentýž bug jinde opravil `feed2bf`. Ověřeno živě
+    sezením ve 23:30 místního času: sloupec sedí na správném dni.
+  - **Legenda „Samostatně" → „Správně bez nápovědy".** Na dashboardu by stála vedle
+    sekce „Samostatné procvičování", kde totéž slovo znamená pravý opak (bez zadání
+    rodiče). Barvy sjednoceny na semafor design systému — dřív měl sloupec
+    `bg-green-500`, ale legenda `bg-success`, takže puntík neodpovídal barvě, kterou
+    vysvětluje.
 - **Ověřeno:** typecheck baseline 0, testy zelené, `vite build` prošel.
 
 ### Session 2026-09-04 (14) — vazba sezení↔úkol, streak, časovač:
@@ -239,7 +250,7 @@ Dva paralelní auditní agenti (rodič / dítě) + vlastní ověření. Opraveno
 🟠 **Zbývá z auditu (čeká na rozhodnutí / větší zásah):**
 - ✅ ~~**Přiřazení sezení k úkolu**~~ — vyřešeno v session (14), viz výše.
 - ✅ ~~**`ChildSessionLog` `limit(200)`**~~ — vyřešeno v session (15), viz výše.
-- ✅ ~~**`ChildActivityChart` je nepoužitý**~~ — smazán v session (15), viz výše.
+- ✅ ~~**`ChildActivityChart` je nepoužitý**~~ — napojen na dashboard v session (15), viz výše.
 - ✅ ~~**Skrytý časovač u dětí**~~ — vyřešeno v session (14), viz výše.
 - ✅ ~~**„🔥 dní v řadě" na dětské ploše**~~ — vyřešeno v session (14), viz výše.
 - Latentní křehkosti (chráněné zmrazeným obsahem): `fill_blank` s víc mezerami,
