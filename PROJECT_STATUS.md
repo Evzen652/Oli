@@ -144,6 +144,43 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (13) — audit rodičovských + dětských obrazovek:
+
+Dva paralelní auditní agenti (rodič / dítě) + vlastní ověření. Opraveno (3 commity):
+
+- ✅ **Jednotný výpočet úspěšnosti** (`65a2603`) — napříč obrazovkami nebyla stejná
+  definice „správně". Rozhodnuto (uživatel): **úspěšnost = všechny správné (i s
+  nápovědou) / celkem**, nápověda zvlášť, netrestá se. Sjednoceno v `SkillDetailModal`,
+  `AssignmentList`, `useChildStats`, `ChildSessionLog`, `SessionHistory`,
+  `weeklyReportGenerator`, `Report`. Opraven i záporný `wrongCount` v reportu,
+  vlastní `<button>` zpět → `<BackButton/>`, shoda rodu „procvičoval/a".
+- ✅ **Dětský tok** (`0c43f5b`) — (a) startovní level: `handleTopicSelect` obcházel
+  `TOPIC_MATCH` → sezení vždy L1, `defaultLevel`/uložený level ignorován; extrahováno
+  do `prepareMatchedTopic()`. (b) obnova sezení se hned ukončovala (`startTime` se
+  neresetoval → STOP_2); nyní posun `startTime` o odehraný čas. (c) „Zopakovat" po
+  obnově padalo (generator ztracen serializací) → rehydratace z registru. (d) prázdný
+  batch z generátoru → toast „připravuje se" místo trofeje za 0 úloh.
+- ✅ **Timezone** — „dní aktivních" počítáno přes UTC půlnoc → lokální datum
+  (`useChildStats`, `weeklyReportGenerator`).
+- ✅ **RLS ověřeno** — `session_logs`/`skill_profiles`/`parent_assignments`/
+  `student_misconceptions` mají SELECT/ALL scoped na vlastníka → IDOR přes `childId`
+  z URL reálně nehrozí. Není co opravovat.
+
+🟠 **Zbývá z auditu (čeká na rozhodnutí / větší zásah):**
+- **Přiřazení sezení k úkolu** (`AssignmentList` #10 + `ChildSessionLog` #9): skóre
+  splněného úkolu = poslední sezení dovednosti bez vazby na `assigned_date`; a jednou
+  zadané téma navždy zmizí ze „Samostatného procvičování". Potřebuje vazbu sezení↔úkol.
+- **`ChildSessionLog` `limit(200)`** může rozseknout nejstarší sezení (aktivní dítě).
+- **`ChildActivityChart` je nepoužitý** — buď napojit (nejhezčí rozpad aktivit), nebo smazat.
+- **Skrytý časovač u dětí** končí sezení hláškou „Potřebuješ pomoc od dospělého" bez
+  varování — zvážit vyšší/žádný limit nebo přátelštější hlášku.
+- **„🔥 dní v řadě" na dětské ploše** = streak → možný rozpor s invariantem „žádná
+  gamifikace" (CLAUDE.md). K rozhodnutí.
+- Latentní křehkosti (chráněné zmrazeným obsahem): `fill_blank` s víc mezerami,
+  `drag_order` čárka v položce, `true_false` bez `options`. Mrtvý kód:
+  `handleRevealAnswer`, `ChildActivityBadge` split.
+- 5. Doporučení v modalu generická (jen z %), ne z konkrétních chyb/tématu.
+
 ### Session 2026-09-04 (12) — úklid demo dat + test modalu „Ukázat výsledky a hodnocení“:
 
 - ✅ **Smazána demo data** z produkční DB (přes nový `sb_secret` klíč / `.env.admin`):

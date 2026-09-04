@@ -142,7 +142,8 @@ export async function generateWeeklyReport(
   }
 
   // Compute stats
-  const days = new Set(logs.map(l => (l.created_at as string).slice(0, 10))).size;
+  // Lokální datum (ne UTC slice) — večerní aktivita v ČR jinak spadne do jiného dne.
+  const days = new Set(logs.map(l => new Date(l.created_at as string).toLocaleDateString("en-CA"))).size;
   const attempts = logs.length;
   const correctAlone = logs.filter(l => l.correct && !l.help_used).length;
   const withHelp = logs.filter(l => l.correct && l.help_used).length;

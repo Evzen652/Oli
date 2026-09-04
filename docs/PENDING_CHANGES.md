@@ -57,8 +57,22 @@ jako dítě a ověřil modal na reálných datech — **funguje přesně**. Dř�
    ukládají skutečnou odpověď žáka. Guard: jen u chyb a jen když se liší od klíče.
    Testy `session-student-answer.test.ts` (2/2), regrese 31/31, ověřeno seedem v UI.
 
-**🟡 Zbývá (drobnost):**
+**✅ Audit rodič+dítě obrazovek (2026-09-04) — opraveno (commity 65a2603, 0c43f5b):**
+- Jednotný výpočet úspěšnosti (= všechny správné i s nápovědou / celkem) napříč
+  modalem, seznamem, dashboardem, reportem, historií; opraven záporný wrongCount.
+- Dětský tok: startovní level z defaultLevel/uloženého (prepareMatchedTopic),
+  obnova sezení neresetovala čas → STOP_2, „Zopakovat" po obnově padalo (generator),
+  prázdný batch → toast místo trofeje. Timezone dnů → lokální datum.
+- RLS ověřeno (session_logs/skill_profiles/parent_assignments/misconceptions) → IDOR nehrozí.
+
+**🟡 Zbývá z auditu (rozhodnutí / větší zásah):**
 5. Doporučení generická (jen z %), ne z konkrétních chyb/tématu.
+- Vazba sezení↔úkol: skóre úkolu = poslední sezení dovednosti bez `assigned_date`;
+  zadané téma mizí ze „Samostatného procvičování" (ChildSessionLog #9, AssignmentList #10).
+- ChildSessionLog `limit(200)` může rozseknout nejstarší sezení.
+- ChildActivityChart nepoužitý → napojit nebo smazat.
+- Skrytý časovač u dětí → tvrdá hláška bez varování; „🔥 dní v řadě" = streak vs. invariant „žádná gamifikace".
+- Latentní: fill_blank víc mezer, drag_order čárka, true_false bez options; mrtvý kód revealAnswer / Badge split.
 
 ---
 ## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03

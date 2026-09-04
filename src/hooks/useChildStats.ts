@@ -73,8 +73,9 @@ export function useChildStats(childId: string | null, period: StatsPeriod = "7d"
       // shodně se SkillDetailModal / AssignmentList / ChildSessionLog.
       const accuracy = tasks > 0 ? Math.round(((independent + helpUsed) / tasks) * 100) : 0;
 
-      // Počet různých dnů s aktivitou
-      const dayKey = (iso: string) => new Date(iso).toISOString().slice(0, 10);
+      // Počet různých dnů s aktivitou — lokální datum (en-CA = YYYY-MM-DD),
+      // ne UTC. Jinak by večerní procvičování v ČR (UTC+1/+2) spadlo do jiného dne.
+      const dayKey = (iso: string) => new Date(iso).toLocaleDateString("en-CA");
       const days = new Set(data.map((r) => dayKey(r.created_at as string)));
       const daysActive = days.size;
 
