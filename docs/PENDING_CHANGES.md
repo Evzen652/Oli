@@ -7,6 +7,32 @@
 
 ---
 
+## ✅ Useknutá sezení na hraně limitu + úklid mrtvého kódu (2026-09-04)
+
+- 🐞 **Sezení rozseknuté limitem ukazovalo špatná čísla.** Obrazovky skládají sezení
+  z pevného počtu **řádků** (`.order(created_at, desc).limit(N)`), jenže limit se
+  počítá v řádcích, ne v sezeních — u aktivního dítěte proto nejstarší sezení v dávce
+  přišlo useknuté vejpůl. Neprojevilo se to prázdným místem, ale **nesprávným číslem**:
+  sezení o šesti úlohách se ukázalo jako „✓2 správně" ze dvou, včetně tomu odpovídající
+  známky. Rodič to nemá jak poznat — vypadá to jako sezení, které dítě nedodělalo.
+- ✅ Nový [`sessionLogPaging.ts`](../src/lib/sessionLogPaging.ts) celé nejisté sezení
+  zahodí (radši o jedno míň než jedno se špatnými čísly; zvýšení limitu problém
+  neřeší, jen ho posouvá k aktivnějším dětem). Původní nález mluvil jen o
+  `ChildSessionLog`, ale **tutéž vadu měly doslova i** `SessionHistory` (500),
+  `SkillDetailModal` (500) a `SelfPracticeList` (200) — opraveny všechny čtyři.
+- ✅ **`AssignmentList` omezen dnem nejstaršího zadání** místo slepého `limit(1000)`.
+  Log starší než nejstarší úkol nemůže spadnout do žádného okna — jen ujídal z limitu
+  a mohl vytlačit sezení, které úkol splnilo, takže by u karty zmizelo skóre. Mez se
+  počítá přes nový `startOfLocalDayIso`, tedy **stejně jako dolní mez okna**: naivní
+  `${den}T00:00:00Z` by v ČR (UTC+1/+2) usekl logy mezi místní půlnocí a druhou ranní.
+- 🗑 **`ChildActivityChart` smazán** (303 řádků). Nikdo ho neimportoval, přežil jako
+  mrtvý kód i celý redesign rodičovského dashboardu a nesl tři vady, které by se před
+  nasazením musely opravit: vlastní mapu předmětů (systém je má sjednocené
+  v `subjectRegistry`), `toISOString().slice(0,10)` na klíče dnů (UTC bug opravený
+  jinde v `feed2bf`) a legendu „samostatně" bez filtrování zadaných úkolů. Kdyby ten
+  týdenní rozpad někdy chtěl: `git show 8bea0b7:src/components/ChildActivityChart.tsx`.
+- **Ověřeno:** 7 nových testů, typecheck baseline 0, celá sada zelená, `vite build` prošel.
+
 ## ✅ Vazba sezení ↔ úkol, streak a časovač (2026-09-04)
 
 Tři poslední otevřené body z auditu obrazovek (13).
@@ -108,11 +134,10 @@ jako dítě a ověřil modal na reálných datech — **funguje přesně**. Dř�
 
 **🟡 Zbývá z auditu (rozhodnutí / větší zásah):**
 5. Doporučení generická (jen z %), ne z konkrétních chyb/tématu.
-- Vazba sezení↔úkol: skóre úkolu = poslední sezení dovednosti bez `assigned_date`;
-  zadané téma mizí ze „Samostatného procvičování" (ChildSessionLog #9, AssignmentList #10).
-- ChildSessionLog `limit(200)` může rozseknout nejstarší sezení.
-- ChildActivityChart nepoužitý → napojit nebo smazat.
-- Skrytý časovač u dětí → tvrdá hláška bez varování; „🔥 dní v řadě" = streak vs. invariant „žádná gamifikace".
+- ✅ ~~Vazba sezení↔úkol~~ — hotovo 2026-09-04, viz sekce nahoře.
+- ✅ ~~ChildSessionLog `limit(200)`~~ — hotovo 2026-09-04 (`sessionLogPaging.ts`), viz nahoře.
+- ✅ ~~ChildActivityChart nepoužitý~~ — smazán 2026-09-04, viz nahoře.
+- ✅ ~~Skrytý časovač u dětí / „🔥 dní v řadě"~~ — hotovo 2026-09-04, viz nahoře.
 - Latentní: fill_blank víc mezer, drag_order čárka, true_false bez options; mrtvý kód revealAnswer / Badge split.
 
 ---

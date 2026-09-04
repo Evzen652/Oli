@@ -5,6 +5,9 @@ import { ChevronDown, Sparkles } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta, NEUTRAL_PALETTE, type SubjectMeta } from "@/lib/subjectRegistry";
 import { buildAssignmentWindows, isAssignedSession } from "@/lib/assignmentBinding";
+import { dropTruncatedTailSession } from "@/lib/sessionLogPaging";
+
+const LOG_LIMIT = 200;
 
 interface Props {
   childId: string;
@@ -62,11 +65,11 @@ export function SelfPracticeList({ childId }: Props) {
       const [logsRes, assignRes] = await Promise.all([
         supabase
           .from("session_logs")
-          .select("skill_id, correct, help_used, created_at")
+          .select("session_id, skill_id, correct, help_used, created_at")
           .eq("child_id", childId)
           .gte("created_at", since)
           .order("created_at", { ascending: false })
-          .limit(200),
+          .limit(LOG_LIMIT),
         supabase
           .from("parent_assignments")
           .select("skill_id, assigned_date, status, created_at, updated_at")
@@ -80,7 +83,9 @@ export function SelfPracticeList({ childId }: Props) {
       // zpětně vymazal i dřívější samostatné procvičování téhož tématu.
       const windows = buildAssignmentWindows(assignRes.data ?? []);
 
-      const logs = (logsRes.data ?? []).filter(
+      // Useknuté nejstarší sezení by podhodnotilo součty u své dovednosti —
+      // ta by pak vypadala jako míň procvičovaná, než skutečně je.
+      const logs = dropTruncatedTailSession(logsRes.data ?? [], LOG_LIMIT).filter(
         (l) => !isAssignedSession(l.skill_id, l.created_at, windows)
       );
 

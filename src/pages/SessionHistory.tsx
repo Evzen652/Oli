@@ -7,6 +7,9 @@ import { useT } from "@/lib/i18n";
 import { CheckCircle2, HelpCircle, XCircle } from "lucide-react";
 import { getTopicById } from "@/lib/contentRegistry";
 import { getTopicIllustrationUrl, getTopicEmoji } from "@/lib/prvoukaVisuals";
+import { dropTruncatedTailSession } from "@/lib/sessionLogPaging";
+
+const LOG_LIMIT = 500;
 
 interface SessionSummary {
   session_id: string;
@@ -34,7 +37,7 @@ export default function SessionHistory() {
           .select("session_id, skill_id, correct, help_used, created_at")
           .eq("child_id", childId)
           .order("created_at", { ascending: false })
-          .limit(500),
+          .limit(LOG_LIMIT),
         supabase
           .from("curriculum_skills")
           .select("code_skill_id, name"),
@@ -56,9 +59,13 @@ export default function SessionHistory() {
         return;
       }
 
-      // Group by session_id
+      // Group by session_id. Nejstarší sezení v plné dávce je nejspíš useknuté
+      // limitem — bez tohohle by se ukázalo s podhodnoceným počtem úloh.
       const map = new Map<string, SessionSummary>();
-      for (const row of data) {
+      for (const row of dropTruncatedTailSession(
+        data.filter((r): r is typeof r & { session_id: string } => !!r.session_id),
+        LOG_LIMIT,
+      )) {
         // Řádek bez `session_id` nejde přiřadit k sezení — sloupec je nullable.
         if (!row.session_id) continue;
         const sessionId = row.session_id;

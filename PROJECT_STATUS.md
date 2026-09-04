@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (15) — poslední dva body auditu + sjednocení větví:
+
+- ✅ **Sjednoceno na `main`.** `chore/remove-essay-and-ai-authoring` fast-forwardnuta
+  do `main` (181 commitů) a **dosloužila**. Dokud práce běžela mimo `main`, každá nová
+  session startovala od `main` a dostala měsíce starý kód — a varování o tom leželo
+  v `CLAUDE.md` **na té odbočené větvi**, takže ho ten, kdo začal od `main`, nikdy
+  nepřečetl. Stálo to celý rozdělaný task napsaný proti neexistujícímu kódu.
+  Opraveno v `CLAUDE.md` i `docs/SESSION_HANDOFF.md` §0.
+- 🐞 **Useknuté sezení na hraně limitu.** Obrazovky skládají sezení z pevného počtu
+  **řádků** (`.limit(N)`), takže u aktivního dítěte přišlo nejstarší sezení v dávce
+  rozseknuté vejpůl. Nezobrazilo se prázdné místo, ale **špatné číslo** — sezení
+  o šesti úlohách jako „✓2 správně" ze dvou, včetně odpovídající známky. Nový
+  [`sessionLogPaging.ts`](src/lib/sessionLogPaging.ts) celé nejisté sezení zahodí.
+  Aplikováno na `ChildSessionLog` (200), `SessionHistory` (500), `SkillDetailModal`
+  (500) a `SelfPracticeList` (200) — původní nález mluvil jen o prvním, ostatní tři
+  měly tutéž vadu doslova.
+- ✅ **`AssignmentList` omezen dnem nejstaršího zadání** místo slepého `limit(1000)`:
+  starší log nemůže spadnout do okna žádného úkolu, jen ujídal z limitu a mohl
+  vytlačit sezení, které úkol splnilo (→ karta bez skóre). Mez se počítá přes nový
+  `startOfLocalDayIso`, tedy **stejně** jako dolní mez okna — naivní `T00:00:00Z` by
+  v ČR usekl logy z brzkých ranních hodin, které do okna patří.
+- 🗑 **`ChildActivityChart` smazán** (303 řádků). Nikdo ho neimportoval, přežil jako
+  mrtvý kód i celý redesign rodičovského dashboardu, a nesl tři vady, které by se
+  před nasazením musely opravit: vlastní mapu předmětů (systém je má sjednocené
+  v `subjectRegistry`), `toISOString().slice(0,10)` na klíče dnů (tedy UTC bug
+  opravený jinde v `feed2bf`) a legendu „samostatně" bez filtrování zadaných úkolů.
+  Obnovitelný: `git show 8bea0b7:src/components/ChildActivityChart.tsx`.
+- **Ověřeno:** typecheck baseline 0, testy zelené, `vite build` prošel.
+
 ### Session 2026-09-04 (14) — vazba sezení↔úkol, streak, časovač:
 
 Tři otevřené body z auditu (13) uzavřeny.
@@ -209,8 +238,8 @@ Dva paralelní auditní agenti (rodič / dítě) + vlastní ověření. Opraveno
 
 🟠 **Zbývá z auditu (čeká na rozhodnutí / větší zásah):**
 - ✅ ~~**Přiřazení sezení k úkolu**~~ — vyřešeno v session (14), viz výše.
-- **`ChildSessionLog` `limit(200)`** může rozseknout nejstarší sezení (aktivní dítě).
-- **`ChildActivityChart` je nepoužitý** — buď napojit (nejhezčí rozpad aktivit), nebo smazat.
+- ✅ ~~**`ChildSessionLog` `limit(200)`**~~ — vyřešeno v session (15), viz výše.
+- ✅ ~~**`ChildActivityChart` je nepoužitý**~~ — smazán v session (15), viz výše.
 - ✅ ~~**Skrytý časovač u dětí**~~ — vyřešeno v session (14), viz výše.
 - ✅ ~~**„🔥 dní v řadě" na dětské ploše**~~ — vyřešeno v session (14), viz výše.
 - Latentní křehkosti (chráněné zmrazeným obsahem): `fill_blank` s víc mezerami,

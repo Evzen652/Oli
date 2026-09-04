@@ -7,6 +7,9 @@ import { IllustrationImg } from "@/components/IllustrationImg";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
 import { Button } from "@/components/ui/button";
 import { buildAssignmentWindows, isAssignedSession } from "@/lib/assignmentBinding";
+import { dropTruncatedTailSession } from "@/lib/sessionLogPaging";
+
+const LOG_LIMIT = 200;
 
 export interface SessionEntry {
   session_id: string;
@@ -80,11 +83,13 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
         .select("session_id, skill_id, correct, help_used, created_at")
         .eq("child_id", childId)
         .order("created_at", { ascending: false })
-        .limit(200);
+        .limit(LOG_LIMIT);
 
       if (data) {
         const map = new Map<string, SessionEntry>();
-        for (const row of data) {
+        // Nejstarší sezení v plné dávce je nejspíš useknuté limitem — radši
+        // o jedno sezení míň než jedno s podhodnocenými čísly.
+        for (const row of dropTruncatedTailSession(data, LOG_LIMIT)) {
           if (isAssignedSession(row.skill_id, row.created_at, windows)) continue;
           let s = map.get(row.session_id);
           if (!s) {

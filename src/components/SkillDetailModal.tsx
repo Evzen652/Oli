@@ -6,6 +6,9 @@ import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { pad } from "@/lib/czechGrammar";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
+import { dropTruncatedTailSession } from "@/lib/sessionLogPaging";
+
+const LOG_LIMIT = 500;
 
 interface SessionSummary {
   sessionId: string;
@@ -265,13 +268,17 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
         .eq("child_id", childId)
         .eq("skill_id", skillId)
         .order("created_at", { ascending: false })
-        .limit(500);
+        .limit(LOG_LIMIT);
 
       if (cancelled || !data) { setLoading(false); return; }
 
-      // Agregace po sezeních
+      // Agregace po sezeních. Nejstarší sezení v plné dávce je nejspíš useknuté
+      // limitem — bez tohohle by mělo podhodnocený počet úloh i známku.
       const map = new Map<string, { correct: number; helpUsed: number; total: number; date: string }>();
-      for (const log of data) {
+      // Explicitní typ: dotaz jde přes `supabase as any`, takže by se generikum
+      // odvodilo z omezení (`{ session_id }`) a zbytek sloupců by zmizel.
+      type AggRow = { session_id: string; correct: boolean; help_used: boolean; created_at: string };
+      for (const log of dropTruncatedTailSession<AggRow>(data, LOG_LIMIT)) {
         const sid = log.session_id as string;
         const prev = map.get(sid) ?? { correct: 0, helpUsed: 0, total: 0, date: log.created_at as string };
         prev.total += 1;

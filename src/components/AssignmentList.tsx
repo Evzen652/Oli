@@ -6,7 +6,7 @@ import { CheckCircle2, XCircle, Trash2, BarChart2 } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
-import { pickCompletingSessionId, toAssignmentWindow } from "@/lib/assignmentBinding";
+import { pickCompletingSessionId, toAssignmentWindow, startOfLocalDayIso } from "@/lib/assignmentBinding";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
 
@@ -93,11 +93,23 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
     const completionMap = new Map<string, { date: string; correct: number; helpUsed: number; total: number }>();
 
     if (completed.length > 0 && childId) {
-      const { data: logs } = await supabase
+      // Dotaz omezíme dnem nejstaršího zadání: starší log nemůže spadnout do
+      // okna žádného z těchhle úkolů, takže by jen ujídal z limitu a mohl
+      // vytlačit sezení, které úkol opravdu splnilo (→ žádné skóre u karty).
+      const earliestAssigned = completed
+        .map(a => (a.assigned_date ?? "").slice(0, 10))
+        .filter(Boolean)
+        .sort()[0];
+      const since = earliestAssigned ? startOfLocalDayIso(earliestAssigned) : null;
+
+      let query = supabase
         .from("session_logs")
         .select("skill_id, session_id, correct, help_used, created_at")
         .eq("child_id", childId)
-        .in("skill_id", [...new Set(completed.map(a => a.skill_id))])
+        .in("skill_id", [...new Set(completed.map(a => a.skill_id))]);
+      if (since) query = query.gte("created_at", since);
+
+      const { data: logs } = await query
         .order("created_at", { ascending: false })
         .limit(1000);
 
