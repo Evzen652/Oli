@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { SessionData, SessionState, PracticeTask, TopicMetadata, Grade } from "@/lib/types";
-import { createSession, processState } from "@/lib/sessionOrchestrator";
+import { createSession, processState, prepareMatchedTopic } from "@/lib/sessionOrchestrator";
 import { setDiktatFilter } from "@/lib/content";
 import { supabase } from "@/integrations/supabase/client";
 import { useSessionPersistence, clearPersistedSession } from "@/hooks/useSessionPersistence";
@@ -352,6 +352,13 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       newSession.childInput = enrichedTopic.title;
       newSession.state = "EXPLAIN" as SessionState;
 
+      // Startovní level: přímý dětský tok obchází TOPIC_MATCH, takže bez tohoto
+      // by sezení vždy startovalo na L1 a defaultLevel/uložený level by se
+      // ignorovaly. Jen pro generátorová témata (DB-only řídí batch jinak).
+      if (!isDbOnly) {
+        await prepareMatchedTopic(newSession);
+      }
+
       // Pre-load custom exercises into the session batch (DB-only topics)
       if (preloadedBatch.length > 0) {
         const taskCount = enrichedTopic.sessionTaskCount ?? 6;
@@ -369,20 +376,26 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       // jinak by probliknul EXPLAIN screen mezi výběrem tématu a procvičováním.
       const s1 = { ...newSession, elapsedSeconds: 0 };
       const r1 = await processState(s1);
+      let final = r1;
       if (r1.session.state === "EXPLAIN") {
         setExplanation(r1.output);
         const s2 = { ...r1.session, elapsedSeconds: 0 };
-        const r2 = await processState(s2);
-        setSession(r2.session);
-        setOutput(r2.output ?? "");
-        setPracticeQuestion(r2.practiceQuestion ?? "");
-        setUserInput("");
-      } else {
-        setSession(r1.session);
-        setOutput(r1.output ?? "");
-        setPracticeQuestion(r1.practiceQuestion ?? "");
-        setUserInput("");
+        final = await processState(s2);
       }
+
+      // Prázdný batch z generátoru (téma bez úloh na dané úrovni) → stejné
+      // chování jako u prázdného DB-only tématu: nabídnout jiné, ne „trofej"
+      // v shrnutí za 0 zodpovězených úloh.
+      if (final.session.practiceBatch.length === 0) {
+        setOutput("Toto cvičení se připravuje. Zkus jiné téma.");
+        toast.error("Toto cvičení se připravuje. Zkus jiné téma.");
+        return;
+      }
+
+      setSession(final.session);
+      setOutput(final.output ?? "");
+      setPracticeQuestion(final.practiceQuestion ?? "");
+      setUserInput("");
     } catch (err) {
       console.error("[handleTopicSelect] error:", err);
     } finally {

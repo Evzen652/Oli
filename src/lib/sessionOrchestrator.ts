@@ -49,6 +49,47 @@ export function createSession(grade: Grade): SessionData {
   };
 }
 
+/**
+ * Připraví právě napárované téma pro start sezení: prefetch misconception
+ * confidence, načtení uloženého levelu žáka (mezi-sezeníová adaptace) s
+ * fallbackem na `defaultLevel`, a zacachování `_maxLevel` (strop dostupných úrovní).
+ *
+ * Sdílené mezi stavem TOPIC_MATCH a přímým dětským tokem (`handleTopicSelect`),
+ * který TOPIC_MATCH obchází. Bez tohoto by dětské sezení vždy startovalo na
+ * L1 (createSession) a `defaultLevel` i uložený level by se ignorovaly.
+ * Předpoklad: `s.matchedTopic` je nastavené.
+ */
+export async function prepareMatchedTopic(s: SessionData): Promise<void> {
+  const topic = s.matchedTopic;
+  if (!topic) return;
+
+  try {
+    const { getActiveMisconceptionConfidence } = await import("./performanceTracker");
+    s.misconceptionConfidence = await getActiveMisconceptionConfidence(topic.id);
+  } catch {
+    s.misconceptionConfidence = 0;
+  }
+
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { getSkillLevel } = await import("./supabase/skillLevel");
+      const skillRow = await getSkillLevel(user.id, topic.id);
+      s.currentLevel = skillRow?.level ?? topic.defaultLevel ?? 1;
+    } else {
+      s.currentLevel = topic.defaultLevel ?? 1;
+    }
+  } catch {
+    s.currentLevel = topic.defaultLevel ?? 1;
+  }
+
+  // Pojistka: nikdy neservíruj úroveň, která nemá odlišné úlohy (generátor =
+  // zdroj pravdy). Spočítej JEDNOU a cachuj — CHECK loop pak jen čte.
+  const topicMaxLevel = maxAvailableLevel(topic);
+  (s as unknown as { _maxLevel?: number })._maxLevel = topicMaxLevel;
+  s.currentLevel = Math.min(s.currentLevel, topicMaxLevel);
+}
+
 /** Compute EMA mastery from streaks and error count */
 function computeMastery(session: SessionData): number {
   const total = session.errorStreak + session.successStreak + session.errorCount;
@@ -186,35 +227,9 @@ export async function processState(session: SessionData, userInput?: string): Pr
       }
       s.matchedTopic = topic;
 
-      // Pre-fetch active misconception confidence pro tento skill (jednou per session/topic).
-      // Realtime adaptive loop pak jen čte z s.misconceptionConfidence (sync).
-      // Fire-and-forget — pokud DB lookup selže, default 0 znamená "žádný terapeutický mód".
-      try {
-        const { getActiveMisconceptionConfidence } = await import("./performanceTracker");
-        s.misconceptionConfidence = await getActiveMisconceptionConfidence(topic.id);
-      } catch {
-        s.misconceptionConfidence = 0;
-      }
-
-      // Načti uložený level žáka pro toto téma (mezi-sezení adaptace).
-      // Fire-and-forget — pokud selže, použij defaultLevel z metadat.
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const { getSkillLevel } = await import("./supabase/skillLevel");
-          const skillRow = await getSkillLevel(user.id, topic.id);
-          s.currentLevel = skillRow?.level ?? topic.defaultLevel ?? 1;
-        }
-      } catch {
-        s.currentLevel = topic.defaultLevel ?? 1;
-      }
-
-      // Pojistka: nikdy neservíruj úroveň, která nemá odlišné úlohy
-      // (generátor je zdroj pravdy — viz levelCoverage.ts). Spočítej JEDNOU
-      // a cachuj — CHECK loop pak jen čte (invariant CHECK < 60ms, žádné gen volání).
-      const topicMaxLevel = maxAvailableLevel(topic);
-      (s as unknown as { _maxLevel?: number })._maxLevel = topicMaxLevel;
-      s.currentLevel = Math.min(s.currentLevel, topicMaxLevel);
+      // Prefetch misconception, uložený level (fallback defaultLevel) a _maxLevel.
+      // Sdíleno s přímým dětským tokem (handleTopicSelect) přes prepareMatchedTopic.
+      await prepareMatchedTopic(s);
 
       s = transition(s, "EXPLAIN");
       return processState(s);

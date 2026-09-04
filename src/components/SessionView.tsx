@@ -30,6 +30,7 @@ import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getTopicInsight } from "@/lib/topicInsight";
 import { readLocal, writeLocal } from "@/lib/safeStorage";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
+import { getTopicById } from "@/lib/contentRegistry";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
 import { ExitSessionDialog } from "@/components/ExitSessionDialog";
 import goodToKnowImg from "@/assets/good-to-know.png";
@@ -293,8 +294,20 @@ export function SessionView() {
       topicTitle={recoveryData?.session?.matchedTopic ? getChildTopicTitle(recoveryData.session.matchedTopic, grade, isStudentView) : ""}
       onRecover={() => {
         if (recoveryData) {
-          s.setGrade(recoveryData.session.grade);
-          s.setSession(recoveryData.session);
+          const rec = recoveryData.session;
+          // Čas strávený mimo aktivní sezení se nepočítá — jinak by se obnovené
+          // sezení při první odpovědi hned ukončilo do STOP_2 („čas vypršel"),
+          // což ruší celý smysl obnovy. Posuň startTime o dosud odehraný čas.
+          rec.startTime = Date.now() - (rec.elapsedSeconds ?? 0) * 1000;
+          // matchedTopic.generator je funkce → JSON.stringify ji ze zálohy zahodí.
+          // Přehrání uloženého batche to nevadí, ale „Zopakovat" po obnově volá
+          // topic.generator → TypeError. Rehydratuj generátor z registru.
+          if (rec.matchedTopic) {
+            const fresh = getTopicById(rec.matchedTopic.id);
+            if (fresh) rec.matchedTopic = { ...rec.matchedTopic, generator: fresh.generator };
+          }
+          s.setGrade(rec.grade);
+          s.setSession(rec);
           // Bez tohohle se sezení obnovilo, ale ukazatel průběhu byl prázdný —
           // dítě vidělo „Úloha 3 z 6" a přitom nulu hotových teček.
           s.setTaskResults(recoveryData.taskResults ?? []);
