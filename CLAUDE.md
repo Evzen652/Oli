@@ -94,7 +94,8 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 
 ## Multi-PC workflow
 - User pracuje střídavě na dvou PC. Vždy na začátku session udělej `git pull`, abys měl nejnovější změny z druhého PC. Pokud user nepoví jinak.
-- **Pracovní branch je `chore/remove-essay-and-ai-authoring`** (aktualizováno 2026-08-31). Na `main` ani na `claude/cranky-shirley` práce posledních session NENÍ — `main` je za ní o víc než 100 commitů. Na druhém PC tedy nejdřív `git fetch origin && git checkout chore/remove-essay-and-ai-authoring`, teprve pak `git pull`.
+- **Pracovní branch je `main`** (od 2026-09-04). Do té doby se pracovalo na `chore/remove-essay-and-ai-authoring`; ta je teď fast-forwardnutá do `main` a **dosloužila — už do ní necommituj**.
+- **Proč se to sjednotilo:** dokud práce běžela mimo `main`, každá nová session i každý nástroj startoval od `main` a dostal několik měsíců starý kód. Varování o tom přitom leželo v CLAUDE.md **na té odbočené větvi**, takže ho ten, kdo začal od `main`, nikdy neviděl. Jednou to stálo celý rozdělaný task napsaný proti neexistujícímu kódu. Kdyby se práce zase odklonila mimo `main`, patří upozornění na **obě** větve, ne jen na tu novou.
 - **Když se na druhém PC „nezobrazují změny", zkontroluj nejdřív branch** (`git status -sb`), ne cache. Tahle záměna už jednou stála čas.
 - Při skončení práce / před tím, než user přejde na druhý PC: pushni všechny commity (uživatelem schválené) na origin.
 - Pro jednoduchý start je v repo skript `scripts/oli-start.ps1` (Windows) — dělá `git pull` + `npm install` (jen když je třeba) + `npm run dev`. User ho spouští dvojklikem.
@@ -102,7 +103,7 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 ## ⚠️ ZAČÁTEK KAŽDÉ SESSION — POVINNÉ
 
 Po `git pull` vždy zobraz stručné shrnutí stavu projektu:
-0. **Nejdřív ověř větev a worktree** — [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) sekce 0. Práce neběží na `main`; čistý strom shodný s `origin/main` NENÍ důkaz aktuálnosti.
+0. **Nejdřív ověř větev a worktree** — [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) sekce 0. Od 2026-09-04 se pracuje na `main`, takže shoda s `origin/main` je v pořádku — ale `git fetch` si udělej, ať to ověřuješ proti čerstvému stavu, ne proti tomu, co máš z minule.
 1. **Kde jsme skončili** — přečti sekci 6 z `PROJECT_STATUS.md` (Otevřené / poslední session hotovo)
 2. **Co je rozděláno** — přečti otevřené položky z `docs/PENDING_CHANGES.md`
 3. Zobraz jako 2–3 věty + bullet list „Doporučené další kroky" (priorita dle PENDING_CHANGES)

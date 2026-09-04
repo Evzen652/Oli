@@ -5,31 +5,30 @@
 
 ## 0. Než začneš cokoli dělat
 
-**Práce neběží na `main`.** Aktivní větev je `chore/remove-essay-and-ai-authoring`
-(PR #20), která žije ve worktree:
+**Od 2026-09-04 se pracuje na `main`.** Větev `chore/remove-essay-and-ai-authoring`
+(PR #20) je do `main` fast-forwardnutá a **dosloužila — už do ní necommituj**.
+Worktree `hungry-villani-074811` na ní pořád sedí; než v něm budeš dělat, přepni
+ho na `main`.
 
-```
-C:/Users/weigle/Oli/.claude/worktrees/hungry-villani-074811
-```
-
-`main` je za ní o víc než 130 commitů a **nemá** akvarelové ilustrace landingu,
-avatary rolí ani `docs/ILLUSTRATION_STYLE.md`.
-
-Ověř to, než uvěříš čistému stromu:
+Ověř si to `git fetch`em, ne pamětí:
 
 ```bash
-git branch -a --format="%(refname:short) %(committerdate:short)" && git worktree list
+git fetch origin && git status -sb && git worktree list
 ```
 
-Tři věci, které kolem toho stály čas:
+Proč se to sjednotilo — tři věci, které kolem rozdvojených větví stály čas:
 
-1. **Čistý strom shodný s `origin/main` není důkaz aktuálnosti.** Session začala
-   ve worktree z `main`, kde všechno vypadalo v pořádku, jen tam chyběla práce
-   posledních dní.
-2. **`CLAUDE.md` na `main` uvádí zastaralou větev.** Verze na aktivní větvi je
-   správná, ale kdo startuje z `main`, přečte si starý pokyn.
-3. **Větev nejde checkoutovat ve dvou worktree naráz.** Drží-li ji
-   `hungry-villani-074811`, pracuj rovnou v něm.
+1. **Čistý strom shodný s `origin/main` není důkaz aktuálnosti**, dokud sis
+   neudělal `fetch`. Jedna session takhle začala ve worktree z `main`, kde
+   všechno vypadalo v pořádku, jen tam chyběla práce posledních dní.
+2. **Varování o odbočené větvi leželo jen na té odbočené větvi.** `CLAUDE.md` na
+   `main` uváděl zastaralý pokyn, takže kdo startoval z `main`, správnou verzi
+   nikdy nepřečetl. Jedna session tak napsala celý task proti kódu, který mezitím
+   přestal existovat. **Kdyby se práce zase odklonila mimo `main`, patří
+   upozornění na obě větve.**
+3. **Větev nejde checkoutovat ve dvou worktree naráz.** Drží-li ji jiný worktree,
+   pracuj rovnou v něm — nebo pushni rovnou na cílovou větev
+   (`git push origin <moje-vetev>:<cilova>`), když jde o fast-forward.
 
 Pozor i na **dev server**: běží-li z cizího worktree na portu 8080, uživatel
 vidí na své obvyklé adrese jinou verzi aplikace, než si myslí.
