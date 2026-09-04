@@ -303,7 +303,9 @@ function AssignmentCard({
   const correct = a.completionCorrect ?? 0;
   const helpUsed = a.completionHelpUsed ?? 0;
   const wrong = total - correct - helpUsed;
-  const acc = total > 0 ? Math.round((correct / total) * 100) : null;
+  // Úspěšnost = všechny správné (i s nápovědou) / celkem. Nápověda se ukazuje
+  // zvlášť, netrestá se ve známce (shodné se SkillDetailModal a ChildSessionLog).
+  const acc = total > 0 ? Math.round(((correct + helpUsed) / total) * 100) : null;
   const grade = acc !== null ? pctToGrade(acc) : null;
   const gMeta = grade !== null ? GRADE_META[grade] : null;
 

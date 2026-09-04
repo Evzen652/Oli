@@ -147,7 +147,9 @@ export async function generateWeeklyReport(
   const correctAlone = logs.filter(l => l.correct && !l.help_used).length;
   const withHelp = logs.filter(l => l.correct && l.help_used).length;
   const wrong = logs.filter(l => !l.correct).length;
-  const accuracy = Math.round((correctAlone / attempts) * 100);
+  // Úspěšnost = všechny správné (samostatně i s nápovědou) / celkem — shodně s
+  // dashboardem a detailem. Nápověda se vykazuje zvlášť (withHelp), netrestá se.
+  const accuracy = Math.round(((correctAlone + withHelp) / attempts) * 100);
 
   // Zjisti, které skill IDs jsou zadané rodiče
   const { data: assignedRows } = resolvedChildId
@@ -161,7 +163,8 @@ export async function generateWeeklyReport(
     const existing = skillMap.get(log.skill_id) ?? { correct: 0, attempts: 0, helpUsed: 0, errors: [] };
     existing.attempts++;
     if (log.correct) existing.correct++;
-    if (log.help_used) existing.helpUsed++;
+    // Jen správně-s-nápovědou (disjunktní), aby wrongCount = attempts - correct nevyšel záporně.
+    if (log.correct && log.help_used) existing.helpUsed++;
     if (log.error_type) existing.errors.push(log.error_type);
     skillMap.set(log.skill_id, existing);
   }

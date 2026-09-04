@@ -68,7 +68,10 @@ export function useChildStats(childId: string | null, period: StatsPeriod = "7d"
       const independent = data.filter((r) => r.correct && !r.help_used).length;
       const helpUsed = data.filter((r) => r.correct && r.help_used).length;
       const wrong = data.filter((r) => !r.correct).length;
-      const accuracy = tasks > 0 ? Math.round((independent / tasks) * 100) : 0;
+      // Úspěšnost = všechny správné (samostatně i s nápovědou) / celkem.
+      // Nápověda se vykazuje zvlášť (helpUsed), netrestá se v úspěšnosti —
+      // shodně se SkillDetailModal / AssignmentList / ChildSessionLog.
+      const accuracy = tasks > 0 ? Math.round(((independent + helpUsed) / tasks) * 100) : 0;
 
       // Počet různých dnů s aktivitou
       const dayKey = (iso: string) => new Date(iso).toISOString().slice(0, 10);

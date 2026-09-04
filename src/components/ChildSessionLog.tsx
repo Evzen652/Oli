@@ -89,7 +89,9 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
           }
           s.total++;
           if (row.correct) s.correct++;
-          if (row.help_used) s.help_used++;
+          // help_used = jen SPRÁVNĚ s nápovědou (disjunktní kategorie pro zobrazení).
+          // Špatná odpověď s nápovědou spadá do „špatně", ne do „s nápovědou".
+          if (row.correct && row.help_used) s.help_used++;
         }
         setSessions(Array.from(map.values()));
       }
@@ -237,7 +239,7 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
                 </div>
                 <div className="flex flex-col items-end gap-3 shrink-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct} správně</span>
+                    {s.correct - s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct - s.help_used} správně</span>}
                     {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">{s.help_used} s nápov.</span>}
                     {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">✗ {s.total - s.correct} špatně</span>}
                     <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-caption font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>

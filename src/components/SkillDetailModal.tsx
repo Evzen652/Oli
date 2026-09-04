@@ -287,7 +287,11 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
         helpUsed: s.helpUsed,
         wrong: s.total - s.correct - s.helpUsed,
         total: s.total,
-        pct: s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0,
+        // Úspěšnost = VŠECHNY správné (i s nápovědou) / celkem. Nápověda se
+        // ukazuje zvlášť jako nuance, netrestá se ve známce — jinak by dítě, které
+        // odpoví vše správně s nápovědou, vyšlo na 0 % / „Nedostatečný" (nesmysl).
+        // Shodné se souhrnem v ChildSessionLog.
+        pct: s.total > 0 ? Math.round(((s.correct + s.helpUsed) / s.total) * 100) : 0,
       }));
 
       if (!cancelled) setSessions(result);
@@ -362,10 +366,10 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
                 <p className="text-sm text-slate-600 leading-snug">
                   {childName
                     ? (lastGrade <= 2
-                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
+                        ? `${childName} procvičoval/a uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
                         : lastGrade === 3
-                        ? `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek průměrný (${last.pct} %).`
-                        : `${childName} procvičoval uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
+                        ? `${childName} procvičoval/a uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek průměrný (${last.pct} %).`
+                        : `${childName} procvičoval/a uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
                     : (lastGrade <= 2
                         ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
                         : lastGrade === 3
