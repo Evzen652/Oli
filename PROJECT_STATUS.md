@@ -159,10 +159,13 @@ src/
   3. Sekce „Správně (N)“ je nyní **sbalená do `<details>`** („— rozbalit/sbalit“), chyby a nápověda zůstávají rozbalené.
   4. `FALLBACK_QB` banka smyšlených otázek **odstraněna** → u dat bez `question_text` neutrální placeholder.
   6. Gramatika „`${last.total} otázek`“ → `pad(last.total, "OTÁZKA")`.
-- 🟠 **Zbývá (krok B + drobnost) — čeká na rozhodnutí:**
-  1. `SkillDetailModal` neukazuje, **co dítě odpovědělo špatně** — jen správnou odpověď;
-     `session_logs` odpověď žáka vůbec neukládá (`error_type` jen `"wrong_answer"`,
-     `response_time_ms` = 0). Chce sloupec `student_answer` + doplnit ukládání (migrace).
+- ✅ **Krok B hotový (2026-09-04, ověřeno naživo na 8090):** modal u chybných úloh
+  ukazuje **„Dítě odpovědělo: … "** (přeškrtnuté, červené) nad správnou odpovědí.
+  Migrace `student_answer` do `session_logs` nasazena; `performanceTracker` +
+  `sessionOrchestrator` ukládají skutečnou odpověď žáka (`answer` z CHECK).
+  Guard: zobrazí se jen u chyb a jen když se liší od klíče. Ověřeno seedem (DOM +
+  screenshot), unit testy `session-student-answer.test.ts` (2/2), regrese 31/31.
+- 🟠 **Zbývá (drobnost):**
   5. Doporučení jsou generická (jen z %), ne z konkrétních chyb/tématu.
 
 ### Session 2026-09-04 (11) — první návštěva rodiče + PIN doladění:

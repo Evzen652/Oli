@@ -24,6 +24,7 @@ interface LogItem {
   errorType: string | null;
   question?: string;
   correctAnswer?: string;
+  studentAnswer?: string;
 }
 
 function pctToGrade(pct: number): 1 | 2 | 3 | 4 | 5 {
@@ -260,7 +261,7 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
     async function load() {
       const { data } = await (supabase as any)
         .from("session_logs")
-        .select("id, session_id, correct, help_used, error_type, example_id, created_at, question_text, correct_answer")
+        .select("id, session_id, correct, help_used, error_type, example_id, created_at, question_text, correct_answer, student_answer")
         .eq("child_id", childId)
         .eq("skill_id", skillId)
         .order("created_at", { ascending: false })
@@ -302,6 +303,7 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
           errorType: l.error_type as string | null,
           question: l.question_text ?? undefined,
           correctAnswer: l.correct_answer ?? undefined,
+          studentAnswer: l.student_answer ?? undefined,
         }));
         if (!cancelled) setLogItems(items);
       }
@@ -449,6 +451,11 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
                   <div key={l.id} className={`rounded-xl px-3 py-2 text-xs ${rowCls}`}>
                     {l.question
                       ? <><span className="font-medium">{l.question}</span>
+                          {!l.correct && l.studentAnswer && l.studentAnswer !== l.correctAnswer && (
+                            <span className="block mt-0.5">
+                              Dítě odpovědělo: <span className="font-semibold text-red-700 line-through decoration-red-400">{l.studentAnswer}</span>
+                            </span>
+                          )}
                           {l.correctAnswer && (
                             <span className="block text-muted-foreground mt-0.5">
                               Správná odpověď: <span className="font-semibold">{l.correctAnswer}</span>

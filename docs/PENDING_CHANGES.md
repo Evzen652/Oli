@@ -51,11 +51,14 @@ jako dítě a ověřil modal na reálných datech — **funguje přesně**. Dř�
 4. `FALLBACK_QB` banka smyšlených otázek **odstraněna** → neutrální placeholder u dat bez `question_text`.
 6. Gramatika „`${last.total} otázek`" → `pad(last.total, "OTÁZKA")`.
 
-**🟠 Krok B + drobnost — čeká na rozhodnutí:**
-1. 🔴 Modal neukazuje, **co dítě odpovědělo špatně** — jen správnou odpověď. Data se
-   neukládají (`session_logs` nemá odpověď žáka; `error_type`=`"wrong_answer"`,
-   `response_time_ms`=0). → sloupec `student_answer` + doplnit ukládání v `performanceTracker`.
-5. 🟡 Doporučení generická (jen z %), ne z konkrétních chyb/tématu.
+**✅ Krok B hotový (2026-09-04, ověřeno naživo):**
+1. Modal u chyb ukazuje **„Dítě odpovědělo: … "** (přeškrtnuté, červené) nad správnou odpovědí.
+   Migrace `session_logs.student_answer` nasazena; `performanceTracker` + `sessionOrchestrator`
+   ukládají skutečnou odpověď žáka. Guard: jen u chyb a jen když se liší od klíče.
+   Testy `session-student-answer.test.ts` (2/2), regrese 31/31, ověřeno seedem v UI.
+
+**🟡 Zbývá (drobnost):**
+5. Doporučení generická (jen z %), ne z konkrétních chyb/tématu.
 
 ---
 ## ✅ Názvy témat pro ročníky 3–5 — HOTOVO 2026-09-03

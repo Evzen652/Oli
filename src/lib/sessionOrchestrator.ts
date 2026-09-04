@@ -419,6 +419,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
           helpUsed: s.helpUsedOnCurrent,
           questionText: task.question,
           correctAnswer: task.correctAnswer,
+          studentAnswer: answer,
         });
       }
 
