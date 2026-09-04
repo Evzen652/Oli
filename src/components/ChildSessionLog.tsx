@@ -6,6 +6,7 @@ import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
 import { Button } from "@/components/ui/button";
+import { buildAssignmentWindows, isAssignedSession } from "@/lib/assignmentBinding";
 
 export interface SessionEntry {
   session_id: string;
@@ -67,9 +68,12 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
     (async () => {
       const { data: assignments } = await supabase
         .from("parent_assignments")
-        .select("skill_id")
+        .select("skill_id, assigned_date, status, created_at, updated_at")
         .eq("child_id", childId);
-      const assignedSkills = new Set((assignments ?? []).map(a => a.skill_id));
+      // Filtrujeme podle času sezení, ne podle „téma bylo někdy zadáno".
+      // Ta stará podmínka znamenala, že zadáním tématu rodič zpětně smazal
+      // z historie i sezení, která proběhla dávno před zadáním.
+      const windows = buildAssignmentWindows(assignments ?? []);
 
       const { data } = await supabase
         .from("session_logs")
@@ -81,7 +85,7 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
       if (data) {
         const map = new Map<string, SessionEntry>();
         for (const row of data) {
-          if (assignedSkills.has(row.skill_id)) continue;
+          if (isAssignedSession(row.skill_id, row.created_at, windows)) continue;
           let s = map.get(row.session_id);
           if (!s) {
             s = { session_id: row.session_id, date: row.created_at as string, skill_id: row.skill_id as string, total: 0, correct: 0, help_used: 0 };

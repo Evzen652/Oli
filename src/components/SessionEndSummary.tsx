@@ -3,7 +3,7 @@ import type { SessionData, TopicMetadata } from "@/lib/types";
 import { getChildTopicTitle } from "@/lib/displayNames";
 import { generateAiEvaluation } from "@/lib/sessionEvaluator";
 import { Button } from "@/components/ui/button";
-import { Trophy, Sparkles, RotateCcw } from "lucide-react";
+import { Trophy, Hourglass, Sparkles, RotateCcw } from "lucide-react";
 import categoryInfoImg from "@/assets/category-info.png";
 import icoTotal from "@/assets/progress/progress-current.png";
 import icoCorrect from "@/assets/progress/progress-correct.png";
@@ -46,6 +46,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
   const answered = session.currentTaskIndex;
   const wrong = session.errorCount;
   const correctAlone = answered - helpUsed - wrong;
+  const timeExpired = session.stopReason === "time_expired";
 
   useEffect(() => {
     if (!session.matchedTopic || answered === 0) return;
@@ -95,16 +96,27 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
           Trofej i obíhající symboly byly do 2026-09-03 systémová emoji.
           Kreslí se na každé platformě jinak a vedle akvarelových ikon
           působily jako cizí těleso — viz `ProgressIndicator`. */}
+      {/* Sezení ukončené časovým limitem MUSÍ vypadat jinak než dokončené.
+          Dřív dostalo dítě po vypršení limitu naprosto stejnou trofej
+          a nadpis „Shrnutí procvičování" jako po dokončení všech úloh —
+          nikde se nedozvědělo, že mu prostě došel čas. */}
       <div className="relative rounded-3xl border border-[#9A3412]/20 bg-[#FFF1E6] p-7 text-center overflow-hidden">
         <div className="relative z-10 flex flex-col items-center gap-2">
-          <Trophy className="w-11 h-11 text-[#9A3412]" aria-hidden />
+          {timeExpired
+            ? <Hourglass className="w-11 h-11 text-[#9A3412]" aria-hidden />
+            : <Trophy className="w-11 h-11 text-[#9A3412]" aria-hidden />}
           <h2 className="text-display text-[#9A3412] tracking-tight">
-            {t("summary.title")}
+            {t(timeExpired ? "summary.title_time_expired" : "summary.title")}
           </h2>
           {session.matchedTopic && (
             <span className="inline-block mt-1 px-4 py-1.5 rounded-full bg-card text-foreground text-sm font-semibold shadow-e1">
               {getChildTopicTitle(session.matchedTopic, session.grade)}
             </span>
+          )}
+          {timeExpired && (
+            <p className="mt-2 max-w-md text-base text-[#9A3412]/90 leading-snug">
+              {t("summary.time_expired_note")}
+            </p>
           )}
         </div>
       </div>
@@ -139,8 +151,14 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
         </div>
       </div>
 
-      {/* Hodnocení od sovičky */}
-      <div className="pt-1">
+      {/* Hodnocení od sovičky — jen když je co hodnotit.
+
+          Bez podmínky `answered > 0` se panel zasekl na „Píšu ti hodnocení…"
+          napořád: efekt se u nuly úloh vrací dřív, než nastaví `evalMinReached`,
+          takže podmínka `!evalMinReached` zůstala navždy pravdivá. Dřív to bylo
+          nedosažitelné (sezení skončilo nejdřív po odpovědi), od chvíle, kdy
+          limit hlídá i nečinné dítě, dosažitelné je. */}
+      {answered > 0 && <div className="pt-1">
         {(aiEvalLoading || !evalMinReached) && (
           <div className="rounded-3xl border border-success/25 bg-card shadow-e1 p-7 flex flex-col items-center gap-3">
             <img src={categoryInfoImg} alt="Sovička" className="w-24 h-24 animate-pulse-scale mix-blend-multiply object-contain" />
@@ -168,7 +186,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
             </p>
           </div>
         )}
-      </div>
+      </div>}
 
       {/* Action buttons — pill style */}
       <div className="grid grid-cols-2 gap-3">

@@ -1,60 +1,58 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
+/**
+ * Hlídač časového limitu sezení. **Nic nevykresluje.**
+ *
+ * Do 2026-09-04 vykresloval dítěti odpočet s progress barem, který poslední
+ * minutu svítil červeně. Odstraněno ze dvou důvodů:
+ *
+ *  - Ubíhající čas je pro dítě tlak, ne informace — limit stejně nešlo
+ *    ovlivnit ani prodloužit, takže odpočet nenabízel žádnou akci.
+ *  - Odpočet byl navíc schovaný za `!isStudentView`, což je *každé* dítě.
+ *    Viděl ho tedy jen rodič/admin v náhledu sezení, tedy nikdo, komu limit
+ *    reálně běží.
+ *
+ * Místo odpočtu přijde jedna klidná hláška `warnSeconds` před koncem
+ * (`onWarning`) a po vypršení jiná koncová obrazovka (`onTimeExpired`).
+ */
 interface SessionTimerProps {
   startTime: number;
   maxSeconds: number;
   isActive: boolean;
   onTimeExpired: () => void;
-  countUp?: boolean;
+  /**
+   * Zavolá se jednou, `warnSeconds` před vypršením limitu. Dostane `startTime`
+   * sezení, aby si volající mohl hlášku svázat s konkrétním sezením, aniž by
+   * musel předávat nestabilní callback (ten by při každém renderu restartoval
+   * interval a odpočet by se nikdy nedopočítal).
+   */
+  onWarning?: (startTime: number) => void;
+  /** Kolik sekund před koncem upozornit. Výchozí 60. */
+  warnSeconds?: number;
 }
 
-export function SessionTimer({ startTime, maxSeconds, isActive, onTimeExpired, countUp }: SessionTimerProps) {
-  const [elapsed, setElapsed] = useState(0);
+export function SessionTimer({
+  startTime, maxSeconds, isActive, onTimeExpired, onWarning, warnSeconds = 60,
+}: SessionTimerProps) {
+  // Ref, ne state: upozornění má padnout právě jednou za sezení a nemá
+  // restartovat interval.
+  const warnedForRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!isActive) return;
     const interval = setInterval(() => {
-      const now = Math.floor((Date.now() - startTime) / 1000);
-      setElapsed(now);
-      if (!countUp && now >= maxSeconds) {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      if (onWarning && warnedForRef.current !== startTime && elapsed >= maxSeconds - warnSeconds) {
+        warnedForRef.current = startTime;
+        onWarning(startTime);
+      }
+      if (elapsed >= maxSeconds) {
         onTimeExpired();
         clearInterval(interval);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [startTime, maxSeconds, isActive, onTimeExpired, countUp]);
+  }, [startTime, maxSeconds, isActive, onTimeExpired, onWarning, warnSeconds]);
 
-  if (countUp) {
-    const minutes = Math.floor(elapsed / 60);
-    const seconds = elapsed % 60;
-    return (
-      <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden>⏱</span>
-        <span className="text-base font-mono tabular-nums font-semibold text-muted-foreground">
-          {minutes}:{seconds.toString().padStart(2, "0")}
-        </span>
-      </div>
-    );
-  }
-
-  const remaining = Math.max(0, maxSeconds - elapsed);
-  const minutes = Math.floor(remaining / 60);
-  const seconds = remaining % 60;
-  const pct = Math.max(0, (remaining / maxSeconds) * 100);
-  const isLow = remaining < 60;
-
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-lg" aria-hidden>⏱</span>
-      <div className="h-3 flex-1 rounded-full bg-secondary overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all duration-1000 ${isLow ? "bg-destructive" : "bg-primary/70"}`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-      <span className={`text-base font-mono tabular-nums font-semibold ${isLow ? "text-destructive" : "text-muted-foreground"}`}>
-        {minutes}:{seconds.toString().padStart(2, "0")}
-      </span>
-    </div>
-  );
+  return null;
 }

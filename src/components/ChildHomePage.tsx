@@ -171,37 +171,46 @@ const TIPS = [
 
 // ── Motivační věta ────────────────────────────────────────────────────────────
 
+/**
+ * POZOR NA VÝZNAM `days`.
+ *
+ * `days` = **počet různých dnů s procvičováním** za sledované období
+ * (`useChildStats.daysActive`), NE počet dnů po sobě. Texty proto nesmějí
+ * tvrdit „v řadě", „za sebou" ani „bez přerušení" — dítěti by lhaly a zároveň
+ * by z toho dělaly streak, který invariant projektu („no gamification")
+ * výslovně zakazuje.
+ */
 export function motivationalEmoji(days: number, tasks: number, accuracy: number): string {
   const seed = new Date().getDate();
-  const highStreak = days >= 5;
+  const manyDays = days >= 5;
   const goodAccuracy = accuracy >= 75;
   const lowAccuracy = accuracy < 50 && tasks >= 5;
-  if (highStreak && goodAccuracy) return ["🏆", "🚀", "💪", "⚡"][seed % 4];
-  if (lowAccuracy) return ["💡", "🔥", "🎯"][seed % 3];
-  return ["🌟", "✨", "👏", "🎉", "💫"][seed % 5];
+  if (manyDays && goodAccuracy) return ["🌟", "📘", "💡", "✨"][seed % 4];
+  if (lowAccuracy) return ["💡", "🎯", "🧭"][seed % 3];
+  return ["🌟", "✨", "👏", "📗", "💫"][seed % 5];
 }
 
 export function motivationalMessage(days: number, tasks: number, accuracy: number, name: string): string {
   const greeting = name ? toGreeting(name) : "kamaráde";
   const seed = new Date().getDate(); // mění se každý den
 
-  const highStreak = days >= 5;
+  const manyDays = days >= 5;
   const goodAccuracy = accuracy >= 75;
   const manyTasks = tasks >= 20;
   const lowAccuracy = accuracy < 50 && tasks >= 5;
 
   const variants: string[][] = [
-    // Vysoký streak + dobrá úspěšnost
-    highStreak && goodAccuracy ? [
-      `${greeting}, ${pluralDays(days)} v řadě a ${accuracy} % správně — to je fakt skvělý výsledek! Pokračuj, jde ti to výborně.`,
-      `Wow, ${pluralDays(days)} bez přerušení! Tvoje ${accuracy}% úspěšnost ukazuje, že látku opravdu zvládáš. Jen tak dál!`,
-      `${pluralDays(days)} v řadě, ${tasks} splněných úloh a ${accuracy} % — tohle jsou čísla, na která můžeš být hrdý/á.`,
+    // Hodně dnů s procvičováním + dobrá úspěšnost
+    manyDays && goodAccuracy ? [
+      `${greeting}, ${pluralDays(days)} s procvičováním a ${accuracy} % správně — to je fakt skvělý výsledek! Pokračuj, jde ti to výborně.`,
+      `${pluralDays(days)} s procvičováním a ${accuracy}% úspěšnost ukazují, že látku opravdu zvládáš. Jen tak dál!`,
+      `${pluralDays(days)} s procvičováním, ${tasks} splněných úloh a ${accuracy} % — tohle jsou čísla, na která můžeš být hrdý/á.`,
     ] : [],
 
-    // Vysoký streak, slabší úspěšnost
-    highStreak && !goodAccuracy ? [
-      `${greeting}, ${pluralDays(days)} v řadě — to je vytrvalost! Přesnost zatím ${accuracy} %, ale to se cvičením zlepší. Nehárej!`,
-      `Procvičuješ ${pluralDays(days)} za sebou — to je skvělý návyk. Některé úlohy jdou těžce, ale právě tak se to učí.`,
+    // Hodně dnů s procvičováním, slabší úspěšnost
+    manyDays && !goodAccuracy ? [
+      `${greeting}, ${pluralDays(days)} s procvičováním — to je pěkný kus práce! Přesnost zatím ${accuracy} %, ale to se cvičením zlepší.`,
+      `Procvičuješ pravidelně (${pluralDays(days)}) — to je skvělý návyk. Některé úlohy jdou těžce, ale právě tak se to učí.`,
     ] : [],
 
     // Hodně úloh
@@ -218,11 +227,11 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
 
     // Obecné varianty (vždy dostupné jako záloha)
     [
-      `${greeting}, máš za sebou ${czPad(tasks, "ÚLOHA")} a ${pluralDays(days)} procvičování v řadě. Jsi na dobré cestě — pokračuj!`,
-      `${pluralDays(days)} trénování a ${czPad(tasks, "ÚLOHA")} — to se počítá. Co si dnes vybereš?`,
+      `${greeting}, máš za sebou ${czPad(tasks, "ÚLOHA")} a ${pluralDays(days)} s procvičováním. Jsi na dobré cestě — pokračuj!`,
+      `${pluralDays(days)} s trénováním a ${czPad(tasks, "ÚLOHA")} — to se počítá. Co si dnes vybereš?`,
       `Tvoje ${accuracy}% úspěšnost a ${tasks} splněných úloh ukazují, že makáš. Jen tak dál, ${greeting}!`,
       `${czPad(tasks, "ÚLOHA")} tento týden a ${accuracy} % správně — dobrý základ. Pojď přidat další!`,
-      `Každý den trošku navíc. ${pluralDays(days)} v řadě dokazuje, že to myslíš vážně.`,
+      `Každý den trošku navíc. ${pluralDays(days)} s procvičováním dokazuje, že to myslíš vážně.`,
     ],
   ];
 
@@ -364,6 +373,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
   }
 
   const showStats = !stats.loading && stats.tasks > 0;
+  // Pilulky nahoře čtou stejné období jako přepínač níž — tooltip proto nesmí
+  // mít „tento týden" natvrdo, jak měl dřív.
+  const periodLabel = PERIOD_OPTIONS.find(o => o.value === statsPeriod)?.label ?? "";
 
   const assignmentSubjects = [...new Set(assignments.map(a => a.subject).filter(Boolean) as string[])];
 
@@ -428,8 +440,13 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           </div>
           {showStats && (
             <div className="flex gap-3 flex-wrap">
-              <StatPill emoji="🔥" main={pluralDays(stats.daysActive)} sub="v řadě" cls="bg-orange-100 text-orange-800" tooltip={`Procvičuješ ${pluralDays(stats.daysActive)} za sebou bez přerušení. Jen tak dál!`} />
-              <StatPill emoji="✅" main={String(stats.tasks)} sub={pluralTasks(stats.tasks)} cls="bg-emerald-100 text-emerald-800" tooltip={`Tento týden jsi splnil${stats.tasks === 1 ? "a" : ""} ${stats.tasks} ${pluralTasks(stats.tasks)}.`} />
+              {/* `daysActive` je počet RŮZNÝCH dnů s procvičováním za zvolené
+                  období, ne série dnů po sobě. Dřív tu byl „🔥 … v řadě"
+                  s tooltipem „za sebou bez přerušení" — dítěti to lhalo
+                  a zároveň to byl streak, který invariant „no gamification"
+                  zakazuje. Popisek proto říká přesně to, co se měří. */}
+              <StatPill emoji="📅" main={pluralDays(stats.daysActive)} sub="s procvičováním" cls="bg-orange-100 text-orange-800" tooltip={`Kolik různých dní jsi procvičoval/a (${periodLabel.toLowerCase()}).`} />
+              <StatPill emoji="✅" main={String(stats.tasks)} sub={pluralTasks(stats.tasks)} cls="bg-emerald-100 text-emerald-800" tooltip={`Kolik úloh jsi splnil/a (${periodLabel.toLowerCase()}).`} />
               <StatPill emoji="⭐" main={`${stats.accuracy} %`} sub="úspěšnost" cls="bg-violet-100 text-violet-800" tooltip={`Z každých 100 odpovědí máš ${stats.accuracy} správně.`} />
             </div>
           )}

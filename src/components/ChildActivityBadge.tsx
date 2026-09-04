@@ -1,5 +1,7 @@
 import { useChildStats } from "@/hooks/useChildStats";
-import { Sparkles, Flame, CheckCircle2, Star } from "lucide-react";
+// CalendarDays, ne Flame: `days` je počet různých dnů s procvičováním,
+// ne série. Plamínek z toho dělal streak, který invariant projektu zakazuje.
+import { Sparkles, CalendarDays, CheckCircle2, Star } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
 import { plural, form } from "@/lib/czechGrammar";
 
@@ -30,8 +32,11 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
       return (
         <div className="rounded-2xl border border-border bg-muted/30 p-4">
           <p className="text-sm text-muted-foreground leading-relaxed">
+            {/* `daysActive` je počet různých dnů s procvičováním, ne série po
+                sobě — „kolik dní v řadě" slibovalo rodiči metriku, kterou
+                aplikace nepočítá (a počítat nemá, viz invariant „no gamification"). */}
             Zatím žádná aktivita. Jakmile dítě začne procvičovat, uvidíte tady{" "}
-            <span className="font-semibold text-foreground">kolik dní v řadě</span> trénuje,{" "}
+            <span className="font-semibold text-foreground">v kolika dnech</span> trénovalo,{" "}
             <span className="font-semibold text-foreground">kolik úloh</span> za týden splnilo a s jakou{" "}
             <span className="font-semibold text-foreground">úspěšností</span>.
           </p>
@@ -73,8 +78,8 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
             se ořezávala. Takhle šířku drží krátký popisek, ne řada vedle sebe.
             Stejné tvarosloví jako statistiky ve shrnutí sezení. */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div title="Kolik dní za sebou dítě procvičuje" className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
-            <Flame className="h-5 w-5 mx-auto mb-1.5 text-primary" />
+          <div title="V kolika různých dnech dítě za poslední týden procvičovalo" className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+            <CalendarDays className="h-5 w-5 mx-auto mb-1.5 text-primary" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">{form(days, "DEN").toUpperCase()}</p>
           </div>

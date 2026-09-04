@@ -6,6 +6,7 @@ import { CheckCircle2, XCircle, Trash2, BarChart2 } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
+import { pickCompletingSessionId, toAssignmentWindow } from "@/lib/assignmentBinding";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
 
@@ -16,6 +17,8 @@ interface Assignment {
   due_date: string | null;
   status: string;
   note: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
   subject?: string;
   completedDate?: string;
   completionCorrect?: number;
@@ -72,7 +75,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
   const fetchAssignments = useCallback(async () => {
     const { data } = await supabase
       .from("parent_assignments")
-      .select("id, skill_id, assigned_date, due_date, status, note")
+      .select("id, skill_id, assigned_date, due_date, status, note, created_at, updated_at")
       .eq("child_id", childId)
       .order("assigned_date", { ascending: false })
       .limit(100);
@@ -82,45 +85,55 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
       subject: getSkillSubject(a.skill_id) ?? undefined,
     }));
 
-    // Pro splněné úkoly dohledej datum a skóre z session_logs
-    const completedSkillIds = rawList.filter(a => a.status === "completed").map(a => a.skill_id);
+    // Skóre splněného úkolu = sezení, které ho splnilo, a to natrvalo.
+    // Dřív se bralo „poslední sezení na tom skill_id", takže si dítě pozdějším
+    // procvičováním téhož tématu zpětně přepsalo známku u dávno hotového úkolu.
+    // Klíčem je proto ID úkolu, ne skill_id — jedno téma může být zadáno vícekrát.
+    const completed = rawList.filter(a => a.status === "completed");
     const completionMap = new Map<string, { date: string; correct: number; helpUsed: number; total: number }>();
 
-    if (completedSkillIds.length > 0 && childId) {
+    if (completed.length > 0 && childId) {
       const { data: logs } = await supabase
         .from("session_logs")
         .select("skill_id, session_id, correct, help_used, created_at")
         .eq("child_id", childId)
-        .in("skill_id", completedSkillIds)
+        .in("skill_id", [...new Set(completed.map(a => a.skill_id))])
         .order("created_at", { ascending: false })
         .limit(1000);
 
       if (logs) {
-        const lastSessionId = new Map<string, string>();
+        const bySkill = new Map<string, typeof logs>();
         for (const log of logs) {
-          const sid = log.skill_id as string;
-          if (!lastSessionId.has(sid)) lastSessionId.set(sid, log.session_id as string);
+          const list = bySkill.get(log.skill_id as string);
+          if (list) list.push(log);
+          else bySkill.set(log.skill_id as string, [log]);
         }
-        const cCorrect = new Map<string, number>();
-        const cHelp = new Map<string, number>();
-        const cTotal = new Map<string, number>();
-        const cDate = new Map<string, string>();
-        for (const log of logs) {
-          const sid = log.skill_id as string;
-          if (log.session_id !== lastSessionId.get(sid)) continue;
-          cTotal.set(sid, (cTotal.get(sid) ?? 0) + 1);
-          if (log.correct && !log.help_used) cCorrect.set(sid, (cCorrect.get(sid) ?? 0) + 1);
-          if (log.correct && log.help_used) cHelp.set(sid, (cHelp.get(sid) ?? 0) + 1);
-          if (!cDate.has(sid)) cDate.set(sid, log.created_at as string);
-        }
-        for (const [sid, date] of cDate) {
-          completionMap.set(sid, { date, correct: cCorrect.get(sid) ?? 0, helpUsed: cHelp.get(sid) ?? 0, total: cTotal.get(sid) ?? 0 });
+
+        for (const a of completed) {
+          const skillLogs = bySkill.get(a.skill_id) ?? [];
+          const sessionId = pickCompletingSessionId(
+            skillLogs.map(l => ({ session_id: l.session_id as string, created_at: l.created_at })),
+            toAssignmentWindow(a),
+          );
+          // Bez dohledaného sezení raději neukazuj žádné skóre než cizí.
+          if (!sessionId) continue;
+
+          const rows = skillLogs.filter(l => l.session_id === sessionId);
+          if (rows.length === 0) continue;
+          completionMap.set(a.id, {
+            // `logs` jsou řazené sestupně, takže rows[0] je poslední odpověď
+            // sezení — tedy okamžik, kdy dítě úkol dokončilo.
+            date: rows[0].created_at as string,
+            correct: rows.filter(l => l.correct && !l.help_used).length,
+            helpUsed: rows.filter(l => l.correct && l.help_used).length,
+            total: rows.length,
+          });
         }
       }
     }
 
     setAssignments(rawList.map(a => {
-      const cm = completionMap.get(a.skill_id);
+      const cm = completionMap.get(a.id);
       return cm ? { ...a, completedDate: cm.date, completionCorrect: cm.correct, completionHelpUsed: cm.helpUsed, completionTotal: cm.total } : a;
     }));
     setLoading(false);

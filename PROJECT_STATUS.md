@@ -144,6 +144,47 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-04 (14) — vazba sezení↔úkol, streak, časovač:
+
+Tři otevřené body z auditu (13) uzavřeny.
+
+- ✅ **Vazba sezení ↔ úkol** — nový [`assignmentBinding.ts`](src/lib/assignmentBinding.ts)
+  zavádí **okno úkolu** (od `assigned_date` do okamžiku splnění). Sezení patří k úkolu,
+  jen když do okna spadne. Tím: (a) skóre splněného úkolu je **zmrazené** na sezení,
+  které ho splnilo — dřív se bralo „poslední sezení na tom skill_id", takže si dítě
+  pozdějším opakováním zpětně přepsalo známku; (b) „Samostatné procvičování" už
+  nemizí — dřív zadání tématu retroaktivně smazalo z historie i starší samostatná
+  sezení. Bez migrace: čas splnění = `updated_at`, který klient posílá explicitně.
+- ✅ **Streak přeznačen na fakt** — `daysActive` je počet RŮZNÝCH dnů s aktivitou, ne
+  série. UI z toho dělalo „🔥 8 dní **v řadě**" + tooltip „za sebou bez přerušení",
+  tedy nepravdu i zakázanou gamifikaci. Nyní 📅 „8 dní / s procvičováním"; ze všech
+  motivačních vět zmizelo „v řadě / za sebou / bez přerušení / vytrvalost"; plamínek
+  pryč i z rodičovské karty (`ChildActivityBadge`), včetně textu „kolik dní v řadě
+  trénuje". Tooltipy nově respektují zvolené období (dřív „tento týden" natvrdo).
+- ✅ **Časovač** — 🐞 **`SessionTimer` byl schovaný za `!isStudentView`, což je KAŽDÉ
+  dítě.** Hlídač limitu tedy běžel jedině rodiči/adminovi v náhledu. Dětem se limit
+  uplatnil jen náhodou přes `evaluateStop` po **chybné** odpovědi: kdo odpovídal
+  správně, neskončil nikdy, kdo chyboval v 8:01, spadl uprostřed úlohy — a uviděl
+  🏆 „Shrnutí procvičování", nikde ani slovo o čase. Nyní: hlídač běží všem
+  a **nic nevykresluje** (odpočet s červenou poslední minutou zrušen — pro dítě to
+  byl tlak bez možnosti reakce), minutu před koncem přijde jedna klidná hláška
+  a po vypršení jiná koncová obrazovka („Pro dnešek to stačí"). Limity 8/10/12 min
+  dle ročníku beze změny.
+- 🐞 **Nález z toho plynoucí:** sezení teď může skončit s **0 odpovědmi** (dítě jen
+  sedí). `SessionEndSummary` v tom případě točil „Píšu ti hodnocení…" donekonečna —
+  efekt se u nuly úloh vrací dřív, než nastaví `evalMinReached`. Panel se u nuly úloh
+  nezobrazí.
+- 🩹 **Pre-existující rozbitý test** `hooks-supabase.test.tsx` (očekával starou
+  definici úspěšnosti z doby před `65a2603`) srovnán — sada byla červená už před
+  touto session.
+- **Ověřeno:** typecheck baseline 0, **114/114 souborů a 4649 testů**, `vite build`
+  prošel; živě v prohlížeči celý dětský tok (hlavička bez odpočtu, varování minutu
+  před koncem, koncová obrazovka s odpovědmi i bez nich).
+- 🟡 **Vědomě neřešeno:** explicitní provázání „tohle sezení běží kvůli úkolu X"
+  (protažení `assignmentId` přes `onSelectTopic → handleTopicSelect → session`) —
+  okno úkolu pokrývá obě uživatelsky viditelné vady i bez něj. Limit zůstává **na
+  sezení, ne na den**: „Procvičit znovu" nastartuje nový limit.
+
 ### Session 2026-09-04 (13) — audit rodičovských + dětských obrazovek:
 
 Dva paralelní auditní agenti (rodič / dítě) + vlastní ověření. Opraveno (3 commity):
@@ -167,15 +208,11 @@ Dva paralelní auditní agenti (rodič / dítě) + vlastní ověření. Opraveno
   z URL reálně nehrozí. Není co opravovat.
 
 🟠 **Zbývá z auditu (čeká na rozhodnutí / větší zásah):**
-- **Přiřazení sezení k úkolu** (`AssignmentList` #10 + `ChildSessionLog` #9): skóre
-  splněného úkolu = poslední sezení dovednosti bez vazby na `assigned_date`; a jednou
-  zadané téma navždy zmizí ze „Samostatného procvičování". Potřebuje vazbu sezení↔úkol.
+- ✅ ~~**Přiřazení sezení k úkolu**~~ — vyřešeno v session (14), viz výše.
 - **`ChildSessionLog` `limit(200)`** může rozseknout nejstarší sezení (aktivní dítě).
 - **`ChildActivityChart` je nepoužitý** — buď napojit (nejhezčí rozpad aktivit), nebo smazat.
-- **Skrytý časovač u dětí** končí sezení hláškou „Potřebuješ pomoc od dospělého" bez
-  varování — zvážit vyšší/žádný limit nebo přátelštější hlášku.
-- **„🔥 dní v řadě" na dětské ploše** = streak → možný rozpor s invariantem „žádná
-  gamifikace" (CLAUDE.md). K rozhodnutí.
+- ✅ ~~**Skrytý časovač u dětí**~~ — vyřešeno v session (14), viz výše.
+- ✅ ~~**„🔥 dní v řadě" na dětské ploše**~~ — vyřešeno v session (14), viz výše.
 - Latentní křehkosti (chráněné zmrazeným obsahem): `fill_blank` s víc mezerami,
   `drag_order` čárka v položce, `true_false` bez `options`. Mrtvý kód:
   `handleRevealAnswer`, `ChildActivityBadge` split.

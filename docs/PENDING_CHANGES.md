@@ -7,6 +7,47 @@
 
 ---
 
+## ✅ Vazba sezení ↔ úkol, streak a časovač (2026-09-04)
+
+Tři poslední otevřené body z auditu obrazovek (13).
+
+- 🐞 **Skóre úkolu se dalo zpětně přepsat.** Rodičovský seznam počítal skóre splněného
+  úkolu z **posledního sezení na tom `skill_id`**, ne z toho, které úkol splnilo. Dítě
+  si téma za týden zopakovalo hůř → rodiči se změnila známka u dávno hotového úkolu.
+- 🐞 **Zadání úkolu přepisovalo historii.** „Samostatné procvičování" vyhazovalo každé
+  sezení, jehož téma bylo **kdykoli** zadáno. Rodič zadal téma a tím retroaktivně
+  zmizelo i deset starších samostatných sezení, která se zadáním nesouvisela.
+- ✅ **Řešení = okno úkolu** ([`assignmentBinding.ts`](../src/lib/assignmentBinding.ts)):
+  od `assigned_date` do splnění. Sezení mimo okno = samostatné. Skóre = poslední sezení
+  v okně, zmrazené; když žádné není, neukáže se skóre žádné (dřív se ukázalo cizí).
+  **Bez migrace** — čas splnění je `updated_at`, který klient posílá explicitně
+  v `markAssignmentCompleted`. Historické řádky bez něj degradují směrem
+  „ukázat víc v historii", ne k tichému skrytí dat. 18 nových testů.
+- 🐞 **Časovač dětem fakticky neběžel.** `SessionTimer` byl schovaný za `!isStudentView`,
+  což je **každé** dítě — hlídač limitu tedy běžel jedině rodiči/adminovi v náhledu
+  sezení. Dětem se limit uplatnil jen náhodou přes `evaluateStop` po **chybné**
+  odpovědi: kdo odpovídal správně, neskončil nikdy; kdo chyboval v 8:01, spadl
+  uprostřed úlohy a uviděl 🏆 „Shrnutí procvičování" bez jediné zmínky o čase
+  (`stopReason: "time_expired"` se nastavoval a nikdy nezobrazoval).
+- ✅ **Časovač nově:** hlídač běží všem a **nic nevykresluje** (odpočet s červenou
+  poslední minutou zrušen — pro dítě to byl tlak bez možnosti reakce a viděl ho stejně
+  jen rodič). Minutu před koncem jedna klidná hláška, po vypršení obrazovka
+  „Pro dnešek to stačí". Limity 8/10/12 min dle ročníku beze změny.
+- 🐞 **Následný nález:** sezení teď může skončit s **0 odpovědmi** (dítě jen sedí)
+  a `SessionEndSummary` v tom případě točil „Píšu ti hodnocení…" donekonečna — efekt
+  se u nuly úloh vrací dřív, než nastaví `evalMinReached`. Panel se u nuly nezobrazí.
+- ✅ **Streak přeznačen na fakt.** `daysActive` je počet různých dnů s aktivitou, ne
+  série; UI z toho dělalo „🔥 8 dní v řadě" + „za sebou bez přerušení". Nyní 📅
+  „8 dní / s procvičováním", ze všech vět zmizelo „v řadě / za sebou / vytrvalost",
+  plamínek pryč i z rodičovské karty včetně slibu „uvidíte, kolik dní v řadě trénuje".
+- 🩹 **Pre-existující rozbitý test** `hooks-supabase.test.tsx` (starý předpoklad
+  o úspěšnosti z doby před `65a2603`) srovnán — sada byla červená už před touto session.
+- **Ověřeno:** typecheck baseline 0, **114/114 souborů a 4649 testů**, `vite build`
+  prošel, živě v prohlížeči celý dětský tok.
+- 🟡 **Vědomě neřešeno:** explicitní `assignmentId` protažený sezením (dítě by vidělo
+  „úkol od rodiče" v hlavičce). Limit zůstává **na sezení, ne na den** — „Procvičit
+  znovu" nastartuje nový.
+
 ## ✅ Demo režim odstraněn z celé aplikace (2026-09-03)
 
 Demo zrušeno úplně. −660 řádků. Detail v commitu `chore: odstranit demo režim`.

@@ -249,9 +249,14 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
         if (childByParent) child = childByParent;
       }
       if (!child) return;
+      // `updated_at` posíláme explicitně, ne přes DB trigger: je to jediné
+      // časové razítko splnění, které máme bez migrace, a rodičovský seznam
+      // podle něj páruje úkol s konkrétním sezením (viz `assignmentBinding.ts`).
+      // Kdyby trigger v ostré DB chyběl, zůstal by čas splnění nezjistitelný
+      // a skóre úkolu by zase přepisovalo pozdější procvičování téhož tématu.
       const { data: updated } = await supabase
         .from("parent_assignments")
-        .update({ status: "completed" })
+        .update({ status: "completed", updated_at: new Date().toISOString() })
         .eq("child_id", child.id)
         .eq("skill_id", skillId)
         .eq("status", "pending")

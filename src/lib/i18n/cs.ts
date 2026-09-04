@@ -78,6 +78,7 @@ const cs = {
   "session.input.submit": "Odeslat",
   "session.input.confusion": "Zkus napsat jakékoliv slovo nebo příklad, který s tím souvisí.",
   "session.input.idk": "Ještě nevím / Něco jiného",
+  "session.time_warning": "Za chvíli si dáme pauzu — dokonči klidně tuhle úlohu, ať se soustředíš na ni.",
   "session.time_expired": "Čas vypršel. Sezení bylo ukončeno.",
   "session.ended": "Sezení bylo ukončeno.",
 
@@ -91,6 +92,8 @@ const cs = {
 
   // Summary
   "summary.title": "Shrnutí procvičování",
+  "summary.title_time_expired": "Pro dnešek to stačí",
+  "summary.time_expired_note": "Vypršel čas na dnešní procvičování. Zbylé úlohy počkají — vrátit se k nim můžeš kdykoli.",
   "summary.total": "Celkem",
   "summary.correct": "Správně",
   "summary.help_used": "Nápověda",

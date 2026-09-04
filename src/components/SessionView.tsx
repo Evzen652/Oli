@@ -45,7 +45,7 @@ import icoExample from "@/assets/progress/progress-correct.png";
 import icoMistake from "@/assets/progress/progress-wrong.png";
 import icoFunFact from "@/assets/progress/progress-help.png";
 import { useT } from "@/lib/i18n";
-import { LogOut, Eye, Lightbulb } from "lucide-react";
+import { LogOut, Eye, Lightbulb, Hourglass } from "lucide-react";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { getSubjectMeta, getSubjectPalette } from "@/lib/subjectRegistry";
 import { OliLogo } from "@/components/OliLogo";
@@ -202,6 +202,15 @@ export function SessionView() {
   // Uchováváme akci, kterou má odchod provést — hlavička jich má čtyři
   // (logo, Zpět, Odhlásit se, ✕) a všechny mají projít stejnou branou.
   const [pendingExit, setPendingExit] = useState<(() => void) | null>(null);
+
+  // Klidné upozornění minutu před vypršením limitu. Drží `startTime` sezení,
+  // ne boolean — po „Procvičit znovu" začíná nové sezení s novým `startTime`,
+  // takže hláška sama zhasne a příště se ukáže znovu.
+  const [timeWarningFor, setTimeWarningFor] = useState<number | null>(null);
+  // Prázdné deps jsou nutnost, ne pohodlí: `SessionTimer` má callback
+  // v závislostech svého intervalu, takže nestabilní identita by interval
+  // restartovala při každém renderu a tikot by se nikdy nedopočítal.
+  const handleTimeWarning = useCallback((startTime: number) => setTimeWarningFor(startTime), []);
 
   // For paired children: auto-load grade from children table
   const [childGradeLoaded, setChildGradeLoaded] = useState(false);
@@ -527,15 +536,23 @@ export function SessionView() {
             )}
           </div>
           <div className="flex items-center gap-3">
-            {!isTerminal && !isStudentView && (
-              <div className="w-48">
-                <SessionTimer
-                  startTime={session.startTime}
-                  maxSeconds={session.rules.maxDurationSeconds}
-                  isActive={!isLocked}
-                  onTimeExpired={s.handleTimeExpired}
-                />
-              </div>
+            {/* `SessionTimer` nic nevykresluje — jen hlídá limit na pozadí
+                a minutu před koncem pošle jednu klidnou hlášku.
+
+                Podmínka `!isStudentView` je pryč záměrně: `isStudentView` je
+                pravda pro KAŽDÉ dítě (viz jeho definice výše), takže hlídač
+                běžel jedině rodiči/adminovi v náhledu — tedy nikomu, komu
+                limit platí. Dětem se limit uplatnil jen náhodou přes
+                `evaluateStop` po chybné odpovědi: kdo odpovídal správně,
+                neskončil nikdy, a kdo chyboval v 8:01, spadl uprostřed úlohy. */}
+            {!isTerminal && (
+              <SessionTimer
+                startTime={session.startTime}
+                maxSeconds={session.rules.maxDurationSeconds}
+                isActive={!isLocked}
+                onTimeExpired={s.handleTimeExpired}
+                onWarning={handleTimeWarning}
+              />
             )}
             {!isStudentView && (
               <a href="/report" className="text-base text-muted-foreground hover:text-foreground">
@@ -579,6 +596,18 @@ export function SessionView() {
 
       <main className="flex flex-1 flex-col items-center justify-center p-4">
         <div className="w-full max-w-2xl flex flex-col space-y-6">
+          {/* Blížící se konec limitu — jedna klidná věta, žádný odpočet.
+              Jantarová, ne červená: není to chyba ani trest, jen informace. */}
+          {!isTerminal && timeWarningFor === session.startTime && (
+            <div
+              role="status"
+              className="rounded-2xl border border-warning/30 bg-warning-muted px-5 py-3 flex items-start gap-2.5 text-base text-foreground"
+            >
+              <Hourglass className="h-5 w-5 shrink-0 text-warning mt-0.5" aria-hidden />
+              <span>{t("session.time_warning")}</span>
+            </div>
+          )}
+
           {/* Topic info */}
           {session.matchedTopic && !isTerminal && (
             <div className="space-y-3">
