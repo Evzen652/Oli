@@ -771,6 +771,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           childId={childId}
           skillId={selectedSkill.skillId}
           childName={childName || undefined}
+          // Tenhle modál otevírá DÍTĚ tlačítkem „Ukázat moje výsledky".
+          // Bez toho by o sobě četlo ve třetí osobě a dostávalo rady určené
+          // rodiči („zkuste se zeptat", „proberte s učitelem").
+          audience="child"
           onClose={() => setSelectedSkill(null)}
         />
       )}

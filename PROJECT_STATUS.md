@@ -144,6 +144,38 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-05 (20) — modál s výsledky: špatné publikum + redesign:
+
+- 🐞 **Dítě četlo text psaný pro rodiče.** `SkillDetailModal` se otevírá ze tří
+  míst a jedno z nich je dětské („Ukázat moje výsledky"), ale všechny texty byly
+  v rodičovském hlase. Dítě o sobě četlo ve třetí osobě („Tonda procvičoval/a…",
+  „Dítě odpovědělo") a dostávalo rady adresované někomu jinému: *„zkuste se
+  zeptat, jak o úlohách uvažuje"*, *„doporučujeme probrat s učitelem"*, *„spíše
+  hádá než přemýšlí"*.
+- ✅ **Texty vytaženy do `src/lib/skillFeedback.ts`** s `audience: "parent" | "child"`.
+  Rodičovská sada zůstala beze změny významu; dítě má **vlastní krátkou sadu**, ne
+  překlopená zájmena — rodičovské věty jsou diagnóza pro dospělého a ve druhé osobě
+  by daly nesmysl („zkus se sám sebe zeptat, jak uvažuješ").
+- ✅ **13 testů**, které hlídají hranici publik. Včetně kontroly, že sám detektor
+  může padnout (rodičovské texty ty zakázané obraty naopak obsahovat musí) —
+  poučení z pravidla `name-in-word`, které kdysi nemohlo padnout nikdy.
+- 🎨 **Redesign podle designera.** Nález, který by nikdo nenašel čtením kódu:
+  `tailwind.config.ts` mapuje `emerald: colors.green`, takže **známka 1 a 2 se
+  vykreslovaly pixel po pixelu stejně** — rodič viděl dvě různé známky
+  v nerozeznatelném obalu. Stejná past `rose: colors.red`; známka 4 nosila
+  `orange-300`, tedy odstín značky. Pět ramp nahrazeno třemi sémantickými tóny.
+- 🎨 Dál: barevné plochy `border-2` → bílé karty `shadow-e1`; číslice známky
+  `text-3xl` + procenta `text-2xl` (skórový panel, proti invariantu „žádná
+  gamifikace") → štítek `text-xl` a jeden řádek metadat; ad-hoc `green-700`/
+  `red-600` → `text-success`/`text-destructive`; přeškrtnutá červená odpověď
+  (trest, ne informace) → neutrální řádek s barevnou lištou vlevo; `<details>`
+  s textem „— rozbalit" → `Collapsible` s rotující šipkou; `rounded-lg` →
+  `rounded-3xl sm:rounded-3xl` (responzivní varianta v CSS přebíjí base utilitu).
+- 🎨 **Doporučení přesunuto nahoru** — jediná akční informace stála až za
+  seznamem odpovědí, který má klidně třicet řádků.
+- **Ověřeno:** typecheck 0, UI audit (baseline 10 → **9**), **118/118 souborů
+  a 4699 testů**, build prošel, oba pohledy živě.
+
 ### Session 2026-09-05 (19) — rozbité flexboxy na úzké obrazovce:
 
 Ne responzivní průchod — jen ta podmnožina, která je **vada, ne neučesanost**.

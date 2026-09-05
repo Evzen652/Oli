@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CheckCircle2, HelpCircle, XCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Activity, CheckCircle2, ChevronDown, HelpCircle, Lightbulb, ListChecks, XCircle } from "lucide-react";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { pad } from "@/lib/czechGrammar";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { dropTruncatedTailSession } from "@/lib/sessionLogPaging";
+import {
+  getRecommendations,
+  getIntroSentence,
+  formatCzDate,
+  FEEDBACK_LABELS,
+  type Audience,
+  type SessionSummary,
+} from "@/lib/skillFeedback";
 
 const LOG_LIMIT = 500;
-
-interface SessionSummary {
-  sessionId: string;
-  date: string;
-  correct: number;
-  helpUsed: number;
-  wrong: number;
-  total: number;
-  pct: number;
-}
 
 interface LogItem {
   id: string;
@@ -38,222 +38,67 @@ function pctToGrade(pct: number): 1 | 2 | 3 | 4 | 5 {
   return 5;
 }
 
-const GRADE_META: Record<number, { color: string; bg: string; border: string; label: string }> = {
-  1: { color: "text-emerald-700", bg: "bg-emerald-50",  border: "border-emerald-300", label: "Výborný"      },
-  2: { color: "text-green-700",   bg: "bg-green-50",    border: "border-green-300",   label: "Chvalitebný"  },
-  3: { color: "text-amber-700",   bg: "bg-amber-50",    border: "border-amber-300",   label: "Dobrý"        },
-  4: { color: "text-orange-700",  bg: "bg-orange-50",   border: "border-orange-300",  label: "Dostatečný"   },
-  5: { color: "text-rose-700",    bg: "bg-rose-50",     border: "border-rose-300",    label: "Nedostatečný" },
+/**
+ * Tón známky — sémantické tokeny, ne pastelové rampy.
+ *
+ * Předchozí verze měla pět vlastních ramp a dvě z nich byly TOTOŽNÉ: v
+ * `tailwind.config.ts` je `emerald: colors.green`, takže známka 1
+ * (`emerald-700/50/300`) se vykreslila pixel po pixelu stejně jako známka 2
+ * (`green-700/50/300`). Rodič viděl dvě různé známky v nerozeznatelném obalu.
+ * Stejná past: `rose: colors.red` a `orange-300` = odstín značky, takže
+ * „dostatečný" nosil primární barvu.
+ *
+ * Tři tóny stačí — rozdíl mezi 1 a 2 nese číslice a slovní popis, ne odstín.
+ */
+const GRADE_TONE: Record<number, string> = {
+  1: "border-success/30 bg-success-muted text-success",
+  2: "border-success/30 bg-success-muted text-success",
+  3: "border-warning/30 bg-warning-muted text-warning",
+  4: "border-destructive/25 bg-destructive-muted text-destructive",
+  5: "border-destructive/25 bg-destructive-muted text-destructive",
 };
 
-function getRecommendations(sessions: SessionSummary[], overallPct: number, grade: number): string[] {
-  const tips: string[] = [];
-  const n = sessions.length;
-  // sessions[0] = nejnovější, sessions[n-1] = nejstarší
+const GRADE_LABEL: Record<number, string> = {
+  1: "Výborný",
+  2: "Chvalitebný",
+  3: "Dobrý",
+  4: "Dostatečný",
+  5: "Nedostatečný",
+};
 
-  const totalAnswers = sessions.reduce((s, x) => s + x.total, 0);
-  const totalHelp    = sessions.reduce((s, x) => s + x.helpUsed, 0);
-  const totalWrong   = sessions.reduce((s, x) => s + x.wrong, 0);
-  const totalCorrect = sessions.reduce((s, x) => s + x.correct, 0);
-  const helpRatio    = totalAnswers > 0 ? totalHelp  / totalAnswers : 0;
-  const wrongRatio   = totalAnswers > 0 ? totalWrong / totalAnswers : 0;
-  const correctRatio = totalAnswers > 0 ? totalCorrect / totalAnswers : 0;
-
-  const pcts    = sessions.map(s => s.pct);
-  const mean    = n > 0 ? pcts.reduce((a, b) => a + b, 0) / n : 0;
-  const stdDev  = n > 1 ? Math.sqrt(pcts.reduce((a, b) => a + (b - mean) ** 2, 0) / n) : 0;
-  const bestPct = Math.max(...pcts);
-  const worstPct = Math.min(...pcts);
-
-  const lastPct  = n >= 1 ? sessions[0].pct : null;
-  const prevPct  = n >= 2 ? sessions[1].pct : null;
-  const thirdPct = n >= 3 ? sessions[2].pct : null;
-
-  const perfectCount = sessions.filter(s => s.pct === 100).length;
-  const failCount    = sessions.filter(s => s.pct < 40).length;
-
-  // === CELKOVÝ VÝSLEDEK ===
-  if (overallPct === 100) {
-    tips.push("Perfektní výsledek — ani jedna chyba! Tato látka je zvládnuta na výbornou.");
-  } else if (overallPct >= 95) {
-    tips.push("Výsledek téměř bez chyby. Látka je pevně zvládnuta a dítě ji umí spolehlivě použít.");
-  } else if (grade === 1) {
-    tips.push("Výborný výsledek. Látka je dobře zvládnuta, dítě ji chápe a umí ji bez větších potíží použít.");
-  } else if (grade === 2 && overallPct >= 85) {
-    tips.push("Velmi dobrý výsledek. Drobné chyby se tu a tam vyskytnou, ale látku dítě celkově ovládá dobře.");
-  } else if (grade === 2) {
-    tips.push("Dobrý výsledek s menšími mezerami. Krátké opakování klíčových pojmů by výsledek ještě posunulo.");
-  } else if (grade === 3 && overallPct >= 65) {
-    tips.push("Průměrný výsledek — látka je hrubě zvládnuta, ale chyby se opakují. Pravidelné krátké procvičení pomůže.");
-  } else if (grade === 3 && overallPct >= 55) {
-    tips.push("Výsledek na spodní hranici průměru. Látka není zcela jistá — doporučujeme se k ní pravidelně vracet.");
-  } else if (grade === 4 && overallPct >= 45) {
-    tips.push("Výsledek je pod průměrem. Je dobré rozdělit látku na menší části a procvičovat postupně.");
-  } else if (grade === 4) {
-    tips.push("S touto látkou má dítě znatelné potíže. Doporučujeme kratší a časté procvičování zaměřené na konkrétní slabá místa.");
-  } else if (grade === 5 && overallPct <= 20) {
-    tips.push("Velmi nízký výsledek — látka zatím není pochopena. Doporučujeme projít ji znovu od začátku, ideálně s pomocí rodiče nebo učitele.");
-  } else if (grade === 5) {
-    tips.push("Látka zatím není zvládnuta. Je vhodné probrat ji znovu od základů a postupovat po malých krocích bez spěchu.");
-  }
-
-  // === TREND ===
-  if (n >= 4) {
-    const newest = sessions.slice(0, Math.ceil(n / 2));
-    const oldest = sessions.slice(Math.floor(n / 2));
-    const avgNew = newest.reduce((s, x) => s + x.pct, 0) / newest.length;
-    const avgOld = oldest.reduce((s, x) => s + x.pct, 0) / oldest.length;
-    const diff = avgNew - avgOld;
-    if (diff >= 30) tips.push("Výsledky se výrazně zlepšily — dítě udělalo velký pokrok. Procvičování se zřetelně vyplácí.");
-    else if (diff >= 15) tips.push("Výsledky se postupem času zlepšují. Látka se pomalu usazuje — to je skvělý znak.");
-    else if (diff <= -30) tips.push("Výsledky výrazně klesly. Látka pravděpodobně přestala být čerstvá — doporučujeme krátkou rekapitulaci a nový pokus.");
-    else if (diff <= -15) tips.push("Výsledky mírně klesají. Může pomoci kratší, ale pravidelnější procvičování.");
-    else if (Math.abs(diff) <= 5 && grade <= 2) tips.push("Výsledky jsou dlouhodobě stabilně dobré — látka je pevně zažitá.");
-    else if (Math.abs(diff) <= 5 && grade >= 4) tips.push("Výsledky dlouhodobě stagnují na nízké úrovni. Doporučujeme změnit přístup — například látku procvičovat jiným způsobem nebo kratšími úseky.");
-  } else if (n === 3 && lastPct !== null && thirdPct !== null) {
-    const diff = lastPct - thirdPct;
-    if (diff >= 20) tips.push("Za tři cvičení je vidět zlepšení — dítě se učí a látka mu jde stále lépe.");
-    else if (diff <= -20) tips.push("Výsledky ve třech cvičeních mírně klesají. Stojí za to zjistit, co dítěti dělá největší potíže.");
-  }
-
-  // === KONZISTENCE ===
-  if (n >= 3) {
-    if (stdDev >= 30) {
-      tips.push("Výsledky jsou velmi nevyrovnané — někdy výborně, jindy špatně. Může jít o vliv nálady, únavy nebo prostředí. Zkuste procvičovat pravidelně ve stejnou dobu a v klidu.");
-    } else if (stdDev >= 18) {
-      tips.push("Výsledky poměrně kolísají. Zkuste zjistit, za jakých podmínek se dítěti daří nejlépe, a tyto podmínky opakovat.");
-    } else if (stdDev <= 6 && grade <= 2) {
-      tips.push("Výsledky jsou stabilně dobré bez větších výkyvů — dítě je v této látce sebejisté a spolehlivé.");
-    } else if (stdDev <= 6 && grade >= 4) {
-      tips.push("Výsledky jsou konzistentně slabé — jde pravděpodobně o systematický problém, ne náhodu. Doporučujeme látku probrat s učitelem.");
-    } else if (stdDev <= 10 && grade === 3) {
-      tips.push("Výsledky jsou stabilní, ale stále v průměru. Cílené procvičení konkrétních chybných úloh by mohlo posunout výsledek výše.");
-    }
-  }
-
-  // === NÁPOVĚDA ===
-  if (helpRatio === 0 && grade >= 4 && totalAnswers >= 6) {
-    tips.push("Dítě nápovědu vůbec nevyužívá, přitom výsledky jsou slabé. Může to znamenat, že spíše hádá než přemýšlí — zkuste se zeptat, jak o úlohách uvažuje.");
-  } else if (helpRatio >= 0.6) {
-    tips.push("Nápověda se využívala ve více než polovině odpovědí. Látka pravděpodobně ještě není internalizovaná — procvičujte pomaleji a klaste důraz na porozumění, ne rychlost.");
-  } else if (helpRatio >= 0.4) {
-    tips.push("Nápověda se využívala poměrně často. Je dobré trénovat vybavování bez ní — dítě si zkusí odpovědět samo a až pak se podívá.");
-  } else if (helpRatio >= 0.2) {
-    tips.push("Nápověda se příležitostně hodila. Je to v pořádku — důležité je, aby ji dítě postupně potřebovalo méně.");
-  } else if (helpRatio > 0 && helpRatio < 0.08 && grade <= 2) {
-    tips.push("Nápovědu využívalo jen výjimečně. To svědčí o dobré samostatnosti a jistotě v látce.");
-  } else if (helpRatio === 0 && grade <= 2 && totalAnswers >= 6) {
-    tips.push("Ani jednou nepotřebovalo nápovědu — výborná samostatnost!");
-  }
-
-  // === CHYBOVOST ===
-  if (wrongRatio >= 0.6) {
-    tips.push("Více než polovina odpovědí byla chybná. Doporučujeme látku nejdříve společně projít a teprve pak znovu procvičovat.");
-  } else if (wrongRatio >= 0.4) {
-    tips.push("Velká část odpovědí byla chybná. Pomůže se u každé chybné odpovědi společně zamyslet, proč byla špatně.");
-  } else if (wrongRatio >= 0.25 && grade <= 2) {
-    tips.push("I přes dobrý výsledek se vyskytuje čtvrtina chybných odpovědí. Stojí za to zjistit, u kterých typů úloh k tomu dochází.");
-  } else if (wrongRatio <= 0.03 && grade <= 2 && totalAnswers >= 8) {
-    tips.push("Téměř žádné chyby na velkém počtu úloh — výborná přesnost a jistota v látce.");
-  } else if (wrongRatio <= 0.08 && grade <= 2) {
-    tips.push("Minimální chybovost — dítě odpovídalo přesně a s jistotou.");
-  }
-
-  // === CELKOVÝ ROZSAH (počet úloh) ===
-  if (totalAnswers >= 50 && grade <= 2) {
-    tips.push(`Za všechna cvičení celkem zodpovědělo ${pad(totalAnswers, "ÚLOHA")} s výborným výsledkem — to je pořádný kus práce!`);
-  } else if (totalAnswers >= 50 && grade >= 4) {
-    tips.push(`Za všechna cvičení proběhlo celkem ${pad(totalAnswers, "ÚLOHA")}. I přes velký objem procvičování výsledky zatím nestačí — zkuste jiný způsob výkladu.`);
-  } else if (totalAnswers <= 8 && n === 1) {
-    tips.push("Cvičení bylo krátké — hodnocení je zatím orientační. Delší nebo opakované procvičení přinese přesnější obrázek.");
-  }
-
-  // === POČET CVIČENÍ ===
-  if (n === 1) {
-    tips.push("Zatím proběhlo jen jedno cvičení. Pro spolehlivé hodnocení doporučujeme látku zopakovat alespoň dvakrát nebo třikrát v různé dny.");
-  } else if (n === 2 && grade <= 2) {
-    tips.push("Dvě cvičení, oba dobré výsledky — slibný start. Třetí opakování potvrdí, že je látka skutečně zažitá.");
-  } else if (n === 2 && grade >= 4) {
-    tips.push("Dvě cvičení s nižším výsledkem. Je ještě brzy na závěry — doporučujeme alespoň jedno nebo dvě další procvičení.");
-  } else if (n >= 7 && grade <= 2) {
-    tips.push("Sedm a více cvičení s dobrými výsledky — tato látka je pevně zvládnuta. Není třeba ji nyní intenzivně procvičovat, stačí občasné zopakování.");
-  } else if (n >= 5 && grade >= 4) {
-    tips.push("I přes pět a více cvičení výsledky stagnují. Pouhé opakování pravděpodobně nestačí — doporučujeme jiný přístup nebo pomoc učitele.");
-  } else if (n >= 4 && grade <= 2) {
-    tips.push("Opakované procvičování přineslo ovoce — vytrvalost se zřetelně vyplatila.");
-  } else if (n === 3 && grade >= 4) {
-    tips.push("Tři cvičení za sebou s nižším výsledkem. Je vhodné zpomalit a zkontrolovat, zda dítě základům skutečně rozumí.");
-  }
-
-  // === SKOK V POSLEDNÍM VÝSLEDKU ===
-  if (lastPct !== null && prevPct !== null) {
-    if (lastPct >= 90 && prevPct < 60) {
-      tips.push("Poslední cvičení dopadlo výrazně lépe než předchozí — skvělý skok! Stojí za to zeptat se dítěte, co mu tentokrát pomohlo.");
-    } else if (lastPct >= 80 && prevPct < 55) {
-      tips.push("Poslední cvičení bylo znatelně lepší. Dítě se posunulo — motivujte ho, aby v tom pokračovalo.");
-    } else if (lastPct < 40 && prevPct >= 75) {
-      tips.push("Poslední výsledek byl výrazně horší než předchozí. Může jít o špatný den nebo únavu — není třeba panikovat, ale příště situaci sledujte.");
-    } else if (lastPct < 55 && prevPct >= 80) {
-      tips.push("Poslední výsledek byl horší než obvykle. Může to být výjimka — zkuste zopakovat za pár dní a výsledky porovnat.");
-    } else if (lastPct >= 85 && prevPct >= 85) {
-      tips.push("Poslední dvě cvičení dopadla výborně — dítě je v látce stabilně dobré.");
-    } else if (lastPct < 45 && prevPct < 45) {
-      tips.push("Poslední dvě cvičení dopadla slabě. Doporučujeme látku projít společně před dalším procvičováním.");
-    }
-  }
-
-  // === NEJLEPŠÍ vs. NEJHORŠÍ ===
-  if (n >= 3 && bestPct - worstPct >= 40) {
-    tips.push(`Rozdíl mezi nejlepším (${bestPct} %) a nejhorším (${worstPct} %) cvičením je velký. Výsledky závisí na podmínkách nebo náladě — zkuste zjistit, co situaci ovlivňuje.`);
-  }
-
-  // === PERFEKTNÍ VÝSLEDKY ===
-  if (perfectCount >= 3) {
-    tips.push(`${perfectCount} ze ${n} cvičení dopadla na 100 % — výjimečná výkonnost, na kterou může být dítě velmi hrdé!`);
-  } else if (perfectCount === 2) {
-    tips.push("Dvě cvičení dopadla na 100 % — dítě na to opakovaně ukázalo. Skvělý výsledek!");
-  } else if (perfectCount === 1 && n >= 3) {
-    tips.push("Jedno cvičení dopadlo na 100 % — dítě na to má. Motivujte ho, aby takového výsledku dosáhlo znovu.");
-  }
-
-  // === PODÍL SPRÁVNÝCH BEZ NÁPOVĚDY ===
-  if (correctRatio >= 0.9 && helpRatio <= 0.05 && totalAnswers >= 10) {
-    tips.push("Naprostá většina odpovědí byla správná hned napoprvé bez nápovědy — to je opravdu solidní výkon.");
-  } else if (correctRatio <= 0.2 && n >= 2) {
-    tips.push("Správných odpovědí bez nápovědy bylo velmi málo. Doporučujeme začít jednodušší formou procvičení nebo si látku nejdříve projít.");
-  }
-
-  // === SÉRIE POSLEDNÍCH CVIČENÍ ===
-  if (n >= 3 && sessions.slice(0, 3).every(s => s.pct >= 80)) {
-    tips.push("Poslední tři cvičení dopadla výborně — dítě je v plné formě a látku ovládá jistě.");
-  } else if (n >= 3 && sessions.slice(0, 3).every(s => s.pct < 50)) {
-    tips.push("Poslední tři cvičení za sebou dopadla slabě. To stojí za pozornost — doporučujeme zjistit příčinu a případně zpomalit.");
-  }
-
-  return tips.slice(0, 1);
-}
-
-function formatCzDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return "";
-  return `${d.getDate()}.${d.getMonth() + 1}.`;
-}
-
-function sessionCountLabel(n: number): string {
-  return `${n} cvičení`;
-}
+/** Levá lišta u řádku odpovědi — stav nese proužek, ne výplň celé plochy. */
+const GROUP_ACCENT = {
+  wrong: "border-l-destructive/60",
+  helped: "border-l-warning/60",
+  correct: "border-l-success/60",
+} as const;
 
 interface Props {
   childId: string;
   skillId: string;
   onClose: () => void;
   childName?: string;
+  /**
+   * Komu se modál ukazuje. Rozhoduje o VŠECH textech — rodič čte diagnózu
+   * o dítěti ve třetí osobě, dítě čte o sobě ve druhé. Volitelné s výchozím
+   * `parent`, protože rodičovská volání jsou dvě a dětské jedno; kdyby se
+   * ale někde zapomnělo, ať radši rodič uvidí text pro rodiče než dítě text
+   * o sobě jako o třetí osobě. Texty žijí v `src/lib/skillFeedback.ts`.
+   */
+  audience?: Audience;
 }
 
-export function SkillDetailModal({ childId, skillId, onClose, childName }: Props) {
+export function SkillDetailModal({ childId, skillId, onClose, childName, audience = "parent" }: Props) {
+  const labels = FEEDBACK_LABELS[audience];
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [logItems, setLogItems] = useState<LogItem[]>([]);
   const [loading, setLoading] = useState(true);
+  // Obojí sbalené: správné odpovědi a starší pokusy jsou doplňkové. Bez
+  // explicitního stavu by `Collapsible` sice fungoval, ale nešel by zavřít
+  // programově — tuhle past už jednou schoval `open={open || shouldDefaultOpen}`
+  // v grafu aktivity, kde se karta nedala sbalit vůbec.
+  const [correctOpen, setCorrectOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   const subject = getSkillSubject(skillId) ?? null;
   const subjectMeta = subject ? getSubjectMeta(subject) : null;
@@ -328,204 +173,246 @@ export function SkillDetailModal({ childId, skillId, onClose, childName }: Props
   // Souhrnný panel = pouze poslední sezení
   const last = sessions[0] ?? null;
   const lastGrade = last ? pctToGrade(last.pct) : null;
-  const gMeta = lastGrade !== null ? GRADE_META[lastGrade] : null;
   const recommendations = last && lastGrade !== null
-    ? getRecommendations(sessions, last.pct, lastGrade)
+    ? getRecommendations(sessions, last.pct, lastGrade, audience)
     : [];
+
+  // Sekce = bílá karta, stejně jako všude jinde v aplikaci. Modál dřív používal
+  // barevné plochy s `border-2`, což je tvar, který má produkt vyhrazený pro
+  // dashed placeholdery — vypadal proto jako cizí těleso.
+  const sectionCls = "rounded-3xl border border-border bg-card p-5 shadow-e1";
+
+  const sectionHeader = (icon: React.ReactNode, tone: string, title: string, subtitle?: string) => (
+    <div className="flex items-center gap-2.5">
+      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl ${tone}`}>{icon}</span>
+      <div className="min-w-0">
+        <h3 className="text-sm font-bold text-foreground leading-tight">{title}</h3>
+        {subtitle && <p className="text-caption text-muted-foreground leading-tight">{subtitle}</p>}
+      </div>
+    </div>
+  );
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl w-[90vw] max-h-[85vh] flex flex-col overflow-hidden">
-        <DialogHeader>
-          {/* Předmět + název dovednosti */}
-          <div className="flex items-center gap-3 mb-1">
+      {/* `rounded-3xl sm:rounded-3xl`: `ui/dialog.tsx` má `sm:rounded-lg`, a
+          responzivní varianta stojí v CSS za base utilitou — samotné
+          `rounded-3xl` by ji nepřebilo a modál by zůstal ostřejší než karty
+          pod ním. `p-0 gap-0` ruší vnitřní odsazení dialogu, protože odsazení
+          si tady řídí hlavička a scroll kontejner zvlášť. */}
+      <DialogContent className="max-w-2xl w-[90vw] max-h-[85vh] flex flex-col gap-0 overflow-hidden rounded-3xl sm:rounded-3xl border-border bg-background p-0 shadow-e2">
+        {/* `pr-12`: zavírací křížek je `absolute right-4 top-4`, dlouhý název
+            tématu by se pod něj jinak podsunul. */}
+        <DialogHeader className="shrink-0 space-y-0 border-b border-border/60 bg-card px-5 py-4 pr-12 text-left sm:px-6">
+          <div className="flex items-center gap-3">
             {subjectMeta && (
-              <div className="h-12 w-12 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-muted overflow-hidden">
                 <IllustrationImg
                   src={subjectMeta.image ?? ""}
-                  className="h-9 w-9 object-contain"
-                  fallback={<span className="text-2xl">{subjectMeta.emoji ?? "📚"}</span>}
+                  className="h-8 w-8 object-contain"
+                  fallback={<span className="text-xl">{subjectMeta.emoji ?? "📚"}</span>}
                 />
-              </div>
+              </span>
             )}
-            <div>
+            <div className="min-w-0">
               {subjectMeta?.label && (
-                <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
+                <p className="text-caption font-bold uppercase tracking-[0.12em] text-muted-foreground leading-none mb-1">
                   {subjectMeta.label}
                 </p>
               )}
-              <DialogTitle className="text-base leading-snug">{getReadableSkillName(skillId)}</DialogTitle>
+              <DialogTitle className="text-base font-bold leading-snug text-foreground">
+                {getReadableSkillName(skillId)}
+              </DialogTitle>
             </div>
           </div>
         </DialogHeader>
 
-        <div className="overflow-y-auto flex-1 pr-1">
+        <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-6 space-y-4">
         {loading ? (
-          <p className="text-center text-sm text-muted-foreground py-8">Načítám výsledky…</p>
+          <p className="py-10 text-center text-sm text-muted-foreground">Načítám výsledky…</p>
         ) : sessions.length === 0 ? (
-          <p className="text-center text-sm text-muted-foreground py-8">Žádné záznamy k zobrazení.</p>
+          // Prázdný stav, ne prázdná díra — `npm run audit:ui` na to má pravidlo.
+          <div className="space-y-1 rounded-3xl border border-dashed border-border bg-card/40 px-6 py-10 text-center">
+            <p className="text-sm font-semibold text-foreground">Zatím tu nic není</p>
+            <p className="text-caption text-muted-foreground">
+              {audience === "child"
+                ? "Až téma procvičíš, uvidíš tu své výsledky."
+                : "Až dítě téma procvičí, uvidíte tu jeho výsledky."}
+            </p>
+          </div>
         ) : (
-          <div className="space-y-4">
-            {/* Souhrnný panel — poslední sezení */}
-            {last && lastGrade !== null && gMeta && (
-              <div className="space-y-2">
-                {/* Úvodní věta */}
-                <p className="text-sm text-slate-600 leading-snug">
-                  {childName
-                    ? (lastGrade <= 2
-                        ? `${childName} procvičoval/a uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
-                        : lastGrade === 3
-                        ? `${childName} procvičoval/a uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek průměrný (${last.pct} %).`
-                        : `${childName} procvičoval/a uvedené téma dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
-                    : (lastGrade <= 2
-                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek výborný (${last.pct} %).`
-                        : lastGrade === 3
-                        ? `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek průměrný (${last.pct} %).`
-                        : `Procvičování ze dne ${formatCzDate(last.date)}, celkem ${pad(last.total, "OTÁZKA")}. Výsledek zatím slabší (${last.pct} %). Stojí za to se k tématu vrátit.`)
-                  }
+          <>
+            {/* ── 1. Verdikt ── */}
+            {last && lastGrade !== null && (
+              <section className={`${sectionCls} space-y-4`}>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {getIntroSentence(audience, last, lastGrade, childName)}
                 </p>
-                {/* Hodnotící karta */}
-                <div className={`rounded-2xl border-2 p-4 ${gMeta.bg} ${gMeta.border}`}>
-                  <div className="flex items-center gap-4">
-                    <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl font-bold border-2 shrink-0 bg-white ${gMeta.color} ${gMeta.border}`}>
-                      {lastGrade}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className={`font-bold text-lg leading-tight ${gMeta.color}`}>{gMeta.label}</p>
-                      <span className={`text-2xl font-bold ${gMeta.color}`}>{last.pct} %</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 mt-3 pt-3 border-t border-black/10">
-                    <span className="text-green-700 font-semibold text-sm flex items-center gap-1">
-                      <CheckCircle2 className="h-4 w-4" /> {last.correct} správně
-                    </span>
-                    {last.helpUsed > 0 && (
-                      <span className="text-amber-600 font-semibold text-sm flex items-center gap-1">
-                        <HelpCircle className="h-4 w-4" /> {last.helpUsed} s nápovědou
-                      </span>
-                    )}
-                    {last.wrong > 0 && (
-                      <span className="text-red-600 font-semibold text-sm flex items-center gap-1">
-                        <XCircle className="h-4 w-4" /> {last.wrong} chybně
-                      </span>
-                    )}
+
+                {/* Známka je štítek, ne displej. Dřív tu byla číslice `text-3xl`
+                    a vedle ní procenta `text-2xl` — dvě obří čísla vedle sebe
+                    dělají skórový panel, což invariant „žádná gamifikace"
+                    vylučuje. Školní známka smí zůstat, jako displej ne. */}
+                <div className="flex items-center gap-3">
+                  <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-xl font-extrabold tabular-nums ${GRADE_TONE[lastGrade]}`}>
+                    {lastGrade}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold leading-tight text-foreground">{GRADE_LABEL[lastGrade]}</p>
+                    <p className="text-caption leading-tight text-muted-foreground tabular-nums">
+                      Úspěšnost {last.pct} % · {pad(last.total, "OTÁZKA")} · {formatCzDate(last.date)}
+                    </p>
                   </div>
                 </div>
-              </div>
-            )}
 
-            {/* Historie cvičení */}
-            {sessions.length > 1 && (
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Historie · {sessionCountLabel(sessions.length - 1)}
-                </p>
-                <div className="space-y-1.5">
-                  {sessions.slice(1).map(s => {
-                    const g = pctToGrade(s.pct);
-                    const gm = GRADE_META[g];
-                    return (
-                      <div key={s.sessionId} className={`rounded-xl border px-3 py-2 flex items-center gap-3 ${gm.bg} ${gm.border}`}>
-                        <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-caption font-bold border bg-white shrink-0 ${gm.color} ${gm.border}`}>
-                          {g}
-                        </span>
-                        <span className={`font-semibold text-sm ${gm.color}`}>{s.pct} %</span>
-                        <div className="flex items-center gap-2 ml-auto text-xs">
-                          <span className="text-green-600 flex items-center gap-0.5"><CheckCircle2 className="h-3 w-3" />{s.correct}</span>
-                          {s.helpUsed > 0 && <span className="text-amber-500 flex items-center gap-0.5"><HelpCircle className="h-3 w-3" />{s.helpUsed}</span>}
-                          {s.wrong > 0 && <span className="text-red-500 flex items-center gap-0.5"><XCircle className="h-3 w-3" />{s.wrong}</span>}
-                          <span className="text-muted-foreground">{formatCzDate(s.date)}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="flex flex-wrap items-center gap-2 border-t border-border/60 pt-3">
+                  <Badge variant="success" className="gap-1">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> {last.correct} správně
+                  </Badge>
+                  {last.helpUsed > 0 && (
+                    <Badge variant="warning" className="gap-1">
+                      <HelpCircle className="h-3.5 w-3.5" /> {last.helpUsed} s nápovědou
+                    </Badge>
+                  )}
+                  {last.wrong > 0 && (
+                    <Badge variant="danger" className="gap-1">
+                      <XCircle className="h-3.5 w-3.5" /> {last.wrong} chybně
+                    </Badge>
+                  )}
                 </div>
-              </div>
+              </section>
             )}
 
-            {/* Jak si vedl(a) */}
+            {/* ── 2. Doporučení / Co dál ──
+                Nahoru, ne dolů: je to jediná akční informace a dřív stála až
+                za seznamem odpovědí, který má klidně třicet řádků. */}
+            {recommendations.length > 0 && (
+              <section className={`${sectionCls} space-y-3`}>
+                {sectionHeader(<Lightbulb className="h-4 w-4" />, "bg-warning/10 text-warning", labels.advice)}
+                {/* Jeden rámeček, i když vět je víc. Dvě samostatné tintované
+                    plochy pod sebou vypadají jako dvě různá sdělení — přitom
+                    je to jedna rada o dvou větách. */}
+                <div className="space-y-1.5 rounded-2xl border border-warning/30 bg-warning-muted px-3.5 py-3">
+                  {recommendations.map((tip, i) => (
+                    <p key={i} className="text-sm leading-relaxed text-foreground">{tip}</p>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* ── 3. Jak si vedl(a) / Jak ti to šlo ── */}
             {logItems.length > 0 && (() => {
               const wrong   = logItems.filter(l => !l.correct);
               const helped  = logItems.filter(l => l.correct && l.helpUsed);
               const correct = logItems.filter(l => l.correct && !l.helpUsed);
 
-              const renderGroup = (
-                items: LogItem[],
-                icon: React.ReactNode,
-                label: string,
-                rowCls: string,
-                dotCls: string,
-                collapsible = false,
-              ) => {
-                if (items.length === 0) return null;
-                const rows = items.map((l) => (
-                  <div key={l.id} className={`rounded-xl px-3 py-2 text-xs ${rowCls}`}>
-                    {l.question
-                      ? <><span className="font-medium">{l.question}</span>
-                          {!l.correct && l.studentAnswer && l.studentAnswer !== l.correctAnswer && (
-                            <span className="block mt-0.5">
-                              Dítě odpovědělo: <span className="font-semibold text-red-700 line-through decoration-red-400">{l.studentAnswer}</span>
-                            </span>
-                          )}
-                          {l.correctAnswer && (
-                            <span className="block text-muted-foreground mt-0.5">
-                              Správná odpověď: <span className="font-semibold">{l.correctAnswer}</span>
-                            </span>
-                          )}
-                        </>
-                      : <span className="text-muted-foreground italic">
-                          {!l.correct ? "Chybná odpověď" : l.helpUsed ? "Správně s nápovědou" : "Správně"}
-                        </span>
-                    }
-                  </div>
-                ));
-                // Chyby a nápověda jsou pro rodiče nejdůležitější → vždy rozbalené.
-                // Správné odpovědi zabírají nejvíc místa a mají nejmenší hodnotu →
-                // defaultně sbalené do <details>, rodič si je může rozkliknout.
-                if (collapsible) {
-                  return (
-                    <details className="group space-y-1">
-                      <summary className={`text-caption font-bold uppercase tracking-wide flex items-center gap-1 cursor-pointer list-none select-none ${dotCls}`}>
-                        {icon} {label} ({items.length})
-                        <span className="ml-1 font-normal normal-case text-muted-foreground group-open:hidden">— rozbalit</span>
-                        <span className="ml-1 font-normal normal-case text-muted-foreground hidden group-open:inline">— sbalit</span>
-                      </summary>
-                      <div className="space-y-1 mt-1">{rows}</div>
-                    </details>
-                  );
-                }
-                return (
-                  <div className="space-y-1">
-                    <p className={`text-caption font-bold uppercase tracking-wide flex items-center gap-1 ${dotCls}`}>
-                      {icon} {label} ({items.length})
+              const row = (l: LogItem, accent: string) => (
+                // Neutrální plocha, stav nese levá lišta. Dřív byly tři plné
+                // tinty pod sebou a chybná odpověď byla přeškrtnutá červeně —
+                // to je u dítěte trest, ne informace.
+                <div key={l.id} className={`rounded-2xl border border-border/60 border-l-[3px] ${accent} bg-muted/40 px-3.5 py-2.5`}>
+                  {l.question ? (
+                    <>
+                      <p className="text-sm font-medium leading-snug text-foreground">{l.question}</p>
+                      {!l.correct && l.studentAnswer && l.studentAnswer !== l.correctAnswer && (
+                        <p className="mt-1 text-caption text-muted-foreground">
+                          {labels.answeredPrefix} <span className="font-semibold text-destructive">{l.studentAnswer}</span>
+                        </p>
+                      )}
+                      {l.correctAnswer && (
+                        <p className="mt-0.5 text-caption text-muted-foreground">
+                          {labels.correctAnswer} <span className="font-semibold text-success">{l.correctAnswer}</span>
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-caption italic text-muted-foreground">
+                      {!l.correct ? "Chybná odpověď" : l.helpUsed ? "Správně s nápovědou" : "Správně"}
                     </p>
-                    {rows}
-                  </div>
-                );
-              };
+                  )}
+                </div>
+              );
+
+              const groupLabel = (icon: React.ReactNode, tone: string, label: string, n: number) => (
+                <p className={`flex items-center gap-1.5 text-caption font-bold uppercase tracking-[0.12em] ${tone}`}>
+                  {icon} {label} <span className="font-semibold text-muted-foreground">({n})</span>
+                </p>
+              );
 
               return (
-                <div className="space-y-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Jak si vedl(a)</p>
-                  {renderGroup(wrong,   <XCircle className="h-3 w-3" />,      "Chybně",         "bg-red-50 border border-red-100 text-red-800",      "text-red-500")}
-                  {renderGroup(helped,  <HelpCircle className="h-3 w-3" />,   "S nápovědou",    "bg-amber-50 border border-amber-100 text-amber-800", "text-amber-500")}
-                  {renderGroup(correct, <CheckCircle2 className="h-3 w-3" />, "Správně",        "bg-green-50 border border-green-100 text-green-800", "text-green-600", true)}
-                </div>
+                <section className={`${sectionCls} space-y-4`}>
+                  {sectionHeader(<ListChecks className="h-4 w-4" />, "bg-primary/10 text-primary", labels.breakdown)}
+
+                  {wrong.length > 0 && (
+                    <div className="space-y-1.5">
+                      {groupLabel(<XCircle className="h-3.5 w-3.5" />, "text-destructive", "Chybně", wrong.length)}
+                      {wrong.map(l => row(l, GROUP_ACCENT.wrong))}
+                    </div>
+                  )}
+
+                  {helped.length > 0 && (
+                    <div className="space-y-1.5">
+                      {groupLabel(<HelpCircle className="h-3.5 w-3.5" />, "text-warning", "S nápovědou", helped.length)}
+                      {helped.map(l => row(l, GROUP_ACCENT.helped))}
+                    </div>
+                  )}
+
+                  {/* Chyby a nápověda jsou to důležité → vždy rozbalené. Správné
+                      odpovědi zabírají nejvíc místa a nesou nejmíň informace →
+                      sbalené. Dřív to řešil nativní <details> s textem
+                      „— rozbalit"; to je popis affordance, ne affordance. */}
+                  {correct.length > 0 && (
+                    <Collapsible open={correctOpen} onOpenChange={setCorrectOpen} className="space-y-1.5">
+                      <CollapsibleTrigger className="group flex w-full items-center gap-1.5 text-caption font-bold uppercase tracking-[0.12em] text-success transition-colors hover:text-foreground">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Správně <span className="font-semibold text-muted-foreground">({correct.length})</span>
+                        <ChevronDown className="ml-auto h-3.5 w-3.5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-1.5 pt-1">
+                        {correct.map(l => row(l, GROUP_ACCENT.correct))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
+                </section>
               );
             })()}
 
-            {/* Doporučení */}
-            {recommendations.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Doporučení</p>
-                {recommendations.map((tip, i) => (
-                  <p key={i} className="text-sm text-slate-700 leading-snug bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5">
-                    {tip}
-                  </p>
-                ))}
-              </div>
+            {/* ── 4. Starší pokusy ── */}
+            {sessions.length > 1 && (
+              <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className={sectionCls}>
+                <CollapsibleTrigger className="group flex w-full items-center gap-2.5 text-left">
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-success/10 text-success">
+                    <Activity className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold text-foreground leading-tight">{labels.history}</span>
+                    <span className="block text-caption text-muted-foreground leading-tight">
+                      {pad(sessions.length - 1, "CVIČENÍ")}
+                    </span>
+                  </span>
+                  <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-1.5 pt-3">
+                  {sessions.slice(1).map(s => {
+                    const g = pctToGrade(s.pct);
+                    return (
+                      <div key={s.sessionId} className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-border/60 bg-muted/40 px-3.5 py-2.5">
+                        <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border text-caption font-bold tabular-nums ${GRADE_TONE[g]}`}>
+                          {g}
+                        </span>
+                        <span className="text-sm font-semibold tabular-nums text-foreground">{s.pct} %</span>
+                        <span className="ml-auto flex flex-wrap items-center gap-2 text-caption tabular-nums text-muted-foreground">
+                          <span className="font-semibold text-success">✓ {s.correct}</span>
+                          {s.helpUsed > 0 && <span className="font-semibold text-warning">? {s.helpUsed}</span>}
+                          {s.wrong > 0 && <span className="font-semibold text-destructive">✗ {s.wrong}</span>}
+                          <span>{formatCzDate(s.date)}</span>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </CollapsibleContent>
+              </Collapsible>
             )}
-          </div>
+          </>
         )}
         </div>
       </DialogContent>

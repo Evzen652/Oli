@@ -293,6 +293,7 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
           childId={childId}
           skillId={detailData.skillId}
           childName={childName}
+          audience="parent"
           onClose={() => setDetailData(null)}
         />
       )}

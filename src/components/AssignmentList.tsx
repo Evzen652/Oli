@@ -310,6 +310,7 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
           childId={childId}
           skillId={detailData.skillId}
           childName={childName}
+          audience="parent"
           onClose={() => setDetailData(null)}
         />
       )}

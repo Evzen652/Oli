@@ -1,6 +1,6 @@
 {
   "note": "Přijaté (zatím neopravené) nálezy UI auditu. Guard selže jen na NOVÉM. Seznam jen zkracuj.",
-  "updated": "2026-09-04",
+  "updated": "2026-09-05",
   "accepted": [
     "branch-only-action|src/components/AdminAIChat.tsx|`handleWizardGenerate` je navěšený jen v dřívější větvi renderu — v hlavním returnu se nevyskytuje, takže akce zmizí, jakmile se komponenta překlopí do druhého stavu.",
     "dead-component|src/components/AdminAIActions.tsx|<AdminAIActions> není nikde importována ani renderována.",
@@ -8,7 +8,6 @@
     "dead-component|src/components/admin/ContentCoverageDashboard.tsx|<ContentCoverageDashboard> není nikde importována ani renderována.",
     "empty-state-null|src/components/AdminAIActions.tsx|`if (actions.length===0) return null` — prázdný stav bez vysvětlení.",
     "empty-state-null|src/components/SelfPracticeList.tsx|`if (loading||groups.length===0) return null` — prázdný stav bez vysvětlení.",
-    "empty-state-null|src/components/SkillDetailModal.tsx|`if (items.length===0) return null` — prázdný stav bez vysvětlení.",
     "empty-state-null|src/components/admin/ExerciseTab.tsx|`if (saved.length===0) return null` — prázdný stav bez vysvětlení.",
     "empty-state-null|src/components/parent/NextWeekPlan.tsx|`if (!items||items.length===0) return null` — prázdný stav bez vysvětlení.",
     "write-only-state|src/components/ProposalReview.tsx|`savingType` se nastavuje přes `setSavingType`, ale nikde se nečte."

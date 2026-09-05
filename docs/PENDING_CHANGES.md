@@ -7,6 +7,34 @@
 
 ---
 
+## ✅ Modál s výsledky — špatné publikum + redesign (2026-09-05)
+
+**Vada:** `SkillDetailModal` se otevírá rodiči i dítěti, ale všechny texty byly
+psané pro rodiče. Dítě o sobě četlo ve třetí osobě a dostávalo rady určené
+někomu jinému („zkuste se zeptat", „proberte s učitelem", „spíše hádá než
+přemýšlí"). Typecheck ani render test to nechytí — kód je validní, jen mluví
+na nesprávné publikum.
+
+- Texty do `src/lib/skillFeedback.ts`, prop `audience: "parent" | "child"`.
+- Dítě má **vlastní sadu**, ne překlopená zájmena. Rodičovská sada beze změny.
+- 13 testů na hranici publik + kontrola, že detektor sám může padnout.
+
+**Redesign** (návrh designera, ověřený proti kódu):
+`emerald: colors.green` v `tailwind.config.ts` znamenalo, že **známka 1 a 2 byly
+vizuálně totožné**. Pět pastelových ramp → tři sémantické tóny. Barevné plochy →
+bílé karty. Známka jako štítek, ne displej (invariant „žádná gamifikace").
+`<details>` → `Collapsible`. Doporučení nahoru, ne za třicetiřádkový seznam.
+
+### ⏭️ Otevřené, mimo rozsah
+
+- **Overlay dialogu je `bg-black/80`** (`ui/dialog.tsx:22`) — pro dětskou část
+  dost tvrdý. Je to sdílená komponenta všech modálů, takže změna na
+  `bg-foreground/50` je samostatné rozhodnutí.
+- **`DESIGN_SYSTEM.md` je zastaralý** u primární barvy (uvádí #5A45E0, aplikace
+  má #F97316). Zatím se řídíme kódem.
+
+---
+
 ## ✅ Rozbité flexboxy na úzké obrazovce — 6 oprav (2026-09-05)
 
 Šest míst se stejnou příčinou: sloupec s tlačítkem `shrink-0`, textový sloupec
