@@ -3,7 +3,7 @@ import { useChildStats } from "@/hooks/useChildStats";
 // ne série. Plamínek z toho dělal streak, který invariant projektu zakazuje.
 import { Sparkles, CalendarDays, CheckCircle2, Star } from "lucide-react";
 import { DewhiteImg } from "@/components/DewhiteImg";
-import { plural, form } from "@/lib/czechGrammar";
+import { form } from "@/lib/czechGrammar";
 
 interface Props {
   childId?: string;
@@ -49,23 +49,27 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
 
     let summaryText: string;
     {
+      // Samostatná věta, ne přívěsek — po odstranění shrnující věty už nemá
+      // k čemu se přilepit. Rozpad zadané/samostatné je jediný údaj, který
+      // v dlaždicích nad tím není.
       const splitPart = assignedTasks > 0 && selfTasks > 0
-        ? ` (${assignedTasks} ze zadání, ${selfTasks} samostatně)`
+        ? `Z toho ${assignedTasks} ze zadání a ${selfTasks} samostatně.`
         : assignedTasks > 0
-        ? " — vše ze zadání"
+        ? "Vše ze zadání."
         : selfTasks > 0
-        ? " — vše samostatně"
+        ? "Vše samostatně."
         : "";
 
-      // Akuzativ (4. pád) — "splnil 1 úlohu / 2 úlohy / 5 úloh" (stejný pattern jako ChildHomePage.pluralTasks)
-      const base = `Za poslední týden splnil/a ${tasks} ${plural(tasks, "úlohu", "úlohy", "úloh")} za ${days} ${form(days, "DEN")}${splitPart} s ${accuracy}% úspěšností.`;
-
+      // Věta NEopakuje čísla z dlaždic nad sebou. Stálo tu „Za poslední týden
+      // splnil/a 12 úloh za 1 den s 67% úspěšností." — všechny tři údaje jsou
+      // v dlaždicích o pár pixelů výš, jen většim písmem. Zbylo to, co
+      // v dlaždicích není: rozpad zadané/samostatné a doporučení.
       const tip =
-        accuracy >= 80 ? " Skvělé výsledky — klidně přidejte nové téma!" :
-        accuracy >= 50 ? " Jde to správným směrem — trochu více opakování a výsledky přijdou." :
-        " Zkuste spolu procvičit jedno konkrétní téma — pomůže to víc než roztříštěné opakování.";
+        accuracy >= 80 ? "Skvělé výsledky — klidně přidejte nové téma!" :
+        accuracy >= 50 ? "Jde to správným směrem — trochu více opakování a výsledky přijdou." :
+        "Zkuste spolu procvičit jedno konkrétní téma — pomůže to víc než roztříštěné opakování.";
 
-      summaryText = base + tip;
+      summaryText = splitPart ? `${splitPart} ${tip}` : tip;
     }
 
     // Světlá varianta — karta rodičovského dashboardu je bílá (dřív oranžový

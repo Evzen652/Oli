@@ -7,6 +7,33 @@
 
 ---
 
+## ✅ Hustota rodičovského dashboardu (2026-09-06)
+
+Stejný průchod jako u modálu, pravidlo „méně je někdy více".
+Naměřeno 2548 px na 914 px okna = 2,8 obrazovky.
+
+Smazáno, protože to bylo jinými slovy o kus výš: uvítací odstavec (výčet sekcí,
+které jsou pod ním nadepsané), shrnující věta pod statistikami (opakovala všechna
+tři čísla z dlaždic), popis u nálezů („Žák chybuje v ‹nadpis›"), podtitulek
+u „Zadané úkoly". Nálezy „Na co se zaměřit" → 2 viditelné + `Zobrazit další (N)`,
+počet vypsaný, ne tichý ořez.
+
+**Výsledek: 2548 → 2154 px, 2304 → 1374 znaků (−40 %).**
+
+🐞 **Vedlejší nález:** `usedGrades` v `ChildSessionLog` byl natvrdo `[1..5]`
+navzdory názvu — čtyři z pěti filtrů vracely „Žádné záznamy odpovídající filtru".
+Odvozeno z dat.
+
+### ⏭️ Zbývá zvážit
+
+- **Prázdná karta „Zadané úkoly" má 212 px** na sdělení „zatím nic". Je to
+  korektní prázdný stav s návodem, takže bez zásahu — ale u rodiče, který nikdy
+  nic nezadá, je to trvalý blok.
+- **Kotvící lišta** („Zadané úkoly ↓ / Procvičování ↓ / Na co se zaměřit ↓") je
+  obsah stránky, která má 2,4 obrazovky. Po dalším zkrácení může být zbytečná.
+
+---
+
 ## ✅ Modál s výsledky — špatné publikum + redesign (2026-09-05)
 
 **Vada:** `SkillDetailModal` se otevírá rodiči i dítěti, ale všechny texty byly

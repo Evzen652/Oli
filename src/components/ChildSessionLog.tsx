@@ -116,7 +116,15 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
     ? subjectsForGrade(grade)
     : [...new Set(sessions.map(s => getSkillSubject(s.skill_id)).filter(Boolean) as string[])];
 
-  const usedGrades: (1 | 2 | 3 | 4 | 5)[] = [1, 2, 3, 4, 5];
+  // Známky, které se v datech OPRAVDU vyskytly. Proměnná se tak jmenovala
+  // odjakživa, ale byl to natvrdo psaný seznam [1..5] — rodič viděl pět filtrů
+  // i u dítěte se dvěma sezeními a čtyři z nich vracely „Žádné záznamy
+  // odpovídající filtru". Tlačítko slibovalo výsledky, které mít nemohlo.
+  // Vzorec musí být týž jako ve `filtered` níž, jinak by šlo odfiltrovat
+  // známku, kterou seznam nabízí.
+  const usedGrades = [...new Set(
+    sessions.map(s => pctToGrade(s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0))
+  )].sort((a, b) => a - b);
 
   // Filtrace
   const filtered = sessions.filter(s => {

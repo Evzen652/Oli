@@ -144,6 +144,38 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (21) — hustota rodičovského dashboardu:
+
+Stejný průchod jako u modálu. Naměřeno 2548 px na 914 px okna = **2,8 obrazovky**,
+2304 znaků. Hledáno opakování, ne sekce navíc.
+
+- ✂️ **Uvítací odstavec smazán.** „Zde vidíte přehled procvičování vašeho dítěte —
+  co zadáváte, jak mu to jde a na které chyby se vyplatí zaměřit" je výčet tří
+  sekcí, které jsou hned pod tím vypsané a nadepsané. Rodič to četl při každé
+  návštěvě a nikdy se z toho nedozvěděl nic nového.
+- ✂️ **Shrnující věta pod statistikami.** „Za poslední týden splnil/a 12 úloh za
+  1 den s 67% úspěšností" — všechny tři údaje jsou v dlaždicích o pár pixelů výš,
+  jen větším písmem. Zbylo, co v dlaždicích není: rozpad zadané/samostatné a rada.
+- ✂️ **Popis u nálezů „Na co se zaměřit".** Generovaný text má u všech nálezů týž
+  tvar „Žák chybuje v ‹nadpis karty›, což naznačuje, že tomu nerozumí". Čtyři
+  nálezy × takový odstavec byly nejdelší blok stránky. Akci nese `suggestion`.
+- ✂️ **Nálezy: 2 viditelné + „Zobrazit další (2)".** Ne tichý ořez — počet je
+  vypsaný. Rodič zareaguje na jednu dvě věci; čtyři karty se stejnou vahou
+  znamenají, že nevyčnívá žádná. 662 → 459 px.
+- ✂️ **Podtitulek „Zadané úkoly"** („Témata, která jste zadali k procvičení
+  (Tonda)") — nadpis podruhé; nad prázdným seznamem dokonce potřetí. Podtitulek
+  u „Samostatné procvičování" naopak **zůstává**: vymezuje pojem, neopakuje fakt.
+- 🐞 **Vedlejší nález — filtry známek slibovaly výsledky, které mít nemohly.**
+  `usedGrades` v `ChildSessionLog` se tak jmenovalo, ale byl to natvrdo psaný
+  seznam `[1..5]`. Rodič viděl pět filtrů i u dítěte se dvěma sezeními a čtyři
+  z nich vracely „Žádné záznamy odpovídající filtru". Nově odvozeno z dat —
+  na testovacím účtu zbyly dva.
+- 🛠 **UI audit chytil moji vlastní chybu** — po zkrácení věty zůstal nepoužitý
+  import `plural`. Opraveno `--fix`.
+- **Výsledek: 2548 → 2154 px** (2,8 → 2,4 obrazovky), **2304 → 1374 znaků (−40 %)**.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **118/118 souborů
+  a 4700 testů**, build prošel, změřeno živě.
+
 ### Session 2026-09-05 (20) — modál s výsledky: špatné publikum + redesign:
 
 - 🐞 **Dítě četlo text psaný pro rodiče.** `SkillDetailModal` se otevírá ze tří

@@ -230,11 +230,15 @@ export default function ParentDashboard() {
         {/* ── Greeting bar ── */}
         <div className="bg-card rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-e1 border border-border">
           <img src={logoNoText} alt="Oli" className="h-14 w-14 object-contain shrink-0" />
+          {/* Bez vysvětlujícího odstavce. Stálo tu „Zde vidíte přehled
+              procvičování vašeho dítěte — co zadáváte, jak mu to jde a na které
+              chyby se vyplatí zaměřit", tedy výčet tří sekcí, které jsou hned
+              pod tím vypsané a nadepsané. Rodič to čte při každé návštěvě
+              a nikdy se z toho nedozví nic nového. */}
           <div className="flex-1 min-w-0">
-            <h1 className="font-bold text-2xl text-foreground leading-tight">
+            <h1 className="font-bold text-xl sm:text-2xl text-foreground leading-tight">
               {t("parent.greeting")}
             </h1>
-            <p className="text-base text-muted-foreground mt-0.5">Zde vidíte přehled procvičování vašeho dítěte — co zadáváte, jak mu to jde a na které chyby se vyplatí zaměřit.</p>
           </div>
           {(
             <>
@@ -423,8 +427,13 @@ export default function ParentDashboard() {
                     <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><ClipboardList className="h-4 w-4" /></span>
                     <h2 className="font-bold text-base text-foreground">Zadané úkoly</h2>
                   </div>
-                  {/* 1. pád — viz poznámka o skloňování u `assign.title` v cs.ts. */}
-                  <p className="text-xs text-muted-foreground mt-0.5">Témata, která jste zadali k procvičení ({child.child_name}).</p>
+                  {/* Bez podtitulku. „Témata, která jste zadali k procvičení
+                      (Tonda)." pod nadpisem „Zadané úkoly" je týž údaj podruhé,
+                      a jméno dítěte nese celá karta. Nad prázdným seznamem to
+                      byla dokonce třetí formulace — pod tím stojí „Zatím jste
+                      nic nezadali" i návod, jak úkol zadat.
+                      Podtitulek u „Samostatné procvičování" naopak zůstává:
+                      ten vymezuje pojem (bez vašeho zadání), neopakuje fakt. */}
                 </div>
                 <div className="p-4">
                   <AssignmentList

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useChildMisconceptions } from "@/hooks/useChildMisconceptions";
-import { Lightbulb, Sparkles, Loader2 } from "lucide-react";
+import { Lightbulb, Sparkles, Loader2, ChevronDown } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { getReadableSkillName, getSkillSubject } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { IllustrationImg } from "@/components/IllustrationImg";
@@ -30,6 +31,7 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
   const loading = hookResult.loading;
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState(false);
+  const [restOpen, setRestOpen] = useState(false);
 
   const handleAnalyze = async () => {
     setAnalyzing(true);
@@ -83,9 +85,16 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
 
   if (data.length === 0) return analyzeButton;
 
-  return (
-    <div className="space-y-3">
-      {data.map((m) => {
+  // Nálezy chodí seřazené podle `confidence` sestupně (viz hook), takže první
+  // dva jsou ty nejjistější. Zbytek je pod přepínačem s VYPSANÝM počtem —
+  // rodič reálně zareaguje na jednu dvě věci a čtyři karty se stejnou vahou
+  // znamenají, že nevyčnívá žádná. Tichý ořez by to být nesměl, `audit:ui`
+  // na „mlčky zahozený zbytek" pravidlo má.
+  const PRIMARY = 2;
+  const primary = data.slice(0, PRIMARY);
+  const rest = data.slice(PRIMARY);
+
+  const card = (m: (typeof data)[number]) => {
         const subject = getSkillSubject(m.skill_id);
         const subjectMeta = subject ? getSubjectMeta(subject) : null;
         const skillName = getReadableSkillName(m.skill_id);
@@ -113,12 +122,36 @@ export function ChildMisconceptions({ childId = "", childName }: Props) {
                 <p className="text-sm text-foreground leading-snug">{sub(m.suggestion)}</p>
               </div>
             )}
-            {m.description && (
-              <p className="text-xs text-muted-foreground leading-relaxed">{sub(m.description)}</p>
-            )}
+            {/* `m.description` se NEzobrazuje. Generovaný popis má u všech
+                nálezů týž tvar „Žák chybuje v <nadpis karty>, což naznačuje, že
+                tomu nerozumí" — tedy nadpis podruhé plus konstatování, které
+                říká už samotná existence sekce „Na co se zaměřit". Čtyři
+                nálezy × jeden takový odstavec byly nejdelší blok stránky.
+                Rodič potřebuje akci, a tu nese `suggestion` nad tím.
+                Kdyby analýza začala vracet konkrétní popis (typ chyby, ne
+                převyprávěný nadpis), má smysl ho vrátit — pak už bude nést
+                informaci, která jinde na kartě není. */}
           </div>
         );
-      })}
+  };
+
+  return (
+    <div className="space-y-3">
+      {primary.map(card)}
+
+      {rest.length > 0 && (
+        <Collapsible open={restOpen} onOpenChange={setRestOpen} className="space-y-3">
+          <CollapsibleTrigger className="group flex w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-border bg-card/40 px-4 py-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-card hover:border-primary/40">
+            <span className="group-data-[state=open]:hidden">Zobrazit další ({rest.length})</span>
+            <span className="hidden group-data-[state=open]:inline">Skrýt další</span>
+            <ChevronDown className="h-3.5 w-3.5 transition-transform group-data-[state=open]:rotate-180" />
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-3">
+            {rest.map(card)}
+          </CollapsibleContent>
+        </Collapsible>
+      )}
+
       {analyzeButton}
     </div>
   );
