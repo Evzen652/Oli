@@ -144,6 +144,39 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (24) — oživení tlačítek (rodič i dítě):
+
+Uživatel: „je to trochu suchopárné, všechno bílé… (malinko) ta tlačítka oživit."
+
+Diagnóza designera: problém není bílá, ale to, že kotvící pilulky byly **jediné
+prvky bez identity** — přitom každá sekce, na kterou míří, svou barvu i ikonu
+už má. Nic se nevymýšlelo, jen se ta barva zopakovala o dva scrolly dřív.
+
+- ✅ **Ikona a tón cílové sekce v pilulce** — `ClipboardList` primary,
+  `Activity` success, `Target` warning. Shodné s hlavičkami sekcí, takže rodič
+  pozná cíl dřív, než dočte text. Všechny tři ikony byly v souboru už
+  naimportované.
+- ✅ **`bg-card` → `bg-muted`.** Nebyla to výjimka, ale **oprava nekonzistence**:
+  „Celá historie" i „Podrobné hodnocení" o pár řádků níž tak vypadají odjakživa,
+  bílé byly jen tyhle tři. Bílá tak zůstává plochou karty a tlačítko se z ní
+  zvedá. Bonus: hover teď může být SVĚTLEJŠÍ než klid (accent #FFF3EA vs
+  muted #F2F0EA), což na bílé nešlo.
+- ✅ **`LIFT`** (`hover:-translate-y-px` + e2 + `active:scale`) — jediný pohyb
+  povolený v aplikaci, definovaný v `ui/button.tsx`. Tyhle pilulky ho jako
+  jediné neměly; nešlo o rozhodnutí, ale o odchylku.
+- ✅ **Žákovská strana:** chipy předmětů dostaly `bg-muted` + `LIFT`. Ikonu
+  cílové sekce **ne** — svou identitu už nesou akvarelovou ilustrací předmětu,
+  a to je přesně to, co rodičovské pilulce chybělo.
+- **Kontrast změřen po zásahu:** text 15,21 : 1; ikony `success` 4,42 a
+  `warning` 4,39. Ikona `primary` má 2,42 — pod 3 : 1, ale je **redundantní
+  k textovému popisku** (WCAG 1.4.11 na ni nedopadá) a je to táž hodnota jako
+  u hlavičky sekce, na kterou míří. Alternativa `text-accent-foreground` (6,4 : 1)
+  by se s tou hlavičkou rozešla, proto ponecháno.
+- **Nedotčeno:** bílá výplň karet, StatPill, ChildActivityBadge, FloatingStars,
+  primární CTA (jeho 2,79 : 1 je dluh tokenu `--primary`, ne téhle úpravy).
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **118/118 souborů
+  a 4700 testů**, build prošel, kontrast změřen živě.
+
 ### Session 2026-09-06 (23) — „Přepočítat analýzu chyb" pryč z rodičovského pohledu:
 
 - ✂️ **Tlačítko odebráno.** Bylo to inženýrské ovládání v rodičovském rozhraní:

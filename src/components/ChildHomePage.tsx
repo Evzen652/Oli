@@ -512,8 +512,14 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   // Na oranžovém pozadí stačila bílá plocha, aby chip vystoupil.
                   // Na bílé kartě ho musí ohraničit okraj — jinak by z něj
                   // zbyla jen ilustrace se jménem plovoucí v prázdnu.
+                  //
+                  // `bg-muted` + `LIFT` shodně s kotvícími pilulkami na
+                  // rodičovském dashboardu: bílá je plocha karty, tlačítko se
+                  // z ní zvedá. Ikonu cílové sekce chip NEDOSTÁVÁ — svou
+                  // identitu už nese akvarelová ilustrace předmětu, a to je
+                  // přesně to, co rodičovské pilulce chybělo.
                   <button key={subj} onClick={() => onBrowseTopics(subj)}
-                    className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-accent/50 transition-colors shadow-e1 shrink-0">
+                    className="flex items-center gap-2 rounded-full border border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-accent hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] transition-all duration-150 shadow-e1 shrink-0">
                     <IllustrationImg src={meta.image} className="h-6 w-6 object-contain" fallback={<span className="text-sm">{meta.emoji}</span>} />
                     {meta.label}
                   </button>

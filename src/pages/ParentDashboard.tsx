@@ -389,15 +389,33 @@ export default function ParentDashboard() {
                   {/* Rychlá navigace do sekcí + hlavní akce. Bod (c): z přehledu
                       se rodič proklikne na všechny části stránky. */}
                   <div className="relative z-10 mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+                    {/* Kotvící pilulky nesou ikonu a tón CÍLOVÉ sekce — tytéž,
+                        jaké má hlavička, na kterou skáčou (`ClipboardList`
+                        primary, `Activity` success, `Target` warning). Nic
+                        nového se nevymýšlí, jen se ta barva opakuje o dva
+                        scrolly dřív, takže rodič pozná cíl dřív, než dočte text.
+
+                        `bg-muted` místo `bg-card`: bílá zůstává plochou karty
+                        a tlačítko se z ní zvedne jako objekt. Není to výjimka —
+                        „Celá historie" i „Podrobné hodnocení" o pár řádků níž
+                        tak vypadají odjakživa; bílé byly jen tyhle tři.
+                        Navíc díky tomu může být hover SVĚTLEJŠÍ než klid
+                        (accent #FFF3EA vs muted #F2F0EA), což na bílé nešlo.
+
+                        `LIFT` (viz `ui/button.tsx`) je jediný pohyb povolený
+                        v aplikaci; tyhle pilulky ho jako jediné neměly. */}
                     <div className="flex flex-wrap gap-2 flex-1">
-                      <button type="button" onClick={() => scrollToSection("ukoly")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
-                        Zadané úkoly <PaintedArrow direction="down" className="h-3.5 w-3.5" />
+                      <button type="button" onClick={() => scrollToSection("ukoly")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] transition-all duration-150">
+                        <ClipboardList className="h-3.5 w-3.5 text-primary" />
+                        Zadané úkoly <PaintedArrow direction="down" className="h-3.5 w-3.5 text-muted-foreground" />
                       </button>
-                      <button type="button" onClick={() => scrollToSection("procvicovani")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
-                        Procvičování <PaintedArrow direction="down" className="h-3.5 w-3.5" />
+                      <button type="button" onClick={() => scrollToSection("procvicovani")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] transition-all duration-150">
+                        <Activity className="h-3.5 w-3.5 text-success" />
+                        Procvičování <PaintedArrow direction="down" className="h-3.5 w-3.5 text-muted-foreground" />
                       </button>
-                      <button type="button" onClick={() => scrollToSection("zamerit")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
-                        Na co se zaměřit <PaintedArrow direction="down" className="h-3.5 w-3.5" />
+                      <button type="button" onClick={() => scrollToSection("zamerit")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent hover:shadow-e2 hover:-translate-y-px active:translate-y-0 active:scale-[0.98] transition-all duration-150">
+                        <Target className="h-3.5 w-3.5 text-warning" />
+                        Na co se zaměřit <PaintedArrow direction="down" className="h-3.5 w-3.5 text-muted-foreground" />
                       </button>
                     </div>
                     {editingId !== child.id && (

@@ -7,6 +7,23 @@
 
 ---
 
+## ✅ Oživení tlačítek — rodič i dítě (2026-09-06)
+
+Kotvící pilulky byly jediné prvky bez identity, přestože sekce, na které míří,
+svou barvu i ikonu mají. Dostaly ikonu a tón cílové sekce, `bg-muted` místo
+`bg-card` a `LIFT`. Žákovské chipy předmětů totéž, bez ikony (identitu nesou
+ilustrací). Kontrast po zásahu: text 15,21 : 1, ikony 4,42 / 4,39;
+`primary` ikona 2,42 — redundantní k popisku, shodné s hlavičkou sekce.
+
+### ⏭️ Otevřené k úklidu (mimo rozsah „malinko oživit")
+
+- **Dětská strana má natvrdo `bg-[#fdf8f2]`** místo tokenu `--background`
+  (#FAF9F6) — `ChildHomePage.tsx`.
+- **Filtrační skupiny na dětské straně jedou na syrových `slate-*`** místo
+  tokenů. Tohle je ta doopravdy šedá část dětského UI.
+
+---
+
 ## ✅ „Přepočítat analýzu chyb" pryč z rodičovského pohledu (2026-09-06)
 
 Inženýrské ovládání v rodičovském rozhraní. Rodič nevěděl, co „analýza chyb" je,
