@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface Misconception {
@@ -20,7 +20,6 @@ export interface Misconception {
 export function useChildMisconceptions(childId: string | null) {
   const [data, setData] = useState<Misconception[]>([]);
   const [loading, setLoading] = useState(false);
-  const [reloadToken, setReloadToken] = useState(0);
 
   useEffect(() => {
     if (!childId) {
@@ -42,9 +41,10 @@ export function useChildMisconceptions(childId: string | null) {
       setLoading(false);
     })();
     return () => { cancelled = true; };
-  }, [childId, reloadToken]);
+  }, [childId]);
 
-  const refetch = useCallback(() => setReloadToken((t) => t + 1), []);
-
-  return { data, loading, refetch };
+  // Bez `refetch`. Existoval jen kvůli tlačítku „Přepočítat analýzu chyb"
+  // v rodičovském pohledu; to bylo odebráno (analýzu spouští `performanceTracker`
+  // sám po chybné odpovědi), takže `refetch` i `reloadToken` neměl kdo volat.
+  return { data, loading };
 }

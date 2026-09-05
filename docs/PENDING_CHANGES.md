@@ -7,6 +7,26 @@
 
 ---
 
+## ✅ „Přepočítat analýzu chyb" pryč z rodičovského pohledu (2026-09-06)
+
+Inženýrské ovládání v rodičovském rozhraní. Rodič nevěděl, co „analýza chyb" je,
+kdy ji zmáčknout ani jestli je seznam čerstvý — zeptal se doslova „co to je?".
+
+Odebráním se nic neztratilo: `performanceTracker.ts:147` spouští
+`analyze-misconceptions` automaticky po chybné odpovědi (rate limit 6 h na dítě),
+edge funkce existující nálezy `update`uje a zastaralé `resolve`uje.
+
+### 🟠 Otevřené: ruční přepočet chybí úplně
+
+Automatika přepočítá jen témata, která dítě **aktuálně procvičuje**. Zastaralý
+nález u tématu, kterého se dítě už nedotkne, zůstane napořád — týká se to
+i poškozeného záznamu s ruským „части" v ostré DB.
+
+Ruční spuštění patří do **adminu**, kde ho zatím nikdo nepřidal. Do té doby jde
+takový záznam opravit jen zásahem do DB.
+
+---
+
 ## ✅ Hustota dětské stránky (2026-09-06)
 
 Třetí průchod pravidlem „méně je někdy více". 1222 px na 914 px = 1,34 obrazovky.

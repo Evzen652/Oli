@@ -144,6 +144,26 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (23) — „Přepočítat analýzu chyb" pryč z rodičovského pohledu:
+
+- ✂️ **Tlačítko odebráno.** Bylo to inženýrské ovládání v rodičovském rozhraní:
+  rodič nevěděl, co „analýza chyb" je, kdy ji zmáčknout ani jestli je seznam
+  čerstvý. Uživatel se na něj zeptal doslova „co to je?", což je na tlačítko
+  dostatečný verdikt.
+- ✅ **Odebráním se nic neztratilo** — `performanceTracker.ts:147` spouští
+  `analyze-misconceptions` **automaticky** po chybné odpovědi (fire-and-forget,
+  rate limit 6 h na dítě). Tlačítko bylo ruční duplikát toho, co běží samo.
+  Edge funkce navíc existující nálezy `update`uje a zastaralé `resolve`uje, takže
+  se seznam obnovuje bez zásahu.
+- ⚠️ **Caveat:** automatika přepočítá jen témata, která dítě aktuálně procvičuje.
+  Zastaralý nález u tématu, kterého se dítě už nedotkne, tak zůstane. Týká se to
+  i toho poškozeného záznamu s ruským „части" v ostré DB. Ruční přepočet patří
+  do adminu — **zatím tam není**, viz `PENDING_CHANGES`.
+- 🧹 Uklizen i `refetch` v `useChildMisconceptions` — po odebrání tlačítka ho
+  neměl kdo volat.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **118/118 souborů
+  a 4700 testů**, build prošel. Sekce 459 → 408 px, stránka 2154 → 2102 px.
+
 ### Session 2026-09-06 (22) — hustota dětské stránky:
 
 Třetí průchod pravidlem „méně je někdy více". Výchozí stav 1222 px na 914 px
