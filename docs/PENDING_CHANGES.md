@@ -7,6 +7,37 @@
 
 ---
 
+## ✅ Úklid `slate-*` a natvrdo psaného pozadí (2026-09-06)
+
+`bg-[#fdf8f2]` → `bg-background`; `slate-*` → tokeny v `ChildHomePage`,
+`ChildSessionLog`, `AssignmentList`, `Report`, `AnonStudentPage`.
+Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
+
+**Mapování** (`slate: colors.stone` v configu, takže jde o teplou šeď):
+
+| bylo | je | pozn. |
+|---|---|---|
+| `text-slate-900` | `text-foreground` | přesná shoda #1C1917 |
+| `text-slate-500` | `text-muted-foreground` | přesná shoda #78716C |
+| `text-slate-600/700` | `text-muted-foreground` / `text-foreground` | dle role |
+| `border-slate-200` | `border-border` | #E7E5E4 → #E7E2D9 |
+| `bg-slate-50` | `bg-background` | |
+| `bg-slate-100` | `bg-muted` | |
+| `bg-slate-800 text-white` | `bg-foreground text-background` | aktivní pilulka |
+| `bg-white` | `bg-card` | |
+
+### 🟠 Zbývá 28 výskytů `slate-*`
+
+`Landing`, `LandingNav`, `Auth`, `Onboarding`, `ChildAuth`, `BackButton`.
+Nedělal jsem je schválně: jsou to vstupní obrazovky, které jsem v téhle session
+vizuálně neprocházel, a **Landing je chráněná plocha**. Mapování výš je hotové,
+takže je to mechanická práce — ale patří k ní projít ty obrazovky v prohlížeči.
+
+Mimo tenhle výčet jsou ještě `src/components/ui/**` (shadcn defaulty) a
+`src/components/admin/**` — jiná kategorie, nespěchá.
+
+---
+
 ## ✅ Oživení tlačítek — rodič i dítě (2026-09-06)
 
 Kotvící pilulky byly jediné prvky bez identity, přestože sekce, na které míří,
@@ -15,12 +46,7 @@ svou barvu i ikonu mají. Dostaly ikonu a tón cílové sekce, `bg-muted` místo
 ilustrací). Kontrast po zásahu: text 15,21 : 1, ikony 4,42 / 4,39;
 `primary` ikona 2,42 — redundantní k popisku, shodné s hlavičkou sekce.
 
-### ⏭️ Otevřené k úklidu (mimo rozsah „malinko oživit")
-
-- **Dětská strana má natvrdo `bg-[#fdf8f2]`** místo tokenu `--background`
-  (#FAF9F6) — `ChildHomePage.tsx`.
-- **Filtrační skupiny na dětské straně jedou na syrových `slate-*`** místo
-  tokenů. Tohle je ta doopravdy šedá část dětského UI.
+### ✅ Vyřízeno 2026-09-06 — viz „Úklid `slate-*`" níž
 
 ---
 

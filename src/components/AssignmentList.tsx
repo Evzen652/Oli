@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -227,15 +227,15 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
       {/* Filtry — fixní, nescrollují */}
       <div className="flex-shrink-0 space-y-2 mb-3">
         {/* Status filtry — pill group */}
-        <div className="flex flex-wrap rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
+        <div className="flex flex-wrap rounded-xl border border-border bg-background p-0.5 gap-0.5">
           {STATUS_FILTERS.map(f => (
             <button
               key={f.key}
               onClick={() => setStatusFilter(f.key)}
               className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${
                 statusFilter === f.key
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {f.label}
@@ -250,8 +250,8 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
               onClick={() => setSubjectFilter(null)}
               className={`h-7 px-3 rounded-xl text-xs font-medium border transition-all ${
                 subjectFilter === null
-                  ? "bg-slate-800 text-white border-slate-800"
-                  : "bg-white text-slate-500 border-slate-200 hover:border-slate-400"
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-card text-muted-foreground border-border hover:border-input"
               }`}
             >
               Vše
@@ -265,11 +265,11 @@ export function AssignmentList({ childId = "", childName, refreshKey, highlightS
                   onClick={() => setSubjectFilter(subjectFilter === s ? null : s)}
                   className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${
                     subjectFilter === s
-                      ? "bg-slate-800 text-white border-slate-800"
-                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"
+                      ? "bg-foreground text-background border-foreground"
+                      : "bg-card text-muted-foreground border-border hover:border-input"
                   }`}
                 >
-                  <span className="h-5 w-5 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
+                  <span className="h-5 w-5 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
                     <IllustrationImg
                       src={meta?.image ?? ""}
                       className="h-4 w-4 object-contain"
@@ -364,7 +364,7 @@ function AssignmentCard({
     // textový sloupec (`min-w-0`) na nulovou šířku.
     <div className={`rounded-3xl border ${cardClasses} px-4 py-4 md:px-7 md:py-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 shadow-sm transition-all duration-500`}>
       <div className="flex flex-1 min-w-0 items-center gap-4 md:gap-6">
-        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 shrink-0" aria-hidden="true">
+        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-muted shrink-0" aria-hidden="true">
           <IllustrationImg
             src={subjectMeta?.image ?? ""}
             className="h-11 w-11 object-contain"

@@ -423,7 +423,7 @@ export default function Report() {
                         tip = "Doporučujeme začít od základů a procvičovat denně po 5–10 minutách.";
                       }
                       return (
-                        <div key={s.skill} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-2">
+                        <div key={s.skill} className="rounded-2xl border border-border/40 bg-muted/40 p-4 space-y-2">
                           <div className="flex items-center justify-between gap-3">
                             <div className="flex items-center gap-2 min-w-0">
                               <span className={`h-2 w-2 rounded-full shrink-0 ${dotColor}`} />

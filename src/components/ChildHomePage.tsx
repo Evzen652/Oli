@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
 import { getContentWarning } from "@/lib/contentAvailability";
@@ -426,7 +426,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
   return (
     <>
-    <div className="min-h-screen bg-[#fdf8f2] px-4 py-6 sm:px-8 sm:py-10">
+    {/* `bg-background`, ne natvrdo psané `#fdf8f2`. Byla to jediná stránka
+        s vlastním odstínem podkladu — o chlup teplejší než token, takže se
+        dětská a rodičovská strana lišily v ploše, na které obě stojí. */}
+    <div className="min-h-screen bg-background px-4 py-6 sm:px-8 sm:py-10">
       <div className="w-full max-w-5xl mx-auto space-y-5">
 
         {/* ── Content fallback banner — pokud ročník dítěte nemá vlastní obsah ── */}
@@ -575,12 +578,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               Starší / Splněné"), z nichž žádné nemohlo nic ukázat. */}
           {assignments.length > 0 && (
           <div className="px-5 pt-3 pb-1">
-            <div className="flex flex-wrap w-fit max-w-full rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
+            <div className="flex flex-wrap w-fit max-w-full rounded-xl border border-border bg-background p-0.5 gap-0.5">
               {(["all", "today", "week", "older", "completed"] as const).map(f => {
                 const labels = { all: "Vše", today: "Dnes", week: "Tento týden", older: "Starší", completed: "Splněné" };
                 return (
                   <button key={f} onClick={() => setAssignmentDateFilter(f)}
-                    className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${assignmentDateFilter === f ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>
+                    className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${assignmentDateFilter === f ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
                     {labels[f]}
                   </button>
                 );
@@ -592,15 +595,15 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           {assignmentSubjects.length > 1 && (
             <div className="px-5 pt-2 pb-1 flex flex-wrap gap-1.5">
               <button onClick={() => setAssignmentSubject(null)}
-                className={`h-7 px-3 rounded-xl text-xs font-medium border transition-all ${assignmentSubject === null ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-500 border-slate-200 hover:border-slate-400"}`}
+                className={`h-7 px-3 rounded-xl text-xs font-medium border transition-all ${assignmentSubject === null ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-input"}`}
               >Vše</button>
               {assignmentSubjects.map(subj => {
                 const meta = getSubjectMeta(subj);
                 return (
                   <button key={subj} onClick={() => setAssignmentSubject(assignmentSubject === subj ? null : subj)}
-                    className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${assignmentSubject === subj ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"}`}
+                    className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${assignmentSubject === subj ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-input"}`}
                   >
-                    <span className="h-5 w-5 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
+                    <span className="h-5 w-5 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
                       <IllustrationImg src={meta?.image ?? ""} className="h-4 w-4 object-contain" fallback={<span className="text-caption">{meta?.emoji ?? "📚"}</span>} />
                     </span>
                     {meta?.label ?? subj}
@@ -627,7 +630,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               ].filter(Boolean).join(" · ");
               const isCompleted = a.status === "completed" || a.status === "skipped";
               return (
-                <div key={a.id} className={`rounded-2xl border p-4 flex items-center gap-4 ${isCompleted ? "border-emerald-200 bg-emerald-50/40" : "border-border/40 bg-slate-50/60"}`}>
+                <div key={a.id} className={`rounded-2xl border p-4 flex items-center gap-4 ${isCompleted ? "border-emerald-200 bg-emerald-50/40" : "border-border/40 bg-muted/40"}`}>
                   <div className="flex-1 min-w-0">
                     <SkillHeader subjMeta={subjMeta} breadcrumb={breadcrumb} skillName={a.skillName} />
                     <div className="flex items-center gap-2 mt-2 flex-wrap">
@@ -678,10 +681,10 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
             </div>
           )}
           <div className="px-5 pt-3 pb-1">
-            <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
+            <div className="inline-flex rounded-xl border border-border bg-background p-0.5 gap-0.5">
               {PERIOD_OPTIONS.map(opt => (
                 <button key={opt.value} onClick={() => setStatsPeriod(opt.value)}
-                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${statsPeriod === opt.value ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${statsPeriod === opt.value ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
                 >{opt.label}</button>
               ))}
             </div>
@@ -692,16 +695,16 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
             <div className="px-5 pt-2 pb-1 flex flex-wrap gap-1.5">
               <button
                 onClick={() => setSkillSubject(null)}
-                className={`h-7 px-3 rounded-xl text-xs font-medium border transition-all ${skillSubject === null ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-500 border-slate-200 hover:border-slate-400"}`}
+                className={`h-7 px-3 rounded-xl text-xs font-medium border transition-all ${skillSubject === null ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-input"}`}
               >Vše</button>
               {skillSubjects.map(subj => {
                 const meta = getSubjectMeta(subj);
                 return (
                   <button key={subj}
                     onClick={() => setSkillSubject(skillSubject === subj ? null : subj)}
-                    className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${skillSubject === subj ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"}`}
+                    className={`h-7 pl-1.5 pr-3 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5 ${skillSubject === subj ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-input"}`}
                   >
-                    <span className="h-5 w-5 rounded-lg bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
+                    <span className="h-5 w-5 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
                       <IllustrationImg src={meta?.image ?? ""} className="h-4 w-4 object-contain" fallback={<span className="text-caption">{meta?.emoji ?? "📚"}</span>} />
                     </span>
                     {meta?.label ?? subj}
@@ -713,17 +716,17 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           {/* Filtry 1-5 jsou pro dětské UI demotivační (FEATURES.studentGradeFilters = false). */}
           {FEATURES.studentGradeFilters && (
             <div className="px-5 pt-2 pb-1">
-              <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5 flex-wrap">
+              <div className="inline-flex rounded-xl border border-border bg-background p-0.5 gap-0.5 flex-wrap">
                 <button
                   onClick={() => setSkillGradeFilter(null)}
-                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === null ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                  className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === null ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
                 >Vše</button>
                 {([1, 2, 3, 4, 5] as const).map(g => {
                   const m = GRADE_META[g];
                   return (
                     <button key={g}
                       onClick={() => setSkillGradeFilter(skillGradeFilter === g ? null : g)}
-                      className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === g ? `bg-white shadow-sm ${m.color}` : "text-slate-500 hover:text-slate-700"}`}
+                      className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${skillGradeFilter === g ? `bg-card shadow-sm ${m.color}` : "text-muted-foreground hover:text-foreground"}`}
                     >{g} – {m.label}</button>
                   );
                 })}
@@ -749,7 +752,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 topic?.topic && topic.topic !== getReadableSkillName(s.skillId) ? topic.topic : null,
               ].filter(Boolean).join(" · ");
               return (
-                <div key={s.skillId} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-3">
+                <div key={s.skillId} className="rounded-2xl border border-border/40 bg-muted/40 p-4 space-y-3">
                   {/* Na mobilu pod sebe — hlavička a výsledky se vedle sebe
                       do 275 px nevejdou a řádek přetékal kartu. */}
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3">
@@ -886,7 +889,7 @@ function PeriodSelect({ value, onChange }: { value: StatsPeriod; onChange: (v: S
         <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[150px] rounded-xl border border-border/50 bg-white shadow-lg py-1 overflow-hidden">
+        <div className="absolute left-0 top-full mt-1.5 z-50 min-w-[150px] rounded-xl border border-border/50 bg-card shadow-lg py-1 overflow-hidden">
           {PERIOD_OPTIONS.map(opt => (
             <button
               key={opt.value}
@@ -894,7 +897,7 @@ function PeriodSelect({ value, onChange }: { value: StatsPeriod; onChange: (v: S
               className={`w-full text-left px-3.5 py-2 text-xs transition-colors ${
                 opt.value === value
                   ? "bg-blue-50 text-blue-600 font-semibold"
-                  : "text-foreground hover:bg-slate-50"
+                  : "text-foreground hover:bg-background"
               }`}
             >
               {opt.label}
@@ -930,7 +933,7 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
     // hlavička se odmítne zúžit pod svůj obsah a řádek přeteče kartu.
     // Mimo flex kontext (řádek úkolu) obě třídy nic nedělají.
     <div className="flex min-w-0 flex-1 items-start gap-2">
-      <div className="shrink-0 h-9 w-9 rounded-lg bg-slate-100 flex items-center justify-center">
+      <div className="shrink-0 h-9 w-9 rounded-lg bg-muted flex items-center justify-center">
         {subjMeta
           ? <IllustrationImg src={subjMeta.image} className="h-7 w-7 object-contain" fallback={<span className="text-base">{subjMeta.emoji}</span>} />
           : <span className="text-base">📋</span>}

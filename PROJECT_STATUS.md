@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (25) — úklid `slate-*` a natvrdo psaného pozadí:
+
+- ✅ **`bg-[#fdf8f2]` → `bg-background`.** Dětská stránka byla jediná s vlastním
+  odstínem podkladu (#FDF8F2 vs token #FAF9F6) — o chlup teplejší, takže se
+  obě strany lišily v ploše, na které stojí.
+- ✅ **`slate-*` → tokeny** v `ChildHomePage`, `ChildSessionLog`, `AssignmentList`,
+  `Report`, `AnonStudentPage`. Mapování: `slate-900`→`foreground`,
+  `slate-500`→`muted-foreground` (obojí **přesná shoda**, obě jsou #1C1917 /
+  #78716C), `slate-200`→`border`, `slate-50`→`background`, `slate-100`→`muted`,
+  `slate-800 + text-white`→`foreground + background`. Plus `bg-white`→`bg-card`.
+- ✅ **Ověřeno srovnáním, ne odhadem:** před zásahem jsem si uložil spočítané
+  barvy filtračních pilulek a po zásahu porovnal — pozadí `rgb(241,239,233)`,
+  text `rgb(28,25,23)`, okraj `rgb(231,227,217)` **beze změny**; neaktivní text
+  se posunul o 1 jednotku na kanál (zaokrouhlení HSL).
+- 🐞 **Vlastní chyba, kterou odhalil až prohlížeč:** komentář `//` vložený mezi
+  `<>` a `<div>` je v JSX **children pozici**, takže se vykreslil jako viditelný
+  text na stránce. Typecheck ani testy to nechytnou. Opraveno na `{/* */}`.
+  (Táž past jako dřív u `{/* */}` uvnitř `{podmínka && ( … )}`.)
+- ⏭️ **Zbývá 28 výskytů** v `Landing`, `LandingNav`, `Auth`, `Onboarding`,
+  `ChildAuth`, `BackButton` — vstupní obrazovky, které jsem v téhle session
+  vizuálně neprocházel. Landing je navíc chráněná plocha. Viz `PENDING_CHANGES`.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **118/118 souborů
+  a 4700 testů**, build prošel, obě strany živě.
+
 ### Session 2026-09-06 (24) — oživení tlačítek (rodič i dítě):
 
 Uživatel: „je to trochu suchopárné, všechno bílé… (malinko) ta tlačítka oživit."

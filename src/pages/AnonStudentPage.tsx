@@ -154,8 +154,8 @@ export default function AnonStudentPage() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-sm font-bold text-slate-800">Den {currentDay}</span>
-                    <span className="text-xs text-slate-500">z {TRIAL_DAYS}</span>
+                    <span className="text-sm font-bold text-foreground">Den {currentDay}</span>
+                    <span className="text-xs text-muted-foreground">z {TRIAL_DAYS}</span>
                     <span className="text-xs text-violet-600 font-medium ml-1">— plný přístup ke všem tématům</span>
                   </div>
                   <div className="mt-1.5 h-1.5 w-full max-w-xs rounded-full bg-accent overflow-hidden">
@@ -182,9 +182,9 @@ export default function AnonStudentPage() {
               <div className="h-9 w-9 rounded-xl bg-violet-100 flex items-center justify-center shrink-0">
                 <BookOpen className="h-4.5 w-4.5 text-violet-600" />
               </div>
-              <div className="text-sm text-slate-600 leading-snug">
-                <span className="font-semibold text-slate-800">Procvičuješ jako host.</span>{" "}
-                <span className="text-slate-500">Pokrok se uloží jen v tomto prohlížeči.</span>
+              <div className="text-sm text-muted-foreground leading-snug">
+                <span className="font-semibold text-foreground">Procvičuješ jako host.</span>{" "}
+                <span className="text-muted-foreground">Pokrok se uloží jen v tomto prohlížeči.</span>
               </div>
             </div>
             <button
