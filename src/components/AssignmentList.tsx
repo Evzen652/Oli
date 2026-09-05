@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -388,16 +388,16 @@ function AssignmentCard({
         )}
         {isCompleted && total > 0 && (
           <div className="flex items-center gap-1.5">
-            <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">
+            <span className="flex items-center gap-0.5 text-xs text-success font-semibold">
               ✓ {correct} správně
             </span>
             {helpUsed > 0 && (
-              <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">
+              <span className="flex items-center gap-0.5 text-xs text-warning font-semibold">
                 {helpUsed} s nápov.
               </span>
             )}
             {wrong > 0 && (
-              <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">
+              <span className="flex items-center gap-0.5 text-xs text-destructive font-semibold">
                 ✗ {wrong} špatně
               </span>
             )}
@@ -432,7 +432,7 @@ function AssignmentCard({
           <Button
             variant="outline"
             size="sm"
-            className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
+            className="h-7 px-2.5 rounded-full text-xs text-orange-800 border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
             onClick={onDetail}
           >
             <BarChart2 className="h-3.5 w-3.5" />

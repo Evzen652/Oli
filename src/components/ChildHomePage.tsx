@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getTopicById, getTopicsForGrade } from "@/lib/contentRegistry";
 import { getContentWarning } from "@/lib/contentAvailability";
@@ -8,7 +8,8 @@ import { FEATURES } from "@/lib/features";
 import { useChildStats, type StatsPeriod } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart2, Calendar, ChevronDown, Link2 } from "lucide-react";
+import { BarChart2, Calendar, CalendarDays, CheckCircle2, ChevronDown, Heart, Activity, Link2, Star } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { toast } from "sonner";
 import { getReadableSkillName } from "@/lib/skillReadableName";
@@ -123,7 +124,7 @@ function PairingCodeInput({ onPaired }: { onPaired: (childName: string, grade: n
         </div>
         {status === "loading" && <p className="text-sm text-muted-foreground animate-pulse">Ověřuji kód...</p>}
         {status === "error" && <p className="text-sm text-destructive">{errorMsg}</p>}
-        {status === "success" && <p className="text-sm text-green-600 font-medium">Propojeno!</p>}
+        {status === "success" && <p className="text-sm text-success font-medium">Propojeno!</p>}
       </CardContent>
     </Card>
   );
@@ -429,7 +430,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         })()}
 
         {/* ── Greeting bar ── */}
-        <div className="bg-white rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-sm border border-black/[0.05]">
+        <div className="bg-card rounded-3xl px-6 py-5 flex flex-wrap items-center gap-4 shadow-e1 border border-border">
           <div className="h-14 w-14 flex items-center justify-center shrink-0">
             <img src={oliPozdrav} alt="" className="h-14 w-14 object-contain" />
           </div>
@@ -450,9 +451,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                   s tooltipem „za sebou bez přerušení" — dítěti to lhalo
                   a zároveň to byl streak, který invariant „no gamification"
                   zakazuje. Popisek proto říká přesně to, co se měří. */}
-              <StatPill emoji="📅" main={pluralDays(stats.daysActive)} sub="s procvičováním" cls="bg-orange-100 text-orange-800" tooltip={`Kolik různých dní jsi procvičoval/a (${periodLabel.toLowerCase()}).`} />
-              <StatPill emoji="✅" main={String(stats.tasks)} sub={pluralTasks(stats.tasks)} cls="bg-emerald-100 text-emerald-800" tooltip={`Kolik úloh jsi splnil/a (${periodLabel.toLowerCase()}).`} />
-              <StatPill emoji="⭐" main={`${stats.accuracy} %`} sub="úspěšnost" cls="bg-violet-100 text-violet-800" tooltip={`Z každých 100 odpovědí máš ${stats.accuracy} správně.`} />
+              <StatPill icon={CalendarDays} main={pluralDays(stats.daysActive)} sub="s procvičováním" tone="primary" tooltip={`Kolik různých dní jsi procvičoval/a (${periodLabel.toLowerCase()}).`} />
+              <StatPill icon={CheckCircle2} main={String(stats.tasks)} sub={pluralTasks(stats.tasks)} tone="success" tooltip={`Kolik úloh jsi splnil/a (${periodLabel.toLowerCase()}).`} />
+              <StatPill icon={Star} main={`${stats.accuracy} %`} sub="úspěšnost" tone="warning" tooltip={`Z každých 100 odpovědí máš ${stats.accuracy} správně.`} />
             </div>
           )}
         </div>
@@ -464,10 +465,18 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
 
         {/* ── Hero: Procvičovat samostatně ── */}
-        {/* Hero ve značkové borůvkové. Odstíny 600–800 kvůli kontrastu bílého
-            textu (≥6,25:1) — světlejší varianty i původní violet-500 (4,2:1)
-            byly pod limitem WCAG AA. */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-violet-700 to-violet-800 px-8 py-8 text-white flex flex-col min-h-[180px]">
+        {/* Hero zůstává jediná velká barevná plocha na stránce — dítě potřebuje
+            jednu zjevnou akci, rodič si vystačí s pilulkami. Karty kolem už jsou
+            bílé jako na rodičovském dashboardu, takže hero nekonkuruje ničemu.
+
+            Odstíny 700–900, ne 600–800. Rampa `violet` je v `tailwind.config.ts`
+            alias na značkovou oranžovou (`violet: brandOrange`), takže komentář
+            o „borůvkové" tady dřív popisoval barvu, která se nevykresluje.
+            Změřeno na živé stránce: `violet-600` = `#EA580C` dávalo bílému textu
+            3,56 : 1 — nadpis (30 px/800) tím prošel, ale „HLAVNÍ AKCE" (12 px)
+            a podtitulek (15 px) potřebují 4,5 a neprošly. `violet-700`
+            (`#C2410C`) je na 5,10 : 1, takže projde všechno. */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-700 via-violet-800 to-violet-900 px-8 py-8 text-white flex flex-col min-h-[180px]">
           {/* Plovoucí hvězdičky — každá má vlastní dráhu */}
           <span className="absolute top-5 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
           <span className="absolute top-8 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>
@@ -501,17 +510,25 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 );
               })}
             </div>
+            {/* `text-orange-800` (#9A3412), ne `text-primary` (#F97316):
+                značková oranžová má na bílé jen 2,79 : 1, tedy pod normou pro
+                15px text. Tmavší odstín téže rampy je na 6,6 : 1 a vypadá
+                stejně „oranžově" — je to táž barva, jen čitelná. */}
             <button onClick={() => onBrowseTopics()}
-              className="shrink-0 h-12 rounded-2xl bg-white font-bold text-primary hover:bg-white/95 active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-md whitespace-nowrap">
+              className="shrink-0 h-12 rounded-2xl bg-white font-bold text-orange-800 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-md whitespace-nowrap">
               Začít procvičovat <PaintedArrow className="h-4 w-4 shrink-0" />
             </button>
           </div>
         </div>
 
         {/* ── Úkoly od rodiče ── */}
-        <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
-          <div className="px-5 py-4 border-b border-border/40 flex items-center gap-2.5">
-            <span className="text-rose-500">❤️</span>
+        <div className="bg-card rounded-3xl shadow-e1 border border-border overflow-hidden">
+          <div className="px-5 py-4 border-b border-border/60 flex items-center gap-2.5">
+            {/* Ikona v tintové dlaždici — stejná anatomie hlavičky sekce jako
+                na rodičovském dashboardu. Emoji se na každé platformě kreslí
+                jinak a vedle akvarelových ilustrací působí jako cizí těleso
+                (totéž rozhodnutí padlo u trofeje ve shrnutí sezení). */}
+            <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><Heart className="h-4 w-4" /></span>
             <div className="flex-1 min-w-0">
               <h2 className="font-bold text-foreground text-base">Úkoly od rodiče</h2>
               <p className="text-xs text-muted-foreground leading-tight">Tady jsou cvičení, která ti zadali doma. Snaž se je splnit do termínu!</p>
@@ -616,9 +633,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         </div>
 
         {/* ── Co jsi procvičoval ── */}
-        <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
-          <div className="px-5 py-4 border-b border-border/40 flex items-center gap-2.5">
-            <span className="text-purple-500">📊</span>
+        <div className="bg-card rounded-3xl shadow-e1 border border-border overflow-hidden">
+          <div className="px-5 py-4 border-b border-border/60 flex items-center gap-2.5">
+            <span className="grid h-8 w-8 place-items-center rounded-xl bg-success/10 text-success shrink-0"><Activity className="h-4 w-4" /></span>
             <div className="flex-1 min-w-0">
               <h2 className="font-bold text-foreground text-base">Co jsi procvičoval</h2>
               <p className="text-xs text-muted-foreground leading-tight">Podívej se, jak ti to šlo v poslední době.</p>
@@ -717,7 +734,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
+                      className="h-7 px-2.5 rounded-full text-xs text-orange-800 border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
                       onClick={() => setSelectedSkill({ skillId: s.skillId })}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
@@ -731,12 +748,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
         </div>
 
         {/* ── Tip dne ── */}
-        <div className="bg-white rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-black/[0.05]">
+        <div className="bg-card rounded-3xl px-6 py-5 flex items-center gap-4 shadow-e1 border border-border">
           <div className="h-12 w-12 flex items-center justify-center shrink-0">
             <img src={oliTip} alt="" className="h-12 w-12 object-contain" />
           </div>
           <div>
-            <p className="text-xs font-bold text-orange-500 mb-1">Tip dne</p>
+            <p className="text-xs font-bold text-orange-800 mb-1">Tip dne</p>
             <p className="font-semibold text-base text-foreground">{TIPS[new Date().getDate() % TIPS.length]}</p>
           </div>
         </div>
@@ -899,13 +916,40 @@ function pluralTasks(n: number) {
   return czPlural(n, "úlohu", "úlohy", "úloh");
 }
 
-function StatPill({ emoji, main, sub, cls, tooltip }: { emoji: string; main: string; sub: string; cls: string; tooltip?: string }) {
+/**
+ * Statistika v hlavičce — bílá karta s ikonou, jako `ChildActivityBadge`
+ * na rodičovském dashboardu.
+ *
+ * Dřív to byly plné barevné plochy (`bg-orange-100` / `bg-emerald-100` /
+ * `bg-violet-100`) s emoji. Dvě z nich přitom vypadaly **identicky**: rampa
+ * `violet` je v `tailwind.config.ts` alias na značkovou oranžovou, takže
+ * „dní" a „úspěšnost" měly po přemapování stejný tint. Barvu tady nese jen
+ * ikona a tenký okraj — plochu drží bílá karta, jak žádá design systém
+ * („karta je vždy bílá, barvu nesou obrázky, ne UI").
+ */
+const STAT_TONES = {
+  primary: { border: "border-primary/25", icon: "text-primary" },
+  success: { border: "border-success/30", icon: "text-success" },
+  warning: { border: "border-warning/30", icon: "text-warning" },
+} as const;
+
+function StatPill({ icon: Icon, main, sub, tone, tooltip }: {
+  icon: LucideIcon;
+  main: string;
+  sub: string;
+  tone: keyof typeof STAT_TONES;
+  tooltip?: string;
+}) {
+  const t = STAT_TONES[tone];
   return (
-    <div title={tooltip} className={`rounded-2xl px-4 py-2.5 flex items-center gap-2.5 cursor-help ${cls}`}>
-      <span className="text-lg leading-none">{emoji}</span>
+    <div
+      title={tooltip}
+      className={`rounded-2xl border ${t.border} bg-card px-4 py-2.5 flex items-center gap-2.5 cursor-help shadow-e1`}
+    >
+      <Icon className={`h-5 w-5 shrink-0 ${t.icon}`} aria-hidden />
       <div>
-        <p className="font-extrabold text-base leading-tight tabular-nums">{main}</p>
-        <p className="text-xs opacity-70 leading-tight">{sub}</p>
+        <p className="font-extrabold text-base leading-tight tabular-nums text-foreground">{main}</p>
+        <p className="text-xs text-muted-foreground leading-tight">{sub}</p>
       </div>
     </div>
   );

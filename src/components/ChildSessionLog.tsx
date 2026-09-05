@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BarChart2 } from "lucide-react";
 import { getSkillSubject, getReadableSkillName } from "@/lib/skillReadableName";
@@ -250,9 +250,9 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
                 </div>
                 <div className="flex flex-col items-end gap-3 shrink-0">
                   <div className="flex items-center gap-1.5">
-                    {s.correct - s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-green-600 font-semibold">✓ {s.correct - s.help_used} správně</span>}
-                    {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-amber-500 font-semibold">{s.help_used} s nápov.</span>}
-                    {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-red-500 font-semibold">✗ {s.total - s.correct} špatně</span>}
+                    {s.correct - s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-success font-semibold">✓ {s.correct - s.help_used} správně</span>}
+                    {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-warning font-semibold">{s.help_used} s nápov.</span>}
+                    {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-destructive font-semibold">✗ {s.total - s.correct} špatně</span>}
                     <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-caption font-bold border ${gMeta.bg} ${gMeta.color} ${gMeta.border}`}>
                       {grade}
                     </span>
@@ -261,7 +261,7 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-7 px-2.5 rounded-full text-xs text-primary border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
+                      className="h-7 px-2.5 rounded-full text-xs text-orange-800 border-primary/30 hover:bg-accent flex items-center gap-1 font-semibold"
                       onClick={() => setDetailData({ skillId: s.skill_id })}
                     >
                       <BarChart2 className="h-3.5 w-3.5" />
