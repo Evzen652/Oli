@@ -123,6 +123,12 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // Běžný text (#44403C, 9,76:1). `--foreground-soft` byl v index.css
+        // definovaný od začátku, ale TADY chyběl — takže `text-foreground-soft`
+        // neexistoval a kdo potřeboval odstín mezi nadpisem a popiskem, sáhl
+        // po `text-slate-600`. Tím vznikla většina zbylých slate tříd; token
+        // se registruje, aby ta záminka zmizela.
+        "foreground-soft": "hsl(var(--foreground-soft))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

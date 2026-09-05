@@ -144,6 +144,45 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (26) — vstupní obrazovky dotažené + chybějící token:
+
+- ✅ **`--foreground-soft` zaregistrován v Tailwindu.** Token byl v `index.css`
+  definovaný od začátku (#44403C, „běžný text"), ale v `tailwind.config.ts`
+  chyběl — `text-foreground-soft` tedy **neexistoval**. Kdo potřeboval odstín
+  mezi nadpisem a popiskem, neměl co použít a sáhl po `text-slate-600`. Tím
+  vznikla většina zbylých slate tříd; tohle je jejich vlastní příčina.
+- ✅ **Dotaženo:** `Landing`, `LandingNav`, `Auth`, `ChildAuth`, `Onboarding`,
+  `Report`, `ParentDashboard`, `AnonStudentPage`, `AnonMigrationDialog`,
+  `InviteParentDialog`. `BackButton` byl čistý už dřív — slate v něm je jen
+  v komentáři popisujícím starý stav.
+- ✅ **Gradient, který nemohl gradovat.** `Auth` i `ChildAuth` měly
+  `from-violet-50 via-purple-50 to-orange-50`; config mapuje violet i purple na
+  značkovou oranžovou, takže **všechny tři zastávky renderovaly #FFF7ED**
+  (změřeno v prohlížeči). Tříbarevný přechod byl plná barva → `bg-accent`.
+- ✅ **Studená šeď na landingu.** `bg-[#F8FAFC]` (slate-50, modrošedá) byl jediný
+  studený podklad v teplé paletě → `bg-background` #FAF9F6.
+- ✅ **Měřitelný přínos pro přístupnost:** dva odkazy na `AnonStudentPage`
+  (`text-gray-400`) měly kontrast **2,52:1 — propadaly WCAG AA**. Po převodu na
+  `text-muted-foreground` mají **4,74:1**.
+- 🐞 **Vlastní chyba, málem drahá:** v PowerShellu se `@( @("a","b") )` rozbalí
+  na plochý dvouprvkový řetězcový pole, takže se iterovalo po **znacích** —
+  skript nahradil v `ParentDashboard.tsx` každé `b` za `g` (286×). Zasáhlo to
+  jen ten jediný soubor s jednou dvojicí; vráceno `git checkout` a opraveno
+  ručně. **Vnořené pole v PS potřebuje `,@(...)` nebo `[object[]]`.**
+- ⏭️ **Zbývá ~30 výskytů v adminu** (`AdminDashboard`, `AdminRvpTree`,
+  `AdminContentAudit`, …) a v `src/components/ui/**` (shadcn defaulty).
+  Záměrně nesaženo — vnitřní nástroje, které jsem vizuálně neprocházel.
+- ⏭️ **Ponecháno záměrně:** `subjectRegistry.ts` a paleta `C` v `Landing.tsx`
+  (dokumentované dekorativní palety, ne odvozeniny tokenů), `#1E293B` v
+  `OliLogo` (barva značky, doložená komentářem), `bg-white/15`–`/70` překryvy
+  (bílý závoj nad barvou, ne karta), `SessionEndSummary` (soudržná lokální
+  oranžová, pro `#FFF1E6` token neexistuje).
+- ⚠️ **Preview je odhlášené.** Kvůli anonymním obrazovkám jsem se v prohlížeči
+  odhlásil; heslo zpět zadat nesmím, přihlášení je na uživateli.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **118/118 souborů
+  a 4700 testů**, build prošel; `/landing`, `/auth`, `/auth/child`,
+  `/onboarding` i `/student` projity živě a barvy změřeny.
+
 ### Session 2026-09-06 (25) — úklid `slate-*` a natvrdo psaného pozadí:
 
 - ✅ **`bg-[#fdf8f2]` → `bg-background`.** Dětská stránka byla jediná s vlastním

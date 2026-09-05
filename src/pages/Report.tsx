@@ -135,7 +135,7 @@ export default function Report() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#fdf8f2]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center space-y-3">
           <p className="text-4xl animate-bounce">📊</p>
           <p className="text-muted-foreground">{t("report.loading")}</p>
@@ -146,7 +146,7 @@ export default function Report() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#fdf8f2] p-4">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-4">
         <p className="text-4xl">😕</p>
         <p className="text-destructive">{error}</p>
         <BackButton to="/parent" label={t("report.back")} />
@@ -208,11 +208,11 @@ export default function Report() {
   const hasActivity = report.stats.attempts > 0;
 
   return (
-    <div className="min-h-screen bg-[#fdf8f2] px-4 pb-12 pt-4">
+    <div className="min-h-screen bg-background px-4 pb-12 pt-4">
       <div className="mx-auto max-w-2xl space-y-4">
 
         {/* Header */}
-        <div className="bg-white rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-black/[0.05]">
+        <div className="bg-card rounded-3xl px-6 py-5 flex items-center gap-4 shadow-sm border border-border/50">
           <BackButton to="/parent" label={t("report.back")} size="sm" />
           <img src={logoNoText} alt="Oli" className="h-10 w-10 object-contain shrink-0" />
           <div className="flex-1 min-w-0">
@@ -222,7 +222,7 @@ export default function Report() {
         </div>
 
         {/* Range tabs */}
-        <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-1.5 grid grid-cols-3 gap-1">
+        <div className="bg-card rounded-3xl shadow-sm border border-border/50 p-1.5 grid grid-cols-3 gap-1">
           {RANGE_TABS.map((tab) => (
             <button
               key={tab.id}
@@ -249,7 +249,7 @@ export default function Report() {
 
         {/* Stats + shrnutí */}
         {hasActivity ? (
-          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
+          <div className="bg-card rounded-3xl shadow-sm border border-border/50 overflow-hidden">
             <div className="grid grid-cols-3 divide-x divide-border/40">
               <div className="px-5 py-5 text-center">
                 <p className="text-3xl font-extrabold text-foreground tabular-nums">{report.stats.days}</p>
@@ -272,7 +272,7 @@ export default function Report() {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] p-6 text-center space-y-3">
+          <div className="bg-card rounded-3xl shadow-sm border border-border/50 p-6 text-center space-y-3">
             <p className="text-4xl">💤</p>
             <p className="text-lg font-semibold text-foreground">
               {range === "week" && "Tento týden žádná aktivita"}
@@ -292,7 +292,7 @@ export default function Report() {
 
         {/* Graf témat */}
         {hasActivity && allChartData.length > 0 && (
-          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
+          <div className="bg-card rounded-3xl shadow-sm border border-border/50 overflow-hidden">
             <div className="px-5 py-4 border-b border-border/40">
               <h2 className="font-bold text-base text-foreground">Přehled témat</h2>
               <p className="text-xs text-muted-foreground mt-0.5">Úspěšnost v každém procvičovaném tématu (% správných odpovědí)</p>
@@ -353,7 +353,7 @@ export default function Report() {
                       if (!active || !payload?.length) return null;
                       const d = payload[0].payload;
                       return (
-                        <div className="bg-white border border-border rounded-xl shadow-md px-3 py-2 text-xs space-y-0.5">
+                        <div className="bg-card border border-border rounded-xl shadow-md px-3 py-2 text-xs space-y-0.5">
                           <p className="font-semibold text-foreground">{d.name}</p>
                           <p className="text-muted-foreground">{d.correct} z {d.attempts} správně</p>
                           <p className="font-bold" style={{ color: d.color }}>{d.acc} %</p>
@@ -454,7 +454,7 @@ export default function Report() {
 
         {/* Co teď */}
         {hasActivity && report.recommendations && (
-          <div className="bg-white rounded-3xl shadow-sm border border-black/[0.05] overflow-hidden">
+          <div className="bg-card rounded-3xl shadow-sm border border-border/50 overflow-hidden">
             <div className="px-5 py-4 border-b border-border/40">
               <h2 className="font-bold text-base text-foreground">Co teď?</h2>
               <p className="text-xs text-muted-foreground mt-0.5">Doporučení na základě výsledků</p>

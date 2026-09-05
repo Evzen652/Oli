@@ -216,7 +216,7 @@ export default function ParentDashboard() {
 
 
   return (
-    <div className="min-h-screen bg-[#fdf8f2]" style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
+    <div className="min-h-screen bg-background" style={role === "admin" ? { paddingTop: "2.5rem" } : undefined}>
       {role === "admin" && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur text-primary-foreground px-5 py-2.5 flex items-center justify-between text-sm shadow-soft-2">
           <span className="font-medium inline-flex items-center gap-2"><Eye className="h-3.5 w-3.5" />Náhled rodičovského pohledu</span>

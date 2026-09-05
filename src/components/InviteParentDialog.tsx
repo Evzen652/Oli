@@ -129,10 +129,10 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
   if (emailSent) {
     return (
       <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
+        <div className="bg-card rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
           <div className="text-5xl">✉️</div>
-          <h3 className="text-lg font-bold text-gray-900">Skoro hotovo!</h3>
-          <p className="text-gray-700 text-sm leading-relaxed">
+          <h3 className="text-lg font-bold text-foreground">Skoro hotovo!</h3>
+          <p className="text-foreground-soft text-sm leading-relaxed">
             Řekni rodičům, ať se zaregistrují na <strong>oli-edu.com</strong> pomocí emailu{" "}
             <strong>{email}</strong>.
           </p>
@@ -150,24 +150,24 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
   // ── Hlavní dialog ─────────────────────────────────────────────────────────
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div ref={dialogRef} className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-5 shadow-2xl">
+      <div ref={dialogRef} className="bg-card rounded-2xl p-6 max-w-sm w-full space-y-5 shadow-2xl">
 
         {/* Hlavička */}
         <div className="text-center">
           <div className="text-4xl mb-2">👪</div>
-          <h3 className="text-lg font-bold text-gray-900">
+          <h3 className="text-lg font-bold text-foreground">
             Pošli rodičům odkaz, ať vidí, jak jsi šikovný!
           </h3>
         </div>
 
         {/* Záložky */}
-        <div className="flex rounded-xl bg-gray-100 p-1 gap-1">
+        <div className="flex rounded-xl bg-muted p-1 gap-1">
           <button
             onClick={() => setTab("whatsapp")}
             className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-semibold transition-all ${
               tab === "whatsapp"
-                ? "bg-white shadow text-green-700"
-                : "text-gray-500 hover:text-gray-700"
+                ? "bg-card shadow text-green-700"
+                : "text-muted-foreground hover:text-foreground-soft"
             }`}
           >
             <MessageCircle className="h-4 w-4" />
@@ -177,8 +177,8 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
             onClick={() => setTab("email")}
             className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-semibold transition-all ${
               tab === "email"
-                ? "bg-white shadow text-violet-700"
-                : "text-gray-500 hover:text-gray-700"
+                ? "bg-card shadow text-violet-700"
+                : "text-muted-foreground hover:text-foreground-soft"
             }`}
           >
             <Mail className="h-4 w-4" />
@@ -190,7 +190,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
         {tab === "whatsapp" && (
           <div className="space-y-3">
             <div>
-              <label htmlFor="parent-phone" className="text-sm text-gray-600 font-medium">
+              <label htmlFor="parent-phone" className="text-sm text-foreground-soft font-medium">
                 Telefonní číslo rodiče
               </label>
               <input
@@ -200,7 +200,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
                 onChange={(e) => { setPhone(e.target.value); setPhoneError(null); }}
                 placeholder="777 123 456"
                 autoComplete="off"
-                className="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3
+                className="mt-1 w-full border border-border rounded-xl px-4 py-3
                            text-sm focus:outline-none focus:ring-2 focus:ring-green-300"
               />
               {phoneError && <p className="text-xs text-red-600 mt-1.5">{phoneError}</p>}
@@ -215,7 +215,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
               <MessageCircle className="h-4 w-4" />
               Otevřít WhatsApp <PaintedArrow className="h-4 w-4" />
             </button>
-            <p className="text-xs text-gray-400 text-center">
+            <p className="text-xs text-muted-foreground text-center">
               Otevře se WhatsApp s předvyplněnou zprávou — jen ji pošleš.
             </p>
           </div>
@@ -225,7 +225,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
         {tab === "email" && (
           <div className="space-y-3">
             <div>
-              <label htmlFor="parent-email" className="text-sm text-gray-600 font-medium">
+              <label htmlFor="parent-email" className="text-sm text-foreground-soft font-medium">
                 Email rodiče
               </label>
               <input
@@ -235,7 +235,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
                 onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
                 placeholder="maminka@email.cz"
                 autoComplete="off"
-                className="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3
+                className="mt-1 w-full border border-border rounded-xl px-4 py-3
                            text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
               />
               {emailError && <p className="text-xs text-red-600 mt-1.5">{emailError}</p>}
@@ -258,7 +258,7 @@ export function InviteParentDialog({ onClose, childName, anonGrade, childId }: P
 
         <button
           onClick={onClose}
-          className="w-full text-gray-400 text-sm hover:text-gray-600 py-1 transition-colors"
+          className="w-full text-muted-foreground text-sm hover:text-foreground-soft py-1 transition-colors"
         >
           Teď ne
         </button>

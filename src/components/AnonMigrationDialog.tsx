@@ -25,13 +25,13 @@ export function AnonMigrationDialog({ onConfirm, onSkip, loading }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
+      <div className="bg-card rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
         <div className="text-center">
           <div className="text-5xl mb-3">🎉</div>
-          <h3 className="text-lg font-bold text-gray-900">
+          <h3 className="text-lg font-bold text-foreground">
             Máš splněno {summary.completedCount} {taskWord}!
           </h3>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Chceš si přenést svůj dosavadní pokrok do nového účtu?
           </p>
         </div>
@@ -63,7 +63,7 @@ export function AnonMigrationDialog({ onConfirm, onSkip, loading }: Props) {
             type="button"
             onClick={onSkip}
             disabled={loading}
-            className="w-full text-gray-400 text-sm hover:text-gray-600 py-2
+            className="w-full text-muted-foreground text-sm hover:text-foreground-soft py-2
                        disabled:opacity-60"
           >
             Ne, začít od začátku

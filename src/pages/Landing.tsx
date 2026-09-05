@@ -1,4 +1,4 @@
-﻿import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -143,7 +143,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-card">
       <LandingNav />
 
       {/* ═══════ HERO ═══════ */}
@@ -260,7 +260,7 @@ export default function Landing() {
       </section>
 
       {/* ═══════ JAK TO FUNGUJE ═══════ */}
-      <Section id="jak-to-funguje" className="bg-[#F8FAFC]">
+      <Section id="jak-to-funguje" className="bg-background">
         <SectionHead title="Jak to funguje" sub="Tři kroky od prvního spuštění až po každodenní učení." />
         <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {[
@@ -328,7 +328,7 @@ export default function Landing() {
       </Section>
 
       {/* ═══════ HLAVNÍ PŘÍNOSY ═══════ */}
-      <Section id="prinosy" className="bg-[#F8FAFC]">
+      <Section id="prinosy" className="bg-background">
         <SectionHead title="Co vám Oli přinese" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           <FeatureCard img={imgPrehledPokroku} preprocessed title="Přehled o pokroku" desc="Každý den vidíte, co dítě procvičilo a jak se mu dařilo." bg={C.bgOrange} />
@@ -349,7 +349,7 @@ export default function Landing() {
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Zdarma</h3><p className="text-sm text-muted-foreground mt-1">Na vyzkoušení a první pokroky</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>0 Kč</span><span className="text-muted-foreground text-sm">/měsíc</span></div>
-              <ul className="space-y-3 text-sm text-slate-600">
+              <ul className="space-y-3 text-sm text-foreground-soft">
                 {["Anonymní vstup bez registrace", "14 dní plný přístup zdarma", `Po 14 dnech: ${pad(DEFAULT_DAILY_COUNT, "CVIČENÍ")} denně navždy`, "Veškerý hotový obsah"].map((f) => (
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
@@ -366,7 +366,7 @@ export default function Landing() {
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Standard</h3><p className="text-sm text-muted-foreground mt-1">Pro pravidelný posun a přehled</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>249 Kč</span><span className="text-muted-foreground text-sm">/měsíc</span></div>
-              <ul className="space-y-3 text-sm text-slate-600">
+              <ul className="space-y-3 text-sm text-foreground-soft">
                 {[
                   { text: "Neomezené procvičování", soon: false },
                   { text: "Rodičovský přehled a zadávání úkolů", soon: false },
@@ -395,7 +395,7 @@ export default function Landing() {
             <CardContent className="p-8 space-y-6">
               <div><h3 className="text-xl font-bold font-heading" style={{ color: C.dark }}>Rodinný</h3><p className="text-sm text-muted-foreground mt-1">Pro více dětí</p></div>
               <div><span className="text-4xl font-bold" style={{ color: C.dark }}>399 Kč</span><span className="text-muted-foreground text-sm">/měsíc</span></div>
-              <ul className="space-y-3 text-sm text-slate-600">
+              <ul className="space-y-3 text-sm text-foreground-soft">
                 {["Vše ze Standard plánu", "Až 3 děti pod jedním účtem"].map((f) => (
                   <li key={f} className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 shrink-0" style={{ color: C.teal }} /> {f}</li>
                 ))}
@@ -429,12 +429,12 @@ export default function Landing() {
       </section>
 
       {/* ═══════ FOOTER ═══════ */}
-      <footer className="border-t border-slate-100 py-8 bg-white">
+      <footer className="border-t border-muted py-8 bg-card">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">© 2025 Oli. Všechna práva vyhrazena.</p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-slate-700 transition-colors">Podmínky</a>
-            <a href="#" className="hover:text-slate-700 transition-colors">Ochrana soukromí</a>
+            <a href="#" className="hover:text-foreground-soft transition-colors">Podmínky</a>
+            <a href="#" className="hover:text-foreground-soft transition-colors">Ochrana soukromí</a>
           </div>
         </div>
       </footer>

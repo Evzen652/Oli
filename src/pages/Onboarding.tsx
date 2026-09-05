@@ -161,7 +161,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-background overflow-hidden">
       <LandingNav />
 
 
@@ -178,10 +178,10 @@ export default function Onboarding() {
             {/* Mávající póza, ne logo — nadpis pod ní je „Ahoj! Já jsem Oli." */}
             <img src={oliPozdrav} alt="" className="h-20 w-20 object-contain" />
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Ahoj! Já jsem Oli.
               </h1>
-              <p className="text-slate-500 text-base leading-relaxed">
+              <p className="text-muted-foreground text-base leading-relaxed">
                 Pomůžu ti se vším, co máš teď ve škole.<br />
                 Jen mi řekni, do které třídy chodíš a jdeme na to.
               </p>
@@ -202,7 +202,7 @@ export default function Onboarding() {
           </a>
 
           <div className="space-y-4">
-            <p className="text-slate-800 font-bold text-2xl">Vyber svůj ročník</p>
+            <p className="text-foreground font-bold text-2xl">Vyber svůj ročník</p>
             <div className="grid grid-cols-3 gap-5">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((grade) => {
                 const available = isGradeAvailable(grade);
@@ -259,7 +259,7 @@ export default function Onboarding() {
                           alt=""
                           className="h-[72%] w-[72%] object-contain drop-shadow-sm select-none"
                         />
-                        <span className="absolute top-1.5 left-1.5 h-8 w-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-slate-800 text-base font-black leading-none select-none">
+                        <span className="absolute top-1.5 left-1.5 h-8 w-8 rounded-full bg-card/90 shadow-sm flex items-center justify-center text-foreground text-base font-black leading-none select-none">
                           {grade}
                         </span>
                       </>
@@ -294,13 +294,13 @@ export default function Onboarding() {
             }
           `}</style>
 
-          <div className="pt-4 border-t border-slate-200 space-y-1.5">
-            <p className="text-sm text-slate-600 leading-relaxed">
+          <div className="pt-4 border-t border-border space-y-1.5">
+            <p className="text-sm text-foreground-soft leading-relaxed">
               Chcete dítěti zadávat úkoly a sledovat pokrok?
             </p>
             <a
               href="/auth?mode=register"
-              className="text-sm font-medium text-orange-500 hover:text-orange-600 hover:underline transition-colors inline-flex items-center gap-1.5"
+              className="text-sm font-medium text-primary hover:text-primary-hover hover:underline transition-colors inline-flex items-center gap-1.5"
             >
               Jsem tady jako rodič <PaintedArrow className="h-4 w-4" />
             </a>

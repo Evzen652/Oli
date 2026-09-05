@@ -147,7 +147,7 @@ export default function AnonStudentPage() {
       <div className="max-w-4xl mx-auto px-4 pt-4">
         {trialActive ? (
           <div className="rounded-2xl bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-violet-200">
-            <div className="rounded-2xl bg-white/95 backdrop-blur px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+            <div className="rounded-2xl bg-card/95 backdrop-blur px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
               <div className="flex items-center gap-3 min-w-0 flex-1">
                 <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shadow-sm shrink-0">
                   <Sparkles className="h-4.5 w-4.5 text-white" />
@@ -177,7 +177,7 @@ export default function AnonStudentPage() {
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl bg-white border border-violet-200 shadow-md px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+          <div className="rounded-2xl bg-card border border-violet-200 shadow-md px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
             <div className="flex items-center gap-3 min-w-0">
               <div className="h-9 w-9 rounded-xl bg-violet-100 flex items-center justify-center shrink-0">
                 <BookOpen className="h-4.5 w-4.5 text-violet-600" />
@@ -273,13 +273,13 @@ export default function AnonStudentPage() {
         <div className="text-center pt-2 space-y-1.5">
           <button
             onClick={() => setShowInviteParent(true)}
-            className="block mx-auto text-sm text-gray-400 hover:text-violet-600 transition-colors"
+            className="block mx-auto text-sm text-muted-foreground hover:text-violet-600 transition-colors"
           >
             👪 Sdílet pokrok s rodiči
           </button>
           <a
             href="/auth?mode=register"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-violet-600 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-violet-600 transition-colors"
           >
             Jsem rodič — založit účet <PaintedArrow className="h-4 w-4" />
           </a>
@@ -331,7 +331,7 @@ function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
             className={`group aspect-square flex flex-col rounded-3xl p-6 transition-all ${
               completed
                 ? "bg-emerald-50 border-2 border-emerald-200"
-                : "bg-white border-2 border-violet-100 hover:border-violet-300 hover:shadow-md hover:-translate-y-0.5"
+                : "bg-card border-2 border-violet-100 hover:border-violet-300 hover:shadow-md hover:-translate-y-0.5"
             }`}
           >
             <div className="flex-1 flex items-center justify-center min-h-0">
@@ -354,7 +354,7 @@ function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
                     </>
                   )}
                 </div>
-                <p className="font-bold text-gray-900 text-base leading-tight">{title}</p>
+                <p className="font-bold text-foreground text-base leading-tight">{title}</p>
               </div>
               {completed ? (
                 <span className="flex items-center justify-center gap-1.5 text-emerald-700 font-semibold text-sm py-2">
@@ -392,7 +392,7 @@ function SubjectGrid({ grade, onSelect }: { grade: number; onSelect: (subject: s
           <button
             key={subject}
             onClick={() => onSelect(subject)}
-            className="group aspect-square flex flex-col items-center justify-center gap-3 rounded-3xl bg-white border-2 border-violet-100 hover:border-violet-400 hover:shadow-md hover:-translate-y-0.5 p-6 transition-all"
+            className="group aspect-square flex flex-col items-center justify-center gap-3 rounded-3xl bg-card border-2 border-violet-100 hover:border-violet-400 hover:shadow-md hover:-translate-y-0.5 p-6 transition-all"
           >
             <IllustrationImg
               src={meta.image}

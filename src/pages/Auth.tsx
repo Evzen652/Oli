@@ -69,7 +69,7 @@ export default function Auth() {
   // Potvrzení registrace
   if (registeredEmail) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50">
+      <div className="min-h-screen bg-accent">
         <LandingNav />
         <div className="mx-auto max-w-md px-4 py-16 flex flex-col items-center gap-6 text-center">
           <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-400 to-purple-500 ring-4 ring-violet-100 flex items-center justify-center shadow-sm">
@@ -92,7 +92,7 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-purple-50 to-orange-50">
+    <div className="min-h-screen bg-accent">
       <LandingNav />
       <div className="mx-auto max-w-md px-4 py-8">
         <div className="mb-6">
@@ -108,24 +108,24 @@ export default function Auth() {
               className={`rounded-2xl border-2 px-4 py-5 text-center transition-all ${
                 role === "parent"
                   ? "border-emerald-400 bg-emerald-50 shadow-md"
-                  : "border-slate-200 bg-white hover:border-emerald-200 hover:bg-emerald-50/50"
+                  : "border-border bg-card hover:border-emerald-200 hover:bg-emerald-50/50"
               }`}
             >
               <div className="flex justify-center mb-3">
                 <img src={ROLE_IMAGES.parent} alt="Rodič" className="w-16 h-16 object-contain" />
               </div>
-              <p className="font-bold text-sm text-slate-900">Jsem rodič</p>
-              <p className="text-xs text-slate-500 mt-0.5">Sledovat pokrok dítěte</p>
+              <p className="font-bold text-sm text-foreground">Jsem rodič</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Sledovat pokrok dítěte</p>
             </button>
             <button
               onClick={() => navigate("/auth/child")}
-              className="rounded-2xl border-2 border-slate-200 bg-white px-4 py-5 text-center hover:border-violet-200 hover:bg-violet-50/50 transition-all"
+              className="rounded-2xl border-2 border-border bg-card px-4 py-5 text-center hover:border-violet-200 hover:bg-violet-50/50 transition-all"
             >
               <div className="flex justify-center mb-3">
                 <img src={ROLE_IMAGES.child} alt="Žák" className="w-16 h-16 object-contain" />
               </div>
-              <p className="font-bold text-sm text-slate-900">Jsem žák</p>
-              <p className="text-xs text-slate-500 mt-0.5">Přihlásit se kódem</p>
+              <p className="font-bold text-sm text-foreground">Jsem žák</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Přihlásit se kódem</p>
             </button>
           </div>
 

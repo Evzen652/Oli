@@ -44,7 +44,7 @@ export function LandingNav() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-100 bg-white/70 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b border-muted bg-card/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <OliLogo size="xs" onClick={handleLogoClick} />
 
@@ -53,7 +53,7 @@ export function LandingNav() {
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}
             </button>

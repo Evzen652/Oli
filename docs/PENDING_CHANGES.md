@@ -26,15 +26,60 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 | `bg-slate-800 text-white` | `bg-foreground text-background` | aktivní pilulka |
 | `bg-white` | `bg-card` | |
 
-### 🟠 Zbývá 28 výskytů `slate-*`
+### ✅ Vstupní obrazovky dotaženy 2026-09-06 — viz sekci níž
 
-`Landing`, `LandingNav`, `Auth`, `Onboarding`, `ChildAuth`, `BackButton`.
-Nedělal jsem je schválně: jsou to vstupní obrazovky, které jsem v téhle session
-vizuálně neprocházel, a **Landing je chráněná plocha**. Mapování výš je hotové,
-takže je to mechanická práce — ale patří k ní projít ty obrazovky v prohlížeči.
+---
 
-Mimo tenhle výčet jsou ještě `src/components/ui/**` (shadcn defaulty) a
-`src/components/admin/**` — jiná kategorie, nespěchá.
+## ✅ Vstupní obrazovky + chybějící token `foreground-soft` (2026-09-06)
+
+Dotaženo: `Landing`, `LandingNav`, `Auth`, `ChildAuth`, `Onboarding`, `Report`,
+`ParentDashboard`, `AnonStudentPage`, `AnonMigrationDialog`, `InviteParentDialog`.
+`BackButton` byl čistý už dřív — slate je v něm jen v komentáři o starém stavu.
+
+### Vlastní příčina, ne jen následek
+
+`--foreground-soft` (#44403C, „běžný text") byl v `index.css` definovaný, ale
+v `tailwind.config.ts` **neregistrovaný** → `text-foreground-soft` neexistoval.
+Kdo potřeboval odstín mezi nadpisem (#1C1917) a popiskem (#78716C), neměl co
+použít a napsal `text-slate-600`. Token je teď zaregistrovaný.
+
+### Doplněk mapování
+
+| bylo | je | pozn. |
+|---|---|---|
+| `text-slate-700` / `text-gray-700` | `text-foreground-soft` | přesná shoda #44403C |
+| `text-slate-600` / `text-gray-600` | `text-foreground-soft` | 87,83,78 → 68,64,60 |
+| `text-gray-400` | `text-muted-foreground` | **2,52:1 → 4,74:1**, propadalo WCAG AA |
+| `bg-[#F8FAFC]` | `bg-background` | jediná studená šeď v teplé paletě |
+| `border-slate-100` | `border-muted` | `border-border` by hairline zviditelnil |
+| `border-black/[0.05]` | `border-border/50` | 242,242,242 → 243,241,236 |
+| `text-orange-500` / `600` | `text-primary` / `text-primary-hover` | přesná shoda |
+| gradient violet→purple→orange | `bg-accent` | viz níž |
+
+### Gradient, který nemohl gradovat
+
+`Auth` i `ChildAuth` měly `bg-gradient-to-br from-violet-50 via-purple-50
+to-orange-50`. Config mapuje `violet` i `purple` na značkovou oranžovou, takže
+všechny tři zastávky renderovaly **#FFF7ED** — změřeno sondou v živém CSS.
+Tříbarevný přechod byl plná barva. Nahrazeno `bg-accent` (#FFF3EA).
+
+### Záměrně nesaženo
+
+- `src/components/admin/**` a `src/components/ui/**` (~30 výskytů) — vnitřní
+  nástroje a shadcn defaulty, vizuálně neprocházené.
+- `subjectRegistry.ts`, paleta `C` v `Landing.tsx` — dokumentované dekorativní
+  palety, které se **záměrně** neodvozují od tokenů.
+- `#1E293B` v `OliLogo` — barva značky, doložená komentářem.
+- `bg-white/15`–`/70` — bílý závoj nad barvou, ne karta; `bg-card` by tu lhal.
+- `SessionEndSummary` — soudržná lokální oranžová, pro `#FFF1E6` token není.
+
+### 🐞 Past, která málem stála soubor
+
+V PowerShellu se `@( @("a","b") )` **rozbalí** na plochý dvouprvkový řetězcový
+pole. `foreach` pak iteruje po znacích, takže `$pair[0]`/`$pair[1]` byly `b`
+a `g` — skript nahradil v `ParentDashboard.tsx` každé `b` za `g` (286×).
+Zasáhlo to jen soubor s **jedinou** dvojicí. Vráceno `git checkout`.
+Vnořené pole v PS vynutíš `,@(...)` nebo `[object[]]`.
 
 ---
 
