@@ -264,8 +264,8 @@ export function SessionView() {
   // Admin floating banner component with grade dropdown
   const GRADES = [2, 3, 4, 5, 6, 7, 8, 9];
   const AdminBanner = role === "admin" ? (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur text-primary-foreground px-5 py-2.5 flex items-center justify-between text-sm shadow-soft-2">
-      <div className="flex items-center gap-3">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur text-primary-foreground px-5 py-2.5 flex flex-wrap items-center justify-between gap-2 text-sm shadow-soft-2">
+      <div className="flex flex-wrap items-center gap-3">
         <span className="font-medium inline-flex items-center gap-2">
           <Eye className="h-3.5 w-3.5" />
           Náhled žákovského pohledu

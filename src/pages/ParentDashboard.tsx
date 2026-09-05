@@ -465,11 +465,16 @@ export default function ParentDashboard() {
 
               {/* Na co se zaměřit — full width */}
               <div id="zamerit" className="scroll-mt-6 bg-card rounded-3xl shadow-e1 border border-border flex flex-col overflow-hidden">
-                <div className="px-5 py-4 border-b border-border/60 flex items-center gap-2.5">
-                  <span className="grid h-8 w-8 place-items-center rounded-xl bg-warning/10 text-warning shrink-0"><Target className="h-4 w-4" /></span>
-                  <div className="flex-1 min-w-0">
-                    <h2 className="font-bold text-base text-foreground">Na co se zaměřit</h2>
-                    <p className="text-xs text-muted-foreground mt-0.5">Opakující se chyby z posledních cvičení, na které stojí za to reagovat.</p>
+                {/* Tlačítko na vlastní řádek do `sm` — jinak jako `shrink-0`
+                    nechá podtitulku ani ne sto pixelů a ta se vysází do úzkého
+                    sloupce. Ikona zůstává u nadpisu. */}
+                <div className="px-5 py-4 border-b border-border/60 flex flex-col items-start gap-2.5 sm:flex-row sm:items-center">
+                  <div className="flex flex-1 min-w-0 items-center gap-2.5">
+                    <span className="grid h-8 w-8 place-items-center rounded-xl bg-warning/10 text-warning shrink-0"><Target className="h-4 w-4" /></span>
+                    <div className="min-w-0">
+                      <h2 className="font-bold text-base text-foreground">Na co se zaměřit</h2>
+                      <p className="text-xs text-muted-foreground mt-0.5">Opakující se chyby z posledních cvičení, na které stojí za to reagovat.</p>
+                    </div>
                   </div>
                   <button
                     className="h-8 rounded-xl bg-muted border border-border text-foreground font-semibold flex items-center gap-1.5 px-3 hover:bg-muted/80 active:scale-[0.98] transition-all text-xs shrink-0"

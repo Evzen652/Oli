@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-05 (19) — rozbité flexboxy na úzké obrazovce:
+
+Ne responzivní průchod — jen ta podmnožina, která je **vada, ne neučesanost**.
+Stejná příčina všude: sloupec s tlačítkem má `shrink-0`, textový sloupec `min-w-0`,
+takže text spolkne celý deficit šířky a smrskne se až k nule.
+
+- 🐞 **Název tématu se vysázel po jednom znaku na řádek** (`ChildSessionLog`,
+  rodičovský přehled). „Pravopis: Vyjmenovaná slova po B, L, M, P, S, V, Z" jako
+  svislý sloupec písmen + vodorovný posuvník uvnitř karty. Karta se do `md`
+  skládá pod sebe. **`sm` nestačí** — i při 640 px zbude na text ~120 px.
+- 🐞 **Totéž v `AssignmentList`** (stejný tvar karty, obě strany aplikace).
+- 🐞 **Filtry známek přetékaly kartu o 151 px** — `inline-flex` se šesti pilulkami
+  se nezalomí, poslední známky byly za okrajem. Sjednoceno s `AssignmentList`
+  na `flex-wrap`.
+- 🐞 **Řádek s předměty u tlačítka „Začít procvičovat"** dostal na mobilu <100 px.
+  Vodorovné posouvání je tam záměr, ale na sto pixelech je z něj hádanka.
+- 🐞 **`SkillHeader` neuměl zúžit** — chybělo `min-w-0`, takže řádek „Co jsi
+  procvičoval" přetékal kartu o 239 px.
+- 🐞 **Podtitulek „Na co se zaměřit"** stlačený tlačítkem na ~100 px.
+- **Ověřeno měřením, ne odhadem:** skript proti `scrollWidth > clientWidth` na
+  375 / 768 / 1440 px. Před: 5 přetékajících uzlů na rodičovské, 5 na dětské.
+  Po: **0 na obou**, na desktopu se karty vracejí do řádku (`flex-direction: row`,
+  název 337 px) — žádná regrese. Typecheck 0, UI audit bez nového nálezu,
+  **117/117 souborů a 4686 testů**, build prošel.
+- ⏭️ **Zbytek responzivity zůstává otevřený** a je to designové rozhodnutí, ne
+  bug: vnitřek aplikace má proti landingu (23 breakpointů) skoro nulu. Až na to
+  dojde, začít **rodičovskou částí** — rodič dashboard reálně otevře na telefonu,
+  dítě procvičuje u stolu.
+
 ### Session 2026-09-04 (18) — detektor na dětskou část: 3 nálezy, 3 nová pravidla:
 
 - 🐞 **`GradeSelect` pouštěl dál JEN 3. ročník.** Vlastní gate `DEMO_MODE = true` /

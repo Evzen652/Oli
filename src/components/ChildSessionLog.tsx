@@ -135,9 +135,12 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
     <div className="flex flex-col">
       {/* Filtry — fixní, nescrollují */}
       <div className="flex-shrink-0 space-y-2 pt-1 mb-2">
-        {/* Hodnocení — pill group */}
+        {/* Hodnocení — pill group.
+            `flex-wrap`, ne `inline-flex` — šest pilulek („Vše" + pět známek)
+            má 460 px a v úzké kartě se nezalomí, takže poslední známky
+            zmizely za okrajem. Shodné s `AssignmentList`. */}
         {usedGrades.length > 1 && (
-          <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
+          <div className="flex flex-wrap w-fit max-w-full rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
             <button
               onClick={() => setGradeFilter(null)}
               className={`h-7 px-3 rounded-lg text-xs font-medium transition-all ${
@@ -227,29 +230,38 @@ export function ChildSessionLog({ childId = "", childName, grade }: Props) {
             const subjectMeta = subject ? getSubjectMeta(subject) : null;
 
             return (
-              <div key={s.session_id} className="rounded-3xl border border-border/40 bg-slate-50/60 px-7 py-6 flex items-center gap-6">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 shrink-0">
-                  <IllustrationImg
-                    src={subjectMeta?.image ?? ""}
-                    className="h-11 w-11 object-contain"
-                    fallback={<span className="text-2xl">{subjectMeta?.emoji ?? "📋"}</span>}
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  {subjectMeta?.label && (
-                    <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
-                      {subjectMeta.label}
+              // Do `md` se karta skládá pod sebe. Na jednom řádku se totiž
+              // sloupec s výsledky (`shrink-0`, uvnitř široké tlačítko) nezmenší
+              // a celý deficit šířky spolkne textový sloupec — ten má `min-w-0`,
+              // takže se smrskne až na nulu a název tématu se vysází po jednom
+              // znaku na řádek. `sm` na to nestačí: i při 640 px zbude na text
+              // ~120 px. Ikona s textem drží pohromadě ve vlastní skupině, aby
+              // po zalomení nezůstala ikona na samostatném řádku.
+              <div key={s.session_id} className="rounded-3xl border border-border/40 bg-slate-50/60 px-4 py-4 md:px-7 md:py-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
+                <div className="flex flex-1 min-w-0 items-center gap-4 md:gap-6">
+                  <div className="grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 shrink-0">
+                    <IllustrationImg
+                      src={subjectMeta?.image ?? ""}
+                      className="h-11 w-11 object-contain"
+                      fallback={<span className="text-2xl">{subjectMeta?.emoji ?? "📋"}</span>}
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    {subjectMeta?.label && (
+                      <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">
+                        {subjectMeta.label}
+                      </p>
+                    )}
+                    <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
+                    <p className="text-muted-foreground text-caption mt-0.5">
+                      {new Date(s.date).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" })}
+                      {" "}
+                      {new Date(s.date).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}
                     </p>
-                  )}
-                  <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
-                  <p className="text-muted-foreground text-caption mt-0.5">
-                    {new Date(s.date).toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric" })}
-                    {" "}
-                    {new Date(s.date).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" })}
-                  </p>
+                  </div>
                 </div>
-                <div className="flex flex-col items-end gap-3 shrink-0">
-                  <div className="flex items-center gap-1.5">
+                <div className="flex flex-col items-start gap-3 shrink-0 md:items-end">
+                  <div className="flex flex-wrap items-center gap-1.5">
                     {s.correct - s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-success font-semibold">✓ {s.correct - s.help_used} správně</span>}
                     {s.help_used > 0 && <span className="flex items-center gap-0.5 text-xs text-warning font-semibold">{s.help_used} s nápov.</span>}
                     {s.total - s.correct > 0 && <span className="flex items-center gap-0.5 text-xs text-destructive font-semibold">✗ {s.total - s.correct} špatně</span>}

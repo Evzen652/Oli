@@ -490,8 +490,11 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
             </p>
           </div>
 
-          {/* Spodní řada — chipy vlevo, tlačítko vpravo, zarovnané dolů */}
-          <div className="relative z-10 flex items-end justify-between gap-4 mt-4">
+          {/* Spodní řada — chipy vlevo, tlačítko vpravo, zarovnané dolů.
+              Na mobilu pod sebe: tlačítko je `shrink-0` a široké, takže by
+              chipům nechalo ani ne sto pixelů. Vodorovné posouvání je tu
+              záměr, ale na sto pixelech je z něj hádanka, ne zkratka. */}
+          <div className="relative z-10 flex flex-col items-stretch gap-3 mt-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: 'none' }}>
               {[...new Set(topics.map(t => t.subject))].map((subj) => {
                 const meta = getSubjectMeta(subj);
@@ -515,7 +518,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
                 je horší než sdílený problém. Kontrast primárních tlačítek je
                 věc tokenu `--primary`, ne téhle jedné komponenty. */}
             <button onClick={() => onBrowseTopics()}
-              className="shrink-0 h-12 rounded-2xl bg-primary font-bold text-primary-foreground hover:bg-primary-hover active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-e1 whitespace-nowrap">
+              className="shrink-0 h-12 rounded-2xl bg-primary font-bold text-primary-foreground hover:bg-primary-hover active:scale-[0.98] transition-all flex items-center justify-center sm:justify-start gap-2 px-5 text-sm shadow-e1 whitespace-nowrap">
               Začít procvičovat <PaintedArrow className="h-4 w-4 shrink-0" />
             </button>
           </div>
@@ -718,9 +721,11 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               ].filter(Boolean).join(" · ");
               return (
                 <div key={s.skillId} className="rounded-2xl border border-border/40 bg-slate-50/60 p-4 space-y-3">
-                  <div className="flex items-start gap-3">
+                  {/* Na mobilu pod sebe — hlavička a výsledky se vedle sebe
+                      do 275 px nevejdou a řádek přetékal kartu. */}
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-3">
                     <SkillHeader subjMeta={subjMeta} breadcrumb={breadcrumb} skillName={getReadableSkillName(s.skillId)} lastPracticed={s.lastPracticed} />
-                    <div className="flex items-center gap-1.5 text-xs ml-auto shrink-0">
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs shrink-0 sm:ml-auto">
                       <span className="text-emerald-600 font-semibold">✓ {correct} správně</span>
                       {wrong > 0 && <span className="text-rose-500 font-semibold">✗ {wrong} špatně</span>}
                       {gMeta && grade && (
@@ -880,7 +885,11 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
     : breadcrumb;
 
   return (
-    <div className="flex items-start gap-2">
+    // `min-w-0 flex-1`, protože hlavička se používá i jako položka flexboxu
+    // vedle sloupce s výsledky. Bez toho platí implicitní `min-width: auto`,
+    // hlavička se odmítne zúžit pod svůj obsah a řádek přeteče kartu.
+    // Mimo flex kontext (řádek úkolu) obě třídy nic nedělají.
+    <div className="flex min-w-0 flex-1 items-start gap-2">
       <div className="shrink-0 h-9 w-9 rounded-lg bg-slate-100 flex items-center justify-center">
         {subjMeta
           ? <IllustrationImg src={subjMeta.image} className="h-7 w-7 object-contain" fallback={<span className="text-base">{subjMeta.emoji}</span>} />

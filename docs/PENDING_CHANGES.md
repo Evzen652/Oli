@@ -7,6 +7,33 @@
 
 ---
 
+## ✅ Rozbité flexboxy na úzké obrazovce — 6 oprav (2026-09-05)
+
+Šest míst se stejnou příčinou: sloupec s tlačítkem `shrink-0`, textový sloupec
+`min-w-0` → text spolkne celý deficit šířky a smrskne se k nule. Nejhorší projev:
+název tématu vysázený **po jednom znaku na řádek** v rodičovském přehledu.
+
+- `ChildSessionLog` + `AssignmentList` — karta se do `md` skládá pod sebe
+  (`sm` nestačí, i při 640 px zbude na text ~120 px).
+- `ChildSessionLog` — filtry známek `inline-flex` → `flex-wrap` (přetékaly o 151 px).
+- `ChildHomePage` — řádek předmětů u CTA a řádek „Co jsi procvičoval".
+- `SkillHeader` — doplněno `min-w-0 flex-1` (přetékal o 239 px).
+- `ParentDashboard` — hlavička „Na co se zaměřit".
+- `SessionView` — admin náhledová lišta (`flex-wrap`).
+
+**Ověřeno měřením** (`scrollWidth > clientWidth`) na 375 / 768 / 1440 px:
+před 5+5 přetékajících uzlů, po **0**; na desktopu beze změny rozvržení.
+
+### ⏭️ Otevřené: zbytek responzivity (designové rozhodnutí, ne bug)
+
+Vnitřek aplikace má proti landingu (23 breakpointů) skoro nulu:
+`ChildActivityChart` 0, `AssignmentList` 0, `ChildSessionLog` 0, `ChildHomePage` 2.
+Dělat to teď by znamenalo dělat to dvakrát — rozvržení dashboardu se ještě hýbe.
+Až na to dojde, **začít rodičovskou částí**: rodič si dashboard reálně otevře na
+telefonu, dítě procvičuje u stolu nebo na tabletu.
+
+---
+
 ## ✅ Detektor na dětské části — 3 nálezy, 3 nová pravidla (2026-09-04)
 
 - 🐞 **`GradeSelect` pouštěl dál JEN 3. ročník.** Měl vlastní gate `DEMO_MODE = true` /

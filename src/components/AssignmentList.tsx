@@ -358,36 +358,41 @@ function AssignmentCard({
   const gMeta = grade !== null ? GRADE_META[grade] : null;
 
   return (
-    <div className={`rounded-3xl border ${cardClasses} px-7 py-6 flex items-center gap-6 shadow-sm transition-all duration-500`}>
-      <div className="grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 shrink-0" aria-hidden="true">
-        <IllustrationImg
-          src={subjectMeta?.image ?? ""}
-          className="h-11 w-11 object-contain"
-          fallback={<span className="text-2xl">{subjectMeta?.emoji ?? "📚"}</span>}
-        />
-      </div>
-      <div className="flex-1 min-w-0">
-        {subjectLabel && <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">{subjectLabel}</p>}
-        <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
-        <p className="text-caption text-muted-foreground mt-0.5">
-          zadáno {formatCzDate(a.assigned_date)}
-          {hasTerminus && !isCompleted && ` · do ${formatCzDate(a.due_date!)}`}
-          {isCompleted && a.completedDate && (
-            <> <span className="mx-0.5 opacity-40">|</span> <span className="text-emerald-700 font-medium">splněno {formatCzDate(a.completedDate)}</span></>
+    // Skládání pod sebe do `md` ze stejného důvodu jako v `ChildSessionLog` —
+    // `shrink-0` sloupec s odznaky a tlačítkem by na jednom řádku vytlačil
+    // textový sloupec (`min-w-0`) na nulovou šířku.
+    <div className={`rounded-3xl border ${cardClasses} px-4 py-4 md:px-7 md:py-6 flex flex-col gap-4 md:flex-row md:items-center md:gap-6 shadow-sm transition-all duration-500`}>
+      <div className="flex flex-1 min-w-0 items-center gap-4 md:gap-6">
+        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-slate-100 shrink-0" aria-hidden="true">
+          <IllustrationImg
+            src={subjectMeta?.image ?? ""}
+            className="h-11 w-11 object-contain"
+            fallback={<span className="text-2xl">{subjectMeta?.emoji ?? "📚"}</span>}
+          />
+        </div>
+        <div className="min-w-0">
+          {subjectLabel && <p className="text-caption font-bold text-muted-foreground uppercase tracking-wide leading-tight mb-0.5">{subjectLabel}</p>}
+          <p className="font-semibold text-foreground text-sm leading-tight">{name}</p>
+          <p className="text-caption text-muted-foreground mt-0.5">
+            zadáno {formatCzDate(a.assigned_date)}
+            {hasTerminus && !isCompleted && ` · do ${formatCzDate(a.due_date!)}`}
+            {isCompleted && a.completedDate && (
+              <> <span className="mx-0.5 opacity-40">|</span> <span className="text-emerald-700 font-medium">splněno {formatCzDate(a.completedDate)}</span></>
+            )}
+          </p>
+          {a.note && (
+            <p className="text-xs text-foreground/80 italic mt-1 leading-snug">„{a.note}"</p>
           )}
-        </p>
-        {a.note && (
-          <p className="text-xs text-foreground/80 italic mt-1 leading-snug">„{a.note}"</p>
-        )}
+        </div>
       </div>
-      <div className="flex flex-col items-end gap-3 shrink-0">
+      <div className="flex flex-col items-start gap-3 shrink-0 md:items-end">
         {isCompleted && (
           <Badge variant="success" className="gap-1 h-6 px-2.5">
             <CheckCircle2 className="h-3 w-3" /> Splněno
           </Badge>
         )}
         {isCompleted && total > 0 && (
-          <div className="flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             <span className="flex items-center gap-0.5 text-xs text-success font-semibold">
               ✓ {correct} správně
             </span>
