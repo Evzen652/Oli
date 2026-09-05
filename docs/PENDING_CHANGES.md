@@ -25,6 +25,13 @@ vizuálně totožné**. Pět pastelových ramp → tři sémantické tóny. Bare
 bílé karty. Známka jako štítek, ne displej (invariant „žádná gamifikace").
 `<details>` → `Collapsible`. Doporučení nahoru, ne za třicetiřádkový seznam.
 
+**Zhuštění — pravidlo „méně je někdy více":**
+Tentýž údaj byl na první obrazovce čtyřikrát. Smazán řádek metadat pod známkou,
+štítky jen když je co rozpadat, dětská rada = právě jedna věta a je to pokyn,
+u správné odpovědi se neopakuje řešení. **1110 px → 533 px** (z 1,6 obrazovky
+na jednu), 805 → 546 znaků. Platí i pro další obrazovky: než něco přidám,
+zkontrolovat, jestli to jinými slovy už není o dva bloky výš.
+
 ### ⏭️ Otevřené, mimo rozsah
 
 - **Overlay dialogu je `bg-black/80`** (`ui/dialog.tsx:22`) — pro dětskou část

@@ -93,17 +93,31 @@ describe("skillFeedback — oddělení publik", () => {
     for (const { sessions } of SCENARE) {
       for (const grade of [1, 2, 3, 4, 5]) {
         const spojeno = getRecommendations(sessions, sessions[0].pct, grade, "child").join(" ");
-        // Druhá osoba: buď „jsi", nebo tvar na -š, nebo rozkaz („zkus", „projdi").
-        expect(/\b(jsi|ti|tě|tvo)\b|š\b|\b(zkus|projdi|mrkni|drž|podívej)\b/i.test(spojeno)).toBe(true);
+        // Druhá osoba: buď „jsi", nebo tvar na -š, nebo rozkazovací způsob.
+        const rozkaz = /\b(zkus|projdi|mrkni|drž|podívej|začni|řekni|napiš)\b/i;
+        expect(/\b(jsi|ti|tě|tvo)\b|š\b/i.test(spojeno) || rozkaz.test(spojeno)).toBe(true);
       }
     }
   });
 
-  it("dítě dostane nanejvýš dvě věty, rodič nejvýše jednu", () => {
+  // Dítě dostane PRÁVĚ jednu větu, ne „nanejvýš". Dřív byly dvě a první
+  // shrnovala výsledek, který stojí o dva bloky výš ve známce i v úvodní větě —
+  // tentýž údaj byl na první obrazovce počtvrté.
+  it("každé publikum dostane právě jednu radu", () => {
     for (const { nazev, sessions } of SCENARE) {
       for (const grade of [1, 2, 3, 4, 5]) {
-        expect(getRecommendations(sessions, sessions[0].pct, grade, "child").length, nazev).toBeLessThanOrEqual(2);
-        expect(getRecommendations(sessions, sessions[0].pct, grade, "parent").length, nazev).toBeLessThanOrEqual(1);
+        expect(getRecommendations(sessions, sessions[0].pct, grade, "child").length, nazev).toBe(1);
+        expect(getRecommendations(sessions, sessions[0].pct, grade, "parent").length, nazev).toBe(1);
+      }
+    }
+  });
+
+  // Rada je pokyn, ne shrnutí. Procenta ani počty patří do známky nad ní.
+  it("dětská rada neopakuje výsledek čísly", () => {
+    for (const { nazev, sessions } of SCENARE) {
+      for (const grade of [1, 2, 3, 4, 5]) {
+        const veta = getRecommendations(sessions, sessions[0].pct, grade, "child")[0];
+        expect(veta, `${nazev} / ${grade}`).not.toMatch(/\d+\s*%/);
       }
     }
   });

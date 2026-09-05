@@ -115,51 +115,40 @@ function summarize(sessions: SessionSummary[]) {
 }
 
 /**
- * Doporučení pro DÍTĚ.
+ * Doporučení pro DÍTĚ — **právě jedna věta, a to o tom, co dál**.
  *
- * Krátká sada, protože delší nikdo nečte a hlavně: dítě nepotřebuje diagnózu,
- * potřebuje vědět, co udělat příště. Vrací se vždy jen jedna věta o výsledku
- * a nanejvýš jedna navazující o tom, co dál — pořadí od nejsilnějšího signálu.
+ * Původně jich byly dvě a první z nich shrnovala výsledek („Všechno správně,
+ * ani jedna chyba…"). Jenže výsledek už stojí o dva bloky výš ve známce
+ * i v úvodní větě — tentýž fakt byl na první obrazovce počtvrté. Ubráno,
+ * ne zmenšeno: zbylo jen to, co jinde není, tedy pokyn.
+ *
+ * Pořadí = priorita. Situační signál (skok, propad, nápověda, první pokus)
+ * přebíjí obecný pokyn podle známky, protože říká víc.
  */
 function getChildRecommendations(sessions: SessionSummary[], overallPct: number, grade: number): string[] {
-  const tips: string[] = [];
-  const { n, helpRatio, totalAnswers } = summarize(sessions);
-
-  // === JAK TO DOPADLO ===
-  if (overallPct === 100) {
-    tips.push("Všechno správně, ani jedna chyba. Tohle téma umíš — můžeš jít na něco těžšího.");
-  } else if (overallPct >= 95) {
-    tips.push("Skoro bez chyby. Tohle už ti jde spolehlivě.");
-  } else if (grade === 1) {
-    tips.push("Šlo ti to dobře. Mrkni se dolů na to, co nevyšlo, ať víš, kde si dát pozor.");
-  } else if (grade === 2) {
-    tips.push("Většinu jsi měl/a správně, pár věcí uteklo. Podívej se na ně a zkus téma znovu.");
-  } else if (grade === 3) {
-    tips.push("Něco ti vyšlo, něco ne. Vyplatí se téma projít ještě jednou, klidně po kouskách.");
-  } else if (grade === 4) {
-    tips.push("Tohle téma ti zatím dělá potíže. Není to průšvih — zkus kratší cvičení, ale víckrát.");
-  } else {
-    tips.push("Tohle téma je zatím těžké. Projdi si ho od začátku a klidně si řekni o pomoc.");
-  }
-
-  // === CO DÁL ===
-  // Jen jedna navazující věta, a jen když z čísel opravdu něco plyne.
+  const { n, helpRatio } = summarize(sessions);
   const lastPct = n >= 1 ? sessions[0].pct : null;
   const prevPct = n >= 2 ? sessions[1].pct : null;
 
+  // === SITUAČNÍ SIGNÁL ===
   if (lastPct !== null && prevPct !== null && lastPct >= 80 && prevPct < 55) {
-    tips.push("Oproti minule velký skok nahoru. Ať jsi udělal/a cokoliv jinak, drž se toho.");
-  } else if (lastPct !== null && prevPct !== null && lastPct < 50 && prevPct >= 80) {
-    tips.push("Minule ti to šlo líp. Zkus to znovu, až budeš odpočatý/a — někdy je to jen tím.");
-  } else if (helpRatio >= 0.4) {
-    tips.push("Nápovědu jsi potřeboval/a často. Příště zkus nejdřív odpovědět sám/sama a teprve pak se podívat.");
-  } else if (helpRatio === 0 && grade <= 2 && totalAnswers >= 6) {
-    tips.push("A ani jednou jsi nepotřeboval/a nápovědu.");
-  } else if (n === 1) {
-    tips.push("Tohle bylo první cvičení na tohle téma. Zkus ho ještě jednou jiný den — uvidíš, co ti zůstalo.");
+    return ["Oproti minule velký skok nahoru. Ať jsi udělal/a cokoliv jinak, drž se toho."];
+  }
+  if (lastPct !== null && prevPct !== null && lastPct < 50 && prevPct >= 80) {
+    return ["Minule ti to šlo líp. Zkus to znovu, až budeš odpočatý/a — někdy je to jen tím."];
+  }
+  if (helpRatio >= 0.4) {
+    return ["Nápovědu jsi potřeboval/a často. Příště zkus nejdřív odpovědět sám/sama a teprve pak se podívat."];
+  }
+  if (n === 1 && grade <= 3) {
+    return ["Zkus téma ještě jednou jiný den — uvidíš, co ti z něj zůstalo."];
   }
 
-  return tips;
+  // === OBECNÝ POKYN PODLE ZNÁMKY ===
+  if (grade <= 2) return ["Tohle téma ti jde. Můžeš zkusit něco těžšího."];
+  if (grade === 3) return ["Projdi si téma ještě jednou, klidně po malých kouscích."];
+  if (grade === 4) return ["Zkus kratší cvičení, ale víckrát. Po částech to půjde líp než najednou."];
+  return ["Začni od základů a klidně si řekni o pomoc. Není to ostuda, je to zkratka."];
 }
 
 /**

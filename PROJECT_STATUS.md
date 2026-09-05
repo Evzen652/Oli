@@ -173,8 +173,16 @@ src/
   `rounded-3xl sm:rounded-3xl` (responzivní varianta v CSS přebíjí base utilitu).
 - 🎨 **Doporučení přesunuto nahoru** — jediná akční informace stála až za
   seznamem odpovědí, který má klidně třicet řádků.
+- ✂️ **Pak ještě zhuštěno — „méně je někdy více".** Tentýž údaj („6 otázek,
+  100 %, 4. 9.") stál na první obrazovce **čtyřikrát**: ve větě, v řádku metadat
+  pod známkou, ve štítku „6 správně" a znovu v doporučení. Nešlo o moc sekcí,
+  ale o opakování. Řádek metadat smazán; štítky se ukazují jen když je co
+  rozpadat (ne když bylo všechno správně); dětská rada je **právě jedna věta
+  a je to pokyn, ne shrnutí výsledku**; u správně zodpovězené úlohy se
+  neopakuje správná odpověď. Výsledek: **1110 px → 533 px**, tedy z 1,6
+  obrazovky na jednu bez rolování; 805 → 546 znaků.
 - **Ověřeno:** typecheck 0, UI audit (baseline 10 → **9**), **118/118 souborů
-  a 4699 testů**, build prošel, oba pohledy živě.
+  a 4700 testů**, build prošel, oba pohledy živě a změřené.
 
 ### Session 2026-09-05 (19) — rozbité flexboxy na úzké obrazovce:
 

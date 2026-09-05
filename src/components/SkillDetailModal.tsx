@@ -252,33 +252,36 @@ export function SkillDetailModal({ childId, skillId, onClose, childName, audienc
                     a vedle ní procenta `text-2xl` — dvě obří čísla vedle sebe
                     dělají skórový panel, což invariant „žádná gamifikace"
                     vylučuje. Školní známka smí zůstat, jako displej ne. */}
+                {/* Žádný řádek metadat pod známkou. Stálo tam „Úspěšnost 100 %
+                    · 6 otázek · 4. 9.", což je doslova to, co říká věta nad tím
+                    — tentýž údaj dvakrát pod sebou jinými slovy. */}
                 <div className="flex items-center gap-3">
                   <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl border text-xl font-extrabold tabular-nums ${GRADE_TONE[lastGrade]}`}>
                     {lastGrade}
                   </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-bold leading-tight text-foreground">{GRADE_LABEL[lastGrade]}</p>
-                    <p className="text-caption leading-tight text-muted-foreground tabular-nums">
-                      Úspěšnost {last.pct} % · {pad(last.total, "OTÁZKA")} · {formatCzDate(last.date)}
-                    </p>
-                  </div>
+                  <p className="min-w-0 flex-1 text-sm font-bold text-foreground">{GRADE_LABEL[lastGrade]}</p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 border-t border-border/60 pt-3">
-                  <Badge variant="success" className="gap-1">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> {last.correct} správně
-                  </Badge>
-                  {last.helpUsed > 0 && (
-                    <Badge variant="warning" className="gap-1">
-                      <HelpCircle className="h-3.5 w-3.5" /> {last.helpUsed} s nápovědou
+                {/* Rozpad na kategorie jen když se opravdu na co rozpadat.
+                    Když bylo všechno správně, byl to jediný štítek „6 správně",
+                    tedy stoprocentní úspěšnost potřetí na jedné obrazovce. */}
+                {(last.helpUsed > 0 || last.wrong > 0) && (
+                  <div className="flex flex-wrap items-center gap-2 border-t border-border/60 pt-3">
+                    <Badge variant="success" className="gap-1">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> {last.correct} správně
                     </Badge>
-                  )}
-                  {last.wrong > 0 && (
-                    <Badge variant="danger" className="gap-1">
-                      <XCircle className="h-3.5 w-3.5" /> {last.wrong} chybně
-                    </Badge>
-                  )}
-                </div>
+                    {last.helpUsed > 0 && (
+                      <Badge variant="warning" className="gap-1">
+                        <HelpCircle className="h-3.5 w-3.5" /> {last.helpUsed} s nápovědou
+                      </Badge>
+                    )}
+                    {last.wrong > 0 && (
+                      <Badge variant="danger" className="gap-1">
+                        <XCircle className="h-3.5 w-3.5" /> {last.wrong} chybně
+                      </Badge>
+                    )}
+                  </div>
+                )}
               </section>
             )}
 
@@ -318,7 +321,10 @@ export function SkillDetailModal({ childId, skillId, onClose, childName, audienc
                           {labels.answeredPrefix} <span className="font-semibold text-destructive">{l.studentAnswer}</span>
                         </p>
                       )}
-                      {l.correctAnswer && (
+                      {/* Správnou odpověď má smysl ukázat jen tam, kde padla
+                          jiná. U správně zodpovězené úlohy je to informace,
+                          kterou čtenář právě sám napsal. */}
+                      {l.correctAnswer && !l.correct && (
                         <p className="mt-0.5 text-caption text-muted-foreground">
                           {labels.correctAnswer} <span className="font-semibold text-success">{l.correctAnswer}</span>
                         </p>
