@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useChildren, type Child } from "@/hooks/useChildren";
 import { useProfile } from "@/hooks/useProfile";
@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Grade } from "@/lib/types";
 import { ChildActivityBadge } from "@/components/ChildActivityBadge";
 import { ChildActivityChart } from "@/components/ChildActivityChart";
+import { FloatingStars } from "@/components/FloatingStars";
 import { ChildMisconceptions } from "@/components/ChildMisconceptions";
 import { AssignmentCreator } from "@/components/AssignmentCreator";
 import { AssignmentList } from "@/components/AssignmentList";
@@ -296,7 +297,12 @@ export default function ParentDashboard() {
               <div className="rounded-3xl border border-border bg-card shadow-e1 overflow-hidden">
                 <div className="h-1.5 bg-gradient-to-r from-primary via-primary/70 to-primary/40" />
                 <div className="relative p-6 sm:p-7">
-                  <div className="flex items-start justify-between gap-3">
+                  {/* Táž dekorace jako na hlavní kartě dítěte — rodič má poznat,
+                      že je to stejná aplikace, kterou používá jeho dítě. */}
+                  <FloatingStars />
+                  {/* `relative z-10`: absolutně pozicované hvězdičky by se jinak
+                      vykreslily NAD statickým obsahem karty a plavaly by přes text. */}
+                  <div className="relative z-10 flex items-start justify-between gap-3">
                     <p className="text-caption font-bold tracking-[0.15em] text-muted-foreground">PŘEHLED DÍTĚTE</p>
                     <div className="flex items-center gap-1 shrink-0">
                       <ChildPinControl child={child} onChanged={refetch} tone="icon" />
@@ -345,7 +351,7 @@ export default function ParentDashboard() {
                     </>
                   ) : (
                     <>
-                      <h2 className="font-bold text-3xl leading-tight text-foreground mt-1">{child.child_name}</h2>
+                      <h2 className="relative z-10 font-bold text-3xl leading-tight text-foreground mt-1">{child.child_name}</h2>
                       <div className="flex flex-wrap items-center gap-2 mt-1.5">
                         <p className="text-muted-foreground text-sm">{child.grade}. ročník · aktivní</p>
                         <span className="inline-flex items-center gap-1 rounded-full border border-success/30 bg-success-muted px-2.5 py-0.5 text-caption font-semibold text-success">
@@ -361,7 +367,7 @@ export default function ParentDashboard() {
                       větví (čtení vs. editace) a poznámky mezi nimi jsou
                       volitelné. Když se odstup věší na sourozence, zmizí
                       pokaždé, když ten sourozenec zrovna není. */}
-                  <div className="mt-5">
+                  <div className="relative z-10 mt-5">
                     <ChildActivityBadge childId={child.id} compact />
                   </div>
 
@@ -378,7 +384,7 @@ export default function ParentDashboard() {
 
                   {/* Rychlá navigace do sekcí + hlavní akce. Bod (c): z přehledu
                       se rodič proklikne na všechny části stránky. */}
-                  <div className="mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <div className="relative z-10 mt-5 flex flex-col sm:flex-row sm:items-center gap-3">
                     <div className="flex flex-wrap gap-2 flex-1">
                       <button type="button" onClick={() => scrollToSection("ukoly")} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold text-foreground shadow-e1 hover:border-primary/50 hover:bg-accent/50 transition-colors">
                         Zadané úkoly <PaintedArrow direction="down" className="h-3.5 w-3.5" />

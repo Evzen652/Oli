@@ -16,6 +16,7 @@ import { getReadableSkillName } from "@/lib/skillReadableName";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 import { oliPozdrav, oliTip } from "@/lib/oliPoses";
 import { IllustrationImg } from "@/components/IllustrationImg";
+import { FloatingStars } from "@/components/FloatingStars";
 import { toGreeting } from "@/lib/czechNames";
 import { SkillDetailModal } from "@/components/SkillDetailModal";
 import { Badge } from "@/components/ui/badge";
@@ -465,57 +466,56 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
 
 
         {/* ── Hero: Procvičovat samostatně ── */}
-        {/* Hero zůstává jediná velká barevná plocha na stránce — dítě potřebuje
-            jednu zjevnou akci, rodič si vystačí s pilulkami. Karty kolem už jsou
-            bílé jako na rodičovském dashboardu, takže hero nekonkuruje ničemu.
+        {/* Bílá karta jako všechno ostatní na stránce i na rodičovském
+            dashboardu. Dřív to byla jediná velká barevná plocha — vedle
+            sjednocených bílých karet pak vypadala jako kus jiné aplikace.
+            Že jde o hlavní akci, teď nese velikost nadpisu a plné tlačítko,
+            ne barevné pozadí. Odpovídá to i pravidlu design systému
+            „karta je vždy bílá, barvu nesou obrázky, ne UI".
 
-            Odstíny 700–900, ne 600–800. Rampa `violet` je v `tailwind.config.ts`
-            alias na značkovou oranžovou (`violet: brandOrange`), takže komentář
-            o „borůvkové" tady dřív popisoval barvu, která se nevykresluje.
-            Změřeno na živé stránce: `violet-600` = `#EA580C` dávalo bílému textu
-            3,56 : 1 — nadpis (30 px/800) tím prošel, ale „HLAVNÍ AKCE" (12 px)
-            a podtitulek (15 px) potřebují 4,5 a neprošly. `violet-700`
-            (`#C2410C`) je na 5,10 : 1, takže projde všechno. */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-700 via-violet-800 to-violet-900 px-8 py-8 text-white flex flex-col min-h-[180px]">
-          {/* Plovoucí hvězdičky — každá má vlastní dráhu */}
-          <span className="absolute top-5 right-20 text-white text-3xl pointer-events-none select-none" style={{ animation: 'oli-star-1 18s ease-in-out infinite' }}>✦</span>
-          <span className="absolute top-8 right-7  text-white text-xl pointer-events-none select-none" style={{ animation: 'oli-star-2 22s ease-in-out infinite', animationDelay: '-7s' }}>+</span>
-          <span className="absolute top-1/2 right-12 text-white text-lg pointer-events-none select-none" style={{ animation: 'oli-star-3 15s ease-in-out infinite', animationDelay: '-3s' }}>✦</span>
-          <span className="absolute bottom-6 right-24 text-white text-2xl pointer-events-none select-none" style={{ animation: 'oli-star-4 20s ease-in-out infinite', animationDelay: '-11s' }}>✦</span>
-          <span className="absolute bottom-5 left-1/2 text-white text-base pointer-events-none select-none" style={{ animation: 'oli-star-2 17s ease-in-out infinite', animationDelay: '-5s' }}>+</span>
-          <span className="absolute top-3 left-1/3  text-white text-sm pointer-events-none select-none" style={{ animation: 'oli-star-1 25s ease-in-out infinite', animationDelay: '-14s' }}>✦</span>
+            Hvězdičky zůstávají — jen musely dostat barvu: na oranžové byly
+            bílé, na bílé by byly neviditelné. Jsou dekorace, takže tlumený
+            tint značky, ne plná barva. */}
+        <div className="relative overflow-hidden rounded-3xl bg-card border border-border shadow-e1 px-8 py-8 flex flex-col min-h-[180px]">
+          <FloatingStars />
 
           {/* Horní část — roste a tlačí spodní řadu dolů */}
-          <div className="flex-1">
-            <p className="text-caption font-bold tracking-[0.15em] text-white/60 flex items-center gap-1.5 mb-3">
-              <span>✦</span> HLAVNÍ AKCE
+          <div className="relative z-10 flex-1">
+            <p className="text-caption font-bold tracking-[0.15em] text-muted-foreground flex items-center gap-1.5 mb-3">
+              <span className="text-orange-800">✦</span> HLAVNÍ AKCE
             </p>
-            <h2 className="font-display text-3xl font-extrabold leading-tight mb-2">Procvičovat samostatně</h2>
-            <p className="text-white/80 text-sm leading-relaxed">
+            <h2 className="font-display text-3xl font-extrabold leading-tight mb-2 text-foreground">Procvičovat samostatně</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Vyber si předmět a téma — Oli ti připraví cvičení na míru.
             </p>
           </div>
 
           {/* Spodní řada — chipy vlevo, tlačítko vpravo, zarovnané dolů */}
-          <div className="flex items-end justify-between gap-4 mt-4">
+          <div className="relative z-10 flex items-end justify-between gap-4 mt-4">
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: 'none' }}>
               {[...new Set(topics.map(t => t.subject))].map((subj) => {
                 const meta = getSubjectMeta(subj);
                 return (
+                  // Na oranžovém pozadí stačila bílá plocha, aby chip vystoupil.
+                  // Na bílé kartě ho musí ohraničit okraj — jinak by z něj
+                  // zbyla jen ilustrace se jménem plovoucí v prázdnu.
                   <button key={subj} onClick={() => onBrowseTopics(subj)}
-                    className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white/90 transition-colors shadow-sm shrink-0">
+                    className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground hover:border-primary/50 hover:bg-accent/50 transition-colors shadow-e1 shrink-0">
                     <IllustrationImg src={meta.image} className="h-6 w-6 object-contain" fallback={<span className="text-sm">{meta.emoji}</span>} />
                     {meta.label}
                   </button>
                 );
               })}
             </div>
-            {/* `text-orange-800` (#9A3412), ne `text-primary` (#F97316):
-                značková oranžová má na bílé jen 2,79 : 1, tedy pod normou pro
-                15px text. Tmavší odstín téže rampy je na 6,6 : 1 a vypadá
-                stejně „oranžově" — je to táž barva, jen čitelná. */}
+            {/* Plné tlačítko, ne obrácené — na bílé kartě musí hlavní akci
+                nést barva plochy. `bg-primary`, tedy TÁŽ oranžová jako všude
+                jinde v aplikaci (rodičovské „Chci zadat úkol(y)", landing).
+                Zkoušel jsem tu tmavší `orange-700`, protože bílý text má na
+                `#F97316` jen 2,79 : 1 — ale odlišný odstín na jediném tlačítku
+                je horší než sdílený problém. Kontrast primárních tlačítek je
+                věc tokenu `--primary`, ne téhle jedné komponenty. */}
             <button onClick={() => onBrowseTopics()}
-              className="shrink-0 h-12 rounded-2xl bg-white font-bold text-orange-800 hover:bg-white/95 active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-md whitespace-nowrap">
+              className="shrink-0 h-12 rounded-2xl bg-primary font-bold text-primary-foreground hover:bg-primary-hover active:scale-[0.98] transition-all flex items-center gap-2 px-5 text-sm shadow-e1 whitespace-nowrap">
               Začít procvičovat <PaintedArrow className="h-4 w-4 shrink-0" />
             </button>
           </div>
