@@ -7,6 +7,27 @@
 
 ---
 
+## ✅ Hustota dětské stránky (2026-09-06)
+
+Třetí průchod pravidlem „méně je někdy více". 1222 px na 914 px = 1,34 obrazovky.
+
+Smazáno kvůli opakování: recitace čísel v `motivationalMessage` (všech 12 variant
+opakovalo StatPilly vedle sebe — fond přepsán bez hodnot), nadpisek „✦ HLAVNÍ AKCE"
+(poznámka pro designéra v UI), podtitulky převyprávějící nadpis, opakování názvu
+tématu v drobečku.
+
+**Výsledek: 1222 → 1056 px, 914 → 639 znaků (−30 %).**
+
+🐞 **Dvě mrtvá ovládání** (táž vada jako `usedGrades` u rodiče): filtry úkolů
+podle data se kreslily i nad prázdným seznamem; `skillSubjects` byl natvrdo psaný
+rozvrh ročníku, takže filtry nabízely předměty, které dítě nikdy nedělalo.
+
+> **Vzor k zapamatování:** seznam voleb odvozený z konfigurace místo z dat je
+> v tomhle projektu opakovaná chyba — `usedGrades`, `skillSubjects`,
+> `DEMO_GRADE` v `GradeSelect`. Stojí za zvážení pravidlo do `audit:ui`.
+
+---
+
 ## ✅ Hustota rodičovského dashboardu (2026-09-06)
 
 Stejný průchod jako u modálu, pravidlo „méně je někdy více".

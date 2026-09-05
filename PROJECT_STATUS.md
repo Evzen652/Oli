@@ -144,6 +144,37 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (22) — hustota dětské stránky:
+
+Třetí průchod pravidlem „méně je někdy více". Výchozí stav 1222 px na 914 px
+okna = 1,34 obrazovky, 914 znaků — proti rodiči už střídmé, ale s týmiž vadami.
+
+- ✂️ **`motivationalMessage`: dvanáct variant, a všechny recitovaly čísla
+  z dlaždic vedle sebe.** „1 den s trénováním a 12 úloh — to se počítá."
+  a hned vedle StatPilly „1 den · 12 úloh · 67 %". Celý fond přepsán bez hodnot:
+  čísla zůstávají v dlaždicích, věta dělá to, co dlaždice neumí — dá tomu tón
+  a pošle dítě dál. Situační větvení (hodně dnů / slabá úspěšnost / …) zůstalo.
+  Zmizelo i oslovení uvnitř vět — nadpis nad nimi říká „Ahoj, Tondo!".
+- ✂️ **Nadpisek „✦ HLAVNÍ AKCE"** — poznámka pro designéra, která se dostala
+  do UI. Dítěti neříká nic; že jde o hlavní akci, nese velikost nadpisu a plné
+  tlačítko pod ním.
+- ✂️ **Podtitulky, které převyprávějí nadpis**: „Podívej se, jak ti to šlo
+  v poslední době" pod „Co jsi procvičoval" (pryč) a „Tady jsou cvičení, která
+  ti zadali doma…" pod „Úkoly od rodiče" (zbyla jen pobídka, a jen když nějaký
+  úkol existuje — nad prázdným seznamem to navíc nebyla pravda).
+- 🐞 **Dvě ovládání, která nemohla nic udělat** — táž vada jako `usedGrades`
+  u rodiče. Filtry úkolů podle data (5 tlačítek) se kreslily i nad prázdným
+  seznamem. A `skillSubjects` byl natvrdo psaný rozvrh ročníku, takže dítě, které
+  dělalo jen češtinu, dostalo i „Matematika" a „Prvouka" — obě vracely „Žádné
+  výsledky pro zvolený filtr". Nově odvozeno z dat a skryto pod dvěma předměty.
+- 🐞 **Drobeček opakoval název tématu.** „Čeština | Jazyková výchova · Pravopis"
+  a pod tím „Pravopis: Vyjmenovaná slova po B, L, M, P, S, V, Z". Z drobečku
+  vypadnou části, které už stojí v názvu.
+- **Výsledek: 1222 → 1056 px, 914 → 639 znaků (−30 %).** Mobil 375 px bez
+  vodorovného přetečení.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **118/118 souborů
+  a 4700 testů**, build prošel, změřeno živě na desktopu i na 375 px.
+
 ### Session 2026-09-06 (21) — hustota rodičovského dashboardu:
 
 Stejný průchod jako u modálu. Naměřeno 2548 px na 914 px okna = **2,8 obrazovky**,

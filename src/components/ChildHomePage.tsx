@@ -201,39 +201,46 @@ export function motivationalMessage(days: number, tasks: number, accuracy: numbe
   const manyTasks = tasks >= 20;
   const lowAccuracy = accuracy < 50 && tasks >= 5;
 
+  // Věta NERECITUJE čísla. Všech dvanáct variant dřív začínalo výčtem „X dní
+  // s procvičováním a Y úloh…" — přitom tytéž tři údaje stojí ve StatPillech
+  // hned vedle, velkým písmem. Dítě tak četlo totéž dvakrát na jednom řádku.
+  // Čísla zůstávají v dlaždicích; věta dělá to, co dlaždice neumí — dá tomu tón
+  // a pošle dítě dál. Situační větvení zůstává, jen bez opakování hodnot.
+  //
+  // `greeting` se ve větách nepoužívá: nadpis nad nimi už říká „Ahoj, Tondo!".
   const variants: string[][] = [
     // Hodně dnů s procvičováním + dobrá úspěšnost
     manyDays && goodAccuracy ? [
-      `${greeting}, ${pluralDays(days)} s procvičováním a ${accuracy} % správně — to je fakt skvělý výsledek! Pokračuj, jde ti to výborně.`,
-      `${pluralDays(days)} s procvičováním a ${accuracy}% úspěšnost ukazují, že látku opravdu zvládáš. Jen tak dál!`,
-      `${pluralDays(days)} s procvičováním, ${tasks} splněných úloh a ${accuracy} % — tohle jsou čísla, na která můžeš být hrdý/á.`,
+      "Chodíš sem pravidelně a je to znát. Pokračuj ve stejném tempu.",
+      "Tohle ti sedí — látku zvládáš. Jen tak dál!",
+      "Máš to zažité. Co kdyby sis dnes zkusil/a něco těžšího?",
     ] : [],
 
     // Hodně dnů s procvičováním, slabší úspěšnost
     manyDays && !goodAccuracy ? [
-      `${greeting}, ${pluralDays(days)} s procvičováním — to je pěkný kus práce! Přesnost zatím ${accuracy} %, ale to se cvičením zlepší.`,
-      `Procvičuješ pravidelně (${pluralDays(days)}) — to je skvělý návyk. Některé úlohy jdou těžce, ale právě tak se to učí.`,
+      "Chodíš sem pravidelně, a to je to hlavní. Přesnost se cvičením zvedne.",
+      "Pravidelnost už máš. Zkus číst zadání o kousek pomaleji — často to stačí.",
     ] : [],
 
     // Hodně úloh
     manyTasks ? [
-      `${czPad(tasks, "ÚLOHA")} tento týden — to je pořádná dávka! Mozek ti poděkuje, až přijde písemka.`,
-      `${greeting}, ${tasks} splněných úloh mluví za vše. Jsi pilný/á a výsledky budou přicházet.`,
+      "Tenhle týden jsi toho zvládl/a hodně. Mozek ti poděkuje, až přijde písemka.",
+      "Pěkná dávka práce. Výsledky se dostaví, neboj.",
     ] : [],
 
     // Slabá úspěšnost — povzbudit
     lowAccuracy ? [
-      `${accuracy} % správně — chyby jsou součást učení, ${greeting}. Zkus se dnes zaměřit na jedno téma a uvidíš, jak rychle to půjde lépe.`,
-      `Zatím ${accuracy} % úspěšnost — nevzdávej to! Každá špatná odpověď tě přiblíží k té správné.`,
+      "Chyby jsou součást učení. Zkus se dnes zaměřit jen na jedno téma a uvidíš.",
+      "Nevzdávej to — každá špatná odpověď tě přiblíží k té správné.",
     ] : [],
 
     // Obecné varianty (vždy dostupné jako záloha)
     [
-      `${greeting}, máš za sebou ${czPad(tasks, "ÚLOHA")} a ${pluralDays(days)} s procvičováním. Jsi na dobré cestě — pokračuj!`,
-      `${pluralDays(days)} s trénováním a ${czPad(tasks, "ÚLOHA")} — to se počítá. Co si dnes vybereš?`,
-      `Tvoje ${accuracy}% úspěšnost a ${tasks} splněných úloh ukazují, že makáš. Jen tak dál, ${greeting}!`,
-      `${czPad(tasks, "ÚLOHA")} tento týden a ${accuracy} % správně — dobrý základ. Pojď přidat další!`,
-      `Každý den trošku navíc. ${pluralDays(days)} s procvičováním dokazuje, že to myslíš vážně.`,
+      "Jsi na dobré cestě. Co si dnes vybereš?",
+      "Pojď do toho. Stačí si vybrat téma.",
+      "Každý den trošku navíc — to se počítá.",
+      "Kousek po kousku to jde nejlíp. Do čeho se pustíš?",
+      "Máš na to. Vyber si, co tě dnes láká.",
     ],
   ];
 
@@ -400,11 +407,14 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
     return true;
   });
 
-  const skillSubjects: string[] = grade <= 3
-    ? ["matematika", "čeština", "prvouka"]
-    : grade <= 5
-    ? ["matematika", "čeština", "přírodověda", "vlastivěda"]
-    : ["matematika", "čeština"];
+  // Předměty, které dítě OPRAVDU procvičovalo — ne celý rozvrh ročníku.
+  // Dřív to byl natvrdo psaný seznam podle ročníku, takže se nabízela
+  // „Matematika" i „Prvouka" u dítěte, které dělalo jen češtinu; obě vracely
+  // „Žádné výsledky pro zvolený filtr." Táž vada jako `usedGrades`
+  // v `ChildSessionLog` na rodičovské straně.
+  const skillSubjects: string[] = [...new Set(
+    stats.skills.map(s => getTopicById(s.skillId)?.subject).filter(Boolean) as string[]
+  )];
   const visibleSkills = stats.skills.filter(s => {
     if (skillSubject && getTopicById(s.skillId)?.subject !== skillSubject) return false;
     if (skillGradeFilter !== null) {
@@ -480,13 +490,13 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           <FloatingStars />
 
           {/* Horní část — roste a tlačí spodní řadu dolů */}
+          {/* Bez nadpisku „✦ HLAVNÍ AKCE". Byla to poznámka pro designéra, která
+              se dostala do UI — dítěti neříká nic a to, že jde o hlavní akci,
+              nese velikost nadpisu a plné tlačítko pod ním. */}
           <div className="relative z-10 flex-1">
-            <p className="text-caption font-bold tracking-[0.15em] text-muted-foreground flex items-center gap-1.5 mb-3">
-              <span className="text-orange-800">✦</span> HLAVNÍ AKCE
-            </p>
             <h2 className="font-display text-3xl font-extrabold leading-tight mb-2 text-foreground">Procvičovat samostatně</h2>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Vyber si předmět a téma — Oli ti připraví cvičení na míru.
+              Vyber si předmět a téma.
             </p>
           </div>
 
@@ -534,7 +544,13 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
             <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary/10 text-primary shrink-0"><Heart className="h-4 w-4" /></span>
             <div className="flex-1 min-w-0">
               <h2 className="font-bold text-foreground text-base">Úkoly od rodiče</h2>
-              <p className="text-xs text-muted-foreground leading-tight">Tady jsou cvičení, která ti zadali doma. Snaž se je splnit do termínu!</p>
+              {/* Podtitulek jen když nějaký úkol je. „Tady jsou cvičení, která
+                  ti zadali doma" je nadpis podruhé; nad prázdným seznamem to
+                  navíc není pravda — pod tím stojí „Žádné úkoly 🎉". Zbyla
+                  pobídka, tedy to, co v nadpisu není. */}
+              {assignments.length > 0 && (
+                <p className="text-xs text-muted-foreground leading-tight">Snaž se je splnit do termínu.</p>
+              )}
             </div>
             {assignments.filter(a => a.status === "pending").length > 0 && (
               <span className="rounded-full bg-primary text-primary-foreground text-caption font-bold px-2.5 py-1 leading-none shrink-0">
@@ -548,9 +564,12 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               <span>Úkoly od rodiče jsou dostupné jen přihlášeným žákům. <strong>Vytvoř si účet</strong> a propoj se s rodičem.</span>
             </div>
           )}
-          {/* Filtr podle data zadání */}
+          {/* Filtr podle data zadání — jen když je co filtrovat. Nad prázdným
+              seznamem se nabízelo pět tlačítek („Vše / Dnes / Tento týden /
+              Starší / Splněné"), z nichž žádné nemohlo nic ukázat. */}
+          {assignments.length > 0 && (
           <div className="px-5 pt-3 pb-1">
-            <div className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
+            <div className="flex flex-wrap w-fit max-w-full rounded-xl border border-slate-200 bg-slate-50 p-0.5 gap-0.5">
               {(["all", "today", "week", "older", "completed"] as const).map(f => {
                 const labels = { all: "Vše", today: "Dnes", week: "Tento týden", older: "Starší", completed: "Splněné" };
                 return (
@@ -562,6 +581,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               })}
             </div>
           </div>
+          )}
 
           {assignmentSubjects.length > 1 && (
             <div className="px-5 pt-2 pb-1 flex flex-wrap gap-1.5">
@@ -640,8 +660,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           <div className="px-5 py-4 border-b border-border/60 flex items-center gap-2.5">
             <span className="grid h-8 w-8 place-items-center rounded-xl bg-success/10 text-success shrink-0"><Activity className="h-4 w-4" /></span>
             <div className="flex-1 min-w-0">
+              {/* Bez podtitulku — „Podívej se, jak ti to šlo v poslední době"
+                  je nadpis převyprávěný jinými slovy. */}
               <h2 className="font-bold text-foreground text-base">Co jsi procvičoval</h2>
-              <p className="text-xs text-muted-foreground leading-tight">Podívej se, jak ti to šlo v poslední době.</p>
             </div>
           </div>
           {isAnonUser && (
@@ -659,7 +680,9 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               ))}
             </div>
           </div>
-          {skillSubjects.length > 0 && (
+          {/* `> 1`, ne `> 0`: u jediného předmětu je volba „Vše | Čeština"
+              dvojice tlačítek, mezi kterými není žádný rozdíl. */}
+          {skillSubjects.length > 1 && (
             <div className="px-5 pt-2 pb-1 flex flex-wrap gap-1.5">
               <button
                 onClick={() => setSkillSubject(null)}
@@ -884,9 +907,16 @@ function SkillHeader({ subjMeta, breadcrumb, skillName, lastPracticed }: {
   lastPracticed?: string | null;
 }) {
   const subjectLabel = subjMeta?.label ?? null;
-  const shortBreadcrumb = subjectLabel && breadcrumb.startsWith(subjectLabel)
+  // Z drobečku vypadnou části, které už stojí v názvu tématu. Bez toho se
+  // četlo „Čeština | Jazyková výchova · Pravopis" a hned pod tím „Pravopis:
+  // Vyjmenovaná slova po B, L, M, P, S, V, Z" — „Pravopis" dvakrát pod sebou.
+  const shortBreadcrumb = (subjectLabel && breadcrumb.startsWith(subjectLabel)
     ? breadcrumb.slice(subjectLabel.length).replace(/^\s*·\s*/, '').trim()
-    : breadcrumb;
+    : breadcrumb)
+    .split('·')
+    .map(part => part.trim())
+    .filter(part => part && !skillName.toLowerCase().includes(part.toLowerCase()))
+    .join(' · ');
 
   return (
     // `min-w-0 flex-1`, protože hlavička se používá i jako položka flexboxu
