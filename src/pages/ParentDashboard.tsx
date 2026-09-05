@@ -356,14 +356,20 @@ export default function ParentDashboard() {
                     </>
                   )}
 
-                  {/* Statistiky */}
-                  <ChildActivityBadge childId={child.id} compact />
+                  {/* Statistiky. Odstup drží tenhle obal, ne `mb-5` na řádku
+                      s ročníkem — ten se totiž renderuje jen v jedné ze dvou
+                      větví (čtení vs. editace) a poznámky mezi nimi jsou
+                      volitelné. Když se odstup věší na sourozence, zmizí
+                      pokaždé, když ten sourozenec zrovna není. */}
+                  <div className="mt-5">
+                    <ChildActivityBadge childId={child.id} compact />
+                  </div>
 
                   {/* Denní rozpad těch tří čísel nad ním. Patří sem, ne do
                       „Samostatného procvičování" — graf počítá VŠECHNU aktivitu
                       včetně zadaných úkolů, takže pod tím nadpisem by tvrdil
-                      něco jiného, než ukazuje. Sám se sbalí, když není co
-                      ukázat, takže prázdnému přehledu nepřekáží. */}
+                      něco jiného, než ukazuje. Vždy sbalený, ať přehled zůstane
+                      krátký; detail si rozklikne, kdo ho chce. */}
                   {child.is_paired && (
                     <div className="mt-4">
                       <ChildActivityChart childId={child.id} />
