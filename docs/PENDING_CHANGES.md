@@ -30,6 +30,51 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## 🟠 ČEKÁ NA EVŽENA: čtyři údaje v právních stránkách (2026-09-06)
+
+`src/content/legal.ts` — **název provozovatele, IČO, adresa, kontaktní e-mail**.
+Identita správce údajů a kontakt pro uplatnění práv jsou právně závazné údaje;
+vymyslet si je nesmím. Dokud tam stojí `DOPLNIT`, stránky je vykreslí jako žlutý
+zástupný text a ve vývoji hlásí banner — schválně, aby nešly nasadit omylem.
+
+**Bez vyplnění neodevzdávej do obchodů.** Obojí vyžaduje funkční URL se zásadami
+a kontroluje ji při review.
+
+---
+
+## ✅ Zásady soukromí a podmínky použití (2026-09-06)
+
+`/soukromi` a `/podminky` nad sdíleným rámem `LegalLayout`. Patička landingu
+měla u obou odkazů `href="#"` — nevedly nikam.
+
+**Routy jsou ve všech pěti větvích routeru** přes sdílené pole `legalRoutes`
+v `App.tsx`, ne pětkrát opsané. Recenzent obchodu je otevírá odhlášený, uživatel
+z patičky — a přesně na tomhle místě už jednou vznikl bug, kdy `/auth/child`
+vracelo 404 každému přihlášenému.
+
+### 🧪 Nový hlídač: `src/test/legal-recipients.test.ts`
+
+Prochází zdroják, vytáhne cizí hostitele a porovná je se seznamem `PRIJEMCI`.
+Právní text stárne jinak než kód: když někdo přidá volání ven a zapomene ho
+dopsat, nic se nerozbije — jen se zveřejněný dokument tiše stane nepravdivým.
+
+**Vyplatil se hned — našel pět hostitelů, které jsem vynechal:**
+
+| hostitel | co to znamenalo |
+|---|---|
+| `api.groq.com` | `_shared/aiCall.ts` routuje mezi Groq, Google a Lovable podle nastaveného klíče — data o učení mohou jít i ke Groqu, ne jen ke Gemini |
+| `wa.me` | pozvánka rodiči přes WhatsApp; číslo zůstává v zařízení, ale Meta se o zprávě dozví |
+| `router.huggingface.co`, `gen.pollinations.ai`, `claude.ai` | admin, bez dat uživatele — zapsáno do `MIMO_ROZSAH` s odůvodněním |
+
+### ⏭️ Otevřené
+
+- **Mazání účtu v aplikaci chybí** — zásady proto popisují výmaz jako žádost
+  e-mailem, což je pravda dnes. Až tlačítko vznikne, přepiš „Vaše práva".
+- **Právní kontrola.** Není to posudek; u služby pro děti to není formalita.
+- **Retenční lhůty** (`LHUTA_SMAZANI`, `LHUTA_ANON`) jsou návrh, ne rozhodnutí.
+
+---
+
 ## ✅ Vstupní obrazovky + chybějící token `foreground-soft` (2026-09-06)
 
 Dotaženo: `Landing`, `LandingNav`, `Auth`, `ChildAuth`, `Onboarding`, `Report`,

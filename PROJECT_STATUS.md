@@ -144,6 +144,39 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (27) — zásady soukromí a podmínky použití:
+
+- ✅ **`/soukromi` a `/podminky`** — dvě nové stránky (`Privacy.tsx`, `Terms.tsx`)
+  nad sdíleným rámem `LegalLayout`. Bez nich nejde odevzdat do Google Play ani
+  App Store; obojí vyžaduje funkční URL se zásadami a kontroluje ji při review.
+- ✅ **Mrtvé odkazy v patičce opraveny.** „Podmínky" i „Ochrana soukromí" byly
+  `<a href="#">` — nevedly nikam.
+- ✅ **Routy ve VŠECH pěti větvích routeru** přes sdílené pole `legalRoutes`
+  v `App.tsx`. Ne pětkrát opsané: přesně tady vznikl dřív bug, kdy `/auth/child`
+  vracelo 404 každému přihlášenému. Sdílené pole se nemá jak rozejít.
+- ✅ **Text popisuje skutečné chování**, ověřené proti kódu — ne šablonu.
+  Tvrzení „žádná analytika, žádná reklama" je ověřené: v repu není gtag,
+  Plausible, PostHog, Sentry ani reklamní SDK.
+- 🧪 **Nový test `legal-recipients.test.ts`** prochází zdroják, vytáhne cizí
+  hostitele a porovná je se seznamem příjemců. Táž myšlenka jako `audit:ui` —
+  hlídat, že dokument neslibuje něco, co neodpovídá skutečnosti.
+- 🐞 **Ten test se vyplatil hned:** našel **pět** hostitelů, které jsem
+  v zásadách vynechal. Dva podstatné — `api.groq.com` (`_shared/aiCall.ts`
+  routuje mezi Groq, Google a Lovable podle nastaveného klíče, takže data
+  o učení mohou jít i ke Groqu) a `wa.me` (pozvánka rodiči přes WhatsApp).
+  Bez testu bych zveřejnil nepravdivý dokument.
+- ⚠️ **Čtyři údaje musí doplnit Evžen** — `src/content/legal.ts`: název
+  provozovatele, IČO, adresa, kontaktní e-mail. Identitu správce údajů si
+  vymyslet nesmím. Dokud chybí, stránky je vykreslí jako žlutý zástupný text
+  a ve vývoji navíc hlásí banner, aby nešly nasadit nedopatřením.
+- ⚠️ **Není to právní posudek.** U služby mířené na děti nech projít právníkem.
+- ⏭️ **Mazání účtu v aplikaci pořád chybí** (blocker B3). Zásady proto popisují
+  výmaz jako žádost e-mailem — což je pravda dnes. Až tlačítko vznikne, přepiš
+  část „Vaše práva"; do té doby by zmínka o něm byla nepravdivá.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **119/119 souborů
+  a 4703 testů**, build prošel. `/soukromi`, `/podminky` i proklik z patičky
+  projity živě v odhlášeném stavu (tedy tak, jak je uvidí recenzent obchodu).
+
 ### Session 2026-09-06 (26) — vstupní obrazovky dotažené + chybějící token:
 
 - ✅ **`--foreground-soft` zaregistrován v Tailwindu.** Token byl v `index.css`

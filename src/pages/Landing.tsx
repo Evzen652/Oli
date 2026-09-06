@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -433,8 +433,10 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">© 2025 Oli. Všechna práva vyhrazena.</p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground-soft transition-colors">Podmínky</a>
-            <a href="#" className="hover:text-foreground-soft transition-colors">Ochrana soukromí</a>
+            {/* Dřív `href="#"` — odkaz, který nikam nevedl. Google Play i App Store
+                vyžadují funkční URL se zásadami a kontrolují ji při review. */}
+            <Link to="/podminky" className="hover:text-foreground-soft transition-colors">Podmínky</Link>
+            <Link to="/soukromi" className="hover:text-foreground-soft transition-colors">Ochrana soukromí</Link>
           </div>
         </div>
       </footer>

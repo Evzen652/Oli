@@ -27,8 +27,27 @@ import AdminRvpTree from "./pages/AdminRvpTree";
 import Landing from "./pages/Landing";
 import Onboarding from "./pages/Onboarding";
 import AnonStudentPage from "./pages/AnonStudentPage";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
+
+/**
+ * Právní stránky — musí být ve VŠECH větvích routeru.
+ *
+ * Recenzent Google Play i App Store je otevírá odhlášený a přímo z URL, kterou
+ * vyplníš do formuláře; přihlášený uživatel se na ně dostane z patičky. Kdyby
+ * chyběly v jedné větvi, spadne odkaz na 404 právě té skupině — a to je přesně
+ * chyba, která tu už jednou byla u `/auth/child` (404 pro každého přihlášeného,
+ * přestože dashboard sám na tu stránku odkazoval).
+ *
+ * Proto jedno sdílené pole místo pěti opsaných dvojic: větve se nemají jak
+ * rozejít. Kdo přidá novou větev a zapomene je vložit, uvidí to na první pohled.
+ */
+const legalRoutes = [
+  <Route key="soukromi" path="/soukromi" element={<Privacy />} />,
+  <Route key="podminky" path="/podminky" element={<Terms />} />,
+];
 
 function AuthenticatedRoutes() {
   const { role, loading: roleLoading } = useUserRole();
@@ -52,6 +71,7 @@ function AuthenticatedRoutes() {
         <Route path="/" element={<Landing />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        {legalRoutes}
         <Route path="*" element={<Navigate to="/onboarding" replace />} />
       </Routes>
     );
@@ -75,6 +95,7 @@ function AuthenticatedRoutes() {
             přitom rodičovský dashboard sám vybízí „otevři Oli a zadej kód". */}
         <Route path="/auth/child" element={<ChildAuth />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        {legalRoutes}
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -94,6 +115,7 @@ function AuthenticatedRoutes() {
         {/* Viz komentář v admin větvi — rodič předává zařízení dítěti. */}
         <Route path="/auth/child" element={<ChildAuth />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        {legalRoutes}
         <Route path="/" element={<Navigate to="/parent" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -110,6 +132,7 @@ function AuthenticatedRoutes() {
       {/* Přepnutí na jiné dítě na sdíleném zařízení (sourozenci). */}
       <Route path="/auth/child" element={<ChildAuth />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      {legalRoutes}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -170,6 +193,7 @@ const App = () => {
                    <Route path="/auth/child" element={<ChildAuth />} />
                    <Route path="/auth/forgot-password" element={<ForgotPassword />} />
                    <Route path="/reset-password" element={<ResetPassword />} />
+                   {legalRoutes}
                    {/* Dřív tichý `Navigate to="/"`, zatímco přihlášené větve ukazují
                        NotFound. Tichý redirect schová rozbitý odkaz před uživatelem
                        i před námi (žádná chyba v konzoli) — 404 se má přiznat. */}
