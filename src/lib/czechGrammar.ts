@@ -55,6 +55,7 @@ const NOUNS: Record<string, [string, string, string]> = {
   ŽÁK:        ["žák", "žáci", "žáků"],
   DÍTĚ:       ["dítě", "děti", "dětí"],
   RODIČ:      ["rodič", "rodiče", "rodičů"],
+  PROFIL:     ["profil", "profily", "profilů"],
   CHYBA:      ["chyba", "chyby", "chyb"],
   BOD:        ["bod", "body", "bodů"],
   NÁPOVĚDA:   ["nápověda", "nápovědy", "nápověd"],

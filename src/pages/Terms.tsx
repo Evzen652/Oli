@@ -123,8 +123,13 @@ export default function Terms() {
 
       <LegalSection id="ukonceni" title="Ukončení">
         <p>
-          Používání můžete kdykoli ukončit. O zrušení účtu a smazání dat dítěte nás
-          požádejte na kontaktním e-mailu výš; vyřídíme to do {LHUTA_SMAZANI}.
+          Používání můžete kdykoli ukončit. Účet smažete přímo v aplikaci — jako rodič
+          dole v přehledu. Když se nemůžete přihlásit, napište nám na kontaktní e-mail
+          výš a vyřídíme to do {LHUTA_SMAZANI}. Postup popisuje stránka{" "}
+          <Link to="/smazani-uctu" className="font-medium text-primary hover:text-primary-hover hover:underline">
+            jak smazat účet
+          </Link>
+          .
         </p>
       </LegalSection>
 

@@ -30,6 +30,59 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## 🔴 ČEKÁ NA EVŽENA: nasadit `delete-account` (2026-09-06)
+
+```bash
+supabase functions deploy delete-account
+```
+
+Dokud neproběhne, tlačítko „Smazat účet" v rodičovském přehledu **nic nesmaže**
+— volání vrátí 404. Aplikace to poctivě přizná („účet je pořád aktivní, nic
+jsme nesmazali") a pošle uživatele na kontaktní e-mail, takže nikdo neodejde
+s falešným pocitem smazaných dat. Ale funkce to není, dokud není nasazená.
+
+**Aktualizovaný deploy pro spuštění** (viz taky blokery pilotu níž):
+
+```bash
+supabase db push
+supabase functions deploy pair-child session-evaluation weekly-report delete-account
+```
+
+---
+
+## ✅ Mazání účtu — blocker obchodů B3 (2026-09-06)
+
+Google Play i Apple vyžadují mazání účtu přímo v aplikaci u každé služby, která
+umí účet založit. Play navíc veřejnou adresu, kde jde požádat bez instalace.
+
+- `supabase/functions/delete-account/index.ts` — identita volajícího **výhradně
+  z JWT**, tělo nese jen potvrzovací slovo. Maže 13 tabulek v pořadí od
+  závislostí ke kořeni, včetně dětských auth účtů.
+- `src/components/parent/DeleteAccountDialog.tsx` — opsání slova `SMAZAT`,
+  výpis toho, co zmizí, včetně jmen dětí.
+- `src/pages/DeleteAccountInfo.tsx` na `/smazani-uctu` — veřejná stránka pro
+  Play Console, dostupná odhlášenému.
+
+### Proč se nespoléhá na cizí klíče
+
+`schema.sql` je u tabulky `children` prokazatelně zastaralý (viz CLAUDE.md),
+takže `ON DELETE CASCADE` by tu byl neověřený předpoklad. Pořadí je explicitní
+a čitelné. Kdyby kaskády existovaly, mazání je jen idempotentní navíc.
+
+### Co se NEmaže a proč
+
+`anon_progress` a `anon_trial` visí na náhodném tokenu z prohlížeče, ne na účtu
+— není podle čeho je k účtu přiřadit. Mažou se podle lhůty `LHUTA_ANON`.
+
+### ⏭️ Otevřené
+
+- **Nasadit** (viz výš). Bez toho je tlačítko nefunkční, byť poctivé.
+- **Ověřit naostro po deployi** — funkci jsem nemohl spustit ani jednou.
+  Testovací účet, smazat, zkontrolovat, že v žádné z 13 tabulek nezbyl řádek.
+- **Dialog neprošel živě** — vyžaduje přihlášení rodiče, heslo zadávat nesmím.
+
+---
+
 ## 🟠 ČEKÁ NA EVŽENA: čtyři údaje v právních stránkách (2026-09-06)
 
 `src/content/legal.ts` — **název provozovatele, IČO, adresa, kontaktní e-mail**.

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { LegalLayout, LegalSection, Doplnit } from "@/components/LegalLayout";
 import {
   PROVOZOVATEL,
@@ -166,8 +167,14 @@ export default function Privacy() {
           <strong className="text-foreground"><Udaj hodnota={PROVOZOVATEL.email} co="kontaktní e-mail" /></strong>.
         </p>
         <p>
-          O smazání účtu a všech dat dítěte nás požádejte na tomtéž e-mailu; vyřídíme
-          to do {LHUTA_SMAZANI}.
+          Účet i všechna data dětí smažete{" "}
+          <strong className="text-foreground">přímo v aplikaci</strong> — jako rodič dole
+          v přehledu. Když se nemůžete přihlásit, napište nám a vyřídíme to do{" "}
+          {LHUTA_SMAZANI}. Obě cesty popisuje stránka{" "}
+          <Link to="/smazani-uctu" className="font-medium text-primary hover:text-primary-hover hover:underline">
+            jak smazat účet
+          </Link>
+          .
         </p>
         <p>
           Když budete mít za to, že s údaji nakládáme špatně, můžete si stěžovat u

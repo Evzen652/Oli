@@ -437,6 +437,7 @@ export default function Landing() {
                 vyžadují funkční URL se zásadami a kontrolují ji při review. */}
             <Link to="/podminky" className="hover:text-foreground-soft transition-colors">Podmínky</Link>
             <Link to="/soukromi" className="hover:text-foreground-soft transition-colors">Ochrana soukromí</Link>
+            <Link to="/smazani-uctu" className="hover:text-foreground-soft transition-colors">Smazání účtu</Link>
           </div>
         </div>
       </footer>

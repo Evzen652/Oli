@@ -29,6 +29,7 @@ import Onboarding from "./pages/Onboarding";
 import AnonStudentPage from "./pages/AnonStudentPage";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import DeleteAccountInfo from "./pages/DeleteAccountInfo";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,10 @@ const queryClient = new QueryClient();
 const legalRoutes = [
   <Route key="soukromi" path="/soukromi" element={<Privacy />} />,
   <Route key="podminky" path="/podminky" element={<Terms />} />,
+  // Google Play vyžaduje kromě mazání v aplikaci i veřejnou adresu, na které
+  // jde o smazání požádat BEZ instalace. Tahle URL se vyplňuje do Play Console,
+  // takže ji musí otevřít i odhlášený člověk.
+  <Route key="smazani-uctu" path="/smazani-uctu" element={<DeleteAccountInfo />} />,
 ];
 
 function AuthenticatedRoutes() {

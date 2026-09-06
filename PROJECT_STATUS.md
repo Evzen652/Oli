@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (28) — mazání účtu (blocker obchodů B3):
+
+- ✅ **Edge funkce `delete-account`.** Kdo se maže, se bere **výhradně z JWT** —
+  tělo požadavku nenese žádné id, jinak by kdokoli se svým přihlášením smazal
+  cizí účet. Tělo nese jen potvrzovací slovo, aby omylem odeslaný požadavek
+  neprošel.
+- ✅ **Mazání v pořadí od závislostí ke kořeni**, explicitně přes 13 tabulek.
+  Na cizí klíče se záměrně nespoléhá: `schema.sql` je u `children` prokazatelně
+  zastaralý, takže tichý `ON DELETE` by byl neověřený předpoklad.
+  Maže i **dětské auth účty** (`children.child_user_id`) a řádky
+  `student_skill_level`, jejichž `student_id` je auth id toho, kdo cvičil.
+- ✅ **Dialog s opsáním slova** místo „Opravdu?" — to se odklikne bez čtení.
+  Vypíše konkrétně, co zmizí, včetně jmen dětí.
+- ✅ **Veřejná stránka `/smazani-uctu`** — Google Play vyžaduje kromě mazání
+  v aplikaci i adresu, na které jde požádat **bez instalace**. Přidána do
+  `legalRoutes`, takže je i ona ve všech pěti větvích routeru.
+- ⚠️ **Bezpečná degradace, ne předstírání.** Funkce zatím **není nasazená**,
+  takže volání vrací 404. Nejhorší chování by bylo tvářit se, že se účet
+  smazal — uživatel by odešel s pocitem, že jeho data jsou pryč, a ona by tam
+  byla dál. Při 404 se proto **neodhlašujeme**, nic netvrdíme a nabídneme
+  e-mail. Rozhodnutí izolováno do `funkceNedostupna()` a pokryto 7 testy;
+  500 se **záměrně** nepovažuje za nedostupnost, protože tam jistotu nemáme.
+- ⏭️ **Deploy je na Evženovi:** `supabase functions deploy delete-account`.
+  Do té doby tlačítko existuje, ale poctivě řekne, že mazání nešlo spustit.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **120/120 souborů
+  a 4710 testů**, build prošel, `/smazani-uctu` projito živě odhlášeně.
+  Samotný dialog živě neprošel — vyžaduje přihlášení rodiče a heslo zadávat
+  nesmím.
+
 ### Session 2026-09-06 (27) — zásady soukromí a podmínky použití:
 
 - ✅ **`/soukromi` a `/podminky`** — dvě nové stránky (`Privacy.tsx`, `Terms.tsx`)

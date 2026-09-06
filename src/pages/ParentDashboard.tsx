@@ -31,6 +31,7 @@ import { BackButton } from "@/components/BackButton";
 import { GradeSelectItems } from "@/components/GradeSelectItems";
 import { cn } from "@/lib/utils";
 import { ChildPinControl } from "@/components/parent/ChildPinControl";
+import { DeleteAccountDialog } from "@/components/parent/DeleteAccountDialog";
 
 
 
@@ -93,6 +94,7 @@ function LearningNotesDisplay({ notes, onEdit }: { notes: string | null; onEdit:
 
 export default function ParentDashboard() {
   const { children, loading, addChild, regenerateCode, updateChild, deleteChild, refetch } = useChildren();
+  const [showDelete, setShowDelete] = useState(false);
   const { profile } = useProfile();
   const [showAdd, setShowAdd] = useState(false);
   const [newName, setNewName] = useState("");
@@ -634,7 +636,33 @@ export default function ParentDashboard() {
           </button>
         )}
 
+        {/* ── Účet ──
+            Google Play i Apple vyžadují mazání účtu přímo v aplikaci u každé
+            služby, která umí účet založit — musí být tedy dohledatelné, ne
+            schované. Zároveň patří dolů a potichu, ne vedle „Odhlásit" nahoře:
+            ty dvě akce se pletou a jedna z nich nejde vzít zpět. */}
+        <section className="border-t border-border pt-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-foreground">Smazat účet</p>
+              <p className="text-sm text-muted-foreground">
+                Trvale odstraní účet i data všech dětí. Nejde vzít zpět.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-full border-destructive/40 text-destructive hover:bg-destructive-muted hover:text-destructive"
+              onClick={() => setShowDelete(true)}
+            >
+              Smazat účet
+            </Button>
+          </div>
+        </section>
+
       </main>
+
+      <DeleteAccountDialog deti={children} open={showDelete} onOpenChange={setShowDelete} />
     </div>
   );
 }
