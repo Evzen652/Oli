@@ -144,6 +144,37 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (29) — obal aplikace přes Capacitor (blocker B1):
+
+- ✅ **Capacitor 8**, platformy `android/` i `ios/` vygenerované a verzované
+  (aby šly sestavit z obou PC). Web se sestaví do `dist/` a Capacitor ho zabalí
+  — žádný druhý kód.
+- ⚠️ **`appId: com.oliedu.app` je NEVRATNÝ.** Po prvním vydání ho nejde změnit
+  ani v Play, ani v App Store. Odvozeno z `oli-edu.com`. Změnit teď, nebo nikdy.
+- ✅ **Ikony a splash** — 87 souborů pro Android, 10 pro iOS, 8 pro web,
+  generované z `oli-logo.png` (1024×1024). Maskable ikona je zvlášť, se
+  60% bezpečnou zónou — táž bitmapa jako „any" by se na Androidu ořízla.
+- ✅ **Bezpečné zóny** — `viewport-fit=cover` + odsazení `#root`. Odsazení nese
+  `#root`, ne `body`, aby pozadí zůstalo celoplošné. Na webu je `env()` nula.
+- ✅ **Hardwarové Zpět na Androidu** vrací v historii místo ukončení aplikace.
+  Výchozí chování Capacitoru by dítě uprostřed cvičení vyhodilo ven i s
+  rozdělanou prací; takhle platí táž ochrana odchodu jako u tlačítka v aplikaci.
+- ✅ **Splash se schovává až po startu Reactu** (`launchAutoHide: false`) —
+  odpadá bílý záblesk.
+- 🐞 **Vygenerovaný webový manifest byl nepoužitelný:** cesty `../icons/`,
+  `type: image/png` u `.webp` souborů, chybějící `name`, `start_url` i
+  `display`. Přepsaný ručně — díky tomu jde aplikace nainstalovat i z prohlížeče
+  na počítači, což je třetí cílová platforma.
+- ⏭️ **Sestavit jsem to nemohl** — na tomhle PC není JDK, Android SDK ani
+  Android Studio; iOS vyžaduje macOS. Ověřeno jen to, že `cap sync` proběhne
+  pro obě platformy a že web zásahy nerozbily.
+- ⏭️ **Zbývá:** podpisové klíče, ověření domény pro hluboké odkazy (bez toho
+  obnova hesla otevře prohlížeč, ne aplikaci), stažení písma Nunito do repa,
+  formuláře o datech v obou obchodech. Detail v `docs/MOBILNI_BUILD.md`.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **120/120 souborů
+  a 4710 testů**, build prošel, `cap sync` pro android i ios, web živě
+  bez změny (výška stránky i rozvržení shodné, `#root` padding 0).
+
 ### Session 2026-09-06 (28) — mazání účtu (blocker obchodů B3):
 
 - ✅ **Edge funkce `delete-account`.** Kdo se maže, se bere **výhradně z JWT** —

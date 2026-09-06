@@ -154,6 +154,31 @@ All colors MUST be HSL.
     font-feature-settings: "ss01", "cv11";
   }
 
+  /* ── Bezpečné zóny (výřez, čelist, indikátor gest) ──
+     V obalu pro Google Play a App Store běží aplikace přes celou plochu
+     displeje — bez odsazení by nadpis ležel pod čelistí a spodní tlačítka
+     pod indikátorem gest. `env()` vrací hodnoty jen díky `viewport-fit=cover`
+     v `index.html`.
+
+     Odsazení nese `#root`, ne `body`: pozadí tak zůstává celoplošné a v pruhu
+     u stavového řádku se ukáže `--background`, tedy táž krémová jako zbytek
+     aplikace. Na webu je `env()` nula, takže se nic nemění. */
+  #root {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* `min-h-screen` počítá se 100 % výšky displeje, tedy včetně bezpečných zón.
+     Uvnitř odsazeného `#root` by proto vznikl přesah a stránka by šla scrollovat
+     o pár pixelů, přestože se obsah vejde. */
+  #root :is(.min-h-screen) {
+    min-height: calc(
+      100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+    );
+  }
+
   /* font-family se dědí z `body` (Nunito) — dřív tu bylo explicitní pravidlo,
      které navíc přebíjelo utility `font-heading`/`font-display`. */
   h1, h2, h3, h4 {

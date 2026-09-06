@@ -1,0 +1,24 @@
+{
+  "name": "Oli — procvičování pro ZŠ",
+  "short_name": "Oli",
+  "description": "Oli připraví dítěti cvičení na míru podle ročníku a tématu. Krátké procvičování, nápověda po ruce, přehled pro rodiče.",
+  "lang": "cs",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAF9F6",
+  "theme_color": "#FAF9F6",
+  "categories": ["education", "kids"],
+  "icons": [
+    { "src": "/icons/icon-48.webp", "sizes": "48x48", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-72.webp", "sizes": "72x72", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-96.webp", "sizes": "96x96", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-128.webp", "sizes": "128x128", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-192.webp", "sizes": "192x192", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-256.webp", "sizes": "256x256", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-512.webp", "sizes": "512x512", "type": "image/webp", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

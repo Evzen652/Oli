@@ -30,6 +30,55 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## 🔴 ROZHODNI TEĎ: `appId` obalu je nevratný (2026-09-06)
+
+`capacitor.config.ts` → **`com.oliedu.app`**, odvozeno z `oli-edu.com`.
+
+Po prvním vydání se nedá změnit ani v Google Play, ani v App Store — změna
+znamená novou aplikaci s nulou stažení a bez recenzí. Pokud chceš jiný, teď
+je jediná chvíle.
+
+---
+
+## ✅ Obal aplikace přes Capacitor — blocker obchodů B1 (2026-09-06)
+
+Capacitor 8, platformy `android/` i `ios/` verzované v gitu. Web se sestaví do
+`dist/` a zabalí — žádný druhý kód. Postup, požadavky a zbytek v
+[`docs/MOBILNI_BUILD.md`](MOBILNI_BUILD.md).
+
+### Co si vyžádala mobilní forma navíc
+
+- **Bezpečné zóny** — bez `viewport-fit=cover` a odsazení `#root` by nadpis
+  ležel pod čelistí a tlačítka pod indikátorem gest. Odsazení nese `#root`,
+  ne `body`, aby pozadí zůstalo celoplošné.
+- **Hardwarové Zpět** — výchozí chování Capacitoru aplikaci rovnou ukončí. To
+  by dítě uprostřed cvičení vyhodilo ven i s rozdělanou prací, takže se místo
+  toho vracíme v historii a platí táž ochrana odchodu jako v aplikaci.
+- **Maskable ikona zvlášť** se 60% bezpečnou zónou; táž bitmapa jako „any" by
+  se na Androidu ořízla.
+
+### 🐞 Vygenerovaný manifest byl nepoužitelný
+
+`@capacitor/assets` vyrobil `public/manifest.webmanifest` s cestami `../icons/`,
+`type: "image/png"` u `.webp` souborů a bez `name`, `start_url` i `display`.
+Přepsaný ručně — díky tomu jde aplikace nainstalovat i z prohlížeče na počítači,
+což je třetí cílová platforma ze zadání.
+
+### ⏭️ Otevřené
+
+- **Sestavení neproběhlo ani jednou** — na tomhle PC není JDK, Android SDK ani
+  Android Studio, iOS vyžaduje macOS. První build může narazit na verze JDK
+  nebo chybějící SDK komponenty; není to chyba konfigurace.
+- **Podpisové klíče** (klíč k Androidu zálohovat — při ztrátě nelze aktualizovat).
+- **Hluboké odkazy** — obnova hesla dnes otevře prohlížeč, ne aplikaci.
+  Aplikace odkaz zpracovat umí, chybí ověření domény (`assetlinks.json`,
+  `apple-app-site-association`). Jde až po podpisových klíčích.
+- **Nunito se stahuje z Google Fonts** — v mobilu to znamená náhradní písmo při
+  prvním spuštění bez signálu a je to jediný důvod, proč je Google mezi příjemci
+  v zásadách soukromí. Stažení písma do repa vyřeší obojí.
+
+---
+
 ## 🔴 ČEKÁ NA EVŽENA: nasadit `delete-account` (2026-09-06)
 
 ```bash
