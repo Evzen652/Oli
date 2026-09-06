@@ -9,6 +9,7 @@ import { serverStartTrial } from "@/lib/anonServerSync";
 import { writeLocal } from "@/lib/safeStorage";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
+import { useParentGate } from "@/components/ParentGate";
 import { useToast } from "@/hooks/use-toast";
 
 const S = "https://uusaczibimqvaazpaopy.supabase.co/storage/v1/object/public/prvouka-images";
@@ -141,6 +142,9 @@ const GRADE_INK = "#4A4038";
 export default function Onboarding() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<number | null>(null);
+  // Výběr ročníku dělá dítě — oba vstupy do rodičovské části tedy vedou
+  // přes bránu (Play Families / Apple Kids).
+  const { requireParent, gateElement } = useParentGate();
   const { toast } = useToast();
 
   const handleGradeSelect = (grade: number) => {
@@ -190,16 +194,17 @@ export default function Onboarding() {
 
 
           {/* Rodičovský vstup — viditelně před výběrem ročníku */}
-          <a
-            href="/auth?mode=register"
-            className="flex items-center justify-between rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-5 py-3.5 hover:bg-emerald-100 transition-colors text-left"
+          <button
+            type="button"
+            onClick={() => requireParent(() => { window.location.href = "/auth?mode=register"; })}
+            className="flex w-full items-center justify-between rounded-2xl border-2 border-emerald-200 bg-emerald-50 px-5 py-3.5 hover:bg-emerald-100 transition-colors text-left"
           >
             <div>
               <p className="font-bold text-emerald-900 text-base">Jsem rodič</p>
               <p className="text-sm text-emerald-700">Chci zadávat úkoly a sledovat pokrok dítěte</p>
             </div>
             <PaintedArrow className="h-5 w-5 text-emerald-500 shrink-0 ml-3" />
-          </a>
+          </button>
 
           <div className="space-y-4">
             <p className="text-foreground font-bold text-2xl">Vyber svůj ročník</p>
@@ -298,16 +303,19 @@ export default function Onboarding() {
             <p className="text-sm text-foreground-soft leading-relaxed">
               Chcete dítěti zadávat úkoly a sledovat pokrok?
             </p>
-            <a
-              href="/auth?mode=register"
+            <button
+              type="button"
+              onClick={() => requireParent(() => { window.location.href = "/auth?mode=register"; })}
               className="text-sm font-medium text-primary hover:text-primary-hover hover:underline transition-colors inline-flex items-center gap-1.5"
             >
               Jsem tady jako rodič <PaintedArrow className="h-4 w-4" />
-            </a>
+            </button>
           </div>
 
         </div>
       </div>
+
+      {gateElement}
     </div>
   );
 }

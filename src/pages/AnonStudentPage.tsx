@@ -19,6 +19,7 @@ import { IllustrationImg } from "@/components/IllustrationImg";
 import { Check, Sparkles, Heart, BookOpen } from "lucide-react";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { InviteParentDialog } from "@/components/InviteParentDialog";
+import { useParentGate } from "@/components/ParentGate";
 import { LandingNav } from "@/pages/LandingNav";
 import { BackButton } from "@/components/BackButton";
 import { pad } from "@/lib/czechGrammar";
@@ -45,6 +46,10 @@ export default function AnonStudentPage() {
   const [refreshTick, setRefreshTick] = useState(0);
   // invite parent dialog
   const [showInviteParent, setShowInviteParent] = useState(false);
+  // Tahle stránka je dětská. Play Families i Apple Kids vyžadují, aby dítě
+  // neopustilo dětskou část bez dospělého — proto každý vstup do rodičovské
+  // části (registrace, sdílení pokroku ven) vede přes bránu.
+  const { requireParent, gateElement } = useParentGate();
 
   // Pokud chybí grade → onboarding
   useEffect(() => {
@@ -167,7 +172,7 @@ export default function AnonStudentPage() {
                 </div>
               </div>
               <button
-                onClick={() => setShowInviteParent(true)}
+                onClick={() => requireParent(() => setShowInviteParent(true))}
                 className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <Heart className="h-3.5 w-3.5 fill-current" />
@@ -188,7 +193,7 @@ export default function AnonStudentPage() {
               </div>
             </div>
             <button
-              onClick={() => setShowInviteParent(true)}
+              onClick={() => requireParent(() => setShowInviteParent(true))}
               className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
             >
               <Heart className="h-3.5 w-3.5 fill-current" />
@@ -226,7 +231,7 @@ export default function AnonStudentPage() {
               Pro plný přístup ti rodič může založit účet.
             </p>
             <button
-              onClick={() => setShowInviteParent(true)}
+              onClick={() => requireParent(() => setShowInviteParent(true))}
               className="mt-2 text-sm font-semibold text-amber-900 hover:underline inline-flex items-center gap-1.5"
             >
               👪 Chci plný přístup — řekni rodičům <PaintedArrow className="h-4 w-4" />
@@ -272,17 +277,18 @@ export default function AnonStudentPage() {
         {/* Vstupy pro rodiče — dítě sdílí pozvánku, nebo rodič jde rovnou na účet */}
         <div className="text-center pt-2 space-y-1.5">
           <button
-            onClick={() => setShowInviteParent(true)}
+            onClick={() => requireParent(() => setShowInviteParent(true))}
             className="block mx-auto text-sm text-muted-foreground hover:text-violet-600 transition-colors"
           >
             👪 Sdílet pokrok s rodiči
           </button>
-          <a
-            href="/auth?mode=register"
+          <button
+            type="button"
+            onClick={() => requireParent(() => { window.location.href = "/auth?mode=register"; })}
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-violet-600 transition-colors"
           >
             Jsem rodič — založit účet <PaintedArrow className="h-4 w-4" />
-          </a>
+          </button>
         </div>
 
         {/* CTA po splnění všech 3 (freemium mode) */}
@@ -290,16 +296,19 @@ export default function AnonStudentPage() {
           <div className="rounded-2xl bg-gradient-to-br from-violet-100 to-purple-100 border-2 border-violet-200 p-6 text-center space-y-3">
             <h3 className="text-xl font-bold text-violet-900">Skvělé! Splnil jsi dnešní úkoly. 🎉</h3>
             <p className="text-violet-700">Zítra tě čekají nové. Chceš si uložit pokrok?</p>
-            <a
-              href="/auth?mode=register"
+            <button
+              type="button"
+              onClick={() => requireParent(() => { window.location.href = "/auth?mode=register"; })}
               className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-3 font-semibold hover:bg-primary-hover transition-colors"
             >
               Zaregistrovat se zdarma <PaintedArrow className="h-4 w-4" />
-            </a>
+            </button>
             <p className="text-sm text-violet-500/80">Nebo se vrať zítra pro nové úkoly.</p>
           </div>
         )}
       </div>
+
+      {gateElement}
 
       {showInviteParent && (
         <InviteParentDialog

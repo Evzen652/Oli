@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-06 (30) — dětská kategorie: rodičovská brána (blocker B4):
+
+- **Předpoklad, na kterém to stojí:** Oli JE aplikace mířená na děti — mluví
+  k nim, kreslená je pro ně, smyčka procvičování je dětská. Tvrdit v obchodě
+  opak by bylo zkreslení. Rodičovská brána je proto povinná tak jako tak,
+  pod Play Families i pod Apple Kids.
+- ✅ **`useParentGate()`** — překážka, kterou projde dospělý a malé dítě ne.
+  Úspěch platí **jen tři minuty a jen v paměti**; kdyby se ukládal, dítě by
+  po jednom projití rodiče mělo bránu otevřenou napořád.
+- ✅ **Zapojeno do všech čtyř míst, kudy dítě opouštělo dětskou část:**
+  `AnonStudentPage` (4× sdílení pokroku + 2× registrace), `Onboarding` (2×),
+  `SessionView` (1×).
+- 🔴 **Nejvážnější nález:** přes „Sdílet s rodiči" **dítě zadávalo telefonní
+  číslo a odesílalo zprávu do WhatsAppu** — tedy odchod z aplikace i předání
+  údaje třetí straně, bez jakéhokoli dospělého. To je pod Kids Category tvrdý
+  důvod k zamítnutí. Teď je to za bránou.
+- 🧠 **Proč násobení, když Oli učí matematiku.** Brána musí být nad rámec
+  toho, co umí CÍLOVÉ dítě. Otevřené jsou ročníky 2–4 a písemné násobení
+  dvojciferným číslem je učivo 5. ročníku. Předpoklad ale **vyprší**, jakmile
+  se pátý ročník otevře — pak by Oli sama učila, jak vlastní bránu překonat.
+  Proto `parent-gate.test.ts` spadne přesně v ten okamžik a řekne, co vyměnit.
+- ⏭️ **Zbývá (Evžen):** vyplnit v obou obchodech cílovou věkovou skupinu,
+  Data safety / Privacy Nutrition Labels a rozhodnout, jestli jít do Apple
+  Kids Category (přísnější review, lepší umístění), nebo hlásit smíšené
+  publikum.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **121/121 souborů
+  a 4712 testů**, build prošel. Brána projita živě: chybná odpověď hlásí
+  chybu a drží dialog, správná pustí dál na registraci.
+
 ### Session 2026-09-06 (29) — obal aplikace přes Capacitor (blocker B1):
 
 - ✅ **Capacitor 8**, platformy `android/` i `ios/` vygenerované a verzované

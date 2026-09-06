@@ -30,6 +30,36 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## ✅ Dětská kategorie — rodičovská brána (blocker B4, 2026-09-06)
+
+`useParentGate()` v `src/components/ParentGate.tsx`. Zapojeno do všech míst,
+kudy dítě opouštělo dětskou část: `AnonStudentPage`, `Onboarding`, `SessionView`.
+
+### 🔴 Co to odhalilo
+
+Přes „Sdílet s rodiči" **dítě zadávalo telefonní číslo a odesílalo zprávu do
+WhatsAppu**. Odchod z aplikace i předání údaje třetí straně, bez dospělého —
+pod Apple Kids Category tvrdý důvod k zamítnutí. Teď je to za bránou.
+
+### 🧠 Proč násobení v aplikaci, která učí matematiku
+
+Brána musí být nad rámec toho, co umí **cílové** dítě. Otevřené jsou ročníky
+2–4; písemné násobení dvojciferným číslem je podle RVP učivo 5. ročníku.
+
+**Ten předpoklad vyprší.** Jakmile se pátý ročník otevře, Oli sama naučí, jak
+bránu překonat. `src/test/parent-gate.test.ts` proto spadne přesně v ten
+okamžik a napíše, co vyměnit — je to budík na zestárlé rozhodnutí, ne test
+chování.
+
+### ⏭️ Zbývá rozhodnout (Evžen)
+
+- **Apple Kids Category, nebo smíšené publikum?** Kids Category znamená
+  přísnější review a trvalý zákaz analytiky třetích stran, ale lepší umístění.
+  Brána je potřeba tak jako tak, takže to rozhodnutí nic neblokuje.
+- Cílová věková skupina v Play Console, Data safety a Privacy Nutrition Labels.
+
+---
+
 ## 🔴 ROZHODNI TEĎ: `appId` obalu je nevratný (2026-09-06)
 
 `capacitor.config.ts` → **`com.oliedu.app`**, odvozeno z `oli-edu.com`.

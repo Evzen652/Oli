@@ -22,6 +22,7 @@ import { useSessionDispatch, TERMINAL_STATES } from "@/hooks/useSessionDispatch"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useParentGate } from "@/components/ParentGate";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { FractionBarVisual } from "@/components/FractionBarVisual";
@@ -144,6 +145,9 @@ export function SessionView() {
     () => !!sessionStorage.getItem("oli_anon_browse_subject"),
   );
   const [showAnonGateModal, setShowAnonGateModal] = useState(false);
+  // Sezení běží dítě. Cesta „Jsem rodič → registrace" opouští dětskou část,
+  // takže vede přes bránu (Play Families / Apple Kids).
+  const { requireParent, gateElement } = useParentGate();
   const [topicBrowserSubject, setTopicBrowserSubject] = useState<string | undefined>(
     () => sessionStorage.getItem("oli_anon_browse_subject") ?? undefined,
   );
@@ -443,7 +447,10 @@ export function SessionView() {
               </button>
               <button
                 className="flex flex-col items-start gap-1 rounded-lg border-2 border-success/30 bg-card px-5 py-4 text-left transition-all duration-150 hover:bg-success-muted hover:shadow-e2 hover:-translate-y-px"
-                onClick={() => { setShowAnonGateModal(false); navigate("/auth?mode=register"); }}
+                onClick={() => {
+                  setShowAnonGateModal(false);
+                  requireParent(() => navigate("/auth?mode=register"));
+                }}
               >
                 <span className="font-bold text-base text-foreground">Jsem rodič</span>
                 <span className="text-sm text-muted-foreground">Chci sledovat pokrok dítěte</span>
@@ -451,6 +458,8 @@ export function SessionView() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {gateElement}
       </>
     );
   }
