@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { generatePairingCode } from "@/lib/pairingCode";
 
 export interface Child {
   id: string;
@@ -43,11 +44,7 @@ export function useChildren() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not authenticated");
 
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "";
-    for (let i = 0; i < 6; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
-    }
+    const code = generatePairingCode();
 
     const { data, error } = await supabase
       .from("children")
@@ -68,11 +65,7 @@ export function useChildren() {
   }, [fetchChildren]);
 
   const regenerateCode = useCallback(async (childId: string) => {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "";
-    for (let i = 0; i < 6; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
-    }
+    const code = generatePairingCode();
 
     const { error } = await supabase
       .from("children")

@@ -144,6 +144,39 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-07 (31) — párovací kód: nepředvídatelnost + limit pokusů:
+
+- ✅ **`Math.random()` → `crypto.getRandomValues()`** ve `src/lib/pairingCode.ts`.
+  `Math.random()` není kryptograficky bezpečný: kdo si nechá vygenerovat kódy
+  pro vlastní děti, dostane sérii výstupů z téhož generátoru a tím vodítko
+  k předpovědi kódů generovaných hned potom. Úspěšné uhodnutí přitom vydá
+  relaci **dětského účtu**.
+- ✅ **Opraveny OBA výskyty** — `addChild` i `regenerateCode`. Druhý by jinak
+  zůstal slabý a nikdo by si toho nevšiml.
+- ✅ **Limit pokusů v `pair-child`** — 10 za 15 minut, pak hodinový zámek.
+  Migrace `20260907090000_pairing_rate_limit.sql` přidává tabulku
+  `pairing_attempts` klíčovanou **hashem IP**, ne adresou. RLS zapnuté a
+  záměrně bez policy: přístup má jen service role.
+- 🧠 **Proč se limit klíčuje na volajícího, ne na dítě:** špatný pokus nedopadne
+  na žádný řádek `children`, takže u dítěte se počítat nedá. Jediné místo, kde
+  jde útok zachytit, je volající.
+- 🧠 **Počítá se jen 404.** „Použitý" (409) a „vypršelý" (410) kód znamenají, že
+  volající kód skutečně měl — započítat je by zamykalo děti, které to jen
+  zkoušejí podruhé. Po úspěšném spárování se počítadlo maže.
+- 🐞 **Test mě opravil:** tvrdil jsem, že abeceda vynechává i `L`. Nevynechává —
+  a je to správně, protože `1` ani `I` v ní nejsou, takže `L` není s čím
+  zaměnit. Chyba byla v mém tvrzení, ne v kódu; test to teď drží i s důvodem.
+- ⚠️ **Nový nález, neopraveno:** dětský interní e-mail se odvozuje z párovacího
+  kódu (`child_<kód>@app.internal` v `pair-child`). Identita účtu je tím vázaná
+  na krátkou, hádatelnou hodnotu. Neřešil jsem to — je to změna schématu účtů,
+  ne oprava limitu.
+- ⏭️ **Deploy (Evžen):** `supabase db push` + `supabase functions deploy
+  pair-child`, a nastavit secret **`PAIRING_HASH_SALT`** (bez ní funkce běží,
+  jen hashe IP jsou zpětně zkusitelné a píše se varování do logu).
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **122/122 souborů
+  a 4718 testů**, build prošel. Samotné párování spustit nešlo — funkce není
+  nasazená.
+
 ### Session 2026-09-06 (30) — dětská kategorie: rodičovská brána (blocker B4):
 
 - **Předpoklad, na kterém to stojí:** Oli JE aplikace mířená na děti — mluví

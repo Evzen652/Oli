@@ -30,6 +30,39 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## ✅ Párovací kód — nepředvídatelnost a limit pokusů (2026-09-07)
+
+Uhodnutí párovacího kódu vydá relaci **dětského účtu**. Předtím se kód
+generoval přes `Math.random()` a `pair-child` neměl žádné omezení pokusů —
+kontrast s PINem, který má zámek po pěti chybách už dlouho.
+
+- `src/lib/pairingCode.ts` — `crypto.getRandomValues()`, oba call-sity
+  (`addChild` i `regenerateCode`) opravené.
+- `supabase/migrations/20260907090000_pairing_rate_limit.sql` — tabulka
+  `pairing_attempts`, klíč = **hash IP**, RLS bez policy (jen service role).
+- `pair-child` — 10 pokusů / 15 min, pak hodinový zámek; jen stav 404 se
+  počítá jako hádání; po úspěchu se počítadlo maže.
+
+### ⏭️ Zbývá
+
+```bash
+supabase db push
+supabase functions deploy pair-child
+```
+
+Plus secret **`PAIRING_HASH_SALT`** v Supabase Edge Functions. Bez ní funkce
+běží dál, jen hashe IP jsou zpětně zkusitelné (IPv4 má ~4 miliardy adres,
+což je bez soli projitelné) a do logu se píše varování.
+
+### 🟠 Nový nález, NEOPRAVENO
+
+Dětský interní e-mail se v `pair-child` odvozuje z párovacího kódu:
+`child_<kód>@app.internal`. Identita účtu je tím navázaná na krátkou hádatelnou
+hodnotu, a po přegenerování kódu už neodpovídá. Není to součást limitu pokusů,
+je to změna schématu účtů — rozhodni zvlášť.
+
+---
+
 ## ✅ Dětská kategorie — rodičovská brána (blocker B4, 2026-09-06)
 
 `useParentGate()` v `src/components/ParentGate.tsx`. Zapojeno do všech míst,
