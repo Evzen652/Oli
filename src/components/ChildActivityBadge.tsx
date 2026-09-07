@@ -80,19 +80,27 @@ export function ChildActivityBadge({ childId = "", compact }: Props) {
         {/* Svislé vycentrované karty (ikona nahoře) — vodorovná řada
             „ikona | číslo/popisek" se na mobilu (375 px) nevešla a „ÚSPĚŠNOST"
             se ořezávala. Takhle šířku drží krátký popisek, ne řada vedle sebe.
-            Stejné tvarosloví jako statistiky ve shrnutí sezení. */}
+            Stejné tvarosloví jako statistiky ve shrnutí sezení.
+
+            Plocha je `bg-accent`, u všech tří STEJNÁ. Bílá tu nevystupovala,
+            protože karta pod nimi je taky bílá. Tint podle tónu ale nejde:
+            `primary` (dny) a `warning` (úspěšnost) dávají po zesvětlení
+            rgb(254,241,232) a rgb(247,238,230) — změřeno, rozdíl 7/3/2, tedy
+            k nerozeznání. Přesně na tohle se tyhle dlaždice jednou už zbílily.
+            Rozlišuje ikona a okraj. Mění-li se tady, musí i `StatPill`
+            v `ChildHomePage`. */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div title="V kolika různých dnech dítě za poslední týden procvičovalo" className="rounded-2xl border border-primary/25 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+          <div title="V kolika různých dnech dítě za poslední týden procvičovalo" className="rounded-2xl border border-primary/25 bg-accent px-2 py-3 shadow-e1 text-center cursor-help">
             <CalendarDays className="h-5 w-5 mx-auto mb-1.5 text-primary" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{days}</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">{form(days, "DEN").toUpperCase()}</p>
           </div>
-          <div title="Splněných úloh za poslední týden" className="rounded-2xl border border-success/30 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+          <div title="Splněných úloh za poslední týden" className="rounded-2xl border border-success/30 bg-accent px-2 py-3 shadow-e1 text-center cursor-help">
             <CheckCircle2 className="h-5 w-5 mx-auto mb-1.5 text-success" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{tasks}</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">ÚLOH</p>
           </div>
-          <div title="Podíl správných odpovědí za poslední týden" className="rounded-2xl border border-warning/30 bg-card px-2 py-3 shadow-e1 text-center cursor-help">
+          <div title="Podíl správných odpovědí za poslední týden" className="rounded-2xl border border-warning/30 bg-accent px-2 py-3 shadow-e1 text-center cursor-help">
             <Star className="h-5 w-5 mx-auto mb-1.5 text-warning" />
             <p className="text-xl font-extrabold text-foreground tabular-nums leading-none">{accuracy}%</p>
             <p className="text-muted-foreground text-caption font-bold mt-1">ÚSPĚŠNOST</p>

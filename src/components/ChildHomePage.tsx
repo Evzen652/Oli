@@ -969,15 +969,20 @@ function pluralTasks(n: number) {
 }
 
 /**
- * Statistika v hlavičce — bílá karta s ikonou, jako `ChildActivityBadge`
- * na rodičovském dashboardu.
+ * Statistika v hlavičce — laděná stejně jako `ChildActivityBadge`
+ * na rodičovském dashboardu. Když se mění jedna, musí i druhá.
  *
- * Dřív to byly plné barevné plochy (`bg-orange-100` / `bg-emerald-100` /
- * `bg-violet-100`) s emoji. Dvě z nich přitom vypadaly **identicky**: rampa
- * `violet` je v `tailwind.config.ts` alias na značkovou oranžovou, takže
- * „dní" a „úspěšnost" měly po přemapování stejný tint. Barvu tady nese jen
- * ikona a tenký okraj — plochu drží bílá karta, jak žádá design systém
- * („karta je vždy bílá, barvu nesou obrázky, ne UI").
+ * ── Proč mají všechny tři TÝŽ tint ──────────────────────────────────────────
+ * Dřív to byly plné barevné plochy podle tónu (`bg-orange-100` /
+ * `bg-emerald-100` / `bg-violet-100`). Dvě z nich vypadaly **identicky**:
+ * rampa `violet` je v `tailwind.config.ts` alias na značkovou oranžovou.
+ * Proto se plochy tehdy zbílily.
+ *
+ * Bílá na bílé kartě ale nevystupovala vůbec, takže plocha je teď `bg-accent`.
+ * Tint je u všech tří STEJNÝ a to je záměr, ne lenost: `primary` (dny)
+ * a `warning` (úspěšnost) dávají po zesvětlení rgb(254,241,232)
+ * a rgb(247,238,230) — změřeno, rozdíl 7/3/2, tedy k nerozeznání. Barva podle
+ * tónu by tu starou chybu vrátila. Rozlišuje ikona a okraj, ne plocha.
  */
 const STAT_TONES = {
   primary: { border: "border-primary/25", icon: "text-primary" },
@@ -996,7 +1001,7 @@ function StatPill({ icon: Icon, main, sub, tone, tooltip }: {
   return (
     <div
       title={tooltip}
-      className={`rounded-2xl border ${t.border} bg-card px-4 py-2.5 flex items-center gap-2.5 cursor-help shadow-e1`}
+      className={`rounded-2xl border ${t.border} bg-accent px-4 py-2.5 flex items-center gap-2.5 cursor-help shadow-e1`}
     >
       <Icon className={`h-5 w-5 shrink-0 ${t.icon}`} aria-hidden />
       <div>
