@@ -144,6 +144,31 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-07 (34) — předání na druhý PC + úklid zastaralých map:
+
+- ✅ **`docs/SESSION_HANDOFF.md` přepsán.** Byl z 1. 9. a popisoval obsahovou
+  fázi (Wave B, RVP sken). Od září se dělá příprava spuštění, takže dokument
+  teď popisuje tuhle fázi: kde jsme skončili, co má udělat Evžen, co je
+  nasazené a co ne, otevřené položky a pasti prostředí.
+- ✅ **Odkazy na runbook a přehled** jsou v handoffu — čtrnáct kroků
+  s příkazy, odkazy a kontrolou u každého kroku.
+- 🐞 **Třetí zastaralý dokument v řadě, a nejzrádnější:**
+  `docs/DESIGN_SYSTEM.md` uváděl primární barvu `#5A45E0` (borůvková) ještě
+  půl roku poté, co ji nahradila oranžová z nového loga. Nešlo jen o špatný
+  hex — sekce se **chlubila kontrastem 6,25 : 1**, který dnešní `#F97316`
+  nesplňuje (má 2,79 : 1). Kdo si to přečetl, považoval přístupnost tlačítek
+  za vyřešenou. Opraveno včetně vysvětlení, proč se to stalo.
+- 🐞 **`CLAUDE.md` tvrdil, že PIN migrace čeká na deploy.** Sloupce v databázi
+  jsou, ověřeno sondou. Opraveno — tenhle soubor se načítá do každé session,
+  takže nepravda v něm je nejdražší.
+- 🧠 **Vzorec, který se v téhle session opakoval třikrát:** dokumentace
+  neodpovídala skutečnosti a plánovalo se podle ní. Proto teď každý z těch
+  tří zápisů nese i datum a způsob ověření, ne jen opravenou hodnotu.
+- ⚠️ **Past pro další session:** worktree `competent-johnson-de23e8` sedí na
+  větvi, která sleduje zastaralý remote, takže `git status` hlásí „ahead"
+  vůči špatné větvi. Pushovalo se přes `git push origin <vetev>:main`.
+  Na druhém PC stačí `git pull` na `main`.
+
 ### Session 2026-09-07 (33) — drobnosti z dětské stránky:
 
 - 🐞 **Chip předmětu se při najetí uřízl o horní hranu.** Řada chipů je

@@ -24,18 +24,31 @@ Nejvýmluvnější detail: na `/admin` se vedle sebe renderovaly **dvě oranžov
 
 ## Barvy
 
-### Primární — borůvková
+### Primární — značková oranžová
 
-Značková barva je **`#5A45E0`**. Důvody volby: aplikace už fialová de facto
-byla (309 výskytů), fialová je jediné velké místo na barevném kruhu
-nekolidující se sémantikou, a splňuje kontrast.
+> ⚠️ **Opraveno 2026-09-07.** Tahle sekce popisovala borůvkovou `#5A45E0`
+> ještě půl roku poté, co ji nahradila oranžová z nového loga (2026-09-01,
+> viz `PROJECT_STATUS.md`). Nešlo jen o špatný hex: sekce se **chlubila
+> kontrastem 6,25 : 1**, který dnešní barva nesplňuje — kdo si to přečetl,
+> považoval přístupnost tlačítek za vyřešenou. Zdroj pravdy je `src/index.css`
+> a `tailwind.config.ts`, ne tenhle soubor.
+
+Značková barva je **`#F97316`**, shodná s logem.
 
 | token | hex | kontrast s bílým textem |
 |---|---|---|
-| `--primary` | `#5A45E0` | **6,25 : 1** ✅ |
-| `--primary-hover` | `#4A37C4` | **7,97 : 1** ✅ |
-| `--accent` | `#F3F1FE` | tint |
-| `--accent-foreground` | `#3B2A9E` | 9,36 : 1 na tintu ✅ |
+| `--primary` | `#F97316` | **2,79 : 1** ❌ |
+| `--primary-hover` | `#EA580C` | |
+| `--accent` | `#FFF3EA` | tint |
+
+**Kontrast primárních tlačítek je otevřené rozhodnutí.** WCAG AA žádá 4,5 : 1;
+bílá na `#F97316` má 2,79 : 1, a to na **každém** primárním tlačítku
+v aplikaci. Ztmavení je jeden token, ale odchýlí značku od loga. Nedělat na
+úrovni jedné komponenty — zkoušelo se to u dětského „Začít procvičovat"
+a odlišný odstín na jediném tlačítku je horší než sdílený problém.
+
+Nápis v logu je `#1E293B` a od `--primary` se **záměrně** liší; sousedí
+s kresbou, kdežto tlačítka ne (viz komentář v `OliLogo.tsx`).
 
 ### Oranžová patří sově, ne tlačítkům
 

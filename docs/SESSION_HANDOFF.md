@@ -1,14 +1,17 @@
-# Předání práce — stav k 2026-09-01 (17:05)
+# Předání práce — stav k 2026-09-07
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
+>
+> **Fáze se změnila.** Do konce srpna se dělal obsah (Wave B, přiměřenost
+> ročníku, pozice správných odpovědí). Od začátku září se dělá **příprava
+> spuštění** — právní stránky, mazání účtu, mobilní obal, dětská kategorie,
+> bezpečnost. Starší poznatky z obsahové fáze jsou v historii tohohle souboru
+> (`git log -p docs/SESSION_HANDOFF.md`) a v `PENDING_CHANGES.md`.
+
+---
 
 ## 0. Než začneš cokoli dělat
-
-**Od 2026-09-04 se pracuje na `main`.** Větev `chore/remove-essay-and-ai-authoring`
-(PR #20) je do `main` fast-forwardnutá a **dosloužila — už do ní necommituj**.
-Worktree `hungry-villani-074811` na ní pořád sedí; než v něm budeš dělat, přepni
-ho na `main`.
 
 Ověř si to `git fetch`em, ne pamětí:
 
@@ -16,159 +19,194 @@ Ověř si to `git fetch`em, ne pamětí:
 git fetch origin && git status -sb && git worktree list
 ```
 
-Proč se to sjednotilo — tři věci, které kolem rozdvojených větví stály čas:
+**Pracovní větev je `main`.** K 2026-09-07 je `origin/main` na `6da65f2`.
 
-1. **Čistý strom shodný s `origin/main` není důkaz aktuálnosti**, dokud sis
-   neudělal `fetch`. Jedna session takhle začala ve worktree z `main`, kde
-   všechno vypadalo v pořádku, jen tam chyběla práce posledních dní.
-2. **Varování o odbočené větvi leželo jen na té odbočené větvi.** `CLAUDE.md` na
-   `main` uváděl zastaralý pokyn, takže kdo startoval z `main`, správnou verzi
-   nikdy nepřečetl. Jedna session tak napsala celý task proti kódu, který mezitím
-   přestal existovat. **Kdyby se práce zase odklonila mimo `main`, patří
-   upozornění na obě větve.**
-3. **Větev nejde checkoutovat ve dvou worktree naráz.** Drží-li ji jiný worktree,
-   pracuj rovnou v něm — nebo pushni rovnou na cílovou větev
-   (`git push origin <moje-vetev>:<cilova>`), když jde o fast-forward.
+### ⚠️ Past, na kterou v tomhle repu narazíš hned
 
-Pozor i na **dev server**: běží-li z cizího worktree na portu 8080, uživatel
-vidí na své obvyklé adrese jinou verzi aplikace, než si myslí.
+Worktree `competent-johnson-de23e8` sedí na větvi `session-task-binding-v2`,
+která **sleduje zastaralou vzdálenou větev** `chore/remove-essay-and-ai-authoring`.
+`git status` tam proto hlásí `[ahead 29]` — ale vůči **špatné** větvi. Skutečný
+stav je, že všech 29 commitů **na `origin/main` je**.
 
-## 1. Co je hotové
+Pushovalo se z něj explicitně:
 
-**Wave B uzavřena** — `format/length` 109 → 0, 39 témat, každé GATE 3× `invarianty: 0`.
-Metoda a pasti v [`WAVE_B_HANDOFF.md`](WAVE_B_HANDOFF.md).
+```bash
+git push origin session-task-binding-v2:main
+```
 
-**Přiměřenost ročníku uzavřena — 7 ze 7 témat** (commity `75949b1`, `1879b3f`, `750382a`).
+**Na druhém PC to nic neznamená** — tam stačí normální `git pull` na `main`.
 
-**Pozice správných odpovědí srovnány — 82 souborů, 3 075 úloh** (`4d0a57b` … `6de3c9e`).
-Korpus bez informatiky **26/25/25/24 %**, dřív 64 % klíčů na první pozici. Detail a pasti v §2.
+### Worktree, ve kterých nepracuj
 
-| téma | zásah |
+`git worktree list` jich ukáže sedm. Většina sedí na starých commitech
+(`fd45fe5`, `feed2bf`). Než v některém začneš, přepni ho na `main` a udělej
+`git pull` — jinak píšeš proti kódu, který už neexistuje. Tahle záměna už
+jednou stála celý task.
+
+---
+
+## 1. Kde jsme skončili
+
+Poslední session (2026-09-06 → 07) uzavřela **všechny čtyři blokery obchodů**
+a jeden bezpečnostní nález. Jedenáct commitů, `ccfc592` … `6da65f2`:
+
+| commit | co |
 |---|---|
-| `g4-…prvni-pomoc-tisnove-volani` | pool přepsán, 35 → 39 úloh |
-| `g5-…etapy-lidskeho-zivota-dospivani` | L2 + L3 přepsány |
-| `g4-…savci-ptaci` | L3 přepsán celý, 9 → 12 |
-| `g5-…rozmnozovaci-soustava` | L2 + L3 přepsány |
-| `g5-…horniny-a-nerosty` | L2 + L3 přepsány |
-| `g4-…voda-skupenstvi-kolobeh` | 1 úloha + hranice |
-| `g5-…kostra-a-svaly` | terminologie, 11 míst |
+| `ccfc592` | vstupní obrazovky na tokeny, zaregistrován `--foreground-soft` |
+| `ede40fb` | zásady soukromí a podmínky použití (`/soukromi`, `/podminky`) |
+| `ec4957b` | mazání účtu — edge funkce, dialog, `/smazani-uctu` |
+| `ca0fd31` | obal aplikace přes Capacitor (android + ios) |
+| `2adf6ea` | rodičovská brána (Play Families / Apple Kids) |
+| `477336a` | párovací kód — CSPRNG + limit pokusů |
+| `8525b39` | dlaždice statistik dostaly tint |
+| `3c2294a` | dětský modál — pryč se sbalenými sekcemi |
+| `3cb0cdf` | chip předmětu se uřízl o horní hranu |
+| `3c5b605` | prázdný stav „Úkoly od rodiče" |
+| `6da65f2` | tři okruhy matematiky měly tentýž obrázek |
 
-Testy **4615/4615**, typecheck 0, GATE u všech `invarianty: 0` (u tří zcela bez nálezů).
+**Kód je hotový. Skoro všechno ostatní čeká na Evžena.**
 
-### Tři věci, které z toho stojí za zapamatování
+---
 
-**Sken podhodnotil rozsah, a je jasné proč.** Slovník v `scripts/rvp-scan.mjs` uměl
-anatomii, farmakologii a medicínu, ale neznal **evoluční a psychologickou terminologii**.
-Proto u tří témat ohlásil jednu úlohu tam, kde byla mimo ročník **celá úroveň L3**.
-Skenu věř, že něco našel — **ne že našel všechno**. Slepé místo je popsané přímo
-v hlavičce skriptu.
+## 2. Co má udělat Evžen — přesné kroky
 
-**Nálezy z handoffu ověřuj proti kódu.** Předchozí předání uvádělo dvě položky, které
-neplatily: `navykove-latky` už acetylcholin ani endokanabinoidy neobsahovaly (odstranila
-je Wave B, dávka 20, `d078e38`) a `nucleus accumbens` u dospívání **nikdy neexistoval**
-(`git log -S` nenašel commit, který by ho zavedl).
+Runbook se čtrnácti kroky, příkazy, odkazy a kontrolou u každého kroku:
 
-**`boundaries` si u 5 ze 7 témat protiřečily s vlastním obsahem.** Soubor deklaroval
-„Molekulární struktura vody není náplní 4. ročníku" a o kus výš se ptal na polární vazby
-a ionty. Je to strojově detekovatelné — `rvp-scan.mjs` proto u každého tématu vypisuje
-i jeho `boundaries`. **Stojí za zvážení udělat z toho invariant auditu.**
+**https://claude.ai/code/artifact/fd60671e-87be-4aba-bf5e-ed12ac68d18d**
 
-## 2. Otevřené — podle priority
+Stav a definice hotového (co ještě chybí ke spuštění):
 
-### 🔴 Blockery pilotu — čekají na Evžena, ne na kód
-Bez nich se rodič nezaregistruje a dítě nepřipojí. Detail v `PENDING_CHANGES.md`.
+**https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db3a2b68b299**
+
+Nejkratší shrnutí:
 
 ```bash
-supabase db push && supabase functions deploy pair-child child-relogin set-child-pin session-evaluation weekly-report
+npx supabase login
+npx supabase link --project-ref uusaczibimqvaazpaopy
+npx supabase secrets set PAIRING_HASH_SALT=<náhodných 32 bajtů hex>
+npx supabase db push
+npx supabase functions deploy pair-child session-evaluation weekly-report delete-account
 ```
 
-### 🟡 Pozice správné odpovědi — vyřešeno mimo informatiku
-Bylo 64 % klíčů na 1. pozici; po zásahu je korpus **bez informatiky na 26/25/25/24 %**, tedy
-na úrovni náhody. Zpracováno **82 souborů / 3 075 úloh** v šesti dávkách (`4d0a57b` … `6de3c9e`).
+A čtyři věci k vyplnění nebo rozhodnutí:
 
-```bash
-node scripts/answer-position-report.mjs --no-inf --files
-```
+1. **Údaje provozovatele** v `src/content/legal.ts` — název, IČO, adresa,
+   kontaktní e-mail. Dokud tam stojí `DOPLNIT`, právní stránky to vykreslí
+   jako žlutý zástupný text.
+2. **Potvrdit `appId`** `com.oliedu.app` v `capacitor.config.ts` — po prvním
+   vydání je **nevratný**.
+3. **Apple Kids Category, nebo smíšené publikum.** Brána je hotová a povinná
+   v obou případech, takže to nic neblokuje — potřebuje se to až do formulářů.
+4. **Právní kontrola zásad soukromí.** Není to posudek, u služby pro děti to
+   není formalita.
 
-**Co z toho stojí za zapamatování:**
+---
 
-Report měl **stejné slepé místo jako `rvp-scan.mjs`**. Hlídal výhradně zkosení na PRVNÍ pozici,
-takže třináct témat `grade-5/cjl`, kde byl klíč na DRUHÉ pozici u 88–100 % úloh, nikdy neukázal —
-strategie „ber vždy druhý" tam procházela se stoprocentní úspěšností. Opraveno (`cf394c2`): hodnotí
-se maximum přes všechny čtyři pozice. **Poučení se opakuje: nástroj řekne, že něco našel, ne že
-našel všechno.**
+## 3. Co je nasazené a co ne — ověřeno 2026-09-06 sondou
 
-`rebalance-answer-positions.mjs` **nekontroluje `inputType`**, přestože si to v hlavičce říká.
-Regex chytá jakoukoli dvojici `correctAnswer` + `options`; jediná ochrana je textová heuristika.
-**Typy ověř před spuštěním** — jinak tiše rozbiješ `drag_order` a `comparison`.
-
-Freeze zásahem ohrožen není: otisk v `contentSnapshot.ts` pokrývá jen `question` a `correctAnswer`,
-nikoli `options`. Ověřeno čtením mechanismu, ne jen zeleným testem.
-
-**Zbývá:** informatika (10 souborů, 323 úloh, 100 % na 1. pozici) — vynechána podle stálého pokynu,
-je to práce na jednu dávku. A výplňové možnosti typu `["Ano", "Ne", "Nevím", "Záleží na situaci"]`,
-kde dítě fakticky volí ze dvou, takže hádání má 50 % i po srovnání pozic — samostatná úloha.
-
-### 🟡 Zděděný dluh, který jsem záměrně nechal být
-Držel jsem se zadání a **počty úloh v poolech nezvětšoval** — jen vyměnil obsah.
-Proto zůstává vidět:
-
-- **Pooly pod prahem `K_MIN = 12`:** `horniny` L2/L3 má 7/5, `dospivani` 5/4,
-  `rozmnozovaci` 6/4. Při `sessionTaskCount: 6` a pěti unikátních úlohách se dítěti
-  opakuje skoro celý pool.
-- **`g5-…kostra-a-svaly` má `gen(_level)`**, který vrací **pro všechny tři úrovně tentýž
-  POOL** — odtud `tier_population: L3 prázdná` a „100 % otázek L3 je shodných s L1".
-  Vyžaduje přestavbu tématu, ne opravu.
-- **Výplňové „prý" v distraktorech** — 12 souborů, 90 výskytů (nejvíc `magnetyElektrina` 9×).
-  „Oba systémy jsou **prý** naprosto stejné" se pozná bez znalosti látky. **Plošně to nejde** —
-  část výskytů je legitimní obsah u podmiňovacího způsobu.
-- **`g5-…navykove-latky`** — zbývá „hepatitida" a „LSD".
-
-### 🟡 Heuristické nálezy auditu (~140)
-Hlavně `hint_progression` (druhá nápověda není o 20 % delší) a `min_unique_tasks_per_tier`.
-Ani jedno neblokuje GATE.
-
-### ⏭️ Čeká na rozhodnutí uživatele
-- `DiktatFilterSelect.tsx:41` — vlastní tlačítko „Zpět" místo `<BackButton />`.
-  Nepřepsáno, protože by se změnil vzhled.
-- Šipky v `ui/` a adminu — vědomě ponechány systémové.
-
-## 3. Nástroje (nově v repu)
-
-| skript | k čemu |
+| nasazené | NEnasazené |
 |---|---|
-| `scripts/rvp-scan.mjs` | sken korpusu na obsah nad rámec RVP ročníku |
-| `scripts/answer-position-report.mjs` | měření zkosení pozice odpovědi (všechny 4 pozice, `--no-inf`) |
-| `scripts/rebalance-answer-positions.mjs` | srovnání pozic v jednom souboru |
+| `child-relogin`, `set-child-pin`, `anon-progress`, `analyze-misconceptions`, `send-parent-invite`, `generate-prvouka-images`, `ai-curriculum` | **`pair-child`**, `session-evaluation`, `weekly-report`, **`delete-account`** (nová), `exercise-validator` (odcházející, nevadí) |
 
-```bash
-node scripts/rvp-scan.mjs . 6
-node scripts/answer-position-report.mjs --no-inf --files
-node scripts/rebalance-answer-positions.mjs <soubor.ts> --dry
-```
+**Dokumentace k tomuhle byla sedm týdnů zastaralá.** `PENDING_CHANGES` vedl
+`child-relogin` a `set-child-pin` jako nenasazené — jsou nasazené. `CLAUDE.md`
+tvrdil, že PIN migrace čeká — sloupce `pin_hash`, `pin_failed_attempts`
+v databázi **jsou**. Ověřuj sondou, ne čtením.
 
-`rebalance` pouštěj **až jako poslední krok** úprav souboru — po něm přestanou sedět
-doslovné náhrady kotvené na starý tvar `options: [...]`. Je idempotentní.
+**Neověřeno:** jestli proběhla migrace `20260719120000_fix_profile_provisioning`
+(registrace rodiče vracela 500). Zjistit nešlo — ověření vyžaduje založit účet
+a zadat heslo, což Claude dělat nesmí.
 
-## 4. Prostředí — co bolelo
+---
 
-- **Commit message přes `-F soubor`**, ne here-string (PowerShell).
-- **Heredoc v Bash toolu ničí zpětná lomítka.** `cat > f <<'EOF'` promění `[^"\\]`
-  na `[^"\]` → `SyntaxError: Invalid regular expression`. **Pomocné skripty piš
-  Write toolem**, ne heredocem. Heredoc je OK jen pro text bez lomítek.
-- **`\b` je ASCII.** `/\bprý\b/` **nikdy nesedne** — slovo končí na „ý", což není
-  ASCII slovní znak. Regex vypadá správně a tiše vrací nulu. Použij
-  `(" " + s + " ").includes(" prý ")`.
-- **Soubory jsou CRLF** — `.ts` i `.md`. Víceřádkové náhrady musí konce řádků ctít,
-  jinak se vzorec nenajde a vypadá to jako chybějící text.
-- **Skrytý Browser panel vrací prázdné screenshoty.** Text čti přes `read_page`.
-- **`git stash` je sdílený mezi worktrees.** Pro ověření „je ten nález předexistující?"
-  použij `git show HEAD:<soubor> > _orig.ts` a pak smaž — ne stash, jinak riskuješ,
-  že popneš práci jiné session.
-- **Worktree nemá `.env`** (je v `.gitignore`). Bez něj aplikace spadne na
-  `supabaseUrl is required`; zkopíruj z `C:/Users/weigle/Oli/.env`.
-- **Dev server startuje z worktree, ve kterém session ZAČALA.** `preview_start` si drží pracovní
-  adresář z doby startu — přepnutí do jiného worktree na to nemá vliv, a čte i cizí `launch.json`.
-  Projeví se to bílou stránkou (`supabaseUrl is required`, protože tam chybí `.env`) a tím, že
-  aplikace ukazuje starý kód. Ověříš změnou portu v místním `launch.json`: pokud dostaneš původní
-  port, čte se cizí konfigurace. **Řešení: pustit `npm run dev` přímo z worktree.**
+## 4. Otevřené pro další session
+
+### 🟠 Krok 2 rozcestníku — podklad karet, pak teprve kresby
+
+Nález z 7. 9., zapsaný v `PENDING_CHANGES`. Původní diagnóza („3D obrázky si
+nesou vlastní fialové pozadí") **byla chybná** — změřeno, obrázky jsou
+průhledné PNG a levandulová je **náš vlastní** předmětový tint `bg-[#E3EDFD]`.
+
+`subjectRegistry.ts` u `tintClass` píše: *„dlaždice ikony, chip, jemný podklad.
+**Ne pozadí celé karty.**"* V `TopicBrowser` zabírá **72 % plochy karty**.
+
+Tohle je nejspíš větší důvod, proč rozcestník nevypadá jako zbytek aplikace,
+než rukopis kreseb — a opraví se bez jediného nového obrázku. **Udělat před
+generováním**, jinak se nové kresby posuzují na podkladu, který sám nesedí.
+
+### 🟠 Sliby vs. obsah
+
+Titulek a Open Graph slibují „1. stupeň ZŠ" (1.–5. ročník). Otevřené jsou
+**2., 3. a 4.** Buď stáhnout slib, nebo doplnit obsah. V popiscích obchodů je
+nesoulad důvod k zamítnutí.
+
+### 🟠 Kontrast primární barvy
+
+Bílá na `#F97316` má **2,79 : 1** na každém primárním tlačítku; WCAG AA žádá
+4,5 : 1. Oprava je jeden token, ale ztmaví značku. **Rozhodnutí uživatele.**
+
+### 🟠 Váha buildu
+
+`dist` má 23,6 MB, z toho **18,5 MB obrázků** (jednotlivé landing PNG ~1 MB)
+a JS jeden chunk 5,1 MB / 1,4 MB gzip bez code splittingu. Na mobilních datech
+to je hodně. **Na landing obrázky nesahat bez pokynu uživatele.**
+
+### 🟠 Dětský e-mail se odvozuje z párovacího kódu
+
+`pair-child` skládá `child_<kód>@app.internal`. Identita účtu je tím navázaná
+na krátkou hádatelnou hodnotu a po přegenerování kódu už neodpovídá. Je to
+změna schématu účtů, ne oprava limitu — čeká na rozhodnutí.
+
+### 🟠 Admin veze ~3 000 řádků vypnuté větve
+
+AI tvorba obsahu je za `adminAiContentCreator: false`, ale kód zůstal
+(`AdminAIPanel`, `AdminAIChat`, `ExerciseValidator`, `ReformulateTaskDialog`,
+mrtvá `ContentCoverageDashboard`). Navíc: cvičení schválené v adminu jde do DB,
+kde ho `runOfflineAudit` nevidí a freeze neklíčuje.
+
+---
+
+## 5. Pasti prostředí, které v téhle session stály čas
+
+**Bash tool nemá coreutils.** `sed`, `cat`, `head`, `grep`, `ls` — „command not
+found". Používej PowerShell nebo Read/Grep/Glob.
+
+**PowerShell rozbaluje jednoprvková vnořená pole.** `@( @("a","b") )` není pole
+polí, ale plochý dvouprvkový řetězec, takže `foreach` iteruje po **znacích**.
+Dávkový skript takhle nahradil v jednom souboru každé `b` za `g` (286×) — a jen
+v tom souboru, který měl v tabulce jedinou dvojici. Po dávkové náhradě vždy
+zkontroluj `git diff --stat`.
+
+**Commit message piš Write toolem, ne `Out-File -Encoding utf8`.** PS 5.1 tím
+zapíše BOM a git ho vezme jako součást předmětu (`﻿style(ui): …`, viz `8525b39`).
+
+**Here-string má CRLF, soubory v repu LF.** Náhrady víceřádkových bloků přes
+`.Replace()` proto tiše nenajdou nic. Používej Edit tool.
+
+**Konzole v prohlížeči drží zastaralé chyby.** Poznáš to podle starého `?t=`
+razítka a odkazu na stránku, ze které jsi dávno odešel. Ověřuj až po reloadu —
+v téhle session tři „chyby" byly mezistavy HMR, které dávno neplatily.
+
+**Screenshot se rozchází s DOM, když je stránka odscrollovaná.** Vrací prázdný
+snímek. Měř přes `javascript_tool`, screenshot dělej po čerstvé navigaci.
+
+**Vite si bere vlastní port.** Harness hlásil 59083, server běžel na **8082**.
+Ověř si to v `preview_logs`.
+
+**Dětské a rodičovské plochy vyžadují přihlášení**, takže je Claude živě
+neuvidí (heslo zadávat nesmí). Ověřovat se dá náhledem složeným ze skutečných
+tříd — v téhle session to fungovalo třikrát.
+
+---
+
+## 6. Pravidla, která se v téhle session opakovaně uplatnila
+
+- **Rodičovská a žákovská část se mění spolu.** `ChildActivityBadge` ↔
+  `StatPill`, texty přes `skillFeedback.ts`.
+- **Sbalení není zhuštění, je to schování.** Pro rodiče volba, pro dítě
+  smazání s klutrem navíc.
+- **Emoji nepatří vedle akvarelů** — viz `docs/ILLUSTRATION_STYLE.md`.
+- **Formulace pro dítě bez rodových koncovek** — aplikace pohlaví nezná.
+- **Když komentář tvrdí něco, co po změně neplatí, patří opravit v témže
+  commitu.** Zastaralá dokumentace v téhle session opakovaně vedla k nesprávným
+  závěrům.

@@ -120,6 +120,8 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 
 Po `git pull` vždy zobraz stručné shrnutí stavu projektu:
 0. **Nejdřív ověř větev a worktree** — [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) sekce 0. Od 2026-09-04 se pracuje na `main`, takže shoda s `origin/main` je v pořádku — ale `git fetch` si udělej, ať to ověřuješ proti čerstvému stavu, ne proti tomu, co máš z minule.
+   **Pozor:** worktree `competent-johnson-de23e8` sedí na větvi, která sleduje zastaralý remote, takže tam `git status` hlásí „ahead" vůči špatné větvi. Pushovalo se z něj přes `git push origin <vetev>:main`. Viz SESSION_HANDOFF §0.
+   **Fáze se změnila:** od září se nedělá obsah, ale příprava spuštění (obchody, právní stránky, bezpečnost). Postup pro uživatele je v runbooku odkázaném z SESSION_HANDOFF §2.
 1. **Kde jsme skončili** — přečti sekci 6 z `PROJECT_STATUS.md` (Otevřené / poslední session hotovo)
 2. **Co je rozděláno** — přečti otevřené položky z `docs/PENDING_CHANGES.md`
 3. Zobraz jako 2–3 věty + bullet list „Doporučené další kroky" (priorita dle PENDING_CHANGES)
@@ -245,7 +247,7 @@ Zjednodušení: AI jen pro hodnocení, NE pro generování cvičení.
 ## DB Column Notes
 - children table uses `child_name` (ověřeno proti auto-generovanému `types.ts` 2026-07-15; dřívější poznámka „name" byla chybná — `name` patří jiným tabulkám)
 - children **má** sloupec `is_paired` (i tak lze derivovat z `child_user_id != null`; helper `isPaired()` v `useChildren.ts` zvládá obojí)
-- children má PIN sloupce `pin_hash` / `pin_failed_attempts` / `pin_locked_until` (child re-login PIN; **migrace čeká na deploy** — do té doby `select` konkrétně `pin_hash` chybuje, `select("*")` je OK)
+- children má PIN sloupce `pin_hash` / `pin_failed_attempts` / `pin_locked_until` (child re-login PIN). **Migrace PROBĚHLA** — ověřeno 2026-09-06 dotazem na ostrou databázi, `select("pin_hash")` vrací 200. (Do 2026-09-06 tu stálo „migrace čeká na deploy"; sedm týdnů to nebyla pravda a plánovalo se podle toho.)
 - profiles uses `id` as PK referencing auth.users(id)
 - Zdroj pravdy o sloupcích = `src/integrations/supabase/types.ts` (auto-gen), NE `supabase/schema.sql` (u `children` zastaralý)
 - **`types.ts` přegenerovaný 2026-08-25** (předtím 2026-04-11, tedy starší než migrace z 30. 4. a 21. 5.). Needituj ho ručně — přegeneruj:
