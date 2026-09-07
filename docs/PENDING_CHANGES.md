@@ -30,6 +30,28 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## ✅ Modál výsledků — dítě si sbalené sekce nerozklikne (2026-09-07)
+
+Sekce „Jak ti to šlo" a „Dřívější pokusy" byly v dětské verzi sbalené za
+šipkou. Šipka je dospělácká afordance; dítě přečte, co je vidět, a odejde.
+
+**Nejhorší případ:** když dítě nic nepokazí, jsou `wrong` i `helped` prázdné
+a celá sekce se scvrkne na nadpis se šipkou, uvnitř které není vidět nic.
+
+**Příčina byla v původním zadání „je tam moc informací".** Sbalení není
+zhuštění, je to schování — pro rodiče volba, pro dítě smazání s klutrem navíc.
+
+- Dítě: `correct` se nesbaluje, je z toho jedna věta.
+- Dítě: „Dřívější pokusy" se nevykresluje vůbec.
+- `audience` je nově **povinný prop** — zapomenutý prop byl dřív tiché
+  rozhodnutí (default `parent`), teď je to chyba překladu.
+
+### ⏭️ Neověřeno
+
+Modál se otevírá jen z dětské stránky po přihlášení, takže živě neprošel.
+
+---
+
 ## ✅ Párovací kód — nepředvídatelnost a limit pokusů (2026-09-07)
 
 Uhodnutí párovacího kódu vydá relaci **dětského účtu**. Předtím se kód

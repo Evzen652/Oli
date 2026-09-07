@@ -144,6 +144,32 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-07 (32) — modál výsledků: dítě si nic nerozklikne:
+
+- 🐞 **Nález od uživatele:** v dětské verzi modalu byly sekce „Jak ti to šlo"
+  a „Dřívější pokusy" sbalené za šipkou. Dítě (7–10 let) šipku nepoužije —
+  přečte, co je vidět, a jde pryč.
+- 🐞 **Horší případ, který to odhalilo:** když dítě nic nepokazí, jsou skupiny
+  `wrong` i `helped` prázdné a celá sekce se scvrkne na nadpis, ikonu a šipku.
+  Uvnitř není vidět **nic** — a jediná smysluplná věta („všechno správně")
+  je za klikem, který nepřijde.
+- 🧠 **Příčina byla moje:** sbalování jsem přidal jako řešení „moc informací".
+  Jenže **sbalení není zhuštění, je to schování**. Pro rodiče v pořádku, ten
+  si vybere. Pro dítě je sbalený obsah totéž co smazaný, jen s klutrem navíc.
+- ✅ **Dítě: žádné sbalování.** Místo skupiny „Správně (6)" jedna věta —
+  „Všechno správně — 6 úloh." nebo „4 úlohy bez chyby.", podle toho, jestli
+  jsou i chyby.
+- ✅ **Dítě: „Dřívější pokusy" pryč úplně.** Historie je analytická potřeba
+  dospělého a jde proti principu „čím míň času v systému, tím líp".
+- ✅ **`audience` je nově POVINNÝ prop.** Dřív měl default `parent`, takže
+  zapomenutý prop nebyl chyba, ale tiché rozhodnutí — nová dětská plocha by
+  bez varování dostala rodičovský modál. Teď to chytí překladač. Všechna tři
+  volání ho už předávala, takže zásah do call-sitů nebyl potřeba.
+- ⏭️ **Neověřeno živě** — modál se otevírá jen z dětské stránky po přihlášení.
+  Pokryto typecheckem, ne prohlížečem.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **4718 testů**,
+  build prošel.
+
 ### Session 2026-09-07 (31) — párovací kód: nepředvídatelnost + limit pokusů:
 
 - ✅ **`Math.random()` → `crypto.getRandomValues()`** ve `src/lib/pairingCode.ts`.

@@ -80,15 +80,20 @@ interface Props {
   childName?: string;
   /**
    * Komu se modál ukazuje. Rozhoduje o VŠECH textech — rodič čte diagnózu
-   * o dítěti ve třetí osobě, dítě čte o sobě ve druhé. Volitelné s výchozím
-   * `parent`, protože rodičovská volání jsou dvě a dětské jedno; kdyby se
-   * ale někde zapomnělo, ať radši rodič uvidí text pro rodiče než dítě text
-   * o sobě jako o třetí osobě. Texty žijí v `src/lib/skillFeedback.ts`.
+   * o dítěti ve třetí osobě, dítě čte o sobě ve druhé — a nově i o tom, co se
+   * vůbec vykreslí: dítě nedostává sbalené sekce ani historii pokusů.
+   *
+   * ZÁMĚRNĚ POVINNÉ, bez výchozí hodnoty. Dřív tu byl default `parent`
+   * s odůvodněním „kdyby se někde zapomnělo". Jenže zapomenutý prop tím
+   * přestal být chybou a stal se tichým rozhodnutím: nová dětská plocha by
+   * bez varování dostala rodičovský modál. Takhle to chytí překladač.
+   *
+   * Texty žijí v `src/lib/skillFeedback.ts`.
    */
-  audience?: Audience;
+  audience: Audience;
 }
 
-export function SkillDetailModal({ childId, skillId, onClose, childName, audience = "parent" }: Props) {
+export function SkillDetailModal({ childId, skillId, onClose, childName, audience }: Props) {
   const labels = FEEDBACK_LABELS[audience];
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [logItems, setLogItems] = useState<LogItem[]>([]);
@@ -362,28 +367,49 @@ export function SkillDetailModal({ childId, skillId, onClose, childName, audienc
                     </div>
                   )}
 
-                  {/* Chyby a nápověda jsou to důležité → vždy rozbalené. Správné
-                      odpovědi zabírají nejvíc místa a nesou nejmíň informace →
-                      sbalené. Dřív to řešil nativní <details> s textem
-                      „— rozbalit"; to je popis affordance, ne affordance. */}
+                  {/* Chyby a nápověda jsou to důležité → vždy rozbalené.
+                      Správné odpovědi zabírají nejvíc místa a nesou nejmíň
+                      informace, takže se u RODIČE sbalí.
+
+                      U DÍTĚTE se ale nesbalují, a to je záměr. Šipka je
+                      dospělácká afordance — dítě přečte, co je vidět, a jde
+                      pryč; sbalený obsah je pro něj totéž co smazaný, jen
+                      s klutrem navíc. Navíc když nic nepokazí, jsou `wrong`
+                      i `helped` prázdné a celá sekce se scvrkne na nadpis se
+                      šipkou, uvnitř které není vidět nic. Proto dítě dostane
+                      jednu větu a žádné klikání. */}
                   {correct.length > 0 && (
-                    <Collapsible open={correctOpen} onOpenChange={setCorrectOpen} className="space-y-1.5">
-                      <CollapsibleTrigger className="group flex w-full items-center gap-1.5 text-caption font-bold uppercase tracking-[0.12em] text-success transition-colors hover:text-foreground">
-                        <CheckCircle2 className="h-3.5 w-3.5" />
-                        Správně <span className="font-semibold text-muted-foreground">({correct.length})</span>
-                        <ChevronDown className="ml-auto h-3.5 w-3.5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="space-y-1.5 pt-1">
-                        {correct.map(l => row(l, GROUP_ACCENT.correct))}
-                      </CollapsibleContent>
-                    </Collapsible>
+                    audience === "child" ? (
+                      <p className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
+                        {wrong.length === 0 && helped.length === 0
+                          ? `Všechno správně — ${pad(correct.length, "ÚLOHA")}.`
+                          : `${pad(correct.length, "ÚLOHA")} bez chyby.`}
+                      </p>
+                    ) : (
+                      <Collapsible open={correctOpen} onOpenChange={setCorrectOpen} className="space-y-1.5">
+                        <CollapsibleTrigger className="group flex w-full items-center gap-1.5 text-caption font-bold uppercase tracking-[0.12em] text-success transition-colors hover:text-foreground">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                          Správně <span className="font-semibold text-muted-foreground">({correct.length})</span>
+                          <ChevronDown className="ml-auto h-3.5 w-3.5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="space-y-1.5 pt-1">
+                          {correct.map(l => row(l, GROUP_ACCENT.correct))}
+                        </CollapsibleContent>
+                      </Collapsible>
+                    )
                   )}
                 </section>
               );
             })()}
 
-            {/* ── 4. Starší pokusy ── */}
-            {sessions.length > 1 && (
+            {/* ── 4. Starší pokusy — jen pro rodiče ──
+                Historie pokusů je analytická potřeba dospělého: srovnat, jestli
+                se dítě lepší. Dítě samo z ní nic nezíská a jde to proti principu
+                „čím míň času v systému, tím líp". Navíc byla sbalená, takže by
+                ji stejně nikdy neotevřelo — sekce, kterou nikdo nerozklikne,
+                není obsah, jen nádoba. */}
+            {audience === "parent" && sessions.length > 1 && (
               <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className={sectionCls}>
                 <CollapsibleTrigger className="group flex w-full items-center gap-2.5 text-left">
                   <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-success/10 text-success">
