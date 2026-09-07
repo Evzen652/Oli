@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-07 (33) — drobnosti z dětské stránky:
+
+- 🐞 **Chip předmětu se při najetí uřízl o horní hranu.** Řada chipů je
+  `overflow-x-auto`; tím se z ní stane scroll kontejner a CSS vynutí i
+  `overflow-y: auto`, takže ořezává i svisle. Chip má `hover:-translate-y-px`
+  → posune se nad hranu a uřízne. Dole prostor byl (`pb-1`), nahoře žádný.
+  Opraveno `pt-1`. Změřeno: před 1 px přesahu, po 3 px rezervy.
+  Ostatní `overflow-x-auto` v projektu nic nezvedají — jednorázovka.
+- 🐞 **Prázdný stav „Úkoly od rodiče" byl „Žádné úkoly 🎉".** Dvě věci špatně:
+  emoji se na každé platformě kreslí jinak a vedle akvarelů působí jako cizí
+  těleso (totéž rozhodnutí padlo u hlavičky téže sekce a u trofeje ve shrnutí
+  sezení) — a oslava toho, že dítě nic nemá, jde proti smyslu nástroje, který
+  rodič používá k zadávání. Prázdno není úspěch, je to stav.
+- ✅ **Nový prázdný stav** s ikonou v tintové dlaždici (táž anatomie jako
+  hlavička sekce) a hláškou, která nabídne, co dál. Dvě varianty: propojené
+  dítě dostane pobídku k procvičování, nepřihlášené vysvětlení. Formulace
+  **bez rodových koncovek** — aplikace pohlaví dítěte nezná.
+- 🧠 **Maskota jsem tam nedal schválně:** obě pózy (`oliPozdrav`, `oliTip`)
+  už na téže stránce jsou (uvítání a „Tip dne"). Třetí výskyt by je rozmělnil
+  a pózy mají podle `oliPoses.ts` rozlišovat kontext.
+- **Ověřeno:** typecheck 0, UI audit bez nového nálezu, testy prošly, build
+  prošel. Obojí ověřeno náhledem ze skutečných tříd — dětská stránka vyžaduje
+  přihlášení, takže živě ne.
+
 ### Session 2026-09-07 (32) — modál výsledků: dítě si nic nerozklikne:
 
 - 🐞 **Nález od uživatele:** v dětské verzi modalu byly sekce „Jak ti to šlo"

@@ -8,7 +8,7 @@ import { FEATURES } from "@/lib/features";
 import { useChildStats, type StatsPeriod } from "@/hooks/useChildStats";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart2, Calendar, CalendarDays, CheckCircle2, ChevronDown, Heart, Activity, Link2, Star } from "lucide-react";
+import { BarChart2, Calendar, CalendarDays, CheckCircle2, ChevronDown, Heart, Activity, Inbox, Link2, Star } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { toast } from "sonner";
@@ -562,7 +562,7 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               <h2 className="font-bold text-foreground text-base">Úkoly od rodiče</h2>
               {/* Podtitulek jen když nějaký úkol je. „Tady jsou cvičení, která
                   ti zadali doma" je nadpis podruhé; nad prázdným seznamem to
-                  navíc není pravda — pod tím stojí „Žádné úkoly 🎉". Zbyla
+                  navíc není pravda — tam mluví prázdný stav níž. Zbyla
                   pobídka, tedy to, co v nadpisu není. */}
               {assignments.length > 0 && (
                 <p className="text-xs text-muted-foreground leading-tight">Snaž se je splnit do termínu.</p>
@@ -621,7 +621,24 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
           )}
           <div className="p-4 space-y-3">
             {assignments.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-6">Žádné úkoly 🎉</p>
+              /* Prázdný stav, ne oznámení. Stálo tu „Žádné úkoly 🎉" — dvě věci
+                 špatně naráz. Emoji se na každé platformě kreslí jinak a vedle
+                 akvarelů působí jako cizí těleso (viz hlavička téhle sekce
+                 a trofej ve shrnutí sezení). A oslava toho, že dítě nic nemá,
+                 jde proti smyslu nástroje, který rodič používá k zadávání.
+                 Prázdno není úspěch, je to jen stav — a má nabídnout, co dál. */
+              <div className="flex flex-col items-center gap-3 py-8 text-center">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-primary/10 text-primary">
+                  <Inbox className="h-5 w-5" />
+                </span>
+                {/* Bez rodových koncovek — dítě může být kluk i holka a aplikace
+                    jeho pohlaví nezná. Proto „procvičuj", ne „buď šikovný". */}
+                <p className="max-w-[36ch] text-sm leading-relaxed text-foreground-soft">
+                  {isAnonUser
+                    ? "Tady uvidíš úkoly od rodiče, až se s ním propojíš."
+                    : "Zatím ti rodič žádný úkol nezadal. Nevadí — vyber si nahoře předmět a procvičuj, co tě baví."}
+                </p>
+              </div>
             ) : visibleAssignments.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">
                 {assignmentDateFilter !== "all" ? "Pro tento časový rozsah žádné úkoly." : "Žádné úkoly pro tento předmět."}
