@@ -118,13 +118,23 @@ Sjednocuje vzhled (pill-shaped, white bg, border, hover) napříč celou aplikac
 
 ## ⚠️ ZAČÁTEK KAŽDÉ SESSION — POVINNÉ
 
-Po `git pull` vždy zobraz stručné shrnutí stavu projektu:
-0. **Nejdřív ověř větev a worktree** — [`docs/SESSION_HANDOFF.md`](docs/SESSION_HANDOFF.md) sekce 0. Od 2026-09-04 se pracuje na `main`, takže shoda s `origin/main` je v pořádku — ale `git fetch` si udělej, ať to ověřuješ proti čerstvému stavu, ne proti tomu, co máš z minule.
-   **Pozor:** worktree `competent-johnson-de23e8` sedí na větvi, která sleduje zastaralý remote, takže tam `git status` hlásí „ahead" vůči špatné větvi. Pushovalo se z něj přes `git push origin <vetev>:main`. Viz SESSION_HANDOFF §0.
-   **Fáze se změnila:** od září se nedělá obsah, ale příprava spuštění (obchody, právní stránky, bezpečnost). Postup pro uživatele je v runbooku odkázaném z SESSION_HANDOFF §2.
-1. **Kde jsme skončili** — přečti sekci 6 z `PROJECT_STATUS.md` (Otevřené / poslední session hotovo)
-2. **Co je rozděláno** — přečti otevřené položky z `docs/PENDING_CHANGES.md`
-3. Zobraz jako 2–3 věty + bullet list „Doporučené další kroky" (priorita dle PENDING_CHANGES)
+**Postup je v [`docs/SESSION_PROTOCOL.md`](docs/SESSION_PROTOCOL.md).** Projdi ho
+celý, ne jen tenhle odstavec — jsou v něm hotové příkazy k ověření a seznam
+toho, co Claude dělat nesmí (ať se na to nepřijde až uprostřed úkolu).
+
+Tři věci, které stojí za to znát dřív, než tam sáhneš:
+
+- **`git fetch` dřív, než čemukoli uvěříš.** Čistý strom shodný s `origin/main`
+  není důkaz aktuálnosti. Worktree `competent-johnson-de23e8` navíc sleduje
+  zastaralý remote, takže tam `git status` hlásí „ahead" vůči špatné větvi;
+  pushovalo se z něj přes `git push origin <vetev>:main`.
+- **Dokumentaci ověř, nečti ji jako pravdu.** V září 2026 byly zároveň
+  nepravdivé `PENDING_CHANGES`, `CLAUDE.md` i `DESIGN_SYSTEM.md` — a podle
+  všech tří se plánovalo. Protokol má na to hotové sondy.
+- **Fáze se změnila:** od září se nedělá obsah, ale příprava spuštění
+  (obchody, právní stránky, bezpečnost). Kde jsme skončili → `SESSION_HANDOFF.md`.
+
+Výstup pro uživatele: 2–3 věty + bullet list „Doporučené další kroky".
 
 ## ⚠️ KONTEXT — UPOZORNĚNÍ NA DÉLKU SESSION
 
