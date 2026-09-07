@@ -508,7 +508,14 @@ export function ChildHomePage({ grade, onSelectTopic, onBrowseTopics }: ChildHom
               chipům nechalo ani ne sto pixelů. Vodorovné posouvání je tu
               záměr, ale na sto pixelech je z něj hádanka, ne zkratka. */}
           <div className="relative z-10 flex flex-col items-stretch gap-3 mt-4 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: 'none' }}>
+            {/* `pt-1` NENÍ kosmetika. `overflow-x-auto` udělá ze schránky scroll
+                kontejner a CSS tím vynutí i `overflow-y: auto` — svisle se tedy
+                ořezává taky, přestože se o svislé posouvání nikdo neprosil.
+                Chip má `hover:-translate-y-px`, takže se při najetí posune nad
+                horní hranu a uřízne se. Dole prostor byl (`pb-1`), nahoře žádný.
+                Kdo sem přidá jakýkoli `-translate-y` nebo větší stín, potřebuje
+                headroom stejně. */}
+            <div className="flex gap-2 overflow-x-auto pt-1 pb-1 scrollbar-none" style={{ scrollbarWidth: 'none' }}>
               {[...new Set(topics.map(t => t.subject))].map((subj) => {
                 const meta = getSubjectMeta(subj);
                 return (
