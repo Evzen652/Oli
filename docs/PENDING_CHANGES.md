@@ -30,6 +30,43 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## ✅ Tři okruhy měly tentýž obrázek (2026-09-07)
+
+V matematice 4. ročníku sdílely „Velká čísla", „Písemné počítání" a „Zlomky"
+jednu ilustraci. Ověřeno z běžící stránky, ne odhadem:
+
+```
+Velká čísla       → cat-matematika-cislo-a-pocetni-operace.png
+Písemné počítání  → cat-matematika-cislo-a-pocetni-operace.png
+Zlomky            → cat-matematika-cislo-a-pocetni-operace.png
+```
+
+**Příčina:** obrázek se klíčuje podle OBLASTI RVP, ale karta nese DĚTSKÝ název
+okruhu — a několik okruhů spadá pod jednu oblast. Kód to dělá doslova:
+`getCategoryIllustrationUrl(subject, rvpCategory)` vedle popisku `okruh.name`.
+
+**Oprava:** obrázek, který se v mřížce opakuje, se nepoužije vůbec; karta
+spadne na emoji okruhu, a ta je pro každý okruh jiná (🔢 / ✏️ / 🍰). Prázdno
+neklame, sdílený obrázek ano. Až budou vlastní kresby, filtr se sám přestane
+uplatňovat.
+
+### 🟠 NOVÝ NÁLEZ pro krok 2 — fialová není z obrázků
+
+Původně jsem tvrdil, že si 3D obrázky nesou vlastní fialové pozadí. **Není to
+pravda**, změřeno: obrázky jsou průhledné PNG a levandulová je **náš vlastní
+předmětový tint** `bg-[#E3EDFD]` = rgb(227,237,253), studená modrofialová
+proti krémovému podkladu aplikace rgb(250,248,245).
+
+Horší je, jak se používá. `subjectRegistry.ts` u `tintClass` píše:
+*„dlaždice ikony, chip, jemný podklad. **Ne pozadí celé karty.**"* V
+`TopicBrowser` zabírá **72 % plochy karty** — tint určený pro čip je z něj
+největší barevná plocha na obrazovce.
+
+Tohle je nejspíš větší důvod, proč rozcestník nevypadá jako zbytek aplikace,
+než rukopis kreseb. A opravit se dá bez jediného nového obrázku.
+
+---
+
 ## ✅ Modál výsledků — dítě si sbalené sekce nerozklikne (2026-09-07)
 
 Sekce „Jak ti to šlo" a „Dřívější pokusy" byly v dětské verzi sbalené za

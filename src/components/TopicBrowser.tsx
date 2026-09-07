@@ -438,9 +438,31 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                         onClick: () => handleCategoryClick(category),
                       };
                     });
+                // Ilustrace se klíčuje podle OBLASTI RVP, ale karta nese DĚTSKÝ
+                // název okruhu — a několik okruhů spadá pod jednu oblast.
+                // V matematice 4. ročníku tak „Velká čísla", „Písemné počítání"
+                // i „Zlomky" dostaly týž obrázek z `cislo-a-pocetni-operace`.
+                // Dítěti to čte jako „tyhle tři jsou totéž"; ilustrace tu má
+                // rozlišovat, a místo toho slučovala.
+                //
+                // Obrázek, který se v mřížce opakuje, neidentifikuje nic, takže
+                // ho radši nemáme — karta spadne na emoji okruhu, a ta je na
+                // rozdíl od obrázku pro každý okruh jiná. Prázdno neklame,
+                // sdílený obrázek ano.
+                //
+                // Není to náhrada za vlastní kresby, jen zábrana proti lhaní.
+                // Až budou, tenhle filtr se sám přestane uplatňovat.
+                const imageCounts = new Map<string, number>();
+                for (const c of cards) {
+                  if (c.imageUrl) imageCounts.set(c.imageUrl, (imageCounts.get(c.imageUrl) ?? 0) + 1);
+                }
+                const dedupedCards = cards.map(c =>
+                  c.imageUrl && (imageCounts.get(c.imageUrl) ?? 0) > 1 ? { ...c, imageUrl: null } : c,
+                );
+
                 return (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {cards.map(card => card.locked ? (
+                    {dedupedCards.map(card => card.locked ? (
                       <button
                         key={card.id}
                         type="button"
