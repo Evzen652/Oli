@@ -36,12 +36,16 @@ export default function Privacy() {
       perex="Oli je aplikace pro děti, takže k datům přistupujeme opatrněji než je běžné. Neprodáváme je, neměříme chování napříč weby a nezobrazujeme reklamu. Níže je popsané, co konkrétně ukládáme a proč."
     >
       <LegalSection id="spravce" title="Kdo za data odpovídá">
+        {/* „Se sídlem" je podnikatelský obrat; provozovatelem je fyzická osoba,
+            u které se uvádí jen místo. Úplnou adresu tu schválně neuvádíme —
+            viz poznámka u `adresa` v content/legal.ts. */}
         <p>
           Správcem osobních údajů je <strong className="text-foreground"><Udaj hodnota={PROVOZOVATEL.nazev} co="jméno nebo firma provozovatele" /></strong>
           {PROVOZOVATEL.ico !== null && (
             <>, IČO <Udaj hodnota={PROVOZOVATEL.ico} co="IČO" /></>
           )}
-          , se sídlem <Udaj hodnota={PROVOZOVATEL.adresa} co="adresa sídla" />.
+          , <Udaj hodnota={PROVOZOVATEL.adresa} co="místo provozovatele" />.
+          Úplnou poštovní adresu sdělíme na vyžádání.
         </p>
         <p>
           Ve všem, co se týká vašich údajů, se na nás obraťte na{" "}

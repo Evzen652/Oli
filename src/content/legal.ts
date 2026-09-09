@@ -29,10 +29,17 @@ export interface Provozovatel {
  * ⚠️ VYPLŇ. Viz hlavička souboru.
  */
 export const PROVOZOVATEL: Provozovatel = {
-  nazev: DOPLNIT,
-  ico: DOPLNIT,
-  adresa: DOPLNIT,
-  email: DOPLNIT,
+  // Správcem údajů musí být PRÁVNÍ OSOBA, ne značka. „Oli" je název aplikace;
+  // provozuje ji fyzická osoba nepodnikatel, takže tu patří jméno a příjmení.
+  nazev: "Evžen Weigl",
+  // Nepodniká → žádné IČO. `null` znamená, že se řádek s IČO vůbec nevykreslí.
+  ico: null,
+  // Záměrně jen obec, ne ulice a číslo popisné. Zásady soukromí jsou veřejná
+  // a indexovaná stránka a provozovatel je fyzická osoba — plná domácí adresa
+  // by tím byla trvale dohledatelná. Pro uplatnění práv stačí spolehlivý
+  // kontakt, ten je e-mailem níž; úplnou adresu sdělí na vyžádání.
+  adresa: "Olomouc, Česká republika",
+  email: "evzen.weigl@gmail.com",
 };
 
 /** Datum účinnosti obou dokumentů. Při každé věcné změně posuň. */
