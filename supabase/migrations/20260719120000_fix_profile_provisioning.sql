@@ -33,11 +33,15 @@ DECLARE
   v_role public.app_role;
 BEGIN
   -- profiles (idempotentně) — `id` explicitně, viz hlavička migrace.
+  --
+  -- ⚠️ Podmínka NESMÍ viset jen na `user_id`. Primární klíč je `id`, takže
+  -- profil může existovat se správným `id`, ale jiným nebo prázdným
+  -- `user_id` — kontrola přes `user_id` ho nenajde a INSERT pak spadne na
+  -- `profiles_pkey`. Ověřeno na ostré databázi 2026-09-10, kde to shodilo
+  -- celý skript. Proto `ON CONFLICT (id)`.
   INSERT INTO public.profiles (id, user_id)
-  SELECT NEW.id, NEW.id
-  WHERE NOT EXISTS (
-    SELECT 1 FROM public.profiles p WHERE p.user_id = NEW.id
-  );
+  VALUES (NEW.id, NEW.id)
+  ON CONFLICT (id) DO NOTHING;
 
   -- role z metadat signupu; default 'parent' pro veřejnou registraci rodiče
   v_role := COALESCE(NULLIF(NEW.raw_user_meta_data->>'role', ''), 'parent')::public.app_role;
@@ -52,12 +56,23 @@ BEGIN
 END;
 $$;
 
--- Backfill: uživatelé, kterým profil kvůli téhle chybě nevznikl.
+-- Backfill ve dvou krocích. Původní jednokrokový INSERT spadl na ostré
+-- databázi (`profiles_pkey`), protože předpokládal, že „profil chybí" se pozná
+-- podle `user_id`. Ve skutečnosti tam byly řádky se správným `id`, ale
+-- nesedícím `user_id` — pro aplikaci stejně nepoužitelné jako chybějící,
+-- protože ta hledá podle `user_id`.
+
+-- 1) Spravit rozvázané řádky: profil existuje, ale neukazuje na svého uživatele.
+UPDATE public.profiles p
+SET user_id = p.id
+FROM auth.users u
+WHERE p.id = u.id
+  AND p.user_id IS DISTINCT FROM u.id;
+
+-- 2) Doplnit profily, které nevznikly vůbec.
 -- (Bez profilu spadne rodič po přihlášení do nekonečného onboardingu —
 --  App.tsx routuje `parent` bez `display_name` vždy na /onboarding.)
 INSERT INTO public.profiles (id, user_id)
 SELECT u.id, u.id
 FROM auth.users u
-WHERE NOT EXISTS (
-  SELECT 1 FROM public.profiles p WHERE p.user_id = u.id
-);
+ON CONFLICT (id) DO NOTHING;
