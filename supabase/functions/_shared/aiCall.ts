@@ -103,8 +103,15 @@ export async function aiCall(opts: AiCallOptions): Promise<Response> {
   if (preferGroq && groqKey) {
     console.log(`[aiCall] Provider: Groq, model: ${model.groq}`);
     const res = await doFetch(GROQ_URL, groqKey, model.groq);
-    if ((res.status === 429 || res.status >= 500) && googleKey && model.google) {
-      console.log(`[aiCall] Groq returned ${res.status}, falling back to Google`);
+    // Fallback při JAKÉKOLI chybě, ne jen 429/5xx. Původně se přepínalo jen
+    // na přetížení a výpadky — jenže 2026-09-10 vrátil Groq na produkci
+    // `404 model_not_found` (model `llama-3.3-70b-versatile` na tom účtu
+    // není) a router to propustil jako chybu ven, přestože byl Gemini
+    // nakonfigurovaný a fungoval. Špatný název modelu u jednoho poskytovatele
+    // nemá shodit funkci, když je po ruce druhý.
+    if (!res.ok && googleKey && model.google) {
+      const detail = await res.clone().text().catch(() => "");
+      console.warn(`[aiCall] Groq ${res.status} (${detail.slice(0, 200)}), fallback na Google`);
       return await doFetch(GOOGLE_URL, googleKey, model.google);
     }
     return res;

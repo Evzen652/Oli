@@ -80,7 +80,16 @@ export function createSessionEvalHandler(deps: SessionEvalDeps) {
       if (!response.ok) {
         if (response.status === 429) return jsonResp({ error: "Rate limit exceeded" }, 429);
         if (response.status === 402) return jsonResp({ error: "Payment required" }, 402);
-        return jsonResp({ error: "AI gateway error" }, 500);
+        // Detail poskytovatele patří do odpovědi, ne jen do logu. Holé
+        // „AI gateway error" je přesně důvod, proč se roky nevědělo, že
+        // nastavený klíč vůbec neexistuje — chyba vypadala stejně jako
+        // jakákoli jiná. Klíč se v těle odpovědi poskytovatele nevrací.
+        const detail = await response.text().catch(() => "");
+        console.error(`[session-evaluation] provider ${response.status}: ${detail.slice(0, 500)}`);
+        return jsonResp(
+          { error: `AI gateway error ${response.status}: ${detail.slice(0, 300)}` },
+          500,
+        );
       }
 
       const data = await response.json();
