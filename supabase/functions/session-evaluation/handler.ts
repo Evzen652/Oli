@@ -2,12 +2,23 @@
  * SESSION-EVALUATION core handler — testovatelný extract.
  *
  * AI generuje slovní hodnocení po session (žák ho vidí v SessionEndSummary).
- * Pure handler, injected fetch + getApiKey deps.
+ *
+ * ── Proč se injektuje celé volání, ne klíč ──────────────────────────────────
+ * Dřív se sem injektoval `getApiKey()` a handler volal natvrdo Lovable Gateway.
+ * Jenže v projektu je nastavený `GROQ_API_KEY` a `GEMINI_API_KEY`, kdežto
+ * `LOVABLE_API_KEY` **ne** — funkce by tedy po nasazení házela 500 při každém
+ * dokončeném sezení. (Ověřeno 2026-09-09 přes `supabase secrets list`.)
+ *
+ * Výběr poskytovatele umí `_shared/aiCall.ts`, ale ten čte klíče přímo z Deno
+ * env, což by čistotu handleru rozbilo. Proto se injektuje `callAi` — v provozu
+ * ho `index.ts` napojí na `aiCall`, v testu se dá podstrčit.
  */
 
 export interface SessionEvalDeps {
-  fetch: typeof globalThis.fetch;
-  getApiKey: () => string | undefined;
+  /** Provede AI volání. V provozu `aiCall` z `_shared/aiCall.ts`. */
+  callAi: (messages: Array<{ role: string; content: string }>) => Promise<Response>;
+  /** Je nakonfigurovaný aspoň jeden poskytovatel? */
+  hasProvider: () => boolean;
 }
 
 const corsHeaders = {
@@ -31,8 +42,12 @@ export function createSessionEvalHandler(deps: SessionEvalDeps) {
         subject = "matematika",
       } = await req.json();
 
-      const apiKey = deps.getApiKey();
-      if (!apiKey) throw new Error("LOVABLE_API_KEY is not configured");
+      // Bez poskytovatele nemá smysl nic stavět. Vrací se 503, ne 500:
+      // není to chyba běhu, je to chybějící konfigurace — a klient na to má
+      // vlastní lokální hlášku, takže dítě zůstane bez povšimnutí.
+      if (!deps.hasProvider()) {
+        return jsonResp({ error: "Žádný AI poskytovatel není nakonfigurován." }, 503);
+      }
 
       // Subject-aware terminology
       const subjectLabel = subject === "čeština" ? "českého jazyka" : "matematiky";
@@ -57,20 +72,10 @@ export function createSessionEvalHandler(deps: SessionEvalDeps) {
 
       const userPrompt = `Žák procvičoval téma "${topicTitle}" (předmět: ${subject}). Vyřešil ${totalTasks} ${taskWord}: ${correctCount} správně bez pomoci, ${helpUsedCount} správně s nápovědou a ${wrongCount} špatně.${helpInfo} Napiš krátké slovní hodnocení.`;
 
-      const response = await deps.fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userPrompt },
-          ],
-        }),
-      });
+      const response = await deps.callAi([
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ]);
 
       if (!response.ok) {
         if (response.status === 429) return jsonResp({ error: "Rate limit exceeded" }, 429);

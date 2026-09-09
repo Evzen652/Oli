@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { aiCall, hasAnyAiProvider } from "../_shared/aiCall.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -141,8 +142,11 @@ serve(async (req) => {
       );
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
+    // Dřív se tu četl jen `LOVABLE_API_KEY`, který v projektu nastavený NENÍ —
+    // rodič by tedy dostával holá čísla s větou „AI narace není k dispozici",
+    // přestože `GROQ_API_KEY` i `GEMINI_API_KEY` nastavené jsou. Výběr
+    // poskytovatele teď dělá `_shared/aiCall.ts`.
+    if (!hasAnyAiProvider()) {
       return new Response(
         JSON.stringify({
           report: {
@@ -200,19 +204,18 @@ FORMÁT:
 
 Zavolej funkci weekly_report s výsledkem.`;
 
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
+    const aiResponse = await aiCall({
+      // Report se skládá přes tool calling, takže model musí umět funkce.
+      // Llama 3.3 70B na Groqu i Gemini to zvládají; pořadí řeší router.
+      model: {
+        groq: "llama-3.3-70b-versatile",
+        google: "gemini-2.0-flash",
       },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: "Jsi laskavý asistent pro rodičovské reporty. Píšeš srozumitelně, konkrétně a pozitivně. Žádné technické termíny. PIŠ VÝHRADNĚ ČESKY — report čte český rodič, nikdy nepoužívej slova z jiných jazyků." },
-          { role: "user", content: aiPrompt },
-        ],
-        tools: [
+      messages: [
+        { role: "system", content: "Jsi laskavý asistent pro rodičovské reporty. Píšeš srozumitelně, konkrétně a pozitivně. Žádné technické termíny. PIŠ VÝHRADNĚ ČESKY — report čte český rodič, nikdy nepoužívej slova z jiných jazyků." },
+        { role: "user", content: aiPrompt },
+      ],
+      tools: [
           {
             type: "function",
             function: {
@@ -255,9 +258,8 @@ Zavolej funkci weekly_report s výsledkem.`;
               },
             },
           },
-        ],
-        tool_choice: { type: "function", function: { name: "weekly_report" } },
-      }),
+      ],
+      toolChoice: { type: "function", function: { name: "weekly_report" } },
     });
 
     if (!aiResponse.ok) {

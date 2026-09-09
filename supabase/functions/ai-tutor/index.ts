@@ -507,7 +507,6 @@ Zavolej funkci correctness_check.`;
       model: {
         // Pro Layer 3 stačí stejný model jako generator (cross-check je při toolu, ne při modelu)
         groq: "llama-3.3-70b-versatile",
-        lovable: "openai/gpt-5-mini",
       },
     });
 
@@ -554,7 +553,6 @@ async function validateTasksForGrade(tasks: any[], gradeMin: number, _apiKey: st
       toolChoice: { type: "function", function: { name: "grade_validation" } },
       model: {
         groq: "llama-3.3-70b-versatile",
-        lovable: "google/gemini-3-flash-preview",
       },
     });
 
@@ -650,7 +648,7 @@ serve(async (req) => {
     if (!hasAnyAiProvider()) {
       throw new Error(
         "Žádný AI provider není nakonfigurován. Nastavte GROQ_API_KEY (preferováno) " +
-        "nebo LOVABLE_API_KEY v Supabase Edge Functions Secrets."
+        "nebo GEMINI_API_KEY v Supabase Edge Functions Secrets."
       );
     }
 
@@ -712,7 +710,6 @@ serve(async (req) => {
       toolChoice,
       model: {
         groq: "llama-3.3-70b-versatile",
-        lovable: "google/gemini-3-flash-preview",
       },
     });
 

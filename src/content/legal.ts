@@ -63,10 +63,10 @@ export function chybiCokoliv(): boolean {
  *
  *   Supabase   — `src/integrations/supabase/client.ts`, všechny edge funkce
  *   Jazykový   — `supabase/functions/_shared/aiCall.ts` routuje podle toho, který
- *   model        klíč je nastavený: Groq (`api.groq.com`), Google
- *                (`generativelanguage.googleapis.com`) nebo Lovable Gateway
- *                (`ai.gateway.lovable.dev`). Používá `session-evaluation`,
- *                `weekly-report`, `analyze-misconceptions`.
+ *   model        klíč je nastavený: Groq (`api.groq.com`) nebo Google
+ *                (`generativelanguage.googleapis.com`). Používá
+ *                `session-evaluation`, `weekly-report`, `analyze-misconceptions`.
+ *                **Lovable AI Gateway se nepoužívá** (rozhodnutí 2026-09-09).
  *   Resend     — `api.resend.com` v `send-parent-invite`
  *   WhatsApp   — `wa.me` v `InviteParentDialog.tsx` (odkaz se skládá v prohlížeči,
  *                telefonní číslo se na server neposílá)
@@ -89,11 +89,11 @@ export const PRIJEMCI: Prijemce[] = [
     umisteni: "Evropská unie",
   },
   {
-    nazev: "Poskytovatel jazykového modelu (Groq, Google nebo Lovable AI Gateway)",
+    nazev: "Poskytovatel jazykového modelu (Groq nebo Google)",
     ucel:
       "Slovní hodnocení po procvičování a týdenní shrnutí pro rodiče. Posílá se téma, " +
       "úroveň a počet správných odpovědí — ne jméno dítěte ani text jeho odpovědí. " +
-      "Který z poskytovatelů se použije, závisí na aktuálním nastavení služby.",
+      "Který z těch dvou se použije, závisí na aktuálním nastavení služby.",
     umisteni: "mimo EU",
   },
   {

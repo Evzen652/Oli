@@ -30,6 +30,46 @@ Ověřeno srovnáním spočítaných barev před a po — pilulky beze změny.
 
 ---
 
+## ✅ Lovable AI Gateway se nepoužívá (rozhodnutí uživatele, 2026-09-09)
+
+Ověřeno přes `supabase secrets list`: nastavené jsou **`GROQ_API_KEY`
+a `GEMINI_API_KEY`**, `LOVABLE_API_KEY` nikoli. Dvě ze čtyř funkcí čekajících
+na deploy si přitom Lovable braly natvrdo:
+
+| funkce | co by se stalo po nasazení |
+|---|---|
+| `session-evaluation` | **500 při každém dokončeném sezení** (`throw` bez klíče) |
+| `weekly-report` | rodič dostane holá čísla a větu „AI narace není k dispozici" |
+
+- `_shared/aiCall.ts` — Lovable pryč z routování i z `AiModelMap`; zbývá
+  Groq → Google.
+- Vyčištěno u všech volajících: `session-evaluation`, `weekly-report`,
+  `ai-tutor`, `analyze-misconceptions`, `tutor-chat`, plus vlastní řetěz
+  v `ai-curriculum`.
+- `session-evaluation` byl označený jako „testovatelný extract", ale test
+  neměl — a chyba seděla přesně v té neotestované větvi. Doplněno 7 testů,
+  hlavně na hranici „chybí konfigurace" (503) vs „AI selhala" (500).
+- `src/content/legal.ts` — zásady soukromí už Lovable nejmenují.
+
+### 🧪 Nový hlídač
+
+`legal-recipients.test.ts` nově kontroluje, že se Lovable nevrátí do
+`_shared/aiCall.ts`. Napoprvé spadl na **mém vlastním komentáři** v hlavičce
+toho souboru, takže hlídá `Deno.env.get("LOVABLE_API_KEY")` a URL, ne pouhou
+zmínku — jinak by nešlo to rozhodnutí v kódu zdokumentovat.
+
+### 🟠 Kde Lovable zbývá — čeká na rozhodnutí
+
+Jen tam, kudy neteče nic o dítěti, a odstranění by změnilo chování:
+
+- `generate-image`, `generate-prvouka-images` — adminí generování ilustrací
+  (mají i další poskytovatele: OpenAI, HuggingFace, Pollinations)
+- `generate-logo` — Lovable je jeho **jediný** poskytovatel, odstraněním
+  přestane fungovat úplně
+- `exercise-validator`, `semantic-gate` — odcházející, nenasazené
+
+---
+
 ## ✅ Tři okruhy měly tentýž obrázek (2026-09-07)
 
 V matematice 4. ročníku sdílely „Velká čísla", „Písemné počítání" a „Zlomky"

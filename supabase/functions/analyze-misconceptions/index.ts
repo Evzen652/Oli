@@ -230,7 +230,6 @@ Pokud ne, vrať confidence < 0.4.
           toolChoice: { type: "function", function: { name: "report_misconception" } },
           model: {
             groq: "llama-3.3-70b-versatile",
-            lovable: "openai/gpt-5-mini",
           },
         });
 
