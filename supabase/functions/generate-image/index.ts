@@ -1,13 +1,18 @@
 // generate-image — vyrobí obrázek pro vizuální cvičení (image_select, diagram_label).
 //
-// Provider routing:
-//   1) GROQ — nemá image generation, skip
-//   2) OPENAI_API_KEY — přímý OpenAI (DALL-E 3)
+// Poskytovatel: Gemini (`GEMINI_API_KEY`), nativní výstup obrázku.
+// Lovable Gateway i OpenAI odstraněny 2026-09-10 — Lovable se v projektu
+// nepoužívá nikde a `OPENAI_API_KEY` nastavený není.
 //
-// Lovable Gateway odstraněn 2026-09-09 — nepoužívá se nikde v projektu.
+// Obrázek se ukládá do bucketu `exercise-assets` a do DB jde odkaz na něj.
+// Dřív se ukládala URL od OpenAI, která po pár hodinách expiruje — knihovna
+// assetů tak postupně odkazovala do prázdna.
 //
 // Vstup:
-//   { prompt: string, skill_id?: string, tags?: string[], size?: "1024x1024" }
+//   { prompt: string, skill_id?: string, tags?: string[], alt_text?: string }
+//
+// `size` odsud zmizel spolu s DALL-E: Gemini rozměr v tomhle volání nepřijímá,
+// takže parametr by se tiše ignoroval. Nikdo ho ostatně neposílal.
 //
 // Výstup:
 //   { url: string, asset_id: string, alt_text: string }
@@ -68,7 +73,7 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { prompt, skill_id, tags, size = "1024x1024", alt_text } = body ?? {};
+    const { prompt, skill_id, tags, alt_text } = body ?? {};
     if (!prompt || typeof prompt !== "string") {
       return new Response(JSON.stringify({ error: "Missing 'prompt'" }), {
         status: 400,
@@ -76,52 +81,94 @@ serve(async (req) => {
       });
     }
 
-    // ── Provider routing ─────────────────────────────────────────────
-    // Lovable Gateway odstraněn 2026-09-09 (rozhodnutí uživatele: nepoužívat
-    // nikde). Zbývá přímý OpenAI — vyžaduje `OPENAI_API_KEY`, který v projektu
-    // zatím nastavený NENÍ, takže funkce bez něj vrátí 500 s jasnou hláškou.
-    const openaiKey = Deno.env.get("OPENAI_API_KEY");
-
-    let imageUrl: string | null = null;
-    let providerUsed = "";
-
-    if (openaiKey) {
-      const r = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${openaiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "dall-e-3",
-          prompt,
-          n: 1,
-          size,
-          response_format: "url",
-        }),
-      });
-      if (r.ok) {
-        const data = await r.json();
-        imageUrl = data.data?.[0]?.url ?? null;
-        providerUsed = "openai_dalle3";
-      } else {
-        const errText = await r.text().catch(() => "");
-        return new Response(
-          JSON.stringify({ error: `OpenAI error ${r.status}: ${errText}` }),
-          { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-    }
-
-    if (!imageUrl) {
+    // ── Generování přes Gemini ───────────────────────────────────────
+    // Lovable Gateway i OpenAI odstraněny 2026-09-10. Gemini má nativní výstup
+    // obrázku a `GEMINI_API_KEY` je v projektu nastavený, na rozdíl od
+    // `OPENAI_API_KEY`.
+    //
+    // ⚠️ Vedlejší oprava, ne jen výměna poskytovatele: OpenAI vracelo URL na
+    // svůj vlastní obrázek a ta se ukládala do `exercise_assets.url`. Takové
+    // odkazy ale po pár hodinách expirují, takže knihovna assetů postupně
+    // odkazovala do prázdna. Gemini vrací base64, který si rovnou uložíme do
+    // vlastního storage — odkaz pak platí trvale.
+    const geminiKey = Deno.env.get("GEMINI_API_KEY");
+    if (!geminiKey) {
       return new Response(
         JSON.stringify({
           error:
-            "Žádný provider pro generování obrázků není nakonfigurován. Nastavte OPENAI_API_KEY v Supabase Edge Functions Secrets.",
+            "Generování obrázků není nakonfigurováno. Nastavte GEMINI_API_KEY v Supabase Edge Functions Secrets.",
         }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    const aiResp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
+        }),
+      }
+    );
+
+    if (!aiResp.ok) {
+      const errText = await aiResp.text().catch(() => "");
+      return new Response(
+        JSON.stringify({ error: `Gemini error ${aiResp.status}: ${errText.slice(0, 300)}` }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const aiData = await aiResp.json();
+    const parts = aiData.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find(
+      (p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData,
+    );
+    const base64: string | undefined = imagePart?.inlineData?.data;
+
+    if (!base64) {
+      return new Response(
+        JSON.stringify({ error: "Gemini nevrátil obrázek." }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Bucket založíme, pokud ještě není — stejně jako `generate-prvouka-images`.
+    const { error: bucketErr } = await supabase.storage.createBucket("exercise-assets", {
+      public: true,
+      allowedMimeTypes: ["image/png", "image/jpeg", "image/webp"],
+    });
+    if (bucketErr && !bucketErr.message.includes("already exists")) {
+      console.warn("[generate-image] bucket create warning:", bucketErr.message);
+    }
+
+    // Uložení do vlastního storage — viz poznámka o expiraci výš.
+    const contentType: string = imagePart.inlineData.mimeType ?? "image/png";
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+    const nazevSouboru = `${crypto.randomUUID()}.png`;
+    const { error: uploadErr } = await supabase.storage
+      .from("exercise-assets")
+      .upload(nazevSouboru, bytes, { contentType, upsert: false });
+
+    if (uploadErr) {
+      console.error("[generate-image] upload failed:", uploadErr);
+      return new Response(
+        JSON.stringify({ error: `Uložení obrázku selhalo: ${uploadErr.message}` }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { data: urlData } = supabase.storage
+      .from("exercise-assets")
+      .getPublicUrl(nazevSouboru);
+    const imageUrl = urlData.publicUrl;
+    const providerUsed = "gemini-2.0-flash";
 
     // Zápis do exercise_assets
     const { data: asset, error: insertErr } = await supabase
