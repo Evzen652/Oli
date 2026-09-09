@@ -32,7 +32,7 @@ async function tryProvider(
 
 /**
  * 3-úrovňový AI fallback chain:
- *   Gemini  → Groq  → Lovable Gateway
+ *   Gemini  → Groq
  * Pokud první selže (4xx/5xx), zkusíme další. Vrátíme úspěšnou odpověď
  * nebo posledně neúspěšnou (s provider info).
  */

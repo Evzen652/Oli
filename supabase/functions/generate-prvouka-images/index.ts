@@ -235,15 +235,12 @@ function autoPrompt(key: string): string {
  * Generuje obrázek přes preferovaný provider.
  *
  * Priorita podle env IMAGE_PROVIDER:
- *   "lovable"      → Lovable Gateway prefer, Gemini direct fallback
- *   "gemini"       → Gemini direct prefer, Lovable fallback
- *   (nenastaveno)  → default: Lovable prefer (využít předplacený kredit),
- *                    Gemini fallback
+ *   "gemini"       → Gemini direct prefer
+ *   (nenastaveno)  → default: Pollinations → HuggingFace → Gemini
  *
  * Vrací { base64, contentType } nebo throws Error.
  */
 async function generateImage(prompt: string): Promise<{ base64: string; contentType: string; provider: string; providerErrors?: string[] }> {
-  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
   const HF_TOKEN = Deno.env.get("HF_TOKEN");
 
   // Hugging Face FLUX.1-schnell — nový router endpoint (router.huggingface.co)
@@ -318,28 +315,6 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64: btoa(binary), contentType: "image/jpeg" };
   };
 
-  const tryLovable = async () => {
-    const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash-image",
-        messages: [{ role: "user", content: prompt }],
-        modalities: ["image", "text"],
-      }),
-    });
-    if (!resp.ok) {
-      const t = await resp.text();
-      throw new Error(`Lovable error ${resp.status}: ${t.slice(0, 200)}`);
-    }
-    const data = await resp.json();
-    const dataUrl: string | undefined = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-    if (!dataUrl?.startsWith("data:image/")) throw new Error("No image in Lovable response");
-    const base64 = dataUrl.split(",")[1];
-    const mimeMatch = dataUrl.match(/data:(image\/\w+);/);
-    return { base64, contentType: mimeMatch?.[1] ?? "image/png" };
-  };
-
   // Gemini 2.0 Flash — nativní image generation přes generateContent + responseModalities.
   const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
   const tryGeminiDirect = async () => {
@@ -366,12 +341,11 @@ async function generateImage(prompt: string): Promise<{ base64: string; contentT
     return { base64: imagePart.inlineData.data, contentType: imagePart.inlineData.mimeType ?? "image/png" };
   };
 
-  // Priorita: Pollinations (nejlepší kvalita, s tokenem) → HuggingFace (záloha) → Gemini → Lovable
+  // Priorita: Pollinations (nejlepší kvalita, s tokenem) → HuggingFace (záloha) → Gemini
   const chain = [
     { name: "pollinations", run: tryPollinations },
     ...(HF_TOKEN ? [{ name: "huggingface", run: tryHuggingFace }] : []),
     ...(GEMINI_API_KEY ? [{ name: "gemini-direct", run: tryGeminiDirect }] : []),
-    ...(LOVABLE_API_KEY ? [{ name: "lovable-gemini", run: tryLovable }] : []),
   ];
 
   const errors: string[] = [];
@@ -455,12 +429,12 @@ serve(async (req) => {
     const force: boolean = body.force === true;
     const customPrompts: Record<string, string> = body.customPrompts ?? {};
 
-    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+    // Lovable Gateway odstraněn 2026-09-09 (nepoužívá se nikde v projektu).
+    // Řetěz je teď Pollinations → HuggingFace → Gemini; `IMAGE_PROVIDER` už
+    // jen říká, jestli má Gemini jít první.
     const geminiKey = Deno.env.get("GEMINI_API_KEY");
-    const pref = Deno.env.get("IMAGE_PROVIDER") ?? "lovable";
-    const primary = pref === "gemini"
-      ? (geminiKey ? "gemini-direct" : (lovableKey ? "lovable-gateway (fallback)" : "none"))
-      : (lovableKey ? "lovable-gateway" : (geminiKey ? "gemini-direct (fallback)" : "none"));
+    const pref = Deno.env.get("IMAGE_PROVIDER") ?? "pollinations";
+    const primary = pref === "gemini" && geminiKey ? "gemini-direct" : "pollinations";
     console.log(`[generate-prvouka-images] Preference: ${pref}, Primary: ${primary}`);
 
     // Ensure bucket exists (auto-create if missing)

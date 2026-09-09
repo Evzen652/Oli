@@ -45,11 +45,6 @@ const MIMO_ROZSAH: Record<string, string> = {
   "router.huggingface.co": "generování ilustrací v adminu z redakčních promptů",
   "gen.pollinations.ai": "generování ilustrací v adminu z redakčních promptů",
   "api.openai.com": "generování ilustrací v adminu (generate-image) z redakčních promptů",
-  // Lovable se pro data uživatelů NEPOUŽÍVÁ (rozhodnutí 2026-09-09) — z routeru
-  // `_shared/aiCall.ts` je pryč, hlídá to test níž. Hostitel v repu zbývá jen
-  // v adminím generování obrázků a v odcházejících funkcích (exercise-validator,
-  // semantic-gate, generate-logo), kudy neteče nic o dítěti.
-  "ai.gateway.lovable.dev": "admin generování obrázků a odcházející funkce; neteče přes něj nic o uživateli",
 };
 
 /** Hostitel → která položka `PRIJEMCI` ho pokrývá. */
@@ -131,26 +126,28 @@ describe("zásady soukromí odpovídají skutečnosti", () => {
     }
   });
 
-  it("AI router nesmí volat Lovable — data o učení jdou jen ke Groqu nebo Googlu", () => {
-    // Rozhodnutí 2026-09-09: Lovable AI Gateway se nepoužívá. Kdyby se vrátil
-    // do `aiCall.ts`, začaly by přes něj chodit údaje o procvičování dítěte —
-    // a zásady soukromí by ho přestaly jmenovat pravdivě. MIMO_ROZSAH výš ho
-    // pouští jen kvůli adminímu generování obrázků, což tenhle test nehlídá,
-    // proto sem patří kontrola konkrétního souboru.
-    const router = readFileSync(
-      join(KOREN, "supabase", "functions", "_shared", "aiCall.ts"),
-      "utf8",
-    );
-    // Hledá POUŽITÍ, ne zmínku: komentář v hlavičce toho souboru Lovable
-    // schválně jmenuje, aby bylo vysvětlené, proč tam není. Kdyby test
-    // hlídal i zmínky, nešlo by to rozhodnutí v kódu zdokumentovat.
-    const zminky =
-      router.match(/Deno\.env\.get\(\s*["']LOVABLE_API_KEY["']|ai\.gateway\.lovable\.dev/g) ?? [];
+  it("Lovable se nepoužívá NIKDE v projektu", () => {
+    // Rozhodnutí uživatele 2026-09-09: Lovable AI Gateway pryč ze všech funkcí,
+    // ne jen z těch, kudy tečou data dítěte. Test proto prochází celý strom
+    // edge funkcí, ne jen router.
+    //
+    // Hledá POUŽITÍ, ne zmínku: komentáře, které vysvětlují, PROČ tam Lovable
+    // není, jsou žádoucí — kdyby test hlídal i je, nešlo by to rozhodnutí
+    // v kódu zdokumentovat.
+    const nalezy: string[] = [];
+    for (const soubor of sesbirejSoubory(join(KOREN, "supabase", "functions"))) {
+      const text = readFileSync(soubor, "utf8");
+      const shody =
+        text.match(/Deno\.env\.get\(\s*["']LOVABLE_API_KEY["']|ai\.gateway\.lovable\.dev/g) ?? [];
+      if (shody.length) nalezy.push(`${soubor.slice(KOREN.length + 1)} (${shody.length}×)`);
+    }
     expect(
-      zminky,
-      "V `_shared/aiCall.ts` se objevil Lovable. Buď ho odstraň, nebo ho doplň " +
-        "do PRIJEMCI v src/content/legal.ts — zásady soukromí musí jmenovat " +
-        "každého, komu se data dostanou.",
+      nalezy,
+      "Objevil se Lovable. Nepoužívá se nikde — přepoj volání na Groq nebo " +
+        "Gemini (viz `_shared/aiCall.ts`). Kdyby to mělo být výjimkou, patří " +
+        "současně do PRIJEMCI v src/content/legal.ts, protože zásady soukromí " +
+        "musí jmenovat každého, komu se data dostanou.\n\n" +
+        nalezy.join("\n"),
     ).toEqual([]);
   });
 

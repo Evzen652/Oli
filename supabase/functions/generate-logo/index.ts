@@ -40,8 +40,11 @@ serve(async (req) => {
       });
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    // Lovable Gateway odstraněn 2026-09-09 (nepoužívá se nikde v projektu).
+    // Nativní generování obrázků přes Gemini — stejný postup jako
+    // `tryGeminiDirect` v `generate-prvouka-images`.
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not configured");
 
     // Check if logo already exists
     const { data: existing } = await supabase.storage
@@ -59,44 +62,42 @@ serve(async (req) => {
       );
     }
 
-    // Generate logo using Lovable AI
+    // Generate logo using Gemini (native image output)
     const aiResponse = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash-image",
-          messages: [
-            {
-              role: "user",
-              content:
+          contents: [{
+            parts: [{
+              text:
                 "Create a cute, flat-style colorful logo illustration featuring a friendly cartoon owl mascot next to the text 'Oli' in bold rounded letters. The owl should be small, cheerful, with big eyes. Child-friendly, clean design, white background, suitable as a small navigation logo. The text 'Oli' must be clearly readable with a soft 'i'. Use warm, vibrant colors like orange, teal and yellow. Ultra high resolution.",
-            },
-          ],
-          modalities: ["image", "text"],
+            }],
+          }],
+          generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
         }),
       }
     );
 
     if (!aiResponse.ok) {
       const errText = await aiResponse.text();
-      console.error("AI gateway error:", aiResponse.status, errText);
-      throw new Error(`AI gateway error: ${aiResponse.status}`);
+      console.error("Gemini error:", aiResponse.status, errText);
+      throw new Error(`Gemini error: ${aiResponse.status}`);
     }
 
     const aiData = await aiResponse.json();
-    const imageData = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    // Gemini vrací obrázek jako inlineData v částech odpovědi, ne jako data URL.
+    const parts = aiData.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find(
+      (p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData,
+    );
+    const base64 = imagePart?.inlineData?.data;
 
-    if (!imageData) {
+    if (!base64) {
       throw new Error("No image returned from AI");
     }
 
-    // Extract base64 data and convert to binary
-    const base64 = imageData.replace(/^data:image\/\w+;base64,/, "");
     const binaryStr = atob(base64);
     const bytes = new Uint8Array(binaryStr.length);
     for (let i = 0; i < binaryStr.length; i++) {

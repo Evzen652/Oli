@@ -8,5 +8,6 @@ import { createSemanticGateHandler } from "./handler.ts";
 
 serve(createSemanticGateHandler({
   fetch: globalThis.fetch,
-  getApiKey: () => Deno.env.get("LOVABLE_API_KEY") ?? undefined,
+  // Lovable Gateway odstraněn 2026-09-09 (nepoužívá se nikde v projektu).
+  getApiKey: () => Deno.env.get("GROQ_API_KEY") ?? undefined,
 }));

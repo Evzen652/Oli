@@ -148,7 +148,7 @@ describe.skipIf(!PEDAGOGICAL_AUDIT_ENABLED)("CONTENT AUDIT — pedagogická kont
 // AI AUDIT — opt-in (vyžaduje API key + AUDIT_AI=1)
 // ─────────────────────────────────────────────────────────
 
-const AI_KEY = process.env.LOVABLE_API_KEY ?? process.env.GROQ_API_KEY;
+const AI_KEY = process.env.GROQ_API_KEY ?? process.env.GEMINI_API_KEY;
 const AI_AUDIT_ENABLED = process.env.AUDIT_AI === "1" && !!AI_KEY;
 
 describe.skipIf(!AI_AUDIT_ENABLED)("CONTENT AUDIT — AI pedagogická kontrola (opt-in)", () => {

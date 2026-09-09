@@ -9,7 +9,7 @@
 
 export interface SemanticGateDeps {
   fetch: typeof globalThis.fetch;
-  /** Vrátí LOVABLE_API_KEY z env, nebo undefined pokud chybí */
+  /** Vrátí GROQ_API_KEY z env, nebo undefined pokud chybí */
   getApiKey: () => string | undefined;
 }
 
@@ -36,11 +36,11 @@ export function createSemanticGateHandler(deps: SemanticGateDeps) {
       const apiKey = deps.getApiKey();
       if (!apiKey) {
         // Žádný klíč → throw (handler catch ho převede na fallback)
-        throw new Error("LOVABLE_API_KEY is not configured");
+        throw new Error("GROQ_API_KEY is not configured");
       }
 
       const response = await deps.fetch(
-        "https://ai.gateway.lovable.dev/v1/chat/completions",
+        "https://api.groq.com/openai/v1/chat/completions",
         {
           method: "POST",
           headers: {
@@ -48,7 +48,7 @@ export function createSemanticGateHandler(deps: SemanticGateDeps) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "google/gemini-2.5-flash-lite",
+            model: "llama-3.1-8b-instant",
             messages: [
               {
                 role: "system",

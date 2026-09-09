@@ -58,15 +58,24 @@ na deploy si přitom Lovable braly natvrdo:
 toho souboru, takže hlídá `Deno.env.get("LOVABLE_API_KEY")` a URL, ne pouhou
 zmínku — jinak by nešlo to rozhodnutí v kódu zdokumentovat.
 
-### 🟠 Kde Lovable zbývá — čeká na rozhodnutí
+### ✅ Dotaženo 2026-09-10 — Lovable není nikde
 
-Jen tam, kudy neteče nic o dítěti, a odstranění by změnilo chování:
+Uživatel rozhodl, že Lovable nemá zůstat ani v adminu. Zbylých pět funkcí:
 
-- `generate-image`, `generate-prvouka-images` — adminí generování ilustrací
-  (mají i další poskytovatele: OpenAI, HuggingFace, Pollinations)
-- `generate-logo` — Lovable je jeho **jediný** poskytovatel, odstraněním
-  přestane fungovat úplně
-- `exercise-validator`, `semantic-gate` — odcházející, nenasazené
+| funkce | kam přepojeno |
+|---|---|
+| `generate-prvouka-images` | řetěz zkrácen na Pollinations → HuggingFace → Gemini |
+| `generate-logo` | Gemini s nativním výstupem obrázku — místo aby funkce umřela |
+| `generate-image` | přímý OpenAI (vyžaduje `OPENAI_API_KEY`, ten zatím nastavený není) |
+| `semantic-gate` | Groq, `llama-3.1-8b-instant` |
+| `exercise-validator` | Groq, `llama-3.3-70b-versatile` |
+
+**Hlídač zpřísněn:** `legal-recipients.test.ts` prochází celý strom edge funkcí,
+ne jen router. Hlídá volání (`Deno.env.get("LOVABLE_API_KEY")`, URL brány),
+ne zmínku — komentáře vysvětlující, proč tam Lovable není, jsou žádoucí.
+
+Zbylé výskyty slova v `TopicBrowser.tsx` míří na **jiný Lovable** — nástroj,
+kterým byl projekt kdysi založený, ne AI bránu. Ty zůstávají.
 
 ---
 

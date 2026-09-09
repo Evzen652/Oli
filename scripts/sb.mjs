@@ -148,7 +148,6 @@ async function cmdStatus(env) {
       console.log(`  Chain:    ${h.providers_chain?.join(" → ") || "(žádný)"}`);
       console.log(`  Gemini:   ${h.gemini_api_key ? "✓" : "✗"}`);
       console.log(`  Groq:     ${h.groq_api_key ? "✓" : "✗"}`);
-      console.log(`  Lovable:  ${h.lovable_api_key ? "✓" : "✗"}`);
     } else {
       console.log(`  ⚠ healthcheck ${res.status}`);
     }
@@ -239,7 +238,7 @@ async function cmdSecretList(env) {
 
 async function cmdSecretSet(env, pairs) {
   if (pairs.length === 0) {
-    console.error("Použití: sb secret-set LOVABLE_API_KEY=sk-xxx GROQ_API_KEY=gsk-yyy");
+    console.error("Použití: sb secret-set GROQ_API_KEY=gsk-yyy GEMINI_API_KEY=xxx");
     process.exit(1);
   }
   await runSb(env, ["secrets", "set", ...pairs]);

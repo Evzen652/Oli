@@ -295,15 +295,19 @@ describe("semantic-gate — security: input se trim'í, vkládá se do prompt", 
     expect(callBody.messages[1].content).not.toContain("  zlomky  "); // trimmed
   });
 
-  it("AI request používá google/gemini-2.5-flash-lite (nejlevnější model)", async () => {
+  // Model se změnil 2026-09-09 s odchodem Lovable Gateway. Sémantická brána
+  // jen klasifikuje krátký vstup, takže patří na nejlevnější dostupný model.
+  it("AI request používá nejlevnější model a míří na Groq, ne na Lovable", async () => {
     const fetchMock = mkAiCall(validToolCall);
     const handler = createSemanticGateHandler({
       fetch: fetchMock as unknown as typeof fetch,
       getApiKey: () => "key",
     });
     await handler(mkRequest({ input: "test" }));
+    const [url] = fetchMock.mock.calls[0];
     const callBody = JSON.parse(fetchMock.mock.calls[0][1].body as string);
-    expect(callBody.model).toBe("google/gemini-2.5-flash-lite");
+    expect(callBody.model).toBe("llama-3.1-8b-instant");
+    expect(url).toBe("https://api.groq.com/openai/v1/chat/completions");
   });
 
   it("API key je v Authorization header, ne v query/body", async () => {

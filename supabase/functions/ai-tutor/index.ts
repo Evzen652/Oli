@@ -496,7 +496,7 @@ ${tasksJson}
 Zavolej funkci correctness_check.`;
 
   try {
-    // Druhý model nezávisle ověří správnost — Groq Llama 70B nebo GPT přes Lovable.
+    // Druhý model nezávisle ověří správnost — Groq Llama 70B nebo Gemini.
     const response = await aiCall({
       messages: [
         { role: "system", content: "Jsi expertní matematický a jazykový kontrolor pro ZŠ." },

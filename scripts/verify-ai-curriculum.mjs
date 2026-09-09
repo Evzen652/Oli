@@ -247,9 +247,6 @@ async function main() {
   const health = await checkHealth();
   if (health) {
     console.log(`\n📡 AI provider chain: ${health.providers_chain.join(" → ") || "(žádný!)"}`);
-    if (!health.lovable_api_key) {
-      console.log(`   💡 TIP: pro vyšší odolnost přidej LOVABLE_API_KEY do Supabase secrets`);
-    }
     console.log("");
   }
 

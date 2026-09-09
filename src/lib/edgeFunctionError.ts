@@ -18,7 +18,7 @@ type EdgeError = FunctionsHttpError | FunctionsRelayError | FunctionsFetchError 
 interface FriendlyOptions {
   /** Název funkce — pro deploy command v hlášce */
   functionName: string;
-  /** Volitelně přečte error.context.json() pro detail (např. LOVABLE_API_KEY missing) */
+  /** Volitelně přečte error.context.json() pro detail (např. GROQ_API_KEY missing) */
   bodyJson?: Record<string, unknown> | null;
 }
 

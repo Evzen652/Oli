@@ -102,7 +102,7 @@ export function AssetPicker({ skillId, onSelect, trigger }: Props) {
       }
     } catch (e: any) {
       toast({
-        description: e?.message ?? "Generování selhalo. Zkontrolujte LOVABLE_API_KEY nebo OPENAI_API_KEY v Supabase secrets.",
+        description: e?.message ?? "Generování selhalo. Zkontrolujte OPENAI_API_KEY v Supabase secrets.",
         variant: "destructive",
       });
     } finally {

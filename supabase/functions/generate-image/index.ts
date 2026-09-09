@@ -2,8 +2,9 @@
 //
 // Provider routing:
 //   1) GROQ — nemá image generation, skip
-//   2) LOVABLE_API_KEY — Lovable Gateway (DALL-E 3 / OpenAI image)
-//   3) OPENAI_API_KEY — fallback přímý OpenAI
+//   2) OPENAI_API_KEY — přímý OpenAI (DALL-E 3)
+//
+// Lovable Gateway odstraněn 2026-09-09 — nepoužívá se nikde v projektu.
 //
 // Vstup:
 //   { prompt: string, skill_id?: string, tags?: string[], size?: "1024x1024" }
@@ -76,40 +77,15 @@ serve(async (req) => {
     }
 
     // ── Provider routing ─────────────────────────────────────────────
-    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+    // Lovable Gateway odstraněn 2026-09-09 (rozhodnutí uživatele: nepoužívat
+    // nikde). Zbývá přímý OpenAI — vyžaduje `OPENAI_API_KEY`, který v projektu
+    // zatím nastavený NENÍ, takže funkce bez něj vrátí 500 s jasnou hláškou.
     const openaiKey = Deno.env.get("OPENAI_API_KEY");
 
     let imageUrl: string | null = null;
     let providerUsed = "";
 
-    if (lovableKey) {
-      // Lovable Gateway proxy na OpenAI image
-      const r = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${lovableKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "openai/dall-e-3",
-          prompt,
-          n: 1,
-          size,
-          response_format: "url",
-        }),
-      });
-      if (r.ok) {
-        const data = await r.json();
-        imageUrl = data.data?.[0]?.url ?? null;
-        providerUsed = "lovable_dalle3";
-      } else {
-        const errText = await r.text().catch(() => "");
-        console.warn(`[generate-image] Lovable error ${r.status}: ${errText}`);
-      }
-    }
-
-    if (!imageUrl && openaiKey) {
-      // Fallback: přímý OpenAI
+    if (openaiKey) {
       const r = await fetch("https://api.openai.com/v1/images/generations", {
         method: "POST",
         headers: {
@@ -141,7 +117,7 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({
           error:
-            "Žádný provider pro generování obrázků není nakonfigurován. Nastavte LOVABLE_API_KEY (preferováno) nebo OPENAI_API_KEY v Supabase Edge Functions Secrets.",
+            "Žádný provider pro generování obrázků není nakonfigurován. Nastavte OPENAI_API_KEY v Supabase Edge Functions Secrets.",
         }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );

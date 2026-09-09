@@ -171,7 +171,7 @@ That's all!`;
     expect(r.suggestions).toEqual(["Tip 1", "Tip 2"]);
   });
 
-  it("Lovable Gateway truncated tool_call arguments → recovery", () => {
+  it("useknuté tool_call arguments od poskytovatele → recovery", () => {
     // Pretend AI vrátí trailing comma + extra whitespace
     const truncated = '{"results": [{"id": "1", "ok": true,}],}';
     const r = extractJsonFromResponse(truncated) as { results: Array<{ id: string; ok: boolean }> };
