@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { LegalLayout, LegalSection, Doplnit } from "@/components/LegalLayout";
-import { PROVOZOVATEL, LHUTA_SMAZANI, chybi } from "@/content/legal";
+import { PROVOZOVATEL, LHUTA_SMAZANI_2P, chybi } from "@/content/legal";
 
 /** Vypíše hodnotu, nebo viditelný zástupný text, když ji provozovatel nedoplnil. */
 function Udaj({ hodnota, co }: { hodnota: string | null; co: string }) {
@@ -125,7 +125,7 @@ export default function Terms() {
         <p>
           Používání můžete kdykoli ukončit. Účet smažete přímo v aplikaci — jako rodič
           dole v přehledu. Když se nemůžete přihlásit, napište nám na kontaktní e-mail
-          výš a vyřídíme to do {LHUTA_SMAZANI}. Postup popisuje stránka{" "}
+          výš a vyřídíme to do {LHUTA_SMAZANI_2P}. Postup popisuje stránka{" "}
           <Link to="/smazani-uctu" className="font-medium text-primary hover:text-primary-hover hover:underline">
             jak smazat účet
           </Link>

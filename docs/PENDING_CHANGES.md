@@ -7,6 +7,49 @@
 
 ---
 
+## ✅ Aplikace je nasazená na produkci (2026-09-10)
+
+`oli-edu.com` servírovalo build ze 4. září. Dnes nasazen aktuální —
+ověřeno tím, že `/soukromi`, `/podminky` a `/smazani-uctu` jsou živé
+(4. září ještě neexistovaly). Nasazeny i obě migrace, secret
+`PAIRING_HASH_SALT` a čtyři edge funkce; sonda vrací 6/6 × 200.
+
+### ⛔ Vercel nedeployuje na push
+
+Produkční větev je přepnutá na `main`, ale commit deployment **nespustí** —
+pět minut po pushi žádný deployment nevznikl. Zatím se nasazuje ručně:
+
+```bash
+npx vercel --prod
+```
+
+Napojit v Settings → Git. Do té doby platí: **push ≠ nasazeno.** Kdo se na
+to spolehne, bude ladit produkci, která nemá jeho kód.
+
+### ⛔ Oba AI klíče jsou nefunkční
+
+`GROQ_API_KEY` se ověří, ale nemá přístup k modelu (`404 model_not_found`
+u dvou různých), `GEMINI_API_KEY` vrací „Please pass a valid API key".
+Aplikace degraduje bezpečně — slovní hodnocení se prostě nezobrazí — takže
+to spuštění neblokuje, ale funkce chybí.
+
+---
+
+## ✅ Lhůty stály v prvním pádě za předložkou (2026-09-10)
+
+Našlo se to až čtením živých stránek: „vyřídíme to do **třicet dnů**",
+„mažeme po **dvanáct měsíců**". `LHUTA_SMAZANI` a `LHUTA_ANON` byly
+nominativy, jenže **všech pět** použití v kódu stojí za předložkou — jiný
+tvar tam nikdy nepatřil.
+
+Konstanty se jmenují `LHUTA_SMAZANI_2P` a `LHUTA_ANON_6P` a nesou skloněný
+tvar. Pád je v názvu schválně: dokud se jmenovaly bez něj, vypadalo dosazení
+do `do {…}` naprosto v pořádku. Typecheck to chytit nemohl, string je string.
+
+Kdo přidá použití v jiném pádě, **přidá druhou konstantu** — tuhle neohýbá.
+
+---
+
 ## ✅ Úklid `slate-*` a natvrdo psaného pozadí (2026-09-06)
 
 `bg-[#fdf8f2]` → `bg-background`; `slate-*` → tokeny v `ChildHomePage`,
@@ -250,7 +293,15 @@ což je třetí cílová platforma ze zadání.
 
 ---
 
-## 🔴 ČEKÁ NA EVŽENA: nasadit `delete-account` (2026-09-06)
+## ✅ VYŘÍZENO 2026-09-10: `delete-account` je nasazená (zadáno 2026-09-06)
+
+Nasazeno spolu s `pair-child`, `session-evaluation` a `weekly-report`.
+Ověřeno **skutečným voláním**, ne výpisem z nasazení: `delete-account` vrací
+400 bez potvrzovacího slova, `pair-child` 404 na neplatný kód — tedy obě se
+opravdu spustily. Migrace se přitom **nedaly protlačit přes `db push`**,
+spouštěly se ručně v SQL editoru; kdo bude nasazovat příště, ať s tím počítá.
+
+Text níž je původní zadání, ponechané kvůli kontextu.
 
 ```bash
 supabase functions deploy delete-account
@@ -296,14 +347,23 @@ a čitelné. Kdyby kaskády existovaly, mazání je jen idempotentní navíc.
 
 ### ⏭️ Otevřené
 
-- **Nasadit** (viz výš). Bez toho je tlačítko nefunkční, byť poctivé.
-- **Ověřit naostro po deployi** — funkci jsem nemohl spustit ani jednou.
-  Testovací účet, smazat, zkontrolovat, že v žádné z 13 tabulek nezbyl řádek.
+- ~~**Nasadit**~~ — ✅ hotovo 10. 9. 2026, viz výš.
+- **Ověřit naostro po deployi** — ⏭️ pořád otevřené. Že funkce odmítne
+  volání bez potvrzení, je ověřené; že po skutečném smazání nezbyde řádek
+  v žádné z 13 tabulek, ověřené **není**. Chce to testovací účet.
 - **Dialog neprošel živě** — vyžaduje přihlášení rodiče, heslo zadávat nesmím.
 
 ---
 
-## 🟠 ČEKÁ NA EVŽENA: čtyři údaje v právních stránkách (2026-09-06)
+## ✅ VYŘÍZENO 2026-09-09: údaje v právních stránkách (zadáno 2026-09-06)
+
+Doplněno: **Evžen Weigl**, bez IČO (nepodniká), **Olomouc, Česká republika**,
+**evzen.weigl@gmail.com**. Adresa je záměrně jen obec — zásady jsou veřejná
+indexovaná stránka a provozovatel je fyzická osoba, takže plná domácí adresa by
+byla trvale dohledatelná. Pro uplatnění práv stačí e-mail; úplnou adresu sdělí
+na vyžádání, což je ve stránce napsané.
+
+Původní zadání kvůli kontextu:
 
 `src/content/legal.ts` — **název provozovatele, IČO, adresa, kontaktní e-mail**.
 Identita správce údajů a kontakt pro uplatnění práv jsou právně závazné údaje;

@@ -48,11 +48,19 @@ export const UCINNE_OD = "6. 9. 2026";
 /**
  * Jak dlouho držíme data po zrušení účtu, než je smažeme natvrdo.
  * Krátká lhůta je pojistka proti omylu („smazal jsem to omylem"), ne archiv.
+ *
+ * ⚠️ Tvar je **2. pád**, protože jediné místo, kde se lhůta vyskytuje, je
+ * vazba „do …". Do 10. 9. 2026 tu stál nominativ a na produkci se četlo
+ * „vyřídíme to do třicet dnů". Když přibude použití v jiném pádě, přidej
+ * druhou konstantu — neohýbej tuhle.
  */
-export const LHUTA_SMAZANI = "třicet dnů";
+export const LHUTA_SMAZANI_2P = "třiceti dnů";
 
-/** Jak dlouho žije serverová kopie anonymního pokroku bez další aktivity. */
-export const LHUTA_ANON = "dvanáct měsíců";
+/**
+ * Jak dlouho žije serverová kopie anonymního pokroku bez další aktivity.
+ * Tvar je **6. pád** — používá se výhradně ve vazbě „po … bez aktivity".
+ */
+export const LHUTA_ANON_6P = "dvanácti měsících";
 
 /** Je hodnota nevyplněná? */
 export function chybi(v: string | null): boolean {

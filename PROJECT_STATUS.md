@@ -144,6 +144,51 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-09/10 (35) — appka je poprvé nasazená a ověřená na produkci:
+
+**Nasazeno a ověřeno skutečným voláním, ne výpisem z nasazení:**
+
+- ✅ **Dvě migrace** — oprava registrace rodiče (dřív 500) a tabulka
+  `pairing_attempts`. Spuštěné ručně v SQL editoru, **ne přes `db push`** —
+  ta cesta nefungovala, viz past níž.
+- ✅ **Secret `PAIRING_HASH_SALT`** nastaven.
+- ✅ **Čtyři edge funkce** nasazeny: `pair-child`, `session-evaluation`,
+  `weekly-report`, `delete-account`. Sonda 6/6 vrací 200. `pair-child`
+  (404 na neplatný kód) a `delete-account` (400 bez potvrzení) se tím
+  poprvé prokazatelně **spustily**, ne jen nahrály.
+- ✅ **Web na produkci** — `oli-edu.com` běžel od 4. 9., dnes nasazen
+  aktuální build přes `vercel --prod`. Ověřeno, že `/soukromi`,
+  `/podminky` i `/smazani-uctu` jsou živé (4. 9. neexistovaly).
+- ✅ **Lovable odstraněn z celého repa**, `generate-image` přepnut na Gemini.
+  Hlídá to test — nesmí se vrátit.
+- ✅ **Údaje provozovatele doplněny** (jen obec, ne ulice: zásady jsou
+  veřejná indexovaná stránka a provozovatel je fyzická osoba).
+
+**Nalezeno až na živých stránkách:**
+
+- 🐞 **Lhůty v prvním pádě za předložkou.** `LHUTA_SMAZANI`/`LHUTA_ANON`
+  byly nominativy, ale **všech pět** použití stojí za předložkou — na
+  produkci se četlo „vyřídíme to do **třicet dnů**" a „mažeme po
+  **dvanáct měsíců**". Konstanty přejmenovány na `LHUTA_SMAZANI_2P` /
+  `LHUTA_ANON_6P` a skloněny; název teď nese pád, takže se stejná chyba
+  nedá napsat omylem. Typecheck by ji nikdy nechytil — string je string.
+
+**Otevřené:**
+
+- ⛔ **Vercel nedeployuje na push do `main`.** Produkční větev byla
+  přepnutá, ale commit deployment nespustí — nasazuje se ručně
+  (`vercel --prod`). Napojit v Settings → Git.
+- ⛔ **Oba AI klíče jsou nefunkční.** `GROQ_API_KEY` se ověří, ale nemá
+  přístup k modelu (`404 model_not_found` u dvou různých); `GEMINI_API_KEY`
+  vrací „Please pass a valid API key". Aplikace degraduje bezpečně, takže
+  to spuštění neblokuje — slovní hodnocení se prostě nezobrazí.
+- ⏭️ **Proklikání musí udělat Evžen** — registrace rodiče → spárování
+  dítěte → smazání účtu. Zakládání účtů a zadávání hesel dělat nesmím.
+- ⏭️ **Zbytek runbooku:** potvrdit `appId`, rozhodnout Apple Kids Category
+  vs. smíšené publikum, podpisový klíč pro Android, ověření domény pro
+  App Links / Universal Links, formuláře o datech v obou obchodech.
+- ⏭️ **Tvrzení „1. stupeň ZŠ"** neodpovídá otevřeným ročníkům (2, 3, 4).
+
 ### Session 2026-09-07 (34) — předání na druhý PC + úklid zastaralých map:
 
 - ✅ **`docs/SESSION_HANDOFF.md` přepsán.** Byl z 1. 9. a popisoval obsahovou
@@ -362,14 +407,20 @@ src/
   routuje mezi Groq, Google a Lovable podle nastaveného klíče, takže data
   o učení mohou jít i ke Groqu) a `wa.me` (pozvánka rodiči přes WhatsApp).
   Bez testu bych zveřejnil nepravdivý dokument.
+  → **Lovable z routeru odstraněn 9. 9. 2026**, dnes zbývá Groq a Google;
+  tentýž test to hlídá, aby se nevrátil.
 - ⚠️ **Čtyři údaje musí doplnit Evžen** — `src/content/legal.ts`: název
   provozovatele, IČO, adresa, kontaktní e-mail. Identitu správce údajů si
   vymyslet nesmím. Dokud chybí, stránky je vykreslí jako žlutý zástupný text
   a ve vývoji navíc hlásí banner, aby nešly nasadit nedopatřením.
+  → **Doplněno 9. 9. 2026** (Evžen Weigl, bez IČO, Olomouc, e-mail).
 - ⚠️ **Není to právní posudek.** U služby mířené na děti nech projít právníkem.
+  → **Stále platí.**
 - ⏭️ **Mazání účtu v aplikaci pořád chybí** (blocker B3). Zásady proto popisují
   výmaz jako žádost e-mailem — což je pravda dnes. Až tlačítko vznikne, přepiš
   část „Vaše práva"; do té doby by zmínka o něm byla nepravdivá.
+  → **Hotovo 9. 9. 2026** — tlačítko i edge funkce `delete-account` existují,
+  část „Vaše práva" přepsaná, stránka `/smazani-uctu` popisuje obě cesty.
 - **Ověřeno:** typecheck 0, UI audit bez nového nálezu, **119/119 souborů
   a 4703 testů**, build prošel. `/soukromi`, `/podminky` i proklik z patičky
   projity živě v odhlášeném stavu (tedy tak, jak je uvidí recenzent obchodu).

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { LegalLayout, LegalSection, Doplnit } from "@/components/LegalLayout";
-import { PROVOZOVATEL, LHUTA_SMAZANI, LHUTA_ANON, chybi } from "@/content/legal";
+import { PROVOZOVATEL, LHUTA_SMAZANI_2P, LHUTA_ANON_6P, chybi } from "@/content/legal";
 
 /** Vypíše hodnotu, nebo viditelný zástupný text, když ji provozovatel nedoplnil. */
 function Udaj({ hodnota, co }: { hodnota: string | null; co: string }) {
@@ -39,7 +39,7 @@ export default function DeleteAccountInfo() {
           <strong className="text-foreground"><Udaj hodnota={PROVOZOVATEL.email} co="kontaktní e-mail" /></strong>.
           Stačí věta, že chcete účet smazat.
         </p>
-        <p>Vyřídíme to do {LHUTA_SMAZANI}.</p>
+        <p>Vyřídíme to do {LHUTA_SMAZANI_2P}.</p>
       </LegalSection>
 
       <LegalSection id="co-se-smaze" title="Co se smaže">
@@ -59,7 +59,7 @@ export default function DeleteAccountInfo() {
         <p>
           Používáte-li Oli bez účtu, žádné vaše osobní údaje nemáme — pokrok visí
           na náhodném identifikátoru v prohlížeči. Zmizí, když v prohlížeči smažete
-          data webu. Serverovou kopii mažeme po {LHUTA_ANON} bez aktivity.
+          data webu. Serverovou kopii mažeme po {LHUTA_ANON_6P} bez aktivity.
         </p>
       </LegalSection>
 

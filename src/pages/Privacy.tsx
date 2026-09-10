@@ -3,8 +3,8 @@ import { LegalLayout, LegalSection, Doplnit } from "@/components/LegalLayout";
 import {
   PROVOZOVATEL,
   PRIJEMCI,
-  LHUTA_SMAZANI,
-  LHUTA_ANON,
+  LHUTA_SMAZANI_2P,
+  LHUTA_ANON_6P,
   chybi,
 } from "@/content/legal";
 
@@ -68,7 +68,7 @@ export default function Privacy() {
         <p>
           Když v prohlížeči smažete data webu, vazba na tenhle pokrok zanikne a
           nedokážeme ho k nikomu přiřadit. Serverovou kopii mažeme po{" "}
-          {LHUTA_ANON} bez aktivity.
+          {LHUTA_ANON_6P} bez aktivity.
         </p>
       </LegalSection>
 
@@ -158,9 +158,9 @@ export default function Privacy() {
       <LegalSection id="jak-dlouho" title="Jak dlouho data držíme">
         <p>
           Údaje účtu a výsledky dítěte máme po dobu, kdy účet trvá. Po jeho zrušení
-          je mažeme do {LHUTA_SMAZANI} — ta lhůta je pojistka proti omylu, ne archiv.
+          je mažeme do {LHUTA_SMAZANI_2P} — ta lhůta je pojistka proti omylu, ne archiv.
         </p>
-        <p>Pokrok z používání bez registrace mažeme po {LHUTA_ANON} bez aktivity.</p>
+        <p>Pokrok z používání bez registrace mažeme po {LHUTA_ANON_6P} bez aktivity.</p>
       </LegalSection>
 
       <LegalSection id="prava" title="Vaše práva">
@@ -174,7 +174,7 @@ export default function Privacy() {
           Účet i všechna data dětí smažete{" "}
           <strong className="text-foreground">přímo v aplikaci</strong> — jako rodič dole
           v přehledu. Když se nemůžete přihlásit, napište nám a vyřídíme to do{" "}
-          {LHUTA_SMAZANI}. Obě cesty popisuje stránka{" "}
+          {LHUTA_SMAZANI_2P}. Obě cesty popisuje stránka{" "}
           <Link to="/smazani-uctu" className="font-medium text-primary hover:text-primary-hover hover:underline">
             jak smazat účet
           </Link>
