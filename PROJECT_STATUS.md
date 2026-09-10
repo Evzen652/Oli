@@ -175,9 +175,15 @@ src/
 
 **Otevřené:**
 
-- ⛔ **Vercel nedeployuje na push do `main`.** Produkční větev byla
-  přepnutá, ale commit deployment nespustí — nasazuje se ručně
-  (`vercel --prod`). Napojit v Settings → Git.
+- ⛔ **Vercel nedeployuje na push do `main`** — příčina nalezena, čeká na
+  Evžena. Projekt měl `link.sourceless: true`: vazbu, která existuje jen
+  jako metadata, takže `git connect` hlásil „already connected", ale
+  z pushů se nestavělo. Pod tím leží skutečná překážka — Vercel App má na
+  GitHubu **omezený přístup** a repozitář `Oli` mezi povolenými není.
+  Oprava: přidat repozitář na
+  <https://github.com/settings/installations/123167320>, pak
+  `npx vercel git connect …`. Detail v `docs/PENDING_CHANGES.md`.
+  Do té doby se nasazuje ručně přes `npx vercel --prod`.
 - ⛔ **Oba AI klíče jsou nefunkční.** `GROQ_API_KEY` se ověří, ale nemá
   přístup k modelu (`404 model_not_found` u dvou různých); `GEMINI_API_KEY`
   vrací „Please pass a valid API key". Aplikace degraduje bezpečně, takže

@@ -14,17 +14,41 @@ ověřeno tím, že `/soukromi`, `/podminky` a `/smazani-uctu` jsou živé
 (4. září ještě neexistovaly). Nasazeny i obě migrace, secret
 `PAIRING_HASH_SALT` a čtyři edge funkce; sonda vrací 6/6 × 200.
 
-### ⛔ Vercel nedeployuje na push
+### ⛔ Vercel nedeployuje na push — příčina nalezena 2026-09-10
 
-Produkční větev je přepnutá na `main`, ale commit deployment **nespustí** —
-pět minut po pushi žádný deployment nevznikl. Zatím se nasazuje ručně:
+Zatím se nasazuje ručně:
 
 ```bash
 npx vercel --prod
 ```
 
-Napojit v Settings → Git. Do té doby platí: **push ≠ nasazeno.** Kdo se na
-to spolehne, bude ladit produkci, která nemá jeho kód.
+Do napojení platí: **push ≠ nasazeno.** Kdo se na to spolehne, bude ladit
+produkci, která nemá jeho kód.
+
+**Proč to nefungovalo** (a proč to vypadalo, že je vše v pořádku): projekt
+měl v nastavení `link.sourceless: true`. To je vazba na repozitář, která
+existuje jen jako **metadata** — dashboard i `vercel git connect` hlásí
+„already connected", ale z pushů se nestaví. Vzniká, když projekt založí
+CLI deploy, ne import z Gitu. Produkční větev byla přitom správně `main`,
+takže hledání chyby tam bylo slepá ulička.
+
+Pod tím leží skutečná překážka: Vercel App má na GitHub účtu `Evzen652`
+**omezený přístup** (`isAccessRestricted: true`) a `Oli` mezi povolenými
+repozitáři není — `search-repo` na „Oli" nevrátí nic. Proto po odpojení
+sourceless vazby `vercel git connect` selže: Vercel ten repozitář nevidí.
+
+**Postup opravy** (první krok musí udělat Evžen, jde o udělení přístupu):
+
+1. <https://github.com/settings/installations/123167320> → **Configure** →
+   *Repository access* → přidat `Evzen652/Oli` → **Save**.
+2. ```bash
+   npx vercel git connect https://github.com/Evzen652/Oli.git --yes
+   ```
+3. Ověřit pushem, že vznikne deployment.
+
+Diagnostika, kdyby se to vrátilo — `link.sourceless` a `isAccessRestricted`
+se čtou z API (token má CLI v `%APPDATA%\com.vercel.cli\Data\auth.json`);
+v dashboardu ani jedno vidět není, což je důvod, proč se to hledalo dlouho.
 
 ### ⛔ Oba AI klíče jsou nefunkční
 
