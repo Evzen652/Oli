@@ -14,16 +14,13 @@ ověřeno tím, že `/soukromi`, `/podminky` a `/smazani-uctu` jsou živé
 (4. září ještě neexistovaly). Nasazeny i obě migrace, secret
 `PAIRING_HASH_SALT` a čtyři edge funkce; sonda vrací 6/6 × 200.
 
-### ⛔ Vercel nedeployuje na push — příčina nalezena 2026-09-10
+### ✅ Vercel deployuje z pushů — opraveno 2026-09-10
 
-Zatím se nasazuje ručně:
+Push do `main` zase vytvoří nasazení sám. Ruční `npx vercel --prod` funguje
+dál a hodí se, když je potřeba nasadit něco, co ještě není v `main`.
 
-```bash
-npx vercel --prod
-```
-
-Do napojení platí: **push ≠ nasazeno.** Kdo se na to spolehne, bude ladit
-produkci, která nemá jeho kód.
+Poslední nasazení z Gitu předtím bylo **19. července 2026**; sedm týdnů se
+nasazovalo jen z CLI, aniž by to někdo pojmenoval.
 
 **Proč to nefungovalo** (a proč to vypadalo, že je vše v pořádku): projekt
 měl v nastavení `link.sourceless: true`. To je vazba na repozitář, která
@@ -37,14 +34,18 @@ Pod tím leží skutečná překážka: Vercel App má na GitHub účtu `Evzen65
 repozitáři není — `search-repo` na „Oli" nevrátí nic. Proto po odpojení
 sourceless vazby `vercel git connect` selže: Vercel ten repozitář nevidí.
 
-**Postup opravy** (první krok musí udělat Evžen, jde o udělení přístupu):
+**Jak se to opravilo** (a co zopakovat, kdyby se to vrátilo):
 
 1. <https://github.com/settings/installations/123167320> → **Configure** →
-   *Repository access* → přidat `Evzen652/Oli` → **Save**.
+   *Repository access* → přidat `Evzen652/Oli` → **Save**. Tenhle krok
+   Claude udělat nemůže, je to udělení přístupu.
 2. ```bash
+   npx vercel git disconnect --yes
    npx vercel git connect https://github.com/Evzen652/Oli.git --yes
    ```
-3. Ověřit pushem, že vznikne deployment.
+   Odpojení je nutné: dokud sourceless vazba existuje, `connect` jen řekne
+   „already connected" a nic neopraví.
+3. Ověřit pushem, že vznikne nasazení se `source: git`, ne `cli`.
 
 Diagnostika, kdyby se to vrátilo — `link.sourceless` a `isAccessRestricted`
 se čtou z API (token má CLI v `%APPDATA%\com.vercel.cli\Data\auth.json`);
