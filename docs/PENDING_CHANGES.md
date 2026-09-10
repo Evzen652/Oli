@@ -7,6 +7,18 @@
 
 ---
 
+## ✅ Shrnutí sezení — akvarel místo AI značek (2026-09-10/11)
+
+Jiskřičky (`Sparkles`) pryč z tlačítka „Jiné téma" i z obou hodnoticích
+panelů — žádný model se tam nevolá. Hlavička (pohár / přesýpací hodiny) je
+akvarel, kolem sovičky při skládání hodnocení zase obíhají kniha, tužka
+a hvězda. Detail: `PROJECT_STATUS.md` §6, session 36.
+
+### 🟠 Otevřené
+- Pohár se zobrazí i při 1/6 (i 0/6) — rozhodnutí, jestli hlavičku odstupňovat.
+
+---
+
 ## ✅ Aplikace je nasazená na produkci (2026-09-10)
 
 `oli-edu.com` servírovalo build ze 4. září. Dnes nasazen aktuální —

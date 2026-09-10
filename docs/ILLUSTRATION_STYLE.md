@@ -1,4 +1,4 @@
-# Ilustrace — rukopis a technická pravidla
+﻿# Ilustrace — rukopis a technická pravidla
 
 Závazné pro každou novou kresbu v aplikaci. Vzniklo z oprav 19 akvarelových
 ilustrací na landing page (2026-08-31) — každý bod dole už jednou něco rozbil.
@@ -209,3 +209,168 @@ když nový vyjde jinak, něco se v promptu rozjelo.
 Každý požadavek v promptech odpovídá jednomu bodu z §2 — nejsou to ozdoby.
 Zvlášť „margin of empty paper on all four sides" a „no white clothing":
 bez nich se pozadí nedá vyříznout a v kresbě vzniknou bílé díry.
+
+---
+
+## 6. Hlavička shrnutí sezení — HOTOVO (2026-09-10)
+
+`src/assets/summary-done.png` + `summary-time-expired.png`, 256 × 256, ~90 kB.
+Nahradily lucide `Trophy` a `Hourglass` v `SessionEndSummary.tsx`.
+
+**Velikost:** zobrazuje se v 80 px, takže 256 px dá 3,2× rezervu. 512 px vyšlo
+na 340 kB za ikonu — u buildu, který už nese 18,5 MB obrázků, to nemá co dělat.
+
+**Reference stylu do promptu:** `src/assets/landing-male-kroky.png` — jediná
+z devatenácti, která je předmětové zátiší, ne postava.
+
+### Prompty (použité)
+
+> Watercolour and ink children's picture-book illustration in exactly the style
+> of the attached reference: hand-painted on rough cold-pressed paper, fine
+> uneven ink contour line, transparent pastel washes wet-into-wet, visible paper
+> grain, muted pastel palette.
+>
+> A single classic two-handled trophy cup standing on a small plinth, seen
+> straight from the front, centred. The cup bowl is warm muted ochre and mustard
+> brass, softly shaded, sitting on a warm brown wooden base. Two curved handles,
+> one on each side. A soft grey-blue watercolour shadow puddle under the plinth.
+>
+> Muted and hand-painted, NOT shiny, NOT metallic, NOT glossy, no lens flare,
+> no sparkles, no stars, no glow, no rays, no confetti. All highlights painted
+> as pale ochre or cream washes — never white and never pale grey. No white or
+> near-white areas anywhere inside the drawing.
+>
+> One single object in the frame, nothing beside it. Pure flat white background
+> with a clear wide margin of empty white paper on all four sides. No engraved
+> plate, no text, no letters, no numbers, no watermark, no border, no frame,
+> no vignette, no drop shadow beyond the soft watercolour puddle. Square format.
+
+Druhý stav je tentýž prompt s jiným předmětem:
+
+> A single hourglass standing upright on a small wooden base, seen straight from
+> the front, centred. Wooden frame in warm ochre, sand collected in the lower
+> bulb in muted mustard yellow. The glass bulbs painted as pale sage and dusty
+> teal washes, never white and never empty paper — no unpainted area inside the
+> glass. A soft grey-blue watercolour shadow puddle under the base.
+
+Tři klauzule, které nejsou ozdoba a odpovídají bodům z §2:
+
+- **žádné jiskřičky, hvězdičky ani záře** — z téhle obrazovky se zrovna
+  vyhazovaly `Sparkles`, protože znamenají „tohle psala AI";
+- **odlesky v okrové, ne bílé** — bílý odlesk uprostřed kresby není díra,
+  kterou by výplň od okrajů vzala, ale krycí flek (§2 bod 3);
+- **žádná rytá cedulka** — na podstavec trofeje model skoro vždy dopíše text.
+
+### Reprodukce
+
+```powershell
+# 1) ořez na obsah + čtverec
+scripts\crop-square.ps1 -In <gemini.jpg> -Out done256.png -Size 256
+
+# 2) sken uzavřených kapes — ČÍSLA ID PLATÍ JEN PRO TEN SOUBOR
+scripts\fix-landing-alpha.ps1 -In done256.png -ScanOnly
+
+# 3) vyříznutí pozadí + kapes, náhled na barvě banneru
+scripts\fix-landing-alpha.ps1 -In done256.png -Out src\assets\summary-done.png `
+  -ClearIds 9,8 -Preview nahled.png -PreviewBg "#FFF1E6"
+
+# 4) kontrola
+scripts\check-white-pockets.ps1 -Files src\assets\summary-done.png
+```
+
+Naměřeno: pohár 0,1 %, hodiny 0,1 % krycí bílé.
+
+**Které kapsy se vyřezávaly.** U poháru dvě — mezery mezi uchy a tělem
+(`id=9`, `id=8`), tedy přesně případ „ucho hrnku" z §2 bodu 5. U hodin taky
+dvě — svislé mezery mezi dřevěnými sloupky a sklem (`id=0`, `id=1`). Bledé
+plochy **uvnitř** skla jsou kresba, ne pozadí; nechat je tam byl záměr.
+
+### ⚠️ `mix-blend-multiply` tady nefunguje — vyzkoušeno a zavrženo
+
+Napoprvé se obrázek složil přes `mix-blend-multiply` na banner `#FFF1E6`
+s úvahou, že násobení bílé tím pozadím dá zpátky přesně tu barvu, takže se
+pozadí nemusí vyřezávat vůbec. **Na obrazovce z toho byl bílý čtverec.**
+
+Obalový `div` v hlavičce má `relative z-10`, čímž zakládá vlastní stacking
+context — element se pak násobí s prázdným pozadím toho kontextu, ne s bannerem.
+U sovičky o kus níž (`bg-card`, bílá) tahle chyba nikdy nepraskla, protože bílá
+na bílé není vidět. **Multiply tedy není doložený vzor téhle aplikace, jen
+doposud neviditelná chyba** — nové kresby vyřezávej do alfy.
+
+---
+
+## 7. Předměty kolem sovičky — HOTOVO (2026-09-10)
+
+`src/assets/drift-book.png`, `drift-star.png`, `drift-pencil.png`, 128 × 128,
+21–31 kB. Vznášejí se kolem sovičky v `SessionEndSummary.tsx`, když skládá
+hodnocení.
+
+**Co tu bylo předtím.** Do `95edaf6` (3. 9.) kolem sovičky obíhala po kruhu tři
+systémová emoji 📖 ✏️ ⭐ (`animate-orbit`, `-delayed-1`, `-delayed-2`). Emoji šla
+pryč se všemi ostatními — každá platforma je kreslí jinak. CSS pro `orbit` se
+tehdy smazalo taky, takže se dráha psala znovu.
+
+**Obíhání, ne drift (2026-09-11).** Nejdřív se místo kruhu zkusil pomalý
+drift (posun o pár pixelů, 13/16/19 s na dráhu) s úvahou, že kroužení na
+3 vteřiny poutá pozornost. V praxi to nefungovalo: panel je na obrazovce jen
+3 s, za tu dobu předmět urazil čtvrtinu dráhy a vypadal jako statický obrázek.
+Uživatel chtěl kroužení zpátky. `oli-orbit` v `index.css`: poloměr 68 px,
+4 s na otáčku, rozestup 120°, předmět se otáčí zpátky, aby držel orientaci.
+Pod `prefers-reduced-motion: reduce` se dráha **pozastaví**, nezruší — jinak
+by se všechny tři slily do středu přes sovičku.
+
+Soubory se dál jmenují `drift-*.png`; název je historický.
+
+### Generování
+
+Jeden list, všechny tři objekty najednou — po samostatných bězích se rozejde
+sytost i tloušťka kontury a vedle sebe je to vidět (viz §5). Prompt je stejný
+jako v §6 s tímto tělem:
+
+> Three separate small objects in a single row on one sheet, evenly spaced, NOT
+> touching, NOT overlapping, with a wide band of empty white paper between them
+> and around all four edges.
+>
+> LEFT: an open book seen from a slight angle, cover in muted sage green, pages
+> in warm cream and pale ochre — never white.
+> CENTRE: a simple five-pointed star, painted in muted mustard yellow and warm ochre.
+> RIGHT: a wooden pencil lying diagonally, warm ochre wood, coral red painted
+> body, muted graphite tip.
+>
+> All three drawn at the same scale and the same visual weight, each fitting
+> inside an equally sized square. Simple bold shapes with very few interior
+> details — they will be displayed very small.
+>
+> Flat floating objects: no shadow, no shadow puddle, no ground, no surface,
+> nothing under them.
+
+⚠️ **„no shadow puddle" je tu naopak než v §6.** U poháru je šedomodrá kaluž
+povinná, protože stojí na podstavci. Tyhle se vznášejí, takže by je stín
+přilepil k neexistující podlaze.
+
+### Rozřezání listu
+
+```powershell
+# zmerit, jak velky je ktery predmet
+scripts\split-object-row.ps1 -In <list.jpg> -OutDir out -Names "book","star","pencil" `
+  -Threshold 225 -Measure
+
+# rozrezat natesno ke kazdemu predmetu
+scripts\split-object-row.ps1 -In <list.jpg> -OutDir out -Names "book","star","pencil" `
+  -Threshold 225 -Size 128 -Tight
+```
+
+**`-Threshold 225`, ne výchozích 232.** List z Gemini nemá bílé pozadí, ale
+krémový papír s viditelnou strukturou (~247,244,236). Na 232 se do bboxu
+započítala zrnitost papíru a hvězda vyšla jako 475 × 425 px místo 221 × 215 —
+tedy větší než kniha, což je nesmysl, který by se dál nesl do velikostí.
+
+**`-Tight` je tu nutnost, ne volba.** Bez něj dostanou všechny tři společnou
+stranu čtverce podle největšího z nich. Kniha pak vyplní 83 % dlaždice, tužka
+66 % a hvězda 44 %, takže se při stejné CSS třídě vykreslí každá jinak velká —
+napoprvé z toho byla hvězda o polovinu menší, než měla být. S `-Tight` řídí
+poměry výhradně CSS (`w-9` / `w-6` / `w-9`).
+
+**Bílá u knihy je v pořádku.** `check-white-pockets` hlásí 18,2 % krycí bílé
+s bboxem uvnitř knihy — to je levá stránka, tedy kresba. Panel má bílou kartu,
+takže není vidět; vyříznout ji by udělalo díru.

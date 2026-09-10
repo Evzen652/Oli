@@ -268,3 +268,34 @@ All colors MUST be HSL.
 .animate-dot-1 { animation: dots-blink 1.4s ease-in-out infinite; }
 .animate-dot-2 { animation: dots-blink 1.4s ease-in-out infinite; animation-delay: 0.2s; }
 .animate-dot-3 { animation: dots-blink 1.4s ease-in-out infinite; animation-delay: 0.4s; }
+
+/* Předměty obíhají sovičce kolem hlavy, když skládá hodnocení.
+   Do 2026-09-03 tu obíhala systémová emoji 📖 ✏️ ⭐; šla pryč, protože je
+   každá platforma kreslí jinak, a CSS se smazalo s nimi. 2026-09-10 se místo
+   kruhu zkusil pomalý drift (13–19 s na dráhu) — jenže panel je na obrazovce
+   jen 3 s, za tu dobu se předmět posunul o pár pixelů a působilo to jako
+   statický obrázek. Uživatel chtěl kroužení zpátky; 4 s na otáčku znamená,
+   že za 3 s čekání uběhnou tři čtvrtiny kruhu.
+
+   Druhý `rotate` otáčí předmět zpátky, aby tužka nemířila hrotem pokaždé
+   jinam — obíhá, ale neotáčí se kolem vlastní osy. Záporné delays je
+   rozestaví po 120°. */
+@keyframes oli-orbit {
+  0%   { transform: rotate(0deg) translateX(68px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(68px) rotate(-360deg); }
+}
+
+.animate-orbit-1 { animation: oli-orbit 4s linear infinite; }
+.animate-orbit-2 { animation: oli-orbit 4s linear infinite; animation-delay: -1.333s; }
+.animate-orbit-3 { animation: oli-orbit 4s linear infinite; animation-delay: -2.667s; }
+
+/* Dekorace, která se hýbe sama od sebe, patří mezi první věci k vypnutí.
+   U oběžné dráhy `paused`, ne `none`: bez animace by transform zmizel
+   a všechny tři předměty by se slily do středu přes sovičku. Takhle zůstanou
+   stát rozestavené po kruhu. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-orbit-1,
+  .animate-orbit-2,
+  .animate-orbit-3 { animation-play-state: paused; }
+  .animate-pulse-scale { animation: none; }
+}

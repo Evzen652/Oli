@@ -144,6 +144,36 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-10 (36) — shrnutí sezení: pryč s jiskřičkami, trofej ke změně:
+
+- ✅ **„Jiné téma" mělo jiskřičky** (`Sparkles`) — dnes napříč weby značka
+  „tohle vygenerovala AI". Tlačítko přitom vede na rozcestník témat, žádný
+  model se nevolá. Nahrazeno mřížkou (`LayoutGrid`).
+- ✅ **Oba hodnoticí panely měly taky jiskřičky.** U spodního to byl přímo
+  nepravdivý slib: `fallbackEval` je věta složená lokálně z procent. Oba nesou
+  sovičku (`category-info.png`, 40 px, `mix-blend-multiply`) — navazuje na stav
+  načítání o kus výš, kde ji dítě právě vidělo.
+- ✅ **Hlavička shrnutí je akvarel.** `Trophy` i `Hourglass` byly lucide čáry,
+  které vedle akvarelových ikon o kus níž působily jako cizí sada. Nahrazeny
+  `summary-done.png` a `summary-time-expired.png` (256 px, ~90 kB, pozadí
+  vyříznuté do alfy). Oba stavy najednou — kdyby dostal akvarel jen jeden,
+  byly by na jednom místě dvě různé sady. Prompty i postup reprodukce jsou
+  v [`docs/ILLUSTRATION_STYLE.md`](docs/ILLUSTRATION_STYLE.md) §6.
+- ✅ **Předměty kolem sovičky se vrátily.** Kniha, hvězda a tužka (`drift-*.png`,
+  128 px) obíhají sovičce kolem hlavy, když skládá hodnocení — jako do 3. 9.,
+  jen jako akvarel místo systémových emoji. Mezikrok s pomalým driftem
+  (10. 9.) se neosvědčil: panel je na obrazovce 3 s a drift za tu dobu
+  vypadal jako stojící obrázek. `oli-orbit`, 4 s na otáčku; pod
+  `prefers-reduced-motion` se pozastaví. Postup a pasti v `ILLUSTRATION_STYLE.md` §7.
+- 🟠 **Trofej se pořád zobrazí i při 1/6.** Vyměnila se jen kresba, ne
+  podmínka — vykresluje se stejně po šesti správných i po jedné. Gamifikaci
+  architektura zakazuje a je to slib, který se neplní; k rozhodnutí, jestli
+  hlavičku odstupňovat podle výsledku.
+- 📌 **`mix-blend-multiply` v hlavičce nefunguje** — obalový `div` má
+  `relative z-10`, tím zakládá stacking context a obrázek se násobí s prázdnem
+  místo s bannerem (na obrazovce bílý čtverec). U sovičky na bílé kartě ta
+  chyba nikdy nepraskla. Detail v `ILLUSTRATION_STYLE.md` §6.
+
 ### Session 2026-09-09/10 (35) — appka je poprvé nasazená a ověřená na produkci:
 
 **Nasazeno a ověřeno skutečným voláním, ne výpisem z nasazení:**
