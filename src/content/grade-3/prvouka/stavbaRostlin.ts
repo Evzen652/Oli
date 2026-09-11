@@ -404,8 +404,8 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "V jakém pořadí jdou za sebou děje v životě rostliny?",
-    correctAnswer: "Klíčení → růst → kvetení → opylení → vznik plodu se semeny",
-    options: ["Kvetení → klíčení → opylení → růst → plod", "Opylení → klíčení → plod → kvetení → růst", "Klíčení → růst → kvetení → opylení → vznik plodu se semeny", "Plod → semeno → kvetení → klíčení → růst"],
+    correctAnswer: "Klíčení, růst, kvetení, opylení, vznik plodu se semeny",
+    options: ["Kvetení, klíčení, opylení, růst, plod", "Opylení, klíčení, plod, kvetení, růst", "Klíčení, růst, kvetení, opylení, vznik plodu se semeny", "Plod, semeno, kvetení, klíčení, růst"],
     emoji: "🔄",
     hints: [
       "Začni tím, co dělá zaseté semínko, a skonči novými semeny.",

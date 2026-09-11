@@ -387,8 +387,8 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Které pořadí je seřazené od nejmenšího k největšímu?",
-    correctAnswer: "dům → ulice → obec",
-    options: ["obec → ulice → dům", "ulice → obec → dům", "dům → ulice → obec", "dům → obec → ulice"],
+    correctAnswer: "dům, ulice, obec",
+    options: ["obec, ulice, dům", "ulice, obec, dům", "dům, ulice, obec", "dům, obec, ulice"],
     emoji: "📏",
     hints: ["Začni od nejmenšího místa, kde bydlíš, a postupně jdi k větším celkům."],
     explanation: "Nejmenší je dům, pak ulice, na které dům stojí, a nakonec celá obec, do které ulice patří.",

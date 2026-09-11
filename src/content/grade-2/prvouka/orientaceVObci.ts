@@ -144,7 +144,7 @@ const POOL_L2: PracticeTask[] = [
     solutionSteps: ["Chleba i mléko dohromady koupíš v obchodě — pekárna prodává jen pečivo."],
   },
   {
-    question: "Kam půjdeš, když máš vysokou horečku a rodiče chtějí, aby tě vyšetřil lékař?",
+    question: "Kam půjdeš, když máš vysokou horečku a potřebuješ, aby tě někdo prohlédl?",
     correctAnswer: "Lékař",
     options: ["Nemocnice", "Lékař", "Lékárna", "Škola"],
     emoji: "👩‍⚕️",

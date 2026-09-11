@@ -264,7 +264,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kudy vede bezpečná cesta ze školy domů, pokud vede podél silnice?",
     correctAnswer: "Po chodníku",
-    options: ["Po chodníku", "Po silnici, protože je to kratší", "Po silnici, když nejedou auta", "Po chodníku i po silnici, jak se to hodí"],
+    options: ["Po chodníku", "Po silnici, protože je to kratší", "Po silnici, když nejedou auta", "Tam, kde je zrovna volněji"],
     emoji: "🏫",
     hints: [
       "I na krátkém úseku platí obecné pravidlo, kde má chodit chodec a kde jezdí auta.",

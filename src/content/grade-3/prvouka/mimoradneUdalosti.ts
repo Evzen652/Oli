@@ -379,9 +379,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Venku zazní kolísavý tón sirény. Jaké je správné pořadí toho, co uděláš?",
-    correctAnswer: "jdu do budovy → zavřu okna a dveře → zapnu rádio nebo televizi",
+    correctAnswer: "jdu do budovy, zavřu okna a dveře, zapnu rádio nebo televizi",
     options: [
-      "jdu do budovy → zavřu okna a dveře → zapnu rádio nebo televizi",
+      "jdu do budovy, zavřu okna a dveře, zapnu rádio nebo televizi",
       "zůstanu venku a natáčím, co se děje",
       "otevřu okna dokořán a vykláním se ven",
       "utíkám co nejdál od domu do polí",

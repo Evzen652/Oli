@@ -43,7 +43,7 @@ function bezZbytku(dMin: number, dMax: number, qMin: number, qMax: number, nMin:
     { value: q - 1, why: `Zkouška: ${q - 1} × ${d} = ${fmt((q - 1) * d)}, zbylo by ještě ${d}.` },
     { value: q + 10, why: "Odhad první číslice podílu je o jedna vyšší — zkus vynásobit." },
   ], [
-    `Kolikrát se ${d} vejde do ${prvniCast(N, d)}? Zkus to odhadnout: ${d} je asi ${Math.round(d / 10) * 10}.`,
+    `Kolikrát se ${d} vejde do ${prvniCast(N, d)}? Zkus si dělitel ${d} zaokrouhlit na desítky.`,
     `Dělíš postupně: vezmi tolik číslic, aby se do nich ${d} vešlo, napiš číslici podílu, vynásob, odečti a připiš další číslici. Na konci ověř: podíl × ${d} = ${fmt(N)}.`,
   ], [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
 }

@@ -286,7 +286,7 @@ const POOL_L3: PracticeTask[] = [
     ],
   },
   {
-    question: "Kuře je mládě slepice. Až kuře vyroste, stane se z něj dospělá...?",
+    question: "Kuře vyroste. Jaké dospělé zvíře z něj bude?",
     correctAnswer: "Slepice",
     options: ["Kachna", "Husa", "Koza", "Slepice"],
     emoji: "🐔",
@@ -296,7 +296,7 @@ const POOL_L3: PracticeTask[] = [
     ],
   },
   {
-    question: "Jehně je mládě ovce. Až jehně vyroste, stane se z něj dospělá...?",
+    question: "Jehně vyroste. Jaké dospělé zvíře z něj bude?",
     correctAnswer: "Ovce",
     options: ["Ovce", "Koza", "Kráva", "Prase"],
     emoji: "🐑",
@@ -306,7 +306,7 @@ const POOL_L3: PracticeTask[] = [
     ],
   },
   {
-    question: "Kotě je mládě kočky. Až kotě vyroste, stane se z něj dospělá...?",
+    question: "Kotě vyroste. Jaké dospělé zvíře z něj bude?",
     correctAnswer: "Kočka",
     options: ["Koza", "Kočka", "Ovce", "Slepice"],
     emoji: "🐱",
@@ -316,7 +316,7 @@ const POOL_L3: PracticeTask[] = [
     ],
   },
   {
-    question: "House je mládě husy. Až house vyroste, stane se z něj dospělá...?",
+    question: "House vyroste. Jaké dospělé zvíře z něj bude?",
     correctAnswer: "Husa",
     options: ["Kachna", "Slepice", "Husa", "Koza"],
     emoji: "🦢",

@@ -236,7 +236,7 @@ const POOL_L3: PracticeTask[] = [
     { value: "Nové věci se učíš ve snech", why: "Ve snech se neučíš. Mozek jen ukládá, co se naučil přes den." },
     { value: "Spánek s pamětí nesouvisí", why: "Souvisí. Nevyspalý člověk si pamatuje hůř." },
   ], {
-    hints: ["Co dělá mozek, když tělo odpočívá?", "Přes den se naučíš básničku. Ráno ji umíš líp, než večer. Kdy se mozek postaral, aby ji uložil?"],
+    hints: ["Co dělá mozek, když tělo odpočívá?", "Odpoledne se naučíš básničku a ráno ji umíš líp než večer. Kdy se mozek postaral, aby ji uložil?"],
     explanation: "Ve spánku mozek třídí a ukládá, co jsme se přes den naučili. Po dobrém spánku si pamatujeme lépe, nevyspalý člověk zapomíná.",
   }),
   choice("Svačina A: sladký rohlík a limonáda. Svačina B: chléb se sýrem a jablko. Která zasytí na déle?", "B, protože dává energii postupně", [

@@ -284,12 +284,12 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Kopneš do míče. V jakém pořadí to v těle proběhne?",
-    correctAnswer: "Mozek dá povel → nerv přenese signál → sval se stáhne → kost se pohne",
+    correctAnswer: "Mozek dá povel, nerv přenese signál, sval se stáhne, kost se pohne",
     options: [
-      "Mozek dá povel → nerv přenese signál → sval se stáhne → kost se pohne",
-      "Sval se stáhne → mozek dá povel → kost se pohne → nerv přenese signál",
-      "Kost se pohne → sval se stáhne → mozek dá povel → nerv přenese signál",
-      "Nerv se stáhne → kost dá povel → sval přenese signál → mozek se pohne",
+      "Mozek dá povel, nerv přenese signál, sval se stáhne, kost se pohne",
+      "Sval se stáhne, mozek dá povel, kost se pohne, nerv přenese signál",
+      "Kost se pohne, sval se stáhne, mozek dá povel, nerv přenese signál",
+      "Nerv se stáhne, kost dá povel, sval přenese signál, mozek se pohne",
     ],
     emoji: "⚽",
     hints: [
@@ -364,7 +364,7 @@ const POOL_L3: PracticeTask[] = [
     emoji: "💉",
     hints: [
       "Očkování je trénink nanečisto — na co tělo připraví?",
-      "Díky němu tělo nemoc pozná, ještě než opravdu přijde.",
+      "Díky němu je obrana připravená dřív, než přijde skutečná nákaza.",
     ],
     explanation:
       "Očkování ukáže tělu oslabené zárodky nemoci. Imunitní systém se je naučí rozpoznat, takže při skutečné nákaze je porazí rychle, dřív než způsobí vážnou nemoc.",

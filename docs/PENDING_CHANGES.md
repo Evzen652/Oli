@@ -17,6 +17,8 @@ Detail: `PROJECT_STATUS.md` §6, session 37.
 ### 📌 Na vědomí
 - 6. ročník má zatím jen fyziku a dějepis.
 - ✅ Hlavička cvičení 6. ročníku psala „Dejepis“ bez háčku — opraveno (popisek z rejstříku předmětů).
+- ✅ Výběr z možností ignoroval velikost písmen („praha“ = správně u velkých písmen) — nový validátor `option_exact`.
+- 🟠 3. ročník: 9 slohových témat bez L2/L3 a několik témat s málo různými úlohami na L3.
 - Otevření 7. ročníku by oslabilo rodičovskou bránu (procenta) — hlídá `src/test/parent-gate.test.ts`.
 
 ---

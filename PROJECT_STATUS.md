@@ -165,6 +165,15 @@ src/
 - 📌 6. ročník má zatím jen fyziku a dějepis.
 - ✅ **Hlavička cvičení psala „Dejepis“** — brala slug předmětu (`dejepis`) místo
   popisku z rejstříku. `SessionView` teď bere `getSubjectMeta(...).label`.
+- ✅ **Výběr z možností ignoroval velikost písmen** — ve cvičení „Velká písmena“
+  (3. ročník) se „praha“ hodnotila jako správně. `select_one` má nový výchozí
+  validátor `option_exact` (přesná shoda s kliknutou možností); ověřeno v prohlížeči.
+- ✅ Drobné nálezy obsahového auditu ve 2.–4. ročníku: šipky v možnostech
+  pořadí (audit je čte jako nápovědu) → čárky, klíč ve znění otázky (mláďata,
+  lékař), distraktor obsažený v klíči, úniky v nápovědách. Zámek obsahu přegenerován.
+- 🟠 Zbývá: 9 slohových témat 3. ročníku má jen jednu úroveň (L2/L3 = L1)
+  a společné nápovědy; několik témat 3. ročníku (čeština, matematika) má na L3
+  málo různých úloh.
 - 📌 Zbývající nálezy `docs-check` jsou výčtové úlohy („Které z čísel … je
   největší?“, „najdi slovo ve větě“), kde klíč ve znění být musí — brána je
   bere jako výjimku.

@@ -28,7 +28,7 @@ const POOL_L1: Item[] = [
     "Délka věty ani počet podstatných či přídavných jmen o tom nerozhoduje — hledej, co je spojuje dohromady.",
   ] },
   { q: "Kolik sloves je ve větě jednoduché?", a: "Jedno", opts: ["Žádné", "Jedno", "Dvě", "Tři"], e: "Věta jednoduchá = 1 sloveso.", hints: [
-    "Věta jednoduchá popisuje jen jednu věc, která se děje — kolik takových dějů (sloves) to tedy je?",
+    "Kolik dějů taková věta popisuje — a kolik v ní tedy najdeš sloves?",
     "Porovnej to se souvětím, kde dějů bývá víc a jsou spojené spojkou.",
   ] },
   { q: "'Slunce svítí.' je:", a: "Věta jednoduchá", opts: ["Věta jednoduchá", "Souvětí", "Nelze určit", "Souvětí o třech větách"], e: "1 sloveso 'svítí' → věta jednoduchá." },
@@ -71,7 +71,7 @@ const POOL_L3: Item[] = [
   { q: "Která věta je nejsložitější (nejvíc vět)?", a: "Napsal jsem úkol, potom jsem si četl a nakonec jsem šel spát.", opts: ["Napsal jsem si dlouhý domácí úkol z matematiky.", "Napsal jsem úkol, potom jsem si četl a nakonec jsem šel spát.", "Po večeři jsem si v pokoji četl novou knihu.", "Večer jsem šel spát a hned jsem usnul."], e: "Nejvíc vět má ta možnost, kde napočítáš nejvíc sloves: napsal jsem, četl jsem, šel jsem." },
   { q: "Kolik čárek má správně souvětí 'Přišel Petr a Anna zpívala a Bára tancovala'?", a: "Žádnou čárku", opts: ["Žádnou čárku", "Dvě čárky (před oběma 'a')", "Jednu čárku (jen před 2. 'a')", "Tři čárky"], e: "Před spojkou 'a' ve slučovacím poměru se čárka NEPÍŠE — ani mezi větami hlavními. Čárku píšeme před 'ale', 'protože', 'když', 'aby' apod., ale ne před 'a', 'i', 'ani', 'nebo' ve slučovacím poměru." },
   { q: "Ve větě 'Když prší, vezmeme si deštníky a půjdeme.' je:", a: "Souvětí ze 3 vět", opts: ["Souvětí ze 3 vět", "Souvětí ze 2 vět", "Věta jednoduchá s výčtem", "Věta jednoduchá"], e: "3 slovesa: 'prší', 'vezmeme si', 'půjdeme' → 3 věty souvětí." },
-  { q: "Věta: 'Slyšel jsem hudbu, protože zpívali ptáci.' — jaká je hlavní věta?", a: "Slyšel jsem hudbu", opts: ["Slyšel jsem hudbu", "protože zpívali ptáci", "zpívali ptáci", "hudbu"], e: "Hlavní věta má hlavní myšlenku. Věta se spojkou 'protože' vysvětluje důvod (vedlejší věta)." },
+  { q: "Věta: 'Slyšel jsem hudbu, protože zpívali ptáci.' — jaká je hlavní věta?", a: "Slyšel jsem hudbu", opts: ["Slyšel jsem hudbu", "protože zpívali ptáci", "zpívali ptáci", "celé souvětí"], e: "Hlavní věta má hlavní myšlenku. Věta se spojkou 'protože' vysvětluje důvod (vedlejší věta)." },
 ];
 
 function pick(pool: Item[]): PracticeTask[] {

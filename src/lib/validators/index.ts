@@ -47,6 +47,22 @@ export const stringExactValidator: Validator = {
   },
 };
 
+// ─── Option Exact (výchozí pro select_one) ─────────────────────────────
+// Dítě u select_one odpověď nepíše, ale klikne na možnost — odpověď je tedy
+// přesně text té možnosti a velikost písmen v ní nese význam. Cvičení na velká
+// písmena nabízí „Praha / praha / PRAHA"; string_exact velikost zahazoval,
+// takže „praha" se hodnotilo jako správně (nalezeno 2026-09-11). Porovnává se
+// proto přesně, jen bez okrajových mezer a s jednotnou normalizací Unicode.
+export const optionExactValidator: Validator = {
+  id: "option_exact",
+  validate(answer, expected) {
+    const norm = (s: string) => s.trim().normalize("NFC");
+    return norm(answer) === norm(expected)
+      ? { correct: true }
+      : { correct: false, errorType: "wrong_string" };
+  },
+};
+
 // ─── Blank Text (fill_blank — tolerantní k zápisu předpony/přípony) ──────
 // Žák doplňuje část slova ("Přečetl ___tah"). Nápovědy i výklad ale píší
 // předpony s pomlčkou ("vy- = dokončení děje"), takže dítě ji přirozeně
@@ -706,6 +722,7 @@ export const diagramLabelValidator: Validator = {
 // ─── Registry ────────────────────────────────────────────────────────────
 const VALIDATORS: Record<string, Validator> = {
   string_exact: stringExactValidator,
+  option_exact: optionExactValidator,
   blank_text: blankTextValidator,
   numeric_tolerance: numericToleranceValidator,
   numeric_range: numericRangeValidator,
@@ -735,6 +752,8 @@ export function getValidator(id?: string): Validator {
 /** Mapování InputType → výchozí validátor */
 export function getDefaultValidator(inputType: string): Validator {
   switch (inputType) {
+    case "select_one":
+      return optionExactValidator;
     case "fraction":
       return fractionValidator;
     case "number":

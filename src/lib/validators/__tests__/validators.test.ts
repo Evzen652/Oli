@@ -176,8 +176,12 @@ describe("validateAnswer dispatch", () => {
   it("uses numeric validator for number inputType", () => {
     expect(validateAnswer("3,14", "3.14", { inputType: "number" }).correct).toBe(true);
   });
-  it("uses string for select_one", () => {
-    expect(validateAnswer("ano", "ANO", { inputType: "select_one" }).correct).toBe(true);
+  it("select_one porovnává přesně — velikost písmen u zvolené možnosti rozhoduje", () => {
+    // Cvičení na velká písmena nabízí „Praha / praha / PRAHA"; malé „praha" nesmí projít.
+    expect(validateAnswer("Praha", "Praha", { inputType: "select_one" }).correct).toBe(true);
+    expect(validateAnswer(" Praha ", "Praha", { inputType: "select_one" }).correct).toBe(true);
+    expect(validateAnswer("praha", "Praha", { inputType: "select_one" }).correct).toBe(false);
+    expect(validateAnswer("PRAHA", "Praha", { inputType: "select_one" }).correct).toBe(false);
   });
   it("uses set for multi_select", () => {
     expect(validateAnswer("b,a", "a,b", { inputType: "multi_select" }).correct).toBe(true);
@@ -191,6 +195,7 @@ describe("getDefaultValidator", () => {
     expect(getDefaultValidator("multi_select").id).toBe("set_match");
     expect(getDefaultValidator("drag_order").id).toBe("ordered_sequence");
     expect(getDefaultValidator("text").id).toBe("string_exact");
+    expect(getDefaultValidator("select_one").id).toBe("option_exact");
   });
 });
 

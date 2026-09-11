@@ -388,7 +388,7 @@ describe("getDefaultValidator — coverage", () => {
     ["drag_order", "ordered_sequence"],
     ["match_pairs", "pairs_match"],
     ["categorize", "categorize_groups"],
-    ["select_one", "string_exact"],
+    ["select_one", "option_exact"], // přesná shoda s kliknutou možností (velká písmena)
     ["comparison", "string_exact"],
     ["fill_blank", "string_exact"],
     ["text", "string_exact"],

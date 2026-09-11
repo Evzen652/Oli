@@ -181,8 +181,8 @@ const POOL_L2: PracticeTask[] = [
   },
   {
     question: "Které pořadí správně popisuje koloběh vody?",
-    correctAnswer: "Výpar → oblaka → srážky (déšť/sníh) → řeky → moře",
-    options: ["Srážky → výpar → moře → oblaka → řeky", "Oblaka → moře → výpar → řeky → srážky", "Výpar → oblaka → srážky (déšť/sníh) → řeky → moře", "Řeky → srážky → moře → výpar → oblaka"],
+    correctAnswer: "Výpar, oblaka, srážky (déšť/sníh), řeky, moře",
+    options: ["Srážky, výpar, moře, oblaka, řeky", "Oblaka, moře, výpar, řeky, srážky", "Výpar, oblaka, srážky (déšť/sníh), řeky, moře", "Řeky, srážky, moře, výpar, oblaka"],
     hints: [
       "Vše začíná teplem slunce, které vodu mění na páru.",
       "Pára stoupá, ochladí se, a pak teprve padá dolů jako srážky.",

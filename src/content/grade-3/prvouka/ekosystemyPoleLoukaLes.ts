@@ -149,12 +149,12 @@ const POOL: PracticeTask[] = [
   },
   {
     question: "Jaký je správný potravní řetězec na louce?",
-    correctAnswer: "Tráva → kobylka → ježek → liška",
+    correctAnswer: "Tráva, kobylka, ježek, liška",
     options: [
-      "Tráva → kobylka → ježek → liška",
-      "Liška → ježek → kobylka → tráva",
-      "Kobylka → tráva → liška → ježek",
-      "Ježek → liška → tráva → kobylka",
+      "Tráva, kobylka, ježek, liška",
+      "Liška, ježek, kobylka, tráva",
+      "Kobylka, tráva, liška, ježek",
+      "Ježek, liška, tráva, kobylka",
     ],
     hints: [
       "Potravní řetězec začíná vždy rostlinou — ta je první.",
@@ -381,10 +381,11 @@ const POOL_L3_EXTRA: PracticeTask[] = [
   },
   {
     question: "Který potravní řetězec je SPRÁVNĚ z lesa?",
-    correctAnswer: "Bukvice → myš → sova.",
-    options: ["Sova → myš → bukvice.", "Myš → bukvice → sova.", "Bukvice → sova → myš.", "Bukvice → myš → sova."],
+    correctAnswer: "Bukvice, myš, sova.",
+    options: ["Sova, myš, bukvice.", "Myš, bukvice, sova.", "Bukvice, sova, myš.", "Bukvice, myš, sova."],
     hints: [
-      "Řetězec začíná rostlinou. Šipka znamená: „je snědeno“.",
+      "Řetězec začíná rostlinou. Každý další člen jí ten předchozí.",
+      "Kdo z nich jí rostliny, a kdo loví ty, kdo jedí rostliny?",
     ],
     explanation:
       "Bukvice (plod buku) → sní myš (konzument 1) → uloví sova (konzument 2). Rostlina musí být první, dravec poslední.",
