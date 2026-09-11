@@ -1,71 +1,144 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (inventura obsahu). Dřív 8 úloh Ano/Ne na každé úrovni
+// (i na L2/L3), jedna nápověda, žádná zpětná vazba. Teď tři oddělené banky:
+// L1 Ano/Ne: je slovo vlastní jméno? · L2 najdi vlastní jméno ve větě
+// · L3 přenos: stejné slovo jednou jako příjmení nebo název města, jindy jako
+// obecné jméno (Liška × liška, Most × most) a obrácená otázka (které slovo
+// vlastní jméno NENÍ). Slova ve zkoumaném místě jsou psaná VELKÝMI písmeny,
+// aby první písmeno odpověď neprozradilo. L2/L3 mají čtyři možnosti — router
+// je vykreslí jako výběr, i když je téma true_false.
+
+const ANO = "Ano";
+const NE = "Ne";
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+
+// ── L1: Ano/Ne ────────────────────────────────────────────────────────────────
+// [vlastní jméno, obecné jméno stejného druhu, „jméno jedné určité …“, „slovo pro každou …“]
+const DVOJICE: [string, string, string, string][] = [
+  ["Vltava", "řeka", "jedné určité řeky", "každou řeku"],
+  ["Brno", "město", "jednoho určitého města", "každé město"],
+  ["Sněžka", "hora", "jedné určité hory", "každou horu"],
+  ["Petr", "kluk", "jednoho určitého kluka", "každého kluka"],
+  ["Alík", "pes", "jednoho určitého psa", "každého psa"],
+  ["Cilka", "kočka", "jedné určité kočky", "každou kočku"],
+  ["Lucie", "dívka", "jedné určité dívky", "každou dívku"],
+  ["Česko", "stát", "jednoho určitého státu", "každý stát"],
+];
+
+function anoNe(i: number, vlastni: boolean): PracticeTask {
+  const [V, o, jedne, kazde] = DVOJICE[i];
+  const [exV, exO] = DVOJICE[(i + 1) % DVOJICE.length];
+  const W = (vlastni ? V : o).toUpperCase();
+  const spravne = vlastni ? ANO : NE;
+  return {
+    question: `Je slovo ${W} vlastní jméno?`,
+    correctAnswer: spravne,
+    options: [ANO, NE],
+    optionFeedback: vlastni
+      ? { [NE]: `${V} je vlastní jméno: nehodí se na ${kazde}, je to jméno ${jedne}.` }
+      : { [ANO]: `„${o}“ se hodí na ${kazde}, není to jméno ${jedne}. Je to obecné jméno.` },
+    hints: [
+      `Je ${W} jméno ${jedne}, nebo slovo pro ${kazde}?`,
+      `Vlastní jméno patří jen jedné určité osobě, zvířeti nebo místu (třeba ${exV}). Obecné jméno se hodí na všechny stejného druhu (třeba ${exO}). Kam patří slovo ${W}?`,
+    ],
+    explanation: vlastni
+      ? `${V} je jméno ${jedne}, ne slovo pro ${kazde}. Proto je to vlastní jméno a píše se s velkým ${V[0]}.`
+      : `${cap(o)} je slovo pro ${kazde}, ne jméno ${jedne}. Je to obecné jméno a píše se s malým písmenem. Vlastní jméno je třeba ${V}.`,
+    emoji: vlastni ? "🔠" : "🔡",
+  };
 }
 
-const ANO = "Ano, to je pravda";
-const NE = "Ne, to není pravda";
+// ── L2: najdi vlastní jméno ve větě ──────────────────────────────────────────
+// [téma (6. pád), věta psaná správně, vlastní jméno ve tvaru z věty, „jméno jedné určité …“, chybné [slovo z věty, proč není vlastní jméno]]
+const VE_VETE: [string, string, string, string, [string, string][]][] = [
+  ["psovi", "Náš pes Alík spí v boudě.", "Alík", "jednoho určitého psa", [["pes", "hodí se na každého psa"], ["boudě", "hodí se na každou psí boudu"], ["spí", "říká, co pes dělá, žádné jméno to není"]]],
+  ["koupání", "V létě se koupeme v řece Otavě.", "Otavě", "jedné určité řeky", [["řece", "hodí se na každou řeku"], ["létě", "je název ročního období, píše se s malým písmenem"], ["koupeme", "říká, co děláme, žádné jméno to není"]]],
+  ["babičce", "Babička bydlí ve městě Olomouci.", "Olomouci", "jednoho určitého města", [["Babička", "hodí se na každou babičku — velké B má jen proto, že stojí na začátku věty"], ["městě", "hodí se na každé město"], ["bydlí", "říká, co babička dělá, žádné jméno to není"]]],
+  ["kočce", "Sousedova kočka Líza má koťata.", "Líza", "jedné určité kočky", [["kočka", "hodí se na každou kočku"], ["koťata", "hodí se na všechna koťata"], ["Sousedova", "říká, čí kočka je — velké S má jen proto, že stojí na začátku věty"]]],
+  ["horách", "Na horu Sněžku vede lanovka.", "Sněžku", "jedné určité hory", [["horu", "hodí se na každou horu"], ["lanovka", "hodí se na každou lanovku"], ["vede", "říká, co lanovka dělá, žádné jméno to není"]]],
+  ["kamarádovi", "Můj nejlepší kamarád se jmenuje Matěj.", "Matěj", "jednoho určitého kluka", [["kamarád", "hodí se na každého kamaráda"], ["nejlepší", "říká, jaký kamarád je"], ["jmenuje", "říká, co se děje, žádné jméno to není"]]],
+  ["cestování", "S tatínkem jsme jeli vlakem do Prahy.", "Prahy", "jednoho určitého města", [["tatínkem", "hodí se na každého tatínka"], ["vlakem", "hodí se na každý vlak"], ["jeli", "říká, co jsme dělali, žádné jméno to není"]]],
+  ["koni", "Na statku žije kůň Blesk.", "Blesk", "jednoho určitého koně", [["kůň", "hodí se na každého koně"], ["statku", "hodí se na každý statek"], ["žije", "říká, co kůň dělá, žádné jméno to není"]]],
+  ["sestře", "Moje sestra Klára chodí do školy.", "Klára", "jedné určité dívky", [["sestra", "hodí se na každou sestru"], ["školy", "hodí se na každou školu"], ["chodí", "říká, co sestra dělá, žádné jméno to není"]]],
+  ["rybníku", "U rybníka Rožmberk hnízdí kachny.", "Rožmberk", "jednoho určitého rybníka", [["rybníka", "hodí se na každý rybník"], ["kachny", "hodí se na všechny kachny"], ["hnízdí", "říká, co kachny dělají, žádné jméno to není"]]],
+  ["škole", "Naše škola stojí v ulici Květná.", "Květná", "jedné určité ulice", [["škola", "hodí se na každou školu"], ["ulici", "hodí se na každou ulici"], ["stojí", "říká, kde škola je, žádné jméno to není"]]],
+  ["zoo", "V zoo žije slonice Lulu.", "Lulu", "jedné určité slonice", [["slonice", "hodí se na každou slonici"], ["zoo", "hodí se na každou zoologickou zahradu"], ["žije", "říká, co slonice dělá, žádné jméno to není"]]],
+  ["pečení", "Babička Anna peče buchty.", "Anna", "jedné určité ženy", [["Babička", "hodí se na každou babičku — velké B má jen proto, že stojí na začátku věty"], ["buchty", "hodí se na všechny buchty"], ["peče", "říká, co babička dělá, žádné jméno to není"]]],
+  ["prázdninách", "Letos pojedeme k moři do Chorvatska.", "Chorvatska", "jednoho určitého státu", [["moři", "hodí se na každé moře"], ["Letos", "říká, kdy se něco stane — velké L má jen proto, že stojí na začátku věty"], ["pojedeme", "říká, co budeme dělat, žádné jméno to není"]]],
+];
 
-interface PoolItem {
-  question: string;
-  correct: string;
-  emoji: string;
-  hint: string;
-  solution: string;
+function veVete([tema, veta, jm, jedne, d]: (typeof VE_VETE)[number]): PracticeTask {
+  const U = (s: string) => s.toUpperCase();
+  return {
+    ...choice(`Které slovo je vlastní jméno? „${U(veta)}“`, U(jm), d.map(([w, proc]) => ({ value: U(w), why: `${U(w)} ${proc}.` })) as [Distractor, Distractor, Distractor], {
+      hints: [
+        `Ve větě o ${tema} je právě jedno vlastní jméno. Které slovo to je?`,
+        `U každého slova ve větě o ${tema} se zeptej: hodí se na všechny stejného druhu, nebo patří jen jedné určité osobě, zvířeti či místu? Věta je psaná velkými písmeny, aby první písmeno nic neprozradilo.`,
+      ],
+      explanation: `${jm} je jméno ${jedne}, proto je to vlastní jméno. Správně napíšeme: „${veta}“`,
+    }),
+    emoji: "🔎",
+  };
 }
 
-// L1: Rozpoznání vlastního jména (Praha je vlastní jméno. Jan je vlastní jméno. Rex je vlastní jméno psa.)
-const POOL_L1: PoolItem[] = [
-  { question: "'Praha' je vlastní jméno. Je to pravda?", correct: ANO, emoji: "🏙️", hint: "Praha je konkrétní název jednoho města v Česku — takový název se jmenuje vlastní jméno.", solution: "'Praha' je vlastní jméno — je to konkrétní název hlavního města České republiky, proto píšeme P velké." },
-  { question: "'Jan' je vlastní jméno osoby. Je to pravda?", correct: ANO, emoji: "👦", hint: "Jan je jméno konkrétního člověka — jak se takovým jménům říká?", solution: "'Jan' je vlastní jméno — je to jméno konkrétní osoby, proto píšeme J velké." },
-  { question: "Vltava je vlastní jméno řeky. Je to pravda?", correct: ANO, emoji: "🌊", hint: "Vltava je konkrétní název jedné řeky v Česku — je to vlastní jméno?", solution: "Vltava je vlastní jméno — je to konkrétní název řeky, proto píšeme V velké." },
-  { question: "'Alžběta' je vlastní jméno. Je to pravda?", correct: ANO, emoji: "👧", hint: "Alžběta je jméno konkrétní osoby — jak se takovým jménům říká?", solution: "'Alžběta' je vlastní jméno — je to jméno konkrétní osoby, proto píšeme A velké." },
-  { question: "Vlastní jméno psa může být 'Rex'. Je to pravda?", correct: ANO, emoji: "🐕", hint: "Rex je konkrétní jméno, které dáváme konkrétnímu psovi — je to vlastní jméno?", solution: "Vlastní jméno psa může být 'Rex' — vlastní jméno může mít i zvíře nebo věc, píšeme ho s velkým R." },
-  { question: "Slovo 'pes' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🐕", hint: "Slovo 'pes' říká druh zvířete — ale nejmenuje konkrétního psa. Vlastní jméno psa by bylo třeba...", solution: "'Pes' není vlastní jméno — je to obecné podstatné jméno, které označuje všechny psy. Vlastní jméno je třeba 'Rex' (jméno konkrétního psa)." },
-  { question: "Slovo 'město' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🏙️", hint: "Slovo 'město' říká druh sídla — ale nejmenuje konkrétní město. Vlastní jméno by bylo třeba...", solution: "'Město' není vlastní jméno — je to obecné slovo pro všechna města. Vlastní jméno je třeba 'Praha' nebo 'Brno'." },
-  { question: "Slovo 'kamarád' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🤝", hint: "Slovo 'kamarád' říká druh vztahu — ale nejmenuje konkrétního kamaráda. Vlastní jméno kamaráda by bylo třeba...", solution: "'Kamarád' není vlastní jméno — je to obecné slovo. Vlastní jméno je třeba 'Tomáš' nebo 'Lucie'." },
+// ── L3a: stejné slovo — vlastní, nebo obecné jméno? ──────────────────────────
+interface Dvojznacne { W: string; a: string; spatne: string[]; znamena: string; kazde: string; e: string }
+const DVOJZNACNA: Dvojznacne[] = [
+  { W: "LIŠKA", a: "Pan LIŠKA opravuje auta.", spatne: ["V lese běžela LIŠKA.", "Ta LIŠKA má huňatý ocas.", "Viděli jsme LIŠKU u nory."], znamena: "zvíře", kazde: "každou lišku", e: "Ve větě „Pan Liška opravuje auta.“ je Liška příjmení jednoho určitého pána. Proto je to vlastní jméno s velkým L." },
+  { W: "ZAJÍC", a: "Náš soused pan ZAJÍC má psa.", spatne: ["Na poli skáče ZAJÍC.", "Ten ZAJÍC má dlouhé uši.", "Pes honil ZAJÍCE."], znamena: "zvíře", kazde: "každého zajíce", e: "Ve větě „Náš soused pan Zajíc má psa.“ je Zajíc příjmení souseda. Proto je to vlastní jméno s velkým Z." },
+  { W: "MOST", a: "Strýc bydlí ve městě MOST.", spatne: ["Přes řeku vede MOST.", "Ten MOST je kamenný.", "Auta jedou přes MOST."], znamena: "stavba přes řeku", kazde: "každý most", e: "Ve větě „Strýc bydlí ve městě Most.“ je Most název jednoho určitého města. Proto je to vlastní jméno s velkým M." },
+  { W: "TÁBOR", a: "Město TÁBOR leží v jižních Čechách.", spatne: ["V létě jedu na TÁBOR.", "Na TÁBOŘE jsme spali ve stanu.", "Ten TÁBOR byl u lesa."], znamena: "letní pobyt dětí", kazde: "každý tábor", e: "Ve větě „Město Tábor leží v jižních Čechách.“ je Tábor název města. Proto je to vlastní jméno s velkým T." },
+  { W: "PÍSEK", a: "Babička žije ve městě PÍSEK.", spatne: ["Na pláži je jemný PÍSEK.", "Děti si hrají v PÍSKU.", "Tatínek přivezl PÍSEK na stavbu."], znamena: "drobná zrníčka kamínků", kazde: "všechen písek", e: "Ve větě „Babička žije ve městě Písek.“ je Písek název jednoho určitého města. Proto je to vlastní jméno s velkým P." },
+  { W: "KOS", a: "Pan KOS je náš trenér.", spatne: ["Na stromě zpívá KOS.", "Ten KOS je celý černý.", "Viděli jsme KOSA na zahradě."], znamena: "pták", kazde: "každého kosa", e: "Ve větě „Pan Kos je náš trenér.“ je Kos příjmení trenéra. Proto je to vlastní jméno s velkým K." },
+  { W: "VRÁNA", a: "Pan VRÁNA nás učí zpívat.", spatne: ["Na poli sedí VRÁNA.", "Ta VRÁNA hlasitě krákala.", "Kočka pozorovala VRÁNU."], znamena: "pták", kazde: "každou vránu", e: "Ve větě „Pan Vrána nás učí zpívat.“ je Vrána příjmení učitele. Proto je to vlastní jméno s velkým V." },
+  { W: "MRÁZ", a: "Pan MRÁZ prodává zeleninu.", spatne: ["V noci byl velký MRÁZ.", "Ten MRÁZ štípal do tváří.", "Ráno přišel první MRÁZ."], znamena: "velká zima", kazde: "každý mráz", e: "Ve větě „Pan Mráz prodává zeleninu.“ je Mráz příjmení prodavače. Proto je to vlastní jméno s velkým M." },
 ];
 
-// L2: Pravidlo velké/malé písmeno (vlastní = velké, obecné = malé)
-const POOL_L2: PoolItem[] = [
-  { question: "Vlastní jméno píšeme s velkým písmenem. Je to pravda?", correct: ANO, emoji: "🔠", hint: "Vzpomeň si na jméno svého kamaráda nebo název svého města — jak začíná?", solution: "Vlastní jméno píšeme vždy s velkým písmenem — proto 'Praha', 'Jan', 'Vltava', ne 'praha', 'jan', 'vltava'." },
-  { question: "'Brno' je vlastní jméno města. Je to pravda?", correct: ANO, emoji: "🏙️", hint: "Brno je konkrétní název jednoho českého města — je to vlastní jméno?", solution: "'Brno' je vlastní jméno — je to konkrétní název města, proto píšeme B velké." },
-  { question: "Název 'Česká republika' je vlastní jméno. Je to pravda?", correct: ANO, emoji: "🇨🇿", hint: "Česká republika je konkrétní název jednoho státu — je to vlastní jméno?", solution: "'Česká republika' je vlastní jméno — je to konkrétní název státu, proto píšeme Č velké." },
-  { question: "Jméno 'marie' (s malým m) je správně napsané. Je to pravda?", correct: NE, emoji: "👩", hint: "Marie je jméno konkrétní osoby. Jak píšeme vlastní jméno — s malým nebo velkým písmenem?", solution: "'Marie' se píše s velkým M — je to vlastní jméno osoby. 'marie' s malým m je pravopisná chyba." },
-  { question: "Obecná jména se píšou s velkým písmenem. Je to pravda?", correct: NE, emoji: "🔡", hint: "Obecné podstatné jméno označuje všechny věci svého druhu (pes, stůl, řeka) — jak ho píšeme?", solution: "Obecná jména píšeme s malým písmenem — 'pes', 'stůl', 'řeka'. Velké písmeno patří jen vlastním jménům." },
-  { question: "Jméno 'jana' (s malým j) je správně napsané. Je to pravda?", correct: NE, emoji: "👧", hint: "Jana je jméno konkrétní osoby. Jak píšeme vlastní jméno — s malým nebo velkým písmenem?", solution: "'Jana' se píše s velkým J — je to vlastní jméno osoby. 'jana' s malým j je pravopisná chyba." },
-  { question: "Slovo 'kočka' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🐱", hint: "Slovo 'kočka' říká druh zvířete — ale nejmenuje konkrétní kočku. Vlastní jméno kočky by bylo třeba...", solution: "'Kočka' není vlastní jméno — je to obecné slovo pro všechny kočky. Vlastní jméno je třeba 'Micka'." },
-  { question: "Název 'labe' (s malým l) je správně napsaný. Je to pravda?", correct: NE, emoji: "🌊", hint: "Labe je konkrétní název řeky — je to vlastní nebo obecné jméno?", solution: "'Labe' se píše s velkým L — je to vlastní jméno řeky. 'labe' s malým l je pravopisná chyba." },
+function dvojznacne(x: Dvojznacne): PracticeTask {
+  const d = x.spatne.map((s) => ({ value: s, why: `Ve větě „${s}“ znamená ${x.W.toLowerCase()} ${x.znamena} — slovo se hodí na ${x.kazde}. Je to obecné jméno s malým písmenem.` })) as [Distractor, Distractor, Distractor];
+  return {
+    ...choice(`Ve které větě je ${x.W} vlastní jméno?`, x.a, d, {
+      hints: [
+        `Ve většině vět znamená ${x.W} ${x.znamena}. Kde znamená něco jiného?`,
+        `U každé věty se zeptej, co tam slovo ${x.W} znamená. Když znamená ${x.znamena}, hodí se na ${x.kazde} — to je obecné jméno. Vlastní jméno patří jen jednomu určitému člověku nebo místu, třeba jako příjmení nebo název města.`,
+      ],
+      explanation: x.e,
+    }),
+    emoji: "🤔",
+  };
+}
+
+// ── L3b: obrácená otázka — které slovo vlastní jméno NENÍ? ────────────────────
+// [skupina (2. pád mn. č.), tři vlastní jména, obecné jméno, „jméno jedné určité …“, proč je obecné]
+const OBRACENE: [string, [string, string, string], string, string, string][] = [
+  ["řek", ["MORAVA", "ODRA", "JIZERA"], "POTOK", "jedné určité řeky", "potokem je každý malý tok vody"],
+  ["měst", ["PLZEŇ", "OSTRAVA", "LIBEREC"], "VESNICE", "jednoho určitého města", "vesnicí je každá malá obec"],
+  ["hor", ["SNĚŽKA", "ŘÍP", "RADHOŠŤ"], "KOPEC", "jedné určité hory", "kopcem je každá menší hora"],
+  ["psů", ["REX", "ALÍK", "AZOR"], "PEJSEK", "jednoho určitého psa", "pejskem můžeme říct každému malému psovi"],
+  ["dětí", ["JANA", "TOMÁŠ", "EMA"], "SPOLUŽÁK", "jednoho určitého dítěte", "spolužákem je každý, kdo chodí s tebou do třídy"],
+  ["zemí", ["SLOVENSKO", "POLSKO", "NĚMECKO"], "STÁT", "jedné určité země", "slovo stát se hodí na každou zemi s vlastními hranicemi"],
 ];
 
-// L3: Méně zřejmé případy a časté omyly (jaro vs. Jaroslav, řeka vs. Vltava, stůl, slunce)
-const POOL_L3: PoolItem[] = [
-  { question: "Slovo 'řeka' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🏞️", hint: "Slovo 'řeka' říká druh vodního toku — ale nejmenuje konkrétní řeku. Vlastní jméno by bylo třeba...", solution: "'Řeka' není vlastní jméno — je to obecné slovo pro všechny řeky. Vlastní jméno je třeba 'Vltava' nebo 'Labe'." },
-  { question: "Slovo 'jaro' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🌸", hint: "Slovo 'jaro' označuje roční období — nejmenuje konkrétní věc. Je to vlastní jméno?", solution: "'Jaro' není vlastní jméno — je to obecné slovo pro roční období. Vlastní jméno je třeba 'Jaroslav' (jméno člověka)." },
-  { question: "Slovo 'stůl' je vlastní jméno. Je to pravda?", correct: NE, emoji: "🪑", hint: "Slovo 'stůl' označuje druh nábytku — nejmenuje konkrétní věc. Je to vlastní jméno?", solution: "'Stůl' není vlastní jméno — je to obecné slovo pro kus nábytku. Vlastní jméno se vztahuje k jedinečné osobě, místu nebo věci." },
-  { question: "Slovo 'slunce' je vlastní jméno. Je to pravda?", correct: NE, emoji: "☀️", hint: "Slovo 'slunce' označuje hvězdu obecně — i v jiných slunečních soustavách jsou hvězdy. Píšeme ho s malým s.", solution: "'Slunce' jako obecné slovo píšeme s malým s — označuje typ hvězdy. Vlastní jméno (astronomický název) by bylo 'Slunce' jen v odborném textu." },
-  { question: "'Micka' může být vlastní jméno kočky. Je to pravda?", correct: ANO, emoji: "🐱", hint: "Vlastní jméno může dostat i zvíře. Micka je konkrétní název pro konkrétní kočku — je to vlastní jméno?", solution: "'Micka' je vlastní jméno — je to konkrétní jméno dané konkrétní kočce, proto píšeme M velké." },
-  { question: "Slovo 'hora' je vlastní jméno. Je to pravda?", correct: NE, emoji: "⛰️", hint: "Slovo 'hora' označuje druh terénu — nejmenuje konkrétní horu. Vlastní jméno by bylo třeba...", solution: "'Hora' není vlastní jméno — je to obecné slovo. Vlastní jméno je třeba 'Sněžka' (konkrétní hora)." },
-  { question: "'Sněžka' je vlastní jméno hory. Je to pravda?", correct: ANO, emoji: "⛰️", hint: "Sněžka je konkrétní název nejvyšší hory Česka — je to vlastní jméno?", solution: "'Sněžka' je vlastní jméno — je to konkrétní název hory, proto píšeme S velké." },
-  { question: "Slovo 'kniha' je vlastní jméno. Je to pravda?", correct: NE, emoji: "📚", hint: "Slovo 'kniha' označuje druh předmětu — nejmenuje konkrétní knihu. Je to vlastní jméno?", solution: "'Kniha' není vlastní jméno — je to obecné slovo pro všechny knihy. Vlastní jméno by byl třeba název konkrétní knihy." },
-];
+function obracene([sk, vl, ob, jedne, proc]: (typeof OBRACENE)[number]): PracticeTask {
+  const Cap = (s: string) => s[0] + s.slice(1).toLowerCase();
+  return {
+    ...choice(`Mezi jmény ${sk} se schovalo obecné jméno. Které to je?`, ob, vl.map((w) => ({ value: w, why: `${Cap(w)} je jméno ${jedne}, tedy vlastní jméno s velkým písmenem.` })) as [Distractor, Distractor, Distractor], {
+      hints: [
+        `Které slovo není jméno ${jedne}, ale hodí se na mnoho podobných?`,
+        `Pozor, otázka je obrácená: hledáš slovo, které vlastní jméno NENÍ. U každého slova se zeptej, jestli je to jméno ${jedne}, nebo slovo, které se hodí na všechny stejného druhu.`,
+      ],
+      explanation: `${Cap(ob)} je obecné jméno — ${proc}. Ostatní slova jsou jména jednotlivých ${sk}, tedy vlastní jména, a píšou se s velkým písmenem.`,
+    }),
+    emoji: "🕵️",
+  };
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).map(item => ({
-    question: item.question,
-    correctAnswer: item.correct,
-    options: [ANO, NE],
-    emoji: item.emoji,
-    hints: [item.hint],
-    explanation: item.solution,
-  }));
+  if (level === 1) return shuffle(DVOJICE.flatMap((_, i) => [anoNe(i, true), anoNe(i, false)]));
+  if (level === 2) return shuffle(VE_VETE).map(veVete);
+  return shuffle([...DVOJZNACNA.map(dvojznacne), ...OBRACENE.map(obracene)]);
 }
 
 export const VLASTNIJMENA: TopicMetadata[] = [
