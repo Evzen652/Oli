@@ -21,19 +21,24 @@ function prvni3(kandidati: Distractor[], spravne: string): [Distractor, Distract
 
 function nasob(t: number, n: number): PracticeTask {
   const x = t * n;
+  // Distraktory jen z malé násobilky (dřív se u n = 10 objevilo „7 × 11").
   const d = prvni3([
-    { value: String(t * (n + 1)), why: `To je ${t} × ${n + 1}.` },
-    { value: String(t + n), why: "Čísla jsi sečetl, ne vynásobil." },
-    { value: String(t * (n - 1)), why: `To je ${t} × ${n - 1}.` },
-    { value: String(t * (n + 2)), why: `To je ${t} × ${n + 2}.` },
-    { value: String(x + 1), why: `Výsledek musí být v násobilce čísla ${t}.` },
+    ...(n < 10 ? [{ value: String(t * (n + 1)), why: `To je ${t} × ${n + 1}, tedy o ${t} víc, než má vyjít.` }] : []),
+    { value: String(t + n), why: `Čísla ${t} a ${n} jsi sečetl, ale máš je vynásobit.` },
+    { value: String(t * (n - 1)), why: `To je ${t} × ${n - 1}, tedy o ${t} méně, než má vyjít.` },
+    ...(n < 9 ? [{ value: String(t * (n + 2)), why: `To je ${t} × ${n + 2} — přičetl jsi číslo ${t} o dvakrát víc, než máš.` }] : []),
+    { value: String(x + 1), why: `${x + 1} v řadě násobků čísla ${t} vůbec není — výsledek musí být jejím členem.` },
   ], String(x));
+  // Vysvětlení říká PROČ: malé n rozepíše jako součet, větší n rozloží přes pětinásobek.
+  const explanation = n <= 5
+    ? `${t} × ${n} znamená sečíst ${n}krát číslo ${t}: ${Array.from({ length: n }, () => t).join(" + ")} = ${x}.`
+    : `${t} × 5 = ${5 * t} a ${t} × ${n - 5} = ${t * (n - 5)}. Dohromady ${5 * t} + ${t * (n - 5)} = ${x}, proto ${t} × ${n} = ${x}.`;
   return choice(`${t} × ${n} = ?`, String(x), d, {
     hints: [
       `Řekni si řadu násobků čísla ${t} a zastav se u ${n}. čísla v řadě.`,
-      `${t} × ${n} je totéž jako ${n} × ${t} — vyber si pořadí, které znáš lépe.`,
+      `${t} × ${n} je totéž jako ${n} × ${t}. Vyber si pořadí, které znáš lépe, a přičítej postupně po ${t}, dokud nesečteš ${n} stejných čísel.`,
     ],
-    explanation: `${t} × ${n} = ${x}.`,
+    explanation,
   });
 }
 
@@ -46,11 +51,21 @@ function del(t: number, n: number): PracticeTask {
     { value: String(n + 2), why: `Zkouška: ${t} × ${n + 2} = ${t * (n + 2)}, ne ${x}.` },
     { value: String(n + 3), why: `Zkouška: ${t} × ${n + 3} = ${t * (n + 3)}, ne ${x}.` },
   ], String(n));
+  // Nápovědy nesou dělitele i dělence, takže jsou pro každý příklad jiné
+  // (dřív se „dělitel × ? = 24" opakovalo u 24 ÷ 3, 24 ÷ 4, 24 ÷ 6 i 24 ÷ 8).
+  // U t = n (16 ÷ 4) by dělitel v nápovědě byl zároveň výsledkem — tam se
+  // ptáme na číslo vynásobené samo sebou.
+  const hints: [string, string] = t === n
+    ? [
+      `Které číslo vynásobené samo sebou dá ${x}?`,
+      `Dělení je opak násobení. Zkoušej v malé násobilce násobit čísla sama sebou, dokud ti nevyjde přesně ${x}.`,
+    ]
+    : [
+      `Jakým číslem musíš vynásobit ${t}, abys dostal ${x}? Hledáš ${t} × ? = ${x}.`,
+      `Dělení je opak násobení. Říkej násobky čísla ${t} a na prstech počítej, kolikátý v řadě je ${x} — tolikrát se ${t} vejde do ${x}.`,
+    ];
   return choice(`${x} ÷ ${t} = ?`, String(n), d, {
-    hints: [
-      `Hledáš chybějící číslo v násobilce: dělitel × ? = ${x}.`,
-      `Dělení je opak násobení — projdi násobilku dělitele, dokud nenarazíš na ${x}.`,
-    ],
+    hints,
     explanation: `${x} ÷ ${t} = ${n}, protože ${t} × ${n} = ${x}.`,
   });
 }
