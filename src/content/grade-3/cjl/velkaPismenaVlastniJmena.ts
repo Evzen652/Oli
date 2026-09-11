@@ -90,10 +90,12 @@ const POOL_L3: Item[] = [
   { q: "Jak napíšeme: 'Bydlím v ulici Na _____' (kopec)?", a: "Kopci", opts: ["Kopci", "kopci", "KOPCI", "kOpci"], e: "Součást názvu ulice 'Na Kopci' → velké K." },
   { q: "Jak napíšeme název měsíce ve větě '28. _____ máme svátek'?", a: "října", opts: ["října", "Října", "ŘÍJNA", "říJna"], e: "Názvy měsíců se v češtině píší MALÝM písmenem." },
   { q: "Jak správně: 'Učitelka se jmenuje ___ Nováková.'", a: "paní Nováková", opts: ["paní Nováková", "Paní Nováková", "paní nováková", "PANÍ NOVÁKOVÁ"], e: "'Paní' = obecné oslovení (malé p). 'Nováková' = příjmení (velké N)." },
-  { q: "Které z těchto píšeme s velkým písmenem?", a: "Západ", opts: ["západ slunce", "Západ", "západní vítr", "cesta na západ"], e: "'Západ' jako název oblasti (Západ Evropy) → velké. 'Západ slunce' (obecný děj) → malé." },
+  // 2026-09-11: „Západ“ (distraktory obsahovaly klíč) a „Vánoce“ (svátky jsou
+  // mimo hranice tématu) nahrazeny víceslovnými zeměpisnými názvy.
+  { q: "Jak napíšeme: 'Na výlet jedeme do _____ hor' (Orlické hory)?", a: "Orlických", opts: ["Orlických", "orlických", "ORLICKÝCH", "orLických"], e: "V názvu Orlické hory má velké písmeno jen první slovo; „hory“ píšeme malým h." },
   { q: "Věta: 'V pondělí jedeme do Prahy.' Kolik slov s velkým písmenem má být?", a: "Dvě (V + Prahy)", opts: ["Dvě (V + Prahy)", "Jedno (jen V)", "Tři (V + pondělí + Prahy)", "Jedno (Prahy)"], e: "'V' na začátku věty a 'Prahy' jako vlastní jméno města. 'Pondělí' (den v týdnu) → malé p." },
   { q: "Jak píšeme 'ulice Karlova' ve větě?", a: "ulice Karlova", opts: ["ulice Karlova", "Ulice Karlova", "ulice karlova", "ULICE KARLOVA"], e: "'Ulice' je obecné (malé u), 'Karlova' je vlastní jméno ulice (velké K)." },
-  { q: "Jak napíšeme název svátku 'vánoce'?", a: "Vánoce", opts: ["Vánoce", "vánoce", "VÁNOCE", "vÁnoce"], e: "Vánoce jako název svátku píšeme s velkým V." },
+  { q: "Jak napíšeme: 'Babička bydlí v Ústí nad _____' (řeka Labe)?", a: "Labem", opts: ["Labem", "labem", "LABEM", "lAbem"], e: "Labe je vlastní jméno řeky — i v názvu města Ústí nad Labem píšeme velké L." },
   { q: "Která z těchto vět je napsána SPRÁVNĚ?", a: "V pondělí jsme jeli k babičce do Ostravy.", opts: ["V pondělí jsme jeli k babičce do Ostravy.", "V Pondělí jsme jeli k babičce do ostravy.", "v pondělí jsme jeli k Babičce do Ostravy.", "V pondělí Jsme jeli k babičce do Ostravy."], e: "'V' na začátku, 'pondělí' malé (den), 'babičce' malé (obecné), 'Ostravy' velké (město)." },
   { q: "Jak napíšeme 'na Moravě' v běžné větě?", a: "na Moravě", opts: ["na Moravě", "Na Moravě", "na moravě", "NA MORAVĚ"], e: "'Na' je předložka (malé n), 'Morava' je zeměpisný název (velké M)." },
   { q: "Jak správně: 'Karlův _____ v Praze' (most)?", a: "most", opts: ["most", "Most", "MOST", "moST"], e: "V názvu 'Karlův most' je Karlův s velkým K (přídavné jméno od Karla), ale 'most' je obecný typ stavby → malé m." },
@@ -106,7 +108,7 @@ function pick(pool: Item[]): PracticeTask[] {
     options: shuffle([...opts]),
     hints: hints ?? [
       "Zeptej se, jestli slovo označuje jednu určitou věc, nebo celý druh.",
-      "Když je takových věcí na světě mnoho, píše se malé písmeno.",
+      "Když je takových věcí na světě mnoho (každé město, každý potok, každý pes), píše se malé písmeno; velké dostane jen jméno jedné konkrétní.",
     ],
     explanation: e,
   }));

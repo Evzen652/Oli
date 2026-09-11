@@ -1,82 +1,63 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 3. ročníku): úrovně byly překrývající se výřezy
+// tabulky převodů, takže L2 a L3 přinesly málo nových úloh (poměr 0,40 a 0,48).
+// Teď oddělené úrovně:
+// L1 na menší jednotku po desítkách (cm → mm, dm → cm, m → dm) ·
+// L2 zpět na větší jednotku po desítkách a m → cm · L3 km ↔ m a cm → m.
+
+type Conv = { z: string; na: string; k: number };
+const CM_MM: Conv = { z: "cm", na: "mm", k: 10 };
+const DM_CM: Conv = { z: "dm", na: "cm", k: 10 };
+const M_DM: Conv = { z: "m", na: "dm", k: 10 };
+const M_CM: Conv = { z: "m", na: "cm", k: 100 };
+const KM_M: Conv = { z: "km", na: "m", k: 1000 };
+
+const N = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+/** n větších jednotek → menší jednotky (násobíme). */
+function naMensi(c: Conv, n: number): PracticeTask {
+  const x = n * c.k;
+  const jinyVztah = c.k === 10 ? 100 : 10;
+  const d: [Distractor, Distractor, Distractor] = [
+    { value: `${x + c.k} ${c.na}`, why: `To by odpovídalo ${n + 1} ${c.z}.` },
+    { value: `${n} ${c.na}`, why: "Číslo zůstalo stejné — na menší jednotku musí vyjít větší číslo." },
+    { value: `${n * jinyVztah} ${c.na}`, why: `Špatný převodní vztah: 1 ${c.z} = ${c.k} ${c.na}.` },
+  ];
+  return choice(`${n} ${c.z} = ? ${c.na}`, `${x} ${c.na}`, d, {
+    hints: [
+      `Kolik ${c.na} odpovídá jednotce ${c.z}? A ty máš ${n} ${c.z}.`,
+      `Na menší jednotku převádíš násobením, takže vyjde větší číslo než ${n}.`,
+    ],
+    explanation: `1 ${c.z} = ${c.k} ${c.na}, takže ${n} ${c.z} = ${n} × ${c.k} = ${x} ${c.na}.`,
+  });
 }
 
-// Převodní tabulka délky
-const PREVODY: { z: string; na: string; nasobek: number }[] = [
-  { z: "cm", na: "mm", nasobek: 10 },
-  { z: "dm", na: "cm", nasobek: 10 },
-  { z: "m", na: "cm", nasobek: 100 },
-  { z: "m", na: "dm", nasobek: 10 },
-  { z: "km", na: "m", nasobek: 1000 },
-];
+/** menší jednotky → větší jednotky (dělíme). */
+function naVetsi(c: Conv, n: number): PracticeTask {
+  const x = n * c.k;
+  const d: [Distractor, Distractor, Distractor] = [
+    { value: `${n + 1} ${c.z}`, why: `To by bylo ${(n + 1) * c.k} ${c.na}.` },
+    { value: `${n > 1 ? n - 1 : n + 2} ${c.z}`, why: `To by bylo ${(n > 1 ? n - 1 : n + 2) * c.k} ${c.na}.` },
+    { value: `${x} ${c.z}`, why: "Číslo zůstalo stejné — na větší jednotku musí vyjít menší číslo." },
+  ];
+  return choice(`${x} ${c.na} = ? ${c.z}`, `${n} ${c.z}`, d, {
+    hints: [
+      `Kolik ${c.na} odpovídá jednotce ${c.z}? Kolikrát se to vejde do ${x} ${c.na}?`,
+      `Na větší jednotku převádíš dělením, takže vyjde menší číslo než ${x}.`,
+    ],
+    explanation: `1 ${c.z} = ${c.k} ${c.na}, takže ${x} ${c.na} = ${x} ÷ ${c.k} = ${n} ${c.z}.`,
+  });
+}
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  const prevody = level === 1
-    ? PREVODY.slice(0, 3)
+  const tasks = level === 1
+    ? [CM_MM, DM_CM, M_DM].flatMap((c) => N.map((n) => naMensi(c, n)))
     : level === 2
-      ? PREVODY.slice(0, 4)
-      : PREVODY;
-
-  for (let i = 0; i < 40; i++) {
-    const prev = prevody[i % prevody.length];
-    const isUp = i % 2 === 0; // nahoru (× nasobek) nebo dolů (÷ nasobek)
-
-    if (isUp) {
-      const n = Math.floor(Math.random() * 9) + 1;
-      const correct = n * prev.nasobek;
-      tasks.push({
-        question: `${n} ${prev.z} = ? ${prev.na}`,
-        correctAnswer: `${correct} ${prev.na}`,
-        options: shuffle([
-          `${correct} ${prev.na}`,
-          `${correct + prev.nasobek} ${prev.na}`,
-          `${correct - prev.nasobek > 0 ? correct - prev.nasobek : correct + 2 * prev.nasobek} ${prev.na}`,
-          `${n} ${prev.na}`,
-        ]),
-        hints: [
-          `Zapamatuj si: kolik ${prev.na} je v jednom ${prev.z}.`,
-          "Na menší jednotku: vynásob počet koeficientem přepočtu.",
-        ],
-        solutionSteps: [
-          `1 ${prev.z} = ${prev.nasobek} ${prev.na}`,
-          `${n} × ${prev.nasobek} = ${correct}`,
-          `${n} ${prev.z} = ${correct} ${prev.na}`,
-        ],
-      });
-    } else {
-      const n = (Math.floor(Math.random() * 9) + 1) * prev.nasobek;
-      const correct = n / prev.nasobek;
-      tasks.push({
-        question: `${n} ${prev.na} = ? ${prev.z}`,
-        correctAnswer: `${correct} ${prev.z}`,
-        options: shuffle([
-          `${correct} ${prev.z}`,
-          `${correct + 1} ${prev.z}`,
-          `${correct - 1 > 0 ? correct - 1 : correct + 2} ${prev.z}`,
-          `${n} ${prev.z}`,
-        ]),
-        hints: [
-          `Zapamatuj si: kolik ${prev.na} tvoří jeden ${prev.z}.`,
-          "Na větší jednotku: vyděl počet malých jednotek přepočítávacím koeficientem.",
-        ],
-        solutionSteps: [
-          `${prev.nasobek} ${prev.na} = 1 ${prev.z}`,
-          `${n} ÷ ${prev.nasobek} = ${correct}`,
-          `${n} ${prev.na} = ${correct} ${prev.z}`,
-        ],
-      });
-    }
-  }
-  return tasks;
+      ? [...[CM_MM, DM_CM, M_DM].flatMap((c) => N.map((n) => naVetsi(c, n))), ...N.map((n) => naMensi(M_CM, n))]
+      : [...N.map((n) => naMensi(KM_M, n)), ...N.map((n) => naVetsi(KM_M, n)), ...N.map((n) => naVetsi(M_CM, n))];
+  return shuffle(tasks);
 }
 
 export const PREVODYJEDNOTEKDELKY: TopicMetadata[] = [

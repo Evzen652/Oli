@@ -171,9 +171,18 @@ src/
 - ✅ Drobné nálezy obsahového auditu ve 2.–4. ročníku: šipky v možnostech
   pořadí (audit je čte jako nápovědu) → čárky, klíč ve znění otázky (mláďata,
   lékař), distraktor obsažený v klíči, úniky v nápovědách. Zámek obsahu přegenerován.
-- 🟠 Zbývá: 9 slohových témat 3. ročníku má jen jednu úroveň (L2/L3 = L1)
-  a společné nápovědy; několik témat 3. ročníku (čeština, matematika) má na L3
-  málo různých úloh.
+- ✅ **3. ročník — offline audit obsahu 72 → 0 nálezů.** 9 slohových témat
+  (rozhovor, omluvenka a pozvánka, popis, převyprávění, sebekontrola, tvořivé
+  činnosti, úhledné psaní, výtvarný doprovod, vypravování) a vyhledávání
+  informací měly jen jednu úroveň a společnou nápovědu; teď tři oddělené banky
+  po 13 úlohách, každá s vlastní nápovědou a zpětnou vazbou u chybných možností.
+  Přepsané i slovní druhy, podstatná jména, synonyma, kořen slova, vyjmenovaná
+  a příbuzná slova (doplňování jen grafému y/ý/i/í přes `grade-3/_iy.ts`)
+  a čtyři matematické generátory s překrývajícími se úrovněmi (převody délky,
+  převody hmotnosti/objemu/času, malá násobilka, ×10/×100 a dělení se zbytkem).
+  Sdílení pomocníci: `grade-3/_shared.ts`. Zámek obsahu přegenerován.
+  Slovníkový strážce `vyjmenovana-canon.test.ts` teď kontroluje všechny tři
+  úrovně, čte české uvozovky „…“ a kánon zná i slova s i/í (mít, bílý, vír).
 - 📌 Zbývající nálezy `docs-check` jsou výčtové úlohy („Které z čísel … je
   největší?“, „najdi slovo ve větě“), kde klíč ve znění být musí — brána je
   bere jako výjimku.

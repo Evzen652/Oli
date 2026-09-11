@@ -1,47 +1,69 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// Přepsáno 2026-09-11 (audit 3. ročníku): úrovně se překrývaly (L1 násobilky
+// 2–5, L2 2–7, L3 2–10), takže L2 přinesla málo nových úloh (poměr 0,59).
+// Teď oddělené úrovně:
+// L1 násobení 2–5 · L2 dělení 2–5 a násobení 6–7 · L3 násobení 8–10
+// a dělení 6–10.
+
+function prvni3(kandidati: Distractor[], spravne: string): [Distractor, Distractor, Distractor] {
+  const videno = new Set([spravne]);
+  const out: Distractor[] = [];
+  for (const k of kandidati) {
+    if (Number(k.value) <= 0 || videno.has(k.value)) continue;
+    videno.add(k.value);
+    out.push(k);
+    if (out.length === 3) break;
   }
-  return a;
+  return out as [Distractor, Distractor, Distractor];
 }
 
+function nasob(t: number, n: number): PracticeTask {
+  const x = t * n;
+  const d = prvni3([
+    { value: String(t * (n + 1)), why: `To je ${t} × ${n + 1}.` },
+    { value: String(t + n), why: "Čísla jsi sečetl, ne vynásobil." },
+    { value: String(t * (n - 1)), why: `To je ${t} × ${n - 1}.` },
+    { value: String(t * (n + 2)), why: `To je ${t} × ${n + 2}.` },
+    { value: String(x + 1), why: `Výsledek musí být v násobilce čísla ${t}.` },
+  ], String(x));
+  return choice(`${t} × ${n} = ?`, String(x), d, {
+    hints: [
+      `Řekni si řadu násobků čísla ${t} a zastav se u ${n}. čísla v řadě.`,
+      `${t} × ${n} je totéž jako ${n} × ${t} — vyber si pořadí, které znáš lépe.`,
+    ],
+    explanation: `${t} × ${n} = ${x}.`,
+  });
+}
+
+function del(t: number, n: number): PracticeTask {
+  const x = t * n;
+  const d = prvni3([
+    { value: String(n + 1), why: `Zkouška: ${t} × ${n + 1} = ${t * (n + 1)}, ne ${x}.` },
+    { value: String(n - 1), why: `Zkouška: ${t} × ${n - 1} = ${t * (n - 1)}, ne ${x}.` },
+    { value: String(t), why: "To je dělitel, ne výsledek." },
+    { value: String(n + 2), why: `Zkouška: ${t} × ${n + 2} = ${t * (n + 2)}, ne ${x}.` },
+    { value: String(n + 3), why: `Zkouška: ${t} × ${n + 3} = ${t * (n + 3)}, ne ${x}.` },
+  ], String(n));
+  return choice(`${x} ÷ ${t} = ?`, String(n), d, {
+    hints: [
+      `Hledáš chybějící číslo v násobilce: dělitel × ? = ${x}.`,
+      `Dělení je opak násobení — projdi násobilku dělitele, dokud nenarazíš na ${x}.`,
+    ],
+    explanation: `${x} ÷ ${t} = ${n}, protože ${t} × ${n} = ${x}.`,
+  });
+}
+
+const NN = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  const tables = level === 1 ? [2, 3, 4, 5] : level === 2 ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-  for (let i = 0; i < 40; i++) {
-    const t = tables[i % tables.length];
-    const n = Math.floor(Math.random() * 10) + 1;
-    const product = t * n;
-    const isDiv = i % 3 === 2; // každý třetí příklad je dělení
-
-    if (isDiv) {
-      const d1 = n + 1 <= 10 ? n + 1 : n - 1;
-      const d2 = n - 1 >= 1 ? n - 1 : n + 2;
-      tasks.push({
-        question: `${product} ÷ ${t} = ?`,
-        correctAnswer: String(n),
-        options: shuffle([String(n), String(d1), String(d2), String(n + 2 <= 10 ? n + 2 : 1)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [`Vzpomeň si na násobilku ${t}.`, `Ptáme se: ${t} × ? = ${product}. Zkoušej násobitele od nejmenšího, dokud nenarazíš přesně na ${product}.`],
-        solutionSteps: [`${product} ÷ ${t} = ?`, `${t} × ${n} = ${product}`, `Výsledek: ${n}`],
-      });
-    } else {
-      const d1 = product + t;
-      const d2 = product - t > 0 ? product - t : product + t * 2;
-      tasks.push({
-        question: `${t} × ${n} = ?`,
-        correctAnswer: String(product),
-        options: shuffle([String(product), String(d1), String(d2), String(product + 1)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [`Výsledek je v násobilce ${t}.`, `${t} × ${n} = opakované sčítání čísla ${t}, celkem ${n}×.`],
-        solutionSteps: [`${t} × ${n} = ${product}`],
-      });
-    }
-  }
-  return tasks;
+  const tasks = level === 1
+    ? [2, 3, 4, 5].flatMap((t) => NN.map((n) => nasob(t, n)))
+    : level === 2
+      ? [...[2, 3, 4, 5].flatMap((t) => NN.map((n) => del(t, n))), ...[6, 7].flatMap((t) => NN.map((n) => nasob(t, n)))]
+      : [...[8, 9, 10].flatMap((t) => NN.map((n) => nasob(t, n))), ...[6, 7, 8, 9, 10].flatMap((t) => NN.map((n) => del(t, n)))];
+  return shuffle(tasks).slice(0, 40);
 }
 
 export const NASOBENIADELENIMALANASOBILKA: TopicMetadata[] = [

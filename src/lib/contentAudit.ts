@@ -215,8 +215,12 @@ export function runOfflineAudit(
     // Reportujeme max 3 hits per topic × category, aby se log nezaplavil.
     {
       // Kolo 2 spec: normalize = trim → lower → NFC diakritika → sjednocení mezer.
-      const norm = (s: string) =>
-        s.trim().toLowerCase().normalize("NFC").replace(/\s+/g, " ");
+      // U select_one dítě kliká na možnost a hodnotí se přesně (validátor
+      // option_exact) — možnosti lišící se jen velikostí písmen („Praha / praha")
+      // jsou tam legitimní úloha na velká písmena, ne duplicita.
+      const norm = topic.inputType === "select_one"
+        ? (s: string) => s.trim().normalize("NFC").replace(/\s+/g, " ")
+        : (s: string) => s.trim().toLowerCase().normalize("NFC").replace(/\s+/g, " ");
       let optionsDistinctReports = 0;
       let answerKeyReports = 0;
       let generatedWordReports = 0;

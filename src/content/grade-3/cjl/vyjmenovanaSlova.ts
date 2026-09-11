@@ -1,115 +1,84 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
+import { doplnIY, type Dopln } from "../_iy";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 3. ročníku). Úrovně byly překrývající se výřezy
+// jednoho seznamu (na L3 zbyly čtyři nové úlohy) a nápověda byla u všech
+// úloh stejná. Teď tři oddělené banky:
+// L1 doplnit y/ý ve vyjmenovaném slově · L2 poznat vyjmenované slovo mezi
+// slovy s i/í · L3 stejně znějící slova, kde rozhoduje význam (mýt × mít,
+// být × bít, výr × vír).
 
-/**
- * PED-1 refaktor: dva typy úloh mají teď různé možnosti.
- * - `fill`  — „Doplň: 'b_k'" → options jsou POUZE sporný grafém [y, ý, i, í].
- *   Dříve options obsahovaly celá chybná slova („bík", „byk", „bik") — dítě si je
- *   zapamatovalo.
- * - `which` — „Které slovo PATŘÍ mezi vyjmenovaná po B?" → options jsou 4 SPRÁVNĚ
- *   NAPSANÁ slova, jen jedno je vyjmenované. Dříve byly mezi distraktory
- *   překlepy („mislet", „sinec", „naziivat") — antipattern.
- */
+const D = (veta: string, slovo: string, g: Dopln["g"], s: string, proc: string): Dopln => ({ veta, slovo, g, s, proc });
 
-type Grapheme = "y" | "ý" | "i" | "í";
-
-interface FillItem {
-  kind: "fill";
-  q: string;
-  correct: Grapheme;
-  word: string;
-  e: string;
-}
-
-interface WhichItem {
-  kind: "which";
-  q: string;
-  correct: string;
-  distractors: [string, string, string];
-  e: string;
-}
-
-type PoolItem = FillItem | WhichItem;
-
-const POOL: PoolItem[] = [
-  // ── B ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Na farmě žil velký b_k.'", correct: "ý", word: "býk", e: "'Býk' je vyjmenované slovo po B, proto píšeme Ý. Býk je samec krávy — pamatuj si ho jako zvíře ze seznamu vyjmenovaných slov." },
-  { kind: "fill", q: "Doplň: 'Umřít — to znamená přestat b_t.'", correct: "ý", word: "být", e: "'Být' je vyjmenované slovo po B, proto píšeme Ý. Pozor — 'bít' (bít holí) se píše s Í, protože to je úplně jiné slovo s jiným významem!" },
-  { kind: "fill", q: "Doplň: 'V potoce žila velká b_lina.'", correct: "y", word: "bylina", e: "'Bylina' je vyjmenované slovo po B, proto píšeme Y. Byliny jsou léčivé rostliny — třeba máta nebo heřmánek." },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po B?", correct: "kobyla", distractors: ["kabela", "kabel", "kabát"], e: "'Kobyla' je přímo v seznamu vyjmenovaných slov po B. Ostatní slova (kabela, kabel, kabát) vyjmenovaná nejsou." },
-  { kind: "fill", q: "Doplň: 'Kobyla je samice a b_k je samec.'", correct: "ý", word: "býk", e: "'Býk' je vyjmenované slovo po B — samec krávy. Proto píšeme Ý, ne Í." },
-  // ── L ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Na sněhu jsme jeli na l_žích.'", correct: "y", word: "lyžích", e: "'Lyže' je vyjmenované slovo po L, proto píšeme Y. Všechna slova odvozená od 'lyže' (lyžích, lyžovat, lyžař) také píšeme s Y." },
-  { kind: "fill", q: "Doplň: 'Kůra stromu se jmenuje l_ko.'", correct: "ý", word: "lýko", e: "'Lýko' je vyjmenované slovo po L, proto píšeme Ý. Lýko je měkká část pod kůrou stromu." },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po L?", correct: "lysý", distractors: ["liška", "lípa", "letadlo"], e: "'Lysý' je vyjmenované slovo po L — znamená bez vlasů nebo bez srsti. Liška, lípa ani letadlo mezi vyjmenovaná slova nepatří — po L v nich píšeme I." },
-  { kind: "fill", q: "Doplň: 'Na obloze se bl_skalo.'", correct: "ý", word: "blýskalo", e: "'Blýskat se' je vyjmenované slovo po L, proto píšeme Ý. Blýskání je záblesk světla — třeba při bouřce." },
-  // ── M ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'M_dlo voní růžemi.'", correct: "ý", word: "Mýdlo", e: "'Mýdlo' je vyjmenované slovo po M, proto píšeme Ý. Mýdlem se myjeme — a myje se právě přes Y!" },
-  { kind: "fill", q: "Doplň: 'M_t nádobí je důležité.'", correct: "ý", word: "Mýt", e: "'Mýt' (umývat) je vyjmenované slovo po M, proto píšeme Ý. Pozor — 'mít' (vlastnit něco) se píše s Í, protože to je jiné slovo!" },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po M?", correct: "myslet", distractors: ["milovat", "mistr", "místy"], e: "'Myslet' je vyjmenované slovo po M. 'Milovat', 'mistr' i 'místy' vyjmenovaná nejsou — píší se s I." },
-  { kind: "fill", q: "Doplň: 'Celý den jsme se m_lili, kde je cesta.'", correct: "ý", word: "mýlili", e: "'Mýlit se' je vyjmenované slovo po M, proto píšeme Ý. Mýlit se znamená dělat chyby nebo se plést." },
-  // ── P ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'P_cha předchází pád.'", correct: "ý", word: "Pýcha", e: "'Pýcha' je vyjmenované slovo po P, proto píšeme Ý. Pýcha znamená, když si někdo myslí, že je lepší než ostatní." },
-  { kind: "fill", q: "Doplň: 'Brambory jsou v p_tli.'", correct: "y", word: "pytli", e: "'Pytel' je vyjmenované slovo po P, proto píšeme Y. Jeho tvary (v pytli, v pytlíku) píšeme také s Y, protože jde o stejné slovo." },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po P?", correct: "pyl", distractors: ["pila", "pili", "pták"], e: "'Pyl' je vyjmenované slovo po P — je to žlutý prášek z květin. 'Pila' (nástroj), 'pili' (minulý čas od pít) a 'pták' vyjmenovaná nejsou — píší se s I." },
-  { kind: "fill", q: "Doplň: 'Zločinec musí p_kat za svůj čin.'", correct: "y", word: "pykat", e: "'Pykat' je vyjmenované slovo po P, proto píšeme Y. Pykat za čin znamená nést trest nebo následky za špatný skutek." },
-  // ── S ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'S_r je z mléka.'", correct: "ý", word: "Sýr", e: "'Sýr' je vyjmenované slovo po S, proto píšeme Ý. Sýr se vyrábí z mléka — a hned si vzpomeneš na Ý jako v slově sýr!" },
-  { kind: "fill", q: "Doplň: 'Po obědě byl s_tý.'", correct: "y", word: "sytý", e: "'Sytý' je vyjmenované slovo po S, proto píšeme Y. Sytý znamená, že ses najedl a máš plné břicho." },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po S?", correct: "syn", distractors: ["sen", "silák", "síla"], e: "'Syn' je vyjmenované slovo po S — je to chlapec v rodině. 'Sen', 'silák' ani 'síla' vyjmenovaná nejsou — píší se s I nebo Í." },
-  { kind: "fill", q: "Doplň: 'S_rový sýr není zralý.'", correct: "y", word: "Syrový", e: "'Syrový' je vyjmenované slovo po S, proto píšeme Y. Syrový znamená čerstvý a nezpracovaný — jako syrové mléko." },
-  // ── V ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Vlk začal v_t na měsíc.'", correct: "ý", word: "výt", e: "'Výt' je vyjmenované slovo po V, proto píšeme Ý. Výt znamená vydávat ten táhlý zvuk, jako vlci v noci." },
-  { kind: "fill", q: "Doplň: 'Má špatný zv_k vstávat pozdě.'", correct: "y", word: "zvyk", e: "'Zvyk' patří do rodiny vyjmenovaného slova 'zvykat' po V, proto píšeme Y. Zvyk je něco, co děláme pravidelně a automaticky." },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po V?", correct: "výskat", distractors: ["vidět", "vítr", "vítat"], e: "'Výskat' je vyjmenované slovo po V — výskat znamená radostně křičet. 'Vidět', 'vítr' i 'vítat' mezi vyjmenovaná slova nepatří." },
-  // ── Z ─────────────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Přijď brz_, čekám na tebe.'", correct: "y", word: "brzy", e: "'Brzy' je vyjmenované slovo po Z, proto píšeme Y. Brzy znamená za chvíli nebo co nejdříve." },
-  { kind: "fill", q: "Doplň: 'Plazí jaz_k je rozdvojený.'", correct: "y", word: "jazyk", e: "'Jazyk' je vyjmenované slovo po Z, proto píšeme Y. Jazyk je orgán v ústech — a hadi mají rozdvojený jazyk!" },
-  { kind: "which", q: "Které slovo PATŘÍ mezi vyjmenovaná po Z?", correct: "nazývat", distractors: ["namočit", "napsat", "nakoupit"], e: "'Nazývat' je vyjmenované slovo po Z — nazývat něco znamená pojmenovat to. 'Namočit', 'napsat' ani 'nakoupit' vyjmenovaná nejsou." },
+const L1: Dopln[] = [
+  D("Na farmě žil velký b_k.", "býk", "ý", "B", "„Býk“ je vyjmenované slovo po B, proto Ý; vyslovuje se dlouze."),
+  D("Chtěl bych b_t kosmonautem.", "být", "ý", "B", "„Být“ je vyjmenované slovo po B — dlouhé Ý."),
+  D("Kob_la se pásla na louce.", "kobyla", "y", "B", "„Kobyla“ je vyjmenované slovo po B — krátké Y."),
+  D("V zimě jezdíme na l_žích.", "lyžích", "y", "L", "„Lyže“ je vyjmenované slovo po L, i tvar „lyžích“ má Y."),
+  D("Strýc je úplně l_sý.", "lysý", "y", "L", "„Lysý“ je vyjmenované slovo po L — krátké Y."),
+  D("Na umyvadle leží m_dlo.", "mýdlo", "ý", "M", "„Mýdlo“ patří k vyjmenovanému „mýt“ — dlouhé Ý."),
+  D("Včely sbírají p_l.", "pyl", "y", "P", "„Pyl“ je vyjmenované slovo po P — krátké Y."),
+  D("Brambory jsou v p_tli.", "pytli", "y", "P", "„Pytel“ je vyjmenované slovo po P, i „v pytli“ má Y."),
+  D("Na chleba si dám s_r.", "sýr", "ý", "S", "„Sýr“ je vyjmenované slovo po S — dlouhé Ý."),
+  D("Pan Novák má s_na a dceru.", "syna", "y", "S", "„Syn“ je vyjmenované slovo po S — krátké Y."),
+  D("V noci houká v_r.", "výr", "ý", "V", "„Výr“ (sova) je vyjmenované slovo po V — dlouhé Ý."),
+  D("Vlk začal v_t na měsíc.", "výt", "ý", "V", "„Výt“ je vyjmenované slovo po V — dlouhé Ý."),
+  D("Jaz_k máme v puse.", "jazyk", "y", "Z", "„Jazyk“ je vyjmenované slovo po Z — krátké Y."),
 ];
 
-const GRAPHEMES: readonly Grapheme[] = ["y", "ý", "i", "í"] as const;
+// [souhláska, vyjmenované slovo, tři slova s i/í po stejné souhlásce, druhé znění otázky]
+const L2: [string, string, [string, string, string], boolean][] = [
+  ["B", "býk", ["bílý", "bída", "bič"], false], ["B", "dobytek", ["bílek", "bizon", "bitva"], true],
+  ["L", "slyšet", ["slina", "klín", "líný"], false], ["L", "plynout", ["plivat", "plíce", "lípa"], true],
+  ["M", "myslet", ["milovat", "mistr", "místo"], false], ["M", "hmyz", ["smích", "mince", "míra"], true],
+  ["P", "pytel", ["pila", "pivo", "písek"], false], ["P", "pykat", ["pilot", "píšťala", "pití"], true],
+  ["S", "sýkora", ["síto", "silný", "sirka"], false], ["S", "sypat", ["síla", "sídlo", "sít"], true],
+  ["V", "vysoký", ["vidět", "vítr", "víla"], false], ["V", "zvykat", ["vidle", "vinout", "vítat"], true],
+  ["Z", "nazývat", ["zima", "zítra", "získat"], false],
+];
 
-function makeTask(item: PoolItem): PracticeTask {
-  if (item.kind === "fill") {
-    return {
-      question: item.q,
-      correctAnswer: item.correct,
-      // Sporný grafém — vždy stejná sada, dítě si nezapamatuje chybnou variantu slova.
-      options: [...GRAPHEMES],
+function ktere([s, vyjm, jina, druhe]: [string, string, [string, string, string], boolean]): PracticeTask {
+  return choice(druhe ? `Které z těchto slov je vyjmenované slovo po ${s}?` : `Které slovo patří mezi vyjmenovaná slova po ${s}?`, vyjm,
+    jina.map((w) => ({ value: w, why: `„${w}“ mezi vyjmenovaná slova po ${s} nepatří — proto se v něm píše i/í.` })) as never, {
       hints: [
-        "Je slovo v seznamu vyjmenovaných po dané souhlásce (nebo je jeho příbuzné)?",
-        "Ano → tvrdé Y/Ý. Ne → měkké I/Í.",
+        druhe
+          ? `Které slovo z nabídky se píše s y po ${s}? Vyjmenuj si řadu po ${s} nahlas.`
+          : `Zkus si říct vyjmenovaná slova po ${s}. Které slovo z nabídky v té řadě zazní?`,
+        `Ostatní slova v nabídce se píšou s i/í, protože mezi vyjmenovaná nepatří. Když si nejsi jistý nebo jistá, řekni si celou řadu po ${s} od začátku.`,
       ],
-      explanation: item.e,
-    };
-  }
-  return {
-    question: item.q,
-    correctAnswer: item.correct,
-    // Všechna 4 slova správně napsaná — jen 1 je vyjmenované. Test rozpoznání
-    // příslušnosti, ne pravopisný trik.
-    options: shuffle([item.correct, ...item.distractors]),
-    hints: [
-      "Vyjmenovaná slova = zvláštní seznam slov s Y/Ý po B, L, M, P, S, V, Z.",
-      "Ostatní slova (i po stejné souhlásce) píšeme s I/Í.",
-    ],
-    explanation: item.e,
-  };
+      explanation: `„${vyjm}“ je vyjmenované slovo po ${s}, proto se píše s y/ý. Ostatní slova mezi vyjmenovaná nepatří.`,
+    });
 }
 
+const L3: Dopln[] = [
+  D("Musím si m_t ruce.", "mýt", "ý", "M", "„Mýt“ znamená umývat — je to vyjmenované slovo, dlouhé Ý."),
+  D("Chci m_t psa.", "mít", "í", "M", "„Mít“ znamená vlastnit — to vyjmenované slovo není, píše se Í."),
+  D("Kovář začal b_t do železa.", "bít", "í", "B", "„Bít“ znamená tlouct — vyjmenované slovo to není, píše se Í."),
+  D("Chtěla bych b_t doma.", "být", "ý", "B", "„Být“ znamená existovat, zůstávat — vyjmenované slovo, Ý."),
+  D("V lese houká v_r.", "výr", "ý", "V", "„Výr“ je sova — vyjmenované slovo, Ý."),
+  D("Ve vodě se točil v_r.", "vír", "í", "V", "„Vír“ je točící se proud vody — vyjmenované slovo to není, Í."),
+  D("Vlci začali v_t.", "výt", "ý", "V", "„Výt“ je zvuk vlka — vyjmenované slovo, Ý."),
+  D("Maminka začala v_t věnec.", "vít", "í", "V", "„Vít“ věnec znamená splétat — vyjmenované slovo to není, Í."),
+  D("L_že nechte v chodbě.", "Lyže", "y", "L", "„Lyže“ je vyjmenované slovo po L — krátké Y."),
+  D("Kočka l_že mléko.", "líže", "í", "L", "„Líže“ je od slova lízat — vyjmenované slovo to není, Í."),
+  D("Na zahradě rostou b_liny.", "byliny", "y", "B", "„Bylina“ je vyjmenované slovo po B — krátké Y."),
+  D("Na louce kvetou b_lé kopretiny.", "bílé", "í", "B", "„Bílý“ vyjmenované slovo není — píše se Í."),
+  D("Po obědě jsem s_tý.", "sytý", "y", "S", "„Sytý“ je vyjmenované slovo po S — krátké Y."),
+];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL.filter((_, i) => i % 3 === 0).slice(0, 12)
-    : level === 2 ? POOL.slice(0, 18) : POOL;
-  return shuffle(pool).slice(0, 16).map(makeTask);
+  if (level === 2) return shuffle(L2).map(ktere);
+  const pool = level === 1 ? L1 : L3;
+  return shuffle(pool).map((d) => doplnIY(d, level === 1
+    ? [
+      `Ve větě „${d.veta}“: patří doplňované slovo mezi vyjmenovaná slova po ${d.s}?`,
+      "Po obojetných souhláskách b, f, l, m, p, s, v, z píšeme y/ý jen ve vyjmenovaných slovech a ve slovech příbuzných. Pak ještě poslechni, jestli je samohláska krátká, nebo dlouhá.",
+    ]
+    : [
+      `Co znamená doplňované slovo ve větě „${d.veta}“? Patří k vyjmenovanému slovu, nebo jen podobně zní?`,
+      "Stejně znějící slova se píšou podle významu — y/ý dostane jen to slovo, které patří do řady vyjmenovaných slov nebo do jejich rodiny. Pak rozhodni o délce samohlásky.",
+    ]));
 }
 
 export const VYJMENOVANASLOVA: TopicMetadata[] = [

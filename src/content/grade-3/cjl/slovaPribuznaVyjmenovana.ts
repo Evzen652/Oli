@@ -1,103 +1,81 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
+import { doplnIY, type Dopln } from "../_iy";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 3. ročníku). Úrovně byly překrývající se výřezy
+// jednoho seznamu (na L3 zbyly čtyři nové úlohy). Teď tři oddělené banky:
+// L1 doplnit y/ý ve slově příbuzném s vyjmenovaným · L2 najít příbuzné slovo
+// mezi slovy s i/í · L3 příbuzná slova s předponou nebo v jiném tvaru a slova,
+// která jen podobně znějí (letiště, bílý).
 
-/**
- * PED-1: dvě šablony úloh
- *  - `fill`  — „Doplň: ..." → options = sporný grafém [y, ý, i, í].
- *  - `which` — „Příbuzné slovo k 'X' je:" → 4 správně napsaná slova, jen 1 je z rodiny.
- *
- * Předtím byly u obou typů distraktory tvořené záměnami písmen („bidlení",
- * „bystri", „ližař", „mišlenka") — dítě si takový chybný tvar zapamatuje.
- */
+const D = (veta: string, slovo: string, g: Dopln["g"], s: string, proc: string): Dopln => ({ veta, slovo, g, s, proc });
 
-type Grapheme = "y" | "ý" | "i" | "í";
-
-interface FillItem {
-  kind: "fill";
-  q: string;
-  correct: Grapheme;
-  word: string;
-  e: string;
-}
-
-interface WhichItem {
-  kind: "which";
-  q: string;
-  correct: string;
-  distractors: [string, string, string];
-  e: string;
-}
-
-type PoolItem = FillItem | WhichItem;
-
-const POOL: PoolItem[] = [
-  // ── po B ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Koupili jsme nové b_dlení.'", correct: "y", word: "bydlení", e: "Slovo 'bydlení' patří do rodiny vyjmenovaného slova 'být' — bydlet, bydliště, bydlení. Po souhlásce B u vyjmenovaných a jejich příbuzných píšeme vždy Y." },
-  { kind: "fill", q: "Doplň: 'Na louce se pásl b_k a krávy.'", correct: "ý", word: "býk", e: "Slovo 'býk' je vyjmenované slovo po B, proto píšeme Ý. Býk je samec krávy — pamatuj si ho jako jedno z vyjmenovaných slov." },
-  { kind: "fill", q: "Doplň: 'B_strý potok tekl přes kameny.'", correct: "y", word: "Bystrý", e: "Slovo 'bystrý' je vyjmenované slovo po B — znamená rychlý nebo chytrý. Patří k němu i příbuzná 'bystřina' (rychlý potok)." },
-  { kind: "which", q: "Příbuzné slovo k 'být' je:", correct: "bydliště", distractors: ["bidlo", "bičovat", "bílek"], e: "Slovo 'bydliště' patří do rodiny slova 'být' — bydlet, bydlení, bydliště. 'Bidlo' (tyč) a 'bičovat' jsou skutečná slova, ale s vyjmenovanými nesouvisí; 'bílek' je od 'bílý' (barva)." },
-  // ── po L ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Na l_žích jsme jeli z kopce.'", correct: "y", word: "lyžích", e: "Slovo 'lyže' je vyjmenované po L, takže 'lyžích' (6. pád od lyže) se píše také s Y. Celá rodina lyže, lyžař, lyžování má Y." },
-  { kind: "fill", q: "Doplň: 'Kůra stromu se nazývá l_ko.'", correct: "ý", word: "lýko", e: "Slovo 'lýko' je vyjmenované po L — je to tenká vrstva pod kůrou stromu. Vyjmenovaná slova po L se píší s Y nebo Ý." },
-  { kind: "which", q: "Příbuzné slovo k 'lyže' je:", correct: "lyžař", distractors: ["liška", "lípa", "letadlo"], e: "Slovo 'lyžař' patří do rodiny 'lyže' → lyžař → lyžovat. 'Liška', 'lípa' ani 'letadlo' mezi příbuzná vyjmenovaným po L nepatří." },
-  // ── po M ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'M_dlo voní levandulí.'", correct: "ý", word: "Mýdlo", e: "Slovo 'mýdlo' je příbuzné k vyjmenovanému 'mýt' — mýdlem se myjeme. Píšeme Ý, protože je to příbuzné s vyjmenovaným slovem." },
-  { kind: "fill", q: "Doplň: 'Musíme m_t nádobí po večeři.'", correct: "ý", word: "mýt", e: "Slovo 'mýt' je vyjmenované slovo po M. Pozor, nezaměňuj s 'mít' (vlastnit) — to je jiné slovo s krátkým Í!" },
-  { kind: "which", q: "Příbuzné slovo k 'myslet' je:", correct: "myšlenka", distractors: ["milovat", "místo", "mistr"], e: "Slovo 'myšlenka' patří do rodiny 'mysl → myslet → myšlenka'. 'Milovat', 'místo' a 'mistr' vyjmenovaná ani příbuzná nejsou." },
-  // ── po P ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'P_cha předchází pád.'", correct: "ý", word: "Pýcha", e: "Slovo 'pýcha' je vyjmenované po P. Příbuzné je 'pyšný' — kdo je pyšný, má v sobě pýchu. Celá rodina se píše s Y/Ý." },
-  { kind: "fill", q: "Doplň: 'Brambory dáme do p_tle.'", correct: "y", word: "pytle", e: "Slovo 'pytel' je vyjmenované po P, proto jeho tvary — pytle, pytlích, pytlíku — se také píší s Y." },
-  { kind: "which", q: "Příbuzné slovo k 'pyšný' je:", correct: "pýcha", distractors: ["pila", "pilný", "písek"], e: "'Pyšný' a 'pýcha' patří do jedné rodiny vyjmenovaných slov po P. 'Pila', 'pilný' a 'písek' s vyjmenovanými nesouvisí — píší se s I nebo Í." },
-  // ── po S ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'S_r je výrobek z mléka.'", correct: "ý", word: "Sýr", e: "Slovo 'sýr' je vyjmenované po S, proto se píše s Ý. Pamatuj si ho zpaměti jako součást řady vyjmenovaných slov." },
-  { kind: "fill", q: "Doplň: 'Byl s_tý, protože hodně snědl.'", correct: "y", word: "sytý", e: "Slovo 'sytý' je vyjmenované po S. Příbuzná slova (sytit, nasytit) se také píší s Y." },
-  // ── po V ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Vlk začal v_t na měsíc.'", correct: "ý", word: "výt", e: "Slovo 'výt' je vyjmenované po V — takto označujeme zvuk vlka. Píšeme Ý, protože je to vyjmenované slovo." },
-  { kind: "which", q: "Příbuzné slovo k 'zvyk' je:", correct: "zvyknout", distractors: ["vlast", "vítr", "vítat"], e: "'Zvyknout' patří do rodiny vyjmenovaného 'zvykat' po V. 'Vlast', 'vítr' ani 'vítat' vyjmenovaná ani příbuzná nejsou." },
-  // ── po Z ──────────────────────────────────────────────
-  { kind: "fill", q: "Doplň: 'Přijď brz_.'", correct: "y", word: "brzy", e: "Slovo 'brzy' je vyjmenované po Z, proto píšeme Y. Brzy znamená za chvíli nebo co nejdříve." },
-  { kind: "which", q: "Příbuzné slovo k 'jazyk' je:", correct: "jazykový", distractors: ["zima", "zítra", "zametat"], e: "'Jazykový' patří do rodiny 'jazyk → jazykový → jazykověda'. 'Zima', 'zítra' a 'zametat' vyjmenovaná nejsou — píší se s I nebo Í." },
-  { kind: "fill", q: "Doplň: 'Lékař zkoumal můj jaz_k.'", correct: "y", word: "jazyk", e: "Slovo 'jazyk' je vyjmenované po Z — jazykem mluvíme a ochutnáváme. Vyjmenovaná slova po Z píšeme s Y." },
+const L1: Dopln[] = [
+  D("Napiš na obálku své b_dliště.", "bydliště", "y", "B", "„Bydliště“ patří k vyjmenovanému „bydlit“ — Y."),
+  D("Pes má v boudě pěkný příb_tek.", "příbytek", "y", "B", "„Příbytek“ patří k vyjmenovanému „bydlit, byt“ — Y."),
+  D("Každý ob_vatel města dostal leták.", "obyvatel", "y", "B", "„Obyvatel“ je vyjmenované slovo po B — Y."),
+  D("Na svahu jezdil zkušený l_žař.", "lyžař", "y", "L", "„Lyžař“ patří k vyjmenovanému „lyže“ — Y."),
+  D("Opatrně pol_kej tabletu.", "polykej", "y", "L", "„Polykat“ je vyjmenované slovo po L — Y."),
+  D("Dostala jsem skvělou m_šlenku.", "myšlenku", "y", "M", "„Myšlenka“ patří k vyjmenovanému „myslet“ — Y."),
+  D("Prášek na praní voní jako m_dlo.", "mýdlo", "ý", "M", "„Mýdlo“ patří k vyjmenovanému „mýt“ — dlouhé Ý."),
+  D("Bonbony byly v malém p_tlíku.", "pytlíku", "y", "P", "„Pytlík“ patří k vyjmenovanému „pytel“ — Y."),
+  D("Páv je p_šný na svůj ocas.", "pyšný", "y", "P", "„Pyšný“ patří k vyjmenovanému „pýcha“ — krátké Y."),
+  D("Polévka nás dobře nas_tila.", "nasytila", "y", "S", "„Nasytit“ patří k vyjmenovanému „sytý“ — Y."),
+  D("Letadlo stoupalo do v_šky.", "výšky", "ý", "V", "„Výška“ patří k vyjmenovanému „vysoký“ — dlouhé Ý."),
+  D("Na nový dům si musíme zv_knout.", "zvyknout", "y", "V", "„Zvyknout“ patří k vyjmenovanému „zvykat“ — Y."),
+  D("V hodině jsme dělali jaz_kové cvičení.", "jazykové", "y", "Z", "„Jazykový“ patří k vyjmenovanému „jazyk“ — Y."),
 ];
 
-const GRAPHEMES: readonly Grapheme[] = ["y", "ý", "i", "í"] as const;
+// [vyjmenované slovo, souhláska, příbuzné slovo, tři slova s i/í po stejné souhlásce]
+const L2: [string, string, string, [string, string, string]][] = [
+  ["být", "B", "bydlet", ["bidlo", "bitva", "bílý"]], ["lyže", "L", "lyžař", ["lízat", "líný", "lípa"]],
+  ["myslet", "M", "myšlenka", ["milovat", "místo", "mistr"]], ["pytel", "P", "pytlík", ["pila", "pivo", "písek"]],
+  ["sytý", "S", "nasytit", ["síto", "sirka", "síla"]], ["vysoký", "V", "výška", ["vidět", "víla", "vítr"]],
+  ["zvykat", "V", "zvyklost", ["vítat", "vidle", "víko"]], ["jazyk", "Z", "jazykový", ["zima", "zítra", "získat"]],
+  ["mýt", "M", "umyvadlo", ["milý", "míč", "mísa"]], ["slyšet", "L", "neslyšný", ["slina", "slíbit", "klíč"]],
+  ["brzy", "Z", "brzký", ["zima", "zisk", "zívat"]], ["pýcha", "P", "pyšný", ["pilný", "písmeno", "pískat"]],
+  ["kobyla", "B", "kobylka", ["kobliha", "bílek", "bizon"]],
+];
 
-function makeTask(item: PoolItem): PracticeTask {
-  if (item.kind === "fill") {
-    return {
-      question: item.q,
-      correctAnswer: item.correct,
-      options: [...GRAPHEMES],
+function pribuzne([vyjm, s, klic, jina]: [string, string, string, [string, string, string]]): PracticeTask {
+  return choice(`Které slovo je příbuzné s vyjmenovaným slovem „${vyjm}“?`, klic,
+    jina.map((w) => ({ value: w, why: `„${w}“ se slovem „${vyjm}“ nesouvisí — proto se v něm po ${s} píše i/í.` })) as never, {
       hints: [
-        "Je slovo příbuzné s některým vyjmenovaným?",
-        "Ano → Y/Ý. Ne → I/Í.",
+        `Co znamená „${vyjm}“? Které slovo z nabídky s tím významem souvisí?`,
+        `Příbuzné slovo má stejný kořen i podobný význam jako „${vyjm}“, a proto se v něm také píše y/ý. Ostatní slova jen začínají stejnou souhláskou.`,
       ],
-      explanation: item.e,
-    };
-  }
-  return {
-    question: item.q,
-    correctAnswer: item.correct,
-    options: shuffle([item.correct, ...item.distractors]),
-    hints: [
-      "Rodina = mají stejný kořen a význam navazuje na vyjmenované slovo.",
-      "Podobný začátek slova nestačí — musí sedět i význam.",
-    ],
-    explanation: item.e,
-  };
+      explanation: `„${klic}“ patří do rodiny vyjmenovaného slova „${vyjm}“, proto se píše s y/ý.`,
+    });
 }
 
+const L3: Dopln[] = [
+  D("Nový náb_tek je pěkný.", "nábytek", "y", "B", "„Nábytek“ patří k vyjmenovanému „bydlit, byt“ — Y."),
+  D("Zab_dleli se v nové chatě.", "zabydleli", "y", "B", "„Zabydlet se“ patří k „bydlit“ — Y i s předponou."),
+  D("Včely op_lují květy.", "opylují", "y", "P", "„Opylovat“ patří k vyjmenovanému „pyl“ — Y."),
+  D("Ten člověk je nesl_šící.", "neslyšící", "y", "L", "„Neslyšící“ patří k vyjmenovanému „slyšet“ — Y."),
+  D("Letadlo přistálo na let_šti.", "letišti", "i", "L", "„Letiště“ patří k „letět“, ne k vyjmenovanému slovu — píše se I."),
+  D("Maminka vařila b_linkový čaj.", "bylinkový", "y", "B", "„Bylinkový“ patří k vyjmenovanému „bylina“ — Y."),
+  D("Celý týden jsme l_žovali.", "lyžovali", "y", "L", "„Lyžovat“ patří k „lyže“ — Y."),
+  D("Děti radostně v_skaly.", "výskaly", "ý", "V", "„Výskat“ je vyjmenované slovo po V — dlouhé Ý."),
+  D("Na trhu prodávali malé s_rečky.", "sýrečky", "ý", "S", "„Sýreček“ patří k „sýr“ — dlouhé Ý."),
+  D("Umyj si ruce v um_vadle.", "umyvadle", "y", "M", "„Umyvadlo“ patří k vyjmenovanému „mýt“ — Y."),
+  D("Na podlaze ležela b_lá peříčka.", "bílá", "í", "B", "„Bílý“ vyjmenované slovo ani jeho rodina není — Í."),
+  D("Dlouho přem_šlel o úkolu.", "přemýšlel", "ý", "M", "„Přemýšlet“ patří k „myslet“ — tady dlouhé Ý."),
+  D("Dědeček pos_pal cestu pískem.", "posypal", "y", "S", "„Posypat“ patří k vyjmenovanému „sypat“ — Y."),
+];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL.slice(0, 10) : level === 2 ? POOL.slice(0, 15) : POOL;
-  return shuffle(pool).slice(0, 16).map(makeTask);
+  if (level === 2) return shuffle(L2).map(pribuzne);
+  const pool = level === 1 ? L1 : L3;
+  return shuffle(pool).map((d) => doplnIY(d, level === 1
+    ? [
+      `Ve větě „${d.veta}“: ke kterému vyjmenovanému slovu po ${d.s} doplňované slovo patří?`,
+      "Slova příbuzná s vyjmenovanými se píšou stejně jako vyjmenované slovo — s y/ý. Najdi základní slovo a pak poslechni, jestli je samohláska krátká, nebo dlouhá.",
+    ]
+    : [
+      `Ve větě „${d.veta}“: patří slovo do rodiny vyjmenovaného slova, nebo jen podobně zní?`,
+      "Předpona ani jiný tvar na pravopisu nic nemění — rozhoduje rodina slova. Slova, která s vyjmenovaným jen podobně znějí, se píšou s i/í. Pak rozhodni o délce samohlásky.",
+    ]));
 }
 
 export const SLOVAPRIBYZNAVANJE: TopicMetadata[] = [

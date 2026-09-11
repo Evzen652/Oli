@@ -72,72 +72,72 @@
     "taskCount": 27
   },
   "g3-cjl-dialog-pravidla": {
-    "hash": "31cb4f6caec4f97dc91927ade5c7c7bac2d37a7b",
-    "taskCount": 12
+    "hash": "b1a781015473a97f87751c87eb073dd37c23b3df",
+    "taskCount": 39
   },
   "g3-cjl-jazykova-vychova-nauka-o-slove-slova-pribuzna-koren-slova": {
-    "hash": "8642f09d01f96457698186f19a0e03cf40898d81",
-    "taskCount": 33
+    "hash": "0a07e478d4513648e888c89a0f96fff562c610a2",
+    "taskCount": 39
   },
   "g3-cjl-jazykova-vychova-nauka-o-slove-slova-souznacna-synonyma-a-protikladna-antonyma": {
-    "hash": "0ac7b8ffc6a5a9234ddb0c2358a2b1438ecc82b0",
-    "taskCount": 33
+    "hash": "1bc89f6d4b2c609c4a0a79f3e8c1dabdfa6660b8",
+    "taskCount": 39
   },
   "g3-cjl-omluvenka-zprava": {
-    "hash": "cb31364d0ef6f682d65717d3fff39c2ddb1e722b",
-    "taskCount": 12
+    "hash": "51d49b03777b715e3c9e21a1225399a52b8b61d0",
+    "taskCount": 39
   },
   "g3-cjl-popis-predmetu": {
-    "hash": "b5b542cc62953f9113c96c20ced5425ec2526d40",
-    "taskCount": 12
+    "hash": "d4b897fbc59f7dfce11f2ad3b4448dce05928af5",
+    "taskCount": 39
   },
   "g3-cjl-reprodukce-textu": {
-    "hash": "29f0c96663f26735e027d601d288bfaf6b23f0a7",
-    "taskCount": 10
+    "hash": "c2a5a34cee4a1fab1ef9b1f3175323d9fb09d291",
+    "taskCount": 39
   },
   "g3-cjl-sebekontrola-projevu": {
-    "hash": "8cb7a750a604c75a016a773cda9d45aecea982a3",
-    "taskCount": 10
+    "hash": "183d2c4d1b0cdb5dbf85aa7dcc329ac0e95706b1",
+    "taskCount": 39
   },
   "g3-cjl-slovni-druhy": {
-    "hash": "5a7b5b17b6ac2eebf51e500abbc0b87f30b06187",
-    "taskCount": 16
+    "hash": "aa474d3716db8082d7b52767695660192e6b3ab3",
+    "taskCount": 39
   },
   "g3-cjl-tvorive-cinnosti": {
-    "hash": "bafbd92f05933f48918de992e6a789e47d001097",
-    "taskCount": 10
+    "hash": "282ba9184a980064fd67d47d1f5d3c72a3959466",
+    "taskCount": 39
   },
   "g3-cjl-uhledne-psani": {
-    "hash": "e8009c01789f5c63700aeed0e39fdb32b493aecb",
-    "taskCount": 10
+    "hash": "f6c9375b193df6a2dec7216c9d51b6d7d4ef20f6",
+    "taskCount": 39
   },
   "g3-cjl-vlastni-vytvarny-doprovod": {
-    "hash": "9960ffd07b526b4544f670ae7e130c7a85b2960f",
-    "taskCount": 10
+    "hash": "94d73867110f2ca143587fc7e6983e1f93b1f69b",
+    "taskCount": 39
   },
   "g3-cjl-vypravovani-osnova": {
-    "hash": "1065a259bc7c9391127e3fd2b50b8c172825fb36",
-    "taskCount": 12
+    "hash": "d56660bcfd0ae29bac1b3c88784561199b68373e",
+    "taskCount": 39
   },
   "g3-mat-nasobeni-10-100-zbytkem": {
-    "hash": "c4bbef658a04021e73c3d04b391fce88ae2696c2",
-    "taskCount": 42
+    "hash": "4b83e615b13d736947af093dec2aeb105c39a21e",
+    "taskCount": 78
   },
   "g3-mat-nasobeni-deleni-mala-nasobilka": {
-    "hash": "9c583fcbaa7c676529ef7e95bc4cf5de2d524bb3",
-    "taskCount": 69
+    "hash": "f7800d1fac038f97ce49198a04ec792f1c3986bb",
+    "taskCount": 116
   },
   "g3-mat-obvod-trojuhelniku-ctverce-obdelniku": {
     "hash": "dec7e53eb0b5b6581bf0aeac6724997fe068a51f",
     "taskCount": 86
   },
   "g3-mat-prevody-delky": {
-    "hash": "4e9b979d8b97d1069be4bb5e1796cd60277d6851",
-    "taskCount": 60
+    "hash": "dd6ddee3090709822255b92050d1e885bc13c2a5",
+    "taskCount": 90
   },
   "g3-mat-prevody-hmotnost-objem-cas": {
-    "hash": "5c7c96583b67ee010ec840bcfb2d86fcabf07228",
-    "taskCount": 64
+    "hash": "0e87be48e1246c373fd45363aae3fa6bd1400fce",
+    "taskCount": 103
   },
   "g3-mat-scitani-odcitani-1000": {
     "hash": "0363e68fc5253ce1e2514ba1a61ed35b6abae142",

@@ -1,42 +1,91 @@
-﻿import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { shuffle, urcovaci, type Kategorie } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 3. ročníku). Úrovně byly překrývající se výřezy
+// jednoho seznamu a všechny úlohy měly stejnou nápovědu, která u podstatných
+// jmen prozrazovala odpověď. Teď tři oddělené banky:
+// L1 podstatné jméno, přídavné jméno, sloveso · L2 zájmeno, číslovka,
+// příslovce, předložka, spojka · L3 částice, citoslovce a slova, která mění
+// druh podle věty („večer" jako kdy × jako část dne).
 
-const POOL: { q: string; a: string; opts: string[]; e: string }[] = [
-  { q: "Jaký slovní druh je slovo 'pes' ve větě 'Pes štěká.'?", a: "Podstatné jméno", opts: ["Podstatné jméno", "Přídavné jméno", "Sloveso", "Příslovce"], e: "Slovo 'pes' pojmenovává zvíře — odpovídá na otázku 'Co?' nebo 'Kdo?'. Slova, která odpovídají na tyto otázky, jsou podstatná jména." },
-  { q: "Jaký slovní druh je slovo 'velký' ve větě 'Velký pes štěká.'?", a: "Přídavné jméno", opts: ["Přídavné jméno", "Podstatné jméno", "Sloveso", "Zájmeno"], e: "Slovo 'velký' říká, jaký je pes — odpovídá na otázku 'Jaký?'. Slova, která popisují vlastnosti věcí nebo osob, jsou přídavná jména." },
-  { q: "Jaký slovní druh je slovo 'štěká' ve větě 'Pes štěká.'?", a: "Sloveso", opts: ["Sloveso", "Podstatné jméno", "Přídavné jméno", "Příslovce"], e: "Slovo 'štěká' říká, co pes dělá — odpovídá na otázku 'Co dělá?'. Slova vyjadřující děj nebo stav jsou slovesa." },
-  { q: "Jaký slovní druh je slovo 'rychle' ve větě 'Pes běží rychle.'?", a: "Příslovce", opts: ["Příslovce", "Přídavné jméno", "Sloveso", "Podstatné jméno"], e: "Slovo 'rychle' říká, jak pes běží — odpovídá na otázku 'Jak?'. Příslovce popisují okolnosti děje, třeba kde, kdy nebo jak se něco děje." },
-  { q: "Jaký slovní druh je slovo 'on' ve větě 'On jde domů.'?", a: "Zájmeno", opts: ["Zájmeno", "Podstatné jméno", "Přídavné jméno", "Sloveso"], e: "Slovo 'on' zastupuje podstatné jméno — třeba místo 'Petr jde domů' řekneme 'On jde domů'. Slova, která nahrazují jména, se nazývají zájmena." },
-  { q: "Jaký slovní druh je slovo 'pět' ve větě 'Mám pět jablek.'?", a: "Číslovka", opts: ["Číslovka", "Podstatné jméno", "Přídavné jméno", "Příslovce"], e: "Slovo 'pět' udává počet jablek — odpovídá na otázku 'Kolik?'. Slova vyjadřující počet nebo pořadí jsou číslovky." },
-  { q: "Jaký slovní druh je slovo 'v' ve větě 'Sedím v parku.'?", a: "Předložka", opts: ["Předložka", "Spojka", "Příslovce", "Citoslovce"], e: "Slovo 'v' se vždy váže k dalšímu slovu — 'v parku'. Předložky stojí před podstatnými jmény a upřesňují vztahy mezi slovy, třeba kde se něco děje." },
-  { q: "Jaký slovní druh je slovo 'a' ve větě 'Jana a Petr přišli.'?", a: "Spojka", opts: ["Spojka", "Předložka", "Příslovce", "Citoslovce"], e: "Slovo 'a' spojuje dvě jména dohromady — Janu a Petra. Slova, která spojují části věty nebo celé věty, se jmenují spojky." },
-  { q: "Jaký slovní druh je slovo 'ach' ve větě 'Ach, to je krásné!'?", a: "Citoslovce", opts: ["Citoslovce", "Spojka", "Příslovce", "Částice"], e: "Slovo 'ach' vyjadřuje pocit nebo náladu — obdiv, překvapení nebo bolest. Taková slova se nazývají citoslovce a většinou stojí na začátku věty s čárkou." },
-  { q: "Jaký slovní druh je slovo 'ne' ve větě 'Ne, to není pravda.'?", a: "Částice", opts: ["Částice", "Citoslovce", "Příslovce", "Spojka"], e: "Slovo 'ne' vyjadřuje postoj mluvčího — popírá nebo odmítá. Částice nevyjadřují děj ani vlastnost, ale dávají větě zvláštní nádech jako popření, výzva nebo pochybnost." },
-  { q: "Kolik slovních druhů existuje v češtině?", a: "Deset", opts: ["Deset", "Osm", "Dvanáct", "Šest"], e: "V češtině existuje přesně deset slovních druhů: podstatné jméno, přídavné jméno, zájmeno, číslovka, sloveso, příslovce, předložka, spojka, částice a citoslovce." },
-  { q: "Podstatná jména označují:", a: "Osoby, věci, zvířata, jevy (kdo? co?)", opts: ["Osoby, věci, zvířata, jevy (kdo? co?)", "Vlastnosti (jaký?)", "Děje (co dělá?)", "Okolnosti (kde? kdy? jak?)"], e: "Podstatná jména pojmenovávají vše, na co se můžeme zeptat 'Kdo?' nebo 'Co?' — třeba maminka, stůl, pes nebo déšť." },
-  { q: "Přídavná jména označují:", a: "Vlastnosti", opts: ["Osoby a věci", "Vlastnosti", "Děje a stavy", "Počty"], e: "Přídavná jména popisují vlastnosti — říkají, jaký něco je. Ptáme se na ně otázkou 'Jaký? Jaká? Jaké?' — třeba velký, krásná, modré." },
-  { q: "Slovesa označují:", a: "Děje a stavy", opts: ["Vlastnosti", "Děje a stavy", "Osoby a věci", "Okolnosti"], e: "Slovesa říkají, co se děje nebo jaký stav nastává — ptáme se 'Co dělá?' nebo 'Co se děje?'. Třeba běží, spí, je nebo svítí." },
-  { q: "Slovo 'tři' v 'Mám tři psy.' je:", a: "Číslovka", opts: ["Číslovka", "Přídavné jméno", "Podstatné jméno", "Příslovce"], e: "Slovo 'tři' říká, kolik psů mám — vyjadřuje počet. Číslovky odpovídají na otázku 'Kolik?' nebo 'Kolikátý?', proto to není přídavné jméno." },
-  { q: "Slovo 'on' nahrazuje:", a: "Podstatné jméno (zájmeno)", opts: ["Podstatné jméno (zájmeno)", "Sloveso", "Přídavné jméno", "Příslovce"], e: "Zájmeno 'on' zastupuje podstatné jméno, aby se ve větě nemuselo stále opakovat — místo 'Tomáš šel, Tomáš spal' řekneme 'Tomáš šel, on spal'." },
+const DRUHY: Kategorie[] = [
+  { nazev: "podstatné jméno", znak: "pojmenovává osoby, zvířata, věci a místa (kdo? co?)." },
+  { nazev: "přídavné jméno", znak: "říká, jaká je osoba nebo věc (jaký? který?)." },
+  { nazev: "zájmeno", znak: "zastupuje podstatné jméno (já, ty, on, můj…)." },
+  { nazev: "číslovka", znak: "vyjadřuje počet nebo pořadí (kolik? kolikátý?)." },
+  { nazev: "sloveso", znak: "vyjadřuje, co kdo dělá nebo co se děje." },
+  { nazev: "příslovce", znak: "říká, jak, kde nebo kdy se něco děje." },
+  { nazev: "předložka", znak: "stojí před podstatným jménem nebo zájmenem (v, na, s, do…)." },
+  { nazev: "spojka", znak: "spojuje slova nebo věty (a, ale, protože…)." },
+  { nazev: "částice", znak: "uvozuje větu a vyjadřuje přání nebo postoj (ať, kéž)." },
+  { nazev: "citoslovce", znak: "vyjadřuje pocit nebo napodobuje zvuk (ach, bum, haf)." },
+];
+const PJ = "podstatné jméno", PR = "přídavné jméno", ZA = "zájmeno", CI = "číslovka", SL = "sloveso",
+  PS = "příslovce", PD = "předložka", SP = "spojka", CA = "částice", CT = "citoslovce";
+
+interface Slovo { slovo: string; veta: string; druh: string; klic: string; proc: string; prednost?: string[] }
+const S = (slovo: string, veta: string, druh: string, klic: string, proc: string, prednost?: string[]): Slovo => ({ slovo, veta, druh, klic, proc, prednost });
+
+const L1: Slovo[] = [
+  S("pes", "Pes štěká na pošťáka.", PJ, "slovo pojmenovává zvíře, ptáme se kdo? co?", "„Pes“ pojmenovává zvíře — podstatné jméno."),
+  S("červené", "Na stole leží červené jablko.", PR, "slovo říká, jaké je jablko", "„Červené“ říká, jaké jablko je — přídavné jméno."),
+  S("skáče", "Veverka skáče po větvích.", SL, "slovo říká, co veverka dělá", "„Skáče“ je děj — sloveso."),
+  S("babička", "Babička peče buchty.", PJ, "slovo pojmenovává osobu", "„Babička“ pojmenovává osobu — podstatné jméno."),
+  S("malý", "Malý kluk se směje.", PR, "slovo říká, jaký je kluk", "„Malý“ říká, jaký je kluk — přídavné jméno."),
+  S("čte", "Tomáš čte pohádku.", SL, "slovo říká, co Tomáš dělá", "„Čte“ je děj — sloveso."),
+  S("slunce", "Ráno vyšlo slunce.", PJ, "slovo pojmenovává věc na obloze", "„Slunce“ pojmenovává věc — podstatné jméno."),
+  S("teplý", "Pijeme teplý čaj.", PR, "slovo říká, jaký je čaj", "„Teplý“ říká, jaký je čaj — přídavné jméno."),
+  S("spí", "Kočka spí na gauči.", SL, "slovo říká, co kočka dělá", "„Spí“ je děj — sloveso."),
+  S("kolo", "Nové kolo stojí v garáži.", PJ, "slovo pojmenovává věc", "„Kolo“ pojmenovává věc — podstatné jméno."),
+  S("veselá", "Veselá písnička zněla třídou.", PR, "slovo říká, jaká je písnička", "„Veselá“ říká, jaká je písnička — přídavné jméno."),
+  S("plave", "Ryba plave v rybníku.", SL, "slovo říká, co ryba dělá", "„Plave“ je děj — sloveso."),
+  S("škola", "Škola začíná v osm.", PJ, "slovo pojmenovává místo, kam chodíš", "„Škola“ pojmenovává místo — podstatné jméno."),
+].map((s) => ({ ...s, prednost: [PJ, PR, SL, PS] }));
+
+const L2: Slovo[] = [
+  S("on", "On jde domů.", ZA, "slovo stojí místo jména kluka", "„On“ zastupuje jméno — zájmeno.", [PJ, PS]),
+  S("pět", "Mám pět jablek.", CI, "slovo udává, kolik jablek mám", "„Pět“ vyjadřuje počet — číslovka.", [PR, PS]),
+  S("rychle", "Pes běží rychle.", PS, "slovo říká, jak pes běží", "„Rychle“ říká, jak se něco děje — příslovce.", [PR, SL]),
+  S("v", "Sedím v parku.", PD, "slovo stojí před slovem park a patří k němu", "„V“ stojí před podstatným jménem — předložka.", [SP, PS]),
+  S("a", "Jana a Petr přišli.", SP, "slovo spojuje dvě jména", "„A“ spojuje slova — spojka.", [PD, CA]),
+  S("my", "My jedeme k moři.", ZA, "slovo stojí místo jmen několika lidí", "„My“ zastupuje jména — zájmeno.", [PJ, CI]),
+  S("třetí", "Jsem třetí v řadě.", CI, "slovo udává pořadí", "„Třetí“ vyjadřuje pořadí — číslovka.", [PR, PS]),
+  S("venku", "Děti si hrají venku.", PS, "slovo říká, kde si děti hrají", "„Venku“ říká kde — příslovce.", [PJ, PD]),
+  S("na", "Kniha leží na stole.", PD, "slovo stojí před slovem stůl a patří k němu", "„Na“ stojí před podstatným jménem — předložka.", [SP, PS]),
+  S("ale", "Chtěl jsem jít ven, ale pršelo.", SP, "slovo spojuje dvě věty", "„Ale“ spojuje věty — spojka.", [PD, PS]),
+  S("dva", "Na stromě sedí dva ptáci.", CI, "slovo udává, kolik je ptáků", "„Dva“ vyjadřuje počet — číslovka.", [PR, ZA]),
+  S("zítra", "Zítra pojedeme na výlet.", PS, "slovo říká, kdy pojedeme", "„Zítra“ říká kdy — příslovce.", [PJ, CI]),
+  S("ona", "Ona má ráda koně.", ZA, "slovo stojí místo jména dívky", "„Ona“ zastupuje jméno — zájmeno.", [PJ, CA]),
 ];
 
+const L3: Slovo[] = [
+  S("ach", "Ach, to je krásné!", CT, "slovo vyjadřuje obdiv, žádnou věc nepojmenovává", "„Ach“ vyjadřuje pocit — citoslovce.", [CA, SP]),
+  S("ať", "Ať už jsi doma!", CA, "slovo uvozuje větu a vyjadřuje přání", "„Ať“ vyjadřuje přání mluvčího — částice.", [SP, CT]),
+  S("bum", "Bum! Spadla kniha.", CT, "slovo napodobuje zvuk pádu", "„Bum“ napodobuje zvuk — citoslovce.", [CA, PS]),
+  S("kéž", "Kéž by už byly prázdniny!", CA, "slovo uvozuje větu a vyjadřuje přání", "„Kéž“ vyjadřuje přání — částice.", [CT, SP]),
+  S("haf", "Pes udělal haf a utekl.", CT, "slovo napodobuje zvuk psa", "„Haf“ napodobuje zvuk — citoslovce.", [PJ, CA]),
+  S("večer", "Večer bylo chladno.", PS, "slovo tu odpovídá na otázku kdy?", "„Večer“ tu říká, kdy bylo chladno — příslovce.", [PJ, PR]),
+  S("večer", "Ten večer byl krásný.", PJ, "slovo tu pojmenovává část dne a stojí před ním „ten“", "„Ten večer“ — tady slovo pojmenovává část dne, je to podstatné jméno.", [PS, PR]),
+  S("jeho", "Jeho pes je hnědý.", ZA, "slovo říká, čí je pes, a stojí místo jména", "„Jeho“ zastupuje jméno majitele — zájmeno.", [PR, CI]),
+  S("jednu", "Máme dva psy a jednu kočku.", CI, "slovo udává, kolik je koček", "„Jednu“ vyjadřuje počet — číslovka.", [ZA, PR]),
+  S("s", "Šel jsem ven s kamarádem.", PD, "slovo stojí před slovem kamarád a patří k němu", "„S“ stojí před podstatným jménem — předložka.", [SP, CA]),
+  S("protože", "Zůstal doma, protože byl nemocný.", SP, "slovo spojuje dvě věty a říká proč", "„Protože“ spojuje věty — spojka.", [PS, CA]),
+  S("vesele", "Děti se vesele smály.", PS, "slovo říká, jak se děti smály", "„Vesele“ říká jak — příslovce (přídavné jméno by bylo veselý).", [PR, SL]),
+  S("hop", "Hop a skočil do vody!", CT, "slovo napodobuje skok, nic nepojmenovává", "„Hop“ napodobuje pohyb — citoslovce.", [SL, CA]),
+];
+
+function uloha(s: Slovo): PracticeTask {
+  return urcovaci(`Jaký slovní druh je slovo „${s.slovo}“ ve větě „${s.veta}“?`, s.druh, DRUHY, {
+    hints: [
+      `Na jakou otázku odpovídá slovo „${s.slovo}“ ve větě „${s.veta}“?`,
+      `Pomůže tohle: ${s.klic}. Ke každému slovnímu druhu patří jiná otázka — kdo? co?, jaký?, co dělá?, kolik?, jak? kde? kdy?`,
+    ],
+    explanation: s.proc,
+  }, s.prednost);
+}
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL.slice(0, 8) : level === 2 ? POOL.slice(0, 12) : POOL;
-  return shuffle(pool).slice(0, 16).map(({ q, a, opts, e }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle([...opts]),
-    hints: ["Ke každému slovnímu druhu patří otázka — zkus si ji položit.", "Některá slova jméno jen zastupují, jiná vyjadřují počet."],
-    explanation: e,
-  }));
+  return shuffle(level === 1 ? L1 : level === 2 ? L2 : L3).map(uloha);
 }
 
 export const SLOVNIDRUHY: TopicMetadata[] = [

@@ -1,86 +1,64 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 3. ročníku): L3 generovala totéž co L2
+// (12 unikátních úloh z 25) a nápovědy byly jednořádkové. Teď oddělené úrovně:
+// L1 násobení deseti · L2 násobení stem a dvojciferné číslo krát deset ·
+// L3 dělení se zbytkem (dělitel 2–5).
+
+function krat(n: number, m: 10 | 100): PracticeTask {
+  const x = n * m;
+  const d: [Distractor, Distractor, Distractor] = m === 10
+    ? [
+      { value: String(x + 10), why: `To je ${n + 1} × 10.` },
+      { value: String(n + 10), why: "Deset jsi přičetl, ne násobil." },
+      { value: String(n * 100), why: "Přidal jsi dvě nuly — to je násobení stem." },
+    ]
+    : [
+      { value: String(n * 10), why: "Přidal jsi jen jednu nulu — to je násobení deseti." },
+      { value: String(n * 1000), why: "Přidal jsi tři nuly." },
+      { value: String(x + 100), why: `To je ${n + 1} × 100.` },
+    ];
+  return choice(`${n} × ${m} = ?`, String(x), d, {
+    hints: [
+      `Kolik nul přibude za číslo ${n}, když ho násobíš ${m === 10 ? "deseti" : "stem"}?`,
+      m === 10
+        ? `Při násobení deseti se každá číslice čísla ${n} posune o jedno místo doleva — jednotky se stanou desítkami.`
+        : `Při násobení stem se každá číslice čísla ${n} posune o dvě místa doleva — jednotky se stanou stovkami.`,
+    ],
+    explanation: `${n} × ${m} = ${x} — za číslo ${n} připíšeme ${m === 10 ? "jednu nulu" : "dvě nuly"}.`,
+  });
+}
+
+const NASOBILKA: Record<number, string> = { 2: "dvou", 3: "tří", 4: "čtyř", 5: "pěti" };
+
+function zbytek(d: number, p: number, z: number): PracticeTask {
+  const delenec = d * p + z;
+  const moznosti: [Distractor, Distractor, Distractor] = [
+    { value: `${p + 1} zbytek ${z}`, why: `${d} × ${p + 1} = ${d * (p + 1)}, to je víc než ${delenec}.` },
+    { value: `${p - 1} zbytek ${z + d}`, why: `Zbytek musí být menší než ${d} — vešel by se tam ještě jeden násobek.` },
+    { value: `${p} zbytek ${(z + 1) % d}`, why: `Zkontroluj odčítání: ${delenec} − ${d * p} = ${z}.` },
+  ];
+  return choice(`${delenec} ÷ ${d} = ? (může být zbytek)`, `${p} zbytek ${z}`, moznosti, {
+    hints: [
+      `Která čísla z násobilky ${NASOBILKA[d]} jsou blízko ${delenec}?`,
+      `Najdi největší násobek dělitele, který není větší než ${delenec}. Kolikrát se dělitel vešel, to je podíl; co zbyde do ${delenec}, patří za slovo zbytek.`,
+    ],
+    explanation: `${d} × ${p} = ${d * p}, ${delenec} − ${d * p} = ${z}. Výsledek: ${p} zbytek ${z}. Zkouška: ${d} × ${p} + ${z} = ${delenec}.`,
+  });
 }
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-
-  for (let i = 0; i < 40; i++) {
-    const type = i % 3;
-
-    if (type === 0) {
-      // Násobení × 10
-      const n = Math.floor(Math.random() * 9) + 1;
-      const correct = n * 10;
-      tasks.push({
-        question: `${n} × 10 = ?`,
-        correctAnswer: String(correct),
-        options: shuffle([String(correct), String(correct + 10), String(correct - 10 > 0 ? correct - 10 : correct + 20), String(n + 10)]),
-        hints: ["Přidej za číslo jednu nulu na konci.", "Násobení deseti posune každou číslici o jedno místo doleva — jednotky se stanou desítkami."],
-        solutionSteps: [`${n} × 10 = ${correct} (přidáme nulu: ${n}0)`],
-      });
-    } else if (type === 1) {
-      // Násobení × 100 (level 2+)
-      const n = level >= 2 ? Math.floor(Math.random() * 9) + 1 : Math.floor(Math.random() * 9) + 1;
-      const mult = level >= 2 ? 100 : 10;
-      const correct = n * mult;
-      tasks.push({
-        question: `${n} × ${mult} = ?`,
-        correctAnswer: String(correct),
-        options: shuffle([String(correct), String(correct + mult), String(correct + 10), String(n + mult)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [`Násobení ${mult} = přidáme ${mult === 10 ? "jednu nulu" : "dvě nuly"} za číslo.`],
-        solutionSteps: [`${n} × ${mult} = ${correct}`],
-      });
-    } else {
-      // Dělení se zbytkem (level 2+)
-      if (level >= 2) {
-        const delitel = Math.floor(Math.random() * 4) + 2; // 2–5
-        const podil = Math.floor(Math.random() * 8) + 1;
-        const zbytek = Math.floor(Math.random() * (delitel - 1));
-        const delenec = delitel * podil + zbytek;
-        const correct = `${podil} zbytek ${zbytek}`;
-        tasks.push({
-          question: `${delenec} ÷ ${delitel} = ? (může být zbytek)`,
-          correctAnswer: correct,
-          options: shuffle([
-            correct,
-            `${podil + 1} zbytek ${zbytek}`,
-            `${podil} zbytek ${(zbytek + 1) % delitel}`,
-            `${podil - 1 >= 0 ? podil - 1 : podil + 2} zbytek ${zbytek}`,
-          ]),
-          hints: [
-            `Hledej největší násobek ${delitel}, který se vejde do ${delenec}.`,
-            `Spočítej kolik celých násobků ${delitel} se vejde, pak odečti od ${delenec} — co zbyde je zbytek.`,
-          ],
-          solutionSteps: [
-            `${delenec} ÷ ${delitel}`,
-            `${delitel} × ${podil} = ${delitel * podil} (vejde se do ${delenec})`,
-            `Zbytek: ${delenec} − ${delitel * podil} = ${zbytek}`,
-            `Výsledek: ${podil} zbytek ${zbytek}`,
-          ],
-        });
-      } else {
-        // level 1: jen násobení 10
-        const n = Math.floor(Math.random() * 9) + 1;
-        const correct = n * 10;
-        tasks.push({
-          question: `Kolik je ${n} × 10?`,
-          correctAnswer: String(correct),
-          options: shuffle([String(correct), String(correct + 10), String(correct + 1), String(correct - 10 > 0 ? correct - 10 : correct + 20)]),
-          hints: ["Násobení 10 — přidáme nulu."],
-          solutionSteps: [`${n} × 10 = ${correct}`],
-        });
-      }
-    }
+  if (level === 1) return shuffle(Array.from({ length: 19 }, (_, i) => krat(i + 1, 10)));
+  if (level === 2) {
+    return shuffle([
+      ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => krat(n, 100)),
+      ...[21, 25, 34, 40, 45, 56, 67, 78, 89, 99].map((n) => krat(n, 10)),
+    ]);
   }
-  return tasks;
+  const vse: PracticeTask[] = [];
+  for (const d of [2, 3, 4, 5]) for (let p = 2; p <= 9; p++) for (let z = 0; z < d; z++) vse.push(zbytek(d, p, z));
+  return shuffle(vse).slice(0, 40);
 }
 
 export const NASOBENI10A100DELENISEZBYTKEM: TopicMetadata[] = [

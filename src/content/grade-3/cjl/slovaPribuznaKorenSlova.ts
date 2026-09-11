@@ -1,65 +1,92 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 3. ročníku). Otázky „Jaký je kořen slov: les,
+// lesní…?" měly odpověď přímo ve znění, L3 byla sjednocením nižších úrovní
+// a nápověda byla u všech úloh stejná. Teď rodiny slov s pastmi (slovo, které
+// jen podobně začíná):
+// L1 které slovo je příbuzné se základním slovem · L2 které slovo mezi
+// příbuzná nepatří · L3 stejný kořen jako odvozené slovo (nejdřív najít
+// základní slovo).
 
-interface QA { q: string; a: string; opts: string[]; e: string }
+interface Rodina { zaklad: string; pribuzna: [string, string, string]; pasti: [string, string, string] }
+const R = (zaklad: string, pribuzna: [string, string, string], pasti: [string, string, string]): Rodina => ({ zaklad, pribuzna, pasti });
 
-const POOL: QA[] = [
-  { q: "Která slova jsou příbuzná se slovem 'les'?", a: "lesní, lesník, lesopark", opts: ["lesní, lesník, lesopark", "lest, lestivý, lestit", "les, lesk, lesknout", "leze, lezec, lezení"], e: "Lesní, lesník i lesopark mají v sobě kořen LES a všechna nějak souvisejí s lesem. Slovo 'lesk' nebo 'leze' zní podobně, ale les s leskem ani lezením nesouvisí." },
-  { q: "Jaký je kořen slov: dům, domek, domácí, domov?", a: "DŮM / DOM", opts: ["DŮM / DOM", "DŮ", "DOMÁ", "DOME"], e: "Ve všech těchto slovech se skrývá část DŮM nebo DOM — domek je malý dům, domácí patří k domu, domov je místo, kde bydlíme. Tato společná část je kořen." },
-  { q: "Které slovo NEPATŘÍ do skupiny příbuzných slov se slovem 'voda'?", a: "vodit", opts: ["vodit", "vodník", "vodopád", "vodní"], e: "Vodník, vodopád a vodní jsou příbuzná se 'vodou' — všechna nějak souvisejí s vodou. Vodit ale znamená vést někoho za ruku, s vodou nemá nic společného." },
-  { q: "Jaký je kořen slov: les, lesní, lesník, lesopark?", a: "LES", opts: ["LES", "LESO", "LE", "LESK"], e: "Slova les, lesní, lesník a lesopark mají všechna společnou část LES. Lesopark je park s lesem, lesník se stará o les — kořen je LES." },
-  { q: "Která slova jsou příbuzná se slovem 'hora'?", a: "horský, horolezec, horník", opts: ["horský, horolezec, horník", "hora, horko, horečka", "hora, hodit, honem", "horský, horký, horečka"], e: "Horský znamená 'patřící k hoře', horolezec leze na hory a horník pracuje pod zemí v hoře. Horko a horečka sice znějí podobně, ale nesouvisejí s horou — jsou to o teplotě." },
-  { q: "Jaký je kořen slov: hora, horský, horolezec, horník?", a: "HOR", opts: ["HOR", "HORO", "HO", "HORA"], e: "Všechna tato slova mají společnou část HOR — hora, horský, horolezec i horník se nějak týkají hor nebo hornin. Kořen HOR je jejich společná část." },
-  { q: "Která slova jsou příbuzná se slovem 'ruka'?", a: "ručka, rukavice, ručník", opts: ["ručka, rukavice, ručník", "ruka, rukovat, rušit", "ručka, ruský, rušno", "rukavice, ručník, rušit"], e: "Ručka je malá ruka, rukavice chrání ruce a ručník je látka na utírání rukou — všechna tato slova mají kořen RUK nebo RUČ a souvisejí s rukou. Rušit nebo ruský s rukou nesouvisejí." },
-  { q: "Jaký je kořen slov: škola, školní, školák, školní?", a: "ŠKOL", opts: ["ŠKOL", "ŠKOLA", "ŠKO", "ŠKOLN"], e: "Ve slovech škola, školní a školák se vždy skrývá část ŠKOL. Školní den je den ve škole, školák je žák ve škole — kořen ŠKOL je jejich společná část." },
-  { q: "Která slova jsou příbuzná se slovem 'země'?", a: "zemský, zeměpis, zemědělec", opts: ["zemský, zeměpis, zemědělec", "zem, zemdlít, zemřít", "zemský, zemřít, zemdlít", "zeměpis, zemřít, zoologický"], e: "Zemský znamená 'patřící k zemi', zeměpis popisuje zemi a zemědělec obdělává zemi. Zemdlít nebo zemřít znějí podobně, ale s pojmem 'země' nesouvisejí." },
-  { q: "Jaký je kořen slov: voda, vodní, vodník, vodopád?", a: "VOD", opts: ["VOD", "VODA", "VO", "VODN"], e: "Vodní, vodník a vodopád — ve všech se skrývá kořen VOD. Vodník žije ve vodě, vodopád je padající voda, vodní znamená 'týkající se vody'." },
-  { q: "Která slova jsou příbuzná se slovem 'strom'?", a: "stromový, stromek, stromořadí", opts: ["stromový, stromek, stromořadí", "strom, stromit, strach", "stromek, strop, strouhanka", "stromořadí, strach, stromový"], e: "Stromek je malý strom, stromový znamená 'patřící ke stromům', stromořadí je řada stromů. Strach nebo strop znějí trochu podobně, ale se stromem nesouvisejí." },
-  { q: "Jaký je kořen slov: květ, kvetoucí, kvítí, rozkvetlý?", a: "KVET / KVĚT", opts: ["KVET / KVĚT", "KVÉTO", "KV", "KVETU"], e: "Květ, kvetoucí, kvítí i rozkvetlý — všechna tato slova mají společný kořen KVET nebo KVĚT a všechna se týkají kvetení. Rozkvetlý strom je strom, který kvete." },
-  { q: "Která slova jsou příbuzná se slovem 'cesta'?", a: "cestovní, cestovatel, procestovat", opts: ["cestovní, cestovatel, procestovat", "cesta, cestovat, čistit", "cesta, cestovat, četník", "cestovní, cestovat, česat"], e: "Cestovní, cestovatel a procestovat mají kořen CEST a všechna nějak souvisejí s cestováním. Čistit nebo česat znějí trochu podobně, ale s cestou nemají nic společného." },
-  { q: "Jaký je kořen slov: kniha, knižní, knihovna, knihkupectví?", a: "KNIH", opts: ["KNIH", "KNIHO", "KNI", "KNIHK"], e: "Knižní znamená 'týkající se knih', knihovna je místo s knihami, knihkupectví prodává knihy — ve všech slovech najdeme kořen KNIH." },
-  { q: "Která slova jsou příbuzná se slovem 'sníh'?", a: "sněžný, sněhulák, sněžit", opts: ["sněžný, sněhulák, sněžit", "sníh, snídat, snít", "sněžit, sniknout, snít", "sněhulák, snézt, snít"], e: "Sněžný, sněhulák a sněžit mají kořen SNĚH nebo SNĚŽ a všechna souvisejí se sněhem. Snídat nebo snít znějí podobně díky 'sn-', ale se sněhem nemají nic společného." },
-  { q: "Jaký je kořen slov: ryba, rybník, rybář, rybí?", a: "RYB", opts: ["RYB", "RYBA", "RY", "RYBN"], e: "Ryba, rybník, rybář i rybí — všechna mají kořen RYB. Rybník je nádrž, kde žijí ryby, rybář ryby loví a rybí polévka je z ryb." },
-  { q: "Která slova jsou příbuzná se slovem 'kůň'?", a: "koňský, koník, koňmo", opts: ["koňský, koník, koňmo", "kůň, kůže, koupit", "koňský, koupit, koňmo", "koník, kousnout, koňský"], e: "Koňský znamená 'patřící koni', koník je malý kůň a koňmo znamená 'na koni' — všechna mají kořen KOŇ nebo KON. Kůže nebo koupit se koně netýkají." },
-  { q: "Jaký je kořen slov: pes, psí, pejsek, psovod?", a: "PES / PS", opts: ["PES / PS", "PESO", "PE", "PEJSK"], e: "Slova pes, psí, pejsek a psovod mají společný kořen PES nebo PS — psovod vede psa, psí boudu používá pes, pejsek je mazlivé slovo pro psa." },
-  { q: "Která slova jsou příbuzná se slovem 'den'?", a: "denní, celodenní, polední", opts: ["denní, celodenní, polední", "den, dění, dýchat", "denní, děsit, denně", "polední, děkovat, denní"], e: "Denní řád je plán na celý den, celodenní znamená 'trvající celý den', polední je uprostřed dne — všechna mají kořen DEN. Děkovat nebo dýchat se dnem nesouvisejí." },
-  { q: "Jaký je kořen slov: město, městský, maloměsto, měšťan?", a: "MĚST / MĚŠ", opts: ["MĚST / MĚŠ", "MĚSTE", "MĚ", "MĚSTO"], e: "Městský patří k městu, maloměsto je malé město, měšťan je obyvatel města — kořen je MĚST nebo MĚŠ. Všechna tato slova nějak souvisejí s městem." },
-  { q: "Která slova jsou příbuzná se slovem 'vítr'?", a: "větrný, větrník, větrat", opts: ["větrný, větrník, větrat", "vítr, vítězit, vítěz", "větrat, vítěz, větrník", "větrník, vítřit, větrat"], e: "Větrný den je plný větru, větrník se točí od větru, větrat znamená pouštět čerstvý vzduch — všechna mají kořen VĚTR. Vítězit nebo vítěz se větrem nesouvisejí." },
-  { q: "Jaký je kořen slov: ptát, otázka, dotaz, zeptat?", a: "PT / TÁZ / TAZ", opts: ["PT / TÁZ / TAZ", "OTÁZKO", "PT", "DOTAZ"], e: "Ptát se, otázka, dotaz a zeptat se — všechna nějak souvisejí s ptaním. Kořen se mění: PT (ptát), TÁZ (otázka), TAZ (dotaz) — ale všechna slova patří do stejné rodiny." },
-  { q: "Která slova jsou příbuzná se slovem 'práce'?", a: "pracovní, pracovník, pracovat", opts: ["pracovní, pracovník, pracovat", "práce, pravda, pravý", "pracovní, pravit, pracovat", "pracovat, pravý, pracovník"], e: "Pracovní den je den plný práce, pracovník je člověk, který pracuje, pracovat znamená dělat práci — kořen PRAC nebo PRACOV. Pravda nebo pravý se prací nesouvisejí." },
-  { q: "Jaký je kořen slov: sůl, solný, solit, osolit?", a: "SOL", opts: ["SOL", "SŮLE", "SO", "SOLIT"], e: "Sůl, solný, solit i osolit — všechna se týkají soli. Kořen je SOL (v sůl se změní na SŮL kvůli délce, ale základ zůstává stejný). Osolit jídlo znamená přidat do něj sůl." },
-  { q: "Která slova jsou příbuzná se slovem 'světlo'?", a: "světelný, svítilna, osvětlení", opts: ["světelný, svítilna, osvětlení", "světlo, světový, světnice", "světelný, světový, svítit", "světlo, svítit, světový"], e: "Světelný výkon se týká světla, svítilna svítí (vydává světlo), osvětlení je zdroj světla — všechna mají kořen SVĚTL nebo SVĚT. Světový nebo světnice mají jiný kořen (svět ve smyslu 'světa')." },
-  { q: "Jaký je kořen slov: noc, noční, půlnoc, nocovat?", a: "NOC", opts: ["NOC", "NOCE", "NO", "NOCOV"], e: "Noc, noční, půlnoc i nocovat — všechna se týkají noci. Noční klid je v noci, půlnoc je uprostřed noci, nocovat znamená strávit noc někde — kořen NOC." },
-  { q: "Která slova jsou příbuzná se slovem 'zima'?", a: "zimní, zimnička, přezimovat", opts: ["zimní, zimnička, přezimovat", "zima, zimat, zímat", "zimní, zimovat, zímat", "přezimovat, zimat, zima"], e: "Zimní oblečení nosíme v zimě, zimnička je drobná třesavka z chladu, přezimovat znamená přečkat zimu — kořen ZIM. Zímat nebo zimat nejsou skutečná slova." },
-  { q: "Jaký je kořen slov: pít, pití, napít, vypít?", a: "PIT / PÍT", opts: ["PIT / PÍT", "PITÍ", "PI", "NAPÍ"], e: "Pít, pití, napít i vypít — všechna se týkají pití. Společná část je PIT/PÍT. 'Na-' a 'vy-' jsou jen předpony, ke kořenu nepatří." },
-  { q: "Která slova patří do skupiny se slovem 'zahrada'?", a: "zahradní, zahradník, zahrádka", opts: ["zahradní, zahradník, zahrádka", "zahrada, zacházet, zahrát", "zahradní, zachovat, zahrát", "zahradník, záhada, zahrádka"], e: "Zahradní nábytek patří do zahrady, zahradník se stará o zahradu, zahrádka je malá zahrada — kořen ZAHRAD. Záhada nebo zacházet se zahradou nesouvisejí, i když začínají podobně." },
-  { q: "Jaký je kořen slov: oko, oční, očko?", a: "OK / OČ", opts: ["OK / OČ", "OKO", "O", "OČKO"], e: "Oko, oční a očko — všechna se týkají oka. Oční lékař léčí oči, očko je malé oko — kořen se mění mezi OK (oko) a OČ (oční, očko), ale jde o stejnou rodinu slov." },
-  { q: "Která slova jsou příbuzná se slovem 'moře'?", a: "mořský, námořník, přímořský", opts: ["mořský, námořník, přímořský", "moře, morát, mořit", "mořský, mořit, modrý", "námořník, morát, mořský"], e: "Mořský vzduch voní mořem, námořník pluje po moři, přímořský kraj leží u moře — kořen MOŘ nebo MOR. Mořit nebo modrý s mořem nesouvisejí." },
-  { q: "Jaký je kořen slov: mluvit, mluvčí, promluva, výmluva?", a: "MLUV", opts: ["MLUV", "MLUVI", "ML", "MLUVIT"], e: "Mluvit, mluvčí, promluva i výmluva — všechna se týkají mluvení. Mluvčí je ten, kdo mluví, promluva je řeč, výmluva je důvod (i když ne vždy pravdivý) — kořen MLUV." },
-  { q: "Která slova jsou příbuzná se slovem 'srdce'?", a: "srdečný, srdcový, nesrdečný", opts: ["srdečný, srdcový, nesrdečný", "srdce, srdeční, srdit", "srdečný, srdit, srdco", "srdit, srdco, srdečný"], e: "Srdečný člověk je laskavý (má velké srdce), srdcový tvar připomíná srdce, nesrdečný je opak srdečného — všechna mají kořen SRDC nebo SRDEČ. Srdit se (zlobit se) do této rodiny významem nepatří." },
+const RODINY_A: Rodina[] = [
+  R("les", ["lesní", "lesník", "lesnatý"], ["lesk", "lest", "lezec"]),
+  R("voda", ["vodník", "vodní", "vodopád"], ["vodit", "vozík", "vosa"]),
+  R("hora", ["horský", "horolezec", "pohoří"], ["horko", "hořet", "horký"]),
+  R("ruka", ["rukavice", "ručník", "ručka"], ["rušit", "ruský", "rum"]),
+  R("škola", ["školák", "školní", "školka"], ["skála", "šikovný", "škoda"]),
+  R("země", ["zemský", "zeměpis", "pozemek"], ["zemřít", "zemdlít", "zeď"]),
+  R("strom", ["stromek", "stromový", "stromořadí"], ["strop", "strach", "struna"]),
+  R("sníh", ["sněhulák", "sněžit", "zasněžený"], ["snídat", "snít", "snop"]),
+  R("ryba", ["rybník", "rybář", "rybí"], ["rybíz", "rychlý", "rýma"]),
+  R("den", ["denní", "polední", "denně"], ["děkovat", "dělat", "deka"]),
+  R("vítr", ["větrný", "větrník", "větrat"], ["vítěz", "vítat", "věta"]),
+  R("noc", ["noční", "půlnoc", "nocovat"], ["nos", "nosit", "novina"]),
+  R("kniha", ["knižní", "knihovna", "knihkupec"], ["kníže", "knoflík", "knedlík"]),
+];
+const RODINY_B: Rodina[] = [
+  R("práce", ["pracovat", "pracovní", "pracovník"], ["pravda", "pravý", "prach"]),
+  R("pes", ["psí", "pejsek", "psovod"], ["pestrý", "pěst", "pero"]),
+  R("oko", ["oční", "očko", "očička"], ["okno", "okurka", "okap"]),
+  R("mluvit", ["mluvčí", "promluva", "výmluva"], ["mlýn", "mlha", "mléko"]),
+  R("srdce", ["srdečný", "srdíčko", "srdnatý"], ["srna", "srp", "srst"]),
+  R("moře", ["mořský", "námořník", "přímoří"], ["mokrý", "most", "moucha"]),
+  R("zahrada", ["zahradní", "zahradník", "zahrádka"], ["zahrát", "zahřát", "zahodit"]),
+  R("dům", ["domek", "domov", "domácí"], ["dým", "důl", "duch"]),
+  R("kůň", ["koník", "koňský", "koníček"], ["kouř", "kousek", "koule"]),
+  R("cesta", ["cestovat", "cestovní", "cestovatel"], ["cena", "celý", "cedit"]),
+  R("sůl", ["solit", "solný", "slánka"], ["sova", "sotva", "sokol"]),
+  R("světlo", ["světelný", "svítilna", "rozsvítit"], ["svatý", "svetr", "svačina"]),
+  R("zima", ["zimní", "přezimovat", "zimník"], ["zítra", "zisk", "zívat"]),
 ];
 
+function pribuzne(r: Rodina): PracticeTask {
+  const [a] = r.pribuzna;
+  // Příklad do nápovědy nesmí klíč obsahovat (lesník × lesní).
+  const b = r.pribuzna.slice(1).find((w) => !w.includes(a)) ?? r.pribuzna[2];
+  return choice(`Které slovo je příbuzné se slovem „${r.zaklad}“?`, a,
+    r.pasti.map((p) => ({ value: p, why: `„${p}“ jen podobně začíná, významem se slovem „${r.zaklad}“ nesouvisí.` })) as never, {
+      hints: [
+        `Které slovo z nabídky má stejný kořen i podobný význam jako „${r.zaklad}“?`,
+        `Příbuzné slovo nese stejný význam jako „${r.zaklad}“ — třeba „${b}“. Past: slovo může začínat podobně a znamenat něco úplně jiného.`,
+      ],
+      explanation: `„${a}“ patří do rodiny slova „${r.zaklad}“ — má stejný kořen a souvisí s ním významem.`,
+    });
+}
+
+function nepatri(r: Rodina): PracticeTask {
+  const [past] = r.pasti;
+  // Pevné pořadí: jedna rodina = jedna úloha (zamíchání by dělalo „nové“ úlohy se stejnou nápovědou).
+  const vse = [...r.pribuzna, past].sort((x, y) => x.localeCompare(y, "cs"));
+  return choice(`Které slovo nepatří mezi slova příbuzná se slovem „${r.zaklad}“: ${vse.join(", ")}?`, past,
+    r.pribuzna.map((p) => ({ value: p, why: `„${p}“ příbuzné je — má stejný kořen jako „${r.zaklad}“ a souvisí s ním významem.` })) as never, {
+      hints: [
+        `Co znamená „${r.zaklad}“? U každého slova z nabídky se zeptej, jestli s tím významem souvisí.`,
+        "Příbuzná slova mají stejný kořen i podobný význam. Jedno slovo jen podobně zní, ale znamená něco úplně jiného.",
+      ],
+      explanation: `„${past}“ jen podobně zní, ale se slovem „${r.zaklad}“ významem nesouvisí. Ostatní slova do rodiny patří.`,
+    });
+}
+
+function stejnyKoren(r: Rodina): PracticeTask {
+  const [odvozene, , klic] = r.pribuzna;
+  return choice(`Které slovo má stejný kořen jako „${odvozene}“?`, klic,
+    r.pasti.map((p) => ({ value: p, why: `„${p}“ jen podobně začíná — s „${odvozene}“ nemá společný význam.` })) as never, {
+      hints: [
+        `K jakému základnímu slovu patří „${odvozene}“? Najdi v nabídce další slovo z téže rodiny.`,
+        `„${odvozene}“ patří ke slovu „${r.zaklad}“. Slovo se stejným kořenem musí souviset i s významem, ne jen podobně začínat.`,
+      ],
+      explanation: `„${odvozene}“ i „${klic}“ patří do rodiny slova „${r.zaklad}“ — mají stejný kořen.`,
+    });
+}
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL.slice(0, 15) : level === 2 ? POOL.slice(15, 30) : POOL;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle(opts),
-    hints: [
-      "Příbuzná slova mají stejný kořen — stejnou část, která nese hlavní význam.",
-      "Kořen najdeš, když porovnáš více příbuzných slov a najdeš, co mají společného.",
-    ],
-    explanation: e,
-  }));
+  if (level === 1) return shuffle(RODINY_A).map(pribuzne);
+  if (level === 2) return shuffle(RODINY_B).map(nepatri);
+  return shuffle(RODINY_A).map(stejnyKoren);
 }
 
 export const SLOVAPRIBYZNAKOREN: TopicMetadata[] = [
