@@ -1,0 +1,4111 @@
+[
+ {
+  "batch": "2|matematika + 2|čeština",
+  "topics": [
+   {
+    "id": "g2-mat-scitani-odcitani-100",
+    "file": "src/content/grade-2/matematika/scitaniAOdcitaniDo100.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "9/10/7",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "86 − 48 = ?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 26,
+      "example": "67 − 4 = ?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 26,
+      "example": "54 + 3 = ?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-ciselna-osa-100",
+    "file": "src/content/grade-2/matematika/ciselnaOsaDo100.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "7/7/7",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Co chybí? 0, 10, ___, 30, 40",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 21,
+      "example": "Co chybí? 20, ___, 24, 26, 28",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 21,
+      "example": "Co chybí? 45, ___, 55, 60, 65",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-cteni-zapis-100",
+    "file": "src/content/grade-2/matematika/cteniZapisPorovnavaniCiselDo100.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "7/7/7",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Které číslo je největší: 29, 92, 39?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 21,
+      "example": "Které číslo je největší: 45, 72, 28?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 21,
+      "example": "Které číslo je největší: 90, 19, 55?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-nasobeni-opakovane",
+    "file": "src/content/grade-2/matematika/nasobeniJakoOpakovaneScitani.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/10/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "10 + 10 = 10 × ?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 28,
+      "example": "10 + 10 = 10 × ?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 28,
+      "example": "10 + 10 = 10 × ?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-nasobilka-2345",
+    "file": "src/content/grade-2/matematika/nasobilka2345.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "18/18/36",
+    "note": "Variabilita stačí; chybí druhá nápověda a feedback, L3 nápovědy nejsou odstupňované.",
+    "findings": [
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 36,
+      "example": "2 × 4 = ?",
+      "levels": "L1,L2"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 36,
+      "example": "? × 4 = 8",
+      "levels": "L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 72,
+      "example": "2 × 4 = ?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-vztah-nasobeni-deleni",
+    "file": "src/content/grade-2/matematika/vztahNasobieniADeleni.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "9/9/9",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "8 ÷ 2 = ?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 18,
+      "example": "8 ÷ 2 = ?",
+      "levels": "L1,L2"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 9,
+      "example": "2 × ? = 16 (hint 'Vzpomeň si na násobilku dvojek.' se opakuje)",
+      "levels": "L3"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 9,
+      "example": "4 × ? = 32",
+      "levels": "L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 27,
+      "example": "8 ÷ 2 = ?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-slovni-ulohy-100",
+    "file": "src/content/grade-2/matematika/slovniUlohyDo100.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/18/10",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 2,
+      "example": "Máš 20 Kč. Koupíš žvýkačky za 8 Kč. Kolik ti zbyde?",
+      "levels": "L1,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 38,
+      "example": "Máš 20 Kč. Koupíš žvýkačky za 8 Kč. Kolik ti zbyde?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 38,
+      "example": "Máš 20 Kč. Koupíš žvýkačky za 8 Kč. Kolik ti zbyde?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "V lese je 24 stromů. Přibyde 8 nových stromů. Kolik jich je ... (13 slov)"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-jednotky",
+    "file": "src/content/grade-2/matematika/jednotkyDlkyHmotnostiObjemu.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/10/12",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 2,
+      "example": "1000 g = 1 kg. Je to pravda?",
+      "levels": "L1,L2"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 32,
+      "example": "1000 g = 1 kg. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 32,
+      "example": "1000 g = 1 kg. Je to pravda?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-mereni-casu",
+    "file": "src/content/grade-2/matematika/mereniCasu.ts",
+    "gate": "FAIL",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/10/10",
+    "note": "Detektor hint leak spustil klíč ve znění otázky (výběr ze dvou), ne samotná nápověda ('Kolik sekund má 1 minuta?'). Brána ale selže, dokud se to nepřeformuluje.",
+    "findings": [
+     {
+      "category": "hint_leak",
+      "severity": "blocker",
+      "count": 1,
+      "example": "Co je delší: 1 minuta nebo 1 sekunda?",
+      "levels": "L1"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "example": "Co je delší: 1 minuta nebo 1 sekunda?",
+      "levels": "L1"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Kolik dopoledních hodin je do poledne?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 28,
+      "example": "Kolik dopoledních hodin je do poledne?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 28,
+      "example": "Kolik dopoledních hodin je do poledne?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-posloupnosti",
+    "file": "src/content/grade-2/matematika/posloupnostiCisel.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "7/7/7",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "30, 35, 40, ___, 50",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 21,
+      "example": "30, 35, 40, ___, 50",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 21,
+      "example": "30, 35, 40, ___, 50",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-tabulky",
+    "file": "src/content/grade-2/matematika/tabulkyAJednoduchaSchema.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "94/99/100",
+    "note": "Parametrický generátor: hints[0] obsahuje data úlohy. Hints[1] a optionFeedback stačí doplnit do šablon (4–5 míst). Fallback hint na ř. 201 je generický.",
+    "findings": [
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 293,
+      "example": "V pytlíku byly 2 kuličky, dokoupili jsme ještě 8 kuliček...",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 293,
+      "example": "V pytlíku byly 2 kuličky, dokoupili jsme ještě 8 kuliček...",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "V pondělí bylo 8 jablek, v úterý 6 jablek. Kolik jablek bylo ... (13 slov)"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-bod-primka-usecka",
+    "file": "src/content/grade-2/matematika/bodPrimkaUsecka.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "9/9/10",
+    "note": "Téměř vše jsou úlohy Ano/Ne i na L2/L3. 'Bod leží na přímce. Je to pravda?' (klíč: pravda) je bez obrázku věcně sporné.",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Přímka nemá konec. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 28,
+      "example": "Přímka nemá konec. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 28,
+      "example": "Přímka nemá konec. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "format",
+      "severity": "real",
+      "count": 20,
+      "example": "Úsečka AB je stejná jako úsečka BA. Je to pravda?",
+      "levels": "L2,L3"
+     },
+     {
+      "category": "factual_error",
+      "severity": "real",
+      "count": 1,
+      "example": "Bod leží na přímce. Je to pravda?"
+     }
+    ]
+   },
+   {
+    "id": "g2-mat-mereni-delky",
+    "file": "src/content/grade-2/matematika/mereniDelkyUsecky.ts",
+    "gate": "FAIL",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/11/12",
+    "note": "Hint leak na L3 je způsobený tím, že klíč '5 cm' stojí ve znění otázky (výběr ze dvou); nápověda sama neprozrazuje. Brána přesto selže.",
+    "findings": [
+     {
+      "category": "hint_leak",
+      "severity": "blocker",
+      "count": 1,
+      "example": "Která úsečka je delší: 5 cm nebo 40 mm?",
+      "levels": "L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 10,
+      "example": "Která úsečka je delší: 12 cm nebo 7 cm?",
+      "levels": "L1,L3"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 2,
+      "example": "Která úsečka je delší: 12 cm nebo 7 cm?",
+      "levels": "L1,L2"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 31,
+      "example": "Která úsečka je delší: 12 cm nebo 7 cm?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 31,
+      "example": "Která úsečka je delší: 12 cm nebo 7 cm?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "Úsečka AB = 3 cm a BC = 7 cm. Jak dlouhá je úsečka AC? (15 slov)"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-pravopis-tvrdych-a-mekkych-souhlasek-i-y-po-souhlaskach",
+    "file": "src/content/grade-2/cjl/pravopisIY.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Jaká souhláska je 'š'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 11,
+      "example": "hint 'K je tvrdá souhláska → píšeme Y/Ý.' sdílí 3 úlohy"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 8,
+      "example": "Jaká souhláska je 'š'?",
+      "levels": "L1"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Jaká souhláska je 'š'?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-skupiny-de-te-ne-be-pe-ve-me",
+    "file": "src/content/grade-2/cjl/skupinyDeTeNe.ts",
+    "gate": "FAIL",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "hint_leak",
+      "severity": "blocker",
+      "count": 1,
+      "example": "Za kterými písmeny se píše ě (skupiny s háčkem)? (hint vypisuje 'd, t, n, b, p, v, m')",
+      "levels": "L1"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Ve kterém slově je skupina 'tě'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Ve kterém slově je skupina 'tě'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Ve kterém slově je skupina 'tě'?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky",
+    "file": "src/content/grade-2/cjl/slabiky.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Kolik slabik má slovo 'les'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Kolik slabik má slovo 'maminka'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Kolik slabik má slovo 'čokoláda'?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci",
+    "file": "src/content/grade-2/cjl/druhyVet.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Jaký druh věty je 'Pes štěká.'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Jaký druh věty je 'Pojď hrát!'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Čím končí tázací věta?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 5,
+      "example": "Která z vět je tázací: 'Otevři okno!' / 'Kdy přijdeš?' / ...",
+      "levels": "L2"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "Která z vět je rozkazovací: 'Venku prší.' / 'Prší dnes?' / ... (14 slov)"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu",
+    "file": "src/content/grade-2/cjl/slovesa.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Které slovo je sloveso: 'pes', 'běhá', 'rychlý'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Které slovo je sloveso: 'řeka', 'teče', 'modrá'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Které slovo je sloveso: 'škola', 'učit', 'velký'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 21,
+      "example": "Které slovo je sloveso: 'pes', 'běhá', 'rychlý'?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno",
+    "file": "src/content/grade-2/cjl/vlastniJmena.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Vlastní jméno psa může být 'Rex'. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Vlastní jméno psa může být 'Rex'. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Vlastní jméno psa může být 'Rex'. Je to pravda?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna",
+    "file": "src/content/grade-2/cjl/slovaProtikladna.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Jak se nazývají slova opačného významu?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Jak se nazývají slova opačného významu?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Jak se nazývají slova opačného významu?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena",
+    "file": "src/content/grade-2/cjl/slovaNadrazena.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Jak se jmenuje konkrétnější slovo pod nadřazeným?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Jak se jmenuje konkrétnější slovo pod nadřazeným?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Jak se jmenuje konkrétnější slovo pod nadřazeným?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
+    "file": "src/content/grade-2/cjl/abecedaRazeni.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Které písmeno přichází v abecedě před 'D'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Které písmeno přichází v abecedě před 'D'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Které písmeno přichází v abecedě před 'D'?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 10,
+      "example": "Které slovo je v abecedě jako poslední: 'vůz', 'ryba', ...",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-literarni-vychova-literarni-zanry-pohadka-rikanky-basen-hadanka",
+    "file": "src/content/grade-2/cjl/pohadkaRikankaBasen.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Co je báseň?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Co je báseň?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Co je báseň?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-literarni-vychova-prace-s-knihou-spisovatel-ilustrator-knihovna",
+    "file": "src/content/grade-2/cjl/spisovatelKniha.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Kdo namaloval obrázky v knize?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Kdo namaloval obrázky v knize?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Kdo namaloval obrázky v knize?",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
+    "file": "src/content/grade-2/cjl/orientaceVTextu.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/8",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Věta nemusí mít na konci žádné znaménko. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "example": "Věta nemusí mít na konci žádné znaménko. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 24,
+      "example": "Věta nemusí mít na konci žádné znaménko. Je to pravda?",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "Obrázek v textu může doplnit nebo vysvětlit, co text říká. ... (13 slov)"
+     }
+    ]
+   },
+   {
+    "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku",
+    "file": "src/content/grade-2/cjl/deleniSlovNaKonciRadku.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/10/9",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "example": "Kam patří rozdělovník, když slovo 'louže' nepatří ...",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 29,
+      "example": "Kam patří rozdělovník, když slovo 'louže' nepatří ...",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 29,
+      "example": "Kam patří rozdělovník, když slovo 'louže' nepatří ...",
+      "levels": "L1,L2,L3"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "batch": "2|prvouka",
+  "topics": [
+   {
+    "id": "g2-prv-hodiny-cas",
+    "file": "src/content/grade-2/prvouka/hodinyKalendarCas.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/14/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1,L2,L3",
+      "example": "Kolik hodin má den?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 29,
+      "levels": "L1,L2,L3",
+      "example": "Kolik hodin má den? (jen hints[0])"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 8,
+      "levels": "L2,L3",
+      "example": "Kolik hodin uplyne od půlnoci do poledne?"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 8,
+      "levels": "L2,L3",
+      "example": "Co trvá déle — týden, nebo měsíc?"
+     }
+    ],
+    "note": "Brána čistá. Klíč ve znění jen u srovnávacích otázek „X, nebo Y?“, tam je nevyhnutelný. Nápovědy jsou unikátní pro úlohu, chybí druhá nápověda a optionFeedback."
+   },
+   {
+    "id": "g2-prv-tradice",
+    "file": "src/content/grade-2/prvouka/tradiceAZvyky.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/13/13",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1,L2,L3",
+      "example": "Co zpíváme o Vánocích?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1,L2,L3",
+      "example": "Co zpíváme o Vánocích?"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 3,
+      "levels": "L3",
+      "example": "Který ze svátků slavíme dřív v roce — Masopust, nebo …?"
+     }
+    ],
+    "note": "Všechny úlohy mají jen jednu nápovědu a žádný feedback. Klíč ve znění jen u srovnávacích otázek na pořadí svátků."
+   },
+   {
+    "id": "g2-prv-sousedstvi",
+    "file": "src/content/grade-2/prvouka/lideVOkoliKamaradstvi.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/14/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 42,
+      "levels": "L1,L2,L3",
+      "example": "Kamaráda pozorně posloucháme, když nám něco vypráví. (true_false)"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 18,
+      "levels": "L1",
+      "example": "Kamaráda pozorně posloucháme, když nám něco vypráví."
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 18,
+      "levels": "L2,L3",
+      "example": "Kamarád ti svěří tajemství a poprosí tě, ať to nikomu…"
+     }
+    ],
+    "note": "Brána hlásí 1× sentence_complexity (otázka má 14 slov) jen k revizi."
+   },
+   {
+    "id": "g2-prv-povolani",
+    "file": "src/content/grade-2/prvouka/povolaniPraceDospelych.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "16/14/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 44,
+      "levels": "L1,L2,L3",
+      "example": "Kdo staví domy z cihel?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 44,
+      "levels": "L1,L2,L3",
+      "example": "Kdo staví domy z cihel?"
+     }
+    ],
+    "note": "U žádné úlohy není hints[1] ani optionFeedback."
+   },
+   {
+    "id": "g2-prv-chovani",
+    "file": "src/content/grade-2/prvouka/pravidlaSlusnehoChovani.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/13/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 39,
+      "levels": "L1,L2,L3",
+      "example": "Umýváme si ruce před jídlem. Je to pravda?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 16,
+      "levels": "L1",
+      "example": "Umýváme si ruce před jídlem. Je to pravda?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 21,
+      "levels": "L2,L3",
+      "example": "Ve frontě u pokladny stojí před tebou několik lidí…"
+     }
+    ],
+    "note": "Brána hlásí 1× sentence_complexity. L3 má přesně 12 úloh."
+   },
+   {
+    "id": "g2-prv-nase-obec",
+    "file": "src/content/grade-2/prvouka/naseObecNazev.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "15/14/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 43,
+      "levels": "L1,L2,L3",
+      "example": "Obec nemá ulice. Je to pravda?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 43,
+      "levels": "L1,L2,L3",
+      "example": "Obec nemá ulice. Je to pravda?"
+     },
+     {
+      "category": "other",
+      "severity": "real",
+      "count": 1,
+      "levels": "L3",
+      "example": "Které tvrzení je správné? (distraktor „Každá obec je město“ je fráze obsažená v klíči)"
+     }
+    ],
+    "note": "Distraktor se textově překrývá s klíčem, chybný od správného může odlišit jen jedno slovo. Ověřit, jestli je volba jednoznačná."
+   },
+   {
+    "id": "g2-prv-orientace-obec",
+    "file": "src/content/grade-2/prvouka/orientaceVObci.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "12/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1,L2,L3",
+      "example": "Co se dělá na hřišti?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 24,
+      "levels": "L1,L2",
+      "example": "Co se dělá na hřišti?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 12,
+      "levels": "L3",
+      "example": "Chceš si přečíst knihu o dinosaurech, ale rodiče nemají…"
+     }
+    ],
+    "note": "Každá úroveň má přesně 12 úloh, tedy hraniční minimum."
+   },
+   {
+    "id": "g2-prv-plan-obce",
+    "file": "src/content/grade-2/prvouka/planObceOkoliSkoly.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 38,
+      "levels": "L1,L2,L3",
+      "example": "Kde je bezpečné místo pro přecházení silnice, označené…"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 23,
+      "levels": "L1,L2,L3",
+      "example": "Kde si děti hrají venku na prolézačkách a houpačkách?"
+     }
+    ],
+    "note": "Obě nápovědy jsou všude, ale velká často není delší. Brána hlásí sentence_complexity (15 slov) a hint_progression jen k revizi."
+   },
+   {
+    "id": "g2-prv-zvirata-uzitek",
+    "file": "src/content/grade-2/prvouka/domaciHospodarskaZvirata.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "16/14/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 44,
+      "levels": "L1,L2,L3",
+      "example": "Které zvíře snáší vejce?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 44,
+      "levels": "L1,L2,L3",
+      "example": "Které zvíře snáší vejce?"
+     }
+    ],
+    "note": "Banka s jednou unikátní nápovědou na úlohu (hints: [\"…\"]). Chybí hints[1] a optionFeedback."
+   },
+   {
+    "id": "g2-prv-jaro-rostliny-mladata",
+    "file": "src/content/grade-2/prvouka/kvetouciRostlinyMladata.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "15/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 39,
+      "levels": "L1,L2,L3",
+      "example": "Jak se jmenuje mládě kozy?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 39,
+      "levels": "L1,L2,L3",
+      "example": "Jak se jmenuje mládě kozy?"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 3,
+      "levels": "L3",
+      "example": "Petrklíč i pampeliška mají žluté květy. Která z nich…?"
+     }
+    ],
+    "note": "Klíč ve znění jen u srovnávacích otázek na dvě jmenované rostliny. Brána hlásí 1× sentence_complexity."
+   },
+   {
+    "id": "g2-prv-jaro-leto",
+    "file": "src/content/grade-2/prvouka/zmenyVPrirodeJaroLeto.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 38,
+      "levels": "L1,L2,L3",
+      "example": "V létě je teplo. Je to pravda?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 18,
+      "levels": "L1,L3",
+      "example": "V létě je teplo. Je to pravda?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 14,
+      "levels": "L2,L3",
+      "example": "Co dělají stromy na jaře?"
+     }
+    ]
+   },
+   {
+    "id": "g2-prv-zima-zvirata",
+    "file": "src/content/grade-2/prvouka/zazimovaniZvirat.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "15/14/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 43,
+      "levels": "L1,L2,L3",
+      "example": "Čáp na zimu odlétá do teplých krajů. Je to pravda?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 18,
+      "levels": "L1,L3",
+      "example": "Čáp na zimu odlétá do teplých krajů. Je to pravda?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 23,
+      "levels": "L2,L3",
+      "example": "Co dělá vlaštovka, když přijde zima?"
+     }
+    ]
+   },
+   {
+    "id": "g2-prv-podzim-zima",
+    "file": "src/content/grade-2/prvouka/zmenyVPrirodePodzimZima.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "16/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1,L2,L3",
+      "example": "Na podzim je horko jako uprostřed léta. Je to pravda?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 20,
+      "levels": "L1,L3",
+      "example": "Na podzim je horko jako uprostřed léta. Je to pravda?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 16,
+      "levels": "L2,L3",
+      "example": "Co dělají listnaté stromy na podzim?"
+     }
+    ]
+   },
+   {
+    "id": "g2-prv-prvni-pomoc",
+    "file": "src/content/grade-2/prvouka/drobnaPoraneniTisnoveLinky.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/12/13",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 38,
+      "levels": "L1,L2,L3",
+      "example": "Jaké je tísňové číslo záchranné služby (sanitky)?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 13,
+      "levels": "L1",
+      "example": "Co přiložíme na bouli od nárazu?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 20,
+      "levels": "L2,L3",
+      "example": "Kamarádovi teče z nosu krev. Co je správné udělat?"
+     }
+    ],
+    "note": "Všech 13 úloh L1 má jen jednu nápovědu. U L2/L3 obě nápovědy jsou, ale velká často není delší."
+   },
+   {
+    "id": "g2-prv-zdravy-styl",
+    "file": "src/content/grade-2/prvouka/zdravyZivotniStyl.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "15/12/13",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1,L2,L3",
+      "example": "Zdravé je jíst celý den jenom bonbony. Je to pravda?"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 19,
+      "levels": "L1,L3",
+      "example": "Zelenina je zdravá. Je to pravda?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 15,
+      "levels": "L2,L3",
+      "example": "Co patří ke zdravému dni dítěte?"
+     },
+     {
+      "category": "format",
+      "severity": "real",
+      "count": 4,
+      "levels": "L3",
+      "example": "Voda je zdravější nápoj než slazená limonáda. Je to pravda?"
+     }
+    ],
+    "note": "Na L3 jsou binární úlohy Ano/Ne (pravidla je povolují jen na L1). Ano/Ne ale není jediný formát L3, proto jen real, ne rewrite."
+   }
+  ]
+ },
+ {
+  "batch": "3|matematika",
+  "topics": [
+   {
+    "id": "g3-mat-cisla-do-1000",
+    "file": "src/content/grade-3/matematika/cteniZapisPorovnavaniCiselDo1000.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "187/191/198",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 426,
+      "example": "Rozlož číslo 195: kolik má stovek, desítek a jednotek? (hints[0] 'Stovky = první číslice…' 136x)",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 576,
+      "example": "Porovnej: 170 vs 33",
+      "levels": "L1-L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-zaokrouhlovani",
+    "file": "src/content/grade-3/matematika/zaokrouhlovaniNaDesitkyAStovky.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "175/183/191",
+    "note": "L1 generuje čísla už zaokrouhlená (320 na desítky = 320) – triviální úloha, klíč ve znění.",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "real",
+      "count": 48,
+      "example": "Zaokrouhli číslo 320 na desítky.",
+      "levels": "L1"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 549,
+      "example": "Zaokrouhli číslo 430 na desítky.",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 2,
+      "example": "mala napoveda se opakuje (2 šablonové nápovědy)",
+      "levels": "L1-L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-scitani-odcitani-1000",
+    "file": "src/content/grade-3/matematika/scitaniAOdcitaniDo1000.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "200/200/200",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 600,
+      "example": "hints[0] 'Dávej pozor na přechod přes desítky nebo stovky.' 400x",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 600,
+      "example": "228 − 114 = ?",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "example": "228 − 114 = ? (výsledek shodou roven menšiteli)",
+      "levels": "L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-nasobilka-6-10",
+    "file": "src/content/grade-3/matematika/nasobilka6789a10.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "20/20/51",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 91,
+      "example": "7 × 4 = ?",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 42,
+      "example": "? × 10 = 100",
+      "levels": "L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-nasobeni-deleni-mala-nasobilka",
+    "file": "src/content/grade-3/matematika/nasobeniADeleniMalaNasobilka.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "36/54/72",
+    "note": "Nápověda 'Hledáš chybějící číslo v násobilce: dělitel × ? = …' se opakuje 2–4x mezi úlohami se stejnými čísly.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 30,
+      "example": "Hledáš chybějící číslo v násobilce: dělitel × ? = … (4x)",
+      "levels": "L1-L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-nasobeni-10-100-zbytkem",
+    "file": "src/content/grade-3/matematika/nasobeni10a100DeleniSeZbytkem.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "19/19/97",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "example": "1 × 100 = ?",
+      "levels": "L2"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-prevody-delky",
+    "file": "src/content/grade-3/matematika/prevodyJednotekDelky.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "27/36/27",
+    "findings": []
+   },
+   {
+    "id": "g3-mat-prevody-hmotnost-objem-cas",
+    "file": "src/content/grade-3/matematika/prevodyJednotekHmotnostiObjemCas.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "27/45/36",
+    "findings": []
+   },
+   {
+    "id": "g3-mat-tabulky-diagramy",
+    "file": "src/content/grade-3/matematika/tabulkyJizdniRadyDiagramy.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "100/100/100",
+    "note": "Každá úloha má jen 1 nápovědu (šablonovou), žádný optionFeedback. Nápověda u celkové doby jízdy říká 'Sečti čas odjezdu … (rozdíl …)' – vnitřně protichůdné.",
+    "findings": [
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 300,
+      "example": "Tabulka: Počty zvířat v zoo … (jen hints[0])",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 300,
+      "example": "Jízdní řád autobusu: …",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 51,
+      "example": "Tabulka: Body ve soutěži … (čtení hodnoty z tabulky)",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "language_error",
+      "severity": "real",
+      "count": 100,
+      "example": "hint 'Sečti čas odjezdu poslední zastávky od začátku (rozdíl …)' – má být odečti",
+      "levels": "L3"
+     },
+     {
+      "category": "format",
+      "severity": "real",
+      "count": 1,
+      "example": "Jízdní řád autobusu: … (26 slov, max 18 pro 3. ročník)",
+      "levels": "L1-L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-slovni-ulohy-dve-operace",
+    "file": "src/content/grade-3/matematika/slovniUlohySeDvemaOperacemi.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "191/194/195",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 580,
+      "example": "hints[0] 'Každý krok = jedna početní operace.' 580x",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 580,
+      "example": "slovní úloha se dvěma operacemi (všechny úlohy)",
+      "levels": "L1-L3"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-rysovani-usecky",
+    "file": "src/content/grade-3/matematika/rysovaaniUseckyODaneDelce.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/12",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 28,
+      "example": "Co potřebuješ k narýsování úsečky?",
+      "levels": "L1-L2"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 28,
+      "example": "Co jsou krajní body úsečky?",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_explanation",
+      "severity": "real",
+      "count": 28,
+      "example": "Kolik milimetrů má 1 centimetr?",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 26,
+      "example": "Úsečka CD má délku 45 mm. Kolik je to cm?",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "real",
+      "count": 1,
+      "example": "(1 úloha s klíčem ve znění)",
+      "levels": "?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 2,
+      "example": "mala napoveda se opakuje",
+      "levels": "?"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-kruznice-kruh",
+    "file": "src/content/grade-3/matematika/kruznicaKruhRysovani.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/9/12",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 29,
+      "example": "Co platí: průměr = ?",
+      "levels": "L1-L2"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 27,
+      "example": "hints[0] 'Poloměr = polovina průměru (r = d ÷ 2)…' 27x",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 29,
+      "example": "Co platí: průměr = ?",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_explanation",
+      "severity": "real",
+      "count": 29,
+      "example": "Ciferník má poloměr 8 cm. Střed je označen bodem S…",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "real",
+      "count": 1,
+      "example": "Ciferník má poloměr 8 cm. Střed je označen bodem S…",
+      "levels": "L3"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 1,
+      "example": "Co platí: průměr = ?",
+      "levels": "L2"
+     }
+    ]
+   },
+   {
+    "id": "g3-mat-obvod-trojuhelniku-ctverce-obdelniku",
+    "file": "src/content/grade-3/matematika/obvodTrojuhelnikuCtverceObdelniku.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "100/132/137",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 185,
+      "example": "hints[0] 'Obvod obdélníku = 2 × (delší + kratší strana).' 147x",
+      "levels": "L1-L3"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 369,
+      "example": "Čtverec má stranu 9 cm. Jaký je jeho obvod?",
+      "levels": "L1-L3"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "batch": "3|prvouka",
+  "topics": [
+   {
+    "id": "g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti",
+    "file": "src/content/grade-3/prvouka/minulostRegionuPovesti.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/12/12",
+    "note": "Gate PASS; no file in the batch has optionFeedback. The two key-in-question hits are the 'Kde spíš najdeš…' either-or questions.",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 37,
+      "levels": "L1-L3",
+      "example": "Kde podle pověsti spí Blaničtí rytíři?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 30,
+      "levels": "L1-L3",
+      "example": "Co je pověst?"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 2,
+      "levels": "L2",
+      "example": "Kde spíš najdeš staré listiny a úřední dokumenty o…"
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine",
+    "file": "src/content/grade-3/prvouka/casovaPrimkaGenerace.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/14/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 42,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 35,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 49 zn. vs malá 52 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost",
+    "file": "src/content/grade-3/prvouka/komunikaceBezpecnost.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/13/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 38,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 29,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 29 zn. vs malá 38 zn."
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 4,
+      "example": "hints[0] 'Tísňová čísla fungují i bez kreditu na mobilu.' 2x; 'Fotky jsou osobní…' 2x"
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu",
+    "file": "src/content/grade-3/prvouka/vztahyKonflikty.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/14/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 39,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 27,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 47 zn. vs malá 133 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region",
+    "file": "src/content/grade-3/prvouka/krajeRegionyCr.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/14/14",
+    "note": "Four 'krajské město X kraje' L2 questions carry the key in the wording, and the hint 'Krajské město má stejné jméno jako kraj.' (shared by 7 tasks) gives it away outright.",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 41,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 31,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 39 zn. vs malá 41 zn."
+     },
+     {
+      "category": "key_in_question",
+      "severity": "real",
+      "count": 4,
+      "levels": "L2",
+      "example": "Jaké je krajské město Libereckého kraje?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 7,
+      "levels": "L2",
+      "example": "hints[0] 'Krajské město má stejné jméno jako kraj.' 7x"
+     },
+     {
+      "category": "format",
+      "severity": "real",
+      "count": 1,
+      "example": "Patří Praha do Středočeského kraje? (only 2 options, Ano/Ne)"
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas",
+    "file": "src/content/grade-3/prvouka/mapaStranySveta.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/16/14",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 43,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 30,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 51 zn. vs malá 55 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly",
+    "file": "src/content/grade-3/prvouka/crSymboly.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "14/13/13",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1-L3",
+      "example": "Co bylo dřív — příchod Cyrila a Metoděje na Velkou Moravu…"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 66 zn. vs malá 69 zn."
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 3,
+      "example": "hints[0] 'Hledej souseda, který splňuje obě podmínky zároveň' 3x"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 2,
+      "levels": "L3",
+      "example": "Co se stalo dřív — vznik Československa (28. října …) nebo …?"
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy",
+    "file": "src/content/grade-3/prvouka/ekosystemyPoleLoukaLes.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "11/8/9",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "levels": "L1-L3",
+      "example": "only 11/8/9 unique tasks (need ≥12 per level)"
+     },
+     {
+      "category": "missing_hints",
+      "severity": "real",
+      "count": 7,
+      "levels": "L3",
+      "example": "Sova ulovila myš. Jaká je sova v tomto řetězci?"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 28,
+      "levels": "L1-L3",
+      "example": "Jak se jmenuje plovoucí rostlina s bílými nebo žlutými květy…"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 14,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 34 zn. vs malá 39 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz",
+    "file": "src/content/grade-3/prvouka/skupinyZivocichu.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "12/12/12",
+    "note": "The gate's difficulty_progression flag ('identical output L1-3') is a heuristic false positive. gen() uses separate POOL_L1/L2/L3; every task is a match task sharing one question text, and only the pairs differ. Whether L3 is actually harder than L1 still needs a manual look.",
+    "findings": [
+     {
+      "category": "missing_explanation",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1-L3",
+      "example": "Spoj každé zvíře se správnou skupinou živočichů."
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 20,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 35 zn. vs malá 33 zn."
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 2,
+      "example": "hints[0] 'Slepýš je beznohý plaz, ne had.' 2x"
+     },
+     {
+      "category": "level_overlap",
+      "severity": "exception",
+      "count": 36,
+      "levels": "L1-L3",
+      "example": "Gate: identical first question at all levels (same prompt text, different pairs)"
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod",
+    "file": "src/content/grade-3/prvouka/stavbaRostlin.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "11/10/10",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "levels": "L1-L3",
+      "example": "only 11/10/10 unique tasks"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 31,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 39 zn. vs malá 45 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou",
+    "file": "src/content/grade-3/prvouka/zivaNezivaPrivroda.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "12/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 22,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 69 zn. vs malá 71 zn."
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 2,
+      "example": "hints[0] 'Neživá věc nedýchá, neroste ani se nerozmnožuje.' 2x"
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot",
+    "file": "src/content/grade-3/prvouka/vodaVzduchPuda.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "12/12/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 22,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 58 zn. vs malá 68 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni",
+    "file": "src/content/grade-3/prvouka/mimoradneUdalosti.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/13/12",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 38,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 34,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 33 zn. vs malá 49 zn."
+     }
+    ]
+   },
+   {
+    "id": "g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc",
+    "file": "src/content/grade-3/prvouka/stavbaTelaaZdravi.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/10/10",
+    "findings": [
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 3,
+      "levels": "L1-L3",
+      "example": "only 10/10/10 unique tasks"
+     },
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 30,
+      "levels": "L1-L3",
+      "example": "(all select_one tasks lack optionFeedback)"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 21,
+      "levels": "L1-L3",
+      "example": "Velká nápověda 42 zn. vs malá 54 zn."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "batch": "3|čeština",
+  "topics": [
+   {
+    "id": "g3-cjl-jazykova-vychova-nauka-o-slove-slova-pribuzna-koren-slova",
+    "file": "src/content/grade-3/cjl/slovaPribuznaKorenSlova.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "13/13/13",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 13,
+      "levels": "L2",
+      "example": "Které slovo nepatří mezi slova příbuzná se slovem „…“: a, b, c, d? (výčtová úloha, klíč je v nabídce)"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-jazykova-vychova-nauka-o-slove-slova-souznacna-synonyma-a-protikladna-antonyma",
+    "file": "src/content/grade-3/cjl/slovaSouznacnaAProtikladna.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-jazykova-vychova-nauka-o-slove-vyznam-slova-slova-jednoznacna-a-mnohoznacna",
+    "file": "src/content/grade-3/cjl/slovaJednoznacnaMnohoznacna.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "15/15/10",
+    "note": "Chybí feedback u všech úloh a jedna malá nápověda je sdílená pro 39 úloh; L3 má jen 10 úloh.",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 40,
+      "levels": "L1,L2,L3",
+      "example": "Co znamená slovo 'hlava' ve větě 'Bolí mě hlava'?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 39,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Jednoznačné slovo = má jen jeden hlavní význam…“ u 39 úloh"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 10,
+      "levels": "L3",
+      "example": "L3 má jen 10 unikátních úloh"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 1,
+      "levels": "L1",
+      "example": "Které slovo je jednoznačné (má jen jeden běžný význam)?"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "levels": "L3",
+      "example": "Které slovo má přenesený význam ve větě 'Hlavu stá…'"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-slova-pribuzna-vyjmenovana",
+    "file": "src/content/grade-3/cjl/slovaPribuznaVyjmenovana.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-vyjmenovana-slova",
+    "file": "src/content/grade-3/cjl/vyjmenovanaSlova.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-velka-pismena",
+    "file": "src/content/grade-3/cjl/velkaPismenaVlastniJmena.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "9/9/10",
+    "note": "Když úloha nemá vlastní nápovědy, doplní se šablona (ř. 109), proto je hints[0] u 26 úloh stejná. Duplicity lišící se jen velikostí písmen jsou u tohoto tématu záměrné.",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 28,
+      "levels": "L1,L2,L3",
+      "example": "Jak správně napíšeme hlavní město ČR?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Zeptej se, jestli slovo označuje jednu určitou věc…“ ×26"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 28,
+      "levels": "L1,L2,L3",
+      "example": "9/9/10 unikátních úloh"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 2,
+      "levels": "L2",
+      "example": "Co je vlastní jméno?"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 17,
+      "levels": "L1,L3",
+      "example": "Jak napíšeme: 'bydlím v _____' (město Brno)? — možnosti se liší jen velikostí písmen"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 7,
+      "levels": "L1,L2,L3",
+      "example": "Název pohoří Šumava píšeme:"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-spojovani-vet-spojkami",
+    "file": "src/content/grade-3/cjl/spojovaniVetSpojkami.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/9/10",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 29,
+      "levels": "L1,L2,L3",
+      "example": "Vyber správnou spojku: 'Chceš čaj ___ kávu?'"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 28,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Spojky spojují dvě věty do jednoho smysluplného celku…“ ×28"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 29,
+      "levels": "L1,L2,L3",
+      "example": "10/9/10 unikátních úloh"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 1,
+      "levels": "L2",
+      "example": "Které slovo je spojka?"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-veta-jednoducha-souveti",
+    "file": "src/content/grade-3/cjl/vetaJednoduchaSouveti.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/10",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "'Pes štěká.' — Je to věta jednoduchá nebo souvětí?"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 24,
+      "levels": "L1,L2,L3",
+      "example": "'Prší.' je: (velká nápověda není delší než malá)"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 20,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Nejdřív najdi všechna slovesa — říkají, co se děje…“ ×20"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "8/8/10 unikátních úloh"
+     },
+     {
+      "category": "other",
+      "severity": "real",
+      "count": 3,
+      "levels": "L2,L3",
+      "example": "Které souvětí je správně zapsané? — distraktory jsou klíč s jinou interpunkcí (detektor: fráze v klíči)"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 3,
+      "levels": "L1,L3",
+      "example": "Věta: 'Petr četl knihu, ale usnul u ní.' — Určíme…"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-podstatna-jmena-rod-cislo-pad",
+    "file": "src/content/grade-3/cjl/podstatnaJmenaRodCisloPad.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "14/13/14",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-slovesa-osoba-cislo-cas",
+    "file": "src/content/grade-3/cjl/slovesaOsobaCisloCas.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "9/9/10",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 29,
+      "levels": "L1,L2,L3",
+      "example": "Sloveso 'bude hrát' je v čase:"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 27,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Zeptej se, jestli se děj už stal, právě probíhá…“ ×27"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 28,
+      "levels": "L1,L2,L3",
+      "example": "9/9/10 unikátních úloh"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 1,
+      "levels": "L2",
+      "example": "Sloveso 'jdu' je v čísle:"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-slovni-druhy",
+    "file": "src/content/grade-3/cjl/slovniDruhyPrehled.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-sebekontrola-projevu",
+    "file": "src/content/grade-3/cjl/sebekontrolaPisemnehoProjevu.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "13/13/13",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 13,
+      "levels": "L3",
+      "example": "Text: „Na výlete jsme viděli srnu.“ Které slovo je napsané chybně?"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-uhledne-psani",
+    "file": "src/content/grade-3/cjl/uhledneACitelnePsani.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-dialog-pravidla",
+    "file": "src/content/grade-3/cjl/dialogPravidlaRozhovoru.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "13/13/13",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 5,
+      "levels": "L3",
+      "example": "Text: Babička řekla: „Upeču koláč.“ Co je přímá řeč?"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-omluvenka-zprava",
+    "file": "src/content/grade-3/cjl/omluvenkaZpravaOznameniPozvanka.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "13/13/13",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "levels": "L3",
+      "example": "Text: „Milá Kláro, zvu tě na oslavu svých 9. narozenin…“"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-popis-predmetu",
+    "file": "src/content/grade-3/cjl/popisPredmetuZvireteOsoby.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "13/13/13",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "levels": "L3",
+      "example": "Text: „Náš pes Brok je velký a chlupatý. Má černou…“"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-vypravovani-osnova",
+    "file": "src/content/grade-3/cjl/vypravovaniOsnova.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-plynule-cteni-porozumeni",
+    "file": "src/content/grade-3/cjl/plynuleCteniSPorozumenim.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "12/12/12",
+    "note": "Jen 6 textů (2 na úroveň), otázky se vzorkují. Malá nápověda je obecná šablona u všech 36 úloh, feedback chybí všude.",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1,L2,L3",
+      "example": "Přečti si text: Máša má psa Boba. Bob je velký hnědý… (otázka)"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Přečti text pozorně a hledej odpověď přímo v textu“ ×36"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 36,
+      "levels": "L1,L2,L3",
+      "example": "velká nápověda 40 zn. vs malá 51 zn."
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 15,
+      "levels": "L1,L2,L3",
+      "example": "Přečti si text: V zimě přišla do zahrady liška… (odpověď je v textu)"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "levels": "L1",
+      "example": "sentence_complexity: otázka má 46 slov (čtecí text)"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-reprodukce-textu",
+    "file": "src/content/grade-3/cjl/reprodukcePrectenehoTextu.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g3-cjl-vyhledavani-informaci",
+    "file": "src/content/grade-3/cjl/vyhledavaniInformaciKlicova.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "13/13/13",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 16,
+      "levels": "L1,L3",
+      "example": "Text: „Vlak do Brna odjíždí v 8.15 z prvního nástupiště…“"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "levels": "L1",
+      "example": "sentence_complexity 19 slov: Text: „Ježek je noční živočich…“"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-pohadka-povidka-basen-bajka",
+    "file": "src/content/grade-3/cjl/pohadkaPovídkaBasenBajka.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/10",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "Co je bajka?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 22,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Zeptej se: mohlo by se to stát doopravdy?“ ×22"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "8/8/10 unikátních úloh"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-proza-verse",
+    "file": "src/content/grade-3/cjl/prozaAVerseRozliseni.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "8/8/10",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "Co je próza?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 23,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Nejdřív se podívej, jak je text zapsaný na stránce“ ×23"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 26,
+      "levels": "L1,L2,L3",
+      "example": "8/8/10 unikátních úloh"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 1,
+      "levels": "L3",
+      "example": "Text A: 'Bylo jednou jedno kotě. Žilo v lese…'"
+     }
+    ]
+   },
+   {
+    "id": "g3-cjl-vers-rym-prirovnani",
+    "file": "src/content/grade-3/cjl/versRymPrirovnani.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "10/10/10",
+    "findings": [
+     {
+      "category": "missing_feedback",
+      "severity": "real",
+      "count": 30,
+      "levels": "L1,L2,L3",
+      "example": "Co se rýmuje se slovem 'modrý'?"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 30,
+      "levels": "L1,L2,L3",
+      "example": "hints[0] „Rým = stejné/podobné zakončení slov. Přirovnání = …“ ×30"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 27,
+      "levels": "L1,L2,L3",
+      "example": "Doplň přirovnání: 'Rychlý jako ___' (velká nápověda není delší)"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 30,
+      "levels": "L1,L2,L3",
+      "example": "10/10/10 unikátních úloh"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "batch": "4|matematika",
+  "topics": [
+   {
+    "id": "g4-mat-pisemne-scitani-odcitani-4",
+    "file": "src/content/grade-4/matematika/pisemneScitaniAOdcitaniVicecifernychCisel.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "200/200/200",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-pisemne-deleni-jednociferne-4",
+    "file": "src/content/grade-4/matematika/pisemneDeleniJednocifernymDelitelem.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "72/147/198",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-pisemne-nasobeni-4",
+    "file": "src/content/grade-4/matematika/pisemneNasobeniJednoADvoucifernymCinitelem.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "194/200/199",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-zlomek-cast-celku-4",
+    "file": "src/content/grade-4/matematika/zlomekJakoCastCelkuZnazorneniZlomku.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "42/147/147",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-zlomky-scitani-odcitani-stejny-jmenovatel-4",
+    "file": "src/content/grade-4/matematika/scitaniAOdcitaniZlomkuSeStejnymJmenovatelem.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "96/141/106",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-cisla-do-milionu-4",
+    "file": "src/content/grade-4/matematika/cteniZapisAPorovnavaniCiselDoMilionu.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "200/200/200",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-zaokrouhlovani-4",
+    "file": "src/content/grade-4/matematika/zaokrouhlovaniNaDesitkyStovkyTisiceDesetitisice.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "200/200/199",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-obvod-obsah-obdelnik-ctverec-4",
+    "file": "src/content/grade-4/matematika/obvodAObsahObdelnikuACtverce.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "26/177/101",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-rovnobezky-kolmice-4",
+    "file": "src/content/grade-4/matematika/rovnobezkyAKolmice.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "13/13/13",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-trojuhelnik-druhy-stran-4",
+    "file": "src/content/grade-4/matematika/trojuhelnikDruhyPodleStran.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "128/111/178",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-osova-soumernost-4",
+    "file": "src/content/grade-4/matematika/osovaSoumernostOsaSoumerneUtvary.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "32/13/13",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-aritmeticky-prumer-4",
+    "file": "src/content/grade-4/matematika/aritmetickyPrumerUvod.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "190/200/200",
+    "findings": []
+   },
+   {
+    "id": "g4-mat-tabulky-diagramy-4",
+    "file": "src/content/grade-4/matematika/tabulkyDiagramySloupcovyKruhovy.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "200/200/200",
+    "note": "hints[0] in cteniDiagramu (L1 ■=2, L2 ■=5) uses only the row name + its squares, so different diagrams with the same row repeat it; adding the scale or the dataset name to hint[0] fixes it. Key in question = nejvic() select_one, where the options are the table rows (by design). Audit flagged 30-word sentence_complexity because the diagram rows count as words.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 46,
+      "levels": "L1,L2",
+      "example": "Řádek „Středa“ vypadá takto: ■■■. Kolik v něm je čtverečků? (hint[0] shared by 4 tasks)"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 135,
+      "levels": "L2",
+      "example": "Tabulka „Oblíbené ovoce ve třídě“: • Jablka: 3 … Které ovoce má nejraději nejvíc žáků?"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "levels": "L1,L2,L3",
+      "example": "Diagram „Jak se žáci dostanou do školy“ — jeden čtvereček ■ znamená … (30 words incl. data)"
+     }
+    ]
+   },
+   {
+    "id": "g4-mat-magicke-ctverce-ciselne-rady-4",
+    "file": "src/content/grade-4/matematika/magickeCtverceCiselneRady.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "170/187/148",
+    "note": "Only audit sentence_complexity (32 words); the length comes from the magic-square layout in the prompt.",
+    "findings": [
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "Magický čtverec: součet v každém řádku, sloupci i na úhlopříčce… (32 words incl. grid)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "batch": "4|čeština",
+  "topics": [
+   {
+    "id": "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predlozek-s-z-se-ze",
+    "file": "src/content/grade-4/cjl/pravopisPredlozekSZSeZe.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/14/14"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predpon-vy-vy-s-z-vz",
+    "file": "src/content/grade-4/cjl/pravopisPredponVyVySZVz.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-stavba-slova-predpona-koren-pripona-koncovka",
+    "file": "src/content/grade-4/cjl/predponaKorenPriponaKoncovka.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 4,
+      "example": "Jaký je kořen slova „nákup“?",
+      "levels": "L1,L2"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Úloha určuje část zadaného slova, takže kořen v otázce stát musí."
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek",
+    "file": "src/content/grade-4/cjl/stavbaVetyZakladniSkladebniDvojicePodmetPrisudek.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 24,
+      "example": "Urči podmět ve větě: „Žáci odpovídají na otázky.“",
+      "levels": "L1,L2,L3"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Úloha hledá člen v citované větě, takže klíč ve znění být musí."
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-vzorec-souveti",
+    "file": "src/content/grade-4/cjl/vetaJednoduchaASouvetiVzorecSouveti.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-sklonovani-podle-vzoru-rod-muz-zen-str",
+    "file": "src/content/grade-4/cjl/podstatnaJmenaSklonovaniPodleVzoruRodMuzZenStr.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce",
+    "file": "src/content/grade-4/cjl/vzoryPodstatnychJmenPanHradMuzStrojPredsedaSoudce.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/12"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure",
+    "file": "src/content/grade-4/cjl/vzoryPodstatnychJmenZenaRuzePisenKostMestoMoreKureStaveni.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech",
+    "file": "src/content/grade-4/cjl/slovesaMluvnickeKategorieCasovaniVJednoduchychCasech.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-jazykova-vychova-tvaroslovi-zajmena-druhy-zajmen",
+    "file": "src/content/grade-4/cjl/zajmenaDruhyZajmen.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu",
+    "file": "src/content/grade-4/cjl/dopisPsaniSoukromehoDopisu.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "example": "Kdo napsal dopis „Brno 5. 5. 2026 / Milá Jano, / …",
+      "levels": "L3"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Úloha učí najít pisatele podle podpisu v textu dopisu, takže je záměrná."
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor",
+    "file": "src/content/grade-4/cjl/inzeratVzkazTelefonickyRozhovor.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-osoby-a-pracovniho-postupu",
+    "file": "src/content/grade-4/cjl/popisPredmetuOsobyAPracovnihoPostupu.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova",
+    "file": "src/content/grade-4/cjl/vypravovaniSCasovouPosloupnostiOsnova.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "example": "Co je ve větě „Pojď se mnou!“ zavolal Honza. přímá řeč?",
+      "levels": "L2"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Úloha vybírá přímou řeč z citované věty, takže je záměrná. Znění je ale neobratné (tečka uprostřed otázky před slovy „přímá řeč“) a stojí za drobnou úpravu."
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-cteni-manipulativni-komunikace-v-reklame",
+    "file": "src/content/grade-4/cjl/manipulativniKomunikaceVReklame.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-primerene-narocnych-textu",
+    "file": "src/content/grade-4/cjl/plynuleCteniSPorozumenimPrimereneNarocnychTextu.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 13,
+      "example": "Přečti si text: „Martina hraje na housle. Každé út…",
+      "levels": "L1,L2"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "[sentence_complexity] 24 slov: Přečti si text: „Tomáš a jeho sestra Klára jeli v sobotu k b…",
+      "levels": "L1"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Úlohy na porozumění textu s předponou „Text:“; delší věty jsou kvůli čtecímu textu."
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci",
+    "file": "src/content/grade-4/cjl/rozliseniPodstatnychAOkrajovychInformaci.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 21,
+      "example": "Která věta je okrajová? „Tygři žijí v Asii. Jsou o…",
+      "levels": "L1,L2,L3"
+     },
+     {
+      "category": "format",
+      "severity": "exception",
+      "count": 1,
+      "example": "[sentence_complexity] 23 slov: Která věta je okrajová? „Třída jela na výlet do zoo. Viděli…",
+      "levels": "L1"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Úloha vybírá větu z citovaného textu, takže klíč ve znění být musí. Délka odpovídá čtecímu textu."
+   },
+   {
+    "id": "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky",
+    "file": "src/content/grade-4/cjl/vyhledavaniKlicovychSlovAHlavniMyslenky.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika",
+    "file": "src/content/grade-4/cjl/encyklopedieSlovnikPeriodika.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
+    "file": "src/content/grade-4/cjl/pohadkaPovestBajkaPovidka.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika",
+    "file": "src/content/grade-4/cjl/hlavniPostavyAJejichCharakteristika.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "real",
+      "count": 1,
+      "example": "Jana chce najít ztraceného psa, ale brání jí silná bouřka. Co jí v příběhu stojí v cestě?",
+      "levels": "L3"
+     }
+    ],
+    "uniquePerLevel": "13/13/13",
+    "note": "Na L3 je klíč „bouřka“ doslova ve znění, takže úloha nic neprověřuje. Úlohu je třeba přeformulovat (ř. 201)."
+   },
+   {
+    "id": "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema",
+    "file": "src/content/grade-4/cjl/vlastniLiterarniTvorbaNaDaneTema.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   }
+  ]
+ },
+ {
+  "batch": "4|vlastivěda + 4|přírodověda",
+  "topics": [
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta",
+    "file": "src/content/grade-4/vlastiveda/t14KrajuCrJejichPolohaAKrajskaMesta.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-kraje-cr-nas-kraj-priroda-hospodarstvi-zajimavosti",
+    "file": "src/content/grade-4/vlastiveda/nasKrajPrirodaHospodarstviZajimavosti.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-prace-s-mapou-druhy-map-meritko-mapove-znacky-svetove-strany",
+    "file": "src/content/grade-4/vlastiveda/druhyMapMeritkoMapoveZnackySvetoveStrany.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-ceska-republika-podnebi-cr-ovzdusi-pocasi",
+    "file": "src/content/grade-4/vlastiveda/podnebiCrOvzdusiPocasi.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-ceska-republika-poloha-cr-v-evrope-sousedni-staty",
+    "file": "src/content/grade-4/vlastiveda/polohaCrVEvropeSousedniStaty.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-ceska-republika-povrch-cr-niziny-vrchoviny-hory-krkonose-sumava-aj",
+    "file": "src/content/grade-4/vlastiveda/povrchCrNizinyVrchovinyHoryKrkonoseSumavaAj.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-vlastiveda-misto-kde-zijeme-ceska-republika-vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr",
+    "file": "src/content/grade-4/vlastiveda/vodstvoCrHlavniRekyVltavaLabeMoravaOdraRybnikyPrehrady.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-pravek-a-prvni-lide-na-nasem-uzemi",
+    "file": "src/content/grade-4/vlastiveda/pravekAPrvniLideNaNasemUzemi.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-slovane-velkomoravska-rise-cyril-a-metodej",
+    "file": "src/content/grade-4/vlastiveda/slovaneVelkomoravskaRiseCyrilAMetodej.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii",
+    "file": "src/content/grade-4/vlastiveda/premyslovciSvVaclavPremyslOtakarIiVaclavIi.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-lucemburkove-karel-iv-a-jeho-doba",
+    "file": "src/content/grade-4/vlastiveda/lucemburkoveKarelIvAJehoDoba.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-lide-a-cas-husitstvi-mistr-jan-hus-husitske-valky",
+    "file": "src/content/grade-4/vlastiveda/mistrJanHusHusitskeValky.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-vlastiveda-lide-kolem-nas-stat-a-spolecnost-vznik-a-vyvoj-statu-demokracie-pravni-stat",
+    "file": "src/content/grade-4/vlastiveda/vznikAVyvojStatuDemokraciePravniStat.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-voda-skupenstvi-kolobeh-vody-v-prirode",
+    "file": "src/content/grade-4/prirodoveda/vodaSkupenstviKolobehVodyVPrirode.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-vzduch-slozeni-vlastnosti-vyznam",
+    "file": "src/content/grade-4/prirodoveda/vzduchSlozeniVlastnostiVyznam.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/12"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-slunce-svetlo-teplo-energie",
+    "file": "src/content/grade-4/prirodoveda/slunceSvetloTeploEnergie.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-puda-vznik-slozeni-vyznam-pro-zivot",
+    "file": "src/content/grade-4/prirodoveda/pudaVznikSlozeniVyznamProZivot.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ekosystemy-les-louka-pole-rybnik-rostliny-a-zivocichove",
+    "file": "src/content/grade-4/prirodoveda/lesLoukaPoleRybnikRostlinyAZivocichove.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-dreviny-stromy-a-kere",
+    "file": "src/content/grade-4/prirodoveda/drevinyStromyAKere.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-hospodarske-rostliny-obilniny-ovoce-zelenina",
+    "file": "src/content/grade-4/prirodoveda/hospodarskeRostlinyObilninyOvoceZelenina.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-stavba-rostlin-rozsireni-druhy-rostlin",
+    "file": "src/content/grade-4/prirodoveda/stavbaRostlinRozsireniDruhyRostlin.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-zivocichove-bezobratli-a-obratlovci-uvodni-trideni",
+    "file": "src/content/grade-4/prirodoveda/bezobratliAObratlovciUvodniTrideni.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "12/12/12"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-zivocichove-savci-ptaci-znaky-zastupci",
+    "file": "src/content/grade-4/prirodoveda/savciPtaciZnakyZastupci.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-rozmanitost-prirody-ochrana-prirody-chranene-rostliny-a-zivocichove-ohrozene-druhy",
+    "file": "src/content/grade-4/prirodoveda/chraneneRostlinyAZivocichoveOhrozeneDruhy.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-clovek-a-jeho-zdravi-bezpecnost-prvni-pomoc-tisnove-volani-mimoradne-udalosti",
+    "file": "src/content/grade-4/prirodoveda/prvniPomocTisnoveVolaniMimoradneUdalosti.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g4-prirodoveda-clovek-a-jeho-zdravi-zdravy-zivotni-styl-strava-pohyb-spanek-prevence-urazu-a-nemoci",
+    "file": "src/content/grade-4/prirodoveda/stravaPohybSpanekPrevenceUrazuANemoci.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/13/13"
+   }
+  ]
+ },
+ {
+  "batch": "5|matematika",
+  "topics": [
+   {
+    "id": "g5-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-vypocet",
+    "file": "src/content/grade-5/matematika/aritmetickyPrumerVypocet.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "150/150/118",
+    "findings": []
+   },
+   {
+    "id": "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-cisla-nad-milion-miliardy",
+    "file": "src/content/grade-5/matematika/cislaNadMilionMiliardy.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "150/150/150",
+    "findings": []
+   },
+   {
+    "id": "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-desetinna-cisla-cteni-zapis-porovnavani",
+    "file": "src/content/grade-5/matematika/desetinnaCislaCteniZapisPorovnavani.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "147/128/149",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 128,
+      "levels": "L2",
+      "example": "Které z čísel 6,05; 6,06; 6,1; 6,5 je nejmenší?"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-diagramy-grafy-cteni-a-sestavovani-tabulek",
+    "file": "src/content/grade-5/matematika/diagramyGrafyCteniASestavovaniTabulek.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "150/150/150",
+    "note": "Brána: 1 sentence_complexity (31 slov) – popis grafu v zadání, nevyhnutelná délka.",
+    "findings": [
+     {
+      "category": "other",
+      "severity": "exception",
+      "count": 1,
+      "example": "Graf: sloupcový graf „Sesbíraný papír (kg)“ má sloupce vysok… (31 slov)"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-konstrukce-trojuhelniku-kolmice-rovnobezky",
+    "file": "src/content/grade-5/matematika/konstrukceTrojuhelnikuKolmiceRovnobezky.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "13/150/120",
+    "note": "L1 jen 13 unikátních úloh – těsně nad limitem 12.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 19,
+      "levels": "L2/L3",
+      "example": "hint[0] „Kolik centimetrů je 6 cm + 7 cm? A je to víc než 8…“ sdílí 2–3 úlohy"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 13,
+      "levels": "L1",
+      "example": "L1 má jen 13 unikátních úloh"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-nasobeni-a-deleni-desetinnych-cisel-10-100-1000",
+    "file": "src/content/grade-5/matematika/nasobeniADeleniDesetinnychCisel101001000.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "uniquePerLevel": "148/150/149",
+    "findings": []
+   },
+   {
+    "id": "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce-ve-ctvercove-siti-jednotky-obsahu",
+    "file": "src/content/grade-5/matematika/obsahObrazceVeCtvercoveSitiJednotkyObsahu.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "115/144/119",
+    "note": "Nápovědy z šablon nesou jen část dat (jen stranu čtverce c, jen počet v řadě), proto se opakují až 20x. Key-in-question L3 je falešně pozitivní: klíč „5 cm“ je podřetězcem „25 cm²“.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 200,
+      "levels": "L1/L2/L3",
+      "example": "hint[0] „Jaký obsah má celý obdélník a jaký vystřižený čtverec o straně 2 cm?“ 20x"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 7,
+      "levels": "L3",
+      "example": "Čtverec má obsah 25 cm². Jak dlouhá je jeho strana?"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-sestrojeni-obrazu-urceni-osy",
+    "file": "src/content/grade-5/matematika/osovaSoumernostSestrojeniObrazuUrceniOsy.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "13/32/58",
+    "note": "Nápověda obsahuje jen vzdálenost bodu od osy (6 hodnot → 9–10 úloh na každou). Malá variabilita: L1 13 a L2 32 unikátních úloh.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 58,
+      "levels": "L3",
+      "example": "hint[0] „Jak daleko od osy je bod A (4 čtverečky)? Na kterou…“ 10x"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 4,
+      "levels": "L2",
+      "example": "Kolik os souměrnosti má pravidelný šestiúhelník?"
+     },
+     {
+      "category": "low_variety",
+      "severity": "real",
+      "count": 45,
+      "levels": "L1/L2",
+      "example": "L1 13 a L2 32 unikátních úloh"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-dvoucifernym-delitelem",
+    "file": "src/content/grade-5/matematika/pisemneDeleniDvoucifernymDelitelem.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "133/149/150",
+    "note": "L3: hint[0] je parametrizovaný jen dělitelem, hint[1] není výrazně delší.",
+    "findings": [
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 38,
+      "levels": "L3",
+      "example": "Vypočítej písemně: 8 910 : 22"
+     },
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 34,
+      "levels": "L3",
+      "example": "hint[0] „Vejde se 11 do části, kterou dostaneš po prvním od…“ 8x"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-scitani-a-odcitani-desetinnych-cisel",
+    "file": "src/content/grade-5/matematika/scitaniAOdcitaniDesetinnychCisel.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "150/150/150",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 6,
+      "example": "hint[0] „Kolik metrů se odstřihlo celkem? Sečti 1,52 a 0,3…“ 2x"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-ulohy-nezavisle-na-beznych-postupech-prostorova-predstavivos",
+    "file": "src/content/grade-5/matematika/ulohyNezavisleNaBeznychPostupechProstorovaPredstavivost.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "145/111/73",
+    "note": "Statická nápověda bez dat úlohy (triko/sukně 15x). Rozdílová nápověda má jen první dva rozdíly (12x). Nápověda s vrstvou kostek se opakuje 2–3x.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 95,
+      "levels": "L1/L2/L3",
+      "example": "hint[0] „Kolik oblečení dostaneš s prvním tričkem, když k němu vyzkoušíš všechny sukně?“ 15x"
+     }
+    ]
+   },
+   {
+    "id": "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-zaporna-cisla-na-ciselne-ose",
+    "file": "src/content/grade-5/matematika/zapornaCislaNaCiselneOse.ts",
+    "gate": "PASS",
+    "verdict": "rewrite",
+    "uniquePerLevel": "84/150/112",
+    "note": "Statická nápověda „Všechna čísla jsou záporná…“ se opakuje 52x a „Na kterou stranu od nuly…“ 13x. Klíč ve znění u výčtových úloh „nejmenší/největší“ je výjimka.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 110,
+      "levels": "L1/L2/L3",
+      "example": "hint[0] „Všechna čísla jsou záporná. Které z nich leží na ose nejblíž nule?“ 52x"
+     },
+     {
+      "category": "hint_progression",
+      "severity": "real",
+      "count": 3,
+      "levels": "L1",
+      "example": "Ponorka je 24 m pod hladinou. Jak tu výšku zapíšeš…"
+     },
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 105,
+      "levels": "L2",
+      "example": "Které z čísel 6; −30; −23; 0 je nejmenší?"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "batch": "5|čeština",
+  "topics": [
+   {
+    "id": "g5-cjl-literarni-vychova-literarni-pojmy-a-zanry-basen-lyricka-a-epicka-roman-povidka",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/basenLyrickaAEpickaRomanPovidka.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-tvaroslovi-cislovky-druhy-zakladni-radove-druhove-nasobne",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/cislovkyDruhyZakladniRadoveDruhoveNasobne.ts",
+    "uniquePerLevel": "13/13/12"
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-uredni-zadost-tiskopisy-prihlaska-dotaznik",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/dopisUredniZadostTiskopisyPrihlaskaDotaznik.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-literarni-vychova-prace-s-textem-elementarni-literarni-pojmy-pri-rozboru-textu",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/elementarniLiterarniPojmyPriRozboruTextu.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-skladba-podmet-vyjadreny-nevyjadreny-nekolikanasobny",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/podmetVyjadrenyNevyjadrenyNekolikanasobny.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-subjektivne-zabarveny-popis-pracovniho-postupu",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/popisSubjektivneZabarvenyPopisPracovnihoPostupu.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-posuzovani-uplnosti-sdeleni",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/posuzovaniUplnostiSdeleni.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-tvaroslovi-pridavna-jmena-druhy-tvrda-mekka-privlastnovaci-sklonovani",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/pridavnaJmenaDruhyTvrdaMekkaPrivlastnovaciSklonovani.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-skladba-prima-a-neprima-rec-uvod",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/primaANeprimaRecUvod.ts",
+    "uniquePerLevel": "13/16/13"
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-reprodukce-primerene-sloziteho-sdeleni",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/reprodukcePrimereneSlozitehoSdeleni.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-skladba-shoda-prisudku-s-podmetem",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/shodaPrisudkuSPodmetem.ts",
+    "uniquePerLevel": "97/53/192"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-nauka-o-slove-slova-jednoznacna-mnohoznacna-vicevyznamova",
+    "gate": "PASS",
+    "verdict": "patch",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 2,
+      "example": "Které slovo je mnohoznačné (má víc významů)?",
+      "levels": "L1"
+     }
+    ],
+    "file": "src/content/grade-5/cjl/slovaJednoznacnaMnohoznacnaVicevyznamova.ts",
+    "uniquePerLevel": "18/13/12",
+    "note": "hints[0] je šablona s náhodně vybranými jednoznačnými slovy (shuffle), při shodě výběru vznikne stejná malá nápověda u dvou úloh; navázat nápovědu na klíčové slovo úlohy."
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-nauka-o-slove-slova-spisovna-a-nespisovna",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 14,
+      "example": "Které slovo ve větě „Eště chvíli počkej.“ je nespisovné?",
+      "levels": "L2"
+     }
+    ],
+    "file": "src/content/grade-5/cjl/slovaSpisovnaANespisovna.ts",
+    "uniquePerLevel": "17/14/13",
+    "note": "Úloha je výběr slova z uvedené věty — klíč ve znění je dán formátem."
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-tvaroslovi-slovesa-zpusob-oznamovaci-rozkazovaci-podminovaci",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/slovesaZpusobOznamovaciRozkazovaciPodminovaci.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-tvaroslovi-slovni-druhy-urcovani-vsech-deseti-ohebne-a-neohebne",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/slovniDruhyUrcovaniVsechDesetiOhebneANeohebne.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-skladba-souveti-vzorce-pocet-vet",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/souvetiVzorcePocetVet.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-studijni-cteni-a-vecne-cteni",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 1,
+      "example": "Text: „Jízdné: dítě do 6 let zdarma, dítě 6–15 let 10 Kč…“ Kolik zaplatí desetiletý Jakub…",
+      "levels": "L3"
+     }
+    ],
+    "file": "src/content/grade-5/cjl/studijniCteniAVecneCteni.ts",
+    "uniquePerLevel": "13/13/13",
+    "note": "Úloha s předponou Text: — 10 Kč je v textu, ale odpověď vyžaduje výpočet."
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-telefonicky-rozhovor-zanechani-vzkazu",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/telefonickyRozhovorZanechaniVzkazu.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-literarni-vychova-literarni-pojmy-a-zanry-umelecke-a-neumelecke-texty",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/umeleckeANeumeleckeTexty.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-text-na-dane-tema",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/vlastniLiterarniTextNaDaneTema.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-rozvinutou-osnovou",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/vypravovaniSRozvinutouOsnovou.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-cjl-jazykova-vychova-tvaroslovi-zajmena-sklonovani-osobnich-zajmen",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/cjl/zajmenaSklonovaniOsobnichZajmen.ts",
+    "uniquePerLevel": "13/13/13"
+   }
+  ]
+ },
+ {
+  "batch": "5|vlastivěda",
+  "topics": [
+   {
+    "id": "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-druha-svetova-valka-okupace-osvobozeni",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/druhaSvetovaValkaOkupaceOsvobozeni.ts",
+    "uniquePerLevel": "20/137/144"
+   },
+   {
+    "id": "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-evropa-poloha-povrch-vodstvo-podnebi",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/evropaPolohaPovrchVodstvoPodnebi.ts",
+    "uniquePerLevel": "118/150/150"
+   },
+   {
+    "id": "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-evropske-staty-a-eu-sousedni-zeme-cr-podrobne",
+    "gate": "PASS",
+    "verdict": "patch",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 4,
+      "example": "Malá nápověda se opakuje 2x: „Začni dvojicí, kterou znáš jistě. Kam patří „Rakousko“ …“ (matching)",
+      "levels": "matching úlohy"
+     }
+    ],
+    "file": "src/content/grade-5/vlastiveda/evropskeStatyAEuSousedniZemeCrPodrobne.ts",
+    "uniquePerLevel": "131/150/150",
+    "note": "hints[0] matching úloh generuje sdílený helper v src/content/grade-5/_shared.ts:183 jen z levých stran; dvě sady se stejnými levými stranami (jiné pořadí/pravé strany) dostanou stejnou nápovědu. Oprava: dedup sad se stejnou množinou levých stran nebo zapojit do h0 i data pravé strany."
+   },
+   {
+    "id": "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-globus-svetove-strany-na-mape-casova-pasma-uvod",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/globusSvetoveStranyNaMapeCasovaPasmaUvod.ts",
+    "uniquePerLevel": "70/149/150"
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-novovek-habsburska-monarchie-habsburkove-doba-pobelohorska-baroko",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/habsburkoveDobaPobelohorskaBaroko.ts",
+    "uniquePerLevel": "20/131/143"
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-komunisticky-rezim-sametova-revoluce-1989",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/komunistickyRezimSametovaRevoluce1989.ts",
+    "uniquePerLevel": "20/118/137"
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-novovek-habsburska-monarchie-marie-terezie-josef-ii-reformy",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/marieTerezieJosefIiReformy.ts",
+    "uniquePerLevel": "20/117/144"
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-narodni-obrozeni-a-19-stoleti-narodni-obrozeni-jungmann-palacky-havlicek",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/narodniObrozeniJungmannPalackyHavlicek.ts",
+    "uniquePerLevel": "20/130/146"
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-narodni-obrozeni-a-19-stoleti-prumyslova-revoluce-vedecky-a-technicky-pokrok",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/prumyslovaRevoluceVedeckyATechnickyPokrok.ts",
+    "uniquePerLevel": "20/119/143"
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-prvni-svetova-valka-a-vznik-ceskoslovenska-1918",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/prvniSvetovaValkaAVznikCeskoslovenska1918.ts",
+    "uniquePerLevel": "20/131/142"
+   },
+   {
+    "id": "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-svetadily-a-oceany-zeme-prehled",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/svetadilyAOceanyZemePrehled.ts",
+    "uniquePerLevel": "72/149/150"
+   },
+   {
+    "id": "g5-vlastiveda-lide-kolem-nas-demokracie-a-stat-volby-zastupitelske-organy-cr-prezident-vlada",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/volbyZastupitelskeOrganyCrPrezidentVlada.ts",
+    "uniquePerLevel": "13/13/12",
+    "note": "Splňuje minimum 12 na úroveň jen těsně (L3 = 12)."
+   },
+   {
+    "id": "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-vznik-cr-1993-cr-v-eu-a-nato",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/vlastiveda/vznikCr1993CrVEuANato.ts",
+    "uniquePerLevel": "20/105/142"
+   }
+  ]
+ },
+ {
+  "batch": "5|přírodověda",
+  "topics": [
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-trideni-organismu-bezobratli-hmyz-pavouci-mekkysi-cervi",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/bezobratliHmyzPavouciMekkysiCervi.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-clovek-a-jeho-zdravi-vyvoj-cloveka-a-rozmnozovani-etapy-lidskeho-zivota-dospivani",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/etapyLidskehoZivotaDospivani.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-neziva-priroda-rozsireni-horniny-a-nerosty-druhy-vlastnosti-vznik",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/horninyANerostyDruhyVlastnostiVznik.ts",
+    "uniquePerLevel": "13/12/13"
+   },
+   {
+    "id": "g5-prirodoveda-clovek-a-jeho-zdravi-lidske-telo-soustavy-kostra-a-svaly-dychaci-a-obehova-soustava",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/kostraASvalyDychaciAObehovaSoustava.ts",
+    "uniquePerLevel": "70/149/150"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-energie-a-jeji-zdroje-magnety-elektrina-jednoduche-obvody-uvod",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/magnetyElektrinaJednoducheObvodyUvod.ts",
+    "uniquePerLevel": "13/12/13"
+   },
+   {
+    "id": "g5-prirodoveda-clovek-a-jeho-zdravi-navyky-a-prevence-navykove-latky-alkohol-nikotin-drogy",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/navykoveLatkyAlkoholNikotinDrogy.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-clovek-a-jeho-zdravi-lidske-telo-soustavy-nervova-soustava-smysly",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/nervovaSoustavaSmysly.ts",
+    "uniquePerLevel": "70/149/150"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-energie-a-jeji-zdroje-obnovitelne-a-neobnovitelne-zdroje-energie",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/obnovitelneANeobnovitelneZdrojeEnergie.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-trideni-organismu-obratlovci-savci-ptaci-plazi-obojzivelnici-ryby",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/obratlovciSavciPtaciPlaziObojzivelniciRyby.ts",
+    "uniquePerLevel": "129/150/150"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-ekosystemy-a-zivotni-prostredi-ochrana-prirody-narodni-parky-chko-v-cr",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/ochranaPrirodyNarodniParkyChkoVCr.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-ekosystemy-a-zivotni-prostredi-potravni-retezec-vztahy-v-ekosystemu",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/potravniRetezecVztahyVEkosystemu.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-trideni-organismu-rise-rostlin-hub-zivocichu",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/riseRostlinHubZivocichu.ts",
+    "uniquePerLevel": "113/149/150"
+   },
+   {
+    "id": "g5-prirodoveda-clovek-a-jeho-zdravi-vyvoj-cloveka-a-rozmnozovani-rozmnozovaci-soustava-vyvoj-cloveka-uvod",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/rozmnozovaciSoustavaVyvojClovekaUvod.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-clovek-a-jeho-zdravi-lidske-telo-soustavy-travici-soustava-vylucovaci-soustava",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/traviciSoustavaVylucovaciSoustava.ts",
+    "uniquePerLevel": "69/149/150"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-neziva-priroda-rozsireni-vesmir-slunecni-soustava-planety-slunce-mesic",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/vesmirSlunecniSoustavaPlanetySlunceMesic.ts",
+    "uniquePerLevel": "13/13/13"
+   },
+   {
+    "id": "g5-prirodoveda-rozmanitost-prirody-neziva-priroda-rozsireni-zeme-jako-planeta-tvar-rotace-obeh-stridani-dne-a-noci",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "file": "src/content/grade-5/prirodoveda/zemeJakoPlanetaTvarRotaceObehStridaniDneANoci.ts",
+    "uniquePerLevel": "24/67/60"
+   }
+  ]
+ },
+ {
+  "batch": "6|fyzika + 6|dejepis",
+  "topics": [
+   {
+    "id": "g6-fyz-mereni-delky-6",
+    "file": "src/content/grade-6/fyzika/mereniDelky.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "39/64/36"
+   },
+   {
+    "id": "g6-fyz-mereni-hmotnosti-6",
+    "file": "src/content/grade-6/fyzika/mereniHmotnosti.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "36/56/32"
+   },
+   {
+    "id": "g6-fyz-mereni-objemu-6",
+    "file": "src/content/grade-6/fyzika/mereniObjemu.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "37/83/34"
+   },
+   {
+    "id": "g6-fyz-hustota-6",
+    "file": "src/content/grade-6/fyzika/hustota.ts",
+    "gate": "PASS",
+    "verdict": "exception_only",
+    "uniquePerLevel": "24/27/40",
+    "note": "L3 'Z ktere latky je?' ma v zadani referencni tabulku hustot vsech latek, takze nazev latky (klic) tam je nutne - vyctova uloha. U L3 'Jakou hmotnost ma V cm3' jde o falesnou shodu podretezce: klic '9 g' / '7 g' se najde v '0,9 g/cm3' / '0,7 g/cm3'.",
+    "findings": [
+     {
+      "category": "key_in_question",
+      "severity": "exception",
+      "count": 17,
+      "levels": "L3",
+      "example": "Těleso má hmotnost 156 g a objem 20 cm³. Z které látky je? (ρ: led 0,9 · … železo 7,8 …)"
+     }
+    ]
+   },
+   {
+    "id": "g6-fyz-mereni-teploty-6",
+    "file": "src/content/grade-6/fyzika/mereniTeploty.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "98/98/77"
+   },
+   {
+    "id": "g6-fyz-mereni-casu-6",
+    "file": "src/content/grade-6/fyzika/mereniCasu.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "16/32/56"
+   },
+   {
+    "id": "g6-dej-periodizace-letopocet-6",
+    "file": "src/content/grade-6/dejepis/periodizaceLetopocet.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "119/80/81",
+    "note": "hints[0] u uloh 'nejstarsi' sklada jen dva letopocty (ostatni[0..1], resp. nl+pr), takze dve ulohy se stejnou dvojici a jinou treti moznosti sdileji malou napovedu; hints[1] je u techto sablon staticky text. Staci zahrnout do hints[0] vsechny moznosti.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 4,
+      "levels": "L1-L3",
+      "example": "Porovnej 400 př. n. l. a 100 př. n. l.: které z nich je dál v minulosti?"
+     }
+    ]
+   },
+   {
+    "id": "g6-dej-doba-kamenna-periodizace-6",
+    "file": "src/content/grade-6/dejepis/dobaKamennaPeriodizace.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "104/114/114"
+   },
+   {
+    "id": "g6-dej-co-je-dejepis-6",
+    "file": "src/content/grade-6/dejepis/coJeDejepis.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "13/17/12",
+    "note": "L3 = 12 unikatnich, prave na hranici minima."
+   },
+   {
+    "id": "g6-dej-historicke-prameny-6",
+    "file": "src/content/grade-6/dejepis/historickePrameny.ts",
+    "gate": "PASS",
+    "verdict": "ok",
+    "findings": [],
+    "uniquePerLevel": "107/120/119"
+   },
+   {
+    "id": "g6-dej-pomocne-vedy-historicke-6",
+    "file": "src/content/grade-6/dejepis/pomocneVedyHistoricke.ts",
+    "gate": "PASS",
+    "verdict": "patch",
+    "uniquePerLevel": "115/120/120",
+    "note": "hints[0] se sklada z ukazky nalezu (podmnozina); dve ulohy se stejnou ukazkou sdileji malou napovedu. hints[1] je sdileny text pravidla (RULE/GLOSSARY) podle urovne.",
+    "findings": [
+     {
+      "category": "hint_duplicate",
+      "severity": "real",
+      "count": 2,
+      "levels": "?",
+      "example": "U nálezů „Pergamen se starým písmem k rozluštění“, … se zeptej: jde o vykopávku, o písmo…"
+     }
+    ]
+   }
+  ]
+ }
+]

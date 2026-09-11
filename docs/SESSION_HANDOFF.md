@@ -72,6 +72,36 @@ vlastní nápovědy + zpětná vazba u chybných možností):
 
 Sdílení pomocníci `grade-3/_shared.ts` (`choice`, `urcovaci`, `shuffle`).
 
+### ▶ DALŠÍ KROK: hromadné opravy obsahu podle inventury
+
+Po posledním commitu session 37 proběhla **inventura celého obsahu** (workflow,
+13 agentů): **`docs/CONTENT_INVENTORY.md`** (čitelný přehled po tématech)
+a `docs/content-inventory-2026-09-11.json` (surová data s nálezy a soubory).
+
+- 142 témat v pořádku / jen záměrné výjimky, **40 k cílené úpravě, 47 k přepisu
+  generátoru**. Těžiště: 2. ročník (41 témat) a nepřepsaná část 3. ročníku.
+  4.–6. ročník je skoro čistý.
+- Hlavní nálezy: chybí zpětná vazba u chybných možností (~5 400 úloh), jedna
+  malá nápověda pro celou úroveň (~2 700), chybí druhá nápověda (~1 600),
+  < 12 unikátních úloh na úroveň. Offline audit (`audit:content` = 0) to
+  nevidí — měří jen strukturu; tohle našel `scripts/docs-check.ts`.
+- **Vidí to děti už teď:** brána FAIL u `g2-mat-mereni-casu`,
+  `g2-mat-mereni-delky` a skupin dě/tě/ně; `g3-mat-tabulky-diagramy` radí
+  „Sečti“ místo „odečti“; `g2-mat-bod-primka-usecka` má nejednoznačnou otázku.
+
+**Uživatel chce opravy pustit workflowem (víc agentů najednou)** — zatím
+nerozhodl mezi: A) všech 87 najednou (doporučeno), B) nejdřív 3 chyby
+viditelné dětem, C) po ročnících. Návrh: ~15 agentů po 5–6 tématech z
+inventury, úpravy přímo v souborech témat (nepřekrývají se), každý musí mít
+svá témata čistá v `audit-topic` + `docs-check`; zámek obsahu, testy,
+dokumentaci a commit dělá až jeden závěrečný krok. Inventuru jde zopakovat
+skriptem `scripts/workflows/content-inventory.js` (args: `wt`, `groups` =
+id témat po `ročník|předmět`).
+
+Nástroje: `node scripts/audit-topic.mjs <id>` (brána),
+`IDS=a,b npx vite-node scripts/docs-check.ts` (všechny úlohy, přísné),
+`npm run audit:content` (offline audit celku).
+
 ### Session 2026-09-09/10 — appka poprvé celá venku
 
 Vercel napojen na GitHub (`d9e61b5`), nasazeny migrace, secret
