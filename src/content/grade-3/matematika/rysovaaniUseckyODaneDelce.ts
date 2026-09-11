@@ -1,122 +1,293 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "../_shared";
+import { plural } from "@/lib/czechGrammar";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// Přepsáno 2026-09-11 (inventura obsahu): úrovně měly jen 8/8/12 ručních otázek,
+// všechny úlohy sdílely stejnou dvojici nápověd, chybné možnosti neměly zpětnou
+// vazbu a v L1/L3 se objevovala desetinná čísla (4,5 cm), která 3. ročník ještě nezná.
+// Teď parametrické úlohy, nápovědy i vysvětlení nesou čísla konkrétní úlohy:
+//   L1 rozpoznání — délka přečtená z pravítka od nuly; pojmy (krajní body, zápis |AB|…)
+//   L2 aplikace   — úsečka nezačíná u nuly (odečítání); cm a mm → mm; čtení mm dílků
+//   L3 transfer   — kde označit bod B (inverze); součet a rozdíl úseček v různých
+//                   jednotkách; polovina úsečky v milimetrech (dva kroky)
+// Jen celá čísla (RVP 3. ročníku), délky do 15 cm / 150 mm.
+
+/** Vybere první tři různé distraktory, které se neshodují s klíčem (dedup po vygenerování tvaru). */
+function tri(key: string, cands: Distractor[]): [Distractor, Distractor, Distractor] {
+  const seen = new Set([key]);
+  const out: Distractor[] = [];
+  for (const c of cands) {
+    if (seen.has(c.value)) continue;
+    seen.add(c.value);
+    out.push(c);
+    if (out.length === 3) return out as [Distractor, Distractor, Distractor];
   }
-  return a;
+  throw new Error(`Málo různých distraktorů pro klíč „${key}“`);
 }
 
-/**
- * PED-3 kalibrace L1<L2<L3.
- *
- * Před: `pool = level<=2 ? POOL_L1 : POOL_L1+POOL_L2` → L1 a L2 měly identický
- * obsah, L3 přidalo jen POOL_L2. Audit `24/0/12 max L3 ⚠ chybí těžší`.
- *
- * Teď disjunktní:
- *  L1 — definice a jednotky (co je úsečka, mm/cm, krajní body).
- *  L2 — praxe rýsování a měření (jak přiložit pravítko, převody, rozdíl délek).
- *  L3 — aplikace: součet/rozdíl více úseček, slovní úlohy s převody, dvojitá úsečka.
- */
+const DVOJICE: [string, string][] = [
+  ["A", "B"], ["C", "D"], ["E", "F"], ["K", "L"], ["M", "N"], ["P", "R"], ["U", "V"], ["X", "Y"],
+];
+const TROJICE: [string, string, string][] = [["A", "B", "C"], ["K", "L", "M"], ["P", "R", "T"], ["D", "E", "F"]];
+const dv = (i: number) => DVOJICE[i % DVOJICE.length];
+const dilky = (m: number) => `${m} ${plural(m, "milimetrový dílek", "milimetrové dílky", "milimetrových dílků")}`;
 
-interface Item {
-  q: string;
-  a: string;
-  opts: string[];
-  hints?: string[];
+// ─── L1 · rozpoznání ────────────────────────────────────────────────────────
+
+/** Bod X u nuly, bod Y u čísla n → délka se přečte přímo. */
+function odNuly(n: number, i: number): PracticeTask {
+  const [X, Y] = dv(i);
+  return choice(`Bod ${X} je na pravítku u nuly, bod ${Y} u čísla ${n}. Jak dlouhá je úsečka ${X}${Y}?`, `${n} cm`, [
+    { value: `${n + 1} cm`, why: `To vyjde, když se k číslům započítá i nula. Nula je začátek úsečky, ne její první centimetr.` },
+    { value: `${n - 1} cm`, why: `Tolik by měřila úsečka, kdyby bod ${Y} ležel u čísla ${n - 1}. Délku čteš přesně u bodu ${Y}.` },
+    { value: `${n} mm`, why: `Čísla na pravítku značí celé centimetry. Milimetry jsou jen malé dílky mezi nimi.` },
+  ], {
+    hints: [
+      `Začátek úsečky je u nuly, konec u čísla ${n}. Co ta čísla na pravítku měří?`,
+      `Když bod ${X} leží přesně u nuly, délka úsečky ${X}${Y} se přečte rovnou u bodu ${Y}. Velká čísla na pravítku jsou centimetry, malé dílky mezi nimi milimetry. Kolik celých centimetrů je od nuly k číslu ${n}?`,
+    ],
+    explanation: `Bod ${X} leží u nuly, takže délku čteme přímo u bodu ${Y}: od 0 do ${n} je ${n} cm. Proto |${X}${Y}| = ${n} cm.`,
+  });
 }
 
-const POOL_L1: Item[] = [
-  { q: "Co potřebuješ k narýsování úsečky?", a: "Pravítko a tužku", opts: ["Pravítko a tužku", "Kružítko", "Úhloměr", "Jen tužku"] },
-  {
-    q: "Jak se označuje délka úsečky AB?",
-    a: "|AB|",
-    opts: ["|AB|", "AB", "∠AB", "(AB)"],
+const POJMY: PracticeTask[] = [
+  choice("Kolik krajních bodů má úsečka?", "dva", [
+    { value: "jeden", why: "Jeden krajní bod má polopřímka: v bodě začíná a na druhou stranu pokračuje bez konce." },
+    { value: "žádný", why: "Žádný krajní bod nemá přímka, ta pokračuje na obě strany donekonečna. Úsečka ne." },
+    { value: "tři", why: "Bod uprostřed úsečky není krajní. Krajní body jsou jen na koncích a konce má úsečka jen na dvou stranách." },
+  ], {
     hints: [
-      "Délku měříme v cm nebo mm, vždy od nuly. 1 cm = 10 mm.",
-      "Zápis délky úsečky se píše se dvěma svislými čarami kolem názvů krajních bodů, ne jen holými písmeny.",
+      "Krajní body leží na koncích úsečky. Kolik konců úsečka má?",
+      "Úsečka je rovná čára, která někde začíná a někde končí — na rozdíl od přímky, která pokračuje donekonečna. Na každém konci leží jeden bod. Spočítej konce úsečky.",
     ],
-  },
-  { q: "Co jsou krajní body úsečky?", a: "Body A a B na obou koncích", opts: ["Střed úsečky uprostřed", "Body A a B na obou koncích", "Pravítko s měřítkem", "Celková délka úsečky"] },
-  { q: "Úsečka má délku 3 cm. Jaká je délka v mm?", a: "30 mm", opts: ["30 mm", "3 mm", "300 mm", "0,3 mm"] },
-  { q: "Úsečka CD má délku 45 mm. Kolik je to cm?", a: "4,5 cm", opts: ["4,5 cm", "45 cm", "4 cm", "0,45 cm"] },
-  {
-    q: "Kolik milimetrů má 1 centimetr?",
-    a: "10 mm",
-    opts: ["10 mm", "100 mm", "1 mm", "1000 mm"],
+    explanation: "Úsečka má dva konce a na každém leží jeden krajní bod, třeba A a B. Proto se úsečka jmenuje podle nich: úsečka AB.",
+  }),
+  choice("Úsečky AB a CD jsou stejně dlouhé. Jak se takovým úsečkám říká?", "shodné", [
+    { value: "rovnoběžné", why: "Rovnoběžné úsečky mají stejný směr a nikdy se neprotnou. O délce to nic neříká." },
+    { value: "kolmé", why: "Kolmé úsečky spolu svírají pravý úhel. O délce to nic neříká." },
+    { value: "různoběžné", why: "Různoběžné úsečky míří každá jinam. O délce to nic neříká." },
+  ], {
     hints: [
-      "Přemýšlej, kolikrát se menší jednotka (mm) vejde do té větší (cm).",
-      "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
+      "Hledej slovo, které říká, že se dvě věci dají přesně položit přes sebe.",
+      "Když změříš AB i CD a vyjde stejné číslo, dají se úsečky položit přes sebe tak, že se úplně kryjí. Ostatní slova popisují, kam úsečky míří, ne jak jsou dlouhé.",
     ],
-  },
-  { q: "Dvě úsečky jsou stejně dlouhé. Říkáme, že jsou:", a: "Shodné", opts: ["Rovnoběžné", "Shodné", "Různoběžné", "Kolmé"] },
-  {
-    q: "Úsečka je část přímky ohraničená:",
-    a: "Dvěma body",
-    opts: ["Dvěma body", "Jedním bodem", "Třemi body", "Kružnicí"],
+    explanation: "Stejně dlouhé úsečky se po přiložení přes sebe kryjí — říkáme, že jsou shodné. Zapisujeme |AB| = |CD|.",
+  }),
+  choice("Ke které čárce pravítka přiložíš bod A, aby šla délka úsečky přečíst přímo?", "k nule", [
+    { value: "k číslu 1", why: "Když začneš u jedničky, přečteš u bodu B číslo o 1 cm větší, než je skutečná délka." },
+    { value: "k okraji pravítka", why: "Okraj pravítka často není nula — před nulou bývá kousek bez čárek." },
+    { value: "k prostřední čárce", why: "Od prostřední čárky by se délka musela odečítat, přímo přečíst by nešla." },
+  ], {
     hints: [
-      "Délku měříme v cm nebo mm, vždy od nuly. 1 cm = 10 mm.",
-      "Kolik bodů potřebuješ, aby jimi byla úsečka na obou koncích ohraničená?",
+      "Kde na pravítku začíná počítání centimetrů?",
+      "Délka úsečky je počet centimetrů od začátku ke konci. Když začátek úsečky leží tam, kde pravítko začíná počítat, přečteš délku rovnou u bodu B a nic neodečítáš.",
     ],
-  },
+    explanation: "Centimetry se na pravítku počítají od nuly. Když je bod A u nuly, číslo u bodu B je přímo délka úsečky; jinak by se muselo odečítat.",
+  }),
+  choice("Body A a B máš označené. Jak je spojíš, aby vznikla úsečka AB?", "rovnou čarou podél pravítka", [
+    { value: "obloukem pomocí kružítka", why: "Kružítkem vzniká oblouk nebo kružnice. Úsečka je rovná." },
+    { value: "rovnou čarou od ruky", why: "Od ruky čára nebude přesně rovná, proto se úsečka rýsuje podél pravítka." },
+    { value: "vlnovkou od bodu k bodu", why: "Úsečka je nejkratší spojení dvou bodů. Vlnovka je křivá a delší." },
+  ], {
+    hints: [
+      "Úsečka musí být úplně rovná. Co ti pomůže vést tužku rovně?",
+      "Přilož pravítko tak, aby se jeho hrana dotýkala bodu A i bodu B. Tužku pak veď po hraně od jednoho bodu ke druhému. Kružítko ani ruka bez pomůcky rovnou čáru neudělají.",
+    ],
+    explanation: "Úsečka je rovná čára mezi dvěma body. Přesně rovnou ji nakreslíš jen s pravítkem: přiložíš ho k oběma bodům a vedeš tužku po hraně.",
+  }),
+  choice("Jak správně zapíšeš, že úsečka AB měří 6 cm?", "|AB| = 6 cm", [
+    { value: "|AB| = 6", why: "Chybí jednotka. Bez „cm“ nikdo neví, jestli jde o centimetry, nebo milimetry." },
+    { value: "AB = |6 cm|", why: "Svislé čáry patří kolem názvu úsečky, ne kolem čísla." },
+    { value: "|A| = |B| = 6 cm", why: "Délku má úsečka, ne jednotlivé body. Svislé čáry se píšou kolem obou písmen dohromady." },
+  ], {
+    hints: [
+      "Délka úsečky se zapisuje pomocí svislých čar. Kam je dáš a co nesmí chybět za číslem?",
+      "Svislé čáry obklopí oba krajní body dohromady — tím říkáš „délka úsečky“. Za rovnítko napiš číslo i jednotku, jinak by nikdo nevěděl, jestli jde o centimetry, nebo milimetry.",
+    ],
+    explanation: "Délka úsečky AB se píše |AB|; svislé čáry znamenají „délka“. Za rovnítko patří číslo i jednotka, tedy |AB| = 6 cm.",
+  }),
+  choice("Čím se úsečka liší od přímky?", "má začátek i konec", [
+    { value: "je křivá", why: "Úsečka i přímka jsou rovné čáry, křivá není ani jedna." },
+    { value: "nemá žádný konec", why: "To platí pro přímku, která pokračuje na obě strany donekonečna." },
+    { value: "má jen jeden konec", why: "Jen na jedné straně končí polopřímka, ne úsečka." },
+  ], {
+    hints: [
+      "Přímka pokračuje na obě strany bez přestání. Jak je to u úsečky?",
+      "Úsečka leží mezi dvěma body a za nimi už nepokračuje. Přímka se dá prodlužovat donekonečna na obě strany, polopřímka jen na jednu. Která možnost to vystihuje?",
+    ],
+    explanation: "Úsečka začíná v jednom krajním bodě a končí ve druhém. Přímka nemá začátek ani konec a polopřímka má jen začátek.",
+  }),
 ];
 
-const POOL_L2: Item[] = [
-  { q: "Ke které části pravítka přikládáme začátek úsečky?", a: "K nule (0)", opts: ["K nule (0)", "K číslu 1", "Kamkoli", "K prostředku pravítka"] },
-  { q: "Jak narýsuješ úsečku délky 6,5 cm?", a: "Odměřím 65 mm na pravítku", opts: ["Odměřím 65 mm na pravítku", "Odměřím 6 cm", "Odměřím 7 cm", "Použiji kružítko"] },
-  { q: "Jak zjistíš délku narýsované úsečky?", a: "Přiložím pravítko a odečtu vzdálenost bodů", opts: ["Přiložím pravítko a odečtu vzdálenost bodů", "Odhadem", "Spočítám mm na papíru", "Porovnám s jinou úsečkou"] },
-  { q: "Úsečka EF je 8 cm. Úsečka GH je 5 cm. O kolik je EF delší?", a: "3 cm", opts: ["3 cm", "13 cm", "2 cm", "4 cm"] },
-  { q: "Narýsuj úsečku délky 5 cm. Jaký krok uděláš první?", a: "Označím bod A a přiložím pravítko", opts: ["Označím bod A a přiložím pravítko", "Hned začnu kreslit", "Změřím papír", "Označím střed úsečky"] },
-  {
-    q: "Chceš úsečku 7 cm. Na pravítku odměříš:",
-    a: "70 mm",
-    opts: ["70 mm", "7 mm", "0,7 mm", "700 mm"],
+// ─── L2 · aplikace ──────────────────────────────────────────────────────────
+
+/** Úsečka nezačíná u nuly: délka = b − a. */
+function mimoNulu([a, b]: [number, number], i: number): PracticeTask {
+  const [X, Y] = dv(i + 3);
+  const L = b - a;
+  return choice(`Bod ${X} je na pravítku u čísla ${a}, bod ${Y} u čísla ${b}. Jak dlouhá je úsečka ${X}${Y}?`, `${L} cm`, tri(`${L} cm`, [
+    { value: `${b} cm`, why: `${b} cm by platilo, kdyby bod ${X} ležel u nuly. Tady ale úsečka začíná u čísla ${a}.` },
+    { value: `${L + 1} cm`, why: `To vyjde, když se spočítají čísla od ${a} do ${b} včetně obou. Délku ale tvoří mezery mezi čísly, ne čísla samotná.` },
+    { value: `${a + b} cm`, why: `Čísla ${a} a ${b} se nesčítají — délka je vzdálenost mezi nimi, tedy rozdíl.` },
+    { value: `${L - 1} cm`, why: `O centimetr méně — jeden skok mezi čísly se ztratil. Od ${a} do ${b} počítej skoky pečlivě.` },
+  ]), {
     hints: [
-      "Délku měříme v centimetrech i milimetrech, vždy od nuly. 1 cm = 10 mm.",
-      "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
+      `Bod ${X} neleží u nuly, ale u čísla ${a}. Kolik centimetrů je od něj k číslu ${b}?`,
+      `Když úsečka nezačíná u nuly, nestačí přečíst číslo u bodu ${Y}. Počítej centimetrové skoky od ${a} do ${b}, nebo od většího čísla odečti menší. Pozor, nepočítej čísla, ale mezery mezi nimi.`,
     ],
-  },
-  { q: "Úsečka má 12 cm. Kolik je to mm?", a: "120 mm", opts: ["120 mm", "12 mm", "1,2 mm", "1200 mm"] },
-  { q: "Chceme přesně 3 cm 2 mm. Kolik mm celkem odměříme?", a: "32 mm", opts: ["32 mm", "23 mm", "5 mm", "302 mm"] },
-];
-
-const POOL_L3: Item[] = [
-  // Aplikace: součet a rozdíl více úseček
-  { q: "Úsečky |AB| = 4 cm, |BC| = 3 cm leží na jedné přímce za sebou. Jak dlouhá je celá úsečka |AC|?", a: "7 cm", opts: ["7 cm", "1 cm", "12 cm", "3,5 cm"] },
-  { q: "Úsečka |XY| = 15 cm, |YZ| = 8 cm — leží za sebou. Kolik cm je |XZ|?", a: "23 cm", opts: ["23 cm", "7 cm", "120 cm", "15 cm"] },
-  { q: "Celková úsečka |AC| má 10 cm. Její část |AB| je 6 cm. Jak dlouhá je zbylá část |BC|?", a: "4 cm", opts: ["4 cm", "16 cm", "6 cm", "60 cm"] },
-  // Slovní úloha s převody
-  { q: "Tomáš narýsoval úsečku 55 mm a Anna úsečku 6 cm. Kdo má delší úsečku?", a: "Anna (60 mm > 55 mm)", opts: ["Anna (60 mm > 55 mm)", "Tomáš (55 mm > 6 mm)", "Jsou stejně", "Nelze porovnat"] },
-  { q: "Provaz je dlouhý 1 m. Kolik cm je to?", a: "100 cm", opts: ["100 cm", "10 cm", "1000 cm", "1 cm"] },
-  { q: "Kolik mm má 2 cm 5 mm?", a: "25 mm", opts: ["25 mm", "52 mm", "205 mm", "7 mm"] },
-  // Dvojitá úsečka a průměr
-  { q: "Úsečky |AB| a |CD| jsou shodné, každá 4 cm. Kolik cm je jejich součet?", a: "8 cm", opts: ["8 cm", "4 cm", "16 cm", "2 cm"] },
-  { q: "Úsečka |AB| = 12 cm. Kolik cm je polovina této úsečky?", a: "6 cm", opts: ["6 cm", "24 cm", "12 cm", "3 cm"] },
-  // Porovnání a nerovnost
-  { q: "Máme úsečky 3,5 cm, 5 mm a 4 cm. Která je nejdelší?", a: "4 cm", opts: ["4 cm", "3,5 cm", "5 mm", "všechny stejné"] },
-  { q: "Úsečka |AB| = 9 cm, |CD| = 90 mm. Které tvrzení platí?", a: "|AB| = |CD|", opts: ["|AB| = |CD|", "|AB| > |CD|", "|AB| < |CD|", "nelze porovnat"] },
-  // Kombinovaná úloha
-  { q: "Chceš narýsovat 3 stejně dlouhé úsečky za sebou, každá 4 cm. Kolik cm bude mít výsledná úsečka?", a: "12 cm", opts: ["12 cm", "4 cm", "7 cm", "16 cm"] },
-  { q: "Krátká úsečka má 25 mm, dlouhá je 3× delší. Kolik cm má dlouhá?", a: "7,5 cm", opts: ["7,5 cm", "75 cm", "0,75 cm", "10 cm"] },
-];
-
-function pick(pool: Item[]): PracticeTask[] {
-  return shuffle(pool).map(({ q, a, opts, hints }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle([...opts]),
-    hints: hints ?? [
-      "Délku měříme v cm nebo mm, vždy od nuly. 1 cm = 10 mm.",
-      "Úsečka = část přímky mezi dvěma body A a B. Zápis délky: |AB|.",
-    ],
-  }));
+    explanation: `Úsečka začíná u čísla ${a} a končí u čísla ${b}. Její délka je vzdálenost mezi nimi: ${b} − ${a} = ${L} cm.`,
+  });
 }
+
+/** c cm m mm → milimetry. */
+function cmMmNaMm([c, m]: [number, number], i: number): PracticeTask {
+  const [X, Y] = dv(i + 5);
+  const x = 10 * c + m;
+  return choice(`Úsečka ${X}${Y} měří ${c} cm ${m} mm. Kolik je to milimetrů?`, `${x} mm`, tri(`${x} mm`, [
+    { value: `${c + m} mm`, why: `Centimetry a milimetry nejde sečíst jen tak. Nejdřív převeď ${c} cm na milimetry.` },
+    { value: `${10 * m + c} mm`, why: `Čísla se prohodila. ${c} cm je ${c} ${plural(c, "desítka", "desítky", "desítek")} milimetrů, na místo desítek tedy patří ${c}.` },
+    { value: `${100 * c + m} mm`, why: `1 cm má 10 mm, ne 100 mm. ${c} cm je jen ${10 * c} mm.` },
+  ]), {
+    hints: [
+      `Kolik milimetrů je ${c} cm? A co pak uděláš s ${m} mm navíc?`,
+      `Jeden centimetr má deset milimetrů, takže ${c} cm je ${c} krát deset milimetrů. K tomu přičti ještě ${m} mm. Na pravítku to je ${c} ${plural(c, "velký dílek", "velké dílky", "velkých dílků")} a k tomu ${m} ${plural(m, "malý", "malé", "malých")}.`,
+    ],
+    explanation: `${c} cm = ${10 * c} mm, protože každý centimetr má 10 mm. K tomu ${m} mm: ${10 * c} + ${m} = ${x} mm.`,
+  });
+}
+
+/** Bod Y je m milimetrových dílků za číslem c → délka v mm. */
+function ctiMm([c, m]: [number, number], i: number): PracticeTask {
+  const [X, Y] = dv(i + 1);
+  const x = 10 * c + m;
+  return choice(`Bod ${X} je u nuly, bod ${Y} o ${dilky(m)} za číslem ${c}. Kolik milimetrů měří úsečka ${X}${Y}?`, `${x} mm`, tri(`${x} mm`, [
+    { value: `${10 * c - m} mm`, why: `Dílky jsou ZA číslem ${c}, ne před ním, proto se k ${10 * c} mm přičítají.` },
+    { value: `${c + m} mm`, why: `Číslo ${c} na pravítku znamená ${c} cm, tedy ${10 * c} mm — ne ${c} mm.` },
+    { value: `${10 * (c + 1) + m} mm`, why: `Tak by to vyšlo, kdyby bod ${Y} ležel za číslem ${c + 1}. Leží ale za číslem ${c}.` },
+  ]), {
+    hints: [
+      `Číslo ${c} na pravítku znamená ${c} cm. Kolik milimetrů to je a kolik dílků ještě přibude?`,
+      `Každý centimetr má deset milimetrových dílků. Od nuly k číslu ${c} je tedy ${c} krát deset dílků a od čísla ${c} pak odpočítej ještě ${dilky(m)}. Oba počty sečti.`,
+    ],
+    explanation: `Od nuly k číslu ${c} je ${c} cm = ${10 * c} mm. K tomu ${dilky(m)} za číslem ${c}, tedy ${m} mm: ${10 * c} + ${m} = ${x} mm.`,
+  });
+}
+
+// ─── L3 · transfer ──────────────────────────────────────────────────────────
+
+/** Inverze: začátek u čísla a, délka L → kde označit konec. */
+function kdeKonec([a, L]: [number, number], i: number): PracticeTask {
+  const [X, Y] = dv(i + 2);
+  const key = `u čísla ${a + L}`;
+  return choice(`Úsečka ${X}${Y} má měřit ${L} cm. Bod ${X} je u čísla ${a}. Kde na pravítku označíš bod ${Y}?`, key, tri(key, [
+    { value: `u čísla ${L}`, why: `Tak by to bylo, kdyby bod ${X} ležel u nuly. Začíná ale u čísla ${a}, takže se konec posune o ${a} dál.` },
+    { value: `u čísla ${a + L + 1}`, why: `O centimetr dál — to se stane, když se číslo ${a} počítá už jako první centimetr. Počítej skoky mezi čísly.` },
+    ...(L - a > 0 ? [{ value: `u čísla ${L - a}`, why: `Číslo ${a} se má k délce přičíst, ne odečíst — bod ${Y} musí ležet dál od nuly než bod ${X}.` }] : []),
+    { value: `u čísla ${a + L - 1}`, why: `O centimetr blíž — úsečka by měřila jen ${L - 1} cm. Od čísla ${a} udělej ${L} ${plural(L, "skok", "skoky", "skoků")}.` },
+  ]), {
+    hints: [
+      `Bod ${X} nezačíná u nuly, ale u čísla ${a}. O kolik centimetrů dál musí ležet bod ${Y}?`,
+      `Od čísla ${a} odpočítej na pravítku ${L} ${plural(L, "centimetrový skok", "centimetrové skoky", "centimetrových skoků")} doprava — jeden skok je vzdálenost mezi dvěma sousedními čísly. Kde se zastavíš, tam označ bod ${Y}. Můžeš také sečíst ${a} + ${L}.`,
+    ],
+    explanation: `Úsečka začíná u čísla ${a} a má měřit ${L} cm, proto její konec leží o ${L} dál: ${a} + ${L} = ${a + L}. Bod ${Y} označíš u čísla ${a + L}.`,
+  });
+}
+
+/** Dvě úsečky za sebou, jedna v cm, druhá v mm → celek v mm. */
+function soucet([c, m]: [number, number], i: number): PracticeTask {
+  const [X, Y, Z] = TROJICE[i % TROJICE.length];
+  const x = 10 * c + m;
+  return choice(`Úsečka ${X}${Y} měří ${c} cm, úsečka ${Y}${Z} měří ${m} mm. Leží za sebou. Kolik milimetrů měří ${X}${Z}?`, `${x} mm`, tri(`${x} mm`, [
+    { value: `${c + m} mm`, why: `Centimetry a milimetry nejde sečíst přímo — ${c} cm je nejdřív potřeba převést na ${10 * c} mm.` },
+    { value: `${100 * c + m} mm`, why: `1 cm má 10 mm, ne 100 mm. ${c} cm je ${10 * c} mm.` },
+    { value: `${Math.abs(10 * c - m)} mm`, why: `Úsečky leží za sebou, takže se jejich délky sčítají, ne odečítají.` },
+  ]), {
+    hints: [
+      `${c} cm a ${m} mm jsou v různých jednotkách. Co uděláš, než je sečteš?`,
+      `Nejdřív převeď ${c} cm na milimetry — každý centimetr má deset milimetrů. Pak přičti ${m} mm, protože úsečky ${X}${Y} a ${Y}${Z} leží za sebou a jejich délky se skládají.`,
+    ],
+    explanation: `${c} cm = ${10 * c} mm. Úsečky leží za sebou, takže ${10 * c} mm + ${m} mm = ${x} mm.`,
+  });
+}
+
+/** Rozdíl délek v různých jednotkách → mm. */
+function rozdil([c, m]: [number, number], i: number): PracticeTask {
+  const [X, Y] = dv(i);
+  const [U, V] = dv(i + 4);
+  const x = 10 * c - m;
+  return choice(`Úsečka ${X}${Y} měří ${c} cm, úsečka ${U}${V} měří ${m} mm. O kolik milimetrů je ${X}${Y} delší?`, `${x} mm`, tri(`${x} mm`, [
+    { value: `${m - c} mm`, why: `${c} cm není ${c} mm. Nejdřív převeď ${c} cm na ${10 * c} mm, teprve pak odečítej.` },
+    { value: `${10 * c + m} mm`, why: `Otázka „o kolik je delší“ chce rozdíl délek, ne jejich součet.` },
+    { value: `${100 * c - m} mm`, why: `1 cm má 10 mm, ne 100 mm. ${c} cm je ${10 * c} mm.` },
+  ]), {
+    hints: [
+      `Úsečka ${X}${Y} je zadaná v centimetrech, ${U}${V} v milimetrech. Převeď ${c} cm, než začneš porovnávat.`,
+      `${c} cm převeď na milimetry — každý centimetr má deset milimetrů. Pak se ptáš, o kolik je jedno číslo větší než druhé, takže od většího počtu milimetrů odečti ${m}.`,
+    ],
+    explanation: `${c} cm = ${10 * c} mm. Rozdíl délek: ${10 * c} mm − ${m} mm = ${x} mm. O tolik je úsečka ${X}${Y} delší.`,
+  });
+}
+
+/** Bod S v polovině úsečky c cm → |XS| v mm. U lichých c je převod nutný dřív než dělení. */
+function polovina(c: number, i: number): PracticeTask {
+  const [X, Y] = dv(i);
+  const x = 5 * c;
+  const sude = c % 2 === 0;
+  return choice(`Úsečka ${X}${Y} měří ${c} cm. Bod S leží přesně v její polovině. Kolik milimetrů měří ${X}S?`, `${x} mm`, tri(`${x} mm`, [
+    ...(sude ? [{ value: `${c / 2} mm`, why: `${c / 2} je polovina v centimetrech. Otázka se ale ptá na milimetry, ještě je potřeba převést.` }] : []),
+    { value: `${10 * c} mm`, why: `To je celá úsečka ${X}${Y}. Bod S je v polovině, takže ${X}S je jen polovina z ní.` },
+    { value: `${20 * c} mm`, why: `Tady se délka zdvojnásobila. Polovina je naopak menší než celá úsečka.` },
+    { value: `${c} mm`, why: `${c} je délka celé úsečky v centimetrech, ne polovina v milimetrech.` },
+  ]), {
+    hints: sude
+      ? [
+        `Nejdřív zjisti, kolik je polovina z ${c} cm. V jakých jednotkách se ale otázka ptá?`,
+        `Bod S dělí úsečku ${X}${Y} na dvě stejné části, takže ${X}S je polovina z ${c} cm. Tu polovinu pak převeď na milimetry — jeden centimetr má deset milimetrů.`,
+      ]
+      : [
+        `Polovinu z ${c} cm v celých centimetrech nevyjádříš. Zkus nejdřív převést na milimetry.`,
+        `Převeď ${c} cm na milimetry, každý centimetr má deset milimetrů. Bod S dělí úsečku ${X}${Y} na dvě stejné části, takže počet milimetrů pak rozděl na dvě stejné poloviny.`,
+      ],
+    explanation: sude
+      ? `Polovina z ${c} cm je ${c / 2} cm. V milimetrech: ${c / 2} cm = ${x} mm. Proto |${X}S| = ${x} mm.`
+      : `${c} cm = ${10 * c} mm. Polovina z ${10 * c} mm je ${x} mm, protože ${x} + ${x} = ${10 * c}. Proto |${X}S| = ${x} mm.`,
+  });
+}
+
+// ─── Úrovně ─────────────────────────────────────────────────────────────────
+
+const L2_MIMO_NULU: [number, number][] = [
+  [1, 6], [2, 9], [3, 11], [4, 10], [2, 5], [5, 14], [3, 7], [6, 15], [1, 10], [4, 13], [8, 12], [7, 9],
+];
+const L2_CM_MM: [number, number][] = [
+  [3, 2], [4, 7], [5, 3], [6, 4], [7, 5], [8, 1], [2, 9], [9, 6], [3, 8], [1, 4], [6, 2], [4, 5],
+];
+const L2_CTI_MM: [number, number][] = [[4, 6], [2, 3], [7, 2], [5, 8], [3, 5], [9, 4], [6, 7], [1, 8]];
+const L3_KDE: [number, number][] = [
+  [2, 5], [3, 6], [4, 7], [1, 8], [5, 4], [6, 9], [2, 11], [3, 9], [7, 6], [4, 10], [1, 12], [5, 7],
+];
+const L3_SOUCET: [number, number][] = [
+  [4, 25], [3, 18], [5, 12], [2, 35], [6, 14], [3, 45], [7, 16], [4, 32], [5, 27], [2, 48], [6, 23], [8, 15],
+];
+// Rozdíl nikdy nevyjde stejně jako druhá délka (jinak by klíč stál v zadání).
+const L3_ROZDIL: [number, number][] = [
+  [9, 46], [7, 38], [6, 25], [8, 52], [5, 16], [4, 27], [9, 63], [7, 44], [6, 51], [8, 35], [5, 32], [3, 18],
+];
+const L3_POLOVINA = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return pick(pool);
+  if (level === 1) {
+    return shuffle([...[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(odNuly), ...POJMY]);
+  }
+  if (level === 2) {
+    return shuffle([...L2_MIMO_NULU.map(mimoNulu), ...L2_CM_MM.map(cmMmNaMm), ...L2_CTI_MM.map(ctiMm)]);
+  }
+  return shuffle([
+    ...L3_KDE.map(kdeKonec),
+    ...L3_SOUCET.map(soucet),
+    ...L3_ROZDIL.map(rozdil),
+    ...L3_POLOVINA.map(polovina),
+  ]);
 }
 
 export const RYSOVANIUSECKYODANEDELCE: TopicMetadata[] = [
@@ -153,7 +324,7 @@ export const RYSOVANIUSECKYODANEDELCE: TopicMetadata[] = [
         "Napiš délku: |AB| = … cm.",
       ],
       commonMistake: "Přikládání pravítka ne od nuly, ale od čísla 1 — vznikne o 1 cm delší úsečka.",
-      example: "|AB| = 4,5 cm: začátek u 0, konec u 4,5 na pravítku. To je také 45 mm.",
+      example: "|AB| = 4 cm 5 mm: začátek u 0, konec o 5 malých dílků za číslem 4. To je 45 mm.",
     },
   },
 ];
