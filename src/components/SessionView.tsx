@@ -538,7 +538,9 @@ export function SessionView() {
             <BackButton size="sm" onClick={() => requestExit(leaveSession)} />
             {session.matchedTopic && (
               <span className="text-lg font-bold text-foreground">
-                {session.matchedTopic.subject.charAt(0).toUpperCase() + session.matchedTopic.subject.slice(1)}
+                {/* Popisek z rejstříku, ne ze slugu: téma 6. ročníku má subject
+                    „dejepis" bez háčku a hlavička pak psala „Dejepis". */}
+                {getSubjectMeta(session.matchedTopic.subject).label}
                 <span className="font-bold"> | {session.grade}. ročník</span>
               </span>
             )}

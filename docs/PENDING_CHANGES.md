@@ -16,6 +16,7 @@ Detail: `PROJECT_STATUS.md` §6, session 37.
 
 ### 📌 Na vědomí
 - 6. ročník má zatím jen fyziku a dějepis.
+- ✅ Hlavička cvičení 6. ročníku psala „Dejepis“ bez háčku — opraveno (popisek z rejstříku předmětů).
 - Otevření 7. ročníku by oslabilo rodičovskou bránu (procenta) — hlídá `src/test/parent-gate.test.ts`.
 
 ---

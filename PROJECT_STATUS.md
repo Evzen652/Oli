@@ -163,6 +163,8 @@ src/
   brána už nenásobí dvojciferná čísla (to 5. ročník učí), ale počítá procenta
   („30 % z 240", učivo 7. ročníku). Budík `parent-gate.test.ts` teď hlídá 7. ročník.
 - 📌 6. ročník má zatím jen fyziku a dějepis.
+- ✅ **Hlavička cvičení psala „Dejepis“** — brala slug předmětu (`dejepis`) místo
+  popisku z rejstříku. `SessionView` teď bere `getSubjectMeta(...).label`.
 - 📌 Zbývající nálezy `docs-check` jsou výčtové úlohy („Které z čísel … je
   největší?“, „najdi slovo ve větě“), kde klíč ve znění být musí — brána je
   bere jako výjimku.
