@@ -1,387 +1,60 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { chronologie, type Udalost } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// vysvětlení, zadání neodpovídala položkám („obsazení ČSR, konec války…“
+// s jinými událostmi uvnitř), první úloha L1 měla položky ve špatném pořadí
+// (osvobození Prahy 9. 5. před koncem války 8. 5.) a L3 obsahovala sporné
+// „obnovení demokratické ČSR volbami 1946“. Teď se úlohy skládají z banky
+// ověřených událostí: L1 tři s datem, L2 čtyři s datem, L3 čtyři bez data.
 
-// Level 1 – jednodušší sekvence (4 události)
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky: vznik Protektorátu, začátek 2. světové války, konec války, osvobození Prahy.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu Čechy a Morava (15. 3. 1939)",
-      "Začátek 2. světové války (1. 9. 1939)",
-      "Osvobození Prahy Sovětskou armádou (9. 5. 1945)",
-      "Konec 2. světové války v Evropě (8. 5. 1945)",
-    ],
-    hints: ["Protektorát vznikl ještě před začátkem světové války."],
-  },
-  {
-    question: "Seřaď od nejdřívějšího: atentát na Heydricha, vznik Protektorátu, vypálení Lidic, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Protektorát byl nejdříve, pak atentát a Lidice."],
-  },
-  {
-    question: "Seřaď: obsazení ČSR, konec války, vznik Protektorátu, německá kapitulace.",
-    correctAnswer: "order",
-    items: [
-      "Obsazení českých zemí Hitlerem (15. 3. 1939)",
-      "Začátek 2. světové války (1. 9. 1939)",
-      "Odsun sudetských Němců začíná (1945–1946)",
-      "Německá kapitulace (8. 5. 1945)",
-    ],
-    hints: ["Odsun Němců probíhal po konci války."],
-  },
-  {
-    question: "Seřaď: atentát na Heydricha, Terezín jako ghetto, vznik Protektorátu, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Terezín slouží jako ghetto pro Židy (od 1941)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Terezín jako ghetto fungoval od roku 1941."],
-  },
-  {
-    question: "Seřaď čtyři klíčové události 2. světové války v českém kontextu.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu Čechy a Morava (1939)",
-      "Operace Anthropoid — atentát (1942)",
-      "Konec války — Den vítězství (8. 5. 1945)",
-      "Odsun sudetských Němců (1945–1946)",
-    ],
-    hints: ["Odsun Němců byl až po konci války."],
-  },
-  {
-    question: "Seřaď: Německo napadlo Polsko, vznik Protektorátu, kapitulace Německa, osvobozeni Plzně.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Německo napadlo Polsko (1. 9. 1939)",
-      "Osvobození Plzně Američany (6. 5. 1945)",
-      "Kapitulace Německa (8. 5. 1945)",
-    ],
-    hints: ["Protektorát vznikl před začátkem světové války."],
-  },
-  {
-    question: "Seřaď chronologicky: Gabčík a Kubiš přiletěli do Prahy, vznik Protektorátu, konec války, Heydrich umírá.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Gabčík a Kubiš vysazeni do Prahy (28. 12. 1941)",
-      "Heydrich umírá po atentátu (4. 6. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Parašutisté přiletěli v prosinci 1941."],
-  },
-  {
-    question: "Seřaď: Mnichovská dohoda, vznik Protektorátu, atentát na Heydricha, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Mnichovská dohoda — Sudety Německu (září 1938)",
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Mnichovská dohoda byla v září 1938."],
-  },
-  {
-    question: "Seřaď: Terezínské ghetto, první deportace Židů, vznik Protektorátu, holocaust v Osvětimi.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "První deportace Židů do Terezína (1941)",
-      "Masové deportace do Osvětimi z Terezína (1942–1944)",
-      "Osvobození táborů (1945)",
-    ],
-    hints: ["Deportace začaly v roce 1941."],
-  },
-  {
-    question: "Seřaď čtyři klíčové okamžiky pro Židy v Protektorátu.",
-    correctAnswer: "order",
-    items: [
-      "Zavedení protižidovských zákonů v Protektorátu (1939–1940)",
-      "Povinnost nosit žlutou hvězdu (1941)",
-      "Deportace do Terezína (od 1941)",
-      "Osvobození přeživších (1945)",
-    ],
-    hints: ["Omezení přišla postupně."],
-  },
-];
+const UDALOSTI: Udalost[] = [
+  { uroven: 1, co: "Mnichovská dohoda — pohraničí připadlo Německu", kdy: "září 1938", klic: 1938.0930,
+    proc: "V Mnichově se Německo, Itálie, Británie a Francie bez Československa dohodly, že pohraničí musí připadnout Německu." },
+  { uroven: 1, co: "Vznik Protektorátu Čechy a Morava", kdy: "15. 3. 1939", klic: 1939.0315,
+    proc: "Hitler obsadil zbytek Čech a Moravy ještě před začátkem světové války." },
+  { uroven: 1, co: "Německo napadlo Polsko — začala 2. světová válka", kdy: "1. 9. 1939", klic: 1939.0901,
+    proc: "Po útoku na Polsko vyhlásily Británie a Francie Německu válku." },
+  { uroven: 1, co: "Atentát na Reinharda Heydricha", kdy: "27. 5. 1942", klic: 1942.0527,
+    proc: "Parašutisté Jozef Gabčík a Jan Kubiš zaútočili v Praze na nejmocnějšího nacistu v protektorátu." },
+  { uroven: 1, co: "Vypálení Lidic", kdy: "10. 6. 1942", klic: 1942.0610,
+    proc: "Nacisté se za atentát mstili: Lidice srovnali se zemí, muže postříleli, ženy a děti odvlekli." },
+  { uroven: 1, co: "Kapitulace Německa — konec války v Evropě", kdy: "8. 5. 1945", klic: 1945.0508,
+    proc: "Německo podepsalo bezpodmínečnou kapitulaci; proto 8. května slavíme Den vítězství." },
 
-// Level 2 – středně těžké sekvence (5 událostí)
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky 5 klíčových událostí 2. světové války v českých zemích.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu Čechy a Morava (15. 3. 1939)",
-      "Začátek 2. světové války (1. 9. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec 2. světové války v Evropě (8. 5. 1945)",
-    ],
-    hints: ["Protektorát byl před začátkem světové války."],
-  },
-  {
-    question: "Seřaď: Lidice, Gabčík a Kubiš přiletěli, atentát, vznik Protektorátu, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Gabčík a Kubiš vysazeni do Prahy (28. 12. 1941)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec války (8. 5. 1945)",
-    ],
-    hints: ["Parašutisté přiletěli v prosinci 1941."],
-  },
-  {
-    question: "Seřaď 5 milníků holocaustu v Čechách.",
-    correctAnswer: "order",
-    items: [
-      "Protižidovské zákony v Protektorátu (1939)",
-      "Povinnost nosit žlutou hvězdu (1941)",
-      "Terezínské ghetto funguje naplno (1942)",
-      "Deportace do Osvětimi (1942–1944)",
-      "Osvobození přeživších Židů (1945)",
-    ],
-    hints: ["Omezení přicházela postupně."],
-  },
-  {
-    question: "Seřaď chronologicky: Mnichovská dohoda, vznik Protektorátu, atentát, vypálení Lidic, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Mnichovská dohoda (září 1938)",
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Mnichovská dohoda byla v září 1938."],
-  },
-  {
-    question: "Seřaď 5 klíčových událostí od konce Protektorátu po Postupim.",
-    correctAnswer: "order",
-    items: [
-      "Pražské povstání (5. 5. 1945)",
-      "Osvobození Plzně Američany (6. 5. 1945)",
-      "Kapitulace Německa (8. 5. 1945)",
-      "Osvobození Prahy Sovětskou armádou (9. 5. 1945)",
-      "Postupimská konference — odsun Němců rozhodnut (1945)",
-    ],
-    hints: ["Pražské povstání začalo 5. 5. 1945."],
-  },
-  {
-    question: "Seřaď: deportace z Terezína, Mnichovská dohoda, vznik Protektorátu, konec války, osvobozeni.",
-    correctAnswer: "order",
-    items: [
-      "Mnichovská dohoda (1938)",
-      "Vznik Protektorátu (1939)",
-      "Deportace Židů z Terezína do Osvětimi (1942–1944)",
-      "Konec války (8. 5. 1945)",
-      "Odsun sudetských Němců (1945–1946)",
-    ],
-    hints: ["Mnichovská dohoda byla v roce 1938."],
-  },
-  {
-    question: "Seřaď: Operace Anthropoid, Heydrich jmenován protektorem, atentát, vypálení Lidic, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Heydrich jmenován zastupujícím protektorem (září 1941)",
-      "Gabčík a Kubiš vysazeni — Operace Anthropoid (12. 1941)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Heydrich byl jmenován v září 1941."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat 2. světové války z pohledu Čechů.",
-    correctAnswer: "order",
-    items: [
-      "15. 3. 1939 — vznik Protektorátu",
-      "27. 5. 1942 — atentát na Heydricha",
-      "10. 6. 1942 — vypálení Lidic",
-      "8. 5. 1945 — konec války (Den vítězství)",
-      "1945–1946 — odsun sudetských Němců",
-    ],
-    hints: ["Pamatuj na rok 1939 a rok 1942."],
-  },
-  {
-    question: "Seřaď chronologicky: odsun Němců, osvobozeni Prahy, konec války, atentát, vznik Protektorátu.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu Čechy a Morava (15. 3. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Konec 2. světové války v Evropě (8. 5. 1945)",
-      "Osvobození Prahy Sovětskou armádou (9. 5. 1945)",
-      "Odsun sudetských Němců (1945–1946)",
-    ],
-    hints: ["Odsun Němců byl až po osvobozeni."],
-  },
-  {
-    question: "Seřaď 5 událostí týkajících se Terezína a holocaustu.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Terezín otevřen jako ghetto (1941)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vrchol deportací z Terezína (1942–1944)",
-      "Osvobozeni Terezína (1945)",
-    ],
-    hints: ["Terezínské ghetto fungovalo od roku 1941."],
-  },
-];
+  { uroven: 2, co: "Heydrich přijel do Prahy jako zastupující říšský protektor", kdy: "září 1941", klic: 1941.0927,
+    proc: "Heydrich hned vyhlásil stanné právo a tvrdě pronásledoval odboj." },
+  { uroven: 2, co: "První transport Židů do terezínského ghetta", kdy: "listopad 1941", klic: 1941.1124,
+    proc: "Nacisté soustředili Židy z protektorátu v Terezíně a odtud je odváželi do vyhlazovacích táborů." },
+  { uroven: 2, co: "Parašutisté Gabčík a Kubiš seskočili u Prahy", kdy: "prosinec 1941", klic: 1941.1228,
+    proc: "Výsadek připravila československá vláda v Londýně; na atentát se parašutisté chystali ještě pět měsíců." },
+  { uroven: 2, co: "Vypálení osady Ležáky", kdy: "24. 6. 1942", klic: 1942.0624,
+    proc: "Dva týdny po Lidicích zničili nacisté i Ležáky, kde se ukrývala vysílačka parašutistů." },
+  { uroven: 2, co: "Pražské povstání", kdy: "5. 5. 1945", klic: 1945.0505,
+    proc: "Pražané povstali proti okupantům tři dny před koncem války." },
+  { uroven: 2, co: "Americká armáda osvobodila Plzeň", kdy: "6. 5. 1945", klic: 1945.0506,
+    proc: "Západ Čech osvobodila americká armáda generála Pattona." },
+  { uroven: 2, co: "Rudá armáda vstoupila do Prahy", kdy: "9. 5. 1945", klic: 1945.0509,
+    proc: "Sovětská vojska dorazila do Prahy den po kapitulaci Německa." },
 
-// Level 3 – pokročilé sekvence (5–6 událostí)
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Seřaď 6 klíčových událostí 2. světové války v českém kontextu od nejdřívějšího.",
-    correctAnswer: "order",
-    items: [
-      "Mnichovská dohoda (září 1938)",
-      "Vznik Protektorátu Čechy a Morava (15. 3. 1939)",
-      "Začátek 2. světové války (1. 9. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec 2. světové války v Evropě (8. 5. 1945)",
-    ],
-    hints: ["Mnichovská dohoda přišla ještě před vznikem Protektorátu."],
-  },
-  {
-    question: "Seřaď 6 klíčových momentů: od Mnichovské dohody po odsun Němců.",
-    correctAnswer: "order",
-    items: [
-      "Mnichovská dohoda — Sudety Německu (1938)",
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Terezín jako ghetto (od 1941)",
-      "Atentát na Heydricha (1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-      "Odsun sudetských Němců (1945–1946)",
-    ],
-    hints: ["Mnichovská dohoda je absolutně první."],
-  },
-  {
-    question: "Seřaď 6 milníků od Heydrichova jmenování po konec války.",
-    correctAnswer: "order",
-    items: [
-      "Heydrich jmenován zastupujícím protektorem (září 1941)",
-      "Gabčík a Kubiš vysazeni (28. 12. 1941)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Heydrich umírá (4. 6. 1942)",
-      "Vypálení Lidic (10. 6. 1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-    ],
-    hints: ["Heydrich umřel 4. 6. 1942 — týden po atentátu."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat v chronologickém pořadí.",
-    correctAnswer: "order",
-    items: [
-      "15. 3. 1939 — vznik Protektorátu",
-      "1. 9. 1939 — začátek 2. světové války",
-      "27. 5. 1942 — atentát na Heydricha",
-      "10. 6. 1942 — vypálení Lidic",
-      "8. 5. 1945 — Den vítězství",
-      "1945–1946 — odsun sudetských Němců",
-    ],
-    hints: ["Pamatuj klíčová data: 3/1939, 9/1939, 5/1942, 6/1942, 5/1945."],
-  },
-  {
-    question: "Seřaď 6 milníků týkajících se Židů v Čechách za 2. světové války.",
-    correctAnswer: "order",
-    items: [
-      "Protižidovské zákony v Protektorátu (1939–1940)",
-      "Povinnost nosit žlutou hvězdu (1941)",
-      "Terezín jako ghetto — první deportace (1941)",
-      "Atentát na Heydricha — architekt holocaustu (1942)",
-      "Masové deportace do Osvětimi (1942–1944)",
-      "Osvobozeni a návrat přeživších (1945)",
-    ],
-    hints: ["Omezení přicházela postupně od 1939."],
-  },
-  {
-    question: "Seřaď 6 událostí od Mnichovské dohody po Postupimskou konferenci.",
-    correctAnswer: "order",
-    items: [
-      "Mnichovská dohoda (září 1938)",
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Pražské povstání (5. 5. 1945)",
-      "Konec 2. světové války (8. 5. 1945)",
-      "Postupimská konference — odsun Němců (1945)",
-    ],
-    hints: ["Pražské povstání bylo 5. 5. 1945 — tři dny před koncem války."],
-  },
-  {
-    question: "Seřaď 5 klíčových okamžiků osvobozování Čech v roce 1945.",
-    correctAnswer: "order",
-    items: [
-      "Pražské povstání (5. 5. 1945)",
-      "Osvobozeni Plzně Americany (6. 5. 1945)",
-      "Kapitulace Německa (8. 5. 1945)",
-      "Příjezd Sovětské armády do Prahy (9. 5. 1945)",
-      "Konec ozbrojených bojů v ČSR (12. 5. 1945)",
-    ],
-    hints: ["Pražské povstání bylo 5. 5. — první ze série."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat 2. světové války na světové úrovni.",
-    correctAnswer: "order",
-    items: [
-      "Německo obsazuje ČSR (15. 3. 1939)",
-      "Německo napadá Polsko (1. 9. 1939)",
-      "Německo napadá SSSR (22. 6. 1941)",
-      "USA vstupuje po Pearl Harboru (8. 12. 1941)",
-      "Vylodění v Normandii (D-Day, 6. 6. 1944)",
-      "Kapitulace Německa (8. 5. 1945)",
-    ],
-    hints: ["Obsazení ČSR bylo ještě před začátkem světové války."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat týkajících se operace Anthropoid.",
-    correctAnswer: "order",
-    items: [
-      "Heydrich jmenován protektorem (září 1941)",
-      "Gabčík a Kubiš vycvičeni v Anglii a vysazeni (12. 1941)",
-      "Atentát na Heydricha (27. 5. 1942)",
-      "Heydrich umírá (4. 6. 1942)",
-      "Gabčík a Kubiš padají v kryptě katedrály (18. 6. 1942)",
-    ],
-    hints: ["Atentát byl 27. 5. 1942."],
-  },
-  {
-    question: "Seřaď 6 milníků od začátku Protektorátu po obnovení ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Protektorátu (15. 3. 1939)",
-      "Terezínské ghetto otevřeno (1941)",
-      "Atentát na Heydricha (1942)",
-      "Konec 2. světové války (8. 5. 1945)",
-      "Odsun sudetských Němců (1945–1946)",
-      "Obnovení demokratické ČSR (1946 — volby)",
-    ],
-    hints: ["Obnovení demokracie bylo volbami v roce 1946."],
-  },
+  { uroven: 3, co: "Německo napadlo Sovětský svaz", kdy: "22. 6. 1941", klic: 1941.0622,
+    proc: "Útokem na Sovětský svaz se válka rozšířila na východ a SSSR se přidal ke spojencům." },
+  { uroven: 3, co: "Japonsko zaútočilo na Pearl Harbor a do války vstoupily USA", kdy: "prosinec 1941", klic: 1941.1207,
+    proc: "Po japonském útoku na americkou námořní základnu vstoupily Spojené státy do války." },
+  { uroven: 3, co: "Němci byli poraženi u Stalingradu", kdy: "únor 1943", klic: 1943.0202,
+    proc: "Po porážce u Stalingradu začala německá armáda na východě ustupovat." },
+  { uroven: 3, co: "Spojenci se vylodili v Normandii", kdy: "6. 6. 1944", klic: 1944.0606,
+    proc: "Vyloděním ve Francii otevřeli spojenci druhou frontu na západě Evropy." },
+  { uroven: 3, co: "Slovenské národní povstání", kdy: "29. 8. 1944", klic: 1944.0829,
+    proc: "Slováci povstali proti fašistickému režimu a německé armádě ještě během války." },
+  { uroven: 3, co: "Rudá armáda osvobodila tábor Osvětim", kdy: "27. 1. 1945", klic: 1945.0127,
+    proc: "Osvětim byl největší nacistický vyhlazovací tábor; osvobodili ho sovětští vojáci několik měsíců před koncem války." },
+  { uroven: 3, co: "Vysídlení většiny Němců z Československa", kdy: "1945–1946", klic: 1945.9,
+    proc: "Po válce byla většina Němců z Československa vysídlena; vítězné mocnosti to schválily v Postupimi." },
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return chronologie(UDALOSTI, level, "z let 1938–1946");
 }
 
 export const DRUHASVETOVAVALKAOKUPACEOSVOBOZENI: TopicMetadata[] = [
@@ -416,7 +89,7 @@ export const DRUHASVETOVAVALKAOKUPACEOSVOBOZENI: TopicMetadata[] = [
         "8. 5. 1945: konec války; západ = Američané, východ = Sověti",
         "Odsun sudetských Němců po 1945",
       ],
-      commonMistake: "Zaměňování protektorátu (1939) s začátkem světové války (1939) — protektorát byl o 6 měsíců dříve.",
+      commonMistake: "Zaměňování protektorátu (1939) se začátkem světové války (1939) — protektorát byl o 6 měsíců dříve.",
       example: "Lidice byly vypáleny jako odplata za atentát na Heydricha v červnu 1942.",
     },
   },

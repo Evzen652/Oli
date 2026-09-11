@@ -50,6 +50,12 @@ export const TIER_EXCEPTIONS: ReadonlySet<string> = new Set<string>([
 // Nový tvar přidávej jen po ověření v Slovníku spisovné češtiny.
 // ─────────────────────────────────────────────────────────────
 export const PREFIX_WHITELIST: ReadonlySet<string> = new Set<string>([
+  // Tvary z přepsaného generátoru (2026-09-11), ověřené spisovné slovo po slově.
+  "výletě", "vyskočila", "výhled", "vysvětlila", "výtahem", "vylezli", "vyběhli",
+  "sjel", "spojili", "stekla", "zžloutlo", "zkyslo", "vzlétlo", "vznesl", "spadaly",
+  "zmrzla", "slévají", "zbledl", "srazilo", "zhubla", "zvedl", "vzpomínala",
+  "zmrzl", "sběhly", "slepily", "spadl", "sjeli", "zmizela", "zlepšil", "vznesli",
+  "vyběhl", "vzlétl",
   // vy- (dokončení, pohyb ven)
   "vydělal", "výhru", "vyletěl", "výbornou", "výtah", "vylezla",
   "výhodu", "vystřelil", "vypracoval", "výborné", "výbornou",

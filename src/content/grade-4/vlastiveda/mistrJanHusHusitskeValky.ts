@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { posilNapovedy } from "../_shared";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -348,8 +349,69 @@ const POOL_L3: PracticeTask[] = [
   },
 ];
 
+// Doplněno 2026-09-11: pravidla chtějí aspoň 12 různých úloh na úroveň.
+const EXTRA_L1: PracticeTask[] = [
+  {
+    question: "Seřaď události husitské doby od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Hus kázal v Betlémské kapli","1. pražská defenestrace (1419)","Basilejská kompaktáta (1436)"],
+    hints: ["Která událost se stala ještě za Husova života?", "Hus kázal v Betlémské kapli před svým upálením. Defenestrace roku 1419 zahájila války a kompaktáta roku 1436 je ukončila."],
+    explanation: "Jan Hus kázal v Betlémské kapli na začátku 15. století. Roku 1419 začaly defenestrací husitské války a roku 1436 je ukončila Basilejská kompaktáta.",
+  },
+  {
+    question: "Seřaď husitské mezníky od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Hus upálen (1415)","Jan Žižka zemřel (1424)","Bitva u Lipan (1434)"],
+    hints: ["Porovnej letopočty tří událostí.", "Hus zemřel roku 1415, Žižka o devět let později v době válek a bitva u Lipan roku 1434 přišla deset let po Žižkově smrti."],
+    explanation: "Jan Hus byl upálen roku 1415. Jan Žižka zemřel roku 1424 a bitva u Lipan roku 1434 znamenala porážku radikálních husitů.",
+  },
+];
+const EXTRA_L2: PracticeTask[] = [
+  {
+    question: "Seřaď události od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Hus kázal v Betlémské kapli","1. pražská defenestrace (1419)","Jan Žižka zemřel (1424)","Basilejská kompaktáta (1436)"],
+    hints: ["Která událost nemá letopočet? Kdy asi byla?", "Hus kázal v Betlémské kapli ještě před upálením. Po něm přišla defenestrace (1419), Žižkova smrt (1424) a nakonec smír (1436)."],
+    explanation: "Jan Hus kázal v Betlémské kapli před rokem 1415. Roku 1419 začaly husitské války, roku 1424 zemřel Jan Žižka a roku 1436 války ukončila Basilejská kompaktáta.",
+  },
+  {
+    question: "Seřaď husitské bitvy a události od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Hus upálen (1415)","Bitva na Vítkově (1420)","Jan Žižka zemřel (1424)","Bitva u Lipan (1434)"],
+    hints: ["Kterou bitvu ještě vedl Jan Žižka?", "Na Vítkově roku 1420 Žižka zvítězil. Zemřel roku 1424 a bitva u Lipan (1434) už byla bez něj."],
+    explanation: "Jan Hus byl upálen roku 1415. Roku 1420 husité pod vedením Jana Žižky zvítězili na Vítkově, roku 1424 Žižka zemřel a roku 1434 byli radikální husité poraženi u Lipan.",
+  },
+];
+const EXTRA_L3: PracticeTask[] = [
+  {
+    question: "Seřaď události od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Hus kázal v Betlémské kapli","Jan Hus upálen (1415)","Bitva u Sudoměře (březen 1420)","Bitva na Vítkově (červenec 1420)","Jan Žižka zemřel (1424)"],
+    hints: ["Dvě bitvy se staly ve stejném roce. Rozhoduje měsíc.", "U Sudoměře Žižka zvítězil na jaře 1420, na Vítkově v létě téhož roku. Před nimi bylo Husovo kázání a upálení, po nich Žižkova smrt."],
+    explanation: "Hus kázal v Betlémské kapli a roku 1415 byl upálen. V březnu 1420 zvítězil Žižka u Sudoměře, v červenci 1420 na Vítkově. Jan Žižka zemřel roku 1424.",
+  },
+  {
+    question: "Seřaď husitské události od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["1. pražská defenestrace (1419)","Bitva na Vítkově (1420)","Poslední křížová výprava odražena (1431)","Bitva u Lipan (1434)","Basilejská kompaktáta (1436)"],
+    hints: ["Poslední tři události jsou blízko sebe na konci válek. Co přišlo až úplně nakonec?", "Křížové výpravy husité odráželi do roku 1431. Pak se husité rozdělili a u Lipan (1434) bojovali proti sobě. Kompaktáta roku 1436 přinesla smír."],
+    explanation: "Války začaly defenestrací roku 1419, roku 1420 husité zvítězili na Vítkově. Poslední křížovou výpravu odrazili roku 1431, roku 1434 byli radikální husité poraženi u Lipan a roku 1436 přinesla smír Basilejská kompaktáta.",
+  },
+];
+
+const DOPLNEK: Record<number, string> = {
+  "1": "Porovnej letopočty. Události bez letopočtu zařaď podle toho, jestli se staly za Husova života, nebo po jeho smrti.",
+  "2": "Nejdřív se ptej, co se stalo za Husova života a co až po jeho upálení roku 1415.",
+  "3": "Některé události dělí jen pár měsíců nebo let — dívej se na přesné letopočty a na to, kdo v nich ještě žil."
+};
+
+const [P1, P2, P3] = posilNapovedy(
+  [[...POOL_L1, ...EXTRA_L1], [...POOL_L2, ...EXTRA_L2], [...POOL_L3, ...EXTRA_L3]],
+  DOPLNEK,
+);
+
 function gen(level: number): PracticeTask[] {
-  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  const pool = level >= 3 ? P3 : level === 2 ? P2 : P1;
   return shuffle(pool);
 }
 

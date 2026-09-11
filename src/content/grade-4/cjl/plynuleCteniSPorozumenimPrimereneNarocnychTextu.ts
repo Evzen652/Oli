@@ -1,236 +1,169 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 4. ročníku). Původně L1 a L2 tvořily úlohy
+// Ano/Ne (polovina se dala uhodnout) o čtenářských strategiích, bez
+// zpětné vazby a část bez diakritiky („Kdyz nerozumim slovu…“). V L3 byl
+// věcně chybný text o „lyšce“, která je prý ryba (lyska je pták),
+// a distraktor „Čapek žil v 19. století“, který je napůl pravdivý.
+// Téma teď cvičí to, co v názvu má: čtení krátkého textu a otázku k němu.
+//
+// L1 = odpověď je v textu doslova (kdo, co, kde, kdy, kolik)
+// L2 = odpověď je potřeba vyvodit (proč, co z toho plyne, pořadí)
+// L3 = hlavní myšlenka, účel textu, vyvození z více vět, čtenářské strategie.
+
+function text(t: string, q: string, klic: string, spatne: [[string, string], [string, string], [string, string]], hints: [string, string], explanation: string): PracticeTask {
+  return choice(`Přečti si text: „${t}“ ${q}`, klic, spatne.map(([value, why]) => ({ value, why })) as never, { hints, explanation });
 }
 
-interface TFItem { q: string; a: "ano" | "ne"; hint: string; e: string }
+const BABICKA = "Tomáš a jeho sestra Klára jeli v sobotu k babičce do Plzně. Babička jim upekla borůvkové buchty.";
+const JEZEK = "Ve čtvrtek ráno našla Eva na zahradě malého ježka. Dala mu misku s vodou a zavolala tátu.";
+const MARTINA = "Martina hraje na housle. Každé úterý chodí do hudební školy, kde ji učí paní Dvořáková.";
 
-// Level 1: zakladni ctenarske strategie
-const POOL_L1: TFItem[] = [
-  { q: "Kdyz nerozumim slovu, mam vzdy prestat cist.", a: "ne", hint: "Zkusime odhadnout vyznam z kontextu nebo pokracovat dale.", e: "Když narazíš na neznámé slovo, nemusíš hned přestat. Často jeho význam poznáš z okolních vět, nebo se vyjasní, až budeš číst dál. Přestat číst by tě připravilo o zbytek textu." },
-  { q: "Hlavní myšlenka textu je nejdůležitější sdělení, které chce autor předat.", a: "ano", hint: "Hlavní myšlenka drží celý text pohromadě.", e: "Hlavní myšlenka je to nejdůležitější, co nám autor chce říct, a drží celý text pohromadě. Ostatní věty ji jen doplňují podrobnostmi a příklady." },
-  { q: "Přečíst text rychle bez zastavení zaručuje jeho porozumění.", a: "ne", hint: "Rychlé čtení neznamená porozumění — potřebujeme přemýšlet.", e: "Rychlost a porozumění nejsou totéž. Můžeš text přelétnout očima a stejně nevědět, o čem byl. Aby ses obsahu opravdu chytil, musíš se u čtení zastavovat a přemýšlet." },
-  { q: "Kontext jsou okolní věty, které pomáhají pochopit neznámé slovo.", a: "ano", hint: "Kontext = okolí slova, ze kterého odhadujeme jeho význam.", e: "Kontext je okolí slova — věty kolem něj. Právě z nich často odhadneš, co neznámé slovo znamená, aniž bys hledal ve slovníku." },
-  { q: "Otázka 'Proč' pomáhá zjistit příčinu nebo důvod děje v textu.", a: "ano", hint: "Proč = příčina, kde = místo, kdo = postava, kdy = čas.", e: "Otázka 'proč' se vždy ptá po příčině nebo důvodu — proč se něco stalo. Tím se liší od otázek kde (místo), kdo (postava) a kdy (čas)." },
-  { q: "Když přečteme nadpis, víme vždy celý obsah textu.", a: "ne", hint: "Nadpis naznačuje téma, ale obsah textu je mnohem bohatší.", e: "Nadpis ti napoví téma a připraví tě na to, o čem text bude, ale neprozradí všechno. Skutečný obsah je v textu mnohem bohatší než pár slov nadpisu." },
-  { q: "Porozumění textu znamená, že dokážeme odpovědět na otázky kdo, co, kde, kdy, proč.", a: "ano", hint: "Tyto otázky pokrývají základní složky porozumění.", e: "Otázky kdo, co, kde, kdy a proč pokrývají základní složky každého textu. Když na ně umíš odpovědět, je to dobrý důkaz, že jsi textu porozuměl." },
-  { q: "Literární text (pohádka, povídka) vždy podává objektivní fakta.", a: "ne", hint: "Literární text vyjadřuje příběhy a pocity, ne nutně fakta.", e: "Pohádky a povídky vyprávějí příběhy a zachycují pocity — bývají vymyšlené. Objektivní, ověřená fakta najdeš spíš ve věcném textu, jako je encyklopedie nebo zpráva." },
-  { q: "Věcný text (encyklopedie, zpráva) podává informace a fakta.", a: "ano", hint: "Věcný = informační text = zaměřen na fakta, ne na příběh.", e: "Věcný text je zaměřený na informace a ověřená fakta, ne na vymyšlený příběh. Proto encyklopedie nebo zpráva slouží k poučení, ne k pobavení příběhem." },
-  { q: "Po přečtení odstavce je dobré shrnout, co jsme přečetli, vlastními slovy.", a: "ano", hint: "Shrnutí je ověření porozumění.", e: "Shrnutí odstavce vlastními slovy je rychlá kontrola, jestli jsi obsah opravdu pochopil. Pokud ho dokážeš převyprávět, rozumíš mu; pokud ne, vyplatí se odstavec přečíst znovu." },
-  { q: "Inference (vyvozování) znamená opisovat text doslova.", a: "ne", hint: "Vyvozování = odhadujeme to, co není přímo napsáno, ze stop v textu.", e: "Vyvozování není doslovné opisování — naopak odhaduješ to, co v textu přímo napsané NENÍ, podle stop, které ti autor zanechal. Je to čtení mezi řádky." },
-  { q: "'Martin přišel domů mokrý.' — z toho vyvozujeme, že pravděpodobně pršelo.", a: "ano", hint: "Mokrý = stopa; pršelo nebo dostal se do vody — vyvozujeme.", e: "Že Martin přišel mokrý, je stopa. Z ní vyvodíš nejpravděpodobnější vysvětlení — že venku pršelo. Text to neříká přímo, ale ty si to domyslíš ze stopy." },
-  { q: "Klíčová slova jsou ta, která nejlépe vystihují téma textu.", a: "ano", hint: "Klíčová slova se zpravidla opakují a shrnují téma.", e: "Klíčová slova nejlépe vystihují, o čem text je — proto se v něm často opakují. Když je vypíšeš, máš v ruce shrnutí tématu." },
-  { q: "Číst text podruhé nemá žádný smysl.", a: "ne", hint: "Opakované čtení pomáhá odhalit to, čemu jsme neporozuměli poprvé.", e: "Podruhé čteš text už s představou, o čem je, a všimneš si toho, co ti poprvé uniklo. Opakované čtení je proto běžná a užitečná strategie, ne ztráta času." },
-  { q: "Otázka 'Kdo' v textu zjišťuje postavy nebo aktéry textu.", a: "ano", hint: "Kdo = postava, aktér, původce děje.", e: "Otázka 'kdo' se ptá po postavách — kdo v textu jedná nebo o kom se mluví. Liší se od otázky 'kde' (místo) nebo 'kdy' (čas)." },
-  { q: "Přeskočení těžkých slov v textu je nejlepší strategie čtení s porozuměním.", a: "ne", hint: "Lépe odhadnout z kontextu nebo vyhledat ve slovníku.", e: "Přeskakování těžkých slov ti může nechat mezery v porozumění. Lepší je odhadnout jejich význam z okolních vět, nebo si je vyhledat ve slovníku." },
-  { q: "Zastavení se a přemýšlení o obsahu (stop-and-think) zlepšuje porozumění.", a: "ano", hint: "Aktivní čtení = zastavíme se a ověřujeme, co jsme pochopili.", e: "Když se při čtení zastavíš a přemýšlíš, co jsi právě přečetl, čteš aktivně a obsah si lépe zpracuješ. To je mnohem účinnější než číst bez přemýšlení." },
-  { q: "Předvídání v textu znamená odhadovat, co se stane dál, na základě stop.", a: "ano", hint: "Předvídání je aktivní čtenářská strategie.", e: "Předvídání znamená, že podle dosavadních stop odhadneš, co přijde dál. Drží tě to u textu v pozoru a porovnáváš svůj odhad s tím, co se opravdu stane." },
-  { q: "Délka textu určuje, jak dobře mu porozumíme.", a: "ne", hint: "Porozumění závisí na naší strategii, ne na délce textu.", e: "Dlouhý text nemusí být těžší na pochopení než krátký. O porozumění rozhoduje hlavně to, jak text čteš a jakou strategii zvolíš, ne jeho délka." },
-  { q: "Záměr autora textu je to, co chce autor říct nebo čeho textem dosáhnout.", a: "ano", hint: "Záměr = proč autor text napsal.", e: "Záměr autora je důvod, proč text vznikl — co tím chtěl říct nebo způsobit (poučit, pobavit, varovat). Když ho odhalíš, lépe pochopíš celý text." },
-  { q: "Každé slovo v textu je stejně důležité a musíme si je zapamatovat.", a: "ne", hint: "Soustředíme se na klíčová slova a hlavní myšlenku.", e: "Není potřeba pamatovat si každé slovo — to ani nejde. Soustřeď se na klíčová slova a hlavní myšlenku, ostatní jsou jen doplňující podrobnosti." },
-  { q: "Čtenářská strategie je záměrný přístup k textu (předvídání, vyvozování, shrnutí).", a: "ano", hint: "Strategie = plánovaný způsob, jak číst a porozumět.", e: "Čtenářská strategie je promyšlený postup, jak k textu přistoupit — třeba předvídat, vyvozovat nebo shrnovat. Není to náhoda, ale záměrný způsob, jak textu porozumět." },
-  { q: "Pokud přečteme text rychle, automaticky mu porozumíme lépe.", a: "ne", hint: "Rychlost čtení a porozumění spolu nesouvisejí přímo.", e: "Rychlé čtení samo o sobě porozumění nezaručí — můžeš text rychle přečíst a nic si z něj nezapamatovat. Důležitější je číst pozorně a přemýšlet o obsahu." },
-  { q: "Odpověď na otázku může být v textu přímo napsána nebo ji musíme vyvodit.", a: "ano", hint: "Buď hledáme doslova, nebo vyvozujeme ze stop.", e: "Některé odpovědi najdeš v textu doslova napsané, jiné nikoli — ty musíš vyvodit ze stop. Dobrý čtenář pozná, kdy hledat přímo a kdy domýšlet." },
-  { q: "Při čtení s porozuměním je vhodné číst pomalu a soustředěně.", a: "ano", hint: "Soustředěné čtení umožňuje zpracovat obsah textu.", e: "Pomalé a soustředěné čtení ti dá čas obsah zpracovat a promyslet. Když spěcháš, podstatné věci ti snadno utečou." },
-  { q: "Pokud text nerozumíme hned, není důvod ho číst znovu.", a: "ne", hint: "Opakované čtení je běžná a účinná strategie porozumění.", e: "Když napoprvé nerozumíš, je čtení znovu právě tou správnou cestou. Podruhé si všimneš souvislostí, které ti poprvé unikly — proto se opakované čtení vyplatí." },
-  { q: "Hlavní myšlenka textu je vždy v první větě prvního odstavce.", a: "ne", hint: "Hlavní myšlenka může být kdekoli — na začátku, uprostřed i na konci.", e: "Hlavní myšlenka nemá pevné místo — někdy stojí na začátku, jindy uprostřed nebo až na konci. Proto ji nelze hledat jen v první větě, musíš ji vyhledat v celém textu." },
-  { q: "Vyvozování záměru autora pomáhá pochopit, proč text vznikl.", a: "ano", hint: "Autor psal s určitým cílem — vyvozujeme, jakým.", e: "Autor psal text s nějakým cílem. Když ze stop vyvodíš jeho záměr, pochopíš, proč text vznikl, a lépe rozumíš celému sdělení." },
-  { q: "Shrnutí textu jednou větou ukazuje, zda jsme mu skutečně porozuměli.", a: "ano", hint: "Kdo umí shrnout, ten rozumí obsahu i hlavní myšlence.", e: "Kdo dokáže shrnout text do jediné věty, musel pochytit jeho hlavní myšlenku. Shrnutí je proto spolehlivý důkaz porozumění." },
-  { q: "Odborný (naučný) text poznáme podle toho, že obsahuje fakta a odborné pojmy.", a: "ano", hint: "Odborný text je věcný, objektivní a používá terminologii.", e: "Odborný text se pozná podle ověřených faktů a odborných pojmů a podává je věcně a objektivně. Tím se liší od příběhu, který vypráví a vyjadřuje pocity." },
+const L1: PracticeTask[] = [
+  text(BABICKA, "Kam jeli Tomáš a Klára?", "k babičce do Plzně", [
+    ["k dědečkovi do Brna", "Dědeček ani Brno v textu nejsou."], ["na výlet do lesa", "O lese text nemluví."], ["do školy v Plzni", "Jeli k babičce, ne do školy."],
+  ], ["Najdi v textu slovo „jeli“. Co následuje za ním?", "Odpověď je v první větě doslova: kam a za kým děti jely. Dávej pozor na jméno města."], "V textu stojí: jeli v sobotu k babičce do Plzně."),
+  text(BABICKA, "Co jim babička upekla?", "borůvkové buchty", [
+    ["jablečný koláč", "Koláč v textu není."], ["perník", "Perník v textu není."], ["chleba", "Chleba v textu není."],
+  ], ["Najdi v textu slovo „upekla“.", "Odpověď je v druhé větě hned za slovem „upekla“."], "V textu stojí: babička jim upekla borůvkové buchty."),
+  text(JEZEK, "Kdy Eva našla ježka?", "ve čtvrtek ráno", [
+    ["v sobotu večer", "V textu je jiný den i jiná část dne."], ["v neděli odpoledne", "Neděle v textu není."], ["v úterý v poledne", "Úterý v textu není."],
+  ], ["Otázka „kdy“ se ptá na čas. Kde v textu je nějaký den?", "Čas najdeš hned na začátku první věty — je tam den v týdnu i část dne. Obojí musí sedět."], "Text začíná: Ve čtvrtek ráno našla Eva ježka."),
+  text(JEZEK, "Komu Eva zavolala?", "tátovi", [
+    ["mámě", "Máma v textu není."], ["sousedovi", "Soused v textu není."], ["veterináři", "Veterinář v textu není."],
+  ], ["Najdi v textu slovo „zavolala“.", "Za slovem „zavolala“ je, komu Eva volala. Stačí ho dát do správného tvaru."], "V textu stojí: zavolala tátu — zavolala tedy tátovi."),
+  text("Na školním výletě jsme viděli tři jeleny, dvě srny a jednoho zajíce.", "Kolik jelenů děti viděly?", "tři", [
+    ["dva", "Dvě byly srny."], ["jeden", "Jeden byl zajíc."], ["šest", "Šest je počet všech zvířat dohromady."],
+  ], ["Najdi v textu slovo „jeleny“. Jaké číslo je před ním?", "V textu jsou čísla u několika různých zvířat. Hledej to, které stojí přímo u jelenů."], "V textu stojí: tři jeleny."),
+  text("Knihovna je otevřená od pondělí do čtvrtka od 9 do 17 hodin. V pátek je zavřeno.", "Kdy je knihovna zavřená?", "v pátek", [
+    ["v pondělí", "V pondělí je otevřeno."], ["ve středu", "Středa je mezi pondělím a čtvrtkem, je otevřeno."], ["ve čtvrtek", "Ve čtvrtek je ještě otevřeno."],
+  ], ["Najdi v textu slovo „zavřeno“.", "Druhá věta přesně říká, kdy je zavřeno. Dny od pondělí do čtvrtka jsou otevřené."], "V textu stojí: V pátek je zavřeno."),
+  text("Pan Novák pěstuje na zahradě rajčata, okurky a papriky. Nejvíc se mu daří rajčata.", "Co se panu Novákovi daří nejvíc?", "rajčata", [
+    ["okurky", "Okurky pěstuje, ale nejvíc se mu daří něco jiného."], ["papriky", "Papriky pěstuje, ale nejvíc se mu daří něco jiného."], ["jahody", "Jahody v textu nejsou."],
+  ], ["Najdi v textu slovo „nejvíc“.", "První věta vyjmenuje, co pan Novák pěstuje. Odpověď je ale ve druhé větě."], "V textu stojí: Nejvíc se mu daří rajčata."),
+  text(MARTINA, "Na jaký nástroj hraje Martina?", "na housle", [
+    ["na klavír", "Klavír v textu není."], ["na flétnu", "Flétna v textu není."], ["na kytaru", "Kytara v textu není."],
+  ], ["Najdi v textu slovo „hraje“.", "Odpověď je v první větě hned za slovem „hraje“."], "V textu stojí: Martina hraje na housle."),
+  text(MARTINA, "Kdo Martinu učí?", "paní Dvořáková", [
+    ["maminka", "Maminka v textu není."], ["pan Dvořák", "V textu je paní, ne pan."], ["starší sestra", "Sestra v textu není."],
+  ], ["Najdi v textu slovo „učí“.", "Za slovem „učí“ je jméno. Pozor, jestli jde o pana, nebo o paní."], "V textu stojí: učí ji paní Dvořáková."),
+  text("Vlak do Brna odjíždí v 8:15 z druhé koleje.", "Z které koleje vlak odjíždí?", "z druhé", [
+    ["z první", "V textu je jiná kolej."], ["z třetí", "V textu je jiná kolej."], ["z osmé", "Osm je část času odjezdu, ne kolej."],
+  ], ["Najdi v textu slovo „koleje“.", "V textu je čas i číslo koleje. Nesplet si je — číslo koleje stojí přímo před slovem „koleje“."], "V textu stojí: z druhé koleje."),
+  text("Veverka si na podzim schovává oříšky do dutiny stromu. V zimě je pak vyhrabává a jí.", "Kam si veverka schovává oříšky?", "do dutiny stromu", [
+    ["do nory v zemi", "O noře text nemluví."], ["pod kámen u potoka", "Kámen ani potok v textu nejsou."], ["do ptačího hnízda", "Hnízdo v textu není."],
+  ], ["Najdi v textu slovo „schovává“.", "Otázka „kam“ se ptá na místo. Je v první větě."], "V textu stojí: schovává oříšky do dutiny stromu."),
+  text("Petr má psa Maxe. Max je hnědý jezevčík a nejraději si hraje s míčkem.", "Jaký pes je Max?", "hnědý jezevčík", [
+    ["černý labrador", "V textu je jiná barva i plemeno."], ["bílý pudl", "V textu je jiná barva i plemeno."], ["hnědý ovčák", "Barva sedí, ale plemeno je jiné."],
+  ], ["Najdi v textu jméno Max a čti dál.", "Druhá věta popisuje, jaký Max je: barvu i plemeno. Obojí musí sedět."], "V textu stojí: Max je hnědý jezevčík."),
+  text("Na kraji vesnice stojí starý mlýn. Dnes je v něm muzeum, kam jezdí hodně turistů.", "Co je dnes ve starém mlýně?", "muzeum", [
+    ["pekárna", "Pekárna v textu není."], ["škola", "Škola v textu není."], ["hospoda", "Hospoda v textu není."],
+  ], ["Najdi v textu slovo „dnes“.", "První věta říká, kde mlýn stojí. Co je v něm teď, říká druhá věta."], "V textu stojí: Dnes je v něm muzeum."),
 ];
 
-// Level 2: slozitejsi ctenarske strategie
-const POOL_L2: TFItem[] = [
-  { q: "Text o slonech říkající 'Slon je největší suchozemské zvíře.' je detail, ne hlavní myšlenka.", a: "ne", hint: "Tato informace je klíčová pro pochopení tématu — jde o hlavní myšlenku.", e: "Že je slon největší suchozemské zvíře, je nosná informace, kolem které se text točí — to je hlavní myšlenka, ne pouhý detail. Detailem by byla třeba barva jeho kůže." },
-  { q: "Text o slonech říkající 'Slon má šedou kůži.' je detail, ne hlavní myšlenka.", a: "ano", hint: "Barva kůže je doplňující detail, ne nosná myšlenka textu.", e: "Barva sloní kůže je drobná podrobnost, která text jen doplňuje — proto jde o detail, ne o hlavní myšlenku. Hlavní myšlenka by řekla, o čem text především je." },
-  { q: "Čtenářská strategie předvídání nám říká, co se stalo v minulosti.", a: "ne", hint: "Předvídání se týká budoucnosti — odhadujeme, co přijde dál.", e: "Předvídání se dívá dopředu — odhaduješ, co teprve přijde. To, co se už stalo, není předvídání, ale shrnutí nebo zopakování přečteného." },
-  { q: "Inference znamená, že vyvozujeme informace, které nejsou přímo v textu.", a: "ano", hint: "Vyvozujeme ze stop — to, co autor neříká přímo.", e: "Inference neboli vyvozování znamená domýšlet ze stop to, co autor přímo nenapsal. Čteš tak mezi řádky a doplňuješ chybějící informace." },
-  { q: "Záměrné shrnutí každého odstavce zlepšuje celkové porozumění textu.", a: "ano", hint: "Průběžné shrnutí udržuje čtenáře v kontaktu s textem.", e: "Když si po každém odstavci shrneš, co jsi přečetl, udržuješ kontakt s textem a snáz poskládáš celý obsah dohromady. Průběžné shrnování proto porozumění zlepšuje." },
-  { q: "Příběh (literární text) a encyklopedický text se čtou stejnou strategií.", a: "ne", hint: "Různé texty vyžadují různé strategie čtení.", e: "Příběh sleduješ kvůli ději a postavám, encyklopedii čteš kvůli faktům a pojmům — každý vyžaduje jiný přístup. Stejnou strategií je tedy číst nelze." },
-  { q: "Pokud autor popisuje škodlivost plastů, jeho záměrem pravděpodobně je upozornit na problém.", a: "ano", hint: "Téma škodlivosti vede k záměru upozornit a motivovat ke změně.", e: "Když autor zdůrazňuje, jak jsou plasty škodlivé, nejspíš chce čtenáře varovat a přimět ho ke změně. To je jeho záměr, který vyvodíš z toho, co a jak píše." },
-  { q: "Hlavní myšlenka se vždy skrývá v posledním odstavci textu.", a: "ne", hint: "Hlavní myšlenka může stát kdekoli — záleží na textu.", e: "Hlavní myšlenka nemá pevné místo — někdy je hned na začátku, jindy uprostřed či na konci. Hledat ji jen v posledním odstavci by tě mohlo svést." },
-  { q: "Klíčová slova textu o zimě jsou pravděpodobně: sníh, mráz, led, zima.", a: "ano", hint: "Klíčová slova vystihují téma — u zimy to jsou zimní pojmy.", e: "Klíčová slova vystihují téma a v textu se opakují. U textu o zimě to budou právě zimní pojmy jako sníh, mráz a led — z nich poznáš, o čem text je." },
-  { q: "Čím více slov v textu neznáme, tím méně šancí máme mu porozumět.", a: "ne", hint: "Kontext a strategie mohou pomoci i při neznalosti slov.", e: "I když některá slova neznáš, můžeš jejich význam odhadnout z kontextu a textu porozumět. Neznalost pár slov tě tedy o porozumění automaticky nepřipraví." },
-  { q: "Shrnutí textu vlastními slovy je lepší ukázka porozumění než opisování.", a: "ano", hint: "Vlastní slova ukazují, že jsme obsah zpracovali, ne jen opsali.", e: "Když text převyprávíš vlastními slovy, dokazuješ, že jsi obsahu opravdu porozuměl. Opsat věty doslova zvládneš i bez pochopení, proto je shrnutí lepší důkaz." },
-  { q: "Návod k sestavení nábytku je příkladem věcného (informačního) textu.", a: "ano", hint: "Návod popisuje postup — jde o praktický věcný text.", e: "Návod popisuje krok za krokem, jak něco udělat, a podává praktické informace — proto je to věcný text. Nevypráví příběh ani nevyjadřuje pocity." },
-  { q: "Pohádka je příkladem věcného (naučného) textu.", a: "ne", hint: "Pohádka je literární (umělecký) text — vymyšlený příběh.", e: "Pohádka je vymyšlený příběh s postavami a dějem, tedy literární (umělecký) text. Věcný text naopak podává ověřená fakta, ne smyšlený příběh." },
-  { q: "Při čtení odborného textu pomáhá soustředit se na pojmy a jejich vysvětlení.", a: "ano", hint: "Odborné pojmy jsou stavební kameny odborného textu.", e: "Odborné pojmy jsou stavební kameny naučného textu — když pochopíš je a jejich vysvětlení, pochopíš celý text. Proto se na ně vyplatí soustředit." },
-  { q: "Pokud text nerozumíme, vždy je to chybou autora, ne čtenáře.", a: "ne", hint: "Porozumění je dílem obou — autora i čtenáře a jeho strategií.", e: "Porozumění vzniká spoluprací autora a čtenáře. Někdy text píše autor nejasně, ale jindy pomůže, když čtenář zvolí lepší strategii — vina není vždy jen na jedné straně." },
-  { q: "Aktivní čtení zahrnuje předvídání, vyvozování, kladení otázek a shrnutí.", a: "ano", hint: "Aktivní čtenář si klade otázky a přemýšlí o textu.", e: "Aktivní čtenář s textem pracuje — předvídá, vyvozuje, ptá se a shrnuje. Právě tyto činnosti dohromady tvoří aktivní čtení a vedou k lepšímu porozumění." },
-  { q: "Čtení jen nadpisu a obrázků bez textu je spolehlivá cesta k porozumění.", a: "ne", hint: "Nadpisy a obrázky pomáhají orientaci, ale ne plnému porozumění.", e: "Nadpis a obrázky ti pomohou zorientovat se, ale samy o sobě obsah neprozradí. Plnému porozumění se přiblížíš jen tehdy, když si přečteš celý text." },
-  { q: "Odpověď na otázku 'Proč' v textu o slonech může být: 'Slon pije vodu chobotém, aby se ochladil.'", a: "ano", hint: "Proč = příčina/důvod — chladí se proto, že je mu horko.", e: "Otázka 'proč' se ptá po důvodu. Slovo 'aby se ochladil' ten důvod přímo udává, proto je to platná odpověď na otázku proč." },
-  { q: "Záměr autora zprávy (novinového článku) je většinou pobavit čtenáře.", a: "ne", hint: "Zpráva informuje o událostech — záměr je informovat, ne pobavit.", e: "Novinová zpráva má hlavně informovat o tom, co se stalo. Pobavit chce spíš vtip nebo příběh, kdežto záměrem zprávy je předat čtenáři fakta." },
-  { q: "Dobrý čtenář si při čtení klade otázky jako: Co chce autor říct? Proč to píše?", a: "ano", hint: "Tyto otázky udržují čtenáře aktivního a zlepšují porozumění.", e: "Když si při čtení kladeš otázky po smyslu a záměru, čteš aktivně a hlouběji přemýšlíš o textu. Právě tak pracuje dobrý čtenář a lépe porozumí." },
-  { q: "Text, který přečteme za trest, si zapamatujeme stejně dobře jako text, který nás zajímá.", a: "ne", hint: "Motivace a zájem výrazně ovlivňují porozumění a zapamatování.", e: "Co tě baví, to si zapamatuješ snáz, protože tomu věnuješ víc pozornosti. Text čtený nerad nebo za trest se ti do paměti vryje hůř — zájem hraje velkou roli." },
-  { q: "Vizuální pomůcky (grafy, obrázky) mohou pomoci pochopit věcný text.", a: "ano", hint: "Ilustrace a grafy doplňují a vysvětlují obsah textu.", e: "Grafy a obrázky ukazují obsah názorně a doplňují to, co je v textu napsané slovy. Proto ti při čtení věcného textu mohou pomoci pochopit, o co jde." },
-  { q: "Pokud přečteme text dvakrát, vždy mu porozumíme na 100 %.", a: "ne", hint: "Dvakrát nestačí vždy — záleží na obtížnosti textu a strategiích čtenáře.", e: "Dvojí čtení sice pomáhá, ale stoprocentní porozumění nezaručuje. U těžkého textu může být potřeba číst víckrát nebo zvolit lepší strategii." },
-  { q: "Čtenářská strategie 'předvídání' pomáhá lépe se soustředit na to, co přijde.", a: "ano", hint: "Předvídání udržuje zájem a připravuje čtenáře na obsah.", e: "Když odhaduješ, co přijde dál, jsi zvědavý a připravený na pokračování — a tím se líp soustředíš. Proto předvídání udržuje pozornost a pomáhá porozumění." },
-  { q: "Věcný text obsahuje autorovy osobní pocity a hodnocení.", a: "ne", hint: "Věcný text je objektivní — pocity patří do literárního textu.", e: "Věcný text podává fakta objektivně, bez autorových pocitů a osobního hodnocení. Pocity a dojmy najdeš spíš v literárním textu, jako je báseň nebo povídka." },
-  { q: "Rozlišovat hlavní myšlenku od detailů je důležitá čtenářská dovednost.", a: "ano", hint: "Kdo umí oddělit podstatné od nepodstatného, lépe porozumí textu.", e: "Když umíš oddělit hlavní myšlenku od pouhých detailů, soustředíš se na podstatné a textu lépe porozumíš. Je to proto důležitá čtenářská dovednost." },
-  { q: "Otázka 'Kde' v textu zjišťuje místo děje.", a: "ano", hint: "Kde = místo; kdo = postava; kdy = čas; proč = příčina.", e: "Otázka 'kde' se vždy ptá po místě — kde se děj odehrává. Tím se liší od otázky kdo (postava), kdy (čas) a proč (příčina)." },
-  { q: "Pokud neznáme žánr textu (pohádka, článek, návod), nelze zvolit správnou strategii.", a: "ne", hint: "Můžeme strategii přizpůsobit i bez znalosti žánru — pozorujeme text.", e: "I bez jistoty, o jaký žánr jde, si všímáš toho, jak text vypadá, a strategii přizpůsobíš. Znalost žánru pomáhá, ale není podmínkou pro čtení s porozuměním." },
-  { q: "Inference (vyvozování) je čtenářská dovednost, která patří až na střední školu.", a: "ne", hint: "Vyvozování trénujeme od útlého věku — je součástí základní gramotnosti.", e: "Vyvozovat ze stop se učíme už od malička — i ty to děláš, když si domyslíš, že někdo přišel mokrý kvůli dešti. Není to dovednost jen pro starší žáky." },
-  { q: "Čtení s porozuměním je základ pro úspěch ve všech školních předmětech.", a: "ano", hint: "Všechny předměty vyžadují čtení textů a porozumění jejich obsahu.", e: "Ať se učíš matematiku, přírodovědu nebo dějepis, všude musíš číst zadání a texty a rozumět jim. Proto je čtení s porozuměním základ úspěchu ve všech předmětech." },
+const L2: PracticeTask[] = [
+  text("Martin přišel ze hřiště celý mokrý a zablácený. Z bot mu tekla voda.", "Co se asi stalo venku?", "pršelo", [
+    ["svítilo slunce", "Po slunečném dni by nebyl mokrý."], ["byl velký mráz", "V mrazu by voda zmrzla, nebyla by bláto."], ["foukal suchý vítr", "Suchý vítr by nikoho nenamočil."],
+  ], ["Proč by mohl být někdo mokrý a zablácený?", "Text to neříká přímo. Stopy (mokrý, bláto, voda v botách) ukazují na jedno počasí."], "Text neříká „pršelo“, ale mokré oblečení, bláto a voda v botách na to ukazují."),
+  text("Anna zívala, protírala si oči a hlava jí padala na lavici.", "Jak se asi Anna cítila?", "byla ospalá", [
+    ["byla veselá", "Veselost by se projevila smíchem, ne zíváním."], ["měla hlad", "Hlad se neprojevuje zíváním."], ["zlobila se", "Vztek by vypadal jinak."],
+  ], ["Kdy lidé zívají a protírají si oči?", "Text pocit nepojmenuje. Poznáš ho podle toho, co Anna dělá."], "Zívání, protírání očí a padající hlava ukazují, že Anna byla ospalá."),
+  text("Když prší, cesta k babičce se mění v bláto a ve strouze jsou skryté díry. Proto k ní chodíme jen za sucha.", "Proč se k babičce nechodí za deště?", "cesta je blátivá a nebezpečná", [
+    ["babička není doma", "O tom text nemluví."], ["rodiče to nikdy nedovolí", "Za sucha se tam chodí."], ["cesta je delší", "O délce cesty text nic neříká."],
+  ], ["Najdi v textu slovo „proto“. Co je před ním?", "Slovo „proto“ spojuje důvod s tím, co z něj plyne. Důvod je v první větě."], "Za deště je cesta blátivá a jsou na ní skryté díry — je nebezpečná."),
+  text("Petr běhá do školy deset minut. Jednou zaspal, a aby to stihl, jel autobusem.", "Co z textu plyne?", "autobus je rychlejší než Petrův běh", [
+    ["Petr jezdí autobusem každý den", "Jel jen jednou, když zaspal."], ["Petr nemá rád autobus", "O tom text nic neříká."], ["Petr bydlí daleko od školy", "Běží jen deset minut — bydlí blízko."],
+  ], ["Proč Petr jel autobusem, když zaspal?", "Jel, „aby to stihl“. Co to říká o rychlosti autobusu?"], "Petr jel autobusem, aby to stihl — autobus je tedy rychlejší než jeho běh."),
+  text("Nejprve jsme zasadili semínko. Potom jsme ho zalévali. Po týdnu vyrašil malý lístek.", "Co se stalo jako poslední?", "vyrašil lístek", [
+    ["zasadili semínko", "To bylo první."], ["zalévali ho", "To bylo druhé."], ["koupili květináč", "O květináči text nic neříká."],
+  ], ["Která časová slova v textu jsou?", "Nejprve → potom → po týdnu. Poslední událost je ta za posledním časovým údajem."], "Pořadí: zasadili, zalévali, po týdnu vyrašil lístek — to bylo poslední."),
+  text("Kočka seděla u okna a vrtěla ocasem. Na parapet venku přiletěl vrabec.", "Proč asi kočka vrtěla ocasem?", "sledovala vrabce", [
+    ["byla unavená", "Unavená kočka spí, nevrtí ocasem u okna."], ["chtěla jít spát", "O spánku text nic neříká."], ["bála se psa", "Pes v textu není."],
+  ], ["Co bylo za oknem?", "Text důvod neříká přímo. Spoj si, co kočka dělala a co bylo venku."], "Kočka seděla u okna a venku byl vrabec — nejspíš ho sledovala."),
+  text("Anna je o dva roky mladší než její bratr Pavel. Pavlovi bude v květnu čtrnáct.", "Kolik let bude Anně v květnu?", "dvanáct", [
+    ["deset", "To by byla o čtyři roky mladší."], ["čtrnáct", "To je věk Pavla."], ["šestnáct", "To by byla starší než Pavel."],
+  ], ["Kolik let bude Pavlovi a o kolik je Anna mladší?", "Anna je mladší než Pavel, takže od Pavlova věku musíš odečíst rozdíl mezi nimi."], "Pavlovi bude 14, Anna je o 2 roky mladší: 14 − 2 = 12."),
+  text("V naší třídě je 24 dětí. Polovina chodí na fotbal, čtvrtina na keramiku a ostatní nechodí na žádný kroužek.", "Kolik dětí nechodí na kroužek?", "šest", [
+    ["dvanáct", "Dvanáct chodí na fotbal."], ["osm", "Tolik to nevyjde — spočítej polovinu a čtvrtinu."], ["čtyři", "Tolik to nevyjde."],
+  ], ["Kolik je polovina a kolik čtvrtina z 24?", "Spočítej, kolik dětí chodí na fotbal a kolik na keramiku, a odečti je od 24."], "Polovina z 24 je 12, čtvrtina 6. 12 + 6 = 18, 24 − 18 = 6 dětí nechodí na kroužek."),
+  text("Samec slona afrického váží až 6 tun, samice kolem 3 tun.", "Co z textu plyne?", "samice váží asi polovinu toho, co samec", [
+    ["samice jsou těžší než samci", "Je to naopak."], ["sloni afričtí žijí v Asii", "O tom text nic neříká."], ["samec váží 3 tuny", "3 tuny váží samice."],
+  ], ["Porovnej čísla u samce a samice.", "Kolikrát se vejdou 3 tuny do 6 tun? Když dvakrát, je menší číslo polovinou většího."], "Samec 6 tun, samice 3 tuny — samice váží asi polovinu."),
+  text("Pravěcí lidé vyráběli nástroje z pazourku — tvrdého kamene, který se dá naostřit.", "Proč byl pazourek vhodný na nástroje?", "byl tvrdý a dal se naostřit", [
+    ["byl měkký", "Text říká opak — byl tvrdý."], ["byl vzácný a drahý", "O ceně text nic neříká."], ["byl lehký jako dřevo", "O váze text nic neříká."],
+  ], ["Co text o pazourku říká za pomlčkou?", "Za pomlčkou jsou dvě vlastnosti pazourku. Právě ty ho dělají vhodným na nože a škrabky."], "Pazourek byl tvrdý a dal se naostřit — proto byl vhodný na nástroje."),
+  text("Ježek Bodlinka přes den spí v listí a v noci loví žížaly. Na zimu zaleze pod kůlnu a spí až do jara.", "Které tvrzení podle textu platí?", "v noci hledá potravu a zimu prospí", [
+    ["v noci spí a přes den loví", "Je to naopak."], ["celou zimu loví", "V zimě spí."], ["žije daleko od lidí v lese", "Žije u kůlny, tedy u lidí."],
+  ], ["Co dělá Bodlinka ve dne, v noci a v zimě?", "Porovnávej každé tvrzení s textem. Stačí jedno slovo, které nesedí, a tvrzení neplatí."], "Text říká: v noci loví, v zimě spí. Ostatní tvrzení mu odporují."),
+  text("Karel Čapek psal pohádky pro děti, například Devatero pohádek, ale také vážné knihy pro dospělé.", "Co o Čapkovi text říká?", "psal pro děti i pro dospělé", [
+    ["psal jen pohádky", "Psal i vážné knihy pro dospělé."], ["nikdy nepsal pro dospělé", "Text říká opak."], ["psal jen básně", "O básních text nemluví."],
+  ], ["Najdi v textu slovo „ale“. Co je před ním a co za ním?", "Před „ale“ jsou knihy pro děti, za ním pro dospělé. Odpověď spojí obojí."], "Text uvádí pohádky pro děti i vážné knihy pro dospělé."),
+  text("Povodeň zaplavila vesnici v noci. Lidé utekli na střechy. Voda zničila mnoho věcí, ale všichni se zachránili.", "Jak povodeň dopadla pro lidi?", "všichni se zachránili", [
+    ["nikdo se nezachránil", "Text říká opak."], ["lidé zůstali v ložnicích", "Utekli na střechy."], ["voda nic nezničila", "Zničila mnoho věcí."],
+  ], ["Najdi v textu, co se stalo s lidmi.", "Poslední věta mluví o věcech i o lidech. Pozor na slovo „ale“."], "Voda zničila věci, ale všichni lidé se zachránili."),
 ];
 
-// A5 (kolo 2): L3 s výběrem ze 4 tvrzení — porozumění krátkému textu.
-// Nahrazuje binární Ano/Ne (50 % náhoda) skutečnou diagnostickou úlohou.
-interface ReadingItem { text: string; q: string; a: string; opts: string[]; e: string }
-const POOL_L3_TEXTY: ReadingItem[] = [
-  {
-    text: `Ježek Bodlinka žil ve staré zahradě u domu. Přes den spal schovaný v hromadě listí, ale v noci se vydával za lovem hlemýžďů a žížal. Když přišla zima, uložil se k dlouhému spánku pod kůlnu, kde bylo teplo.`,
-    q: `Které tvrzení o ježkovi Bodlinkovi platí?`,
-    a: "V noci hledá potravu, přes zimu spí.",
-    opts: [
-      "V noci hledá potravu, přes zimu spí.",
-      "V noci spí a přes den loví.",
-      "Přes celou zimu loví hlemýždě.",
-      "Bodlinka žije v lese daleko od lidí.",
-    ],
-    e: "Text říká: přes den spal, v noci lovil, na zimu se uložil ke spánku. Ostatní varianty protiřečí textu.",
-  },
-  {
-    text: `Anna má tři sourozence: staršího bratra Pavla, mladší dvojčata Kláru a Terezku. Nejstarší z nich je Pavel, kterému bude v květnu čtrnáct. Anna sama je o dva roky mladší.`,
-    q: `Kolik let bude Anně v květnu?`,
-    a: "Dvanáct.",
-    opts: [
-      "Dvanáct.",
-      "Deset.",
-      "Čtrnáct.",
-      "Osmnáct.",
-    ],
-    e: "Pavlovi bude 14, Anna je o 2 roky mladší → 14 − 2 = 12 let.",
-  },
-  {
-    text: `Když prší, cesta k babičce se stává neprůchodnou. Bahno je hluboké až po kotníky a tráva ve strouze pod stezkou skrývá hluboké výmoly. Proto tam chodíme jen za sucha.`,
-    q: `Proč se k babičce nechodí, když prší?`,
-    a: "Cesta je nebezpečná — hluboké bahno a skryté výmoly.",
-    opts: [
-      "Cesta je nebezpečná — hluboké bahno a skryté výmoly.",
-      "Babička není doma, když prší.",
-      "Rodiče to nedovolují bez ohledu na počasí.",
-      "Cesta je delší, když prší.",
-    ],
-    e: "Text uvádí: bahno po kotníky a skryté výmoly → nebezpečné. O babiččině nepřítomnosti ani zákazu rodičů text nemluví.",
-  },
-  {
-    text: `Slon africký patří k největším suchozemským zvířatům. Dospělý samec může vážit až 6 tun a být vysoký přes 3 metry. Slonice bývají menší a lehčí, kolem 3 tun.`,
-    q: `Co lze z textu bezpečně vyvodit?`,
-    a: "Slonice jsou v průměru přibližně o polovinu lehčí než samci.",
-    opts: [
-      "Slonice jsou v průměru přibližně o polovinu lehčí než samci.",
-      "Slonice žijí odděleně od samců.",
-      "Sloni afričtí žijí v Asii.",
-      "Slonice jsou vždy vyšší než 3 metry.",
-    ],
-    e: "Samec až 6 tun, slonice 3 tuny → slonice je o polovinu lehčí. Ostatní informace v textu nejsou.",
-  },
-  {
-    text: `Petr každý den ráno běžel do školy. Trvalo mu to deset minut, protože bydlel blízko. Jednou zaspal a musel do školy jet autobusem, aby to stihl.`,
-    q: `Co lze z textu vyvodit o Petrovi?`,
-    a: "Autobus je rychlejší než jeho běh.",
-    opts: [
-      "Autobus je rychlejší než jeho běh.",
-      "Petr každý den jede autobusem.",
-      "Petr nemá rád autobus.",
-      "Petr do školy vždy chodí pěšky pomalu.",
-    ],
-    e: "Když zaspal, jel autobusem, aby to STIHL. To znamená, že autobus mu ušetřil čas → je rychlejší.",
-  },
-  {
-    text: `Karel Čapek napsal mnoho slavných knih. Nejznámější jsou pohádky, například Devatero pohádek. Kromě pohádek psal i vážnější knihy pro dospělé.`,
-    q: `Které tvrzení o Karlu Čapkovi PLATÍ podle textu?`,
-    a: "Psal knihy pro děti i pro dospělé.",
-    opts: [
-      "Psal knihy pro děti i pro dospělé.",
-      "Psal pouze pohádky.",
-      "Nikdy nepsal vážné knihy.",
-      "Karel Čapek žil v 19. století.",
-    ],
-    e: "Text uvádí: pohádky pro děti + vážné knihy pro dospělé → obojí.",
-  },
-  {
-    text: `V naší třídě je 24 dětí. Polovina z nich chodí kroužek fotbalu, čtvrtina kroužek keramiky, zbytek nemá kroužek žádný.`,
-    q: `Kolik dětí ve třídě NEMÁ kroužek?`,
-    a: "Šest.",
-    opts: [
-      "Šest.",
-      "Dvanáct.",
-      "Osm.",
-      "Čtyři.",
-    ],
-    e: "24 dětí: polovina (12) fotbal + čtvrtina (6) keramika = 18. Zbývá 24 − 18 = 6 bez kroužku.",
-  },
-  {
-    text: `Blesková povodeň zaplavila vesnici během noci. Voda stoupala rychle a lidé se museli evakuovat na střechy domů. Naštěstí byla škoda na majetku, ne na životech — všichni se stihli zachránit.`,
-    q: `Co je hlavní myšlenkou textu?`,
-    a: "Přes rozsáhlé škody se nikdo nezranil.",
-    opts: [
-      "Přes rozsáhlé škody se nikdo nezranil.",
-      "Povodeň zničila celou vesnici a nikdo nepřežil.",
-      "Voda stoupala pomalu.",
-      "Lidé zůstali doma v ložnicích.",
-    ],
-    e: "Klíč textu: škoda jen na majetku, všichni se zachránili. Ostatní tvrzení jsou v rozporu s textem.",
-  },
-  {
-    text: `Když se řekne „lyška", většina lidí si vybaví rybu žijící v čistých potocích. Ve skutečnosti však lyška může znamenat i zvíře v lidových pohádkách — mazanou postavičku, která přechytračí slabší.`,
-    q: `Co o slově „lyška" text říká?`,
-    a: "Slovo má více významů — rybu i pohádkovou postavičku.",
-    opts: [
-      "Slovo má více významů — rybu i pohádkovou postavičku.",
-      "Lyška je jen jméno pro rybu.",
-      "V pohádkách se lyška nikdy neobjevuje.",
-      "Lyška je moderní vynález.",
-    ],
-    e: "Text explicitně říká: lyška = ryba I pohádková postavička. Mnohoznačné slovo.",
-  },
-  {
-    text: `Pračlověk vyráběl nástroje z pazourku — z pěkně tvrdého kamene, který se dá naostřit. Na maso používal škrabky, na kůže nože. Tyto nástroje mu pomohly přežít.`,
-    q: `Proč byl pazourek vhodný na výrobu nástrojů?`,
-    a: "Byl tvrdý a dal se dobře naostřit.",
-    opts: [
-      "Byl tvrdý a dal se dobře naostřit.",
-      "Byl měkký a lehko se lámal.",
-      "Byl vzácný a drahý.",
-      "Byl teplý a mohlo se z něj topit.",
-    ],
-    e: "Text říká: pazourek byl tvrdý + dal se naostřit → proto vhodný. Ostatní vlastnosti (měkký, vzácný, teplý) textu odporují.",
-  },
+const L3: PracticeTask[] = [
+  text("Sova pálená loví v noci. Díky citlivému sluchu najde myš i ve tmě. Létá tak tiše, že ji kořist neslyší.", "Jaká je hlavní myšlenka textu?", "sova je dobře přizpůsobená lovu v noci", [
+    ["sovy mají měkké peří na křídlech", "To text neříká a není to hlavní."], ["myši se schovávají ve tmě", "Text je o sově, ne o myších."], ["sovy létají hlavně ve dne", "Text říká, že loví v noci."],
+  ], ["Co mají všechny tři věty společného?", "Každá věta ukazuje jednu schopnost sovy. Hlavní myšlenka je spojí: k čemu jí všechny slouží."], "Všechny věty ukazují, jak se sova hodí k nočnímu lovu (sluch, tichý let)."),
+  text("Každý z nás vyhodí ročně hodně jídla. Přitom stačí nakupovat podle seznamu a zbytky zamrazit. Tak ušetříme peníze i přírodu.", "Co chce autor textem dosáhnout?", "abychom méně plýtvali jídlem", [
+    ["abychom nakupovali víc", "Text radí naopak nakupovat podle seznamu."], ["aby nás pobavil vtipem", "V textu žádný vtip není."], ["aby nás naučil vařit polévku", "O vaření text nemluví."],
+  ], ["Co nám text radí?", "Záměr autora poznáš podle rad, které dává, a podle toho, co slibuje (ušetříme peníze i přírodu)."], "Autor radí, jak nevyhazovat jídlo — chce, abychom méně plýtvali."),
+  text("Pozor! Zítra od 8 do 12 hodin nepoteče voda.", "Jaký druh textu to je?", "oznámení", [
+    ["pohádka", "Pohádka vypráví vymyšlený příběh."], ["báseň", "Báseň má verše a rýmy."], ["dopis kamarádovi", "Dopis má oslovení a podpis."],
+  ], ["Co text lidem sděluje a proč?", "Krátký text, který upozorňuje lidi na něco důležitého, co se stane, má svůj název."], "Text upozorňuje lidi na důležitou věc — je to oznámení."),
+  text("Za devatero horami žil drak, který hlídal princeznu ve zlaté věži.", "Proč text asi vznikl?", "aby čtenáře pobavil", [
+    ["aby informoval o počasí", "O počasí text nic neříká."], ["aby naučil počítat", "Počítání v textu není."], ["aby prodal zboží", "Text nic neprodává."],
+  ], ["Jaký druh textu to je?", "Vymyšlený svět, drak a princezna patří do pohádky. Pohádky se vyprávějí pro radost."], "Je to začátek pohádky — vznikla, aby čtenáře pobavila."),
+  text("Nejprve si umyj ruce. Pak nakrájej chleba. Nakonec ho namaž máslem.", "K čemu text slouží?", "radí, jak něco udělat", [
+    ["vypráví příběh", "Nevystupují v něm postavy, je to návod."], ["popisuje osobu", "Žádná osoba se tu nepopisuje."], ["zve na oslavu", "O oslavě text nemluví."],
+  ], ["Jaká slova v textu jsou a co ti říkají?", "Nejprve, pak, nakonec a pokyny (umyj, nakrájej, namaž) — takhle vypadá návod."], "Text dává pokyny krok za krokem — radí, jak něco udělat."),
+  text("Tomáš nechal v obchodě peněženku u pokladny. Za chvíli za ním vyběhla prodavačka a peněženku mu podala.", "Jaká asi byla prodavačka?", "poctivá", [
+    ["zlá", "Zlá by peněženku nevrátila."], ["líná", "Líná by za ním nevyběhla."], ["smutná", "O smutku text nic neříká."],
+  ], ["Co prodavačka udělala s cizí peněženkou?", "Vlastnost poznáš podle činu. Kdo vrátí cizí věc, i když ji mohl nechat, je…?"], "Prodavačka vrátila peněženku — byla poctivá."),
+  text("Honza trénoval celé léto každý den na kole. Na podzim vyhrál školní závod.", "Proč asi Honza vyhrál?", "protože hodně trénoval", [
+    ["protože měl nové tričko", "O tričku text nic neříká."], ["protože pršelo", "O počasí text nic neříká."], ["protože ostatní nepřišli", "To text neříká."],
+  ], ["Co Honza dělal celé léto?", "Text spojuje dvě věci: trénink a vítězství. Která z nich vysvětluje tu druhou?"], "Honza celé léto trénoval, a proto na podzim vyhrál."),
+  text("Voda se v přírodě neztrácí. Z moří se vypařuje, vytvoří mraky a spadne jako déšť. Po řekách se pak vrací do moře.", "Jaká je hlavní myšlenka textu?", "voda v přírodě pořád koluje", [
+    ["moře je slané", "To text neříká."], ["déšť je mokrý", "To není hlavní myšlenka."], ["řeky jsou dlouhé", "O délce řek text nemluví."],
+  ], ["Kam se voda dostane a odkud se vrací?", "Text popisuje cestu vody dokola: moře → mraky → déšť → řeky → moře. Hlavní myšlenka to shrne."], "Voda koluje dokola — vypaří se, spadne jako déšť a vrátí se do moře."),
+  text("Lucka chtěla psa. Celý rok se starala o sousedova Rexe, venčila ho a krmila. Na Vánoce našla pod stromečkem štěně.", "Co z textu vyvodíš?", "rodiče viděli, že se o psa umí postarat", [
+    ["Lucka nemá ráda psy", "Chtěla psa a o Rexe se starala."], ["Rex byl Luččin pes", "Rex byl sousedův."], ["štěně bylo od souseda", "Odkud štěně bylo, text neříká."],
+  ], ["Proč asi Lucka dostala štěně až po roce péče o Rexe?", "Text to neříká přímo. Spoj si, co Lucka celý rok dělala a co pak dostala."], "Lucka rok ukazovala, že se o psa umí starat — proto nakonec štěně dostala."),
+  text("Nebe se zatáhlo černými mraky a v dálce zahřmělo.", "Co se asi stane?", "přijde bouřka", [
+    ["vyjde slunce", "Černé mraky slunce zakryly."], ["začne sněžit", "Hřmění patří k bouřce, ne ke sněžení."], ["bude klidný večer", "Hřmění klid neslibuje."],
+  ], ["Co ohlašují černé mraky a hřmění?", "Předvídej podle stop v textu. Hrom a tmavé mraky jdou vždy s jedním počasím."], "Černé mraky a hřmění ohlašují bouřku."),
+  choice("Kdy čteš text pomalu a pozorně?", "když se z něj chci něco naučit", [
+    { value: "když hledám jen jedno číslo", why: "Na jedno číslo stačí text přejet očima." },
+    { value: "když ho jen rychle prolétnu", why: "Rychlé prolétnutí není pozorné čtení." },
+    { value: "nikdy", why: "Pozorné čtení je potřeba, když se učíme." },
+  ], {
+    hints: ["Jak čteš učebnici před testem?", "Když potřebuješ látku pochopit a zapamatovat si ji, musíš rozumět každé větě. To se rychlým čtením nepovede."],
+    explanation: "Pomalu a pozorně čteme, když se chceme něco naučit a pochopit.",
+  }),
+  choice("Když při čtení narazíš na neznámé slovo, co uděláš nejdřív?", "zkusím odhadnout význam z okolních vět", [
+    { value: "přestanu číst", why: "Kvůli jednomu slovu nemusíš přestat." },
+    { value: "zavřu knihu", why: "Tím se nic nedozvíš." },
+    { value: "přeskočím celý odstavec", why: "Tím ti uteče víc než jedno slovo." },
+  ], {
+    hints: ["Co ti o neznámém slově napoví věty kolem něj?", "Okolní věty často prozradí, co slovo znamená. Když to nejde, zeptej se nebo použij slovník."],
+    explanation: "Nejdřív zkusíme význam odhadnout z okolních vět, potom se můžeme zeptat nebo hledat ve slovníku.",
+  }),
+  choice("Jak si ověříš, že jsi textu porozuměl nebo porozuměla?", "zkusím ho převyprávět vlastními slovy", [
+    { value: "spočítám slova", why: "Počet slov o porozumění nic neřekne." },
+    { value: "prohlédnu si obrázky", why: "Obrázky porozumění neověří." },
+    { value: "přečtu jen nadpis", why: "Z nadpisu obsah nepoznáš." },
+  ], {
+    hints: ["Dokážeš kamarádovi říct, o čem text byl?", "Když obsah umíš kamarádovi říct po svém, rozumíš mu. Když to nejde, přečti text znovu."],
+    explanation: "Když text dokážeme převyprávět vlastními slovy, porozuměli jsme mu.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  if (level === 3) {
-    return shuffle(POOL_L3_TEXTY).slice(0, 30).map(({ text, q, a, opts, e }) => ({
-      question: `Text:\n${text}\n\n${q}`,
-      correctAnswer: a,
-      options: shuffle([...opts]),
-      hints: [
-        "Přečti si text pozorně — odpověď se v něm skrývá (přímo nebo vyvození ze stop).",
-        "Vylučuj tvrzení, která textu odporují.",
-      ],
-      explanation: e,
-    }));
-  }
-  const pool = level === 1 ? POOL_L1 : POOL_L2;
-  return shuffle(pool).slice(0, 30).map(({ q, a, hint, e }) => ({
-    question: q,
-    correctAnswer: a === "ano" ? "Ano" : "Ne",
-    options: ["Ano", "Ne"],
-    hints: [
-      hint,
-      "Porozumění = umím odpovědět na kdo/co/kde/kdy/proč.",
-      "Hlavní myšlenka = bez ní text nedává smysl.",
-      "Vyvozování = čtu mezi řádky, ze stop v textu.",
-    ],
-    explanation: e,
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const PLYNULECTENISPOROZUMENIMPRIMERENENAROCNYCHTEXTU: TopicMetadata[] = [
@@ -244,7 +177,7 @@ export const PLYNULECTENISPOROZUMENIMPRIMERENENAROCNYCHTEXTU: TopicMetadata[] = 
     category: "Komunikační a slohová výchova",
     topic: "Komunikační a slohová výchova",
     briefDescription: "Naučíš se číst s porozuměním a vyvozovat závěry z přečteného textu.",
-    keywords: ["čtení", "porozumění", "hlavní myšlenka", "klíčové slovo", "vyvozování", "inference"],
+    keywords: ["čtení", "porozumění", "hlavní myšlenka", "klíčové slovo", "vyvozování"],
     goals: [
       "Číst přiměřeně náročné texty s porozuměním",
       "Odpovídat na otázky kdo, co, kde, kdy, proč",
@@ -252,22 +185,22 @@ export const PLYNULECTENISPOROZUMENIMPRIMERENENAROCNYCHTEXTU: TopicMetadata[] = 
     ],
     boundaries: ["Bez literární analýzy", "Bez textů nad 4. ročník"],
     gradeRange: [4, 4],
-    inputType: "true_false",
+    inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
     recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci"],
     generator: gen,
     helpTemplate: {
-      hint: "Porozumění: umím odpovědět na kdo/co/kde/kdy/proč; hlavní myšlenka = bez ní text nedává smysl",
+      hint: "Odpověď hledej v textu: někdy stojí doslova, někdy ji vyvodíš ze stop",
       steps: [
-        "Přečti text pomalu a soustředěně.",
-        "Zastavuj se a ptej se: Co jsem právě přečetl(a)?",
-        "Odpovídej na otázky kdo, co, kde, kdy, proč.",
-        "Vyvozuj ze stop to, co není přímo napsáno.",
+        "Přečti otázku a zjisti, na co se ptá (kdo, co, kde, kdy, proč).",
+        "Najdi v textu místo, které se k otázce vztahuje.",
+        "Když odpověď není napsaná přímo, spoj stopy z textu.",
+        "Porovnej každou možnost s textem.",
       ],
-      commonMistake: "Záměna doslovné odpovědi a vyvozené odpovědi — ne vše je přímo v textu",
-      example: "'Martin přišel domů mokrý.' → vyvozujeme: pravděpodobně pršelo",
+      commonMistake: "Vybrat odpověď, která zní rozumně, ale v textu nestojí ani z něj neplyne",
+      example: "„Martin přišel domů mokrý.“ → vyvozujeme: pravděpodobně pršelo",
     },
   },
 ];

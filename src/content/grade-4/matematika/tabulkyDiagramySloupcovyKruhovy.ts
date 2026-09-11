@@ -1,178 +1,185 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { buildUniqueOptions, shuffleOptions } from "@/lib/content/uniqueOptions";
+import { ciselnaUloha, rnd, shuffle } from "./_mat";
 
-// Bez obrázků — úlohy jsou textové/číselné reprezentace dat z tabulek.
-
-/**
- * Systémové dluhy Balík 1C (2026-07-10): `values()` vracelo vždy stejné 4 čísla
- * pro každý dataset → reálně jen 3 datasety × pár otázkových vzorů, žádná
- * parametrizace (CONTENT_AUTHORING.md 5.3). Teď se hodnoty generují náhodně
- * (s garancí jednoznačného maxima/minima), disjunktní podle dovednosti:
- *
- *   L1 — celkový součet / přímé přečtení jedné hodnoty.
- *   L2 — najdi položku s největší / nejmenší hodnotou.
- *   L3 — rozdíl max−min NEBO "o kolik víc" mezi dvěma náhodnými položkami.
- */
+// Přepsáno 2026-09-11 (audit 4. ročníku). Úlohy téhož typu měly stejnou
+// nápovědu, chybné možnosti byly jen ±1, ±2, ±5 bez vysvětlení a čtení
+// hodnoty z tabulky mělo klíč přímo v zadání. Teď se vedle tabulky čte
+// i sloupcový diagram ze čtverečků ■, kde jeden čtvereček znamená víc kusů
+// (typická chyba: spočítat čtverečky a zapomenout na měřítko).
+// L1 součet v tabulce, diagram „■ = dva“ · L2 největší/nejmenší, diagram „■ = pět“
+// L3 rozdíly v tabulce i v diagramu.
+// Řádky tabulky začínají „•“: jinak by kontrola gramatiky četla „3⏎Březen“ jako „3 Březen“.
 
 interface Dataset {
-  name: string;
-  items: string[];
+  nazev: string;
+  polozky: string[];
+  /** Tvar položky do otázky („jablka“, „v lednu“, „autobusem“). */
+  tvar: string[];
   min: number;
   max: number;
+  dva: string;
+  pet: string;
+  celkem: string;
+  kolik: (t: string) => string;
+  oKolik: (x: string, y: string) => string;
+  nejvic: string;
+  nejmin: string;
 }
 
-const DATASETS: Dataset[] = [
-  { name: "oblíbené ovoce ve třídě", items: ["Jablka", "Banány", "Pomeranče", "Jahody"], min: 3, max: 20 },
-  { name: "počet knih přečtených za měsíc", items: ["Leden", "Únor", "Březen", "Duben"], min: 2, max: 15 },
-  { name: "způsob dopravy do školy", items: ["Pěšky", "Autobusem", "Autem", "Na kole"], min: 2, max: 25 },
-  { name: "prodej vstupenek na koncert", items: ["Pondělí", "Úterý", "Středa", "Čtvrtek"], min: 5, max: 40 },
+const DATA: Dataset[] = [
+  {
+    nazev: "Oblíbené ovoce ve třídě", polozky: ["Jablka", "Banány", "Pomeranče", "Jahody"],
+    tvar: ["jablka", "banány", "pomeranče", "jahody"], min: 3, max: 20, dva: "dva žáky", pet: "pět žáků",
+    celkem: "Kolik žáků hlasovalo celkem?",
+    kolik: (t) => `Kolik žáků má nejraději ${t}?`,
+    oKolik: (x, y) => `O kolik víc žáků má nejraději ${x} než ${y}?`,
+    nejvic: "Které ovoce má nejraději nejvíc žáků?", nejmin: "Které ovoce má nejraději nejméně žáků?",
+  },
+  {
+    nazev: "Přečtené knihy ve třídě", polozky: ["Leden", "Únor", "Březen", "Duben"],
+    tvar: ["v lednu", "v únoru", "v březnu", "v dubnu"], min: 2, max: 15, dva: "dvě knihy", pet: "pět knih",
+    celkem: "Kolik knih přečetla třída za všechny čtyři měsíce?",
+    kolik: (t) => `Kolik knih přečetla třída ${t}?`,
+    oKolik: (x, y) => `O kolik víc knih přečetla třída ${x} než ${y}?`,
+    nejvic: "Ve kterém měsíci přečetla třída nejvíc knih?", nejmin: "Ve kterém měsíci přečetla třída nejméně knih?",
+  },
+  {
+    nazev: "Jak se žáci dostanou do školy", polozky: ["Pěšky", "Autobusem", "Autem", "Na kole"],
+    tvar: ["pěšky", "autobusem", "autem", "na kole"], min: 2, max: 25, dva: "dva žáky", pet: "pět žáků",
+    celkem: "Kolik žáků je to celkem?",
+    kolik: (t) => `Kolik žáků se dostane do školy ${t}?`,
+    oKolik: (x, y) => `O kolik víc žáků se dostane do školy ${x} než ${y}?`,
+    nejvic: "Jak se do školy dostane nejvíc žáků?", nejmin: "Jak se do školy dostane nejméně žáků?",
+  },
+  {
+    nazev: "Prodané vstupenky na koncert", polozky: ["Pondělí", "Úterý", "Středa", "Čtvrtek"],
+    tvar: ["v pondělí", "v úterý", "ve středu", "ve čtvrtek"], min: 5, max: 40, dva: "dvě vstupenky", pet: "pět vstupenek",
+    celkem: "Kolik vstupenek se prodalo za všechny čtyři dny?",
+    kolik: (t) => `Kolik vstupenek se prodalo ${t}?`,
+    oKolik: (x, y) => `O kolik víc vstupenek se prodalo ${x} než ${y}?`,
+    nejvic: "Ve který den se prodalo nejvíc vstupenek?", nejmin: "Ve který den se prodalo nejméně vstupenek?",
+  },
 ];
 
-function randInt(min: number, max: number): number {
-  return min + Math.floor(Math.random() * (max - min + 1));
-}
+const nahodny = () => DATA[rnd(0, DATA.length - 1)];
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+/** Čtyři různé hodnoty — maximum i minimum jsou tak jednoznačné. */
+function hodnoty(min: number, max: number): number[] {
+  for (;;) {
+    const v = [0, 1, 2, 3].map(() => rnd(min, max));
+    if (new Set(v).size === 4) return v;
   }
-  return a;
 }
 
-/** Vygeneruje hodnoty s garantovaně jednoznačným maximem i minimem (bez remíz). */
-function genValues(ds: Dataset): number[] {
-  for (let attempt = 0; attempt < 20; attempt++) {
-    const values = ds.items.map(() => randInt(ds.min, ds.max));
-    const max = Math.max(...values);
-    const min = Math.min(...values);
-    if (values.filter((v) => v === max).length === 1 && values.filter((v) => v === min).length === 1) {
-      return values;
-    }
-  }
-  // Fallback: vynutíme unikátnost drobnou úpravou.
-  const values = ds.items.map((_, i) => ds.min + i * Math.max(1, Math.floor((ds.max - ds.min) / ds.items.length)));
-  return values;
+const tabulka = (ds: Dataset, v: number[]) =>
+  `Tabulka „${ds.nazev}“:\n${ds.polozky.map((p, i) => `• ${p}: ${v[i]}`).join("\n")}`;
+
+const diagram = (ds: Dataset, k: number[], m: 2 | 5) =>
+  `Diagram „${ds.nazev}“ — jeden čtvereček ■ znamená ${m === 2 ? ds.dva : ds.pet}:\n${ds.polozky.map((p, i) => `${p}: ${"■".repeat(k[i])}`).join("\n")}`;
+
+function soucet(): PracticeTask {
+  const ds = nahodny();
+  const v = hodnoty(ds.min, ds.max);
+  const s = v.reduce((a, b) => a + b, 0);
+  return ciselnaUloha(`${tabulka(ds, v)}\n${ds.celkem}`, s, [
+    { value: s - v[3], why: `Vynechal se řádek „${ds.polozky[3]}“ (${v[3]}).` },
+    { value: s - v[0], why: `Vynechal se řádek „${ds.polozky[0]}“ (${v[0]}).` },
+    { value: s + v[1], why: `Řádek „${ds.polozky[1]}“ (${v[1]}) se započítal dvakrát.` },
+  ], [
+    `Sečti všechna čtyři čísla: ${v.join(" + ")}.`,
+    `Sčítej po dvou: ${v[0]} + ${v[1]}, pak ${v[2]} + ${v[3]}, a nakonec sečti oba mezisoučty. Zkontroluj, že žádný řádek nechybí.`,
+  ], [`${v.join(" + ")} = ${s}`]);
 }
 
-interface Table {
-  ds: Dataset;
-  values: number[];
-  context: string;
+function cteniDiagramu(m: 2 | 5): PracticeTask {
+  const ds = nahodny();
+  const k = hodnoty(1, 8);
+  const i = rnd(0, 3), j = (i + 1) % 4;
+  const klic = k[i] * m;
+  const znamena = m === 2 ? ds.dva : ds.pet;
+  return ciselnaUloha(`${diagram(ds, k, m)}\n${ds.kolik(ds.tvar[i])}`, klic, [
+    { value: k[i], why: `${k[i]} je počet čtverečků. Jeden čtvereček ale znamená ${znamena}.` },
+    { value: klic + m, why: "O jeden čtvereček víc — spočítej je znovu." },
+    { value: klic - m, why: "O jeden čtvereček méně — spočítej je znovu." },
+    { value: k[j] * m, why: `Tohle patří k řádku „${ds.polozky[j]}“.` },
+  ], [
+    `Řádek „${ds.polozky[i]}“ vypadá takto: ${"■".repeat(k[i])}. Kolik v něm je čtverečků?`,
+    `Každý čtvereček v řádku „${ds.polozky[i]}“ znamená ${znamena}. Počítej po ${m === 2 ? "dvou" : "pěti"}, nebo počet čtverečků vynásob ${m === 2 ? "dvěma" : "pěti"}.`,
+  ], [`V řádku „${ds.polozky[i]}“ je ${"■".repeat(k[i])}.`, `${k[i]} · ${m} = ${klic}`]);
 }
 
-function makeTable(): Table {
-  const ds = DATASETS[randInt(0, DATASETS.length - 1)];
-  const values = genValues(ds);
-  const context = `Tabulka „${ds.name}": ${ds.items.map((k, j) => `${k}: ${values[j]}`).join(", ")}.`;
-  return { ds, values, context };
-}
-
-function makeNumberOptions(correct: number): string[] {
-  const distractors = [String(correct + 2), String(Math.max(0, correct - 1)), String(correct + 5)];
-  const fallbacks = [String(Math.max(0, correct - 5)), String(correct + 1), String(correct + 10), String(Math.max(0, correct - 2))];
-  const { options } = buildUniqueOptions(String(correct), distractors, fallbacks, 4);
-  return shuffleOptions(options);
-}
-
-// ── L1 — součet / přímé čtení ────────────────────────────────────────────────
-
-function makeSumTask(): PracticeTask {
-  const t = makeTable();
-  const total = t.values.reduce((a, b) => a + b, 0);
+function nejvic(maximum: boolean): PracticeTask {
+  const ds = nahodny();
+  const v = hodnoty(ds.min, ds.max);
+  const cil = maximum ? Math.max(...v) : Math.min(...v);
+  const idx = v.indexOf(cil);
+  const optionFeedback: Record<string, string> = {};
+  ds.polozky.forEach((p, i) => {
+    if (i !== idx) optionFeedback[p] = `„${p}“ má ${v[i]}, ale „${ds.polozky[idx]}“ má ${maximum ? "víc" : "méně"} (${cil}).`;
+  });
   return {
-    question: `${t.context}\nJaký je celkový součet?`,
-    correctAnswer: String(total),
-    options: makeNumberOptions(total),
-    hints: ["Sečti všechna čísla v tabulce."],
-    solutionSteps: [`${t.values.join(" + ")} = ${total}`],
+    question: `${tabulka(ds, v)}\n${maximum ? ds.nejvic : ds.nejmin}`,
+    correctAnswer: ds.polozky[idx],
+    options: shuffle(ds.polozky),
+    optionFeedback,
+    hints: [
+      `Porovnej čísla ${v.join(", ")}. Které je ${maximum ? "největší" : "nejmenší"}?`,
+      `${maximum ? "Největší číslo by v diagramu mělo nejvyšší sloupec" : "Nejmenší číslo by v diagramu mělo nejnižší sloupec"}. Až ho najdeš, podívej se, ke kterému řádku tabulky patří.`,
+    ],
+    solutionSteps: [`${maximum ? "Největší" : "Nejmenší"} číslo je ${cil}.`, `Patří k řádku „${ds.polozky[idx]}“.`],
   };
 }
 
-function makeReadTask(): PracticeTask {
-  const t = makeTable();
-  const idx = randInt(0, t.ds.items.length - 1);
-  const correct = t.values[idx];
-  return {
-    question: `${t.context}\nJaká je hodnota u položky „${t.ds.items[idx]}"?`,
-    correctAnswer: String(correct),
-    options: makeNumberOptions(correct),
-    hints: ["Najdi v tabulce správnou položku a přečti její hodnotu."],
-    solutionSteps: [`Položka „${t.ds.items[idx]}" má hodnotu ${correct}.`],
-  };
+function rozdilMaxMin(): PracticeTask {
+  let ds: Dataset, v: number[], d: number;
+  do {
+    ds = nahodny();
+    v = hodnoty(ds.min, ds.max);
+    d = Math.max(...v) - Math.min(...v);
+  } while (v.includes(d));
+  const max = Math.max(...v), min = Math.min(...v);
+  const druhy = [...v].sort((a, b) => a - b)[1];
+  return ciselnaUloha(`${tabulka(ds, v)}\nO kolik se liší největší a nejmenší číslo v tabulce?`, d, [
+    { value: max + min, why: "Čísla se sečetla. Rozdíl zjistíš odečtením." },
+    { value: max - druhy, why: `Odečetlo se ${druhy}, ale nejmenší číslo je ${min}.` },
+    { value: max, why: `${max} je největší číslo. Ještě od něj odečti nejmenší.` },
+  ], [
+    `Které z čísel ${v.join(", ")} je největší a které nejmenší?`,
+    "Rozdíl zjistíš odečtením: od největšího čísla odečti nejmenší. Kontrola: nejmenší číslo + rozdíl musí dát největší.",
+  ], [`Největší: ${max}, nejmenší: ${min}`, `${max} − ${min} = ${d}`]);
 }
 
-// ── L2 — maximum / minimum ───────────────────────────────────────────────────
-
-function makeMaxTask(): PracticeTask {
-  const t = makeTable();
-  const maxIdx = t.values.indexOf(Math.max(...t.values));
-  return {
-    question: `${t.context}\nKterá položka má největší hodnotu?`,
-    correctAnswer: t.ds.items[maxIdx],
-    options: shuffle(t.ds.items.slice()),
-    hints: ["Najdi největší číslo v tabulce."],
-    solutionSteps: [`Největší hodnota: ${t.values[maxIdx]} → ${t.ds.items[maxIdx]}.`],
-  };
-}
-
-function makeMinTask(): PracticeTask {
-  const t = makeTable();
-  const minIdx = t.values.indexOf(Math.min(...t.values));
-  return {
-    question: `${t.context}\nKterá položka má nejmenší hodnotu?`,
-    correctAnswer: t.ds.items[minIdx],
-    options: shuffle(t.ds.items.slice()),
-    hints: ["Najdi nejmenší číslo v tabulce."],
-    solutionSteps: [`Nejmenší hodnota: ${t.values[minIdx]} → ${t.ds.items[minIdx]}.`],
-  };
-}
-
-// ── L3 — rozdíl max−min / "o kolik víc" mezi dvěma náhodnými položkami ──────
-
-function makeMaxMinDiffTask(): PracticeTask {
-  const t = makeTable();
-  const maxIdx = t.values.indexOf(Math.max(...t.values));
-  const minIdx = t.values.indexOf(Math.min(...t.values));
-  const diff = t.values[maxIdx] - t.values[minIdx];
-  return {
-    question: `${t.context}\nJaký je rozdíl mezi největší a nejmenší hodnotou?`,
-    correctAnswer: String(diff),
-    options: makeNumberOptions(diff),
-    hints: ["Největší − nejmenší = rozdíl."],
-    solutionSteps: [`${t.values[maxIdx]} − ${t.values[minIdx]} = ${diff}`],
-  };
-}
-
-function makePairDiffTask(): PracticeTask {
-  const t = makeTable();
-  const i1 = randInt(0, t.ds.items.length - 1);
-  let i2 = randInt(0, t.ds.items.length - 1);
-  while (i2 === i1) i2 = randInt(0, t.ds.items.length - 1);
-  const [hiIdx, loIdx] = t.values[i1] >= t.values[i2] ? [i1, i2] : [i2, i1];
-  const diff = t.values[hiIdx] - t.values[loIdx];
-  return {
-    question: `${t.context}\nO kolik má „${t.ds.items[hiIdx]}" větší hodnotu než „${t.ds.items[loIdx]}"?`,
-    correctAnswer: String(diff),
-    options: makeNumberOptions(diff),
-    hints: [`Odečti: hodnota u „${t.ds.items[hiIdx]}" − hodnota u „${t.ds.items[loIdx]}".`],
-    solutionSteps: [`${t.values[hiIdx]} − ${t.values[loIdx]} = ${diff}`],
-  };
+function rozdilDiagram(): PracticeTask {
+  const ds = nahodny();
+  const m: 2 | 5 = Math.random() < 0.5 ? 2 : 5;
+  const k = hodnoty(1, 8);
+  let i = rnd(0, 3), j = rnd(0, 3);
+  while (j === i || k[j] >= k[i]) { i = rnd(0, 3); j = rnd(0, 3); }
+  const d = (k[i] - k[j]) * m;
+  const znamena = m === 2 ? ds.dva : ds.pet;
+  return ciselnaUloha(`${diagram(ds, k, m)}\n${ds.oKolik(ds.tvar[i], ds.tvar[j])}`, d, [
+    { value: k[i] - k[j], why: `${k[i] - k[j]} je rozdíl čtverečků. Každý čtvereček ale znamená ${znamena}.` },
+    { value: (k[i] + k[j]) * m, why: "Řádky se sečetly. Otázka se ptá, o kolik má jeden řádek víc než druhý." },
+    { value: k[i] * m, why: `Tohle je jen hodnota řádku „${ds.polozky[i]}“. Ještě od ní odečti řádek „${ds.polozky[j]}“.` },
+  ], [
+    `Řádek „${ds.polozky[i]}“ má ${"■".repeat(k[i])}, řádek „${ds.polozky[j]}“ ${"■".repeat(k[j])}. O kolik čtverečků je první delší?`,
+    `Spočítej čtverečky, které má řádek „${ds.polozky[i]}“ navíc. Každý z nich znamená ${znamena}, takže jejich počet vynásob ${m === 2 ? "dvěma" : "pěti"}.`,
+  ], [`Čtverečky navíc: ${k[i]} − ${k[j]} = ${k[i] - k[j]}`, `${k[i] - k[j]} · ${m} = ${d}`]);
 }
 
 function gen(level: number): PracticeTask[] {
-  const count = 20;
-  if (level === 1) return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeSumTask() : makeReadTask()));
-  if (level === 2) return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeMaxTask() : makeMinTask()));
-  return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeMaxMinDiffTask() : makePairDiffTask()));
+  return Array.from({ length: 40 }, (_, i) => {
+    if (level === 1) return i % 2 ? soucet() : cteniDiagramu(2);
+    if (level === 2) return i % 3 === 2 ? cteniDiagramu(5) : nejvic(i % 3 === 0);
+    return i % 2 ? rozdilMaxMin() : rozdilDiagram();
+  });
 }
 
 export const TABULKY_DIAGRAMY: TopicMetadata[] = [
   {
     id: "g4-mat-tabulky-diagramy-4",
     rvpNodeId: "g4-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-tabulky-diagramy-sloupcovy-kruhovy",
-    displayName: "Tabulky a grafy",
+    displayName: "Čtení tabulek a diagramů",
     title: "Tabulky a diagramy",
     studentTitle: "Tabulky a grafy",
     subject: "matematika",

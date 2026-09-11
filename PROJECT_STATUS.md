@@ -144,6 +144,29 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-11 (37) — audit obsahu 4.–6. ročníku:
+
+- ✅ **4. ročník prošel celým auditem** podle CONTENT_AUTHORING §0: každá úloha má
+  dvě vlastní nápovědy, vysvětlení PROČ a zpětnou vazbu u každé chybné možnosti.
+  Opravené věcné a gramatické chyby, matematika běží na generátorech s typickými
+  chybami jako distraktory. Znovu zamrazen.
+- ✅ **5. ročník je připravený ke zveřejnění** — 63 témat (vlastivěda 13,
+  přírodověda 16, čeština 22, matematika 12), bez informatiky. Pevné seznamy
+  úloh bez nápověd nahradily generátory a banky nad sdílenými pomocníky
+  (`grade-5/_shared.ts`, `_urceni.ts`, `_poradi.ts`, `matematika/_mat.ts`).
+  Brána `audit-topic` PASS u všech; zamrazeno.
+- ✅ **6. ročník (11 témat: fyzika 6, dějepis 5)** — dějepis měl 3–4 úlohy na
+  úroveň, teď generátory s ≥ 12 unikátními úlohami; fyzika má malou nápovědu
+  s čísly ze zadání; opravené úlohy, kde klíč stál v zadání. Test doby kamenné
+  připouští nápovědu se všemi položkami, jen ne ve správném pořadí. Zamrazeno.
+- 🟠 **Ročníky 5 a 6 jsou pořád zamčené** (`ACTIVE_GRADES = [2, 3, 4]`). Odemčení
+  je jeden řádek, ale čekají na něj dvě rozhodnutí: rodičovská brána používá
+  dvojciferné násobení, které 5. ročník učí (`parent-gate.test.ts` po odemčení
+  spadne), a 6. ročník má jen fyziku a dějepis.
+- 📌 Zbývající nálezy `docs-check` jsou výčtové úlohy („Které z čísel … je
+  největší?“, „najdi slovo ve větě“), kde klíč ve znění být musí — brána je
+  bere jako výjimku.
+
 ### Session 2026-09-10 (36) — shrnutí sezení: pryč s jiskřičkami, trofej ke změně:
 
 - ✅ **„Jiné téma" mělo jiskřičky** (`Sparkles`) — dnes napříč weby značka

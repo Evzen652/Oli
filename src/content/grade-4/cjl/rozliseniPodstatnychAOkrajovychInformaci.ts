@@ -1,97 +1,264 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 4. ročníku). Z původního poolu vypadly
+// distraktory se slovem „prý“ (pravidlo §0), odpovědi se závorkou, která
+// prozrazovala klíč („— vysvětluje chování“), úlohy, kde šly obhájit dvě
+// odpovědi, a oslovení dítěte v mužském rodě („kdybys psal“). Každá úloha
+// s ukázkou má právě jednu větu, která s tématem nesouvisí (nebo právě
+// jednu, která nese hlavní sdělení).
+//
+// L1 = co je podstatné a okrajové, krátké ukázky · L2 = podstatnost podle
+// toho, co čtenář hledá, shrnutí · L3 = přenos: hlavní myšlenka z více vět,
+// rada spolužákovi, co vynechat.
+
+function ukazka(q: string, vety: [string, string, string, string], klic: number, proc: [string, string, string, string], hints: [string, string], explanation: string): PracticeTask {
+  const spatne = vety.map((v, i) => ({ value: v, why: proc[i] })).filter((_, i) => i !== klic) as [
+    { value: string; why: string }, { value: string; why: string }, { value: string; why: string },
+  ];
+  return choice(`${q} „${vety.join(" ")}“`, vety[klic], spatne, { hints, explanation });
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
-
-const POOL_L1: QA[] = [
-  { q: "V textu o slonech je hlavní myšlenkou:", a: "Sloni jsou největší suchozemská zvířata.", opts: ["Sloni jsou největší suchozemská zvířata.", "Sloni mají šedou kůži.", "Sloni žijí v Africe i Asii.", "Sloni jedí přibližně 150 kg potravy denně."], e: "Hlavní myšlenka shrnuje to nejdůležitější, co text o slonech říká — že jsou největší suchozemská zvířata. Barva kůže, místo výskytu nebo množství potravy jsou jen doplňující detaily, které by mohly chybět a text by stále dával smysl." },
-  { q: "Jaká informace je podstatná pro celý text o požáru?", a: "Vypukl velký požár a hasiči zasahovali.", opts: ["Vypukl velký požár a hasiči zasahovali.", "Jeden z hasičů měl červenou helmu.", "Hasičské auto bylo umyté.", "Psi v okolí štěkali."], e: "Podstatná informace nese hlavní obsah textu — že vypukl požár a hasiči zasahovali. Barva helmy, čisté auto nebo štěkající psi jsou drobnosti, bez kterých by smysl textu zůstal stejný." },
-  { q: "Jaká informace je okrajová v textu o přírodní katastrofě?", a: "Záchranáři měli oranžové vesty.", opts: ["Záchranáři měli oranžové vesty.", "Záplava poškodila 200 domů.", "Tisíce lidí musely opustit domovy.", "Voda dosáhla výšky dvou metrů."], e: "Okrajová informace text jen zpestřuje, ale nemění jeho smysl — barva vest záchranářů s katastrofou nesouvisí. Počet poškozených domů, lidé bez domova nebo výška vody naopak ukazují, jak vážná katastrofa byla, a jsou tedy podstatné." },
-  {
-    q: "Co je podstatná informace?",
-    a: "Informace, bez které by text nedával smysl",
-    opts: ["Informace, bez které by text nedával smysl", "Každá informace v textu", "Detail, který text zpestřuje", "Informace v závorce"],
-    e: "Podstatná informace je ta, kterou nelze vynechat — bez ní by text ztratil smysl nebo hlavní myšlenku. Detail, který text jen zpestřuje, ani umístění v závorce o důležitosti nerozhodují.",
-    hints: [
-      "Zkus si tuhle informaci z textu odmyslet — dal by text stále dohromady stejný celkový příběh?",
-      "Jedna z možností popisuje něco, co je pro pochopení textu naprosto klíčové.",
-    ],
-  },
-  { q: "Co je okrajová informace?", a: "Doplňující detail, který text nezásadně mění", opts: ["Závěr textu, poslední věta odstavce", "Doplňující detail, který text nezásadně mění", "Nejdůležitější sdělení celého textu", "Hlavní téma, o kterém text vypráví"], e: "Okrajová informace je jen doplňující detail — když ji vynecháme, text se nezmění v tom hlavním. Hlavní téma i nejdůležitější sdělení jsou naopak podstatné a závěr nemusí být okrajový vůbec." },
-  { q: "V textu o výletě do zoo: Která informace je podstatná?", a: "Navštívili jsme zoo a viděli mnoho zvířat.", opts: ["Navštívili jsme zoo a viděli mnoho zvířat.", "Autobus měl klimatizaci.", "Jedna ze spolužaček zapomněla svačinu.", "Průvodce byl vysoký pán s brýlemi."], e: "Podstatná je věta o samotném výletu — že jsme byli v zoo a viděli zvířata. Klimatizace v autobuse, zapomenutá svačina nebo vzhled průvodce jsou jen vedlejší detaily, které s hlavním tématem výletu přímo nesouvisí." },
-  { q: "Jak poznáme podstatnou informaci?", a: "Ptáme se: Co by chybělo, kdybych ji vynechal?", opts: ["Ptáme se: Co by chybělo, kdybych ji vynechal?", "Je to nejdelší věta v textu", "Je to první věta odstavce", "Je to věta s vykřičníkem"], e: "Podstatnou informaci poznáme tak, že si ji zkusíme odmyslet — pokud bez ní text ztratí smysl, je podstatná. Délka věty, její pořadí ani vykřičník o důležitosti nerozhodují." },
-  { q: "V textu o vynálezu letadla: Která informace je podstatná?", a: "Bratři Wrightové poprvé úspěšně vzlétli v roce 1903.", opts: ["Bratři Wrightové poprvé úspěšně vzlétli v roce 1903.", "Letadlo bylo vyrobeno ze dřeva.", "Jeden bratr byl starší než druhý.", "Den byl slunečný."], e: "Text je o vynálezu letadla, proto je podstatná samotná událost prvního úspěšného letu v roce 1903. Materiál letadla, věk bratrů nebo počasí jsou jen doplňky, které vynález nevysvětlují." },
-  { q: "V textu o zvířatech: Která informace je okrajová?", a: "Tygr má oranžovo-černé pruhy.", opts: ["Tygr má oranžovo-černé pruhy.", "Tygr je největší z kočkovitých šelem.", "Tygři žijí v Asii.", "Tygři jsou ohrožení vyhynutím."], e: "Barva pruhů je jen vnější detail, který o tygrovi nic zásadního neříká, proto je okrajová. To, že je tygr největší šelma, kde žije a že je ohrožen, jsou důležité informace o jeho životě." },
-  { q: "Při shrnutí textu vybíráme:", a: "jen podstatné informace, okrajové vynecháváme", opts: ["jen podstatné informace, okrajové vynecháváme", "všechny informace z textu", "jen okrajové informace", "první větu každého odstavce"], e: "Shrnutí má být stručné, proto do něj dáváme jen podstatné informace a okrajové detaily vynecháme. Kdybychom opisovali vše nebo jen první věty odstavců, nebylo by to shrnutí, ale skoro celý text." },
-  { q: "Text o školní olympiádě: Která informace je podstatná?", a: "Naše škola zvítězila ve štafetě.", opts: ["Naše škola zvítězila ve štafetě.", "Jeden závodník měl zelené tkaničky.", "Diváci jedli zmrzlinu.", "Pořadatel olympiády měl modré tričko."], e: "Podstatný je výsledek olympiády — že naše škola zvítězila ve štafetě. Zelené tkaničky, zmrzlina diváků nebo barva trička pořadatele jsou jen drobnosti, které průběh ani výsledek nemění." },
-  { q: "Proč rozlišujeme podstatné a okrajové informace?", a: "Abychom se zaměřili na to, co je pro pochopení textu klíčové", opts: ["Abychom se zaměřili na to, co je pro pochopení textu klíčové", "Abychom text zkrátili", "Abychom se naučili psát rychleji", "Abychom text zapomněli"], e: "Rozlišování nám pomáhá soustředit se na to nejdůležitější, abychom textu opravdu porozuměli. Není cílem text jen zkrátit nebo zapomenout — jde o to vědět, co je hlavní a co jen doplněk." },
-  { q: "Text o moři: Která informace je podstatná?", a: "Oceány pokrývají více než 70 % povrchu Země.", opts: ["Oceány pokrývají více než 70 % povrchu Země.", "Námořník měl námořnické tričko.", "Vlny se třpytily v slunci.", "Voda v moři je slaná a studená."], e: "Údaj, že oceány pokrývají přes 70 % povrchu Země, je důležitý fakt o moři. Tričko námořníka nebo třpytící se vlny jsou jen ozdobné detaily, které o významu moře nic nevypovídají." },
-  { q: "V textu o vesmíru: Která informace je okrajová?", a: "Astronaut měl bílý skafandr.", opts: ["Astronaut měl bílý skafandr.", "Měsíc obíhá kolem Země.", "Slunce je hvězda.", "Vesmír se stále rozrůstá."], e: "Barva skafandru je jen detail, který o vesmíru nic podstatného neříká, proto je okrajová. To, že Měsíc obíhá Zemi, že Slunce je hvězda a že se vesmír rozpíná, jsou důležité poznatky o vesmíru." },
-  { q: "Příklad podstatné informace v článku o zdraví:", a: "Pravidelné cvičení snižuje riziko srdečních chorob.", opts: ["Pravidelné cvičení snižuje riziko srdečních chorob.", "Lékař nosil bílý plášť.", "Nemocnice byla velká budova.", "Čekárna měla modré židle."], e: "V článku o zdraví je podstatná rada, která čtenáři pomáhá — že cvičení snižuje riziko nemocí srdce. Bílý plášť lékaře, velikost budovy nebo barva židlí se zdravím čtenáře nesouvisí." },
-  { q: "Okrajová informace v textu zpestřuje: ale bez ní:", a: "text by stále dával smysl", opts: ["text by stále dával smysl", "text by byl nepochopitelný", "text by ztratil hlavní téma", "text by byl příliš krátký"], e: "Právě podle toho okrajovou informaci poznáme — když ji odebereme, text dál dává smysl a hlavní téma zůstane. Kdyby se text bez ní stal nepochopitelným, byla by to informace podstatná." },
+const L1: PracticeTask[] = [
+  choice("Co je podstatná informace?", "ta, bez které by text nedával smysl", [
+    { value: "každá věta v textu", why: "Některé věty jsou jen drobnosti navíc." },
+    { value: "zajímavá drobnost navíc", why: "Drobnost navíc je okrajová informace." },
+    { value: "věta napsaná v závorce", why: "Podle závorky o důležitosti nerozhodneš." },
+  ], {
+    hints: ["Co by se stalo s textem, kdybys tu informaci vyškrtl nebo vyškrtla?", "Podstatná informace nese to hlavní. Bez ní by čtenář nevěděl, o co v textu vůbec jde, a text by se rozpadl."],
+    explanation: "Podstatná informace je ta, bez které by text ztratil smysl nebo hlavní sdělení.",
+  }),
+  choice("Co je okrajová informace?", "drobnost, bez které text pořád dává smysl", [
+    { value: "nejdůležitější věta textu", why: "To je naopak podstatná informace." },
+    { value: "hlavní téma textu", why: "Téma je to nejdůležitější." },
+    { value: "nadpis textu", why: "Nadpis ukazuje téma, drobností není." },
+  ], {
+    hints: ["Když drobnost z textu vynecháš, změní se to hlavní?", "Okrajová informace text zpestří, ale o tom hlavním nerozhoduje. Vynechat se dá."],
+    explanation: "Okrajová informace je drobnost navíc — když ji vynecháme, text pořád dává smysl.",
+  }),
+  choice("Jak poznáš, jestli je informace podstatná?", "zkusím ji vynechat", [
+    { value: "je to vždy nejdelší věta", why: "Délka o důležitosti nerozhoduje." },
+    { value: "je to vždy první věta", why: "Hlavní sdělení může být kdekoli." },
+    { value: "je v ní vykřičník", why: "Vykřičník o důležitosti nic neříká." },
+  ], {
+    hints: ["Co se stane, když informaci z textu odmyslíš?", "Když bez informace text ztratí smysl, byla podstatná. Když se nic nezmění, byla okrajová."],
+    explanation: "Informaci zkusíme vynechat: když text ztratí smysl, je podstatná, když ne, je okrajová.",
+  }),
+  ukazka("Která věta vyjadřuje hlavní sdělení textu?", ["Naše škola vyhrála štafetu v okresním závodě.", "Závodilo se na městském stadionu.", "Jeden běžec měl zelené tkaničky.", "Diváci jedli zmrzlinu."], 0,
+    ["", "Místo závodu je doplňující údaj.", "Barva tkaniček je drobnost navíc.", "Co jedli diváci, s výsledkem nesouvisí."],
+    ["Co by škola napsala do zprávy na web jako první?", "Hlavní sdělení je to, kvůli čemu zpráva vznikla — co se na závodě stalo. Ostatní věty jen dokreslují."],
+    "Hlavní sdělení je, že škola vyhrála štafetu. Ostatní věty jsou doplňující drobnosti."),
+  ukazka("Která věta je okrajová?", ["Ve vesnici vypukl požár stodoly.", "Hasiči oheň uhasili za hodinu.", "Nikdo nebyl zraněn.", "Jeden hasič měl na helmě nálepku."], 3,
+    ["Požár je hlavní událost.", "To je důležitý údaj o zásahu.", "To je důležitá zpráva pro čtenáře.", ""],
+    ["Která věta nic neříká o požáru ani o zásahu?", "Tři věty mluví o požáru, zásahu a zraněných. Jedna je jen drobnost, bez které by zpráva nic neztratila."],
+    "Nálepka na helmě s požárem nesouvisí — je to okrajová informace."),
+  ukazka("Co je v oznámení nejdůležitější?", ["Zítra nepůjde elektřina od 8 do 12 hodin.", "Oprava se týká celé ulice.", "Elektrikáři přijedou bílým autem.", "Pan Novák má nový plot."], 0,
+    ["", "To je doplňující údaj, hlavní je, kdy elektřina nepůjde.", "Barva auta nikoho neomezí.", "Plot pana Nováka s oznámením nesouvisí."],
+    ["Co potřebují obyvatelé ulice vědět hlavně?", "Oznámení má lidi upozornit na věc, která je omezí. Hledej větu, podle které se zařídí."],
+    "Nejdůležitější je, kdy nepůjde elektřina — podle toho se lidé zařídí."),
+  ukazka("Která věta je okrajová?", ["Tygři žijí v Asii.", "Jsou ohrožení, protože lidé kácejí lesy.", "Fotograf, který je fotil, měl zelenou bundu.", "V přírodě jich zbývá málo."], 2,
+    ["Kde tygři žijí, je důležitá informace.", "Příčina ohrožení je podstatná.", "", "Kolik jich zbývá, je podstatné."],
+    ["Která věta není o tygrech?", "Všechny věty kromě jedné mluví o tom, kde tygři žijí a proč jsou ohrožení."],
+    "Bunda fotografa o tygrech nic neříká — je okrajová."),
+  ukazka("Která věta je okrajová?", ["Třída jela na výlet do zoo.", "Viděli slony, žirafy a lvy.", "Autobus byl modrý.", "Nejvíc se dětem líbila žirafa."], 2,
+    ["O tom je celý text.", "To je hlavní zážitek z výletu.", "", "To patří k zážitkům z výletu."],
+    ["Která věta s návštěvou zoo nesouvisí?", "Výlet, zvířata i to, co se dětem líbilo, patří k tématu. Jedna věta je jen drobnost o cestě."],
+    "Barva autobusu s návštěvou zoo nesouvisí — je okrajová."),
+  choice("Proč rozlišujeme podstatné a okrajové informace?", "abychom pochopili, co je v textu hlavní", [
+    { value: "abychom text rychle zapomněli", why: "Chceme si naopak zapamatovat to hlavní." },
+    { value: "abychom psali rychleji", why: "Se psaním to nesouvisí." },
+    { value: "abychom našli pravopisné chyby", why: "To je jiná činnost." },
+  ], {
+    hints: ["Co si z textu potřebuješ odnést?", "Když víš, co je hlavní, zapamatuješ si to podstatné a drobnosti tě nezmatou."],
+    explanation: "Rozlišování nám pomáhá pochopit, co je v textu hlavní.",
+  }),
+  choice("Co dáš do shrnutí textu?", "jen podstatné informace", [
+    { value: "všechny informace", why: "To by bylo převyprávění, ne shrnutí." },
+    { value: "jen zajímavé drobnosti", why: "Drobnosti do shrnutí nepatří." },
+    { value: "jen první větu textu", why: "První věta nemusí být ta hlavní." },
+  ], {
+    hints: ["Má být shrnutí dlouhé, nebo krátké?", "Shrnutí řekne v kostce to hlavní. Drobnosti vynechá."],
+    explanation: "Do shrnutí patří jen podstatné informace, okrajové vynecháme.",
+  }),
+  ukazka("Která věta je okrajová?", ["Na náměstí se v sobotu koná jarmark.", "Začíná v 9 hodin.", "Stánky budou prodávat perníky a hračky.", "Loni tam pršelo."], 3,
+    ["O tom je celá zpráva.", "Čas začátku je důležitý.", "Co se bude prodávat, je důležité.", ""],
+    ["Která informace nepomůže nikomu, kdo chce na jarmark jít letos?", "Zpráva zve na letošní jarmark: kdy a co tam bude. Jedna věta ale mluví o něčem, co už bylo a letos nikomu nepomůže."],
+    "Loňské počasí s letošním jarmarkem nesouvisí — je okrajové."),
+  ukazka("Která informace je pro hraní hry okrajová?", ["Hra je pro dva hráče.", "Vyhrává ten, kdo první dojde do cíle.", "Hází se jednou kostkou.", "Krabice od hry je zelená."], 3,
+    ["Počet hráčů je pro hru důležitý.", "Pravidlo vítězství je podstatné.", "Jak se hází, je důležité pravidlo.", ""],
+    ["Která věta ti při hraní vůbec nepomůže?", "Pravidla říkají, kolik lidí hraje, jak se hraje a kdo vyhrává. Jedna věta s pravidly nesouvisí."],
+    "Barva krabice pro hraní nic neznamená — je okrajová."),
+  choice("Kamarádovi převyprávíš film jednou větou. Co řekneš?", "o čem film byl a jak dopadl", [
+    { value: "jakou barvu měla sedadla v kině", why: "To s filmem nesouvisí." },
+    { value: "kolik stál popcorn", why: "Cena popcornu nic neřekne o filmu." },
+    { value: "jak se jmenoval uvaděč", why: "Uvaděč s filmem nesouvisí." },
+  ], {
+    hints: ["Co bude kamaráda zajímat?", "V jedné větě je místo jen pro to nejdůležitější: hlavní příběh filmu a jeho konec."],
+    explanation: "Do jedné věty dáme to podstatné — o čem film byl a jak dopadl.",
+  }),
 ];
 
-const POOL_L2: QA[] = [
-  { q: "Přečti: 'Hroch tráví většinu života ve vodě. Kůže hrocha je citlivá na sluneční záření.' Která informace je podstatnější?", a: "Hroch tráví většinu života ve vodě — vysvětluje chování", opts: ["Hroch tráví většinu života ve vodě — vysvětluje chování", "Kůže hrocha je citlivá — podstatnější", "Obě jsou stejně důležité", "Ani jedna není podstatná"], e: "Podstatnější je věta o životě ve vodě, protože vysvětluje hrochovo chování — a citlivá kůže je vlastně jen důvod, proč se ve vodě zdržuje. Druhá věta tak hlavní informaci jen doplňuje, není sama hlavní." },
-  { q: "Jak rozlišíme podstatné od okrajového v delším textu?", a: "Ptáme se: Co je hlavní téma? Co se bez toho neobejde?", opts: ["Ptáme se: Co je hlavní téma? Co se bez toho neobejde?", "Podstatné je, co je nejdéle popsáno", "Podstatné je, co je v závorce", "Podstatné je vždy první věta"], e: "Nejdřív si určíme hlavní téma a pak hledáme informace, bez kterých by se text neobešel — to jsou podstatné. Délka popisu, závorka ani pořadí věty samy o sobě o důležitosti nerozhodují." },
-  { q: "Příklad: 'Voda je základem života. Lidské tělo tvoří z 60 % voda.' — podstatná informace:", a: "Obě věty jsou podstatné — vysvětlují téma", opts: ["Obě věty jsou podstatné — vysvětlují téma", "Pouze první věta", "Pouze druhá věta", "Ani jedna není podstatná"], e: "Obě věty se týkají hlavního tématu — jak je voda důležitá pro život — a jedna druhou potvrzuje konkrétním údajem. Proto nelze ani jednu označit za pouhý okrajový detail." },
-  { q: "Proč autoři píšou okrajové informace?", a: "Aby text byl živější, konkrétnější a zajímavější", opts: ["Aby text byl živější, konkrétnější a zajímavější", "Protože nevědí, co je důležité", "Protože musí splnit délku textu", "Protože jsou to chyby"], e: "Okrajové informace nejsou chyby ani výplň — autor je přidává schválně, aby byl text barvitější a poutavější. Dobrý autor moc dobře ví, co je hlavní a co je jen ozdoba." },
-  { q: "Jak při čtení zprávy poznáme, co je podstatné?", a: "Otázky co/kdo/kde/kdy/proč → ty odpovědi jsou podstatné", opts: ["Otázky co/kdo/kde/kdy/proč → ty odpovědi jsou podstatné", "Podstatné jsou jen přídavná jména", "Podstatné jsou jen příslovce", "Podstatná je délka věty"], e: "Zpráva odpovídá na otázky kdo, co, kde, kdy a proč — a právě tyto odpovědi tvoří jádro sdělení. Druh slova ani délka věty o tom, co je podstatné, nerozhodují." },
-  { q: "Přečti: 'Praha je hlavní město České republiky. Leží na řece Vltavě.' — okrajová informace:", a: "Leží na Vltavě — doplňující detail (pokud se text zabývá statusem hlavního města)", opts: ["Praha je hlavní město — to je prý jen okrajový detail", "Leží na Vltavě — doplňující detail (pokud se text zabývá statusem hlavního města)", "Obě věty jsou stejně podstatné, žádná není vedlejší", "Ani jedna z těch dvou vět není v textu podstatná"], e: "Když je tématem to, že Praha je hlavní město, je tato věta podstatná a poloha na Vltavě ji jen doplňuje. Co je podstatné a co okrajové, totiž vždy závisí na hlavním tématu textu." },
-  { q: "Jak napsat stručné shrnutí textu?", a: "Vybrat jen podstatné informace — téma + hlavní myšlenka", opts: ["Přidat do shrnutí vlastní nové myšlenky", "Vybrat jen podstatné informace — téma + hlavní myšlenka", "Opsat celý text doslova, beze změny", "Napsat jen okrajové detaily, hlavní věc vynechat"], e: "Shrnutí zachytí téma a hlavní myšlenku vlastními slovy a okrajové detaily vynechá. Není to doslovný opis textu ani místo pro vlastní nápady — ty do shrnutí nepatří." },
-  { q: "V novinovém článku o závodu: 'Závod vyhrál Jan Novák. Startovní číslo měl 47.' — podstatná informace:", a: "Závod vyhrál Jan Novák.", opts: ["Závod vyhrál Jan Novák.", "Startovní číslo bylo 47.", "Obě jsou stejně podstatné.", "Ani jedna není podstatná."], e: "Hlavní zprávou článku je, kdo závod vyhrál — tedy Jan Novák. Jeho startovní číslo je jen doplňující detail, který výsledek závodu nijak nemění." },
-  { q: "Při psaní referátu vybíráme:", a: "podstatné informace, okrajové vynecháváme", opts: ["podstatné informace, okrajové vynecháváme", "jen nejzajímavější okrajové detaily", "vše, co najdeme", "jen první a poslední větu každého odstavce"], e: "Referát má posluchače poučit o hlavních věcech, proto vybíráme podstatné informace a okrajové vynecháme. Kdybychom dali jen zajímavé detaily nebo opsali vše, referát by ztratil jasné téma." },
-  {
-    q: "Jak zjistíme, co je v textu okrajové?",
-    a: "Ptáme se: Dá text smysl i bez této informace?",
-    opts: ["Ptáme se: Dá text smysl i bez této informace?", "Okrajové je vždy v závorce", "Okrajové je vždy podtržené", "Okrajové je kratší věta"],
-    e: "Stačí si informaci odmyslet — pokud text i bez ní dává smysl, je okrajová. Okrajovou informaci nepoznáme podle závorky, podtržení ani podle délky věty.",
-    hints: [
-      "Zkus si tuhle informaci z textu vyškrtnout — zůstane po vyškrtnutí zbytek srozumitelný?",
-      "Okrajovou informaci nepoznáme podle formátování (závorka, podtržení) ani podle délky věty.",
-    ],
-  },
-  { q: "Přečti: 'Chobotnice má 8 chapadel. Má modrou krev.' — podstatnější informace pro téma 'zvláštní vlastnosti chobotnice'?", a: "Má modrou krev — výjimečnější a méně známá vlastnost", opts: ["Má modrou krev — výjimečnější a méně známá vlastnost", "8 chapadel — všichni to vědí", "Obě jsou stejně podstatné", "Ani jedna není podstatná"], e: "Téma je o zvláštních vlastnostech, a modrá krev je opravdu neobvyklá a překvapivá. Osm chapadel sice platí, ale skoro každý to ví, takže pro toto téma je to méně podstatné." },
-  { q: "Co je 'shrnutí' textu?", a: "Stručná výpověď o hlavních myšlenkách bez okrajových detailů", opts: ["Celý text přepsaný úplně jiným stylem", "Stručná výpověď o hlavních myšlenkách bez okrajových detailů", "Doslovný opis celého textu bez zkrácení", "Prostý výpis klíčových slov bez vět"], e: "Shrnutí krátce řekne hlavní myšlenky a okrajové detaily vypustí. Není to opis celého textu, ani jen výčet slov — má dát rychlý a srozumitelný přehled o tom nejdůležitějším." },
-  { q: "Okrajová informace je v textu:", a: "doplňující, zajímavá, ale pro pochopení nutná není", opts: ["vždy nejdelší věta v odstavci", "doplňující, zajímavá, ale pro pochopení nutná není", "vždy umístěná na konci odstavce", "vždy ta nejdůležitější v textu"], e: "Okrajová informace text obohacuje a může být zajímavá, ale pro pochopení hlavní myšlenky nutná není. Nejdůležitější bývá informace podstatná a okrajová není ani nejdelší, ani vázaná na konec odstavce." },
-  { q: "Přečti: 'Slunce je hvězda vzdálená 150 mil. km. Svítí žlutobíle.' — podstatná informace:", a: "Slunce je hvězda vzdálená 150 mil. km.", opts: ["Slunce je hvězda vzdálená 150 mil. km.", "Svítí žlutobíle.", "Obě jsou podstatné.", "Ani jedna není podstatná."], e: "Podstatné je, co Slunce je a jak daleko je od nás — to je hlavní fakt o Slunci. Barva světla je jen doplňující detail, který hlavní sdělení nemění." },
+const L2: PracticeTask[] = [
+  ukazka("Text má vysvětlit, proč hroši žijí ve vodě. Která věta je okrajová?", ["Hroši tráví většinu dne ve vodě.", "Mají citlivou kůži a slunce by jim ublížilo.", "Ve vodě se také ochladí.", "Hroch Bobeš ze zoo váží dvě tuny."], 3,
+    ["O tom je celý text.", "To je důvod, proč jsou ve vodě.", "To je další důvod.", ""],
+    ["Která věta nevysvětluje, proč jsou hroši ve vodě?", "Tři věty mluví o vodě a důvodech. Jedna je zajímavost o jednom hrochovi."],
+    "Váha hrocha Bobeše nevysvětluje, proč hroši žijí ve vodě — je okrajová."),
+  choice("Které shrnutí textu o hroších je nejlepší?", "Hroši jsou většinu dne ve vodě, protože je chrání před sluncem.", [
+    { value: "Hroch Bobeš ze zoo váží dvě tuny.", why: "To je jen drobnost z textu." },
+    { value: "Hroši jsou velká zvířata.", why: "To text nevysvětluje, je to obecné." },
+    { value: "Hroši, voda, slunce, kůže, dvě tuny.", why: "To je výčet slov, ne shrnutí." },
+  ], {
+    hints: ["Které shrnutí řekne v jedné větě to hlavní?", "Dobré shrnutí zachytí hlavní myšlenku textu celou větou — tady co hroši dělají a proč."],
+    explanation: "Shrnutí zachytí hlavní myšlenku: hroši jsou ve vodě, protože je chrání před sluncem.",
+  }),
+  ukazka("Co je ve zprávě o závodě nejdůležitější?", ["Závod vyhrál Jan Novák z Brna.", "Běžel se startovním číslem 47.", "Svítilo slunce.", "U cíle hrála hudba."], 0,
+    ["", "Startovní číslo je jen drobnost.", "Počasí je doplňující údaj.", "Hudba je drobnost."],
+    ["Co chce každý po závodě vědět jako první?", "Zpráva o závodě má hlavně říct, jak závod dopadl. Číslo, počasí a hudba jsou jen kulisa."],
+    "Nejdůležitější je, kdo závod vyhrál. Ostatní jsou doplňující drobnosti."),
+  ukazka("Chceš vědět, jestli si vzít deštník. Co je podstatné?", ["Zítra bude celý den pršet.", "Teplota vystoupá na 15 °C.", "Fouká slabý vítr.", "Slunce vyjde v šest hodin."], 0,
+    ["", "Teplota s deštníkem nesouvisí.", "Slabý vítr o dešti nic neříká.", "Východ slunce o dešti nic neříká."],
+    ["Na čem záleží, když se rozhoduješ o deštníku?", "Podstatné je to, co potřebuješ pro své rozhodnutí. Pro deštník je to jen jedna věc."],
+    "Pro deštník je podstatné, že bude pršet. Ostatní údaje s deštníkem nesouvisí."),
+  ukazka("Chceš vědět, jestli si vzít teplou bundu. Co je podstatné?", ["Zítra bude celý den pršet.", "Teplota vystoupá jen na 5 °C.", "Fouká slabý vítr.", "Slunce vyjde v šest hodin."], 1,
+    ["Déšť rozhoduje o deštníku, ne o teplé bundě.", "", "Slabý vítr zimu moc nezmění.", "Východ slunce nic neříká o zimě."],
+    ["Na čem záleží, když se rozhoduješ o teplé bundě?", "Teď hledáš jinou informaci než u deštníku. Podstatné je to, co ti řekne, jaká bude zima."],
+    "Pro teplou bundu je podstatná teplota. Stejný text — ale podstatné je něco jiného, protože hledáš něco jiného."),
+  choice("Proč autoři dávají do textu i okrajové informace?", "aby byl text živější", [
+    { value: "protože nevědí, co je důležité", why: "Autor drobnosti přidává schválně." },
+    { value: "aby text byl delší za každou cenu", why: "Jde o zajímavost, ne o délku." },
+    { value: "protože je to chyba", why: "Není to chyba, drobnosti text zpestřují." },
+  ], {
+    hints: ["Jak by se četl text, kde jsou jen suchá fakta?", "Drobnosti pomáhají čtenáři si věc představit a udržet pozornost."],
+    explanation: "Okrajové informace text zpestřují a oživují, proto je autoři přidávají.",
+  }),
+  ukazka("Která věta je okrajová?", ["Praha je hlavní město České republiky.", "Protéká jí řeka Vltava.", "Na Pražském hradě sídlí prezident.", "Můj strýc tam jednou ztratil deštník."], 3,
+    ["To je hlavní fakt o Praze.", "To je důležitý údaj o Praze.", "To je důležitý údaj o Praze.", ""],
+    ["Která věta se týká jen jednoho člověka, ne Prahy?", "Tři věty jsou fakta o Praze. Jedna je zážitek, který s Prahou jako městem nesouvisí."],
+    "Strýcův deštník nic neříká o Praze — je to okrajová informace."),
+  choice("Jak napíšeš shrnutí textu?", "vlastními slovy, jen to hlavní", [
+    { value: "opíšu celý text", why: "Opis není shrnutí." },
+    { value: "vypíšu jen drobnosti", why: "Drobnosti do shrnutí nepatří." },
+    { value: "přidám svoje nové nápady", why: "Shrnutí nepřidává nic, co v textu není." },
+  ], {
+    hints: ["Má být shrnutí delší, nebo kratší než text?", "Shrnutí je kratší než text a nepřebírá ho doslova — řekneš ho po svém. Tak poznáš, že textu rozumíš."],
+    explanation: "Shrnutí zachytí vlastními slovy jen to hlavní z textu.",
+  }),
+  ukazka("Která věta je okrajová?", ["Včely opylují květy.", "Bez nich by nebylo ovoce.", "Včelař pan Malý má vousy.", "Včel v přírodě ubývá."], 2,
+    ["To je hlavní význam včel.", "To vysvětluje, proč jsou včely důležité.", "", "To je důležitá zpráva o včelách."],
+    ["Která věta není o včelách?", "Tři věty mluví o tom, co včely dělají a proč jsou důležité. Jedna je drobnost o jednom člověku."],
+    "Vousy pana Malého o včelách nic neříkají — je to okrajová informace."),
+  choice("Která otázka ti pomůže najít podstatné informace ve zprávě?", "Co se stalo, kde a kdy?", [
+    { value: "Jakou barvu měla tužka autora?", why: "Tužka autora s obsahem zprávy nesouvisí." },
+    { value: "Kolik slov má zpráva?", why: "Počet slov o obsahu nic neřekne." },
+    { value: "Která věta je nejdelší?", why: "Délka o důležitosti nerozhoduje." },
+  ], {
+    hints: ["Na co odpovídá každá zpráva v novinách?", "Každá zpráva odpovídá na několik základních otázek: jaká událost, na jakém místě, v jaký čas a kdo u toho byl."],
+    explanation: "Otázky co, kde a kdy vedou k podstatným informacím každé zprávy.",
+  }),
+  ukazka("Chceš jet na Sněžku lanovkou. Co je pro tebe nejdůležitější?", ["Na Sněžce napadl první sníh.", "Lanovka proto dnes nejezdí.", "Na chatě mají nové záclony.", "Výhled odtud bývá krásný."], 1,
+    ["Sníh je důvod, ale pro tebe je hlavní, že lanovka nejede.", "", "Záclony s cestou nesouvisí.", "Výhled nic neříká o tom, jestli pojedeš."],
+    ["Co ovlivní tvoji cestu lanovkou?", "Podstatné je to, co ovlivní tvůj plán. Jedna věta ti řekne, jestli se lanovkou vůbec dostaneš nahoru."],
+    "Pro cestu lanovkou je nejdůležitější, že dnes nejezdí."),
+  ukazka("Která věta je v textu o chřipce okrajová?", ["Chřipka se šíří kapénkami.", "Pomáhá si často mýt ruce.", "V čekárně jsou modré židle.", "Nemocní mají zůstat doma."], 2,
+    ["To je důležitá informace o šíření.", "To je důležitá rada.", "", "To je důležitá rada."],
+    ["Která věta nic neříká o chřipce ani o tom, jak se chránit?", "Text radí, jak se chřipka šíří a jak se chránit. Jedna věta je drobnost o místnosti."],
+    "Modré židle v čekárně s chřipkou nesouvisí — jsou okrajovou informací."),
+  choice("Proč do shrnutí nepatří okrajové informace?", "shrnutí má říct jen to hlavní", [
+    { value: "okrajové informace jsou nepravdivé", why: "Pravdivé jsou, jen nejsou hlavní." },
+    { value: "shrnutí musí mít jen jednu větu", why: "Shrnutí může mít i víc vět." },
+    { value: "je to zakázané", why: "Zakázané to není, jen to shrnutí neslouží." },
+  ], {
+    hints: ["K čemu shrnutí slouží?", "Shrnutí má čtenáři rychle říct to podstatné. Drobnosti by ho zdržely."],
+    explanation: "Shrnutí zachycuje jen to hlavní — drobnosti by ho zbytečně prodlužovaly.",
+  }),
 ];
 
-const POOL_L3: QA[] = [
-  { q: "Text: 'Amazonský prales je největší deštný prales světa. Žije v něm milion druhů rostlin a živočichů. Prales pomáhá vyrábět kyslík pro celou planetu. Řeka Amazonka teče skrz prales.' Které dvě věty jsou pro POCHOPENÍ VÝZNAMU pralesa nejdůležitější?", a: "'Je největší deštný prales světa' a 'pomáhá vyrábět kyslík pro celou planetu'", opts: ["'Je největší deštný prales světa' a 'pomáhá vyrábět kyslík pro celou planetu'", "Jen věta o řece Amazonce", "Jen věta o počtu druhů", "Všechny čtyři věty jsou stejně důležité"], e: "Tyto dvě věty vysvětlují, proč je prales pro planetu důležitý — velikost a produkce kyslíku. Řeka je jen doplňující zeměpisný detail." },
-  { q: "Přečti: 'Fotbalový zápas skončil 3:1. Hrálo se za deště. Diváci fandili domácímu týmu.' Kdyby text měl mít jen jednu větu, kterou bys vybral jako nejdůležitější?", a: "'Fotbalový zápas skončil 3:1.' (výsledek je hlavní informace zprávy o zápase)", opts: ["'Hrálo se za deště.' (jen doplňující okolnost počasí)", "'Fotbalový zápas skončil 3:1.' (výsledek je hlavní informace zprávy o zápase)", "Žádná věta není důležitější než ty ostatní", "'Diváci fandili domácímu týmu.' (jen atmosféra zápasu)"], e: "Výsledek zápasu je hlavním smyslem sportovní zprávy — počasí a chování diváků jsou jen doplňující okolnosti." },
-  { q: "Text o vodě: 'Voda vře při 100 °C. Voda je nezbytná pro život. Voda tvoří 71 % povrchu Země.' Je informace 'Voda vře při 100 °C' podstatná pro text o důležitosti vody pro život?", a: "Ne — je to okrajový fakt o teplotě varu, nesouvisí přímo s tím, proč je voda pro život důležitá", opts: ["Ano, je to prý ta úplně nejdůležitější informace v celém textu", "Ne — je to okrajový fakt o teplotě varu, nesouvisí přímo s tím, proč je voda pro život důležitá", "Ano, protože obsahuje konkrétní číslo a jednotku", "Ne, ale jen proto, že je to příliš krátká jedna věta"], e: "Podstatnost informace závisí na tématu textu — tady je tématem důležitost vody pro život, a teplota varu k tomu přímo nepatří." },
-  { q: "Táž informace může být v jednom textu podstatná a v jiném okrajová. Co o tom rozhoduje?", a: "Hlavní téma a účel daného textu", opts: ["Hlavní téma a účel daného textu", "Délka informace", "Pořadí, ve kterém je napsaná", "Počet slov ve větě"], e: "O tom, zda je informace podstatná, rozhoduje to, jestli souvisí s hlavním tématem a účelem textu — ne její délka nebo pořadí." },
-  { q: "Text: 'Šampionát vyhrálo Japonsko. Zápas trval 90 minut. Diváci byli nadšení.' Kdybys psal krátkou zprávu do novin, kterou informaci bys VYNECHAL jako první?", a: "'Diváci byli nadšení.' (subjektivní dojem, ne klíčové fakty o výsledku)", opts: ["Nevynechal bych vůbec nic, všechno je stejně důležité", "'Diváci byli nadšení.' (subjektivní dojem, ne klíčové fakty o výsledku)", "'Zápas trval 90 minut.' (méně důležitý detail o délce)", "'Šampionát vyhrálo Japonsko.' (to je přece hlavní zpráva)"], e: "Krátká zpráva potřebuje hlavně fakta o výsledku — dojem diváků je subjektivní a nejméně podstatný, proto by šel vynechat jako první." },
-  { q: "Přečti: 'Sopka Vesuv zničila město Pompeje v roce 79 n. l. Erupce trvala několik dní. Archeologové dodnes nacházejí popel a sochy.' Která informace NEJVÍC mění pochopení textu, kdybychom ji vynechali?", a: "'Sopka Vesuv zničila město Pompeje v roce 79 n. l.' (hlavní událost)", opts: ["'Sopka Vesuv zničila město Pompeje v roce 79 n. l.' (hlavní událost)", "'Erupce trvala několik dní.'", "'Archeologové dodnes nacházejí popel.'", "Všechny věty mají stejný význam"], e: "Bez hlavní věty o zničení Pompejí by text ztratil smysl — ostatní věty jsou jen doplňující podrobnosti k této hlavní události." },
-  { q: "Ve zprávě o počasí: 'Zítra bude 25 °C, jasno, vítr ze severu.' Pro rozhodnutí, zda si vzít deštník, je nejdůležitější informace:", a: "'Jasno' (znamená, že nebude pršet)", opts: ["'Jasno' (znamená, že nebude pršet)", "'25 °C'", "'Vítr ze severu'", "Všechny informace jsou stejně důležité pro deštník"], e: "Pro rozhodnutí o deštníku je klíčové, jestli bude pršet — to říká slovo 'jasno'. Teplota a směr větru s deštníkem přímo nesouvisí." },
-  { q: "Proč může být stejná informace důležitá pro jednoho čtenáře a okrajová pro jiného?", a: "Záleží na tom, co čtenář v textu hledá / jaký má cíl čtení", opts: ["Záleží na tom, co čtenář v textu hledá / jaký má cíl čtení", "Informace jsou vždy pro všechny stejně důležité", "Je to náhoda", "Závisí to na délce věty"], e: "Podstatnost informace je relativní — závisí na tom, co konkrétní čtenář hledá a proč text čte, ne na délce věty nebo náhodě." },
-  { q: "Text má 5 vět. Chceš napsat shrnutí na 1 větu. Jak vybereš, co do shrnutí patří?", a: "Vyberu informaci, která spojuje/shrnuje smysl většiny ostatních vět", opts: ["Zkopíruji první větu, ať je jakákoli", "Vyberu informaci, která spojuje/shrnuje smysl většiny ostatních vět", "Zkopíruji poslední větu, ať je jakákoli", "Vyberu nejdelší větu z celého textu"], e: "Dobré shrnutí zachycuje to, co spojuje smysl celého textu — ne nutně první, poslední nebo nejdelší větu." },
-  { q: "Text: 'Robot poprvé přistál na Marsu v roce 2021. Vážil 1 tunu. Cesta trvala 7 měsíců.' Kdyby ses ptal 'Kdy se to stalo?', která informace je podstatná?", a: "'V roce 2021' (odpovídá přímo na otázku kdy)", opts: ["'V roce 2021' (odpovídá přímo na otázku kdy)", "'Vážil 1 tunu'", "'Cesta trvala 7 měsíců'", "Žádná informace neodpovídá"], e: "Podstatnost informace se posuzuje podle konkrétní otázky — na otázku 'kdy' odpovídá jen rok 2021, ostatní údaje se týkají jiných otázek." },
+const L3: PracticeTask[] = [
+  choice("Táž informace je v jednom textu podstatná a v jiném okrajová. Co o tom rozhoduje?", "téma a účel textu", [
+    { value: "délka informace", why: "Délka o důležitosti nerozhoduje." },
+    { value: "pořadí ve větě", why: "Pořadí nerozhoduje." },
+    { value: "počet slov v textu", why: "Počet slov nerozhoduje." },
+  ], {
+    hints: ["Je barva auta důležitá ve zprávě o nehodě? A ve zprávě o počasí?", "Podstatnost záleží na tom, o čem text je a k čemu slouží. Stejný údaj může být v jednom textu klíčový a v jiném zbytečný."],
+    explanation: "O podstatnosti rozhoduje téma a účel textu — co chce text sdělit.",
+  }),
+  ukazka("Proč je prales důležitý pro celou planetu?", ["Amazonský prales je největší deštný prales světa.", "Žije v něm obrovské množství zvířat a rostlin.", "Stromy v něm vyrábějí kyslík.", "Řeka Amazonka je velmi dlouhá."], 2,
+    ["Velikost pralesa nevysvětluje, proč ho potřebuje celá planeta.", "To je důležité pro prales, ale otázka se ptá na celou planetu.", "", "Délka řeky s významem pro planetu nesouvisí."],
+    ["Co z pralesa potřebují všichni lidé na Zemi?", "Hledáš větu, která odpovídá právě na otázku „proč pro celou planetu“. Ostatní věty jsou pravdivé, ale na tuhle otázku neodpovídají."],
+    "Pro celou planetu je důležité, že stromy v pralese vyrábějí kyslík."),
+  ukazka("Kdyby zpráva o zápase měla jen jednu větu, která to bude?", ["Zápas skončil 3:1 pro domácí.", "Hrálo se v dešti.", "Diváci hlasitě fandili.", "Stadion byl vyprodaný."], 0,
+    ["", "Počasí je doplněk.", "Fandění je doplněk.", "Počet diváků je doplněk."],
+    ["Co chce každý fanoušek vědět nejdřív?", "Jedna věta musí nést to nejdůležitější ze zprávy o zápase — jak zápas dopadl."],
+    "Nejdůležitější je výsledek zápasu. Ostatní věty jen dokreslují atmosféru."),
+  ukazka("Text je o tom, proč je voda důležitá pro život. Která věta je okrajová?", ["Voda vře při sto stupních.", "Bez vody nemůže žít žádný tvor.", "Lidské tělo je z velké části voda.", "Rostliny potřebují vodu k růstu."], 0,
+    ["", "To přímo souvisí s tématem.", "To ukazuje, jak je voda pro nás důležitá.", "To ukazuje, proč vodu potřebují rostliny."],
+    ["Která věta je sice pravdivá, ale nesouvisí s životem?", "Tři věty mluví o tom, proč vodu potřebují živí tvorové. Jedna je fakt o vodě, který s tématem nesouvisí."],
+    "Bod varu je pravdivý fakt, ale s významem vody pro život nesouvisí — v tomto textu je okrajový."),
+  ukazka("Píšeš krátkou zprávu o mistrovství. Kterou větu vynecháš?", ["Mistrovství vyhrálo Japonsko.", "Ve finále porazilo Brazílii.", "Finále se hrálo v Tokiu.", "Na tribuně seděl kluk s červenou čepicí."], 3,
+    ["Vítěz je nejdůležitější.", "Soupeř ve finále je důležitý.", "Místo finále je důležitý údaj.", ""],
+    ["Která věta nic neříká o mistrovství?", "Krátká zpráva má místo jen na podstatné. Vynechej to, co s výsledkem a průběhem nesouvisí."],
+    "Kluk s čepicí s výsledkem mistrovství nesouvisí — vynecháme ho."),
+  ukazka("Která věta je pro text nejdůležitější?", ["Sopka Vesuv zasypala město Pompeje popelem.", "Stalo se to před téměř dvěma tisíci lety.", "Archeologové dnes město odkrývají.", "Průvodce v muzeu má rád kávu."], 0,
+    ["", "Kdy se to stalo, je doplňující údaj.", "To je důsledek hlavní události.", "Průvodce s textem nesouvisí."],
+    ["Bez které věty by ostatní věty nedávaly smysl?", "Hlavní událost je ta, ke které se ostatní věty vztahují — kdy se stala a co se děje dnes."],
+    "Nejdůležitější je hlavní událost — Vesuv zasypal Pompeje. Ostatní věty na ni navazují."),
+  choice("Proč může být stejná informace pro jednoho čtenáře důležitá a pro jiného ne?", "každý hledá v textu něco jiného", [
+    { value: "informace jsou pro všechny stejné", why: "Záleží na tom, co čtenář potřebuje." },
+    { value: "je to náhoda", why: "Není to náhoda, ale cíl čtení." },
+    { value: "záleží na délce věty", why: "Délka nerozhoduje." },
+  ], {
+    hints: ["Hledáš v jízdním řádu totéž co tvůj kamarád, který jede jinam?", "Podstatné je to, co potřebuješ ty. Kamarád, který jede jinam, bude v jízdním řádu považovat za důležité jiné řádky."],
+    explanation: "Podstatnost záleží na tom, co čtenář v textu hledá.",
+  }),
+  choice("Text má pět vět a máš ho shrnout jednou větou. Co uděláš?", "najdu, co spojuje většinu vět", [
+    { value: "opíšu první větu", why: "První věta nemusí zachytit celý text." },
+    { value: "opíšu nejdelší větu", why: "Délka nerozhoduje." },
+    { value: "vyberu nejzajímavější drobnost", why: "Drobnost není hlavní myšlenka." },
+  ], {
+    hints: ["O čem je většina vět?", "Hlavní myšlenka je to, co mají věty společné. Tu napiš jednou vlastní větou."],
+    explanation: "Shrnutí zachytí, co spojuje většinu vět — hlavní myšlenku celého textu.",
+  }),
+  ukazka("Chceš vědět, jak dlouho robot letěl. Která informace je podstatná?", ["Robot přistál na Marsu v roce 2021.", "Vážil přes jednu tunu.", "Cesta trvala sedm měsíců.", "Na Marsu pořídil tisíce fotek."], 2,
+    ["Rok přistání neříká, jak dlouho letěl.", "Váha s délkou letu nesouvisí.", "", "Fotky s délkou letu nesouvisí."],
+    ["Která věta odpovídá na otázku „jak dlouho“?", "Podstatnost teď řídí tvoje otázka. Hledej větu s údajem o délce cesty."],
+    "Na otázku „jak dlouho letěl“ odpovídá věta o sedmi měsících cesty."),
+  choice("Které shrnutí vystihuje text „Ledovce tají. Hladina moří stoupá. Pobřežní města jsou ohrožena.“?", "Oteplování ohrožuje města u moře.", [
+    { value: "Ledovce jsou krásné.", why: "O kráse ledovců text nemluví." },
+    { value: "Moře jsou velká.", why: "To text neříká." },
+    { value: "Města jsou u moře.", why: "To je jen část a chybí příčina." },
+  ], {
+    hints: ["Jak spolu tři věty souvisejí?", "Věty jdou za sebou jako příčina a následek. Shrnutí má zachytit celý řetězec, ne jen jeden článek."],
+    explanation: "Tání ledovců zvedá hladinu moří a to ohrožuje pobřežní města — shrnutí: oteplování ohrožuje města u moře.",
+  }),
+  choice("Kamarád vypráví o výletě a mluví jen o sedadlech ve vlaku a o knírku průvodčího. Až na konci řekne, že se v lese ztratili. Co mu poradíš?", "ať řekne hned to hlavní", [
+    { value: "ať přidá víc drobností o vlaku", why: "Drobnosti by vyprávění ještě prodloužily." },
+    { value: "ať mluví rychleji", why: "Rychlost nepomůže, pomůže pořadí." },
+    { value: "ať raději nic neříká", why: "Vyprávět může — jen s tím hlavním." },
+  ], {
+    hints: ["Co je na tom výletě nejzajímavější?", "Posluchače zajímá hlavní událost. Drobnosti o vlaku ho unaví, než se dozví, že se ztratili."],
+    explanation: "Poradíme mu začít tím hlavním (ztratili se v lese) a drobnosti vynechat.",
+  }),
+  choice("Úkol zní: Najdi v textu, kdy hrad vznikl. Co je pro tebe teď podstatné?", "rok založení hradu", [
+    { value: "barva střechy", why: "Barva střechy s otázkou nesouvisí." },
+    { value: "jméno kastelána", why: "Kastelán s rokem vzniku nesouvisí." },
+    { value: "počet schodů do věže", why: "Počet schodů na otázku neodpovídá." },
+  ], {
+    hints: ["Na co se úkol ptá?", "Při hledání v textu je podstatné to, co odpovídá na otázku. Všechno ostatní můžeš přeskočit."],
+    explanation: "Úkol se ptá, kdy hrad vznikl — podstatný je rok jeho založení.",
+  }),
+  choice("Proč nestačí vybrat nejdelší větu, když hledáš hlavní myšlenku?", "délka o důležitosti nerozhoduje", [
+    { value: "nejdelší věta je vždy okrajová", why: "Vždy okrajová není — jen délka nic nedokazuje." },
+    { value: "hlavní myšlenka je vždy nejkratší", why: "Ani to neplatí." },
+    { value: "text hlavní myšlenku nemá", why: "Každý text nějakou hlavní myšlenku má." },
+  ], {
+    hints: ["Může být dlouhá věta plná drobností?", "Důležitost poznáš podle obsahu, ne podle toho, kolik má věta slov."],
+    explanation: "Hlavní myšlenku poznáme podle obsahu. Délka věty o důležitosti nic neříká.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e, hints }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle(opts),
-    hints: hints ?? [
-      "Podstatná informace: bez ní text nedává smysl",
-      "Okrajová informace: text dává smysl i bez ní — jen doplňuje",
-      "Ptej se: Dá text smysl bez této informace? Ano → okrajová; Ne → podstatná",
-    ],
-    explanation: e,
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const ROZLISENIPODSTATNYCHAOKRAJOVYCHINFORMACI: TopicMetadata[] = [
@@ -108,9 +275,9 @@ export const ROZLISENIPODSTATNYCHAOKRAJOVYCHINFORMACI: TopicMetadata[] = [
     keywords: ["podstatná informace", "okrajová informace", "shrnutí", "hlavní myšlenka", "čtení s porozuměním"],
     goals: [
       "Rozlišit podstatné a okrajové informace v textu",
-      "Sestavit stručné shrnutí textu",
+      "Vybrat, co patří do shrnutí",
     ],
-    boundaries: ["Bez pokročilé argumentační analýzy", "Bez novinových textů s manipulací"],
+    boundaries: ["Bez odborných textů", "Krátké ukázky přiměřené 4. ročníku"],
     gradeRange: [4, 4],
     inputType: "select_one",
     defaultLevel: 1,
@@ -119,14 +286,15 @@ export const ROZLISENIPODSTATNYCHAOKRAJOVYCHINFORMACI: TopicMetadata[] = [
     recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky"],
     generator: gen,
     helpTemplate: {
-      hint: "Podstatná = bez ní text nedává smysl; okrajová = text dává smysl i bez ní (jen doplňuje)",
+      hint: "Podstatná = bez ní text nedává smysl; okrajová = drobnost navíc. Záleží i na tom, co v textu hledáš.",
       steps: [
-        "Urči hlavní téma textu.",
-        "Pro každou informaci se zeptej: Je nutná pro pochopení tématu?",
-        "Nutná → podstatná; pouze doplňující → okrajová.",
+        "O čem text je?",
+        "Zkus informaci vynechat — dává text pořád smysl?",
+        "Nedává → podstatná; dává → okrajová.",
+        "Do shrnutí dej jen podstatné informace.",
       ],
-      commonMistake: "Záměna zajímavé informace a podstatné informace — zajímavá detail může být okrajový",
-      example: "Text o slonech: 'Sloni jsou největší suchozemská zvířata.' = podstatné; 'Mají šedou kůži.' = okrajové",
+      commonMistake: "Považovat za podstatnou nejdelší nebo první větu",
+      example: "Zpráva o požáru: „Hasiči oheň uhasili“ = podstatné; „hasič měl na helmě nálepku“ = okrajové",
     },
   },
 ];

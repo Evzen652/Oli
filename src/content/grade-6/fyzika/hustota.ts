@@ -64,7 +64,7 @@ function genL1(): PracticeTask {
 // L2 — převod jednotky (kg→g nebo dm³→cm³) + výpočet hustoty (dva kroky).
 function genL2(): PracticeTask {
   const latka = pick([LATKY[2], LATKY[3], LATKY[4]]); // hliník/železo/měď (ρ ≥ 2,7)
-  const V = pick([100, 200, 500]); // cm³
+  const V = pick([20, 40, 50, 100, 150, 200, 250, 400, 500]); // cm³ (27 kombinací s látkami)
   const mG = +(latka.rho * V).toFixed(0);
   const mKg = +(mG / 1000).toFixed(3);
   const rho = latka.rho;
@@ -126,7 +126,7 @@ function genL3(): PracticeTask {
       ],
       {
         hints: [
-          `Krok 1: Hledáš hmotnost, ne hustotu. Ze vztahu ρ = m / V vyjádři hmotnost: m = ρ · V.`,
+          `Krok 1: Hledáš hmotnost tělesa z látky ${latka.nazev}, ne hustotu. Ze vztahu ρ = m / V vyjádři hmotnost: m = ρ · V.`,
           `Krok 2: Dosaď do vzorce hustotu a objem ze zadání (obě hodnoty máš v textu úlohy).`,
           `Krok 3: Vynásob hustotu objemem. Výsledek je hmotnost v gramech.`,
         ],
@@ -185,7 +185,7 @@ export const HUSTOTA: TopicMetadata[] = [
   {
     id: "g6-fyz-hustota-6",
     rvpNodeId: "g6-fyzika-mereni-fyzikalnich-velicin-hustota-teplota-cas-hustota-vypocet-a-mereni",
-    displayName: "Hustota",
+    displayName: "Hustota látky",
     title: "Hustota – výpočet a měření",
     studentTitle: "Hustota",
     subject: "fyzika",

@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { posilNapovedy } from "../_shared";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -412,8 +413,29 @@ const POOL_L3: PracticeTask[] = [
   },
 ];
 
+const EXTRA_L1: PracticeTask[] = [
+
+];
+const EXTRA_L2: PracticeTask[] = [
+
+];
+const EXTRA_L3: PracticeTask[] = [
+
+];
+
+const DOPLNEK: Record<number, string> = {
+  "1": "Pomůže ti, jak těžké bylo materiál získat: kámen ležel všude, kov se musel nejdřív naučit tavit.",
+  "2": "Sleduj, jak se měnil život: nejdřív lidé za potravou putovali, pak se usadili u polí a až potom tavili kovy.",
+  "3": "U národů se ptej, kdo koho vystřídal a kdo jsou předkové dnešních Čechů — ti přišli nejpozději."
+};
+
+const [P1, P2, P3] = posilNapovedy(
+  [[...POOL_L1, ...EXTRA_L1], [...POOL_L2, ...EXTRA_L2], [...POOL_L3, ...EXTRA_L3]],
+  DOPLNEK,
+);
+
 function gen(level: number): PracticeTask[] {
-  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  const pool = level >= 3 ? P3 : level === 2 ? P2 : P1;
   return shuffle(pool);
 }
 

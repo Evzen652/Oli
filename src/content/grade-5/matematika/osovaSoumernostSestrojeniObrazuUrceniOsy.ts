@@ -1,73 +1,142 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
+import { choice } from "../_shared";
+import { ciselnaUloha, pick, rnd, sada, shuffle } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď: L1 pojmy (osa, obraz bodu, souměrné
+// tvary, osy čtverce, kruhu a trojúhelníků) · L2 počet os u písmen a dalších
+// obrazců · L3 obraz bodu ve čtvercové síti podle svislé nebo vodorovné osy.
+
+const L1: PracticeTask[] = [
+  choice("Co je osa souměrnosti?", "přímka, podle které se obrazec dá přeložit na sebe", [
+    { value: "nejdelší strana obrazce", why: "Osa nemusí být strana." },
+    { value: "přímka, která obrazec rozdělí na dvě libovolné části", why: "Obě části musí být zrcadlově stejné." },
+    { value: "bod uprostřed obrazce", why: "Osa je přímka, ne bod." },
+  ], { hints: ["Co se stane, když osově souměrný obrázek složíš napůl přes osu?", "Obě poloviny se po přeložení přesně kryjí — jedna je zrcadlovým obrazem druhé."], explanation: "Osa souměrnosti je přímka, podle které se obrazec přeloží tak, že se obě poloviny kryjí." }),
+  choice("Kde leží obraz bodu v osové souměrnosti?", "stejně daleko od osy jako bod, ale na druhé straně", [
+    { value: "dvakrát dál od osy než bod", why: "Vzdálenost od osy se nemění." },
+    { value: "vždy přímo na ose", why: "Na ose leží jen obraz bodu, který na ose už je." },
+    { value: "na stejné straně osy jako bod", why: "Obraz je za osou, jako odraz za zrcadlem." },
+  ], { hints: ["Představ si zrcadlo: kde za ním vidíš svůj odraz?", "Obraz leží na kolmici k ose, v téže vzdálenosti od ní, jakou má původní bod, jen za osou."], explanation: "Obraz bodu je stejně daleko od osy, na opačné straně." }),
+  choice("Který z těchto tvarů je osově souměrný?", "srdce", [
+    { value: "písmeno F", why: "F se v zrcadle změní v jiný tvar." },
+    { value: "číslice 7", why: "Sedmička souměrná není." },
+    { value: "písmeno Z", why: "Z nemá žádnou osu souměrnosti." },
+  ], { hints: ["Který tvar můžeš přeložit napůl tak, aby se obě půlky kryly?", "Zkus si každý tvar představit se zrcátkem postaveným přesně uprostřed."], explanation: "Srdce má svislou osu souměrnosti." }),
+  choice("Co v přírodě je osově souměrné?", "křídla motýla", [
+    { value: "ulita šneka", why: "Ulita je stočená do spirály." },
+    { value: "rozbitý kámen", why: "Úlomky mají nepravidelný tvar." },
+    { value: "klikatá řeka", why: "Řeka se vine nepravidelně." },
+  ], { hints: ["Co vypadá, jako by ho někdo vytiskl a pak přeložil napůl?", "Souměrné věci mají levou a pravou polovinu jako zrcadlové obrazy."], explanation: "Motýlí křídla jsou souměrná podle těla motýla." }),
+  choice("Bod leží přímo na ose souměrnosti. Kde je jeho obraz?", "ve stejném místě jako bod", [
+    { value: "na opačné straně osy", why: "Bod na ose má od osy vzdálenost nula." },
+    { value: "dvakrát dál od osy", why: "Dvakrát nula je pořád nula." },
+    { value: "nikde, obraz nemá", why: "Obraz má každý bod." },
+  ], { hints: ["Jak daleko od osy je bod, který leží přímo na ní?", "Obraz má od osy tutéž vzdálenost co bod. Když je vzdálenost nulová, obraz a bod splynou."], explanation: "Bod na ose je sám sobě obrazem." }),
+  choice("Kolik os souměrnosti má čtverec?", "4", [
+    { value: "2", why: "Kromě dvou os středem stran má čtverec i dvě osy v úhlopříčkách." },
+    { value: "1", why: "Čtverec se dá přeložit víc způsoby." },
+    { value: "8", why: "Tolik způsobů přeložení čtverec nemá." },
+  ], { hints: ["Podle kterých čar můžeš čtvercový papír přeložit, aby se půlky kryly?", "Čtverec se dá přeložit podle obou středních příček i podle obou úhlopříček."], explanation: "Čtverec má 4 osy: 2 střední příčky a 2 úhlopříčky." }),
+  choice("Kolik os souměrnosti má kruh?", "nekonečně mnoho", [
+    { value: "jednu", why: "Kruh se dá přeložit podle kteréhokoli průměru." },
+    { value: "dvě", why: "Průměrů je víc než dva." },
+    { value: "čtyři", why: "Průměrů je víc než čtyři." },
+  ], { hints: ["Kolika způsoby můžeš přeložit kulatou placku napůl?", "Každá přímka, která prochází středem kruhu, ho rozdělí na dvě shodné poloviny."], explanation: "Každý průměr kruhu je osou souměrnosti." }),
+  choice("Jak zkontroluješ, že je obrázek osově souměrný?", "přiložím zrcátko na osu nebo ho přeložím", [
+    { value: "změřím jeho obvod", why: "Obvod o souměrnosti nic neřekne." },
+    { value: "spočítám jeho strany", why: "Počet stran souměrnost neurčí." },
+    { value: "otočím ho vzhůru nohama", why: "Otočení není přeložení." },
+  ], { hints: ["Co ti ukáže druhou polovinu obrázku, když zakryješ tu první?", "Zrcadlo postavené na osu ukáže přesně chybějící polovinu; stejně funguje přeložení papíru."], explanation: "Souměrnost ověříme zrcátkem nebo přeložením." }),
+  choice("Kolik os souměrnosti má obdélník, který není čtverec?", "2", [
+    { value: "4", why: "Úhlopříčky obdélníku osami nejsou — po přeložení se půlky nekryjí." },
+    { value: "1", why: "Obdélník se dá přeložit podél i napříč." },
+    { value: "0", why: "Obdélník souměrný je." },
+  ], { hints: ["Zkus přeložit obdélníkový papír podle úhlopříčky. Kryjí se půlky?", "Obdélník se dá přeložit jen podle čar spojujících středy protějších stran."], explanation: "Obdélník má 2 osy — střední příčky." }),
+  choice("Kolik os souměrnosti má rovnoramenný trojúhelník, který není rovnostranný?", "1", [
+    { value: "3", why: "Tři osy má jen rovnostranný trojúhelník." },
+    { value: "2", why: "Druhá osa by vyžadovala další shodné strany." },
+    { value: "0", why: "Rovnoramenný trojúhelník souměrný je." },
+  ], { hints: ["Kde se potkávají dvě stejně dlouhá ramena?", "Osa vede vrcholem mezi rameny a středem základny."], explanation: "Rovnoramenný trojúhelník má jednu osu." }),
+  choice("Je písmeno N osově souměrné?", "ne, žádnou osu nemá", [
+    { value: "ano, má svislou osu", why: "Po svislém přeložení se N obrátí." },
+    { value: "ano, má vodorovnou osu", why: "Po vodorovném přeložení se N obrátí." },
+    { value: "ano, má dvě osy", why: "N nemá ani jednu osu." },
+  ], { hints: ["Zkus N přeložit svisle a pak vodorovně. Kryjí se půlky?", "N se v zrcadle změní na obrácené N; stejné zůstane jen po otočení, a to osová souměrnost není."], explanation: "Písmeno N osu souměrnosti nemá." }),
+  choice("Bod posuneme blíž k ose. Co se stane s jeho obrazem?", "obraz se také přiblíží k ose", [
+    { value: "obraz se vzdálí od osy", why: "Obraz se hýbe stejně jako bod." },
+    { value: "obraz zůstane na místě", why: "Obraz závisí na poloze bodu." },
+    { value: "obraz přeskočí na stejnou stranu", why: "Obraz je vždy za osou." },
+  ], { hints: ["Když přistoupíš k zrcadlu, co udělá tvůj odraz?", "Vzdálenost od osy mají bod i jeho zrcadlový protějšek vždy stejnou — mění se společně."], explanation: "Obraz je stejně daleko od osy jako bod, takže se přiblíží také." }),
+  choice("Kolik os souměrnosti má rovnostranný trojúhelník?", "3", [
+    { value: "1", why: "Osu má každý vrchol, ne jen jeden." },
+    { value: "2", why: "Vrcholy jsou tři." },
+    { value: "6", why: "Každá osa vede jedním vrcholem, osy se nezdvojují." },
+  ], { hints: ["Kolik má rovnostranný trojúhelník vrcholů? Každým z nich může vést jedna osa.", "Osa vede vždy vrcholem a středem protější strany."], explanation: "Rovnostranný trojúhelník má 3 osy." }),
+];
+
+// Velká tiskací písmena: [písmeno, počet os, popis os]
+const PISMENA: [string, number, string][] = [
+  ["A", 1, "jedna svislá osa"], ["B", 1, "jedna vodorovná osa"], ["C", 1, "jedna vodorovná osa"], ["D", 1, "jedna vodorovná osa"], ["E", 1, "jedna vodorovná osa"],
+  ["H", 2, "svislá i vodorovná osa"], ["I", 2, "svislá i vodorovná osa"], ["K", 1, "jedna vodorovná osa"], ["M", 1, "jedna svislá osa"], ["O", 2, "svislá i vodorovná osa"],
+  ["T", 1, "jedna svislá osa"], ["U", 1, "jedna svislá osa"], ["V", 1, "jedna svislá osa"], ["W", 1, "jedna svislá osa"], ["X", 2, "svislá i vodorovná osa"],
+  ["Y", 1, "jedna svislá osa"], ["F", 0, "žádná osa"], ["G", 0, "žádná osa"], ["L", 0, "žádná osa"], ["P", 0, "žádná osa"], ["R", 0, "žádná osa"], ["S", 0, "žádná osa"], ["Z", 0, "žádná osa"], ["J", 0, "žádná osa"],
+];
+
+function pismeno(): PracticeTask | null {
+  const [p, n, popis] = pick(PISMENA);
+  const chyby = ["0", "1", "2", "4"].filter((v) => v !== String(n)).map((v) => ({
+    value: v,
+    why: Number(v) > n ? `Písmeno ${p} tolik os nemá — má ${popis}.` : `Nějakou osu jsi přehlédl nebo přehlédla — písmeno ${p} má ${popis}.`,
+  }));
+  return ciselnaUloha(`Kolik os souměrnosti má velké tiskací písmeno ${p}?`, String(n), chyby, [
+    `Zkus si písmeno ${p} představit přeložené svisle napůl. Kryjí se půlky? A co vodorovně?`,
+    "Osa souměrnosti rozdělí písmeno na dvě zrcadlově stejné půlky. U tiskacích písmen vyzkoušej svislou a vodorovnou osu — každou zvlášť.",
+  ], [`${p}: ${popis}`]);
 }
 
-// Level 1: základní pojmy, příklady ze života
-const POOL_L1: PracticeTask[] = [
-  { question: "Co je osová souměrnost?", correctAnswer: "Obraz je zrcadlovým odrazem originálu přes osu", options: ["Obraz je zrcadlovým odrazem originálu přes osu", "Obraz je posunutý o stejnou vzdálenost", "Obraz je otočený o 180°", "Obraz je zmenšený na polovinu"] },
-  { question: "Kolik os souměrnosti má čtverec?", correctAnswer: "4", options: ["2", "4", "1", "0"] },
-  { question: "Kolik os souměrnosti má kružnice?", correctAnswer: "Nekonečně mnoho", options: ["1", "4", "Nekonečně mnoho", "0"] },
-  { question: "Kolik os souměrnosti má obdélník (ne čtverec)?", correctAnswer: "2", options: ["4", "1", "0", "2"] },
-  { question: "Má písmeno A osu souměrnosti?", correctAnswer: "Ano – svislá osa", options: ["Ano – svislá osa", "Ne", "Ano – vodorovná osa", "Ano – 2 osy"] },
-  { question: "Má písmeno B osu souměrnosti?", correctAnswer: "Ano – vodorovná osa", options: ["Ne", "Ano – vodorovná osa", "Ano – svislá osa", "Ano – 2 osy"] },
-  { question: "Má písmeno S osu souměrnosti?", correctAnswer: "Ne", options: ["Ano – svislá osa", "Ano – vodorovná osa", "Ne", "Ano – 2 osy"] },
-  { question: "Motýl je příkladem osové souměrnosti. Kde leží osa?", correctAnswer: "Svislá osa uprostřed těla", options: ["Vodorovná osa uprostřed těla", "Nemá osu", "Dvě osy křížem", "Svislá osa uprostřed těla"] },
-  { question: "Je lidský obličej přesně osově souměrný?", correctAnswer: "Přibližně – v přírodě nejsou dokonalé", options: ["Přibližně – v přírodě nejsou dokonalé", "Ano, je to dokonale přesné zrcadlení", "Ne vůbec, obličej nemá žádnou souměrnost", "Záleží na tom, o kterého člověka jde"] },
-  { question: "Kolik os souměrnosti má rovnostranný trojúhelník?", correctAnswer: "3", options: ["1", "3", "0", "6"] },
-  { question: "Kolik os souměrnosti má rovnoramenný trojúhelník (ne rovnostranný)?", correctAnswer: "1", options: ["2", "0", "1", "3"] },
-  { question: "Kolik os souměrnosti má kruh?", correctAnswer: "Nekonečně mnoho", options: ["1", "2", "0", "Nekonečně mnoho"] },
-  { question: "Má písmeno H osu souměrnosti?", correctAnswer: "Ano – svislou i vodorovnou — 2 osy", options: ["Ano – svislou i vodorovnou — 2 osy", "Ne, písmeno H nemá žádnou osu souměrnosti", "Jen svislou, vodorovnou nemá", "Jen vodorovnou, svislou nemá"] },
-  { question: "Co je osa souměrnosti?", correctAnswer: "Přímka, podle níž se obraz překládá – skládá", options: ["Bod, kolem nějž se otáčí", "Přímka, podle níž se obraz překládá – skládá", "Střed obrazce", "Průsečík úhlopříček"] },
-  { question: "Má pravidelný šestiúhelník osy souměrnosti?", correctAnswer: "Ano, 6 os", options: ["Ne", "Ano, 3 osy", "Ano, 6 os", "Ano, 2 osy"] },
-  { question: "Je zrcadlový obraz souměrný s originálem?", correctAnswer: "Ano, jsou osově souměrné – osou je zrcadlo", options: ["Ne, zrcadlový obraz je úplně jiný tvar", "Záleží na tom, jak je zrcadlo nakloněné", "Jen přibližně, nikdy ne přesně stejné", "Ano, jsou osově souměrné – osou je zrcadlo"] },
-  { question: "Kolik os souměrnosti má pravidelný pětiúhelník?", correctAnswer: "5", options: ["5", "3", "1", "0"] },
-  { question: "Kde leží osa souměrnosti u kapky vody?", correctAnswer: "Svislá osa středem kapky", options: ["Vodorovná osa středem kapky", "Svislá osa středem kapky", "Nemá osu", "Diagonálně"] },
-  { question: "Má číslo 8 osu souměrnosti?", correctAnswer: "Ano – svislou i vodorovnou — 2 osy", options: ["Ne, číslo 8 nemá žádnou osu souměrnosti", "Jen svislou, vodorovnou nemá", "Ano – svislou i vodorovnou — 2 osy", "Jen vodorovnou, svislou nemá"] },
-  { question: "Kolik os souměrnosti má kosočtverec (rhombus) — ne čtverec?", correctAnswer: "2", options: ["4", "1", "0", "2"] },
+// Obrazce, které nejsou v L1: [název, počet os, chyby]
+const OBRAZCE: [string, string, [string, string][]][] = [
+  ["kosočtverec (který není čtverec)", "2", [["4", "Kosočtverec nemá pravé úhly, osy středem stran nemá."], ["1", "Kosočtverec má osy v obou úhlopříčkách."], ["0", "Kosočtverec je souměrný podle úhlopříček."]]],
+  ["pravidelný šestiúhelník", "6", [["3", "Kromě os vrcholy má i osy středy stran."], ["2", "Pravidelný šestiúhelník má os víc."], ["12", "Každá osa vede dvěma protějšími vrcholy nebo středy stran — os je tolik, kolik stran."]]],
+  ["pravidelný pětiúhelník", "5", [["1", "Osa vede každým vrcholem, ne jen jedním."], ["10", "Každá osa vede vrcholem a středem protější strany — os je tolik, kolik vrcholů."], ["0", "Pravidelný pětiúhelník souměrný je."]]],
+  ["kosodélník", "0", [["2", "Kosodélník po přeložení podle úhlopříčky ani středních příček nesedí."], ["1", "Žádné přeložení kosodélníku nedá dvě kryjící se půlky."], ["4", "Kosodélník osy nemá."]]],
+  ["různostranný trojúhelník", "0", [["1", "Osa by potřebovala dvě stejně dlouhé strany."], ["3", "Tři osy má jen rovnostranný trojúhelník."], ["2", "Různostranný trojúhelník osy nemá."]]],
+  ["rovnoramenný lichoběžník", "1", [["2", "Lichoběžník se dá přeložit jen svisle, středem obou základen."], ["0", "Rovnoramenný lichoběžník souměrný je."], ["4", "Tolik os lichoběžník nemá."]]],
+  ["půlkruh", "1", [["2", "Po vodorovném přeložení se půlkruh nekryje."], ["0", "Půlkruh se dá přeložit podle kolmice ke straně ve středu."], ["nekonečně mnoho", "To má jen celý kruh."]]],
+  ["ovál (elipsa)", "2", [["nekonečně mnoho", "To má kruh; ovál je protáhlý."], ["1", "Ovál se dá přeložit podél i napříč."], ["4", "Šikmo se ovál přeložit nedá."]]],
 ];
 
-// Level 2: sestrojení obrazu, vzdálenost od osy
-const POOL_L2: PracticeTask[] = [
-  { question: "Bod A leží 3 cm od osy souměrnosti. Jak daleko od osy leží jeho obraz A'?", correctAnswer: "3 cm", options: ["3 cm", "6 cm", "0 cm", "1,5 cm"] },
-  { question: "Bod B leží 5 cm od osy. Jaká je vzdálenost B od B' (celková)?", correctAnswer: "10 cm", options: ["5 cm", "10 cm", "2,5 cm", "0 cm"] },
-  { question: "Osa souměrnosti je svislá přímka. Bod P [3; 2]. Kde leží P'?", correctAnswer: "P' leží na opačné straně ve stejné vzdálenosti od osy", options: ["P' = [3; −2] (jen otočený znak u druhé souřadnice)", "P' = [−3; −2] (otočené znaménko u obou souřadnic)", "P' leží na opačné straně ve stejné vzdálenosti od osy", "P' = [0; 2] (bod na samotné ose souměrnosti)"] },
-  { question: "Při osové souměrnosti: osa je svislá, bod je vlevo od osy. Kde bude jeho obraz?", correctAnswer: "Vpravo od osy, stejně daleko", options: ["Vlevo, ale výše", "Na ose", "Záleží na bodu", "Vpravo od osy, stejně daleko"] },
-  { question: "Obraz bodu leží na ose souměrnosti. Co to znamená?", correctAnswer: "Bod leží přímo na ose – obraz = originál", options: ["Bod leží přímo na ose – obraz = originál", "Bod je daleko od osy", "Bod nemá obraz", "Záleží na vzdálenosti"] },
-  { question: "Kolmice z bodu na osu souměrnosti slouží k:", correctAnswer: "Určení polohy obrazu – obraz je stejně daleko na opačné straně", options: ["Výpočtu obsahu obrazce, který vznikne zrcadlením", "Určení polohy obrazu – obraz je stejně daleko na opačné straně", "Určení celkové délky osy souměrnosti", "Nalezení středu obrazce, ne jeho obrazu"] },
-  { question: "Trojúhelník ABC překládáme přes osu. Obraz je A'B'C'. Mají trojúhelník a obraz stejný tvar a velikost?", correctAnswer: "Ano – shodné útvary", options: ["Ne, obraz je zmenšený", "Ano, ale jiný tvar", "Ano – shodné útvary", "Záleží na ose"] },
-  { question: "Přeložím papír přes čáru a vystřihnu tvar. Oba díly jsou:", correctAnswer: "Osově souměrné – osa = záhyb", options: ["Stejné ale bez souměrnosti", "Různé tvary", "Záleží na tvaru", "Osově souměrné – osa = záhyb"] },
-  { question: "Bod A [4; 0], osa je osa y (svislá). Kde leží A'?", correctAnswer: "[−4; 0]", options: ["[−4; 0]", "[4; 0]", "[0; 4]", "[−4; 4]"] },
-  { question: "Bod B [0; 3], osa je osa x (vodorovná). Kde leží B'?", correctAnswer: "[0; −3]", options: ["[0; 3]", "[0; −3]", "[3; 0]", "[−3; 0]"] },
-  { question: "Úsečka AB je rovnoběžná s osou souměrnosti. Jaká je délka jejího obrazu A'B'?", correctAnswer: "Stejná jako délka AB", options: ["Dvojnásobná", "Poloviční", "Stejná jako délka AB", "Záleží na vzdálenosti od osy"] },
-  { question: "Kolik os souměrnosti má pravidelný čtyřúhelník (čtverec)?", correctAnswer: "4 – 2 osy přes strany, 2 přes rohy", options: ["2 – jen úhlopříčky, zapomíná na strany", "1 – jen jedna, ne všechny 4 osy", "0 – čtverec žádnou osu souměrnosti nemá", "4 – 2 osy přes strany, 2 přes rohy"] },
-];
+function obrazec(): PracticeTask | null {
+  const [nazev, n, chyby] = pick(OBRAZCE);
+  return ciselnaUloha(`Kolik os souměrnosti má ${nazev}?`, n, chyby.map(([value, why]) => ({ value, why })), [
+    `Nakresli si ${nazev.split(" (")[0]}. Podle kterých čar ho můžeš přeložit, aby se půlky přesně kryly?`,
+    "U mnohoúhelníků hledej osy vrcholy a středy stran. U pravidelných mnohoúhelníků je os tolik, kolik mají stran.",
+  ], [`${nazev}: ${n === "0" ? "žádná osa" : n === "1" ? "jedna osa" : `${n} os`}`.replace("2 os", "2 osy").replace("nekonečně mnoho os", "nekonečně mnoho os")]);
+}
 
-// Level 3: složitější situace, kombinace
-const POOL_L3: PracticeTask[] = [
-  { question: "Obdélník 4 × 6 cm. Kolik os souměrnosti má?", correctAnswer: "2", options: ["2", "4", "1", "0"] },
-  { question: "Je obraz při osové souměrnosti vždy stejně velký jako originál?", correctAnswer: "Ano – souměrnost zachovává velikost", options: ["Ne, je zmenšený", "Ano – souměrnost zachovává velikost", "Záleží na ose", "Záleží na vzdálenosti od osy"] },
-  { question: "Obrazec má 3 osy souměrnosti. Jaký to může být?", correctAnswer: "Rovnostranný trojúhelník", options: ["Obdélník", "Čtverec", "Rovnostranný trojúhelník", "Pravidelný šestiúhelník"] },
-  { question: "Slovo 'OKO' — má osa souměrnosti (svislá)?", correctAnswer: "Ano", options: ["Ne", "Záleží na fontu", "Jen přibližně", "Ano"] },
-  { question: "Jak se nazývá obrazec, jehož obraz při osové souměrnosti je totožný s originálem?", correctAnswer: "Osově souměrný obrazec", options: ["Osově souměrný obrazec", "Středově souměrný", "Rovnoběžný", "Kongruentní"] },
-  { question: "Bod A je 2 cm od osy, bod B je 5 cm od osy. Vzdálenost A' od B' = ?", correctAnswer: "Závisí na poloze bodů — nelze určit jen z těchto dat", options: ["7 cm — součet vzdáleností obou bodů od osy", "Závisí na poloze bodů — nelze určit jen z těchto dat", "3 cm — rozdíl vzdáleností obou bodů od osy", "10 cm — dvojnásobek větší ze vzdáleností"] },
-  { question: "Přeložíme list papíru napůl a nastřihneme (symetricky). Výsledek je:", correctAnswer: "Osově souměrný tvar", options: ["Kruh", "Náhodný tvar", "Osově souměrný tvar", "Čtverec"] },
-  { question: "Má písmeno X dvě osy souměrnosti?", correctAnswer: "Ano – svislá a vodorovná", options: ["Ne", "Ano, ale diagonální", "Jen jednu", "Ano – svislá a vodorovná"] },
-  { question: "Úhelník (pravoúhlý trojúhelník 90°-45°-45°) má kolik os souměrnosti?", correctAnswer: "1", options: ["1", "0", "2", "3"] },
-  { question: "Úhelník (pravoúhlý trojúhelník 90°-60°-30°) má kolik os souměrnosti?", correctAnswer: "0", options: ["1", "0", "2", "3"] },
-  { question: "Když dva osově souměrné obrazce přiložíme podél osy, co dostaneme?", correctAnswer: "Větší obrazec, který může být souměrný", options: ["Stejný obrazec jako každý z těch dvou", "Vždy nesouměrný, nepravidelný tvar", "Větší obrazec, který může být souměrný", "Vždy přesný kruh nebo elipsu"] },
-  { question: "Platí: obrazy dvou různých bodů na ose souměrnosti jsou totožné s originálem?", correctAnswer: "Ano – body na ose se zobrazí samy na sebe", options: ["Ne, obraz bodu na ose je vždy jinde", "Záleží na tom, kde přesně osa leží", "Záleží na tom, jak daleko body jsou", "Ano – body na ose se zobrazí samy na sebe"] },
-];
+function obrazBodu(): PracticeTask | null {
+  const svisla = Math.random() < 0.5;
+  const a = rnd(1, 6), b = rnd(1, 6);
+  if (a === b) return null;
+  const [tam, zpet, druha] = svisla ? ["vlevo od osy", "vpravo od osy", "nad spodním okrajem"] : ["nad osou", "pod osou", "od levého okraje"];
+  const P = (x: number, strana: string, y: number) => `${pad(x, "ČTVEREČEK")} ${strana}, ${pad(y, "ČTVEREČEK")} ${druha}`;
+  const key = P(a, zpet, b);
+  return ciselnaUloha(`Ve čtvercové síti je ${svisla ? "svislá" : "vodorovná"} osa. Bod A leží ${pad(a, "ČTVEREČEK")} ${tam} a ${pad(b, "ČTVEREČEK")} ${druha}. Kde leží jeho obraz?`, key, [
+    { value: P(a, tam, b), why: "To je místo samotného bodu. Obraz leží za osou." },
+    { value: P(b, zpet, a), why: "Čísla se prohodila. Vzdálenost od osy i druhá souřadnice zůstanou stejné." },
+    { value: P(2 * a, zpet, b), why: "Obraz je od osy stejně daleko jako bod, ne dvakrát dál." },
+  ], [
+    `Jak daleko od osy je bod A (${pad(a, "ČTVEREČEK")})? Na kterou stranu osy se obraz dostane?`,
+    `Obraz leží za osou ve stejné vzdálenosti od ní. Ta druhá vzdálenost (${druha}) se nemění, protože se posouváš jen ${svisla ? "vodorovně" : "svisle"}.`,
+  ], [`Vzdálenost od osy: ${pad(a, "ČTVEREČEK")} → obraz ${zpet}`, `${druha[0].toUpperCase()}${druha.slice(1)}: beze změny (${b})`]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return shuffle(L1);
+  if (level === 2) return sada(24, (i) => (i % 3 === 2 ? obrazec() : pismeno()));
+  return sada(30, obrazBodu);
 }
 
 export const OSOVASOUMERNOSTSESTROJENIOBRAZUURCENIOSY: TopicMetadata[] = [

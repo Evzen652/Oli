@@ -85,6 +85,11 @@ const NOUNS: Record<string, [string, string, string]> = {
   MÍSTO:      ["místo", "místa", "míst"],
   AUTO:       ["auto", "auta", "aut"],
   KORUNA:     ["koruna", "koruny", "korun"],
+  TRIČKO:     ["tričko", "trička", "triček"],
+  SUKNĚ:      ["sukně", "sukně", "sukní"],
+  MOŽNOST:    ["možnost", "možnosti", "možností"],
+  PATRO:      ["patro", "patra", "pater"],
+  ČTVEREČEK:  ["čtvereček", "čtverečky", "čtverečků"],
   KULIČKA:    ["kulička", "kuličky", "kuliček"],
   KRABICE:    ["krabice", "krabice", "krabic"],
 

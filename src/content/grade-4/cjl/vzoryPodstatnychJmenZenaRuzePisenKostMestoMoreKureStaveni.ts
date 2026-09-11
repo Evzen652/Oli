@@ -1,104 +1,179 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
+import { tvarUlohy } from "./_vzory";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 4. ročníku): nápovědy a zpětná vazba vznikají
+// z vlastností slova (rod, zakončení, 2. pád), takže jsou pro každou úlohu
+// jiné. Vypadla vymyšlená slova v možnostech („staveniším“) a málo známá
+// slova („kolíbání“, „prsť“).
+//
+// L1 = vzor běžného slova · L2 = tvar v daném pádě · L3 = záludná slova
+// (loď, myš, zvíře, vejce), určení pádu z tvaru, dvojice stejného vzoru.
+
+type Vzor = "žena" | "růže" | "píseň" | "kost" | "město" | "moře" | "kuře" | "stavení";
+
+const ZENSKY = new Set<Vzor>(["žena", "růže", "píseň", "kost"]);
+
+// Čím se vzor pozná: buď podle zakončení v 1. pádě, nebo podle 2. pádu.
+const ZNAK: Record<Vzor, { text: string; podle: "konec" | "gen" }> = {
+  žena: { text: "končí v 1. pádě na -a", podle: "konec" },
+  růže: { text: "končí v 1. pádě na -e nebo -ě", podle: "konec" },
+  píseň: { text: "končí na souhlásku a ve 2. pádě má -e nebo -ě (bez písně)", podle: "gen" },
+  kost: { text: "končí na souhlásku a ve 2. pádě má -i (bez kosti)", podle: "gen" },
+  město: { text: "končí na -o", podle: "konec" },
+  moře: { text: "končí na -e a ve 2. pádě se nemění (bez moře)", podle: "gen" },
+  kuře: { text: "v dalších pádech přibírá -et- (bez kuřete)", podle: "gen" },
+  stavení: { text: "končí na -í", podle: "konec" },
+};
+
+const MATOUCI: Record<Vzor, [Vzor, Vzor, Vzor]> = {
+  žena: ["růže", "píseň", "kost"],
+  růže: ["žena", "píseň", "kost"],
+  píseň: ["kost", "růže", "žena"],
+  kost: ["píseň", "žena", "růže"],
+  město: ["moře", "kuře", "stavení"],
+  moře: ["město", "kuře", "stavení"],
+  kuře: ["moře", "město", "stavení"],
+  stavení: ["moře", "město", "kuře"],
+};
+
+function proc(d: Vzor, w: string, gen: string): string {
+  const z = ZNAK[d];
+  const slovo = z.podle === "konec" ? `končí na -${w.slice(-1)}` : `ve 2. pádě zní „bez ${gen}“`;
+  return `Vzor ${d} ${z.text}. „${w}“ ale ${slovo}.`;
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
+function vzorUlohy(w: string, vzor: Vzor, gen: string): PracticeTask {
+  const zen = ZENSKY.has(vzor);
+  const ukaz = zen ? "ta" : "to";
+  const konec = w.slice(-1);
+  const h1: Record<Vzor, string> = {
+    žena: `„${w}“ je rodu ženského a končí na -a. Mezi ženskými vzory je jen jeden, který končí na -a.`,
+    růže: `„${w}“ je rodu ženského a končí na -${konec}. Hledej ženský vzor se stejným zakončením.`,
+    píseň: `„${w}“ je rodu ženského a končí na souhlásku. Rozhodne 2. pád: řekni „bez ${gen}“ a poslouchej, jestli končí na -e/-ě, nebo na -i.`,
+    kost: `„${w}“ je rodu ženského a končí na souhlásku. Rozhodne 2. pád: řekni „bez ${gen}“ a poslouchej, jestli končí na -e/-ě, nebo na -i.`,
+    město: `„${w}“ je rodu středního a končí na -o. Mezi středními vzory je jediný s tímto zakončením.`,
+    moře: `„${w}“ je rodu středního a končí na -e. Řekni „bez ${gen}“: tvar zůstane stejný, žádné -et- nepřibude.`,
+    kuře: `„${w}“ je rodu středního. Řekni „bez ${gen}“ a všimni si, že v dalších pádech přibývá -et-.`,
+    stavení: `„${w}“ je rodu středního a končí na -í. Tak končí i jeden ze středních vzorů.`,
+  };
+  const [a, b, c] = MATOUCI[vzor];
+  return choice(`Ke kterému vzoru patří slovo „${w}“?`, vzor, [
+    { value: a, why: proc(a, w, gen) },
+    { value: b, why: proc(b, w, gen) },
+    { value: c, why: proc(c, w, gen) },
+  ], {
+    hints: [`Řekneš „ta ${w}“, nebo „to ${w}“? A na co slovo končí?`, h1[vzor]],
+    explanation: `Řekneme „${ukaz} ${w}“, takže je rod ${zen ? "ženský" : "střední"}. Slovo ${ZNAK[vzor].podle === "gen" ? `má 2. pád „bez ${gen}“` : `končí na -${konec}`} a vzor ${vzor} ${ZNAK[vzor].text}, proto se „${w}“ skloňuje podle něj.`,
+  });
+}
 
-const POOL_L1: QA[] = [
-  { q: "Ke kterému vzoru patří 'teta'?", a: "žena", opts: ["žena", "růže", "píseň", "kost"], e: "Slovo 'teta' je rodu ženského (ta teta) a v 1. pádu končí na tvrdé -a, stejně jako vzor žena. Proto se skloňuje podle vzoru žena, ne podle růže, která končí na měkké -e." },
-  { q: "Ke kterému vzoru patří 'ulice'?", a: "růže", opts: ["růže", "žena", "píseň", "kost"], e: "Slovo 'ulice' je rodu ženského a v 1. pádu končí na měkké -e, úplně stejně jako vzor růže. Vzor žena má naopak tvrdé -a, proto sem ulice nepatří." },
-  { q: "Ke kterému vzoru patří 'báseň'?", a: "píseň", opts: ["píseň", "žena", "kost", "růže"], e: "Slovo 'báseň' je rodu ženského a končí na souhlásku -ň (na -eň), což je typický znak vzoru píseň. Vzory žena a růže končí na samohlásku, proto sem báseň nepatří." },
-  { q: "Ke kterému vzoru patří 'radost'?", a: "kost", opts: ["kost", "žena", "píseň", "růže"], e: "Slovo 'radost' je rodu ženského a končí na -ost, stejně jako vzor kost. Slova zakončená na -ost a -est patří ke vzoru kost, ne k píseň, která končí na -ň." },
-  { q: "Ke kterému vzoru patří 'auto'?", a: "město", opts: ["město", "moře", "kuře", "stavení"], e: "Slovo 'auto' je rodu středního (to auto) a v 1. pádu končí na tvrdé -o, stejně jako vzor město. Vzor moře má měkké -e, proto auto patří k městu." },
-  { q: "Ke kterému vzoru patří 'pole'?", a: "moře", opts: ["moře", "město", "kuře", "stavení"], e: "Slovo 'pole' je rodu středního a končí na měkké -e, stejně jako vzor moře. Vzor město má tvrdé -o, proto pole patří k moři." },
-  { q: "Ke kterému vzoru patří 'kotě'?", a: "kuře", opts: ["kuře", "moře", "město", "stavení"], e: "Slovo 'kotě' je rodu středního a označuje mládě (živé zvíře). Mláďata zakončená na -e/-ě se skloňují podle vzoru kuře, protože v dalších pádech přibírá -et- (kotěte) jako kuře." },
-  { q: "Ke kterému vzoru patří 'nádraží'?", a: "stavení", opts: ["stavení", "město", "moře", "kuře"], e: "Slovo 'nádraží' je rodu středního a končí na -í, což je typický znak vzoru stavení. Slova středního rodu zakončená na -í se skloňují právě podle stavení." },
-  { q: "Ke kterému vzoru patří 'škola'?", a: "žena", opts: ["žena", "růže", "kost", "píseň"], e: "Slovo 'škola' je rodu ženského a v 1. pádu končí na tvrdé -a, stejně jako vzor žena. Vzor růže má měkké -e, proto škola patří k ženě." },
-  { q: "Ke kterému vzoru patří 'skříň'?", a: "píseň", opts: ["píseň", "žena", "kost", "růže"], e: "Slovo 'skříň' je rodu ženského a končí na souhlásku -ň, stejně jako vzor píseň. Ženská slova zakončená na -ň patří ke vzoru píseň, ne ke kost (ta končí na -ost/-est)." },
-  { q: "Co je charakteristické pro vzor 'kost'?", a: "ženský rod, -í v 7. pádu j. č.", opts: ["ženský rod, -í v 7. pádu j. č.", "ženský rod, tvrdý základ", "ženský rod, měkký základ", "střední rod"], e: "Vzor kost je ženský a poznáš ho podle toho, že v 7. pádu jednotného čísla má koncovku -í (kostí), ne -ou jako žena. Právě tahle koncovka kost odlišuje od ostatních vzorů." },
-  { q: "Ke kterému vzoru patří 'slunce'?", a: "moře", opts: ["moře", "město", "kuře", "stavení"], e: "Slovo 'slunce' je rodu středního a končí na měkké -e, stejně jako vzor moře. Vzor město má tvrdé -o, proto slunce patří k moři." },
-  { q: "Ke kterému vzoru patří 'pravítko'?", a: "město", opts: ["město", "moře", "stavení", "kuře"], e: "Slovo 'pravítko' je rodu středního a v 1. pádu končí na tvrdé -o, stejně jako vzor město. Vzor moře má měkké -e, proto pravítko patří k městu." },
-  { q: "Ke kterému vzoru patří 'kolíbání'?", a: "stavení", opts: ["stavení", "moře", "město", "kuře"], e: "Slovo 'kolíbání' je rodu středního a končí na -í, což je znak vzoru stavení. Podstatná jména středního rodu na -í (často odvozená od sloves) se skloňují podle stavení." },
-  { q: "Ke kterému vzoru patří 'věc'?", a: "kost", opts: ["kost", "žena", "růže", "píseň"], e: "Slovo 'věc' je rodu ženského a v 7. pádu jednotného čísla má koncovku -í (věcí), stejně jako kost (kostí). Tahle koncovka řadí věc ke vzoru kost, ne k růži." },
-  { q: "Ke kterému vzoru patří 'židle'?", a: "růže", opts: ["růže", "žena", "kost", "píseň"], e: "Slovo 'židle' je rodu ženského a v 1. pádu končí na měkké -e, stejně jako vzor růže. Vzor žena má tvrdé -a, proto židle patří k růži." },
+const L1: PracticeTask[] = ([
+  ["teta", "žena", "tety"], ["ulice", "růže", "ulice"], ["báseň", "píseň", "básně"],
+  ["radost", "kost", "radosti"], ["auto", "město", "auta"], ["pole", "moře", "pole"],
+  ["kotě", "kuře", "kotěte"], ["nádraží", "stavení", "nádraží"], ["škola", "žena", "školy"],
+  ["skříň", "píseň", "skříně"], ["slunce", "moře", "slunce"], ["pravítko", "město", "pravítka"],
+  ["židle", "růže", "židle"],
+] as [string, Vzor, string][]).map(([w, v, g]) => vzorUlohy(w, v, g));
+
+const L2: PracticeTask[] = [
+  tvarUlohy("škola", "6. pádě množného čísla", "Ve všech … začalo vyučování.", "školách",
+    [{ form: "školám", pad: "3. pád množného čísla (ke školám)" }, { form: "školami", pad: "7. pád množného čísla (se školami)" }, { form: "školy", pad: "2. pád jednotného čísla nebo 1. a 4. pád množného" }],
+    "žena", "ženách"),
+  tvarUlohy("židle", "2. pádě množného čísla", "V jídelně je dvacet …", "židlí",
+    [{ form: "židle", pad: "1. pád jednotného čísla nebo 1. a 4. pád množného (ty židle)" }, { form: "židlím", pad: "3. pád množného čísla (k židlím)" }, { form: "židlích", pad: "6. pád množného čísla (o židlích)" }],
+    "růže", "růží"),
+  tvarUlohy("báseň", "7. pádě jednotného čísla", "Vystoupila jsem s krátkou …", "básní",
+    [{ form: "básni", pad: "3. nebo 6. pád jednotného čísla (k básni, o básni)" }, { form: "básněmi", pad: "7. pád, ale množného čísla (s básněmi)" }, { form: "básně", pad: "2. pád jednotného čísla (bez básně)" }],
+    "píseň", "písní"),
+  tvarUlohy("radost", "7. pádě jednotného čísla", "Dárek jsme přijali s …", "radostí",
+    [{ form: "radosti", pad: "2., 3. nebo 6. pád jednotného čísla (bez radosti, k radosti)" }, { form: "radostmi", pad: "7. pád množného čísla" }, { form: "radostem", pad: "3. pád množného čísla" }],
+    "kost", "kostí"),
+  tvarUlohy("auto", "6. pádě množného čísla", "Mluvili jsme o závodních …", "autech",
+    [{ form: "autům", pad: "3. pád množného čísla (k autům)" }, { form: "auty", pad: "7. pád množného čísla (s auty)" }, { form: "auta", pad: "2. pád jednotného čísla nebo 1. a 4. pád množného" }],
+    "město", "městech"),
+  tvarUlohy("pole", "2. pádě množného čísla", "Kolem vesnice je spousta …", "polí",
+    [{ form: "pole", pad: "1. pád jednotného čísla nebo 1. a 4. pád množného" }, { form: "poli", pad: "3. nebo 6. pád jednotného čísla, případně 7. pád množného" }, { form: "polím", pad: "3. pád množného čísla (k polím)" }],
+    "moře", "moří"),
+  tvarUlohy("kotě", "2. pádě jednotného čísla", "Miska zůstala bez …", "kotěte",
+    [{ form: "kotěti", pad: "3. nebo 6. pád jednotného čísla (ke kotěti, o kotěti)" }, { form: "kotětem", pad: "7. pád jednotného čísla (s kotětem)" }, { form: "koťat", pad: "2. pád, ale množného čísla (bez koťat)" }],
+    "kuře", "kuřete"),
+  tvarUlohy("nádraží", "7. pádě jednotného čísla", "Vlak projel kolem malým …", "nádražím",
+    [{ form: "nádraží", pad: "tvar pro 1. až 6. pád jednotného čísla — v 7. pádě přibývá -m" }, { form: "nádražími", pad: "7. pád, ale množného čísla (s nádražími)" }, { form: "nádražích", pad: "6. pád množného čísla (o nádražích)" }],
+    "stavení", "stavením"),
+  tvarUlohy("skříň", "2. pádě jednotného čísla", "Vytáhla jsem svetr ze …", "skříně",
+    [{ form: "skříni", pad: "3. nebo 6. pád jednotného čísla (ke skříni, o skříni)" }, { form: "skříní", pad: "7. pád jednotného čísla (se skříní) nebo 2. pád množného" }, { form: "skříněmi", pad: "7. pád množného čísla" }],
+    "píseň", "písně"),
+  tvarUlohy("slovo", "7. pádě množného čísla", "Vysvětli to vlastními …", "slovy",
+    [{ form: "slovech", pad: "6. pád množného čísla (o slovech)" }, { form: "slovům", pad: "3. pád množného čísla (ke slovům)" }, { form: "slova", pad: "2. pád jednotného čísla nebo 1. a 4. pád množného" }],
+    "město", "městy"),
+  tvarUlohy("věc", "3. pádě množného čísla", "Nevěnuj pozornost zbytečným …", "věcem",
+    [{ form: "věcí", pad: "7. pád jednotného čísla (s věcí) nebo 2. pád množného (bez věcí)" }, { form: "věcech", pad: "6. pád množného čísla (o věcech)" }, { form: "věcmi", pad: "7. pád množného čísla (s věcmi)" }],
+    "kost", "kostem"),
+  tvarUlohy("slunce", "7. pádě jednotného čísla", "Pláž byla zalitá …", "sluncem",
+    [{ form: "slunci", pad: "3. nebo 6. pád jednotného čísla (ke slunci, o slunci)" }, { form: "slunce", pad: "1., 2. nebo 4. pád jednotného čísla" }, { form: "sluncím", pad: "3. pád množného čísla" }],
+    "moře", "mořem"),
+  tvarUlohy("teta", "3. pádě jednotného čísla", "Napsala jsem dopis …", "tetě",
+    [{ form: "tetu", pad: "4. pád jednotného čísla (vidím tetu)" }, { form: "tetou", pad: "7. pád jednotného čísla (s tetou)" }, { form: "tety", pad: "2. pád jednotného čísla (bez tety)" }],
+    "žena", "ženě"),
 ];
 
-const POOL_L2: QA[] = [
-  {
-    q: "Jaký tvar má 'žena' v 2. pádu množného čísla?",
-    a: "žen",
-    opts: ["žen", "ženy", "ženám", "ženách"],
-    e: "Ve 2. pádu množného čísla (koho, čeho) ztratí vzor žena koncovku úplně — zbyde holý základ 'žen' (mnoho žen). Tvary jako 'ženám' nebo 'ženách' patří k jiným pádům (3. a 6.).",
-    hints: [
-      "Tento vzor ve 2. pádu množného čísla ztrácí koncovku úplně — zůstává jen holý základ slova.",
-      "Zkus doplnit: 'mnoho ___' — jak by to znělo bez koncovky?",
-    ],
-  },
-  { q: "Jaký tvar má 'růže' v 2. pádu množného čísla?", a: "růží", opts: ["růží", "růže", "růžím", "růžích"], e: "Vzor růže má ve 2. pádu množného čísla koncovku -í (mnoho růží). Tvar 'růžím' patří do 3. pádu a 'růžích' do 6. pádu, proto je správně 'růží'." },
-  { q: "Jaký tvar má 'píseň' v 7. pádu jednotného čísla?", a: "písní", opts: ["písní", "písni", "písněmi", "písněm"], e: "V 7. pádu jednotného čísla (s kým, čím) má vzor píseň koncovku -í (s písní). Tvar 'písněmi' je 7. pád množného čísla, proto je u jednotného čísla správně 'písní'." },
-  { q: "Jaký tvar má 'kost' v 7. pádu jednotného čísla?", a: "kostí", opts: ["kostí", "kosti", "kostím", "kostem"], e: "Vzor kost má v 7. pádu jednotného čísla koncovku -í (s kostí). Právě tahle koncovka -í odlišuje kost od vzoru žena, který by měl -ou (ženou)." },
-  { q: "Jaký tvar má 'město' v 1. pádu množného čísla?", a: "města", opts: ["města", "městu", "měst", "městem"], e: "V 1. pádu množného čísla (ta města) má vzor město koncovku -a. Tvar 'měst' je 2. pád množného čísla, proto je u 1. pádu správně 'města'." },
-  { q: "Jaký tvar má 'moře' v 2. pádu množného čísla?", a: "moří", opts: ["moří", "moře", "moři", "mořem"], e: "Vzor moře má ve 2. pádu množného čísla koncovku -í (mnoho moří). Tvar 'moře' je 1. pád a 'mořem' 7. pád jednotného čísla, proto je správně 'moří'." },
-  { q: "Jaký tvar má 'kuře' v 2. pádu jednotného čísla?", a: "kuřete", opts: ["kuřete", "kuři", "kuřeti", "kuřetem"], e: "Vzor kuře přibírá v dalších pádech vsuvku -et-, takže ve 2. pádu jednotného čísla zní 'kuřete' (bez kuřete). Tvar 'kuřeti' patří do 3. a 6. pádu, 'kuřetem' do 7. pádu." },
-  { q: "Jaký tvar má 'stavení' v 7. pádu jednotného čísla?", a: "stavením", opts: ["stavením", "stavení", "staveními", "staveniším"], e: "V 7. pádu jednotného čísla (s čím) má vzor stavení koncovku -m, tedy 'stavením'. Tvar 'staveními' je 7. pád množného čísla, proto je u jednotného čísla správně 'stavením'." },
-  { q: "Urči vzor slova 'stanice'.", a: "růže", opts: ["růže", "žena", "kost", "píseň"], e: "Slovo 'stanice' je rodu ženského a v 1. pádu končí na měkké -e, stejně jako vzor růže. Vzor žena má tvrdé -a, proto stanice patří k růži." },
-  { q: "Urči vzor slova 'září' (měsíc).", a: "stavení", opts: ["stavení", "moře", "město", "kuře"], e: "Slovo 'září' je rodu středního a končí na -í, stejně jako vzor stavení. Střední slova zakončená na -í se skloňují podle stavení, ne podle moře (to končí na -e)." },
-  { q: "Jaký tvar má 'píseň' v 2. pádu množného čísla?", a: "písní", opts: ["písní", "písně", "písněm", "písních"], e: "Vzor píseň má ve 2. pádu množného čísla koncovku -í (mnoho písní). Tvar 'písní' je shodný s 7. pádem jednotného čísla, ale 'písněm' a 'písních' patří k jiným pádům." },
-  { q: "Jaký tvar má 'kost' v 1. pádu množného čísla?", a: "kosti", opts: ["kosti", "kostí", "kost", "kostem"], e: "V 1. pádu množného čísla (ty kosti) má vzor kost koncovku -i. Tvar 'kostí' patří do 2. pádu množného čísla, proto je u 1. pádu správně 'kosti'." },
-  { q: "Urči vzor slova 'chodba'.", a: "žena", opts: ["žena", "růže", "kost", "píseň"], e: "Slovo 'chodba' je rodu ženského a v 1. pádu končí na tvrdé -a, stejně jako vzor žena. Vzor růže má měkké -e, proto chodba patří k ženě." },
-  {
-    q: "Jaký tvar má 'město' v 2. pádu množného čísla?",
-    a: "měst",
-    opts: ["měst", "městu", "městech", "městům"],
-    e: "Ve 2. pádu množného čísla (mnoho měst) ztratí vzor město koncovku úplně a zbyde holý základ 'měst'. Tvar 'městu' je 3. pád jednotného čísla, 'městech' je 6. pád mn. č. a 'městům' 3. pád mn. č.",
-    hints: [
-      "Tento vzor ve 2. pádu množného čísla taky ztrácí koncovku úplně — zůstává jen holý základ slova.",
-      "Zkus doplnit: 'mnoho ___' — jak by to znělo bez koncovky?",
-    ],
-  },
-  { q: "Urči vzor slova 'mládě'.", a: "kuře", opts: ["kuře", "moře", "město", "stavení"], e: "Slovo 'mládě' je rodu středního a označuje mládě (živé). Mláďata zakončená na -ě se skloňují podle vzoru kuře, protože přibírají vsuvku -et- (mláděte) jako kuře." },
-  { q: "Jaký tvar má 'stavení' v 1. pádu množného čísla?", a: "stavení", opts: ["stavení", "staveních", "staveními", "stavením"], e: "Vzor stavení má v 1. pádu množného čísla stejný tvar jako v jednotném — 'stavení' se nemění (jedno stavení, dvě stavení). Tvary 'staveních' a 'staveními' patří k jiným pádům." },
-];
-
-const POOL_L3: QA[] = [
-  { q: "Urči pád a číslo tvaru 'ženách'.", a: "6. pád množného čísla", opts: ["6. pád množného čísla", "3. pád množného čísla", "7. pád množného čísla", "4. pád množného čísla"], e: "Koncovka -ách u vzoru žena patří 6. pádu množného čísla — ptáme se 'o kom, o čem' (o ženách). 3. pád množného čísla by zněl 'ženám' a 7. pád 'ženami'." },
-  { q: "Urči pád a číslo tvaru 'písněmi'.", a: "7. pád množného čísla", opts: ["7. pád množného čísla", "6. pád množného čísla", "3. pád množného čísla", "4. pád množného čísla"], e: "Koncovka -ěmi u vzoru píseň patří 7. pádu množného čísla — ptáme se 's kým, s čím' (s písněmi). 6. pád množného čísla by zněl 'písních'." },
-  { q: "Urči pád a číslo tvaru 'kuřat'.", a: "2. pád množného čísla", opts: ["2. pád množného čísla", "6. pád množného čísla", "4. pád množného čísla", "1. pád množného čísla"], e: "Tvar 'kuřat' (bez kuřat) je 2. pád množného čísla vzoru kuře — ptáme se 'koho, čeho'. V 1. pádu množného čísla by to znělo 'kuřata'." },
-  { q: "Urči pád a číslo tvaru 'mořích'.", a: "6. pád množného čísla", opts: ["6. pád množného čísla", "7. pád množného čísla", "3. pád množného čísla", "2. pád množného čísla"], e: "Koncovka -ích u vzoru moře patří 6. pádu množného čísla — ptáme se 'o čem' (o mořích). 7. pád množného čísla by zněl 'moři' a 3. pád 'mořím'." },
-  { q: "Urči vzor slova 'větvička'.", a: "žena", opts: ["žena", "růže", "kost", "píseň"], e: "Slovo 'větvička' je rodu ženského a v 1. pádu končí na tvrdé -a, stejně jako vzor žena. Zdrobnělina se skloňuje podle svého zakončení, takže patří k ženě, ne k růži." },
-  { q: "Urči vzor slova 'čtvrť'.", a: "kost", opts: ["kost", "píseň", "žena", "růže"], e: "Slovo 'čtvrť' je rodu ženského a končí na souhlásku, takže přichází v úvahu píseň i kost. Rozhodne 2. pád: říkáme 'do čtvrti' jako 'do kosti', ne 'do čtvrtě' jako 'do písně'. Zakončení tady nestačí, musíš slovo vyskloňovat." },
-  { q: "Urči pád a číslo tvaru 'kostech'.", a: "6. pád množného čísla", opts: ["6. pád množného čísla", "3. pád množného čísla", "7. pád množného čísla", "2. pád množného čísla"], e: "Koncovka -ech u vzoru kost patří 6. pádu množného čísla — ptáme se 'o čem' (o kostech). 3. pád množného čísla by zněl 'kostem' a 7. pád 'kostmi'." },
-  { q: "Urči pád a číslo tvaru 'růžím'.", a: "3. pád množného čísla", opts: ["3. pád množného čísla", "6. pád množného čísla", "2. pád množného čísla", "7. pád množného čísla"], e: "Koncovka -ím u vzoru růže patří 3. pádu množného čísla — ptáme se 'komu, čemu' (růžím). 6. pád množného čísla by zněl 'růžích' a 2. pád 'růží'." },
-  { q: "Jaký tvar má 'kuře' v 7. pádu jednotného čísla?", a: "kuřetem", opts: ["kuřetem", "kuřeti", "kuřete", "kuřat"], e: "V 7. pádu jednotného čísla (s kým, čím) má vzor kuře vsuvku -et- a koncovku -em, tedy 'kuřetem'. Tvar 'kuřeti' patří do 3. a 6. pádu, 'kuřete' je 2. pád j.č., 'kuřat' 2. pád mn. č." },
-  { q: "Urči vzor slova 'knihovnictví'.", a: "stavení", opts: ["stavení", "moře", "město", "kuře"], e: "Slovo 'knihovnictví' je rodu středního a končí na -í, stejně jako vzor stavení. Střední slova zakončená na -í se vždy skloňují podle stavení." },
-  { q: "Ve kterém pádu jednotného čísla se tvar vzoru 'stavení' odliší od ostatních?", a: "7. pád", opts: ["7. pád", "1. pád", "4. pád", "5. pád"], e: "V jednotném čísle má vzor stavení ve všech pádech stejný tvar 'stavení' — kromě 7. pádu, kde přibírá koncovku -m (se stavením). Právě 7. pád je tedy ten jediný odlišný." },
-  { q: "Urči vzor slova 'procházení'.", a: "stavení", opts: ["stavení", "moře", "kuře", "město"], e: "Slovo 'procházení' je rodu středního a končí na -í, stejně jako vzor stavení. Podstatná jména na -í odvozená od sloves se skloňují podle stavení." },
-  { q: "Jaký tvar má 'žena' v 7. pádu množného čísla?", a: "ženami", opts: ["ženami", "ženách", "ženám", "žen"], e: "V 7. pádu množného čísla (s kým, čím) má vzor žena koncovku -ami (se ženami). Tvar 'ženách' je 6. pád a 'ženám' 3. pád množného čísla." },
-  { q: "Jaký tvar má 'moře' v 6. pádu množného čísla?", a: "mořích", opts: ["mořích", "mořím", "moří", "moři"], e: "V 6. pádu množného čísla (o čem) má vzor moře koncovku -ích (o mořích). Tvar 'mořím' je 3. pád a 'moří' 2. pád množného čísla." },
-  { q: "Urči vzor slova 'prsť'.", a: "kost", opts: ["kost", "žena", "píseň", "růže"], e: "Slovo 'prsť' (znamená zem, hlína) je rodu ženského a končí na souhlásku -ť, v 7. pádu má -í (prstí). Tahle koncovka řadí slovo ke vzoru kost, ne k píseň." },
-  { q: "Urči pád a číslo tvaru 'kuřeti'.", a: "3. nebo 6. pád jednotného čísla", opts: ["3. nebo 6. pád jednotného čísla", "2. pád jednotného čísla", "7. pád jednotného čísla", "1. pád množného čísla"], e: "Tvar 'kuřeti' má vzor kuře shodný ve 3. i 6. pádu jednotného čísla (dám kuřeti, o kuřeti). 2. pád by zněl 'kuřete' a 7. pád 'kuřetem'." },
+const L3: PracticeTask[] = [
+  vzorUlohy("čtvrť", "kost", "čtvrti"),
+  vzorUlohy("tvář", "píseň", "tváře"),
+  vzorUlohy("myš", "kost", "myši"),
+  vzorUlohy("loď", "kost", "lodi"),
+  vzorUlohy("zvíře", "kuře", "zvířete"),
+  vzorUlohy("vejce", "moře", "vejce"),
+  vzorUlohy("přání", "stavení", "přání"),
+  choice("Urči pád a číslo tvaru „ženách“.", "6. pád množného čísla", [
+    { value: "3. pád množného čísla", why: "3. pád množného čísla je „ženám“ (komu? čemu?)." },
+    { value: "7. pád množného čísla", why: "7. pád množného čísla je „ženami“ (s kým? čím?)." },
+    { value: "2. pád množného čísla", why: "2. pád množného čísla je „žen“ (bez koho?)." },
+  ], {
+    hints: ["Zkus tvar „ženách“ dát do věty. Jakou předložku k němu potřebuješ?", "Koncovka -ách se pojí s předložkami „o“ a „v“: mluvíme o ženách. Který pád odpovídá na otázku „o kom? o čem?“?"],
+    explanation: "Mluvíme o kom? — o ženách. Otázka „o kom, o čem“ patří k 6. pádu a žen je víc, proto 6. pád množného čísla.",
+  }),
+  choice("Urči pád a číslo tvaru „kuřat“.", "2. pád množného čísla", [
+    { value: "1. pád množného čísla", why: "1. pád množného čísla je „kuřata“ (ta kuřata)." },
+    { value: "3. pád množného čísla", why: "3. pád množného čísla je „kuřatům“." },
+    { value: "6. pád množného čísla", why: "6. pád množného čísla je „kuřatech“ (o kuřatech)." },
+  ], {
+    hints: ["Zkus větu „Na dvoře pobíhá hodně …“. Hodí se tam tvar „kuřat“?", "Po slovech „hodně, mnoho, bez“ stojí pád s otázkou „koho? čeho?“. Tvar „kuřat“ nemá žádnou koncovku, podobně jako „bez měst“ nebo „bez žen“."],
+    explanation: "Bez koho? — bez kuřat; mnoho kuřat. Otázka „koho, čeho“ patří k 2. pádu a kuřat je víc, proto 2. pád množného čísla.",
+  }),
+  choice("Urči pád a číslo tvaru „písněmi“.", "7. pád množného čísla", [
+    { value: "6. pád množného čísla", why: "6. pád množného čísla je „písních“ (o písních)." },
+    { value: "3. pád množného čísla", why: "3. pád množného čísla je „písním“." },
+    { value: "7. pád jednotného čísla", why: "7. pád jednotného čísla je „písní“ (s jednou písní)." },
+  ], {
+    hints: ["Zkus větu „Oslava začala veselými …“. Na jakou otázku tvar odpovídá?", "Koncovka -mi patří k pádu s otázkou „s kým? čím?“. Zbývá rozhodnout, jestli jde o jednu píseň, nebo o víc."],
+    explanation: "S čím? — s písněmi. Koncovka -ěmi patří k 7. pádu množného čísla; s jednou písní by to bylo „písní“.",
+  }),
+  choice("Ve kterém pádě jednotného čísla se tvar vzoru stavení liší od ostatních?", "v 7. pádě", [
+    { value: "v 1. pádě", why: "1. pád je „stavení“ — stejně jako 2. až 6. pád." },
+    { value: "ve 2. pádě", why: "2. pád je „bez stavení“ — tvar se nemění." },
+    { value: "v 5. pádě", why: "5. pád (oslovení) je taky „stavení“." },
+  ], {
+    hints: ["Vyskloňuj si „stavení“: bez stavení, ke stavení, vidím stavení…", "Ve většině pádů zůstane tvar „stavení“. Jen v jednom pádě na konci něco přibude — zkus „s kým? s čím?“."],
+    explanation: "Vzor stavení má v jednotném čísle ve všech pádech tvar „stavení“, jen v 7. pádě přibývá -m: se stavením.",
+  }),
+  choice("Která dvojice slov patří ke stejnému vzoru?", "radost – myš", [
+    { value: "radost – báseň", why: "Bez radosti × bez básně: 2. pád na -i a na -ě, tedy dva různé vzory." },
+    { value: "škola – ulice", why: "Škola končí na -a, ulice na -e — každá má jiný vzor." },
+    { value: "pole – kotě", why: "Bez pole × bez kotěte: jen u kotěte přibývá -et-." },
+  ], {
+    hints: ["U každé dvojice řekni obě slova ve 2. pádě: bez… .", "Stejný vzor mají slova se stejnou koncovkou ve 2. pádě. Hledej dvojici, kde obě slova končí po „bez“ stejně."],
+    explanation: "Bez radosti, bez myši — obě slova mají ve 2. pádě -i, a patří tedy ke vzoru kost.",
+  }),
+  tvarUlohy("hříbě", "1. pádě množného čísla", "Na louce se pásla dvě …", "hříbata",
+    [{ form: "hříběte", pad: "2. pád jednotného čísla (bez hříběte)" }, { form: "hříbat", pad: "2. pád množného čísla (bez hříbat)" }, { form: "hříbětem", pad: "7. pád jednotného čísla (s hříbětem)" }],
+    "kuře", "kuřata"),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e, hints }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle(opts),
-    hints: hints ?? [
-      "Urči nejdřív rod: řekneš před slovem 'ta', nebo 'to'?",
-      "Pak se podívej na zakončení slova a zkus ho vyskloňovat — u slov končících na souhlásku i u mláďat rozhodne až tvar, který slovo dostane v dalších pádech.",
-    ],
-    explanation: e,
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const VZORYPODSTATNYCHJMENZENARUZEPISENKOSTMESTOMOREKURESTAVENI: TopicMetadata[] = [
@@ -126,13 +201,13 @@ export const VZORYPODSTATNYCHJMENZENARUZEPISENKOSTMESTOMOREKURESTAVENI: TopicMet
     recommendedNext: ["g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech"],
     generator: gen,
     helpTemplate: {
-      hint: "žena=tvrdý žen., růže=měkký žen., píseň=-ň, kost=-í v 7.p., město=tvrdý střed., moře=měkký střed., kuře=živý střed., stavení=-í",
+      hint: "žena=-a, růže=-e/-ě, píseň=bez písně, kost=bez kosti, město=-o, moře=-e, kuře=-ete, stavení=-í",
       steps: [
         "Urči rod: ta → ženský; to → střední.",
-        "Ženský: tvrdý základ → žena; měkký základ → růže; -ň → píseň; -ost/-est → kost",
-        "Střední: tvrdý základ → město; měkký základ → moře; živý na -e → kuře; -í → stavení",
+        "Ženský: -a → žena; -e/-ě → růže; souhláska → 2. pád na -e/-ě = píseň, na -i = kost",
+        "Střední: -o → město; -e beze změny → moře; přibývá -et- → kuře; -í → stavení",
       ],
-      commonMistake: "Záměna vzorů kost a žena: kost má v 7. pádu j.č. -í (kostí), žena má -ou (ženou)",
+      commonMistake: "Záměna vzorů píseň a kost: rozhodne 2. pád — bez písně (-ě), ale bez kosti (-i)",
       example: "žena: ženou (7. pád j.č.); kost: kostí (7. pád j.č.); kuře: kuřete (2. pád j.č.)",
     },
   },

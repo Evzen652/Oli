@@ -1,363 +1,176 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
+import { urceni, type Kategorie, type Polozka } from "../_urceni";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby k chybným možnostem. Teď: L1 jaký žánr se hodí k nápadu
+// · L2 stavba textu (začátek, konec, nadpis, rým, plán) · L3 úprava vlastního
+// textu (opakování, spisovnost, přesná slova, obraznost).
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Před psaním vlastního textu je nejdůležitější:",
-    correctAnswer: "vybrat téma a promyslet příběh",
-    options: ["vybrat téma a promyslet příběh", "vymyslet nadpis a podnadpis", "spočítat, kolik to má slov", "narýsovat okraje stránky"],
-    hints: ["Co musíš vědět dřív, než napíšeš první větu — jak se text bude jmenovat, nebo o čem vlastně bude?"],
-    explanation: "Nejdřív musíš vědět, o čem píšeš a co se v textu stane. Nadpis i úprava se dají doladit až nakonec, ale bez tématu není co psát.",
-  },
-  {
-    question: "Co je téma vlastního literárního textu?",
-    correctAnswer: "hlavní myšlenka textu",
-    options: [
-      "název textu na první straně",
-      "hlavní myšlenka textu",
-      "délka textu ve stranách",
-      "počet postav v textu",
-    ],
-    hints: ["Kdyby se tě někdo zeptal, o čem tvůj text je, co bys odpověděl?"],
-    explanation: "Téma je to, o čem text v jádru vypovídá — přátelství, odvaha, ztráta. Název ani rozsah o obsahu nic neprozradí.",
-  },
-  {
-    question: "Jak správně začneme psát povídku?",
-    correctAnswer: "úvodem, který představí situaci",
-    options: ["podrobným popisem počasí", "rovnou závěrem příběhu", "úvodem, který představí situaci", "podpisem autora textu"],
-    hints: ["Čtenář na začátku nic neví. Co mu musíš dát, aby se v příběhu zorientoval a zůstal u něj?"],
-    explanation: "Dobrý úvod čtenáře uvede do situace — kdo, kde a co se chystá. Když začneš závěrem nebo dlouhým popisem počasí, čtenář ztratí zájem.",
-  },
-  {
-    question: "Co musí povídka nebo pohádka obsahovat?",
-    correctAnswer: "postavy, prostředí a děj",
-    options: ["jen podrobný popis postav", "jen rozhovory postav", "jen závěrečné poučení", "postavy, prostředí a děj"],
-    hints: ["Zkus si představit text, ve kterém se nikdo nepohne. Bude to ještě příběh?"],
-    explanation: "Příběh potřebuje někoho, kdo jedná, místo, kde jedná, a události, které se stanou. Samotný popis nebo samotné dialogy příběh netvoří.",
-  },
-  {
-    question: "Co je charakteristické pro pohádku?",
-    correctAnswer: "kouzelné a nadpřirozené prvky",
-    options: ["kouzelné a nadpřirozené prvky", "doložené historické události", "výsledky vědeckých pokusů", "rozhovory bez jakéhokoli děje"],
-    hints: ["Co mají společného mluvící zvíře, čarodějnice a kouzelný prsten? A může se to stát doopravdy?"],
-    explanation: "Pohádku poznáš podle toho, že se v ní děje něco, co v běžném světě není možné. Historická ani vědecká látka tenhle znak nemá.",
-  },
-  {
-    question: "Jak správně ukončíme vlastní literární text?",
-    correctAnswer: "rozuzlením a pointou",
-    options: [
-      "pouhým slovem konec",
-      "rozuzlením a pointou",
-      "ponecháním děje nedokončeného",
-      "shrnutím všech postav",
-    ],
-    hints: ["Čtenář dočte poslední větu. Co se musel dozvědět, aby neměl pocit, že text náhle utnul?"],
-    explanation: "Závěr má odpovědět, jak dopadl problém ze zápletky, a nechat čtenáři myšlenku na konec. Slovo 'konec' samo o sobě nic nevyřeší.",
-  },
-  {
-    question: "Jaký žánr bys vybral pro příběh o kouzelném lesním skřítkovi?",
-    correctAnswer: "pohádku",
-    options: ["detektivní povídku", "historický román", "pohádku", "věcný popis"],
-    hints: ["Skřítek v běžném světě neexistuje. Který žánr s takovými bytostmi počítá?"],
-    explanation: "Nadpřirozená bytost patří do žánru, kde je kouzlo přirozenou součástí světa. V detektivce ani v historickém románu by působila cizorodě.",
-  },
-  {
-    question: "Co je pointa v literárním textu?",
-    correctAnswer: "překvapivý závěr textu",
-    options: ["první věta textu", "podrobný popis postav", "seznam použitých knih", "překvapivý závěr textu"],
-    hints: ["Proč si někdy pamatuješ z celé povídky hlavně poslední větu?"],
-    explanation: "Pointa je vyvrcholení na konci, které čtenáře překvapí nebo přinutí přemýšlet. Právě kvůli ní si text zapamatuje.",
-  },
-  {
-    question: "Jaký žánr vybrat pro příběh plný napětí a záhady?",
-    correctAnswer: "detektivní povídku",
-    options: ["detektivní povídku", "lyrickou báseň", "veselou říkanku", "věcný popis přístroje"],
-    hints: ["Který z uvedených žánrů je celý postavený na tom, že čtenář něco do konce neví?"],
-    explanation: "Napětí a nevyřešená záhada jsou základem detektivního žánru. Lyrická báseň ani říkanka na takovém napětí nestojí.",
-  },
-  {
-    question: "Co je osnova textu a proč ji tvoříme?",
-    correctAnswer: "plán textu předem",
-    options: [
-      "seznam použitých slov",
-      "plán textu předem",
-      "závěrečné shrnutí textu",
-      "soupis chyb po napsání",
-    ],
-    hints: ["Vzniká před psaním, nebo až po něm? A k čemu ti při psaní pomůže?"],
-    explanation: "Osnova je stručný plán, co a v jakém pořadí napíšeš. Díky ní se příběh nerozpadne a nezapomeneš žádnou důležitou část.",
-  },
-  {
-    question: "Co je dialog v literárním textu?",
-    correctAnswer: "rozhovor postav v přímé řeči",
-    options: ["popis prostředí kolem postav", "popis vzhledu jedné postavy", "rozhovor postav v přímé řeči", "vnitřní myšlenky vypravěče"],
-    hints: ["Podívej se do knihy na místa s uvozovkami a pomlčkami na začátku řádku. Co se tam odehrává?"],
-    explanation: "Dialog je rozhovor dvou nebo více postav zapsaný přímou řečí. Popis ani vnitřní myšlenky dialogem nejsou — chybí jim výměna replik.",
-  },
-  {
-    question: "Jak přímá řeč text oživuje?",
-    correctAnswer: "dává postavám vlastní hlas",
-    options: ["nahrazuje děj popisem", "zpomaluje tempo příběhu", "skrývá, kdo právě mluví", "dává postavám vlastní hlas"],
-    hints: ["Porovnej 'Řekl jí, že se zlobí' a '„Zlobím se!“ vykřikl'. Ve které variantě postavu skoro slyšíš?"],
-    explanation: "V přímé řeči čtenář slyší postavu jejími vlastními slovy, takže působí živě a děj se zrychluje. Vyprávění o tom, co postava řekla, je odtažitější.",
-  },
-  {
-    question: "Co je nezbytné pro dobrou charakteristiku postavy?",
-    correctAnswer: "vzhled, chování i pocity",
-    options: ["vzhled, chování i pocity", "jen jméno a věk postavy", "jen seznam jejích přátel", "jen místo, kde postava žije"],
-    hints: ["Kdyby ses o někom dozvěděl jen jméno a věk, poznal bys ho? Co dalšího potřebuješ vědět?"],
-    explanation: "Aby byla postava živá, musí čtenář vědět, jak vypadá, jak jedná a co prožívá uvnitř. Samotné údaje jako jméno nebo věk to nezajistí.",
-  },
-  {
-    question: "Jak se liší pohádka od povídky?",
-    correctAnswer: "pohádka má kouzla, povídka ne",
-    options: [
-      "povídka má kouzla, pohádka ne",
-      "pohádka má kouzla, povídka ne",
-      "pohádka je vždy delší",
-      "obojí je úplně totéž",
-    ],
-    hints: ["V jednom z těch žánrů se může stát i to, co ve skutečném světě není možné. Ve kterém?"],
-    explanation: "Pohádka pracuje s kouzly a nadpřirozenými bytostmi, povídka se drží možného světa. Délka o zařazení nerozhoduje.",
-  },
-  {
-    question: "Co je správné pravidlo pro psaní vlastního textu?",
-    correctAnswer: "osnova, psaní, oprava",
-    options: ["psát rovnou a neopravovat", "napsat text jen jednou", "osnova, psaní, oprava", "opravit dřív, než začnu psát"],
-    hints: ["Tři kroky jdou v určitém pořadí. Co dává smysl dělat jako první a co až úplně nakonec?"],
-    explanation: "Nejdřív si text naplánuješ, pak napíšeš a nakonec opravíš. Žádný autor neodevzdá první verzi — právě úpravy z textu udělají dobrý text.",
-  },
+const ZANRY: Kategorie[] = [
+  { nazev: "pohádka", znak: "vymyšlený příběh s kouzly, kde dobro vítězí nad zlem." },
+  { nazev: "bajka", znak: "zvířata jednají jako lidé a z příběhu plyne ponaučení." },
+  { nazev: "povídka", znak: "příběh ze skutečného života, bez kouzel." },
+  { nazev: "báseň", znak: "text ve verších, často s rýmem a rytmem." },
+];
+const PO = "pohádka", BA = "bajka", PV = "povídka", BS = "báseň";
+const N = (napad: string, kategorie: string, klic: string, proc: string): Polozka =>
+  ({ uroven: 1, slovo: napad, veta: napad, kategorie, klic, proc });
+
+const NAPADY: Polozka[] = [
+  N("Chudý chlapec dostane od víly kouzelný prsten a zachrání princeznu.", PO, "je tu víla a kouzelný prsten", "Kouzla a dobro vítězí — pohádka."),
+  N("Líná cikáda celé léto zpívá a v zimě prosí pracovitého mravence o jídlo — kdo nepracuje, nemá.", BA, "zvířata se chovají jako lidé a z příběhu plyne poučení", "Zvířata jako lidé a poučení — bajka."),
+  N("Kluk z páté třídy poprvé jede sám vlakem k babičce a cestou se ztratí.", PV, "je to běžná příhoda ze života bez kouzel", "Skutečná příhoda — povídka."),
+  N("Chceš v krátkých rýmovaných řádcích vyjádřit, jak voní jarní louka.", BS, "píšeš krátké řádky s rýmem", "Verše s rýmem — báseň."),
+  N("Drak unese princeznu a nejmladší ze tří bratrů se ji vydá vysvobodit.", PO, "je tu drak a princezna", "Pohádkové bytosti — pohádka."),
+  N("Pyšný zajíc se vysmívá pomalé želvě, ale v závodě ho želva porazí — pýcha se nevyplácí.", BA, "zvířata jednají jako lidé a na konci je ponaučení", "Zvířata a ponaučení — bajka."),
+  N("Holka z vesnice najde u cesty zraněného kosa a doma ho s tátou vyléčí.", PV, "všechno se tak mohlo opravdu stát", "Skutečná příhoda — povídka."),
+  N("Chceš rytmicky a s rýmy popsat, jak padá první sníh.", BS, "chceš psát v rytmu a s rýmy", "Rytmus a rým — báseň."),
+  N("Kouzelný hrnec vaří kaši, dokud neuslyší správná slova.", PO, "je tu kouzelný předmět", "Kouzla — pohádka."),
+  N("Vrána se ozdobí pávím peřím, ostatní ptáci ji poznají a vyženou — nemáme se vydávat za jiné.", BA, "ptáci jednají jako lidé a z příběhu plyne poučení", "Zvířata a ponaučení — bajka."),
+  N("Dvě kamarádky se pohádají kvůli ztracené knize a pak se usmíří.", PV, "je to obyčejná příhoda mezi kamarádkami", "Skutečná příhoda — povídka."),
+  N("Chceš napsat pár slok s rýmy o tom, jak se těšíš na prázdniny.", BS, "chceš psát sloky s rýmy", "Sloky a rýmy — báseň."),
+  N("Mluvící kocour pomůže mlynářovu synovi získat zámek a princeznu.", PO, "mluvící kocour bez ponaučení a zámek s princeznou jsou kouzelný svět", "Kouzelný svět — pohádka."),
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Jak vybrat správné téma pro vlastní báseň?",
-    correctAnswer: "téma, které mě zajímá",
-    options: ["téma s nejdelším názvem", "téma, které nikoho nezajímá", "vždy jen počasí", "téma, které mě zajímá"],
-    hints: ["O čem se ti bude psát líp — o věci, ke které nic necítíš, nebo o té, která ti leží v hlavě?"],
-    explanation: "Nejlepší básně vyrůstají z vlastního prožitku. Když tě téma zajímá, snáz k němu najdeš obrazy a slova.",
-  },
-  {
-    question: "Co je rýmové schéma ABAB?",
-    correctAnswer: "rýmuje se 1.+3. a 2.+4. verš",
-    options: ["rýmuje se 1.+3. a 2.+4. verš", "rýmuje se 1.+2. a 3.+4. verš", "rýmují se všechny verše", "rýmuje se jen 1. a 4. verš"],
-    hints: ["Písmena jdou za sebou A-B-A-B. Které pozice mají stejné písmeno?"],
-    explanation: "Stejná písmena označují stejný rým. U schématu ABAB se tedy rýmuje první verš se třetím a druhý se čtvrtým — rýmy se střídají.",
-  },
-  {
-    question: "Co je rýmové schéma AABB?",
-    correctAnswer: "rýmuje se 1.+2. a 3.+4. verš",
-    options: [
-      "rýmuje se 1.+3. a 2.+4. verš",
-      "rýmuje se 1.+2. a 3.+4. verš",
-      "rýmují se všechny verše",
-      "nerýmuje se žádný verš",
-    ],
-    hints: ["Písmena jdou za sebou A-A-B-B. Stojí stejná písmena vedle sebe, nebo obden?"],
-    explanation: "U schématu AABB se rýmují sousední dvojice veršů — první s druhým a třetí se čtvrtým. Tomu se říká sdružený rým.",
-  },
-  {
-    question: "Jak napsat zajímavé zahájení povídky?",
-    correctAnswer: "začít akcí nebo dialogem",
-    options: ["začít popisem počasí", "začít výčtem postav", "začít akcí nebo dialogem", "začít shrnutím konce"],
-    hints: ["Kdy tě kniha chytne dřív — když se hned něco děje, nebo když se dvě strany popisuje obloha?"],
-    explanation: "Když text začne děním nebo replikou, čtenář je hned uvnitř příběhu. Dlouhý popis nebo výčet postav ho na začátku spíš odradí.",
-  },
-  {
-    question: "Jaký typ vypravěče se hodí do pohádky pro děti?",
-    correctAnswer: "er-forma, tedy 3. osoba",
-    options: ["ich-forma, tedy 1. osoba", "2. osoba, oslovení ty", "střídání všech osob", "er-forma, tedy 3. osoba"],
-    hints: ["Jak začíná většina pohádek, které znáš — 'Byl jednou jeden…', nebo 'Byl jsem jednou…'?"],
-    explanation: "Pohádky se tradičně vyprávějí zvenčí ve 3. osobě, takže vypravěč vidí na všechny postavy. Střídání osob by malého čtenáře jen zmátlo.",
-  },
-  {
-    question: "Jak správně napsat napínavou scénu?",
-    correctAnswer: "krátké věty a rychlé tempo",
-    options: ["krátké věty a rychlé tempo", "dlouhé popisné věty", "podrobný popis prostředí", "výčet vlastností postav"],
-    hints: ["Aby čtenář cítil napětí, věty nesmí být dlouhé a popisné — mají znít, jako by se to dělo rychle, teď hned."],
-    explanation: "Krátké věty čtenář přečte rychleji, a text tím zrychlí i děj. Dlouhý popis napětí naopak brzdí.",
-  },
-  {
-    question: "Jak správně napsat klidnou, idylickou scénu?",
-    correctAnswer: "delší věty a bohatý popis",
-    options: [
-      "krátké věty bez popisu",
-      "delší věty a bohatý popis",
-      "jen rychlé dialogy",
-      "výčet událostí za sebou",
-    ],
-    hints: ["Je to opak toho, co bys použil v napínavé scéně. Co tedy s délkou vět uděláš?"],
-    explanation: "Rozvité věty a smyslové detaily čtení zpomalí, a čtenář se tak v klidné scéně může zdržet. Krátké věty by naopak vytvořily spěch.",
-  },
-  {
-    question: "Co je hlavní chyba začínajících autorů?",
-    correctAnswer: "hodně popisu, málo děje",
-    options: ["hodně děje, málo popisu", "příliš krátký nadpis", "hodně popisu, málo děje", "příliš mnoho kapitol"],
-    hints: ["Co se v takovém textu nestane, i když je dlouhý?"],
-    explanation: "Začátečníci často dlouze popisují prostředí a vzhled, ale příběh se nikam nehne. Čtenáře drží u textu především děj.",
-  },
-  {
-    question: "Jak zapsat vnitřní myšlenky postavy?",
-    correctAnswer: "odlišit je od přímé řeči",
-    options: ["psát je stejně jako dialog", "vůbec je nezapisovat", "psát je vždy velkými písmeny", "odlišit je od přímé řeči"],
-    hints: ["Myšlenku postava nevysloví nahlas. Jak dá autor čtenáři najevo, že ji nikdo jiný neslyší?"],
-    explanation: "Myšlenky se zapisují jinak než mluvená řeč — kurzivou nebo bez uvozovek. Kdyby vypadaly stejně jako dialog, čtenář by nepoznal, co bylo řečeno nahlas.",
-  },
-  {
-    question: "Jak vytvořit napínavou zápletku v povídce?",
-    correctAnswer: "cíl postavy a překážky",
-    options: ["cíl postavy a překážky", "jen popis prostředí", "jen rozhovory postav", "jen výčet postav"],
-    hints: ["Kdyby postava dostala všechno hned, o co by se čtenář bál?"],
-    explanation: "Napětí vzniká z toho, že postava něco chce a něco jí v tom brání. Bez překážky není konflikt, a tedy ani napětí.",
-  },
-  {
-    question: "Co je pointa pohádky nebo bajky?",
-    correctAnswer: "poučení plynoucí z děje",
-    options: [
-      "poslední věta textu",
-      "poučení plynoucí z děje",
-      "seznam všech postav",
-      "název celé bajky",
-    ],
-    hints: ["Kvůli čemu se bajka vlastně vypráví? Kvůli příběhu samotnému, nebo kvůli tomu, co si z něj odneseš?"],
-    explanation: "Bajka i pohádka mířila odjakživa k ponaučení — líný nedostane odměnu, pyšný pohoří. Poslední věta je jen místem, kde se to poučení objeví.",
-  },
-  {
-    question: "Jak se liší hrdina a záporák v literárním textu?",
-    correctAnswer: "hrdina usiluje, záporák brání",
-    options: ["záporák usiluje, hrdina brání", "hrdina i záporák jsou totéž", "hrdina usiluje, záporák brání", "záporák vždy nakonec zemře"],
-    hints: ["Jeden z nich má v příběhu cíl, druhý mu stojí v cestě. Který je který?"],
-    explanation: "Hrdina (protagonista) o něco usiluje, záporák (antagonista) mu v tom brání. Z toho střetu vzniká děj — a jak dopadne, není dané předem.",
-  },
-  {
-    question: "Jak zlepšit text po prvním napsání?",
-    correctAnswer: "přečíst nahlas a opravit",
-    options: ["odevzdat rovnou první verzi", "opravit jen pravopisné chyby", "text pro jistotu zkrátit na půl", "přečíst nahlas a opravit"],
-    hints: ["Když si text přečteš potichu, přeskočíš spoustu míst. Co se změní, když ho vyslovíš?"],
-    explanation: "Při čtení nahlas uslyšíš věty, které drhnou nebo se opakují — a ty pak opravíš. Samotná kontrola pravopisu takové chyby neodhalí.",
-  },
-  {
-    question: "Co jsou klišé v literárním textu?",
-    correctAnswer: "obehraná, neoriginální fráze",
-    options: ["obehraná, neoriginální fráze", "odborný termín z učebnice", "obzvlášť zdařilá věta", "cizí slovo v textu"],
-    hints: ["Proč už spojení 'krásná jako růže' nikoho nepřekvapí?"],
-    explanation: "Klišé je obrat, který byl použit tolikrát, že přestal cokoli sdělovat. Není chybný, jen otřelý — a čtenáře proto míjí.",
-  },
-  {
-    question: "Jak napsat originální text bez klišé?",
-    correctAnswer: "hledat vlastní obrazy",
-    options: [
-      "opisovat od slavných autorů",
-      "hledat vlastní obrazy",
-      "psát jen o počasí",
-      "používat co nejvíc frází",
-    ],
-    hints: ["Když tě napadne první přirovnání, napadlo pravděpodobně i všechny ostatní. Co s tím uděláš?"],
-    explanation: "Originalita vzniká tím, že popíšeš věc po svém — vlastním přirovnáním a vlastním pohledem. Opisování cizích obratů vede zpět ke klišé.",
-  },
+const L2: PracticeTask[] = [
+  choice("Který začátek se hodí k pohádce?", "Za devatero horami žil jeden král.", [
+    { value: "Včera jsem šel do obchodu.", why: "Tak začíná spíš zážitek ze života." },
+    { value: "Voda vře při 100 stupních.", why: "To je věcná informace." },
+    { value: "Nejprve si umyj ruce.", why: "To je pokyn z návodu." },
+  ], {
+    hints: ["Jak obvykle začínají pohádky, které znáš?", "Pohádky mají ustálené začátky, které čtenáře přenesou do vymyšleného světa daleko odsud."],
+    explanation: "Za devatero horami… je typický pohádkový začátek.",
+  }),
+  choice("Který nadpis se hodí k povídce o tom, jak se Tomáš poprvé učil plavat?", "Tomáš a velká voda", [
+    { value: "Plavání", why: "Příliš obecné, nezaujme." },
+    { value: "Tomáš se naučil plavat", why: "Prozradí konec." },
+    { value: "Moje kolo", why: "S příběhem nesouvisí." },
+  ], {
+    hints: ["Který nadpis vzbudí zvědavost a přitom neprozradí konec?", "Dobrý nadpis se týká příběhu, je krátký a zajímavý, ale nevyzradí, jak to dopadne."],
+    explanation: "Tomáš a velká voda se týká příběhu a konec neprozradí.",
+  }),
+  choice("Jak nejlépe opravit větu „Pes běžel a pes štěkal a pes skákal.“?", "Pes běžel, štěkal a skákal.", [
+    { value: "Pes běžel a pes štěkal.", why: "Pořád opakuje pes a navíc něco vynechává." },
+    { value: "Běžel štěkal skákal.", why: "Chybí podmět i čárky." },
+    { value: "Pes běžel a štěkal a skákal a pes.", why: "Opakování zůstalo a věta je horší." },
+  ], {
+    hints: ["Které slovo se ve větě zbytečně opakuje?", "Stejný podmět stačí napsat jednou; slovesa pak oddělíš čárkou a před poslední dáš spojku a."],
+    explanation: "Podmět jednou, slovesa oddělená čárkou: Pes běžel, štěkal a skákal.",
+  }),
+  choice("Co musí mít každý příběh, aby byl zajímavý?", "problém nebo zápletku, kterou postava řeší", [
+    { value: "co nejvíc postav", why: "Počet postav zajímavost nezaručí." },
+    { value: "hodně popisů počasí", why: "Popisy děj nenesou." },
+    { value: "stejný začátek jako jiný příběh", why: "Opakování cizího začátku nezaujme." },
+  ], {
+    hints: ["O čem by byl příběh, kdyby se v něm nic nestalo?", "Napětí vznikne, když postava musí překonat nějakou překážku."],
+    explanation: "Bez problému, který se řeší, příběh nemá napětí.",
+  }),
+  choice("Co uděláš, když dopíšeš svůj příběh?", "přečtu ho znovu a opravím chyby", [
+    { value: "hned ho vyhodím", why: "Tím práci zahodíš." },
+    { value: "nic, je hotový", why: "V hotovém textu často zůstanou chyby." },
+    { value: "přepíšu ho celý jinak bez čtení", why: "Bez čtení nevíš, co opravit." },
+  ], {
+    hints: ["Jak zjistíš, jestli se ti v textu něco nepovedlo?", "Hotový text si pomalu projdi, hledej překlepy, opakovaná slova a místa, kde něco chybí."],
+    explanation: "Po dopsání text znovu přečteme a opravíme.",
+  }),
+  choice("Který verš se rýmuje s veršem „Na zahradě roste mák,“?", "u plotu sedí malý pták.", [
+    { value: "v trávě běží malý pes.", why: "Pes se s mák nerýmuje." },
+    { value: "v okně svítí lampa.", why: "Lampa se s mák nerýmuje." },
+    { value: "u plotu sedí kočka.", why: "Kočka se s mák nerýmuje." },
+  ], {
+    hints: ["Jak zní konec slova mák?", "Rým znamená, že konce veršů zní stejně: mák — …ák."],
+    explanation: "Mák — pták: konce veršů zní stejně.",
+  }),
+  choice("Co je nejlepší první krok, když máš napsat pohádku na téma odvaha?", "vymyslet postavu, její problém a jak ho vyřeší", [
+    { value: "hned začít psát bez přemýšlení", why: "Bez plánu se příběh snadno rozpadne." },
+    { value: "opsat hotovou pohádku z knihy", why: "To není vlastní text." },
+    { value: "nejdřív nakreslit obálku knihy", why: "Obálka příběh nevymyslí." },
+  ], {
+    hints: ["Co potřebuješ vědět, než napíšeš první větu?", "Plán příběhu: kdo bude hlavní hrdina, co ho potká a jak se s tím vypořádá."],
+    explanation: "Nejdřív plán: postava, problém, řešení.",
+  }),
+  choice("Která věta nejlépe ukáže, jak vypadá zimní les?", "Stromy se prohýbaly pod čepicemi sněhu a všude bylo ticho.", [
+    { value: "V lese byla zima a byl tam sníh.", why: "Pravda, ale čtenář les nevidí." },
+    { value: "Les byl velký a byly v něm stromy.", why: "Obecné, nic zvláštního." },
+    { value: "Šel jsem lesem domů a pak jsem jedl.", why: "Vypráví děj, les nepopisuje." },
+  ], {
+    hints: ["Ve které větě les skoro vidíš a slyšíš?", "Živý popis používá přesná slova, obraznost a smysly — co vidíš, slyšíš, cítíš."],
+    explanation: "Čepice sněhu a ticho vytvoří obraz zimního lesa.",
+  }),
+  choice("Který konec se hodí k pohádce?", "A žili šťastně až do smrti.", [
+    { value: "Pokračování příště.", why: "Pohádka má uzavřený konec." },
+    { value: "Recept je hotový.", why: "To je konec návodu." },
+    { value: "Zítra bude pršet.", why: "To je předpověď počasí." },
+  ], {
+    hints: ["Jak obvykle končí pohádky?", "Pohádky mají ustálené závěry, které říkají, že dobro zvítězilo a všechno se obrátilo k lepšímu."],
+    explanation: "A žili šťastně až do smrti je typický pohádkový konec.",
+  }),
+  choice("Čím obvykle končí bajka?", "ponaučením, co si z příběhu vzít", [
+    { value: "veselou písničkou", why: "Písnička do bajky nepatří." },
+    { value: "seznamem postav", why: "Seznam postav není konec." },
+    { value: "přáním všeho nejlepšího", why: "To patří do přání, ne do bajky." },
+  ], {
+    hints: ["Co si má čtenář z bajky odnést?", "Na konci bajky často stojí věta, která říká, jak se správně chovat — třeba Kdo jinému jámu kopá, sám do ní padá."],
+    explanation: "Bajka končí ponaučením.",
+  }),
+  choice("Chceš, aby postavy v tvém příběhu mluvily. Jak to zapíšeš?", "přímou řečí v uvozovkách", [
+    { value: "jen číslicemi", why: "Číslice řeč nezapíšou." },
+    { value: "velkými písmeny bez uvozovek", why: "Velká písmena řeč neoznačují." },
+    { value: "pod čarou jako poznámku", why: "Poznámka pod čarou je pro vysvětlivky." },
+  ], {
+    hints: ["Jak se v textu pozná, co postava řekla přesně svými slovy?", "Slova postavy dáváme do „…“ a uvozovací věta (řekl, zeptala se) je od nich oddělená."],
+    explanation: "Slova postav píšeme jako přímou řeč v uvozovkách.",
+  }),
+  choice("Proč je dobré v příběhu střídat slova jako řekl, zašeptal, vykřikl?", "čtenář lépe pozná, jak postava mluvila", [
+    { value: "aby byl text delší", why: "Nejde o délku." },
+    { value: "protože řekl je sprosté slovo", why: "Řekl sprosté není, jen se opakuje." },
+    { value: "aby se čtenář nudil", why: "Naopak — text je zajímavější." },
+  ], {
+    hints: ["Co se dozvíš ze slova zašeptal, co ze slova řekl nevyčteš?", "Přesné sloveso ukáže náladu i hlasitost — jestli se mluvčí bojí, zlobí, nebo tajně radí."],
+    explanation: "Přesné sloveso ukáže, jak kdo mluvil.",
+  }),
+  choice("Jak vybrat téma pro vlastní báseň?", "o něčem, co dobře znám a co ve mně vyvolává pocity", [
+    { value: "o něčem, co mě vůbec nezajímá", why: "Bez zájmu se píše těžko." },
+    { value: "jen o tom, co vybere spolužák", why: "Vlastní báseň má být tvoje." },
+    { value: "o něčem, o čem nic nevím", why: "O neznámém se píše těžko." },
+  ], {
+    hints: ["O čem se ti bude psát nejlépe?", "Báseň vyjadřuje dojmy a nálady; nejsnáz píšeš o tom, co sám nebo sama prožíváš."],
+    explanation: "Nejlépe se píše o tom, co známe a co v nás budí pocity.",
+  }),
 ];
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Co je kompoziční oblouk příběhu?",
-    correctAnswer: "napětí stoupá a pak klesá",
-    options: ["napětí je pořád stejné", "napětí od začátku jen klesá", "napětí stoupá a pak klesá", "napětí přijde až za koncem"],
-    hints: ["Nakresli si průběh napětí v dobrodružné knize jako čáru. Jaký tvar ti vyjde?"],
-    explanation: "Příběh se rozbíhá, napětí roste až k vrcholu a po něm přichází rozuzlení. Ta křivka je důvod, proč se dobře napsaná kniha čte jedním dechem.",
-  },
-  {
-    question: "Co je nespolehlivý vypravěč?",
-    correctAnswer: "vypravěč, jemuž nelze věřit",
-    options: ["vypravěč stojící mimo příběh", "vypravěč bez jména", "vypravěč, který mlčí", "vypravěč, jemuž nelze věřit"],
-    hints: ["Představ si příběh vyprávěný někým, kdo lže nebo si věci pamatuje špatně. Co to udělá se čtenářem?"],
-    explanation: "Nespolehlivý vypravěč podává děj zkresleně — buď záměrně, nebo protože sám všemu nerozumí. Čtenář si proto musí pravdu domýšlet sám.",
-  },
-  {
-    question: "Proč se vyplatí pocit spíš ukázat než ho pojmenovat?",
-    correctAnswer: "čtenář ho pak prožije sám",
-    options: ["čtenář ho pak prožije sám", "text je tím vždy kratší", "je to jednodušší na psaní", "vyhneme se tak přímé řeči"],
-    hints: ["Porovnej 'Byl smutný' a 'Slzy mu stékaly po tvářích'. Ve které větě ten smutek opravdu cítíš?"],
-    explanation: "Když autor pocit jen pojmenuje, čtenář ho vezme na vědomí. Když ho ukáže jednáním a detailem, čtenář si ho odvodí sám — a proto ho i prožije.",
-  },
-  {
-    question: "Co je román v dopisech?",
-    correctAnswer: "příběh složený z dopisů",
-    options: [
-      "příběh o poštovním úřadu",
-      "příběh složený z dopisů",
-      "příběh psaný jen v básních",
-      "příběh bez jakýchkoli postav",
-    ],
-    hints: ["Nejde o to, o čem se píše, ale o to, jakou podobu má samotný text. Z čeho se skládá?"],
-    explanation: "Takový román netvoří souvislé vyprávění, ale dopisy nebo deníkové zápisy postav. Čtenář se děj dozvídá jen z toho, co si postavy navzájem napíšou.",
-  },
-  {
-    question: "Jak se liší vnitřní a vnější konflikt v příběhu?",
-    correctAnswer: "vnitřní je sám se sebou",
-    options: ["vnitřní je s jinou osobou", "vnější je sám se sebou", "vnitřní je sám se sebou", "obojí je úplně totéž"],
-    hints: ["Rozhodnout se mezi strachem a odvahou — odehrává se takový boj venku, nebo uvnitř postavy?"],
-    explanation: "Vnitřní konflikt je zápas postavy s vlastními pochybnostmi, vnější je střet s jinou postavou nebo s okolnostmi. Silné příběhy mívají obojí zároveň.",
-  },
-  {
-    question: "Která věta lépe ukazuje, že je postava smutná?",
-    correctAnswer: "'Slzy mu stékaly po tvářích.'",
-    options: ["'Byl velmi smutný.'", "'Cítil se dost špatně.'", "'Vůbec nebyl veselý.'", "'Slzy mu stékaly po tvářích.'"],
-    hints: ["Tři z těch vět čtenáři pocit oznámí. Jedna mu ho dá vidět. Která?"],
-    explanation: "Popis konkrétního detailu nechá čtenáře, aby si pocit odvodil sám — a tím ho zasáhne silněji než pouhé sdělení 'byl smutný'.",
-  },
-  {
-    question: "Proč autor ukončí kapitolu v nejnapínavější chvíli?",
-    correctAnswer: "aby čtenář četl dál",
-    options: ["aby čtenář četl dál", "aby si čtenář odpočinul", "aby byl text kratší", "aby se vyhnul rozuzlení"],
-    hints: ["Co uděláš, když kapitola skončí větou 'Dveře se pomalu otevřely'?"],
-    explanation: "Nedořečená situace v čtenáři vyvolá potřebu vědět, jak to dopadne, a ten proto pokračuje do další kapitoly. Rozuzlení přijde, jen o kus dál.",
-  },
-  {
-    question: "Co znamená, že má text význam i mezi řádky?",
-    correctAnswer: "postava říká něco jiného, než myslí",
-    options: [
-      "postava mluví nahlas a jasně",
-      "postava říká něco jiného, než myslí",
-      "text má dva různé konce",
-      "text je psaný ve dvou jazycích",
-    ],
-    hints: ["Když někdo řekne 'To je v pořádku' a přitom mu je do pláče, co se čtenář dozví z těch slov a co ze situace?"],
-    explanation: "Skrytý význam vzniká tam, kde se rozchází to, co postava vysloví, a to, co doopravdy cítí. Čtenář rozdíl odhalí z chování a okolností.",
-  },
-  {
-    question: "Jak vytvořit psychologicky složitou postavu?",
-    correctAnswer: "má silné stránky i slabiny",
-    options: ["je jen dobrá, nebo jen zlá", "má popsaný jen vzhled", "má silné stránky i slabiny", "nikdy nemluví, jen jedná"],
-    hints: ["Znáš ve skutečném životě někoho, kdo je jen dobrý, nebo jen zlý?"],
-    explanation: "Věrohodná postava má klady i zápory, stejně jako skuteční lidé. Postava jen dobrá nebo jen zlá působí ploše a čtenář jí neuvěří.",
-  },
-  {
-    question: "Co znamená vymyslet pro příběh vlastní svět?",
-    correctAnswer: "svět s vlastními pravidly",
-    options: ["věrný popis skutečného města", "mapa nakreslená na obálce", "seznam postav a jejich jmen", "svět s vlastními pravidly"],
-    hints: ["Nestačí vymyslet jména a místa. Co musí ve smyšleném světě fungovat, aby čtenáři dával smysl?"],
-    explanation: "Vlastní svět potřebuje pravidla, která platí po celou dobu — jak funguje magie, kdo komu vládne, co je zakázané. Bez nich se příběh stane nevěrohodným.",
-  },
-  {
-    question: "Co znamená, že se postava v příběhu vyvíjí?",
-    correctAnswer: "na konci je jiná než na začátku",
-    options: ["na konci je jiná než na začátku", "na konci je stejná jako na začátku", "má na konci jiné jméno", "objeví se až v samotném závěru"],
-    hints: ["Zbabělec, který na konci obstojí — co se u něj během příběhu změnilo?"],
-    explanation: "Vývoj postavy znamená, že ji události proměnily — něco pochopila, něco překonala. Postava, která zůstane stejná, čtenáře obvykle nezaujme.",
-  },
-];
+const L3: PracticeTask[] = [
+  ["Byl tam pes. Ten pes byl velký. Ten pes byl černý.", "Byl tam velký černý pes.", ["Byl tam pes, pes byl velký a černý pes.", "Pořád opakuje pes."], ["Byl tam malý bílý pes.", "Mění, jaký pes byl."], ["Byl tam velkej černej pes.", "Velkej a černej jsou nespisovné tvary."], "Kolikrát se ve třech větách opakuje stejné podstatné jméno?", "Věty o téže věci můžeš spojit: vlastnosti dáš jako přídavná jména před podstatné jméno."],
+  ["A pak jsme šli domů a pak jsme jedli a pak jsme spali.", "Pak jsme šli domů, najedli se a nakonec usnuli.", ["A pak jsme šli domů a pak jedli a pak spali.", "A pak se pořád opakuje."], ["Šli jsme do školy a nejedli jsme.", "Mění, co se stalo."], ["Pak jsme šli domů najedli se nakonec usnuli.", "Chybí čárky a spojka."], "Které spojení se ve větě pořád opakuje?", "Slova pro časovou posloupnost střídej (nejdřív, potom, nato) a několik sloves za sebou odděl čárkou."],
+  ["Princezna byla hezká.", "Princezna měla dlouhé zlaté vlasy a smála se jako zvoneček.", ["Princezna byla hezká, opravdu moc hezká.", "Jen opakuje hodnocení."], ["Princezna byla ošklivá a zlá jako čarodějnice.", "Mění, jaká princezna byla."], ["Princezna byla hezká a byla to princezna.", "Nic nového nepřidává."], "Podle čeho by čtenář poznal, jak ta dívka vypadá?", "Místo obecného hodnocení ukaž konkrétní podrobnosti — vzhled, pohyb, hlas; pomůže i přirovnání."],
+  ["Bylo to fakt super a moc jsme se nasmáli.", "Bylo to skvělé a moc jsme se nasmáli.", ["Bylo to fakt super.", "Hovorové slovo zůstalo a část věty zmizela."], ["Bylo to nudné a nikdo se nesmál.", "Mění smysl."], ["Bylo to fakt skvělý a moc jsme se nasmáli.", "Fakt a skvělý jsou hovorové."], "Které slovo je hovorové a do psaného textu se nehodí?", "V literárním textu (mimo přímou řeč) píšeme spisovně: místo hovorových výrazů volíme spisovná slova se stejným významem."],
+  ["Drak byl strašný.", "Drak chrlil oheň a jeho řev otřásal skalami.", ["Drak byl strašný a strašný.", "Jen opakuje slovo."], ["Drak byl hodný a veselý.", "Mění, jaký drak byl."], ["Drak byl strašnej.", "Strašnej je nespisovné."], "Co by ta obluda musela dělat, aby se jí čtenář opravdu bál?", "Nepiš jen, že je něco strašné — ukaž to činy a zvuky, které strach vyvolají."],
+  ["Ahoj, řekla Eva. Ahoj, řekl Petr.", "„Ahoj,“ pozdravila Eva. „Ahoj,“ odpověděl Petr.", ["Ahoj, řekla Eva a ahoj, řekl Petr.", "Chybí uvozovky, řeč postav nepoznáme."], ["„Ahoj,“ pozdravila Eva. „Nazdar,“ odpověděla Eva.", "Mluví jen Eva, Petr zmizel."], ["„Ahoj“ řekla Eva „ahoj“ řekl Petr", "Chybí čárky a tečky."], "Jak čtenář pozná, která slova postava přímo řekla?", "Přímou řeč dej do uvozovek a místo opakovaného řekl zkus sloveso, které řekne víc (zeptal se, zašeptal, zavolal)."],
+  ["Ráno. Škola. Test. Špatná známka.", "Ráno šel Filip do školy, psal test a dostal špatnou známku.", ["Ráno škola test špatná známka.", "Pořád to nejsou věty."], ["Ráno šel Filip do školy a dostal jedničku.", "Mění, jak to dopadlo."], ["Ráno, škola, test, a pak špatná známka.", "Stále jen hesla bez sloves."], "Co v zápisu chybí, aby z něj byly celé věty?", "Z heslovitých poznámek uděláš vyprávění, když doplníš, kdo co dělal — tedy slovesa a podmět."],
+  ["Měsíc svítil.", "Měsíc svítil nad lesem jako stříbrná lucerna.", ["Měsíc svítil a pořád jen svítil a svítil.", "Opakování obraz nevytvoří."], ["Slunce jasně svítilo nad celým lesem.", "Mění, co svítilo."], ["Měsíc svítil moc a bylo to moc hezké.", "Obecné hodnocení bez obrazu."], "Jak můžeš čtenáři ukázat, jak ten svit vypadal?", "Obraz oživí místo děje a přirovnání — k čemu se podobá světlo v noci?"],
+  ["Dědeček byl starý. Byl dobrý. Vyprávěl pohádky.", "Starý laskavý dědeček nám rád vyprávěl pohádky.", ["Dědeček byl starý, byl dobrý, byl.", "Opakuje byl a věta nedává smysl."], ["Mladý přísný dědeček nevyprávěl nic.", "Mění smysl."], ["Starej hodnej děda vyprávěl pohádky.", "Starej a hodnej jsou nespisovné."], "Jak spojit tři krátké věty o téže osobě do jedné?", "Vlastnosti dej jako přídavná jména před podstatné jméno a spisovný tvar zachovej."],
+  ["Kočka udělala skok na stůl a udělala pád do misky.", "Kočka skočila na stůl a spadla do misky.", ["Kočka udělala skok na stůl a spadla.", "Udělala skok zůstalo a miska zmizela."], ["Pes skočil na stůl a spadl do misky.", "Mění zvíře."], ["Kočka skočila na stůl a udělala pád.", "Udělala pád zůstalo."], "Které sloveso se ve větě opakuje a je zbytečně obecné?", "Místo udělat skok, udělat pád napiš jedno přesné sloveso, které to řekne samo."],
+  ["Bylo to hrozně moc strašně napínavé.", "Bylo to neuvěřitelně napínavé.", ["Bylo to hrozně moc napínavé.", "Pořád se hromadí zesilující slova."], ["Bylo to nudné.", "Mění smysl."], ["Bylo to strašně hrozně moc napínavé.", "Jen přeházené, hromadění zůstalo."], "Kolik zesilujících slov se ve větě hromadí?", "Hromadění slov jako hrozně, moc, strašně text neoživí; stačí jedno výstižné slovo."],
+  ["Tonda byl smutný, protože byl smutný, že ztratil míč.", "Tonda byl smutný, protože ztratil míč.", ["Tonda byl smutný, protože byl smutný.", "Příčina zmizela a zůstalo opakování."], ["Tonda byl veselý, protože našel míč.", "Mění smysl."], ["Tonda byl smutný, že byl smutný.", "Opakování zůstalo."], "Co se ve větě říká dvakrát?", "Příčinu stačí napsat jednou — za spojku dej to, co se opravdu stalo."],
+  ["V lese bylo ticho. V lese byla tma. V lese byla zima.", "V lese bylo ticho, tma a zima.", ["V lese bylo ticho a v lese byla tma.", "Opakování zůstalo a zima zmizela."], ["V lese bylo veselo a teplo.", "Mění smysl."], ["Ticho tma zima les.", "Není to věta."], "Která slova se na začátku každé věty opakují?", "Tři věty se stejným začátkem spoj do jedné a jednotlivé jevy odděl čárkou."],
+].map(([veta, klic, d1, d2, d3, h0, h1]) => {
+  const ds = [d1, d2, d3] as [string, string][];
+  return choice(`Která úprava textu „${veta as string}“ je nejlepší?`, klic as string,
+    ds.map(([value, why]) => ({ value, why })) as never,
+    { hints: [h0 as string, h1 as string], explanation: `„${klic as string}“ říká totéž, ale lépe — bez zbytečného opakování, spisovně a výstižně.` });
+});
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level >= 3) return shuffle(L3);
+  if (level === 2) return shuffle(L2);
+  return urceni(NAPADY, ZANRY, 1, (p) => ({
+    question: `Jaký žánr zvolíš pro tento nápad? ${p.veta}`,
+    hints: [
+      `Jsou v nápadu „${p.veta.slice(0, 50)}…“ kouzla, zvířata s poučením, obyčejná příhoda, nebo verše?`,
+      `Pomůže tohle: ${p.klic}.`,
+    ],
+  }), ["Kouzla ukazují na vymyšlený svět, poučení na příběh se zvířaty, obyčejná příhoda na život kolem nás.", "Verše a rým prozradí text psaný po řádcích."]);
 }
 
 export const VLASTNILITERARNITEXTNADANETEMA: TopicMetadata[] = [
@@ -378,7 +191,7 @@ export const VLASTNILITERARNITEXTNADANETEMA: TopicMetadata[] = [
     ],
     boundaries: [
       "Bez hodnocení vlastní tvůrčí práce AI",
-      "Rozšiřující nad rámec RVP 5. ročníku: úroveň 3 (kompoziční oblouk, nespolehlivý vypravěč, vnitřní a vnější konflikt, vývoj postavy)",
+      "Úroveň 3: úprava vlastního textu (opakování, spisovnost, přesná slova); bez odborné teorie",
     ],
     gradeRange: [5, 5],
     inputType: "select_one",

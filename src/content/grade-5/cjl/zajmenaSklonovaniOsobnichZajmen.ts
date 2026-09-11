@@ -1,356 +1,73 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy se ptaly na izolované tvary
+// („2. pád od já“) a jako správnou nabízely dvojici „mě / mne“, takže dítě
+// nevybíralo tvar do věty. Teď se tvar doplňuje do věty a možnosti nikdy
+// neobsahují dva správné tvary (třeba mi i mně ve 3. pádě):
+// L1 já a ty (mě × mně × mnou) · L2 on, ona, my, vy · L3 tvary po předložce
+// (k němu, na ni × o ní, s nimi) a krátké × dlouhé tvary.
+
+type Z = { veta: string; zajmeno: string; tvar: string; chyby: [[string, string], [string, string], [string, string]]; napoveda: string; proc: string };
+
+const ULOHY: Record<1 | 2 | 3, Z[]> = {
+  1: [
+    { veta: "Přijď zítra ke ___.", zajmeno: "já", tvar: "mně", chyby: [["mě", "Mě je 2. nebo 4. pád; po předložce k je 3. pád."], ["mnou", "Mnou je 7. pád (s kým?)."], ["mi", "Krátký tvar mi se po předložce nepoužívá."]], napoveda: "Po předložce k je 3. pád (komu? čemu?). Ve 3. pádě se píše tvar s -ně.", proc: "Ke komu? Ke mně — 3. pád." },
+    { veta: "Mluvili jsme o ___.", zajmeno: "já", tvar: "mně", chyby: [["mě", "Mě je 2. nebo 4. pád; po o je 6. pád."], ["mnou", "Mnou je 7. pád."], ["mi", "Mi je krátký 3. pád a po předložce se nepíše."]], napoveda: "Po předložce o je 6. pád (o kom? o čem?); ve 3. a 6. pádě se píše tvar s -ně.", proc: "O kom? O mně — 6. pád." },
+    { veta: "Pojď se ___ podívat na hřiště.", zajmeno: "já", tvar: "mnou", chyby: [["mně", "Mně je 3. nebo 6. pád."], ["mě", "Mě je 2. nebo 4. pád."], ["mi", "Mi je 3. pád."]], napoveda: "Zeptej se s kým? — to je 7. pád.", proc: "S kým? Se mnou — 7. pád." },
+    { veta: "Bez ___ nikam nechoď.", zajmeno: "já", tvar: "mě", chyby: [["mně", "Mně je 3. nebo 6. pád; po bez je 2. pád."], ["mnou", "Mnou je 7. pád."], ["mi", "Mi je 3. pád."]], napoveda: "Po předložce bez je 2. pád (koho? čeho?). Ve 2. pádě píšeme mě, ne mně.", proc: "Bez koho? Beze mě — 2. pád." },
+    { veta: "Vidíš ___ na té fotce?", zajmeno: "já", tvar: "mě", chyby: [["mně", "Mně je 3. nebo 6. pád; tady je 4. pád."], ["mnou", "Mnou je 7. pád."], ["mi", "Mi je 3. pád."]], napoveda: "Zeptej se koho? co? vidíš — to je 4. pád.", proc: "Koho vidíš? Mě — 4. pád." },
+    { veta: "Podej ___ prosím sešit.", zajmeno: "já", tvar: "mi", chyby: [["mě", "Mě je 2. nebo 4. pád; tady je 3. pád."], ["mnou", "Mnou je 7. pád."], ["můj", "Můj je přivlastňovací zájmeno, ne tvar zájmena já."]], napoveda: "Zeptej se komu? podej — to je 3. pád.", proc: "Komu? Mi (nebo mně) — 3. pád." },
+    { veta: "Půjdu s ___ do kina.", zajmeno: "ty", tvar: "tebou", chyby: [["tobě", "Tobě je 3. nebo 6. pád."], ["tebe", "Tebe je 2. nebo 4. pád."], ["ti", "Ti je 3. pád."]], napoveda: "Zeptej se s kým? — to je 7. pád.", proc: "S kým? S tebou — 7. pád." },
+    { veta: "Myslím na ___.", zajmeno: "ty", tvar: "tebe", chyby: [["tě", "Krátký tvar tě se po předložce nepoužívá."], ["tobě", "Tobě je 3. nebo 6. pád; po na je tu 4. pád."], ["tebou", "Tebou je 7. pád."]], napoveda: "Na koho myslíš? To je 4. pád; po předložce se píše dlouhý tvar.", proc: "Na koho? Na tebe — 4. pád, po předložce dlouhý tvar." },
+    { veta: "Přinesu ___ knihu.", zajmeno: "ty", tvar: "ti", chyby: [["tě", "Tě je 2. nebo 4. pád; tady je 3. pád."], ["tebou", "Tebou je 7. pád."], ["tvou", "Tvou je tvar přivlastňovacího zájmena tvůj."]], napoveda: "Zeptej se komu? přinesu — to je 3. pád.", proc: "Komu? Ti (nebo tobě) — 3. pád." },
+    { veta: "Často o ___ mluvíme.", zajmeno: "ty", tvar: "tobě", chyby: [["tebe", "Tebe je 2. nebo 4. pád; po o je 6. pád."], ["tebou", "Tebou je 7. pád."], ["ti", "Krátký tvar ti se po předložce nepoužívá."]], napoveda: "O kom mluvíme? To je 6. pád.", proc: "O kom? O tobě — 6. pád." },
+    { veta: "Bez ___ to nepůjde.", zajmeno: "ty", tvar: "tebe", chyby: [["tobě", "Tobě je 3. nebo 6. pád; po bez je 2. pád."], ["tebou", "Tebou je 7. pád."], ["ti", "Ti je 3. pád."]], napoveda: "Po předložce bez je 2. pád (koho? čeho?); po předložce dlouhý tvar.", proc: "Bez koho? Bez tebe — 2. pád." },
+    { veta: "Stojí to před ___.", zajmeno: "já", tvar: "mnou", chyby: [["mně", "Mně je 3. nebo 6. pád; po před je tu 7. pád."], ["mě", "Mě je 2. nebo 4. pád."], ["mi", "Mi je 3. pád."]], napoveda: "Před kým? — to je 7. pád.", proc: "Před kým? Přede mnou — 7. pád." },
+    { veta: "Kvůli ___ přišel pozdě.", zajmeno: "ty", tvar: "tobě", chyby: [["tebe", "Tebe je 2. nebo 4. pád; po kvůli je 3. pád."], ["tebou", "Tebou je 7. pád."], ["ti", "Po předložce se krátký tvar nepíše."]], napoveda: "Po předložce kvůli je 3. pád (kvůli komu?).", proc: "Kvůli komu? Kvůli tobě — 3. pád." },
+  ],
+  2: [
+    { veta: "Dal jsem ___ dárek.", zajmeno: "ona", tvar: "jí", chyby: [["ji", "Ji je 4. pád (koho? co?)."], ["ní", "Ní se píše po předložce."], ["její", "Její je přivlastňovací zájmeno."]], napoveda: "Komu jsem dal dárek? To je 3. pád; bez předložky začíná tvar na j-.", proc: "Komu? Jí — 3. pád." },
+    { veta: "Včera jsem ___ viděl v parku.", zajmeno: "ona", tvar: "ji", chyby: [["jí", "Jí je 3. nebo 7. pád."], ["ní", "Ní se píše po předložce."], ["její", "Její je přivlastňovací zájmeno."]], napoveda: "Koho jsem viděl? To je 4. pád; bez předložky začíná tvar na j-.", proc: "Koho? Ji — 4. pád." },
+    { veta: "Potkal jsem ___ před školou.", zajmeno: "on", tvar: "ho", chyby: [["mu", "Mu je 3. pád (komu?)."], ["něho", "Tvar s n- se píše po předložce."], ["ním", "Ním je 7. pád po předložce."]], napoveda: "Koho jsem potkal? To je 4. pád; bez předložky se píše tvar bez n-.", proc: "Koho? Ho (jeho) — 4. pád." },
+    { veta: "Poděkoval jsem ___ za pomoc.", zajmeno: "on", tvar: "mu", chyby: [["ho", "Ho je 2. nebo 4. pád."], ["němu", "Tvar s n- se píše po předložce."], ["jím", "Jím je 7. pád."]], napoveda: "Komu jsem poděkoval? To je 3. pád.", proc: "Komu? Mu (jemu) — 3. pád." },
+    { veta: "Přijďte zítra k ___.", zajmeno: "my", tvar: "nám", chyby: [["nás", "Nás je 2., 4. nebo 6. pád."], ["námi", "Námi je 7. pád."], ["náš", "Náš je přivlastňovací zájmeno."]], napoveda: "Ke komu? To je 3. pád.", proc: "Ke komu? K nám — 3. pád." },
+    { veta: "Pojďte s ___ na výlet.", zajmeno: "my", tvar: "námi", chyby: [["nám", "Nám je 3. pád."], ["nás", "Nás je 2., 4. nebo 6. pád."], ["náma", "Náma je nespisovný tvar; spisovně námi."]], napoveda: "S kým? To je 7. pád.", proc: "S kým? S námi — 7. pád." },
+    { veta: "Dlouho jsme na ___ čekali.", zajmeno: "vy", tvar: "vás", chyby: [["vám", "Vám je 3. pád."], ["vámi", "Vámi je 7. pád."], ["váš", "Váš je přivlastňovací zájmeno."]], napoveda: "Na koho jsme čekali? To je 4. pád.", proc: "Na koho? Na vás — 4. pád." },
+    { veta: "Přineseme ___ dort.", zajmeno: "vy", tvar: "vám", chyby: [["vás", "Vás je 2., 4. nebo 6. pád."], ["vámi", "Vámi je 7. pád."], ["váš", "Váš je přivlastňovací zájmeno."]], napoveda: "Komu přineseme dort? To je 3. pád.", proc: "Komu? Vám — 3. pád." },
+    { veta: "Pozdravil jsem ___ na chodbě.", zajmeno: "oni", tvar: "je", chyby: [["jich", "Jich je 2. pád."], ["jim", "Jim je 3. pád."], ["ně", "Tvar ně se píše po předložce."]], napoveda: "Koho jsem pozdravil? To je 4. pád; bez předložky tvar na j-.", proc: "Koho? Je — 4. pád." },
+    { veta: "Zavolám ___ večer.", zajmeno: "oni", tvar: "jim", chyby: [["je", "Je je 4. pád."], ["jich", "Jich je 2. pád."], ["nim", "Tvar s n- se píše po předložce."]], napoveda: "Komu zavolám? To je 3. pád.", proc: "Komu? Jim — 3. pád." },
+    { veta: "Kolik ___ tam bylo?", zajmeno: "oni", tvar: "jich", chyby: [["je", "Je je 4. pád."], ["jim", "Jim je 3. pád."], ["nich", "Tvar s n- se píše po předložce."]], napoveda: "Po slově kolik je 2. pád (koho? čeho?).", proc: "Kolik (koho)? Jich — 2. pád." },
+    { veta: "Obdivuji ___ za odvahu.", zajmeno: "ona", tvar: "ji", chyby: [["jí", "Jí je 3. nebo 7. pád."], ["ni", "Tvar ni se píše po předložce."], ["její", "Její je přivlastňovací zájmeno."]], napoveda: "Koho obdivuji? To je 4. pád, bez předložky.", proc: "Koho? Ji — 4. pád." },
+    { veta: "Pomůžeme ___ s úkolem.", zajmeno: "on", tvar: "mu", chyby: [["ho", "Ho je 2. nebo 4. pád."], ["něm", "Něm je 6. pád po předložce."], ["jím", "Jím je 7. pád."]], napoveda: "Komu pomůžeme? To je 3. pád.", proc: "Komu? Mu (jemu) — 3. pád." },
+  ],
+  3: [
+    { veta: "Šli jsme k ___ na návštěvu.", zajmeno: "on", tvar: "němu", chyby: [["jemu", "Po předložce se píše tvar s n-."], ["mu", "Krátký tvar mu se po předložce nepoužívá."], ["něho", "Něho je 2. nebo 4. pád; po k je 3. pád."]], napoveda: "Po předložce k je 3. pád a zájmeno on má po předložce tvar s n-.", proc: "Ke komu? K němu — 3. pád, po předložce s n-." },
+    { veta: "Mluvili jsme o ___ celý večer.", zajmeno: "on", tvar: "něm", chyby: [["něho", "Něho je 2. nebo 4. pád; po o je 6. pád."], ["ním", "Ním je 7. pád."], ["jeho", "Po předložce se píše tvar s n-."]], napoveda: "O kom jsme mluvili? To je 6. pád, po předložce tvar s n-.", proc: "O kom? O něm — 6. pád." },
+    { veta: "Hrál jsem si s ___ celé odpoledne.", zajmeno: "on", tvar: "ním", chyby: [["jím", "Po předložce se píše tvar s n-."], ["něm", "Něm je 6. pád."], ["němu", "Němu je 3. pád."]], napoveda: "S kým? To je 7. pád; po předložce tvar s n-.", proc: "S kým? S ním — 7. pád." },
+    { veta: "Čekal jsem na ___ před kinem.", zajmeno: "ona", tvar: "ni", chyby: [["ní", "Ní je 2., 3., 6. nebo 7. pád; po na je tu 4. pád."], ["ji", "Po předložce se píše tvar s n-."], ["jí", "Jí je 3. nebo 7. pád bez předložky."]], napoveda: "Na koho jsem čekal? To je 4. pád — po předložce s krátkým i: n-i.", proc: "Na koho? Na ni — 4. pád (krátké i)." },
+    { veta: "Často na ___ vzpomínám.", zajmeno: "ona", tvar: "ni", chyby: [["ní", "Ní je 6. pád (o ní); na koho? je 4. pád."], ["ji", "Po předložce se píše tvar s n-."], ["jí", "Jí je 3. nebo 7. pád."]], napoveda: "Na koho vzpomínám? 4. pád — po předložce n- a krátké i.", proc: "Na koho? Na ni — 4. pád." },
+    { veta: "Mluvili jsme o ___ jen hezky.", zajmeno: "ona", tvar: "ní", chyby: [["ni", "Ni je 4. pád (na ni); o kom? je 6. pád."], ["jí", "Po předložce se píše tvar s n-."], ["ji", "Ji je 4. pád bez předložky."]], napoveda: "O kom? 6. pád — po předložce n- a dlouhé í.", proc: "O kom? O ní — 6. pád (dlouhé í)." },
+    { veta: "Sedla jsem si vedle ___.", zajmeno: "ona", tvar: "ní", chyby: [["ni", "Ni je 4. pád; po vedle je 2. pád."], ["jí", "Po předložce se píše tvar s n-."], ["ji", "Ji je 4. pád bez předložky."]], napoveda: "Vedle koho? 2. pád — po předložce n- a dlouhé í.", proc: "Vedle koho? Vedle ní — 2. pád." },
+    { veta: "Šli jsme k ___ na oslavu.", zajmeno: "oni", tvar: "nim", chyby: [["jim", "Po předložce se píše tvar s n-."], ["nich", "Nich je 2. nebo 6. pád."], ["nimi", "Nimi je 7. pád."]], napoveda: "Ke komu? 3. pád; po předložce tvar s n-.", proc: "Ke komu? K nim — 3. pád." },
+    { veta: "Mluvili o ___ učitelé.", zajmeno: "oni", tvar: "nich", chyby: [["jich", "Po předložce se píše tvar s n-."], ["nim", "Nim je 3. pád."], ["nimi", "Nimi je 7. pád."]], napoveda: "O kom? 6. pád; po předložce tvar s n-.", proc: "O kom? O nich — 6. pád." },
+    { veta: "Na výlet jsme jeli s ___.", zajmeno: "oni", tvar: "nimi", chyby: [["jimi", "Po předložce se píše tvar s n-."], ["nim", "Nim je 3. pád."], ["nich", "Nich je 2. nebo 6. pád."]], napoveda: "S kým? 7. pád; po předložce tvar s n-.", proc: "S kým? S nimi — 7. pád." },
+    { veta: "Ten dopis je pro ___.", zajmeno: "on", tvar: "něj", chyby: [["jeho", "Po předložce se píše tvar s n-."], ["němu", "Němu je 3. pád; po pro je 4. pád."], ["ním", "Ním je 7. pád."]], napoveda: "Pro koho? 4. pád; po předložce tvar s n-.", proc: "Pro koho? Pro něj (pro něho) — 4. pád." },
+    { veta: "Dívali jsme se na ___ s obdivem.", zajmeno: "oni", tvar: "ně", chyby: [["je", "Po předložce se píše tvar s n-."], ["nich", "Nich je 2. nebo 6. pád; na koho? je 4. pád."], ["nim", "Nim je 3. pád."]], napoveda: "Na koho jsme se dívali? 4. pád; po předložce tvar s n-.", proc: "Na koho? Na ně — 4. pád." },
+    { veta: "Dostal jsem od ___ dopis.", zajmeno: "ona", tvar: "ní", chyby: [["ni", "Ni je 4. pád; po od je 2. pád."], ["jí", "Po předložce se píše tvar s n-."], ["její", "Její je přivlastňovací zájmeno."]], napoveda: "Od koho? 2. pád — po předložce n- a dlouhé í.", proc: "Od koho? Od ní — 2. pád." },
+  ],
+};
+
+function uloha(z: Z): PracticeTask {
+  return choice(`Doplň správný tvar zájmena „${z.zajmeno}“: „${z.veta}“`, z.tvar,
+    z.chyby.map(([value, why]) => ({ value, why })) as never, {
+      hints: [`Jakou pádovou otázku položíš na vynechané slovo ve větě „${z.veta}“?`, z.napoveda],
+      explanation: z.proc,
+    });
 }
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Jaký je 2. pád od zájmena 'já'?",
-    correctAnswer: "mě / mne",
-    options: ["mě / mne", "mi", "mnou", "mé"],
-    hints: ["Zeptej se: Koho/čeho? To je 2. pád zájmena 'já'."],
-    explanation: "2. pád (koho/čeho?) zájmena 'já' je 'mě' nebo 'mne'.",
-  },
-  {
-    question: "Jaký je 3. pád od zájmena 'já'?",
-    correctAnswer: "mi / mně",
-    options: ["mě", "mi / mně", "mnou", "mé"],
-    hints: ["Zeptej se: Komu/čemu? To je 3. pád zájmena 'já'."],
-    explanation: "3. pád (komu/čemu?) zájmena 'já' je 'mi' (krátký tvar) nebo 'mně'.",
-  },
-  {
-    question: "Jaký je 7. pád od zájmena 'já'?",
-    correctAnswer: "mnou",
-    options: ["mi", "mě", "mnou", "mne"],
-    hints: ["Zeptej se: S kým/čím? To je 7. pád zájmena 'já'."],
-    explanation: "7. pád (s kým/čím?) zájmena 'já' je 'mnou'.",
-  },
-  {
-    question: "Jaký je 2. pád od zájmena 'ty'?",
-    correctAnswer: "tebe / tě",
-    options: ["tobě / ti", "tebou", "tví", "tebe / tě"],
-    hints: ["Zeptej se: Koho/čeho? To je 2. pád zájmena 'ty'."],
-    explanation: "2. pád (koho/čeho?) zájmena 'ty' je 'tebe' nebo 'tě'.",
-  },
-  {
-    question: "Jaký je 3. pád od zájmena 'ty'?",
-    correctAnswer: "tobě / ti",
-    options: ["tobě / ti", "tebe / tě", "tebou", "tvé"],
-    hints: ["Zeptej se: Komu/čemu? To je 3. pád zájmena 'ty'."],
-    explanation: "3. pád (komu/čemu?) zájmena 'ty' je 'tobě' nebo 'ti'.",
-  },
-  {
-    question: "Jaký je 7. pád od zájmena 'ty'?",
-    correctAnswer: "tebou",
-    options: ["tobě", "tebou", "tě", "ti"],
-    hints: ["Zeptej se: S kým/čím? To je 7. pád zájmena 'ty'."],
-    explanation: "7. pád (s kým/čím?) zájmena 'ty' je 'tebou'.",
-  },
-  {
-    question: "Která forma je správná: 'Řekl to ___ (já).' v 3. pádu?",
-    correctAnswer: "mi / mně",
-    options: ["mě", "mnou", "mi / mně", "mé"],
-    hints: ["Řekl komu? To ukazuje na 3. pád zájmena 'já'."],
-    explanation: "Řekl komu? → 3. pád: 'mi' (krátký tvar v běžné větě) nebo 'mně' (při zdůraznění). 'mě' je 2./4. pád, 'mnou' je 7. pád.",
-  },
-  {
-    question: "Která forma je správná: 'Sedí vedle ___ (já).'?",
-    correctAnswer: "mě / mne",
-    options: ["mi", "mnou", "mně", "mě / mne"],
-    hints: ["Vedle koho? Předložka 'vedle' se pojí s 2. pádem."],
-    explanation: "Po předložce 'vedle' je 2. pád: 'vedle mě' nebo 'vedle mne'.",
-  },
-  {
-    question: "Která forma je správná: 'Šla s ___ (ty).' v 7. pádu?",
-    correctAnswer: "tebou",
-    options: ["tebou", "tobě", "tě", "ti"],
-    hints: ["S kým? To je 7. pád zájmena 'ty'."],
-    explanation: "7. pád (s kým?) zájmena 'ty' je 'tebou': 's tebou'.",
-  },
-  {
-    question: "Jaký je 1. pád množného čísla od zájmena 'on'?",
-    correctAnswer: "oni / ony / ona",
-    options: ["vždycky jen ony", "oni / ony / ona", "vždycky jen oni", "oni pro všechny rody"],
-    hints: ["Tvar v 1. pádu množného čísla závisí na rodu podstatného jména."],
-    explanation: "1. pád mn. č.: 'oni' (rod mužský životný), 'ony' (rod mužský neživotný a ženský), 'ona' (rod střední).",
-  },
-  {
-    question: "Jaký je 2. pád od zájmena 'on' (mužský rod)?",
-    correctAnswer: "ho / jej / jeho",
-    options: ["mu / jemu", "jím", "ho / jej / jeho", "nim"],
-    hints: ["Zeptej se: Koho/čeho? To je 2. pád zájmena 'on'."],
-    explanation: "2. pád (koho/čeho?) zájmena 'on' je 'ho', 'jej' nebo 'jeho'.",
-  },
-  {
-    question: "Která forma je správná: 'Dám to ___ (on).' v 3. pádu?",
-    correctAnswer: "mu / jemu",
-    options: ["ho", "jím", "nim", "mu / jemu"],
-    hints: ["Dám komu? To je 3. pád zájmena 'on'."],
-    explanation: "3. pád (komu?) zájmena 'on' je 'mu' (krátký tvar) nebo 'jemu'.",
-  },
-  {
-    question: "Která forma je správná: 'Jdu s ___ (on).' v 7. pádu?",
-    correctAnswer: "ním",
-    options: ["ním", "mu", "ho", "jemu"],
-    hints: ["Po předložce se používá delší tvar (ne 'ho')."],
-    explanation: "Po předložce je 7. pád 'ním': 's ním'. Bez předložky by to byl tvar 'jím'.",
-  },
-  {
-    question: "Která forma je správná: 'Myslím na ___ (ona).' ve 4. pádu?",
-    correctAnswer: "ni / ji",
-    options: ["jí", "ni / ji", "ní", "ona"],
-    hints: ["Na koho? → 4. pád. Pozor na tvar po předložce 'na'."],
-    explanation: "4. pád (koho?) zájmena 'ona' je 'ji'; po předložce 'na' se mění na 'ni': 'na ni'. 'jí/ní' jsou jiné pády.",
-  },
-  {
-    question: "Jaký je 3. pád od zájmena 'my'?",
-    correctAnswer: "nám",
-    options: ["nás", "námi", "nám", "naše"],
-    hints: ["Zeptej se: Komu/čemu? To je 3. pád zájmena 'my'."],
-    explanation: "3. pád (komu/čemu?) zájmena 'my' je 'nám'.",
-  },
-];
-
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Která forma je správná: 'Viděl ___ (já) v parku.' ve 4. pádu?",
-    correctAnswer: "mě / mne",
-    options: ["mi", "mnou", "mé", "mě / mne"],
-    hints: ["Viděl koho? → 4. pád zájmena 'já'."],
-    explanation: "4. pád (koho?) zájmena 'já' je 'mě' (krátký tvar) nebo 'mne'.",
-  },
-  {
-    question: "Která forma je správná: 'Mluvil o ___ (ty).' v 6. pádu?",
-    correctAnswer: "tobě",
-    options: ["tobě", "tě", "ti", "tebou"],
-    hints: ["O kom/čem? To je 6. pád, po předložce 'o'."],
-    explanation: "6. pád (o kom?) zájmena 'ty' je 'tobě': 'o tobě'.",
-  },
-  {
-    question: "Kdy se používá krátký tvar 'mi'?",
-    correctAnswer: "v nepřízvučné pozici (ne po předložce)",
-    options: [
-      "vždy a všude bez výjimky",
-      "v nepřízvučné pozici (ne po předložce)",
-      "jen na samém začátku věty",
-      "jen v otázkách a zvoláních",
-    ],
-    hints: ["Vzpomeň si: 'Řekni mi.' vs 'Ke mně přijď.' Kde stojí 'mi'?"],
-    explanation: "'mi' je krátký nepřízvučný tvar 3. pádu. Po předložkách (ke, o, k) se používá dlouhý tvar 'mně'.",
-  },
-  {
-    question: "Proč se říká 'pro mě', a ne 'pro mi'?",
-    correctAnswer: "po předložce je delší tvar (mě/mne)",
-    options: ["'mi' je zkrácenina slova", "záleží na nářečí", "po předložce je delší tvar (mě/mne)", "obojí je správně"],
-    hints: ["Po předložce nikdy nestojí krátké 'mi'."],
-    explanation: "Po předložkách (pro, ke, o, bez) se nikdy nepoužívá krátké 'mi' — vždy 'mě/mne' nebo 'mně'.",
-  },
-  {
-    question: "Jaký je 4. pád od zájmena 'oni'?",
-    correctAnswer: "je / ně",
-    options: ["jim", "jimi", "nim", "je / ně"],
-    hints: ["Vidím koho? → 4. pád množného čísla."],
-    explanation: "4. pád (koho?) mn. č. je 'je' (vidím je); po předložce se mění na 'ně' (na ně).",
-  },
-  {
-    question: "Která forma je správná: 'Jde to bez ___ (vy).' ve 2. pádu?",
-    correctAnswer: "vás",
-    options: ["vás", "vám", "vámi", "vy"],
-    hints: ["Bez koho/čeho? Předložka 'bez' se pojí s 2. pádem."],
-    explanation: "2. pád (koho/čeho?) zájmena 'vy' je 'vás': 'bez vás'.",
-  },
-  {
-    question: "Která forma je správná: 'Mluvili o ___ (já).' v 6. pádu?",
-    correctAnswer: "o mně",
-    options: ["o mi", "o mně", "o mě", "o ní"],
-    hints: ["Po předložce 'o' následuje 6. pád. Krátké 'mi' tu nemůže být."],
-    explanation: "Po předložce 'o' = 6. pád = 'mně': 'o mně'. Krátké 'mi' se po předložce nepoužívá.",
-  },
-  {
-    question: "Jaký je 7. pád od zájmena 'my'?",
-    correctAnswer: "námi",
-    options: ["nás", "nám", "námi", "my"],
-    hints: ["S kým? To je 7. pád zájmena 'my'."],
-    explanation: "7. pád (s kým?) zájmena 'my' je 'námi': 's námi'.",
-  },
-  {
-    question: "Která forma je správná: 'Jdu za ___ (ona).' v 7. pádu?",
-    correctAnswer: "za ní",
-    options: ["za ji", "za jí", "za ni", "za ní"],
-    hints: ["Za = předložka. Použiješ delší tvar zájmena 'ona'."],
-    explanation: "Po předložce 'za' = 7. pád = 'ní': 'za ní'. 'ji/ni' jsou 4. pád, 'jí' je 3. pád.",
-  },
-  {
-    question: "Jaký je 2. pád od zájmena 'ono'?",
-    correctAnswer: "ho / jeho / jej",
-    options: ["ho / jeho / jej", "mu", "jím", "nim"],
-    hints: ["Střední rod 'ono' se v některých pádech skloňuje stejně jako mužský 'on'."],
-    explanation: "2. pád zájmena 'ono' je 'ho/jeho/jej' — stejně jako u 'on'.",
-  },
-  {
-    question: "Která forma je správná: 'Vidím ___ (vy).' ve 4. pádu?",
-    correctAnswer: "vás",
-    options: ["vám", "vás", "vámi", "vy"],
-    hints: ["Vidím koho? To je 4. pád zájmena 'vy'."],
-    explanation: "4. pád (koho?) zájmena 'vy' je 'vás'.",
-  },
-  {
-    question: "Která forma je správná: 'Záleží na ___ (on).' v 6. pádu?",
-    correctAnswer: "něm",
-    options: ["mu", "ho", "něm", "jemu"],
-    hints: ["Po předložce 'na' následuje 6. pád."],
-    explanation: "Po předložce 'na' = 6. pád = 'něm': 'na něm'.",
-  },
-  {
-    question: "Která forma je správná: 'Jde tam bez ___ (já).'?",
-    correctAnswer: "bez mě",
-    options: ["bez mi", "bez mnou", "bez já", "bez mě"],
-    hints: ["'Bez' se pojí s 2. pádem. 'Mi' je 3. pád."],
-    explanation: "Předložka 'bez' = 2. pád = 'mě' (nebo 'mne'). 'mi' je 3. pád, 'mnou' je 7. pád.",
-  },
-  {
-    question: "Která forma je správná: 'Volal jsi na ___ (já)?' ve 4. pádu?",
-    correctAnswer: "na mě",
-    options: ["na mě", "na mnou", "na mi", "na mé"],
-    hints: ["'Na' se tady pojí se 4. pádem. Ptáme se: na koho?"],
-    explanation: "Předložka 'na' + 4. pád = 'na mě' (nebo 'na mne'). 'mnou' je 7. pád, 'mi' je 3. pád.",
-  },
-  {
-    question: "Jak se liší 'jím' a 'jim'?",
-    correctAnswer: "jím = 7. pád j. č., jim = 3. pád mn. č.",
-    options: [
-      "jsou totéž, jen pravopis",
-      "jím = 7. pád j. č., jim = 3. pád mn. č.",
-      "jim = 7. pád, jím = 3. pád",
-      "obojí je 4. pád",
-    ],
-    hints: ["Délka samohlásky í/i rozlišuje pád. Které je jednotné a které množné?"],
-    explanation: "'jím' (dlouhé í) = 7. pád jednotného čísla (pohrdá jím). 'jim' (krátké i) = 3. pád množného čísla (řeknu jim).",
-  },
-];
-
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Která forma je správná: 'Přijdu k ___ (ty).' ve 3. pádu?",
-    correctAnswer: "tobě",
-    options: ["tě", "ti", "tobě", "tebou"],
-    hints: ["Po předložce 'k' následuje 3. pád. Krátké 'ti' tu nestojí."],
-    explanation: "Po předložce 'k' = 3. pád = 'tobě': 'k tobě' (ne 'k ti').",
-  },
-  {
-    question: "Která forma je správná: 'Myslím jen na ___ (já).' (mluvčí o sobě)?",
-    correctAnswer: "sebe",
-    options: ["mě", "mi", "mnou", "sebe"],
-    hints: ["Když podmět mluví sám o sobě, použije zvratné zájmeno."],
-    explanation: "Když mluvčí myslí na sebe sama, použije zvratné 'sebe': 'Myslím jen na sebe.' 'Na mě' by znamenalo někoho jiného.",
-  },
-  {
-    question: "Ve větě 'Je mi dobře.' — je tvar 'mi' správně?",
-    correctAnswer: "Ano, 'mi' je tu správně",
-    options: ["Ano, 'mi' je tu správně", "Ne, správně je 'mně'", "Ne, správně je 'mě'", "Záleží na nářečí"],
-    hints: ["Je ve větě předložka? Pokud ne, krátký tvar 'mi' může být správně."],
-    explanation: "'Je mi dobře' — 'mi' je krátký tvar 3. pádu v nepřízvučné pozici, a to je správně. Není tu předložka, která by vyžadovala 'mně'.",
-  },
-  {
-    question: "Ve větě 'Dej to mně, ne jemu.' — proč je tam 'mně', a ne 'mi'?",
-    correctAnswer: "'mně' je zdůrazněný (přízvučný) tvar",
-    options: [
-      "tvar 'mi' je tu úplně špatně",
-      "'mně' je zdůrazněný (přízvučný) tvar",
-      "záleží na slovese ve větě",
-      "'mně' je tu ve 4. pádu",
-    ],
-    hints: ["Věta něco zdůrazňuje (MNĚ, ne jemu). Zdůraznění vede k dlouhému tvaru."],
-    explanation: "Při zdůraznění a kontrastu ('mně, ne jemu') se používá dlouhý přízvučný tvar 'mně', i když není po předložce.",
-  },
-  {
-    question: "Jaký je 7. pád od zájmena 'ona'?",
-    correctAnswer: "ní",
-    options: ["jí", "ji", "ní", "ona"],
-    hints: ["7. pád zájmena 'ona', typicky po předložce (s, za, před)."],
-    explanation: "7. pád (s kým?) zájmena 'ona' je 'ní': 's ní, za ní'. 'jí' je 3. pád, 'ji' je 4. pád.",
-  },
-  {
-    question: "Která forma je správná: 'Psal jsem o ___ (ty).' v 6. pádu?",
-    correctAnswer: "tobě",
-    options: ["tě", "ti", "tebou", "tobě"],
-    hints: ["O kom? To je 6. pád, po předložce 'o'."],
-    explanation: "6. pád (o kom?) zájmena 'ty' je 'tobě': 'o tobě'.",
-  },
-  {
-    question: "Která forma je správná: 'Šli jsme s ___ (oni).' v 7. pádu?",
-    correctAnswer: "nimi",
-    options: ["nimi", "jim", "ně", "jimi"],
-    hints: ["S kým? → 7. pád množného čísla, po předložce."],
-    explanation: "7. pád mn. č. po předložce 's' je 'nimi': 's nimi'.",
-  },
-  {
-    question: "Jaký tvar má zájmeno 'ony' v 6. pádu po předložce?",
-    correctAnswer: "nich",
-    options: ["ji", "nich", "ní", "jimi"],
-    hints: ["6. pád množného čísla po předložce (o, v)."],
-    explanation: "6. pád mn. č. po předložce je 'nich': 'o nich, v nich'.",
-  },
-  {
-    question: "Kdy použijeme 'jejím' a kdy 'jím'?",
-    correctAnswer: "jejím = přivlastňovací, jím = 7. pád osobního",
-    options: ["jsou to naprosto stejné tvary", "tvar 'jejím' je vždycky špatně", "jejím = přivlastňovací, jím = 7. pád osobního", "'jím' se používá k přivlastnění"],
-    hints: ["Jedno vyjadřuje, čí to je (přivlastňuje) — druhé je osobní zájmeno v jiném tvaru, po předložce nebo slovese."],
-    explanation: "'jejím' je přivlastňovací zájmeno (jejím autem = patří jí). 'jím' je 7. pád osobního zájmena 'on/ono' (pohrdá jím).",
-  },
-  {
-    question: "Která forma je správná: 'Promluvil s ___ (já) o problému.' v 7. pádu?",
-    correctAnswer: "mnou",
-    options: ["mi", "mě", "mne", "mnou"],
-    hints: ["S kým? To je 7. pád zájmena 'já'."],
-    explanation: "7. pád (s kým?) zájmena 'já' je 'mnou': 's mnou'.",
-  },
-  {
-    question: "Která forma je správná: 'Závisí to na ___ (vy).' v 6. pádu?",
-    correctAnswer: "vás",
-    options: ["vás", "vám", "vámi", "vy"],
-    hints: ["Na kom? To je 6. pád, po předložce 'na'."],
-    explanation: "6. pád (na kom?) zájmena 'vy' je 'vás': 'na vás'.",
-  },
-  {
-    question: "Která forma je správná: 'Viděl jsem ___ (oni, mužský životný) v parku.' ve 4. pádu?",
-    correctAnswer: "je / ně",
-    options: ["jim", "je / ně", "jimi", "nich"],
-    hints: ["Viděl koho? → 4. pád množného čísla."],
-    explanation: "4. pád (koho?) mn. č.: bez předložky 'je', po předložce 'ně' (na ně).",
-  },
-  {
-    question: "Která forma je správná: 'Dám to ___ (ona).' ve 3. pádu?",
-    correctAnswer: "jí",
-    options: ["ji", "ní", "jí", "ona"],
-    hints: ["Dám komu? To je 3. pád zájmena 'ona'."],
-    explanation: "3. pád (komu?) zájmena 'ona' je 'jí' (dlouhé í). 'ji' (krátké i) je 4. pád.",
-  },
-  {
-    question: "Která forma je správná: 'Potřebuju ___ (ty) tady.' ve 4. pádu?",
-    correctAnswer: "tě / tebe",
-    options: ["tobě", "ti", "tebou", "tě / tebe"],
-    hints: ["Potřebuji koho? → 4. pád zájmena 'ty'."],
-    explanation: "4. pád (koho?) zájmena 'ty' je 'tě' (krátký tvar) nebo 'tebe'.",
-  },
-  {
-    question: "Která forma je správná: 'Záleží mi na ___ (my).' v 6. pádu?",
-    correctAnswer: "nás",
-    options: ["nás", "nám", "námi", "my"],
-    hints: ["Na kom? → 6. pád zájmena 'my'."],
-    explanation: "Po předložce 'na' = 6. pád = 'nás': 'na nás'.",
-  },
-];
-
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return shuffle(ULOHY[(level >= 3 ? 3 : level) as 1 | 2 | 3].map(uloha));
 }
 
 export const ZAJMENASKLONOVANIOSOBNICHZAJMEN: TopicMetadata[] = [

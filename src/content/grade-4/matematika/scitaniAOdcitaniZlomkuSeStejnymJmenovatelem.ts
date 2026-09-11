@@ -1,86 +1,120 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { phrase, pad } from "@/lib/czechGrammar";
+import { ciselnaUloha, rnd } from "./_mat";
+
+// Přepsáno 2026-09-11 (audit 4. ročníku). Velká nápověda prozrazovala
+// výsledek („Sečteme čitatele: 2 + 3 = 5.“), L3 krátila zlomky (krácení
+// patří až na 2. stupeň) a distraktory neměly vysvětlení. Teď:
+// L1 sčítání (výsledek menší než celek)
+// L2 odčítání a sčítání ve slovní úloze
+// L3 dvoukrokové úlohy: kolik zbylo po dvou odebráních, kolik chybí do celku.
+// Výsledek se nekrátí — 2/8 zůstává 2/8.
+
+const z = (c: number, j: number) => `${c}/${j}`;
+
+function scitani(): PracticeTask {
+  const j = rnd(3, 12);
+  const a = rnd(1, j - 2);
+  const b = rnd(1, j - 1 - a);
+  const c = a + b;
+  return ciselnaUloha(`${z(a, j)} + ${z(b, j)} = ?`, z(c, j), [
+    { value: z(c, 2 * j), why: `Sečetly se i jmenovatele. Díly jsou pořád stejně velké (${z(1, j)}), jmenovatel ${j} se nemění.` },
+    { value: z(c + 1, j), why: `Čitatele se sečetly špatně: ${a} + ${b} je méně.` },
+    { value: z(a * b, j), why: "Čitatele se vynásobily. Při sčítání zlomků se čitatele sčítají." },
+    { value: z(j, c), why: "Čitatel a jmenovatel jsou prohozené. Nahoře je počet dílů, dole počet dílů celku." },
+    { value: z(Math.max(1, c - 1), j), why: `Čitatele se sečetly špatně: ${a} + ${b} je víc.` },
+  ], [
+    `Zlomky ${z(a, j)} a ${z(b, j)} mají stejný jmenovatel. Co to říká o velikosti jejich dílů?`,
+    `Představ si celek rozdělený na ${phrase(j, "STEJNÝ", "DÍL")}. Vezmeš ${pad(a, "DÍL")} a pak ještě ${pad(b, "DÍL")}. Kolik dílů máš dohromady? Jmenovatel ${j} zůstává.`,
+  ], [
+    `Jmenovatele jsou stejné (${j}), díly jsou stejně velké.`,
+    `Sečteme čitatele: ${a} + ${b} = ${c}.`,
+    `${z(a, j)} + ${z(b, j)} = ${z(c, j)}`,
+  ]);
+}
+
+function odcitani(): PracticeTask {
+  let j = 0, a = 0, b = 0, c = 0;
+  // Výsledek nesmí stát v zadání: 4/8 − 2/8 (b = c), 11/12 − 10/12 („1/12“ je v „11/12“).
+  do { j = rnd(3, 12); a = rnd(2, j); b = rnd(1, a - 1); c = a - b; } while (b === c || String(a).endsWith(String(c)));
+  return ciselnaUloha(`${z(a, j)} − ${z(b, j)} = ?`, z(c, j), [
+    { value: z(a + b, j), why: "Čitatele se sečetly. Tady se odčítá." },
+    { value: z(b, j), why: `To je zlomek, který se odčítal. Výsledek je to, co zbude: ${a} − ${b}.` },
+    { value: z(c + 1, j), why: `Čitatele se odečetly špatně: ${a} − ${b} je méně.` },
+    { value: z(j - c, j), why: "Tohle je část, která do celku chybí. Výsledek odčítání je jiná část." },
+    { value: z(Math.max(1, c - 1), j), why: `Čitatele se odečetly špatně: ${a} − ${b} je víc.` },
+  ], [
+    `Zlomky ${z(a, j)} a ${z(b, j)} mají stejně velké díly (jmenovatel ${j}). S kterými čísly budeš počítat?`,
+    `Představ si koláč rozdělený na ${phrase(j, "STEJNÝ", "DÍL")}, z něhož máš ${pad(a, "DÍL")}. Když ${pad(b, "DÍL")} sníš, kolik dílů ti zůstane? Jmenovatel ${j} se nemění.`,
+  ], [
+    `Jmenovatele jsou stejné (${j}), odečítáme jen čitatele.`,
+    `${a} − ${b} = ${c}`,
+    `${z(a, j)} − ${z(b, j)} = ${z(c, j)}`,
+  ]);
+}
+
+function slovniSoucet(): PracticeTask {
+  const j = rnd(4, 12);
+  const a = rnd(1, j - 2);
+  const b = rnd(1, j - 1 - a);
+  const c = a + b;
+  return ciselnaUloha(`Adam snědl ${z(a, j)} pizzy a Bára ${z(b, j)}. Jakou část pizzy snědli dohromady?`, z(c, j), [
+    { value: z(c, 2 * j), why: `Sečetly se i jmenovatele. Pizza je pořád rozdělená na ${phrase(j, "STEJNÝ", "DÍL")}.` },
+    { value: z(j - c, j), why: "Tohle je část, která zbyla. Otázka se ptá, kolik snědli." },
+    { value: z(c + 1, j), why: `Dílů je o jeden víc, než snědli: ${a} + ${b} je méně.` },
+    { value: z(Math.max(1, c - 1), j), why: `Dílů je o jeden méně, než snědli: ${a} + ${b} je víc.` },
+  ], [
+    `Adam snědl ${pad(a, "DÍL")} z ${j}, Bára ${pad(b, "DÍL")} z ${j}. Kolik dílů je to dohromady?`,
+    `Oba zlomky mají jmenovatel ${j}, díly jsou stejně velké. Sečti jen čitatele a jmenovatel ${j} nech — výsledek zapiš jako zlomek.`,
+  ], [
+    `Adam ${z(a, j)}, Bára ${z(b, j)} — díly jsou stejné.`,
+    `${z(a, j)} + ${z(b, j)} = ${z(c, j)}`,
+  ]);
+}
+
+function zbytek(): PracticeTask {
+  let j = 0, a = 0, b = 0, c = 0;
+  // Zbytek nesmí stát v zadání (Tom 2/5, zbylo 2/5).
+  do { j = rnd(5, 12); a = rnd(1, j - 3); b = rnd(1, j - 2 - a); c = j - a - b; }
+  while (c === a || c === b || String(a).endsWith(String(c)) || String(b).endsWith(String(c)));
+  return ciselnaUloha(`Čokoláda má ${pad(j, "DÍL")}. Tom snědl ${z(a, j)} čokolády, Lucie ${z(b, j)}. Jaká část čokolády zbyla?`, z(c, j), [
+    { value: z(a + b, j), why: "To je část, kterou snědli. Otázka se ptá, co zbylo." },
+    { value: z(j - a, j), why: "Odečetla se jen Tomova část. Lucie snědla také." },
+    { value: z(j - b, j), why: "Odečetla se jen Luciina část. Tom snědl také." },
+    { value: z(c + 1, j), why: `Zkouška: ${a} + ${b} + ${c + 1} je víc než ${j}.` },
+  ], [
+    `Tom snědl ${pad(a, "DÍL")}, Lucie ${pad(b, "DÍL")}. Kolik dílů to je dohromady a kolik jich zbude z ${j}?`,
+    `Celá čokoláda má ${pad(j, "DÍL")}. Nejdřív sečti díly, které snědli oba dohromady, a pak je odečti od celku. Jmenovatel zůstává ${j}.`,
+  ], [
+    `Snědli: ${z(a, j)} + ${z(b, j)} = ${z(a + b, j)}`,
+    `Zbylo: ${z(j, j)} − ${z(a + b, j)} = ${z(c, j)}`,
+  ]);
+}
+
+function doCelku(): PracticeTask {
+  let j = 0, a = 0, c = 0;
+  do { j = rnd(3, 12); a = rnd(1, j - 1); c = j - a; } while (a === c || String(a).endsWith(String(c)));
+  return ciselnaUloha(`${z(a, j)} + ? = 1. Jaký zlomek chybí do celku?`, z(c, j), [
+    { value: z(a, j), why: `To je zlomek ze zadání. ${z(a, j)} + ${z(a, j)} = ${z(2 * a, j)}, to není celek.` },
+    { value: z(j, c), why: "Čitatel a jmenovatel jsou prohozené." },
+    { value: z(c + 1, j), why: `S tímhle by to bylo víc než celek: ${a} + ${c + 1} je víc než ${j}.` },
+    ...(c > 1 ? [{ value: z(c - 1, j), why: `S tímhle by celek nebyl celý: ${a} + ${c - 1} je méně než ${j}.` }] : []),
+    { value: z(c, 2 * j), why: `Jmenovatel se nemění — díly jsou pořád ${z(1, j)}.` },
+  ], [
+    `Celek má ${pad(j, "DÍL")}. Kolik dílů chybí k ${z(a, j)}?`,
+    `Celek zapíšeš jako zlomek, který má nahoře i dole ${j} — to jsou všechny díly. Od čitatele ${j} odečti čitatel ${a} a jmenovatel ponech.`,
+  ], [
+    `1 = ${z(j, j)}`,
+    `${z(j, j)} − ${z(a, j)} = ${z(c, j)}`,
+  ]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-
-  // level 1: sčítání, jmenovatel 4–8, výsledek < 1
-  // level 2: odčítání i sčítání, jmenovatel 5–12, výsledek může být roven 1
-  // level 3: mix, výsledek jako smíšené číslo nebo 1, zjednodušení
-
-  const jmenovatele = [
-    ...(level === 1 ? [4, 5, 6, 8] : []),
-    ...(level >= 2 ? [5, 6, 8, 10, 12] : []),
-    ...(level === 3 ? [3, 7, 9] : []),
-  ];
-
-  for (let i = 0; i < 40; i++) {
-    const den = jmenovatele[Math.floor(Math.random() * jmenovatele.length)];
-    const isAdd = level === 1 ? true : Math.random() < 0.5;
-
-    let num1: number, num2: number;
-
-    if (isAdd) {
-      num1 = Math.floor(Math.random() * (den - 2)) + 1; // 1..den-2
-      const maxNum2 = level === 1 ? den - num1 - 1 : den - num1;
-      num2 = Math.floor(Math.random() * maxNum2) + 1;
-    } else {
-      num1 = Math.floor(Math.random() * (den - 1)) + 2; // 2..den
-      num2 = Math.floor(Math.random() * (num1 - 1)) + 1; // 1..num1-1
-    }
-
-    const resultNum = isAdd ? num1 + num2 : num1 - num2;
-    const op = isAdd ? "+" : "−";
-
-    // Výsledek jako zlomek nebo 1 nebo zjednodušený
-    let correctStr: string;
-    if (resultNum === den) {
-      correctStr = "1";
-    } else if (resultNum === 0) {
-      correctStr = "0";
-    } else {
-      const g = gcd(resultNum, den);
-      correctStr = g > 1 ? `${resultNum / g}/${den / g}` : `${resultNum}/${den}`;
-    }
-
-    // Distraktory
-    const d1 = `${resultNum + 1}/${den}`;
-    const d2 = `${resultNum}/${den + 1}`;
-    const d3 = isAdd ? `${num1 * num2}/${den * den}` : `${num1 + num2}/${den}`;
-
-    tasks.push({
-      question: `${num1}/${den} ${op} ${num2}/${den} = ?`,
-      correctAnswer: correctStr,
-      options: shuffle([correctStr, d1, d2, d3].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-      hints: [
-        `Jmenovatel (${den}) zůstane stejný — pracujeme jen s čitateli.`,
-        correctStr === "1"
-          ? "Když čitatelé po sečtení dají dohromady přesně jmenovatele, zlomek se rovná celku."
-          : isAdd
-            ? `Sečteme čitatele: ${num1} + ${num2} = ${resultNum}.`
-            : `Odečteme čitatele: ${num1} − ${num2} = ${resultNum}.`,
-      ],
-      solutionSteps: [
-        `${num1}/${den} ${op} ${num2}/${den}`,
-        `= (${num1} ${op} ${num2}) / ${den}`,
-        `= ${resultNum}/${den}${correctStr !== `${resultNum}/${den}` ? ` = ${correctStr}` : ""}`,
-      ],
-    });
-  }
-
-  return tasks;
-}
-
-function gcd(a: number, b: number): number {
-  return b === 0 ? a : gcd(b, a % b);
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+  return Array.from({ length: 40 }, (_, i) => {
+    if (level === 1) return scitani();
+    if (level === 2) return i % 2 ? odcitani() : slovniSoucet();
+    return i % 2 ? zbytek() : doCelku();
+  });
 }
 
 export const SCITANI_ODCITANI_ZLOMKU: TopicMetadata[] = [

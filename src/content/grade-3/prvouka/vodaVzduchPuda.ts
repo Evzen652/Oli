@@ -456,10 +456,10 @@ export const VODAVZDUCHPUDA: TopicMetadata[] = [
     helpTemplate: {
       hint: "Vzpomeň si na koloběh vody: výpar → oblaka → déšť → řeky → moře.",
       steps: [
-        "1. Voda: výpar → oblaka → srážky → řeky → moře (koloběh).",
-        "2. Vzduch: 4/5 dusík + 1/5 kyslík + trocha CO₂.",
-        "3. Kyslík = dýchání živočichů. CO₂ = fotosyntéza rostlin.",
-        "4. Půda vzniká z hornin + odumřelých organismů. Žížaly ji kypří.",
+        "Voda: výpar → oblaka → srážky → řeky → moře (koloběh).",
+        "Vzduch: 4/5 dusík + 1/5 kyslík + trocha CO₂.",
+        "Kyslík = dýchání živočichů. CO₂ = fotosyntéza rostlin.",
+        "Půda vzniká z hornin + odumřelých organismů. Žížaly ji kypří.",
       ],
       commonMistake: "Vzduch není jen kyslík — největší část tvoří dusík.",
       example: "Koloběh vody: řeka vypaří vodu → oblaka → déšť → řeka opět.",

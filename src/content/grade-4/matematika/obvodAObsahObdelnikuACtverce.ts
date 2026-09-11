@@ -1,103 +1,136 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { ciselnaUloha, rnd } from "./_mat";
 
-function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
+// Přepsáno 2026-09-11 (audit 4. ročníku). Úlohy měly jedinou obecnou
+// nápovědu („Obvod čtverce = 4 × a.“), žádnou zpětnou vazbu k chybným
+// možnostem a klíč bez jednotek. Teď mají odpovědi jednotky (cm, cm²)
+// a distraktory jsou typické chyby: záměna obvodu a obsahu, polovina
+// obvodu, zapomenutá strana, špatná jednotka.
+// L1 čtverec · L2 obdélník · L3 zpětné úlohy (strana z obvodu či obsahu).
+// V nápovědách se za čísla nepíše „cm“ — „15 cm“ by obsahovalo klíč „5 cm“.
 
-  // level 1: obvod i obsah čtverce (a do 20)
-  // level 2: obvod i obsah obdélníku (a,b do 50)
-  // level 3: mix — dáno obvod nebo obsah, najdi chybějící rozměr
-
-  for (let i = 0; i < 40; i++) {
-    if (level === 1) {
-      const a = Math.floor(Math.random() * 18) + 2; // 2–19
-      const obvod = 4 * a;
-      const obsah = a * a;
-      const isObvod = Math.random() < 0.5;
-      const correct = isObvod ? String(obvod) : String(obsah);
-      const d1 = isObvod ? String(obvod + a) : String(obsah + a);
-      const d2 = isObvod ? String(2 * a) : String(2 * a * a);
-      const d3 = isObvod ? String(obvod - a) : String(obsah - a);
-      tasks.push({
-        question: isObvod
-          ? `Čtverec se stranou ${a} cm. Jaký je jeho obvod?`
-          : `Čtverec se stranou ${a} cm. Jaký je jeho obsah?`,
-        correctAnswer: correct,
-        options: shuffle([correct, d1, d2, d3].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [
-          isObvod ? `Obvod čtverce = 4 × a.` : `Obsah čtverce = a × a.`,
-        ],
-        solutionSteps: isObvod
-          ? [`O = 4 × ${a} = ${obvod} cm`]
-          : [`S = ${a} × ${a} = ${obsah} cm²`],
-      });
-    } else if (level === 2) {
-      const a = Math.floor(Math.random() * 40) + 5;  // 5–44
-      const b = Math.floor(Math.random() * 30) + 3;  // 3–32
-      const obvod = 2 * (a + b);
-      const obsah = a * b;
-      const isObvod = Math.random() < 0.5;
-      const correct = isObvod ? String(obvod) : String(obsah);
-      tasks.push({
-        question: isObvod
-          ? `Obdélník ${a} cm × ${b} cm. Jaký je jeho obvod?`
-          : `Obdélník ${a} cm × ${b} cm. Jaký je jeho obsah?`,
-        correctAnswer: correct,
-        options: shuffle([correct, String(isObvod ? obvod + b : obsah + a),
-          String(isObvod ? a + b : a + b), String(isObvod ? obvod - a : obsah - b)]
-          .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [
-          isObvod ? `Obvod obdélníku = 2 × (a + b).` : `Obsah obdélníku = a × b.`,
-        ],
-        solutionSteps: isObvod
-          ? [`O = 2 × (${a} + ${b}) = 2 × ${a + b} = ${obvod} cm`]
-          : [`S = ${a} × ${b} = ${obsah} cm²`],
-      });
-    } else {
-      // Dáno obvod → najdi stranu
-      const isSquare = Math.random() < 0.5;
-      if (isSquare) {
-        const a = Math.floor(Math.random() * 20) + 5;
-        const obvod = 4 * a;
-        tasks.push({
-          question: `Čtverec má obvod ${obvod} cm. Jak dlouhá je jeho strana?`,
-          correctAnswer: String(a),
-          options: shuffle([String(a), String(a + 2), String(a - 2), String(a * 2)]
-            .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-          hints: [`Strana čtverce = obvod ÷ 4.`],
-          solutionSteps: [`a = ${obvod} ÷ 4 = ${a} cm`],
-        });
-      } else {
-        const b = Math.floor(Math.random() * 15) + 3;
-        const a = Math.floor(Math.random() * 20) + 5;
-        const obvod = 2 * (a + b);
-        tasks.push({
-          question: `Obdélník má obvod ${obvod} cm a jednu stranu ${b} cm. Jak dlouhá je druhá strana?`,
-          correctAnswer: String(a),
-          options: shuffle([String(a), String(a + 3), String(a - 3), String(obvod - b)]
-            .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-          hints: [`Součet stran = obvod ÷ 2. Druhá strana = (obvod ÷ 2) − ${b}.`],
-          solutionSteps: [`(${obvod} ÷ 2) − ${b} = ${obvod / 2} − ${b} = ${a} cm`],
-        });
-      }
-    }
+function ctverec(): PracticeTask {
+  const a = rnd(3, 15);
+  const o = 4 * a, s = a * a;
+  if (Math.random() < 0.5) {
+    return ciselnaUloha(`Čtverec má stranu ${a} cm. Jaký je jeho obvod?`, `${o} cm`, [
+      { value: `${s} cm`, why: `${a} × ${a} je obsah, ne obvod. Obvod je délka čáry kolem čtverce.` },
+      { value: `${2 * a} cm`, why: "Sečetly se jen dvě strany. Čtverec má strany čtyři." },
+      { value: `${3 * a} cm`, why: "Chybí jedna strana. Čtverec má strany čtyři." },
+      { value: `${o} cm²`, why: "Obvod je délka, měří se v centimetrech (cm). Čtvereční centimetry (cm²) patří k obsahu." },
+    ], [
+      `Čtverec má stranu ${a}. Kolik takových stran obejdeš dokola?`,
+      `Obvod je délka čáry kolem celého čtverce. Obejdi ho dokola: čtyřikrát strana ${a}, tedy 4 × ${a}.`,
+    ], [`Čtverec má čtyři stejné strany.`, `o = 4 · a = 4 · ${a} = ${o} cm`]);
   }
-  return tasks;
+  return ciselnaUloha(`Čtverec má stranu ${a} cm. Jaký je jeho obsah?`, `${s} cm²`, [
+    { value: `${o} cm²`, why: `4 × ${a} je obvod, ne obsah. Obsah je strana krát strana.` },
+    { value: `${2 * a} cm²`, why: `${a} + ${a} je součet stran. Obsah je součin: ${a} × ${a}.` },
+    { value: `${s} cm`, why: "Obsah je plocha, měří se ve čtverečních centimetrech (cm²)." },
+    { value: `${s + a} cm²`, why: "O jednu řadu čtverečků víc. Obsah je přesně strana krát strana." },
+  ], [
+    `Kolik čtverečků 1 cm × 1 cm pokryje čtverec se stranou ${a}?`,
+    `V jedné řadě je tolik čtverečků, kolik měří strana (${a}), a řad je stejně. Obsah je proto ${a} × ${a}.`,
+  ], [`Obsah čtverce = strana × strana.`, `S = ${a} · ${a} = ${s} cm²`]);
 }
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+function obdelnik(): PracticeTask {
+  const a = rnd(5, 30);
+  let b = rnd(3, 20);
+  while (b === a) b = rnd(3, 20);
+  const o = 2 * (a + b), s = a * b;
+  if (Math.random() < 0.5) {
+    return ciselnaUloha(`Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obvod?`, `${o} cm`, [
+      { value: `${a + b} cm`, why: `${a} + ${b} je jen polovina obvodu — kolem obdélníku jsou dvě strany ${a} cm a dvě strany ${b} cm.` },
+      { value: `${2 * a + b} cm`, why: `Chybí jedna strana ${b} cm. Obdélník má čtyři strany.` },
+      { value: `${a + 2 * b} cm`, why: `Chybí jedna strana ${a} cm. Obdélník má čtyři strany.` },
+      { value: `${s} cm`, why: `${a} × ${b} je obsah, ne obvod.` },
+    ], [
+      `Obejdi obdélník dokola: kolikrát půjdeš po straně ${a} a kolikrát po straně ${b}?`,
+      `Kolem obdélníku jsou dvě strany ${a} a dvě strany ${b}. Nejdřív sečti ${a} + ${b} a výsledek vezmi dvakrát.`,
+    ], [`o = 2 · (a + b)`, `o = 2 · (${a} + ${b}) = 2 · ${a + b} = ${o} cm`]);
   }
-  return a;
+  return ciselnaUloha(`Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obsah?`, `${s} cm²`, [
+    { value: `${o} cm²`, why: `2 × (${a} + ${b}) je obvod, ne obsah. Obsah je součin stran.` },
+    { value: `${a + b} cm²`, why: "Strany se sečetly. Obsah je jejich součin." },
+    { value: `${s} cm`, why: "Obsah je plocha, měří se ve čtverečních centimetrech (cm²)." },
+    { value: `${s + a} cm²`, why: `O jednu řadu čtverečků víc — zkontroluj násobení ${a} × ${b}.` },
+  ], [
+    `Obsah obdélníku je plocha uvnitř. Jakou početní operaci použiješ se stranami ${a} a ${b}?`,
+    `Obsah je počet čtverečků 1 cm × 1 cm, které obdélník pokryjí. Jedna řada je dlouhá jako strana ${a} a řad je tolik, kolik měří strana ${b}. Vynásob ${a} × ${b}.`,
+  ], [`S = a · b`, `S = ${a} · ${b} = ${s} cm²`]);
+}
+
+function stranaCtverceZObvodu(): PracticeTask {
+  const a = rnd(5, 25), o = 4 * a;
+  return ciselnaUloha(`Čtverec má obvod ${o} cm. Jak dlouhá je jeho strana?`, `${a} cm`, [
+    { value: `${o / 2} cm`, why: "Obvod se dělil dvěma. Čtverec má ale čtyři stejné strany — děl čtyřmi." },
+    { value: `${o - 4} cm`, why: "Od obvodu se odečetla čtyřka. Obvod je čtyřikrát strana, proto se dělí čtyřmi." },
+    { value: `${o} cm`, why: "To je celý obvod, tedy všechny čtyři strany dohromady." },
+    { value: `${a + 1} cm`, why: `Zkouška: 4 × ${a + 1} = ${4 * (a + 1)}, ne ${o}.` },
+  ], [
+    `Obvod čtverce je součet čtyř stejných stran. Na kolik stejných dílů rozdělíš číslo ${o}?`,
+    `Všechny čtyři strany čtverce jsou stejně dlouhé a dohromady dají obvod ${o}. Jednu stranu proto dostaneš dělením ${o} ÷ 4.`,
+  ], [`o = 4 · a, takže a = o ÷ 4`, `a = ${o} ÷ 4 = ${a} cm`, `Zkouška: 4 · ${a} = ${o} ✓`]);
+}
+
+function stranaCtverceZObsahu(): PracticeTask {
+  // 5 a 6 ne: „25 cm²“ a „36 cm²“ by obsahovaly klíč „5 cm“ / „6 cm“.
+  const a = [3, 4, 7, 8, 9, 10][rnd(0, 5)], s = a * a;
+  return ciselnaUloha(`Čtverec má obsah ${s} cm². Jak dlouhá je jeho strana?`, `${a} cm`, [
+    ...(s % 4 === 0 ? [{ value: `${s / 4} cm`, why: "Dělení čtyřmi patří k obvodu. U obsahu hledáš číslo, které krát samo sebe dá obsah." }] : []),
+    ...(s % 2 === 0 ? [{ value: `${s / 2} cm`, why: `Obsah není strana + strana. Hledej číslo, pro které platí ? × ? = ${s}.` }] : []),
+    { value: `${a + 1} cm`, why: `Zkouška: ${a + 1} × ${a + 1} = ${(a + 1) * (a + 1)}, ne ${s}.` },
+    { value: `${a - 1} cm`, why: `Zkouška: ${a - 1} × ${a - 1} = ${(a - 1) * (a - 1)}, ne ${s}.` },
+    { value: `${s} cm`, why: "To je obsah, ne délka strany. Hledáš číslo, které krát samo sebe dá obsah." },
+  ], [
+    `Které číslo vynásobené samo sebou dá ${s}?`,
+    `Obsah čtverce je strana × strana. Projdi násobilku a hledej číslo, které když vynásobíš jím samým, dostaneš ${s}.`,
+  ], [`S = a · a`, `${a} · ${a} = ${s}, takže a = ${a} cm`]);
+}
+
+function druhaStranaZObvodu(): PracticeTask {
+  const a = rnd(5, 20);
+  let b = rnd(3, 15);
+  while (b === a || String(b).endsWith(String(a)) || String(2 * (a + b)).endsWith(String(a))) b = rnd(3, 15);
+  const o = 2 * (a + b);
+  return ciselnaUloha(`Obdélník má obvod ${o} cm a jednu stranu ${b} cm. Jak dlouhá je druhá strana?`, `${a} cm`, [
+    { value: `${o - b} cm`, why: `Strana ${b} cm se odečetla jen jednou. V obvodu je ale dvakrát.` },
+    { value: `${o / 2} cm`, why: `To je součet dvou sousedních stran. Ještě od něj odečti ${b}.` },
+    { value: `${o - 2 * b} cm`, why: "To jsou obě hledané strany dohromady. Jedna je polovina." },
+    { value: `${a + 1} cm`, why: `Zkouška: 2 × (${a + 1} + ${b}) = ${2 * (a + 1 + b)}, ne ${o}.` },
+  ], [
+    `Kolik zbude z obvodu ${o}, když odečteš dvakrát ${b}?`,
+    `${o} − 2 × ${b} = ${o - 2 * b} — to jsou obě hledané strany dohromady. Jedna strana je polovina z toho: ${o - 2 * b} ÷ 2.`,
+  ], [`o = 2 · (a + b), známe b = ${b} cm`, `Obě neznámé strany: ${o} − 2 · ${b} = ${o - 2 * b} cm`, `Jedna strana: ${o - 2 * b} ÷ 2 = ${a} cm`]);
+}
+
+function druhaStranaZObsahu(): PracticeTask {
+  const a = rnd(3, 10);
+  let b = rnd(2, 10);
+  while (b === a || String(b).endsWith(String(a)) || String(a * b).endsWith(String(a))) b = rnd(2, 10);
+  const s = a * b;
+  return ciselnaUloha(`Obdélník má obsah ${s} cm² a jednu stranu ${b} cm. Jak dlouhá je druhá strana?`, `${a} cm`, [
+    { value: `${s - b} cm`, why: `Obsah je součin stran, ne součet. Proto se neodečítá, ale dělí: ${s} ÷ ${b}.` },
+    { value: `${b} cm`, why: `To je strana, kterou už znáš. Hledáš druhou: ${s} ÷ ${b}.` },
+    { value: `${a + 1} cm`, why: `Zkouška: ${a + 1} × ${b} = ${(a + 1) * b}, ne ${s}.` },
+    { value: `${a - 1} cm`, why: `Zkouška: ${a - 1} × ${b} = ${(a - 1) * b}, ne ${s}.` },
+  ], [
+    `Obsah = strana × strana. Kterým číslem musíš vynásobit ${b}, aby vyšlo ${s}?`,
+    `Hledáš číslo, pro které platí ? × ${b} = ${s}. Najdeš ho dělením ${s} ÷ ${b} — pomůže ti násobilka čísla ${b}.`,
+  ], [`S = a · b`, `a = ${s} ÷ ${b} = ${a} cm`, `Zkouška: ${a} · ${b} = ${s} ✓`]);
+}
+
+function gen(level: number): PracticeTask[] {
+  const L3 = [stranaCtverceZObvodu, stranaCtverceZObsahu, druhaStranaZObvodu, druhaStranaZObsahu];
+  return Array.from({ length: 40 }, (_, i) => (level === 1 ? ctverec() : level === 2 ? obdelnik() : L3[i % 4]()));
 }
 
 export const OBVOD_OBSAH: TopicMetadata[] = [
   {
     id: "g4-mat-obvod-obsah-obdelnik-ctverec-4",
     rvpNodeId: "g4-matematika-geometrie-v-rovine-a-v-prostoru-obvod-a-obsah-obvod-a-obsah-obdelniku-a-ctverce",
-    displayName: "Obvod a obsah",
+    displayName: "Obvod a obsah útvarů",
     title: "Obvod a obsah obdélníku a čtverce",
     studentTitle: "Obvod a obsah",
     subject: "matematika",

@@ -1,80 +1,152 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
+import { ciselnaUloha, pick, rnd, sada } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď generátor s typickými chybami
+// (u řady s násobením pokračovat přičítáním, u podání rukou počítat každou
+// dvojici dvakrát, u natřené krychle zapomenout na vnitřní kostky).
+// L1 řada, která roste nebo klesá o stejné číslo · L2 řada s násobením,
+// se střídáním dvou kroků nebo s rostoucím krokem · L3 kombinatorika
+// a prostorová představivost (podání rukou, oblečení, kostky v kvádru, natřená
+// krychle, hrany a stěny těles).
+
+const rada = (xs: number[]) => `${xs.join(", ")}, ?`;
+
+function aritmeticka(): PracticeTask | null {
+  const krok = rnd(2, 15) * (Math.random() < 0.3 ? -1 : 1), a = krok > 0 ? rnd(1, 40) : rnd(80, 150);
+  const xs = Array.from({ length: 5 }, (_, i) => a + i * krok);
+  const key = a + 5 * krok;
+  if (key < 0) return null;
+  return ciselnaUloha(`Které číslo v řadě pokračuje? ${rada(xs)}`, key, [
+    { value: key + (krok > 0 ? 1 : -1), why: `Krok je ${Math.abs(krok)}, ne ${Math.abs(krok) + 1}.` },
+    { value: key - (krok > 0 ? 1 : -1), why: `Krok je ${Math.abs(krok)}, ne ${Math.abs(krok) - 1}.` },
+    { value: key + krok, why: "Krok se přičetl dvakrát — hledáš jen další číslo." },
+  ], [
+    `O kolik se liší ${xs[0]} a ${xs[1]}? A platí to i pro ${xs[3]} a ${xs[4]}?`,
+    "Když se sousední čísla liší pořád o stejné číslo, stačí ho přičíst (nebo odečíst) k poslednímu číslu řady.",
+  ], [`Krok: ${xs[1]} − ${xs[0]} = ${krok}`, `${xs[4]} ${krok > 0 ? "+" : "−"} ${Math.abs(krok)} = ${key}`]);
 }
 
-// Level 1: číselné řady, jednoduché logické úlohy
-const POOL_L1: PracticeTask[] = [
-  { question: "Jaké číslo chybí v řadě: 2, 4, 8, ?, 32?", correctAnswer: "16", options: ["16", "12", "10", "20"] },
-  { question: "Jaké číslo chybí v řadě: 1, 3, 5, 7, ?, 11?", correctAnswer: "9", options: ["8", "9", "10", "6"] },
-  { question: "Jaké číslo chybí v řadě: 100, 90, 80, ?, 60?", correctAnswer: "70", options: ["75", "65", "70", "50"] },
-  { question: "Jaké číslo chybí v řadě: 1, 4, 9, 16, ?, 36?", correctAnswer: "25", options: ["20", "24", "30", "25"] },
-  { question: "Jaké číslo chybí v řadě: 5, 10, 15, ?, 25?", correctAnswer: "20", options: ["20", "18", "22", "30"] },
-  { question: "Jaké číslo chybí v řadě: 2, 6, 18, ?, 162?", correctAnswer: "54", options: ["36", "54", "72", "48"] },
-  { question: "Jaké číslo chybí v řadě: 1, 1, 2, 3, 5, ?, 13?", correctAnswer: "8", options: ["7", "9", "8", "6"] },
-  { question: "Vzor: každý čtverec je černobílý jako šachovnice. Co je ve čtverci uprostřed na pozici [řada 2, sloupec 2] (začínáme bílou)?", correctAnswer: "Černá", options: ["Bílá", "Šedá", "Záleží na velikosti", "Černá"] },
-  { question: "Jaké číslo chybí: 3, 6, 12, 24, ?, 96?", correctAnswer: "48", options: ["48", "36", "60", "72"] },
-  { question: "Jaké číslo přijde za: 0, 1, 1, 2, 3, 5, 8?", correctAnswer: "13", options: ["11", "13", "10", "14"] },
-  { question: "Řada: 10, 20, 30, 40... Jaká je 8. číslo?", correctAnswer: "80", options: ["70", "90", "80", "40"] },
-  { question: "Jaké číslo chybí: 1, 2, 4, 8, 16, ?", correctAnswer: "32", options: ["24", "20", "30", "32"] },
-  { question: "Řada: 64, 32, 16, ?, 4?", correctAnswer: "8", options: ["8", "12", "6", "10"] },
-  { question: "Jaké číslo chybí: 7, 14, 21, ?, 35?", correctAnswer: "28", options: ["24", "28", "30", "32"] },
-  { question: "Vzor: △, ○, □, △, ○, ?", correctAnswer: "□", options: ["△", "○", "□", "◇"] },
-  { question: "Vzor: 1, 3, 2, 4, 3, 5, 4, ?", correctAnswer: "6", options: ["5", "7", "4", "6"] },
-  { question: "Jaké číslo chybí: 1000, 500, 250, ?, 62,5?", correctAnswer: "125", options: ["125", "100", "150", "200"] },
-  { question: "Řada: 2, 3, 5, 7, 11, ? (prvočísla)", correctAnswer: "13", options: ["12", "13", "14", "15"] },
-  { question: "Jaké číslo chybí: 3, 9, 27, ?, 243?", correctAnswer: "81", options: ["54", "72", "81", "90"] },
-  { question: "Vzor: A, C, E, G, ?", correctAnswer: "I", options: ["H", "J", "F", "I"] },
+function nasobici(): PracticeTask | null {
+  const k = pick([2, 3]), a = rnd(1, k === 2 ? 12 : 5);
+  const xs = Array.from({ length: 4 }, (_, i) => a * k ** i);
+  const key = xs[3] * k, rozdil = xs[3] - xs[2];
+  return ciselnaUloha(`Které číslo v řadě pokračuje? ${rada(xs)}`, key, [
+    { value: xs[3] + rozdil, why: `Přičetl se poslední rozdíl (${rozdil}), ale rozdíly rostou — každé číslo je ${k === 2 ? "dvakrát" : "třikrát"} větší než předchozí.` },
+    { value: xs[3] + k, why: `Přičetlo se ${k}, ale čísla se ${k === 2 ? "zdvojnásobují" : "ztrojnásobují"}.` },
+    { value: xs[3] * (k + 1), why: `Násobí se ${k}, ne ${k + 1}.` },
+  ], [
+    `Liší se sousední čísla ${xs.join(", ")} pořád o stejné číslo? Zkus místo odčítání dělit: ${xs[1]} : ${xs[0]}.`,
+    "Když rozdíly rostou, zkus, jestli se čísla nenásobí. Poznáš to tak, že každé číslo je stejněkrát větší než to předchozí.",
+  ], [`${xs[1]} : ${xs[0]} = ${k}, ${xs[2]} : ${xs[1]} = ${k}`, `${xs[3]} × ${k} = ${key}`]);
+}
+
+function stridava(): PracticeTask | null {
+  const p = rnd(3, 9), m = rnd(1, p - 1), a = rnd(5, 30);
+  const xs = [a];
+  for (let i = 1; i < 6; i++) xs.push(xs[i - 1] + (i % 2 ? p : -m));
+  const key = xs[5] + p;
+  return ciselnaUloha(`Které číslo v řadě pokračuje? ${rada(xs)}`, key, [
+    { value: xs[5] - m, why: `Kroky se střídají: +${p}, −${m}. Po odečtení přichází přičtení.` },
+    { value: xs[5] + (p - m), why: `${p - m} je, o kolik řada vyroste za dva kroky; další krok je ale jen +${p}.` },
+    { value: key + 1, why: `Krok je +${p}, ne +${p + 1}.` },
+  ], [
+    `Napiš si rozdíly mezi sousedními čísly ${xs.slice(0, 4).join(", ")}. Opakují se?`,
+    "Rozdíly se můžou střídat, třeba přičti, odečti, přičti… Zjisti, který krok přišel naposledy, a použij ten druhý.",
+  ], [`Kroky: +${p}, −${m}, +${p}, −${m}, +${p}`, `Poslední byl −${m}, další je +${p}: ${xs[5]} + ${p} = ${key}`]);
+}
+
+function rostouciKrok(): PracticeTask | null {
+  const a = rnd(1, 20), k0 = rnd(1, 4);
+  const xs = [a];
+  for (let i = 0; i < 4; i++) xs.push(xs[i] + k0 + i);
+  const key = xs[4] + k0 + 4;
+  return ciselnaUloha(`Které číslo v řadě pokračuje? ${rada(xs)}`, key, [
+    { value: xs[4] + k0 + 3, why: `Krok se neopakuje, roste o 1: ${k0}, ${k0 + 1}, ${k0 + 2}, ${k0 + 3}, ${k0 + 4}.` },
+    { value: xs[4] + k0, why: `${k0} byl jen první krok; kroky se zvětšují.` },
+    { value: key + 1, why: `Další krok je ${k0 + 4}, ne ${k0 + 5}.` },
+  ], [
+    `Napiš si rozdíly mezi sousedními čísly: ${xs[1] - xs[0]}, ${xs[2] - xs[1]}, … Jak se mění?`,
+    "Když rozdíly nejsou stejné, podívej se, jestli samy netvoří řadu — třeba rostou vždy o 1. Další rozdíl pak přičti k poslednímu číslu.",
+  ], [`Rozdíly: ${xs.slice(1).map((x, i) => x - xs[i]).join(", ")}, další ${k0 + 4}`, `${xs[4]} + ${k0 + 4} = ${key}`]);
+}
+
+function ruce(): PracticeTask | null {
+  const n = rnd(4, 9), key = (n * (n - 1)) / 2;
+  return ciselnaUloha(`Počet dětí na schůzce je ${n}. Každé dítě si podá ruku s každým jednou. Kolik podání rukou proběhne?`, key, [
+    { value: n * (n - 1), why: `Každé podání se počítalo dvakrát — když si Eva podá ruku s Petrem, je to totéž podání jako Petr s Evou.` },
+    { value: n * n, why: "Nikdo si nepodává ruku sám se sebou a každá dvojice se počítá jednou." },
+    { value: n - 1, why: `To je počet podání jen jednoho dítěte. Každé z dětí si podá ruku s ${n - 1} dalšími.` },
+  ], [
+    `S kolika dětmi si podá ruku první dítě? A s kolika novými druhé, když s prvním už se pozdravilo?`,
+    `První dítě podá ruku ${n - 1} dětem, druhé už jen ${n - 2} novým, třetí ${n - 3}… Sečti to. Nebo: každé dítě podá ${n - 1} rukou, ale každé podání tak počítáš dvakrát, takže vyděl dvěma.`,
+  ], [`${Array.from({ length: n - 1 }, (_, i) => n - 1 - i).join(" + ")} = ${key}`, `Nebo: ${n} × ${n - 1} : 2 = ${key}`]);
+}
+
+function obleceni(): PracticeTask | null {
+  const t = rnd(2, 6), k = rnd(2, 5);
+  if (t === k) return null;
+  const tricka = pad(t, "TRIČKO"), sukne = pad(k, "SUKNĚ");
+  return ciselnaUloha(`Petra má ${tricka} a ${sukne}. Kolik různých oblečení (tričko a sukně) si může obléct?`, t * k, [
+    { value: t + k, why: "Trička a sukně se sečetly. Ke každému tričku ale můžeš vzít kteroukoli sukni." },
+    { value: t * k - 1, why: "Žádná dvojice se nemá vynechat." },
+    { value: 2 * (t + k), why: "Tady se nepočítají kusy oblečení, ale dvojice tričko + sukně." },
+  ], [
+    `Kolik oblečení dostaneš s prvním tričkem, když k němu vyzkoušíš všechny sukně?`,
+    `Ke každému tričku se hodí každá sukně. S jedním tričkem máš ${pad(k, "MOŽNOST")}; to platí pro každé tričko, takže se násobí.`,
+  ], [`Jedno tričko: ${pad(k, "MOŽNOST")}`, `${t} × ${k} = ${t * k}`]);
+}
+
+function kvadr(): PracticeTask | null {
+  const a = rnd(2, 5), b = rnd(2, 5), c = rnd(2, 4);
+  return ciselnaUloha(`Kvádr je složený z kostek: na délku ${a}, na šířku ${b} a na výšku ${c}. Kolik kostek má celý kvádr?`, a * b * c, [
+    { value: a + b + c, why: "Rozměry se sečetly. Kostky vyplňují celý prostor, takže se násobí." },
+    { value: a * b, why: `To je jen jedna vrstva. Vrstev je ${c}.` },
+    { value: a * b * c - c, why: "Žádná kostka uvnitř nechybí — kvádr je plný." },
+  ], [
+    `Kolik kostek je v jedné vrstvě (${a} na délku a ${b} na šířku)? Kolik je vrstev?`,
+    "Počet kostek v kvádru = kostky v jedné vrstvě × počet vrstev. Jedna vrstva má délka × šířka kostek.",
+  ], [`Jedna vrstva: ${a} × ${b} = ${a * b}`, `${c} vrstvy: ${a * b} × ${c} = ${a * b * c}`]);
+}
+
+function natrena(): PracticeTask | null {
+  const n = rnd(4, 6), key = (n - 2) ** 3;
+  return ciselnaUloha(`Velkou krychli ${n} × ${n} × ${n} složenou z malých kostek natřeme zvenku barvou. Kolik malých kostek nebude natřených vůbec?`, key, [
+    { value: (n - 1) ** 3, why: "Z každé strany se odebrala jen jedna vrstva. Natřená je ale vrstva na obou stranách — na každém rozměru ubudou dvě kostky." },
+    { value: n ** 3 - n * n * 6, why: "Kostky na hranách a v rozích se tak odečetly vícekrát." },
+    { value: n * n, why: "To je počet kostek na jedné stěně." },
+  ], [
+    `Které kostky se barvy vůbec nedotknou? Představ si, že z krychle ${n} × ${n} × ${n} odloupneš vnější vrstvu.`,
+    `Nenatřené zůstanou jen kostky uvnitř. Na každém rozměru odpadne kostka na začátku i na konci, takže vnitřek je krychle ${n - 2} × ${n - 2} × ${n - 2}.`,
+  ], [`Vnitřek: ${n} − 2 = ${n - 2} na každý rozměr`, `${n - 2} × ${n - 2} × ${n - 2} = ${key}`]);
+}
+
+const TELESA: [string, number, number, number][] = [
+  ["krychle", 12, 6, 8], ["kvádr", 12, 6, 8], ["čtyřboký jehlan", 8, 5, 5], ["trojboký hranol", 9, 5, 6], ["trojboký jehlan", 6, 4, 4],
 ];
 
-// Level 2: prostorová představivost, složitější logika
-const POOL_L2: PracticeTask[] = [
-  { question: "Pohled ze shora na L-tvar: oba ramena jsou 2 × 1. Jaký je celkový tvar?", correctAnswer: "L – 4 čtverečky", options: ["L – 4 čtverečky", "T – 4 čtverečky", "Kříž – 4 čtverečky", "Čtverec – 4 čtverečky"] },
-  { question: "Kostka je složena z 27 malých kostek (3×3×3). Kolik malých kostek vidíme z jedné strany?", correctAnswer: "9", options: ["27", "9", "18", "6"] },
-  { question: "Kostka 3×3×3 = 27 kostek. Kolik kostek je v prostředku (nevidíme je)?", correctAnswer: "1", options: ["0", "8", "1", "3"] },
-  { question: "Čtverec rozstřihneme jedním řezem. Kolik částí dostaneme?", correctAnswer: "2", options: ["1", "3", "4", "2"] },
-  { question: "Čtverec rozstřihneme dvěma řezy rovnoběžně. Kolik části dostaneme?", correctAnswer: "3", options: ["3", "2", "4", "6"] },
-  { question: "Přeložíme čtverec napůl podél strany. Vznikne:", correctAnswer: "Obdélník", options: ["Čtverec", "Obdélník", "Trojúhelník", "Trapéz"], explanation: "Přehyb podél strany rozdělí čtverec na dva obdélníky, každý s polovičním obsahem. Přehyb podél úhlopříčky by dal trojúhelník." },
-  { question: "Přeložíme čtverec přes úhlopříčku. Vznikne:", correctAnswer: "Rovnoramenný pravoúhlý trojúhelník", options: ["Obdélník", "Rovnostranný trojúhelník", "Rovnoramenný pravoúhlý trojúhelník", "Čtverec"] },
-  { question: "Do čtverce 4×4 nakreslíme všechny úhlopříčky malých čtverečků. Jaký tvar vznikne uprostřed?", correctAnswer: "Čtverec – otočený o 45°", options: ["Trojúhelník", "Šestiúhelník", "Kružnice", "Čtverec – otočený o 45°"] },
-  { question: "Celkový počet kostek 2×2×2 = ?", correctAnswer: "8", options: ["8", "6", "4", "12"] },
-  { question: "Kostka 2×2×2 — kolik kostek je vidět z každého pohledu?", correctAnswer: "4", options: ["2", "4", "8", "6"] },
-  { question: "Vzor: 1 trojúhelník = 3 strany. 2 trojúhelníky sdílejí 1 stranu = ? stran celkem?", correctAnswer: "5", options: ["6", "4", "5", "7"] },
-  { question: "Řada trojúhelníků sdílejících strany: 1→3 strany, 2→5 stran, 3→7 stran, 10→?", correctAnswer: "21", options: ["20", "22", "30", "21"] },
-  { question: "Tři přímky se protínají v různých bodech. Kolik průsečíků mohou vytvořit maximálně?", correctAnswer: "3", options: ["3", "2", "6", "1"] },
-  { question: "4 přímky mohou mít maximálně kolik průsečíků?", correctAnswer: "6", options: ["4", "6", "8", "3"] },
-  { question: "Sítě krychle: kolik čtverečků tvoří síť krychle?", correctAnswer: "6", options: ["4", "8", "6", "12"] },
-  { question: "Válec z papíru: přeložíme obdélník do tvaru trubky. Co tvoří základny?", correctAnswer: "Kružnice", options: ["Čtverce", "Trojúhelníky", "Obdélníky", "Kružnice"] },
-  { question: "Čtverec má stranu 4 cm. Překryjeme ho jiným čtvercem (stranu 2 cm) v rohu. Kolik cm² zbyde viditelných?", correctAnswer: "12 cm²", options: ["12 cm²", "16 cm²", "8 cm²", "20 cm²"] },
-];
-
-// Level 3: složitější kombinatorika a prostorová logika
-const POOL_L3: PracticeTask[] = [
-  { question: "Kolik různých cest vede z A do B v mřížce 3×3 (jen dolů a doprava)?", correctAnswer: "20", options: ["12", "20", "6", "15"] },
-  { question: "Šachovnice 8×8. Kolik je na ní čtverečků 1×1?", correctAnswer: "64", options: ["56", "32", "64", "128"] },
-  { question: "Šachovnice 8×8. Kolik je na ní čtverečků 2×2?", correctAnswer: "49", options: ["64", "16", "32", "49"] },
-  { question: "Vzor čtverečků: 1. vrstva = 1, 2. vrstva = 4, 3. vrstva = 9. Jaká je 4. vrstva?", correctAnswer: "16", options: ["16", "12", "20", "25"] },
-  { question: "Kostky 1×1×1 skládáme do pyramidy. Spodní patra: 9, 4, 1. Kolik kostek celkem?", correctAnswer: "14", options: ["12", "14", "16", "9"] },
-  { question: "Číslo: součet číslic = 15, číslo je trojciferné, číslice jsou po řadě rostoucí. Jaké číslo to je?", correctAnswer: "456", options: ["159", "258", "456", "357"] },
-  { question: "Ze čtyř čísel 1, 2, 3, 4 sestavíme čtyřciferné číslo. Kolik různých čísel lze sestavit?", correctAnswer: "24", options: ["16", "12", "4", "24"] },
-  { question: "Hledáme číslo: je dělitelné 3, je větší než 20 a menší než 30, součet číslic je 6. Jaké číslo to je?", correctAnswer: "24", options: ["24", "21", "27", "22"] },
-  { question: "Jaký je součet čísel od 1 do 10?", correctAnswer: "55", options: ["50", "55", "45", "100"] },
-  { question: "Jaký je součet čísel od 1 do 100? (Gaussův trik)", correctAnswer: "5050", options: ["5000", "5100", "5050", "4950"] },
-  { question: "V kolonce je 5 čísel. Průměr je 8. Jedno číslo je 4, druhé 12. Součet zbývajících tří?", correctAnswer: "24", options: ["16", "20", "28", "24"] },
-  { question: "Číslo: je větší než 50 a menší než 100, je dělitelné 7 i 3. Jaké číslo to je?", correctAnswer: "63", options: ["63", "56", "84", "42"] },
-  { question: "Kolik čtverce 2×2 se vejde do čtverce 6×6?", correctAnswer: "9", options: ["6", "9", "4", "12"] },
-  { question: "Řada: 1, 8, 27, 64, ?  (třetí mocniny)", correctAnswer: "125", options: ["100", "216", "125", "81"] },
-];
+function teleso(): PracticeTask | null {
+  const [nazev, h, s, v] = pick(TELESA);
+  const co = pick(["hran", "stěn", "vrcholů"] as const);
+  const key = co === "hran" ? h : co === "stěn" ? s : v;
+  const jine = { hran: h, "stěn": s, "vrcholů": v };
+  const chyby = (Object.entries(jine) as [string, number][]).filter(([k]) => k !== co).map(([k, x]) => ({ value: x, why: `${x} je počet ${k}, ne ${co}.` }));
+  return ciselnaUloha(`Kolik ${co} má ${nazev}?`, key, [
+    ...chyby,
+    { value: key + 2, why: "Zkus je spočítat postupně: nahoře, dole a po stranách." },
+    { value: key - 2, why: "Zkus je spočítat postupně: nahoře, dole a po stranách." },
+  ], [
+    `Představ si ${nazev === "krychle" ? "hrací kostku" : nazev === "kvádr" ? "krabici od bot" : nazev.includes("jehlan") ? "jehlan jako pyramidu" : "hranol jako stan"}. Kolik ${co} vidíš nahoře, kolik dole a kolik po stranách?`,
+    "Hrana je čára, kde se potkávají dvě stěny; stěna je plocha; vrchol je bod, kde se stýká víc hran. Počítej po částech — podstava, horní část, boky.",
+  ], [`${nazev}: ${h} hran, ${s} stěn, ${v} vrcholů`]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return sada(30, aritmeticka);
+  if (level === 2) { const t = [nasobici, stridava, rostouciKrok]; return sada(30, (i) => t[i % 3]()); }
+  const t = [ruce, obleceni, kvadr, natrena, teleso];
+  return sada(30, (i) => t[i % 5]());
 }
 
 export const ULOHYNEZAVISLENABEZNYCHPOSTUPECHPROSTOROVAPREDSTAVIVOST: TopicMetadata[] = [

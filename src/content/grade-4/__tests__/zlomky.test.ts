@@ -67,27 +67,37 @@ describe("scitaniOdcitaniZlomku – generator", () => {
         }
       });
 
+      // 2026-09-11: generátor má kromě „a/j ± b/j = ?“ i doplněk do celku
+      // a slovní úlohy; výsledek se nekrátí (krácení patří až na 2. stupeň).
       it("correctAnswer je matematicky správný", () => {
+        let overeno = 0;
         for (const t of tasks) {
-          // "num1/den OP num2/den = ?"
           const q = t.question.replace(/\s/g, "");
-          const isAdd = q.includes("+");
-          const parts = q.replace("=?", "").split(isAdd ? "+" : "−");
-          const [n1, d1] = parts[0].split("/").map(Number);
-          const [n2] = parts[1].split("/").map(Number);
-          const resultNum = isAdd ? n1 + n2 : n1 - n2;
-
-          const answer = t.correctAnswer;
-          if (answer === "1") {
-            expect(resultNum).toBe(d1);
-          } else if (answer === "0") {
-            expect(resultNum).toBe(0);
+          const [rn, rd] = t.correctAnswer.split("/").map(Number);
+          const vyraz = q.match(/^(\d+)\/(\d+)([+−])(\d+)\/(\d+)=\?$/);
+          const doplnek = q.match(/^(\d+)\/(\d+)\+\?=1\./);
+          const zlomky = [...t.question.matchAll(/(\d+)\/(\d+)/g)].map((m) => [Number(m[1]), Number(m[2])]);
+          if (vyraz) {
+            const [, n1, d, op, n2] = vyraz;
+            expect(rd).toBe(Number(d));
+            expect(rn).toBe(op === "+" ? Number(n1) + Number(n2) : Number(n1) - Number(n2));
+          } else if (doplnek) {
+            expect(rd).toBe(Number(doplnek[2]));
+            expect(rn).toBe(Number(doplnek[2]) - Number(doplnek[1]));
+          } else if (/zbyla\?$/.test(t.question)) {
+            const [[a, j], [b]] = zlomky;
+            expect(rd).toBe(j);
+            expect(rn).toBe(j - a - b);
+          } else if (/dohromady\?$/.test(t.question)) {
+            const [[a, j], [b]] = zlomky;
+            expect(rd).toBe(j);
+            expect(rn).toBe(a + b);
           } else {
-            const [rn, rd] = answer.split("/").map(Number);
-            // Výsledek může být zjednodušený — ověříme křížovým součinem
-            expect(rn * d1).toBe(resultNum * rd);
+            continue;
           }
+          overeno++;
         }
+        expect(overeno).toBe(tasks.length);
       });
     });
   }

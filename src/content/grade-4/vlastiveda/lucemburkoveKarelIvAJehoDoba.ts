@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { posilNapovedy } from "../_shared";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -348,8 +349,69 @@ const POOL_L3: PracticeTask[] = [
   },
 ];
 
+// Doplněno 2026-09-11: pravidla chtějí aspoň 12 různých úloh na úroveň.
+const EXTRA_L1: PracticeTask[] = [
+  {
+    question: "Seřaď události z doby Karla IV. od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Karlova univerzita (1348)","Zlatá bula (1356)","Karel IV. zemřel (1378)"],
+    hints: ["Porovnej letopočty tří událostí.", "Univerzitu Karel založil hned na začátku své vlády, Zlatou bulu vydal o osm let později a zemřel roku 1378."],
+    explanation: "Karel IV. založil univerzitu v Praze roku 1348, Zlatou bulu vydal roku 1356 a zemřel roku 1378.",
+  },
+  {
+    question: "Seřaď mezníky od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Bitva u Kresčaku – Jan padl (1346)","Karlova univerzita (1348)","Karlův most – zahájena stavba (1357)"],
+    hints: ["Která událost se stala ještě za života Karlova otce?", "Jan Lucemburský padl u Kresčaku roku 1346. Karel pak roku 1348 založil univerzitu a roku 1357 začala stavba mostu."],
+    explanation: "Jan Lucemburský padl roku 1346 v bitvě u Kresčaku. Jeho syn Karel IV. roku 1348 založil univerzitu a roku 1357 začala stavba Karlova mostu.",
+  },
+];
+const EXTRA_L2: PracticeTask[] = [
+  {
+    question: "Seřaď události lucemburské doby od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Lucemburský – král v Čechách (1310)","Karlova univerzita (1348)","Karel IV. – císař (1355)","Karel IV. zemřel (1378)"],
+    hints: ["Kdo vládl v Čechách dřív než Karel?", "Karlův otec Jan se stal králem roku 1310. Karel založil univerzitu roku 1348, císařem se stal roku 1355 a zemřel roku 1378."],
+    explanation: "Jan Lucemburský se stal českým králem roku 1310. Jeho syn Karel IV. založil roku 1348 univerzitu, roku 1355 se stal císařem a roku 1378 zemřel.",
+  },
+  {
+    question: "Seřaď stavby a zákony Karla IV. od nejstarších po nejnovější.",
+    correctAnswer: "order",
+    items: ["Bitva u Kresčaku – Jan padl (1346)","Nové Město pražské (1348)","Zlatá bula (1356)","Karlův most – zahájena stavba (1357)"],
+    hints: ["Která událost umožnila Karlovi začít vládnout?", "Po smrti otce u Kresčaku (1346) Karel založil Nové Město (1348), vydal Zlatou bulu (1356) a rok nato začal stavět most."],
+    explanation: "Po smrti Jana Lucemburského u Kresčaku roku 1346 vládl Karel IV. Roku 1348 založil Nové Město pražské, roku 1356 vydal Zlatou bulu a roku 1357 začala stavba Karlova mostu.",
+  },
+];
+const EXTRA_L3: PracticeTask[] = [
+  {
+    question: "Seřaď mezníky doby Lucemburků od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Jan Lucemburský – král v Čechách (1310)","Karlova univerzita (1348)","Karel IV. – císař (1355)","Karlův most – zahájena stavba (1357)","Karel IV. zemřel – Václav IV. (1378)"],
+    hints: ["Dvě události jsou jen dva roky od sebe. Které to jsou?", "Císařem se Karel stal roku 1355 a stavba mostu začala roku 1357. Před nimi byla univerzita (1348) a vláda Karlova otce (1310), po nich Karlova smrt (1378)."],
+    explanation: "Jan Lucemburský vládl od roku 1310. Karel IV. založil univerzitu roku 1348, císařem se stal roku 1355, stavba Karlova mostu začala roku 1357 a po Karlově smrti roku 1378 nastoupil Václav IV.",
+  },
+  {
+    question: "Seřaď události Karlovy vlády od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Bitva u Kresčaku – Jan padl (1346)","Karel IV. – český král (1347)","Zlatá bula (1356)","Karlův most – zahájena stavba (1357)","Karel IV. zemřel (1378)"],
+    hints: ["Karel se stal králem rok po jedné smutné události. Po které?", "Jan Lucemburský padl roku 1346 a o rok později byl Karel korunován. Zlatou bulu vydal roku 1356, most začal stavět roku 1357 a zemřel roku 1378."],
+    explanation: "Jan Lucemburský padl roku 1346 u Kresčaku. Karel IV. byl korunován českým králem roku 1347, roku 1356 vydal Zlatou bulu, roku 1357 začal stavět Karlův most a roku 1378 zemřel.",
+  },
+];
+
+const DOPLNEK: Record<number, string> = {
+  "1": "Porovnej letopočty v závorkách — nejmenší číslo znamená, že se to stalo nejdřív.",
+  "2": "Karel IV. se stal nejdřív králem a teprve potom císařem. Letopočty ti pomohou s ostatním.",
+  "3": "Několik událostí se stalo těsně po sobě v 50. letech 14. století — rozhoduje přesný rok."
+};
+
+const [P1, P2, P3] = posilNapovedy(
+  [[...POOL_L1, ...EXTRA_L1], [...POOL_L2, ...EXTRA_L2], [...POOL_L3, ...EXTRA_L3]],
+  DOPLNEK,
+);
+
 function gen(level: number): PracticeTask[] {
-  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  const pool = level >= 3 ? P3 : level === 2 ? P2 : P1;
   return shuffle(pool);
 }
 

@@ -1,79 +1,304 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 4. ročníku). Vypadly úlohy nevhodné pro
+// 4. ročník (detektiv „závislý na whisky“), odborné pojmy, které hranice
+// tématu vylučují („round character“, „protagonista“, „antagonista“,
+// „jednodimenzionální“), gramatická chyba („Jana dostal cenu“) a nápovědy
+// společné pro celé téma.
+//
+// L1 = hlavní a vedlejší postava, vzhled a povaha, kladná a záporná
+// L2 = co o postavě prozradí úryvek · L3 = přenos: postava se mění, jak
+// vlastnost ukázat, dobré i slabé stránky, co dát do popisu postavy.
+
+function uryvek(text: string, q: string, klic: string, spatne: [[string, string], [string, string], [string, string]], hints: [string, string], explanation: string): PracticeTask {
+  return choice(`Přečti si: „${text}“ ${q}`, klic, spatne.map(([value, why]) => ({ value, why })) as never, { hints, explanation });
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string }
-
-const POOL_L1: QA[] = [
-  { q: "Jak poznáme hlavní postavu v příběhu?", a: "Nejvíce se vyskytuje, příběh se točí kolem ní", opts: ["Nejvíce se vyskytuje, příběh se točí kolem ní", "Je to vždy dospělý muž", "Je zmíněna jen jednou", "Je nejkrásnější v příběhu"], e: "Hlavní postava je ta, o které se vypráví nejvíc a kolem které se odehrává děj. Nemusí to být dospělý ani ten nejkrásnější — důležité je, že je středem příběhu." },
-  { q: "Co jsou fyzické vlastnosti postavy?", a: "Jak postava vypadá: výška, vlasy, oči, postava", opts: ["Jak postava vypadá: výška, vlasy, oči, postava", "Jak se postava chová k ostatním", "Co postava říká a myslí", "Čím postava pracuje"], e: "Fyzické vlastnosti popisují vnější vzhled — co na postavě vidíme očima, třeba výšku, vlasy nebo postavu. To, jak se chová nebo co si myslí, patří k vlastnostem povahovým." },
-  { q: "Co jsou psychické vlastnosti postavy?", a: "Charakter: odvážný, lstivý, laskavý, sobecký", opts: ["Charakter: odvážný, lstivý, laskavý, sobecký", "Jak postava vypadá fyzicky", "Věk a jméno postavy", "Kde postava bydlí"], e: "Psychické vlastnosti popisují povahu — jaká postava je uvnitř, jak jedná a smýšlí. Vzhled, věk nebo bydliště nám o povaze nic neřeknou." },
-  { q: "Co je přímá charakteristika postavy?", a: "Autor přímo říká, jaká postava je: 'Petr je odvážný.'", opts: ["Autor přímo říká, jaká postava je: 'Petr je odvážný.'", "Postava ukazuje vlastnosti svým jednáním", "Jiná postava mluví o hlavní postavě", "Přímá řeč hlavní postavy"], e: "U přímé charakteristiky autor vlastnost rovnou pojmenuje slovy ('Petr je odvážný'). Když se vlastnost pozná až z jednání, jde o charakteristiku nepřímou." },
-  { q: "Co je nepřímá charakteristika postavy?", a: "Vlastnosti poznáme z chování, řeči a jednání postavy", opts: ["Vlastnosti poznáme z chování, řeči a jednání postavy", "Autor přímo říká, jaká postava je", "Jméno postavy nám říká vše", "Popis oblečení postavy"], e: "U nepřímé charakteristiky autor vlastnost neřekne přímo — necháme ji vyplynout z toho, jak postava jedná a mluví. Když autor řekne 'je odvážný', je to naopak charakteristika přímá." },
-  { q: "Příklad přímé charakteristiky:", a: "'Jana je velmi hodná a pomáhá všem v nouzi.'", opts: ["'Jana je velmi hodná a pomáhá všem v nouzi.'", "'Jana skočila do řeky, aby zachránila tonoucího.'", "'Jana řekla: Pomůžu ti!'", "'Jana dostal cenu za statečnost.'"], e: "Tato věta vlastnost přímo pojmenuje slovem 'hodná' — to je přímá charakteristika. Ostatní možnosti vlastnost jen naznačují přes čin nebo řeč, ty by byly nepřímé." },
-  { q: "Příklad nepřímé charakteristiky:", a: "'Skočil do řeky a zachránil tonoucího.' → odvážný", opts: ["'Skočil do řeky a zachránil tonoucího.' → odvážný", "'Petr je odvážný.'", "'Řekli mu, že je odvážný.'", "'Dostal vyznamenání za statečnost.'"], e: "Z odvážného činu si sami domyslíme, že je postava odvážná — vlastnost není řečena přímo, proto je charakteristika nepřímá. Věta 'Petr je odvážný' by vlastnost pojmenovala přímo." },
-  { q: "Čím se liší hlavní a vedlejší postava?", a: "Hlavní = střed příběhu; vedlejší = doplňuje příběh", opts: ["Hlavní = střed příběhu; vedlejší = doplňuje příběh", "Hlavní je vždy hodná, vedlejší zlá", "Hlavní je dospělá, vedlejší dítě", "Nejsou žádné vedlejší postavy"], e: "Hlavní postava je středem děje, vedlejší ho jen doplňují a pomáhají nebo brání hlavní postavě. Rozdíl není ve věku ani v tom, kdo je hodný nebo zlý." },
-  { q: "Co nám o postavě může říct přímá řeč?", a: "Jak postava mluví, co si myslí a jaké má hodnoty", opts: ["Jen to, jak postava fyzicky vypadá", "Jak postava mluví, co si myslí a jaké má hodnoty", "Jen kolik je postavě přesně let", "Jen jak se postava jmenuje"], e: "Z toho, co a jak postava říká, poznáme její povahu, názory i hodnoty. Věk, vzhled ani jméno se z přímé řeči většinou nedozvíme." },
-  { q: "Záporná postava v pohádce má typicky vlastnosti:", a: "závist, lstivost, krutost, sobeckost", opts: ["závist, lstivost, krutost, sobeckost", "odvaha, laskavost, upřímnost", "výška, barva vlasů, věk", "povolání, bydliště, záliby"], e: "Záporná (zlá) postava se pozná podle špatných povahových vlastností jako závist nebo krutost. Odvaha a laskavost patří kladným postavám a výška či věk jsou jen vnější údaje." },
-  { q: "Kladná postava v pohádce má typicky vlastnosti:", a: "odvaha, laskavost, upřímnost, pracovitost", opts: ["odvaha, laskavost, upřímnost, pracovitost", "závist, lstivost, krutost", "výška, barva vlasů, věk", "povolání, bydliště, záliby"], e: "Kladná (hodná) postava má dobré povahové vlastnosti jako odvaha a laskavost. Závist a krutost patří záporným postavám a výška nebo věk povahu nepopisují." },
-  { q: "Jak se postava vyvíjí v příběhu?", a: "Může se změnit — naučí se, poroste, změní názor", opts: ["Může se změnit — naučí se, poroste, změní názor", "Postava je vždy stejná od začátku do konce", "Postava vždy zesiluje fyzicky", "Postava vždy zemře na konci"], e: "Zajímavá postava se během příběhu vyvíjí — něco se naučí, dospěje nebo změní názor. Není pravda, že by zůstávala vždy stejná nebo vždy nutně zemřela." },
-  { q: "Vypravěč v příběhu:", a: "Vypráví příběh — může být uvnitř nebo vně příběhu", opts: ["Vypráví příběh — může být uvnitř nebo vně příběhu", "Je vždy hlavní postavou", "Je vždy zápornou postavou", "Je vždy dítětem"], e: "Vypravěč je ten, kdo příběh vypráví — někdy je sám jednou z postav, jindy stojí mimo děj a jen ho líčí. Nemusí být hlavní ani zápornou postavou." },
-  { q: "Jak poznáme postavu z pohádky?", a: "Je jednodimenzionální — jasně dobrá nebo zlá", opts: ["Je jednodimenzionální — jasně dobrá nebo zlá", "Je složitá s rozporuplnými vlastnostmi", "Nikdy nemluví", "Je vždy zvíře"], e: "Pohádkové postavy bývají jednoduché a jasně rozdělené na dobré a zlé. Složitější postavy s rozpornými vlastnostmi najdeme spíš v povídkách a románech." },
-  { q: "Jaká slova popisují fyzické vlastnosti?", a: "vysoký, blonďatý, štíhlý, s modrýma očima", opts: ["vysoký, blonďatý, štíhlý, s modrýma očima", "odvážný, laskavý, sobecký", "rychlý, chytrý, pilný", "šťastný, smutný, naštvaný"], e: "Fyzické vlastnosti popisují vzhled — výšku, barvu vlasů, postavu nebo oči. Slova jako odvážný nebo chytrý popisují povahu, ne to, jak postava vypadá." },
-  { q: "Jaká slova popisují psychické vlastnosti?", a: "odvážný, laskavý, sobecký, lstivý, upřímný", opts: ["odvážný, laskavý, sobecký, lstivý, upřímný", "vysoký, blonďatý, štíhlý", "rychlý, pomalý, hlasitý", "červený, zelený, modrý"], e: "Psychické vlastnosti popisují povahu — jaká postava je uvnitř, jako odvážný nebo upřímný. Slova vysoký nebo modrý popisují jen vzhled, ne charakter." },
+const L1: PracticeTask[] = [
+  choice("Jak poznáš hlavní postavu?", "příběh se točí hlavně kolem ní", [
+    { value: "je vždy nejstarší", why: "Hlavní postavou může být i dítě." },
+    { value: "objeví se jen jednou", why: "Hlavní postava se objevuje nejčastěji." },
+    { value: "je vždy nejkrásnější", why: "Vzhled o tom nerozhoduje." },
+  ], {
+    hints: ["O kom se v příběhu vypráví nejvíc?", "Hlavní postava je ta, kvůli které příběh vůbec je. Děje se hlavně jí a objevuje se skoro všude."],
+    explanation: "Hlavní postava je ta, kolem které se děj točí — objevuje se nejčastěji.",
+  }),
+  choice("Co dělá vedlejší postava?", "pomáhá nebo překáží hlavní postavě", [
+    { value: "je ta, o které je celý příběh", why: "To je hlavní postava." },
+    { value: "vypráví celý příběh", why: "To je vypravěč." },
+    { value: "napsala celou knihu", why: "To je autor." },
+  ], {
+    hints: ["Kdo stojí v příběhu kolem hlavního hrdiny?", "Vedlejší postavy děj doplňují — třeba hrdinovi radí, pomáhají mu, nebo mu naopak ztěžují cestu."],
+    explanation: "Vedlejší postava doplňuje děj — pomáhá nebo překáží hlavní postavě.",
+  }),
+  choice("Která slova popisují vzhled postavy?", "vysoký, zrzavý, s brýlemi", [
+    { value: "odvážný, laskavý, lstivý", why: "Tato slova popisují povahu." },
+    { value: "rychle, potichu, opatrně", why: "Tato slova říkají, jak se něco dělá." },
+    { value: "včera, potom, nakonec", why: "Tato slova říkají čas." },
+  ], {
+    hints: ["Která slova popisují, co na postavě uvidíš očima?", "Vzhled je to, co by bylo vidět na obrázku postavy: výška, vlasy, brýle, oblečení."],
+    explanation: "Vysoký, zrzavý, s brýlemi — to je vidět, jde o vzhled.",
+  }),
+  choice("Která slova popisují povahu postavy?", "odvážný, laskavý, lstivý", [
+    { value: "vysoký, zrzavý, s brýlemi", why: "Tato slova popisují vzhled." },
+    { value: "rychle, potichu, opatrně", why: "Tato slova říkají, jak se něco dělá." },
+    { value: "včera, potom, nakonec", why: "Tato slova říkají čas." },
+  ], {
+    hints: ["Která slova popisují, jaká postava je uvnitř?", "Povahu na obrázku neuvidíš. Poznáš ji podle toho, jak se postava chová k ostatním."],
+    explanation: "Odvážný, laskavý, lstivý popisují povahu — jaká postava je.",
+  }),
+  choice("Jaká bývá kladná postava v pohádce?", "odvážná a hodná", [
+    { value: "závistivá a zlá", why: "To jsou vlastnosti záporné postavy." },
+    { value: "vysoká a s dlouhými vlasy", why: "To je vzhled, ne to, jestli je kladná." },
+    { value: "bohatá a s korunou", why: "Bohatství o dobrotě nic neříká." },
+  ], {
+    hints: ["Komu v pohádce fandíš?", "Kladná postava je ta dobrá — pomáhá druhým a nebojí se."],
+    explanation: "Kladná postava je dobrá — bývá odvážná, hodná a pomáhá druhým.",
+  }),
+  choice("Jaká bývá záporná postava v pohádce?", "závistivá a krutá", [
+    { value: "odvážná a hodná", why: "To jsou vlastnosti kladné postavy." },
+    { value: "malá a s krátkými vlasy", why: "To je vzhled, ne povaha." },
+    { value: "chudá a veselá", why: "Chudoba ani veselost ze zlé postavy nedělají." },
+  ], {
+    hints: ["Kdo v pohádce škodí druhým?", "Záporná postava je ta zlá — závidí, lže a ubližuje ostatním."],
+    explanation: "Záporná postava bývá závistivá, krutá a lstivá.",
+  }),
+  choice("Ve kterém příkladu autor řekne vlastnost postavy přímo?", "Honza byl odvážný.", [
+    { value: "Honza vběhl do hořícího domu pro kočku.", why: "Tady odvahu poznáme z činu, autor ji nepojmenuje." },
+    { value: "Honza zavolal: „Pomůžu ti!“", why: "Tady poznáme vlastnost z řeči postavy." },
+    { value: "Honza dostal od krále medaili.", why: "Tady se vlastnost jen domýšlíme." },
+  ], {
+    hints: ["Ve které větě je vlastnost napsaná jedním slovem?", "Autor může vlastnost rovnou pojmenovat, nebo ji ukázat na tom, co postava dělá a říká."],
+    explanation: "„Honza byl odvážný“ vlastnost přímo pojmenuje.",
+  }),
+  choice("Ve kterém příkladu poznáš vlastnost z toho, co postava dělá?", "Anna se rozdělila o svačinu se spolužákem.", [
+    { value: "Anna byla vždycky štědrá.", why: "Tady je vlastnost řečená přímo." },
+    { value: "Anna chodí do 4.B na naší škole.", why: "Tady se o povaze nic nedozvíme." },
+    { value: "Anna bydlí v Brně u parku.", why: "Tady se o povaze nic nedozvíme." },
+  ], {
+    hints: ["Ve které větě Anna něco dělá?", "Vlastnost se dá ukázat na činu: kdo se rozdělí, je štědrý, i když to autor nenapíše."],
+    explanation: "Z toho, že se Anna rozdělila o svačinu, poznáme, že je štědrá.",
+  }),
+  choice("Kdo je v pohádce o Popelce hlavní postava?", "Popelka", [
+    { value: "macecha", why: "Macecha je důležitá, ale příběh se netočí kolem ní." },
+    { value: "princ", why: "Princ je vedlejší postava." },
+    { value: "holubičky", why: "Holubičky Popelce pomáhají — jsou vedlejší." },
+  ], {
+    hints: ["Po kom se pohádka jmenuje?", "Hlavní postava je ta, jejíž příběh sledujeme od začátku do konce."],
+    explanation: "Pohádka vypráví o Popelce — ta je hlavní postava.",
+  }),
+  choice("Kdo je v pohádce o Popelce záporná postava?", "macecha", [
+    { value: "Popelka", why: "Popelka je kladná hlavní postava." },
+    { value: "princ", why: "Princ je kladná postava." },
+    { value: "holubičky", why: "Holubičky Popelce pomáhají." },
+  ], {
+    hints: ["Kdo se k Popelce choval zle?", "Záporná postava hrdince škodí — dává jí těžkou práci a nepouští ji na ples."],
+    explanation: "Macecha se k Popelce chová zle — je to záporná postava.",
+  }),
+  choice("Kdo je vypravěč?", "ten, kdo příběh vypráví", [
+    { value: "vždy hlavní postava", why: "Vypravěč může stát i mimo příběh." },
+    { value: "vždy záporná postava", why: "To neplatí." },
+    { value: "ten, kdo příběh čte", why: "To je čtenář." },
+  ], {
+    hints: ["Čí hlas slyšíš, když čteš příběh?", "Vypravěč může být jednou z postav (Jmenuji se Ema…) nebo stojí mimo děj a jen o něm vypráví."],
+    explanation: "Vypravěč je ten, kdo příběh vypráví — může být postavou, nebo stát mimo děj.",
+  }),
+  choice("Co se o postavě dozvíš z toho, co říká?", "jaká je a co si myslí", [
+    { value: "kolik je jí přesně let", why: "Věk z řeči většinou nepoznáme." },
+    { value: "jakou má barvu očí", why: "Barvu očí z řeči nepoznáš." },
+    { value: "kde přesně bydlí", why: "Bydliště z řeči většinou nepoznáme." },
+  ], {
+    hints: ["Co prozradí věta „Nechte to na mně, já to zvládnu!“?", "Z řeči poznáš, jak postava přemýšlí a jakou má povahu — třeba odvážnou, bojácnou, nebo nafoukanou."],
+    explanation: "Z toho, co postava říká, poznáme její povahu a myšlenky.",
+  }),
+  choice("Může se postava během příběhu změnit?", "ano, může se něco naučit", [
+    { value: "ne, zůstává stále stejná", why: "Mnoho postav se během příběhu změní." },
+    { value: "ano, ale jen vzhledem", why: "Mění se hlavně povaha nebo názor." },
+    { value: "ne, v příbězích se nikdo nemění", why: "Právě změna bývá na příběhu zajímavá." },
+  ], {
+    hints: ["Jaký byl lakomec na začátku příběhu a jaký na konci?", "Postava může v příběhu dospět, poučit se z chyby nebo změnit názor."],
+    explanation: "Postava se může během příběhu změnit — něco se naučí, poučí se z chyby.",
+  }),
 ];
 
-const POOL_L2: QA[] = [
-  { q: "Přečti: 'Petr mlčky pomohl přenést těžké bedny bez toho, aby ho kdokoli žádal.' Co tím chce autor říct?", a: "Petr je obětavý a pracovitý (nepřímá charakteristika)", opts: ["Petr je obětavý a pracovitý (nepřímá charakteristika)", "Petr je silný (fyzická vlastnost)", "Petr je tichý (přímá charakteristika)", "Bedny byly těžké"], e: "Z toho, že Petr pomohl sám od sebe a bez vyzvání, poznáme jeho povahu — je obětavý a pracovitý. Vlastnost není řečena přímo, vyplývá z jeho jednání, proto jde o nepřímou charakteristiku." },
-  { q: "Přečti: 'Marta se usmívala na každého, kdo šel kolem.' Co vyvozujeme?", a: "Marta je přátelská a otevřená", opts: ["Marta je přátelská a otevřená", "Marta je zlá a lstivá", "Marta je smutná", "Marta je fyzicky aktivní"], e: "Úsměv na každého ukazuje přátelskou a otevřenou povahu — to si z jejího chování domyslíme. Zlost nebo smutek by se projevily úplně jinak." },
-  { q: "Jak se liší postava v pohádce a v povídce?", a: "Pohádková = jednodimenzionální; v povídce = komplexnější", opts: ["Pohádková = jednodimenzionální; v povídce = komplexnější", "Jsou stejné", "V pohádce je vždy dospělá; v povídce dítě", "V pohádce není hlavní postava"], e: "Pohádkové postavy bývají jednoduché a jasně dobré nebo zlé, kdežto v povídce jsou složitější a opravdovější. Rozdíl není ve věku postav." },
-  { q: "Příklad vývoje postavy v příběhu:", a: "Zlý statkář pochopí, že záleží na přátelství, a změní se.", opts: ["Zlý statkář pochopí, že záleží na přátelství, a změní se.", "Hodný chlapec zůstane hodný celý příběh.", "Drak celý příběh plní příkazy.", "Princezna čeká celý příběh bez pohybu."], e: "O vývoji mluvíme, když se postava během příběhu změní — statkář se ze zlého stane lepším. V ostatních možnostech postava zůstává po celou dobu stejná." },
-  { q: "Co je 'round character' (plná postava)?", a: "Komplexní postava s rozporuplnými vlastnostmi — ne jen dobrá nebo zlá", opts: ["Postava, která v celém příběhu nemá jméno", "Komplexní postava s rozporuplnými vlastnostmi — ne jen dobrá nebo zlá", "Postava, která je hlavně fyzicky velmi silná", "Postava typická pro klasickou pohádku"], e: "Plná postava má víc různých, někdy i protichůdných vlastností, takže působí jako skutečný člověk. Postava jen dobrá nebo jen zlá (třeba z pohádky) je naopak jednoduchá." },
-  { q: "Autor řekne: 'Honza byl vždy první, kdo se nabídl k práci.' — jaký typ charakteristiky?", a: "nepřímá (jednání ukazuje pracovitost)", opts: ["nepřímá (jednání ukazuje pracovitost)", "přímá (autor říká přímo)", "fyzická", "psychická přímá"], e: "Autor neřekne 'Honza je pracovitý', ale ukáže jeho čin, ze kterého to poznáme — to je nepřímá charakteristika. Přímá by vlastnost pojmenovala rovnou slovem." },
-  { q: "Jakou roli hrají vedlejší postavy?", a: "Doplňují příběh, pomáhají nebo brání hlavní postavě", opts: ["Doplňují příběh, pomáhají nebo brání hlavní postavě", "Jsou vždy záporné", "Jsou vždy kladné", "Nevyskytují se v příbězích"], e: "Vedlejší postavy stojí kolem hlavní postavy a děj doplňují — někdy jí pomáhají, jindy překážejí. Nejsou tedy vždy jen kladné, ani vždy jen záporné." },
-  { q: "Jak popsat postavu při charakteristice?", a: "Fyzické vlastnosti → psychické vlastnosti → chování → vztahy", opts: ["Jen přímou řečí postavy, nic jiného", "Fyzické vlastnosti → psychické vlastnosti → chování → vztahy", "Jméno → věk → pohlaví → a tím to končí", "Popisujeme postavy vždy jen abecedně"], e: "Postavu popisujeme od vzhledu k povaze a chování až po vztahy k ostatním — jdeme tak od toho, co vidíme, k tomu, co je hlubší. Pouhý výčet jména a věku ani abeceda postavu nevystihnou." },
-  { q: "Záporná postava: 'Královna záviděla sněhurce její krásu a přikázala ji zabít.' — jaká vlastnost?", a: "závist a krutost", opts: ["závist a krutost", "upřímnost a odvaha", "laskavost a obětavost", "pracovitost a pilnost"], e: "Královna druhé závidí a chce jí ublížit — to ukazuje závist a krutost, typické vlastnosti záporné postavy. Laskavost ani odvaha by vedly k úplně jinému jednání." },
-  { q: "Jak vyjádříme sympatie nebo antipatie k postavě?", a: "Záleží na jejích vlastnostech a jednání — co dělá a říká", opts: ["Záleží na jejích vlastnostech a jednání — co dělá a říká", "Záleží na délce popisu postavy", "Záleží na fyzickém popisu", "Záleží na jménu postavy"], e: "Jestli nám je postava sympatická, určuje hlavně to, jak jedná a co říká — podle jejích činů ji máme rádi, nebo ne. Délka popisu ani jméno na to nemají vliv." },
-  { q: "Protagonista je:", a: "Hlavní postava příběhu — hrdina", opts: ["Hlavní postava příběhu — hrdina", "Záporná postava", "Vedlejší postava", "Vypravěč"], e: "Protagonista je hlavní postava, hrdina, kolem kterého se příběh točí. Jeho protivníkem je antagonista — to je naopak ten, kdo mu stojí v cestě." },
-  { q: "Antagonista je:", a: "Protivník hlavní postavy — překáží nebo bojuje proti ní", opts: ["Protivník hlavní postavy — překáží nebo bojuje proti ní", "Hlavní hrdina", "Vedlejší postava pomáhající hrdinovi", "Vypravěč"], e: "Antagonista je protivník hrdiny — staví se mu do cesty nebo proti němu bojuje. Hlavní hrdina je naopak protagonista." },
-  { q: "Proč autor nevykreslí vždy postavu přímou charakteristikou?", a: "Nepřímá je živější — čtenář si sám vyvozuje vlastnosti", opts: ["Nepřímá je živější — čtenář si sám vyvozuje vlastnosti", "Autor neumí psát přímou charakteristiku", "Přímá charakteristika je zakázána", "Čtenáři se nepřímá nelíbí"], e: "Když si vlastnost domyslíme sami z jednání postavy, příběh je živější a zajímavější než suché 'je odvážný'. Není to proto, že by autor přímou charakteristiku neuměl nebo směl." },
-  { q: "Příklad komplexní postavy:", a: "Detektiv, který je chytrý, ale závisí na whisky a je osamělý", opts: ["Detektiv, který je chytrý, ale závisí na whisky a je osamělý", "Pohádkový princ, který je vždy hodný", "Drak, který je vždy zlý", "Víla, která vždy pomáhá"], e: "Komplexní postava má dobré i slabé stránky zároveň — detektiv je chytrý, ale i osamělý a se závislostí. Princ, drak ani víla mají jen jednu jasnou vlastnost, proto jsou jednoduší." },
+const L2: PracticeTask[] = [
+  uryvek("Petr mlčky pomohl paní přenést těžké tašky, i když ho nikdo nežádal.", "Jaký Petr je?", "ochotný", [
+    ["líný", "Líný by tašky nenesl."], ["zlý", "Zlý by nepomohl."], ["smutný", "O smutku úryvek nic neříká."],
+  ], ["Co Petr udělal a proč?", "Pomohl sám od sebe, bez žádosti. Taková vlastnost se pozná z činu."], "Petr pomohl, i když ho nikdo nežádal — je ochotný."),
+  uryvek("Marta se usmívala na každého, kdo šel kolem.", "Jaká Marta je?", "přátelská", [
+    ["zlá", "Zlý člověk se na každého neusmívá."], ["lakomá", "O penězích úryvek nic neříká."], ["unavená", "O únavě úryvek nic neříká."],
+  ], ["Co Marta dělá?", "Úsměv na každého ukazuje, jak se Marta chová k lidem kolem sebe."], "Marta se usmívá na každého — je přátelská."),
+  uryvek("Filip se nikdy nechlubil, i když vyhrál soutěž.", "Jaký Filip je?", "skromný", [
+    ["chlubivý", "Úryvek říká opak."], ["líný", "Kdo vyhraje soutěž, asi líný není."], ["zlý", "O zlobě úryvek nic neříká."],
+  ], ["Co Filip nedělá, i když by mohl?", "Kdo se nechlubí ani po vítězství, má jednu vlastnost — opak chlubivosti."], "Filip se nechlubí ani po vítězství — je skromný."),
+  uryvek("Eliška zabouchla dveře a beze slova odešla.", "Jak se asi Eliška cítila?", "byla naštvaná", [
+    ["byla šťastná", "Šťastný člověk dveřmi nebouchá."], ["byla ospalá", "Ospalý člověk nebouchá dveřmi."], ["měla hlad", "O hladu úryvek nic neříká."],
+  ], ["Kdy lidé bouchají dveřmi?", "Pocit není řečený. Poznáš ho podle toho, co Eliška udělala."], "Zabouchnutí dveří a odchod beze slova ukazují, že byla naštvaná."),
+  uryvek("Babička si vždycky našla čas vyslechnout každého, kdo měl starost.", "Jaká babička je?", "trpělivá a laskavá", [
+    ["netrpělivá", "Úryvek říká opak."], ["zapomnětlivá", "O paměti úryvek nic neříká."], ["chlubivá", "O chlubení úryvek nic neříká."],
+  ], ["Co babička dělá pro lidi se starostmi?", "Kdo si pro druhé vždycky najde čas a poslouchá je, má dobré vlastnosti."], "Babička si vždy najde čas a naslouchá — je trpělivá a laskavá."),
+  uryvek("Královna záviděla Sněhurce krásu a chtěla jí ublížit.", "Jaké vlastnosti královna má?", "závist a krutost", [
+    ["odvahu a dobrotu", "To jsou vlastnosti kladné postavy."], ["skromnost a pracovitost", "To úryvek neukazuje."], ["veselost a ochotu", "To úryvek neukazuje."],
+  ], ["Co královna cítí a co chce udělat?", "Úryvek jmenuje jeden pocit a jeden záměr. Oba ukazují na zápornou postavu."], "Královna závidí a chce ublížit — má vlastnosti záporné postavy."),
+  uryvek("Tomáš je chytrý, ale bojí se tmy a někdy zalže, aby se vyhnul potížím.", "Jaká je to postava?", "má dobré i slabé stránky", [
+    ["je jen dobrá", "Tomáš má i slabé stránky."], ["je jen zlá", "Tomáš je i chytrý."], ["nemá žádné vlastnosti", "Úryvek vyjmenovává několik vlastností."],
+  ], ["Kolik vlastností úryvek vyjmenuje a jaké jsou?", "Najdi v úryvku dobrou vlastnost a pak ty slabší. Jsou tam obojí."], "Tomáš je chytrý, ale bojí se a lže — má dobré i slabé stránky."),
+  choice("Ve kterém popisu jsou jen vlastnosti vzhledu?", "Vysoký muž s šedivým vousem.", [
+    { value: "Klidný a moudrý stařec.", why: "Klid a moudrost jsou povaha." },
+    { value: "Muž, který rád pomáhá.", why: "Ochota je povaha." },
+    { value: "Muž, který nikdy nelže.", why: "Poctivost je povaha." },
+  ], {
+    hints: ["Který popis by šel nakreslit?", "Vzhled je vidět na obrázku. Povahu na obrázku nenakreslíš."],
+    explanation: "Výška a šedivý vous jsou vidět — jde o vzhled.",
+  }),
+  choice("Proč autor často vlastnost neřekne, ale ukáže ji na tom, co postava dělá?", "čtenář si ji domyslí a příběh je živější", [
+    { value: "protože autor neumí dobře psát", why: "Je to záměr, ne neumětelství." },
+    { value: "protože je to v knihách zakázané", why: "Zakázané to není." },
+    { value: "protože čtenáře to vůbec nebaví", why: "Naopak — čtenáře baví domýšlet." },
+  ], {
+    hints: ["Co je napínavější: „byl odvážný“, nebo „vběhl do hořícího domu“?", "Když čtenář vlastnost pozná z činu, víc ho to vtáhne a lépe si postavu představí."],
+    explanation: "Když čtenář vlastnost pozná sám z činu, příběh je živější a přesvědčivější.",
+  }),
+  choice("V příběhu drak brání hrdinovi dostat se k princezně. Jakou roli má drak?", "je hrdinův protivník", [
+    { value: "je hrdinův pomocník", why: "Pomocník by hrdinovi pomáhal, ne bránil." },
+    { value: "vypráví příběh", why: "Vypravěč děj vypráví, nebojuje." },
+    { value: "je hlavní postava", why: "Příběh se točí kolem hrdiny." },
+  ], {
+    hints: ["Pomáhá drak hrdinovi, nebo mu stojí v cestě?", "Postava, která hlavnímu hrdinovi brání v cíli, je jeho soupeř."],
+    explanation: "Drak hrdinovi brání — je to jeho protivník.",
+  }),
+  choice("Kterou větou autor ukáže, že je Jakub odvážný, aniž to napíše?", "Jakub vlezl do tmavého sklepa, i když se ostatní báli.", [
+    { value: "Jakub byl odvážný.", why: "Tady je vlastnost napsaná přímo." },
+    { value: "Jakub byl velmi odvážný kluk.", why: "Tady je vlastnost napsaná přímo." },
+    { value: "Jakub měl modrou bundu.", why: "Bunda o odvaze nic neřekne." },
+  ], {
+    hints: ["Ve které větě Jakub dělá něco, na co ostatní nemají?", "Vlastnost ukázaná činem: postava udělá něco, co vyžaduje odvahu, a čtenář si to domyslí."],
+    explanation: "Když Jakub vleze do tmavého sklepa, i když se ostatní bojí, poznáme odvahu z činu.",
+  }),
+  choice("Jak poznáš hlavní postavu v knize, kterou čteš?", "objevuje se nejčastěji a děj se točí kolem ní", [
+    { value: "je vždy na obálce první", why: "Obálka o tom nerozhoduje." },
+    { value: "je vždy nejstarší", why: "Věk o tom nerozhoduje." },
+    { value: "je vždy zvíře", why: "Hlavní postava může být kdokoli." },
+  ], {
+    hints: ["O kom se v knize píše na většině stránek?", "Hlavní postavu poznáš podle toho, jak často v příběhu vystupuje a jak moc se jí děj týká."],
+    explanation: "Hlavní postava se objevuje nejčastěji a děj se točí hlavně kolem ní.",
+  }),
+  choice("Proč mají pohádky jasně dobré a jasně zlé postavy?", "aby i malý čtenář hned poznal, kdo je kdo", [
+    { value: "protože v pohádkách nejsou lidé", why: "Lidé v pohádkách jsou." },
+    { value: "aby byla pohádka delší", why: "O délku nejde." },
+    { value: "protože to přikazuje zákon", why: "Žádný zákon to nepřikazuje." },
+  ], {
+    hints: ["Pro koho se pohádky vyprávějí?", "Pohádky jsou pro nejmenší. Jednoduché dělení na dobré a zlé jim pomáhá příběhu rozumět."],
+    explanation: "Jasně dobré a zlé postavy pomáhají malým čtenářům hned pochopit, komu fandit.",
+  }),
 ];
 
-const POOL_L3: QA[] = [
-  { q: "Přečti: 'Babička si vždy našla čas vyslechnout každého, kdo měl starost.' Jaký typ charakteristiky to je a jaká vlastnost z toho plyne?", a: "Nepřímá charakteristika — babička je trpělivá a laskavá", opts: ["Nepřímá charakteristika — babička je trpělivá a laskavá", "Přímá charakteristika — babička je stará", "Fyzická vlastnost — babička má šedé vlasy", "Žádná charakteristika"], e: "Vlastnost není řečena přímo, ale vyplývá z jednání — babička si dělá čas na druhé, proto je trpělivá a laskavá. To je nepřímá charakteristika." },
-  { q: "V příběhu bojuje hrdina s drakem, který mu brání dostat se ke kouzelnému meči. Kdo je antagonista?", a: "Drak (překáží hrdinovi, brání mu v cíli)", opts: ["Kouzelný meč, o který hrdina usiluje", "Drak (překáží hrdinovi, brání mu v cíli)", "Hrdina sám sobě, protože se bojí", "Vypravěč, který příběh jen líčí"], e: "Antagonista je ten, kdo hlavní postavě stojí v cestě — v tomto příběhu je to drak, který brání hrdinovi dosáhnout jeho cíle." },
-  { q: "Přečti: 'Tomáš je chytrý chlapec, ale bojí se tmy a někdy lže, aby se vyhnul potížím.' Jde o postavu:", a: "Komplexní (round) — má dobré i slabé vlastnosti zároveň", opts: ["Komplexní (round) — má dobré i slabé vlastnosti zároveň", "Jednodimenzionální — jen kladnou", "Jednodimenzionální — jen zápornou", "Bez jakýchkoli vlastností"], e: "Tomáš má dobré vlastnosti (chytrost) i slabé stránky (strach, lhaní) zároveň — to je znak komplexní, plné postavy, ne jednoduché." },
-  { q: "Přečti: 'Eliška zabouchla dveře a beze slova odešla.' Co si o Elišce můžeme myslet?", a: "Je naštvaná nebo rozrušená (nepřímo, z jejího jednání)", opts: ["Je naštvaná nebo rozrušená (nepřímo, z jejího jednání)", "Je šťastná", "Je unavená a chce spát", "Nic si o ní nemyslíme, nejsou tam žádné informace"], e: "Bouchnutí dveřmi a odchod beze slova naznačuje vztek nebo rozrušení — vlastnost si domýšlíme z jednání, proto je to nepřímá charakteristika." },
-  { q: "Autor popisuje postavu takto: 'Vysoký muž s šedivým plnovousem, hluboký hlas, vždy klidný a moudrý.' Které části popisu jsou fyzické a které psychické?", a: "Fyzické: vysoký, šedivý plnovous, hluboký hlas. Psychické: klidný, moudrý.", opts: ["Nedá se to vůbec nijak rozdělit na dvě skupiny", "Fyzické: vysoký, šedivý plnovous, hluboký hlas. Psychické: klidný, moudrý.", "Úplně všechno v popisu je fyzická vlastnost", "Úplně všechno v popisu je psychická vlastnost"], e: "Vzhled a hlas jsou fyzické vlastnosti (co vidíme a slyšíme), kdežto klid a moudrost popisují povahu — to jsou vlastnosti psychické." },
-  { q: "V pohádce je čarodějnice vylíčena jen jako 'zlá a lstivá' bez dalšího vysvětlení. V realistické povídce by taková postava byla spíš:", a: "Příliš jednoduchá — povídka obvykle potřebuje komplexnější, uvěřitelnější postavy", opts: ["Naprosto typická, povídky mají postavy stejně jednoduché", "Příliš jednoduchá — povídka obvykle potřebuje komplexnější, uvěřitelnější postavy", "Vždy hlavní postavou celého literárního příběhu", "Nemožná, takové postavy neexistují v žádném žánru"], e: "Pohádkové postavy bývají jednoduché (jasně dobré nebo zlé), ale povídka o reálném životě potřebuje uvěřitelnější, komplexnější postavy." },
-  { q: "Protagonista v příběhu chce najít ztraceného psa. Antagonistou může být:", a: "Cokoliv, co mu v hledání brání — třeba bouřka, zlý soused nebo vlastní strach", opts: ["Jen jiná osoba, nikdy to nemůže být věc ani okolnost", "Cokoliv, co mu v hledání brání — třeba bouřka, zlý soused nebo vlastní strach", "Antagonista tu vůbec není potřeba, stačí hledat psa", "Jen jiné zvíře, které se psovi postaví do cesty"], e: "Antagonista nemusí být jen zlá osoba — může to být i překážka nebo vlastní slabost, hlavně že hrdinovi brání v dosažení cíle." },
-  { q: "Přečti: 'Filip se nikdy nechlubil svými úspěchy, i když vyhrál soutěž.' Jaká vlastnost z toho vyplývá?", a: "Skromnost (nepřímá charakteristika z jednání)", opts: ["Fyzická síla, protože soutěž vyžaduje sílu", "Skromnost (nepřímá charakteristika z jednání)", "Lenost, protože se o výhře nezmiňuje", "Pýcha, protože soutěž vyhrál"], e: "Z toho, že se Filip nechlubí ani po vítězství, poznáme jeho skromnost — vlastnost vyplývá z jednání, ne z přímého tvrzení." },
-  { q: "Ve dvou větách o stejné postavě: 'Petr je odvážný.' a 'Petr vběhl do hořícího domu, aby zachránil kočku.' Který způsob charakteristiky lépe ukáže čtenáři, jaký Petr skutečně je, a proč?", a: "Druhá věta (nepřímá) — čin je přesvědčivější a živější než pouhé tvrzení", opts: ["Ani jedna z těch dvou vět o Petrovi vůbec nic neříká", "Druhá věta (nepřímá) — čin je přesvědčivější a živější než pouhé tvrzení", "První věta (přímá) — je jednodušší a kratší na přečtení", "Obě věty jsou naprosto stejně silné a přesvědčivé"], e: "Konkrétní čin (běh do hořícího domu) čtenáře přesvědčí mnohem víc než pouhé tvrzení 'je odvážný' — nepřímá charakteristika je živější." },
-  { q: "Vedlejší postava v příběhu pomáhá hlavnímu hrdinovi radou, ale sama se do děje moc nezapojuje. Jakou roli plní?", a: "Doplňuje příběh a podporuje hlavní postavu, aniž by byla sama ve středu děje", opts: ["Je to ve skutečnosti hlavní postava celého příběhu", "Doplňuje příběh a podporuje hlavní postavu, aniž by byla sama ve středu děje", "Taková postava nemá v příběhu vůbec žádný smysl", "Je to vždy antagonista, který hrdinovi škodí"], e: "Vedlejší postavy podporují hlavní postavu a doplňují děj, ale příběh se netočí kolem nich — proto zůstávají vedlejší, ne hlavní." },
+const L3: PracticeTask[] = [
+  uryvek("Pan Hrubý na děti často křičel, ale když napadl sníh, potichu jim uklidil chodník před školou.", "Co o panu Hrubém můžeš říct?", "vypadá přísně, ale má dobré srdce", [
+    ["je jen zlý a nemá rád děti", "Uklidil dětem chodník — jen zlý není."], ["je jen hodný a na nikoho nekřičí", "Na děti ale křičí."], ["nemá rád zimu a sníh", "O tom úryvek nic neříká."],
+  ], ["Jak se pan Hrubý chová navenek a co udělá potichu?", "Úryvek ukazuje dvě stránky postavy: jak se chová, když ho všichni vidí, a co udělá, když se nikdo nedívá. Pozor na slovo „ale“."], "Pan Hrubý křičí, ale potají dětem pomáhá — navenek je přísný, ale má dobré srdce."),
+  choice("Jana chce najít ztraceného psa, ale brání jí silná bouřka. Co jí v příběhu stojí v cestě?", "bouřka", [
+    { value: "pes", why: "Psa Jana hledá — je to její cíl." },
+    { value: "Jana", why: "Jana je hlavní postava." },
+    { value: "vypravěč", why: "Vypravěč jen vypráví." },
+  ], {
+    hints: ["Co Janě brání, aby psa našla?", "Hrdinovi může v cestě stát postava, ale i počasí, překážka nebo vlastní strach."],
+    explanation: "Janě v hledání brání bouřka — ta je v příběhu její překážkou.",
+  }),
+  choice("Dvě věty: „Petr je odvážný.“ a „Petr vběhl do hořícího domu, aby zachránil kočku.“ Která ukáže Petrovu odvahu lépe?", "druhá, protože čin přesvědčí víc", [
+    { value: "první, protože je kratší", why: "Délka o přesvědčivosti nerozhoduje." },
+    { value: "obě úplně stejně", why: "Čin čtenáře přesvědčí víc než pouhé tvrzení." },
+    { value: "ani jedna", why: "Obě o odvaze mluví." },
+  ], {
+    hints: ["Čemu věříš víc — tomu, co o sobě někdo řekne, nebo tomu, co udělá?", "Tvrzení čtenáři jen oznámí vlastnost. Čin ji ukáže, čtenář ji pocítí a snáz postavě uvěří."],
+    explanation: "Čin (vběhl do hořícího domu) přesvědčí čtenáře víc než pouhé tvrzení.",
+  }),
+  choice("Chceš ukázat, že je postava zvědavá. Kterou větu napíšeš?", "Pořád nakukovala do zamčené skříně a vyptávala se, co v ní je.", [
+    { value: "Byla to hodně zvědavá holka.", why: "Vlastnost je jen řečená, ne ukázaná." },
+    { value: "Měla zelené oči a dlouhé hnědé vlasy.", why: "Vzhled o zvědavosti nic neřekne." },
+    { value: "Bydlela v Praze u Vltavy.", why: "Bydliště o zvědavosti nic neřekne." },
+  ], {
+    hints: ["Co dělá zvědavý člověk?", "Vlastnost ukážeš tak, že postava udělá něco, co pro ni je typické. Zvědavý se ptá a nakukuje."],
+    explanation: "Nakukování a vyptávání zvědavost ukážou, aniž to slovo padne.",
+  }),
+  choice("Na začátku příběhu je Ondra sobecký, na konci se rozdělí o svačinu s novým spolužákem. Co se stalo?", "postava se během příběhu změnila", [
+    { value: "Ondra je vedlejší postava", why: "To z textu nevyplývá a o změně to nic neříká." },
+    { value: "Ondra byl vždycky štědrý", why: "Na začátku byl sobecký." },
+    { value: "příběh nemá hlavní postavu", why: "Ondra je zjevně hlavní postava." },
+  ], {
+    hints: ["Jaký byl Ondra na začátku a jaký na konci?", "Když se povaha postavy mezi začátkem a koncem příběhu liší, postava prošla změnou."],
+    explanation: "Ondra byl na začátku sobecký a na konci štědrý — postava se změnila.",
+  }),
+  choice("Vedlejší postava hrdinovi poradí, ale jinak se do děje moc nezapojuje. Jakou roli má?", "pomáhá hlavní postavě", [
+    { value: "je hlavní postava", why: "Děj se netočí kolem ní." },
+    { value: "je hrdinův protivník", why: "Protivník by hrdinovi škodil." },
+    { value: "vypráví příběh", why: "To dělá vypravěč." },
+  ], {
+    hints: ["Pomáhá, nebo škodí?", "Vedlejší postava s radou je pro hrdinu oporou, i když není ve středu děje."],
+    explanation: "Postava, která hrdinovi radí, mu pomáhá — je jeho pomocníkem.",
+  }),
+  choice("Co se dozvíš z věty „Pavla měla na sobě červené šaty“?", "jak Pavla vypadá", [
+    { value: "jakou má Pavla povahu", why: "Šaty povahu neprozradí." },
+    { value: "co si Pavla myslí", why: "O myšlenkách věta nic neříká." },
+    { value: "jestli je Pavla kladná postava", why: "Z oblečení to nepoznáme." },
+  ], {
+    hints: ["Popisuje věta to, co je vidět, nebo co je uvnitř?", "Oblečení patří ke vzhledu. O povaze ani myšlenkách nic neřekne."],
+    explanation: "Oblečení je vzhled — věta říká, jak Pavla vypadá.",
+  }),
+  choice("Jak poznáš, že je postava lakomá, i když to autor nenapíše?", "nikdy se o nic nerozdělí a počítá každou korunu", [
+    { value: "podle barvy jejích vlasů", why: "Vlasy o povaze nic neřeknou." },
+    { value: "podle jejího jména", why: "Jméno o povaze nic neříká." },
+    { value: "podle toho, kde bydlí", why: "Bydliště o povaze nic neříká." },
+  ], {
+    hints: ["Co dělá lakomý člověk?", "Povahu poznáš z chování. Lakomec nerad dává a o peníze se bojí."],
+    explanation: "Lakomost poznáme z chování — postava se nerozdělí a počítá každou korunu.",
+  }),
+  choice("Proč bývají postavy v povídkách složitější než v pohádkách?", "skuteční lidé mají dobré i slabé stránky", [
+    { value: "povídky jsou vždy delší", why: "Délka nerozhoduje." },
+    { value: "v povídkách nejsou zlí lidé", why: "I v povídkách jsou lidé s chybami." },
+    { value: "pohádky nemají postavy", why: "Pohádky postavy mají." },
+  ], {
+    hints: ["Jsou lidé kolem tebe jen dobří, nebo jen zlí?", "Povídka vypráví o obyčejném životě. Lidé v něm nejsou jen hodní, nebo jen zlí — mají vlastnosti i chyby zároveň."],
+    explanation: "Povídky vyprávějí o skutečném životě, kde mají lidé dobré i slabé stránky.",
+  }),
+  choice("Kdo vypráví příběh, který začíná „Jmenuji se Ema a včera se mi stalo něco divného“?", "sama Ema", [
+    { value: "neznámý vypravěč mimo příběh", why: "Vypravěč mluví o sobě „já“ — je v příběhu." },
+    { value: "ilustrátor knihy", why: "Ilustrátor kreslí obrázky." },
+    { value: "čtenář", why: "Čtenář příběh čte, nevypráví." },
+  ], {
+    hints: ["Kdo v první větě mluví o sobě?", "Když vypravěč říká „já“ a představí se, je sám postavou příběhu."],
+    explanation: "Vypravěč mluví o sobě a jmenuje se Ema — příběh vypráví sama Ema.",
+  }),
+  choice("Ve kterém úryvku poznáš povahu postavy z její řeči?", "„Nechte to na mně, já to zvládnu!“ zvolal Honza.", [
+    { value: "Honza měl hnědé vlasy.", why: "To je vzhled, žádná řeč." },
+    { value: "Honza bydlel na kraji města.", why: "To je bydliště, žádná řeč." },
+    { value: "Honza šel domů.", why: "To je děj, Honza nic neříká." },
+  ], {
+    hints: ["Ve kterém úryvku postava mluví?", "Z toho, co a jak postava říká, poznáš její povahu — tady sebevědomí a odvahu."],
+    explanation: "Honzova slova ukazují, že je odvážný a sebevědomý — poznáme to z řeči.",
+  }),
+  choice("Proč nám může být sympatická i postava, která udělá chybu?", "chápeme, proč to udělala, a vidíme, že se snaží", [
+    { value: "protože je hlavní postava", why: "Hlavní postava sympatická být nemusí." },
+    { value: "protože je hezká", why: "Vzhled o sympatiích nerozhoduje." },
+    { value: "protože má hezké jméno", why: "Jméno o sympatiích nerozhoduje." },
+  ], {
+    hints: ["Děláš někdy chyby i ty?", "Postava s chybami je podobná skutečným lidem. Když rozumíme jejím důvodům, fandíme jí."],
+    explanation: "Když chápeme důvody postavy a vidíme, že se snaží, fandíme jí i přes chyby.",
+  }),
+  choice("Máš popsat svou oblíbenou postavu z knihy. Co do popisu dáš?", "vzhled, povahu a co v příběhu dělá", [
+    { value: "jen jméno", why: "Jméno postavu nepopíše." },
+    { value: "jen barvu oblečení", why: "To je jen malá část vzhledu." },
+    { value: "jen počet stran knihy", why: "To s postavou nesouvisí." },
+  ], {
+    hints: ["Co by kamarád potřeboval vědět, aby si postavu představil?", "Úplný popis postavy řekne, jak vypadá, jakou má povahu a jakou úlohu má v celém ději — tak si ji kamarád představí."],
+    explanation: "Do popisu postavy patří vzhled, povaha a to, co v příběhu dělá.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle(opts),
-    hints: [
-      "Ta postava, kolem které se točí většina děje a objevuje se nejčastěji, bývá ústřední.",
-      "To, co je na postavě vidět zvenčí, je jeden typ vlastností; to, co dělá a jaká je uvnitř, je typ druhý.",
-      "Přímá charakteristika = autor říká přímo; nepřímá = z jednání a řeči postavy",
-    ],
-    explanation: e,
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const HLAVNIPOSTAVYAJEJICHCHARAKTERISTIKA: TopicMetadata[] = [
@@ -87,10 +312,10 @@ export const HLAVNIPOSTAVYAJEJICHCHARAKTERISTIKA: TopicMetadata[] = [
     category: "Literární výchova",
     topic: "Literární výchova",
     briefDescription: "Naučíš se analyzovat postavy v příbězích a rozlišit přímou a nepřímou charakteristiku.",
-    keywords: ["hlavní postava", "charakteristika", "fyzické vlastnosti", "psychické vlastnosti", "přímá charakteristika", "nepřímá charakteristika"],
+    keywords: ["hlavní postava", "vedlejší postava", "vzhled", "povaha", "kladná postava", "záporná postava", "charakteristika"],
     goals: [
-      "Rozlišit fyzické a psychické vlastnosti postavy",
-      "Rozlišit přímou a nepřímou charakteristiku",
+      "Rozlišit vzhled a povahu postavy",
+      "Poznat vlastnost postavy z jejího jednání a řeči",
       "Určit hlavní a vedlejší postavu",
     ],
     boundaries: ["Bez literárněvědné terminologie", "Bez psychologické analýzy"],
@@ -102,15 +327,15 @@ export const HLAVNIPOSTAVYAJEJICHCHARAKTERISTIKA: TopicMetadata[] = [
     recommendedNext: ["g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema"],
     generator: gen,
     helpTemplate: {
-      hint: "Fyzické = vzhled; psychické = charakter; přímá = autor říká přímo; nepřímá = z jednání postavy",
+      hint: "Vzhled = co je vidět; povaha = jaká postava je. Vlastnost může autor říct přímo, nebo ji ukázat na tom, co postava dělá.",
       steps: [
-        "Kdo je hlavní postava? → nejvíce se vyskytuje",
-        "Fyzické vlastnosti: jak vypadá (vlasy, oči, postava)?",
-        "Psychické vlastnosti: jak se chová (odvážný, laskavý...)?",
-        "Přímá char. = autor říká; nepřímá = z jednání/řeči/myšlenek",
+        "Kdo je hlavní postava? → příběh se točí kolem ní.",
+        "Vzhled: jak postava vypadá.",
+        "Povaha: jak se chová k ostatním.",
+        "Vlastnost řečená přímo („je hodný“), nebo ukázaná činem („pomohl bez ptaní“)?",
       ],
-      commonMistake: "Záměna přímé a nepřímé charakteristiky — 'Je hodný.' = přímá; 'Pomohl bez ptaní.' = nepřímá",
-      example: "Přímá: 'Jana je velmi odvážná.' Nepřímá: 'Jana skočila do řeky, aby zachránila tonoucího.'",
+      commonMistake: "Považovat vzhled za povahu — „vysoký“ je vzhled, „odvážný“ je povaha",
+      example: "Přímo: „Jana byla odvážná.“ Z činu: „Jana skočila do vody, aby zachránila štěně.“",
     },
   },
 ];

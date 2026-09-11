@@ -76,9 +76,13 @@ describe.each([
   it("nápověda neprozrazuje celé pořadí (jen kotva)", () => {
     for (const t of tasks) {
       for (const h of t.hints ?? []) {
-        // hint nesmí obsahovat doslovně více než 1 položku v pořadí za sebou
+        // hint smí jmenovat víc položek jen v jiném pořadí, než je správné —
+        // dvě a víc položek ve správném sledu by prozradily řešení
         const mentioned = t.items!.filter((it) => h.includes(it));
-        expect(mentioned.length, `hint cituje ${mentioned.length} položek: ${h}`).toBeLessThanOrEqual(1);
+        if (mentioned.length >= 2) {
+          const podleHintu = [...mentioned].sort((a, b) => h.indexOf(a) - h.indexOf(b));
+          expect(podleHintu.join("|"), `hint cituje položky ve správném pořadí: ${h}`).not.toBe(mentioned.join("|"));
+        }
       }
     }
   });

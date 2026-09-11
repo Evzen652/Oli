@@ -1,88 +1,78 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { ciselnaUloha, fmt, rnd } from "./_mat";
 
-type Round = 10 | 100 | 1000 | 10000;
+// Přepsáno 2026-09-11 (audit 4. ročníku). Distraktory byly jen ± jeden řád
+// bez vysvětlení, možnosti mohly klesnout na tři, nápověda měla překlep
+// („nul zbytek“) a L3 se od L2 lišila jen velikostí čísla. Teď:
+// L1 desítky a stovky (do 9 999) · L2 tisíce a stovky (do 99 999)
+// L3 desetitisíce a tisíce (do 999 999) a obrácená úloha: které číslo se
+// zaokrouhlí na dané číslo. Distraktory: opačný směr, zaokrouhlení na jiný
+// řád, sousední násobek.
 
-function roundTo(n: number, to: Round): number {
-  return Math.round(n / to) * to;
+type Rad = 10 | 100 | 1000 | 10000;
+const NA: Record<Rad, string> = { 10: "desítky", 100: "stovky", 1000: "tisíce", 10000: "desetitisíce" };
+const POD: Record<Rad, string> = { 10: "jednotek", 100: "desítek", 1000: "stovek", 10000: "tisíců" };
+
+const zaokr = (n: number, r: number) => Math.round(n / r) * r;
+const cifra = (n: number, r: Rad) => Math.floor(n / (r / 10)) % 10;
+
+function zaokrouhli(r: Rad, min: number, max: number): PracticeTask {
+  let n = rnd(min, max);
+  while (n % r === 0) n = rnd(min, max);
+  const klic = zaokr(n, r);
+  const d = cifra(n, r);
+  const dolu = Math.floor(n / r) * r;
+  const chyby = [
+    d >= 5
+      ? { value: fmt(dolu), why: `Tohle je zaokrouhlení dolů. Na místě ${POD[r]} je ${d}, a to je 5 nebo víc — zaokrouhluje se nahoru.` }
+      : { value: fmt(dolu + r), why: `Tohle je zaokrouhlení nahoru. Na místě ${POD[r]} je ${d}, a to je méně než 5 — zaokrouhluje se dolů.` },
+    ...(r < 10000 ? [{ value: fmt(zaokr(n, r * 10)), why: `Tohle je zaokrouhlení na ${NA[(r * 10) as Rad]}, ne na ${NA[r]}.` }] : []),
+    ...(r > 10 ? [{ value: fmt(zaokr(n, r / 10)), why: `Tohle je zaokrouhlení na ${NA[(r / 10) as Rad]}, ne na ${NA[r]}.` }] : []),
+    { value: fmt(klic + r), why: `Zaokrouhlené číslo má být co nejblíž číslu ${fmt(n)}. ${fmt(klic + r)} je od něj dál než ${fmt(klic)}.` },
+    { value: fmt(klic - r), why: `Zaokrouhlené číslo má být co nejblíž číslu ${fmt(n)}. ${fmt(klic - r)} je od něj dál než ${fmt(klic)}.` },
+  ];
+  return ciselnaUloha(`Zaokrouhli číslo ${fmt(n)} na ${NA[r]}.`, fmt(klic), chyby, [
+    `Při zaokrouhlování na ${NA[r]} rozhoduje číslice na místě ${POD[r]}. Která to je v čísle ${fmt(n)}?`,
+    `Najdi v čísle ${fmt(n)} místo ${POD[r]}. Je-li tam 0 až 4, zaokrouhli dolů, je-li tam 5 až 9, zaokrouhli nahoru. Všechny číslice vpravo od řádu, na který zaokrouhluješ, nahraď nulami.`,
+  ], [
+    `Zaokrouhlujeme na ${NA[r]}, rozhoduje číslice na místě ${POD[r]}: ${d}.`,
+    d >= 5 ? `${d} ≥ 5, zaokrouhlujeme nahoru: ${fmt(n)} ≐ ${fmt(klic)}.` : `${d} < 5, zaokrouhlujeme dolů: ${fmt(n)} ≐ ${fmt(klic)}.`,
+  ]);
+}
+
+/** Obrácená úloha: které z čísel se zaokrouhlí na T? */
+function ktereCislo(r: 10 | 100 | 1000): PracticeTask {
+  const T = rnd(r === 1000 ? 12 : 21, 99) * r;
+  const pul = r / 2;
+  let klic: number;
+  do klic = rnd(T - pul + 1, T + pul - 2); while (klic === T);
+  const vedle = (x: number) => ({
+    value: fmt(x),
+    why: `${fmt(x)} má na místě ${POD[r]} číslici ${cifra(x, r)}, proto se zaokrouhlí na ${fmt(zaokr(x, r))}, ne na ${fmt(T)}.`,
+  });
+  const smer = Math.random() < 0.5 ? -1 : 1;
+  const chyby = [
+    vedle(T - pul - 1 - rnd(0, Math.floor(pul / 2) - 1)),
+    vedle(T + pul + rnd(0, Math.floor(pul / 2) - 1)),
+    vedle(T + smer * r * rnd(1, 2) + rnd(-pul + 1, pul - 2)),
+  ];
+  return ciselnaUloha(`Které číslo se po zaokrouhlení na ${NA[r]} změní na ${fmt(T)}?`, fmt(klic), chyby, [
+    `Zaokrouhli v duchu na ${NA[r]} každou možnost, třeba ${chyby[2].value}. U které vyjde ${fmt(T)}?`,
+    `Na ${fmt(T)} se zaokrouhlí čísla od ${fmt(T - pul)} do ${fmt(T + pul - 1)}. Hledej možnost z tohoto rozmezí — pozor na čísla těsně pod ${fmt(T - pul)} a od ${fmt(T + pul)} výš.`,
+  ], [
+    `Na ${fmt(T)} se zaokrouhlí čísla od ${fmt(T - pul)} do ${fmt(T + pul - 1)}.`,
+    `Do tohoto rozmezí patří ${fmt(klic)}: na místě ${POD[r]} má ${cifra(klic, r)}, zaokrouhlí se na ${fmt(T)}.`,
+  ]);
 }
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-
-  // level 1: zaokrouhlení na desítky a stovky (čísla do 9 999)
-  // level 2: zaokrouhlení na tisíce (čísla do 99 999)
-  // level 3: zaokrouhlení na desetitisíce (čísla do 999 999)
-
-  const configs: { to: Round; max: number }[] = level === 1
-    ? [{ to: 10, max: 9999 }, { to: 100, max: 9999 }]
-    : level === 2
-      ? [{ to: 100, max: 99999 }, { to: 1000, max: 99999 }]
-      : [{ to: 1000, max: 999999 }, { to: 10000, max: 999999 }];
-
-  const labels: Record<Round, string> = {
-    10: "desítky",
-    100: "stovky",
-    1000: "tisíce",
-    10000: "desetitisíce",
-  };
-
-  for (let i = 0; i < 40; i++) {
-    const cfg = configs[i % configs.length];
-    const n = Math.floor(Math.random() * (cfg.max - cfg.to)) + cfg.to;
-    const correct = roundTo(n, cfg.to);
-    const label = labels[cfg.to];
-
-    const d1 = correct + cfg.to;
-    const d2 = correct - cfg.to;
-    const d3 = correct + cfg.to * 2;
-
-    tasks.push({
-      question: `Zaokrouhli číslo ${fmt(n)} na ${label}.`,
-      correctAnswer: fmt(correct),
-      options: shuffle([fmt(correct), fmt(d1), fmt(d2 > 0 ? d2 : d1 * 2)].filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)
-        .concat(fmt(d3)).slice(0, 4)),
-      hints: [
-        `Podívej se na číslici řádu těsně pod ${label} (tj. ${labelBelow(cfg.to)}).`,
-        `Je-li tato číslice ≥ 5, zaokrouhli nahoru; je-li < 5, zaokrouhli dolů (nul zbytek).`,
-      ],
-      solutionSteps: [
-        `${fmt(n)} → zaokrouhlujeme na ${label}.`,
-        `Číslice ${labelBelow(cfg.to)}: ${digitAt(n, cfg.to / 10 || 1)}.`,
-        digitAt(n, cfg.to / 10 || 1) >= 5
-          ? `≥ 5 → zaokrouhlujeme nahoru → ${fmt(correct)}.`
-          : `< 5 → zaokrouhlujeme dolů → ${fmt(correct)}.`,
-      ],
-    });
-  }
-
-  return tasks;
-}
-
-function digitAt(n: number, place: number): number {
-  return Math.floor(n / place) % 10;
-}
-
-function labelBelow(to: Round): string {
-  const map: Record<Round, string> = {
-    10: "jednotek",
-    100: "desítek",
-    1000: "stovek",
-    10000: "tisíců",
-  };
-  return map[to];
-}
-
-function fmt(n: number): string {
-  return n.toLocaleString("cs-CZ").replace(/ /g, " ");
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+  return Array.from({ length: 40 }, (_, i) => {
+    if (level === 1) return i % 2 ? zaokrouhli(10, 100, 9999) : zaokrouhli(100, 1000, 9999);
+    if (level === 2) return i % 2 ? zaokrouhli(1000, 10000, 99999) : zaokrouhli(100, 10000, 99999);
+    if (i % 3 === 0) return zaokrouhli(10000, 100000, 999999);
+    if (i % 3 === 1) return zaokrouhli(1000, 100000, 999999);
+    return ktereCislo(([10, 100, 1000] as const)[rnd(0, 2)]);
+  });
 }
 
 export const ZAOKROUHLOVANI: TopicMetadata[] = [

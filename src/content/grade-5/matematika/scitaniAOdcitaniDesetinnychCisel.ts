@@ -1,104 +1,140 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { ciselnaUloha, fdec, fkc, pick, rnd, sada, type Chyba } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď generátor; počítá se v setinách jako
+// s celými čísly, takže klíč nemá chyby zaokrouhlení. Distraktory jsou typické
+// chyby: desetiny sečtené bez přenosu (3,7 + 2,5 = 5,12), zarovnání podle
+// posledního místa místo podle čárky (3,5 + 1,25 = 4,30), zapomenutá čárka.
+// L1 obě čísla s desetinami · L2 desetiny se setinami · L3 slovní úlohy
+// o penězích a délkách na dva kroky.
+
+const D = (setiny: number) => fdec(setiny / 100);
+
+function jednoMisto(): PracticeTask | null {
+  const plus = Math.random() < 0.5;
+  let a = rnd(11, 199), b = rnd(11, 199); // v desetinách
+  if (!plus && a < b) [a, b] = [b, a];
+  if (a % 10 === 0 || b % 10 === 0 || a === b) return null;
+  const vysl = plus ? a + b : a - b;
+  if (vysl === a || vysl === b) return null;
+  const [ca, da, cb, db] = [Math.floor(a / 10), a % 10, Math.floor(b / 10), b % 10];
+  const T = (x: number) => fdec(x / 10);
+  if (T(a).includes(T(vysl)) || T(b).includes(T(vysl))) return null;
+  const chyby: Chyba[] = plus
+    ? [
+      ...(da + db >= 10 ? [
+        { value: `${ca + cb},${da + db}`, why: `Desetiny ${da} + ${db} = ${da + db} desetin, to je 1 celá a ${(da + db) % 10} desetin. Celá se přenese k celým.` },
+        { value: T(vysl - 10), why: "Z desetin se měla přenést 1 celá, ale zapomněla se přičíst." },
+      ] : []),
+      { value: String(vysl), why: "Chybí desetinná čárka — výsledek je desetkrát větší." },
+      { value: T(vysl + 1), why: `Desetiny: ${da} + ${db} = ${da + db}. Zkontroluj poslední číslici.` },
+      { value: T(vysl - 1), why: `Desetiny: ${da} + ${db} = ${da + db}. Zkontroluj poslední číslici.` },
+    ]
+    : [
+      ...(da < db ? [
+        { value: `${ca - cb},${db - da}`, why: `U desetin se odečetlo menší od většího (${db} − ${da}). Správně se musí půjčit 1 celá: ${da + 10} − ${db}.` },
+        { value: T(vysl + 10), why: "Půjčila se 1 celá, ale zapomněla se odečíst od celých." },
+      ] : []),
+      { value: String(vysl), why: "Chybí desetinná čárka — výsledek je desetkrát větší." },
+      { value: T(a + b), why: "Čísla se sečetla místo odečetla." },
+      { value: T(vysl + 1), why: "Zkontroluj desetiny." },
+    ];
+  const znak = plus ? "+" : "−";
+  return ciselnaUloha(`Vypočítej: ${T(a)} ${znak} ${T(b)}`, T(vysl), chyby, [
+    `Zapiš ${T(a)} a ${T(b)} pod sebe tak, aby byly čárky přesně pod sebou. Kolik vyjde u desetin?`,
+    plus
+      ? "Počítej zprava: nejdřív desetiny, pak celé. Když desetiny dají deset nebo víc, zapiš jednotky a jednu celou přenes k celým."
+      : "Počítej zprava: nejdřív desetiny, pak celé. Když nahoře desetin nestačí, půjč si jednu celou (= deset desetin) a nezapomeň ji u celých odečíst.",
+  ], [
+    `Desetiny: ${plus ? `${da} + ${db} = ${da + db}${da + db >= 10 ? " → píšu " + ((da + db) % 10) + ", 1 přenáším" : ""}` : da < db ? `${da + 10} − ${db} = ${da + 10 - db} (půjčil jsem si 1 celou)` : `${da} − ${db} = ${da - db}`}`,
+    `Celé: ${plus ? `${ca} + ${cb}${da + db >= 10 ? " + 1" : ""}` : `${ca}${da < db ? " − 1" : ""} − ${cb}`} = ${Math.floor(vysl / 10)}`,
+    `Výsledek: ${T(vysl)}`,
+  ]);
 }
 
-// Level 1: jednoduchá čísla s 1 desetinným místem
-const POOL_L1: PracticeTask[] = [
-  { question: "1,5 + 2,3 = ?", correctAnswer: "3,8", options: ["3,8", "3,9", "3,7", "4,8"] },
-  { question: "3,7 + 1,2 = ?", correctAnswer: "4,9", options: ["5,0", "4,9", "4,8", "4,7"] },
-  { question: "2,6 + 1,4 = ?", correctAnswer: "4,0", options: ["4,1", "3,9", "4,0", "3,0"] },
-  { question: "5,3 + 2,4 = ?", correctAnswer: "7,7", options: ["7,6", "7,8", "6,7", "7,7"] },
-  { question: "4,8 + 1,1 = ?", correctAnswer: "5,9", options: ["5,9", "6,0", "5,8", "4,9"] },
-  { question: "6,2 + 2,5 = ?", correctAnswer: "8,7", options: ["8,8", "8,7", "8,6", "9,7"] },
-  { question: "3,9 + 0,6 = ?", correctAnswer: "4,5", options: ["4,4", "4,6", "4,5", "3,5"] },
-  { question: "7,1 + 1,8 = ?", correctAnswer: "8,9", options: ["9,0", "8,8", "7,9", "8,9"] },
-  { question: "0,5 + 0,3 = ?", correctAnswer: "0,8", options: ["0,8", "0,9", "0,7", "1,8"] },
-  { question: "1,7 + 1,3 = ?", correctAnswer: "3,0", options: ["2,0", "3,0", "3,1", "2,9"] },
-  { question: "5,4 − 2,1 = ?", correctAnswer: "3,3", options: ["3,2", "3,4", "3,3", "2,3"] },
-  { question: "7,8 − 3,5 = ?", correctAnswer: "4,3", options: ["4,2", "4,4", "5,3", "4,3"] },
-  { question: "4,6 − 1,4 = ?", correctAnswer: "3,2", options: ["3,2", "3,1", "3,3", "2,2"] },
-  { question: "9,5 − 4,3 = ?", correctAnswer: "5,2", options: ["5,1", "5,2", "5,3", "4,2"] },
-  { question: "6,0 − 2,7 = ?", correctAnswer: "3,3", options: ["3,2", "3,4", "3,3", "4,3"] },
-  { question: "8,4 − 5,1 = ?", correctAnswer: "3,3", options: ["3,2", "3,4", "2,3", "3,3"] },
-  { question: "3,5 − 1,9 = ?", correctAnswer: "1,6", options: ["1,6", "1,5", "1,7", "2,6"] },
-  { question: "5,0 − 2,5 = ?", correctAnswer: "2,5", options: ["2,4", "2,5", "2,6", "3,5"] },
-  { question: "2,8 − 0,6 = ?", correctAnswer: "2,2", options: ["2,1", "2,3", "2,2", "1,2"] },
-  { question: "10,0 − 4,3 = ?", correctAnswer: "5,7", options: ["5,6", "5,8", "6,7", "5,7"] },
-  { question: "1,5 + 3,5 = ?", correctAnswer: "5,0", options: ["5,0", "4,0", "5,1", "4,9"] },
-  { question: "0,9 + 0,1 = ?", correctAnswer: "1,0", options: ["0,10", "1,0", "1,1", "0,9"] },
-  { question: "4,3 + 2,7 = ?", correctAnswer: "7,0", options: ["6,0", "7,1", "7,0", "6,9"] },
-  { question: "8,6 − 6,4 = ?", correctAnswer: "2,2", options: ["2,1", "2,3", "3,2", "2,2"] },
-  { question: "3,0 − 1,5 = ?", correctAnswer: "1,5", options: ["1,5", "1,4", "1,6", "2,5"] },
-  { question: "6,7 + 2,3 = ?", correctAnswer: "9,0", options: ["8,0", "9,0", "9,1", "8,9"] },
-  { question: "7,5 − 3,5 = ?", correctAnswer: "4,0", options: ["3,0", "4,1", "4,0", "3,9"] },
-  { question: "0,8 + 0,4 = ?", correctAnswer: "1,2", options: ["1,3", "0,12", "1,1", "1,2"] },
-  { question: "5,6 − 2,8 = ?", correctAnswer: "2,8", options: ["2,8", "2,7", "2,9", "3,8"] },
-  { question: "9,2 − 4,7 = ?", correctAnswer: "4,5", options: ["4,4", "4,5", "4,6", "5,5"] },
-];
+function ruznaMista(): PracticeTask | null {
+  const plus = Math.random() < 0.5;
+  const aDes = rnd(11, 99), bSet = rnd(101, 999); // a v desetinách, b v setinách
+  if (aDes % 10 === 0 || bSet % 10 === 0) return null;
+  let A = aDes * 10, B = bSet;
+  let [txtA, txtB] = [fdec(aDes / 10), D(bSet)];
+  if (!plus && A < B) { [A, B] = [B, A]; [txtA, txtB] = [txtB, txtA]; }
+  const vysl = plus ? A + B : A - B;
+  if (vysl <= 0 || txtA.includes(D(vysl)) || txtB.includes(D(vysl))) return null;
+  // Chybné zarovnání: jedna desetina se vezme jako setiny (3,5 → 3,05).
+  const spatneDes = Math.floor(aDes / 10) * 100 + (aDes % 10);
+  const spatne = plus ? spatneDes + B : A === aDes * 10 ? spatneDes - B : A - spatneDes;
+  const chyby: Chyba[] = [
+    ...(spatne > 0 ? [{ value: D(spatne), why: `Čísla se zarovnala podle posledního místa, ne podle čárky: ${fdec(aDes / 10)} = ${fdec(aDes / 10)}0, ne ${D(spatneDes)}.` }] : []),
+    { value: String(vysl), why: "Chybí desetinná čárka." },
+    { value: D(plus ? vysl - 100 : vysl + 100), why: plus ? "Z desetin se měla přenést 1 celá." : "Při půjčování se zapomnělo odečíst 1 celou." },
+    { value: D(plus ? vysl + 10 : vysl - 10), why: "Chyba u desetin — zkontroluj přenos ze setin." },
+    { value: D(vysl + 1), why: "Chyba u setin." },
+  ];
+  const znak = plus ? "+" : "−";
+  return ciselnaUloha(`Vypočítej: ${txtA} ${znak} ${txtB}`, D(vysl), chyby, [
+    `Číslo ${fdec(aDes / 10)} má za čárkou jedno místo, ${D(bSet)} dvě. Jak je zapíšeš pod sebe?`,
+    "Čárka musí být přesně pod čárkou. Číslu s jedním místem za čárkou doplň na konec nulu, aby měla obě čísla setiny, a počítej jako s celými čísly.",
+  ], [
+    `Doplníme nulu: ${fdec(aDes / 10)} = ${fdec(aDes / 10)}0`,
+    `${plus ? `${fdec(aDes / 10)}0 + ${D(bSet)}` : `${txtA.includes(",") && txtA.split(",")[1].length === 1 ? `${txtA}0` : txtA} − ${txtB.includes(",") && txtB.split(",")[1].length === 1 ? `${txtB}0` : txtB}`} = ${D(vysl)}`,
+  ]);
+}
 
-// Level 2: čísla s 2 desetinnými místy
-const POOL_L2: PracticeTask[] = [
-  { question: "1,25 + 2,50 = ?", correctAnswer: "3,75", options: ["3,85", "3,65", "3,75", "4,75"] },
-  { question: "3,14 + 1,36 = ?", correctAnswer: "4,50", options: ["4,40", "4,60", "3,50", "4,50"] },
-  { question: "5,60 + 2,35 = ?", correctAnswer: "7,95", options: ["7,95", "7,85", "8,05", "6,95"] },
-  { question: "4,08 + 3,12 = ?", correctAnswer: "7,20", options: ["7,10", "7,20", "7,30", "6,20"] },
-  { question: "2,75 + 1,25 = ?", correctAnswer: "4,00", options: ["3,00", "4,10", "4,00", "3,90"] },
-  { question: "6,50 + 1,75 = ?", correctAnswer: "8,25", options: ["8,15", "8,35", "7,25", "8,25"] },
-  { question: "0,75 + 0,50 = ?", correctAnswer: "1,25", options: ["1,25", "1,15", "1,35", "0,125"] },
-  { question: "3,99 + 0,01 = ?", correctAnswer: "4,00", options: ["3,99", "4,00", "4,01", "3,00"] },
-  { question: "7,35 − 2,15 = ?", correctAnswer: "5,20", options: ["5,10", "5,30", "5,20", "4,20"] },
-  { question: "9,80 − 4,55 = ?", correctAnswer: "5,25", options: ["5,15", "5,35", "4,25", "5,25"] },
-  { question: "6,00 − 2,75 = ?", correctAnswer: "3,25", options: ["3,25", "3,15", "3,35", "4,25"] },
-  { question: "5,50 − 1,25 = ?", correctAnswer: "4,25", options: ["4,15", "4,25", "4,35", "3,25"] },
-  { question: "8,20 − 3,45 = ?", correctAnswer: "4,75", options: ["4,65", "4,85", "4,75", "5,75"] },
-  { question: "10,00 − 3,75 = ?", correctAnswer: "6,25", options: ["6,15", "6,35", "7,25", "6,25"] },
-  { question: "4,50 − 2,50 = ?", correctAnswer: "2,00", options: ["2,00", "1,00", "2,10", "1,90"] },
-  { question: "1,05 + 2,95 = ?", correctAnswer: "4,00", options: ["3,00", "4,00", "4,01", "3,99"] },
-  { question: "3,72 + 1,28 = ?", correctAnswer: "5,00", options: ["4,00", "5,10", "5,00", "4,90"] },
-  { question: "7,00 − 2,50 = ?", correctAnswer: "4,50", options: ["4,40", "4,60", "5,50", "4,50"] },
-  { question: "2,34 + 3,66 = ?", correctAnswer: "6,00", options: ["6,00", "5,00", "6,10", "5,90"] },
-  { question: "8,15 − 4,05 = ?", correctAnswer: "4,10", options: ["4,00", "4,10", "4,20", "3,10"] },
-  { question: "1,50 + 2,75 = ?", correctAnswer: "4,25", options: ["4,15", "4,35", "4,25", "3,25"] },
-  { question: "6,25 − 3,50 = ?", correctAnswer: "2,75", options: ["2,65", "2,85", "3,75", "2,75"] },
-  { question: "0,25 + 0,75 = ?", correctAnswer: "1,00", options: ["1,00", "0,10", "1,10", "0,90"] },
-  { question: "5,00 − 1,35 = ?", correctAnswer: "3,65", options: ["3,55", "3,65", "3,75", "4,65"] },
-  { question: "9,00 − 5,25 = ?", correctAnswer: "3,75", options: ["3,65", "3,85", "3,75", "4,75"] },
+const ZBOZI: [string, number, number][] = [
+  ["sešit", 1290, 2990], ["pero", 890, 2490], ["chléb", 2990, 4590], ["mléko", 1690, 2890],
+  ["pravítko", 990, 1990], ["jablka", 2450, 4990], ["sýr", 3290, 5490], ["čokoládu", 1990, 3490],
 ];
+const JMENA = ["Eva", "Tomáš", "Lucka", "Filip", "Anna", "Jakub"];
 
-// Level 3: kombinované příklady, přechod přes celé číslo
-const POOL_L3: PracticeTask[] = [
-  { question: "3,75 + 2,50 − 1,25 = ?", correctAnswer: "5,00", options: ["4,00", "5,10", "4,90", "5,00"] },
-  { question: "10,00 − 3,45 − 2,55 = ?", correctAnswer: "4,00", options: ["4,00", "3,00", "4,01", "3,99"] },
-  { question: "1,99 + 3,01 = ?", correctAnswer: "5,00", options: ["4,00", "5,00", "5,10", "4,90"] },
-  { question: "8,05 − 4,95 = ?", correctAnswer: "3,10", options: ["3,00", "3,20", "3,10", "4,10"] },
-  { question: "0,99 + 0,01 = ?", correctAnswer: "1,00", options: ["0,10", "1,01", "0,99", "1,00"] },
-  { question: "5,25 + 2,75 + 1,00 = ?", correctAnswer: "9,00", options: ["9,00", "8,00", "9,10", "8,90"] },
-  { question: "7,00 − 1,35 − 2,65 = ?", correctAnswer: "3,00", options: ["2,00", "3,00", "3,10", "2,90"] },
-  { question: "2,50 + 2,50 + 2,50 = ?", correctAnswer: "7,50", options: ["6,50", "7,60", "7,50", "8,50"] },
-  { question: "6,30 − 2,85 = ?", correctAnswer: "3,45", options: ["3,35", "3,55", "4,45", "3,45"] },
-  { question: "4,00 − 1,75 − 0,25 = ?", correctAnswer: "2,00", options: ["2,00", "1,00", "2,10", "1,90"] },
-  { question: "9,99 + 0,01 = ?", correctAnswer: "10,00", options: ["9,00", "10,00", "10,01", "9,99"] },
-  { question: "3,33 + 3,33 + 3,34 = ?", correctAnswer: "10,00", options: ["9,00", "10,01", "10,00", "9,99"] },
-  { question: "12,50 − 7,75 = ?", correctAnswer: "4,75", options: ["4,65", "4,85", "5,75", "4,75"] },
-  { question: "0,50 + 1,50 + 2,50 = ?", correctAnswer: "4,50", options: ["4,50", "3,50", "4,60", "5,50"] },
-  { question: "6,00 + 1,75 − 3,25 = ?", correctAnswer: "4,50", options: ["3,50", "4,50", "4,60", "5,50"] },
-  { question: "8,08 − 4,04 = ?", correctAnswer: "4,04", options: ["3,04", "4,14", "4,04", "5,04"] },
-  { question: "1,11 + 2,22 + 3,33 = ?", correctAnswer: "6,66", options: ["5,66", "6,76", "7,66", "6,66"] },
-  { question: "5,75 + 4,25 = ?", correctAnswer: "10,00", options: ["10,00", "9,00", "10,10", "9,90"] },
-  { question: "15,00 − 8,50 − 1,25 = ?", correctAnswer: "5,25", options: ["4,25", "5,25", "5,35", "6,25"] },
-  { question: "3,60 + 2,40 + 1,50 = ?", correctAnswer: "7,50", options: ["6,50", "7,60", "7,50", "8,50"] },
-];
+function nakup(): PracticeTask | null {
+  const [z1, z2] = [pick(ZBOZI), pick(ZBOZI)];
+  if (z1 === z2) return null;
+  const c1 = rnd(z1[1] / 10, z1[2] / 10) * 10, c2 = rnd(z2[1] / 10, z2[2] / 10) * 10; // v haléřích, na desetníky
+  const platil = c1 + c2 <= 5000 ? 5000 : 10000;
+  const vratili = platil - c1 - c2;
+  if (vratili < 200) return null;
+  const kdo = pick(JMENA);
+  const P = (h: number) => fkc(h / 100);
+  return ciselnaUloha(`${kdo} koupil${kdo.endsWith("a") ? "a" : ""} ${z1[0]} za ${P(c1)} Kč a ${z2[0]} za ${P(c2)} Kč. Platil${kdo.endsWith("a") ? "a" : ""} ${platil / 100} Kč. Kolik korun ${kdo === "Eva" || kdo.endsWith("a") ? "jí" : "mu"} vrátili?`, `${P(vratili)} Kč`, [
+    { value: `${P(c1 + c2)} Kč`, why: "To je cena nákupu. Ještě ji odečti od částky, kterou dal prodavači." },
+    { value: `${P(platil - c1)} Kč`, why: "Odečetla se jen první položka." },
+    { value: `${P(vratili + 100)} Kč`, why: "Při odčítání se zapomnělo půjčit — zkontroluj korunu." },
+    { value: `${P(vratili - 10)} Kč`, why: "Chyba u desetníků — zkontroluj číslice za čárkou." },
+  ], [
+    `Kolik stál celý nákup? Sečti ${P(c1)} a ${P(c2)} s čárkami pod sebou.`,
+    `Úloha má dva kroky: nejdřív cena nákupu (součet), potom kolik zbude z ${platil / 100} Kč (rozdíl). Celé korunky zapiš jako ${platil / 100},00.`,
+  ], [
+    `Nákup: ${P(c1)} + ${P(c2)} = ${P(c1 + c2)} Kč`,
+    `Vrátili: ${platil / 100},00 − ${P(c1 + c2)} = ${P(vratili)} Kč`,
+  ]);
+}
+
+function stuha(): PracticeTask | null {
+  const cela = rnd(25, 60) * 10, p1 = rnd(51, 199), druhy = rnd(3, 9) * 10;
+  if (p1 % 10 === 0) return null;
+  const zbylo = cela - p1 - druhy;
+  if (zbylo <= 20) return null;
+  const co = pick([["stuha", "Stuha", "odstřihli"], ["provaz", "Provaz", "uřízli"], ["látka", "Látka", "odstřihli"]]);
+  return ciselnaUloha(`${co[1]} měřil${co[0] === "provaz" ? "" : "a"} ${D(cela)} m. Nejdřív z ní ${co[2]} ${D(p1)} m a potom ještě ${D(druhy)} m. Kolik metrů zbylo?`.replace("z ní", co[0] === "provaz" ? "z něj" : "z ní"), `${D(zbylo)} m`, [
+    { value: `${D(cela - p1)} m`, why: "Odečetl se jen první kus." },
+    { value: `${D(p1 + druhy)} m`, why: "To je délka obou odstřižených kusů dohromady, ne zbytek." },
+    { value: `${D(cela - p1 - Math.floor(druhy / 10))} m`, why: `${D(druhy)} m je ${druhy / 10} desetin metru, ne setin — zarovnej čárky pod sebe.` },
+    { value: `${D(zbylo + 100)} m`, why: "Při odčítání se zapomnělo půjčit celý metr." },
+  ], [
+    `Kolik metrů se odstřihlo celkem? Sečti ${D(p1)} a ${D(druhy)} s čárkami pod sebou.`,
+    "Můžeš odečítat postupně, nebo nejdřív sečíst oba kusy a pak odečíst najednou. Vždy drž čárku pod čárkou a čísla s jedním místem za čárkou doplň nulou.",
+  ], [
+    `Odstřiženo: ${D(p1)} + ${D(druhy)} = ${D(p1 + druhy)} m`,
+    `Zbylo: ${D(cela)} − ${D(p1 + druhy)} = ${D(zbylo)} m`,
+  ]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return sada(30, jednoMisto);
+  if (level === 2) return sada(30, ruznaMista);
+  return sada(30, (i) => (i % 2 ? stuha() : nakup()));
 }
 
 export const SCITANIAODCITANIDESETINNYCHCISEL: TopicMetadata[] = [

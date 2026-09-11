@@ -1,76 +1,143 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
+import { ciselnaUloha, fdec, fmt, pick, rnd, sada } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď generátor s typickými chybami:
+// obvod místo obsahu, sečtené strany, u převodů jednotek obsahu převod jako
+// u délky (1 m² = 100 cm²).
+// L1 obsah obdélníku a čtverce, počet čtverečků v síti · L2 složené obrazce
+// (vystřižený roh, dva obdélníky) · L3 převody jednotek obsahu a strana
+// z obsahu.
+
+const JEDN = ["cm", "dm", "m"];
+
+function sit(): PracticeTask | null {
+  const r = rnd(2, 9), s = rnd(3, 12);
+  if (r === s) return null;
+  return ciselnaUloha(`Obdélník ve čtvercové síti má ${pad(r, "ŘÁDEK")} a v každém řádku ${pad(s, "ČTVEREČEK")}. Kolik čtverečků zabírá?`, r * s, [
+    { value: r + s, why: "Počet řádků a čtverečků v řádku se sečetl. Řádků je víc, každý má stejně čtverečků — násob." },
+    { value: 2 * (r + s), why: "To jsou čtverečky kolem okraje (obvod), ne celá plocha." },
+    { value: r * s - s, why: `Chybí jeden řádek. Řádků je ${r}.` },
+  ], [
+    `Kolik čtverečků je v jednom řádku a kolik je řádků (${r})?`,
+    "Obsah ve čtvercové síti = počet všech čtverečků uvnitř. Když jsou v řádcích stejně dlouhé řady, stačí vynásobit počet řádků počtem čtverečků v řádku.",
+  ], [`${r} řádků × ${s} čtverečků = ${r * s}`.replace(/^(\d+) řádků/, `${pad(r, "ŘÁDEK")}`)]);
 }
 
-// Level 1: počítání čtverečků, základní obsah
-const POOL_L1: PracticeTask[] = [
-  { question: "Obdélník ve čtvercové síti je 4 čtverečky široký a 3 čtverečky vysoký. Kolik čtverečků pokrývá?", correctAnswer: "12", options: ["12", "14", "10", "7"] },
-  { question: "Čtverec ve čtvercové síti má stranu 3 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "9", options: ["12", "9", "6", "3"] },
-  { question: "Obrazec ve čtvercové síti pokrývá 8 čtverečků. Jaký je jeho obsah, pokud 1 čtvereček = 1 cm²?", correctAnswer: "8 cm²", options: ["8 cm", "4 cm²", "8 cm²", "16 cm²"] },
-  { question: "Obdélník 5 × 2 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "10", options: ["14", "7", "25", "10"] },
-  { question: "Čtverec se stranou 4 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "16", options: ["16", "8", "12", "4"] },
-  { question: "Obdélník 6 × 3 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "18", options: ["9", "18", "15", "36"] },
-  { question: "Obdélník ve čtvercové síti má obsah 20 čtverečků. Pokud je 5 čtverečků široký, jak je vysoký?", correctAnswer: "4 čtverečky", options: ["5 čtverečků", "15 čtverečků", "4 čtverečky", "25 čtverečků"] },
-  { question: "Jaká je jednotka obsahu?", correctAnswer: "cm², m², km²", options: ["cm, m, km", "cm³, m³", "g, kg", "cm², m², km²"] },
-  { question: "Obsah obdélníku 3 cm × 5 cm = ?", correctAnswer: "15 cm²", options: ["15 cm²", "16 cm", "8 cm", "15 cm"] },
-  { question: "Obsah čtverce se stranou 6 cm = ?", correctAnswer: "36 cm²", options: ["24 cm", "36 cm²", "12 cm²", "36 cm"] },
-  { question: "Obrazec pokrývá 15 čtverečků (každý 1 m²). Jaký je jeho obsah?", correctAnswer: "15 m²", options: ["15 m", "15 km²", "15 m²", "15 cm²"] },
-  { question: "Obdélník 7 × 4 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "28", options: ["22", "11", "14", "28"] },
-  { question: "Co je obsah obrazce?", correctAnswer: "Plocha, kterou obrazec pokrývá", options: ["Plocha, kterou obrazec pokrývá", "Délka obvodu obrazce", "Výška obrazce v centimetrech", "Počet vrcholů obrazce"] },
-  { question: "Obsah obdélníku 10 cm × 4 cm = ?", correctAnswer: "40 cm²", options: ["28 cm", "40 cm²", "14 cm²", "40 cm"] },
-  { question: "Čtverec ve čtvercové síti má stranu 5 čtverečků. Kolik čtverečků pokrývá?", correctAnswer: "25", options: ["20", "10", "25", "5"] },
-  { question: "Obdélník 8 × 2 čtverečky. Kolik čtverečků pokrývá?", correctAnswer: "16", options: ["20", "10", "6", "16"] },
-  { question: "Obsah čtverce se stranou 9 cm = ?", correctAnswer: "81 cm²", options: ["81 cm²", "36 cm", "18 cm²", "81 cm"] },
-  { question: "Obdélník ve čtvercové síti: šířka 4, výška 6. Obsah?", correctAnswer: "24 čtverečků", options: ["20 čtverečků", "24 čtverečků", "10 čtverečků", "48 čtverečků"] },
-  { question: "Obsah obdélníku 2 cm × 9 cm = ?", correctAnswer: "18 cm²", options: ["22 cm", "11 cm²", "18 cm²", "18 cm"] },
-  { question: "Co je čtvercová síť?", correctAnswer: "Mřížka z čtverců stejné velikosti", options: ["Síť z trojúhelníků", "Souřadnicová soustava", "Pravítko", "Mřížka z čtverců stejné velikosti"] },
+function obdelnik(): PracticeTask | null {
+  const a = rnd(3, 15), b = rnd(2, 12), u = pick(JEDN);
+  if (a === b) return null;
+  const S = (n: number) => `${fmt(n)} ${u}²`;
+  return ciselnaUloha(`Obdélník má strany ${a} ${u} a ${b} ${u}. Jaký má obsah?`, S(a * b), [
+    { value: S(2 * (a + b)), why: `${2 * (a + b)} je obvod (součet všech stran). Obsah je plocha uvnitř: délka × šířka.` },
+    { value: S(a + b), why: "Strany se sečetly. Obsah se počítá násobením." },
+    { value: S(a * b - b), why: `Zkouška: ${a} × ${b} = ${a * b}.` },
+  ], [
+    `Kolik čtverečků 1 ${u} × 1 ${u} by se vešlo do jedné řady podél strany ${a} ${u}? A kolik takových řad je?`,
+    `Obsah obdélníku = délka × šířka. Výsledek je ve čtverečních jednotkách (${u}²), protože počítáš čtverečky, ne délku. Obvod (součet stran) je něco jiného.`,
+  ], [`${a} × ${b} = ${a * b}`, `Obsah: ${S(a * b)}`]);
+}
+
+function ctverec(): PracticeTask | null {
+  const a = rnd(3, 15), u = pick(JEDN);
+  const S = (n: number) => `${fmt(n)} ${u}²`;
+  return ciselnaUloha(`Čtverec má stranu ${a} ${u}. Jaký má obsah?`, S(a * a), [
+    { value: S(4 * a), why: `${4 * a} je obvod (4 × strana). Obsah je strana × strana.` },
+    { value: S(2 * a), why: "Strana se vynásobila dvěma. Obsah je strana × strana." },
+    { value: S(a * a + a), why: `Zkouška: ${a} × ${a} = ${a * a}.` },
+  ], [
+    `Kolik čtverečků je v jedné řadě (${a}) a kolik je řad?`,
+    `Obsah čtverce = strana × strana. Výsledek je v ${u}², protože počítáš čtverečky, ne délku. Pozor na záměnu s obvodem, ten je 4 × strana.`,
+  ], [`${a} × ${a} = ${a * a}`, `Obsah: ${S(a * a)}`]);
+}
+
+function vystrizeny(): PracticeTask | null {
+  const a = rnd(6, 15), b = rnd(5, 12), c = rnd(2, Math.min(a, b) - 2);
+  const S = (n: number) => `${fmt(n)} cm²`;
+  const v = a * b - c * c;
+  return ciselnaUloha(`Z obdélníku ${a} cm × ${b} cm vystřihneme v rohu čtverec o straně ${c} cm. Jaký obsah má zbytek?`, S(v), [
+    { value: S(a * b), why: "To je obsah celého obdélníku. Vystřižený čtverec se musí odečíst." },
+    { value: S(a * b + c * c), why: "Čtverec se přičetl. Vystřižením plocha ubude." },
+    { value: S(a * b - 4 * c), why: `Odečetl se obvod čtverce (${4 * c}). Odečítá se jeho obsah ${c} × ${c}.` },
+  ], [
+    `Jaký obsah má celý obdélník a jaký vystřižený čtverec o straně ${c} cm?`,
+    "Obsah složeného obrazce spočítáš po částech: obsah celého obdélníku minus obsah té části, která chybí.",
+  ], [`Obdélník: ${a} × ${b} = ${a * b}`, `Čtverec: ${c} × ${c} = ${c * c}`, `Zbytek: ${a * b} − ${c * c} = ${v} cm²`]);
+}
+
+function dvaObdelniky(): PracticeTask | null {
+  const a = rnd(3, 10), b = rnd(2, 8), c = rnd(2, 8), d = rnd(2, 8);
+  if (a * b === c * d) return null;
+  const S = (n: number) => `${fmt(n)} cm²`;
+  const v = a * b + c * d;
+  return ciselnaUloha(`Obrazec se skládá z obdélníku ${a} cm × ${b} cm a obdélníku ${c} cm × ${d} cm, které se jen dotýkají. Jaký má obsah?`, S(v), [
+    { value: S((a + c) * (b + d)), why: "Rozměry se sečetly a vynásobily, jako by to byl jeden velký obdélník. Každý obdélník spočítej zvlášť." },
+    { value: S(a + b + c + d), why: "Rozměry se jen sečetly. Obsah se počítá násobením." },
+    { value: S(a * b), why: `To je jen první obdélník. Přičti i druhý (${c} × ${d}).` },
+  ], [
+    `Jaký obsah má první obdélník (${a} × ${b}) a jaký druhý (${c} × ${d})?`,
+    "Obsah složeného obrazce = součet obsahů jeho částí. Spočítej každý obdélník zvlášť a výsledky sečti.",
+  ], [`${a} × ${b} = ${a * b}`, `${c} × ${d} = ${c * d}`, `${a * b} + ${c * d} = ${v} cm²`]);
+}
+
+// [větší, menší, kolik menších je ve větší, 2. pád mn. č. menší, 2. pád mn. č. větší]
+const PREVODY: [string, string, number, string, string][] = [
+  ["m²", "dm²", 100, "čtverečních decimetrů", "čtverečních metrů"],
+  ["dm²", "cm²", 100, "čtverečních centimetrů", "čtverečních decimetrů"],
+  ["m²", "cm²", 10000, "čtverečních centimetrů", "čtverečních metrů"],
+  ["ha", "m²", 10000, "čtverečních metrů", "hektarů"],
+  ["km²", "ha", 100, "hektarů", "čtverečních kilometrů"],
 ];
 
-// Level 2: převody jednotek obsahu
-const POOL_L2: PracticeTask[] = [
-  { question: "1 m² = ? cm²", correctAnswer: "10 000 cm²", options: ["10 000 cm²", "100 cm²", "1 000 cm²", "1 000 000 cm²"] },
-  { question: "1 km² = ? m²", correctAnswer: "1 000 000 m²", options: ["100 000 m²", "1 000 000 m²", "10 000 m²", "1000 m²"] },
-  { question: "3 m² = ? cm²", correctAnswer: "30 000 cm²", options: ["3 000 cm²", "300 cm²", "30 000 cm²", "300 000 cm²"] },
-  { question: "50 000 cm² = ? m²", correctAnswer: "5 m²", options: ["0,5 m²", "50 m²", "500 m²", "5 m²"] },
-  { question: "2 km² = ? m²", correctAnswer: "2 000 000 m²", options: ["2 000 000 m²", "200 000 m²", "20 000 m²", "2000 m²"] },
-  { question: "20 000 cm² = ? m²", correctAnswer: "2 m²", options: ["0,2 m²", "2 m²", "20 m²", "200 m²"] },
-  { question: "Pokoj má obsah 20 m². Kolik cm² to je?", correctAnswer: "200 000 cm²", options: ["2 000 cm²", "20 000 cm²", "200 000 cm²", "2 000 000 cm²"] },
-  { question: "Fotbalové hřiště má obsah 7 140 m². Kolik km² to je (přibližně)?", correctAnswer: "asi 0,007 km²", options: ["asi 7 km²", "asi 0,7 km²", "asi 0,07 km²", "asi 0,007 km²"] },
-  { question: "1 ha (hektar) = 10 000 m². Kolik hektarů je 50 000 m²?", correctAnswer: "5 ha", options: ["5 ha", "50 ha", "0,5 ha", "500 ha"] },
-  { question: "Školní pozemek má 1,5 m² záhonků. Kolik cm² to je?", correctAnswer: "15 000 cm²", options: ["1 500 cm²", "15 000 cm²", "150 000 cm²", "150 cm²"] },
-  { question: "Která jednotka obsahu je největší: cm², m², km²?", correctAnswer: "km²", options: ["m²", "cm²", "km²", "jsou stejné"] },
-  { question: "Která jednotka obsahu je nejmenší: cm², m², km²?", correctAnswer: "cm²", options: ["m²", "km²", "jsou stejné", "cm²"] },
-  { question: "0,5 m² = ? cm²", correctAnswer: "5 000 cm²", options: ["5 000 cm²", "500 cm²", "50 000 cm²", "50 cm²"] },
-  { question: "100 000 m² = ? km²", correctAnswer: "0,1 km²", options: ["1 km²", "0,1 km²", "10 km²", "0,01 km²"] },
-  { question: "Stůl má plochu 7 500 cm². Kolik m² to je?", correctAnswer: "0,75 m²", options: ["7,5 m²", "75 m²", "0,75 m²", "0,075 m²"] },
-];
+function prevod(): PracticeTask | null {
+  const [velka, mala, f, malaGen, velkaGen] = pick(PREVODY);
+  const naMale = Math.random() < 0.5;
+  const x = naMale ? rnd(2, 40) : rnd(2, 90) * (f / 10) + pick([0, f / 2]);
+  const key = naMale ? x * f : x / f;
+  const delkovy = f === 100 ? 10 : 100;
+  const jed = naMale ? mala : velka;
+  return ciselnaUloha(`Kolik ${naMale ? malaGen : velkaGen} je ${fmt(x)} ${naMale ? velka : mala}?`, `${fdec(key)} ${jed}`, [
+    { value: `${fdec(naMale ? x * delkovy : x / delkovy)} ${jed}`, why: `Převádělo se jako délka. U obsahu se převodní číslo umocní: 1 ${velka} = ${fmt(f)} ${mala}.` },
+    { value: `${fdec(naMale ? x / f : x * f)} ${jed}`, why: naMale ? "Na menší jednotku vyjde číslo větší — násob." : "Na větší jednotku vyjde číslo menší — děl." },
+    { value: `${fdec(naMale ? x * f * 10 : x / f / 10)} ${jed}`, why: `1 ${velka} = ${fmt(f)} ${mala}, ne ${fmt(f * 10)} ${mala}.` },
+  ], [
+    `Kolik ${malaGen} je v jednom ${velka === "ha" ? "hektaru" : velka === "km²" ? "čtverečním kilometru" : velka === "dm²" ? "čtverečním decimetru" : "čtverečním metru"}? Bude číslo v odpovědi víc, nebo míň než ${fmt(x)}?`,
+    `Čtverec 1 ${velka} má stranu, která je v ${mala.replace("²", "")} ${Math.sqrt(f) === 10 ? "desetkrát" : "stokrát"} delší — a obsah proto ${fmt(f)}krát. Na menší jednotky násob, na větší děl. Převodní číslo u obsahu je vždy druhou mocninou převodu délky.`.replace("v ha", "v m").replace("v m ", "v m "),
+  ], [`1 ${velka} = ${fmt(f)} ${mala}`, `${fmt(x)} ${naMale ? `× ${fmt(f)}` : `: ${fmt(f)}`} = ${fdec(key)} ${jed}`]);
+}
 
-// Level 3: kombinace — obsah a převody, slovní úlohy
-const POOL_L3: PracticeTask[] = [
-  { question: "Zahrádka je 12 m dlouhá a 8 m široká. Jaký má obsah?", correctAnswer: "96 m²", options: ["40 m", "80 m²", "48 m²", "96 m²"] },
-  { question: "Místnost 5 m × 4 m. Kolik cm² dlaždic potřebujeme?", correctAnswer: "200 000 cm²", options: ["200 000 cm²", "20 000 cm²", "2 000 000 cm²", "2 000 cm²"] },
-  { question: "Na záhon široký 2 m sázíme rostliny do řad vzdálených 25 cm. Kolik řad se vejde?", correctAnswer: "8 řad", options: ["6 řad", "8 řad", "9 řad", "12 řad"], explanation: "2 m jsou 200 cm. 200 : 25 = 8 řad." },
-  { question: "Čtverec má obsah 49 cm². Jak dlouhá je jeho strana?", correctAnswer: "7 cm", options: ["12,25 cm", "24,5 cm", "7 cm", "49 cm"] },
-  { question: "Čtverec má obsah 64 cm². Jak dlouhá je jeho strana?", correctAnswer: "8 cm", options: ["16 cm", "32 cm", "64 cm", "8 cm"] },
-  { question: "Obdélník má obsah 72 cm² a výšku 8 cm. Jak je široký?", correctAnswer: "9 cm", options: ["9 cm", "8 cm", "10 cm", "64 cm"] },
-  { question: "Obdélník 15 cm × 6 cm. Obsah?", correctAnswer: "90 cm²", options: ["42 cm", "90 cm²", "21 cm²", "900 cm²"] },
-  { question: "Čtverec se stranou 12 cm. Obsah?", correctAnswer: "144 cm²", options: ["48 cm", "24 cm²", "144 cm²", "1 440 cm²"] },
-  { question: "Porovnej obsah: čtverec se stranou 5 cm vs. obdélník 6 cm × 4 cm. Který je větší?", correctAnswer: "Čtverec (25 cm²) je větší než obdélník – 24 cm²", options: ["Obdélník – 24 cm² je větší", "jsou stejné", "nelze porovnat", "Čtverec (25 cm²) je větší než obdélník – 24 cm²"] },
-  { question: "Stěna 3 m × 2,5 m. Obsah v cm²?", correctAnswer: "750 000 cm²", options: ["750 000 cm²", "75 000 cm²", "7 500 cm²", "7 500 000 cm²"] },
-  { question: "Zahrada 30 m × 25 m. Obsah v m²? A v km²?", correctAnswer: "750 m² = 0,00075 km²", options: ["55 m = 0,0055 km²", "750 m² = 0,00075 km²", "750 m² = 0,075 km²", "7 500 m² = 0,0075 km²"] },
-  { question: "Obrazec se skládá z obdélníku 4×3 a přilepeného čtverce se stranou 2. Celkový obsah?", correctAnswer: "16 cm²", options: ["20 cm²", "12 cm²", "16 cm²", "24 cm²"] },
-];
+function stranaCtverce(): PracticeTask | null {
+  const s = rnd(3, 12);
+  return ciselnaUloha(`Čtverec má obsah ${s * s} cm². Jak dlouhá je jeho strana?`, `${s} cm`, [
+    { value: `${fdec((s * s) / 4)} cm`, why: "Obsah se vydělil čtyřmi, jako by to byl obvod. Obsah je strana × strana." },
+    { value: `${fdec((s * s) / 2)} cm`, why: "Obsah se vydělil dvěma. Hledáš číslo, které vynásobené samo sebou dá obsah." },
+    { value: `${s + 1} cm`, why: `Zkouška: ${s + 1} × ${s + 1} = ${(s + 1) * (s + 1)}, ne ${s * s}.` },
+  ], [
+    `Které číslo vynásobené samo sebou dá ${s * s}?`,
+    "Obsah čtverce = strana × strana. Hledáš tedy číslo, jehož násobek se sebou samým je obsah — pomůže malá násobilka.",
+  ], [`${s} × ${s} = ${s * s}`, `Strana: ${s} cm`]);
+}
+
+function druhaStrana(): PracticeTask | null {
+  const a = rnd(3, 12), b = rnd(3, 12);
+  if (a === b) return null;
+  const S = a * b;
+  return ciselnaUloha(`Obdélník má obsah ${S} cm² a jedna jeho strana měří ${a} cm. Jak dlouhá je druhá strana?`, `${b} cm`, [
+    { value: `${S - a} cm`, why: "Strana se od obsahu odečetla. Obsah vznikl násobením, takže se musí dělit." },
+    { value: `${fdec(S / 2 - a)} cm`, why: "Počítalo se jako s obvodem. Obsah = délka × šířka." },
+    { value: `${b + 1} cm`, why: `Zkouška: ${a} × ${b + 1} = ${a * (b + 1)}, ne ${S}.` },
+  ], [
+    `Kolikrát musíš vzít ${a}, abys dostal nebo dostala ${S}?`,
+    `Obsah obdélníku = délka × šířka. Když znáš obsah a jednu stranu, druhou dostaneš dělením: obsah ÷ známá strana.`,
+  ], [`${S} ÷ ${a} = ${b}`, `Zkouška: ${a} × ${b} = ${S} ✓`]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) { const t = [sit, obdelnik, ctverec]; return sada(30, (i) => t[i % 3]()); }
+  if (level === 2) return sada(30, (i) => (i % 2 ? dvaObdelniky() : vystrizeny()));
+  const t = [prevod, prevod, stranaCtverce, druhaStrana];
+  return sada(30, (i) => t[i % 4]());
 }
 
 export const OBSAHOBRAZCEVECTVERCOVESITIJEDNOTKYOBSAHU: TopicMetadata[] = [

@@ -156,171 +156,547 @@
     "taskCount": 28
   },
   "g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek": {
-    "hash": "5305b0bb00fb428bb67ba96f8acacc17a2342041",
-    "taskCount": 48
+    "hash": "add8fc00d6f4b6426840b4f4864b31ae8cf07aec",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-skladba-veta-jednoducha-a-souveti-vzorec-souveti": {
-    "hash": "c9594c9d83abc478f96fc457f1175fd2b0eba179",
-    "taskCount": 48
+    "hash": "b8bac0a6aaafb61e7296ace1d5f89f8352d7fb86",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predlozek-s-z-se-ze": {
-    "hash": "77c00f443964ba7bd461ac1a716c7ef20d3d0425",
-    "taskCount": 90
+    "hash": "d8c72ea4604569e977a1b77cc16bfee6fc7fd767",
+    "taskCount": 41
+  },
+  "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predpon-vy-vy-s-z-vz": {
+    "hash": "328d4b461fdd3474a855b4d85b09bd38f3b64ef1",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-stavba-slova-predpona-koren-pripona-koncovka": {
-    "hash": "9f4f96e20668bbfe3a185a6d80478f56adf312ea",
-    "taskCount": 48
+    "hash": "f422919326ec17ebd368350f00d8d7dc2ba1d6b0",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-sklonovani-podle-vzoru-rod-muz-zen-str": {
-    "hash": "1a9ef360dacdef08ee5156647154da4e1c76fd64",
-    "taskCount": 48
+    "hash": "3a9c3c58df7e7fb813a04ae9bec60e24d416e673",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-slovesa-mluvnicke-kategorie-casovani-v-jednoduchych-casech": {
-    "hash": "8abd917e1235fb7ce873bf01420f7ee8f519a891",
-    "taskCount": 48
+    "hash": "955baf92950afef0e8622d200765b6cb7830ee23",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-pan-hrad-muz-stroj-predseda-soudce": {
-    "hash": "ea56dfd56f550e2b37165980e7a6036fe863d2a4",
-    "taskCount": 48
+    "hash": "61f17d0cd3e3abc6629b0baa94ae1b4865b46e8e",
+    "taskCount": 38
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-vzory-podstatnych-jmen-zena-ruze-pisen-kost-mesto-more-kure": {
-    "hash": "d2693e63671740d42b553526ca029b56609d89e4",
-    "taskCount": 48
+    "hash": "936d086a9c3f3effdc0c92086a25d1b0cb5c82bb",
+    "taskCount": 39
   },
   "g4-cjl-jazykova-vychova-tvaroslovi-zajmena-druhy-zajmen": {
-    "hash": "7188d9598cafc98c6d8415f95f9b3484aa69d9d9",
-    "taskCount": 48
+    "hash": "c0f418af057900069ce25c5187dfe94ea3e41b8c",
+    "taskCount": 39
+  },
+  "g4-cjl-komunikacni-a-slohova-vychova-cteni-manipulativni-komunikace-v-reklame": {
+    "hash": "7688bb05712699b92550fb165e58301d1a7665e9",
+    "taskCount": 39
+  },
+  "g4-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-primerene-narocnych-textu": {
+    "hash": "b266539f4ccc489cfccb3796099fa39a4e4eb145",
+    "taskCount": 39
+  },
+  "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci": {
+    "hash": "3bd90d9a47f9280e0034a88616ca58bda42e5de7",
+    "taskCount": 39
+  },
+  "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky": {
+    "hash": "6d2190d1ee00a99200c1fec3e5f970fef68d896e",
+    "taskCount": 39
+  },
+  "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu": {
+    "hash": "85f4e9834e0475689c7c5109ea4e854853ac32ef",
+    "taskCount": 39
   },
   "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-inzerat-vzkaz-telefonicky-rozhovor": {
-    "hash": "a42ed9a81baa64470090372558b241684db45cad",
-    "taskCount": 32
+    "hash": "63bfa10fc5338f1d330baa7f06a579dc844fdfec",
+    "taskCount": 39
   },
   "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-predmetu-osoby-a-pracovniho-postupu": {
-    "hash": "4db1761f5764cedc890b2da43b7765db65db4d91",
-    "taskCount": 31
+    "hash": "2c7fe763102dd4e30f090032a31faaa1a43fd5af",
+    "taskCount": 39
   },
   "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-casovou-posloupnosti-osnova": {
-    "hash": "b4809c1d629375e9bea3e8974bf3dedf8a618844",
-    "taskCount": 31
+    "hash": "27bd2fd08163566f694be92e0a90453e7b114b60",
+    "taskCount": 39
+  },
+  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika": {
+    "hash": "e6b6a200b47b4eeed75003cdcf09cc74e42709e1",
+    "taskCount": 39
+  },
+  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka": {
+    "hash": "1d75aead2c40f92afee06148505592388bccf0d7",
+    "taskCount": 39
+  },
+  "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika": {
+    "hash": "7c67846cdcc1d9484358664fca5665f9b3d9a7df",
+    "taskCount": 39
   },
   "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema": {
-    "hash": "1eaede5df2527f33ba19300c9a938e779ab0edd0",
-    "taskCount": 30
+    "hash": "b717de23101142276423886dec03c89794a4899a",
+    "taskCount": 39
   },
   "g4-mat-aritmeticky-prumer-4": {
-    "hash": "d40ec1af1224deb9a9a78303795c2bc91f8b62cc",
-    "taskCount": 120
+    "hash": "faae67d4c72b3cc93eed6bbfb1e815d4b0fa413f",
+    "taskCount": 119
   },
   "g4-mat-cisla-do-milionu-4": {
-    "hash": "71fb59b1dd8a0b82be6b08433b2cc4b164610d58",
+    "hash": "b686c2546fa6d64ee9fd5b8405447874437917e8",
     "taskCount": 120
   },
+  "g4-mat-magicke-ctverce-ciselne-rady-4": {
+    "hash": "55546c09bb66de4eb0203732dd24e3290be009d5",
+    "taskCount": 109
+  },
   "g4-mat-obvod-obsah-obdelnik-ctverec-4": {
-    "hash": "82d32ff8d2ccc60d52a8c54db7b1ef98ff954bc3",
-    "taskCount": 99
+    "hash": "47ff5f6a5d450d8e92c92f3a5ad36bb69a7095fc",
+    "taskCount": 88
   },
   "g4-mat-osova-soumernost-4": {
-    "hash": "4934df6c8b841106b758f42b55c0e509af87d725",
-    "taskCount": 23
+    "hash": "7b34ae09cc5b51a0b8d9fb2409af5038b1b3d311",
+    "taskCount": 58
   },
   "g4-mat-pisemne-deleni-jednociferne-4": {
-    "hash": "6ff1d496e59819570c8554d97e4b8e03c1f43ead",
-    "taskCount": 100
+    "hash": "1b6749f07eaee28a8fb35b203214614887c7af34",
+    "taskCount": 101
   },
   "g4-mat-pisemne-nasobeni-4": {
-    "hash": "974a25187325309ed20de066ae13935b11c82c17",
+    "hash": "e4a0084b4ba774f415accb410bcd438f107ddb0e",
     "taskCount": 120
   },
   "g4-mat-pisemne-scitani-odcitani-4": {
-    "hash": "6b909366352048c922b45ba9dd2c66f6135b15b2",
+    "hash": "9ba5f546ee548ba2959678eb130005cf9d4b9d29",
     "taskCount": 120
   },
   "g4-mat-rovnobezky-kolmice-4": {
-    "hash": "30f294cca9c273a6cdcae7f52ff93c3d6c978cc7",
-    "taskCount": 17
+    "hash": "fd805b5cc11abd11ba683eb23e9ca61d0ea77089",
+    "taskCount": 39
+  },
+  "g4-mat-tabulky-diagramy-4": {
+    "hash": "224871c885dde852f2539bc456c400bc742ada74",
+    "taskCount": 119
   },
   "g4-mat-trojuhelnik-druhy-stran-4": {
-    "hash": "656cbe08433a99ad82309a46ed058171e599d62e",
-    "taskCount": 36
+    "hash": "b6a59c54b5c9657772d61e563fbf4bb7b69f1fae",
+    "taskCount": 106
   },
   "g4-mat-zaokrouhlovani-4": {
-    "hash": "888a8277986408f5cfcc7c56d25abf9c8a5274aa",
+    "hash": "d66e7e8156a9617d2eebfc947a53663cddc60c07",
     "taskCount": 120
   },
+  "g4-mat-zlomek-cast-celku-4": {
+    "hash": "d6031186f8c0c6160f115dd85a72fd92cb5ed342",
+    "taskCount": 94
+  },
   "g4-mat-zlomky-scitani-odcitani-stejny-jmenovatel-4": {
-    "hash": "1c8b210e65ffad62a5dcde93ec8142fa158b1562",
-    "taskCount": 84
+    "hash": "1361055707fc5a66c745661b0e81ccf252048033",
+    "taskCount": 101
   },
   "g4-prirodoveda-clovek-a-jeho-zdravi-bezpecnost-prvni-pomoc-tisnove-volani-mimoradne-udalosti": {
     "hash": "a31004feaf7d2bb9af18a08bd4bbe22806f6eb76",
     "taskCount": 39
   },
   "g4-prirodoveda-clovek-a-jeho-zdravi-zdravy-zivotni-styl-strava-pohyb-spanek-prevence-urazu-a-nemoci": {
-    "hash": "d1522fc0d969b06fe130a41f62e1d736a70932a4",
-    "taskCount": 34
+    "hash": "b618b17851e4d08e2ada7c28a837a604575bd1e8",
+    "taskCount": 39
   },
   "g4-prirodoveda-rozmanitost-prirody-ekosystemy-les-louka-pole-rybnik-rostliny-a-zivocichove": {
-    "hash": "5ed21a3f674c138feef022f076a6e4681fa5f89a",
-    "taskCount": 1
+    "hash": "5171a69de250d43804ffc362d76a0b7ac7e5a96d",
+    "taskCount": 6
   },
   "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-puda-vznik-slozeni-vyznam-pro-zivot": {
-    "hash": "3937ea0df32fd9b7c4df18e43c675670fee5832a",
-    "taskCount": 31
+    "hash": "0b64d7a938ad7d8e807e7d4debfd442bdb30d823",
+    "taskCount": 39
   },
   "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-slunce-svetlo-teplo-energie": {
-    "hash": "5942d8d26fe425ff6ffbebdd7aa8d9c63e151580",
-    "taskCount": 40
+    "hash": "9fe4dcdeed61f6689c10104e7c31b99a3062618c",
+    "taskCount": 39
   },
   "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-voda-skupenstvi-kolobeh-vody-v-prirode": {
-    "hash": "07edec950f76f23231a1fc5464fbc287cb8a50c2",
-    "taskCount": 45
+    "hash": "6ca58c82cf9163f3b43ae0a47cb42ea3adb696a4",
+    "taskCount": 39
   },
   "g4-prirodoveda-rozmanitost-prirody-neziva-priroda-vzduch-slozeni-vlastnosti-vyznam": {
-    "hash": "98aecd9cbf62e677e40ab22e9bb702d5360b3e10",
-    "taskCount": 45
-  },
-  "g4-prirodoveda-rozmanitost-prirody-ochrana-prirody-chranene-rostliny-a-zivocichove-ohrozene-druhy": {
-    "hash": "2534ee179387f5099d53fae752bfd06133a42df8",
-    "taskCount": 31
-  },
-  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-dreviny-stromy-a-kere": {
-    "hash": "0bc5e54d9981603004f1e3a0499aff29fcac4380",
-    "taskCount": 35
-  },
-  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-hospodarske-rostliny-obilniny-ovoce-zelenina": {
-    "hash": "3443d3aadfdcb22a6e9a5d01dfdf62953325e774",
-    "taskCount": 36
-  },
-  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-zivocichove-bezobratli-a-obratlovci-uvodni-trideni": {
-    "hash": "126e595d80f108efa8f87be43b057d9ab9ecc501",
-    "taskCount": 1
-  },
-  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-zivocichove-savci-ptaci-znaky-zastupci": {
-    "hash": "7c684d05a189e9505f93bd2fe34041aaf45a11a1",
+    "hash": "83497e57412daa0c21c31354d804fc418a1beb40",
     "taskCount": 38
   },
+  "g4-prirodoveda-rozmanitost-prirody-ochrana-prirody-chranene-rostliny-a-zivocichove-ohrozene-druhy": {
+    "hash": "e38c92251686bcd43efebf92a472227e1f7f389f",
+    "taskCount": 39
+  },
+  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-dreviny-stromy-a-kere": {
+    "hash": "defc4a6d0650e8d7bf584d99a8765a619dbf7990",
+    "taskCount": 39
+  },
+  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-hospodarske-rostliny-obilniny-ovoce-zelenina": {
+    "hash": "3a0476ba010947abfa1e420b91409e6c9633825a",
+    "taskCount": 39
+  },
+  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-stavba-rostlin-rozsireni-druhy-rostlin": {
+    "hash": "b72254c8d1843c6328acdaec319c834a11598f78",
+    "taskCount": 30
+  },
+  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-zivocichove-bezobratli-a-obratlovci-uvodni-trideni": {
+    "hash": "8986522ad9c647286722bc006f61ceb447550340",
+    "taskCount": 7
+  },
+  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-zivocichove-savci-ptaci-znaky-zastupci": {
+    "hash": "9def86b82839ad7ccf5d736d4d3e4ce81718ce31",
+    "taskCount": 39
+  },
+  "g4-vlastiveda-lide-a-cas-husitstvi-mistr-jan-hus-husitske-valky": {
+    "hash": "f36ba5ca3a66d817d80a18a140c478590e9f74ef",
+    "taskCount": 9
+  },
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-lucemburkove-karel-iv-a-jeho-doba": {
+    "hash": "1c9f7a694dda76cc046ac678bd279080f9f6d9ef",
+    "taskCount": 14
+  },
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-pravek-a-prvni-lide-na-nasem-uzemi": {
+    "hash": "22f8f372a0c3c02c90c1618429a4fb7d232ce56b",
+    "taskCount": 21
+  },
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii": {
+    "hash": "b03122e727c1ca1c68a39234abb17615a72bb287",
+    "taskCount": 14
+  },
+  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-slovane-velkomoravska-rise-cyril-a-metodej": {
+    "hash": "9ec204754cdf8d94dce60aba59f40cb4c040d752",
+    "taskCount": 14
+  },
   "g4-vlastiveda-lide-kolem-nas-stat-a-spolecnost-vznik-a-vyvoj-statu-demokracie-pravni-stat": {
-    "hash": "f3348b06a0bd6f52e4adec48e55836361ed5c838",
-    "taskCount": 27
+    "hash": "b7ac68feae26037557b5071742c6f984841d499d",
+    "taskCount": 39
   },
   "g4-vlastiveda-misto-kde-zijeme-ceska-republika-podnebi-cr-ovzdusi-pocasi": {
-    "hash": "51e36031ce504b38dd3c13eb7fbad057ae1d09c2",
-    "taskCount": 30
+    "hash": "cf10974c3ace6ff94c9f6836dcdb23ce661975b1",
+    "taskCount": 39
   },
   "g4-vlastiveda-misto-kde-zijeme-ceska-republika-poloha-cr-v-evrope-sousedni-staty": {
-    "hash": "adfca256ff0cd299661af6e528328a47d4eaf7cf",
-    "taskCount": 30
+    "hash": "0be777733e9200c2b7a6748aeddfa41d4a4ac70e",
+    "taskCount": 39
   },
   "g4-vlastiveda-misto-kde-zijeme-ceska-republika-povrch-cr-niziny-vrchoviny-hory-krkonose-sumava-aj": {
-    "hash": "47316147d8f086de15d21431d48b419a93adf174",
-    "taskCount": 28
+    "hash": "14e239e76a11bf3eaa7d5c4f1fe3ddedc0c79b15",
+    "taskCount": 39
+  },
+  "g4-vlastiveda-misto-kde-zijeme-ceska-republika-vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr": {
+    "hash": "5c64fc3a84ad95a1596da0fafdffc52619b20d5d",
+    "taskCount": 3
+  },
+  "g4-vlastiveda-misto-kde-zijeme-kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta": {
+    "hash": "3023adcd9c1d9a29ebafea7c2fefe8422cc9ceb7",
+    "taskCount": 3
   },
   "g4-vlastiveda-misto-kde-zijeme-kraje-cr-nas-kraj-priroda-hospodarstvi-zajimavosti": {
-    "hash": "30567289f52d3e0d05e5b6b80607788aef79f6cf",
-    "taskCount": 30
+    "hash": "56c02b51e2de92fe4e41819dfa5bb7508839064f",
+    "taskCount": 39
   },
   "g4-vlastiveda-misto-kde-zijeme-prace-s-mapou-druhy-map-meritko-mapove-znacky-svetove-strany": {
-    "hash": "d9de186943533d7ac15202533ef03075689e6ec5",
-    "taskCount": 30
+    "hash": "3dc6c15445cf6e4bf43c057ccc1a86b520dce7b5",
+    "taskCount": 39
+  },
+  "g5-cjl-jazykova-vychova-nauka-o-slove-slova-jednoznacna-mnohoznacna-vicevyznamova": {
+    "hash": "554a70cccc50edd41516c9d49a40413ea99eadf2",
+    "taskCount": 37
+  },
+  "g5-cjl-jazykova-vychova-nauka-o-slove-slova-spisovna-a-nespisovna": {
+    "hash": "ef55bbad03bb88397c75256f49f5a341577fd388",
+    "taskCount": 44
+  },
+  "g5-cjl-jazykova-vychova-skladba-podmet-vyjadreny-nevyjadreny-nekolikanasobny": {
+    "hash": "7bccbab83e80c2935bd4b52bef7c7a06e79582db",
+    "taskCount": 39
+  },
+  "g5-cjl-jazykova-vychova-skladba-prima-a-neprima-rec-uvod": {
+    "hash": "5c1fd6827382792cb3ed97b8cf80f09513d70f64",
+    "taskCount": 42
+  },
+  "g5-cjl-jazykova-vychova-skladba-shoda-prisudku-s-podmetem": {
+    "hash": "73267c95b60884488e78fd82cb0209c61026f611",
+    "taskCount": 120
+  },
+  "g5-cjl-jazykova-vychova-skladba-souveti-vzorce-pocet-vet": {
+    "hash": "aa99a555b31a06a4f73801edfe6905b518f05b5c",
+    "taskCount": 39
+  },
+  "g5-cjl-jazykova-vychova-tvaroslovi-cislovky-druhy-zakladni-radove-druhove-nasobne": {
+    "hash": "4d8bef8dde5e083e04ab63344cba549dfba6a3d3",
+    "taskCount": 38
+  },
+  "g5-cjl-jazykova-vychova-tvaroslovi-pridavna-jmena-druhy-tvrda-mekka-privlastnovaci-sklonovani": {
+    "hash": "b9c0e954debacca3c417b5f9f877d9f8aef53294",
+    "taskCount": 39
+  },
+  "g5-cjl-jazykova-vychova-tvaroslovi-slovesa-zpusob-oznamovaci-rozkazovaci-podminovaci": {
+    "hash": "74c2bc3ef8d4adfec66f73aab0dfde879ef1e58f",
+    "taskCount": 39
+  },
+  "g5-cjl-jazykova-vychova-tvaroslovi-slovni-druhy-urcovani-vsech-deseti-ohebne-a-neohebne": {
+    "hash": "ef97a4b6b075e1b8cb5ad00eb9757d4668f4f8f7",
+    "taskCount": 39
+  },
+  "g5-cjl-jazykova-vychova-tvaroslovi-zajmena-sklonovani-osobnich-zajmen": {
+    "hash": "f4356138df2e2b16f97cbc3efc1326945b84d1bf",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-posuzovani-uplnosti-sdeleni": {
+    "hash": "e2a8f6e8f872193d0fcfff38073b50827917dc01",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-reprodukce-primerene-sloziteho-sdeleni": {
+    "hash": "63f18eae4881e1700cb7083a2d101305c9ca69ef",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-cteni-a-naslouchani-studijni-cteni-a-vecne-cteni": {
+    "hash": "740c53ee6a7da20a3506c21cfb44a367e1335ea5",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-uredni-zadost-tiskopisy-prihlaska-dotaznik": {
+    "hash": "e330b9025b2223dfb1d62031039af02c94d225b6",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-popis-subjektivne-zabarveny-popis-pracovniho-postupu": {
+    "hash": "083c79b75a91506295c3621aa7149bfde01c69c8",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-telefonicky-rozhovor-zanechani-vzkazu": {
+    "hash": "e524f2283409f34a34f97800c985cba1beb45495",
+    "taskCount": 39
+  },
+  "g5-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypravovani-s-rozvinutou-osnovou": {
+    "hash": "00ad15c4097dbf73864242f5db6329c60c783a4c",
+    "taskCount": 39
+  },
+  "g5-cjl-literarni-vychova-literarni-pojmy-a-zanry-basen-lyricka-a-epicka-roman-povidka": {
+    "hash": "5752941169e9d5f296d27f4ad92d4928ab0fe684",
+    "taskCount": 39
+  },
+  "g5-cjl-literarni-vychova-literarni-pojmy-a-zanry-umelecke-a-neumelecke-texty": {
+    "hash": "b3a36061f2c8b6bc9b071d7deed9d97bd9e1770b",
+    "taskCount": 39
+  },
+  "g5-cjl-literarni-vychova-prace-s-textem-elementarni-literarni-pojmy-pri-rozboru-textu": {
+    "hash": "1b8379f12c9c72b4886ab99a7ce0d6def37e4605",
+    "taskCount": 39
+  },
+  "g5-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-text-na-dane-tema": {
+    "hash": "406784c97ce8499deca3ddb8fb58c744bdc8c4af",
+    "taskCount": 39
+  },
+  "g5-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-nasobeni-a-deleni-desetinnych-cisel-10-100-1000": {
+    "hash": "d51ec12f22c4fd27fa936a119d15671a44bf3c00",
+    "taskCount": 90
+  },
+  "g5-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-dvoucifernym-delitelem": {
+    "hash": "fb7ab194e555ac2eb0bb6c5a1caee0e30fa7e4c0",
+    "taskCount": 90
+  },
+  "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-cisla-nad-milion-miliardy": {
+    "hash": "8a125a28949bc45766fb0f7602960c0b4fb848c0",
+    "taskCount": 90
+  },
+  "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-desetinna-cisla-cteni-zapis-porovnavani": {
+    "hash": "64a4edf9700e224eeb280703c4410a7849ec2da3",
+    "taskCount": 90
+  },
+  "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-scitani-a-odcitani-desetinnych-cisel": {
+    "hash": "0fb498c3cb94d67bf9c645f1114947d78f4db684",
+    "taskCount": 90
+  },
+  "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-zaporna-cisla-na-ciselne-ose": {
+    "hash": "be2ba7d163bb45741f933811aa57b86ed373ba0c",
+    "taskCount": 90
+  },
+  "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-konstrukce-trojuhelniku-kolmice-rovnobezky": {
+    "hash": "cd3216004e21e2ff63e3ffdd8d8e8dc078a7ab7a",
+    "taskCount": 73
+  },
+  "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce-ve-ctvercove-siti-jednotky-obsahu": {
+    "hash": "a13841f0fde53867b2950ae8da29ada319ab52e7",
+    "taskCount": 90
+  },
+  "g5-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-sestrojeni-obrazu-urceni-osy": {
+    "hash": "ee63da17411ca63780eddd45d16dc63e6b7edcdc",
+    "taskCount": 67
+  },
+  "g5-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-ulohy-nezavisle-na-beznych-postupech-prostorova-predstavivos": {
+    "hash": "6cff8f6cd0c73a61a83bc52684d4612d30e77681",
+    "taskCount": 90
+  },
+  "g5-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-vypocet": {
+    "hash": "b7b53fa82386bb0f8585b7296f69ab35b0edcf59",
+    "taskCount": 90
+  },
+  "g5-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-diagramy-grafy-cteni-a-sestavovani-tabulek": {
+    "hash": "2d7d5182de07a0f1104a2e791127910c3d69eb42",
+    "taskCount": 90
+  },
+  "g5-prirodoveda-clovek-a-jeho-zdravi-lidske-telo-soustavy-kostra-a-svaly-dychaci-a-obehova-soustava": {
+    "hash": "3b3fde0f6806042aa73e4125d500b45d3c6bb971",
+    "taskCount": 3
+  },
+  "g5-prirodoveda-clovek-a-jeho-zdravi-lidske-telo-soustavy-nervova-soustava-smysly": {
+    "hash": "d25a9ba98f3deb675cb47722a689bc35792df514",
+    "taskCount": 3
+  },
+  "g5-prirodoveda-clovek-a-jeho-zdravi-lidske-telo-soustavy-travici-soustava-vylucovaci-soustava": {
+    "hash": "c49817eab8b07bc7a3069f2f9f3258ddd77c464c",
+    "taskCount": 3
+  },
+  "g5-prirodoveda-clovek-a-jeho-zdravi-navyky-a-prevence-navykove-latky-alkohol-nikotin-drogy": {
+    "hash": "75a0ebb58a92e1c6edce988e796d4bef30b96939",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-clovek-a-jeho-zdravi-vyvoj-cloveka-a-rozmnozovani-etapy-lidskeho-zivota-dospivani": {
+    "hash": "1af9df5269dad6abadeee5742874e1338971e2f4",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-clovek-a-jeho-zdravi-vyvoj-cloveka-a-rozmnozovani-rozmnozovaci-soustava-vyvoj-cloveka-uvod": {
+    "hash": "5471fde48926744fcc976ba8f5bd0f3c4cb5e212",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-rozmanitost-prirody-ekosystemy-a-zivotni-prostredi-ochrana-prirody-narodni-parky-chko-v-cr": {
+    "hash": "bf110aec425abbaacdda5f426896daa3c0f93ae6",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-rozmanitost-prirody-ekosystemy-a-zivotni-prostredi-potravni-retezec-vztahy-v-ekosystemu": {
+    "hash": "a33dcf1931602ff9d150c12b8418473ea87e4e7e",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-rozmanitost-prirody-energie-a-jeji-zdroje-magnety-elektrina-jednoduche-obvody-uvod": {
+    "hash": "58f13e5a59973181bbf6b8a345484425392cf13b",
+    "taskCount": 38
+  },
+  "g5-prirodoveda-rozmanitost-prirody-energie-a-jeji-zdroje-obnovitelne-a-neobnovitelne-zdroje-energie": {
+    "hash": "dfc6da663526250d4fd0bd852fcf13521832d3ab",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-rozmanitost-prirody-neziva-priroda-rozsireni-horniny-a-nerosty-druhy-vlastnosti-vznik": {
+    "hash": "a465e092d88926717825b8c0363ff3b5fc8d3413",
+    "taskCount": 38
+  },
+  "g5-prirodoveda-rozmanitost-prirody-neziva-priroda-rozsireni-vesmir-slunecni-soustava-planety-slunce-mesic": {
+    "hash": "facce9763fc7b0d57e13b5094e7f4e37c69ec9d2",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-rozmanitost-prirody-neziva-priroda-rozsireni-zeme-jako-planeta-tvar-rotace-obeh-stridani-dne-a-noci": {
+    "hash": "cfdebd4f94787897c33a3b2c6d1e8f3dd69dc791",
+    "taskCount": 9
+  },
+  "g5-prirodoveda-rozmanitost-prirody-trideni-organismu-bezobratli-hmyz-pavouci-mekkysi-cervi": {
+    "hash": "00bd601f847098d60d4d828fb641ab8369200571",
+    "taskCount": 39
+  },
+  "g5-prirodoveda-rozmanitost-prirody-trideni-organismu-obratlovci-savci-ptaci-plazi-obojzivelnici-ryby": {
+    "hash": "5d68d35219400d1610a7deb492e99e56522bf39d",
+    "taskCount": 3
+  },
+  "g5-prirodoveda-rozmanitost-prirody-trideni-organismu-rise-rostlin-hub-zivocichu": {
+    "hash": "8204eb5cce0c4288b44a4d0f463dd79918b2c6df",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-druha-svetova-valka-okupace-osvobozeni": {
+    "hash": "9ddb4ee00eb9486895147ca7f476bd98ba3da432",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-komunisticky-rezim-sametova-revoluce-1989": {
+    "hash": "510234a054d60c467077d0b6693f2eee954e7c56",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-prvni-svetova-valka-a-vznik-ceskoslovenska-1918": {
+    "hash": "8de68b076f376064be2708a0b039699afa9f74f2",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-20-stoleti-od-t-g-masaryka-po-dnesek-vznik-cr-1993-cr-v-eu-a-nato": {
+    "hash": "521f5e1925b98236e726241dfcf59bdc248f9399",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-narodni-obrozeni-a-19-stoleti-narodni-obrozeni-jungmann-palacky-havlicek": {
+    "hash": "4ac0a96aa936aedc4863fbf6d2b1d97f53bf3546",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-narodni-obrozeni-a-19-stoleti-prumyslova-revoluce-vedecky-a-technicky-pokrok": {
+    "hash": "791d5df8ee0ea488902fe23a31fc3be70b718a4d",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-novovek-habsburska-monarchie-habsburkove-doba-pobelohorska-baroko": {
+    "hash": "4a2aeafcc2d083850190d469afb468d8d4a5a548",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-a-cas-novovek-habsburska-monarchie-marie-terezie-josef-ii-reformy": {
+    "hash": "e7b1f3d4666365d927f3dcb5d07aaae9b05fa256",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-lide-kolem-nas-demokracie-a-stat-volby-zastupitelske-organy-cr-prezident-vlada": {
+    "hash": "0d99382f6a2df2197e8b46a1e04314404d78d272",
+    "taskCount": 38
+  },
+  "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-evropa-poloha-povrch-vodstvo-podnebi": {
+    "hash": "03342055db0689058aa25c4f33d6cd7ba27c68a4",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-evropske-staty-a-eu-sousedni-zeme-cr-podrobne": {
+    "hash": "89534da27e48bfea208670d50ec6c8b48cb9fa39",
+    "taskCount": 6
+  },
+  "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-globus-svetove-strany-na-mape-casova-pasma-uvod": {
+    "hash": "2cdb0b10ca29219548d908242a4261fa4756be38",
+    "taskCount": 3
+  },
+  "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-svetadily-a-oceany-zeme-prehled": {
+    "hash": "618fedc77fbcf90c717d7fed17b295726642abd9",
+    "taskCount": 3
+  },
+  "g6-dej-co-je-dejepis-6": {
+    "hash": "38520a80c8f9e02e6350159a554c22ace579d4e9",
+    "taskCount": 42
+  },
+  "g6-dej-doba-kamenna-periodizace-6": {
+    "hash": "e9116f44f2d68a0c4dc27f56c3920cf77808b2e3",
+    "taskCount": 3
+  },
+  "g6-dej-historicke-prameny-6": {
+    "hash": "9c4d87bed7f64738e0a773b93f4ec956de013270",
+    "taskCount": 3
+  },
+  "g6-dej-periodizace-letopocet-6": {
+    "hash": "652f87f65cc7e201b958072eb8922ed2cd9b2d73",
+    "taskCount": 72
+  },
+  "g6-dej-pomocne-vedy-historicke-6": {
+    "hash": "705011a2acecede14c08a030e1258f83e8e142cc",
+    "taskCount": 3
+  },
+  "g6-fyz-hustota-6": {
+    "hash": "4e10bb02595c4e650d452235e4654ce62512d269",
+    "taskCount": 49
+  },
+  "g6-fyz-mereni-casu-6": {
+    "hash": "c18dccb7224386a3c8df290f886dea6c7c6961d2",
+    "taskCount": 46
+  },
+  "g6-fyz-mereni-delky-6": {
+    "hash": "b3129f1fb8f56a4634d8ee0bf79e687aa0cd65ca",
+    "taskCount": 53
+  },
+  "g6-fyz-mereni-hmotnosti-6": {
+    "hash": "19411bbc9ebbea982beba0b5557e9f7c1569544b",
+    "taskCount": 56
+  },
+  "g6-fyz-mereni-objemu-6": {
+    "hash": "b29ebeedc573974086d0683580ff40a61c33a345",
+    "taskCount": 55
+  },
+  "g6-fyz-mereni-teploty-6": {
+    "hash": "927ed2c53281d5d1146d1cc906afc3fb87140a0e",
+    "taskCount": 70
   }
 }

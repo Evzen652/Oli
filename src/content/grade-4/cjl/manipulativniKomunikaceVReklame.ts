@@ -1,116 +1,294 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 4. ročníku). Původně L1 a L2 tvořily jen
+// úlohy Ano/Ne (polovina se dala uhodnout) bez zpětné vazby a L3 chtěla
+// odborné názvy technik („bandwagon“, „emocionální apel“, „falešná
+// autorita“). Triky se teď jmenují tak, jak by je popsalo dítě, a každá
+// úloha má čtyři možnosti s vysvětlením.
+//
+// L1 = k čemu reklama je a jak se nenechat nachytat
+// L2 = poznej trik ve sloganu · L3 = co udělat, na co se zeptat, co je poctivé.
+
+type Trik = "slavný člověk to chválí" | "všichni to mají" | "spěchej, jinak to zmizí" | "slibuje hezký pocit"
+  | "odborníci bez důkazu" | "nejlepší bez srovnání" | "podmínka malým písmem" | "strašení";
+
+const NENI: Record<Trik, string> = {
+  "slavný člověk to chválí": "Nevystupuje tu žádná slavná osobnost.",
+  "všichni to mají": "Slogan netvrdí, že to mají všichni ostatní.",
+  "spěchej, jinak to zmizí": "Slogan netlačí na čas ani na poslední kusy.",
+  "slibuje hezký pocit": "Slogan nespojuje výrobek s radostí nebo pohodou.",
+  "odborníci bez důkazu": "Slogan se neodvolává na vědce ani odborníky.",
+  "nejlepší bez srovnání": "Slogan netvrdí, že je výrobek nejlepší.",
+  "podmínka malým písmem": "Není tu žádná podmínka schovaná malým písmem.",
+  "strašení": "Slogan tě ničím nestraší.",
+};
+
+const RADA: Record<Trik, string> = {
+  "slavný člověk to chválí": "Kdo za výrobek mluví? Dostal za to zaplaceno?",
+  "všichni to mají": "Slogan tě chce přesvědčit, že nechceš zůstat pozadu za ostatními.",
+  "spěchej, jinak to zmizí": "Slogan chce, aby ses rozhodl nebo rozhodla hned a nestihl nebo nestihla přemýšlet.",
+  "slibuje hezký pocit": "Slogan neříká nic o výrobku, jen ho spojuje s příjemným pocitem.",
+  "odborníci bez důkazu": "Slogan se opírá o někoho chytrého, ale neříká, kdo to je a jak to zjistil.",
+  "nejlepší bez srovnání": "Slogan chválí výrobek nejvyšším stupněm, ale neříká, s čím ho srovnali.",
+  "podmínka malým písmem": "Podívej se na hvězdičku nebo drobný text — co v něm je?",
+  "strašení": "Slogan ti naznačuje, že se stane něco zlého, když výrobek nekoupíš.",
+};
+
+function trik(slogan: string, klic: Trik, spatne: [Trik, Trik, Trik], slova: string, explanation: string): PracticeTask {
+  return choice(`Jaký trik používá slogan „${slogan}“?`, klic,
+    spatne.map((t) => ({ value: t, why: NENI[t] })) as never, {
+      hints: [`Všimni si slov „${slova}“. Čím se tě snaží přesvědčit?`, `${RADA[klic]} Přečti si znovu „${slova}“ a zeptej se, jestli to o výrobku opravdu něco dokazuje.`],
+      explanation,
+    });
 }
 
-interface TFItem { q: string; a: "ano" | "ne"; hint: string; e: string }
-
-// Level 1: zakladni tvrzeni o reklame
-const POOL_L1: TFItem[] = [
-  { q: "Reklama vždy říká pravdu.", a: "ne", hint: "Reklamy jsou navrženy, aby přesvědčily, ne aby informovaly objektivně.", e: "Reklama chce hlavně prodat, a tak vyzdvihne jen to dobré a o nevýhodách mlčí. Proto nemůžeme spoléhat, že říká celou pravdu — některá tvrzení bývají přehnaná nebo zavádějící." },
-  { q: "Cílem reklamy je přesvědčit nás ke koupi produktu.", a: "ano", hint: "Přesvědčení ke koupi je hlavní účel reklamy.", e: "Reklamu platí ten, kdo chce něco prodat, takže jejím hlavním úkolem je přimět nás k nákupu. I když nás při tom baví nebo informuje, vždy za tím stojí snaha, abychom si výrobek koupili." },
-  { q: "Slavná osobnost v reklamě zaručuje kvalitu výrobku.", a: "ne", hint: "Celebrita je placená za doporučení — to nezaručuje kvalitu.", e: "Známá osobnost dostane za vystoupení v reklamě zaplaceno, takže výrobek chválí hlavně kvůli penězům, ne proto, že by ho sama odborně prověřila. Sláva herce nebo zpěváka tedy o kvalitě zboží nic neříká." },
-  { q: "Slogan je krátká, zapamatovatelná reklamní věta.", a: "ano", hint: "Slogan je definován jako stručná fráze, která se snadno pamatuje.", e: "Slogan je úmyslně krátký a chytlavý, abychom si ho snadno zapamatovali a vybavili si ho, až budeme nakupovat. Právě tahle stručnost a zapamatovatelnost ho odlišuje od běžné věty." },
-  { q: "Reklama na zmrzlinu ukazující šťastnou rodinu nám slibuje, že zmrzlina udělá naši rodinu šťastnou.", a: "ne", hint: "Je to emocionální apel — propojení produktu se štěstím, ne slib.", e: "Šťastná rodina v reklamě je emocionální apel — má v nás vyvolat hezký pocit a spojit ho s výrobkem. Není to skutečný slib, protože zmrzlina sama štěstí v rodině nezpůsobí." },
-  { q: "Výrazy jako 'Jen dnes!' nebo 'Poslední kusy!' vždy odrážejí skutečný nedostatek zboží.", a: "ne", hint: "Jde o falešnou naléhavost — tlak na rychlé rozhodnutí.", e: "Tyhle výrazy mají hlavně vyvolat pocit, že musíme jednat hned, aby nám něco neuteklo. Často jde o falešnou naléhavost — zboží bývá k dostání i další dny, jen nás to tlačí k unáhlenému nákupu." },
-  { q: "Reklamy opakují slogan, aby si ho zákazníci lépe zapamatovali.", a: "ano", hint: "Opakování je klasická technika zapamatování.", e: "Když něco slyšíme znovu a znovu, snáz si to zapamatujeme a vybaví se nám to v obchodě. Proto reklamy slogan tolikrát opakují — sázejí na to, že si na výrobek vzpomeneme." },
-  { q: "Tvrzení '20% lepší' je vždy dokazatelné a srovnatelné.", a: "ne", hint: "Lepší než co? Základ srovnání nebývá uveden.", e: "U takového čísla chybí to nejdůležitější — lepší než co? Bez uvedeného srovnání nemůžeme tvrzení ověřit, takže '20% lepší' může znít přesvědčivě, aniž by něco skutečně dokazovalo." },
-  { q: "Kritické myšlení nám pomáhá nepodléhat reklamní manipulaci.", a: "ano", hint: "Ptáme se: Je to pravda? Jaký je základ tvrzení?", e: "Kritické myšlení znamená, že si klademe otázky — je to pravda a na čem to stojí? Když takhle přemýšlíme, snáz odhalíme triky a nenecháme se reklamou zmanipulovat ke zbytečnému nákupu." },
-  { q: "Bandwagon ('všichni to kupují') je spolehlivý důvod pro koupi.", a: "ne", hint: "Tlak skupiny není argument pro kvalitu produktu.", e: "To, že si něco kupuje hodně lidí, ještě neznamená, že je to kvalitní nebo že to potřebujeme právě my. Trik 'všichni to mají' využívá touhu nezůstat stranou, ale o vlastnostech výrobku neříká nic." },
-  { q: "Manipulativní komunikace záměrně ovlivňuje bez logických argumentů.", a: "ano", hint: "Manipulace využívá emoce a triky místo faktů.", e: "Manipulace nás chce přesvědčit pomocí emocí a triků místo skutečných důvodů a faktů. Záměrně obchází rozumné uvažování, a proto je dobré ji umět rozpoznat." },
-  { q: "Reklamy jsou vždy povinny uvést všechny nevýhody produktu.", a: "ne", hint: "Reklamy záměrně vynechávají nevýhody — to je jejich povaha.", e: "Reklama chce výrobek prodat, takže o nevýhodách raději mlčí a ukazuje jen to dobré. Nemá povinnost vyjmenovat všechny zápory, a proto musíme případné nevýhody hledat sami." },
-  { q: "Emocionální apel propojuje produkt s pozitivními pocity (rodina, přátelství, štěstí).", a: "ano", hint: "Emocionální apel je jedna z nejčastějších reklamních technik.", e: "Emocionální apel spojuje výrobek s příjemnými pocity jako rodina nebo přátelství, abychom si ten hezký pocit přenesli i na produkt. Je to jedna z nejčastějších technik, protože emoce nás ovlivňují víc než suchá fakta." },
-  { q: "Vědecký výzkum zmíněný v reklamě bez citace je vždy spolehlivý.", a: "ne", hint: "Jde o falešnou autoritu — základ tvrzení není ověřitelný.", e: "Když reklama mluví o výzkumu, ale neuvede, kdo a jak ho dělal, nemůžeme si to nijak ověřit. Jde o falešnou autoritu — slovo 'výzkum' má jen dodat důvěru, i když za ním nic průkazného být nemusí." },
-  { q: "Dětská cílová skupina je snáze ovlivnitelná reklamou než dospělí.", a: "ano", hint: "Proto existují přísná pravidla pro reklamu cílenou na děti.", e: "Děti zatím nemají tolik zkušeností, aby triky v reklamě prohlédly, a proto je snáz ovlivní. Právě kvůli tomu platí pro reklamu cílenou na děti přísnější pravidla, která je mají chránit." },
-  { q: "Superlativy jako 'nejlepší na trhu' jsou vždy dokazatelné.", a: "ne", hint: "Superlativ bez srovnávací základny není dokazatelný.", e: "Slovo 'nejlepší' zní silně, ale chybí u něj, podle čeho a s čím se výrobek srovnává. Bez takové srovnávací základny nejde tvrzení dokázat — je to spíš chvála než ověřitelný fakt." },
-  { q: "Záměrné vynechání podmínek akce (hvězdičky) je poctivá komunikace.", a: "ne", hint: "Skryté podmínky jsou manipulativní technika.", e: "Když reklama ukáže lákavou nabídku, ale podmínky schová do drobné poznámky u hvězdičky, schválně nám zatajuje důležité informace. Takové skrývání je manipulace, ne poctivé jednání." },
-  { q: "Reklama nám může říkat, co si máme myslet, aniž to přímo tvrdí.", a: "ano", hint: "Emoce a obrazy ovlivňují naše postoje nepřímo.", e: "Reklama nemusí nic přímo říct — stačí obrazy, hudba a pocity, které v nás vyvolá. Tím nepřímo ovlivní, co si o výrobku myslíme, aniž by to vyslovila slovy." },
-  { q: "Pokud reklamu sdílí slavný sportovec, produkt je vhodný pro každého sportovce.", a: "ne", hint: "Celebrita je zaplacena — nejde o odborné doporučení.", e: "Slavný sportovec dostane za reklamu zaplaceno, takže výrobek chválí kvůli smlouvě, ne jako odborný posudek. To, že ho propaguje, ještě neznamená, že se hodí pro každého — každý má jiné potřeby." },
-  { q: "Reklamy na hračky jsou záměrně cíleny na děti, protože ty pak prosí rodiče.", a: "ano", hint: "Jde o záměrnou marketingovou strategii.", e: "Tvůrci vědí, že děti hračku chtějí a budou o ni prosit rodiče, kteří ji nakonec koupí. Proto reklamy na hračky úmyslně cílí na děti — je to promyšlená prodejní strategie." },
+const L1: PracticeTask[] = [
+  choice("Proč vzniká reklama?", "aby lidé něco koupili", [
+    { value: "aby lidé znali všechny nevýhody", why: "O nevýhodách reklama většinou mlčí." },
+    { value: "aby se lidé naučili číst", why: "Učit číst reklama nechce." },
+    { value: "aby byl pořad v televizi delší", why: "Reklama pořad jen přerušuje." },
+  ], {
+    hints: ["Kdo reklamu platí a co z toho chce mít?", "Reklamu platí firma, která chce něco prodat. Všechno v reklamě tomu slouží."],
+    explanation: "Reklamu platí ten, kdo chce něco prodat — jejím cílem je, abychom výrobek koupili.",
+  }),
+  choice("Reklama ukazuje jen dobré vlastnosti výrobku. Proč?", "chce výrobek prodat", [
+    { value: "výrobek žádné nevýhody nemá", why: "Každý výrobek nějaké nevýhody má." },
+    { value: "nevýhody jsou tajné", why: "Nevýhody tajné nejsou — reklama o nich jen mlčí." },
+    { value: "reklama neumí mluvit o nevýhodách", why: "Umí, ale nechce — nevýhody by prodej zbrzdily." },
+  ], {
+    hints: ["Mluvil by prodavač o tom, co je na jeho zboží špatně?", "Kdo něco prodává, ukazuje to nejlepší. O tom, co by tě odradilo, raději mlčí."],
+    explanation: "Reklama chce prodat, a proto ukazuje jen to dobré a o nevýhodách mlčí.",
+  }),
+  choice("Co je slogan?", "krátká věta, která se dobře pamatuje", [
+    { value: "cena výrobku na obalu", why: "Cena slogan není." },
+    { value: "návod, jak výrobek použít", why: "Návod je dlouhý a nic neprodává." },
+    { value: "seznam složení na obalu", why: "Složení je napsané na obalu, slogan je věta z reklamy." },
+  ], {
+    hints: ["Kterou větu z reklamy si pamatuješ, i když nechceš?", "Slogan je krátký, často rýmovaný a opakuje se pořád dokola, aby ti utkvěl v hlavě."],
+    explanation: "Slogan je krátká chytlavá věta z reklamy, kterou si snadno zapamatujeme.",
+  }),
+  choice("Slavný fotbalista v reklamě chválí jogurt. Znamená to, že je jogurt dobrý?", "ne, za reklamu dostal zaplaceno", [
+    { value: "ano, fotbalisté se vyznají v jídle", why: "Fotbalista je odborník na fotbal, ne na jogurty." },
+    { value: "ano, slavní lidé nelžou", why: "I slavní lidé v reklamě mluví hlavně kvůli penězům." },
+    { value: "ne, fotbalisté jogurty nejedí", why: "Jíst je mohou — o kvalitě to ale nic neříká." },
+  ], {
+    hints: ["Proč fotbalista v reklamě vystupuje?", "Firma platí slavné lidi, aby jejich obliba přešla na výrobek. O kvalitě jogurtu to nic neříká."],
+    explanation: "Slavný člověk v reklamě dostává zaplaceno. Jeho sláva o kvalitě výrobku nic neříká.",
+  }),
+  choice("Reklama volá „Jen dnes!“. Co tím chce?", "abychom nakoupili hned a nepřemýšleli", [
+    { value: "abychom věděli, kolik je hodin", why: "Čas tu slouží jen k tomu, aby na nás tlačil." },
+    { value: "abychom přišli až zítra", why: "Naopak — chce, abychom přišli hned." },
+    { value: "abychom nic nekupovali", why: "Reklama chce, abychom koupili." },
+  ], {
+    hints: ["Jak se rozhoduješ, když na tebe někdo spěchá?", "Když máme málo času, nerozmyslíme si, jestli věc opravdu potřebujeme. To reklama využívá."],
+    explanation: "„Jen dnes!“ na nás tlačí, abychom nakoupili hned a nestihli si to rozmyslet.",
+  }),
+  choice("Reklama na čokoládu ukazuje šťastnou rodinu. Co tím chce?", "abychom si čokoládu spojili s radostí", [
+    { value: "ukázat, jak se čokoláda vyrábí", why: "Výroba v reklamě vůbec není." },
+    { value: "říct, kolik čokoláda stojí", why: "Cenu šťastná rodina neukazuje." },
+    { value: "varovat před sladkostmi", why: "Reklama chce prodat, ne varovat." },
+  ], {
+    hints: ["Co ti o čokoládě řekne usmívající se rodina?", "O čokoládě samotné nic. Reklama chce, abys měl nebo měla při pohledu na ni příjemný pocit."],
+    explanation: "Šťastná rodina má v nás vyvolat hezký pocit, který si pak spojíme s čokoládou.",
+  }),
+  choice("Reklama slibuje „Nejlepší vysavač na světě!“. Můžeme tomu věřit?", "ne, chybí, s čím ho srovnali", [
+    { value: "ano, když je to velkými písmeny", why: "Velká písmena nic nedokazují." },
+    { value: "ano, protože to říkají v televizi", why: "Televize reklamu jen vysílá, nepravdivost neověřuje." },
+    { value: "ne, vysavače se nesmí prodávat", why: "Vysavače se prodávat smí." },
+  ], {
+    hints: ["Nejlepší ze všech? Kdo to zkoumal a jak?", "Slovo „nejlepší“ zní silně, ale reklama neříká, s kterými vysavači a podle čeho výrobek srovnala."],
+    explanation: "Tvrzení „nejlepší“ bez srovnání nejde ověřit. Je to chvála, ne důkaz.",
+  }),
+  choice("Na plakátu je velké „ZDARMA*“ a dole malá hvězdička. Co to znamená?", "platí podmínka napsaná malým písmem", [
+    { value: "vše je opravdu úplně zadarmo", why: "Hvězdička skoro vždy odkazuje na podmínku." },
+    { value: "hvězdička je jen ozdoba", why: "Hvězdička odkazuje na drobný text." },
+    { value: "výrobek je hvězdou reklamy", why: "Hvězdička tu neznamená slávu." },
+  ], {
+    hints: ["Kam hvězdička odkazuje?", "Velkými písmeny je napsáno to lákavé, drobnými to, co by tě mohlo odradit. Vždy si drobný text přečti."],
+    explanation: "Hvězdička odkazuje na podmínku napsanou drobně — třeba „při nákupu nad 1 000 Kč“.",
+  }),
+  choice("Kdo reklamu platí?", "ten, kdo chce výrobek prodat", [
+    { value: "diváci v televizi", why: "Diváci reklamu jen sledují." },
+    { value: "škola", why: "Škola reklamy neplatí." },
+    { value: "nikdo, je zadarmo", why: "Reklama stojí hodně peněz." },
+  ], {
+    hints: ["Kdo z reklamy vydělá?", "Reklama stojí peníze. Platí ji ten, kdo doufá, že díky ní prodá víc."],
+    explanation: "Reklamu platí výrobce nebo prodejce, který chce, abychom jeho zboží koupili.",
+  }),
+  choice("Proč reklama opakuje stejnou písničku pořád dokola?", "abychom si výrobek zapamatovali", [
+    { value: "protože nemá jiné písničky", why: "Opakování je záměr, ne nouze." },
+    { value: "aby nás uspala", why: "Reklama nás chce spíš upoutat." },
+    { value: "protože je to povinné", why: "Povinné to není." },
+  ], {
+    hints: ["Proč si pamatuješ písničku z reklamy?", "Co slyšíme pořád dokola, to nám utkví v hlavě — a v obchodě si na to vzpomeneme."],
+    explanation: "Opakováním si písničku i výrobek zapamatujeme a v obchodě si na něj vzpomeneme.",
+  }),
+  choice("Která otázka ti pomůže nenechat se reklamou nachytat?", "Opravdu to potřebuju?", [
+    { value: "Kolik reklam dnes uvidím?", why: "Počet reklam o výrobku nic neřekne." },
+    { value: "Jakou barvu má logo?", why: "Barva loga o kvalitě nic neříká." },
+    { value: "Je herec v reklamě hezký?", why: "Vzhled herce s výrobkem nesouvisí." },
+  ], {
+    hints: ["Která otázka tě přiměje přemýšlet o sobě, a ne o reklamě?", "Nejlepší obrana proti reklamě je zastavit se a zeptat se, jestli věc opravdu chceme a potřebujeme."],
+    explanation: "Otázka „Opravdu to potřebuju?“ nás přiměje zastavit se a nekupovat jen kvůli reklamě.",
+  }),
+  choice("Co udělá rozumný zákazník, než koupí něco z reklamy?", "porovná to s jinými výrobky", [
+    { value: "koupí to hned", why: "Tak by se nechal nachytat." },
+    { value: "koupí to dvakrát", why: "Dvakrát koupit nic nevyřeší." },
+    { value: "věří všemu z reklamy", why: "Reklama ukazuje jen to dobré." },
+  ], {
+    hints: ["Jak zjistíš, jestli je výrobek opravdu dobrý?", "Srovnání s dalšími podobnými věcmi a názory lidí, kteří je mají, řeknou víc než reklama."],
+    explanation: "Rozumný zákazník porovná výrobek s jinými a zjistí si o něm víc, než koupí.",
+  }),
+  choice("Reklama na hračku běží hlavně při dětských pořadech. Proč?", "děti pak hračku chtějí po rodičích", [
+    { value: "dospělí se na televizi nedívají", why: "Dívají, ale hračky chtějí hlavně děti." },
+    { value: "jindy je reklama zakázaná", why: "Zakázaná není, jen by nepřinesla tolik." },
+    { value: "hračky jsou zadarmo", why: "Hračky zadarmo nejsou." },
+  ], {
+    hints: ["Kdo se dívá na dětské pořady a kdo nakonec hračku kupuje?", "Reklama míří na ty, kdo hračku budou chtít. Potom prosí rodiče, aby ji koupili."],
+    explanation: "Reklama míří na děti, protože ty pak hračku chtějí a prosí o ni rodiče.",
+  }),
 ];
 
-// Level 2: slozitejsi tvrzeni o reklamních tricích
-const POOL_L2: TFItem[] = [
-  { q: "Tvrzení 'Doporučeno 9 z 10 dentistů' je vždy věrohodné bez dalšího kontextu.", a: "ne", hint: "Kolik dentistů bylo dotázáno? Kdo je vybral? To nevíme.", e: "U takového čísla nevíme, kolik zubařů se vlastně ptali ani kdo je vybral — třeba jich bylo jen deset. Bez tohoto kontextu zní tvrzení důvěryhodně, ale ověřit ho nemůžeme, takže věrohodné samo o sobě není." },
-  { q: "Reklama 'Zdarma* (*při nákupu nad 500 Kč)' záměrně skrývá podmínku.", a: "ano", hint: "Hvězdička s podmínkou je klasická technika skrytých podmínek.", e: "Velké slovo 'zdarma' nás má nalákat, zatímco důležitá podmínka u hvězdičky je schválně napsaná drobně. Tím reklama skrývá, že nic není doopravdy zadarmo — je to klasický trik se skrytými podmínkami." },
-  { q: "Objektivní informace a reklamní komunikace jsou si rovny, protože obě sdělují fakta.", a: "ne", hint: "Reklama má zájem přesvědčit; objektivní informace je nestranná.", e: "Objektivní informace je nestranná a snaží se říct pravdu, kdežto reklama chce hlavně přesvědčit a prodat. Proto se nedají postavit naroveň — reklama vybírá jen to, co se jí hodí." },
-  { q: "Silný slogan je krátký, rytmický a emocionálně působivý.", a: "ano", hint: "Tyto vlastnosti dělají slogan zapamatovatelným.", e: "Krátkost, rytmus a působení na city dělají slogan chytlavým a snadno zapamatovatelným. Právě díky těmto vlastnostem nám utkví v hlavě a vybaví se nám, až budeme nakupovat." },
-  { q: "Reklama 'Naše auto spotřebuje méně!' poskytuje úplnou informaci.", a: "ne", hint: "Méně než co? Základ srovnání chybí.", e: "Ve sdělení chybí to hlavní — méně než co? Bez srovnání nevíme, s čím se spotřeba porovnává, takže informace není úplná a má jen vyznít dobře." },
-  { q: "Když reklama ukazuje šťastné lidi, produkt opravdu udělá kupující šťastnými.", a: "ne", hint: "Šťastné obrazy jsou emocionální apel, ne slib výsledku.", e: "Šťastní lidé v reklamě mají v nás vyvolat hezký pocit a spojit ho s výrobkem. Je to emocionální apel, ne skutečný výsledek — samotný produkt štěstí nezaručí." },
-  { q: "Záměrné vynechání informací je běžná reklamní technika.", a: "ano", hint: "Reklamy záměrně neuvádí nevýhody nebo skryté podmínky.", e: "Reklama nemusí lhát, stačí, když zamlčí nevýhody nebo skryté podmínky. Takové úmyslné vynechávání je běžný trik, jak vytvořit lepší dojem, než jaký výrobek doopravdy zaslouží." },
-  { q: "Čísla v reklamě (50% lepší, 3× výkonnější) jsou vždy podložena nezávislým výzkumem.", a: "ne", hint: "Čísla bez zdroje a základny nejsou ověřitelná.", e: "Čísla působí přesvědčivě, ale často u nich chybí zdroj a srovnávací základna — lepší o 50 % než co? Bez uvedeného a nezávislého ověření jim nemůžeme bez výhrad věřit." },
-  { q: "Kritický přístup k reklamě znamená ptát se: Proč to říkají? Co z toho mají?", a: "ano", hint: "Kritické otázky pomáhají odhalit záměr a techniky reklamy.", e: "Když se ptáme, proč nám to říkají a co z toho mají, odhalíme skutečný záměr reklamy. Právě tyhle otázky jsou jádrem kritického přístupu a pomáhají nás chránit před triky." },
-  { q: "Reklamy mají vždy povinnost uvést cenu produktu.", a: "ne", hint: "Reklamy mají zákonné povinnosti, ale ne vždy musí uvádět cenu.", e: "Reklama musí dodržovat zákony, třeba nesmí klamat, ale uvést cenu jí povinnost vždycky neukládá. Proto se setkáme i s reklamou, kde se cena vůbec neobjeví." },
-  { q: "Falešná naléhavost ('jen dnes!') nutí zákazníky rozhodovat se unáhleně.", a: "ano", hint: "Právě to je cíl falešné naléhavosti — nedát čas na přemyšlení.", e: "Slovem 'jen dnes' nás reklama tlačí, abychom se rozhodli hned a nestihli si nákup rozmyslet. Právě to je cíl falešné naléhavosti — pod tlakem snáz koupíme i to, co nepotřebujeme." },
-  { q: "Reklama zaměřená na emoce je méně manipulativní než reklama s čísly.", a: "ne", hint: "Emocionální manipulace je stejně silná, jen funguje jinak.", e: "Emoce nás dokážou ovlivnit stejně silně jako čísla, jen působí jinou cestou — přes pocity místo přes rozum. Proto není emocionální reklama o nic méně manipulativní než ta s čísly." },
-  { q: "Bandwagon efekt ('všichni to mají') využívá sociálního tlaku skupiny.", a: "ano", hint: "Patřit ke skupině je silná lidská potřeba, reklamy toho využívají.", e: "Lidé touží někam patřit a nezůstat stranou, a tohle reklama využívá tvrzením 'všichni to mají'. Tlak skupiny nás má přimět ke koupi, i když o kvalitě výrobku nic neříká." },
-  { q: "Pokud se slogan rýmuje, produkt je automaticky kvalitnější.", a: "ne", hint: "Rým usnadňuje zapamatování, ale neříká nic o kvalitě.", e: "Rým slogan zpříjemní a pomůže nám si ho zapamatovat, ale o vlastnostech výrobku nevypovídá nic. Hezky znějící věta tedy z produktu kvalitnější zboží neudělá." },
-  { q: "Je vhodné ověřit reklamní tvrzení z nezávislých zdrojů, než se rozhodneme ke koupi.", a: "ano", hint: "Srovnání a ověřování je součást kritického spotřebitelského chování.", e: "Nezávislý zdroj nemá zájem nám něco prodat, takže nám řekne pravdivější informace než reklama. Ověřovat si tvrzení před nákupem proto patří k rozumnému a kritickému chování zákazníka." },
-  { q: "Reklama může ovlivnit naše rozhodování, aniž si to uvědomujeme.", a: "ano", hint: "Emoce a opakování působí i nevědomě.", e: "Emoce a často opakované slogany na nás působí, i když si toho vůbec nevšimneme. Proto nás reklama dokáže nasměrovat ke koupi, aniž bychom si uvědomili, že nás vlastně ovlivnila." },
-  { q: "Slogan 'Rozdělíme se o radost' slibuje, že čokoláda opravdu přinese radost.", a: "ne", hint: "Je to emocionální apel — propojení produktu s pozitivním pocitem.", e: "Slogan spojuje čokoládu s příjemným pocitem radosti, aby se nám výrobek líbil. Není to skutečný slib — radost nezpůsobí čokoláda sama, jde jen o emocionální apel." },
-  { q: "Cílová skupina reklamy jsou lidé, na které je reklama zaměřena.", a: "ano", hint: "Reklamy jsou vytvářeny pro konkrétní skupiny zákazníků.", e: "Cílová skupina je přesně ta skupina lidí, pro kterou je reklama vytvořená — třeba děti nebo sportovci. Tvůrci ji nejdřív vyberou a pak reklamu přizpůsobí tak, aby právě na ně co nejlépe zapůsobila." },
-  { q: "Falešná autorita ('vědci dokázali') bez citace zdrojů je spolehlivý argument.", a: "ne", hint: "Bez ověřitelného zdroje jde o manipulaci, ne o fakta.", e: "Slovo 'vědci' má dodat tvrzení vážnost, ale když chybí, kteří vědci a kde to dokázali, nedá se to ověřit. Taková falešná autorita působí důvěryhodně, přitom za ní žádný průkazný zdroj být nemusí." },
-  { q: "Reklama může propagovat produkt, aniž o něm přímo mluví (jen obrazy a hudba).", a: "ano", hint: "Emocionální asociace jsou silnou nepřímou technikou.", e: "Samotné obrazy a hudba v nás vyvolají náladu, kterou si pak spojíme s výrobkem, i když o něm reklama nic neřekne. Tahle nepřímá technika působí přes pocity a bývá velmi silná." },
-  { q: "Přemýšlet o tom, komu reklama slouží, nám pomáhá lépe ji pochopit.", a: "ano", hint: "Reklama vždy slouží zájmům výrobce nebo prodejce.", e: "Reklama vždy slouží tomu, kdo ji platí — výrobci nebo prodejci, který chce vydělat. Když si tohle uvědomíme, snáz pochopíme, proč nám něco říká, a nenecháme se tak snadno ovlivnit." },
-  { q: "Reklamy cílené na děti mají v ČR stejná pravidla jako reklamy pro dospělé.", a: "ne", hint: "Reklamy pro děti podléhají přísnějším pravidlům na ochranu dětí.", e: "Děti se nechají ovlivnit snáz než dospělí, a proto pro reklamy cílené na ně platí přísnější pravidla. Nejsou tedy stejná jako u reklam pro dospělé — mají děti zvlášť chránit." },
-  { q: "Pokud reklama mluví o 'přirozeném složení', produkt neobsahuje žádné přísady.", a: "ne", hint: "'Přirozené' je marketingový výraz, ne zákonná definice bez přísad.", e: "Slovo 'přirozené' zní zdravě, ale není to přesná zákonná definice — výrobek může klidně obsahovat různé přísady. Je to marketingový výraz, který má dobře vyznít, ne záruka, že tam nic přidaného není." },
-  { q: "Umět rozpoznat reklamní triky pomáhá lépe hospodařit s penězi.", a: "ano", hint: "Kdo odolá manipulaci, kupuje to, co skutečně potřebuje.", e: "Kdo umí prohlédnout triky, nenechá se zlákat ke zbytečným nákupům a koupí jen to, co opravdu potřebuje. Díky tomu lépe zachází s penězi a zbytečně neutrácí." },
-  { q: "Reklama je vždy dobrá, protože informuje o dostupných produktech.", a: "ne", hint: "Reklama může informovat, ale také záměrně klamat nebo manipulovat.", e: "Reklama nám sice může dát užitečnou informaci o tom, co je k dostání, ale zároveň dokáže záměrně klamat a manipulovat. Proto o ní nemůžeme říct, že je vždycky dobrá — záleží, jak se chová." },
-  { q: "Vizuální obraz (krásní lidé, příroda) v reklamě ovlivňuje naše pocity vůči produktu.", a: "ano", hint: "Vizuální asociace jsou klíčovou součástí emocionálního apelu.", e: "Krásní lidé nebo příroda v reklamě v nás vyvolají příjemný pocit, který si přeneseme i na výrobek. Právě tyhle vizuální obrazy jsou důležitou součástí emocionálního apelu a ovlivňují, jak produkt vnímáme." },
-  { q: "Reklamní slogan může být lhaní, i když neříká žádnou nepravdivou větu.", a: "ano", hint: "Záměrné vynechání informací nebo zavádějící kontext je také manipulace.", e: "Slogan může klamat, i když každé jeho slovo je formálně pravdivé — stačí zamlčet důležitou informaci nebo věc postavit zavádějícím způsobem. I takové matení je manipulace, i bez jediné nepravdivé věty." },
-  { q: "Opakování reklamy na nás nemá žádný vliv, pokud ji nevnímáme vědomě.", a: "ne", hint: "Opakování funguje i nevědomě — to je efekt zapamatování.", e: "I když reklamě nevěnujeme pozornost, opakování ji nenápadně ukládá do paměti a později se nám vybaví. Působí tedy i nevědomě, takže tvrzení, že na nás nemá žádný vliv, neplatí." },
-  { q: "Každý zákazník by měl mít právo znát skutečné vlastnosti produktu před koupí.", a: "ano", hint: "Spotřebitelská práva zahrnují právo na pravdivé informace.", e: "Abychom se mohli rozhodnout správně, potřebujeme znát pravdivé vlastnosti výrobku ještě před nákupem. Právo na takové informace patří mezi spotřebitelská práva a chrání nás před klamáním." },
-  { q: "Dobrý reklamní trik nám může prodat i produkt, který nepotřebujeme.", a: "ano", hint: "Manipulativní reklama přesvědčuje i bez skutečné potřeby.", e: "Šikovná manipulace v nás vyvolá pocit, že výrobek chceme nebo musíme mít, i když ho doopravdy nepotřebujeme. Proto nás dobrý trik dokáže přimět ke koupi i bez skutečné potřeby — a právě proto je dobré ho umět odhalit." },
+const L2: PracticeTask[] = [
+  trik("Tuhle mikinu už má celá třída. A ty?", "všichni to mají", ["podmínka malým písmem", "strašení", "odborníci bez důkazu"], "celá třída… A ty?",
+    "Slogan tlačí na to, abys nezůstal nebo nezůstala pozadu za ostatními — trik „všichni to mají“."),
+  trik("Poslední tři kusy! Jen do půlnoci!", "spěchej, jinak to zmizí", ["slavný člověk to chválí", "slibuje hezký pocit", "nejlepší bez srovnání"], "Poslední tři kusy… jen do půlnoci",
+    "Poslední kusy a čas do půlnoci tlačí k rychlému rozhodnutí — trik „spěchej, jinak to zmizí“."),
+  trik("Zubaři doporučují naši pastu!", "odborníci bez důkazu", ["všichni to mají", "spěchej, jinak to zmizí", "strašení"], "Zubaři doporučují",
+    "Nevíme, kteří zubaři a kolik jich — trik „odborníci bez důkazu“."),
+  trik("Kupte dětem radost.", "slibuje hezký pocit", ["odborníci bez důkazu", "podmínka malým písmem", "všichni to mají"], "radost",
+    "Slogan spojuje výrobek s radostí, o výrobku samém nic neříká — „slibuje hezký pocit“."),
+  trik("Náš vysavač je nejlepší na trhu!", "nejlepší bez srovnání", ["strašení", "slavný člověk to chválí", "spěchej, jinak to zmizí"], "nejlepší na trhu",
+    "„Nejlepší“ bez uvedeného srovnání nejde ověřit — trik „nejlepší bez srovnání“."),
+  trik("Zdarma!* (*při nákupu nad 1 500 Kč)", "podmínka malým písmem", ["slibuje hezký pocit", "nejlepší bez srovnání", "slavný člověk to chválí"], "*při nákupu nad 1 500 Kč",
+    "Velké „zdarma“ láká, podmínka je schovaná za hvězdičkou — „podmínka malým písmem“."),
+  trik("Bez našeho krému budete mít vrásky!", "strašení", ["všichni to mají", "odborníci bez důkazu", "podmínka malým písmem"], "Bez našeho krému",
+    "Slogan vyvolává strach z vrásek a krém nabízí jako záchranu — „strašení“."),
+  trik("Slavná zpěvačka pije jen naši limonádu.", "slavný člověk to chválí", ["spěchej, jinak to zmizí", "strašení", "odborníci bez důkazu"], "Slavná zpěvačka",
+    "Oblíbenost zpěvačky má přejít na limonádu — „slavný člověk to chválí“."),
+  trik("Každá správná máma vaří z naší mouky.", "všichni to mají", ["nejlepší bez srovnání", "slibuje hezký pocit", "podmínka malým písmem"], "Každá správná máma",
+    "Slogan naznačuje, že kdo mouku nepoužívá, není „správná máma“ — trik „všichni to mají“."),
+  trik("Vědci zjistili, že naše tableta funguje o 50 % lépe!", "odborníci bez důkazu", ["strašení", "všichni to mají", "slavný člověk to chválí"], "Vědci zjistili",
+    "Neví se, kteří vědci a o 50 % lépe než co — „odborníci bez důkazu“."),
+  trik("Kupte teď a budete mít klid na celý týden.", "slibuje hezký pocit", ["podmínka malým písmem", "nejlepší bez srovnání", "odborníci bez důkazu"], "klid na celý týden",
+    "Slogan slibuje pocit klidu, o výrobku nic neříká — „slibuje hezký pocit“."),
+  trik("Akce končí za 10 minut!", "spěchej, jinak to zmizí", ["slibuje hezký pocit", "strašení", "všichni to mají"], "za 10 minut",
+    "Krátký čas tlačí k rychlému nákupu bez rozmyslu — „spěchej, jinak to zmizí“."),
+  trik("Nejrychlejší internet ve vesmíru!", "nejlepší bez srovnání", ["podmínka malým písmem", "slavný člověk to chválí", "spěchej, jinak to zmizí"], "Nejrychlejší… ve vesmíru",
+    "Přehnané „nejrychlejší“ bez srovnání nejde ověřit — „nejlepší bez srovnání“."),
 ];
 
-// A5 (kolo 2): L3 s výběrem ze 4 možností — identifikace konkrétní
-// reklamní techniky. Nahrazuje binární Ano/Ne (50 % náhoda) skutečnou
-// diagnostickou úlohou.
-interface TechniqueItem { slogan: string; a: string; opts: string[]; e: string }
-const POOL_L3_TECHNIKY: TechniqueItem[] = [
-  { slogan: `Používá to už devět z deseti slavných hokejistů!`, a: "Slavná osobnost + bandwagon", opts: ["Slavná osobnost + bandwagon", "Falešná autorita", "Emocionální apel", "Falešná naléhavost"], e: "Slavná osobnost (hokejisté) plus tlak skupiny (devět z deseti to má) = bandwagon. Nejde o odbornou autoritu ani o strach či emoce." },
-  { slogan: `Jen dnes! Poslední tři kusy skladem!`, a: "Falešná naléhavost", opts: ["Falešná naléhavost", "Slavná osobnost", "Falešná autorita", "Opakování sloganu"], e: "Slova jako jen dnes a poslední kusy tlačí k rychlému rozhodnutí, i když zboží bývá k dostání i další dny — falešná naléhavost." },
-  { slogan: `Doporučeno devíti z deseti zubařů!`, a: "Falešná autorita (bez zdroje)", opts: ["Falešná autorita (bez zdroje)", "Falešná naléhavost", "Bandwagon", "Emocionální apel"], e: "Zubaři doporučují má zvýšit důvěru, ale nevíme, kolik jich bylo dotázáno ani kdo je vybral — jde o falešnou autoritu." },
-  { slogan: `Kupte našim dětem lásku.`, a: "Emocionální apel", opts: ["Emocionální apel", "Falešná autorita", "Bandwagon", "Falešná naléhavost"], e: "Slovo láska spojuje výrobek s emocí, kterou si přeneseme na produkt — emocionální apel." },
-  { slogan: `Náš vysavač je NEJLEPŠÍ na trhu!`, a: "Superlativ bez důkazu", opts: ["Superlativ bez důkazu", "Emocionální apel", "Falešná autorita", "Opakování"], e: "Slovo nejlepší bez uvedeného srovnání (nejlepší v čem, oproti komu?) je nedokazatelný superlativ." },
-  { slogan: `Zdarma (drobně: *při nákupu nad 1 500 Kč).`, a: "Skryté podmínky (hvězdičky)", opts: ["Skryté podmínky (hvězdičky)", "Superlativ", "Falešná naléhavost", "Emocionální apel"], e: "Velké ZDARMA má nalákat, důležitá podmínka schovaná pod hvězdičkou. Klasický trik skrytých podmínek." },
-  { slogan: `Vědci dokázali, že náš krém je o 50 % účinnější.`, a: "Falešná autorita bez zdroje", opts: ["Falešná autorita bez zdroje", "Superlativ", "Bandwagon", "Emocionální apel"], e: "Vědci dokázali bez uvedení, kdo a jak studie provedl — falešná autorita. Čísla bez zdroje jsou nedokazatelná." },
-  { slogan: `Kupte teď a získáte pocit klidu na celý týden.`, a: "Emocionální apel (klid)", opts: ["Emocionální apel (klid)", "Falešná autorita", "Bandwagon", "Falešná naléhavost"], e: "Pocit klidu spojuje produkt s pozitivní emocí — emocionální apel." },
-  { slogan: `Všechny šikovné maminky už používají naši mouku.`, a: "Bandwagon (tlak skupiny)", opts: ["Bandwagon (tlak skupiny)", "Falešná autorita", "Emocionální apel", "Skryté podmínky"], e: "Slova všechny šikovné maminky tlačí k pocitu, že nemít výrobek znamená nebýt šikovná máma. Tlak skupiny = bandwagon." },
-  { slogan: `Bez našeho krému budete stárnout dvakrát rychleji!`, a: "Apel na strach", opts: ["Apel na strach", "Superlativ", "Bandwagon", "Falešná naléhavost"], e: "Reklama vyvolá strach ze stárnutí a nabídne produkt jako záchranu — apel na strach." },
+const L3: PracticeTask[] = [
+  choice("Jak ověříš, že je výrobek opravdu dobrý?", "zjistím, co o něm říkají lidé, kteří ho mají", [
+    { value: "podívám se na reklamu ještě jednou", why: "Reklama řekne zase jen to dobré." },
+    { value: "zeptám se jen firmy, která ho vyrábí", why: "Firma chce prodat, nebude nestranná." },
+    { value: "koupím ho a uvidím", why: "Pak už je pozdě — peníze jsou pryč." },
+  ], {
+    hints: ["Kdo ti řekne pravdu — ten, kdo prodává, nebo ten, kdo výrobek používá?", "Nejlepší zdroj je ten, kdo z prodeje nic nemá: zákazníci, kteří výrobek už mají, nebo nezávislé testy."],
+    explanation: "Zkušenosti lidí, kteří výrobek mají, jsou nestrannější než reklama nebo výrobce.",
+  }),
+  choice("Reklama říká „Doporučuje 9 z 10 zubařů“. Na co se zeptáš?", "Kolik zubařů se ptali a kdo je vybral?", [
+    { value: "Jakou barvu má pasta?", why: "Barva s doporučením nesouvisí." },
+    { value: "Kolik stojí návštěva zubaře?", why: "S reklamou na pastu to nesouvisí." },
+    { value: "Proč je pasta v tubě?", why: "Tuba o doporučení nic neřekne." },
+  ], {
+    hints: ["Mohli se zeptat jen deseti zubařů, které si sami vybrali?", "Číslo zní přesvědčivě, ale bez toho, kolik lidí se ptali a kdo je vybral, nic nedokazuje."],
+    explanation: "Musíme vědět, kolik zubařů se ptali a kdo je vybral — jinak číslo nic nedokazuje.",
+  }),
+  choice("Reklama říká „O 20 % lepší!“. Co v ní chybí?", "s čím výrobek srovnávají", [
+    { value: "cena výrobku", why: "Cena by nevysvětlila, proč je „lepší“." },
+    { value: "barva obalu", why: "Barva s tvrzením nesouvisí." },
+    { value: "nic, je to jasné", why: "Není jasné, lepší než co." },
+  ], {
+    hints: ["O 20 % lepší… než co?", "Srovnání potřebuje dvě věci. Reklama řekla jen jednu."],
+    explanation: "Chybí, s čím výrobek srovnávají — „lepší než co?“. Bez toho tvrzení nic neznamená.",
+  }),
+  choice("Který slogan je poctivý, a ne manipulativní?", "Jablečný džus, 1 litr, 35 Kč.", [
+    { value: "Džus, bez kterého nebudeš šťastný!", why: "Strašení a slib štěstí." },
+    { value: "Poslední kusy, rychle!", why: "Tlačí na spěch." },
+    { value: "Pije ho každý, jen ty ne!", why: "Tlak, že ho mají všichni ostatní." },
+  ], {
+    hints: ["Který slogan jen věcně říká, co to je a kolik to stojí?", "Poctivá informace neslibuje štěstí, netlačí na čas a nestraší. Jen řekne fakta."],
+    explanation: "Věcná informace (co to je, kolik toho je, kolik to stojí) netlačí ani nestraší — je poctivá.",
+  }),
+  choice("Kamarád chce koupit tenisky, protože je nosí slavný sportovec. Co mu poradíš?", "ať zjistí, jestli je opravdu potřebuje", [
+    { value: "ať je koupí hned", why: "Tak by koupil jen kvůli reklamě." },
+    { value: "ať koupí rovnou dvoje", why: "To by byla ještě větší útrata." },
+    { value: "ať věří každé reklamě", why: "Reklama chce hlavně prodat." },
+  ], {
+    hints: ["Proč sportovec tenisky nosí v reklamě?", "Sportovec dostává za reklamu zaplaceno. Důležité je, jestli budou tenisky dobré právě kamarádovi."],
+    explanation: "Důležité je, jestli budou tenisky pohodlné a jestli je kamarád potřebuje — ne kdo je nosí v reklamě.",
+  }),
+  choice("Proč je dobré s nákupem z reklamy den počkat?", "rozmyslím si, jestli to opravdu chci", [
+    { value: "výrobek se mezitím zlepší", why: "Za den se výrobek nezmění." },
+    { value: "zítra bude všechno zadarmo", why: "To se nestane." },
+    { value: "reklama zmizí z televize", why: "O reklamu nejde, jde o tvé rozhodnutí." },
+  ], {
+    hints: ["Chceš tu věc i druhý den?", "Reklama chce, abychom se rozhodli hned. Když počkáme, rozhodneme se s klidnou hlavou."],
+    explanation: "Když den počkáme, reklama na nás přestane tlačit a rozmyslíme si, jestli věc opravdu chceme.",
+  }),
+  choice("Na obalu stojí „100% přírodní“. Znamená to, že výrobek nemá žádné přidané látky?", "ne nutně, je dobré přečíst složení", [
+    { value: "ano, vždycky", why: "„Přírodní“ je slovo z reklamy, ne záruka." },
+    { value: "ano, přírodní znamená zdravý", why: "I přírodní věci mohou být nezdravé." },
+    { value: "ne, přírodní výrobky neexistují", why: "Existují — jen to slovo samo nic nezaručuje." },
+  ], {
+    hints: ["Kde na obalu zjistíš, co v něm opravdu je?", "Slova na přední straně obalu chtějí prodat. Pravdu řekne složení vzadu drobným písmem."],
+    explanation: "„Přírodní“ zní dobře, ale nic nezaručuje. Pravdu řekne složení na obalu.",
+  }),
+  choice("Která reklama straší?", "Bez naší vitamínové žvýkačky budeš pořád nemocný!", [
+    { value: "Naše sušenky — chuť rodinné pohody.", why: "Tahle slibuje hezký pocit." },
+    { value: "Jen dnes o polovinu levnější!", why: "Tahle tlačí na spěch." },
+    { value: "Má to celá třída!", why: "Tahle tlačí na to, že to mají všichni." },
+  ], {
+    hints: ["Která reklama ti naznačuje, že se ti stane něco zlého?", "Strašení funguje tak, že nás vyleká a výrobek nabídne jako záchranu."],
+    explanation: "Reklama vyhrožuje nemocí a žvýkačku nabízí jako záchranu — to je strašení.",
+  }),
+  choice("Která reklama slibuje hezký pocit?", "Naše sušenky — chuť rodinné pohody.", [
+    { value: "Bez našich vitamínů budeš pořád nemocný!", why: "Tahle straší." },
+    { value: "Jen dnes o polovinu levnější!", why: "Tahle tlačí na spěch." },
+    { value: "Doporučeno odborníky!", why: "Tahle se opírá o odborníky bez důkazu." },
+  ], {
+    hints: ["Ve které reklamě nejde o sušenky, ale o pocit?", "Některé reklamy nic neříkají o výrobku, jen ho spojí s pohodou, láskou nebo radostí."],
+    explanation: "„Chuť rodinné pohody“ spojuje sušenky s příjemným pocitem, o sušenkách nic neříká.",
+  }),
+  choice("Reklama na hru na mobil láká „Stáhni zdarma!“. Na co si dát pozor?", "hra může chtít peníze až uvnitř", [
+    { value: "zdarma je vždy úplně zdarma", why: "Mnoho her „zdarma“ chce platit za věci ve hře." },
+    { value: "stahovat se nesmí nic", why: "Stahovat se smí, jen je dobré dávat pozor." },
+    { value: "hra se sama smaže", why: "O to v reklamě nejde." },
+  ], {
+    hints: ["Jak na hře „zdarma“ firma vydělá?", "Stažení bývá zdarma, ale uvnitř se často nabízejí placené věci. Než něco zaplatíš, poraď se s rodiči."],
+    explanation: "Hra „zdarma“ často chce peníze za věci uvnitř hry — je dobré na to myslet a poradit se s rodiči.",
+  }),
+  choice("Co mají reklamní triky společné?", "chtějí, abychom koupili bez přemýšlení", [
+    { value: "všechny jsou zakázané", why: "Většina triků zakázaná není." },
+    { value: "všechny říkají celou pravdu", why: "Triky naopak ukazují jen část pravdy." },
+    { value: "všechny jsou jen pro dospělé", why: "Mnoho triků míří i na děti." },
+  ], {
+    hints: ["Proč reklama spěchá, straší nebo slibuje pocity?", "Všechny triky se snaží obejít rozum — abychom se rozhodli podle pocitu, ne podle toho, co opravdu potřebujeme."],
+    explanation: "Reklamní triky chtějí, abychom koupili rychle a bez přemýšlení.",
+  }),
+  choice("Pod obrázkem kola je hvězdička: „*cena bez sedla a brzd“. Co je to za trik?", "podmínka malým písmem", [
+    { value: "slavný člověk to chválí", why: "Nikdo slavný tu není." },
+    { value: "strašení", why: "Nic tu nestraší." },
+    { value: "slibuje hezký pocit", why: "Nejde tu o pocit, ale o schovanou informaci." },
+  ], {
+    hints: ["Co je napsané u hvězdičky?", "Lákavá cena je velká, důležitá informace, že kolo je bez sedla a brzd, je schovaná drobně."],
+    explanation: "Důležitá informace (bez sedla a brzd) je schovaná u hvězdičky — podmínka malým písmem.",
+  }),
+  choice("Kdo ti o výrobku nejspíš řekne pravdu?", "nezávislý test výrobků", [
+    { value: "reklama výrobce", why: "Výrobce chce prodat." },
+    { value: "prodavač, který výrobek prodává", why: "Prodavač chce, abys koupil nebo koupila." },
+    { value: "slogan na obalu", why: "Slogan je reklama." },
+  ], {
+    hints: ["Kdo z tvého nákupu nic nemá?", "Pravdu řekne spíš ten, kdo na prodeji nevydělá — třeba časopis nebo organizace, která výrobky testuje."],
+    explanation: "Nezávislý test výrobek jen zkouší a nic neprodává — je nejspolehlivější.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  if (level === 3) {
-    return shuffle(POOL_L3_TECHNIKY).slice(0, 30).map(({ slogan, a, opts, e }) => ({
-      question: `Reklamní slogan: "${slogan}"\nKterou techniku manipulace tento slogan používá?`,
-      correctAnswer: a,
-      options: shuffle([...opts]),
-      hints: [
-        "Reklamní techniky: bandwagon (všichni to mají), emocionální apel, apel na strach, falešná autorita, superlativ bez důkazu, falešná naléhavost, skryté podmínky, slavná osobnost.",
-        "Ptej se: proč tenhle slogan zabírá? Bojím se? Cítím tlak? Věřím falešné autoritě?",
-      ],
-      explanation: e,
-    }));
-  }
-  const pool = level === 1 ? POOL_L1 : POOL_L2;
-  return shuffle(pool).slice(0, 30).map(({ q, a, hint, e }) => ({
-    question: q,
-    correctAnswer: a === "ano" ? "Ano" : "Ne",
-    options: ["Ano", "Ne"],
-    hints: [
-      hint,
-      "Reklamní triky: emoce, slavná osobnost, opakování, falešná naléhavost, zdánlivá výhoda.",
-      "Ptej se: Je to pravda? Co z toho má výrobce? Je základ tvrzení uveden?",
-    ],
-    explanation: e,
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const MANIPULATIVNIKOMUNIKACEVREKLAME: TopicMetadata[] = [
@@ -124,29 +302,30 @@ export const MANIPULATIVNIKOMUNIKACEVREKLAME: TopicMetadata[] = [
     category: "Komunikační a slohová výchova",
     topic: "Komunikační a slohová výchova",
     briefDescription: "Poznáš, jak reklamy manipulují, a naučíš se jim nepodléhat.",
-    keywords: ["reklama", "manipulace", "slogan", "emoce", "slavná osobnost", "falešná naléhavost", "kritické myšlení"],
+    keywords: ["reklama", "slogan", "manipulace", "trik", "kritické myšlení", "spotřebitel"],
     goals: [
-      "Rozpoznat reklamní triky (emoce, celebrita, naléhavost, opakování)",
-      "Kriticky hodnotit reklamní sdělení",
+      "Poznat, k čemu reklama slouží",
+      "Rozpoznat běžné reklamní triky",
+      "Ověřit si tvrzení z reklamy",
     ],
-    boundaries: ["Bez analýzy politické propagandy", "Bez pokročilé semiotiky"],
+    boundaries: ["Bez analýzy politické propagandy", "Bez odborných názvů technik"],
     gradeRange: [4, 4],
-    inputType: "true_false",
+    inputType: "select_one",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "conceptual",
     recommendedNext: ["g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky"],
     generator: gen,
     helpTemplate: {
-      hint: "Triky: emoce (rodina/štěstí), celebrita (slavný doporučuje), naléhavost (jen dnes!), opakování (slogan), zdánlivá výhoda (o 20% lepší — než co?)",
+      hint: "Reklama chce prodat. Ptej se: Kdo to říká? Co z toho má? Opravdu to potřebuju?",
       steps: [
-        "Přečti tvrzení pečlivě.",
-        "Ptej se: Je to pravda? Co tím chtějí říct?",
-        "Najdi techniku: emoce / slavná osoba / naléhavost / opakování.",
-        "Zhodnoť, zda je tvrzení dokazatelné.",
+        "Kdo reklamu platí a co chce?",
+        "Jaký trik používá (slavný člověk, všichni to mají, spěch, pocit, odborníci, nejlepší, hvězdička, strach)?",
+        "Dá se tvrzení ověřit?",
+        "Opravdu tu věc potřebuju?",
       ],
-      commonMistake: "Věřit číslům bez kontextu: '50% lepší' — lepší než co? Základna není uvedena.",
-      example: "Reklama: 'Milujte svou rodinu → kupte nás!' = emocionální apel (propojení produktu se štěstím rodiny)",
+      commonMistake: "Věřit, že slavný člověk nebo slovo „nejlepší“ dokazuje kvalitu výrobku",
+      example: "„Poslední tři kusy!“ → trik: spěchej, jinak to zmizí",
     },
   },
 ];

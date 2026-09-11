@@ -1,385 +1,47 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { chronologie, type Udalost } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// vysvětlení a na úrovni jen deset pevných řad. Teď se skládají z banky
+// ověřených událostí: L1 tři s datem, L2 čtyři s datem, L3 čtyři bez data.
 
-// Level 1 – jednodušší sekvence (4 události)
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky: vznik ČR, vstup do NATO, Sametová revoluce, vstup do EU.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (17. 11. 1989)",
-      "Vznik samostatné ČR (1. 1. 1993)",
-      "Vstup ČR do NATO (1999)",
-      "Vstup ČR do EU (1. 5. 2004)",
-    ],
-    hints: ["Sametová revoluce byla absolutně první."],
-  },
-  {
-    question: "Seřaď od nejdřívějšího: vstup do Schengenu, vznik ČR, vstup do EU, vstup do NATO.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR (1. 1. 1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (1. 5. 2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Vznik ČR byl 1. 1. 1993."],
-  },
-  {
-    question: "Seřaď čtyři klíčové milníky ČR po roce 1989.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (1989)",
-      "Sametový rozvod — vznik ČR a SR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Sametová revoluce byla nejdříve."],
-  },
-  {
-    question: "Seřaď: vstup do EU, vznik ČR, vstup do NATO, vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Vznik ČR byl první."],
-  },
-  {
-    question: "Seřaď: Havel prezidentem, Sametová revoluce, vznik ČR, vstup do NATO.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (17. 11. 1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-      "Vznik ČR (1. 1. 1993)",
-      "Vstup do NATO (1999)",
-    ],
-    hints: ["Havel byl zvolen prezidentem krátce po Sametové revoluci."],
-  },
-  {
-    question: "Seřaď: Klaus premiérem ČR, vznik ČR, vstup do EU, vstup do NATO.",
-    correctAnswer: "order",
-    items: [
-      "Klaus jako premiér ČR (1993–1997)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Klaus byl premiérem od vzniku ČR."],
-  },
-  {
-    question: "Seřaď: vstup do Schengenu, vstup do EU, první svobodné volby po 1989, vstup do NATO.",
-    correctAnswer: "order",
-    items: [
-      "První svobodné volby po pádu komunismu (červen 1990)",
-      "Vstup ČR do NATO (1999)",
-      "Vstup ČR do EU (1. 5. 2004)",
-      "Vstup ČR do Schengenu (2007)",
-    ],
-    hints: ["První svobodné volby proběhly v červnu 1990."],
-  },
-  {
-    question: "Seřaď: Václav Klaus prezidentem, vznik ČR, vstup do EU, vstup do NATO.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Václav Klaus zvolen prezidentem (2003)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Klaus byl zvolen prezidentem v roce 2003."],
-  },
-  {
-    question: "Seřaď čtyři klíčové milníky vztahu ČR k Evropě.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Vstup do NATO byl v roce 1999."],
-  },
-  {
-    question: "Seřaď: ČR usiluje o vstup do NATO, Sametová revoluce, vznik ČR, vstup do EU.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (1989)",
-      "ČR usiluje o vstup do NATO — přihlašuje se (1997)",
-      "Vznik ČR (1993)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Sametová revoluce je nejdříve."],
-  },
-];
+const UDALOSTI: Udalost[] = [
+  { uroven: 1, co: "Sametová revoluce", kdy: "listopad 1989", klic: 1989.1117,
+    proc: "Pád komunismu otevřel cestu k demokracii a svobodným volbám." },
+  { uroven: 1, co: "Vznik samostatné České republiky", kdy: "1. 1. 1993", klic: 1993.0101,
+    proc: "Československo se pokojně rozdělilo na Česko a Slovensko." },
+  { uroven: 1, co: "Česko vstoupilo do NATO", kdy: "12. 3. 1999", klic: 1999.0312,
+    proc: "Vstupem do obranného spojenectví se Česko může spolehnout na pomoc spojenců." },
+  { uroven: 1, co: "Česko vstoupilo do Evropské unie", kdy: "1. 5. 2004", klic: 2004.0501,
+    proc: "Díky EU mohou Češi volně cestovat, studovat a pracovat v dalších zemích unie." },
+  { uroven: 1, co: "Česko vstoupilo do schengenského prostoru", kdy: "21. 12. 2007", klic: 2007.1221,
+    proc: "Na hranicích se sousedními státy zmizely pasové kontroly." },
 
-// Level 2 – středně těžké sekvence (5 událostí)
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky 5 klíčových milníků ČR od roku 1989.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (17. 11. 1989)",
-      "Vznik samostatné ČR (1. 1. 1993)",
-      "Vstup ČR do NATO (1999)",
-      "Vstup ČR do EU (1. 5. 2004)",
-      "Vstup ČR do Schengenu (2007)",
-    ],
-    hints: ["Sametová revoluce byla absolutně první."],
-  },
-  {
-    question: "Seřaď: vstup do Schengenu, Havel prezidentem, vznik ČR, vstup do NATO, vstup do EU.",
-    correctAnswer: "order",
-    items: [
-      "Havel zvolen prezidentem (29. 12. 1989)",
-      "Vznik ČR (1. 1. 1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Havel byl zvolen prezidentem v prosinci 1989."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat od pádu komunismu po vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (1989)",
-      "První svobodné volby (1990)",
-      "Vznik ČR — Sametový rozvod (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Sametová revoluce je nejdříve."],
-  },
-  {
-    question: "Seřaď: pád Berlínské zdi, vznik ČR, vstup do EU, Sametová revoluce, vstup do NATO.",
-    correctAnswer: "order",
-    items: [
-      "Pád Berlínské zdi (9. 11. 1989)",
-      "Sametová revoluce (17. 11. 1989)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Berlínská zeď padla 8 dní před Sametovou revolucí."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat: od komunistického Února 1948 po vstup do EU.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat — komunisté u moci (1948)",
-      "Sametová revoluce (1989)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Únorový převrat je absolutně nejdříve."],
-  },
-  {
-    question: "Seřaď: vstup do NATO, Havel prezidentem, Klaus premiérem, vznik ČR, vstup do EU.",
-    correctAnswer: "order",
-    items: [
-      "Havel zvolen prezidentem (29. 12. 1989)",
-      "Klaus — první premiér ČR (1993)",
-      "Vznik ČR (1. 1. 1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Havel byl zvolen v prosinci 1989."],
-  },
-  {
-    question: "Seřaď 5 milníků od Sametové revoluce po vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (1989)",
-      "Sametový rozvod (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Od 1989 po 2007."],
-  },
-  {
-    question: "Seřaď: Zeman prezidentem, vstup do EU, vznik ČR, vstup do NATO, vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-      "Zeman zvolen prezidentem (2013)",
-    ],
-    hints: ["Zeman byl zvolen v roce 2013."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat: od přihlášení do NATO po přijetí Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "ČR se přihlašuje do NATO (1997)",
-      "Vstup do NATO (1999)",
-      "ČR přihlašuje do EU (2003 — referendum)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["ČR se přihlásila do NATO v roce 1997."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat: od Sametové revoluce po vstup ČR do NATO.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (17. 11. 1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-      "První svobodné volby (červen 1990)",
-      "Vznik ČR (1. 1. 1993)",
-      "Vstup do NATO (1999)",
-    ],
-    hints: ["Sametová revoluce je absolutně první."],
-  },
-];
+  { uroven: 2, co: "Přijata Ústava České republiky", kdy: "16. 12. 1992", klic: 1992.1216,
+    proc: "Ústavu přijala Česká národní rada ještě před vznikem samostatného státu." },
+  { uroven: 1, co: "Václav Havel zvolen prvním prezidentem České republiky", kdy: "26. 1. 1993", klic: 1993.0126,
+    proc: "Prvním prezidentem samostatného Česka se stal Václav Havel." },
+  { uroven: 2, co: "Václav Klaus zvolen prezidentem", kdy: "2003", klic: 2003.0228,
+    proc: "Klaus vystřídal na Pražském hradě Václava Havla." },
+  { uroven: 2, co: "Česko poprvé předsedalo Radě Evropské unie", kdy: "první pololetí 2009", klic: 2009.01,
+    proc: "Půl roku vedlo Česko jednání ministrů zemí Evropské unie." },
+  { uroven: 2, co: "První přímá volba prezidenta", kdy: "leden 2013", klic: 2013.0126,
+    proc: "Poprvé prezidenta nevolil parlament, ale přímo občané; zvolen byl Miloš Zeman." },
 
-// Level 3 – pokročilé sekvence (5–6 událostí)
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Seřaď 6 klíčových milníků ČR od Sametové revoluce po vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (17. 11. 1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-      "Vznik ČR — Sametový rozvod (1. 1. 1993)",
-      "Vstup ČR do NATO (1999)",
-      "Vstup ČR do EU (1. 5. 2004)",
-      "Vstup ČR do Schengenu (2007)",
-    ],
-    hints: ["Sametová revoluce je první, Schengen nejpozději."],
-  },
-  {
-    question: "Seřaď 6 milníků: od pádu komunismu po přijetí ČR do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Pád Berlínské zdi (9. 11. 1989)",
-      "Sametová revoluce (17. 11. 1989)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Berlínská zeď padla 8 dní před Sametovou revolucí."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat: od komunistického převratu 1948 po vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Sametová revoluce (1989)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Únorový převrat je absolutně nejdříve."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat: od vzniku ČSR v 1918 po vstup do EU.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Československa (1918)",
-      "Únorový převrat (1948)",
-      "Sametová revoluce (1989)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Vznik ČSR je absolutně nejdříve."],
-  },
-  {
-    question: "Seřaď 6 milníků: od pádu komunismu v ČSR po přijetí Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (1989)",
-      "První svobodné volby (1990)",
-      "Sametový rozvod — vznik ČR a SR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["Sametová revoluce je nejdříve."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat od vzniku ČR po vstup do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR (1. 1. 1993)",
-      "ČR se přihlašuje do NATO (1997)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (1. 5. 2004)",
-      "Vstup do Schengenu (2007)",
-    ],
-    hints: ["ČR se přihlásila do NATO v roce 1997."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat: od 1. světové války po vstup ČR do EU.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Czechoslovenska (1918)",
-      "Komunistický převrat (1948)",
-      "Sametová revoluce (1989)",
-      "Vznik ČR (1993)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Od roku 1918 po rok 2004."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat zahraniční politiky ČR po roce 1989.",
-    correctAnswer: "order",
-    items: [
-      "Zrušení Varšavské smlouvy (1991)",
-      "Vznik ČR (1993)",
-      "Přihlášení ČR do NATO (1997)",
-      "Vstup do NATO (1999)",
-      "Vstup do EU (2004)",
-    ],
-    hints: ["Varšavská smlouva byla zrušena v roce 1991."],
-  },
-  {
-    question: "Seřaď 6 milníků: od Sametové revoluce po přijetí ČR do Schengenu.",
-    correctAnswer: "order",
-    items: [
-      "Sametová revoluce (17. 11. 1989)",
-      "Sametový rozvod (1. 1. 1993)",
-      "Přihlášení ČR do NATO (1997)",
-      "Vstup ČR do NATO (1999)",
-      "Vstup ČR do EU (1. 5. 2004)",
-      "Vstup ČR do Schengenu (2007)",
-    ],
-    hints: ["Přihlášení do NATO přišlo v roce 1997."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat: od vzniku ČR po vstup Slovenska do eurozóny.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČR a SR (1. 1. 1993)",
-      "Vstup ČR do NATO (1999)",
-      "Vstup ČR i SR do EU (2004)",
-      "Vstup ČR do Schengenu (2007)",
-      "Slovensko přijímá euro (2009)",
-    ],
-    hints: ["Slovensko přijalo euro v roce 2009."],
-  },
+  { uroven: 3, co: "Vznikla Visegrádská skupina", kdy: "15. 2. 1991", klic: 1991.0215,
+    proc: "Československo, Polsko a Maďarsko se ve Visegrádu dohodly na spolupráci." },
+  { uroven: 3, co: "Premiéři Klaus a Mečiar se dohodli na rozdělení státu", kdy: "26. 8. 1992", klic: 1992.0826,
+    proc: "Dohoda ve vile Tugendhat v Brně připravila pokojné rozdělení Československa." },
+  { uroven: 3, co: "Česko přijato do OECD", kdy: "prosinec 1995", klic: 1995.1221,
+    proc: "Členstvím v organizaci vyspělých ekonomik se Česko zařadilo mezi rozvinuté země." },
+  { uroven: 3, co: "Vstoupila v platnost Lisabonská smlouva", kdy: "1. 12. 2009", klic: 2009.1201,
+    proc: "Smlouva změnila fungování Evropské unie; Česko ji schválilo mezi posledními." },
+  { uroven: 3, co: "Česko podruhé předsedalo Radě Evropské unie", kdy: "druhé pololetí 2022", klic: 2022.07,
+    proc: "Podruhé vedlo Česko půl roku jednání zemí Evropské unie." },
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return chronologie(UDALOSTI, level, "z let 1989–2022");
 }
 
 export const VZNIKCR1993CRVEUANATO: TopicMetadata[] = [
@@ -408,7 +70,7 @@ export const VZNIKCR1993CRVEUANATO: TopicMetadata[] = [
     helpTemplate: {
       hint: "Pamatuj: 1993 vznik ČR, 1999 NATO, 2004 EU, 2007 Schengen.",
       steps: [
-        "1. 1. 1993: Sametový rozvod — vznik ČR a SR",
+        "1. 1993: Sametový rozvod — vznik ČR a SR",
         "1999: ČR vstupuje do NATO",
         "1. 5. 2004: ČR vstupuje do EU",
         "2007: ČR vstupuje do Schengenu",

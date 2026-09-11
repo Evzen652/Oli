@@ -1,78 +1,93 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { ciselnaUloha, fmt, rnd, RADY } from "./_mat";
+
+// Přepsáno 2026-09-11 (audit 4. ročníku). Distraktory byly jen výsledek
+// ± činitel (žádná typická chyba), nápovědy stejné pro všechny úlohy
+// a s chybou („Přenos (desetiny výsledku)“ — jde o desítky), postup u L1/L2
+// jen „Násobíme číslici po číslici. Výsledek: …“. Teď distraktory vznikají
+// z typických chyb (zapomenutý přenos, nezapsaný poslední přenos,
+// neposunutý mezisoučet) a postup ukazuje každý sloupec.
+//
+// L1: trojciferné × jednociferné · L2: čtyřciferné × jednociferné
+// L3: trojciferné × dvouciferné (bez násobků deseti).
+
+function bezPrenosu(a: number, b: number): number {
+  let res = 0, place = 1, x = a;
+  while (x > 0) { res += ((x % 10) * b % 10) * place; place *= 10; x = Math.floor(x / 10); }
+  return res;
+}
+
+function sloupce(a: number, b: number): string[] {
+  const steps: string[] = [];
+  const cifry = String(a).split("").reverse().map(Number);
+  let carry = 0;
+  cifry.forEach((d, i) => {
+    const p = d * b + carry;
+    const posledni = i === cifry.length - 1;
+    const plus = carry ? ` + ${carry} (přenos)` : "";
+    steps.push(posledni
+      ? `${RADY[i]}: ${d} × ${b}${plus} = ${p} → zapíšu celé ${p}`
+      : `${RADY[i]}: ${d} × ${b}${plus} = ${p} → zapíšu ${p % 10}${p >= 10 ? `, přenáším ${Math.floor(p / 10)}` : ""}`);
+    carry = Math.floor(p / 10);
+  });
+  return steps;
+}
+
+function jednociferny(a: number, b: number): PracticeTask {
+  const correct = a * b;
+  const p0 = (a % 10) * b;
+  const n = String(a).length;
+  const odhadA = Math.round(a / 10 ** (n - 1)) * 10 ** (n - 1);
+  return ciselnaUloha(`${fmt(a)} × ${b} = ?`, correct, [
+    { value: bezPrenosu(a, b), why: "Tady se zapomnělo na přenosy: v každém sloupci je jen poslední číslice součinu a desítky se nepřičetly k dalšímu sloupci." },
+    { value: correct % 10 ** n, why: "Poslední přenos se nezapsal. Když vynásobíš nejvyšší řád, zapiš celý výsledek i s přenosem." },
+    { value: correct + 10, why: "Výsledek je o 10 větší — v desítkách je chyba v malé násobilce nebo v přičtení přenosu." },
+    { value: correct - 10, why: "Výsledek je o 10 menší — v desítkách se zapomněl přičíst přenos nebo je chyba v malé násobilce." },
+  ], [
+    `Násobíš ${fmt(a)} × ${b}. Začni jednotkami: kolik je ${a % 10} × ${b}?`,
+    `${a % 10} × ${b} = ${p0}: ${p0 >= 10 ? `zapiš ${p0 % 10} a ${Math.floor(p0 / 10)} si pamatuj jako přenos` : `zapiš ${p0}, přenos není`}. Pak násob desítky a přenos k nim přičti. Poslední přenos napiš celý na začátek výsledku.`,
+  ], [
+    `Zapíšeme ${fmt(a)} a pod jednotky ${b}. Násobíme zprava:`,
+    ...sloupce(a, b),
+    `Výsledek: ${fmt(correct)}`,
+    `Odhad pro kontrolu: ${fmt(a)} je asi ${fmt(odhadA)} a ${fmt(odhadA)} × ${b} = ${fmt(odhadA * b)} — výsledek je blízko.`,
+  ]);
+}
+
+function dvouciferny(a: number, b: number): PracticeTask {
+  const u = b % 10, t = Math.floor(b / 10);
+  const correct = a * b;
+  const m1 = a * u, m2 = a * t;
+  return ciselnaUloha(`${fmt(a)} × ${b} = ?`, correct, [
+    { value: m1 + m2, why: `Druhý mezisoučet (${fmt(m2)}) se nezapsal o jedno místo vlevo. Násobíš desítkami, proto patří o řád výš.` },
+    { value: m1 + m2 * 100, why: "Druhý mezisoučet je posunutý o dvě místa. Při násobení desítkami se posouvá jen o jedno." },
+    { value: m2 * 10, why: `Chybí první mezisoučet — násobení jednotkami (${fmt(a)} × ${u}).` },
+    { value: m1, why: `Chybí druhý mezisoučet — násobení desítkami (${fmt(a)} × ${t * 10}).` },
+    { value: correct + 10, why: "Výsledek je o 10 větší — chyba při sčítání mezisoučtů nebo v přenosu." },
+  ], [
+    `Rozlož ${b} = ${t * 10} + ${u}. Kolik je ${fmt(a)} × ${u}?`,
+    `První mezisoučet: ${fmt(a)} × ${u} = ${fmt(m1)}. Druhý: ${fmt(a)} × ${t} = ${fmt(m2)} — zapiš ho o jedno místo vlevo. Nakonec oba mezisoučty sečti.`,
+  ], [
+    `Násobíme ${fmt(a)} × ${b} = ${fmt(a)} × ${u} + ${fmt(a)} × ${t * 10}.`,
+    `1. mezisoučet: ${fmt(a)} × ${u} = ${fmt(m1)}`,
+    `2. mezisoučet: ${fmt(a)} × ${t} = ${fmt(m2)}, zapíšeme o jedno místo vlevo → ${fmt(m2 * 10)}`,
+    `Sečteme: ${fmt(m1)} + ${fmt(m2 * 10)} = ${fmt(correct)}`,
+    `Odhad: ${fmt(a)} × ${Math.round(b / 10) * 10} = ${fmt(a * Math.round(b / 10) * 10)} — výsledek je blízko.`,
+  ]);
+}
 
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
-
-  // level 1: 3-ciferné × jednociferné (do 999 × 9)
-  // level 2: 4-ciferné × jednociferné (do 9 999 × 9)
-  // level 3: 3-ciferné × dvouciferné (do 999 × 99)
-
   for (let i = 0; i < 40; i++) {
-    let a: number, b: number;
-
-    if (level === 1) {
-      a = Math.floor(Math.random() * 900) + 100;  // 100–999
-      b = Math.floor(Math.random() * 8) + 2;      // 2–9
-    } else if (level === 2) {
-      a = Math.floor(Math.random() * 9000) + 1000; // 1 000–9 999
-      b = Math.floor(Math.random() * 8) + 2;       // 2–9
-    } else {
-      a = Math.floor(Math.random() * 900) + 100;   // 100–999
-      b = Math.floor(Math.random() * 89) + 11;     // 11–99 (aspoň dvouciferné)
+    if (level === 1) tasks.push(jednociferny(rnd(100, 999), rnd(2, 9)));
+    else if (level === 2) tasks.push(jednociferny(rnd(1000, 9999), rnd(2, 9)));
+    else {
+      let b = rnd(11, 99);
+      while (b % 10 === 0) b = rnd(11, 99);
+      tasks.push(dvouciferny(rnd(100, 999), b));
     }
-
-    const correct = a * b;
-
-    const distractors = [
-      correct + b,
-      correct - b,
-      correct + a,
-      correct - a,
-    ].filter(v => v > 0 && v !== correct);
-
-    const opts = shuffle([correct, distractors[0], distractors[1], distractors[2]])
-      .map(String);
-
-    const steps: string[] = level === 3
-      ? [
-          `Násobíme ${fmt(a)} × ${b}:`,
-          `  ${fmt(a)} × ${b % 10} = ${fmt(a * (b % 10))}  (jednotky)`,
-          `  ${fmt(a)} × ${Math.floor(b / 10)} = ${fmt(a * Math.floor(b / 10))}  (desítky, posunout o 1 místo vlevo)`,
-          `Sečteme mezisoučty: ${fmt(a * (b % 10))} + ${fmt(a * Math.floor(b / 10) * 10)} = ${fmt(correct)}`,
-        ]
-      : [
-          `Násobíme ${fmt(a)} × ${b} číslici po číslici zprava.`,
-          `Výsledek: ${fmt(correct)}`,
-        ];
-
-    tasks.push({
-      question: `${fmt(a)} × ${b} = ?`,
-      correctAnswer: String(correct),
-      options: opts,
-      hints: [
-        `Začni od nejnižšího řádu (jednotky) a postupuj doleva.`,
-        level === 3
-          ? `Při dvojciferném činiteli vypočítej dva mezisoučty a sečti je (druhý posuň o 1 místo).`
-          : `Přenos (desetiny výsledku) přidej k součtu dalšího sloupce.`,
-      ],
-      solutionSteps: steps,
-    });
   }
-
   return tasks;
-}
-
-function fmt(n: number): string {
-  return n.toLocaleString("cs-CZ").replace(/ /g, " ");
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
 }
 
 export const PISEMNE_NASOBENI: TopicMetadata[] = [
@@ -111,9 +126,9 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
       hint: "Násobíme zprava. Výsledek každé číslice zapíšeme, přenos přičteme k dalšímu sloupci. Dvouciferný činitel = dva mezisoučty, druhý posunutý o místo.",
       steps: [
         "Zapiš čísla pod sebe (menší dole).",
-        "Násobíme spodní číslici jednotek s každou číslicí horního čísla zprava, přenosi zapiš nad sloupec.",
+        "Násobíme spodní číslici jednotek s každou číslicí horního čísla zprava, přenosy si pamatuj.",
         "Výsledek zapíšeme (první mezisoučet).",
-        "Při dvouciferném spodním: násobíme desetinu, výsledek posuneme o 1 místo vlevo (druhý mezisoučet).",
+        "Při dvouciferném spodním: násobíme desítkami, výsledek posuneme o 1 místo vlevo (druhý mezisoučet).",
         "Sečteme mezisoučty → konečný výsledek.",
       ],
       commonMistake: "Zapomenutí posunout druhý mezisoučet o jedno místo vlevo při násobení dvouciferným činitelem.",

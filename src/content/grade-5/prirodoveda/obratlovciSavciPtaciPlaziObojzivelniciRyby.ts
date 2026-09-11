@@ -1,321 +1,47 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { trideni, type Zarazeni } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// vysvětlení a na úrovni jen deset pevných sad. Teď banka živočichů: L1 běžní
+// zástupci, L2 živočichové, kteří klamou vzhledem (netopýr, velryba, tučňák),
+// L3 méně známí a zrádní (slepýš, ptakopysk, mořský koník).
 
-/**
- * Balík 1A — infra oprava (viz src/lib/levelCoverage.ts taskKey) +
- * disjunktní POOL_L1/L2/L3. Jedna oprava faktu: "Žarloun" (nesprávný/
- * neexistující český název ryby) → "Treska obecná".
- */
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Pták", items: ["Kachna divoká"] },
-      { name: "Savec", items: ["Vlk obecný"] },
-      { name: "Ryba", items: ["Kapr obecný"] },
-      { name: "Plaz", items: ["Ještěrka obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Obojživelník", items: ["Skokan zelený"] },
-      { name: "Savec", items: ["Netopýr ušatý"] },
-      { name: "Pták", items: ["Čáp bílý"] },
-      { name: "Ryba", items: ["Kapr"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Plaz", items: ["Užovka obojková"] },
-      { name: "Obojživelník", items: ["Mlok skvrnitý"] },
-      { name: "Pták", items: ["Sýkorka koňadra"] },
-      { name: "Savec", items: ["Jelen evropský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Obojživelník", items: ["Žába rosnička"] },
-      { name: "Savec", items: ["Srnec obecný"] },
-      { name: "Pták", items: ["Datel černý"] },
-      { name: "Ryba", items: ["Okounek pstruhový"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Liška obecná"] },
-      { name: "Plaz", items: ["Slepýš křehký"] },
-      { name: "Pták", items: ["Volavka šedá"] },
-      { name: "Ryba", items: ["Štika obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Obojživelník", items: ["Čolek obecný"] },
-      { name: "Savec", items: ["Vydra říční"] },
-      { name: "Pták", items: ["Kavka obecná"] },
-      { name: "Ryba", items: ["Losos atlantský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Medvěd hnědý"] },
-      { name: "Obojživelník", items: ["Ropucha obecná"] },
-      { name: "Pták", items: ["Sokol stěhovavý"] },
-      { name: "Plaz", items: ["Ještěrka zelená"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Pes domácí", "Kočka domácí"] },
-      { name: "Pták", items: ["Slepice domácí"] },
-      { name: "Ryba", items: ["Zlatá rybka"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Ryba", items: ["Kapr", "Lín obecný"] },
-      { name: "Savec", items: ["Netopýr"] },
-      { name: "Pták", items: ["Holub"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Kůň domácí"] },
-      { name: "Pták", items: ["Andulka vlnkovaná"] },
-      { name: "Plaz", items: ["Želva suchozemská", "Leguán zelený"] },
-    ],
-  },
-];
+const Z: Zarazeni[] = [
+  { uroven: 1, polozka: "pes", skupina: "savci", proc: "Pes rodí živá mláďata a kojí je mlékem." },
+  { uroven: 1, polozka: "kůň", skupina: "savci", proc: "Kůň má srst a hříbě pije mateřské mléko." },
+  { uroven: 1, polozka: "srnec", skupina: "savci", proc: "Srnčí mláďata sají mléko matky." },
+  { uroven: 1, polozka: "vrabec", skupina: "ptáci", proc: "Vrabec má peří, zobák a snáší vejce." },
+  { uroven: 1, polozka: "kachna", skupina: "ptáci", proc: "Kachna má peří a křídla a snáší vejce." },
+  { uroven: 1, polozka: "sýkora", skupina: "ptáci", proc: "Sýkora má peří a zobák." },
+  { uroven: 1, polozka: "ještěrka", skupina: "plazi", proc: "Ještěrka má suchou šupinatou kůži." },
+  { uroven: 1, polozka: "užovka", skupina: "plazi", proc: "Užovka je had — plaz se šupinami." },
+  { uroven: 1, polozka: "skokan", skupina: "obojživelníci", proc: "Skokan žije ve vodě i na souši a z vajíček se líhnou pulci." },
+  { uroven: 1, polozka: "kapr", skupina: "ryby", proc: "Kapr dýchá žábrami a má ploutve." },
+  { uroven: 1, polozka: "pstruh", skupina: "ryby", proc: "Pstruh žije ve vodě a dýchá žábrami." },
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Plch velký", "Rys ostrovid", "Ondatra pižmová"] },
-      { name: "Obojživelník", items: ["Skokan hnědý"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Plaz", items: ["Zmije obecná"] },
-      { name: "Obojživelník", items: ["Ropucha"] },
-      { name: "Pták", items: ["Poštolka obecná"] },
-      { name: "Savec", items: ["Zajíc polní"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Gorila horská", "Orangutan"] },
-      { name: "Pták", items: ["Papoušek šedý"] },
-      { name: "Plaz", items: ["Chameleon jemenský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Ryba", items: ["Kapr stříbřitý"] },
-      { name: "Obojživelník", items: ["Olm jeskynní"] },
-      { name: "Pták", items: ["Sova pálená"] },
-      { name: "Savec", items: ["Veverka popelavá"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Nosorožec tuponosý", "Hroch obojživelný"] },
-      { name: "Pták", items: ["Plameňák"] },
-      { name: "Plaz", items: ["Varán komodský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Ryba", items: ["Střevle potoční"] },
-      { name: "Obojživelník", items: ["Čolek dunajský"] },
-      { name: "Pták", items: ["Strakapoud velký"] },
-      { name: "Savec", items: ["Jelenec wapiti"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Slon africký", "Žirafa"] },
-      { name: "Pták", items: ["Pštros africký"] },
-      { name: "Plaz", items: ["Krokodýl"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Vlk šedý"] },
-      { name: "Pták", items: ["Výr velký"] },
-      { name: "Plaz", items: ["Zmije"] },
-      { name: "Obojživelník", items: ["Ropucha zelená"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Bobr evropský"] },
-      { name: "Pták", items: ["Volavka purpurová"] },
-      { name: "Obojživelník", items: ["Čolek horský"] },
-      { name: "Ryba", items: ["Piskor pruhovaný"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Ježek západní"] },
-      { name: "Obojživelník", items: ["Ropucha obecná"] },
-      { name: "Pták", items: ["Strnad obecný"] },
-      { name: "Ryba", items: ["Plotice obecná"] },
-    ],
-  },
-];
+  { uroven: 2, polozka: "netopýr", skupina: "savci", proc: "Netopýr létá, ale rodí živá mláďata a kojí je — je to savec." },
+  { uroven: 2, polozka: "velryba", skupina: "savci", proc: "Velryba žije v moři, ale dýchá plícemi a kojí mláďata." },
+  { uroven: 2, polozka: "delfín", skupina: "savci", proc: "Delfín se musí nadechovat nad hladinou a kojí mláďata." },
+  { uroven: 2, polozka: "tučňák", skupina: "ptáci", proc: "Tučňák neumí létat, ale má peří a snáší vejce." },
+  { uroven: 2, polozka: "pštros", skupina: "ptáci", proc: "Pštros je největší pták — nelétá, ale má peří." },
+  { uroven: 2, polozka: "želva", skupina: "plazi", proc: "Želva má krunýř a šupinatou kůži a klade vejce na souši." },
+  { uroven: 2, polozka: "krokodýl", skupina: "plazi", proc: "Krokodýl žije u vody, ale je to plaz se šupinami." },
+  { uroven: 2, polozka: "mlok", skupina: "obojživelníci", proc: "Mlok vypadá jako ještěrka, ale má vlhkou kůži bez šupin." },
+  { uroven: 2, polozka: "čolek", skupina: "obojživelníci", proc: "Čolek se rozmnožuje ve vodě, jeho larvy dýchají žábrami." },
+  { uroven: 2, polozka: "žralok", skupina: "ryby", proc: "Žralok dýchá žábrami a má ploutve." },
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Velryba i delfín jsou savci — dýchají vzduch, kojí mládě mlékem. Nejsou to ryby.",
-    categories: [
-      { name: "Savec", items: ["Velryba modrá", "Delfín skákavý"] },
-      { name: "Ryba", items: ["Tuňák obecný"] },
-      { name: "Pták", items: ["Tučňák císařský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Lev africký"] },
-      { name: "Plaz", items: ["Krokodýl nilský", "Kajman"] },
-      { name: "Pták", items: ["Orel skalní"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Ptakopysk je savec — kojí mládě mlékem, přestože snáší vejce.",
-    categories: [
-      { name: "Savec", items: ["Ptakopysk"] },
-      { name: "Pták", items: ["Kachna"] },
-      { name: "Plaz", items: ["Leguán"] },
-      { name: "Ryba", items: ["Treska obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Plaz", items: ["Hatérie novozélandská"] },
-      { name: "Pták", items: ["Kivi hnědý"] },
-      { name: "Savec", items: ["Vombat"] },
-      { name: "Ryba", items: ["Barakuda"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Mrož i tuleň jsou savci — přestože žijí ve vodě, dýchají vzduch a kojí mládě.",
-    categories: [
-      { name: "Savec", items: ["Lední medvěd", "Mrož", "Tuleň"] },
-      { name: "Pták", items: ["Tučňák"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Keporkak (druh velryby) je savec, ne ryba — dýchá plícemi, mládě kojí mlékem.",
-    categories: [
-      { name: "Ryba", items: ["Žralok bílý"] },
-      { name: "Savec", items: ["Keporkak"] },
-      { name: "Pták", items: ["Albatros"] },
-      { name: "Plaz", items: ["Mořská želva"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    explanation: "Manta i mořský koník jsou ryby — mají žábry a jsou studenokrevní. Orka a mořský lev jsou savci.",
-    categories: [
-      { name: "Ryba", items: ["Manta velká", "Mořský koník"] },
-      { name: "Savec", items: ["Orka", "Mořský lev"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Ryba", items: ["Losos obecný"] },
-      { name: "Savec", items: ["Vydra mořská"] },
-      { name: "Pták", items: ["Alka velká (vyhynulá)"] },
-      { name: "Plaz", items: ["Leguán mořský"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Antilopa skákavá", "Gepard štíhlý"] },
-      { name: "Pták", items: ["Marabu africký"] },
-      { name: "Plaz", items: ["Kobra indická"] },
-    ],
-  },
-  {
-    question: "Zařaď každého živočicha do správné skupiny obratlovců.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Savec", items: ["Vlk šedý"] },
-      { name: "Pták", items: ["Holub skalní"] },
-      { name: "Plaz", items: ["Slepýš"] },
-      { name: "Ryba", items: ["Mník jednovousý"] },
-    ],
-  },
+  { uroven: 3, polozka: "ježek", skupina: "savci", proc: "Ježek má bodliny místo srsti, ale kojí mláďata." },
+  { uroven: 3, polozka: "ptakopysk", skupina: "savci", proc: "Ptakopysk klade vejce, ale mláďata kojí — proto patří k savcům." },
+  { uroven: 3, polozka: "slepýš", skupina: "plazi", proc: "Slepýš není had ani červ, je to beznohá ještěrka." },
+  { uroven: 3, polozka: "kuňka", skupina: "obojživelníci", proc: "Kuňka je malá žába s pestrým bříškem." },
+  { uroven: 3, polozka: "ropucha", skupina: "obojživelníci", proc: "Ropucha má bradavičnatou kůži, ale kladou vajíčka do vody." },
+  { uroven: 3, polozka: "mořský koník", skupina: "ryby", proc: "Mořský koník vypadá zvláštně, ale dýchá žábrami — je to ryba." },
+  { uroven: 3, polozka: "úhoř", skupina: "ryby", proc: "Úhoř vypadá jako had, ale je to ryba s žábrami." },
+  { uroven: 3, polozka: "kiwi", skupina: "ptáci", proc: "Kiwi nelétá a jeho peří připomíná srst, přesto je to pták." },
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool);
+  return trideni(Z, level, "Roztřiď živočichy do skupin obratlovců.");
 }
 
 export const OBRATLOVCISAVCIPTACIPLAZIOBOJZIVELNICIRYBY: TopicMetadata[] = [
@@ -340,11 +66,11 @@ export const OBRATLOVCISAVCIPTACIPLAZIOBOJZIVELNICIRYBY: TopicMetadata[] = [
     helpTemplate: {
       hint: "5 skupin: ryby (žábry), obojživelníci (voda+souš), plazi (šupiny, studenokrevní), ptáci (peří), savci (srst, mléko).",
       steps: [
-        "1. Ryby: žábry, ploutve, šupiny, voda.",
-        "2. Obojživelníci: larvy ve vodě, dospělci i na souši.",
-        "3. Plazi: šupiny, studenokrevní, suchá kůže.",
-        "4. Ptáci: peří, teplokrevní, vejce.",
-        "5. Savci: srst, teplokrevní, kojení mlékem.",
+        "Ryby: žábry, ploutve, šupiny, voda.",
+        "Obojživelníci: larvy ve vodě, dospělci i na souši.",
+        "Plazi: šupiny, studenokrevní, suchá kůže.",
+        "Ptáci: peří, teplokrevní, vejce.",
+        "Savci: srst, teplokrevní, kojení mlékem.",
       ],
       commonMistake: "Velryba je SAVEC (kojí mlékem), ne ryba. Delfín také.",
       example: "Žába = obojživelník. Had = plaz. Holub = pták. Pes = savec.",

@@ -1,326 +1,112 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby a obsahovaly vymyšlené významy („les — typ šachové figurky,
+// věž v nářečí“). Teď: L1 poznat slovo mnohoznačné a jednoznačné · L2 určit
+// význam slova ve větě · L3 najít větu, kde má slovo stejný význam.
+
+const MNOHOZNACNA: [string, string][] = [
+  ["oko", "lidské oko, oko na punčoše, oka tuku na polévce"],
+  ["koruna", "koruna krále, koruna stromu, česká koruna"],
+  ["kohoutek", "malý kohout i vodovodní kohoutek"],
+  ["list", "list stromu i list papíru"],
+  ["jazyk", "jazyk v ústech i jazyk, kterým mluvíme"],
+  ["zámek", "zámek ve městě i zámek u dveří"],
+  ["noha", "noha člověka i noha stolu"],
+  ["klíč", "klíč od dveří i houslový klíč"],
+  ["myš", "myš na poli i počítačová myš"],
+  ["křídlo", "křídlo ptáka, křídlo budovy i hudební nástroj"],
+  ["pero", "ptačí pero i pero na psaní"],
+  ["vlna", "mořská vlna i ovčí vlna"],
+];
+const JEDNOZNACNA: string[] = ["kyslík", "tužka", "pondělí", "sedmikráska", "trolejbus", "rohlík", "deštník", "brambora", "lednička", "žirafa", "tramvaj", "ponožka"];
+
+function vyber(mnoho: boolean, i: number): PracticeTask {
+  const [slovo, vyznamy] = MNOHOZNACNA[i % MNOHOZNACNA.length];
+  const jedno = shuffle(JEDNOZNACNA).slice(0, 3);
+  if (mnoho) {
+    return choice("Které slovo je mnohoznačné (má víc významů)?", slovo,
+      jedno.map((j) => ({ value: j, why: `„${j}“ má jen jeden význam — je jednoznačné.` })) as never, {
+        hints: [
+          `Zkus pro každé slovo vymyslet dvě různé věty. U kterého se význam změní? Začni třeba slovy „${jedno[0]}“ a „${jedno[1]}“.`,
+          "Mnohoznačné slovo se hodí do vět o úplně jiných věcech — třeba do věty o přírodě i o penězích.",
+        ],
+        explanation: `„${slovo}“ je mnohoznačné: ${vyznamy}. Ostatní slova mají jeden význam.`,
+      });
   }
-  return a;
+  const [j, ...zbyle] = jedno;
+  const dalsi = shuffle(MNOHOZNACNA.filter(([s]) => s !== slovo)).slice(0, 2);
+  const d = [[slovo, vyznamy], ...dalsi].map(([s, v]) => ({ value: s, why: `„${s}“ je mnohoznačné: ${v}.` }));
+  void zbyle;
+  return choice("Které slovo je jednoznačné (má jen jeden význam)?", j, d as never, {
+    hints: [
+      `Zkus pro každé slovo vymyslet dvě různé věty. Má třeba „${slovo}“ nebo „${dalsi[0][0]}“ víc významů?`,
+      "Jednoznačné slovo znamená pořád totéž, ať ho použiješ kdekoli; mnohoznačné se hodí do vět o různých věcech.",
+    ],
+    explanation: `„${j}“ má jen jeden význam — je jednoznačné. Ostatní slova jsou mnohoznačná.`,
+  });
 }
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Které slovo je jednoznačné (má jen jeden význam)?",
-    correctAnswer: "kyslík",
-    options: ["kyslík", "les", "list", "oko"],
-    hints: ["Jednoznačné slovo má přesně jeden vědecký nebo odborný význam."],
-  },
-  {
-    question: "Které slovo je vícevýznamové?",
-    correctAnswer: "oko",
-    options: ["kyslík", "oko", "fotbal", "autobus"],
-    hints: ["Vícevýznamové slovo může znamenat část těla, ale i díru v síti."],
-  },
-  {
-    question: "Slovo 'les' je vícevýznamové. Jaký může mít druhý význam?",
-    correctAnswer: "vícero stromů pohromadě, ale i typ šachové figurky – věž v nářečí",
-    options: ["má jen jeden jediný možný význam – stromy", "znamená vždy jen houby rostoucí v lese", "vícero stromů pohromadě, ale i typ šachové figurky – věž v nářečí", "znamená vždy jen přírodu jako celek"],
-    hints: ["Les může označovat lesní porost, ale v jiných kontextech i jiné věci."],
-  },
-  {
-    question: "Jaký je správný termín pro slova s více různými významy?",
-    correctAnswer: "vícevýznamová slova",
-    options: ["jednoznačná slova", "cizí slova", "zdrobněliny", "vícevýznamová slova"],
-    hints: ["Tato slova mají více než jeden ustálený význam."],
-  },
-  {
-    question: "Slovo 'hlava' je vícevýznamové. Které z těchto vět ukazuje jiný význam?",
-    correctAnswer: "Byl hlavou organizace.",
-    options: ["Byl hlavou organizace.", "Bolí mě hlava.", "Oba jsou stejné.", "Hlava je část těla."],
-    hints: ["Hlava může znamenat vedoucího/šéfa, nejen část těla."],
-  },
-  {
-    question: "Které slovo je jednoznačné?",
-    correctAnswer: "dusík",
-    options: ["ruka", "dusík", "koruna", "list"],
-    hints: ["Chemické prvky mívají jen jeden odborný význam."],
-  },
-  {
-    question: "Slovo 'ruka' — kolik významů má?",
-    correctAnswer: "více – část těla, ale i způsob označení v kartách apod.",
-    options: ["jen jeden jediný – vždy jen část těla", "žádný, protože to vůbec není slovo", "více – část těla, ale i způsob označení v kartách apod.", "přesně tři významy, ani víc, ani míň"],
-    hints: ["Ruka se používá v různých spojeních s různými významy."],
-  },
-  {
-    question: "Ve větě 'Listoval v knize.' slovo 'list' znamená:",
-    correctAnswer: "stránka – papír",
-    options: ["zelený list stromu", "dopis", "karta", "stránka – papír"],
-    hints: ["Při listování v knize myslíme na stránky."],
-  },
-  {
-    question: "Ve větě 'List stromu spadl.' slovo 'list' znamená:",
-    correctAnswer: "zelený list rostliny",
-    options: ["zelený list rostliny", "stránka v knize", "dopis", "papír"],
-    hints: ["Stromy mají listy – části rostliny."],
-  },
-  {
-    question: "Které slovo má více významů: 'kotva' nebo 'kyslík'?",
-    correctAnswer: "kotva",
-    options: ["kyslík", "kotva", "oba stejně", "ani jedno"],
-    hints: ["Kotva může být záchrana, ale i loď zastavující na moři."],
-  },
-  {
-    question: "Slovo 'koruna' může znamenat:",
-    correctAnswer: "českou měnu i ozdobu na hlavě panovníka",
-    options: ["jen ozdobu na hlavě panovníka", "jen českou peněžní měnu", "českou měnu i ozdobu na hlavě panovníka", "vždy jen druh stromu"],
-    hints: ["Koruna je jak mince, tak symbol moci."],
-  },
-  {
-    question: "Jsou slova 'vícevýznamová' a 'mnohoznačná' totéž?",
-    correctAnswer: "ano, jsou to synonyma pro slova s více než jedním významem",
-    options: ["ne, jsou to různé věci", "mnohoznačná mají 3+ a vícevýznamová 2 významy", "vícevýznamová jsou jen v češtině", "ano, jsou to synonyma pro slova s více než jedním významem"],
-    hints: ["Oba termíny označují totéž."],
-  },
-  {
-    question: "Slovo 'zámek' může znamenat:",
-    correctAnswer: "bezpečnostní zařízení i historickou budovu",
-    options: ["bezpečnostní zařízení i historickou budovu", "jen historickou budovu", "jen bezpečnostní zařízení", "druh jídla"],
-    hints: ["Myslíme na zámek na dveřích i na hradní zámek."],
-  },
-  {
-    question: "Slovo 'klíč' je vícevýznamové. Které dva významy má?",
-    correctAnswer: "nástroj k odemykání i hudební symbol",
-    options: ["jen nástroj k odemykání", "nástroj k odemykání i hudební symbol", "jen hudební symbol", "druh stromu a nástroj"],
-    hints: ["Basový klíč je v notách, ale klíč otvírá dveře."],
-  },
-  {
-    question: "Slovo 'fotbal' je:",
-    correctAnswer: "jednoznačné – označuje jen jeden sport",
-    options: ["vícevýznamové – má dva různé smysly", "cizí slovo bez českého překladu", "jednoznačné – označuje jen jeden sport", "zastaralé slovo"],
-    hints: ["Fotbal znamená stále jedno a totéž."],
-  },
+type Vyznam = { slovo: string; veta: string; spravne: string; jine: [string, string, string]; proc: string };
+const VYZNAMY: Vyznam[] = [
+  { slovo: "koruna", veta: "Ze stromu se ulomila celá koruna.", spravne: "horní část stromu s větvemi", jine: ["ozdoba na hlavě krále", "česká mince", "vrchol hory"], proc: "Mluví se o stromu, koruna je jeho horní část s větvemi." },
+  { slovo: "koruna", veta: "Rohlík stojí tři koruny.", spravne: "česká peněžní jednotka", jine: ["ozdoba na hlavě krále", "horní část stromu", "zubní náhrada"], proc: "Mluví se o ceně — koruna je peníz." },
+  { slovo: "oko", veta: "Na punčoše se jí pustilo oko.", spravne: "očko pleteniny", jine: ["orgán zraku", "kapka tuku na polévce", "otvor v síti na ryby"], proc: "Na punčoše je oko smyčka pleteniny, která se může pustit." },
+  { slovo: "list", veta: "Napiš to na čistý list.", spravne: "kus papíru", jine: ["list stromu", "dopis", "list na kytaře"], proc: "Píše se na papír — list je kus papíru." },
+  { slovo: "jazyk", veta: "Mluví třemi jazyky.", spravne: "řeč, kterou lidé mluví", jine: ["sval v ústech", "jazyk u boty", "plamen ohně"], proc: "Mluví třemi — jde o řeč, například češtinu nebo angličtinu." },
+  { slovo: "zámek", veta: "Klíč se v zámku zasekl.", spravne: "zařízení na zamykání", jine: ["velká šlechtická stavba", "hrad na kopci", "sponka do vlasů"], proc: "Klíč se zasekl — zámek je zařízení na zamykání." },
+  { slovo: "noha", veta: "Stůl má jednu nohu kratší.", spravne: "podpěra stolu", jine: ["končetina člověka", "tlapa zvířete", "pata hory"], proc: "Mluví se o stole — noha je jeho podpěra." },
+  { slovo: "myš", veta: "Klikni myší na obrázek.", spravne: "ovladač počítače", jine: ["drobný hlodavec", "šedá barva", "past na hlodavce"], proc: "Klikat se dá počítačovou myší." },
+  { slovo: "kohoutek", veta: "Zavři kohoutek, teče voda.", spravne: "uzávěr vody", jine: ["malý kohout", "ozdoba na střeše", "část pušky"], proc: "Teče voda — kohoutek je uzávěr vody." },
+  { slovo: "křídlo", veta: "Ve škole otevřeli nové křídlo.", spravne: "boční část budovy", jine: ["část těla ptáka", "hudební nástroj", "část letadla"], proc: "Mluví se o škole — křídlo je část budovy." },
+  { slovo: "pero", veta: "Našla v trávě pero z holuba.", spravne: "ptačí pírko", jine: ["nástroj na psaní", "pružina v hodinkách", "trávník"], proc: "Pero z holuba je ptačí pírko." },
+  { slovo: "vlna", veta: "Svetr je z ovčí vlny.", spravne: "srst ovce", jine: ["pohyb vody na moři", "vlnitý pohyb ve vlasech", "kmitání zvuku"], proc: "Svetr z ovčí vlny — vlna je ovčí srst." },
+  { slovo: "klíč", veta: "Na začátku notové osnovy je houslový klíč.", spravne: "značka na začátku notové osnovy", jine: ["nástroj na odemykání", "řešení hádanky", "nářadí na šrouby"], proc: "V notách je klíč značka na začátku osnovy." },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Ve větě 'Hlídač stál u brány.' co znamená slovo 'brána'?",
-    correctAnswer: "velká vchodová závora nebo vstup",
-    options: ["fotbalová branka na hřišti", "brána do nebeského ráje", "jméno konkrétní osoby", "velká vchodová závora nebo vstup"],
-    hints: ["Kontext věty napoví správný význam."],
-  },
-  {
-    question: "Ve větě 'Střelec dal gól do brány.' co znamená slovo 'brána'?",
-    correctAnswer: "fotbalová branka",
-    options: ["fotbalová branka", "velký vstup do hradu", "zeměpisný průsmyk", "vzácná věc"],
-    hints: ["Střelec a gól napovídají sportovní kontext."],
-  },
-  {
-    question: "Které z těchto slov je jednoznačné?",
-    correctAnswer: "algebra",
-    options: ["list", "algebra", "koruna", "zámek"],
-    hints: ["Odborné vědecké termíny bývají jednoznačné."],
-  },
-  {
-    question: "Slovo 'oko' má v češtině přibližně kolik různých významů?",
-    correctAnswer: "více než 5",
-    options: ["přesně 1", "přesně 2", "více než 5", "přesně 3"],
-    hints: ["Oko = zrakový orgán, díra v síti, stehová klička, dírka v jehlici..."],
-  },
-  {
-    question: "Ve větě 'Sedí jí na rameni.' slovo 'rameno' znamená:",
-    correctAnswer: "část těla",
-    options: ["část řeky", "část silnice", "větev stromu", "část těla"],
-    hints: ["Ve větě je 'jí' — mluvíme o osobě. Rameno tu patří k člověku, ne k řece, silnici ani stromu."],
-  },
-  {
-    question: "Ve větě 'Řeka se rozdělila na dvě ramena.' slovo 'rameno' znamená:",
-    correctAnswer: "větev – proud řeky",
-    options: ["větev – proud řeky", "část těla", "most přes řeku", "hráz"],
-    hints: ["Řeka se větvila – jde o tok vody."],
-  },
-  {
-    question: "Jak se nazývají slova, která mají přesně jeden ustálený věcný význam?",
-    correctAnswer: "jednoznačná",
-    options: ["vícevýznamová", "jednoznačná", "mnohoznačná", "synonyma"],
-    hints: ["Jedno slovo, jeden jediný smysl."],
-  },
-  {
-    question: "Slovo 'loket' může znamenat část těla. Co ještě?",
-    correctAnswer: "starou délkovou míru",
-    options: ["druh jídla", "část řeky", "starou délkovou míru", "nástroj v kuchyni"],
-    hints: ["Ve starých textech se loket používal jako jednotka délky."],
-  },
-  {
-    question: "Slovo 'palec' může znamenat prst. Co ještě?",
-    correctAnswer: "starou délkovou míru – palec = cca 2,54 cm",
-    options: ["vzácný druh drahého kamene", "zvláštní způsob psaní na stroji", "konkrétní typ zimního oblečení", "starou délkovou míru – palec = cca 2,54 cm"],
-    hints: ["Inch v angličtině = palec v češtině – délková míra."],
-  },
-  {
-    question: "Ve větě 'Sáhl po svíci.' slovo 'svíce' znamená:",
-    correctAnswer: "světelný zdroj ze včelího vosku nebo parafínu",
-    options: [
-      "světelný zdroj ze včelího vosku nebo parafínu",
-      "motoristický díl",
-      "zápalnou svíčku v motoru",
-      "druh lampičky",
-    ],
-    hints: ["Staré osvětlení – svíce z vosku."],
-  },
-  {
-    question: "Ve větě 'Motor potřebuje nové svíčky.' slovo 'svíčky' znamená:",
-    correctAnswer: "zápalné díly v motoru",
-    options: [
-      "světelné svíčky",
-      "zápalné díly v motoru",
-      "druh dekorace",
-      "plastové tyčinky",
-    ],
-    hints: ["Motor má zapalovací svíčky."],
-  },
-  {
-    question: "Proč je důležité rozlišovat jednoznačná a vícevýznamová slova?",
-    correctAnswer: "aby při čtení správně pochopil/a, co autor myslí",
-    options: ["protože jednoznačná jsou hezčí", "vícevýznamová se nepoužívají", "aby při čtení správně pochopil/a, co autor myslí", "jen kvůli pravopisu"],
-    hints: ["Porozumění textu závisí na správném výkladu slov v kontextu."],
-  },
-  {
-    question: "Slovo 'líný' je:",
-    correctAnswer: "jednoznačné – znamená jen pomalý nebo bez chuti pracovat",
-    options: ["vícevýznamové – má přesně 5 různých smyslů", "odborný termín z fyziky", "slovo bez pevného smyslu", "jednoznačné – znamená jen pomalý nebo bez chuti pracovat"],
-    hints: ["Líný má jeden jasný přídavný jmenný smysl."],
-  },
-  {
-    question: "Slovo 'řeka' – je jednoznačné nebo vícevýznamové?",
-    correctAnswer: "převážně jednoznačné – přirozený vodní tok",
-    options: [
-      "převážně jednoznačné – přirozený vodní tok",
-      "vícevýznamové – 4 různé smysly",
-      "cizí slovo",
-      "zastaralé slovo",
-    ],
-    hints: ["Řeka = tok vody. Má jen jeden základní smysl."],
-  },
-  {
-    question: "Slovo 'hvězda' – je vícevýznamové?",
-    correctAnswer: "ano – astronomické těleso i slavná osobnost",
-    options: [
-      "ne – má jen jeden smysl",
-      "ano – astronomické těleso i slavná osobnost",
-      "ne – je to jen dekorace",
-      "ano – 10 různých smyslů",
-    ],
-    hints: ["Hvězda na nebi i hvězda showbyznysu."],
-  },
+function vyznamUloha(v: Vyznam): PracticeTask {
+  return choice(`Co znamená slovo „${v.slovo}“ ve větě „${v.veta}“?`, v.spravne,
+    v.jine.map((j) => ({ value: j, why: `To je jiný význam slova „${v.slovo}“, který se do této věty nehodí.` })) as never, {
+      hints: [
+        `O čem věta „${v.veta}“ mluví?`,
+        `Slovo „${v.slovo}“ má víc významů. Podívej se na ostatní slova ve větě — které z možných významů k nim sedí?`,
+      ],
+      explanation: v.proc,
+    });
+}
+
+type Stejny = { slovo: string; vzor: string; spravne: string; jine: [string, string, string]; vyznam: string };
+const STEJNE: Stejny[] = [
+  { slovo: "oko", vzor: "Mrklo na mě jedním okem.", spravne: "Do oka mi spadla řasa.", jine: ["Na polévce plavala oka tuku.", "Pustilo se mi oko na punčoše.", "Rybář zašil oko v síti."], vyznam: "orgán zraku" },
+  { slovo: "koruna", vzor: "Král nosil zlatou korunu.", spravne: "Princezně spadla koruna z hlavy.", jine: ["Lípa má hustou korunu.", "Zaplatil jsem dvacet korun.", "Zubař mi dal na zub korunku."], vyznam: "ozdoba na hlavě panovníka" },
+  { slovo: "list", vzor: "Na podzim padá listí a každý list je jinak barevný.", spravne: "Na větvi zůstal poslední žlutý list.", jine: ["Podej mi list papíru.", "Poslal mi dlouhý list z tábora.", "Sešit má čtyřicet listů."], vyznam: "list stromu" },
+  { slovo: "zámek", vzor: "Na kopci stojí starý zámek.", spravne: "Prohlédli jsme si zámek Lednice.", jine: ["Klíč nejde do zámku.", "Na kole mám zámek s kódem.", "Kufr má rozbitý zámek."], vyznam: "šlechtické sídlo" },
+  { slovo: "jazyk", vzor: "Ve škole se učíme anglický jazyk.", spravne: "Čeština je náš mateřský jazyk.", jine: ["Kousl se do jazyka.", "Pes vyplázl jazyk.", "Bota má dlouhý jazyk."], vyznam: "řeč" },
+  { slovo: "myš", vzor: "Kočka chytila myš.", spravne: "Ve spíži se objevila myš.", jine: ["Počítačová myš nefunguje.", "Kliknu myší na ikonu.", "Koupil jsem bezdrátovou myš."], vyznam: "hlodavec" },
+  { slovo: "noha", vzor: "Uklouzl a zlomil si nohu.", spravne: "Bolí mě pravá noha.", jine: ["Stůl má kulaté nohy.", "Židli se ulomila noha.", "Lampa stojí na jedné noze."], vyznam: "končetina člověka" },
+  { slovo: "pero", vzor: "Píšu úkol perem.", spravne: "Do penálu jsem si dal nové pero.", jine: ["Kohout má barevná pera.", "Našla jsem pero z vrány.", "Pták si čechrá pera."], vyznam: "nástroj na psaní" },
+  { slovo: "vlna", vzor: "Na moři byly vysoké vlny.", spravne: "Vlna nás smáčela až po pás.", jine: ["Babička plete z vlny.", "Ovce dávají vlnu.", "Svetr je z jemné vlny."], vyznam: "vlna na vodě" },
+  { slovo: "kohoutek", vzor: "Na dvoře kokrhal malý kohoutek.", spravne: "Kohoutek se schoval pod slepici.", jine: ["Kohoutek u vany kape.", "Otoč kohoutkem doprava.", "Zavřel kohoutek od plynu."], vyznam: "malý kohout" },
+  { slovo: "klíč", vzor: "Ztratil jsem klíč od bytu.", spravne: "Klíč od sklepa visí u dveří.", jine: ["Houslový klíč se kreslí na začátek osnovy.", "Klíčem k úspěchu je trénink.", "Basový klíč se píše jinak."], vyznam: "nástroj na odemykání" },
+  { slovo: "křídlo", vzor: "Pták si poranil křídlo.", spravne: "Holub mával křídly.", jine: ["V novém křídle školy jsou dílny.", "Pianista hraje na křídlo.", "Letadlo mělo poškozené křídlo."], vyznam: "část těla ptáka" },
 ];
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Urči, jaký význam má slovo 'hlava' ve větě: 'Je hlavou firmy už deset let.'",
-    correctAnswer: "vedoucí / ředitel",
-    options: ["část lidského těla", "titul ve šlechtě", "vedoucí / ředitel", "nadpis článku"],
-    hints: ["Hlava firmy = ten, kdo stojí v čele."],
-  },
-  {
-    question: "Ve větě 'Přišel s čistou hlavou.' co znamená 'čistou hlavou'?",
-    correctAnswer: "bez předsudků, se svěžím myšlením",
-    options: ["právě umytou hlavu vlasů", "úplně holou hlavu bez vlasů", "hlavu s pěkně upraveným účesem", "bez předsudků, se svěžím myšlením"],
-    hints: ["Idiom – čistá hlava = jasné myšlení."],
-  },
-  {
-    question: "Slovo 'ucho' je vícevýznamové. Které z těchto výrazů ho nepoužívá v přeneseném smyslu?",
-    correctAnswer: "Bolí ho ucho od rána.",
-    options: ["Bolí ho ucho od rána.", "Ucho hrnce je odlomené.", "Viselo na vlásku – bylo za ušima.", "Hrneček měl dvě ucha."],
-    hints: ["Bolí ho ucho = doslova část těla."],
-  },
-  {
-    question: "Slovo 'koruna' ve větě 'Strom má hustou korunu.' znamená:",
-    correctAnswer: "vrchní část stromu s větvemi a listy",
-    options: [
-      "panovnický symbol moci",
-      "vrchní část stromu s větvemi a listy",
-      "platnou českou měnu",
-      "šikmou střechu domu",
-    ],
-    hints: ["Korunou stromu nazýváme jeho horní část."],
-  },
-  {
-    question: "Ve větě 'Zaplatil sto korun.' slovo 'korun' znamená:",
-    correctAnswer: "česká měna",
-    options: ["panovnický symbol", "vrchol stromu", "česká měna", "ozdoba vlasů"],
-    hints: ["Platíme korunami – českou měnou."],
-  },
-  {
-    question: "Které slovo v této větě je použito v přeneseném smyslu? 'Srdce jeho řeči bylo prosté.'",
-    correctAnswer: "srdce",
-    options: ["jeho", "řeči", "prosté", "srdce"],
-    hints: ["Srdce řeči = jádro / podstata – přenesený smysl."],
-  },
-  {
-    question: "Slovo 'list' ve větě 'Napsal jí dlouhý list.' znamená:",
-    correctAnswer: "dopis / psaná zpráva",
-    options: ["dopis / psaná zpráva", "list stromu", "stránka v knize", "papír bez textu"],
-    hints: ["Napsat list = napsat dopis."],
-  },
-  {
-    question: "Proč musíme při výkladu slova sledovat kontext (okolní věty)?",
-    correctAnswer: "protože vícevýznamová slova mění smysl podle situace",
-    options: [
-      "protože slovník je nedostatečný",
-      "protože vícevýznamová slova mění smysl podle situace",
-      "jen kvůli pravopisu",
-      "protože češtině chybí slova",
-    ],
-    hints: ["Kontext = klíč k pochopení správného významu."],
-  },
-  {
-    question: "Slovo 'jít' – je jednoznačné nebo vícevýznamové? Uveď příklad jiného smyslu.",
-    correctAnswer: "vícevýznamové – 'Jak ti to jde?' – daří se vs. 'Jdu domů.'",
-    options: ["jednoznačné – vždy pohyb pěšky", "jednoznačné – odborný termín z fyziky", "vícevýznamové – 'Jak ti to jde?' – daří se vs. 'Jdu domů.'", "vícevýznamové – jen v příslovích"],
-    hints: ["Jít = pohybovat se, ale i dařit se, fungovat..."],
-  },
-  {
-    question: "Ve větě 'Měl to za ušima.' co to znamená?",
-    correctAnswer: "byl chytrý a vychytralý",
-    options: ["měl za ušima špínu", "nosil náušnice", "měl velké uši", "byl chytrý a vychytralý"],
-    hints: ["Idiom – 'mít za ušima' = být mazaný."],
-  },
-  {
-    question: "Slovo 'zub' ve větě 'Zuby času to nahlodaly.' znamená:",
-    correctAnswer: "ničivé působení času – přenesený smysl",
-    options: ["ničivé působení času – přenesený smysl", "tvrdou zubní sklovinu", "ozubené kolo ve stroji", "určitý typ řezných nástrojů"],
-    hints: ["'Zuby času' je ustálené spojení – čas ničí jako zuby."],
-  },
-  {
-    question: "Které z těchto slov je nejspíše jednoznačné v odborném textu?",
-    correctAnswer: "fotosyntéza",
-    options: ["klíč", "fotosyntéza", "oko", "zámek"],
-    hints: ["Vědecký termín má přesně jeden vědecký smysl."],
-  },
-  {
-    question: "Jak se liší slovníkový výklad jednoznačného a vícevýznamového slova?",
-    correctAnswer: "vícevýznamové má více číslovaných výkladů, jednoznačné jen jeden",
-    options: ["jednoznačné má naopak vždy víc výkladů", "ve slovníku mezi nimi nejsou vůbec žádné rozdíly", "vícevýznamové má více číslovaných výkladů, jednoznačné jen jeden", "záleží to jen na délce daného slova"],
-    hints: ["Ve slovníku: 1. ..., 2. ..., 3. ... = vícevýznamové."],
-  },
-  {
-    question: "Ve větě 'Křišťál je minerál.' slovo 'křišťál' je:",
-    correctAnswer: "jednoznačné – odborný název minerálu",
-    options: ["vícevýznamové – sklo i minerál", "přídavné jméno", "cizí slovo bez překladu", "jednoznačné – odborný název minerálu"],
-    hints: ["Křišťál v mineralogii = přesně určený minerál."],
-  },
-  {
-    question: "Slovo 'nést' – které věty ukazují jeho různé smysly?",
-    correctAnswer: "'Nesu tašku.' a 'Projekt nese riziko.'",
-    options: ["'Nesu tašku.' a 'Projekt nese riziko.'", "'Nesu tašku.' a 'Sed tady.'", "'Pták letí.' a 'Kráčím pomalu.'", "'Nese se.' a 'Letí.'"],
-    hints: ["Nést = fyzicky přenášet, ale i obsahovat (riziko, náklady)."],
-  },
-];
+function stejnyUloha(s: Stejny): PracticeTask {
+  return choice(`Ve které větě má slovo „${s.slovo}“ stejný význam jako ve větě „${s.vzor}“?`, s.spravne,
+    s.jine.map((j) => ({ value: j, why: `Tady má „${s.slovo}“ jiný význam než „${s.vyznam}“.` })) as never, {
+      hints: [
+        `Co znamená „${s.slovo}“ ve větě „${s.vzor}“?`,
+        `Ve vzorové větě má „${s.slovo}“ význam „${s.vyznam}“. Hledej větu, kde znamená totéž, a ostatní vyřaď.`,
+      ],
+      explanation: `Ve větě „${s.spravne}“ znamená „${s.slovo}“ totéž co ve vzoru: ${s.vyznam}.`,
+    });
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return shuffle(Array.from({ length: 16 }, (_, i) => vyber(i % 2 === 0, i)));
+  if (level === 2) return shuffle(VYZNAMY.map(vyznamUloha));
+  return shuffle(STEJNE.map(stejnyUloha));
 }
 
 export const SLOVAJEDNOZNACNAMNOHOZNACNAVICEVYZNAMOVA: TopicMetadata[] = [

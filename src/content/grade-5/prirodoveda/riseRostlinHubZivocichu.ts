@@ -1,305 +1,39 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { trideni, type Zarazeni } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// vysvětlení a na úrovni jen deset pevných sad. Teď banka organismů: L1 běžní
+// zástupci, L2 méně nápadní (mech, plíseň, korál), L3 zrádní (rosnatka,
+// sasanka mořská, choroš).
 
-/**
- * Balík 1A — infra oprava (viz src/lib/levelCoverage.ts taskKey) +
- * disjunktní POOL_L1/L2/L3. Jedna oprava: "Muchovník (Amanita)" (nestandardní
- * název) → "Muchomůrka panterová" (odlišný druh od již použitých
- * "Muchomůrka červená"/"Muchomůrka zelená").
- */
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Hlíva ústřičná", "Hřib smrkový"] },
-      { name: "Rostlina", items: ["Dub letní"] },
-      { name: "Živočich", items: ["Vlk obecný"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Rostlina", items: ["Pampeliška", "Borovice lesní"] },
-      { name: "Houba", items: ["Muchomůrka červená"] },
-      { name: "Živočich", items: ["Kapr obecný"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Lišák obecný"] },
-      { name: "Rostlina", items: ["Kopretina bílá", "Smrk ztepilý"] },
-      { name: "Živočich", items: ["Netopýr velký"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Živočich", items: ["Žížala obecná", "Motýl babočka"] },
-      { name: "Houba", items: ["Lišák obecný"] },
-      { name: "Rostlina", items: ["Jetel luční"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Křemenáč osikový", "Plíseň chlebová"] },
-      { name: "Rostlina", items: ["Tráva psárka"] },
-      { name: "Živočich", items: ["Ještěrka obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Ryzec pravý"] },
-      { name: "Rostlina", items: ["Kopřiva dvoudomá"] },
-      { name: "Živočich", items: ["Sýkorka koňadra", "Liška obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Pečárka polní"] },
-      { name: "Rostlina", items: ["Akát bílý"] },
-      { name: "Živočich", items: ["Žába rosnička", "Holub skalní"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    explanation: "Kvasinka je houba — nefotosyntetizuje a rozkládá organické látky.",
-    categories: [
-      { name: "Houba", items: ["Lanýž černý", "Kvasinka"] },
-      { name: "Rostlina", items: ["Kukuřice setá"] },
-      { name: "Živočich", items: ["Medvěd hnědý"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Sněhová plíseň", "Smrž jedlý"] },
-      { name: "Rostlina", items: ["Jabloň domácí"] },
-      { name: "Živočich", items: ["Vydra říční"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Muchomůrka zelená"] },
-      { name: "Rostlina", items: ["Jedle bělokorá", "Modřín opadavý"] },
-      { name: "Živočich", items: ["Srnec obecný"] },
-    ],
-  },
-];
+const Z: Zarazeni[] = [
+  { uroven: 1, polozka: "dub", skupina: "rostliny", proc: "Dub má zelené listy a živiny si vyrábí ze světla." },
+  { uroven: 1, polozka: "tulipán", skupina: "rostliny", proc: "Tulipán je kvetoucí rostlina se zelenými listy." },
+  { uroven: 1, polozka: "jahodník", skupina: "rostliny", proc: "Jahodník má zelené listy a kvete." },
+  { uroven: 1, polozka: "hřib", skupina: "houby", proc: "Hřib nemá zelené barvivo a živí se látkami z půdy a z kořenů stromů." },
+  { uroven: 1, polozka: "muchomůrka", skupina: "houby", proc: "Muchomůrka je jedovatá houba bez zeleného barviva." },
+  { uroven: 1, polozka: "zajíc", skupina: "živočichové", proc: "Zajíc se pohybuje a potravu musí sníst." },
+  { uroven: 1, polozka: "včela", skupina: "živočichové", proc: "Včela je hmyz — živočich, který se živí nektarem." },
+  { uroven: 1, polozka: "kapr", skupina: "živočichové", proc: "Kapr je ryba, tedy živočich." },
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Živočich", items: ["Lišaj pásovaný", "Rak říční"] },
-      { name: "Houba", items: ["Bedla vysoká"] },
-      { name: "Rostlina", items: ["Šeřík obecný"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Hlíva ústřičná"] },
-      { name: "Rostlina", items: ["Ostružiník maliník", "Jasan ztepilý"] },
-      { name: "Živočich", items: ["Ropucha obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Čirůvka fialová"] },
-      { name: "Rostlina", items: ["Lípa srdčitá"] },
-      { name: "Živočich", items: ["Bobr evropský", "Holub"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Choroš pravý"] },
-      { name: "Rostlina", items: ["Bříza bradavičnatá", "Třešeň ptačí"] },
-      { name: "Živočich", items: ["Veverka obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Klouzek obecný"] },
-      { name: "Rostlina", items: ["Konvalinka vonná", "Jinan dvoulaločný"] },
-      { name: "Živočich", items: ["Plch velký"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Troudnatec kopytovitý"] },
-      { name: "Rostlina", items: ["Jmelí bílé", "Olše lepkavá"] },
-      { name: "Živočich", items: ["Krtek obecný"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Hřib satan"] },
-      { name: "Rostlina", items: ["Šípkový keř", "Topol osika"] },
-      { name: "Živočich", items: ["Liška obecná"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Kozák březový"] },
-      { name: "Rostlina", items: ["Ostřice trsnatá", "Vrba bílá"] },
-      { name: "Živočich", items: ["Čáp bílý"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Václavka obecná"] },
-      { name: "Rostlina", items: ["Zvonečník klasnatý", "Habr obecný"] },
-      { name: "Živočich", items: ["Ježek západní"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Rostlina", items: ["Šafránek jarní", "Dřín obecný"] },
-      { name: "Houba", items: ["Ryzec kravský"] },
-      { name: "Živočich", items: ["Tchoř lesní"] },
-    ],
-  },
-];
+  { uroven: 2, polozka: "mech", skupina: "rostliny", proc: "Mech je zelený a vyrábí si živiny ze světla, i když nekvete." },
+  { uroven: 2, polozka: "kapradina", skupina: "rostliny", proc: "Kapradina nekvete, ale je zelená a fotosyntetizuje." },
+  { uroven: 2, polozka: "plíseň na chlebu", skupina: "houby", proc: "Plíseň je drobná houba, která rozkládá potraviny." },
+  { uroven: 2, polozka: "kvasinky", skupina: "houby", proc: "Kvasinky jsou drobounké houby, díky nimž kyne těsto." },
+  { uroven: 2, polozka: "žížala", skupina: "živočichové", proc: "Žížala je živočich, který se živí zbytky rostlin v půdě." },
+  { uroven: 2, polozka: "medúza", skupina: "živočichové", proc: "Medúza je mořský živočich, i když nemá kosti ani mozek." },
+  { uroven: 2, polozka: "korál", skupina: "živočichové", proc: "Korál vypadá jako rostlina, ale jsou to drobní živočichové." },
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    explanation: "Penicilin (Penicillium) je houba — plíseň produkující antibiotikum. Řasa i mech jsou rostliny.",
-    categories: [
-      { name: "Houba", items: ["Penicilium (plíseň)"] },
-      { name: "Rostlina", items: ["Řasa zelená", "Mech lesní"] },
-      { name: "Živočich", items: ["Hvězdice mořská"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Rudoušek prstnatý"] },
-      { name: "Rostlina", items: ["Prvosenka jarní", "Bez černý"] },
-      { name: "Živočich", items: ["Zajíc polní"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Pýchavka obrovská"] },
-      { name: "Rostlina", items: ["Leknín bílý", "Orobinec úzkolistý"] },
-      { name: "Živočich", items: ["Potápka chocholatá"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Choroš pestrý (Trametes)"] },
-      { name: "Rostlina", items: ["Papratka samičí", "Kapradí orlí"] },
-      { name: "Živočich", items: ["Mlok skvrnitý"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Hřib kovář"] },
-      { name: "Rostlina", items: ["Rákos obecný", "Kosatec žlutý"] },
-      { name: "Živočich", items: ["Čolek obecný"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Lišák obecný"] },
-      { name: "Rostlina", items: ["Vrbovka úzkolistá", "Starček obecný"] },
-      { name: "Živočich", items: ["Užovka obojková"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Hřib hnědý"] },
-      { name: "Rostlina", items: ["Pomněnka lesní", "Hloh obecný"] },
-      { name: "Živočich", items: ["Holub hřivnáč"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Korálovec ježatý"] },
-      { name: "Rostlina", items: ["Šťavel kyselý", "Líska obecná"] },
-      { name: "Živočich", items: ["Bažant obecný"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    explanation: "Muchomůrka panterová je jedovatá houba, podobná muchomůrce červené i zelené — ale jde o třetí, samostatný druh.",
-    categories: [
-      { name: "Houba", items: ["Muchomůrka panterová"] },
-      { name: "Rostlina", items: ["Jahodník obecný", "Malina obecná"] },
-      { name: "Živočich", items: ["Labuť velká"] },
-    ],
-  },
-  {
-    question: "Zařaď každý organismus do správné říše.",
-    correctAnswer: "categorize",
-    categories: [
-      { name: "Houba", items: ["Hřib bronzový"] },
-      { name: "Rostlina", items: ["Vlaštovičník větší", "Ptačí zob obecný"] },
-      { name: "Živočich", items: ["Strnad obecný"] },
-    ],
-  },
+  { uroven: 3, polozka: "rosnatka", skupina: "rostliny", proc: "Rosnatka chytá hmyz, ale je zelená a fotosyntetizuje — je to rostlina." },
+  { uroven: 3, polozka: "přeslička", skupina: "rostliny", proc: "Přeslička je zelená výtrusná rostlina." },
+  { uroven: 3, polozka: "choroš", skupina: "houby", proc: "Choroš roste na kmeni stromu jako polička a rozkládá dřevo." },
+  { uroven: 3, polozka: "hlíva ústřičná", skupina: "houby", proc: "Hlíva roste na dřevě a nemá zelené barvivo." },
+  { uroven: 3, polozka: "sasanka mořská", skupina: "živočichové", proc: "Sasanka mořská vypadá jako květina, ale je to živočich, který loví drobnou kořist." },
+  { uroven: 3, polozka: "houbovec (mořská houba)", skupina: "živočichové", proc: "Mořská houba se jen tak jmenuje — je to jednoduchý přisedlý živočich." },
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool);
+  return trideni(Z, level, "Roztřiď organismy do říší: rostliny, houby, živočichové.");
 }
 
 export const RISEROSTLINHUBZIVOCICHU: TopicMetadata[] = [
@@ -322,8 +56,8 @@ export const RISEROSTLINHUBZIVOCICHU: TopicMetadata[] = [
     sessionTaskCount: 6,
     generator: gen,
     helpTemplate: {
-      hint: "Vzpomeň si: rostliny fotosyntézují, houby rozkládají, živočichové konzumují jiné organismy.",
-      steps: ["1. Zjisti, jak se organismus živí.", "2. Má chlorofyl? → rostlina", "3. Rozkládá mrtvé věci? → houba", "4. Loví nebo spásá jiné organismy? → živočich"],
+      hint: "Vzpomeň si: rostliny si živiny vyrábějí fotosyntézou, houby rozkládají, živočichové konzumují jiné organismy.",
+      steps: ["Zjisti, jak se organismus živí.", "Má chlorofyl? → rostlina", "Rozkládá mrtvé věci? → houba", "Loví nebo spásá jiné organismy? → živočich"],
       commonMistake: "Houby nejsou rostliny – nemají chlorofyl a nefotosyntetizují.",
       example: "Hřib → houba (rozkladač). Dub → rostlina (producent). Zajíc → živočich (konzument).",
     },

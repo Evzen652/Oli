@@ -1,317 +1,143 @@
-﻿import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
+import { urceni, type Kategorie, type Polozka } from "../_urceni";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby a v zadání se míchaly uvozovky otázky s uvozovkami ukázky.
+// Teď: L1 poznat přímou a nepřímou řeč · L2 doplnit znaménko do zápisu přímé
+// řeči (dvojtečka, čárka, otazník, vykřičník) · L3 převést přímou řeč na
+// nepřímou (čárka před že, změna osoby). Na L2 se vybírá název znaménka, ne
+// celá věta — věty lišící se jen interpunkcí audit nerozliší.
+
+// ── L1: poznávání ────────────────────────────────────────────────────────────
+const DRUHY: Kategorie[] = [
+  { nazev: "přímá řeč", znak: "slova postavy zapsaná doslova v uvozovkách (Petr řekl: „Přijdu.“)." },
+  { nazev: "nepřímá řeč", znak: "slova postavy převyprávěná bez uvozovek, obvykle za že, ať, jestli (Petr řekl, že přijde.)." },
+  { nazev: "věta bez řeči postavy", znak: "vypravěč jen popisuje děj, nikdo nemluví." },
+];
+const PR = "přímá řeč", NP = "nepřímá řeč", BZ = "věta bez řeči postavy";
+const V = (veta: string, kategorie: string, klic: string, proc: string): Polozka => ({ uroven: 1, slovo: veta, veta, kategorie, klic, proc });
+const L1_BANKA: Polozka[] = [
+  V("Petr řekl: „Přijdu zítra.“", PR, "slova postavy stojí v uvozovkách přesně tak, jak je řekla", "Slova Petra jsou doslova v uvozovkách — přímá řeč."),
+  V("Petr řekl, že přijde zítra.", NP, "Petrova slova jsou převyprávěná a začínají slovem že", "Petrova slova jsou převyprávěná bez uvozovek — nepřímá řeč."),
+  V("Petr přišel domů pozdě.", BZ, "nikdo tu nemluví, vypravěč jen popisuje", "Nikdo nemluví — věta bez řeči postavy."),
+  V("„Kde bydlíš?“ zeptala se Eva.", PR, "otázka Evy je v uvozovkách", "Evina otázka je doslova v uvozovkách — přímá řeč."),
+  V("Eva se zeptala, kde bydlím.", NP, "Evina otázka je převyprávěná bez uvozovek", "Otázka je převyprávěná — nepřímá řeč."),
+  V("Eva bydlí v Brně.", BZ, "je to jen oznámení, nikdo nemluví", "Nikdo nemluví — věta bez řeči postavy."),
+  V("„Pozor!“ vykřikl hasič.", PR, "výkřik hasiče je v uvozovkách", "Výkřik je doslova v uvozovkách — přímá řeč."),
+  V("Hasič vykřikl, ať si dáme pozor.", NP, "hasičova slova jsou převyprávěná a začínají slovem ať", "Převyprávěný výkřik — nepřímá řeč."),
+  V("Babička se usmála: „To je hezké.“", PR, "za dvojtečkou jsou v uvozovkách slova babičky", "Slova babičky jsou v uvozovkách — přímá řeč."),
+  V("Babička řekla, že je to hezké.", NP, "babiččina slova jsou převyprávěná za že", "Převyprávěná slova — nepřímá řeč."),
+  V("Hasič hasil požár celou noc.", BZ, "vypravěč jen popisuje práci hasiče", "Nikdo nemluví — věta bez řeči postavy."),
+  V("Učitelka se ptala, jestli máme úkol.", NP, "otázka učitelky je převyprávěná za jestli", "Převyprávěná otázka — nepřímá řeč."),
+  V("Tomáš zavolal: „Počkej na mě!“", PR, "Tomášovo zvolání je v uvozovkách", "Tomášova slova jsou doslova v uvozovkách — přímá řeč."),
+];
+
+// ── L2: znaménka v zápisu přímé řeči ─────────────────────────────────────────
+interface Vypoved { pred: string; za: string; text: string; konec: "." | "?" | "!" }
+const VYPOVEDI: Vypoved[] = [
+  { pred: "Máma řekla", za: "řekla máma", text: "Pojď ven", konec: "." },
+  { pred: "Táta se zeptal", za: "zeptal se táta", text: "Máš hotový úkol", konec: "?" },
+  { pred: "Jana zavolala", za: "zavolala Jana", text: "Počkej na mě", konec: "!" },
+  { pred: "Petr řekl", za: "řekl Petr", text: "Zítra přijdu", konec: "." },
+  { pred: "Babička se zeptala", za: "zeptala se babička", text: "Chceš ještě koláč", konec: "?" },
+  { pred: "Trenér vykřikl", za: "vykřikl trenér", text: "Běž rychleji", konec: "!" },
+  { pred: "Eva řekla", za: "řekla Eva", text: "Mám nové kolo", konec: "." },
+  { pred: "Učitelka se zeptala", za: "zeptala se učitelka", text: "Kdo chybí", konec: "?" },
+];
+const VZOR_PRED = "Děda řekl: „Dobrou noc.“";
+const VZOR_ZA: Record<"." | "?" | "!", string> = {
+  ".": "„Dobrou noc,“ řekl děda.",
+  "?": "„Kolik je hodin?“ zeptal se děda.",
+  "!": "„Pozor!“ vykřikl děda.",
+};
+const ZNAMENKO: Record<"." | "?" | "!", string> = { ".": "čárka", "?": "otazník", "!": "vykřičník" };
+
+function predUloha(v: Vypoved): PracticeTask {
+  return choice(`Které znaménko patří na vynechané místo? ${v.pred}___ „${v.text}${v.konec}“`, "dvojtečka", [
+    { value: "čárka", why: "Čárka se píše, když uvozovací věta stojí až za přímou řečí." },
+    { value: "tečka", why: "Tečka by větu ukončila, ale přímá řeč teprve přijde." },
+    { value: "žádné", why: "Před přímou řečí musí stát znaménko, které ji uvede." },
+  ], {
+    hints: [
+      `Stojí slova „${v.pred}“ před přímou řečí, nebo za ní?`,
+      `Podívej se na stejně stavěnou větu: ${VZOR_PRED} Které znaménko stojí ve vzoru hned za slovem „řekl“?`,
+    ],
+    explanation: `Správně: ${v.pred}: „${v.text}${v.konec}“ — uvozovací věta před přímou řečí končí dvojtečkou.`,
+  });
 }
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Jaký druh řeči je věta: Petr řekl: \"Přijdu zítra.\"",
-    correctAnswer: "přímá řeč",
-    options: ["přímá řeč", "nepřímá řeč", "obě najednou", "ani jedna"],
-    hints: ["Jsou slova citována doslova a stojí v uvozovkách? Jak se takový způsob podání cizích slov jmenuje?"],
-  },
-  {
-    question: "Jaký druh řeči je věta: Petr řekl, že přijde zítra.",
-    correctAnswer: "nepřímá řeč",
-    options: ["přímá řeč", "nepřímá řeč", "obě najednou", "ani jedna"],
-    hints: ["Jsou Petrova slova přeformulovaná (vlastními slovy) a chybí uvozovky? Všimni si spojky 'že'. O který druh řeči jde?"],
-  },
-  {
-    question: "Přímá řeč se píše:",
-    correctAnswer: "v uvozovkách",
-    options: ["kurzívou", "tučně", "v uvozovkách", "bez zvláštního označení"],
-    hints: ["Uvozovky ukazují, že jde o přímou citaci slov."],
-  },
-  {
-    question: "Převeď do nepřímé řeči: Jana řekla: \"Mám hlad.\"",
-    correctAnswer: "Jana řekla, že má hlad.",
-    options: ["Jana řekla, že mám hlad.", "Jana: Mám hlad.", "Jana řekla mám hlad.", "Jana řekla, že má hlad."],
-    hints: ["V nepřímé řeči se 'mám' změní na 'má' (změna osoby)."],
-  },
-  {
-    question: "Převeď do přímé řeči: Tomáš řekl, že jde domů.",
-    correctAnswer: "Tomáš řekl: \"Jdu domů.\"",
-    options: [
-      "Tomáš řekl: \"Jdu domů.\"",
-      "Tomáš řekl: \"Jde domů.\"",
-      "Tomáš: jde domů.",
-      "Tomáš řekl jdu domů.",
+function zaUloha(v: Vypoved): PracticeTask {
+  const klic = ZNAMENKO[v.konec];
+  const chyby: Record<string, { value: string; why: string }[]> = {
+    "čárka": [
+      { value: "tečka", why: "Věta pokračuje uvozovací větou, proto se oznámení neukončuje tečkou." },
+      { value: "dvojtečka", why: "Dvojtečka se píše před přímou řečí, ne na jejím konci." },
+      { value: "žádné", why: "Oznámení před uvozovací větou končí uvnitř uvozovek znaménkem." },
     ],
-    hints: ["V přímé řeči mluvčí mluví za sebe – 1. osoba + uvozovky."],
-  },
-  {
-    question: "Kde se píše čárka při přímé řeči s uvozovací větou?",
-    correctAnswer: "před uvozovkami nebo po uvozovací větě před přímou řečí",
-    options: [
-      "vždy jen na úplném konci celé věty",
-      "před uvozovkami nebo po uvozovací větě před přímou řečí",
-      "nikde, čárka se tam vůbec nepíše",
-      "jen u vět, které jsou otázkou",
+    "otazník": [
+      { value: "čárka", why: "Otázka končí otazníkem i tehdy, když za ní následuje uvozovací věta." },
+      { value: "tečka", why: "Je to otázka, ne oznámení." },
+      { value: "vykřičník", why: "Je to otázka, ne zvolání." },
     ],
-    hints: ["Matka řekla[,] 'Pojď sem.' nebo 'Pojď sem[,]' řekla matka."],
-  },
-  {
-    question: "Co je uvozovací věta?",
-    correctAnswer: "věta, která uvádí přímou řeč (říká, kdo mluví)",
-    options: ["věta, která je celá v uvozovkách", "vždy jen první věta celého odstavce", "věta, která uvádí přímou řeč (říká, kdo mluví)", "věta, ve které chybí sloveso"],
-    hints: ["Petr ŘEKL: ... – tučný výraz je uvozovací věta."],
-  },
-  {
-    question: "Převeď do nepřímé řeči: Lucie se zeptala: \"Jdeš s námi?\"",
-    correctAnswer: "Lucie se zeptala, jestli (zda) jdu s nimi.",
-    options: ["Lucie se zeptala, jestli jdeš s námi.", "Lucie: Jdeš s námi?", "Lucie se ptá jestli.", "Lucie se zeptala, jestli (zda) jdu s nimi."],
-    hints: ["Otázka v nepřímé řeči = 'jestli / zda' + změna osoby."],
-  },
-  {
-    question: "V přímé řeči se pronomen 'já' v nepřímé řeči změní na:",
-    correctAnswer: "on nebo ona (podle pohlaví mluvčího)",
-    options: ["on nebo ona (podle pohlaví mluvčího)", "já zůstane úplně stejné jako v přímé řeči", "vždy se změní na 'ty'", "vždy se změní na 'my'"],
-    hints: ["Přímá řeč: já mluvím → nepřímá řeč: on/ona říká."],
-  },
-  {
-    question: "Ve větě 'Řekla: Přijdu.' – co je špatně?",
-    correctAnswer: "chybí uvozovky – správně: Řekla: \"Přijdu.\"",
-    options: [
-      "nic, věta je správně",
-      "chybí uvozovky – správně: Řekla: \"Přijdu.\"",
-      "chybí čárka za přímou řečí",
-      "chybí vykřičník",
+    "vykřičník": [
+      { value: "čárka", why: "Zvolání končí vykřičníkem i tehdy, když za ním následuje uvozovací věta." },
+      { value: "tečka", why: "Je to zvolání, ne oznámení." },
+      { value: "otazník", why: "Není to otázka, ale zvolání." },
     ],
-    hints: ["Přímá řeč musí být v uvozovkách."],
-  },
-  {
-    question: "Jak se změní sloveso v nepřímé řeči věty: Pavel řekl: \"Mám čas.\"?",
-    correctAnswer: "Pavel řekl, že má čas. (mám → má)",
-    options: ["Pavel řekl, že mám čas.", "Pavel řekl, měl čas.", "Pavel řekl, že má čas. (mám → má)", "Pavel říká mám čas."],
-    hints: ["1. osoba 'mám' se změní na 3. osobu 'má'."],
-  },
-  {
-    question: "Přímá řeč obsahuje:",
-    correctAnswer: "doslova citovaná slova postavy nebo osoby",
-    options: ["shrnutí toho, co někdo řekl", "vždy otázku", "vždy rozkaz", "doslova citovaná slova postavy nebo osoby"],
-    hints: ["Přímá = doslova, nepřímá = přeformulovaně."],
-  },
-  {
-    question: "Jaký spojovací výraz se nejčastěji používá v nepřímé řeči?",
-    correctAnswer: "že",
-    options: ["že", "nebo", "ale", "proto"],
-    hints: ["Řekl, že... Myslel si, že... – spojka 'že' uvádí nepřímou řeč."],
-  },
-  {
-    question: "Převeď do přímé řeči: Maminka řekla, že je večeře hotová.",
-    correctAnswer: "Maminka řekla: \"Večeře je hotová.\"",
-    options: ["Maminka řekla: \"Je večeře hotová.\"", "Maminka řekla: \"Večeře je hotová.\"", "Maminka: večeře hotová.", "Maminka řekla je hotovo."],
-    hints: ["V přímé řeči vrátíme 1. nebo 3. osobu a přidáme uvozovky."],
-  },
-  {
-    question: "Ve větě s přímou řečí: „Pojď sem,“ řekla babička. – kde je čárka?",
-    correctAnswer: "uvnitř uvozovek, před uvozovací větou",
-    options: ["hned za uvozovkami, mimo přímou řeč", "až za slovem babička na konci věty", "uvnitř uvozovek, před uvozovací větou", "nikde, v té větě žádná čárka není"],
-    hints: ["'Pojď sem[,]' řekla babička. Čárka je součástí přímé řeči."],
-  },
+  };
+  const spravne = `„${v.text}${v.konec === "." ? "," : v.konec}“ ${v.za}.`;
+  return choice(`Které znaménko patří na vynechané místo? „${v.text}___“ ${v.za}.`, klic, chyby[klic] as never, {
+    hints: [
+      `Je věta „${v.text}“ oznámení, otázka, nebo zvolání?`,
+      `Podívej se na stejně stavěnou větu: ${VZOR_ZA[v.konec]} Které znaménko je ve vzoru uvnitř uvozovek na konci?`,
+    ],
+    explanation: `Správně: ${spravne}`,
+  });
+}
+
+// ── L3: převod na nepřímou řeč ──────────────────────────────────────────────
+type Prevod = [string, string, string, string];
+// [přímá řeč, správná nepřímá, nepřímá se špatnou osobou, proč osoba]
+const PREVODY: Prevod[] = [
+  ["Jana řekla: „Mám hlad.“", "Jana řekla, že má hlad.", "Jana řekla, že mám hlad.", "Hlad má Jana, ne ty — sloveso je ve 3. osobě."],
+  ["Petr řekl: „Jdu domů.“", "Petr řekl, že jde domů.", "Petr řekl, že jdu domů.", "Domů jde Petr — sloveso ve 3. osobě."],
+  ["Babička řekla: „Upeču koláč.“", "Babička řekla, že upeče koláč.", "Babička řekla, že upeču koláč.", "Péct bude babička — upeče."],
+  ["Tomáš řekl: „Jsem unavený.“", "Tomáš řekl, že je unavený.", "Tomáš řekl, že jsem unavený.", "Unavený je Tomáš — je."],
+  ["Učitelka řekla: „Zítra píšeme test.“", "Učitelka řekla, že zítra píšou test.", "Učitelka řekla, že zítra píšeme test.", "O žácích se v nepřímé řeči mluví ve 3. osobě — píšou."],
+  ["Děti volaly: „Máme radost!“", "Děti volaly, že mají radost.", "Děti volaly, že máme radost.", "Radost mají děti — mají."],
+  ["Martin řekl: „Mám nové kolo.“", "Martin řekl, že má nové kolo.", "Martin řekl, že mám nové kolo.", "Kolo má Martin — má."],
+  ["Kamarádka napsala: „Přijedu v sobotu.“", "Kamarádka napsala, že přijede v sobotu.", "Kamarádka napsala, že přijedu v sobotu.", "Přijede kamarádka — přijede."],
+  ["Táta mi řekl: „Opravím ti kolo.“", "Táta mi řekl, že mi opraví kolo.", "Táta mi řekl, že ti opravím kolo.", "Opravovat bude táta a kolo je moje — že mi opraví."],
+  ["Sestra řekla: „Uklidím si pokoj.“", "Sestra řekla, že si uklidí pokoj.", "Sestra řekla, že si uklidím pokoj.", "Uklízet bude sestra — uklidí."],
+  ["Honza řekl: „Neumím plavat.“", "Honza řekl, že neumí plavat.", "Honza řekl, že neumím plavat.", "Plavat neumí Honza — neumí."],
+  ["Maminka mi řekla: „Jsem na tebe pyšná.“", "Maminka mi řekla, že je na mě pyšná.", "Maminka mi řekla, že jsem na tebe pyšná.", "Pyšná je maminka a pyšná je na mě — že je na mě pyšná."],
+  ["Soused řekl: „Bydlím tady deset let.“", "Soused řekl, že tady bydlí deset let.", "Soused řekl, že tady bydlím deset let.", "Bydlí soused — bydlí."],
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Přepiš do nepřímé řeči: Ondřej zvolal: \"Hurá, vyhráli jsme!\"",
-    correctAnswer: "Ondřej zvolal, že vyhráli.",
-    options: ["Ondřej zvolal, že jsme vyhráli.", "Ondřej: Hurá, vyhráli jsme!", "Ondřej zvolal hurá.", "Ondřej zvolal, že vyhráli."],
-    hints: ["Jsme → vyhráli (3. osoba); vykřičník a citoslovce v nepřímé řeči vynecháme."],
-  },
-  {
-    question: "Přepiš do přímé řeči: Kluk se ptal, kdy pojedou na výlet.",
-    correctAnswer: "Kluk se ptal: \"Kdy pojedeme na výlet?\"",
-    options: ["Kluk se ptal: \"Kdy pojedeme na výlet?\"", "Kluk se ptal: \"Kdy jedou na výlet?\"", "Kluk: kdy výlet?", "Kluk řekl: Kdy jeli na výlet."],
-    hints: ["V přímé řeči se vrátíme do 1. osoby množného čísla + otazník."],
-  },
-  {
-    question: "Ve větě s přímou řečí: Tatínek zavolal: \"Snídaně je připravena!\" – co je uvozovací věta?",
-    correctAnswer: "Tatínek zavolal",
-    options: [
-      "Snídaně je připravena!",
-      "Tatínek zavolal",
-      "celá věta",
-      "jen slovo tatínek",
+function prevodUloha([prima, spravne, osoba, proc]: Prevod): PracticeTask {
+  const at = spravne.replace(", že", ", ať");
+  const jestli = spravne.replace(", že", ", jestli");
+  return choice(`Převeď do nepřímé řeči: ${prima}`, spravne, [
+    { value: osoba, why: `Osoba zůstala jako v přímé řeči. ${proc}` },
+    { value: at, why: "Spojkou ať se převypráví výzva nebo přání; postava tu jen něco oznamuje, proto že." },
+    { value: jestli, why: "Spojkou jestli se převypráví otázka; postava se tu na nic neptá, proto že." },
+  ], {
+    hints: [
+      `Kdo v přímé řeči ${prima} mluví a o kom teď budeš vyprávět ty?`,
+      "V nepřímé řeči nejsou uvozovky, oznámení uvádí spojka že, výzvu ať, otázku jestli, a slovesa se mění podle toho, o kom vyprávíš: postava řekne „mám“, ty o ní řekneš „má“.",
     ],
-    hints: ["Uvozovací věta oznamuje, kdo mluví a jak."],
-  },
-  {
-    question: "Přepiš do nepřímé řeči: Paní učitelka řekla: \"Otevřete učebnice na straně 10.\"",
-    correctAnswer: "Paní učitelka řekla, abychom otevřeli učebnice na straně 10.",
-    options: ["Paní učitelka řekla, že otevřeli učebnice.", "Paní učitelka: otevřete.", "Paní učitelka řekla, abychom otevřeli učebnice na straně 10.", "Paní učitelka řekla otevřete."],
-    hints: ["Rozkaz v nepřímé řeči: 'aby...' místo 'že...'"],
-  },
-  {
-    question: "Jaký je rozdíl mezi přímou a nepřímou řečí?",
-    correctAnswer: "přímá cituje doslova, nepřímá přeformuluje a nemá uvozovky",
-    options: ["přímá je kratší, nepřímá delší", "v přímé mluvíme, v nepřímé píšeme", "přímá je zdvořilejší", "přímá cituje doslova, nepřímá přeformuluje a nemá uvozovky"],
-    hints: ["Přímá = doslova + uvozovky. Nepřímá = vlastní slova, žádné uvozovky."],
-  },
-  {
-    question: "Ve větě: \"Vrátím se,\" slíbil Jakub. – kde je chyba?",
-    correctAnswer: "věta je správně napsaná",
-    options: ["věta je správně napsaná", "chybí vykřičník", "chybí uvozovky na konci", "slíbil patří do uvozovek"],
-    hints: ["Slíbil + čárka uvnitř uvozovek – vše je správně."],
-  },
-  {
-    question: "V nepřímé řeči se 'my' mění na:",
-    correctAnswer: "oni (pokud mluvčí mluví o sobě a ostatních třetí osobě)",
-    options: [
-      "zůstane 'my', to se nikdy nemění",
-      "oni (pokud mluvčí mluví o sobě a ostatních třetí osobě)",
-      "vždy se změní jen na jedno 'já'",
-      "vždy se změní jen na oslovení 'vy'",
-    ],
-    hints: ["Záleží na kontextu – kdo o kom mluví."],
-  },
-  {
-    question: "Přepiš do přímé řeči: Sestra říkala, že je unavená a chce spát.",
-    correctAnswer: "Sestra říkala: \"Jsem unavená a chci spát.\"",
-    options: ["Sestra říkala: \"Je unavená a chce spát.\"", "Sestra: unavená, spát.", "Sestra říkala: \"Jsem unavená a chci spát.\"", "Sestra řekla jsem unavená."],
-    hints: ["V přímé řeči mluvčí mluví za sebe – 1. osoba: jsem, chci."],
-  },
-  {
-    question: "Přepiš do nepřímé řeči: David se zeptal: \"Máš čas?\"",
-    correctAnswer: "David se zeptal, jestli mám čas.",
-    options: ["David se zeptal, jestli má čas.", "David: Máš čas?", "David se ptá máš čas.", "David se zeptal, jestli mám čas."],
-    hints: ["Otázka → jestli/zda + zachování osoby adresáta: 'máš' → 'mám' (z pohledu toho, kdo byl dotázán)."],
-  },
-  {
-    question: "Ve větě: Lucie řekla, že přijde zítra. – čím se liší 'přijde' od přímé řeči?",
-    correctAnswer: "v přímé řeči by bylo 'přijdu' (1. osoba Lucie)",
-    options: ["v přímé řeči by bylo 'přijdu' (1. osoba Lucie)", "ničím, oboje je stejné", "v přímé řeči by bylo 'přijdeš'", "v přímé řeči by bylo 'přišla'"],
-    hints: ["Lucie = 1. osoba → v přímé řeči: já přijdu."],
-  },
-  {
-    question: "Jakou interpunkci používáme při přímé řeči stojící PŘED uvozovací větou?",
-    correctAnswer: "čárka nebo otazník nebo vykřičník na konci přímé řeči",
-    options: [
-      "vždy jen prostá tečka, nic jiného",
-      "čárka nebo otazník nebo vykřičník na konci přímé řeči",
-      "žádná interpunkce se tam nepíše",
-      "vždy jen středník uprostřed věty",
-    ],
-    hints: ["'Pojď sem,' nebo 'Přijdeš?' nebo 'Zastav se!' + pak uvozovací věta."],
-  },
-  {
-    question: "Přepiš do nepřímé řeči: Mirek vykřikl: \"Pozor, padá strom!\"",
-    correctAnswer: "Mirek vykřikl, aby si dali pozor, protože padá strom.",
-    options: ["Mirek vykřikl, že pozor strom.", "Mirek: Pozor!", "Mirek vykřikl, aby si dali pozor, protože padá strom.", "Mirek řekl pozor."],
-    hints: ["Citoslovce a vykřičník se nahradí opisem v nepřímé řeči."],
-  },
-  {
-    question: "Jaký tvar mají uvozovky v češtině?",
-    correctAnswer: "dole-nahoru: otevírací dole, zavírací nahoře",
-    options: ["jen horní uvozovky na obou stranách", "záleží na tiskárně", "vždy jednoduché apostrofy", "dole-nahoru: otevírací dole, zavírací nahoře"],
-    hints: ["Čeština má jiný typografický tvar uvozovek než třeba angličtina — všimni si jejich směru nahoře a dole."],
-  },
-  {
-    question: "Přepiš do přímé řeči: Táta nám řekl, abychom šli spát.",
-    correctAnswer: "Táta nám řekl: \"Jděte spát.\"",
-    options: ["Táta nám řekl: \"Jděte spát.\"", "Táta nám řekl: \"Šli jsme spát.\"", "Táta: spát!", "Táta řekl půjdeme spát."],
-    hints: ["Abychom šli = rozkaz → v přímé řeči: Jděte! (rozkazovací způsob)."],
-  },
-  {
-    question: "Může uvozovací věta stát uprostřed přímé řeči?",
-    correctAnswer: "ano – 'Pojď,' řekl, 'to se stane.'",
-    options: [
-      "ne – vždy musí být před nebo za",
-      "ano – 'Pojď,' řekl, 'to se stane.'",
-      "jen v básních",
-      "jen v rozhovorech",
-    ],
-    hints: ["Uvozovací věta může přímou řeč přerušit."],
-  },
-];
-
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Přepiš celý dialog do nepřímé řeči: Petr řekl: \"Nechci jít.\" Eva odpověděla: \"Musíš.\"",
-    correctAnswer: "Petr řekl, že nechce jít. Eva mu odpověděla, že musí.",
-    options: ["Petr řekl, že nechci jít. Eva řekla musíš.", "Petr: nechce. Eva: musí.", "Petr řekl, že nechce jít. Eva mu odpověděla, že musí.", "Petr nechce, Eva musí."],
-    hints: ["Každá replika → samostatná věta s nepřímou řečí."],
-  },
-  {
-    question: "Ve větě: \"Jak se jmenuješ?\" zeptala se dívka. – kde chybí interpunkce?",
-    correctAnswer: "věta je správně – otazník je součástí přímé řeči",
-    options: ["chybí čárka před zavírající uvozovkou", "chybí tečka za 'dívka'", "chybí vykřičník", "věta je správně – otazník je součástí přímé řeči"],
-    hints: ["Když jsou citovaná slova otázkou, otazník nahrazuje čárku před uvozovací větou."],
-  },
-  {
-    question: "Proč v nepřímé řeči časujeme sloveso jinak než v přímé?",
-    correctAnswer: "protože přímá řeč je z pohledu mluvčího (já), nepřímá z pohledu vypravěče (on/ona)",
-    options: ["protože přímá řeč je z pohledu mluvčího (já), nepřímá z pohledu vypravěče (on/ona)", "není to vůbec pravda, časování se nikdy nemění", "protože nepřímá řeč zní prostě zdvořileji", "záleží jen na tom, jaké je použité sloveso"],
-    hints: ["Přesun z 1. na 3. osobu je klíčový rozdíl."],
-  },
-  {
-    question: "Převeď do nepřímé řeči: Soudce prohlásil: \"Obžalovaný je vinen.\"",
-    correctAnswer: "Soudce prohlásil, že obžalovaný je vinen.",
-    options: ["Soudce řekl, že je vinen.", "Soudce prohlásil, že obžalovaný je vinen.", "Soudce: vinen!", "Soudce prohlásil jsem vinen."],
-    hints: ["Subjekt 'obžalovaný' zůstává, jen přidáme 'že'."],
-  },
-  {
-    question: "V přímé řeči stojící za uvozovací větou se píše: Otec řekl, ___",
-    correctAnswer: ": \"Přijdu brzy.\"",
-    options: ["že přijde brzy.", ". Přijdu brzy.", ": \"Přijdu brzy.\"", ", Přijdu brzy."],
-    hints: ["Za uvozovací větou → dvojtečka + uvozovky + obsah."],
-  },
-  {
-    question: "Co se stane s vykřičníkem v přímé řeči, když ji přepíšeme do nepřímé?",
-    correctAnswer: "vykřičník mizí, obsah se vyjádří opisem (že, aby, jak...)",
-    options: ["vykřičník tam zůstane úplně beze změny", "vykřičník se vždy změní na otazník", "vykřičník jednoduše nahradí tečku", "vykřičník mizí, obsah se vyjádří opisem (že, aby, jak...)"],
-    hints: ["Nepřímá řeč je klidnější – ztratíme zvolání i otázku jako interpunkci."],
-  },
-  {
-    question: "Přepiš přímou řeč do nepřímé: Babička volala: \"Pojďte na oběd, děti!\"",
-    correctAnswer: "Babička volala, ať přijdou na oběd.",
-    options: [
-      "Babička volala, ať přijdou na oběd.",
-      "Babička volala, že pojdou na oběd.",
-      "Babička: pojďte!",
-      "Babička volala pojďte.",
-    ],
-    hints: ["Výzva (pojďte!) → 'ať přijdou' nebo 'aby přišli'."],
-  },
-  {
-    question: "Ve větě: Kamarádka šeptala: \"Pss, nevíkej tomu!\" – najdi chybu.",
-    correctAnswer: "slovo 'nevíkej' neexistuje – správně 'neříkej'",
-    options: [
-      "věta je naprosto v pořádku, žádná chyba",
-      "slovo 'nevíkej' neexistuje – správně 'neříkej'",
-      "chybí tam vůbec nějaké uvozovky",
-      "chybí tam celá uvozovací věta",
-    ],
-    hints: ["'nevíkej' není slovo – správně 'neříkej'. A chybí adresát."],
-  },
-  {
-    question: "Přepiš do přímé řeči: Trenér řekl hráčům, aby se soustředili.",
-    correctAnswer: "Trenér řekl hráčům: \"Soustřeďte se!\"",
-    options: ["Trenér řekl: \"Soustředili se!\"", "Trenér: soustředit.", "Trenér řekl hráčům: \"Soustřeďte se!\"", "Trenér řekl soustřeďte."],
-    hints: ["Aby se soustředili → rozkaz: Soustřeďte se! (+ uvozovky)."],
-  },
-  {
-    question: "Může být uvozovací věta uprostřed přímé řeči, například: kamarádi slíbili, ale trochu pozdě?",
-    correctAnswer: "ano – uvozovací věta uprostřed přerušuje přímou řeč",
-    options: ["ne – uvozovací věta nesmí být uprostřed", "ne – chybí vykřičník", "ne – chybí tečka", "ano – uvozovací věta uprostřed přerušuje přímou řeč"],
-    hints: ["Přerušená přímá řeč: první část, uvozovací věta, druhá část."],
-  },
-  {
-    question: "Proč používáme přímou řeč v literárních textech?",
-    correctAnswer: "aby text byl živý, čtenář slyšel postavu přímo mluvit",
-    options: ["aby text byl živý, čtenář slyšel postavu přímo mluvit", "protože pravidla to přikazují", "protože nepřímá řeč neexistuje v literatuře", "aby text byl kratší"],
-    hints: ["Dialog v přímé řeči dává postavám autentický hlas."],
-  },
-];
+    explanation: `${spravne} ${proc}`,
+  });
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return urceni(L1_BANKA, DRUHY, 1, (p) => ({
+    question: `Co obsahuje tato věta? ${p.veta}`,
+    hints: [`Podívej se na větu ${p.veta} Jsou v ní uvozovky a mluví v ní někdo?`, `Pomůže tohle: ${p.klic}.`],
+  }));
+  if (level === 2) return shuffle([...VYPOVEDI.map(predUloha), ...VYPOVEDI.map(zaUloha)]);
+  return shuffle(PREVODY.map(prevodUloha));
 }
 
 export const PRIMAANEPRIMARECUVOD: TopicMetadata[] = [
@@ -348,7 +174,7 @@ export const PRIMAANEPRIMARECUVOD: TopicMetadata[] = [
         "Přepis: nepřímá → přímá: odstraň 'že', přidej uvozovky, vrať osobu.",
       ],
       commonMistake: "Žáci zapomenou změnit osobu (já → on/ona) nebo zapomenou přidat/odebrat uvozovky.",
-      example: "Přímá: Jana řekla: \"Jsem unavená.\" Nepřímá: Jana řekla, že je unavená.",
+      example: "Přímá: Jana řekla: „Jsem unavená.“ Nepřímá: Jana řekla, že je unavená.",
     },
   },
 ];

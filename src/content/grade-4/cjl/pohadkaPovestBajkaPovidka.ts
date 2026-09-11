@@ -1,100 +1,308 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 4. ročníku). Z původního poolu vypadla
+// vymyšlená „pověst“ o drakovi u hory Říp (taková pověst neexistuje),
+// otázky na román (hranice tématu román vylučují) a málo známí autoři
+// a bajky (Krylov, „Moucha a vůz“). Klíče byly často dvakrát delší než
+// distraktory, takže se daly uhodnout bez čtení.
+//
+// L1 = znaky žánrů a známé příklady · L2 = urči žánr z ukázky
+// L3 = hraniční případy (mluvící zvíře v pohádce, skutečná osoba s kouzlem),
+//      ponaučení bajky, co do vlastního příběhu patří.
+
+type Zanr = "pohádka" | "pověst" | "bajka" | "povídka";
+const ZANRY: Zanr[] = ["pohádka", "pověst", "bajka", "povídka"];
+
+function zanr(q: string, klic: Zanr, proc: Record<string, string>, hints: [string, string], explanation: string): PracticeTask {
+  const spatne = ZANRY.filter((z) => z !== klic).map((z) => ({ value: z, why: proc[z] })) as [
+    { value: string; why: string }, { value: string; why: string }, { value: string; why: string },
+  ];
+  return choice(q, klic, spatne, { hints, explanation });
 }
 
-interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
-
-const POOL_L1: QA[] = [
-  { q: "Jaký žánr je text o lišce a hroznovém víně?", a: "bajka", opts: ["bajka", "pohádka", "pověst", "povídka"], e: "Liška, která jedná a uvažuje jako člověk, je typická pro bajku — a na konci takového příběhu bývá ponaučení. Pohádka by měla kouzla a víly, pověst by se vázala na skutečné místo a povídka by měla obyčejné lidi." },
-  { q: "Co je charakteristické pro pohádku?", a: "Nadpřirozené bytosti, dobro vítězí, vymyšlené, 'Byl jednou jeden...'", opts: ["Nadpřirozené bytosti, dobro vítězí, vymyšlené, 'Byl jednou jeden...'", "Váže se na skutečné místo, historický základ", "Zvířata jako lidé, morální ponaučení", "Reálné postavy, krátký příběh"], e: "Pohádka je zcela vymyšlená — vystupují v ní kouzelné bytosti a dobro nakonec zvítězí. Historický základ patří k pověsti, zvířata s ponaučením k bajce a reálné postavy k povídce." },
-  { q: "Co je charakteristické pro pověst?", a: "Váže se na skutečné místo nebo osobu, historický základ", opts: ["Váže se na skutečné místo nebo osobu, historický základ", "Nadpřirozené bytosti, dobro vítězí", "Zvířata jako lidé, morální ponaučení", "Reálné postavy, krátký příběh"], e: "Pověst se opírá o skutečnost — odehrává se na opravdovém místě nebo vypráví o skutečné osobě, i když si k tomu lidé něco přidali. Tím se liší od zcela vymyšlené pohádky i od bajky se zvířaty." },
-  { q: "Co je charakteristické pro bajku?", a: "Zvířata jako lidé, morální ponaučení na konci", opts: ["Zvířata jako lidé, morální ponaučení na konci", "Nadpřirozené bytosti", "Historický základ", "Reálné postavy z každodenního života"], e: "V bajce vystupují zvířata, která mluví a jednají jako lidé, a příběh vždy končí ponaučením. Nadpřirozené bytosti má pohádka a historický základ pověst." },
-  { q: "Co je charakteristické pro povídku?", a: "Kratší próza, reálné postavy a děj, jeden příběh", opts: ["Kratší próza, reálné postavy a děj, jeden příběh", "Nadpřirozené bytosti", "Morální ponaučení", "Historický základ a skutečné místo"], e: "Povídka je krátké vyprávění o obyčejných lidech a věcech, které se mohly opravdu stát, bez kouzel a bez povinného ponaučení. Tím se liší od pohádky, bajky i pověsti." },
-  { q: "Ezop byl starořecký autor:", a: "bajek", opts: ["bajek", "pohádek", "pověstí", "povídek"], e: "Ezop je nejznámější autor bajek — krátkých příběhů o zvířatech s ponaučením. Pohádky, pověsti ani povídky proslulé nepsal, ty psali jiní autoři." },
-  { q: "Alois Jirásek napsal:", a: "Staré pověsti české", opts: ["Staré pověsti české", "pohádky pro děti", "bajky o zvířatech", "detektivní povídky"], e: "Alois Jirásek sepsal Staré pověsti české — příběhy o praotci Čechovi, Libuši či Blanických rytířích, které se vážou k naší historii. Proto je to sbírka pověstí, ne pohádek nebo bajek." },
-  { q: "Pohádka začíná typicky:", a: "Byl jednou jeden...", opts: ["Byl jednou jeden...", "Vím, že bylo skutečně...", "Liška říkala vraně...", "V naší třídě žil..."], e: "Slova 'Byl jednou jeden...' jsou typický pohádkový začátek, který hned napoví, že příběh je vymyšlený. Odkaz na skutečnost by patřil k pověsti a mluvící liška k bajce." },
-  { q: "Bajka o havranovi a lišce učí:", a: "morální ponaučení — nebýt marnivý nebo pozor na lichocení", opts: ["morální ponaučení — nebýt marnivý nebo pozor na lichocení", "historický příběh o lišce", "pohádkový příběh o dobru a zlu", "příběh z reálného života"], e: "V této bajce liška chválí havrana, ten začne pyšně zpívat a upustí sýr — proto nás příběh učí dát si pozor na lichocení a marnivost. Každá bajka totiž končí takovým mravním ponaučením." },
-  { q: "Pověst 'Libuše a Přemysl' je příkladem:", a: "pověsti", opts: ["bajky", "pověsti", "povídky", "pohádky"], e: "Vyprávění o kněžně Libuši a Přemyslovi se váže k počátkům našeho národa a ke skutečné zemi — proto je to pověst. Nemá kouzelné bytosti jako pohádka ani mluvící zvířata jako bajka.", hints: [
-    "Vystupují v něm kouzelné bytosti jako v pohádce, nebo mluvící zvířata jako v bajce?",
-    "Zkus si vzpomenout: je tenhle příběh spojený se SKUTEČNOU zemí a dávnou historií našeho národa, nebo je celý vymyšlený?",
-  ] },
-  { q: "Co je ponaučení (morál) bajky?", a: "Závěrečná věta říkající, co bychom se měli naučit", opts: ["Závěrečná věta říkající, co bychom se měli naučit", "Začátek bajky s uvedením postav", "Popis prostředí", "Přímá řeč zvířat"], e: "Ponaučení (morál) je věta na konci bajky, která shrnuje, co si máme z příběhu odnést. Není to úvod ani popis prostředí — naopak příběh uzavírá." },
-  { q: "Karel Čapek napsal:", a: "Povídky a romány", opts: ["Staré pověsti", "Povídky a romány", "Bajky o zvířatech", "Pohádky s draky"], e: "Karel Čapek je známý jako autor povídek a románů, například detektivních příběhů nebo vědeckofantastických děl. Staré pověsti psal Jirásek a bajky Ezop." },
-  { q: "Co je typické pro pohádkové prostředí?", a: "Věci se mění kouzlem, draci, víly, trpaslíci", opts: ["Věci se mění kouzlem, draci, víly, trpaslíci", "Reálná moderní Česká republika", "Historický hrad se skutečným panovníkem", "Zvířata mluví jako lidé"], e: "V pohádce funguje svět kouzelně — objevují se draci, víly a trpaslíci a věci se mění čáry. Skutečný hrad s panovníkem by ukazoval na pověst a mluvící zvířata na bajku." },
-  { q: "Jak se liší pohádka od pověsti?", a: "Pohádka = zcela vymyšlená; pověst = historický základ", opts: ["Pohádka = zcela vymyšlená; pověst = historický základ", "Pohádka má historický základ; pověst je vymyšlená", "Jsou to stejné žánry", "Pohádka má ponaučení; pověst ne"], e: "Pohádka je celá vymyšlená, kdežto pověst se opírá o skutečné místo nebo událost z historie. Není to tedy obráceně a nejsou to ani stejné žánry.", hints: [
-    "Nejsou to ani stejné žánry, ani obráceně, než by se dalo čekat — přemýšlej, který z nich je blíž ke skutečnosti.",
-    "Jeden z těch dvou žánrů si autor celý vymyslel, druhý se opírá o skutečné místo nebo událost z dávné historie — u kterého žánru to platí?",
-  ] },
-  { q: "La Fontaine byl francouzský autor:", a: "bajek", opts: ["bajek", "pohádek", "pověstí", "románů"], e: "Jean de La Fontaine je slavný francouzský autor bajek, který navázal na Ezopa. Pohádky, pověsti ani romány ho neproslavily." },
-  { q: "Bajka 'Liška a vrána' — kdo jsou postavy?", a: "zvířata, která jednají jako lidé", opts: ["zvířata, která jednají jako lidé", "historické osoby", "pohádkové bytosti", "reálné moderní postavy"], e: "V bajce vystupují zvířata, která mluví a chovají se jako lidé — tady liška a vrána. Nejsou to historické osoby ani kouzelné bytosti, právě podle zvířat poznáme bajku." },
+const L1: PracticeTask[] = [
+  zanr("Ve kterém druhu příběhu jednají zvířata jako lidé a na konci je ponaučení?", "bajka", {
+    pohádka: "V pohádce mohou být kouzla i mluvící zvířata, ale ponaučení na konci být nemusí.",
+    pověst: "Pověst se váže ke skutečnému místu nebo osobě.",
+    povídka: "Povídka vypráví o obyčejných lidech, zvířata v ní nemluví.",
+  }, ["Který druh příběhu končí větou, co si z něj máme vzít?", "Liška, vrána, mravenec… jednají jako lidé a příběh končí mravní myšlenkou. Tak vypadají příběhy starého řeckého vypravěče Ezopa."],
+  "Bajka je krátký příběh, ve kterém zvířata jednají jako lidé, a končí ponaučením."),
+  zanr("Ve kterém druhu příběhu vystupují víly, draci a kouzla?", "pohádka", {
+    pověst: "Pověst sice někdy má kouzelné prvky, ale váže se ke skutečnému místu či osobě.",
+    bajka: "V bajce jednají zvířata a jde o ponaučení, ne o víly a draky.",
+    povídka: "Povídka je o obyčejném životě, kouzla v ní nejsou.",
+  }, ["Který příběh je celý vymyšlený a plný kouzel?", "Draci, víly, čarodějnice a kouzelné předměty patří do světa, který si někdo celý vymyslel. Takové příběhy začínají třeba „Byl jednou jeden…“."],
+  "Víly, draci a kouzla patří do pohádky — příběhu, který je celý vymyšlený."),
+  zanr("Který druh příběhu vychází ze skutečného místa, osoby nebo události?", "pověst", {
+    pohádka: "Pohádka je celá vymyšlená, žádné skutečné místo nepotřebuje.",
+    bajka: "Bajka je o zvířatech a ponaučení, ne o skutečném místě.",
+    povídka: "Povídka je o obyčejném životě, ale nevychází ze známé dávné události nebo místa.",
+  }, ["Který příběh by ti mohl vyprávět průvodce na hradě?", "Tyhle příběhy se vyprávějí o skutečném hradu, hoře nebo panovníkovi, jen si k nim lidé přidali neskutečné věci."],
+  "Pověst vychází ze skutečného místa, osoby nebo události, i když k nim lidé přidali něco neskutečného."),
+  zanr("Který druh příběhu vypráví o obyčejných lidech a o tom, co se mohlo opravdu stát?", "povídka", {
+    pohádka: "Pohádka má kouzla a nadpřirozené bytosti.",
+    pověst: "Pověst se váže ke známému místu nebo dávné události a mívá neskutečné prvky.",
+    bajka: "Bajka má zvířata jednající jako lidé a ponaučení.",
+  }, ["Který příběh by se mohl stát tobě nebo tvým spolužákům?", "Bez kouzel, bez mluvících zvířat, bez dávné historie — jen obyčejní lidé a běžné události. Takový krátký příběh má svůj název."],
+  "Povídka je kratší příběh o obyčejných lidech a o tom, co se mohlo opravdu stát."),
+  choice("Kterými slovy často začíná pohádka?", "Byl jednou jeden král…", [
+    { value: "V roce 1348 založil král…", why: "Přesný letopočet ukazuje na skutečnou událost — spíš pověst nebo dějepis." },
+    { value: "Liška jednou potkala vránu…", why: "Liška a vrána jsou postavy bajky." },
+    { value: "Včera jsem šla ze školy…", why: "Tak začíná vyprávění ze skutečného života." },
+  ], {
+    hints: ["Který začátek nám hned řekne, že příběh je vymyšlený?", "Pohádky nepotřebují přesné datum ani skutečné místo. Začínají neurčitě — kdysi dávno, nevíme kde."],
+    explanation: "„Byl jednou jeden…“ je typický začátek pohádky — neříká přesně kdy ani kde, protože příběh je vymyšlený.",
+  }),
+  choice("Kdo sepsal Staré pověsti české?", "Alois Jirásek", [
+    { value: "Ezop", why: "Ezop byl starořecký vypravěč bajek." },
+    { value: "Karel Jaromír Erben", why: "Erben sbíral hlavně pohádky a psal balady (Kytice)." },
+    { value: "Božena Němcová", why: "Němcová je známá hlavně pohádkami a Babičkou." },
+  ], {
+    hints: ["Autor Starých pověstí českých je český spisovatel. Který z nich psal o praotci Čechovi a Libuši?", "Ezop je starý Řek a psal bajky, Erben a Němcová sbírali hlavně pohádky. Zbývá ten, kdo převyprávěl příběhy o praotci Čechovi, Libuši a Blanických rytířích."],
+    explanation: "Staré pověsti české (o praotci Čechovi, Libuši, Blanických rytířích…) sepsal Alois Jirásek.",
+  }),
+  zanr("Ezop je známý vypravěč…", "bajka", {
+    pohádka: "Pohádky sbírali třeba Němcová a Erben.",
+    pověst: "České pověsti sepsal Alois Jirásek.",
+    povídka: "Ezop nepsal o obyčejných lidech, ale o zvířatech s ponaučením.",
+  }, ["Ezop vyprávěl o lišce a hroznech nebo o mravenci a cvrčkovi. Co je to za příběhy?", "Jeho příběhy jsou krátké, jednají v nich zvířata, která se chovají jako lidé, a každý příběh končí větou, co si z něj máme vzít."],
+  "Ezop je starořecký vypravěč bajek — krátkých příběhů o zvířatech s ponaučením."),
+  choice("Jak končí většina pohádek?", "dobro zvítězí nad zlem", [
+    { value: "ponaučením pro čtenáře", why: "Ponaučením končí bajka." },
+    { value: "vždycky smutně", why: "Pohádky naopak většinou končí dobře." },
+    { value: "přesným datem události", why: "Pohádka žádné přesné datum nemá." },
+  ], {
+    hints: ["Co se v pohádce nakonec stane s drakem, čarodějnicí a hrdinou?", "V pohádce hodní hrdinové překonají zlé postavy. Říká se tomu šťastný konec."],
+    explanation: "V pohádce nakonec dobro zvítězí nad zlem — hrdina porazí draka, zlá postava je potrestána.",
+  }),
+  choice("Co je ponaučení v bajce?", "myšlenka, co si z příběhu vzít", [
+    { value: "první věta bajky", why: "Ponaučení je na konci, ne na začátku." },
+    { value: "název bajky", why: "Název jen říká, o čem bajka je." },
+    { value: "jméno autora", why: "Jméno autora ponaučení není." },
+  ], {
+    hints: ["Proč Ezop své bajky vůbec vyprávěl?", "Bajka chce čtenáře něčemu naučit. Na konci to řekne jednou větou — třeba „Pýcha předchází pád“."],
+    explanation: "Ponaučení je myšlenka na konci bajky, co si máme z příběhu vzít pro vlastní život.",
+  }),
+  zanr("Příběh o praotci Čechovi, který přivedl svůj lid k hoře Říp, je…", "pověst", {
+    pohádka: "Hora Říp je skutečné místo, proto nejde o vymyšlenou pohádku.",
+    bajka: "Nejsou tu zvířata s ponaučením.",
+    povídka: "Nejde o obyčejný příběh ze života, ale o vyprávění o počátcích národa.",
+  }, ["Je hora Říp skutečná?", "Příběh se váže ke skutečnému místu a vypráví o počátcích našeho národa. Sepsal ho Alois Jirásek."],
+  "Příběh o praotci Čechovi se váže ke skutečné hoře Říp a k počátkům národa — je to pověst."),
+  zanr("Popelka je…", "pohádka", {
+    pověst: "Popelka se neváže ke skutečnému místu ani osobě.",
+    bajka: "V Popelce nejde o zvířata s ponaučením.",
+    povídka: "V Popelce jsou kouzla (oříšky, šaty), povídka kouzla nemá.",
+  }, ["Co dostala Popelka v oříšcích?", "Kouzelné šaty, princ a šťastný konec — to všechno je znak jednoho druhu příběhu."],
+  "Popelka má kouzla a šťastný konec — je to pohádka."),
+  zanr("Liška a čáp (od Ezopa) je…", "bajka", {
+    pohádka: "Nejsou tu kouzla ani nadpřirozené bytosti a příběh končí ponaučením.",
+    pověst: "Příběh se neváže ke skutečnému místu.",
+    povídka: "Zvířata tu jednají jako lidé, v povídce ne.",
+  }, ["Kdo tu jedná — lidé, nebo zvířata? A kdo příběh vyprávěl?", "Liška a čáp se chovají jako lidé, příběh vymyslel Ezop a končí ponaučením."],
+  "Liška a čáp je Ezopova bajka — zvířata jednají jako lidé a příběh končí ponaučením."),
+  choice("Která čísla se v pohádkách často opakují?", "tři, sedm, devět", [
+    { value: "dva, čtyři, šest", why: "Tato čísla v pohádkách nijak zvláštní nejsou." },
+    { value: "jedna, deset, sto", why: "Sto let spí Šípková Růženka, ale typická trojice čísel je jiná." },
+    { value: "pět, osm, dvanáct", why: "Tato čísla v pohádkách opakovaně nenajdeš." },
+  ], {
+    hints: ["Vzpomeň si: kolik sester, kolik trpaslíků, za kolika horami?", "Tři sudičky, sedm trpaslíků, za devatero horami — pohádková čísla se opakují stále dokola."],
+    explanation: "V pohádkách se opakují čísla tři, sedm a devět (tři sudičky, sedm trpaslíků, za devatero horami).",
+  }),
 ];
 
-const POOL_L2: QA[] = [
-  { q: "Urči žánr: 'V pradávných časech žil na Vyšehradě moudrý kníže Krok, otec tří dcer...'", a: "pověst", opts: ["pohádka", "pověst", "bajka", "povídka"], e: "Vyšehrad je skutečné místo a kníže Krok patří k počátkům našich dějin, proto jde o pověst. Kdyby šlo o pohádku, byly by tu kouzla, a kdyby o bajku, jednala by zvířata." },
-  { q: "Urči žánr: 'Jednoho dne se liška procházela lesem a spatřila hrozny. Přemýšlela, jak se k nim dostat...'", a: "bajka", opts: ["pohádka", "bajka", "pověst", "povídka"], e: "Liška tu přemýšlí a chová se jako člověk a příběh směřuje k ponaučení — to jsou znaky bajky. Pohádka by měla kouzla, pověst skutečné místo a povídka obyčejné lidi." },
-  { q: "Urči žánr: 'V malém horském městě žila žena, která každý rok v zimě pletla svetry pro sousedy...'", a: "povídka", opts: ["bajka", "povídka", "pohádka", "pověst"], e: "Příběh o obyčejné ženě, která dělá běžnou věc, se mohl opravdu stát — nemá kouzla ani mluvící zvířata, proto je to povídka. Chybí mu i historický základ, který by ukazoval na pověst." },
-  { q: "Urči žánr: 'Za devatero horami žila princezna uvězněná v temné věži. Každou noc ji hlídal drak...'", a: "pohádka", opts: ["bajka", "pohádka", "povídka", "pověst"], e: "Slova 'za devatero horami' a drak hlídající princeznu jsou klasické pohádkové prvky — příběh je zcela vymyšlený. Pověst by se vázala na skutečné místo a bajka by měla zvířata s ponaučením." },
-  { q: "Co mají bajka a pohádka společného?", a: "Obě mají prvky fantazie a jsou vymyšlené", opts: ["Obě mají prvky fantazie a jsou vymyšlené", "Obě mají historický základ", "Obě mají jen reálné postavy", "Obě se odehrávají v moderní době"], e: "Bajka i pohádka jsou vymyšlené a obsahují fantazii — mluvící zvířata nebo kouzla. Historický základ má naopak pověst a jen reálné postavy povídka." },
-  { q: "Co mají pověst a historický román společného?", a: "Obě vychází z historických událostí a osob", opts: ["Obě vychází z historických událostí a osob", "Obě jsou vymyšlené", "Obě mají zvířecí postavy", "Obě mají pohádkové bytosti"], e: "Pověst i historický román se opírají o skutečné dějinné události a osoby, i když si k nim přidávají vyprávění. Zvířecí ani pohádkové postavy do nich nepatří." },
-  { q: "Krylov byl ruský autor:", a: "bajek", opts: ["bajek", "pohádek", "pověstí", "románů"], e: "Ivan Krylov je nejznámější ruský autor bajek, podobně jako Ezop ve starém Řecku nebo La Fontaine ve Francii. Pohádky, pověsti ani romány ho neproslavily." },
-  { q: "Jak bajka poučuje čtenáře?", a: "Na konci přímo říká morální ponaučení (záměrně)", opts: ["Na konci přímo říká morální ponaučení (záměrně)", "Pomocí kouzelného řešení", "Skrytě přes postavu knížete", "Prostřednictvím nadpřirozených bytostí"], e: "Bajka poučuje otevřeně — na konci přímo vysloví ponaučení, které si máme z příběhu vzít. Nedělá to kouzlem ani přes nadpřirozené bytosti, ty patří do pohádky.", hints: [
-    "Kouzlo a nadpřirozené bytosti patří k jinému žánru — vyřaď je nejdřív.",
-    "Přemýšlej, JAK přesně bajka na konci sděluje svou myšlenku — schovaně přes postavu, kouzlem, nebo otevřeně vyslovenou větou?",
-  ] },
-  { q: "Pověst 'Blaničtí rytíři' — co je historický základ?", a: "Rytíři čekající v hoře Blaník", opts: ["Liška a havran v lese", "Rytíři čekající v hoře Blaník", "Moderní česká vesnice", "Pohádkový hrad s drakem"], e: "Pověst o Blanických rytířích se váže ke skutečné hoře Blaník a vyjadřuje naději, že vlasti v nejtěžší chvíli přijde pomoc. Drak ani liška do ní nepatří, ty jsou z pohádky a bajky." },
-  { q: "Povídka se od románu liší:", a: "Je kratší, jeden příběh", opts: ["Má víc postav i dějů", "Je kratší, jeden příběh", "Je delší a podrobnější", "Je vždy určená dětem"], e: "Povídka je krátká a vypráví obvykle jeden příběh nebo okamžik, kdežto román je delší a má více dějů a postav. Není to tedy delší útvar a není určená jen dětem.", hints: [
-    "Není to obráceně (delší a podrobnější) a není to jen o počtu postav ani o věku čtenáře.",
-    "Přemýšlej o DÉLCE a POČTU vyprávěných událostí — píše povídka o mnoha propletených dějích, nebo se soustředí jen na jednu věc?",
-  ] },
-  { q: "Bajka 'Moucha a vůz' — jaká je morálka?", a: "Ten, kdo nepracuje, si přisuzuje zásluhy jiných", opts: ["Ten, kdo nepracuje, si přisuzuje zásluhy jiných", "Koně jsou silnější než mouchy", "Vozy jezdí rychle", "Mouchy jsou chytré"], e: "Moucha sedící na voze si myslí, že vůz táhne ona, ačkoli dřou koně — proto nás bajka varuje před tím, abychom si přivlastňovali zásluhy druhých. Ostatní odpovědi berou příběh doslova a míjejí jeho smysl." },
-  { q: "Co je zvláštní na pohádkové logice?", a: "Věci fungují jinak než v reálném světě (kouzla, mluvící zvířata)", opts: ["Věci fungují jinak než v reálném světě (kouzla, mluvící zvířata)", "Vše je realistické a vědecky vysvětlitelné", "Vždy skončí smutně", "Nikdy se neobjevují lidé"], e: "V pohádce platí jiná pravidla než ve skutečnosti — fungují kouzla a zvířata mluví. Pohádky navíc obvykle končí dobře a lidé v nich vystupují, takže ostatní odpovědi neplatí." },
-  { q: "Urči žánr: Příběh o Honzovi, který dostane tři zlaté vlasy čerta.", a: "pohádka", opts: ["bajka", "pohádka", "povídka", "pověst"], e: "Čert a kouzelné zlaté vlasy jsou nadpřirozené prvky a Honza je typický pohádkový hrdina — proto je to pohádka. Pověst by se vázala na historii a bajka by měla zvířata s ponaučením." },
-  { q: "Pověst se od pohádky liší tím, že:", a: "Pověst má základ v historii nebo skutečném místě", opts: ["Pověst má základ v historii nebo skutečném místě", "Pověst je vždy kratší", "Pověst má vždy zvířata", "Pověst vždy skončí šťastně"], e: "Hlavní rozdíl je v pravdivém jádru: pověst vychází ze skutečného místa nebo historie, kdežto pohádka je celá vymyšlená. Délka, zvířata ani šťastný konec o žánru nerozhodují." },
-  { q: "Povídka se od bajky liší tím, že:", a: "Bajka má zvířata a ponaučení", opts: ["Povídka má zvířata a ponaučení", "Bajka má zvířata a ponaučení", "Jsou to stejné žánry", "Bajka je delší než povídka"], e: "V povídce vystupují skuteční lidé, kdežto v bajce jednají zvířata a příběh končí ponaučením. Nejsou to stejné žánry a ponaučení má právě bajka, ne povídka.", hints: [
-    "Který ze dvou žánrů má na konci vyslovenou myšlenku, co si máme odnést?",
-    "Kdo v povídce vystupuje — obyčejní lidé, jako jsi ty a tví kamarádi, nebo mluvící tvorové z lesa?",
-  ] },
+const L2: PracticeTask[] = [
+  zanr("Urči druh příběhu: „Za devatero horami a devatero řekami žila princezna, kterou hlídal drak.“", "pohádka", {
+    pověst: "Místo „za devatero horami“ není skutečné — pověst by jmenovala hrad nebo horu.",
+    bajka: "Není tu zvíře, které by nás mělo něčemu naučit.",
+    povídka: "Drak a kouzelný svět do povídky nepatří.",
+  }, ["Existuje místo „za devatero horami“?", "Vymyšlené místo, princezna a drak — takhle začínají příběhy, ve kterých nakonec dobro zvítězí."],
+  "Vymyšlené místo „za devatero horami“ a drak jsou znaky pohádky."),
+  zanr("Urči druh příběhu: „Když se liška nemohla dostat k hroznům, řekla: Stejně jsou kyselé.“", "bajka", {
+    pohádka: "Liška tu nic nečaruje, příběh směřuje k ponaučení.",
+    pověst: "Příběh se neváže ke skutečnému místu.",
+    povídka: "V povídce zvířata nemluví.",
+  }, ["Kdo tu mluví jako člověk a co nás to má naučit?", "Liška se vymlouvá, protože hrozny nemůže dostat. Příběh ukazuje lidskou vlastnost na zvířeti — typicky pro Ezopa."],
+  "Liška jedná jako člověk a příběh ukazuje lidskou vlastnost — je to bajka."),
+  zanr("Urči druh příběhu: „V hoře Blaník spí rytíři, kteří přijdou zemi na pomoc, až jí bude nejhůř.“", "pověst", {
+    pohádka: "Blaník je skutečná hora, pohádka skutečné místo nepotřebuje.",
+    bajka: "Nejsou tu zvířata s ponaučením.",
+    povídka: "Spící rytíři v hoře nejsou obyčejná událost ze života.",
+  }, ["Je hora Blaník skutečná?", "Příběh o skutečné hoře s neskutečnými rytíři uvnitř — takové vyprávění se předává po generace."],
+  "Skutečná hora Blaník a neskuteční rytíři — to je pověst."),
+  zanr("Urči druh příběhu: „Ondra celé odpoledne trénoval na kole, až konečně bez pomoci objel hřiště.“", "povídka", {
+    pohádka: "Nejsou tu kouzla ani nadpřirozené bytosti.",
+    pověst: "Příběh se neváže ke známému místu nebo dávné události.",
+    bajka: "Nevystupují tu zvířata a není tu ponaučení.",
+  }, ["Mohlo by se to stát i tobě?", "Obyčejný kluk, obyčejné kolo, žádná kouzla ani zvířata — takový krátký příběh ze života má svůj název."],
+  "Obyčejná událost ze života bez kouzel — to je povídka."),
+  choice("V Červené Karkulce mluví vlk. Je to tedy bajka?", "ne, je to pohádka", [
+    { value: "ano, protože zvíře mluví", why: "Mluvící zvíře samo nestačí — bajka potřebuje hlavně ponaučení." },
+    { value: "ano, protože je krátká", why: "Délka o druhu příběhu nerozhoduje." },
+    { value: "ne, je to pověst", why: "Karkulka se neváže ke skutečnému místu." },
+  ], {
+    hints: ["Končí Karkulka ponaučením, nebo tím, že myslivec zachrání babičku?", "Mluvící zvíře najdeš v bajce i v pohádce. Rozhoduje, jestli jde o kouzelný příběh se šťastným koncem, nebo o ponaučení."],
+    explanation: "Mluvící vlk nestačí. Karkulka je pohádka — má šťastný konec a nejde v ní o ponaučení jako v bajce.",
+  }),
+  zanr("Urči druh příběhu: „Pražský orloj postavil mistr Hanuš. Konšelé ho pak oslepili, aby jinde nepostavil lepší.“", "pověst", {
+    pohádka: "Orloj v Praze je skutečný, pohádka skutečné místo nepotřebuje.",
+    bajka: "Nejsou tu zvířata s ponaučením.",
+    povídka: "Nejde o obyčejnou událost dneška, ale o dávné vyprávění o skutečné stavbě.",
+  }, ["Stojí pražský orloj opravdu?", "Příběh o skutečné stavbě, ke které si lidé přidali neuvěřitelné podrobnosti, je druh vyprávění o minulosti."],
+  "Vyprávění o skutečném pražském orloji s přidanými neuvěřitelnými podrobnostmi je pověst."),
+  zanr("Urči druh příběhu: „Mravenec celé léto pracoval, cvrček jen zpíval. V zimě cvrček neměl co jíst.“", "bajka", {
+    pohádka: "Nejsou tu kouzla, příběh má poučit.",
+    pověst: "Příběh se neváže ke skutečnému místu.",
+    povídka: "V povídce zvířata nejednají jako lidé.",
+  }, ["Co nás má příběh o mravenci a cvrčkovi naučit?", "Zvířata tu jednají jako lidé — jeden pracuje, druhý ne — a konec ukazuje, co z toho plyne."],
+  "Zvířata jednají jako lidé a příběh vede k ponaučení o práci — je to bajka."),
+  zanr("Urči druh příběhu: „Honza šel do světa a potkal dědečka, který mu dal kouzelnou píšťalku.“", "pohádka", {
+    pověst: "Příběh se neváže ke skutečnému místu ani osobě.",
+    bajka: "Nejsou tu zvířata s ponaučením.",
+    povídka: "Kouzelná píšťalka do povídky nepatří.",
+  }, ["Může být píšťalka kouzelná doopravdy?", "Honza, cesta do světa a kouzelný dárek — typické prvky vymyšlených příběhů se šťastným koncem."],
+  "Kouzelná píšťalka a Honza jdoucí do světa jsou znaky pohádky."),
+  zanr("Urči druh příběhu: „Kníže Oldřich se vracel z lovu a u studánky uviděl krásnou Boženu.“", "pověst", {
+    pohádka: "Kníže Oldřich byl skutečný panovník, pohádka by měla vymyšlené postavy.",
+    bajka: "Nejsou tu zvířata s ponaučením.",
+    povídka: "Nejde o obyčejný příběh dneška, ale o vyprávění o skutečném knížeti.",
+  }, ["Byl kníže Oldřich skutečný panovník?", "Vyprávění o skutečném panovníkovi z dávné doby se předává po generace — sepsal ho i Alois Jirásek."],
+  "Vyprávění o skutečném knížeti Oldřichovi je pověst."),
+  zanr("Urči druh příběhu: „Eliška se bála prvního dne v nové škole, ale spolužačka Marie jí ukázala celou budovu.“", "povídka", {
+    pohádka: "Nejsou tu kouzla ani nadpřirozené bytosti.",
+    pověst: "Nejde o známé místo ani dávnou událost.",
+    bajka: "Nevystupují tu zvířata s ponaučením.",
+  }, ["Mohlo se to stát doopravdy?", "Nová škola, strach a kamarádka — obyčejná událost ze života bez kouzel a bez zvířat."],
+  "Obyčejná událost ze školy bez kouzel je povídka."),
+  choice("Čím se liší pověst od pohádky?", "pověst se váže ke skutečnému místu", [
+    { value: "pověst je vždycky veselá", why: "Pověsti bývají i smutné (mistr Hanuš)." },
+    { value: "pověst má vždy zvířata", why: "Zvířata jednající jako lidé jsou typická pro bajku." },
+    { value: "pověst nemá žádné postavy", why: "Pověsti mají postavy — Libuši, rytíře, knížata." },
+  ], {
+    hints: ["Kde se odehrává Blaník a kde „za devatero horami“?", "Obojí může mít neskutečné prvky. Jen jedno z nich ale vypráví o hoře, hradu nebo panovníkovi, které opravdu existovaly."],
+    explanation: "Pověst se váže ke skutečnému místu, osobě nebo události. Pohádka je celá vymyšlená.",
+  }),
+  choice("Čím se liší bajka od povídky?", "bajka má zvířata a ponaučení", [
+    { value: "bajka je vždy delší", why: "Bajka je naopak obvykle velmi krátká." },
+    { value: "povídka má kouzla", why: "Povídka kouzla nemá, je o obyčejném životě." },
+    { value: "bajka se odehrává ve škole", why: "Bajka se odehrává ve světě zvířat." },
+  ], {
+    hints: ["Kdo jedná v bajce a kdo v povídce?", "V jednom druhu příběhu vystupují obyčejní lidé, ve druhém zvířata, která se chovají jako lidé a na konci nás něco naučí."],
+    explanation: "Bajka má zvířata jednající jako lidé a ponaučení, povídka vypráví o obyčejných lidech.",
+  }),
+  choice("Proč Ezop vyprávěl o zvířatech, a ne o lidech?", "na zvířatech ukázal lidské vlastnosti", [
+    { value: "lidé ho nezajímali", why: "Naopak — chtěl poučit lidi." },
+    { value: "zvířata uměla číst", why: "Zvířata číst neumějí, bajky jsou pro lidi." },
+    { value: "psal jen pro zvířata", why: "Bajky jsou určené lidem." },
+  ], {
+    hints: ["Jaká je liška v bajkách — a jaký bývá takový člověk?", "Liška je lstivá, mravenec pracovitý, cvrček lehkomyslný. Na zvířatech se dá lidská vlastnost ukázat tak, aby se nikdo neurazil."],
+    explanation: "Zvířata v bajce představují lidské vlastnosti (lstivost, pracovitost). Na nich Ezop ukazoval, jak se lidé chovají.",
+  }),
 ];
 
-const POOL_L3: QA[] = [
-  { q: "Příběh má zvíře, které mluví, ale příběh NEKONČÍ ponaučením a odehrává se 'za devatero horami'. Je to bajka?", a: "Ne, je to spíš pohádka", opts: ["Ano, protože zvíře mluví", "Ne, je to spíš pohádka", "Ano, bajka ponaučení nepotřebuje", "Ano, je to krátký příběh"], e: "Mluvící zvíře samo o sobě bajku nedělá — bez ponaučení a s pohádkovým prostředím ('za devatero horami') jde spíš o pohádku." },
-  { q: "Příběh vypráví o skutečné historické bitvě, ale přidává si smyšlené podrobnosti (např. že bojovníkovi pomohl anděl). Je to:", a: "Pověst (základ v historii, s přidanými smyšlenými prvky)", opts: ["Pověst (základ v historii, s přidanými smyšlenými prvky)", "Pohádka (celá vymyšlená)", "Bajka (chybí zvířata)", "Povídka (chybí historický základ)"], e: "Pověst se opírá o skutečnou historickou událost, ale lidé si k ní časem přidali fantastické podrobnosti — to je pro pověst typické." },
-  { q: "Čím se liší bajka od pohádky, ve které také vystupují mluvící zvířata (např. Kocour v botách)?", a: "Bajka má vždy ponaučení", opts: ["Není mezi nimi žádný rozdíl", "Bajka má vždy ponaučení", "Pohádka je vždy kratší", "Bajka nemá zvířata"], e: "Mluvící zvíře může být v obou žánrech, ale jen bajka musí vždy skončit jasným ponaučením — to je hlavní rozlišovací znak." },
-  { q: "Text popisuje obyčejný den dítěte ve škole — bez kouzel, bez historie, bez zvířat. Jaký žánr to nejspíš je?", a: "Povídka", opts: ["Povídka", "Pohádka", "Bajka", "Pověst"], e: "Obyčejný, reálně možný příběh bez nadpřirozených prvků, historie nebo zvířat s ponaučením je typickou povídkou." },
-  { q: "Pověst o Blanických rytířích i bajka o lišce a hroznech mají něco společného. Co to je?", a: "Obě nesou nějaké poselství", opts: ["Obě se odehrávají dnes", "Obě nesou nějaké poselství", "Obě jsou zcela vymyšlené", "Obě mají mluvící zvířata"], e: "I když jsou pověst a bajka jinak úplně odlišné žánry, obě nesou nějaké poselství — pověst národní naději, bajka mravní ponaučení." },
-  { q: "Proč se pohádka 'O třech přadlenách' řadí mezi pohádky, i když v ní nevystupují žádná zvířata?", a: "Protože obsahuje nadpřirozené bytosti a kouzelné prvky, ne kvůli zvířatům", opts: ["Protože obsahuje nadpřirozené bytosti a kouzelné prvky, ne kvůli zvířatům", "Protože je krátká", "Protože nemá žádné postavy", "Protože se odehrává ve skutečném městě"], e: "Pohádku nepoznáme podle zvířat, ale podle nadpřirozených, kouzelných prvků — přadleny s kouzelnou mocí jsou přesně takový prvek.", hints: [
-    "Přadleny v příběhu mají zvláštní, nadlidskou schopnost — jak by ses tomu rozhodl/a říkat?",
-    "Pohádku nepoznáme jen podle toho, jestli v ní vystupují zvířata — poznáme ji podle něčeho jiného. Co se v příběhu děje neobvykle, kouzelně?",
-  ] },
-  { q: "Příběh 'Krtek a autíčko' — krtek najde a opraví autíčko, na konci není žádné ponaučení, jen radost z hry. Je to bajka?", a: "Ne — chybí ponaučení, i když je hlavní postavou zvíře", opts: ["Ne — chybí ponaučení, i když je hlavní postavou zvíře", "Ano, protože krtek je zvíře", "Ano, protože má šťastný konec", "Ano, protože je to pro děti"], e: "Bez závěrečného ponaučení nejde o bajku, i když hlavní postavou je zvíře — to je klíčová chybějící podmínka." },
-  { q: "Jaký je rozdíl mezi tím, jak 'pravdivá' musí být pověst a jak 'pravdivá' musí být povídka?", a: "Pověst se váže k historii", opts: ["Obě mohou být zcela vymyšlené", "Pověst se váže k historii", "Není mezi nimi rozdíl", "Obě musí být zcela pravdivé"], e: "Pověst potřebuje skutečné historické jádro, zatímco povídka jen musí popisovat něco, co by se reálně mohlo stát, bez nutné vazby na konkrétní historii." },
-  { q: "Text vypráví o dračí bytosti žijící v jeskyni u SKUTEČNÉ hory Říp, která symbolizuje počátky českého národa. Je to:", a: "Pověst", opts: ["Povídka", "Pověst", "Pohádka", "Bajka"], e: "Vazba na skutečné historické místo (horu Říp) a národní symboliku ukazuje na pověst, i když obsahuje fantastický prvek draka." },
-  { q: "Proč nemůže být krátký vtip o dvou kamarádech, kteří si dělají legraci ve třídě, bajkou?", a: "Chybí zvířata i ponaučení", opts: ["Protože se kamarádi smějí", "Chybí zvířata i ponaučení", "Protože je příliš krátký", "Protože se odehrává ve škole"], e: "Bajka potřebuje zvířata s lidskými vlastnostmi a mravní ponaučení na konci — vtip o kamarádech ve škole ani jedno z toho nemá.", hints: [
-    "Má vtip na konci vyslovenou poučnou větu, nebo končí jen pointou k zasmání?",
-    "Kdo ve vtipu jedná — jsou to zvířata s lidskými vlastnostmi, nebo jsou to sami kamarádi?",
-  ] },
+const L3: PracticeTask[] = [
+  zanr("Příběh má mluvícího kocoura, kouzla a šťastný konec, ale žádné ponaučení. Co to je?", "pohádka", {
+    pověst: "Příběh se neváže ke skutečnému místu ani osobě.",
+    bajka: "Mluvící zvíře nestačí — bajka musí končit ponaučením.",
+    povídka: "Kouzla a mluvící kocour do povídky nepatří.",
+  }, ["Co rozhoduje: to, že zvíře mluví, nebo ponaučení na konci?", "Mluvící zvířata jsou v pohádkách i v bajkách. Kouzla a šťastný konec bez ponaučení ale ukazují jen na jeden druh příběhu (třeba Kocour v botách)."],
+  "Kouzla a šťastný konec bez ponaučení jsou znaky pohádky (Kocour v botách), i když v ní mluví zvíře."),
+  zanr("Vyprávění o skutečném hradu Karlštejn, kde prý v noci straší bílá paní. Co to je?", "pověst", {
+    pohádka: "Karlštejn je skutečný hrad, pohádka by měla vymyšlený zámek.",
+    bajka: "Nejsou tu zvířata s ponaučením.",
+    povídka: "Strašidlo do povídky ze skutečného života nepatří.",
+  }, ["Je Karlštejn skutečný hrad? A je skutečná bílá paní?", "Skutečné místo a k němu neskutečné vyprávění, které se předává mezi lidmi — to je jeden druh příběhu."],
+  "Skutečný hrad s vyprávěním o strašidle je pověst."),
+  choice("Které ponaučení patří k bajce o lišce a hroznech?", "Kdo něco nemůže mít, rád to pomlouvá.", [
+    { value: "Hrozny jsou zdravé ovoce.", why: "To je fakt o hroznech, ne ponaučení o chování." },
+    { value: "Lišky jsou chytřejší než ptáci.", why: "Tohle bajka o hroznech neříká." },
+    { value: "Na podzim zrají hrozny.", why: "To je fakt o přírodě, ne ponaučení." },
+  ], {
+    hints: ["Proč liška řekla, že jsou hrozny kyselé?", "Liška na hrozny nedosáhla, a tak řekla, že stejně nejsou dobré. Ponaučení mluví o tom, jak se chovají lidé v podobné situaci."],
+    explanation: "Liška hrozny nedostala, a tak je pomluvila. Ponaučení: Kdo něco nemůže mít, rád to pomlouvá.",
+  }),
+  choice("Které ponaučení patří k bajce o mravenci a cvrčkovi?", "Kdo si v létě nepřipraví zásoby, v zimě hladoví.", [
+    { value: "Zpívat se nemá, je to ztráta času.", why: "Bajka neříká, že zpívat je špatně, ale že je třeba myslet dopředu." },
+    { value: "Mravenci jsou silnější než cvrčci.", why: "To je fakt o zvířatech, ne ponaučení." },
+    { value: "V zimě je venku zima a sníh.", why: "To je jen fakt o počasí." },
+  ], {
+    hints: ["Proč cvrček v zimě neměl co jíst?", "Mravenec pracoval, cvrček celé léto jen zpíval. Ponaučení říká, co se stane, když nemyslíme dopředu."],
+    explanation: "Cvrček v létě nepracoval a v zimě neměl nic. Ponaučení: Kdo si v létě nepřipraví zásoby, v zimě hladoví.",
+  }),
+  choice("Proč pověst o Blanických rytířích vypráví o skutečné hoře?", "pověst se váže ke skutečnému místu", [
+    { value: "protože je to pohádka", why: "Pohádka skutečné místo nepotřebuje." },
+    { value: "protože hora je vymyšlená", why: "Blaník je skutečná hora." },
+    { value: "protože je to bajka", why: "Bajka je o zvířatech s ponaučením." },
+  ], {
+    hints: ["Kde leží Blaník?", "Pověsti vznikaly tak, že si lidé vyprávěli o místech, která znali — a přidávali k nim neskutečné věci."],
+    explanation: "Pověst vždy vychází ze skutečného místa, osoby nebo události — u Blanických rytířů je to skutečná hora Blaník.",
+  }),
+  choice("Proč příběh o tom, jak si Petra zlomila ruku na bruslích, není pohádka?", "nejsou v něm kouzla a mohl se opravdu stát", [
+    { value: "protože je krátký", why: "Pohádky bývají také krátké." },
+    { value: "protože v něm vystupuje dívka", why: "Dívky vystupují i v pohádkách (Popelka)." },
+    { value: "protože se odehrává v zimě", why: "Roční období o druhu příběhu nerozhoduje." },
+  ], {
+    hints: ["Je v příběhu něco kouzelného?", "Pohádku poznáš podle kouzel a vymyšleného světa. Zlomená ruka na bruslích je obyčejná událost ze života."],
+    explanation: "Příběh nemá kouzla a mohl se opravdu stát — je to povídka, ne pohádka.",
+  }),
+  zanr("Zvířata v příběhu mluví a příběh končí větou „Pýcha předchází pád.“ Co to je?", "bajka", {
+    pohádka: "Pohádka nekončí ponaučením, ale šťastným koncem.",
+    pověst: "Příběh se neváže ke skutečnému místu.",
+    povídka: "V povídce zvířata nemluví.",
+  }, ["Co je věta „Pýcha předchází pád“?", "Mluvící zvířata a na konci věta, co si máme z příběhu vzít — obě podmínky dohromady ukazují na jeden druh příběhu."],
+  "Mluvící zvířata a ponaučení na konci — je to bajka."),
+  choice("Která postava patří do pověsti?", "kněžna Libuše", [
+    { value: "Popelka", why: "Popelka je postava z pohádky." },
+    { value: "liška z Ezopovy bajky", why: "Liška je postava z bajky." },
+    { value: "spolužák z vedlejší třídy", why: "Takový hrdina patří spíš do povídky." },
+  ], {
+    hints: ["Která z postav je spojená se skutečným místem a počátky našeho národa?", "Postavy pověstí najdeš ve Starých pověstech českých — jsou to knížata, kněžny a rytíři z dávných dob."],
+    explanation: "Kněžna Libuše je postava ze Starých pověstí českých, patří tedy do pověsti.",
+  }),
+  choice("Která postava patří do pohádky?", "zlá čarodějnice", [
+    { value: "praotec Čech", why: "Praotec Čech je postava z pověsti." },
+    { value: "mravenec z Ezopa", why: "Mravenec je postava z bajky." },
+    { value: "Eliška z nové školy", why: "Obyčejná dívka ze školy je hrdinka povídky." },
+  ], {
+    hints: ["Která postava umí čarovat?", "Nadpřirozené bytosti — víly, draci, skřítci — patří do celého vymyšleného světa."],
+    explanation: "Čarodějnice je nadpřirozená bytost, patří do pohádky.",
+  }),
+  zanr("V příběhu vystupuje skutečný král Karel IV., ale radí mu kouzelný kůň. Co to je?", "pověst", {
+    pohádka: "Karel IV. byl skutečný panovník, pohádka má vymyšlené krále.",
+    bajka: "Kůň tu jen radí, příběh není o ponaučení z chování zvířat.",
+    povídka: "Kouzelný kůň do povídky nepatří.",
+  }, ["Byl Karel IV. skutečný? A mohl mu radit kouzelný kůň?", "Skutečná osoba a k ní něco neskutečného — to je typické pro jeden druh vyprávění o minulosti."],
+  "Skutečná osoba (Karel IV.) s přidaným neskutečným prvkem — to je pověst."),
+  choice("Proč si lidé vyprávěli pověsti o místech ve svém kraji?", "vysvětlovali si tak minulost svého kraje", [
+    { value: "aby byly delší než pohádky", why: "Délka nebyla důvodem." },
+    { value: "protože to byly učebnice dějepisu", why: "Pověsti nejsou přesná historie — je v nich hodně výmyslů." },
+    { value: "aby děti zlobily", why: "Pověsti neměly děti navádět ke zlobení." },
+  ], {
+    hints: ["Proč se vypráví, že v hoře Blaník spí rytíři?", "Lidé chtěli vědět, proč jejich hrad nebo hora vypadá právě tak a co se tam kdysi dělo. Odpověď si vyprávěli v pověstech."],
+    explanation: "Pověsti vysvětlovaly lidem minulost jejich kraje — proč se místo tak jmenuje, co se tam stalo.",
+  }),
+  choice("Chceš napsat bajku. Co v ní nesmí chybět?", "zvířata jednající jako lidé a ponaučení", [
+    { value: "princezna a drak", why: "Princezna a drak patří do pohádky." },
+    { value: "skutečný hrad a král", why: "Skutečné místo a osoba patří do pověsti." },
+    { value: "datum a místo napsání", why: "To patří do dopisu." },
+  ], {
+    hints: ["Jak vypadají Ezopovy příběhy?", "Bajka má dvě povinné věci: zvíře, které se chová jako člověk, a na konci myšlenku, co si z příběhu vzít."],
+    explanation: "Bajka potřebuje zvířata, která jednají jako lidé, a ponaučení na konci.",
+  }),
+  choice("Chceš napsat pověst o svém kraji. Z čeho vyjdeš?", "ze skutečného místa, třeba ze staré zříceniny", [
+    { value: "z mluvících zvířat a ponaučení", why: "To je recept na bajku." },
+    { value: "z království za devatero horami", why: "Vymyšlené království patří do pohádky." },
+    { value: "z toho, co bylo dnes k obědu", why: "Obyčejná událost dneška je spíš námět povídky." },
+  ], {
+    hints: ["Na čem musí pověst stát?", "Pověst vždy stojí na něčem, co opravdu existuje nebo existovalo — hora, hrad, studánka, panovník. Neskutečné věci se k tomu přidávají až potom."],
+    explanation: "Pověst vychází ze skutečného místa (zřícenina, hora, studánka), ke kterému přidáme neobvyklý příběh.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  const selected = shuffle(pool).slice(0, Math.min(pool.length, 16));
-  return selected.map(({ q, a, opts, e, hints }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle(opts),
-    hints: hints ?? [
-      "Zeptej se: mohlo by se to stát doopravdy?",
-      "Pak si všimni dvou věcí: jestli se příběh váže ke skutečnému místu nebo osobě z historie a jestli na konci někoho něčemu naučí.",
-    ],
-    explanation: e,
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const POHADKAPOVESTBAJKAPOVIDKA: TopicMetadata[] = [
@@ -111,7 +319,7 @@ export const POHADKAPOVESTBAJKAPOVIDKA: TopicMetadata[] = [
     keywords: ["pohádka", "pověst", "bajka", "povídka", "literární žánr", "Ezop", "Jirásek"],
     goals: [
       "Rozlišit literární žánry: pohádku, pověst, bajku, povídku",
-      "Přiřadit text k správnému žánru",
+      "Přiřadit text ke správnému žánru",
     ],
     boundaries: ["Bez románu a novely", "Bez dramatických žánrů"],
     gradeRange: [4, 4],
@@ -122,15 +330,15 @@ export const POHADKAPOVESTBAJKAPOVIDKA: TopicMetadata[] = [
     recommendedNext: ["g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika"],
     generator: gen,
     helpTemplate: {
-      hint: "Pohádka=draci+víly; Pověst=historické místo+osoby; Bajka=zvířata+ponaučení; Povídka=reální lidé+jeden příběh",
+      hint: "Pohádka=kouzla a šťastný konec; Pověst=skutečné místo nebo osoba; Bajka=zvířata+ponaučení; Povídka=obyčejní lidé",
       steps: [
-        "Jsou nadpřirozené bytosti? → pohádka",
-        "Historické místo nebo osoby? → pověst",
-        "Zvířata jako lidé + morál na konci? → bajka",
-        "Reální lidé, žádná fantazie? → povídka",
+        "Kouzla a vymyšlený svět? → pohádka",
+        "Skutečné místo, osoba nebo událost? → pověst",
+        "Zvířata jako lidé + ponaučení na konci? → bajka",
+        "Obyčejní lidé, nic kouzelného? → povídka",
       ],
-      commonMistake: "Záměna pohádky a bajky — bajka má vždy morální ponaučení na konci",
-      example: "Liška a hrozny (Ezop) = bajka; Libuše (Jirásek) = pověst; Červená Karkulka = pohádka",
+      commonMistake: "Mluvící zvíře ještě neznamená bajku — bajka musí mít ponaučení (Červená Karkulka je pohádka)",
+      example: "Liška a hrozny (Ezop) = bajka; Libuše (Jirásek) = pověst; Popelka = pohádka",
     },
   },
 ];

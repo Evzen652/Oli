@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+// 2026-09-11: práh 12 úloh na úroveň (CONTENT_CONTRACT) — rovnoběžky a osová souměrnost mají pevné banky po 13 úlohách.
 import { OBVOD_OBSAH } from "../matematika/obvodAObsahObdelnikuACtverce";
 import { ROVNOBEZKY_KOLMICE } from "../matematika/rovnobezkyAKolmice";
 import { TROJUHELNIK_DRUHY } from "../matematika/trojuhelnikDruhyPodleStran";
@@ -19,9 +20,9 @@ describe("obvodObsah – metadata", () => {
 describe("obvodObsah – generator", () => {
   const meta = OBVOD_OBSAH[0];
   for (const level of [1, 2, 3] as const) {
-    it(`level ${level}: ≥30 úloh, correctAnswer v options`, () => {
+    it(`level ${level}: ≥12 úloh, correctAnswer v options`, () => {
       const tasks = meta.generator(level);
-      expect(tasks.length).toBeGreaterThanOrEqual(30);
+      expect(tasks.length).toBeGreaterThanOrEqual(12);
       for (const t of tasks) {
         expect(t.correctAnswer).toBeTruthy();
         expect(t.options).toContain(t.correctAnswer);
@@ -38,9 +39,9 @@ describe("rovnobezkyKolmice – metadata", () => {
 describe("rovnobezkyKolmice – generator", () => {
   const meta = ROVNOBEZKY_KOLMICE[0];
   for (const level of [1, 2, 3] as const) {
-    it(`level ${level}: ≥30 úloh, correctAnswer v options`, () => {
+    it(`level ${level}: ≥12 úloh, correctAnswer v options`, () => {
       const tasks = meta.generator(level);
-      expect(tasks.length).toBeGreaterThanOrEqual(30);
+      expect(tasks.length).toBeGreaterThanOrEqual(12);
       for (const t of tasks) {
         expect(t.options).toContain(t.correctAnswer);
       }
@@ -56,9 +57,9 @@ describe("trojuhelnikDruhy – metadata", () => {
 describe("trojuhelnikDruhy – generator", () => {
   const meta = TROJUHELNIK_DRUHY[0];
   for (const level of [1, 2, 3] as const) {
-    it(`level ${level}: ≥30 úloh, correctAnswer v options`, () => {
+    it(`level ${level}: ≥12 úloh, correctAnswer v options`, () => {
       const tasks = meta.generator(level);
-      expect(tasks.length).toBeGreaterThanOrEqual(30);
+      expect(tasks.length).toBeGreaterThanOrEqual(12);
       for (const t of tasks) {
         expect(t.options).toContain(t.correctAnswer);
       }
@@ -74,9 +75,9 @@ describe("osovaSoumernost – metadata", () => {
 describe("osovaSoumernost – generator", () => {
   const meta = OSOVA_SOUMERNOST[0];
   for (const level of [1, 2, 3] as const) {
-    it(`level ${level}: ≥30 úloh, correctAnswer v options`, () => {
+    it(`level ${level}: ≥12 úloh, correctAnswer v options`, () => {
       const tasks = meta.generator(level);
-      expect(tasks.length).toBeGreaterThanOrEqual(30);
+      expect(tasks.length).toBeGreaterThanOrEqual(12);
       for (const t of tasks) {
         expect(t.options).toContain(t.correctAnswer);
       }

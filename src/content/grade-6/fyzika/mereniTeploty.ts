@@ -28,17 +28,19 @@ function gen(level: number): PracticeTask[] {
 function genL1(): PracticeTask {
   const delta = ri(2, 9);
   const warming = Math.random() < 0.5;
-  const start = warming ? ri(5, 20) : ri(delta + 2, 24); // ochlazení: start > delta → výsledek ≥ 2
+  let start = warming ? ri(5, 20) : ri(delta + 2, 24); // ochlazení: start > delta → výsledek ≥ 2
+  if (!warming && start === 2 * delta) start += 1; // výsledek ≠ změna, jinak by klíč stál v zadání
   const result = warming ? start + delta : start - delta;
+  // Znění vybrané podle čísel: stejná čísla = stejná úloha (jinak by se malá nápověda opakovala).
   const ctx = warming
-    ? pick([
+    ? ([
         `Ráno bylo ${tC(start)}. Přes den se oteplilo o ${delta} °C. Jaká je teplota teď?`,
         `Voda měla ${tC(start)}. Ohřáli jsme ji o ${delta} °C. Jakou má teplotu?`,
-      ])
-    : pick([
+      ])[(start + delta) % 2]
+    : ([
         `Odpoledne bylo ${tC(start)}. Večer se ochladilo o ${delta} °C. Jaká je teplota teď?`,
         `Vzduch měl ${tC(start)}. Teplota klesla o ${delta} °C. Jaká je teď?`,
-      ]);
+      ])[(start + delta) % 2];
   return task(
     ctx,
     tC(result),
@@ -58,7 +60,7 @@ function genL1(): PracticeTask {
     ],
     {
       hints: [
-        `Krok 1: Urči směr — „oteplilo se" přičítáš, „ochladilo se / kleslo" odečítáš.`,
+        `Krok 1: Teplota se v zadání ${warming ? "zvyšuje" : "snižuje"} — budeš přičítat, nebo odečítat?`,
         `Krok 2: K počáteční teplotě připoj změnu uvedenou v zadání.`,
       ],
       solutionSteps: [

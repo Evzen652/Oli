@@ -1,353 +1,74 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { urceni, type Kategorie, type Polozka } from "../_urceni";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby k chybným možnostem. Teď se podle popisu díla nebo krátké
+// vlastní ukázky určuje, o jaký útvar jde: L1 zřetelné popisy · L2 ukázky
+// a popisy s méně nápadnými znaky · L3 zrádné případy (příběh ve verších je
+// báseň epická, ne povídka; krátká próza s jedním dějem je povídka, ne román).
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Co je lyrická báseň?",
-    correctAnswer: "báseň o pocitech a náladách, bez děje",
-    options: ["báseň o pocitech a náladách, bez děje", "báseň s příběhem a postavami", "báseň o historické události", "báseň určená jen dětem"],
-    hints: ["'Lyrika' pochází z řeckého nástroje lyra, spojeného s výrazem vnitřního světa. Vypráví tato báseň příběh, nebo spíše vyjadřuje niterné prožívání?"],
-    explanation: "Lyrická báseň nic nevypráví — zachycuje, co básník cítí a jak vnímá svět. Jakmile by měla postavy a sled událostí, byla by to báseň epická.",
-  },
-  {
-    question: "Co je epická báseň?",
-    correctAnswer: "báseň s příběhem a dějem",
-    options: ["báseň bez děje, jen o pocitech", "báseň s příběhem a dějem", "báseň jen o přírodě a krajině", "báseň psaná z pohledu zvířete"],
-    hints: ["'Epika' pochází z řeckého slova pro vyprávění. Má tato báseň příběh s postavami a dějem, nebo jen vyjadřuje pocity?"],
-    explanation: "Epická báseň vypráví příběh, jen ho místo do vět rozdělí do veršů. Patří sem balada, epos i veršovaná pohádka. Bez děje by šlo o lyriku.",
-  },
-  {
-    question: "Co je román?",
-    correctAnswer: "delší próza s více postavami",
-    options: ["kratší próza s jedním příběhem", "báseň psaná v próze", "delší próza s více postavami", "hra určená pro divadlo"],
-    hints: ["Zamysli se, kolik dějových linek a postav dokáže dílo unést, když má stovky stran — a kolik, když má jen pár."],
-    explanation: "Román má dost místa na několik dějových linek a mnoho postav, které se vyvíjejí. Kratší próza s jediným příběhem je povídka.",
-  },
-  {
-    question: "Co je povídka?",
-    correctAnswer: "kratší próza s jedním příběhem",
-    options: ["delší próza s více příběhy", "báseň s pravidelným rýmem", "hra určená pro divadlo", "kratší próza s jedním příběhem"],
-    hints: ["Kolik zápletek se vejde do textu, který přečteš za půl hodiny?"],
-    explanation: "Povídka se soustředí na jednu situaci a málo postav — proto je krátká. Kdyby měla víc dějových linek a stovky stran, byl by to román.",
-  },
-  {
-    question: "Jaký literární žánr je Erbenova Kytice?",
-    correctAnswer: "sbírka balad",
-    options: ["sbírka balad", "román", "sbírka povídek", "divadelní hra"],
-    hints: ["Vodník, Polednice, Vrba — mají tyhle texty děj? A jsou psané ve verších, nebo v souvislých větách?"],
-    explanation: "Kytice obsahuje básně, které vyprávějí příběh a končí tragicky — to jsou balady. Kdyby to byla próza, šlo by o sbírku povídek.",
-  },
-  {
-    question: "Jaký literární žánr jsou Máchovy básně (Máj)?",
-    correctAnswer: "lyrickoepická báseň",
-    options: ["dobrodružný román", "lyrickoepická báseň", "detektivní povídka", "divadelní tragédie"],
-    hints: ["Máj má příběh o Vilémovi, ale zároveň rozsáhlé pasáže o přírodě a pocitech. Která možnost obě tyhle stránky spojuje?"],
-    explanation: "Máj vypráví příběh (epická složka), ale velkou část zabírají úvahy a nálady (lyrická složka). Proto se řadí mezi básně lyrickoepické.",
-  },
-  {
-    question: "Jaký je hlavní rozdíl mezi románem a povídkou?",
-    correctAnswer: "román je delší a složitější",
-    options: ["povídka je delší a složitější", "povídka je vždy jen o dětech", "román je delší a složitější", "román musí být sci-fi"],
-    hints: ["Rozdíl není v tématu ani v tom, pro koho je dílo určené. Zamysli se nad rozsahem a počtem dějových linek."],
-    explanation: "Rozhoduje rozsah a složitost děje, ne téma. Román i povídka mohou být o čemkoli — sci-fi, o dětech i o dospělých.",
-  },
-  {
-    question: "Který z těchto titulů je román?",
-    correctAnswer: "Dobrodružství Toma Sawyera",
-    options: ["Kytice od Erbena", "Máj od Máchy", "Polednice od Erbena", "Dobrodružství Toma Sawyera"],
-    hints: ["Tři z těch titulů jsou psané ve verších. Který jediný je souvislá próza na několik set stran?"],
-    explanation: "Tom Sawyer je dlouhá próza s mnoha postavami — román. Kytice, Máj i Polednice jsou psané ve verších, takže mezi romány nepatří.",
-  },
-  {
-    question: "Co je balada?",
-    correctAnswer: "epická báseň s tragickým dějem",
-    options: ["epická báseň s tragickým dějem", "lyrická báseň o přírodě", "veselá báseň pro děti", "pohádka psaná ve verších"],
-    hints: ["Vodník i Polednice končí neštěstím. Co je pro tenhle typ básní typické kromě toho, že mají děj?"],
-    explanation: "Balada vypráví příběh ve verších a téměř vždy končí neštěstím — právě tragický konec ji odlišuje od veršované pohádky.",
-  },
-  {
-    question: "Co je epos?",
-    correctAnswer: "rozsáhlá báseň o hrdinech",
-    options: [
-      "kratší lyrická báseň",
-      "rozsáhlá báseň o hrdinech",
-      "moderní dobrodružný román",
-      "pohádka pro nejmenší",
-    ],
-    hints: ["Ilias a Odyssea mají tisíce veršů a sledují osudy bojovníků. Jaký útvar to je?"],
-    explanation: "Epos je dlouhá veršovaná skladba o činech hrdinů. Od románu se liší tím, že je psaný ve verších, ne v próze.",
-  },
-  {
-    question: "Jaký typ díla je Jaroslav Foglar – Záhada hlavolamu?",
-    correctAnswer: "dobrodružný román pro mládež",
-    options: ["sbírka lyrických básní", "detektivní povídka", "dobrodružný román pro mládež", "veršovaná pohádka"],
-    hints: ["Je to souvislá próza na několik set stran o partě chlapců a jejich pátrání. Který žánr tomu odpovídá?"],
-    explanation: "Záhada hlavolamu je dlouhá próza s mnoha postavami, psaná pro mladé čtenáře — dobrodružný román. Na povídku je příliš rozsáhlá.",
-  },
-  {
-    question: "Lyrická báseň nevypráví příběh, ale:",
-    correctAnswer: "vyjadřuje pocity a nálady",
-    options: ["popisuje historické události", "instruuje čtenáře, co dělat", "vypráví pohádku", "vyjadřuje pocity a nálady"],
-    hints: ["Když v básni není děj ani postavy, co v ní vlastně zbývá?"],
-    explanation: "Lyrika zachycuje vnitřní svět — dojmy, nálady a prožitky. Historické události i pohádky mají děj, takže patří k epice.",
-  },
-  {
-    question: "Jaký literární žánr psal Arthur Conan Doyle (Sherlock Holmes)?",
-    correctAnswer: "detektivní povídky a novely",
-    options: ["detektivní povídky a novely", "epické básně o hrdinech", "lyrické básně o lásce", "veršované pohádky"],
-    hints: ["Příběhy o Sherlocku Holmesovi jsou psané souvislými větami, ne ve verších, a většina z nich je krátká."],
-    explanation: "Doyle psal prózu — kratší příběhy o vyšetřování záhad. Jde tedy o povídky a novely, ne o poezii.",
-  },
-  {
-    question: "Co je novela?",
-    correctAnswer: "próza delší než povídka",
-    options: [
-      "próza delší než román",
-      "próza delší než povídka",
-      "jiné slovo pro román",
-      "kratší epická báseň",
-    ],
-    hints: ["Novela stojí mezi dvěma útvary, které už znáš. Který z nich je kratší a který delší?"],
-    explanation: "Novela je rozsahem mezi povídkou a románem — delší než povídka, kratší než román, a drží se jedné hlavní dějové linky.",
-  },
-  {
-    question: "Jaký je autor knihy 'Ostrov pokladů'?",
-    correctAnswer: "Robert Louis Stevenson",
-    options: ["Mark Twain", "Arthur Conan Doyle", "Robert Louis Stevenson", "Jaroslav Foglar"],
-    hints: ["Autor je Skot, který psal dobrodružné romány o mořeplavbě a pirátech."],
-    explanation: "Ostrov pokladů napsal skotský spisovatel Stevenson. Twain je autorem Toma Sawyera, Doyle psal o Sherlocku Holmesovi a Foglar o Rychlých šípech.",
-  },
+const UTVARY: Kategorie[] = [
+  { nazev: "báseň lyrická", znak: "ve verších vyjadřuje pocity a nálady, nevypráví příběh." },
+  { nazev: "báseň epická", znak: "ve verších vypráví příběh s postavami a dějem (třeba balada)." },
+  { nazev: "povídka", znak: "kratší vyprávění v próze s jedním hlavním dějem a několika postavami." },
+  { nazev: "román", znak: "rozsáhlé vyprávění v próze s mnoha postavami a delším, rozvětveným dějem." },
 ];
+const LYR = "báseň lyrická", EP = "báseň epická", POV = "povídka", ROM = "román";
+const P = (uroven: 1 | 2 | 3, popis: string, kategorie: string, klic: string, proc: string): Polozka =>
+  ({ uroven, slovo: popis, veta: popis, kategorie, klic, proc });
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Co je lyrickoepická báseň?",
-    correctAnswer: "báseň s pocity i s dějem",
-    options: ["báseň jen s pocity, bez děje", "báseň jen s dějem, bez pocitů", "pohádka psaná ve verších", "báseň s pocity i s dějem"],
-    hints: ["'Lyricko-' a '-epická' — obě části názvu napovídají, co dílo spojuje. Která dvě slova označují pocity a příběh?"],
-    explanation: "Název je složený ze dvou slov, protože se v díle spojují obě složky: příběh i vyjádření nálad. Typickým příkladem je Máchův Máj.",
-  },
-  {
-    question: "Co je pohádka a jaký žánr to je?",
-    correctAnswer: "dílo s fantastickými prvky",
-    options: ["dílo s fantastickými prvky", "dílo o skutečné historii", "text popisující vědecký pokus", "hra určená pro divadlo"],
-    hints: ["Co mají společného kouzelný prsten, mluvící zvíře a drak? A může se něco takového stát doopravdy?"],
-    explanation: "Pohádku poznáš podle nadpřirozených prvků — kouzel, mluvících zvířat, nadpřirozených bytostí. Může být psaná prózou i ve verších.",
-  },
-  {
-    question: "Jaké znaky má epická báseň, které lyrická nemá?",
-    correctAnswer: "děj, postavy a zápletku",
-    options: [
-      "rým a pravidelný rytmus",
-      "děj, postavy a zápletku",
-      "verše rozdělené do slok",
-      "záleží jen na autorovi",
-    ],
-    hints: ["Rým, rytmus i sloky najdeš u obou. Co potřebuješ navíc, aby se dalo mluvit o hrdinovi a rozuzlení?"],
-    explanation: "Verše, rým i sloky mají oba druhy. Rozdíl je jen v tom, že epická báseň něco vypráví — má postavy, zápletku a rozuzlení.",
-  },
-  {
-    question: "Jaký je žánr díla Tři mušketýři (Alexandre Dumas)?",
-    correctAnswer: "historický dobrodružný román",
-    options: ["epická báseň", "detektivní povídka", "historický dobrodružný román", "pohádka"],
-    hints: ["Dílo má stovky stran, odehrává se ve Francii 17. století a je psané souvislými větami."],
-    explanation: "Tři mušketýři jsou rozsáhlá próza zasazená do skutečné minulosti — historický román s dobrodružným dějem.",
-  },
-  {
-    question: "Co je sci-fi (science fiction)?",
-    correctAnswer: "próza o budoucnosti a technice",
-    options: ["próza o dávné historii", "báseň o vesmírné krajině", "pohádka o kouzelnících", "próza o budoucnosti a technice"],
-    hints: ["Anglický název doslova znamená 'vědecká fikce'. Čím se takové příběhy vysvětlují — kouzly, nebo vynálezy?"],
-    explanation: "Sci-fi staví na vědě a technice, které zatím neexistují — vesmírné lodě, roboti, cestování časem. Tím se liší od pohádky, kde funguje magie.",
-  },
-  {
-    question: "Jaký je rozdíl mezi povídkou a příběhem v básni (baladou)?",
-    correctAnswer: "povídka je próza, balada báseň",
-    options: ["povídka je próza, balada báseň", "balada je próza, povídka báseň", "obojí je psáno ve verších", "liší se jen svou délkou"],
-    hints: ["Oba útvary vyprávějí příběh. Podívej se, jak je text na stránce zapsaný — v odstavcích, nebo v řádcích pod sebou?"],
-    explanation: "Děj mají oba, liší se jen formou zápisu: povídka je psaná souvislými větami, balada ve verších. Délka nerozhoduje.",
-  },
-  {
-    question: "Co je detektivní román?",
-    correctAnswer: "próza o záhadě a jejím řešení",
-    options: [
-      "próza o dávné minulosti",
-      "próza o záhadě a jejím řešení",
-      "veršovaný příběh o hrdinovi",
-      "vyprávění o kouzlech",
-    ],
-    hints: ["Co dělá vyšetřovatel od první do poslední stránky takové knihy?"],
-    explanation: "Detektivní román staví celý děj na nevyřešené záhadě, kterou hrdina postupně rozplétá. Napětí drží právě otázka, kdo je pachatel.",
-  },
-  {
-    question: "Co je fantasy román?",
-    correctAnswer: "próza ze smyšleného světa s magií",
-    options: ["próza ze skutečné minulosti", "pohádka jen pro malé děti", "próza ze smyšleného světa s magií", "veršovaný hrdinský příběh"],
-    hints: ["Pán prstenů má vlastní mapu, vlastní národy i vlastní jazyky. Existuje takový svět doopravdy?"],
-    explanation: "Fantasy si vytváří vlastní svět s vlastními pravidly, kde funguje magie. Od pohádky se liší rozsahem a tím, že je psaná i pro dospělé čtenáře.",
-  },
-  {
-    question: "Co je autobiografie?",
-    correctAnswer: "vyprávění autora o sobě",
-    options: ["vyprávění o jiné osobě", "smyšlený životní příběh", "báseň o vlastních pocitech", "vyprávění autora o sobě"],
-    hints: ["Předpona 'auto-' znamená 'sám' a 'bio-' znamená 'život'. Kdo je tedy hlavní postavou?"],
-    explanation: "V autobiografii píše autor o svém vlastním životě. Kdyby psal o někom jiném, byl by to životopis (biografie).",
-  },
-  {
-    question: "Proč patří Erbenova Kytice mezi epická díla?",
-    correctAnswer: "její básně vyprávějí příběh",
-    options: ["její básně vyprávějí příběh", "je psaná souvislou prózou", "obsahuje jen popisy přírody", "je určená pro divadlo"],
-    hints: ["Vzpomeň si na Polednici nebo Vodníka — dozvíš se z nich, co se komu stalo?"],
-    explanation: "V každé básni Kytice se něco stane — má postavy, zápletku a rozuzlení. To je znak epiky. Kdyby šlo jen o nálady a popisy, byla by to lyrika.",
-  },
-  {
-    question: "Co je pohádkový román?",
-    correctAnswer: "delší próza s pohádkovými prvky",
-    options: [
-      "krátká lidová pohádka",
-      "delší próza s pohádkovými prvky",
-      "veršovaný pohádkový příběh",
-      "báseň o kouzelném světě",
-    ],
-    hints: ["Kouzla a nadpřirozené bytosti tu zůstávají, ale dílo má rozsah knihy. Co se tedy změnilo oproti klasické pohádce?"],
-    explanation: "Pohádkový román si nechává kouzelné prvky, ale má rozsah a stavbu románu — víc postav, víc dějových linek a delší text.",
-  },
-  {
-    question: "Co je hororová literatura?",
-    correctAnswer: "žánr zaměřený na strach a napětí",
-    options: ["žánr o skutečné historii", "poezie o přírodních náladách", "žánr zaměřený na strach a napětí", "vyprávění s veselým koncem"],
-    hints: ["Jaký pocit má takové dílo ve čtenáři záměrně vyvolat?"],
-    explanation: "Horor je stavěný tak, aby čtenáře vyděsil — pracuje s hrozbou, napětím a nadpřirozeným nebezpečím. Cíl žánru je vyvolat strach.",
-  },
-  {
-    question: "Povídka má oproti románu obvykle:",
-    correctAnswer: "méně postav a jednodušší děj",
-    options: ["více postav a složitější děj", "vždy veršovanou podobu", "povinně tragický konec", "méně postav a jednodušší děj"],
-    hints: ["Když má text jen pár stran, kolik osudů stihne čtenáři představit?"],
-    explanation: "Krátký rozsah povídky nedovolí rozvinout mnoho postav ani vedlejších dějových linek — proto se soustředí na jednu situaci. Formu i konec má stejně volné jako román.",
-  },
-  {
-    question: "Co je fejeton?",
-    correctAnswer: "vtipný článek v novinách",
-    options: ["vtipný článek v novinách", "dlouhý román o historii", "báseň otištěná v novinách", "vědecká studie v časopise"],
-    hints: ["Je to krátký text, který vychází v tisku a všímá si všedních věcí s nadhledem a humorem."],
-    explanation: "Fejeton je krátký novinový útvar, ve kterém autor s humorem nebo ironií komentuje běžný život. Od zprávy ho odlišuje právě osobní a vtipný tón.",
-  },
-  {
-    question: "Co je dobrodružný román?",
-    correctAnswer: "próza plná napínavých událostí",
-    options: [
-      "próza o všedním dni ve škole",
-      "próza plná napínavých událostí",
-      "báseň o dalekých krajích",
-      "sbírka krátkých vtipů",
-    ],
-    hints: ["Co drží čtenáře u knih o pirátech, cestovatelích a objevitelích?"],
-    explanation: "Dobrodružný román staví na napětí a nečekaných zvratech — cestách, pronásledování, nebezpečí. Klidné vyprávění o všedním dni by tenhle žánr nenaplnilo.",
-  },
-];
+const BANKA: Polozka[] = [
+  P(1, "Básník ve verších popisuje, jak smutně se cítí za deštivého podzimního večera.", LYR, "jde o verše a o pocity, žádný příběh se tu nevypráví", "Verše vyjadřující pocity — báseň lyrická."),
+  P(1, "Ve verších se vypráví, jak statečný rytíř přemohl draka a zachránil princeznu.", EP, "je to ve verších a má to postavy a děj", "Příběh vyprávěný ve verších — báseň epická."),
+  P(1, "Na několika stranách se v odstavcích vypráví, jak Tonda ztratil klíče a našel je až večer.", POV, "je to krátké, v próze a má jeden děj", "Krátké vyprávění v próze s jedním dějem — povídka."),
+  P(1, "Tlustá kniha o čtyřech stech stranách sleduje osudy celé rodiny během mnoha let.", ROM, "je to velmi dlouhé, v próze a s mnoha postavami", "Rozsáhlá próza s mnoha postavami — román."),
+  P(1, "Krátká báseň oslavuje krásu jarní louky a radost z prvního tepla.", LYR, "vyjadřuje radost a obdiv, neděje se v ní žádný příběh", "Báseň plná pocitů bez děje — báseň lyrická."),
+  P(1, "Balada ve verších vypráví, co se stalo matce, která nedodržela slib.", EP, "je ve verších a vypráví příběh", "Balada vypráví ve verších příběh — báseň epická."),
+  P(1, "Příběh na pár stranách o tom, jak dvě kamarádky zachránily koťátko ze stromu.", POV, "je krátký, v próze a má jeden děj", "Krátká próza s jednou příhodou — povídka."),
+  P(1, "Rozsáhlý příběh v několika dílech o chlapci, který studuje na kouzelnické škole a zažívá mnoho dobrodružství.", ROM, "je velmi dlouhý, má mnoho postav a dějových linií", "Rozsáhlý prozaický příběh — román."),
+  P(1, "Básník ve verších vyznává, jak moc má rád svůj rodný kraj.", LYR, "vyjadřuje vztah a pocity, nevypráví děj", "Vyjádření pocitů ve verších — báseň lyrická."),
+  P(1, "Ve verších se vypráví, jak vodník stáhl do rybníka dívku, která ho neposlechla.", EP, "je ve verších a vypráví příběh s postavami", "Příběh ve verších — báseň epická (balada)."),
+  P(1, "Krátké vyprávění v próze o jednom zvláštním dni na táboře.", POV, "je krátké, v próze a o jedné příhodě", "Krátká próza s jedním dějem — povídka."),
+  P(1, "Kniha o trosečníkovi, který mnoho let přežívá na pustém ostrově a postupně buduje svůj svět.", ROM, "je to dlouhé vyprávění v próze o mnoha letech života", "Dlouhé prozaické vyprávění — román (například Robinson Crusoe)."),
+  P(1, "Verše zachycují ticho zasněženého lesa a klid, který básník cítí.", LYR, "zachycuje náladu, neděje se nic", "Nálada a pocity ve verších — báseň lyrická."),
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Jaký je rozdíl mezi lyrikou a epikou jako literárními druhy?",
-    correctAnswer: "lyrika je bez děje, epika s dějem",
-    options: ["epika je bez děje, lyrika s dějem", "obojí vždy vypráví příběh", "lyrika je bez děje, epika s dějem", "liší se jen svou délkou"],
-    hints: ["Obě mohou být psané ve verších i v próze. Rozhoduje něco jiného — zeptej se, jestli se v díle něco stane."],
-    explanation: "Lyrika zachycuje pocity a nálady, epika vypráví, co se stalo. Forma ani délka o zařazení nerozhodují — existují i krátké epické básně.",
-  },
-  {
-    question: "Co je drama jako literární druh?",
-    correctAnswer: "dílo určené pro divadlo",
-    options: ["dílo určené jen ke čtení", "báseň přednášená zpaměti", "vyprávění v próze", "dílo určené pro divadlo"],
-    hints: ["Text tvoří převážně repliky postav a poznámky o tom, kdo kam přichází. Komu je takový zápis určený?"],
-    explanation: "Drama je psané pro jeviště — děj se odvíjí z dialogů postav, doplněných scénickými poznámkami pro herce a režii.",
-  },
-  {
-    question: "Co je tragédie?",
-    correctAnswer: "hra se smutným koncem",
-    options: ["hra se smutným koncem", "hra s veselým koncem", "báseň o smutku", "pohádka se šťastným koncem"],
-    hints: ["Vzpomeň si, jak dopadnou Romeo a Julie nebo Hamlet."],
-    explanation: "Tragédie je divadelní hra, kde hlavní hrdina neuspěje a zpravidla zahyne. Právě konec ji odlišuje od komedie.",
-  },
-  {
-    question: "Co je komedie?",
-    correctAnswer: "hra s veselým koncem",
-    options: [
-      "hra se smutným koncem",
-      "hra s veselým koncem",
-      "báseň plná humoru",
-      "vážné vyprávění v próze",
-    ],
-    hints: ["Je to opak toho druhu hry, kde hrdina na konci prohraje."],
-    explanation: "Komedie je divadelní hra, která diváka baví a končí dobře. Není to báseň ani próza — je to text určený k hraní na jevišti.",
-  },
-  {
-    question: "Co je literární próza?",
-    correctAnswer: "texty psané běžnými větami",
-    options: ["texty psané ve verších", "texty s pravidelným rýmem", "texty psané běžnými větami", "texty určené jen k recitaci"],
-    hints: ["Podívej se, jak text vypadá na stránce: pokračuje řádek za řádkem až k okraji, nebo se láme na krátké řádky pod sebou?"],
-    explanation: "Próza se píše souvislými větami a odstavci, bez veršů a rýmu. Patří sem romány, povídky i novely.",
-  },
-  {
-    question: "Co je lyrický subjekt v básni?",
-    correctAnswer: "ten, kdo v básni mluví",
-    options: ["vždy sám autor básně", "hlavní postava příběhu", "čtenář, který báseň čte", "ten, kdo v básni mluví"],
-    hints: ["Když v básni stojí 'já', je to nutně ten člověk, který ji napsal? Zkus si představit báseň psanou z pohledu starce nebo dítěte."],
-    explanation: "Lyrický subjekt je hlas, kterým báseň promlouvá. Bývá autorovi blízký, ale nemusí se s ním shodovat — básník může psát i z pohledu někoho úplně jiného.",
-  },
-  {
-    question: "V čem se drama liší od románu?",
-    correctAnswer: "je psané v dialozích",
-    options: ["je psané v dialozích", "je psané ve verších", "je vždy kratší", "nemá žádné postavy"],
-    hints: ["Představ si obě knihy otevřené vedle sebe. Čím je stránka divadelní hry na první pohled jiná?"],
-    explanation: "V dramatu nese děj přímá řeč postav, doplněná scénickými poznámkami. Román naopak vypráví vypravěč. Verše i délka mohou být v obou případech různé.",
-  },
-  {
-    question: "Co je sbírka básní?",
-    correctAnswer: "kniha více básní jednoho autora",
-    options: [
-      "jedna dlouhá báseň",
-      "kniha více básní jednoho autora",
-      "kniha povídek",
-      "výbor z románů",
-    ],
-    hints: ["Erbenova Kytice není jedna báseň — co je tedy jako celek?"],
-    explanation: "Sbírka shromažďuje více básní do jedné knihy, obvykle spojených tématem nebo autorem. Jedna samostatná dlouhá báseň sbírka není.",
-  },
-  {
-    question: "Co je leitmotiv v literárním díle?",
-    correctAnswer: "opakující se motiv v díle",
-    options: ["hlavní postava díla", "poučení na konci díla", "opakující se motiv v díle", "název kapitoly"],
-    hints: ["Když se v knize znovu a znovu vrací tentýž obraz nebo věta, autor to nedělá náhodou. Jak se takovému prvku říká?"],
-    explanation: "Leitmotiv je prvek, který se dílem táhne jako červená nit — obraz, věta nebo téma, jež se opakovaně vrací a spojuje jednotlivé části.",
-  },
-  {
-    question: "Co je hlavní myšlenka literárního díla?",
-    correctAnswer: "to, co chtěl autor sdělit",
-    options: ["jméno hlavní postavy", "počet kapitol v knize", "místo, kde se děj odehrává", "to, co chtěl autor sdělit"],
-    hints: ["Když knihu dočteš a někdo se tě zeptá, o čem to vlastně bylo, co odpovíš — kdo tam vystupoval, nebo proč to autor napsal?"],
-    explanation: "Hlavní myšlenka je sdělení, kvůli kterému dílo vzniklo — třeba že přátelství je důležitější než majetek. Postavy a místo jsou jen prostředky, jak ji autor předá.",
-  },
-  {
-    question: "Jaký žánr jsou Andersenovy pohádky?",
-    correctAnswer: "autorské pohádky",
-    options: ["autorské pohádky", "lidové pohádky", "epické básně", "balady ve verších"],
-    hints: ["U Boženy Němcové jde často o zápis toho, co se vyprávělo mezi lidmi. U Andersena je to jinak — víme, kdo je vymyslel."],
-    explanation: "Andersen si své pohádky sám vymyslel a napsal, proto jsou autorské (umělé). Lidové pohádky se naopak předávaly ústně a jejich původce neznáme.",
-  },
+  P(2, "„Padá listí, padá tiše, / smutek se mi v srdci píše.“", LYR, "jsou to verše a mluví o pocitu smutku", "Verše vyjadřující smutek — báseň lyrická."),
+  P(2, "„Šel Honza lesem do světa, / potkal tam dědu s kloboukem, / ten mu dal radu na cestu…“", EP, "jsou to verše a něco se v nich děje: postava jde, potká někoho", "Ve verších se vypráví děj — báseň epická."),
+  P(2, "„Když Eliška ráno otevřela oči, byla na zahradě tma. Rychle se oblékla a vyběhla ven…“ Celý text má pět stran.", POV, "je to próza, krátká, s jednou příhodou", "Krátká próza — povídka."),
+  P(2, "Kniha má třicet kapitol a vypráví o dětství, dospívání i dospělosti hlavní hrdinky a jejích přátel.", ROM, "je velmi dlouhá a sleduje mnoho let a postav", "Rozsáhlá próza — román."),
+  P(2, "Sbírka Kytice od Karla Jaromíra Erbena obsahuje příběhy vyprávěné ve verších, například Polednici nebo Vodníka.", EP, "jsou to verše, které vyprávějí strašidelné příběhy", "Básně z Kytice jsou balady — básně epické."),
+  P(2, "„Ó, jak krásné je ráno, když zpívají ptáci / a slunce mě hladí po tváři.“", LYR, "jsou to verše plné radosti, žádný příběh", "Verše vyjadřující radost — báseň lyrická."),
+  P(2, "Na dvou stranách čteme, jak se dědeček ztratil v obchoďáku a jak ho vnuk našel u hraček.", POV, "je to krátké vyprávění v próze", "Krátká próza s jedním dějem — povídka."),
+  P(2, "Příběh ve verších o hloupém Honzovi, který nakonec vyzraje na lakomého krále.", EP, "je ve verších a má děj s postavami", "Děj ve verších — báseň epická."),
+  P(2, "Mnohasetstránková kniha sleduje osudy vesnice během války i po ní očima několika rodin.", ROM, "je to rozsáhlé vyprávění s mnoha postavami", "Rozsáhlé vyprávění v próze — román."),
+  P(2, "Básník přirovnává svou lásku k matce k teplu kamen v zimě.", LYR, "vyjadřuje cit, nevypráví děj", "Vyjádření citu — báseň lyrická."),
+  P(2, "Sbírka krátkých příběhů v próze, z nichž každý vypráví jinou příhodu ze školy.", POV, "každý příběh je krátký, v próze a má jeden děj", "Každý z krátkých prozaických příběhů je povídka."),
+  P(2, "„Za devatero horami žil kovář. Jednou k němu přišel voják…“ — dlouhé vyprávění ve verších o jejich společné cestě.", EP, "vypráví příběh, a to ve verších", "Příběh vyprávěný ve verších — báseň epická."),
+  P(2, "Kniha o mnoha kapitolách, v níž se střídají vypravěči a děj se odehrává ve třech různých městech.", ROM, "je rozsáhlá a má několik dějových linií", "Rozvětvený rozsáhlý děj — román."),
+
+  P(3, "Krátký text ve verších, ve kterém dívka jde přes les, potká vlka a uteče mu.", EP, "i když je text krátký, je ve verších a vypráví příběh", "Krátkost nerozhoduje — příběh ve verších je báseň epická, ne povídka."),
+  P(3, "Krátký text v próze o jednom odpoledni na rybníce, kde se chlapec poprvé naučí plavat.", POV, "je v próze, krátký a má jeden děj", "Próza s jedním dějem je povídka; román by byl mnohem rozsáhlejší."),
+  P(3, "Dlouhá báseň, ve které básník postupně popisuje, co cítí v každém ročním období.", LYR, "je dlouhá, ale nevypráví příběh, jen vyjadřuje pocity", "Délka nerozhoduje — báseň bez děje, plná pocitů, je lyrická."),
+  P(3, "Kniha o dvaceti kapitolách vypráví ve verších, jak se chudý chlapec stal králem.", EP, "je rozsáhlá, ale psaná ve verších", "Vyprávění ve verších je báseň epická, i když je dlouhé jako kniha."),
+  P(3, "Text v próze na tři strany, ve kterém vypravěč jen líčí, jak voní les po dešti a jak se cítí.", POV, "je v próze a krátký; román by byl mnohem delší", "Krátký prozaický text se řadí k povídkám (i když se v něm skoro nic neděje)."),
+  P(3, "Verše, v nichž básník oslovuje měsíc a svěřuje se mu se svým stesknem.", LYR, "vyjadřuje stesk, nevypráví děj", "Oslovení a vyjádření pocitů — báseň lyrická."),
+  P(3, "Vyprávění v próze na tři sta stran o jedné výpravě, na kterou se vydá deset postav, a o tom, co každá z nich prožije.", ROM, "je rozsáhlé a sleduje osudy mnoha postav", "Rozsáhlá próza s mnoha postavami a liniemi — román."),
+  P(3, "Balada o dívce, která v noci na hřbitově potká ducha.", EP, "balada je ve verších a vypráví příběh", "Balada je báseň epická."),
+  P(3, "Krátká básnička, ve které si dítě představuje, jaké by to bylo být ptákem.", LYR, "vyjadřuje představy a pocity, nevypráví příběh", "Představy a pocity ve verších — báseň lyrická."),
+  P(3, "Příběh v próze na dvě strany s jednou postavou, která celý den čeká na dopis.", POV, "je krátký, v próze, s jednou postavou a jedním dějem", "Krátké prozaické vyprávění — povídka."),
+  P(3, "Kniha, v níž se v próze střídají kapitoly z pohledu čtyř sourozenců během jednoho dlouhého léta.", ROM, "je rozsáhlá, s více postavami a vypravěči", "Rozsáhlé prozaické vyprávění s více postavami — román."),
+  P(3, "Verše, které vyprávějí, jak se sedlák se sousedem přeli o mez a jak je rozsoudil rychtář.", EP, "je ve verších a má děj", "Příběh ve verších — báseň epická."),
+  P(3, "Verše popisují, jak básník vidí z okna první sníh a jak ho to rozesměje.", LYR, "zachycuje dojem a pocit, ne příběh", "Dojem a pocit ve verších — báseň lyrická."),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return urceni(BANKA, UTVARY, level, (p) => ({
+    question: `O jaký útvar jde? ${p.veta}`,
+    hints: [
+      `Je text „${p.veta.slice(0, 60)}${p.veta.length > 60 ? "…" : ""}“ psaný ve verších, nebo v próze?`,
+      `Pomůže tohle: ${p.klic}.`,
+    ],
+  }));
 }
 
 export const BASENLYRICKAAEPICKAROMANPOVIDKA: TopicMetadata[] = [

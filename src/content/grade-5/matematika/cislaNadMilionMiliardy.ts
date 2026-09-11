@@ -1,74 +1,133 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { TROJICE, cisloSlovy, ciselnaUloha, fmt, lzeCist, pick, rnd, sada, type Chyba } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností; některé možnosti obsahovaly překlepy
+// („miliiony“). Teď generátor: čísla se skládají z trojic a chybné možnosti jsou
+// typické chyby se zápisem trojic (vynechaná trojice nul, posun o řád,
+// padesát tisíc zapsané jako 500 000).
+// L1 miliony (čtení a zápis) · L2 miliardy · L3 kolik milionů je v čísle,
+// zaokrouhlení na miliony a zápis s prázdnou trojicí uprostřed.
+
+type Trojice = [number, number, number, number]; // miliardy, miliony, tisíce, jednotky
+const hodnota = ([b, m, t, u]: Trojice) => b * 1e9 + m * 1e6 + t * 1e3 + u;
+const NAZVY = ["miliardy", "miliony", "tisíce", "jednotky"];
+const trojiceTxt = (n: number) => fmt(n).split(" ");
+
+/** Typické chyby v zápisu — jen takové, které jde správně přečíst. */
+function varianty([b, m, t, u]: Trojice): { v: Trojice; why: string }[] {
+  const out: { v: Trojice; why: string }[] = [];
+  const nejvyssi = b ? 0 : 1;
+  const x: Trojice = [b, m, t, u];
+  if (t && t < 100 && t * 10 <= 999) out.push({ v: [b, m, t * 10, u], why: `Trojice tisíců je ${String(t).padStart(3, "0")}, ne ${t * 10}. Chybějící místa vpředu se doplní nulami.` });
+  if (u === 0 && t) out.push({ v: nejvyssi ? [0, 0, m, t] : [0, b, m, t], why: "Vypadla poslední trojice nul, takže se všechno posunulo o jeden řád trojic níž." });
+  if (t === 0 && (u || nejvyssi === 0)) out.push({ v: nejvyssi ? [0, 0, m, u] : [0, b, m, u], why: "Chybí trojice nul na místě tisíců. I prázdná trojice se musí zapsat: 000." });
+  const hl = x[nejvyssi];
+  if (hl * 10 <= 999 && lzeCist(hl * 10)) { const v: Trojice = [...x] as Trojice; v[nejvyssi] = hl * 10; out.push({ v, why: `Na začátku je o nulu víc — ${NAZVY[nejvyssi]} jsou ${hl}, ne ${hl * 10}.` }); }
+  if (hl % 10 === 0 && lzeCist(hl / 10)) { const v: Trojice = [...x] as Trojice; v[nejvyssi] = hl / 10; out.push({ v, why: `Na začátku chybí nula — ${NAZVY[nejvyssi]} jsou ${hl}, ne ${hl / 10}.` }); }
+  if (t && lzeCist(t + 5)) out.push({ v: [b, m, t + 5, u], why: `Trojice tisíců je ${t}, ne ${t + 5}.` });
+  if (lzeCist(hl + 1)) { const v: Trojice = [...x] as Trojice; v[nejvyssi] = hl + 1; out.push({ v, why: `Na začátku je ${hl}, ne ${hl + 1}.` }); }
+  return out.filter((o) => o.v.every(lzeCist) && hodnota(o.v) !== hodnota(x) && hodnota(o.v) > 0);
 }
 
-// Level 1: miliony — čtení a zápis
-const POOL_L1: PracticeTask[] = [
-  { question: "Jak zapíšeme číslem: 'pět milionů'?", correctAnswer: "5 000 000", options: ["5 000 000", "500 000", "50 000 000", "5000"] },
-  { question: "Jak zapíšeme číslem: 'jeden milion'?", correctAnswer: "1 000 000", options: ["100 000", "1 000 000", "10 000 000", "1000"] },
-  { question: "Kolik nul má číslo milion?", correctAnswer: "6", options: ["5", "7", "6", "9"] },
-  { question: "Jak čteme číslo 3 000 000?", correctAnswer: "tři miliony", options: ["tři miliiony", "třicet set tisíc", "tři tisíce tisíc", "tři miliony"] },
-  { question: "Jak čteme číslo 2 500 000?", correctAnswer: "dva miliony pět set tisíc", options: ["dva miliony pět set tisíc", "dvacet pět set", "dva a půl milionu", "dva miliony padesát tisíc"] },
-  { question: "Jak zapíšeme číslem: 'sedm milionů sto tisíc'?", correctAnswer: "7 100 000", options: ["7 010 000", "7 100 000", "7 001 000", "71 000 000"] },
-  { question: "Co je větší: 5 000 000 nebo 4 900 000?", correctAnswer: "5 000 000", options: ["4 900 000", "jsou stejná", "5 000 000", "nelze určit"] },
-  { question: "Jak čteme číslo 10 000 000?", correctAnswer: "deset milionů", options: ["jeden milion tisíc", "sto tisíc tisíc", "tisíc tisíc", "deset milionů"] },
-  { question: "Jaký počet obyvatel má město s 1 200 000 obyvateli?", correctAnswer: "jeden milion dvě stě tisíc", options: ["jeden milion dvě stě tisíc", "dvanáct set tisíc", "jeden milion dvanáct", "jeden a dvě stě tisíc"] },
-  { question: "Jak zapíšeme číslem: 'osm milionů padesát tisíc'?", correctAnswer: "8 050 000", options: ["8 500 000", "8 050 000", "8 005 000", "8 050"] },
-  { question: "Co je 1 000 000 × 6?", correctAnswer: "6 000 000", options: ["600 000", "60 000 000", "6 000 000", "6 000"] },
-  { question: "Jak čteme číslo 4 030 000?", correctAnswer: "čtyři miliony třicet tisíc", options: ["čtyři miliony tři tisíce", "čtyři tři tisíce", "čtyřicet tři tisíc", "čtyři miliony třicet tisíc"] },
-  { question: "Seřaď od nejmenšího: 3 200 000; 2 900 000; 3 100 000", correctAnswer: "2 900 000 — 3 100 000 — 3 200 000", options: ["2 900 000 — 3 100 000 — 3 200 000", "3 100 000 — 2 900 000 — 3 200 000", "3 200 000 — 3 100 000 — 2 900 000", "2 900 000 — 3 200 000 — 3 100 000"] },
-  { question: "Česká republika má asi 10 900 000 obyvatel. Jak to čteme?", correctAnswer: "deset milionů devět set tisíc", options: ["deset a devět set tisíc", "deset milionů devět set tisíc", "deset devět set tisíc", "sto devět tisíc"] },
-  { question: "Jak zapíšeme číslem: 'šest milionů šest set šedesát tisíc'?", correctAnswer: "6 660 000", options: ["6 606 000", "6 600 600", "6 660 000", "6 060 000"] },
-];
+function nahodne(miliardy: boolean): Trojice {
+  const mala = TROJICE.filter((g) => g < 100);
+  const b = miliardy ? pick(mala) : 0;
+  const m = miliardy ? (Math.random() < 0.7 ? pick(TROJICE) : 0) : pick(mala);
+  const t = Math.random() < 0.75 ? pick(TROJICE) : 0;
+  const u = miliardy ? 0 : Math.random() < 0.35 ? pick(TROJICE) : 0;
+  return [b, m, t, u];
+}
 
-// Level 2: miliardy — čtení a zápis
-const POOL_L2: PracticeTask[] = [
-  { question: "Kolik nul má miliarda?", correctAnswer: "9", options: ["6", "12", "7", "9"] },
-  { question: "Jak zapíšeme číslem: 'jedna miliarda'?", correctAnswer: "1 000 000 000", options: ["1 000 000 000", "1 000 000", "100 000 000", "10 000 000 000"] },
-  { question: "Jak čteme číslo 2 000 000 000?", correctAnswer: "dvě miliardy", options: ["dva miliarda", "dvě miliardy", "dva miliony tisíc", "dvě miliony"] },
-  { question: "Jak čteme číslo 2 350 000 000?", correctAnswer: "dvě miliardy tři sta padesát milionů", options: ["dvacet tři pět nula milionů", "dvě a půl miliardy plus", "dvě miliardy tři sta padesát milionů", "dvě miliarda třistapadesát"] },
-  { question: "Jak zapíšeme číslem: 'pět miliard'?", correctAnswer: "5 000 000 000", options: ["5 000 000", "500 000 000", "50 000 000 000", "5 000 000 000"] },
-  { question: "Vzdálenost Země od Slunce je asi 150 000 000 km. Jak to čteme?", correctAnswer: "sto padesát milionů kilometrů", options: ["sto padesát milionů kilometrů", "patnáct milionů", "sto pět milionů", "patnáct set tisíc"] },
-  { question: "Na Zemi žije přibližně 8 000 000 000 lidí. Jak to čteme?", correctAnswer: "osm miliard", options: ["osm milionů", "osm miliard", "osm bilionů", "osm miliardů"] },
-  { question: "Co je větší: 1 500 000 000 nebo 999 000 000?", correctAnswer: "1 500 000 000", options: ["999 000 000", "jsou stejná", "1 500 000 000", "nelze určit"] },
-  { question: "Jak zapíšeme číslem: 'tři miliardy dvě stě milionů'?", correctAnswer: "3 200 000 000", options: ["3 020 000 000", "3 002 000 000", "32 000 000 000", "3 200 000 000"] },
-  { question: "Kolik milionů je v miliardě?", correctAnswer: "1000", options: ["1000", "100", "10 000", "1"] },
-  { question: "Jak čteme číslo 7 500 000 000?", correctAnswer: "sedm miliard pět set milionů", options: ["sedmdesát pět milionů", "sedm miliard pět set milionů", "sedm milionů pět set tisíc", "sedm a půl miliardy"] },
-  { question: "Seřaď od největšího: 2 100 000 000; 1 900 000 000; 2 050 000 000", correctAnswer: "2 100 000 000 — 2 050 000 000 — 1 900 000 000", options: ["1 900 000 000 — 2 050 000 000 — 2 100 000 000", "2 050 000 000 — 2 100 000 000 — 1 900 000 000", "2 100 000 000 — 2 050 000 000 — 1 900 000 000", "2 100 000 000 — 1 900 000 000 — 2 050 000 000"] },
-  { question: "Jak zapíšeme číslem: 'čtyři miliardy čtyřicet milionů'?", correctAnswer: "4 040 000 000", options: ["4 400 000 000", "4 004 000 000", "4 000 040 000", "4 040 000 000"] },
-  { question: "Čína má asi 1 400 000 000 obyvatel. Jak to čteme?", correctAnswer: "jedna miliarda čtyři sta milionů", options: ["jedna miliarda čtyři sta milionů", "čtrnáct set milionů", "jedná čtyřicet milionů", "jedna a čtyři sta milionů"] },
-  { question: "Platí: 1 000 000 000 > 999 999 999?", correctAnswer: "Ano", options: ["Ne", "Ano", "Jsou si rovny", "Záleží na situaci"] },
-];
+function zapis(x: Trojice): PracticeTask | null {
+  const n = hodnota(x), slova = cisloSlovy(n);
+  const chyby: Chyba[] = varianty(x).map((o) => ({ value: fmt(hodnota(o.v)), why: o.why }));
+  const casti = [x[0] && "miliardy", x[1] && "miliony", x[2] && "tisíce", x[3] && "jednotky"].filter(Boolean).join(", ");
+  return ciselnaUloha(`Zapiš číslicemi: ${slova}.`, fmt(n), chyby, [
+    `Které trojice v čísle „${slova}“ jsou, a které chybí? Máš tu ${casti}.`,
+    "Každá trojice (miliardy, miliony, tisíce, jednotky) má v zápisu tři číslice. Prázdnou trojici zapiš jako 000 a chybějící místa vpředu doplň nulami, třeba padesát tisíc je v trojici tisíců 050.",
+  ], [
+    `Trojice zleva: ${trojiceTxt(n).join(" | ")}`,
+    `Zápis: ${fmt(n)}`,
+  ]);
+}
 
-// Level 3: porovnávání, počítání s velkými čísly, příklady ze života
-const POOL_L3: PracticeTask[] = [
-  { question: "Kolik milionů je v čísle 3 700 000 000?", correctAnswer: "3700", options: ["370", "37000", "3700", "3,7"] },
-  { question: "O kolik je větší 2 000 000 000 než 1 500 000 000?", correctAnswer: "500 000 000", options: ["5 000 000", "50 000 000", "5 000 000 000", "500 000 000"] },
-  { question: "Planeta Mars je vzdálena asi 225 000 000 km. Zapiš to slovy.", correctAnswer: "dvě stě dvacet pět milionů", options: ["dvě stě dvacet pět milionů", "dvacet dva pět milionů", "dvě stě padesát pět milionů", "dvě miliardy dvacet pět"] },
-  { question: "Průměrná vzdálenost Pluta od Slunce je asi 5 900 000 000 km. Jak to čteme?", correctAnswer: "pět miliard devět set milionů", options: ["pět milionů devět set tisíc", "pět miliard devět set milionů", "padesát devět miliard", "pět miliarda devět set"] },
-  { question: "Seřaď od nejmenšího: 850 000 000; 1 050 000 000; 950 000 000; 1 000 000 000", correctAnswer: "850 000 000 — 950 000 000 — 1 000 000 000 — 1 050 000 000", options: ["850 000 000 — 1 000 000 000 — 950 000 000 — 1 050 000 000", "1 050 000 000 — 1 000 000 000 — 950 000 000 — 850 000 000", "850 000 000 — 950 000 000 — 1 000 000 000 — 1 050 000 000", "950 000 000 — 850 000 000 — 1 000 000 000 — 1 050 000 000"] },
-  { question: "Kolik je 1 miliarda ÷ 1000?", correctAnswer: "1 000 000", options: ["100 000", "10 000 000", "1000", "1 000 000"] },
-  { question: "Kolik milionů je v čísle 12 000 000 000?", correctAnswer: "12 000", options: ["12 000", "1200", "120 000", "12"] },
-  { question: "Platí: 6 miliard > 6000 milionů?", correctAnswer: "Jsou si rovny", options: ["Ano, 6 miliard je větší", "Jsou si rovny", "Ne, 6000 milionů je větší", "Nelze porovnat"] },
-  { question: "Světový oceán má objem asi 1 335 000 000 km³. Jak zaokrouhlíme na miliardy?", correctAnswer: "přibližně 1 miliarda", options: ["přibližně 13 miliard", "přibližně 133 milionů", "přibližně 1 miliarda", "přibližně 2 miliardy"] },
-  { question: "Zápis 4,5 × 10⁹ znamená kolik miliard?", correctAnswer: "4,5 miliardy", options: ["45 milionů", "450 milionů", "45 miliard", "4,5 miliardy"] },
-  { question: "Která z odpovědí správně čte číslo 1 005 000 000?", correctAnswer: "jedna miliarda pět milionů", options: ["jedna miliarda pět milionů", "jedna miliarda padesát milionů", "jedna miliarda pět set milionů", "deset miliard pět milionů"] },
-  { question: "Kolik tisíc milionů je deset miliard?", correctAnswer: "10 000", options: ["1000", "10 000", "100 000", "100"] },
-  { question: "O kolik je 3 000 000 000 větší než 2 750 000 000?", correctAnswer: "250 000 000", options: ["25 000 000", "2 500 000", "250 000 000", "2 500 000 000"] },
-  { question: "Platí: 999 milionů < 1 miliarda?", correctAnswer: "Ano", options: ["Ne", "Jsou si rovny", "Záleží", "Ano"] },
-  { question: "Jak zapíšeme číslicemi: 'sedm miliard sto dvacet milionů třicet tisíc'?", correctAnswer: "7 120 030 000", options: ["7 120 030 000", "7 012 030 000", "7 120 300 000", "7 120 003 000"] },
-];
+function cteni(x: Trojice): PracticeTask | null {
+  const n = hodnota(x);
+  const chyby: Chyba[] = varianty(x).map((o) => ({ value: cisloSlovy(hodnota(o.v)), why: o.why }));
+  const trojice = trojiceTxt(n);
+  return ciselnaUloha(`Jak přečteš číslo ${fmt(n)}?`, cisloSlovy(n), chyby, [
+    `Rozděl číslo zprava po trojicích: ${trojice.join(" | ")}. Jak se jmenuje každá trojice?`,
+    "Trojice zleva se jmenují miliardy, miliony, tisíce a jednotky. Přečti každou trojici a přidej její název; trojici samých nul nečteš vůbec.",
+  ], [
+    `Trojice: ${trojice.join(" | ")}`,
+    `Čteme: ${cisloSlovy(n)}`,
+  ]);
+}
+
+function kolikMilionu(): PracticeTask | null {
+  const b = rnd(1, 12), m = pick([0, rnd(1, 9) * 100, rnd(10, 99) * 10]), t = rnd(0, 9) * 100;
+  const n = b * 1e9 + m * 1e6 + t * 1e3;
+  const key = b * 1000 + m;
+  return ciselnaUloha(`Kolik celých milionů je v čísle ${cisloSlovy(n)}?`, fmt(key), [
+    ...(m ? [{ value: fmt(m), why: `${m} je jen trojice milionů. Každá miliarda má ale tisíc milionů — i ty se počítají.` }] : []),
+    { value: fmt(b), why: `${b} je počet miliard, ne milionů.` },
+    ...(m ? [{ value: fmt(b * 1000), why: "Započítaly se jen miliardy převedené na miliony; chybí trojice milionů." }] : []),
+    { value: fmt(key * 1000), why: "To je počet tisíců, ne milionů." },
+    { value: fmt(b * 100 + m), why: "Jedna miliarda je tisíc milionů, ne sto." },
+  ], [
+    `V čísle „${cisloSlovy(n)}“ jsou miliardy i miliony. Kolik milionů dá jedna miliarda?`,
+    "Jedna miliarda je tisíc milionů. Miliardy převeď na miliony a přičti miliony, které v čísle jsou navíc; tisíce a jednotky do celých milionů nepatří. Výsledek bude vždy víc než tisíc, protože je tu aspoň jedna miliarda.",
+  ], [
+    `Miliardy na miliony: ${b} × 1 000 = ${fmt(b * 1000)}`,
+    `${fmt(b * 1000)} + ${m} = ${fmt(key)} milionů`,
+  ]);
+}
+
+function zaokrouhli(): PracticeTask | null {
+  const m = rnd(2, 98), zbytek = rnd(1, 999) * 1000 + pick([0, rnd(1, 999)]);
+  if (Math.floor(zbytek / 100000) === 5 && zbytek % 100000 === 0) return null;
+  const n = m * 1e6 + zbytek;
+  const nahoru = zbytek >= 500000;
+  const key = (nahoru ? m + 1 : m) * 1e6;
+  const statisice = Math.floor(zbytek / 100000);
+  return ciselnaUloha(`Zaokrouhli číslo ${fmt(n)} na miliony.`, fmt(key), [
+    { value: fmt(nahoru ? m * 1e6 : (m + 1) * 1e6), why: `Rozhoduje číslice stotisíců (${statisice}): ${nahoru ? "je 5 nebo víc, zaokrouhluje se nahoru" : "je menší než 5, zaokrouhluje se dolů"}.` },
+    { value: fmt(Math.round(n / 1e5) * 1e5), why: "To je zaokrouhlení na statisíce, ne na miliony." },
+    { value: fmt(Math.round(n / 1e7) * 1e7 || 1e7), why: "To je zaokrouhlení na desítky milionů." },
+    { value: fmt((nahoru ? m + 2 : m - 1) * 1e6), why: "Při zaokrouhlení se trojice milionů změní nejvýš o jedna." },
+  ], [
+    `Mezi kterými dvěma celými miliony leží číslo ${fmt(n)}? Podívej se na číslici hned za trojicí milionů.`,
+    "Na miliony rozhoduje číslice stotisíců: 0 až 4 znamená zaokrouhlit dolů, 5 až 9 nahoru. Všechno za miliony se pak nahradí nulami.",
+  ], [
+    `Číslice stotisíců: ${statisice}`,
+    `${statisice >= 5 ? "5 až 9 — nahoru" : "0 až 4 — dolů"}: ${fmt(key)}`,
+  ]);
+}
+
+function prazdnaTrojice(): PracticeTask | null {
+  const b = pick(TROJICE.filter((g) => g < 20)), t = pick(TROJICE.filter((g) => g < 1000));
+  const x: Trojice = [b, 0, t, 0];
+  if (!t) return null;
+  const n = hodnota(x), slova = cisloSlovy(n);
+  return ciselnaUloha(`Zapiš číslicemi: ${slova}.`, fmt(n), [
+    { value: fmt(b * 1e6 + t * 1e3), why: "Chybí trojice milionů. Mezi miliardami a tisíci je prázdná trojice 000." },
+    { value: fmt(b * 1e9 + t * 1e6), why: `${cisloSlovy(t * 1000)} patří do trojice tisíců, ne milionů.` },
+    { value: fmt(b * 1e9 + t), why: "Tisíce se zapsaly jako jednotky; chybí poslední trojice nul." },
+  ], [
+    `Miliardy (${b}) máš. Kam patří „${cisloSlovy(t * 1000)}“ a která trojice se vůbec neřekne?`,
+    "Miliardy mají za sebou tři trojice: miliony, tisíce a jednotky. Trojici, která se neřekne, zapiš jako 000. Nejdřív si napiš miliardy a tři prázdné trojice po třech místech, teprve pak do nich doplň, co v čísle zazní.",
+  ], [
+    `Trojice zleva: ${trojiceTxt(n).join(" | ")}`,
+    `Zápis: ${fmt(n)}`,
+  ]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return sada(30, (i) => (i % 2 ? cteni(nahodne(false)) : zapis(nahodne(false))));
+  if (level === 2) return sada(30, (i) => (i % 2 ? cteni(nahodne(true)) : zapis(nahodne(true))));
+  const tvurci = [kolikMilionu, zaokrouhli, prazdnaTrojice];
+  return sada(30, (i) => tvurci[i % 3]());
 }
 
 export const CISLANADMILIONMILIARDY: TopicMetadata[] = [

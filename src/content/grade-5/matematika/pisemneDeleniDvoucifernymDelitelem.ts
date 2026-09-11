@@ -1,89 +1,104 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
+import { ciselnaUloha, fmt, pick, rnd, sada } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď generátor, který rozepíše písemné
+// dělení krok po kroku. Distraktory: špatný odhad číslice podílu (±1),
+// vynechaná nula v podílu (103 → 13), zbytek větší než dělitel.
+// L1 trojciferné číslo : dělitel 11–19 beze zbytku · L2 dělitel 21–99, i čtyřciferný
+// dělenec, beze zbytku · L3 dělení se zbytkem, nula uprostřed podílu
+// a slovní úloha, kde se výsledek zaokrouhluje nahoru.
+
+function pisemne(N: number, d: number): { q: number; r: number; kroky: string[] } {
+  const cislice = String(N).split("").map(Number);
+  let cur = 0, q = "", zacal = false;
+  const kroky: string[] = [];
+  cislice.forEach((c, i) => {
+    cur = cur * 10 + c;
+    if (!zacal && cur < d && i < cislice.length - 1) return;
+    zacal = true;
+    const k = Math.floor(cur / d);
+    q += String(k);
+    kroky.push(`${cur} : ${d} = ${k}, protože ${k} × ${d} = ${k * d}; zbytek ${cur - k * d}`);
+    cur -= k * d;
+  });
+  return { q: Number(q), r: cur, kroky };
 }
 
-// Level 1: jednodušší dělení — výsledek je přesné celé číslo
-const POOL_L1: PracticeTask[] = [
-  { question: "312 ÷ 12 = ?", correctAnswer: "26", options: ["26", "24", "28", "27"] },
-  { question: "504 ÷ 21 = ?", correctAnswer: "24", options: ["22", "24", "26", "23"] },
-  { question: "840 ÷ 28 = ?", correctAnswer: "30", options: ["28", "32", "30", "29"] },
-  { question: "396 ÷ 11 = ?", correctAnswer: "36", options: ["34", "38", "37", "36"] },
-  { question: "480 ÷ 16 = ?", correctAnswer: "30", options: ["30", "28", "32", "24"] },
-  { question: "675 ÷ 25 = ?", correctAnswer: "27", options: ["25", "27", "29", "26"] },
-  { question: "520 ÷ 20 = ?", correctAnswer: "26", options: ["24", "28", "26", "25"] },
-  { question: "756 ÷ 21 = ?", correctAnswer: "36", options: ["34", "38", "37", "36"] },
-  { question: "330 ÷ 15 = ?", correctAnswer: "22", options: ["22", "20", "24", "21"] },
-  { question: "540 ÷ 18 = ?", correctAnswer: "30", options: ["28", "30", "32", "29"] },
-  { question: "728 ÷ 14 = ?", correctAnswer: "52", options: ["50", "54", "52", "48"] },
-  { question: "864 ÷ 32 = ?", correctAnswer: "27", options: ["25", "29", "26", "27"] },
-  { question: "420 ÷ 15 = ?", correctAnswer: "28", options: ["28", "26", "30", "27"] },
-  { question: "990 ÷ 33 = ?", correctAnswer: "30", options: ["28", "30", "32", "29"] },
-  { question: "616 ÷ 22 = ?", correctAnswer: "28", options: ["26", "30", "28", "27"] },
-  { question: "630 ÷ 21 = ?", correctAnswer: "30", options: ["28", "32", "29", "30"] },
-  { question: "572 ÷ 13 = ?", correctAnswer: "44", options: ["44", "42", "46", "43"] },
-  { question: "480 ÷ 24 = ?", correctAnswer: "20", options: ["18", "20", "22", "21"] },
-  { question: "714 ÷ 21 = ?", correctAnswer: "34", options: ["32", "36", "34", "33"] },
-  { question: "552 ÷ 12 = ?", correctAnswer: "46", options: ["44", "48", "45", "46"] },
-];
+const prvniCast = (N: number, d: number) => {
+  const s = String(N);
+  for (let i = 1; i <= s.length; i++) if (Number(s.slice(0, i)) >= d) return Number(s.slice(0, i));
+  return N;
+};
 
-// Level 2: středně náročné dělení
-const POOL_L2: PracticeTask[] = [
-  { question: "682 ÷ 22 = ?", correctAnswer: "31", options: ["31", "29", "33", "32"] },
-  { question: "775 ÷ 25 = ?", correctAnswer: "31", options: ["29", "31", "33", "30"] },
-  { question: "936 ÷ 36 = ?", correctAnswer: "26", options: ["24", "28", "26", "25"] },
-  { question: "812 ÷ 28 = ?", correctAnswer: "29", options: ["27", "31", "28", "29"] },
-  { question: "957 ÷ 33 = ?", correctAnswer: "29", options: ["29", "27", "31", "30"] },
-  { question: "1008 ÷ 36 = ?", correctAnswer: "28", options: ["26", "28", "30", "27"] },
-  { question: "1122 ÷ 33 = ?", correctAnswer: "34", options: ["32", "36", "34", "33"] },
-  { question: "845 ÷ 13 = ?", correctAnswer: "65", options: ["63", "67", "64", "65"] },
-  { question: "756 ÷ 27 = ?", correctAnswer: "28", options: ["28", "26", "30", "27"] },
-  { question: "1044 ÷ 36 = ?", correctAnswer: "29", options: ["27", "29", "31", "28"] },
-  { question: "884 ÷ 26 = ?", correctAnswer: "34", options: ["32", "36", "34", "33"] },
-  { question: "1105 ÷ 35 = ?", correctAnswer: "31 se zbytkem 20", options: ["32 se zbytkem 20", "30 se zbytkem 20", "31,5 bez zbytku", "31 se zbytkem 20"] },
-  { question: "672 ÷ 24 = ?", correctAnswer: "28", options: ["28", "26", "30", "27"] },
-  { question: "858 ÷ 26 = ?", correctAnswer: "33", options: ["31", "33", "35", "32"] },
-  { question: "988 ÷ 38 = ?", correctAnswer: "26", options: ["24", "28", "26", "25"] },
-  { question: "1020 ÷ 34 = ?", correctAnswer: "30", options: ["28", "32", "29", "30"] },
-  { question: "924 ÷ 33 = ?", correctAnswer: "28", options: ["28", "26", "30", "27"] },
-  { question: "910 ÷ 35 = ?", correctAnswer: "26", options: ["24", "26", "28", "25"] },
-  { question: "1218 ÷ 42 = ?", correctAnswer: "29", options: ["27", "31", "29", "28"] },
-  { question: "975 ÷ 39 = ?", correctAnswer: "25", options: ["23", "27", "24", "25"] },
-];
+function bezZbytku(dMin: number, dMax: number, qMin: number, qMax: number, nMin: number, nMax: number): PracticeTask | null {
+  const d = rnd(dMin, dMax), q = rnd(qMin, qMax), N = d * q;
+  if (N < nMin || N > nMax || d % 10 === 0) return null;
+  const { kroky } = pisemne(N, d);
+  const bezNuly = String(q).includes("0") ? Number(String(q).replace(/0/g, "")) : null;
+  return ciselnaUloha(`Vypočítej písemně: ${fmt(N)} : ${d}`, q, [
+    ...(bezNuly ? [{ value: bezNuly, why: "V podílu chybí nula. Když se dělitel do části dělence nevejde, zapíše se do podílu 0." }] : []),
+    { value: q + 1, why: `Zkouška: ${q + 1} × ${d} = ${fmt((q + 1) * d)}, to je víc než ${fmt(N)}.` },
+    { value: q - 1, why: `Zkouška: ${q - 1} × ${d} = ${fmt((q - 1) * d)}, zbylo by ještě ${d}.` },
+    { value: q + 10, why: "Odhad první číslice podílu je o jedna vyšší — zkus vynásobit." },
+  ], [
+    `Kolikrát se ${d} vejde do ${prvniCast(N, d)}? Zkus to odhadnout: ${d} je asi ${Math.round(d / 10) * 10}.`,
+    `Dělíš postupně: vezmi tolik číslic, aby se do nich ${d} vešlo, napiš číslici podílu, vynásob, odečti a připiš další číslici. Na konci ověř: podíl × ${d} = ${fmt(N)}.`,
+  ], [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
+}
 
-// Level 3: větší čísla, odhad, ověření
-const POOL_L3: PracticeTask[] = [
-  { question: "1428 ÷ 42 = ?", correctAnswer: "34", options: ["34", "32", "36", "33"] },
-  { question: "1560 ÷ 52 = ?", correctAnswer: "30", options: ["28", "30", "32", "29"] },
-  { question: "2016 ÷ 63 = ?", correctAnswer: "32", options: ["30", "34", "32", "31"] },
-  { question: "2250 ÷ 75 = ?", correctAnswer: "30", options: ["28", "32", "29", "30"] },
-  { question: "1716 ÷ 44 = ?", correctAnswer: "39", options: ["39", "37", "41", "38"] },
-  { question: "2184 ÷ 56 = ?", correctAnswer: "39", options: ["37", "39", "41", "38"] },
-  { question: "1932 ÷ 69 = ?", correctAnswer: "28", options: ["26", "30", "28", "27"] },
-  { question: "2664 ÷ 72 = ?", correctAnswer: "37", options: ["35", "39", "36", "37"] },
-  { question: "2295 ÷ 85 = ?", correctAnswer: "27", options: ["27", "25", "29", "26"] },
-  { question: "1200 ÷ 48 = ?", correctAnswer: "25", options: ["23", "25", "27", "24"] },
-  { question: "1998 ÷ 66 = ?", correctAnswer: "30 se zbytkem 18", options: ["31 se zbytkem 18", "29 se zbytkem 18", "30 se zbytkem 18", "30,27 bez zbytku"] },
-  { question: "2808 ÷ 78 = ?", correctAnswer: "36", options: ["34", "38", "35", "36"] },
-  { question: "1702 ÷ 37 = ?", correctAnswer: "46", options: ["46", "44", "48", "45"] },
-  { question: "Ověř: 26 × 12 = ?", correctAnswer: "312", options: ["322", "312", "302", "320"] },
-  { question: "Ověř: 34 × 22 = ?", correctAnswer: "748", options: ["738", "758", "748", "740"] },
-  { question: "Škola nakoupila 756 sešitů pro 27 tříd. Kolik sešitů dostane každá třída?", correctAnswer: "28", options: ["26", "30", "27", "28"] },
-  { question: "Autobus ujel 840 km za 28 hodin. Kolik km ujel za 1 hodinu?", correctAnswer: "30", options: ["30", "28", "32", "29"] },
-  { question: "V krabicích je 528 bonbonů, každá krabice má 24 bonbonů. Kolik je krabic?", correctAnswer: "22", options: ["20", "22", "24", "21"] },
-  { question: "Odhad: 720 ÷ 24 je přibližně kolik?", correctAnswer: "30", options: ["25", "35", "30", "20"] },
-  { question: "Odhad: 900 ÷ 31 je přibližně kolik?", correctAnswer: "29", options: ["25", "35", "20", "29"] },
-];
+function seZbytkem(): PracticeTask | null {
+  const d = rnd(12, 48), q = rnd(11, 60), r = rnd(1, d - 1), N = d * q + r;
+  if (N > 999 || d % 10 === 0 || d - r === r) return null;
+  const { kroky } = pisemne(N, d);
+  const T = (a: number, b: number) => `${a}, zbytek ${b}`;
+  return ciselnaUloha(`Vypočítej písemně se zbytkem: ${N} : ${d}`, T(q, r), [
+    { value: T(q - 1, r + d), why: `Zbytek ${r + d} je větší než dělitel ${d} — dělitel by se vešel ještě jednou.` },
+    { value: T(q, d - r), why: `Zbytek se odečetl obráceně. Zkouška: ${q} × ${d} + ${d - r} = ${q * d + d - r}, ne ${N}.` },
+    { value: T(q + 1, r), why: `Zkouška: ${q + 1} × ${d} = ${(q + 1) * d}, to je víc než ${N}.` },
+  ], [
+    `Kolikrát se ${d} vejde do ${prvniCast(N, d)}? Pokračuj, dokud nepoužiješ všechny číslice.`,
+    `Co zbude po posledním odečtení, musí být menší než ${d}. Zkouška: podíl × ${d} + to, co zbylo = ${N}.`,
+  ], [...kroky, `Zkouška: ${q} × ${d} + ${r} = ${N} ✓`]);
+}
+
+function nulaUprostred(): PracticeTask | null {
+  const d = rnd(11, 25), q = rnd(1, 9) * 100 + rnd(1, 9), N = d * q;
+  if (N > 9999 || d % 10 === 0) return null;
+  const { kroky } = pisemne(N, d);
+  return ciselnaUloha(`Vypočítej písemně: ${fmt(N)} : ${d}`, q, [
+    { value: Number(String(q).replace("0", "")), why: "V podílu chybí nula. Když se dělitel do připsané části nevejde, napíše se do podílu 0 a připíše se další číslice." },
+    { value: q + 10, why: `Zkouška: ${q + 10} × ${d} = ${fmt((q + 10) * d)}, ne ${fmt(N)}.` },
+    { value: q - 1, why: `Zkouška: ${q - 1} × ${d} = ${fmt((q - 1) * d)}, zbylo by ještě ${d}.` },
+  ], [
+    `Vejde se ${d} do části, kterou dostaneš po prvním odečtení a připsání další číslice? Co napíšeš do podílu, když ne?`,
+    `Každá připsaná číslice dělence dá jednu číslici podílu — i když je to 0. Na konci ověř: podíl × ${d} = ${fmt(N)}.`,
+  ], [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
+}
+
+function autobusy(): PracticeTask | null {
+  const d = pick([38, 45, 48, 50, 55, 57, 60]), N = rnd(150, 480);
+  if (N % d === 0) return null;
+  const q = Math.floor(N / d), r = N % d;
+  return ciselnaUloha(`Počet dětí, které jedou na výlet, je ${N}. Do jednoho autobusu se vejde ${d} dětí. Kolik autobusů je potřeba, aby jely všechny děti?`, q + 1, [
+    { value: q, why: `S ${q} autobusy by ${r === 1 ? "jedno dítě zůstalo" : "zbylé děti zůstaly"} doma — pro zbytek je potřeba ještě jeden autobus.` },
+    { value: q + 2, why: `Stačí o jeden méně: ${q + 1} autobusů pojme ${(q + 1) * d} dětí.` },
+    { value: r, why: `${r} je zbytek po dělení — počet dětí, které se nevešly, ne počet autobusů.` },
+  ], [
+    `Kolik plných autobusů dostaneš, když vydělíš ${N} : ${d}? Zbudou nějaké děti?`,
+    "Vyděl se zbytkem. Zbytek jsou děti, které se do plných autobusů nevešly — i pro ně musí přijet autobus, takže se počet zaokrouhlí nahoru.",
+  ], [
+    `${N} : ${d} = ${q}, zbytek ${r}`,
+    `Na ${pad(r, "DÍTĚ")} je potřeba další autobus: ${q} + 1 = ${q + 1}`,
+  ]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return sada(30, () => bezZbytku(11, 19, 11, 60, 100, 999));
+  if (level === 2) return sada(30, () => bezZbytku(21, 99, 12, 99, 250, 9999));
+  const tvurci = [seZbytkem, nulaUprostred, autobusy];
+  return sada(30, (i) => tvurci[i % 3]());
 }
 
 export const PISEMNEDELENIDVOUCIFERNYMDELITELEM: TopicMetadata[] = [

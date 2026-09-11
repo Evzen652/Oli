@@ -1,368 +1,334 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby k chybným možnostem. Teď: L1 části úředního dopisu a tiskopisů
+// · L2 co do žádosti a přihlášky patří a jak ji napsat zdvořile · L3 vyplňování
+// tiskopisů a e-mailů v konkrétních situacích.
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Co patří do hlavičky (záhlaví) úředního dopisu?",
-    correctAnswer: "adresa odesílatele i adresáta",
-    options: ["adresa odesílatele i adresáta", "jen datum napsání dopisu", "jen podpis odesílatele", "jen vlastní text dopisu"],
-    hints: ["Záhlaví má hned na začátku odpovědět na dvě otázky. Které to jsou?"],
-    explanation: "Ze záhlaví musí být na první pohled jasné, kdo dopis píše a komu je určen. Datum i podpis se doplňují, ale samy o sobě záhlaví netvoří.",
-  },
-  {
-    question: "Co je 'Věc:' v úředním dopisu?",
-    correctAnswer: "stručné označení tématu",
-    options: [
-      "zdvořilostní pozdrav",
-      "stručné označení tématu",
-      "podpis odesílatele",
-      "datum napsání dopisu",
-    ],
-    hints: ["Úředník dostane denně desítky dopisů. Co mu na jednom řádku napoví, o co jde, ještě než ho začne číst?"],
-    explanation: "Za 'Věc:' se píše několikaslovné shrnutí — třeba 'Žádost o uvolnění z výuky'. Adresát tak hned ví, komu dopis předat a jak ho vyřídit.",
-  },
-  {
-    question: "Jak se správně zahajuje úřední dopis?",
-    correctAnswer: "Vážený pane / Vážená paní",
-    options: ["Ahoj, pane Nováku,", "Dobrý den, příteli,", "Vážený pane / Vážená paní", "Zdravím tě, kamaráde,"],
-    hints: ["Úřední dopis je formální — jak bys zdvořile oslovil cizího dospělého, ne jako kamaráda?"],
-    explanation: "Formální oslovení začíná slovem 'Vážený' a připojuje se k němu titul nebo funkce. Tykání i přátelské pozdravy do úředního dopisu nepatří.",
-  },
-  {
-    question: "Co musí obsahovat závěr úředního dopisu?",
-    correctAnswer: "zdvořilý pozdrav a podpis",
-    options: ["jen datum napsání", "jen otisk razítka", "jen telefonní číslo", "zdvořilý pozdrav a podpis"],
-    hints: ["Čím dopis uzavřeš, aby bylo jasné, že končí, a zároveň kdo za ním stojí?"],
-    explanation: "Závěr tvoří fráze 'S pozdravem' nebo 'S úctou' a pod ní podpis. Bez podpisu není zřejmé, kdo dopis odeslal, a dopis nelze vyřídit.",
-  },
-  {
-    question: "Co je to žádost?",
-    correctAnswer: "úřední dopis s prosbou",
-    options: ["úřední dopis s prosbou", "neformální e-mail příteli", "pozvánka na oslavu", "dopis jen s pozdravem"],
-    hints: ["Píšeš, protože po druhé straně něco chceš. Komu takový dopis posíláš a jakým tónem?"],
-    explanation: "V žádosti se obracíme na úřad nebo instituci s konkrétní prosbou — o povolení, výjimku, informaci. Proto má formální podobu a odůvodnění.",
-  },
-  {
-    question: "Co musí obsahovat přihláška?",
-    correctAnswer: "osobní údaje a co, kam, kdy",
-    options: [
-      "jen podpis žadatele",
-      "osobní údaje a co, kam, kdy",
-      "jen datum podání",
-      "jen zdvořilý pozdrav",
-    ],
-    hints: ["Přemýšlej, co všechno potřebuje vědět ten, kdo přihlášku dostane, aby poznal, kdo se hlásí a na co se hlásí."],
-    explanation: "Z přihlášky musí být zřejmé, kdo se hlásí a k čemu. Samotný podpis nebo datum organizátorovi nestačí — nevěděl by, koho zapsat.",
-  },
-  {
-    question: "Kde se uvádí datum v úředním dopisu?",
-    correctAnswer: "v záhlaví pod adresou",
-    options: ["hned za označením Věc:", "v závěru za podpisem", "v záhlaví pod adresou", "datum se neuvádí"],
-    hints: ["Datum bývá v horní části dopisu, blízko údajů o tom, kdo dopis píše — zkus si vybavit, kde přesně to bývá napsané."],
-    explanation: "Datum patří do horní části dopisu, obvykle pod adresu odesílatele: 'V Praze dne 1. 6. 2026'. Podle něj se počítají lhůty pro vyřízení.",
-  },
-  {
-    question: "Jaký tón (styl) má úřední dopis?",
-    correctAnswer: "formální a zdvořilý",
-    options: ["neformální a přátelský", "humorný a hravý", "odborný s termíny", "formální a zdvořilý"],
-    hints: ["Píšeš někomu, koho neznáš a kdo o tvé věci rozhoduje. Jak bys s ním mluvil?"],
-    explanation: "Úřední dopis zachovává odstup a zdvořilost, používá spisovná slova a vyká. Vtipy ani slang by působily nemístně.",
-  },
-  {
-    question: "Jak se podepisujeme v úředním dopisu?",
-    correctAnswer: "jménem a příjmením",
-    options: ["jménem a příjmením", "vlastní přezdívkou", "jen iniciálami", "podpis není nutný"],
-    hints: ["Adresát tě nezná. Co mu musí podpis prozradit, aby věděl, s kým jedná?"],
-    explanation: "Podepisujeme se celým jménem, ideálně vlastnoručně. Přezdívka ani iniciály by adresátovi neumožnily zjistit, kdo dopis poslal.",
-  },
-  {
-    question: "Jak se správně píše adresa na obálce úředního dopisu?",
-    correctAnswer: "Vážený pan Jan Novák, adresa",
-    options: [
-      "Ahoj, pane Novák!",
-      "Vážený pan Jan Novák, adresa",
-      "Pane Novák!",
-      "Dobrý den, pane!",
-    ],
-    hints: ["Na obálku nepatří pozdrav. Co tam musí být, aby dopis vůbec došel?"],
-    explanation: "Na obálce se uvádí zdvořilé oslovení v 1. pádu, celé jméno a úplná adresa. Pozdrav ani zvolání sem nepatří — obálku čte pošta, ne adresát.",
-  },
-  {
-    question: "Co je dotazník?",
-    correctAnswer: "formulář s otázkami",
-    options: ["žádost o práci", "přihláška do školy", "formulář s otázkami", "pozvánka na akci"],
-    hints: ["Nic nevysvětluješ ani o nic nežádáš — jen odpovídáš. Do čeho?"],
-    explanation: "Dotazník obsahuje připravené otázky a volná místa na odpovědi. Slouží ke sběru údajů, ne k prosbě jako žádost.",
-  },
-  {
-    question: "Proč se žádost píše formálně?",
-    correctAnswer: "čte ji úřad, který rozhoduje",
-    options: ["přikazuje to zákon", "neformální žádost je zakázaná", "formální text je vždy kratší", "čte ji úřad, který rozhoduje"],
-    hints: ["Kdo tvou žádost otevře a co s ní bude dělat? Jak to ovlivní tón, který zvolíš?"],
-    explanation: "Žádost čte úředník, který o ní rozhoduje. Formální styl vyjadřuje respekt a zvyšuje šanci na kladné vyřízení. Zákon jazyk dopisu nepředepisuje.",
-  },
-  {
-    question: "Co uvádíme v těle (obsahu) žádosti?",
-    correctAnswer: "důvod, prosbu a poděkování",
-    options: ["důvod, prosbu a poděkování", "jen zdvořilý pozdrav", "jen jméno žadatele", "seznam přátel a známých"],
-    hints: ["Tři věci: proč píšeš, co přesně chceš a čím to slušně uzavřeš."],
-    explanation: "Adresát potřebuje vědět, proč žádáš a o co konkrétně. Poděkování za vyřízení pak žádost zdvořile uzavírá.",
-  },
-  {
-    question: "Co je tiskopis?",
-    correctAnswer: "předtištěný formulář",
-    options: [
-      "ručně psaný dopis",
-      "předtištěný formulář",
-      "otisk úředního razítka",
-      "zvláštní druh obálky",
-    ],
-    hints: ["Nemusíš vymýšlet, co napsat — je to připravené a ty jen doplňuješ. Co to je?"],
-    explanation: "Tiskopis má předem vytištěné rubriky a prázdná políčka, do kterých se doplňují údaje. Ušetří práci a zaručí, že nic nechybí.",
-  },
-  {
-    question: "Jaké osobní údaje se nejčastěji uvádějí v přihlášce?",
-    correctAnswer: "jméno, datum narození, adresa",
-    options: ["jen jméno a příjmení", "jen adresa bydliště", "jméno, datum narození, adresa", "jen číslo pojišťovny"],
-    hints: ["Podle čeho se dá jeden konkrétní člověk spolehlivě odlišit od jiného se stejným jménem?"],
-    explanation: "Přihláška potřebuje údaje, které člověka jednoznačně určí — jméno, datum narození a adresu. Samotné jméno by u dvou stejných jmen nestačilo.",
-  },
+const L1: PracticeTask[] = [
+  choice("Čím začíná úřední dopis?", "oslovením Vážená paní ředitelko", [
+    { value: "oslovením Ahoj, paní ředitelko", why: "Ahoj se hodí ke kamarádům, ne do úředního dopisu." },
+    { value: "oslovením Čau", why: "Čau je hovorové a do úředního dopisu nepatří." },
+    { value: "oslovením Milá babičko", why: "Tak začíná osobní dopis babičce." },
+  ], {
+    hints: ["Komu se píše úřední dopis — kamarádovi, nebo úřadu?", "Úřední dopis je určený dospělému, kterému vykáme, a začíná zdvořilým oslovením."],
+    explanation: "Úřední dopis začíná zdvořilým oslovením, třeba Vážená paní ředitelko.",
+  }),
+  choice("Čím končí úřední dopis?", "pozdravem a podpisem", [
+    { value: "smajlíkem", why: "Smajlíky do úředního dopisu nepatří." },
+    { value: "otázkou bez podpisu", why: "Bez podpisu adresát neví, kdo píše." },
+    { value: "pozdravem Měj se", why: "Tykání a hovorový pozdrav se do úředního dopisu nehodí." },
+  ], {
+    hints: ["Jak adresát pozná, kdo mu dopis poslal?", "Na konci je zdvořilý pozdrav a pod ním vlastnoručně napsané jméno pisatele."],
+    explanation: "Úřední dopis končí pozdravem a podpisem pisatele.",
+  }),
+  choice("Co je žádost?", "dopis, ve kterém někoho slušně o něco prosíme", [
+    { value: "dopis kamarádovi z prázdnin", why: "To je osobní dopis." },
+    { value: "seznam věcí na nákup", why: "To je nákupní seznam." },
+    { value: "krátký vtip pro spolužáky", why: "Vtip žádostí není." },
+  ], {
+    hints: ["Co udělá člověk, který něco žádá?", "V žádosti vysvětlíš, o co prosíš a proč, a zdvořile ji podepíšeš."],
+    explanation: "Žádost je úřední dopis, ve kterém někoho zdvořile o něco prosíme.",
+  }),
+  choice("Kde v úředním dopise uvedeš svou adresu?", "v záhlaví nahoře", [
+    { value: "nikde", why: "Adresát musí vědět, kam odpovědět." },
+    { value: "uprostřed textu", why: "Adresa patří do záhlaví." },
+    { value: "jen do podpisu", why: "Adresa se píše do záhlaví, podpis je dole." },
+  ], {
+    hints: ["Kam se v dopise píšou údaje o odesílateli?", "Na začátku dopisu jsou údaje o pisateli a adresátovi, na konci pozdrav a podpis."],
+    explanation: "Adresa pisatele patří do záhlaví dopisu.",
+  }),
+  choice("Co je přihláška?", "tiskopis k přihlášení", [
+    { value: "pozvánka na oslavu", why: "Pozvánka zve, nepřihlašuje." },
+    { value: "vysvědčení ze školy", why: "Vysvědčení hodnotí prospěch." },
+    { value: "jízdenka na vlak", why: "Jízdenka je doklad o zaplacení jízdy." },
+  ], {
+    hints: ["Co vyplníš, když chceš chodit do kroužku?", "Tento papír má předtištěné kolonky na jméno, datum narození a podpis rodiče."],
+    explanation: "Přihláška je tiskopis, kterým se přihlašujeme do kroužku, na tábor nebo do soutěže.",
+  }),
+  choice("Co napíšeš do kolonky Datum narození?", "den, měsíc a rok mého narození", [
+    { value: "dnešní den, měsíc a rok", why: "Dnešní datum patří do kolonky Datum." },
+    { value: "adresu, kde bydlím", why: "Adresa má vlastní kolonku." },
+    { value: "jméno a příjmení maminky", why: "Jméno rodiče se píše jinam." },
+  ], {
+    hints: ["Na co se kolonka ptá?", "Narození — kdy jsi přišel nebo přišla na svět."],
+    explanation: "Do kolonky Datum narození patří den, měsíc a rok narození.",
+  }),
+  choice("Jak se vyplňuje tiskopis?", "čitelně hůlkovým písmem a pravdivě", [
+    { value: "tužkou a co nejrychleji", why: "Tužka se může smazat a spěch vede k chybám." },
+    { value: "jen některé kolonky podle nálady", why: "Vyplňují se všechny potřebné kolonky." },
+    { value: "vymyšlenými údaji", why: "Údaje musí být pravdivé." },
+  ], {
+    hints: ["Kdo bude tiskopis číst a co z něj potřebuje zjistit?", "Údaje musí přečíst i cizí člověk, proto se píše tiskacím písmem a pravdivě."],
+    explanation: "Tiskopis vyplňujeme čitelně hůlkovým písmem a pravdivě.",
+  }),
+  choice("Co je dotazník?", "seznam otázek k zodpovězení", [
+    { value: "dopis s omluvou za absenci", why: "Omluva je jiný útvar." },
+    { value: "recept na koláč", why: "Recept je návod." },
+    { value: "báseň o jaru a květinách", why: "Báseň je umělecký text." },
+  ], {
+    hints: ["Co najdeš v dotazníku, když ho dostaneš ve škole?", "Dotazník se ptá na názory nebo údaje a ty zaškrtáváš nebo píšeš odpovědi."],
+    explanation: "Dotazník je seznam otázek, na které odpovídáme.",
+  }),
+  choice("Jak v žádosti oslovíš pana ředitele?", "Vážený pane řediteli", [
+    { value: "Ahoj, řediteli", why: "Tykání a ahoj se k řediteli nehodí." },
+    { value: "Milý pane Jardo", why: "Oslovení křestním jménem se do úředního dopisu nehodí." },
+    { value: "Nazdar", why: "Nazdar je hovorový pozdrav." },
+  ], {
+    hints: ["Jak oslovujeme dospělé, kterým vykáme, v úředním dopise?", "Oslovení začíná slovem vážený a pokračuje funkcí v 5. pádě."],
+    explanation: "Správně je Vážený pane řediteli.",
+  }),
+  choice("Který pozdrav se hodí na konec žádosti?", "S pozdravem", [
+    { value: "Měj se", why: "Tykání se do žádosti nehodí." },
+    { value: "Čau", why: "Čau je hovorové." },
+    { value: "Pa pa", why: "Pa pa se říká v rodině." },
+  ], {
+    hints: ["Který pozdrav je spisovný a zdvořilý?", "Úřední dopis končí ustálenou spisovnou formulí, po které následuje podpis."],
+    explanation: "Na konec žádosti patří S pozdravem a podpis.",
+  }),
+  choice("Proč se úřední dopis píše spisovně a zdvořile?", "adresát je cizí dospělý nebo úřad", [
+    { value: "aby byl dopis delší", why: "Délka nerozhoduje." },
+    { value: "aby se adresát nasmál", why: "Úřední dopis není zábava." },
+    { value: "protože spisovně se píše jen v zimě", why: "Spisovnost nezávisí na ročním období." },
+  ], {
+    hints: ["Komu úřední dopis píšeme?", "K cizím dospělým a úřadům se chováme zdvořile — v řeči i v psaní."],
+    explanation: "Úřední dopis míří k cizímu člověku nebo úřadu, proto je spisovný a zdvořilý.",
+  }),
+  choice("Co znamená kolonka Podpis zákonného zástupce?", "podpis rodiče", [
+    { value: "podpis kamaráda", why: "Kamarád zákonným zástupcem není." },
+    { value: "můj podpis", why: "Za dítě podepisuje rodič." },
+    { value: "podpis pošťáka", why: "Pošťák přihlášku nepodepisuje." },
+  ], {
+    hints: ["Kdo za dítě rozhoduje a nese odpovědnost?", "Zákonný zástupce je ten, kdo se o dítě ze zákona stará — obvykle maminka nebo tatínek."],
+    explanation: "Zákonným zástupcem je rodič; jeho podpis souhlasí s přihláškou.",
+  }),
+  choice("Co napíšeš do kolonky Příjmení?", "své příjmení, třeba Novák", [
+    { value: "své křestní jméno", why: "Křestní jméno má vlastní kolonku." },
+    { value: "svou přezdívku", why: "Přezdívka do tiskopisu nepatří." },
+    { value: "jméno svého psa", why: "Tiskopis se ptá na tebe." },
+  ], {
+    hints: ["Jak se jmenuje celá tvoje rodina?", "Příjmení je rodinné jméno, které máš společné s rodiči."],
+    explanation: "Do kolonky Příjmení patří rodinné jméno, například Novák.",
+  }),
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "V žádosti o uvolnění z výuky napíšeme:",
-    correctAnswer: "důvod a konkrétní termíny",
-    options: ["jen podpis rodiče", "jen datum napsání", "seznam spolužáků", "důvod a konkrétní termíny"],
-    hints: ["Ředitel musí rozhodnout. Co potřebuje vědět kromě toho, že žák nepřijde?"],
-    explanation: "Bez uvedení dnů a důvodu nemůže škola žádost posoudit ani absenci zaevidovat. Obojí proto musí být uvedeno přesně.",
-  },
-  {
-    question: "Jaký je správný zdvořilostní závěr žádosti?",
-    correctAnswer: "S pozdravem, S úctou",
-    options: ["S pozdravem, S úctou", "Čau, měj se!", "Zdravím všechny!", "Tak zatím, ahoj!"],
-    hints: ["Tři z těch možností bys napsal kamarádovi. Která zbývá pro úřad?"],
-    explanation: "Ustálené formální závěry jsou 'S pozdravem' a 'S úctou'. Přátelské rozloučení by narušilo úřední ráz celého dopisu.",
-  },
-  {
-    question: "Přihláška na tábor musí obsahovat:",
-    correctAnswer: "údaje dítěte, termín, kontakt",
-    options: [
-      "jen jméno dítěte",
-      "údaje dítěte, termín, kontakt",
-      "jen podpis rodiče",
-      "jen termín tábora",
-    ],
-    hints: ["Organizátor musí vědět, koho zapsat, na kdy a komu zavolat, kdyby se něco stalo."],
-    explanation: "Přihláška slouží k tomu, aby organizátor mohl dítě zařadit na správný turnus a v případě potřeby se spojit s rodiči. Jediný údaj k tomu nestačí.",
-  },
-  {
-    question: "V úředním dopisu NESMÍME používat:",
-    correctAnswer: "slang a emotikony",
-    options: ["datum napsání", "vlastní jméno", "slang a emotikony", "formální pozdrav"],
-    hints: ["Tři z těch prvků v úředním dopisu být musí. Který tam nepatří nikdy?"],
-    explanation: "Nespisovné výrazy, zkratky z chatu a emotikony narušují formální ráz dopisu a snižují jeho vážnost. Ostatní tři prvky jsou naopak povinné.",
-  },
-  {
-    question: "Jak napíšeme oslovení, když neznáme jméno adresáta?",
-    correctAnswer: "oslovíme funkci nebo instituci",
-    options: ["napíšeme Ahoj všichni", "napíšeme Dobrý den, neznámý", "oslovení úplně vynecháme", "oslovíme funkci nebo instituci"],
-    hints: ["Jméno neznáš, ale víš, komu píšeš — škole, úřadu, řediteli. Co z toho použiješ?"],
-    explanation: "Když jméno neznáme, oslovíme funkci ('Vážený pane řediteli') nebo instituci ('Vážené vedení školy'). Vynechat oslovení by bylo nezdvořilé.",
-  },
-  {
-    question: "Co je 'příloha' u dopisu?",
-    correctAnswer: "dokument připojený k dopisu",
-    options: ["dokument připojený k dopisu", "otisk poštovního razítka", "seznam všech adresátů", "datum odeslání dopisu"],
-    hints: ["Posíláš spolu s dopisem ještě něco navíc. Jak se tomu říká?"],
-    explanation: "Příloha je doklad odeslaný spolu s dopisem — kopie vysvědčení, potvrzení, životopis. V dopisu se přílohy vypisují, aby adresát poznal, co má dorazit.",
-  },
-  {
-    question: "Žádost o brigádu musí obsahovat:",
-    correctAnswer: "kontakt, o co žádám a proč",
-    options: [
-      "jen jméno žadatele",
-      "kontakt, o co žádám a proč",
-      "jen podpis a datum",
-      "seznam přátel a známých",
-    ],
-    hints: ["Zaměstnavatel musí vědět, o jakou práci ti jde, proč zrovna tobě ji dát a jak se ti ozvat."],
-    explanation: "Bez kontaktu tě zaměstnavatel nemůže oslovit, bez uvedení práce neví, kam tě zařadit, a bez zdůvodnění nemá důvod vybrat právě tebe.",
-  },
-  {
-    question: "Na obálce se adresa adresáta píše:",
-    correctAnswer: "doprostřed nebo vpravo",
-    options: ["vlevo nahoru", "na zadní stranu", "doprostřed nebo vpravo", "nezáleží na místě"],
-    hints: ["Vlevo nahoře už je adresa odesílatele. Kam tedy zbývá napsat příjemce?"],
-    explanation: "Adresa příjemce patří na přední stranu doprostřed nebo do pravé dolní části. Vlevo nahoře je odesílatel a zadní strana zůstává volná.",
-  },
-  {
-    question: "Proč v žádosti uvádíme důvod?",
-    correctAnswer: "aby adresát mohl rozhodnout",
-    options: ["aby byl text delší", "důvod se vůbec neuvádí", "aby dopis vypadal lépe", "aby adresát mohl rozhodnout"],
-    hints: ["Představ si úředníka, který dostane jen 'Žádám o uvolnění'. Co mu chybí?"],
-    explanation: "Bez důvodu nemá adresát podle čeho posoudit, jestli žádosti vyhovět. Odůvodnění je tedy věcná nutnost, ne jen formalita.",
-  },
-  {
-    question: "Co je správná struktura úředního dopisu?",
-    correctAnswer: "záhlaví, Věc, oslovení, text, závěr",
-    options: ["záhlaví, Věc, oslovení, text, závěr", "text, podpis, záhlaví", "podpis, záhlaví, text", "závěr, oslovení, záhlaví"],
-    hints: ["Přemýšlej, co logicky přijde jako první (kdo komu píše) a co jako úplně poslední (kdo dopis napsal)."],
-    explanation: "Dopis začíná údaji o odesílateli a adresátovi, pokračuje označením tématu a oslovením, pak přijde vlastní sdělení a nakonec zdvořilý závěr s podpisem.",
-  },
-  {
-    question: "Co uvádíme v záhlaví na levé straně?",
-    correctAnswer: "adresa odesílatele",
-    options: [
-      "adresa adresáta",
-      "adresa odesílatele",
-      "datum napsání",
-      "označení Věc:",
-    ],
-    hints: ["Levý horní roh patří tomu, kdo dopis posílá, nebo tomu, kdo ho dostane?"],
-    explanation: "Vlevo nahoře stojí údaje o odesílateli, tedy o tom, kdo dopis píše. Adresát se uvádí napravo nebo níže.",
-  },
-  {
-    question: "Co uvádíme v záhlaví na pravé nebo spodní straně?",
-    correctAnswer: "adresa adresáta",
-    options: ["adresa odesílatele", "datum napsání", "adresa adresáta", "označení Věc:"],
-    hints: ["Je to opačná strana, než kde stojí ten, kdo dopis píše."],
-    explanation: "Napravo nebo pod adresou odesílatele se uvádí, komu je dopis určen. Toto rozmístění je u úředních dopisů ustálené.",
-  },
-  {
-    question: "Jak se správně píše datum v českém dopisu?",
-    correctAnswer: "V Praze dne 1. 6. 2026",
-    options: ["1.6.2026 Praha", "dne 1. 6.", "datum se neuvádí", "V Praze dne 1. 6. 2026"],
-    hints: ["Kromě dne patří k datu v dopisu ještě jeden údaj. Jaký, a jak se to celé uvozuje?"],
-    explanation: "V českém dopisu se uvádí místo i celé datum ve tvaru 'V Praze dne 1. 6. 2026'. Bez roku by nebylo možné určit lhůtu vyřízení.",
-  },
-  {
-    question: "Co je průvodní dopis?",
-    correctAnswer: "krátký úvod k dokumentu",
-    options: ["krátký úvod k dokumentu", "pozdravný dopis příteli", "pohlednice z dovolené", "dopis bez adresy"],
-    hints: ["Posíláš životopis. Co k němu přiložíš, aby příjemce věděl, proč mu chodí?"],
-    explanation: "Průvodní dopis vysvětluje, co posíláš a proč, a doprovází hlavní dokument. Sám o sobě obvykle nic nevyřizuje.",
-  },
-  {
-    question: "Jak se liší žádost od přihlášky?",
-    correctAnswer: "žádost prosí, přihláška hlásí",
-    options: [
-      "přihláška prosí, žádost hlásí",
-      "žádost prosí, přihláška hlásí",
-      "přihláška je vždy delší",
-      "obojí znamená totéž",
-    ],
-    hints: ["U jednoho z těch dokumentů může adresát odmítnout, u druhého jen zapisuje. Který je který?"],
-    explanation: "V žádosti o něco prosíme a adresát rozhoduje, zda vyhoví. Přihláškou oznamujeme, že se hlásíme, a adresát nás zpravidla jen zaeviduje.",
-  },
+const L2: PracticeTask[] = [
+  choice("Která věta patří do žádosti o přijetí do kroužku?", "Prosím Vás o přijetí do výtvarného kroužku.", [
+    { value: "Chci do výtvarky, jasný?", why: "Hovorové a nezdvořilé." },
+    { value: "Dej mě do výtvarky.", why: "Tykání a rozkaz se do žádosti nehodí." },
+    { value: "Výtvarka je fajn, beru ji.", why: "Hovorové a chybí prosba." },
+  ], {
+    hints: ["Která věta zní jako slušná prosba?", "V žádosti vykáme, prosíme a píšeme spisovně."],
+    explanation: "Prosím Vás o přijetí… je zdvořilá a spisovná prosba.",
+  }),
+  choice("Co musí žádost obsahovat?", "o co žádám, proč a kdo žádá", [
+    { value: "jen to, o co žádám", why: "Chybí důvod a podpis." },
+    { value: "vtip na úvod", why: "Vtip do žádosti nepatří." },
+    { value: "seznam mých kamarádů", why: "To se žádosti netýká." },
+  ], {
+    hints: ["Na co se adresát zeptá, když žádost dostane?", "Adresát potřebuje vědět, co chceš, proč to chceš a kdo žádost píše."],
+    explanation: "Žádost obsahuje, o co žádáme, proč, a podpis pisatele.",
+  }),
+  choice("Proč se v úředním dopise píše Vám a Vás s velkým V?", "vyjadřujeme úctu k oslovenému člověku", [
+    { value: "protože je to začátek věty", why: "Velké V se píše i uprostřed věty." },
+    { value: "protože se tak píše vždycky a všude", why: "V běžném textu se píše malé v." },
+    { value: "protože je to jméno", why: "Není to jméno, ale zájmeno." },
+  ], {
+    hints: ["Komu dopisem vykáme?", "Velké písmeno u zájmena, kterým oslovujeme jednoho člověka, vyjadřuje zdvořilost."],
+    explanation: "Velké V u Vás, Vám vyjadřuje úctu k adresátovi.",
+  }),
+  choice("Kam se v dopise píše místo a datum?", "nahoru, obvykle vpravo", [
+    { value: "pod podpis", why: "Datum se píše do záhlaví." },
+    { value: "doprostřed textu", why: "Do textu datum nepatří." },
+    { value: "nikam", why: "Místo a datum v dopise být má." },
+  ], {
+    hints: ["Kde v dopise najdeš, kdy byl napsaný?", "Místo a datum patří do záhlaví, aby je adresát hned viděl."],
+    explanation: "Místo a datum se píše nahoru, obvykle vpravo.",
+  }),
+  choice("Který údaj do přihlášky do kroužku nepatří?", "oblíbené jídlo", [
+    { value: "jméno a příjmení", why: "Bez jména by nebylo jasné, kdo se hlásí." },
+    { value: "datum narození", why: "Podle věku se tvoří skupiny." },
+    { value: "telefon na rodiče", why: "Vedoucí musí rodiče kontaktovat." },
+  ], {
+    hints: ["Který údaj vedoucí kroužku nepotřebuje?", "Do přihlášky patří jen údaje potřebné k organizaci — jméno, věk, kontakt na rodiče."],
+    explanation: "Oblíbené jídlo do přihlášky nepatří.",
+  }),
+  choice("Proč musí přihlášku podepsat rodič?", "za dítě rozhoduje zákonný zástupce", [
+    { value: "dítě neumí psát", why: "Dítě psát umí, ale za něj rozhoduje rodič." },
+    { value: "rodič má hezčí písmo", why: "O písmo nejde." },
+    { value: "je to jen zvyk", why: "Podpis rodiče vyjadřuje souhlas." },
+  ], {
+    hints: ["Kdo nese za dítě odpovědnost?", "Podpisem rodič souhlasí, že dítě bude kroužek navštěvovat, a třeba i zaplatí."],
+    explanation: "Rodič je zákonný zástupce a podpisem vyjadřuje souhlas.",
+  }),
+  choice("V dotazníku je otázka s možnostmi a) ano, b) ne. Co uděláš?", "zakroužkuji tu jednu možnost, která platí", [
+    { value: "napíšu dlouhý příběh", why: "Stačí vybrat možnost." },
+    { value: "zakroužkuji obě možnosti", why: "Ano i ne zároveň platit nemůže." },
+    { value: "nevyplním nic", why: "Otázka zůstane bez odpovědi." },
+  ], {
+    hints: ["Kolik odpovědí u takové otázky platí?", "U otázky s nabídnutými možnostmi se vybírá jedna, pokud dotazník neříká jinak."],
+    explanation: "Vybereme a označíme jednu platnou možnost.",
+  }),
+  choice("Kdo je adresát?", "ten, komu dopis píšeme", [
+    { value: "ten, kdo dopis píše", why: "To je odesílatel." },
+    { value: "pošťák, který dopis nese", why: "Pošťák dopis jen doručuje." },
+    { value: "ulice a číslo domu", why: "To je adresa." },
+  ], {
+    hints: ["Kdo dopis dostane do schránky?", "Adresát je příjemce dopisu; odesílatel je jeho autor."],
+    explanation: "Adresát je ten, komu je dopis určen.",
+  }),
+  choice("Kdo je odesílatel?", "ten, kdo dopis posílá", [
+    { value: "ten, komu dopis přijde", why: "To je adresát." },
+    { value: "úředník na poště", why: "Úředník dopis jen přijme." },
+    { value: "známka na obálce", why: "Známka je poplatek za doručení." },
+  ], {
+    hints: ["Od koho dopis pochází?", "Údaje odesílatele se píšou na obálku, aby se dopis mohl vrátit, když se nedoručí."],
+    explanation: "Odesílatel je ten, kdo dopis posílá.",
+  }),
+  choice("Kde je na obálce adresa adresáta?", "vpravo dole", [
+    { value: "vlevo nahoře", why: "Vlevo nahoře je odesílatel." },
+    { value: "uprostřed nahoře", why: "Tam adresa nepatří." },
+    { value: "na zadní straně", why: "Adresa patří na přední stranu." },
+  ], {
+    hints: ["Kam se na obálce lepí známka a kde je odesílatel?", "Odesílatel je vlevo nahoře, známka vpravo nahoře a adresát v pravé dolní části."],
+    explanation: "Adresa adresáta se píše vpravo dole.",
+  }),
+  choice("Proč se v žádosti uvádí důvod?", "aby adresát věděl, proč má žádosti vyhovět", [
+    { value: "aby byla žádost delší", why: "Délka nerozhoduje." },
+    { value: "protože je to povinná hádanka", why: "Žádost není hádanka." },
+    { value: "aby se adresát nudil", why: "Důvod adresátovi pomůže rozhodnout." },
+  ], {
+    hints: ["Podle čeho se adresát rozhodne?", "Když vysvětlíš, proč o něco prosíš, adresát snáz pochopí a vyhoví."],
+    explanation: "Důvod pomůže adresátovi rozhodnout, jestli žádosti vyhoví.",
+  }),
+  choice("Která věta je zdvořilá?", "Děkuji Vám za vyřízení mé žádosti.", [
+    { value: "Tak to vyřiďte, jo?", why: "Hovorové a příkré." },
+    { value: "Doufám, že to nezkazíte.", why: "Nezdvořilé." },
+    { value: "Čekám rychlou odpověď!", why: "Rozkazovačné." },
+  ], {
+    hints: ["Která věta vyjadřuje poděkování?", "Zdvořilá věta vyká, děkuje a nikoho nepopohání."],
+    explanation: "Děkuji Vám za vyřízení… je zdvořilá věta.",
+  }),
+  choice("Kam se na obálce píše odesílatel?", "vlevo nahoře", [
+    { value: "vpravo dole", why: "Vpravo dole je adresát." },
+    { value: "do středu", why: "Do středu se adresy nepíšou." },
+    { value: "na známku", why: "Na známku se nepíše." },
+  ], {
+    hints: ["Kde bývá na obálce menší písmo s adresou toho, kdo dopis poslal?", "Pošta potřebuje vidět adresáta vpravo dole; zpáteční adresa je v opačném rohu obálky."],
+    explanation: "Odesílatel se píše vlevo nahoře.",
+  }),
 ];
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Co je vykání a proč ho používáme v úředním dopisu?",
-    correctAnswer: "zdvořilé oslovení dospělého",
-    options: ["nářeční forma češtiny", "způsob psaní e-mailů", "zdvořilé oslovení dospělého", "forma záporné věty"],
-    hints: ["Čím se liší 'Prosím Vás' od 'Prosím tě' a co tím dáváš adresátovi najevo?"],
-    explanation: "Vykáním oslovujeme dospělé a cizí osoby zájmenem 'vy' a vyjadřujeme tím úctu a odstup. Tykání by v úředním dopisu působilo nemístně důvěrně.",
-  },
-  {
-    question: "Jak zní správné oslovení v dopisu starostovi?",
-    correctAnswer: "Vážený pane starosto,",
-    options: ["Ahoj, starosto,", "Pane starosta!", "Dobrý den, pane,", "Vážený pane starosto,"],
-    hints: ["Přemýšlej, jak zdvořile oslovit muže ve veřejné funkci — jaký přívlastek se v úředních dopisech používá, a v jakém pádě se jeho funkce skloňuje?"],
-    explanation: "Oslovení stojí v 5. pádu: 'pane starosto', ne 'pane starosta'. Ke jménu funkce se navíc připojuje zdvořilostní 'Vážený'.",
-  },
-  {
-    question: "Jak zakončit žádost profesionálně?",
-    correctAnswer: "Děkuji za vyřízení. S úctou",
-    options: ["Děkuji za vyřízení. S úctou", "Čau a měj se hezky!", "Nashle, ať to vyjde!", "Prosím pozdravujte doma."],
-    hints: ["Dvě části: poděkování za to, že se tím adresát bude zabývat, a formální rozloučení."],
-    explanation: "Profesionální závěr spojuje poděkování za vyřízení s formální frází 'S úctou' a podpisem. Ostatní varianty patří do soukromé korespondence.",
-  },
-  {
-    question: "Co se nesmí zapomenout uvést v žádosti o omluvení z výuky?",
-    correctAnswer: "jméno, třída, termín, důvod",
-    options: [
-      "jen podpis rodiče",
-      "jméno, třída, termín, důvod",
-      "jen den absence",
-      "jen jméno rodiče",
-    ],
-    hints: ["Škola má stovky žáků. Co všechno potřebuje vědět, aby absenci správně zapsala a uznala?"],
-    explanation: "Bez jména a třídy škola nepozná, o kterého žáka jde, bez termínu neví, co zapsat, a bez důvodu nemůže absenci uznat. Podpis rodiče je nutný navíc, ne místo toho.",
-  },
-  {
-    question: "Ve formálním e-mailu řediteli školy NESMÍME napsat:",
-    correctAnswer: "Hej, chci se zeptat jestli... 😊",
-    options: [
-      "Vážený pane řediteli, rád bych se informoval...",
-      "S úctou, Jana Nováková",
-      "Hej, chci se zeptat jestli... 😊",
-      "Předmět: Žádost o informaci",
-    ],
-    hints: ["Tři z těch formulací bys v úředním e-mailu čekal. Která do něj nepatří ani náhodou?"],
-    explanation: "Neformální oslovení, chybějící interpunkce a emotikon do úředního e-mailu nepatří. Ostatní tři možnosti jsou naopak jeho běžnou součástí.",
-  },
-  {
-    question: "Proč musí žádost obsahovat konkrétní termíny a data?",
-    correctAnswer: "aby adresát věděl, o co jde",
-    options: ["aby byl text delší", "vyžaduje to zákon", "kvůli lepší úpravě", "aby adresát věděl, o co jde"],
-    hints: ["Žádost 'o uvolnění někdy příští týden' se vyřídit nedá. Proč?"],
-    explanation: "Neurčitá žádost se nedá posoudit ani zaevidovat — adresát neví, o jaké dny jde. Konkrétní termín proto rozhoduje o tom, zda lze žádosti vyhovět.",
-  },
-  {
-    question: "Co je životopis a jaký typ dokumentu to je?",
-    correctAnswer: "přehled osobních a pracovních údajů",
-    options: ["přehled osobních a pracovních údajů", "úřední dopis s prosbou", "formulář s otázkami", "pohlednice z dovolené"],
-    hints: ["Nikoho v něm o nic nežádáš ani neodpovídáš na otázky. Co v něm tedy je?"],
-    explanation: "Životopis přehledně shrnuje, kdo jsi, co jsi vystudoval a co umíš. K žádosti se přikládá jako příloha — sám o sobě žádostí není.",
-  },
-  {
-    question: "Kam v žádosti patří odůvodnění?",
-    correctAnswer: "do textu před prosbu",
-    options: [
-      "do záhlaví nad oslovení",
-      "do textu před prosbu",
-      "až za podpis",
-      "do označení Věc:",
-    ],
-    hints: ["Adresát má nejdřív pochopit situaci, a teprve pak se dozvědět, co po něm chceš. V jakém pořadí to napíšeš?"],
-    explanation: "Nejdřív vysvětlíš situaci a teprve pak formuluješ prosbu — adresát tak čte prosbu už s pochopením souvislostí. Za podpisem už text nepokračuje.",
-  },
-  {
-    question: "Proč je v úředním dopisu důležité označení 'Věc:'?",
-    correctAnswer: "adresát hned pozná téma",
-    options: ["je to zbytečný prvek", "nahrazuje pozdrav", "adresát hned pozná téma", "nahrazuje podpis"],
-    hints: ["Na úřadě se dopisy třídí podle agendy dřív, než je někdo přečte celé. Co jim to umožní?"],
-    explanation: "Jediný řádek za 'Věc:' umožní dopis zařadit a předat správnému úředníkovi. Oslovení ani podpis přitom nenahrazuje — ty zůstávají povinné.",
-  },
-  {
-    question: "Jak se vyjádříme zdvořile v žádosti o snížení školného?",
-    correctAnswer: "Dovoluji si vás požádat o snížení...",
-    options: ["Chci snížení školného!", "Potřebuju míň platit.", "Prosím, snižte mi to.", "Dovoluji si vás požádat o snížení..."],
-    hints: ["Adresát není povinen vyhovět. Která formulace to bere v úvahu a která zní jako příkaz?"],
-    explanation: "Obrat 'Dovoluji si Vás požádat' ponechává rozhodnutí na adresátovi a působí zdvořile. Přímý požadavek ani hovorová prosba do úředního dopisu nepatří.",
-  },
-  {
-    question: "Jaký je rozdíl mezi tiskopisem a volnou žádostí?",
-    correctAnswer: "tiskopis má hotová políčka",
-    options: ["tiskopis má hotová políčka", "volná žádost má hotová políčka", "tiskopis nemá podpis", "volná žádost nemá strukturu"],
-    hints: ["Jeden z těch dokumentů má už předem připravená políčka k vyplnění, druhý musíš napsat celý sám od začátku svými slovy."],
-    explanation: "Tiskopis je předtištěný formulář, kde jen doplňuješ údaje. Volnou žádost píšeš celou sám, ale i ona má pevnou strukturu a podpis.",
-  },
+const L3: PracticeTask[] = [
+  choice("Píšeš e-mail s žádostí o prodloužení výpůjčky v knihovně. Co do něj nepatří?", "smajlíky a hovorové zkratky", [
+    { value: "oslovení a pozdrav", why: "Oslovení a pozdrav do e-mailu patří." },
+    { value: "název knihy", why: "Knihovna potřebuje vědět, o kterou knihu jde." },
+    { value: "tvoje jméno", why: "Knihovna musí vědět, kdo žádá." },
+  ], {
+    hints: ["Je e-mail knihovně úřední, nebo kamarádská zpráva?", "I úřední e-mail má oslovení, jasnou prosbu, pozdrav a jméno; hovorové zkratky do něj nepatří."],
+    explanation: "Do úředního e-mailu nepatří smajlíky ani hovorové zkratky.",
+  }),
+  choice("Co napíšeš do kolonky Bydliště?", "ulici, číslo domu, obec a PSČ", [
+    { value: "jen jméno ulice", why: "Chybí číslo domu, obec a PSČ." },
+    { value: "název své školy", why: "Škola není bydliště." },
+    { value: "telefonní číslo", why: "Telefon má vlastní kolonku." },
+  ], {
+    hints: ["Co potřebuje pošta, aby ti mohla doručit dopis?", "Úplná adresa říká, kde přesně bydlíš: jméno ulice s číslem, město nebo vesnici a poštovní směrovací číslo."],
+    explanation: "Bydliště = ulice, číslo domu, obec a PSČ.",
+  }),
+  choice("Nevíš, co znamená kolonka v přihlášce. Co uděláš?", "zeptám se rodičů nebo pracovníka", [
+    { value: "vymyslím si nějaký údaj", why: "Vymyšlený údaj může způsobit potíže." },
+    { value: "kolonku přeškrtnu", why: "Přeškrtnutí neřeší, co tam patří." },
+    { value: "nechám ji prázdnou a odešlu", why: "Přihláška může být neplatná." },
+  ], {
+    hints: ["Kdo ti vysvětlí, co kolonka znamená?", "Zeptat se je v pořádku — chyba v tiskopisu může způsobit, že přihlášku nepřijmou."],
+    explanation: "Když něčemu nerozumíme, zeptáme se.",
+  }),
+  choice("Proč se do dotazníku píše pravda?", "výsledky se použijí a nepravda by je zkreslila", [
+    { value: "dotazník se stejně nikdo nečte", why: "Odpovědi se zpracovávají." },
+    { value: "je to jen hra", why: "Dotazník slouží ke zjištění skutečnosti." },
+    { value: "za pravdu je odměna", why: "Odměna není důvod." },
+  ], {
+    hints: ["K čemu dotazník slouží?", "Z odpovědí se dělají závěry — třeba jaký kroužek otevřít; nepravdivé odpovědi by vedly ke špatnému rozhodnutí."],
+    explanation: "Pravdivé odpovědi dávají pravdivé výsledky.",
+  }),
+  choice("Proč v dopise řediteli netykáme?", "vykáme cizím dospělým a nadřízeným", [
+    { value: "ředitel neumí číst ty", why: "Nejde o čtení, ale o zdvořilost." },
+    { value: "tykání je zakázané zákonem", why: "Zákon to nezakazuje, jde o slušnost." },
+    { value: "protože ředitel je starý", why: "Věk není jediný důvod — vykáme i mladým cizím dospělým." },
+  ], {
+    hints: ["Komu tykáme a komu vykáme?", "Tykáme rodině a kamarádům; k ostatním dospělým a v úředním styku se chováme s větší úctou."],
+    explanation: "V úředním dopise vykáme — je to projev zdvořilosti.",
+  }),
+  choice("Co je PSČ?", "poštovní směrovací číslo", [
+    { value: "pořadové školní číslo", why: "Taková zkratka v adrese není." },
+    { value: "podpis starosty čtvrti", why: "PSČ není podpis." },
+    { value: "počet stran v čísle", why: "PSČ se týká pošty." },
+  ], {
+    hints: ["Která část adresy je složená jen z číslic?", "Podle tohoto pětimístného čísla pošta pozná, kam dopis poslat."],
+    explanation: "PSČ je poštovní směrovací číslo — pomáhá poště třídit dopisy.",
+  }),
+  choice("Proč se tiskopis vyplňuje hůlkovým písmem?", "je čitelné pro každého", [
+    { value: "je rychlejší než psací", why: "Nejde o rychlost." },
+    { value: "šetří inkoust", why: "Nejde o inkoust." },
+    { value: "je hezčí", why: "Hlavní je čitelnost." },
+  ], {
+    hints: ["Kdo tiskopis čte?", "Tiskopis zpracovává cizí člověk nebo počítač; tiskací písmena přečte každý."],
+    explanation: "Hůlkové písmo je čitelné pro každého.",
+  }),
+  choice("Které zájmeno napíšeš v dopise řediteli s velkým písmenem?", "Vám", [
+    { value: "mně", why: "Sebe velkým písmenem neoznačujeme." },
+    { value: "nám", why: "Nám se týká pisatelů." },
+    { value: "jim", why: "Jim se týká jiných lidí." },
+  ], {
+    hints: ["Kterým zájmenem oslovuješ ředitele?", "Velké písmeno patří zájmenu, kterým zdvořile oslovuješ adresáta."],
+    explanation: "Zájmeno Vám, kterým oslovujeme adresáta, píšeme s velkým V.",
+  }),
+  choice("Co napíšeš do předmětu e-mailu se žádostí?", "krátce, o co jde, třeba Žádost o prodloužení výpůjčky", [
+    { value: "Ahoj!", why: "Předmět má říct, o co jde." },
+    { value: "nic, předmět nechám prázdný", why: "Prázdný předmět e-mail znejistí nebo zapadne." },
+    { value: "DŮLEŽITÉ!!!", why: "Vykřičníky nic neříkají o obsahu." },
+  ], {
+    hints: ["Co má adresát poznat, ještě než e-mail otevře?", "Předmět je jako nadpis: stručně řekne, čeho se zpráva týká."],
+    explanation: "Předmět e-mailu stručně vystihne obsah zprávy.",
+  }),
+  choice("Proč se úřední dopis podepisuje vlastní rukou?", "podpis potvrzuje, že dopis píšu opravdu já", [
+    { value: "aby dopis vypadal hezky", why: "Nejde o vzhled." },
+    { value: "aby se ušetřil papír", why: "Podpis papír nešetří." },
+    { value: "je to jen ozdoba", why: "Podpis má důležitou úlohu." },
+  ], {
+    hints: ["Jak adresát pozná, že dopis nenapsal někdo jiný?", "Vlastnoruční podpis je jako tvoje značka — potvrzuje, že za dopisem stojíš."],
+    explanation: "Podpis potvrzuje totožnost pisatele a jeho souhlas s obsahem.",
+  }),
+  choice("Dotazník se ptá na počet sourozenců a ty žádné nemáš. Co napíšeš?", "0", [
+    { value: "nic, kolonku vynechám", why: "Nevyplněná kolonka je nejasná." },
+    { value: "vymyslím si bratra", why: "Údaj musí být pravdivý." },
+    { value: "jméno kamaráda", why: "Kamarád sourozenec není." },
+  ], {
+    hints: ["Jak zapíšeš počet, když nemáš ani jednoho?", "Kolonka se ptá na číslo; když sourozence nemáš, napíšeš číslo, které znamená žádný."],
+    explanation: "Když sourozence nemáme, napíšeme 0 — kolonka tak zůstane jasná.",
+  }),
+  choice("Kdy je vhodné poslat žádost e-mailem místo dopisu?", "když to adresát dovoluje a je to rychlejší", [
+    { value: "vždycky, dopisy se už nepíšou", why: "Někdy je dopis s podpisem nutný." },
+    { value: "nikdy, e-mail je nezdvořilý", why: "E-mail může být zdvořilý." },
+    { value: "jen v noci", why: "Denní doba nerozhoduje." },
+  ], {
+    hints: ["Přijímá škola nebo knihovna žádosti e-mailem?", "E-mail je rychlý, ale některé úřady chtějí podepsaný dopis — řiď se tím, co adresát požaduje."],
+    explanation: "E-mail posíláme tam, kde ho adresát přijímá; jinak píšeme dopis.",
+  }),
+  choice("Která žádost je úplná?", "Vážený pane řediteli, prosím o uvolnění na závody 5. května. S pozdravem Eva Nová", [
+    { value: "Vážený pane řediteli, prosím o uvolnění. S pozdravem Eva Nová", why: "Chybí, kdy a proč." },
+    { value: "Prosím o uvolnění na závody 5. května. S pozdravem Eva Nová", why: "Chybí oslovení." },
+    { value: "Vážený pane řediteli, prosím o uvolnění na závody 5. května.", why: "Chybí pozdrav a podpis." },
+  ], {
+    hints: ["Co všechno má žádost obsahovat od oslovení po podpis?", "Úplná žádost má oslovení, prosbu s důvodem a datem, pozdrav a podpis."],
+    explanation: "Úplná žádost má oslovení, prosbu s důvodem a datem, pozdrav a podpis.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return shuffle(level >= 3 ? L3 : level === 2 ? L2 : L1);
 }
 
 export const DOPISUREDNIZADOSTTISKOPISYPRIHLASKADOTAZNIK: TopicMetadata[] = [

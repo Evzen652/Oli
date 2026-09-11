@@ -1,387 +1,51 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { chronologie, type Udalost } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// vysvětlení a na úrovni jen deset pevných řad. Teď se skládají z banky
+// ověřených událostí: L1 tři s datem, L2 čtyři s datem, L3 čtyři bez data.
 
-// Level 1 – jednodušší sekvence (4 události)
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky: Sametová revoluce, únorový převrat, Pražské jaro, srpnová invaze.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat — komunisté přebírají moc (1948)",
-      "Pražské jaro — Dubčekovy reformy (1968)",
-      "Srpnová invaze vojsk Varšavské smlouvy (1968)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Únorový převrat byl absolutně první v roce 1948."],
-  },
-  {
-    question: "Seřaď od nejdřívějšího: Václav Havel prezidentem, Sametová revoluce, Gottwald první komunistický prezident, Pražské jaro.",
-    correctAnswer: "order",
-    items: [
-      "Gottwald — první komunistický prezident (1948)",
-      "Pražské jaro (1968)",
-      "Sametová revoluce (17. 11. 1989)",
-      "Václav Havel zvolen prezidentem (29. 12. 1989)",
-    ],
-    hints: ["Gottwald byl první, Havel přišel po Sametové revoluci."],
-  },
-  {
-    question: "Seřaď: normalizace, Pražské jaro, únorový převrat, Sametová revoluce.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Normalizace — Husákova éra (1969–1989)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Normalizace přišla po invazi 1968."],
-  },
-  {
-    question: "Seřaď čtyři klíčové události komunistické éry v ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat — komunisté u moci (1948)",
-      "Kolektivizace — vznik JZD (1949–1960)",
-      "Pražské jaro a srpnová invaze (1968)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Kolektivizace začala hned po převratu."],
-  },
-  {
-    question: "Seřaď: Gorbačovovy reformy inspirují svět, Sametová revoluce, Pražské jaro, únorový převrat.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Gorbačovovy reformy — perestrojka (1985)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Gorbačov začal reformy v roce 1985."],
-  },
-  {
-    question: "Seřaď: Charta 77, invaze SSSR, únorový převrat, Sametová revoluce.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Invaze SSSR — konec Pražského jara (21. 8. 1968)",
-      "Charta 77 — petice disidentů (1977)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Charta 77 přišla po invazi."],
-  },
-  {
-    question: "Seřaď čtyři klíčové momenty spojené s Alexandrem Dubčekem.",
-    correctAnswer: "order",
-    items: [
-      "Dubček se stává 1. tajemníkem KSČ (leden 1968)",
-      "Pražské jaro — reformy (jaro 1968)",
-      "Srpnová invaze a konec reforem (21. 8. 1968)",
-      "Dubček sesazen a degradován na lesního dělníka (1969)",
-    ],
-    hints: ["Dubček nastoupil v lednu 1968."],
-  },
-  {
-    question: "Seřaď: Václav Havel disidentem, únorový převrat, Sametová revoluce, Havel prezidentem.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Václav Havel aktivní jako disident a autor Charty 77 (1977)",
-      "Sametová revoluce (17. 11. 1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-    ],
-    hints: ["Charta 77 přišla v roce 1977."],
-  },
-  {
-    question: "Seřaď: pád Berlínské zdi, Pražské jaro, únorový převrat, Sametová revoluce.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Pád Berlínské zdi (9. 11. 1989)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Berlínská zeď padla 9. 11. — osm dní před Sametovou revolucí."],
-  },
-  {
-    question: "Seřaď: Jan Palach se upálil, Pražské jaro, únorový převrat, normalizace začíná.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Jan Palach se upálil na protest (16. 1. 1969)",
-      "Normalizace začíná — Husák nahrazuje Dubčeka (1969)",
-    ],
-    hints: ["Jan Palach se upálil v lednu 1969."],
-  },
-];
+const UDALOSTI: Udalost[] = [
+  { uroven: 1, co: "Komunisté převzali moc ve státě (Vítězný únor)", kdy: "25. 2. 1948", klic: 1948.0225,
+    proc: "Komunistická strana ovládla stát a začala potlačovat ostatní strany." },
+  { uroven: 1, co: "Vojska Varšavské smlouvy obsadila Československo", kdy: "21. 8. 1968", klic: 1968.0821,
+    proc: "Sovětská a další armády přijely ukončit uvolnění zvané pražské jaro." },
+  { uroven: 1, co: "Zásah proti studentům na Národní třídě — začala sametová revoluce", kdy: "17. 11. 1989", klic: 1989.1117,
+    proc: "Brutální zásah proti studentům spustil pokojné protesty, které komunistický režim svrhly." },
+  { uroven: 1, co: "Václav Havel zvolen prezidentem", kdy: "29. 12. 1989", klic: 1989.1229,
+    proc: "Dříve pronásledovaný disident se stal prezidentem na konci roku revoluce." },
+  { uroven: 1, co: "První svobodné volby po revoluci", kdy: "červen 1990", klic: 1990.0608,
+    proc: "Poprvé po dlouhých letech mohli lidé volit svobodně mezi více stranami." },
 
-// Level 2 – středně těžké sekvence (5 událostí)
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky 5 klíčových událostí komunistické éry v ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat — komunisté přebírají moc (1948)",
-      "Pražské jaro — Dubčekovy reformy (1968)",
-      "Srpnová invaze vojsk Varšavské smlouvy (21. 8. 1968)",
-      "Normalizace — Husákova éra (1969–1989)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Začni rokem 1948."],
-  },
-  {
-    question: "Seřaď: Sametová revoluce, Charta 77, Pražské jaro, únorový převrat, srpnová invaze.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Srpnová invaze (21. 8. 1968)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Charta 77 je mezi invazí a Sametovou revolucí."],
-  },
-  {
-    question: "Seřaď 5 klíčových momentů komunistické represe v ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Politické procesy — show-trials (1949–1954)",
-      "Pražské jaro potlačeno (1968)",
-      "Jan Palach se upálil (1969)",
-      "Normalizační čistky — Dubček degradován (1969)",
-      "Havel uvězněn za Chartu 77 (1979)",
-    ],
-    hints: ["Politické procesy byly v 50. letech."],
-  },
-  {
-    question: "Seřaď: Havel prezidentem, únorový převrat, Pražské jaro, Sametová revoluce, Charta 77.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (17. 11. 1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-    ],
-    hints: ["Pražské jaro je první ze čtyř."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat od únorového převratu po volby 1990.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Srpnová invaze (21. 8. 1968)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (17. 11. 1989)",
-      "První svobodné volby po pádu komunismu (červen 1990)",
-    ],
-    hints: ["Svobodné volby přišly v červnu 1990."],
-  },
-  {
-    question: "Seřaď chronologicky: pád Berlínské zdi, Pražské jaro, únorový převrat, Sametová revoluce, normalizace.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Normalizace — Husákova éra (1969)",
-      "Pád Berlínské zdi (9. 11. 1989)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Berlínská zeď padla 8 dní před Sametovou revolucí."],
-  },
-  {
-    question: "Seřaď: únorový převrat, kolektivizace, Pražské jaro, Charta 77, Sametová revoluce.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Kolektivizace — vznik JZD (1949–1960)",
-      "Pražské jaro (1968)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Kolektivizace probíhala po únoru 1948."],
-  },
-  {
-    question: "Seřaď 5 milníků od srpnové invaze k Sametové revoluci.",
-    correctAnswer: "order",
-    items: [
-      "Srpnová invaze Varšavské smlouvy (21. 8. 1968)",
-      "Jan Palach se upálil (16. 1. 1969)",
-      "Husák nahrazuje Dubčeka (1969)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Jan Palach se upálil v lednu 1969."],
-  },
-  {
-    question: "Seřaď: únorový převrat, Gorbačovovy reformy, Pražské jaro, invaze, Sametová revoluce.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Srpnová invaze (1968)",
-      "Gorbačovovy reformy — perestrojka (1985)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Gorbačovovy reformy začaly v roce 1985."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat spojených s Václavem Havlem.",
-    correctAnswer: "order",
-    items: [
-      "Havel píše první hry — Zahradní slavnost (1963)",
-      "Havel podepisuje Chartu 77 (1977)",
-      "Havel uvězněn (1979–1983)",
-      "Sametová revoluce — Havel vůdcem (1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-    ],
-    hints: ["Havel psal hry od 60. let."],
-  },
-];
+  { uroven: 2, co: "Politický proces s Miladou Horákovou", kdy: "1950", klic: 1950.0627,
+    proc: "Komunisté ji ve vykonstruovaném procesu odsoudili k smrti — symbol represí 50. let." },
+  { uroven: 2, co: "Měnová reforma připravila lidi o úspory", kdy: "1953", klic: 1953.0601,
+    proc: "Stát přes noc vyměnil peníze v nevýhodném poměru a úspory lidí znehodnotil." },
+  { uroven: 2, co: "Pražské jaro — Alexander Dubček v čele strany", kdy: "leden 1968", klic: 1968.0105,
+    proc: "Pokus o „socialismus s lidskou tváří“ uvolnil cenzuru; ukončila ho srpnová okupace." },
+  { uroven: 1, co: "Jan Palach se upálil na protest", kdy: "leden 1969", klic: 1969.0116,
+    proc: "Student chtěl svým činem probudit lidi z lhostejnosti po okupaci." },
+  { uroven: 2, co: "Vznikla Charta 77", kdy: "leden 1977", klic: 1977.0101,
+    proc: "Disidenti v čele s Václavem Havlem upozorňovali, že režim porušuje lidská práva." },
+  { uroven: 2, co: "Pád Berlínské zdi", kdy: "9. 11. 1989", klic: 1989.1109,
+    proc: "Týden před 17. listopadem padla zeď mezi východním a západním Berlínem." },
 
-// Level 3 – pokročilé sekvence (5–6 událostí)
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Seřaď 6 klíčových událostí komunistické éry v ČSR od nejdřívějšího.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat — komunisté přebírají moc (1948)",
-      "Pražské jaro — Dubčekovy reformy (1968)",
-      "Srpnová invaze vojsk Varšavské smlouvy (21. 8. 1968)",
-      "Normalizace — Husákova éra (1969–1989)",
-      "Sametová revoluce (17. 11. 1989)",
-      "Václav Havel zvolen prezidentem (29. 12. 1989)",
-    ],
-    hints: ["Začni rokem 1948, skonči 29. 12. 1989."],
-  },
-  {
-    question: "Seřaď 6 milníků od únorového převratu po první svobodné volby.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Politické procesy — show-trials (1950–1954)",
-      "Pražské jaro (1968)",
-      "Srpnová invaze (1968)",
-      "Sametová revoluce (1989)",
-      "První svobodné volby (červen 1990)",
-    ],
-    hints: ["Politické procesy probíhaly v 50. letech."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat v komunistické ČSR — od kolektivizace po pád režimu.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Kolektivizace — zemědělci přicházejí o půdu (1949–1960)",
-      "Pražské jaro — Dubčekovy reformy (1968)",
-      "Srpnová invaze (21. 8. 1968)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Kolektivizace probíhala od 1949."],
-  },
-  {
-    question: "Seřaď 6 milníků od konce 2. světové války po Sametovou revoluci.",
-    correctAnswer: "order",
-    items: [
-      "Osvobozeni ČSR (1945)",
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Srpnová invaze (1968)",
-      "Charta 77 (1977)",
-      "Sametová revoluce (1989)",
-    ],
-    hints: ["Osvobozeni bylo v roce 1945, Sametová revoluce v 1989."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat: únorový převrat, Havel uvězněn, Pražské jaro, invaze, Charta 77, Sametová revoluce.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro (1968)",
-      "Srpnová invaze (21. 8. 1968)",
-      "Charta 77 (1977)",
-      "Havel uvězněn za Chartu 77 (1979)",
-      "Sametová revoluce (17. 11. 1989)",
-    ],
-    hints: ["Havel byl uvězněn v roce 1979."],
-  },
-  {
-    question: "Seřaď 6 milníků celoevropského pádu komunismu roku 1989.",
-    correctAnswer: "order",
-    items: [
-      "Polsko — první nekomunistická vláda (srpen 1989)",
-      "Maďarsko otvírá hranici Rakousků (září 1989)",
-      "NDR — masové demonstrace (říjen 1989)",
-      "Pád Berlínské zdi (9. 11. 1989)",
-      "Sametová revoluce v ČSR (17. 11. 1989)",
-      "Rumunsko — pád Ceaușesca (prosinec 1989)",
-    ],
-    hints: ["Polsko bylo první, Rumunsko poslední."],
-  },
-  {
-    question: "Seřaď 5 klíčových momentů Pražského jara 1968.",
-    correctAnswer: "order",
-    items: [
-      "Dubček se stává 1. tajemníkem KSČ (leden 1968)",
-      "Zrušení cenzury tisku (únor 1968)",
-      "2000 slov — manifest za reformy (červen 1968)",
-      "Srpnová invaze Varšavské smlouvy (21. 8. 1968)",
-      "Moskvský protokol — kapitulace (srpen 1968)",
-    ],
-    hints: ["Dubček nastoupil v lednu 1968."],
-  },
-  {
-    question: "Seřaď 6 klíčových momentů Sametové revoluce 1989.",
-    correctAnswer: "order",
-    items: [
-      "Studentská demonstrace na Národní třídě (17. 11. 1989)",
-      "Policie napadá studenty (17. 11. 1989)",
-      "Vznik Občanského fóra (19. 11. 1989)",
-      "Generální stávka (27. 11. 1989)",
-      "Komunisté vzdávají vedoucí roli (29. 11. 1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-    ],
-    hints: ["Studentská demonstrace spustila vše."],
-  },
-  {
-    question: "Seřaď 5 klíčových dat spojených s normalizací.",
-    correctAnswer: "order",
-    items: [
-      "Srpnová invaze (21. 8. 1968)",
-      "Husák nahrazuje Dubčeka (1969)",
-      "Normalizační čistky — stovky tisíc vyloučeno z KSČ (1970)",
-      "Charta 77 (1977)",
-      "Havel propuštěn z vězení (1983)",
-    ],
-    hints: ["Srpnová invaze zahájila normalizaci."],
-  },
-  {
-    question: "Seřaď 6 milníků od únorového převratu po přijetí nové Ústavy ČR.",
-    correctAnswer: "order",
-    items: [
-      "Únorový převrat (1948)",
-      "Pražské jaro a invaze (1968)",
-      "Sametová revoluce (1989)",
-      "Havel zvolen prezidentem (29. 12. 1989)",
-      "Sametový rozvod — vznik ČR (1. 1. 1993)",
-      "Přijetí Ústavy ČR (16. 12. 1992)",
-    ],
-    hints: ["Ústava ČR byla přijata ještě před vznikem ČR."],
-  },
+  { uroven: 3, co: "Začala kolektivizace — rolníci museli do družstev (JZD)", kdy: "od roku 1949", klic: 1949.0223,
+    proc: "Soukromá hospodářství přešla do jednotných zemědělských družstev, často pod nátlakem." },
+  { uroven: 3, co: "Gustáv Husák v čele strany — začala normalizace", kdy: "duben 1969", klic: 1969.0417,
+    proc: "Husák po Dubčekovi obnovil přísnou kontrolu společnosti." },
+  { uroven: 3, co: "Palachův týden — demonstrace k výročí Palachova činu", kdy: "leden 1989", klic: 1989.0115,
+    proc: "Protesty ukázaly, že se lidé přestávají bát; pár měsíců nato padl režim." },
+  { uroven: 3, co: "Z ústavy zmizel článek o vedoucí úloze komunistické strany", kdy: "29. 11. 1989", klic: 1989.1129,
+    proc: "Dvanáct dní po začátku revoluce ztratila komunistická strana zaručenou moc." },
+  { uroven: 3, co: "Z Československa odešla sovětská vojska", kdy: "červen 1991", klic: 1991.0621,
+    proc: "Vojska, která zemi obsadila v roce 1968, odešla dva roky po revoluci." },
+  { uroven: 3, co: "Rozdělení Československa na dva státy", kdy: "1. 1. 1993", klic: 1993.0101,
+    proc: "Česko a Slovensko se pokojně rozdělily na samostatné státy." },
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return chronologie(UDALOSTI, level, "z let 1948–1993");
 }
 
 export const KOMUNISTICKYREZIMSAMETOVAREVOLUCE1989: TopicMetadata[] = [

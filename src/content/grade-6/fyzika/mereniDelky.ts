@@ -205,7 +205,8 @@ function genL3(): PracticeTask {
   }
   // kolik chybí do celku (m + převod)
   const targetM = pick([1000, 2000, 1500]);
-  const doneM = pick([300, 450, 600, 750, 800, 250]);
+  let doneM = pick([300, 450, 600, 750, 800, 250]);
+  while (targetM - doneM === doneM) doneM = pick([300, 450, 600, 800, 250]);
   const restM = targetM - doneM;
   const correct = `${cz(restM)} m`;
   return task(

@@ -1,362 +1,189 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, pick, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu, binární
+// otázky „Je slovo X spisovné? ano/ne“ i na L3 a zpětnou vazbu bez vysvětlení.
+// Teď: L1 vybrat spisovné slovo mezi nespisovnými · L2 najít nespisovné slovo
+// ve větě · L3 zrádné spisovné tvary (rukama, očima, s koňmi, vosa).
+
+interface Par { nespisovne: string; spisovne: string; jev: string }
+const PARY: Par[] = [
+  { nespisovne: "vokno", spisovne: "okno", jev: "na začátku slova se v nespisovné řeči přidává v-" },
+  { nespisovne: "votevřít", spisovne: "otevřít", jev: "na začátku slova se v nespisovné řeči přidává v-" },
+  { nespisovne: "mlíko", spisovne: "mléko", jev: "nespisovně se místo -é- říká -í-" },
+  { nespisovne: "polívka", spisovne: "polévka", jev: "nespisovně se místo -é- říká -í-" },
+  { nespisovne: "lítat", spisovne: "létat", jev: "nespisovně se místo -é- říká -í-" },
+  { nespisovne: "dobrej", spisovne: "dobrý", jev: "nespisovně se místo -ý říká -ej" },
+  { nespisovne: "malej", spisovne: "malý", jev: "nespisovně se místo -ý říká -ej" },
+  { nespisovne: "bejt", spisovne: "být", jev: "nespisovně se místo -ý- říká -ej-" },
+  { nespisovne: "mejdlo", spisovne: "mýdlo", jev: "nespisovně se místo -ý- říká -ej-" },
+  { nespisovne: "cejtit", spisovne: "cítit", jev: "nespisovně se místo -í- říká -ej-" },
+  { nespisovne: "zejtra", spisovne: "zítra", jev: "nespisovně se místo -í- říká -ej-" },
+  { nespisovne: "bysme", spisovne: "bychom", jev: "spisovný tvar podmiňovacího způsobu je bychom" },
+  { nespisovne: "du", spisovne: "jdu", jev: "nespisovně se vypouští j- na začátku" },
+  { nespisovne: "dyž", spisovne: "když", jev: "nespisovně se zjednodušuje skupina hlásek" },
+  { nespisovne: "eště", spisovne: "ještě", jev: "nespisovně se vypouští j-" },
+  { nespisovne: "kerej", spisovne: "který", jev: "nespisovně se zjednodušuje a mění koncovka" },
+  { nespisovne: "von", spisovne: "on", jev: "na začátku slova se v nespisovné řeči přidává v-" },
+];
+const spis = (slovo: string) => PARY.find((p) => p.nespisovne === slovo)?.spisovne ?? slovo;
+
+function vyberSpisovne(i: number): PracticeTask {
+  const a = PARY[i];
+  const jine = [1, 5, 9].map((k) => PARY[(i + k) % PARY.length]);
+  const d = jine.map((p) => ({ value: p.nespisovne, why: `„${p.nespisovne}“ je nespisovné, spisovně „${p.spisovne}“ — ${p.jev}.` }));
+  return choice("Které slovo je spisovné?", a.spisovne, d as never, {
+    hints: [
+      `Zkus slova „${jine[0].nespisovne}“ a „${jine[1].nespisovne}“ říct tak, jak se píšou v učebnici. Změní se?`,
+      `Nespisovné tvary poznáš třeba podle -ej místo -ý, podle v- na začátku nebo podle -í- místo -é-. Slovo „${jine[0].nespisovne}“ se spisovně řekne „${jine[0].spisovne}“.`,
+    ],
+    explanation: `„${a.spisovne}“ je spisovné slovo; ostatní jsou nespisovné tvary (${jine.map((p) => `${p.nespisovne} → ${p.spisovne}`).join(", ")}).`,
+  });
 }
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Je slovo 'jdu' spisovné?",
-    correctAnswer: "ano",
-    options: ["ano", "ne", "záleží na situaci", "nikdo neví"],
-    hints: ["Slovníkový tvar 'jdu' je správný spisovný tvar."],
-  },
-  {
-    question: "Je slovo 'du' (místo 'jdu') spisovné?",
-    correctAnswer: "ne – je to nespisovný hovorový tvar",
-    options: [
-      "ano – je to správně",
-      "ne – je to nespisovný hovorový tvar",
-      "ano – v dialektu",
-      "záleží na kraji",
-    ],
-    hints: ["'Du' je hovorová zkrácenina, ve škole nebo v textu se nepoužívá."],
-  },
-  {
-    question: "Jak zní spisovná varianta slova 'ksicht'?",
-    correctAnswer: "obličej / tvář",
-    options: ["ksicht je správně", "morda", "obličej / tvář", "fňuk"],
-    hints: ["Slangové slovo 'ksicht' nahradíme neutrálním výrazem."],
-  },
-  {
-    question: "Jak zní spisovná varianta slova 'vokno'?",
-    correctAnswer: "okno",
-    options: ["vokno je správně", "vejkno", "vínko", "okno"],
-    hints: ["Předpona 'vo-' místo 'o-' je nespisovná (obecná čeština)."],
-  },
-  {
-    question: "Ve které situaci používáme OBVYKLE spisovnou češtinu?",
-    correctAnswer: "v písemné práci ve škole",
-    options: ["v písemné práci ve škole", "při hře s kamarády", "při rozhovoru s babičkou doma", "při sportu"],
-    hints: ["Škola a úřady vyžadují spisovný projev."],
-  },
-  {
-    question: "Slovo 'cajk' je:",
-    correctAnswer: "nespisovné slangové slovo",
-    options: [
-      "spisovné slovo",
-      "nespisovné slangové slovo",
-      "nářeční výraz",
-      "správný termín",
-    ],
-    hints: ["Slang = výrazy určité skupiny lidí, nejsou ve slovníku jako správné."],
-  },
-  {
-    question: "Slovo 'dobrej' (místo 'dobrý') je:",
-    correctAnswer: "nespisovné – obecná čeština",
-    options: ["správně – je to správný tvar", "správně – dialekt", "nespisovné – obecná čeština", "nové slovo"],
-    hints: ["Přídavná jména v obecné češtině mají zkrácené koncovky."],
-  },
-  {
-    question: "Ve které situaci je hovorová čeština zcela přijatelná?",
-    correctAnswer: "při rozhovoru s přáteli",
-    options: ["ve školní písemné práci", "v novinovém článku", "v úředním dopise", "při rozhovoru s přáteli"],
-    hints: ["Hovorová čeština je přirozená v běžné mluvené komunikaci."],
-  },
-  {
-    question: "Jak zní spisovná varianta slova 'fest' (ve smyslu 'hodně')?",
-    correctAnswer: "velmi / hodně",
-    options: ["velmi / hodně", "fest je správně", "moc fest", "pevně"],
-    hints: ["'Fest' je slangový výraz z nářečí, nahradíme ho neutrálním."],
-  },
-  {
-    question: "Slovo 'autobus' je:",
-    correctAnswer: "spisovné – přejatý výraz uznaný slovníkem",
-    options: ["nespisovné cizí slovo", "spisovné – přejatý výraz uznaný slovníkem", "slangový výraz", "dialektismus"],
-    hints: ["Mnoho přejatých slov je v češtině plně přijato jako spisovná."],
-  },
-  {
-    question: "Co jsou to nářečí (dialekty)?",
-    correctAnswer: "místní varianty jazyka typické pro určitý region",
-    options: ["slova, kterými mezi sebou mluví jen mládež", "odborná pojmenování používaná ve vědě", "místní varianty jazyka typické pro určitý region", "slova, která se dnes už běžně nepoužívají"],
-    hints: ["Na Moravě nebo ve Slezsku uslyšíš jiné výrazy než v Praze."],
-  },
-  {
-    question: "Ve vědeckém textu nebo učebnici se používá:",
-    correctAnswer: "spisovná čeština",
-    options: ["slang a hovorová čeština", "nářečí z daného kraje", "angličtina", "spisovná čeština"],
-    hints: ["Odborné texty vyžadují přesný a neutrální jazyk."],
-  },
-  {
-    question: "Jak zní nespisovný hovorový tvar slovesa 'být'?",
-    correctAnswer: "bejt",
-    options: [
-      "bejt",
-      "býti",
-      "buďto",
-      "být je správně",
-    ],
-    hints: ["Obecná čeština mění dlouhé 'ý' na 'ej' — zkus ten princip aplikovat na tohle sloveso (podobně jako 'dobrý' → 'dobrej')."],
-  },
-  {
-    question: "Slovo 'brácha' (místo 'bratr') je:",
-    correctAnswer: "hovorové nespisovné slovo",
-    options: [
-      "plně spisovné",
-      "hovorové nespisovné slovo",
-      "odborný termín",
-      "nářeční výraz",
-    ],
-    hints: ["Brácha je familiární označení bratra – ve škole pišeme 'bratr'."],
-  },
-  {
-    question: "V rozhlasovém zpravodajství se používá:",
-    correctAnswer: "spisovná čeština",
-    options: ["hovorová čeština", "slang", "spisovná čeština", "nářečí daného kraje"],
-    hints: ["Zpravodajství musí být srozumitelné všem posluchačům v celé zemi."],
-  },
+interface Veta { veta: string; slovo: string; spisovne: string; jev: string }
+const VETY: Veta[] = [
+  { veta: "Včera sme byli v kině.", slovo: "sme", spisovne: "jsme", jev: "nespisovně se vypouští j-" },
+  { veta: "Maminka koupila mlíko a chleba.", slovo: "mlíko", spisovne: "mléko", jev: "nespisovně -í- místo -é-" },
+  { veta: "Otevři prosím vokno.", slovo: "vokno", spisovne: "okno", jev: "nespisovně se přidává v- na začátek" },
+  { veta: "To byl dobrej nápad.", slovo: "dobrej", spisovne: "dobrý", jev: "nespisovně -ej místo -ý" },
+  { veta: "Zejtra pojedeme k babičce.", slovo: "zejtra", spisovne: "zítra", jev: "nespisovně -ej- místo -í-" },
+  { veta: "Šli bysme rádi ven.", slovo: "bysme", spisovne: "bychom", jev: "spisovně bychom" },
+  { veta: "Dyž prší, zůstaneme doma.", slovo: "dyž", spisovne: "když", jev: "nespisovně se zjednodušují hlásky" },
+  { veta: "Na zahradě roste velkej strom.", slovo: "velkej", spisovne: "velký", jev: "nespisovně -ej místo -ý" },
+  { veta: "Umyj si ruce mejdlem.", slovo: "mejdlem", spisovne: "mýdlem", jev: "nespisovně -ej- místo -ý-" },
+  { veta: "Ptáci lítají nad lesem.", slovo: "lítají", spisovne: "létají", jev: "nespisovně -í- místo -é-" },
+  { veta: "Eště chvíli počkej.", slovo: "eště", spisovne: "ještě", jev: "nespisovně se vypouští j-" },
+  { veta: "Von přišel pozdě.", slovo: "von", spisovne: "on", jev: "nespisovně se přidává v- na začátek" },
+  { veta: "Dáš si polívku?", slovo: "polívku", spisovne: "polévku", jev: "nespisovně -í- místo -é-" },
+  { veta: "Kerej sešit je tvůj?", slovo: "kerej", spisovne: "který", jev: "nespisovně se mění hlásky i koncovka" },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Jak zní spisovná varianta věty 'Von jde domů.'?",
-    correctAnswer: "On jde domů.",
-    options: ["Von jde domů. – správně", "Un jde domů.", "Vono jde domů.", "On jde domů."],
-    hints: ["'Von' místo 'On' je nespisovné (obecná čeština – záměna v/o)."],
-  },
-  {
-    question: "Jak zní nářeční výraz 'dycky' ve spisovné češtině?",
-    correctAnswer: "vždy / stále",
-    options: ["vždy / stále", "dycky je správně", "nikdy", "někdy"],
-    hints: ["'Dycky' pochází z moravských nářečí."],
-  },
-  {
-    question: "Slovo 'půjdem' (místo 'půjdeme') je:",
-    correctAnswer: "hovorová zkrácená forma, nespisovná",
-    options: [
-      "zcela správný spisovný tvar",
-      "hovorová zkrácená forma, nespisovná",
-      "nářeční podoba z jižních Čech",
-      "slovo přejaté z cizího jazyka",
-    ],
-    hints: ["Krácení tvarů sloves je typické pro hovorový projev."],
-  },
-  {
-    question: "Co patří do skupiny 'slang'?",
-    correctAnswer: "výrazy specifické skupiny lidí – mládeže, sportovců atd.",
-    options: [
-      "odborné vědecké termíny",
-      "nářeční výrazy jednoho kraje",
-      "výrazy specifické skupiny lidí – mládeže, sportovců atd.",
-      "zastaralé výrazy z 18. století",
-    ],
-    hints: ["Slang = žargon určité skupiny – hráči, programátoři, hudebníci..."],
-  },
-  {
-    question: "Jak zní spisovná varianta slova 'holka'?",
-    correctAnswer: "dívka / dívčina",
-    options: ["holka je plně správné", "ženská", "babička", "dívka / dívčina"],
-    hints: ["'Holka' je hovorový výraz — jak by ses o mladé osobě ženského rodu vyjádřil/a ve formálním textu, třeba v úřední zprávě?"],
-  },
-  {
-    question: "Slovo 'kluk' versus 'chlapec' – který výraz je spisovnější?",
-    correctAnswer: "chlapec je neutrálně spisovné, kluk je hovorové",
-    options: ["chlapec je neutrálně spisovné, kluk je hovorové", "kluk je spisovnější", "oba jsou stejně nespisovné", "oba jsou plně spisovné"],
-    hints: ["Kluk je přijatelné, ale chlapec je formálnější."],
-  },
-  {
-    question: "Ve školním slohové práci na téma 'Jak jsem trávil prázdniny' je vhodné:",
-    correctAnswer: "psát spisovně, ale s přirozeným vypravěčským tónem",
-    options: ["psát čistě hovorově jako v SMS", "psát spisovně, ale s přirozeným vypravěčským tónem", "psát jen odborné vědecké výrazy", "psát nářečím svého kraje"],
-    hints: ["Sloh = formální text, ale vyprávění může být živé a přirozené."],
-  },
-  {
-    question: "Jak zní nespisovný hovorový tvar slova 'pojďte'?",
-    correctAnswer: "pojďte i poďte jsou přijatelné, ale poďte bývá hovorovější",
-    options: ["poďte je zcela špatně", "oba tvary jsou zcela nespisovné", "pojďte i poďte jsou přijatelné, ale poďte bývá hovorovější", "správně je jen 'jděte'"],
-    hints: ["Přijatelnost tvarů závisí na situaci a kontextu."],
-  },
-  {
-    question: "Proč se dialekty liší oblast od oblasti?",
-    correctAnswer: "historicky se různé regiony vyvíjely odděleně",
-    options: ["protože lidé v různých krajích mluví různými jazyky", "dialekty jsou záměrně vymyšlené", "závisí na teplotě klimatu", "historicky se různé regiony vyvíjely odděleně"],
-    hints: ["Historický vývoj, sousedství s jinými jazyky – to formuje nářečí."],
-  },
-  {
-    question: "Ve větě 'Šel sem k vám.' slovo 'sem' místo 'jsem' je:",
-    correctAnswer: "nespisovný hovorový tvar",
-    options: ["nespisovný hovorový tvar", "správně – sem = jsem", "nářeční výraz z Moravy", "přejaté slovo"],
-    hints: ["'Sem' místo 'jsem' je typická obecná čeština."],
-  },
-  {
-    question: "Proč je důležité umět používat spisovnou češtinu?",
-    correctAnswer: "abychom byli srozumitelní všem a působili formálně v potřebných situacích",
-    options: [
-      "protože hovorová čeština v Česku neexistuje",
-      "abychom byli srozumitelní všem a působili formálně v potřebných situacích",
-      "protože nářečí jsou ve školách zakázaná",
-      "abychom se snadněji naučili cizí jazyky",
-    ],
-    hints: ["Spisovný jazyk je společný základ pro všechny Čechy."],
-  },
-  {
-    question: "Slovo 'makat' (místo 'pracovat') je:",
-    correctAnswer: "hovorový slangový výraz",
-    options: ["plně spisovné", "dialektismus", "hovorový slangový výraz", "anglicismus"],
-    hints: ["Makat = pracovat tvrdě – expresivní, neformální výraz."],
-  },
-  {
-    question: "Ve formálním dopise řediteli školy bychom NIKDY nepoužili:",
-    correctAnswer: "slova jako 'čau', 'pozdravuju', 'brácha'",
-    options: ["slova jako 'Vážený pane řediteli'", "formální pozdravy", "vlastní podpis", "slova jako 'čau', 'pozdravuju', 'brácha'"],
-    hints: ["Úřední styl = formální jazyk bez hovorových výrazů."],
-  },
-  {
-    question: "Jak se nazývá vrstva češtiny, která stojí mezi plně spisovnou a nářečím?",
-    correctAnswer: "hovorová čeština / obecná čeština",
-    options: ["hovorová čeština / obecná čeština", "odborná čeština", "archaická čeština", "poetická čeština"],
-    hints: ["Přemýšlej o vrstvě jazyka, kterou používáme v běžné, neformální mluvě — ne v oficiálních dokumentech, ale ani v místním nářečí jedné oblasti."],
-  },
-  {
-    question: "Slovo 'mobil' (telefon) je:",
-    correctAnswer: "přijatelné i ve spisovném projevu jako zkrácená podoba",
-    options: [
-      "zcela nespisovné, patří jen do hovoru",
-      "přijatelné i ve spisovném projevu jako zkrácená podoba",
-      "odborný termín užívaný ve fyzice",
-      "nářeční slovo z venkovských oblastí",
-    ],
-    hints: ["Mobil je zkratka pro mobilní telefon – dnes plně přijatá."],
-  },
-];
+function najdiVeVete(v: Veta): PracticeTask {
+  const slova = v.veta.replace(/[.,?!]/g, "").split(" ");
+  const tvar = slova.find((s) => s.toLowerCase() === v.slovo) ?? v.slovo;
+  const ostatni = shuffle(slova.filter((s) => s.toLowerCase() !== v.slovo && s.length > 2)).slice(0, 3);
+  return choice(`Které slovo ve větě „${v.veta}“ je nespisovné?`, tvar,
+    ostatni.map((s) => ({ value: s, why: `„${s}“ je spisovné slovo.` })) as never, {
+      hints: [
+        `Slovo „${ostatni[0]}“ je spisovné. Které jiné slovo by hlasatel ve zprávách vyslovil jinak?`,
+        "Hledej typické nespisovné znaky: -ej místo -ý nebo -í, v- na začátku slova, -í- místo -é-, vynechané j-.",
+      ],
+      explanation: `„${v.slovo}“ je nespisovné (${v.jev}); spisovně „${v.spisovne}“.`,
+    });
+}
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Přepiš větu do spisovné podoby: 'Dyž přijdem, řekneme vám.'",
-    correctAnswer: "Když přijdeme, řekneme vám.",
-    options: ["Dyž přidem, řekneme vám.", "Když přijdem, řekneme vám.", "Když přijdeme, řekneme vám.", "Dyž přijdeme, řekneme vám."],
-    hints: ["'Dyž' = 'Když', 'přijdem' = 'přijdeme'."],
-  },
-  {
-    question: "Která z těchto vět je plně NESPISOVNÁ?",
-    correctAnswer: "Von to vobjednál vo den dřív.",
-    options: ["On to objednal o den dřív.", "Objednal to předem.", "Dříve si to objednal.", "Von to vobjednál vo den dřív."],
-    hints: ["Von, vobjednal, vo – vše jsou nespisovné tvary."],
-  },
-  {
-    question: "Co je 'argot'?",
-    correctAnswer: "tajný jazyk určité skupiny – zloději, vězeňský slang",
-    options: ["tajný jazyk určité skupiny – zloději, vězeňský slang", "nářečí z Moravy", "odborný vědecký jazyk", "forma starší češtiny z 18. stol."],
-    hints: ["Argot = specifický slang uzavřené skupiny s cílem utajit smysl."],
-  },
-  {
-    question: "Jak se správně říká o češtině, která porušuje normu, ale je přijatelná v mluvené komunikaci?",
-    correctAnswer: "obecná čeština",
-    options: [
-      "špatná čeština",
-      "obecná čeština",
-      "nespisovná literatura",
-      "dialektismus",
-    ],
-    hints: ["Přemýšlej o nespisovné, ale nadnářeční vrstvě jazyka, kterou v běžné mluvě používá velká část lidí v Čechách."],
-  },
-  {
-    question: "Přepiš do nespisovné podoby: 'Chtěl jsem jít do kina.'",
-    correctAnswer: "Chtěl sem jít do kina.",
-    options: ["Chtel jsem jít do kina.", "Chtěl semte jít do kina.", "Chtěl sem jít do kina.", "Chtel sem jit do kina."],
-    hints: ["Jsem → sem (obecná čeština). Ostatní zůstávají."],
-  },
-  {
-    question: "Ve větě 'Přišel s bráchou a řek, že přijdou.' kolik nespisovných prvků je?",
-    correctAnswer: "dva: brácha (místo bratr), řek – místo řekl",
-    options: ["žádný – vše je správně", "jeden: brácha", "tři: brácha, řek, přijdou", "dva: brácha (místo bratr), řek – místo řekl"],
-    hints: ["Brácha = hovorové, řek = zkrácený nespisovný tvar 'řekl'."],
-  },
-  {
-    question: "Které slovo je plně přijatelné v obou vrstvách – hovorové i spisovné – bez významné ztráty formálnosti?",
-    correctAnswer: "telefon",
-    options: ["telefon", "brácha", "ksicht", "du – jdu"],
-    hints: ["Hledej slovo, které by ses nebál/a použít úplně stejně v rozhovoru s kamarádem i v oficiálním dopise — bez rozdílu."],
-  },
-  {
-    question: "Má čeština jeden nebo více standardů (norem) pro správný jazyk?",
-    correctAnswer: "jeden základní – spisovná norma kodifikovaná ve slovníku",
-    options: [
-      "každý kraj má svou vlastní normu",
-      "jeden základní – spisovná norma kodifikovaná ve slovníku",
-      "dvě normy – jedna pro školu, jedna pro dospělé",
-      "žádná norma neexistuje",
-    ],
-    hints: ["Pravidla českého pravopisu a slovník = základní norma."],
-  },
-  {
-    question: "Co znamená 'kodifikace' v jazykovém smyslu?",
-    correctAnswer: "zapsání a určení správné formy slova ve slovníku/pravidlech",
-    options: ["překlad slova do cizího jazyka", "vymýšlení nových slov", "zapsání a určení správné formy slova ve slovníku/pravidlech", "zakazování dialektů"],
-    hints: ["Kodifikovat = stanovit závazná pravidla pro správný jazyk."],
-  },
-  {
-    question: "Slovo 'super' (výborný) – je dnes ve slovníku češtiny?",
-    correctAnswer: "ano – přejaté slovo přijaté jako hovorové/neformální",
-    options: ["ne – nikdy nebude přijato", "ano – plně formální a neutrální", "pouze v mluveném projevu, ve slovníku ne", "ano – přejaté slovo přijaté jako hovorové/neformální"],
-    hints: ["Nová slova se postupně přijímají do slovníku jako nová vrstva jazyka."],
-  },
-  {
-    question: "Jak se nazývá jev, kdy nové slovo (např. z angličtiny) vstupuje do češtiny?",
-    correctAnswer: "přejímání slov / přejaté slovo",
-    options: ["přejímání slov / přejaté slovo", "zastarávání a mizení starých slov", "tvoření nových slov odvozováním", "zhrubění výrazu, tedy vulgarizace"],
-    hints: ["Computer → počítač, nebo smartphone zůstal smartphone."],
-  },
-  {
-    question: "Která z vět je stylově VHODNÁ pro školní sloh a která pro SMS?",
-    correctAnswer: "Sloh: 'Poté jsme navštívili muzeum.' SMS: 'Pak sme šli do muzea.'",
-    options: [
-      "Sloh: 'Pak sme šli do muzea.' SMS: 'Poté jsme navštívili muzeum.'",
-      "Sloh: 'Poté jsme navštívili muzeum.' SMS: 'Pak sme šli do muzea.'",
-      "Pro obě situace se hodí stejný styl",
-      "SMS musí být vždy spisovná",
-    ],
-    hints: ["Sme místo jsme, pak místo poté = hovorové."],
-  },
-  {
-    question: "Proč mohou být nářeční výrazy cenné pro kulturu?",
-    correctAnswer: "uchovávají historii a identitu dané oblasti",
-    options: ["jsou vždy lepší než spisovná čeština", "pomáhají při studiu angličtiny", "uchovávají historii a identitu dané oblasti", "nemají žádnou hodnotu"],
-    hints: ["Folkloristika, literatura, místní kultura – dialekty jsou součástí dědictví."],
-  },
-  {
-    question: "Ve větě 'Dej to tamhle.' je slovo 'tamhle':",
-    correctAnswer: "hovorové/obecně české, ale přijatelné v mluvené řeči",
-    options: ["zcela nespisovné, ve škole zakázané", "odborný termín z jazykovědy", "nářeční podoba z jižních Čech", "hovorové/obecně české, ale přijatelné v mluvené řeči"],
-    hints: ["Tamhle = tam tamto místo, hovorový výraz, ale používaný běžně."],
-  },
-  {
-    question: "Jak zní nářeční slovo 'šak' (Morava) ve spisovné češtině?",
-    correctAnswer: "však / přece",
-    options: ["však / přece", "šak je správně v celé ČR", "ale / jenže", "tak / tedy"],
-    hints: ["Slovo 'šak' na Moravě zdůrazňuje to, co druhý už dávno ví — jaká dvě spisovná slovíčka mají podobný odstín ujištění?"],
-  },
-  {
-    question: "Jak poznáš, že slovo je nespisovné, když nevíš jistě?",
-    correctAnswer: "vyhledám ho ve slovníku – nespisovné je označeno zkratkou 'hovor.' nebo 'nář.'",
-    options: [
-      "nespisovné slovo nikdy nenajdu ve slovníku",
-      "vyhledám ho ve slovníku – nespisovné je označeno zkratkou 'hovor.' nebo 'nář.'",
-      "záleží jen na mém pocitu",
-      "nespisovná slova jsou vždy kratší",
-    ],
-    hints: ["Slovník češtiny označuje stylovou vrstvu každého slova."],
-  },
+const L3: PracticeTask[] = [
+  choice("Který tvar 7. pádu je spisovný?", "rukama", [
+    { value: "kamarádama", why: "Spisovně s kamarády." },
+    { value: "lidma", why: "Spisovně s lidmi." },
+    { value: "dobrejma", why: "Spisovně s dobrými." },
+  ], {
+    hints: ["Která podstatná jména mají v 7. pádě množného čísla zvláštní tvar?", "Části těla, které máme v páru — ruce, nohy, oči, uši —, mají v 7. pádě spisovný tvar zakončený na -ma; ostatní slova ne."],
+    explanation: "Rukama je spisovný tvar 7. pádu (ruce jsou párové); s kamarády, s lidmi, s dobrými.",
+  }),
+  choice("Které slovo bys napsal nebo napsala do slohové práce?", "očima", [
+    { value: "klukama", why: "Spisovně s kluky." },
+    { value: "holkama", why: "Spisovně s holkami." },
+    { value: "stromama", why: "Spisovně se stromy." },
+  ], {
+    hints: ["Který tvar patří k části těla, kterou máme dvakrát?", "Oči, uši, ruce a nohy mají v 7. pádě spisovně -ma; ostatní slova ne."],
+    explanation: "Očima je spisovné; s kluky, s holkami, se stromy.",
+  }),
+  choice("Které spojení je spisovné?", "s koňmi", [
+    { value: "s koněma", why: "Spisovně s koňmi." },
+    { value: "s psama", why: "Spisovně se psy." },
+    { value: "s pánama", why: "Spisovně s pány." },
+  ], {
+    hints: ["Jak zní spisovně 7. pád od slova koně?", "Slovo kůň má v 7. pádě množného čísla spisovně tvar zakončený na -mi."],
+    explanation: "Spisovně s koňmi; s koněma je nespisovné.",
+  }),
+  choice("Které slovo začíná na v- i ve spisovné češtině?", "vosa", [
+    { value: "vokno", why: "Spisovně okno." },
+    { value: "votevřít", why: "Spisovně otevřít." },
+    { value: "von", why: "Spisovně on." },
+  ], {
+    hints: ["Které z těch slov má bez v- úplně jiný význam?", "Osa je čára, kolem které se něco otáčí; bodavý hmyz se spisovně jmenuje s v- na začátku."],
+    explanation: "Vosa je spisovné slovo; ostatní mají nespisovné v- navíc (okno, otevřít, on).",
+  }),
+  choice("Který z těchto tvarů je spisovný?", "nohama", [
+    { value: "rybama", why: "Spisovně s rybami." },
+    { value: "autama", why: "Spisovně s auty." },
+    { value: "dětma", why: "Spisovně s dětmi." },
+  ], {
+    hints: ["Které z těch slov označuje část těla v páru?", "Párové části těla mají v 7. pádě spisovně -ma, ostatní slova mají -y nebo -mi."],
+    explanation: "Nohama je spisovné; s rybami, s auty, s dětmi.",
+  }),
+  choice("Která věta je celá spisovná?", "Byli jsme u babičky.", [
+    { value: "Byli sme u babičky.", why: "Spisovně jsme." },
+    { value: "Dyž pršelo, byli sme doma.", why: "Spisovně když a jsme." },
+    { value: "Bylo tam moc dobrý jídlo.", why: "Spisovně dobré jídlo." },
+  ], {
+    hints: ["Přečti každou větu pozorně slovo po slovu.", "Hledej věty, kde je nespisovný tvar: vynechané j-, zjednodušené hlásky nebo špatná koncovka přídavného jména."],
+    explanation: "Byli jsme u babičky. — ostatní věty obsahují nespisovné tvary.",
+  }),
+  choice("Najdi spisovný tvar.", "ušima", [
+    { value: "pejskama", why: "Spisovně s pejsky." },
+    { value: "kočkama", why: "Spisovně s kočkami." },
+    { value: "sestrama", why: "Spisovně se sestrami." },
+  ], {
+    hints: ["Která z těch slov patří k části těla?", "Uši jsou párová část těla, a proto mají spisovně -ma v 7. pádě."],
+    explanation: "Ušima je spisovné; s pejsky, s kočkami, se sestrami.",
+  }),
+  choice("Které slovo je nespisovné?", "ňákej", [
+    { value: "nějaký", why: "Nějaký je spisovné." },
+    { value: "který", why: "Který je spisovné." },
+    { value: "jaký", why: "Jaký je spisovné." },
+  ], {
+    hints: ["Které slovo má na konci -ej?", "Spisovně se píše -ý a hláska ě; zjednodušený tvar patří do běžné mluvy."],
+    explanation: "Ňákej je nespisovné, spisovně nějaký.",
+  }),
+  choice("Vyber spisovné spojení.", "s dobrými lidmi", [
+    { value: "s dobrejma lidma", why: "Spisovně s dobrými lidmi." },
+    { value: "s dobrýma lidma", why: "Spisovně -ými a -mi." },
+    { value: "s dobrejmi lidmi", why: "Spisovně dobrými, ne dobrejmi." },
+  ], {
+    hints: ["Jak zní spisovně 7. pád množného čísla u přídavného jména a podstatného jména?", "Přídavné jméno má v 7. pádě množného čísla koncovku -ými, podstatné jméno lidé koncovku -mi."],
+    explanation: "Spisovně: s dobrými lidmi.",
+  }),
+  choice("U kterého slova je v- na začátku spisovné?", "vydra", [
+    { value: "vokurka", why: "Spisovně okurka." },
+    { value: "vodpoledne", why: "Spisovně odpoledne." },
+    { value: "vořech", why: "Spisovně ořech." },
+  ], {
+    hints: ["U kterého slova v- na začátek opravdu patří?", "Zvíře u řeky se spisovně jmenuje s v-; ostatní slova ho mají navíc jen v nespisovné řeči."],
+    explanation: "Vydra je spisovné; okurka, odpoledne, ořech jsou spisovně bez v-.",
+  }),
+  choice("Která věta neobsahuje žádné nespisovné slovo?", "Dej mi mléko z ledničky.", [
+    { value: "Dej mi mlíko z ledničky.", why: "Spisovně mléko." },
+    { value: "Dej mi mléko z lendničky.", why: "Spisovně lednička." },
+    { value: "Dej mně mlíko z ledničky.", why: "Mně je správně, ale mlíko je nespisovné." },
+  ], {
+    hints: ["Porovnej věty slovo po slově.", "Hledej -í- místo -é- a zkomolená slova; jedna věta je celá bez chyby."],
+    explanation: "Dej mi mléko z ledničky. — ostatní obsahují nespisovné tvary.",
+  }),
+  choice("Které spojení bys použil nebo použila v dopise řediteli?", "s dětmi", [
+    { value: "s dětma", why: "Spisovně s dětmi." },
+    { value: "s děckama", why: "Děcka i -ma jsou nespisovné." },
+    { value: "s dítěma", why: "Spisovně s dětmi." },
+  ], {
+    hints: ["Jak zní 7. pád množného čísla od slova děti?", "Děti se skloňují jako kosti: s kostmi — s …"],
+    explanation: "Spisovně s dětmi.",
+  }),
+  choice("Který tvar je spisovný ve větě „My ___ šli do kina.“?", "bychom", [
+    { value: "bysme", why: "Bysme je nespisovné." },
+    { value: "bychme", why: "Takový tvar neexistuje." },
+    { value: "bysem", why: "Takový tvar neexistuje." },
+  ], {
+    hints: ["Jak zní spisovně: My ___ šli do kina.", "Spisovný tvar pro 1. osobu množného čísla v podmiňovacím způsobu končí na -chom."],
+    explanation: "Spisovně bychom; bysme patří do běžné mluvy.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return shuffle(PARY.map((_, i) => vyberSpisovne(i)));
+  if (level === 2) return shuffle(VETY.map(najdiVeVete));
+  return shuffle(L3);
 }
 
 export const SLOVASPISOVNAANESPISOVNA: TopicMetadata[] = [
@@ -386,7 +213,7 @@ export const SLOVASPISOVNAANESPISOVNA: TopicMetadata[] = [
     contentType: "conceptual",
     generator: gen,
     helpTemplate: {
-      hint: "Zeptej se sám sebe: 'Řekl/a bych to řediteli školy nebo napsal/a v novinách?' Pokud ano – je to asi spisovné.",
+      hint: "Zeptej se sám nebo sama sebe: 'Řekl/a bych to řediteli školy nebo napsal/a v novinách?' Pokud ano – je to asi spisovné.",
       steps: [
         "Přemýšlej, v jaké situaci se slovo používá.",
         "Zkus si vzpomenout, zda je slovo v učebnici nebo jen v hovoru.",

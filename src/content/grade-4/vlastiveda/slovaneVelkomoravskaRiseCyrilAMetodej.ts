@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { posilNapovedy } from "../_shared";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -30,7 +31,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Seřaď události od nejstarší po nejnovější.",
     correctAnswer: "order",
     items: ["Příchod Slovanů (6. stol.)", "Cyril a Metoděj na Moravě (863)", "Zánik Velké Moravy (906)"],
-    hints: ["Slované přišli jako první.", "Velká Morava zanikla roku 906 — nejpozději."],
+    hints: ["Která událost je udaná jen stoletím? Převeď ho na roky.", "Velká Morava zanikla roku 906 — nejpozději."],
     explanation: "Slované přišli v 6. století. Roku 863 přišli na Moravu Cyril a Metoděj s hlaholicí. Roku 906 Velkomoravská říše zanikla.",
   },
   {
@@ -44,7 +45,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Seřaď od nejstarší po nejnovější.",
     correctAnswer: "order",
     items: ["Příchod Slovanů (6. stol.)", "Sámova říše (623)", "Cyril a Metoděj (863)"],
-    hints: ["Slované přišli jako první.", "Cyril a Metoděj přišli až roku 863."],
+    hints: ["Šesté století jsou roky 501 až 600. Je to před rokem 623, nebo po něm?", "Cyril a Metoděj přišli až roku 863."],
     explanation: "Slované přišli v 6. století. Roku 623 je Sámo sjednotil v první stát. Roku 863 přinesli Cyril a Metoděj slovanské písmo.",
   },
   {
@@ -79,7 +80,7 @@ const POOL_L1: PracticeTask[] = [
     question: "Seřaď od nejstarší po nejnovější.",
     correctAnswer: "order",
     items: ["Příchod Slovanů (6. stol.)", "Velkomoravská říše (9. stol.)", "Zánik Velké Moravy (906)"],
-    hints: ["Slované přišli jako první.", "Zánik (906) je konec Velké Moravy."],
+    hints: ["Dvě události jsou z Velké Moravy. Co musí přijít dřív — vznik, nebo zánik?", "Zánik (906) je konec Velké Moravy."],
     explanation: "Slované přišli v 6. století. V 9. století vznikla Velkomoravská říše. Roku 906 zanikla nájezdy kočovných Maďarů.",
   },
   {
@@ -101,7 +102,7 @@ const POOL_L2: PracticeTask[] = [
       "Cyril a Metoděj přišli na Moravu (863)",
       "Zánik Velkomoravské říše (906)",
     ],
-    hints: ["Slované přišli jako první.", "Cyril a Metoděj (863) přišli před zánikem Velké Moravy (906)."],
+    hints: ["Porovnej letopočty; u století si vzpomeň, že 6. století jsou roky 501 až 600.", "Cyril a Metoděj (863) přišli před zánikem Velké Moravy (906)."],
     explanation: "Slované přišli bez vlastního státu. Sámo je roku 623 sjednotil v první říši. Cyril a Metoděj roku 863 přinesli hlaholici. Velká Morava zanikla roku 906 nájezdy Maďarů.",
   },
   {
@@ -149,7 +150,7 @@ const POOL_L2: PracticeTask[] = [
       "Cyril a Metoděj (863)",
       "Zánik Velké Moravy (906)",
     ],
-    hints: ["Slované přišli jako první.", "Cyril a Metoděj (863) přišli před zánikem (906)."],
+    hints: ["Najdi dvojici událostí z 9. a 10. století a rozhodni, která byla dřív.", "Cyril a Metoděj (863) přišli před zánikem (906)."],
     explanation: "Slované přišli v 6. století, Sámo je sjednotil roku 623, Cyril a Metoděj přinesli písmo roku 863 a Velká Morava zanikla roku 906.",
   },
   {
@@ -173,7 +174,7 @@ const POOL_L2: PracticeTask[] = [
       "Velkomoravská říše (9. stol.)",
       "Zánik Velké Moravy (906)",
     ],
-    hints: ["Slované přišli jako první.", "Sámova říše je před Velkou Moravou."],
+    hints: ["Dva státy jsou slovanské. Který vznikl dřív — Sámova říše, nebo Velká Morava?", "Sámova říše je před Velkou Moravou."],
     explanation: "Slované přišli v 6. století. Sámo vytvořil první stát (623–658). V 9. století vznikla Velkomoravská říše, která roku 906 zanikla.",
   },
   {
@@ -209,7 +210,7 @@ const POOL_L2: PracticeTask[] = [
       "Cyril a Metoděj – hlaholice (863)",
       "Bořivoj pokřtěn na moravském dvoře",
     ],
-    hints: ["Slované přišli jako první.", "Bořivoj se dal pokřtít až po příchodu Cyrila a Metoděje (863)."],
+    hints: ["Bořivoj nemá letopočet. Pokřtil se před příchodem věrozvěstů, nebo po něm?", "Bořivoj se dal pokřtít až po příchodu Cyrila a Metoděje (863)."],
     explanation: "Slované přišli v 6. století, Sámo je sjednotil roku 623. Cyril a Metoděj přinesli roku 863 hlaholici. Krátce poté přijal na Moravě křest kníže Bořivoj.",
   },
 ];
@@ -347,8 +348,69 @@ const POOL_L3: PracticeTask[] = [
   },
 ];
 
+// Doplněno 2026-09-11: pravidla chtějí aspoň 12 různých úloh na úroveň.
+const EXTRA_L1: PracticeTask[] = [
+  {
+    question: "Seřaď události Velké Moravy od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Sámova říše (623)","Cyril a Metoděj přišli na Moravu (863)","Bořivoj pokřtěn (asi 883)"],
+    hints: ["Porovnej letopočty v závorkách.", "Sámova říše je ze 7. století, zbylé dvě události z 9. století. U nich rozhodne, který rok je menší."],
+    explanation: "Sámova říše vznikla roku 623. Cyril a Metoděj přišli na Moravu roku 863 a asi o dvacet let později se na moravském dvoře dal pokřtít český kníže Bořivoj.",
+  },
+  {
+    question: "Seřaď od nejstarší události po nejnovější.",
+    correctAnswer: "order",
+    items: ["Slované přicházejí (6. stol.)","Sámova říše (623)","Zánik Velké Moravy (906)"],
+    hints: ["Kterou z událostí určuje jen století, a ne přesný rok?", "Šesté století jsou roky 501 až 600 — tedy před rokem 623. Velká Morava zanikla až na počátku 10. století."],
+    explanation: "Slované přišli do našich zemí v 6. století. Roku 623 vznikla Sámova říše, první známý slovanský stát. Velká Morava zanikla kolem roku 906.",
+  },
+];
+const EXTRA_L2: PracticeTask[] = [
+  {
+    question: "Seřaď mezníky raných slovanských dějin od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Slované přicházejí (6. stol.)","Sámova říše (623)","Velkomoravská říše vzniká (kolem 833)","Bořivoj pokřtěn (asi 883)"],
+    hints: ["Nejdřív urči, co se stalo v 6. a v 7. století.", "Velká Morava vznikla kolem roku 833 a Bořivoj se dal pokřtít o padesát let později, když už tam působil Metoděj."],
+    explanation: "Slované přišli v 6. století, Sámova říše vznikla roku 623, Velkomoravská říše kolem roku 833 a kníže Bořivoj se dal pokřtít asi roku 883.",
+  },
+  {
+    question: "Seřaď slovanské státy a události od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Zánik Říma (5. stol.)","Sámova říše (623)","Velkomoravská říše vzniká (kolem 833)","Cyril a Metoděj (863)"],
+    hints: ["Která událost se stala ještě před příchodem Slovanů?", "Řím zanikl v 5. století. Cyril a Metoděj přišli do už existující Velké Moravy, tedy až po jejím vzniku."],
+    explanation: "Západořímská říše zanikla v 5. století. Roku 623 vznikla Sámova říše, kolem roku 833 Velká Morava a roku 863 do ní přišli Cyril a Metoděj.",
+  },
+];
+const EXTRA_L3: PracticeTask[] = [
+  {
+    question: "Seřaď mezníky od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Zánik Říma (5. stol.)","Sámova říše (623)","Velkomoravská říše vzniká (kolem 833)","Cyril a Metoděj (863)","Zánik Velké Moravy (906)"],
+    hints: ["Tři události se týkají Velké Moravy. Která z nich musí být první?", "Nejdřív musela Velká Morava vzniknout (kolem 833), pak do ní přišli věrozvěsti (863) a nakonec zanikla (906). Před tím vším byl Řím a Sámova říše."],
+    explanation: "Řím zanikl v 5. století, Sámova říše vznikla roku 623. Velká Morava vznikla kolem roku 833, roku 863 přišli Cyril a Metoděj a kolem roku 906 říše zanikla.",
+  },
+  {
+    question: "Seřaď události 9. století a jejich předehru od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Slované přicházejí (6. stol.)","Velkomoravská říše vzniká (kolem 833)","Cyril a Metoděj (863)","Bořivoj pokřtěn (asi 883)","Zánik Velké Moravy (906)"],
+    hints: ["Čtyři události jsou z 9. a 10. století. Seřaď je podle přesných roků.", "Pořadí v 9. století: nejdřív vznik říše, pak příchod věrozvěstů, po dvaceti letech Bořivojův křest a nakonec zánik na počátku 10. století."],
+    explanation: "Slované přišli v 6. století. Velká Morava vznikla kolem roku 833, Cyril a Metoděj přišli roku 863, Bořivoj se dal pokřtít asi roku 883 a říše zanikla kolem roku 906.",
+  },
+];
+
+const DOPLNEK: Record<number, string> = {
+  "1": "Letopočet v závorce ti napoví: čím menší číslo, tím dřív se to stalo. Století přečti jako stovky let.",
+  "2": "Když je v závorce století, převeď ho na roky: 6. století jsou roky 501 až 600, takže je dřív než rok 623.",
+  "3": "Několik událostí z 9. století jde těsně po sobě — rozhodují přesné roky, ne století."
+};
+
+const [P1, P2, P3] = posilNapovedy(
+  [[...POOL_L1, ...EXTRA_L1], [...POOL_L2, ...EXTRA_L2], [...POOL_L3, ...EXTRA_L3]],
+  DOPLNEK,
+);
+
 function gen(level: number): PracticeTask[] {
-  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  const pool = level >= 3 ? P3 : level === 2 ? P2 : P1;
   return shuffle(pool);
 }
 

@@ -1,82 +1,124 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
+import { ciselnaUloha, fdec, pick, rnd, sada } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď generátor s typickými chybami
+// (zapomenuté dělení, dělení špatným počtem, useknuté desetiny).
+// L1 průměr ze tří až čtyř čísel do 100 · L2 ze čtyř až šesti čísel, výsledek
+// může vyjít s pěti desetinami (12,5) · L3 obrácené úlohy: součet z průměru,
+// chybějící číslo a změna průměru po přidání čísla.
+
+const POCET_1P: Record<number, string> = { 3: "tři", 4: "čtyři", 5: "pět", 6: "šest" };
+const POCET_7P: Record<number, string> = { 2: "dvěma", 3: "třemi", 4: "čtyřmi", 5: "pěti", 6: "šesti", 7: "sedmi" };
+const seznam = (xs: number[]) => `${xs.slice(0, -1).join(", ")} a ${xs[xs.length - 1]}`;
+
+// Jednotka vždy před výčtem čísel, aby za číslem nestál tvar, který nesedí.
+const KONTEXT_CELE = [
+  (s: string) => `Jaký je průměr čísel ${s}?`,
+  (s: string) => `Počty žáků v jednotlivých třídách jsou ${s}. Kolik žáků má třída průměrně?`,
+  (s: string) => `Obchod prodal za jednotlivé dny tolik rohlíků: ${s}. Kolik rohlíků prodal průměrně za den?`,
+  (s: string) => `Družstvo sklidilo za jednotlivé dny tolik kilogramů jablek: ${s}. Kolik kilogramů to bylo průměrně za den?`,
+];
+const KONTEXT_DES = [
+  (s: string) => `Jaký je průměr čísel ${s}?`,
+  (s: string) => `Honza běhal za jednotlivé dny tolik minut: ${s}. Kolik minut běhal průměrně za den?`,
+  (s: string) => `Na výletě jsme za jednotlivé dny ušli tolik kilometrů: ${s}. Kolik kilometrů to bylo průměrně za den?`,
+  (s: string) => `Konvice vařila vodu postupně tolik sekund: ${s}. Kolik sekund to trvalo průměrně?`,
+];
+
+function prumer(count: number, max: number, desetiny: boolean): PracticeTask | null {
+  const nums = Array.from({ length: count }, () => rnd(5, max));
+  const sum = nums.reduce((a, b) => a + b, 0);
+  const avg = sum / count;
+  if (new Set(nums).size < count || nums.includes(avg)) return null;
+  if (desetiny ? (2 * sum) % count !== 0 : sum % count !== 0) return null;
+  const serazena = [...nums].sort((a, b) => a - b);
+  const chyby = [
+    { value: fdec(sum), why: `${fdec(sum)} je součet. Průměr dostaneš, když součet vydělíš počtem čísel.` },
+    ...((2 * sum) % (count - 1) === 0 ? [{ value: fdec(sum / (count - 1)), why: `Součet se dělil ${POCET_7P[count - 1]}. Čísel je ale ${POCET_1P[count]}.` }] : []),
+    ...(!Number.isInteger(avg) ? [{ value: fdec(Math.floor(avg)), why: `Dělení ${sum} ÷ ${count} nevyšlo beze zbytku a zbytek se zahodil. Pokračuj za desetinnou čárkou.` }] : []),
+    { value: fdec(avg + 1), why: `Zkouška: ${count} × ${fdec(avg + 1)} = ${fdec(count * (avg + 1))}, ale součet je ${sum}.` },
+    { value: fdec(avg - 1), why: `Zkouška: ${count} × ${fdec(avg - 1)} = ${fdec(count * (avg - 1))}, ale součet je ${sum}.` },
+  ];
+  const kontext = (desetiny ? KONTEXT_DES : KONTEXT_CELE)[sum % 4];
+  return ciselnaUloha(kontext(seznam(nums)), fdec(avg), chyby, [
+    `Nejdřív sečti všechna čísla: ${nums.join(" + ")}. Kolik vyjde?`,
+    `Průměr = součet všech čísel ÷ jejich počet. Čísel je ${POCET_1P[count]}, takže celý součet vyděl ${POCET_7P[count]}.${desetiny ? " Když dělení nevyjde beze zbytku, pokračuj za desetinnou čárkou." : ""}`,
+  ], [
+    `Součet: ${nums.join(" + ")} = ${sum}`,
+    `Průměr: ${sum} ÷ ${count} = ${fdec(avg)}`,
+    `Průměr leží mezi nejmenším (${serazena[0]}) a největším (${serazena[count - 1]}) číslem — to sedí.`,
+  ]);
 }
 
-// Level 1: průměr ze 3 čísel, jednoduchá čísla
-const POOL_L1: PracticeTask[] = [
-  { question: "Průměr čísel 2, 4, 6 = ?", correctAnswer: "4", options: ["4", "3", "5", "6"] },
-  { question: "Průměr čísel 1, 3, 5 = ?", correctAnswer: "3", options: ["2", "3", "4", "5"] },
-  { question: "Průměr čísel 4, 6, 8 = ?", correctAnswer: "6", options: ["5", "7", "6", "8"] },
-  { question: "Průměr čísel 10, 20, 30 = ?", correctAnswer: "20", options: ["15", "25", "30", "20"] },
-  { question: "Průměr čísel 3, 6, 9 = ?", correctAnswer: "6", options: ["6", "5", "7", "9"] },
-  { question: "Průměr čísel 5, 5, 5 = ?", correctAnswer: "5", options: ["3", "5", "10", "15"] },
-  { question: "Průměr čísel 0, 6, 12 = ?", correctAnswer: "6", options: ["4", "8", "6", "18"] },
-  { question: "Průměr čísel 8, 10, 12 = ?", correctAnswer: "10", options: ["9", "11", "12", "10"] },
-  { question: "Průměr čísel 15, 20, 25 = ?", correctAnswer: "20", options: ["20", "18", "22", "25"] },
-  { question: "Jak počítáme průměr?", correctAnswer: "Součet čísel dělený jejich počtem", options: ["Největší číslo plus nejmenší", "Součet čísel dělený jejich počtem", "Součin čísel", "Prostřední číslo"] },
-  { question: "Průměr čísel 7, 9, 11 = ?", correctAnswer: "9", options: ["8", "10", "9", "11"] },
-  { question: "Průměr čísel 100, 200, 300 = ?", correctAnswer: "200", options: ["150", "250", "300", "200"] },
-  { question: "Průměr čísel 12, 14, 16 = ?", correctAnswer: "14", options: ["14", "13", "15", "16"] },
-  { question: "Průměr čísel 20, 30, 40 = ?", correctAnswer: "30", options: ["25", "30", "35", "40"] },
-  { question: "Průměr čísel 50, 50, 50 = ?", correctAnswer: "50", options: ["100", "25", "50", "150"] },
-  { question: "Průměr čísel 6, 8, 10 = ?", correctAnswer: "8", options: ["7", "9", "10", "8"] },
-  { question: "Průměr čísel 0, 0, 9 = ?", correctAnswer: "3", options: ["3", "0", "9", "4,5"] },
-  { question: "Průměr čísel 40, 50, 60 = ?", correctAnswer: "50", options: ["45", "50", "55", "60"] },
-  { question: "Průměr čísel 1, 2, 3 = ?", correctAnswer: "2", options: ["1", "3", "2", "6"] },
-  { question: "Průměr čísel 9, 12, 15 = ?", correctAnswer: "12", options: ["10", "14", "13", "12"] },
-];
+function soucetZPrumeru(): PracticeTask | null {
+  const n = rnd(5, 9), avg = rnd(18, 32);
+  const celkem = n * avg;
+  return ciselnaUloha(`Ve škole je ${pad(n, "TŘÍDA")}. Průměrný počet žáků ve třídě je ${avg}. Kolik žáků chodí do všech tříd dohromady?`, celkem, [
+    { value: avg + n, why: "Počet tříd a průměr se sečetly. Průměr říká, kolik žáků připadá na jednu třídu — tříd je víc." },
+    { value: avg, why: "To je počet žáků v jedné průměrné třídě, ne ve všech třídách." },
+    { value: avg * (n - 1), why: `Násobilo se o jednu třídu méně. Tříd je ${n}.` },
+  ], [
+    `Kolik žáků by bylo ve škole, kdyby v každé z tříd (je jich ${n}) bylo přesně ${avg} žáků?`,
+    `Průměr = součet ÷ počet, takže součet = průměr × počet. Vynásob průměrný počet žáků počtem tříd. Výsledek musí vyjít mnohem víc než průměr, protože jde o všechny třídy.`,
+  ], [
+    `Součet = průměr × počet tříd`,
+    `${avg} × ${n} = ${celkem}`,
+    `Zkouška: ${celkem} ÷ ${n} = ${avg} ✓`,
+  ]);
+}
 
-// Level 2: průměr ze 4–5 čísel
-const POOL_L2: PracticeTask[] = [
-  { question: "Průměr čísel 2, 4, 6, 8 = ?", correctAnswer: "5", options: ["5", "4", "6", "20"] },
-  { question: "Průměr čísel 10, 20, 30, 40 = ?", correctAnswer: "25", options: ["20", "25", "30", "100"] },
-  { question: "Průměr čísel 5, 10, 15, 20 = ?", correctAnswer: "12,5", options: ["10", "15", "12,5", "50"] },
-  { question: "Průměr čísel 3, 5, 7, 9, 11 = ?", correctAnswer: "7", options: ["6", "8", "35", "7"] },
-  { question: "Průměr čísel 12, 16, 20, 24 = ?", correctAnswer: "18", options: ["18", "16", "20", "72"] },
-  { question: "Tři žáci dostali za test: 8, 6, 10. Jaký byl jejich průměr?", correctAnswer: "8", options: ["6", "8", "10", "7"] },
-  { question: "Průměr čísel 1, 3, 5, 7, 9 = ?", correctAnswer: "5", options: ["4", "6", "5", "25"] },
-  { question: "Čtyři dni teploty: 18, 20, 22, 24 °C. Průměrná teplota?", correctAnswer: "21 °C", options: ["20 °C", "22 °C", "84 °C", "21 °C"] },
-  { question: "Průměr čísel 25, 35, 45, 55 = ?", correctAnswer: "40", options: ["40", "35", "45", "160"] },
-  { question: "Průměr čísel 100, 80, 60, 40, 20 = ?", correctAnswer: "60", options: ["50", "60", "70", "300"] },
-  { question: "Hanka naměřila výšky: 152, 158, 162, 168 cm. Průměrná výška?", correctAnswer: "160 cm", options: ["155 cm", "165 cm", "160 cm", "640 cm"] },
-  { question: "Průměr čísel 14, 18, 22, 26 = ?", correctAnswer: "20", options: ["18", "22", "80", "20"] },
-  { question: "Průměr čísel 7, 9, 11, 13, 15 = ?", correctAnswer: "11", options: ["11", "10", "12", "55"] },
-  { question: "Jan zaběhl: 200, 250, 300, 350 m. Průměr?", correctAnswer: "275 m", options: ["250 m", "275 m", "300 m", "1100 m"] },
-  { question: "Průměr čísel 4, 8, 12, 16, 20 = ?", correctAnswer: "12", options: ["10", "14", "12", "60"] },
-  { question: "Průměr čísel 30, 40, 50, 60, 70 = ?", correctAnswer: "50", options: ["40", "60", "250", "50"] },
-  { question: "Průměr čísel 6, 9, 12, 15 = ?", correctAnswer: "10,5", options: ["10,5", "10", "11", "42"] },
-  { question: "Průměr čísel 100, 100, 200, 200 = ?", correctAnswer: "150", options: ["100", "150", "200", "600"] },
-];
+function chybejici(): PracticeTask | null {
+  const count = rnd(4, 5), avg = rnd(12, 60);
+  const known = Array.from({ length: count - 1 }, () => rnd(5, 2 * avg));
+  const sumKnown = known.reduce((a, b) => a + b, 0);
+  const celek = avg * count, missing = celek - sumKnown;
+  if (missing < 10 || missing > 150 || missing === avg || known.includes(missing) || known.includes(avg) || new Set(known).size < known.length) return null;
+  const [kolika, kolik, porade] = count === 4 ? ["čtyř", "Tři", "čtvrté"] : ["pěti", "Čtyři", "páté"];
+  return ciselnaUloha(`Průměr ${kolika} čísel je ${avg}. ${kolik} z nich jsou ${seznam(known)}. Jaké je ${porade} číslo?`, missing, [
+    { value: avg, why: `Hledané číslo nemusí být rovno průměru. Průměr ${avg} říká, že všechna čísla dohromady dají ${count} × ${avg} = ${celek}.` },
+    { value: celek, why: `${celek} je součet všech čísel. Ještě od něj odečti známá čísla.` },
+    { value: sumKnown, why: `${sumKnown} je součet známých čísel. Hledané číslo je to, co jim chybí do ${celek}.` },
+    { value: missing + 1, why: `Zkouška: (${[...known, missing + 1].join(" + ")}) ÷ ${count} nedá ${avg}.` },
+  ], [
+    `Jaký je součet všech čísel, když je jejich průměr ${avg}? Známá čísla jsou ${seznam(known)}.`,
+    `Součet všech čísel = průměr × počet čísel = ${avg} × ${count}. Od tohoto součtu odečti známá čísla — co zbude, je hledané číslo.`,
+  ], [
+    `Součet všech ${kolika} čísel: ${avg} × ${count} = ${celek}`,
+    `Známá čísla: ${known.join(" + ")} = ${sumKnown}`,
+    `Hledané číslo: ${celek} − ${sumKnown} = ${missing}`,
+    `Zkouška: (${[...known, missing].join(" + ")}) ÷ ${count} = ${avg} ✓`,
+  ]);
+}
 
-// Level 3: průměr v příkladech ze života, hledání chybějícího čísla
-const POOL_L3: PracticeTask[] = [
-  { question: "Průměr čísel 3, 7, ?, 11 je 8. Jaké je chybějící číslo?", correctAnswer: "11", options: ["8", "9", "11", "12"] },
-  { question: "Průměr čísel 5, ?, 15 je 10. Jaké je chybějící číslo?", correctAnswer: "10", options: ["8", "12", "15", "10"] },
-  { question: "Průměr 4 čísel je 12. Jejich součet je?", correctAnswer: "48", options: ["48", "16", "36", "3"] },
-  { question: "Průměr 5 čísel je 20. Jejich součet je?", correctAnswer: "100", options: ["25", "100", "4", "15"] },
-  { question: "Žák dostal za tři testy: 7, 9, ?. Průměr je 8. Jakou dostanete za třetí test?", correctAnswer: "8", options: ["6", "10", "8", "7"] },
-  { question: "Teploty 5 dní: 18, 20, 22, ?, 26 °C. Průměr je 22 °C. Jaká byla čtvrtá teplota?", correctAnswer: "24 °C", options: ["22 °C", "20 °C", "26 °C", "24 °C"] },
-  { question: "Průměr čísel 15, 25, 35 = ?", correctAnswer: "25", options: ["25", "20", "30", "75"] },
-  { question: "Průměr čísel 11, 13, 15, 17, 19 = ?", correctAnswer: "15", options: ["14", "15", "16", "75"] },
-  { question: "Tři skupiny: A = 24 bodů, B = 36 bodů, C = 30 bodů. Průměr bodů skupin?", correctAnswer: "30", options: ["28", "32", "30", "90"] },
-  { question: "Průměr čísel 2, 4, 6, 8, 10, 12 = ?", correctAnswer: "7", options: ["6", "8", "42", "7"] },
-  { question: "Průměr je 15. Jsou čtyři čísla. Tři jsou 10, 15, 20. Jaké je čtvrté?", correctAnswer: "15", options: ["15", "10", "20", "25"] },
-  { question: "Průměr 3 čísel je 9. Dvě čísla jsou 6 a 12. Jaké je třetí?", correctAnswer: "9", options: ["6", "9", "12", "3"] },
-  { question: "Průměrná výška 4 dětí je 155 cm. Součet výšek?", correctAnswer: "620 cm", options: ["600 cm", "640 cm", "620 cm", "155 cm"] },
-  { question: "Průměr čísel 50, 70, 90, 110 = ?", correctAnswer: "80", options: ["70", "90", "320", "80"] },
-  { question: "Škola má průměrně 28 žáků ve třídě. Je 6 tříd. Kolik je celkem žáků?", correctAnswer: "168", options: ["168", "28", "34", "180"] },
-];
+function pridane(): PracticeTask | null {
+  const n = pick([3, 4]), avg = rnd(8, 30), nove = rnd(avg + 2, avg + 30);
+  const soucet = n * avg + nove;
+  if (soucet % (n + 1) !== 0) return null;
+  const vysledek = soucet / (n + 1);
+  const pul = (avg + nove) / 2;
+  const kolika = n === 3 ? "tří" : "čtyř";
+  return ciselnaUloha(`Průměr ${kolika} čísel je ${avg}. Přidáme k nim číslo ${nove}. Jaký je průměr všech čísel teď?`, vysledek, [
+    ...(Number.isInteger(pul) ? [{ value: pul, why: `To je průměr jen dvou čísel (${avg} a ${nove}). Původní průměr ale zastupuje ${n === 3 ? "tři čísla" : "čtyři čísla"}.` }] : []),
+    { value: Math.round((n * avg + nove) / n), why: `Nový součet se dělil původním počtem čísel. Čísel je teď o jedno víc.` },
+    { value: avg, why: "Přidané číslo je větší než průměr, takže průměr musí stoupnout." },
+    { value: vysledek + 1, why: `Zkouška: ${n + 1} × ${vysledek + 1} = ${(n + 1) * (vysledek + 1)}, ale součet je ${soucet}.` },
+  ], [
+    `Kolik dají původní čísla dohromady, když je jejich průměr ${avg}? A kolik bude čísel, až přibude ${nove}?`,
+    `Původní součet = ${avg} × ${n}. Přičti nové číslo a celý nový součet vyděl novým počtem čísel (o jedno víc). Nový průměr musí ležet mezi starým průměrem a přidaným číslem.`,
+  ], [
+    `Původní součet: ${avg} × ${n} = ${n * avg}`,
+    `Nový součet: ${n * avg} + ${nove} = ${soucet}`,
+    `Nový průměr: ${soucet} ÷ ${n + 1} = ${vysledek}`,
+  ]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return sada(30, () => prumer(rnd(3, 4), 99, false));
+  if (level === 2) return sada(30, () => prumer(rnd(4, 6), 60, true));
+  const tvurci = [soucetZPrumeru, chybejici, pridane];
+  return sada(30, (i) => tvurci[i % tvurci.length]());
 }
 
 export const ARITMETICKYPRUMERVYPOCET: TopicMetadata[] = [

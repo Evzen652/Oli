@@ -1,97 +1,81 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { buildUniqueOptions } from "@/lib/content/uniqueOptions";
+import { ciselnaUloha, rnd } from "./_mat";
 
-function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
+// Přepsáno 2026-09-11 (audit 4. ročníku). Nápovědy byly u všech úloh stejné
+// („Sečti všechna čísla.“), distraktory jen ±1 a ±2 bez vysvětlení a klíč se
+// mohl objevit přímo mezi zadanými čísly. Teď jsou distraktory typické chyby
+// (zapomenuté dělení, dělení špatným počtem, prostřední číslo místo průměru)
+// a klíč nikdy není mezi zadanými čísly.
+// L1 tři čísla do 20 · L2 čtyři až pět čísel do 50 · L3 chybějící číslo z průměru.
 
-  // level 1: průměr 3 čísel (do 20), celé výsledky
-  // level 2: průměr 4–5 čísel (do 50), celé výsledky
-  // level 3: mix + zpětná úloha (chybějící člen ze zadaného průměru)
+const POCET_1P: Record<number, string> = { 3: "tři", 4: "čtyři", 5: "pět" };
+const POCET_7P: Record<number, string> = { 2: "dvěma", 3: "třemi", 4: "čtyřmi", 5: "pěti" };
 
-  for (let i = 0; i < 40; i++) {
-    if (level <= 2) {
-      const count = level === 1 ? 3 : [4, 5][i % 2];
-      const max = level === 1 ? 20 : 50;
-      // Generujeme čísla tak, aby průměr byl celý
-      let nums: number[];
-      do {
-        nums = Array.from({ length: count }, () => Math.floor(Math.random() * max) + 1);
-      } while (nums.reduce((a, b) => a + b, 0) % count !== 0);
-      const sum = nums.reduce((a, b) => a + b, 0);
-      const avg = sum / count;
+const KONTEXT = [
+  (s: string) => `Jaký je průměr čísel ${s}?`,
+  (s: string) => `Ema měla v testech tyto počty bodů: ${s}. Kolik bodů měla průměrně?`,
+  (s: string) => `Teploty v poledne byly ${s} °C. Jaká byla průměrná teplota ve °C?`,
+  (s: string) => `Družstvo sklidilo za jednotlivé dny ${s} kg jablek. Kolik kilogramů to bylo průměrně za den?`,
+];
 
-      tasks.push({
-        question: `Jaký je průměr čísel: ${nums.join(", ")}?`,
-        correctAnswer: String(avg),
-        options: shuffle([String(avg), String(avg + 1), String(avg - 1), String(avg + 2)]
-          .filter((v, idx, arr) => arr.indexOf(v) === idx).slice(0, 4)),
-        hints: [
-          "Sečti všechna čísla.",
-          "Vyděl součet počtem čísel.",
-        ],
-        solutionSteps: [
-          `Součet: ${nums.join(" + ")} = ${sum}`,
-          `Průměr = ${sum} ÷ ${count} = ${avg}`,
-        ],
-      });
-    } else {
-      // Zpětná úloha: průměr n čísel je X, chybí jedno.
-      // Retry dokud chybějící člen nevyjde v rozsahu [1, 99]. Dřívější fallback
-      // (`tasks[0] ?? {question:""}`) při i=0 vytvořil prázdnou úlohu a tu pak
-      // replikoval do dalších iterací → nevalidní batch (příčina flaky testu).
-      const count = [3, 4][i % 2];
-      let avg = 0;
-      let knownNums: number[] = [];
-      let sumKnown = 0;
-      let missing = 0;
-      do {
-        avg = Math.floor(Math.random() * 20) + 5; // průměr 5–24
-        knownNums = Array.from({ length: count - 1 }, () => Math.floor(Math.random() * (avg * 2)) + 1);
-        sumKnown = knownNums.reduce((a, b) => a + b, 0);
-        missing = avg * count - sumKnown;
-      } while (missing < 1 || missing > 99);
+const seznam = (xs: number[]) => `${xs.slice(0, -1).join(", ")} a ${xs[xs.length - 1]}`;
 
-      // Distraktory = typické chyby; buildUniqueOptions garantuje 4 různé kladné
-      // možnosti (dřív se u missing ∈ {1,2} člen missing−2 ≤ 0 odfiltroval → jen 3).
-      const rawDistractors = [
-        avg !== missing ? String(avg) : null,      // miskoncepce: dítě odpoví průměr místo chybějícího čísla
-        String(missing + 2),
-        missing - 2 > 0 ? String(missing - 2) : null,
-        String(missing + avg),
-      ].filter((v): v is string => v !== null);
-      const fallbackPool = [
-        String(missing + 1),
-        String(missing + 3),
-        String(missing * 2),
-        String(missing + avg + 1),
-      ];
-      const { options } = buildUniqueOptions(String(missing), rawDistractors, fallbackPool, 4);
-
-      tasks.push({
-        question: `Průměr ${count} čísel je ${avg}. Znáš ${count - 1} z nich: ${knownNums.join(", ")}. Jaké je chybějící číslo?`,
-        correctAnswer: String(missing),
-        options: shuffle(options),
-        hints: [
-          "Nejdřív spočítej celkový součet: průměr × počet čísel.",
-          "Od celkového součtu odečti známá čísla — to je chybějící.",
-        ],
-        solutionSteps: [
-          `Celkový součet = ${avg} × ${count} = ${avg * count}`,
-          `${avg * count} − ${sumKnown} = ${missing}`,
-        ],
-      });
-    }
-  }
-  return tasks;
+function prumer(count: number, max: number): PracticeTask {
+  let nums: number[], sum: number, avg: number;
+  do {
+    nums = Array.from({ length: count }, () => rnd(1, max));
+    sum = nums.reduce((a, b) => a + b, 0);
+    avg = sum / count;
+  } while (!Number.isInteger(avg) || nums.includes(avg) || avg === count || new Set(nums).size < count);
+  const serazena = [...nums].sort((a, b) => a - b);
+  const chyby = [
+    { value: sum, why: `${sum} je součet. Průměr dostaneš, když součet vydělíš počtem čísel.` },
+    ...(sum % (count - 1) === 0 ? [{ value: sum / (count - 1), why: `Součet se dělil ${POCET_7P[count - 1]}. Čísel je ale ${POCET_1P[count]}.` }] : []),
+    ...(count % 2 === 1 ? [{ value: serazena[Math.floor(count / 2)], why: "To je prostřední číslo, když čísla seřadíš. Průměr se ale počítá ze součtu všech čísel." }] : []),
+    { value: avg + 1, why: `Zkouška: ${count} × ${avg + 1} = ${count * (avg + 1)}, ale součet je ${sum}.` },
+    { value: avg - 1, why: `Zkouška: ${count} × ${avg - 1} = ${count * (avg - 1)}, ale součet je ${sum}.` },
+  ];
+  // Kontext podle součtu: stejná čísla = stejná úloha (jinak by se malá nápověda opakovala u různých zadání).
+  return ciselnaUloha(KONTEXT[sum % KONTEXT.length](seznam(nums)), avg, chyby, [
+    `Nejdřív sečti všechna čísla: ${nums.join(" + ")}. Kolik vyjde?`,
+    `Průměr = součet všech čísel ÷ jejich počet. Čísel je ${POCET_1P[count]}, takže celý součet vyděl ${POCET_7P[count]}.`,
+  ], [
+    `Součet: ${nums.join(" + ")} = ${sum}`,
+    `Průměr: ${sum} ÷ ${count} = ${avg}`,
+    `Průměr leží mezi nejmenším (${serazena[0]}) a největším (${serazena[count - 1]}) číslem.`,
+  ]);
 }
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+function chybejici(): PracticeTask {
+  const count = rnd(3, 4);
+  let avg = 0, known: number[] = [], sumKnown = 0, missing = 0;
+  do {
+    avg = rnd(6, 25);
+    known = Array.from({ length: count - 1 }, () => rnd(1, 2 * avg));
+    sumKnown = known.reduce((a, b) => a + b, 0);
+    missing = avg * count - sumKnown;
+  } while (missing < 2 || missing > 99 || missing === avg || missing === count
+    || known.includes(missing) || known.includes(avg) || new Set(known).size < known.length);
+  const celek = avg * count;
+  const [kolika, kolik, porade] = count === 3 ? ["tří", "Dvě", "třetí"] : ["čtyř", "Tři", "čtvrté"];
+  return ciselnaUloha(`Průměr ${kolika} čísel je ${avg}. ${kolik} z nich jsou ${seznam(known)}. Jaké je ${porade} číslo?`, missing, [
+    { value: avg, why: `Hledané číslo nemusí být rovno průměru. Průměr ${avg} říká, že všechna čísla dohromady dají ${count} × ${avg} = ${celek}.` },
+    { value: celek, why: `${celek} je součet všech čísel. Ještě od něj odečti známá čísla.` },
+    { value: sumKnown, why: `${sumKnown} je součet známých čísel. Hledané číslo je to, co jim chybí do ${celek}.` },
+    { value: missing + 1, why: `Zkouška: (${[...known, missing + 1].join(" + ")}) ÷ ${count} nedá ${avg}.` },
+  ], [
+    `Jaký je součet všech čísel, když je jejich průměr ${avg}? Známá čísla jsou ${seznam(known)}.`,
+    `Součet všech čísel = průměr × počet čísel = ${avg} × ${count}. Od tohoto součtu odečti známá čísla ${seznam(known)} — co zbude, je hledané číslo.`,
+  ], [
+    `Součet všech ${kolika} čísel: ${avg} · ${count} = ${celek}`,
+    `Známá čísla: ${known.join(" + ")} = ${sumKnown}`,
+    `Hledané číslo: ${celek} − ${sumKnown} = ${missing}`,
+    `Zkouška: (${[...known, missing].join(" + ")}) ÷ ${count} = ${avg} ✓`,
+  ]);
+}
+
+function gen(level: number): PracticeTask[] {
+  return Array.from({ length: 40 }, () => (level === 1 ? prumer(3, 20) : level === 2 ? prumer(rnd(4, 5), 50) : chybejici()));
 }
 
 export const ARITMETICKY_PRUMER: TopicMetadata[] = [

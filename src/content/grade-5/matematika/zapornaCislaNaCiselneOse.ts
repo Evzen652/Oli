@@ -1,74 +1,166 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
+import { ciselnaUloha, pick, rnd, sada, shuffle, slovy } from "./_mat";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
+// a bez vysvětlení chybných možností. Teď generátor s typickými chybami:
+// „−8 je víc než −3, protože 8 je víc než 3“, záporné číslo na špatné straně
+// osy, vzdálenost od nuly se znaménkem.
+// L1 záporné číslo na ose, na teploměru a pod hladinou, vzdálenost od nuly
+// · L2 největší a nejmenší ze čtyř čísel, seřazení · L3 posun po ose o několik
+// dílů (změna teploty, patra pod zemí, kolik dílů je mezi dvěma čísly).
+
+const Z = (n: number) => (n < 0 ? `−${-n}` : String(n));
+
+function naOse(): PracticeTask | null {
+  const n = rnd(2, 15);
+  return ciselnaUloha(`Které číslo leží na číselné ose ${pad(n, "DÍL")} vlevo od nuly?`, Z(-n), [
+    { value: Z(n), why: `${n} leží vpravo od nuly. Vlevo od nuly jsou záporná čísla se znaménkem minus.` },
+    { value: Z(-(n + 1)), why: "Počítej dílky znovu — od nuly, ne od prvního dílku." },
+    { value: Z(-(n - 1)), why: "Počítej dílky znovu — nula se nepočítá jako první dílek." },
+  ], [
+    `Na kterou stranu od nuly leží čísla se znaménkem minus? A kolik dílů máš odpočítat?`,
+    "Vpravo od nuly jsou kladná čísla, vlevo záporná. Číslo, které je o několik dílů vlevo od nuly, zapíšeš s minusem a počtem dílů.",
+  ], [`Vlevo od nuly = záporné číslo`, `${pad(n, "DÍL")} vlevo → ${Z(-n)}`]);
 }
 
-// Level 1: základní porovnávání záporných čísel
-const POOL_L1: PracticeTask[] = [
-  { question: "Které číslo je větší: −3 nebo −5?", correctAnswer: "−3", options: ["−3", "−5", "jsou stejná", "nelze určit"] },
-  { question: "Které číslo je menší: −1 nebo −4?", correctAnswer: "−4", options: ["−1", "−4", "jsou stejná", "nelze určit"] },
-  { question: "Platí: −2 > −7?", correctAnswer: "Ano", options: ["Ne", "Jsou si rovny", "Ano", "Záleží"] },
-  { question: "Platí: −5 < −1?", correctAnswer: "Ano", options: ["Ne", "Jsou si rovny", "Záleží", "Ano"] },
-  { question: "Platí: −3 > 0?", correctAnswer: "Ne", options: ["Ne", "Ano", "Jsou si rovny", "Záleží"] },
-  { question: "Platí: 0 > −8?", correctAnswer: "Ano", options: ["Ne", "Ano", "Jsou si rovny", "Záleží"] },
-  { question: "Jaká teplota je vyšší: −10 °C nebo −5 °C?", correctAnswer: "−5 °C", options: ["−10 °C", "jsou stejné", "−5 °C", "nelze určit"] },
-  { question: "Jaká teplota je nižší: −2 °C nebo −6 °C?", correctAnswer: "−6 °C", options: ["−2 °C", "jsou stejné", "nelze určit", "−6 °C"] },
-  { question: "Kde na číselné ose leží číslo −4?", correctAnswer: "Vlevo od nuly", options: ["Vlevo od nuly", "Vpravo od nuly", "Na nule", "Mimo číselnou osu"] },
-  { question: "Kde na číselné ose leží číslo 4?", correctAnswer: "Vpravo od nuly", options: ["Vlevo od nuly", "Vpravo od nuly", "Na nule", "Mimo číselnou osu"] },
-  { question: "Které číslo leží na číselné ose nejblíže nule: −8, −2, −5?", correctAnswer: "−2", options: ["−5", "−8", "−2", "jsou stejně daleko"] },
-  { question: "Seřaď od nejmenšího: −3, 0, 2, −1", correctAnswer: "−3, −1, 0, 2", options: ["0, −1, −3, 2", "2, 0, −1, −3", "−1, −3, 0, 2", "−3, −1, 0, 2"] },
-  { question: "Platí: −9 < −1?", correctAnswer: "Ano", options: ["Ano", "Ne", "Jsou si rovny", "Záleží"] },
-  { question: "Co je záporné číslo?", correctAnswer: "Číslo menší než nula", options: ["Číslo větší než nula", "Číslo menší než nula", "Číslo rovné nule", "Číslo bez znaménka"] },
-  { question: "Které z čísel je záporné: −5, 0, 3?", correctAnswer: "−5", options: ["0", "3", "−5", "všechna jsou záporná"] },
-  { question: "Jaká teplota je v mrazu: 5 °C nebo −5 °C?", correctAnswer: "−5 °C", options: ["5 °C", "obě jsou v mrazu", "ani jedna", "−5 °C"] },
-  { question: "Platí: −100 < −1?", correctAnswer: "Ano", options: ["Ano", "Ne", "Jsou si rovny", "Záleží"] },
-  { question: "Které číslo je větší: −6 nebo 1?", correctAnswer: "1", options: ["−6", "1", "jsou stejná", "nelze určit"] },
-  { question: "Seřaď od největšího: 5, −5, 0", correctAnswer: "5, 0, −5", options: ["−5, 0, 5", "0, 5, −5", "5, 0, −5", "5, −5, 0"] },
-  { question: "Které číslo je nejblíže nule: −3 nebo 2?", correctAnswer: "2 – vzdálenost 2", options: ["−3 – vzdálenost 3", "jsou stejně daleko", "nula sama", "2 – vzdálenost 2"] },
-];
+function teplomer(): PracticeTask | null {
+  const n = rnd(2, 25);
+  return ciselnaUloha(`Teploměr ukazuje teplotu ${n} °C pod nulou. Jak ji zapíšeš číslem?`, `${Z(-n)} °C`, [
+    { value: `${n} °C`, why: "Bez minusu by to byla teplota nad nulou." },
+    { value: `${Z(-(n + 10))} °C`, why: `Pod nulou je o ${n}, ne o ${n + 10}.` },
+    { value: "0 °C", why: "Nula je bod mrazu. Teplota pod nulou je záporné číslo." },
+  ], [
+    `Teplota je pod bodem mrazu. Jaké znaménko dáš před číslo ${slovy(n)}?`,
+    "Teploty pod nulou se zapisují se znaménkem minus. Nula je bod mrazu, teplota nad ní je kladná.",
+  ], [`Pod nulou → minus`, `${n} °C pod nulou = ${Z(-n)} °C`]);
+}
 
-// Level 2: absolutní hodnota, teploty, hlubiny
-const POOL_L2: PracticeTask[] = [
-  { question: "Jak daleko od nuly leží číslo −7 na číselné ose?", correctAnswer: "7 kroků", options: ["7 kroků", "−7 kroků", "0 kroků", "14 kroků"] },
-  { question: "Jak daleko od nuly leží číslo 7 na číselné ose?", correctAnswer: "7 kroků", options: ["−7 kroků", "7 kroků", "0 kroků", "14 kroků"] },
-  { question: "Mají čísla −5 a 5 stejnou vzdálenost od nuly?", correctAnswer: "Ano", options: ["Ne", "Záleží na směru", "Ano", "Nelze porovnat"] },
-  { question: "Teplota ráno byla −4 °C, odpoledne 3 °C. O kolik stupňů se oteplilo?", correctAnswer: "7 °C", options: ["1 °C", "−7 °C", "4 °C", "7 °C"] },
-  { question: "Teplota klesla z 2 °C na −5 °C. O kolik stupňů klesla?", correctAnswer: "7 °C", options: ["7 °C", "3 °C", "5 °C", "−3 °C"] },
-  { question: "Hloubka pod mořem −30 m a −80 m — která je větší?", correctAnswer: "−30 m – blíže k hladině", options: ["−80 m – větší číslo", "−30 m – blíže k hladině", "jsou stejné", "nelze říct"] },
-  { question: "Seřaď od nejmenšího: −10, 5, −3, 0, 8", correctAnswer: "−10, −3, 0, 5, 8", options: ["8, 5, 0, −3, −10", "−3, −10, 0, 5, 8", "−10, −3, 0, 5, 8", "0, −3, −10, 5, 8"] },
-  { question: "Podzemní patro je v hloubce −4 m. Nadzemní patro ve výšce 3 m. Jaký je rozdíl?", correctAnswer: "7 m", options: ["1 m", "−1 m", "4 m", "7 m"] },
-  { question: "Platí: vzdálenost čísla −8 od nuly > vzdálenost čísla 5 od nuly?", correctAnswer: "Ano", options: ["Ano", "Ne", "Jsou stejné", "Záleží"] },
-  { question: "Číslo −12 leží na číselné ose vlevo nebo vpravo od čísla −5?", correctAnswer: "Vlevo – −12 < −5", options: ["Vpravo – −12 > −5", "Vlevo – −12 < −5", "Na stejném místě", "Nelze určit"] },
-  { question: "Vypočítej: jak daleko je −6 od 4 na číselné ose?", correctAnswer: "10 kroků", options: ["2 kroky", "−10 kroků", "10 kroků", "6 kroků"] },
-  { question: "Teplota v Praze je −3 °C a v Brně −8 °C. Kde je tepleji?", correctAnswer: "V Praze – −3 °C", options: ["V Brně – −8 °C", "je stejně", "nelze určit", "V Praze – −3 °C"] },
-  { question: "Jaké celé číslo leží na číselné ose mezi −3 a −1?", correctAnswer: "−2", options: ["−2", "−1", "−3", "0"] },
-  { question: "Seřaď od největšího: −4, −9, −1, −6", correctAnswer: "−1, −4, −6, −9", options: ["−9, −6, −4, −1", "−1, −4, −6, −9", "−4, −9, −1, −6", "−1, −6, −4, −9"] },
-  { question: "Jaká je absolutní hodnota čísla −15?", correctAnswer: "15", options: ["−15", "0", "15", "1"] },
-];
+function hloubka(): PracticeTask | null {
+  const n = rnd(3, 40), kdo = pick(["Potápěč", "Ponorka", "Kotva"]);
+  return ciselnaUloha(`${kdo} je ${n} m pod hladinou. Jak tu výšku zapíšeš číslem, když hladina je 0 m?`, `${Z(-n)} m`, [
+    { value: `${n} m`, why: `${n} m by bylo nad hladinou.` },
+    { value: `${Z(-(n * 10))} m`, why: `Pod hladinou je ${n} m, ne ${n * 10} m.` },
+    { value: `${Z(-(n + 1))} m`, why: "Zkontroluj číslo — hloubka je v zadání." },
+  ], [
+    `Je ${kdo.toLowerCase()} nad hladinou, nebo pod ní? Jaké znaménko pak dostane číslo ${slovy(n)}?`,
+    "Hladina je nula. Co je nad ní, zapíšeš kladným číslem, co je pod ní, záporným — se znaménkem minus.",
+  ], [`Hladina = 0`, `Pod hladinou → ${Z(-n)} m`]);
+}
 
-// Level 3: složitější porovnávání, příklady ze života
-const POOL_L3: PracticeTask[] = [
-  { question: "Nejnižší zaznamenaná teplota na Zemi je asi −89 °C. Která je nižší: −89 °C nebo −90 °C?", correctAnswer: "−90 °C", options: ["−89 °C", "jsou stejné", "nelze určit", "−90 °C"] },
-  { question: "Mariánský příkop je hluboký asi −11 000 m. Jak to čteme?", correctAnswer: "jedenáct tisíc metrů pod hladinou moře", options: ["jedenáct tisíc metrů pod hladinou moře", "minus jedenáct tisíc", "nad hladinou moře", "jedenáct metrů"] },
-  { question: "Seřaď od nejmenšího: −50, 20, −100, 0, −25", correctAnswer: "−100, −50, −25, 0, 20", options: ["20, 0, −25, −50, −100", "−100, −50, −25, 0, 20", "−25, −50, −100, 0, 20", "0, −25, −50, −100, 20"] },
-  { question: "Banka: máš −500 Kč (dluh). Kamarád má 200 Kč. Kdo má více peněz?", correctAnswer: "Kamarád – 200 Kč", options: ["Ty – −500 Kč je větší číslo", "jste na tom stejně", "Kamarád – 200 Kč", "nelze porovnat"] },
-  { question: "Teploměr ukázal −15 °C ráno a −8 °C v poledne. Je v poledne tepleji?", correctAnswer: "Ano – −8 > −15", options: ["Ne – −15 je větší záporné číslo", "je stejně", "záleží na místě", "Ano – −8 > −15"] },
-  { question: "Platí: −|−5| = −5?", correctAnswer: "Ano", options: ["Ano", "Ne", "Pouze přibližně", "Záleží"] },
-  { question: "Které dva body jsou na číselné ose stejně daleko od nuly: −7 a 7?", correctAnswer: "Ano, oba jsou 7 kroků od nuly", options: ["Ne, −7 je od nuly dál", "Ano, oba jsou 7 kroků od nuly", "Ne, 7 je od nuly dál", "Nelze je vůbec porovnat"] },
-  { question: "Výtah je v poschodí −2 (2. podzemní). Musí jet do 5. patra. O kolik pater jede?", correctAnswer: "7 pater", options: ["3 patra", "5 pater", "7 pater", "−7 pater"] },
-  { question: "Teploměr ukazuje −20 °C. Oteplí se o 35 °C. Jaká bude teplota?", correctAnswer: "15 °C", options: ["−15 °C", "55 °C", "−55 °C", "15 °C"] },
-  { question: "Platí: čím více vlevo na číselné ose, tím menší číslo?", correctAnswer: "Ano", options: ["Ano", "Ne", "Záleží na čísle", "Záleží na měřítku"] },
-];
+function vzdalenost(): PracticeTask | null {
+  const n = rnd(2, 20);
+  return ciselnaUloha(`Kolik dílů je na číselné ose od nuly k číslu ${Z(-n)}?`, pad(n, "DÍL"), [
+    { value: pad(n + 1, "DÍL"), why: "Nula se nepočítá jako dílek — počítají se mezery mezi čísly." },
+    { value: pad(n - 1, "DÍL"), why: "Počítej znovu: od nuly až k číslu." },
+    { value: pad(2 * n, "DÍL"), why: `To by bylo z čísla ${Z(-n)} až k číslu ${n} na druhé straně.` },
+  ], [
+    `Zkus si na ose odpočítat od nuly doleva až k číslu minus ${slovy(n)}. Kolik skoků uděláš?`,
+    "Vzdálenost od nuly je vždy kladné číslo — je to počet dílů mezi nulou a číslem. Znaménko jen říká, na které straně číslo leží.",
+  ], [`Od 0 doleva k ${Z(-n)}: ${pad(n, "DÍL")}`]);
+}
+
+function nejmensi(): PracticeTask | null {
+  const a = rnd(14, 30), b = rnd(10, a - 3), c = rnd(1, 9);
+  const key = Z(-a);
+  const ds = [
+    { value: Z(-b), why: `${Z(-b)} leží blíž nule, tedy víc vpravo než ${key}.` },
+    { value: "0", why: "Nula leží vpravo od všech záporných čísel." },
+    { value: String(c), why: `${c} je kladné — leží vpravo od nuly.` },
+  ];
+  const vse = shuffle([key, ...ds.map((d) => d.value)]);
+  return ciselnaUloha(`Které z čísel ${vse.join("; ")} je nejmenší?`, key, ds, [
+    `Představ si číselnou osu. Kde na ní leží ${Z(-b)} a kde ${c}? Které z čísel je ze všech nejvíc vlevo?`,
+    "Čísla na ose rostou zleva doprava. Záporná čísla jsou vlevo od nuly, a čím dál od nuly doleva, tím víc vlevo — bez ohledu na to, jak velká číslice stojí za minusem.",
+  ], [`Na ose zleva: ${[...vse].sort((x, y) => Number(x.replace("−", "-")) - Number(y.replace("−", "-"))).join("; ")}`, `Nejvíc vlevo: ${key}`]);
+}
+
+function nejvetsi(): PracticeTask | null {
+  const cisla = new Set<number>();
+  while (cisla.size < 4) cisla.add(-rnd(10, 40));
+  const xs = [...cisla].sort((x, y) => x - y);
+  const key = Z(xs[3]);
+  const ds = [
+    { value: Z(xs[0]), why: `Za minusem stojí velká číslice, ale ${Z(xs[0])} leží na ose ze všech nejvíc vlevo.` },
+    { value: Z(xs[1]), why: `${Z(xs[1])} leží dál od nuly než ${key}, tedy víc vlevo.` },
+    { value: Z(xs[2]), why: `${Z(xs[2])} leží dál od nuly než ${key}, tedy víc vlevo.` },
+  ];
+  const vse = shuffle(xs.map(Z));
+  return ciselnaUloha(`Které z čísel ${vse.join("; ")} je největší?`, key, ds, [
+    `Všechna čísla jsou záporná. Které z nich leží na ose nejblíž nule?`,
+    "Na ose rostou čísla zleva doprava. U záporných čísel platí: čím blíž nule, tím víc vpravo — takže to s nejmenší číslicí za minusem je nejvíc vpravo.",
+  ], [`Na ose zleva: ${xs.map(Z).join("; ")}`, `Nejvíc vpravo: ${key}`]);
+}
+
+function serad(): PracticeTask | null {
+  const cisla = new Set<number>([-rnd(5, 15), -rnd(1, 4), rnd(1, 9)]);
+  cisla.add(Math.random() < 0.5 ? 0 : -rnd(16, 25));
+  if (cisla.size < 4) return null;
+  const xs = [...cisla];
+  const J = (a: number[]) => a.map(Z).join("; ");
+  const key = [...xs].sort((a, b) => a - b);
+  let zamichane = shuffle(xs);
+  if (J(zamichane) === J(key)) zamichane = [...key].reverse();
+  return ciselnaUloha(`Seřaď od nejmenšího: ${J(zamichane)}.`, J(key), [
+    { value: J([...xs].sort((a, b) => Math.abs(a) - Math.abs(b))), why: "Řadilo se podle číslic bez ohledu na minus. Záporná čísla jsou ale vlevo od nuly." },
+    { value: J([...key].reverse()), why: "To je pořadí od největšího." },
+    { value: J([...xs].sort((a, b) => (a < 0 && b < 0 ? b - a : a - b))), why: "Záporná čísla se seřadila obráceně — to s větší číslicí za minusem leží víc vlevo." },
+  ], [
+    `Které z čísel ${J(xs)} leží na ose nejvíc vlevo, a které nejvíc vpravo?`,
+    "Na ose rostou čísla zleva doprava: nejdřív záporná (to s největší číslicí za minusem úplně vlevo), pak nula a nakonec kladná čísla.",
+  ], [`Na ose zleva doprava: ${J(key)}`]);
+}
+
+function teplota(): PracticeTask | null {
+  const start = -rnd(2, 12), zmena = rnd(3, 15);
+  const konec = start + zmena;
+  if (konec === 0 || Math.abs(konec) === -start || Math.abs(konec) === zmena) return null;
+  if (`${zmena} °C`.includes(`${Z(konec)} °C`) || Z(start).includes(Z(konec))) return null;
+  const kdy = pick([["Ráno", "do poledne"], ["V noci", "do rána"], ["V pondělí", "do úterý"]]);
+  return ciselnaUloha(`${kdy[0]} bylo ${Z(start)} °C, ${kdy[1]} se oteplilo o ${zmena} °C. Kolik stupňů bylo potom?`, `${Z(konec)} °C`, [
+    { value: `${Z(start - zmena)} °C`, why: "Posun šel na špatnou stranu. Oteplení znamená posun po teploměru nahoru — doprava na ose." },
+    { value: `${Z(-start + zmena)} °C`, why: "Minus se nevšímal. Teplota začínala pod nulou." },
+    { value: `${Z(-konec)} °C`, why: `Znaménko nesedí: po posunu o ${zmena} dílů nahoru z ${Z(start)} jsi ${konec > 0 ? "nad" : "pod"} nulou.` },
+  ], [
+    `Kolik dílů je z ${Z(start)} k nule? A kolik dílů ještě zbývá z oteplení o ${zmena} °C?`,
+    "Oteplení = posun po teploměru nahoru (na ose doprava), ochlazení = dolů (doleva). Nejdřív dojdi k nule a pak pokračuj o zbytek.",
+  ], [
+    `Z ${Z(start)} k nule: ${pad(-start, "DÍL")}`,
+    konec > 0 ? `Zbývá ${zmena} − ${-start} = ${konec} → ${konec} °C` : `Nula nestačí: ${Z(start)} + ${zmena} = ${Z(konec)} °C`,
+  ]);
+}
+
+function patra(): PracticeTask | null {
+  const start = -rnd(1, 3), nahoru = rnd(2, 8), konec = start + nahoru;
+  if (konec === 0 || Math.abs(konec) === -start) return null;
+  return ciselnaUloha(`Výtah stojí v patře ${Z(start)} (pod zemí). Vyjede o ${pad(nahoru, "PATRO")} nahoru. Ve kterém patře zastaví?`, Z(konec), [
+    { value: Z(start - nahoru), why: "Výtah jel nahoru, ne dolů." },
+    { value: Z(nahoru - start), why: "Nevšímal sis minusu — výtah začínal pod zemí." },
+    { value: Z(konec + 1), why: "Přízemí má číslo 0 — i to je jedno patro na cestě." },
+  ].map((c) => ({ ...c })), [
+    `Kolik pater musí výtah z patra ${Z(start)} vyjet, aby byl v přízemí (0)?`,
+    "Patra pod zemí mají záporná čísla, přízemí je 0. Jízda nahoru je posun doprava na číselné ose; přízemí se počítá jako jedno patro.",
+  ], [`Z ${Z(start)} do přízemí: ${-start}`, `Zbývá ${nahoru} − ${-start} = ${konec} → patro ${Z(konec)}`]);
+}
+
+function mezi(): PracticeTask | null {
+  const a = -rnd(2, 12), b = rnd(2, 12);
+  const d = b - a;
+  return ciselnaUloha(`Kolik dílů je na číselné ose mezi čísly ${Z(a)} a ${b}?`, pad(d, "DÍL"), [
+    { value: pad(b + a > 0 ? b + a : -(b + a) || 1, "DÍL"), why: `Čísla se odečetla bez ohledu na minus. Z ${Z(a)} k nule je ${-a} dílů a z nuly k ${b} dalších ${b}.` },
+    { value: pad(d + 1, "DÍL"), why: "Počítala se čísla, ne mezery mezi nimi." },
+    { value: pad(d - 1, "DÍL"), why: "Nula leží mezi nimi a také se přes ni jde." },
+  ], [
+    `Kolik dílů je z ${Z(a)} k nule, a kolik z nuly k ${b}?`,
+    "Když leží jedno číslo vlevo a druhé vpravo od nuly, rozděl cestu na dvě části: k nule a od nuly. Obě části sečti.",
+  ], [`${Z(a)} → 0: ${pad(-a, "DÍL")}`, `0 → ${b}: ${pad(b, "DÍL")}`, `Celkem: ${-a} + ${b} = ${d}`]);
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) { const t = [naOse, teplomer, hloubka, vzdalenost]; return sada(30, (i) => t[i % 4]()); }
+  if (level === 2) { const t = [nejmensi, nejvetsi, serad]; return sada(30, (i) => t[i % 3]()); }
+  const t = [teplota, patra, mezi];
+  return sada(30, (i) => t[i % 3]());
 }
 
 export const ZAPORNACISLANACISELNEOSE: TopicMetadata[] = [
@@ -88,7 +180,7 @@ export const ZAPORNACISLANACISELNEOSE: TopicMetadata[] = [
       "Pochopit záporná čísla v kontextu teploty a hlubiny",
       "Určit vzdálenost čísla od nuly",
     ],
-    boundaries: ["Bez sčítání a odčítání záporných čísel", "Bez záporných desetinných čísel"],
+    boundaries: ["Úroveň 3: posun po číselné ose o několik dílů (změna teploty, patra pod zemí); bez písemného počítání se zápornými čísly", "Bez záporných desetinných čísel"],
     gradeRange: [5, 5],
     inputType: "select_one",
     defaultLevel: 1,

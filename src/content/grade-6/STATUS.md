@@ -1,4 +1,4 @@
-⏸️ PARKOVÁNO — mimo aktivní scope (2026-06-18). Nerozšiřovat.
+✅ Auditováno 2026-09-11 (CONTENT_AUTHORING §0) a zamrazeno. Ročník je zatím zamčený v `ACTIVE_GRADES` — viz `PROJECT_STATUS.md` §6, session 37.
 
 # Grade 6 — STATUS (pilot 2. stupně)
 

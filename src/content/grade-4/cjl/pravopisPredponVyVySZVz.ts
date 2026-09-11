@@ -1,148 +1,125 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 4. ročníku). Původní pool měl chybné klíče
+// („Dostal ___znamení“ → „vý“ dává neexistující „významení“), rozbité věty
+// („Chlapec ___klidnil se postupně“ s klíčem „u“), nepřirozená spojení
+// („vystřelil gól“ místo „vstřelil gól“) a pravidlo „vý- = přízvučná
+// slabika“, které dítěti nic neřekne. Věty, kde by šly dvě předpony
+// (vyletěl × vzlétl na střechu), tu nejsou — doplňovačka má jeden klíč.
+//
+// L1 = vy- × vý- (sloveso × jméno); možnosti jen sporný grafém (vy/vý/vi/ví)
+// L2 = s- × z- × vz- podle významu
+// L3 = všechno dohromady včetně výjimky zvednout.
 
-interface FillItem { sentence: string; blank: string; options: string[] }
+type Klic = "vy" | "vý" | "s" | "z" | "vz";
+type Vyznam = "sloveso" | "jméno" | "ven" | "dolů" | "dohromady" | "nahoru" | "změna";
 
-const POOL_L1: FillItem[] = [
-  { sentence: "___dělal jsem domácí úkol.", blank: "Vy", options: ["Vy-", "Vý-", "S-", "Z-"] }, // uppercase entry — gen() dole sjednotí case klíče s options
-
-  { sentence: "Dostal jsem ___hru v soutěži.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Míč ___letěl vysoko do vzduchu.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dostal ___bornou známku.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Přečetl ___tah z knihy.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Kočka ___lezla na strom.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Ptáček ___letěl z klece.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dostal ___hodu v závodech.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Hráč ___střelil gól.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Žák ___pracoval celé cvičení.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dostal jsem ___borné hodnocení.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Psala dopis s ___bornou péčí.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Závodník ___trénoval měsíc.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Přečetl ___tisk z novin.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Horolezec ___stoupil na vrchol.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Žák ___světlil úlohu správně.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dostal ___znamení z matematiky.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Žába ___skočila z rybníka.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Sbírka má ___bornou cenu.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Ptáci ___létali z hnízda.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Přečetl jsem ___tah ze smlouvy.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dítě ___běhlo za míčem.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Je to ___borný nápad.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Sluníčko ___šlo z mraků.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Dostal ___zvání na oslavu.", blank: "po", options: ["vy-", "vý-", "po-", "z-"] },
-  { sentence: "Kluk ___koukl z okna.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Přečetl jsem ___bornou knihu.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Ryba ___skočila z vody.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Zpěvák měl ___borný hlas.", blank: "vý", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Závodník ___hrál závod.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-];
-
-const POOL_L2: FillItem[] = [
-  { sentence: "Lyžař ___jel z kopce.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Chlapec ___bohatl díky práci.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Kameny ___padaly ze skály.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Brácha ___pálil papír v ohni.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Dívka ___lepšila svůj výkon.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Sníh ___rostl přes noc.", blank: "vz", options: ["vy-", "vz-", "s-", "z-"] },
-  { sentence: "Svah ___jeli na saních.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Mlha ___hustla po ránu.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Ovoce ___měklo na slunci.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Kamion ___jel z dálnice.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Balón se ___nesl k obloze.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Slza ___tekla po tváři.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Chlapec se ___dal a přestal plakat.", blank: "vz", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Přátelé ___loučili síly.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Vlak ___pomalel před stanicí.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Otec si ___pomněl na dětství.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Voda ___houstla mrazem.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Letadlo ___klesalo k přistání.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Cena ___klesla po slevě.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Chlapec ___klidnil se postupně.", blank: "u", options: ["s-", "z-", "u-", "vz-"] },
-  { sentence: "Přátelé ___chystali na výlet.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Puk ___klouzal po ledu.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Jelen ___mizel v lese.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Oheň ___hasl ráno.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Ptáci ___létali nad vodou.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Auto ___razilo se stromem.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Stromy ___dřevěněly s lety.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Těsto ___tuhlo v troubě.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Potoky se ___lévaly do řeky.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Mléko ___kyslo v teple.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-];
-
-const POOL_L3: FillItem[] = [
-  { sentence: "Chlapec si ___pomněl na tábor v přírodě.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Žák ___vedl ruku, aby odpověděl na otázku.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Závodníci ___jeli na kole ze strmého kopce.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Holčička ___pracovala celý projekt sama.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Slunce ___chází každý den na východě.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Balón se ___nesl do oblak a zmizel z dohledu.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Přátelé ___loučili síly a dokázali to.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Kámen ___padl ze skály na cestu.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Kluk ___skočil na trampolíně velmi vysoko.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Hra ___těžila z každého hráče to nejlepší.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Horolezec ___stoupil na vrchol hory.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Potok ___mrzl a děti mohly bruslit.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Četa vojáků ___pochodovala na rozkaz.", blank: "vy", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Závodník ___trénoval a dosáhl nového rekordu.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Přátelství mezi nimi ___niklo na táboře.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Mlha ___hustla poté, co přišla studená fronta.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Ptáci ___létali do výšky, když viděli nebezpečí.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Chlapec ___pracoval projekt za jeden večer.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Lyžař ___jel z hory, a pak znovu vyjel nahoru.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Voda ___hustla na ledu a zamrzla.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Dívka ___lepšila výsledky po celý rok.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Muž se ___pamatoval z leknutí.", blank: "vz", options: ["vz-", "vy-", "s-", "z-"] },
-  { sentence: "Železo ___rezivělo v dešti, až bylo celé hnědé.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Závodníci ___jeli z vrcholu sjezdovky.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Tréninkem ___mohutněl a byl stále silnější.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Děti se ___běhly k učiteli na hřišti.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Přátelé ___chystali na cestu a naložili zavazadla.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Ptáci ___letěli na jih, kde bylo teplo.", blank: "vy", options: ["vy-", "vý-", "s-", "z-"] },
-  { sentence: "Teplota ___klesala každý den o stupeň.", blank: "s", options: ["s-", "z-", "vy-", "vz-"] },
-  { sentence: "Hoch ___vládl obtíže a šel za svým cílem.", blank: "z", options: ["s-", "z-", "vy-", "vz-"] },
-];
-
-const EXPLANATIONS: Record<string, string> = {
-  "vy": "Předpona vy- se vždy píše s tvrdým y. Vyjadřuje dokončení děje nebo pohyb ven (například vyletět z klece). Když není slabika přízvučná, píšeme krátké vy-.",
-  "vý": "Předpona vý- se vždy píše s tvrdým ý. Píšeme ji tehdy, když je první slabika přízvučná a dlouhá, většinou u podstatných a přídavných jmen (výhra, výborný, výtah). Měkké i sem nikdy nepatří.",
-  "s": "Předpona s- se píše, když znamená pohyb dolů nebo spojení dohromady (sjet z kopce, sloučit síly). Rozhoduje se podle významu — když jde o směr dolů či dání věcí k sobě, je to s-.",
-  "z": "Předpona z- se píše, když znamená změnu stavu — něco se stane jiným (ztuhnout, zbohatnout, zlepšit). Rozhoduj se podle významu: pokud se mění stav nebo vlastnost, patří tam z-.",
-  "vz": "Předpona vz- se píše, když znamená pohyb nahoru nebo vznik něčeho nového (vzlétnout do výšky, vzejít). Když jde děj směrem vzhůru, je to vz-.",
-  "po": "Tady nejde o předpony vy-/vý- ani s-/z-/vz-. Slovo má předponu po-, kterou poznáš podle významu slovesa. Vždy se rozhoduj podle toho, co sloveso vyjadřuje.",
-  "u": "Tady nejde o předpony vy-/vý- ani s-/z-/vz-. Slovo má předponu u-, kterou poznáš podle významu slovesa. Vždy se rozhoduj podle toho, co sloveso vyjadřuje.",
+const POPIS: Record<Vyznam, string> = {
+  sloveso: "sloveso (co kdo dělá)",
+  jméno: "podstatné nebo přídavné jméno",
+  ven: "pohyb ven nebo dokončení děje",
+  dolů: "pohyb dolů",
+  dohromady: "spojení dohromady",
+  nahoru: "pohyb nahoru",
+  změna: "změnu stavu nebo vlastnosti",
 };
 
+const PRAVIDLO: Record<string, string> = {
+  "vy-": "Krátké vy- mají slovesa: vyletět, vyhrát. Znamená pohyb ven nebo dokončení.",
+  "vý-": "Dlouhé vý- mají hlavně podstatná a přídavná jména: výlet, výborný.",
+  "vi-": "Předpona vi- v češtině neexistuje — v předponě je po v vždy y.",
+  "ví-": "Předpona ví- v češtině neexistuje — v předponě je po v vždy y nebo ý.",
+  "s-": "S- znamená pohyb dolů nebo spojení dohromady: sjet, slepit.",
+  "z-": "Z- znamená, že se něco mění — stav, barva, vlastnost: zčervenat, zlepšit.",
+  "vz-": "Vz- znamená pohyb nahoru: vzlétnout, vznést se.",
+};
+
+function uloha(veta: string, klic: Klic, slovo: string, vyznam: Vyznam, options: string[], vyjimka?: string): PracticeTask {
+  const correct = `${klic}-`;
+  const zbytek = veta.split("___")[1].split(/[\s,.!?]/)[0];
+  const optionFeedback: Record<string, string> = {};
+  for (const o of options) if (o !== correct) optionFeedback[o] = `${PRAVIDLO[o]} „${slovo}“ ale vyjadřuje ${POPIS[vyznam]}.`;
+  if (vyjimka) for (const o of options) if (o !== correct) optionFeedback[o] = vyjimka;
+  return {
+    question: `Doplň správnou předponu: „${veta}“`,
+    correctAnswer: correct,
+    options,
+    blanks: [klic],
+    optionFeedback,
+    hints: vyznam === "sloveso" || vyznam === "jméno"
+      ? [
+          `Je slovo „…${zbytek}“ po doplnění sloveso (co kdo dělá), nebo jméno věci či vlastnosti?`,
+          `Slovesa mají předponu s krátkým y (vyletět, vyhrát), podstatná a přídavná jména většinou s dlouhým ý (výlet, výborný). Po v v předponě nikdy nepíšeme i. Co znamená „…${zbytek}“?`,
+        ]
+      : [
+          `Co v této větě znamená „…${zbytek}“: pohyb ven, dolů, nahoru, spojení, nebo změnu?`,
+          `Pohyb dolů nebo spojení dohromady má jednu předponu, pohyb nahoru jinou a změna stavu zase jinou. Představ si, co se ve větě se slovem „…${zbytek}“ opravdu děje.`,
+        ],
+    explanation: vyjimka
+      ? `Správně je „${slovo}“. ${vyjimka}`
+      : `Správně je „${slovo}“: slovo vyjadřuje ${POPIS[vyznam]}. ${PRAVIDLO[correct]}`,
+  };
+}
+
+const VY = ["vy-", "vý-", "vi-", "ví-"];
+const SZ = ["s-", "z-", "vz-"];
+const VSE = ["vy-", "s-", "z-", "vz-"];
+
+const L1: PracticeTask[] = ([
+  ["Ptáček ___letěl z klece.", "vy", "vyletěl", "sloveso"],
+  ["Dostali jsme ___bornou zmrzlinu.", "vý", "výbornou", "jméno"],
+  ["Kočka ___lezla na strom.", "vy", "vylezla", "sloveso"],
+  ["Tomáš získal ___hru v soutěži.", "vý", "výhru", "jméno"],
+  ["Na ___letě jsme viděli zámek.", "vý", "výletě", "jméno"],
+  ["Žába ___skočila z vody.", "vy", "vyskočila", "sloveso"],
+  ["Petr ___hrál závod.", "vy", "vyhrál", "sloveso"],
+  ["Z okna je krásný ___hled.", "vý", "výhled", "jméno"],
+  ["Paní učitelka nám ___světlila úlohu.", "vy", "vysvětlila", "sloveso"],
+  ["Jedeme ___tahem do pátého patra.", "vý", "výtahem", "jméno"],
+  ["Mravenci ___lezli z mraveniště.", "vy", "vylezli", "sloveso"],
+  ["Tatínek má ___borné nápady.", "vý", "výborné", "jméno"],
+  ["Kluci ___běhli ven.", "vy", "vyběhli", "sloveso"],
+] as [string, Klic, string, Vyznam][]).map(([v, k, s, z]) => uloha(v, k, s, z, VY));
+
+const L2: PracticeTask[] = ([
+  ["Lyžař ___jel z kopce.", "s", "sjel", "dolů"],
+  ["Přátelé ___pojili síly.", "s", "spojili", "dohromady"],
+  ["Slza mu ___tekla po tváři.", "s", "stekla", "dolů"],
+  ["Listí na podzim ___žloutlo.", "z", "zžloutlo", "změna"],
+  ["Mléko v teple ___kyslo.", "z", "zkyslo", "změna"],
+  ["Letadlo ___létlo k obloze.", "vz", "vzlétlo", "nahoru"],
+  ["Balón se ___nesl vysoko.", "vz", "vznesl", "nahoru"],
+  ["Kameny ___padaly ze skály.", "s", "spadaly", "dolů"],
+  ["Voda v kaluži ___mrzla.", "z", "zmrzla", "změna"],
+  ["Potoky se ___lévají do řeky.", "s", "slévají", "dohromady"],
+  ["Tomáš leknutím ___bledl.", "z", "zbledl", "změna"],
+  ["Auto se ___razilo s dodávkou.", "s", "srazilo", "dohromady"],
+  ["Po nemoci babička ___hubla.", "z", "zhubla", "změna"],
+] as [string, Klic, string, Vyznam][]).map(([v, k, s, z]) => uloha(v, k, s, z, SZ));
+
+const L3: PracticeTask[] = [
+  uloha("Petr ___vedl těžkou krabici.", "z", "zvedl", "nahoru", VSE,
+    "„Zvednout“ je výjimka: znamená sice pohyb nahoru, ale píše se se z-. Stejně zvedat, zvednutý."),
+  ...([
+    ["Babička ___pomínala na mládí.", "vz", "vzpomínala", "nahoru"],
+    ["Holčička ___pracovala úkol sama.", "vy", "vypracovala", "ven"],
+    ["Potok v zimě ___mrzl.", "z", "zmrzl", "změna"],
+    ["Děti se ___běhly k učitelce.", "s", "sběhly", "dohromady"],
+    ["Děti ___lepily dva papíry k sobě.", "s", "slepily", "dohromady"],
+    ["Ze skály ___padl kámen.", "s", "spadl", "dolů"],
+    ["Lyžaři ___jeli prudký svah.", "s", "sjeli", "dolů"],
+    ["Liška ___mizela v lese.", "z", "zmizela", "změna"],
+    ["Tomáš si ___lepšil známky.", "z", "zlepšil", "změna"],
+    ["Holubi se ___nesli k nebi.", "vz", "vznesli", "nahoru"],
+    ["Pes ___běhl ze dveří ven.", "vy", "vyběhl", "ven"],
+    ["Pták ___létl z větve až nad střechy.", "vz", "vzlétl", "nahoru"],
+  ] as [string, Klic, string, Vyznam][]).map(([v, k, s, z]) => uloha(v, k, s, z, VSE)),
+];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30).map(({ sentence, blank, options }) => {
-    // Sjednocení case: klíč musí literálně sedět do options (case-sensitive).
-    // Vyber tu variantu z options, která má stejnou předponu bez ohledu na case.
-    const targetKey = blank + "-";
-    const matched = options.find((o) => o.toLowerCase() === targetKey.toLowerCase()) ?? targetKey;
-    return {
-      question: `Doplň správnou předponu: "${sentence}"`,
-      correctAnswer: matched,
-      options: options,
-      blanks: [blank],
-      hints: [
-        "vy- = dokončení děje nebo pohyb ven (vyletět, vypracovat)",
-        "vý- = přízvučná první slabika (výhra, výborný, výtah)",
-        "s- = pohyb dolů nebo sloučení (sjet, spalit)",
-        "z- = změna stavu (ztuhnout, zbohatnout, zlepšit)",
-        "vz- = pohyb nahoru nebo vznik (vzlétnout, vzdát)",
-      ],
-      explanation: EXPLANATIONS[blank.toLowerCase()] ?? EXPLANATIONS["vy"],
-    };
-  });
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const PRAVOPISPREDPONVYVYSZVZ: TopicMetadata[] = [
@@ -158,8 +135,8 @@ export const PRAVOPISPREDPONVYVYSZVZ: TopicMetadata[] = [
     briefDescription: "Naučíš se, kdy psát předponu vy-, vý-, s-, z- nebo vz-.",
     keywords: ["předpona", "vy-", "vý-", "s-", "z-", "vz-", "pravopis"],
     goals: [
-      "Rozlišit předpony vy-/vý-/s-/z-/vz- podle významu slovesa",
-      "Správně doplnit předponu ve větách",
+      "Rozlišit vy- (slovesa) a vý- (jména)",
+      "Rozlišit předpony s-/z-/vz- podle významu",
     ],
     boundaries: ["Nezabývat se předložkami s/z", "Bez předpon v přejatých slovech"],
     gradeRange: [4, 4],
@@ -170,17 +147,15 @@ export const PRAVOPISPREDPONVYVYSZVZ: TopicMetadata[] = [
     recommendedNext: ["g4-cjl-jazykova-vychova-stavba-slova-pravopis-predlozek-s-z-se-ze"],
     generator: gen,
     helpTemplate: {
-      hint: "vy-=dokončení, vý-=přízvučná slabika, s-=dolů/dohromady, z-=změna stavu, vz-=nahoru/vznik",
+      hint: "vy- = slovesa (vyletět), vý- = jména (výlet); s- = dolů/dohromady, z- = změna stavu, vz- = nahoru",
       steps: [
-        "Co vyjadřuje sloveso?",
-        "Pohyb dolů nebo sloučení → s-",
+        "Je to sloveso? → vy-. Podstatné nebo přídavné jméno? → většinou vý-.",
+        "Pohyb dolů nebo spojení → s-",
         "Změna stavu → z-",
-        "Dokončení děje nebo pohyb ven → vy-",
-        "Pohyb nahoru nebo vznik → vz-",
-        "Přízvučná 1. slabika → vý-",
+        "Pohyb nahoru → vz- (výjimka: zvednout)",
       ],
       commonMistake: "Záměna s- a z- (sjet = dolů × zlepšit = změna stavu)",
-      example: "sjet (z kopce dolů) × ztuhnout (změna stavu) × vzlétnout (nahoru)",
+      example: "sjet (z kopce dolů) × zmrznout (změna stavu) × vzlétnout (nahoru)",
     },
   },
 ];

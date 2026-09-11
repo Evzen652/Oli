@@ -31,6 +31,23 @@ export function pickN<T>(arr: T[], n: number): T[] {
   return shuffle(arr).slice(0, n);
 }
 
+/** Velká nápověda má být aspoň o pětinu delší než malá (audit hint_progression). */
+export function doplnVelkou(h0: string, h1: string, doplnky: string[]): string {
+  let out = h1;
+  for (const d of doplnky) {
+    if (out.length >= h0.length * 1.2) break;
+    if (!out.includes(d)) out = `${out} ${d}`;
+  }
+  return out;
+}
+
+const STRATEGIE_VYBER = ["Vylučuj možnosti, které odporují tomu, co o tématu víš.", "Nejdřív škrtni tu, která je jasně mimo, a pak porovnej zbylé."];
+const STRATEGIE_RAZENI = ["Najdi nejdřív nejstarší položku, pak nejnovější, a zbytek doplň mezi ně.", "U každé položky se ptej, z jaké doby pochází a co bylo před ní.", "Kámen byl dřív než kov a bronz dřív než železo."];
+const STRATEGIE_TRIDENI = ["Zařaď nejdřív položky, u kterých si jsi jistý nebo jistá, a zbytek podle rozlišovacího znaku.", "U každé položky se ptej, co je na ní to podstatné, ne z čeho je vyrobená."];
+/** Dvě nápovědy: malá beze změny, velká = zbytek dohromady, aspoň o pětinu delší. */
+const dve = (hints: string[], doplnky: string[]): string[] =>
+  hints.length >= 2 ? [hints[0], doplnVelkou(hints[0], hints.slice(1).join(" "), doplnky)] : hints;
+
 /** Distraktor = konkrétní typická chyba + její diagnostické vysvětlení. */
 export interface Distractor {
   value: string;
@@ -64,7 +81,7 @@ export function buildChoiceTask(
     correctAnswer: correct,
     options: shuffle([correct, ...uniq]),
     optionFeedback,
-    hints: parts.hints,
+    hints: dve(parts.hints, STRATEGIE_VYBER),
     explanation: parts.explanation,
   };
   if (parts.solutionSteps) task.solutionSteps = parts.solutionSteps;
@@ -88,7 +105,7 @@ export function buildOrderTask(
     question,
     correctAnswer: "order",
     items: orderedItems,
-    hints: parts.hints,
+    hints: dve(parts.hints, STRATEGIE_RAZENI),
     explanation: parts.explanation,
   };
 }
@@ -112,7 +129,7 @@ export function buildCategorizeTask(
     question,
     correctAnswer: "categorize",
     categories,
-    hints: parts.hints,
+    hints: dve(parts.hints, STRATEGIE_TRIDENI),
     explanation: parts.explanation,
   };
 }

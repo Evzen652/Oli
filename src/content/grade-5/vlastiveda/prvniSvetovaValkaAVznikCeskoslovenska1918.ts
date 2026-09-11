@@ -1,385 +1,53 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { chronologie, type Udalost } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// vysvětlení a na úrovni jen deset pevných řad. Teď se skládají z banky
+// ověřených událostí: L1 tři s datem, L2 čtyři s datem, L3 čtyři bez data.
 
-// Level 1 – jednodušší sekvence (4 události)
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky: začátek 1. světové války, atentát v Sarajevu, vznik Československa, konec války.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (28. 6. 1914)",
-      "Začátek 1. světové války (srpen 1914)",
-      "Konec 1. světové války (11. 11. 1918)",
-      "Vznik Československa (28. 10. 1918)",
-    ],
-    hints: ["Atentát byl zápalníkem, vznik ČSR nastal těsně před koncem války."],
-  },
-  {
-    question: "Seřaď chronologicky: vznik ČSR, TGM prvním prezidentem, atentát v Sarajevu, vstup USA do války.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Vstup USA do války (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "TGM zvolen prvním prezidentem (1918)",
-    ],
-    hints: ["USA vstoupily do války roku 1917."],
-  },
-  {
-    question: "Seřaď od nejdřívějšího: ruská revoluce, konec války, začátek války, vznik ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Začátek 1. světové války (1914)",
-      "Ruská revoluce (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Konec války (11. 11. 1918)",
-    ],
-    hints: ["Ruská revoluce proběhla v roce 1917."],
-  },
-  {
-    question: "Seřaď: Masaryk odchází do emigrace, vznik ČSR, atentát v Sarajevu, začátek 1. světové války.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (28. 6. 1914)",
-      "Začátek války (srpen 1914)",
-      "Masaryk odchází do emigrace (1915)",
-      "Vznik ČSR (1918)",
-    ],
-    hints: ["Masaryk odešel do emigrace až po začátku války."],
-  },
-  {
-    question: "Seřaď chronologicky: vznik Trojspolku, atentát na Františka Ferdinanda, vstup USA, vznik ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Vznik Trojspolku (1882)",
-      "Atentát na Františka Ferdinanda (1914)",
-      "Vstup USA do války (1917)",
-      "Vznik Československa (1918)",
-    ],
-    hints: ["Trojspolek existoval dlouho před válkou."],
-  },
-  {
-    question: "Seřaď: kapitulácia Trojspolku, vznik ČSR, bitva na Marně, atentát v Sarajevu.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Bitva na Marně (1914)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Kapitulace Trojspolku (11. 11. 1918)",
-    ],
-    hints: ["Atentát byl první událostí."],
-  },
-  {
-    question: "Seřaď chronologicky čtyři klíčové roky 1. světové války a vzniku ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Sarajevo — začátek války (1914)",
-      "Rusko vystupuje z války (1917)",
-      "Vznik Československa (1918)",
-      "Versailleská mírová smlouva (1919)",
-    ],
-    hints: ["Versailleská smlouva byla až v roce 1919."],
-  },
-  {
-    question: "Seřaď: legionáři bojují v Rusku, atentát v Sarajevu, vznik ČSR, TGM v USA.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Legionáři bojují v Rusku (1916–1917)",
-      "TGM jedná v USA (1918)",
-      "Vznik ČSR (28. 10. 1918)",
-    ],
-    hints: ["Legionáři bojovali v průběhu války."],
-  },
-  {
-    question: "Seřaď od nejdřívějšího: konec Habsburků, vznik ČSR, atentát na Ferdinanda, Pražský defenzivní pakt.",
-    correctAnswer: "order",
-    items: [
-      "Atentát na Františka Ferdinanda (28. 6. 1914)",
-      "Vstup Itálie na stranu Dohody (1915)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Rozpad Habsburské monarchie (1918)",
-    ],
-    hints: ["Atentát byl absolutně první."],
-  },
-  {
-    question: "Seřaď: Masaryk dostává Washingtonskou deklaraci, začátek války, vstup USA, atentát.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Začátek války (srpen 1914)",
-      "Vstup USA (1917)",
-      "Washingtonská deklarace (18. 10. 1918)",
-    ],
-    hints: ["Washingtonská deklarace předcházela vzniku ČSR o 10 dní."],
-  },
-];
+const UDALOSTI: Udalost[] = [
+  { uroven: 1, co: "Atentát na následníka trůnu Františka Ferdinanda d’Este v Sarajevu", kdy: "28. 6. 1914", klic: 1914.0628,
+    proc: "Následník rakouského trůnu byl zastřelen; Rakousko-Uhersko pak obvinilo Srbsko." },
+  { uroven: 1, co: "Rakousko-Uhersko vyhlásilo válku Srbsku — začala 1. světová válka", kdy: "28. 7. 1914", klic: 1914.0728,
+    proc: "Válka začala přesně měsíc po atentátu v Sarajevu." },
+  { uroven: 1, co: "T. G. Masaryk odešel do ciziny bojovat za samostatný stát", kdy: "prosinec 1914", klic: 1914.1218,
+    proc: "Z ciziny přesvědčoval vítězné mocnosti, že Češi a Slováci chtějí vlastní stát." },
+  { uroven: 1, co: "Vznik samostatného Československa", kdy: "28. 10. 1918", klic: 1918.1028,
+    proc: "V Praze byl vyhlášen samostatný stát; proto je 28. října státní svátek." },
+  { uroven: 1, co: "Příměří — konec 1. světové války", kdy: "11. 11. 1918", klic: 1918.1111,
+    proc: "Německo podepsalo příměří necelé dva týdny po vzniku Československa." },
+  { uroven: 1, co: "Masaryk se vrátil do Prahy jako prezident", kdy: "21. 12. 1918", klic: 1918.1221,
+    proc: "Prezidentem byl zvolen ještě v cizině, do Prahy dorazil až před Vánoci." },
 
-// Level 2 – středně těžké sekvence (5 událostí)
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Seřaď chronologicky 5 klíčových událostí 1. světové války a vzniku ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (28. 6. 1914)",
-      "Začátek 1. světové války (srpen 1914)",
-      "Ruská revoluce (1917)",
-      "Vstup USA do války (1917)",
-      "Vznik Československa (28. 10. 1918)",
-    ],
-    hints: ["Atentát byl první, vznik ČSR poslední."],
-  },
-  {
-    question: "Seřaď chronologicky: legionáři na frontách, Masaryk v exilu, vznik ČSR, Versailles, atentát.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Masaryk v exilu — diplomatická práce (1915–1918)",
-      "Legionáři bojují ve Francii a Rusku (1916–1918)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Versailleská mírová smlouva (1919)",
-    ],
-    hints: ["Versailleská smlouva formálně ukončila válku — až v 1919."],
-  },
-  {
-    question: "Seřaď: Japonsko vstupuje, Ruská revoluce, atentát, USA vstupuje, vznik ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Japonsko vstupuje do války na stranu Dohody (1914)",
-      "Ruská revoluce (1917)",
-      "USA vstupuje do války (1917)",
-      "Vznik Čínovlovenska (1918)",
-    ],
-    hints: ["Atentát byl absolutně první."],
-  },
-  {
-    question: "Seřaď 5 klíčových okamžiků Masarykovy cesty k vzniku ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Masaryk přednáší v Londýně (1915)",
-      "Masaryk jedná s francouzskou vládou (1916)",
-      "Čs. Národní rada uznána Dohodou (1918)",
-      "Washingtonská deklarace (18. 10. 1918)",
-      "Vznik Čínovlovenska (28. 10. 1918)",
-    ],
-    hints: ["Masaryk pracoval postupně od Londýna ke Washingtonu."],
-  },
-  {
-    question: "Seřaď chronologicky: vytvoření Československa, konec války, vstup USA, Ruská revoluce, atentát.",
-    correctAnswer: "order",
-    items: [
-      "Atentát na Františka Ferdinanda (28. 6. 1914)",
-      "Ruská revoluce (únor/říjen 1917)",
-      "USA vstupuje do války (6. 4. 1917)",
-      "Vznik Čs (28. 10. 1918)",
-      "Konec 1. světové války (11. 11. 1918)",
-    ],
-    hints: ["Vznik ČSR byl ještě před koncem války."],
-  },
-  {
-    question: "Seřaď: bitva u Verdunu, atentát, vstup USA, vznik ČSR, Versailles.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Bitva u Verdunu (1916)",
-      "USA vstupuje (1917)",
-      "Vznik ČSR (1918)",
-      "Versailleská smlouva (1919)",
-    ],
-    hints: ["Bitva u Verdunu proběhla v roce 1916."],
-  },
-  {
-    question: "Seřaď chronologicky: Masaryk jedná s Wilsonem, atentát, vznik legií, vstup USA, vznik ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Vznik Čs. legií (1914–1915)",
-      "USA vstupuje (1917)",
-      "Masaryk jedná s Wilsonem (1918)",
-      "Vznik ČSR (1918)",
-    ],
-    hints: ["Legie vznikaly záhy po začátku války."],
-  },
-  {
-    question: "Seřaď: konec Habsburků, legionáři u Zborova, atentát v Sarajevu, vznik ČSR, Versailles.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Bitva u Zborova — legionáři (1917)",
-      "Konec Habsburků — Karel I. abdikuje (1918)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Versailleská smlouva (1919)",
-    ],
-    hints: ["Bitva u Zborova (1917) posílila prestiž legionářů."],
-  },
-  {
-    question: "Seřaď 5 událostí od vypuknutí války po formální uznání ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Vypuknutí 1. světové války (srpen 1914)",
-      "Vznik Čs. Národní rady v Paříži (1916)",
-      "USA vstupuje do války (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Versailleská smlouva uznává ČSR (1919)",
-    ],
-    hints: ["Čs. Národní rada vznikla v roce 1916."],
-  },
-  {
-    question: "Seřaď: Masaryk odchází do exilu, atentát, USA vstupuje, vznik ČSR, TGM prezidentem.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Masaryk odchází do exilu (1915)",
-      "USA vstupuje (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "TGM zvolen prezidentem (14. 11. 1918)",
-    ],
-    hints: ["TGM byl zvolen prezidentem krátce po vzniku ČSR."],
-  },
-];
+  { uroven: 2, co: "Vznikla Československá národní rada v Paříži", kdy: "1916", klic: 1916.02,
+    proc: "Masaryk, Edvard Beneš a Milan Rastislav Štefánik v ní řídili odboj v cizině." },
+  { uroven: 2, co: "Zemřel císař František Josef I.", kdy: "21. 11. 1916", klic: 1916.1121,
+    proc: "Po 68 letech vlády ho vystřídal poslední rakouský císař Karel I." },
+  { uroven: 2, co: "Bitva u Zborova", kdy: "2. 7. 1917", klic: 1917.0702,
+    proc: "Českoslovenští legionáři v Rusku v ní vybojovali slavné vítězství." },
+  { uroven: 2, co: "Washingtonská deklarace nezávislosti", kdy: "18. 10. 1918", klic: 1918.1018,
+    proc: "Masaryk v USA vyhlásil nezávislost Čechů a Slováků deset dní před 28. říjnem." },
+  { uroven: 2, co: "Martinská deklarace — Slováci se připojili ke společnému státu", kdy: "30. 10. 1918", klic: 1918.1030,
+    proc: "Slovenští politici se v Martině přihlásili k Československu dva dny po vyhlášení v Praze." },
+  { uroven: 2, co: "Masaryk zvolen prvním prezidentem", kdy: "14. 11. 1918", klic: 1918.1114,
+    proc: "Prezidenta zvolilo Národní shromáždění, když byl Masaryk ještě v USA." },
 
-// Level 3 – pokročilé sekvence (5–6 událostí)
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Seřaď 6 klíčových událostí 1. světové války a vzniku ČSR od nejdřívějšího.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (28. 6. 1914)",
-      "Začátek 1. světové války (srpen 1914)",
-      "Ruská revoluce (1917)",
-      "USA vstupuje do války (1917)",
-      "Vznik Československa (28. 10. 1918)",
-      "Versailleská mírová smlouva (1919)",
-    ],
-    hints: ["Versailleská smlouva byla až v roce 1919."],
-  },
-  {
-    question: "Seřaď 6 milníků — od politické krize po plné uznání ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Atentát na Františka Ferdinanda (1914)",
-      "Masaryk odchází do exilu (1915)",
-      "Bitva u Zborova — legionáři (1917)",
-      "USA vstupuje do války (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Versailleská smlouva — ČSR uznána mezinárodně (1919)",
-    ],
-    hints: ["Bitva u Zborova (1917) posílila pozici legionářů."],
-  },
-  {
-    question: "Seřaď: Karel I. abdikuje, Versailles, vznik ČSR, Ruská revoluce, atentát, USA vstupuje.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Ruská revoluce (1917)",
-      "USA vstupuje (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Karel I. abdikuje (11. 11. 1918)",
-      "Versailleská mírová smlouva (1919)",
-    ],
-    hints: ["Karel I. abdikoval ve stejný den jako konec války."],
-  },
-  {
-    question: "Seřaď 6 milníků cesty Čechů a Slováků za vlastním státem.",
-    correctAnswer: "order",
-    items: [
-      "Česká a slovenská emigrace — první kontakty s Dohodou (1914)",
-      "Vznik Čs. legií ve Francii (1914)",
-      "Vznik Čs. Národní rady v Paříži (1916)",
-      "Bitva u Zborova — mezinárodní uznání legionářů (1917)",
-      "Washingtonská deklarace (18. 10. 1918)",
-      "Vznik Čs (28. 10. 1918)",
-    ],
-    hints: ["Cesta k ČSR trvala celou válku."],
-  },
-  {
-    question: "Seřaď chronologicky: vznik ČSR, bitva u Zborova, konec války, Versailles, atentát, Rusko vystupuje.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Bitva u Zborova (1917)",
-      "Rusko vystupuje z války (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Konec války (11. 11. 1918)",
-      "Versailleská mírová smlouva (1919)",
-    ],
-    hints: ["Rusko vystoupilo z války v roce 1917."],
-  },
-  {
-    question: "Seřaď 6 klíčových dat: TGM prezidentem, atentát, Masaryk v exilu, vznik ČSR, Versailles, vstup USA.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Masaryk odchází do exilu (1915)",
-      "USA vstupuje (1917)",
-      "Vznik ČSR (28. 10. 1918)",
-      "TGM zvolen prezidentem (14. 11. 1918)",
-      "Versailleská smlouva (1919)",
-    ],
-    hints: ["TGM byl zvolen krátce po vzniku ČSR."],
-  },
-  {
-    question: "Seřaď 5 událostí, které vedly k zániku Rakouska-Uherska a vzniku ČSR.",
-    correctAnswer: "order",
-    items: [
-      "Atentát na Františka Ferdinanda (1914)",
-      "Porážky Trojspolku na frontách (1917–1918)",
-      "Vznik Čs (28. 10. 1918)",
-      "Karel I. abdikuje (11. 11. 1918)",
-      "Rozpad Habsburské monarchie (1918)",
-    ],
-    hints: ["Rozpad Habsburků nastal po vzniku ČSR."],
-  },
-  {
-    question: "Seřaď: Wilsonových 14 bodů, atentát, vznik ČSR, USA vstupuje, Versailles.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "USA vstupuje (1917)",
-      "Wilsonových 14 bodů (leden 1918)",
-      "Vznik ČSR (28. 10. 1918)",
-      "Versailleská smlouva (1919)",
-    ],
-    hints: ["Wilsonových 14 bodů bylo v lednu 1918."],
-  },
-  {
-    question: "Seřaď 5 klíčových milníků, jimiž prošlo Československo od vzniku k prvním volbám.",
-    correctAnswer: "order",
-    items: [
-      "Vznik ČSR (28. 10. 1918)",
-      "TGM zvolen prezidentem (14. 11. 1918)",
-      "Versailleská smlouva — mezinárodní uznání (1919)",
-      "Přijetí ústavy ČSR (1920)",
-      "První parlamentní volby (1920)",
-    ],
-    hints: ["Ústava a volby přišly v roce 1920."],
-  },
-  {
-    question: "Seřaď: Štefánik zahynul, TGM prezidentem, vznik ČSR, Versailles, atentát.",
-    correctAnswer: "order",
-    items: [
-      "Atentát v Sarajevu (1914)",
-      "Vznik ČSR (28. 10. 1918)",
-      "TGM zvolen prezidentem (14. 11. 1918)",
-      "Štefánik zahynul při letecké nehodě (4. 5. 1919)",
-      "Versailleská mírová smlouva (1919)",
-    ],
-    hints: ["Štefánik zemřel krátce po vzniku ČSR."],
-  },
+  { uroven: 3, co: "Itálie vstoupila do války proti Rakousku-Uhersku", kdy: "květen 1915", klic: 1915.0523,
+    proc: "Itálie přešla na stranu Dohody a v Alpách vznikla nová fronta." },
+  { uroven: 3, co: "V Rusku padl car", kdy: "březen 1917", klic: 1917.03,
+    proc: "Revoluce svrhla cara; Rusko pak z války vystoupilo." },
+  { uroven: 3, co: "Do války vstoupily Spojené státy americké", kdy: "duben 1917", klic: 1917.0406,
+    proc: "Vstup USA dal Dohodě převahu nad Německem a Rakouskem-Uherskem." },
+  { uroven: 3, co: "Milan Rastislav Štefánik zahynul při letecké havárii", kdy: "4. 5. 1919", klic: 1919.0504,
+    proc: "Zahynul při návratu do vlasti, necelý rok po vzniku státu." },
+  { uroven: 3, co: "Versailleská mírová smlouva s Německem", kdy: "28. 6. 1919", klic: 1919.0628,
+    proc: "Mírová konference v Paříži potvrdila nové státy a hranice ve střední Evropě." },
+  { uroven: 3, co: "Přijata první československá ústava", kdy: "29. 2. 1920", klic: 1920.0229,
+    proc: "Ústava zakotvila Československo jako demokratickou republiku." },
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return chronologie(UDALOSTI, level, "z let 1914–1920");
 }
 
 export const PRVNISVETOVAVALKAAVZNIKCESKOSLOVENSKA1918: TopicMetadata[] = [

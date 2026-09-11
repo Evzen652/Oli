@@ -1,363 +1,261 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby a vzkazy se nedaly porovnat. Teď: L1 pravidla telefonování
+// a tísňová čísla · L2 vybrat úplný vzkaz (kdo volal, co chtěl, podpis a čas)
+// · L3 jak se zachovat v nečekaných situacích u telefonu.
+
+const L1: PracticeTask[] = [
+  choice("Jak začneš hovor, když někomu voláš?", "pozdravím a řeknu, kdo volá", [
+    { value: "hned řeknu, co chci, bez pozdravu", why: "Bez pozdravu a představení je to nezdvořilé a druhý neví, kdo volá." },
+    { value: "mlčím, dokud se druhý nezeptá", why: "Volající má začít mluvit jako první." },
+    { value: "zeptám se, kdo tam je, a zavěsím", why: "Tím hovor jen přerušíš." },
+  ], {
+    hints: ["Co uslyší člověk, který zvedne telefon, jako první?", "Druhý tě nevidí, a tak musíš říct, kdo jsi — a nejdřív pozdravit."],
+    explanation: "Volající nejdřív pozdraví a představí se, teprve pak řekne, co potřebuje.",
+  }),
+  choice("Co řekneš, když doma zvedneš zvonící telefon?", "pozdravím a představím se", [
+    { value: "řeknu jen „No?“", why: "Takové přijetí hovoru je neslušné." },
+    { value: "mlčím, dokud nepromluví volající", why: "Volající neví, jestli se dovolal." },
+    { value: "hned zavěsím", why: "Tím hovor ukončíš dřív, než začal." },
+  ], {
+    hints: ["Jak volající pozná, že se dovolal správně?", "Stačí říct třeba „Dobrý den, u Novákových, Eva.“ — volající hned ví, kam volá."],
+    explanation: "Když přijímáš hovor, pozdravíš a představíš se.",
+  }),
+  choice("Jak se na konci hovoru rozloučíš?", "poděkuji a rozloučím se", [
+    { value: "prostě zavěsím bez slova", why: "Bez rozloučení je to nezdvořilé." },
+    { value: "řeknu, ať už nevolá", why: "To je neslušné." },
+    { value: "nechám telefon ležet a odejdu", why: "Hovor by zůstal viset." },
+  ], {
+    hints: ["Jak se loučíš s někým, s kým jsi mluvil nebo mluvila tváří v tvář?", "U telefonu platí stejná zdvořilost: poděkovat a pozdravit na rozloučenou."],
+    explanation: "Hovor končí poděkováním a rozloučením.",
+  }),
+  choice("Co musí obsahovat vzkaz pro maminku o tom, že jí někdo volal?", "kdo volal, co chtěl a kdy", [
+    { value: "jen jméno volajícího", why: "Maminka by nevěděla, co volající chtěl." },
+    { value: "jen „někdo volal“", why: "Maminka by nevěděla kdo ani proč." },
+    { value: "celý rozhovor slovo od slova", why: "Vzkaz má být stručný." },
+  ], {
+    hints: ["Na co se tě maminka zeptá, když si vzkaz přečte?", "Maminka potřebuje vědět, kdo to byl, co potřeboval a kdy to bylo, aby mohla zareagovat."],
+    explanation: "Dobrý vzkaz říká, kdo volal, co chtěl a kdy.",
+  }),
+  choice("Kam dáš vzkaz, aby ho maminka určitě našla?", "na viditelné místo, třeba na lednici", [
+    { value: "do šuplíku mezi ponožky", why: "Tam ho maminka nenajde." },
+    { value: "do koše", why: "Tam vzkaz nepatří." },
+    { value: "do své aktovky", why: "Tam ho maminka neuvidí." },
+  ], {
+    hints: ["Kde se maminka určitě podívá, až přijde domů?", "Vzkaz musí být tam, kde ho maminka uvidí bez hledání."],
+    explanation: "Vzkaz patří na viditelné místo, kde ho adresát hned najde.",
+  }),
+  choice("Proč je dobré mluvit do telefonu zřetelně?", "druhý mě nevidí a musí mi rozumět", [
+    { value: "aby byl hovor dražší", why: "Zřetelnost cenu neovlivní." },
+    { value: "aby mě slyšeli sousedé", why: "Nejde o hlasitost pro sousedy." },
+    { value: "telefon jinak nefunguje", why: "Telefon funguje, ale druhý by ti nerozuměl." },
+  ], {
+    hints: ["Co u telefonu chybí oproti rozhovoru tváří v tvář?", "Tvůj obličej ani ruce u telefonu vidět nejsou — posluchač pozná všechno jen z tvého hlasu."],
+    explanation: "U telefonu se nedá ukázat ani odezírat, proto je důležité mluvit zřetelně.",
+  }),
+  choice("Neznámý člověk se do telefonu ptá, jestli jsi doma sám nebo sama. Co uděláš?", "neprozradím to a řeknu, že rodiče teď nemůžou k telefonu", [
+    { value: "řeknu mu, že jsem doma úplně sám nebo sama", why: "Cizímu člověku to neprozrazuj." },
+    { value: "řeknu mu naši adresu, ať se zastaví", why: "Adresu cizím lidem neříkej." },
+    { value: "pozvu ho na návštěvu, když je milý", why: "Cizího člověka nezvi." },
+  ], {
+    hints: ["Proč by to asi cizí člověk chtěl vědět?", "Cizím lidem neříkej, že jsi doma bez dospělých, ani adresu; stačí říct, že rodiče nemůžou k telefonu."],
+    explanation: "Cizím lidem neprozrazuj, že jsi doma sám nebo sama; řekni, že rodiče teď nemůžou k telefonu.",
+  }),
+  choice("Které číslo zavoláš, když hoří?", "150", [
+    { value: "155", why: "155 je záchranná služba." },
+    { value: "158", why: "158 je policie." },
+    { value: "156", why: "156 je městská policie." },
+  ], {
+    hints: ["Tísňová čísla začínají 15. Které patří hasičům?", "Hasiči mají číslo, které končí nulou."],
+    explanation: "Hasiči mají číslo 150; funguje i jednotné evropské číslo 112.",
+  }),
+  choice("Jaké číslo má zdravotnická záchranná služba?", "155", [
+    { value: "150", why: "150 jsou hasiči." },
+    { value: "158", why: "158 je policie." },
+    { value: "156", why: "156 je městská policie." },
+  ], {
+    hints: ["Tísňová čísla začínají 15. Které patří záchrance?", "Záchranka má číslo, které končí pětkou."],
+    explanation: "Zdravotnická záchranná služba má číslo 155.",
+  }),
+  choice("Jaké číslo má policie?", "158", [
+    { value: "150", why: "150 jsou hasiči." },
+    { value: "155", why: "155 je záchranná služba." },
+    { value: "156", why: "156 je městská policie, ne státní policie." },
+  ], {
+    hints: ["Tísňová čísla začínají 15. Které patří policii?", "Policie má číslo, které končí osmičkou."],
+    explanation: "Policie České republiky má číslo 158.",
+  }),
+  choice("Co řekneš operátorovi, když voláš záchranku?", "co se stalo, kde to je a kdo volá", [
+    { value: "jen své jméno a zavěsím", why: "Operátor potřebuje vědět, co se stalo a kde." },
+    { value: "jen „pomoc“ a zavěsím", why: "Záchranka by nevěděla, kam jet." },
+    { value: "jen to, co se stalo, bez adresy", why: "Bez místa nemůže záchranka přijet." },
+  ], {
+    hints: ["Co potřebuje záchranka vědět, aby mohla přijet?", "Operátor potřebuje vědět, jakou pomoc poslat, kam přesně jet a na koho se obrátit. Hovor neukončuj sám nebo sama."],
+    explanation: "Záchrance řekneš, co se stalo, kde to je a kdo volá.",
+  }),
+  choice("Kdy je vhodné zavolat kamarádovi?", "přes den, ne pozdě večer", [
+    { value: "pozdě v noci, kdy všichni spí", why: "V noci se volá jen v nouzi." },
+    { value: "během vyučování", why: "Ve škole se telefonovat nemá." },
+    { value: "v neděli v šest ráno", why: "Tak brzy se nevolá." },
+  ], {
+    hints: ["Kdy by tě telefon rušil?", "Volat se hodí v době, kdy druhý nespí a nemá povinnosti — zhruba mezi ránem a večerem."],
+    explanation: "Kamarádům voláme přes den, ne v noci ani ve škole.",
+  }),
+  choice("Proč máš nechat operátora záchranky zavěsit jako prvního?", "může se ještě na něco zeptat", [
+    { value: "je to jen zvyk", why: "Má to důvod — operátor se může doptat." },
+    { value: "jinak se hovor zpoplatní", why: "Tísňové volání je zdarma." },
+    { value: "protože je to vedoucí", why: "Nejde o postavení, ale o informace." },
+  ], {
+    hints: ["Co když operátorovi po tvé odpovědi pořád něco chybí?", "Operátor může radit, co dělat do příjezdu záchranky, nebo se doptat na cestu."],
+    explanation: "Operátor se může doptat nebo poradit; proto hovor ukončí on.",
+  }),
+];
+
+interface Vzkaz { komu: string; kdo: string; co: string; kdoMa: string; podpis: string; cas: string }
+const VZKAZY: Vzkaz[] = [
+  { komu: "Mami", kdo: "paní Nováková", co: "máš jí zavolat zpátky", kdoMa: "maminka", podpis: "Petr", cas: "16:30" },
+  { komu: "Tati", kdo: "děda", co: "přijede v sobotu vlakem v deset", kdoMa: "tatínek", podpis: "Eva", cas: "15:10" },
+  { komu: "Mami", kdo: "trenér", co: "zítřejší trénink se ruší", kdoMa: "maminka", podpis: "Jakub", cas: "17:00" },
+  { komu: "Tati", kdo: "pan doktor", co: "máš přijít ve čtvrtek v osm", kdoMa: "tatínek", podpis: "Lenka", cas: "11:45" },
+  { komu: "Mami", kdo: "soused", co: "má u sebe tvůj balík", kdoMa: "maminka", podpis: "Tom", cas: "14:20" },
+  { komu: "Babi", kdo: "teta Jana", co: "oslava bude v neděli ve tři", kdoMa: "babička", podpis: "Ema", cas: "18:05" },
+  { komu: "Mami", kdo: "paní učitelka", co: "výlet začíná zítra v osm u školy", kdoMa: "maminka", podpis: "Ondra", cas: "13:50" },
+  { komu: "Tati", kdo: "strýc Karel", co: "vrátí ti vrtačku v pondělí", kdoMa: "tatínek", podpis: "Anna", cas: "16:00" },
+  { komu: "Mami", kdo: "knihovna", co: "rezervovaná kniha je připravená", kdoMa: "maminka", podpis: "Šimon", cas: "12:30" },
+  { komu: "Tati", kdo: "pan Veselý z práce", co: "porada bude až v úterý", kdoMa: "tatínek", podpis: "Klára", cas: "19:15" },
+  { komu: "Mami", kdo: "kadeřnice", co: "tvůj termín se posouvá na pátek", kdoMa: "maminka", podpis: "Vojta", cas: "10:40" },
+  { komu: "Babi", kdo: "pan Černý", co: "přiveze dříví ve středu", kdoMa: "babička", podpis: "Marek", cas: "17:30" },
+  { komu: "Tati", kdo: "paní ze školy", co: "máš podepsat přihlášku na tábor", kdoMa: "tatínek", podpis: "Nela", cas: "14:00" },
+];
+
+function vzkazUloha(v: Vzkaz): PracticeTask {
+  const cely = `${v.komu}, volal ${v.kdo}: ${v.co}. ${v.podpis}, ${v.cas}`;
+  return choice(`Který vzkaz je nejlepší? (Volal ${v.kdo}, ${v.co}.)`, cely, [
+    { value: `${v.komu}, někdo ti volal a něco chtěl, zavolej mu. ${v.podpis}, ${v.cas}`, why: "Chybí, kdo volal a co chtěl." },
+    { value: `${v.komu}, volal ${v.kdo}, ale nevím proč. ${v.podpis}, ${v.cas}`, why: "Chybí, co volající chtěl nebo co se má udělat." },
+    { value: `${v.komu}, volal ${v.kdo}: ${v.co}.`, why: "Chybí podpis a čas — nevíš, kdo vzkaz psal a kdy to bylo." },
+  ], {
+    hints: [
+      `Co všechno musí ${v.kdoMa} poznat ze vzkazu o tom, že volal ${v.kdo}?`,
+      "Dobrý vzkaz říká, kdo volal a co chtěl nebo co se má udělat, a je podepsaný i s časem, aby bylo jasné, kdy to bylo.",
+    ],
+    explanation: `Úplný vzkaz: ${cely} — je v něm kdo volal, co chtěl, podpis i čas.`,
+  });
 }
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Jak správně začneme telefonický hovor?",
-    correctAnswer: "představíme se a řekneme, komu voláme",
-    options: ["představíme se a řekneme, komu voláme", "rovnou řekneme, co chceme", "počkáme, až nás přepojí", "řekneme jen svoje číslo"],
-    hints: ["Ten druhý tě nevidí a neví, kdo volá. Co se musí dozvědět jako první?"],
-    explanation: "Na začátku hovoru se představíš a řekneš, koho sháníš — jinak druhá strana neví, s kým mluví ani komu hovor předat.",
-  },
-  {
-    question: "Co musí zanechaný vzkaz obsahovat?",
-    correctAnswer: "kdo, kdy, proč a co dál",
-    options: [
-      "jen jméno volajícího",
-      "kdo, kdy, proč a co dál",
-      "jen čas hovoru",
-      "jen telefonní číslo",
-    ],
-    hints: ["Vzkaz čte někdo, kdo u telefonu nebyl. Co všechno se musí dozvědět?"],
-    explanation: "Úplný vzkaz říká, kdo volal, kdy, o co šlo a co má příjemce udělat. Jediný z těch údajů by mu k reakci nestačil.",
-  },
-  {
-    question: "Jak správně ukončíme telefonický hovor?",
-    correctAnswer: "rozloučíme se a počkáme",
-    options: ["prostě přestaneme mluvit", "zavěsíme bez rozloučení", "rozloučíme se a počkáme", "necháme telefon ležet"],
-    hints: ["Co by si druhá strana pomyslela, kdyby hovor najednou zmlkl?"],
-    explanation: "Hovor se uzavře pozdravem a teprve pak se zavěsí — nejlépe až po druhé straně, aby se nestalo, že ještě něco chtěla dodat.",
-  },
-  {
-    question: "Jaký tón používáme při telefonátu s úřadem?",
-    correctAnswer: "formální a zdvořilý",
-    options: ["přátelský a uvolněný", "stručný bez pozdravu", "rychlý a nervózní", "formální a zdvořilý"],
-    hints: ["Mluvíš s někým, koho neznáš a kdo je v práci. Jak bys s ním jednal?"],
-    explanation: "S institucí se mluví stejně zdvořile jako v úředním dopise — s pozdravem, vykáním a bez hovorových výrazů.",
-  },
-  {
-    question: "Proč zanecháváme vzkaz, když volaný není dostupný?",
-    correctAnswer: "aby věděl, kdo volal",
-    options: ["aby věděl, kdo volal", "je to naše povinnost", "vzkaz není nutný", "jen kvůli zdvořilosti"],
-    hints: ["Volaný uvidí jen zmeškaný hovor. Co mu z toho nebude jasné?"],
-    explanation: "Bez vzkazu se volaný dozví jen to, že mu někdo volal, ale ne kdo a proč. Vzkaz mu umožní reagovat, aniž by musel hádat.",
-  },
-  {
-    question: "Jak začneme vzkaz na záznamník?",
-    correctAnswer: "Dobrý den, tady Jana Nováková",
-    options: [
-      "Hej, jsem to já.",
-      "Dobrý den, tady Jana Nováková",
-      "Jen rychle…",
-      "Kde jste?",
-    ],
-    hints: ["Záznamník si nepamatuje, kdo mu volá. Čím tedy vzkaz začneš?"],
-    explanation: "Vzkaz na záznamník začíná stejně jako živý hovor — pozdravem a představením. Bez jména příjemce netuší, kdo mu volal.",
-  },
-  {
-    question: "Jaký je rozdíl mezi telefonátem příteli a do nemocnice?",
-    correctAnswer: "příteli volně, do nemocnice formálně",
-    options: ["příteli formálně, do nemocnice volně", "do nemocnice se netelefonuje", "příteli volně, do nemocnice formálně", "obojí je úplně stejné"],
-    hints: ["Rozhoduje to, s kým mluvíš. Kdo z těch dvou je pro tebe cizí instituce?"],
-    explanation: "S kamarádem si můžeš tykat a mluvit uvolněně, s institucí zachováváš vykání a zdvořilé formulace. Rozhoduje adresát, ne téma hovoru.",
-  },
-  {
-    question: "Co uděláme, pokud jsme zavolali na špatné číslo?",
-    correctAnswer: "omluvíme se a zavěsíme",
-    options: ["zavěsíme bez omluvy", "pokračujeme v rozhovoru", "vyptáváme se na jméno", "omluvíme se a zavěsíme"],
-    hints: ["Někoho jsi vyrušil omylem. Co se v takové situaci patří?"],
-    explanation: "Krátká omluva stačí — 'Omlouvám se, spletl jsem si číslo.' Vyptávat se cizího člověka na jeho údaje se nepatří.",
-  },
-  {
-    question: "Co uděláme, když nám volá neznámé číslo?",
-    correctAnswer: "Dobrý den, kdo volá, prosím?",
-    options: ["Dobrý den, kdo volá, prosím?", "Okamžitě zavěsíme.", "Hned sdělíme svou adresu.", "Přijmeme hovor mlčky."],
-    hints: ["Nevíš, kdo je na druhé straně. Co zjistíš dřív, než cokoli prozradíš?"],
-    explanation: "Zdvořilá otázka na totožnost volajícího je běžná a bezpečná. Své osobní údaje neznámému člověku nesdělujeme.",
-  },
-  {
-    question: "Co ve vzkazu nesmí chybět, aby šlo zavolat zpět?",
-    correctAnswer: "kontakt pro zpětné volání",
-    options: [
-      "jen naše jméno",
-      "kontakt pro zpětné volání",
-      "jen čas hovoru",
-      "jméno našeho psa",
-    ],
-    hints: ["Příjemce chce reagovat. Co k tomu nutně potřebuje?"],
-    explanation: "Bez telefonního čísla nebo e-mailu se příjemce nemá jak ozvat, i kdyby chtěl. Kontakt je proto ve vzkazu nejdůležitější údaj.",
-  },
-  {
-    question: "Jak se představíme na začátku formálního telefonátu?",
-    correctAnswer: "Dobrý den, jmenuji se…",
-    options: ["Čau, jsem Honza.", "Víte, kdo jsem?", "Dobrý den, jmenuji se…", "Hej, posloucháte?"],
-    hints: ["Formální hovor začíná dvěma věcmi. Pozdravem a čím ještě?"],
-    explanation: "Ve formálním hovoru se představíš celým jménem a hned uvedeš, čeho se hovor týká. Zkrácené jméno patří jen mezi známé.",
-  },
-  {
-    question: "Kdy je vhodné zavolat?",
-    correctAnswer: "v obvyklou denní dobu",
-    options: ["kdykoli, i v noci", "jen ráno před osmou", "jen o víkendu", "v obvyklou denní dobu"],
-    hints: ["Kdy bys sám nerad zvedal telefon?"],
-    explanation: "Volá se v době, kdy člověk běžně bdí a je zastižitelný. Noční ani velmi časný hovor se hodí jen v naléhavé situaci.",
-  },
-  {
-    question: "Co je hlasová schránka (záznamník)?",
-    correctAnswer: "zaznamená vzkaz místo nás",
-    options: ["zaznamená vzkaz místo nás", "seznam telefonních čísel", "způsob přepojení hovoru", "zvláštní druh telefonu"],
-    hints: ["Nezvedneš telefon, a přesto se později dozvíš, co ti chtěli. Jak to?"],
-    explanation: "Záznamník nahraje, co volající řekne, když hovor nikdo nepřijme. Vzkaz si pak vyslechneš, až budeš mít čas.",
-  },
-  {
-    question: "Jak zdvořile požádáme o přepojení?",
-    correctAnswer: "Mohl byste mě prosím přepojit?",
-    options: [
-      "Přepoj mě hned!",
-      "Mohl byste mě prosím přepojit?",
-      "Dej mi dalšího.",
-      "Chci jiné číslo.",
-    ],
-    hints: ["Žádáš o službu někoho, koho neznáš. Jak takovou prosbu zformuluješ?"],
-    explanation: "Zdvořilá prosba používá podmiňovací způsob a slovo 'prosím'. Rozkaz by ve formálním hovoru působil hrubě.",
-  },
-  {
-    question: "Co zapíšeme do písemného vzkazu pro kolegu?",
-    correctAnswer: "jméno, čas, obsah, kontakt",
-    options: ["jen jméno volajícího", "jen čas hovoru", "jméno, čas, obsah, kontakt", "jen obsah vzkazu"],
-    hints: ["Kolega u telefonu nebyl. Co všechno musí ze vzkazu vyčíst?"],
-    explanation: "Písemný vzkaz musí obsahovat všechny čtyři údaje, jinak si kolega nedokáže hovor zařadit ani na něj odpovědět.",
-  },
-];
-
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Který vzkaz pro rodiče je úplný?",
-    correctAnswer: "Volala paní Nováková, prosí o zavolání",
-    options: ["Někdo dnes ráno volal.", "Máme tu nějaký vzkaz.", "Zavolej někomu zpátky.", "Volala paní Nováková, prosí o zavolání"],
-    hints: ["Porovnej možnosti: ze které se rodiče dozvědí, kdo volal i co se od nich čeká?"],
-    explanation: "Úplný vzkaz uvádí jméno volajícího a to, co má příjemce udělat. Zbylé možnosti neříkají ani jedno, takže se podle nich nedá zařídit nic.",
-  },
-  {
-    question: "Telefonuješ do knihovny. Jak se správně zeptáš na otevírací dobu?",
-    correctAnswer: "Dobrý den, jaká je otevírací doba?",
-    options: ["Dobrý den, jaká je otevírací doba?", "Kdy máte otevřeno?", "Máte teď otevřeno?", "Hej, jaké máte časy?"],
-    hints: ["Formální otázka má tři části: pozdrav, zdvořilou formulaci a konkrétní dotaz. Která možnost je má všechny?"],
-    explanation: "Zdvořilý dotaz začíná pozdravem a ptá se konkrétně. Otázka bez pozdravu působí odměřeně a hovorová varianta do instituce nepatří.",
-  },
-  {
-    question: "Co řekneš hned po pozdravu?",
-    correctAnswer: "kdo jste a proč voláte",
-    options: [
-      "rovnou svůj požadavek",
-      "kdo jste a proč voláte",
-      "počkáte, až se zeptají",
-      "své telefonní číslo",
-    ],
-    hints: ["Druhá strana potřebuje vědět dvě věci naráz. Které to jsou?"],
-    explanation: "Po pozdravu následuje představení a důvod hovoru. Teprve když druhá strana ví, s kým mluví a o co jde, může reagovat.",
-  },
-  {
-    question: "Při telefonátu špatně slyšíš. Co řekneš?",
-    correctAnswer: "Promiňte, mohl byste to zopakovat?",
-    options: ["Jen mlčky přikývnete.", "Zavěsíte bez omluvy.", "Promiňte, mohl byste to zopakovat?", "Začnete hlasitě křičet."],
-    hints: ["Nerozuměl jsi. Je lepší se přiznat, nebo dělat, že rozumíš?"],
-    explanation: "Požádat o zopakování je běžná a slušná součást hovoru. Mlčení by vedlo k nedorozumění a křik by situaci nezlepšil.",
-  },
-  {
-    question: "Co řekneš na záznamník jako první?",
-    correctAnswer: "jméno a čas volání",
-    options: ["jen důvod hovoru", "jen zpětný kontakt", "pozdrav bez jména", "jméno a čas volání"],
-    hints: ["Vzkaz si příjemce poslechne třeba za dva dny. Co proto musí zaznít hned na začátku?"],
-    explanation: "Na začátku vzkazu musí být jasné, kdo a kdy volal. Teprve pak dává smysl důvod hovoru i kontakt.",
-  },
-  {
-    question: "Jak zní přirozené ukončení formálního hovoru?",
-    correctAnswer: "Na shledanou, hezký den.",
-    options: ["Na shledanou, hezký den.", "Tak zatím, čau.", "Pá pá, měj se.", "Tak teda."],
-    hints: ["Tři možnosti bys řekl kamarádovi. Která zbývá pro úřad nebo firmu?"],
-    explanation: "Formální rozloučení tvoří pozdrav a případně přání hezkého dne. Hovorové varianty patří jen mezi známé.",
-  },
-  {
-    question: "Proč si vzkaz zapíšeme hned po hovoru?",
-    correctAnswer: "abychom nezapomněli podrobnosti",
-    options: [
-      "protože to nařizuje zákon",
-      "abychom nezapomněli podrobnosti",
-      "abychom měli víc práce",
-      "zapisovat není potřeba",
-    ],
-    hints: ["Vzpomeneš si na přesné číslo a čas ještě za hodinu?"],
-    explanation: "Čísla, jména a časy z hlavy rychle vyprchají. Zápis hned po hovoru je jediný způsob, jak je předat přesně.",
-  },
-  {
-    question: "Jak dlouhý má být vzkaz na záznamníku?",
-    correctAnswer: "stručný, jen podstatné",
-    options: ["co nejdelší a podrobný", "bez jména a kontaktu", "stručný, jen podstatné", "vzkaz se nenechává"],
-    hints: ["Záznamník má omezený čas a příjemce si vzkaz poslechne ve spěchu. Co z toho plyne?"],
-    explanation: "Vzkaz má obsahovat jméno, čas, důvod a kontakt — a nic navíc. Dlouhé vyprávění se do záznamu často ani nevejde.",
-  },
-  {
-    question: "Při formálním telefonátu nikdy neřekneme:",
-    correctAnswer: "čau, hele, fakt?",
-    options: ["Dobrý den.", "Chtěl jsem se zeptat.", "Na shledanou.", "čau, hele, fakt?"],
-    hints: ["Tři možnosti bys ve formálním hovoru čekal. Která tam nepatří?"],
-    explanation: "Hovorové výrazy narušují formální ráz hovoru. Ostatní tři formulace jsou naopak jeho běžnou součástí.",
-  },
-  {
-    question: "Nejsi si jistý, zda jsi správně porozuměl. Co uděláš?",
-    correctAnswer: "zopakujeme, co jsme slyšeli",
-    options: ["zopakujeme, co jsme slyšeli", "předpokládáme, že je to tak", "zavěsíme a zavoláme znovu", "zeptáme se někoho jiného"],
-    hints: ["Jak si ověříš, že jsi rozuměl správně, aniž bys hovor přerušil?"],
-    explanation: "Když shrneš vlastními slovy, co jsi pochopil, druhá strana to buď potvrdí, nebo opraví. Nedorozumění se tak odhalí hned.",
-  },
-  {
-    question: "Jak se liší SMS od telefonního vzkazu?",
-    correctAnswer: "psaná forma, stejný obsah",
-    options: [
-      "psaná forma, méně obsahu",
-      "psaná forma, stejný obsah",
-      "SMS vzkazem vůbec není",
-      "SMS je vždy lepší",
-    ],
-    hints: ["Změní se způsob předání. Změní se i to, co musí vzkaz obsahovat?"],
-    explanation: "SMS je psaná, ale musí obsahovat totéž co mluvený vzkaz — kdo píše, o co jde a kontakt. Forma se mění, obsah ne.",
-  },
-  {
-    question: "Jak je vhodné telefonovat ve veřejné dopravě?",
-    correctAnswer: "stručně a tlumeně",
-    options: ["hlasitě a podrobně", "vůbec nezvedat telefon", "stručně a tlumeně", "zapnout hlasitý odposlech"],
-    hints: ["Kolem tebe sedí cizí lidé. Co z toho plyne pro hlasitost i délku hovoru?"],
-    explanation: "V dopravě se mluví krátce a potichu, případně se domluví zavolání později. Hlasitý hovor obtěžuje ostatní cestující.",
-  },
-  {
-    question: "Co je dobrým zvykem před formálním telefonátem?",
-    correctAnswer: "připravit si klíčové body",
-    options: ["volat úplně bez přípravy", "mít u sebe kamaráda", "volat vždy jen z domova", "připravit si klíčové body"],
-    hints: ["Co ti pomůže, abys během hovoru na nic nezapomněl?"],
-    explanation: "Několik poznámek předem zajistí, že hovor bude přehledný a nic důležitého nevynecháš. Bez přípravy se snadno ztratíš.",
-  },
-  {
-    question: "Jak napíšeš vzkaz, když nevíš přesně, co volající chtěl?",
-    correctAnswer: "co víme a prosbu o zavolání",
-    options: ["co víme a prosbu o zavolání", "domyslíme si zbytek", "nevzkážeme raději nic", "napíšeme jen čas hovoru"],
-    hints: ["Neúplná informace je pořád lepší než žádná. Co k ní ale musíš přidat?"],
-    explanation: "Zapíšeš, co víš, a doplníš, ať se příjemce ozve zpět. Domýšlet si obsah by mohlo vést k nedorozumění.",
-  },
-  {
-    question: "Jak si ověříš telefonní číslo, které ti někdo diktuje?",
-    correctAnswer: "zopakuji ho nahlas zpátky",
-    options: [
-      "zapíšu si ho potichu",
-      "zopakuji ho nahlas zpátky",
-      "zeptám se na jméno",
-      "poprosím o e-mail",
-    ],
-    hints: ["Jak druhá strana pozná, že sis číslo zapsal správně?"],
-    explanation: "Když číslo přečteš nahlas zpátky, volající hned uslyší případnou chybu a opraví ji. Tichý zápis nikdo nezkontroluje.",
-  },
-];
-
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Jak správně zahájíš hovor s ordinací lékaře?",
-    correctAnswer: "Dobrý den, rád bych se objednal.",
-    options: ["Ahoj, potřebuju doktora.", "Máte volné místo?", "Dobrý den, rád bych se objednal.", "Hej, potřebuju pomoc."],
-    hints: ["Ordinace je instituce. Co musí zaznít kromě toho, co chceš?"],
-    explanation: "Hovor s ordinací začíná pozdravem, představením a zdvořile formulovaným požadavkem. Tykání ani strohý dotaz se sem nehodí.",
-  },
-  {
-    question: "Jak se omluvíš, když voláš v nevhodnou dobu?",
-    correctAnswer: "Omlouvám se, že volám takhle pozdě.",
-    options: ["Promiňte a hned mluvíme dál.", "Dobu volání nezmiňujeme.", "Zavěsíme bez omluvy.", "Omlouvám se, že volám takhle pozdě."],
-    hints: ["Víš, že jsi vyrušil. Přiznáš to, nebo to přejdeš mlčením?"],
-    explanation: "Vyrušil jsi mimo obvyklou dobu, takže se to sluší pojmenovat a omluvit. Přejít to mlčky by působilo bezohledně.",
-  },
-  {
-    question: "Co zapíšeš do vzkazu o informační schůzce ve škole?",
-    correctAnswer: "datum, kdo, čas, zpráva, kontakt",
-    options: ["datum, kdo, čas, zpráva, kontakt", "jen název školy", "jen datum schůzky", "jen telefonní číslo"],
-    hints: ["Rodiče musí vědět, kdy schůzka je, kdo volal a jak se doptat. Která možnost to pokrývá?"],
-    explanation: "Vzkaz o schůzce musí obsahovat všechny údaje najednou, aby rodiče věděli, kam a kdy přijít a na koho se obrátit s dotazem.",
-  },
-  {
-    question: "Jak přijmeš pracovní telefonát od neznámé firmy?",
-    correctAnswer: "Dobrý den, u telefonu Nováková.",
-    options: [
-      "Kdo volá a odkud?",
-      "Dobrý den, u telefonu Nováková.",
-      "Haló, co chcete?",
-      "Počkejte chvilku.",
-    ],
-    hints: ["I když nevíš, kdo volá, začínáš ty. Čím?"],
-    explanation: "Při přijetí hovoru se představíš, aby volající věděl, s kým mluví. Strohé 'Haló' ani protiotázka nejsou vhodným začátkem.",
-  },
-  {
-    question: "Co řekneš nejdřív při volání na tísňovou linku?",
-    correctAnswer: "kde jsme a co se stalo",
-    options: ["svoje jméno a věk", "svoje telefonní číslo", "kde jsme a co se stalo", "dnešní datum a čas"],
-    hints: ["Záchranáři musí vyjet co nejrychleji. Co k tomu potřebují ze všeho nejdřív?"],
-    explanation: "Bez místa a popisu situace nemůže dispečink poslat pomoc. Ostatní údaje se doplní až potom.",
-  },
-  {
-    question: "Co chybí ve vzkazu 'Volala Jana, zavolejte zpět.'?",
-    correctAnswer: "čas volání a telefon",
-    options: ["jméno volající osoby", "prosba o zavolání", "pozdrav na začátku", "čas volání a telefon"],
-    hints: ["Projdi si, co ve vzkazu je. Které dva povinné údaje tam nenajdeš?"],
-    explanation: "Jméno i prosba o zavolání ve vzkazu jsou, ale chybí kdy Jana volala a na jaké číslo se má příjemce ozvat. Bez čísla nelze zavolat zpět.",
-  },
-  {
-    question: "Proč je důležité mluvit pomalu a jasně?",
-    correctAnswer: "aby si druhý stihl zapsat",
-    options: ["aby si druhý stihl zapsat", "kvůli lepšímu signálu", "aby hovor trval déle", "je to jen zvyk"],
-    hints: ["Druhá strana si často píše poznámky. Co jí rychlá řeč znemožní?"],
-    explanation: "Při telefonu se nedá odezírat ze rtů, takže rychlá nebo nezřetelná řeč vede k chybám. Pomalé tempo dá druhé straně čas zapisovat.",
-  },
-  {
-    question: "Co uděláš, když sdělujeme přesné číslo nebo adresu?",
-    correctAnswer: "zopakujeme a necháme potvrdit",
-    options: [
-      "řekneme je jen jednou",
-      "zopakujeme a necháme potvrdit",
-      "pošleme raději e-mail",
-      "nadiktujeme je rychle",
-    ],
-    hints: ["Jediné přeslechnuté číslo znehodnotí celý údaj. Jak se tomu vyhneš?"],
-    explanation: "Zopakování údaje a jeho potvrzení druhou stranou odhalí chybu hned. U čísel a adres je to nejspolehlivější pojistka.",
-  },
-  {
-    question: "Jak řekneš, že musíš hovor přerušit?",
-    correctAnswer: "Promiňte, mohu vám zavolat zpět?",
-    options: ["Musím jít. Nashle.", "Zavěsíme bez omluvy.", "Promiňte, mohu vám zavolat zpět?", "Mlčky odložíme telefon."],
-    hints: ["Nestačí jen odejít. Co druhé straně nabídneš, aby o nic nepřišla?"],
-    explanation: "K omluvě patří i nabídka, že se ozveš znovu — druhá strana tak ví, že hovor není odbytý. Bez ní působí přerušení nezdvořile.",
-  },
-  {
-    question: "Co znamená zavolat zpět?",
-    correctAnswer: "voláme tomu, kdo volal nám",
-    options: ["voláme na jiné číslo", "přepojíme hovor dál", "necháme si zavolat", "voláme tomu, kdo volal nám"],
-    hints: ["Slovo 'zpět' napovídá směr. Kdo se ozval jako první?"],
-    explanation: "Zpětné zavolání znamená, že se ozveš tomu, kdo se tě pokoušel zastihnout. Proto ve vzkazu nikdy nesmí chybět kontakt.",
-  },
-  {
-    question: "Proč se u tísňového volání nemá zavěsit jako první?",
-    correctAnswer: "operátor se může ještě ptát",
-    options: ["operátor se může ještě ptát", "hovor je tím dražší", "je to zakázané zákonem", "číslo by se zablokovalo"],
-    hints: ["Dispečink potřebuje upřesnit místo nebo stav zraněného. Co když už nebudeš na lince?"],
-    explanation: "Operátor často doplňuje otázky nebo radí, co dělat do příjezdu pomoci. Proto se čeká, až hovor ukončí on.",
-  },
+const L3: PracticeTask[] = [
+  choice("Omylem ses dovolal nebo dovolala na špatné číslo. Co řekneš?", "omluvím se za omyl a rozloučím se", [
+    { value: "hned zavěsím bez slova", why: "Bez omluvy je to neslušné." },
+    { value: "zeptám se, kdo tam je, a povídám si", why: "Zdržuješ cizího člověka." },
+    { value: "řeknu, ať mi dá správné číslo", why: "Druhý tvé správné číslo nezná." },
+  ], {
+    hints: ["Kdo za omyl může a co se v takové chvíli říká?", "Stačí krátce říct, že ses spletl nebo spletla, omluvit se a pozdravit."],
+    explanation: "Při omylu se krátce omluvíme a rozloučíme.",
+  }),
+  choice("Někdo volá tatínkovi, který zrovna spí. Co řekneš?", "řeknu, že teď nemůže, a nabídnu vzkaz", [
+    { value: "hned ho vzbudím a podám mu telefon", why: "Tatínek odpočívá; budit ho kvůli běžnému hovoru není nutné — stačí vyřídit vzkaz." },
+    { value: "řeknu, že tady žádný tatínek nebydlí", why: "To není pravda a volající by zbytečně hledal jinde." },
+    { value: "zavěsím bez vysvětlení", why: "Volající by nevěděl, co se děje." },
+  ], {
+    hints: ["Jak můžeš pomoct volajícímu i tatínkovi?", "Nemusíš nikoho budit — zapiš si, kdo volá a co chce, a tatínkovi to později předej."],
+    explanation: "Řekneme, že teď nemůže k telefonu, a nabídneme vyřízení vzkazu.",
+  }),
+  choice("V hlasové schránce je vzkaz: „Ahoj, tady Honza, zavolej.“ Co v něm chybí?", "proč máš zavolat", [
+    { value: "kdo volal", why: "Honza se představil." },
+    { value: "pozdrav", why: "Honza pozdravil." },
+    { value: "nic, je úplný", why: "Nevíš, proč máš volat." },
+  ], {
+    hints: ["Víš po poslechu, o co Honzovi jde?", "Dobrý vzkaz řekne i důvod — pak se můžeš připravit, než zavoláš zpátky."],
+    explanation: "Vzkazu chybí důvod, proč máš volat.",
+  }),
+  choice("Proč do telefonu nikomu neříkáš heslo nebo kód od karty?", "mohl by ho zneužít", [
+    { value: "heslo se tím změní", why: "Heslo se samo nezmění, ale mohl by ho zneužít někdo cizí." },
+    { value: "telefon by se rozbil", why: "Nejde o telefon." },
+    { value: "je to jen zdvořilost", why: "Jde o bezpečnost." },
+  ], {
+    hints: ["Kdo by mohl s tvým heslem něco udělat?", "Podvodníci se často vydávají za banku nebo školu; skutečná instituce heslo po telefonu nechce."],
+    explanation: "Hesla a kódy neříkáme nikomu — mohly by se zneužít.",
+  }),
+  choice("Voláš do knihovny prodloužit výpůjčku. Co řekneš jako první?", "pozdravím a řeknu své jméno", [
+    { value: "hned diktuji názvy knih", why: "Nejdřív pozdrav a představení." },
+    { value: "zeptám se, kolik je hodin", why: "To s výpůjčkou nesouvisí." },
+    { value: "řeknu, že volám omylem", why: "Voláš záměrně." },
+  ], {
+    hints: ["Jak začíná každý slušný hovor?", "Knihovnice potřebuje vědět, kdo volá; teprve pak řekneš, o co jde."],
+    explanation: "Nejdřív pozdrav a představení, pak prosba o prodloužení.",
+  }),
+  choice("Babička upadla a nemůže vstát. Voláš záchranku. Co řekneš nejdřív?", "co se stalo a kde to je", [
+    { value: "jak se jmenuje naše kočka", why: "To záchranka nepotřebuje." },
+    { value: "že zavolám později", why: "Pomoc je potřeba hned." },
+    { value: "jaké bylo včera počasí", why: "To s nehodou nesouvisí." },
+  ], {
+    hints: ["Co záchranka potřebuje vědět, aby mohla vyjet?", "Nejdůležitější je, jakou pomoc potřebuješ a kam mají přijet."],
+    explanation: "Záchrance řekneme, co se stalo a kde; pak odpovídáme na otázky operátora.",
+  }),
+  choice("Proč se při telefonování nejí ani nežvýká?", "je to slyšet a druhému se špatně rozumí", [
+    { value: "telefon by se ušpinil", why: "Hlavní důvod je srozumitelnost a zdvořilost." },
+    { value: "jídlo by vystydlo", why: "Nejde o jídlo." },
+    { value: "je to zakázané zákonem", why: "Zákon to nezakazuje, jen je to nezdvořilé." },
+  ], {
+    hints: ["Jak zní hlas, když někdo mluví s plnou pusou?", "Mlaskání je v telefonu slyšet ještě víc a slova jsou nesrozumitelná."],
+    explanation: "Jídlo při hovoru je slyšet, je nezdvořilé a zhoršuje srozumitelnost.",
+  }),
+  choice("Kdy je lepší poslat zprávu než volat?", "když druhý nemůže mluvit, třeba je ve škole", [
+    { value: "když je něco velmi naléhavé", why: "Naléhavé věci se řeší hovorem." },
+    { value: "když potřebuji rychlou pomoc", why: "Rychlou pomoc zajistí hovor." },
+    { value: "když volám záchranku", why: "Záchrance se volá." },
+  ], {
+    hints: ["Kdy by zvonění telefonu druhého rušilo?", "Zprávu si druhý přečte, až bude moct; hovor ho vyruší hned."],
+    explanation: "Zprávu posíláme, když druhý nemůže mluvit a věc nespěchá.",
+  }),
+  choice("Který vzkaz na záznamník je zdvořilý?", "Dobrý den, tady Eva Malá, prosím, zavolejte mi zpět. Děkuji.", [
+    { value: "Ahoj, tady Eva, zavolej hned, jinak se naštvu, jo?", why: "Výhrůžka a tykání dospělému není zdvořilé." },
+    { value: "Tady někdo, kdo potřebuje zavolat. Rychle!", why: "Chybí jméno a slušnost." },
+    { value: "Eva. Zavolejte. Hned. Je to důležité, víte?", why: "Chybí pozdrav a poděkování, zní to příkře." },
+  ], {
+    hints: ["Který vzkaz obsahuje pozdrav, jméno, prosbu i poděkování?", "Zdvořilý vzkaz dospělému: pozdrav, představení, prosba, poděkování."],
+    explanation: "Zdvořilý vzkaz má pozdrav, jméno, prosbu a poděkování.",
+  }),
+  choice("Volá cizí člověk a chce mluvit s Pavlem, který u vás nebydlí. Co řekneš?", "že má asi špatné číslo", [
+    { value: "že Pavel přijde za hodinu", why: "To není pravda." },
+    { value: "naši adresu, ať se přijde podívat", why: "Adresu cizím neříkej." },
+    { value: "nic a začnu si povídat", why: "Stačí upozornit na omyl." },
+  ], {
+    hints: ["Kdo se tu spletl?", "Stačí zdvořile upozornit na omyl, nic dalšího o sobě neprozrazuj."],
+    explanation: "Zdvořile řekneme, že má asi špatné číslo.",
+  }),
+  choice("Proč je dobré si před důležitým hovorem napsat, co chceš říct?", "nic důležitého nezapomenu", [
+    { value: "hovor bude delší", why: "Poznámky hovor naopak zkrátí." },
+    { value: "je to povinné", why: "Není to povinné, jen užitečné." },
+    { value: "druhý to uslyší", why: "Poznámky slouží tobě." },
+  ], {
+    hints: ["Stalo se ti, že jsi po zavěšení zjistil nebo zjistila, že jsi na něco zapomněl nebo zapomněla?", "S poznámkami se neztratíš ani v nervozitě a řekneš všechno, co potřebuješ."],
+    explanation: "Poznámky pomohou nezapomenout nic důležitého.",
+  }),
+  choice("Jak ukončíš hovor s paní učitelkou?", "poděkuji a řeknu na shledanou", [
+    { value: "řeknu čau", why: "Čau se hodí ke kamarádům, ne k učitelce." },
+    { value: "prostě zavěsím", why: "Bez rozloučení je to nezdvořilé." },
+    { value: "řeknu „tak jo, zatím“", why: "Je to příliš hovorové." },
+  ], {
+    hints: ["Jak se loučíš s dospělým, kterému vykáš?", "K dospělým se hodí poděkování a spisovný pozdrav."],
+    explanation: "S učitelkou se loučíme poděkováním a pozdravem Na shledanou.",
+  }),
+  choice("Zvoní telefon z neznámého čísla a rodiče nejsou doma. Co je rozumné?", "nic o sobě neprozradit a nabídnout vzkaz", [
+    { value: "říct, že jsem doma sám nebo sama", why: "To cizímu neprozrazuj." },
+    { value: "říct heslo od wifi", why: "Hesla nikomu neříkej." },
+    { value: "domluvit si s neznámým schůzku", why: "S cizími lidmi se nedomlouvej." },
+  ], {
+    hints: ["Co bys neměl nebo neměla cizímu člověku říkat?", "Stačí zjistit, kdo volá, a nabídnout, že vyřídíš vzkaz; o sobě nic neprozrazuj."],
+    explanation: "Cizím lidem nic o sobě neříkáme; nabídneme jen vyřízení vzkazu.",
+  }),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level === 1) return shuffle(L1);
+  if (level === 2) return shuffle(VZKAZY.map(vzkazUloha));
+  return shuffle(L3);
 }
 
 export const TELEFONICKYROZHOVORZANECHANIVZKAZU: TopicMetadata[] = [

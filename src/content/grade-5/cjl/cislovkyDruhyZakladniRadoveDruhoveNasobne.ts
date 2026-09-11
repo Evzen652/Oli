@@ -1,335 +1,74 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { urceni, type Kategorie, type Polozka } from "../_urceni";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby a číslovky se určovaly bez věty. Teď se každá číslovka určuje
+// ve větě: L1 běžné tvary · L2 skloňované a méně časté tvary (dvojí, oboje,
+// trojnásobný) · L3 neurčité a tázací číslovky (mnoho, několikrát, kolikátý).
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: "Jaký druh číslovky je 'pět'?",
-    correctAnswer: "základní – kolik?",
-    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – kolikery?", "násobná – kolikrát?"],
-    hints: ["Zkus na 'pět' postupně všechny čtyři otázky: kolik? kolikátý? kolikery? kolikrát? — jen jedna z nich dává smysl."],
-    explanation: "Ptáme se: Kolik? — pět. Číslovka udává prostý počet, proto je základní. Pořadí by bylo 'pátý', sada 'patery' a opakování 'pětkrát'.",
-  },
-  {
-    question: "Jaký druh číslovky je 'třetí'?",
-    correctAnswer: "řadová – kolikátý?",
-    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – kolikery?", "násobná – kolikrát?"],
-    hints: ["Zkus na 'třetí' postupně všechny čtyři otázky: kolik? kolikátý? kolikery? kolikrát? — jen jedna z nich dává smysl."],
-    explanation: "Ptáme se: Kolikátý? — třetí. Číslovka udává pořadí v řadě, proto je řadová. Prostý počet by byl 'tři', opakování 'třikrát'.",
-  },
-  {
-    question: "Jaký druh číslovky je 'dvoje'?",
-    correctAnswer: "druhová – kolikery?",
-    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – kolikery?", "násobná – kolikrát?"],
-    hints: ["Zkus na 'dvoje' postupně všechny čtyři otázky: kolik? kolikátý? kolikery? kolikrát? — jen jedna z nich dává smysl."],
-    explanation: "Ptáme se: Kolikery? — dvoje (dvoje dveře, dvoje boty). Číslovka počítá sady nebo druhy věcí, proto je druhová. Kdybychom počítali jednotlivé kusy, řekli bychom 'dva'.",
-  },
-  {
-    question: "Jaký druh číslovky je 'třikrát'?",
-    correctAnswer: "násobná – kolikrát?",
-    options: ["základní – kolik?", "řadová – kolikátý?", "druhová – kolikery?", "násobná – kolikrát?"],
-    hints: ["Zkus na 'třikrát' postupně všechny čtyři otázky: kolik? kolikátý? kolikery? kolikrát? — jen jedna z nich dává smysl."],
-    explanation: "Ptáme se: Kolikrát? — třikrát. Číslovka říká, kolikrát se děj opakoval, proto je násobná. Prostý počet by byl 'tři', pořadí 'třetí'.",
-  },
-  {
-    question: "Jaký druh číslovky je 'druhý'?",
-    correctAnswer: "řadová",
-    options: ["řadová", "základní", "druhová", "násobná"],
-    hints: ["Tohle číslo říká POŘADÍ, ne přesný počet ani kolikrát se něco opakuje — zkus na něj zformulovat vhodnou otázku."],
-    explanation: "Ptáme se: Kolikátý? — druhý. Číslovka udává pořadí, proto je řadová. Pozor na podobnost se slovem 'druhová' — ta počítá sady (dvoje), ne pořadí.",
-  },
-  {
-    question: "Jaký druh číslovky je 'jednou'?",
-    correctAnswer: "násobná",
-    options: ["základní", "násobná", "řadová", "druhová"],
-    hints: ["Tohle slovo říká, KOLIK OPAKOVÁNÍ děje proběhlo — zkus na něj zformulovat vhodnou otázku."],
-    explanation: "Ptáme se: Kolikrát? — jednou. Číslovka počítá opakování děje, proto je násobná. Základní by byla 'jeden', řadová 'první'.",
-  },
-  {
-    question: "Jaký druh číslovky je 'jedny' (například jedny dveře)?",
-    correctAnswer: "druhová",
-    options: ["základní", "řadová", "druhová", "násobná"],
-    hints: ["Tato číslovka označuje sadu nebo druh věcí (například věci, které přirozeně tvoří pár). Která otázka se jí ptá?"],
-    explanation: "Dveře jsou pomnožné — počítáme je po celcích, ne po kusech. Proto 'jedny dveře', ne 'jeden dveře'. Číslovky počítající sady jsou druhové.",
-  },
-  {
-    question: "Jaký druh číslovky je 'sedm'?",
-    correctAnswer: "základní",
-    options: ["řadová", "druhová", "násobná", "základní"],
-    hints: ["Zkus se zeptat na toto číslo otázkou: kolik? kolikátý? kolikrát? Která otázka sem sedí nejlépe?"],
-    explanation: "Ptáme se: Kolik? — sedm. Číslovka udává prostý počet, proto je základní.",
-  },
-  {
-    question: "Jaký druh číslovky je 'sedmý'?",
-    correctAnswer: "řadová",
-    options: ["řadová", "základní", "druhová", "násobná"],
-    hints: ["Zkus se zeptat na toto číslo otázkou: kolik? kolikátý? kolikrát? Která otázka sem sedí nejlépe?"],
-    explanation: "Ptáme se: Kolikátý? — sedmý. Číslovka udává pořadí v řadě, proto je řadová.",
-  },
-  {
-    question: "Jaký druh číslovky je 'sedmkrát'?",
-    correctAnswer: "násobná",
-    options: ["základní", "násobná", "řadová", "druhová"],
-    hints: ["Zkus se zeptat na toto číslo otázkou: kolik? kolikátý? kolikrát? Která otázka sem sedí nejlépe?"],
-    explanation: "Ptáme se: Kolikrát? — sedmkrát. Přípona -krát říká, kolikrát se děj opakoval, proto je číslovka násobná.",
-  },
-  {
-    question: "Na jakou otázku odpovídají základní číslovky?",
-    correctAnswer: "kolik?",
-    options: ["kolikátý?", "kolikery?", "kolik?", "kolikrát?"],
-    hints: ["Základní číslovky říkají, jak velký je počet (pět, deset, sto). Jakou otázku bys položil, kdybys chtěl zjistit počet?"],
-    explanation: "Základní číslovky udávají prostý počet (pět jablek), a na počet se ptáme otázkou 'kolik'. Ostatní otázky patří k pořadí, sadám a opakování.",
-  },
-  {
-    question: "Na jakou otázku odpovídají řadové číslovky?",
-    correctAnswer: "kolikátý?",
-    options: ["kolik?", "kolikery?", "kolikrát?", "kolikátý?"],
-    hints: ["Řadové číslovky vyjadřují pořadí (první, druhý, třetí). Jakou otázku bys položil, kdybys chtěl zjistit pořadí?"],
-    explanation: "Řadové číslovky určují místo v řadě (třetí místo), a na pořadí se ptáme otázkou 'kolikátý'. Otázka 'kolik' by vedla k číslovce základní.",
-  },
-  {
-    question: "Na jakou otázku odpovídají druhové číslovky?",
-    correctAnswer: "kolikery?",
-    options: ["kolikery?", "kolik?", "kolikátý?", "kolikrát?"],
-    hints: ["Druhové číslovky počítají sady nebo druhy věcí, ne jednotlivé kusy — zkus zformulovat otázku, na kterou takové počítání odpovídá."],
-    explanation: "Druhové číslovky počítají sady či druhy (dvoje boty, troje dveře) a ptáme se na ně otázkou 'kolikery'. Na 'kolik' by odpovídala číslovka základní — dva, tři.",
-  },
-  {
-    question: "Na jakou otázku odpovídají násobné číslovky?",
-    correctAnswer: "kolikrát?",
-    options: ["kolik?", "kolikrát?", "kolikátý?", "kolikery?"],
-    hints: ["Násobné číslovky říkají, kolik opakování děje proběhlo (jednou, dvakrát, trojnásobně) — zkus zformulovat otázku, na kterou tahle čísla odpovídají."],
-    explanation: "Násobné číslovky vyjadřují počet opakování (dvakrát denně) a ptáme se na ně otázkou 'kolikrát'. Otázka 'kolik' by vedla k číslovce základní.",
-  },
-  {
-    question: "Jaký druh číslovky je 'trojnásobný'?",
-    correctAnswer: "násobná",
-    options: ["základní", "řadová", "násobná", "druhová"],
-    hints: ["Přípona -násobný říká, kolikrát je něco větší. Zkus se zeptat: kolikrát? Patří to k druhu, který tuto otázku zodpovídá."],
-    explanation: "Ptáme se: Kolikrát? — trojnásobný (třikrát větší). Násobné číslovky mohou mít i tvar přídavného jména, ale druh se tím nemění.",
-  },
+const DRUHY: Kategorie[] = [
+  { nazev: "číslovka základní", znak: "vyjadřuje počet; ptáme se kolik? (pět, dvacet, mnoho)." },
+  { nazev: "číslovka řadová", znak: "vyjadřuje pořadí; ptáme se kolikátý? (první, třetí)." },
+  { nazev: "číslovka druhová", znak: "vyjadřuje počet druhů nebo souborů; ptáme se kolikery? kolikerý? (dvoje boty, dvojí chléb)." },
+  { nazev: "číslovka násobná", znak: "vyjadřuje, kolikrát se něco děje nebo kolikrát je něco větší (třikrát, dvojnásobný)." },
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Ve větě 'Přišla jako první.' jaký druh číslovky je 'první'?",
-    correctAnswer: "řadová",
-    options: ["základní", "druhová", "násobná", "řadová"],
-    hints: ["Zkus se zeptat: kolikátá přišla? Podle toho, která otázka sedí, poznáš druh číslovky."],
-    explanation: "Ptáme se: Kolikátá přišla? — první. Číslovka určuje pořadí v cíli, proto je řadová.",
-  },
-  {
-    question: "Ve větě 'Koupil dvoje boty.' jaký druh číslovky je 'dvoje'?",
-    correctAnswer: "druhová",
-    options: ["druhová", "základní", "řadová", "násobná"],
-    hints: ["Boty existují přirozeně v párech. Číslovka vyjadřuje sadu nebo druh — která otázka se na ni ptá?"],
-    explanation: "Koupil dva páry, tedy dvě sady — proto 'dvoje', ne 'dva'. Číslovky počítající sady jsou druhové. 'Dva boty' by znamenalo dva jednotlivé kusy.",
-  },
-  {
-    question: "Ve větě 'Přečetl jsem to dvakrát.' jaký druh číslovky je 'dvakrát'?",
-    correctAnswer: "násobná",
-    options: ["základní", "násobná", "řadová", "druhová"],
-    hints: ["Zeptej se na tuto číslovku: kolikrát přečetl? Podle odpovědi poznáš, který druh číslovky vyjadřuje opakování děje."],
-    explanation: "Ptáme se: Kolikrát přečetl? — dvakrát. Číslovka počítá opakování děje, proto je násobná.",
-  },
-  {
-    question: "Ve větě 'Máme sto korun.' jaký druh číslovky je 'sto'?",
-    correctAnswer: "základní",
-    options: ["řadová", "druhová", "základní", "násobná"],
-    hints: ["Zeptej se: kolik korun máme? Která otázka (kolik? / kolikátý? / kolikrát?) sem sedí?"],
-    explanation: "Ptáme se: Kolik korun? — sto. Číslovka udává prostý počet, proto je základní.",
-  },
-  {
-    question: "Co je rozdíl mezi 'tři' a 'troje'?",
-    correctAnswer: "tři = počet kusů, troje = počet sad",
-    options: ["tři = počet sad, troje = počet kusů", "tři i troje znamenají totéž", "tři je číslovka, troje je příslovce", "tři = počet kusů, troje = počet sad"],
-    hints: ["Jedno z těch dvou slov říká, kolik KUSŮ něčeho je, druhé říká, kolik SAD dohromady tvoří danou věc (dveře mají dvě křídla, boty dva kusy) — zkus rozhodnout, které je které."],
-    explanation: "'Tři' je číslovka základní a počítá jednotlivé kusy (tři tužky). 'Troje' je číslovka druhová a počítá sady nebo dvojice (troje dveře, troje boty). Obojí jsou číslovky, jen jiného druhu.",
-  },
-  {
-    question: "Jaký druh číslovky je 'stonásobně'?",
-    correctAnswer: "násobná",
-    options: ["násobná", "základní", "řadová", "druhová"],
-    hints: ["Přípona -násobně říká, kolikrát je něco větší nebo více. Zkus se zeptat otázkou, která odpovídá opakování."],
-    explanation: "Ptáme se: Kolikrát? — stonásobně (stokrát více). Násobné číslovky mohou mít i tvar příslovce, druh se tím nemění.",
-  },
-  {
-    question: "Ve větě 'Setkal jsem se s ním potřetí.' jaký druh číslovky je 'potřetí'?",
-    correctAnswer: "násobná",
-    options: ["základní", "násobná", "řadová", "druhová"],
-    hints: ["'Potřetí' znamená 'po třetí'. Zkus se zeptat: kolikrát jsem se s ním setkal? Podle odpovědi urči druh číslovky."],
-    explanation: "Ptáme se: Kolikrát? — potřetí. Slova poprvé, podruhé, potřetí počítají opakování děje, proto jsou to číslovky násobné, ne řadové.",
-  },
-  {
-    question: "Ve větě 'Na třetím místě skončila.' jaký druh číslovky je 'třetím'?",
-    correctAnswer: "řadová",
-    options: ["základní", "druhová", "řadová", "násobná"],
-    hints: ["Zeptej se: na kolikátém místě skončila? Která otázka ti pomůže určit druh číslovky vyjadřující pořadí?"],
-    explanation: "Ptáme se: Na kolikátém místě? — na třetím. Číslovka určuje pořadí, proto je řadová. Tvar 'třetím' je jen 6. pád, druh se skloňováním nemění.",
-  },
-  {
-    question: "Jaký druh číslovky je 'půldruhého'?",
-    correctAnswer: "základní",
-    options: ["řadová", "druhová", "násobná", "základní"],
-    hints: ["'Půldruhého' vyjadřuje zlomkový počet. Zeptej se: kolik? — odpovídá na tuto otázku, nebo jinak?"],
-    explanation: "Ptáme se: Kolik? — půldruhého, tedy jeden a půl. Číslovky vyjadřující i neceločíselný počet patří mezi základní (zlomkové).",
-  },
-  {
-    question: "Jaký druh číslovky je 'čtvrtý'?",
-    correctAnswer: "řadová",
-    options: ["řadová", "základní", "druhová", "násobná"],
-    hints: ["Zkus se zeptat: kolikátý? Pokud otázka sedí, víš, o jaký druh jde."],
-    explanation: "Ptáme se: Kolikátý? — čtvrtý. Číslovka udává pořadí, proto je řadová. Základní by byla 'čtyři'.",
-  },
-  {
-    question: "Jaký druh číslovky je 'čtvery' (čtvery housle)?",
-    correctAnswer: "druhová",
-    options: ["základní", "druhová", "řadová", "násobná"],
-    hints: ["Housle existují jako celý nástroj, ale ve skupině jich může být víc druhů nebo sad. Která otázka se ptá na druh nebo sadu?"],
-    explanation: "Housle jsou pomnožné jméno, takže se počítají po celcích — 'čtvery housle' jsou čtyři nástroje. Číslovky počítající sady jsou druhové.",
-  },
-  {
-    question: "Jaký druh číslovky je 'čtyřikrát'?",
-    correctAnswer: "násobná",
-    options: ["základní", "řadová", "násobná", "druhová"],
-    hints: ["Zkus se zeptat: kolikrát? Pokud otázka sedí, jde o druh číslovky vyjadřující opakování."],
-    explanation: "Ptáme se: Kolikrát? — čtyřikrát. Přípona -krát říká, kolikrát se děj opakoval, proto je číslovka násobná.",
-  },
-  {
-    question: "Jaký druh číslovky je 'čtyři'?",
-    correctAnswer: "základní",
-    options: ["řadová", "druhová", "násobná", "základní"],
-    hints: ["Zkus se zeptat: kolik? Pokud otázka sedí, jde o druh číslovky vyjadřující samotný počet."],
-    explanation: "Ptáme se: Kolik? — čtyři. Číslovka udává prostý počet, proto je základní. Řadová by byla 'čtvrtý', druhová 'čtvery'.",
-  },
-  {
-    question: "Použij správný druh číslovky: 'Přeložil to do ___ jazyků.' (počet = 5)",
-    correctAnswer: "pěti",
-    options: ["pěti", "pátých", "pětkrát", "patery"],
-    hints: ["Do kolika jazyků? Hledáš tvar, který vyjadřuje prostý počet — ne pořadí, ne kolikrát se to opakovalo."],
-    explanation: "Ptáme se: Do kolika jazyků? — do pěti. Potřebujeme číslovku základní ve 2. pádu. 'Pátých' by udávalo pořadí, 'pětkrát' opakování a 'patery' sady.",
-  },
-  {
-    question: "Použij správný druh číslovky: 'Dostal se na ___ místo.' (pořadí = 5)",
-    correctAnswer: "páté",
-    options: ["pět", "páté", "pětkrát", "patery"],
-    hints: ["Zadání říká, že jde o pořadí. Kterou otázkou se na pořadí ptáme a jaký tvar číslovky na ni odpovídá?"],
-    explanation: "Ptáme se: Na kolikáté místo? — na páté. Pořadí vyjadřuje číslovka řadová. Tvar 'pět' by udával počet míst, ne pozici v pořadí.",
-  },
-];
+const P = (uroven: 1 | 2 | 3, slovo: string, veta: string, kategorie: string, klic: string, proc: string): Polozka =>
+  ({ uroven, slovo, veta, kategorie, klic, proc });
 
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Jaký druh číslovky je 'jednorázově'?",
-    correctAnswer: "násobná",
-    options: ["základní", "řadová", "násobná", "druhová"],
-    hints: ["Přípona -rázově říká, kolikrát se děj odehrává. Zkus se zeptat otázkou, která odpovídá opakování."],
-    explanation: "Ptáme se: Kolikrát? — jednorázově, tedy jen jednou. Číslovka počítá opakování děje, proto je násobná, i když má tvar příslovce.",
-  },
-  {
-    question: "Ve větě 'Koupila troje rukavice.' proč 'troje' a ne 'tři'?",
-    correctAnswer: "rukavice se počítají po sadách",
-    options: ["tři je vždy nespisovný tvar", "záleží na nářečí", "obojí lze zaměnit", "rukavice se počítají po sadách"],
-    hints: ["Věci existující v sadách nebo párech se počítají druhovými číslovkami."],
-    explanation: "Rukavice tvoří pár, takže 'troje rukavice' jsou tři páry — počítáme sady, a na to slouží číslovka druhová. Tvar 'tři rukavice' by znamenal tři jednotlivé kusy.",
-  },
-  {
-    question: "Jaký druh číslovky je 'jednosměrně'?",
-    correctAnswer: "není číslovka",
-    options: ["není číslovka", "základní", "násobná", "řadová"],
-    hints: ["Obsahuje toto slovo číslo nebo číselný základ? Zkus odpovědět na otázku: lze se 'jednosměrně' zeptat otázkou kolik? kolikátý? kolikrát?"],
-    explanation: "Slovo je odvozeno od přídavného jména 'jednosměrný' a říká, jakým způsobem se něco děje — ne kolikrát ani kolik. Je to příslovce, ne číslovka.",
-  },
-  {
-    question: "Jaký druh číslovky je 'oba / obě'?",
-    correctAnswer: "základní",
-    options: [
-      "druhová",
-      "základní",
-      "řadová",
-      "násobná",
-    ],
-    hints: ["'Oba/obě' označuje vždy právě dva ze skupiny. Zkus se zeptat: kolik? Odpovídá tato číslovka na tuto otázku?"],
-    explanation: "Ptáme se: Kolik? — oba, tedy dva. Je to zvláštní tvar číslovky základní pro dvojici, o níž už byla řeč. Pořadí ani opakování nevyjadřuje.",
-  },
-  {
-    question: "Ve větě 'Psal jsem to desetkrát.' – urči druh číslovky 'desetkrát'.",
-    correctAnswer: "násobná",
-    options: ["základní", "řadová", "násobná", "druhová"],
-    hints: ["Zeptej se: kolikrát psal? Která otázka (kolik? / kolikátý? / kolikrát?) sem nejlépe pasuje?"],
-    explanation: "Ptáme se: Kolikrát psal? — desetkrát. Číslovka počítá opakování děje, proto je násobná. Základní by byla 'deset'.",
-  },
-  {
-    question: "Řadová číslovka 'první' se skloňuje jako:",
-    correctAnswer: "přídavné jméno",
-    options: ["podstatné jméno", "zájmeno", "neskloňuje se", "přídavné jméno"],
-    hints: ["Zamysli se: mění 'první' svůj tvar podobně jako slova jako 'mladý' nebo 'jarní'? Ke kterému slovnímu druhu to přibližuje?"],
-    explanation: "Skloňuje se podle vzorů přídavných jmen — 'první, prvního, prvnímu' jde stejně jako 'jarní, jarního, jarnímu'. Řadové číslovky se proto chovají jako přídavná jména.",
-  },
-  {
-    question: "Základní číslovky 1–4 se skloňují jako:",
-    correctAnswer: "přídavná jména nebo zájmena",
-    options: ["přídavná jména nebo zájmena", "podstatná jména", "neskloňují se", "slovesa"],
-    hints: ["Zkus tyhle číslovky ohnout do všech pádů a porovnej vzniklé koncovky se třemi možnými vzory ohýbání — kterému slovnímu druhu se to nejvíc podobá?"],
-    explanation: "Číslovky 1–4 mění tvar podle rodu i pádu (jeden – jedna – jedno, dva – dvě, tři – třech), stejně jako přídavná jména a zájmena. Od pěti výš už rod nerozlišují.",
-  },
-  {
-    question: "Základní číslovky 5+ (pět, šest...) se skloňují jako:",
-    correctAnswer: "podstatná jména",
-    options: [
-      "přídavná jména",
-      "podstatná jména",
-      "neskloňují se",
-      "zájmena",
-    ],
-    hints: ["Zkus skloňovat 'pět, pěti, pěti...' — všimni si, že se tvar u několika pádů vůbec nemění. Ke vzoru jakého slovního druhu takové skloňování připomíná?"],
-    explanation: "Mají jen dva tvary — 'pět' v 1. a 4. pádu a 'pěti' ve zbylých, tedy stejně málo tvarů jako vzor kost u podstatných jmen. Rod na rozdíl od číslovek 1–4 nerozlišují.",
-  },
-  {
-    question: "Ve větě 'Přišel poprvé.' jaký druh číslovky je 'poprvé'?",
-    correctAnswer: "násobná",
-    options: ["základní", "řadová", "násobná", "druhová"],
-    hints: ["'Poprvé' říká, kolikátý pokus to byl. Zkus se zeptat: kolikrát? Která otázka sem lépe sedí?"],
-    explanation: "Ptáme se: Kolikrát? — poprvé, tedy jednou. Slova poprvé, podruhé, potřetí počítají opakování děje, proto jsou násobná, i když připomínají pořadí.",
-  },
-  {
-    question: "Jaký druh číslovky je 'několikrát'?",
-    correctAnswer: "násobná neurčitá",
-    options: ["základní neurčitá", "řadová neurčitá", "druhová neurčitá", "násobná neurčitá"],
-    hints: ["'Několikrát' neudává přesné číslo. Zkus se zeptat: kolikrát? Podle otázky urči druh — a zamysli se, zda víme přesnou hodnotu."],
-    explanation: "Ptáme se: Kolikrát? — několikrát, tedy násobná. Protože neříká přesný počet opakování, je navíc neurčitá.",
-  },
-  {
-    question: "Jaký druh číslovky je 'dvojí' (například dvojí názor)?",
-    correctAnswer: "druhová",
-    options: ["druhová", "základní", "řadová", "násobná"],
-    hints: ["'Dvojí' říká, že existují dva druhy nebo typy. Která otázka se ptá na druh nebo sadu věcí?"],
-    explanation: "'Dvojí názor' znamená názor dvou druhů, ne dva kusy názoru. Číslovky počítající druhy jsou druhové — základní by byla 'dva'.",
-  },
-  {
-    question: "Ve větě 'Skóre bylo pět ku třem.' jaký druh číslovky jsou 'pět' a 'třem'?",
-    correctAnswer: "obě jsou základní",
-    options: [
-      "obě jsou řadové",
-      "obě jsou základní",
-      "obě jsou druhové",
-      "obě jsou násobné",
-    ],
-    hints: ["'Pět' říká počet. 'Třem' je skloňovaný tvar téhož druhu číslovky. Zkus se zeptat na obě: kolik?"],
-    explanation: "Obě udávají počet bodů, ptáme se na ně otázkou 'kolik'. Tvar 'třem' je jen 3. pád číslovky 'tři' — skloňování druh číslovky nemění.",
-  },
+const ZAKL = "číslovka základní", RAD = "číslovka řadová", DRUH = "číslovka druhová", NAS = "číslovka násobná";
+
+const BANKA: Polozka[] = [
+  P(1, "pět", "Na stole leží pět tužek.", ZAKL, "vyjadřuje, kolik je kusů tužek", "Pět tužek — počet kusů; ptáme se kolik? Je to číslovka základní."),
+  P(1, "sto", "Naše škola má sto žáků.", ZAKL, "vyjadřuje, kolik je žáků", "Sto žáků — počet; číslovka základní."),
+  P(1, "první", "Ve frontě stál první.", RAD, "vyjadřuje místo v pořadí", "První — pořadí; ptáme se kolikátý? Číslovka řadová."),
+  P(1, "třetím", "Bydlím ve třetím patře.", RAD, "vyjadřuje, které patro v pořadí to je", "Ve třetím patře — pořadí; číslovka řadová."),
+  P(1, "dvakrát", "Zvonek zazvonil dvakrát.", NAS, "vyjadřuje, jak často se něco stalo", "Dvakrát — ptáme se kolikrát? Číslovka násobná."),
+  P(1, "třikrát", "Básničku si přečetl třikrát.", NAS, "vyjadřuje, jak často to udělal", "Třikrát — kolikrát? Číslovka násobná."),
+  P(1, "dvoje", "Koupil si dvoje boty.", DRUH, "počítá celé páry bot, ne jednotlivé kusy", "Dvoje boty — dva páry; ptáme se kolikery? Číslovka druhová."),
+  P(1, "troje", "Máme doma troje klíče.", DRUH, "počítá celé svazky klíčů", "Troje klíče — tři soubory; číslovka druhová."),
+  P(1, "deset", "Je mi deset let.", ZAKL, "vyjadřuje, kolik je let", "Deset let — počet; číslovka základní."),
+  P(1, "desátý", "Dnes je desátý den prázdnin.", RAD, "vyjadřuje, který den v pořadí to je", "Desátý den — pořadí; číslovka řadová."),
+  P(1, "pětkrát", "Na trampolíně pětkrát vyskočil.", NAS, "vyjadřuje, jak často vyskočil", "Pětkrát — kolikrát? Číslovka násobná."),
+  P(1, "čtvery", "Vzala si čtvery rukavice.", DRUH, "počítá celé páry rukavic", "Čtvery rukavice — čtyři páry; číslovka druhová."),
+  P(1, "dvacet", "Ve třídě je dvacet dětí.", ZAKL, "vyjadřuje, kolik je dětí", "Dvacet dětí — počet; číslovka základní."),
+
+  P(2, "dvojnásobnou", "Dostal dvojnásobnou porci.", NAS, "vyjadřuje, kolikrát je porce větší", "Dvojnásobná porce — dvakrát větší; číslovka násobná."),
+  P(2, "patery", "Ve skříni visí patery šaty.", DRUH, "počítá celé kusy oblečení, které se jinak neříkají v jednotném čísle", "Patery šaty — ptáme se kolikery? Číslovka druhová."),
+  P(2, "jednou", "Byl jsem tam jen jednou.", NAS, "vyjadřuje, jak často tam byl", "Jednou — kolikrát? Číslovka násobná."),
+  P(2, "čtvrtý", "Čtvrtý den konečně přestalo pršet.", RAD, "vyjadřuje, který den v pořadí", "Čtvrtý den — pořadí; číslovka řadová."),
+  P(2, "tisíc", "Městečko má tisíc obyvatel.", ZAKL, "vyjadřuje, kolik je obyvatel", "Tisíc obyvatel — počet; číslovka základní."),
+  P(2, "dvojí", "Babička upekla dvojí koláče.", DRUH, "vyjadřuje počet druhů koláčů", "Dvojí koláče — dva druhy; číslovka druhová."),
+  P(2, "stý", "Škola slavila stý den školního roku.", RAD, "vyjadřuje, který den v pořadí", "Stý den — pořadí; číslovka řadová."),
+  P(2, "desetkrát", "Úlohu si desetkrát zkontroloval.", NAS, "vyjadřuje, jak často to udělal", "Desetkrát — kolikrát? Číslovka násobná."),
+  P(2, "osm", "V bedně je osm jablek.", ZAKL, "vyjadřuje, kolik je jablek", "Osm jablek — počet; číslovka základní."),
+  P(2, "sedmý", "V závodě skončil sedmý.", RAD, "vyjadřuje umístění v pořadí", "Sedmý — kolikátý? Číslovka řadová."),
+  P(2, "trojnásobný", "Byl to trojnásobný vítěz závodu.", NAS, "vyjadřuje, kolikrát vyhrál", "Trojnásobný vítěz — třikrát; číslovka násobná."),
+  P(2, "oboje", "Vzal si na kopec oboje sáňky.", DRUH, "počítá dva celé kusy, které se říkají v množném čísle", "Oboje sáňky — ptáme se kolikery? Číslovka druhová."),
+  P(2, "dvanáctý", "Dvanáctý žák přišel pozdě.", RAD, "vyjadřuje místo v pořadí", "Dvanáctý — pořadí; číslovka řadová."),
+
+  P(3, "mnoho", "Na obloze viděl mnoho hvězd.", ZAKL, "vyjadřuje počet, i když ne přesný", "Mnoho hvězd — neurčitý počet; číslovka základní neurčitá."),
+  P(3, "několikrát", "Na dveře několikrát zaklepal.", NAS, "vyjadřuje, jak často, i když ne přesně", "Několikrát — neurčitě kolikrát; číslovka násobná neurčitá."),
+  P(3, "několikátý", "Už několikátý den prší.", RAD, "vyjadřuje místo v pořadí, i když ne přesně", "Několikátý den — neurčité pořadí; číslovka řadová neurčitá."),
+  P(3, "málo", "Na koncert přišlo málo lidí.", ZAKL, "vyjadřuje neurčitý počet lidí", "Málo lidí — neurčitý počet; číslovka základní neurčitá."),
+  P(3, "kolikrát", "Kolikrát jsi byl v Praze?", NAS, "ptá se, jak často to bylo", "Kolikrát — tázací číslovka násobná."),
+  P(3, "kolik", "Kolik stojí ten sešit?", ZAKL, "ptá se na počet korun", "Kolik — tázací číslovka základní."),
+  P(3, "kolikátý", "Kolikátý jsi skončil v závodě?", RAD, "ptá se na umístění", "Kolikátý — tázací číslovka řadová."),
+  P(3, "dvoje", "V chodbě jsou dvoje dveře.", DRUH, "počítá celé dveře; slovo dveře má jen množné číslo", "Dvoje dveře — slovo dveře nemá jednotné číslo, proto číslovka druhová."),
+  P(3, "několik", "Na oslavu přišlo několik hostů.", ZAKL, "vyjadřuje neurčitý počet hostů", "Několik hostů — neurčitý počet; číslovka základní neurčitá."),
+  P(3, "trojí", "Na stole byl trojí salát.", DRUH, "vyjadřuje počet druhů salátu", "Trojí salát — tři druhy; číslovka druhová."),
+  P(3, "tolikrát", "Tolikrát jsem ti to říkal!", NAS, "vyjadřuje, jak často se to stalo", "Tolikrát — ukazovací číslovka násobná."),
+  P(3, "nesčetněkrát", "Tu písničku slyšel nesčetněkrát.", NAS, "vyjadřuje, že se to stalo tolikrát, že to nejde spočítat", "Nesčetněkrát — neurčitá číslovka násobná."),
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  return urceni(BANKA, DRUHY, level, (p) => ({
+    question: `Jaký druh číslovky je „${p.slovo}“ ve větě „${p.veta}“?`,
+    hints: [
+      `Na jakou otázku odpovídá „${p.slovo}“ ve větě „${p.veta}“: kolik, kolikátý, kolikery, nebo kolikrát?`,
+      `Pomůže tohle: „${p.slovo}“ tu ${p.klic}.`,
+    ],
+  }));
 }
 
 export const CISLOVKYDRUHYZAKLADNIRADOVEDRUHOVENASOBNE: TopicMetadata[] = [

@@ -1,152 +1,84 @@
 /**
- * Dějepis 6. ročník — Doba kamenná a periodizace pravěku (chronologie).
+ * Dějepis 6. ročník — Doba kamenná a periodizace pravěku (drag_order).
  *
- * FAKTICKÝ vzor typu drag_order (žák seřazuje na časové ose). Druhý ověřovaný
- * typ pilotu po select_one (periodizace/letopočet). Demonstruje, že chybový model
- * 2. stupně platí i pro řazení — kvalita leží v JEDNOZNAČNÉ chronologii a ve
- * vysvětlení PROČ to pořadí (materiál nástrojů: kámen → bronz → železo; obživa:
- * lov → zemědělství; národy u nás: Keltové → Germáni → Slované).
+ * Přepsáno 2026-09-11 (audit 6. ročníku): dřív čtyři pevné úlohy na úroveň,
+ * teď generátor z banky úseků pravěku. Každý úsek má několik podob (název,
+ * typický nástroj, způsob života, nález), úloha vybere 3 / 4 / 5 různých úseků
+ * a z každého jednu podobu. Pořadí úseků je pevné (rank), takže chronologie je
+ * jednoznačná.
  *
- * Reálná gradace přes POČET položek a jemnost rozlišení:
- *  • L1 — 3 zřetelné epochy (kámen/bronz/železo, lov/zemědělství).
- *  • L2 — 4 epochy (přidává návaznost a kulturu, např. únětickou).
- *  • L3 — 5 položek včetně mezolitu a národů na našem území.
- * Znění otázek L1 a L3 je záměrně disjunktní (check difficulty_progression
- * porovnává texty otázek): L1 mluví o „třech", L3 o „pěti / celé časové ose".
+ * Malá nápověda se ptá na položky v ZAMÍCHANÉM pořadí (nic neprozradí), velká
+ * dá pravidlo řazení a jednu kotvu. Vysvětlení říká u každé položky, proč tam patří.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pickN, buildOrderTask as order } from "./_shared";
+import { pickN, shuffle, pick, buildOrderTask as order } from "./_shared";
 
-// ── Poolu úloh po úrovních ──────────────────────────────────────────────────
-// Položky jsou vždy ve SPRÁVNÉM pořadí (od nejstaršího po nejnovější).
-
-const L1: PracticeTask[] = [
-  order(
-    "Seřaď tři úseky doby kamenné od nejstaršího po nejnovější.",
-    ["Paleolit – starší doba kamenná", "Mezolit – střední doba kamenná", "Neolit – mladší doba kamenná"],
-    {
-      hints: ["Názvy říkají pořadí: starší → střední → mladší doba kamenná.", "Paleolit (starší) je vždy první a trval nejdéle."],
-      explanation: "Doba kamenná se dělí na tři úseky podle stáří: paleolit (starší) trval statisíce let, mezolit (střední) je krátký přechod po době ledové a neolit (mladší) přinesl zemědělství.",
-    },
-  ),
-  order(
-    "Seřaď tři pravěké epochy podle materiálu nástrojů, od nejstarší.",
-    ["Doba kamenná", "Doba bronzová", "Doba železná"],
-    {
-      hints: ["Epochy se jmenují podle materiálu nástrojů.", "Kámen lidé používali dávno před kovy."],
-      explanation: "Epochy pravěku se jmenují podle materiálu nástrojů: nejdřív kámen, pak bronz (slitina mědi a cínu) a nakonec železo — každý další materiál byl tvrdší a lidé ho museli umět zpracovat.",
-    },
-  ),
-  order(
-    "Co bylo dřív? Seřaď tři způsoby života od nejstaršího.",
-    ["Lovci a sběrači (paleolit)", "První zemědělci (neolit)", "Kovolitci a obchodníci (doba bronzová)"],
-    {
-      hints: ["Přemýšlej, jak se měnila obživa: nejdřív lov.", "Zemědělství přišlo dávno před zpracováním kovů."],
-      explanation: "Nejstarší lidé se živili lovem a sběrem (paleolit). V neolitu přišla zemědělská revoluce — lidé se usadili. Teprve potom, v době bronzové, se rozvinulo zpracování kovů a obchod.",
-    },
-  ),
-  order(
-    "Seřaď tři pravěké epochy od nejstarší po nejnovější.",
-    ["Starší doba kamenná", "Mladší doba kamenná", "Doba bronzová"],
-    {
-      hints: ["Starší doba kamenná byla před mladší.", "Bronz je kov — přišel až po době kamenné."],
-      explanation: "Starší doba kamenná (paleolit) je nejstarší, mladší doba kamenná (neolit) přinesla zemědělství a doba bronzová pak první kovové nástroje.",
-    },
-  ),
+interface Podoba { text: string; proc: string }
+const USEKY: Podoba[][] = [
+  [
+    { text: "Paleolit – starší doba kamenná", proc: "nejstarší a nejdelší úsek, lidé kámen jen štípali" },
+    { text: "Paleolit – lovci mamutů", proc: "v době ledové lidé lovili mamuty — nejstarší úsek" },
+    { text: "Lovci a sběrači (paleolit)", proc: "první lidé se živili lovem a sběrem" },
+    { text: "Štípaný kámen (paleolit)", proc: "nejstarší nástroje vznikaly štípáním kamene" },
+    { text: "Věstonická venuše (paleolit)", proc: "soška z Dolních Věstonic je stará asi 30 000 let" },
+  ],
+  [
+    { text: "Mezolit – střední doba kamenná", proc: "krátký přechod po skončení doby ledové" },
+    { text: "Mezolit – konec doby ledové", proc: "oteplilo se, lidé lovili menší zvěř a rybařili" },
+    { text: "Střední doba kamenná", proc: "leží mezi starší a mladší dobou kamennou" },
+  ],
+  [
+    { text: "Neolit – první zemědělci", proc: "lidé se usadili, pěstovali obilí a chovali zvířata" },
+    { text: "Broušený kámen (neolit)", proc: "kámen se už brousil, nástroje byly dokonalejší" },
+    { text: "Zemědělská revoluce (neolit)", proc: "zemědělství změnilo lovce v usedlé zemědělce" },
+    { text: "Mladší doba kamenná", proc: "poslední část doby kamenné, přinesla zemědělství" },
+  ],
+  [
+    { text: "Doba bronzová", proc: "první kovové nástroje ze slitiny mědi a cínu" },
+    { text: "Doba bronzová – únětická kultura", proc: "u nás vznikla únětická kultura, která zpracovávala bronz" },
+    { text: "Bronz – slitina mědi a cínu", proc: "bronz lidé uměli vyrobit až po době kamenné" },
+    { text: "Bronzové nástroje a šperky", proc: "kovové předměty z bronzu nahradily kámen" },
+  ],
+  [
+    { text: "Doba železná", proc: "železo je tvrdší než bronz a přišlo až nakonec" },
+    { text: "Doba železná – Keltové", proc: "Keltové ovládli zpracování železa" },
+    { text: "Keltská oppida", proc: "opevněná sídla Keltů z doby železné, první města u nás" },
+    { text: "Železné nástroje – Keltové (Bohemia)", proc: "podle keltského kmene Bójů se naše země nazývá Bohemia" },
+  ],
 ];
 
-const L2: PracticeTask[] = [
-  order(
-    "Seřaď čtyři pravěké epochy od nejstarší po nejnovější.",
-    ["Paleolit – lovci mamutů", "Neolit – první zemědělci", "Doba bronzová – únětická kultura", "Doba železná – Keltové"],
-    {
-      hints: ["Lov mamutů patří do nejstaršího paleolitu.", "Keltové ovládli železo — to bylo až nakonec."],
-      explanation: "Lovci mamutů žili v paleolitu (době ledové). Neolit přinesl zemědělství. V době bronzové vznikla u nás únětická kultura. Keltové v době železné stavěli oppida; podle jejich kmene Bójů se země později začala nazývat Bohemia.",
-    },
-  ),
-  order(
-    "Seřaď čtyři období podle vývoje nástrojů, od nejstaršího.",
-    ["Štípaný kámen (paleolit)", "Broušený kámen (neolit)", "Bronz – měď a cín", "Železo – Keltové"],
-    {
-      hints: ["Kámen se zpracovával dřív než kovy.", "Železo je tvrdší než bronz — přišlo později."],
-      explanation: "Nástroje ukazují pokrok: v paleolitu lidé kámen jen štípali, v neolitu ho už brousili, pak přišel bronz (slitina mědi a cínu) a nakonec železo, které ovládli Keltové.",
-    },
-  ),
-  order(
-    "Seřaď čtyři úseky doby kamenné a kovů od nejstaršího.",
-    ["Paleolit", "Mezolit", "Neolit", "Doba bronzová"],
-    {
-      hints: ["Doba kamenná má tři části: starší, střední, mladší.", "Bronz přišel až po celé době kamenné."],
-      explanation: "Doba kamenná postupuje paleolit → mezolit → neolit (starší, střední, mladší), teprve po ní následuje doba bronzová s prvními kovovými nástroji.",
-    },
-  ),
-  order(
-    "Seřaď čtyři mezníky pravěku od nejstaršího po nejnovější.",
-    ["Lovci a sběrači", "Zemědělská revoluce (neolit)", "Bronzové nástroje", "Železné nástroje a oppida"],
-    {
-      hints: ["Lov a sběr byly úplně první způsob obživy.", "Oppida (opevněná města) stavěli Keltové až v době železné."],
-      explanation: "Lovci a sběrači (paleolit) žili nomádsky. Zemědělská revoluce v neolitu umožnila usazení. Pak přišly bronzové nástroje a nakonec železo — Keltové stavěli oppida, první města u nás.",
-    },
-  ),
-];
+const ZADANI: Record<number, string> = {
+  3: "Seřaď tři úseky pravěku od nejstaršího po nejnovější.",
+  4: "Seřaď čtyři úseky pravěku od nejstaršího po nejnovější.",
+  5: "Seřaď všech pět úseků pravěku na našem území od nejstaršího po nejnovější.",
+};
+const PRAVIDLO = "Pravěk jde od doby kamenné (starší, střední a mladší — paleolit, mezolit, neolit) přes dobu bronzovou k době železné.";
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
-const L3: PracticeTask[] = [
-  order(
-    "Seřaď všech pět úseků pravěku na našem území od nejstaršího po nejnovější.",
-    [
-      "Paleolit – lovci mamutů",
-      "Mezolit – konec doby ledové",
-      "Neolit – první zemědělci",
-      "Doba bronzová – únětická kultura",
-      "Doba železná – Keltové (Bohemia)",
+function uloha(kolik: number): PracticeTask {
+  const rady = pickN([0, 1, 2, 3, 4], kolik).sort((a, b) => a - b);
+  const xs = rady.map((r) => pick(USEKY[r]));
+  let promichane = shuffle(xs);
+  if (promichane.every((x, i) => x === xs[i])) promichane = [...xs].reverse();
+  const [a, b, ...zbytek] = promichane;
+  const kotva = pick(xs.slice(1));
+  return order(ZADANI[kolik], xs.map((x) => x.text), {
+    hints: [
+      `Co bylo dřív: „${a.text}“, nebo „${b.text}“?${zbytek.length ? ` A kam patří ${zbytek.map((x) => `„${x.text}“`).join(" a ")}?` : ""}`,
+      `${PRAVIDLO} Pomůže i kotva: ${kotva.text} — ${kotva.proc}.`,
     ],
-    {
-      hints: ["Doba kamenná má tři části (paleolit, mezolit, neolit) — ty jsou nejstarší.", "Keltové a železo jsou až úplně na konci pravěku."],
-      explanation: "Celá osa pravěku: paleolit (lovci mamutů) → mezolit (po době ledové) → neolit (zemědělci) → doba bronzová (únětická kultura) → doba železná (Keltové; podle jejich kmene Bójů se země nazývá Bohemia).",
-    },
-  ),
-  order(
-    "Seřaď pět pravěkých mezníků chronologicky, od nejstaršího.",
-    [
-      "Věstonická venuše (paleolit, 29 000 let)",
-      "Zemědělská revoluce (neolit)",
-      "Únětická kultura (doba bronzová)",
-      "Keltové – kmen Bójů",
-      "Germáni – Markomani",
-    ],
-    {
-      hints: ["Věstonická venuše je stará 29 000 let — to je paleolit, úplný začátek.", "Germáni přišli až po Keltech, kolem přelomu letopočtu."],
-      explanation: "Věstonická venuše (29 000 let) je z paleolitu. Zemědělská revoluce přišla v neolitu. Únětická kultura patří do doby bronzové. Podle keltského kmene Bójů dostala země pozdější jméno Bohemia; Germáni (Markomani) je z Čech vytlačili kolem přelomu letopočtu.",
-    },
-  ),
-  order(
-    "Seřaď celou časovou osu národů a epoch u nás, od nejstarší po nejnovější.",
-    [
-      "Lovci mamutů (paleolit)",
-      "První zemědělci (neolit)",
-      "Keltové (doba železná)",
-      "Germáni (Markomani)",
-      "Slované (6. století n. l.)",
-    ],
-    {
-      hints: ["Začni nejstarší dobou kamennou — lovci mamutů.", "Slované přišli jako poslední, až v 6. století našeho letopočtu."],
-      explanation: "Lovci mamutů žili v paleolitu, zemědělci v neolitu. Pak přišli Keltové (doba železná), které vystřídali Germáni (Markomani) kolem přelomu letopočtu, a nakonec dorazili Slované v 6. století n. l. — už skoro ve středověku.",
-    },
-  ),
-  order(
-    "Seřaď celou periodizaci pravěku podle materiálu, od nejstarší epochy.",
-    ["Paleolit", "Mezolit", "Neolit", "Doba bronzová", "Doba železná"],
-    {
-      hints: ["Tři úseky doby kamenné jdou: starší → střední → mladší.", "Po kameni přišel bronz a teprve nakonec železo."],
-      explanation: "Pravěk postupuje paleolit → mezolit → neolit (celá doba kamenná), pak doba bronzová a nakonec doba železná — pořadí kopíruje, jak lidé zvládali stále tvrdší materiály.",
-    },
-  ),
-];
+    explanation: `Správné pořadí: ${xs.map((x) => x.text).join(" → ")}. ${xs.map((x) => `${cap(x.text)}: ${x.proc}.`).join(" ")}`,
+  });
+}
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? L1 : level === 2 ? L2 : L3;
-  // vrátí celý pool v náhodném pořadí (orchestrátor vybere sessionTaskCount)
-  return pickN(pool, pool.length);
+  const kolik = level === 1 ? 3 : level === 2 ? 4 : 5;
+  const out = new Map<string, PracticeTask>();
+  for (let i = 0; i < 200 && out.size < 24; i++) {
+    const t = uloha(kolik);
+    out.set(t.items!.join("|"), t);
+  }
+  return [...out.values()];
 }
 
 // ── Topic ────────────────────────────────────────────────────────────────

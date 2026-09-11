@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { posilNapovedy } from "../_shared";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -347,8 +348,69 @@ const POOL_L3: PracticeTask[] = [
   },
 ];
 
+// Doplněno 2026-09-11: pravidla chtějí aspoň 12 různých úloh na úroveň.
+const EXTRA_L1: PracticeTask[] = [
+  {
+    question: "Seřaď přemyslovské mezníky od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Bořivoj přijal křesťanství","Přemysl Otakar I. – dědičné království (1212)","Konec Přemyslovců (1306)"],
+    hints: ["Kdo z nich byl ještě kníže, a ne král?", "Bořivoj byl první křesťanský kníže v 9. století. Dědičné království přišlo až roku 1212 a rod skončil roku 1306."],
+    explanation: "Bořivoj přijal křesťanství v 9. století. Přemysl Otakar I. získal roku 1212 dědičný královský titul. Roku 1306 byl zavražděn Václav III. a Přemyslovci vymřeli.",
+  },
+  {
+    question: "Seřaď přemyslovské události od nejstarší po nejnovější.",
+    correctAnswer: "order",
+    items: ["Sv. Václav zavražděn (935)","Přemysl Otakar I. – dědičné království (1212)","Václav II. – kutnohorské stříbro"],
+    hints: ["Václav II. nemá letopočet. Vládl na konci 13. století.", "Svatý Václav žil v 10. století, Přemysl Otakar I. získal královský titul roku 1212 a Václav II. vládl až koncem 13. století, kdy se v Kutné Hoře těžilo stříbro."],
+    explanation: "Svatý Václav byl zavražděn roku 935. Roku 1212 se Čechy staly dědičným královstvím. Václav II. vládl koncem 13. století a zbohatl na kutnohorském stříbře.",
+  },
+];
+const EXTRA_L2: PracticeTask[] = [
+  {
+    question: "Seřaď přemyslovské krále od nejstaršího po nejmladšího.",
+    correctAnswer: "order",
+    items: ["Sv. Václav zavražděn (935)","Přemysl Otakar I. – dědičné království (1212)","Václav II. – pražský groš (1300)","Václav III. zavražděn (1306)"],
+    hints: ["Kdo z nich byl posledním Přemyslovcem?", "Pražský groš dal razit Václav II. roku 1300 a jeho syn Václav III. byl zavražděn o šest let později. Svatý Václav a Přemysl Otakar I. žili mnohem dřív."],
+    explanation: "Svatý Václav byl zavražděn roku 935. Přemysl Otakar I. získal roku 1212 dědičný královský titul. Václav II. dal roku 1300 razit pražský groš a jeho syn Václav III. byl roku 1306 zavražděn.",
+  },
+  {
+    question: "Seřaď mezníky od nejstaršího po nejnovější.",
+    correctAnswer: "order",
+    items: ["Příchod Slovanů (6. stol.)","Bořivoj přijal křesťanství","Přemysl Otakar I. – dědičné království (1212)","Konec Přemyslovců (1306)"],
+    hints: ["Která událost se stala dávno před prvními přemyslovskými knížaty?", "Slované přišli v 6. století, Bořivoj vládl v 9. století. Pak přišlo dědičné království (1212) a konec rodu (1306)."],
+    explanation: "Slované přišli v 6. století. Kníže Bořivoj přijal křesťanství v 9. století. Roku 1212 se Čechy staly dědičným královstvím a roku 1306 Přemyslovci vymřeli.",
+  },
+];
+const EXTRA_L3: PracticeTask[] = [
+  {
+    question: "Seřaď přemyslovské osobnosti a události od nejstarších po nejnovější.",
+    correctAnswer: "order",
+    items: ["Bořivoj přijal křesťanství","Sv. Václav zavražděn (935)","Přemysl Otakar I. – dědičné království (1212)","Přemysl Otakar II. padl na Moravském poli (1278)","Václav II. – pražský groš (1300)"],
+    hints: ["Dva panovníci se jmenují Přemysl Otakar. Který byl dřív?", "Otakar I. získal dědičné království roku 1212, jeho vnuk Otakar II. padl roku 1278. Po něm vládl Václav II., který roku 1300 zavedl pražský groš."],
+    explanation: "Bořivoj přijal křesťanství v 9. století, sv. Václav byl zavražděn roku 935. Přemysl Otakar I. získal roku 1212 dědičné království, Přemysl Otakar II. padl roku 1278 a Václav II. dal roku 1300 razit pražský groš.",
+  },
+  {
+    question: "Seřaď od nejstarší události po nejnovější.",
+    correctAnswer: "order",
+    items: ["Příchod Slovanů (6. stol.)","Sv. Václav zavražděn (935)","Přemysl Otakar II. padl na Moravském poli (1278)","Václav II. – pražský groš (1300)","Václav III. zavražděn (1306)"],
+    hints: ["Poslední tři události dělí jen pár desítek let. Kdo vládl po kom?", "Po Přemyslu Otakarovi II. (padl 1278) vládl jeho syn Václav II. (groš 1300) a po něm vnuk Václav III., zavražděný roku 1306."],
+    explanation: "Slované přišli v 6. století, sv. Václav byl zavražděn roku 935. Přemysl Otakar II. padl roku 1278, jeho syn Václav II. zavedl roku 1300 pražský groš a vnuk Václav III. byl roku 1306 zavražděn.",
+  },
+];
+
+const DOPLNEK: Record<number, string> = {
+  "1": "Porovnej letopočty a u postav bez letopočtu si vzpomeň, kdo vládl dřív — kníže, nebo král.",
+  "2": "Přemyslovci byli nejdřív knížaty a teprve od roku 1212 dědičnými králi. Letopočty ti řeknou zbytek.",
+  "3": "U panovníků bez letopočtu si vzpomeň, čím se proslavili a ve kterém století žili."
+};
+
+const [P1, P2, P3] = posilNapovedy(
+  [[...POOL_L1, ...EXTRA_L1], [...POOL_L2, ...EXTRA_L2], [...POOL_L3, ...EXTRA_L3]],
+  DOPLNEK,
+);
+
 function gen(level: number): PracticeTask[] {
-  const pool = level >= 3 ? POOL_L3 : level === 2 ? POOL_L2 : POOL_L1;
+  const pool = level >= 3 ? P3 : level === 2 ? P2 : P1;
   return shuffle(pool);
 }
 

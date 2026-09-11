@@ -177,7 +177,8 @@ function genL3(): PracticeTask {
   // kolik chybí (recept: kg cíl − g již máš)
   const targetKg = pick([1, 1.5, 2]);
   const targetG = targetKg * 1000;
-  const haveG = pick([300, 450, 600, 750, 800, 250]);
+  let haveG = pick([300, 450, 600, 750, 800, 250]);
+  while (targetG - haveG === haveG) haveG = pick([300, 450, 600, 800, 250]);
   const restG = targetG - haveG;
   return task(
     `Recept potřebuje ${cz(targetKg)} kg mouky. Máš ${cz(haveG)} g. Kolik gramů ti chybí?`,

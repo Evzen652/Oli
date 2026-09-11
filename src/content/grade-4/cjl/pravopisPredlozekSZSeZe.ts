@@ -1,136 +1,108 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { shuffle } from "../_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// Přepsáno 2026-09-11 (audit 4. ročníku). Původní pool měl chybné klíče
+// i podle vlastního pravidla: „Pracoval ___ soustředěním“ → „s“ (správně
+// se soustředěním), „Pomáhal ___ nadšením“ → „se“ (správně s nadšením),
+// a u vět se směrem shora dolů („Vypadlo ___ stolu“, „Sníh padal ___
+// střechy“) chtěl „ze“, přestože nápověda učila „se střechy“.
+//
+// Význam „shora dolů“ (s kopce × z kopce) tu záměrně není: dnešní norma
+// připouští obojí a doplňovačka s jedním klíčem by dítěti vyčítala
+// správnou odpověď. Téma drží dvě jasná pravidla:
+//   s/se + 7. pád — s kým? s čím? (dohromady)
+//   z/ze + 2. pád — odkud? (zevnitř, odněkud)
+// a delší tvar se/ze tam, kde by se krátký špatně vyslovoval.
+//
+// L1 = krátký tvar s/z · L2 = přibývá se/ze před s, z, š, ž
+// L3 = záludné případy (se psem, se mnou, se všemi, s nadšením × se zájmem).
+
+const OPTIONS = ["s", "z", "se", "ze"];
+
+function uloha(veta: string, klic: "s" | "z" | "se" | "ze"): PracticeTask {
+  const po = veta.split("___ ")[1] ?? "";
+  const slovo = po.split(/[\s,.!?]/)[0];
+  const sKym = klic.startsWith("s");
+  const dlouhy = klic.length === 2;
+  const jina = sKym ? "odkud?" : "s kým? s čím?";
+  const optionFeedback: Record<string, string> = {};
+  for (const o of OPTIONS) {
+    if (o === klic) continue;
+    if (o[0] !== klic[0]) {
+      optionFeedback[o] = `„${o}“ patří k otázce „${jina}“. Tady se ale ptáme „${sKym ? "s kým? s čím?" : "odkud?"}“.`;
+    } else if (dlouhy) {
+      optionFeedback[o] = `Krátký tvar by se tu špatně vyslovoval. Píše se delší: „${klic} ${slovo}“.`;
+    } else {
+      optionFeedback[o] = `Delší tvar píšeme jen tam, kde by se krátký špatně vyslovoval (se sestrou, ze školy). „${klic} ${slovo}“ se vysloví snadno.`;
+    }
   }
-  return a;
+  return {
+    question: `Doplň správnou předložku: „${veta}“`,
+    correctAnswer: klic,
+    options: [...OPTIONS],
+    blanks: [klic],
+    optionFeedback,
+    hints: [
+      `Na jakou otázku odpovídá ve větě slovo „${slovo}“?`,
+      `Nejdřív rozhodni podle otázky: s kým, s čím? — nebo odkud? Pak zkus říct předložku nahlas před slovem „${slovo}“: když se krátký tvar špatně vyslovuje, přidej -e.`,
+    ],
+    explanation: `Ptáme se „${sKym ? "s kým? s čím?" : "odkud?"}“: ${veta.replace("___", klic)}${dlouhy ? ` Delší tvar „${klic}“ je tu proto, že „${klic[0]} ${slovo}“ by se špatně vyslovovalo.` : ""}`,
+  };
 }
 
-// Level 1: jednoduche vety
-const POOL_L1: { sentence: string; blank: string }[] = [
-  { sentence: "Odešel ___ školy.", blank: "ze" },
-  { sentence: "Přišel ___ kamarádem.", blank: "s" },
-  { sentence: "Vyšel ___ lesa.", blank: "z" },
-  { sentence: "Sjel ___ kopce.", blank: "z" },
-  { sentence: "Šel ___ bratrem.", blank: "s" },
-  { sentence: "Vzal knihu ___ skříně.", blank: "ze" },
-  { sentence: "Přišel ___ sestrou.", blank: "s" },
-  { sentence: "Vyběhl ___ domu.", blank: "z" },
-  { sentence: "Sedí ___ psem.", blank: "se" },
-  { sentence: "Vylezl ___ stromu.", blank: "ze" },
-  { sentence: "Jde ___ tátou.", blank: "s" },
-  { sentence: "Vypadl ___ kapsy.", blank: "z" },
-  { sentence: "Šla ___ mámou.", blank: "s" },
-  { sentence: "Vyndal peněženku ___ tašky.", blank: "z" },
-  { sentence: "Hraje ___ přáteli.", blank: "s" },
-  { sentence: "Vypadlo ___ stolu.", blank: "ze" },
-  { sentence: "Jede ___ dědou.", blank: "s" },
-  { sentence: "Vylezl ___ díry.", blank: "z" },
-  { sentence: "Vyskočil ___ auta.", blank: "z" },
-  { sentence: "Šla ___ babičkou.", blank: "s" },
-  { sentence: "Vzal míč ___ tašky.", blank: "ze" },
-  { sentence: "Hrají ___ sousedy.", blank: "se" },
-  { sentence: "Přišel ___ školy unavený.", blank: "ze" },
-  { sentence: "Jede ___ celou rodinou.", blank: "s" },
-  { sentence: "Sníh padal ___ střechy.", blank: "ze" },
-  { sentence: "Cestoval ___ přítelem.", blank: "s" },
-  { sentence: "Ryba vyskočila ___ vody.", blank: "z" },
-  { sentence: "Šel na výlet ___ třídou.", blank: "se" },
-  { sentence: "Vypadl ___ okna míč.", blank: "z" },
-  { sentence: "Sedí ___ sestrou.", blank: "se" },
-];
+const L1: PracticeTask[] = ([
+  ["Šel jsem na procházku ___ tátou.", "s"],
+  ["Tomáš přišel ___ kamarádem.", "s"],
+  ["Vyšli jsme ___ lesa.", "z"],
+  ["Vyndal pero ___ penálu.", "z"],
+  ["Hraju si ___ bratrem.", "s"],
+  ["Přinesla vodu ___ potoka.", "z"],
+  ["Jana jede ___ babičkou k moři.", "s"],
+  ["Kočka vyskočila ___ krabice.", "z"],
+  ["Pijeme čaj ___ citronem.", "s"],
+  ["Vrátili jsme se ___ divadla.", "z"],
+  ["Maminka přijela ___ Brna.", "z"],
+  ["Na výlet jedu ___ dědou.", "s"],
+  ["Voda teče ___ kohoutku.", "z"],
+] as [string, "s" | "z"][]).map(([v, k]) => uloha(v, k));
 
-// Level 2: delsi vety
-const POOL_L2: { sentence: string; blank: string }[] = [
-  { sentence: "Vrátil se ___ hory velmi unavený.", blank: "z" },
-  { sentence: "Šel do obchodu ___ maminou.", blank: "s" },
-  { sentence: "Voda vytekla ___ vědra na zem.", blank: "ze" },
-  { sentence: "Pracoval ___ soustředěním celý den.", blank: "s" },
-  { sentence: "Vyskočil ___ auta a utíkal.", blank: "z" },
-  { sentence: "Cestoval ___ celou rodinou.", blank: "s" },
-  { sentence: "Vylezl ___ sklepa plný prachu.", blank: "ze" },
-  { sentence: "Přišel domů ___ zpěvem.", blank: "se" },
-  { sentence: "Vylovil rybu ___ rybníka.", blank: "z" },
-  { sentence: "Hrál fotbal ___ spolužáky.", blank: "se" },
-  { sentence: "Vypadl ___ okna hračkový míč.", blank: "z" },
-  { sentence: "Přivítal hosty ___ srdečným úsměvem.", blank: "se" },
-  { sentence: "Přinesl košík ___ zahrady.", blank: "ze" },
-  { sentence: "Psal úkol ___ velkou pečlivostí.", blank: "s" },
-  { sentence: "Odskočil ___ cesty, aby ho auto nesrazilo.", blank: "ze" },
-  { sentence: "Nakupoval ___ starší sestrou.", blank: "se" },
-  { sentence: "Vrátil knihu ___ police.", blank: "ze" },
-  { sentence: "Šel do parku ___ sousedovým psem.", blank: "se" },
-  { sentence: "Vytáhl zápisník ___ batohu.", blank: "z" },
-  { sentence: "Pracoval ___ zápalem celý týden.", blank: "se" },
-  { sentence: "Přijel ___ Brna na návštěvu.", blank: "z" },
-  { sentence: "Jela autobusem ___ babičkou.", blank: "s" },
-  { sentence: "Snesl krabici ___ police.", blank: "ze" },
-  { sentence: "Vrátil se domů ___ starším bratrem.", blank: "se" },
-  { sentence: "Psal dopis ___ velkou pečlivostí.", blank: "s" },
-  { sentence: "Vykoukl ___ okna a zamával.", blank: "z" },
-  { sentence: "Diskutoval ___ učitelkou o knize.", blank: "s" },
-  { sentence: "Vylezl ___ podkroví a přinesl fotografie.", blank: "z" },
-  { sentence: "Pomáhal ___ nadšením celé odpoledne.", blank: "se" },
-  { sentence: "Vzal si kabát ___ věšáku.", blank: "ze" },
-];
+const L2: PracticeTask[] = ([
+  ["Odešli jsme ___ školy.", "ze"],
+  ["Povídala si ___ sestrou.", "se"],
+  ["Vytáhl svačinu ___ batohu.", "z"],
+  ["Petr hraje fotbal ___ spolužáky.", "se"],
+  ["Vypadl mu klíč ___ kapsy.", "z"],
+  ["Vylila vodu ___ džbánu.", "z"],
+  ["Mluvil jsem ___ ředitelem.", "s"],
+  ["Přijeli jsme ___ Zlína.", "ze"],
+  ["Kluci se vrátili ___ hřiště.", "z"],
+  ["Babička mluvila ___ sousedkou.", "se"],
+  ["Vyběhl ___ zahrady.", "ze"],
+  ["Šla jsem na nákup ___ maminkou.", "s"],
+  ["Vytáhla svetr ___ šuplíku.", "ze"],
+  ["Hrála si ___ žákyní z vedlejší třídy.", "se"],
+] as [string, "s" | "z" | "se" | "ze"][]).map(([v, k]) => uloha(v, k));
 
-// Level 3: souvetí
-const POOL_L3: { sentence: string; blank: string }[] = [
-  { sentence: "Když přišel ___ školy, rovnou si sedl k úkolům.", blank: "ze" },
-  { sentence: "Jel ___ celou třídou na výlet, který byl skvělý.", blank: "s" },
-  { sentence: "Vylezl ___ podkroví a přinesl staré fotografie.", blank: "z" },
-  { sentence: "Pomáhal ___ nadšením, takže práce šla rychle.", blank: "se" },
-  { sentence: "Vzal si kabát ___ věšáku a vyběhl ven.", blank: "ze" },
-  { sentence: "Hrají ___ sousedy, protože venku je krásně.", blank: "se" },
-  { sentence: "Vytáhl zápisník ___ batohu a začal psát.", blank: "z" },
-  { sentence: "Diskutoval ___ učitelkou o přečtené knize.", blank: "s" },
-  { sentence: "Přijel ___ Prahy a hned šel spát.", blank: "z" },
-  { sentence: "Pracuje ___ zápalem, který ostatní obdivují.", blank: "se" },
-  { sentence: "Snesl krabici ___ police, ale skoro ji upustil.", blank: "ze" },
-  { sentence: "Vrátil se domů ___ starším bratrem po setmění.", blank: "se" },
-  { sentence: "Vzal čaj ___ šálku a pomalu ho pil.", blank: "ze" },
-  { sentence: "Jela autobusem ___ babičkou na druhý konec města.", blank: "s" },
-  { sentence: "Vykoukl ___ okna a zamával kamarádům.", blank: "z" },
-  { sentence: "Přemýšlel ___ velkou pozorností nad každou větou.", blank: "s" },
-  { sentence: "Vytáhl zápisník ___ tašky a opsal úkol.", blank: "z" },
-  { sentence: "Cestoval ___ přítelem, i když bylo špatné počasí.", blank: "s" },
-  { sentence: "Vypadl míč ___ stolu a kutálel se po podlaze.", blank: "ze" },
-  { sentence: "Šel ven ___ psem, aby se procházeli v parku.", blank: "se" },
-  { sentence: "Přinesl košík ___ zahrady, kde rostly jahody.", blank: "ze" },
-  { sentence: "Sedí ___ sestrou u okna a čtou si.", blank: "se" },
-  { sentence: "Vypadlo pero ___ kapsy kabátu na zem.", blank: "z" },
-  { sentence: "Jede ___ babičkou na víkend, těší se.", blank: "s" },
-  { sentence: "Vrátil se ___ hory, kde strávil celý týden.", blank: "z" },
-  { sentence: "Pracoval ___ soustředěním, i když byl unavený.", blank: "s" },
-  { sentence: "Vylezl ___ sklepa a přinesl zavařeniny.", blank: "ze" },
-  { sentence: "Vylovil rybu ___ rybníka a pustil ji zpátky.", blank: "z" },
-  { sentence: "Přivítal hosty ___ srdečným úsměvem u dveří.", blank: "se" },
-  { sentence: "Hrál si ___ spolužáky, dokud ho maminka nezavolala.", blank: "se" },
-];
-
-function explain(blank: string): string {
-  if (blank === "s" || blank === "se") {
-    return `Správně je předložka „${blank}“. Předložky s/se píšeme tehdy, když je něco spolu s něčím nebo někým, anebo když se něco pohybuje z povrchu (dolů, shora). Zeptej se „s kým, s čím?“ — pokud věta dává smysl, patří tam s/se. Tvar „se“ použijeme před slovem, které se těžko vyslovuje (se sestrou, se psem).`;
-  }
-  return `Správně je předložka „${blank}“. Předložky z/ze píšeme tehdy, když se něco pohybuje z vnitřku ven nebo odněkud pryč (ze školy, z lesa). Zeptej se „odkud?“ — pokud něco vychází zevnitř nebo směřuje pryč, patří tam z/ze. Tvar „ze“ použijeme před slovem, které se těžko vyslovuje (ze školy, ze stromu).`;
-}
+const L3: PracticeTask[] = ([
+  ["Pracoval ___ nadšením celé odpoledne.", "s"],
+  ["Úkol psala ___ soustředěním.", "se"],
+  ["Přivítala hosty ___ úsměvem.", "s"],
+  ["Poslouchal vyprávění ___ zájmem.", "se"],
+  ["Tatínek šel ven ___ psem.", "se"],
+  ["Ten dopis přišel ___ Švédska.", "ze"],
+  ["Rozloučila se ___ všemi kamarády.", "se"],
+  ["Strýc se vrátil ___ zahraničí.", "ze"],
+  ["Půjdeš ___ mnou do kina?", "se"],
+  ["Dostal pohled ___ Prahy.", "z"],
+  ["Teta přijela ___ Ostravy.", "z"],
+  ["Na schůzku přišla ___ zpožděním.", "se"],
+  ["Vylez ___ stanu, už svítí slunce.", "ze"],
+  ["Ráda si povídám ___ tetou.", "s"],
+] as [string, "s" | "z" | "se" | "ze"][]).map(([v, k]) => uloha(v, k));
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30).map(({ sentence, blank }) => ({
-    question: `Doplň správnou předložku: "${sentence}"`,
-    correctAnswer: blank,
-    options: ["s", "z", "se", "ze"],
-    blanks: [blank],
-    hints: [
-      "s/se = pohyb z povrchu nebo dohromady s někým",
-      "z/ze = pohyb z vnitřku (ze školy = z vnitřku budovy)",
-    ],
-    explanation: explain(blank),
-  }));
+  const pool = level >= 3 ? L3 : level === 2 ? L2 : L1;
+  return shuffle(pool);
 }
 
 export const PRAVOPISPREDLOZEKSZSEZE: TopicMetadata[] = [
@@ -143,13 +115,13 @@ export const PRAVOPISPREDLOZEKSZSEZE: TopicMetadata[] = [
     subject: "čeština",
     category: "Jazyková výchova",
     topic: "Jazyková výchova",
-    briefDescription: "Pochopíš, kdy psát s/se a kdy z/ze podle směru pohybu.",
+    briefDescription: "Pochopíš, kdy psát s/se (s kým, s čím) a kdy z/ze (odkud).",
     keywords: ["předložka", "s", "z", "se", "ze", "pravopis", "předložky"],
     goals: [
-      "Rozlišit předložky s/se (z povrchu, dohromady) a z/ze (z vnitřku)",
+      "Rozlišit předložky s/se (s kým, s čím) a z/ze (odkud)",
       "Správně doplnit předložku ve větě",
     ],
-    boundaries: ["Nezabývat se předponami s-/z-", "Bez předložkových pádů"],
+    boundaries: ["Nezabývat se předponami s-/z-", "Bez významu „shora dolů“ (s kopce × z kopce), kde norma připouští obojí"],
     gradeRange: [4, 4],
     inputType: "fill_blank",
     defaultLevel: 1,
@@ -158,14 +130,14 @@ export const PRAVOPISPREDLOZEKSZSEZE: TopicMetadata[] = [
     recommendedNext: ["g4-cjl-jazykova-vychova-stavba-slova-predpona-koren-pripona-koncovka"],
     generator: gen,
     helpTemplate: {
-      hint: "z/ze = pohyb z vnitřku (ze školy, z lesa); s/se = pohyb z povrchu nebo dohromady (s kamarádem, sjel ze střechy)",
+      hint: "s/se = s kým? s čím? (dohromady); z/ze = odkud? (zevnitř, odněkud)",
       steps: [
-        "Zkus dosadit: 'z vnitřku' nebo 'dohromady s někým'?",
-        "Z vnitřku → z/ze",
-        "Dohromady nebo z povrchu → s/se",
+        "Zeptej se: s kým, s čím? → s/se. Odkud? → z/ze.",
+        "Zkus spojení vyslovit: když se krátký tvar špatně říká, napiš se/ze.",
+        "Delší tvar bývá před s, z, š, ž (se sestrou, ze školy) a v několika dalších spojeních (se psem, se mnou).",
       ],
-      commonMistake: "Záměna 'ze školy' (z vnitřku) a 'se střechy' (z povrchu)",
-      example: "Vyšel ze školy. (z vnitřku) × Sjel se střechy. (z povrchu)",
+      commonMistake: "Psát „se“ i tam, kde se krátký tvar dobře vysloví: správně „s nadšením“, ale „se zájmem“",
+      example: "Jdu s tátou. (s kým?) × Jdu ze školy. (odkud?)",
     },
   },
 ];

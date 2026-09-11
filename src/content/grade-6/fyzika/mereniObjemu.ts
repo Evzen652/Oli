@@ -182,7 +182,8 @@ function genL3(): PracticeTask {
   // kolik ml chybí do naplnění
   const targetL = pick([1, 1.5, 2]);
   const targetMl = targetL * 1000;
-  const haveMl = pick([300, 450, 600, 750, 800, 250]);
+  let haveMl = pick([300, 450, 600, 750, 800, 250]);
+  while (targetMl - haveMl === haveMl) haveMl = pick([300, 450, 600, 800, 250]);
   const restMl = targetMl - haveMl;
   return task(
     `Nádrž pojme ${cz(targetL)} l. Nalil jsi ${cz(haveMl)} ml. Kolik mililitrů ještě chybí?`,

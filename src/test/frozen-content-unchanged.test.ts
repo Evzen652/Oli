@@ -9,12 +9,14 @@ import {
 import { GRADE_2_TOPICS } from "@/content/grade-2";
 import { GRADE_3_TOPICS } from "@/content/grade-3";
 import { GRADE_4_TOPICS } from "@/content/grade-4";
+import { GRADE_5_TOPICS } from "@/content/grade-5";
+import { GRADE_6_TOPICS } from "@/content/grade-6";
 import type { TopicMetadata } from "@/lib/types";
 
 /**
  * Audit `frozen_content_unchanged`
  *
- * Zamkne otázku + správnou odpověď u všech aktivních témat 2.–4. ročníku
+ * Zamkne otázku + správnou odpověď u všech auditovaných témat 2.–6. ročníku
  * (bez informatiky, bez ID v `UNFROZEN_TOPIC_IDS`). Padne, pokud se jakýkoliv
  * pár (question, correctAnswer) zamčeného tématu změní.
  *
@@ -32,6 +34,9 @@ const ALL_TOPICS: TopicMetadata[] = [
   ...GRADE_2_TOPICS,
   ...GRADE_3_TOPICS,
   ...GRADE_4_TOPICS,
+  // 5. a 6. ročník prošly auditem 2026-09-11 (obsah hotový, ročníky zatím zamčené v ACTIVE_GRADES).
+  ...GRADE_5_TOPICS,
+  ...GRADE_6_TOPICS,
 ].filter((t) => t.subject !== "informatika");
 
 type Snapshot = Record<string, TopicFingerprint>;

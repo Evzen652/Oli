@@ -25,16 +25,16 @@ import type { TopicMetadata, PracticeTask } from "./types";
  * přegeneruje: `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`.
  */
 export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
+  // Přepis přírodovědy 4. ročníku (2026-09-11) — úlohy neměly vlastní nápovědu,
+  // vysvětlení ani diagnostiku a obsahovaly věcné chyby (stonožka jako hmyz,
+  // dvě správné možnosti, angličtina v textu). Znovu zamrazit po dokončení.
+  // Vlastivěda 4. ročníku (2026-09-11) — stejný dluh: věcné chyby a chybějící dokumentace.
   // P1 — oprava neexistujících slov („zdal", „spochodovala", double prefix)
   // P0 — sjednocení case klíče s options
-  "g4-cjl-jazykova-vychova-stavba-slova-pravopis-predpon-vy-vy-s-z-vz",
   // P2 — dedup možností přes buildUniqueOptions (L2 vždy měla dupe, L3 často)
-  "g4-mat-zlomek-cast-celku-4",
   // P2 — řazení: unikátní vstupní čísla (duplicity → shodné distraktory)
   "g3-mat-cisla-do-1000",
   // P0 — klíč "ano"/"ne" sjednocen na "Ano"/"Ne" (options literal)
-  "g4-cjl-komunikacni-a-slohova-vychova-cteni-manipulativni-komunikace-v-reklame",
-  "g4-cjl-komunikacni-a-slohova-vychova-cteni-plynule-cteni-s-porozumenim-primerene-narocnych-textu",
   // PED-1 — možnosti = sporný grafém (y/ý/i/í), ne celá chybná slova
   "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-pravopis-tvrdych-a-mekkych-souhlasek-i-y-po-souhlaskach",
   "g3-cjl-vyjmenovana-slova",
@@ -44,7 +44,6 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // PED-3 — naplnit L3 + disjunktní L1/L2/L3
   "g3-mat-kruznice-kruh",
   "g3-mat-rysovani-usecky",
-  "g4-mat-magicke-ctverce-ciselne-rady-4",
   "g2-mat-mereni-delky",
   "g2-mat-jednotky",
   "g2-mat-nasobilka-2345",
@@ -56,7 +55,6 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   "g3-cjl-velka-pismena",
   "g3-cjl-veta-jednoducha-souveti",
   "g3-cjl-jazykova-vychova-nauka-o-slove-vyznam-slova-slova-jednoznacna-a-mnohoznacna",
-  "g4-cjl-komunikacni-a-slohova-vychova-slohova-vychova-dopis-psani-soukromeho-dopisu",
   // Kolo 2 P0 opravy (2026-07-09) — oba vzorové topics dokončeny a znovu zamrazeny 2026-08-30
   "g3-cjl-podstatna-jmena-rod-cislo-pad",
   // Systémové dluhy Balík 1B (2026-07-10) — rozšíření z 3 na 8 textů, disjunktní L1/L2/L3
@@ -64,31 +62,17 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // Systémové dluhy Balík 1C (2026-07-10) — parametrizace z rozsahu čísel místo pevného seznamu
   "g2-mat-tabulky",
   "g3-mat-tabulky-diagramy",
-  "g4-mat-tabulky-diagramy-4",
   // Systémové dluhy Balík 2A (2026-07-10) — doplnění L3 (+L2 u 2 topics) u čtenářských/
   // literárních témat čeština 3.–4. tř., vyloučených z TIER_EXCEPTIONS
   "g3-cjl-vers-rym-prirovnani",
   "g3-cjl-proza-verse",
   "g3-cjl-pohadka-povidka-basen-bajka",
   "g3-cjl-vyhledavani-informaci",
-  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-encyklopedie-slovnik-periodika",
-  "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika",
-  "g4-cjl-literarni-vychova-literarni-pojmy-a-zanry-pohadka-povest-bajka-povidka",
-  "g4-cjl-komunikacni-a-slohova-vychova-cteni-rozliseni-podstatnych-a-okrajovych-informaci",
-  "g4-cjl-komunikacni-a-slohova-vychova-cteni-vyhledavani-klicovych-slov-a-hlavni-myslenky",
   // Systémové dluhy Balík A (2026-07-12) — vlastivěda g4: gen(_level) ignoroval level
   // (35/0/0 maxL1 → produkce ořezaná na L1), přepis na disjunktní POOL_L1/L2/L3
-  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-pravek-a-prvni-lide-na-nasem-uzemi",
-  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-lucemburkove-karel-iv-a-jeho-doba",
-  "g4-vlastiveda-lide-a-cas-husitstvi-mistr-jan-hus-husitske-valky",
-  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-premyslovci-sv-vaclav-premysl-otakar-ii-vaclav-ii",
-  "g4-vlastiveda-lide-a-cas-nejstarsi-dejiny-ceskych-zemi-slovane-velkomoravska-rise-cyril-a-metodej",
-  "g4-vlastiveda-misto-kde-zijeme-kraje-cr-14-kraju-cr-jejich-poloha-a-krajska-mesta",
-  "g4-vlastiveda-misto-kde-zijeme-ceska-republika-vodstvo-cr-hlavni-reky-vltava-labe-morava-odra-rybniky-prehr",
   // Systémové dluhy Balík B (2026-07-12) — přírodověda g4 stavba rostlin: gen(_level)
   // ignoroval level (30/1/0), přepis na disjunktní POOL_L1/L2/L3 + fakt-check
   // ("Bránice" jako synonymum "průduch" byl chybný — bránice je savčí orgán)
-  "g4-prirodoveda-rozmanitost-prirody-ziva-priroda-rostliny-stavba-rostlin-rozsireni-druhy-rostlin",
   // Systémové dluhy Balík C (2026-07-12) — prvouka g3: L1=12, L2/L3 tenké nebo
   // prázdné, přepis na disjunktní POOL_L1/L2/L3 + fakt-check
   "g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine",
@@ -130,6 +114,12 @@ export const UNFROZEN_TOPIC_IDS: ReadonlySet<string> = new Set<string>([
   // (12/3/0). Přepsáno na disjunktní POOL_L1/L2/L3 (13/13/12 maxL3), fakt-check
   // dle metodiky HZS ČR (kolísavý vs rovný tón sirény), nápovědy bez leaků.
   "g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni",
+  // Přepis češtiny 4. ročníku (2026-09-11) — nápovědy společné pro celé téma,
+  // chybějící zpětná vazba a věcné chyby v klíčích (předložky s/z, stavba slova,
+  // druhy zájmen, sponový přísudek). Znovu zamrazit po dokončení.
+  // 2026-09-11: audit matematiky 4. ročníku — generátory přepsány (nápovědy, zpětná vazba, chybové distraktory).
+
+  // → 4. ročník (přírodověda, vlastivěda, čeština, matematika) znovu zamrazen 2026-09-11 po auditu.
 ]);
 
 export interface TopicFingerprint {

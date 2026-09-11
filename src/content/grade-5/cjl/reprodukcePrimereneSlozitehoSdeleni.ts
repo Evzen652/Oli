@@ -1,326 +1,112 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle } from "../_shared";
+import { urceni, type Kategorie, type Polozka } from "../_urceni";
+const zac = (s: string) => s.replace(/[„“]/g, "").split(" ").slice(0, 5).join(" ") + "…";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy měly jedinou nápovědu bez
+// zpětné vazby k chybným možnostem. Teď: L1 vybrat věrné převyprávění krátkého
+// textu · L2 posoudit, co je na převyprávění špatně (přidává, mění, vynechává,
+// nebo je věrné) · L3 vybrat shrnutí, které vystihne celý text, ne jen podrobnost.
+
+// ── L1: věrné převyprávění ───────────────────────────────────────────────────
+interface Vernost { text: string; verne: string; zmena: string; pridano: string; opak: string; naCo: string }
+const VERNOST: Vernost[] = [
+  { text: "Kočka Micka má tři koťata. Všechna jsou černá.", verne: "Micka má tři koťata, samá černá.", zmena: "Micka má tři bílá koťata.", pridano: "Micka má tři černá koťata a jedno z nich je nemocné.", opak: "Micka nemá žádná koťata.", naCo: "kolik mláďat je a jakou mají barvu" },
+  { text: "Petr zaspal, a proto přišel do školy pozdě.", verne: "Petr přišel pozdě, protože zaspal.", zmena: "Petr přišel pozdě, protože mu ujel autobus.", pridano: "Petr zaspal, přišel pozdě a paní učitelka se zlobila.", opak: "Petr přišel do školy brzy, protože vstal včas.", naCo: "jaká byla příčina" },
+  { text: "V zimě ježek spí v hromadě listí a nic nejí.", verne: "Ježek přes zimu prospí v listí a nepotřebuje potravu.", zmena: "V zimě ježek spí v noře pod zemí a nic nejí.", pridano: "V zimě ježek spí v listí, nic nejí a na jaře má mláďata.", opak: "V zimě ježek neusíná a pořád hledá jídlo.", naCo: "kde zvíře přečká chladné měsíce a jestli se krmí" },
+  { text: "Babička upekla koláč s jablky a dala ho sousedům.", verne: "Babička sousedům darovala jablečný koláč, který upekla.", zmena: "Babička upekla koláč se švestkami a dala ho sousedům.", pridano: "Babička upekla koláč s jablky, dala ho sousedům a oni jí přinesli květiny.", opak: "Babička koupila koláč s jablky a snědla ho sama.", naCo: "s čím pečivo bylo a kdo ho dostal" },
+  { text: "Vlak do Brna odjíždí v 8 hodin z třetí koleje.", verne: "Ze třetí koleje vyjede v 8 hodin vlak do Brna.", zmena: "Vlak do Brna odjíždí v 9 hodin z třetí koleje.", pridano: "Vlak do Brna odjíždí v 8 hodin z třetí koleje a má jídelní vůz.", opak: "Vlak do Brna dnes nejede.", naCo: "v kolik a odkud souprava vyjíždí" },
+  { text: "Anička se bála psa, ale když ho poznala, začala si s ním hrát.", verne: "Anička měla ze psa strach, dokud ho nepoznala; pak si spolu hráli.", zmena: "Anička se bála psa, a proto utekla domů.", pridano: "Anička se bála psa, pak si s ním hrála a nakonec si ho vzala domů.", opak: "Anička se psa nikdy nebála.", naCo: "jak se změnil dívčin vztah ke zvířeti" },
+  { text: "Na výlet si vezmi pláštěnku, protože má pršet.", verne: "Kvůli předpovědi deště si na výlet přibal pláštěnku.", zmena: "Na výlet si vezmi plavky, protože má být horko.", pridano: "Na výlet si vezmi pláštěnku, deštník a teplý svetr, protože má pršet.", opak: "Pláštěnku si na výlet neber, bude hezky.", naCo: "co si vzít s sebou a z jakého důvodu" },
+  { text: "Lucka vyhrála závod, protože hodně trénovala.", verne: "Díky poctivému tréninku Lucka zvítězila v závodě.", zmena: "Lucka vyhrála závod, protože měla štěstí.", pridano: "Lucka vyhrála závod a dostala zlatý pohár a kolo.", opak: "Lucka závod prohrála, i když trénovala.", naCo: "jak soutěž dopadla a čemu za to vděčí" },
+  { text: "Knihovna je v pondělí zavřená, v ostatní dny je otevřená od 9 do 17 hodin.", verne: "Kromě pondělí knihovna otvírá v 9 a zavírá v 17 hodin.", zmena: "Knihovna je v neděli zavřená, jinak je otevřená od 9 do 17 hodin.", pridano: "Knihovna je v pondělí zavřená, jinak je otevřená od 9 do 17 hodin a půjčuje i hry.", opak: "Knihovna je otevřená jen v pondělí.", naCo: "který den se nechodí a jaká je otevírací doba" },
+  { text: "Pavel zalil kytky, a proto nezvadly.", verne: "Díky Pavlovu zalévání zůstaly květiny svěží.", zmena: "Kytky nezvadly, protože pršelo.", pridano: "Pavel zalil kytky, nezvadly a jedna z nich vykvetla.", opak: "Pavel kytky nezalil, a tak zvadly.", naCo: "proč rostliny vydržely" },
+  { text: "Sova loví v noci, ve dne spí v dutině stromu.", verne: "Přes den sova odpočívá ve stromové dutině a na lov vyráží v noci.", zmena: "Sova loví ve dne a v noci spí v dutině stromu.", pridano: "Sova loví v noci myši i zajíce a ve dne spí v dutině stromu.", opak: "Sova v noci spí a vůbec neloví.", naCo: "kdy pták loví a kde tráví den" },
+  { text: "Tomáš si půjčil kolo od bratra a slíbil, že ho vrátí do večera.", verne: "Tomáš dostal bratrovo kolo s tím, že ho večer vrátí.", zmena: "Tomáš si koupil kolo a slíbil, že ho bude šetřit.", pridano: "Tomáš si půjčil kolo od bratra, slíbil, že ho vrátí do večera, a pak spadl do louže.", opak: "Bratr Tomášovi kolo odmítl půjčit.", naCo: "od koho věc má a co přislíbil" },
+  { text: "Ve škole bude zítra divadlo, a proto odpadne matematika.", verne: "Zítra se místo matematiky půjde na divadelní představení.", zmena: "Zítra bude ve škole divadlo, a proto odpadne tělocvik.", pridano: "Zítra bude ve škole divadlo o drakovi, a proto odpadne matematika i angličtina.", opak: "Zítra se bude matematika učit dvakrát.", naCo: "co se zítra stane a která hodina se neuskuteční" },
+];
+
+function vernostUloha(v: Vernost): PracticeTask {
+  return choice(`Text: „${v.text}“ Které převyprávění je věrné?`, v.verne, [
+    { value: v.zmena, why: "Mění údaj z textu." },
+    { value: v.pridano, why: "Přidává něco, co v textu není." },
+    { value: v.opak, why: "Říká opak toho, co je v textu." },
+  ], {
+    hints: [
+      `Co přesně text říká o tom, ${v.naCo}? Zkontroluj to v každé možnosti.`,
+      "Věrné převyprávění říká totéž jinými slovy: nic nepřidá, nic důležitého nevynechá a nic nezmění.",
+    ],
+    explanation: `„${v.verne}“ říká totéž co text, jen jinými slovy.`,
+  });
 }
 
-const TEXT_A = "Sloni jsou největší suchozemská zvířata na světě. Samci mohou vážit až 6 tun. Žijí v Africe a Asii. Živí se rostlinami, trávou a listy.";
-const TEXT_B = "Knihovna je místo, kde si lidé půjčují knihy. Návštěvníci mohou číst na místě nebo si knihy půjčit domů. Záznamy o výpůjčkách vedou knihovníci.";
-const TEXT_C = "Každé ráno chodí Pavel do školy pěšky. Cesta trvá patnáct minut. Cestou potkává kamarády a spolu se baví o tom, co se ten den naučí.";
+// ── L2: co je na převyprávění špatně ─────────────────────────────────────────
+const CHYBY: Kategorie[] = [
+  { nazev: "přidává informaci navíc", znak: "převyprávění obsahuje údaj, který v původní ukázce není." },
+  { nazev: "mění údaj", znak: "převyprávění uvádí jiné číslo, jméno, místo nebo čas než ukázka." },
+  { nazev: "vynechává to podstatné", znak: "převyprávění nezmíní to nejdůležitější z ukázky." },
+  { nazev: "je věrné", znak: "převyprávění říká totéž co ukázka, jen jinými slovy." },
+];
+const PR = "přidává informaci navíc", ME = "mění údaj", VY = "vynechává to podstatné", VE = "je věrné";
+const R = (text: string, prevypraveni: string, kategorie: string, klic: string, proc: string): Polozka =>
+  ({ uroven: 2, slovo: prevypraveni, veta: `Text: „${text}“ Převyprávění: „${prevypraveni}“`, kategorie, klic, proc });
 
-const POOL_L1: PracticeTask[] = [
-  {
-    question: `Přečti sdělení: "${TEXT_A}" Která reprodukce nejlépe vystihuje smysl?`,
-    correctAnswer: "Sloni váží až 6 tun a žijí v Africe a Asii.",
-    options: ["Sloni váží až 6 tun a žijí v Africe a Asii.", "Sloni jsou malá zvířata z Afriky.", "Sloni jedí jen trávu v Americe.", "Slon africký váží až 10 tun."],
-    hints: ["Reprodukce zachovává klíčové informace – váhu, místo, potravu."],
-  },
-  {
-    question: `Přečti sdělení: "${TEXT_B}" Která reprodukce je nejpřesnější?`,
-    correctAnswer: "Knihovna půjčuje knihy domů i na místě.",
-    options: [
-      "Knihovna je obchod s knihami.",
-      "Knihovna půjčuje knihy domů i na místě.",
-      "Knihovníci v knihovně knihy prodávají.",
-      "V knihovně se nesmí číst na místě.",
-    ],
-    hints: ["Správná reprodukce nezmění smysl ani nepřidá nepravdivé informace."],
-  },
-  {
-    question: `Přečti sdělení: "${TEXT_C}" Která reprodukce je správná?`,
-    correctAnswer: "Pavel chodí každé ráno pěšky do školy, cesta trvá 15 minut a cestou potkává kamarády.",
-    options: ["Pavel jezdí do školy autobusem každé ráno.", "Pavel chodí do školy odpoledne, cesta trvá hodinu.", "Pavel chodí každé ráno pěšky do školy, cesta trvá 15 minut a cestou potkává kamarády.", "Pavel chodí sám do školy, nikoho nepotkává."],
-    hints: ["Reprodukce musí zachovat fakta: pěšky, 15 minut, kamarádi."],
-  },
-  {
-    question: "Co je reprodukce sdělení?",
-    correctAnswer: "převyprávění vlastními slovy",
-    options: ["doslovné opakování textu", "přeložení do jiného jazyka", "zkrácení na jedno slovo", "převyprávění vlastními slovy"],
-    hints: ["Reprodukce = svými výrazy, ale smysl zůstává stejný."],
-  },
-  {
-    question: "Co se v reprodukci NESMÍ změnit?",
-    correctAnswer: "hlavní smysl a klíčové informace",
-    options: ["hlavní smysl a klíčové informace", "slova musí být stejná", "délka textu", "pořadí vět"],
-    hints: ["Smysl musí zůstat. Slova mohou být jiná."],
-  },
-  {
-    question: "Jaký je rozdíl mezi reprodukcí a doslova citovaným textem?",
-    correctAnswer: "reprodukce je vlastními slovy",
-    options: [
-      "citace je vlastními slovy",
-      "reprodukce je vlastními slovy",
-      "obojí znamená totéž",
-      "citace je vždy kratší",
-    ],
-    hints: ["Citát = přesná kopie slov. Reprodukce = vlastní formulace."],
-  },
-  {
-    question: "Při reprodukci NESMÍME:",
-    correctAnswer: "přidat, co v originálu není",
-    options: ["použít vlastní slova", "zkrátit původní text", "přidat, co v originálu není", "změnit pořadí informací"],
-    hints: ["Reprodukce = zachovat, ne vymýšlet."],
-  },
-  {
-    question: "Jak poznáme dobrou reprodukci?",
-    correctAnswer: "má vše podstatné a nic navíc",
-    options: ["je kratší než originál", "je delší než originál", "je psaná stejnými slovy", "má vše podstatné a nic navíc"],
-    hints: ["Dobrá reprodukce = věrná a úplná, ale vlastními slovy."],
-  },
-  {
-    question: "Proč je reprodukce užitečná dovednost?",
-    correctAnswer: "pomáhá ověřit, zda jsme textu porozuměli",
-    options: ["pomáhá ověřit, zda jsme textu porozuměli", "jen kvůli memorování", "záleží na délce textu", "jen kvůli překladu"],
-    hints: ["Reprodukce = důkaz porozumění textu."],
-  },
-  {
-    question: "Co je zkrácená reprodukce (shrnutí)?",
-    correctAnswer: "jen nejdůležitější myšlenky",
-    options: [
-      "přesná kopie celého textu",
-      "jen nejdůležitější myšlenky",
-      "text přeložený do cizího jazyka",
-      "text delší než originál",
-    ],
-    hints: ["Shrnutí = stručná reprodukce. Jen to nejpodstatnější."],
-  },
-  {
-    question: "Která z reprodukcí textu 'Sloni mají šedou barvu a velké uši. Ušima se chladí.' je správná?",
-    correctAnswer: "Sloni jsou šedí a mají velké uši, které používají k chlazení.",
-    options: ["Sloni jsou černí a mají malé uši.", "Sloni mají malé uši a jsou zelení.", "Sloni jsou šedí a mají velké uši, které používají k chlazení.", "Sloni se chladí vodou."],
-    hints: ["Správná reprodukce zachovává: barvu, velikost uší, funkci."],
-  },
-  {
-    question: "Která z reprodukcí je špatná? Originál: 'Psi jsou věrná zvířata. Žijí s lidmi tisíce let.'",
-    correctAnswer: "Psi jsou nebezpečná zvířata a žijí jen ve volné přírodě.",
-    options: ["Psi jsou věrní a s lidmi žijí tisíce let.", "Psi patří k nejdéle domestikovaným zvířatům.", "Psi jsou přátelé lidí od pradávna.", "Psi jsou nebezpečná zvířata a žijí jen ve volné přírodě."],
-    hints: ["Špatná reprodukce mění smysl originálu."],
-  },
-  {
-    question: "Jak hledat klíčové informace pro reprodukci?",
-    correctAnswer: "ptáme se: kdo? co? kde? kdy? proč? jak?",
-    options: ["ptáme se: kdo? co? kde? kdy? proč? jak?", "počítáme slova", "hledáme nejdelší větu", "záleží na autorovi"],
-    hints: ["Klíčové informace = odpovědi na základní otázky."],
-  },
-  {
-    question: "Co je parafráze?",
-    correctAnswer: "jiná formulace, stejný smysl",
-    options: [
-      "doslova citovaný text",
-      "jiná formulace, stejný smysl",
-      "přeložení do jiného jazyka",
-      "zkrácení na jedno slovo",
-    ],
-    hints: ["Řekneš totéž, ale po svém. Změní se tím obsah sdělení?"],
-  },
-  {
-    question: "Při reprodukci delšího textu je vhodné:",
-    correctAnswer: "najít hlavní myšlenky a přeformulovat je",
-    options: ["přečíst text jen jednou", "napsat jen první větu", "najít hlavní myšlenky a přeformulovat je", "opsat nejdelší odstavec"],
-    hints: ["Krok 1: co je hlavní? Krok 2: jak to říct jinak?"],
-  },
+const POSOUZENI: Polozka[] = [
+  R("Ve středu jela 5. A na výlet do Kutné Hory. Prohlédli si chrám svaté Barbory a odpoledne se vrátili.", "Ve středu byla 5. A v Kutné Hoře, prohlédla si chrám svaté Barbory a odpoledne byla zpátky.", VE, "den, třída, město i chrám sedí", "Všechny údaje souhlasí, jen jinými slovy — věrné."),
+  R("Martin dostal k narozeninám kolo. Hned odpoledne s ním jel k babičce.", "Martin dostal k Vánocům kolo a hned s ním jel k babičce.", ME, "dárek dostal při jiné příležitosti", "Narozeniny se změnily na Vánoce — mění údaj."),
+  R("Náš pes Bobík umí podat pac a přinést míček.", "Bobík umí podat pac, přinést míček a skákat přes švihadlo.", PR, "skákání přes švihadlo v ukázce nebylo", "Švihadlo si převyprávění přidalo."),
+  R("Hasiči v noci zachránili z hořícího domu dvě děti. Nikdo nebyl zraněn.", "V noci hořel dům a nikdo nebyl zraněn.", VY, "zmizela záchrana dvou dětí, o které ukázka hlavně je", "Chybí to nejdůležitější — záchrana dětí."),
+  R("Eliška se učila hrát na klavír tři roky. Letos poprvé vystoupila na koncertě.", "Eliška se klavír učí tři roky a letos měla svůj první koncert.", VE, "délka učení i první koncert souhlasí", "Údaje sedí — věrné."),
+  R("Obchod na rohu bude od pondělí otevřený až do 20 hodin.", "Obchod na rohu bude od pondělí otevřený do 18 hodin.", ME, "hodina zavírání je jiná", "Dvacet hodin se změnilo na osmnáct — mění údaj."),
+  R("Jirka našel v parku peněženku a odnesl ji na policii.", "Jirka našel v parku peněženku, odnesl ji na policii a dostal odměnu tisíc korun.", PR, "o odměně ukázka nic neříká", "Odměnu si převyprávění vymyslelo."),
+  R("Vlaštovky odlétají na zimu do Afriky, protože u nás by nenašly hmyz.", "Vlaštovky na zimu odlétají.", VY, "chybí kam a proč", "Chybí cíl cesty i důvod — vynechává to podstatné."),
+  R("Karel a Ondra postavili ze sněhu hrad s věží. Večer ho rozbourala sněhová fréza.", "Karel s Ondrou postavili sněhový hrad s věží, ale večer ho zničila fréza.", VE, "kdo, co i jak to dopadlo sedí", "Údaje souhlasí — věrné."),
+  R("Za týden začne škola v přírodě v Krkonoších. Pojede celá třída.", "Za týden začne škola v přírodě na Šumavě. Pojede celá třída.", ME, "pohoří je jiné", "Krkonoše se změnily na Šumavu — mění údaj."),
+  R("Maminka koupila na trhu jahody a udělala z nich marmeládu.", "Maminka koupila na trhu jahody, udělala marmeládu a rozdala ji sousedům.", PR, "o sousedech ukázka nemluví", "Rozdávání sousedům si převyprávění přidalo."),
+  R("Po silné bouřce spadl v ulici strom a zablokoval silnici. Autobusy proto jezdily objížďkou.", "Po bouřce jezdily autobusy jinudy.", VY, "chybí příčina — spadlý strom", "Bez stromu nevíme, proč autobusy jezdily jinudy."),
+  R("Ve čtvrtek přijde do třídy spisovatelka a bude číst ze své nové knihy.", "Ve čtvrtek k nám do třídy přijde spisovatelka a přečte nám kus své nové knihy.", VE, "den, host i to, co bude dělat, sedí", "Údaje souhlasí — věrné."),
 ];
 
-const POOL_L2: PracticeTask[] = [
-  {
-    question: "Přečti: 'Čokoláda se vyrábí z kakaových bobů. Kakaovník roste v tropech. Z bobů se lisuje máslo a prášek.' Která reprodukce je nejlepší?",
-    correctAnswer: "Čokoláda je z kakaových bobů z tropů.",
-    options: ["Čokoláda se vyrábí z obilí.", "Kakaovník roste jen v Africe.", "Čokoláda je hlavně z mléka.", "Čokoláda je z kakaových bobů z tropů."],
-    hints: ["Zachovej: původ, místo pěstování, způsob výroby."],
-  },
-  {
-    question: "Přečti: 'Knihovna v našem městě nabízí přes 50 tisíc titulů. Otevřeno je denně kromě neděle.' Která reprodukce je správná?",
-    correctAnswer: "Knihovna má 50 000 knih, zavřeno v neděli.",
-    options: ["Knihovna má 50 000 knih, zavřeno v neděli.", "Knihovna je otevřena jen v neděli.", "Knihovna má přes 100 000 knih.", "Knihovna je zavřena celý týden."],
-    hints: ["Fakta: počet knih + zavírací den. Musí být přesně zachovány."],
-  },
-  {
-    question: "Co je klíčová myšlenka odstavce?",
-    correctAnswer: "bez ní odstavec ztratí smysl",
-    options: [
-      "je to vždy první věta",
-      "bez ní odstavec ztratí smysl",
-      "je to vždy poslední věta",
-      "je to nejdelší věta",
-    ],
-    hints: ["Klíčová = bez ní ztrácíme smysl celého odstavce."],
-  },
-  {
-    question: "Co je tematická věta?",
-    correctAnswer: "shrnuje myšlenku odstavce",
-    options: ["je poslední větou odstavce", "je nejkratší větou textu", "shrnuje myšlenku odstavce", "je vždy otázkou"],
-    hints: ["Topic sentence = věta-shrnutí. Zbytek ji rozvíjí."],
-  },
-  {
-    question: "Přečti: 'Mars je čtvrtá planeta od Slunce. Má dvě měsíce. Je pojmenován po římském bohu války.' Která reprodukce chybuje?",
-    correctAnswer: "Mars je třetí planeta od Slunce a nemá žádný měsíc.",
-    options: [
-      "Mars je čtvrtý od Slunce, má dva měsíce a nese jméno boha války.",
-      "Mars, pojmenovaný po bohu války, je čtvrtá planeta s dvěma měsíci.",
-      "Mars je čtvrtá planeta od Slunce. Má dvě měsíce.",
-      "Mars je třetí planeta od Slunce a nemá žádný měsíc.",
-    ],
-    hints: ["Chyba v reprodukci = pozice (třetí místo čtvrtá) nebo počet měsíců."],
-  },
-  {
-    question: "Proč se reprodukce liší od doslova opakování?",
-    correctAnswer: "ukazuje, že jsi porozuměl",
-    options: ["ukazuje, že jsi porozuměl", "je vždy delší než originál", "je přesnější než originál", "opakování je vždy kratší"],
-    hints: ["Porozuměl/a jsi → dokážeš říct jinak. Jen si zapamatoval/a → opakuješ doslova."],
-  },
-  {
-    question: "Přečti: 'Mravenec unese 50× svou vlastní váhu. Žijí v koloniích o tisících jedinců.' Která reprodukce je nejpřesnější?",
-    correctAnswer: "Mravenci žijí v koloniích a jsou silní – unesou 50× svou váhu.",
-    options: [
-      "Mravenci jsou malí a červení.",
-      "Mravenci žijí v koloniích a jsou silní – unesou 50× svou váhu.",
-      "Mravenci unesou 100× svou váhu.",
-      "Mravenci žijí sami a jsou slabí.",
-    ],
-    hints: ["Zachovej: sílu (50×) a kolonie."],
-  },
-  {
-    question: "Co je hlavní smysl sdělení?",
-    correctAnswer: "myšlenka celého textu",
-    options: ["první věta textu", "poslední věta textu", "myšlenka celého textu", "nejdelší věta textu"],
-    hints: ["Ptej se: o čem je celý text? To je hlavní smysl."],
-  },
-  {
-    question: "Jak víme, že naše reprodukce je věrná?",
-    correctAnswer: "porovnáme s originálem – jsou klíčové informace všechny?",
-    options: ["je stejně dlouhá jako originál", "použili jsme stejná slova", "záleží na délce", "porovnáme s originálem – jsou klíčové informace všechny?"],
-    hints: ["Ověření: znovu přečti originál a zkontroluj."],
-  },
-  {
-    question: "Jak správně strukturujeme reprodukci delšího textu?",
-    correctAnswer: "každý odstavec originálu shrneme do jedné věty reprodukce",
-    options: ["každý odstavec originálu shrneme do jedné věty reprodukce", "napíšeme jen první a poslední odstavec", "záleží jen na délce", "přepíšeme jen zajímavé části"],
-    hints: ["Jednu část textu shrň do jedné výstižné věty — a totéž udělej pro každou další část."],
-  },
-  {
-    question: "Přečti: 'Bouřky vznikají při srážce teplého a studeného vzduchu. Doprovázejí je blesky a hrom.' Která reprodukce je chybná?",
-    correctAnswer: "Bouřky vznikají jen v létě a hrom je způsoben vlhkostí.",
-    options: ["Bouřky nastávají při srážce teplého a studeného vzduchu a provází je blesky.", "Bouřky vznikají jen v létě a hrom je způsoben vlhkostí.", "Při bouřkách dochází ke srážce vzdušných mas a ke vzniku blesků.", "Bouřky jsou způsobeny rozdílem teplot vzduchu."],
-    hints: ["Tato reprodukce mění, kdy bouřky vznikají, a vymýšlí příčinu hromu, o které originál nic neříká."],
-  },
-  {
-    question: "Co je abstrakce v reprodukci?",
-    correctAnswer: "shrnutí konkrétních detailů do obecné myšlenky",
-    options: ["přeložení textu", "doplnění nových informací", "shrnutí konkrétních detailů do obecné myšlenky", "záleží na tématu"],
-    hints: ["'Sloni jedí trávu, listy a větve.' → 'Sloni se živí rostlinami.' = abstrakce."],
-  },
-  {
-    question: "Při reprodukci odborného textu je důležité:",
-    correctAnswer: "zachovat klíčové termíny a přesná čísla",
-    options: ["použít jednodušší slova bez termínů", "zkrátit na polovinu", "záleží na adresátovi", "zachovat klíčové termíny a přesná čísla"],
-    hints: ["Odborné termíny a čísla nelze nahradit – jsou přesné."],
-  },
-  {
-    question: "Jak se liší shrnutí od analýzy textu?",
-    correctAnswer: "shrnutí říká co, rozbor proč",
-    options: ["shrnutí říká co, rozbor proč", "rozbor říká co, shrnutí proč", "obojí znamená totéž", "rozbor je vždy kratší"],
-    hints: ["Shrnutí = obsah. Analýza = záměr, styl, struktura."],
-  },
-  {
-    question: "Přečti: 'Vrabec domácí je nejrozšířenější pták v Evropě. Živí se semeny a hmyzem.' Která reprodukce je nejlepší?",
-    correctAnswer: "Vrabec je běžný pták, jí semena i hmyz.",
-    options: [
-      "Vrabec je vzácný pták Evropy.",
-      "Vrabec je běžný pták, jí semena i hmyz.",
-      "Vrabci žijí jen v Asii.",
-      "Vrabci jedí jen semena.",
-    ],
-    hints: ["Zachovej: rozšíření (nejrozšířenější, Evropa), potravu (semena + hmyz)."],
-  },
-];
-
-const POOL_L3: PracticeTask[] = [
-  {
-    question: "Jak se liší reprodukce faktografického textu od reprodukce literárního textu?",
-    correctAnswer: "u faktů přesnost, u příběhu nálada",
-    options: ["u faktů nálada, u příběhu přesnost", "obojí je úplně stejné", "u faktů přesnost, u příběhu nálada", "literární je vždy delší"],
-    hints: ["Fakta = přesná čísla a termíny. Literatura = příběh a emoce."],
-  },
-  {
-    question: "Co je citátová reprodukce (doslova)?",
-    correctAnswer: "doslovné znění v uvozovkách",
-    options: ["volná vlastní formulace", "zkrácená verze textu", "překlad do jiného jazyka", "doslovné znění v uvozovkách"],
-    hints: ["Citace = doslova, uvozovky. Reprodukce = vlastní slova."],
-  },
-  {
-    question: "Při reprodukci básně je důležité:",
-    correctAnswer: "zachovat téma a náladu",
-    options: ["zachovat téma a náladu", "zachovat rým a rytmus", "přepsat báseň doslova", "zkrátit ji na jednu větu"],
-    hints: ["Báseň se reprodukuje prózou – zachováme téma a pocit."],
-  },
-  {
-    question: "Co je selektivní reprodukce?",
-    correctAnswer: "reprodukce jen vybrané části textu – ne celku",
-    options: [
-      "reprodukce celého textu doslova",
-      "reprodukce jen vybrané části textu – ne celku",
-      "zkrácení textu na polovinu",
-      "záleží na délce",
-    ],
-    hints: ["Selektivní = vybereme jen to, co je pro nás relevantní."],
-  },
-  {
-    question: "Co je interpretační chyba v reprodukci?",
-    correctAnswer: "přidání vlastního názoru",
-    options: ["změna pořadí informací", "zkrácení celého textu", "přidání vlastního názoru", "použití vlastních slov"],
-    hints: ["Interpretace = vlastní výklad. Reprodukce by měla být neutrální."],
-  },
-  {
-    question: "Přečti: 'Vítr vzniká pohybem vzdušných mas způsobeným rozdílem tlaků. Čím větší je rozdíl, tím silnější vítr.' Která reprodukce je nejpřesnější?",
-    correctAnswer: "Vítr vzniká rozdílem tlaku vzduchu.",
-    options: ["Vítr je způsoben teplotou slunce.", "Vítr vždy fouká ze severu.", "Tlak nemá na vítr vliv.", "Vítr vzniká rozdílem tlaku vzduchu."],
-    hints: ["Zachovej: příčina (rozdíl tlaků), vztah (větší rozdíl = silnější vítr)."],
-  },
-  {
-    question: "Jak pomáhá osnova při reprodukci dlouhého textu?",
-    correctAnswer: "osnova zachycuje klíčové body – reprodukujeme každý bod zvlášť",
-    options: ["osnova zachycuje klíčové body – reprodukujeme každý bod zvlášť", "osnova je pro reprodukci zbytečná", "záleží jen na délce", "osnova se tvoří po reprodukci"],
-    hints: ["Osnova = mapa textu. Reprodukce bodu po bodu = přehledná reprodukce."],
-  },
-  {
-    question: "Jaký je rozdíl mezi parafrází a reprodukcí?",
-    correctAnswer: "jsou prakticky totéž",
-    options: [
-      "parafráze je vždy kratší",
-      "jsou prakticky totéž",
-      "reprodukce je přesná kopie",
-      "parafráze je překlad",
-    ],
-    hints: ["Parafráze a reprodukce jsou synonyma pro vlastní přeformulování."],
-  },
-  {
-    question: "Jak se liší shrnutí od rozšířené reprodukce?",
-    correctAnswer: "shrnutí = jen hlavní body; rozšířená = zachovány i detaily",
-    options: ["jsou totéž", "rozšířená je vždy delší než originál", "shrnutí = jen hlavní body; rozšířená = zachovány i detaily", "záleží na adresátovi"],
-    hints: ["Shrnutí = stručné. Rozšířená reprodukce = podrobnější."],
-  },
-  {
-    question: "Přečti a reprodukuj vlastními slovy: 'Voda tvoří 71 % povrchu Země. Přesto je pitná voda vzácná.'",
-    correctAnswer: "Ačkoli voda pokrývá přes 70 % zemského povrchu, pitné vody je málo.",
-    options: ["Celá Země je pokryta vodou.", "Pitná voda tvoří 71 % Země.", "Voda je vzácná, proto Země je suchá.", "Ačkoli voda pokrývá přes 70 % zemského povrchu, pitné vody je málo."],
-    hints: ["Zachovej: 71 % a paradox = hodně vody, ale málo pitné."],
-  },
-  {
-    question: "Co je kritická reprodukce?",
-    correctAnswer: "hodnotíme i kvalitu originálu",
-    options: ["hodnotíme i kvalitu originálu", "doslova opakujeme cizí text", "jen zkrátíme původní text", "přeložíme text do cizího jazyka"],
-    hints: ["Kritická = reprodukuji + hodnotím: je to pravda? Je to logické?"],
-  },
-];
+// ── L3: shrnutí celého textu ─────────────────────────────────────────────────
+const DETAIL = "Je to pravda, ale jen jedna podrobnost — ne celý text.";
+const OBECNE = "Je to příliš obecné; nic neříká o tomto textu.";
+const L3: PracticeTask[] = [
+  ["Ježci jsou užiteční pomocníci na zahradě. Loví slimáky a hmyz, který škodí rostlinám. Proto je dobré nechat jim na zahradě hromadu listí, kde mohou přezimovat.", "Ježci pomáhají zahradě, a proto jim máme nechat úkryt.", "Ježci loví slimáky.", "Zvířata jsou zajímavá.", "Ježci škodí rostlinám na zahradě.", "Proč text zmiňuje slimáky i hromadu listí — co mají společného?"],
+  ["Kuba celý týden trénoval přihrávky. V sobotu v zápase přihrál na dva góly a tým vyhrál. Trenér ho pochválil.", "Kubův trénink se v zápase vyplatil.", "Trenér Kubu pochválil.", "Fotbal je kolektivní hra.", "Kuba v zápase nepřihrál ani jednou.", "Jak souvisí to, co Kuba dělal přes týden, s tím, co se stalo v sobotu?"],
+  ["Voda v přírodě neustále koluje. Vypařuje se z moří, vytváří mraky a jako déšť padá zpět na zem. Odtud stéká do řek a znovu do moře.", "V přírodě stále obíhá voda dokola.", "Z mraků padá déšť.", "Příroda je krásná.", "Voda z moře se nikdy nevypařuje.", "Co mají všechny kroky společného — kde celý děj končí a kde začíná?"],
+  ["Babička Marie ztratila brýle. Celý den je hledala po celém domě. Večer je našel vnuk — měla je celou dobu na hlavě.", "Babička marně hledala brýle, které měla na hlavě.", "Vnuk našel brýle večer.", "Brýle se často ztrácejí.", "Babička brýle nechala v obchodě.", "Co je na příběhu vtipné a proč hledání trvalo celý den?"],
+  ["Na naší škole vznikl nový kroužek robotiky. Děti si v něm postaví a naprogramují malého robota. Kroužek je každé úterý po vyučování.", "Škola otevřela kroužek, kde děti staví a programují roboty.", "Kroužek robotiky bude každé úterý po škole.", "Roboti jsou moderní a baví hodně dětí.", "Kroužek robotiky se od příštího týdne ruší.", "Co je na škole nového a co se tam žáci naučí?"],
+  ["Včely opylují květy. Bez nich by mnoho rostlin neneslo plody a lidé by neměli dost ovoce. Proto je chráníme.", "Včely jsou pro úrodu důležité, a proto je chráníme.", "Včely opylují květy.", "Hmyz žije všude na světě, i ve městech.", "Bez včel by bylo ovoce víc.", "Proč text mluví o ovoci, když je hlavně o hmyzu?"],
+  ["Adam dlouho nechtěl jíst zeleninu. Pak si ji sám vypěstoval na zahrádce. Od té doby mu mrkev chutná.", "Vlastní úroda naučila Adama jíst zeleninu.", "Adam má na zahrádce záhon s mrkví.", "Zelenina je zdravá a má hodně vitamínů.", "Adam zeleninu dodnes odmítá jíst.", "Co způsobilo, že se Adamův názor změnil?"],
+  ["Město postavilo nové cyklostezky. Víc lidí teď jezdí do práce na kole a v ulicích je méně aut.", "Díky cyklostezkám lidé víc jezdí na kole a aut ubylo.", "Město postavilo cyklostezky.", "Jízda na kole je zdravá pro každého.", "Po stavbě cyklostezek přibylo aut.", "Co se ve městě změnilo a co tu změnu způsobilo?"],
+  ["Ema zapomněla doma úkol. Místo výmluvy řekla paní učitelce pravdu. Paní učitelka ocenila její upřímnost a dovolila jí úkol donést zítra.", "Ema řekla pravdu a vyplatilo se jí to.", "Ema zapomněla úkol doma.", "Úkoly jsou důležité pro učení.", "Paní učitelka Emu za pravdu potrestala.", "Co Ema udělala jinak, než by čekal každý, a jak to dopadlo?"],
+  ["Na podzim listnaté stromy shazují listí. Šetří tak vodu, protože v zimě ji ze zmrzlé půdy nedostanou.", "Stromy shazují listí, aby v zimě šetřily vodou.", "Půda v zimě zamrzá.", "Stromy jsou různé.", "Stromy shazují listí, protože mají vody moc.", "Jaký důvod text uvádí — čeho by se rostlinám v mrazu nedostávalo?"],
+  ["Petr si půjčil od Honzy knihu a omylem ji polil čajem. Druhý den mu koupil novou a omluvil se.", "Petr knihu poškodil, a tak ji Honzovi nahradil a omluvil se.", "Petr pil čaj.", "Knihy se mají půjčovat.", "Petr knihu vrátil politou a mlčel.", "Co se s půjčenou věcí stalo a jak to viník napravil?"],
+  ["V lese se nesmí rozdělávat oheň. Stačí jiskra a v suchém létě může shořet celý les. Proto se ohně rozdělávají jen na vyhrazených místech.", "Oheň se smí rozdělat jen na vyhrazeném místě, jinak hrozí požár lesa.", "V létě bývá sucho.", "Oheň je horký.", "V lese je oheň bezpečný, když je léto.", "Proč text varuje, a kde je tedy táborák dovolený?"],
+  ["Klára se bála mluvit před třídou. Doma si referát několikrát nahlas přečetla před zrcadlem. Ve škole pak mluvila klidně.", "Klára strach překonala tím, že se dobře připravila.", "Klára má doma zrcadlo.", "Mluvit před lidmi je těžké.", "Klára ve škole nakonec nepromluvila.", "Co Kláře pomohlo a jak dopadl její referát?"],
+].map(([text, klic, detail, obecne, chybne, h0]) =>
+  choice(`Text: „${text}“ Které shrnutí nejlépe vystihne celý text?`, klic, [
+    { value: detail, why: DETAIL },
+    { value: obecne, why: OBECNE },
+    { value: chybne, why: "Neodpovídá textu — ten říká něco jiného." },
+  ], {
+    hints: [h0, "Dobré shrnutí obsahuje hlavní myšlenku celého textu, ne jen jednu podrobnost, a nic nemění."],
+    explanation: `„${klic}“ vystihuje, o čem je celý text.`,
+  }),
+);
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).slice(0, 30);
+  if (level >= 3) return shuffle(L3);
+  if (level === 2) {
+    return urceni(POSOUZENI, CHYBY, 2, (p) => ({
+      question: `${p.veta} Jaké je převyprávění?`,
+      hints: [
+        `Projdi převyprávění „${zac(p.slovo)}“ kousek po kousku a každou informaci najdi i v původní ukázce. Sedí všechno?`,
+        `Pomůže tohle: ${p.klic}. Porovnej jména, čísla, místa a důvody v obou verzích a hledej i to, co v převyprávění chybí nebo přebývá.`,
+      ],
+    }), ["Porovnej jména, čísla, místa a důvody v obou verzích.", "Hledej i to, co v převyprávění chybí nebo přebývá."]);
+  }
+  return shuffle(VERNOST.map(vernostUloha));
 }
 
 export const REPRODUKCEPRIMERENESLOZITEHOSDELENI: TopicMetadata[] = [

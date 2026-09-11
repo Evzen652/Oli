@@ -1,63 +1,53 @@
 /**
- * Dějepis 6. ročník — Periodizace dějin, časová přímka, letopočet.
+ * Dějepis 6. ročník — Periodizace dějin, časová přímka, letopočet (select_one).
  *
- * ZLATÝ VZOR faktického tématu 2. stupně (most z výpočetního světa fyziky):
- * numericky ověřitelné, ale procvičuje HISTORICKÉ uvažování o čase.
- *
- * Demonstruje, že chybový model distraktorů funguje i na faktický předmět —
- * každá špatná možnost = konkrétní typický omyl s letopočtem:
- *  • L1 určení století: rok 1492 → 14. století (vzal číslo stovek místo +1).
- *  • L2 řazení / rozdíl př. n. l.: menší číslo = dřív (u př. n. l. je to obráceně).
- *  • L3 přes přelom letopočtu: zapomenutý rok 0 (mezi 1 př. n. l. a 1 n. l. je 1 rok).
- *
- * Žák VYBÍRÁ (select_one) — neuvádí volnou odpověď. Téma záměrně nemíchá typy
- * (vyhýbá se Cause C: select_one téma musí emitovat jen úlohy s `options`).
+ * Přepsáno 2026-09-11 (audit 6. ročníku): L1 dřív jen deset pevných roků a
+ * všechny úlohy měly stejnou malou nápovědu. Teď se roky generují a malá
+ * nápověda pracuje s letopočty konkrétní úlohy; velká dá pravidlo.
+ * Chybový model beze změny: vzít jen počet stovek, přidat století navíc,
+ * splést éru; u př. n. l. „menší číslo = dřív“; přes přelom zapomenout, že rok 0
+ * neexistuje.
+ *  • L1 — století roku n. l.
+ *  • L2 — letopočty př. n. l.: rozdíl ve stejné éře a nejstarší událost.
+ *  • L3 — přes přelom letopočtu (rok 0 neexistuje) a řazení napříč érami.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad } from "@/lib/czechGrammar";
-import { pick, buildChoiceTask as choice } from "./_shared";
+import { pick, pickN, buildChoiceTask as choice } from "./_shared";
 
-// Století, do kterého rok patří: počet celých stovek + 1
-// (rok 1492 → 14 stovek + 1 = 15. století; obecně ceil(rok/100)).
 const stoleti = (rok: number) => Math.ceil(rok / 100);
+const rnd = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-// ── Generátor ──────────────────────────────────────────────────────────────
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  for (let i = 0; i < 24; i++) {
-    tasks.push(level === 1 ? genL1() : level === 2 ? genL2() : genL3());
+  const out = new Map<string, PracticeTask>();
+  for (let i = 0; i < 200 && out.size < 24; i++) {
+    const t = level === 1 ? genL1() : level === 2 ? genL2() : genL3();
+    out.set(`${t.question}|${t.correctAnswer}`, t);
   }
-  return tasks;
+  return [...out.values()];
 }
 
-// L1 — určení století roku n. l. (jeden krok: počet stovek + 1).
+// L1 — určení století roku n. l. (počet stovek + 1).
 function genL1(): PracticeTask {
-  // záměrně žádné násobky 100, ať počet stovek je odlišný distraktor
-  const rok = pick([1492, 1805, 1648, 1212, 1789, 1066, 1415, 1356, 1781, 988]);
+  let rok = rnd(101, 2099);
+  if (rok % 100 === 0) rok += 1;
   const cent = stoleti(rok);
   const stovky = Math.floor(rok / 100);
+  // Příklad z jiného století — v jeho číslech se nesmí objevit klíč ani jako konec („15.“ u klíče 5.).
+  const vzor = [1492, 1805, 1212, 1648].find((v) => Math.floor(v / 100) !== cent && stoleti(v) !== cent
+    && !`${stoleti(v)}.`.endsWith(`${cent}.`) && !String(Math.floor(v / 100)).endsWith(String(cent))) ?? 1805;
   return choice(
     `Do kterého století patří rok ${rok} n. l.?`,
     `${cent}. století`,
     [
-      {
-        value: `${stovky}. století`,
-        why: `Vzal jsi jen číslo stovek (${stovky}). Století se počítá o jedno výš — rok ${rok} patří do ${cent}. století. (Příklad: rok 1492 = 15. století, ne 14.)`,
-      },
-      {
-        value: `${cent + 1}. století`,
-        why: `Přidal jsi jedno století navíc. ${cent}. století končí až rokem ${cent * 100}, takže rok ${rok} do něj ještě spadá.`,
-      },
-      {
-        value: `${cent}. století př. n. l.`,
-        why: `Spletl sis éru. Rok ${rok} je v našem letopočtu (n. l.), ne před ním.`,
-      },
+      { value: `${stovky}. století`, why: `Vzal jsi jen číslo stovek (${stovky}). Století se počítá o jedno výš — rok ${rok} patří do ${cent}. století.` },
+      { value: `${cent + 1}. století`, why: `Přidal jsi jedno století navíc. ${cent}. století končí až rokem ${cent * 100}, takže rok ${rok} do něj ještě spadá.` },
+      { value: `${cent}. století př. n. l.`, why: `Spletl sis éru. Rok ${rok} je v našem letopočtu (n. l.), ne před ním.` },
     ],
     {
       hints: [
-        "Století urči z počtu celých stovek v roce — ale pozor, počítá se o jedno výš.",
-        `Rok ${rok}: kolik celých stovek obsahuje?`,
-        "K počtu stovek přičti 1 — i začátek dalšího stovkového úseku už patří do vyššího století.",
+        `Rok ${rok}: kolik celých stovek v něm je? Z toho pak určíš století.`,
+        `Století se počítá o jedno výš, než je počet celých stovek: k počtu stovek přičti 1, protože i začátek dalšího stovkového úseku už patří do vyššího století. Třeba rok ${vzor} má ${Math.floor(vzor / 100)} celých stovek a patří do ${stoleti(vzor)}. století.`,
       ],
       solutionSteps: [
         `Rok ${rok} obsahuje ${stovky} celých stovek.`,
@@ -68,46 +58,29 @@ function genL1(): PracticeTask {
   );
 }
 
-// L2 — práce s letopočty př. n. l. (rozdíl, nebo řazení: větší = starší).
+// L2 — letopočty př. n. l. (rozdíl ve stejné éře, nebo nejstarší: větší = starší).
 function genL2(): PracticeTask {
   if (Math.random() < 0.5) {
-    // rozdíl dvou let př. n. l. (stejná éra → odečítání)
-    const [a, b] = pick([
-      [500, 200], [800, 300], [400, 100], [600, 150],
-      [300, 50], [750, 250], [1000, 600], [450, 150],
-    ]);
+    const a = rnd(3, 20) * 50, b = rnd(1, a / 50 - 1) * 50;
     const ans = a - b;
     return choice(
       `Jedna stavba vznikla roku ${a} př. n. l., druhá roku ${b} př. n. l. Kolik let je mezi nimi?`,
       pad(ans, "ROK"),
       [
-        {
-          value: pad(a + b, "ROK"),
-          why: `Sčítal jsi. Obě data jsou př. n. l. (stejná éra), takže se odčítají: ${a} − ${b} = ${ans}.`,
-        },
-        {
-          value: pad(a + b - 1, "ROK"),
-          why: `Použil jsi pravidlo pro přelom letopočtu (− 1 za chybějící rok 0). Tady jsou ale obě data př. n. l. — jen se odečtou: ${a} − ${b}.`,
-        },
-        {
-          value: pad(a, "ROK"),
-          why: `To je jen první letopočet, ne rozdíl. Odečti od něj druhý: ${a} − ${b} = ${ans}.`,
-        },
+        { value: pad(a + b, "ROK"), why: `Sčítal jsi. Obě data jsou př. n. l. (stejná éra), takže se odčítají: ${a} − ${b} = ${ans}.` },
+        { value: pad(a + b - 1, "ROK"), why: `Použil jsi pravidlo pro přelom letopočtu (− 1 za chybějící rok 0). Tady jsou ale obě data př. n. l. — jen se odečtou: ${a} − ${b}.` },
+        { value: pad(a, "ROK"), why: `To je jen první letopočet, ne rozdíl. Odečti od něj druhý: ${a} − ${b} = ${ans}.` },
       ],
       {
         hints: [
-          "Obě data jsou ve stejné éře (př. n. l.), takže rozdíl spočítáš odečtením.",
-          `Od staršího (většího) letopočtu odečti mladší: ${a} − ${b}.`,
+          `Roky ${a} př. n. l. a ${b} př. n. l. jsou ve stejné éře. Který z nich je dál v minulosti?`,
+          `Ve stejné éře se rozdíl počítá odečtením: od staršího (u př. n. l. většího) letopočtu odečti mladší, tedy ${a} − ${b}. Rok 0 tu nehraje roli, protože se nepřechází přes přelom letopočtu.`,
         ],
         explanation: `Obě události jsou před naším letopočtem, takže jde o jednu éru — rozdíl je prosté odečtení: ${a} − ${b} = ${pad(ans, "ROK")}. (Nesčítá se a neodečítá rok 0 — to platí jen přes přelom letopočtu.)`,
       },
     );
   }
-  // řazení: která událost př. n. l. je nejstarší (větší číslo = starší)
-  const roky = pick([
-    [776, 509, 264], [753, 490, 146], [3000, 1200, 800],
-    [2500, 1500, 600], [1000, 500, 100],
-  ]);
+  const roky = pickN(Array.from({ length: 18 }, (_, i) => 100 + 50 * i), 4);
   const max = Math.max(...roky);
   const ostatni = roky.filter((r) => r !== max);
   return choice(
@@ -119,8 +92,8 @@ function genL2(): PracticeTask {
     })),
     {
       hints: [
-        "U letopočtů před naším letopočtem (př. n. l.) běží čas obráceně, do minulosti.",
-        "Čím větší číslo př. n. l., tím starší událost — najdi tedy největší číslo.",
+        `Porovnej ${ostatni[0]} př. n. l. a ${ostatni[1]} př. n. l.: které z nich je dál v minulosti?`,
+        "U letopočtů před naším letopočtem běží čas obráceně, směrem do minulosti: čím větší číslo př. n. l., tím starší událost. Najdi tedy mezi možnostmi největší číslo.",
       ],
       explanation: `Před naším letopočtem se roky počítají směrem do minulosti, takže větší číslo = starší událost. Nejstarší je proto rok ${max} př. n. l.`,
     },
@@ -130,32 +103,20 @@ function genL2(): PracticeTask {
 // L3 — přes přelom letopočtu (rok 0 neexistuje), nebo řazení napříč érami.
 function genL3(): PracticeTask {
   if (Math.random() < 0.5) {
-    // doba trvání od X př. n. l. do Y n. l.: X + Y − 1 (rok 0 neexistuje)
-    const a = pick([100, 200, 300, 500, 400, 750]);
-    const b = pick([100, 200, 300, 500, 400]);
+    const a = rnd(2, 16) * 50, b = rnd(1, 12) * 50;
     const ans = a + b - 1;
     return choice(
       `Říše vznikla roku ${a} př. n. l. a zanikla roku ${b} n. l. Jak dlouho existovala? (Pozor: rok 0 neexistuje.)`,
       pad(ans, "ROK"),
       [
-        {
-          value: pad(a + b, "ROK"),
-          why: `Zapomněl jsi, že rok 0 neexistuje — mezi 1 př. n. l. a 1 n. l. je jen 1 rok. Proto se po sečtení odečítá 1: ${a} + ${b} − 1 = ${ans}.`,
-        },
-        {
-          value: pad(Math.abs(a - b), "ROK"),
-          why: `Odečetl jsi, jako by obě data byla ve stejné éře. Přes přelom letopočtu se naopak sčítá (a odečte 1 za chybějící rok 0): ${a} + ${b} − 1.`,
-        },
-        {
-          value: pad(a + b - 2, "ROK"),
-          why: `Odečetl jsi 2, ale chybí jen jediný rok (rok 0). Správně ${a} + ${b} − 1 = ${ans}.`,
-        },
+        { value: pad(a + b, "ROK"), why: `Zapomněl jsi, že rok 0 neexistuje — mezi 1 př. n. l. a 1 n. l. je jen 1 rok. Proto se po sečtení odečítá 1: ${a} + ${b} − 1 = ${ans}.` },
+        { value: pad(Math.abs(a - b) || 1, "ROK"), why: `Odečetl jsi, jako by obě data byla ve stejné éře. Přes přelom letopočtu se naopak sčítá (a odečte 1 za chybějící rok 0): ${a} + ${b} − 1.` },
+        { value: pad(a + b - 2, "ROK"), why: `Odečetl jsi 2, ale chybí jen jediný rok (rok 0). Správně ${a} + ${b} − 1 = ${ans}.` },
       ],
       {
         hints: [
-          "Data jsou ve dvou různých érách (př. n. l. a n. l.), takže se roky sčítají.",
-          "Pozor na přelom: rok 0 neexistuje, hned po 1 př. n. l. následuje 1 n. l.",
-          `Sečti oba letopočty a odečti 1 za chybějící rok 0: ${a} + ${b} − 1.`,
+          `Rok ${a} př. n. l. a rok ${b} n. l. jsou v různých érách. Co s nimi uděláš — sečteš, nebo odečteš?`,
+          "Přes přelom letopočtu se roky sčítají. Pozor ale na přelom: rok 0 neexistuje, hned po 1 př. n. l. následuje 1 n. l. — proto od součtu odečti 1.",
         ],
         solutionSteps: [
           `Přes přelom se letopočty sčítají: ${a} + ${b} = ${a + b}.`,
@@ -165,36 +126,34 @@ function genL3(): PracticeTask {
       },
     );
   }
-  // řazení napříč érami: nejstarší je vždy př. n. l., a tam větší číslo
-  const sada = pick([
-    [{ y: 300, bc: true }, { y: 200, bc: false }, { y: 50, bc: true }, { y: 400, bc: false }],
-    [{ y: 500, bc: true }, { y: 100, bc: false }, { y: 150, bc: true }, { y: 300, bc: false }],
-    [{ y: 250, bc: true }, { y: 50, bc: false }, { y: 800, bc: true }, { y: 200, bc: false }],
-  ]);
+  const bcRoky = pickN(Array.from({ length: 16 }, (_, i) => 50 + 50 * i), 2);
+  const adRoky = pickN(Array.from({ length: 16 }, (_, i) => 50 + 50 * i), 2);
+  const sada = [...bcRoky.map((y) => ({ y, bc: true })), ...adRoky.map((y) => ({ y, bc: false }))];
   const label = (e: { y: number; bc: boolean }) => `${e.y} ${e.bc ? "př. n. l." : "n. l."}`;
-  // nejstarší = největší rok mezi př. n. l.
-  const bc = sada.filter((e) => e.bc);
-  const nejstarsi = bc.reduce((m, e) => (e.y > m.y ? e : m));
+  const nejstarsi = sada.filter((e) => e.bc).reduce((m, e) => (e.y > m.y ? e : m));
+  const ostatni = sada.filter((e) => e !== nejstarsi);
+  const nl = ostatni.find((e) => !e.bc) ?? ostatni[0];
+  const pr = ostatni.find((e) => e.bc) ?? ostatni[1];
   return choice(
     "Která událost je nejstarší?",
     label(nejstarsi),
-    sada
-      .filter((e) => e !== nejstarsi)
-      .map((e) => ({
-        value: label(e),
-        why: e.bc
-          ? `Vybral jsi správně letopočet př. n. l., ale větší číslo př. n. l. = starší. Nejstarší je ${label(nejstarsi)}`
-          : `To je náš letopočet (n. l.). Vše před naším letopočtem se stalo dřív — nejstarší je ${label(nejstarsi)}`,
-      })),
+    ostatni.map((e) => ({
+      value: label(e),
+      why: e.bc
+        ? `Vybral jsi správně letopočet př. n. l., ale větší číslo př. n. l. = starší. Nejstarší je ${label(nejstarsi)}.`
+        : `To je náš letopočet (n. l.). Vše před naším letopočtem se stalo dřív — nejstarší je ${label(nejstarsi)}.`,
+    })),
     {
       hints: [
-        "Nejdřív rozliš éry: všechno před naším letopočtem je starší než cokoli z našeho letopočtu.",
-        "Mezi lety př. n. l. je nejstarší to s největším číslem.",
+        `Bylo dřív ${label(nl)}, nebo ${label(pr)}? Rozliš nejdřív éry.`,
+        "Všechno před naším letopočtem je starší než cokoli z našeho letopočtu. Mezi lety př. n. l. je pak nejstarší to s největším číslem.",
       ],
-      explanation: `Letopočty př. n. l. jsou vždy starší než n. l. Mezi nimi je nejstarší ten s největším číslem — proto ${label(nejstarsi)}`,
+      explanation: `Letopočty př. n. l. jsou vždy starší než n. l. Mezi nimi je nejstarší ten s největším číslem — proto ${label(nejstarsi)}.`,
     },
   );
 }
+
+void pick;
 
 // ── Topic ────────────────────────────────────────────────────────────────
 export const PERIODIZACE_LETOPOCET: TopicMetadata[] = [
