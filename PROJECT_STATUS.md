@@ -159,10 +159,10 @@ src/
   úroveň, teď generátory s ≥ 12 unikátními úlohami; fyzika má malou nápovědu
   s čísly ze zadání; opravené úlohy, kde klíč stál v zadání. Test doby kamenné
   připouští nápovědu se všemi položkami, jen ne ve správném pořadí. Zamrazeno.
-- 🟠 **Ročníky 5 a 6 jsou pořád zamčené** (`ACTIVE_GRADES = [2, 3, 4]`). Odemčení
-  je jeden řádek, ale čekají na něj dvě rozhodnutí: rodičovská brána používá
-  dvojciferné násobení, které 5. ročník učí (`parent-gate.test.ts` po odemčení
-  spadne), a 6. ročník má jen fyziku a dějepis.
+- ✅ **Ročníky 5 a 6 jsou otevřené** (`ACTIVE_GRADES = [2, 3, 4, 5, 6]`). Rodičovská
+  brána už nenásobí dvojciferná čísla (to 5. ročník učí), ale počítá procenta
+  („30 % z 240", učivo 7. ročníku). Budík `parent-gate.test.ts` teď hlídá 7. ročník.
+- 📌 6. ročník má zatím jen fyziku a dějepis.
 - 📌 Zbývající nálezy `docs-check` jsou výčtové úlohy („Které z čísel … je
   největší?“, „najdi slovo ve větě“), kde klíč ve znění být musí — brána je
   bere jako výjimku.

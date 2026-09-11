@@ -10,13 +10,13 @@
 ## ✅ Audit obsahu 4.–6. ročníku (2026-09-11)
 
 4. ročník prošel auditem a je znovu zamrazen. 5. ročník (63 témat) a 6. ročník
-(11 témat) mají obsah připravený ke zveřejnění a jsou taky ve freeze snapshotu.
+(11 témat) jsou po auditu zamrazené a otevřené žákům; rodičovská brána počítá
+procenta místo dvojciferného násobení.
 Detail: `PROJECT_STATUS.md` §6, session 37.
 
-### 🟠 Otevřené
-- Odemknout 5./6. ročník (`ACTIVE_GRADES`) — nejdřív vyměnit úlohu rodičovské
-  brány (`src/components/ParentGate.tsx`, hlídá `src/test/parent-gate.test.ts`).
-- 6. ročník má jen fyziku a dějepis — rozhodnout, jestli ho zveřejnit takhle.
+### 📌 Na vědomí
+- 6. ročník má zatím jen fyziku a dějepis.
+- Otevření 7. ročníku by oslabilo rodičovskou bránu (procenta) — hlídá `src/test/parent-gate.test.ts`.
 
 ---
 

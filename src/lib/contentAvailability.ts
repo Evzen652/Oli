@@ -10,12 +10,14 @@
 import { getAllTopics } from "@/lib/contentRegistry";
 
 /**
- * Aktivní scope pilotu (rozhodnutí D9 + zamknutí 2026-07-12):
- * žákům nabízíme jen ročníky 2–4. Ročníky 5+ mají obsah v repu,
- * ale nejsou auditované → v onboardingu zamčené („připravujeme").
- * JEDINÝ zdroj pravdy — odemčení ročníku = přidat ho sem.
+ * Aktivní scope (rozhodnutí D9, zamknutí 2026-07-12, rozšíření 2026-09-11):
+ * žákům nabízíme ročníky 2–6. Ročníky 5 a 6 se otevřely po auditu obsahu
+ * (CONTENT_AUTHORING §0); vyšší ročníky zatím obsah nemají → v onboardingu
+ * zamčené („připravujeme").
+ * JEDINÝ zdroj pravdy — odemčení ročníku = přidat ho sem. Pozor: 7. ročník
+ * by oslabil rodičovskou bránu (procenta), hlídá `parent-gate.test.ts`.
  */
-export const ACTIVE_GRADES: readonly number[] = [2, 3, 4];
+export const ACTIVE_GRADES: readonly number[] = [2, 3, 4, 5, 6];
 
 const FALLBACK_GRADE = 4;
 

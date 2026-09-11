@@ -8,32 +8,23 @@ import {
 } from "@/lib/contentAvailability";
 
 /**
- * Zamknutí ročníků mimo aktivní scope pilotu (2026-07-12).
- * Ročníky 5 a 6 MAJÍ obsah v repu, ale nejsou auditované →
- * žákům se nesmí nabízet. Odemčení = přidat do ACTIVE_GRADES
- * (vědomé rozhodnutí), ne vedlejší efekt registrace obsahu.
+ * Aktivní scope ročníků. Do 2026-09-11 byly otevřené jen 2–4; ročníky 5 a 6
+ * se otevřely po auditu obsahu. Odemčení = přidat do ACTIVE_GRADES (vědomé
+ * rozhodnutí), ne vedlejší efekt registrace obsahu.
  */
 describe("contentAvailability — aktivní scope ročníků", () => {
-  it("aktivní scope pilotu je 2–4", () => {
-    expect([...ACTIVE_GRADES]).toEqual([2, 3, 4]);
+  it("aktivní scope je 2–6", () => {
+    expect([...ACTIVE_GRADES]).toEqual([2, 3, 4, 5, 6]);
   });
 
-  it.each([2, 3, 4])("ročník %i je dostupný (scope + obsah)", (g) => {
+  it.each([2, 3, 4, 5, 6])("ročník %i je dostupný (scope + obsah)", (g) => {
     expect(hasContentForGrade(g)).toBe(true);
     expect(isGradeAvailable(g)).toBe(true);
     expect(getBestAvailableGrade(g)).toBe(g);
     expect(getContentWarning(g)).toBeNull();
   });
 
-  it.each([5, 6])(
-    "ročník %i má obsah v repu, ale je ZAMČENÝ (mimo aktivní scope)",
-    (g) => {
-      expect(hasContentForGrade(g)).toBe(true); // obsah existuje…
-      expect(isGradeAvailable(g)).toBe(false); // …ale žákům se nenabízí
-    },
-  );
-
-  it.each([1, 5, 6, 7, 8, 9])(
+  it.each([1, 7, 8, 9])(
     "ročník %i není dostupný → fallback na 4 + varování",
     (g) => {
       expect(isGradeAvailable(g)).toBe(false);

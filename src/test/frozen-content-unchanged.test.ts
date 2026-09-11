@@ -34,7 +34,7 @@ const ALL_TOPICS: TopicMetadata[] = [
   ...GRADE_2_TOPICS,
   ...GRADE_3_TOPICS,
   ...GRADE_4_TOPICS,
-  // 5. a 6. ročník prošly auditem 2026-09-11 (obsah hotový, ročníky zatím zamčené v ACTIVE_GRADES).
+  // 5. a 6. ročník prošly auditem 2026-09-11 (obsah hotový, ročníky otevřené).
   ...GRADE_5_TOPICS,
   ...GRADE_6_TOPICS,
 ].filter((t) => t.subject !== "informatika");

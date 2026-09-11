@@ -5,8 +5,8 @@ import { getHelpForSkill } from "../lib/helpEngine";
 import { getPrerequisites, getAllTopics } from "../lib/contentRegistry";
 import type { SessionData, Grade } from "../lib/types";
 
-// Ročník 6 je parkovaný (D9, ACTIVE_GRADES = [2,3,4] v contentAvailability.ts)
-// a odpovídající téma pro grade 6 v registry neexistuje — classifyIntent vrací
+// Ročník 6 má jen fyziku a dějepis, takže téma o zlomcích pro grade 6
+// v registry neexistuje — classifyIntent vrací
 // "wrong_grade" a session nikdy nedosáhne PRACTICE. Grade 4 má aktivní
 // ekvivalent (g4-mat-zlomek-cast-celku-4). Fráze musí přesně sedět na keyword
 // (matchesAnyKeyword je na hranici slova, ne fuzzy/stemming) — topic má
