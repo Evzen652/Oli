@@ -1,0 +1,111 @@
+{"batches": [
+{"slug": "g2mat-a", "name": "2. mat: sčítání, osa, čtení čísel", "topics": [
+ {"v": "rewrite", "id": "g2-mat-scitani-odcitani-100", "f": "src/content/grade-2/matematika/scitaniAOdcitaniDo100.ts"},
+ {"v": "rewrite", "id": "g2-mat-ciselna-osa-100", "f": "src/content/grade-2/matematika/ciselnaOsaDo100.ts"},
+ {"v": "rewrite", "id": "g2-mat-cteni-zapis-100", "f": "src/content/grade-2/matematika/cteniZapisPorovnavaniCiselDo100.ts"}]},
+{"slug": "g2mat-b", "name": "2. mat: násobení, posloupnosti", "topics": [
+ {"v": "rewrite", "id": "g2-mat-nasobeni-opakovane", "f": "src/content/grade-2/matematika/nasobeniJakoOpakovaneScitani.ts"},
+ {"v": "rewrite", "id": "g2-mat-vztah-nasobeni-deleni", "f": "src/content/grade-2/matematika/vztahNasobieniADeleni.ts"},
+ {"v": "patch", "id": "g2-mat-nasobilka-2345", "f": "src/content/grade-2/matematika/nasobilka2345.ts"},
+ {"v": "rewrite", "id": "g2-mat-posloupnosti", "f": "src/content/grade-2/matematika/posloupnostiCisel.ts"}]},
+{"slug": "g2mat-c", "name": "2. mat: slovní úlohy, jednotky, čas", "note": "g2-mat-mereni-casu NEPROCHÁZÍ bránou (hint_leak: klíč stojí ve znění otázky u výběru ze dvou, např. „Kolik sekund má 1 minuta?“). Přeformuluj tak, aby brána prošla.", "topics": [
+ {"v": "rewrite", "id": "g2-mat-slovni-ulohy-100", "f": "src/content/grade-2/matematika/slovniUlohyDo100.ts"},
+ {"v": "rewrite", "id": "g2-mat-jednotky", "f": "src/content/grade-2/matematika/jednotkyDlkyHmotnostiObjemu.ts"},
+ {"v": "rewrite", "id": "g2-mat-mereni-casu", "f": "src/content/grade-2/matematika/mereniCasu.ts"}]},
+{"slug": "g2mat-d", "name": "2. mat: délka, bod a přímka, tabulky", "note": "g2-mat-mereni-delky NEPROCHÁZÍ bránou (klíč „5 cm“ ve znění otázky na L3). g2-mat-bod-primka-usecka: skoro vše je Ano/Ne i na L2/L3 a „Bod leží na přímce. Je to pravda?“ je bez obrázku věcně sporné — zadání musí být jednoznačná bez obrázku. g2-mat-tabulky je parametrický: doplň hints[1] a optionFeedback do šablon, nahraď generický fallback hint.", "topics": [
+ {"v": "rewrite", "id": "g2-mat-mereni-delky", "f": "src/content/grade-2/matematika/mereniDelkyUsecky.ts"},
+ {"v": "rewrite", "id": "g2-mat-bod-primka-usecka", "f": "src/content/grade-2/matematika/bodPrimkaUsecka.ts"},
+ {"v": "patch", "id": "g2-mat-tabulky", "f": "src/content/grade-2/matematika/tabulkyAJednoduchaSchema.ts"}]},
+{"slug": "g2cjl-a", "name": "2. čj: i/y, dě/tě/ně, slabiky, dělení slov", "note": "Skupiny dě/tě/ně NEPROCHÁZÍ bránou (hint_leak). Pravopis 1. stupně: doplňuje se jen sporný grafém.", "topics": [
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-pravopis-tvrdych-a-mekkych-souhlasek-i-y-po-souhlaskach", "f": "src/content/grade-2/cjl/pravopisIY.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-skupiny-de-te-ne-be-pe-ve-me", "f": "src/content/grade-2/cjl/skupinyDeTeNe.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky", "f": "src/content/grade-2/cjl/slabiky.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku", "f": "src/content/grade-2/cjl/deleniSlovNaKonciRadku.ts"}]},
+{"slug": "g2cjl-b", "name": "2. čj: druhy vět, slovesa, vlastní jména", "topics": [
+ {"v": "rewrite", "id": "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci", "f": "src/content/grade-2/cjl/druhyVet.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu", "f": "src/content/grade-2/cjl/slovesa.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno", "f": "src/content/grade-2/cjl/vlastniJmena.ts"}]},
+{"slug": "g2cjl-c", "name": "2. čj: protikladná, nadřazená slova, abeceda", "topics": [
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna", "f": "src/content/grade-2/cjl/slovaProtikladna.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena", "f": "src/content/grade-2/cjl/slovaNadrazena.ts"},
+ {"v": "rewrite", "id": "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni", "f": "src/content/grade-2/cjl/abecedaRazeni.ts"}]},
+{"slug": "g2cjl-d", "name": "2. čj: žánry, kniha, orientace v textu", "topics": [
+ {"v": "rewrite", "id": "g2-cjl-literarni-vychova-literarni-zanry-pohadka-rikanky-basen-hadanka", "f": "src/content/grade-2/cjl/pohadkaRikankaBasen.ts"},
+ {"v": "rewrite", "id": "g2-cjl-literarni-vychova-prace-s-knihou-spisovatel-ilustrator-knihovna", "f": "src/content/grade-2/cjl/spisovatelKniha.ts"},
+ {"v": "rewrite", "id": "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis", "f": "src/content/grade-2/cjl/orientaceVTextu.ts"}]},
+{"slug": "g2prv-a", "name": "2. prvouka (1/2)", "topics": [
+ {"v": "patch", "id": "g2-prv-hodiny-cas", "f": "src/content/grade-2/prvouka/hodinyKalendarCas.ts"},
+ {"v": "patch", "id": "g2-prv-tradice", "f": "src/content/grade-2/prvouka/tradiceAZvyky.ts"},
+ {"v": "patch", "id": "g2-prv-sousedstvi", "f": "src/content/grade-2/prvouka/lideVOkoliKamaradstvi.ts"},
+ {"v": "patch", "id": "g2-prv-povolani", "f": "src/content/grade-2/prvouka/povolaniPraceDospelych.ts"},
+ {"v": "patch", "id": "g2-prv-chovani", "f": "src/content/grade-2/prvouka/pravidlaSlusnehoChovani.ts"},
+ {"v": "patch", "id": "g2-prv-nase-obec", "f": "src/content/grade-2/prvouka/naseObecNazev.ts"},
+ {"v": "patch", "id": "g2-prv-orientace-obec", "f": "src/content/grade-2/prvouka/orientaceVObci.ts"}]},
+{"slug": "g2prv-b", "name": "2. prvouka (2/2)", "topics": [
+ {"v": "patch", "id": "g2-prv-plan-obce", "f": "src/content/grade-2/prvouka/planObceOkoliSkoly.ts"},
+ {"v": "patch", "id": "g2-prv-zvirata-uzitek", "f": "src/content/grade-2/prvouka/domaciHospodarskaZvirata.ts"},
+ {"v": "patch", "id": "g2-prv-jaro-rostliny-mladata", "f": "src/content/grade-2/prvouka/kvetouciRostlinyMladata.ts"},
+ {"v": "patch", "id": "g2-prv-jaro-leto", "f": "src/content/grade-2/prvouka/zmenyVPrirodeJaroLeto.ts"},
+ {"v": "patch", "id": "g2-prv-zima-zvirata", "f": "src/content/grade-2/prvouka/zazimovaniZvirat.ts"},
+ {"v": "patch", "id": "g2-prv-podzim-zima", "f": "src/content/grade-2/prvouka/zmenyVPrirodePodzimZima.ts"},
+ {"v": "patch", "id": "g2-prv-prvni-pomoc", "f": "src/content/grade-2/prvouka/drobnaPoraneniTisnoveLinky.ts"},
+ {"v": "patch", "id": "g2-prv-zdravy-styl", "f": "src/content/grade-2/prvouka/zdravyZivotniStyl.ts"}]},
+{"slug": "g3mat-a", "name": "3. mat: čísla do 1000, zaokrouhlování, sčítání, tabulky", "note": "g3-mat-tabulky-diagramy: nápověda radí „Sečti čas…“, správně má být „odečti“ (~100 úloh) — děti to vidí, oprav s prioritou.", "topics": [
+ {"v": "rewrite", "id": "g3-mat-cisla-do-1000", "f": "src/content/grade-3/matematika/cteniZapisPorovnavaniCiselDo1000.ts"},
+ {"v": "patch", "id": "g3-mat-zaokrouhlovani", "f": "src/content/grade-3/matematika/zaokrouhlovaniNaDesitkyAStovky.ts"},
+ {"v": "rewrite", "id": "g3-mat-scitani-odcitani-1000", "f": "src/content/grade-3/matematika/scitaniAOdcitaniDo1000.ts"},
+ {"v": "rewrite", "id": "g3-mat-tabulky-diagramy", "f": "src/content/grade-3/matematika/tabulkyJizdniRadyDiagramy.ts"}]},
+{"slug": "g3mat-b", "name": "3. mat: násobilka, slovní úlohy, obvod", "topics": [
+ {"v": "patch", "id": "g3-mat-nasobilka-6-10", "f": "src/content/grade-3/matematika/nasobilka6789a10.ts"},
+ {"v": "patch", "id": "g3-mat-nasobeni-deleni-mala-nasobilka", "f": "src/content/grade-3/matematika/nasobeniADeleniMalaNasobilka.ts"},
+ {"v": "rewrite", "id": "g3-mat-slovni-ulohy-dve-operace", "f": "src/content/grade-3/matematika/slovniUlohySeDvemaOperacemi.ts"},
+ {"v": "rewrite", "id": "g3-mat-obvod-trojuhelniku-ctverce-obdelniku", "f": "src/content/grade-3/matematika/obvodTrojuhelnikuCtverceObdelniku.ts"}]},
+{"slug": "g3mat-c", "name": "3. mat: rýsování úsečky, kružnice", "topics": [
+ {"v": "rewrite", "id": "g3-mat-rysovani-usecky", "f": "src/content/grade-3/matematika/rysovaaniUseckyODaneDelce.ts"},
+ {"v": "rewrite", "id": "g3-mat-kruznice-kruh", "f": "src/content/grade-3/matematika/kruznicaKruhRysovani.ts"}]},
+{"slug": "g3prv-a", "name": "3. prvouka: ekosystémy, rostliny, tělo", "topics": [
+ {"v": "rewrite", "id": "g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy", "f": "src/content/grade-3/prvouka/ekosystemyPoleLoukaLes.ts"},
+ {"v": "rewrite", "id": "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-stavba-rostlin-koren-stonek-list-kvet-plod", "f": "src/content/grade-3/prvouka/stavbaRostlin.ts"},
+ {"v": "rewrite", "id": "g3-prvouka-clovek-a-jeho-zdravi-lidske-telo-stavba-lidskeho-tela-kostra-svaly-uvod-zdravi-a-nemoc", "f": "src/content/grade-3/prvouka/stavbaTelaaZdravi.ts"}]},
+{"slug": "g3prv-b", "name": "3. prvouka: lidé, čas, místo", "topics": [
+ {"v": "patch", "id": "g3-prvouka-lide-a-cas-minulost-a-soucasnost-minulost-naseho-regionu-povesti", "f": "src/content/grade-3/prvouka/minulostRegionuPovesti.ts"},
+ {"v": "patch", "id": "g3-prvouka-lide-a-cas-minulost-a-soucasnost-casova-primka-generace-v-rodine", "f": "src/content/grade-3/prvouka/casovaPrimkaGenerace.ts"},
+ {"v": "patch", "id": "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-komunikace-jednani-s-neznamymi-lidmi-bezpecnost", "f": "src/content/grade-3/prvouka/komunikaceBezpecnost.ts"},
+ {"v": "patch", "id": "g3-prvouka-lide-kolem-nas-souziti-a-komunikace-vztahy-mezi-lidmi-reseni-konfliktu", "f": "src/content/grade-3/prvouka/vztahyKonflikty.ts"},
+ {"v": "patch", "id": "g3-prvouka-misto-kde-zijeme-nase-vlast-kraje-a-regiony-cr-uvod-nas-region", "f": "src/content/grade-3/prvouka/krajeRegionyCr.ts"},
+ {"v": "patch", "id": "g3-prvouka-misto-kde-zijeme-nase-vlast-mapa-svetove-strany-plan-a-mapa-kompas", "f": "src/content/grade-3/prvouka/mapaStranySveta.ts"}]},
+{"slug": "g3prv-c", "name": "3. prvouka: symboly, živočichové, příroda, mimořádné události", "topics": [
+ {"v": "patch", "id": "g3-prvouka-misto-kde-zijeme-nase-vlast-ceska-republika-hlavni-mesto-statni-symboly", "f": "src/content/grade-3/prvouka/crSymboly.ts"},
+ {"v": "patch", "id": "g3-prvouka-rozmanitost-prirody-rostliny-a-zivocichove-skupiny-zivocichu-savci-ptaci-ryby-plazi-obojzivelnici-hmyz", "f": "src/content/grade-3/prvouka/skupinyZivocichu.ts"},
+ {"v": "patch", "id": "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-rozdily-mezi-zivou-a-nezivou-prirodou", "f": "src/content/grade-3/prvouka/zivaNezivaPrivroda.ts"},
+ {"v": "patch", "id": "g3-prvouka-rozmanitost-prirody-ziva-a-neziva-priroda-voda-vzduch-puda-vyznam-pro-zivot", "f": "src/content/grade-3/prvouka/vodaVzduchPuda.ts"},
+ {"v": "patch", "id": "g3-prvouka-clovek-a-jeho-zdravi-bezpecnost-a-prvni-pomoc-mimoradne-udalosti-pozar-povoden-chovani-pri-ohrozeni", "f": "src/content/grade-3/prvouka/mimoradneUdalosti.ts"}]},
+{"slug": "g3cjl-a", "name": "3. čj: význam slova, velká písmena, spojky", "topics": [
+ {"v": "rewrite", "id": "g3-cjl-jazykova-vychova-nauka-o-slove-vyznam-slova-slova-jednoznacna-a-mnohoznacna", "f": "src/content/grade-3/cjl/slovaJednoznacnaMnohoznacna.ts"},
+ {"v": "rewrite", "id": "g3-cjl-velka-pismena", "f": "src/content/grade-3/cjl/velkaPismenaVlastniJmena.ts"},
+ {"v": "rewrite", "id": "g3-cjl-spojovani-vet-spojkami", "f": "src/content/grade-3/cjl/spojovaniVetSpojkami.ts"}]},
+{"slug": "g3cjl-b", "name": "3. čj: věta a souvětí, slovesa, čtení", "topics": [
+ {"v": "rewrite", "id": "g3-cjl-veta-jednoducha-souveti", "f": "src/content/grade-3/cjl/vetaJednoduchaSouveti.ts"},
+ {"v": "rewrite", "id": "g3-cjl-slovesa-osoba-cislo-cas", "f": "src/content/grade-3/cjl/slovesaOsobaCisloCas.ts"},
+ {"v": "rewrite", "id": "g3-cjl-plynule-cteni-porozumeni", "f": "src/content/grade-3/cjl/plynuleCteniSPorozumenim.ts"}]},
+{"slug": "g3cjl-c", "name": "3. čj: žánry, próza a verše, rým", "topics": [
+ {"v": "rewrite", "id": "g3-cjl-pohadka-povidka-basen-bajka", "f": "src/content/grade-3/cjl/pohadkaPovídkaBasenBajka.ts"},
+ {"v": "rewrite", "id": "g3-cjl-proza-verse", "f": "src/content/grade-3/cjl/prozaAVerseRozliseni.ts"},
+ {"v": "rewrite", "id": "g3-cjl-vers-rym-prirovnani", "f": "src/content/grade-3/cjl/versRymPrirovnani.ts"}]},
+{"slug": "g5mat-a", "name": "5. mat: obsah ve čtvercové síti, souměrnost, záporná čísla", "topics": [
+ {"v": "rewrite", "id": "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce-ve-ctvercove-siti-jednotky-obsahu", "f": "src/content/grade-5/matematika/obsahObrazceVeCtvercoveSitiJednotkyObsahu.ts"},
+ {"v": "rewrite", "id": "g5-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-sestrojeni-obrazu-urceni-osy", "f": "src/content/grade-5/matematika/osovaSoumernostSestrojeniObrazuUrceniOsy.ts"},
+ {"v": "rewrite", "id": "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-zaporna-cisla-na-ciselne-ose", "f": "src/content/grade-5/matematika/zapornaCislaNaCiselneOse.ts"}]},
+{"slug": "g5mat-b", "name": "5. mat: logické úlohy, konstrukce, dělení, desetinná čísla", "topics": [
+ {"v": "rewrite", "id": "g5-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-ulohy-nezavisle-na-beznych-postupech-prostorova-predstavivos", "f": "src/content/grade-5/matematika/ulohyNezavisleNaBeznychPostupechProstorovaPredstavivost.ts"},
+ {"v": "patch", "id": "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-konstrukce-trojuhelniku-kolmice-rovnobezky", "f": "src/content/grade-5/matematika/konstrukceTrojuhelnikuKolmiceRovnobezky.ts"},
+ {"v": "patch", "id": "g5-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-dvoucifernym-delitelem", "f": "src/content/grade-5/matematika/pisemneDeleniDvoucifernymDelitelem.ts"},
+ {"v": "patch", "id": "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-scitani-a-odcitani-desetinnych-cisel", "f": "src/content/grade-5/matematika/scitaniAOdcitaniDesetinnychCisel.ts"}]},
+{"slug": "g4-6-mix", "name": "4.–6. ročník: drobné úpravy", "topics": [
+ {"v": "patch", "id": "g4-mat-tabulky-diagramy-4", "f": "src/content/grade-4/matematika/tabulkyDiagramySloupcovyKruhovy.ts"},
+ {"v": "patch", "id": "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika", "f": "src/content/grade-4/cjl/hlavniPostavyAJejichCharakteristika.ts"},
+ {"v": "patch", "id": "g5-cjl-jazykova-vychova-nauka-o-slove-slova-jednoznacna-mnohoznacna-vicevyznamova", "f": "src/content/grade-5/cjl/slovaJednoznacnaMnohoznacnaVicevyznamova.ts"},
+ {"v": "patch", "id": "g5-vlastiveda-misto-kde-zijeme-evropa-a-svet-evropske-staty-a-eu-sousedni-zeme-cr-podrobne", "f": "src/content/grade-5/vlastiveda/evropskeStatyAEuSousedniZemeCrPodrobne.ts"},
+ {"v": "patch", "id": "g6-dej-periodizace-letopocet-6", "f": "src/content/grade-6/dejepis/periodizaceLetopocet.ts"},
+ {"v": "patch", "id": "g6-dej-pomocne-vedy-historicke-6", "f": "src/content/grade-6/dejepis/pomocneVedyHistoricke.ts"}]}
+]}

@@ -144,6 +144,14 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-11 (38) — hromadné opravy 87 témat (ROZPRACOVÁNO):
+
+- 🟡 Varianta A spuštěna workflowem `content-fix-87` (22 dávek, autor ve vlastním
+  worktree + nezávislý kritik). Přerušeno (došel kredit). 13 dávek (2. ročník
+  + 3. mat) commitnuto a pushnuto jako `origin/content-fix/*`, 5 dávek jen WIP
+  snapshot `origin/wip/content-fix/*`, 4 nezačaté. **Na `main` zatím nic.**
+  Pokračování: `docs/SESSION_HANDOFF.md` §1 „▶▶ ROZPRACOVÁNO“.
+
 ### Session 2026-09-11 (37) — audit obsahu 4.–6. ročníku:
 
 - ✅ **4. ročník prošel celým auditem** podle CONTENT_AUTHORING §0: každá úloha má

@@ -72,6 +72,47 @@ vlastní nápovědy + zpětná vazba u chybných možností):
 
 Sdílení pomocníci `grade-3/_shared.ts` (`choice`, `urcovaci`, `shuffle`).
 
+### ▶▶ ROZPRACOVÁNO (session 38, 2026-09-11): hromadné opravy — varianta A běží
+
+Uživatel zvolil **A (všech 87)**. Na PC1 spuštěn workflow `content-fix-87`
+(skript `scripts/workflows/content-fix-87.js`, dávky
+`scripts/workflows/content-fix-87.args.json` — 22 dávek). Session přerušena
+(došel kredit), workflow nedoběhl.
+
+**Jak workflow pracuje:** každá dávka = autor ve **vlastním git worktree** a
+větvi `content-fix/<dávka>` (proč worktree: `docs-check` i brána načítají celý
+registr témat, takže rozepsaný soubor jednoho agenta by shodil kontroly všem
+ostatním) → pak nezávislý **kritik** (Generator→Critic) ve stejné větvi,
+commit „fix(content): kontrola …“. Na `main` nikdo nesahá, snapshot se
+nepřegeneruje (dělá se až při slučování).
+
+**Stav k přerušení:**
+- ✅ Autor hotov, **pushnuto na origin** (13 dávek): `content-fix/g2mat-a…d`,
+  `g2cjl-a…d`, `g2prv-a`, `g2prv-b`, `g3mat-a…c` = celý 2. ročník + 3. mat.
+  Kritik u nich **nemusel doběhnout** — ověř `git log origin/content-fix/<x>`:
+  chybí-li commit „kontrola …“, kritika pusť znovu (critPrompt ve skriptu).
+- 🟡 Rozpracované, **bez commitu** — uložen jen snapshot rozdělané práce
+  (`git stash create`) na `origin/wip/content-fix/<dávka>`: `g3prv-a`,
+  `g3prv-b`, `g3prv-c`, `g3cjl-a`, `g3cjl-b`. **Neověřené, může být
+  rozbité** — ber jako výchozí bod, ne hotovou práci.
+- ⏭️ Nezačaté: `g3cjl-c`, `g5mat-a`, `g5mat-b`, `g4-6-mix`.
+- Pozn.: pokud workflow na PC1 ještě doběhl, další větve jsou jen lokálně na
+  PC1 → tam `git push origin "refs/heads/content-fix/*"`.
+
+**Pokračování (nová session, „use a workflow“):**
+1. Spusť `content-fix-87.js` jen s nedokončenými dávkami z args (resume
+   z jiné session nejde). `REPO` je ve skriptu natvrdo
+   `C:\Users\Evzen\Desktop\OLI` — na druhém PC uprav. Skript dělá
+   `git checkout -b content-fix/<slug>` — u dávek s WIP místo toho vyjdi
+   z `origin/wip/content-fix/<slug>`.
+2. Kritika pro hotové dávky, u kterých chybí commit „kontrola“.
+3. Slučování (inline, ne agent): každou větev `git merge --squash` / 
+   `git cherry-pick --no-commit` do `main` pracovního stromu → přegeneruj zámek
+   `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`
+   → `npm test`, `npm run audit:content`, `npm run typecheck`,
+   `IDS=<všech 87> npx vite-node scripts/docs-check.ts` → shrnutí uživateli →
+   commit **až po souhlasu**. Push do `main` = produkce.
+
 ### ▶ DALŠÍ KROK: hromadné opravy obsahu podle inventury
 
 Po posledním commitu session 37 proběhla **inventura celého obsahu** (workflow,
