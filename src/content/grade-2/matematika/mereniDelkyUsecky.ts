@@ -1,101 +1,204 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
+import { pad } from "@/lib/czechGrammar";
 
 /**
- * PED-3 kalibrace L1<L2<L3.
+ * Přepsáno 2026-09-11 (inventura obsahu). Dřív: krátké ruční seznamy
+ * (8/11/12 úloh), jen jedna nápověda, žádná zpětná vazba u chybných možností
+ * a na L3 klíč „5 cm“ přímo ve znění otázky („5 cm nebo 40 mm?“), což shodilo
+ * bránu. Teď parametrické úlohy, u nichž nápovědy, vysvětlení i zpětná vazba
+ * nesou čísla konkrétní úlohy, a klíč nikdy nestojí doslova v zadání.
  *
- * Před: `gen(_level)` ignoroval úroveň → L1==L2==L3, `getTierTasks` (rozdíl
- * množin) L2 i L3 vyprazdňoval. Audit `20/0/0 max L1`.
+ *  L1 — čtení délky na pravítku, úsečka začíná u nuly (rozpoznání).
+ *  L2 — pravítko nezačíná u nuly, součet dvou částí, rozdíl dvou úseček (aplikace).
+ *  L3 — chybějící část (inverze), převod cm → mm, dvoukrokové úlohy,
+ *       „dvakrát delší“ (transfer).
  *
- * Teď disjunktní pooly:
- *  L1 — porovnávání „která je delší/kratší" (základ, malá čísla).
- *  L2 — součet a rozdíl 2 úseček + polovina (aplikace znalosti sčítání).
- *  L3 — převody cm↔mm, třetina, prodloužení, dvoukrokové slovní úlohy.
+ * Délky do 30 cm, jednotky cm a mm (RVP 2. ročníku).
  */
 
-interface PoolItem {
-  question: string;
-  correct: string;
-  distractors: string[];
-  hint: string;
-  solution: string;
+const cm = (n: number) => `${n} cm`;
+
+/** Vybere 3 různé distraktory (≠ klíč, kladná délka) v pořadí priority. */
+function tri(correct: string, cands: (Distractor | null)[]): [Distractor, Distractor, Distractor] {
+  const out: Distractor[] = [];
+  for (const d of cands) {
+    if (!d || d.value === correct || out.some((o) => o.value === d.value)) continue;
+    if (!/^[1-9]\d* (cm|mm)$/.test(d.value)) continue;
+    out.push(d);
+    if (out.length === 3) break;
+  }
+  if (out.length < 3) throw new Error(`Málo distraktorů pro ${correct}`);
+  return out as [Distractor, Distractor, Distractor];
 }
 
-const POOL_L1: PoolItem[] = [
-  { question: "Která úsečka je delší: 5 cm nebo 8 cm?", correct: "8 cm", distractors: ["5 cm", "3 cm", "10 cm"], hint: "Srovnej čísla: 5 a 8 — které je větší?", solution: "8 cm je delší — 8 je větší než 5." },
-  { question: "Která úsečka je delší: 12 cm nebo 7 cm?", correct: "12 cm", distractors: ["7 cm", "10 cm", "15 cm"], hint: "Srovnej čísla: 12 a 7 — které je větší?", solution: "12 cm je delší — 12 je větší než 7." },
-  { question: "Která úsečka je kratší: 4 cm nebo 9 cm?", correct: "4 cm", distractors: ["9 cm", "6 cm", "2 cm"], hint: "Srovnej čísla: 4 a 9 — které je menší?", solution: "4 cm je kratší — 4 je menší než 9." },
-  { question: "Která úsečka je kratší: 15 cm nebo 6 cm?", correct: "6 cm", distractors: ["15 cm", "10 cm", "8 cm"], hint: "Srovnej čísla: 15 a 6 — které je menší?", solution: "6 cm je kratší — 6 je menší než 15." },
-  { question: "Která úsečka je delší: 2 cm nebo 11 cm?", correct: "11 cm", distractors: ["2 cm", "5 cm", "9 cm"], hint: "Srovnej čísla: 2 a 11 — které je větší?", solution: "11 cm je delší — 11 je větší než 2." },
-  { question: "Která úsečka je kratší: 13 cm nebo 3 cm?", correct: "3 cm", distractors: ["13 cm", "5 cm", "8 cm"], hint: "Srovnej čísla: 13 a 3 — které je menší?", solution: "3 cm je kratší — 3 je menší než 13." },
-  { question: "Která úsečka je delší: 14 cm nebo 9 cm?", correct: "14 cm", distractors: ["9 cm", "10 cm", "12 cm"], hint: "Srovnej čísla: 14 a 9.", solution: "14 cm je delší — 14 je větší než 9." },
-  { question: "Která úsečka je stejně dlouhá jako 6 cm?", correct: "6 cm", distractors: ["4 cm", "7 cm", "5 cm"], hint: "Hledej stejnou hodnotu.", solution: "Stejná délka je 6 cm — je to totéž číslo." },
-];
+// ── L1 — pravítko od nuly ────────────────────────────────────────────────────
 
-const POOL_L2: PoolItem[] = [
-  // Součet 2 úseček
-  { question: "Úsečka AB = 4 cm a BC = 3 cm. Jak dlouhá je úsečka AC?", correct: "7 cm", distractors: ["6 cm", "8 cm", "5 cm"], hint: "AC = AB + BC. Kolik je 4 + 3?", solution: "AC = AB + BC = 4 cm + 3 cm = 7 cm." },
-  { question: "Úsečka AB = 6 cm a BC = 5 cm. Jak dlouhá je úsečka AC?", correct: "11 cm", distractors: ["10 cm", "12 cm", "9 cm"], hint: "AC = AB + BC. Kolik je 6 + 5?", solution: "AC = AB + BC = 6 cm + 5 cm = 11 cm." },
-  { question: "Úsečka AB = 8 cm a BC = 2 cm. Jak dlouhá je úsečka AC?", correct: "10 cm", distractors: ["6 cm", "12 cm", "9 cm"], hint: "AC = AB + BC. Kolik je 8 + 2?", solution: "AC = AB + BC = 8 cm + 2 cm = 10 cm." },
-  { question: "Úsečka AB = 3 cm a BC = 7 cm. Jak dlouhá je úsečka AC?", correct: "10 cm", distractors: ["4 cm", "9 cm", "11 cm"], hint: "AC = AB + BC. Kolik je 3 + 7?", solution: "AC = AB + BC = 3 cm + 7 cm = 10 cm." },
-  { question: "Úsečka AB = 5 cm a BC = 5 cm. Jak dlouhá je úsečka AC?", correct: "10 cm", distractors: ["5 cm", "8 cm", "12 cm"], hint: "AC = AB + BC. Kolik je 5 + 5?", solution: "AC = AB + BC = 5 cm + 5 cm = 10 cm." },
-  // Polovina úsečky
-  { question: "Úsečka je 10 cm dlouhá. Kolik cm je polovina?", correct: "5 cm", distractors: ["4 cm", "6 cm", "8 cm"], hint: "Polovina = rozděl na 2 stejné části. Kolik je 10 ÷ 2?", solution: "Polovina z 10 cm = 10 ÷ 2 = 5 cm." },
-  { question: "Úsečka je 8 cm dlouhá. Kolik cm je polovina?", correct: "4 cm", distractors: ["3 cm", "5 cm", "6 cm"], hint: "Polovina = rozděl na 2 stejné části. Kolik je 8 ÷ 2?", solution: "Polovina z 8 cm = 8 ÷ 2 = 4 cm." },
-  { question: "Úsečka je 6 cm dlouhá. Kolik cm je polovina?", correct: "3 cm", distractors: ["2 cm", "4 cm", "5 cm"], hint: "Polovina = rozděl na 2 stejné části. Kolik je 6 ÷ 2?", solution: "Polovina z 6 cm = 6 ÷ 2 = 3 cm." },
-  { question: "Úsečka je 12 cm dlouhá. Kolik cm je polovina?", correct: "6 cm", distractors: ["5 cm", "7 cm", "4 cm"], hint: "Polovina = rozděl na 2 stejné části. Kolik je 12 ÷ 2?", solution: "Polovina z 12 cm = 12 ÷ 2 = 6 cm." },
-  // Rozdíl 2 úseček
-  { question: "Úsečka AB = 9 cm a úsečka CD = 4 cm. Jaký je jejich rozdíl?", correct: "5 cm", distractors: ["3 cm", "6 cm", "13 cm"], hint: "Rozdíl = větší minus menší. Kolik je 9 − 4?", solution: "9 cm − 4 cm = 5 cm — AB je o 5 cm delší než CD." },
-  { question: "Úsečka AB = 15 cm a úsečka CD = 8 cm. Jaký je jejich rozdíl?", correct: "7 cm", distractors: ["6 cm", "8 cm", "23 cm"], hint: "Rozdíl = větší minus menší. Kolik je 15 − 8?", solution: "15 cm − 8 cm = 7 cm — AB je o 7 cm delší než CD." },
-];
-
-const POOL_L3: PoolItem[] = [
-  // Převody cm ↔ mm
-  { question: "Která úsečka je delší: 3 cm nebo 30 mm?", correct: "stejně dlouhé", distractors: ["3 cm", "30 mm", "20 mm"], hint: "Převeď na stejnou jednotku: 1 cm = 10 mm. Kolik mm je 3 cm?", solution: "3 cm = 30 mm — obě úsečky jsou stejně dlouhé." },
-  { question: "Pravítko ukazuje 7 cm. Kolik je to milimetrů?", correct: "70 mm", distractors: ["7 mm", "700 mm", "17 mm"], hint: "1 cm = 10 mm. Kolik je 7 × 10?", solution: "7 cm = 7 × 10 = 70 mm." },
-  { question: "Pravítko ukazuje 3 cm. Kolik je to milimetrů?", correct: "30 mm", distractors: ["3 mm", "300 mm", "13 mm"], hint: "1 cm = 10 mm. Kolik je 3 × 10?", solution: "3 cm = 3 × 10 = 30 mm." },
-  { question: "Která úsečka je delší: 5 cm nebo 40 mm?", correct: "5 cm", distractors: ["40 mm", "stejně dlouhé", "45 mm"], hint: "Převeď: 5 cm = ? mm. Pak porovnej.", solution: "5 cm = 50 mm > 40 mm — 5 cm je delší." },
-  { question: "Kolik mm má 6 cm?", correct: "60 mm", distractors: ["6 mm", "16 mm", "600 mm"], hint: "1 cm = 10 mm.", solution: "6 cm = 6 × 10 = 60 mm." },
-  // Prodloužení + dvoukrok
-  { question: "Úsečka AB = 5 cm. Prodloužíme ji o 3 cm. Jak dlouhá bude celkem?", correct: "8 cm", distractors: ["7 cm", "9 cm", "6 cm"], hint: "Prodloužení = přidat délku. Kolik je 5 + 3?", solution: "5 cm + 3 cm = 8 cm — úsečka bude celkem 8 cm dlouhá." },
-  { question: "Úsečka je 9 cm. Zkrátíme ji o 4 cm. Kolik cm zbývá?", correct: "5 cm", distractors: ["4 cm", "6 cm", "13 cm"], hint: "Zkrátíme = odečteme. Kolik je 9 − 4?", solution: "9 cm − 4 cm = 5 cm — úsečka bude 5 cm dlouhá." },
-  // Třetina
-  // POZN. (A7 kolo 2): „třetina" je na hraně 2. ročníku (dělení 3× obvykle
-  // až v 2. pololetí). Ponecháno jako L3 challenge — kdo neumí dělit 3×,
-  // může se svést algoritmem „hledej 3 stejné části z 21/15". Vizuální oporu
-  // (kresba úsečky rozdělené na 3) přidáme až s illustrationDesc systémem.
-  { question: "Úsečka je 21 cm dlouhá. Kolik cm je třetina? (L3 challenge)", correct: "7 cm", distractors: ["5 cm", "6 cm", "9 cm"], hint: "Třetina = rozděl na 3 stejné části. Kolik je 21 ÷ 3?", solution: "Třetina z 21 cm = 21 ÷ 3 = 7 cm." },
-  { question: "Úsečka je 15 cm dlouhá. Kolik cm je třetina? (L3 challenge)", correct: "5 cm", distractors: ["3 cm", "6 cm", "7 cm"], hint: "Třetina = rozděl na 3 stejné části. 15 ÷ 3 = ?", solution: "Třetina z 15 cm = 15 ÷ 3 = 5 cm." },
-  // Slovní úlohy dvoukrokové
-  { question: "Máme 3 úsečky za sebou, každá 4 cm. Jak dlouhá je celá?", correct: "12 cm", distractors: ["4 cm", "7 cm", "16 cm"], hint: "3 × 4 = ?", solution: "3 × 4 cm = 12 cm — celá úsečka má 12 cm." },
-  { question: "Úsečka AB = 6 cm. Úsečka CD je dvakrát delší. Kolik cm má CD?", correct: "12 cm", distractors: ["3 cm", "8 cm", "16 cm"], hint: "Dvakrát delší = 2 × 6.", solution: "CD = 2 × 6 cm = 12 cm." },
-  { question: "Součet dvou úseček je 20 cm. Jedna měří 8 cm. Kolik měří druhá?", correct: "12 cm", distractors: ["10 cm", "28 cm", "16 cm"], hint: "Druhá = celek − první. 20 − 8 = ?", solution: "20 cm − 8 cm = 12 cm — druhá úsečka měří 12 cm." },
-];
-
-function pick(pool: PoolItem[]): PracticeTask[] {
-  return shuffle(pool).map((item) => {
-    const opts = shuffle([item.correct, ...item.distractors].slice(0, 4));
-    return {
-      question: item.question,
-      correctAnswer: item.correct,
-      options: opts,
-      hints: [item.hint],
-      solutionSteps: [item.solution],
-    };
+function odNuly(n: number): PracticeTask {
+  const key = cm(n);
+  return choice(`Úsečka na pravítku sahá od 0 do ${n}. Kolik měří?`, key, tri(key, [
+    { value: cm(n + 1), why: "Spočítal jsi čárky i s tou u nuly. Délku ale tvoří dílky mezi čárkami a těch je o jeden méně než čárek." },
+    { value: cm(n - 1), why: "Jeden centimetr chybí — asi jsi začal počítat až od čísla 1. Dílek od 0 do 1 se počítá také." },
+    { value: `${n} mm`, why: "Čísla na pravítku ukazují centimetry. Milimetry jsou jen ty nejmenší čárky mezi nimi." },
+    { value: cm(n + 2), why: "To je víc, než kolik dílků úsečka na pravítku zabírá." },
+  ]), {
+    hints: [
+      `Úsečka začíná přesně u nuly a končí u čísla ${n}. Co ti číslo na konci prozradí?`,
+      `Každý dílek mezi dvěma sousedními čísly na pravítku měří 1 cm. Když úsečka začíná u nuly, spočítej dílky od 0 až po ${n} — mezery, ne čárky.`,
+    ],
+    explanation: `Pravítko měří od nuly, takže číslo na konci úsečky rovnou udává její délku: od 0 do ${n} je ${pad(n, "CENTIMETR")}.`,
   });
 }
 
+// ── L2 — pravítko mimo nulu, součet, rozdíl ─────────────────────────────────
+
+function mimoNulu(s: number, e: number): PracticeTask {
+  const L = e - s;
+  const key = cm(L);
+  return choice(`Úsečka na pravítku začíná u ${s} a končí u ${e}. Kolik měří?`, key, tri(key, [
+    { value: cm(e), why: `Přečetl jsi jen číslo na konci. To stačí, jen když úsečka začíná u nuly — tahle začíná u ${s}.` },
+    { value: cm(e + s), why: `Čísla ${s} a ${e} jsi sečetl. Délka je vzdálenost od začátku ke konci, proto se odečítá.` },
+    { value: cm(L + 1), why: "Počítal jsi čárky místo dílků — čárek je vždycky o jednu víc než centimetrů." },
+    { value: cm(L - 1), why: `Jeden dílek ti vypadl. Spočítej mezery mezi čárkami od ${s} do ${e} ještě jednou.` },
+  ]), {
+    hints: [
+      `Úsečka nezačíná u nuly, ale u čísla ${s}. Stačí proto přečíst číslo ${e} na konci?`,
+      `Délka je vzdálenost od začátku ke konci: od čísla ${e} odečti ${s}. Nebo spočítej dílky (mezery mezi čísly) od ${s} do ${e}.`,
+    ],
+    explanation: `Úsečka nezačíná u nuly, proto se délka počítá jako konec minus začátek: ${e} − ${s} = ${L}, tedy ${pad(L, "CENTIMETR")}.`,
+  });
+}
+
+function soucet(a: number, b: number): PracticeTask {
+  const sum = a + b;
+  const key = cm(sum);
+  const big = Math.max(a, b);
+  const small = Math.min(a, b);
+  const postup = big < 10 && sum > 10
+    ? `nejdřív doplň ${big} do deseti a pak přičti zbytek čísla ${small}`
+    : `začni u většího čísla ${big} a přičti k němu ${small}`;
+  return choice(`Úsečka AC se skládá z částí ${a} cm a ${b} cm. Kolik měří?`, key, tri(key, [
+    { value: cm(big - small), why: "Délky jsi odečetl. Když se úsečka skládá ze dvou částí, je dlouhá jako obě části dohromady." },
+    { value: cm(sum + 1), why: "O centimetr víc — při počítání po jedné jsi započítal i číslo, od kterého jsi začínal." },
+    { value: cm(sum - 1), why: "O centimetr méně — při počítání po jedné ti jeden krok vypadl." },
+    { value: cm(sum + 10), why: "O deset víc — při přechodu přes desítku jsi přidal desítku navíc." },
+  ]), {
+    hints: [
+      `Úsečka AC je složená ze dvou kusů: ${a} cm a ${b} cm. Mají se délky sečíst, nebo odečíst?`,
+      `Celá úsečka je tak dlouhá jako obě části položené za sebou, takže sčítáš ${a} + ${b}. Postup: ${postup}.`,
+    ],
+    explanation: `Části úsečky leží za sebou, proto se jejich délky sčítají: ${a} cm + ${b} cm = ${sum} cm.`,
+  });
+}
+
+function rozdil(a: number, b: number): PracticeTask {
+  const d = a - b;
+  const key = cm(d);
+  return choice(`Úsečka AB měří ${a} cm, úsečka CD ${b} cm. O kolik je AB delší?`, key, tri(key, [
+    { value: cm(a + b), why: "Délky jsi sečetl. Otázka „o kolik je delší“ se ptá na rozdíl, takže se odečítá." },
+    { value: cm(d + 1), why: `O centimetr víc — zkontroluj odčítání přičítáním: od ${b} dojdi na ${a} a počítej kroky.` },
+    { value: cm(d - 1), why: `O centimetr méně — zkontroluj odčítání přičítáním: od ${b} dojdi na ${a} a počítej kroky.` },
+    { value: cm(b), why: "To je délka úsečky CD, ne rozdíl mezi úsečkami." },
+  ]), {
+    hints: [
+      `AB měří ${a} cm a CD ${b} cm. Kolik centimetrů musíš ke kratší přidat, aby byla stejně dlouhá?`,
+      `„O kolik delší“ znamená rozdíl: od delší délky ${a} odečti kratší ${b}. Můžeš také přičítat od ${b}, dokud nedojdeš na ${a}, a počítat kroky.`,
+    ],
+    explanation: `Rozdíl délek zjistíš odečtením: ${a} − ${b} = ${d}. O ${pad(d, "CENTIMETR")} je AB delší než CD.`,
+  });
+}
+
+// ── L3 — inverze, převod na mm, dva kroky, dvakrát delší ────────────────────
+
+function chybiCast(c: number, a: number): PracticeTask {
+  const bc = c - a;
+  const key = cm(bc);
+  return choice(`Úsečka AC měří ${c} cm, její část AB ${a} cm. Kolik měří BC?`, key, tri(key, [
+    { value: cm(c + a), why: "Délky jsi sečetl. BC je jen zbytek úsečky AC, proto od celé délky část AB odečti." },
+    { value: cm(a), why: "To je délka části AB, ta je v zadání. Ptáme se na druhou část, BC." },
+    { value: cm(bc + 1), why: `O centimetr víc. Zkouška: zbytek plus ${a} musí dát přesně ${c}.` },
+    { value: cm(bc - 1), why: `O centimetr méně. Zkouška: zbytek plus ${a} musí dát přesně ${c}.` },
+  ]), {
+    hints: [
+      `Celá úsečka AC měří ${c} cm, kus AB z ní zabírá ${a} cm. Kolik zbývá na BC?`,
+      `AB a BC dohromady dávají celou AC. Hledáš chybějící část, takže počítáš ${c} − ${a}. Zkontroluj to: zbytek a ${a} musí dohromady dát ${c}.`,
+    ],
+    explanation: `AC = AB + BC, takže BC = AC − AB = ${c} − ${a} = ${bc} cm. Zkouška: ${a} + ${bc} = ${c}.`,
+  });
+}
+
+function naMilimetry(n: number): PracticeTask {
+  const key = `${n * 10} mm`;
+  return choice(`Úsečka měří ${n} cm. Kolik je to milimetrů?`, key, tri(key, [
+    { value: `${n} mm`, why: "Číslo zůstalo stejné. Milimetr je menší než centimetr, takže milimetrů musí vyjít víc." },
+    { value: `${n * 100} mm`, why: "1 cm má 10 mm, ne 100 mm. Násobil jsi stovkou." },
+    { value: `${n + 10} mm`, why: `K číslu ${n} jsi jen přičetl 10. Deset milimetrů má ale každý centimetr, proto se násobí.` },
+  ]), {
+    hints: [
+      `Kolik milimetrových dílků je na pravítku v jednom centimetru? A centimetrů máš ${n}.`,
+      `1 cm = 10 mm. Úsečka má ${pad(n, "CENTIMETR")} a v každém je 10 mm, takže počítáš ${n} × 10 — neboli přičteš desítku ${n}krát.`,
+    ],
+    explanation: `1 cm má 10 mm, takže ${n} cm má ${n}krát víc milimetrů: ${n} × 10 = ${n * 10} mm.`,
+  });
+}
+
+function dvaKroky(a: number, b: number): PracticeTask {
+  const cd = a + b;
+  const total = a + cd;
+  const key = cm(total);
+  return choice(`Úsečka AB má ${a} cm, CD o ${b} cm víc. Kolik mají dohromady?`, key, tri(key, [
+    { value: cm(cd), why: "To je jen délka CD. Otázka chce obě úsečky dohromady, přičti ještě AB." },
+    { value: cm(2 * a), why: `Počítal jsi, jako by CD byla stejně dlouhá jako AB. Je ale o ${b} cm delší.` },
+    { value: cm(total + b), why: `Rozdíl ${b} cm jsi přičetl dvakrát. Delší je jen úsečka CD, a to jednou.` },
+    { value: cm(total + 1), why: "O centimetr víc — přepočítej druhý krok, sčítání obou délek." },
+  ]), {
+    hints: [
+      `AB má ${a} cm. Kolik má CD, když je o ${b} cm delší? Teprve pak sečti obě.`,
+      `Počítej ve dvou krocích. 1) Délka CD: k délce AB přičti ${b}. 2) Délku CD, kterou jsi dostal, sečti s AB (${a} cm). Ptáme se na obě úsečky dohromady.`,
+    ],
+    explanation: `Nejdřív CD: ${a} + ${b} = ${cd} cm. Pak obě dohromady: ${a} + ${cd} = ${total} cm.`,
+  });
+}
+
+function dvakratDelsi(a: number): PracticeTask {
+  const key = cm(2 * a);
+  return choice(`Úsečka AB měří ${a} cm, CD je dvakrát delší. Kolik měří CD?`, key, tri(key, [
+    { value: cm(a + 2), why: "Přičetl jsi 2. „Dvakrát delší“ ale neznamená o 2 cm víc — znamená dvakrát tolik." },
+    { value: cm(3 * a), why: "To by byla úsečka třikrát delší, ne dvakrát." },
+    a % 2 === 0 ? { value: cm(a / 2), why: "To je polovina — tak dlouhá by byla úsečka dvakrát kratší." } : null,
+    { value: cm(a), why: "To je délka AB. CD je dvakrát delší, takže musí vyjít víc." },
+  ]), {
+    hints: [
+      `CD je dvakrát delší než AB, která měří ${a} cm. Kolikrát vezmeš délku AB?`,
+      `Dvakrát delší znamená položit AB za sebe dvakrát: ${a} cm a ještě jednou ${a} cm. Sečti je, nebo počítej ${a} × 2.`,
+    ],
+    explanation: `Dvakrát delší znamená dvakrát tolik: 2 × ${a} = ${a} + ${a} = ${2 * a} cm.`,
+  });
+}
+
+// ── Banky parametrů (ručně vybrané tak, aby klíč nestál ve znění otázky) ────
+
+const L1_N = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+const L2_MIMO: [number, number][] = [[1, 6], [2, 9], [3, 7], [4, 12], [2, 11], [5, 13], [3, 10], [1, 9]];
+const L2_SOUCET: [number, number][] = [[4, 7], [6, 8], [8, 5], [9, 6], [5, 9], [12, 4], [7, 6], [3, 11], [10, 7]];
+const L2_ROZDIL: [number, number][] = [[12, 7], [9, 4], [14, 6], [11, 8], [16, 9], [13, 5], [10, 4], [18, 11]];
+const L3_CAST: [number, number][] = [[15, 6], [12, 5], [18, 7], [20, 8], [14, 9], [17, 11], [13, 4], [19, 12]];
+const L3_MM = [3, 4, 5, 6, 7, 8];
+const L3_DVA: [number, number][] = [[4, 3], [5, 2], [6, 4], [7, 3], [3, 5], [8, 2]];
+const L3_DVAKRAT = [3, 4, 6, 7, 9];
+
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return pick(pool);
+  const tasks = level === 1
+    ? L1_N.map(odNuly)
+    : level === 2
+      ? [...L2_MIMO.map(([s, e]) => mimoNulu(s, e)), ...L2_SOUCET.map(([a, b]) => soucet(a, b)), ...L2_ROZDIL.map(([a, b]) => rozdil(a, b))]
+      : [
+          ...L3_CAST.map(([c, a]) => chybiCast(c, a)),
+          ...L3_MM.map(naMilimetry),
+          ...L3_DVA.map(([a, b]) => dvaKroky(a, b)),
+          ...L3_DVAKRAT.map(dvakratDelsi),
+        ];
+  return shuffle(tasks);
 }
 
 export const MERIENIDELIVKYUSECKY: TopicMetadata[] = [
@@ -124,14 +227,14 @@ export const MERIENIDELIVKYUSECKY: TopicMetadata[] = [
     contentType: "factual",
     generator: gen,
     helpTemplate: {
-      hint: "Délky sečti jako čísla, jen přidej 'cm'. 1 cm = 10 mm.",
+      hint: "Na pravítku počítej dílky mezi čárkami, ne čárky. Délky za sebou sčítej, rozdíl odečítej. 1 cm = 10 mm.",
       steps: [
-        "Přečti délky obou úseček.",
-        "Sečti nebo odečti čísla (nebo převeď na stejnou jednotku).",
-        "Přidej jednotku cm (nebo mm).",
+        "Zjisti, kde úsečka začíná a kde končí (nebo z jakých částí se skládá).",
+        "Rozhodni, jestli délky sčítáš, nebo odečítáš.",
+        "Spočítej a nezapomeň na jednotku cm nebo mm.",
       ],
-      commonMistake: "Zapomenutí jednotky — výsledek musí mít 'cm' nebo 'mm'.",
-      example: "AB = 4 cm, BC = 3 cm. AC = 4 + 3 = 7 cm.",
+      commonMistake: "Když úsečka nezačíná u nuly, nestačí přečíst číslo na konci — musíš odečíst začátek.",
+      example: "Úsečka začíná u 2 a končí u 9: 9 − 2 = 7, měří tedy 7 cm.",
     },
   },
 ];
