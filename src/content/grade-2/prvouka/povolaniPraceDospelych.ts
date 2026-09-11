@@ -19,6 +19,7 @@ function shuffle<T>(arr: T[]): T[] {
 //        faktů o povolání zároveň, rozlišení blízkých/zaměnitelných
 //        povolání (lékař vs. zubař vs. veterinář) a jednoduché scénáře
 //        „na koho se obrátit, když…“.
+// Každá úloha: dvě vlastní nápovědy, zpětná vazba u každé chybné možnosti.
 // ─────────────────────────────────────────────────────────
 
 const POOL_L1: PracticeTask[] = [
@@ -27,7 +28,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Hasič",
     options: ["Hasič", "Pekař", "Učitel", "Prodavač"],
     emoji: "👨‍🚒",
-    hints: ["Hašení ohně je nebezpečná práce — kdo na ni má speciální oblek a hadici?"],
+    hints: [
+      "Hašení ohně je nebezpečná práce — kdo na ni má speciální oblek a hadici?",
+      "Když někde hoří, přijede červené auto se sirénou a žebříkem. Lidé, kteří z něj vyskočí, mají helmy a stříkají vodu. Jak se jmenuje jejich povolání?",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče chleba a rohlíky, oheň nehasí.",
+      Učitel: "Učitel učí děti ve škole.",
+      Prodavač: "Prodavač prodává zboží v obchodě.",
+    },
     solutionSteps: ["Oheň hasí hasič — má speciální oblek, helmu a hadici s vodou."],
   },
   {
@@ -35,7 +44,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Lékař",
     options: ["Řidič", "Lékař", "Kuchař", "Pošťák"],
     emoji: "👩‍⚕️",
-    hints: ["Když jsme nemocní, jdeme se nechat vyšetřit — ke komu?"],
+    hints: [
+      "Když jsme nemocní, jdeme se nechat vyšetřit — ke komu?",
+      "Když máš horečku, jdeš s maminkou do ordinace. Tam tě prohlédne člověk v bílém plášti, poslechne si tvůj dech a napíše recept.",
+    ],
+    optionFeedback: {
+      Řidič: "Řidič řídí auto nebo autobus, nemocné neléčí.",
+      Kuchař: "Kuchař vaří jídlo.",
+      Pošťák: "Pošťák roznáší dopisy a balíky.",
+    },
     solutionSteps: ["Lidi léčí lékař — vyšetřuje pacienty a předepisuje léky."],
   },
   {
@@ -43,7 +60,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Učitel",
     options: ["Hasič", "Pekař", "Učitel", "Zedník"],
     emoji: "👨‍🏫",
-    hints: ["Ve škole nás někdo naučí číst, psát a počítat — kdo to je?"],
+    hints: [
+      "Kdo stojí ve třídě u tabule a zadává úkoly?",
+      "Každé ráno přijde do vaší třídy dospělý, který vysvětluje nové učivo, opravuje úkoly a píše známky. Jak se tomu povolání říká?",
+    ],
+    optionFeedback: {
+      Hasič: "Hasič hasí požáry, ve škole neučí.",
+      Pekař: "Pekař peče pečivo v pekárně.",
+      Zedník: "Zedník staví domy z cihel.",
+    },
     solutionSteps: ["Děti učí učitel — ve škole nás naučí číst, psát, počítat a spoustu dalšího."],
   },
   {
@@ -51,7 +76,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Pekař",
     options: ["Lékař", "Policista", "Kadeřník", "Pekař"],
     emoji: "🍞",
-    hints: ["Chléb se peče v peci — kdo s tím pracuje?"],
+    hints: [
+      "Chléb se peče v peci — kdo s tím pracuje?",
+      "Tenhle člověk vstává dlouho před svítáním, míchá mouku, vodu a kvásek, tvaruje těsto a vkládá ho do horké pece, aby ráno bylo v obchodě čerstvé pečivo.",
+    ],
+    optionFeedback: {
+      Lékař: "Lékař léčí nemocné lidi.",
+      Policista: "Policista hlídá pořádek a bezpečnost.",
+      Kadeřník: "Kadeřník stříhá vlasy.",
+    },
     solutionSteps: ["Chléb a rohlíky peče pekař — vstává velmi brzy ráno, aby bylo pečivo čerstvé."],
   },
   {
@@ -59,7 +92,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Kuchař",
     options: ["Kuchař", "Učitel", "Hasič", "Zemědělec"],
     emoji: "👨‍🍳",
-    hints: ["V jídelně nebo restauraci někdo připravuje jídlo — kdo to je?"],
+    hints: [
+      "V jídelně nebo restauraci někdo připravuje jídlo — kdo to je?",
+      "V kuchyni restaurace stojí u sporáku člověk s bílou čepicí a zástěrou. Krájí zeleninu, míchá polévku a chystá obědy pro hosty.",
+    ],
+    optionFeedback: {
+      Učitel: "Učitel učí děti, nevaří.",
+      Hasič: "Hasič hasí požáry.",
+      Zemědělec: "Zemědělec pěstuje plodiny na poli, ale jídlo v restauraci nevaří.",
+    },
     solutionSteps: ["Jídlo vaří kuchař — v restauraci nebo jídelně připravuje pokrmy."],
   },
   {
@@ -67,7 +108,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Řidič",
     options: ["Pekař", "Řidič", "Lékař", "Zedník"],
     emoji: "🚌",
-    hints: ["Autobus potřebuje někoho za volantem — kdo ho řídí?"],
+    hints: [
+      "Autobus potřebuje někoho za volantem — kdo to je?",
+      "Když nastoupíš do autobusu, u předních dveří sedí člověk, který drží volant, zastavuje na zastávkách a otevírá dveře. Jak se jmenuje jeho povolání?",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče pečivo.",
+      Lékař: "Lékař léčí nemocné.",
+      Zedník: "Zedník staví domy.",
+    },
     solutionSteps: ["Autobus řídí řidič — stará se o bezpečnou přepravu cestujících."],
   },
   {
@@ -75,7 +124,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Policista",
     options: ["Kuchař", "Pekař", "Policista", "Herec"],
     emoji: "👮",
-    hints: ["Bezpečnost lidí a dodržování pravidel zajišťuje..."],
+    hints: [
+      "Bezpečnost lidí a dodržování pravidel zajišťuje…",
+      "Tenhle člověk nosí uniformu s odznakem, jezdí autem s modrými majáky, pomáhá při dopravní nehodě a chytá zloděje.",
+    ],
+    optionFeedback: {
+      Kuchař: "Kuchař vaří jídlo.",
+      Pekař: "Pekař peče pečivo.",
+      Herec: "Herec může v divadle strážníka jen hrát, doopravdy pořádek nehlídá.",
+    },
     solutionSteps: ["Lidi chrání policista — hlídá pořádek a bezpečnost."],
   },
   {
@@ -83,7 +140,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Pošťák",
     options: ["Hasič", "Lékař", "Malíř", "Pošťák"],
     emoji: "📬",
-    hints: ["Dopisy a balíky přicházejí do naší schránky — kdo je přinese?"],
+    hints: [
+      "Dopisy a balíky přicházejí do naší schránky — kdo je přinese?",
+      "Tenhle člověk chodí každý den po ulici s velkou brašnou nebo jezdí žlutým autem. Zazvoní u dveří, když nese balík, a dopisy vhodí do schránky.",
+    ],
+    optionFeedback: {
+      Hasič: "Hasič hasí požáry.",
+      Lékař: "Lékař léčí nemocné.",
+      Malíř: "Malíř maluje obrazy nebo stěny.",
+    },
     solutionSteps: ["Dopisy a balíky roznáší pošťák — chodí dům od domu a doručuje zásilky."],
   },
   {
@@ -91,7 +156,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Veterinář",
     options: ["Veterinář", "Pekař", "Řidič", "Prodavač"],
     emoji: "🐕",
-    hints: ["Zvířata nejdou k lékaři — kdo se o nemocná zvířata stará?"],
+    hints: [
+      "Zvířata mají svého vlastního lékaře — jak se mu říká?",
+      "Když je pejsek nemocný, jde s ním páníček do ordinace, kde čekají i kočky a králíci. Člověk v plášti je prohlédne a dá jim injekci nebo lék.",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče pečivo.",
+      Řidič: "Řidič řídí auto nebo autobus.",
+      Prodavač: "Prodavač v obchodě prodává zboží, třeba i krmivo, ale zvířata neléčí.",
+    },
     solutionSteps: ["Zvířata léčí veterinář — je to „lékař pro zvířata“."],
   },
   {
@@ -99,7 +172,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Kadeřník",
     options: ["Kuchař", "Kadeřník", "Učitel", "Zubař"],
     emoji: "💇",
-    hints: ["Vlasy nám rostou a potřebujeme je stříhat — kdo to dělá?"],
+    hints: [
+      "Vlasy nám rostou a potřebujeme je stříhat — kdo to dělá?",
+      "Posadíš se do otáčecího křesla před velké zrcadlo, dostaneš přes sebe plášť a někdo ti nůžkami a hřebenem upraví účes.",
+    ],
+    optionFeedback: {
+      Kuchař: "Kuchař vaří jídlo.",
+      Učitel: "Učitel učí děti ve škole.",
+      Zubař: "Zubař ošetřuje zuby, ne vlasy.",
+    },
     solutionSteps: ["Vlasy stříhá kadeřník — v kadeřnictví nám ostříhá nebo upraví účes."],
   },
   {
@@ -107,15 +188,31 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Zedník",
     options: ["Pekař", "Pošťák", "Zedník", "Malíř"],
     emoji: "🧱",
-    hints: ["Domy jsou postavené z cihel a betonu — kdo je staví?"],
-    solutionSteps: ["Domy staví zedník — skládá cihly a lije beton."],
+    hints: [
+      "Domy jsou postavené z cihel a betonu — kdo je staví?",
+      "Na stavbě pokládá člověk v helmě jednu cihlu na druhou a spojuje je maltou, až vyroste zeď. Jak se jmenuje toto povolání?",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče chleba.",
+      Pošťák: "Pošťák roznáší dopisy.",
+      Malíř: "Malíř stěny jen natírá barvou, ale nestaví je.",
+    },
+    solutionSteps: ["Domy staví zedník — skládá cihly a spojuje je maltou."],
   },
   {
     question: "Kdo opravuje porouchaná auta?",
     correctAnswer: "Mechanik",
     options: ["Lékař", "Učitel", "Zedník", "Mechanik"],
     emoji: "🔧",
-    hints: ["Když auto porouchá a nejede, je potřeba ho opravit — kdo to umí?"],
+    hints: [
+      "Když se auto porouchá a nejede, je potřeba ho opravit — kdo to umí?",
+      "V autoservisu leží člověk v montérkách pod autem, ušpiněný od oleje, a klíči utahuje šrouby, dokud auto zase nejede.",
+    ],
+    optionFeedback: {
+      Lékař: "Lékař léčí lidi, auta ne.",
+      Učitel: "Učitel učí děti.",
+      Zedník: "Zedník staví domy.",
+    },
     solutionSteps: ["Auta opravuje mechanik — v autoservisu zjistí závadu a opraví ji."],
   },
   {
@@ -123,7 +220,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Zemědělec",
     options: ["Zemědělec", "Hasič", "Pekař", "Kuchař"],
     emoji: "🚜",
-    hints: ["Pšenice, brambory nebo zelenina rostou na polích — kdo se o ně stará?"],
+    hints: [
+      "Pšenice, brambory nebo zelenina rostou na polích — kdo se o ně stará?",
+      "Na jaře oře pole traktorem, zasévá semínka a v létě sklízí kombajnem zlaté klasy. Jak se jmenuje člověk, který se takhle stará o pole?",
+    ],
+    optionFeedback: {
+      Hasič: "Hasič hasí požáry.",
+      Pekař: "Pekař z mouky peče chleba, ale obilí nepěstuje.",
+      Kuchař: "Kuchař zeleninu vaří, ale nepěstuje ji.",
+    },
     solutionSteps: ["Obilí a zeleninu pěstuje zemědělec — obdělává pole a sklízí úrodu."],
   },
   {
@@ -131,7 +236,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Prodavač",
     options: ["Hasič", "Prodavač", "Lékař", "Zedník"],
     emoji: "🏪",
-    hints: ["V obchodě nám někdo pomáhá vybrat a zaplatit — kdo to je?"],
+    hints: [
+      "V obchodě nám někdo pomáhá vybrat a zaplatit — kdo to je?",
+      "V obchodě stojí u pokladny člověk, který pípne zboží čtečkou, řekne ti, kolik to stojí, a vrátí ti drobné.",
+    ],
+    optionFeedback: {
+      Hasič: "Hasič hasí požáry.",
+      Lékař: "Lékař léčí nemocné.",
+      Zedník: "Zedník staví domy.",
+    },
     solutionSteps: ["V obchodě prodává prodavač — pomáhá zákazníkům a přijímá platby."],
   },
   {
@@ -139,7 +252,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Zubař",
     options: ["Pekař", "Řidič", "Zubař", "Veterinář"],
     emoji: "🦷",
-    hints: ["Kazy v zubech potřebují ošetření — ke komu jdeme?"],
+    hints: [
+      "Kazy v zubech potřebují ošetření — ke komu jdeme?",
+      "Sedneš si do zvláštního křesla, otevřeš pusu a někdo ti malým zrcátkem prohlédne zuby. Když najde kaz, opraví ho vrtáčkem.",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče pečivo.",
+      Řidič: "Řidič řídí vozidla.",
+      Veterinář: "Veterinář ošetřuje zuby zvířatům, ne lidem.",
+    },
     solutionSteps: ["Zuby opravuje zubař — ošetřuje kazy a stará se o zdraví zubů."],
   },
   {
@@ -147,7 +268,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Herec",
     options: ["Pekař", "Řidič", "Malíř", "Herec"],
     emoji: "🎭",
-    hints: ["V divadle lidé hrají různé role v příbězích — jak se jim říká?"],
+    hints: [
+      "V divadle lidé hrají různé role v příbězích — jak se jim říká?",
+      "Na jevišti se člověk převlékne za krále nebo za vlka, naučí se text zpaměti a diváci mu nakonec tleskají.",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče pečivo.",
+      Řidič: "Řidič řídí vozidla.",
+      Malíř: "Malíř může pro divadlo namalovat kulisy, ale postavy na jevišti nehraje.",
+    },
     solutionSteps: ["V divadle hraje herec — učí se role a vystupuje před diváky."],
   },
 ];
@@ -158,7 +287,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Hadicí s vodou",
     options: ["Hadicí s vodou", "Vařečkou", "Štětcem", "Kladivem"],
     emoji: "🚒",
-    hints: ["Mysli na to, co hasič drží v rukou, když stříká na oheň."],
+    hints: [
+      "Mysli na to, co hasič drží v rukou, když stříká na oheň.",
+      "Oheň uhasí něco mokrého, co se stříká z dlouhé trubice připojené k hasičskému autu. Která z nabízených věcí by oheň opravdu uhasila?",
+    ],
+    optionFeedback: {
+      Vařečkou: "Vařečkou se míchá jídlo, oheň by nezhasila.",
+      Štětcem: "Štětcem se maluje.",
+      Kladivem: "Kladivem se zatloukají hřebíky.",
+    },
     solutionSteps: ["Hasič hasí oheň hadicí s vodou — vodu čerpá z hasičského auta nebo hydrantu."],
   },
   {
@@ -166,7 +303,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Bílý plášť",
     options: ["Hasičskou přilbu", "Bílý plášť", "Zástěru zedníka", "Uniformu policisty"],
     emoji: "👩‍⚕️",
-    hints: ["Lékař nosí typický oděv, podle kterého ho v ordinaci hned poznáš."],
+    hints: [
+      "Lékař nosí typický oděv, podle kterého ho v ordinaci hned poznáš.",
+      "Vzpomeň si na ordinaci: lékař má na sobě světlý oděv až ke kolenům, s kapsami, ve kterých nosí propisku a teploměr.",
+    ],
+    optionFeedback: {
+      "Hasičskou přilbu": "Přilbu nosí hasič.",
+      "Zástěru zedníka": "Zástěru nosí zedník na stavbě.",
+      "Uniformu policisty": "Uniformu nosí policista.",
+    },
     solutionSteps: ["Lékař při vyšetřování nosí bílý plášť — je to jeho typický pracovní oděv."],
   },
   {
@@ -174,7 +319,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "V pekárně",
     options: ["V kuchyni restaurace", "V lékárně", "V pekárně", "Na poli"],
     emoji: "🍞",
-    hints: ["Mysli na místo, kde jsou velké pece na pečivo a vůně čerstvého chleba."],
+    hints: [
+      "Mysli na místo, kde jsou velké pece na pečivo a vůně čerstvého chleba.",
+      "Pekař potřebuje velkou pec a spoustu mouky. Místo, kde pracuje, má název podobný jeho povolání — podle toho, co se tam dělá.",
+    ],
+    optionFeedback: {
+      "V kuchyni restaurace": "V kuchyni restaurace pracuje kuchař.",
+      "V lékárně": "V lékárně se vydávají léky.",
+      "Na poli": "Na poli roste obilí, pečivo se tam nepeče.",
+    },
     solutionSteps: ["Pekař peče chléb a rohlíky v pekárně — tam má pece na pečivo."],
   },
   {
@@ -182,7 +335,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Nůžky a hřeben",
     options: ["Kladivo a hřebíky", "Vařečku a hrnec", "Štětec a barvy", "Nůžky a hřeben"],
     emoji: "💇",
-    hints: ["Mysli na nástroje, kterými se dají vlasy zastřihnout a učesat."],
+    hints: [
+      "Mysli na nástroje, kterými se dají vlasy zastřihnout a učesat.",
+      "Jedním nástrojem se vlasy zkrátí — má dvě ostří. Druhým se učešou — má hodně zoubků. Najdi dvojici, ve které jsou oba.",
+    ],
+    optionFeedback: {
+      "Kladivo a hřebíky": "Kladivo a hřebíky patří truhláři.",
+      "Vařečku a hrnec": "Vařečka a hrnec patří kuchaři.",
+      "Štětec a barvy": "Štětec a barvy patří malíři.",
+    },
     solutionSteps: ["Kadeřník používá nůžky a hřeben — nůžkami stříhá, hřebenem vlasy upravuje."],
   },
   {
@@ -190,7 +351,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Cihly a maltu",
     options: ["Cihly a maltu", "Mouku a droždí", "Prkna a hřebíky", "Barvy a štětce"],
     emoji: "🧱",
-    hints: ["Zeď se skládá z kousků, které se k sobě slepí lepidlem na stavbu."],
+    hints: [
+      "Zeď se skládá z kousků, které se k sobě slepí lepidlem na stavbu.",
+      "Zeď se staví z červených kvádrů, které se kladou řadu po řadě. Mezi ně se maže šedá hmota, která po zaschnutí ztvrdne.",
+    ],
+    optionFeedback: {
+      "Mouku a droždí": "Mouka a droždí jsou na pečení, ty potřebuje pekař.",
+      "Prkna a hřebíky": "Prkna a hřebíky používá tesař nebo truhlář.",
+      "Barvy a štětce": "Barvy a štětce potřebuje malíř.",
+    },
     solutionSteps: ["Zedník ke stavbě zdi potřebuje cihly a maltu — maltou cihly k sobě slepuje."],
   },
   {
@@ -198,7 +367,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Stetoskopem",
     options: ["Vařečkou", "Stetoskopem", "Kladivem", "Nůžkami na vlasy"],
     emoji: "🐕",
-    hints: ["Tímto nástrojem se poslouchá tlukot srdce a dech — visí lékařům kolem krku."],
+    hints: [
+      "Tímto nástrojem se poslouchá tlukot srdce a dech — visí lékařům kolem krku.",
+      "Veterinář si konce nástroje nasadí do uší a jeho kulatou část přiloží zvířeti na hrudník. Tak uslyší, jak mu bije srdce.",
+    ],
+    optionFeedback: {
+      Vařečkou: "Vařečka patří do kuchyně.",
+      Kladivem: "Kladivo patří zedníkovi nebo truhláři.",
+      "Nůžkami na vlasy": "Nůžky na vlasy používá kadeřník.",
+    },
     solutionSteps: ["Veterinář si zvíře prohlíží stetoskopem — poslouchá jím srdce a dech."],
   },
   {
@@ -206,7 +383,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Volant",
     options: ["Kormidlo lodi", "Řídítka kola", "Volant", "Vařečku"],
     emoji: "🚌",
-    hints: ["Tímto se v autě nebo autobuse otáčí doleva a doprava."],
+    hints: [
+      "Tímto se v autě nebo autobuse otáčí doleva a doprava.",
+      "Je to velký kruh přímo před řidičem. Když s ním otočí doleva, autobus zatočí doleva; když doprava, zatočí doprava.",
+    ],
+    optionFeedback: {
+      "Kormidlo lodi": "Kormidlem se řídí loď, ne autobus.",
+      "Řídítka kola": "Řídítka má kolo nebo motorka.",
+      Vařečku: "Vařečkou se míchá jídlo.",
+    },
     solutionSteps: ["Řidič drží volant — otáčením volantu určuje směr jízdy autobusu."],
   },
   {
@@ -214,7 +399,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "K zubaři",
     options: ["K veterináři", "K pekaři", "K zedníkovi", "K zubaři"],
     emoji: "🦷",
-    hints: ["Hledej povolání, které se stará přímo o zdraví zubů."],
+    hints: [
+      "Hledej povolání, které se stará přímo o zdraví zubů.",
+      "Veterinář léčí zvířata a pekař ani zedník s bolestí nepomohou. Hledej lékaře, který ti nahlédne do pusy a spraví bolavý zub.",
+    ],
+    optionFeedback: {
+      "K veterináři": "Veterinář léčí zvířata, lidské zuby ne.",
+      "K pekaři": "Pekař peče pečivo.",
+      "K zedníkovi": "Zedník staví domy.",
+    },
     solutionSteps: ["Když bolí zub, jdeme k zubaři — prohlédne a ošetří zub."],
   },
   {
@@ -222,7 +415,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Uniformu",
     options: ["Uniformu", "Bílý plášť", "Zástěru", "Hasičskou helmu"],
     emoji: "👮",
-    hints: ["Je to typický oděv se stejnou barvou a odznakem, který nosí všichni policisté."],
+    hints: [
+      "Je to typický oděv se stejnou barvou a odznakem, který nosí všichni policisté.",
+      "Všichni policisté mají stejné tmavé oblečení se znakem a nápisem POLICIE, aby je každý na první pohled poznal. Jak se takovému oblečení říká?",
+    ],
+    optionFeedback: {
+      "Bílý plášť": "Bílý plášť nosí lékař.",
+      Zástěru: "Zástěru nosí třeba kuchař nebo prodavač.",
+      "Hasičskou helmu": "Helmu nosí hasič.",
+    },
     solutionSteps: ["Policista nosí uniformu — podle ní ho lidé na ulici snadno poznají."],
   },
   {
@@ -230,7 +431,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Obilí a zeleninu",
     options: ["Chleba a rohlíky", "Obilí a zeleninu", "Cihly a maltu", "Léky"],
     emoji: "🚜",
-    hints: ["Mysli na to, co roste přímo na poli, ne na to, co se z toho později vyrábí."],
+    hints: [
+      "Mysli na to, co roste přímo na poli, ne na to, co se z toho později vyrábí.",
+      "Chleba se peče v pekárně a léky vyrábějí továrny. Na poli ze země vyrůstají klasy pšenice, brambory nebo mrkev.",
+    ],
+    optionFeedback: {
+      "Chleba a rohlíky": "Chleba a rohlíky peče pekař — z obilí, které pěstuje zemědělec.",
+      "Cihly a maltu": "Cihly a malta jsou stavební materiál.",
+      Léky: "Léky se na poli nepěstují, vyrábějí se v továrně.",
+    },
     solutionSteps: ["Zemědělec pěstuje na poli obilí a zeleninu — z obilí se pak mimo jiné peče chléb."],
   },
   {
@@ -238,7 +447,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Prodává zboží a vybírá peníze",
     options: ["Peče chleba a rohlíky", "Léčí nemocná zvířata", "Prodává zboží a vybírá peníze", "Staví domy a mosty"],
     emoji: "🏪",
-    hints: ["Mysli na to, co dělá člověk za pokladnou, když si u něj něco kupuješ."],
+    hints: [
+      "Mysli na to, co dělá člověk za pokladnou, když si u něj něco kupuješ.",
+      "Když si v obchodě kupuješ sešit, podáš ho člověku u pokladny. Ten ti řekne cenu, ty zaplatíš a on ti sešit dá. Která možnost to popisuje?",
+    ],
+    optionFeedback: {
+      "Peče chleba a rohlíky": "To dělá pekař.",
+      "Léčí nemocná zvířata": "To dělá veterinář.",
+      "Staví domy a mosty": "To dělají stavaři, třeba zedník.",
+    },
     solutionSteps: ["Prodavač v obchodě prodává zboží zákazníkům a vybírá od nich peníze."],
   },
   {
@@ -246,7 +463,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Dopisy a balíky",
     options: ["Léky", "Chléb", "Cihly", "Dopisy a balíky"],
     emoji: "📬",
-    hints: ["Mysli na to, co najdeš ve schránce u dveří domu."],
+    hints: [
+      "Mysli na to, co najdeš ve schránce u dveří domu.",
+      "Do schránky se vejde obálka s pohlednicí od babičky, a když je zásilka větší, pošťák zazvoní a podá ti krabici.",
+    ],
+    optionFeedback: {
+      Léky: "Léky se vyzvedávají v lékárně.",
+      Chléb: "Chléb se kupuje v pekárně nebo v obchodě.",
+      Cihly: "Cihly se vozí na stavbu nákladním autem.",
+    },
     solutionSteps: ["Pošťák doručuje do schránky dopisy a balíky."],
   },
   {
@@ -254,7 +479,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Vaří a připravuje jídlo",
     options: ["Vaří a připravuje jídlo", "Prodává potraviny", "Stříhá vlasy", "Opravuje auta"],
     emoji: "👨‍🍳",
-    hints: ["Mysli na to, co se děje v kuchyni restaurace, než jídlo přijde na stůl."],
+    hints: [
+      "Mysli na to, co se děje v kuchyni restaurace, než jídlo přijde na stůl.",
+      "V kuchyni restaurace je horko, na plotně bublají hrnce a na pánvi se smaží řízky. Ten, kdo tam pracuje, pak jídlo dá na talíř.",
+    ],
+    optionFeedback: {
+      "Prodává potraviny": "Potraviny prodává prodavač v obchodě.",
+      "Stříhá vlasy": "Vlasy stříhá kadeřník.",
+      "Opravuje auta": "Auta opravuje mechanik.",
+    },
     solutionSteps: ["Kuchař v restauraci vaří a připravuje jídlo pro hosty."],
   },
   {
@@ -262,7 +495,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Klíči a nářadím v autoservisu",
     options: ["Vařečkou v kuchyni", "Klíči a nářadím v autoservisu", "Nůžkami v kadeřnictví", "Štětcem v ateliéru"],
     emoji: "🔧",
-    hints: ["Mysli na místo a nástroje, kterými se šroubuje a rozebírá motor."],
+    hints: [
+      "Mysli na místo a nástroje, kterými se šroubuje a rozebírá motor.",
+      "Mechanik pracuje v dílně pro auta. Potřebuje nástroje, kterými povolí a utáhne šrouby — ne nástroje z kuchyně, kadeřnictví ani ateliéru.",
+    ],
+    optionFeedback: {
+      "Vařečkou v kuchyni": "Vařečka patří kuchaři.",
+      "Nůžkami v kadeřnictví": "Nůžky patří kadeřníkovi.",
+      "Štětcem v ateliéru": "Štětec patří malíři.",
+    },
     solutionSteps: ["Mechanik opravuje auto klíči a dalším nářadím v autoservisu."],
   },
 ];
@@ -273,7 +514,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Hasič",
     options: ["Zedník", "Policista", "Hasič", "Zahradník"],
     emoji: "👨‍🚒",
-    hints: ["Hledej povolání, které má zároveň OBOJÍ — helmu i hadici na hašení ohně."],
+    hints: [
+      "Hledej povolání, které má zároveň OBOJÍ — helmu i hadici na hašení ohně.",
+      "Zedník nosí helmu, ale hadici nemá. Zahradník má hadici, ale jen na zalévání. Policista nemá ani jedno. Kdo má obojí a hasí oheň?",
+    ],
+    optionFeedback: {
+      Zedník: "Zedník má helmu na stavbě, ale hadicí oheň nehasí.",
+      Policista: "Policista hlídá pořádek, oheň nehasí.",
+      Zahradník: "Zahradník hadicí zalévá záhony, oheň nehasí a helmu nenosí.",
+    },
     solutionSteps: [
       "Hasič nosí ochrannou helmu a používá hadici na hašení ohně zároveň. Zedník má sice helmu, ale ne hadici na hašení, a zahradník má hadici, ale jen na zalévání, ne helmu.",
     ],
@@ -283,7 +532,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Zedník",
     options: ["Malíř", "Mechanik", "Zemědělec", "Zedník"],
     emoji: "🧱",
-    hints: ["Hledej povolání, které staví domy PŘÍMO z cihel slepených maltou."],
+    hints: [
+      "Hledej povolání, které staví domy PŘÍMO z cihel slepených maltou.",
+      "Malíř domy natírá, mechanik opravuje auta a zemědělec pracuje na poli. Kdo skládá zdi z cihel a maltou je spojuje?",
+    ],
+    optionFeedback: {
+      Malíř: "Malíř domy maluje, ale cihly nepokládá.",
+      Mechanik: "Mechanik opravuje auta.",
+      Zemědělec: "Zemědělec pěstuje plodiny na poli.",
+    },
     solutionSteps: [
       "Zedník staví domy a k tomu používá cihly a maltu. Malíř domy jen maluje, cihly a maltu nepoužívá.",
     ],
@@ -293,7 +550,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Mechanik",
     options: ["Mechanik", "Řidič", "Zedník", "Prodavač"],
     emoji: "🔧",
-    hints: ["Řidič auto jen řídí — hledej toho, kdo ho i opravuje pomocí nářadí."],
+    hints: [
+      "Řidič auto jen řídí — hledej toho, kdo ho i opravuje pomocí nářadí.",
+      "Když se auto porouchá, řidič ho odveze do dílny. Tam ho převezme někdo v montérkách, zvedne ho na zvedák a vymění rozbitou součástku.",
+    ],
+    optionFeedback: {
+      Řidič: "Řidič auto řídí, ale když se porouchá, veze ho do servisu.",
+      Zedník: "Zedník staví domy.",
+      Prodavač: "Prodavač prodává v obchodě.",
+    },
     solutionSteps: [
       "Mechanik opravuje porouchaná auta a pracuje s nářadím v autoservisu. Řidič auto pouze řídí, ale neopravuje ho.",
     ],
@@ -303,7 +568,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Pekař",
     options: ["Kuchař", "Pekař", "Prodavač", "Zemědělec"],
     emoji: "🍞",
-    hints: ["Kuchař taky vaří jídlo, ale hledej toho, kdo peče PŘÍMO chléb v pekárně."],
+    hints: [
+      "Kuchař taky vaří jídlo, ale hledej toho, kdo peče PŘÍMO chléb v pekárně.",
+      "Kuchař vaří obědy v restauraci, prodavač chléb jen prodává a zemědělec pěstuje obilí. Kdo chléb opravdu upeče v peci ještě za tmy?",
+    ],
+    optionFeedback: {
+      Kuchař: "Kuchař vaří jídla v restauraci, chléb v pekárně nepeče.",
+      Prodavač: "Prodavač chléb jen prodává.",
+      Zemědělec: "Zemědělec pěstuje obilí, z něhož se chléb peče, ale sám ho nepeče.",
+    },
     solutionSteps: [
       "Pekař peče chléb a pracuje brzy ráno v pekárně. Kuchař vaří jiná jídla, obvykle v restauraci nebo jídelně, ne chléb v pekárně.",
     ],
@@ -313,7 +586,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Kuchař",
     options: ["Pekař", "Prodavač", "Kuchař", "Učitel"],
     emoji: "👨‍🍳",
-    hints: ["Pekař taky něco připravuje, ale hledej toho, kdo vaří obědy v kuchyni."],
+    hints: [
+      "Pekař taky něco připravuje, ale hledej toho, kdo vaří obědy v kuchyni.",
+      "Pekař peče pečivo v pekárně, prodavač stojí u pokladny a učitel učí ve škole. Kdo stojí u sporáku a chystá polévky a hlavní jídla?",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař peče pečivo v pekárně, obědy nevaří.",
+      Prodavač: "Prodavač prodává, nevaří.",
+      Učitel: "Učitel učí ve škole.",
+    },
     solutionSteps: [
       "Kuchař vaří jídlo v kuchyni restaurace nebo jídelny. Pekař naproti tomu peče pečivo v pekárně.",
     ],
@@ -323,9 +604,17 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Zemědělec",
     options: ["Pekař", "Kuchař", "Prodavač", "Zemědělec"],
     emoji: "🚜",
-    hints: ["Pekař z obilí jen peče pečivo — hledej toho, kdo obilí PĚSTUJE přímo na poli."],
+    hints: [
+      "Pekař z obilí jen peče pečivo — hledej toho, kdo obilí PĚSTUJE přímo na poli.",
+      "Pekař a kuchař s obilím nebo moukou pracují až potom a prodavač výrobky jen prodává. Kdo jezdí kombajnem po poli a obilí sklízí?",
+    ],
+    optionFeedback: {
+      Pekař: "Pekař z mouky peče, obilí nepěstuje.",
+      Kuchař: "Kuchař vaří jídlo, na poli nepracuje.",
+      Prodavač: "Prodavač prodává zboží v obchodě.",
+    },
     solutionSteps: [
-      "Zemědělec pěstuje obilí a na podzim ho sklízí na poli. Pekař obilí (respektive mouku z něj) pouze zpracovává v pekárně.",
+      "Zemědělec pěstuje obilí a v létě ho sklízí na poli. Pekař obilí (respektive mouku z něj) pouze zpracovává v pekárně.",
     ],
   },
   {
@@ -333,7 +622,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "K lékaři",
     options: ["K lékaři", "K zubaři", "K veterináři", "K zedníkovi"],
     emoji: "👩‍⚕️",
-    hints: ["Bříško a horečka se týkají celého těla, ne jen zubů nebo zvířat."],
+    hints: [
+      "Bříško a horečka se týkají celého těla, ne jen zubů nebo zvířat.",
+      "Zuby tě nebolí, takže zubař nepomůže. Veterinář léčí zvířata. Hledej toho, kdo prohlédne celé tělo a změří ti teplotu.",
+    ],
+    optionFeedback: {
+      "K zubaři": "Zubař léčí jen zuby, a ty tě nebolí.",
+      "K veterináři": "Veterinář léčí zvířata, ne lidi.",
+      "K zedníkovi": "Zedník staví domy, nemoci neléčí.",
+    },
     solutionSteps: [
       "Když bolí bříško a je horečka, jde se k lékaři, který léčí celé tělo. Zubař se stará jen o zuby, veterinář léčí zvířata.",
     ],
@@ -341,9 +638,17 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Bolí tě zub, ale jinak jsi úplně zdravý. Ke komu půjdeš?",
     correctAnswer: "K zubaři",
-    options: ["K lékaři", "K zubaři", "K veterináři", "K kadeřníkovi"],
+    options: ["K lékaři", "K zubaři", "K veterináři", "Ke kadeřníkovi"],
     emoji: "🦷",
-    hints: ["Hledej povolání, které se stará JEN o zuby, ne o celé tělo."],
+    hints: [
+      "Hledej povolání, které se stará JEN o zuby, ne o celé tělo.",
+      "Jinak jsi zdravý, takže celé tělo prohlížet nepotřebuješ. Hledej lékaře, který má zvláštní křeslo a vrtáček na kazy.",
+    ],
+    optionFeedback: {
+      "K lékaři": "Obvodní lékař léčí celé tělo; s bolavým zubem tě pošle jinam.",
+      "K veterináři": "Veterinář léčí zvířata.",
+      "Ke kadeřníkovi": "Kadeřník stříhá vlasy, zuby neléčí.",
+    },
     solutionSteps: [
       "Když bolí jen zub a jinak je člověk zdravý, jde se k zubaři. Lékař léčí celé tělo, ale na zuby chodíme k zubaři.",
     ],
@@ -353,7 +658,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "K veterináři",
     options: ["K zubaři", "K lékaři", "K veterináři", "K zahradníkovi"],
     emoji: "🐕",
-    hints: ["Hledej povolání, které se stará o VŠECHNA zvířata, včetně jejich zoubků."],
+    hints: [
+      "Hledej povolání, které se stará o VŠECHNA zvířata, včetně jejich zoubků.",
+      "Zubař i lékař léčí jen lidi. Pejsek je zvíře — a o všechno, co zvířata trápí, i o jejich zuby, se stará jeden zvláštní lékař.",
+    ],
+    optionFeedback: {
+      "K zubaři": "Zubař ošetřuje lidské zuby, psí ne.",
+      "K lékaři": "Lékař léčí lidi, ne zvířata.",
+      "K zahradníkovi": "Zahradník se stará o rostliny.",
+    },
     solutionSteps: [
       "Veterinář léčí zvířata včetně jejich zubů, proto se s nemocným pejskem jde k němu. Zubař ošetřuje jen lidské zuby, ne zvířecí.",
     ],
@@ -363,9 +676,17 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Hasiče",
     options: ["Policistu", "Lékaře", "Pošťáka", "Hasiče"],
     emoji: "🚒",
-    hints: ["Hledej povolání, které je vybavené přímo na hašení ohně."],
+    hints: [
+      "Hledej povolání, které je vybavené přímo na hašení ohně.",
+      "Při požáru je nejdůležitější oheň co nejrychleji uhasit. Kdo přijede s cisternou vody a žebříkem? Zavolat jim můžeš na číslo 150.",
+    ],
+    optionFeedback: {
+      Policistu: "Policie řeší krádeže a nehody, oheň hasit neumí.",
+      Lékaře: "Lékař ošetří zraněné, ale oheň neuhasí.",
+      Pošťáka: "Pošťák roznáší dopisy, při požáru nepomůže.",
+    },
     solutionSteps: [
-      "Při požáru voláme hasiče — jsou vybavení hadicemi a vozem na hašení ohně. Policista a lékař pomáhají při jiných druzích nebezpečí.",
+      "Při požáru voláme hasiče (číslo 150) — jsou vybavení hadicemi a vozem na hašení ohně. Policista a lékař pomáhají při jiných druzích nebezpečí.",
     ],
   },
   {
@@ -373,9 +694,17 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Na policistu",
     options: ["Na policistu", "Na hasiče", "Na lékaře", "Na zedníka"],
     emoji: "👮",
-    hints: ["Krádež řeší povolání, které chrání lidi a jejich majetek, ne oheň nebo nemoci."],
+    hints: [
+      "Krádež řeší povolání, které chrání lidi a jejich majetek, ne oheň nebo nemoci.",
+      "Nikde nehoří a nikdo není zraněný, takže hasiči ani lékař nejsou potřeba. Hledej toho, kdo pátrá po zlodějích — volá se na číslo 158.",
+    ],
+    optionFeedback: {
+      "Na hasiče": "Hasiči hasí požáry, krádeže nevyšetřují.",
+      "Na lékaře": "Lékař léčí nemoci.",
+      "Na zedníka": "Zedník staví domy.",
+    },
     solutionSteps: [
-      "Krádeže vyšetřuje policista. Hasič pomáhá při požárech a lékař léčí nemoci, s krádeží nepomohou.",
+      "Krádeže vyšetřuje policista (číslo 158). Hasič pomáhá při požárech a lékař léčí nemoci, s krádeží nepomohou.",
     ],
   },
   {
@@ -383,7 +712,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Prodavač",
     options: ["Pošťák", "Prodavač", "Pekař", "Kuchař"],
     emoji: "🏪",
-    hints: ["Pošťák taky přichází k lidem, ale hledej toho, kdo stojí PŘÍMO za pokladnou v obchodě."],
+    hints: [
+      "Pošťák taky přichází k lidem, ale hledej toho, kdo stojí PŘÍMO za pokladnou v obchodě.",
+      "Pošťák zásilky doručuje, pekař peče a kuchař vaří. Kdo sedí u pokladny, řekne ti cenu a vrátí ti drobné, když zaplatíš?",
+    ],
+    optionFeedback: {
+      Pošťák: "Pošťák doručuje zásilky, nic neprodává.",
+      Pekař: "Pekař pečivo peče, v obchodě ho prodává obvykle někdo jiný.",
+      Kuchař: "Kuchař vaří jídlo v kuchyni.",
+    },
     solutionSteps: [
       "Prodavač v obchodě prodává zboží a vybírá peníze u pokladny. Pošťák naproti tomu doručuje zásilky, ale nic neprodává.",
     ],
@@ -393,7 +730,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Pošťák",
     options: ["Prodavač", "Hasič", "Pošťák", "Zemědělec"],
     emoji: "📬",
-    hints: ["Prodavač zboží prodává v obchodě — hledej toho, kdo dopisy nosí přímo k lidem domů."],
+    hints: [
+      "Prodavač zboží prodává v obchodě — hledej toho, kdo dopisy nosí přímo k lidem domů.",
+      "Prodavač čeká v obchodě, hasič vyjíždí k požárům a zemědělec pracuje na poli. Kdo každý den obchází domy a vhazuje obálky do schránek?",
+    ],
+    optionFeedback: {
+      Prodavač: "Prodavač zůstává v obchodě, dopisy nenosí.",
+      Hasič: "Hasič hasí požáry.",
+      Zemědělec: "Zemědělec pracuje na poli.",
+    },
     solutionSteps: [
       "Pošťák doručuje dopisy a balíky a chodí s taškou od domu k domu. Prodavač naopak čeká na zákazníky v obchodě.",
     ],
@@ -403,7 +748,15 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Kadeřník",
     options: ["Zubař", "Lékař", "Malíř", "Kadeřník"],
     emoji: "💇",
-    hints: ["Zubař taky používá nástroje u člověka, ale hledej toho, kdo pracuje s VLASY."],
+    hints: [
+      "Zubař taky používá nástroje u člověka, ale hledej toho, kdo pracuje s VLASY.",
+      "Zubař pracuje v puse, lékař léčí nemoci a malíř natírá stěny. Kdo tě posadí před zrcadlo a zkrátí ti vlasy?",
+    ],
+    optionFeedback: {
+      Zubař: "Zubař ošetřuje zuby, ne vlasy.",
+      Lékař: "Lékař léčí nemoci.",
+      Malíř: "Malíř maluje štětcem, nůžkami vlasy nestříhá.",
+    },
     solutionSteps: [
       "Kadeřník stříhá vlasy nůžkami a upravuje je hřebenem v kadeřnictví. Zubař pracuje s nástroji u zubů, ne u vlasů.",
     ],
