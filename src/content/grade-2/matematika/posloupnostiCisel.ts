@@ -1,61 +1,156 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// Přepsáno 2026-09-11 (inventura obsahu): 7/7/7 úloh s jednou nápovědou
+// a bez zpětné vazby. Teď parametrický generátor nad pevnými bankami řad:
+// L1 rostoucí řady s krokem 2, 5, 10 od násobku kroku (mezera uprostřed nebo
+// na konci) · L2 klesající řady, krok 3 a řady od „nekulatého“ čísla ·
+// L3 obrácený směr (mezera na začátku) a dva kroky dopředu (dvě mezery).
+// Nápovědy, vysvětlení i zpětná vazba nesou čísla konkrétní řady.
+
+const MEZERA = "___";
+const DELKA = 5;
+
+/** Záměnný krok — typická chyba „počítám po jiném čísle“. */
+const JINY_KROK: Record<number, number> = { 2: 3, 3: 2, 5: 10, 10: 5 };
+
+/**
+ * Náhradní záměnné kroky pro případ, že by se distraktor trefil do čísla, které
+ * v zadání viditelně stojí. U kroku 5 je totiž „chybný krok 10“ právě další člen
+ * řady — dítě ho vyloučí na první pohled a z úlohy zbydou jen dvě smysluplné
+ * možnosti. Bere se první krok, který na viditelné číslo nepadne.
+ */
+const JINE_KROKY: Record<number, number[]> = { 2: [3, 5], 3: [2, 5], 5: [10, 2], 10: [5, 2] };
+
+function rada(start: number, krok: number): number[] {
+  return Array.from({ length: DELKA }, (_, i) => start + i * krok);
+}
+
+/** První tři různé kandidáty v oboru 0–100, které nejsou klíčem. */
+function tri(key: number, cands: Array<[number, string]>): [Distractor, Distractor, Distractor] {
+  const seen = new Set([key]);
+  const out: Distractor[] = [];
+  for (const [v, why] of cands) {
+    if (v < 0 || v > 100 || seen.has(v)) continue;
+    seen.add(v);
+    out.push({ value: String(v), why });
+    if (out.length === 3) break;
   }
-  return a;
+  if (out.length < 3) throw new Error(`Málo distraktorů pro klíč ${key}`);
+  return out as [Distractor, Distractor, Distractor];
 }
 
-interface PoolItem {
-  question: string;
-  correct: string;
-  distractors: string[];
-  hint: string;
-  solution: string;
+const smer = (krok: number) => (krok > 0 ? "roste" : "klesá");
+
+/** L1/L2: jedna mezera uprostřed nebo na konci (před ní vždy stojí číslo). */
+function mezeraUvnitr(start: number, krok: number, idx: number): PracticeTask {
+  if (idx < 1) throw new Error("mezeraUvnitr: mezera musí mít souseda vlevo");
+  const r = rada(start, krok);
+  const x = r[idx];
+  const prev = r[idx - 1];
+  const k = Math.abs(krok);
+  const vRade = new Set(r.filter((_, i) => i !== idx));
+  const jinyK = JINE_KROKY[k].find((j) => !vRade.has(prev + j * Math.sign(krok))) ?? JINY_KROK[k];
+  const jiny = jinyK * Math.sign(krok);
+  // dvojice sousedních čísel, která v zadání opravdu stojí
+  const p = idx >= 3 ? 0 : idx + 1;
+  const [a, b] = [r[p], r[p + 1]];
+  const zobraz = r.map((v, i) => (i === idx ? MEZERA : String(v))).join(", ");
+  const d = tri(x, [
+    [prev + jiny, `${krok > 0 ? "Přičetl" : "Odečetl"} jsi ${Math.abs(jiny)}. Krok této řady je ale ${k}: ${a} → ${b}.`],
+    [prev - krok, `Tady jsi šel opačným směrem. Řada ${smer(krok)}, podívej se na ${a} → ${b}.`],
+    [x + 1, `Jen o 1 vedle. Od ${prev} jdi přesně o ${k}.`],
+    [x - 1, `Jen o 1 vedle. Od ${prev} jdi přesně o ${k}.`],
+  ]);
+  const dalsi = idx < DELKA - 1 ? ` Sedí to i s dalším číslem ${r[idx + 1]}.` : "";
+  return choice(`Doplň chybějící číslo: ${zobraz}`, String(x), d, {
+    hints: [
+      `Porovnej ${a} a ${b}: o kolik se čísla mění?`,
+      `Každé další číslo je o stejný krok ${krok > 0 ? "větší" : "menší"}. Zjisti krok z čísel ${a} a ${b} a pak ho ${krok > 0 ? "přičti k číslu" : "odečti od čísla"} ${prev}, které stojí před mezerou.`,
+    ],
+    explanation: `Krok řady je ${krok > 0 ? "+" : "−"}${k} (${a} → ${b}). Proto ${prev} ${krok > 0 ? "+" : "−"} ${k} = ${x}.${dalsi}`,
+  });
 }
 
-const POOL_L1: PoolItem[] = [
-  { question: "10, 20, ___, 40, 50", correct: "30", distractors: ["25", "35", "20"], hint: "Srovnej 10→20: přibývá 10. Přidej 10 ke 20.", solution: "Krok je +10. 20 + 10 = 30." },
-  { question: "5, 10, ___, 20, 25", correct: "15", distractors: ["12", "18", "10"], hint: "Srovnej 5→10: přibývá 5. Přidej 5 k 10.", solution: "Krok je +5. 10 + 5 = 15." },
-  { question: "0, 10, 20, ___, 40", correct: "30", distractors: ["25", "35", "50"], hint: "Srovnej 0→10→20: přibývá 10. Přidej 10 ke 20.", solution: "Krok je +10. 20 + 10 = 30." },
-  { question: "15, 20, ___, 30, 35", correct: "25", distractors: ["22", "28", "20"], hint: "Srovnej 15→20: přibývá 5. Přidej 5 ke 20.", solution: "Krok je +5. 20 + 5 = 25." },
-  { question: "40, 50, ___, 70, 80", correct: "60", distractors: ["55", "65", "50"], hint: "Srovnej 40→50: přibývá 10. Přidej 10 k 50.", solution: "Krok je +10. 50 + 10 = 60." },
-  { question: "30, 35, 40, ___, 50", correct: "45", distractors: ["42", "48", "40"], hint: "Srovnej 30→35→40: přibývá 5. Přidej 5 ke 40.", solution: "Krok je +5. 40 + 5 = 45." },
-  { question: "20, 30, 40, 50, ___", correct: "60", distractors: ["55", "65", "70"], hint: "Srovnej 20→30: přibývá 10. Přidej 10 k 50.", solution: "Krok je +10. 50 + 10 = 60." },
+/** L3: mezera na začátku — jdi od prvního známého čísla zpátky. */
+function mezeraNaZacatku(start: number, krok: number): PracticeTask {
+  const r = rada(start, krok);
+  const x = r[0];
+  const f = r[1];
+  const k = Math.abs(krok);
+  const jiny = JINY_KROK[k] * Math.sign(krok);
+  const zobraz = [MEZERA, ...r.slice(1)].join(", ");
+  const d = tri(x, [
+    [f + krok, `Šel jsi dopředu, ne zpátky. Číslo ${f + krok} už v řadě stojí za ${f}.`],
+    [f - jiny, `Použil jsi krok ${Math.abs(jiny)}. Krok této řady je ${k}: ${r[1]} → ${r[2]}.`],
+    [x + 1, `Jen o 1 vedle. Od ${f} jdi zpátky přesně o ${k}.`],
+    [x - 1, `Jen o 1 vedle. Od ${f} jdi zpátky přesně o ${k}.`],
+  ]);
+  return choice(`Které číslo patří na začátek řady? ${zobraz}`, String(x), d, {
+    hints: [
+      `Řada pokračuje ${r[1]}, ${r[2]}, ${r[3]}: jaký má krok a kterým směrem jde?`,
+      krok > 0
+        ? `Mezera je na začátku, před číslem ${f}. Řada roste, takže směrem zpátky se čísla zmenšují — krok od čísla ${f} odečti.`
+        : `Mezera je na začátku, před číslem ${f}. Řada klesá, takže směrem zpátky se čísla zvětšují — krok k číslu ${f} přičti.`,
+    ],
+    explanation: `Krok řady je ${krok > 0 ? "+" : "−"}${k}. Před číslem ${f} proto stojí ${f} ${krok > 0 ? "−" : "+"} ${k} = ${x}. Zkouška: ${x} ${krok > 0 ? "+" : "−"} ${k} = ${f}.`,
+  });
+}
+
+/** L3: dvě mezery na konci — ptáme se na tu poslední (dva kroky). */
+function dveMezery(start: number, krok: number): PracticeTask {
+  const r = rada(start, krok);
+  const L = r[2];
+  const y = r[3];
+  const x = r[4];
+  const k = Math.abs(krok);
+  const jiny = JINY_KROK[k] * Math.sign(krok);
+  const zobraz = [...r.slice(0, 3), MEZERA, MEZERA].join(", ");
+  const d = tri(x, [
+    [y, `${y} patří do první mezery. Ptáme se na poslední mezeru — o krok dál.`],
+    [x + krok, `To je o krok dál, než je poslední mezera. Od ${L} jdi jen dvakrát.`],
+    [L + 2 * jiny, `Dvakrát jsi použil krok ${Math.abs(jiny)}. Krok této řady je ${k}: ${r[0]} → ${r[1]}.`],
+    [x + 1, `Jen o 1 vedle. Od ${L} jdi dvakrát přesně o ${k}.`],
+  ]);
+  return choice(`Které číslo patří do poslední mezery? ${zobraz}`, String(x), d, {
+    hints: [
+      `Zjisti krok z čísel ${r[0]} a ${r[1]}, pak ho použij dvakrát.`,
+      `Do první mezery patří číslo o jeden krok za ${L}. Poslední mezera je o další krok dál — od čísla ${L} tedy musíš krok ${krok > 0 ? "přičíst" : "odečíst"} dvakrát za sebou.`,
+    ],
+    explanation: `Krok řady je ${krok > 0 ? "+" : "−"}${k}. První mezera: ${L} ${krok > 0 ? "+" : "−"} ${k} = ${y}. Poslední mezera: ${y} ${krok > 0 ? "+" : "−"} ${k} = ${x}.`,
+  });
+}
+
+// ── Banky úrovní: [start, krok, index mezery] ─────────────────────────────
+
+const L1: [number, number, number][] = [
+  [10, 10, 2], [0, 10, 3], [30, 10, 2], [20, 10, 4], [50, 10, 1],
+  [5, 5, 2], [15, 5, 2], [35, 5, 3], [55, 5, 4], [70, 5, 1],
+  [2, 2, 2], [10, 2, 3], [16, 2, 4], [40, 2, 2],
 ];
 
-const POOL_L2: PoolItem[] = [
-  { question: "80, 70, ___, 50, 40", correct: "60", distractors: ["55", "65", "70"], hint: "Srovnej 80→70: ubývá 10. Odečti 10 od 70.", solution: "Krok je −10. 70 − 10 = 60." },
-  { question: "50, 40, ___, 20, 10", correct: "30", distractors: ["25", "35", "40"], hint: "Srovnej 50→40: ubývá 10. Odečti 10 od 40.", solution: "Krok je −10. 40 − 10 = 30." },
-  { question: "4, 6, ___, 10, 12", correct: "8", distractors: ["7", "9", "6"], hint: "Srovnej 4→6: přibývá 2. Přidej 2 k 6.", solution: "Krok je +2. 6 + 2 = 8." },
-  { question: "12, 14, ___, 18, 20", correct: "16", distractors: ["15", "17", "14"], hint: "Srovnej 12→14: přibývá 2. Přidej 2 ke 14.", solution: "Krok je +2. 14 + 2 = 16." },
-  { question: "90, 80, 70, ___, 50", correct: "60", distractors: ["55", "65", "75"], hint: "Srovnej 90→80→70: ubývá 10. Odečti 10 od 70.", solution: "Krok je −10. 70 − 10 = 60." },
-  { question: "6, ___, 10, 12, 14", correct: "8", distractors: ["7", "9", "5"], hint: "Srovnej 10→12→14: přibývá 2. Co bylo před 10? Odečti 2.", solution: "Krok je +2. 6 + 2 = 8." },
-  { question: "22, 24, 26, ___, 30", correct: "28", distractors: ["27", "29", "25"], hint: "Srovnej 22→24→26: přibývá 2. Přidej 2 k 26.", solution: "Krok je +2. 26 + 2 = 28." },
+const L2: [number, number, number][] = [
+  [90, -10, 2], [75, -10, 3], [100, -10, 4],
+  [50, -5, 2], [85, -5, 1], [40, -5, 4],
+  [20, -2, 2], [36, -2, 3], [51, -2, 4],
+  [3, 3, 3], [12, 3, 2], [24, 3, 4],
+  [13, 10, 2], [47, 10, 3], [7, 5, 2], [26, 5, 4],
 ];
 
-const POOL_L3: PoolItem[] = [
-  { question: "20, 18, ___, 14, 12", correct: "16", distractors: ["15", "17", "18"], hint: "Srovnej 20→18: ubývá 2. Odečti 2 od 18.", solution: "Krok je −2. 18 − 2 = 16." },
-  { question: "35, 30, ___, 20, 15", correct: "25", distractors: ["22", "28", "30"], hint: "Srovnej 35→30: ubývá 5. Odečti 5 od 30.", solution: "Krok je −5. 30 − 5 = 25." },
-  { question: "3, 6, 9, ___, 15", correct: "12", distractors: ["11", "13", "10"], hint: "Srovnej 3→6→9: přibývá 3. Přidej 3 k 9.", solution: "Krok je +3. 9 + 3 = 12." },
-  { question: "50, 45, ___, 35, 30", correct: "40", distractors: ["38", "42", "45"], hint: "Srovnej 50→45: ubývá 5. Odečti 5 od 45.", solution: "Krok je −5. 45 − 5 = 40." },
-  { question: "9, 12, 15, ___, 21", correct: "18", distractors: ["16", "20", "17"], hint: "Srovnej 9→12→15: přibývá 3. Přidej 3 k 15.", solution: "Krok je +3. 15 + 3 = 18." },
-  { question: "40, 38, ___, 34, 32", correct: "36", distractors: ["35", "37", "38"], hint: "Srovnej 40→38: ubývá 2. Odečti 2 od 38.", solution: "Krok je −2. 38 − 2 = 36." },
-  { question: "6, 9, 12, ___, 18", correct: "15", distractors: ["13", "14", "16"], hint: "Srovnej 6→9→12: přibývá 3. Přidej 3 ke 12.", solution: "Krok je +3. 12 + 3 = 15." },
+const L3_ZACATEK: [number, number][] = [
+  [23, 3], [64, -3], [38, 5], [91, -5], [17, 10], [44, -2], [76, -10],
+];
+const L3_DVE: [number, number][] = [
+  [8, 3], [95, -5], [46, -3], [27, 5], [62, -10], [81, -2], [33, 10],
 ];
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).map(item => ({
-    question: item.question,
-    correctAnswer: item.correct,
-    options: shuffle([item.correct, ...item.distractors]),
-    hints: [item.hint],
-    solutionSteps: [item.solution],
-  }));
+  const tasks = level === 1
+    ? L1.map(([s, k, i]) => mezeraUvnitr(s, k, i))
+    : level === 2
+      ? L2.map(([s, k, i]) => mezeraUvnitr(s, k, i))
+      : [...L3_ZACATEK.map(([s, k]) => mezeraNaZacatku(s, k)), ...L3_DVE.map(([s, k]) => dveMezery(s, k))];
+  return shuffle(tasks);
 }
 
 export const POSLOUPNOSTICISEL: TopicMetadata[] = [
@@ -73,7 +168,7 @@ export const POSLOUPNOSTICISEL: TopicMetadata[] = [
     goals: [
       "Rozpoznat pravidlo číselné řady.",
       "Doplnit chybějící číslo do posloupnosti.",
-      "Pracovat s kroky +2, +5, +10, -2, -5, -10.",
+      "Pracovat s kroky ±2, ±3, ±5 a ±10.",
     ],
     boundaries: ["Čísla 0–100.", "Kroky ±2, ±3, ±5, ±10."],
     gradeRange: [2, 2],

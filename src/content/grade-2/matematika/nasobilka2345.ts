@@ -22,15 +22,15 @@ interface PoolItem {
 // gen(3) používá všechny položky.
 const POOL: PoolItem[] = [
   // Násobilka 2
-  { question: "2 × 2 = ?", correct: "4", distractors: ["2", "6", "8"], hint: "Vynásobit 2 = přičti číslo k sobě: 2 + 2 = ?", level: 1 },
-  { question: "2 × 3 = ?", correct: "6", distractors: ["4", "8", "5"], hint: "Vynásobit 2 = přičti číslo k sobě: 3 + 3 = ?", level: 1 },
-  { question: "2 × 4 = ?", correct: "8", distractors: ["6", "10", "7"], hint: "Vynásobit 2 = přičti číslo k sobě: 4 + 4 = ?", level: 1 },
-  { question: "2 × 5 = ?", correct: "10", distractors: ["8", "12", "9"], hint: "Vynásobit 2 = přičti číslo k sobě: 5 + 5 = ?", level: 1 },
-  { question: "2 × 6 = ?", correct: "12", distractors: ["10", "14", "11"], hint: "Vynásobit 2 = přičti číslo k sobě: 6 + 6 = ?", level: 1 },
-  { question: "2 × 7 = ?", correct: "14", distractors: ["12", "16", "13"], hint: "Vynásobit 2 = přičti číslo k sobě: 7 + 7 = ?", level: 1 },
-  { question: "2 × 8 = ?", correct: "16", distractors: ["14", "18", "15"], hint: "Vynásobit 2 = přičti číslo k sobě: 8 + 8 = ?", level: 1 },
-  { question: "2 × 9 = ?", correct: "18", distractors: ["16", "20", "17"], hint: "Vynásobit 2 = přičti číslo k sobě: 9 + 9 = ?", level: 1 },
-  { question: "2 × 10 = ?", correct: "20", distractors: ["18", "22", "12"], hint: "Vynásobit 2 = přičti číslo k sobě: 10 + 10 = ?", level: 1 },
+  { question: "2 × 2 = ?", correct: "4", distractors: ["2", "6", "8"], hint: "Násobení dvěma: přičti číslo k sobě. 2 + 2 = ?", level: 1 },
+  { question: "2 × 3 = ?", correct: "6", distractors: ["4", "8", "5"], hint: "Násobení dvěma: přičti číslo k sobě. 3 + 3 = ?", level: 1 },
+  { question: "2 × 4 = ?", correct: "8", distractors: ["6", "10", "7"], hint: "Násobení dvěma: přičti číslo k sobě. 4 + 4 = ?", level: 1 },
+  { question: "2 × 5 = ?", correct: "10", distractors: ["8", "12", "9"], hint: "Násobení dvěma: přičti číslo k sobě. 5 + 5 = ?", level: 1 },
+  { question: "2 × 6 = ?", correct: "12", distractors: ["10", "14", "11"], hint: "Násobení dvěma: přičti číslo k sobě. 6 + 6 = ?", level: 1 },
+  { question: "2 × 7 = ?", correct: "14", distractors: ["12", "16", "13"], hint: "Násobení dvěma: přičti číslo k sobě. 7 + 7 = ?", level: 1 },
+  { question: "2 × 8 = ?", correct: "16", distractors: ["14", "18", "15"], hint: "Násobení dvěma: přičti číslo k sobě. 8 + 8 = ?", level: 1 },
+  { question: "2 × 9 = ?", correct: "18", distractors: ["16", "20", "17"], hint: "Násobení dvěma: přičti číslo k sobě. 9 + 9 = ?", level: 1 },
+  { question: "2 × 10 = ?", correct: "20", distractors: ["18", "22", "12"], hint: "Násobení dvěma: přičti číslo k sobě. 10 + 10 = ?", level: 1 },
   // Násobilka 3
   { question: "3 × 2 = ?", correct: "6", distractors: ["3", "9", "5"], hint: "3 + 3 = ?", level: 1 },
   { question: "3 × 3 = ?", correct: "9", distractors: ["6", "12", "8"], hint: "3 + 3 + 3 = ?", level: 1 },
@@ -40,7 +40,7 @@ const POOL: PoolItem[] = [
   { question: "3 × 7 = ?", correct: "21", distractors: ["18", "24", "20"], hint: "Počítej po 3: 3, 6, 9, 12, 15, 18 — a přidej ještě jednu trojku.", level: 1 },
   { question: "3 × 8 = ?", correct: "24", distractors: ["21", "27", "22"], hint: "Počítej po 3: 3, 6, 9, 12, 15, 18, 21 — a přidej ještě jednu trojku.", level: 1 },
   { question: "3 × 9 = ?", correct: "27", distractors: ["24", "30", "25"], hint: "Počítej po 3: 3, 6, 9, 12, 15, 18, 21, 24 — a přidej ještě jednu trojku.", level: 1 },
-  { question: "3 × 10 = ?", correct: "30", distractors: ["27", "33", "20"], hint: "Násobení deseti: připiš k číslu jednu nulu.", level: 1 },
+  { question: "3 × 10 = ?", correct: "30", distractors: ["27", "33", "20"], hint: "Násobení deseti: připiš k číslu 3 jednu nulu.", level: 1 },
   // Násobilka 4
   { question: "4 × 2 = ?", correct: "8", distractors: ["4", "12", "6"], hint: "4 + 4 = ?", level: 2 },
   { question: "4 × 3 = ?", correct: "12", distractors: ["8", "16", "11"], hint: "4 + 4 + 4 = ?", level: 2 },
@@ -50,7 +50,7 @@ const POOL: PoolItem[] = [
   { question: "4 × 7 = ?", correct: "28", distractors: ["24", "32", "27"], hint: "Počítej po 4: 4, 8, 12, 16, 20, 24 — a přidej ještě jednu čtyřku.", level: 2 },
   { question: "4 × 8 = ?", correct: "32", distractors: ["28", "36", "30"], hint: "Počítej po 4: 4, 8, 12, 16, 20, 24, 28 — a přidej ještě jednu čtyřku.", level: 2 },
   { question: "4 × 9 = ?", correct: "36", distractors: ["32", "40", "35"], hint: "Počítej po 4: 4, 8, 12, 16, 20, 24, 28, 32 — a přidej ještě jednu čtyřku.", level: 2 },
-  { question: "4 × 10 = ?", correct: "40", distractors: ["36", "44", "30"], hint: "Násobení deseti: připiš k číslu jednu nulu.", level: 2 },
+  { question: "4 × 10 = ?", correct: "40", distractors: ["36", "44", "30"], hint: "Násobení deseti: připiš k číslu 4 jednu nulu.", level: 2 },
   // Násobilka 5
   { question: "5 × 2 = ?", correct: "10", distractors: ["5", "15", "8"], hint: "5 + 5 = ?", level: 2 },
   { question: "5 × 3 = ?", correct: "15", distractors: ["10", "20", "14"], hint: "5 + 5 + 5 = ?", level: 2 },
@@ -60,8 +60,84 @@ const POOL: PoolItem[] = [
   { question: "5 × 7 = ?", correct: "35", distractors: ["30", "40", "34"], hint: "Počítej po 5: 5, 10, 15, 20, 25, 30 — a přidej ještě jednu pětku.", level: 2 },
   { question: "5 × 8 = ?", correct: "40", distractors: ["35", "45", "38"], hint: "Počítej po 5: 5, 10, 15, 20, 25, 30, 35 — a přidej ještě jednu pětku.", level: 2 },
   { question: "5 × 9 = ?", correct: "45", distractors: ["40", "50", "44"], hint: "Počítej po 5: 5, 10, 15, 20, 25, 30, 35, 40 — a přidej ještě jednu pětku.", level: 2 },
-  { question: "5 × 10 = ?", correct: "50", distractors: ["45", "55", "40"], hint: "Násobení deseti: připiš k číslu jednu nulu.", level: 2 },
+  { question: "5 × 10 = ?", correct: "50", distractors: ["45", "55", "40"], hint: "Násobení deseti: připiš k číslu 5 jednu nulu.", level: 2 },
 ];
+
+// ── Dokumentace úloh (doplněno 2026-09-11, inventura obsahu) ───────────────
+// Pool zůstává beze změny (kromě jedinečné malé nápovědy u ×10). Každá úloha
+// navíc dostane velkou nápovědu, vysvětlení a zpětnou vazbu u každé chybné
+// možnosti — ta se odvodí z toho, jakou chybu distraktor představuje.
+
+const NUM: Record<number, { sg: string; acc: string; few: string; many: string }> = {
+  2: { sg: "dvojka", acc: "dvojku", few: "dvojky", many: "dvojek" },
+  3: { sg: "trojka", acc: "trojku", few: "trojky", many: "trojek" },
+  4: { sg: "čtyřka", acc: "čtyřku", few: "čtyřky", many: "čtyřek" },
+  5: { sg: "pětka", acc: "pětku", few: "pětky", many: "pětek" },
+};
+
+const KRAT: Record<number, string> = {
+  2: "dvakrát", 3: "třikrát", 4: "čtyřikrát", 5: "pětkrát", 6: "šestkrát",
+  7: "sedmkrát", 8: "osmkrát", 9: "devětkrát", 10: "desetkrát",
+};
+
+function parse(question: string): [number, number] {
+  const m = question.match(/^(\d+) × (\d+) = \?$/);
+  if (!m) throw new Error(`Nečitelný příklad: ${question}`);
+  return [Number(m[1]), Number(m[2])];
+}
+
+/** Jakou chybu distraktor představuje (a × b = a sečtené b-krát). */
+function proc(a: number, b: number, d: number): string {
+  const c = a * b;
+  const n = NUM[a];
+  // U ×10 by „o jednu víc“ vedlo na a × 11, což je mimo malou násobilku — radši
+  // připomeneme pravidlo pro násobení deseti.
+  if (b === 10 && d === c + a) {
+    return `Násobit deseti znamená připsat za číslo ${a} nulu — ${c}. Ty jsi ale přičetl ještě jednu ${n.acc} navíc.`;
+  }
+  if (d === c + a) return `To je ${a} × ${b + 1} — přičetl jsi o jednu ${n.acc} víc.`;
+  if (d === c - a) return `To je ${a} × ${b - 1} — jedna ${n.sg} ti chybí.`;
+  if (d === c + 2 * a) return `To je ${a} × ${b + 2} — přičetl jsi o dvě ${n.few} víc.`;
+  if (d === c - 2 * a) return `To je ${a} × ${b - 2} — chybí ti dvě ${n.few}.`;
+  if (d === a + b) return `${a} + ${b} je součet. Násobení znamená sčítat ${n.acc} ${KRAT[b]}.`;
+  if (d === c + b) return `To je výsledek příkladu ${a + 1} × ${b}. Máš ale ${a} × ${b}.`;
+  if (d === c - b) return `To je výsledek příkladu ${a - 1} × ${b}. Máš ale ${a} × ${b}.`;
+  if (d === c + 1 || d === c - 1) return `Jen o 1 vedle — při počítání po ${a} ses přepočítal.`;
+  if (d === c + 2 || d === c - 2) return `O 2 vedle — zkontroluj poslední přičtení ${a}.`;
+  throw new Error(`Neznámý typ chyby: ${a} × ${b}, možnost ${d}`);
+}
+
+function velka(a: number, b: number): string {
+  if (b === 10) {
+    return `Násobit deseti znamená vzít ${NUM[a].acc} desetkrát. Nemusíš sčítat: za číslo ${a} stačí připsat nulu.`;
+  }
+  if (a === 2) {
+    return `Násobit dvěma znamená zdvojit: vezmi ${b} a přičti k tomu ještě jednou ${b}. Sčítej opatrně, hlavně přes desítku.`;
+  }
+  return `${a} × ${b} znamená sečíst ${NUM[a].acc} ${KRAT[b]}. Přičítej ${NUM[a].acc} po jedné a na prstech hlídej, kolik ${NUM[a].many} už máš — skonči, až jich bude ${b}.`;
+}
+
+function vysvetleni(a: number, b: number): string {
+  const c = a * b;
+  if (b === 10) return `${a} × 10 = ${c}: násobit deseti znamená připsat za číslo nulu.`;
+  if (a === 2) return `2 × ${b} = ${c}, protože ${b} + ${b} = ${c}.`;
+  return `${a} × ${b} = ${c}, protože ${Array(b).fill(a).join(" + ")} = ${c}.`;
+}
+
+function poolTask(item: PoolItem): PracticeTask {
+  const [a, b] = parse(item.question);
+  const optionFeedback: Record<string, string> = {};
+  for (const d of item.distractors) optionFeedback[d] = proc(a, b, Number(d));
+  return {
+    question: item.question,
+    correctAnswer: item.correct,
+    options: shuffle([item.correct, ...item.distractors]),
+    optionFeedback,
+    hints: [item.hint, velka(a, b)],
+    explanation: vysvetleni(a, b),
+    solutionSteps: [`${item.question.replace("?", item.correct)}`],
+  };
+}
 
 /**
  * PED-3 kalibrace L1<L2<L3.
@@ -74,22 +150,25 @@ const POOL: PoolItem[] = [
 
 function makeInverseTask(t: number, n: number): PracticeTask {
   const c = t * n;
-  const distractors = Array.from(
-    new Set([
-      String(n + 1),
-      String(Math.max(1, n - 1)),
-      String(n + 2),
-      String(Math.max(1, n - 2)),
-    ]),
-  ).slice(0, 3);
+  const distractors: string[] = [];
+  for (const d of [n - 1, n + 1, n + 2, n - 2]) {
+    if (d >= 1 && d !== n && !distractors.includes(String(d)) && distractors.length < 3) distractors.push(String(d));
+  }
+  const optionFeedback: Record<string, string> = {};
+  for (const s of distractors) {
+    const d = Number(s);
+    optionFeedback[s] = `Zkouška: ${d} × ${t} = ${d * t}, a to je ${d * t < c ? "méně" : "víc"} než ${c}.`;
+  }
   return {
     question: `? × ${t} = ${c}`,
     correctAnswer: String(n),
     options: shuffle([String(n), ...distractors]),
+    optionFeedback,
     hints: [
       `Zeptej se: kolikrát vezmu ${t}, abych dostal ${c}?`,
-      `Nebo obráceně: ${c} ÷ ${t} = ?`,
+      `Chybějící číslo najdeš dělením ${c} ÷ ${t}. Počítej po ${t} od nuly a na prstech si hlídej, kolikrát jsi ${t} přičetl, než dojdeš k ${c}.`,
     ],
+    explanation: `${n} × ${t} = ${c}, a proto na místo otazníku patří ${n}. Chybějící činitel najdeš dělením ${c} ÷ ${t}.`,
     solutionSteps: [
       `Hledám číslo x tak, že x × ${t} = ${c}.`,
       `x = ${c} ÷ ${t} = ${n}.`,
@@ -106,13 +185,7 @@ function gen(level: number): PracticeTask[] {
   }
   const filtered = POOL.filter((item) => item.level === (level as 1 | 2));
   const shuffled = shuffle(filtered);
-  return shuffled.slice(0, 20).map((item) => ({
-    question: item.question,
-    correctAnswer: item.correct,
-    options: shuffle([item.correct, ...item.distractors]),
-    hints: [item.hint],
-    solutionSteps: [`${item.question.replace("?", item.correct)}`],
-  }));
+  return shuffled.slice(0, 20).map(poolTask);
 }
 
 export const NASOBILKA2345: TopicMetadata[] = [
