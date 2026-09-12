@@ -80,7 +80,7 @@ const POOL_L1: PracticeTask[] = [
     { value: "Kraje a obce", why: "Kraje a obce jsou samospráva, ne parlament." },
     { value: "Policie a soudy", why: "Policie a soudy nejsou parlament." },
   ], {
-    hints: ["V jedné části sedí poslanci, ve druhé senátoři.", "V jedné části zasedá 200 poslanců, ve druhé 81 senátorů. Jak se ty dvě části jmenují podle toho, kdo v nich sedí?"],
+    hints: ["Parlament nezasedá v jedné síni — kolik má komor a kdo v nich sedí?", "V jedné části zasedá 200 poslanců, ve druhé 81 senátorů. Jak se ty dvě části jmenují podle toho, kdo v nich sedí?"],
     explanation: "Parlament má dvě komory: Poslaneckou sněmovnu s 200 poslanci a Senát s 81 senátory.",
   }),
   choice("Kdy vznikla samostatná Česká republika?", "1. ledna 1993", [
