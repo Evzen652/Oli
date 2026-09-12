@@ -29,7 +29,12 @@ function* walkSrc(dir: string): Generator<string> {
     const st = statSync(full);
     if (st.isDirectory()) {
       // Skip test dir, node_modules, etc.
-      if (["test", "__tests__", "node_modules"].includes(entry)) continue;
+      // `content` taky: generátory úloh nejsou UI a některé z nich mají
+      // vlastní pomocnou funkci `t(...)` pro sestavení úlohy (viz
+      // grade-3/prvouka). Regex ji nerozezná od překladového volání a
+      // 2026-09-12 to po sloučení dávek prvouky vyrobilo 216 „chybějících
+      // klíčů" a shodilo celou testovací sadu.
+      if (["test", "__tests__", "node_modules", "content"].includes(entry)) continue;
       yield* walkSrc(full);
     } else if (/\.(ts|tsx)$/.test(entry)) {
       yield full;

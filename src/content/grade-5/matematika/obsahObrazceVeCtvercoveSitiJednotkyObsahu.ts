@@ -95,6 +95,12 @@ function prevod(): PracticeTask | null {
   const naMale = Math.random() < 0.5;
   const x = naMale ? rnd(2, 40) : rnd(2, 90) * (f / 10) + pick([0, f / 2]);
   const key = naMale ? x * f : x / f;
+  // Velká nápověda začíná „Čtverec 1 <velká jednotka> má stranu…", takže
+  // když klíč vyjde přesně „1 <velká>", stojí odpověď doslova v nápovědě.
+  // Stane se to jen pro x === f (např. 100 cm² → 1 dm²), tedy vzácně — a proto
+  // to `audit:content` chytal jen občas. Nejspíš právě tohle bylo za tím, že
+  // celá testovací sada spadla 2× z 9 běhů (2026-09-12).
+  if (!naMale && key === 1) return null;
   const delkovy = f === 100 ? 10 : 100;
   const jed = naMale ? mala : velka;
   return ciselnaUloha(`Kolik ${naMale ? malaGen : velkaGen} je ${fmt(x)} ${naMale ? velka : mala}?`, `${fdec(key)} ${jed}`, [

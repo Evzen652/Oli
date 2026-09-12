@@ -435,7 +435,12 @@ export function runOfflineAudit(
         const correct = String(task.correctAnswer);
         const distractors = task.options.filter(o => o !== task.correctAnswer);
         const maxDistractorLen = Math.max(...distractors.map(o => o.length));
-        const giveawayMarker = /nepatří|patří|správně|→/i.test(correct);
+        // Meta-text prozrazuje odpověď jen tehdy, když ho ostatní možnosti
+        // NEMAJÍ. U seřazovacích úloh („Který potravní řetězec je správně?")
+        // má šipku každá možnost, takže neprozrazuje nic — heuristika na tom
+        // 2026-09-12 vyrobila dva falešné nálezy a shodila `audit:content`.
+        const META = /nepatří|patří|správně|→/i;
+        const giveawayMarker = META.test(correct) && distractors.some((o) => !META.test(o));
         const giveawayLength = correct.length > 15 && correct.length >= 2 * maxDistractorLen;
         if (giveawayMarker || giveawayLength) {
           issues.push({
