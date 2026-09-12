@@ -537,7 +537,7 @@ const L3: U[] = [
     d: [
       ["Protože je vždy největší", "Velikost nerozhoduje — tráva je menší než kobylka, a přesto je na začátku."],
       ["Protože ji jedí úplně všichni živočichové", "Masožravci rostliny nejedí. Rozhoduje, že rostlina nikoho jíst nemusí."],
-      ["Protože se nemůže pohybovat", "Nepohybují se i houby, a na začátku nejsou. Rozhoduje, jak rostlina získá potravu."],
+      ["Protože se nemůže pohybovat", "Nepohybují se ani houby, a přesto na začátku nestojí. Rozhoduje, jak rostlina získá potravu."],
     ],
     h: [
       "Zeptej se, odkud bere potravu první článek řetězce, když nikoho nejí.",
@@ -614,7 +614,7 @@ export const EKOSYSTEMYPOLLOUKAES: TopicMetadata[] = [
       "voda",
       "kobylka",
       "motýl",
-      "krtok",
+      "krtek",
       "pampeliška",
       "jetel",
       "čáp",

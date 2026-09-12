@@ -139,7 +139,7 @@ const L1: U[] = [
     ],
     h: [
       "Jablko, švestka nebo šípek — jak se takové části rostliny říká jedním slovem?",
-      "Rozkroj jablko nebo rajče: semínka jsou schovaná uvnitř dužnaté části. Ta část je chrání a zvířata ji rády jedí, takže jim pomůže dostat se i jinam.",
+      "Rozkroj jablko nebo rajče: semínka jsou schovaná uvnitř dužnaté části. Ta část je chrání a zvířata ji ráda jedí, takže jim pomůže dostat se i jinam.",
     ],
     e: "Semena chrání plod — třeba jablko nebo šípek. Když plod dozraje, semena se z něj uvolní a mohou vyklíčit.",
   },
@@ -337,7 +337,7 @@ const L2: U[] = [
     ],
     h: [
       "Rozkroj jablko: co je uvnitř a co to obaluje?",
-      "Mysli na dvě věci najednou. První je ochrana toho, co je schované vevnitř. Druhá souvisí s tím, proč zvířata plody rády jedí a kam se přitom dostanou.",
+      "Mysli na dvě věci najednou. První je ochrana toho, co je schované vevnitř. Druhá souvisí s tím, proč zvířata plody ráda jedí a kam se přitom dostanou.",
     ],
     e: "Plod semena chrání a zároveň pomáhá jejich šíření: zvíře plod sní a semena vyloučí jinde, javorové nažky odnese vítr.",
   },

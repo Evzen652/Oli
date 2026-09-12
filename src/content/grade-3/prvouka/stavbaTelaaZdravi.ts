@@ -441,7 +441,7 @@ const L3: U[] = [
     d: [
       ["Sval se stáhne a teprve potom dá mozek povel", "Sval se sám nerozhodne — povel přichází první z hlavy."],
       ["Kost se pohne a teprve pak se stáhne sval", "Kost se sama nehýbe, do pohybu ji uvede až tah svalu."],
-      ["Nerv pohne kostí a až nakonec dá mozek povel", "Nerv jen přenáší signál, kostí nehýbe, a povel je vždy první."],
+      ["Nerv pohne kostí a až nakonec dá mozek povel", "Nerv jen přenáší signál, kostí nehýbe a povel je vždy první."],
     ],
     h: [
       "Kdo v těle o pohybu rozhoduje a kdo jen plní rozkaz?",
@@ -567,7 +567,7 @@ const L3: U[] = [
       "Co se musí zkrátit a za co to musí zatáhnout, aby se kloub ohnul?",
       "Pohyb v kloubu vzniká tahem. Něco měkkého se stáhne, přes pevné lanko zatáhne za tvrdou část a ta se v kloubu otočí. Vnitřní orgány s tím nemají co dělat.",
     ],
-    e: "Každý pohyb v kloubu vytvoří sval, který se stáhne, a šlacha, která tah přenese na kost. Bez téhle trojice se koleno neohne.",
+    e: "Každý pohyb v kloubu vznikne tak, že se sval stáhne a šlacha přenese jeho tah na kost. Bez téhle trojice se koleno neohne.",
   },
   {
     q: "Kamarád v lavici má rýmu a kašle. Co uděláš, abys nemoc nechytil?",
