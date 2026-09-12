@@ -63,6 +63,9 @@ Deno.serve(async (req) => {
       return json({ error: "Neplatné přihlášení." }, 401);
     }
     const uid = userData.user.id;
+    // Jediná vazba pozvánek na mazaný účet — `parent_invitations` nemá
+    // `parent_user_id`. Viz úklid pozvánek níž.
+    const uzivatelEmail = userData.user.email?.trim().toLowerCase() ?? null;
 
     // ── 1. Zjisti děti ────────────────────────────────────────────────────
     const { data: deti, error: detiErr } = await admin
@@ -113,6 +116,11 @@ Deno.serve(async (req) => {
     // ── 2. Data navázaná na děti ──────────────────────────────────────────
     await smaz("parent_assignments", "child_id", childIds);
     await smaz("parent_invitations", "child_id", childIds);
+    // Pozvánky z anonymního režimu mají `child_id = NULL` — dítě je poslalo
+    // dřív, než vůbec nějaký účet vznikl, takže je řádek výš nechá ležet
+    // i s e-mailem. Zásady soukromí přitom slibují, že smazání účtu odstraní
+    // účet i všechna data dětí; do 13. 9. 2026 to kvůli tomuhle nebyla pravda.
+    if (uzivatelEmail) await smaz("parent_invitations", "email", [uzivatelEmail]);
     await smaz("session_logs", "child_id", childIds);
     await smaz("skill_profiles", "child_id", childIds);
     await smaz("student_misconceptions", "child_id", childIds);

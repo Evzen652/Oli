@@ -166,7 +166,14 @@ serve(async (req) => {
       );
     }
 
-    const aiPrompt = `Vytvoř stručný a srozumitelný týdenní report pro rodiče o procvičování jejich dítěte${childName ? ` (${childName})` : ""}.
+    // Jméno dítěte se do promptu NEVKLÁDÁ. Zásady soukromí (`/soukromi`,
+    // sekce „Kde se do toho plete umělá inteligence") i karta příjemce
+    // v `src/content/legal.ts` slibují, že poskytovatel jazykového modelu
+    // dostane jen téma, úroveň a počty — jméno ne. Do 2026-09-13 tu bylo
+    // `${childName}` a ten slib to porušovalo. `childName` se dál vrací
+    // v odpovědi (ř. 138, 162, 278, 319), to je ale naše API pro rodiče,
+    // ne odchozí volání ven.
+    const aiPrompt = `Vytvoř stručný a srozumitelný týdenní report pro rodiče o procvičování jejich dítěte.
 
 DATA:
 - Počet sezení: ${totalSessions}

@@ -43,7 +43,7 @@ export const PROVOZOVATEL: Provozovatel = {
 };
 
 /** Datum účinnosti obou dokumentů. Při každé věcné změně posuň. */
-export const UCINNE_OD = "6. 9. 2026";
+export const UCINNE_OD = "13. 9. 2026";
 
 /**
  * Jak dlouho držíme data po zrušení účtu, než je smažeme natvrdo.
@@ -59,8 +59,20 @@ export const LHUTA_SMAZANI_2P = "třiceti dnů";
 /**
  * Jak dlouho žije serverová kopie anonymního pokroku bez další aktivity.
  * Tvar je **6. pád** — používá se výhradně ve vazbě „po … bez aktivity".
+ *
+ * ⚠️ Musí odpovídat TTL v `supabase/functions/anon-progress/index.ts`
+ * (`action === "cleanup"`), kde je 44 dní = 14 dní trialu + 30 dní. Do
+ * 13. 9. 2026 tu stálo „dvanácti měsících" a rozcházelo se to s kódem
+ * o jedenáct měsíců. Když se změní TTL, změň i tohle — jsou to dvě čísla
+ * o téže věci a mají se hlídat navzájem.
+ *
+ * ⚠️ A POZOR: ten úklid **nikdo nevolá**. `action: "cleanup"` je v celém repu
+ * jen ve své definici — žádný cron v `.github/workflows/`, žádný
+ * `cron.schedule` v migracích. Dokud se nespustí (naplánovanou úlohou
+ * v Supabase, viz `docs/PENDING_CHANGES.md`), je tahle lhůta slib, který
+ * nic nevymáhá. Ověř `select * from cron.job` v dashboardu.
  */
-export const LHUTA_ANON_6P = "dvanácti měsících";
+export const LHUTA_ANON_6P = "44 dnech";
 
 /** Je hodnota nevyplněná? */
 export function chybi(v: string | null): boolean {
@@ -102,6 +114,17 @@ export const PRIJEMCI: Prijemce[] = [
     nazev: "Supabase",
     ucel: "Databáze, přihlašování a serverové funkce. Zde jsou uložena všechna data účtu.",
     umisteni: "Evropská unie",
+  },
+  {
+    // Hosting v seznamu do 13. 9. 2026 chyběl. `legal-recipients.test.ts` ho
+    // nechytí konstrukčně — hledá `https://` hosty volané Z kódu, a hosting
+    // je ten, KDO kód servíruje, takže se ve voláních nikdy neobjeví.
+    nazev: "Vercel",
+    ucel:
+      "Provoz webu — odsud se aplikace načítá. Vercel při každém otevření stránky " +
+      "vidí IP adresu a technické údaje prohlížeče. Obsah účtu ani výsledky dětí " +
+      "u něj uložené nejsou.",
+    umisteni: "mimo EU",
   },
   {
     nazev: "Poskytovatel jazykového modelu (Groq nebo Google)",

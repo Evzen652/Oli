@@ -17,14 +17,19 @@ function Udaj({ hodnota, co }: { hodnota: string | null; co: string }) {
 /**
  * Zásady ochrany osobních údajů.
  *
- * Text popisuje SKUTEČNÉ chování aplikace, ověřené proti kódu 6. 9. 2026 —
+ * Text popisuje SKUTEČNÉ chování aplikace, ověřené proti kódu 13. 9. 2026 —
  * ne obecnou šablonu. Konkrétně:
  *   • seznam příjemců odpovídá voláním ven (viz `PRIJEMCI` v content/legal.ts),
  *   • tvrzení „žádná analytika" je ověřené: v repu není gtag, Plausible,
  *     PostHog, Sentry ani reklamní SDK,
- *   • mazání účtu je popsané jako žádost e-mailem, protože tlačítko v aplikaci
- *     zatím NEEXISTUJE. Až vznikne, přepiš část „Vaše práva" — do té doby by
- *     zmínka o něm byla nepravdivá.
+ *   • tvrzení „model nedostane jméno" platí až od 13. 9. 2026, kdy se jméno
+ *     vyhodilo z promptu ve `supabase/functions/weekly-report/index.ts`.
+ *
+ * ⚠️ Kontrola 13. 9. 2026 našla osm míst, kde se text rozešel s kódem — všechna
+ * vznikla tím, že se změnil kód a text se nedopsal (ukládání odpovědí dítěte,
+ * PIN, poznámky rodiče, e-mail z anonymního režimu, hosting mezi příjemci,
+ * lhůty). **Když měníš, co se ukládá nebo kam to jde, přepiš i tuhle stránku** —
+ * zásady, které mlčí o skutečném zpracování, jsou horší než žádné.
  *
  * Tenhle text není právní posudek. Před spuštěním ho nech projít právníkem;
  * u služby mířené na děti to není formalita.
@@ -56,8 +61,9 @@ export default function Privacy() {
 
       <LegalSection id="bez-uctu" title="Když aplikaci používáte bez registrace">
         <p>
-          Oli jde spustit rovnou — dítě si vybere ročník a začne. V tom režimu{" "}
-          <strong className="text-foreground">neukládáme jméno, e-mail ani nic, podle čeho by šlo dítě identifikovat.</strong>
+          Oli jde spustit rovnou — dítě si vybere ročník a začne. Samo od sebe{" "}
+          <strong className="text-foreground">po něm nechceme jméno, e-mail ani nic, podle čeho by šlo dítě
+          identifikovat</strong> — jedinou výjimku popisujeme na konci téhle části.
         </p>
         <p>
           V prohlížeči vznikne náhodný technický identifikátor a k němu se ukládá
@@ -69,6 +75,13 @@ export default function Privacy() {
           Když v prohlížeči smažete data webu, vazba na tenhle pokrok zanikne a
           nedokážeme ho k nikomu přiřadit. Serverovou kopii mažeme po{" "}
           {LHUTA_ANON_6P} bez aktivity.
+        </p>
+        <p>
+          <strong className="text-foreground">Jedna výjimka:</strong> v aplikaci je tlačítko „Pozvat rodiče",
+          které vede přes ověření, že u zařízení je dospělý. Když se tou cestou
+          zadá e-mail, uložíme ho — spolu s ročníkem a odkazem na dosavadní
+          pokrok, aby na něj šlo po registraci navázat. Jinak v tomhle režimu
+          žádný kontakt neukládáme.
         </p>
       </LegalSection>
 
@@ -85,7 +98,16 @@ export default function Privacy() {
           </li>
           <li>
             <strong className="text-foreground">jméno dítěte a jeho ročník</strong> — zadává je rodič.
-            Klidně použijte přezdívku, aplikace nepotřebuje jméno skutečné.
+            Klidně použijte přezdívku, aplikace nepotřebuje jméno skutečné;
+          </li>
+          <li>
+            <strong className="text-foreground">poznámku k dítěti</strong>, pokud ji rodič napíše — volné pole
+            v přehledu, kam si lze poznamenat, co dítěti dělá potíže;
+          </li>
+          <li>
+            <strong className="text-foreground">PIN dítěte</strong>, pokud ho rodič nastaví — aby se dítě
+            vrátilo do svého účtu bez hesla. Neukládáme ho čitelně, jen jeho
+            zašifrovaný otisk, a k tomu počet chybných pokusů.
           </li>
         </ul>
         <p>
@@ -101,8 +123,15 @@ export default function Privacy() {
           Z toho skládáme přehled pro rodiče a doporučení, co procvičit dál.
         </p>
         <p>
+          U jednotlivých úloh navíc ukládáme <strong className="text-foreground">znění otázky, správnou odpověď
+          a to, co dítě odpovědělo</strong> — včetně odpovědí, které dítě píše vlastními slovy.
+          Bez toho by rodič v přehledu viděl jen „5 z 8 správně" a nepoznal by, kde
+          přesně se dítě zaseklo.
+        </p>
+        <p>
           K výsledkům dítěte má přístup <strong className="text-foreground">jen ten rodič, ke kterému je dítě
-          připojené</strong>. Jiní rodiče ani jiné děti je nevidí.
+          připojené</strong>. Jiní rodiče ani jiné děti je nevidí. Odpovědi dítěte
+          nikam neodesíláme — jazykový model je nedostane (viz část níž).
         </p>
       </LegalSection>
 
@@ -146,7 +175,12 @@ export default function Privacy() {
         <p>
           Slovní hodnocení po procvičování a týdenní shrnutí pro rodiče píše jazykový
           model. Posílá se mu <strong className="text-foreground">téma, úroveň a počet správných odpovědí</strong> —
-          ne jméno dítěte a ne text jeho odpovědí.
+          ne jméno dítěte a ne text jeho odpovědí. Model tedy nedostane nic, podle
+          čeho by šlo poznat, o které dítě jde.
+        </p>
+        <p>
+          Dítě samo s modelem <strong className="text-foreground">nekomunikuje</strong> — v aplikaci není chat
+          ani jiné místo, kde by mu psalo.
         </p>
         <p>
           Cvičení samotná <strong className="text-foreground">umělá inteligence negeneruje</strong>. Píšou se
@@ -157,8 +191,10 @@ export default function Privacy() {
 
       <LegalSection id="jak-dlouho" title="Jak dlouho data držíme">
         <p>
-          Údaje účtu a výsledky dítěte máme po dobu, kdy účet trvá. Po jeho zrušení
-          je mažeme do {LHUTA_SMAZANI_2P} — ta lhůta je pojistka proti omylu, ne archiv.
+          Údaje účtu a výsledky dítěte máme po dobu, kdy účet trvá. Když účet
+          zrušíte <strong className="text-foreground">tlačítkem v aplikaci, smažou se okamžitě</strong> —
+          nedržíme je „pro jistotu" o den déle. Když nám o smazání napíšete
+          e-mailem, protože se nemůžete přihlásit, vyřídíme to do {LHUTA_SMAZANI_2P}.
         </p>
         <p>Pokrok z používání bez registrace mažeme po {LHUTA_ANON_6P} bez aktivity.</p>
       </LegalSection>
