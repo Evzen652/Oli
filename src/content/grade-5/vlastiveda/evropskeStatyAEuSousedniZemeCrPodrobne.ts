@@ -32,7 +32,7 @@ const HLAVNI_MESTA: Dvojice[] = [
   { uroven: 3, levy: "Rumunsko", pravy: "Bukurešť", proc: "Bukurešť je největší město Rumunska." },
   { uroven: 3, levy: "Bulharsko", pravy: "Sofie", proc: "Sofie leží pod horou Vitoša." },
   { uroven: 3, levy: "Litva", pravy: "Vilnius", proc: "Vilnius je nejjižnější z pobaltských metropolí." },
-  { uroven: 3, levy: "Lotyšsko", pravy: "Riga", proc: "Riga je největší město Pobaltí." },
+  { uroven: 3, levy: "Lotyšsko", pravy: "Riga", proc: "Riga leží u ústí řeky Daugavy do Rižského zálivu." },
   { uroven: 3, levy: "Estonsko", pravy: "Tallinn", proc: "Tallinn má zachované středověké Staré Město." },
 ];
 
@@ -75,10 +75,57 @@ const SOUSEDE_A_EU: Dvojice[] = [
     proc: "Volby do Evropského parlamentu jsou jednou za pět let." },
 ];
 
+/**
+ * Obě banky sdílejí názvy států („Německo“, „Polsko“, „Rakousko“, „Slovensko“,
+ * „Chorvatsko“, „Norsko“). Sdílená nápověda z `parovani` jmenuje jen levé
+ * strany, takže sada hlavních měst a sada faktů o EU se stejnými státy dostaly
+ * tutéž malou nápovědu. Úvodní věta obě sady rozliší; velká nápověda se pak
+ * dorovná zpátky na o pětinu delší text.
+ *
+ * Dorovnává se ale RADAMI, ne zbytkem řešení. `doplnVelkou` ve sdíleném
+ * helperu si na dorovnání délky bere nejdřív `proc` DALŠÍCH dvojic té úlohy —
+ * u tříprvkové sady pak velká nápověda prozradí dvě dvojice ze tří a třetí
+ * vyjde vylučováním. Úvodní věta cíl 1,2 × zvedne, takže by to tady bylo ještě
+ * častější (13 % → 40 % úloh na L1). Přilepené dvojice proto uřízneme —
+ * nápověda končí větou o vylučování, jak ji `parovani` postavilo.
+ * Kořen je v `src/content/grade-5/_shared.ts` a týká se 17 témat, viz
+ * `docs/PENDING_CHANGES.md`.
+ */
+const KONEC_VELKE = "Zbylé dvojice pak doplň vylučováním.";
+
+function odlisSadu(tasks: PracticeTask[], uvod: string, rady: string[]): PracticeTask[] {
+  return tasks.map((t) => {
+    const [m, v] = t.hints as [string, string];
+    const konec = v.indexOf(KONEC_VELKE);
+    const jadro = konec >= 0 ? v.slice(0, konec + KONEC_VELKE.length) : v;
+    const h0 = `${uvod} ${m}`;
+    let h1 = `${uvod} ${jadro}`;
+    for (const r of rady) {
+      if (h1.length >= h0.length * 1.2) break;
+      if (!h1.includes(r)) h1 = `${h1} ${r}`;
+    }
+    return { ...t, hints: [h0, h1] as [string, string] };
+  });
+}
+
 function gen(level: number): PracticeTask[] {
   return [
-    ...parovani(HLAVNI_MESTA, level, "Spoj stát s jeho hlavním městem.", 15),
-    ...parovani(SOUSEDE_A_EU, level, "Spoj pojem s tím, co o něm platí.", 15),
+    ...odlisSadu(
+      parovani(HLAVNI_MESTA, level, "Spoj stát s jeho hlavním městem.", 15),
+      "Přiřazuješ státům jejich hlavní města.",
+      [
+        "Hlavní město bývá největší město státu a často leží na velké řece.",
+        "U státu, který neznáš, si vzpomeň, kde jsi název jeho města slyšel — ve zprávách, na mapě nebo z prázdnin.",
+      ],
+    ),
+    ...odlisSadu(
+      parovani(SOUSEDE_A_EU, level, "Spoj pojem s tím, co o něm platí.", 15),
+      "Přiřazuješ pojmům to, co o nich platí.",
+      [
+        "Nejdřív si u každého pojmu řekni, co to vlastně je: stát, město, měna, nebo spolek států.",
+        "Popisy, které mluví o hranicích a světových stranách, patří k sousedům Česka.",
+      ],
+    ),
   ];
 }
 
@@ -92,11 +139,14 @@ export const EVROPSKESTATYAEUSOUSEDNIZEMECRPODROBNE: TopicMetadata[] = [
     category: "Místo, kde žijeme",
     topic: "Evropa a svět",
     briefDescription: "Poznáš sousedy Česka a jak funguje Evropská unie.",
-    keywords: ["sousedé čr", "německo", "polsko", "slovensko", "rakousko", "eu", "vatikán", "monaco"],
+    keywords: ["sousedé čr", "německo", "polsko", "slovensko", "rakousko", "eu", "vatikán", "hlavní města"],
+    // Cíle popisují to, co téma opravdu generuje. Dřív tu stálo „porovná
+    // sousedy ČR podle populace“ — ta látka ze zadání vypadla (audit 5. ročníku
+    // vyhodil HDP na obyvatele a statistiky), cíl po ní zůstal.
     goals: [
       "Žák jmenuje 4 sousední státy ČR a jejich polohu",
-      "Žák uvede základní fakta o EU (27 členů, Brusel)",
-      "Žák porovná sousedy ČR podle populace",
+      "Žák přiřadí evropským státům jejich hlavní města",
+      "Žák uvede základní fakta o EU (vstup 2004, Brusel, euro)",
     ],
     boundaries: ["Detailní ekonomická statistika", "Politická geografie celé Evropy"],
     gradeRange: [5, 5],

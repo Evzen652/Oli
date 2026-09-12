@@ -83,6 +83,10 @@ function genL2(): PracticeTask {
   const roky = pickN(Array.from({ length: 18 }, (_, i) => 100 + 50 * i), 4);
   const max = Math.max(...roky);
   const ostatni = roky.filter((r) => r !== max);
+  // Malá nápověda dřív jmenovala jen dva rozptylovače, takže dvě úlohy se
+  // stejnou dvojicí sdílely nápovědu. Teď vyjmenuje čísla všech čtyř možností
+  // (ta jsou i v zadání, takže neprozrazuje) a ptá se jen na SMĚR času.
+  const [nejmensi, druhy] = [...ostatni].sort((a, b) => a - b);
   return choice(
     "Která událost je nejstarší? (všechny se staly před naším letopočtem)",
     `${max} př. n. l.`,
@@ -92,8 +96,8 @@ function genL2(): PracticeTask {
     })),
     {
       hints: [
-        `Porovnej ${ostatni[0]} př. n. l. a ${ostatni[1]} př. n. l.: které z nich je dál v minulosti?`,
-        "U letopočtů před naším letopočtem běží čas obráceně, směrem do minulosti: čím větší číslo př. n. l., tím starší událost. Najdi tedy mezi možnostmi největší číslo.",
+        `Všechny čtyři možnosti jsou př. n. l., takže je nemusíš třídit podle éry — stačí porovnat jejich čísla: ${roky.join(", ")}. Rozmysli si jen, jestli u letopočtů př. n. l. znamená větší číslo dřív, nebo později.`,
+        `U letopočtů před naším letopočtem běží čas obráceně, směrem do minulosti: čím větší číslo př. n. l., tím dřív se událost stala. Rok ${nejmensi} př. n. l. je proto mladší než rok ${druhy} př. n. l. Porovnej takhle všechny čtyři možnosti mezi sebou a vyber tu, jejíž číslo je největší.`,
       ],
       explanation: `Před naším letopočtem se roky počítají směrem do minulosti, takže větší číslo = starší událost. Nejstarší je proto rok ${max} př. n. l.`,
     },
@@ -103,14 +107,18 @@ function genL2(): PracticeTask {
 // L3 — přes přelom letopočtu (rok 0 neexistuje), nebo řazení napříč érami.
 function genL3(): PracticeTask {
   if (Math.random() < 0.5) {
-    const a = rnd(2, 16) * 50, b = rnd(1, 12) * 50;
+    const a = rnd(2, 16) * 50;
+    // b ≠ a: jinak by rozptylovač „odečetl jsi“ vyšel 0 a musel se nahradit
+    // jedničkou — možnost „1 rok“ by pak neodpovídala chybě, kterou popisuje.
+    let b = rnd(1, 12) * 50;
+    while (b === a) b = rnd(1, 12) * 50;
     const ans = a + b - 1;
     return choice(
       `Říše vznikla roku ${a} př. n. l. a zanikla roku ${b} n. l. Jak dlouho existovala? (Pozor: rok 0 neexistuje.)`,
       pad(ans, "ROK"),
       [
         { value: pad(a + b, "ROK"), why: `Zapomněl jsi, že rok 0 neexistuje — mezi 1 př. n. l. a 1 n. l. je jen 1 rok. Proto se po sečtení odečítá 1: ${a} + ${b} − 1 = ${ans}.` },
-        { value: pad(Math.abs(a - b) || 1, "ROK"), why: `Odečetl jsi, jako by obě data byla ve stejné éře. Přes přelom letopočtu se naopak sčítá (a odečte 1 za chybějící rok 0): ${a} + ${b} − 1.` },
+        { value: pad(Math.abs(a - b), "ROK"), why: `Odečetl jsi, jako by obě data byla ve stejné éře. Přes přelom letopočtu se naopak sčítá (a odečte 1 za chybějící rok 0): ${a} + ${b} − 1.` },
         { value: pad(a + b - 2, "ROK"), why: `Odečetl jsi 2, ale chybí jen jediný rok (rok 0). Správně ${a} + ${b} − 1 = ${ans}.` },
       ],
       {
@@ -132,23 +140,27 @@ function genL3(): PracticeTask {
   const label = (e: { y: number; bc: boolean }) => `${e.y} ${e.bc ? "př. n. l." : "n. l."}`;
   const nejstarsi = sada.filter((e) => e.bc).reduce((m, e) => (e.y > m.y ? e : m));
   const ostatni = sada.filter((e) => e !== nejstarsi);
-  const nl = ostatni.find((e) => !e.bc) ?? ostatni[0];
-  const pr = ostatni.find((e) => e.bc) ?? ostatni[1];
+  // Malá nápověda dřív jmenovala jen dvě možnosti, takže se u různých úloh
+  // opakovala. Teď roztřídí všechny čtyři podle éry (čísla jsou i v zadání)
+  // a ptá se jen na to, která éra je starší — srovnání dvou letopočtů
+  // př. n. l. mezi sebou zůstává na žákovi.
+  const nl = ostatni.filter((e) => !e.bc);
+  const prCisla = [...bcRoky].sort((a, b) => a - b);
   return choice(
     "Která událost je nejstarší?",
     label(nejstarsi),
     ostatni.map((e) => ({
       value: label(e),
       why: e.bc
-        ? `Vybral jsi správně letopočet př. n. l., ale větší číslo př. n. l. = starší. Nejstarší je ${label(nejstarsi)}.`
-        : `To je náš letopočet (n. l.). Vše před naším letopočtem se stalo dřív — nejstarší je ${label(nejstarsi)}.`,
+        ? `Vybral jsi správně letopočet př. n. l., ale větší číslo př. n. l. = starší. Nejstarší je ${label(nejstarsi)}`
+        : `To je náš letopočet (n. l.). Vše před naším letopočtem se stalo dřív — nejstarší je ${label(nejstarsi)}`,
     })),
     {
       hints: [
-        `Bylo dřív ${label(nl)}, nebo ${label(pr)}? Rozliš nejdřív éry.`,
-        "Všechno před naším letopočtem je starší než cokoli z našeho letopočtu. Mezi lety př. n. l. je pak nejstarší to s největším číslem.",
+        `Roztřiď si čtyři možnosti podle éry: ${nl.map(label).join(" a ")} jsou z našeho letopočtu, čísla ${prCisla.join(" a ")} patří do doby před ním. Která éra je starší?`,
+        `Všechno, co se stalo před naším letopočtem, je starší než cokoli z našeho letopočtu — možnosti ${nl.map(label).join(" a ")} proto můžeš rovnou vyřadit. Zbudou dva letopočty př. n. l. a u nich běží čas obráceně: čím větší číslo př. n. l., tím dál do minulosti. Porovnej tedy jejich čísla mezi sebou.`,
       ],
-      explanation: `Letopočty př. n. l. jsou vždy starší než n. l. Mezi nimi je nejstarší ten s největším číslem — proto ${label(nejstarsi)}.`,
+      explanation: `Letopočty př. n. l. jsou vždy starší než n. l. Mezi nimi je nejstarší ten s největším číslem — proto ${label(nejstarsi)}`,
     },
   );
 }
@@ -167,7 +179,7 @@ export const PERIODIZACE_LETOPOCET: TopicMetadata[] = [
     subject: "dejepis",
     category: "Úvod do dějepisu",
     topic: "Historie a historické prameny",
-    briefDescription: "Naučíš se počítat se letopočty a určovat století na časové přímce.",
+    briefDescription: "Naučíš se počítat s letopočty a určovat století na časové přímce.",
     keywords: [
       "letopočet", "století", "časová přímka", "periodizace", "před naším letopočtem",
       "našeho letopočtu", "př. n. l.", "n. l.", "datování", "chronologie",

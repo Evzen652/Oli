@@ -136,7 +136,9 @@ const L2: PracticeTask[] = [
     ["byla šťastná", "Šťastný člověk dveřmi nebouchá."], ["byla ospalá", "Ospalý člověk nebouchá dveřmi."], ["měla hlad", "O hladu úryvek nic neříká."],
   ], ["Kdy lidé bouchají dveřmi?", "Pocit není řečený. Poznáš ho podle toho, co Eliška udělala."], "Zabouchnutí dveří a odchod beze slova ukazují, že byla naštvaná."),
   uryvek("Babička si vždycky našla čas vyslechnout každého, kdo měl starost.", "Jaká babička je?", "trpělivá a laskavá", [
-    ["netrpělivá", "Úryvek říká opak."], ["zapomnětlivá", "O paměti úryvek nic neříká."], ["chlubivá", "O chlubení úryvek nic neříká."],
+    // Dvě vlastnosti i u rozptylovačů: s jedním slovem proti klíči o dvou by
+    // šlo uhodnout podle délky možnosti, aniž by dítě četlo úryvek.
+    ["netrpělivá a uspěchaná", "Úryvek říká opak — babička si čas vždycky najde."], ["zapomnětlivá a roztržitá", "O paměti úryvek nic neříká."], ["chlubivá a hlučná", "O chlubení úryvek nic neříká."],
   ], ["Co babička dělá pro lidi se starostmi?", "Kdo si pro druhé vždycky najde čas a poslouchá je, má dobré vlastnosti."], "Babička si vždy najde čas a naslouchá — je trpělivá a laskavá."),
   uryvek("Královna záviděla Sněhurce krásu a chtěla jí ublížit.", "Jaké vlastnosti královna má?", "závist a krutost", [
     ["odvahu a dobrotu", "To jsou vlastnosti kladné postavy."], ["skromnost a pracovitost", "To úryvek neukazuje."], ["veselost a ochotu", "To úryvek neukazuje."],
@@ -198,13 +200,13 @@ const L3: PracticeTask[] = [
   uryvek("Pan Hrubý na děti často křičel, ale když napadl sníh, potichu jim uklidil chodník před školou.", "Co o panu Hrubém můžeš říct?", "vypadá přísně, ale má dobré srdce", [
     ["je jen zlý a nemá rád děti", "Uklidil dětem chodník — jen zlý není."], ["je jen hodný a na nikoho nekřičí", "Na děti ale křičí."], ["nemá rád zimu a sníh", "O tom úryvek nic neříká."],
   ], ["Jak se pan Hrubý chová navenek a co udělá potichu?", "Úryvek ukazuje dvě stránky postavy: jak se chová, když ho všichni vidí, a co udělá, když se nikdo nedívá. Pozor na slovo „ale“."], "Pan Hrubý křičí, ale potají dětem pomáhá — navenek je přísný, ale má dobré srdce."),
-  choice("Jana chce najít ztraceného psa, ale brání jí silná bouřka. Co jí v příběhu stojí v cestě?", "bouřka", [
-    { value: "pes", why: "Psa Jana hledá — je to její cíl." },
-    { value: "Jana", why: "Jana je hlavní postava." },
-    { value: "vypravěč", why: "Vypravěč jen vypráví." },
+  choice("Jana chce najít ztraceného psa, ale venku se strhl prudký déšť s hromy a blesky. Co jí v příběhu stojí v cestě?", "bouřka", [
+    { value: "pes", why: "Psa Jana hledá — je to její cíl, ne překážka." },
+    { value: "Jana", why: "Jana je hlavní postava, která překážku teprve překonává." },
+    { value: "vypravěč", why: "Vypravěč příběh jen vypráví, do děje nezasahuje." },
   ], {
-    hints: ["Co Janě brání, aby psa našla?", "Hrdinovi může v cestě stát postava, ale i počasí, překážka nebo vlastní strach."],
-    explanation: "Janě v hledání brání bouřka — ta je v příběhu její překážkou.",
+    hints: ["Co se venku děje ve chvíli, kdy chce Jana vyrazit hledat?", "Hrdinovi může v cestě stát postava, ale i počasí, překážka nebo vlastní strach. Projdi možnosti a u každé se zeptej: brání tohle Janě v hledání?"],
+    explanation: "Prudký déšť s hromy a blesky je bouřka — právě ta Janě brání psa najít, takže je v příběhu její překážkou.",
   }),
   choice("Dvě věty: „Petr je odvážný.“ a „Petr vběhl do hořícího domu, aby zachránil kočku.“ Která ukáže Petrovu odvahu lépe?", "druhá, protože čin přesvědčí víc", [
     { value: "první, protože je kratší", why: "Délka o přesvědčivosti nerozhoduje." },
@@ -311,7 +313,9 @@ export const HLAVNIPOSTAVYAJEJICHCHARAKTERISTIKA: TopicMetadata[] = [
     subject: "čeština",
     category: "Literární výchova",
     topic: "Literární výchova",
-    briefDescription: "Naučíš se analyzovat postavy v příbězích a rozlišit přímou a nepřímou charakteristiku.",
+    // Bez pojmů „analyzovat“ a „přímá/nepřímá charakteristika“: hranice tématu
+    // odbornou terminologii vylučují a v úlohách ta slova nepadnou ani jednou.
+    briefDescription: "Poznáš hlavní a vedlejší postavy a to, jak autor ukáže, jaké jsou.",
     keywords: ["hlavní postava", "vedlejší postava", "vzhled", "povaha", "kladná postava", "záporná postava", "charakteristika"],
     goals: [
       "Rozlišit vzhled a povahu postavy",
