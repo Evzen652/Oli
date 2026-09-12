@@ -76,7 +76,7 @@ const POOL_L1: PracticeTask[] = [
       "Vlajka má dva vodorovné pruhy a k tomu klín, který zasahuje od okraje dovnitř.",
       "Rozhoduj ve dvou krocích. Nejdřív urči, který pruh je nahoře a který dole — světlejší barva patří vždy nad tmavší. Potom se podívej na klín u žerdi: má barvu, která se v žádném z vodorovných pruhů neopakuje.",
     ],
-    "Vlajka České republiky má bílý pruh nahoře, červený pruh dole a modrý klín, který vychází z levého okraje. Bílá a červená pochází z českých zemských barev, modrý klín přibyl při vzniku Československa.",
+    "Vlajka České republiky má bílý pruh nahoře, červený pruh dole a modrý klín, který vychází z levého okraje. Bílá a červená pocházejí z českých zemských barev, modrý klín přibyl při vzniku Československa.",
   ),
   q(
     "Co znázorňuje velký státní znak České republiky?",

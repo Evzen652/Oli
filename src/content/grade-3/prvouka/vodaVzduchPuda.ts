@@ -217,7 +217,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     [
       "Po dešti je uvidíš na chodníku — jsou růžové a protáhlé.",
-      "Hledej tvory, kteří se zemí prokousávají chodbičky a tím ji provzdušňují. Vedle nich pracují ještě tak drobné organismy, že je pouhým okem nezahlédneš, a ty rozkládají zbytky na živiny.",
+      "Hledej tvory, kteří si v zemi prokousávají chodbičky a tím ji provzdušňují. Vedle nich pracují ještě tak drobné organismy, že je pouhým okem nezahlédneš, a ty rozkládají zbytky na živiny.",
     ],
     "Žížaly prokopávají půdu a provzdušňují ji, mikroorganismy rozkládají odumřelé látky na živiny. Bez nich by půda nebyla úrodná.",
   ),
@@ -429,7 +429,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Protože živočichové i rostliny vydechují stejný plyn", why: "Kdyby vydávali totéž, k žádné výměně by nedocházelo." },
       { o: "Protože rostliny přes den vůbec nedýchají", why: "Rostliny dýchají neustále, přes den jen navíc fotosyntetizují." },
-      { o: "Protože kyslík rostliny vůbec nepotřebují", why: "Kyslík potřebují i rostliny — dýchají jím, nejvíc v noci." },
+      { o: "Protože kyslík rostliny vůbec nepotřebují", why: "Kyslík potřebují i rostliny — také dýchají, v noci ho proto jen spotřebovávají." },
     ],
     [
       "Porovnej, co jedna skupina organismů vydává a co druhá naopak potřebuje.",

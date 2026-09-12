@@ -328,7 +328,7 @@ const POOL_L2: PracticeTask[] = [
     [
       { o: "150", why: "Číslo 150 přivolá hasiče, žádný požár tu ale není." },
       { o: "155", why: "Číslo 155 přivolá záchrannou službu ke zraněným." },
-      { o: "112", why: "Číslo 112 by tě k policii teprve přepojilo, přímá linka je rychlejší." },
+      { o: "156", why: "Číslo 156 patří městské policii; krádež vyšetřuje státní policie na jiné lince." },
     ],
     [
       "Děje se něco protiprávního — někdo bere cizí majetek.",
@@ -427,9 +427,9 @@ const POOL_L3: PracticeTask[] = [
     "Zaplavená ulice vypadá klidně a voda sahá jen po kotníky. Proč je i tak nebezpečné do ní vejít?",
     "proud může strhnout i dítě a pod vodou nevidíš otevřené kanály a předměty",
     [
-      { o: "voda je studená a mohl bys dostat rýmu", why: "Rýma je malichernost proti riziku utonutí." },
-      { o: "namočil by sis boty a doma bys je musel sušit", why: "O boty tu vůbec nejde, hrozí ohrožení života." },
-      { o: "voda by ti mohla zničit hodinky", why: "Zničené hodinky jsou drobnost proti tomu, co hrozí." },
+      { o: "voda bývá studená, takže bys mohl prochladnout", why: "Prochladnutí je nepříjemné, ale hrozí něco mnohem horšího — proud a kanály skryté pod hladinou." },
+      { o: "na mokré dlažbě by ti mohly uklouznout nohy", why: "Uklouznout se dá i na chodníku. Tady navíc nevidíš, kam šlapeš, a tlačí do tebe proud." },
+      { o: "nebezpečné je to teprve tehdy, když voda sahá nad pás", why: "I voda po kolena dokáže dítě porazit a odnést." },
     ],
     [
       "Přemýšlej o dvou skrytých nebezpečích najednou: o síle vody a o tom, co není vidět.",
@@ -483,8 +483,8 @@ const POOL_L3: PracticeTask[] = [
     "Při požáru někdo navrhne otevřít všechna okna, ať kouř odejde. Proč je to špatný nápad?",
     "čerstvý vzduch oheň rozdmýchá a plameny zesílí",
     [
-      { o: "oknem by mohla přiletět moucha", why: "To je malichernost, skutečné riziko je úplně jiné." },
-      { o: "průvan by rozházel papíry po pokoji", why: "Rozházené papíry nejsou ten hlavní problém." },
+      { o: "kouř je těžší než vzduch, takže by oknem stejně neodešel", why: "Kouř je naopak horký a lehký a stoupá vzhůru. Rozhoduje ale přívod vzduchu k ohni." },
+      { o: "sklo by od horka prasklo a mohlo by tě pořezat", why: "Prasklé sklo je až následek. Hlavní riziko je, že otevřeným oknem se k ohni dostane vzduch." },
       { o: "otevřít okno je při požáru vždy správné", why: "Naopak: okna i dveře do hořící místnosti se zavírají." },
     ],
     [

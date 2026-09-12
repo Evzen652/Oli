@@ -210,7 +210,7 @@ const POOL_L1: PracticeTask[] = [
     "Brouk je živý organismus — dýchá, roste a rozmnožuje se. Cihla, sklenice a mince jsou neživé vyrobené předměty.",
   ),
   q(
-    "Co patří do neživé přírody?",
+    "Co nepatří do živé přírody?",
     "Skála",
     [
       { o: "Liška", why: "Liška je šelma — loví, dýchá a má mláďata." },
@@ -343,7 +343,7 @@ const POOL_L2: PracticeTask[] = [
     "K fotosyntéze — výrobě potravy",
     [
       { o: "Aby se mohly pohybovat", why: "Rostlina se z místa nepohybuje, světlo k tomu nepotřebuje." },
-      { o: "Aby mohly dýchat", why: "Dýchat rostlina dokáže i ve tmě, ke dýchání světlo nutné není." },
+      { o: "Aby mohly dýchat", why: "Dýchat rostlina dokáže i ve tmě, k dýchání světlo nutné není." },
       { o: "Aby se rozmnožovaly", why: "K rozmnožování slouží květy a semena, ne přímo světlo." },
     ],
     [
@@ -542,7 +542,7 @@ const POOL_L3: PracticeTask[] = [
     "Živočichové by neměli co jíst, protože na rostlinách závisí celý řetězec",
     [
       { o: "Nic by se nestalo, dravci by dál lovili kořist", why: "Dravci loví býložravce, a ti by bez rostlin neměli co jíst." },
-      { o: "Živočichové by začali fotosyntetizovat místo rostlin", why: "Živočichové zelené barvivo nemají, fotosyntéza jim není možná." },
+      { o: "Živočichové by začali fotosyntetizovat místo rostlin", why: "Živočichové zelené barvivo nemají, fotosyntézy proto nejsou schopni." },
       { o: "Jen býložravci by měli problém, masožravci ne", why: "Masožravci by přišli o kořist, protože by vymřeli býložravci." },
     ],
     [
@@ -557,7 +557,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Oxid uhličitý, který rostliny vyrábějí při fotosyntéze", why: "Oxid uhličitý rostliny při fotosyntéze naopak spotřebovávají." },
       { o: "Cukr, který se mění na vzduch", why: "Cukr je potrava rostliny a na vzduch se nemění." },
-      { o: "Vodu, kterou rostliny vypouštějí do vzduchu", why: "Vodní páru rostliny opravdu odpařují, dýchat se ale nedá." },
+      { o: "Vodu, kterou rostliny vypouštějí do vzduchu", why: "Vodní páru rostliny opravdu odpařují, dýchat ji ale nemůžeme." },
     ],
     [
       "Rozliš, co rostlina při fotosyntéze spotřebuje a co naopak vydá ven.",
