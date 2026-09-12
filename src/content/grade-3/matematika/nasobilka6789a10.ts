@@ -1,119 +1,131 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { buildUniqueOptions, shuffleOptions } from "@/lib/content/uniqueOptions";
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import { pad, isAre } from "@/lib/czechGrammar";
+import { choice, shuffle, type Distractor } from "../_shared";
 
 /**
- * PED-2 kalibrace L1 < L2 < L3.
+ * PED-2 kalibrace L1 < L2 < L3 (disjunktní otázky, rozdíl množin drží gradaci).
  *
- * Před: L1 = tables [6,7], L2 = [8,9,10], L3 = celá [6..10] → L3 pool zahrnoval
- * L1+L2, `getTierTasks` (rozdíl množin) často vyřadil většinu L3, gradace šla
- * do háje.
+ *   L1 — násobky **6, 7 a 10** (prvně učené řady; desítková řada je nejsnazší).
+ *   L2 — násobky **8 a 9** (těžší, méně vídané řady).
+ *   L3 — **INVERZE** „? × t = c" pro t ∈ [6..10] — hledání chybějícího činitele
+ *        vyžaduje dělení (obrácená operace).
  *
- * Teď: **disjunktní otázky**.
- *   L1  — násobek **6 a 7**, prvně učené řady (množina otázek t × n, t∈{6,7}).
- *   L2  — násobek **8 a 9**, těžší řady (množina otázek t × n, t∈{8,9}).
- *   L3  — násobek **10** (technicky snadné, ale nová řada) + **INVERZE**
- *         "? × t = c" pro t ∈ [6..10] — vyžaduje dělení / spojení dvou operací.
- * Otázky se formou (`?` na začátku vs uprostřed) nikdy nepřekrývají mezi
- * úrovněmi → rozdíl množin drží gradaci deterministicky.
+ * Oprava 2026-09-11 (inventura obsahu): každá chybná možnost má zpětnou vazbu
+ * z chybového modelu (sousední spoj, záměna řady, sečtení místo násobení),
+ * nápovědy jsou odstupňované a počítají s konkrétními čísly úlohy. Desítková
+ * řada se přesunula z L3 do L1 — jako přímý příklad byla snazší než L2.
  */
 
-interface MulTask {
-  t: number;
-  n: number;
+/** Vybere první tři různé kladné distraktory, které se neshodují s klíčem. */
+function prvni3(kandidati: Distractor[], spravne: string): [Distractor, Distractor, Distractor] {
+  const videno = new Set([spravne]);
+  const out: Distractor[] = [];
+  for (const k of kandidati) {
+    if (Number(k.value) <= 0 || videno.has(k.value)) continue;
+    videno.add(k.value);
+    out.push(k);
+    if (out.length === 3) break;
+  }
+  if (out.length < 3) throw new Error(`Málo distraktorů pro ${spravne}`);
+  return out as [Distractor, Distractor, Distractor];
+}
+
+/** Nápovědy a vysvětlení pro `t × n` podle toho, jak se příklad nejlépe počítá. */
+function postup(t: number, n: number): { h0: string; h1: string; expl: string } {
+  const x = t * n;
+  if (n === 1) {
+    return {
+      h0: `Kolik je číslo ${t} vzaté jen jednou?`,
+      h1: `Násobit jedničkou znamená vzít číslo jen jednou — nic se nepřidá ani neubere. Co tedy zbude z čísla ${t}?`,
+      expl: `Násobit jedničkou znamená vzít číslo jednou, proto ${t} × 1 = ${x}.`,
+    };
+  }
+  if (t === 10) {
+    return {
+      h0: `10 × ${n} je totéž jako ${pad(n, "DESÍTKA")}.`,
+      h1: `Když násobíš deseti, napiš číslo ${n} a připiš za něj nulu — tak zapíšeš ${pad(n, "DESÍTKA")} jedním číslem.`,
+      expl: `10 × ${n} ${isAre(n)} ${pad(n, "DESÍTKA")}, a to je ${x}. Při násobení deseti se k číslu ${n} jen připíše nula.`,
+    };
+  }
+  if (n === 10) {
+    return {
+      h0: `Násobit deseti je snadné: ${t} × 10 ${isAre(t)} ${pad(t, "DESÍTKA")}.`,
+      h1: `K číslu ${t} připiš nulu — tak zapíšeš ${pad(t, "DESÍTKA")} jedním číslem. Záměnnost: ${t} × 10 = 10 × ${t}.`,
+      expl: `${t} × 10 je ${pad(t, "DESÍTKA")}, a to je ${x}. Při násobení deseti se k číslu ${t} jen připíše nula.`,
+    };
+  }
+  if (n === 5) {
+    return {
+      h0: `${t} × 5 je polovina z ${t} × 10.`,
+      h1: `Nejdřív spočítej ${t} × 10 (připiš k číslu ${t} nulu) a pak to číslo rozděl na dvě stejné poloviny.`,
+      expl: `${t} × 10 = ${t * 10} a polovina z ${t * 10} je ${x}, proto ${t} × 5 = ${x}.`,
+    };
+  }
+  const soucet = Array.from({ length: n }, () => t).join(" + ");
+  if (n < 5) {
+    return {
+      h0: `${t} × ${n} znamená ${n}krát sečíst číslo ${t}.`,
+      h1: `Sečti postupně ${soucet}. Začni u čísla ${t} a pokaždé přičti dalších ${t}.`,
+      expl: `${t} × ${n} znamená sečíst ${n}krát číslo ${t}: ${soucet} = ${x}.`,
+    };
+  }
+  const zbytek = n - 5;
+  return {
+    h0: `Vyjdi z příkladu, který znáš (${t} × 5 = ${t * 5}), a dopočítej ${t} × ${n}.`,
+    h1: zbytek === 1
+      ? `${t} × ${n} je o jedno číslo ${t} víc než ${t} × 5. K číslu ${t * 5} tedy přičti ještě jednou ${t}.`
+      : `${t} × ${n} je totéž co ${t} × 5 a k tomu ${t} × ${zbytek}. K číslu ${t * 5} tedy přičti ještě ${zbytek}krát číslo ${t}.`,
+    expl: `${t} × 5 = ${t * 5} a ${t} × ${zbytek} = ${t * zbytek}. Dohromady ${t * 5} + ${t * zbytek} = ${x}, proto ${t} × ${n} = ${x}.`,
+  };
 }
 
 /** `t × n = ?` — standardní tvar. */
 function makeForward(t: number, n: number): PracticeTask {
-  const correct = t * n;
-  const distractors = [
-    String(correct + t),
-    String(Math.max(0, correct - t)),
-    String(correct + 1),
-  ];
-  const fallbacks = [
-    String(correct - 1),
-    String(correct + t + 1),
-    String(correct + 2),
-    String(t * (n + 1)),
-    String(t * Math.max(1, n - 1)),
-  ];
-  const { options } = buildUniqueOptions(String(correct), distractors, fallbacks, 4);
-  return {
-    question: `${t} × ${n} = ?`,
-    correctAnswer: String(correct),
-    options: shuffleOptions(options),
-    hints: [
-      `${t} × ${n} = ${n}× přičteš ${t}.`,
-      n === 1
-        ? "Násobení jedničkou nic nemění — číslo zůstane úplně stejné."
-        : `Nebo: ${t} × ${n} = ${t} + ${t} + … (${n}×)`,
-    ],
-    solutionSteps: [
-      `${t} × ${n} = ${correct}`,
-      `(${Array.from({ length: n }, () => t).join(" + ")} = ${correct})`,
-    ],
-  };
+  const x = t * n;
+  const d = prvni3([
+    ...(n < 10 ? [{ value: String(t * (n + 1)), why: `To je ${t} × ${n + 1}, tedy o ${t} víc, než má vyjít.` }] : []),
+    ...(n > 1 ? [{ value: String(t * (n - 1)), why: `To je ${t} × ${n - 1}, tedy o ${t} méně, než má vyjít.` }] : []),
+    { value: String((t - 1) * n), why: `To je ${t - 1} × ${n} — spletl ses v řadě, násobíš číslem ${t}.` },
+    { value: String(t + n), why: `Čísla ${t} a ${n} jsi sečetl, ale máš je vynásobit.` },
+    { value: String(x + 1), why: `${x + 1} v řadě násobků čísla ${t} vůbec není — výsledek musí být jejím členem.` },
+  ], String(x));
+  const p = postup(t, n);
+  return choice(`${t} × ${n} = ?`, String(x), d, { hints: [p.h0, p.h1], explanation: p.expl });
 }
 
 /** `? × t = c` — inverzní tvar, nutí dítě dělit. */
 function makeInverse(t: number, n: number): PracticeTask {
   const c = t * n;
-  const distractors = [
-    String(n + 1),
-    String(Math.max(1, n - 1)),
-    String(n + 2),
-  ];
-  const fallbacks = [
-    String(Math.max(1, n - 2)),
-    String(n + 3),
-    String(n + t),
-  ];
-  const { options } = buildUniqueOptions(String(n), distractors, fallbacks, 4);
-  return {
-    question: `? × ${t} = ${c}`,
-    correctAnswer: String(n),
-    options: shuffleOptions(options),
+  const d = prvni3([
+    { value: String(n + 1), why: `Zkouška: ${n + 1} × ${t} = ${(n + 1) * t}, to je víc než ${c}.` },
+    { value: String(n - 1), why: `Zkouška: ${n - 1} × ${t} = ${(n - 1) * t}, to je méně než ${c}.` },
+    { value: String(c - t), why: `Číslo ${t} jsi od ${c} odečetl. Máš ale zjistit, kolikrát se ${t} vejde do ${c}.` },
+    { value: String(n + 2), why: `Zkouška: ${n + 2} × ${t} = ${(n + 2) * t}, to je víc než ${c}.` },
+  ], String(n));
+  return choice(`? × ${t} = ${c}`, String(n), d, {
     hints: [
-      `Zeptej se: kolikrát vezmu ${t}, abych dostal ${c}?`,
-      `To je totéž jako ${c} ÷ ${t}.`,
+      `Kolikrát musíš vzít číslo ${t}, abys dostal ${c}?`,
+      `Říkej násobky čísla ${t} — ${t}, ${2 * t}, ${3 * t}, … — a na prstech počítej, kolikátý v řadě je ${c}. Stejně dobře můžeš dělit: ${c} ÷ ${t}.`,
     ],
-    solutionSteps: [
-      `Hledám číslo x tak, že x × ${t} = ${c}.`,
-      `x = ${c} ÷ ${t} = ${n}.`,
-    ],
-  };
+    explanation: `Chybějící číslo najdeš dělením: ${c} ÷ ${t} = ${n}. Zkouška: ${n} × ${t} = ${c}, takže to sedí.`,
+  });
 }
 
+const N10 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 function gen(level: number): PracticeTask[] {
-  const combos: MulTask[] = [];
   if (level === 1) {
-    // L1 — řady 6 a 7 (prvně naučené, kotva)
-    for (const t of [6, 7]) for (let n = 1; n <= 10; n++) combos.push({ t, n });
-    return shuffle(combos).slice(0, 20).map(({ t, n }) => makeForward(t, n));
+    // L1 — řady 6, 7 a 10 (prvně naučené + nejsnazší desítková)
+    const tasks = [6, 7, 10].flatMap((t) => N10.map((n) => makeForward(t, n)));
+    return shuffle(tasks).slice(0, 20);
   }
   if (level === 2) {
     // L2 — řady 8 a 9 (těžší, méně vídané)
-    for (const t of [8, 9]) for (let n = 1; n <= 10; n++) combos.push({ t, n });
-    return shuffle(combos).slice(0, 20).map(({ t, n }) => makeForward(t, n));
+    return shuffle([8, 9].flatMap((t) => N10.map((n) => makeForward(t, n))));
   }
-  // L3 — desítková řada (technicky snadná, ale nová) + INVERZE napříč 6-10
-  const tenSeries: MulTask[] = [];
-  for (let n = 1; n <= 10; n++) tenSeries.push({ t: 10, n });
-  const inverse: MulTask[] = [];
-  for (const t of [6, 7, 8, 9, 10]) for (let n = 2; n <= 10; n++) inverse.push({ t, n });
-  const out: PracticeTask[] = [];
-  for (const { t, n } of shuffle(tenSeries).slice(0, 6)) out.push(makeForward(t, n));
-  for (const { t, n } of shuffle(inverse).slice(0, 14)) out.push(makeInverse(t, n));
-  return shuffle(out);
+  // L3 — INVERZE napříč řadami 6–10
+  const inverse = [6, 7, 8, 9, 10].flatMap((t) => N10.slice(1).map((n) => makeInverse(t, n)));
+  return shuffle(inverse).slice(0, 20);
 }
 
 export const NASOBILKA6789A10: TopicMetadata[] = [
