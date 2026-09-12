@@ -142,6 +142,18 @@ function spocitej(q: string): number | null {
     return Number(cislice.join(""));
   }
 
+  // Obvody: trojúhelník ze tří stran, čtverec ze strany, obdélník z rozměrů
+  const trojuhelnik = cisti.match(/strany\s+(\d+)\s*\w*,\s*(\d+)\s*\w*\s+a\s+(\d+)/);
+  if (trojuhelnik && /obvod/i.test(cisti)) {
+    return Number(trojuhelnik[1]) + Number(trojuhelnik[2]) + Number(trojuhelnik[3]);
+  }
+  const ctverec = cisti.match(/[ČčS]tverec má stranu\s+(\d+)/);
+  if (ctverec && /obvod/i.test(cisti)) return 4 * Number(ctverec[1]);
+  const obdelnik = cisti.match(/dlouh[áý]\s+(\d+)\s*\w*\s+a\s+širok[áý]\s+(\d+)/);
+  if (obdelnik && /obvod/i.test(cisti)) return 2 * (Number(obdelnik[1]) + Number(obdelnik[2]));
+  const obdelnikStrany = cisti.match(/[Oo]bdélník má strany\s+(\d+)\s*\w*\s+a\s+(\d+)/);
+  if (obdelnikStrany && /obvod/i.test(cisti)) return 2 * (Number(obdelnikStrany[1]) + Number(obdelnikStrany[2]));
+
   // „Které číslo je o 10 menší než 109?"
   const oKolik = cisti.match(/Které číslo je o\s+(\d+)\s+(menší|větší) než\s+(\d+)/);
   if (oKolik) {
