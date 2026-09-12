@@ -752,7 +752,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     emoji: "🦺",
     hints: [
-      "Spoj dva fakty: reflexní prvky pomáhají za snížené viditelnosti a v zimě se stmívá už brzy odpoledne.",
+      "Kdy je kamarádka na cestě vidět líp — ráno, nebo když jde domů v zimě odpoledne?",
       "Nerozhoduje, jak bylo ráno, ale jaké světlo bude na cestě domů. Představ si zimní odpoledne kolem páté hodiny — je ještě světlo?",
     ],
     explanation:

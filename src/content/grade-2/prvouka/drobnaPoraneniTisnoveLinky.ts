@@ -245,7 +245,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "🚲",
     hints: [
-      "Nejdřív ranku vyčistíme a pak to řekneme dospělému.",
+      "U každé možnosti se zeptej: dostane se špína z ranky, nebo naopak do ní?",
       "Mysli na dvě věci: jak z ranky dostat špínu, aby se nezanítila, a kdo ti pomůže ranku ošetřit a posoudí, jestli je to vážné.",
     ],
     solutionSteps: ["Odřené koleno nejdřív opláchneme čistou vodou a řekneme to dospělému. Písek ani sliny na ranku nepatří — zanesly by do ní špínu a bakterie."],
@@ -399,7 +399,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "🩸",
     hints: [
-      "Hlavu nakláníme dopředu, ne dozadu, a nos jemně stiskneme.",
+      "Kam by krev tekla, kdyby měl kamarád hlavu zakloněnou dozadu?",
       "Kdyby hlava byla zakloněná nebo kamarád ležel, krev by stékala do krku a mohlo by se mu udělat špatně. Jakou polohu zvolíš místo toho?",
     ],
     solutionSteps: ["Při krvácení z nosu kamaráda posadíme, hlavu nakloníme mírně dopředu a stiskneme měkkou část nosu. Zaklánět hlavu dozadu není dobré — krev by tekla do krku."],
@@ -436,7 +436,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     emoji: "🩹",
     hints: [
-      "Krvácení zastavíme jemným přitlačením čisté látky.",
+      "Co se stane, když na ránu nepřiložíš nic? A co když přiložíš něco špinavého?",
       "Mysli na dvě věci zároveň: krev je potřeba zastavit tlakem a rána se nesmí zašpinit. Co z nabídky splní obojí?",
     ],
     solutionSteps: ["Na krvácející ranu přitlačíme čistý kapesník nebo obvaz — přítlak pomůže krvácení zastavit. Písek ani špinavá látka na ránu nepatří."],
@@ -492,7 +492,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     emoji: "📍",
     hints: [
-      "Bez místa by pomoc nevěděla, kam jet.",
+      "Představ si, že do telefonu řekneš jen „někdo se zranil“. Co záchranáři pořád nevědí?",
       "Spoj dvě věci: záchranáři sednou do sanitky a musí se rozhodnout, kudy pojedou. Co jim k tomu musíš do telefonu říct?",
     ],
     solutionSteps: ["Místo je důležité proto, aby záchranáři věděli, kam přijet, a rychle nás našli. Kdyby nevěděli, kde jsme, nemohli by přijet včas."],
