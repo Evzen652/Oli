@@ -1,72 +1,146 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// Přepsáno 2026-09-11 (inventura obsahu). Dřív 8 úloh na úroveň, jedna nápověda,
+// žádná zpětná vazba. Teď tři oddělené banky:
+// L1 poznat sloveso mezi samostatnými slovy (podstatná a přídavná jména kolem
+// jednoho tématu) · L2 najít sloveso v jednoduché větě · L3 přenos: v rodině
+// příbuzných slov odlišit sloveso od názvu činnosti (zpívat × zpěv) a najít
+// sloveso ve větě, kde past tvoří název činnosti nebo kde sloveso vyjadřuje stav.
+
+// PJ podstatné jméno · CIN podstatné jméno = název činnosti · PR přídavné jméno · OK slovo o okolnosti (jak, kdy, kde)
+type Druh = "PJ" | "CIN" | "PR" | "OK";
+const PROC_NE: Record<Druh, string> = {
+  PJ: "je podstatné jméno — odpovídá na otázku kdo nebo co, neříká, co se děje",
+  CIN: "je podstatné jméno — je to jen název činnosti (odpovídá na otázku co?), neříká, že to někdo dělá",
+  PR: "je přídavné jméno — říká, jaký kdo nebo co je",
+  OK: "říká, jak, kdy nebo kde se něco děje, ale samo děj neoznačuje",
+};
+type Slovo = [string, Druh];
+const tri = (d: Slovo[]) => d.map(([w, k]) => ({ value: w, why: `„${w}“ ${PROC_NE[k]}.` })) as [Distractor, Distractor, Distractor];
+
+// ── L1: samostatná slova kolem jednoho tématu ─────────────────────────────────
+// [téma (6. pád), sloveso, co sloveso říká, tři jiná slova]
+const L1: [string, string, string, Slovo[]][] = [
+  ["psovi", "štěká", "co pes dělá", [["bouda", "PJ"], ["chlupatý", "PR"], ["obojek", "PJ"]]],
+  ["škole", "píše", "co dělá žák", [["tabule", "PJ"], ["pilný", "PR"], ["sešit", "PJ"]]],
+  ["zahradě", "kvete", "co dělá květina", [["tulipán", "PJ"], ["zelený", "PR"], ["konev", "PJ"]]],
+  ["kuchyni", "vaří", "co dělá kuchař", [["hrnec", "PJ"], ["horký", "PR"], ["polévka", "PJ"]]],
+  ["zimě", "mrzne", "co se děje, když je velká zima", [["sníh", "PJ"], ["studený", "PR"], ["sáňky", "PJ"]]],
+  ["kočce", "přede", "co dělá spokojená kočka", [["myš", "PJ"], ["hebká", "PR"], ["mléko", "PJ"]]],
+  ["lese", "roste", "co dělá strom nebo houba", [["houba", "PJ"], ["vysoký", "PR"], ["mech", "PJ"]]],
+  ["hřišti", "běhá", "co dělá dítě", [["míč", "PJ"], ["rychlý", "PR"], ["branka", "PJ"]]],
+  ["moři", "plave", "co dělá ryba", [["vlna", "PJ"], ["slaný", "PR"], ["písek", "PJ"]]],
+  ["ptácích", "zpívá", "co dělá ptáček", [["hnízdo", "PJ"], ["malý", "PR"], ["peří", "PJ"]]],
+  ["hudbě", "hraje", "co dělá muzikant", [["kytara", "PJ"], ["veselý", "PR"], ["písnička", "PJ"]]],
+  ["počasí", "prší", "co se venku děje, když padá voda z mraků", [["mrak", "PJ"], ["mokrý", "PR"], ["deštník", "PJ"]]],
+  ["obchodě", "nakupuje", "co dělá zákazník", [["košík", "PJ"], ["drahý", "PR"], ["pokladna", "PJ"]]],
+  ["noci", "spí", "co dělají děti v noci", [["postel", "PJ"], ["tmavý", "PR"], ["polštář", "PJ"]]],
+];
+
+function l1([o, v, co, d]: (typeof L1)[number]): PracticeTask {
+  return choice(`Slova o ${o}: které z nich je sloveso?`, v, tri(d), {
+    hints: [
+      `Které ze slov o ${o} říká, co někdo nebo něco dělá?`,
+      `Ke každému slovu o ${o} si polož otázku. Kdo nebo co? — to je podstatné jméno. Jaký? — to je přídavné jméno. Co dělá? — to je sloveso. Vyber slovo, které odpovídá na „co dělá“.`,
+    ],
+    explanation: `„${v}“ říká, ${co}. Označuje děj, proto je to sloveso. Ostatní slova pojmenovávají věci nebo vlastnosti.`,
+  });
 }
 
-interface PoolItem {
-  question: string;
-  correct: string;
-  distractors: string[];
-  emoji: string;
-  hint: string;
-  solution: string;
+// ── L2: sloveso v jednoduché větě ────────────────────────────────────────────
+// [věta, sloveso, kdo/co to dělá (pro vysvětlení), tři jiná slova z věty]
+const L2: [string, string, string, Slovo[]][] = [
+  ["Máma vaří v kuchyni polévku.", "vaří", "máma", [["Máma", "PJ"], ["kuchyni", "PJ"], ["polévku", "PJ"]]],
+  ["Malý pes skáče přes plot.", "skáče", "pes", [["Malý", "PR"], ["pes", "PJ"], ["plot", "PJ"]]],
+  ["Žák čte zajímavou knihu.", "čte", "žák", [["Žák", "PJ"], ["zajímavou", "PR"], ["knihu", "PJ"]]],
+  ["Studený vítr fouká od hor.", "fouká", "vítr", [["Studený", "PR"], ["vítr", "PJ"], ["hor", "PJ"]]],
+  ["Ptáci letí do teplých krajů.", "letí", "ptáci", [["Ptáci", "PJ"], ["teplých", "PR"], ["krajů", "PJ"]]],
+  ["Černá kočka sedí na střeše.", "sedí", "kočka", [["Černá", "PR"], ["kočka", "PJ"], ["střeše", "PJ"]]],
+  ["Tomáš píše dlouhý dopis.", "píše", "Tomáš", [["Tomáš", "PJ"], ["dlouhý", "PR"], ["dopis", "PJ"]]],
+  ["Na louce kvetou žluté pampelišky.", "kvetou", "pampelišky", [["louce", "PJ"], ["žluté", "PR"], ["pampelišky", "PJ"]]],
+  ["Děti staví velký hrad z písku.", "staví", "děti", [["Děti", "PJ"], ["velký", "PR"], ["hrad", "PJ"]]],
+  ["Babička peče sladkou buchtu.", "peče", "babička", [["Babička", "PJ"], ["sladkou", "PR"], ["buchtu", "PJ"]]],
+  ["Hasiči rychle hasí požár.", "hasí", "hasiči", [["Hasiči", "PJ"], ["rychle", "OK"], ["požár", "PJ"]]],
+  ["Každé ráno hlasitě zvoní starý budík.", "zvoní", "budík", [["hlasitě", "OK"], ["starý", "PR"], ["budík", "PJ"]]],
+  ["Rybář chytá v řece ryby.", "chytá", "rybář", [["Rybář", "PJ"], ["řece", "PJ"], ["ryby", "PJ"]]],
+  ["Malá Ema maluje barevného motýla.", "maluje", "Ema", [["Malá", "PR"], ["Ema", "PJ"], ["motýla", "PJ"]]],
+];
+
+const MNOZNE = new Set(["ptáci", "pampelišky", "děti", "hasiči"]);
+
+function l2([veta, v, kdo, d]: (typeof L2)[number]): PracticeTask {
+  const dela = MNOZNE.has(kdo) ? "dělají" : "dělá";
+  return choice(`Najdi sloveso ve větě: „${veta}“`, v, tri(d), {
+    // Nápověda větu necituje — obsahuje sloveso, a tím by prozradila klíč.
+    hints: [
+      `Ve větě něco ${dela} ${kdo}. Které slovo říká, co ${kdo} ${dela}?`,
+      `Polož si otázku „co ${dela} ${kdo}?“. Slovo, které na ni odpovídá, je sloveso. Slova, která odpovídají na otázku kdo, co nebo jaký (třeba ${d[0][0]} nebo ${d[1][0]}), slovesa nejsou.`,
+    ],
+    explanation: `Ve větě „${veta}“ odpovídá slovo „${v}“ na otázku „co ${dela} ${kdo}?“. Označuje děj, proto je to sloveso.`,
+  });
 }
 
-// L1: Definice slovesa + identifikace slovesa ze tří izolovaných slov
-const POOL_L1: PoolItem[] = [
-  { question: "Co označuje sloveso?", correct: "Děj nebo stav", distractors: ["Věc nebo osobu", "Vlastnost věci"], emoji: "📝", hint: "Sloveso říká, co někdo DĚLÁ nebo jak STOJÍ věci — dělá, spí, je, stojí.", solution: "Sloveso označuje děj nebo stav — říká, co osoba nebo věc dělá (běží, čte) nebo jak je (je nemocný, leží)." },
-  { question: "Která slova jsou slovesa?", correct: "Slova označující činnost nebo stav", distractors: ["Slova označující věci", "Slova označující vlastnosti"], emoji: "📖", hint: "Sloveso říká, co se děje nebo co se dělá — ne co to je nebo jaké to je.", solution: "Slovesa označují činnost nebo stav — říkají, co osoby nebo věci dělají nebo jak jsou." },
-  { question: "Které slovo je sloveso: 'pes', 'běhá', 'rychlý'?", correct: "běhá", distractors: ["pes", "rychlý"], emoji: "🐕", hint: "'Pes' je věc, 'rychlý' je vlastnost — co zbývá? Co dělá pes?", solution: "Sloveso je 'běhá' — říká, co pes dělá. 'Pes' je věc (podstatné jméno), 'rychlý' je vlastnost (přídavné jméno)." },
-  { question: "Které slovo je sloveso: 'škola', 'učit', 'velký'?", correct: "učit", distractors: ["škola", "velký"], emoji: "🏫", hint: "'Škola' je věc, 'velký' je vlastnost — co zbývá? Co se v škole dělá?", solution: "Sloveso je 'učit' — říká, co se dělá. 'Škola' je věc, 'velký' je vlastnost." },
-  { question: "Které slovo je sloveso: 'řeka', 'teče', 'modrá'?", correct: "teče", distractors: ["řeka", "modrá"], emoji: "🏞️", hint: "'Řeka' je věc, 'modrá' je vlastnost — co zbývá? Co řeka dělá?", solution: "Sloveso je 'teče' — říká, co řeka dělá. 'Řeka' je věc, 'modrá' je vlastnost." },
-  { question: "Které slovo je sloveso: 'domeček', 'pěkný', 'hrát'?", correct: "hrát", distractors: ["domeček", "pěkný"], emoji: "🏠", hint: "'Domeček' je věc, 'pěkný' je vlastnost — co zbývá? Co děti dělají?", solution: "Sloveso je 'hrát' — říká, co děti dělají. 'Domeček' je věc, 'pěkný' je vlastnost." },
-  { question: "Které slovo je sloveso: 'zpívat', 'píseň', 'hlasitý'?", correct: "zpívat", distractors: ["píseň", "hlasitý"], emoji: "🎵", hint: "'Píseň' je věc, 'hlasitý' je vlastnost — co zbývá? Co zpěvák dělá?", solution: "Sloveso je 'zpívat' — říká, co zpěvák dělá. 'Píseň' je věc, 'hlasitý' je vlastnost." },
-  { question: "Které slovo je sloveso: 'okno', 'zavřít', 'nové'?", correct: "zavřít", distractors: ["okno", "nové"], emoji: "🪟", hint: "'Okno' je věc, 'nové' je vlastnost — co zbývá? Co s oknem můžeme dělat?", solution: "Sloveso je 'zavřít' — říká, co se dělá. 'Okno' je věc, 'nové' je vlastnost." },
+// ── L3a: rodina příbuzných slov — sloveso × název činnosti ───────────────────
+// [název činnosti, sloveso, spojení s „budu“, osoba, vlastnost]
+const RODINY: [string, string, string, string, string][] = [
+  ["zpěv", "zpívat", "budu zpívat", "zpěvák", "zpěvný"],
+  ["běh", "běhat", "budu běhat", "běžec", "běžecký"],
+  ["skok", "skákat", "budu skákat", "skokan", "skokanský"],
+  ["malba", "malovat", "budu malovat", "malíř", "malovaný"],
+  ["hra", "hrát", "budu hrát", "hráč", "hravý"],
+  ["plavání", "plavat", "budu plavat", "plavec", "plavecký"],
+  ["let", "létat", "budu létat", "letec", "letecký"],
+  ["práce", "pracovat", "budu pracovat", "pracovník", "pracovitý"],
+  ["smích", "smát se", "budu se smát", "smíšek", "směšný"],
+  ["jízda", "jezdit", "budu jezdit", "jezdec", "jízdní"],
 ];
 
-// L2: Hledání slovesa v jednoduché větě
-const POOL_L2: PoolItem[] = [
-  { question: "Co dělá pes ve větě 'Pes skáče přes plot.'?", correct: "skáče", distractors: ["pes", "plot"], emoji: "🐕", hint: "Hledáme slovo, které říká, co pes DĚLÁ — ne co pes je.", solution: "Ve větě 'Pes skáče přes plot.' je sloveso 'skáče' — říká, co pes dělá." },
-  { question: "Co dělá máma ve větě 'Máma vaří polévku.'?", correct: "vaří", distractors: ["máma", "polévku"], emoji: "🍲", hint: "Hledáme slovo, které říká, co máma DĚLÁ.", solution: "Ve větě 'Máma vaří polévku.' je sloveso 'vaří' — říká, co máma dělá." },
-  { question: "Co dělá žák ve větě 'Žák čte knihu.'?", correct: "čte", distractors: ["žák", "knihu"], emoji: "📖", hint: "Hledáme slovo, které říká, co žák DĚLÁ.", solution: "Ve větě 'Žák čte knihu.' je sloveso 'čte' — říká, co žák dělá." },
-  { question: "Co dělá vítr ve větě 'Vítr fouká.'?", correct: "fouká", distractors: ["vítr", "silně"], emoji: "💨", hint: "Hledáme slovo, které říká, co vítr DĚLÁ.", solution: "Ve větě 'Vítr fouká.' je sloveso 'fouká' — říká, co vítr dělá." },
-  { question: "Co dělají ptáci ve větě 'Ptáci letí do teplých krajů.'?", correct: "letí", distractors: ["ptáci", "krajů"], emoji: "🐦", hint: "Hledáme slovo, které říká, co ptáci DĚLAJÍ.", solution: "Ve větě 'Ptáci letí do teplých krajů.' je sloveso 'letí' — říká, co ptáci dělají." },
-  { question: "Co dělá kočka ve větě 'Kočka sedí na střeše.'?", correct: "sedí", distractors: ["kočka", "střeše"], emoji: "🐱", hint: "Hledáme slovo, které říká, co kočka DĚLÁ nebo jak se nachází.", solution: "Ve větě 'Kočka sedí na střeše.' je sloveso 'sedí' — říká, jak se kočka nachází." },
-  { question: "Co dělá slunce ve větě 'Slunce svítí.'?", correct: "svítí", distractors: ["slunce", "jasně"], emoji: "☀️", hint: "Hledáme slovo, které říká, co slunce DĚLÁ.", solution: "Ve větě 'Slunce svítí.' je sloveso 'svítí' — říká, co slunce dělá." },
-  { question: "Co dělá Tomáš ve větě 'Tomáš píše dopis.'?", correct: "píše", distractors: ["Tomáš", "dopis"], emoji: "✏️", hint: "Hledáme slovo, které říká, co Tomáš DĚLÁ.", solution: "Ve větě 'Tomáš píše dopis.' je sloveso 'píše' — říká, co Tomáš dělá." },
+function rodina([n, v, budu, osoba, vl]: (typeof RODINY)[number]): PracticeTask {
+  return choice(`Slova jsou příbuzná se slovem „${n}“. Které z nich je sloveso?`, v, [
+    { value: n, why: `„${n}“ ${PROC_NE.CIN}.` },
+    { value: osoba, why: `„${osoba}“ je podstatné jméno — pojmenovává osobu (kdo?), ne děj.` },
+    { value: vl, why: `„${vl}“ ${PROC_NE.PR}.` },
+  ], {
+    hints: [
+      `Které slovo z rodiny „${n}“ můžeš spojit se slovem „budu“ nebo „budeš“?`,
+      `Pozor: „${n}“ je taky činnost, ale jen její název — odpovídá na otázku co? Sloveso říká, co někdo dělá, a dá se s ním říct „já budu…“ nebo „ty budeš…“. Osoba (kdo?) ani vlastnost (jaký?) sloveso není.`,
+    ],
+    explanation: `„${v}“ je sloveso — říká, co někdo dělá, a můžeš říct „${budu}“. „${n}“ je jen název té činnosti, „${osoba}“ pojmenovává osobu a „${vl}“ vlastnost.`,
+  });
+}
+
+// ── L3b: sloveso ve větě s pastí (název činnosti) nebo se slovesem stavu ─────
+interface Rucni { veta: string; v: string; d: Slovo[]; h: [string, string]; e: string }
+const PASTI: Rucni[] = [
+  {
+    veta: "Zpěv ptáků nás ráno budí.", v: "budí", d: [["Zpěv", "CIN"], ["ptáků", "PJ"], ["ráno", "OK"]],
+    h: ["Jedno slovo ve větě zní jako činnost, ale je to název. Co zpěv ptáků dělá?", "„Zpěv“ odpovídá na otázku co? — je to podstatné jméno. Hledej slovo, které odpovídá na otázku „co dělá zpěv ptáků?“. Takové slovo je sloveso."],
+    e: "Slovo „budí“ odpovídá na otázku „co dělá zpěv ptáků?“, proto je sloveso. „Zpěv“ je jen název činnosti — podstatné jméno.",
+  },
+  {
+    veta: "Běh na lyžích mě moc baví.", v: "baví", d: [["Běh", "CIN"], ["lyžích", "PJ"], ["moc", "OK"]],
+    h: ["„Běh“ zní jako činnost. Je to ale sloveso, nebo název? Co běh na lyžích dělá?", "Zkus říct „já budu běh“ — nejde to, „běh“ je podstatné jméno. Hledej slovo, které odpovídá na otázku „co dělá běh na lyžích?“."],
+    e: "„Baví“ odpovídá na otázku „co dělá běh na lyžích?“, proto je sloveso. „Běh“ je název činnosti, tedy podstatné jméno.",
+  },
+  {
+    veta: "Po obědě je čas na odpočinek.", v: "je", d: [["obědě", "PJ"], ["čas", "PJ"], ["odpočinek", "CIN"]],
+    h: ["V této větě nikdo nic nedělá. Které slovo vyjadřuje stav?","Sloveso neoznačuje jen činnost, ale i stav — třeba „být“, „ležet“, „spát“. Zkus každé slovo spojit s „já“: které z nich se dá říct jako „já jsem“? „Odpočinek“ je jen název činnosti."],
+    e: "Slovo „je“ patří ke slovesu „být“ a označuje stav. I stav je děj, proto je „je“ sloveso. „Odpočinek“ je podstatné jméno.",
+  },
+  {
+    veta: "Dědeček leží v posteli nemocný.", v: "leží", d: [["Dědeček", "PJ"], ["posteli", "PJ"], ["nemocný", "PR"]],
+    h: ["Dědeček nic nedělá, ale nějak se má. Které slovo říká, v jakém je stavu?", "Sloveso může označovat i stav, kdy se nic nehýbe (sedí, stojí, spí). Slovo „nemocný“ říká, jaký dědeček je — to je vlastnost. Hledej slovo, které odpovídá na otázku „co dělá dědeček?“."],
+    e: "„Leží“ odpovídá na otázku „co dělá dědeček?“ a označuje stav, proto je to sloveso. „Nemocný“ je vlastnost — přídavné jméno.",
+  },
 ];
 
-// L3: Delší / složitější věty + rozlišení slovesa od podobných slov (zpěv vs. zpívat)
-const POOL_L3: PoolItem[] = [
-  { question: "Co dělá dítě ve větě 'Dítě stojí u okna a dívá se ven.'?", correct: "stojí", distractors: ["dítě", "okna"], emoji: "🧒", hint: "Ve větě jsou dvě slovesa — vyber to první. Co dítě dělá u okna?", solution: "Ve větě je sloveso 'stojí' — říká, jak se dítě nachází. Druhé sloveso 'dívá se' by bylo také správně." },
-  { question: "Co označuje slovo 'spát'?", correct: "Co osoba dělá (děj)", distractors: ["Věc nebo osobu", "Vlastnost"], emoji: "😴", hint: "Spát je to, co děláme v noci — popisuje DĚJ nebo STAV.", solution: "Slovo 'spát' je sloveso — označuje děj (stav spánku), který osoba nebo živočich prožívá." },
-  { question: "Které slovo je sloveso: 'radost', 'smát se', 'veselý'?", correct: "smát se", distractors: ["radost", "veselý"], emoji: "😄", hint: "'Radost' je věc, 'veselý' je vlastnost — co zbývá? Co děláme, když jsme veselí?", solution: "Sloveso je 'smát se' — říká, co děláme. 'Radost' je věc, 'veselý' je vlastnost." },
-  { question: "Které slovo je sloveso: 'zpěv', 'zpívat', 'zpěvný'?", correct: "zpívat", distractors: ["zpěv", "zpěvný"], emoji: "🎶", hint: "'Zpěv' je věc (co slyšíme), 'zpěvný' je vlastnost — co dělá zpěvák?", solution: "Sloveso je 'zpívat' — říká, co zpěvák dělá. 'Zpěv' je podstatné jméno (věc), 'zpěvný' je přídavné jméno (vlastnost)." },
-  { question: "Které slovo je sloveso: 'běh', 'běhat', 'rychlý'?", correct: "běhat", distractors: ["běh", "rychlý"], emoji: "🏃", hint: "'Běh' je věc (název činnosti), 'rychlý' je vlastnost — co dělá závodník?", solution: "Sloveso je 'běhat' — říká, co závodník dělá. 'Běh' je podstatné jméno (věc), 'rychlý' je přídavné jméno (vlastnost)." },
-  { question: "Které slovo je sloveso: 'skok', 'skočit', 'vysoký'?", correct: "skočit", distractors: ["skok", "vysoký"], emoji: "🤸", hint: "'Skok' je věc (výsledek), 'vysoký' je vlastnost — co sportovec udělá?", solution: "Sloveso je 'skočit' — říká, co sportovec udělá. 'Skok' je podstatné jméno, 'vysoký' je přídavné jméno." },
-  { question: "Jaké sloveso najdeš ve větě 'Starý pes leží u dveří a spí.'?", correct: "leží", distractors: ["starý", "pes"], emoji: "🐶", hint: "Ve větě jsou dvě slovesa. Vyber to první — co pes dělá u dveří?", solution: "První sloveso je 'leží' — říká, jak se pes nachází. 'Starý' je vlastnost, 'pes' je věc." },
-  { question: "Které slovo je sloveso: 'smích', 'smát se', 'smějící'?", correct: "smát se", distractors: ["smích", "smějící"], emoji: "😂", hint: "'Smích' je věc, 'smějící' je vlastnost (přídavné jméno) — co děláme, když nám je veselo?", solution: "Sloveso je 'smát se' — říká, co děláme. 'Smích' je podstatné jméno (věc), 'smějící' je přídavné jméno (vlastnost)." },
-];
+const past = (x: Rucni): PracticeTask => choice(`Najdi sloveso ve větě: „${x.veta}“`, x.v, tri(x.d), { hints: x.h, explanation: x.e });
 
 function gen(level: number): PracticeTask[] {
-  const pool = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).map(item => {
-    const options = shuffle([item.correct, ...item.distractors]);
-    return {
-      question: item.question,
-      correctAnswer: item.correct,
-      options,
-      emoji: item.emoji,
-      hints: [item.hint],
-      explanation: item.solution,
-    };
-  });
+  if (level === 1) return shuffle(L1).map(l1);
+  if (level === 2) return shuffle(L2).map(l2);
+  return shuffle([...RODINY.map(rodina), ...PASTI.map(past)]);
 }
 
 export const SLOVESA: TopicMetadata[] = [
