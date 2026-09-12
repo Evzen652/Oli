@@ -31,7 +31,7 @@ const POOL_L1: PracticeTask[] = [
     "Vcítit se do pocitů druhého člověka",
     [
       ["Být nejlepší ve třídě", "Být nejlepší je o výkonu, ne o tom, jak rozumíš druhým lidem."],
-      ["Dělat si, co chci", "Dělat si, co chci, je pravý opak — vůbec se tím nezabývám tím, co prožívá někdo jiný."],
+      ["Dělat si, co chci", "Dělat si, co chci, je pravý opak — vůbec se nezabývám tím, co prožívá někdo jiný."],
       ["Mluvit hodně hlasitě", "Hlasitost o pocitech nic neříká. Empatie je tichá schopnost, ne způsob mluvy."],
     ],
     "Slovo empatie má základ ve slově „cítit“.",
@@ -290,7 +290,7 @@ const POOL_L2: PracticeTask[] = [
       ["Lhostejnost k druhým", "Lhostejnému je cizí nemoc jedno a nikam nejde."],
     ],
     "Kamarád je zrovna v nesnázích a ty k němu jdeš.",
-    "Nemuseli jsi jít nikam a nikdo by si toho nevšiml. Přesto to uděláš. Které dvě vlastnosti se takovým činem projevují?",
+    "Nemusel bys jít nikam a nikdo by si toho nevšiml. Přesto to uděláš. Které dvě vlastnosti se takovým činem projevují?",
     "Navštívit nemocného kamaráda a pomoct mu s učivem je projevem věrnosti a ochoty pomoct — základních znaků dobrého kamarádství.",
   ),
   t(
@@ -489,7 +489,7 @@ const POOL_L3: PracticeTask[] = [
     "Tolerance a úcta k člověku neznamenají, že musíme souhlasit s nepravdivým tvrzením. Můžeme slušně vysvětlit fakta, aniž bychom se druhému posmívali nebo ho odmítli.",
   ),
   t(
-    "Skupina spolužáků záměrně nikoho nezve, aby si s nimi hrál, a jednomu spolužáku dlouhodobě říkají, že je hloupý. Je to jen konflikt, a co bys měl udělat?",
+    "Skupina spolužáků záměrně nezve jednoho kluka do hry a dlouhodobě mu říká, že je hloupý. Je to jen konflikt, a co bys měl udělat?",
     "Ne, je to psychické násilí (šikana) — je třeba to nahlásit dospělému",
     [
       ["Ano, je to jen běžný konflikt, časem to samo přejde", "Dlouhodobé urážky samy nepřejdou. Konflikt je jedna neshoda, ne měsíce ponižování."],

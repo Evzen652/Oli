@@ -174,7 +174,7 @@ const POOL_L1: PracticeTask[] = [
       ["Kolik měst je na mapě zakresleno", "Města by sis musel spočítat sám. Tenhle údaj se týká zmenšení."],
     ],
     "Tenhle údaj se týká velikosti, ne významu symbolů.",
-    "Zápis 1:100 000 znamená, že jeden centimetr na papíře odpovídá stotisíci centimetrům v krajině. Je to tedy informace o rozměrech, nebo o významu značek?",
+    "Zápis 1:100 000 znamená, že jeden centimetr na papíře odpovídá sto tisícům centimetrů v krajině. Je to tedy informace o rozměrech, nebo o významu značek?",
     "Měřítko mapy prozradí, o kolik je mapa zmenšená oproti skutečnosti, a umožní přepočítat vzdálenosti. Co znamenají značky a barvy, řekne naopak legenda.",
   ),
   t(

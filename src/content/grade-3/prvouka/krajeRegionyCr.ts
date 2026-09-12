@@ -67,16 +67,16 @@ const POOL_L1: PracticeTask[] = [
     "Region je oblast, která má společné znaky — například stejnou přírodu, historii nebo kulturu. Nemusí mít přesně dané hranice jako kraj. Příkladem je Haná nebo Chodsko.",
   ),
   t(
-    "Kolik krajských měst má Česká republika?",
-    "14",
+    "Který kraj leží celý kolem Prahy?",
+    "Středočeský kraj",
     [
-      ["13", "O jedno míň — nezapomeň, že i Praha je krajem a zároveň krajským městem."],
-      ["12", "Dvanáct je málo. Každý jednotlivý kraj má vlastní krajské město, žádný o ně nepřišel."],
-      ["15", "O jedno navíc. Žádný kraj nemá dvě krajská města."],
+      ["Ústecký kraj", "Ústecký kraj leží na severu Čech u Labe a u německé hranice, hlavní město neobklopuje."],
+      ["Plzeňský kraj", "Plzeňský kraj je na západě Čech. Mezi ním a hlavním městem leží ještě jiný kraj."],
+      ["Jihomoravský kraj", "Jihomoravský kraj leží na Moravě, a to je od hlavního města daleko na východ."],
     ],
-    "Každý kraj má právě jedno krajské město — ani víc, ani míň.",
-    "Když má každý kraj právě jedno takové město, musí jich být přesně tolik jako krajů. Vzpomeň si tedy nejdřív na počet krajů a to číslo rovnou použij.",
-    "Česká republika má 14 krajů a každý kraj má své krajské město — dohromady tedy 14 krajských měst. I kraj Vysočina má své krajské město, i když se nejmenuje stejně jako kraj.",
+    "Praha jako kraj nesousedí s žádným cizím státem.",
+    "Vyřaď nejdřív kraj, který leží na Moravě, a potom kraje u německé hranice. Zůstane ten, který se rozkládá kolem hlavního města ze všech stran.",
+    "Praha je samostatný kraj, ale ze všech stran ji obklopuje Středočeský kraj. Právě proto sídlí krajský úřad Středočeského kraje v Praze, i když do tohoto kraje Praha nepatří.",
   ),
   t(
     "Které město je zároveň hlavním městem státu i samostatným krajem?",
@@ -184,7 +184,7 @@ const POOL_L1: PracticeTask[] = [
     ],
     "Kdyby jich bylo víc, nebylo by jasné, kam na úřad jet.",
     "Krajský úřad je v kraji jen jeden a musí někde sídlit. Kolik měst tedy může tuhle roli v jednom kraji zastávat?",
-    "Každý kraj má právě jedno krajské město, ve kterém sídlí jeho úřad. Proto je krajských měst v republice stejně jako krajů.",
+    "Každý kraj má právě jedno krajské město, ve kterém sídlí jeho úřad. Obyvatelé kraje tak vždy vědí, kam mají na úřad jet.",
   ),
 ];
 
@@ -245,9 +245,9 @@ const POOL_L2: PracticeTask[] = [
       ["Třebíč", "Třebíč je město téhož kraje se slavnou židovskou čtvrtí, centrem kraje ale není."],
       ["Žďár nad Sázavou", "Žďár nad Sázavou patří do stejného kraje, krajskou správu však nemá."],
     ],
-    "Tenhle kraj jako jediný nenese jméno svého krajského města.",
+    "Jméno tohoto kraje ti název jeho města neprozradí.",
     "Jméno kraje vzniklo z názvu krajiny — kopcovité vrchoviny uprostřed republiky. Město tedy podle kraje neuhodneš; hledej to, které leží přibližně ve středu státu.",
-    "Jihlava je krajské město kraje Vysočina. Leží přibližně ve středu České republiky. Vysočina je jediný kraj, který nemá v názvu jméno svého krajského města.",
+    "Jihlava je krajské město kraje Vysočina. Leží přibližně ve středu České republiky. Vysočina je jediný kraj pojmenovaný podle krajiny — kopcovité vrchoviny, a ne podle města.",
   ),
   t(
     "Jaké je krajské město Karlovarského kraje?",
@@ -361,16 +361,16 @@ const POOL_L2: PracticeTask[] = [
 
 const POOL_L3: PracticeTask[] = [
   t(
-    "Který kraj je jedinou výjimkou — jeho krajské město se nejmenuje stejně jako kraj?",
+    "Který kraj dostal jméno podle krajiny, a ne podle svého krajského města?",
     "Kraj Vysočina",
     [
-      ["Plzeňský kraj", "Ten se jmenuje přesně podle svého krajského města, takže výjimkou není."],
+      ["Plzeňský kraj", "Ten se jmenuje přesně podle svého krajského města, žádnou krajinu název nepopisuje."],
       ["Zlínský kraj", "I ten nese jméno svého krajského města na východní Moravě."],
       ["Olomoucký kraj", "Také jeho název vznikl ze jména krajského města na střední Moravě."],
     ],
-    "Většina krajů si vzala jméno po svém hlavním městě — hledej ten, který ne.",
-    "Jeden jediný kraj dostal jméno podle typu krajiny, ve které leží, a ne podle města. Projdi nabízené názvy a najdi ten, který žádné české město nepřipomíná.",
-    "Kraj Vysočina je jediný, jehož krajské město (Jihlava) se nejmenuje stejně jako kraj. Jeho název vznikl z názvu kopcovité krajiny, ostatní kraje se jmenují po svém městě.",
+    "Tři z nabízených názvů vznikly ze jména města.",
+    "Projdi názvy jeden po druhém a hledej ten, který žádné české město nepřipomíná. Popisuje totiž kopcovitý typ krajiny uprostřed republiky.",
+    "Kraj Vysočina dostal jméno z názvu kopcovité krajiny, a ne podle svého krajského města — tím je Jihlava. Zlínský, Olomoucký i Plzeňský kraj naopak nesou jméno svého krajského města.",
   ),
   t(
     "Krajský úřad sídlí v Jihlavě. Který kraj tedy spravuje?",
@@ -382,7 +382,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     "Postupuj obráceně než obvykle: od města ke kraji.",
     "U většiny krajů bys jméno města v názvu kraje našel — tady ne. Vzpomeň si, který kraj se jako jediný jmenuje podle krajiny, a ověř, které město ho spravuje.",
-    "Jihlava je krajské město kraje Vysočina, takže krajský úřad v ní spravuje právě tento kraj. Je to jediný kraj, jehož jméno neprozradí, kde jeho úřad sídlí.",
+    "Jihlava je krajské město kraje Vysočina, takže krajský úřad v ní spravuje právě tento kraj. Jméno kraje vzniklo z názvu krajiny, a proto samo neprozradí, kde úřad sídlí.",
   ),
   t(
     "Jihočeský kraj i Jihomoravský kraj mají v názvu slovo „Jiho-“. Které krajské město patří k tomu jihočeskému?",
@@ -588,7 +588,7 @@ export const KRAJEREGIONYCR: TopicMetadata[] = [
       commonMistake:
         "Středočeský kraj nemá vlastní krajské město — jeho správa sídlí v Praze, ale Praha do Středočeského kraje nepatří.",
       example:
-        "Jihomoravský kraj — krajské město Brno. Vysočina — krajské město Jihlava (jediný kraj bez jména města v názvu).",
+        "Jihomoravský kraj — krajské město Brno. Vysočina — krajské město Jihlava (kraj pojmenovaný podle krajiny, ne podle města).",
     },
   },
 ];
