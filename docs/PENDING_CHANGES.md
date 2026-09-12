@@ -7,6 +7,20 @@
 
 ---
 
+## 🟠 Lint shody hlásí planý poplach u jmenné části přísudku (2026-09-12)
+
+`czechAgreementLint.ts` označí větu **„0,3 m je 3 desetiny metru"** za chybu
+a chce „jsou 3 desetiny". Spona se tu ale shoduje s podmětem („0,3 m",
+jednotné číslo), ne s číslovkou ve jmenné části přísudku. Pravidlo bere
+povrchově první číslovku za slovesem, takže nerozliší „k nule **jsou** 2 díly"
+(tam je číslovka podmět, hlásí správně) od „0,3 m **je** 3 desetiny" (tam je
+přísudek, hlásí špatně).
+
+Našlo se to při kontrole `g5mat-b`: oprava tvaru („3 desetin" → „3 desetiny")
+ten poplach probudila. Větu jsem přeformuloval, aby neblokovala CI, ale
+**pravidlo je pořád děravé** a příští autor na to narazí znovu. Patří do
+sekce „nesmí hlásit" v `czech-agreement-lint.test.ts`.
+
 ## ✅ Lint shody přísudku s číslovkou (2026-09-12)
 
 `src/lib/czechAgreementLint.ts` + `scripts/lint-agreement.ts`. Audit lintuje
@@ -15,15 +29,27 @@ Našel 5 chyb v zamrazeném obsahu 5. a 6. ročníku a 8 v dávkách čekající
 kritika. Dvakrát ale nejdřív vyrobil falešný poplach na správné větě, proto má
 test sekci „nesmí hlásit" — nová pravidla musí projít i tou.
 
-**Jak ho pustit na obsah mimo `main`:** do worktree zkopíruj
-`src/lib/czechAgreementLint.ts`, `src/lib/czechGrammar.ts` a
-`scripts/lint-agreement.ts`, pusť `IDS=<témata> npx vite-node
-scripts/lint-agreement.ts`, pak kopie smaž a `git checkout -- src/lib/czechGrammar.ts`.
+**Jak ho pustit na obsah mimo `main`:** rovnou ve worktree
+`IDS=<témata> npx vite-node scripts/lint-agreement.ts`. **Nic nekopíruj** —
+`czechAgreementLint.ts`, `czechGrammar.ts` i skript ve větvích `content-fix/*`
+jsou (ověřeno u všech tří dávek) a jsou shodné s `main`. Dřív tu stálo, že tam
+nejsou; podle toho se kopírovalo a při úklidu se pak mazaly skutečné soubory
+větve.
 
 ## ▶ PŘEDÁNÍ 2026-09-12 — co udělat jako první
 
-1. **Kritik na `g5mat-a`, `g5mat-b`, `g4-6-mix`** (autoři hotovi, commity
-   `6363b28`, `46fc9e8`, `59f79ab`). Postup: `docs/SESSION_HANDOFF.md` §1.
+1. ✅ **Kritici jsou hotoví u všech tří zbylých dávek** — `g5mat-a` (`28b5be6`),
+   `g5mat-b` (`9068e1d`), `g4-6-mix` (`d50de2d`). **Všechny tři commity jsou
+   jen lokálně ve worktree `wf_84b89ce1-8c0-20`, `-21` a `-22`, nepushnuté.**
+   Dohromady 17 nálezů; klíče samotné sedí — 36 972 úloh přepočítáno ze znění
+   zadání vlastními parsery, 0 neshod. Detail: `PROJECT_STATUS.md` §6,
+   session 40.
+
+   📌 **Vzorec napříč oběma dávkami:** autoři používají `pad`/`plural` skoro
+   všude, ale zapomenou na pár míst ve `solutionSteps` a ve zpětné vazbě —
+   „3 řad", „4 kostek", „o 2 let víc". Stojí za zvážení kontrola, která hlídá
+   číslovku 1–4 následovanou 2. pádem množného čísla; `lint-agreement` tuhle
+   třídu nevidí, protože řeší shodu přísudku, ne tvar po číslovce.
 2. **Sloučit je do `main`** — pozor na past s `frozen_content_unchanged`
    (tři témata mění zadání/klíč) a na to, že `g5mat-b` opravuje chybu, která
    je do sloučení v produkci (klíč 22 místo 14 u číselné řady).
@@ -60,10 +86,32 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
    v `hintLeakage` odstraňuje `„`, ale ne `“`, takže za uvozovkou nevidí
    hranici slova. Autoři to museli obcházet v obsahu — patří to opravit
    v kontrolách.
-2. **`parovani` v `src/content/grade-5/_shared.ts`** skládá velkou nápovědu
-   tak, že končí utrženou větou o jiné dvojici („…doplň vylučováním. V Římě
-   stojí Koloseum…"). Je to i na `main`, týká se všech témat, která helper
-   používají.
+2. 🔴 **`doplnVelkou` v `src/content/grade-5/_shared.ts` prozrazuje řešení.**
+   (Dřív tu stálo jen „končí utrženou větou o jiné dvojici" — je to horší než
+   kosmetika.) Velká nápověda má být o pětinu delší než malá a `doplnVelkou`
+   si na dorovnání délky bere **nejdřív `proc` DALŠÍCH položek té úlohy**
+   a teprve potom obecné strategie:
+
+   ```ts
+   hints: [h0, doplnVelkou(h0, h1, [...xs.slice(2).map((x) => x.proc), ...STRATEGIE_PAROVANI])],
+   ```
+
+   U tříprvkové sady (L1) tak nápověda rozebere dvě dvojice ze tří a třetí
+   vyjde vylučováním — nápověda řeší celou úlohu. Změřeno na bance evropských
+   států: **L1 13 %, L2 35 %, L3 72 %** úloh má v nápovědě ≥ 2 dvojice.
+   Stejný vzorec je i v `chronologie` (řádek 159) a `trideni` (řádek 218).
+
+   **Oprava je na jeden řádek** — dát strategie do seznamu první a `proc`
+   ostatních položek až za ně (dvě věty strategie ~110 znaků délku dorovnají
+   skoro vždy, takže se na `proc` nedojde).
+
+   **Proč to nespravil kritik dávky:** helper používá **17 témat 5. ročníku**
+   a 16 z nich je už zamrazených v produkci — oprava přepíše nápovědy napříč
+   nimi a je to rozhodnutí uživatele, ne dávky. V `g4-6-mix` se to obešlo
+   lokálně (`odlisSadu` přilepené dvojice uřízne), protože tam nový obal
+   `odlisSadu` cíl 1,2× zvedal a únik na L1 zhoršoval z 13 % na 40 %.
+   `check-hint-leak.ts` tuhle třídu nevidí — porovnává nápovědu s
+   `correctAnswer`, a ten je u `match_pairs` jen řetězec „match".
 3. **Tiché mizení úloh:** u převodů jednotek obsahu se tři z pěti převodů na
    větší jednotku vůbec negenerovaly — duplicitní distraktor způsobil, že
    `ciselnaUloha` vracela `null`. Audit to neukáže: co nevznikne, nemá co
@@ -76,7 +124,25 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
 2. **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy, >1,9× delší než
    nejkratší distraktor). Žák může odpovídat podle délky. Je to vzorec
    napříč repem, ne chyba jedné dávky — chtělo by to kontrolu jako
-   `check:hints`.
+   `check:hints`. (Nejkřiklavější kus z `g4-6-mix` — klíč „trpělivá
+   a laskavá" proti třem jednoslovným — opraven na místě.)
+3. **Dvě kontroly hlásí u čtení tabulek planý poplach** (`g4-mat-tabulky-diagramy-4`,
+   posouzeno ručně, ponecháno beze změny):
+   - `docs-check` hlásí „klíč ve znění otázky" u otázky „Které ovoce má
+     nejraději nejvíc žáků?". Klíč je název řádku tabulky — jenže v zadání
+     jsou **všechny čtyři** možnosti, takže se z toho nedá nic vyčíst.
+     Kontrola je psaná na `select_one`, kde odpověď v zadání stát nemá.
+   - `audit-topic` hlásí `sentence_complexity` 26 slov (max 18 pro 4. ročník).
+     Vlastní otázka má 6 slov („Kolik vstupenek se prodalo v pondělí?");
+     zbytek jsou řádky diagramu, které nemají koncovou interpunkci, takže je
+     heuristika spolkne do jedné věty.
+4. **Vymyšlené významy mezi rozptylovači** u „Co znamená slovo X ve větě Y?"
+   (`g5-cjl-…-mnohoznacna`): „trávník" u *pera*, „pata hory" u *nohy*,
+   „šedá barva" u *myši*, „sponka do vlasů" u *zámku*. Kritik je **nechal** —
+   dají se číst jako povrchové návnady (věta o *peru* nalezeném **v trávě**),
+   ne jako omyl. „list na kytaře" opraven, tam žádná návnada není. Stojí za
+   rozhodnutí, jestli má tenhle typ úlohy mít mezi možnostmi jen skutečné
+   významy toho slova.
 
 ## 🟠 Historie zadání — workflow `content-fix-87` (2026-09-11, session 38)
 

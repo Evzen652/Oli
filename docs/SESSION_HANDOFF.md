@@ -87,16 +87,22 @@ Každá dávka = autor napíše/opraví, pak ji projde **nezávislý kritik**.
 | stav | dávek | témat |
 |---|---|---|
 | ✅ autor i kritik, **sloučeno do `main`** (v produkci) | 19 | 74 |
-| 🟠 **autor hotov, čeká kritik** | 3 | 13 |
+| 🟡 **autor i kritik hotov, čeká push a sloučení** | 3 | 13 |
+| 🟠 autor hotov, čeká kritik | 0 | 0 |
 
-**Tři dávky, které zbývají** — autoři je dopsali 12. 9. večer, kritik na ně
-nedošel (kredit):
+**Autorská i kritická část je hotová u všech 22 dávek.** Zbývají tři dávky,
+které čekají na push a sloučení — **žádný z těch commitů není na `origin`:**
 
-| dávka | commit autora | worktree |
-|---|---|---|
-| `g5mat-a` | `6363b28` | `.claude/worktrees/wf_84b89ce1-8c0-20` |
-| `g5mat-b` | `46fc9e8` | `.claude/worktrees/wf_84b89ce1-8c0-21` |
-| `g4-6-mix` | `59f79ab` | `.claude/worktrees/wf_84b89ce1-8c0-22` |
+| dávka | commit autora | kritik | worktree |
+|---|---|---|---|
+| `g5mat-a` | `6363b28` | ✅ `28b5be6` — **jen lokálně, nepushnuto** | `.claude/worktrees/wf_84b89ce1-8c0-20` |
+| `g5mat-b` | `46fc9e8` | ✅ `9068e1d` — **jen lokálně, nepushnuto** | `.claude/worktrees/wf_84b89ce1-8c0-21` |
+| `g4-6-mix` | `59f79ab` | ✅ `d50de2d` — **jen lokálně, nepushnuto** | `.claude/worktrees/wf_84b89ce1-8c0-22` |
+
+⚠️ **Větve dávek sáhly jen na své obsahové soubory.** `git diff main` v nich
+ukazuje i dokumentaci a skripty, ale to je pohyb `main` od merge-base, ne
+změna větve — `git merge --squash` proto nic v dokumentaci nepřepíše.
+Ověřuj to `git diff $(git merge-base main HEAD) HEAD --stat`, ne `git diff main`.
 
 Větve `origin/wip/content-fix/*` jsou tím **překonané** — byly to pojistky
 rozdělané práce, dnes je všechno v commitech. Nepoužívej je.
@@ -105,15 +111,32 @@ rozdělané práce, dnes je všechno v commitech. Nepoužívej je.
 
 1. `cd` do worktree dávky. Worktree existují, nejsou locked a `node_modules`
    junction v nich funguje.
-2. **Nejdřív strojové kontroly, ať nečteš to, co spočítá skript.** Zkopíruj
-   si je z `main` (ve větvi nejsou):
+2. **Nejdřív strojové kontroly, ať nečteš to, co spočítá skript.** Pusť je
+   rovnou z větve s `IDS=<témata dávky>`:
    ```
-   cp /c/Users/Evzen/Desktop/OLI/scripts/{check-keys-arith,check-keys-tables,lint-agreement,check-hint-leak}.ts scripts/
-   cp /c/Users/Evzen/Desktop/OLI/src/lib/czechAgreementLint.ts src/lib/
-   cp /c/Users/Evzen/Desktop/OLI/src/lib/czechGrammar.ts src/lib/czechGrammar.ts
+   IDS=<témata> npx vite-node scripts/check-keys-arith.ts
+   IDS=<témata> npx vite-node scripts/check-keys-tables.ts
+   IDS=<témata> npx vite-node scripts/lint-agreement.ts
+   IDS=<témata> npx vite-node scripts/check-hint-leak.ts
    ```
-   Pusť je s `IDS=<témata dávky>`. Na konci kopie smaž a
-   `git checkout -- src/lib/czechGrammar.ts`.
+   ⚠️ **Nekopíruj je z `main`.** Dřívější znění tvrdilo, že ve větvi nejsou —
+   **jsou tam a jsou s `main` shodné** (ověřeno 12. 9. na `g5mat-a`). Kdo je
+   zkopíruje, smaže při úklidu skutečné soubory větve; vrací je
+   `git checkout -- scripts/… src/lib/czechAgreementLint.ts`.
+
+   ⚠️ **U geometrie a pojmových témat tyhle skripty nic neověří** — hlásí
+   „nepokryto vzorem" u všech úloh, protože neumí jejich tvar zadání.
+   `PASS` z nich tedy není důkaz. U `g5mat-a` musel kritik napsat vlastní
+   přepočet klíče ze znění zadání (parser + vlastní tabulky os) — teprve ten
+   ověřil 6 974 úloh.
+
+   ⚠️ **`check-hint-leak.ts` nevidí `match_pairs`, `categorize` ani
+   `drag_order`.** Porovnává nápovědu s `correctAnswer`, a ten je u těch typů
+   jen řetězec „match" / „categorize" / „order" — skutečné řešení je v
+   `pairs` / `categories` / `items`. U `g4-6-mix` tak proklouzla nápověda,
+   která rozebrala dvě dvojice ze tří a třetí nechala vyjít vylučováním.
+   U těchhle typů si napiš vlastní kontrolu: *kolik dvojic/položek nápověda
+   rozebere?* Jedna je záměr (ukázková úvaha), dvě a víc řeší úlohu.
 3. Co skript nepokryje, vyřeš sám a porovnej s klíčem. Šablonovaná zpětná
    vazba: kontroluj, že čísla v ní sedí ke konkrétní úloze — tam se chyby
    schovávají.
@@ -132,13 +155,27 @@ nechat ležet.
 #### Co mají kritici u těchhle tří dávek ověřit přednostně
 
 Autoři sami hlásí, co opravili — kritik to má potvrdit nezávisle:
-- `g5mat-b`: u řady se střídavými kroky (`8, 13, 10, 15, 12, 17, ?`) byl
-  **klíč 22 místo 14** a správná odpověď se nabízela jako distraktor.
+- `g5mat-b`: ✅ **ověřeno 12. 9.** — u řady se střídavými kroky
+  (`8, 13, 10, 15, 12, 17, ?`) byl **klíč 22 místo 14** a správná odpověď se
+  nabízela jako distraktor. Po opravě vychází 14 a 22 je distraktor.
   **Tahle chyba je pořád na `main`, tedy v produkci**, dokud se dávka nesloučí.
-- `g5mat-a`: tři z pěti převodů jednotek obsahu na větší jednotku se vůbec
-  negenerovaly (duplicitní distraktor → `ciselnaUloha` vracela `null`).
-- `g4-6-mix`: klíč „bouřka" stál doslova v zadání; nápovědy u diagramů nesly
-  jen jeden řádek tabulky (51 duplicit).
+  Kritik našel navíc pět ručně psaných tvarů po číslovce, dvě vadné vazby
+  a nejednoznačné zadání „Kolik pravých úhlů má lichoběžník?" — detail
+  v `PROJECT_STATUS.md` §6, session 40.
+- `g5mat-a`: ✅ **ověřeno 12. 9.** — tři z pěti převodů jednotek obsahu na
+  větší jednotku se opravdu negenerovaly (duplicitní distraktor →
+  `ciselnaUloha` vracela `null`) a po opravě se generuje všech pět. Kritik
+  našel navíc tři chyby v textech kolem klíče (tvar „3 řad", zpětná vazba
+  u „4 osy" si odporovala u H/I/O/X, nepravdivé zobecnění o trojúhelnících) —
+  detail v `PROJECT_STATUS.md` §6, session 40.
+- `g4-6-mix`: ✅ **ověřeno 12. 9.** — klíč „bouřka" v zadání doslova nestojí
+  („prudký déšť s hromy a blesky") a nápovědy u diagramů nesou všechny řádky.
+  Kritik našel navíc **nápovědu, která řešila celou úlohu** (u párování
+  evropských států rozebrala dvě dvojice ze tří), rozptylovač neodpovídající
+  chybě, kterou popisuje, klíč uhodnutelný podle délky, dva popisy tématu
+  slibující látku, která v úlohách není, jeden vymyšlený význam a index, kvůli
+  kterému se polovina banky nikdy nestala klíčem — detail
+  v `PROJECT_STATUS.md` §6, session 40b.
 
 #### Slučování do `main` (inline, ne agent)
 
@@ -149,11 +186,14 @@ npm test && npm run audit:content && npm run check:keys && npm run check:keys:ta
 REPEATS=12 npm run audit:agreement && npm run audit:ui && npm run build
 ```
 
-⚠️ **Past:** u tří témat se změnilo zadání nebo klíč, takže
-`frozen_content_unchanged` spadne, dokud se snapshot nepřegeneruje —
+⚠️ **Past:** `frozen_content_unchanged` spadne, dokud se snapshot
+nepřegeneruje — zadání nebo klíč se mění u
 `konstrukceTrojuhelnikuKolmiceRovnobezky` (+5 úloh),
-`scitaniAOdcitaniDesetinnychCisel` („6,0" místo „6") a
-`ulohyNezavisleNaBeznychPostupech…` (opravený klíč).
+`scitaniAOdcitaniDesetinnychCisel` („6,0" místo „6"),
+`ulohyNezavisleNaBeznychPostupech…` (opravený klíč) a po `g4-6-mix` ještě
+u `slovaJednoznacnaMnohoznacnaVicevyznamova` (L1 16 → 24 úloh),
+`periodizaceLetopocet` (jiný rozptylovač) a
+`evropskeStatyAEuSousedniZemeCrPodrobne` (kratší velká nápověda).
 
 Push do `main` = nasazení na produkci, tedy až po shrnutí uživateli.
 

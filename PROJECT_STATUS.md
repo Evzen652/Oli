@@ -144,6 +144,107 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-12 (40b) — kritik na `g4-6-mix`, opravný průchod dokončen:
+
+**Všech 22 dávek má autora i nezávislého kritika.** `g4-6-mix` (commit
+`d50de2d` na `content-fix/g4-6-mix`, **nepushnuto, nesloučeno**) — šest témat
+napříč 4.–6. ročníkem: tabulky a diagramy, postavy v příbězích, mnohoznačná
+slova, evropské státy a EU, letopočty, pomocné vědy historické.
+
+- ✅ **Klíče sedí — 20 098 přepočítáno, 0 neshod.** Vlastní parser čte zadání
+  a počítá znovu: součty a rozdíly z tabulky, čtení diagramu přes měřítko
+  (■ = dva / pět), století z roku, rozdíl letopočtů ve stejné éře, trvání přes
+  přelom (rok po roce, ne vzorcem), pořadí na časové ose. Hlavní města ověřena
+  proti vlastní tabulce 25 států psané odděleně od banky tématu.
+- ✅ **Autorovy dvě opravy potvrzeny** — klíč „bouřka" v zadání doslova nestojí
+  („prudký déšť s hromy a blesky"), nápovědy u diagramů nesou všechny řádky.
+- 🔴 **Nápověda řešila celou úlohu** (evropské státy): velká nápověda rozebrala
+  dvě dvojice ze tří a třetí vyšla vylučováním. Kořen je ve sdíleném
+  `doplnVelkou` — na dorovnání délky si bere `proc` dalších dvojic a teprve
+  pak obecné strategie. Nový obal `odlisSadu` cíl 1,2× zvedal, takže únik na
+  L1 rostl z 13 % na 40 %. Opraveno v dávce (přilepené dvojice se uříznou);
+  **kořen se týká 17 témat 5. ročníku a čeká na rozhodnutí** →
+  `docs/PENDING_CHANGES.md`. `check-hint-leak` tuhle třídu nevidí: porovnává
+  nápovědu s `correctAnswer`, a ten je u `match_pairs` jen řetězec „match".
+- ✅ **„počítat se letopočty"** → „s letopočty" (vokalizovaná předložka patří
+  před s-/z-, ne před „l").
+- ✅ **Rozptylovač, který neodpovídal chybě** — při stejném letopočtu vzniku
+  i zániku vycházelo odečtení 0 a nahrazovalo se jedničkou, takže možnost
+  „1 rok" popisovala chybu, která by ji nevyrobila. Teď se `b === a` nelosuje.
+- ✅ **Klíč se dal uhodnout podle délky** — „trpělivá a laskavá" byla jediná
+  dvouslovná možnost proti třem jednoslovným. Rozptylovače mají taky dvě
+  vlastnosti.
+- ✅ **Popis tématu sliboval, co v úlohách není** — „rozlišit přímou
+  a nepřímou charakteristiku" (hranice tématu odbornou terminologii vylučují,
+  v úlohách ta slova nepadnou) a cíl „porovná sousedy ČR podle populace"
+  (látka, kterou audit 5. ročníku z tématu vyhodil).
+- ✅ **„list na kytaře" není význam slova *list*** → „část pily, která řeže".
+- ✅ **Šest z dvanácti mnohoznačných slov se nikdy nestalo klíčem** — index
+  se posouval po úloze, ne po dvojici, takže sudé úlohy braly jen sudé
+  položky banky. L1: 17 → 24 unikátních úloh.
+- 📌 **Dva planý poplachy posouzeny ručně a ponechány** (`docs-check` „klíč ve
+  znění otázky" u čtení tabulky — v zadání jsou všechny čtyři možnosti;
+  `audit-topic` 26 slov ve větě — heuristika počítá řádky diagramu jako jednu
+  větu, vlastní otázka má 6 slov). Detail v `PENDING_CHANGES`.
+
+Brány: `audit-topic` 6× PASS (0 k revizi), `docs-check` 13/13/13 · 24/13/12 ·
+129/150/150 · 200/200/200 · 116/77/77 · 118/120/120, lint shody i hint-leak
+bez nálezu, typecheck čistý.
+
+### Session 2026-09-12 (40) — kritici na `g5mat-a` a `g5mat-b` hotovi, zbývá jeden:
+
+**`g5mat-b` (commit `9068e1d`, nepushnuto)** — konstrukce a úhly, písemné
+dělení, desetinná čísla, logické úlohy. Klíč přepočítán ze znění zadání
+(u řad se vzor odvozoval z čísel, ne z generátoru): **9 900 úloh, 0 neshod**.
+Potvrzena autorova oprava — u řady `8, 13, 10, 15, 12, 17` vychází 14, ne 22,
+a 22 je teď distraktor. **Tahle chyba je do sloučení pořád v produkci.**
+
+- ✅ **Pět míst mělo ručně psaný tvar po číslovce** místo helperu: „1 celá
+  a 2 desetin", „3 desetin metru", „4 kostek", „4 stěn / 4 vrcholů",
+  „o 2 let víc". Stejná třída chyby jako v `g5mat-a` — autoři používají
+  `pad` skoro všude a zapomenou na pár míst ve `solutionSteps`.
+- ✅ **„a to je přesně tolik než 14"** — „tolik" se pojí s „jako".
+- ✅ **„nemá žádné dvě strany rovnoběžné, ne jednu"** — přivěšené „ne jednu"
+  se tlouklo se záporem ve větě před ním.
+- ✅ **„Kolik pravých úhlů má lichoběžník?" nemělo jedinou odpověď** —
+  pravoúhlý lichoběžník je taky lichoběžník a je v téže tabulce hned vedle,
+  takže 2 šly obhájit stejně jako klíč 0. Přejmenováno na „obecný lichoběžník".
+- 📌 **Planý poplach lintu, který patří opravit v `src/lib/czechAgreementLint.ts`:**
+  po opravě tvaru začal hlásit „0,3 m **je** 3 desetiny metru" jako chybu shody
+  a chtěl „jsou". Spona se ale shoduje s podmětem „0,3 m", ne s číslovkou
+  ve jmenné části přísudku. Lint bere povrchově první číslovku za slovesem.
+  Větu jsem přeformuloval, aby neblokovala CI, ale pravidlo je pořád děravé.
+
+### Session 2026-09-12 (40a) — kritik na `g5mat-a`:
+
+- ✅ **`g5mat-a` prošla nezávislým kritikem** (commit `28b5be6` na
+  `content-fix/g5mat-a`, **nepushnuto, nesloučeno**). Tři témata: obsah ve
+  čtvercové síti, osová souměrnost, záporná čísla na číselné ose.
+- ✅ **Klíče sedí.** Kritik je přepočítával **ze znění zadání**, ne
+  z generátoru (vlastní parser na 25 tvarů otázek + vlastní tabulky os
+  písmen a obrazců): 6 974 vygenerovaných úloh, **0 neshod**. Potvrzen
+  i autorův nález — po opravě duplicitního distraktoru se generují všech
+  pět převodů jednotek obsahu na větší jednotku.
+- ✅ **Tři nálezy, všechny v textech kolem klíče:** „3 řad po 3 čtverečcích"
+  (po číslovce 2–4 patří 1. pád mn. č.; „řada" v `NOUNS` není, tvary proto
+  dostává `plural` přímo) · zpětná vazba u možnosti „4" si odporovala —
+  tvrdila selhání přeložení a hned dodala „má svislou i vodorovnou osu"
+  (H, I, O, X) · „Trojúhelník má tři vrcholy, takže ani os nemůže být míň"
+  zobecňovalo na všechny trojúhelníky a odporovalo sousedním úlohám téže
+  banky (různostranný 0, rovnoramenný 1).
+- 📌 **Oprava postupu v `SESSION_HANDOFF.md`:** kontrolní skripty ve
+  větvích dávek **jsou** a jsou shodné s `main` — kopírovat je netřeba.
+  Podle starého znění jsem je zkopíroval a při úklidu smazal skutečné
+  soubory větve; vrátil je `git checkout --`.
+- 📌 **Squash sloučení nic nepřepíše:** větev sama sáhla jen na ty tři
+  obsahové soubory. `git diff main` ukazuje i dokumentaci, ale to je pohyb
+  `main`, ne změna větve.
+- 🟠 **Zbývá:** kritik na `g5mat-b` a `g4-6-mix` (10 témat), pak sloučení
+  všech tří.
+- 📌 **Mimo dávku:** `zapornaCislaNaCiselneOse` má v `goals` „v kontextu
+  teploty a **hlubiny**" (patří „hloubky"). Je to zmrazený text mimo diff
+  dávky, `goals` se dítěti nezobrazuje — neopravoval jsem.
+
 ### Session 2026-09-12 (39) — 19 z 22 dávek na produkci, 3 čekají na kritika:
 
 **STAV K PŘEDÁNÍ:** autorská část je hotová u **všech 22 dávek**. Sloučeno
