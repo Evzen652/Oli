@@ -266,11 +266,30 @@ function makeL3DiffTask(): PracticeTask {
   };
 }
 
+/**
+ * Losované úlohy se musí lišit i uvnitř jedné úrovně: sezení bere úlohy
+ * z tohoto seznamu, takže dvě stejné věty v něm znamenají, že dítě může
+ * dostat tutéž úlohu dvakrát za sebou. (Kontrola 2026-09-12 našla v L1
+ * dvakrát „V pondělí byla 2 jablka, v úterý 4 jablka.“) Pooly mají 90+
+ * kombinací, takže na 20 různých vět stačí pár pokusů navíc.
+ */
+function distinct(make: () => PracticeTask, count: number): PracticeTask[] {
+  const out: PracticeTask[] = [];
+  const seen = new Set<string>();
+  for (let i = 0; i < count * 25 && out.length < count; i++) {
+    const task = make();
+    if (seen.has(task.question)) continue;
+    seen.add(task.question);
+    out.push(task);
+  }
+  return out;
+}
+
 function gen(level: number): PracticeTask[] {
   const count = 20;
-  if (level === 1) return Array.from({ length: count }, makeL1Task);
-  if (level === 2) return Array.from({ length: count }, makeL2Task);
-  return Array.from({ length: count }, () => (Math.random() < 0.5 ? makeL3SumTask() : makeL3DiffTask()));
+  if (level === 1) return distinct(makeL1Task, count);
+  if (level === 2) return distinct(makeL2Task, count);
+  return distinct(() => (Math.random() < 0.5 ? makeL3SumTask() : makeL3DiffTask()), count);
 }
 
 export const TABULKYAJEDNODUCHASHEMA: TopicMetadata[] = [

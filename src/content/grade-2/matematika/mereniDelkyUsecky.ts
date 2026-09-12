@@ -1,6 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
-import { pad } from "@/lib/czechGrammar";
+import { pad, isAre } from "@/lib/czechGrammar";
 
 /**
  * Přepsáno 2026-09-11 (inventura obsahu). Dřív: krátké ruční seznamy
@@ -46,7 +46,7 @@ function odNuly(n: number): PracticeTask {
       `Úsečka začíná přesně u nuly a končí u čísla ${n}. Co ti číslo na konci prozradí?`,
       `Každý dílek mezi dvěma sousedními čísly na pravítku měří 1 cm. Když úsečka začíná u nuly, spočítej dílky od 0 až po ${n} — mezery, ne čárky.`,
     ],
-    explanation: `Pravítko měří od nuly, takže číslo na konci úsečky rovnou udává její délku: od 0 do ${n} je ${pad(n, "CENTIMETR")}.`,
+    explanation: `Pravítko měří od nuly, takže číslo na konci úsečky rovnou udává její délku: od 0 do ${n} ${isAre(n)} ${pad(n, "CENTIMETR")}.`,
   });
 }
 
@@ -138,7 +138,7 @@ function naMilimetry(n: number): PracticeTask {
       `Kolik milimetrových dílků je na pravítku v jednom centimetru? A centimetrů máš ${n}.`,
       `1 cm = 10 mm. Úsečka má ${pad(n, "CENTIMETR")} a v každém je 10 mm, takže počítáš ${n} × 10 — neboli přičteš desítku ${n}krát.`,
     ],
-    explanation: `1 cm má 10 mm, takže ${n} cm má ${n}krát víc milimetrů: ${n} × 10 = ${n * 10} mm.`,
+    explanation: `1 cm má 10 mm, a proto se počet centimetrů násobí deseti: ${n} × 10 = ${n * 10} mm.`,
   });
 }
 
