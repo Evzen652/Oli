@@ -1,94 +1,579 @@
-﻿import type { TopicMetadata, PracticeTask } from "@/lib/types";
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-interface QA { q: string; a: string; opts: string[]; e: string; hints?: string[] }
-
-const POOL: QA[] = [
-  { q: "Co znamená slovo 'koruna' ve větě 'Král nosí zlatou korunu'?", a: "ozdoba hlavy krále", opts: ["ozdoba hlavy krále", "česká měna", "horní část stromu", "starý pozdrav"], e: "Ve větě se mluví o králi — a král nosí korunu jako symbol moci na hlavě. Ostatní významy (peníze, strom) by tu nedávaly smysl." },
-  { q: "Co znamená slovo 'koruna' ve větě 'Strom má hustou korunu'?", a: "horní část stromu s větvemi", opts: ["horní část stromu s větvemi", "ozdoba hlavy krále", "česká měna", "odznak"], e: "Věta mluví o stromě, takže koruna tu znamená horní část stromu — všechny větve a listy dohromady. Koruna krále by u stromu nedávala smysl." },
-  { q: "Co znamená slovo 'koruna' ve větě 'Jogurt stojí deset korun'?", a: "česká peněžní jednotka", opts: ["česká peněžní jednotka", "ozdoba hlavy krále", "horní část stromu", "odznak"], e: "Věta mluví o ceně jogurtu — a ceny platíme penězi. Koruna je česká měna, takže zde jde o peníze, ne o královskou ozdobu ani strom." },
-  { q: "Kolik různých významů má slovo 'koruna'?", a: "více významů — je to slovo mnohoznačné", opts: ["více významů — je to slovo mnohoznačné", "jeden přesný význam — je to jednoznačné", "žádný vlastní význam", "je to cizí slovo"], e: "Slovo 'koruna' může znamenat ozdobu krále, peníze nebo vrchol stromu — má tedy více různých významů, a proto je mnohoznačné." },
-  { q: "Co znamená slovo 'list' ve větě 'Napsal jsem dopis na list papíru'?", a: "arch papíru", opts: ["arch papíru", "zelená část rostliny", "kapsa v kabátě", "obálka dopisu"], e: "Ve větě se píše dopis na papír — 'list papíru' tu znamená jeden arch (kus) papíru. Zelený list by tu nedával smysl, protože se nám nepíše na listy ze stromu." },
-  { q: "Co znamená slovo 'list' ve větě 'Strom má krásné zelené listy'?", a: "zelená část rostliny", opts: ["zelená část rostliny", "arch papíru", "kapsa v kabátě", "obálka dopisu"], e: "Věta mluví o stromě a jeho zelené části. Listy rostliny jsou ploché zelené části, které vyrůstají z větví — a přesně o těch je tu řeč." },
-  { q: "Je slovo 'list' jednoznačné nebo mnohoznačné?", a: "mnohoznačné — má více významů", opts: ["mnohoznačné — má více významů", "jednoznačné — má jen jeden význam", "cizí slovo bez českého ekvivalentu", "vlastní jméno"], e: "Slovo 'list' může znamenat arch papíru i zelený list stromu — má tedy více různých významů, a proto patří mezi mnohoznačná slova." },
-  { q: "Co znamená slovo 'hlava' ve větě 'Bolí mě hlava'?", a: "část těla", opts: ["část těla", "vedoucí skupiny", "záhlaví stránky", "hlava kapitoly v knize"], e: "Bolest se cítí v těle — a hlava je část těla na vrcholu krku. Ve větě o bolesti jde jednoznačně o fyzickou část těla, ne o šéfa skupiny." },
-  { q: "Co znamená slovo 'hlava' ve větě 'Je to hlava naší skupiny'?", a: "vedoucí, šéf skupiny", opts: ["vedoucí, šéf skupiny", "část těla", "záhlaví stránky", "číslo stránky"], e: "Věta mluví o skupině a jejím vedení. 'Hlava skupiny' tu znamená vedoucího — toho, kdo skupinu řídí. Je to přenesený (obrazný) význam slova." },
-  { q: "Je slovo 'hlava' jednoznačné nebo mnohoznačné?", a: "mnohoznačné — má více významů", opts: ["mnohoznačné — má více významů", "jednoznačné — má jen jeden význam", "pouze zeměpisný termín", "zastaralé slovo"], e: "Slovo 'hlava' může znamenat část těla, vedoucího skupiny nebo záhlaví stránky — má více různých významů, a proto je mnohoznačné." },
-  { q: "Co znamená slovo 'hřbet' ve větě 'Pohladil jsem koně po hřbetu'?", a: "záda zvířete", opts: ["záda zvířete", "vrchol hory", "záda knihy (hřeben)", "část nohy"], e: "Ve větě hladíme koně — a hřbet je u zvířat záda, horní část těla. Kůň nemá vrchol hory ani záda knihy, takže jde o záda zvířete." },
-  {
-    q: "Které slovo je jednoznačné (má jen jeden běžný význam)?",
-    a: "klokan",
-    opts: ["klokan", "hlava", "koruna", "list"],
-    e: "Klokan je jen jedno konkrétní zvíře — australský skokavec. Naopak slova hlava, koruna a list mají více různých významů, takže jsou mnohoznačná.",
-    hints: [
-      "Jedna z možností pojmenovává jen jedno konkrétní zvíře a nic jiného.",
-      "Mnohoznačné slovo = má více různých významů (koruna: na hlavě, peníze, strom).",
-    ],
-  },
-  { q: "Co znamená slovo 'pero' ve větě 'Psal jsem perem'?", a: "nástroj na psaní", opts: ["nástroj na psaní", "ptačí pero", "jarní pero (péro)", "pero v závodech"], e: "Psaní je jasný kontext — 'pero' tu znamená nástroj, kterým píšeme. Ptačí pero by se k psaní hodilo jen v pohádce, v dnešní době jde o pero plnicí nebo kuličkové." },
-  { q: "Co znamená slovo 'pero' ve větě 'Ptáček ztratil pero'?", a: "část ptačího opeření", opts: ["část ptačího opeření", "nástroj na psaní", "pero v závodech", "jarní péro"], e: "Věta mluví o ptáčkovi — a ptáci mají peří. 'Pero' je jedna jednotlivá část ptačího opeření, kterou ptáčci ztrácí při přepeřování." },
-  { q: "Jak poznáme, který význam slova je správný?", a: "podle věty (kontextu), ve které se slovo nachází", opts: ["podle abecedy, ve které slovo je", "podle věty (kontextu), ve které se slovo nachází", "podle délky slova ve větě", "podle toho, kdo přesně mluví"], e: "Slovo samo o sobě může mít více významů, ale věta kolem nám vždy prozradí, co se myslí. Kontext (= okolní věta) je nejlepší vodítko pro správné pochopení." },
-  { q: "Které ze slov je mnohoznačné?", a: "zámek", opts: ["zámek", "dub", "tygr", "planeta"], e: "Zámek může být historická budova i mechanizmus na dveřích — má tedy více významů. Dub, tygr a planeta mají každé jen jeden jasný hlavní význam." },
-  { q: "Co znamená slovo 'zámek' ve větě 'Dveře mají zámek'?", a: "mechanizmus k zamykání", opts: ["mechanizmus k zamykání", "historická budova", "ozdoba na náramku", "klíč"], e: "Ve větě jsou dveře — a dveře se zamykají zámkem. Jde tu o kovový mechanizmus, do kterého vkládáme klíč, ne o historickou budovu." },
-  { q: "Co znamená slovo 'zámek' ve větě 'Navštívili jsme starý zámek'?", a: "historická budova, sídlo šlechty", opts: ["historická budova, sídlo šlechty", "mechanizmus k zamykání", "klíč od dveří", "ozdoba"], e: "Věta mluví o navštívení — a navštěvujeme budovy, ne mechanizmy na dveřích. 'Starý zámek' je historická stavba, kde dříve bydlela šlechta." },
-  { q: "Které slovo je jednoznačné?", a: "fotbal", opts: ["fotbal", "les", "ruka", "stůl"], e: "Fotbal je jen jedna konkrétní sportovní hra — nemá jiný běžný význam. Slova jako ruka nebo stůl mohou mít přenesené významy (zlatá ruka, stůl jednání)." },
-  { q: "Co znamená slovo 'les' ve větě 'Houby rostou v lese'?", a: "prostor porostlý stromy", opts: ["prostor porostlý stromy", "přezdívka pro hustý vous", "les rukou (zvednuté ruce)", "tmavá barva"], e: "Houby rostou v přírodě mezi stromy — a les je místo, kde roste hodně stromů pohromadě. Jde tu o základní, přímý význam slova." },
-  { q: "Je slovo 'les' jednoznačné nebo mnohoznačné?", a: "většinou jednoznačné, ale v přeneseném smyslu může mít další použití", opts: ["nemá vůbec žádný svůj vlastní význam", "většinou jednoznačné, ale v přeneseném smyslu může mít další použití", "vždy jednoznačné, žádný jiný význam nemá", "vždy mnohoznačné, úplně stejně jako slovo 'koruna'"], e: "Slovo 'les' většinou znamená místo se stromy, ale někdy se používá přeneseně — třeba 'les rukou' (mnoho zvednutých rukou). Není tak mnohoznačné jako koruna, ale má svůj přenesený smysl." },
-  { q: "Co znamená slovo 'kolo' ve větě 'Jedu na kole'?", a: "jízdní kolo", opts: ["jízdní kolo", "matematický tvar", "kolo soutěže", "kolo na autě"], e: "Věta říká 'jedu na kole' — jezdíme na jízdním kole. Jde o dopravní prostředek se dvěma koly, na kterém sedíme a šlapeme do pedálů." },
-  { q: "Co znamená slovo 'kolo' ve větě 'Postoupili do druhého kola soutěže'?", a: "část soutěže, etapa", opts: ["část soutěže, etapa", "jízdní kolo", "matematický tvar kružnice", "kolo na autě"], e: "Věta mluví o soutěži — a soutěže mají kola (části). 'Druhé kolo' je druhá etapa soutěže, ne jízdní kolo ani geometrický tvar." },
-  { q: "Jak se jmenuje slovo, které má jen jeden hlavní význam?", a: "jednoznačné slovo", opts: ["jednoznačné slovo", "mnohoznačné slovo", "synonymum", "antonymum"], e: "Jednoznačné slovo má jen jeden jasný, přesný význam — třeba slovo 'klokan' označuje vždy jen to australské zvíře. Synonymum je slovo se stejným významem, antonymum je slovo opačného významu." },
-  { q: "Jak se jmenuje slovo, které má více různých významů?", a: "mnohoznačné slovo", opts: ["mnohoznačné slovo", "jednoznačné slovo", "příbuzné slovo", "cizí slovo"], e: "Mnohoznačné slovo má více různých významů — třeba 'koruna' může být ozdoba hlavy, peníze nebo vrchol stromu. Číslovka 'mnoho' v názvu napovídá, že jde o více významů." },
-  { q: "Co znamená slovo 'most' ve větě 'Přešli jsme přes most nad řekou'?", a: "stavba přes řeku nebo propast", opts: ["stavba přes řeku nebo propast", "část šachové hry", "fotbalová obranná pozice", "název ulice"], e: "Věta mluví o přecházení přes řeku — a most je stavba, která nám umožní přejít přes řeku nebo jiný překážku. Jde o přímý, základní význam slova." },
-  { q: "Co znamená 'zlatá ruka' (přeneseně)?", a: "šikovný člověk, který umí opravit cokoliv", opts: ["šperky nošené na ruce", "šikovný člověk, který umí opravit cokoliv", "rukavice vyrobené ze zlata", "skutečná ruka pokrytá zlatem"], e: "'Zlatá ruka' je přenesený (obrazný) výraz — nemyslíme tím skutečné zlato, ale šikovnost. Říkáme to o někom, kdo umí opravit nebo vyrobit cokoliv." },
-  { q: "Které slovo označuje jak část obličeje, tak přední část lodi?", a: "nos", opts: ["nos", "oko", "ústa", "hlava"], e: "Slovo 'nos' může znamenat část obličeje (čicháme jím) i přední část lodi. Přední část lodě vypadá trochu jako nos, a tak jsme ji pojmenovali stejně — to je typické pro mnohoznačná slova." },
-  { q: "Co znamená slovo 'oko' ve větě 'Uháčkovala oko na svetru'?", a: "smyčka v pletení nebo háčkování", opts: ["klidné oko hurikánu", "smyčka v pletení nebo háčkování", "jedno oko rybářské sítě", "zrakový orgán na tváři"], e: "Věta mluví o háčkování — a v pletení a háčkování se 'oko' říká jedné smyčce nitě. Jde o přenesený význam, protože smyčka trochu připomíná tvar oka." },
-  { q: "Jak se pozná mnohoznačné slovo ve větě?", a: "podíváme se na větu kolem — kontext prozradí, jaký význam se myslí", opts: ["podíváme se na větu kolem — kontext prozradí, jaký význam se myslí", "mnohoznačná slova jsou vždy zvýrazněna", "mnohoznačná slova jsou vždy delší", "poznáme to podle velkého písmena"], e: "Mnohoznačné slovo samo o sobě nevypadá jinak než jiná slova — musíme se podívat na celou větu. Věta kolem nám řekne, v jakém smyslu se slovo použilo." },
-];
+import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "../_shared";
 
 /**
- * PED-3 kalibrace L1<L2<L3.
- * Před: L3 = celý POOL, L1∪L2 = POOL[0..30] → L3\(L1∪L2) = 1 úloha.
- * Teď disjunktní: L1 (konkrétní věty), L2 (definice + rozpoznávání typu),
- * L3 (přenesené významy, obrazné výrazy, srovnání).
+ * Přepsáno 2026-09-12 (inventura obsahu, dávka g3cjl-a).
+ *
+ * Předtím: jeden pool sdílených úloh, u žádné z nich zpětná vazba k chybným
+ * možnostem, malá nápověda společná pro 39 úloh a L3 jen o deseti položkách.
+ *
+ * Teď tři disjunktní banky podle kognitivní náročnosti:
+ *   L1 — rozpoznání: význam mnohoznačného slova určí kontext věty.
+ *   L2 — aplikace pojmu: bez kontextu rozhodnout, které slovo má víc významů.
+ *   L3 — transfer: přenesený (obrazný) význam — ustálená spojení a věty,
+ *        kde se jméno jedné věci půjčilo věci úplně jiné.
+ *
+ * Každá úloha má vlastní dvojici nápověd (malá odkazuje na konkrétní větu nebo
+ * konkrétní možnosti), vysvětlení PROČ a zpětnou vazbu u každé chybné možnosti.
  */
-const POOL_L3_EXTRA: QA[] = [
-  { q: "Co znamená přenesený výraz 'ostrý jazyk'?", a: "člověk, který mluví ostře, kritizuje jedovatě", opts: ["člověk, který mluví ostře, kritizuje jedovatě", "jazyk s ostrým hrotem", "jazyk zvířete s bodlinami", "jazyk politiků"], e: "'Ostrý jazyk' je obrazný výraz — nemluvíme o skutečné ostrosti, ale o způsobu mluvy člověka." },
-  { q: "Co znamená přenesený výraz 'zlaté ruce'?", a: "šikovný člověk, který umí opravit cokoliv", opts: ["šikovný člověk, který umí opravit cokoliv", "ruce potažené zlatem", "boháč", "ruce ve zlatých šatech"], e: "'Zlaté ruce' popisují šikovnost — přenesený význam, ne skutečné zlato." },
-  { q: "Které slovo má přenesený význam ve větě 'Hlavu státu tvoří prezident'?", a: "hlavu", opts: ["hlavu", "státu", "tvoří", "prezident"], e: "'Hlava státu' = vedoucí — přenesený význam, ne fyzická hlava." },
-  { q: "Ve větě 'Pod větrem se ohnula koruna stromu' znamená 'koruna':", a: "vršek stromu (větve a listy)", opts: ["vršek stromu (větve a listy)", "královská ozdoba", "peněžní jednotka", "město"], e: "V kontextu stromu se 'koruna' vždy myslí vršek s větvemi." },
-  { q: "Vyber větu, kde má slovo 'list' PŘENESENÝ význam:", a: "Otočila jsem list a začala znovu.", opts: ["Otočila jsem list a začala znovu.", "Ze stromu spadl žlutý list.", "List papíru je čistý.", "Dubový list má tvar hvězdy."], e: "'Otočit list' = začít nově — přenesený význam (jako otočit stránku života)." },
-  { q: "Co znamená slovíčko 'zub' ve větě 'Zub času nahlodal starou zeď'?", a: "postupné opotřebení věcí časem", opts: ["zdravý zub v ústech", "postupné opotřebení věcí časem", "zubatá část klíče", "obyčejný kovový hřebík"], e: "'Zub času' = obrazné vyjádření pomalého ničení věcí stárnutím." },
-  { q: "Co znamená přenesený výraz 'mít páky' na někoho?", a: "mít prostředky, jak něco ovlivnit nebo někoho přimět", opts: ["mít doma skutečné dřevěné páky", "mít prostředky, jak něco ovlivnit nebo někoho přimět", "mít v dílně vlastní nářadí", "být obecně silný ve sportu"], e: "'Mít páky' je obrazný výraz — znamená mít prostředky, kterými můžeš něco ovlivnit. Není to o skutečných pákách." },
-  { q: "Které z těchto slov je mnohoznačné?", a: "jazyk", opts: ["jazyk", "citron", "chleba", "banán"], e: "'Jazyk' má více významů: orgán v ústech, mateřský jazyk (řeč), i tenký kus (jazyk boty). 'Citron', 'chleba' a 'banán' mají jen jeden hlavní význam." },
-  { q: "Ve větě 'V lese hučely velké borovice' má slovo 'les' význam:", a: "místo se stromy (jednoznačný, přímý)", opts: ["místo se stromy (jednoznačný, přímý)", "les rukou", "hodně věcí najednou", "město"], e: "'V lese' = na místě, kde rostou stromy — přímý význam." },
-  { q: "Co znamená obraz 'srdce z kamene'?", a: "chladný člověk bez soucitu", opts: ["chladný člověk bez soucitu", "kámen ve tvaru srdce", "srdce ze sochy", "starý šperk"], e: "'Srdce z kamene' = přenesený význam — člověk necítí soucit, jako by měl místo srdce kámen." },
-];
 
-function pick(pool: QA[]): PracticeTask[] {
-  return shuffle(pool).slice(0, Math.min(pool.length, 16)).map(({ q, a, opts, e, hints }) => ({
-    question: q,
-    correctAnswer: a,
-    options: shuffle(opts),
-    hints: hints ?? [
-      "Jednoznačné slovo = má jen jeden hlavní význam (např. klokan).",
-      "Mnohoznačné slovo = má více různých významů (koruna: na hlavě, peníze, strom).",
-    ],
-    explanation: e,
-  }));
+// ── L1 · význam podle kontextu ──────────────────────────────────────────────
+
+interface KontextItem {
+  slovo: string;
+  veta: string;
+  /** Doplní větu „Ve větě se mluví …“ — musí být unikátní (jde do malé nápovědy). */
+  oblast: string;
+  /** Slovo ve větě, které o významu rozhoduje. */
+  klic: string;
+  spravne: string;
+  chybne: [Distractor, Distractor, Distractor];
 }
 
+const KONTEXT: KontextItem[] = [
+  {
+    slovo: "koruna",
+    veta: "Vítr rozhoupal korunu starého dubu.",
+    oblast: "o starém dubu, tedy o stromu",
+    klic: "rozhoupal",
+    spravne: "vršek stromu s větvemi",
+    chybne: [
+      { value: "české peníze", why: "Ve větě se nic nekupuje ani neplatí — vítr rozhoupe jen něco, co roste vysoko." },
+      { value: "ozdoba na hlavě krále", why: "Žádný král ani královna ve větě nevystupují; koruna tu patří dubu." },
+      { value: "kořeny stromu pod zemí", why: "Kořeny jsou schované pod zemí a vítr je nerozhoupe." },
+    ],
+  },
+  {
+    slovo: "koruna",
+    veta: "Za rohlík jsem zaplatil osm korun.",
+    oblast: "o placení v obchodě",
+    klic: "zaplatil",
+    spravne: "české peníze",
+    chybne: [
+      { value: "ozdoba na hlavě krále", why: "Královskou ozdobou se v obchodě za rohlík neplatí." },
+      { value: "vršek stromu s větvemi", why: "Ve větě žádný strom není — mluví se o tom, kolik rohlík stál." },
+      { value: "papírový sáček na pečivo", why: "Sáček k pečivu v obchodě patří, ale zaplatit se jím nedá." },
+    ],
+  },
+  {
+    slovo: "list",
+    veta: "Napsala vzkaz na čistý list papíru.",
+    oblast: "o psaní vzkazu",
+    klic: "Napsala",
+    spravne: "arch papíru",
+    chybne: [
+      { value: "část rostliny, která roste na větvi", why: "Na lístek utržený z větve se vzkaz nepíše." },
+      { value: "dopis poslaný poštou", why: "Poštu ve větě nikdo neposílá — teprve se píše vzkaz." },
+      { value: "tužka, kterou se píše", why: "Tužkou se píše, ale ptáme se, NA CO se psalo." },
+    ],
+  },
+  {
+    slovo: "list",
+    veta: "Na podzim spadl z javoru poslední list.",
+    oblast: "o javoru na podzim",
+    klic: "spadl",
+    spravne: "část rostliny, která roste na větvi",
+    chybne: [
+      { value: "arch papíru", why: "Papír z javoru nepadá — ve větě je strom, ne sešit." },
+      { value: "dopis poslaný poštou", why: "Dopis nosí pošťák, ne javor." },
+      { value: "plod stromu, například žalud", why: "Plod je něco jiného; ptáme se na význam slova, které ve větě opravdu stojí." },
+    ],
+  },
+  {
+    slovo: "hlava",
+    veta: "Po celém dni mě bolela hlava.",
+    oblast: "o bolesti po dlouhém dni",
+    klic: "bolela",
+    spravne: "část těla nad krkem",
+    chybne: [
+      { value: "vedoucí celé skupiny", why: "Žádnou skupinu ve větě nikdo nevede — mluví se o bolesti." },
+      { value: "horní část hřebíku", why: "Hřebík žádnou bolest necítí; ve větě jde o člověka." },
+      { value: "hlávka česneku", why: "Česnek se ve větě nevaří ani nekrájí." },
+    ],
+  },
+  {
+    slovo: "hlava",
+    veta: "Hlava naší výpravy rozdělila úkoly.",
+    oblast: "o tom, kdo výpravě velí",
+    klic: "rozdělila",
+    spravne: "vedoucí celé skupiny",
+    chybne: [
+      { value: "část těla nad krkem", why: "Samotné tělo úkoly nerozdělí — musí to udělat člověk, který výpravu řídí." },
+      { value: "horní část hřebíku", why: "Hřebík ve výpravě nikomu nic nerozdělí." },
+      { value: "nejrychlejší člen výpravy", why: "Vést výpravu a být v ní nejrychlejší není totéž." },
+    ],
+  },
+  {
+    slovo: "zámek",
+    veta: "Do dveří jsme dali nový zámek.",
+    oblast: "o dveřích a zamykání",
+    klic: "dveří",
+    spravne: "zařízení, které se otvírá klíčem",
+    chybne: [
+      { value: "velká historická budova", why: "Budovu do dveří nikdo nedá — bývá to naopak." },
+      { value: "klíč od bytu", why: "Klíč zámek jenom otvírá, sám zámkem není." },
+      { value: "klika na dveřích", why: "Klikou se dveře otvírají, ale zamknout se jimi nedá." },
+    ],
+  },
+  {
+    slovo: "zámek",
+    veta: "V neděli jsme si prohlédli starý zámek.",
+    oblast: "o nedělní prohlídce",
+    klic: "prohlédli",
+    spravne: "velká historická budova",
+    chybne: [
+      { value: "zařízení, které se otvírá klíčem", why: "Prohlídka se nedělá kolem kousku kovu ve dveřích." },
+      { value: "klíč od bytu", why: "Klíč si na výlet nikdo prohlížet nechodí." },
+      { value: "obraz visící v muzeu", why: "Obrazy uvnitř být mohou, ale to slovo pojmenovává samotnou stavbu." },
+    ],
+  },
+  {
+    slovo: "kolo",
+    veta: "Do školy jezdím každý den na kole.",
+    oblast: "o cestě do školy",
+    klic: "jezdím",
+    spravne: "jízdní kolo",
+    chybne: [
+      { value: "část soutěže", why: "Ve větě se nesoutěží — někdo se každý den dopravuje do školy." },
+      { value: "kružnice narýsovaná kružítkem", why: "Narýsovaný tvar tě do školy neodveze." },
+      { value: "kolečko od auta", why: "Samotné kolečko od auta nikam nejede." },
+    ],
+  },
+  {
+    slovo: "kolo",
+    veta: "Náš tým postoupil do druhého kola soutěže.",
+    oblast: "o soutěži, ve které se postupuje dál",
+    klic: "postoupil",
+    spravne: "část soutěže",
+    chybne: [
+      { value: "jízdní kolo", why: "Na kole se dá k soutěži přijet, ale postoupit do něj nejde." },
+      { value: "kružnice narýsovaná kružítkem", why: "Do narýsovaného tvaru tým nepostupuje." },
+      { value: "vítězství v celé soutěži", why: "Postoupit dál znamená jít o krok vpřed, ne už vyhrát." },
+    ],
+  },
+  {
+    slovo: "oko",
+    veta: "Do oka mi ve větru spadlo smítko.",
+    oblast: "o smítku, které přineslo počasí",
+    klic: "smítko",
+    spravne: "orgán, kterým vidíme",
+    chybne: [
+      { value: "smyčka při pletení svetru", why: "Svetr ve větě nikdo neplete." },
+      { value: "mastné kolečko na polévce", why: "Polévka se ve větě nevaří ani nejí." },
+      { value: "brýle na čtení", why: "Brýle se nosí před očima, ale okem nejsou." },
+    ],
+  },
+  {
+    slovo: "pero",
+    veta: "Podepsal se modrým perem.",
+    oblast: "o podpisu",
+    klic: "Podepsal",
+    spravne: "psací potřeba",
+    chybne: [
+      { value: "jedno ptačí peříčko", why: "Peříčkem se dnes nikdo nepodepisuje." },
+      { value: "pružina v posteli", why: "Pružinu z postele nikdo do ruky nebere." },
+      { value: "guma na mazání", why: "Gumou se maže, ne podepisuje." },
+    ],
+  },
+  {
+    slovo: "pero",
+    veta: "Papoušek při přeletu ztratil barevné pero.",
+    oblast: "o papouškovi za letu",
+    klic: "Papoušek",
+    spravne: "jedno ptačí peříčko",
+    chybne: [
+      { value: "psací potřeba", why: "Papoušek propisku ani tužku neztratí." },
+      { value: "pružina v posteli", why: "Pružina z postele za letu nevypadne." },
+      { value: "celé ptačí křídlo", why: "Křídlo je celé, kdežto to, co papoušek ztratil, je jen jeho malinká část." },
+    ],
+  },
+  {
+    slovo: "jazyk",
+    veta: "Po zmrzlině mě studil jazyk.",
+    oblast: "o snědené zmrzlině",
+    klic: "studil",
+    spravne: "sval v ústech",
+    chybne: [
+      { value: "řeč, kterou mluvíme", why: "Řeč po zmrzlině studit nemůže — chlad cítí tělo." },
+      { value: "kus kůže u boty", why: "Kůže u boty nic necítí." },
+      { value: "plamen ohně", why: "Plamen hřeje, ale ve větě nikdo netopí." },
+    ],
+  },
+  {
+    slovo: "klíč",
+    veta: "Zapomněl jsem doma klíč od bytu.",
+    oblast: "o zapomenuté věci z domova",
+    klic: "Zapomněl",
+    spravne: "věc, kterou se odemyká",
+    chybne: [
+      { value: "zámek ve dveřích", why: "Zámek je to, CO se odemyká; ve větě jde o to, ČÍM se odemyká." },
+      { value: "hejno letících ptáků", why: "Ptáci létají vysoko, ale doma se nezapomínají." },
+      { value: "návod na vyluštění hádanky", why: "Návod nikoho do bytu nepustí; ve větě jde o obyčejnou věc z kapsy." },
+    ],
+  },
+];
+
+function kontextUloha(it: KontextItem): PracticeTask {
+  return choice(
+    `Co znamená slovo „${it.slovo}“ ve větě „${it.veta}“?`,
+    it.spravne,
+    it.chybne,
+    {
+      hints: [
+        `Ve větě se mluví ${it.oblast}. Který z nabízených významů tam patří?`,
+        `Rozhoduje věta kolem, ne slovo samo. Nejvíc napoví „${it.klic}“ — zkus u každé možnosti říct, jestli k němu sedí. Ostatní významy to slovo taky má, jenom se hodí do jiných vět.`,
+      ],
+      explanation: `Ve větě se mluví ${it.oblast}, a proto tu má slovo „${it.slovo}“ význam „${it.spravne}“. V jiné větě může totéž slovo znamenat něco úplně jiného — tomu se říká mnohoznačnost.`,
+    },
+  );
+}
+
+// ── L2 · jednoznačné × mnohoznačné bez kontextu ─────────────────────────────
+
+interface MnohoSlovo { slovo: string; v1: string; v2: string }
+interface JednoSlovo { slovo: string; proc: string }
+
+const M: Record<string, MnohoSlovo> = {
+  koruna: { slovo: "koruna", v1: "ozdobu na hlavě krále", v2: "české peníze" },
+  list: { slovo: "list", v1: "lístek na větvi", v2: "arch papíru" },
+  hlava: { slovo: "hlava", v1: "část těla nad krkem", v2: "vedoucího celé skupiny" },
+  zámek: { slovo: "zámek", v1: "starou budovu, kam se jezdí na výlet", v2: "zařízení ve dveřích" },
+  kolo: { slovo: "kolo", v1: "dopravní prostředek, na kterém se šlape", v2: "část soutěže" },
+  oko: { slovo: "oko", v1: "orgán, kterým vidíme", v2: "smyčku na upleteném svetru" },
+  pero: { slovo: "pero", v1: "psací potřebu", v2: "ptačí peříčko" },
+  jazyk: { slovo: "jazyk", v1: "sval v ústech", v2: "řeč, kterou mluvíme" },
+  klíč: { slovo: "klíč", v1: "věc, kterou se odemyká", v2: "hejno letících ptáků" },
+  raketa: { slovo: "raketa", v1: "tenisovou pálku", v2: "stroj, který letí do vesmíru" },
+  myš: { slovo: "myš", v1: "malé zvířátko z pole", v2: "věc, kterou se ovládá počítač" },
+  vlna: { slovo: "vlna", v1: "vodu zvednutou na moři", v2: "přízi na svetr" },
+  ucho: { slovo: "ucho", v1: "orgán, kterým slyšíme", v2: "držadlo hrnku" },
+  zub: { slovo: "zub", v1: "kousek kosti v puse", v2: "ostrý výstupek na pile" },
+  nos: { slovo: "nos", v1: "část obličeje", v2: "špičatou příď lodi" },
+};
+
+const J: Record<string, JednoSlovo> = {
+  žirafa: { slovo: "žirafa", proc: "pojmenovává jen jedno zvíře s dlouhým krkem" },
+  mrkev: { slovo: "mrkev", proc: "pojmenovává jen jednu oranžovou zeleninu" },
+  tramvaj: { slovo: "tramvaj", proc: "pojmenovává jen jeden dopravní prostředek na kolejích" },
+  svetr: { slovo: "svetr", proc: "pojmenovává jen jeden kus teplého oblečení" },
+  deštník: { slovo: "deštník", proc: "pojmenovává jen jednu věc, která chrání před deštěm" },
+  pastelka: { slovo: "pastelka", proc: "pojmenovává jen jednu věc na vybarvování" },
+  hrnec: { slovo: "hrnec", proc: "pojmenovává jen jednu nádobu na vaření" },
+  vidlička: { slovo: "vidlička", proc: "pojmenovává jen jeden příbor" },
+  mravenec: { slovo: "mravenec", proc: "pojmenovává jen jeden drobný hmyz" },
+  kaktus: { slovo: "kaktus", proc: "pojmenovává jen jednu rostlinu s bodlinami" },
+  vrtulník: { slovo: "vrtulník", proc: "pojmenovává jen jeden létající stroj s vrtulí" },
+  jahoda: { slovo: "jahoda", proc: "pojmenovává jen jedno červené ovoce" },
+  sešit: { slovo: "sešit", proc: "pojmenovává jen jednu věc na psaní ve škole" },
+  lednice: { slovo: "lednice", proc: "pojmenovává jen jeden chladicí spotřebič" },
+  sněhulák: { slovo: "sněhulák", proc: "pojmenovává jen jednu postavu ze sněhu" },
+  koloběžka: { slovo: "koloběžka", proc: "pojmenovává jen jednu věc s řídítky a stupátkem" },
+};
+
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+
+/** L2a — najdi mnohoznačné slovo mezi jednoznačnými. */
+const HLEDEJ_MNOHO: [MnohoSlovo, JednoSlovo, JednoSlovo, JednoSlovo][] = [
+  [M.koruna, J.žirafa, J.mrkev, J.tramvaj],
+  [M.list, J.svetr, J.deštník, J.pastelka],
+  [M.kolo, J.hrnec, J.vidlička, J.mravenec],
+  [M.oko, J.kaktus, J.vrtulník, J.jahoda],
+  [M.raketa, J.sešit, J.lednice, J.sněhulák],
+  [M.myš, J.žirafa, J.pastelka, J.hrnec],
+  [M.vlna, J.mrkev, J.vidlička, J.kaktus],
+  [M.ucho, J.tramvaj, J.deštník, J.vrtulník],
+];
+
+/** L2b — najdi jednoznačné slovo mezi mnohoznačnými. */
+const HLEDEJ_JEDNO: [JednoSlovo, MnohoSlovo, MnohoSlovo, MnohoSlovo][] = [
+  [J.žirafa, M.koruna, M.list, M.hlava],
+  [J.tramvaj, M.zámek, M.kolo, M.oko],
+  [J.vidlička, M.pero, M.jazyk, M.klíč],
+  [J.kaktus, M.raketa, M.myš, M.vlna],
+  [J.sešit, M.ucho, M.zub, M.nos],
+  [J.deštník, M.koruna, M.kolo, M.jazyk],
+  [J.jahoda, M.list, M.oko, M.zub],
+  [J.koloběžka, M.hlava, M.klíč, M.nos],
+];
+
+function hledejMnoho([m, d1, d2, d3]: [MnohoSlovo, JednoSlovo, JednoSlovo, JednoSlovo]): PracticeTask {
+  return choice(
+    "Které z těchto slov je mnohoznačné (má víc různých významů)?",
+    m.slovo,
+    [
+      { value: d1.slovo, why: `„${cap(d1.slovo)}“ ${d1.proc} — druhý význam nemá.` },
+      { value: d2.slovo, why: `„${cap(d2.slovo)}“ ${d2.proc} — druhý význam nemá.` },
+      { value: d3.slovo, why: `„${cap(d3.slovo)}“ ${d3.proc} — druhý význam nemá.` },
+    ],
+    {
+      hints: [
+        `U slov „${d1.slovo}“ a „${d2.slovo}“ druhý význam nevymyslíš. Jedna možnost je ale jiná — u které ti napadnou dva?`,
+        `Mnohoznačné slovo se dá použít ve dvou úplně jiných větách a pokaždé znamená něco jiného. Slovo jako „${d3.slovo}“ pojmenovává vždycky jen jednu věc, takže druhou větu s jiným významem s ním nesložíš.`,
+      ],
+      explanation: `Toto slovo může znamenat ${m.v1} i ${m.v2} — má tedy víc různých významů, a proto je mnohoznačné. Zbylé tři možnosti pojmenovávají pokaždé jen jednu jedinou věc.`,
+    },
+  );
+}
+
+function hledejJedno([j, d1, d2, d3]: [JednoSlovo, MnohoSlovo, MnohoSlovo, MnohoSlovo]): PracticeTask {
+  return choice(
+    "Které z těchto slov je jednoznačné (má jen jeden význam)?",
+    j.slovo,
+    [
+      { value: d1.slovo, why: `„${cap(d1.slovo)}“ má víc významů: ${d1.v1} i ${d1.v2}.` },
+      { value: d2.slovo, why: `„${cap(d2.slovo)}“ má víc významů: ${d2.v1} i ${d2.v2}.` },
+      { value: d3.slovo, why: `„${cap(d3.slovo)}“ má víc významů: ${d3.v1} i ${d3.v2}.` },
+    ],
+    {
+      hints: [
+        `Tři možnosti mají dva významy — třeba „${d1.slovo}“ a „${d2.slovo}“. Hledej tu čtvrtou.`,
+        `Zkus u každé možnosti složit dvě věty, ve kterých to slovo znamená pokaždé něco jiného. U „${d3.slovo}“ to půjde snadno; u jedné možnosti to nepůjde vůbec, a právě ta je hledaná.`,
+      ],
+      explanation: `Toto slovo ${j.proc}, a proto je jednoznačné. Zbylá tři slova se dají použít ve dvou různých významech, takže jsou mnohoznačná.`,
+    },
+  );
+}
+
+// ── L3 · přenesený význam ───────────────────────────────────────────────────
+
+interface IdiomItem {
+  fraze: string;
+  /** Doplní větu „Zkus si vzpomenout, …“ (unikátní, jde do malé nápovědy). */
+  naco: string;
+  /** Co v tom spojení NEhledat doslova. */
+  doslova: string;
+  spravne: string;
+  chybne: [Distractor, Distractor, Distractor];
+}
+
+const IDIOMY: IdiomItem[] = [
+  {
+    fraze: "mít zlaté ruce",
+    naco: "co se o někom říká, když doma všechno spraví",
+    doslova: "opravdové zlato",
+    spravne: "být moc šikovný a umět spravit skoro všechno",
+    chybne: [
+      { value: "nosit na rukou zlaté prsteny", why: "To by bylo čtení slovo od slova — spojení ale chválí dovednost, ne šperky." },
+      { value: "být bohatý", why: "Bohatství a šikovnost nejsou totéž; tady se chválí to, co člověk umí." },
+      { value: "mít ruce ušpiněné od barvy", why: "Špinavé ruce mívá i ten, komu se práce vůbec nedaří." },
+    ],
+  },
+  {
+    fraze: "mít hlavu v oblacích",
+    naco: "co se říká o někom, kdo se zasní a neposlouchá",
+    doslova: "skutečné mraky",
+    spravne: "být zasněný a nedávat pozor",
+    chybne: [
+      { value: "stát na vysoké hoře", why: "Kde člověk stojí, to spojení neřeší — mluví o pozornosti." },
+      { value: "být hodně vysoký", why: "Výška s tím nemá nic společného; jde o to, kam se toulají myšlenky." },
+      { value: "mít spoustu dobrých nápadů", why: "Nápady jsou něco jiného než nepozornost, a tohle spojení chválou není." },
+    ],
+  },
+  {
+    fraze: "být jedno velké ucho",
+    naco: "co se říká o někom, kdo nechce přijít o jediné slovo",
+    doslova: "opravdové ucho",
+    spravne: "napjatě a pozorně poslouchat",
+    chybne: [
+      { value: "mít nápadně velké uši", why: "Jak kdo vypadá, to spojení nepopisuje." },
+      { value: "být nedoslýchavý", why: "Je to naopak: ten člověk slyší všechno, protože dává velký pozor." },
+      { value: "pořád o někom mluvit", why: "Mluvení a poslouchání jsou opačné činnosti." },
+    ],
+  },
+  {
+    fraze: "mít srdce z kamene",
+    naco: "co se říká o někom, komu nikoho není líto",
+    doslova: "skutečný kámen",
+    spravne: "nikoho nelitovat a nemít soucit",
+    chybne: [
+      { value: "nosit na krku kamínek ve tvaru srdce", why: "Šperk s tím nemá co dělat — spojení mluví o povaze." },
+      { value: "být velmi silný a zdravý", why: "Síla ani zdraví to nejsou; jde o to, co člověk cítí k druhým." },
+      { value: "být hodně statečný", why: "Statečnost je chvála, tohle spojení ale nikoho nechválí." },
+    ],
+  },
+  {
+    fraze: "mít tvrdou hlavu",
+    naco: "co se říká o někom, kdo si nikdy nedá říct",
+    doslova: "tvrdost kostí",
+    spravne: "nenechat si od nikoho poradit",
+    chybne: [
+      { value: "mít pevnou lebku", why: "O tělo tady vůbec nejde — spojení mluví o chování." },
+      { value: "špatně se učit", why: "Učení to není; i chytrý člověk si může stát tvrdě za svým." },
+      { value: "často narážet hlavou", why: "To by bylo čtení slovo od slova a nic by nevysvětlilo." },
+    ],
+  },
+  {
+    fraze: "cítit se jako ryba ve vodě",
+    naco: "co se říká o někom, komu je někde moc dobře",
+    doslova: "opravdová voda",
+    spravne: "být někde úplně spokojený",
+    chybne: [
+      { value: "umět výborně plavat", why: "Plavání je jen obrázek, ze kterého spojení vzniklo; říká se i o někom na suchu." },
+      { value: "být promoklý až na kůži", why: "Mokro s tím nemá nic společného." },
+      { value: "být zticha jako ryba", why: "To je jiné ustálené spojení — tohle mluví o spokojenosti, ne o mlčení." },
+    ],
+  },
+  {
+    fraze: "spadl mu kámen ze srdce",
+    naco: "co člověk cítí, když se špatná zpráva nakonec nepotvrdí",
+    doslova: "skutečný kámen",
+    spravne: "hodně se mu ulevilo",
+    chybne: [
+      { value: "něco těžkého mu upadlo na zem", why: "To by bylo čtení slovo od slova — žádný kámen ve hře není." },
+      { value: "hrozně se lekl", why: "Je to naopak: strach teprve skončil." },
+      { value: "rozzlobil se", why: "Zlost to není; tohle spojení popisuje úlevu." },
+    ],
+  },
+  {
+    fraze: "jde mu to od ruky",
+    naco: "co se říká o někom, komu práce ubývá pod rukama",
+    doslova: "pohyb ruky",
+    spravne: "pracuje rychle a snadno",
+    chybne: [
+      { value: "něco mu z ruky vypadlo", why: "Nic nepadá — spojení hodnotí, jak se práce daří." },
+      { value: "pracuje jen levou rukou", why: "Která ruka to dělá, není důležité." },
+      { value: "práci odmítá", why: "Je to naopak: práce mu jde pěkně od ruky." },
+    ],
+  },
+  {
+    fraze: "otočit list",
+    naco: "co člověk udělá, když chce začít úplně nanovo",
+    doslova: "papír v knize",
+    spravne: "začít znovu a jinak",
+    chybne: [
+      { value: "přetočit stránku v knize", why: "Přesně z tohohle obrázku spojení vzniklo, ale dnes znamená něco jiného." },
+      { value: "utrhnout list ze stromu", why: "Strom s tím nemá nic společného." },
+      { value: "všechno vzdát", why: "Vzdát to je opak — tohle spojení mluví o novém začátku." },
+    ],
+  },
+  {
+    fraze: "mít oči i vzadu",
+    naco: "co se říká o dospělém, kterému nic neunikne",
+    doslova: "počet očí",
+    spravne: "všimnout si úplně všeho",
+    chybne: [
+      { value: "mít víc než dvě oči", why: "To by bylo čtení slovo od slova; nikdo takový není." },
+      { value: "umět se dívat přes rameno", why: "Otočit hlavu umí každý — spojení mluví o pozornosti." },
+      { value: "nosit brýle", why: "Brýle s tím nemají nic společného." },
+    ],
+  },
+];
+
+function idiomUloha(it: IdiomItem): PracticeTask {
+  return choice(
+    `Co znamená spojení „${it.fraze}“?`,
+    it.spravne,
+    it.chybne,
+    {
+      hints: [
+        `Spojení „${it.fraze}“ se nemyslí doslova. Zkus si vzpomenout, ${it.naco}.`,
+        `Přenesený význam se nedá přečíst slovo od slova — ${it.doslova} v tom spojení vůbec nehledej. Zeptej se radši, jakého člověka nebo jakou situaci lidé takhle popisují, a vyber možnost, která to vystihuje.`,
+      ],
+      explanation: `Spojení „${it.fraze}“ má přenesený (obrazný) význam. Slova v něm nepopisují skutečnou věc — vznikla z obrázku, který si každý představí, a dnes znamenají „${it.spravne}“.`,
+    },
+  );
+}
+
+interface PrenesenyItem {
+  slovo: string;
+  /** „Tři věty mluví o …“ — unikátní, jde do malé nápovědy. */
+  oblast: string;
+  spravna: string;
+  /** Proč tu jde o přenesený význam (do vysvětlení). */
+  proc: string;
+  doslovne: [Distractor, Distractor, Distractor];
+}
+
+const PRENESENE: PrenesenyItem[] = [
+  {
+    slovo: "ucho",
+    oblast: "opravdovém uchu na hlavě",
+    spravna: "Hrnek na kakao má odražené ucho.",
+    proc: "držadlo hrnku odstává stejně jako ucho na hlavě, a tak dostalo stejné jméno",
+    doslovne: [
+      { value: "Petrovi kouká za uchem tužka.", why: "Tady jde o skutečné ucho na Petrově hlavě." },
+      { value: "Do ucha mi v lese vlétl komár.", why: "Komár vlétl do opravdového ucha — nic přeneseného." },
+      { value: "Po nemoci ho bolelo levé ucho.", why: "Bolet může jen skutečná část těla." },
+    ],
+  },
+  {
+    slovo: "noha",
+    oblast: "opravdové noze člověka nebo zvířete",
+    spravna: "U kuchyňského stolu se uvolnila jedna noha.",
+    proc: "podpěra stolu stojí na zemi a nese váhu jako noha, a tak se jí tak začalo říkat",
+    doslovne: [
+      { value: "Po pádu z kola ho bolela noha.", why: "Bolí ho opravdová noha — o přenesený význam tu nejde." },
+      { value: "Zvedl nohu vysoko nad překážku.", why: "Nohu zvedá člověk, takže jde o skutečnou část těla." },
+      { value: "Kotě má na každé noze bílou ponožku.", why: "Popisuje se srst na skutečných nohou kotěte." },
+    ],
+  },
+  {
+    slovo: "zub",
+    oblast: "opravdovém zubu v puse",
+    spravna: "Na staré pile chybí jeden zub.",
+    proc: "ostré výstupky na pile vypadají jako zuby, a proto se jim tak říká",
+    doslovne: [
+      { value: "Včera mi vypadl mléčný zub.", why: "Mléčný zub je opravdový zub z pusy." },
+      { value: "U zubaře mi spravili zub.", why: "Zubař spravuje skutečné zuby." },
+      { value: "Tygr v zoo vycenil ostré zuby.", why: "Tygr má opravdový chrup — nic obrazného." },
+    ],
+  },
+  {
+    slovo: "oko",
+    oblast: "opravdovém oku, kterým se vidí",
+    spravna: "Babičce se na pleteném svetru spustilo oko.",
+    proc: "smyčka z příze má kulatý tvar jako oko, a tak se jí začalo říkat stejně",
+    doslovne: [
+      { value: "Do oka mi spadla řasa.", why: "Řasa spadla do opravdového oka." },
+      { value: "Zavřel oči a hned usnul.", why: "Zavírají se skutečné oči — nic přeneseného." },
+      { value: "Sova má obrovské oči.", why: "Popisuje se, jak sova doopravdy vypadá." },
+    ],
+  },
+  {
+    slovo: "nos",
+    oblast: "opravdovém nosu na obličeji",
+    spravna: "Nos lodi prorazil velkou vlnu.",
+    proc: "špičatá příď lodi vybíhá dopředu jako nos, a tak se jí tak říká",
+    doslovne: [
+      { value: "Na mraze mě zebe nos.", why: "Zebe skutečný nos na obličeji." },
+      { value: "Utřel si nos do kapesníku.", why: "Kapesník se používá na opravdový nos." },
+      { value: "Pes má moc citlivý nos.", why: "Popisuje se skutečný čich psa." },
+    ],
+  },
+  {
+    slovo: "jazyk",
+    oblast: "opravdovém jazyku v ústech",
+    spravna: "Jazyk u boty se mi zkroutil pod tkaničkou.",
+    proc: "kus kůže pod tkaničkou má podobný tvar jako jazyk, a tak převzal jeho jméno",
+    doslovne: [
+      { value: "Po zmrzlině mě studil jazyk.", why: "Chlad cítí skutečný jazyk v ústech." },
+      { value: "Vyplázl na mě jazyk.", why: "Plazí se opravdový jazyk — nic obrazného." },
+      { value: "Kočka si jazykem čistí kožich.", why: "Kočka používá svůj skutečný jazyk." },
+    ],
+  },
+];
+
+function prenesenyUloha(it: PrenesenyItem): PracticeTask {
+  return choice(
+    `Ve které větě je slovo „${it.slovo}“ použité v přeneseném významu?`,
+    it.spravna,
+    it.doslovne,
+    {
+      hints: [
+        `Tři věty mluví o ${it.oblast} doopravdy. Hledej tu jedinou, kde to slovo pojmenovává něco úplně jiného.`,
+        `Přenesený význam vzniká tak, že se jméno jedné věci půjčí věci jiné, která ji něčím připomíná. Projdi věty jednu po druhé a u každé si řekni, jestli se mluví o ${it.oblast} doopravdy, nebo o věci, která tak jenom vypadá.`,
+      ],
+      explanation: `V téhle větě se nemluví o ${it.oblast}: ${it.proc}. Právě takhle přenesený význam vzniká — ostatní tři věty popisují skutečnou věc.`,
+    },
+  );
+}
+
+// ── Generátor ───────────────────────────────────────────────────────────────
+
 function gen(level: number): PracticeTask[] {
-  if (level === 1) return pick(POOL.slice(0, 15));
-  if (level === 2) return pick(POOL.slice(15, 31));
-  return pick(POOL_L3_EXTRA);
+  if (level === 1) return shuffle(KONTEXT.map(kontextUloha));
+  if (level === 2) return shuffle([...HLEDEJ_MNOHO.map(hledejMnoho), ...HLEDEJ_JEDNO.map(hledejJedno)]);
+  return shuffle([...IDIOMY.map(idiomUloha), ...PRENESENE.map(prenesenyUloha)]);
 }
 
 export const SLOVAJEDNOZNACNAMNOHO: TopicMetadata[] = [
@@ -116,13 +601,13 @@ export const SLOVAJEDNOZNACNAMNOHO: TopicMetadata[] = [
     contentType: "conceptual",
     generator: gen,
     helpTemplate: {
-      hint: "Mnohoznačné slovo: 'koruna' = na hlavě krále / peníze / horní část stromu. Vždy hledej kontext věty.",
+      hint: "Mnohoznačné slovo: „koruna“ = na hlavě krále / peníze / horní část stromu. Vždy hledej kontext věty.",
       steps: [
         "Přečti si celou větu, ne jen samotné slovo.",
-        "Podle kontextu (co se v větě děje) urči, jaký význam se zde myslí.",
+        "Podle kontextu (co se ve větě děje) urči, jaký význam se zde myslí.",
       ],
-      commonMistake: "Žáci si vyberou první/nejčastější význam bez ohledu na větu.",
-      example: "'List papíru' = arch papíru. 'List stromu' = zelená část rostliny. Stejné slovo, jiný kontext!",
+      commonMistake: "Žáci si vyberou první (nejčastější) význam bez ohledu na větu.",
+      example: "„List papíru“ = arch papíru. „List stromu“ = zelená část rostliny. Stejné slovo, jiný kontext!",
     },
   },
 ];
