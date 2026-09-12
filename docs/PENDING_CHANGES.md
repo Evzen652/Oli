@@ -38,23 +38,26 @@ větve.
 
 ## ▶ PŘEDÁNÍ 2026-09-12 — co udělat jako první
 
-1. ✅ **Kritici jsou hotoví u všech tří zbylých dávek** — `g5mat-a` (`28b5be6`),
-   `g5mat-b` (`9068e1d`), `g4-6-mix` (`d50de2d`). **Všechny tři commity jsou
-   jen lokálně ve worktree `wf_84b89ce1-8c0-20`, `-21` a `-22`, nepushnuté.**
-   Dohromady 17 nálezů; klíče samotné sedí — 36 972 úloh přepočítáno ze znění
-   zadání vlastními parsery, 0 neshod. Detail: `PROJECT_STATUS.md` §6,
-   session 40.
+1. ✅ **Opravný průchod je hotový — všech 22 dávek (87 témat) je v `main`.**
+   Poslední tři sloučeny 12. 9.: `g5mat-a` (`7c62066`), `g5mat-b` (`c908b90`),
+   `g4-6-mix` (`65a666f`), zámek obsahu přegenerován v `c619cb3`.
+   Kritici dohromady našli 17 nálezů; klíče samotné sedly — 36 972 úloh
+   přepočítáno ze znění zadání vlastními parsery, 0 neshod.
+   Brány po sloučení: 4 745 testů, `audit:content` čistý v 8 bězích po sobě,
+   `check:keys` 4 700 ověřených / 0 neshod, `check:keys:tables` 471 / 0,
+   `audit:agreement` 38 583 úloh bez nálezu, `audit:ui` bez nového nálezu,
+   `build` ✓. Detail: `PROJECT_STATUS.md` §6, sessions 40–40b.
 
-   📌 **Vzorec napříč oběma dávkami:** autoři používají `pad`/`plural` skoro
-   všude, ale zapomenou na pár míst ve `solutionSteps` a ve zpětné vazbě —
-   „3 řad", „4 kostek", „o 2 let víc". Stojí za zvážení kontrola, která hlídá
-   číslovku 1–4 následovanou 2. pádem množného čísla; `lint-agreement` tuhle
-   třídu nevidí, protože řeší shodu přísudku, ne tvar po číslovce.
-2. **Sloučit je do `main`** — pozor na past s `frozen_content_unchanged`
-   (tři témata mění zadání/klíč) a na to, že `g5mat-b` opravuje chybu, která
-   je do sloučení v produkci (klíč 22 místo 14 u číselné řady).
-3. Pak je opravný průchod celý hotový (87 témat) a dá se uklidit 22 worktree
-   `.claude/worktrees/wf_84b89ce1-8c0-*` i větve `content-fix/*` a `wip/*`.
+   📌 **Vzorec napříč dávkami:** autoři používají `pad`/`plural` skoro všude,
+   ale zapomenou na pár míst ve `solutionSteps` a ve zpětné vazbě — „3 řad",
+   „4 kostek", „o 2 let víc". Stojí za zvážení kontrola, která hlídá číslovku
+   1–4 následovanou 2. pádem množného čísla; `lint-agreement` tuhle třídu
+   nevidí, protože řeší shodu přísudku, ne tvar po číslovce.
+2. ⚠️ **Zatím je to jen lokálně** — dokud se `main` nepushne, produkce běží na
+   `b25cc30` a je v ní pořád klíč 22 místo 14 u číselné řady. Ověř
+   `git status -sb`.
+3. **Uklidit 22 worktree** `.claude/worktrees/wf_84b89ce1-8c0-*` a větve
+   `content-fix/*` i `wip/content-fix/*` — už nejsou k ničemu.
 4. Teprve potom má smysl vrátit se k **přípravě spuštění** — `SESSION_HANDOFF.md`
    §2 má šest bodů, z nichž dva umí udělat jen uživatel (proklikat registraci →
    spárování → smazání účtu; opravit `GROQ_API_KEY` a `GEMINI_API_KEY`).

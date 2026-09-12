@@ -144,6 +144,22 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-12 (40c) — tři poslední dávky sloučeny, průchod uzavřen:
+
+- ✅ **Všech 22 dávek (87 témat) je v `main`.** Squash commity `7c62066`
+  (`g5mat-a`), `c908b90` (`g5mat-b`), `65a666f` (`g4-6-mix`), zámek obsahu
+  přegenerován v `c619cb3` — sedm témat změnilo zadání nebo klíč.
+- ✅ **Brány po sloučení:** 4 745 testů prochází, `check:keys` 4 700 ověřených
+  klíčů / 0 neshod, `check:keys:tables` 471 / 0, `audit:agreement` 38 583 úloh
+  bez nálezu, `audit:ui` bez nového nálezu, `build` ✓.
+- ✅ **`audit:content` je čistý — ověřeno osmi běhy po sobě**, ne jedním.
+  Audit vzorkuje losovaný obsah, takže jeden běh nic nedokazuje; poslední
+  zbývající nález (odpověď se shodovala s cenou v zadání) opravila `g5mat-b`.
+- 📌 **Do produkce to půjde až pushnutím `main`** — do té doby tam zůstává
+  i klíč 22 místo 14 u číselné řady.
+- ▶ **Zbývá úklid:** 22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`
+  a větve `content-fix/*` i `wip/content-fix/*`.
+
 ### Session 2026-09-12 (40b) — kritik na `g4-6-mix`, opravný průchod dokončen:
 
 **Všech 22 dávek má autora i nezávislého kritika.** `g4-6-mix` (commit

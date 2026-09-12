@@ -86,18 +86,25 @@ Každá dávka = autor napíše/opraví, pak ji projde **nezávislý kritik**.
 
 | stav | dávek | témat |
 |---|---|---|
-| ✅ autor i kritik, **sloučeno do `main`** (v produkci) | 19 | 74 |
-| 🟡 **autor i kritik hotov, čeká push a sloučení** | 3 | 13 |
-| 🟠 autor hotov, čeká kritik | 0 | 0 |
+| ✅ autor i kritik, **sloučeno do `main`** | 22 | 87 |
 
-**Autorská i kritická část je hotová u všech 22 dávek.** Zbývají tři dávky,
-které čekají na push a sloučení — **žádný z těch commitů není na `origin`:**
+**Opravný průchod je hotový.** Všech 22 dávek má autora i nezávislého kritika
+a všechno je sloučené do `main`. Poslední tři dávky (12. 9., squash commity):
 
-| dávka | commit autora | kritik | worktree |
+| dávka | commit autora | kritik | squash v `main` |
 |---|---|---|---|
-| `g5mat-a` | `6363b28` | ✅ `28b5be6` — **jen lokálně, nepushnuto** | `.claude/worktrees/wf_84b89ce1-8c0-20` |
-| `g5mat-b` | `46fc9e8` | ✅ `9068e1d` — **jen lokálně, nepushnuto** | `.claude/worktrees/wf_84b89ce1-8c0-21` |
-| `g4-6-mix` | `59f79ab` | ✅ `d50de2d` — **jen lokálně, nepushnuto** | `.claude/worktrees/wf_84b89ce1-8c0-22` |
+| `g5mat-a` | `6363b28` | `28b5be6` | `7c62066` |
+| `g5mat-b` | `46fc9e8` | `9068e1d` | `c908b90` |
+| `g4-6-mix` | `59f79ab` | `d50de2d` | `65a666f` |
+
+Zámek obsahu přegenerován v `c619cb3` (sedm témat změnilo zadání nebo klíč).
+
+⚠️ **Je to jen lokálně na `main`, dokud se to nepushne** — zkontroluj
+`git status -sb`. Push = nasazení na produkci.
+
+▶ **Další krok: úklid.** 22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`
+a větve `content-fix/*` i `wip/content-fix/*` už nejsou k ničemu:
+`git worktree remove --force <cesta>` + `git branch -D <větev>`.
 
 ⚠️ **Větve dávek sáhly jen na své obsahové soubory.** `git diff main` v nich
 ukazuje i dokumentaci a skripty, ale to je pohyb `main` od merge-base, ne
@@ -197,15 +204,13 @@ u `slovaJednoznacnaMnohoznacnaVicevyznamova` (L1 16 → 24 úloh),
 
 Push do `main` = nasazení na produkci, tedy až po shrnutí uživateli.
 
-#### ⚠️ `audit:content` na `main` hlásí občas jeden nález
+#### ✅ `audit:content` už nehlásí nic
 
-Audit vzorkuje losovaný obsah, takže některé vady vyplavou jen v části běhů
-(zhruba 1 ze 4–10). K 12. 9. zbývá jeden takový: u nákupní úlohy
-`scitaniAOdcitaniDesetinnychCisel` se **správná odpověď náhodou shoduje
-s jednou z cen v zadání** („…jablka za 35,90 Kč… → 35,90 Kč"). **Opravuje to
-větev `content-fix/g5mat-b`** (zahazuje zadání, kde výsledek padne na číslo
-ze zadání) — po sloučení té dávky to zmizí. Než se sloučí, může na tom CI
-občas spadnout.
+Audit vzorkuje losovaný obsah, takže vady vyplavou jen v části běhů (zhruba
+1 ze 4–10) — **jeden běh proto není důkaz, pouštěj ho ve smyčce.** Poslední
+zbývající nález (u nákupní úlohy `scitaniAOdcitaniDesetinnychCisel` se správná
+odpověď náhodou shodovala s jednou z cen v zadání) opravila `g5mat-b`.
+Po sloučení ověřeno osmi běhy po sobě — čisté.
 
 Druhý nález téhož druhu (`g4-mat-cisla-do-milionu-4` měl u čtení čísel jen
 tři možnosti, protože slovní klíč nemá číselnou pojistku na doplnění
