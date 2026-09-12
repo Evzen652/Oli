@@ -101,13 +101,30 @@ commitnout**. Jejich rozpracovaná práce je zachráněná jako snapshot:
 
 | dávka | stav autora | kde | worktree |
 |---|---|---|---|
-| `g5mat-a` | ✅ **hotov a commitnut** (`6363b28`) — **čeká na kritika** | `origin/content-fix/g5mat-a` | `wf_84b89ce1-8c0-20` |
-| `g4-6-mix` | ✅ **hotov a commitnut** (`59f79ab`) — **čeká na kritika** | `origin/content-fix/g4-6-mix` | `wf_84b89ce1-8c0-22` |
-| `g5mat-b` | 🟠 rozepsaný, necommitnutý (4 soubory) | `origin/wip/content-fix/g5mat-b-autor` | `wf_84b89ce1-8c0-21` |
+| `g5mat-a` | ✅ hotov (`6363b28`) | `origin/content-fix/g5mat-a` | `wf_84b89ce1-8c0-20` |
+| `g5mat-b` | ✅ hotov (`46fc9e8`) | `origin/content-fix/g5mat-b` | `wf_84b89ce1-8c0-21` |
+| `g4-6-mix` | ✅ hotov (`59f79ab`) | `origin/content-fix/g4-6-mix` | `wf_84b89ce1-8c0-22` |
 
-**První krok příští session: pusť kritiky na `g5mat-a` a `g4-6-mix`** — oba
-autoři hotovi, brána PASS, docs-check bez nových výjimek. Teprve pak dopiš
-`g5mat-b` (autor rozepsaný) a nakonec sluč všechny tři do `main`.
+**Autorská část je u všech 22 dávek hotová. Zbývají už jen tři kritici
+a sloučení.** Snapshoty `origin/wip/content-fix/*-autor` jsou tím překonané.
+
+⚠️ **Past při slučování těchhle tří (hlásí autor `g5mat-b`):** u tří témat
+se změnilo zadání nebo klíč, takže `frozen_content_unchanged` spadne —
+`konstrukceTrojuhelnikuKolmiceRovnobezky` (+5 úloh),
+`scitaniAOdcitaniDesetinnychCisel` (jiný zápis klíče, „6,0" místo „6")
+a `ulohyNezavisleNaBeznychPostupech…` (opravený klíč). Při merge je přidej
+do `UNFROZEN_TOPIC_IDS` nebo rovnou přegeneruj snapshot
+(`UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`),
+jinak CI spadne.
+
+**Co autoři našli a co má kritik ověřit:**
+- `g5mat-b`: u řady se střídavými kroky (`8, 13, 10, 15, 12, 17, ?`) byl
+  **klíč 22 místo 14** — správná odpověď byla nabízená jako distraktor.
+  Tahle chyba je i na `main`, takže dokud se dávka nesloučí, je v produkci.
+- `g5mat-a`: tři z pěti převodů jednotek obsahu na větší jednotku se vůbec
+  negenerovaly (duplicitní distraktor → `ciselnaUloha` vracela `null`).
+- `g4-6-mix`: klíč „bouřka" stál doslova v zadání; nápovědy u diagramů
+  nesly jen jeden řádek tabulky (51 duplicit).
 
 Autor `g5mat-a` hlásí dvě věci, které si kritik má ověřit: (1) u převodů
 jednotek obsahu se tři z pěti převodů na větší jednotku vůbec negenerovaly
