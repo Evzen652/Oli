@@ -13,6 +13,21 @@
 opravené** — jsou to nálezy k rozhodnutí. Vše ověřeno v kódu, cesty a řádky
 sedí k commitu `e3663ca`.
 
+### ✅ Zásady soukromí srovnány s kódem (`08707af`, 13. 9. 2026)
+
+Všech osm níže popsaných rozporů je opravené — šest v textu, dva v kódu
+(jméno dítěte pryč z promptu ve `weekly-report`, `delete-account` maže
+i pozvánky bez `child_id` podle e-mailu rodiče). Účinnost posunuta.
+
+🔴 **Zůstává jedna věc k rozhodnutí:** úklid anonymních dat **nikdo
+nespouští** — `action: "cleanup"` v `anon-progress/index.ts` je v celém repu
+jen ve své definici. Text teď slibuje 44 dnů místo dvanácti měsíců, takže
+sedí se záměrem kódu, ale dokud se úklid nenaplánuje, je to slib, který nic
+nevymáhá. Ověř `select * from cron.job` v Supabase dashboardu; když tam nic
+není, naplánuj to (pg_cron už je v migracích povolený).
+
+<details><summary>Původní popis osmi rozporů (pro dohledání, co se měnilo)</summary>
+
 ### Zásady soukromí tvrdí něco jiného, než dělá kód
 
 Text v `src/pages/Privacy.tsx` a data v `src/content/legal.ts` jsou jinak
@@ -48,10 +63,14 @@ poctivé; tohle je osm míst, kde se rozešly s kódem (většina vznikla po
 8. **Dvě stránky slibují u mazání různé věci** — `Privacy.tsx:160-161` „do
    třiceti dnů", `DeleteAccountInfo.tsx:33` „proběhne hned". Kód dělá druhé.
 
+</details>
+
 ⚠️ `src/integrations/supabase/types.ts` je **zastaralý** — `student_answer`
 ani PIN sloupce v něm nejsou (proto `as any` v `performanceTracker.ts:83`).
 CLAUDE.md ho označuje za zdroj pravdy; pro tuhle kontrolu to neplatí, musí se
-číst i `supabase/migrations/`.
+číst i `supabase/migrations/`. **Stojí za přegenerování** (postup je v CLAUDE.md,
+sekce „DB Column Notes") — dokud se to neudělá, každá kontrola „co se ukládá"
+musí číst migrace, jinak přehlédne přesně ty sloupce, které chyběly i v zásadách.
 
 ### ✅ Dětská kategorie — díra v rodičovské bráně opravena (`39b4ecc`)
 
