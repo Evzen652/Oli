@@ -92,19 +92,19 @@ const L1: Ctení[] = [
   },
   {
     text:
-      "Jednoho mrazivého rána přišla do zahrady liška. Měla rezavou srst a bílou špičku ocasu. Sháněla něco k jídlu, protože byla vyhladovělá. Uviděl ji muž, který se v zahradě staral o stromy, a hodil jí kůrku chleba. Liška ji popadla a zmizela mezi stromy v lese.",
+      "Jednoho mrazivého rána přišla do zahrady liška a nechala ve sněhu drobné stopy. Měla rezavou srst a bílou špičku ocasu. Sháněla něco k jídlu, protože byla vyhladovělá. Uviděl ji muž, který se v zahradě staral o stromy, a hodil jí kůrku chleba. Liška ji popadla a zmizela mezi stromy v lese.",
     otazky: [
       {
         q: "V jakém ročním období se příběh odehrává?",
         a: "V zimě",
         d: [
-          ["V létě", "V létě rána mrazivá nebývají. První věta textu popisuje počasí — a to k létu nesedí."],
-          ["Na jaře", "Jaro už bývá teplé. Rozhodující je slovo, kterým text popisuje ráno hned v první větě."],
-          ["Na podzim", "Podzimní rána bývají chladná, ale mráz patří k jinému, ještě studenějšímu období."],
+          ["V létě", "V létě rána mrazivá nebývají a sníh v zahradě neleží. První věta popisuje počasí — a to k létu nesedí."],
+          ["Na jaře", "Na jaře už bývá teplo a sníh taje. Rozhodující jsou slova o mrazu a o sněhu v první větě."],
+          ["Na podzim", "Podzimní rána bývají chladná, ale text mluví i o sněhu — a ten leží v nejchladnějším období roku."],
         ],
-        h0: "První věta popisuje, jaké bylo ráno. To slovo o počasí je celá odpověď.",
-        h1: "Text neříká roční období přímo, ale popisuje ráno jako mrazivé. Projdi si v duchu roční období a rozmysli, ve kterém z nich mrzne pravidelně — právě to je hledaná odpověď.",
-        e: "Text mluví o mrazivém ránu. Mráz patří k nejchladnějšímu ročnímu období, takže příběh se odehrává tehdy, kdy mrzne.",
+        h0: "První věta popisuje, jaké bylo ráno a v čem po lišce zůstaly stopy.",
+        h1: "Text neříká roční období přímo, ale mluví o mrazivém ránu a o stopách ve sněhu. Projdi si v duchu roční období a rozmysli, ve kterém z nich mrzne a leží sníh — právě to je hledaná odpověď.",
+        e: "Text mluví o mrazivém ránu a o stopách ve sněhu. Mráz i sníh patří k nejchladnějšímu ročnímu období, takže příběh se odehrává tehdy, kdy mrzne.",
       },
       {
         q: "Co liška v zahradě hledala?",
@@ -135,7 +135,7 @@ const L1: Ctení[] = [
         a: "Do lesa",
         d: [
           ["Na pole", "Pole text nezmiňuje. Poslední věta říká, kam liška po získání kůrky odešla."],
-          ["K rybníku", "Žádná voda se v textu neobjevuje. Odpověď najdeš v úplně poslední větě."],
+          ["K rybníku", "Rybník se v textu neobjevuje. Odpověď najdeš v úplně poslední větě."],
           ["Do nory pod plotem", "O noře ani plotu text nic neříká. Liška odběhla někam, kde je hodně stromů."],
         ],
         h0: "Úplně poslední věta textu říká, kam liška s kůrkou odběhla.",
@@ -321,7 +321,7 @@ const L2: Ctení[] = [
         d: [
           ["Rostliny jsou nemocné", "O nemocech text nic nepíše. Důvod zalévání je v téže větě jako slovo „léto“."],
           ["Sousedka jí to poradila", "Žádná sousedka se v textu neobjevuje. Důvod je v počasí, ne v radě od někoho."],
-          ["Na zahradě je málo místa", "Velikost zahrady s zaléváním nesouvisí. Rozhoduje to, jak je v létě teplo."],
+          ["Na zahradě je málo místa", "Velikost zahrady se zaléváním nesouvisí. Rozhoduje to, jak je v létě teplo."],
         ],
         h0: "Ve větě o létě jsou dvě části spojené slovy „a tak“. Ta první říká důvod.",
         h1: "Věta „V létě bývá velké horko, a tak musí zahradu každý den zalévat.“ má příčinu na začátku a důsledek na konci. Otázka se ptá na příčinu, tedy na část před slovy „a tak“.",
@@ -460,16 +460,16 @@ const L2: Ctení[] = [
         e: "Eva zavolala mamince a ta pro ni přijela autem. Do školy se pak podle textu vrátily společně, takže Eva jela autem s ní.",
       },
       {
-        q: "Co Eva udělala hned potom, co u dveří klíče nenašla?",
+        q: "Co Eva udělala potom, co si vzpomněla, kde klíče nechala?",
         a: "Zatelefonovala mamince",
         d: [
           ["Rozbila okno", "Nic takového v textu není. Eva zvolila mnohem klidnější řešení."],
           ["Počkala na chodbě do večera", "O čekání text nic neříká. Třetí věta popisuje, co udělala vzápětí."],
           ["Šla ke kamarádce", "Žádná kamarádka se v textu neobjevuje. Eva se obrátila na někoho z rodiny."],
         ],
-        h0: "Třetí věta začíná slovesem, které popisuje Evin první krok po zjištění.",
+        h0: "Třetí věta začíná slovesem, které popisuje Evin krok po tom, co si vzpomněla.",
         h1: "Sleduj pořadí dějů: Eva zjistí, že nemá klíče, pak si vzpomene, kde jsou, a pak něco udělá. Otázka míří na ten třetí krok, tedy na začátek třetí věty.",
-        e: "Text říká, že Eva „zavolala proto mamince“. Zavolat po telefonu a zatelefonovat znamená totéž, takže to byl její první krok.",
+        e: "Text říká, že Eva „zavolala proto mamince“. Zavolat po telefonu a zatelefonovat znamená totéž, takže to byl její první krok k řešení.",
       },
     ],
   },
@@ -480,7 +480,7 @@ const L2: Ctení[] = [
 const L3: Ctení[] = [
   {
     text:
-      "Ondra se učí hrát na housle už půl roku. Ze začátku mu to vůbec nešlo a pouzdro s houslemi často zůstávalo celý týden zavřené. Paní učitelka mu jednou řekla, že i ona se jako malá dlouho trápila, než jí to začalo jít. Na ta slova si Ondra vzpomněl pokaždé, když ho cvičení přestalo bavit. Po několika měsících každodenního cvičení zahrál na školním koncertě celou skladbu bez jediné chyby.",
+      "Ondra se učí hrát na housle už půl roku. Ze začátku mu to vůbec nešlo a pouzdro s houslemi často zůstávalo celý týden zavřené. Paní učitelka mu jednou řekla, že i ona se jako malá dlouho trápila, než jí to začalo jít. Na ta slova si Ondra vzpomněl pokaždé, když ho cvičení přestalo bavit. Po několika dalších měsících každodenního cvičení zahrál na školním koncertě celou skladbu bez jediné chyby.",
     otazky: [
       {
         q: "Které ponaučení z příběhu vyplývá?",
@@ -618,7 +618,7 @@ const L3: Ctení[] = [
         q: "Co se o Matějovi z příběhu dozvíme?",
         a: "Také kdysi býval nový",
         d: [
-          ["Chodí do školy od první třídy", "Text říká opak — do téhle třídy přestoupil odjinud, a to teprve loni."],
+          ["Chodí do téhle třídy od první třídy", "Text říká opak — do téhle třídy přestoupil odjinud, a to teprve loni."],
           ["Je nejlepší hráč vybíjené", "O jeho výkonech ve hře text nic nepíše. Vybíjenou jen nabídl."],
           ["S nikým se nebaví", "Matěj zve Leu do party, se kterou hraje. Kamarády tedy má."],
         ],
@@ -627,7 +627,7 @@ const L3: Ctení[] = [
         e: "Text říká, že Matěj loni do téhle třídy přestoupil. Kdo přestoupí, je ve třídě zpočátku nováčkem, stejně jako teď Lea.",
       },
       {
-        q: "Co se změnilo v Leině postavení do konce týdne?",
+        q: "Co se pro Leu do konce týdne změnilo?",
         a: "Získala kamarády",
         d: [
           ["Přestoupila jinam", "O dalším přestupu text nic neříká. Lea ve třídě zůstala."],

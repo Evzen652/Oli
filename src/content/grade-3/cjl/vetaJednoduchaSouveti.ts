@@ -71,7 +71,7 @@ function ulohaL1({ v, slovesa, ptej }: L1Item): PracticeTask {
     });
   }
   return choice(`Kolik sloves má „${v}“ a je to věta jednoduchá, nebo souvětí?`, S2, [
-    { value: J1, why: `Jeden děj ti utekl: ve větě je „${s0}“ i „${s1}“. S dvěma ději už to věta jednoduchá není.` },
+    { value: J1, why: `Jeden děj ti utekl: ve větě je „${s0}“ i „${s1}“. Se dvěma ději už to věta jednoduchá není.` },
     { value: J2, why: `Slovesa jsou opravdu dvě („${s0}“, „${s1}“), ale dva děje znamenají dvě věty spojené dohromady — a to je souvětí.` },
     { value: S1, why: `Je to souvětí, ale sloveso není jedno: najdeš „${s0}“ i „${s1}“.` },
   ], {
@@ -207,7 +207,10 @@ const L3: L3Item[] = [
     tip: "V souvětí jsou spojky „ale“ a „protože“.",
   },
   {
-    typ: "pocet", v: "Půjdeme do kina nebo zůstaneme doma.", spravne: "Půjdeme do kina nebo zůstaneme doma.", carek: 0, hranic: 1,
+    // Pozor na výběr věty: „nebo“ ve vylučovacím poměru („Uklidíš si, nebo
+    // půjdeš domů.“) čárku naopak chce. Proto tu stojí dvě rovnocenné činnosti,
+    // které se navzájem neruší — tam je „nebo“ slučovací a čárka nepatří.
+    typ: "pocet", v: "Po obědě si čteme nebo kreslíme.", spravne: "Po obědě si čteme nebo kreslíme.", carek: 0, hranic: 1,
     moc: "Před „nebo“ se čárka nepíše — patří mezi spojky a, i, ani, nebo, před kterými čárka není.", malo: "",
     tip: "Věty spojuje spojka „nebo“.",
   },
@@ -283,7 +286,7 @@ function ulohaL3(it: L3Item): PracticeTask {
           `Najdi v „${it.v}“ slovesa. Kde končí první věta a kde začíná další?`,
           `${it.tip} Čárka odděluje celé věty, nikdy nerozdělí jednu větu uprostřed. ${PRAVIDLO}`,
         ],
-        explanation: `Správně: „${it.spravne}“. Čárka stojí přesně na hranici mezi dvěma větami souvětí, a proto patří ${pred(it.klic)}.`,
+        explanation: `Správně: „${it.spravne}“ Čárka stojí přesně na hranici mezi dvěma větami souvětí, a proto patří ${pred(it.klic)}.`,
       });
   }
   const { v, spravne, carek, hranic, moc, malo, tip } = it;
@@ -302,7 +305,7 @@ function ulohaL3(it: L3Item): PracticeTask {
       `Najdi v „${v}“ slovesa a místa, kde končí první věta a začíná další.`,
       `${tip} U každé hranice mezi větami rozhodni podle spojky: ${PRAVIDLO}`,
     ],
-    explanation: `Správně: „${spravne}“. ${carek === 0 ? moc : malo}${carek > 0 && moc ? ` ${moc}` : ""}`,
+    explanation: `Správně: „${spravne}“ ${carek === 0 ? moc : malo}${carek > 0 && moc ? ` ${moc}` : ""}`,
   });
 }
 
@@ -333,7 +336,7 @@ export const VETAJJEDNODUCHASONVETI: TopicMetadata[] = [
     generator: gen,
     helpTemplate: {
       hint: "Věta jednoduchá = 1 sloveso. Souvětí = 2+ slovesa spojená spojkou (a, ale, nebo, protože, když…).",
-      steps: ["Najdi všechna slovesa (děje) ve větě.", "Jedno sloveso → věta jednoduchá.", "Dvě a více sloves s spojkou → souvětí."],
+      steps: ["Najdi všechna slovesa (děje) ve větě.", "Jedno sloveso → věta jednoduchá.", "Dvě a více sloves se spojkou → souvětí."],
       commonMistake: "Výčet ('chleba, máslo a sýr') není souvětí — je to jen jedno sloveso s více předměty.",
       example: "Jana čte. (jednoduchá) × Jana čte a Petr píše. (souvětí — dvě slovesa: čte, píše)",
     },

@@ -218,7 +218,10 @@ const L3: (L3Doplň | L3Urci)[] = [
     proc: "„Teď“ ukazuje přítomný čas a hrají „kluci“ = oni (3. osoba, číslo množné).",
   },
   {
-    typ: "doplň", veta: "Minulou sobotu ___ Eva s tátou na ryby.", zadani: "jít", klic: "šla",
+    // Podmět je jen Eva. Dřív tu stálo „Eva s tátou“, jenže tam je číslo sporné
+    // (spisovně „Eva s tátou šla“, běžně i „šli“) a distraktor „šly“ by navíc
+    // u mužského „táty“ nešel použít — na určování čísla je to past, ne úloha.
+    typ: "doplň", veta: "Minulou sobotu ___ Eva na ryby.", zadani: "jít", klic: "šla",
     spatne: [
       ["jde", "„Jde“ je přítomný čas, ale „minulou sobotu“ už bylo."],
       ["půjde", "„Půjde“ je budoucí čas — minulá sobota už proběhla."],
