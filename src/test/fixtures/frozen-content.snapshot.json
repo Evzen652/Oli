@@ -20,16 +20,16 @@
     "taskCount": 24
   },
   "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku": {
-    "hash": "260a5da1432cff9432eb1625ee318c2ba3782362",
-    "taskCount": 29
+    "hash": "24e663d300d59d142eecc64764b07a0bf3196ce6",
+    "taskCount": 45
   },
   "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-skupiny-de-te-ne-be-pe-ve-me": {
-    "hash": "ebb2d9b4f4ef95273d69ef3bce60629ce8dba974",
-    "taskCount": 24
+    "hash": "2387fcba0c8a4bbf57b0050faa75ddc728abb960",
+    "taskCount": 50
   },
   "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky": {
-    "hash": "385c63b65707c3a90f1c60c8e05b3f25709b63bb",
-    "taskCount": 24
+    "hash": "e54d5238954e48fbbb8d610320e79ba242fb1be7",
+    "taskCount": 47
   },
   "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci": {
     "hash": "2593f53d1c6501ec7794f527e0ff9f2bc760482e",
@@ -128,8 +128,8 @@
     "taskCount": 116
   },
   "g3-mat-obvod-trojuhelniku-ctverce-obdelniku": {
-    "hash": "dec7e53eb0b5b6581bf0aeac6724997fe068a51f",
-    "taskCount": 86
+    "hash": "a5e05631c91e4c8ed8ba3caad711a0229ce5202d",
+    "taskCount": 90
   },
   "g3-mat-prevody-delky": {
     "hash": "dd6ddee3090709822255b92050d1e885bc13c2a5",
@@ -140,16 +140,16 @@
     "taskCount": 103
   },
   "g3-mat-scitani-odcitani-1000": {
-    "hash": "0363e68fc5253ce1e2514ba1a61ed35b6abae142",
-    "taskCount": 120
+    "hash": "d5b9f32aea469c64fb23967508c3a54e0e391538",
+    "taskCount": 72
   },
   "g3-mat-slovni-ulohy-dve-operace": {
-    "hash": "d285f6f8a1c1ad9be346fc1c8e6f41ad8c2da387",
-    "taskCount": 119
+    "hash": "684a8736b331b22045580261aaeb3bbbb167f616",
+    "taskCount": 90
   },
   "g3-mat-zaokrouhlovani": {
-    "hash": "bac8b4483429f30c02ac3a061d869eddcbecb956",
-    "taskCount": 116
+    "hash": "a25f33ce6830c1c4260389bf2f9b8a7e9778b467",
+    "taskCount": 72
   },
   "g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy": {
     "hash": "b470de4e25836dbee6991b744cff9b7f8a3d425c",

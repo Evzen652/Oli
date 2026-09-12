@@ -64,18 +64,33 @@ function parse(question: string): { radky: Radek[]; otazka: string; skala: numbe
   return { radky, otazka, skala: skalaM ? Number(skalaM[1]) : jeden ? 1 : 1 };
 }
 
-/** Řádky, na které otázka ukazuje, v pořadí, v jakém jsou v otázce zmíněné. */
+/**
+ * Řádky, na které otázka ukazuje, v pořadí, v jakém je otázka zmiňuje.
+ *
+ * Párování je na české skloňování („Leden" → „lednu", „Lvi" → „lvů"), takže
+ * se porovnává společný začátek. Aby se štítky se stejným začátkem nepletly
+ * („3. A" × „3. B" × „3. C" mají shodné první tři znaky), musí být nejlepší
+ * shoda pro dané slovo JEDINÁ — jinak se slovo zahodí jako nejednoznačné.
+ */
 function zminene(otazka: string, radky: Radek[]): Radek[] {
-  const slova = otazka.split(/[^\p{L}\p{N}.]+/u).filter((w) => w.length >= 3);
-  const nalezy: { r: Radek; pozice: number }[] = [];
-  for (const r of radky) {
-    let nejlepsi = -1;
-    slova.forEach((w, i) => {
-      if (spolecnyZaklad(w, r.label) >= Math.min(4, r.label.length) && nejlepsi === -1) nejlepsi = i;
-    });
-    if (nejlepsi >= 0) nalezy.push({ r, pozice: nejlepsi });
-  }
-  return nalezy.sort((a, b) => a.pozice - b.pozice).map((x) => x.r);
+  // Jednoznakové tokeny se drží kvůli štítkům „3. A" — samotné „A" je pro
+  // párování bezcenné, ale ve dvojici „3. A" nese celý štítek.
+  const tokeny = otazka.split(/[^\p{L}\p{N}.]+/u).filter(Boolean);
+  const dvojice = tokeny.slice(0, -1).map((w, i) => `${w} ${tokeny[i + 1]}`);
+  const slova = [...tokeny.filter((w) => w.length >= 2), ...dvojice];
+
+  const poradi = new Map<Radek, number>();
+  slova.forEach((slovo, pozice) => {
+    const skore = radky.map((r) => ({ r, n: spolecnyZaklad(slovo, r.label) }));
+    const nejlepsi = Math.max(...skore.map((x) => x.n));
+    const kandidati = skore.filter((x) => x.n === nejlepsi);
+    if (kandidati.length !== 1) return;                       // nejednoznačné
+    const { r, n } = kandidati[0];
+    if (n < Math.min(2, r.label.length)) return;              // příliš slabá shoda
+    if (!poradi.has(r)) poradi.set(r, pozice);
+  });
+
+  return [...poradi.entries()].sort((a, b) => a[1] - b[1]).map(([r]) => r);
 }
 
 const zadane = (process.env.EXTRA_IDS ?? process.env.IDS ?? "").split(",").filter(Boolean);
@@ -133,7 +148,7 @@ for (const id of ids) {
       zkontroluj(scitance.reduce((a, b) => a + b, 0), "součet");
     } else if (/O kolik/i.test(otazka)) {
       // „V zoo přibyli 3 další lvi" — úloha mění hodnotu řádku, než se ptá.
-      if (/přibyl|ubyl|přijelo|odešl|přidal/i.test(task.question)) nepokryto.push(`L${level} ${otazka}`);
+      if (/přibyl|ubyl|přijelo|odešl|přidal|dostal|navíc|ztratil|prodal/i.test(task.question)) nepokryto.push(`L${level} ${otazka}`);
       else if (cil.length === 2) zkontroluj(Math.abs((cil[0].hodnota ?? 0) * skala - (cil[1].hodnota ?? 0) * skala), "rozdíl");
       else nepokryto.push(`L${level} ${otazka}`);
     } else if (/nejvíc|nejvyšší|nejvíce/i.test(otazka)) {

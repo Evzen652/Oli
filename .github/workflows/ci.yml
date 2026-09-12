@@ -48,6 +48,14 @@ jobs:
         env:
           REPEATS: '30'
 
+      # Klíč se přepočítá z textu zadání. Když tohle spadne, NEJDŘÍV ručně
+      # přepočítej nález — šestkrát se ukázalo, že chybu má kontrola, ne obsah.
+      - name: Key check (přepočet klíčů z zadání)
+        run: npm run check:keys
+
+      - name: Key check — tabulky a diagramy
+        run: npm run check:keys:tables
+
       - name: Verify curriculum
         run: npm run verify:curriculum
 
