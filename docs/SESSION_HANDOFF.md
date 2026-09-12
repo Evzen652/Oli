@@ -86,26 +86,36 @@ ostatním) → pak nezávislý **kritik** (Generator→Critic) ve stejné větvi
 commit „fix(content): kontrola …“. Na `main` nikdo nesahá, snapshot se
 nepřegeneruje (dělá se až při slučování).
 
-**Stav k přerušení:**
-- ✅ Autor hotov, **pushnuto na origin** (13 dávek): `content-fix/g2mat-a…d`,
-  `g2cjl-a…d`, `g2prv-a`, `g2prv-b`, `g3mat-a…c` = celý 2. ročník + 3. mat.
-  Kritik u nich **nemusel doběhnout** — ověř `git log origin/content-fix/<x>`:
-  chybí-li commit „kontrola …“, kritika pusť znovu (critPrompt ve skriptu).
-- 🟡 Rozpracované, **bez commitu** — uložen jen snapshot rozdělané práce
-  (`git stash create`) na `origin/wip/content-fix/<dávka>`: `g3prv-a`,
-  `g3prv-b`, `g3prv-c`, `g3cjl-a`, `g3cjl-b`. **Neověřené, může být
-  rozbité** — ber jako výchozí bod, ne hotovou práci.
-- ⏭️ Nezačaté: `g3cjl-c`, `g5mat-a`, `g5mat-b`, `g4-6-mix`.
-- Pozn.: pokud workflow na PC1 ještě doběhl, další větve jsou jen lokálně na
-  PC1 → tam `git push origin "refs/heads/content-fix/*"`.
+**Stav k přerušení (po dvou bězích, oba spadly na limitu relace).
+Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
+
+| dávky | stav | kde |
+|---|---|---|
+| `g2mat-a`, `g2mat-b` | ✅ autor **i kritik** hotov | `origin/content-fix/*` |
+| `g2mat-c`, `g2mat-d`, `g2cjl-a…d`, `g2prv-a`, `g2prv-b`, `g3mat-a…c`, `g3prv-a…c`, `g3cjl-a…c` (17) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
+| `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🔴 rozdělané, **bez commitu** — jen snapshot, NEOVĚŘENÉ | `origin/wip/content-fix/*` (větev `content-fix/*` je u nich ještě na starém commitu) |
+
+- Ověření stavu dávky: `git log --oneline -2 origin/content-fix/<dávka>` —
+  commit „fix(content): **kontrola** …“ = kritik doběhl.
+- Co kritik u dvou hotových dávek našel: 11 chyb v 6 tématech (mj. klíč, který
+  nesouhlasil s vlastním řešením). **To je důvod, proč se zbylých 17 dávek nesmí
+  slučovat bez kritika** — samotná brána i `docs-check` je propustily.
+
+**Past, která tohle zdržela:** obě spadnutí byl limit relace, ne chyba obsahu.
+Po pádu zůstanou worktree `.claude/worktrees/wf_*` (někdy `locked`) a větve
+`content-fix/*` na základním commitu; nový běh pak neumí udělat
+`git checkout -b`. Před dalším pokusem: `git worktree unlock/remove --force`
++ `git branch -D` u dávek bez práce (WIP si napřed zachraň přes
+`git stash create` a push na `wip/content-fix/*`, viz výše).
 
 **Pokračování (nová session, „use a workflow“):**
-1. Spusť `content-fix-87.js` jen s nedokončenými dávkami z args (resume
-   z jiné session nejde). `REPO` je ve skriptu natvrdo
-   `C:\Users\Evzen\Desktop\OLI` — na druhém PC uprav. Skript dělá
-   `git checkout -b content-fix/<slug>` — u dávek s WIP místo toho vyjdi
-   z `origin/wip/content-fix/<slug>`.
-2. Kritika pro hotové dávky, u kterých chybí commit „kontrola“.
+1. **Nejdřív kritik pro 17 dávek**, kde chybí (`critPrompt` ve skriptu; kritik
+   pracuje ve worktree dané větve, a když už neexistuje, založí si nový:
+   `git worktree add … content-fix/<dávka>` + junction na `node_modules`).
+   Pusť je po ~8 dávkách na běh, ať se vejdeš do limitu.
+2. Pak 3 nedokončené dávky autorem: `g5mat-a`, `g5mat-b`, `g4-6-mix` — výchozí
+   bod je `origin/wip/content-fix/<dávka>` (neověřený!), pak kritik.
+   `REPO` je ve skriptu natvrdo `C:\Users\Evzen\Desktop\OLI` — na druhém PC uprav.
 3. Slučování (inline, ne agent): každou větev `git merge --squash` / 
    `git cherry-pick --no-commit` do `main` pracovního stromu → přegeneruj zámek
    `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`

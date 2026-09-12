@@ -147,9 +147,11 @@ src/
 ### Session 2026-09-11 (38) — hromadné opravy 87 témat (ROZPRACOVÁNO):
 
 - 🟡 Varianta A spuštěna workflowem `content-fix-87` (22 dávek, autor ve vlastním
-  worktree + nezávislý kritik). Přerušeno (došel kredit). 13 dávek (2. ročník
-  + 3. mat) commitnuto a pushnuto jako `origin/content-fix/*`, 5 dávek jen WIP
-  snapshot `origin/wip/content-fix/*`, 4 nezačaté. **Na `main` zatím nic.**
+  worktree + nezávislý kritik). Dva běhy, oba spadly na limitu relace.
+  **2 dávky hotové i s kritikem**, 17 s prací autora bez kritika, 3 rozdělané
+  (`origin/wip/content-fix/*`). Vše na `origin/content-fix/*`, **na `main`
+  z obsahu nic**. Kritik u prvních dvou dávek našel 11 chyb v 6 tématech, které
+  brána i `docs-check` propustily → bez kritika neslučovat.
   Pokračování: `docs/SESSION_HANDOFF.md` §1 „▶▶ ROZPRACOVÁNO“.
 
 ### Session 2026-09-11 (37) — audit obsahu 4.–6. ročníku:

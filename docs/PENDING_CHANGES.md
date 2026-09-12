@@ -9,11 +9,15 @@
 
 ## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-11, session 38)
 
-Uživatel zvolil variantu **A (všech 87)**. Workflow `content-fix-87` nedoběhl
-(došel kredit). 13 dávek (celý 2. ročník + 3. matematika) má commit autora
-a je pushnuto jako `origin/content-fix/*`; 5 dávek (3. prvouka, 3. čeština a/b)
-má jen neověřený snapshot na `origin/wip/content-fix/*`; 4 dávky nezačaté.
-**Nic není na `main`.** Postup pokračování: `docs/SESSION_HANDOFF.md` §1
+Uživatel zvolil variantu **A (všech 87)**. Workflow `content-fix-87` běžel
+dvakrát a pokaždé spadl na limitu relace. Stav: **2 dávky hotové včetně
+nezávislého kritika**, **17 dávek má práci autora bez kritika**, **3 dávky
+rozdělané** jen jako snapshot na `origin/wip/content-fix/*`. Vše na
+`origin/content-fix/*`, **na `main` z obsahu nic**.
+
+Kritik u prvních dvou dávek našel 11 chyb v 6 tématech, které brána
+i `docs-check` propustily — zbylých 17 dávek se proto nesmí sloučit,
+dokud kritik neproběhne. Postup: `docs/SESSION_HANDOFF.md` §1
 „▶▶ ROZPRACOVÁNO“.
 
 ## ✅ Audit obsahu 4.–6. ročníku (2026-09-11)
