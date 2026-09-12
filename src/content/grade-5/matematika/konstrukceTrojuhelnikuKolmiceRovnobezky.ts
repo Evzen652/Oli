@@ -74,6 +74,31 @@ const L1: PracticeTask[] = [
     { value: "pravoúhlý", why: "Pravoúhlý má úhel přesně 90°." },
     { value: "rovnoramenný", why: "Rovnoramenný se určuje podle stran." },
   ], { hints: ["Jak se jmenuje úhel, který je širší než pravý?", "Úhel do 90° je ostrý, přesně 90° pravý a od 90° do 180° tupý; trojúhelník se jmenuje podle takového úhlu."], explanation: "Trojúhelník s tupým úhlem je tupoúhlý." }),
+  choice("Jak zapíšeš, že přímka a je kolmá k přímce b?", "a ⊥ b", [
+    { value: "a ∥ b", why: "Dvě svislé čárky znamenají rovnoběžnost, ne kolmost." },
+    { value: "a = b", why: "Rovnítko by znamenalo, že jde o jednu a tutéž přímku." },
+    { value: "a ∈ b", why: "Tenhle znak se čte „leží na“ a používá se u bodu, ne u dvou přímek." },
+  ], { hints: ["Který ze znaků připomíná tvarem roh, tedy dvě čáry svírající pravý úhel?", "Znak pro kolmost vypadá jako obrácené písmeno T — svislá čára narazí na vodorovnou a udělá s ní roh."], explanation: "Kolmost se zapisuje znakem ⊥, který sám vypadá jako dvě čáry svírající pravý úhel." }),
+  choice("Jak zapíšeš, že přímky p a q jsou rovnoběžné?", "p ∥ q", [
+    { value: "p ⊥ q", why: "Tenhle znak znamená kolmost, tedy pravý úhel." },
+    { value: "p ≠ q", why: "Přeškrtnuté rovnítko říká jen to, že se přímky nerovnají." },
+    { value: "p → q", why: "Šipka značí směr nebo přechod, o vzájemné poloze přímek nic neříká." },
+  ], { hints: ["Který ze znaků je sám nakreslený ze dvou čar, které se nikde nepotkají?", "Znak pro rovnoběžnost tvoří dvě svislé čárky vedle sebe — přesně tak, jak vedou rovnoběžné přímky."], explanation: "Rovnoběžnost se zapisuje znakem ∥, tedy dvěma čárkami, které se nikde neprotnou." }),
+  choice("Jak se jmenuje úhel, který je menší než pravý?", "ostrý", [
+    { value: "tupý", why: "Tupý úhel je naopak širší než pravý." },
+    { value: "přímý", why: "Přímý úhel je rovná čára, tedy 180°." },
+    { value: "plný", why: "Plný úhel je celé otočení dokola, tedy 360°." },
+  ], { hints: ["Jak vypadá úhel, který je špičatější než roh sešitu?", "Úhly se dělí podle toho, jak jsou široké: do 90°, přesně 90°, mezi 90° a 180° a pak celé otočení."], explanation: "Úhel menší než 90° je špičatý, a proto se mu říká ostrý." }),
+  choice("Jak se jmenuje úhel, který je větší než pravý, ale menší než přímý?", "tupý", [
+    { value: "ostrý", why: "Ostrý úhel je naopak užší než pravý." },
+    { value: "pravý", why: "Pravý úhel má přesně 90°, hledá se úhel širší." },
+    { value: "plný", why: "Plný úhel je celé otočení dokola, tedy 360°." },
+  ], { hints: ["Představ si roh sešitu, který někdo rozevřel doširoka, ale ještě z něj nevznikla rovná čára.", "Mezi 90° a 180° leží jediný druh úhlu; ostrý je pod 90° a přímý je přesně 180°."], explanation: "Úhel mezi 90° a 180° je rozevřený víc než pravý, a proto se mu říká tupý." }),
+  choice("Čím narýsuješ kružnici?", "kružítkem", [
+    { value: "trojúhelníkem s ryskou", why: "Ryska slouží k rýsování kolmic a rovnoběžek." },
+    { value: "pravítkem", why: "Pravítkem se rýsují jen rovné čáry." },
+    { value: "úhloměrem", why: "Úhloměrem se úhly měří, nekreslí se jím kružnice." },
+  ], { hints: ["Která pomůcka má hrot, který se zapíchne do středu, a tuhu, která se kolem něj otáčí?", "Kružnice je čára, jejíž všechny body mají od středu stejnou vzdálenost; potřebuješ tedy pomůcku, která tu vzdálenost udrží pořád stejnou."], explanation: "Jen kružítko udrží při otáčení stále stejnou vzdálenost od středu, a proto jím vznikne kružnice." }),
 ];
 
 function tretiUhel(): PracticeTask | null {
@@ -85,13 +110,15 @@ function tretiUhel(): PracticeTask | null {
     { value: a + b, why: "To je součet dvou známých úhlů. Třetí úhel je to, co jim chybí do 180°." },
   ], [
     `Kolik stupňů mají dohromady úhly ${a}° a ${b}°?`,
-    "Součet všech tří úhlů trojúhelníku je vždy přímý úhel, tedy sto osmdesát stupňů. Od něj odečti oba známé úhly.",
+    `Nejdřív sečti ${a}° a ${b}°. Součet všech tří úhlů trojúhelníku je vždycky přímý úhel, tedy sto osmdesát stupňů — a kolik do nich tomu součtu chybí, tolik má třetí úhel.`,
   ], [`${a}° + ${b}° = ${a + b}°`, `180° − ${a + b}° = ${c}°`, `Zkouška: ${a}° + ${b}° + ${c}° = 180° ✓`]);
 }
 
 function druh(): PracticeTask | null {
   const a = rnd(20, 90), b = rnd(20, 160 - a), c = 180 - a - b;
   if (c < 15) return null;
+  // 60°, 60°, 60° by byl i rovnostranný — u takového zadání by byly správně dvě možnosti.
+  if (a === 60 && b === 60) return null;
   const nej = Math.max(a, b, c);
   const key = nej < 90 ? "ostroúhlý" : nej === 90 ? "pravoúhlý" : "tupoúhlý";
   const why: Record<string, string> = {
@@ -103,8 +130,8 @@ function druh(): PracticeTask | null {
   const chyby = ["ostroúhlý", "pravoúhlý", "tupoúhlý", "rovnostranný"].filter((k) => k !== key).map((k) => ({ value: k, why: why[k] }));
   return ciselnaUloha(`Trojúhelník má úhly ${a}° a ${b}°. Jaký je podle úhlů?`, key, shuffle(chyby), [
     `Úhly ${a}° a ${b}° znáš. Kolik stupňů má třetí úhel?`,
-    "Dopočítej třetí úhel (součet je sto osmdesát stupňů). Pak rozhoduje nejširší úhel: jsou všechny ostré (pod 90°), je jeden pravý (90°), nebo je jeden tupý (přes 90°)?",
-  ], [`Třetí úhel: 180° − ${a}° − ${b}° = ${c}°`, `Nejširší úhel: ${nej}° → ${key}`]);
+    `Od sto osmdesáti stupňů odečti ${a}° i ${b}° a dopočítej třetí úhel. Pak si z těch tří úhlů vyber ten nejširší a porovnej ho s pravým úhlem: je menší než 90°, přesně 90°, nebo větší? Přesně podle toho se druh trojúhelníku pojmenuje.`,
+  ], [`Třetí úhel: 180° − ${a}° − ${b}° = ${c}°`, `Úhly jsou ${a}°, ${b}° a ${c}°, nejširší z nich je ${nej}°`, `${nej}° je ${nej < 90 ? "menší než 90°, takže jsou všechny úhly ostré" : nej === 90 ? "přesně 90°, tedy pravý úhel" : "větší než 90°, tedy tupý úhel"} → ${key}`]);
 }
 
 const ANO = "ano, dvě kratší strany jsou dohromady delší než nejdelší";
@@ -121,26 +148,58 @@ function nerovnost(): PracticeTask | null {
     { value: "ano, trojúhelník jde sestrojit z jakýchkoli stran", why: "Z příliš krátkých stran se konce nepotkají." },
     { value: "ne, všechny strany musí být stejně dlouhé", why: "Trojúhelník může mít strany různé délky." },
   ], [
-    `Kolik centimetrů je ${s1} cm + ${s2} cm? A je to víc než ${s3} cm?`,
-    "Trojúhelník jde sestrojit jen tehdy, když je součet dvou menších úseček víc než ta třetí; jinak se jejich konce nepotkají.",
+    `Které z čísel ${poradi[0]}, ${poradi[1]} a ${poradi[2]} je největší? Zkus sečíst ty dvě zbývající.`,
+    `Seřaď délky od nejmenší: ${s1} cm, ${s2} cm, ${s3} cm. Sečti ty dvě nejmenší a součet porovnej s tou největší — pokud je součet menší nebo přesně stejný, konce úseček se při rýsování nikde nepotkají.`,
   ], [`${s1} + ${s2} = ${s1 + s2}`, `${s1 + s2} ${lze ? ">" : s1 + s2 === s3 ? "=" : "<"} ${s3} → ${lze ? "lze" : "nelze"}`]);
 }
 
 // [tvar, dvojice rovnoběžných stran, pravé úhly]
+// Čtverec a obdélník tady schválně nejsou: jejich vlastnosti se procvičují na
+// úrovni I a v L3 by šlo o pouhé vybavení, ne o úvahu nad tvarem.
 const TVARY: [string, number, number][] = [
-  ["čtverec", 2, 4], ["obdélník", 2, 4], ["kosočtverec (který není čtverec)", 2, 0], ["lichoběžník", 1, 0], ["pravoúhlý lichoběžník", 1, 2], ["obecný čtyřúhelník", 0, 0], ["kosodélník", 2, 0],
+  ["kosočtverec (který není čtverec)", 2, 0], ["lichoběžník", 1, 0], ["pravoúhlý lichoběžník", 1, 2], ["obecný čtyřúhelník", 0, 0], ["kosodélník", 2, 0],
 ];
+
+const R_POCET: Record<number, string> = {
+  0: "žádnou dvojici rovnoběžných stran",
+  1: "jednu dvojici rovnoběžných stran",
+  2: "dvě dvojice rovnoběžných stran",
+  4: "čtyři dvojice rovnoběžných stran",
+};
+const P_POCET: Record<number, string> = {
+  0: "žádný pravý úhel",
+  1: "jeden pravý úhel",
+  2: "dva pravé úhly",
+  4: "čtyři pravé úhly",
+};
 
 function tvar(): PracticeTask | null {
   const [nazev, rov, prave] = pick(TVARY);
   const naRov = Math.random() < 0.5;
   const key = naRov ? rov : prave;
-  const moznosti = naRov ? [0, 1, 2, 4] : [0, 1, 2, 4];
-  const chyby = moznosti.filter((m) => m !== key).map((m) => ({ value: String(m), why: naRov ? `${nazev[0].toUpperCase()}${nazev.slice(1)} má ${rov === 0 ? "žádnou dvojici" : rov === 1 ? "jednu dvojici" : "dvě dvojice"} rovnoběžných stran.` : `${nazev[0].toUpperCase()}${nazev.slice(1)} má ${prave === 0 ? "žádný pravý úhel" : prave === 2 ? "dva pravé úhly" : "čtyři pravé úhly"}.` }));
+  const Nazev = `${nazev[0].toUpperCase()}${nazev.slice(1)}`;
+  const zaklad = nazev.split(" (")[0];
+  const stav = naRov
+    ? (rov === 0 ? `${Nazev} nemá žádné dvě strany rovnoběžné` : `${Nazev} má ${R_POCET[rov]}`)
+    : (prave === 0 ? `${Nazev} nemá ani jeden pravý úhel` : `${Nazev} má ${P_POCET[prave]}`);
+  const chyby = [0, 1, 2, 4].filter((m) => m !== key).map((m) => ({
+    value: String(m),
+    why: naRov
+      ? (m === 4
+        ? `4 je počet stran čtyřúhelníku, ne počet dvojic — jedna dvojice jsou vždycky dvě strany proti sobě. ${stav}.`
+        : `${stav}, ne ${R_POCET[m]}. Porovnávej vždy dvojici stran, které leží proti sobě.`)
+      : `${stav}. Odpověď ${m} tomu neodpovídá — přilož roh papíru postupně do všech čtyř rohů a přesvědč se.`,
+  }));
   return ciselnaUloha(naRov ? `Kolik dvojic rovnoběžných stran má ${nazev}?` : `Kolik pravých úhlů má ${nazev}?`, String(key), chyby, [
-    naRov ? `Nakresli si ${nazev.split(" (")[0]}. Které strany vedou proti sobě a nikdy by se nepotkaly?` : `Nakresli si ${nazev.split(" (")[0]}. Ve kterých rozích by přesně sedl roh sešitu?`,
-    naRov ? "Rovnoběžné strany jsou naproti sobě a jsou od sebe všude stejně daleko. Počítej dvojice, ne jednotlivé strany — jedna dvojice jsou vždy dvě strany proti sobě." : "Pravý úhel poznáš trojúhelníkem s ryskou nebo rohem papíru. Zkontroluj všechny čtyři rohy jeden po druhém a počítej jen ty, do kterých roh papíru přesně zapadne.",
-  ], [`${nazev}: ${rov === 0 ? "žádná dvojice" : rov === 1 ? "1 dvojice" : "2 dvojice"} rovnoběžných stran, ${prave} pravé úhly`.replace("0 pravé úhly", "žádný pravý úhel").replace("4 pravé úhly", "4 pravé úhly")]);
+    naRov ? `Nakresli si ${zaklad}. Které strany vedou proti sobě a nikdy by se nepotkaly?` : `Nakresli si ${zaklad}. Ve kterých rozích by přesně sedl roh sešitu?`,
+    naRov
+      ? `Nakresli si ${zaklad} a u každé strany najdi tu, která leží proti ní. Rovnoběžné strany vedou stejným směrem a jsou od sebe všude stejně daleko; počítej dvojice, ne jednotlivé strany — jedna dvojice jsou vždycky dvě strany proti sobě.`
+      : `Nakresli si ${zaklad} a přikládej roh papíru postupně do všech čtyř rohů. Počítej jen ty rohy, do kterých roh papíru přesně zapadne; tam, kde je roh užší nebo širší, o pravý úhel nejde.`,
+  ], [
+    `${Nazev} — strany: ${rov === 0 ? "žádné dvě protější strany nevedou stejným směrem" : R_POCET[rov]}.`,
+    `${Nazev} — rohy: ${prave === 0 ? "ani jeden roh není pravý" : P_POCET[prave]}.`,
+    naRov ? `Ptáme se na dvojice rovnoběžných stran, a těch je ${rov}.` : `Ptáme se na pravé úhly, a těch je ${prave}.`,
+  ]);
 }
 
 function gen(level: number): PracticeTask[] {

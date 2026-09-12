@@ -26,6 +26,16 @@ function pisemne(N: number, d: number): { q: number; r: number; kroky: string[] 
   return { q: Number(q), r: cur, kroky };
 }
 
+/**
+ * Nápověda nesmí obsahovat výsledek ani jako samostatné číslo — u dělení se
+ * podíl může náhodou shodnout s číslem, které nápověda zmiňuje (dělitel, část
+ * dělence). Taková úloha se zahodí a generátor zkusí jiná čísla.
+ */
+function hintBezCisla(key: number | string, hints: [string, string]): boolean {
+  const s = String(key);
+  return !hints.some((h) => (h.match(/\d+/g) ?? []).includes(s));
+}
+
 const prvniCast = (N: number, d: number) => {
   const s = String(N);
   for (let i = 1; i <= s.length; i++) if (Number(s.slice(0, i)) >= d) return Number(s.slice(0, i));
@@ -37,15 +47,17 @@ function bezZbytku(dMin: number, dMax: number, qMin: number, qMax: number, nMin:
   if (N < nMin || N > nMax || d % 10 === 0) return null;
   const { kroky } = pisemne(N, d);
   const bezNuly = String(q).includes("0") ? Number(String(q).replace(/0/g, "")) : null;
+  const hints: [string, string] = [
+    `Začni u čísla ${fmt(N)} zleva: kolikrát se ${d} vejde do ${prvniCast(N, d)}? Pro odhad si ${d} zaokrouhli na desítky.`,
+    `Postupuj po číslicích: z ${fmt(N)} vezmi zleva tolik číslic, aby se do nich ${d} vešlo, zapiš číslici podílu, vynásob ${d}, odečti a připiš další číslici dělence. Takhle pokračuj až na konec a nakonec ověř zkouškou — podíl vynásobený ${d} musí dát zpátky ${fmt(N)}.`,
+  ];
+  if (!hintBezCisla(q, hints)) return null;
   return ciselnaUloha(`Vypočítej písemně: ${fmt(N)} : ${d}`, q, [
     ...(bezNuly ? [{ value: bezNuly, why: "V podílu chybí nula. Když se dělitel do části dělence nevejde, zapíše se do podílu 0." }] : []),
     { value: q + 1, why: `Zkouška: ${q + 1} × ${d} = ${fmt((q + 1) * d)}, to je víc než ${fmt(N)}.` },
     { value: q - 1, why: `Zkouška: ${q - 1} × ${d} = ${fmt((q - 1) * d)}, zbylo by ještě ${d}.` },
     { value: q + 10, why: "Odhad první číslice podílu je o jedna vyšší — zkus vynásobit." },
-  ], [
-    `Kolikrát se ${d} vejde do ${prvniCast(N, d)}? Zkus si dělitel ${d} zaokrouhlit na desítky.`,
-    `Dělíš postupně: vezmi tolik číslic, aby se do nich ${d} vešlo, napiš číslici podílu, vynásob, odečti a připiš další číslici. Na konci ověř: podíl × ${d} = ${fmt(N)}.`,
-  ], [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
+  ], hints, [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
 }
 
 function seZbytkem(): PracticeTask | null {
@@ -53,42 +65,48 @@ function seZbytkem(): PracticeTask | null {
   if (N > 999 || d % 10 === 0 || d - r === r) return null;
   const { kroky } = pisemne(N, d);
   const T = (a: number, b: number) => `${a}, zbytek ${b}`;
+  const hints: [string, string] = [
+    `Vyděl ${N} : ${d} postupně zleva — kolikrát se ${d} vejde do ${prvniCast(N, d)}?`,
+    `Děl po číslicích až na konec: vezmi zleva tolik číslic z ${N}, aby se do nich ${d} vešlo, zapiš číslici podílu, vynásob ${d} a odečti. To, co po posledním odečtení zůstane, musí být menší než ${d} — jinak se ${d} vejde ještě jednou. Zkouška: podíl krát ${d} a k tomu ten poslední rozdíl dá ${N}.`,
+  ];
+  if (!hintBezCisla(q, hints) || !hintBezCisla(r, hints)) return null;
   return ciselnaUloha(`Vypočítej písemně se zbytkem: ${N} : ${d}`, T(q, r), [
     { value: T(q - 1, r + d), why: `Zbytek ${r + d} je větší než dělitel ${d} — dělitel by se vešel ještě jednou.` },
     { value: T(q, d - r), why: `Zbytek se odečetl obráceně. Zkouška: ${q} × ${d} + ${d - r} = ${q * d + d - r}, ne ${N}.` },
     { value: T(q + 1, r), why: `Zkouška: ${q + 1} × ${d} = ${(q + 1) * d}, to je víc než ${N}.` },
-  ], [
-    `Kolikrát se ${d} vejde do ${prvniCast(N, d)}? Pokračuj, dokud nepoužiješ všechny číslice.`,
-    `Co zbude po posledním odečtení, musí být menší než ${d}. Zkouška: podíl × ${d} + to, co zbylo = ${N}.`,
-  ], [...kroky, `Zkouška: ${q} × ${d} + ${r} = ${N} ✓`]);
+  ], hints, [...kroky, `Zkouška: ${q} × ${d} + ${r} = ${N} ✓`]);
 }
 
 function nulaUprostred(): PracticeTask | null {
   const d = rnd(11, 25), q = rnd(1, 9) * 100 + rnd(1, 9), N = d * q;
   if (N > 9999 || d % 10 === 0) return null;
   const { kroky } = pisemne(N, d);
+  const hints: [string, string] = [
+    `Vyděl ${fmt(N)} : ${d} zleva. Co zapíšeš do podílu, když se ${d} do právě připsané části nevejde ani jednou?`,
+    `Každá číslice dělence ${fmt(N)}, kterou při dělení připíšeš, dá jednu číslici podílu — a když se ${d} do vzniklého čísla nevejde, patří na to místo v podílu nula a připisuje se další číslice. Na konci ověř zkouškou: podíl vynásobený ${d} musí dát zpátky ${fmt(N)}.`,
+  ];
+  if (!hintBezCisla(q, hints)) return null;
   return ciselnaUloha(`Vypočítej písemně: ${fmt(N)} : ${d}`, q, [
     { value: Number(String(q).replace("0", "")), why: "V podílu chybí nula. Když se dělitel do připsané části nevejde, napíše se do podílu 0 a připíše se další číslice." },
     { value: q + 10, why: `Zkouška: ${q + 10} × ${d} = ${fmt((q + 10) * d)}, ne ${fmt(N)}.` },
     { value: q - 1, why: `Zkouška: ${q - 1} × ${d} = ${fmt((q - 1) * d)}, zbylo by ještě ${d}.` },
-  ], [
-    `Vejde se ${d} do části, kterou dostaneš po prvním odečtení a připsání další číslice? Co napíšeš do podílu, když ne?`,
-    `Každá připsaná číslice dělence dá jednu číslici podílu — i když je to 0. Na konci ověř: podíl × ${d} = ${fmt(N)}.`,
-  ], [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
+  ], hints, [...kroky, `Zkouška: ${q} × ${d} = ${fmt(N)} ✓`]);
 }
 
 function autobusy(): PracticeTask | null {
   const d = pick([38, 45, 48, 50, 55, 57, 60]), N = rnd(150, 480);
   if (N % d === 0) return null;
   const q = Math.floor(N / d), r = N % d;
+  const hints: [string, string] = [
+    `Kolik plných autobusů obsadí ${N} dětí, když se do jednoho vejde ${d}? A zbude po nich ještě někdo?`,
+    `Vyděl ${N} : ${d} a všímej si toho, co po dělení zůstane. Děti, které se do plných autobusů nevešly, musí taky někam nastoupit, takže pro ně musí přijet ještě jeden autobus — počet se proto zaokrouhluje nahoru, i kdyby v posledním autobuse jelo jediné dítě.`,
+  ];
+  if (!hintBezCisla(q + 1, hints)) return null;
   return ciselnaUloha(`Počet dětí, které jedou na výlet, je ${N}. Do jednoho autobusu se vejde ${d} dětí. Kolik autobusů je potřeba, aby jely všechny děti?`, q + 1, [
     { value: q, why: `S ${q} autobusy by ${r === 1 ? "jedno dítě zůstalo" : "zbylé děti zůstaly"} doma — pro zbytek je potřeba ještě jeden autobus.` },
-    { value: q + 2, why: `Stačí o jeden méně: ${q + 1} autobusů pojme ${(q + 1) * d} dětí.` },
+    { value: q + 2, why: `Stačí o jeden autobus méně — do ${q + 1} autobusů se vejde ${pad((q + 1) * d, "DÍTĚ")}, a to bohatě stačí.` },
     { value: r, why: `${r} je zbytek po dělení — počet dětí, které se nevešly, ne počet autobusů.` },
-  ], [
-    `Kolik plných autobusů dostaneš, když vydělíš ${N} : ${d}? Zbudou nějaké děti?`,
-    "Vyděl se zbytkem. Zbytek jsou děti, které se do plných autobusů nevešly — i pro ně musí přijet autobus, takže se počet zaokrouhlí nahoru.",
-  ], [
+  ], hints, [
     `${N} : ${d} = ${q}, zbytek ${r}`,
     `Na ${pad(r, "DÍTĚ")} je potřeba další autobus: ${q} + 1 = ${q + 1}`,
   ]);
