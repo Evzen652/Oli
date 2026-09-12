@@ -92,7 +92,31 @@ Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
 | dávky | stav | kde |
 |---|---|---|
 | **všech 19 dávek** (`g2mat-a…d`, `g2cjl-a…d`, `g2prv-a/b`, `g3mat-a…c`, `g3prv-a…c`, `g3cjl-a…c`) | ✅ autor i kritik, **SLOUČENO do `main`** | v produkci |
-| `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🔴 rozdělané, **bez autora i kritika** — jen snapshot na `origin/wip/content-fix/*` | zbývá |
+| `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🟠 **autoři rozpracovaní, přerušeni kreditem** — snapshoty na `origin/wip/content-fix/<dávka>-autor` | zbývá |
+
+### ▶▶ KDE APŘESNĚ POKRAČOVAT (přerušeno 2026-09-12, došel kredit)
+
+Tři autorské agenti běželi na posledních třech dávkách a **nestihli
+commitnout**. Jejich rozpracovaná práce je zachráněná jako snapshot:
+
+| dávka | snapshot | worktree |
+|---|---|---|
+| `g5mat-a` | `origin/wip/content-fix/g5mat-a-autor` | `.claude/worktrees/wf_84b89ce1-8c0-20` |
+| `g5mat-b` | `origin/wip/content-fix/g5mat-b-autor` | `.claude/worktrees/wf_84b89ce1-8c0-21` |
+| `g4-6-mix` | `origin/wip/content-fix/g4-6-mix-autor` | `.claude/worktrees/wf_84b89ce1-8c0-22` |
+
+**Rozpracovaná práce je v těch worktree pořád i na disku** — snapshot je jen
+pojistka pro druhý počítač. Snapshoty obsahují i zkopírované nástroje
+(`scripts/check-*.ts`, `src/lib/czechAgreementLint.ts`, `czechGrammar.ts`) —
+ty do obsahového commitu NEPATŘÍ, při pokračování je zahoď.
+
+**Postup pokračování:**
+1. V každém worktree zkontroluj `git status`, dopiš, co chybí, a commitni
+   **jen soubory témat** do `content-fix/<dávka>`.
+2. Teprve pak na dávku pusť nezávislého kritika (postup výš v tomhle souboru).
+3. Autoři dostali instrukci nejdřív `git reset --hard origin/main` — ověř, že
+   v jejich práci nechybí opravy, které na `main` přibyly 12. 9.
+   (shoda přísudku, „rok 291 má 2 stovky", odstraněný leak u převodů obsahu).
 
 > Ověřeno 2026-09-12: `origin/wip/content-fix/*` je **osm** větví, ne tři.
 > Kromě `g5mat-a`, `g5mat-b`, `g4-6-mix` tam leží ještě snapshoty
