@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad, plural } from "@/lib/czechGrammar";
+import { pad, plural, isAre } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "../_shared";
 
 /**
@@ -290,7 +290,7 @@ function presHodinu(s: Spoj, i: number, j: number): PracticeTask {
         `Jízda ze ${s.druhG} ${A} na ${s.druhA} ${B} přechází přes ${h2}:00. Kolik minut zbývá od ${cas(h1, m1)} do ${h2}:00?`,
         `Rozděl jízdu na dvě části: od ${cas(h1, m1)} do ${h2}:00 a od ${h2}:00 do ${cas(h2, m2)}. Obě části sečti. Nepočítej časy jako obyčejná čísla — hodina má 60 minut, ne 100.`,
       ],
-      explanation: `Od ${cas(h1, m1)} do ${h2}:00 je ${min(doHodiny)} a od ${h2}:00 do ${cas(h2, m2)} je ${min(m2)}. Celkem ${doHodiny} + ${m2} = ${dur}, tedy ${min(dur)}.`,
+      explanation: `Od ${cas(h1, m1)} do ${h2}:00 ${isAre(doHodiny)} ${min(doHodiny)} a od ${h2}:00 do ${cas(h2, m2)} ${isAre(m2)} ${min(m2)}. Celkem ${doHodiny} + ${m2} = ${dur}, tedy ${min(dur)}.`,
     });
 }
 
