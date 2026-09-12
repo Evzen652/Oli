@@ -236,7 +236,7 @@
     "taskCount": 39
   },
   "g4-cjl-literarni-vychova-prace-s-textem-hlavni-postavy-a-jejich-charakteristika": {
-    "hash": "7c67846cdcc1d9484358664fca5665f9b3d9a7df",
+    "hash": "a898da3cded50e7fb99c231d3bb6396b10c0dec5",
     "taskCount": 39
   },
   "g4-cjl-literarni-vychova-prace-s-textem-vlastni-literarni-tvorba-na-dane-tema": {
@@ -404,8 +404,8 @@
     "taskCount": 39
   },
   "g5-cjl-jazykova-vychova-nauka-o-slove-slova-jednoznacna-mnohoznacna-vicevyznamova": {
-    "hash": "554a70cccc50edd41516c9d49a40413ea99eadf2",
-    "taskCount": 37
+    "hash": "f28a1f38678c032cfebc16b5af20c95fa2836113",
+    "taskCount": 44
   },
   "g5-cjl-jazykova-vychova-nauka-o-slove-slova-spisovna-a-nespisovna": {
     "hash": "ef55bbad03bb88397c75256f49f5a341577fd388",
@@ -508,27 +508,27 @@
     "taskCount": 90
   },
   "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-scitani-a-odcitani-desetinnych-cisel": {
-    "hash": "0fb498c3cb94d67bf9c645f1114947d78f4db684",
+    "hash": "175e933dd078270358e017501eaf1061bc3f5ccb",
     "taskCount": 90
   },
   "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-zaporna-cisla-na-ciselne-ose": {
-    "hash": "be2ba7d163bb45741f933811aa57b86ed373ba0c",
+    "hash": "08363aefab28b8184afe35ea5b394ce8453620d2",
     "taskCount": 90
   },
   "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-konstrukce-trojuhelniku-kolmice-rovnobezky": {
-    "hash": "cd3216004e21e2ff63e3ffdd8d8e8dc078a7ab7a",
-    "taskCount": 73
+    "hash": "5b033d656d62044af8e63202e6d4c68959697157",
+    "taskCount": 78
   },
   "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce-ve-ctvercove-siti-jednotky-obsahu": {
-    "hash": "a13841f0fde53867b2950ae8da29ada319ab52e7",
+    "hash": "6b4fb9a5a45c58a753f28778afeaea63999dbf28",
     "taskCount": 90
   },
   "g5-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova-soumernost-sestrojeni-obrazu-urceni-osy": {
-    "hash": "ee63da17411ca63780eddd45d16dc63e6b7edcdc",
-    "taskCount": 67
+    "hash": "92fdd2470e3a19f4e91400863bf492df37ae0ddd",
+    "taskCount": 80
   },
   "g5-matematika-nestandardni-aplikacni-ulohy-a-problemy-logicke-ulohy-ulohy-nezavisle-na-beznych-postupech-prostorova-predstavivos": {
-    "hash": "6cff8f6cd0c73a61a83bc52684d4612d30e77681",
+    "hash": "d55e698c41b0ddb2f7ad40b82de778b646191e23",
     "taskCount": 90
   },
   "g5-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-aritmeticky-prumer-vypocet": {
@@ -668,7 +668,7 @@
     "taskCount": 3
   },
   "g6-dej-periodizace-letopocet-6": {
-    "hash": "652f87f65cc7e201b958072eb8922ed2cd9b2d73",
+    "hash": "41f0d339c6231a7fa857824a6786ec358b8a3037",
     "taskCount": 72
   },
   "g6-dej-pomocne-vedy-historicke-6": {
