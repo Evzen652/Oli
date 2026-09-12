@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { pad } from "@/lib/czechGrammar";
 import { ciselnaUloha, fdec, fkc, pick, rnd, sada, type Chyba } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
@@ -8,8 +9,36 @@ import { ciselnaUloha, fdec, fkc, pick, rnd, sada, type Chyba } from "./_mat";
 // posledního místa místo podle čárky (3,5 + 1,25 = 4,30), zapomenutá čárka.
 // L1 obě čísla s desetinami · L2 desetiny se setinami · L3 slovní úlohy
 // o penězích a délkách na dva kroky.
+//
+// Doplněno 2026-09-12 (inventura obsahu): nápovědy nenesly data konkrétní
+// úlohy — jedna věta obsloužila celou skupinu zadání (u stuhy se malá
+// nápověda opakovala dvakrát, velká byla u všech úloh stejná). Teď obě
+// nápovědy počítají s čísly té úlohy a `bezLeaku` hlídá, aby se mezi nimi
+// náhodou neobjevil výsledek.
 
-const D = (setiny: number) => fdec(setiny / 100);
+/**
+ * Desetinné číslo v tomhle tématu se nikdy nezobrazí jako celé: 6 se píše
+ * „6,0". Bez toho stálo mezi možnostmi „5,8 | 5,9 | 6 | 59" jediné číslo bez
+ * čárky a šlo poznat podle tvaru, ne podle výpočtu — a dítě, které se zrovna
+ * učí, že 6 = 6,0, to navíc mate.
+ */
+const desetinne = (n: number, min: number) =>
+  n.toLocaleString("cs-CZ", { minimumFractionDigits: min, maximumFractionDigits: 4 }).replace(/\s/g, " ");
+
+const D = (setiny: number) => desetinne(setiny / 100, 1);
+
+/**
+ * Nápověda smí zopakovat zadaná čísla, ale nikdy ne výsledek. U desetinných
+ * čísel se výsledek může s některým zadaným číslem náhodou shodnout (4,5 − 1,2
+ * i 3,9 − 0,6 dají 3,3), proto se hledá samostatné číslo, ne podřetězec.
+ * Když se trefí, zadání se zahodí a generátor zkusí jiná čísla.
+ */
+function bezLeaku(key: string, hints: [string, string]): boolean {
+  const cislo = key.match(/^-?\d+(?:,\d+)?/)?.[0];
+  if (!cislo) return true;
+  const re = new RegExp(`(^|[^\\d,.])${cislo.replace(/,/g, ",")}([^\\d,.]|$)`);
+  return !hints.some((h) => re.test(h));
+}
 
 function jednoMisto(): PracticeTask | null {
   const plus = Math.random() < 0.5;
@@ -19,12 +48,12 @@ function jednoMisto(): PracticeTask | null {
   const vysl = plus ? a + b : a - b;
   if (vysl === a || vysl === b) return null;
   const [ca, da, cb, db] = [Math.floor(a / 10), a % 10, Math.floor(b / 10), b % 10];
-  const T = (x: number) => fdec(x / 10);
+  const T = (x: number) => desetinne(x / 10, 1);
   if (T(a).includes(T(vysl)) || T(b).includes(T(vysl))) return null;
   const chyby: Chyba[] = plus
     ? [
       ...(da + db >= 10 ? [
-        { value: `${ca + cb},${da + db}`, why: `Desetiny ${da} + ${db} = ${da + db} desetin, to je 1 celá a ${(da + db) % 10} desetin. Celá se přenese k celým.` },
+        { value: `${ca + cb},${da + db}`, why: `Desetiny ${da} + ${db} = ${pad(da + db, "DESETINA")}, to je 1 celá a ${pad((da + db) % 10, "DESETINA")}. Celá se přenese k celým.` },
         { value: T(vysl - 10), why: "Z desetin se měla přenést 1 celá, ale zapomněla se přičíst." },
       ] : []),
       { value: String(vysl), why: "Chybí desetinná čárka — výsledek je desetkrát větší." },
@@ -41,12 +70,17 @@ function jednoMisto(): PracticeTask | null {
       { value: T(vysl + 1), why: "Zkontroluj desetiny." },
     ];
   const znak = plus ? "+" : "−";
-  return ciselnaUloha(`Vypočítej: ${T(a)} ${znak} ${T(b)}`, T(vysl), chyby, [
-    `Zapiš ${T(a)} a ${T(b)} pod sebe tak, aby byly čárky přesně pod sebou. Kolik vyjde u desetin?`,
-    plus
-      ? "Počítej zprava: nejdřív desetiny, pak celé. Když desetiny dají deset nebo víc, zapiš jednotky a jednu celou přenes k celým."
-      : "Počítej zprava: nejdřív desetiny, pak celé. Když nahoře desetin nestačí, půjč si jednu celou (= deset desetin) a nezapomeň ji u celých odečíst.",
-  ], [
+  const hints: [string, string] = plus
+    ? [
+      `Zapiš ${T(a)} a ${T(b)} pod sebe tak, aby čárka stála přesně pod čárkou. Začni vpravo u desetin: kolik dají ${da} a ${db} dohromady?`,
+      `Sečti nejdřív desetiny, tedy ${da} a ${db}. Když ti vyjde deset nebo víc, zapiš pod čáru jen jednotky a jednu celou si přenes doleva k celým číslům ${ca} a ${cb}. Teprve potom sečti celá čísla a přenesenou celou k nim přičti. Do výsledku nakonec opiš čárku přesně pod ty dvě nad ním.`,
+    ]
+    : [
+      `Zapiš ${T(a)} a ${T(b)} pod sebe tak, aby čárka stála přesně pod čárkou. Začni vpravo u desetin: jde ${db} odečíst od ${da}?`,
+      `U desetin odečítáš ${db} od ${da}. Když nahoře desetin nestačí, půjč si jednu celou od čísla ${ca} — je to deset desetin, takže jich máš najednou o deset víc — a u celých pak tu půjčenou celou nezapomeň odečíst. Do výsledku nakonec opiš čárku přesně pod ty dvě nad ním.`,
+    ];
+  if (!bezLeaku(T(vysl), hints)) return null;
+  return ciselnaUloha(`Vypočítej: ${T(a)} ${znak} ${T(b)}`, T(vysl), chyby, hints, [
     `Desetiny: ${plus ? `${da} + ${db} = ${da + db}${da + db >= 10 ? " → píšu " + ((da + db) % 10) + ", 1 přenáším" : ""}` : da < db ? `${da + 10} − ${db} = ${da + 10 - db} (půjčil jsem si 1 celou)` : `${da} − ${db} = ${da - db}`}`,
     `Celé: ${plus ? `${ca} + ${cb}${da + db >= 10 ? " + 1" : ""}` : `${ca}${da < db ? " − 1" : ""} − ${cb}`} = ${Math.floor(vysl / 10)}`,
     `Výsledek: ${T(vysl)}`,
@@ -73,10 +107,12 @@ function ruznaMista(): PracticeTask | null {
     { value: D(vysl + 1), why: "Chyba u setin." },
   ];
   const znak = plus ? "+" : "−";
-  return ciselnaUloha(`Vypočítej: ${txtA} ${znak} ${txtB}`, D(vysl), chyby, [
-    `Číslo ${fdec(aDes / 10)} má za čárkou jedno místo, ${D(bSet)} dvě. Jak je zapíšeš pod sebe?`,
-    "Čárka musí být přesně pod čárkou. Číslu s jedním místem za čárkou doplň na konec nulu, aby měla obě čísla setiny, a počítej jako s celými čísly.",
-  ], [
+  const hints: [string, string] = [
+    `Číslo ${fdec(aDes / 10)} má za čárkou jedno místo, ${D(bSet)} má dvě. Co uděláš s ${fdec(aDes / 10)}, aby měla obě čísla stejný počet míst, než je ${plus ? "sečteš" : "odečteš"}?`,
+    `K číslu ${fdec(aDes / 10)} připiš na konec nulu — jeho hodnota se tím nezmění, jen bude mít taky setiny jako ${D(bSet)}. Pak zapiš obě čísla pod sebe čárkou pod čárkou a ${plus ? "sčítej" : "odčítej"} zprava jako celá čísla: nejdřív setiny, potom desetiny a nakonec celé. Do výsledku opiš čárku přesně pod ty dvě nad ním.`,
+  ];
+  if (!bezLeaku(D(vysl), hints)) return null;
+  return ciselnaUloha(`Vypočítej: ${txtA} ${znak} ${txtB}`, D(vysl), chyby, hints, [
     `Doplníme nulu: ${fdec(aDes / 10)} = ${fdec(aDes / 10)}0`,
     `${plus ? `${fdec(aDes / 10)}0 + ${D(bSet)}` : `${txtA.includes(",") && txtA.split(",")[1].length === 1 ? `${txtA}0` : txtA} − ${txtB.includes(",") && txtB.split(",")[1].length === 1 ? `${txtB}0` : txtB}`} = ${D(vysl)}`,
   ]);
@@ -97,15 +133,21 @@ function nakup(): PracticeTask | null {
   if (vratili < 200) return null;
   const kdo = pick(JMENA);
   const P = (h: number) => fkc(h / 100);
-  return ciselnaUloha(`${kdo} koupil${kdo.endsWith("a") ? "a" : ""} ${z1[0]} za ${P(c1)} Kč a ${z2[0]} za ${P(c2)} Kč. Platil${kdo.endsWith("a") ? "a" : ""} ${platil / 100} Kč. Kolik korun ${kdo === "Eva" || kdo.endsWith("a") ? "jí" : "mu"} vrátili?`, `${P(vratili)} Kč`, [
-    { value: `${P(c1 + c2)} Kč`, why: "To je cena nákupu. Ještě ji odečti od částky, kterou dal prodavači." },
+  const hints: [string, string] = [
+    `${kdo} platí dvě věci: ${z1[0]} za ${P(c1)} Kč a ${z2[0]} za ${P(c2)} Kč. Kolik stojí celý nákup dohromady?`,
+    `Úloha má dva kroky. Nejdřív sečti ${P(c1)} a ${P(c2)} zapsané pod sebou čárkou pod čárkou — tak zjistíš cenu nákupu. Potom tuhle cenu odečti od ${platil / 100} Kč; celé koruny si proto napiš jako ${platil / 100},00, ať mají obě čísla stejně míst za čárkou.`,
+  ];
+  const klic = `${P(vratili)} Kč`;
+  const a = kdo.endsWith("a") ? "a" : "";
+  const q = `${kdo} koupil${a} ${z1[0]} za ${P(c1)} Kč a ${z2[0]} za ${P(c2)} Kč. Platil${a} ${platil / 100} Kč. Kolik korun ${a ? "jí" : "mu"} vrátili?`;
+  // „8,90 Kč" je podřetězcem „18,90 Kč" v zadání — dítě by odpověď opsalo.
+  if (q.includes(klic) || !bezLeaku(klic, hints)) return null;
+  return ciselnaUloha(q, klic, [
+    { value: `${P(c1 + c2)} Kč`, why: `To je cena nákupu. Ještě ji odečti od ${platil / 100} Kč, které dostal prodavač.` },
     { value: `${P(platil - c1)} Kč`, why: "Odečetla se jen první položka." },
     { value: `${P(vratili + 100)} Kč`, why: "Při odčítání se zapomnělo půjčit — zkontroluj korunu." },
     { value: `${P(vratili - 10)} Kč`, why: "Chyba u desetníků — zkontroluj číslice za čárkou." },
-  ], [
-    `Kolik stál celý nákup? Sečti ${P(c1)} a ${P(c2)} s čárkami pod sebou.`,
-    `Úloha má dva kroky: nejdřív cena nákupu (součet), potom kolik zbude z ${platil / 100} Kč (rozdíl). Celé korunky zapiš jako ${platil / 100},00.`,
-  ], [
+  ], hints, [
     `Nákup: ${P(c1)} + ${P(c2)} = ${P(c1 + c2)} Kč`,
     `Vrátili: ${platil / 100},00 − ${P(c1 + c2)} = ${P(vratili)} Kč`,
   ]);
@@ -117,16 +159,21 @@ function stuha(): PracticeTask | null {
   const zbylo = cela - p1 - druhy;
   if (zbylo <= 20) return null;
   const co = pick([["stuha", "Stuha", "odstřihli"], ["provaz", "Provaz", "uřízli"], ["látka", "Látka", "odstřihli"]]);
-  return ciselnaUloha(`${co[1]} měřil${co[0] === "provaz" ? "" : "a"} ${D(cela)} m. Nejdřív z ní ${co[2]} ${D(p1)} m a potom ještě ${D(druhy)} m. Kolik metrů zbylo?`.replace("z ní", co[0] === "provaz" ? "z něj" : "z ní"), `${D(zbylo)} m`, [
+  const hints: [string, string] = [
+    `${co[1]} — celá délka ${D(cela)} m, ${co[0] === "provaz" ? "uříznuté" : "odstřižené"} kusy ${D(p1)} m a ${D(druhy)} m. Kolik metrů ubylo dohromady?`,
+    `Sečti oba kusy, ${D(p1)} m a ${D(druhy)} m, zapsané pod sebou čárkou pod čárkou; kratšímu číslu si na konci doplň nulu, ať mají obě stejně míst za čárkou. Ten součet potom odečti od ${D(cela)} m. Můžeš taky odčítat postupně, nejdřív jeden kus a pak druhý — výsledek vyjde stejný.`,
+  ];
+  const klic = `${D(zbylo)} m`;
+  const q = `${co[1]} měřil${co[0] === "provaz" ? "" : "a"} ${D(cela)} m. Nejdřív ${co[0] === "provaz" ? "z něj" : "z ní"} ${co[2]} ${D(p1)} m a potom ještě ${D(druhy)} m. Kolik metrů zbylo?`;
+  // „1,3 m" je podřetězcem „11,3 m" v zadání — dítě by odpověď opsalo.
+  if (q.includes(klic) || !bezLeaku(klic, hints)) return null;
+  return ciselnaUloha(q, klic, [
     { value: `${D(cela - p1)} m`, why: "Odečetl se jen první kus." },
-    { value: `${D(p1 + druhy)} m`, why: "To je délka obou odstřižených kusů dohromady, ne zbytek." },
-    { value: `${D(cela - p1 - Math.floor(druhy / 10))} m`, why: `${D(druhy)} m je ${druhy / 10} desetin metru, ne setin — zarovnej čárky pod sebe.` },
+    { value: `${D(p1 + druhy)} m`, why: "To je délka obou odebraných kusů dohromady, ne zbytek." },
+    { value: `${D(cela - p1 - Math.floor(druhy / 10))} m`, why: `Číslice ${druhy / 10} v čísle ${D(druhy)} m znamená desetiny, ne setiny — zarovnej čárky pod sebe.` },
     { value: `${D(zbylo + 100)} m`, why: "Při odčítání se zapomnělo půjčit celý metr." },
-  ], [
-    `Kolik metrů se odstřihlo celkem? Sečti ${D(p1)} a ${D(druhy)} s čárkami pod sebou.`,
-    "Můžeš odečítat postupně, nebo nejdřív sečíst oba kusy a pak odečíst najednou. Vždy drž čárku pod čárkou a čísla s jedním místem za čárkou doplň nulou.",
-  ], [
-    `Odstřiženo: ${D(p1)} + ${D(druhy)} = ${D(p1 + druhy)} m`,
+  ], hints, [
+    `Ubylo celkem: ${D(p1)} + ${D(druhy)} = ${D(p1 + druhy)} m`,
     `Zbylo: ${D(cela)} − ${D(p1 + druhy)} = ${D(zbylo)} m`,
   ]);
 }
