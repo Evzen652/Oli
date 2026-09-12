@@ -1,103 +1,199 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
+import { pluralWithNumber } from "@/lib/czechGrammar";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+// Přepsáno 2026-09-11 (inventura obsahu). Dřív jedna nápověda pro celou úroveň,
+// žádná zpětná vazba, jen tři možnosti a na L3 odpovědi Ano/Ne.
+// Teď tři oddělené banky:
+// L1 dvouslabičná slova (dá-rek): rozdělovník mezi dvěma slabikami
+// L2 víceslabičná slova a slova s dvojhláskou ou/au nebo s ch (ko-hout, cha-ta)
+// L3 rozhodnout, JESTLI slovo vůbec rozdělit jde: jednoslabičná slova (strom)
+//    a slova, u kterých by osamělo písmeno (ucho, oběd) — proti nim slova,
+//    která začínají samohláskou, a přesto se rozdělit dají (opi-ce, au-to).
+// Pravidla: dělíme jen mezi slabikami; na konci ani na začátku řádku nesmí
+// zůstat jedno písmeno (ch se počítá jako jedno); dvojhlásku ani ch nedělíme.
+
+const SAMOHLASKY = "aáeéěiíoóuúůyý";
+/** Počet písmen, ch = jedno písmeno. */
+const pismen = (s: string) => s.replace(/ch/g, "X").length;
+const slabik = (n: number) => pluralWithNumber(n, "slabiku", "slabiky", "slabik");
+
+/** Proč je konkrétní rozdělení chybné — rozpozná typ chyby z tvaru možnosti. */
+function procChybne(w: string, deleni: string, v: string): string {
+  const [l, r] = v.split("-");
+  if (l.endsWith("c") && r.startsWith("h")) return `Rozdělovník tu rozdělil ch. Ch je jedno písmeno (jedna hláska), a proto se nerozděluje.`;
+  if (pismen(l) === 1) return `Na konci řádku by zůstalo jen jedno písmeno „${l}“ – to se nesmí.`;
+  if (pismen(r) === 1) return `Na nový řádek by přešlo jen jedno písmeno „${r}“ – to se nesmí.`;
+  const dvoj = /[oa]$/.test(l) && r.startsWith("u") ? `${l.slice(-1)}u` : null;
+  if (dvoj) return `Rozdělovník tu rozdělil dvojhlásku ${dvoj}. Dvojhláska je jedna slabika, proto se nedělí.`;
+  return `Rozdělovník tu stojí uprostřed slabiky. Slovo „${w}“ se vyslovuje po slabikách ${deleni}.`;
+}
+
+/** Všechna správná místa k dělení: hranice slabik, kde na obou stranách zůstanou aspoň dvě písmena. */
+function platnaDeleni(syl: string[]): string[] {
+  const out: string[] = [];
+  for (let i = 1; i < syl.length; i++) {
+    const l = syl.slice(0, i).join("");
+    const r = syl.slice(i).join("");
+    if (pismen(l) >= 2 && pismen(r) >= 2) out.push(`${l}-${r}`);
   }
-  return a;
+  return out;
 }
 
-interface SplitItem {
-  question: string;
-  correct: string;
-  distractors: string[];
-  emoji: string;
-  hint: string;
-  solution: string;
-}
-
-interface CanDivideItem {
-  question: string;
-  correct: "Ano" | "Ne";
-  emoji: string;
-  hint: string;
-  solution: string;
-}
-
-type PoolItem = SplitItem | CanDivideItem;
-
-function isSplitItem(item: PoolItem): item is SplitItem {
-  return "distractors" in item;
-}
-
-// L1: dvojslabičná slova, jasná hranice slabik, rozdělovník patří jednoznačně na 1 místo.
-const POOL_L1: SplitItem[] = [
-  { question: "Kam patří rozdělovník, když slovo 'okno' nepatří celé na řádek?", correct: "ok-no", distractors: ["o-kno", "okn-o"], emoji: "🪟", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'okno' se dělí na slabiky 'ok-no'. Rozdělovník patří jen mezi slabiky, ne uprostřed jedné z nich." },
-  { question: "Kam patří rozdělovník, když slovo 'kniha' nepatří celé na řádek?", correct: "kni-ha", distractors: ["k-niha", "knih-a"], emoji: "📚", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'kniha' se dělí na slabiky 'kni-ha'. Samotné písmeno 'k' ani 'a' nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'máma' nepatří celé na řádek?", correct: "má-ma", distractors: ["m-áma", "mám-a"], emoji: "👩", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'máma' se dělí na slabiky 'má-ma'. Rozdělovník patří přesně mezi obě slabiky." },
-  { question: "Kam patří rozdělovník, když slovo 'auto' nepatří celé na řádek?", correct: "au-to", distractors: ["a-uto", "aut-o"], emoji: "🚗", hint: "Pozor — 'au' se vyslovuje dohromady jako jedna slabika, nerozděluj ji.", solution: "Slovo 'auto' se dělí na slabiky 'au-to' — dvojhláska AU tvoří jednu slabiku, proto se nesmí rozdělit uprostřed." },
-  { question: "Kam patří rozdělovník, když slovo 'ryba' nepatří celé na řádek?", correct: "ry-ba", distractors: ["r-yba", "ryb-a"], emoji: "🐟", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'ryba' se dělí na slabiky 'ry-ba'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'škola' nepatří celé na řádek?", correct: "ško-la", distractors: ["š-kola", "škol-a"], emoji: "🏫", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'škola' se dělí na slabiky 'ško-la'. Rozdělovník patří přesně mezi obě slabiky." },
-  { question: "Kam patří rozdělovník, když slovo 'voda' nepatří celé na řádek?", correct: "vo-da", distractors: ["v-oda", "vod-a"], emoji: "💧", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'voda' se dělí na slabiky 'vo-da'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'louže' nepatří celé na řádek?", correct: "lou-že", distractors: ["l-ouže", "louž-e"], emoji: "💦", hint: "Pozor — 'ou' se vyslovuje dohromady jako jedna slabika, nerozděluj ji.", solution: "Slovo 'louže' se dělí na slabiky 'lou-že' — dvojhláska OU tvoří jednu slabiku." },
-  { question: "Kam patří rozdělovník, když slovo 'boty' nepatří celé na řádek?", correct: "bo-ty", distractors: ["b-oty", "bot-y"], emoji: "👢", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'boty' se dělí na slabiky 'bo-ty'. Rozdělovník patří přesně mezi obě slabiky." },
-  { question: "Kam patří rozdělovník, když slovo 'kočka' nepatří celé na řádek?", correct: "koč-ka", distractors: ["k-očka", "kočk-a"], emoji: "🐱", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'kočka' se dělí na slabiky 'koč-ka'. Samotné písmeno nesmí zůstat na řádku samo." },
+// ── L1: dvouslabičná slova ─────────────────────────────────────────────────
+const L1: [string, string][] = [
+  ["dá", "rek"], ["se", "šit"], ["do", "mek"], ["po", "koj"], ["pa", "pír"], ["ve", "čer"], ["ko", "mín"],
+  ["mo", "týl"], ["be", "ran"], ["ba", "nán"], ["ka", "bát"], ["sa", "lát"], ["po", "moc"], ["ko", "pec"],
 ];
 
-// L2: nová dvojslabičná slova s jinými souhláskovými skupinami — stejné pravidlo, těžší slovní zásoba.
-const POOL_L2: SplitItem[] = [
-  { question: "Kam patří rozdělovník, když slovo 'žába' nepatří celé na řádek?", correct: "žá-ba", distractors: ["ž-ába", "žáb-a"], emoji: "🐸", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'žába' se dělí na slabiky 'žá-ba'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'dárek' nepatří celé na řádek?", correct: "dá-rek", distractors: ["d-árek", "dáre-k"], emoji: "🎁", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'dárek' se dělí na slabiky 'dá-rek'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'sešit' nepatří celé na řádek?", correct: "se-šit", distractors: ["s-ešit", "seš-it"], emoji: "📓", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'sešit' se dělí na slabiky 'se-šit'. Rozdělovník patří přesně mezi obě slabiky." },
-  { question: "Kam patří rozdělovník, když slovo 'slunce' nepatří celé na řádek?", correct: "slun-ce", distractors: ["slu-nce", "sluncе-"], emoji: "☀️", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'slunce' se dělí na slabiky 'slun-ce'. Rozdělovník patří přesně mezi obě slabiky." },
-  { question: "Kam patří rozdělovník, když slovo 'husa' nepatří celé na řádek?", correct: "hu-sa", distractors: ["h-usa", "hus-a"], emoji: "🦢", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'husa' se dělí na slabiky 'hu-sa'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'pero' nepatří celé na řádek?", correct: "pe-ro", distractors: ["p-ero", "per-o"], emoji: "🖊️", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'pero' se dělí na slabiky 'pe-ro'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'domek' nepatří celé na řádek?", correct: "do-mek", distractors: ["d-omek", "dome-k"], emoji: "🏠", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'domek' se dělí na slabiky 'do-mek'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'moucha' nepatří celé na řádek?", correct: "mou-cha", distractors: ["m-oucha", "mouch-a"], emoji: "🪰", hint: "Pozor — 'ou' se vyslovuje dohromady jako jedna slabika, nerozděluj ji.", solution: "Slovo 'moucha' se dělí na slabiky 'mou-cha' — dvojhláska OU tvoří jednu slabiku." },
-  { question: "Kam patří rozdělovník, když slovo 'ruka' nepatří celé na řádek?", correct: "ru-ka", distractors: ["r-uka", "ruk-a"], emoji: "✋", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'ruka' se dělí na slabiky 'ru-ka'. Samotné písmeno nesmí zůstat na řádku samo." },
-  { question: "Kam patří rozdělovník, když slovo 'noha' nepatří celé na řádek?", correct: "no-ha", distractors: ["n-oha", "noh-a"], emoji: "🦵", hint: "Rozděl slovo na slabiky — rozdělovník patří přesně mezi ně.", solution: "Slovo 'noha' se dělí na slabiky 'no-ha'. Samotné písmeno nesmí zůstat na řádku samo." },
-];
-
-// L3: transfer — kdy se slovo NESMÍ dělit vůbec (jednoslabičné slovo, nebo by osamělo 1 písmeno).
-const POOL_L3: PoolItem[] = [
-  { question: "Které z těchto slov NELZE na konci řádku rozdělit, protože by osamělo jedno písmeno?", correct: "ano", distractors: ["kolo", "pole"], emoji: "🚫", hint: "Rozděl každé slovo na slabiky. U kterého by na řádku zůstalo jen jedno písmeno?", solution: "Slovo 'ano' bychom museli rozdělit na 'a-no', ale samotné písmeno 'a' nesmí na řádku zůstat samo. Proto se 'ano' na konci řádku nedělí — musí zůstat celé." },
-  { question: "Které z těchto slov NELZE na konci řádku rozdělit, protože by osamělo jedno písmeno?", correct: "eso", distractors: ["nebe", "ruka"], emoji: "🚫", hint: "Rozděl každé slovo na slabiky. U kterého by na řádku zůstalo jen jedno písmeno?", solution: "Slovo 'eso' bychom museli rozdělit na 'e-so', ale samotné písmeno 'e' nesmí na řádku zůstat samo. Proto se 'eso' na konci řádku nedělí." },
-  { question: "Které z těchto slov NELZE na konci řádku rozdělit, protože by osamělo jedno písmeno?", correct: "oko", distractors: ["voda", "okno"], emoji: "🚫", hint: "Rozděl každé slovo na slabiky. U kterého by na řádku zůstalo jen jedno písmeno?", solution: "Slovo 'oko' bychom museli rozdělit na 'o-ko', ale samotné písmeno 'o' nesmí na řádku zůstat samo. Proto se 'oko' na konci řádku nedělí." },
-  { question: "Které z těchto slov NELZE na konci řádku rozdělit, protože by osamělo jedno písmeno?", correct: "umí", distractors: ["ryba", "máma"], emoji: "🚫", hint: "Rozděl každé slovo na slabiky. U kterého by na řádku zůstalo jen jedno písmeno?", solution: "Slovo 'umí' bychom museli rozdělit na 'u-mí', ale samotné písmeno 'u' nesmí na řádku zůstat samo. Proto se 'umí' na konci řádku nedělí." },
-  { question: "Které z těchto slov NELZE na konci řádku rozdělit, protože by osamělo jedno písmeno?", correct: "ano", distractors: ["číslo", "kočka"], emoji: "🚫", hint: "Rozděl každé slovo na slabiky. U kterého by na řádku zůstalo jen jedno písmeno?", solution: "Slovo 'ano' bychom museli rozdělit na 'a-no', ale samotné písmeno 'a' nesmí na řádku zůstat samo." },
-  { question: "Lze rozdělit slovo 'dům' na konci řádku?", correct: "Ne", emoji: "🏠", hint: "Kolik slabik (samohlásek) slovo 'dům' má?", solution: "Slovo 'dům' má jen jednu slabiku (jednu samohlásku Ů) — jednoslabičné slovo se na konci řádku nedělí vůbec, nemá kde." },
-  { question: "Lze rozdělit slovo 'kolo' na konci řádku?", correct: "Ano", emoji: "🚲", hint: "Kolik slabik (samohlásek) slovo 'kolo' má? Zůstalo by na některé straně jen jedno písmeno?", solution: "Slovo 'kolo' má dvě slabiky 'ko-lo' a na žádné straně nezůstává osamělé písmeno — proto se dělit smí." },
-  { question: "Lze rozdělit slovo 'pes' na konci řádku?", correct: "Ne", emoji: "🐕", hint: "Kolik slabik (samohlásek) slovo 'pes' má?", solution: "Slovo 'pes' má jen jednu slabiku (jednu samohlásku E) — jednoslabičné slovo se na konci řádku nedělí vůbec." },
-  { question: "Lze rozdělit slovo 'eso' na konci řádku?", correct: "Ne", emoji: "🃏", hint: "Rozděl slovo na slabiky. Zůstalo by na některé straně jen jedno písmeno?", solution: "Slovo 'eso' by se dělilo na 'e-so', ale samotné 'e' nesmí zůstat na řádku samo — proto se nedělí." },
-  { question: "Lze rozdělit slovo 'ryba' na konci řádku?", correct: "Ano", emoji: "🐟", hint: "Kolik slabik (samohlásek) slovo 'ryba' má? Zůstalo by na některé straně jen jedno písmeno?", solution: "Slovo 'ryba' má dvě slabiky 'ry-ba' a na žádné straně nezůstává osamělé písmeno — proto se dělit smí." },
-];
-
-function makeTask(item: PoolItem): PracticeTask {
-  if (isSplitItem(item)) {
-    return {
-      question: item.question,
-      correctAnswer: item.correct,
-      options: shuffle([item.correct, ...item.distractors]),
-      emoji: item.emoji,
-      hints: [item.hint],
-      explanation: item.solution,
-    };
-  }
+function dvouslabicne([s1, s2]: [string, string]): PracticeTask {
+  const w = s1 + s2;
+  const spravne = `${s1}-${s2}`;
+  const jine = [`${w[0]}-${w.slice(1)}`, `${s1}${s2[0]}-${s2.slice(1)}`, `${w.slice(0, -1)}-${w.slice(-1)}`];
   return {
-    question: item.question,
-    correctAnswer: item.correct,
-    options: shuffle(["Ano", "Ne"]),
-    emoji: item.emoji,
-    hints: [item.hint],
-    explanation: item.solution,
+    ...choice(
+      `Jak rozdělíš slovo „${w}“ na konci řádku?`,
+      spravne,
+      jine.map((v) => ({ value: v, why: procChybne(w, spravne, v) })) as [Distractor, Distractor, Distractor],
+      {
+        hints: [
+          `Řekni „${w}“ pomalu po slabikách. Kde se hlas na chvilku zastaví?`,
+          `Rozdělovník patří jen mezi slabiky. Vyslov „${w}“ po slabikách a pak zkontroluj, že na konci řádku ani na novém řádku nezůstane jen jedno písmeno.`,
+        ],
+        explanation: `Slovo „${w}“ má dvě slabiky – ${s1} a ${s2}. Rozdělovník proto patří mezi ně: ${spravne}. Na každém řádku zůstanou aspoň dvě písmena.`,
+      },
+    ),
+    emoji: "↩️",
   };
 }
 
+// ── L2: víceslabičná slova, dvojhlásky, ch ─────────────────────────────────
+// [slabiky, správná možnost, tři chybné]
+const L2: [string[], string, [string, string, string]][] = [
+  [["ko", "hout"], "ko-hout", ["koho-ut", "k-ohout", "kohou-t"]],
+  [["lou", "ka"], "lou-ka", ["lo-uka", "l-ouka", "louk-a"]],
+  [["hou", "ba"], "hou-ba", ["ho-uba", "h-ouba", "houb-a"]],
+  [["kou", "pel"], "kou-pel", ["ko-upel", "k-oupel", "koupe-l"]],
+  [["cha", "ta"], "cha-ta", ["c-hata", "ch-ata", "chat-a"]],
+  [["chy", "ba"], "chy-ba", ["c-hyba", "ch-yba", "chyb-a"]],
+  [["ja", "ho", "da"], "jaho-da", ["jah-oda", "j-ahoda", "jahod-a"]],
+  [["lo", "pa", "ta"], "lo-pata", ["lop-ata", "l-opata", "lopat-a"]],
+  [["čo", "ko", "lá", "da"], "čoko-láda", ["čok-oláda", "č-okoláda", "čokolád-a"]],
+  [["pa", "pou", "šek"], "pa-poušek", ["papo-ušek", "pap-oušek", "papouše-k"]],
+  [["ko", "čá", "rek"], "kočá-rek", ["koč-árek", "k-očárek", "kočáre-k"]],
+  [["te", "le", "fon"], "te-lefon", ["tel-efon", "t-elefon", "telefo-n"]],
+  [["po", "hád", "ka"], "po-hádka", ["poh-ádka", "p-ohádka", "pohádk-a"]],
+  [["ro", "pu", "cha"], "ropu-cha", ["ropuc-ha", "rop-ucha", "r-opucha"]],
+  [["ho", "di", "ny"], "hodi-ny", ["hod-iny", "h-odiny", "hodin-y"]],
+];
+
+function viceslabicne([syl, spravne, jine]: [string[], string, [string, string, string]]): PracticeTask {
+  const w = syl.join("");
+  const deleni = syl.join("-");
+  const platna = platnaDeleni(syl);
+  if (!platna.includes(spravne)) throw new Error(`L2 ${w}: ${spravne} není platné dělení`);
+  for (const j of jine) if (platna.includes(j)) throw new Error(`L2 ${w}: distraktor ${j} je také správně`);
+  const dvoj = syl.find((s) => /ou|au/.test(s))?.match(/ou|au/)?.[0];
+  const ch = w.includes("ch");
+  const pravidla = [
+    "Rozdělovník patří jen mezi slabiky",
+    dvoj ? `dvojhlásku ${dvoj} nikdy nerozdělujeme` : null,
+    ch ? "ch se nerozděluje, protože je to jedno písmeno" : null,
+  ].filter(Boolean).join(", ");
+  const dalsi = platna.filter((p) => p !== spravne);
+  return {
+    ...choice(
+      `Které rozdělení slova „${w}“ na konci řádku je správné?`,
+      spravne,
+      jine.map((v) => ({ value: v, why: procChybne(w, deleni, v) })) as [Distractor, Distractor, Distractor],
+      {
+        hints: [
+          `Řekni „${w}“ pomalu po slabikách a najdi místa, kde se hlas zastaví.`,
+          `${pravidla}. U slova „${w}“ navíc zkontroluj, že na konci řádku ani na novém řádku nezůstane samotné jedno písmeno.`,
+        ],
+        explanation: `Slovo „${w}“ dělíme po slabikách ${deleni}. Možnost ${spravne} dělí slovo mezi slabikami a na obou řádcích zůstanou aspoň dvě písmena` +
+          `${dvoj ? `; dvojhláska ${dvoj} zůstala pohromadě` : ""}${ch ? "; ch zůstalo celé" : ""}.` +
+          `${dalsi.length ? ` Stejně dobře by šlo i ${dalsi.join(" nebo ")}.` : ""}`,
+      },
+    ),
+    emoji: "📝",
+  };
+}
+
+// ── L3: jde slovo vůbec rozdělit? ──────────────────────────────────────────
+const NIKAM = "nikam";
+
+// [slabiky, chybná rozdělení] — správná odpověď se dopočítá (platné dělení, nebo „nikam“)
+const L3: [string[], string[]][] = [
+  [["strom"], ["st-rom", "str-om", "stro-m"]],
+  [["vlak"], ["v-lak", "vl-ak", "vla-k"]],
+  [["stůl"], ["s-tůl", "st-ůl", "stů-l"]],
+  [["most"], ["m-ost", "mo-st", "mos-t"]],
+  [["u", "cho"], ["u-cho", "uc-ho", "uch-o"]],
+  [["o", "kap"], ["o-kap", "ok-ap", "oka-p"]],
+  [["o", "běd"], ["o-běd", "ob-ěd", "obě-d"]],
+  [["o", "řech"], ["o-řech", "oř-ech", "ořec-h"]],
+  [["ú", "kol"], ["ú-kol", "úk-ol", "úko-l"]],
+  [["au", "to"], ["a-uto", "aut-o"]],
+  [["o", "vo", "ce"], ["o-voce", "ov-oce"]],
+  [["o", "pi", "ce"], ["o-pice", "op-ice"]],
+  [["u", "li", "ce"], ["u-lice", "ul-ice"]],
+  [["mou", "cha"], ["mouc-ha", "mo-ucha"]],
+  [["o", "ře", "chy"], ["o-řechy", "ořec-hy"]],
+  [["ú", "ko", "ly"], ["ú-koly", "úk-oly"]],
+];
+
+function jdeRozdelit([syl, chybna]: [string[], string[]]): PracticeTask {
+  const w = syl.join("");
+  const deleni = syl.join("-");
+  const platna = platnaDeleni(syl);
+  if (platna.length > 1) throw new Error(`L3 ${w}: víc platných dělení`);
+  const spravne = platna[0] ?? NIKAM;
+  const n = syl.length;
+  for (const c of chybna) if (platna.includes(c)) throw new Error(`L3 ${w}: distraktor ${c} je také správně`);
+  const moznosti = platna.length ? [...chybna, NIKAM] : chybna;
+  if (moznosti.length !== 3) throw new Error(`L3 ${w}: potřebuji tři chybné možnosti`);
+  const why = (v: string): string => {
+    if (v === NIKAM) return `Slovo „${w}“ rozdělit jde: má ${slabik(n)} a dá se rozdělit tak, aby na obou řádcích zůstala aspoň dvě písmena.`;
+    if (n === 1) {
+      const [l, r] = v.split("-");
+      const navic = pismen(l) === 1 || pismen(r) === 1 ? " Navíc by na jednom řádku zůstalo jediné písmeno." : "";
+      return `Slovo „${w}“ má jen jednu slabiku – jednoslabičné slovo se nedělí vůbec.${navic}`;
+    }
+    return procChybne(w, deleni, v);
+  };
+  const explanation =
+    spravne !== NIKAM
+      ? `Slovo „${w}“ má slabiky ${deleni}. Rozdělení ${spravne} vede mezi slabikami a na obou řádcích zůstanou aspoň dvě písmena${SAMOHLASKY.includes(w[0]) ? " – i když slovo začíná samohláskou" : ""}.`
+      : n === 1
+        ? `Slovo „${w}“ má jen jednu slabiku a jednoslabičné slovo se na konci řádku nedělí. Celé ho napíšeš na nový řádek.`
+        : `Slovo „${w}“ má slabiky ${deleni}. Jediné místo mezi slabikami by nechalo samotné „${syl[0]}“ na konci řádku, a to se nesmí – proto se slovo nedělí a celé přejde na nový řádek.`;
+  return {
+    ...choice(
+      `Slovo „${w}“ se nevejde na řádek. Kam dáš rozdělovník?`,
+      spravne,
+      moznosti.map((v) => ({ value: v, why: why(v) })) as [Distractor, Distractor, Distractor],
+      {
+        hints: [
+          `Vyslov „${w}“ po slabikách. Zůstala by po rozdělení na některém řádku jen jedna hláska?`,
+          `Slovo dělíme jen mezi slabikami. Jednoslabičné slovo se nedělí vůbec a na konci ani na začátku řádku nesmí zůstat jedno písmeno (ch se počítá jako jedno). Vyzkoušej to se slovem „${w}“ u každé nabídnuté možnosti.`,
+        ],
+        explanation,
+      },
+    ),
+    emoji: "🚧",
+  };
+}
+
+// Kontrola dat při načtení: L1 slabiky musí začínat souhláskou a mít jednu samohlásku.
+for (const [s1, s2] of L1) {
+  if ([...s1 + s2].filter((c) => SAMOHLASKY.includes(c)).length !== 2) throw new Error(`L1 ${s1}${s2}: čekám dvě slabiky`);
+}
+
 function gen(level: number): PracticeTask[] {
-  const pool: PoolItem[] = level === 1 ? POOL_L1 : level === 2 ? POOL_L2 : POOL_L3;
-  return shuffle(pool).map(makeTask);
+  if (level === 1) return shuffle(L1).map(dvouslabicne);
+  if (level === 2) return shuffle(L2).map(viceslabicne);
+  return shuffle(L3).map(jdeRozdelit);
 }
 
 export const DELENISLOVNAKONCIRADKU: TopicMetadata[] = [
@@ -117,8 +213,8 @@ export const DELENISLOVNAKONCIRADKU: TopicMetadata[] = [
       "Poznat, kdy se slovo dělit nesmí (jedna slabika, nebo by osamělo písmeno).",
     ],
     boundaries: [
-      "Běžná jedno- a dvojslabičná slova 2. třídy.",
-      "Bez slov se slabikotvornými souhláskami (r, l) a bez víceslabičných rozborů.",
+      "Běžná slova 2. třídy.",
+      "Bez slov se shlukem souhlásek mezi samohláskami, kde je víc správných možností (ses-tra × se-stra).",
     ],
     gradeRange: [2, 2],
     inputType: "select_one",
@@ -131,10 +227,10 @@ export const DELENISLOVNAKONCIRADKU: TopicMetadata[] = [
       steps: [
         "Rozděl slovo na slabiky.",
         "Najdi hranici mezi slabikami — tam patří rozdělovník.",
-        "Zkontroluj, že na žádné straně nezůstalo jen jedno písmeno.",
+        "Zkontroluj, že na žádné straně nezůstalo jen jedno písmeno a že jsi nerozdělil(a) ou, au ani ch.",
       ],
       commonMistake: "Rozdělit slovo uprostřed slabiky, nebo nechat jedno písmeno samotné na řádku (např. 'a-no').",
-      example: "okno → ok-no (správně). ano → nelze rozdělit, protože by zůstalo samotné 'a'.",
+      example: "dárek → dá-rek (správně). ucho → nelze rozdělit, protože by zůstalo samotné 'u'.",
     },
   },
 ];
