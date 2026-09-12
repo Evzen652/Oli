@@ -144,7 +144,41 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
-### Session 2026-09-12 (39) — kritici po jedné dávce + lint shody (ROZPRACOVÁNO):
+### Session 2026-09-12 (39) — 8 dávek zkontrolováno a SLOUČENO, tři nové kontroly:
+
+**Na `main` je poprvé opravený obsah** — 26 témat s autorem i nezávislým
+kritikem: celá 2. matematika (13), 2. čeština i/y + dě/tě/ně + slabiky
++ dělení slov (4), celá 3. matematika (10). Produkce je tím opravená
+u témat, která inventura vedla jako chyby viditelné dětmi
+(`g2-mat-mereni-casu`, `g2-mat-mereni-delky`, skupiny dě/tě/ně,
+`g3-mat-tabulky-diagramy`, `g2-mat-bod-primka-usecka`).
+
+**Tři nové kontroly, všechny v CI:**
+- `npm run audit:agreement` — shoda přísudku s číslovkou nad všemi tématy
+  (44 882 unikátních úloh, REPEATS=15).
+- `npm run check:keys` — **přepočítá klíč z textu zadání**, nepřebírá ho
+  z generátoru: 4 689 klíčů matematiky 2.–5. ročníku, 0 neshod.
+- `npm run check:keys:tables` — totéž pro tabulky, jízdní řády a diagramy
+  (472 klíčů). Umí i měřítko kroužku a zpoždění spoje.
+
+**Nálezy kritika v tomhle běhu:** 2 v `g2mat-c` (shoda po „půl", nápověda
+o váze v obchodě u veterináře), 3 v `g2mat-d` (spona u 2–4, shoda v převodu
+cm→mm, chybějící dedup v losování), 5 v zamrazeném 5.–6. ročníku, 8 ve
+třech tématech 3. matematiky. Dávky `g2cjl-a`, `g3mat-b`, `g3mat-c` prošly
+bez dalšího nálezu (empty commit „kontrola … — bez nálezu" je záměrný
+záznam, aby `git log` rozlišil „kritik proběhl" od „kritik neproběhl").
+
+⚠️ **Poučení, které stojí za zapamatování: šestkrát za den hlásila chybu
+kontrola, ne obsah** (koncovka -ek jako genitiv, „4 jen", přivlastňovací
+„nohy 4 kachen", trojčlenný výraz, oddělovač tisíců, štítek „Na kole").
+Kdyby se nálezy bral jako pravda, „opravil" by se správný obsah. Proto má
+`czech-agreement-lint.test.ts` sekci „nesmí hlásit" (19 správných vět)
+a v obou skriptech jsou ty případy poznamenané u dotčeného pravidla.
+
+**Zbývá:** 11 dávek bez kritika (`g2cjl-b/c/d`, `g2prv-a/b`, `g3prv-a/b/c`,
+`g3cjl-a/b/c`) a 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+
+### Session 2026-09-12 (39a) — lint shody (detail):
 
 - ✅ **Lint shody přísudku s číslovkou** — `src/lib/czechAgreementLint.ts`
   (3 pravidla), zapojený do `audit:content` a jako samostatný sweep

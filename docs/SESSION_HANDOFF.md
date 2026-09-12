@@ -91,9 +91,9 @@ Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
 
 | dávky | stav | kde |
 |---|---|---|
-| `g2mat-a`, `g2mat-b`, `g2mat-c`, `g2mat-d` | ✅ autor **i kritik** hotov | `origin/content-fix/*` |
-| `g2cjl-a…d`, `g2prv-a`, `g2prv-b`, `g3mat-a…c`, `g3prv-a…c`, `g3cjl-a…c` (15) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
-| `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🔴 rozdělané, **bez commitu** — jen snapshot, NEOVĚŘENÉ | `origin/wip/content-fix/*` (větev `content-fix/*` je u nich ještě na starém commitu) |
+| `g2mat-a…d`, `g2cjl-a`, `g3mat-a…c` (8) | ✅ autor i kritik, **SLOUČENO do `main`** | v produkci |
+| `g2cjl-b`, `g2cjl-c`, `g2cjl-d`, `g2prv-a`, `g2prv-b`, `g3prv-a…c`, `g3cjl-a…c` (11) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
+| `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🔴 rozdělané, **bez commitu** — jen snapshot, NEOVĚŘENÉ | `origin/wip/content-fix/*` |
 
 > Ověřeno 2026-09-12: `origin/wip/content-fix/*` je **osm** větví, ne tři.
 > Kromě `g5mat-a`, `g5mat-b`, `g4-6-mix` tam leží ještě snapshoty
@@ -126,11 +126,28 @@ bez agentů. Ověřený postup jedné dávky (~20 min, dávka o 3 tématech):
    a pro L1/L2/L3 vypíše otázku, klíč, možnosti, `optionFeedback`, obě nápovědy
    a vysvětlení; pusť `T=1|2|3 npx vite-node scripts/tmp-dump-critic.ts`
    a výpis si ulož do scratchpadu. Na konci skript smaž.
-3. Každou úlohu vyřeš sám a porovnej s klíčem; kontroluj i to, že šablonovaná
-   zpětná vazba čísla souhlasí s konkrétní úlohou (tam se chyby schovávají).
-4. `node scripts/audit-topic.mjs <id>`, `IDS=<id> npx vite-node scripts/docs-check.ts`,
+3. **Nejdřív strojové kontroly, pak oči** — ať se nečte, co spočítá skript.
+   Do worktree zkopíruj z `main` soubory `scripts/check-keys-arith.ts`,
+   `scripts/check-keys-tables.ts`, `scripts/lint-agreement.ts`,
+   `src/lib/czechAgreementLint.ts` a `src/lib/czechGrammar.ts`, pusť je
+   s `IDS=<témata dávky>` a na konci kopie smaž
+   (`git checkout -- src/lib/czechGrammar.ts`).
+   U matematiky tím padne většina klíčů (u `g3mat-a` 2 117 z 2 117).
+4. Co skript označí „nepokryto vzorem", vyřeš sám a porovnej s klíčem;
+   kontroluj i to, že šablonovaná zpětná vazba čísla souhlasí s konkrétní
+   úlohou (tam se chyby schovávají).
+   ⚠️ **Nález strojové kontroly nejdřív ručně přepočítej.** U `check-keys`
+   bylo šest z šesti prvních nálezů chybou skriptu, ne obsahu.
+5. `node scripts/audit-topic.mjs <id>`, `IDS=<id> npx vite-node scripts/docs-check.ts`,
    `npm run typecheck`; commit „fix(content): kontrola …“ do `content-fix/<dávka>`
-   a push té větve (ne na `main`).
+   a push té větve (ne na `main`). **Když kritik nic nenajde, udělej prázdný
+   commit** `--allow-empty` se stejným prefixem — jinak `git log` nerozliší
+   „kritik proběhl bez nálezu" od „kritik neproběhl".
+6. Sloučení do `main`: `git merge --squash content-fix/<dávka>`, pak
+   `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`,
+   `npm test`, `npm run audit:content`, `npm run check:keys`,
+   `npm run check:keys:tables`, `npm run audit:agreement`, `npm run audit:ui`,
+   `npm run build`. Push do `main` = nasazení na produkci.
 
 Původní workflow (`critPrompt` ve skriptu) zůstává jako záložní varianta, pokud
 uživatel řekne jinak; pouštět po ~8 dávkách na běh.
