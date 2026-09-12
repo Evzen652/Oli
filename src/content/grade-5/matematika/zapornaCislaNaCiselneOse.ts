@@ -1,95 +1,182 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad } from "@/lib/czechGrammar";
-import { ciselnaUloha, pick, rnd, sada, shuffle, slovy } from "./_mat";
+import { ciselnaUloha, pick, rnd, sada, shuffle } from "./_mat";
 
-// Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
-// a bez vysvětlení chybných možností. Teď generátor s typickými chybami:
-// „−8 je víc než −3, protože 8 je víc než 3“, záporné číslo na špatné straně
-// osy, vzdálenost od nuly se znaménkem.
-// L1 záporné číslo na ose, na teploměru a pod hladinou, vzdálenost od nuly
-// · L2 největší a nejmenší ze čtyř čísel, seřazení · L3 posun po ose o několik
-// dílů (změna teploty, patra pod zemí, kolik dílů je mezi dvěma čísly).
+// Přepsáno 2026-09-12 (inventura obsahu). Předchozí verze měla statické
+// nápovědy („Všechna čísla jsou záporná…" se opakovalo u 52 úloh) a na L2
+// výhradně výčtové úlohy, kde klíč nutně stál ve znění otázky.
+//
+// Teď: L1 rozpoznání zápisu (číslo vlevo od nuly, teplota pod nulou, hloubka,
+// porovnání s nulou) · L2 aplikace na polohu čísla (co leží mezi, soused,
+// opačné číslo, seřazení) · L3 posun po ose o několik dílů (oteplení a
+// ochlazení přes nulu, patra pod zemí, vzdálenost přes nulu, zpětný výpočet).
+// Každá nápověda nese data své úlohy, takže se neopakuje.
 
+/** Záporné číslo s typografickým minusem. */
 const Z = (n: number) => (n < 0 ? `−${-n}` : String(n));
+
+// ── Pojistka proti prozrazení ────────────────────────────────────────────────
+
+const bezInterpunkce = (s: string) => s.replace(/(?<!\d)[.,](?!\d)/g, " ").replace(/[;:!?"'„“()×]/g, " ");
+
+function obsahujeCislo(text: string, cislo: string): boolean {
+  return new RegExp(`(^|[^\\d.,])${cislo.replace(".", "\\.")}([^\\d.,]|$)`).test(bezInterpunkce(text));
+}
+
+/** Číselné jádro klíče — jen tvary, které detektor prozrazení hlídá (číslo, číslo s jednotkou). */
+function jadro(key: string): string | null {
+  if (/^\d+$/.test(key)) return key;
+  return key.match(/^(\d+)\s+\p{L}[\p{L}\s/²³°]*$/u)?.[1] ?? null;
+}
+
+/**
+ * Pustí dál jen úlohu, jejíž klíč není ve znění otázky ani v nápovědách.
+ * U záporného klíče se číselné jádro nehledá: „−7 °C" v nápovědě nikdy nestojí,
+ * a číslice za minusem sama odpověď neprozradí (o výsledku rozhoduje znaménko).
+ */
+function overeno(t: PracticeTask | null): PracticeTask | null {
+  if (!t) return null;
+  const key = String(t.correctAnswer);
+  if (t.question.toLowerCase().includes(key.toLowerCase())) return null;
+  if ((t.hints ?? []).some((h) => key.length >= 3 && h.includes(key))) return null;
+  const cislo = jadro(key);
+  if (cislo && (t.hints ?? []).some((h) => obsahujeCislo(h, cislo))) return null;
+  return t;
+}
+
+// ── L1 · rozpoznání zápisu ───────────────────────────────────────────────────
 
 function naOse(): PracticeTask | null {
   const n = rnd(2, 15);
-  return ciselnaUloha(`Které číslo leží na číselné ose ${pad(n, "DÍL")} vlevo od nuly?`, Z(-n), [
-    { value: Z(n), why: `${n} leží vpravo od nuly. Vlevo od nuly jsou záporná čísla se znaménkem minus.` },
-    { value: Z(-(n + 1)), why: "Počítej dílky znovu — od nuly, ne od prvního dílku." },
-    { value: Z(-(n - 1)), why: "Počítej dílky znovu — nula se nepočítá jako první dílek." },
-  ], [
-    `Na kterou stranu od nuly leží čísla se znaménkem minus? A kolik dílů máš odpočítat?`,
-    "Vpravo od nuly jsou kladná čísla, vlevo záporná. Číslo, které je o několik dílů vlevo od nuly, zapíšeš s minusem a počtem dílů.",
-  ], [`Vlevo od nuly = záporné číslo`, `${pad(n, "DÍL")} vlevo → ${Z(-n)}`]);
+  return overeno(ciselnaUloha(
+    `Které číslo leží na číselné ose ${pad(n, "DÍL")} vlevo od nuly?`,
+    Z(-n),
+    [
+      { value: Z(n), why: `Číslo ${n} bez znaménka leží ${pad(n, "DÍL")} vpravo od nuly, tedy na opačnou stranu, než zadání říká.` },
+      { value: Z(-(n + 1)), why: `O jeden díl dál, než zadání říká. Od nuly se má odpočítat ${pad(n, "DÍL")}.` },
+      { value: Z(-(n - 1)), why: `O jeden díl blíž nule. Počítej znovu, prvním dílem od nuly doleva začíná číslo ${Z(-1)}.` },
+    ],
+    [
+      `Od nuly máš jít doleva, a to o ${pad(n, "DÍL")}. Co se píše před číslo, které leží vlevo od nuly?`,
+      `Číselná osa má vpravo od nuly čísla kladná a vlevo záporná. Kolik dílů od nuly ujdeš, takové je číslo, a protože jdeš doleva, patří před ně znaménko minus. Počítají se přitom mezery mezi čísly, ne čísla samotná, takže nula sama se jako první díl nepočítá.`,
+    ],
+    [`Vlevo od nuly leží záporná čísla.`, `${pad(n, "DÍL")} vlevo od nuly je číslo ${Z(-n)}.`],
+  ));
 }
 
 function teplomer(): PracticeTask | null {
   const n = rnd(2, 25);
-  return ciselnaUloha(`Teploměr ukazuje teplotu ${n} °C pod nulou. Jak ji zapíšeš číslem?`, `${Z(-n)} °C`, [
-    { value: `${n} °C`, why: "Bez minusu by to byla teplota nad nulou." },
-    { value: `${Z(-(n + 10))} °C`, why: `Pod nulou je o ${n}, ne o ${n + 10}.` },
-    { value: "0 °C", why: "Nula je bod mrazu. Teplota pod nulou je záporné číslo." },
-  ], [
-    `Teplota je pod bodem mrazu. Jaké znaménko dáš před číslo ${slovy(n)}?`,
-    "Teploty pod nulou se zapisují se znaménkem minus. Nula je bod mrazu, teplota nad ní je kladná.",
-  ], [`Pod nulou → minus`, `${n} °C pod nulou = ${Z(-n)} °C`]);
+  return overeno(ciselnaUloha(
+    `Teploměr ukazuje teplotu ${n} °C pod nulou. Jak ji zapíšeš číslem?`,
+    `${Z(-n)} °C`,
+    [
+      { value: `${n} °C`, why: `Bez znaménka jde o ${n} °C nad nulou, tedy o teplotu nad bodem mrazu.` },
+      { value: "0 °C", why: "Nula je sám bod mrazu. Teplota pod nulou leží na ose vlevo od něj." },
+      { value: `${Z(-(n + 10))} °C`, why: `Číslo nesedí se zadáním: teploměr je ${n} °C pod nulou, ne ${n + 10} °C.` },
+    ],
+    [
+      `Teplota ${n} °C pod nulou leží pod bodem mrazu. Co se na číselné ose píše před čísla, která leží vlevo od nuly?`,
+      `Nula na teploměru je bod mrazu. Teploty nad ní se zapisují jako obyčejná kladná čísla, teploty pod ní se znaménkem minus, protože na číselné ose leží vlevo od nuly. Samo číslo přitom říká, o kolik stupňů je teplota od nuly vzdálená, a to se zápisem nemění.`,
+    ],
+    [`Pod nulou znamená vlevo od nuly, tedy záporné číslo.`, `Teplota ${n} °C pod nulou se zapíše ${Z(-n)} °C.`],
+  ));
 }
 
 function hloubka(): PracticeTask | null {
   const n = rnd(3, 40), kdo = pick(["Potápěč", "Ponorka", "Kotva"]);
-  return ciselnaUloha(`${kdo} je ${n} m pod hladinou. Jak tu výšku zapíšeš číslem, když hladina je 0 m?`, `${Z(-n)} m`, [
-    { value: `${n} m`, why: `${n} m by bylo nad hladinou.` },
-    { value: `${Z(-(n * 10))} m`, why: `Pod hladinou je ${n} m, ne ${n * 10} m.` },
-    { value: `${Z(-(n + 1))} m`, why: "Zkontroluj číslo — hloubka je v zadání." },
-  ], [
-    `Je ${kdo.toLowerCase()} nad hladinou, nebo pod ní? Jaké znaménko pak dostane číslo ${slovy(n)}?`,
-    "Hladina je nula. Co je nad ní, zapíšeš kladným číslem, co je pod ní, záporným — se znaménkem minus.",
-  ], [`Hladina = 0`, `Pod hladinou → ${Z(-n)} m`]);
+  return overeno(ciselnaUloha(
+    `${kdo} je ${n} m pod hladinou. Jak tuhle výšku zapíšeš, když hladina má 0 m?`,
+    `${Z(-n)} m`,
+    [
+      { value: `${n} m`, why: `${n} m bez znaménka by znamenalo ${n} m nad hladinou, třeba na stožáru.` },
+      { value: "0 m", why: "Nula je sama hladina. Místo pod hladinou má číslo menší než nula." },
+      { value: `${Z(-(n * 10))} m`, why: `Hloubka ze zadání je ${n} m, ne ${n * 10} m — číslo se neshoduje.` },
+    ],
+    [
+      `Hladina znamená nulu a ${kdo.toLowerCase()} se nachází ${n} m pod ní. Co se píše před čísla, která leží pod nulou?`,
+      `Když je hladina nula, čísla nad ní jsou kladná (výška nad hladinou) a čísla pod ní záporná (hloubka). Zapisuje se proto stejné číslo jako hloubka, jen se znaménkem minus. Samotné číslo říká, jak daleko od hladiny to je, a znaménko říká, na kterou stranu.`,
+    ],
+    [`Hladina = 0 m, pod hladinou jsou záporná čísla.`, `Hloubka ${n} m pod hladinou se zapíše ${Z(-n)} m.`],
+  ));
 }
 
-function vzdalenost(): PracticeTask | null {
-  const n = rnd(2, 20);
-  return ciselnaUloha(`Kolik dílů je na číselné ose od nuly k číslu ${Z(-n)}?`, pad(n, "DÍL"), [
-    { value: pad(n + 1, "DÍL"), why: "Nula se nepočítá jako dílek — počítají se mezery mezi čísly." },
-    { value: pad(n - 1, "DÍL"), why: "Počítej znovu: od nuly až k číslu." },
-    { value: pad(2 * n, "DÍL"), why: `To by bylo z čísla ${Z(-n)} až k číslu ${n} na druhé straně.` },
-  ], [
-    `Zkus si na ose odpočítat od nuly doleva až k číslu minus ${slovy(n)}. Kolik skoků uděláš?`,
-    "Vzdálenost od nuly je vždy kladné číslo — je to počet dílů mezi nulou a číslem. Znaménko jen říká, na které straně číslo leží.",
-  ], [`Od 0 doleva k ${Z(-n)}: ${pad(n, "DÍL")}`]);
+function porovnejSNulou(): PracticeTask | null {
+  const n = rnd(2, 30);
+  return overeno(ciselnaUloha(
+    `Porovnej číslo ${Z(-n)} s nulou. Co o něm platí?`,
+    "je menší než nula",
+    [
+      { value: "je větší než nula", why: "Větší než nula jsou čísla vpravo od ní, tedy kladná. Číslo se znaménkem minus leží vlevo." },
+      { value: "je stejně velké jako nula", why: "Stejná jako nula je jen sama nula, a ta se píše bez znaménka." },
+      { value: "leží na ose vpravo od nuly", why: `Vpravo od nuly leží čísla bez minusu. Číslice ${n} za minusem říká jen vzdálenost od nuly, odměřuje se ale na opačnou stranu.` },
+    ],
+    [
+      `Najdi na číselné ose místo pro číslo ${Z(-n)} a místo pro nulu. Které z těch dvou míst leží víc vlevo?`,
+      `Na číselné ose hodnoty rostou zleva doprava, takže to, co leží víc vlevo, má vždycky nižší hodnotu. Záporná čísla leží vlevo od nuly bez ohledu na to, jak velká číslice stojí za minusem, a proto nula vyhraje nad každým z nich. Číslice za minusem udává jen vzdálenost od nuly.`,
+    ],
+    [`Číslo se znaménkem minus leží vlevo od nuly.`, `Co leží vlevo, má nižší hodnotu — nula je tedy větší.`],
+  ));
 }
 
-function nejmensi(): PracticeTask | null {
-  const a = rnd(14, 30), b = rnd(10, a - 3), c = rnd(1, 9);
-  const key = Z(-a);
-  const ds = [
-    { value: Z(-b), why: `${Z(-b)} leží blíž nule, tedy víc vpravo než ${key}.` },
-    { value: "0", why: "Nula leží vpravo od všech záporných čísel." },
-    { value: String(c), why: `${c} je kladné — leží vpravo od nuly.` },
-  ];
-  const vse = shuffle([key, ...ds.map((d) => d.value)]);
-  return ciselnaUloha(`Které z čísel ${vse.join("; ")} je nejmenší?`, key, ds, [
-    `Představ si číselnou osu. Kde na ní leží ${Z(-b)} a kde ${c}? Které z čísel je ze všech nejvíc vlevo?`,
-    "Čísla na ose rostou zleva doprava. Záporná čísla jsou vlevo od nuly, a čím dál od nuly doleva, tím víc vlevo — bez ohledu na to, jak velká číslice stojí za minusem.",
-  ], [`Na ose zleva: ${[...vse].sort((x, y) => Number(x.replace("−", "-")) - Number(y.replace("−", "-"))).join("; ")}`, `Nejvíc vlevo: ${key}`]);
+// ── L2 · aplikace na polohu čísla ────────────────────────────────────────────
+
+function mezi(): PracticeTask | null {
+  const a = -rnd(6, 20), b = a + rnd(4, 10);
+  const m = a + Math.floor((b - a) / 2);
+  if (m === a || m === b) return null;
+  const nizsi = a - rnd(1, 5), vyssi = b + rnd(1, 5);
+  return overeno(ciselnaUloha(
+    `Které z nabízených čísel leží na číselné ose mezi ${Z(a)} a ${Z(b)}?`,
+    Z(m),
+    [
+      { value: Z(nizsi), why: `${Z(nizsi)} leží ještě vlevo od ${Z(a)}, tedy mimo vyznačený úsek.` },
+      { value: Z(vyssi), why: `${Z(vyssi)} leží až vpravo od ${Z(b)}, tedy za koncem úseku.` },
+      { value: Z(-a), why: `${Z(-a)} je kladné, a proto leží vpravo od nuly — to je úplně jinde než úsek od ${Z(a)} do ${Z(b)}.` },
+    ],
+    [
+      `Hledané číslo musí ležet napravo od ${Z(a)} a zároveň nalevo od ${Z(b)}. Projdi možnosti a u každé zkontroluj obě podmínky.`,
+      `Na číselné ose hodnoty rostou zleva doprava, takže ležet mezi dvěma čísly znamená být napravo od menšího z nich a nalevo od většího. U záporných čísel pozor: čím větší číslice stojí za minusem, tím dál vlevo číslo leží, takže ${Z(a)} je z dvojice to menší. Možnosti proto neposuzuj podle číslic, ale podle místa na ose.`,
+    ],
+    [`Úsek začíná v ${Z(a)} a končí v ${Z(b)}.`, `Uvnitř úseku leží ${Z(m)} — je napravo od ${Z(a)} a nalevo od ${Z(b)}.`],
+  ));
 }
 
-function nejvetsi(): PracticeTask | null {
-  const cisla = new Set<number>();
-  while (cisla.size < 4) cisla.add(-rnd(10, 40));
-  const xs = [...cisla].sort((x, y) => x - y);
-  const key = Z(xs[3]);
-  const ds = [
-    { value: Z(xs[0]), why: `Za minusem stojí velká číslice, ale ${Z(xs[0])} leží na ose ze všech nejvíc vlevo.` },
-    { value: Z(xs[1]), why: `${Z(xs[1])} leží dál od nuly než ${key}, tedy víc vlevo.` },
-    { value: Z(xs[2]), why: `${Z(xs[2])} leží dál od nuly než ${key}, tedy víc vlevo.` },
-  ];
-  const vse = shuffle(xs.map(Z));
-  return ciselnaUloha(`Které z čísel ${vse.join("; ")} je největší?`, key, ds, [
-    `Všechna čísla jsou záporná. Které z nich leží na ose nejblíž nule?`,
-    "Na ose rostou čísla zleva doprava. U záporných čísel platí: čím blíž nule, tím víc vpravo — takže to s nejmenší číslicí za minusem je nejvíc vpravo.",
-  ], [`Na ose zleva: ${xs.map(Z).join("; ")}`, `Nejvíc vpravo: ${key}`]);
+function soused(): PracticeTask | null {
+  const x = -rnd(2, 12), vpravo = Math.random() < 0.5;
+  const smer = vpravo ? "vpravo" : "vlevo";
+  const key = x + (vpravo ? 1 : -1);
+  return overeno(ciselnaUloha(
+    `Které číslo leží na číselné ose hned ${smer} od čísla ${Z(x)}?`,
+    Z(key),
+    [
+      { value: Z(x - (vpravo ? 1 : -1)), why: `To je soused na opačné straně. Od ${Z(x)} se má jít ${smer}.` },
+      { value: Z(x + (vpravo ? 2 : -2)), why: `Krok je o díl delší, než má být. Sousední čísla se od ${Z(x)} liší přesně o jedna.` },
+      { value: Z(-x), why: `${Z(-x)} leží na druhé straně nuly, ne hned vedle čísla ${Z(x)}.` },
+    ],
+    [
+      `Postav se v duchu na číslo ${Z(x)} a udělej jediný krok ${smer}. Roste přitom hodnota čísla, nebo klesá?`,
+      `Sousední čísla na ose se liší přesně o jeden díl. Krok doprava znamená o jedna víc, krok doleva o jedna míň, a u záporných čísel to platí stejně. Číslice za minusem se přitom chová obráceně: směrem doprava se zmenšuje, směrem doleva zvětšuje. Řiď se proto polohou na ose, ne velikostí té číslice.`,
+    ],
+    [`Sousední čísla se liší o jeden díl.`, `Hned ${smer} od ${Z(x)} leží ${Z(key)}.`],
+  ));
+}
+
+function opacne(): PracticeTask | null {
+  const n = rnd(2, 18);
+  return overeno(ciselnaUloha(
+    `Které číslo leží na číselné ose stejně daleko od nuly jako ${n}, ale na opačné straně?`,
+    Z(-n),
+    [
+      { value: "0", why: "Nula leží přesně uprostřed mezi oběma čísly, takže sama tou dvojicí není." },
+      { value: Z(n), why: `${n} je totéž číslo, které je v zadání — leží na stejné straně nuly, ne na opačné.` },
+      { value: Z(-2 * n), why: `${Z(-2 * n)} leží sice vlevo od nuly, ale dvakrát dál, než má být. Vzdálenost od nuly zůstává stejná.` },
+    ],
+    [
+      `Od nuly k číslu ${n} vede cesta dlouhá ${pad(n, "DÍL")}. Stejně dlouhou cestu odpočítej od nuly na opačnou stranu — co se píše před číslo, které tam leží?`,
+      `Dvojice čísel, která leží od nuly stejně daleko, ale každé z jiné strany, se liší jedině znaménkem. Vpravo od nuly jsou čísla kladná, vlevo záporná, a počet dílů k nule je u obou stejný. Mění se tedy jen strana, ne vzdálenost od nuly.`,
+    ],
+    [`Vzdálenost od nuly zůstává ${pad(n, "DÍL")}.`, `Na opačné straně nuly proto leží ${Z(-n)}.`],
+  ));
 }
 
 function serad(): PracticeTask | null {
@@ -97,70 +184,158 @@ function serad(): PracticeTask | null {
   cisla.add(Math.random() < 0.5 ? 0 : -rnd(16, 25));
   if (cisla.size < 4) return null;
   const xs = [...cisla];
-  const J = (a: number[]) => a.map(Z).join("; ");
-  const key = [...xs].sort((a, b) => a - b);
+  const J = (pole: number[]) => pole.map(Z).join("; ");
+  const spravne = [...xs].sort((p, q) => p - q);
   let zamichane = shuffle(xs);
-  if (J(zamichane) === J(key)) zamichane = [...key].reverse();
-  return ciselnaUloha(`Seřaď od nejmenšího: ${J(zamichane)}.`, J(key), [
-    { value: J([...xs].sort((a, b) => Math.abs(a) - Math.abs(b))), why: "Řadilo se podle číslic bez ohledu na minus. Záporná čísla jsou ale vlevo od nuly." },
-    { value: J([...key].reverse()), why: "To je pořadí od největšího." },
-    { value: J([...xs].sort((a, b) => (a < 0 && b < 0 ? b - a : a - b))), why: "Záporná čísla se seřadila obráceně — to s větší číslicí za minusem leží víc vlevo." },
-  ], [
-    `Které z čísel ${J(xs)} leží na ose nejvíc vlevo, a které nejvíc vpravo?`,
-    "Na ose rostou čísla zleva doprava: nejdřív záporná (to s největší číslicí za minusem úplně vlevo), pak nula a nakonec kladná čísla.",
-  ], [`Na ose zleva doprava: ${J(key)}`]);
+  if (J(zamichane) === J(spravne)) zamichane = [...spravne].reverse();
+  return overeno(ciselnaUloha(
+    `Seřaď od nejmenšího: ${J(zamichane)}.`,
+    J(spravne),
+    [
+      { value: J([...xs].sort((p, q) => Math.abs(p) - Math.abs(q))), why: "Řadilo se podle číslic bez ohledu na minus. Záporná čísla ale leží vlevo od nuly, takže patří na začátek." },
+      { value: J([...spravne].reverse()), why: "To je pořadí od největšího. Od nejmenšího se začíná číslem, které leží na ose nejvíc vlevo." },
+      { value: J([...xs].sort((p, q) => (p < 0 && q < 0 ? q - p : p - q))), why: "Záporná čísla jsou seřazená obráceně. To s větší číslicí za minusem leží dál vlevo, a je proto menší." },
+    ],
+    [
+      `Čísla ${J(zamichane)} si rozděl na záporná a kladná: záporná leží vlevo od nuly, kladná vpravo. Které ze záporných je ze všech nejdál vlevo?`,
+      `Na číselné ose hodnoty rostou zleva doprava, takže seřadit od nejmenšího znamená vypsat čísla v tom pořadí, v jakém na ose leží zleva. Nejdřív přijdou záporná čísla, a mezi nimi je nejmenší to s největší číslicí za minusem, protože leží nejdál vlevo. Pak následuje nula a nakonec kladná čísla od nejmenšího.`,
+    ],
+    [`Zleva doprava: nejdřív záporná (od největší číslice za minusem), pak nula a kladná.`, `Správné pořadí: ${J(spravne)}.`],
+  ));
 }
 
-function teplota(): PracticeTask | null {
-  const start = -rnd(2, 12), zmena = rnd(3, 15);
-  const konec = start + zmena;
-  if (konec === 0 || Math.abs(konec) === -start || Math.abs(konec) === zmena) return null;
-  if (`${zmena} °C`.includes(`${Z(konec)} °C`) || Z(start).includes(Z(konec))) return null;
+// ── L3 · posun po ose ────────────────────────────────────────────────────────
+
+function oteplilo(): PracticeTask | null {
+  const start = -rnd(2, 12), zmena = rnd(3, 15), konec = start + zmena;
+  if (konec === 0) return null;
   const kdy = pick([["Ráno", "do poledne"], ["V noci", "do rána"], ["V pondělí", "do úterý"]]);
-  return ciselnaUloha(`${kdy[0]} bylo ${Z(start)} °C, ${kdy[1]} se oteplilo o ${zmena} °C. Kolik stupňů bylo potom?`, `${Z(konec)} °C`, [
-    { value: `${Z(start - zmena)} °C`, why: "Posun šel na špatnou stranu. Oteplení znamená posun po teploměru nahoru — doprava na ose." },
-    { value: `${Z(-start + zmena)} °C`, why: "Minus se nevšímal. Teplota začínala pod nulou." },
-    { value: `${Z(-konec)} °C`, why: `Znaménko nesedí: po posunu o ${zmena} dílů nahoru z ${Z(start)} jsi ${konec > 0 ? "nad" : "pod"} nulou.` },
-  ], [
-    `Kolik dílů je z ${Z(start)} k nule? A kolik dílů ještě zbývá z oteplení o ${zmena} °C?`,
-    "Oteplení = posun po teploměru nahoru (na ose doprava), ochlazení = dolů (doleva). Nejdřív dojdi k nule a pak pokračuj o zbytek.",
-  ], [
-    `Z ${Z(start)} k nule: ${pad(-start, "DÍL")}`,
-    konec > 0 ? `Zbývá ${zmena} − ${-start} = ${konec} → ${konec} °C` : `Nula nestačí: ${Z(start)} + ${zmena} = ${Z(konec)} °C`,
-  ]);
+  return overeno(ciselnaUloha(
+    `${kdy[0]} bylo ${Z(start)} °C, ${kdy[1]} se oteplilo o ${zmena} °C. Jakou teplotu ukazoval teploměr potom?`,
+    `${Z(konec)} °C`,
+    [
+      { value: `${Z(start - zmena)} °C`, why: `Posun šel na špatnou stranu. Oteplení znamená pohyb po ose doprava, tedy od ${Z(start)} směrem k nule, ne od ní.` },
+      { value: `${Z(-start + zmena)} °C`, why: `Minus v zadání zůstal bez povšimnutí. Teplota začínala pod nulou, na ${Z(start)} °C, ne na ${-start} °C.` },
+      { value: `${Z(-konec)} °C`, why: `Číslo sedí, znaménko ne: po posunu o ${pad(zmena, "DÍL")} doprava z ${Z(start)} je teploměr ${konec > 0 ? "nad" : "pod"} nulou.` },
+    ],
+    [
+      `${kdy[0]} ukazoval teploměr ${Z(start)} °C. Dojdi po ose nejdřív k nule — kolik dílů to je? Zbytek z oteplení o ${zmena} °C pak pokračuje stejným směrem dál.`,
+      `Oteplení je posun po číselné ose doprava (na teploměru nahoru), ochlazení doleva. Rozděl si proto cestu na dvě části: z ${Z(start)} k nule a odtud dál. Když je oteplení větší než vzdálenost k nule, teploměr přejde přes nulu do kladných čísel. Když je menší, zůstane teplota pod nulou, jen blíž k ní.`,
+    ],
+    [
+      `Z ${Z(start)} °C k nule: ${pad(-start, "DÍL")}.`,
+      konec > 0
+        ? `Z oteplení zbývá ${zmena} − ${-start} = ${konec}, teploměr tedy přešel přes nulu.`
+        : `Oteplení o ${zmena} °C nestačí na ${pad(-start, "DÍL")} k nule, teplota zůstala pod nulou.`,
+      `Výsledek: ${Z(konec)} °C.`,
+    ],
+  ));
+}
+
+function ochladilo(): PracticeTask | null {
+  const start = rnd(2, 12), zmena = start + rnd(2, 14), konec = start - zmena;
+  const kde = pick(["Na horách", "Na zahradě", "Za oknem"]);
+  return overeno(ciselnaUloha(
+    `${kde} bylo odpoledne ${start} °C, v noci se ochladilo o ${zmena} °C. Jakou teplotu ukázal teploměr ráno?`,
+    `${Z(konec)} °C`,
+    [
+      { value: `${Z(start + zmena)} °C`, why: "Posun šel nahoru. Ochlazení je pohyb po ose doleva, tedy k menším číslům." },
+      { value: `${Z(-konec)} °C`, why: `Číslo sedí, znaménko ne. Ochlazení o ${zmena} °C je víc než ${pad(start, "DÍL")} k nule, takže teplota klesla až pod ni.` },
+      { value: "0 °C", why: `U nuly ochlazování neskončilo: z ${start} °C k nule stačí ${pad(start, "DÍL")}, ale ochlazení bylo o ${zmena} °C.` },
+    ],
+    [
+      `${kde} klesla teplota z ${start} °C dolů o ${zmena} °C. Kolik dílů stačí k nule a kolik jich pak ještě zbude pod ni?`,
+      `Ochlazení je posun po číselné ose doleva. Nejdřív ujdeš cestu z ${start} °C k nule, a protože je ochlazení větší, zbytek pokračuje pod nulu do záporných čísel. Výsledek se zapisuje se znaménkem minus a říká, o kolik dílů leží vlevo od nuly.`,
+    ],
+    [
+      `Z ${start} °C k nule: ${pad(start, "DÍL")}.`,
+      `Zbytek ochlazení: ${zmena} − ${start} = ${zmena - start}, a ten už jde pod nulu.`,
+      `Výsledek: ${Z(konec)} °C.`,
+    ],
+  ));
 }
 
 function patra(): PracticeTask | null {
   const start = -rnd(1, 3), nahoru = rnd(2, 8), konec = start + nahoru;
-  if (konec === 0 || Math.abs(konec) === -start) return null;
-  return ciselnaUloha(`Výtah stojí v patře ${Z(start)} (pod zemí). Vyjede o ${pad(nahoru, "PATRO")} nahoru. Ve kterém patře zastaví?`, Z(konec), [
-    { value: Z(start - nahoru), why: "Výtah jel nahoru, ne dolů." },
-    { value: Z(nahoru - start), why: "Nevšímal sis minusu — výtah začínal pod zemí." },
-    { value: Z(konec + 1), why: "Přízemí má číslo 0 — i to je jedno patro na cestě." },
-  ].map((c) => ({ ...c })), [
-    `Kolik pater musí výtah z patra ${Z(start)} vyjet, aby byl v přízemí (0)?`,
-    "Patra pod zemí mají záporná čísla, přízemí je 0. Jízda nahoru je posun doprava na číselné ose; přízemí se počítá jako jedno patro.",
-  ], [`Z ${Z(start)} do přízemí: ${-start}`, `Zbývá ${nahoru} − ${-start} = ${konec} → patro ${Z(konec)}`]);
+  if (konec === 0) return null;
+  return overeno(ciselnaUloha(
+    `Výtah stojí v patře ${Z(start)}, tedy pod zemí, a vyjede o ${pad(nahoru, "PATRO")} nahoru. Ve kterém patře zastaví?`,
+    Z(konec),
+    [
+      { value: Z(start - nahoru), why: "Výtah jel podle zadání nahoru, ne dolů — patra se mají zvětšovat." },
+      { value: Z(nahoru - start), why: `Minus zůstal bez povšimnutí: výtah začínal pod zemí v patře ${Z(start)}, ne v patře ${-start}.` },
+      { value: Z(konec + 1), why: "Přízemí má číslo 0 a cestou nahoru se počítá jako jedno z projetých pater." },
+    ],
+    [
+      `Z patra ${Z(start)} je do přízemí, které má číslo 0, jen kousek. Kolik pater to je a kolik z těch ${pad(nahoru, "PATRO")} pak ještě zbude?`,
+      `Patra pod zemí se značí zápornými čísly, přízemí je nula a patra nad zemí kladná čísla. Jízda nahoru je posun po číselné ose doprava. Rozděl si ji proto na dvě části: z patra ${Z(start)} do přízemí a odtud dál nahoru. Přízemí se přitom počítá jako jedno patro na cestě, ne jako mezera navíc.`,
+    ],
+    [
+      `Z patra ${Z(start)} do přízemí: ${pad(-start, "PATRO")}.`,
+      `Zbývá ${nahoru} − ${-start} = ${konec}.`,
+      `Výtah zastaví v patře ${Z(konec)}.`,
+    ],
+  ));
 }
 
-function mezi(): PracticeTask | null {
+function vzdalenostPresNulu(): PracticeTask | null {
   const a = -rnd(2, 12), b = rnd(2, 12);
-  const d = b - a;
-  return ciselnaUloha(`Kolik dílů je na číselné ose mezi čísly ${Z(a)} a ${b}?`, pad(d, "DÍL"), [
-    { value: pad(b + a > 0 ? b + a : -(b + a) || 1, "DÍL"), why: `Čísla se odečetla bez ohledu na minus. Z ${Z(a)} k nule je ${-a} dílů a z nuly k ${b} dalších ${b}.` },
-    { value: pad(d + 1, "DÍL"), why: "Počítala se čísla, ne mezery mezi nimi." },
-    { value: pad(d - 1, "DÍL"), why: "Nula leží mezi nimi a také se přes ni jde." },
-  ], [
-    `Kolik dílů je z ${Z(a)} k nule, a kolik z nuly k ${b}?`,
-    "Když leží jedno číslo vlevo a druhé vpravo od nuly, rozděl cestu na dvě části: k nule a od nuly. Obě části sečti.",
-  ], [`${Z(a)} → 0: ${pad(-a, "DÍL")}`, `0 → ${b}: ${pad(b, "DÍL")}`, `Celkem: ${-a} + ${b} = ${d}`]);
+  const d = b - a, chybny = Math.abs(b + a);
+  if (chybny === 0 || chybny === d || chybny === d - 1 || chybny === d + 1) return null;
+  return overeno(ciselnaUloha(
+    `Kolik dílů je na číselné ose mezi čísly ${Z(a)} a ${b}?`,
+    pad(d, "DÍL"),
+    [
+      { value: pad(chybny, "DÍL"), why: `Čísla se odečetla, jako by ležela na stejné straně nuly. Z ${Z(a)} k nule a z nuly k ${b} se ale jde pokaždé jiným úsekem a oba se sčítají.` },
+      { value: pad(d + 1, "DÍL"), why: "Počítala se čísla včetně nuly, ne mezery mezi nimi. Díl je mezera mezi dvěma sousedními čísly." },
+      { value: pad(d - 1, "DÍL"), why: "Jeden díl vypadl z počítání. Nula leží uvnitř úseku a přes ni se také jde." },
+    ],
+    [
+      `Cesta z ${Z(a)} do ${b} vede přes nulu. Kolik dílů ujdeš z ${Z(a)} k nule a kolik potom z nuly do ${b}?`,
+      `Když leží jedno číslo vlevo a druhé vpravo od nuly, rozděl si cestu na dvě části a ty pak sečti. Od ${Z(a)} k nule je tolik dílů, kolik říká číslice za minusem, a od nuly k ${b} tolik, kolik říká samo číslo. Pozor na odečtení obou číslic bez ohledu na minus — tím bys dostal jen rozdíl vzdáleností, ne celou cestu.`,
+    ],
+    [
+      `Z ${Z(a)} k nule: ${pad(-a, "DÍL")}.`,
+      `Z nuly k ${b}: ${pad(b, "DÍL")}.`,
+      `Celá cesta: ${-a} + ${b} = ${d}, tedy ${pad(d, "DÍL")}.`,
+    ],
+  ));
+}
+
+function zpetnaTeplota(): PracticeTask | null {
+  const konec = rnd(-3, 4), zmena = rnd(3, 12), rano = konec - zmena;
+  if (konec === 0 || rano >= 0) return null;
+  return overeno(ciselnaUloha(
+    `V poledne ukazoval teploměr ${Z(konec)} °C, a to je o ${zmena} °C víc než ráno. Jakou teplotu ukazoval ráno?`,
+    `${Z(rano)} °C`,
+    [
+      { value: `${Z(konec + zmena)} °C`, why: `Oteplení se přičetlo ještě jednou. Ráno bylo chladněji než v poledne, takže se od ${Z(konec)} °C jde po ose zpátky doleva.` },
+      { value: `${Z(-rano)} °C`, why: `Číslo sedí, znaménko ne: posun o ${pad(zmena, "DÍL")} doleva z ${Z(konec)} končí vlevo od nuly.` },
+      { value: "0 °C", why: `Nula je jen bod mrazu na cestě. Z ${Z(konec)} °C se má jít dolů o ${zmena} °C, a to je ještě dál.` },
+    ],
+    [
+      `Ráno bylo chladněji než v poledne, takže se z ${Z(konec)} °C musíš po ose vrátit o ${pad(zmena, "DÍL")}. Kterým směrem?`,
+      `Když víš, o kolik teplota stoupla, a znáš výsledek, hledáš začátek — to znamená jít po ose obráceně, tedy doleva. Z ${Z(konec)} °C odpočítej ${pad(zmena, "DÍL")} zpátky${konec > 0 ? ": nejdřív k nule a pak dál pod ni, protože cesta k nule sama tolik dílů nezabere" : ", a protože poledne bylo pod nulou, celá cesta zůstane vlevo od ní"}.`,
+    ],
+    [
+      `Zpětný posun je doleva o ${pad(zmena, "DÍL")}.`,
+      konec > 0 ? `Z ${Z(konec)} °C nejdřív k nule a pak ještě dál pod nulu.` : `Poledne bylo pod nulou, takže se jde jen dál doleva.`,
+      `Ráno bylo ${Z(rano)} °C. Kontrola: ${Z(rano)} + ${zmena} = ${Z(konec)} ✓`,
+    ],
+  ));
 }
 
 function gen(level: number): PracticeTask[] {
-  if (level === 1) { const t = [naOse, teplomer, hloubka, vzdalenost]; return sada(30, (i) => t[i % 4]()); }
-  if (level === 2) { const t = [nejmensi, nejvetsi, serad]; return sada(30, (i) => t[i % 3]()); }
-  const t = [teplota, patra, mezi];
-  return sada(30, (i) => t[i % 3]());
+  if (level === 1) {
+    const t = [naOse, teplomer, hloubka, porovnejSNulou];
+    return sada(30, (i) => t[i % 4]());
+  }
+  if (level === 2) {
+    const t = [mezi, soused, opacne, serad];
+    return sada(30, (i) => t[i % 4]());
+  }
+  const t = [oteplilo, ochladilo, patra, vzdalenostPresNulu, zpetnaTeplota];
+  return sada(30, (i) => t[i % 5]());
 }
 
 export const ZAPORNACISLANACISELNEOSE: TopicMetadata[] = [
