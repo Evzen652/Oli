@@ -53,26 +53,26 @@ function anoNe(i: number, vlastni: boolean): PracticeTask {
 // ── L2: najdi vlastní jméno ve větě ──────────────────────────────────────────
 // [téma (6. pád), věta psaná správně, vlastní jméno ve tvaru z věty, „jméno jedné určité …“, chybné [slovo z věty, proč není vlastní jméno]]
 const VE_VETE: [string, string, string, string, [string, string][]][] = [
-  ["psovi", "Náš pes Alík spí v boudě.", "Alík", "jednoho určitého psa", [["pes", "hodí se na každého psa"], ["boudě", "hodí se na každou psí boudu"], ["spí", "říká, co pes dělá, žádné jméno to není"]]],
-  ["koupání", "V létě se koupeme v řece Otavě.", "Otavě", "jedné určité řeky", [["řece", "hodí se na každou řeku"], ["létě", "je název ročního období, píše se s malým písmenem"], ["koupeme", "říká, co děláme, žádné jméno to není"]]],
-  ["babičce", "Babička bydlí ve městě Olomouci.", "Olomouci", "jednoho určitého města", [["Babička", "hodí se na každou babičku — velké B má jen proto, že stojí na začátku věty"], ["městě", "hodí se na každé město"], ["bydlí", "říká, co babička dělá, žádné jméno to není"]]],
-  ["kočce", "Sousedova kočka Líza má koťata.", "Líza", "jedné určité kočky", [["kočka", "hodí se na každou kočku"], ["koťata", "hodí se na všechna koťata"], ["Sousedova", "říká, čí kočka je — velké S má jen proto, že stojí na začátku věty"]]],
-  ["horách", "Na horu Sněžku vede lanovka.", "Sněžku", "jedné určité hory", [["horu", "hodí se na každou horu"], ["lanovka", "hodí se na každou lanovku"], ["vede", "říká, co lanovka dělá, žádné jméno to není"]]],
-  ["kamarádovi", "Můj nejlepší kamarád se jmenuje Matěj.", "Matěj", "jednoho určitého kluka", [["kamarád", "hodí se na každého kamaráda"], ["nejlepší", "říká, jaký kamarád je"], ["jmenuje", "říká, co se děje, žádné jméno to není"]]],
-  ["cestování", "S tatínkem jsme jeli vlakem do Prahy.", "Prahy", "jednoho určitého města", [["tatínkem", "hodí se na každého tatínka"], ["vlakem", "hodí se na každý vlak"], ["jeli", "říká, co jsme dělali, žádné jméno to není"]]],
-  ["koni", "Na statku žije kůň Blesk.", "Blesk", "jednoho určitého koně", [["kůň", "hodí se na každého koně"], ["statku", "hodí se na každý statek"], ["žije", "říká, co kůň dělá, žádné jméno to není"]]],
-  ["sestře", "Moje sestra Klára chodí do školy.", "Klára", "jedné určité dívky", [["sestra", "hodí se na každou sestru"], ["školy", "hodí se na každou školu"], ["chodí", "říká, co sestra dělá, žádné jméno to není"]]],
-  ["rybníku", "U rybníka Rožmberk hnízdí kachny.", "Rožmberk", "jednoho určitého rybníka", [["rybníka", "hodí se na každý rybník"], ["kachny", "hodí se na všechny kachny"], ["hnízdí", "říká, co kachny dělají, žádné jméno to není"]]],
-  ["škole", "Naše škola stojí v ulici Květná.", "Květná", "jedné určité ulice", [["škola", "hodí se na každou školu"], ["ulici", "hodí se na každou ulici"], ["stojí", "říká, kde škola je, žádné jméno to není"]]],
-  ["zoo", "V zoo žije slonice Lulu.", "Lulu", "jedné určité slonice", [["slonice", "hodí se na každou slonici"], ["zoo", "hodí se na každou zoologickou zahradu"], ["žije", "říká, co slonice dělá, žádné jméno to není"]]],
-  ["pečení", "Babička Anna peče buchty.", "Anna", "jedné určité ženy", [["Babička", "hodí se na každou babičku — velké B má jen proto, že stojí na začátku věty"], ["buchty", "hodí se na všechny buchty"], ["peče", "říká, co babička dělá, žádné jméno to není"]]],
-  ["prázdninách", "Letos pojedeme k moři do Chorvatska.", "Chorvatska", "jednoho určitého státu", [["moři", "hodí se na každé moře"], ["Letos", "říká, kdy se něco stane — velké L má jen proto, že stojí na začátku věty"], ["pojedeme", "říká, co budeme dělat, žádné jméno to není"]]],
+  ["psovi", "Náš pes Alík spí v boudě.", "Alík", "jednoho určitého psa", [["pes", "se hodí na každého psa"], ["boudě", "se hodí na každou psí boudu"], ["spí", "říká, co pes dělá, žádné jméno to není"]]],
+  ["koupání", "V létě se koupeme v řece Otavě.", "Otavě", "jedné určité řeky", [["řece", "se hodí na každou řeku"], ["létě", "je název ročního období, píše se s malým písmenem"], ["koupeme", "říká, co děláme, žádné jméno to není"]]],
+  ["babičce", "Babička bydlí ve městě Olomouci.", "Olomouci", "jednoho určitého města", [["Babička", "se hodí na každou babičku — velké B má jen proto, že stojí na začátku věty"], ["městě", "se hodí na každé město"], ["bydlí", "říká, co babička dělá, žádné jméno to není"]]],
+  ["kočce", "Sousedova kočka Líza má koťata.", "Líza", "jedné určité kočky", [["kočka", "se hodí na každou kočku"], ["koťata", "se hodí na všechna koťata"], ["Sousedova", "říká, čí kočka je — velké S má jen proto, že stojí na začátku věty"]]],
+  ["horách", "Na horu Sněžku vede lanovka.", "Sněžku", "jedné určité hory", [["horu", "se hodí na každou horu"], ["lanovka", "se hodí na každou lanovku"], ["vede", "říká, co lanovka dělá, žádné jméno to není"]]],
+  ["kamarádovi", "Můj nejlepší kamarád se jmenuje Matěj.", "Matěj", "jednoho určitého kluka", [["kamarád", "se hodí na každého kamaráda"], ["nejlepší", "říká, jaký kamarád je"], ["jmenuje", "říká, co se děje, žádné jméno to není"]]],
+  ["cestování", "S tatínkem jsme jeli vlakem do Prahy.", "Prahy", "jednoho určitého města", [["tatínkem", "se hodí na každého tatínka"], ["vlakem", "se hodí na každý vlak"], ["jeli", "říká, co jsme dělali, žádné jméno to není"]]],
+  ["koni", "Na statku žije kůň Blesk.", "Blesk", "jednoho určitého koně", [["kůň", "se hodí na každého koně"], ["statku", "se hodí na každý statek"], ["žije", "říká, co kůň dělá, žádné jméno to není"]]],
+  ["sestře", "Moje sestra Klára chodí do školy.", "Klára", "jedné určité dívky", [["sestra", "se hodí na každou sestru"], ["školy", "se hodí na každou školu"], ["chodí", "říká, co sestra dělá, žádné jméno to není"]]],
+  ["rybníku", "U rybníka Rožmberk hnízdí kachny.", "Rožmberk", "jednoho určitého rybníka", [["rybníka", "se hodí na každý rybník"], ["kachny", "se hodí na všechny kachny"], ["hnízdí", "říká, co kachny dělají, žádné jméno to není"]]],
+  ["škole", "Naše škola stojí v ulici Květná.", "Květná", "jedné určité ulice", [["škola", "se hodí na každou školu"], ["ulici", "se hodí na každou ulici"], ["stojí", "říká, kde škola je, žádné jméno to není"]]],
+  ["zoo", "V zoo žije slonice Lulu.", "Lulu", "jedné určité slonice", [["slonice", "se hodí na každou slonici"], ["zoo", "se hodí na každou zoologickou zahradu"], ["žije", "říká, co slonice dělá, žádné jméno to není"]]],
+  ["pečení", "Babička Anna peče buchty.", "Anna", "jedné určité ženy", [["Babička", "se hodí na každou babičku — velké B má jen proto, že stojí na začátku věty"], ["buchty", "se hodí na všechny buchty"], ["peče", "říká, co babička dělá, žádné jméno to není"]]],
+  ["prázdninách", "Letos pojedeme k moři do Chorvatska.", "Chorvatska", "jednoho určitého státu", [["moři", "se hodí na každé moře"], ["Letos", "říká, kdy se něco stane — velké L má jen proto, že stojí na začátku věty"], ["pojedeme", "říká, co budeme dělat, žádné jméno to není"]]],
 ];
 
 function veVete([tema, veta, jm, jedne, d]: (typeof VE_VETE)[number]): PracticeTask {
   const U = (s: string) => s.toUpperCase();
   return {
-    ...choice(`Které slovo je vlastní jméno? „${U(veta)}“`, U(jm), d.map(([w, proc]) => ({ value: U(w), why: `${U(w)} ${proc}.` })) as [Distractor, Distractor, Distractor], {
+    ...choice(`Které slovo je vlastní jméno? „${U(veta)}“`, U(jm), d.map(([w, proc]) => ({ value: U(w), why: `Slovo ${U(w)} ${proc}.` })) as [Distractor, Distractor, Distractor], {
       hints: [
         `Ve větě o ${tema} je právě jedno vlastní jméno. Které slovo to je?`,
         `U každého slova ve větě o ${tema} se zeptej: hodí se na všechny stejného druhu, nebo patří jen jedné určité osobě, zvířeti či místu? Věta je psaná velkými písmeny, aby první písmeno nic neprozradilo.`,

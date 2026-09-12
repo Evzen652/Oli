@@ -9,9 +9,15 @@ import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
 type Typ = "O" | "T" | "R";
 const NAZEV: Record<Typ, string> = { O: "oznamovací", T: "tázací", R: "rozkazovací" };
+/**
+ * Přísudková část, která se VŽDY dosazuje za podmět („ta …“). U tázací věty
+ * je v ní příklonné „se“, a to nesmí stát na začátku výpovědi — proto tady
+ * „se ptá“ a v šablonách před tím vždy „ta“. Dřív vznikalo „ta ptá se
+ * a končí otazníkem“ (kontrola 2026-09-12).
+ */
 const ZNAK: Record<Typ, string> = {
   O: "něco sděluje a končí tečkou",
-  T: "ptá se a končí otazníkem",
+  T: "se ptá a končí otazníkem",
   R: "přikazuje nebo prosí a končí vykřičníkem",
 };
 const UCEL: Record<Typ, string> = {
@@ -26,7 +32,7 @@ const EMOJI: Record<Typ, string> = { O: "💬", T: "❓", R: "❗" };
 const PRAVIDLO = "Oznamovací věta končí tečkou, tázací otazníkem, rozkazovací vykřičníkem.";
 
 type Veta = [string, Typ];
-const fb = ([s, t]: Veta): Distractor => ({ value: s, why: `„${s}“ je věta ${NAZEV[t]} — ${ZNAK[t]}.` });
+const fb = ([s, t]: Veta): Distractor => ({ value: s, why: `„${s}“ je věta ${NAZEV[t]} — ta ${ZNAK[t]}.` });
 const tri = (d: Veta[]) => d.map(fb) as [Distractor, Distractor, Distractor];
 
 // ── L1: Která věta o … je tázací / oznamovací / rozkazovací? ─────────────────
@@ -65,26 +71,26 @@ function l1(x: L1Item): PracticeTask {
 // ── L2: Kterou větu řekne, aby splnil svůj záměr? ────────────────────────────
 interface L2Item { q: string; kdo: string; cil: string; typ: Typ; s: string; proc: string; d: Veta[] }
 const L2: L2Item[] = [
-  { q: "Eva nemá hodinky a chce znát čas. Co řekne?", kdo: "Eva", cil: "se zeptat na čas", typ: "T", s: "Kolik je hodin?", proc: "se ptá na čas", d: [["Je už pozdě.", "O"], ["Podívej se na hodiny!", "R"], ["Hodiny visí na zdi.", "O"]] },
+  { q: "Eva nemá hodinky a chce znát čas. Co řekne?", kdo: "Eva", cil: "zjistit, kolik je hodin", typ: "T", s: "Kolik je hodin?", proc: "se ptá na čas", d: [["Je už pozdě.", "O"], ["Podívej se na hodiny!", "R"], ["Hodiny visí na zdi.", "O"]] },
   { q: "Maminka chce, aby Jirka umyl nádobí. Co mu řekne?", kdo: "maminka", cil: "Jirkovi říct, co má udělat", typ: "R", s: "Jirko, umyj nádobí!", proc: "přikazuje Jirkovi, co má udělat", d: [["Jirka umyl nádobí.", "O"], ["Umyl jsi nádobí?", "T"], ["Nádobí je v dřezu.", "O"]] },
   { q: "Tomáš se chce pochlubit novým kolem. Co řekne kamarádům?", kdo: "Tomáš", cil: "kamarádům něco sdělit", typ: "O", s: "Dostal jsem nové kolo.", proc: "sděluje novinku", d: [["Půjčíš mi kolo?", "T"], ["Podej mi helmu!", "R"], ["Kdo má kolo?", "T"]] },
   { q: "Babička hledá Lucku. Kterou větou se na ni zeptá?", kdo: "babička", cil: "zjistit, kde Lucka je", typ: "T", s: "Kde je Lucka?", proc: "se ptá, kde Lucka je", d: [["Lucka je na zahradě.", "O"], ["Lucko, pojď domů!", "R"], ["Lucka si hraje.", "O"]] },
   { q: "Paní učitelka chce, aby děti otevřely čítanky. Co řekne?", kdo: "paní učitelka", cil: "dětem říct, co mají udělat", typ: "R", s: "Otevřete si čítanky!", proc: "vyzývá děti, co mají udělat", d: [["Děti mají čítanky.", "O"], ["Máte čítanky?", "T"], ["Čítanka je nová.", "O"]] },
   { q: "Petr chce mamince povědět, co viděl v lese. Co řekne?", kdo: "Petr", cil: "mamince něco sdělit", typ: "O", s: "V lese jsem viděl srnku.", proc: "sděluje, co Petr viděl", d: [["Viděla jsi srnku?", "T"], ["Pojď se mnou do lesa!", "R"], ["Kde bydlí srnky?", "T"]] },
   { q: "Ondra prosí Kláru o pastelku. Kterou větu jí řekne?", kdo: "Ondra", cil: "Kláru o něco poprosit", typ: "R", s: "Kláro, podej mi pastelku!", proc: "prosí Kláru, co má udělat", d: [["Klára má pastelky.", "O"], ["Kde je moje pastelka?", "T"], ["Pastelka spadla pod lavici.", "O"]] },
-  { q: "Děda chce vědět, jestli bude pršet. Kterou větu řekne?", kdo: "děda", cil: "se zeptat na počasí", typ: "T", s: "Bude dnes pršet?", proc: "se ptá na počasí", d: [["Dnes bude pršet.", "O"], ["Vezmi si deštník!", "R"], ["Venku je zataženo.", "O"]] },
-  { q: "Sestra se chce zeptat kamarádky na jméno. Co řekne?", kdo: "sestra", cil: "se zeptat na jméno", typ: "T", s: "Jak se jmenuješ?", proc: "se ptá na jméno", d: [["Jmenuji se Ema.", "O"], ["Řekni mi své jméno!", "R"], ["Ema má hezké jméno.", "O"]] },
+  { q: "Děda chce vědět, jestli bude pršet. Kterou větu řekne?", kdo: "děda", cil: "zjistit, jaké je počasí", typ: "T", s: "Bude dnes pršet?", proc: "se ptá na počasí", d: [["Dnes bude pršet.", "O"], ["Vezmi si deštník!", "R"], ["Venku je zataženo.", "O"]] },
+  { q: "Sestra se chce zeptat kamarádky na jméno. Co řekne?", kdo: "sestra", cil: "zjistit, jak se kamarádka jmenuje", typ: "T", s: "Jak se jmenuješ?", proc: "se ptá na jméno", d: [["Jmenuji se Ema.", "O"], ["Řekni mi své jméno!", "R"], ["Ema má hezké jméno.", "O"]] },
   { q: "Kuba chce oznámit, že vyhrál závod. Kterou větu řekne?", kdo: "Kuba", cil: "oznámit novinku", typ: "O", s: "Vyhrál jsem závod.", proc: "sděluje, co se stalo", d: [["Kdo vyhrál závod?", "T"], ["Běž rychleji!", "R"], ["Poběžíš taky?", "T"]] },
   { q: "Tatínek chce, aby pes přestal štěkat. Co mu řekne?", kdo: "tatínek", cil: "psovi říct, co má udělat", typ: "R", s: "Rexi, přestaň štěkat!", proc: "přikazuje psovi, co má udělat", d: [["Pes štěká na kočku.", "O"], ["Proč pes štěká?", "T"], ["Rex je hlídací pes.", "O"]] },
   { q: "Anička chce mamince oznámit, že dostala jedničku. Co řekne?", kdo: "Anička", cil: "mamince sdělit novinku", typ: "O", s: "Dostala jsem jedničku.", proc: "sděluje novinku ze školy", d: [["Dostala jsi jedničku?", "T"], ["Pochval mě!", "R"], ["Z čeho byla písemka?", "T"]] },
   { q: "Filip chce, aby kamarád zavřel dveře. Co mu řekne?", kdo: "Filip", cil: "kamarádovi říct, co má udělat", typ: "R", s: "Zavři dveře!", proc: "přikazuje kamarádovi, co má udělat", d: [["Dveře jsou otevřené.", "O"], ["Kdo otevřel dveře?", "T"], ["Venku táhne.", "O"]] },
-  { q: "Mirka neví, v kolik hodin začíná film. Co řekne?", kdo: "Mirka", cil: "se zeptat na čas", typ: "T", s: "Kdy začne film?", proc: "se ptá na čas", d: [["Film začíná v pět.", "O"], ["Pusť ten film!", "R"], ["Film je o zvířatech.", "O"]] },
+  { q: "Mirka neví, v kolik hodin začíná film. Co řekne?", kdo: "Mirka", cil: "zjistit, kolik je hodin", typ: "T", s: "Kdy začne film?", proc: "se ptá na čas", d: [["Film začíná v pět.", "O"], ["Pusť ten film!", "R"], ["Film je o zvířatech.", "O"]] },
 ];
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
 function l2(x: L2Item): PracticeTask {
-  const d = x.d.map(([s, t]) => ({ value: s, why: `„${s}“ je věta ${NAZEV[t]} — ${ZNAK[t]}. ${cap(x.kdo)} ale chce ${x.cil}.` })) as [Distractor, Distractor, Distractor];
+  const d = x.d.map(([s, t]) => ({ value: s, why: `„${s}“ je věta ${NAZEV[t]} — ta ${ZNAK[t]}. ${cap(x.kdo)} ale chce ${x.cil}.` })) as [Distractor, Distractor, Distractor];
   return {
     ...choice(x.q, x.s, d, {
       hints: [
@@ -194,7 +200,7 @@ function znamenko([ctx, veta, typ, proc, spatne, h0]: (typeof ZNAMENKA)[number])
   return {
     ...choice(q, lab(typ, typ), d, {
       hints: [h0, `Nejdřív rozhodni, co věta „${veta}“ dělá: sděluje, ptá se, nebo přikazuje? Tím máš druh věty. Znaménko pak k druhu patří: ${PRAVIDLO}`],
-      explanation: `„${veta}${znak[typ]}“ ${proc}. Je to věta ${NAZEV[typ]}, a proto na konec patří ${ZNAMENKO4[typ]}.`,
+      explanation: `„${veta}${znak[typ]}“ ${proc}. Je to věta ${NAZEV[typ]}, a proto na konec patří ${ZNAMENKO[typ]}.`,
     }),
     emoji: EMOJI[typ],
   };
