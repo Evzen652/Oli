@@ -53,14 +53,15 @@ ani PIN sloupce v něm nejsou (proto `as any` v `performanceTracker.ts:83`).
 CLAUDE.md ho označuje za zdroj pravdy; pro tuhle kontrolu to neplatí, musí se
 číst i `supabase/migrations/`.
 
-### Dětská kategorie — jediná díra v rodičovské bráně
+### ✅ Dětská kategorie — díra v rodičovské bráně opravena (`39b4ecc`)
 
 Brána `src/components/ParentGate.tsx` (úloha „X % z Y", platnost 3 min jen
-v paměti) chrání všechny vstupy do rodičovské části **kromě jednoho**:
-`LandingNav` je vykreslený na třech dětských obrazovkách
-(`Onboarding.tsx:169`, `AnonStudentPage.tsx:149`, `ChildAuth.tsx:183`)
-a nabízí **„Ceník"** (→ `/landing#ceny`, částky 249 / 399 Kč) a
-**„Přihlásit se"** (→ `/auth`) bez brány (`LandingNav.tsx:13, 34, 65, 83`).
+v paměti) chránila všechny vstupy do rodičovské části **kromě jednoho**:
+`LandingNav` na třech dětských obrazovkách nabízel „Ceník" (částky 249 / 399 Kč)
+i „Přihlásit se" bez brány. Opraveno propem `detskeZobrazeni` — za bránou je
+**celé** menu, protože všechny položky vedou na `/landing`, kde ceník je
+(chránit jen odkaz „Ceník" by dítě obešlo přes „Přínosy"). Na marketingovém
+landingu se brána neptá. Ověřeno v běžící aplikaci, ne jen typecheckem.
 
 Jinak je z hlediska dětské kategorie čisto: **žádná reklama ani analytika**
 (ověřeno v `package.json`, fulltextem i nativně — `google-services.json`
@@ -99,9 +100,10 @@ v dětské větvi routeru (`App.tsx:134`, odkaz skrytý, route živá).
   (kvůli `androidScheme: "https"`, `capacitor.config.ts:24`). Našly to
   nezávisle dva průzkumy, ověřeno v kódu. Oprava musí být podmíněná —
   natvrdo produkční doména rozbije vývoj na localhostu.
-- **`cap sync` nikdy neproběhl** (chybí `android/app/src/main/assets/`)
-  a `android/app/.gitignore` má jen `/build/*` — po prvním syncu se celý
-  `dist/` nabídne ke commitu. Doplnit **dřív**, než sync poprvé poběží.
+- **`cap sync` nikdy neproběhl** (chybí `android/app/src/main/assets/`).
+  ✅ `android/app/.gitignore` doplněn o výstup syncu (`39b4ecc`) — stihlo se
+  to dřív, než sync poprvé poběží.
+- ✅ `ExampleInstrumentedTest.java` testoval `com.getcapacitor.app` (`39b4ecc`).
 - **Podklad pro Data Safety / Privacy Nutrition Labels neexistuje.**
   Nejblíž je `legal.ts` (`PRIJEMCI`) a `Privacy.tsx`, ale ani jedno není
   namapované na kategorie formulářů.
