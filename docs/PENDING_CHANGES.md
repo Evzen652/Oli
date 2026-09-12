@@ -20,6 +20,19 @@ test sekci „nesmí hlásit" — nová pravidla musí projít i tou.
 `scripts/lint-agreement.ts`, pusť `IDS=<témata> npx vite-node
 scripts/lint-agreement.ts`, pak kopie smaž a `git checkout -- src/lib/czechGrammar.ts`.
 
+## ▶ PŘEDÁNÍ 2026-09-12 — co udělat jako první
+
+1. **Kritik na `g5mat-a`, `g5mat-b`, `g4-6-mix`** (autoři hotovi, commity
+   `6363b28`, `46fc9e8`, `59f79ab`). Postup: `docs/SESSION_HANDOFF.md` §1.
+2. **Sloučit je do `main`** — pozor na past s `frozen_content_unchanged`
+   (tři témata mění zadání/klíč) a na to, že `g5mat-b` opravuje chybu, která
+   je do sloučení v produkci (klíč 22 místo 14 u číselné řady).
+3. Pak je opravný průchod celý hotový (87 témat) a dá se uklidit 22 worktree
+   `.claude/worktrees/wf_84b89ce1-8c0-*` i větve `content-fix/*` a `wip/*`.
+4. Teprve potom má smysl vrátit se k **přípravě spuštění** — `SESSION_HANDOFF.md`
+   §2 má šest bodů, z nichž dva umí udělat jen uživatel (proklikat registraci →
+   spárování → smazání účtu; opravit `GROQ_API_KEY` a `GEMINI_API_KEY`).
+
 ## ✅ Hromadné opravy obsahu — 19 z 22 dávek hotovo a na produkci (2026-09-12)
 
 **74 témat prošlo autorem i nezávislým kritikem a je sloučeno do `main`.**
