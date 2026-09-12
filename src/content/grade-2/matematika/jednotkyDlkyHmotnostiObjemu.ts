@@ -73,7 +73,7 @@ function jednotka(p: Predmet): PracticeTask {
   const h1 =
     p.unit === CM ? `${p.opora} Měříš délku něčeho malého, takže vyber menší jednotku délky.`
     : p.unit === M ? `${p.opora} Měříš délku něčeho velkého, takže vyber větší jednotku délky.`
-    : p.unit === KG ? `${p.opora} Zajímá tě, jak je to těžké. Vyber jednotku, kterou ukazuje váha v obchodě.`
+    : p.unit === KG ? `${p.opora} Zajímá tě, jak je to těžké. Vyber jednotku, kterou ukazuje váha.`
     : `${p.opora} Zajímá tě, kolik tekutiny se vejde dovnitř. Vyber jednotku, kterou najdeš na krabici mléka.`;
   return choice(`Jakou jednotkou změříš ${p.co}?`, p.unit, d, {
     hints: [`Ptáš se na ${p.co}. Měříš délku, hmotnost, nebo objem — a jak velké to asi je?`, h1],
@@ -232,7 +232,7 @@ const L3_CASTI: PracticeTask[] = [
     ],
     explanation: "1 l = 10 dl, půl litru = 5 dl. Dohromady 10 + 5 = 15 dl.",
   }),
-  choice("Kolik decilitrů mají dva a půl litru?", "25 dl", [
+  choice("Kolik decilitrů má dva a půl litru?", "25 dl", [
     { value: "20 dl", why: "20 dl jsou jen dva celé litry. Chybí ještě půl litru." },
     { value: "7 dl", why: "Sečetl jsi 2 + 5. Dva litry ale nejsou 2 dl — každý litr má 10 dl." },
     { value: "250 dl", why: "Počítal jsi, jako by litr měl 100 dl. Má jich jen deset." },
