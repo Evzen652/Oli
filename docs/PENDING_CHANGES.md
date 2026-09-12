@@ -7,6 +7,105 @@
 
 ---
 
+## 🔴 Příprava spuštění — co našla kontrola kódu (2026-09-12)
+
+Čtyři paralelní průzkumy nad `main` po sloučení obsahu. **Nic z toho není
+opravené** — jsou to nálezy k rozhodnutí. Vše ověřeno v kódu, cesty a řádky
+sedí k commitu `e3663ca`.
+
+### Zásady soukromí tvrdí něco jiného, než dělá kód
+
+Text v `src/pages/Privacy.tsx` a data v `src/content/legal.ts` jsou jinak
+poctivé; tohle je osm míst, kde se rozešly s kódem (většina vznikla po
+6. 9. 2026, kdy se text naposled ověřoval):
+
+1. **Jméno dítěte jde do jazykového modelu.** `supabase/functions/weekly-report/index.ts:169`
+   vkládá `childName` do promptu, `Privacy.tsx:147-149` slibuje „ne jméno
+   dítěte". **Aplikace tu funkci nevolá** — nahradil ji
+   `src/lib/weeklyReportGenerator.ts` (bez AI) a ve `src/` jsou jen komentáře.
+   Funkce je ale nasazená (`supabase/config.toml:24`) a s rodičovským JWT
+   volatelná. Buď jméno z promptu vyhodit, nebo funkci zrušit.
+2. **Ukládá se doslovná odpověď dítěte.** `session_logs.question_text`,
+   `correct_answer`, `student_answer` (`src/lib/performanceTracker.ts:81-83`,
+   migrace `20260904120000_session_logs_student_answer.sql`), rodič je vidí
+   v `SkillDetailModal.tsx:117`. `Privacy.tsx:97-107` vyjmenovává jen téma,
+   úroveň, počet správných, nápovědu a čas.
+3. **PIN dítěte a `learning_notes` rodiče** v zásadách nejsou (`Privacy.tsx:77-90`).
+4. **Anonymní režim přece jen sbírá e-mail** — dítě ho zadá v `InviteParentDialog`,
+   uloží se do `parent_invitations` i s `anon_token`
+   (`supabase/functions/send-parent-invite/index.ts:167-181`). `Privacy.tsx:59-61`
+   tvrdí, že se v tom režimu neukládá nic identifikujícího.
+5. **Mazání účtu nechá pozvánky za sebou** — `delete-account/index.ts:115` maže
+   `parent_invitations` jen přes `child_id`; řádky s `child_id = NULL` (bod 4)
+   nejde k účtu přiřadit, tabulka nemá `parent_user_id`.
+6. **Retence anonymních dat nesedí** — zásady 12 měsíců (`legal.ts:63`), kód
+   44 dní (`anon-progress/index.ts:125-131`). **A volajícího toho úklidu se
+   nepodařilo najít** — v `src/` není, v `.github/workflows/` cron není,
+   v migracích jen `CREATE EXTENSION pg_cron` bez `cron.schedule`. Ověřit
+   v Supabase dashboardu `select * from cron.job`.
+7. **Vercel chybí mezi příjemci** (`legal.ts:100-134`). `legal-recipients.test.ts`
+   ho nechytí konstrukčně — hledá hosty volané z kódu, hosting se tak neprojeví.
+8. **Dvě stránky slibují u mazání různé věci** — `Privacy.tsx:160-161` „do
+   třiceti dnů", `DeleteAccountInfo.tsx:33` „proběhne hned". Kód dělá druhé.
+
+⚠️ `src/integrations/supabase/types.ts` je **zastaralý** — `student_answer`
+ani PIN sloupce v něm nejsou (proto `as any` v `performanceTracker.ts:83`).
+CLAUDE.md ho označuje za zdroj pravdy; pro tuhle kontrolu to neplatí, musí se
+číst i `supabase/migrations/`.
+
+### Dětská kategorie — jediná díra v rodičovské bráně
+
+Brána `src/components/ParentGate.tsx` (úloha „X % z Y", platnost 3 min jen
+v paměti) chrání všechny vstupy do rodičovské části **kromě jednoho**:
+`LandingNav` je vykreslený na třech dětských obrazovkách
+(`Onboarding.tsx:169`, `AnonStudentPage.tsx:149`, `ChildAuth.tsx:183`)
+a nabízí **„Ceník"** (→ `/landing#ceny`, částky 249 / 399 Kč) a
+**„Přihlásit se"** (→ `/auth`) bez brány (`LandingNav.tsx:13, 34, 65, 83`).
+
+Jinak je z hlediska dětské kategorie čisto: **žádná reklama ani analytika**
+(ověřeno v `package.json`, fulltextem i nativně — `google-services.json`
+neexistuje, jediné android oprávnění je `INTERNET`), **žádný platební kód**
+(`subscriptions` je prázdná scaffolding), **žádný chat ani sdílení mezi
+uživateli**, dítě nezadává e-mail ani heslo (účet má syntetickou adresu
+`@app.internal`). Tutor chat je vypnutý `FEATURES.studentChat = false`
+(`src/lib/features.ts:27`) — dokud zásady tvrdí, že text dítěte ven nejde,
+měl by ten flag zmizet úplně, ne jen být `false`.
+
+Zbývá k rozhodnutí: Google Fonts na každé dětské obrazovce (`index.html:16-18`,
+jediné odchozí volání bez funkční nutnosti — řešitelné self-hostingem),
+odchod do WhatsApp z dětské obrazovky (za branou), a `/report` zůstalo
+v dětské větvi routeru (`App.tsx:134`, odkaz skrytý, route živá).
+
+### Mobilní vydání
+
+- **Produkční doména je `oli-edu.com`** (doloženo z `PROJECT_STATUS.md:17`,
+  `send-parent-invite/index.ts:19`, `capacitor.config.ts:12`,
+  `docs/MOBILNI_BUILD.md:100`). Ve `vercel.json` nakonfigurovaná není — jen
+  v dashboardu.
+- **`com.oliedu.app` je konzistentní** v osmi místech napříč Androidem i iOS
+  (`capacitor.config.ts:16`, `build.gradle:4,7`, `strings.xml:5,6`,
+  `MainActivity.java:1`, `project.pbxproj:312,333`, `Info.plist:14`).
+  Jediný zbytek šablony: `ExampleInstrumentedTest.java:24` testuje
+  `com.getcapacitor.app`. Produkční nastavení je čisté — `server.url` není,
+  cleartext ani debuggable nikde.
+- **Hluboké odkazy nejsou zapojené vůbec:** `public/.well-known/` neexistuje,
+  `AndroidManifest.xml` má jen `MAIN`/`LAUNCHER` (žádný `VIEW`/`BROWSABLE`,
+  žádné `autoVerify`), iOS nemá `.entitlements`. Aplikační strana
+  (`src/lib/native.ts`) je přitom hotová. Blokuje to podpisový klíč — bez
+  jeho SHA-256 otisku nejde `assetlinks.json` napsat.
+- 🔴 **Reset hesla a potvrzení registrace z mobilu povedou do prázdna.**
+  `src/pages/ForgotPassword.tsx:25` a `src/pages/Auth.tsx:51` používají
+  `window.location.origin`, což je uvnitř obalu `https://localhost`
+  (kvůli `androidScheme: "https"`, `capacitor.config.ts:24`). Našly to
+  nezávisle dva průzkumy, ověřeno v kódu. Oprava musí být podmíněná —
+  natvrdo produkční doména rozbije vývoj na localhostu.
+- **`cap sync` nikdy neproběhl** (chybí `android/app/src/main/assets/`)
+  a `android/app/.gitignore` má jen `/build/*` — po prvním syncu se celý
+  `dist/` nabídne ke commitu. Doplnit **dřív**, než sync poprvé poběží.
+- **Podklad pro Data Safety / Privacy Nutrition Labels neexistuje.**
+  Nejblíž je `legal.ts` (`PRIJEMCI`) a `Privacy.tsx`, ale ani jedno není
+  namapované na kategorie formulářů.
+
 ## 🟠 Lint shody hlásí planý poplach u jmenné části přísudku (2026-09-12)
 
 `czechAgreementLint.ts` označí větu **„0,3 m je 3 desetiny metru"** za chybu
