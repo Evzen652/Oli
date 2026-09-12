@@ -1,13 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
 // ─────────────────────────────────────────────────────────
 // Disjunktní pooly obtížnosti (L1 < L2 < L3), select_one.
@@ -22,524 +14,547 @@ function shuffle<T>(arr: T[]): T[] {
 //        skládání dvou mezilehlých směrů po otočce o 180°, kombinace
 //        barva+poloha na mapě, rozdíl mezi tím, co řekne legenda
 //        a co měřítko.
+// Každá úloha: dvě vlastní nápovědy, zpětná vazba u každé chybné možnosti
+// a vysvětlení PROČ (CONTENT_AUTHORING §0).
 // ─────────────────────────────────────────────────────────
 
+type Chyba = [string, string];
+
+function t(
+  question: string,
+  correct: string,
+  chyby: [Chyba, Chyba, Chyba],
+  h0: string,
+  h1: string,
+  explanation: string,
+): PracticeTask {
+  const d = chyby.map(([value, why]) => ({ value, why })) as [Distractor, Distractor, Distractor];
+  return choice(question, correct, d, { hints: [h0, h1], explanation });
+}
+
 const POOL_L1: PracticeTask[] = [
-  {
-    question: "Kde je na mapě světová strana sever?",
-    correctAnswer: "Nahoře",
-    options: ["Nahoře", "Dole", "Vpravo", "Vlevo"],
-    hints: [
-      "Na mapách se sever vždy kreslí směrem nahoru.",
-      "Představ si kompasovou ručičku — ukazuje nahoru na mapě.",
+  t(
+    "Kde je na mapě světová strana sever?",
+    "Nahoře",
+    [
+      ["Dole", "Dolní okraj mapy patří opačné straně — té, která leží naproti severu."],
+      ["Vpravo", "Pravý okraj mapy patří straně, kde ráno vychází slunce."],
+      ["Vlevo", "Levý okraj mapy patří straně, kde slunce večer zapadá."],
     ],
-    explanation:
-      "Na většině map platí dohodnuté pravidlo: sever je nahoře, jih je dole, východ je vpravo a západ je vlevo. Díky tomu se na mapách všichni snadno orientujeme.",
-  },
-  {
-    question: "Kde je na mapě světová strana jih?",
-    correctAnswer: "Dole",
-    options: ["Nahoře", "Dole", "Vlevo", "Vpravo"],
-    hints: [
-      "Jih je opak severu. Sever je nahoře, jih je tedy...",
-      "Jih je přesně na opačném okraji mapy než sever.",
+    "Na mapách se sever vždycky kreslí směrem vzhůru.",
+    "Proto se mapa při čtení nikdy neotáčí vzhůru nohama. Když šipka na mapě míří k hornímu okraji, míří k severu. U kterého okraje mapy tedy sever hledat?",
+    "Na většině map platí dohodnuté pravidlo: sever je nahoře, jih je dole, východ je vpravo a západ je vlevo. Díky téhle dohodě se na každé mapě orientujeme stejně.",
+  ),
+  t(
+    "Kde je na mapě světová strana jih?",
+    "Dole",
+    [
+      ["Nahoře", "Horní okraj patří severu. Jih leží přesně naproti němu."],
+      ["Vlevo", "Levý okraj mapy patří západu, ne protilehlé straně severu."],
+      ["Vpravo", "Pravý okraj mapy patří východu, ne protilehlé straně severu."],
     ],
-    explanation:
-      "Na standardní mapě je jih dole. Je to přesně naproti severu, který je nahoře.",
-  },
-  {
-    question: "Kde je na mapě světová strana východ?",
-    correctAnswer: "Vpravo",
-    options: ["Vlevo", "Nahoře", "Vpravo", "Dole"],
-    hints: [
-      "Slunce ráno vychází na východě.",
-      "Sever je nahoře. Pokud se díváš na mapu a slunce ráno vychází napravo od tebe... kde na mapě je východ?",
+    "Jih je přesný opak severu.",
+    "Sever se kreslí k hornímu okraji mapy. Když je jeho opak přesně naproti, musí ležet u toho druhého vodorovného okraje — ne u boků mapy.",
+    "Na standardní mapě je jih dole. Leží přesně naproti severu, který je nahoře, protože obě strany tvoří dvojici protikladů.",
+  ),
+  t(
+    "Kde je na mapě světová strana východ?",
+    "Vpravo",
+    [
+      ["Vlevo", "Levý okraj patří straně, kde slunce zapadá, ne kde vychází."],
+      ["Nahoře", "Horní okraj mapy je vyhrazený severu."],
+      ["Dole", "Dolní okraj mapy je vyhrazený jihu."],
     ],
-    explanation:
-      "Na mapě je východ vpravo. Slunce vychází na východě — proto se někdy říká 'východ slunce'. Na mapě ho najdeme na pravé straně.",
-  },
-  {
-    question: "Kde je na mapě světová strana západ?",
-    correctAnswer: "Vlevo",
-    options: ["Vpravo", "Dole", "Nahoře", "Vlevo"],
-    hints: [
-      "Západ je naproti východu. Východ je vpravo, západ je tedy...",
-      "Slunce večer zapadá na západě.",
+    "Slunce ráno vychází právě na téhle straně.",
+    "Postav se čelem k severu — tedy k hornímu okraji mapy. Ranní slunce budeš mít po pravé ruce. Ke kterému okraji mapy tahle ruka ukazuje?",
+    "Na mapě je východ vpravo. Slunce tam ráno vychází, proto se říká „východ slunce“. Na mapě ho proto najdeme na pravé straně.",
+  ),
+  t(
+    "Kde je na mapě světová strana západ?",
+    "Vlevo",
+    [
+      ["Vpravo", "Pravý okraj patří straně, kde slunce vychází, ne kde zapadá."],
+      ["Dole", "Dolní okraj mapy patří jihu, ne straně večerního slunce."],
+      ["Nahoře", "Horní okraj mapy patří severu, ne straně večerního slunce."],
     ],
-    explanation:
-      "Na mapě je západ vlevo. Slunce každý večer zapadá na západě, který na mapách najdeme na levé straně.",
-  },
-  {
-    question: "Na co ukazuje magnetická ručička kompasu?",
-    correctAnswer: "Na magnetický sever",
-    options: [
-      "Na magnetický sever",
-      "Na jih",
-      "Na nejbližší město",
-      "Na východ, odkud vychází slunce",
+    "Slunce večer zapadá právě na téhle straně.",
+    "Východ je na mapě u pravého okraje a tahle strana leží přesně naproti němu. U kterého okraje ji tedy najdeš — u bočního, nebo u vodorovného?",
+    "Na mapě je západ vlevo. Slunce každý večer zapadá na západě, a protože východ je vpravo, jeho protiklad musí být na levé straně.",
+  ),
+  t(
+    "Na co ukazuje magnetická ručička kompasu?",
+    "Na magnetický sever",
+    [
+      ["Na jih", "Barevný hrot ručičky míří opačným směrem — k protilehlé straně."],
+      ["Na nejbližší město", "Kompas o městech nic neví. Reaguje jen na magnetismus Země."],
+      ["Na východ, odkud vychází slunce", "Ručička na slunce nereaguje. Ukazuje pořád stejným směrem i v noci."],
     ],
-    hints: [
-      "Kompas nás naviguje — ručička vždy ukazuje jedním pevným směrem.",
-      "Magnetická ručička reaguje na zemské magnetické pole — ať kompasem otočíš jakkoli, vrátí se pořád stejným směrem. Zkus si vzpomenout, kam ukazují magnety na Zemi.",
+    "Ať kompasem otočíš jakkoli, ručička se vrátí pořád do stejného směru.",
+    "Ručička je malý magnet a přitahuje ji magnetické pole Země. To má dva póly a ručička míří k tomu, který leží nahoře na glóbusu. Který směr to je?",
+    "Magnetická ručička kompasu vždy ukazuje na magnetický sever, protože ji natáčí zemské magnetické pole. Právě proto se kompas hodí k orientaci v přírodě.",
+  ),
+  t(
+    "Jaký přístroj používáme k určení světových stran v terénu?",
+    "Kompas",
+    [
+      ["Teploměr", "Teploměr měří teplotu vzduchu, o směru neřekne nic."],
+      ["Dalekohled", "Dalekohled přiblíží vzdálené předměty, ale neukáže, kde je sever."],
+      ["Barometr", "Barometr měří tlak vzduchu a pomáhá odhadnout počasí, ne směr."],
     ],
-    explanation:
-      "Magnetická ručička kompasu vždy ukazuje na magnetický sever. Využívá zemské magnetické pole. Proto se kompas používá k orientaci v přírodě.",
-  },
-  {
-    question: "Jaký přístroj používáme k určení světových stran v terénu?",
-    correctAnswer: "Kompas",
-    options: ["Teploměr", "Kompas", "Dalekohled", "Barometr"],
-    hints: [
-      "Tento přístroj má magnetickou ručičku.",
-      "Používají ho turisté k orientaci v přírodě.",
+    "Ten přístroj má otočnou magnetickou ručičku.",
+    "Turisté ho nosí v batohu spolu s mapou a používají ho, když v lese ztratí přehled o směru. Vyřaď přístroje, které měří počasí nebo přibližují obraz.",
+    "K určení světových stran v terénu používáme kompas. Jeho magnetická ručička míří na sever, a od severu pak odvodíme i ostatní směry.",
+  ),
+  t(
+    "Co je kompas?",
+    "Přístroj s magnetickou ručičkou, která vždy ukazuje na sever",
+    [
+      ["Přístroj na měření vzdálenosti mezi městy", "Vzdálenost se na mapě zjistí z měřítka, ne z tohoto přístroje."],
+      ["Přístroj na měření teploty vzduchu", "Teplotu měří teploměr. Tenhle přístroj měří směr, ne teplo."],
+      ["Přístroj na kreslení map", "Mapy kreslí kartografové. Tenhle přístroj se používá při jejich čtení v terénu."],
     ],
-    explanation:
-      "K určení světových stran v terénu používáme kompas. Jeho magnetická ručička vždy ukazuje na sever, takže podle ní zjistíme i ostatní směry.",
-  },
-  {
-    question: "Co je kompas?",
-    correctAnswer: "Přístroj s magnetickou ručičkou, která vždy ukazuje na sever",
-    options: ["Přístroj na měření vzdálenosti mezi městy", "Přístroj na měření teploty vzduchu", "Přístroj s magnetickou ručičkou, která vždy ukazuje na sever", "Přístroj na kreslení map"],
-    hints: [
-      "Kompas má ručičku — a ta reaguje na zemský magnetismus.",
-      "Nepočítá vzdálenosti ani teplotu, jen ukazuje směr.",
+    "Rozhodni podle toho, co ten přístroj měří — směr, délku, nebo teplo.",
+    "Uvnitř má otočnou ručičku, kterou natáčí magnetické pole Země, takže pořád míří k jednomu bodu. Vyřaď možnosti, které mluví o měření vzdálenosti nebo teploty.",
+    "Kompas je přístroj s magnetickou ručičkou, která vždy ukazuje na sever. Podle severu pak snadno určíme i ostatní světové strany.",
+  ),
+  t(
+    "Jak se jinak říká kompasu?",
+    "Buzola",
+    [
+      ["Barometr", "Barometr měří tlak vzduchu, žádnou magnetickou ručičku k určení směru nemá."],
+      ["Teploměr", "Teploměr měří teplotu, s hledáním severu nesouvisí."],
+      ["Dalekohled", "Dalekohled jen přibližuje, směr neurčí."],
     ],
-    explanation:
-      "Kompas je přístroj s magnetickou ručičkou, která vždy ukazuje na sever. Podle ní pak snadno určíme i ostatní světové strany.",
-  },
-  {
-    question: "Jak se jinak říká kompasu?",
-    correctAnswer: "Buzola",
-    options: ["Barometr", "Teploměr", "Dalekohled", "Buzola"],
-    hints: [
-      "Toto slovo turisté často používají místo 'kompas'.",
-      "Oba výrazy znamenají přístroj s magnetickou ručičkou pro určení severu.",
+    "Turisté tohle slovo používají místo slova kompas.",
+    "Hledej mezi nabídkou jediný název, který neoznačuje měřicí přístroj na počasí ani optickou pomůcku. Ostatní tři měří něco úplně jiného než směr.",
+    "Buzola je jiný název pro kompas — přístroj s magnetickou ručičkou, která ukazuje na sever. Oba výrazy znamenají totéž.",
+  ),
+  t(
+    "Co znamená legenda na mapě?",
+    "Vysvětlivky — co znamenají jednotlivé značky a barvy na mapě",
+    [
+      ["Název státu vyznačeného na mapě", "Název státu bývá napsaný přímo v mapě, ne v tabulce se symboly."],
+      ["Vzdálenost mezi dvěma městy", "Vzdálenost se počítá z měřítka, ne z vysvětlivek."],
+      ["Rok, kdy byla mapa vydána", "Rok vydání je jen údaj o stáří mapy, ke čtení značek nepomůže."],
     ],
-    explanation:
-      "Buzola je jiný název pro kompas — přístroj s magnetickou ručičkou, která ukazuje na sever.",
-  },
-  {
-    question: "Co znamená legenda na mapě?",
-    correctAnswer: "Vysvětlivky — co znamenají jednotlivé značky a barvy na mapě",
-    options: [
-      "Vysvětlivky — co znamenají jednotlivé značky a barvy na mapě",
-      "Název státu vyznačeného na mapě",
-      "Vzdálenost mezi dvěma městy",
-      "Rok, kdy byla mapa vydána",
+    "Bývá v rohu mapy a je v ní seznam symbolů s popiskem.",
+    "Kdybys ji zakryl, nevěděl bys, jestli modrá čára znamená řeku, nebo hranici. K čemu tedy taková tabulka na mapě slouží?",
+    "Legenda (vysvětlivky) je část mapy, která vysvětluje, co znamenají použité značky, symboly a barvy. Bez ní bychom mapu nedokázali přečíst.",
+  ),
+  t(
+    "K čemu legenda na mapě slouží?",
+    "Abychom poznali, co znamenají značky a barvy použité na mapě",
+    [
+      ["Abychom zjistili, kolik obyvatel má daný stát", "Počty obyvatel se hledají v tabulkách nebo encyklopedii, ne ve vysvětlivkách mapy."],
+      ["Abychom si spočítali skutečnou vzdálenost dvou míst", "K přepočtu vzdálenosti slouží měřítko, ne vysvětlivky."],
+      ["Abychom poznali, kdo mapu nakreslil", "Jméno autora bývá v tiráži. Vysvětlivky se týkají obsahu mapy."],
     ],
-    hints: [
-      "Legenda stojí obvykle v rohu mapy a vysvětluje symboly.",
-      "Bez legendy bychom nevěděli, co znamená modrá čára nebo zelená barva.",
+    "Funguje jako slovníček k symbolům na mapě.",
+    "Kdykoli narazíš na neznámou značku — tečku, křížek nebo šrafování — hledáš, co znamená. Kde se to dozvíš, a je to informace o významu, nebo o vzdálenosti?",
+    "Legenda slouží k tomu, abychom poznali, co znamenají jednotlivé značky a barvy na mapě. Bez ní by symboly zůstaly nesrozumitelné.",
+  ),
+  t(
+    "Co je měřítko mapy?",
+    "Poměr, o kolik je mapa zmenšená oproti skutečnosti",
+    [
+      ["Název oblasti zobrazené na mapě", "Název území bývá v záhlaví mapy, o zmenšení nic neříká."],
+      ["Tabulka s výškami hor", "Výšky hor bývají napsané u vrcholů. Tohle se týká celé mapy najednou."],
+      ["Popis hranice státu", "Hranice je na mapě nakreslená čárou. Tenhle údaj se týká zmenšení."],
     ],
-    explanation:
-      "Legenda (vysvětlivky) je část mapy, která vysvětluje, co znamenají všechny použité značky, symboly a barvy. Bez legendy bychom mapu nedokázali číst.",
-  },
-  {
-    question: "K čemu legenda na mapě slouží?",
-    correctAnswer: "Abychom poznali, co znamenají značky a barvy použité na mapě",
-    options: ["Abychom zjistili, kolik obyvatel má daný stát", "Abychom poznali, co znamenají značky a barvy použité na mapě", "Abychom si spočítali skutečnou vzdálenost dvou míst", "Abychom poznali, kdo mapu nakreslil"],
-    hints: [
-      "Legenda je jako slovníček ke značkám na mapě.",
-      "Bez ní bychom nevěděli, co znamená konkrétní symbol.",
+    "Mapa nemůže být stejně velká jako skutečná krajina.",
+    "Celý kraj se musel vejít na kus papíru, takže ho někdo mnohokrát zmenšil. Zápis jako 1:100 000 přesně říká kolikrát. O čem tedy tenhle údaj vypovídá?",
+    "Měřítko mapy říká, kolikrát je mapa zmenšená oproti skutečnosti. Například 1:100 000 znamená, že 1 cm na mapě odpovídá 1 km ve skutečnosti.",
+  ),
+  t(
+    "Co ti prozradí měřítko mapy?",
+    "O kolik je mapa zmenšená oproti skutečnosti",
+    [
+      ["Co znamenají barvy a značky na mapě", "Významy barev a značek vysvětluje legenda, ne tenhle údaj."],
+      ["Kdo mapu nakreslil a kdy", "Autor a rok jsou jen doprovodné údaje, s velikostí zobrazení nesouvisejí."],
+      ["Kolik měst je na mapě zakresleno", "Města by sis musel spočítat sám. Tenhle údaj se týká zmenšení."],
     ],
-    explanation:
-      "Legenda slouží k tomu, abychom poznali, co znamenají jednotlivé značky a barvy na mapě. Je to nezbytná pomůcka pro čtení mapy.",
-  },
-  {
-    question: "Co je měřítko mapy?",
-    correctAnswer: "Poměr, o kolik je mapa zmenšená oproti skutečnosti",
-    options: ["Název oblasti zobrazené na mapě", "Tabulka s výškami hor", "Poměr, o kolik je mapa zmenšená oproti skutečnosti", "Popis hranice státu"],
-    hints: [
-      "Mapa nemůže být stejně velká jako skutečný kraj — musí se zmenšit.",
-      "Měřítko říká, kolik centimetrů na mapě odpovídá kilometrům ve skutečnosti.",
+    "Tenhle údaj se týká velikosti, ne významu symbolů.",
+    "Zápis 1:100 000 znamená, že jeden centimetr na papíře odpovídá sto tisícům centimetrů v krajině. Je to tedy informace o rozměrech, nebo o významu značek?",
+    "Měřítko mapy prozradí, o kolik je mapa zmenšená oproti skutečnosti, a umožní přepočítat vzdálenosti. Co znamenají značky a barvy, řekne naopak legenda.",
+  ),
+  t(
+    "Kolik hlavních světových stran rozeznáváme?",
+    "Čtyři",
+    [
+      ["Tři", "Tři je málo — každá strana má svůj protiklad, takže musí vyjít sudý počet."],
+      ["Pět", "Pět nevyjde: hlavní strany tvoří dvojice protikladů, a těch je sudý počet."],
+      ["Osm", "Osm vyjde, až když k hlavním stranám přidáš i ty mezilehlé (SV, JV, JZ, SZ)."],
     ],
-    explanation:
-      "Měřítko mapy říká, kolikrát je mapa zmenšená oproti skutečnosti. Například měřítko 1:100 000 znamená, že 1 cm na mapě odpovídá 1 km ve skutečnosti.",
-  },
-  {
-    question: "Co ti prozradí měřítko mapy?",
-    correctAnswer: "O kolik je mapa zmenšená oproti skutečnosti",
-    options: ["Co znamenají barvy a značky na mapě", "Kdo mapu nakreslil a kdy", "Kolik měst je na mapě zakresleno", "O kolik je mapa zmenšená oproti skutečnosti"],
-    hints: [
-      "Měřítko se týká velikosti, ne významu značek.",
-      "Měřítko 1:100 000 znamená, že 1 cm na mapě odpovídá 100 000 cm ve skutečnosti — to je informace o velikosti, ne o významu značek.",
-    ],
-    explanation:
-      "Měřítko mapy prozradí, o kolik je mapa zmenšená oproti skutečnosti. Co znamenají značky a barvy, to naopak řekne legenda.",
-  },
-  {
-    question: "Kolik hlavních světových stran rozeznáváme?",
-    correctAnswer: "Čtyři",
-    options: ["Čtyři", "Tři", "Pět", "Osm"],
-    hints: [
-      "Vyjmenuj je: sever, jih, východ, západ.",
-      "Spočítej si je na prstech — je jich přesně tolik.",
-    ],
-    explanation:
-      "Rozeznáváme čtyři hlavní světové strany: sever, jih, východ a západ. Kromě nich existují ještě čtyři mezilehlé strany (SV, JV, JZ, SZ).",
-  },
+    "Zkus si je vyjmenovat a přitom počítat na prstech.",
+    "Jsou to dvě dvojice protikladů: jedna míří nahoru a dolů na mapě, druhá doprava a doleva. Kolik jich dohromady napočítáš, než začneš opakovat?",
+    "Rozeznáváme čtyři hlavní světové strany: sever, jih, východ a západ. Tvoří dvě dvojice protikladů. Kromě nich existují ještě čtyři mezilehlé strany (SV, JV, JZ, SZ).",
+  ),
 ];
 
 const POOL_L2: PracticeTask[] = [
-  {
-    question: "Co je severovýchod (SV)?",
-    correctAnswer: "Mezilehlá světová strana mezi severem a východem",
-    options: ["Mezilehlá světová strana mezi severem a západem", "Mezilehlá světová strana mezi severem a východem", "Jiný název pro sever", "Světová strana pod jihem"],
-    hints: [
-      "SV vzniklo spojením dvou písmen. Kterých dvou světových stran jsou to první písmena?",
-      "SV = Sever + Východ. Najdeš ho v pravém horním rohu mapy.",
+  t(
+    "Co je severovýchod (SV)?",
+    "Mezilehlá světová strana mezi severem a východem",
+    [
+      ["Mezilehlá světová strana mezi severem a západem", "To je severozápad — druhé písmeno zkratky by bylo Z, ne V."],
+      ["Jiný název pro sever", "Kdyby to byl jen jiný název, zkratka by měla jediné písmeno."],
+      ["Světová strana pod jihem", "Pod jihem už žádná další strana není. Jih je krajní bod mapy dole."],
     ],
-    explanation:
-      "Severovýchod (SV) je mezilehlá světová strana ležící přesně mezi severem a východem. Na mapě ji najdeme v pravém horním rohu.",
-  },
-  {
-    question: "Co je jihozápad (JZ)?",
-    correctAnswer: "Mezilehlá světová strana mezi jihem a západem",
-    options: ["Mezilehlá světová strana mezi jihem a východem", "Jiný název pro západ", "Mezilehlá světová strana mezi jihem a západem", "Světová strana naproti severu"],
-    hints: [
-      "JZ = Jih + Západ. Podívej se na mapu dolů doleva.",
-      "Jihozápad je v levém dolním rohu mapy.",
+    "Zkratka SV je složená z prvních písmen dvou hlavních stran.",
+    "Rozšifruj obě písmena zvlášť a najdi strany, které začínají na S a na V. Ta hledaná leží přesně mezi nimi, tedy v rohu mapy mezi horním a pravým okrajem.",
+    "Severovýchod (SV) je mezilehlá světová strana ležící přesně mezi severem a východem. Její název i zkratka vznikly spojením obou hlavních stran.",
+  ),
+  t(
+    "Co je jihozápad (JZ)?",
+    "Mezilehlá světová strana mezi jihem a západem",
+    [
+      ["Mezilehlá světová strana mezi jihem a východem", "To je jihovýchod — druhé písmeno zkratky by bylo V, ne Z."],
+      ["Jiný název pro západ", "Zkratka má dvě písmena, takže spojuje dvě strany, ne jednu."],
+      ["Světová strana naproti severu", "Naproti severu je jih samotný, bez druhé složky."],
     ],
-    explanation:
-      "Jihozápad (JZ) je mezilehlá světová strana mezi jihem a západem. Na mapě ji najdeme v levém dolním rohu.",
-  },
-  {
-    question: "Co je jihovýchod (JV)?",
-    correctAnswer: "Mezilehlá světová strana mezi jihem a východem",
-    options: ["Mezilehlá světová strana mezi jihem a západem", "Mezilehlá světová strana mezi severem a východem", "Jiný název pro jih", "Mezilehlá světová strana mezi jihem a východem"],
-    hints: [
-      "JV = Jih + Východ. Podívej se na mapu dolů doprava.",
-      "Jihovýchod je v pravém dolním rohu mapy.",
+    "Zkratka JZ složí dohromady dvě hlavní strany.",
+    "Vezmi obě písmena zvlášť: první patří straně u dolního okraje mapy, druhé straně u levého okraje. Hledaný směr leží přesně mezi nimi, v rohu mapy.",
+    "Jihozápad (JZ) je mezilehlá světová strana mezi jihem a západem. Vznikla spojením obou hlavních stran, které jsou v její zkratce.",
+  ),
+  t(
+    "Co je jihovýchod (JV)?",
+    "Mezilehlá světová strana mezi jihem a východem",
+    [
+      ["Mezilehlá světová strana mezi jihem a západem", "To je jihozápad — druhé písmeno zkratky by bylo Z, ne V."],
+      ["Mezilehlá světová strana mezi severem a východem", "To je severovýchod — první písmeno zkratky by bylo S, ne J."],
+      ["Jiný název pro jih", "Zkratka má dvě písmena, takže jde o spojení dvou stran."],
     ],
-    explanation:
-      "Jihovýchod (JV) je mezilehlá světová strana ležící přesně mezi jihem a východem. Na mapě ji najdeme v pravém dolním rohu.",
-  },
-  {
-    question: "Co je severozápad (SZ)?",
-    correctAnswer: "Mezilehlá světová strana mezi severem a západem",
-    options: [
-      "Mezilehlá světová strana mezi severem a západem",
-      "Mezilehlá světová strana mezi severem a východem",
-      "Mezilehlá světová strana mezi jihem a západem",
-      "Jiný název pro západ",
+    "Obě písmena zkratky JV patří dvěma různým hlavním stranám.",
+    "První písmeno ukazuje ke spodnímu okraji mapy, druhé k pravému. Hledaný směr leží přesně mezi nimi — v rohu, kde se tyhle dva okraje potkávají.",
+    "Jihovýchod (JV) je mezilehlá světová strana ležící přesně mezi jihem a východem. Obě hlavní strany jsou zapsané v její zkratce.",
+  ),
+  t(
+    "Co je severozápad (SZ)?",
+    "Mezilehlá světová strana mezi severem a západem",
+    [
+      ["Mezilehlá světová strana mezi severem a východem", "To je severovýchod — druhé písmeno zkratky by bylo V, ne Z."],
+      ["Mezilehlá světová strana mezi jihem a západem", "To je jihozápad — první písmeno zkratky by bylo J, ne S."],
+      ["Jiný název pro západ", "Zkratka má dvě písmena, takže spojuje dvě hlavní strany."],
     ],
-    hints: [
-      "SZ = Sever + Západ. Podívej se na mapu nahoru doleva.",
-      "Severozápad je v levém horním rohu mapy.",
+    "Zkratka SZ se skládá z počátečních písmen dvou hlavních stran.",
+    "První písmeno patří straně u horního okraje mapy, druhé straně u levého okraje. Hledaný směr míří do rohu mezi ně, ne do rohu na opačné straně.",
+    "Severozápad (SZ) je mezilehlá světová strana ležící přesně mezi severem a západem. Jeho zkratka obsahuje počáteční písmena obou hlavních stran.",
+  ),
+  t(
+    "Ve kterém rohu mapy najdeš severovýchod (SV)?",
+    "Vpravo nahoře",
+    [
+      ["Vlevo nahoře", "Horní část sedí, boční ne — nalevo leží západ, ne východ."],
+      ["Vpravo dole", "Boční část sedí, výška ne — dole leží jih, ne sever."],
+      ["Vlevo dole", "Ani jedna část nesedí: nalevo je západ a dole jih."],
     ],
-    explanation:
-      "Severozápad (SZ) je mezilehlá světová strana ležící přesně mezi severem a západem. Na mapě ji najdeme v levém horním rohu.",
-  },
-  {
-    question: "Ve kterém rohu mapy najdeš severovýchod (SV)?",
-    correctAnswer: "Vpravo nahoře",
-    options: ["Vlevo nahoře", "Vpravo nahoře", "Vpravo dole", "Vlevo dole"],
-    hints: [
-      "Kde je na mapě sever a kde východ? Spoj obě polohy dohromady a najdeš severovýchod.",
-      "Hledej roh, kde se potkává horní a pravý okraj mapy.",
+    "Najdi na mapě obě hlavní strany ze zkratky a podívej se, kde se potkají.",
+    "První písmeno tě posune k jednomu vodorovnému okraji mapy, druhé k jednomu bočnímu. Roh, ve kterém se oba okraje setkají, je hledané místo.",
+    "Severovýchod najdeš v pravém horním rohu mapy — tam, kde se potkává sever (nahoře) s východem (vpravo). Mezilehlá strana vždy leží v rohu mezi svými dvěma složkami.",
+  ),
+  t(
+    "Ve kterém rohu mapy najdeš jihozápad (JZ)?",
+    "Vlevo dole",
+    [
+      ["Vpravo dole", "Spodní část sedí, boční ne — napravo leží východ, ne západ."],
+      ["Vlevo nahoře", "Boční část sedí, výška ne — nahoře leží sever, ne jih."],
+      ["Vpravo nahoře", "Ani jedna část nesedí: napravo je východ a nahoře sever."],
     ],
-    explanation:
-      "Severovýchod najdeš v pravém horním rohu mapy — tam, kde se potkává sever (nahoře) s východem (vpravo).",
-  },
-  {
-    question: "Ve kterém rohu mapy najdeš jihozápad (JZ)?",
-    correctAnswer: "Vlevo dole",
-    options: ["Vpravo dole", "Vlevo nahoře", "Vlevo dole", "Vpravo nahoře"],
-    hints: [
-      "Kde je na mapě jih a kde západ? Spoj obě polohy dohromady a najdeš jihozápad.",
-      "Hledej roh, kde se potkává dolní a levý okraj mapy.",
+    "Urči zvlášť, kde na mapě leží jih, a zvlášť, kde západ.",
+    "Jedna složka tě posune k dolnímu okraji mapy, druhá k levému. Hledaný roh je přesně tam, kde se tyhle dva okraje setkávají — úhlopříčně naproti severovýchodu.",
+    "Jihozápad najdeš v levém dolním rohu mapy — tam, kde se potkává jih (dole) se západem (vlevo).",
+  ),
+  t(
+    "Ve kterém rohu mapy najdeš jihovýchod (JV)?",
+    "Vpravo dole",
+    [
+      ["Vlevo dole", "Spodní část sedí, boční ne — nalevo je západ, ne východ."],
+      ["Vpravo nahoře", "Boční část sedí, výška ne — nahoře je sever, ne jih."],
+      ["Vlevo nahoře", "Ani jedna část nesedí: nalevo je západ a nahoře sever."],
     ],
-    explanation:
-      "Jihozápad najdeš v levém dolním rohu mapy — tam, kde se potkává jih (dole) se západem (vlevo).",
-  },
-  {
-    question: "Ve kterém rohu mapy najdeš jihovýchod (JV)?",
-    correctAnswer: "Vpravo dole",
-    options: ["Vlevo dole", "Vpravo nahoře", "Vlevo nahoře", "Vpravo dole"],
-    hints: [
-      "Kde je na mapě jih a kde východ? Spoj obě polohy dohromady a najdeš jihovýchod.",
-      "Hledej roh, kde se potkává dolní a pravý okraj mapy.",
+    "Obě složky zkratky urči na mapě zvlášť a pak je spoj.",
+    "Jedna složka tě posune k dolnímu okraji mapy, druhá k pravému. V rohu, kde se tyhle dva okraje potkají, leží hledaný směr — úhlopříčně naproti severozápadu.",
+    "Jihovýchod najdeš v pravém dolním rohu mapy — tam, kde se potkává jih (dole) s východem (vpravo).",
+  ),
+  t(
+    "Ve kterém rohu mapy najdeš severozápad (SZ)?",
+    "Vlevo nahoře",
+    [
+      ["Vpravo nahoře", "Horní část sedí, boční ne — napravo je východ, ne západ."],
+      ["Vlevo dole", "Boční část sedí, výška ne — dole je jih, ne sever."],
+      ["Vpravo dole", "Ani jedna část nesedí: napravo je východ a dole jih."],
     ],
-    explanation:
-      "Jihovýchod najdeš v pravém dolním rohu mapy — tam, kde se potkává jih (dole) s východem (vpravo).",
-  },
-  {
-    question: "Ve kterém rohu mapy najdeš severozápad (SZ)?",
-    correctAnswer: "Vlevo nahoře",
-    options: ["Vlevo nahoře", "Vpravo nahoře", "Vlevo dole", "Vpravo dole"],
-    hints: [
-      "Kde je na mapě sever a kde západ? Spoj obě polohy dohromady a najdeš severozápad.",
-      "Hledej roh, kde se potkává horní a levý okraj mapy.",
+    "Rozlož zkratku na dvě strany a každou najdi na mapě zvlášť.",
+    "Jedna složka tě posune k hornímu okraji mapy, druhá k levému. Roh, kde se oba okraje setkají, je hledané místo — úhlopříčně naproti jihovýchodu.",
+    "Severozápad najdeš v levém horním rohu mapy — tam, kde se potkává sever (nahoře) se západem (vlevo).",
+  ),
+  t(
+    "Co je plán (například plán třídy nebo města)?",
+    "Zobrazení malé plochy, například jedné budovy nebo města",
+    [
+      ["Zobrazení celého státu nebo kontinentu", "Tak velké území se zobrazuje na mapě, kde už jednotlivé místnosti nejsou vidět."],
+      ["Fotografie krajiny z letadla", "Fotografie není kreslené zobrazení se značkami a měřítkem."],
+      ["Seznam ulic bez žádného obrázku", "Pouhý seznam by neukázal, kudy vede která ulice."],
     ],
-    explanation:
-      "Severozápad najdeš v levém horním rohu mapy — tam, kde se potkává sever (nahoře) se západem (vlevo).",
-  },
-  {
-    question: "Co je plán (například plán třídy nebo města)?",
-    correctAnswer: "Zobrazení malé plochy, například jedné budovy nebo města",
-    options: ["Zobrazení celého státu nebo kontinentu", "Zobrazení malé plochy, například jedné budovy nebo města", "Fotografie krajiny z letadla", "Seznam ulic bez žádného obrázku"],
-    hints: [
-      "Plán se používá pro menší území — místnost, školu, město.",
-      "Na plánu vidíš podrobně jednotlivé ulice nebo místnosti.",
+    "Rozhoduje velikost zobrazeného území.",
+    "Když vejdeš do školy, můžeš si nakreslit rozmístění tříd i chodeb. To se na zobrazení celého státu nevejde. Které území je tedy tak malé, aby šlo kreslit podrobně?",
+    "Plán zobrazuje malou plochu podrobně — například pokoj, školu nebo město. Právě díky malé ploše může být tak detailní.",
+  ),
+  t(
+    "Co je mapa (například mapa kraje nebo státu)?",
+    "Zobrazení velké plochy, například kraje nebo státu",
+    [
+      ["Zobrazení jedné třídy ve škole", "Tak malý prostor se kreslí do plánu, kde je místo i na jednotlivé lavice."],
+      ["Fotografie mraků z družice", "Snímek mraků ukazuje počasí, ne značky a hranice území."],
+      ["Seznam měst bez žádného obrázku", "Seznam by neukázal, kde města leží vůči sobě."],
     ],
-    explanation:
-      "Plán zobrazuje malou plochu v podrobném provedení — například pokoj, školu nebo město. Díky malé ploše může být plán velmi podrobný.",
-  },
-  {
-    question: "Co je mapa (například mapa kraje nebo státu)?",
-    correctAnswer: "Zobrazení velké plochy, například kraje nebo státu",
-    options: ["Zobrazení jedné třídy ve škole", "Fotografie mraků z družice", "Zobrazení velké plochy, například kraje nebo státu", "Seznam měst bez žádného obrázku"],
-    hints: [
-      "Mapa zobrazuje velké území — kraj, stát, kontinent.",
-      "Na mapě státu nejsou vidět jednotlivé ulice, jen města a hranice.",
+    "Rozhoduje, jak velké území se má vejít na papír.",
+    "Když chceš vidět celý kraj najednou, musíš území hodně zmenšit, a jednotlivé ulice se tam proto nevejdou. Které zobrazení takhle velkou plochu zvládne?",
+    "Mapa zobrazuje velkou plochu — kraj, stát nebo celý kontinent. Protože je území velké, nemůže být tak podrobná jako plán malého místa.",
+  ),
+  t(
+    "Kamarád ti chce popsat cestu ke škole ve vaší ulici. Použije k tomu spíš plán, nebo mapu státu?",
+    "Plán — protože jde o malou plochu s podrobnými ulicemi",
+    [
+      ["Mapu státu — protože je přesnější", "Mapa státu je zmenšená tak moc, že jednotlivé ulice na ní vůbec nejsou."],
+      ["Oboje je stejně vhodné", "Stejně vhodné to není — jen jedno z nich ulice vůbec zobrazuje."],
+      ["Ani jedno, cestu nelze zakreslit", "Cestu zakreslit jde, jen se k tomu musí vybrat dost podrobné zobrazení."],
     ],
-    explanation:
-      "Mapa zobrazuje velkou plochu — kraj, stát nebo celý kontinent. Protože je území velké, mapa nemůže být tak podrobná jako plán malého místa.",
-  },
-  {
-    question:
-      "Kamarád ti chce popsat cestu ke škole ve vaší ulici. Použije k tomu spíš plán, nebo mapu státu?",
-    correctAnswer: "Plán — protože jde o malou plochu s podrobnými ulicemi",
-    options: ["Mapu státu — protože je přesnější", "Oboje je stejně vhodné", "Ani jedno, cestu nelze zakreslit", "Plán — protože jde o malou plochu s podrobnými ulicemi"],
-    hints: [
-      "Ulice a cesta ke škole jsou malé území.",
-      "Plán ti ukáže třeba jednu ulici do detailu, mapa celý kraj najednou.",
+    "Cesta ke škole se odehrává na velmi malém území.",
+    "Nejdřív si rozmysli, jak velké území potřebuješ zachytit — jednu ulici, nebo celou republiku. Pak vyber zobrazení, které tak drobný výsek ukáže do detailu.",
+    "Pro popis cesty v rámci jedné ulice je vhodnější plán — zobrazuje malou plochu podrobně. Mapa státu by jednotlivé ulice vůbec neukázala.",
+  ),
+  t(
+    "Co znamená modrá barva na fyzické mapě?",
+    "Vodu — řeky, jezera, moře",
+    [
+      ["Lesy a parky", "Lesy se na mapách kreslí zeleně, ne touhle barvou."],
+      ["Hory a kopce", "Hory mívají na fyzické mapě hnědý odstín."],
+      ["Silnice a dálnice", "Silnice se značí čarami, obvykle červenou nebo žlutou."],
     ],
-    explanation:
-      "Pro popis cesty v rámci jedné ulice je vhodnější plán — zobrazuje malou plochu podrobně. Mapa státu by ulice ani nezobrazila.",
-  },
-  {
-    question: "Co znamená modrá barva na fyzické mapě?",
-    correctAnswer: "Vodu — řeky, jezera, moře",
-    options: [
-      "Vodu — řeky, jezera, moře",
-      "Lesy a parky",
-      "Hory a kopce",
-      "Silnice a dálnice",
+    "Barvy na mapě většinou napodobují skutečný vzhled krajiny.",
+    "Představ si pohled na rybník nebo moře shora. Jakou barvu bys viděl, a co z nabízených možností tomu odpovídá?",
+    "Modrá barva na mapě označuje vodu — řeky, jezera, rybníky, moře a oceány. Je zvolená proto, že připomíná skutečný vzhled vodní hladiny.",
+  ),
+  t(
+    "Co znamená zelená barva na fyzické mapě?",
+    "Nížiny a roviny",
+    [
+      ["Hory a vrchoviny", "Vyšší terén je na fyzické mapě hnědý, ne zelený."],
+      ["Pouště a suché oblasti", "Suché oblasti bývají žluté nebo béžové."],
+      ["Lesy kolem měst", "Na fyzické mapě barvy ukazují nadmořskou výšku, ne porost."],
     ],
-    hints: [
-      "Zamysli se, jakou barvu má voda v přírodě.",
-      "Na mapě se barvy podobají skutečnosti — voda je modrá.",
+    "Na fyzické mapě barva neprozradí porost, ale nadmořskou výšku.",
+    "Stupnice jde od nejnižších míst k nejvyšším a mění se přitom odstín. Nejnižší patro dostalo barvu luk a polí. Které možnosti popisují právě takový nízký terén?",
+    "Na fyzické mapě zelená barva označuje nížiny — oblasti nízko nad mořem. Čím je terén vyšší, tím barva přechází do žluté a hnědé; nejvyšší hory jsou nejtmavší.",
+  ),
+  t(
+    "Na fyzické mapě vidíš vysoké pohoří. Jakou barvou bude nejspíš vybarveno?",
+    "Hnědou",
+    [
+      ["Modrou", "Modrá patří vodním plochám, ne vyvýšenému terénu."],
+      ["Zelenou", "Zelená patří nejnižšímu patru krajiny, tedy nížinám."],
+      ["Bílou jako sníh", "Bílá se používá až pro ledovce ve světových velehorách, u nás ne."],
     ],
-    explanation:
-      "Modrá barva na mapě označuje vodu — řeky, jezera, rybníky, moře a oceány. Je to přirozená barva připomínající skutečný vzhled vodní hladiny.",
-  },
-  {
-    question: "Co znamená zelená barva na fyzické mapě?",
-    correctAnswer: "Nížiny a roviny",
-    options: ["Hory a vrchoviny", "Nížiny a roviny", "Pouště a suché oblasti", "Lesy kolem měst"],
-    hints: [
-      "Na fyzické mapě barvy ukazují výšku terénu. Zelená = nízko nad mořem.",
-      "Louky, pole a jiná nízko položená území bývají na fyzické mapě zelená.",
+    "Barevná stupnice fyzické mapy jde od nížin k vrcholům.",
+    "Nejnižší místa jsou zelená a směrem vzhůru se odstín postupně mění přes žlutou k tmavším tónům. Jaká barva je na téhle stupnici pro nejvyšší terén u nás?",
+    "Vysoké pohoří bude na fyzické mapě vybarveno hnědě. Zelená patří nížinám a modrá vodě, takže na hory zbývá tmavší odstín barevné stupnice.",
+  ),
+  t(
+    "Chceš na plán svého města zakreslit potok. Jakou barvou ho nakreslíš?",
+    "Modrou",
+    [
+      ["Zelenou", "Zeleně se značí zeleň a nízký terén, ne vodní toky."],
+      ["Hnědou", "Hnědá patří vyvýšenému terénu, ne tekoucí vodě."],
+      ["Žlutou", "Žlutá se používá pro suché oblasti nebo silnice, ne pro potok."],
     ],
-    explanation:
-      "Na fyzické mapě zelená barva označuje nížiny — oblasti ležící nízko nad mořem. Čím vyšší terén, tím přechází barva do žluté, hnědé a nakonec fialové.",
-  },
-  {
-    question: "Na fyzické mapě vidíš vysoké pohoří. Jakou barvou bude nejspíš vybarveno?",
-    correctAnswer: "Hnědou",
-    options: ["Modrou", "Zelenou", "Hnědou", "Bílou jako sníh"],
-    hints: [
-      "Na fyzické mapě barva ukazuje výšku terénu.",
-      "Čím vyšší terén, tím tmavší odstín této barvy.",
+    "Použij stejnou barvu, jakou mají vodní toky na každé mapě.",
+    "Potok je tekoucí voda, takže se řídí stejným pravidlem jako řeky a jezera. Vzpomeň si, jakým odstínem se vodstvo kreslí, aby bylo hned poznat.",
+    "Potok, stejně jako každá jiná voda, se na plánech i mapách kreslí modře. Je to zavedená dohoda, kterou dodržuje každý plán i mapa.",
+  ),
+  t(
+    "Jak můžeš určit sever za slunečného dne v poledne bez kompasu?",
+    "V poledne stojí slunce na jihu, takže sever je přesně naproti",
+    [
+      ["Slunce vždy ukazuje na sever", "Slunce se během dne přesouvá po obloze a na sever u nás nikdy nestojí."],
+      ["Sever je tam, kde svítí nejsilněji", "Nejsilněji svítí slunce v poledne od jihu — to je opačná strana."],
+      ["Za dne nelze sever určit bez kompasu", "Určit se dá — stačí vědět, kde slunce v poledne stojí."],
     ],
-    explanation:
-      "Vysoké pohoří bude na fyzické mapě vybarveno hnědou barvou. Zelená patří nížinám, modrá vodě — hnědá je barva hor a vrchovin.",
-  },
-  {
-    question: "Chceš na plán svého města zakreslit potok. Jakou barvou ho nakreslíš?",
-    correctAnswer: "Modrou",
-    options: ["Zelenou", "Hnědou", "Žlutou", "Modrou"],
-    hints: [
-      "Vzpomeň si, jakou barvu má na mapách voda.",
-      "Barva by měla odpovídat skutečnému vzhledu vody.",
-    ],
-    explanation:
-      "Potok, stejně jako každá jiná voda, se na plánech i mapách kreslí modrou barvou — je to zavedená konvence, kterou používá každá mapa.",
-  },
-  {
-    question: "Jak můžeš určit sever za slunečného dne v poledne bez kompasu?",
-    correctAnswer: "V poledne stojí slunce na jihu, takže sever je přesně naproti",
-    options: [
-      "V poledne stojí slunce na jihu, takže sever je přesně naproti",
-      "Slunce vždy ukazuje na sever",
-      "Sever je tam, kde svítí nejsilněji",
-      "Za dne nelze sever určit bez kompasu",
-    ],
-    hints: [
-      "Slunce je v poledne nejvýše na obloze a stojí na jihu.",
-      "Otočíš-li se čelem k polednímu slunci (jih), za zády máš sever.",
-    ],
-    explanation:
-      "V poledne je slunce nejvýše na obloze a nachází se na jihu. Otočíme-li se k polednímu slunci čelem, stojíme čelem k jihu — za zády máme sever.",
-  },
+    "V poledne je slunce nejvýš na obloze a stojí pořád na stejné straně.",
+    "Postav se k polednímu slunci čelem. Stojíš tak čelem k jedné světové straně — a hledaná strana je její protiklad, tedy přesně za tvými zády.",
+    "V poledne je slunce nejvýše na obloze a nachází se na jihu. Otočíme-li se k němu čelem, stojíme čelem k jihu, a proto máme za zády sever.",
+  ),
 ];
 
 const POOL_L3: PracticeTask[] = [
-  {
-    question:
-      "Je poledne, slunce máš přímo před sebou — stojíš tedy čelem k jihu. Co máš po pravici?",
-    correctAnswer: "Západ",
-    options: ["Východ", "Západ", "Sever", "Jih"],
-    hints: [
-      "Když stojíš čelem k severu, po pravici máš východ. Teď jsi ale otočený o 180° — čelem k jihu.",
-      "Při otočce o 180° se pravá a levá strana prohodí: co bylo napravo, je teď nalevo, a naopak.",
+  t(
+    "Je poledne, slunce máš přímo před sebou — stojíš tedy čelem k jihu. Co máš po pravici?",
+    "Západ",
+    [
+      ["Východ", "Ten bys měl po pravici, kdybys stál čelem k severu. Po otočce o 180° je vlevo."],
+      ["Sever", "Sever máš za zády, ne po straně — stojíš přímo proti němu."],
+      ["Jih", "Jih máš před sebou, dívají se tam tvoje oči, ne pravá ruka."],
     ],
-    explanation:
-      "Čelem k severu máš východ napravo a západ nalevo. Otočíš-li se o 180° (čelem k jihu), strany se prohodí — za zády máš sever, po pravici západ a po levici východ.",
-  },
-  {
-    question:
-      "Je poledne, slunce máš přímo před sebou — stojíš tedy čelem k jihu. Co máš po levici?",
-    correctAnswer: "Východ",
-    options: ["Západ", "Sever", "Východ", "Jih"],
-    hints: [
-      "Když stojíš čelem k severu, po levici máš západ. Teď jsi ale otočený o 180° — čelem k jihu.",
-      "Při otočce o 180° se pravá a levá strana prohodí: co bylo nalevo, je teď napravo, a naopak.",
+    "Nejdřív si představ, jak bys stál čelem k severu, a pak se v duchu otoč.",
+    "Čelem k severu máš po pravé ruce stranu ranního slunce. Otočka o 180° ale pravou a levou stranu prohodí, takže se ti obě strany vymění.",
+    "Čelem k severu máš východ napravo a západ nalevo. Otočíš-li se o 180° (čelem k jihu), strany se prohodí — za zády máš sever, po pravici západ a po levici východ.",
+  ),
+  t(
+    "Je poledne, slunce máš přímo před sebou — stojíš tedy čelem k jihu. Co máš po levici?",
+    "Východ",
+    [
+      ["Západ", "Ten bys měl po levici, kdybys stál čelem k severu. Po otočce o 180° je vpravo."],
+      ["Sever", "Sever máš za zády — stojíš přímo proti němu, ne bokem k němu."],
+      ["Jih", "Jih máš před sebou, ne po levé ruce."],
     ],
-    explanation:
-      "Čelem k severu máš západ nalevo a východ napravo. Otočíš-li se o 180° (čelem k jihu), strany se prohodí — za zády máš sever, po levici východ a po pravici západ.",
-  },
-  {
-    question: "Jdeš na severovýchod (SV) a otočíš se o 180°. Kterým směrem teď jdeš?",
-    correctAnswer: "Jihozápad",
-    options: ["Severozápad", "Jihovýchod", "Severovýchod", "Jihozápad"],
-    hints: [
-      "Otočka o 180° obrátí OBĚ složky směru: sever se změní na jih A východ na západ.",
-      "Hledej roh mapy, který leží úhlopříčně naproti severovýchodu — přes střed mapy na druhou stranu.",
+    "Postav se nejdřív v duchu čelem k severu a pak se otoč o půl kruhu.",
+    "Čelem k severu máš po levé ruce stranu večerního slunce. Otočka o 180° obrátí obě boční strany, takže po levici skončí ta opačná.",
+    "Čelem k severu máš západ nalevo a východ napravo. Otočíš-li se o 180° (čelem k jihu), strany se prohodí — za zády máš sever, po levici východ a po pravici západ.",
+  ),
+  t(
+    "Jdeš na severovýchod (SV) a otočíš se o 180°. Kterým směrem teď jdeš?",
+    "Jihozápad",
+    [
+      ["Severozápad", "Obrátil jsi jen druhou složku směru, první zůstala stejná."],
+      ["Jihovýchod", "Obrátil jsi jen první složku směru, druhá zůstala stejná."],
+      ["Severovýchod", "To je původní směr. Po otočce o 180° musí být směr opačný."],
     ],
-    explanation:
-      "Otočka o 180° obrátí obě části mezilehlého směru najednou: sever ↔ jih a východ ↔ západ. Opakem severovýchodu (SV) je proto jihozápad (JZ).",
-  },
-  {
-    question: "Jdeš na jihozápad (JZ) a otočíš se o 180°. Kterým směrem teď jdeš?",
-    correctAnswer: "Severovýchod",
-    options: ["Severovýchod", "Severozápad", "Jihovýchod", "Jihozápad"],
-    hints: [
-      "Otočka o 180° obrátí OBĚ složky směru: jih se změní na sever A západ na východ.",
-      "Hledej roh mapy, který leží úhlopříčně naproti jihozápadu — přes střed mapy na druhou stranu.",
+    "Otočka o 180° musí obrátit OBĚ složky směru, ne jen jednu.",
+    "Rozlož zkratku na dvě písmena a každé zvlášť vyměň za jeho protiklad. Výsledek pak najdeš v rohu mapy úhlopříčně naproti, přes střed mapy.",
+    "Otočka o 180° obrátí obě části mezilehlého směru najednou: sever ↔ jih a východ ↔ západ. Opakem severovýchodu (SV) je proto jihozápad (JZ).",
+  ),
+  t(
+    "Jdeš na jihozápad (JZ) a otočíš se o 180°. Kterým směrem teď jdeš?",
+    "Severovýchod",
+    [
+      ["Severozápad", "Obrátil jsi jen první složku směru, druhá zůstala nezměněná."],
+      ["Jihovýchod", "Obrátil jsi jen druhou složku směru, první zůstala nezměněná."],
+      ["Jihozápad", "To je směr, kterým jsi šel předtím. Po otočce musí být opačný."],
     ],
-    explanation:
-      "Otočka o 180° obrátí obě části mezilehlého směru najednou: jih ↔ sever a západ ↔ východ. Opakem jihozápadu (JZ) je proto severovýchod (SV).",
-  },
-  {
-    question: "Jdeš na severozápad (SZ) a otočíš se o 180°. Kterým směrem teď jdeš?",
-    correctAnswer: "Jihovýchod",
-    options: ["Severovýchod", "Jihovýchod", "Jihozápad", "Severozápad"],
-    hints: [
-      "Otočka o 180° obrátí OBĚ složky směru: sever se změní na jih A západ na východ.",
-      "Hledej roh mapy, který leží úhlopříčně naproti severozápadu — přes střed mapy na druhou stranu.",
+    "Vyměň za protiklad obě písmena zkratky, ne jen jedno.",
+    "První písmeno vyměň za stranu na opačném vodorovném okraji mapy, druhé za stranu na opačném bočním okraji. Cíl leží úhlopříčně přes střed mapy.",
+    "Otočka o 180° obrátí obě části mezilehlého směru najednou: jih ↔ sever a západ ↔ východ. Opakem jihozápadu (JZ) je proto severovýchod (SV).",
+  ),
+  t(
+    "Jdeš na severozápad (SZ) a otočíš se o 180°. Kterým směrem teď jdeš?",
+    "Jihovýchod",
+    [
+      ["Severovýchod", "Obrátil jsi jen druhou složku směru, první zůstala stejná."],
+      ["Jihozápad", "Obrátil jsi jen první složku směru, druhá zůstala stejná."],
+      ["Severozápad", "To je původní směr. Otočka o 180° ho musí změnit na opačný."],
     ],
-    explanation:
-      "Otočka o 180° obrátí obě části mezilehlého směru najednou: sever ↔ jih a západ ↔ východ. Opakem severozápadu (SZ) je proto jihovýchod (JV).",
-  },
-  {
-    question: "Jdeš na jihovýchod (JV) a otočíš se o 180°. Kterým směrem teď jdeš?",
-    correctAnswer: "Severozápad",
-    options: ["Jihozápad", "Severovýchod", "Severozápad", "Jihovýchod"],
-    hints: [
-      "Otočka o 180° obrátí OBĚ složky směru: jih se změní na sever A východ na západ.",
-      "Hledej roh mapy, který leží úhlopříčně naproti jihovýchodu — přes střed mapy na druhou stranu.",
+    "Obě písmena zkratky musí po otočce změnit svůj protějšek.",
+    "Nahraď každé písmeno stranou na opačném okraji mapy — jedno vodorovně, druhé bokem. Výsledný roh leží přes střed mapy úhlopříčně naproti původnímu.",
+    "Otočka o 180° obrátí obě části mezilehlého směru najednou: sever ↔ jih a západ ↔ východ. Opakem severozápadu (SZ) je proto jihovýchod (JV).",
+  ),
+  t(
+    "Jdeš na jihovýchod (JV) a otočíš se o 180°. Kterým směrem teď jdeš?",
+    "Severozápad",
+    [
+      ["Jihozápad", "Obrátil jsi jen druhou složku směru, první zůstala nezměněná."],
+      ["Severovýchod", "Obrátil jsi jen první složku směru, druhá zůstala nezměněná."],
+      ["Jihovýchod", "To je směr před otočkou. Po otočce o 180° musí být opačný."],
     ],
-    explanation:
-      "Otočka o 180° obrátí obě části mezilehlého směru najednou: jih ↔ sever a východ ↔ západ. Opakem jihovýchodu (JV) je proto severozápad (SZ).",
-  },
-  {
-    question:
-      "Na fyzické mapě vidíš vysokou horu (hnědá barva) v severní části mapy. Stojíš uprostřed mapy — kterým směrem od tebe hora leží?",
-    correctAnswer: "Na sever",
-    options: ["Na jih", "Na východ", "Na západ", "Na sever"],
-    hints: [
-      "Hnědá barva na fyzické mapě znamená horu nebo vrchovinu.",
-      "Hora je nakreslená v horní části mapy. Vzpomeň si, který světový směr je na mapě vždy nahoře.",
+    "Protiklad se musí najít pro obě složky zkratky zároveň.",
+    "Vezmi první písmeno a nahraď ho stranou u opačného vodorovného okraje mapy, pak stejně nalož s druhým písmenem. Výsledek leží v protilehlém rohu.",
+    "Otočka o 180° obrátí obě části mezilehlého směru najednou: jih ↔ sever a východ ↔ západ. Opakem jihovýchodu (JV) je proto severozápad (SZ).",
+  ),
+  t(
+    "Na fyzické mapě vidíš vysokou horu (hnědá barva) v horní části mapy. Stojíš uprostřed mapy — kterým směrem od tebe hora leží?",
+    "Na sever",
+    [
+      ["Na jih", "Jih je u dolního okraje mapy, hora je ale nakreslená v opačné části."],
+      ["Na východ", "Východ je u pravého okraje. Poloha hory je určená výškou na mapě, ne bokem."],
+      ["Na západ", "Západ je u levého okraje. Hora leží u vodorovného okraje, ne u bočního."],
     ],
-    explanation:
-      "Hnědá barva prozradí, že jde o horu. Poloha v horní části mapy prozradí směr — nahoře na mapě je vždy sever, takže hora leží na sever od středu mapy.",
-  },
-  {
-    question:
-      "Na fyzické mapě vidíš širokou nížinu (zelená barva) v jižní části mapy. Stojíš uprostřed mapy — kterým směrem od tebe nížina leží?",
-    correctAnswer: "Na jih",
-    options: ["Na jih", "Na sever", "Na východ", "Na západ"],
-    hints: [
-      "Zelená barva na fyzické mapě znamená nížinu nebo rovinu.",
-      "Nížina je nakreslená v dolní části mapy — a dole na mapě je jih.",
+    "Hnědá barva ti řekne, o jaký terén jde — směr musíš zjistit z polohy na papíře.",
+    "Nejdřív si potvrď podle barvy, že jde opravdu o horu. Pak se podívej, u kterého okraje mapy je nakreslená, a vzpomeň si, která strana tam vždy patří.",
+    "Hnědá barva prozradí, že jde o horu. Směr prozradí poloha: u horního okraje mapy je vždy sever, takže hora leží na sever od středu mapy.",
+  ),
+  t(
+    "Na fyzické mapě vidíš širokou nížinu (zelená barva) v dolní části mapy. Stojíš uprostřed mapy — kterým směrem od tebe nížina leží?",
+    "Na jih",
+    [
+      ["Na sever", "Sever je u horního okraje mapy, nížina je ale nakreslená dole."],
+      ["Na východ", "Východ je u pravého okraje. Nížina leží u vodorovného okraje, ne u bočního."],
+      ["Na západ", "Západ je u levého okraje. Poloha nížiny je určená výškou na mapě, ne bokem."],
     ],
-    explanation:
-      "Zelená barva prozradí, že jde o nížinu. Poloha v dolní části mapy prozradí směr — dole na mapě je vždy jih, takže nížina leží na jih od středu mapy.",
-  },
-  {
-    question:
-      "Mapa má měřítko 1:100 000. Co ti řekne LEGENDA a co ti měřítko NEŘEKNE?",
-    correctAnswer: "Co znamenají značky a barvy na mapě",
-    options: ["Jak daleko jsou od sebe dvě místa", "Co znamenají značky a barvy na mapě", "Kolik má mapa stránek", "Jméno autora mapy"],
-    hints: [
-      "Měřítko se týká jen velikosti a vzdáleností, ne významu značek.",
-      "Legenda vysvětluje symboly a barvy — to je práce, kterou měřítko nedělá.",
+    "Zelená barva prozradí druh terénu, poloha na papíře prozradí směr.",
+    "Nejdřív si podle barvy ověř, že jde o nízko položenou krajinu. Pak urči, u kterého okraje mapy leží, a přiřaď k němu světovou stranu, která tam vždy patří.",
+    "Zelená barva prozradí, že jde o nížinu. Směr prozradí poloha: u dolního okraje mapy je vždy jih, takže nížina leží na jih od středu mapy.",
+  ),
+  t(
+    "Mapa má měřítko 1:100 000. Co ti tohle měřítko NEŘEKNE, a musíš to hledat jinde?",
+    "Co znamenají značky a barvy na mapě",
+    [
+      ["Jak daleko jsou od sebe dvě místa", "Právě tohle měřítko umožní spočítat, takže to není to chybějící."],
+      ["Kolik má mapa stránek", "Počet stránek není údaj, který by se z mapy četl ani hledal v legendě."],
+      ["Jméno autora mapy", "Autor bývá uvedený v tiráži, ale s významem symbolů to nesouvisí."],
     ],
-    explanation:
-      "Měřítko 1:100 000 ti řekne jen to, o kolik je mapa zmenšená (a tedy jak přepočítat vzdálenosti). Co znamenají jednotlivé značky a barvy na mapě, se dozvíš z legendy, ne z měřítka.",
-  },
-  {
-    question:
-      "Z měřítka mapy zjistíš vzdálenost mezi dvěma vesnicemi. Co ti měřítko NEŘEKNE a musíš to zjistit z legendy?",
-    correctAnswer: "Co znamenají barvy a značky na mapě",
-    options: ["Kolik centimetrů má mapa na šířku", "Jak moc je mapa zmenšená", "Co znamenají barvy a značky na mapě", "Zda je mapa fyzická, nebo politická"],
-    hints: [
-      "Měřítko slouží k přepočtu vzdáleností, ne k vysvětlení symbolů.",
-      "Vysvětlivky ke značkám a barvám najdeš vždy v legendě.",
+    "Rozděl si úlohu na dvě otázky: co měřítko umí a co naopak neumí.",
+    "Zápis 1:100 000 umožní přepočítat centimetry na kilometry, o významu symbolů ale mlčí. Ten najdeš v jiné části mapy — ve vysvětlivkách.",
+    "Měřítko 1:100 000 řekne jen to, o kolik je mapa zmenšená, a umožní přepočítat vzdálenosti. Co znamenají jednotlivé značky a barvy, se dozvíš z legendy, ne z měřítka.",
+  ),
+  t(
+    "Z měřítka mapy zjistíš vzdálenost mezi dvěma vesnicemi. Co ti měřítko NEŘEKNE a musíš to zjistit z legendy?",
+    "Co znamenají barvy a značky na mapě",
+    [
+      ["Kolik centimetrů má mapa na šířku", "Šířku papíru si změříš pravítkem, s legendou to nesouvisí."],
+      ["Jak moc je mapa zmenšená", "Právě tohle měřítko říká — takže to není chybějící informace."],
+      ["Zda je mapa fyzická, nebo politická", "Druh mapy poznáš z jejího názvu a celkového vzhledu, ne z vysvětlivek."],
     ],
-    explanation:
-      "Měřítko pomáhá spočítat skutečnou vzdálenost, ale nevysvětluje, co znamenají barvy a značky na mapě — to je úkolem legendy.",
-  },
-  {
-    question:
-      "Stojíš čelem k severu. Otočíš se o 90° doprava (ve směru hodinových ručiček). Kterým směrem se teď díváš?",
-    correctAnswer: "Na východ",
-    options: ["Na západ", "Na jih", "Na sever", "Na východ"],
-    hints: [
-      "Čtvrt otáčky doprava od severu tě posune o jednu světovou stranu ve směru hodinových ručiček.",
-      "Pořadí po směru hodinových ručiček je: sever → východ → jih → západ.",
+    "Přemýšlej, k čemu slouží legenda — a to bude ta chybějící informace.",
+    "Měřítko je nástroj na přepočet délek, nic víc. Vysvětlivky naopak vyjmenovávají symboly a jejich význam. Která z možností patří právě do těch vysvětlivek?",
+    "Měřítko pomáhá spočítat skutečnou vzdálenost, ale nevysvětluje, co znamenají barvy a značky na mapě — to je úkolem legendy.",
+  ),
+  t(
+    "Stojíš čelem k severu. Otočíš se o 90° doprava (ve směru hodinových ručiček). Kterým směrem se teď díváš?",
+    "Na východ",
+    [
+      ["Na západ", "To je otočka o 90° na opačnou stranu, tedy doleva."],
+      ["Na jih", "K jihu by ses dostal až po otočce o 180°, tedy o dvě čtvrtiny."],
+      ["Na sever", "To je výchozí směr před otočením, takže se změnit musel."],
     ],
-    explanation:
-      "Otočka o 90° doprava (po směru hodinových ručiček) posune tvůj směr o jednu světovou stranu dál v pořadí sever → východ → jih → západ. Ze severu se tak dostaneš na východ.",
-  },
-  {
-    question:
-      "Stojíš čelem k severu. Otočíš se o 90° doleva (proti směru hodinových ručiček). Kterým směrem se teď díváš?",
-    correctAnswer: "Na západ",
-    options: ["Na západ", "Na východ", "Na jih", "Na sever"],
-    hints: [
-      "Čtvrt otáčky doleva od severu tě posune o jednu světovou stranu proti směru hodinových ručiček.",
-      "Pořadí proti směru hodinových ručiček je: sever → západ → jih → východ.",
+    "Čtvrt otáčky posune směr právě o jednu světovou stranu.",
+    "Pořadí po směru hodinových ručiček je: sever → východ → jih → západ. Posuň se v téhle řadě o jeden krok dopředu od výchozí strany.",
+    "Otočka o 90° doprava (po směru hodinových ručiček) posune tvůj směr o jednu světovou stranu dál v pořadí sever → východ → jih → západ. Ze severu se tak dostaneš na východ.",
+  ),
+  t(
+    "Stojíš čelem k severu. Otočíš se o 90° doleva (proti směru hodinových ručiček). Kterým směrem se teď díváš?",
+    "Na západ",
+    [
+      ["Na východ", "To je otočka o 90° na opačnou stranu, tedy doprava."],
+      ["Na jih", "K jihu vede až otočka o 180°, tedy dvě čtvrtiny otáčky."],
+      ["Na sever", "To je směr před otočením — čtvrt otáčky ho musela změnit."],
     ],
-    explanation:
-      "Otočka o 90° doleva (proti směru hodinových ručiček) posune tvůj směr o jednu světovou stranu dál v pořadí sever → západ → jih → východ. Ze severu se tak dostaneš na západ.",
-  },
-  {
-    question:
-      "Stojíš čelem k východu. Otočíš se o 90° doprava (ve směru hodinových ručiček). Kterým směrem se teď díváš?",
-    correctAnswer: "Na jih",
-    options: ["Na sever", "Na jih", "Na východ", "Na západ"],
-    hints: [
-      "Čtvrt otáčky doprava tě posune o jednu světovou stranu dál v pořadí sever → východ → jih → západ.",
-      "Z východu je dalším směrem po směru hodinových ručiček jih.",
+    "Otočka doleva posune směr o jednu stranu, ale opačně než doprava.",
+    "Pořadí proti směru hodinových ručiček je: sever → západ → jih → východ. Udělej v téhle řadě jeden krok od výchozí strany.",
+    "Otočka o 90° doleva (proti směru hodinových ručiček) posune tvůj směr o jednu světovou stranu dál v pořadí sever → západ → jih → východ. Ze severu se tak dostaneš na západ.",
+  ),
+  t(
+    "Stojíš čelem k východu. Otočíš se o 90° doprava (ve směru hodinových ručiček). Kterým směrem se teď díváš?",
+    "Na jih",
+    [
+      ["Na sever", "Tam by ses dostal otočkou o 90° na opačnou stranu, tedy doleva."],
+      ["Na východ", "To je výchozí směr — čtvrt otáčky ho musela posunout dál."],
+      ["Na západ", "K západu vede až otočka o 180°, tedy dvě čtvrtiny otáčky."],
     ],
-    explanation:
-      "Otočka o 90° doprava posune tvůj směr o jednu světovou stranu v pořadí sever → východ → jih → západ. Z východu se tak dostaneš na jih.",
-  },
-  {
-    question:
-      "Stojíš čelem k východu. Otočíš se o 90° doleva (proti směru hodinových ručiček). Kterým směrem se teď díváš?",
-    correctAnswer: "Na sever",
-    options: ["Na jih", "Na východ", "Na sever", "Na západ"],
-    hints: [
-      "Čtvrt otáčky doleva je opačný pohyb než doprava — vrátíš se o jednu světovou stranu zpět.",
-      "Pořadí proti směru hodinových ručiček od východu je: východ → sever → západ → jih.",
+    "Výchozí strana už není sever, takže začni počítat od ní.",
+    "Pořadí po směru hodinových ručiček je: sever → východ → jih → západ. Najdi v téhle řadě výchozí stranu a posuň se o jeden krok dopředu.",
+    "Otočka o 90° doprava posune tvůj směr o jednu světovou stranu v pořadí sever → východ → jih → západ. Z východu se tak dostaneš na jih.",
+  ),
+  t(
+    "Stojíš čelem k východu. Otočíš se o 90° doleva (proti směru hodinových ručiček). Kterým směrem se teď díváš?",
+    "Na sever",
+    [
+      ["Na jih", "Tam vede čtvrt otáčky na opačnou stranu, tedy doprava."],
+      ["Na východ", "To je výchozí směr, ten se otočkou změnit musel."],
+      ["Na západ", "K západu bys potřeboval otočku o 180°, ne o čtvrtinu."],
     ],
-    explanation:
-      "Otočka o 90° doleva posune tvůj směr o jednu světovou stranu v pořadí východ → sever → západ → jih. Z východu se tak dostaneš na sever.",
-  },
+    "Otočka doleva vrací směr o jeden krok zpět proti pořadí doprava.",
+    "Pořadí proti směru hodinových ručiček je: východ → sever → západ → jih. Udělej v téhle řadě jeden krok od výchozí strany.",
+    "Otočka o 90° doleva posune tvůj směr o jednu světovou stranu v pořadí východ → sever → západ → jih. Z východu se tak dostaneš na sever.",
+  ),
 ];
 
 function gen(level: number): PracticeTask[] {
