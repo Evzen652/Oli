@@ -24,3 +24,7 @@ jobs:
       - run: npm run audit:ui
       - run: npm test -- --reporter=dot
       - run: npm run audit:content
+      # Nižší REPEATS než v CI — PR check má být rychlý, hlídá regrese.
+      - run: npm run audit:agreement
+        env:
+          REPEATS: '10'

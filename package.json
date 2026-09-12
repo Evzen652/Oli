@@ -20,6 +20,7 @@
     "audit:ui": "node scripts/ui-audit.mjs",
     "audit:ui:fix": "node scripts/ui-audit.mjs --fix",
     "audit:content": "vitest run src/test/content-audit.test.ts --reporter=verbose",
+    "audit:agreement": "vite-node scripts/lint-agreement.ts",
     "audit:coverage": "node scripts/run-audit-coverage.mjs",
     "audit:pedagogical": "node scripts/run-audit-pedagogical.mjs",
     "verify:curriculum": "node scripts/verify-curriculum.mjs",

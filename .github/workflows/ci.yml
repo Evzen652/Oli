@@ -39,6 +39,15 @@ jobs:
       - name: Content audit
         run: npm run audit:content
 
+      # Audit vzorkuje, tenhle sweep projde všechna témata opakovaně.
+      # Rozdíl není teoretický: 2026-09-12 hlásil jeden běh auditu nález
+      # shody a další dva ne — vzorek rarity míjí. REPEATS=30 dá ~78 000
+      # unikátních úloh za ~40 s.
+      - name: Agreement lint (všechna témata, ne vzorek)
+        run: npm run audit:agreement
+        env:
+          REPEATS: '30'
+
       - name: Verify curriculum
         run: npm run verify:curriculum
 
