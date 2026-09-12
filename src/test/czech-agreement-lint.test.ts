@@ -61,6 +61,11 @@ describe("lint shody přísudku s číslovkou", () => {
       "Výsledek: 3 zbytek 0.",            // -ek je tu nominativ sg., ne genitiv pl.
       "6 ÷ 2 = 3 zbytek 0.",              // číslo za rovnítkem neřídí slovo za sebou
       "Rozděl to na 3 zlomek?",           // „zlomek" je taky nominativ sg.
+      "K jednotkám přičti 4 jen tehdy…",  // „jen" není podstatné jméno
+      "Pojď sem 2 krát.",                 // „sem" taky ne
+      "Spočítej nohy 4 kachen.",          // přivlastňovací genitiv („nohy čtyř kachen")
+      "Zjisti součet 3 čísel.",           // totéž — genitiv řídí „součet"
+      "Polovina 2 dílů je jeden díl.",    // totéž
     ];
     for (const veta of spravne) {
       it(`„${veta}“`, () => {

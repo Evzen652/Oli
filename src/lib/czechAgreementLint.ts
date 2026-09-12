@@ -67,10 +67,52 @@ const NOMINATIV_SG = new Set<string>([
 ]);
 
 /**
+ * Slova, která na -ek/-en/-ů končí, ale podstatná jména to nejsou vůbec.
+ * Nachytalo mě „přičti 4 jen k jednotkám“ — 30 falešných nálezů v nápovědách
+ * 3. ročníku na slově „jen“.
+ */
+const NENI_SUBSTANTIVUM = new Set(["jen", "nejen", "ven", "sem", "ten", "onen", "sotva"]);
+
+/**
  * V zápisu výsledku („6 ÷ 2 = 3 zbytek 0", „= 4 díly") číslo neřídí slovo
  * za sebou — je to podíl, ne počet. Pravidlo se za rovnítkem nespouští.
  */
 const ZA_ROVNITKEM = /[=:]\s*$/;
+
+/**
+ * Genitiv po číslovce 2–4 je SPRÁVNĚ, když je v genitivu celé spojení —
+ * typicky po jiném podstatném jménu: „nohy 4 kachen“ (= nohy čtyř kachen),
+ * „součet 3 čísel“, „polovina 2 dílů“. Číslice se neskloňuje, takže se to
+ * pozná jen z toho, co stojí před ní.
+ *
+ * Pravidlo proto hlásí nález jen tam, kde číslovka stojí v nominativu nebo
+ * akuzativu: na začátku větného úseku, po slovese, nebo po předložce, která
+ * genitiv neřídí. Zjištěno při prvním běhu nad nápovědami — „nohy 4 kachen“
+ * u slovní úlohy o statku je v pořádku, i když to jako chyba vypadá.
+ */
+const SLOVESA_PRED_POCTEM = new Set([
+  "je", "jsou", "byl", "byla", "bylo", "byly", "byli", "má", "mají", "máš",
+  "mám", "měl", "měla", "mělo", "měly", "měli", "zbývá", "zbyde", "zbylo",
+  "zbyla", "přibude", "ubude", "chovají", "koupil", "koupila", "dostal",
+  "dostala", "spočítej", "odečti", "přičti", "vezmi", "rozděl", "napiš",
+  "urči", "vybarvi", "zakroužkuj", "doplň", "sečti", "vidíš", "vidí",
+  "zůstane", "zůstalo", "potřebuje", "potřebuješ", "stojí", "váží",
+]);
+/** Předložky, po nichž genitiv NEpatří — tam má nález smysl. */
+const PREDLOZKY_BEZ_GENITIVU = new Set([
+  "na", "o", "po", "pro", "za", "přes", "v", "ve", "s", "se", "k", "ke",
+  "nad", "pod", "mezi", "před",
+]);
+
+/** Je číslovka v pozici, kde se genitiv hlásit má (nominativ/akuzativ)? */
+function pociVGenitivuJeChyba(prefix: string): boolean {
+  const tokeny = prefix.trim().split(/\s+/).filter(Boolean);
+  const predchozi = tokeny[tokeny.length - 1]?.toLowerCase().replace(/[^\p{L}]/gu, "");
+  if (!predchozi) return true; // začátek úseku → číslovka je podmět
+  if (SLOVESA_PRED_POCTEM.has(predchozi)) return true;
+  if (PREDLOZKY_BEZ_GENITIVU.has(predchozi)) return true;
+  return false; // před číslovkou stojí něco jiného (nejčastěji řídící substantivum)
+}
 
 // ── Pravidlo 2: shoda přísudku s počtem 2–4 ─────────────────────────────────
 /** Slovesa, u nichž shodu umíme spočítat: spona a „být" v minulém čase. */
@@ -150,7 +192,11 @@ export function checkCzechAgreement(text: string): AgreementFinding[] {
     if (PREDLOZKA_PRED.test(text.slice(0, at))) continue;
     if (ZA_ROVNITKEM.test(text.slice(0, at))) continue;
     const slovo = m.replace(/^[234]\s+/, "").toLowerCase();
-    if (NOMINATIV_SG.has(slovo)) continue;
+    if (NOMINATIV_SG.has(slovo) || NENI_SUBSTANTIVUM.has(slovo)) continue;
+    const hranice = [".", "!", "?", ";", ":", ",", "—", "–", "(", ")"].map((sep) =>
+      text.lastIndexOf(sep, at),
+    );
+    if (!pociVGenitivuJeChyba(text.slice(Math.max(...hranice) + 1, at))) continue;
     findings.push({
       rule: "genitiv_po_2_4",
       match: m,
