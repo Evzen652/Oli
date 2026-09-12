@@ -22,15 +22,26 @@ const MNOHOZNACNA: [string, string][] = [
 ];
 const JEDNOZNACNA: string[] = ["kyslík", "tužka", "pondělí", "sedmikráska", "trolejbus", "rohlík", "deštník", "brambora", "lednička", "žirafa", "tramvaj", "ponožka"];
 
+/**
+ * Nápověda nesmí obsahovat klíč ani doslova (brána `topic-gate` to hlídá
+ * prostým `hint.includes(correctAnswer)`), a nesmí ani vyjmenovat všechny tři
+ * rozptylovače — to by klíč prozradilo vylučováním. Unikátnost proto nese
+ * UKÁZKOVÉ slovo, které mezi možnostmi vůbec není a odvozuje se posunem
+ * o jedno v téže bance. Dvě úlohy s různým klíčem tak mají vždy různou ukázku
+ * (úlohy se stejným klíčem jsou tatáž úloha a audit je slučuje).
+ */
+const dalsiV = <T>(bank: T[], idx: number): T => bank[(idx + 1) % bank.length];
+
 function vyber(mnoho: boolean, i: number): PracticeTask {
   const [slovo, vyznamy] = MNOHOZNACNA[i % MNOHOZNACNA.length];
   const jedno = shuffle(JEDNOZNACNA).slice(0, 3);
   if (mnoho) {
+    const [ukazka, ukazkaVyznamy] = dalsiV(MNOHOZNACNA, i % MNOHOZNACNA.length);
     return choice("Které slovo je mnohoznačné (má víc významů)?", slovo,
       jedno.map((j) => ({ value: j, why: `„${j}“ má jen jeden význam — je jednoznačné.` })) as never, {
         hints: [
-          `Zkus pro každé slovo vymyslet dvě různé věty. U kterého se význam změní? Začni třeba slovy „${jedno[0]}“ a „${jedno[1]}“.`,
-          "Mnohoznačné slovo se hodí do vět o úplně jiných věcech — třeba do věty o přírodě i o penězích.",
+          `Slovo „${ukazka}“ mezi možnostmi není, ale ukazuje to pěkně: má víc významů — ${ukazkaVyznamy}. Projdi stejně i čtyři nabízené možnosti: u které z nich tě napadnou dvě věty o úplně jiných věcech?`,
+          `Mnohoznačné slovo se hodí do vět o úplně jiných věcech — u slova „${ukazka}“ je to dobře vidět: ${ukazkaVyznamy}. Jednoznačné slovo naopak znamená pořád totéž, ať ho dáš do jakékoli věty, a druhý význam pro ně nevymyslíš. Projdi proto možnosti po jedné a u každé zkus složit dvě věty o různých věcech.`,
         ],
         explanation: `„${slovo}“ je mnohoznačné: ${vyznamy}. Ostatní slova mají jeden význam.`,
       });
@@ -39,10 +50,11 @@ function vyber(mnoho: boolean, i: number): PracticeTask {
   const dalsi = shuffle(MNOHOZNACNA.filter(([s]) => s !== slovo)).slice(0, 2);
   const d = [[slovo, vyznamy], ...dalsi].map(([s, v]) => ({ value: s, why: `„${s}“ je mnohoznačné: ${v}.` }));
   void zbyle;
+  const ukazka = dalsiV(JEDNOZNACNA, JEDNOZNACNA.indexOf(j));
   return choice("Které slovo je jednoznačné (má jen jeden význam)?", j, d as never, {
     hints: [
-      `Zkus pro každé slovo vymyslet dvě různé věty. Má třeba „${slovo}“ nebo „${dalsi[0][0]}“ víc významů?`,
-      "Jednoznačné slovo znamená pořád totéž, ať ho použiješ kdekoli; mnohoznačné se hodí do vět o různých věcech.",
+      `Slovo „${ukazka}“ mezi možnostmi není, ale ukazuje to pěkně: znamená pořád totéž, ať ho dáš do jakékoli věty — je jednoznačné. Projdi takhle čtyři nabízené možnosti: u které z nich tě druhý, úplně jiný význam nenapadne?`,
+      `Jednoznačné slovo znamená pořád totéž, ať ho použiješ kdekoli — jako „${ukazka}“. Mnohoznačné se naopak hodí do vět o úplně jiných věcech: třeba „${slovo}“ je mnohoznačné, protože znamená hned několik věcí — ${vyznamy}. Tři z možností jsou takováhle slova, jen jedna ne — a právě tu hledáš.`,
     ],
     explanation: `„${j}“ má jen jeden význam — je jednoznačné. Ostatní slova jsou mnohoznačná.`,
   });
@@ -67,10 +79,10 @@ const VYZNAMY: Vyznam[] = [
 
 function vyznamUloha(v: Vyznam): PracticeTask {
   return choice(`Co znamená slovo „${v.slovo}“ ve větě „${v.veta}“?`, v.spravne,
-    v.jine.map((j) => ({ value: j, why: `To je jiný význam slova „${v.slovo}“, který se do této věty nehodí.` })) as never, {
+    v.jine.map((j) => ({ value: j, why: `Do věty „${v.veta}“ význam „${j}“ nesedí. Přečti si znovu, o čem věta mluví.` })) as never, {
       hints: [
         `O čem věta „${v.veta}“ mluví?`,
-        `Slovo „${v.slovo}“ má víc významů. Podívej se na ostatní slova ve větě — které z možných významů k nim sedí?`,
+        `Slovo „${v.slovo}“ má víc významů, takže samo o sobě nerozhodne. Ve větě „${v.veta}“ si zakryj „${v.slovo}“ a podívej se na zbylá slova — pak zkus do mezery dosadit každou nabízenou možnost a nech jen tu, po které věta dává smysl.`,
       ],
       explanation: v.proc,
     });
@@ -94,7 +106,7 @@ const STEJNE: Stejny[] = [
 
 function stejnyUloha(s: Stejny): PracticeTask {
   return choice(`Ve které větě má slovo „${s.slovo}“ stejný význam jako ve větě „${s.vzor}“?`, s.spravne,
-    s.jine.map((j) => ({ value: j, why: `Tady má „${s.slovo}“ jiný význam než „${s.vyznam}“.` })) as never, {
+    s.jine.map((j) => ({ value: j, why: `Ve větě „${j}“ má „${s.slovo}“ jiný význam, než jaký má ve vzoru (${s.vyznam}).` })) as never, {
       hints: [
         `Co znamená „${s.slovo}“ ve větě „${s.vzor}“?`,
         `Ve vzorové větě má „${s.slovo}“ význam „${s.vyznam}“. Hledej větu, kde znamená totéž, a ostatní vyřaď.`,

@@ -77,11 +77,18 @@ function uloha(level: number): PracticeTask {
     }
   }
   const vse = shuffle([A, P, N, H].flatMap((g) => vyber[g].map(([n, proc]) => ({ n, proc, g }))));
-  const ukazka = vse.slice(0, 4).map((x) => `„${x.n}“`).join(", ");
+  // Malá nápověda dřív jmenovala jen čtyři nálezy z osmi, takže dvě úlohy se
+  // stejnou ukázkou sdílely nápovědu; teď vyjmenuje všechny nálezy té úlohy.
+  // Velká nápověda byla na každé úrovni jeden a týž statický text — proto k ní
+  // přibylo vodítko k jednomu konkrétnímu nálezu (stejně jako u ostatních
+  // třídicích témat: ukáže se úvaha na jednom, zbytek zůstává na žákovi).
+  const ukazka = vse.map((x) => `„${x.n}“`).join(", ");
+  const vzor = vse[1];
+  const pravidlo = level === 3 ? `${RULE} ${MINCE_RULE}` : level === 1 ? `${GLOSSARY} ${RULE}` : RULE;
   return cat(ZADANI[level], [A, P, N, H].map((g) => ({ name: g, items: vyber[g].map(([n]) => n) })), {
     hints: [
-      `U nálezů ${ukazka} se zeptej: jde o vykopávku, o písmo ke čtení, o platidlo, nebo o znak?`,
-      level === 3 ? `${RULE} ${MINCE_RULE}` : level === 1 ? `${GLOSSARY} ${RULE}` : RULE,
+      `U každého nálezu se zeptej: jde o vykopávku ze země, o písmo ke čtení, o platidlo, nebo o znak rodu či města? Projdi takhle postupně ${ukazka}.`,
+      `${pravidlo} Zkus to na jednom nálezu — ${vzor.n}: ${vzor.proc}. Stejnou úvahu udělej i u ostatních nálezů.`,
     ],
     explanation: `${RULE} ${vse.map((x) => `${x.n}: ${x.proc} (${x.g.toLowerCase()}).`).join(" ")}`,
   });
