@@ -153,7 +153,13 @@ src/
   shoda „dva a půl litru **má**“ (ne „mají“) a nápověda u hmotnosti tvrdila
   „váha v obchodě“ i u úlohy s veterinářem. Brána PASS, `docs-check` ✓, typecheck ✓.
   Commit `6e24614` na `origin/content-fix/g2mat-c`.
-- 🟡 **Zbývá 16 dávek bez kritika** + 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+- ✅ **`g2mat-d` zkontrolována** (167 úloh: délka, bod/přímka/úsečka, tabulky).
+  Opravena spona u číslovek 2–4 („od 0 do 4 **jsou** 4 centimetry“) a shoda
+  v převodu cm→mm; `g2-mat-tabulky` losovaly 20 úloh bez kontroly duplicit,
+  takže v L1 mohla tatáž věta padnout dvakrát — nový helper `distinct()`.
+  Heuristika `sentence_complexity` (14 slov vs. limit 12) adjudikována jako
+  výjimka. Commit `81ff8d0`.
+- 🟡 **Zbývá 15 dávek bez kritika** + 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
 - 📌 **Oprava dokumentace:** `origin/wip/content-fix/*` je **osm** větví, ne tři —
   pět z nich (`g3cjl-a/b`, `g3prv-a/b/c`) jsou zastaralé snapshoty z prvního
   spadlého běhu a **neobsahují** autorský commit, který na těch větvích dnes je.
