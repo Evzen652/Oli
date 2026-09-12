@@ -292,7 +292,7 @@ const POOL_L2: PracticeTask[] = [
       "Po jídle si utřeme pusu ubrouskem a uklidíme po sobě. Nechat nepořádek nebo si utírat pusu do rukávu není slušné stolování.",
   },
   {
-    question: "Vidíš, že staršímu pánovi v autobuse není kde sednout. Co uděláš?",
+    question: "Vidíš, že starší pán v autobuse nemá kde sedět. Co uděláš?",
     correctAnswer: "Uvolním mu své místo",
     options: ["Budu se tvářit, že spím", "Zůstanu sedět, protože jsem přišel dřív", "Uvolním mu své místo", "Řeknu mu, ať se zeptá někoho jiného"],
     emoji: "🚌",
@@ -530,7 +530,7 @@ const POOL_L3: PracticeTask[] = [
       "Přestaneme si hrát úplně a odejdeme naštvaní": "Hrát si můžete dál, stačí ztišit hlas.",
     },
     explanation:
-      "Omluva a tišší hra respektují souseda, a přesto si můžete dál hrát. Ještě hlasitější křik nebo naštvané odejití problém neřeší.",
+      "Omluva a tišší hra respektují souseda, a přesto si můžete dál hrát. Ještě hlasitější křik nebo naštvaný odchod problém neřeší.",
   },
   {
     question: "Smutný kamarád ti svěří tajemství a ty slíbíš mlčet. Co uděláš?",

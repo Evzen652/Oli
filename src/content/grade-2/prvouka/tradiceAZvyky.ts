@@ -24,7 +24,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 const POOL_L1: PracticeTask[] = [
   {
-    question: "Kdy zdobíme vánoční stromeček ozdobami?",
+    question: "Kdy zdobíme stromeček ozdobami?",
     correctAnswer: "Vánoce",
     options: ["Vánoce", "Velikonoce", "Masopust", "Dušičky"],
     emoji: "🎄",
@@ -40,7 +40,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Stromeček zdobíme o Vánocích, které slavíme na konci prosince.",
   },
   {
-    question: "Kdy malujeme velikonoční vajíčka?",
+    question: "Kdy malujeme a barvíme vajíčka?",
     correctAnswer: "Velikonoce",
     options: ["Vánoce", "Velikonoce", "Mikuláš", "Dušičky"],
     emoji: "🥚",
@@ -623,12 +623,12 @@ const POOL_L3: PracticeTask[] = [
       "Čert chodí 5. prosince spolu s Mikulášem a andělem, ale o Vánocích ho nepotkáš.",
   },
   {
-    question: "Kterou postavu nepotkáš o Velikonocích, ale potkáš ji o Vánocích?",
+    question: "Koho nebo co nepotkáš o Velikonocích, ale potkáš o Vánocích?",
     correctAnswer: "Ježíšek",
     options: ["Ježíšek", "Zajíc", "Beránek", "Kočičky"],
     emoji: "⭐",
     hints: [
-      "Hledej postavu, která nosí dárky jen v zimě.",
+      "Hledej toho, kdo nosí dárky jen v zimě.",
       "Zajíc, beránek i kočičky na vrbě patří k jaru a k Velikonocům. Hledej postavu, která k jaru nepatří a přijde na Štědrý večer.",
     ],
     optionFeedback: {

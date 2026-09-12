@@ -88,7 +88,7 @@ const POOL_L1: TrueFalseItem[] = [
     solution: "Souseda zdravíme — je to slušné a přátelské chování.",
   },
   {
-    question: "Kamarádovi lžeme, i když se nás na něco zeptá. Je to pravda?",
+    question: "Kamarádovi lžeme, když se nás na něco zeptá. Je to pravda?",
     correct: false,
     emoji: "🙅",
     hint: "Lhaní přátelství poškozuje.",

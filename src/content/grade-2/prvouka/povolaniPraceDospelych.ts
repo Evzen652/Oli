@@ -301,7 +301,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co má lékař na sobě, když vyšetřuje pacienty?",
     correctAnswer: "Bílý plášť",
-    options: ["Hasičskou přilbu", "Bílý plášť", "Zástěru zedníka", "Uniformu policisty"],
+    options: ["Hasičskou přilbu", "Bílý plášť", "Zástěru kuchaře", "Uniformu policisty"],
     emoji: "👩‍⚕️",
     hints: [
       "Lékař nosí typický oděv, podle kterého ho v ordinaci hned poznáš.",
@@ -309,7 +309,7 @@ const POOL_L2: PracticeTask[] = [
     ],
     optionFeedback: {
       "Hasičskou přilbu": "Přilbu nosí hasič.",
-      "Zástěru zedníka": "Zástěru nosí zedník na stavbě.",
+      "Zástěru kuchaře": "Zástěru nosí kuchař v kuchyni.",
       "Uniformu policisty": "Uniformu nosí policista.",
     },
     solutionSteps: ["Lékař při vyšetřování nosí bílý plášť — je to jeho typický pracovní oděv."],
@@ -363,7 +363,7 @@ const POOL_L2: PracticeTask[] = [
     solutionSteps: ["Zedník ke stavbě zdi potřebuje cihly a maltu — maltou cihly k sobě slepuje."],
   },
   {
-    question: "Čím si veterinář prohlíží nemocné zvíře?",
+    question: "Čím veterinář poslouchá zvířeti srdce a dech?",
     correctAnswer: "Stetoskopem",
     options: ["Vařečkou", "Stetoskopem", "Kladivem", "Nůžkami na vlasy"],
     emoji: "🐕",
@@ -376,7 +376,7 @@ const POOL_L2: PracticeTask[] = [
       Kladivem: "Kladivo patří zedníkovi nebo truhláři.",
       "Nůžkami na vlasy": "Nůžky na vlasy používá kadeřník.",
     },
-    solutionSteps: ["Veterinář si zvíře prohlíží stetoskopem — poslouchá jím srdce a dech."],
+    solutionSteps: ["Veterinář poslouchá zvířeti srdce a dech stetoskopem."],
   },
   {
     question: "Co drží řidič v rukou, aby autobus jel správným směrem?",
@@ -510,7 +510,7 @@ const POOL_L2: PracticeTask[] = [
 
 const POOL_L3: PracticeTask[] = [
   {
-    question: "Kdo hasí oheň a k tomu nosí ochrannou helmu s hadicí?",
+    question: "Kdo hasí oheň a k tomu nosí ochrannou helmu a hadici?",
     correctAnswer: "Hasič",
     options: ["Zedník", "Policista", "Hasič", "Zahradník"],
     emoji: "👨‍🚒",
