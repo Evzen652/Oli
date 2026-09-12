@@ -15,9 +15,11 @@ function shuffle<T>(arr: T[]): T[] {
 //        známou činnost (co se tam dělá) — izolovaný fakt.
 //   L2 = aplikace: od konkrétní potřeby ("chci poslat dopis") odvodíme
 //        instituci, kam je za tím účelem třeba jít.
-//   L3 = transfer (přiměřeně věku 7-8 let): kombinace dvou faktů
-//        zároveň nebo rozlišení blízkých institucí podle závažnosti či
-//        typu situace (lékař vs. nemocnice, hasiči vs. policie...).
+//   L3 = transfer (přiměřeně věku 7-8 let): kombinace dvou potřeb
+//        zároveň, rozlišení blízkých institucí podle závažnosti či
+//        typu situace (lékař vs. nemocnice vs. lékárna, knihovna vs.
+//        knihkupectví...), vyřazení toho, co nesouvisí.
+// Každá úloha: dvě vlastní nápovědy, zpětná vazba u každé chybné možnosti.
 // ─────────────────────────────────────────────────────────
 
 const POOL_L1: PracticeTask[] = [
@@ -27,11 +29,19 @@ const POOL_L1: PracticeTask[] = [
     options: [
       "Děti se tam učí",
       "Půjčují se tam knihy",
-      "Cvičí se tam sportovci uvnitř budovy",
+      "Vydávají se tam léky předepsané lékařem",
       "Modlí se tam lidé",
     ],
     emoji: "🏫",
-    hints: ["Přemýšlej, kam chodíš každý všední den a co se tam naučíš."],
+    hints: [
+      "Přemýšlej, kam chodíš každý všední den a co se tam naučíš.",
+      "Ráno si vezmeš aktovku, sedneš do lavice, paní učitelka píše na tabuli a ty počítáš a čteš. Co se na tom místě tedy dělá?",
+    ],
+    optionFeedback: {
+      "Půjčují se tam knihy": "Knihy se půjčují v knihovně.",
+      "Vydávají se tam léky předepsané lékařem": "Léky na recept se vydávají v lékárně.",
+      "Modlí se tam lidé": "Modlit se chodí lidé do kostela.",
+    },
     solutionSteps: ["Ve škole se děti učí číst, psát a počítat — proto tam chodí každý den."],
   },
   {
@@ -39,7 +49,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Nakupuje se tam jídlo a zboží",
     options: ["Posílají se tam dopisy a balíky", "Nakupuje se tam jídlo a zboží", "Cvičí se tam sportovci uvnitř budovy", "Modlí se tam lidé"],
     emoji: "🏪",
-    hints: ["Přemýšlej, kam jdete s rodiči, když doma dojde jídlo."],
+    hints: [
+      "Přemýšlej, kam jdete s rodiči, když doma dojde jídlo.",
+      "V košíku vezeš chleba, mléko a jablka a u pokladny za ně zaplatíš. Jak se říká tomu, co se tam s věcmi dělá?",
+    ],
+    optionFeedback: {
+      "Posílají se tam dopisy a balíky": "Dopisy se posílají na poště.",
+      "Cvičí se tam sportovci uvnitř budovy": "Cvičí se v tělocvičně.",
+      "Modlí se tam lidé": "Modlí se v kostele.",
+    },
     solutionSteps: ["V obchodě se nakupuje jídlo, pití a další věci na běžný den."],
   },
   {
@@ -47,7 +65,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Posílají a vyzvedávají se tam dopisy a balíky",
     options: ["Půjčují se tam knihy", "Vyřizují se tam záležitosti obce", "Posílají a vyzvedávají se tam dopisy a balíky", "Nastupuje a vystupuje se tam z vlaku"],
     emoji: "📮",
-    hints: ["Přemýšlej, kam bys šel/šla, kdybys chtěl/a někomu poslat dopis."],
+    hints: [
+      "Přemýšlej, kam bys šel, kdybys chtěl někomu poslat pohled.",
+      "Na přepážce ti paní zváží balík, nalepí na obálku známku a řekne, kdy dorazí. Někdy si tam také vyzvedneš balíček, který ti někdo poslal.",
+    ],
+    optionFeedback: {
+      "Půjčují se tam knihy": "Knihy se půjčují v knihovně.",
+      "Vyřizují se tam záležitosti obce": "Záležitosti obce se vyřizují na radnici.",
+      "Nastupuje a vystupuje se tam z vlaku": "Na vlak se jde na nádraží.",
+    },
     solutionSteps: ["Na poště se odesílají a vyzvedávají dopisy a balíky."],
   },
   {
@@ -55,7 +81,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Půjčují se tam knihy",
     options: ["Posílají a vyzvedávají se tam dopisy a balíky", "Děti se tam učí", "Nakupuje se tam jídlo a zboží", "Půjčují se tam knihy"],
     emoji: "📚",
-    hints: ["Přemýšlej, kam jít, když chceš knihu jen na chvíli a nechceš ji koupit."],
+    hints: [
+      "Přemýšlej, kam jít, když chceš knihu jen na chvíli a nechceš ji koupit.",
+      "Vybereš si pohádku z regálu, paní ji zapíše na tvou průkazku a za tři týdny ji zase vrátíš. Co se tedy s knihami na tom místě děje?",
+    ],
+    optionFeedback: {
+      "Posílají a vyzvedávají se tam dopisy a balíky": "To se dělá na poště.",
+      "Děti se tam učí": "Učí se ve škole; v knihovně si spíš čteš a vybíráš.",
+      "Nakupuje se tam jídlo a zboží": "Nakupuje se v obchodě, v knihovně se za knihy neplatí.",
+    },
     solutionSteps: ["V knihovně si lidé zdarma půjčují knihy a zase je vracejí."],
   },
   {
@@ -68,7 +102,15 @@ const POOL_L1: PracticeTask[] = [
       "Pracují tam policisté, kteří chrání pořádek",
     ],
     emoji: "🏥",
-    hints: ["Přemýšlej, kam odvezou člověka, který je vážně nemocný nebo zraněný."],
+    hints: [
+      "Přemýšlej, kam odvezou člověka, který je vážně nemocný nebo zraněný.",
+      "Tam jezdí sanitka s houkačkou. Pacienti leží na pokojích v postelích, někdy i několik dní, a lékaři a sestry se o ně starají ve dne i v noci.",
+    ],
+    optionFeedback: {
+      "Vydávají se tam léky předepsané lékařem": "Léky na recept se vydávají v lékárně.",
+      "Připravují se tam hasiči na hašení požárů": "Hasiči jsou na hasičské stanici.",
+      "Pracují tam policisté, kteří chrání pořádek": "Policisté jsou na policejní stanici.",
+    },
     solutionSteps: ["V nemocnici léčí lékaři těžce nemocné nebo zraněné lidi, kteří tam často i zůstávají."],
   },
   {
@@ -76,7 +118,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Vydávají se tam léky předepsané lékařem",
     options: ["Léčí se tam těžce nemocní lidé", "Vydávají se tam léky předepsané lékařem", "Nakupuje se tam jídlo a zboží", "Vyřizují se tam záležitosti obce"],
     emoji: "💊",
-    hints: ["Přemýšlej, kam jdeme, když nám lékař napíše recept na lék."],
+    hints: [
+      "Přemýšlej, kam jdeme, když nám lékař napíše recept.",
+      "Za pultem stojí paní v bílém plášti, vezme si od tebe recept a z regálu s krabičkami ti podá, co lékař napsal.",
+    ],
+    optionFeedback: {
+      "Léčí se tam těžce nemocní lidé": "Těžce nemocní se léčí v nemocnici, v lékárně se neleží.",
+      "Nakupuje se tam jídlo a zboží": "Jídlo se kupuje v obchodě.",
+      "Vyřizují se tam záležitosti obce": "Záležitosti obce jsou na radnici.",
+    },
     solutionSteps: ["V lékárně vydávají léky, které předepsal lékař."],
   },
   {
@@ -84,7 +134,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Připravují se tam hasiči na hašení požárů",
     options: ["Pracují tam policisté, kteří chrání pořádek", "Léčí se tam těžce nemocní lidé", "Připravují se tam hasiči na hašení požárů", "Vyřizují se tam záležitosti obce"],
     emoji: "🚒",
-    hints: ["Přemýšlej, odkud vyjíždí auto s hadicí, když někde hoří."],
+    hints: [
+      "Přemýšlej, odkud vyjíždí auto s hadicí, když někde hoří.",
+      "V garáži stojí červená auta s žebříky a hadicemi. Když zazvoní poplach, muži si rychle obléknou zásahové obleky a vyjedou.",
+    ],
+    optionFeedback: {
+      "Pracují tam policisté, kteří chrání pořádek": "Policisté pracují na policejní stanici.",
+      "Léčí se tam těžce nemocní lidé": "Nemocní se léčí v nemocnici.",
+      "Vyřizují se tam záležitosti obce": "Záležitosti obce se vyřizují na radnici.",
+    },
     solutionSteps: ["Na hasičské stanici jsou připravení hasiči a hasičská auta pro případ požáru."],
   },
   {
@@ -92,7 +150,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Pracují tam policisté, kteří chrání pořádek",
     options: ["Připravují se tam hasiči na hašení požárů", "Vyřizují se tam záležitosti obce", "Léčí se tam těžce nemocní lidé", "Pracují tam policisté, kteří chrání pořádek"],
     emoji: "👮",
-    hints: ["Přemýšlej, kde pracují lidé v uniformě, kteří hlídají bezpečnost."],
+    hints: [
+      "Přemýšlej, kde pracují lidé v uniformě, kteří hlídají bezpečnost.",
+      "Před budovou parkují auta s modrými majáky a nápisem POLICIE. Sem přijdeš nahlásit, že ti někdo ukradl kolo.",
+    ],
+    optionFeedback: {
+      "Připravují se tam hasiči na hašení požárů": "Hasiči mají svou hasičskou stanici.",
+      "Vyřizují se tam záležitosti obce": "To se dělá na radnici.",
+      "Léčí se tam těžce nemocní lidé": "To se dělá v nemocnici.",
+    },
     solutionSteps: ["Na policejní stanici pracují policisté, kteří chrání lidi a pořádek v obci."],
   },
   {
@@ -105,7 +171,15 @@ const POOL_L1: PracticeTask[] = [
       "Děti se tam učí",
     ],
     emoji: "🏛️",
-    hints: ["Přemýšlej, kam jdou rodiče, když potřebují vyřídit něco úředního pro celou obec."],
+    hints: [
+      "Přemýšlej, kam jdou rodiče, když potřebují vyřídit něco úředního.",
+      "Pracuje tam starosta a úředníci. Rodiče tam vyřizují doklady a lidé se tam ptají, kdy se opraví cesta nebo postaví nové hřiště.",
+    ],
+    optionFeedback: {
+      "Pracují tam policisté, kteří chrání pořádek": "Policisté sídlí na policejní stanici.",
+      "Posílají a vyzvedávají se tam dopisy a balíky": "To se dělá na poště.",
+      "Děti se tam učí": "Děti se učí ve škole.",
+    },
     solutionSteps: ["Na radnici úřaduje starosta a vyřizují se tam záležitosti obce."],
   },
   {
@@ -113,7 +187,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Lidé se tam modlí a scházejí na bohoslužby",
     options: ["Vyřizují se tam záležitosti obce", "Lidé se tam modlí a scházejí na bohoslužby", "Děti se tam učí", "Půjčují se tam knihy"],
     emoji: "⛪",
-    hints: ["Přemýšlej, kam chodí lidé, kteří věří v Boha, a jaká stavba má věž se zvony."],
+    hints: [
+      "Přemýšlej, jaká stavba má vysokou věž se zvony.",
+      "V neděli ráno tam zvoní zvony a lidé, kteří věří v Boha, přicházejí dovnitř, zpívají a poslouchají faráře.",
+    ],
+    optionFeedback: {
+      "Vyřizují se tam záležitosti obce": "To se dělá na radnici.",
+      "Děti se tam učí": "Učí se ve škole.",
+      "Půjčují se tam knihy": "Knihy se půjčují v knihovně.",
+    },
     solutionSteps: ["V kostele se lidé modlí a scházejí na bohoslužby."],
   },
   {
@@ -121,7 +203,15 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Nastupuje a vystupuje se tam z vlaku",
     options: ["Posílají a vyzvedávají se tam dopisy a balíky", "Děti si tam venku hrají", "Nastupuje a vystupuje se tam z vlaku", "Lidé se tam modlí a scházejí na bohoslužby"],
     emoji: "🚉",
-    hints: ["Přemýšlej, kam jdeš, když s rodinou jedete na výlet vlakem."],
+    hints: [
+      "Přemýšlej, kam jdeš, když s rodinou jedete na výlet po kolejích.",
+      "Na nástupišti čekáš s kufrem, z reproduktoru hlásí příjezd a po kolejích přijede dlouhá souprava vagonů.",
+    ],
+    optionFeedback: {
+      "Posílají a vyzvedávají se tam dopisy a balíky": "To se dělá na poště.",
+      "Děti si tam venku hrají": "Na hraní je hřiště, u kolejí je to nebezpečné.",
+      "Lidé se tam modlí a scházejí na bohoslužby": "To se dělá v kostele.",
+    },
     solutionSteps: ["Na nádraží vlaky přijíždějí a odjíždějí a cestující tam nastupují a vystupují."],
   },
   {
@@ -129,8 +219,32 @@ const POOL_L1: PracticeTask[] = [
     correctAnswer: "Děti si tam venku hrají",
     options: ["Cvičí se tam sportovci uvnitř budovy", "Naučíš se tam plavat", "Nastupuje a vystupuje se tam z vlaku", "Děti si tam venku hrají"],
     emoji: "🛝",
-    hints: ["Přemýšlej, kam jdeš odpoledne ven na houpačky a prolézačky."],
+    hints: [
+      "Přemýšlej, kam jdeš odpoledne ven na houpačky a prolézačky.",
+      "Je tam pískoviště, skluzavka, houpačky a průlezky. Nikdo tam nesedí v lavici — běháš a lezeš na čerstvém vzduchu.",
+    ],
+    optionFeedback: {
+      "Cvičí se tam sportovci uvnitř budovy": "Uvnitř budovy se cvičí v tělocvičně, hřiště je venku.",
+      "Naučíš se tam plavat": "Plavat se učí v bazénu.",
+      "Nastupuje a vystupuje se tam z vlaku": "Z vlaku se vystupuje na nádraží.",
+    },
     solutionSteps: ["Na hřišti si děti venku hrají, houpou se a lezou po prolézačkách."],
+  },
+  {
+    question: "Co se dělá v muzeu?",
+    correctAnswer: "Prohlížejí se tam staré a vzácné věci",
+    options: ["Půjčují se tam knihy", "Nakupuje se tam jídlo a zboží", "Prohlížejí se tam staré a vzácné věci", "Promítají se tam filmy"],
+    emoji: "🏺",
+    hints: [
+      "Přemýšlej, kam jdete na výlet podívat se na kostry dinosaurů nebo staré brnění.",
+      "Věci tam leží ve vitrínách a na cedulkách je napsané, kolik je jim let. Nesmíš na ně sahat ani si je odnést domů — můžeš se jen dívat.",
+    ],
+    optionFeedback: {
+      "Půjčují se tam knihy": "Knihy se půjčují v knihovně; věci z muzea si domů neodneseš.",
+      "Nakupuje se tam jídlo a zboží": "Nakupuje se v obchodě.",
+      "Promítají se tam filmy": "Filmy se promítají v kině.",
+    },
+    solutionSteps: ["V muzeu si lidé prohlížejí staré a vzácné věci, které jsou vystavené ve vitrínách."],
   },
 ];
 
@@ -140,23 +254,47 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Obchod",
     options: ["Obchod", "Pekárna", "Lékárna", "Pošta"],
     emoji: "🏪",
-    hints: ["Hledej místo, kde koupíš víc druhů potravin najednou, ne jen jeden druh pečiva."],
+    hints: [
+      "Hledej místo, kde koupíš víc druhů potravin najednou, ne jen jeden druh pečiva.",
+      "Pekárna prodává jen pečivo, mléko tam nedostaneš. Lékárna i pošta jsou na něco jiného. Kde najdeš v regálech chleba i mléko dohromady?",
+    ],
+    optionFeedback: {
+      Pekárna: "V pekárně koupíš chleba, ale mléko ne.",
+      Lékárna: "V lékárně jsou léky, ne potraviny.",
+      Pošta: "Na poště se posílají dopisy.",
+    },
     solutionSteps: ["Chleba i mléko dohromady koupíš v obchodě — pekárna prodává jen pečivo."],
   },
   {
     question: "Kam půjdeš, když máš vysokou horečku a potřebuješ, aby tě někdo prohlédl?",
-    correctAnswer: "Lékař",
-    options: ["Nemocnice", "Lékař", "Lékárna", "Škola"],
+    correctAnswer: "Ordinace lékaře",
+    options: ["Nemocnice", "Ordinace lékaře", "Lékárna", "Škola"],
     emoji: "👩‍⚕️",
-    hints: ["Hledej místo, kam jdeš na běžné vyšetření, když jsi nemocný, ale nezůstáváš tam přes noc."],
-    solutionSteps: ["Na vyšetření kvůli horečce jdeš k lékaři — prohlédne tě a řekne, co dál."],
+    hints: [
+      "Hledej místo pro běžné vyšetření, kde nezůstáváš přes noc.",
+      "Nemocnice je pro vážné případy, kdy se tam i zůstává. Lékárna jen vydává léky. Kde tě prohlédnou, poslechnou a řeknou, co dál?",
+    ],
+    optionFeedback: {
+      Nemocnice: "Do nemocnice se jezdí při vážných potížích; na běžné vyšetření stačí ordinace.",
+      Lékárna: "Lékárna léky vydává, ale nikoho nevyšetřuje.",
+      Škola: "S horečkou do školy nejdeš, zůstaneš doma a jdeš k lékaři.",
+    },
+    solutionSteps: ["Na vyšetření kvůli horečce jdeš do ordinace lékaře — prohlédne tě a řekne, co dál."],
   },
   {
     question: "Kam půjdeš, když chceš poslat dopis babičce?",
     correctAnswer: "Pošta",
     options: ["Knihovna", "Radnice", "Pošta", "Nádraží"],
     emoji: "📮",
-    hints: ["Hledej místo, které se stará o doručování dopisů a balíků."],
+    hints: [
+      "Hledej místo, které se stará o doručování dopisů a balíků.",
+      "Dopis potřebuje známku a někoho, kdo ho doveze až k babičce. Kde si známku koupíš a obálku odevzdáš na přepážce?",
+    ],
+    optionFeedback: {
+      Knihovna: "V knihovně se půjčují knihy.",
+      Radnice: "Na radnici se vyřizují věci obce.",
+      Nádraží: "Z nádraží odjíždějí vlaky, dopisy tam neodesíláš.",
+    },
     solutionSteps: ["Dopis babičce pošleš na poště — tam dopisy přijímají a doručují dál."],
   },
   {
@@ -164,15 +302,31 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Knihovna",
     options: ["Pošta", "Obchod", "Škola", "Knihovna"],
     emoji: "📚",
-    hints: ["Hledej místo, kde si knihu jen na čas půjčíš a pak ji vrátíš."],
-    solutionSteps: ["Knihu si zdarma půjčíš v knihovně, koupit bys ji musel/a v obchodě s knihami."],
+    hints: [
+      "Hledej místo, kde si knihu jen na čas půjčíš a pak ji vrátíš.",
+      "V obchodě bys knihu musel zaplatit. Hledej místo s regály plnými knih, kde dostaneš průkazku a knihu po přečtení vrátíš.",
+    ],
+    optionFeedback: {
+      Pošta: "Na poště se knihy nepůjčují.",
+      Obchod: "V obchodě bys knihu musel koupit.",
+      Škola: "Ve škole máš učebnice, ale na půjčování knih je jiné místo.",
+    },
+    solutionSteps: ["Knihu si zdarma půjčíš v knihovně, koupit bys ji musel v obchodě s knihami."],
   },
   {
     question: "Kam půjdeš, když ti lékař předepsal lék a potřebuješ ho vyzvednout?",
     correctAnswer: "Lékárna",
-    options: ["Lékárna", "Nemocnice", "Lékař", "Obchod"],
+    options: ["Lékárna", "Nemocnice", "Ordinace lékaře", "Obchod"],
     emoji: "💊",
-    hints: ["Hledej místo, kde na tebe čeká lék podle receptu od lékaře."],
+    hints: [
+      "Hledej místo, kde na tebe čeká lék podle receptu od lékaře.",
+      "Lékař ti lék jen napsal na recept, sám ho nevydává. Recept odneseš na místo se zeleným křížem, kde ti za pultem podají krabičku.",
+    ],
+    optionFeedback: {
+      Nemocnice: "Nemocnice léčí pacienty, lék na recept si ale vyzvedneš jinde.",
+      "Ordinace lékaře": "Lékař recept napsal, lék ti ale nedá.",
+      Obchod: "V obchodě se léky na recept neprodávají.",
+    },
     solutionSteps: ["Předepsaný lék vyzvedneš v lékárně."],
   },
   {
@@ -180,7 +334,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Hasičská stanice",
     options: ["Policejní stanice", "Hasičská stanice", "Nemocnice", "Radnice"],
     emoji: "🚒",
-    hints: ["Hledej místo, kde hasiči a jejich auta stále čekají připravená na výjezd."],
+    hints: [
+      "Hledej místo, kde hasiči a jejich auta stále čekají připravení na výjezd.",
+      "V budově s velkými vraty stojí červená auta s hadicemi a žebříky. Hasiči tam čekají, až zazvoní poplach, a pak rychle vyrazí.",
+    ],
+    optionFeedback: {
+      "Policejní stanice": "Z policejní stanice vyjíždějí policisté, ne hasiči.",
+      Nemocnice: "Z nemocnice vyjíždí sanitka.",
+      Radnice: "Na radnici pracuje starosta.",
+    },
     solutionSteps: ["Hasiči vyjíždějí k požáru z hasičské stanice."],
   },
   {
@@ -188,7 +350,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Policejní stanice",
     options: ["Hasičská stanice", "Radnice", "Policejní stanice", "Nemocnice"],
     emoji: "👮",
-    hints: ["Hledej místo, kam se hlásí krádeže a jiné podobné případy."],
+    hints: [
+      "Hledej místo, kam se hlásí krádeže a jiné podobné případy.",
+      "Krádež není požár ani nemoc. Hledej místo, kde pracují lidé v uniformě, kteří pátrají po zlodějích.",
+    ],
+    optionFeedback: {
+      "Hasičská stanice": "Hasiči hasí požáry, krádeže neřeší.",
+      Radnice: "Radnice vyřizuje věci obce, krádeže nevyšetřuje.",
+      Nemocnice: "Nemocnice léčí nemocné.",
+    },
     solutionSteps: ["Krádež kola nahlásíš na policejní stanici — policisté ji budou vyšetřovat."],
   },
   {
@@ -196,15 +366,31 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Radnice",
     options: ["Pošta", "Policejní stanice", "Škola", "Radnice"],
     emoji: "🏛️",
-    hints: ["Hledej místo, kde se vyřizují úřední záležitosti obce."],
-    solutionSteps: ["Úřední doklady jako občanský průkaz se vyřizují na radnici."],
+    hints: [
+      "Hledej místo, kde se vyřizují úřední záležitosti.",
+      "Doklady vydávají úředníci. Pracují ve stejné budově jako starosta, často s věží a hodinami na náměstí.",
+    ],
+    optionFeedback: {
+      Pošta: "Na poště se posílají dopisy, doklady se tam nevydávají.",
+      "Policejní stanice": "Policie doklady kontroluje, ale nový průkaz vyřídíš jinde.",
+      Škola: "Ve škole se děti učí.",
+    },
+    solutionSteps: ["Úřední doklady jako občanský průkaz se vyřizují na radnici (úřadě)."],
   },
   {
     question: "Kam půjdeš v neděli, když se chceš zúčastnit bohoslužby?",
     correctAnswer: "Kostel",
     options: ["Kostel", "Radnice", "Škola", "Knihovna"],
     emoji: "⛪",
-    hints: ["Hledej stavbu s věží a zvony, kam chodí lidé, kteří věří v Boha."],
+    hints: [
+      "Hledej stavbu s věží a zvony, kam chodí lidé, kteří věří v Boha.",
+      "V neděli dopoledne zvoní zvony a lidé jdou dovnitř stavby s vysokou věží, kde je oltář a hrají varhany.",
+    ],
+    optionFeedback: {
+      Radnice: "Na radnici se vyřizují úřední věci, bohoslužby tam nejsou.",
+      Škola: "Ve škole se učí, v neděli je zavřená.",
+      Knihovna: "V knihovně se půjčují knihy.",
+    },
     solutionSteps: ["Na bohoslužbu jdeš do kostela."],
   },
   {
@@ -212,7 +398,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Bazén",
     options: ["Hřiště", "Bazén", "Tělocvična", "Nemocnice"],
     emoji: "🏊",
-    hints: ["Hledej místo s velkou nádrží plnou vody."],
+    hints: [
+      "Hledej místo s velkou nádrží plnou vody.",
+      "Na hřišti ani v tělocvičně voda není. Hledej místo, kde jsou plavčíci, plavecké dráhy a voda po pás i hlubší.",
+    ],
+    optionFeedback: {
+      Hřiště: "Na hřišti voda na plavání není.",
+      Tělocvična: "V tělocvičně se cvičí na nářadí, ne plave.",
+      Nemocnice: "V nemocnici se léčí, ne plave.",
+    },
     solutionSteps: ["Plavat se naučíš v bazénu — je tam voda a plavčík, který na děti dohlíží."],
   },
   {
@@ -220,7 +414,15 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Kino",
     options: ["Škola", "Knihovna", "Kino", "Restaurace"],
     emoji: "🎬",
-    hints: ["Hledej sál s velkým plátnem, kde se promítají filmy."],
+    hints: [
+      "Hledej sál s velkým plátnem, kde se promítají filmy.",
+      "Ve škole i v knihovně se učí a čte, v restauraci se jí. Hledej tmavý sál s měkkými sedačkami a obrovským plátnem.",
+    ],
+    optionFeedback: {
+      Škola: "Ve škole se učí, filmy na velkém plátně se tam nepromítají.",
+      Knihovna: "V knihovně se půjčují knihy.",
+      Restaurace: "V restauraci se jí.",
+    },
     solutionSteps: ["Nový film na velkém plátně uvidíš v kině."],
   },
   {
@@ -228,106 +430,161 @@ const POOL_L2: PracticeTask[] = [
     correctAnswer: "Tělocvična",
     options: ["Hřiště", "Bazén", "Kino", "Tělocvična"],
     emoji: "🤸",
-    hints: ["Hledej místo pro sport, které je uvnitř budovy, takže tam déšť nevadí."],
+    hints: [
+      "Hledej místo pro sport, které je uvnitř budovy, takže tam déšť nevadí.",
+      "Hřiště je venku a zmokl bys. Hledej sál se žebřinami, švédskou bednou a míči, kam chodíte na hodinu tělocviku.",
+    ],
+    optionFeedback: {
+      Hřiště: "Hřiště je venku, v dešti bys zmokl.",
+      Bazén: "V bazénu se plave, ne cvičí na nářadí.",
+      Kino: "V kině se sedí a dívá na film.",
+    },
     solutionSteps: ["Když prší, jde se cvičit do tělocvičny — je to sportoviště uvnitř budovy."],
+  },
+  {
+    question: "Kam půjdeš, když chceš jet vlakem k babičce?",
+    correctAnswer: "Nádraží",
+    options: ["Nádraží", "Pošta", "Hřiště", "Radnice"],
+    emoji: "🚆",
+    hints: [
+      "Vlak nejezdí po silnici — kde na něj nastoupíš?",
+      "Na tom místě jsou nástupiště, koleje a pokladna s jízdenkami. Z reproduktoru hlásí, který vlak kam jede.",
+    ],
+    optionFeedback: {
+      Pošta: "Na poště se posílají dopisy, vlaky tam nejezdí.",
+      Hřiště: "Na hřišti si hraješ, vlak tam nejede.",
+      Radnice: "Na radnici se vyřizují věci obce.",
+    },
+    solutionSteps: ["Na vlak se nastupuje na nádraží — tam vlaky přijíždějí a odjíždějí."],
   },
 ];
 
 const POOL_L3: PracticeTask[] = [
   {
     question:
-      "Lékař tě vyšetřil a napsal ti recept na lék proti kašli. Kam půjdeš, aby sis lék vyzvedl/a?",
+      "Lékař tě vyšetřil a napsal ti recept na lék proti kašli. Kam půjdeš pro lék?",
     correctAnswer: "Lékárna",
-    options: ["Lékárna", "Lékař", "Nemocnice", "Obchod"],
+    options: ["Lékárna", "Ordinace lékaře", "Nemocnice", "Obchod"],
     emoji: "💊",
     hints: [
       "Recept je jen papír s předpisem — lék samotný dostaneš na jiném místě.",
-      "Hledej místo, které lék vydává, ne to, které ho předepisuje.",
+      "Kdo lék napsal, ten ti ho nevydá. Hledej místo, kde za pultem podají krabičky s léky, když přineseš recept — nemocnice ani obchod to nejsou.",
     ],
+    optionFeedback: {
+      "Ordinace lékaře": "U lékaře jsi už byl — recept napsal, ale lék ti nevydá.",
+      Nemocnice: "Nemocnice je pro vážné případy, pro lék na kašel tam nejdeš.",
+      Obchod: "V obchodě se léky na recept neprodávají.",
+    },
     solutionSteps: [
-      "Recept napíše lékař, ale lék samotný vydá lékárna. U lékaře ani v nemocnici žádný lék rovnou nedostaneš.",
+      "Recept napíše lékař, ale lék samotný vydá lékárna. U lékaře ani v nemocnici lék na recept rovnou nedostaneš.",
     ],
   },
   {
     question:
-      "Kamarád spadl ze schodů, nemůže hýbat nohou a možná bude muset zůstat přes noc na pozorování. Kam ho rodiče odvezou?",
+      "Kamarád spadl ze schodů, nemůže hýbat nohou a možná zůstane přes noc. Kam ho odvezou?",
     correctAnswer: "Nemocnice",
-    options: ["Lékárna", "Nemocnice", "Lékař", "Hasičská stanice"],
+    options: ["Lékárna", "Nemocnice", "Ordinace lékaře", "Hasičská stanice"],
     emoji: "🏥",
     hints: [
       "Přemýšlej, které místo má lůžka pro pacienty, kteří tam musí zůstat déle.",
-      "Vážné zranění s možností přespání patří na jiné místo než běžné vyšetření.",
+      "Kamarád možná potřebuje rentgen a zůstat přes noc na pokoji, kde na něj dohlédnou sestry. Obvyklá ordinace ani lékárna to nezvládnou — kam tedy?",
     ],
+    optionFeedback: {
+      Lékárna: "Lékárna jen vydává léky, zranění neošetří.",
+      "Ordinace lékaře": "V běžné ordinaci se přes noc nezůstává a rentgen tam nemají.",
+      "Hasičská stanice": "Hasiči pomáhají při požárech a nehodách, ale neléčí.",
+    },
     solutionSteps: [
       "Při vážném zranění s možností přespání jede kamarád do nemocnice — tam mají lůžka a starají se o pacienty i v noci.",
     ],
   },
   {
     question:
-      "Bolí tě v krku a máš rýmu, ale nemusíš zůstat přes noc — stačí tě vyšetřit a poslat domů s receptem. Kam půjdeš?",
-    correctAnswer: "Lékař",
-    options: ["Nemocnice", "Lékárna", "Lékař", "Škola"],
+      "Bolí tě v krku a máš rýmu, ale přes noc nikde zůstat nemusíš. Kam půjdeš?",
+    correctAnswer: "Ordinace lékaře",
+    options: ["Nemocnice", "Lékárna", "Ordinace lékaře", "Škola"],
     emoji: "👩‍⚕️",
     hints: [
-      "Přemýšlej, kam se chodí na běžné vyšetření, když nejde o vážný případ s přespáním.",
-      "Nemocnice je pro vážnější případy — tvůj problém stačí jen vyšetřit.",
+      "Přemýšlej, kam se chodí na běžné vyšetření, když nejde o vážný případ.",
+      "Tvoje nemoc není vážná a přes noc nikde zůstat nemusíš. Potřebuješ jen, aby tě někdo poslechl, podíval se ti do krku a napsal recept. Kde to proběhne?",
     ],
+    optionFeedback: {
+      Nemocnice: "Nemocnice je pro vážné případy, s rýmou tam nejdeš.",
+      Lékárna: "Lékárna vydá lék, ale nevyšetří tě a recept nenapíše.",
+      Škola: "Nemocný do školy nechodí.",
+    },
     solutionSteps: [
-      "Na běžné vyšetření bez nutnosti zůstat přes noc jdeš k lékaři. Do nemocnice se jezdí jen při vážnějších případech.",
+      "Na běžné vyšetření bez nutnosti zůstat přes noc jdeš do ordinace lékaře. Do nemocnice se jezdí jen při vážnějších případech.",
     ],
   },
   {
-    question:
-      "Kamarád viděl souseda, jak si bez dovolení vzal cizí kolo a odjel s ním pryč. Nejde o požár ani o nemoc, ale o čin, který se má nahlásit. Kam se obrátí?",
+    question: "Kamarád viděl, jak si někdo vzal cizí kolo a odjel s ním. Kam to má nahlásit?",
     correctAnswer: "Policejní stanice",
     options: ["Hasičská stanice", "Nemocnice", "Radnice", "Policejní stanice"],
     emoji: "👮",
     hints: [
-      "Nejdřív vylouči místa pro požár a pro nemoc — zbyde ti jen jedno vhodné místo.",
-      "Hledej místo, kam se hlásí krádeže a podobné případy.",
+      "Nejdřív vyluč místa pro požár a pro nemoc.",
+      "Nikde nehoří a nikdo není zraněný. Jde o krádež — a krádeže vyšetřují lidé v uniformě s odznakem. Kde pracují?",
     ],
+    optionFeedback: {
+      "Hasičská stanice": "Hasiči řeší požáry, krádeže ne.",
+      Nemocnice: "Nemocnice léčí nemoci a zranění.",
+      Radnice: "Radnice vyřizuje věci obce, krádeže nevyšetřuje.",
+    },
     solutionSteps: [
       "Krádež se hlásí na policejní stanici. Hasičská stanice řeší požáry a nemocnice nemoci a zranění — sem krádež nepatří.",
     ],
   },
   {
-    question:
-      "Chceš si přečíst knihu o dinosaurech, ale rodiče nechtějí kupovat novou knihu z obchodu. Kam půjdeš, aby sis ji mohl/a přečíst zadarmo?",
-    correctAnswer: "Knihovna",
-    options: ["Knihovna", "Obchod", "Pošta", "Škola"],
-    emoji: "📚",
+    question: "Chceš si půjčit knihu a zároveň odeslat pohled babičce. Která dvě místa navštívíš?",
+    correctAnswer: "Knihovnu a poštu",
+    options: ["Obchod a školu", "Knihovnu a radnici", "Poštu a nádraží", "Knihovnu a poštu"],
+    emoji: "🗺️",
     hints: [
-      "Hledej místo, kde si knihu jen půjčíš a nemusíš za ni platit.",
-      "V obchodě by sis knihu musel/a koupit — hledej jiné řešení.",
+      "Rozděl úkol na dvě části a pro každou najdi jedno místo.",
+      "Na půjčení knihy potřebuješ místo s regály plnými knih a průkazkou. Na odeslání pohledu místo, kde koupíš známku. Najdi dvojici, kde sedí obě.",
     ],
+    optionFeedback: {
+      "Obchod a školu": "V obchodě ani ve škole se knihy nepůjčují a pohledy neodesílají.",
+      "Knihovnu a radnici": "Knihovna sedí, ale pohled se neodesílá na radnici.",
+      "Poštu a nádraží": "Pošta sedí, ale knihu ti na nádraží nepůjčí.",
+    },
     solutionSteps: [
-      "Knihu o dinosaurech si zdarma půjčíš v knihovně. V obchodě by sis ji musel/a koupit.",
+      "Knihu si půjčíš v knihovně a pohled odešleš na poště — potřebuješ tedy knihovnu a poštu.",
     ],
   },
   {
-    question:
-      "Chceš poslat babičce dopis, ale nemáš doma známku a nevíš, kde si ji koupit. Kam půjdeš, abys vyřídil/a obojí najednou — koupil/a známku i odeslal/a dopis?",
+    question: "Chceš poslat dopis, ale nemáš známku. Kam půjdeš, abys vyřídil obojí najednou?",
     correctAnswer: "Pošta",
     options: ["Obchod", "Pošta", "Radnice", "Knihovna"],
     emoji: "📮",
     hints: [
       "Hledej jedno místo, kde koupíš známku i rovnou odešleš dopis.",
-      "Není potřeba chodit na dvě různá místa — obě věci vyřídíš na jednom.",
+      "Obchod ani knihovna dopisy neodesílají a radnice se stará o obec. Hledej jediné místo, kde ti na přepážce prodají známku a rovnou si od tebe dopis vezmou.",
     ],
+    optionFeedback: {
+      Obchod: "V obchodě dopis neodešleš.",
+      Radnice: "Radnice dopisy nedoručuje.",
+      Knihovna: "V knihovně se půjčují knihy.",
+    },
     solutionSteps: [
       "Na poště koupíš známku i odešleš dopis na jednom místě — nemusíš nikam jinam.",
     ],
   },
   {
-    question:
-      "Rodiče potřebují potvrdit, že bydlíte v této obci, a zároveň se zeptat, kdy se opraví děravá silnice před domem. Kam se rodiče vydají vyřídit obě věci?",
+    question: "Rodiče potřebují potvrdit bydliště a zeptat se na opravu silnice. Kam půjdou?",
     correctAnswer: "Radnice",
     options: ["Pošta", "Policejní stanice", "Radnice", "Škola"],
     emoji: "🏛️",
     hints: [
       "Hledej místo, kde se řeší úřední doklady i běžné záležitosti celé obce, jako jsou silnice.",
-      "Obě věci spolu souvisí s obcí, ne s dopisy ani s bezpečností.",
+      "Pošta doručuje dopisy, policie hlídá bezpečnost a škola učí děti. Hledej budovu, kde úřaduje starosta a kde se rozhoduje o všem, co patří celé obci — i o silnicích.",
     ],
+    optionFeedback: {
+      Pošta: "Pošta doručuje zásilky, o silnicích nerozhoduje.",
+      "Policejní stanice": "Policie chrání pořádek, bydliště ani opravy silnic neřeší.",
+      Škola: "Ve škole se děti učí.",
+    },
     solutionSteps: [
       "Potvrzení o bydlišti i dotaz na opravu silnice vyřídí rodiče na radnici — tam se řeší záležitosti obce.",
     ],
@@ -340,8 +597,13 @@ const POOL_L3: PracticeTask[] = [
     emoji: "⛪",
     hints: [
       "Přemýšlej, která stavba má věž se zvony a kam se chodí na mši.",
-      "Zvony ani mše nepatří k žádné z ostatních nabízených možností.",
+      "Radnice, škola ani knihovna na mši nezvou a v neděli ráno bývají zavřené. Hledej stavbu s vysokou věží, oltářem a varhanami.",
     ],
+    optionFeedback: {
+      Radnice: "Radnice sice může mít věž s hodinami, ale na mši se tam nechodí.",
+      Škola: "Ve škole se v neděli neučí a mše tam nebývá.",
+      Knihovna: "V knihovně se půjčují knihy, mše tam není.",
+    },
     solutionSteps: [
       "Zvony a mše patří ke kostelu — tam se lidé v neděli scházejí k bohoslužbě.",
     ],
@@ -354,8 +616,13 @@ const POOL_L3: PracticeTask[] = [
     emoji: "🎬",
     hints: [
       "V knihovně si knihy jen půjčují — filmy se tam nepromítají.",
-      "Hledej sál s velkým plátnem a sedadly určený přímo na filmy.",
+      "Knihovna je místo s regály a průkazkou. Filmy na obrovském plátně se promítají ve tmavém sále s řadami sedaček, kam si koupíš vstupenku.",
     ],
+    optionFeedback: {
+      Knihovna: "V knihovně se knihy půjčují, filmy na plátně se tam nepromítají.",
+      Škola: "Ve škole se učí.",
+      Tělocvična: "V tělocvičně se cvičí.",
+    },
     solutionSteps: [
       "Filmy na velkém plátně se promítají v kině, ne v knihovně — tam se jen půjčují knihy.",
     ],
@@ -367,9 +634,14 @@ const POOL_L3: PracticeTask[] = [
     options: ["Obchod", "Restaurace", "Pekárna", "Škola"],
     emoji: "🍽️",
     hints: [
-      "V obchodě by sis musel/a jídlo koupit syrové a doma ho uvařit — hledej místo, kde je jídlo hotové a přinesou ho.",
-      "Hledej místo, kde obsluha přináší uvařené jídlo přímo ke stolu.",
+      "Hledej místo, kde jídlo dostaneš už hotové a nemusíš nic vařit.",
+      "V obchodě bys koupil suroviny a musel je doma uvařit, v pekárně je jen pečivo. Hledej místo, kde si sedneš ke stolu a obsluha ti přinese teplý oběd.",
     ],
+    optionFeedback: {
+      Obchod: "V obchodě koupíš suroviny, ale uvařit si je musíš sám.",
+      Pekárna: "V pekárně je pečivo, ne teplý oběd ke stolu.",
+      Škola: "Ve škole je jídelna jen pro žáky, ne pro celou rodinu.",
+    },
     solutionSteps: [
       "Hotové jídlo přinesené ke stolu dostanete v restauraci. V obchodě byste si museli suroviny koupit a uvařit sami.",
     ],
@@ -382,24 +654,51 @@ const POOL_L3: PracticeTask[] = [
     emoji: "🥐",
     hints: [
       "Hledej místo, kde pečivo přímo pečou a hned prodávají čerstvé.",
-      "V obchodě je pečivo často balené — hledej místo přímo od pekaře.",
+      "V obchodě bývá pečivo přivezené odjinud a často zabalené. Hledej místo, kde je vzadu pec, peče se tam od rána a hned za pultem se čerstvé rohlíky prodávají.",
     ],
+    optionFeedback: {
+      Obchod: "V obchodě bývá pečivo přivezené, ne upečené přímo tam.",
+      Restaurace: "Restaurace vaří obědy, rohlíky na prodej nepeče.",
+      Škola: "Ve škole se pečivo neprodává.",
+    },
     solutionSteps: [
       "Čerstvé, ráno upečené rohlíky koupíš v pekárně, kde je pekař rovnou peče.",
     ],
   },
   {
-    question:
-      "Chceš se naučit plavat, ale venku je zima a hřiště ani tělocvična vodu nemají. Kam půjdeš?",
-    correctAnswer: "Bazén",
-    options: ["Hřiště", "Tělocvična", "Nemocnice", "Bazén"],
-    emoji: "🏊",
+    question: "Kniha, kterou chceš, je v knihovně půjčená. Chceš ji mít navždy. Kde ji koupíš?",
+    correctAnswer: "Knihkupectví",
+    options: ["Knihkupectví", "Knihovna", "Radnice", "Lékárna"],
+    emoji: "📖",
     hints: [
-      "Vylouč místa, která vodu na plavání vůbec nemají.",
-      "Hledej místo s velkou nádrží vody, kde je i v zimě teplo.",
+      "Knihovna knihy jen půjčuje — ty ji ale chceš mít doma pořád.",
+      "Hledej obchod, kde jsou v regálech nové knihy s cenovkou a u pokladny za ně zaplatíš. Jmenuje se podle toho, co prodává.",
     ],
+    optionFeedback: {
+      Knihovna: "V knihovně je kniha zrovna půjčená, a koupit se tam nedá.",
+      Radnice: "Na radnici se knihy neprodávají.",
+      Lékárna: "V lékárně jsou léky, ne knihy.",
+    },
     solutionSteps: [
-      "Plavat se naučíš v bazénu — na hřišti ani v tělocvičně voda na plavání není.",
+      "Knihu, kterou chceš mít navždy, koupíš v knihkupectví. Knihovna knihy jen půjčuje a zase je chce zpátky.",
+    ],
+  },
+  {
+    question: "Které z těchto míst s léčením nemoci nesouvisí?",
+    correctAnswer: "Knihovna",
+    options: ["Ordinace lékaře", "Lékárna", "Nemocnice", "Knihovna"],
+    emoji: "🤒",
+    hints: [
+      "Tři místa souvisejí se zdravím, jedno vůbec ne.",
+      "V ordinaci tě vyšetří, lékárna vydá lék a v nemocnici léčí vážné případy. Které místo s nemocí vůbec nesouvisí a navíc bys tam mohl nakazit ostatní?",
+    ],
+    optionFeedback: {
+      "Ordinace lékaře": "K lékaři jdeš právě, když jsi nemocný.",
+      Lékárna: "V lékárně se vydávají léky, a ty k léčení patří.",
+      Nemocnice: "V nemocnici se léčí vážné nemoci a zranění.",
+    },
+    solutionSteps: [
+      "Ordinace lékaře, lékárna i nemocnice pomáhají s léčením. Knihovna slouží k půjčování knih, s nemocí nesouvisí.",
     ],
   },
 ];
