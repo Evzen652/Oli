@@ -422,7 +422,7 @@ const POOL_L3: Uloha[] = [
     q: "Text je zapsaný ve čtyřech krátkých rýmovaných řádcích a vypráví o princezně, kterou unesl drak. Jaký útvar to je?",
     a: "Báseň",
     w: [
-      ["Pohádka", "Princezna a drak jsou sice pohádkové postavy, jenže o zařazení rozhoduje zápis — a ten je ve verších."],
+      ["Pohádka", "Princezna a drak jsou sice pohádkové postavy, jenže text má jen čtyři rýmované řádky — na vyprávěnou pohádku to není."],
       ["Bajka", "Bajka by potřebovala zvířata jednající jako lidé a poučení na konci, drak unášející princeznu to není."],
       ["Povídka", "Povídka by musela vyprávět o skutečném ději v souvislých větách, tady chybí obojí."],
     ],
@@ -430,7 +430,7 @@ const POOL_L3: Uloha[] = [
       "Obsah a zápis si tu odporují. Zeptej se, co o útvaru rozhoduje dřív: postavy v textu, nebo způsob zápisu?",
       "Princezna s drakem svádějí k tomu zvolit útvar podle obsahu. Zkus to ale obráceně: stejný příběh se dá vyprávět v souvislých větách i zapsat do krátkých rýmovaných řádků. Rozhoduje proto zápis, ne to, kdo v příběhu vystupuje.",
     ],
-    e: "O zařazení rozhoduje forma zápisu. Čtyři krátké rýmované řádky jsou verše, a text ve verších je báseň — i když je jeho obsah pohádkový.",
+    e: "Čtyři krátké rýmované řádky jsou verše, a takhle krátký text ve verších je báseň — i když si za postavy vzal princeznu a draka z pohádek.",
   },
   {
     q: "Který znak musí mít vyprávění navíc, aby se z příběhu se zvířaty stala bajka?",
@@ -461,18 +461,18 @@ const POOL_L3: Uloha[] = [
     e: "Oba texty mají zvířata jednající jako lidé, ale bajka potřebuje ještě poučení. Splní to jen text, který na konci radí čtenáři, jak se chovat.",
   },
   {
-    q: "Pohádka o Popelce se přepíše do krátkých rýmovaných veršů, děj zůstane úplně stejný. Co teď platí?",
-    a: "Je to báseň, protože rozhoduje způsob zápisu",
+    q: "Pohádka o Popelce se přepíše do krátkých rýmovaných veršů, děj zůstane úplně stejný. Co o textu platí?",
+    a: "Není už zapsaný v próze, ale ve verších — děj zůstal pohádkový",
     w: [
-      ["Zůstává to pohádka, protože děj se nezměnil", "Děj se opravdu nezměnil, jenže o zařazení rozhoduje zápis, ne obsah."],
-      ["Stala se z toho bajka", "Bajka by potřebovala zvířata jednající jako lidé a poučení na konci, Popelka nemá ani jedno."],
-      ["Není to už žádný literární útvar", "Text nepřestal být literárním útvarem, jen se změnil způsob jeho zápisu."],
+      ["Přestal být pohádkou, protože pohádky se nerýmují", "Pohádka se dá vyprávět i ve verších, veršovaných pohádek je celá řada — pohádkou být nepřestane."],
+      ["Stala se z něj bajka", "Bajka by potřebovala zvířata jednající jako lidé a poučení na konci, Popelka nemá ani jedno."],
+      ["Nezměnilo se nic, pořád je zapsaný v próze", "Próza jsou souvislé věty a odstavce, tady se ale text zlomil do krátkých rýmovaných řádků."],
     ],
     h: [
-      "Změnil se jen zápis, děj zůstal stejný. Rozhodni, co z těch dvou věcí o zařazení rozhoduje.",
-      "Představ si stejný příběh dvakrát: jednou vyprávěný v souvislých větách a odstavcích, podruhé rozepsaný do krátkých řádků se souznějícími konci. Obsah je v obou případech totožný, liší se jen zápis — a právě podle něj se text zařazuje mezi verše, nebo mezi prózu.",
+      "Rozhodni zvlášť o dvou věcech: co se přepisem změnilo na zápisu a co na ději.",
+      "Představ si obě podoby vedle sebe. V jedné souvislé věty a odstavce, ve druhé krátké řádky se souznějícími konci — v tomhle je rozdíl. Příběh o Popelce, střevíčku a kouzlech je ale v obou podobách stejný, takže na obsahu se přepisem nezmění nic.",
     ],
-    e: "Stejný obsah se dá zapsat prózou i ve verších. Jakmile text přejde do krátkých rýmovaných veršů, mluvíme o básni, i když děj zůstal pohádkový.",
+    e: "Zápis a obsah jsou dvě různé věci. Přepisem se změnil jen zápis: z prózy se staly verše. Děj zůstal pohádkový, protože stejný příběh se dá vyprávět prózou i ve verších.",
   },
   {
     q: "Který útvar může mít mluvící zvíře, aniž by musel končit radou pro čtenáře?",

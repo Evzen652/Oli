@@ -153,13 +153,13 @@ const POOL_L1: Uloha[] = [
     q: "Co musí platit, aby dvě slova tvořila rým?",
     a: "Musí stejně znít na konci",
     w: [
-      ["Musí mít stejný počet písmen", "Stejně dlouhá slova ještě rým netvoří — „stůl“ a „pes“ mají stejnou délku, ale nerýmují se."],
+      ["Musí mít stejný počet písmen", "Stejně dlouhá slova ještě rým netvoří — „pes“ a „dům“ mají tři písmena, a přesto se nerýmují."],
       ["Musí začínat stejným písmenem", "Shoda na začátku rým není: „pes“ a „pole“ začínají stejně, přesto si konce neodpovídají."],
       ["Musí znamenat totéž", "Slova stejného významu se rýmovat nemusí — „auto“ a „vůz“ znamenají totéž a nerýmují se."],
     ],
     h: [
       "Přečti si dvojici slov nahlas a poslouchej, jestli si odpovídá jejich začátek, konec, nebo význam.",
-      "Zkoušej si to na příkladech: „stůl“ a „pes“ jsou stejně dlouhá, „pes“ a „pole“ začínají stejně, „auto“ a „vůz“ znamenají totéž — a přesto ani jedna z těch dvojic nerýmuje. Podmínka bude tedy někde jinde než v délce, začátku nebo významu.",
+      "Zkoušej si to na příkladech: „pes“ a „dům“ jsou stejně dlouhá, „pes“ a „pole“ začínají stejně, „auto“ a „vůz“ znamenají totéž — a přesto ani jedna z těch dvojic nerýmuje. Podmínka bude tedy někde jinde než v délce, začátku nebo významu.",
     ],
     e: "Rým vzniká shodou zvuku na konci slov. Ani stejná délka, ani stejné první písmeno, ani stejný význam rým neudělají.",
   },
@@ -355,7 +355,7 @@ const POOL_L2: Uloha[] = [
     e: "Souvislé věty bez rýmu, které vyprávějí jednu událost za druhou, jsou próza. Text o Kubovi je proto zapsaný v próze.",
   },
   {
-    q: "Jak je zapsaná ukázka? „Fouká vítr od Vltavy, / ohýbá se stéblo trávy.“",
+    q: "Jak je zapsaná ukázka? „Fouká vítr od Vltavy, / bere mi čepici z hlavy.“",
     a: V,
     w: [
       [P, "Próza by věty nechala plynout až k okraji stránky, tady jsou dva krátké řádky."],
@@ -363,10 +363,10 @@ const POOL_L2: Uloha[] = [
       [S, "Seznam by neřadil slova do rytmu a neměl by rým, tahle ukázka má obojí."],
     ],
     h: [
-      "Přečti nahlas konce obou úseků, „Vltavy“ a „trávy“. Uslyšíš, že si odpovídají.",
+      "Přečti nahlas konce obou úseků, „Vltavy“ a „hlavy“. Uslyšíš, že si odpovídají.",
       "Oba úseky mají skoro stejnou délku, takže při čtení vzniká pravidelné houpání, kterému říkáme rytmus. K němu se přidává souznění konců. Tahle dvojice vlastností je typická pro jediný způsob zápisu textu.",
     ],
-    e: "Krátké řádky s rytmem a s rýmem „Vltavy – trávy“ jsou verše. Próza ani seznam takhle pravidelné nejsou.",
+    e: "Krátké řádky s rytmem a s rýmem „Vltavy – hlavy“ jsou verše. Próza ani seznam takhle pravidelné nejsou.",
   },
   {
     q: "Jak je zapsaná ukázka? „Na dvoře si hrály děti. Míč jim přeletěl přes plot a musely pro něj zaklepat u souseda.“",
@@ -485,18 +485,18 @@ const POOL_L3: Uloha[] = [
     e: "Odstavce jsou přirozenou součástí prózy a slouží k přehlednosti. Ať jich je jeden, nebo deset, text zůstává prózou, protože se pořád skládá z vět.",
   },
   {
-    q: "Stejná myšlenka je zapsaná dvakrát. A) „V lese roste starý strom a vedle stojí malý dům.“ B) „V lese roste starý strom, / vedle stojí malý dům.“ Co platí?",
+    q: "Stejná slova jsou zapsaná dvakrát. A) „V potoce je čistá voda a na břehu je pohoda.“ B) „V potoce je čistá voda / a na břehu je pohoda.“ Co platí?",
     a: "A je próza, B jsou verše",
     w: [
-      ["A jsou verše, B je próza", "Je to obráceně: zlom řádku a rým má zápis B, ne zápis A."],
+      ["A jsou verše, B je próza", "Je to obráceně: na dva krátké řádky se láme zápis B, ne zápis A."],
       ["Obojí je próza", "Obojí ne — v zápisu B se text láme na dva krátké řádky, a to próza nedělá."],
       ["Obojí jsou verše", "Obojí ne — zápis A je jedna souvislá věta plynoucí až k okraji stránky."],
     ],
     h: [
       "Slova jsou v obou zápisech stejná. Liší se jen jedno: zda text pokračuje dál, nebo se láme.",
-      "Když mají dva texty stejná slova, nemůže o způsobu zápisu rozhodovat obsah. Porovnej je proto jen očima: jeden je jedna dlouhá řada slov, druhý dva krátké kousky pod sebou, jejichž konce si navíc zvukově odpovídají.",
+      "Když mají dva texty stejná slova, nemůže o způsobu zápisu rozhodovat obsah. Porovnej je proto jen očima: jeden je jedna dlouhá řada slov, druhý dva krátké kousky pod sebou, na jejichž koncích navíc stojí slova, která si zvukově odpovídají.",
     ],
-    e: "Stejný obsah se dá zapsat oběma způsoby. Zápis A je jedna souvislá věta, tedy próza; zápis B je rozlomený na dva krátké rýmované řádky, tedy verše.",
+    e: "Stejná slova se dají zapsat oběma způsoby. Zápis A je jedna souvislá věta, tedy próza; zápis B je rozlomený na dva krátké řádky a na jejich koncích zazní rým „voda – pohoda“, tedy verše.",
   },
   {
     q: "Proč zůstává pohádka prózou, i když v ní postavy mluví?",
@@ -623,7 +623,7 @@ export const PROZAVERSE: TopicMetadata[] = [
     contentType: "conceptual",
     generator: gen,
     helpTemplate: {
-      hint: "Próza = příběh v odstavcích. Verše = báseň ve krátkých řádcích s rýmem.",
+      hint: "Próza = příběh v odstavcích. Verše = báseň v krátkých řádcích s rýmem.",
       steps: ["Podívej se, jak je text zapsán.", "Krátké řádky s rýmy → verše/báseň.", "Normální věty v odstavcích → próza."],
       commonMistake: "Říkanka se zdá krátká a jednoduchá — ale je to báseň (verše), ne próza.",
       example: "Próza: 'Bylo jednou malé kotě...' / Verše: 'Skákal pes / přes oves / přes zelenou louku...'",
