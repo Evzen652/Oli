@@ -167,7 +167,7 @@ function meziDesitkami(): Built {
     ans,
     cands: shuffle(cands),
     h0: `Podívej se na první číslici čísla ${n}. Kolik celých desítek číslo ${n} obsahuje?`,
-    h1: `Číslo ${n} je o něco větší než celá desítka s tolika desítkami, kolik ukazuje první číslice, a menší než desítka hned po ní. Obě desítky najdi na ose a ověř, že ${n} leží mezi nimi.`,
+    h1: `První číslice čísla ${n} říká, kolik celých desítek už číslo má. Tuhle desítku najdi na ose a hned za ní tu následující. Ověř, že ${n} je větší než první z nich a menší než druhá — pak mezi nimi leží.`,
     expl: `${n} má ${t} ${plural(t, "desítku", "desítky", "desítek")} a ${u} ${plural(u, "jednotku", "jednotky", "jednotek")}, proto je větší než ${t * 10} a menší než ${(t + 1) * 10}.`,
   };
 }
@@ -225,7 +225,7 @@ function vzdalenost(): Built | null {
     ],
     h0: `Vzdálenost od ${a} do ${b} zjistíš odčítáním. Které číslo odečteš od kterého?`,
     h1: `Jdi po ose po částech: ${cesta}. Délky všech úseků sečti — nebo rovnou vypočítej ${b} ${M} ${a}.`,
-    expl: `Vzdálenost na ose je rozdíl čísel: ${b} ${M} ${a} = ${c}. Z ${a} je potřeba udělat ${dilky(c)} doprava, abychom došli na ${b}.`,
+    expl: `Vzdálenost na ose je rozdíl čísel: ${b} ${M} ${a} = ${c}. Od ${a} musíš udělat ${dilky(c)} doprava, než dojdeš na ${b}.`,
   };
 }
 

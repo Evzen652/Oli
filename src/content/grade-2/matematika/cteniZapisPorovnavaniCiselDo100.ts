@@ -162,8 +162,8 @@ function zeSlov(): Built {
         { v: t * 10, why: `${t * 10} je jen „${TENS[t]}“ — jednotky „${UNITS[u]}“ chybí.` },
       ]),
     ],
-    h0: `„${cap(TENS[t])}“ říká počet desítek a „${UNITS[u]}“ počet jednotek. Kolik je čeho?`,
-    h1: `Nejdřív napiš číslici za „${TENS[t]}“ — kolik desítek to je? Hned za ni napiš číslici za „${UNITS[u]}“. Vznikne dvojmístné číslo, žádnou nulu mezi číslice nepiš.`,
+    h0: `„${cap(TENS[t])}“ říká počet desítek a „${UNITS[u]}“ počet jednotek. Kolik desítek a kolik jednotek to tedy je?`,
+    h1: `Slovo „${TENS[t]}“ nahraď číslicí, která říká, kolik je to desítek, a napiš ji na první místo. Hned za ni napiš číslici pro „${UNITS[u]}“. Vznikne dvojmístné číslo, žádnou nulu mezi číslice nepiš.`,
     expl: `„${cap(TENS[t])}“ znamená ${desA(t)}, proto na místo desítek píšeme ${t}. „${cap(UNITS[u])}“ znamená ${jedA(u)}, proto na místo jednotek píšeme ${u}. Dohromady ${n}.`,
   };
 }
@@ -185,7 +185,7 @@ function oJednuODesitku(): Built {
       ],
       h0: `Číslo ${n} má na místě jednotek devítku. Co se stane, když přidáš ještě jednu jednotku?`,
       h1: `Devět jednotek a jedna další je deset jednotek, a to je jedna celá desítka. Desítek tedy bude o jednu víc než v čísle ${n} a na místě jednotek zůstane nula.`,
-      expl: `${n} + 1: devět jednotek a jedna jednotka tvoří novou desítku. Místo ${desA(t)} tak číslo má ${desA(t + 1)} a žádnou jednotku: ${c}.`,
+      expl: `${n} + 1: devět jednotek a jedna jednotka tvoří novou desítku. Desítek je proto o jednu víc — číslo má ${desA(t + 1)} a žádnou jednotku: ${c}.`,
     };
   }
   if (typ === 1) {
@@ -210,15 +210,19 @@ function oJednuODesitku(): Built {
   const n = plus ? rnd(10, 89) : rnd(20, 99);
   const t = Math.floor(n / 10), u = n % 10, c = plus ? n + 10 : n - 10;
   const sg = plus ? 1 : -1;
+  // Tady drž možnosti v oboru 0–100 (RVP 2. ročníku). Obecný filtr ve `finish`
+  // pouští i trojmístná čísla kvůli chybě zápisu typu „706", ale „101" v úloze
+  // o deseti víc není chyba, kterou by dítě udělalo — vyřadí ji na první pohled.
+  const vObor = (cs: { v: number; why: string }[]) => cs.filter((k) => k.v >= 0 && k.v <= 100);
   return {
     q: `Které číslo je o 10 ${plus ? "větší" : "menší"} než ${n}?`,
     ans: c,
-    cands: shuffle([
+    cands: shuffle(vObor([
       { v: n + sg, why: `${plus ? "Přidal" : "Ubral"} jsi jednu jednotku, a ne jednu desítku.` },
       { v: n - sg * 10, why: `Tohle číslo je o 10 ${plus ? "menší" : "větší"}, ne ${plus ? "větší" : "menší"}.` },
       { v: n + sg * 11, why: `${plus ? "Přidal" : "Ubral"} jsi desítku a navíc ještě jednu jednotku.` },
       { v: n + sg * 20, why: `${plus ? "Přidal" : "Ubral"} jsi dvě desítky, stačí jedna.` },
-    ]),
+    ])),
     h0: `Která číslice čísla ${n} se změní, když ${plus ? "přidáš" : "ubereš"} jednu desítku?`,
     h1: `Jednotky zůstanou stejné (${u}). Desítek bude o jednu ${plus ? "víc" : "méně"} než v čísle ${n}. Zapiš číslo s novým počtem desítek a se stejnými jednotkami.`,
     expl: `O 10 ${plus ? "větší" : "menší"} znamená o jednu desítku ${plus ? "víc" : "méně"}. Jednotky zůstanou ${u} a desítek bude ${t + sg} místo ${t}: ${c}.`,
@@ -251,7 +255,7 @@ function porovnejJednotky(): Built {
     })),
     h0: `Tři z čísel ${list} mají stejný počet desítek. Podle čeho mezi nimi rozhodneš?`,
     h1: `Nejdřív porovnej desítky všech čísel ${list} — číslo s ${max ? "menším" : "větším"} počtem desítek nemůže být ${max ? "největší" : "nejmenší"}. U čísel se stejnými desítkami pak rozhodnou jednotky.`,
-    expl: `Nejdřív desítky: ${trap} má ${max ? "méně" : "víc"} desítek, proto nevyhraje. Zbylá čísla mají ${desA(t)} a rozhodnou jednotky: ${ans} jich má ${max ? "nejvíc" : "nejméně"}.`,
+    expl: `Nejdřív desítky: ${trap} má ${max ? "méně" : "víc"} desítek, proto nemůže být ${max ? "největší" : "nejmenší"}. Zbylá čísla mají ${desA(t)} a rozhodnou jednotky: ${ans} jich má ${max ? "nejvíc" : "nejméně"}.`,
   };
 }
 
@@ -313,7 +317,7 @@ function sestavZCislic(): Built {
       ...shuffle([
         { v: opak * 11, why: `Číslici ${opak} jsi použil dvakrát. Každou číslici můžeš použít jen jednou.` },
         { v: a + b, why: `Sečetl jsi číslice ${a} + ${b}. Máš z nich ale sestavit dvojmístné číslo.` },
-        { v: druhe * 11, why: `Číslici ${druhe} jsi použil dvakrát a druhou vůbec. Každou číslici použij právě jednou.` },
+        { v: druhe * 11, why: `Číslici ${druhe} jsi použil dvakrát a tu druhou vůbec ne. Každou číslici použij právě jednou.` },
       ]),
     ],
     h0: `Chceš co ${max ? "největší" : "nejmenší"} číslo. Kterou z číslic ${a} a ${b} dáš na místo desítek?`,
