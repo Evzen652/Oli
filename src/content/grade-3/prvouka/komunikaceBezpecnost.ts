@@ -1,443 +1,505 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
 // ─────────────────────────────────────────────────────────
 // Disjunktní pooly obtížnosti (L1 < L2 < L3), select_one.
 //   L1 = rozpoznání: izolovaná fakta (čísla, definice, pravidla)
 //   L2 = aplikace:   konkrétní scénář → jedna správná reakce
-//   L3 = transfer:   hraniční/kombinované scénáře (2 kroky uvažování)
+//   L3 = transfer:   hraniční/kombinované scénáře (2 kroky uvažování:
+//                    nejdřív rozpoznat situaci, pak zvolit reakci)
+// Každá úloha: dvě vlastní nápovědy, zpětná vazba u každé chybné možnosti
+// a vysvětlení PROČ (CONTENT_AUTHORING §0).
 // ─────────────────────────────────────────────────────────
 
+type Chyba = [string, string];
+
+function t(
+  question: string,
+  correct: string,
+  chyby: [Chyba, Chyba, Chyba],
+  h0: string,
+  h1: string,
+  explanation: string,
+): PracticeTask {
+  const d = chyby.map(([value, why]) => ({ value, why })) as [Distractor, Distractor, Distractor];
+  return choice(question, correct, d, { hints: [h0, h1], explanation });
+}
+
 const POOL_L1: PracticeTask[] = [
-  {
-    question: "Jaké je telefonní číslo hasičů?",
-    correctAnswer: "150",
-    options: ["150", "155", "158", "112"],
-    hints: [
-      "Hasiči hasí požáry. Jejich číslo začíná na 15.",
-      "Popros doma rodiče, ať ti ukážou, kde máte napsaná důležitá telefonní čísla — třeba na lednici nebo v mobilu.",
+  t(
+    "Jaké je telefonní číslo hasičů?",
+    "150",
+    [
+      ["155", "155 je záchranná služba — ta jezdí k nemocným a zraněným, ne k požáru."],
+      ["158", "158 je policie — ta řeší zločiny a pořádek."],
+      ["112", "112 je evropská tísňová linka pro všechno. Hasiči mají i vlastní číslo."],
     ],
-    explanation: "Hasiči mají číslo 150. Pamatuj si: 150 = hasiči (oheň), 155 = záchranná služba (nemoc), 158 = policie (zločin), 112 = evropská tísňová linka pro všechno.",
-  },
-  {
-    question: "Jaké je telefonní číslo záchranné služby?",
-    correctAnswer: "155",
-    options: ["150", "155", "158", "112"],
-    hints: [
-      "Záchranná služba pomáhá nemocným a zraněným lidem.",
-      "Zkus se doma zeptat, jestli máte důležitá telefonní čísla napsaná někde na viditelném místě.",
+    "Hasiči hasí požáry. Jejich číslo začíná na 15.",
+    "Tři česká tísňová čísla začínají na 15 a liší se poslední číslicí. V řadě „oheň – zdraví – zločin“ jsou hasiči první, takže mají nejnižší poslední číslici.",
+    "Hasiči mají číslo 150. Pomůcka: 150 = oheň, 155 = zdraví (záchranka), 158 = zločin (policie). Číslo 112 je evropská linka pro všechny druhy nouze.",
+  ),
+  t(
+    "Jaké je telefonní číslo záchranné služby?",
+    "155",
+    [
+      ["150", "150 jsou hasiči — ti hasí požáry."],
+      ["158", "158 je policie — ta řeší zločiny."],
+      ["112", "112 je evropská linka pro všechno. Záchranka má i své vlastní číslo."],
     ],
-    explanation: "Záchranná služba má číslo 155. Jezdí k lidem, kteří jsou nemocní, zranění nebo potřebují rychlou lékařskou pomoc.",
-  },
-  {
-    question: "Jaké je telefonní číslo policie?",
-    correctAnswer: "158",
-    options: ["150", "155", "158", "112"],
-    hints: [
-      "Policie řeší zločiny a chrání pořádek.",
-      "Nejlepší způsob, jak si důležitá čísla zapamatovat, je zeptat se doma a pak si je párkrát zopakovat nahlas.",
+    "Záchranná služba pomáhá nemocným a zraněným lidem.",
+    "V řadě „oheň – zdraví – zločin“ je zdraví uprostřed. Hledej číslo na 15, jehož poslední číslice leží mezi čísly hasičů a policie.",
+    "Záchranná služba má číslo 155. Jezdí k lidem, kteří jsou nemocní nebo zranění a potřebují rychlou lékařskou pomoc.",
+  ),
+  t(
+    "Jaké je telefonní číslo policie?",
+    "158",
+    [
+      ["150", "150 jsou hasiči — ti hasí požáry, ne zločiny."],
+      ["155", "155 je záchranná služba — ta ošetřuje zraněné."],
+      ["112", "112 je evropská linka pro všechno. Policie má i své vlastní číslo."],
     ],
-    explanation: "Policie má číslo 158. Voláme ji, když jsme svědky trestného činu nebo potřebujeme pomoc s bezpečností.",
-  },
-  {
-    question: "Co je číslo 112?",
-    correctAnswer: "Tísňová linka platná v celé Evropě",
-    options: ["Číslo určené jen pro děti", "Číslo hasičů v Praze", "Informační linka pro turisty", "Tísňová linka platná v celé Evropě"],
-    hints: [
-      "Tohle číslo si můžeš vzít i na dovolenou za hranice.",
-      "Lze volat i ze zahraničí nebo bez kreditu na mobilu.",
+    "Policie řeší zločiny a chrání pořádek.",
+    "V řadě „oheň – zdraví – zločin“ je zločin poslední, takže policie má z čísel začínajících na 15 tu nejvyšší poslední číslici.",
+    "Policie má číslo 158. Voláme ji, když vidíme trestný čin nebo potřebujeme pomoc s bezpečností.",
+  ),
+  t(
+    "Co je číslo 112?",
+    "Tísňová linka platná v celé Evropě",
+    [
+      ["Číslo určené jen pro děti", "Linka 112 slouží všem, dětem i dospělým."],
+      ["Číslo hasičů v Praze", "Hasiči mají po celé republice číslo 150. Linka 112 platí všude a pro všechno."],
+      ["Informační linka pro turisty", "112 není informační linka — volá se na ni jen v nouzi."],
     ],
-    explanation: "Číslo 112 je evropská tísňová linka. Funguje ve všech zemích EU, i bez kreditu a SIM karty. Operátor tě přepojí na hasiče, záchranku nebo policii podle toho, co potřebuješ.",
-  },
-  {
-    question: "Kolik stojí volání na tísňová čísla 150, 155, 158 nebo 112?",
-    correctAnswer: "Nic — volání je vždy zdarma",
-    options: ["Nic — volání je vždy zdarma", "Podle tarifu mobilu", "Jen když máš kredit", "Musíš mít speciální aplikaci"],
-    hints: [
-      "Tísňová čísla fungují i bez kreditu na mobilu.",
-      "Na tísňová čísla se dá volat i bez SIM karty.",
+    "Tohle číslo si můžeš vzít s sebou i na dovolenou za hranice.",
+    "Na 112 zavoláš ve Francii, v Itálii i u nás a operátor tě spojí s hasiči, záchrankou nebo policií. Kde všude tedy platí?",
+    "Číslo 112 je evropská tísňová linka. Funguje ve všech zemích Evropské unie, i bez kreditu. Operátor tě přepojí na hasiče, záchranku nebo policii podle toho, co se děje.",
+  ),
+  t(
+    "Kolik stojí volání na tísňová čísla 150, 155, 158 nebo 112?",
+    "Nic — volání je vždy zdarma",
+    [
+      ["Podle tarifu mobilu", "Tísňová volání se do tarifu nepočítají, nikdo za ně neplatí."],
+      ["Jen když máš kredit, jinak to nejde", "Tísňová čísla fungují i bez kreditu."],
+      ["Musíš mít speciální aplikaci", "Stačí obyčejný telefon, žádná aplikace není potřeba."],
     ],
-    explanation: "Volání na tísňová čísla je vždy zdarma a funguje i bez kreditu nebo SIM karty — peníze nesmí být překážkou při volání o pomoc.",
-  },
-  {
-    question: "Co znamená slovo šikana?",
-    correctAnswer: "Úmyslné a opakované ubližování druhému",
-    options: ["Jednorázová hádka mezi kamarády", "Úmyslné a opakované ubližování druhému", "Hlasitý smích ve třídě", "Soutěž mezi spolužáky"],
-    hints: [
-      "Klíčová slova jsou „úmyslně“ a „opakovaně“.",
-      "Šikana se neděje jen jednou — trvá a opakuje se.",
+    "Na tísňové číslo se dovoláš i bez kreditu na mobilu.",
+    "Když někdo potřebuje pomoc, nesmí ho zastavit, že nemá peníze. Kolik tedy asi takové volání stojí?",
+    "Volání na tísňová čísla je vždy zdarma a funguje i bez kreditu. Peníze nesmí být překážkou, když jde o život nebo zdraví.",
+  ),
+  t(
+    "Co znamená slovo šikana?",
+    "Úmyslné a opakované ubližování druhému",
+    [
+      ["Jednorázová hádka mezi kamarády", "Jedna hádka šikana není — šikana se opakuje a má za cíl ublížit."],
+      ["Hlasitý smích ve třídě", "Smích sám o sobě nikomu neubližuje."],
+      ["Soutěž mezi spolužáky", "Soutěž je hra podle pravidel, šikana je ubližování."],
     ],
-    explanation: "Šikana je úmyslné a opakované ubližování druhému — fyzické (bití, strkání) nebo psychické (posměch, vyloučení ze skupiny).",
-  },
-  {
-    question: "Je jednorázový žert mezi kamarády totéž co šikana?",
-    correctAnswer: "Ne — šikaně chybí opakování a záměr ublížit",
-    options: ["Ano, je to úplně stejné", "Ano, pokud se někdo zasměje", "Ne — šikaně chybí opakování a záměr ublížit", "Ne, protože šikana neexistuje"],
-    hints: [
-      "Šikana se pozná podle opakování a úmyslu ublížit.",
-      "Jednorázový žert bez záměru ublížit šikana není.",
+    "Šikana se neděje jen jednou.",
+    "Hledej možnost, kde se ubližuje schválně a znovu a znovu. Jedna hádka ani hra to nejsou.",
+    "Šikana je úmyslné a opakované ubližování — fyzické (bití, strkání) nebo psychické (posměch, vylučování z party). Opakování a zlý úmysl ji odlišují od hádky nebo hry.",
+  ),
+  t(
+    "Je jednorázový žert mezi kamarády totéž co šikana?",
+    "Ne — žertu chybí opakování a záměr ublížit",
+    [
+      ["Ano, je to úplně stejné", "Není — žert je jednorázový a nemá ublížit, šikana se schválně opakuje."],
+      ["Ano, pokud se někdo zasměje", "Smích o šikaně nerozhoduje, rozhoduje opakování a záměr ublížit."],
+      ["Ne, protože šikana neexistuje", "Šikana bohužel existuje. Jeden žert to ale není."],
     ],
-    explanation: "Šikana vyžaduje opakování a úmyslné ubližování. Jednorázový žert nebo škádlení bez zlého úmyslu šikanou není.",
-  },
-  {
-    question: "Kdo je pro dítě důvěryhodný dospělý?",
-    correctAnswer: "Rodič, učitel nebo jiný blízký dospělý",
-    options: ["Kdokoliv starší osmnácti let", "Jen rodič a nikdo další", "Cizí člověk s hodnou tváří", "Rodič, učitel nebo jiný blízký dospělý"],
-    hints: [
-      "Důvěryhodný = takový, komu věříme a koho dobře známe.",
-      "Přemýšlej o dospělých, které dítě dobře zná ze svého každodenního života — doma, ve škole, na kroužku.",
+    "Vzpomeň si, podle čeho se šikana pozná.",
+    "Šikana má dva znaky: děje se opakovaně a někdo chce druhému ublížit. Má tyhle znaky jeden žert mezi kamarády?",
+    "Šikana se opakuje a jejím cílem je ublížit. Jednorázový žert nebo škádlení bez zlého úmyslu tyto znaky nemá, proto šikanou není.",
+  ),
+  t(
+    "Kdo je pro dítě důvěryhodný dospělý?",
+    "Rodič, učitel nebo jiný blízký dospělý",
+    [
+      ["Kdokoli starší osmnácti let", "Věk nestačí — důvěryhodný je ten, koho dobře znáš."],
+      ["Jen rodič a nikdo další", "Důvěřovat můžeš i učiteli, prarodiči nebo trenérovi, nejen rodičům."],
+      ["Cizí člověk, který vypadá mile", "Milý vzhled neznamená, že je člověk důvěryhodný. Cizího neznáš."],
     ],
-    explanation: "Důvěryhodný dospělý je člověk, kterého dobře znáš a kterému věříš — rodič, prarodič, učitel, trenér nebo soused. Nemusí to být jen rodič.",
-  },
-  {
-    question: "Co NESMÍŠ sdílet s cizími lidmi na internetu?",
-    correctAnswer: "Svou adresu a telefonní číslo",
-    options: [
-      "Svou adresu a telefonní číslo",
-      "Oblíbenou barvu",
-      "Název svého oblíbeného seriálu",
-      "Obrázek krajiny",
+    "Důvěryhodný znamená, že mu věříš a dobře ho znáš.",
+    "Přemýšlej o dospělých, které vídáš každý den — doma, ve škole, na kroužku. Je to jen jeden člověk, nebo jich může být víc?",
+    "Důvěryhodný dospělý je člověk, kterého dobře znáš a kterému věříš: rodič, prarodič, učitel nebo trenér. Nemusí to být jen rodič, ale nikdy to není cizí člověk.",
+  ),
+  t(
+    "Co NESMÍŠ sdílet s cizími lidmi na internetu?",
+    "Svou adresu a telefonní číslo",
+    [
+      ["Oblíbenou barvu", "Oblíbená barva nic neprozradí o tom, kde bydlíš."],
+      ["Název oblíbeného seriálu", "Seriál tě nijak neprozradí, ten sdílet můžeš."],
+      ["Obrázek krajiny", "Obrázek krajiny bez tebe a bez adresy je v pořádku."],
     ],
-    hints: [
-      "Adresa a telefon jsou osobní údaje — s jejich pomocí tě cizí člověk může najít.",
-      "Jméno, adresa, škola, telefon = nikdy cizím na internetu.",
+    "Hledej údaje, podle kterých by tě cizí člověk mohl najít.",
+    "Barva, seriál ani obrázek krajiny neřeknou, kde bydlíš. Která možnost by cizímu člověku ukázala cestu k tobě domů nebo ke tvému telefonu?",
+    "Adresa a telefonní číslo jsou osobní údaje — podle nich tě cizí člověk může najít nebo ti volat. Proto je cizím lidem na internetu neříkáme.",
+  ),
+  t(
+    "Smíš poslat svou fotku cizímu člověku, kterého znáš jen z internetu?",
+    "Ne — fotky cizím lidem neposílám",
+    [
+      ["Ano, pokud si píšeme dlouho", "Ani dlouhé psaní z cizího člověka neudělá známého — pořád nevíš, kdo to je."],
+      ["Ano, když o to hezky poprosí", "Zdvořilá prosba nic nemění. Fotku by mohl zneužít."],
+      ["Ano, ale jen jednu fotku", "I jedna fotka se dá zneužít a rozeslat dál."],
     ],
-    explanation: "Adresa a telefonní číslo jsou osobní údaje, díky nimž tě cizí člověk může fyzicky najít. Proto tyto údaje nikomu cizímu na internetu neříkáme.",
-  },
-  {
-    question: "Smíš poslat svou fotku cizímu člověku, kterého znáš jen z internetu?",
-    correctAnswer: "Ne — nikdy neposílám fotky cizím lidem",
-    options: ["Ano, pokud si píšeme dlouho", "Ne — nikdy neposílám fotky cizím lidem", "Ano, když o to hezky poprosí", "Ano, ale jen jednu fotku"],
-    hints: [
-      "Fotky jsou osobní — cizí člověk by je mohl zneužít.",
-      "Cizí člověk na internetu může být ve skutečnosti úplně jiný, než tvrdí.",
+    "Fotka je tvůj osobní údaj — ukazuje, jak vypadáš.",
+    "Člověk z internetu může být ve skutečnosti úplně jiný, než tvrdí, a fotku může poslat dál. Změní na tom něco, jak dlouho si píšete?",
+    "Fotku cizímu člověku z internetu neposílej, ani když si dlouho píšete nebo hezky prosí. Nevíš, kdo to doopravdy je a co s fotkou udělá. Když o ni někdo žádá, řekni to dospělému.",
+  ),
+  t(
+    "Proč je dobré znát tísňová čísla 150, 155, 158 a 112 zpaměti?",
+    "Abych mohl rychle zavolat pomoc v nebezpečí",
+    [
+      ["Jen kvůli školnímu testu", "Čísla nejsou jen na test — jednou mohou zachránit život."],
+      ["Abych mohl kamarádům volat zdarma", "Tísňová čísla nejsou na hovory s kamarády. Zbytečné volání zdržuje záchranáře."],
+      ["Abych mohl vyzkoušet, jestli fungují", "Na tísňová čísla se nevolá na zkoušku — blokuješ linku lidem v nouzi."],
     ],
-    explanation: "Fotky nikomu cizímu na internetu neposílej, ani když si dlouho píšete. Pokud tě o to někdo požádá, řekni to rodiči, učiteli nebo jinému důvěryhodnému dospělému.",
-  },
-  {
-    question: "Proč je dobré znát tísňová čísla 150, 155, 158 a 112?",
-    correctAnswer: "Abych mohl rychle zavolat pomoc v nebezpečné situaci",
-    options: ["Jen pro případ školního testu", "Abych mohl volat zdarma", "Abych mohl rychle zavolat pomoc v nebezpečné situaci", "Jsou povinná pro všechny od 6 let"],
-    hints: [
-      "Tísňová čísla fungují i bez kreditu na mobilu.",
-      "V nebezpečí je každá sekunda důležitá.",
+    "Ve vážné situaci není čas hledat čísla v telefonu.",
+    "Když hoří nebo je někdo zraněný, rozhodují minuty. Proč je dobré mít čísla v hlavě dopředu, a ne je až hledat?",
+    "V nebezpečí rozhoduje každá minuta. Kdo zná tísňová čísla zpaměti, zavolá pomoc hned a může zachránit život — svůj nebo někoho jiného.",
+  ),
+  t(
+    "Které tísňové číslo funguje i v zahraničí a bez kreditu na mobilu?",
+    "112",
+    [
+      ["150", "150 jsou čeští hasiči — v cizině to číslo fungovat nemusí."],
+      ["155", "155 je česká záchranka, v jiných zemích mají jiná čísla."],
+      ["158", "158 je česká policie, v zahraničí platí jiné číslo."],
     ],
-    explanation: "Znát tísňová čísla může jednoho dne zachránit život — tvůj nebo někoho blízkého. Volání na 150, 155, 158 nebo 112 je zdarma a funguje i bez kreditu nebo SIM karty.",
-  },
-  {
-    question: "Jaké číslo funguje i v zahraničí a bez kreditu na mobilu?",
-    correctAnswer: "112",
-    options: ["150", "155", "158", "112"],
-    hints: [
-      "Toto číslo funguje ve všech zemích EU.",
-      "Je to evropská tísňová linka.",
+    "Hledej číslo, které není jen české.",
+    "Tři z nabízených čísel platí jen u nás a každé je pro jednu službu. Jedno je společné pro celou Evropu a pro všechny druhy nouze — které to je?",
+    "Číslo 112 je evropská tísňová linka: funguje ve všech zemích Evropské unie i bez kreditu. Čísla 150, 155 a 158 jsou česká.",
+  ),
+  t(
+    "Jaká může být šikana?",
+    "Fyzická i psychická (posměch, vyloučení)",
+    [
+      ["Jen fyzická (bití, strkání)", "Nejen — ubližovat se dá i slovy a vylučováním z party."],
+      ["Jen psychická (posměch)", "Nejen — patří sem i bití a strkání."],
+      ["Jen slovní nadávky", "Nadávky jsou jen jedna podoba. Šikana může být i fyzická."],
     ],
-    explanation: "Číslo 112 funguje ve všech zemích EU, i bez kreditu a SIM karty. Operátor tě přepojí na hasiče, záchranku nebo policii.",
-  },
-  {
-    question: "Jaké může být šikana?",
-    correctAnswer: "Fyzická i psychická (posměch, vyloučení)",
-    options: ["Fyzická i psychická (posměch, vyloučení)", "Jen fyzická (bití, strkání)", "Jen psychická (posměch)", "Jen slovní"],
-    hints: [
-      "Ubližovat se dá tělem, ale i slovy nebo vyloučením z party.",
-      "Šikana není jen bití — patří sem i posměch nebo vyloučení ze skupiny.",
-    ],
-    explanation: "Šikana může být fyzická (bití, strkání) i psychická (posměch, pomlouvání, vyloučení ze skupiny). Obojí je stejně vážné.",
-  },
+    "Ubližovat se dá tělem, ale i slovy.",
+    "Vzpomeň si: bití a strkání je jeden druh, posměch a nechat někoho stranou je druhý. Patří k šikaně jen jeden z nich, nebo oba?",
+    "Šikana může být fyzická (bití, strkání) i psychická (posměch, pomlouvání, vylučování ze skupiny). Obě podoby ubližují a obě jsou stejně vážné.",
+  ),
 ];
 
 const POOL_L2: PracticeTask[] = [
-  {
-    question: "Hoří odpadkový koš na dvoře vašeho domu. Koho zavoláš?",
-    correctAnswer: "Hasiče — 150",
-    options: ["Záchrannou službu — 155", "Hasiče — 150", "Policii — 158", "Nikoho, počkám, až to samo zhasne"],
-    hints: [
-      "Jde o požár — kdo hasí oheň?",
-      "150 = hasiči.",
+  t(
+    "Hoří odpadkový koš na dvoře vašeho domu. Koho zavoláš?",
+    "Hasiče — 150",
+    [
+      ["Záchrannou službu — 155", "Záchranka jezdí k nemocným a zraněným. Oheň hasí jiní."],
+      ["Policii — 158", "Policie řeší zločiny, požár neuhasí."],
+      ["Nikoho, počkám, až oheň sám zhasne", "Oheň se může rychle rozšířit — nikdy nečekej."],
     ],
-    explanation: "Při požáru voláme hasiče na číslo 150. Nikdy nečekáme, až oheň zhasne sám — může se rychle rozšířit.",
-  },
-  {
-    question: "Spolužák spadl na hřišti a nemůže vstát, hodně ho bolí noha. Koho zavoláš?",
-    correctAnswer: "Záchrannou službu — 155",
-    options: ["Hasiče — 150", "Policii — 158", "Záchrannou službu — 155", "Rodiče spolužáka, ale nikoho jiného"],
-    hints: [
-      "Jde o zdravotní příhodu — potřebujeme lékaře.",
-      "Záchranná služba má číslo 155.",
+    "Jde o požár — kdo přijede oheň uhasit?",
+    "Rozlišuj: oheň, zdraví, zločin. Tady je problém oheň — hledej službu, která s ním umí zacházet, a její číslo.",
+    "Při požáru voláme hasiče na číslo 150. Nikdy nečekáme, až oheň zhasne sám — může se rychle rozšířit na dům.",
+  ),
+  t(
+    "Spolužák spadl na hřišti a nemůže vstát, hodně ho bolí noha. Koho zavoláš?",
+    "Záchrannou službu — 155",
+    [
+      ["Hasiče — 150", "Hasiči hasí požáry, tady nic nehoří."],
+      ["Policii — 158", "Nikdo nespáchal zločin, spolužák potřebuje lékaře."],
+      ["Jen rodiče spolužáka a nikoho dalšího", "Rodiče se to dozvědí, ale při vážném zranění je nutná rychlá odborná pomoc."],
     ],
-    explanation: "Záchranná služba (155) jezdí k nemocným a zraněným lidem. Zavolat jen rodičům nestačí — potřebná je rychlá odborná pomoc.",
-  },
-  {
-    question: "Vidíš cizího muže, jak se snaží vypáčit dveře zaparkovaného auta. Co uděláš?",
-    correctAnswer: "Zavolám policii — 158",
-    options: ["Zavolám hasiče — 150", "Půjdu se na to podívat blíž", "Nebudu si toho všímat", "Zavolám policii — 158"],
-    hints: [
-      "Vypáčení auta je trestná činnost — kdo ji řeší?",
-      "Policie chrání pořádek a řeší zločiny.",
+    "Jde o zranění — kdo umí ošetřit zraněného?",
+    "Rozlišuj: oheň, zdraví, zločin. Bolavá noha, na kterou nejde stoupnout, je věc zdraví — kdo k ní přijede s lékařem?",
+    "Záchranná služba (155) jezdí k nemocným a zraněným. Samotné zavolání rodičům nestačí — spolužák potřebuje rychlou odbornou pomoc.",
+  ),
+  t(
+    "Vidíš cizího muže, jak se snaží vypáčit dveře zaparkovaného auta. Co uděláš?",
+    "Zavolám policii — 158",
+    [
+      ["Zavolám hasiče — 150", "Nic nehoří. Krádež řeší jiná služba."],
+      ["Půjdu se na to podívat zblízka", "K místu se nepřibližuj, mohlo by ti hrozit nebezpečí."],
+      ["Nebudu si toho všímat", "Když vidíš možnou krádež, je správné ji nahlásit."],
     ],
-    explanation: "Policie má číslo 158. Voláme ji, když jsme svědky trestného činu. K místu se nepřibližujeme, aby nám nehrozilo nebezpečí.",
-  },
-  {
-    question: "Neznámý muž na ulici ti nabízí, že tě sveze domů autem. Co uděláš?",
-    correctAnswer: "Odmítnu a rychle odejdu k jiným lidem nebo do obchodu",
-    options: [
-      "Odmítnu a rychle odejdu k jiným lidem nebo do obchodu",
-      "Nastoupím, protože vypadá hodně",
-      "Počkám, co chce říct",
-      "Dám mu své telefonní číslo",
+    "Vypáčit cizí auto je krádež.",
+    "Rozlišuj: oheň, zdraví, zločin. Krádež je zločin — kdo ho vyšetřuje? Ke zloději se přitom nepřibližuj.",
+    "Krádež je zločin, a ten řeší policie na čísle 158. K místu se nepřibližujeme, aby nám nehrozilo nebezpečí.",
+  ),
+  t(
+    "Neznámý muž na ulici ti nabízí, že tě sveze domů autem. Co uděláš?",
+    "Odmítnu a rychle odejdu k jiným lidem nebo do obchodu",
+    [
+      ["Nastoupím, protože vypadá mile", "Milý vzhled nic nezaručuje. Do auta cizího člověka nikdy nenastupuj."],
+      ["Počkám, co mi chce říct", "Čekáním dáváš cizímu člověku čas. Bezpečnější je hned odejít."],
+      ["Dám mu své telefonní číslo", "Telefonní číslo je osobní údaj, cizímu ho nedávej."],
     ],
-    hints: [
-      "Do auta cizího člověka nikdy nenastupujeme.",
-      "Bezpečí je důležitější než zdvořilost — smíš říct ne.",
+    "Do auta cizího člověka se nenastupuje.",
+    "Bezpečí je důležitější než zdvořilost — smíš říct ne. Kam je pak nejlepší jít, aby byl kolem někdo, kdo ti pomůže?",
+    "Do auta cizího člověka nikdy nenastupuj, i kdyby byl velmi milý. Odmítni a rychle odejdi tam, kde jsou další lidé — třeba do obchodu.",
+  ),
+  t(
+    "Cizí žena tě žádá, abys jí ukázal cestu na opuštěné parkoviště na kraji města. Co uděláš?",
+    "Odmítnu — s neznámou osobou na odlehlé místo nechodím",
+    [
+      ["Půjdu, protože pomoc potřebuje", "Dospělý, který opravdu potřebuje pomoc, se zeptá jiného dospělého."],
+      ["Půjdu, ale budu dávat pozor", "Opatrnost nestačí — na odlehlém místě ti nikdo nepomůže."],
+      ["Zavolám kamaráda, ať jde se mnou", "Ani ve dvou s cizím člověkem na odlehlé místo nechoďte."],
     ],
-    explanation: "Do auta cizího člověka nikdy nenastupuj, i kdyby byl velmi milý. Bezpečný dospělý nepotřebuje pomoc od dítěte. Rychle odejdi tam, kde jsou další lidé.",
-  },
-  {
-    question: "Cizí žena tě žádá, abys jí ukázal cestu na opuštěné parkoviště na kraji města. Co uděláš?",
-    correctAnswer: "Odmítnu — s neznámou osobou na odlehlé místo nechodím",
-    options: ["Půjdu, protože to potřebuje", "Odmítnu — s neznámou osobou na odlehlé místo nechodím", "Půjdu, ale budu se jí bát", "Zavolám kamaráda, ať jde taky"],
-    hints: [
-      "Přemýšlej, proč by tě neznámý dospělý chtěl vzít právě tam, kde není nikdo jiný, kdo by ti mohl pomoct.",
-      "Dospělí si cestu mohou zjistit sami, nepotřebují doprovod od dítěte.",
+    "Kdo by ti na opuštěném parkovišti mohl pomoct, kdyby se něco stalo?",
+    "Dospělí si cestu zjistí sami — z mapy nebo od jiného dospělého. Proč by potřebovali právě dítě, a právě na místo, kde nikdo není?",
+    "S neznámou osobou na odlehlé místo nikdy nechoď. Dospělý, který opravdu potřebuje poradit cestu, se zeptá jiného dospělého, ne dítěte.",
+  ),
+  t(
+    "Ztratil ses v obchodním domě. Koho požádáš o pomoc?",
+    "Prodavače nebo ochranku v obchodě",
+    [
+      ["Prvního cizího muže na ulici", "Cizí člověk na ulici není bezpečná volba — a navíc jsi v obchodě."],
+      ["Nikoho — počkám sám", "Sám se ztracený jen těžko najdeš. Požádej zaměstnance."],
+      ["Náhodné dítě stejného věku", "Dítě ti nepomůže — nemůže rodiče vyhlásit rozhlasem."],
     ],
-    explanation: "S neznámou osobou na odlehlé nebo opuštěné místo nikdy nechoď. Dospělý, který potřebuje opravdovou pomoc, se zeptá jiného dospělého, ne dítěte.",
-  },
-  {
-    question: "Ztratil ses v obchodním domě. Koho požádáš o pomoc?",
-    correctAnswer: "Prodavače nebo ochranku v obchodě",
-    options: ["Prvního cizího muže na ulici", "Nikoho — počkám sám", "Prodavače nebo ochranku v obchodě", "Náhodné dítě stejného věku"],
-    hints: [
-      "V obchodě jsou dospělí, kteří tam pracují — znají prostředí a mohou zavolat rodiče.",
-      "Zaměstnanci jsou bezpečnější volba než náhodný cizinec.",
+    "V obchodě jsou dospělí, kteří tam pracují.",
+    "Zaměstnanec obchodu zná prostředí a může rodiče vyhlásit rozhlasem. Kdo z nabízených lidí je v obchodě v práci?",
+    "Prodavač nebo ochranka pracují na veřejném místě a vědí, co dělat: zavolají rodiče nebo je vyhlásí rozhlasem. Proto jsou nejlepší volbou.",
+  ),
+  t(
+    "Ztratil ses na náměstí ve městě. Koho požádáš o pomoc?",
+    "Policistu nebo strážníka v uniformě",
+    [
+      ["Kohokoli, kdo vypadá hodný", "Hodný vzhled nic nezaručuje. Obrať se na člověka v uniformě."],
+      ["Jen mládež na skateboardu", "Náhodní kluci nemají povinnost ani možnost ti pomoct."],
+      ["Nikoho, budu bloudit dál", "Bloudit dál je nebezpečné — je lepší požádat o pomoc."],
     ],
-    explanation: "Prodavač nebo bezpečnostní pracovník (ochranka) jsou důvěryhodní dospělí — pracují na veřejném místě a mohou pomoci zavolat rodiče nebo ohlásit ztrátu dítěte přes rozhlas.",
-  },
-  {
-    question: "Ztratil ses na náměstí ve městě. Koho požádáš o pomoc?",
-    correctAnswer: "Policistu nebo strážníka v uniformě",
-    options: ["Kohokoliv, kdo vypadá hodně", "Jen mládež na skateboardu", "Nikoho cizího", "Policistu nebo strážníka v uniformě"],
-    hints: [
-      "Uniforma označuje osobu, která má povinnost pomáhat.",
-      "Policista má služební číslo a musí se prokázat.",
+    "Hledej člověka, kterého poznáš podle oblečení.",
+    "Uniforma prozradí, že má člověk za úkol pomáhat lidem a může kontaktovat tvé rodiče. Kdo na náměstí nosí uniformu?",
+    "Policistu nebo strážníka v uniformě poznáš snadno a mají povinnost ti pomoci. Mohou zavolat tvým rodičům nebo tě bezpečně odvést.",
+  ),
+  t(
+    "Neznámý člověk na internetu se tě ptá, kde přesně bydlíš. Co uděláš?",
+    "Neřeknu mu to a řeknu to rodiči nebo učiteli",
+    [
+      ["Řeknu mu jen název ulice", "I název ulice pomůže cizímu člověku tě najít."],
+      ["Řeknu mu to, když je milý", "Na internetu nepoznáš, kdo je doopravdy milý."],
+      ["Nejdřív se zeptám proč, pak mu to řeknu", "Důvod může být vymyšlený. Adresu cizímu neříkej nikdy."],
     ],
-    explanation: "Policistu nebo strážníka v uniformě poznáš snadno a jsou povinni ti pomoci. Mohou kontaktovat tvoje rodiče nebo tě bezpečně dopravit na místo.",
-  },
-  {
-    question: "Neznámý člověk na internetu se tě ptá, kde přesně bydlíš. Co uděláš?",
-    correctAnswer: "Neřeknu mu to a řeknu to rodiči nebo učiteli",
-    options: [
-      "Neřeknu mu to a řeknu to rodiči nebo učiteli",
-      "Řeknu mu jen název ulice",
-      "Řeknu mu to, když je milý",
-      "Zeptám se ho, proč to chce vědět, a pak mu to řeknu",
+    "Adresa je údaj, podle kterého tě cizí člověk najde.",
+    "Nejde jen o to adresu neprozradit — kdo z dospělých by se měl dozvědět, že se na ni někdo vyptává?",
+    "Adresu cizímu člověku na internetu neříkáme, ani po částech. Když se na ni někdo vyptává, řekneme to rodiči nebo učiteli, aby mohli zasáhnout.",
+  ),
+  t(
+    "Cizí člověk na internetu tě žádá, abys mu poslal svou fotku. Co uděláš?",
+    "Neposílám — řeknu to rodiči nebo učiteli",
+    [
+      ["Pošlu, když vypadá přátelsky", "Přátelské zprávy nic nezaručují."],
+      ["Pošlu fotku, na které nejsem vidět celý", "I část fotky se dá zneužít. Neposílej nic."],
+      ["Pošlu fotku kamaráda místo sebe", "Kamarádovu fotku bez jeho svolení posílat nesmíš — a cizímu už vůbec ne."],
     ],
-    hints: [
-      "Adresa je osobní údaj, kterým tě může cizí člověk najít.",
-      "Vždy to řekni dospělému, i kdyby ten člověk působil mile.",
+    "Fotka je osobní — cizí člověk ji může zneužít.",
+    "Nestačí jen fotku neposlat. Kdo by měl vědět, že tě o ni cizí člověk z internetu žádal, aby tě mohl ochránit?",
+    "Fotku cizímu na internetu neposílej. Nevíš, kdo to doopravdy je a co s fotkou udělá. Když tě o ni někdo žádá, hned to řekni dospělému.",
+  ),
+  t(
+    "Spolužák ti každý den o přestávce schválně strčí a nadává ti před ostatními. Co to je?",
+    "Šikana",
+    [
+      ["Jednorázový žert", "Neděje se to jednou — opakuje se to každý den."],
+      ["Přátelské škádlení", "Škádlení je vzájemná legrace. Tady je strkání schválně a nadávky."],
+      ["Normální chování mezi kamarády", "Kamarádi si schválně neubližují každý den."],
     ],
-    explanation: "Adresu nikdy cizímu na internetu neříkáme, ani po částech. Pokud se na ni někdo ptá, řekni to rodiči nebo učiteli.",
-  },
-  {
-    question: "Cizí člověk na internetu tě žádá, abys mu poslal svou fotku. Co uděláš?",
-    correctAnswer: "Neposílám — řeknu to rodiči nebo učiteli",
-    options: ["Pošlu, když vypadá přátelsky", "Neposílám — řeknu to rodiči nebo učiteli", "Pošlu anonymní fotku", "Pošlu fotku kamaráda místo sebe"],
-    hints: [
-      "Fotky jsou osobní — cizí člověk by je mohl zneužít.",
-      "Pokud tě někdo na internetu žádá o fotky, vždy to řekni dospělému.",
+    "Všimni si slov „každý den“ a „schválně“.",
+    "Když někdo někomu ubližuje úmyslně a pořád znovu, má to svůj název. Znáš ho z hodin o bezpečí.",
+    "Strkání a nadávky, které se opakují každý den a jsou schválně, jsou šikana. Opakování a záměr ublížit ji odlišují od žertu.",
+  ),
+  t(
+    "Vidíš, že silnější spolužák už po několikáté bere mladšímu svačinu a nadává mu. Co bys měl udělat?",
+    "Říct to učiteli nebo jinému dospělému",
+    [
+      ["Nic, není to moje věc", "Je — když šikanu mlčky přihlížíš, pomáháš, aby pokračovala."],
+      ["Počkat, jestli přestane sám", "Šikana sama nepřestává, opakuje se už několikrát."],
+      ["Vzít mladšímu svačinu taky", "Tím by ses k šikaně přidal."],
     ],
-    explanation: "Fotky nikomu cizímu na internetu neposílej. Cizí člověk může být ve skutečnosti úplně jiný, než tvrdí. Pokud tě o to někdo požádá, ihned to řekni dospělému.",
-  },
-  {
-    question: "Spolužák ti každý den o přestávce schválně strčí a nadává ti před ostatními. Co to je?",
-    correctAnswer: "Šikana",
-    options: ["Jednorázový žert", "Přátelské škádlení", "Šikana", "Normální chování mezi kamarády"],
-    hints: [
-      "Klíčové slovo: opakuje se to každý den.",
-      "Jak se nazývá situace, kdy někdo někomu úmyslně a opakovaně ubližuje? Znáš ten pojem z jiných lekcí.",
+    "Opakované braní svačiny a nadávky jsou šikana.",
+    "Šikanu nemá řešit dítě samo. Kdo ve škole má moc ji zastavit, a komu to tedy řekneš?",
+    "Opakované ubližování je šikana a tu má řešit dospělý. Když to řekneš učiteli, pomůžeš mladšímu spolužákovi — mlčení šikanu nezastaví.",
+  ),
+  t(
+    "Jsi na výletě mimo město a stane se něco nebezpečného, ale nejsi si jistý, jaké číslo zavolat. Co uděláš?",
+    "Zavolám 112 — funguje vždy a přepojí mě dál",
+    [
+      ["Nezavolám nikomu, protože si nejsem jistý", "Nejistota není důvod nevolat — existuje číslo pro všechno."],
+      ["Počkám, až najdu správné číslo", "Čekáním ztrácíš čas, který může rozhodovat."],
+      ["Zavolám kamarádovi, ať to vyřeší", "Kamarád pomoc nepošle. Zavolej tísňovou linku."],
     ],
-    explanation: "Šikana je úmyslné a opakované ubližování — fyzické (strkání) nebo psychické (nadávky). Opakování a záměr ublížit ji odlišují od žertu.",
-  },
-  {
-    question: "Vidíš, že silnější spolužák už po několikáté bere mladšímu svačinu a nadává mu. Co bys měl udělat?",
-    correctAnswer: "Říct to učiteli nebo jinému dospělému",
-    options: ["Nic, není to moje věc", "Počkat, jestli přestane sám", "Vzít mladšímu svačinu taky", "Říct to učiteli nebo jinému dospělému"],
-    hints: [
-      "Opakované ubližování je šikana, kterou má řešit dospělý.",
-      "Přihlížet mlčky šikaně situaci neřeší.",
+    "Existuje číslo, které funguje pro každý druh nouze.",
+    "Když nevíš, jestli volat hasiče, záchranku, nebo policii, zavolej linku, kde operátor rozhodne za tebe. Které číslo to je?",
+    "Když si nejsi jistý, zavolej 112. Tahle linka funguje vždy a operátor tě přepojí na hasiče, záchranku nebo policii.",
+  ),
+  t(
+    "Neznámý muž ti nabízí bonbony a zve tě k sobě domů podívat se na štěňata. Co uděláš?",
+    "Odmítnu, odejdu a řeknu to dospělému",
+    [
+      ["Půjdu se jen podívat na štěňata", "Právě lákavá nabídka je past. K cizímu domů nechoď."],
+      ["Vezmu si bonbony, ale dovnitř nepůjdu", "Ani sladkosti od cizího člověka nepřijímej."],
+      ["Zeptám se, jestli tam budou i jiné děti", "Ani přítomnost jiných dětí nic nezaručuje. Odmítni."],
     ],
-    explanation: "Když vidíš opakované ubližování, řekni to učiteli nebo jinému dospělému. Sám to řešit nemusíš a přihlížení bez zásahu situaci nezlepší.",
-  },
-  {
-    question: "Jsi na výletě mimo město a stane se něco nebezpečného, ale nejsi si jistý, jaké přesné číslo zavolat. Co uděláš?",
-    correctAnswer: "Zavolám 112 — funguje vždy a přepojí mě dál",
-    options: [
-      "Zavolám 112 — funguje vždy a přepojí mě dál",
-      "Nezavolám nikomu, protože si nejsem jistý",
-      "Počkám, až najdu správné číslo",
-      "Zavolám kamarádovi, ať to vyřeší",
-    ],
-    hints: [
-      "112 je univerzální číslo pro všechny druhy nebezpečí.",
-      "Operátor tě podle potřeby přepojí na hasiče, záchranku nebo policii.",
-    ],
-    explanation: "Když si nejsi jistý, jaké přesné číslo použít, zavolej 112. Toto univerzální číslo funguje vždy a operátor tě přepojí na správnou pomoc.",
-  },
-  {
-    question: "Neznámý muž ti nabízí bonbony a zve tě k sobě domů podívat se na štěňata. Co uděláš?",
-    correctAnswer: "Odmítnu a odejdu pryč, případně to řeknu dospělému",
-    options: ["Půjdu se jen podívat na štěňata", "Odmítnu a odejdu pryč, případně to řeknu dospělému", "Vezmu si bonbony, ale dovnitř nepůjdu", "Zeptám se, jestli tam budou i jiné děti"],
-    hints: [
-      "Nabídky od cizích lidí, i lákavé, je bezpečnější odmítnout.",
-      "K cizímu člověku domů nikdy nechodíme.",
-    ],
-    explanation: "Nabídky sladkostí nebo pozvání domů od cizího člověka vždy odmítni a odejdi pryč. Řekni to rodiči nebo jinému dospělému, i kdyby to vypadalo neškodně.",
-  },
+    "Lákavá nabídka od cizího člověka je varování.",
+    "Štěňata i bonbony jsou jen návnada. Co je bezpečné udělat hned a komu o tom potom povědět?",
+    "Nabídku sladkostí nebo pozvání domů od cizího člověka vždy odmítni a odejdi. Pak to řekni rodiči nebo jinému dospělému, i kdyby to vypadalo neškodně.",
+  ),
 ];
 
 const POOL_L3: PracticeTask[] = [
-  {
-    question: "Dva spolužáci si spolu hrají na honěnou, smějí se a občas do sebe žertem strčí. Je to šikana?",
-    correctAnswer: "Ne — chybí opakované a úmyslné ubližování",
-    options: ["Ano, protože do sebe strkají", "Ano, protože jsou dva proti jednomu", "Ne — chybí opakované a úmyslné ubližování", "Ne, protože šikana může být jen mezi dospělými"],
-    hints: [
-      "Nejdřív rozpoznej, o jakou situaci jde — je to hra, nebo ubližování?",
-      "Šikana potřebuje opakování a záměr ublížit, obyčejná hra ne.",
+  t(
+    "Dva spolužáci si spolu hrají na honěnou, smějí se a občas do sebe žertem strčí. Je to šikana?",
+    "Ne — chybí opakované a úmyslné ubližování",
+    [
+      ["Ano, protože do sebe strkají", "Strčit se při hře ještě není šikana — oba se smějí a hrají dobrovolně."],
+      ["Ano, protože se to děje o přestávce", "Kdy se to děje, nerozhoduje. Rozhoduje, jestli někdo chce ubližovat."],
+      ["Ne, protože šikana je jen mezi dospělými", "Šikana se bohužel děje i mezi dětmi. Tady ale jde o hru."],
     ],
-    explanation: "Jde o hru, ne o šikanu — chybí opakované a úmyslné ubližování, obě děti se smějí a hrají dobrovolně. Šikanu je potřeba odlišit od běžného škádlení nebo hry.",
-  },
-  {
-    question: "Kamarád ti řekne, že mu spolužák bere svačinu úplně každý den a vyhrožuje mu, že mu ublíží, když to řekne. Co to je a co má udělat jako první?",
-    correctAnswer: "Je to šikana — měl by to hned říct dospělému",
-    options: ["Je to jen legrace — nemusí nic dělat", "Je to šikana, ale musí to vyřešit sám", "Není to šikana, protože jde jen o svačinu", "Je to šikana — měl by to hned říct dospělému"],
-    hints: [
-      "Nejdřív rozpoznej: opakuje se to a je tam vyhrožování — to je šikana.",
-      "Pak zvol správnou reakci: sám ji řešit nemá, potřebuje dospělého.",
+    "Nejdřív rozpoznej, o jakou situaci jde — je to hra, nebo ubližování?",
+    "Porovnej se znaky šikany: chce jeden druhému ublížit? Smějí se oba? Hrají si dobrovolně? Podle toho rozhodni.",
+    "Jde o hru, ne o šikanu: obě děti se smějí a hrají dobrovolně, nikdo nechce druhému ublížit. Šikanu je potřeba odlišit od běžného škádlení nebo hry.",
+  ),
+  t(
+    "Kamarád ti řekne, že mu spolužák bere svačinu úplně každý den a vyhrožuje, že mu ublíží, když to řekne. Co to je a co má udělat jako první?",
+    "Je to šikana — měl by to hned říct dospělému",
+    [
+      ["Je to jen legrace — nemusí nic dělat", "Výhrůžky a každodenní braní svačiny nejsou legrace."],
+      ["Je to šikana, ale musí ji vyřešit sám", "Šikanu dítě samo neřeší — potřebuje pomoc dospělého."],
+      ["Není to šikana, jde jen o svačinu", "Nejde o svačinu, ale o opakované ubližování a výhrůžky."],
     ],
-    explanation: "Opakované braní svačiny s vyhrožováním je šikana. Nejdůležitější první krok je říct to co nejdřív důvěryhodnému dospělému — sám by to řešit neměl.",
-  },
-  {
-    question: "Jsi na výletě v lese, kamarád spadl ze stromu a hodně krvácí, jste daleko od města a nevíš přesně, jaké číslo použít. Co uděláš?",
-    correctAnswer: "Zavolám 112 — funguje všude a přepojí mě na správnou pomoc",
-    options: [
-      "Zavolám 112 — funguje všude a přepojí mě na správnou pomoc",
-      "Nezavolám nikomu, protože nevím přesné číslo",
-      "Počkám, až se dostaneme blíž k městu",
-      "Zavolám 158, protože je to nejjednodušší číslo",
+    "Nejdřív rozpoznej situaci: opakuje se to a je tam vyhrožování.",
+    "Pak zvol reakci. Výhrůžka „když to řekneš, bude hůř“ má kamaráda umlčet — právě proto potřebuje někoho, kdo ho ochrání. Kdo to je?",
+    "Každodenní braní svačiny s výhrůžkami je šikana. První krok je říct to co nejdřív důvěryhodnému dospělému — sám by to kamarád řešit neměl.",
+  ),
+  t(
+    "Jsi na výletě v lese, kamarád spadl ze stromu a hodně krvácí. Jste daleko od města a nevíš přesně, jaké číslo použít. Co uděláš?",
+    "Zavolám 112 — funguje všude a přepojí mě na správnou pomoc",
+    [
+      ["Nezavolám, protože nevím přesné číslo", "Neznalost čísla není důvod nevolat — zbývá jedno univerzální."],
+      ["Počkám, až budeme blíž městu", "Při silném krvácení nečekej, pomoc musí přijet co nejdřív."],
+      ["Zavolám 158, protože je to nejsnazší číslo", "158 je policie. Zraněný potřebuje lékaře, ne policii."],
     ],
-    hints: [
-      "Nejdřív si uvědom, že jde o zdravotní nebezpečí, ale nevíš přesné číslo.",
-      "Když si nejsi jistý, zvol univerzální tísňovou linku.",
+    "Uvědom si, že jde o zdravotní nebezpečí, ale přesné číslo si nepamatuješ.",
+    "Když si nejsi jistý číslem, zvol linku, která funguje všude a kde tě operátor spojí se správnou službou. Čekat na lepší místo se nevyplácí.",
+    "Když přesné číslo nevíš, zavolej 112 — funguje všude, i v lese, a operátor tě spojí se záchrankou. Při silném krvácení se nečeká.",
+  ),
+  t(
+    "Kamarád ti pošle odkaz na neznámou hru a tvrdí, že je úplně bezpečná, protože ji dostal od svého bratra. Co uděláš jako první?",
+    "Nejdřív se zeptám dospělého, jestli je stránka bezpečná",
+    [
+      ["Hned kliknu, protože to poslal kamarád", "Kamarád nemusí vědět, odkud odkaz pochází. Nejdřív ověř."],
+      ["Pošlu odkaz dál celé třídě", "Tím bys případné nebezpečí rozšířil na všechny."],
+      ["Kliknu, ale nezadám žádné heslo", "Nebezpečná stránka může škodit i bez hesla, stačí na ni kliknout."],
     ],
-    explanation: "Když nevíš přesné číslo nebo si nejsi jistý, zavolej 112 — funguje všude, i mimo město, a operátor tě propojí se záchrannou službou.",
-  },
-  {
-    question: "Kamarád ti pošle odkaz na neznámou hru a tvrdí, že je úplně bezpečná, protože ji dostal od svého bratra. Co uděláš jako první?",
-    correctAnswer: "Nejdřív se zeptám dospělého, jestli je stránka bezpečná",
-    options: ["Hned kliknu, protože to poslal kamarád", "Nejdřív se zeptám dospělého, jestli je stránka bezpečná", "Pošlu odkaz dál celé třídě", "Kliknu, ale nezadám žádné heslo"],
-    hints: [
-      "Nejdřív si uvědom, že i důvěryhodný kamarád může nevědomky poslat nebezpečný odkaz.",
-      "Pak zvol správnou reakci: ověření u dospělého, ne kliknutí.",
+    "Uvědom si, že i kamarád může nevědomky poslat nebezpečný odkaz.",
+    "Neznámý odkaz je jako neznámý balíček — nejdřív zjisti, co v něm je. Kdo ti umí posoudit, jestli je v pořádku?",
+    "I odkaz od kamaráda může být nebezpečný, protože ani on nemusí vědět, odkud pochází. Proto se nejdřív zeptej dospělého a teprve pak klikej.",
+  ),
+  t(
+    "Neznámá paní čeká před školou a řekne ti, že ji poslala maminka, protože měla nehodu, a máš jít s ní. Co uděláš?",
+    "Neodejdu s ní — ověřím to u učitele nebo zavolám rodičům",
+    [
+      ["Půjdu s ní, protože zná jméno mojí maminky", "Jméno maminky může cizí člověk zjistit snadno. Nic to nedokazuje."],
+      ["Půjdu s ní, ale budu se bát", "Strach je signál, že to není v pořádku. Nechoď."],
+      ["Řeknu jí, kde bydlím, ať mě tam odveze", "Adresu cizímu neříkej a s cizím nikam nejezdi."],
     ],
-    explanation: "I odkaz od kamaráda může být nebezpečný, protože ani on nemusí vědět, odkud pochází. Vždy se nejdřív zeptej dospělého, než na neznámý odkaz klikneš.",
-  },
-  {
-    question: "Neznámá paní čeká před školou a řekne ti, že ji poslala maminka, protože měla nehodu, a máš jít s ní. Co uděláš?",
-    correctAnswer: "Neodejdu s ní — ověřím to u učitele nebo zavolám rodičům",
-    options: ["Půjdu s ní, protože zná jméno mojí maminky", "Půjdu s ní, ale budu se bát", "Neodejdu s ní — ověřím to u učitele nebo zavolám rodičům", "Řeknu jí, kde bydlím, ať mě tam odveze"],
-    hints: [
-      "Nejdřív si uvědom, že tvrzení cizího člověka nemusí být pravdivé, i když zní naléhavě.",
-      "Pak zvol bezpečnou reakci: ověřit u známého dospělého, ne jít s cizí osobou.",
+    "Tvrzení cizího člověka nemusí být pravdivé, i když zní naléhavě.",
+    "Rodiče by ti předem řekli, kdo pro tebe přijde. Jak si můžeš ověřit, jestli ta paní mluví pravdu, aniž bys s ní odešel?",
+    "I naléhavé tvrzení cizí osoby je potřeba ověřit u učitele nebo rodičů. Cizí lidé mohou znát jméno rodiče, a přesto lhát. S cizím nikam neodcházej.",
+  ),
+  t(
+    "Na internetu ti píše někdo, kdo tvrdí, že je stejně starý jako ty, a chce vědět, do jaké školy chodíš a kde bydlíš, abyste se mohli kamarádit. Co uděláš?",
+    "Neřeknu mu to a řeknu to dospělému",
+    [
+      ["Řeknu mu jen školu, ne adresu", "I podle školy tě může cizí člověk najít."],
+      ["Řeknu mu to, protože je to dítě jako já", "Na internetu nepoznáš, jestli je to opravdu dítě."],
+      ["Nejdřív chci jeho adresu, pak mu dám svou", "Výměna nic nezaručuje — jeho adresa může být vymyšlená."],
     ],
-    explanation: "I naléhavé nebo věrohodně znějící tvrzení cizí osoby je potřeba ověřit u učitele nebo rodičů, než s ní kamkoliv odejdeš. Cizí lidé mohou znát jméno rodiče a přesto lhát.",
-  },
-  {
-    question: "Na internetu ti píše někdo, kdo tvrdí, že je stejně starý jako ty, a chce vědět, do jaké školy chodíš a kde bydlíš, abyste se mohli kamarádit.",
-    correctAnswer: "Neřeknu mu to a řeknu to dospělému",
-    options: ["Řeknu mu jen školu, ne adresu", "Řeknu mu to, protože je to jen dítě jako já", "Zeptám se ho nejdřív na jeho adresu", "Neřeknu mu to a řeknu to dospělému"],
-    hints: [
-      "Nejdřív si uvědom, že na internetu nikdy nevíš jistě, kdo s tebou opravdu píše.",
-      "Pak zvol pravidlo: osobní údaje nesdílet a situaci nahlásit dospělému.",
+    "Na internetu nikdy nevíš jistě, kdo s tebou opravdu píše.",
+    "Škola i adresa jsou údaje, podle kterých tě někdo najde. Kromě toho, že je neprozradíš, komu o takové zprávě povíš?",
+    "Na internetu si nemůžeš být jistý, kdo s tebou píše, i kdyby tvrdil, že je dítě. Školu ani adresu neříkej a zprávu ukaž dospělému.",
+  ),
+  t(
+    "Dva spolužáci se jednou pohádali o pravítko a jeden druhého strčil. Od té doby se to už nestalo. Je to šikana?",
+    "Ne — chybí opakování, šlo o jednu hádku",
+    [
+      ["Ano, protože došlo ke strkání", "Jedno strčení v hádce ještě šikanou není — chybí opakování."],
+      ["Ano, protože to bylo o přestávce", "Čas ani místo nerozhodují. Rozhoduje opakování a záměr."],
+      ["Ne, protože šlo jen o kluky", "Šikana může být mezi kýmkoli. Šikanou to není proto, že se to neopakuje."],
     ],
-    explanation: "Na internetu si nikdy nemůžeš být jistý, kdo s tebou opravdu píše, i kdyby tvrdil, že je dítě. Školu ani adresu neříkej a řekni to dospělému.",
-  },
-  {
-    question: "Dva spolužáci se jednou pohádali o pravítko a jeden druhého strčil. Od té doby se to už nestalo. Je to šikana?",
-    correctAnswer: "Ne — chybí opakování, šlo o jednorázovou hádku",
-    options: [
-      "Ne — chybí opakování, šlo o jednorázovou hádku",
-      "Ano, protože došlo ke strkání",
-      "Ano, protože to bylo o přestávce",
-      "Ne, protože šlo jen o kluky",
+    "Zjisti, jestli se ubližování opakuje, nebo šlo o jednu příhodu.",
+    "Šikana potřebuje, aby se ubližování opakovalo. Stalo se to tady víckrát, nebo jen jednou při sporu o pravítko?",
+    "Jednorázová hádka se strčením není šikana, protože chybí opakování a dlouhodobý záměr ublížit. Je to konflikt, který se dá vyřešit domluvou.",
+  ),
+  t(
+    "Ztratil ses ve městě a jediný dospělý poblíž je muž bez uniformy, který nabízí, že tě odvede na policii. Co je nejbezpečnější?",
+    "Dojdu sám do nejbližšího obchodu nebo za policistou v uniformě",
+    [
+      ["Půjdu s ním, protože nabízí pomoc", "Nabídka pomoci od cizího nic nezaručuje."],
+      ["Počkám na místě a nikoho neoslovím", "Jen čekat nic nevyřeší — bezpečnou pomoc si můžeš najít sám."],
+      ["Půjdu s ním, ale budu si dávat pozor", "Opatrnost nestačí, když jdeš s cizím člověkem."],
     ],
-    hints: [
-      "Nejdřív zjisti, jestli se ubližování opakuje, nebo šlo o jednu příhodu.",
-      "Šikana potřebuje opakování — jednorázová hádka to nesplňuje.",
+    "Nabídka pomoci od cizího člověka bez uniformy není jistota bezpečí.",
+    "Porovnej, kde je víc lidí a kdo má povinnost ti pomoct. Kam bys mohl dojít sám, místo abys šel s cizím?",
+    "I dobře míněná nabídka cizího člověka je méně bezpečná než dojít sám do obchodu nebo za policistou v uniformě. Tam jsou lidé, kteří mají povinnost pomoct.",
+  ),
+  t(
+    "V lese hoří ohniště a zároveň je jeden z kamarádů popálený na ruce. Nevíš, koho zavolat dřív. Co uděláš?",
+    "Zavolám 112 — operátor pošle hasiče i záchranku",
+    [
+      ["Zavolám jen 150, zraněný počká", "Popálený kamarád potřebuje ošetření taky, ne až po uhašení."],
+      ["Počkám, až přijde dospělý", "Oheň i popálenina potřebují pomoc hned."],
+      ["Zavolám kamarádovi domů", "Kamarád pomoc nepošle, zavolej tísňovou linku."],
     ],
-    explanation: "Jednorázová hádka se strčením není šikana, protože chybí opakování a dlouhodobý záměr ublížit. Je potřeba odlišit ojedinělý konflikt od skutečné šikany.",
-  },
-  {
-    question: "Ztratil ses ve městě a jediný dospělý poblíž je muž bez uniformy, který nabízí, že tě odvede na policii. Co je nejbezpečnější?",
-    correctAnswer: "Radši dojdu sám do nejbližšího obchodu nebo za policistou v uniformě",
-    options: ["Půjdu s ním, protože nabízí pomoc", "Radši dojdu sám do nejbližšího obchodu nebo za policistou v uniformě", "Počkám na místě a nikoho neoslovím", "Půjdu s ním, ale budu si dávat pozor"],
-    hints: [
-      "Nejdřív si uvědom, že nabídka pomoci od cizího člověka bez uniformy není jistota bezpečí.",
-      "Pak zvol bezpečnější variantu: obchod nebo osoba v uniformě.",
+    "Uvědom si, že jde o dvě věci najednou — oheň i zranění.",
+    "Místo dvou hovorů stačí jeden: na lince, která platí pro všechny druhy nouze, operátor vyšle obě služby naráz. Která to je?",
+    "Když je potřeba víc druhů pomoci najednou, zavolej 112. Operátor zajistí hasiče i záchrannou službu, aniž bys musel volat dvakrát.",
+  ),
+  t(
+    "Spolužák ti ukáže modřiny a řekne, že mu je dělá stejný kluk už potřetí a vyhrožuje, že to bude horší, když to řekne. Co má udělat jako první?",
+    "Říct to co nejdřív důvěryhodnému dospělému",
+    [
+      ["Počkat, jestli přestane sám", "Ubližování už se opakovalo třikrát — samo nepřestane."],
+      ["Vyřešit si to s tím klukem sám", "Proti tomu, kdo ubližuje a vyhrožuje, dítě samo nestačí."],
+      ["Nic neříkat, aby nebylo hůř", "Právě mlčení chce ten, kdo vyhrožuje. Hůř bude spíš, když se to nikdo nedozví."],
     ],
-    explanation: "I dobře míněná nabídka od cizího člověka bez uniformy je méně bezpečná než dojít sám do obchodu nebo za policistou či strážníkem v uniformě, kterého snadno poznáš.",
-  },
-  {
-    question: "V lese hoří ohniště a zároveň je jeden z kamarádů popálený na ruce. Nevíš, koho zavolat dřív.",
-    correctAnswer: "Zavolám 112 — operátor zajistí hasiče i záchranku najednou",
-    options: ["Zavolám nejdřív 150, pak zkusím 155", "Počkám, až přijde dospělý", "Zavolám 112 — operátor zajistí hasiče i záchranku najednou", "Zavolám kamarádovi domů"],
-    hints: [
-      "Nejdřív si uvědom, že jde o dvě různé situace najednou — požár i zranění.",
-      "Univerzální číslo dokáže zajistit obě pomoci současně.",
+    "Opakované ubližování s výhrůžkami je šikana.",
+    "Výhrůžka má spolužáka umlčet. Co je tedy nejdůležitější první krok — mlčet, bojovat sám, nebo získat někoho silnějšího na svou stranu?",
+    "Opakované ubližování a výhrůžky jsou šikana. Šikanista se vyhrožováním snaží spolužáka umlčet, proto je nejdůležitější co nejdřív to říct dospělému.",
+  ),
+  t(
+    "Kamarádka ti napíše, že jí neznámý člověk z internetu nabízí schůzku a ptá se, jestli má jít. Co jí poradíš?",
+    "Ať to řekne rodičům a s cizím člověkem se nesetkává",
+    [
+      ["Ať jde, ale vezme si kamarádku s sebou", "Ani ve dvou se s cizím z internetu nescházejte."],
+      ["Ať se nejdřív zeptá, jak ten člověk vypadá", "Fotka nebo popis může být falešný."],
+      ["Ať mu pošle adresu, aby věděl, kam přijít", "Adresu cizímu nikdy neposílej."],
     ],
-    explanation: "Když je potřeba víc druhů pomoci najednou (hasiči i záchranná služba), zavolej 112 — operátor zajistí obě služby, aniž bys musel volat dvakrát.",
-  },
-  {
-    question: "Spolužák ti ukáže modřiny a řekne, že mu je dělá stejný kluk už potřetí a že mu vyhrožuje, že to bude horší, když to řekne. Co má udělat jako první?",
-    correctAnswer: "Říct to co nejdřív důvěryhodnému dospělému",
-    options: ["Počkat, jestli přestane sám", "Vyřešit si to s tím klukem sám", "Nic neříkat, aby nebylo hůř", "Říct to co nejdřív důvěryhodnému dospělému"],
-    hints: [
-      "Nejdřív rozpoznej, že opakované ubližování s výhrůžkami je šikana.",
-      "Pak zvol správnou první reakci — pomoc dospělého, ne mlčení.",
+    "Setkání s někým, koho znáš jen z internetu, je vždy rizikové.",
+    "Kdo by měl o takové pozvánce vědět, aby mohl posoudit riziko a kamarádku ochránit? A má se vůbec scházet?",
+    "S cizím člověkem, kterého znáš jen z internetu, se nesetkáváme, ani ve dvou. Správný postup je říct to rodičům, kteří situaci vyřeší.",
+  ),
+  t(
+    "Starší spolužák tě požádá, abys mu jako srandu pomohl schovat penál mladšímu klukovi. Děje se to už podruhé a ten mladší kvůli tomu brečí. Co to je a co uděláš?",
+    "Je to šikana — odmítnu pomáhat a řeknu to dospělému",
+    [
+      ["Je to jen legrace, tak mu pomůžu", "Legrace to není, když mladší kvůli tomu brečí."],
+      ["Je to šikana, ale nebudu se do toho plést", "Když o šikaně víš a mlčíš, pomáháš, aby pokračovala."],
+      ["Není to šikana, jde jen o penál", "Nejde o penál, ale o opakované trápení mladšího."],
     ],
-    explanation: "Opakované ubližování a výhrůžky jsou šikana. Přestože se šikanista vyhrožováním snaží spolužáka umlčet, nejdůležitější je co nejdřív říct to dospělému.",
-  },
-  {
-    question: "Kamarádka ti pošle zprávu, že jí neznámý člověk na internetu nabízí schůzku osobně a ptá se, jestli má jít. Co jí poradíš?",
-    correctAnswer: "Ať to řekne rodičům a s cizím člověkem se osobně nesetkává",
-    options: [
-      "Ať to řekne rodičům a s cizím člověkem se osobně nesetkává",
-      "Ať jde, ale vezme si kamarádku s sebou",
-      "Ať se nejdřív zeptá, jak ten člověk vypadá",
-      "Ať mu pošle svou adresu, aby věděl, kam přijít",
+    "Opakování a slzy mladšího ukazují, že nejde o neškodnou legraci.",
+    "Pak zvol reakci: když pomáháš schovávat penál, stáváš se součástí trápení. Co udělat místo toho a komu to říct?",
+    "Opakované schovávání věcí, které mladšímu ubližuje, je šikana, i když to starší nazývá srandou. Správně je odmítnout se na tom podílet a říct to dospělému.",
+  ),
+  t(
+    "Někdo ti na internetu napíše, že jsi vyhrál tablet, a chce jen tvoje celé jméno, adresu a heslo k účtu. Co uděláš?",
+    "Nic nevyplním a ukážu zprávu dospělému",
+    [
+      ["Vyplním to, tablet se hodí", "Výhra je návnada. Údaje a heslo by se daly zneužít."],
+      ["Pošlu jen jméno a adresu, heslo ne", "I jméno s adresou prozradí, kde bydlíš."],
+      ["Pošlu jen heslo, adresu ne", "Heslo nesmí znát nikdo cizí — otevírá tvůj účet."],
     ],
-    hints: [
-      "Nejdřív si uvědom, že setkání naživo s někým, koho znáš jen z internetu, je vždy rizikové — i pro kamarádku.",
-      "Kdo by měl o takové situaci vědět, aby mohl pomoct posoudit riziko a rozhodnout?",
-    ],
-    explanation: "S cizím člověkem, kterého znáš jen z internetu, se osobně nesetkáváme, ani ve dvou. Správný postup je říct to rodičům, kteří pomohou situaci vyřešit.",
-  },
-  {
-    question: "Starší spolužák tě požádá, abys mu jako srandu pomohl schovat penál mladšímu klukovi. Když se to stane už podruhé a ten mladší kvůli tomu brečí, co to je a co uděláš?",
-    correctAnswer: "Je to šikana — odmítnu pomáhat a řeknu to dospělému",
-    options: ["Je to jen legrace, tak mu pomůžu", "Je to šikana — odmítnu pomáhat a řeknu to dospělému", "Je to šikana, ale nemám se do toho plést", "Není to šikana, protože jde jen o penál"],
-    hints: [
-      "Nejdřív rozpoznej: opakování a slzy mladšího ukazují, že nejde o neškodnou legraci.",
-      "Pak zvol správnou reakci: nepomáhat a nahlásit to dospělému.",
-    ],
-    explanation: "Opakované schovávání věcí, které mladšímu spolužákovi ubližuje, je šikana, i když to starší spolužák nazývá srandou. Správně je odmítnout se na tom podílet a říct to dospělému.",
-  },
+    "Výhra, o kterou jsi nesoutěžil, je podezřelá.",
+    "Nejdřív si uvědom, co ten člověk chce doopravdy — tvoje osobní údaje. Pak rozhodni, co se zprávou udělat a komu ji ukázat.",
+    "Falešná výhra je častý trik, jak od dětí získat osobní údaje a hesla. Nic nevyplňuj, neposílej ani část údajů a zprávu ukaž rodiči nebo učiteli.",
+  ),
 ];
 
 function gen(level: number): PracticeTask[] {
