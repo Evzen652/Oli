@@ -23,10 +23,15 @@ scripts/lint-agreement.ts`, pak kopie smaž a `git checkout -- src/lib/czechGram
 ## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-12, session 39)
 
 **Změna postupu:** workflow se dál nepouští (kredit). Kritik běží **inline, po
-jedné dávce**, ve worktree, které po workflow zůstaly. Hotovo s kritikem **a sloučeno do `main`** (2026-09-12): `g2mat-a`,
-`g2mat-b`, `g2mat-c`, `g2mat-d`, `g2cjl-a`, `g3mat-a`, `g3mat-b`, `g3mat-c`
-— 26 témat. Zbývá **11 dávek bez kritika** (`g2cjl-b/c/d`, `g2prv-a/b`,
-`g3prv-a/b/c`, `g3cjl-a/b/c`) a 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+jedné dávce**, ve worktree, které po workflow zůstaly. Hotovo s kritikem **a sloučeno do `main`** (2026-09-12): **11 dávek / 35 témat**
+— celá 2. matematika, celá 2. čeština, celá 3. matematika. Zbývá **8 dávek
+bez kritika** (`g2prv-a/b`, `g3prv-a/b/c`, `g3cjl-a/b/c` — prvouka a 3. čeština)
+a 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+
+Nálezy kritika v češtině 2. ročníku: tři chyby slovosledu a pádu v šablonách
+zpětné vazby (`ŘECE hodí se…`, `ta ptá se…`, `na konec patří tečku`) — vše
+v textu, který dítě vidí po chybné odpovědi. Dávky `g2cjl-a`, `g2cjl-c`
+a `g2cjl-d` bez nálezu.
 
 Nálezy kritika v `g2mat-c`: shoda po číslovce s „půl“ („dva a půl litru **má**“)
 a nápověda mluvící o „váze v obchodě“ u úlohy s veterinářem. Klíče všech 143
