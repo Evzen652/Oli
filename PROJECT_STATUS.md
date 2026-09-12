@@ -144,11 +144,26 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-12 (39) — kritici po jedné dávce, bez workflow (ROZPRACOVÁNO):
+
+- 🟢 **Uživatel workflow zastavil** („žralo moc kreditu“). Kritik teď běží
+  **inline, dávka po dávce** v už existujících worktree `.claude/worktrees/wf_*`.
+- ✅ **`g2mat-c` zkontrolována** (143 úloh: slovní úlohy 57, jednotky 62, čas 60).
+  Každý klíč přepočítán nezávisle na `correctAnswer`. Dvě opravy v `g2-mat-jednotky`:
+  shoda „dva a půl litru **má**“ (ne „mají“) a nápověda u hmotnosti tvrdila
+  „váha v obchodě“ i u úlohy s veterinářem. Brána PASS, `docs-check` ✓, typecheck ✓.
+  Commit `6e24614` na `origin/content-fix/g2mat-c`.
+- 🟡 **Zbývá 16 dávek bez kritika** + 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+- 📌 **Oprava dokumentace:** `origin/wip/content-fix/*` je **osm** větví, ne tři —
+  pět z nich (`g3cjl-a/b`, `g3prv-a/b/c`) jsou zastaralé snapshoty z prvního
+  spadlého běhu a **neobsahují** autorský commit, který na těch větvích dnes je.
+
 ### Session 2026-09-11 (38) — hromadné opravy 87 témat (ROZPRACOVÁNO):
 
 - 🟡 Varianta A spuštěna workflowem `content-fix-87` (22 dávek, autor ve vlastním
   worktree + nezávislý kritik). Dva běhy, oba spadly na limitu relace.
-  **2 dávky hotové i s kritikem**, 17 s prací autora bez kritika, 3 rozdělané
+  **2 dávky hotové i s kritikem** (dnes 3, viz session 39), 17 s prací autora
+  bez kritika, 3 rozdělané
   (`origin/wip/content-fix/*`). Vše na `origin/content-fix/*`, **na `main`
   z obsahu nic**. Kritik u prvních dvou dávek našel 11 chyb v 6 tématech, které
   brána i `docs-check` propustily → bez kritika neslučovat.

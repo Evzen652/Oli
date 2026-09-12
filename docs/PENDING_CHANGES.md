@@ -7,7 +7,18 @@
 
 ---
 
-## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-11, session 38)
+## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-12, session 39)
+
+**Změna postupu:** workflow se dál nepouští (kredit). Kritik běží **inline, po
+jedné dávce**, ve worktree, které po workflow zůstaly. Hotovo s kritikem:
+`g2mat-a`, `g2mat-b`, **`g2mat-c`** (2026-09-12). Zbývá **16 dávek bez kritika**
+a 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`). Na `main` pořád nic z obsahu.
+
+Nálezy kritika v `g2mat-c`: shoda po číslovce s „půl“ („dva a půl litru **má**“)
+a nápověda mluvící o „váze v obchodě“ u úlohy s veterinářem. Klíče všech 143
+úloh dávky souhlasí.
+
+## 🟠 Historie zadání — workflow `content-fix-87` (2026-09-11, session 38)
 
 Uživatel zvolil variantu **A (všech 87)**. Workflow `content-fix-87` běžel
 dvakrát a pokaždé spadl na limitu relace. Stav: **2 dávky hotové včetně

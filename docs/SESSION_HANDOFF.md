@@ -91,9 +91,16 @@ Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
 
 | dávky | stav | kde |
 |---|---|---|
-| `g2mat-a`, `g2mat-b` | ✅ autor **i kritik** hotov | `origin/content-fix/*` |
-| `g2mat-c`, `g2mat-d`, `g2cjl-a…d`, `g2prv-a`, `g2prv-b`, `g3mat-a…c`, `g3prv-a…c`, `g3cjl-a…c` (17) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
+| `g2mat-a`, `g2mat-b`, `g2mat-c` | ✅ autor **i kritik** hotov | `origin/content-fix/*` |
+| `g2mat-d`, `g2cjl-a…d`, `g2prv-a`, `g2prv-b`, `g3mat-a…c`, `g3prv-a…c`, `g3cjl-a…c` (16) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
 | `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🔴 rozdělané, **bez commitu** — jen snapshot, NEOVĚŘENÉ | `origin/wip/content-fix/*` (větev `content-fix/*` je u nich ještě na starém commitu) |
+
+> Ověřeno 2026-09-12: `origin/wip/content-fix/*` je **osm** větví, ne tři.
+> Kromě `g5mat-a`, `g5mat-b`, `g4-6-mix` tam leží ještě snapshoty
+> `g3cjl-a`, `g3cjl-b`, `g3prv-a`, `g3prv-b`, `g3prv-c` z prvního (spadlého)
+> běhu — **neobsahují** autorský commit, který na těch větvích dnes je, takže
+> jsou zastaralé. Nepoužívej je jako výchozí bod; použitelné jsou jen ty tři
+> z tabulky (ty autorský commit obsahují).
 
 - Ověření stavu dávky: `git log --oneline -2 origin/content-fix/<dávka>` —
   commit „fix(content): **kontrola** …“ = kritik doběhl.
@@ -108,12 +115,26 @@ Po pádu zůstanou worktree `.claude/worktrees/wf_*` (někdy `locked`) a větve
 + `git branch -D` u dávek bez práce (WIP si napřed zachraň přes
 `git stash create` a push na `wip/content-fix/*`, viz výše).
 
-**Pokračování (nová session, „use a workflow“):**
-1. **Nejdřív kritik pro 17 dávek**, kde chybí (`critPrompt` ve skriptu; kritik
-   pracuje ve worktree dané větve, a když už neexistuje, založí si nový:
-   `git worktree add … content-fix/<dávka>` + junction na `node_modules`).
-   Pusť je po ~8 dávkách na běh, ať se vejdeš do limitu.
-2. Pak 3 nedokončené dávky autorem: `g5mat-a`, `g5mat-b`, `g4-6-mix` — výchozí
+**Pokračování — POSTUP ZMĚNĚN 2026-09-12 (session 39):** uživatel workflow
+zastavil, protože „žralo moc kreditu“. Kritik se dělá **inline, po jedné dávce**,
+bez agentů. Ověřený postup jedné dávky (~20 min, dávka o 3 tématech):
+
+1. `cd .claude/worktrees/wf_84b89ce1-8c0-<N>` (mapa worktree → větev:
+   `git worktree list`). Worktree ze workflow **existují a nejsou locked**,
+   `node_modules` junction v nich funguje.
+2. Dočasný výpis úloh: `scripts/tmp-dump-critic.ts` naimportuje témata dávky
+   a pro L1/L2/L3 vypíše otázku, klíč, možnosti, `optionFeedback`, obě nápovědy
+   a vysvětlení; pusť `T=1|2|3 npx vite-node scripts/tmp-dump-critic.ts`
+   a výpis si ulož do scratchpadu. Na konci skript smaž.
+3. Každou úlohu vyřeš sám a porovnej s klíčem; kontroluj i to, že šablonovaná
+   zpětná vazba čísla souhlasí s konkrétní úlohou (tam se chyby schovávají).
+4. `node scripts/audit-topic.mjs <id>`, `IDS=<id> npx vite-node scripts/docs-check.ts`,
+   `npm run typecheck`; commit „fix(content): kontrola …“ do `content-fix/<dávka>`
+   a push té větve (ne na `main`).
+
+Původní workflow (`critPrompt` ve skriptu) zůstává jako záložní varianta, pokud
+uživatel řekne jinak; pouštět po ~8 dávkách na běh.
+2. Pak 3 nedokončené dávky autorem (taky inline): `g5mat-a`, `g5mat-b`, `g4-6-mix` — výchozí
    bod je `origin/wip/content-fix/<dávka>` (neověřený!), pak kritik.
    `REPO` je ve skriptu natvrdo `C:\Users\Evzen\Desktop\OLI` — na druhém PC uprav.
 3. Slučování (inline, ne agent): každou větev `git merge --squash` / 
