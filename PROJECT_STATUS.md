@@ -144,7 +144,32 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
-### Session 2026-09-12 (39) — 8 dávek zkontrolováno a SLOUČENO, tři nové kontroly:
+### Session 2026-09-12 (39) — 19 z 22 dávek hotovo, 74 témat na produkci:
+
+**Opravný průchod je z 85 % hotový.** Na `main` je celý 2. ročník (matematika,
+čeština, prvouka) a celý 3. ročník (matematika, prvouka, čeština) — 74 témat
+s autorem i nezávislým kritikem. Zbývají 3 rozdělané dávky (`g5mat-a`,
+`g5mat-b`, `g4-6-mix`, 13 témat), kde chybí i autorská část.
+
+**Kritiků běželo šest paralelně** (uživatel si to vyžádal), sedmou dávku
+s tísňovými linkami jsem si nechal sám. Nálezy, které brána ani docs-check
+nechytily: nepravdivé tvrzení o krajích 4× v jednom tématu, obrácená
+formulace u šikany (byla v produkci), druhá správná odpověď u tísňového
+čísla i u počtu krajských měst, rýmy, které nerýmují („kámen – plamen"),
+čtyři nápovědy říkající odpověď, „stetoskopem si prohlíží zvíře".
+
+**Čtyři nové kontroly, tři v CI:** `audit:agreement` (shoda přísudku
+s číslovkou), `check:keys` + `check:keys:tables` (přepočet klíče z textu
+zadání — 4 677 klíčů, 0 neshod), `check:hints` (nápověda prozrazující
+odpověď obsahem; do CI NEdána, je měkká).
+
+**Občas padající test vysvětlen a opraven:** i18n test skenoval
+`src/content`, kde generátory prvouky mají vlastní pomocnou funkci `t(...)` —
+regex ji bral za překladové volání a hlásil 216 chybějících klíčů. Nedokážu
+doložit, že šlo pokaždé o tenhle test (starší běhy jsem nezachytil), ale je
+to první deterministicky reprodukovatelné selhání sady.
+
+### Session 2026-09-12 (39-detail) — kontroly a první osm dávek:
 
 **Na `main` je poprvé opravený obsah** — 26 témat s autorem i nezávislým
 kritikem: celá 2. matematika (13), 2. čeština i/y + dě/tě/ně + slabiky
