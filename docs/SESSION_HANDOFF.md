@@ -99,8 +99,9 @@ a všechno je sloučené do `main`. Poslední tři dávky (12. 9., squash commit
 
 Zámek obsahu přegenerován v `c619cb3` (sedm témat změnilo zadání nebo klíč).
 
-⚠️ **Je to jen lokálně na `main`, dokud se to nepushne** — zkontroluj
-`git status -sb`. Push = nasazení na produkci.
+✅ **Pushnuto na produkci 12. 9.** — `origin/main` je na `1580cff`.
+Nasazení samo ověřené není: `gh` tu není přihlášený, takže
+`gh api repos/Evzen652/Oli/commits/<sha>/status` neprojde bez `gh auth login`.
 
 ▶ **Další krok: úklid.** 22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`
 a větve `content-fix/*` i `wip/content-fix/*` už nejsou k ničemu:

@@ -53,9 +53,11 @@ větve.
    „4 kostek", „o 2 let víc". Stojí za zvážení kontrola, která hlídá číslovku
    1–4 následovanou 2. pádem množného čísla; `lint-agreement` tuhle třídu
    nevidí, protože řeší shodu přísudku, ne tvar po číslovce.
-2. ⚠️ **Zatím je to jen lokálně** — dokud se `main` nepushne, produkce běží na
-   `b25cc30` a je v ní pořád klíč 22 místo 14 u číselné řady. Ověř
-   `git status -sb`.
+2. ✅ **Pushnuto na produkci** 12. 9. — `origin/main` je na `1580cff`.
+   Tím zmizel i klíč 22 místo 14 u číselné řady, který do té chvíle běžel
+   v ostré aplikaci. **Nasazení samo ověřené není** — `gh` v tomhle prostředí
+   není přihlášený (`gh auth login`), takže `gh api repos/Evzen652/Oli/commits/1580cff/status`
+   neprošlo. Stojí za proklik v prohlížeči.
 3. **Uklidit 22 worktree** `.claude/worktrees/wf_84b89ce1-8c0-*` a větve
    `content-fix/*` i `wip/content-fix/*` — už nejsou k ničemu.
 4. Teprve potom má smysl vrátit se k **přípravě spuštění** — `SESSION_HANDOFF.md`

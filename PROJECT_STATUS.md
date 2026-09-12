@@ -155,8 +155,10 @@ src/
 - ✅ **`audit:content` je čistý — ověřeno osmi běhy po sobě**, ne jedním.
   Audit vzorkuje losovaný obsah, takže jeden běh nic nedokazuje; poslední
   zbývající nález (odpověď se shodovala s cenou v zadání) opravila `g5mat-b`.
-- 📌 **Do produkce to půjde až pushnutím `main`** — do té doby tam zůstává
-  i klíč 22 místo 14 u číselné řady.
+- ✅ **Pushnuto na produkci** — `origin/main` je na `1580cff`. Tím zmizel
+  i klíč 22 místo 14 u číselné řady, který do té chvíle běžel v ostré
+  aplikaci. Samotné nasazení ověřené není: `gh` v tomhle prostředí není
+  přihlášený, takže `gh api …/commits/<sha>/status` neprošlo.
 - ▶ **Zbývá úklid:** 22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`
   a větve `content-fix/*` i `wip/content-fix/*`.
 
