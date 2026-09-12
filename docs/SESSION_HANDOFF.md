@@ -99,11 +99,19 @@ Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
 Tři autorské agenti běželi na posledních třech dávkách a **nestihli
 commitnout**. Jejich rozpracovaná práce je zachráněná jako snapshot:
 
-| dávka | snapshot | worktree |
-|---|---|---|
-| `g5mat-a` | `origin/wip/content-fix/g5mat-a-autor` | `.claude/worktrees/wf_84b89ce1-8c0-20` |
-| `g5mat-b` | `origin/wip/content-fix/g5mat-b-autor` | `.claude/worktrees/wf_84b89ce1-8c0-21` |
-| `g4-6-mix` | `origin/wip/content-fix/g4-6-mix-autor` | `.claude/worktrees/wf_84b89ce1-8c0-22` |
+| dávka | stav autora | kde | worktree |
+|---|---|---|---|
+| `g5mat-a` | ✅ **hotov a commitnut** (`6363b28`) — **čeká na kritika** | `origin/content-fix/g5mat-a` | `wf_84b89ce1-8c0-20` |
+| `g5mat-b` | 🟠 rozepsaný, necommitnutý (4 soubory) | `origin/wip/content-fix/g5mat-b-autor` | `wf_84b89ce1-8c0-21` |
+| `g4-6-mix` | 🟠 rozepsaný, necommitnutý (6 souborů) | `origin/wip/content-fix/g4-6-mix-autor` | `wf_84b89ce1-8c0-22` |
+
+**První krok příští session: pusť kritika na `g5mat-a`** — autor je hotov,
+brána PASS, docs-check bez výjimek. Teprve pak dopiš zbylé dvě dávky.
+
+Autor `g5mat-a` hlásí dvě věci, které si kritik má ověřit: (1) u převodů
+jednotek obsahu se tři z pěti převodů na větší jednotku vůbec negenerovaly
+(duplicitní distraktor → `ciselnaUloha` vracela `null`) a on to opravil;
+(2) v souměrnosti chyběly počty os základních útvarů a doplnil je do L2.
 
 **Rozpracovaná práce je v těch worktree pořád i na disku** — snapshot je jen
 pojistka pro druhý počítač. Snapshoty obsahují i zkopírované nástroje
