@@ -48,28 +48,28 @@
     "taskCount": 24
   },
   "g2-mat-ciselna-osa-100": {
-    "hash": "0f8f0b7cd3649f7175c0e6002ca4471cbeea02d1",
-    "taskCount": 21
+    "hash": "1edf14183109727787f8d879bb62d31001ff8dcf",
+    "taskCount": 45
   },
   "g2-mat-cteni-zapis-100": {
-    "hash": "a60e218970ea9c580672c9b542489119be8adba0",
-    "taskCount": 21
+    "hash": "6ca4f3fc0a4346ae9c2a546a605f791891fa75de",
+    "taskCount": 45
   },
   "g2-mat-nasobeni-opakovane": {
-    "hash": "ed1af7ac24bd5df31de05bce1b13d912d073e68a",
-    "taskCount": 28
+    "hash": "909f9fb7baa59d99f46bc94552a236e1d3813369",
+    "taskCount": 52
   },
   "g2-mat-posloupnosti": {
-    "hash": "8d7b3c74e9ba9f620c69ca0fc632b8399dd8e823",
-    "taskCount": 21
+    "hash": "a74d1dc2f9ba3f8627366bb49d2e5bbc0fd6a368",
+    "taskCount": 44
   },
   "g2-mat-scitani-odcitani-100": {
-    "hash": "a3c731cff984692f2ceb8e34c2bfdadc4f947c15",
-    "taskCount": 26
+    "hash": "6f033f869441a38f6d7b5a661384f489bd483848",
+    "taskCount": 45
   },
   "g2-mat-vztah-nasobeni-deleni": {
-    "hash": "fc6bd8c48f450bd9413ba55edb7e5822f033cad3",
-    "taskCount": 27
+    "hash": "f2a9eb1f641eed983fae9efae7159451972aadaa",
+    "taskCount": 44
   },
   "g3-cjl-dialog-pravidla": {
     "hash": "b1a781015473a97f87751c87eb073dd37c23b3df",
