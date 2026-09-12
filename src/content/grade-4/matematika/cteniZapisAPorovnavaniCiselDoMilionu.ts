@@ -127,14 +127,28 @@ function zapisSlovy(): PracticeTask {
   const klic = slovy(n);
   const obal = (s: string) => ` ${s} `;
   // Distraktor nesmí být celou frází v klíči ani naopak („… šest set“ × „… šest set jedna“).
-  const chyby = [
+  const chyby: { value: string; why: string }[] = [
     { value: slovy(T * 1000 + ((R % 10) * 10 + Math.floor((R % 100) / 10)) + Math.floor(R / 100) * 100), why: "Desítky a jednotky jsou přehozené." },
     { value: slovy((T + 1) * 1000 + R), why: "Nesedí počet tisíců — je o jeden větší." },
     { value: slovy(T * 1000 + ((R + 100) % 1000 || 100)), why: "Nesedí počet stovek za tisíci." },
     { value: slovy(T * 1000 + (R % 100 === 0 ? R + 1 : R - 1)), why: "Nesedí jednotky." },
     { value: slovy((T - 1) * 1000 + R), why: "Nesedí počet tisíců — je o jeden menší." },
-  ].filter((c) => !obal(c.value).includes(obal(klic)) && !obal(klic).includes(obal(c.value)));
-  return ciselnaUloha(`Jak se čte číslo ${fmt(n)}?`, klic, chyby, [
+  ];
+  // Pojistka: klíč je slovní tvar, takže číselné doplnění distraktorů
+  // v `ciselnaUloha()` se neuplatní (funguje jen pro číselný klíč). Když
+  // filtr níž ubral moc kandidátů, zbyly by méně než tři a úloha by měla
+  // jen tři možnosti — `audit:content` to hlásil jako „Nesedí formát pro typ
+  // select_one", ale jen občas, protože záleží na vylosovaném čísle
+  // (nalezeno 12. 9. u čísla 999 649).
+  for (let d = 2; chyby.length < 9 && d <= 40; d++) {
+    const kandidat = T * 1000 + ((R + d) % 1000);
+    if (kandidat === n) continue;
+    chyby.push({ value: slovy(kandidat), why: "Nesedí jednotky nebo desítky za tisíci." });
+  }
+  const pouzitelne = chyby.filter(
+    (c) => !obal(c.value).includes(obal(klic)) && !obal(klic).includes(obal(c.value)),
+  );
+  return ciselnaUloha(`Jak se čte číslo ${fmt(n)}?`, klic, pouzitelne, [
     `Rozděl číslo ${fmt(n)} na tisíce a zbytek.`,
     `Nejdřív přečti trojici před mezerou a přidej „tisíc“ (nebo „tisíce“), pak přečti poslední tři číslice: ${String(R).padStart(3, "0")}.`,
   ], [

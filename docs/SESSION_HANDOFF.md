@@ -1,12 +1,13 @@
-# Předání práce — stav k 2026-09-11
+# Předání práce — stav k 2026-09-12
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >
 > **Fáze:** od září se dělá **příprava spuštění** (právní stránky, mazání
-> účtu, mobilní obal, bezpečnost). Session 37 (10.–11. 9.) se ale vrátila
-> k obsahu, protože audit ukázal, že 4. ročník má slabé nápovědy a 5. a 6.
-> ročník nebyly otevřené — obojí je teď hotové, viz §1.
+> účtu, mobilní obal, bezpečnost) — ta stojí na čtyřech rozhodnutích
+> uživatele, viz §2. Session 38–39 (11.–12. 9.) se ale vrátily k obsahu,
+> protože inventura našla 87 témat k opravě. **Ten průchod je z 86 %
+> hotový a chybí u něj poslední tři kontroly — začni tím, viz §1.**
 
 ---
 
@@ -26,13 +27,19 @@ sleduje `main`; pushovalo se přes `git push origin HEAD:main`.
 **`push do main = nasazeno na produkci`** (Vercel, ověř
 `gh api repos/Evzen652/Oli/commits/<sha>/status`).
 
-### ⚠️ Past, na kterou v tomhle repu narazíš hned
+### ⚠️ Worktree: 22 jich patří k opravám obsahu
 
-Worktree `competent-johnson-de23e8` sedí na větvi `session-task-binding-v2`,
-která **sleduje zastaralou vzdálenou větev** `chore/remove-essay-and-ai-authoring`.
-`git status` tam hlásí „ahead" vůči **špatné** větvi. Pushovalo se z něj
-explicitně `git push origin session-task-binding-v2:main`. Na druhém PC stačí
-normální `git pull` na `main`.
+`git worktree list` ukáže 23 položek. Kromě hlavního repa je to
+**22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`** — jeden na každou dávku
+oprav obsahu, každý má checkoutnutou svou větev `content-fix/<dávka>`.
+Nejsou locked a `node_modules` junction v nich funguje. U 19 dávek je práce
+hotová a sloučená, takže ty worktree už jsou k ničemu; potřebné jsou jen
+`8c0-20`, `8c0-21` a `8c0-22` (viz §1). Až se sloučí i ty, můžeš celou sadu
+uklidit `git worktree remove --force` + `git branch -D`.
+
+> Starší verze tohohle souboru tu varovala před worktree
+> `competent-johnson-de23e8` se zastaralým remote. **Ten už v repu není** —
+> ověřeno 12. 9. přes `git worktree list`.
 
 ### Worktree, ve kterých nepracuj
 
@@ -72,173 +79,114 @@ vlastní nápovědy + zpětná vazba u chybných možností):
 
 Sdílení pomocníci `grade-3/_shared.ts` (`choice`, `urcovaci`, `shuffle`).
 
-### ▶▶ ROZPRACOVÁNO (session 38, 2026-09-11): hromadné opravy — varianta A běží
+### ▶▶ ZAČNI TADY: opravy obsahu, zbývají tři kontroly (12. 9.)
 
-Uživatel zvolil **A (všech 87)**. Na PC1 spuštěn workflow `content-fix-87`
-(skript `scripts/workflows/content-fix-87.js`, dávky
-`scripts/workflows/content-fix-87.args.json` — 22 dávek). Session přerušena
-(došel kredit), workflow nedoběhl.
+**Kde to stojí:** inventura našla 87 témat k opravě, rozdělených do 22 dávek.
+Každá dávka = autor napíše/opraví, pak ji projde **nezávislý kritik**.
 
-**Jak workflow pracuje:** každá dávka = autor ve **vlastním git worktree** a
-větvi `content-fix/<dávka>` (proč worktree: `docs-check` i brána načítají celý
-registr témat, takže rozepsaný soubor jednoho agenta by shodil kontroly všem
-ostatním) → pak nezávislý **kritik** (Generator→Critic) ve stejné větvi,
-commit „fix(content): kontrola …“. Na `main` nikdo nesahá, snapshot se
-nepřegeneruje (dělá se až při slučování).
-
-**Stav k přerušení (po dvou bězích, oba spadly na limitu relace).
-Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
-
-| dávky | stav | kde |
+| stav | dávek | témat |
 |---|---|---|
-| **všech 19 dávek** (`g2mat-a…d`, `g2cjl-a…d`, `g2prv-a/b`, `g3mat-a…c`, `g3prv-a…c`, `g3cjl-a…c`) | ✅ autor i kritik, **SLOUČENO do `main`** | v produkci |
-| `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🟠 **autoři rozpracovaní, přerušeni kreditem** — snapshoty na `origin/wip/content-fix/<dávka>-autor` | zbývá |
+| ✅ autor i kritik, **sloučeno do `main`** (v produkci) | 19 | 74 |
+| 🟠 **autor hotov, čeká kritik** | 3 | 13 |
 
-### ▶▶ KDE APŘESNĚ POKRAČOVAT (přerušeno 2026-09-12, došel kredit)
+**Tři dávky, které zbývají** — autoři je dopsali 12. 9. večer, kritik na ně
+nedošel (kredit):
 
-Tři autorské agenti běželi na posledních třech dávkách a **nestihli
-commitnout**. Jejich rozpracovaná práce je zachráněná jako snapshot:
+| dávka | commit autora | worktree |
+|---|---|---|
+| `g5mat-a` | `6363b28` | `.claude/worktrees/wf_84b89ce1-8c0-20` |
+| `g5mat-b` | `46fc9e8` | `.claude/worktrees/wf_84b89ce1-8c0-21` |
+| `g4-6-mix` | `59f79ab` | `.claude/worktrees/wf_84b89ce1-8c0-22` |
 
-| dávka | stav autora | kde | worktree |
-|---|---|---|---|
-| `g5mat-a` | ✅ hotov (`6363b28`) | `origin/content-fix/g5mat-a` | `wf_84b89ce1-8c0-20` |
-| `g5mat-b` | ✅ hotov (`46fc9e8`) | `origin/content-fix/g5mat-b` | `wf_84b89ce1-8c0-21` |
-| `g4-6-mix` | ✅ hotov (`59f79ab`) | `origin/content-fix/g4-6-mix` | `wf_84b89ce1-8c0-22` |
+Větve `origin/wip/content-fix/*` jsou tím **překonané** — byly to pojistky
+rozdělané práce, dnes je všechno v commitech. Nepoužívej je.
 
-**Autorská část je u všech 22 dávek hotová. Zbývají už jen tři kritici
-a sloučení.** Snapshoty `origin/wip/content-fix/*-autor` jsou tím překonané.
+#### Postup jedné kontroly (ověřený, ~15–20 min na dávku o 3 tématech)
 
-⚠️ **Past při slučování těchhle tří (hlásí autor `g5mat-b`):** u tří témat
-se změnilo zadání nebo klíč, takže `frozen_content_unchanged` spadne —
-`konstrukceTrojuhelnikuKolmiceRovnobezky` (+5 úloh),
-`scitaniAOdcitaniDesetinnychCisel` (jiný zápis klíče, „6,0" místo „6")
-a `ulohyNezavisleNaBeznychPostupech…` (opravený klíč). Při merge je přidej
-do `UNFROZEN_TOPIC_IDS` nebo rovnou přegeneruj snapshot
-(`UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`),
-jinak CI spadne.
+1. `cd` do worktree dávky. Worktree existují, nejsou locked a `node_modules`
+   junction v nich funguje.
+2. **Nejdřív strojové kontroly, ať nečteš to, co spočítá skript.** Zkopíruj
+   si je z `main` (ve větvi nejsou):
+   ```
+   cp /c/Users/Evzen/Desktop/OLI/scripts/{check-keys-arith,check-keys-tables,lint-agreement,check-hint-leak}.ts scripts/
+   cp /c/Users/Evzen/Desktop/OLI/src/lib/czechAgreementLint.ts src/lib/
+   cp /c/Users/Evzen/Desktop/OLI/src/lib/czechGrammar.ts src/lib/czechGrammar.ts
+   ```
+   Pusť je s `IDS=<témata dávky>`. Na konci kopie smaž a
+   `git checkout -- src/lib/czechGrammar.ts`.
+3. Co skript nepokryje, vyřeš sám a porovnej s klíčem. Šablonovaná zpětná
+   vazba: kontroluj, že čísla v ní sedí ke konkrétní úloze — tam se chyby
+   schovávají.
+4. `node scripts/audit-topic.mjs <id>`, `IDS=<id> npx vite-node scripts/docs-check.ts`,
+   `npm run typecheck`. Celý `npm test` ve worktree nespouštěj.
+5. Commit `fix(content): kontrola …` do `content-fix/<dávka>` + push té větve.
+   **Když kritik nic nenajde, udělej prázdný commit** `--allow-empty` se stejným
+   prefixem — jinak `git log` nerozliší „proběhlo bez nálezu" od „neproběhlo".
 
-**Co autoři našli a co má kritik ověřit:**
+⚠️ **Nález strojové kontroly nejdřív ručně přepočítej.** 12. 9. bylo šest
+z prvních nálezů chybou kontroly, ne obsahu (koncovka -ek jako genitiv,
+„4 jen", přivlastňovací „nohy 4 kachen", trojčlenný výraz, oddělovač tisíců,
+štítek „Na kole"). Falešná „oprava" správného obsahu je horší než nález
+nechat ležet.
+
+#### Co mají kritici u těchhle tří dávek ověřit přednostně
+
+Autoři sami hlásí, co opravili — kritik to má potvrdit nezávisle:
 - `g5mat-b`: u řady se střídavými kroky (`8, 13, 10, 15, 12, 17, ?`) byl
-  **klíč 22 místo 14** — správná odpověď byla nabízená jako distraktor.
-  Tahle chyba je i na `main`, takže dokud se dávka nesloučí, je v produkci.
+  **klíč 22 místo 14** a správná odpověď se nabízela jako distraktor.
+  **Tahle chyba je pořád na `main`, tedy v produkci**, dokud se dávka nesloučí.
 - `g5mat-a`: tři z pěti převodů jednotek obsahu na větší jednotku se vůbec
   negenerovaly (duplicitní distraktor → `ciselnaUloha` vracela `null`).
-- `g4-6-mix`: klíč „bouřka" stál doslova v zadání; nápovědy u diagramů
-  nesly jen jeden řádek tabulky (51 duplicit).
+- `g4-6-mix`: klíč „bouřka" stál doslova v zadání; nápovědy u diagramů nesly
+  jen jeden řádek tabulky (51 duplicit).
 
-Autor `g5mat-a` hlásí dvě věci, které si kritik má ověřit: (1) u převodů
-jednotek obsahu se tři z pěti převodů na větší jednotku vůbec negenerovaly
-(duplicitní distraktor → `ciselnaUloha` vracela `null`) a on to opravil;
-(2) v souměrnosti chyběly počty os základních útvarů a doplnil je do L2.
+#### Slučování do `main` (inline, ne agent)
 
-**Rozpracovaná práce je v těch worktree pořád i na disku** — snapshot je jen
-pojistka pro druhý počítač. Snapshoty obsahují i zkopírované nástroje
-(`scripts/check-*.ts`, `src/lib/czechAgreementLint.ts`, `czechGrammar.ts`) —
-ty do obsahového commitu NEPATŘÍ, při pokračování je zahoď.
+```
+git merge --squash content-fix/<dávka>   # pro každou ze tří
+UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts
+npm test && npm run audit:content && npm run check:keys && npm run check:keys:tables
+REPEATS=12 npm run audit:agreement && npm run audit:ui && npm run build
+```
 
-**Postup pokračování:**
-1. V každém worktree zkontroluj `git status`, dopiš, co chybí, a commitni
-   **jen soubory témat** do `content-fix/<dávka>`.
-2. Teprve pak na dávku pusť nezávislého kritika (postup výš v tomhle souboru).
-3. Autoři dostali instrukci nejdřív `git reset --hard origin/main` — ověř, že
-   v jejich práci nechybí opravy, které na `main` přibyly 12. 9.
-   (shoda přísudku, „rok 291 má 2 stovky", odstraněný leak u převodů obsahu).
+⚠️ **Past:** u tří témat se změnilo zadání nebo klíč, takže
+`frozen_content_unchanged` spadne, dokud se snapshot nepřegeneruje —
+`konstrukceTrojuhelnikuKolmiceRovnobezky` (+5 úloh),
+`scitaniAOdcitaniDesetinnychCisel` („6,0" místo „6") a
+`ulohyNezavisleNaBeznychPostupech…` (opravený klíč).
 
-> Ověřeno 2026-09-12: `origin/wip/content-fix/*` je **osm** větví, ne tři.
-> Kromě `g5mat-a`, `g5mat-b`, `g4-6-mix` tam leží ještě snapshoty
-> `g3cjl-a`, `g3cjl-b`, `g3prv-a`, `g3prv-b`, `g3prv-c` z prvního (spadlého)
-> běhu — **neobsahují** autorský commit, který na těch větvích dnes je, takže
-> jsou zastaralé. Nepoužívej je jako výchozí bod; použitelné jsou jen ty tři
-> z tabulky (ty autorský commit obsahují).
+Push do `main` = nasazení na produkci, tedy až po shrnutí uživateli.
 
-- Ověření stavu dávky: `git log --oneline -2 origin/content-fix/<dávka>` —
-  commit „fix(content): **kontrola** …“ = kritik doběhl.
-- Co kritik u dvou hotových dávek našel: 11 chyb v 6 tématech (mj. klíč, který
-  nesouhlasil s vlastním řešením). **To je důvod, proč se zbylých 17 dávek nesmí
-  slučovat bez kritika** — samotná brána i `docs-check` je propustily.
+#### ⚠️ `audit:content` na `main` hlásí občas jeden nález
 
-**Past, která tohle zdržela:** obě spadnutí byl limit relace, ne chyba obsahu.
-Po pádu zůstanou worktree `.claude/worktrees/wf_*` (někdy `locked`) a větve
-`content-fix/*` na základním commitu; nový běh pak neumí udělat
-`git checkout -b`. Před dalším pokusem: `git worktree unlock/remove --force`
-+ `git branch -D` u dávek bez práce (WIP si napřed zachraň přes
-`git stash create` a push na `wip/content-fix/*`, viz výše).
+Audit vzorkuje losovaný obsah, takže některé vady vyplavou jen v části běhů
+(zhruba 1 ze 4–10). K 12. 9. zbývá jeden takový: u nákupní úlohy
+`scitaniAOdcitaniDesetinnychCisel` se **správná odpověď náhodou shoduje
+s jednou z cen v zadání** („…jablka za 35,90 Kč… → 35,90 Kč"). **Opravuje to
+větev `content-fix/g5mat-b`** (zahazuje zadání, kde výsledek padne na číslo
+ze zadání) — po sloučení té dávky to zmizí. Než se sloučí, může na tom CI
+občas spadnout.
 
-**Pokračování — POSTUP ZMĚNĚN 2026-09-12 (session 39):** uživatel workflow
-zastavil, protože „žralo moc kreditu“. Kritik se dělá **inline, po jedné dávce**,
-bez agentů. Ověřený postup jedné dávky (~20 min, dávka o 3 tématech):
+Druhý nález téhož druhu (`g4-mat-cisla-do-milionu-4` měl u čtení čísel jen
+tři možnosti, protože slovní klíč nemá číselnou pojistku na doplnění
+distraktorů) je už opravený přímo na `main`.
 
-1. `cd .claude/worktrees/wf_84b89ce1-8c0-<N>` (mapa worktree → větev:
-   `git worktree list`). Worktree ze workflow **existují a nejsou locked**,
-   `node_modules` junction v nich funguje.
-2. Dočasný výpis úloh: `scripts/tmp-dump-critic.ts` naimportuje témata dávky
-   a pro L1/L2/L3 vypíše otázku, klíč, možnosti, `optionFeedback`, obě nápovědy
-   a vysvětlení; pusť `T=1|2|3 npx vite-node scripts/tmp-dump-critic.ts`
-   a výpis si ulož do scratchpadu. Na konci skript smaž.
-3. **Nejdřív strojové kontroly, pak oči** — ať se nečte, co spočítá skript.
-   Do worktree zkopíruj z `main` soubory `scripts/check-keys-arith.ts`,
-   `scripts/check-keys-tables.ts`, `scripts/lint-agreement.ts`,
-   `src/lib/czechAgreementLint.ts` a `src/lib/czechGrammar.ts`, pusť je
-   s `IDS=<témata dávky>` a na konci kopie smaž
-   (`git checkout -- src/lib/czechGrammar.ts`).
-   U matematiky tím padne většina klíčů (u `g3mat-a` 2 117 z 2 117).
-4. Co skript označí „nepokryto vzorem", vyřeš sám a porovnej s klíčem;
-   kontroluj i to, že šablonovaná zpětná vazba čísla souhlasí s konkrétní
-   úlohou (tam se chyby schovávají).
-   ⚠️ **Nález strojové kontroly nejdřív ručně přepočítej.** U `check-keys`
-   bylo šest z šesti prvních nálezů chybou skriptu, ne obsahu.
-5. `node scripts/audit-topic.mjs <id>`, `IDS=<id> npx vite-node scripts/docs-check.ts`,
-   `npm run typecheck`; commit „fix(content): kontrola …“ do `content-fix/<dávka>`
-   a push té větve (ne na `main`). **Když kritik nic nenajde, udělej prázdný
-   commit** `--allow-empty` se stejným prefixem — jinak `git log` nerozliší
-   „kritik proběhl bez nálezu" od „kritik neproběhl".
-6. Sloučení do `main`: `git merge --squash content-fix/<dávka>`, pak
-   `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`,
-   `npm test`, `npm run audit:content`, `npm run check:keys`,
-   `npm run check:keys:tables`, `npm run audit:agreement`, `npm run audit:ui`,
-   `npm run build`. Push do `main` = nasazení na produkci.
+**Jak takový nález chytit:** pusť audit ve smyčce a zastav se na prvním,
+který má `Problémů > 0` — jednotlivý běh nic neukáže.
 
-Původní workflow (`critPrompt` ve skriptu) zůstává jako záložní varianta, pokud
-uživatel řekne jinak; pouštět po ~8 dávkách na běh.
-2. Pak 3 nedokončené dávky autorem (taky inline): `g5mat-a`, `g5mat-b`, `g4-6-mix` — výchozí
-   bod je `origin/wip/content-fix/<dávka>` (neověřený!), pak kritik.
-   `REPO` je ve skriptu natvrdo `C:\Users\Evzen\Desktop\OLI` — na druhém PC uprav.
-3. Slučování (inline, ne agent): každou větev `git merge --squash` / 
-   `git cherry-pick --no-commit` do `main` pracovního stromu → přegeneruj zámek
-   `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`
-   → `npm test`, `npm run audit:content`, `npm run typecheck`,
-   `IDS=<všech 87> npx vite-node scripts/docs-check.ts` → shrnutí uživateli →
-   commit **až po souhlasu**. Push do `main` = produkce.
+### Kontroly obsahu, které od 12. 9. existují
 
-### ▶ DALŠÍ KROK: hromadné opravy obsahu podle inventury
+| příkaz | co dělá | v CI |
+|---|---|---|
+| `npm run audit:content` | offline audit struktury (a nově shoda přísudku ve VŠECH textových polích úlohy) | ano |
+| `npm run audit:agreement` | shoda přísudku s číslovkou nad všemi tématy, `REPEATS=30` ≈ 78 000 úloh | ano |
+| `npm run check:keys` | **přepočítá klíč z textu zadání**, nepřebírá ho z generátoru (matematika) | ano |
+| `npm run check:keys:tables` | totéž pro tabulky, jízdní řády a diagramy (měřítko kroužku, zpoždění spoje) | ano |
+| `npm run check:hints` | nápověda, která prozrazuje odpověď **obsahem**, ne slovem | ne — je měkká |
+| `npm run check:length` | klíč nápadně delší než distraktory (dá se tipovat podle délky) | ne — report |
 
-Po posledním commitu session 37 proběhla **inventura celého obsahu** (workflow,
-13 agentů): **`docs/CONTENT_INVENTORY.md`** (čitelný přehled po tématech)
-a `docs/content-inventory-2026-09-11.json` (surová data s nálezy a soubory).
-
-- 142 témat v pořádku / jen záměrné výjimky, **40 k cílené úpravě, 47 k přepisu
-  generátoru**. Těžiště: 2. ročník (41 témat) a nepřepsaná část 3. ročníku.
-  4.–6. ročník je skoro čistý.
-- Hlavní nálezy: chybí zpětná vazba u chybných možností (~5 400 úloh), jedna
-  malá nápověda pro celou úroveň (~2 700), chybí druhá nápověda (~1 600),
-  < 12 unikátních úloh na úroveň. Offline audit (`audit:content` = 0) to
-  nevidí — měří jen strukturu; tohle našel `scripts/docs-check.ts`.
-- **Vidí to děti už teď:** brána FAIL u `g2-mat-mereni-casu`,
-  `g2-mat-mereni-delky` a skupin dě/tě/ně; `g3-mat-tabulky-diagramy` radí
-  „Sečti“ místo „odečti“; `g2-mat-bod-primka-usecka` má nejednoznačnou otázku.
-
-**Uživatel chce opravy pustit workflowem (víc agentů najednou)** — zatím
-nerozhodl mezi: A) všech 87 najednou (doporučeno), B) nejdřív 3 chyby
-viditelné dětem, C) po ročnících. Návrh: ~15 agentů po 5–6 tématech z
-inventury, úpravy přímo v souborech témat (nepřekrývají se), každý musí mít
-svá témata čistá v `audit-topic` + `docs-check`; zámek obsahu, testy,
-dokumentaci a commit dělá až jeden závěrečný krok. Inventuru jde zopakovat
-skriptem `scripts/workflows/content-inventory.js` (args: `wt`, `groups` =
-id témat po `ročník|předmět`).
-
-Nástroje: `node scripts/audit-topic.mjs <id>` (brána),
-`IDS=a,b npx vite-node scripts/docs-check.ts` (všechny úlohy, přísné),
-`npm run audit:content` (offline audit celku).
+`check:hints` a `check:length` schválně nic neblokují: nález u nich není
+důkaz chyby a CI by padalo na legitimním obsahu.
 
 ### Session 2026-09-09/10 — appka poprvé celá venku
 
@@ -281,14 +229,32 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
 
 ## 4. Otevřené pro další session
 
-### 🟠 Zbytky obsahu (docs-check, ne offline audit)
-- `g3-cjl-velka-pismena` L1 nemá zpětnou vazbu u chybných možností a sdílí
-  obecné nápovědy. Možnosti „Praha / praha / PRAHA" jsou záměr (s `option_exact`
-  je to legitimní úloha), ale feedback chybí.
-- Matematické generátory 3. ročníku, které se v session 37 nepřepisovaly,
-  mají pořád malou nápovědu společnou pro celou úroveň.
-- Výčtové úlohy („Které z čísel … je největší?") mají klíč ve znění
-  z podstaty — brána je bere jako výjimku.
+### 🟠 Zbytky obsahu — co zůstává i po opravném průchodu
+
+Tohle **není** seznam z inventury (ten je z 86 % vyřízený, viz §1), ale věci,
+na které kritici narazili a nechali je k rozhodnutí:
+
+- **`crSymboly` L3 je z poloviny počítání letopočtů** — 6 ze 13 úloh je
+  odčítání čtyřciferných čísel (1993 − 1415 = 578). Věcně správné, ale
+  číselný obor 3. ročníku je do 1000 a nápověda učí písemné odčítání, což je
+  učivo 4. ročníku.
+- **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy). Žák může tipovat
+  podle délky. Změř to `npm run check:length`.
+- **Výčtové úlohy** („Které z čísel … je největší?", „Najdi sloveso ve větě")
+  mají klíč ve znění z podstaty — brána i `docs-check` je berou jako výjimku
+  a je to správně.
+- **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá
+  klíč v nápovědě prostým `includes` bez výjimky pro „rejstřík možností",
+  kterou `supabase/functions/_shared/hintLeakage.ts` má; a `normalize()`
+  v `hintLeakage` odstraňuje `„`, ale ne `“`. Autoři to museli obcházet
+  v obsahu — patří to opravit v kontrolách.
+- **`parovani` v `src/content/grade-5/_shared.ts`** skládá velkou nápovědu tak,
+  že končí utrženou větou o jiné dvojici („…doplň vylučováním. V Římě stojí
+  Koloseum…"). Týká se všech témat, která helper používají.
+- **Tiché mizení úloh:** duplicitní distraktor způsobí, že `ciselnaUloha`
+  vrátí `null` a úloha zmizí, aniž to kdokoli pozná (stalo se u tří z pěti
+  převodů jednotek obsahu). Stálo by za kontrolu „generátor vrátil míň úloh,
+  než kolik má v poolech" — co nevznikne, žádný audit nezkontroluje.
 
 ### 🟠 Sliby vs. obsah
 Titulek a Open Graph slibují „1. stupeň ZŠ" (1.–5. ročník). Otevřené jsou

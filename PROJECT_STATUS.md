@@ -144,7 +144,19 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
-### Session 2026-09-12 (39) — 19 z 22 dávek hotovo, 74 témat na produkci:
+### Session 2026-09-12 (39) — 19 z 22 dávek na produkci, 3 čekají na kritika:
+
+**STAV K PŘEDÁNÍ:** autorská část je hotová u **všech 22 dávek**. Sloučeno
+a v produkci je 19 dávek / 74 témat. Zbylé tři (`g5mat-a` `6363b28`,
+`g5mat-b` `46fc9e8`, `g4-6-mix` `59f79ab`) mají hotového autora a **čekají
+jen na nezávislého kritika a sloučení** — postup je v `docs/SESSION_HANDOFF.md`
+§1 „ZAČNI TADY".
+
+⚠️ `g5mat-b` opravuje chybu, která je **pořád v produkci**: u řady
+`8, 13, 10, 15, 12, 17, ?` byl klíč 22 místo 14 a správná odpověď se nabízela
+jako distraktor.
+
+### Session 2026-09-12 (39-shrnutí) — 19 z 22 dávek hotovo, 74 témat na produkci:
 
 **Opravný průchod je z 85 % hotový.** Na `main` je celý 2. ročník (matematika,
 čeština, prvouka) a celý 3. ročník (matematika, prvouka, čeština) — 74 témat
