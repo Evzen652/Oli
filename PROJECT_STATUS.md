@@ -196,9 +196,14 @@ a v obou skriptech jsou ty případy poznamenané u dotčeného pravidla.
   30× „přičti 4 jen“, „nohy 4 kachen“). Test má proto sekci „nesmí hlásit“ —
   19 správných vět, které pravidlo nesmí označit. Falešný nález je tady dražší
   než propuštěná chyba: obsah je zmrazený a „opravou“ správného tvaru se škodí.
-- ⚠️ **Jeden běh testů ze tří měl 1 chybu**, kterou se nepodařilo pojmenovat
-  (další dva běhy i 4 běhy obsahových testů zelené, sweep bez nálezu). Až se
-  zopakuje, pustit `npx vitest run --reporter=json --outputFile=fail.json`.
+- ⚠️ **Občas padající test — nepodchycený.** Za 2026-09-12 spadl **2× z 9 běhů**
+  celé sady, vždy jedna asercie, a v obou případech se výpis nepodařilo
+  zachytit. Šest cílených běhů s JSON reportérem
+  (`npx vitest run --reporter=json --outputFile=run.json`) bylo zelených, stejně
+  jako 4 běhy obsahových testů a sweepy (`check:keys`, `audit:agreement`).
+  Pravděpodobná příčina: testy, které vzorkují losovaný obsah. **Až to spadne
+  znovu, hned ten JSON ulož** — bez něj se hledá naslepo. Tohle je jediná
+  nedovřená věc ze session 39.
 
 ### Session 2026-09-12 (39b) — kritici po jedné dávce, bez workflow:
 

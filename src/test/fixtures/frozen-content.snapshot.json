@@ -1,23 +1,23 @@
 {
   "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena": {
-    "hash": "2b0f34d39c72eb8c4563d7deb23b80e458305a99",
-    "taskCount": 24
+    "hash": "39db768af111a2065d0d02fa04f6b1c5c95980c8",
+    "taskCount": 47
   },
   "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna": {
-    "hash": "95fda96a48f07807f792db43007363bb2f07553b",
-    "taskCount": 24
+    "hash": "741e9aab91670055ad70d15f9765add2a4f9c0b3",
+    "taskCount": 45
   },
   "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni": {
-    "hash": "1ee1c256ba05dbce9273e654d978a2e0506a18a2",
-    "taskCount": 24
+    "hash": "cbee747b798710001e990bdecc4fd2e8790b7390",
+    "taskCount": 47
   },
   "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu": {
-    "hash": "3dd10127ed499ccd3bf1eb7658e875091d36a23e",
-    "taskCount": 24
+    "hash": "9027ad157da4611e282e0a00345e2863f4dd72de",
+    "taskCount": 42
   },
   "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno": {
-    "hash": "7b03c48b6d9cf5ca2b98dae44069908445a95b0b",
-    "taskCount": 24
+    "hash": "fa6537a03aa173755028e726badc9a1707d4b8b2",
+    "taskCount": 44
   },
   "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-deleni-slov-na-konci-radku": {
     "hash": "24e663d300d59d142eecc64764b07a0bf3196ce6",
@@ -32,20 +32,20 @@
     "taskCount": 47
   },
   "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci": {
-    "hash": "2593f53d1c6501ec7794f527e0ff9f2bc760482e",
-    "taskCount": 24
+    "hash": "6a999240f6f598e9f00ad2cd2b9b127371f103da",
+    "taskCount": 43
   },
   "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis": {
-    "hash": "a12cad763d176b2613aa52ebcd1da282d057f946",
-    "taskCount": 24
+    "hash": "4ff65c26d2f2cb4a06337bd743ff287e5595964e",
+    "taskCount": 42
   },
   "g2-cjl-literarni-vychova-literarni-zanry-pohadka-rikanky-basen-hadanka": {
-    "hash": "f5685ce10ef50640339f5fb264156c2bccb58455",
-    "taskCount": 24
+    "hash": "296246bb69ed36f966b09ca55aefa9dad5aabfd5",
+    "taskCount": 45
   },
   "g2-cjl-literarni-vychova-prace-s-knihou-spisovatel-ilustrator-knihovna": {
-    "hash": "c9b3320931558218cbca59f4886267cd84263b74",
-    "taskCount": 24
+    "hash": "004201cbb9295faf6ff6192f6781182f27896464",
+    "taskCount": 42
   },
   "g2-mat-ciselna-osa-100": {
     "hash": "1edf14183109727787f8d879bb62d31001ff8dcf",
