@@ -146,7 +146,7 @@ export default function AnonStudentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-50">
-      <LandingNav />
+      <LandingNav detskeZobrazeni />
 
       {/* Top banner — trial progress nebo anon hint */}
       <div className="max-w-4xl mx-auto px-4 pt-4">

@@ -180,7 +180,7 @@ export default function ChildAuth() {
 
   return (
     <div className="min-h-screen bg-accent">
-      <LandingNav />
+      <LandingNav detskeZobrazeni />
       <div className="mx-auto max-w-md px-4 py-8">
         <div className="mb-6">
           <BackButton to="/auth" />

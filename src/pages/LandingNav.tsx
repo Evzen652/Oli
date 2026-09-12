@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { OliLogo } from "@/components/OliLogo";
+import { useParentGate } from "@/components/ParentGate";
 
 const NAV_LINKS = [
   { label: "Jak to funguje", href: "#jak-to-funguje" },
@@ -13,10 +14,31 @@ const NAV_LINKS = [
   { label: "Ceník", href: "#ceny" },
 ];
 
-export function LandingNav() {
+/**
+ * `detskeZobrazeni` zapni všude, kde tuhle navigaci vidí dítě (`Onboarding`,
+ * `AnonStudentPage`, `ChildAuth`). Odchody z dětské části pak vedou přes
+ * rodičovskou bránu — do 2026-09-12 byly bez ní a byly to jediné takové
+ * vstupy do části pro dospělé; všude jinde (registrace, sdílení rodičům,
+ * pozvánka) se `requireParent` volá.
+ *
+ * Za bránou je **celé** menu, ne jen „Ceník". Všechny položky vedou na
+ * `/landing`, kde ceník je — chránit jen odkaz „Ceník" by nic neřešilo,
+ * dítě by se k částkám dostalo kliknutím na „Přínosy".
+ *
+ * Na marketingovém landingu (`detskeZobrazeni = false`) se brána neptá:
+ * tam přichází dospělý a ptát se ho na procenta by bylo jen otravné.
+ */
+export function LandingNav({ detskeZobrazeni = false }: { detskeZobrazeni?: boolean } = {}) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
+  const { requireParent, gateElement } = useParentGate();
+
+  /** Na dětské obrazovce přes bránu, jinde rovnou. */
+  function odchod(akce: () => void) {
+    if (detskeZobrazeni) requireParent(akce);
+    else akce();
+  }
 
   function handleLogoClick() {
     // Na landing scrolluje nahoru, jinde naviguje na home
@@ -31,15 +53,16 @@ export function LandingNav() {
     // Přihlášeného rodiče/admina/dítě neodhlašovat — LandingNav se renderuje
     // i na /landing v jejich větvi a jejich /auth route je přesměruje zpět.
     // Anonymní návštěvník žádnou auth session nemá, takže není co odhlašovat.
-    navigate("/auth");
+    odchod(() => navigate("/auth"));
   }
 
   function scrollTo(id: string) {
     const el = document.querySelector(id);
     if (el) {
+      // Kotva je na téhle stránce → jsme na landingu, nikam se neodchází.
       el.scrollIntoView({ behavior: "smooth" });
     } else {
-      navigate("/landing" + id);
+      odchod(() => navigate("/landing" + id));
     }
   }
 
@@ -86,6 +109,7 @@ export function LandingNav() {
           </Sheet>
         </div>
       </div>
+      {gateElement}
     </nav>
   );
 }

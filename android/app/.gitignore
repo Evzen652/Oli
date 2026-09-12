@@ -1,2 +1,11 @@
 /build/*
 !/build/.npmkeep
+
+# Výstup `npx cap sync` — sestavený web a vygenerovaná konfigurace.
+# Zdrojem je `dist/`, do gitu tyhle kopie nepatří. iOS své ekvivalenty
+# (`App/App/public`, `App/App/capacitor.config.json`) ignoruje odjakživa,
+# Android je měl vynechané — doplněno 2026-09-12, dřív než `cap sync`
+# poprvé proběhl, aby se celý build nenabídl ke commitu.
+/src/main/assets/public
+/src/main/assets/capacitor.config.json
+/src/main/assets/capacitor.plugins.json

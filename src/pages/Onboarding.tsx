@@ -166,7 +166,7 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background overflow-hidden">
-      <LandingNav />
+      <LandingNav detskeZobrazeni />
 
 
 

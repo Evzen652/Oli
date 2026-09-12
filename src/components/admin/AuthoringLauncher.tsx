@@ -78,7 +78,7 @@ export function AuthoringLauncher({ topic, level }: AuthoringLauncherProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => window.open("https://claude.ai", "_blank")}
+          onClick={() => window.open("https://claude.ai", "_blank", "noopener,noreferrer")}
           className="text-violet-500 hover:text-violet-700 gap-1"
         >
           Otevřít Claude Chat <ExternalLink className="h-3 w-3" />
