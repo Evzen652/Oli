@@ -47,7 +47,7 @@ function genL1(): PracticeTask {
     {
       hints: [
         `Rok ${rok}: kolik celých stovek v něm je? Z toho pak určíš století.`,
-        `Století se počítá o jedno výš, než je počet celých stovek: k počtu stovek přičti 1, protože i začátek dalšího stovkového úseku už patří do vyššího století. Třeba rok ${vzor} má ${Math.floor(vzor / 100)} celých stovek a patří do ${stoleti(vzor)}. století.`,
+        `Století se počítá o jedno výš, než je počet celých stovek: spočítej celé stovky v roce ${rok} a přičti k nim 1, protože i začátek dalšího stovkového úseku už patří do vyššího století. Třeba rok ${vzor} má ${Math.floor(vzor / 100)} celých stovek a patří do ${stoleti(vzor)}. století.`,
       ],
       solutionSteps: [
         `Rok ${rok} obsahuje ${stovky} celých stovek.`,
@@ -80,9 +80,14 @@ function genL2(): PracticeTask {
       },
     );
   }
-  const roky = pickN(Array.from({ length: 18 }, (_, i) => 100 + 50 * i), 4);
-  const max = Math.max(...roky);
-  const ostatni = roky.filter((r) => r !== max);
+  // Klíč se v malé nápovědě objevit nesmí (prozradil by ho), takže nápověda
+  // jmenuje jen rozptylovače. Aby přesto byla pro každou úlohu jiná, je nejbližší
+  // rozptylovač vždy o 50 let mladší než klíč — z největšího jmenovaného roku
+  // tedy klíč jednoznačně plyne a dvě úlohy nemůžou dostat tutéž nápovědu.
+  const max = 50 * rnd(6, 20);
+  const blizky = max - 50;
+  const dalsi = pickN(Array.from({ length: blizky / 50 - 2 }, (_, i) => 100 + 50 * i), 2);
+  const ostatni = [blizky, ...dalsi].sort((a, b) => b - a);
   return choice(
     "Která událost je nejstarší? (všechny se staly před naším letopočtem)",
     `${max} př. n. l.`,
@@ -92,8 +97,8 @@ function genL2(): PracticeTask {
     })),
     {
       hints: [
-        `Porovnej ${ostatni[0]} př. n. l. a ${ostatni[1]} př. n. l.: které z nich je dál v minulosti?`,
-        "U letopočtů před naším letopočtem běží čas obráceně, směrem do minulosti: čím větší číslo př. n. l., tím starší událost. Najdi tedy mezi možnostmi největší číslo.",
+        `Vypiš si čísla všech čtyř možností — tři z nich jsou ${ostatni.join(", ")}. Které číslo znamená nejdál do minulosti?`,
+        `U letopočtů před naším letopočtem běží čas obráceně, směrem do minulosti: čím větší číslo př. n. l., tím starší událost. Z dvojice ${ostatni[0]} př. n. l. a ${ostatni[1]} př. n. l. je proto starší ta s větším číslem. Stejně porovnej i zbylé možnosti a nakonec vyber tu s největším číslem.`,
       ],
       explanation: `Před naším letopočtem se roky počítají směrem do minulosti, takže větší číslo = starší událost. Nejstarší je proto rok ${max} př. n. l.`,
     },
@@ -126,14 +131,20 @@ function genL3(): PracticeTask {
       },
     );
   }
-  const bcRoky = pickN(Array.from({ length: 16 }, (_, i) => 50 + 50 * i), 2);
-  const adRoky = pickN(Array.from({ length: 16 }, (_, i) => 50 + 50 * i), 2);
-  const sada = [...bcRoky.map((y) => ({ y, bc: true })), ...adRoky.map((y) => ({ y, bc: false }))];
+  // Stejný princip jako u L2: klíč v malé nápovědě být nesmí, takže nápověda
+  // jmenuje jen rozptylovače. Druhý letopočet př. n. l. je proto vždy o 50 let
+  // mladší než klíč a roky n. l. se s ním číselně nekryjí (jinak by se číslo
+  // klíče objevilo v nápovědě u jiné éry a vypadalo jako prozrazení).
+  const klicRok = 50 * rnd(3, 16);
+  const druhyPr = klicRok - 50;
+  const adRoky = pickN(
+    Array.from({ length: 16 }, (_, i) => 50 + 50 * i).filter((r) => r !== klicRok && r !== druhyPr),
+    2,
+  );
   const label = (e: { y: number; bc: boolean }) => `${e.y} ${e.bc ? "př. n. l." : "n. l."}`;
-  const nejstarsi = sada.filter((e) => e.bc).reduce((m, e) => (e.y > m.y ? e : m));
-  const ostatni = sada.filter((e) => e !== nejstarsi);
-  const nl = ostatni.find((e) => !e.bc) ?? ostatni[0];
-  const pr = ostatni.find((e) => e.bc) ?? ostatni[1];
+  const nejstarsi = { y: klicRok, bc: true };
+  const ostatni = [{ y: druhyPr, bc: true }, ...adRoky.map((y) => ({ y, bc: false }))];
+  const nl = adRoky.map((y) => label({ y, bc: false }));
   return choice(
     "Která událost je nejstarší?",
     label(nejstarsi),
@@ -145,8 +156,8 @@ function genL3(): PracticeTask {
     })),
     {
       hints: [
-        `Bylo dřív ${label(nl)}, nebo ${label(pr)}? Rozliš nejdřív éry.`,
-        "Všechno před naším letopočtem je starší než cokoli z našeho letopočtu. Mezi lety př. n. l. je pak nejstarší to s největším číslem.",
+        `Roztřiď možnosti podle éry: ${nl.join(" a ")} patří do našeho letopočtu, ${label(ostatni[0])} před něj. Která éra je starší?`,
+        `Všechno před naším letopočtem je starší než cokoli z našeho letopočtu, takže ${nl.join(" ani ")} nejstarší být nemůže. Zbývají letopočty př. n. l. a mezi nimi je nejstarší ten s větším číslem — větší číslo př. n. l. totiž znamená dál do minulosti.`,
       ],
       explanation: `Letopočty př. n. l. jsou vždy starší než n. l. Mezi nimi je nejstarší ten s největším číslem — proto ${label(nejstarsi)}.`,
     },

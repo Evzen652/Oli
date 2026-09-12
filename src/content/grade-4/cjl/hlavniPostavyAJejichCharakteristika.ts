@@ -198,13 +198,13 @@ const L3: PracticeTask[] = [
   uryvek("Pan Hrubý na děti často křičel, ale když napadl sníh, potichu jim uklidil chodník před školou.", "Co o panu Hrubém můžeš říct?", "vypadá přísně, ale má dobré srdce", [
     ["je jen zlý a nemá rád děti", "Uklidil dětem chodník — jen zlý není."], ["je jen hodný a na nikoho nekřičí", "Na děti ale křičí."], ["nemá rád zimu a sníh", "O tom úryvek nic neříká."],
   ], ["Jak se pan Hrubý chová navenek a co udělá potichu?", "Úryvek ukazuje dvě stránky postavy: jak se chová, když ho všichni vidí, a co udělá, když se nikdo nedívá. Pozor na slovo „ale“."], "Pan Hrubý křičí, ale potají dětem pomáhá — navenek je přísný, ale má dobré srdce."),
-  choice("Jana chce najít ztraceného psa, ale brání jí silná bouřka. Co jí v příběhu stojí v cestě?", "bouřka", [
-    { value: "pes", why: "Psa Jana hledá — je to její cíl." },
-    { value: "Jana", why: "Jana je hlavní postava." },
-    { value: "vypravěč", why: "Vypravěč jen vypráví." },
+  choice("Jana chce najít ztraceného psa, ale venku se strhl prudký déšť s hromy a blesky. Co jí v příběhu stojí v cestě?", "bouřka", [
+    { value: "pes", why: "Psa Jana hledá — je to její cíl, ne překážka." },
+    { value: "Jana", why: "Jana je hlavní postava, která překážku teprve překonává." },
+    { value: "vypravěč", why: "Vypravěč příběh jen vypráví, do děje nezasahuje." },
   ], {
-    hints: ["Co Janě brání, aby psa našla?", "Hrdinovi může v cestě stát postava, ale i počasí, překážka nebo vlastní strach."],
-    explanation: "Janě v hledání brání bouřka — ta je v příběhu její překážkou.",
+    hints: ["Co se venku děje ve chvíli, kdy chce Jana vyrazit hledat?", "Hrdinovi může v cestě stát postava, ale i počasí, překážka nebo vlastní strach. Projdi možnosti a u každé se zeptej: brání tohle Janě v hledání?"],
+    explanation: "Prudký déšť s hromy a blesky je bouřka — právě ta Janě brání psa najít, takže je v příběhu její překážkou.",
   }),
   choice("Dvě věty: „Petr je odvážný.“ a „Petr vběhl do hořícího domu, aby zachránil kočku.“ Která ukáže Petrovu odvahu lépe?", "druhá, protože čin přesvědčí víc", [
     { value: "první, protože je kratší", why: "Délka o přesvědčivosti nerozhoduje." },

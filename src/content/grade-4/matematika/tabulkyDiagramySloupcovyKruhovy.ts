@@ -86,8 +86,8 @@ function soucet(): PracticeTask {
     { value: s - v[0], why: `Vynechal se řádek „${ds.polozky[0]}“ (${v[0]}).` },
     { value: s + v[1], why: `Řádek „${ds.polozky[1]}“ (${v[1]}) se započítal dvakrát.` },
   ], [
-    `Sečti všechna čtyři čísla: ${v.join(" + ")}.`,
-    `Sčítej po dvou: ${v[0]} + ${v[1]}, pak ${v[2]} + ${v[3]}, a nakonec sečti oba mezisoučty. Zkontroluj, že žádný řádek nechybí.`,
+    `Sečti všechna čtyři čísla z tabulky „${ds.nazev}“: ${v.join(" + ")}.`,
+    `Sčítej po dvojicích: nejdřív ${v[0]} + ${v[1]}, pak ${v[2]} + ${v[3]} a nakonec sečti oba mezisoučty. Na konci zkontroluj, že jsi do součtu vzal všechny čtyři řádky tabulky „${ds.nazev}“ a žádný nepočítal dvakrát.`,
   ], [`${v.join(" + ")} = ${s}`]);
 }
 
@@ -97,14 +97,17 @@ function cteniDiagramu(m: 2 | 5): PracticeTask {
   const i = rnd(0, 3), j = (i + 1) % 4;
   const klic = k[i] * m;
   const znamena = m === 2 ? ds.dva : ds.pet;
+  const nasob = m === 2 ? "dvěma" : "pěti";
+  const po = m === 2 ? "dvou" : "pěti";
+  const prehled = ds.polozky.map((p, x) => `„${p}“ ${"■".repeat(k[x])}`).join(", ");
   return ciselnaUloha(`${diagram(ds, k, m)}\n${ds.kolik(ds.tvar[i])}`, klic, [
-    { value: k[i], why: `${k[i]} je počet čtverečků. Jeden čtvereček ale znamená ${znamena}.` },
-    { value: klic + m, why: "O jeden čtvereček víc — spočítej je znovu." },
-    { value: klic - m, why: "O jeden čtvereček méně — spočítej je znovu." },
-    { value: k[j] * m, why: `Tohle patří k řádku „${ds.polozky[j]}“.` },
+    { value: k[i], why: `${k[i]} je počet čtverečků v řádku „${ds.polozky[i]}“. Jeden čtvereček ale znamená ${znamena}.` },
+    { value: klic + m, why: `Tolik by vyšlo, kdyby měl řádek „${ds.polozky[i]}“ o jeden čtvereček víc. Spočítej je znovu.` },
+    { value: klic - m, why: `Tolik by vyšlo, kdyby měl řádek „${ds.polozky[i]}“ o jeden čtvereček méně. Spočítej je znovu.` },
+    { value: k[j] * m, why: `Tolik patří k řádku „${ds.polozky[j]}“, ne k řádku „${ds.polozky[i]}“.` },
   ], [
-    `Řádek „${ds.polozky[i]}“ vypadá takto: ${"■".repeat(k[i])}. Kolik v něm je čtverečků?`,
-    `Každý čtvereček v řádku „${ds.polozky[i]}“ znamená ${znamena}. Počítej po ${m === 2 ? "dvou" : "pěti"}, nebo počet čtverečků vynásob ${m === 2 ? "dvěma" : "pěti"}.`,
+    `Diagram „${ds.nazev}“ (■ = ${znamena}): ${prehled}. Z těch řádků potřebuješ jen „${ds.polozky[i]}“.`,
+    `Diagram „${ds.nazev}“ (■ = ${znamena}): ${prehled}. V řádku „${ds.polozky[i]}“ spočítej čtverečky a pak nezapomeň, že jeden čtvereček neznamená jeden — proto počet čtverečků ještě vynásob ${nasob}, nebo přidávej po ${po} tolikrát, kolik je v řádku čtverečků.`,
   ], [`V řádku „${ds.polozky[i]}“ je ${"■".repeat(k[i])}.`, `${k[i]} · ${m} = ${klic}`]);
 }
 
@@ -123,8 +126,8 @@ function nejvic(maximum: boolean): PracticeTask {
     options: shuffle(ds.polozky),
     optionFeedback,
     hints: [
-      `Porovnej čísla ${v.join(", ")}. Které je ${maximum ? "největší" : "nejmenší"}?`,
-      `${maximum ? "Největší číslo by v diagramu mělo nejvyšší sloupec" : "Nejmenší číslo by v diagramu mělo nejnižší sloupec"}. Až ho najdeš, podívej se, ke kterému řádku tabulky patří.`,
+      `Porovnej čísla ${v.join(", ")} z tabulky „${ds.nazev}“. Které z nich je ${maximum ? "největší" : "nejmenší"}?`,
+      `Projdi tabulku „${ds.nazev}“ řádek po řádku shora dolů a průběžně si pamatuj ${maximum ? "největší" : "nejmenší"} číslo, které jsi zatím viděl. ${maximum ? "Největší číslo by v diagramu mělo nejvyšší sloupec" : "Nejmenší číslo by v diagramu mělo nejnižší sloupec"}. Až ho najdeš, přečti si, u kterého řádku stojí.`,
     ],
     solutionSteps: [`${maximum ? "Největší" : "Nejmenší"} číslo je ${cil}.`, `Patří k řádku „${ds.polozky[idx]}“.`],
   };
@@ -144,8 +147,8 @@ function rozdilMaxMin(): PracticeTask {
     { value: max - druhy, why: `Odečetlo se ${druhy}, ale nejmenší číslo je ${min}.` },
     { value: max, why: `${max} je největší číslo. Ještě od něj odečti nejmenší.` },
   ], [
-    `Které z čísel ${v.join(", ")} je největší a které nejmenší?`,
-    "Rozdíl zjistíš odečtením: od největšího čísla odečti nejmenší. Kontrola: nejmenší číslo + rozdíl musí dát největší.",
+    `Které z čísel ${v.join(", ")} v tabulce „${ds.nazev}“ je největší a které nejmenší?`,
+    `V tabulce „${ds.nazev}“ si nejdřív označ největší a nejmenší číslo — ta dvě se porovnávají, ostatní dvě teď nepotřebuješ. Rozdíl pak zjistíš odečtením: od většího z nich odečti menší. Kontrola: nejmenší číslo plus rozdíl musí dát zpátky největší.`,
   ], [`Největší: ${max}, nejmenší: ${min}`, `${max} − ${min} = ${d}`]);
 }
 
@@ -157,13 +160,14 @@ function rozdilDiagram(): PracticeTask {
   while (j === i || k[j] >= k[i]) { i = rnd(0, 3); j = rnd(0, 3); }
   const d = (k[i] - k[j]) * m;
   const znamena = m === 2 ? ds.dva : ds.pet;
+  const prehled = ds.polozky.map((p, x) => `„${p}“ ${"■".repeat(k[x])}`).join(", ");
   return ciselnaUloha(`${diagram(ds, k, m)}\n${ds.oKolik(ds.tvar[i], ds.tvar[j])}`, d, [
     { value: k[i] - k[j], why: `${k[i] - k[j]} je rozdíl čtverečků. Každý čtvereček ale znamená ${znamena}.` },
-    { value: (k[i] + k[j]) * m, why: "Řádky se sečetly. Otázka se ptá, o kolik má jeden řádek víc než druhý." },
-    { value: k[i] * m, why: `Tohle je jen hodnota řádku „${ds.polozky[i]}“. Ještě od ní odečti řádek „${ds.polozky[j]}“.` },
+    { value: (k[i] + k[j]) * m, why: `Řádky „${ds.polozky[i]}“ a „${ds.polozky[j]}“ se sečetly. Otázka se ptá, o kolik má první řádek víc než druhý.` },
+    { value: k[i] * m, why: `Tolik je celý řádek „${ds.polozky[i]}“. Ještě od něj odečti řádek „${ds.polozky[j]}“.` },
   ], [
-    `Řádek „${ds.polozky[i]}“ má ${"■".repeat(k[i])}, řádek „${ds.polozky[j]}“ ${"■".repeat(k[j])}. O kolik čtverečků je první delší?`,
-    `Spočítej čtverečky, které má řádek „${ds.polozky[i]}“ navíc. Každý z nich znamená ${znamena}, takže jejich počet vynásob ${m === 2 ? "dvěma" : "pěti"}.`,
+    `Diagram „${ds.nazev}“ (■ = ${znamena}): ${prehled}. Porovnávají se řádky „${ds.polozky[i]}“ a „${ds.polozky[j]}“.`,
+    `Diagram „${ds.nazev}“ (■ = ${znamena}): ${prehled}. Spočítej, o kolik čtverečků je řádek „${ds.polozky[i]}“ delší než řádek „${ds.polozky[j]}“. Každý čtvereček navíc ale znamená ${znamena}, takže počet čtverečků navíc ještě vynásob ${m === 2 ? "dvěma" : "pěti"}.`,
   ], [`Čtverečky navíc: ${k[i]} − ${k[j]} = ${k[i] - k[j]}`, `${k[i] - k[j]} · ${m} = ${d}`]);
 }
 
