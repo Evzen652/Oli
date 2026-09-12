@@ -20,35 +20,34 @@ test sekci „nesmí hlásit" — nová pravidla musí projít i tou.
 `scripts/lint-agreement.ts`, pusť `IDS=<témata> npx vite-node
 scripts/lint-agreement.ts`, pak kopie smaž a `git checkout -- src/lib/czechGrammar.ts`.
 
-## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-12, session 39)
+## ✅ Hromadné opravy obsahu — 19 z 22 dávek hotovo a na produkci (2026-09-12)
 
-**Změna postupu:** workflow se dál nepouští (kredit). Kritik běží **inline, po
-jedné dávce**, ve worktree, které po workflow zůstaly. Hotovo s kritikem **a sloučeno do `main`** (2026-09-12): **12 dávek / 39 témat**
-— celá 2. matematika, celá 2. čeština, celá 3. matematika a `g3cjl-a`
-(význam slova, velká písmena, spojky). Zbývá **7 dávek / 35 témat bez kritika**
-(`g2prv-a/b`, `g3prv-a/b/c`, `g3cjl-b/c` — prvouka a zbytek 3. češtiny)
-a 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+**74 témat prošlo autorem i nezávislým kritikem a je sloučeno do `main`.**
+Celý 2. ročník (matematika, čeština, prvouka) a celý 3. ročník (matematika,
+prvouka, čeština). Zbývají **3 rozdělané dávky** — `g5mat-a`, `g5mat-b`,
+`g4-6-mix` (13 témat), kde chybí i autorská část; výchozí bod je
+`origin/wip/content-fix/*` a ten obsah NENÍ ověřený.
 
-⚠️ `g2prv-b` obsahuje **drobná poranění a tísňové linky** — bezpečnostně
-citlivý obsah, číslo 155/150/112 musí být ověřené. Tuhle dávku nedávat
-levnějšímu modelu.
+Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
+- **Nepravdivé tvrzení 4× v jednom tématu** — „Vysočina je jediný kraj, který
+  nemá v názvu jméno svého krajského města" (nejmenuje se tak pět krajů).
+- **Obrácená formulace u šikany** — klíč tvrdil „šikaně chybí opakování",
+  správně „žertu chybí opakování". Bylo to v produkci.
+- **Druhá obhajitelně správná odpověď** u tísňového čísla při krádeži (112),
+  u počtu krajských měst (13 × 14) a u veršované pohádky.
+- **Rýmy, které nerýmují** — „kámen – plamen", „strom – dům" v tématu o rýmu.
+- **Nápovědy, které říkaly odpověď** — čtyři u první pomoci a cesty do školy.
+- **Věcné chyby** — „stetoskopem si prohlíží zvíře", „zástěru nosí zedník".
+- **Chybná čárka v tématu o čárkách** — „nebo" ve vylučovacím poměru.
 
-Nálezy kritika v češtině 2. ročníku: tři chyby slovosledu a pádu v šablonách
-zpětné vazby (`ŘECE hodí se…`, `ta ptá se…`, `na konec patří tečku`) — vše
-v textu, který dítě vidí po chybné odpovědi. Dávky `g2cjl-a`, `g2cjl-c`
-a `g2cjl-d` bez nálezu.
-
-Nálezy kritika v `g2mat-c`: shoda po číslovce s „půl“ („dva a půl litru **má**“)
-a nápověda mluvící o „váze v obchodě“ u úlohy s veterinářem. Klíče všech 143
-úloh dávky souhlasí.
-
-Nálezy v `g2mat-d`: spona u číslovek 2–4 („od 0 do 4 **jsou** 4 centimetry“),
-shoda v převodu cm→mm a chybějící kontrola duplicit v losování úloh
-(`g2-mat-tabulky`). Klíče souhlasí, geometrická tvrzení ověřena.
-
-📌 **K rozhodnutí (ne chyba):** `g2-mat-tabulky` slibuje v popisu „přečteš data
-z tabulky“, ale tabulku ukazuje jen L3 — L1 a L2 jsou slovní úlohy část-část-celek.
-Inventura to nevytkla, takže jsem to nechal; sjednocení je produktové rozhodnutí.
+📌 **Zbylo k rozhodnutí (nálezy, které kritici záměrně neopravili):**
+1. `crSymboly` L3 — 6 ze 13 úloh je odčítání čtyřciferných letopočtů
+   (1993 − 1415). Věcně správné, ale číselný obor 3. ročníku je do 1000
+   a nápověda učí písemné odčítání, což je učivo 4. ročníku.
+2. **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy, >1,9× delší než
+   nejkratší distraktor). Žák může odpovídat podle délky. Je to vzorec
+   napříč repem, ne chyba jedné dávky — chtělo by to kontrolu jako
+   `check:hints`.
 
 ## 🟠 Historie zadání — workflow `content-fix-87` (2026-09-11, session 38)
 
