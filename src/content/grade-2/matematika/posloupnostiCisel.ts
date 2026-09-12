@@ -14,6 +14,14 @@ const DELKA = 5;
 /** Záměnný krok — typická chyba „počítám po jiném čísle“. */
 const JINY_KROK: Record<number, number> = { 2: 3, 3: 2, 5: 10, 10: 5 };
 
+/**
+ * Náhradní záměnné kroky pro případ, že by se distraktor trefil do čísla, které
+ * v zadání viditelně stojí. U kroku 5 je totiž „chybný krok 10“ právě další člen
+ * řady — dítě ho vyloučí na první pohled a z úlohy zbydou jen dvě smysluplné
+ * možnosti. Bere se první krok, který na viditelné číslo nepadne.
+ */
+const JINE_KROKY: Record<number, number[]> = { 2: [3, 5], 3: [2, 5], 5: [10, 2], 10: [5, 2] };
+
 function rada(start: number, krok: number): number[] {
   return Array.from({ length: DELKA }, (_, i) => start + i * krok);
 }
@@ -41,7 +49,9 @@ function mezeraUvnitr(start: number, krok: number, idx: number): PracticeTask {
   const x = r[idx];
   const prev = r[idx - 1];
   const k = Math.abs(krok);
-  const jiny = JINY_KROK[k] * Math.sign(krok);
+  const vRade = new Set(r.filter((_, i) => i !== idx));
+  const jinyK = JINE_KROKY[k].find((j) => !vRade.has(prev + j * Math.sign(krok))) ?? JINY_KROK[k];
+  const jiny = jinyK * Math.sign(krok);
   // dvojice sousedních čísel, která v zadání opravdu stojí
   const p = idx >= 3 ? 0 : idx + 1;
   const [a, b] = [r[p], r[p + 1]];
@@ -158,7 +168,7 @@ export const POSLOUPNOSTICISEL: TopicMetadata[] = [
     goals: [
       "Rozpoznat pravidlo číselné řady.",
       "Doplnit chybějící číslo do posloupnosti.",
-      "Pracovat s kroky +2, +5, +10, -2, -5, -10.",
+      "Pracovat s kroky ±2, ±3, ±5 a ±10.",
     ],
     boundaries: ["Čísla 0–100.", "Kroky ±2, ±3, ±5, ±10."],
     gradeRange: [2, 2],

@@ -22,15 +22,15 @@ interface PoolItem {
 // gen(3) používá všechny položky.
 const POOL: PoolItem[] = [
   // Násobilka 2
-  { question: "2 × 2 = ?", correct: "4", distractors: ["2", "6", "8"], hint: "Vynásobit 2 = přičti číslo k sobě: 2 + 2 = ?", level: 1 },
-  { question: "2 × 3 = ?", correct: "6", distractors: ["4", "8", "5"], hint: "Vynásobit 2 = přičti číslo k sobě: 3 + 3 = ?", level: 1 },
-  { question: "2 × 4 = ?", correct: "8", distractors: ["6", "10", "7"], hint: "Vynásobit 2 = přičti číslo k sobě: 4 + 4 = ?", level: 1 },
-  { question: "2 × 5 = ?", correct: "10", distractors: ["8", "12", "9"], hint: "Vynásobit 2 = přičti číslo k sobě: 5 + 5 = ?", level: 1 },
-  { question: "2 × 6 = ?", correct: "12", distractors: ["10", "14", "11"], hint: "Vynásobit 2 = přičti číslo k sobě: 6 + 6 = ?", level: 1 },
-  { question: "2 × 7 = ?", correct: "14", distractors: ["12", "16", "13"], hint: "Vynásobit 2 = přičti číslo k sobě: 7 + 7 = ?", level: 1 },
-  { question: "2 × 8 = ?", correct: "16", distractors: ["14", "18", "15"], hint: "Vynásobit 2 = přičti číslo k sobě: 8 + 8 = ?", level: 1 },
-  { question: "2 × 9 = ?", correct: "18", distractors: ["16", "20", "17"], hint: "Vynásobit 2 = přičti číslo k sobě: 9 + 9 = ?", level: 1 },
-  { question: "2 × 10 = ?", correct: "20", distractors: ["18", "22", "12"], hint: "Vynásobit 2 = přičti číslo k sobě: 10 + 10 = ?", level: 1 },
+  { question: "2 × 2 = ?", correct: "4", distractors: ["2", "6", "8"], hint: "Násobení dvěma: přičti číslo k sobě. 2 + 2 = ?", level: 1 },
+  { question: "2 × 3 = ?", correct: "6", distractors: ["4", "8", "5"], hint: "Násobení dvěma: přičti číslo k sobě. 3 + 3 = ?", level: 1 },
+  { question: "2 × 4 = ?", correct: "8", distractors: ["6", "10", "7"], hint: "Násobení dvěma: přičti číslo k sobě. 4 + 4 = ?", level: 1 },
+  { question: "2 × 5 = ?", correct: "10", distractors: ["8", "12", "9"], hint: "Násobení dvěma: přičti číslo k sobě. 5 + 5 = ?", level: 1 },
+  { question: "2 × 6 = ?", correct: "12", distractors: ["10", "14", "11"], hint: "Násobení dvěma: přičti číslo k sobě. 6 + 6 = ?", level: 1 },
+  { question: "2 × 7 = ?", correct: "14", distractors: ["12", "16", "13"], hint: "Násobení dvěma: přičti číslo k sobě. 7 + 7 = ?", level: 1 },
+  { question: "2 × 8 = ?", correct: "16", distractors: ["14", "18", "15"], hint: "Násobení dvěma: přičti číslo k sobě. 8 + 8 = ?", level: 1 },
+  { question: "2 × 9 = ?", correct: "18", distractors: ["16", "20", "17"], hint: "Násobení dvěma: přičti číslo k sobě. 9 + 9 = ?", level: 1 },
+  { question: "2 × 10 = ?", correct: "20", distractors: ["18", "22", "12"], hint: "Násobení dvěma: přičti číslo k sobě. 10 + 10 = ?", level: 1 },
   // Násobilka 3
   { question: "3 × 2 = ?", correct: "6", distractors: ["3", "9", "5"], hint: "3 + 3 = ?", level: 1 },
   { question: "3 × 3 = ?", correct: "9", distractors: ["6", "12", "8"], hint: "3 + 3 + 3 = ?", level: 1 },
@@ -90,6 +90,11 @@ function parse(question: string): [number, number] {
 function proc(a: number, b: number, d: number): string {
   const c = a * b;
   const n = NUM[a];
+  // U ×10 by „o jednu víc“ vedlo na a × 11, což je mimo malou násobilku — radši
+  // připomeneme pravidlo pro násobení deseti.
+  if (b === 10 && d === c + a) {
+    return `Násobit deseti znamená připsat za číslo ${a} nulu — ${c}. Ty jsi ale přičetl ještě jednu ${n.acc} navíc.`;
+  }
   if (d === c + a) return `To je ${a} × ${b + 1} — přičetl jsi o jednu ${n.acc} víc.`;
   if (d === c - a) return `To je ${a} × ${b - 1} — jedna ${n.sg} ti chybí.`;
   if (d === c + 2 * a) return `To je ${a} × ${b + 2} — přičetl jsi o dvě ${n.few} víc.`;
