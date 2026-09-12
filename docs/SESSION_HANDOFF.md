@@ -103,9 +103,27 @@ Zámek obsahu přegenerován v `c619cb3` (sedm témat změnilo zadání nebo kl�
 Nasazení samo ověřené není: `gh` tu není přihlášený, takže
 `gh api repos/Evzen652/Oli/commits/<sha>/status` neprojde bez `gh auth login`.
 
-▶ **Další krok: úklid.** 22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`
-a větve `content-fix/*` i `wip/content-fix/*` už nejsou k ničemu:
-`git worktree remove --force <cesta>` + `git branch -D <větev>`.
+✅ **Uklizeno 12. 9.** — 22 worktree `wf_84b89ce1-8c0-*` odstraněno, smazány
+větve `content-fix/*` (22) i pomocné `worktree-wf_*` (22). Zbývá **jeden**
+worktree (hlavní repo) a tři větve: `main`, `chore/remove-essay-and-ai-authoring`,
+`claude/cranky-shirley`.
+
+⚠️ **Squash merge nezaznamená větev jako sloučenou** — `git log main..<větev>`
+u ní ukáže commity, i když jejich obsah v `main` je (squash má jiný SHA
+a žádného rodiče z větve). `git branch --merged` ji proto taky nevypíše.
+Ověřuj obsahově, ne podle commitů:
+```bash
+mb=$(git merge-base main $b); files=$(git diff --name-only $mb $b)
+git diff main $b -- $files      # prázdné = práce větve je v main
+```
+Prostý `git diff main $b -- src/content/` **nestačí** a je zavádějící: ukáže
+hlavně to, co má `main` navíc z ostatních dávek, takže každá větev vypadá
+jako nesloučená.
+
+📌 **`origin/wip/content-fix/*` (11 větví) zůstaly.** Devět z nich nese obsah
+lišící se od `main` — jsou to překonané mezistavy z doby před finálními
+commity autora a kritika, ne ztracená práce. Mazat je nikdo neověřil do
+hloubky a je to nevratné na sdíleném originu, takže to čeká na rozhodnutí.
 
 ⚠️ **Větve dávek sáhly jen na své obsahové soubory.** `git diff main` v nich
 ukazuje i dokumentaci a skripty, ale to je pohyb `main` od merge-base, ne

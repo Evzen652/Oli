@@ -159,8 +159,15 @@ src/
   i klíč 22 místo 14 u číselné řady, který do té chvíle běžel v ostré
   aplikaci. Samotné nasazení ověřené není: `gh` v tomhle prostředí není
   přihlášený, takže `gh api …/commits/<sha>/status` neprošlo.
-- ▶ **Zbývá úklid:** 22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`
-  a větve `content-fix/*` i `wip/content-fix/*`.
+- ✅ **Uklizeno** — 22 worktree odstraněno, smazáno 22 větví `content-fix/*`
+  a 22 pomocných `worktree-wf_*`. Zbyl jeden worktree (hlavní repo) a tři
+  větve: `main`, `chore/remove-essay-and-ai-authoring`, `claude/cranky-shirley`.
+  Před smazáním obsahově ověřeno, že práce každé větve je v `main` —
+  **`git log main..<větev>` to po squash merge neukáže** (squash má jiný SHA),
+  takže se musí porovnávat soubory, které větev sama změnila.
+- 📌 **`origin/wip/content-fix/*` (11 větví) zůstaly** — devět nese obsah
+  lišící se od `main` (překonané mezistavy). Mazání na sdíleném originu je
+  nevratné, takže čeká na rozhodnutí.
 
 ### Session 2026-09-12 (40b) — kritik na `g4-6-mix`, opravný průchod dokončen:
 
