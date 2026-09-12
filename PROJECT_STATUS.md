@@ -144,7 +144,29 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
-### Session 2026-09-12 (39) — kritici po jedné dávce, bez workflow (ROZPRACOVÁNO):
+### Session 2026-09-12 (39) — kritici po jedné dávce + lint shody (ROZPRACOVÁNO):
+
+- ✅ **Lint shody přísudku s číslovkou** — `src/lib/czechAgreementLint.ts`
+  (3 pravidla), zapojený do `audit:content` a jako samostatný sweep
+  `scripts/lint-agreement.ts` (`REPEATS=30` → 78 290 unikátních úloh).
+  Audit dosud lintoval jen `question`; nově i nápovědy, vysvětlení, postup
+  a zpětnou vazbu u možností — právě tam ležely obě chyby z dávky g2mat-d.
+- ✅ **5 skutečných chyb v ZAMRAZENÉM obsahu 5. a 6. ročníku**, které prošly
+  auditem session 37: „rok 291 má 2 stovek", „2 řádky × 3 čtverečků",
+  „6 hran, 4 stěn, 4 vrcholů", „po posunu o 3 dílů", „k nule je 2 díly".
+  Snapshot přegenerován, 4 745 testů zelených.
+- ✅ **Lint pustěn na 15 dávek čekajících na kritika**: 8 skutečných nálezů
+  ve třech tématech 3. ročníku (jízdní řády, násobilka, rýsování úsečky) —
+  opraveno a pushnuto na jejich větvích. 12 dávek bez nálezu.
+- 📌 **Dvakrát falešný poplach vlastního pravidla** (27× „Výsledek: 3 zbytek 0“,
+  30× „přičti 4 jen“, „nohy 4 kachen“). Test má proto sekci „nesmí hlásit“ —
+  19 správných vět, které pravidlo nesmí označit. Falešný nález je tady dražší
+  než propuštěná chyba: obsah je zmrazený a „opravou“ správného tvaru se škodí.
+- ⚠️ **Jeden běh testů ze tří měl 1 chybu**, kterou se nepodařilo pojmenovat
+  (další dva běhy i 4 běhy obsahových testů zelené, sweep bez nálezu). Až se
+  zopakuje, pustit `npx vitest run --reporter=json --outputFile=fail.json`.
+
+### Session 2026-09-12 (39b) — kritici po jedné dávce, bez workflow:
 
 - 🟢 **Uživatel workflow zastavil** („žralo moc kreditu“). Kritik teď běží
   **inline, dávka po dávce** v už existujících worktree `.claude/worktrees/wf_*`.

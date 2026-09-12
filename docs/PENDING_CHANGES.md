@@ -7,6 +7,19 @@
 
 ---
 
+## ✅ Lint shody přísudku s číslovkou (2026-09-12)
+
+`src/lib/czechAgreementLint.ts` + `scripts/lint-agreement.ts`. Audit lintuje
+nově i nápovědy, vysvětlení, postup a zpětnou vazbu (dřív jen `question`).
+Našel 5 chyb v zamrazeném obsahu 5. a 6. ročníku a 8 v dávkách čekajících na
+kritika. Dvakrát ale nejdřív vyrobil falešný poplach na správné větě, proto má
+test sekci „nesmí hlásit" — nová pravidla musí projít i tou.
+
+**Jak ho pustit na obsah mimo `main`:** do worktree zkopíruj
+`src/lib/czechAgreementLint.ts`, `src/lib/czechGrammar.ts` a
+`scripts/lint-agreement.ts`, pusť `IDS=<témata> npx vite-node
+scripts/lint-agreement.ts`, pak kopie smaž a `git checkout -- src/lib/czechGrammar.ts`.
+
 ## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-12, session 39)
 
 **Změna postupu:** workflow se dál nepouští (kredit). Kritik běží **inline, po
