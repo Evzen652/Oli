@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad } from "@/lib/czechGrammar";
+import { pad, isAre } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "../_shared";
 
 /**
@@ -44,12 +44,12 @@ function postup(t: number, n: number): { h0: string; h1: string; expl: string } 
     return {
       h0: `10 × ${n} je totéž jako ${pad(n, "DESÍTKA")}.`,
       h1: `Když násobíš deseti, napiš číslo ${n} a připiš za něj nulu — tak zapíšeš ${pad(n, "DESÍTKA")} jedním číslem.`,
-      expl: `10 × ${n} je ${pad(n, "DESÍTKA")}, a to je ${x}. Při násobení deseti se k číslu ${n} jen připíše nula.`,
+      expl: `10 × ${n} ${isAre(n)} ${pad(n, "DESÍTKA")}, a to je ${x}. Při násobení deseti se k číslu ${n} jen připíše nula.`,
     };
   }
   if (n === 10) {
     return {
-      h0: `Násobit deseti je snadné: ${t} × 10 je ${pad(t, "DESÍTKA")}.`,
+      h0: `Násobit deseti je snadné: ${t} × 10 ${isAre(t)} ${pad(t, "DESÍTKA")}.`,
       h1: `K číslu ${t} připiš nulu — tak zapíšeš ${pad(t, "DESÍTKA")} jedním číslem. Záměnnost: ${t} × 10 = 10 × ${t}.`,
       expl: `${t} × 10 je ${pad(t, "DESÍTKA")}, a to je ${x}. Při násobení deseti se k číslu ${t} jen připíše nula.`,
     };
