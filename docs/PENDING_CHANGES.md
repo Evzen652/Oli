@@ -40,6 +40,22 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
 - **Věcné chyby** — „stetoskopem si prohlíží zvíře", „zástěru nosí zedník".
 - **Chybná čárka v tématu o čárkách** — „nebo" ve vylučovacím poměru.
 
+📌 **Nálezy autorů, které přesahují jejich dávku (k opravě mimo obsah):**
+1. **Dvě kontroly na leak si odporují.** `src/test/topic-gate.test.ts` hledá
+   klíč v nápovědě prostým `includes` **bez výjimky pro „rejstřík možností"**,
+   kterou `supabase/functions/_shared/hintLeakage.ts` má. Navíc `normalize()`
+   v `hintLeakage` odstraňuje `„`, ale ne `“`, takže za uvozovkou nevidí
+   hranici slova. Autoři to museli obcházet v obsahu — patří to opravit
+   v kontrolách.
+2. **`parovani` v `src/content/grade-5/_shared.ts`** skládá velkou nápovědu
+   tak, že končí utrženou větou o jiné dvojici („…doplň vylučováním. V Římě
+   stojí Koloseum…"). Je to i na `main`, týká se všech témat, která helper
+   používají.
+3. **Tiché mizení úloh:** u převodů jednotek obsahu se tři z pěti převodů na
+   větší jednotku vůbec negenerovaly — duplicitní distraktor způsobil, že
+   `ciselnaUloha` vracela `null`. Audit to neukáže: co nevznikne, nemá co
+   kontrolovat. Stálo by za kontrolu „generátor vrátil míň úloh, než má pooly".
+
 📌 **Zbylo k rozhodnutí (nálezy, které kritici záměrně neopravili):**
 1. `crSymboly` L3 — 6 ze 13 úloh je odčítání čtyřciferných letopočtů
    (1993 − 1415). Věcně správné, ale číselný obor 3. ročníku je do 1000

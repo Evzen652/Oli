@@ -102,11 +102,12 @@ commitnout**. Jejich rozpracovaná práce je zachráněná jako snapshot:
 | dávka | stav autora | kde | worktree |
 |---|---|---|---|
 | `g5mat-a` | ✅ **hotov a commitnut** (`6363b28`) — **čeká na kritika** | `origin/content-fix/g5mat-a` | `wf_84b89ce1-8c0-20` |
+| `g4-6-mix` | ✅ **hotov a commitnut** (`59f79ab`) — **čeká na kritika** | `origin/content-fix/g4-6-mix` | `wf_84b89ce1-8c0-22` |
 | `g5mat-b` | 🟠 rozepsaný, necommitnutý (4 soubory) | `origin/wip/content-fix/g5mat-b-autor` | `wf_84b89ce1-8c0-21` |
-| `g4-6-mix` | 🟠 rozepsaný, necommitnutý (6 souborů) | `origin/wip/content-fix/g4-6-mix-autor` | `wf_84b89ce1-8c0-22` |
 
-**První krok příští session: pusť kritika na `g5mat-a`** — autor je hotov,
-brána PASS, docs-check bez výjimek. Teprve pak dopiš zbylé dvě dávky.
+**První krok příští session: pusť kritiky na `g5mat-a` a `g4-6-mix`** — oba
+autoři hotovi, brána PASS, docs-check bez nových výjimek. Teprve pak dopiš
+`g5mat-b` (autor rozepsaný) a nakonec sluč všechny tři do `main`.
 
 Autor `g5mat-a` hlásí dvě věci, které si kritik má ověřit: (1) u převodů
 jednotek obsahu se tři z pěti převodů na větší jednotku vůbec negenerovaly
