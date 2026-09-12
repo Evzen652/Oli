@@ -148,6 +148,15 @@ const MALE: MaleItem[] = [
   { veta: "Do školy chodí i můj kamarád.", slovo: "kamarád", jedne: "jednomu jedinému klukovi", zadne: "žádného kluka", priklad: "Martin" },
 ];
 
+/**
+ * „žádné hory“ → „jedné určité hory“, „žádného města“ → „jednoho určitého
+ * města“. Zpětná vazba potřebuje tentýž pád a rod jako pole `zadne`; dřív
+ * v ní věta končila ve vzduchu („je to jméno jednoho určitého.“).
+ */
+function jednoUrcite(zadne: string): string {
+  return zadne.replace(/^žádného /, "jednoho určitého ").replace(/^žádné /, "jedné určité ");
+}
+
 function maleUloha(it: MaleItem): PracticeTask {
   return choice(
     `Proč se ve větě „${it.veta}“ píše slovo „${it.slovo}“ s malým písmenem?`,
@@ -155,7 +164,7 @@ function maleUloha(it: MaleItem): PracticeTask {
     [
       { value: "Není to podstatné jméno.", why: `Podstatné jméno to je — pojmenovává věc nebo bytost. O velikosti prvního písmene ale rozhoduje něco jiného.` },
       { value: "Je to krátké slovo.", why: `Na délce nezáleží: „${it.priklad}“ je taky krátké a velké písmeno má.` },
-      { value: `Jméno ${it.zadne} se nikdy nepíše s velkým písmenem.`, why: `Nepravda — „${it.priklad}“ velké písmeno má, protože je to jméno jednoho určitého.` },
+      { value: `Jméno ${it.zadne} se nikdy nepíše s velkým písmenem.`, why: `Nepravda — „${it.priklad}“ velké písmeno má, protože je to jméno ${jednoUrcite(it.zadne)}.` },
     ],
     {
       hints: [

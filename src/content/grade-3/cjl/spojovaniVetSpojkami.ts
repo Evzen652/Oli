@@ -93,7 +93,7 @@ function najdiSpojku([s, d1, d2, d3]: [string, Nespojka, Nespojka, Nespojka]): P
         `Slova „${d1.slovo}“ i „${d2.slovo}“ něco pojmenovávají či popisují. Spojka nic z toho nedělá — jenom spojuje.`,
         `Spojka nepojmenovává věc, nepopisuje vlastnost ani nevyjadřuje děj. Jen spojuje dvě věty a ukazuje, jaký je mezi nimi vztah: přidání, protiklad, výběr, důvod, čas či účel. Zkus každou možnost postavit doprostřed mezi dvě věty — u slova „${d3.slovo}“ to nepůjde vůbec.`,
       ],
-      explanation: `Tohle slovo ${VYZNAM[s]} — sám o sobě nic nepojmenovává, jen spojuje dvě věty. Právě to dělá spojku spojkou. Zbylé tři možnosti jsou slova, která něco pojmenovávají, popisují nebo vyjadřují děj.`,
+      explanation: `Tohle slovo ${VYZNAM[s]} — samo o sobě nic nepojmenovává, jen spojuje dvě věty. Právě to dělá spojku spojkou. Zbylé tři možnosti jsou slova, která něco pojmenovávají, popisují nebo vyjadřují děj.`,
     },
   );
 }
