@@ -16,6 +16,7 @@ import { validateAnswer, resolveTaskValidation } from "./validators";
 import { getTierTasks } from "./levelCoverage";
 import { checkHintLeakage } from "../../supabase/functions/_shared/hintLeakage";
 import { TIER_EXCEPTIONS, getGeneratedWordCheck } from "./auditInvariantConfig";
+import { checkCzechAgreement, agreementFields } from "./czechAgreementLint";
 
 export type AuditCategory =
   | "format"
@@ -585,29 +586,19 @@ export function runOfflineAudit(
         }
       }
 
-      // d6) Česká gramatika — čísla 2–4 nesmí stát před genitiv-plurálovým tvarem
-      // Detekuje vzor "2 jablek", "3 dílů", "4 knížek" atd. — správně: "2 jablka", "3 díly"
-      {
-        // `\w` je v JS jen ASCII, takze ze slova "baleni" zbyl fragment
-        // "balen" a pravidlo ho oznacilo za genitiv pluralu — 22 falesnych
-        // nalezu na SPRAVNEM tvaru ("4 baleni" je spravne cesky). Opacne
-        // pravidlo MIJELO skutecne pripady s diakritikou ("3 dilu"), protoze
-        // se o "i" zastavilo. `\p{L}` s priznakem `u` cte cele slovo.
-        const genitivPlural = /(?<![\p{L}\p{N}])[234]\s+\p{L}+(?:ů|ek|en)(?![\p{L}])/gu;
-        const questionText = task.question;
-        // Po předložce je genitiv SPRÁVNĚ („ze 3 bodů", „do 4 hodin",
-        // „u 2 domů") — pravidlo se týká holého počtu („3 bodů vede…").
-        const PREPOSITIONS = /(?:^|[^\p{L}])(?:ze|z|do|od|u|bez|kolem|podle|vedle|okolo|během|kromě|místo)\s+$/iu;
-        const matches = (questionText.match(genitivPlural) ?? []).filter((m) => {
-          const at = questionText.indexOf(m);
-          return !PREPOSITIONS.test(questionText.slice(0, at));
-        });
-        if (matches.length > 0) {
+      // d6) Česká gramatika — shoda přísudku a číslovky
+      // Pravidla i jejich odůvodnění jsou v src/lib/czechAgreementLint.ts.
+      // Do 2026-09-12 se tady kontrolovala jen `question`, a jen genitiv
+      // plurálu po 2–4. Ruční kontrola dvou dávek oprav pak našla tři chyby
+      // shody, všechny ve `explanation` — tedy v poli, kam audit nekoukal.
+      // Teď se lintují i nápovědy, vysvětlení, postup a zpětná vazba.
+      for (const field of agreementFields(task)) {
+        for (const finding of checkCzechAgreement(field.text)) {
           issues.push({
             ...issueMeta,
             taskQuestion: task.question.slice(0, 80),
             category: "czech_grammar",
-            detail: `Pravděpodobná špatná pluralizace (2–4 + genitiv plurálu): ${matches.map(m => `"${m}"`).join(", ")} — použij plural() z czechGrammar.ts`,
+            detail: `${field.label}: ${finding.detail}`,
           });
         }
       }

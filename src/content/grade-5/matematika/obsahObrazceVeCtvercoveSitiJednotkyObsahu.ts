@@ -22,7 +22,7 @@ function sit(): PracticeTask | null {
   ], [
     `Kolik čtverečků je v jednom řádku a kolik je řádků (${r})?`,
     "Obsah ve čtvercové síti = počet všech čtverečků uvnitř. Když jsou v řádcích stejně dlouhé řady, stačí vynásobit počet řádků počtem čtverečků v řádku.",
-  ], [`${r} řádků × ${s} čtverečků = ${r * s}`.replace(/^(\d+) řádků/, `${pad(r, "ŘÁDEK")}`)]);
+  ], [`${pad(r, "ŘÁDEK")} × ${pad(s, "ČTVEREČEK")} = ${r * s}`]);
 }
 
 function obdelnik(): PracticeTask | null {

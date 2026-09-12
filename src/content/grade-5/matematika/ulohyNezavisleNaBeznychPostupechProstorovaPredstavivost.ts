@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad } from "@/lib/czechGrammar";
+import { pad, pluralWithNumber } from "@/lib/czechGrammar";
 import { ciselnaUloha, pick, rnd, sada } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
@@ -139,7 +139,11 @@ function teleso(): PracticeTask | null {
   ], [
     `Představ si ${nazev === "krychle" ? "hrací kostku" : nazev === "kvádr" ? "krabici od bot" : nazev.includes("jehlan") ? "jehlan jako pyramidu" : "hranol jako stan"}. Kolik ${co} vidíš nahoře, kolik dole a kolik po stranách?`,
     "Hrana je čára, kde se potkávají dvě stěny; stěna je plocha; vrchol je bod, kde se stýká víc hran. Počítej po částech — podstava, horní část, boky.",
-  ], [`${nazev}: ${h} hran, ${s} stěn, ${v} vrcholů`]);
+  ], [
+    // Souhrn je věta, ne výčet po „kolik" — tvary se tedy musí shodnout
+    // s počtem („4 stěny", ne „4 stěn"). Otázka naopak genitiv potřebuje.
+    `${nazev}: ${pluralWithNumber(h, "hrana", "hrany", "hran")}, ${pluralWithNumber(s, "stěna", "stěny", "stěn")}, ${pluralWithNumber(v, "vrchol", "vrcholy", "vrcholů")}`,
+  ]);
 }
 
 function gen(level: number): PracticeTask[] {

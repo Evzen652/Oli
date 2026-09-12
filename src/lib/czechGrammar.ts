@@ -40,7 +40,13 @@ export function pluralWithNumber(n: number, one: string, few: string, many: stri
 // Klíče VŽDY UPPERCASE — chrání před překlepy a usnadňuje search.
 // Tvar: [one, few, many]
 
-const NOUNS: Record<string, [string, string, string]> = {
+/**
+ * Rejstřík je exportovaný kvůli lintu shody (`czechAgreementLint.ts`), který
+ * z tvarů „few" staví obrácený index: ve větě pozná „3 žáci" a podle rodu
+ * dopočítá, jaký přísudek k tomu počtu patří. Číst ho jde odkudkoli,
+ * ZAPISOVAT nové slovo jen sem.
+ */
+export const NOUNS: Record<string, [string, string, string]> = {
   // Učení / cvičení
   ÚKOL:       ["úkol", "úkoly", "úkolů"],
   ÚLOHA:      ["úloha", "úlohy", "úloh"],

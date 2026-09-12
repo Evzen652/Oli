@@ -53,7 +53,7 @@ function genL1(): PracticeTask {
         `Rok ${rok} obsahuje ${stovky} celých stovek.`,
         `${stovky} + 1 = ${cent}. století (trvá od roku ${(cent - 1) * 100 + 1} do ${cent * 100}).`,
       ],
-      explanation: `Století se počítá tak, že k počtu celých stovek přičteš jedno: rok ${rok} má ${stovky} stovek, patří tedy do ${cent}. století (to trvá od roku ${(cent - 1) * 100 + 1} do ${cent * 100}).`,
+      explanation: `Století se počítá tak, že k počtu celých stovek přičteš jedno: rok ${rok} má ${pad(stovky, "STOVKA")}, patří tedy do ${cent}. století (to trvá od roku ${(cent - 1) * 100 + 1} do ${cent * 100}).`,
     },
   );
 }

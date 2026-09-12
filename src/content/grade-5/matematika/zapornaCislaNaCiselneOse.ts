@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pad } from "@/lib/czechGrammar";
+import { pad, isAre } from "@/lib/czechGrammar";
 import { ciselnaUloha, pick, rnd, sada, shuffle, slovy } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
@@ -120,7 +120,7 @@ function teplota(): PracticeTask | null {
   return ciselnaUloha(`${kdy[0]} bylo ${Z(start)} °C, ${kdy[1]} se oteplilo o ${zmena} °C. Kolik stupňů bylo potom?`, `${Z(konec)} °C`, [
     { value: `${Z(start - zmena)} °C`, why: "Posun šel na špatnou stranu. Oteplení znamená posun po teploměru nahoru — doprava na ose." },
     { value: `${Z(-start + zmena)} °C`, why: "Minus se nevšímal. Teplota začínala pod nulou." },
-    { value: `${Z(-konec)} °C`, why: `Znaménko nesedí: po posunu o ${zmena} dílů nahoru z ${Z(start)} jsi ${konec > 0 ? "nad" : "pod"} nulou.` },
+    { value: `${Z(-konec)} °C`, why: `Znaménko nesedí: po posunu o ${pad(zmena, "DÍL")} nahoru z ${Z(start)} jsi ${konec > 0 ? "nad" : "pod"} nulou.` },
   ], [
     `Kolik dílů je z ${Z(start)} k nule? A kolik dílů ještě zbývá z oteplení o ${zmena} °C?`,
     "Oteplení = posun po teploměru nahoru (na ose doprava), ochlazení = dolů (doleva). Nejdřív dojdi k nule a pak pokračuj o zbytek.",
@@ -147,7 +147,7 @@ function mezi(): PracticeTask | null {
   const a = -rnd(2, 12), b = rnd(2, 12);
   const d = b - a;
   return ciselnaUloha(`Kolik dílů je na číselné ose mezi čísly ${Z(a)} a ${b}?`, pad(d, "DÍL"), [
-    { value: pad(b + a > 0 ? b + a : -(b + a) || 1, "DÍL"), why: `Čísla se odečetla bez ohledu na minus. Z ${Z(a)} k nule je ${-a} dílů a z nuly k ${b} dalších ${b}.` },
+    { value: pad(b + a > 0 ? b + a : -(b + a) || 1, "DÍL"), why: `Čísla se odečetla bez ohledu na minus. Z ${Z(a)} k nule ${isAre(-a)} ${pad(-a, "DÍL")} a z nuly k ${b} dalších ${b}.` },
     { value: pad(d + 1, "DÍL"), why: "Počítala se čísla, ne mezery mezi nimi." },
     { value: pad(d - 1, "DÍL"), why: "Nula leží mezi nimi a také se přes ni jde." },
   ], [
