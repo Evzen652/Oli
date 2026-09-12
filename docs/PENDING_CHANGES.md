@@ -23,10 +23,15 @@ scripts/lint-agreement.ts`, pak kopie smaž a `git checkout -- src/lib/czechGram
 ## 🟠 Hromadné opravy 87 témat z inventury — ROZPRACOVÁNO (2026-09-12, session 39)
 
 **Změna postupu:** workflow se dál nepouští (kredit). Kritik běží **inline, po
-jedné dávce**, ve worktree, které po workflow zůstaly. Hotovo s kritikem **a sloučeno do `main`** (2026-09-12): **11 dávek / 35 témat**
-— celá 2. matematika, celá 2. čeština, celá 3. matematika. Zbývá **8 dávek
-bez kritika** (`g2prv-a/b`, `g3prv-a/b/c`, `g3cjl-a/b/c` — prvouka a 3. čeština)
+jedné dávce**, ve worktree, které po workflow zůstaly. Hotovo s kritikem **a sloučeno do `main`** (2026-09-12): **12 dávek / 38 témat**
+— celá 2. matematika, celá 2. čeština, celá 3. matematika a `g3cjl-a`
+(význam slova, velká písmena, spojky). Zbývá **7 dávek bez kritika**
+(`g2prv-a/b`, `g3prv-a/b/c`, `g3cjl-b/c` — prvouka a zbytek 3. češtiny)
 a 3 rozdělané (`g5mat-a`, `g5mat-b`, `g4-6-mix`).
+
+⚠️ `g2prv-b` obsahuje **drobná poranění a tísňové linky** — bezpečnostně
+citlivý obsah, číslo 155/150/112 musí být ověřené. Tuhle dávku nedávat
+levnějšímu modelu.
 
 Nálezy kritika v češtině 2. ročníku: tři chyby slovosledu a pádu v šablonách
 zpětné vazby (`ŘECE hodí se…`, `ta ptá se…`, `na konec patří tečku`) — vše

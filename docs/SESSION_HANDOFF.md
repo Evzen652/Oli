@@ -91,8 +91,8 @@ Všechno je pushnuté na origin, na `main` NIC z obsahu není:**
 
 | dávky | stav | kde |
 |---|---|---|
-| `g2mat-a…d`, `g2cjl-a…d`, `g3mat-a…c` (11) | ✅ autor i kritik, **SLOUČENO do `main`** | v produkci |
-| `g2prv-a`, `g2prv-b`, `g3prv-a`, `g3prv-b`, `g3prv-c`, `g3cjl-a`, `g3cjl-b`, `g3cjl-c` (8) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
+| `g2mat-a…d`, `g2cjl-a…d`, `g3mat-a…c`, `g3cjl-a` (12) | ✅ autor i kritik, **SLOUČENO do `main`** | v produkci |
+| `g2prv-a`, `g2prv-b`, `g3prv-a`, `g3prv-b`, `g3prv-c`, `g3cjl-b`, `g3cjl-c` (7) | 🟠 autor hotov, **kritik chybí** | `origin/content-fix/*` |
 | `g5mat-a`, `g5mat-b`, `g4-6-mix` (3) | 🔴 rozdělané, **bez commitu** — jen snapshot, NEOVĚŘENÉ | `origin/wip/content-fix/*` |
 
 > Ověřeno 2026-09-12: `origin/wip/content-fix/*` je **osm** větví, ne tři.
