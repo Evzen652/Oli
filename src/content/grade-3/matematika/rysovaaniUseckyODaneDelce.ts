@@ -1,6 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "../_shared";
-import { plural } from "@/lib/czechGrammar";
+import { plural, isAre } from "@/lib/czechGrammar";
 
 // Přepsáno 2026-09-11 (inventura obsahu): úrovně měly jen 8/8/12 ručních otázek,
 // všechny úlohy sdílely stejnou dvojici nápověd, chybné možnosti neměly zpětnou
@@ -145,7 +145,7 @@ function cmMmNaMm([c, m]: [number, number], i: number): PracticeTask {
   const x = 10 * c + m;
   return choice(`Úsečka ${X}${Y} měří ${c} cm ${m} mm. Kolik je to milimetrů?`, `${x} mm`, tri(`${x} mm`, [
     { value: `${c + m} mm`, why: `Centimetry a milimetry nejde sečíst jen tak. Nejdřív převeď ${c} cm na milimetry.` },
-    { value: `${10 * m + c} mm`, why: `Čísla se prohodila. ${c} cm je ${c} ${plural(c, "desítka", "desítky", "desítek")} milimetrů, na místo desítek tedy patří ${c}.` },
+    { value: `${10 * m + c} mm`, why: `Čísla se prohodila. ${c} cm ${isAre(c)} ${c} ${plural(c, "desítka", "desítky", "desítek")} milimetrů, na místo desítek tedy patří ${c}.` },
     { value: `${100 * c + m} mm`, why: `1 cm má 10 mm, ne 100 mm. ${c} cm je jen ${10 * c} mm.` },
   ]), {
     hints: [
