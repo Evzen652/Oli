@@ -45,6 +45,7 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-fyz-latka-a-teleso-6",
           "g6-fyz-skupenstvi-latek-6",
           "g6-fyz-atomy-molekuly-6",
+          "g6-fyz-pohyb-castic-6",
         ],
       },
     ],

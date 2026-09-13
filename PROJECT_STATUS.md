@@ -298,6 +298,26 @@ src/
   novou úlohu a téma bránu „≥ 12 unikátních" procházelo na permutacích.
   Přesně ten případ, kvůli kterému se ta oprava dělala. Ověřeno při
   `COUNT_REPEATS=30`.
+- ✅ **Čtvrté a poslední téma dávky — `Pohyb částic, difúze, Brownův pohyb`.**
+  L1 dva stejné pokusy při dvou teplotách (devět dějů × osm dvojic teplot),
+  L2 difúze na běžné situaci včetně pevných látek (olovo ve zlatě, splasklý
+  balonek, kyslík v rybníce), L3 Brownův pohyb jako **nepřímý důkaz** částic:
+  žák musí z pozorování vyloučit proudění, život i klesání a dojít k tomu, co
+  zbude. Tím je okruh „Látky a tělesa“ hotový (4/4), fyzika **10/13**
+  a šestka **15 ze 117**.
+- 🐛 **Šablona zase vyrobila neshodu — „stejná lžičku rozpustné kávy“.**
+  Malá nápověda skládala „stejná “ + jméno v akuzativu a mluvila o nádobě
+  i tam, kde se pokus dělá ve spíži. Tatáž třída vady jako `z sklo` u prvního
+  tématu dávky: rod, pád ani prostředí se ze šablony odvodit nedají. Každý děj
+  má teď v datech hotovou celou větu.
+- 🐛 **Dvě otázky byly binární Ano/Ne mimo L1.** U L3 dokonce tři možnosti ze
+  čtyř začínaly „Ano“ a klíč byl jediné „Ne“ — dal se trefit jako odlišný kus,
+  bez jediné úvahy o fyzice. Obě přeformulovány na otevřenou otázku.
+- ℹ️ **Známé omezení L1, ponechané vědomě:** klíčem je vždycky ta teplejší
+  strana. Obrácená otázka by to zlomila, jenže u sedmi z devíti dějů míří
+  čtvrtá možnost na tu chladnější stranu a po obrácení by se shodla s klíčem.
+  Přepsat ji znamená obětovat nejsilnější past (chladnější strana se špatným
+  zdůvodněním). Zapsáno v docblocku tématu.
 - ⚠️ **Oprava mého vlastního nálezu: `npx tsc --noEmit` v tomhle repu
   nekontroluje nic.** Kořenový `tsconfig.json` má `"files": []` a jen reference
   na podprojekty, takže projde i se zjevnou typovou chybou v `src/` (ověřeno

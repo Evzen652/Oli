@@ -21,6 +21,7 @@ import { MERENI_CASU } from "./fyzika/mereniCasu";
 import { LATKA_A_TELESO } from "./fyzika/latkaATeleso";
 import { SKUPENSTVI_LATEK } from "./fyzika/skupenstviLatek";
 import { ATOMY_MOLEKULY } from "./fyzika/atomyMolekuly";
+import { POHYB_CASTIC } from "./fyzika/pohybCastic";
 
 // Dějepis (pilot — faktický vzor)
 import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
@@ -41,6 +42,7 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...LATKA_A_TELESO,
   ...SKUPENSTVI_LATEK,
   ...ATOMY_MOLEKULY,
+  ...POHYB_CASTIC,
   // Dějepis — Úvod do dějepisu
   ...PERIODIZACE_LETOPOCET,
   // Dějepis — Pravěk

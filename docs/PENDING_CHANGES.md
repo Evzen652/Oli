@@ -48,6 +48,9 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   scénář, na který ten test vznikl. Netýká se opravy nápovědy ve trojce. → ✅ opraveno níž.
 - ✅ **Dávka 1, téma 3/4 — `Atomy a molekuly`** (13. 9.). Fyzika **9/13**,
   šestka **14 ze 117**. Zbývá `Pohyb částic, difúze, Brownův pohyb`.
+- ✅ **Dávka 1, téma 4/4 — `Pohyb částic, difúze, Brownův pohyb`** (14. 9.).
+  Okruh „Látky a tělesa“ je hotový celý. Fyzika **10/13**, šestka **15 ze 117**.
+  Zbývá poslední okruh fyziky „Elektrické vlastnosti látek“ (3 témata).
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.
