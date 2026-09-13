@@ -248,7 +248,7 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
 5. ⛔ **Právní kontrola zásad soukromí.** Text je srovnaný s kódem — to je
    technická práce. Jestli formulace obstojí právně, Claude neposoudí,
    a u služby pro děti to není formalita. Sem patří i ověření, že se všemi
-   šesti příjemci (`PRIJEMCI` v `src/content/legal.ts`) existuje zpracovatelská
+   pěti příjemci (`PRIJEMCI` v `src/content/legal.ts`) existuje zpracovatelská
    smlouva, protože to stránka tvrdí.
 6. ⛔ **Podpisový klíč pro Android**, ověření domény pro App Links / Universal
    Links, formuláře o datech v obou obchodech (Data Safety / Privacy Nutrition
@@ -336,8 +336,16 @@ v malé nápovědě). Tohle měřítko ty tři nálezy původně našlo.
 
 Odchody z dětské části jsou za rodičovskou bránou (`39b4ecc`). Zbývá:
 
-- **Google Fonts na každé dětské obrazovce** (`index.html:16-18`) — jediné
-  odchozí volání bez funkční nutnosti, řešitelné self-hostingem písma.
+- ✅ **Google Fonts pryč (13. 9.).** Nunito leží v `src/assets/fonts/`
+  (variabilní řez z `@fontsource-variable/nunito@5.3.0`, OFL-1.1, licence vedle),
+  `@font-face` v `src/index.css`. Byl to jediný odchozí požadavek na dětských
+  obrazovkách bez funkční nutnosti. **Dopad na zásady:** příjemce „Google Fonts"
+  ze `legal.ts` zmizel, příjemců je teď pět, ne šest. Vedlejší zisk: v mobilním
+  obalu bez sítě se dřív písmo nenačetlo vůbec.
+  Hlídá `src/test/self-hosted-fonts.test.ts` (čtyři měřítka, každé ověřené
+  obráceně) — včetně toho, že se název rodiny v CSS shoduje s Tailwindem;
+  na tom už jednou ztroskotalo „Baloo 2", které se stahovalo a nikdy
+  nevykreslilo.
 - ✅ **`FEATURES.studentChat` i komponenta `TutorChat` smazány (13. 9.).**
   Být `false` nestačilo: `loadOverrides()` čte `localStorage`, takže flag není
   ochrana, jen skrytí — a zásady soukromí rodičům tvrdí „v aplikaci není chat“.

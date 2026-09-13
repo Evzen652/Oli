@@ -168,6 +168,14 @@ src/
   `TutorChat` zmizely úplně. Edge funkce `tutor-chat` zůstává nasazená; odebrat
   ji jde jen z konzole Supabase. Hlídá `src/test/child-surface.test.ts` — tři
   měřítka, každé ověřené obráceně.
+- ✅ **Google Fonts pryč — písmo hostujeme sami.** Nunito (variabilní řez
+  z `@fontsource-variable/nunito@5.3.0`, OFL-1.1) leží v `src/assets/fonts/`,
+  `@font-face` v `src/index.css`, odkazy z `index.html` odstraněny. Byl to
+  poslední odchozí požadavek na dětských obrazovkách bez funkční nutnosti.
+  **Dopad na zásady soukromí:** příjemce „Google Fonts" zmizel z `legal.ts`,
+  příjemců je pět. Vedlejší zisk: v mobilním obalu bez sítě se písmo dřív
+  nenačetlo vůbec. Hlídá `src/test/self-hosted-fonts.test.ts` — čtyři měřítka,
+  každé ověřené obráceně.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

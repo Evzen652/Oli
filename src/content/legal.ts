@@ -97,7 +97,11 @@ export function chybiCokoliv(): boolean {
  *   Resend     — `api.resend.com` v `send-parent-invite`
  *   WhatsApp   — `wa.me` v `InviteParentDialog.tsx` (odkaz se skládá v prohlížeči,
  *                telefonní číslo se na server neposílá)
- *   Google     — `fonts.googleapis.com` v `index.html` (písmo Nunito)
+ *
+ * **Google Fonts odsud 13. 9. 2026 zmizel** — písmo Nunito se přestalo tahat
+ * z `fonts.googleapis.com` a hostujeme ho sami (`src/assets/fonts/`). Seznam
+ * příjemců se tím zkrátil na pět. Kdyby se odkaz na Google vrátil, patří sem
+ * příjemce zpátky; hlídá `src/test/self-hosted-fonts.test.ts`.
  *
  * Když přibude volání ven, PATŘÍ SEM. Zásady, které příjemce zamlčí, jsou horší
  * než žádné — a přesně na tohle hlídá `src/test/legal-recipients.test.ts`.
@@ -145,13 +149,6 @@ export const PRIJEMCI: Prijemce[] = [
       "Jen když si pozvánku pro rodiče vyberete poslat přes WhatsApp. Telefonní číslo " +
       "zůstává ve vašem zařízení a k nám se neodesílá — otevře se jen WhatsApp " +
       "s předvyplněnou zprávou. Že jste zprávu poslali, se ale dozví WhatsApp.",
-    umisteni: "mimo EU",
-  },
-  {
-    nazev: "Google Fonts",
-    ucel:
-      "Načtení písma Nunito při otevření stránky. Google se tím dozví IP adresu " +
-      "návštěvníka. Nejde o cílení reklamy ani sledování napříč weby.",
     umisteni: "mimo EU",
   },
 ];

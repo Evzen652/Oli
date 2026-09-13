@@ -104,9 +104,12 @@ prohlížeče na sdíleném tabletu, nemá číst hodnocení sebe sama formulova
 dospělého. Obojí hlídá `src/test/child-surface.test.ts` (tři měřítka, každé
 ověřené obráceně).
 
-Zbývá k rozhodnutí: Google Fonts na každé dětské obrazovce (`index.html:16-18`,
-jediné odchozí volání bez funkční nutnosti — řešitelné self-hostingem)
-a odchod do WhatsApp z dětské obrazovky (za branou).
+✅ **Google Fonts pryč (13. 9.).** Písmo hostujeme sami; byl to poslední
+odchozí požadavek na dětských obrazovkách bez funkční nutnosti. Příjemce
+„Google Fonts" tím zmizel i ze zásad soukromí (`PRIJEMCI` v `legal.ts` má teď
+pět položek). Hlídá `src/test/self-hosted-fonts.test.ts`.
+
+Zbývá k rozhodnutí: odchod do WhatsApp z dětské obrazovky (za branou).
 
 ### Mobilní vydání
 
@@ -687,9 +690,9 @@ což je třetí cílová platforma ze zadání.
 - **Hluboké odkazy** — obnova hesla dnes otevře prohlížeč, ne aplikaci.
   Aplikace odkaz zpracovat umí, chybí ověření domény (`assetlinks.json`,
   `apple-app-site-association`). Jde až po podpisových klíčích.
-- **Nunito se stahuje z Google Fonts** — v mobilu to znamená náhradní písmo při
-  prvním spuštění bez signálu a je to jediný důvod, proč je Google mezi příjemci
-  v zásadách soukromí. Stažení písma do repa vyřeší obojí.
+- ✅ **Nunito už se z Google Fonts nestahuje (13. 9.)** — soubory leží
+  v `src/assets/fonts/`. Vyřešilo to obojí: náhradní písmo při prvním spuštění
+  bez signálu i příjemce „Google Fonts" v zásadách soukromí.
 
 ---
 
@@ -1302,8 +1305,10 @@ A9 oprava popisu stacku v `CLAUDE.md`.
   není aktuální značka. Až vznikne, přidat do `index.html` a přepnout
   `twitter:card` na `summary_large_image`.
 - **`Content-Security-Policy` jsem do `vercel.json` nedal** — musela by propustit
-  Supabase, Google Fonts, `data:` URL z canvasu a inline styly Radixu. Špatná CSP
-  rozbije aplikaci potichu až v produkci.
+  Supabase, `data:` URL z canvasu a inline styly Radixu. Špatná CSP rozbije
+  aplikaci potichu až v produkci. (Google Fonts už mezi výjimkami být nemusí —
+  od 13. 9. se písmo servíruje z naší domény, takže je CSP o jeden cizí původ
+  jednodušší.)
 
 ---
 ## ✅ Připomínky z dokumentu — 6 bodů (2026-09-03)

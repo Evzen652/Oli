@@ -56,8 +56,9 @@ const POKRYTI: Record<string, string> = {
   "api.groq.com": "Poskytovatel jazykového modelu (Groq nebo Google)",
   "wa.me": "WhatsApp (Meta)",
   "api.resend.com": "Resend",
-  "fonts.googleapis.com": "Google Fonts",
-  "fonts.gstatic.com": "Google Fonts",
+  // `fonts.googleapis.com` a `fonts.gstatic.com` tu byly do 13. 9. 2026.
+  // Písmo hostujeme sami, takže příjemce „Google Fonts" ze zásad zmizel.
+  // Že se odkaz nevrátí, hlídá `src/test/self-hosted-fonts.test.ts`.
 };
 
 const PRIPONY = [".ts", ".tsx", ".html"];
