@@ -3,10 +3,17 @@
  *
  * Použití:
  *   import { FEATURES } from "@/lib/features";
- *   if (FEATURES.studentChat) { ... }
+ *   if (FEATURES.adminAiContentCreator) { ... }
  *
  * Produkční hodnoty jsou nastaveny zde. Pro dev/test override:
- *   localStorage.setItem("oli_features", JSON.stringify({ studentChat: true }))
+ *   localStorage.setItem("oli_features", JSON.stringify({ adminAiContentCreator: true }))
+ *
+ * ⚠️ **Co chrání slib daný rodičům, sem nepatří.** Přepsat hodnotu z konzole
+ * (`localStorage`) zvládne kdokoli, takže flag není ochrana — je to jen skrytí.
+ * Konverzační tutor (`studentChat`) odsud proto 13. 9. zmizel úplně i s komponentou:
+ * zásady soukromí rodičům tvrdí „v aplikaci není chat" (`Privacy.tsx`), a to nesmí
+ * být pravda jen podle hodnoty, kterou si někdo přepne. Vlastnost, která posílá text
+ * dítěte ven, v kódu buď je, nebo není. Hlídá `src/test/child-surface.test.ts`.
  */
 
 const DEFAULTS = {
@@ -18,13 +25,6 @@ const DEFAULTS = {
    * případ návratu; zapnutí: localStorage oli_features {"adminAiContentCreator":true}.
    */
   adminAiContentCreator: false,
-
-  /**
-   * Konverzační tutor ("Zeptat se Oli") v dětském sezení.
-   * Vypnutý pro grade 1–7 (příliš komplikované, porušuje efektivní princip).
-   * Zapnout až po UX testu se staršími žáky (grade 8–9).
-   */
-  studentChat: false,
 
   /**
    * Runtime AI generátor cvičení v admin detailu podtématu (Level II a III).

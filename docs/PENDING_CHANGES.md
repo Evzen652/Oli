@@ -91,14 +91,22 @@ Jinak je z hlediska dětské kategorie čisto: **žádná reklama ani analytika*
 neexistuje, jediné android oprávnění je `INTERNET`), **žádný platební kód**
 (`subscriptions` je prázdná scaffolding), **žádný chat ani sdílení mezi
 uživateli**, dítě nezadává e-mail ani heslo (účet má syntetickou adresu
-`@app.internal`). Tutor chat je vypnutý `FEATURES.studentChat = false`
-(`src/lib/features.ts:27`) — dokud zásady tvrdí, že text dítěte ven nejde,
-měl by ten flag zmizet úplně, ne jen být `false`.
+`@app.internal`). **Tutor chat je od 13. 9. pryč úplně** — flag
+`FEATURES.studentChat` i komponenta `TutorChat` smazány. Být `false` nestačilo:
+`loadOverrides()` čte `localStorage`, takže hodnotu si kdokoli přepíše
+z konzole, a slib „v aplikaci není chat“ ze zásad nesmí stát na něčem
+přepisovatelném. Edge funkce `tutor-chat` zůstává nasazená — odebrat ji jde
+jen z konzole Supabase.
+
+✅ **`/report` odstraněn z dětské větve routeru (13. 9.).** Cizí data chrání
+RLS, takže to nebyla díra; ale dítě, které adresu tipne nebo ji najde v historii
+prohlížeče na sdíleném tabletu, nemá číst hodnocení sebe sama formulované pro
+dospělého. Obojí hlídá `src/test/child-surface.test.ts` (tři měřítka, každé
+ověřené obráceně).
 
 Zbývá k rozhodnutí: Google Fonts na každé dětské obrazovce (`index.html:16-18`,
-jediné odchozí volání bez funkční nutnosti — řešitelné self-hostingem),
-odchod do WhatsApp z dětské obrazovky (za branou), a `/report` zůstalo
-v dětské větvi routeru (`App.tsx:134`, odkaz skrytý, route živá).
+jediné odchozí volání bez funkční nutnosti — řešitelné self-hostingem)
+a odchod do WhatsApp z dětské obrazovky (za branou).
 
 ### Mobilní vydání
 

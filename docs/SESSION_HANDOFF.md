@@ -338,11 +338,17 @@ Odchody z dětské části jsou za rodičovskou bránou (`39b4ecc`). Zbývá:
 
 - **Google Fonts na každé dětské obrazovce** (`index.html:16-18`) — jediné
   odchozí volání bez funkční nutnosti, řešitelné self-hostingem písma.
-- **`FEATURES.studentChat`** (`src/lib/features.ts:27`) je `false`, ale dokud
-  zásady tvrdí, že text dítěte ven nejde, měl by ten flag **zmizet úplně**.
-  Přepnout ho jde z konzole přes `localStorage`.
-- **`/report` zůstalo v dětské větvi routeru** (`src/App.tsx:135`) — odkaz je
-  skrytý, route živá.
+- ✅ **`FEATURES.studentChat` i komponenta `TutorChat` smazány (13. 9.).**
+  Být `false` nestačilo: `loadOverrides()` čte `localStorage`, takže flag není
+  ochrana, jen skrytí — a zásady soukromí rodičům tvrdí „v aplikaci není chat“.
+  Slib daný v zásadách nesmí stát na hodnotě, kterou si kdokoli přepne
+  z konzole. **Edge funkce `tutor-chat` zůstává nasazená** (odebrat ji jde jen
+  z konzole Supabase); její testy proto zůstávají.
+- ✅ **`/report` odstraněn z dětské větve routeru (13. 9.).** Rodičovský přehled
+  o dítěti patří jen rodiči a adminovi.
+
+  Obojí hlídá `src/test/child-surface.test.ts` — tři měřítka, každé ověřené
+  obráceně (po dočasném vrácení vady spadne to a jen to, které ji měří).
 - **Dětský e-mail se odvozuje z párovacího kódu** (`child_<kód>@app.internal`).
 
 ### 🟠 Zbytky obsahu

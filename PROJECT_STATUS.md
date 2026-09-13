@@ -160,6 +160,14 @@ src/
 - 🟠 **Zbývá k rozhodnutí:** lomítkové tvary jsou i na ~60 dalších místech
   (19 souborů, mj. `i18n/cs.ts` a dětské obrazovky); a `session-evaluation`
   je nasazená, nevolaná, a přesto uvedená v `legal.ts` mezi místy zpracování.
+- ✅ **Dvě věci z dětské plochy uzavřeny** — `/report` a `studentChat`.
+  `/report` byl v dětské větvi routeru: rodičovský přehled o dítěti, odkaz
+  skrytý, route živá. `FEATURES.studentChat` byl sice `false`, jenže
+  `loadOverrides()` čte `localStorage` — slib „v aplikaci není chat“ ze zásad
+  tedy stál na hodnotě, kterou si kdokoli přepne z konzole. Flag i komponenta
+  `TutorChat` zmizely úplně. Edge funkce `tutor-chat` zůstává nasazená; odebrat
+  ji jde jen z konzole Supabase. Hlídá `src/test/child-surface.test.ts` — tři
+  měřítka, každé ověřené obráceně.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

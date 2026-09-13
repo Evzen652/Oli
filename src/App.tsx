@@ -128,11 +128,17 @@ function AuthenticatedRoutes() {
   }
 
   // Child or no role (backward compat) → practice
+  //
+  // `/report` tady schválně NENÍ. Je to rodičovský přehled o dítěti — mistrovství
+  // po dovednostech, slabá místa, doporučení na další týden. Cizí data chrání RLS,
+  // taková díra to nebyla; ale dítě, které adresu tipne nebo ji uvidí v historii
+  // prohlížeče na sdíleném tabletu, nemá číst hodnocení sebe sama formulované pro
+  // dospělého. Odkaz v `SessionView` je za `!isStudentView`, takže route byla živá
+  // už jen pro toho, kdo ji zadá ručně. Hlídá `src/test/child-surface.test.ts`.
   return (
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/landing" element={<Landing />} />
-      <Route path="/report" element={<Report />} />
       <Route path="/auth" element={<Navigate to="/" replace />} />
       {/* Přepnutí na jiné dítě na sdíleném zařízení (sourozenci). */}
       <Route path="/auth/child" element={<ChildAuth />} />
