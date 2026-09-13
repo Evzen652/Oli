@@ -11,6 +11,15 @@
  * zadání, klíč, nabídka možností a strukturovaná data. Nápovědy a vysvětlení do
  * klíče nepatří — dvě úlohy se stejným zadáním i možnostmi jsou z pohledu
  * procvičování táž úloha, i kdyby se k nim losovala jiná nápověda.
+ *
+ * **Pořadí možností se do klíče nepočítá** (2026-09-13). `buildChoiceTask`
+ * nabídku vždycky zamíchá, takže dvě úlohy se stejným zadáním i stejnou
+ * čtveřicí možností vycházely jako různé — a počítadlo unikátnosti tím nafouklo
+ * každé téma typu select_one. U tématu Skupenství látek hlásilo 24 úloh tam,
+ * kde jich ve skutečnosti bylo 18. Pro dítě je přeházená nabídka táž úloha;
+ * kdyby na pořadí záleželo, stačilo by pár zadání a brána `>= 12 unikátních`
+ * by prošla permutacemi místo obsahem. Ostatní pole se schválně neřadí — u
+ * `items` nebo `pairs` může být pořadí součástí zadání.
  */
 import type { PracticeTask } from "./types";
 
@@ -19,7 +28,7 @@ export function klicUlohy(task: PracticeTask): string {
   return JSON.stringify([
     task.question,
     task.correctAnswer,
-    task.options,
+    task.options ? [...task.options].sort() : undefined,
     task.items,
     task.pairs,
     task.categories,

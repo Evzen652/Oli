@@ -26,6 +26,11 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   `vko` chybí v rejstříku předmětů, **bylo mylné** — je tam.
   **Přípravné práce jsou hotové, další krok je první obsahová dávka: dodělat
   fyziku (7 témat).**
+- ✅ **Dávka 1, téma 1/4 — `Látka a těleso`** (13. 9., `30711bf`).
+- ✅ **Dávka 1, téma 2/4 — `Skupenství látek`** (13. 9.). Fyzika **8/13**,
+  šestka **13 ze 117**. Zbývá `Atomy, molekuly` a `Pohyb částic, difúze`.
+- ⏳ **K posouzení zvlášť:** `check:hints` hlásí nález u
+  `g3-prvouka-…-statni-symboly` (L1, překryv 67 %). Nesouvisí s prací na šestce.
 
 Ke stejnému průchodu:
 

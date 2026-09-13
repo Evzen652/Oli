@@ -702,5 +702,9 @@
   "g6-fyz-mereni-teploty-6": {
     "hash": "927ed2c53281d5d1146d1cc906afc3fb87140a0e",
     "taskCount": 70
+  },
+  "g6-fyz-skupenstvi-latek-6": {
+    "hash": "7083fd7453c0ff938283aaec657c98adba183f2a",
+    "taskCount": 57
   }
 }

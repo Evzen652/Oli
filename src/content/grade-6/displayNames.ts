@@ -50,8 +50,8 @@ export const DISPLAY_NAMES: DisplayMap = {
       description: "Spočítáš hustotu a pracuješ s teplotou i časem.",
     },
     "Vlastnosti látek": {
-      name: "Látka a těleso",
-      description: "Rozlišíš předmět od materiálu a jejich vlastnosti.",
+      name: "Jaká je ta látka",
+      description: "Rozlišíš látku od tělesa a poznáš, v jakém je skupenství.",
     },
     // Dějepis
     "Historie a historické prameny": {

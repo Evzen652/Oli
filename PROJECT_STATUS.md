@@ -231,6 +231,26 @@ src/
   zrcadlové duplikáty („Kelímek a pravítko" vs. „Pravítko a kelímek"),
   výpočetní doplněk nápovědy u pojmové úlohy a rod natvrdo („k němu" u ženského
   rodu). Fyzika je teď 7/13.
+- ✅ **Druhé téma dávky — `Skupenství látek`.** L1 skupenství při pokojové
+  teplotě, L2 název změny z běžného děje (tání / tuhnutí / vypařování /
+  kapalnění), L3 skupenství ze skutečných teplot tání a varu. Kritický průchod
+  našel pět vad: **pád generátoru** při −150 °C (v bance není při té teplotě
+  žádná kapalina, `pick` vrátil `undefined`), **„dusík vaří"** místo *vře*,
+  zájmeno „při ní" bez odkazu, čárka před *a* ve slučovacím poměru a nápověda
+  s konstantním ocasem „pozor, kov nemusí být pevný", která u klíče `rtuť`
+  ukazovala rovnou na odpověď. Fyzika je teď **8/13**, šestka **13 ze 117**.
+- 🐛 **Počítadlo unikátnosti úloh nafukovalo každé téma typu select_one.**
+  `klicUlohy()` bralo `options` v tom pořadí, v jakém je `buildChoiceTask`
+  zamíchal, takže táž úloha s přeházenou nabídkou vyšla jako dvě různé. U tématu
+  Skupenství látek hlásilo 24 úloh tam, kde jich je 18. Brána `>= 12 unikátních`
+  tím šla teoreticky projít permutacemi místo obsahem. Opraveno řazením
+  `options` v klíči; na stávajícím obsahu **žádné téma pod práh nespadlo**, což
+  je zároveň důkaz, že se na permutace zatím nic nespoléhalo.
+- ⚠️ **`check:hints` má nález ve 3. ročníku, který nesouvisí s touhle prací**
+  (`g3-prvouka-…-statni-symboly`, L1, překryv 67 %): nápověda „Jednu komoru
+  tvoří poslanci, druhou senátoři" u klíče „Poslanecká sněmovna a Senát".
+  Minule kontrola hlásila 0 — generátory losují, takže **„0 nálezů" není důkaz
+  čistoty**, jen důkaz toho, co se zrovna vylosovalo. Posoudit zvlášť.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

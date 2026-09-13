@@ -41,7 +41,7 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
         name: "Z čeho je co",
         description: "Poznáš rozdíl mezi věcí a materiálem, ze kterého je.",
         emoji: "🧱",
-        topicIds: ["g6-fyz-latka-a-teleso-6"],
+        topicIds: ["g6-fyz-latka-a-teleso-6", "g6-fyz-skupenstvi-latek-6"],
       },
     ],
   },

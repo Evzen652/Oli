@@ -19,6 +19,7 @@ import { MERENI_CASU } from "./fyzika/mereniCasu";
 
 // Fyzika — Látky a tělesa (pojmový vzor)
 import { LATKA_A_TELESO } from "./fyzika/latkaATeleso";
+import { SKUPENSTVI_LATEK } from "./fyzika/skupenstviLatek";
 
 // Dějepis (pilot — faktický vzor)
 import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
@@ -37,6 +38,7 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...MERENI_CASU,
   // Fyzika — Látky a tělesa
   ...LATKA_A_TELESO,
+  ...SKUPENSTVI_LATEK,
   // Dějepis — Úvod do dějepisu
   ...PERIODIZACE_LETOPOCET,
   // Dějepis — Pravěk
