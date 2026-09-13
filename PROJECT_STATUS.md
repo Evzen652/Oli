@@ -144,6 +144,17 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-13 (42) — start: ověření stavu, oprava protokolu:
+
+- ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
+  čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací
+  200. Na originu leží 33 větví `content-fix/*` a `wip/content-fix/*`, mazání
+  čeká na rozhodnutí uživatele.
+- ✅ **`docs/SESSION_PROTOCOL.md` opraven** (`c29a8e4`) — krok 1 posílal novou
+  session přepínat sedm worktree, které od 12. 9. neexistují, a „Aktuální fáze"
+  mluvila o čtyřech rozhodnutích uživatele místo osmi. Doplněna past
+  s `git worktree remove --force` a junction `node_modules`.
+
 ### Session 2026-09-13 (41) — příprava spuštění: soukromí a mobilní odkazy:
 
 - ✅ **Zásady soukromí srovnány s kódem** (`08707af`) — osm míst, kde text mlčel
