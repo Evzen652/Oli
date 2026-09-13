@@ -387,6 +387,27 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
   „0,3 m **je** 3 desetiny metru" chce opravit na „jsou". Patří do sekce
   „nesmí hlásit" v `czech-agreement-lint.test.ts`.
 
+### 📋 6. ročník — plán doplnění
+
+Šestka je **pilot, ne hotový ročník**: **11 témat ze 117** (fyzika 6/13,
+dějepis 5/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
+Přitom je od 11. 9. otevřená žákům, takže šesťák vidí dva předměty z osmi.
+Pětka naproti tomu **hotová je** — 63 z 73 podtémat, zbylých 10 je informatika
+vynechaná podle stálého pokynu.
+
+Plán: [`docs/GRADE_6_COMPLETION_PLAN.md`](GRADE_6_COMPLETION_PLAN.md). Dvě věci
+z něj stojí za pozornost hned:
+
+- **Pořadí se mění oproti červnovému plánu.** Ten řadil faktické předměty první
+  jako „nízké riziko"; to se neprokázalo — kořen úniku v nápovědě seděl právě
+  v pomocnících pro faktická témata. Nově: dodělat fyziku a dějepis (ověřené
+  vzory), pak matematika, a teprve pak faktický blok.
+- **Pět věcí musí být hotových dřív než první nové téma**, protože se zpětně přes
+  stovku souborů dodělávají draho: rozšířit `check-hint-leak` na strukturované
+  typy, doplnit kontrolu „generátor vrátil míň úloh, než má v poolech", navigace
+  a dětské názvy pro šestku (`BY_GRADE` má jen 2–5), `vko` chybí
+  v `subjectRegistry` úplně a ilustrace chybí čtyřem předmětům.
+
 ### 🟠 Sliby vs. obsah
 
 Titulek a Open Graph slibují „1. stupeň ZŠ" (1.–5. ročník). Otevřené jsou

@@ -7,6 +7,24 @@
 
 ---
 
+## 📋 6. ročník — plán doplnění (2026-09-13)
+
+Šestka je pilot: **11 témat ze 117** (fyzika 6/13, dějepis 5/24). Plán, pořadí
+dávek a pět věcí, které musí být hotové dřív než první nové téma:
+[`docs/GRADE_6_COMPLETION_PLAN.md`](GRADE_6_COMPLETION_PLAN.md).
+
+Ke stejnému průchodu:
+
+- ✅ `src/content/grade-5/STATUS.md` vygenerován znovu z `data/rvp_data.json`
+  (byl od druhého řádku nečitelný kvůli dvojímu kódování).
+- ✅ Srovnán počet témat 4. ročníku v `PROJECT_STATUS.md` — „72 topics" zahrnovalo
+  10 souborů informatiky, které se do registru neimportují. V registru je 62.
+- 🟡 **Informatika zůstává mimo** podle stálého pokynu: 20 hotových souborů
+  (10 ve čtvrťáku, 10 v páťáku, 323 úloh) leží v repu nezaregistrovaných.
+  Známá vada, až pokyn padne: klíč stojí u všech úloh na první pozici.
+
+---
+
 ## 🔴 Příprava spuštění — co našla kontrola kódu (2026-09-12)
 
 Čtyři paralelní průzkumy nad `main` po sloučení obsahu; 20 nálezů, vše ověřeno

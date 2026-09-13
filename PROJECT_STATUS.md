@@ -127,7 +127,7 @@ src/
 | **AssignmentCreator** | ✅ | Přepsán na code registry (`getAllTopics()`), ilustrace s `mix-blend-multiply` |
 | **UI redesign** | ✅ | Stats karty s ikonami, fialový session header, ChildHomePage layout s chipy předmětů |
 | **Grade-4 matematika** | ✅ | 14/14 topics implementovány (plný RVP pro 4. ročník) |
-| **Grade-4 obsah kompletní** | ✅ | 72 topics: matematika 14, čeština 22, vlastivěda 13, přírodověda 13, informatika 10 |
+| **Grade-4 obsah kompletní** | ✅ | **62 témat v registru** (matematika 14, čeština 22, vlastivěda 13, přírodověda 13). Informatika (10 souborů) je napsaná, ale podle stálého pokynu se do `GRADE_4_TOPICS` neimportuje — dítě ji nevidí, takže se do počtu nepočítá. Do 13. 9. tu stálo „72 topics … informatika 10“, což do „kompletního“ počítalo i to, co aplikace nenabízí. Totéž platí pro 5. ročník (63 v registru, 10 mimo). |
 | **CI/CD + E2E testy** | ✅ | GitHub Actions pipeline, Playwright setup, 5 E2E spec souborů |
 | **Freemium + 14-denní trial** | ✅ | Anonymní vstup, trial flow, adaptive difficulty, InviteParent flow |
 | **Architektura paralelních sessions** | ✅ | Worktree izolace, SESSION_OWNERSHIP, PENDING_CHANGES komunikace |
@@ -176,6 +176,19 @@ src/
   příjemců je pět. Vedlejší zisk: v mobilním obalu bez sítě se písmo dřív
   nenačetlo vůbec. Hlídá `src/test/self-hosted-fonts.test.ts` — čtyři měřítka,
   každé ověřené obráceně.
+- ✅ **`grade-5/STATUS.md` vygenerován znovu z dat.** Od druhého řádku dál byl
+  nečitelný — text prošel dvojím kódováním, u pěti řádků dvakrát po sobě. Místo
+  dohadování se teď mapa 73 podtémat odvozuje z `data/rvp_data.json` a stav `[x]`
+  znamená „téma s tímhle RVP id je v `GRADE_5_TOPICS`", ne ruční odškrtnutí.
+- ✅ **Srovnán počet témat 4. ročníku.** Tabulka §5 hlásila „72 topics …
+  informatika 10"; v registru je **62**, protože informatika se podle stálého
+  pokynu neimportuje. Do „kompletního" se tedy počítalo i to, co aplikace
+  nenabízí. Totéž ověřeno u pětky (63 v registru, 10 mimo).
+- 📋 **Plán doplnění 6. ročníku:** [`docs/GRADE_6_COMPLETION_PLAN.md`](docs/GRADE_6_COMPLETION_PLAN.md).
+  Šestka má **11 témat ze 117** (fyzika 6/13, dějepis 5/24, zbylých pět předmětů
+  nezačato) a je přitom otevřená žákům. Plán mění pořadí oproti červnu — faktické
+  předměty až po rozšíření kontroly úniku na `match_pairs`/`categorize`/`drag_order`,
+  protože právě tudy prošel únik v 5. ročníku (696 z 1 000 úloh).
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací
