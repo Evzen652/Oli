@@ -144,6 +144,25 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-13 (41) — příprava spuštění: soukromí a mobilní odkazy:
+
+- ✅ **Zásady soukromí srovnány s kódem** (`08707af`) — osm míst, kde text mlčel
+  o skutečném zpracování (odpovědi dítěte, PIN, poznámka rodiče, e-mail
+  z anonymního režimu, hosting mezi příjemci, lhůty). Zároveň opraveno, co
+  text sliboval, ale kód nedělal: jméno dítěte zmizelo z promptu pro týdenní
+  shrnutí, mazání účtu teď maže i pozvánku z anonymního režimu.
+- ✅ **Reset hesla a potvrzení registrace z mobilu** už nevedou do prázdna.
+  Adresu skládá `adresaProOdkazZEmailu()` (`src/lib/native.ts`): na webu původ
+  aktuální stránky, v obalu pro obchody natvrdo `https://oli-edu.com` — tam je
+  `window.location.origin` jen `https://localhost`. Nový hlídač
+  `src/test/email-redirect.test.ts` nepustí další `redirectTo` postavený jinudy.
+- ⚠️ **Dvě věci to nevymáhá a musí se doklepnout u poskytovatelů:**
+  v Supabase musí být `https://oli-edu.com` i `https://oli-edu.com/reset-password`
+  mezi **Redirect URLs** (jinak Supabase odkaz tiše přesměruje na Site URL),
+  a úklid anonymních dat po 44 dnech, který zásady slibují, **nikdo nespouští** —
+  `action: "cleanup"` je v repu jen ve své definici, žádný cron. Ověř
+  `select * from cron.job`.
+
 ### Session 2026-09-12 (40c) — tři poslední dávky sloučeny, průchod uzavřen:
 
 - ✅ **Všech 22 dávek (87 témat) je v `main`.** Squash commity `7c62066`

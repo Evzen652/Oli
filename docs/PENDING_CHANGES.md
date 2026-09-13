@@ -113,12 +113,25 @@ v dětské větvi routeru (`App.tsx:134`, odkaz skrytý, route živá).
   žádné `autoVerify`), iOS nemá `.entitlements`. Aplikační strana
   (`src/lib/native.ts`) je přitom hotová. Blokuje to podpisový klíč — bez
   jeho SHA-256 otisku nejde `assetlinks.json` napsat.
-- 🔴 **Reset hesla a potvrzení registrace z mobilu povedou do prázdna.**
-  `src/pages/ForgotPassword.tsx:25` a `src/pages/Auth.tsx:51` používají
-  `window.location.origin`, což je uvnitř obalu `https://localhost`
-  (kvůli `androidScheme: "https"`, `capacitor.config.ts:24`). Našly to
-  nezávisle dva průzkumy, ověřeno v kódu. Oprava musí být podmíněná —
-  natvrdo produkční doména rozbije vývoj na localhostu.
+- ✅ **Reset hesla a potvrzení registrace z mobilu vedly do prázdna** — opraveno
+  13. 9. 2026. `ForgotPassword.tsx` i `Auth.tsx` používaly
+  `window.location.origin`, což je uvnitř obalu `https://localhost` (kvůli
+  `androidScheme: "https"`, `capacitor.config.ts:24`) — tedy původ WebView,
+  ne adresa na internetu. Nově adresu skládá `adresaProOdkazZEmailu()`
+  v `src/lib/native.ts`: na webu původ aktuální stránky (vývoj na localhostu
+  funguje dál, ověřeno reálným voláním — `redirect_to=http://localhost:8081/
+  reset-password`), v obalu natvrdo `https://oli-edu.com`. Hlídá to
+  `src/test/email-redirect.test.ts` — jednak chování helperu, jednak že žádný
+  `redirectTo` v `src/` nevzniká jinudy; regex ověřen proti oběma původním
+  řádkům.
+  - ⚠️ **Na tobě:** obě adresy musí být v Supabase v **Authentication → URL
+    Configuration → Redirect URLs** (`https://oli-edu.com` a
+    `https://oli-edu.com/reset-password`). Co tam není, Supabase zahodí
+    a přesměruje na Site URL — bez jediné chybové hlášky.
+  - Na mobilu se odkaz zatím otevře v **prohlížeči**, ne v aplikaci (hluboké
+    odkazy čekají na podpisový klíč, viz bod výš). Uživatel si tedy heslo
+    změní v prohlížeči a do aplikace se přihlásí novým — funkční cesta,
+    zatímco předtím nefungovala žádná.
 - **`cap sync` nikdy neproběhl** (chybí `android/app/src/main/assets/`).
   ✅ `android/app/.gitignore` doplněn o výstup syncu (`39b4ecc`) — stihlo se
   to dřív, než sync poprvé poběží.

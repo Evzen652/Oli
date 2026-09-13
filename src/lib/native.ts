@@ -10,6 +10,40 @@ export function isNative(): boolean {
   return Capacitor.isNativePlatform();
 }
 
+/**
+ * Produkční web. Odsud vedou odkazy, které uživatel otevře MIMO aplikaci —
+ * dnes jen ty z e-mailu. Táž hodnota je v `supabase/functions/send-parent-invite`
+ * (`APP_URL`); při změně domény se musí přepsat obě.
+ */
+const PRODUKCNI_WEB = "https://oli-edu.com";
+
+/**
+ * Kam má vést odkaz, který uživateli přijde e-mailem (obnova hesla, potvrzení
+ * registrace).
+ *
+ * Na webu je to původ aktuální stránky — na produkci `https://oli-edu.com`,
+ * při vývoji `http://localhost:8080`. Obnova hesla tak jde vyzkoušet lokálně.
+ *
+ * Uvnitř obalu pro Play a App Store je `window.location.origin` ale
+ * `https://localhost` (kvůli `androidScheme: "https"`, viz `capacitor.config.ts`)
+ * — to je původ WebView, žádná adresa na internetu. Odkaz postavený na něm vede
+ * do prázdna: e-mail odejde, uživatel v něm klikne a neotevře se nic. Proto se
+ * v obalu bere produkční doména natvrdo. Natvrdo pro všechny prostředí ji dát
+ * nejde, to by rozbilo vývoj na localhostu.
+ *
+ * ⚠️ Každá adresa odsud musí být v Supabase v **Authentication → URL
+ * Configuration → Redirect URLs**. Co tam není, to Supabase zahodí a přesměruje
+ * na Site URL — a neohlásí to; projeví se to až tím, že odkaz vede jinam.
+ *
+ * ⚠️ Na mobilu se odkaz zatím otevře v prohlížeči, ne v aplikaci — hluboké
+ * odkazy čekají na podpisový klíč (viz `nastavHlubokeOdkazy` níž). Heslo si
+ * tedy uživatel změní v prohlížeči a do aplikace se pak přihlásí novým. To je
+ * funkční cesta; před touhle opravou nefungovala žádná.
+ */
+export function adresaProOdkazZEmailu(cesta = ""): string {
+  return (isNative() ? PRODUKCNI_WEB : window.location.origin) + cesta;
+}
+
 /** Ať se listener nezaregistruje dvakrát (StrictMode montuje efekty 2×). */
 let nastaveno = false;
 

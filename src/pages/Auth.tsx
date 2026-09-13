@@ -13,6 +13,7 @@ import { Mail, Info } from "lucide-react";
 import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
 import { ROLE_IMAGES } from "@/lib/roleImages";
+import { adresaProOdkazZEmailu } from "@/lib/native";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Role = "parent" | "child" | null;
@@ -48,7 +49,12 @@ export default function Auth() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: window.location.origin, data: { role: "parent" } },
+        options: {
+          // Ne `window.location.origin` — v mobilním obalu je to `https://localhost`
+          // a ověřovací odkaz z e-mailu by vedl do prázdna.
+          emailRedirectTo: adresaProOdkazZEmailu(),
+          data: { role: "parent" },
+        },
       });
       if (error) {
         setError(mapAuthError(error.message));

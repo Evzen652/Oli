@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
 import { mapAuthError } from "@/lib/authErrors";
+import { adresaProOdkazZEmailu } from "@/lib/native";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,9 @@ export default function ForgotPassword() {
     setError(null);
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      // Ne `window.location.origin` — v mobilním obalu je to `https://localhost`
+      // a odkaz z e-mailu by vedl do prázdna.
+      redirectTo: adresaProOdkazZEmailu("/reset-password"),
     });
 
     if (error) {
