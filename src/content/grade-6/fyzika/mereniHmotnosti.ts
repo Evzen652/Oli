@@ -6,14 +6,10 @@
  * vážení/nákupu. Prerekvizita pro Hustotu (ρ = m/V).
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { cz, pick, buildChoiceTask as task } from "./_shared";
+import { cz, pick, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  for (let i = 0; i < 24; i++) {
-    tasks.push(level === 1 ? genL1() : level === 2 ? genL2() : genL3());
-  }
-  return tasks;
+  return ruzneUlohy(() => (level === 1 ? genL1() : level === 2 ? genL2() : genL3()));
 }
 
 // L1 — větší → menší jednotka (násobení jedním krokem).

@@ -54,6 +54,33 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.
+- ✅ **VYŘÍZENO 14. 9. — `generator-task-count` byl náhodně červený.**
+  Zápis z 13. 9. měl **chybnou diagnózu i chybné téma**: neselhávalo
+  `g6-fyz-mereni-casu-6` (to je při 300 bězích stabilní, 16 / 24 / 24) a
+  příčinou nebyl distraktor shodný s klíčem. Číslo z nálezu — 11 unikátních —
+  patřilo **`g6-fyz-hustota-6` L1** a šlo o narozeninový paradox: pět témat
+  fyziky šestky losovalo 24 úloh bez deduplikace z banky o 24, resp. 27
+  kombinacích, takže z 24 tahů vyšlo v průměru jen ~15 různých úloh. Dítě
+  dostávalo tutéž úlohu v jednom sezení dvakrát. Opraveno helperem
+  `ruzneUlohy()` (`grade-6/fyzika/_shared.ts`), převedeno **všech devět témat**
+  fyziky šestky. Celý ročník je teď při 300 bězích deterministický
+  (`min = max`); 15 běhů testu za sebou prošlo.
+  **Poučení: u losujícího generátoru se viník určuje rozdělením přes stovky
+  běhů, ne přečtením jednoho výpisu — a hláška testu nemusí trefit příčinu.**
+- ✅ **Druhá, samostatná vada nalezená při ověřování: 105 úloh mělo tříčlennou
+  nabídku místo čtyřčlenné.** Kolize distraktorů u převodů s faktorem 10
+  (délka `cm→mm`, objem `dl→l`), u teploty L1 (`start = delta`, `start = 2·delta`)
+  a L2/L3 (`b = |a|`, `b = 2·|a|`, `|a| = 2·b`, vytaženo do `kladnaBezKolize()`),
+  a u hustoty L3 chyběl v kódu rovnou třetí distraktor. Po opravě **0 nálezů**
+  napříč všemi 27 dvojicemi fyziky šestky. Zámek obsahu přegenerován, diff je
+  přesně 6 témat (12 řádků) — `mereniCasu`, `skupenstviLatek` a `atomyMolekuly`
+  se nehnuly, což dokládá, že převod na helper nic nepřepsal.
+- ⏳ **K posouzení zvlášť:** táž sonda hlásí **23 dvojic téma × úroveň v nižších
+  ročnících** s nabídkou pod čtyři možnosti. **Devět jsou legitimní `true_false`**
+  a většina zbytku je přirozeně uzavřená množina (`> < =`, tři druhy
+  trojúhelníku podle stran, předpony `s-/z-/vz-`) — **není to tatáž vada**.
+  Skuteční kandidáti na doplnění čtvrté možnosti: zaokrouhlování ve 4. ročníku,
+  sčítání zlomků se stejným jmenovatelem, `g4-mat-trojuhelnik-druhy-stran-4` L3.
 
 Ke stejnému průchodu:
 

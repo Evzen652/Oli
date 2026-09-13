@@ -43,8 +43,7 @@
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad } from "@/lib/czechGrammar";
-import { klicUlohy } from "@/lib/taskIdentity";
-import { pick, buildChoiceTask as task } from "./_shared";
+import { pick, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 /**
  * Molekuly pro L1. `koho` je hotový druhý pád (vazba „molekula čeho"), protože
@@ -463,17 +462,13 @@ function zBanky(p: Polozka, kroky: string[]): PracticeTask {
 }
 
 function gen(level: number): PracticeTask[] {
-  const out = new Map<string, PracticeTask>();
-  for (let i = 0; i < 400 && out.size < 24; i++) {
-    const t =
-      level === 1
-        ? genL1()
-        : level === 2
-          ? zBanky(pick(JEVY), KROKY_L2)
-          : zBanky(pick(MIKROSVET), KROKY_L3);
-    out.set(klicUlohy(t), t);
-  }
-  return [...out.values()];
+  return ruzneUlohy(() =>
+    level === 1
+      ? genL1()
+      : level === 2
+        ? zBanky(pick(JEVY), KROKY_L2)
+        : zBanky(pick(MIKROSVET), KROKY_L3),
+  );
 }
 
 export const ATOMY_MOLEKULY: TopicMetadata[] = [

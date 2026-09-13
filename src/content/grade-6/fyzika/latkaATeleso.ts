@@ -32,7 +32,7 @@
  * úloha, ale pro počítadlo dvě — a nafukovaly by počet „unikátních" zadání.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pick, shuffle, buildChoiceTask as task } from "./_shared";
+import { pick, shuffle, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 /**
  * Banka „těleso — látka". `zLatky` je hotová vazba ve druhém pádě.
@@ -209,12 +209,7 @@ function genL3(): PracticeTask {
 }
 
 function gen(level: number): PracticeTask[] {
-  const out = new Map<string, PracticeTask>();
-  for (let i = 0; i < 400 && out.size < 24; i++) {
-    const t = level === 1 ? genL1() : level === 2 ? genL2() : genL3();
-    out.set(`${t.question}|${t.correctAnswer}|${(t.options ?? []).join("|")}`, t);
-  }
-  return [...out.values()];
+  return ruzneUlohy(() => (level === 1 ? genL1() : level === 2 ? genL2() : genL3()));
 }
 
 export const LATKA_A_TELESO: TopicMetadata[] = [

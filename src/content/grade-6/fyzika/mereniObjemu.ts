@@ -6,14 +6,10 @@
  * a kg/dm³). Chybový model cílí na běžnou mylnou představu „1 cm³ = 1000 ml".
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { cz, pick, buildChoiceTask as task } from "./_shared";
+import { cz, pick, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  for (let i = 0; i < 24; i++) {
-    tasks.push(level === 1 ? genL1() : level === 2 ? genL2() : genL3());
-  }
-  return tasks;
+  return ruzneUlohy(() => (level === 1 ? genL1() : level === 2 ? genL2() : genL3()));
 }
 
 // L1 — větší → menší jednotka (násobení jedním krokem).
@@ -70,6 +66,11 @@ function genL2(): PracticeTask {
     ]);
     const bigVal = pick([1.2, 2.5, 3, 4.5, 0.8, 1.5, 6, 2.4]);
     const smallVal = bigVal * conv.factor;
+    // Posun o řád vzhůru (`bigVal * 10`) vyjde u faktoru 10 přesně jako
+    // nepřevedené číslo ze zadání, tedy jako třetí distraktor — možnost by se
+    // zdeduplikovala pryč a dítě by dostalo jen tři nabídky místo čtyř. Chyba
+    // „o řád vedle" tam proto míří na druhou stranu (dělil o řád víc).
+    const oRad = conv.factor === 10 ? bigVal / 10 : bigVal * 10;
     return task(
       `Převeď ${cz(smallVal)} ${conv.small} na ${conv.big}.`,
       `${cz(bigVal)} ${conv.big}`,
@@ -79,7 +80,7 @@ function genL2(): PracticeTask {
           why: `Převáděl jsi špatným směrem. Z menší jednotky na větší se DĚLÍ, ne násobí.`,
         },
         {
-          value: `${cz(bigVal * 10)} ${conv.big}`,
+          value: `${cz(oRad)} ${conv.big}`,
           why: `Posunul ses o jeden řád. 1 ${conv.big} = ${conv.factor} ${conv.small}.`,
         },
         {

@@ -11,7 +11,7 @@
  * Reálné hustoty látek → úlohy mají fyzikální smysl (rubrika: realističnost).
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { cz, pick, buildChoiceTask as task } from "./_shared";
+import { cz, pick, shuffle, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 /** Látky s reálnou hustotou (g/cm³) a hezkými hodnotami pro 6. ročník. */
 const LATKY = [
@@ -142,9 +142,11 @@ function genL3(): PracticeTask {
   const latka = pick(LATKY);
   const V = pick([10, 20, 50]);
   const m = +(latka.rho * V).toFixed(1);
-  const others = LATKY.filter((l) => l.nazev !== latka.nazev);
-  const wrong1 = pick(others);
-  const wrong2 = pick(others.filter((l) => l.nazev !== wrong1.nazev));
+  // Tři různé látky, ne dvě: `buildChoiceTask` dělá nabídku z klíče + distraktorů,
+  // takže dva distraktory znamenaly tříčlennou nabídku. CONTENT_AUTHORING žádá
+  // čtyři možnosti. `shuffle` navíc zaručí, že se žádná neopakuje.
+  const others = shuffle(LATKY.filter((l) => l.nazev !== latka.nazev));
+  const [wrong1, wrong2, wrong3] = others;
   return task(
     `Těleso má hmotnost ${cz(m)} g a objem ${cz(V)} cm³. Z které látky je? (ρ: led 0,9 · dřevo 0,7 · hliník 2,7 · železo 7,8 · měď 8,9 · stříbro 10,5 g/cm³)`,
     latka.nazev,
@@ -156,6 +158,10 @@ function genL3(): PracticeTask {
       {
         value: wrong2.nazev,
         why: `Spočítaná hustota je ${cz(latka.rho)} g/cm³ (${cz(m)} ÷ ${cz(V)}). „${wrong2.nazev}" má ${cz(wrong2.rho)} g/cm³ — to nesedí.`,
+      },
+      {
+        value: wrong3.nazev,
+        why: `Porovnej s tabulkou: ${cz(m)} g ÷ ${cz(V)} cm³ = ${cz(latka.rho)} g/cm³, kdežto „${wrong3.nazev}" má ${cz(wrong3.rho)} g/cm³.`,
       },
     ],
     {
@@ -174,11 +180,7 @@ function genL3(): PracticeTask {
 }
 
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  for (let i = 0; i < 24; i++) {
-    tasks.push(level === 1 ? genL1() : level === 2 ? genL2() : genL3());
-  }
-  return tasks;
+  return ruzneUlohy(() => (level === 1 ? genL1() : level === 2 ? genL2() : genL3()));
 }
 
 export const HUSTOTA: TopicMetadata[] = [

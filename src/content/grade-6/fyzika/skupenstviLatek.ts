@@ -40,8 +40,7 @@
  * s 800 °C, kde je těsný rozdíl to podstatné.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { klicUlohy } from "@/lib/taskIdentity";
-import { pick, shuffle, buildChoiceTask as task } from "./_shared";
+import { pick, shuffle, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 const velke = (s: string) => `${s[0].toUpperCase()}${s.slice(1)}`;
 
@@ -341,12 +340,7 @@ function genL3(): PracticeTask {
 }
 
 function gen(level: number): PracticeTask[] {
-  const out = new Map<string, PracticeTask>();
-  for (let i = 0; i < 400 && out.size < 24; i++) {
-    const t = level === 1 ? genL1() : level === 2 ? genL2() : genL3();
-    out.set(klicUlohy(t), t);
-  }
-  return [...out.values()];
+  return ruzneUlohy(() => (level === 1 ? genL1() : level === 2 ? genL2() : genL3()));
 }
 
 export const SKUPENSTVI_LATEK: TopicMetadata[] = [

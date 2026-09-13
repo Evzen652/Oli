@@ -7,6 +7,7 @@
  * projektu: jedno téma = jeden samostatný generátor.
  */
 import type { PracticeTask } from "@/lib/types";
+import { klicUlohy } from "@/lib/taskIdentity";
 
 /** České desetinné číslo (čárka), zaokrouhlené, bez zbytečných nul. */
 export function cz(n: number): string {
@@ -98,4 +99,34 @@ export function buildChoiceTask(
     solutionSteps: parts.solutionSteps,
     explanation: parts.explanation,
   };
+}
+
+/**
+ * Nasbírá až `kolik` **různých** úloh — duplicitní los se zahodí a táhne se znovu.
+ *
+ * Bez tohohle kroku stačilo 24× zavolat generátor a doufat. To je narozeninový
+ * paradox: u tématu s 24 možnými zadáními vyjde z 24 tahů v průměru jen ~15
+ * různých úloh a v nejhorším běhu jich bylo 11 — pod hranicí 12, kterou
+ * `CONTENT_AUTHORING.md` požaduje. Kontrola `generator-task-count.test.ts`
+ * proto padala náhodně, typicky jednou ze čtyř (2026-09-14, téma Hustota).
+ *
+ * Unikátnost se měří `klicUlohy()`, tedy až nad **konkrétním vygenerovaným
+ * tvarem** (zadání, klíč, nabídka) — ne nad parametry losu. Distraktor, který
+ * po dosazení čísel vyjde shodně s klíčem, se tím pádem projeví.
+ *
+ * Pozor: strop je `kolik` úloh, ale dolní hranici určuje velikost banky. Když
+ * má úroveň míň než 12 možných zadání, smyčka to nezachrání — pak je potřeba
+ * rozšířit rozsah hodnot.
+ */
+export function ruzneUlohy(
+  los: () => PracticeTask,
+  kolik = 24,
+  pokusu = 400,
+): PracticeTask[] {
+  const out = new Map<string, PracticeTask>();
+  for (let i = 0; i < pokusu && out.size < kolik; i++) {
+    const t = los();
+    out.set(klicUlohy(t), t);
+  }
+  return [...out.values()];
 }

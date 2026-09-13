@@ -9,27 +9,49 @@
  *  • převod na kelviny změnou jednotky bez přičtení 273.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { pick, buildChoiceTask as task } from "./_shared";
+import { pick, buildChoiceTask as task, ruzneUlohy } from "./_shared";
 
 const ri = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 /** Teplota ve °C se správným typografickým minus (−), s mezerou před jednotkou. */
 const tC = (n: number) => `${n < 0 ? "−" : ""}${Math.abs(n)} °C`;
 
+/**
+ * Kladná teplota z `rozsah`, která nesplyne s žádným distraktorem odvozeným
+ * od záporné teploty `zaporna`.
+ *
+ * Úlohy na rozdíl teplot přes nulu nabízejí vedle klíče tři typické chyby:
+ * odečtená čísla (|b − |a||), jen vzdálenost pod nulou (|a|) a jen druhá
+ * teplota (b). Dvě z nich vyjdou stejně, kdykoli b = |a|, b = 2·|a| nebo
+ * |a| = 2·b — `buildChoiceTask` duplicitu zahodí a dítě dostane tři možnosti
+ * místo čtyř. Takové hodnoty se proto z výběru vynechají.
+ */
+function kladnaBezKolize(zaporna: number, rozsah: number[]): number {
+  const z = Math.abs(zaporna);
+  const zakazane = new Set([z, 2 * z, z / 2]);
+  return pick(rozsah.filter((x) => !zakazane.has(x)));
+}
+
+/** Celá čísla od `od` do `do_` včetně. */
+function rada(od: number, do_: number): number[] {
+  return Array.from({ length: do_ - od + 1 }, (_, i) => od + i);
+}
+
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  for (let i = 0; i < 24; i++) {
-    tasks.push(level === 1 ? genL1() : level === 2 ? genL2() : genL3());
-  }
-  return tasks;
+  return ruzneUlohy(() => (level === 1 ? genL1() : level === 2 ? genL2() : genL3()));
 }
 
 // L1 — oteplení / ochlazení o daný počet stupňů (jeden krok, výsledek nezáporný).
 function genL1(): PracticeTask {
   const delta = ri(2, 9);
   const warming = Math.random() < 0.5;
-  let start = warming ? ri(5, 20) : ri(delta + 2, 24); // ochlazení: start > delta → výsledek ≥ 2
-  if (!warming && start === 2 * delta) start += 1; // výsledek ≠ změna, jinak by klíč stál v zadání
+  // Distraktory jsou „počáteční teplota" (start), „jen změna" (delta) a „opačný
+  // směr" (start ∓ delta). Splynou, jakmile start = delta nebo start = 2·delta —
+  // možnost by z nabídky vypadla a dítě by dostalo tři místo čtyř. U ochlazení
+  // navíc start = 2·delta znamená, že výsledek je roven změně, takže by klíč
+  // stál přímo v zadání. Obě pasti řeší jeden společný rozsah a jeden posun.
+  let start = ri(delta + 2, warming ? 20 : 24);
+  if (start === 2 * delta) start += 1;
   const result = warming ? start + delta : start - delta;
   // Znění vybrané podle čísel: stejná čísla = stejná úloha (jinak by se malá nápověda opakovala).
   const ctx = warming
@@ -75,7 +97,7 @@ function genL1(): PracticeTask {
 // L2 — rozdíl teplot přes nulu (jedna teplota záporná, druhá kladná).
 function genL2(): PracticeTask {
   const a = ri(-12, -1); // záporná (chladnější)
-  const b = ri(1, 12); // kladná (teplejší)
+  const b = kladnaBezKolize(a, rada(1, 12)); // kladná (teplejší)
   const diff = b - a; // = b + |a|, vždy kladné
   const rose = Math.random() < 0.5;
   const ctx = rose
@@ -120,7 +142,7 @@ function genL3(): PracticeTask {
   if (variant === 0) {
     // velký rozdíl přes nulu (mrazák × pokoj)
     const cold = ri(-25, -10);
-    const warm = ri(18, 26);
+    const warm = kladnaBezKolize(cold, rada(18, 26));
     const diff = warm - cold;
     return task(
       `V mrazáku je ${tC(cold)} a v pokoji ${tC(warm)}. Jaký je rozdíl teplot?`,

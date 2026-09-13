@@ -144,6 +144,62 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-14 (43) — náhodně padající kontrola počtu úloh:
+
+- 🐛 **`generator-task-count.test.ts` padal zhruba jednou ze čtyř — vinu nesla
+  `Hustota`, ne `Měření času`.** Hlášený řádek ukazoval na
+  `g6-fyz-mereni-casu-6`, ale to téma je při 300 měřených bězích naprosto
+  stabilní (16 / 24 / 24). Číslo z nálezu — **11 unikátních** — patřilo
+  `g6-fyz-hustota-6` L1. Poučení je to staré: **u losujícího generátoru se
+  viník určuje rozdělením přes stovky běhů, ne přečtením jednoho výpisu.**
+- 🐛 **Příčina: narozeninový paradox, ne kolize distraktoru.** `gen()` pětkrát
+  (hustota, délka, hmotnost, objem, teplota) zavolal `genL(level)` 24× za sebou
+  a výsledek nikdo nezdeduplikoval. L1 hustoty má **24 možných zadání**, takže
+  z 24 tahů vyjde v průměru jen ~15 různých úloh a v nejhorším běhu 11 — pod
+  prahem 12. Dítě přitom dostávalo tutéž úlohu v jednom sezení dvakrát.
+  Chybová hláška testu („distraktor vyšel shodně s klíčem") ukazovala na jinou
+  příčinu, než jaká tam byla.
+- ✅ **Oprava: `ruzneUlohy()` v `grade-6/fyzika/_shared.ts`.** Sbírá losy do
+  `Map` podle `klicUlohy()`, tedy až nad **konkrétním vygenerovaným tvarem**
+  (zadání, klíč, nabídka), a duplicitu zahodí. Na helper převedeno **všech devět
+  témat fyziky šestky** — čtyři už vlastní dedup měly, ale každé vlastní
+  (`latkaATeleso` počítal nesetříděné `options`, takže jeho klíč nafukoval
+  úlohy lišící se jen pořadím nabídky). Vada se teď nemá kam vrátit kopií.
+- ✅ **Výsledek: celá fyzika šestky je deterministická.** Při 300 bězích na téma
+  × úroveň je `min = max` u všech 27 dvojic; nejnižší hodnota v celém ročníku
+  je 12 (`atomy-molekuly` L2/L3, ručně psané banky po dvanácti). **15 běhů
+  `generator-task-count.test.ts` za sebou prošlo.**
+- 🐛 **Při ověřování vypadla druhá, samostatná vada: nabídky o třech
+  možnostech.** Sonda nad výstupem našla **105 úloh**, kde `buildChoiceTask`
+  zahodil distraktor shodný s jiným, takže dítě nedostalo čtyři možnosti, ale
+  tři. Čtyři různé příčiny:
+  - **délka a objem** — u převodu s faktorem 10 (`cm→mm`, `dl→l`) vyšel
+    distraktor „posun o řád" (`bigVal * 10`) přesně jako distraktor
+    „nepřevedené číslo". Chyba „o řád vedle" tam teď míří na druhou stranu.
+  - **teplota L1** — distraktory „počáteční teplota" a „jen změna" splynuly při
+    `start = delta`, resp. `start = 2·delta`. Ošetření pro to v kódu bylo, ale
+    jen pro větev ochlazení.
+  - **teplota L2 a L3** — „odečtená čísla", „vzdálenost pod nulou" a „druhá
+    teplota" splynou, kdykoli `b = |a|`, `b = 2·|a|` nebo `|a| = 2·b`. Vytaženo
+    do `kladnaBezKolize()`, protože tentýž vzorec se v souboru objevil třikrát.
+  - **hustota L3** („Z které látky je?") měla v kódu **jen dva distraktory**,
+    takže tříčlenná nabídka nebyla kolize, ale chybějící možnost. Doplněn třetí.
+  Po opravě je nález **0** napříč všemi 27 dvojicemi fyziky šestky.
+- ⚠️ **Zámek obsahu přegenerován, dotkl se přesně 6 témat.** Diff snapshotu má
+  12 řádků (hustota, délka, hmotnost, objem, teplota, látka a těleso) — u
+  `mereniCasu`, `skupenstviLatek` a `atomyMolekuly` je nový helper funkčně
+  totožný s jejich původní smyčkou, takže se jejich otisk nehnul. To je zároveň
+  důkaz, že převod na `ruzneUlohy()` nic nepřepsal. `taskCount` u dotčených
+  témat stoupl (např. hustota 49 → 71), protože dedup pokryje celou banku.
+- ℹ️ **Nález mimo šestku, k posouzení zvlášť:** stejná sonda hlásí 23 dvojic
+  téma × úroveň v nižších ročnících s nabídkou pod čtyři možnosti. **Devět jsou
+  legitimní `true_false`** a většina zbytku je přirozeně uzavřená množina
+  (`> < =`, tři druhy trojúhelníku podle stran, předpony `s-/z-/vz-`).
+  Skutečných kandidátů na doplnění čtvrté možnosti je pár (zaokrouhlování,
+  sčítání zlomků, `trojuhelnik-druhy-stran` L3) — **není to tatáž vada** a do
+  téhle opravy to nepatřilo.
+
+
 ### Session 2026-09-13 (42) — start: ověření stavu, oprava protokolu:
 
 - ✅ **Slovní hodnocení pro dítě opraveno** (`sessionEvaluator.ts`): pryč jsou
