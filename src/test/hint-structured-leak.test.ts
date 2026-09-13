@@ -1,20 +1,33 @@
 /**
- * Velká nápověda u strukturovaných typů smí rozebrat jednu kotvu, ne sadu.
+ * Únik řešení v nápovědě u strukturovaných typů.
  *
  * Proč to nechytí `check-hint-leak.ts`: ten porovnává nápovědu
- * s `correctAnswer`, jenže u `match_pairs`, `categorize` a `drag_order` je
- * `correctAnswer` jen technický marker („match" / „categorize" / „order").
- * Skutečné řešení leží v `pairs` / `categories` / `items`, takže tudy prošla
- * nápověda, která za svůj pevný konec přilepila souvislost **další** dvojice
- * nebo události — 696 z 1 000 úloh v 17 tématech (nalezeno 2026-09-13).
- * U `chronologie` na L3 se pořadí odvozuje právě ze souvislostí, takže každý
- * takový doplněk byl kus řešení.
+ * s `correctAnswer`, jenže u `match_pairs`, `categorize`, `drag_order`
+ * a `timeline` je `correctAnswer` jen technický marker („match" / „categorize" /
+ * „order"). Skutečné řešení leží v `pairs` / `categories` / `items` /
+ * `timelineEvents`, takže tudy prošla nápověda, která za svůj pevný konec
+ * přilepila souvislost **další** dvojice nebo události — 696 z 1 000 úloh
+ * v 17 tématech (nalezeno 2026-09-13). U `chronologie` na L3 se pořadí odvozuje
+ * právě ze souvislostí, takže každý takový doplněk byl kus řešení.
  *
- * **Měřítko je konstrukční, ne heuristické.** Helpery v `grade-5/_shared.ts`
- * staví velkou nápovědu jako „jádro + pevná závěrečná věta", a `doplnVelkou`
- * za ni dorovnává délku. Co stojí za tou větou, musí být obecná strategie
- * z rejstříku — nic jiného tam vzniknout nemá. Tím se test vyhne hádání, co
- * je a co není únik: ptá se na tvar, který helper garantuje.
+ * Měřítka samotná jsou v [`@/lib/hintLeakStructured`](../lib/hintLeakStructured.ts)
+ * jako čisté funkce. Tenhle soubor je používá dvakrát:
+ *
+ *  1. **Na vymyšleném vstupu** — každé měřítko dostane únik, který má chytit,
+ *     i čistý protipříklad. Bez toho by „0 nálezů" nad obsahem nic neznamenalo:
+ *     `check:hints` hlásil vždy „0 nápověd" i pod vypsanými nálezy, protože se
+ *     nezvyšovalo počítadlo. Tahle část je trvalá náhrada za ruční ověření.
+ *  2. **Nad celým obsahem** — a každý běh si hlídá, kolik úloh vůbec prošlo
+ *     měřítkem, aby se „nic jsem nenašel" nedalo splést s „neměl jsem co měřit".
+ *
+ * **Kalibrace 2026-09-13** (12 714 úloh, po opravě kořene úniku). Obsah končí
+ * u všech tří měřítek přesně o krok pod prahem, takže prahy nejsou vycucané:
+ *
+ * | měřítko | zkontrolováno | rozdělení nálezů | práh |
+ * |---|---:|---|---|
+ * | pořadí (`items`) | 563 | 0× 332, 1× 225, **2× 6**, 3+ nikdy | ≥ 3 |
+ * | přiřazení (`categories`) | 146 | 0× 141, **1× 5**, 2+ nikdy | > 1 |
+ * | dvojice (`pairs`) | 499 | 0× 466, **1× 33**, 2+ nikdy | > 1 |
  *
  * Pozn.: jmenovat položky zadání samo o sobě únik NENÍ — třídění zvířat
  * v 3. ročníku úmyslně vypisuje znak ke každému zvířeti, a přesto nechává
@@ -24,6 +37,12 @@
 import { describe, it, expect } from "vitest";
 import { getAllTopics } from "@/lib/contentRegistry";
 import type { PracticeTask } from "@/lib/types";
+import {
+  nejdelsiBehVPoradi,
+  prirazeniVeVete,
+  dvojiceVeVete,
+  PRAH_KOTVY,
+} from "@/lib/hintLeakStructured";
 import {
   RADY_HLAVNI_MESTA,
   RADY_SOUSEDE_A_EU,
@@ -64,40 +83,151 @@ const POVOLENE_DOPLNKY = [
 /** Vzorek na téma × úroveň — generátory losují, takže jeden běh nestačí. */
 const OPAKOVANI = Number(process.env.LEAK_REPEATS ?? 3);
 
+/** Projde generátory všech témat a zavolá `kontrola` na každou unikátní úlohu. */
+function proKazdouUlohu(
+  kontrola: (task: PracticeTask, topicId: string, level: number) => void,
+  opakovani = 1,
+): void {
+  for (const topic of getAllTopics()) {
+    if (!topic.generator) continue;
+    for (let opak = 0; opak < opakovani; opak++) {
+      for (const level of [1, 2, 3]) {
+        let tasks: PracticeTask[] = [];
+        try {
+          tasks = topic.generator(level) ?? [];
+        } catch {
+          continue; // chybějící úroveň řeší jiné brány
+        }
+        const videno = new Set<string>();
+        for (const task of tasks) {
+          const klic = `${task.question}|${task.hints?.[1] ?? ""}`;
+          if (videno.has(klic)) continue;
+          videno.add(klic);
+          kontrola(task, topic.id, level);
+        }
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// 1. Měřítka na vymyšleném vstupu — ověření, že vůbec měří
+// ════════════════════════════════════════════════════════════════════════════
+
+describe("meritka — overeni na vymyslenem vstupu", () => {
+  const dvojice = [
+    { left: "Francie", right: "Paříž" },
+    { left: "Itálie", right: "Řím" },
+    { left: "Polsko", right: "Varšava" },
+  ];
+
+  it("dvojice: dve spojene v jedne vete jsou nalez", () => {
+    const h = "Francie má Paříž a Itálie má Řím, zbytek dopočítej.";
+    expect(dvojiceVeVete(h, dvojice)).toHaveLength(2);
+  });
+
+  it("dvojice: jedna kotva nalez neni", () => {
+    const h = "Začni Francií — její hlavní město je Paříž. Zbylé dvojice doplň vylučováním.";
+    expect(dvojiceVeVete(h, dvojice)).toHaveLength(1);
+  });
+
+  it("dvojice: vyjmenovat prave strany bez prirazeni neni nalez", () => {
+    // Reálný případ ze 4. ročníku: nápověda dá rozlišovací znak obou možností,
+    // ale přiřazení nechá na dítěti — a to je právě cíl úlohy.
+    const h = "Hlavní města jsou Paříž, Řím a Varšava. Přiřaď je podle toho, co o zemích víš.";
+    expect(dvojiceVeVete(h, dvojice)).toEqual([]);
+  });
+
+  it("dvojice: skloneny tvar se pozna", () => {
+    // Bez kmenů by „v Paříži" u „Paříž" neprošlo a únik by zůstal neviditelný.
+    const h = "Ve Francii se jezdí do Paříže. V Itálii do Říma.";
+    expect(dvojiceVeVete(h, dvojice)).toHaveLength(2);
+  });
+
+  const poradi = ["Pravěk", "Starověk", "Středověk", "Novověk"];
+
+  it("poradi: tri prvky ve spravnem poradi jsou nalez", () => {
+    const h = "Nejdřív byl Pravěk, po něm Starověk a pak Středověk.";
+    expect(nejdelsiBehVPoradi(h, poradi)).toEqual(["Pravěk", "Starověk", "Středověk"]);
+  });
+
+  it("poradi: dva prvky jsou kotva, ne nalez", () => {
+    const h = "Rozmysli si, jestli byl Pravěk dřív než Starověk.";
+    expect(nejdelsiBehVPoradi(h, poradi)).toHaveLength(2);
+  });
+
+  it("poradi: prvky ve spatnem poradi resení nedavaji", () => {
+    // Jmenuje tři, ale pozpátku — pořadí z toho nevyčteš.
+    const h = "Novověk? Středověk? Starověk? Seřaď je sám.";
+    expect(nejdelsiBehVPoradi(h, poradi).length).toBeLessThan(3);
+  });
+
+  it("poradi: obecna strategie bez jmen neni nalez", () => {
+    const h = "Nejdřív najdi úplně první a úplně poslední událost, zbylé pak zařaď mezi ně.";
+    expect(nejdelsiBehVPoradi(h, poradi)).toEqual([]);
+  });
+
+  const skupiny = [
+    { name: "Savci", items: ["kočka", "netopýr"] },
+    { name: "Ptáci", items: ["vlaštovka", "sova"] },
+  ];
+
+  it("kategorie: dve prirazeni v jedne vete jsou nalez", () => {
+    const h = "Kočka patří mezi savce. Vlaštovka je ptáci, protože má peří.";
+    // Druhá věta obsahuje „vlaštovka" i „ptáci", první „kočka" i „savci".
+    expect(prirazeniVeVete(h, skupiny)).toHaveLength(2);
+  });
+
+  it("kategorie: jedna kotva nalez neni", () => {
+    const h = "Kočka patří mezi savce. U ostatních se ptej, podle jakého znaku do skupiny patří.";
+    expect(prirazeniVeVete(h, skupiny)).toHaveLength(1);
+  });
+
+  it("kategorie: jmenovat polozky bez skupiny neni nalez", () => {
+    // Přesně případ třídění zvířat ve 3. ročníku: znak ke každé položce,
+    // rozhodnutí na dítěti.
+    const h = "Kočka má srst, vlaštovka má peří, netopýr kojí mláďata, sova má zobák.";
+    expect(prirazeniVeVete(h, skupiny)).toEqual([]);
+  });
+
+  it("kategorie: jmenovat skupiny bez polozek neni nalez", () => {
+    const h = "Savci kojí mláďata, ptáci snášejí vejce.";
+    expect(prirazeniVeVete(h, skupiny)).toEqual([]);
+  });
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// 2. Měřítka nad celým obsahem
+// ════════════════════════════════════════════════════════════════════════════
+
 describe("ÚNIK V NÁPOVĚDĚ — strukturované typy", () => {
-  it("za závěrečnou větou velké nápovědy stojí jen obecná strategie", () => {
+  /**
+   * Konstrukční měřítko pro helpery 5. ročníku: velká nápověda je „jádro +
+   * pevná závěrečná věta" a `doplnVelkou` za ni dorovnává délku. Co stojí za tou
+   * větou, musí být obecná strategie z rejstříku — nic jiného tam vzniknout nemá.
+   * Tím se test vyhne hádání, co je a co není únik: ptá se na tvar, který helper
+   * garantuje.
+   */
+  it("za zaverecnou vetou velke napovedy stoji jen obecna strategie", () => {
     const nalezy: string[] = [];
     const podleTematu = new Map<string, number>();
     let zkontrolovano = 0;
 
-    for (const topic of getAllTopics()) {
-      if (!topic.generator) continue;
-      for (let opak = 0; opak < OPAKOVANI; opak++) {
-        for (const level of [1, 2, 3]) {
-          let tasks: PracticeTask[] = [];
-          try {
-            tasks = topic.generator(level) ?? [];
-          } catch {
-            continue; // chybějící úroveň řeší jiné brány
-          }
-          for (const task of tasks) {
-            const h1 = task.hints?.[1] ?? "";
-            const konec = KONCE.find((k) => h1.includes(k));
-            if (!konec) continue;
-            zkontrolovano++;
+    proKazdouUlohu((task, topicId, level) => {
+      const h1 = task.hints?.[1] ?? "";
+      const konec = KONCE.find((k) => h1.includes(k));
+      if (!konec) return;
+      zkontrolovano++;
 
-            let zbytek = h1.slice(h1.indexOf(konec) + konec.length).trim();
-            for (const s of POVOLENE_DOPLNKY) zbytek = zbytek.split(s).join(" ").trim();
-            if (!zbytek) continue;
+      let zbytek = h1.slice(h1.indexOf(konec) + konec.length).trim();
+      for (const s of POVOLENE_DOPLNKY) zbytek = zbytek.split(s).join(" ").trim();
+      if (!zbytek) return;
 
-            podleTematu.set(topic.id, (podleTematu.get(topic.id) ?? 0) + 1);
-            if (nalezy.length < 10) {
-              nalezy.push(`[${topic.id}] L${level}\n     ZA ZÁVĚREM: ${zbytek}\n     CELÁ H1: ${h1}`);
-            }
-          }
-        }
+      podleTematu.set(topicId, (podleTematu.get(topicId) ?? 0) + 1);
+      if (nalezy.length < 10) {
+        nalezy.push(`[${topicId}] L${level}\n     ZA ZÁVĚREM: ${zbytek}\n     CELÁ H1: ${h1}`);
       }
-    }
+    }, OPAKOVANI);
 
     // Kdyby se helpery přejmenovaly, test by mlčel — ať je vidět, že měří.
     expect(zkontrolovano, "žádná úloha s pevným koncem — změnily se helpery?").toBeGreaterThan(100);
@@ -117,58 +247,105 @@ describe("ÚNIK V NÁPOVĚDĚ — strukturované typy", () => {
   });
 
   /**
-   * Druhé měřítko, tentokrát na ručně psané nápovědy: velká nápověda nesmí
-   * vyjmenovat pravé strany dvojic. Chytilo 2026-09-13 dvě témata 4. ročníku,
-   * kde nápověda přiřadila tři rostliny ze čtyř („Brambory se sázejí jako
-   * hlízy, tulipány jako cibulky…") a všechny čtyři lovce potravního řetězce.
-   *
-   * Počítá jen pravé strany, které nestojí už v zadání ani v malé nápovědě —
-   * ty dítě vidí tak jako tak. Jedna zmíněná je kotva, dvě jsou kus řešení.
+   * Ručně psané nápovědy u `match_pairs`. Chytilo 2026-09-13 dvě témata
+   * 4. ročníku, kde nápověda přiřadila tři rostliny ze čtyř („Brambory se sázejí
+   * jako hlízy, tulipány jako cibulky…") a všechny čtyři lovce potravního řetězce.
    */
-  it("velká nápověda nejmenuje víc než jednu pravou stranu dvojice", () => {
+  it("velka napoveda nejmenuje vic nez jednu pravou stranu dvojice", () => {
     const nalezy: string[] = [];
     let zkontrolovano = 0;
 
-    for (const topic of getAllTopics()) {
-      if (!topic.generator) continue;
-      for (const level of [1, 2, 3]) {
-        let tasks: PracticeTask[] = [];
-        try {
-          tasks = topic.generator(level) ?? [];
-        } catch {
-          continue;
-        }
-        const videno = new Set<string>();
-        for (const task of tasks) {
-          if (!task.pairs?.length) continue;
-          const velka = norm(task.hints?.[1] ?? "");
-          if (!velka) continue;
-          const klic = `${task.question}|${task.hints?.[1]}`;
-          if (videno.has(klic)) continue;
-          videno.add(klic);
-          zkontrolovano++;
+    proKazdouUlohu((task, topicId, level) => {
+      if (!task.pairs?.length) return;
+      const velka = task.hints?.[1] ?? "";
+      if (!norm(velka)) return;
+      zkontrolovano++;
 
-          const jinde = norm(`${task.question} ${task.hints?.[0] ?? ""}`);
-          const prozrazene = task.pairs
-            .map((x) => x.right)
-            .filter((r) => r.length >= 3)
-            .filter((r) => velka.includes(norm(r)) && !jinde.includes(norm(r)));
-
-          if (prozrazene.length > 1) {
-            nalezy.push(
-              `[${topic.id}] L${level} · jmenuje ${prozrazene.length} z ${task.pairs.length} pravých stran: ` +
-                `${prozrazene.map((x) => `„${x}"`).join(", ")}\n     H1: ${task.hints?.[1]}`,
-            );
-          }
-        }
+      const jinde = `${task.question} ${task.hints?.[0] ?? ""}`;
+      const prozrazene = dvojiceVeVete(velka, task.pairs);
+      if (prozrazene.length > PRAH_KOTVY) {
+        nalezy.push(
+          `[${topicId}] L${level} · jmenuje ${prozrazene.length} z ${task.pairs.length} pravých stran: ` +
+            `${prozrazene.map((x) => `„${x}"`).join(", ")}\n     H1: ${velka}`,
+        );
       }
-    }
+    });
 
     expect(zkontrolovano, "žádná úloha s dvojicemi — změnil se tvar dat?").toBeGreaterThan(50);
     expect(
       nalezy.length,
       `Velká nápověda jmenuje víc než jednu pravou stranu, takže zbytek jde ` +
         `dopočítat vylučováním (${nalezy.length} úloh):\n\n${nalezy.slice(0, 10).join("\n\n")}`,
+    ).toBe(0);
+  });
+
+  /**
+   * `drag_order` a `timeline`. Názvy položek dítě vidí (přetahuje je), takže
+   * únik není jejich výskyt, ale pořadí. Dvě položky v pořadí jsou kotva —
+   * a taky přesně to, kam dnes obsah dosahuje (6 úloh z 563). Tři už dávají
+   * dva ze zbývajících rozhodovacích kroků.
+   */
+  it("velka napoveda nejmenuje tri a vic polozek ve spravnem poradi", () => {
+    const nalezy: string[] = [];
+    let zkontrolovano = 0;
+
+    proKazdouUlohu((task, topicId, level) => {
+      const poradi = task.items ?? task.timelineEvents?.map((e) => e.label);
+      if (!poradi?.length) return;
+      const velka = task.hints?.[1] ?? "";
+      if (!norm(velka)) return;
+      zkontrolovano++;
+
+      const beh = nejdelsiBehVPoradi(velka, poradi);
+      if (beh.length > PRAH_KOTVY + 1) {
+        nalezy.push(
+          `[${topicId}] L${level} · ${beh.length} z ${poradi.length} položek ve správném pořadí: ` +
+            `${beh.join(" → ")}\n     H1: ${velka}`,
+        );
+      }
+    });
+
+    expect(zkontrolovano, "žádná úloha s pořadím — změnil se tvar dat?").toBeGreaterThan(50);
+    expect(
+      nalezy.length,
+      `Velká nápověda jmenuje tři a víc položek v tom pořadí, v jakém mají být — ` +
+        `to už není kotva, to je kus řešení (${nalezy.length} úloh):\n\n` +
+        nalezy.slice(0, 10).join("\n\n"),
+    ).toBe(0);
+  });
+
+  /**
+   * `categorize`. Názvy skupin bývají v zadání (jsou to cílové přihrádky), takže
+   * je nelze vyloučit jako pravé strany dvojic — měří se spojení položky se
+   * skupinou v jedné větě. Jmenovat položky bez skupiny je v pořádku: přesně to
+   * dělá třídění zvířat ve 3. ročníku, kde rozhodnutí zůstává na dítěti.
+   */
+  it("velka napoveda neprozradi vic nez jedno zarazeni do skupiny", () => {
+    const nalezy: string[] = [];
+    let zkontrolovano = 0;
+
+    proKazdouUlohu((task, topicId, level) => {
+      if (!task.categories?.length) return;
+      const velka = task.hints?.[1] ?? "";
+      if (!norm(velka)) return;
+      zkontrolovano++;
+
+      const prozrazena = prirazeniVeVete(velka, task.categories);
+      if (prozrazena.length > PRAH_KOTVY) {
+        const polozek = task.categories.reduce((n, c) => n + c.items.length, 0);
+        nalezy.push(
+          `[${topicId}] L${level} · prozrazuje ${prozrazena.length} z ${polozek} zařazení: ` +
+            `${prozrazena.join(", ")}\n     H1: ${velka}`,
+        );
+      }
+    });
+
+    expect(zkontrolovano, "žádná úloha s tříděním — změnil se tvar dat?").toBeGreaterThan(30);
+    expect(
+      nalezy.length,
+      `Velká nápověda říká u víc než jedné položky, do které skupiny patří — ` +
+        `zbytek pak jde u malé sady dopočítat vylučováním (${nalezy.length} úloh):\n\n` +
+        nalezy.slice(0, 10).join("\n\n"),
     ).toBe(0);
   });
 });

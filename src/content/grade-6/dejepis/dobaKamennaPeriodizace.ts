@@ -52,7 +52,12 @@ const ZADANI: Record<number, string> = {
   4: "Seřaď čtyři úseky pravěku od nejstaršího po nejnovější.",
   5: "Seřaď všech pět úseků pravěku na našem území od nejstaršího po nejnovější.",
 };
-const PRAVIDLO = "Pravěk jde od doby kamenné (starší, střední a mladší — paleolit, mezolit, neolit) přes dobu bronzovou k době železné.";
+// Pravidlo jde celé do velké nápovědy, a úkolem úlohy je právě seřadit úseky.
+// Dřív tu stálo „Pravěk jde od doby kamenné (…) přes dobu bronzovou k době
+// železné" — tedy hotové řešení. Vlastní test tématu to nechytil, protože
+// hledá položky doslovně (`h.includes(it)`) a nápověda je měla ohnuté.
+// Nově dává kritérium, podle kterého se pořadí odvodí, ne pořadí samo.
+const PRAVIDLO = "Úseky pravěku se jmenují podle materiálu nástrojů. Kámen leží na zemi a stačí ho opracovat, kov se musí získat z rudy — a čím tvrdší kov, tím vyšší teplotu na to lidé museli zvládnout. Uvnitř doby kamenné rozhoduje, jestli se kámen jen otloukal, nebo už brousil.";
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
 function uloha(kolik: number): PracticeTask {

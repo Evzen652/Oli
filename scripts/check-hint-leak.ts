@@ -17,8 +17,23 @@
 //
 // Vzniklo 2026-09-12 při kontrole dávky g2prv-b, kde takové nápovědy byly
 // čtyři — mezi nimi u první pomoci a u cesty do školy.
+//
+// 2026-09-13: skript uměl porovnávat jen s `correctAnswer`, takže o typech
+// `match_pairs`, `categorize`, `drag_order` a `timeline` **mlčel** — u nich je
+// `correctAnswer` jen marker („match" / „categorize" / „order") a skutečné
+// řešení leží v `pairs` / `categories` / `items`. Tudy prošel únik v 5. ročníku
+// (696 z 1 000 úloh v 17 tématech). Měřítka pro ně jsou v
+// `src/lib/hintLeakStructured.ts` a blokující verzi má
+// `src/test/hint-structured-leak.test.ts`; tady se jen vypisují, ať jde report
+// číst celý na jednom místě.
 import { getAllTopics } from "@/lib/contentRegistry";
 import { pad } from "@/lib/czechGrammar";
+import {
+  dvojiceVeVete,
+  nejdelsiBehVPoradi,
+  prirazeniVeVete,
+  PRAH_KOTVY,
+} from "@/lib/hintLeakStructured";
 
 /**
  * Jednotky a slova, která o porozumění nic neříkají. Bez nich hlásil skript
@@ -33,14 +48,49 @@ const slova = (s: string) => (s.toLowerCase().match(/\p{L}{3,}/gu) ?? []).filter
 const zadane = (process.env.IDS ?? "").split(",").filter(Boolean);
 const ids = zadane.length > 0 ? zadane : getAllTopics().filter((t) => t.generator).map((t) => t.id);
 let nalezu = 0;
+let strukturovanych = 0;
 
 for (const id of ids) {
   const t = getAllTopics().find((x) => x.id === id);
   if (!t?.generator) continue;
-  const videno = new Set<string>();
+  // Dvě různá síta schválně. Překryv s klíčem stačí posoudit jednou na znění
+  // otázky — u textových úloh je otázka různá, takže se tím sjednotí varianty
+  // téhož. U strukturovaných typů je ale otázka **pořád stejná** („Seřaď pět
+  // úseků pravěku…") a mění se jen položky s nápovědou; kdyby se dedup dělal
+  // taky podle otázky, projela by se jedna úloha z tématu a zbytek by zmizel.
+  // Na tomhle skript 13. 9. tiše prošel kolem úniku, který blokující test našel.
+  const videnaOtazka = new Set<string>();
+  const videnaNapoveda = new Set<string>();
   for (const lvl of [1, 2, 3]) for (const task of t.generator(lvl) ?? []) {
-    if (videno.has(task.question)) continue;
-    videno.add(task.question);
+    // ── Strukturované typy: řešení není v `correctAnswer` ──────────────
+    const h1 = task.hints?.[1] ?? "";
+    if (h1 && !videnaNapoveda.has(`${task.question}|${h1}`)) {
+      videnaNapoveda.add(`${task.question}|${h1}`);
+      const vypis = (co: string, polozky: string[]) => {
+        strukturovanych++;
+        console.log(`
+[${id}] L${lvl} · ${co}`);
+        console.log(`   H1:  ${h1}`);
+        console.log(`   →    ${polozky.join(" · ")}`);
+      };
+      const poradi = task.items ?? task.timelineEvents?.map((e) => e.label);
+      if (task.pairs?.length) {
+        const x = dvojiceVeVete(h1, task.pairs);
+        if (x.length > PRAH_KOTVY) vypis(`spojuje ${x.length} z ${task.pairs.length} dvojic`, x);
+      }
+      if (poradi?.length) {
+        const x = nejdelsiBehVPoradi(h1, poradi);
+        if (x.length > PRAH_KOTVY + 1) vypis(`${x.length} z ${poradi.length} položek ve správném pořadí`, x);
+      }
+      if (task.categories?.length) {
+        const x = prirazeniVeVete(h1, task.categories);
+        if (x.length > PRAH_KOTVY) vypis(`prozrazuje ${x.length} zařazení`, x);
+      }
+    }
+
+    if (videnaOtazka.has(task.question)) continue;
+    videnaOtazka.add(task.question);
+
     const h0 = task.hints?.[0];
     if (!h0) continue;
     // Slova, která už stojí v zadání, se nepočítají: nápověda smí zadání
@@ -65,4 +115,6 @@ for (const id of ids) {
 }
 
 console.log(`
-K posouzení: ${pad(nalezu, "NÁPOVĚDA")}. Nález není důkaz chyby — každou posuď ručně.`);
+K posouzení: ${pad(nalezu, "NÁPOVĚDA")} podle překryvu s klíčem`
+  + ` a ${pad(strukturovanych, "NÁPOVĚDA")} u strukturovaných typů.`
+  + ` Nález není důkaz chyby — každou posuď ručně.`);

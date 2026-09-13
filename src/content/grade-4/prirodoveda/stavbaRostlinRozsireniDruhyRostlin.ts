@@ -72,7 +72,10 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Kořen roste dolů do země za vodou, stonek nahoru za světlem. Listy mají žilky, kterými proudí voda a živiny. Květ má barevné okvětní lístky.",
   }),
   match("Spoj strom s jeho plodem.", p(["Dub", "Žalud"], ["Líska", "Oříšek"], ["Jabloň", "Jablko"], ["Javor", "Nažka s křidélky"]), {
-    hints: ["Plody dubu sbírají veverky a sojky.", "Líska dává oříšky, jabloň jablka. Javorové plody padají a točí se jako vrtulka."],
+    // Velká nápověda dřív rozdala dvě dvojice rovnou („Líska dává oříšky,
+    // jabloň jablka") a třetí popsala, takže poslední vyšla vylučováním.
+    // Teď rozebere jednu kotvu a u zbytku dá způsob uvažování.
+    hints: ["Plody dubu sbírají veverky a sojky.", "Javor má plod, který se ve větru točí jako vrtulka — nažku s křidélky. U zbylých tří si vybav strom na podzim: co z něj padá na zem a co s tím dělají zvířata."],
     explanation: "Plodem dubu je žalud, lísky oříšek, jabloně jablko a javoru nažka s křidélky, která se ve větru točí.",
   }),
 ];
@@ -148,11 +151,17 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Plody jsou stavěné tak, aby se semena dostala daleko: sladké barevné sní pták, chmýří odnese vítr, háčky se zachytí na srsti a lehký plod pluje po vodě.",
   }),
   match("Spoj přizpůsobení s tím, k čemu rostlině je.", p(["Tlustý dužnatý stonek", "Zásoba vody v suchu"], ["Velmi dlouhé kořeny", "Dosáhnou vody hluboko"], ["Velké tenké listy", "Zachytí světlo ve stínu"], ["Lepkavé chloupky rosnatky", "Chytí hmyz, když půda nemá živiny"]), {
-    hints: ["Kaktus má tlustý stonek. K čemu mu je v poušti?", "Rostliny v lesním stínu mají velké listy, rostliny v suchu hluboké kořeny. Co získá rosnatka z chyceného hmyzu?"],
+    // „Rostliny v lesním stínu mají velké listy, rostliny v suchu hluboké
+    // kořeny" přiřadilo dvě dvojice opisem — pravou stranu to nevyslovilo,
+    // ale přiřazení dalo. Kontrola na doslovný únik to nevidí, dítě ano.
+    hints: ["Kaktus má tlustý stonek. K čemu mu je v poušti?", "Rosnatka roste v rašeliništi, kde je v půdě málo živin — proto si pomáhá chyceným hmyzem. U zbylých tří se ptej, čeho je v tom prostředí nedostatek, a jestli si rostlina zásobu vytvoří, nebo si pro ni musí dojít."],
     explanation: "Dužnatý stonek je zásobárna vody. Dlouhé kořeny dosáhnou vody hluboko v zemi. Velké tenké listy zachytí málo světla v lesním stínu. Rosnatka si z hmyzu bere živiny, které v rašelině chybějí.",
   }),
   match("Spoj děj v rostlině s tím, co k němu potřebuje.", p(["Klíčení semene", "Vodu a teplo"], ["Opylení", "Hmyz nebo vítr"], ["Výroba potravy v listech", "Světlo"], ["Šíření semen", "Vítr, vodu nebo zvířata"]), {
-    hints: ["Semínka klíčí i v zemi, kde je tma. Co tedy potřebují?", "Listy pracují jen na světle. Pyl na pestík přenese hmyz nebo vítr. Semena roznese něco, co se pohybuje."],
+    // Dřív dala nápověda tři děje ze čtyř: „Listy pracují jen na světle.
+    // Pyl na pestík přenese hmyz nebo vítr." Zůstala jedna kotva a otázka,
+    // podle které se zbytek rozhoduje.
+    hints: ["Semínka klíčí i v zemi, kde je tma. Co tedy potřebují?", "U klíčení má semínko zásobu v sobě, takže mu stačí voda a teplo. U zbylých tří se ptej, jestli se něco musí přenést z místa na místo, nebo jestli k tomu rostlina potřebuje energii."],
     explanation: "Semeno klíčí, když má vodu a teplo, světlo zatím nepotřebuje. Opylení zajistí hmyz nebo vítr. Listy vyrábějí potravu jen na světle. Semena roznese vítr, voda nebo zvířata.",
   }),
   match("Spoj, co vidíš na pokojové rostlině, s tím, co jí chybí.", p(["Svěšené povadlé listy", "Voda"], ["Dlouhý bledý stonek natažený k oknu", "Světlo"], ["Žluté listy ve staré vyčerpané hlíně", "Živiny"], ["Hnijící kořeny v rozmočené hlíně", "Vzduch v půdě"]), {

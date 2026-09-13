@@ -189,6 +189,19 @@ src/
   nezačato) a je přitom otevřená žákům. Plán mění pořadí oproti červnu — faktické
   předměty až po rozšíření kontroly úniku na `match_pairs`/`categorize`/`drag_order`,
   protože právě tudy prošel únik v 5. ročníku (696 z 1 000 úloh).
+- ✅ **Bod 1 plánu šestky hotový — kontrola úniku vidí strukturované typy.**
+  Měřítka jsou čisté funkce v `src/lib/hintLeakStructured.ts`, blokující verze
+  v `src/test/hint-structured-leak.test.ts` (16 měřítek, z toho 12 na vymyšleném
+  vstupu), report v `npm run check:hints`. Našlo **dva skutečné úniky, které
+  neviděla žádná existující kontrola**: nápověda ve 4. ročníku rozdala dvě
+  dvojice ze čtyř a pravidlo v 6. ročníku dalo celé pořadí úseků pravěku.
+  U druhého byl slepý i **vlastní test tématu** — hledá položky doslovně
+  (`h.includes`), a nápověda je měla skloněné. Opraveny čtyři nápovědy
+  (tři ve 4. ročníku, jedna v 6.).
+- ⚠️ **`check:hints` měl druhou slepou skvrnu:** dedup podle znění otázky.
+  U strukturovaných typů je otázka pořád stejná, takže se z tématu posoudila
+  jedna úloha z 24. Teď má dvě síta — otázka pro překryv s klíčem, otázka +
+  nápověda pro strukturované.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

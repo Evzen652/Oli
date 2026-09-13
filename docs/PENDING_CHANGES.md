@@ -13,6 +13,11 @@
 dávek a pět věcí, které musí být hotové dřív než první nové téma:
 [`docs/GRADE_6_COMPLETION_PLAN.md`](GRADE_6_COMPLETION_PLAN.md).
 
+- ✅ **1/5 — kontrola úniku vidí strukturované typy** (13. 9.). Viz
+  `src/lib/hintLeakStructured.ts`. Nálezy: 2 skutečné úniky, 4 opravené
+  nápovědy. Zbývá: kontrola mizejících úloh, navigace šestky, dětské názvy,
+  `vko` v rejstříku předmětů, ilustrace čtyř předmětů.
+
 Ke stejnému průchodu:
 
 - ✅ `src/content/grade-5/STATUS.md` vygenerován znovu z `data/rvp_data.json`
