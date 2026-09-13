@@ -182,9 +182,9 @@ zpřesněné: **Redirect URLs v Supabase** (bez nich je oprava mobilního resetu
 hesla poloviční), **spouštěč úklidu anonymních dat** (zásady slibují 44 dnů,
 nic to nevymáhá), **právní kontrola zásad** a **podpisový klíč pro Android**.
 
-Z technických věcí na rozhodnutí čeká hlavně **kořen úniku v nápovědě**
-(`doplnVelkou`, 17 témat 5. ročníku, 16 zamrazených v produkci) — oprava změní
-zadání, takže se musí přegenerovat zámek obsahu.
+✅ **Kořen úniku v nápovědě je od 13. 9. opravený** — a přegenerovat zámek
+obsahu nebylo třeba, protože oprava se dotkla jen nápověd, ne zadání ani
+klíčů. Detail níž u bodu 2.
 
 ### Co bylo v předání 12. 9. (splněno)
 
@@ -257,17 +257,39 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
    států: **L1 13 %, L2 35 %, L3 72 %** úloh má v nápovědě ≥ 2 dvojice.
    Stejný vzorec je i v `chronologie` (řádek 159) a `trideni` (řádek 218).
 
-   **Oprava je na jeden řádek** — dát strategie do seznamu první a `proc`
-   ostatních položek až za ně (dvě věty strategie ~110 znaků délku dorovnají
-   skoro vždy, takže se na `proc` nedojde).
+   ✅ **Opraveno 13. 9.** Doplňky dostávají **jen obecné strategie**, `proc`
+   prvků úlohy se do nich nedostane vůbec — to je bezpečnější než původně
+   navržené „strategie první, `proc` až za ně", které by při dlouhé malé
+   nápovědě na `proc` pořád dosáhlo. Opraveno na čtyřech místech: `chronologie`,
+   `parovani`, `trideni` a `_poradi.ts`; rejstřík strategií rozšířen na tři
+   věty na kategorii, aby délka vyšla i bez nich.
 
-   **Proč to nespravil kritik dávky:** helper používá **17 témat 5. ročníku**
-   a 16 z nich je už zamrazených v produkci — oprava přepíše nápovědy napříč
-   nimi a je to rozhodnutí uživatele, ne dávky. V `g4-6-mix` se to obešlo
-   lokálně (`odlisSadu` přilepené dvojice uřízne), protože tam nový obal
-   `odlisSadu` cíl 1,2× zvedal a únik na L1 zhoršoval z 13 % na 40 %.
-   `check-hint-leak.ts` tuhle třídu nevidí — porovnává nápovědu s
-   `correctAnswer`, a ten je u `match_pairs` jen řetězec „match".
+   **Rozsah před opravou (změřeno, ne odhadnuto):** 696 z 1 000 úloh (69,6 %)
+   v 17 tématech. Nejhorší `chronologie` L3, kde se pořadí odvozuje právě ze
+   souvislostí — tam byl každý doplněk kus řešení. Naopak u krátkých malých
+   nápověd se doplněk nepřidával vůbec, takže „kompletní únik u tříprvkové
+   úlohy" plošně neplatil; vada byla podmíněná délkou `h0`.
+
+   **Zámek obsahu se přegenerovat nemusel** — `frozen-content-unchanged` hlídá
+   otázky a klíče, a ty se nezměnily. Původní obava, že oprava změní zadání,
+   se nepotvrdila.
+
+   `check-hint-leak.ts` tuhle třídu pořád nevidí (porovnává nápovědu
+   s `correctAnswer`, a ten je u `match_pairs` jen řetězec „match"), takže
+   hlídá nový `src/test/hint-structured-leak.test.ts`. Měří konstrukčně — co
+   smí stát za pevnou závěrečnou větou velké nápovědy — a je ověřený
+   obousměrně: po dočasném vrácení kořene spadl na 786 úlohách.
+
+   🟠 **Cestou se našlo, co s tímhle kořenem nesouvisí a čeká na rozhodnutí:**
+   `_poradi.ts` má v poli `pravidlo` věty, které samy prozrazují pořadí
+   („Měsíc je menší než Země, Jupiter je největší planeta a Slunce je větší než
+   všechny planety dohromady." u úlohy „Seřaď vesmírná tělesa od nejmenšího po
+   největší"), a jinde pravidlo mluví o položkách, které v úloze vůbec nejsou
+   (řešení „minuta → hodina → měsíc", pravidlo o dni a roku). Dvě témata
+   4. ročníku mají navíc únik v ručně psané nápovědě — `…ziva-priroda-rostliny…`
+   („Brambory se sázejí jako hlízy, tulipány jako cibulky…") a
+   `…ekosystemy-les-louka-pole-rybnik…` (nápověda jmenuje všechny čtyři prvky
+   řešení).
 3. **Tiché mizení úloh:** u převodů jednotek obsahu se tři z pěti převodů na
    větší jednotku vůbec negenerovaly — duplicitní distraktor způsobil, že
    `ciselnaUloha` vracela `null`. Audit to neukáže: co nevznikne, nemá co

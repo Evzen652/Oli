@@ -177,10 +177,20 @@ src/
 - ⚠️ **Sada byla červená delší dobu, aniž se to vědělo** — poslední doložitelně
   zelený běh je `9f3a07b` (17. 7.). Předání z 12. 9. přitom uvádělo
   „4 745 testů prochází“.
-- 🔴 **Přeměřen kořen úniku v nápovědě: 19 témat 5. ročníku, 18 zamrazených**
-  (předání uvádělo 17/16). `chronologie` a `_poradi.ts` navíc předávají do
-  velké nápovědy `proc` **všech** prvků, ne až od třetího — u tříprvkové úlohy
-  je nápověda kompletní řešení. Oprava mění zadání → čeká na rozhodnutí.
+- ✅ **Kořen úniku v nápovědě opraven.** `doplnVelkou` si na dorovnání délky
+  bral `proc` dalších prvků úlohy — změřeno 696 z 1 000 úloh (69,6 %) v 17
+  tématech. Opraveno na čtyřech místech (`chronologie`, `parovani`, `trideni`,
+  `_poradi.ts`): doplňky jsou nově jen obecné strategie. Nový hlídač
+  `src/test/hint-structured-leak.test.ts` měří konstrukčně (co smí stát za
+  pevnou závěrečnou větou) a byl ověřen obousměrně — po dočasném vrácení
+  kořene spadl na 786 úlohách.
+- ℹ️ **Zámek obsahu přegenerovat nebylo třeba** — oprava se dotkla jen
+  nápověd, ne zadání ani klíčů, takže `frozen-content-unchanged` prošel beze
+  změny. Předání tvrdilo opak a čekalo se na rozhodnutí kvůli němu.
+- 🟠 **Nalezeno cestou, k rozhodnutí:** `_poradi.ts` má v poli `pravidlo`
+  věty, které samy prozrazují pořadí („Měsíc je menší než Země, Jupiter je
+  největší planeta…“), jinde zase pravidlo mluví o položkách, které v úloze
+  nejsou. Dvě témata 4. ročníku mají únik v ručně psané nápovědě.
 
 ### Session 2026-09-13 (41) — příprava spuštění: soukromí a mobilní odkazy:
 

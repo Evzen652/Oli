@@ -82,14 +82,17 @@ const SOUSEDE_A_EU: Dvojice[] = [
  * tutéž malou nápovědu. Úvodní věta obě sady rozliší; velká nápověda se pak
  * dorovná zpátky na o pětinu delší text.
  *
- * Dorovnává se ale RADAMI, ne zbytkem řešení. `doplnVelkou` ve sdíleném
- * helperu si na dorovnání délky bere nejdřív `proc` DALŠÍCH dvojic té úlohy —
- * u tříprvkové sady pak velká nápověda prozradí dvě dvojice ze tří a třetí
- * vyjde vylučováním. Úvodní věta cíl 1,2 × zvedne, takže by to tady bylo ještě
- * častější (13 % → 40 % úloh na L1). Přilepené dvojice proto uřízneme —
- * nápověda končí větou o vylučování, jak ji `parovani` postavilo.
- * Kořen je v `src/content/grade-5/_shared.ts` a týká se 17 témat, viz
- * `docs/PENDING_CHANGES.md`.
+ * Dorovnává se RADAMI, ne zbytkem řešení. Původně to tady bylo jediné místo,
+ * kde se obcházel kořen ve sdíleném `doplnVelkou` — ten si na dorovnání délky
+ * bral `proc` DALŠÍCH dvojic, takže u tříprvkové sady velká nápověda prozradila
+ * dvě dvojice ze tří a třetí vyšla vylučováním (úvodní věta cíl 1,2 × zvedne,
+ * takže tady by to bylo ještě častější: 13 % → 40 % úloh na L1).
+ *
+ * **Kořen je od 2026-09-13 opravený** v `src/content/grade-5/_shared.ts` —
+ * `doplnVelkou` dostává jen obecné strategie. Tenhle obal tedy už nic
+ * neobchází; zůstává kvůli úvodní větě, která obě sady rozliší, a protože
+ * tématické rady jsou pro dítě lepší než obecná strategie. Hlídá
+ * `src/test/hint-structured-leak.test.ts`.
  */
 const KONEC_VELKE = "Zbylé dvojice pak doplň vylučováním.";
 
@@ -108,23 +111,32 @@ function odlisSadu(tasks: PracticeTask[], uvod: string, rady: string[]): Practic
   });
 }
 
+/**
+ * Rady, kterými se dorovnává velká nápověda. Exportované schválně: hlídač
+ * `hint-structured-leak` je uznává jako povolený doplněk, takže seznam má
+ * jediný zdroj pravdy a nová rada se musí projít testem, ne obejít ho.
+ */
+export const RADY_HLAVNI_MESTA = [
+  "Hlavní město bývá největší město státu a často leží na velké řece.",
+  "U státu, který neznáš, si vzpomeň, kde jsi název jeho města slyšel — ve zprávách, na mapě nebo z prázdnin.",
+];
+
+export const RADY_SOUSEDE_A_EU = [
+  "Nejdřív si u každého pojmu řekni, co to vlastně je: stát, město, měna, nebo spolek států.",
+  "Popisy, které mluví o hranicích a světových stranách, patří k sousedům Česka.",
+];
+
 function gen(level: number): PracticeTask[] {
   return [
     ...odlisSadu(
       parovani(HLAVNI_MESTA, level, "Spoj stát s jeho hlavním městem.", 15),
       "Přiřazuješ státům jejich hlavní města.",
-      [
-        "Hlavní město bývá největší město státu a často leží na velké řece.",
-        "U státu, který neznáš, si vzpomeň, kde jsi název jeho města slyšel — ve zprávách, na mapě nebo z prázdnin.",
-      ],
+      RADY_HLAVNI_MESTA,
     ),
     ...odlisSadu(
       parovani(SOUSEDE_A_EU, level, "Spoj pojem s tím, co o něm platí.", 15),
       "Přiřazuješ pojmům to, co o nich platí.",
-      [
-        "Nejdřív si u každého pojmu řekni, co to vlastně je: stát, město, měna, nebo spolek států.",
-        "Popisy, které mluví o hranicích a světových stranách, patří k sousedům Česka.",
-      ],
+      RADY_SOUSEDE_A_EU,
     ),
   ];
 }

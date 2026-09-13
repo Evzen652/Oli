@@ -229,33 +229,42 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
 
 ## 4. Otevřené pro další session
 
-### 🔴 Kořen úniku v nápovědě — 19 témat 5. ročníku
+### ✅ Kořen úniku v nápovědě — opraveno 13. 9.
 
-> Čísla přeměřena 13. 9. Dřív tu stálo 17 témat / 16 zamrazených a že se bere
-> `proc` *dalších* dvojic. Obojí bylo mírnější než skutečnost.
+`doplnVelkou` v `grade-5/_shared.ts` si na dorovnání délky velké nápovědy
+bral `proc` **dalších** prvků úlohy. Změřeno před opravou: **696 z 1 000 úloh
+(69,6 %) v 17 tématech** mělo za závěrečnou větou přilepenou souvislost další
+dvojice nebo události. Nejhorší byla `chronologie` na L3, kde se pořadí
+odvozuje právě ze souvislostí — tam byl každý doplněk kus řešení.
 
-`doplnVelkou` v `src/content/grade-5/_shared.ts` dorovnává velkou nápovědu
-`proc`em ostatních prvků a teprve pak sahá po obecných strategiích. Ve dvou
-větvích se to chová **hůř, než se dosud psalo**:
+Opraveno na čtyřech místech (`chronologie`, `parovani`, `trideni`,
+`_poradi.ts`): do doplňků jdou **jen obecné strategie**, nikdy `proc` prvků
+úlohy. Rejstřík strategií rozšířen na tři věty na kategorii, aby délka vyšla
+i bez nich. Hlídá `src/test/hint-structured-leak.test.ts` — měřítko je
+konstrukční (co smí stát za pevnou závěrečnou větou), ne heuristické.
+Ověřeno obousměrně: po dočasném vrácení kořene test spadl na 786 úlohách.
 
-| helper | co se předává do doplňku | důsledek na nejmenší úloze |
-|---|---|---|
-| `parovani` (ř. 189), `trideni` (ř. 218) | `xs.slice(2)` — od třetího prvku | h1 rozebere druhý, doplněk třetí → první vyjde vylučováním |
-| `chronologie` (ř. 159), `_poradi.ts` (ř. 41) | **všechny prvky, včetně prvního** | velká nápověda je kompletní řešení, ne dvě třetiny |
+**Dvě věci se nepotvrdily proti tomu, co tu stálo dřív:**
 
-Rozsah (změřeno proti `frozen-content.snapshot.json`): **19 témat 5. ročníku,
-z toho 18 zamrazených v produkci** — nezamrazené je jen
-`zaznamATrideniDatVTabulce`. Opraveno zatím **jen lokálně v dávce `g4-6-mix`**
-(obal `odlisSadu` v `evropskeStatyAEuSousedniZemeCrPodrobne.ts`).
+- **Zámek obsahu přegenerovat netřeba.** Předání tvrdilo, že oprava změní
+  zadání; nezměnila — dotkla se jen nápověd, a `frozen-content-unchanged`
+  hlídá otázky a klíče. Prošel beze změny.
+- **Nebyl to „plošně kompletní únik u tříprvkové úlohy".** U krátkých malých
+  nápověd se doplněk vůbec nepřidával (`h1` už délkou stačila), takže L1
+  párování bylo často v pořádku. Vada byla podmíněná délkou `h0`.
 
-Čeká na rozhodnutí: oprava změní zadání, takže se musí přegenerovat zámek
-obsahu. `check-hint-leak` to konstrukčně nevidí (viz §1) — ani po opravě
-počítadla, protože slepota na `match_pairs` / `categorize` / `drag_order` je
-v tom, s čím porovnává, ne v tom, jak počítá.
+Zbývá k rozhodnutí (mimo tenhle kořen, nalezeno cestou):
 
-`doplnVelkou` existuje i v `grade-3/_shared.ts` a v obou `grade-6/*/_shared.ts`.
-Tam se **krmí jen obecnými strategiemi**, takže tahle vada v nich není —
-ověřeno 13. 9., neopravuj je bez měření.
+- **`_poradi.ts` — pole `pravidlo` samo prozrazuje pořadí.** U „Seřaď vesmírná
+  tělesa od nejmenšího po největší" zní pravidlo „Měsíc je menší než Země,
+  Jupiter je největší planeta a Slunce je větší než všechny planety
+  dohromady." — to je celé řešení, a je to napsané v datech, ne generované.
+  Jinde zase pravidlo mluví o položkách, které v úloze nejsou (řešení
+  „minuta → hodina → měsíc", pravidlo o dni a roku).
+- **Dvě témata 4. ročníku mají únik v ručně psané nápovědě:**
+  `…ziva-priroda-rostliny…` („Brambory se sázejí jako hlízy, tulipány jako
+  cibulky…" — obě dvojice přímo) a `…ekosystemy-les-louka-pole-rybnik…`
+  (nápověda jmenuje všechny čtyři prvky řešení). Nesouvisí s `doplnVelkou`.
 
 ### 🟠 Mobilní vydání — co zbývá
 

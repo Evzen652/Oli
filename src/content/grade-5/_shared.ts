@@ -101,11 +101,32 @@ export function unikatni(pocet: number, tvor: () => PracticeTask | null, klic: (
 
 /** Obecné rady, kterými se velká nápověda dorovná, když souvislosti z banky nestačí. */
 const STRATEGIE_VYBER = ["Vyřaď nejdřív možnosti, které určitě neplatí.", "Zbylé možnosti porovnej s tím, co už víš."];
-const STRATEGIE_RAZENI = ["Nejdřív najdi úplně první a úplně poslední událost, zbylé pak zařaď mezi ně.", "Ptej se: co se muselo stát dřív, aby mohlo přijít to další?"];
-const STRATEGIE_PAROVANI = ["Každá položka vlevo má právě jednu dvojici vpravo.", "Začni tou dvojicí, kterou znáš nejlíp, a zbytek vylučuj."];
-const STRATEGIE_TRIDENI = ["U každé položky se ptej, podle jakého znaku do skupiny patří.", "Když si nejsi jistý nebo jistá, začni položkami, které znáš nejlíp."];
+export const STRATEGIE_RAZENI = [
+  "Nejdřív najdi úplně první a úplně poslední událost, zbylé pak zařaď mezi ně.",
+  "Ptej se: co se muselo stát dřív, aby mohlo přijít to další?",
+  "Když si nejsi jistý nebo jistá, zkus dvě události porovnat mezi sebou a teprve pak je zařaď do celé řady.",
+];
+const STRATEGIE_PAROVANI = [
+  "Každá položka vlevo má právě jednu dvojici vpravo.",
+  "Začni tou dvojicí, kterou znáš nejlíp, a zbytek vylučuj.",
+  "U dvojice, kterou si nejsi jistý nebo jistá, se ptej, které slovo z popisu k položce vůbec sedí.",
+];
+const STRATEGIE_TRIDENI = [
+  "U každé položky se ptej, podle jakého znaku do skupiny patří.",
+  "Když si nejsi jistý nebo jistá, začni položkami, které znáš nejlíp.",
+  "Znak, podle kterého třídíš, hledej na těle nebo na povrchu — ne v tom, kde se položka vyskytuje.",
+];
 
-/** Velká nápověda má být aspoň o pětinu delší než malá (audit hint_progression). */
+/**
+ * Velká nápověda má být aspoň o pětinu delší než malá (audit hint_progression).
+ *
+ * ⚠️ **Do `doplnky` patří jen obecné strategie, nikdy `proc` prvků úlohy.**
+ * Do 2026-09-13 se sem posílaly souvislosti dalších dvojic a událostí, takže
+ * 696 z 1 000 úloh (17 témat) mělo ve velké nápovědě rozebraný druhý prvek —
+ * a u `chronologie` na L3, kde se pořadí odvozuje právě ze souvislostí, byl
+ * každý takový doplněk kusem řešení. Velká nápověda smí rozebrat jednu kotvu
+ * (to dělá `h1`) a dál už jen radit postup.
+ */
 export function doplnVelkou(h0: string, h1: string, doplnky: string[]): string {
   let out = h1;
   for (const d of doplnky) {
@@ -156,7 +177,7 @@ export function chronologie(udalosti: Udalost[], level: number, oCem: string, po
         : `Seřaď čtyři události ${oCem} od nejstarší po nejnovější. Data tentokrát nejsou uvedená.`,
       correctAnswer: "order",
       items: serazene.map(popis),
-      hints: [h0, doplnVelkou(h0, h1, [...serazene.map((u) => u.proc), ...STRATEGIE_RAZENI])],
+      hints: [h0, doplnVelkou(h0, h1, STRATEGIE_RAZENI)],
       explanation: `Správné pořadí: ${serazene.map((u) => `${u.co} (${u.kdy})`).join(" → ")}. ${serazene.map((u) => u.proc).join(" ")}`,
     };
   }, (t) => JSON.stringify(t.items));
@@ -186,7 +207,7 @@ export function parovani(bank: Dvojice[], level: number, zadani: string, pocet =
       question: `${zadani} (${n === 3 ? "tři dvojice" : n === 4 ? "čtyři dvojice" : "pět dvojic"})`,
       correctAnswer: "match",
       pairs: xs.map((x) => ({ left: x.levy, right: x.pravy })),
-      hints: [h0, doplnVelkou(h0, h1, [...xs.slice(2).map((x) => x.proc), ...STRATEGIE_PAROVANI])],
+      hints: [h0, doplnVelkou(h0, h1, STRATEGIE_PAROVANI)],
       explanation: xs.map((x) => `${x.levy} → ${x.pravy}: ${x.proc}`).join(" "),
     };
   }, (t) => JSON.stringify([...(t.pairs ?? [])].sort((p, q) => p.left.localeCompare(q.left))));
@@ -215,7 +236,7 @@ export function trideni(bank: Zarazeni[], level: number, zadani: string, pocet =
       question: `${zadani} (${n === 4 ? "čtyři položky" : n === 5 ? "pět položek" : "šest položek"})`,
       correctAnswer: "categorize",
       categories: skupiny.map((s) => ({ name: s, items: xs.filter((x) => x.skupina === s).map((x) => x.polozka) })),
-      hints: [h0, doplnVelkou(h0, h1, [...xs.slice(2).map((x) => x.proc), ...STRATEGIE_TRIDENI])],
+      hints: [h0, doplnVelkou(h0, h1, STRATEGIE_TRIDENI)],
       explanation: xs.map((x) => `${x.polozka} → ${x.skupina}: ${x.proc}`).join(" "),
     };
   }, (t) => JSON.stringify((t.categories ?? []).map((c) => [c.name, [...c.items].sort()])));

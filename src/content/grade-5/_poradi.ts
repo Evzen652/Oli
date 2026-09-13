@@ -7,7 +7,7 @@
  * jmenuje všechny položky úlohy, velká přidá pravidlo řazení a jednu kotvu.
  */
 import type { PracticeTask } from "@/lib/types";
-import { doplnVelkou, pick, shuffle, unikatni, type SUrovni } from "./_shared";
+import { doplnVelkou, pick, shuffle, unikatni, STRATEGIE_RAZENI, type SUrovni } from "./_shared";
 
 export interface Rada extends SUrovni {
   /** Zadání úlohy; u každé úrovně jiné, aby se úrovně nepřekrývaly. */
@@ -38,7 +38,9 @@ export function poradi(rady: Rada[], level: number, pocet = 30): PracticeTask[] 
       question: r.zadani,
       correctAnswer: "order",
       items: xs.map((x) => x.text),
-      hints: [h0, doplnVelkou(h0, h1, xs.map((x) => `${cap(x.text)}: ${x.proc}`))],
+      // Doplňky jen strategie: `proc` ostatních položek by u řazení prozradil
+      // pořadí, které má dítě samo odvodit (viz `doplnVelkou` v `_shared.ts`).
+      hints: [h0, doplnVelkou(h0, h1, STRATEGIE_RAZENI)],
       explanation: `Správné pořadí: ${xs.map((x) => x.text).join(" → ")}. ${xs.map((x) => `${cap(x.text)}: ${x.proc}`).join(" ")}`,
     };
   }, (t) => `${t.question}|${JSON.stringify(t.items)}`);
