@@ -386,6 +386,27 @@ src/
   čtvrtá možnost na tu chladnější stranu a po obrácení by se shodla s klíčem.
   Přepsat ji znamená obětovat nejsilnější past (chladnější strana se špatným
   zdůvodněním). Zapsáno v docblocku tématu.
+- ✅ **Nový okruh fyziky — `Elektrické pole: kladný a záporný náboj`.**
+  První téma šestky se silou působící na dálku. L1 dvě tělesa se známými
+  znaménky (banka deseti zelektrovaných těles, znaménka podle skutečné
+  trioelektrické řady), L2 mechanismus elektrování a zachování náboje,
+  L3 miskoncepce „nabité přitahuje jen nabité“ — papírky, pramínek vody,
+  balonek na zdi, prach na obrazovce. Fyzika **11/13**, šestka **16 ze 117**.
+  Založen okruh „Elektřina a magnety“ v navigaci, dětské názvy i zajímavost.
+- ✅ **L1 už nemá stálý klíč.** U `pohybCastic` byla správnou odpovědí vždycky
+  teplejší strana (zapsáno tam jako vědomé omezení). Tady se znaménka losují
+  nezávisle, takže „přitáhnou se“ a „odpudí se“ padá střídavě a obě znaménka
+  se musí přečíst.
+- 🐛 **Počtvrté v téhle dávce neshoda ze šablony — „u jantar a u pravítko“.**
+  Vazba *u* žádá druhý pád a ten se z prvního odvodit nedá. Banka má teď
+  u každého tělesa hotový genitiv. Je to natolik opakovaná past, že by stálo
+  za úvahu ji hlídat strojově: každá šablona, která lepí předložku k dosazenému
+  jménu, je podezřelá.
+- 🐛 **Velká nápověda byla u všech úloh L1 stejná** — a to i v už odevzdaném
+  `pohybCastic.ts`. `CONTENT_AUTHORING` žádá obě nápovědy ukotvené v konkrétní
+  úloze a `latkaATeleso.ts` to tak dělá. Opraveno v obou souborech; strukturální
+  kritik teď počítá, kolik různých velkých nápověd úroveň vydá (45 / 12 / 12
+  u nového tématu, 9 / 12 / 12 u opraveného).
 - ⚠️ **Oprava mého vlastního nálezu: `npx tsc --noEmit` v tomhle repu
   nekontroluje nic.** Kořenový `tsconfig.json` má `"files": []` a jen reference
   na podprojekty, takže projde i se zjevnou typovou chybou v `src/` (ověřeno

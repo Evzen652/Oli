@@ -28,7 +28,7 @@
 - [x] **Pohyb částic – difuze, Brownův pohyb** → `fyzika/pohybCastic.ts` ✅ (L1 teplota a rychlost děje · L2 difúze na běžné situaci vč. pevných látek · L3 Brownův pohyb jako důkaz částic)
 
 ### Elektrické vlastnosti látek
-- [ ] Elektrické pole – kladný a záporný náboj
+- [x] **Elektrické pole – kladný a záporný náboj** → `fyzika/elektrickyNaboj.ts` ✅ (L1 přitažení/odpuzení ze znamének · L2 mechanismus elektrování a zachování náboje · L3 nabité přitahuje i nenabité)
 - [ ] Jednoduchý elektrický obvod – zdroj, vodič, spotřebič, spínač
 - [ ] Magnety – magnetické pole, magnetické póly Země
 

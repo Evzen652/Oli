@@ -352,6 +352,10 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Hustota vysvětlí, proč loď plave a kámen ne — a proč se olej drží nad vodou.",
     funFact: "Led je řidší než voda, a proto plave. Kdyby to tak nebylo, rybníky by promrzaly ode dna a ryby by v nich nepřežily.",
   },
+  "fyzika::Elektrické vlastnosti látek::Elektrický náboj a magnetismus": {
+    useful: "Vysvětlí spoustu drobností, které znáš z běžného dne: proč se prádlo v sušičce lepí k sobě, proč tě cvakne o kliku auta a proč se obrazovka práší rychleji než police vedle ní.",
+    funFact: "Slovo elektřina pochází z řeckého élektron, což je jantar. Že jantar potřený kožešinou zvedá stébla, se vědělo už před dvěma a půl tisíci lety.",
+  },
   "fyzika::Látky a tělesa::Částicová stavba látek": {
     useful: "Částicový model vysvětlí naráz spoustu běžných věcí: proč jde vzduch v pumpičce stlačit, proč cukr ve vodě zmizí a proč se kolejnice v létě prodlouží.",
     funFact: "Atomy jsou tak malé, že na jediný milimetr by se jich v řadě vešlo asi deset milionů. Proto je žádný školní mikroskop neukáže.",
@@ -446,6 +450,10 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
   "fyzika::Měření fyzikálních veličin": {
     useful: "Fyzika začíná měřením. Bez čísla je to jen dojem.",
     funFact: "Soustava jednotek SI má sedm základních veličin. Všechny ostatní se z nich odvozují.",
+  },
+  "fyzika::Elektrické vlastnosti látek": {
+    useful: "Elektrická a magnetická síla působí na dálku, bez dotyku. Na tom stojí všechno od zvonku po motor.",
+    funFact: "Blesk je obrovský elektrický výboj mezi mrakem a zemí — totéž, co drobné cvaknutí o kliku auta, jen mnohonásobně silnější.",
   },
   "fyzika::Látky a tělesa": {
     useful: "Všechno kolem tebe je těleso z nějaké látky. Fyzika se ptá, co dělá ta látka a co až konkrétní výrobek.",

@@ -95,6 +95,8 @@ interface DejL1 {
   procChladne: string;
   zvlast: { value: string; why: string };
   stejneVeci: string;
+  /** Krátká vazba „u čeho“ do velké nápovědy, ať není u všech úloh stejná. */
+  naCo: string;
   vysvetleni: string;
 }
 
@@ -113,6 +115,7 @@ const DEJE_L1: DejL1[] = [
       why: "Míchání rozpouštění urychlí, ale potřeba k němu není. Částice vody se pohybují samy a cukr rozpustí i ve stojící sklenici.",
     },
     stejneVeci: "Kostka cukru je v obou sklenicích úplně stejná.",
+    naCo: "u rozpouštění cukru",
     vysvetleni:
       "Čím je voda teplejší, tím rychleji se pohybují její částice. Častěji a prudčeji narážejí do kostky cukru a rychleji z ní odnášejí částice do celé sklenice.",
   },
@@ -130,6 +133,7 @@ const DEJE_L1: DejL1[] = [
       why: "Horká voda chuť čaje opravdu mění. Barvivo z něj ale uvolní rychleji, ne pomaleji — a otázka je na barvu.",
     },
     stejneVeci: "Čajový sáček je v obou hrncích úplně stejný.",
+    naCo: "u louhování čaje",
     vysvetleni:
       "Barvivo se ze sáčku dostává do vody pohybem částic. V horké vodě se částice pohybují rychleji, takže se voda obarví dřív.",
   },
@@ -147,6 +151,7 @@ const DEJE_L1: DejL1[] = [
       why: "Vypařuje se rychleji, to sedí. Právě proto se v teple vůně šíří rychleji — uvolní se jí víc a pohybuje se svižněji.",
     },
     stejneVeci: "Lahvička s vonným olejem je v obou místnostech úplně stejná.",
+    naCo: "u šíření vůně vzduchem",
     vysvetleni:
       "Vůně se místností šíří pohybem svých částic mezi částicemi vzduchu. V teple jsou všechny rychlejší, takže vůně urazí cestu ke dveřím dřív.",
   },
@@ -164,6 +169,7 @@ const DEJE_L1: DejL1[] = [
       why: "Studená voda je opravdu o kousek hustší. Na rychlost promíchání to ale nemá vliv — rozhoduje rychlost pohybu částic a ta je v teple větší.",
     },
     stejneVeci: "Kapka barviva je v obou sklenicích úplně stejná.",
+    naCo: "u rozptylování barviva",
     vysvetleni:
       "Barva se vodou rozšiřuje difúzí, tedy samovolným promícháním částic. Čím je voda teplejší, tím rychleji se částice pohybují a tím dřív je obarvená celá sklenice.",
   },
@@ -180,6 +186,7 @@ const DEJE_L1: DejL1[] = [
       why: "Bublinky v chladu opravdu vydrží déle. Tabletu ale rozpouštějí nárazy částic vody a ty jsou v teple rychlejší.",
     },
     stejneVeci: "Šumivá tableta je v obou sklenicích úplně stejná.",
+    naCo: "u rozpouštění šumivé tablety",
     vysvetleni:
       "Tabletu rozpouštějí částice vody, které do ní narážejí. V teplé vodě se pohybují rychleji, takže tableta zmizí dřív.",
   },
@@ -197,6 +204,7 @@ const DEJE_L1: DejL1[] = [
       why: "Barva v horké vodě nebledne. Naopak se rychleji dostane ke skořápce, protože se částice pohybují svižněji.",
     },
     stejneVeci: "Barva na vajíčka i vejce jsou v obou hrncích úplně stejné.",
+    naCo: "u barvení skořápky",
     vysvetleni:
       "Částice barvy se dostávají ke skořápce pohybem ve vodě. Čím je voda teplejší, tím je jejich pohyb rychlejší a tím dřív je vejce barevné.",
   },
@@ -214,6 +222,7 @@ const DEJE_L1: DejL1[] = [
       why: "Ze začátku u dna opravdu leží. Pohyb částic ho ale postupně roznese po celé sklenici i bez míchání.",
     },
     stejneVeci: "Lžíce sirupu je v obou sklenicích úplně stejná.",
+    naCo: "u sirupu, který leží na dně",
     vysvetleni:
       "Sirup se vodou rozšíří difúzí. Pohyb částic je v teplé vodě rychlejší, takže se sladkost dostane ke hladině dřív.",
   },
@@ -231,6 +240,7 @@ const DEJE_L1: DejL1[] = [
       why: "Rozpustná káva se nesráží. V horké vodě se dokonce rozpustí rychleji, protože do jejích zrnek narážejí rychlejší částice vody.",
     },
     stejneVeci: "Lžička kávy je v obou hrncích úplně stejná.",
+    naCo: "u rozpouštění kávy",
     vysvetleni:
       "Zrnka kávy se rozpouštějí nárazy částic vody. V teplé vodě jsou tyhle nárazy častější a prudší, takže je hrnek hnědý dřív.",
   },
@@ -248,6 +258,7 @@ const DEJE_L1: DejL1[] = [
       why: "Chlad vůni naopak tlumí — proto se potraviny dávají do lednice. Částic se uvolní méně a pohybují se pomaleji.",
     },
     stejneVeci: "Kousek cibule je v obou spížích úplně stejný.",
+    naCo: "u vůně uvolňované z cibule",
     vysvetleni:
       "Z cibule se uvolňují částice vůně a ty se promíchají se vzduchem. V teple se uvolňují rychleji a rychleji se i pohybují, takže je cibule cítit dřív.",
   },
@@ -278,7 +289,7 @@ function genL1(): PracticeTask {
     {
       hints: [
         `Jediný rozdíl mezi oběma pokusy je teplota. ${d.stejneVeci}`,
-        "Teplota látky říká, jak rychle se v ní pohybují částice: čím tepleji, tím svižněji. Rychlejší částice se častěji a prudčeji potkávají, takže se obě látky promíchají dřív. Rozhoduj proto podle toho, kde je teplota vyšší, ne podle toho, co se ti u té které věci zdá z kuchyně.",
+        `Teplota látky říká, jak rychle se v ní pohybují částice: čím tepleji, tím svižněji. Rychlejší částice se častěji a prudčeji potkávají, takže se obě látky promíchají dřív. Platí to i ${d.naCo}. Rozhoduj proto podle toho, kde je teplota vyšší, ne podle toho, co se ti u té které věci zdá z kuchyně.`,
       ],
       solutionSteps: KROKY_L1,
       explanation: d.vysvetleni,

@@ -27,6 +27,10 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Z čeho je co",
       description: "Poznáš rozdíl mezi věcí a materiálem, ze kterého je.",
     },
+    "Elektrické vlastnosti látek": {
+      name: "Elektřina a magnety",
+      description: "Zjistíš, co se přitahuje, co odpuzuje a proč tě cvakne o kliku.",
+    },
     // Dějepis
     "Úvod do dějepisu": {
       name: "Jak se zkoumá minulost",
@@ -56,6 +60,10 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Částicová stavba látek": {
       name: "Z čeho je to uvnitř",
       description: "Podíváš se na látky zblízka, až na jednotlivé částice.",
+    },
+    "Elektrický náboj a magnetismus": {
+      name: "Náboj a magnety",
+      description: "Poznáš sílu, která působí i přes mezeru, bez jediného dotyku.",
     },
     // Dějepis
     "Historie a historické prameny": {

@@ -48,6 +48,15 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-fyz-pohyb-castic-6",
         ],
       },
+      {
+        id: "elektrina-a-magnetismus",
+        name: "Elektřina a magnety",
+        description: "Zjistíš, co se přitahuje, co odpuzuje a proč tě cvakne o kliku.",
+        emoji: "⚡",
+        topicIds: [
+          "g6-fyz-elektricky-naboj-6",
+        ],
+      },
     ],
   },
   {

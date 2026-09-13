@@ -51,6 +51,16 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - ✅ **Dávka 1, téma 4/4 — `Pohyb částic, difúze, Brownův pohyb`** (14. 9.).
   Okruh „Látky a tělesa“ je hotový celý. Fyzika **10/13**, šestka **15 ze 117**.
   Zbývá poslední okruh fyziky „Elektrické vlastnosti látek“ (3 témata).
+- ✅ **Okruh 3 fyziky, téma 1/3 — `Elektrické pole: kladný a záporný náboj`**
+  (14. 9.). Fyzika **11/13**, šestka **16 ze 117**. Zbývá `Jednoduchý
+  elektrický obvod` a `Magnety a magnetické pole`, pak je fyzika hotová celá.
+- 🔁 **Opraveno i zpětně v `pohybCastic.ts`:** velká nápověda byla na L1
+  u všech úloh stejná, což odporuje pravidlu „obě nápovědy unikátní pro tu
+  úlohu“. Nově je ukotvená v konkrétním ději.
+- 💡 **Námět ke zvážení:** neshoda vzniklá lepením předložky k dosazenému
+  jménu (`z sklo`, `stejná lžičku`, `u jantar`) se v téhle dávce objevila
+  počtvrté. Strojová kontrola, která hledá předložku těsně před interpolací
+  v šabloně, by ji chytila dřív než lidský průchod.
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.
