@@ -11,6 +11,7 @@ import { maxAvailableLevel } from "./levelCoverage";
 import { calcSessionScore } from "./sessionUtils";
 import { computeNextLevel } from "./levelProgression";
 import { supabase } from "@/integrations/supabase/client";
+import { validateAnswer, resolveTaskValidation } from "./validators";
 
 /** EMA alpha for mastery calculation */
 const EMA_ALPHA = 0.3;
@@ -396,7 +397,10 @@ export async function processState(session: SessionData, userInput?: string): Pr
         // resolveTaskValidation: u strukturovaných typů (items/pairs/categories)
         // je correctAnswer jen technický marker ("order"/"match") — očekávaná
         // hodnota i validátor se odvozují z tvaru tasku.
-        const { validateAnswer, resolveTaskValidation } = await import("./validators");
+        // Staticky, ne `await import`: modul nemá žádné závislosti a Rollup ho
+        // stejně balí do hlavního chunku, takže dynamický import nic neušetřil —
+        // jen vnesl do realtime smyčky studené načtení modulu: první CHECK
+        // trval 151 ms proti 3,7 ms u dalších, čímž padal invariant CHECK pod 60 ms.
         const { expected, validatorId } = resolveTaskValidation(task);
         const result = validateAnswer(answer, expected, {
           validatorId,

@@ -167,6 +167,16 @@ src/
 - 📊 **Brány po změně:** `audit:content` ✓, `check:keys` 4 656 klíčů / 0 neshod,
   `check:keys:tables` 472 / 0, `typecheck` ✓, `audit:ui` bez nového nálezu.
   Obsah sám je čistý — vadné byly kontroly nad ním.
+- ✅ **Invariant `CHECK < 60 ms` obnoven, testová sada zelená.**
+  `execution-directive.test.ts` padal (67–118 ms, tři běhy po sobě).
+  Rozklad času: první CHECK 151,2 ms, medián dalších 3,7 ms, vlastní validace
+  0,43 ms — příčinou nebyl výpočet, ale `await import("./validators")` uvnitř
+  realtime smyčky. Modul nemá žádné závislosti a Rollup ho stejně balí do
+  hlavního chunku, takže dynamický import nic nešetřil. Po převodu na statický
+  import: první CHECK 3,9 ms, test zelený 3× po sobě.
+- ⚠️ **Sada byla červená delší dobu, aniž se to vědělo** — poslední doložitelně
+  zelený běh je `9f3a07b` (17. 7.). Předání z 12. 9. přitom uvádělo
+  „4 745 testů prochází“.
 - 🔴 **Přeměřen kořen úniku v nápovědě: 19 témat 5. ročníku, 18 zamrazených**
   (předání uvádělo 17/16). `chronologie` a `_poradi.ts` navíc předávají do
   velké nápovědy `proc` **všech** prvků, ne až od třetího — u tříprvkové úlohy

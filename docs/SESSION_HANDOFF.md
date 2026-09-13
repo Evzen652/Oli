@@ -96,6 +96,37 @@ stránky, v obalu natvrdo `https://oli-edu.com`. Ověřeno reálným voláním
 
 ⚠️ **Bez kroku v Supabase to nedojede** — viz §2 bod 3.
 
+### Session 42 (2026-09-13) — lhoucí kontroly a porušený invariant CHECK
+
+Tři věci, které měly společné jedno: **hlídač tvrdil něco jiného, než měřil.**
+
+- **`check:hints` zamlčoval vlastní nálezy** — počítadlo se neinkrementovalo,
+  takže souhrn hlásil „0 nápověd“ i pod vypsaným nálezem. Opraveno a ověřeno
+  oběma směry.
+- **`check:length` nešel spustit** — skript existoval, `npm` skript ne. První
+  měření: 1 459 úloh z 18 821 při prahu 1,6× (ne „~45“).
+- **Invariant `CHECK < 60 ms` byl porušený a testová sada červená.**
+  `execution-directive.test.ts` padal na 67–118 ms ve třech bězích po sobě.
+
+**Co to způsobovalo:** `sessionOrchestrator.ts` načítal validátory uvnitř
+realtime smyčky přes `await import("./validators")`. Rozklad času ukázal
+první CHECK **151,2 ms**, medián dalších **3,7 ms**, vlastní validace
+**0,43 ms** — tedy 40× rozdíl, který nedělal výpočet, ale studené načtení
+modulu. Po převedení na statický import: první CHECK **3,9 ms**, test zelený
+třikrát po sobě.
+
+`validators/index.ts` nemá **žádné importy** a Rollup ho stejně balil do
+hlavního chunku, takže dynamický import nic neušetřil — jen vnesl do smyčky
+náklad, který tam neměl být. V produkci šlo o pomalejší první odpověď
+v sezení, ne o síťové volání (chunk byl už stažený); test měřil totéž na
+pomalejším zavaděči, a proto padal dřív, než si toho někdo všiml v aplikaci.
+
+⚠️ **Tohle padalo delší dobu.** Poslední doložitelně zelená sada je
+`9f3a07b` (17. 7., 4 687 testů). Předání po sloučení obsahu 12. 9. přitom
+tvrdilo „4 745 testů prochází“ — buď se sada tehdy nedoběhla celá, nebo se
+nález přehlédl. **Před vydáním pouštěj `npm test` celý a dívej se na součet,
+ne na poslední řádek.**
+
 ### Session 40 (2026-09-11/12) — opravný průchod obsahu, uzavřeno
 
 Inventura našla 87 témat k opravě, rozdělených do 22 dávek; každá měla autora
@@ -315,6 +346,14 @@ Otevření 7. ročníku by oslabilo rodičovskou bránu — hlídá `parent-gate
 cíle — tedy `node_modules` **hlavního repa**. Stalo se to při úklidu 22 worktree;
 zdrojové soubory ani `package-lock.json` nedotčené, opravil `npm ci`. Než budeš
 odstraňovat worktree s junction, počítej s tím.
+
+**Časový test měří i zavaděč, ne jen kód.** `CHECK < 60 ms` padal na 151 ms
+při prvním volání a 3,7 ms při dalších — rozdíl dělal `await import()` uvnitř
+měřeného úseku. Když časový test padá, **změř první a ustálený běh zvlášť**,
+než sáhneš na limit: rozdíl mezi nimi ukáže, jestli je vadný kód, nebo test.
+
+**Nepouštěj `npm run build` souběžně s časovým testem** — zátěž CPU posunula
+naměřený CHECK z 68 na 118 ms a vypadalo to jako horší regrese, než jaká byla.
 
 **Browser panel kliká podle jiného souřadnicového rámce, než jaký má stránka**
 (screenshot 800×450 vs. viewport 1280×720) — `computer left_click` pak minie
