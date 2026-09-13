@@ -191,6 +191,14 @@ src/
   totožný s jejich původní smyčkou, takže se jejich otisk nehnul. To je zároveň
   důkaz, že převod na `ruzneUlohy()` nic nepřepsal. `taskCount` u dotčených
   témat stoupl (např. hustota 49 → 71), protože dedup pokryje celou banku.
+- ✅ **Téma `Pohyb částic, difúze, Brownův pohyb` prověřeno a srovnáno.**
+  Vzniklo na druhém PC paralelně s touhle opravou, takže bylo potřeba ověřit,
+  jestli nemá tutéž vadu. **Nemá** — 24 / 12 / 12 unikátních, deterministicky
+  (`min = max` při 300 bězích), 0 nabídek pod čtyři možnosti. Dedup si autor
+  napsal správně, jen ručně; převedeno na `ruzneUlohy()`, aby fyzika šestky
+  měla jeden vzor a vada se neměla kam vrátit kopií. **Zámek obsahu po převodu
+  prošel beze změny** — důkaz, že helper je funkčně totožný s původní smyčkou.
+  Fyzika je tím 10/13, všech deset témat na helperu.
 - ℹ️ **Nález mimo šestku, k posouzení zvlášť:** stejná sonda hlásí 23 dvojic
   téma × úroveň v nižších ročnících s nabídkou pod čtyři možnosti. **Devět jsou
   legitimní `true_false`** a většina zbytku je přirozeně uzavřená množina

@@ -75,6 +75,11 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   napříč všemi 27 dvojicemi fyziky šestky. Zámek obsahu přegenerován, diff je
   přesně 6 témat (12 řádků) — `mereniCasu`, `skupenstviLatek` a `atomyMolekuly`
   se nehnuly, což dokládá, že převod na helper nic nepřepsal.
+- ✅ **`Pohyb částic` (14. 9., vzniklo paralelně na druhém PC) prověřeno —
+  tutéž vadu nemá.** 24 / 12 / 12 unikátních deterministicky, 0 nabídek pod
+  čtyři možnosti. Převedeno na `ruzneUlohy()` kvůli jednotnému vzoru; zámek
+  obsahu po převodu prošel beze změny. Všech deset témat fyziky šestky je teď
+  na jednom helperu.
 - ⏳ **K posouzení zvlášť:** táž sonda hlásí **23 dvojic téma × úroveň v nižších
   ročnících** s nabídkou pod čtyři možnosti. **Devět jsou legitimní `true_false`**
   a většina zbytku je přirozeně uzavřená množina (`> < =`, tři druhy
