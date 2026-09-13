@@ -1,13 +1,12 @@
-# Předání práce — stav k 2026-09-12
+# Předání práce — stav k 2026-09-13
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >
-> **Fáze:** od září se dělá **příprava spuštění** (právní stránky, mazání
-> účtu, mobilní obal, bezpečnost) — ta stojí na čtyřech rozhodnutích
-> uživatele, viz §2. Session 38–39 (11.–12. 9.) se ale vrátily k obsahu,
-> protože inventura našla 87 témat k opravě. **Ten průchod je z 86 %
-> hotový a chybí u něj poslední tři kontroly — začni tím, viz §1.**
+> **Fáze: příprava spuštění** — právní stránky, mobilní obal, bezpečnost,
+> formuláře obchodů. **Obsah je hotový a uzavřený** (opravný průchod 87 témat
+> dojel 12. 9., viz §1). Postup práce nejde dál sám od sebe: stojí na šesti
+> rozhodnutích a úkonech, které může udělat jen Evžen — **§2**.
 
 ---
 
@@ -19,245 +18,127 @@ Ověř si to `git fetch`em, ne pamětí:
 git fetch origin && git status -sb && git worktree list
 ```
 
-**Pracovní větev je `main`.** K 2026-09-11 je všechno pushnuté — `origin/main`
-je na commitu s tímhle předáním. Session 37 pracovala ve worktree
-`session-handoff-docs-2dfc1f` na větvi `claude/pokracujeme-52f713`, která
-sleduje `main`; pushovalo se přes `git push origin HEAD:main`.
+**Pracovní větev je `main`.** K 13. 9. je všechno pushnuté, `origin/main` je na
+`b2c9dee`, pracovní strom čistý, **worktree je jediný** (hlavní repo).
+Lokální větve tři: `main`, `chore/remove-essay-and-ai-authoring`,
+`claude/cranky-shirley`.
 
-**`push do main = nasazeno na produkci`** (Vercel, ověř
-`gh api repos/Evzen652/Oli/commits/<sha>/status`).
+**`push do main = nasazeno na produkci`** (Vercel). Ověřit to odsud nejde —
+`gh` v tomhle prostředí není přihlášený, takže
+`gh api repos/Evzen652/Oli/commits/<sha>/status` neprojde bez `gh auth login`.
+Po každém pushi to uživateli řekni, neprodávej push jako ověřené nasazení.
 
-### ⚠️ Worktree: 22 jich patří k opravám obsahu
+### Větve na originu, které se neuklidily
 
-`git worktree list` ukáže 23 položek. Kromě hlavního repa je to
-**22 worktree `.claude/worktrees/wf_84b89ce1-8c0-*`** — jeden na každou dávku
-oprav obsahu, každý má checkoutnutou svou větev `content-fix/<dávka>`.
-Nejsou locked a `node_modules` junction v nich funguje. U 19 dávek je práce
-hotová a sloučená, takže ty worktree už jsou k ničemu; potřebné jsou jen
-`8c0-20`, `8c0-21` a `8c0-22` (viz §1). Až se sloučí i ty, můžeš celou sadu
-uklidit `git worktree remove --force` + `git branch -D`.
+`git branch -r` jich ukáže 50. Z toho:
 
-> Starší verze tohohle souboru tu varovala před worktree
-> `competent-johnson-de23e8` se zastaralým remote. **Ten už v repu není** —
-> ověřeno 12. 9. přes `git worktree list`.
+- **22 × `origin/content-fix/*`** — dávky oprav obsahu. Obsahově ověřeno, že
+  práce každé z nich je v `main` (viz postup níž); lokální kopie smazané.
+- **11 × `origin/wip/content-fix/*`** — pojistky rozdělané práce, devět z nich
+  nese obsah lišící se od `main` (překonané mezistavy, ne ztracená práce).
+- zbytek jsou starší funkční větve (`feat/*`, `fix/*`, `docs/*`).
 
-### Worktree, ve kterých nepracuj
+Mazání na sdíleném originu je nevratné, takže **čeká na rozhodnutí uživatele**.
+Nepoužívej je jako zdroj — aktuální je `main`.
 
-`git worktree list` jich ukáže víc. Většina sedí na starých commitech. Než
-v některém začneš, přepni ho na `main` a udělej `git pull` — jinak píšeš
-proti kódu, který už neexistuje.
+⚠️ **Squash merge nezaznamená větev jako sloučenou.** `git log main..<větev>`
+u ní ukáže commity, i když jejich obsah v `main` je (squash má jiný SHA
+a žádného rodiče z větve), a `git branch --merged` ji taky nevypíše. Ověřuj
+obsahově, jen soubory, na které větev sama sáhla:
+
+```bash
+mb=$(git merge-base main $b); files=$(git diff --name-only $mb $b)
+git diff main $b -- $files      # prázdné = práce větve je v main
+```
+
+Prostý `git diff main $b -- src/content/` **nestačí** a je zavádějící: ukáže
+hlavně to, co má `main` navíc z ostatních dávek, takže každá větev vypadá
+jako nesloučená. Tohle už jednou stálo hodinu.
 
 ---
 
 ## 1. Kde jsme skončili
 
-### Session 37 (2026-09-10/11) — audit obsahu, 5. a 6. ročník otevřené
+### ▶▶ ZAČNI TADY: příprava spuštění
+
+Obsah ani kód teď nejsou úzké hrdlo. Blokuje **šest úkonů, které Claude udělat
+nemůže** (§2) a k nim tři technické věci, které na ně navazují:
+
+| co | stav | kde |
+|---|---|---|
+| Redirect URLs v Supabase | ⛔ na uživateli | §2 bod 3 |
+| Spouštěč úklidu anonymních dat | ⛔ na uživateli | §2 bod 4 |
+| Hluboké odkazy (App Links / Universal Links) | blokuje podpisový klíč | §4 |
+
+### Session 41 (2026-09-13) — soukromí a mobilní odkazy
 
 | commit | co |
 |---|---|
-| `3abac35` | audit 4. ročníku, 5. a 6. ročník připravené ke zveřejnění |
-| `b156da7` | rodičovská brána počítá procenta, `ACTIVE_GRADES = [2, 3, 4, 5, 6]` |
-| `226fce9` | hlavička cvičení psala „Dejepis" (slug místo popisku) |
-| `eda02e9` | `select_one` porovnává přesně včetně velikosti písmen (`option_exact`) |
-| poslední | 3. ročník: offline audit obsahu **72 → 0 nálezů** + toto předání |
+| `39b4ecc` | odchody z dětské části za rodičovskou bránu + tři drobnosti před vydáním |
+| `08707af` | zásady soukromí srovnány s tím, co kód opravdu dělá |
+| `b2c9dee` | odkaz z e-mailu vedl v mobilu na `localhost` |
 
-**Stav obsahu:** `npm run audit:content` hlásí **0 problémů** (229 témat,
-~11 950 úloh), všech 4 717 testů prochází, zámek obsahu
-(`frozen-content.snapshot.json`) přegenerován pro ročníky 2–6.
+**Zásady soukromí** měly osm míst, kde text mlčel o skutečném zpracování
+(odpovědi dítěte, PIN, poznámka rodiče, e-mail z anonymního režimu, hosting
+mezi příjemci, lhůty). Opravou prošly i dvě věci, které text sliboval a kód
+nedělal: jméno dítěte zmizelo z promptu pro týdenní shrnutí
+(`weekly-report/index.ts`) a mazání účtu maže i pozvánku z anonymního režimu
+(`delete-account/index.ts` — ta má `child_id = NULL`, takže dřív zůstávala
+ležet i s e-mailem).
 
-**Na produkci ověřeno v prohlížeči:** ročníky 5 a 6 jdou vybrat, brána
-chce „X % z Y", sezení 5. i 6. ročníku projde, hlavička píše „Dějepis",
-„praha" už se u velkých písmen nehodnotí jako správně.
+**Reset hesla a potvrzení registrace z mobilu** vedly do prázdna: obě stránky
+stavěly `redirectTo` na `window.location.origin`, což je v obalu
+`https://localhost` (původ WebView, ne adresa na internetu). Nově adresu skládá
+`adresaProOdkazZEmailu()` v `src/lib/native.ts` — na webu původ aktuální
+stránky, v obalu natvrdo `https://oli-edu.com`. Ověřeno reálným voláním
+(`recover?redirect_to=http%3A%2F%2Flocalhost%3A8081%2Freset-password`), hlídá
+`src/test/email-redirect.test.ts`.
 
-**Ve 3. ročníku přepsáno** (každé téma 3 oddělené banky, ≥ 13 úloh na úroveň,
-vlastní nápovědy + zpětná vazba u chybných možností):
-- 9 slohových témat + vyhledávání informací;
-- slovní druhy, podstatná jména, synonyma, kořen slova, vyjmenovaná
-  a příbuzná slova (doplňuje se jen grafém y/ý/i/í — `grade-3/_iy.ts`);
-- matematika: převody délky, převody hmotnosti/objemu/času, malá násobilka,
-  ×10/×100 a dělení se zbytkem.
+⚠️ **Bez kroku v Supabase to nedojede** — viz §2 bod 3.
 
-Sdílení pomocníci `grade-3/_shared.ts` (`choice`, `urcovaci`, `shuffle`).
+### Session 40 (2026-09-11/12) — opravný průchod obsahu, uzavřeno
 
-### ▶▶ ZAČNI TADY: opravy obsahu, zbývají tři kontroly (12. 9.)
+Inventura našla 87 témat k opravě, rozdělených do 22 dávek; každá měla autora
+a **nezávislého kritika**. Všech 22 je sloučených do `main` a na produkci
+(`origin/main` bylo na `1580cff`). Zámek obsahu přegenerován v `c619cb3`.
 
-**Kde to stojí:** inventura našla 87 témat k opravě, rozdělených do 22 dávek.
-Každá dávka = autor napíše/opraví, pak ji projde **nezávislý kritik**.
+**Brány po sloučení:** 4 745 testů, `check:keys` 4 700 klíčů / 0 neshod,
+`check:keys:tables` 471 / 0, `audit:agreement` 38 583 úloh bez nálezu,
+`audit:content` čistý (**ověřeno osmi běhy po sobě** — audit vzorkuje losovaný
+obsah, takže jeden běh nic nedokazuje), `audit:ui` bez nového nálezu, `build` ✓.
 
-| stav | dávek | témat |
-|---|---|---|
-| ✅ autor i kritik, **sloučeno do `main`** | 22 | 87 |
+Co ten průchod naučil a co platí dál:
 
-**Opravný průchod je hotový.** Všech 22 dávek má autora i nezávislého kritika
-a všechno je sloučené do `main`. Poslední tři dávky (12. 9., squash commity):
+- **Nález strojové kontroly nejdřív ručně přepočítej.** Šest z prvních nálezů
+  byla chyba kontroly, ne obsahu. Falešná „oprava" správného obsahu je horší
+  než nález nechat ležet.
+- **`check-hint-leak.ts` nevidí `match_pairs`, `categorize` ani `drag_order`** —
+  porovnává nápovědu s `correctAnswer`, a ten je u těch typů jen řetězec
+  „match" / „categorize" / „order". Skutečné řešení je v `pairs` / `categories`
+  / `items`. Tudy proklouzla nápověda, která rozebrala dvě dvojice ze tří.
+- **U geometrie a pojmových témat `check-keys*` nic neověří** — hlásí
+  „nepokryto vzorem“. `PASS` z nich tedy není důkaz; kritik musel napsat
+  vlastní přepočet klíče ze znění zadání.
+- **Tiché mizení úloh:** duplicitní distraktor způsobí, že `ciselnaUloha` vrátí
+  `null` a úloha zmizí, aniž to kdokoli pozná.
 
-| dávka | commit autora | kritik | squash v `main` |
-|---|---|---|---|
-| `g5mat-a` | `6363b28` | `28b5be6` | `7c62066` |
-| `g5mat-b` | `46fc9e8` | `9068e1d` | `c908b90` |
-| `g4-6-mix` | `59f79ab` | `d50de2d` | `65a666f` |
-
-Zámek obsahu přegenerován v `c619cb3` (sedm témat změnilo zadání nebo klíč).
-
-✅ **Pushnuto na produkci 12. 9.** — `origin/main` je na `1580cff`.
-Nasazení samo ověřené není: `gh` tu není přihlášený, takže
-`gh api repos/Evzen652/Oli/commits/<sha>/status` neprojde bez `gh auth login`.
-
-✅ **Uklizeno 12. 9.** — 22 worktree `wf_84b89ce1-8c0-*` odstraněno, smazány
-větve `content-fix/*` (22) i pomocné `worktree-wf_*` (22). Zbývá **jeden**
-worktree (hlavní repo) a tři větve: `main`, `chore/remove-essay-and-ai-authoring`,
-`claude/cranky-shirley`.
-
-⚠️ **Squash merge nezaznamená větev jako sloučenou** — `git log main..<větev>`
-u ní ukáže commity, i když jejich obsah v `main` je (squash má jiný SHA
-a žádného rodiče z větve). `git branch --merged` ji proto taky nevypíše.
-Ověřuj obsahově, ne podle commitů:
-```bash
-mb=$(git merge-base main $b); files=$(git diff --name-only $mb $b)
-git diff main $b -- $files      # prázdné = práce větve je v main
-```
-Prostý `git diff main $b -- src/content/` **nestačí** a je zavádějící: ukáže
-hlavně to, co má `main` navíc z ostatních dávek, takže každá větev vypadá
-jako nesloučená.
-
-📌 **`origin/wip/content-fix/*` (11 větví) zůstaly.** Devět z nich nese obsah
-lišící se od `main` — jsou to překonané mezistavy z doby před finálními
-commity autora a kritika, ne ztracená práce. Mazat je nikdo neověřil do
-hloubky a je to nevratné na sdíleném originu, takže to čeká na rozhodnutí.
-
-⚠️ **Větve dávek sáhly jen na své obsahové soubory.** `git diff main` v nich
-ukazuje i dokumentaci a skripty, ale to je pohyb `main` od merge-base, ne
-změna větve — `git merge --squash` proto nic v dokumentaci nepřepíše.
-Ověřuj to `git diff $(git merge-base main HEAD) HEAD --stat`, ne `git diff main`.
-
-Větve `origin/wip/content-fix/*` jsou tím **překonané** — byly to pojistky
-rozdělané práce, dnes je všechno v commitech. Nepoužívej je.
-
-#### Postup jedné kontroly (ověřený, ~15–20 min na dávku o 3 tématech)
-
-1. `cd` do worktree dávky. Worktree existují, nejsou locked a `node_modules`
-   junction v nich funguje.
-2. **Nejdřív strojové kontroly, ať nečteš to, co spočítá skript.** Pusť je
-   rovnou z větve s `IDS=<témata dávky>`:
-   ```
-   IDS=<témata> npx vite-node scripts/check-keys-arith.ts
-   IDS=<témata> npx vite-node scripts/check-keys-tables.ts
-   IDS=<témata> npx vite-node scripts/lint-agreement.ts
-   IDS=<témata> npx vite-node scripts/check-hint-leak.ts
-   ```
-   ⚠️ **Nekopíruj je z `main`.** Dřívější znění tvrdilo, že ve větvi nejsou —
-   **jsou tam a jsou s `main` shodné** (ověřeno 12. 9. na `g5mat-a`). Kdo je
-   zkopíruje, smaže při úklidu skutečné soubory větve; vrací je
-   `git checkout -- scripts/… src/lib/czechAgreementLint.ts`.
-
-   ⚠️ **U geometrie a pojmových témat tyhle skripty nic neověří** — hlásí
-   „nepokryto vzorem" u všech úloh, protože neumí jejich tvar zadání.
-   `PASS` z nich tedy není důkaz. U `g5mat-a` musel kritik napsat vlastní
-   přepočet klíče ze znění zadání (parser + vlastní tabulky os) — teprve ten
-   ověřil 6 974 úloh.
-
-   ⚠️ **`check-hint-leak.ts` nevidí `match_pairs`, `categorize` ani
-   `drag_order`.** Porovnává nápovědu s `correctAnswer`, a ten je u těch typů
-   jen řetězec „match" / „categorize" / „order" — skutečné řešení je v
-   `pairs` / `categories` / `items`. U `g4-6-mix` tak proklouzla nápověda,
-   která rozebrala dvě dvojice ze tří a třetí nechala vyjít vylučováním.
-   U těchhle typů si napiš vlastní kontrolu: *kolik dvojic/položek nápověda
-   rozebere?* Jedna je záměr (ukázková úvaha), dvě a víc řeší úlohu.
-3. Co skript nepokryje, vyřeš sám a porovnej s klíčem. Šablonovaná zpětná
-   vazba: kontroluj, že čísla v ní sedí ke konkrétní úloze — tam se chyby
-   schovávají.
-4. `node scripts/audit-topic.mjs <id>`, `IDS=<id> npx vite-node scripts/docs-check.ts`,
-   `npm run typecheck`. Celý `npm test` ve worktree nespouštěj.
-5. Commit `fix(content): kontrola …` do `content-fix/<dávka>` + push té větve.
-   **Když kritik nic nenajde, udělej prázdný commit** `--allow-empty` se stejným
-   prefixem — jinak `git log` nerozliší „proběhlo bez nálezu" od „neproběhlo".
-
-⚠️ **Nález strojové kontroly nejdřív ručně přepočítej.** 12. 9. bylo šest
-z prvních nálezů chybou kontroly, ne obsahu (koncovka -ek jako genitiv,
-„4 jen", přivlastňovací „nohy 4 kachen", trojčlenný výraz, oddělovač tisíců,
-štítek „Na kole"). Falešná „oprava" správného obsahu je horší než nález
-nechat ležet.
-
-#### Co mají kritici u těchhle tří dávek ověřit přednostně
-
-Autoři sami hlásí, co opravili — kritik to má potvrdit nezávisle:
-- `g5mat-b`: ✅ **ověřeno 12. 9.** — u řady se střídavými kroky
-  (`8, 13, 10, 15, 12, 17, ?`) byl **klíč 22 místo 14** a správná odpověď se
-  nabízela jako distraktor. Po opravě vychází 14 a 22 je distraktor.
-  **Tahle chyba je pořád na `main`, tedy v produkci**, dokud se dávka nesloučí.
-  Kritik našel navíc pět ručně psaných tvarů po číslovce, dvě vadné vazby
-  a nejednoznačné zadání „Kolik pravých úhlů má lichoběžník?" — detail
-  v `PROJECT_STATUS.md` §6, session 40.
-- `g5mat-a`: ✅ **ověřeno 12. 9.** — tři z pěti převodů jednotek obsahu na
-  větší jednotku se opravdu negenerovaly (duplicitní distraktor →
-  `ciselnaUloha` vracela `null`) a po opravě se generuje všech pět. Kritik
-  našel navíc tři chyby v textech kolem klíče (tvar „3 řad", zpětná vazba
-  u „4 osy" si odporovala u H/I/O/X, nepravdivé zobecnění o trojúhelnících) —
-  detail v `PROJECT_STATUS.md` §6, session 40.
-- `g4-6-mix`: ✅ **ověřeno 12. 9.** — klíč „bouřka" v zadání doslova nestojí
-  („prudký déšť s hromy a blesky") a nápovědy u diagramů nesou všechny řádky.
-  Kritik našel navíc **nápovědu, která řešila celou úlohu** (u párování
-  evropských států rozebrala dvě dvojice ze tří), rozptylovač neodpovídající
-  chybě, kterou popisuje, klíč uhodnutelný podle délky, dva popisy tématu
-  slibující látku, která v úlohách není, jeden vymyšlený význam a index, kvůli
-  kterému se polovina banky nikdy nestala klíčem — detail
-  v `PROJECT_STATUS.md` §6, session 40b.
-
-#### Slučování do `main` (inline, ne agent)
-
-```
-git merge --squash content-fix/<dávka>   # pro každou ze tří
-UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts
-npm test && npm run audit:content && npm run check:keys && npm run check:keys:tables
-REPEATS=12 npm run audit:agreement && npm run audit:ui && npm run build
-```
-
-⚠️ **Past:** `frozen_content_unchanged` spadne, dokud se snapshot
-nepřegeneruje — zadání nebo klíč se mění u
-`konstrukceTrojuhelnikuKolmiceRovnobezky` (+5 úloh),
-`scitaniAOdcitaniDesetinnychCisel` („6,0" místo „6"),
-`ulohyNezavisleNaBeznychPostupech…` (opravený klíč) a po `g4-6-mix` ještě
-u `slovaJednoznacnaMnohoznacnaVicevyznamova` (L1 16 → 24 úloh),
-`periodizaceLetopocet` (jiný rozptylovač) a
-`evropskeStatyAEuSousedniZemeCrPodrobne` (kratší velká nápověda).
-
-Push do `main` = nasazení na produkci, tedy až po shrnutí uživateli.
-
-#### ✅ `audit:content` už nehlásí nic
-
-Audit vzorkuje losovaný obsah, takže vady vyplavou jen v části běhů (zhruba
-1 ze 4–10) — **jeden běh proto není důkaz, pouštěj ho ve smyčce.** Poslední
-zbývající nález (u nákupní úlohy `scitaniAOdcitaniDesetinnychCisel` se správná
-odpověď náhodou shodovala s jednou z cen v zadání) opravila `g5mat-b`.
-Po sloučení ověřeno osmi běhy po sobě — čisté.
-
-Druhý nález téhož druhu (`g4-mat-cisla-do-milionu-4` měl u čtení čísel jen
-tři možnosti, protože slovní klíč nemá číselnou pojistku na doplnění
-distraktorů) je už opravený přímo na `main`.
-
-**Jak takový nález chytit:** pusť audit ve smyčce a zastav se na prvním,
-který má `Problémů > 0` — jednotlivý běh nic neukáže.
-
-### Kontroly obsahu, které od 12. 9. existují
+### Kontroly obsahu, které existují
 
 | příkaz | co dělá | v CI |
 |---|---|---|
-| `npm run audit:content` | offline audit struktury (a nově shoda přísudku ve VŠECH textových polích úlohy) | ano |
+| `npm run audit:content` | offline audit struktury + shoda přísudku ve všech textových polích úlohy | ano |
 | `npm run audit:agreement` | shoda přísudku s číslovkou nad všemi tématy, `REPEATS=30` ≈ 78 000 úloh | ano |
 | `npm run check:keys` | **přepočítá klíč z textu zadání**, nepřebírá ho z generátoru (matematika) | ano |
-| `npm run check:keys:tables` | totéž pro tabulky, jízdní řády a diagramy (měřítko kroužku, zpoždění spoje) | ano |
-| `npm run check:hints` | nápověda, která prozrazuje odpověď **obsahem**, ne slovem | ne — je měkká |
-| `npm run check:length` | klíč nápadně delší než distraktory (dá se tipovat podle délky) | ne — report |
+| `npm run check:keys:tables` | totéž pro tabulky, jízdní řády a diagramy | ano |
+| `npm run check:hints` | nápověda prozrazující odpověď **obsahem**, ne slovem | ne — měkká |
+| `npm run check:length` | klíč nápadně delší než distraktory (dá se tipovat) | ne — report |
+| `npm run audit:ui` | prvek slibuje něco, co nedělá | ano, s baseline |
 
-`check:hints` a `check:length` schválně nic neblokují: nález u nich není
-důkaz chyby a CI by padalo na legitimním obsahu.
+`check:hints` a `check:length` schválně neblokují: nález u nich není důkaz
+chyby a CI by padalo na legitimním obsahu.
 
-### Session 2026-09-09/10 — appka poprvé celá venku
-
-Vercel napojen na GitHub (`d9e61b5`), nasazeny migrace, secret
-`PAIRING_HASH_SALT`, čtyři edge funkce. Dětská cesta bez registrace
-proklikaná na produkci. Degradace při rozbité AI je poctivá (dítě vidí
-lokálně složenou větu, ne chybu). Detail v historii tohoto souboru.
+Po každé změně obsahu:
+`UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`.
 
 ---
 
@@ -271,13 +152,30 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
    **Claude to udělat nesmí** (zakládat účty a zadávat hesla je zakázané).
 2. ⛔ **Opravit oba AI klíče.** `GROQ_API_KEY` nemá přístup k modelu
    (`404 model_not_found`), `GEMINI_API_KEY` vrací „Please pass a valid API
-   key". Spuštění to neblokuje, ale slovní hodnocení a týdenní zpráva bez toho nejsou.
-3. **Potvrdit `appId`** `com.oliedu.app` v `capacitor.config.ts` — po prvním
+   key". Spuštění to neblokuje, ale slovní hodnocení a týdenní zpráva bez toho
+   nejsou.
+3. ⛔ **Doplnit Redirect URLs v Supabase** — Authentication → URL Configuration
+   → Redirect URLs musí obsahovat `https://oli-edu.com`
+   i `https://oli-edu.com/reset-password`. Co tam není, Supabase zahodí
+   a přesměruje na Site URL **bez jediné chybové hlášky**. Bez tohohle kroku
+   je oprava z `b2c9dee` jen poloviční.
+4. ⛔ **Naplánovat úklid anonymních dat.** Zásady soukromí slibují smazání
+   serverové kopie po **44 dnech** bez aktivity, ale `action: "cleanup"`
+   v `supabase/functions/anon-progress/index.ts` **nikdo nevolá** — žádný cron
+   v `.github/workflows/`, žádný `cron.schedule` v migracích. `pg_cron` je
+   v migracích povolený, takže jde o jedno naplánování. Ověř
+   `select * from cron.job` v dashboardu.
+5. ⛔ **Právní kontrola zásad soukromí.** Text je srovnaný s kódem — to je
+   technická práce. Jestli formulace obstojí právně, Claude neposoudí,
+   a u služby pro děti to není formalita. Sem patří i ověření, že se všemi
+   šesti příjemci (`PRIJEMCI` v `src/content/legal.ts`) existuje zpracovatelská
+   smlouva, protože to stránka tvrdí.
+6. ⛔ **Podpisový klíč pro Android**, ověření domény pro App Links / Universal
+   Links, formuláře o datech v obou obchodech (Data Safety / Privacy Nutrition
+   Labels). Bez SHA-256 otisku klíče nejde `assetlinks.json` napsat.
+7. **Potvrdit `appId`** `com.oliedu.app` v `capacitor.config.ts` — po prvním
    vydání je **nevratný**.
-4. **Apple Kids Category, nebo smíšené publikum.**
-5. **Právní kontrola zásad soukromí.**
-6. **Podpisový klíč pro Android**, ověření domény pro App Links / Universal
-   Links, formuláře o datech v obou obchodech.
+8. **Apple Kids Category, nebo smíšené publikum.**
 
 ---
 
@@ -285,7 +183,8 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
 
 Všech šest edge funkcí vrací 200 (sonda 10. 9.), obě migrace proběhly ručně
 v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
-**Neověřené:** že po skutečném smazání účtu nezbude řádek v žádné ze 13 tabulek.
+**Neověřené:** že po skutečném smazání účtu nezbude řádek v žádné ze 13 tabulek
+(patří k §2 bodu 1).
 
 > **Ověřuj sondou, ne čtením** — tenhle soubor nevyjímaje.
 
@@ -293,101 +192,127 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
 
 ## 4. Otevřené pro další session
 
-### 🟠 Zbytky obsahu — co zůstává i po opravném průchodu
+### 🔴 Kořen úniku v nápovědě — 17 témat 5. ročníku
 
-Tohle **není** seznam z inventury (ten je z 86 % vyřízený, viz §1), ale věci,
-na které kritici narazili a nechali je k rozhodnutí:
+`doplnVelkou` v `src/content/grade-5/_shared.ts` (řádek ~189, stejný vzor
+na 159 v `chronologie` a 218 v `trideni`) dorovnává velkou nápovědu tak, že si
+bere `proc` **dalších** dvojic a teprve pak sahá po obecných strategiích.
+U tříprvkové úlohy tak nápověda rozebere dvě dvojice a třetí vyjde
+vylučováním — nápověda úlohu vyřeší.
+
+Opraveno zatím **jen lokálně v dávce `g4-6-mix`** (obal `odlisSadu`
+v `evropskeStatyAEuSousedniZemeCrPodrobne.ts`). Kořen se týká **17 témat
+5. ročníku, z toho 16 zamrazených v produkci** — proto čeká na rozhodnutí:
+oprava změní zadání, takže se musí přegenerovat zámek obsahu.
+`check-hint-leak` to konstrukčně nevidí (viz §1).
+
+### 🟠 Mobilní vydání — co zbývá
+
+- **Hluboké odkazy nejsou zapojené vůbec:** `public/.well-known/` neexistuje,
+  `AndroidManifest.xml` má jen `MAIN`/`LAUNCHER` (žádný `VIEW`/`BROWSABLE`,
+  žádné `autoVerify`), iOS nemá `.entitlements`. Aplikační strana
+  (`src/lib/native.ts`, `nastavHlubokeOdkazy`) je hotová. Blokuje podpisový
+  klíč (§2 bod 6). Do té doby se odkaz z e-mailu otevře v prohlížeči — heslo
+  si uživatel změní tam a do aplikace se přihlásí novým. Funkční, ne hezké.
+- **`cap sync` nikdy neproběhl** (chybí `android/app/src/main/assets/`).
+  `.gitignore` na jeho výstup je doplněný (`39b4ecc`), takže první sync
+  nezanese repo.
+- **Podklad pro Data Safety / Privacy Nutrition Labels neexistuje.** Nejblíž je
+  `PRIJEMCI` v `legal.ts` a `Privacy.tsx`, ale ani jedno není namapované na
+  kategorie formulářů.
+
+### 🟠 Dětská kategorie — zbytky k rozhodnutí
+
+Odchody z dětské části jsou za rodičovskou bránou (`39b4ecc`). Zbývá:
+
+- **Google Fonts na každé dětské obrazovce** (`index.html:16-18`) — jediné
+  odchozí volání bez funkční nutnosti, řešitelné self-hostingem písma.
+- **`FEATURES.studentChat`** (`src/lib/features.ts:27`) je `false`, ale dokud
+  zásady tvrdí, že text dítěte ven nejde, měl by ten flag **zmizet úplně**.
+  Přepnout ho jde z konzole přes `localStorage`.
+- **`/report` zůstalo v dětské větvi routeru** (`src/App.tsx:135`) — odkaz je
+  skrytý, route živá.
+- **Dětský e-mail se odvozuje z párovacího kódu** (`child_<kód>@app.internal`).
+
+### 🟠 Zbytky obsahu
+
+Věci, na které kritici narazili a nechali je k rozhodnutí:
 
 - **`crSymboly` L3 je z poloviny počítání letopočtů** — 6 ze 13 úloh je
-  odčítání čtyřciferných čísel (1993 − 1415 = 578). Věcně správné, ale
-  číselný obor 3. ročníku je do 1000 a nápověda učí písemné odčítání, což je
-  učivo 4. ročníku.
-- **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy). Žák může tipovat
-  podle délky. Změř to `npm run check:length`.
-- **Výčtové úlohy** („Které z čísel … je největší?", „Najdi sloveso ve větě")
-  mají klíč ve znění z podstaty — brána i `docs-check` je berou jako výjimku
-  a je to správně.
-- **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá
-  klíč v nápovědě prostým `includes` bez výjimky pro „rejstřík možností",
-  kterou `supabase/functions/_shared/hintLeakage.ts` má; a `normalize()`
-  v `hintLeakage` odstraňuje `„`, ale ne `“`. Autoři to museli obcházet
-  v obsahu — patří to opravit v kontrolách.
-- **`parovani` v `src/content/grade-5/_shared.ts`** skládá velkou nápovědu tak,
-  že končí utrženou větou o jiné dvojici („…doplň vylučováním. V Římě stojí
-  Koloseum…"). Týká se všech témat, která helper používají.
-- **Tiché mizení úloh:** duplicitní distraktor způsobí, že `ciselnaUloha`
-  vrátí `null` a úloha zmizí, aniž to kdokoli pozná (stalo se u tří z pěti
-  převodů jednotek obsahu). Stálo by za kontrolu „generátor vrátil míň úloh,
-  než kolik má v poolech" — co nevznikne, žádný audit nezkontroluje.
+  odčítání čtyřciferných čísel (1993 − 1415 = 578). Věcně správné, ale číselný
+  obor 3. ročníku je do 1000 a nápověda učí písemné odčítání (učivo 4. ročníku).
+- **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy) — dá se tipovat podle
+  délky. Změř `npm run check:length`.
+- **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá klíč
+  v nápovědě prostým `includes` bez výjimky pro „rejstřík možností", kterou
+  `supabase/functions/_shared/hintLeakage.ts` má; a `normalize()` v `hintLeakage`
+  odstraňuje `„`, ale ne `“`. Autoři to obcházeli v obsahu — patří opravit
+  v kontrolách.
+- **`parovani`** (`grade-5/_shared.ts`) končí velkou nápovědu utrženou větou
+  o jiné dvojici („…doplň vylučováním. V Římě stojí Koloseum…"). Týká se všech
+  témat, která helper používají — souvisí s kořenem výš.
+- **Chybějící kontrola „generátor vrátil míň úloh, než má v poolech"** — co
+  nevznikne, žádný audit nezkontroluje.
+- **`czechAgreementLint` hlásí planý poplach u jmenné části přísudku** —
+  „0,3 m **je** 3 desetiny metru" chce opravit na „jsou". Patří do sekce
+  „nesmí hlásit" v `czech-agreement-lint.test.ts`.
 
 ### 🟠 Sliby vs. obsah
+
 Titulek a Open Graph slibují „1. stupeň ZŠ" (1.–5. ročník). Otevřené jsou
-**2.–6.**, chybí 1. ročník. 6. ročník má zatím jen fyziku a dějepis.
+**2.–6.**, chybí 1. ročník; 6. ročník má zatím jen fyziku a dějepis.
 Otevření 7. ročníku by oslabilo rodičovskou bránu — hlídá `parent-gate.test.ts`.
 
-### 🟠 Dvě češtinové karty mají tentýž obrázek
-„Příbuzná vyjmenovaná" i „Pravidla rozhovoru" (3. ročník) mají stejnou
-ilustraci ABC. Projít mapování napříč předměty, ne opravit jen tyhle dvě.
+### 🟠 Drobnější
 
-### 🟠 Dopsat ověření serverové kopie anonymního pokroku
-Zásady soukromí slibují serverovou kopii; `serverRecordTask` v
-`anonProgress.ts` existuje, ale že se zápis provede, ověřené není.
-
-### 🟠 Rozcestník — podklad karet, pak teprve kresby
-Levandulová je náš předmětový tint `bg-[#E3EDFD]`, který podle
-`subjectRegistry.ts` nemá být pozadím celé karty (v `TopicBrowser` zabírá 72 %).
-
-### 🟠 Rozhodnutí uživatele
-- Kontrast primární barvy: bílá na `#F97316` má 2,79 : 1 (WCAG AA 4,5 : 1).
-- Pohár ve shrnutí se zobrazí i při 1/6 — odstupňovat?
-- Dětský e-mail se odvozuje z párovacího kódu (`child_<kód>@app.internal`).
-- Váha buildu 23,6 MB (18,5 MB obrázků; **na landing obrázky nesahat bez pokynu**).
-- Admin veze ~3 000 řádků vypnuté AI větve.
+- **`src/integrations/supabase/types.ts` je zastaralý** (přegenerovaný
+  25. 8.). Přegeneruj, ne edituj — příkaz je v `CLAUDE.md`. Očekávej nové
+  nullability chyby.
+- **Dopsat ověření serverové kopie anonymního pokroku** — `serverRecordTask`
+  v `anonProgress.ts` existuje, ale že se zápis provede, ověřené není.
+- **Dvě češtinové karty mají tentýž obrázek** („Příbuzná vyjmenovaná"
+  a „Pravidla rozhovoru", 3. ročník). Projít mapování napříč předměty.
+- **Rozcestník:** levandulová `bg-[#E3EDFD]` je předmětový tint, neměla by být
+  pozadím celé karty (v `TopicBrowser` zabírá 72 %).
+- **Kontrast primární barvy:** bílá na `#F97316` má 2,79 : 1 (WCAG AA 4,5 : 1).
+- **Pohár ve shrnutí** se zobrazí i při 1/6 — odstupňovat?
+- **Váha buildu 23,6 MB** (18,5 MB obrázků; **na landing obrázky nesahat bez
+  pokynu**).
+- **Admin veze ~3 000 řádků vypnuté AI větve.**
 
 ---
 
 ## 5. Pasti prostředí, které stály čas
 
-### Přibylo 2026-09-11 (obsah)
+### Přibylo 2026-09-13
 
-**Brána obsahu:** `node scripts/audit-topic.mjs <topicId>` (PASS/FAIL)
-a `npm run audit:content` (celý offline audit). Co detektory berou:
-- **Únik v nápovědě** = kterékoli slovo odpovědi o ≥ 4 znacích se objeví
-  v nápovědě **i jako část jiného slova** („lesní" v „lesník", „slov" ve „slova").
-- **Formát:** správná možnost nesmí být ≥ 2× delší než všechny distraktory;
-  distraktor nesmí být obsažen v klíči (i bez ohledu na velikost písmen,
-  „Rohlík!" v „…jeden rohlík."); šipky „→" a slovo „správně" v klíči
-  čte jako meta-text.
-- **Klíč ve znění otázky** je povolený jen s předponou `Text:` (úlohy
-  na porozumění textu).
-- **Úrovně** se počítají rozdílem (`getTierTasks`): L2 bere jen úlohy, které
-  nejsou v L1. Překrývající se výřezy jednoho seznamu dají na L3 skoro nic.
+**`git worktree remove --force` sleduje junction `node_modules`** a smaže obsah
+cíle — tedy `node_modules` **hlavního repa**. Stalo se to při úklidu 22 worktree;
+zdrojové soubory ani `package-lock.json` nedotčené, opravil `npm ci`. Než budeš
+odstraňovat worktree s junction, počítej s tím.
 
-**Soubory v repu mají smíšené konce řádků (CRLF i LF).** Náhrady skriptem
-nejdřív normalizuj na `\n`, pak vrať původní. Regexy se zpětnými lomítky
-nepiš přes bash heredoc s escapováním — Write toolem do `.cjs`.
-
-**Zámek obsahu po změně:**
-`UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`.
-
-### Přibylo 2026-09-10
-
-**Vercel: „already connected" neznamená připojeno** (`link.sourceless: true`,
-musí se nejdřív `git disconnect`). **Browser panel doručuje kliknutí
-nespolehlivě** — ověřuj stav přes DOM (`get_page_text`, `find`,
-`javascript_tool`); skrytý panel = viewport 0×0. U React inputů nastav
-hodnotu přes `HTMLInputElement.prototype` setter a pošli `input` event.
+**Browser panel kliká podle jiného souřadnicového rámce, než jaký má stránka**
+(screenshot 800×450 vs. viewport 1280×720) — `computer left_click` pak minie
+nebo hlásí „mimo viewport". Ověřuj a klikej přes DOM
+(`javascript_tool`, `find`, `get_page_text`).
 
 ### Ze starších session
 
-- **Bash tool je Git Bash** — `sed`, `grep`, `head` fungují; pro soubory
-  ale preferuj Read/Grep/Glob.
+- **Vercel: „already connected" neznamená připojeno** (`link.sourceless: true`,
+  nejdřív `git disconnect`).
+- U React inputů nastav hodnotu přes `HTMLInputElement.prototype` setter
+  a pošli `input` event — jinak React o změně neví.
+- **Vite si bere vlastní port** — ověř v `preview_logs`, ne podle konfigurace.
+- **Konzole v prohlížeči drží zastaralé chyby** — ověřuj po reloadu.
+- **Soubory v repu mají smíšené konce řádků (CRLF i LF).** Náhrady skriptem
+  nejdřív normalizuj na `\n`, pak vrať původní.
+- **Bash tool je Git Bash** — `sed`, `grep`, `head` fungují; pro soubory ale
+  preferuj Read/Grep/Glob.
 - **PowerShell rozbaluje jednoprvková vnořená pole** — po dávkové náhradě vždy
   `git diff --stat`.
 - **Commit message piš Write toolem a commituj přes `git commit -F`**, ne
-  `Out-File` (BOM v předmětu) ani here-string.
-- **Konzole v prohlížeči drží zastaralé chyby** — ověřuj po reloadu.
-- **Vite si bere vlastní port** — ověř v `preview_logs`.
+  `Out-File` (BOM v předmětu).
+- **Nikdy `git stash` / `git stash pop` ve worktree.**
 - **Dětské a rodičovské plochy vyžadují přihlášení** — heslo Claude zadávat nesmí.
 
 ---
@@ -399,3 +324,7 @@ hodnotu přes `HTMLInputElement.prototype` setter a pošli `input` event.
 - **Formulace pro dítě bez rodových koncovek** — aplikace pohlaví nezná.
 - **Nápověda navádí, neprozrazuje; každá úloha má vlastní obě nápovědy.**
 - **Když komentář tvrdí něco, co po změně neplatí, patří opravit v témže commitu.**
+- **Když měníš, co se ukládá nebo kam to jde, přepiš i `Privacy.tsx`** — zásady,
+  které mlčí o skutečném zpracování, jsou horší než žádné.
+- **Hlídač, který se neověří, je jen dekorace** — nové kontrole ukaž chybu,
+  kterou má chytat, a přesvědč se, že na ní spadne.

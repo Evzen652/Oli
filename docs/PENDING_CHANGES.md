@@ -9,9 +9,13 @@
 
 ## 🔴 Příprava spuštění — co našla kontrola kódu (2026-09-12)
 
-Čtyři paralelní průzkumy nad `main` po sloučení obsahu. **Nic z toho není
-opravené** — jsou to nálezy k rozhodnutí. Vše ověřeno v kódu, cesty a řádky
-sedí k commitu `e3663ca`.
+Čtyři paralelní průzkumy nad `main` po sloučení obsahu; 20 nálezů, vše ověřeno
+v kódu (cesty a řádky sedí ke commitu `e3663ca`).
+
+**Stav k 13. 9.:** opravené jsou díry v rodičovské bráně (`39b4ecc`), rozpory
+zásad soukromí s kódem (`08707af`) a reset hesla z mobilu (`b2c9dee`) —
+odškrtnuté položky mají ✅ přímo u sebe. Zbytek jsou nálezy k rozhodnutí, ne
+hotová práce.
 
 ### ✅ Zásady soukromí srovnány s kódem (`08707af`, 13. 9. 2026)
 
@@ -169,7 +173,20 @@ jsou (ověřeno u všech tří dávek) a jsou shodné s `main`. Dřív tu stálo
 nejsou; podle toho se kopírovalo a při úklidu se pak mazaly skutečné soubory
 větve.
 
-## ▶ PŘEDÁNÍ 2026-09-12 — co udělat jako první
+## ▶ PŘEDÁNÍ 2026-09-13 — co udělat jako první
+
+**Aktuální předání je v `docs/SESSION_HANDOFF.md`** (přepsáno 13. 9., stav
+`b2c9dee`). Krátce: obsah je uzavřený, fáze je příprava spuštění a postup
+stojí na osmi úkonech uživatele — §2 tamtéž. Čtyři z nich jsou nové nebo
+zpřesněné: **Redirect URLs v Supabase** (bez nich je oprava mobilního resetu
+hesla poloviční), **spouštěč úklidu anonymních dat** (zásady slibují 44 dnů,
+nic to nevymáhá), **právní kontrola zásad** a **podpisový klíč pro Android**.
+
+Z technických věcí na rozhodnutí čeká hlavně **kořen úniku v nápovědě**
+(`doplnVelkou`, 17 témat 5. ročníku, 16 zamrazených v produkci) — oprava změní
+zadání, takže se musí přegenerovat zámek obsahu.
+
+### Co bylo v předání 12. 9. (splněno)
 
 1. ✅ **Opravný průchod je hotový — všech 22 dávek (87 témat) je v `main`.**
    Poslední tři sloučeny 12. 9.: `g5mat-a` (`7c62066`), `g5mat-b` (`c908b90`),
@@ -191,11 +208,12 @@ větve.
    v ostré aplikaci. **Nasazení samo ověřené není** — `gh` v tomhle prostředí
    není přihlášený (`gh auth login`), takže `gh api repos/Evzen652/Oli/commits/1580cff/status`
    neprošlo. Stojí za proklik v prohlížeči.
-3. **Uklidit 22 worktree** `.claude/worktrees/wf_84b89ce1-8c0-*` a větve
-   `content-fix/*` i `wip/content-fix/*` — už nejsou k ničemu.
-4. Teprve potom má smysl vrátit se k **přípravě spuštění** — `SESSION_HANDOFF.md`
-   §2 má šest bodů, z nichž dva umí udělat jen uživatel (proklikat registraci →
-   spárování → smazání účtu; opravit `GROQ_API_KEY` a `GEMINI_API_KEY`).
+3. ✅ **Uklizeno** — 22 worktree odstraněno, lokální větve `content-fix/*`
+   i pomocné `worktree-wf_*` smazány. **Na originu 33 větví zůstalo**
+   (22 `content-fix/*` + 11 `wip/content-fix/*`); mazání na sdíleném originu je
+   nevratné, takže čeká na rozhodnutí uživatele.
+4. ✅ **Přechod zpět k přípravě spuštění proběhl** — session 41 (13. 9.)
+   srovnala zásady soukromí s kódem a opravila reset hesla z mobilu.
 
 ## ✅ Hromadné opravy obsahu — 19 z 22 dávek hotovo a na produkci (2026-09-12)
 
