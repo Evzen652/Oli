@@ -675,6 +675,10 @@
     "hash": "705011a2acecede14c08a030e1258f83e8e142cc",
     "taskCount": 3
   },
+  "g6-fyz-atomy-molekuly-6": {
+    "hash": "b53a7aa05b406255ed34bd0e76007cd5ebbfceec",
+    "taskCount": 39
+  },
   "g6-fyz-hustota-6": {
     "hash": "4e10bb02595c4e650d452235e4654ce62512d269",
     "taskCount": 49
@@ -684,8 +688,8 @@
     "taskCount": 57
   },
   "g6-fyz-mereni-casu-6": {
-    "hash": "c18dccb7224386a3c8df290f886dea6c7c6961d2",
-    "taskCount": 46
+    "hash": "d953de8a68d5152f3757871e239922d958c581e3",
+    "taskCount": 64
   },
   "g6-fyz-mereni-delky-6": {
     "hash": "b3129f1fb8f56a4634d8ee0bf79e687aa0cd65ca",

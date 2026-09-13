@@ -24,7 +24,7 @@
 ### Látky a tělesa
 - [x] **Látka a těleso – rozlišení, vlastnosti látek** → `fyzika/latkaATeleso.ts` ✅ (pojmový vzor: L1 rozpoznání · L2 sdílená látka · L3 vlastnost látky vs. tělesa)
 - [x] **Skupenství látek – pevné, kapalné, plynné** → `fyzika/skupenstviLatek.ts` ✅ (L1 skupenství při pokojové teplotě · L2 název změny z běžného děje · L3 skupenství z teploty tání a varu)
-- [ ] Atomy, molekuly – úvod do mikrosvěta
+- [x] **Atomy, molekuly – úvod do mikrosvěta** → `fyzika/atomyMolekuly.ts` ✅ (L1 počet atomů ze složení · L2 částicový model na běžném jevu · L3 vlastnost látky vs. vlastnost jedné částice)
 - [ ] Pohyb částic – difuze, Brownův pohyb
 
 ### Elektrické vlastnosti látek

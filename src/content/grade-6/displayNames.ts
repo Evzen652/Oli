@@ -53,6 +53,10 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Jaká je ta látka",
       description: "Rozlišíš látku od tělesa a poznáš, v jakém je skupenství.",
     },
+    "Částicová stavba látek": {
+      name: "Z čeho je to uvnitř",
+      description: "Podíváš se na látky zblízka, až na jednotlivé částice.",
+    },
     // Dějepis
     "Historie a historické prameny": {
       name: "Prameny o minulosti",

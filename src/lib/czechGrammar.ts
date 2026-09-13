@@ -130,6 +130,11 @@ export const NOUNS: Record<string, [string, string, string]> = {
 
   // Fyzika / měření
   KOLO:       ["kolo", "kola", "kol"],
+
+  // Částicová stavba látek
+  ATOM:       ["atom", "atomy", "atomů"],
+  MOLEKULA:   ["molekula", "molekuly", "molekul"],
+  ČÁSTICE:    ["částice", "částice", "částic"],
 } as const;
 
 export type NounKey = keyof typeof NOUNS;

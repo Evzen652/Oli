@@ -284,7 +284,27 @@ src/
   místo požadovaných 12 (3 ze 4 běhů projdou, počet propadlých dvojic kolísá
   1–2). Přesně ta příčina, kterou test sám pojmenovává: distraktor vyjde shodně
   s klíčem a úloha se zahodí. Netýká se opravy nápovědy — diff je jen
-  `grade-3/prvouka` + skript. **K opravě zvlášť.**
+  `grade-3/prvouka` + skript. **K opravě zvlášť.** → ✅ opraveno níž.
+- ✅ **Třetí téma dávky — `Atomy a molekuly`.** L1 počet atomů ze slovního
+  složení molekuly, L2 částicový model na běžném jevu (stlačený vzduch,
+  rozpuštěná sůl, balonek na váze), L3 miskoncepce „částice má vlastnosti své
+  látky" (mokrá molekula, červenohnědý atom, kapalný atom rtuti). L2 i L3 jsou
+  ručně psané banky po dvanácti položkách — pojmové úlohy se z parametru
+  odvodit nedají. Fyzika **9/13**, šestka **14 ze 117**.
+- 🐛 **`mereniCasu` dával dítěti tutéž úlohu v jednom sezení dvakrát.**
+  Generátor losoval 24 úloh bez deduplikace a jeho L1 má jen šestnáct možných
+  zadání, takže se v průměru osm tahů opakovalo. Vyšlo to najevo **až po opravě
+  `klicUlohy()`** — do té doby počítadlo bralo přeházené pořadí nabídky jako
+  novou úlohu a téma bránu „≥ 12 unikátních" procházelo na permutacích.
+  Přesně ten případ, kvůli kterému se ta oprava dělala. Ověřeno při
+  `COUNT_REPEATS=30`.
+- ⚠️ **Oprava mého vlastního nálezu: `npx tsc --noEmit` v tomhle repu
+  nekontroluje nic.** Kořenový `tsconfig.json` má `"files": []` a jen reference
+  na podprojekty, takže projde i se zjevnou typovou chybou v `src/` (ověřeno
+  obousměrně sondou). Díra ale **není v projektu** — `npm run typecheck` existuje
+  a dělá to správně (`tsc -p tsconfig.app.json --noEmit`). Chyba byla moje:
+  v téhle session jsem hlásil „typecheck ✓" po příkazu, který nekontroloval nic.
+  Od teď `npm run typecheck`.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

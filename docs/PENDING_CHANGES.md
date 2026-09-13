@@ -45,7 +45,12 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - 🐛 **Nový nález k opravě zvlášť:** `generator-task-count` je náhodně červený
   u `g6-fyz-mereni-casu-6` (L1 dá někdy 11 unikátních úloh místo 12; 3 ze 4
   běhů projdou). Distraktor vyjde shodně s klíčem a úloha se zahodí — přesně
-  scénář, na který ten test vznikl. Netýká se opravy nápovědy ve trojce.
+  scénář, na který ten test vznikl. Netýká se opravy nápovědy ve trojce. → ✅ opraveno níž.
+- ✅ **Dávka 1, téma 3/4 — `Atomy a molekuly`** (13. 9.). Fyzika **9/13**,
+  šestka **14 ze 117**. Zbývá `Pohyb částic, difúze, Brownův pohyb`.
+- ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
+  `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
+  `"files": []` a jen reference, takže nekontroluje ani jeden soubor.
 
 Ke stejnému průchodu:
 

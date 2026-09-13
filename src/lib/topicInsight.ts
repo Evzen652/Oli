@@ -352,6 +352,10 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Hustota vysvětlí, proč loď plave a kámen ne — a proč se olej drží nad vodou.",
     funFact: "Led je řidší než voda, a proto plave. Kdyby to tak nebylo, rybníky by promrzaly ode dna a ryby by v nich nepřežily.",
   },
+  "fyzika::Látky a tělesa::Částicová stavba látek": {
+    useful: "Částicový model vysvětlí naráz spoustu běžných věcí: proč jde vzduch v pumpičce stlačit, proč cukr ve vodě zmizí a proč se kolejnice v létě prodlouží.",
+    funFact: "Atomy jsou tak malé, že na jediný milimetr by se jich v řadě vešlo asi deset milionů. Proto je žádný školní mikroskop neukáže.",
+  },
   "fyzika::Látky a tělesa::Vlastnosti látek": {
     useful: "Rozlišit věc od materiálu je první krok k tomu vybrat na práci správnou látku — jinak si koupíš pěknou lžíci, která se v horké polévce ohne.",
     funFact: "Kov gallium se roztaví v dlani — taje už při 30 °C. Teplota tání je vlastnost látky, takže roztaje stejně kostka i drobný kousek.",

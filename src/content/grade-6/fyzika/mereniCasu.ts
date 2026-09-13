@@ -8,18 +8,30 @@
  *  • sečtení složeného času bez převodu jednotek.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { klicUlohy } from "@/lib/taskIdentity";
 import { pick, buildChoiceTask as task } from "./_shared";
 
 const ri = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 /** Čas ve formátu H:MM (minuty vždy na dvě číslice). */
 const hhmm = (h: number, m: number) => `${h}:${String(m).padStart(2, "0")}`;
 
+/**
+ * Losuje se do 24 úloh, ale **bez opakování**.
+ *
+ * Do 2026-09-13 se 24 úloh jen naslepo natáhalo za sebe. L1 má přitom jen
+ * šestnáct možných zadání (dva převody × osm hodnot), takže se z 24 tahů
+ * opakovalo v průměru osm — a dítě dostalo v jednom sezení tutéž úlohu
+ * podruhé. Kontrola `generator-task-count.test.ts` to neviděla, protože
+ * `klicUlohy()` počítalo přeházené pořadí nabídky jako novou úlohu; po opravě
+ * toho počítadla se to ukázalo hned.
+ */
 function gen(level: number): PracticeTask[] {
-  const tasks: PracticeTask[] = [];
-  for (let i = 0; i < 24; i++) {
-    tasks.push(level === 1 ? genL1() : level === 2 ? genL2() : genL3());
+  const out = new Map<string, PracticeTask>();
+  for (let i = 0; i < 400 && out.size < 24; i++) {
+    const t = level === 1 ? genL1() : level === 2 ? genL2() : genL3();
+    out.set(klicUlohy(t), t);
   }
-  return tasks;
+  return [...out.values()];
 }
 
 // L1 — převod větší → menší jednotka jedním krokem (× 60). Důraz: základ 60, ne 100.
