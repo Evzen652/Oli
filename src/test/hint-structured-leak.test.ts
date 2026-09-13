@@ -29,6 +29,10 @@ import {
   RADY_SOUSEDE_A_EU,
 } from "@/content/grade-5/vlastiveda/evropskeStatyAEuSousedniZemeCrPodrobne";
 
+/** Porovnávání textů: sjednotí mezery a uvozovky, diakritiku nechá být. */
+const norm = (s: string) =>
+  s.toLowerCase().replace(/[„“"']/g, " ").replace(/\s+/g, " ").trim();
+
 /** Pevné závěrečné věty, kterými helpery ukončují jádro velké nápovědy. */
 const KONCE = [
   "Zbylé dvojice pak doplň vylučováním.", // parovani
@@ -109,6 +113,62 @@ describe("ÚNIK V NÁPOVĚDĚ — strukturované typy", () => {
       `Velká nápověda má za závěrečnou větou něco jiného než obecnou strategii ` +
         `(${celkem} úloh, ${podleTematu.size} témat) — pravděpodobně se do doplňků ` +
         `vrátil \`proc\` dalších prvků:\n\n${prehled}\n\nUkázky:\n\n${nalezy.join("\n\n")}`,
+    ).toBe(0);
+  });
+
+  /**
+   * Druhé měřítko, tentokrát na ručně psané nápovědy: velká nápověda nesmí
+   * vyjmenovat pravé strany dvojic. Chytilo 2026-09-13 dvě témata 4. ročníku,
+   * kde nápověda přiřadila tři rostliny ze čtyř („Brambory se sázejí jako
+   * hlízy, tulipány jako cibulky…") a všechny čtyři lovce potravního řetězce.
+   *
+   * Počítá jen pravé strany, které nestojí už v zadání ani v malé nápovědě —
+   * ty dítě vidí tak jako tak. Jedna zmíněná je kotva, dvě jsou kus řešení.
+   */
+  it("velká nápověda nejmenuje víc než jednu pravou stranu dvojice", () => {
+    const nalezy: string[] = [];
+    let zkontrolovano = 0;
+
+    for (const topic of getAllTopics()) {
+      if (!topic.generator) continue;
+      for (const level of [1, 2, 3]) {
+        let tasks: PracticeTask[] = [];
+        try {
+          tasks = topic.generator(level) ?? [];
+        } catch {
+          continue;
+        }
+        const videno = new Set<string>();
+        for (const task of tasks) {
+          if (!task.pairs?.length) continue;
+          const velka = norm(task.hints?.[1] ?? "");
+          if (!velka) continue;
+          const klic = `${task.question}|${task.hints?.[1]}`;
+          if (videno.has(klic)) continue;
+          videno.add(klic);
+          zkontrolovano++;
+
+          const jinde = norm(`${task.question} ${task.hints?.[0] ?? ""}`);
+          const prozrazene = task.pairs
+            .map((x) => x.right)
+            .filter((r) => r.length >= 3)
+            .filter((r) => velka.includes(norm(r)) && !jinde.includes(norm(r)));
+
+          if (prozrazene.length > 1) {
+            nalezy.push(
+              `[${topic.id}] L${level} · jmenuje ${prozrazene.length} z ${task.pairs.length} pravých stran: ` +
+                `${prozrazene.map((x) => `„${x}"`).join(", ")}\n     H1: ${task.hints?.[1]}`,
+            );
+          }
+        }
+      }
+    }
+
+    expect(zkontrolovano, "žádná úloha s dvojicemi — změnil se tvar dat?").toBeGreaterThan(50);
+    expect(
+      nalezy.length,
+      `Velká nápověda jmenuje víc než jednu pravou stranu, takže zbytek jde ` +
+        `dopočítat vylučováním (${nalezy.length} úloh):\n\n${nalezy.slice(0, 10).join("\n\n")}`,
     ).toBe(0);
   });
 });

@@ -280,16 +280,20 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
    smí stát za pevnou závěrečnou větou velké nápovědy — a je ověřený
    obousměrně: po dočasném vrácení kořene spadl na 786 úlohách.
 
-   🟠 **Cestou se našlo, co s tímhle kořenem nesouvisí a čeká na rozhodnutí:**
-   `_poradi.ts` má v poli `pravidlo` věty, které samy prozrazují pořadí
-   („Měsíc je menší než Země, Jupiter je největší planeta a Slunce je větší než
-   všechny planety dohromady." u úlohy „Seřaď vesmírná tělesa od nejmenšího po
-   největší"), a jinde pravidlo mluví o položkách, které v úloze vůbec nejsou
-   (řešení „minuta → hodina → měsíc", pravidlo o dni a roku). Dvě témata
-   4. ročníku mají navíc únik v ručně psané nápovědě — `…ziva-priroda-rostliny…`
-   („Brambory se sázejí jako hlízy, tulipány jako cibulky…") a
-   `…ekosystemy-les-louka-pole-rybnik…` (nápověda jmenuje všechny čtyři prvky
-   řešení).
+   ✅ **Cestou opraveno i to, co s kořenem nesouviselo.** V `_poradi.ts` dvě
+   pole `pravidlo`: „Měsíc je menší než Země, Jupiter je největší planeta
+   a Slunce je větší než všechny planety dohromady" bylo u úlohy „Seřaď
+   vesmírná tělesa od nejmenšího po největší" přímo pořadí, a pravidlo
+   o časových úsecích mluvilo o dni a roku i tehdy, když v úloze nebyly
+   (řada má pět položek, úloha z nich bere tři). Obojí přepsáno na princip
+   bez jmen položek.
+
+   Ve 4. ročníku tři ručně psané nápovědy, které dávaly celé řešení: potravní
+   řetězce (všichni čtyři lovci), rozmnožování rostlin (tři dvojice ze čtyř)
+   a tvar listu (malá nápověda lípa, velká zbylé tři stromy). Přepsány na
+   kotvu + rozlišovací znak podle vzoru sousední úlohy téhož souboru, která
+   to má správně. Hlídá druhé měřítko v `hint-structured-leak.test.ts`:
+   velká nápověda smí jmenovat nejvýš jednu pravou stranu dvojice.
 3. **Tiché mizení úloh:** u převodů jednotek obsahu se tři z pěti převodů na
    větší jednotku vůbec negenerovaly — duplicitní distraktor způsobil, že
    `ciselnaUloha` vracela `null`. Audit to neukáže: co nevznikne, nemá co

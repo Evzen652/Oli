@@ -187,10 +187,13 @@ src/
 - ℹ️ **Zámek obsahu přegenerovat nebylo třeba** — oprava se dotkla jen
   nápověd, ne zadání ani klíčů, takže `frozen-content-unchanged` prošel beze
   změny. Předání tvrdilo opak a čekalo se na rozhodnutí kvůli němu.
-- 🟠 **Nalezeno cestou, k rozhodnutí:** `_poradi.ts` má v poli `pravidlo`
-  věty, které samy prozrazují pořadí („Měsíc je menší než Země, Jupiter je
-  největší planeta…“), jinde zase pravidlo mluví o položkách, které v úloze
-  nejsou. Dvě témata 4. ročníku mají únik v ručně psané nápovědě.
+- ✅ **Opraveny i úniky, které s `doplnVelkou` nesouvisely.** V `_poradi.ts`
+  dvě pole `pravidlo`: jedno prozrazovalo celé pořadí („Měsíc je menší než
+  Země, Jupiter je největší planeta…“), druhé mluvilo o položkách, které
+  v úloze nemusí být. Ve 4. ročníku tři ručně psané nápovědy, které dávaly
+  celé řešení — potravní řetězce, rozmnožování rostlin a tvar listu.
+  Přepsáno na kotvu + rozlišovací znak; hlídá druhé měřítko v
+  `hint-structured-leak.test.ts` (nejvýš jedna jmenovaná pravá strana).
 
 ### Session 2026-09-13 (41) — příprava spuštění: soukromí a mobilní odkazy:
 

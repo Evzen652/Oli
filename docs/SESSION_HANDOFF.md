@@ -253,18 +253,26 @@ Ověřeno obousměrně: po dočasném vrácení kořene test spadl na 786 úloh�
   nápověd se doplněk vůbec nepřidával (`h1` už délkou stačila), takže L1
   párování bylo často v pořádku. Vada byla podmíněná délkou `h0`.
 
-Zbývá k rozhodnutí (mimo tenhle kořen, nalezeno cestou):
+Ve stejném průchodu opraveno i to, co s `doplnVelkou` nesouviselo a našlo se
+cestou:
 
-- **`_poradi.ts` — pole `pravidlo` samo prozrazuje pořadí.** U „Seřaď vesmírná
-  tělesa od nejmenšího po největší" zní pravidlo „Měsíc je menší než Země,
-  Jupiter je největší planeta a Slunce je větší než všechny planety
-  dohromady." — to je celé řešení, a je to napsané v datech, ne generované.
-  Jinde zase pravidlo mluví o položkách, které v úloze nejsou (řešení
-  „minuta → hodina → měsíc", pravidlo o dni a roku).
-- **Dvě témata 4. ročníku mají únik v ručně psané nápovědě:**
-  `…ziva-priroda-rostliny…` („Brambory se sázejí jako hlízy, tulipány jako
-  cibulky…" — obě dvojice přímo) a `…ekosystemy-les-louka-pole-rybnik…`
-  (nápověda jmenuje všechny čtyři prvky řešení). Nesouvisí s `doplnVelkou`.
+- **`_poradi.ts` — dvě pole `pravidlo` prozrazovala řešení.** Pravidlo jde celé
+  do velké nápovědy, jenže úloha z řady vybírá jen část položek. „Měsíc je
+  menší než Země, Jupiter je největší planeta a Slunce je větší než všechny
+  planety dohromady" bylo u úlohy „Seřaď vesmírná tělesa od nejmenšího po
+  největší" přímo pořadí; pravidlo o časových úsecích zase mluvilo o dni
+  a roku i tehdy, když v úloze nebyly. Obojí přepsáno na princip bez jmen
+  položek, s poznámkou nad daty, jaký tvar má pravidlo mít.
+- **Tři ručně psané nápovědy ve 4. ročníku dávaly celé řešení:** potravní
+  řetězce (jmenovaly všechny čtyři lovce), rozmnožování rostlin (tři dvojice
+  ze čtyř) a tvar listu (malá nápověda dala lípu, velká zbylé tři stromy).
+  Všechny tři přepsány na kotvu + rozlišovací znak, aniž jmenují pravou stranu
+  — vzor byl v sousední úloze téhož souboru, která to má správně („Jelena
+  uloví jen velká šelma. Rybu chytí pták, který se brodí vodou…").
+
+Hlídá druhé měřítko v témže testu: **velká nápověda smí jmenovat nejvýš jednu
+pravou stranu dvojice** (a nepočítají se ty, které stojí už v zadání nebo
+v malé nápovědě). Tohle měřítko ty tři nálezy původně našlo.
 
 ### 🟠 Mobilní vydání — co zbývá
 

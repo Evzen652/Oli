@@ -225,7 +225,10 @@ const POOL_L3: PracticeTask[] = [
     { left: "Hmyz → žába → ?", right: "Užovka" },
     { left: "Listí → žížala → ?", right: "Krtek" },
   ], {
-    hints: ["Najdi zvíře, které loví pod zemí.", "Krtek loví pod zemí, užovka polyká žáby vcelku, poštolka se vrhá na myši z výšky a liška dohoní i zajíce."],
+    // Velká nápověda dřív jmenovala všechny čtyři lovce, takže úlohu vyřešila.
+    // Teď popisuje způsob lovu a jméno si musí doplnit dítě — stejně jako
+    // u sousední úlohy s jelenem a kůrovcem.
+    hints: ["Najdi zvíře, které loví pod zemí.", "Žížalu pod zemí chytá krtek. Zbylé tři rozliš podle toho, jak loví: jeden zajíce dohoní v běhu, druhý se na myš vrhá z výšky a třetí spolkne žábu vcelku."],
     explanation: "Zajíce uloví liška, myš poštolka, žábu užovka a žížalu krtek pod zemí. Na začátku každého řetězce je potrava z rostlin nebo drobní živočichové.",
   }),
   match(Q_CHAIN, [

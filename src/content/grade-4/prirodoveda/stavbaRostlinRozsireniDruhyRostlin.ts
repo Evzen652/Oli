@@ -95,7 +95,10 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Tyčinky tvoří pyl. Pestík je uprostřed květu a po opylení se z něj vyvine plod. Barevné okvětní lístky lákají hmyz a nektar je pro něj sladkou odměnou.",
   }),
   match("Spoj rostlinu s tím, jak se rozmnožuje i bez semen.", p(["Jahodník", "Plazivé šlahouny"], ["Brambor", "Hlízy"], ["Tulipán", "Cibulky"], ["Muškát", "Ustřižené větvičky, řízky"]), {
-    hints: ["Kdo z nich posílá po zemi dlouhé výhonky?", "Brambory se sázejí jako hlízy, tulipány jako cibulky a muškát se množí tak, že se ustřižená větvička dá do vody."],
+    // Velká nápověda dřív přiřadila tři rostliny ze čtyř a čtvrtá vyšla
+    // vylučováním. Teď rozebere jednu kotvu a u zbylých dvou dá rozlišovací
+    // znak, ne jméno.
+    hints: ["Kdo z nich posílá po zemi dlouhé výhonky?", "Muškát se množí tak, že se ustřižená větvička dá do vody a zakoření. U zbylých dvou rozhoduje, co se sází do země: ztluštělá hlíza s očky, nebo cibulka složená z vrstev."],
     explanation: "Jahodník pouští plazivé šlahouny, na kterých vyrostou nové rostliny. Brambor se množí hlízami, tulipán cibulkami a muškát řízky — ustřiženými větvičkami.",
   }),
   match("Spoj rostlinu s tím, jak se šíří její semena.", p(["Lopuch", "Háčky na srsti zvířat"], ["Netýkavka", "Tobolka praskne a semena vystřelí"], ["Kokos", "Plod pluje po moři"], ["Borůvka", "Zvíře ji sní a semena vyloučí"]), {
@@ -111,7 +114,10 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Pšenice patří mezi trávy — obilniny jsou pěstované trávy. Dub je strom s jedním kmenem, líska keř s víc kmínky a kopretina bylina s měkkým stonkem.",
   }),
   match("Spoj tvar listu se stromem.", p(["Jehlice", "Smrk"], ["List jako dlaň s cípy", "Javor"], ["Složený z pěti lístků jako prsty", "Jírovec (kaštan)"], ["Srdčitý list", "Lípa"]), {
-    hints: ["Lipový list připomíná srdíčko.", "Javorový list vypadá jako roztažená dlaň, kaštan má list z několika lístků jako prsty a smrk nemá listy, ale jehlice."],
+    // Malá nápověda dá lípu, velká dřív dodala zbylé tři stromy — dohromady
+    // celé řešení. Teď rozebere jednu kotvu a u zbytku navede na znalost
+    // stromu, aniž ho jmenuje.
+    hints: ["Lipový list připomíná srdíčko.", "Javorový list vypadá jako roztažená dlaň s cípy. U zbylých dvou pomůže, co o stromech víš odjinud: jeden má na podzim plody v ostnaté slupce, druhý je jehličnan, který se u nás dává i jako vánoční stromek."],
     explanation: "Smrk má jehlice. Javor má list podobný dlani s cípy. Jírovec, kterému říkáme kaštan, má list složený z lístků jako prsty. Lípa má list tvaru srdce.",
   }),
   match("Spoj rostlinu s tím, kde má semena.", p(["Slunečnice", "V terči velkého květu"], ["Hrách", "V lusku"], ["Pšenice", "V klasu"], ["Mák", "V makovici"]), {

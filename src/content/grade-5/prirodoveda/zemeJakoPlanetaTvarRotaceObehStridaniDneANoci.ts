@@ -1,6 +1,14 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { poradi, type Rada } from "../_poradi";
 
+// ⚠️ `pravidlo` jde celé do velké nápovědy, a úloha z řady vybírá jen `kolik`
+// položek. Musí proto (a) navádět na princip řazení, ne vyjmenovat pořadí,
+// a (b) obejít se bez jmen konkrétních položek — ty v úloze být nemusí.
+// 2026-09-13 se na tom opravila dvě pravidla: „Měsíc je menší než Země,
+// Jupiter je největší planeta a Slunce je větší než všechny planety
+// dohromady" bylo přímo řešení, a pravidlo o časových úsecích mluvilo o dni
+// a roku i tehdy, když v úloze nebyly.
+//
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy neměly nápovědy k úloze ani
 // vysvětlení, byly mezi nimi triviální řady (měsíce roku, hodiny dne) i věcné
 // chyby („zemská osa se otáčí ze západu na východ“ — otáčí se Země, ne osa).
@@ -39,7 +47,7 @@ const RADY: Rada[] = [
       { text: "západ Slunce", proc: "Slunce zmizí na západě a nastane noc." },
     ] },
   { uroven: 1, zadani: "Seřaď časové úseky od nejkratšího po nejdelší.", kolik: 3,
-    pravidlo: "Den je jedna otočka Země kolem osy, rok je jeden oběh Země kolem Slunce.",
+    pravidlo: "Každý delší úsek se skládá z těch kratších — ptej se, kolik se jich do něj vejde.",
     polozky: [
       { text: "minuta", proc: "má 60 sekund." },
       { text: "hodina", proc: "má 60 minut." },
@@ -58,7 +66,7 @@ const RADY: Rada[] = [
     ] },
   { uroven: 2, zadani: "Seřaď čtyři planety od nejbližší ke Slunci.", kolik: 4, pravidlo: PLANETY_PRAVIDLO, polozky: PLANETY },
   { uroven: 2, zadani: "Seřaď vesmírná tělesa od nejmenšího po největší.", kolik: 4,
-    pravidlo: "Měsíc je menší než Země, Jupiter je největší planeta a Slunce je větší než všechny planety dohromady.",
+    pravidlo: "U každého tělesa si nejdřív řekni, co to je: měsíc, planeta, hvězda nebo celá galaxie. V tomhle pořadí roste i jejich velikost.",
     polozky: [
       { text: "Měsíc", proc: "je asi čtyřikrát menší než Země." },
       { text: "Země", proc: "je největší z kamenných planet." },
