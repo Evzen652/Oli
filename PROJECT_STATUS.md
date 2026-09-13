@@ -340,7 +340,11 @@ src/
   místo požadovaných 12 (3 ze 4 běhů projdou, počet propadlých dvojic kolísá
   1–2). Přesně ta příčina, kterou test sám pojmenovává: distraktor vyjde shodně
   s klíčem a úloha se zahodí. Netýká se opravy nápovědy — diff je jen
-  `grade-3/prvouka` + skript. **K opravě zvlášť.** → ✅ opraveno níž.
+  `grade-3/prvouka` + skript. **K opravě zvlášť.**
+  → ✅ **Vyřízeno 14. 9. (session 43), ale obojí v téhle diagnóze bylo špatně:**
+  neselhávalo `mereni-casu` (to je stabilní) nýbrž `hustota` L1, a příčinou
+  nebyl distraktor shodný s klíčem, nýbrž chybějící deduplikace losů.
+  Detail v zápisu session 43 na začátku téhle sekce.
 - ✅ **Třetí téma dávky — `Atomy a molekuly`.** L1 počet atomů ze slovního
   složení molekuly, L2 částicový model na běžném jevu (stlačený vzduch,
   rozpuštěná sůl, balonek na váze), L3 miskoncepce „částice má vlastnosti své
