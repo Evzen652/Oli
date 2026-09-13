@@ -18,6 +18,7 @@
 // Vzniklo 2026-09-12 při kontrole dávky g2prv-b, kde takové nápovědy byly
 // čtyři — mezi nimi u první pomoci a u cesty do školy.
 import { getAllTopics } from "@/lib/contentRegistry";
+import { pad } from "@/lib/czechGrammar";
 
 /**
  * Jednotky a slova, která o porozumění nic neříkají. Bez nich hlásil skript
@@ -54,6 +55,7 @@ for (const id of ids) {
     const pokryti = klic.filter((w) => vH0.has(w)).length / klic.length;
     const jeOtazka = /\?/.test(h0);
     if (pokryti >= 0.6 && !jeOtazka) {
+      nalezu++;
       console.log(`\n[${id}] L${lvl} · překryv ${Math.round(pokryti * 100)} %`);
       console.log(`   Q:   ${task.question.slice(0, 80)}`);
       console.log(`   KEY: ${task.correctAnswer}`);
@@ -63,4 +65,4 @@ for (const id of ids) {
 }
 
 console.log(`
-K posouzení: ${nalezu} nápověd. Nález není důkaz chyby — každý posuď ručně.`);
+K posouzení: ${pad(nalezu, "NÁPOVĚDA")}. Nález není důkaz chyby — každou posuď ručně.`);

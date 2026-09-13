@@ -137,6 +137,12 @@ Co ten průchod naučil a co platí dál:
 `check:hints` a `check:length` schválně neblokují: nález u nich není důkaz
 chyby a CI by padalo na legitimním obsahu.
 
+⚠️ **`check:hints` do 13. 9. hlásil vždy „0 nápověd“**, i když nálezy nad tím
+vypsal — počítadlo se neinkrementovalo. Kdo četl jen poslední řádek, odešel
+s tím, že je čisto. Opraveno; ověřeno tématem, kde nález je (hlásí 1)
+i tématem, kde není (hlásí 0). **Slepota na `match_pairs` / `categorize` /
+`drag_order` trvá** — a kořen úniku níž sedí právě v nich.
+
 Po každé změně obsahu:
 `UPDATE_FROZEN_SNAPSHOT=1 npx vitest run src/test/frozen-content-unchanged.test.ts`.
 
@@ -192,19 +198,33 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
 
 ## 4. Otevřené pro další session
 
-### 🔴 Kořen úniku v nápovědě — 17 témat 5. ročníku
+### 🔴 Kořen úniku v nápovědě — 19 témat 5. ročníku
 
-`doplnVelkou` v `src/content/grade-5/_shared.ts` (řádek ~189, stejný vzor
-na 159 v `chronologie` a 218 v `trideni`) dorovnává velkou nápovědu tak, že si
-bere `proc` **dalších** dvojic a teprve pak sahá po obecných strategiích.
-U tříprvkové úlohy tak nápověda rozebere dvě dvojice a třetí vyjde
-vylučováním — nápověda úlohu vyřeší.
+> Čísla přeměřena 13. 9. Dřív tu stálo 17 témat / 16 zamrazených a že se bere
+> `proc` *dalších* dvojic. Obojí bylo mírnější než skutečnost.
 
-Opraveno zatím **jen lokálně v dávce `g4-6-mix`** (obal `odlisSadu`
-v `evropskeStatyAEuSousedniZemeCrPodrobne.ts`). Kořen se týká **17 témat
-5. ročníku, z toho 16 zamrazených v produkci** — proto čeká na rozhodnutí:
-oprava změní zadání, takže se musí přegenerovat zámek obsahu.
-`check-hint-leak` to konstrukčně nevidí (viz §1).
+`doplnVelkou` v `src/content/grade-5/_shared.ts` dorovnává velkou nápovědu
+`proc`em ostatních prvků a teprve pak sahá po obecných strategiích. Ve dvou
+větvích se to chová **hůř, než se dosud psalo**:
+
+| helper | co se předává do doplňku | důsledek na nejmenší úloze |
+|---|---|---|
+| `parovani` (ř. 189), `trideni` (ř. 218) | `xs.slice(2)` — od třetího prvku | h1 rozebere druhý, doplněk třetí → první vyjde vylučováním |
+| `chronologie` (ř. 159), `_poradi.ts` (ř. 41) | **všechny prvky, včetně prvního** | velká nápověda je kompletní řešení, ne dvě třetiny |
+
+Rozsah (změřeno proti `frozen-content.snapshot.json`): **19 témat 5. ročníku,
+z toho 18 zamrazených v produkci** — nezamrazené je jen
+`zaznamATrideniDatVTabulce`. Opraveno zatím **jen lokálně v dávce `g4-6-mix`**
+(obal `odlisSadu` v `evropskeStatyAEuSousedniZemeCrPodrobne.ts`).
+
+Čeká na rozhodnutí: oprava změní zadání, takže se musí přegenerovat zámek
+obsahu. `check-hint-leak` to konstrukčně nevidí (viz §1) — ani po opravě
+počítadla, protože slepota na `match_pairs` / `categorize` / `drag_order` je
+v tom, s čím porovnává, ne v tom, jak počítá.
+
+`doplnVelkou` existuje i v `grade-3/_shared.ts` a v obou `grade-6/*/_shared.ts`.
+Tam se **krmí jen obecnými strategiemi**, takže tahle vada v nich není —
+ověřeno 13. 9., neopravuj je bez měření.
 
 ### 🟠 Mobilní vydání — co zbývá
 
@@ -241,8 +261,13 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
 - **`crSymboly` L3 je z poloviny počítání letopočtů** — 6 ze 13 úloh je
   odčítání čtyřciferných čísel (1993 − 1415 = 578). Věcně správné, ale číselný
   obor 3. ročníku je do 1000 a nápověda učí písemné odčítání (učivo 4. ročníku).
-- **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy) — dá se tipovat podle
-  délky. Změř `npm run check:length`.
+- **Klíč bývá nejdelší možnost — změřeno 13. 9. a je to jiný řád, než se
+  myslelo.** `npm run check:length` (do 13. 9. neexistoval jako npm skript,
+  jen jako soubor, takže se to nikdy nezměřilo) hlásí při výchozím prahu
+  1,6× **1 459 úloh z 18 821**; při 2,0× jich je 854, při 2,5× stále 402.
+  Číslo „~45“ pocházelo z jedné dávky, ne z celého repa. Většina nálezů je
+  legitimní („nekonečně mnoho“ proti „1“) — je to vzorec k rozhodnutí, ne
+  seznam chyb.
 - **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá klíč
   v nápovědě prostým `includes` bez výjimky pro „rejstřík možností", kterou
   `supabase/functions/_shared/hintLeakage.ts` má; a `normalize()` v `hintLeakage`

@@ -154,6 +154,23 @@ src/
   session přepínat sedm worktree, které od 12. 9. neexistují, a „Aktuální fáze"
   mluvila o čtyřech rozhodnutích uživatele místo osmi. Doplněna past
   s `git worktree remove --force` a junction `node_modules`.
+- ✅ **`check:hints` přestal lhát o vlastních nálezech.** Počítadlo `nalezu`
+  se nikdy neinkrementovalo, takže souhrn hlásil „0 nápověd“ i pod vypsaným
+  nálezem — kdo četl poslední řádek, odešel s tím, že je čisto. Ověřeno
+  tématem, kde nález je (hlásí 1), i tématem, kde není (hlásí 0). Souhrn
+  zároveň skloňuje přes `pad()` z `czechGrammar` („1 nápověda“, ne
+  „1 nápověd“).
+- ✅ **`check:length` zaregistrován do `package.json`.** Skript
+  `scripts/check-answer-length.ts` existoval a ve vlastní hlavičce se odkazoval
+  na `npm run check:length`, ale ten příkaz nikdy neexistoval — dokumentace ho
+  na dvou místech předepisovala jako měření, které tedy nikdo neudělal.
+- 📊 **Brány po změně:** `audit:content` ✓, `check:keys` 4 656 klíčů / 0 neshod,
+  `check:keys:tables` 472 / 0, `typecheck` ✓, `audit:ui` bez nového nálezu.
+  Obsah sám je čistý — vadné byly kontroly nad ním.
+- 🔴 **Přeměřen kořen úniku v nápovědě: 19 témat 5. ročníku, 18 zamrazených**
+  (předání uvádělo 17/16). `chronologie` a `_poradi.ts` navíc předávají do
+  velké nápovědy `proc` **všech** prvků, ne až od třetího — u tříprvkové úlohy
+  je nápověda kompletní řešení. Oprava mění zadání → čeká na rozhodnutí.
 
 ### Session 2026-09-13 (41) — příprava spuštění: soukromí a mobilní odkazy:
 

@@ -277,11 +277,17 @@ Co kritici našli (výběr věcí, které brána ani docs-check nechytily):
 1. `crSymboly` L3 — 6 ze 13 úloh je odčítání čtyřciferných letopočtů
    (1993 − 1415). Věcně správné, ale číselný obor 3. ročníku je do 1000
    a nápověda učí písemné odčítání, což je učivo 4. ročníku.
-2. **Klíč bývá nejdelší možnost** (~45 úloh napříč tématy, >1,9× delší než
-   nejkratší distraktor). Žák může odpovídat podle délky. Je to vzorec
-   napříč repem, ne chyba jedné dávky — chtělo by to kontrolu jako
-   `check:hints`. (Nejkřiklavější kus z `g4-6-mix` — klíč „trpělivá
-   a laskavá" proti třem jednoslovným — opraven na místě.)
+2. **Klíč bývá nejdelší možnost** — žák může odpovídat podle délky.
+   ✅ Kontrola už existuje a od 13. 9. je spustitelná: `npm run check:length`
+   (skript `scripts/check-answer-length.ts` tu ležel, ale nikdy nebyl
+   zaregistrovaný v `package.json`, takže se neměřilo).
+   🔴 **Změřeno a je to jiný řád, než se odhadovalo:** při výchozím prahu 1,6×
+   **1 459 úloh z 18 821**, při 2,0× je jich 854, při 2,5× stále 402. Číslo
+   „~45“ platilo pro jednu dávku, ne pro repo. Většina nálezů je legitimní
+   („nekonečně mnoho“ proti „1“), takže tohle je **vzorec k rozhodnutí**, ne
+   seznam chyb — a rozhodnout se musí, jaký práh vůbec znamená problém.
+   (Nejkřiklavější kus z `g4-6-mix` — klíč „trpělivá a laskavá" proti třem
+   jednoslovným — opraven na místě.)
 3. **Dvě kontroly hlásí u čtení tabulek planý poplach** (`g4-mat-tabulky-diagramy-4`,
    posouzeno ručně, ponecháno beze změny):
    - `docs-check` hlásí „klíč ve znění otázky" u otázky „Které ovoce má
