@@ -5,10 +5,12 @@ import { GRADE_2_TOPICS } from "@/content/grade-2";
 import { GRADE_3_TOPICS } from "@/content/grade-3";
 import { GRADE_4_TOPICS } from "@/content/grade-4";
 import { GRADE_5_TOPICS } from "@/content/grade-5";
+import { GRADE_6_TOPICS } from "@/content/grade-6";
 import { GRADE2_NAVIGATION } from "@/content/grade-2/navigation";
 import { GRADE3_NAVIGATION } from "@/content/grade-3/navigation";
 import { GRADE4_NAVIGATION } from "@/content/grade-4/navigation";
 import { GRADE5_NAVIGATION } from "@/content/grade-5/navigation";
+import { GRADE6_NAVIGATION } from "@/content/grade-6/navigation";
 
 /**
  * Konzistence display navigace „předmět → okruh → téma" napříč ročníky.
@@ -29,6 +31,7 @@ const GRADES: Array<{ grade: number; topics: TopicMetadata[]; nav: SubjectNav[] 
   { grade: 3, topics: GRADE_3_TOPICS, nav: GRADE3_NAVIGATION as SubjectNav[] },
   { grade: 4, topics: GRADE_4_TOPICS, nav: GRADE4_NAVIGATION as SubjectNav[] },
   { grade: 5, topics: GRADE_5_TOPICS, nav: GRADE5_NAVIGATION as SubjectNav[] },
+  { grade: 6, topics: GRADE_6_TOPICS, nav: GRADE6_NAVIGATION as SubjectNav[] },
 ];
 
 describe.each(GRADES)("grade-$grade navigace", ({ topics, nav }) => {

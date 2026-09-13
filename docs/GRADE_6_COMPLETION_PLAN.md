@@ -79,13 +79,22 @@ oficiální názvy okruhů („Měření fyzikálních veličin"). Není to rozb
 mají `studentTitle` — ale dětská vrstva chybí, a čím víc témat přibude, tím dráž
 se doplňuje.
 
-### 1.5 Chybějící předmět a ilustrace v rejstříku
+### 1.5 Ilustrace čtyř předmětů — **neblokuje psaní obsahu**
 
-- **`vko` (výchova k občanství) v `subjectRegistry.ts` vůbec není** → dostane
-  neutrální fallback paletu. Přidat dřív, než se napíše první téma občanky.
 - **Ilustrace chybí u čtyř předmětů:** fyzika, přírodopis, zeměpis, vko.
-  Existují jen `matematika, čeština, prvouka, přírodověda, vlastivěda, dějepis, chemie`.
-  Fyzika a dějepis běží dnes bez kresby (fallback emoji).
+  Existují jen `matematika, čeština, prvouka, přírodověda, vlastivěda, dějepis,
+  chemie`. Fyzika běží dnes bez kresby (fallback emoji). Je to práce v admin
+  pipeline → Supabase storage, tedy jiný druh úkolu; **psaní obsahu nedrží**,
+  drží hezké vydání.
+
+> ⚠️ **Oprava vlastního nálezu (13. 9.):** tenhle bod původně tvrdil, že
+> `vko` v `subjectRegistry.ts` vůbec není. **Není to pravda** — je tam jako klíč
+> `"výchova k občanství"` s aliasem `vko`. Moje sonda ho nenašla, protože její
+> regex nepočítal s klíčem v uvozovkách a s mezerami. Ověřeno pořádně přes
+> `resolveSubjectKey()` nad všemi předměty z obsahu i z RVP: **dohledají se
+> všechny.** Hlídá to teď i test (`display-names-coverage.test.ts`).
+> Je to přesně ten případ, před kterým varuje pravidlo „nález strojové kontroly
+> nejdřív ručně přepočítej" — tentokrát jsem tou kontrolou byl já.
 
 ### 1.6 Vizuální smoke test odborných typů
 

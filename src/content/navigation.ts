@@ -14,6 +14,7 @@ import { GRADE2_NAVIGATION } from "./grade-2/navigation";
 import { GRADE3_NAVIGATION } from "./grade-3/navigation";
 import { GRADE4_NAVIGATION } from "./grade-4/navigation";
 import { GRADE5_NAVIGATION } from "./grade-5/navigation";
+import { GRADE6_NAVIGATION } from "./grade-6/navigation";
 
 /** Jeden okruh = dětsky pojmenovaná skupina cvičení (témat). */
 export interface Okruh {
@@ -35,6 +36,7 @@ const BY_GRADE: Partial<Record<Grade, SubjectNav[]>> = {
   3: GRADE3_NAVIGATION,
   4: GRADE4_NAVIGATION,
   5: GRADE5_NAVIGATION,
+  6: GRADE6_NAVIGATION,
 };
 
 /** Vrátí navigaci (okruhy po předmětech) pro daný ročník, nebo null. */

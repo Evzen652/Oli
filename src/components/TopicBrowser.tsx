@@ -360,8 +360,13 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
                   />
                 )}
                 <div className="flex-1 min-w-0">
+                  {/* Popisek z rejstříku, ne ze slugu. `TopicMetadata.subject`
+                      je u 2. stupně bez diakritiky („dejepis"), takže samotné
+                      velké písmeno vyrobilo nadpis „Dejepis". Týž nález a táž
+                      oprava jako v `SessionView` — tady zůstala, protože do
+                      otevření 6. ročníku měly všechny předměty slug s háčky. */}
                   <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                    {capitalize(selectedSubject ?? title)}
+                    {subjectMeta?.label ?? capitalize(selectedSubject ?? title)}
                   </h1>
                   {subtitle && (
                     <p className="text-sm text-foreground/70">

@@ -21,6 +21,11 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   hraně. Zbývá: navigace šestky, dětské názvy, `vko` v rejstříku předmětů
   a ilustrace čtyř předmětů — z toho **ilustrace nejsou blokátor psaní obsahu**,
   jen hezkého vydání.
+- ✅ **3–5/5 — navigace a dětské názvy šestky** (13. 9.). Zbývají jen ilustrace
+  (fyzika, přírodopis, zeměpis, vko), které psaní obsahu nedrží. Tvrzení, že
+  `vko` chybí v rejstříku předmětů, **bylo mylné** — je tam.
+  **Přípravné práce jsou hotové, další krok je první obsahová dávka: dodělat
+  fyziku (7 témat).**
 
 Ke stejnému průchodu:
 

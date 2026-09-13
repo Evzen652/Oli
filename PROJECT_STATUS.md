@@ -210,6 +210,19 @@ src/
   otázky; na tom dřívější sonda uklouzla a hlásila „1 úloha" u strukturovaných
   témat. Kalibrace: 687 dvojic, **minimum v celém obsahu je přesně 12** a 48
   dvojic na té hraně stojí. Ověřeno obousměrně.
+- ✅ **Body 3–5 plánu šestky hotové.** Navigace (`grade-6/navigation.ts`, okruhy
+  „Měření a veličiny", „Jak se zkoumá minulost", „Pravěk") a dětský slovník
+  (`grade-6/displayNames.ts`) — do teď četl šesťák oficiální RVP názvy, přestože
+  je ročník od 11. 9. otevřený. Obojí hlídají testy
+  (`navigation-consistency` rozšířený o šestku, nový `display-names-coverage`).
+- ⚠️ **Opraven můj vlastní chybný nález:** plán tvrdil, že `vko` v rejstříku
+  předmětů chybí. Je tam jako `"výchova k občanství"` s aliasem `vko`; moje
+  sonda ho minula kvůli regexu. Z bodu 5 tak zbyly **jen ilustrace** čtyř
+  předmětů, a ty psaní obsahu neblokují.
+- 🐛 **`TopicBrowser` psal „Dejepis" bez háčku** — nadpis bral syrový
+  `TopicMetadata.subject` místo popisku z rejstříku. Táž chyba a táž oprava jako
+  dřív v `SessionView`; vyšla najevo až na 6. ročníku, protože do jeho otevření
+  měly všechny předměty slug s diakritikou. Ověřeno v běžící aplikaci.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací
