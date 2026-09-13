@@ -23,6 +23,10 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Měření a veličiny",
       description: "Změříš délku, hmotnost, objem, čas i teplotu a převedeš jednotky.",
     },
+    "Látky a tělesa": {
+      name: "Z čeho je co",
+      description: "Poznáš rozdíl mezi věcí a materiálem, ze kterého je.",
+    },
     // Dějepis
     "Úvod do dějepisu": {
       name: "Jak se zkoumá minulost",
@@ -44,6 +48,10 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Hustota, teplota, čas": {
       name: "Hustota a teplota",
       description: "Spočítáš hustotu a pracuješ s teplotou i časem.",
+    },
+    "Vlastnosti látek": {
+      name: "Látka a těleso",
+      description: "Rozlišíš předmět od materiálu a jejich vlastnosti.",
     },
     // Dějepis
     "Historie a historické prameny": {

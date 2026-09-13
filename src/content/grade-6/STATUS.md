@@ -22,7 +22,7 @@
 > Společný test: `__tests__/prevodyJednotek.test.ts` (parametrizovaný přes 3 témata, 51 testů).
 
 ### Látky a tělesa
-- [ ] Látka a těleso – rozlišení, vlastnosti látek
+- [x] **Látka a těleso – rozlišení, vlastnosti látek** → `fyzika/latkaATeleso.ts` ✅ (pojmový vzor: L1 rozpoznání · L2 sdílená látka · L3 vlastnost látky vs. tělesa)
 - [ ] Skupenství látek – pevné, kapalné, plynné
 - [ ] Atomy, molekuly – úvod do mikrosvěta
 - [ ] Pohyb částic – difuze, Brownův pohyb

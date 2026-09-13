@@ -352,6 +352,10 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Hustota vysvětlí, proč loď plave a kámen ne — a proč se olej drží nad vodou.",
     funFact: "Led je řidší než voda, a proto plave. Kdyby to tak nebylo, rybníky by promrzaly ode dna a ryby by v nich nepřežily.",
   },
+  "fyzika::Látky a tělesa::Vlastnosti látek": {
+    useful: "Rozlišit věc od materiálu je první krok k tomu vybrat na práci správnou látku — jinak si koupíš pěknou lžíci, která se v horké polévce ohne.",
+    funFact: "Kov gallium se roztaví v dlani — taje už při 30 °C. Teplota tání je vlastnost látky, takže roztaje stejně kostka i drobný kousek.",
+  },
 };
 
 /**
@@ -438,6 +442,10 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
   "fyzika::Měření fyzikálních veličin": {
     useful: "Fyzika začíná měřením. Bez čísla je to jen dojem.",
     funFact: "Soustava jednotek SI má sedm základních veličin. Všechny ostatní se z nich odvozují.",
+  },
+  "fyzika::Látky a tělesa": {
+    useful: "Všechno kolem tebe je těleso z nějaké látky. Fyzika se ptá, co dělá ta látka a co až konkrétní výrobek.",
+    funFact: "Diamant i tuha v tužce jsou z téhož prvku — uhlíku. Liší se jen tím, jak jsou v nich atomy poskládané.",
   },
 };
 

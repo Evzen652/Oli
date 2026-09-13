@@ -223,6 +223,14 @@ src/
   `TopicMetadata.subject` místo popisku z rejstříku. Táž chyba a táž oprava jako
   dřív v `SessionView`; vyšla najevo až na 6. ročníku, protože do jeho otevření
   měly všechny předměty slug s diakritikou. Ověřeno v běžící aplikaci.
+- ✅ **První obsahová dávka 6. ročníku zahájena — `Látka a těleso`.**
+  První **pojmové** téma fyziky šestky (dosavadních šest je výpočetních).
+  Kritický průchod nad skutečným výstupem našel šest vad, které by žádná
+  kontrola nechytila: `z sklo` / `z dřevo` / `z pálená hlína` (vazba *z* žádá
+  2. pád), identické nápovědy u všech úloh, dvě správné odpovědi v L2,
+  zrcadlové duplikáty („Kelímek a pravítko" vs. „Pravítko a kelímek"),
+  výpočetní doplněk nápovědy u pojmové úlohy a rod natvrdo („k němu" u ženského
+  rodu). Fyzika je teď 7/13.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

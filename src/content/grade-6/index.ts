@@ -17,6 +17,9 @@ import { HUSTOTA } from "./fyzika/hustota";
 import { MERENI_TEPLOTY } from "./fyzika/mereniTeploty";
 import { MERENI_CASU } from "./fyzika/mereniCasu";
 
+// Fyzika — Látky a tělesa (pojmový vzor)
+import { LATKA_A_TELESO } from "./fyzika/latkaATeleso";
+
 // Dějepis (pilot — faktický vzor)
 import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
 import { DOBA_KAMENNA_PERIODIZACE } from "./dejepis/dobaKamennaPeriodizace";
@@ -32,6 +35,8 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...HUSTOTA,
   ...MERENI_TEPLOTY,
   ...MERENI_CASU,
+  // Fyzika — Látky a tělesa
+  ...LATKA_A_TELESO,
   // Dějepis — Úvod do dějepisu
   ...PERIODIZACE_LETOPOCET,
   // Dějepis — Pravěk

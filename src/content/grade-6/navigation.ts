@@ -36,6 +36,13 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-fyz-hustota-6",
         ],
       },
+      {
+        id: "latky-a-telesa",
+        name: "Z čeho je co",
+        description: "Poznáš rozdíl mezi věcí a materiálem, ze kterého je.",
+        emoji: "🧱",
+        topicIds: ["g6-fyz-latka-a-teleso-6"],
+      },
     ],
   },
   {
