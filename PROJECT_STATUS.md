@@ -202,6 +202,14 @@ src/
   U strukturovaných typů je otázka pořád stejná, takže se z tématu posoudila
   jedna úloha z 24. Teď má dvě síta — otázka pro překryv s klíčem, otázka +
   nápověda pro strukturované.
+- ✅ **Bod 2 plánu šestky hotový — chybějící kontrola mizejících úloh.**
+  `src/test/generator-task-count.test.ts`: každé téma × úroveň musí nabídnout
+  ≥ 12 různých úloh (požadavek `CONTENT_AUTHORING`, dosud nekontrolovaný),
+  generátor nesmí vracet prázdné položky ani padat. Identita úlohy je
+  v `src/lib/taskIdentity.ts` — počítá se podle toho, co dítě řeší, ne podle
+  otázky; na tom dřívější sonda uklouzla a hlásila „1 úloha" u strukturovaných
+  témat. Kalibrace: 687 dvojic, **minimum v celém obsahu je přesně 12** a 48
+  dvojic na té hraně stojí. Ověřeno obousměrně.
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

@@ -15,8 +15,12 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 
 - ✅ **1/5 — kontrola úniku vidí strukturované typy** (13. 9.). Viz
   `src/lib/hintLeakStructured.ts`. Nálezy: 2 skutečné úniky, 4 opravené
-  nápovědy. Zbývá: kontrola mizejících úloh, navigace šestky, dětské názvy,
-  `vko` v rejstříku předmětů, ilustrace čtyř předmětů.
+  nápovědy.
+- ✅ **2/5 — kontrola mizejících úloh** (13. 9.). `generator-task-count.test.ts`
+  + `src/lib/taskIdentity.ts`. Minimum v obsahu je přesně 12, takže práh sedí na
+  hraně. Zbývá: navigace šestky, dětské názvy, `vko` v rejstříku předmětů
+  a ilustrace čtyř předmětů — z toho **ilustrace nejsou blokátor psaní obsahu**,
+  jen hezkého vydání.
 
 Ke stejnému průchodu:
 

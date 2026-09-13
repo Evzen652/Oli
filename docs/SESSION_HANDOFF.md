@@ -188,6 +188,8 @@ Co ten průchod naučil a co platí dál:
 | `npm run check:hints` | nápověda prozrazující odpověď **obsahem**, ne slovem | ne — měkká |
 | `npm run check:length` | klíč nápadně delší než distraktory (dá se tipovat) | ne — report |
 | `npm run audit:ui` | prvek slibuje něco, co nedělá | ano, s baseline |
+| `generator-task-count.test.ts` | **téma × úroveň nabídne ≥ 12 různých úloh** — co nevznikne, žádný jiný audit nezkontroluje | ano |
+| `hint-structured-leak.test.ts` | únik u `match_pairs` / `categorize` / `drag_order` / `timeline` | ano |
 
 `check:hints` a `check:length` schválně neblokují: nález u nich není důkaz
 chyby a CI by padalo na legitimním obsahu.
