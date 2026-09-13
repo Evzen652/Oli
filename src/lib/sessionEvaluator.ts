@@ -11,6 +11,15 @@
  *   pravopis, diktát: speciální).
  * - Nápovědu zmiňuje jemně, nikdy jako výtku.
  * - Povzbudivý tón, tykání, žádné emotikony.
+ * - **Žádné rodové koncovky ani lomítkové tvary** („Zvládl/a jsi", „sám/sama",
+ *   „hrdý/á"). Aplikace pohlaví dítěte nezná a lomítko je pro druháka, který
+ *   se teprve rozečítá, překážka. Věty se stavějí tak, aby rod nepotřebovaly —
+ *   často stačí změnit podmět („Nápověda ti pomohla" místo „využil/a jsi").
+ *   Hlídá `src/test/session-evaluator-text.test.ts`.
+ * - **Název tématu nikdy nestojí jako holý podmět.** Jednou je v jednotném
+ *   čísle („Sčítání do 100"), jindy v množném („Vyjmenovaná slova po B"), takže
+ *   přísudek by se u poloviny témat neshodoval — vznikalo „Vyjmenovaná slova
+ *   po B ti evidentně jde". Předřazené „Téma" drží podmět v jednotném čísle.
  * - **Co dál je vždy v 1. osobě množného čísla** („projdeme si to spolu",
  *   ne „procvič si to"). Dítě má cítit, že na to nezůstalo samo — výkon
  *   patří jemu, další krok děláme společně.
@@ -97,40 +106,60 @@ function getSubjectTerms(subject: string, isDiktat: boolean): SubjectTerms {
   }
 }
 
-/** Nápovědu zmíníme jen u starších a jen pokud byla použita. */
+/**
+ * Nápovědu zmíníme jen u starších a jen pokud byla použita.
+ *
+ * Podmětem je nápověda, ne dítě — tím se věta obejde bez rodové koncovky
+ * („jsi využil/a"), kterou aplikace stejně nemá z čeho určit.
+ */
 function helpNote(helpUsedCount: number): string {
   if (helpUsedCount <= 0) return "";
-  return ` Nápovědu jsi využil/a ${helpUsedCount}krát.`;
+  const SLOVY = ["", "jednou", "dvakrát", "třikrát", "čtyřikrát", "pětkrát"];
+  const kolikrat = SLOVY[helpUsedCount] ?? `${helpUsedCount}krát`;
+  return ` Nápověda ti pomohla ${kolikrat}.`;
 }
 
+/**
+ * Hodnocení od 80 % výš — tedy i při plném počtu.
+ *
+ * Proto `vseSpravne`: varianty se losují, a bez téhle větve mohlo dítě dostat
+ * za 6 z 6 větu „skoro všechno bylo správně". Kdo měl všechno, má se to
+ * dozvědět; kdo měl o jednu chybu míň než všechno, nemá slyšet „všechno".
+ */
 function buildGreatEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean): string {
   const { correctCount, totalTasks, helpUsedCount, topicTitle } = input;
+  const vseSpravne = correctCount === totalTasks;
+  // „Máš všechno správně" místo „Máš 6 z 6 správně" — přirozenější a zároveň
+  // se vyhne skloňování číslovky s podstatným jménem.
+  const skore = vseSpravne ? "všechno správně" : `${correctCount} z ${totalTasks} správně`;
 
   if (isYoung) {
     if (helpUsedCount === 0) {
       return pick([
-        `Skvělé! Zvládl/a jsi ${correctCount} z ${totalTasks} správně, a úplně sám/sama. Příště si dáme něco těžšího.`,
-        `Paráda! ${topicTitle} ti jde výborně. Jdeme dál!`,
-        `Výborně, skoro všechno bylo správně — můžeš na sebe být hrdý/á. Tohle už umíme.`,
+        `Skvělé! Máš ${skore}, a úplně bez pomoci. Příště si dáme něco těžšího.`,
+        `Paráda! Téma ${topicTitle} ti jde výborně. Jdeme dál!`,
+        vseSpravne
+          ? `Výborně, všechno správně — a bez jediné nápovědy. Tohle už umíme.`
+          : `Výborně, skoro všechno bylo správně — a bez nápovědy. Tohle už umíme.`,
       ]);
     }
     return pick([
-      `Pěkně ti to šlo! Máš ${correctCount} z ${totalTasks} správně. Příště to zkusíme s menší nápovědou.`,
-      `Hezky! ${topicTitle} už ti jde. Nápovědu budeme brzy potřebovat míň.`,
+      `Pěkně ti to šlo! Máš ${skore}. Příště to zkusíme s menší nápovědou.`,
+      `Hezky! Téma ${topicTitle} už ti jde. Nápovědu budeme brzy potřebovat míň.`,
     ]);
   }
 
   // Grade 4+: 2-3 věty
   if (helpUsedCount === 0) {
     return pick([
-      `Výborně zvládnuto! V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně, a to bez jediné nápovědy. Ukazuješ velkou samostatnost — příště si můžeme dát něco těžšího.`,
-      `Skvělý výkon v ${terms.activity}! ${correctCount} z ${totalTasks} správně a bez pomoci, to je na jedničku. Jdeme dál.`,
-      `${topicTitle} ti evidentně jde. ${correctCount} správných z ${totalTasks} bez nápovědy je vynikající výsledek — posuneme se o kus dál.`,
+      `Výborně zvládnuto! V tématu ${topicTitle} máš ${skore}, a to bez jediné nápovědy. Je za tím pěkný kus samostatné práce — příště si můžeme dát něco těžšího.`,
+      `Skvělý výkon v ${terms.activity}! ${vseSpravne ? "Všechno" : `${correctCount} z ${totalTasks}`} správně a bez pomoci, to je na jedničku. Jdeme dál.`,
+      `Téma ${topicTitle} ti evidentně jde. ${vseSpravne ? "Všechno správně" : `${correctCount} správných z ${totalTasks}`} bez nápovědy je vynikající výsledek — posuneme se o kus dál.`,
     ]);
   }
   return pick([
-    `Dobře ti to šlo! V tématu ${topicTitle} máš ${correctCount} z ${totalTasks} správně.${helpNote(helpUsedCount)} Příště zkusíme míň nápovědy a uvidíš, že to půjde.`,
-    `Solidní výkon v ${terms.activity}. ${correctCount} z ${totalTasks} je výborný základ.${helpNote(helpUsedCount)} Příště se bez nápovědy obejdeme.`,
+    `Dobře ti to šlo! V tématu ${topicTitle} máš ${skore}.${helpNote(helpUsedCount)} Příště zkusíme míň nápovědy a uvidíš, že to půjde.`,
+    `Solidní výkon v ${terms.activity}. ${vseSpravne ? "Všechno správně" : `${correctCount} z ${totalTasks}`} je výborný základ.${helpNote(helpUsedCount)} Příště se bez nápovědy obejdeme.`,
   ]);
 }
 
@@ -141,7 +170,7 @@ function buildGoodEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean):
     if (helpUsedCount > 0) {
       return pick([
         `Není to špatné! Máš ${correctCount} z ${totalTasks} správně. Ještě si to spolu projdeme a půjde to líp.`,
-        `Dobře! ${topicTitle} ještě chvilku procvičíme a bude to lepší.`,
+        `Dobře! Téma ${topicTitle} ještě chvilku procvičíme a bude to lepší.`,
       ]);
     }
     return pick([
@@ -161,14 +190,14 @@ function buildWeakEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean):
 
   if (isYoung) {
     return pick([
-      `Nevadí! ${topicTitle} ještě chce procvičit. Projdeme si to spolu od začátku a půjde to.`,
+      `Nevadí! Téma ${topicTitle} ještě chce procvičit. Projdeme si to spolu od začátku a půjde to.`,
       `Tohle ještě není ono, a to vůbec nevadí — učíš se. Zkusíme to spolu ještě jednou.`,
     ]);
   }
 
   return pick([
     `V tématu ${topicTitle} to zatím není úplně jisté — máš ${correctCount} z ${totalTasks} správně.${helpNote(helpUsedCount)} Nic se neděje, koukneme se na téma znovu a v klidu si to projdeme od základů.`,
-    `${topicTitle} ti zatím dělá potíže — máš ${correctCount} z ${totalTasks}. Vůbec nevadí, každý potřebuje trochu víc času. ${terms.encouragement}.`,
+    `Téma ${topicTitle} ti zatím dělá potíže — máš ${correctCount} z ${totalTasks}. Vůbec nevadí, každý potřebuje trochu víc času. ${terms.encouragement}.`,
   ]);
 }
 

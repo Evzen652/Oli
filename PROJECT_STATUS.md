@@ -146,6 +146,21 @@ src/
 
 ### Session 2026-09-13 (42) — start: ověření stavu, oprava protokolu:
 
+- ✅ **Slovní hodnocení pro dítě opraveno** (`sessionEvaluator.ts`): pryč jsou
+  rodové lomítkové tvary („Zvládl/a jsi", „sám/sama", „hrdý/á", „využil/a"),
+  pryč je „skoro všechno bylo správně" při plném počtu, a název tématu už
+  nestojí jako holý podmět (rozbíjelo shodu: „Vyjmenovaná slova po B ti
+  evidentně jde"). Hlídá `src/test/session-evaluator-text.test.ts` — pět
+  měřítek, každé ověřené obráceně.
+- ℹ️ **Opravena diagnóza AI klíčů z předání.** Tvrdilo, že bez nich „slovní
+  hodnocení a týdenní zpráva nejsou" — obojí přitom běží lokálně bez AI
+  a edge funkce `session-evaluation` / `weekly-report` aplikace vůbec nevolá.
+  `404 model_not_found` není vadný klíč: Groq vyřadil model
+  `llama-3.3-70b-versatile` 16. 8. 2026.
+- 🟠 **Zbývá k rozhodnutí:** lomítkové tvary jsou i na ~60 dalších místech
+  (19 souborů, mj. `i18n/cs.ts` a dětské obrazovky); a `session-evaluation`
+  je nasazená, nevolaná, a přesto uvedená v `legal.ts` mezi místy zpracování.
+
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací
   200. Na originu leží 33 větví `content-fix/*` a `wip/content-fix/*`, mazání

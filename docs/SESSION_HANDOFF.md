@@ -127,6 +127,30 @@ tvrdilo „4 745 testů prochází“ — buď se sada tehdy nedoběhla celá, n
 nález přehlédl. **Před vydáním pouštěj `npm test` celý a dívej se na součet,
 ne na poslední řádek.**
 
+### Session 42 (2026-09-13) — pokračování: nápovědy a slovní hodnocení
+
+Po opravě kořene úniku (viz výš) prošlo revizí i slovní hodnocení, které dítě
+vidí po sezení. Vygenerovat si skutečný výstup odhalilo tři chyby, které
+v žádné kontrole nebyly:
+
+- **Rodové lomítkové tvary** — „Zvládl/a jsi 5 z 6 správně, a úplně sám/sama",
+  „můžeš na sebe být hrdý/á", „Nápovědu jsi využil/a 1krát". Projekt má přitom
+  pravidlo, že formulace pro dítě jsou bez rodových koncovek; u druháka, který
+  se teprve rozečítá, je lomítko navíc překážka.
+- **„skoro všechno bylo správně" při plném počtu** — varianty se losují, takže
+  dítě s 6 z 6 mohlo dostat větu, že to skoro dokázalo.
+- **Rozbitá shoda u názvu tématu** — „Vyjmenovaná slova po B ti evidentně jde".
+  Název je jednou v jednotném čísle, jindy v množném, takže jako holý podmět
+  shodu neudrží. Řeší předřazené „Téma".
+
+Hlídá `src/test/session-evaluator-text.test.ts` (pět měřítek, každé ověřené
+i obráceně — po dočasném vrácení chyby spadne).
+
+⚠️ **Lomítkové tvary jsou i jinde:** `grep` najde ~60 výskytů v 19 souborech,
+mimo jiné v `i18n/cs.ts` („Procvičovat si sám/sama", „Zapomněl/a jsem heslo"),
+`categoryInfo.ts`, `weeklyReportGenerator.ts` a na dětských obrazovkách.
+Opraveno zatím jen slovní hodnocení — zbytek čeká na rozhodnutí.
+
 ### Session 40 (2026-09-11/12) — opravný průchod obsahu, uzavřeno
 
 Inventura našla 87 témat k opravě, rozdělených do 22 dávek; každá měla autora
@@ -187,10 +211,29 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
 1. ⛔ **Proklikat tři scénáře vázané na účet** — registrace rodiče →
    spárování dítěte → smazání účtu, a v Auth → Users ověřit, že účet zmizel.
    **Claude to udělat nesmí** (zakládat účty a zadávat hesla je zakázané).
-2. ⛔ **Opravit oba AI klíče.** `GROQ_API_KEY` nemá přístup k modelu
-   (`404 model_not_found`), `GEMINI_API_KEY` vrací „Please pass a valid API
-   key". Spuštění to neblokuje, ale slovní hodnocení a týdenní zpráva bez toho
-   nejsou.
+2. ⚠️ **AI klíče — méně naléhavé, než se tu psalo.** Do 13. 9. tu stálo, že
+   „slovní hodnocení a týdenní zpráva bez toho nejsou". **Není to pravda:**
+   obojí běží lokálně bez AI — hodnocení přes `generateLocalEvaluation`
+   v `src/lib/sessionEvaluator.ts` (Groq byl odstraněn kvůli klíči
+   v klientském bundlu, nález C1), týdenní zpráva přes
+   `src/lib/weeklyReportGenerator.ts` („No AI needed"). Edge funkce
+   `session-evaluation` i `weekly-report` jsou nasazené, ale **aplikace je
+   nevolá** — v `src/` na ně není jediné `functions.invoke`.
+
+   `404 model_not_found` navíc není vadný klíč: kód volá Groq model
+   `llama-3.3-70b-versatile`, který Groq **vyřadil 16. 8. 2026** (doporučená
+   náhrada `openai/gpt-oss-120b` nebo `qwen/qwen3.6-27b`). Model je zadrátovaný
+   na třech místech — `analyze-misconceptions`, `weekly-report`, `tutor-chat`.
+   `GEMINI_API_KEY` s hláškou „Please pass a valid API key" vypadá na skutečně
+   neplatný klíč; kód k tomu volá `gemini-2.0-flash`, zatímco `CLAUDE.md`
+   předepisuje `gemini-2.5-flash-lite`.
+
+   **Na rozhodnutí:** z celé AI větve se reálně volá jen
+   `analyze-misconceptions` (z `performanceTracker`) a `tutor-chat` (vypnutý
+   přes `FEATURES.studentChat`). Buď se `session-evaluation` napojí, nebo se
+   zruší — teď je v nejhorším stavu: nasazená, nevolaná, a `legal.ts` ji
+   rodičům uvádí mezi místy zpracování dat, takže zásady slibují zpracování,
+   které neprobíhá.
 3. ⛔ **Doplnit Redirect URLs v Supabase** — Authentication → URL Configuration
    → Redirect URLs musí obsahovat `https://oli-edu.com`
    i `https://oli-edu.com/reset-password`. Co tam není, Supabase zahodí
