@@ -19,11 +19,13 @@ git fetch origin && git status -sb && git worktree list
 - **Čistý strom shodný s `origin/main` není důkaz aktuálnosti**, dokud jsi
   neudělal `fetch`. Jedna session takhle začala v worktree, kde všechno
   vypadalo v pořádku, jen tam chyběla práce posledních dnů.
-- Repo má **sedm worktree** a většina sedí na starých commitech. Než v nějakém
-  začneš, přepni ho na `main` a `git pull`.
-- ⚠️ Worktree `competent-johnson-de23e8` sleduje **zastaralý remote**, takže
-  tam `git status` hlásí „ahead" vůči špatné větvi. Pushuje se z něj přes
-  `git push origin <vetev>:main`.
+- **Worktree je od 12. 9. jediný** (hlavní repo). Do té doby jich bylo sedm až
+  dvacet dva a většina seděla na starých commitech — kdyby nějaký znovu přibyl,
+  než v něm začneš, přepni ho na `main` a `git pull`. Zastaralý worktree
+  `competent-johnson-de23e8` už neexistuje.
+- ⚠️ **`git worktree remove --force` následuje junction `node_modules`** a smaže
+  obsah cíle — tedy `node_modules` hlavního repa (stalo se 13. 9., opravil
+  `npm ci`).
 
 ---
 
@@ -143,11 +145,11 @@ umíš udělat místo toho — ne až po půl hodině práce.
 
 ---
 
-## Aktuální fáze (2026-09-07)
+## Aktuální fáze (2026-09-13)
 
-Nedělá se obsah, ale **příprava spuštění**. Kód je hotový; čeká se na deploy
-a na čtyři rozhodnutí uživatele. Postup pro něj je v runbooku odkázaném
-z [`SESSION_HANDOFF.md`](SESSION_HANDOFF.md) §2.
+Nedělá se obsah, ale **příprava spuštění**. Obsahový opravný průchod dojel
+12. 9. a je uzavřený. Postup stojí na **osmi úkonech, které může udělat jen
+uživatel** — `SESSION_HANDOFF.md` §2, runbook je odtud odkazaný.
 
 Nejbližší práce, kterou může vzít Claude, je v `SESSION_HANDOFF.md` §4 —
-začíná podkladem karet v rozcestníku (72 % plochy nese tint určený pro čip).
+nahoře kořen úniku v nápovědě (`doplnVelkou`, 17 témat 5. ročníku).
