@@ -29,8 +29,23 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - ✅ **Dávka 1, téma 1/4 — `Látka a těleso`** (13. 9., `30711bf`).
 - ✅ **Dávka 1, téma 2/4 — `Skupenství látek`** (13. 9.). Fyzika **8/13**,
   šestka **13 ze 117**. Zbývá `Atomy, molekuly` a `Pohyb částic, difúze`.
-- ⏳ **K posouzení zvlášť:** `check:hints` hlásí nález u
-  `g3-prvouka-…-statni-symboly` (L1, překryv 67 %). Nesouvisí s prací na šestce.
+- ✅ **VYŘÍZENO 13. 9. — nález `check:hints` u `g3-prvouka-…-statni-symboly`**
+  (L1, překryv 67 %). Ručně přepočítáno: stroj měl pravdu. Nápověda dodávala
+  dva ze tří kmenů klíče (*poslanci* → Poslanecká sněmovna, *senátoři* → Senát)
+  a k tomu návod, jak je složit — úloha šla vyřešit přiřazením slov, bez
+  znalosti. Přepsána malá i velká nápověda (velká byla horší, jen ji kontrola
+  nesleduje). Ověřeno obousměrně. Zámek obsahu se **nepřegeneroval** — otiskuje
+  jen zadání a klíč, nápovědy ne.
+- ✅ **`check:hints` umí `REPEATS` (výchozí 8)**, jako `lint-agreement.ts`.
+  Původní domněnka, že minulé „0 nálezů" způsobilo losování, **neplatí** —
+  způsobilo ho neinkrementované počítadlo (opraveno v `cd4ac9f`). Losování je
+  ale skutečná druhá díra: jeden běh vidí 12 606 unikátních čtveřic, osm 42 436
+  a osmé pořád přidává ~4 000, tedy **jeden vzorek pokrývá asi třetinu obsahu**.
+  Při `REPEATS=8` i `25` je teď repo na 0 nálezů.
+- 🐛 **Nový nález k opravě zvlášť:** `generator-task-count` je náhodně červený
+  u `g6-fyz-mereni-casu-6` (L1 dá někdy 11 unikátních úloh místo 12; 3 ze 4
+  běhů projdou). Distraktor vyjde shodně s klíčem a úloha se zahodí — přesně
+  scénář, na který ten test vznikl. Netýká se opravy nápovědy ve trojce.
 
 Ke stejnému průchodu:
 

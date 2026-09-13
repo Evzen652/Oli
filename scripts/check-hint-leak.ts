@@ -8,6 +8,7 @@
 //
 //   npm run check:hints            (všechna témata)
 //   IDS=g2-prv-prvni-pomoc npm run check:hints
+//   REPEATS=20 npm run check:hints
 //
 // Nález NENÍ důkaz chyby: nápověda typu „Porovnej dva fakty: kratší cesta
 // nemá chodník, delší ho má" má vysoký překryv, a přesto je to legitimní
@@ -26,6 +27,14 @@
 // `src/lib/hintLeakStructured.ts` a blokující verzi má
 // `src/test/hint-structured-leak.test.ts`; tady se jen vypisují, ať jde report
 // číst celý na jednom místě.
+//
+// 2026-09-13 podruhé: generátory losují, takže jeden běh nevidí celý obsah.
+// Změřeno napříč repem: jedno opakování dá 12 606 unikátních čtveřic
+// (téma, úroveň, otázka, malá nápověda), osm jich dá 42 436 — a osmé
+// opakování pořád přidává skoro 4 000 nových. Jeden běh tedy vidí zhruba
+// třetinu a „0 nálezů" z něj není důkaz čistoty. Proto `REPEATS` jako
+// u `lint-agreement.ts`. Dedup je uvnitř tématu, takže opakování nález
+// nezduplikuje — jen doplní varianty, které se poprvé nevylosovaly.
 import { getAllTopics } from "@/lib/contentRegistry";
 import { pad } from "@/lib/czechGrammar";
 import {
@@ -45,6 +54,7 @@ const JEDNOTKY = new Set(["min","minut","hod","hodin","sek","sekun","cm","mm","k
 const STOP = new Set(["a","i","se","si","je","to","na","do","ho","mu","ji","že","co","by","ne","ale","nebo","když","aby","pak","už","jen","ve","v","z","ze","k","ke","s","o","po","za","při","pro","the"]);
 const slova = (s: string) => (s.toLowerCase().match(/\p{L}{3,}/gu) ?? []).filter((w) => !STOP.has(w)).map((w) => w.slice(0, 5));
 
+const REPEATS = Number(process.env.REPEATS ?? 8);
 const zadane = (process.env.IDS ?? "").split(",").filter(Boolean);
 const ids = zadane.length > 0 ? zadane : getAllTopics().filter((t) => t.generator).map((t) => t.id);
 let nalezu = 0;
@@ -59,8 +69,11 @@ for (const id of ids) {
   // úseků pravěku…") a mění se jen položky s nápovědou; kdyby se dedup dělal
   // taky podle otázky, projela by se jedna úloha z tématu a zbytek by zmizel.
   // Na tomhle skript 13. 9. tiše prošel kolem úniku, který blokující test našel.
+  // Sady jsou nad celým tématem, tedy i přes opakování — proto se nález
+  // z prvního běhu v dalších neopakuje a přibývají jen nové varianty.
   const videnaOtazka = new Set<string>();
   const videnaNapoveda = new Set<string>();
+  for (let r = 0; r < REPEATS; r++)
   for (const lvl of [1, 2, 3]) for (const task of t.generator(lvl) ?? []) {
     // ── Strukturované typy: řešení není v `correctAnswer` ──────────────
     const h1 = task.hints?.[1] ?? "";
@@ -117,4 +130,5 @@ for (const id of ids) {
 console.log(`
 K posouzení: ${pad(nalezu, "NÁPOVĚDA")} podle překryvu s klíčem`
   + ` a ${pad(strukturovanych, "NÁPOVĚDA")} u strukturovaných typů.`
-  + ` Nález není důkaz chyby — každou posuď ručně.`);
+  + ` Nález není důkaz chyby — každou posuď ručně.`
+  + ` (REPEATS=${REPEATS})`);

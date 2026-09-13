@@ -246,11 +246,45 @@ src/
   tím šla teoreticky projít permutacemi místo obsahem. Opraveno řazením
   `options` v klíči; na stávajícím obsahu **žádné téma pod práh nespadlo**, což
   je zároveň důkaz, že se na permutace zatím nic nespoléhalo.
-- ⚠️ **`check:hints` má nález ve 3. ročníku, který nesouvisí s touhle prací**
-  (`g3-prvouka-…-statni-symboly`, L1, překryv 67 %): nápověda „Jednu komoru
-  tvoří poslanci, druhou senátoři" u klíče „Poslanecká sněmovna a Senát".
-  Minule kontrola hlásila 0 — generátory losují, takže **„0 nálezů" není důkaz
-  čistoty**, jen důkaz toho, co se zrovna vylosovalo. Posoudit zvlášť.
+- ✅ **Nález `check:hints` ve 3. ročníku posouzen a opraven.**
+  (`g3-prvouka-…-statni-symboly`, L1, překryv 67 %.) Ruční přepočet dal stroji
+  za pravdu: klíč má tři obsahová slova (*poslanecká*, *sněmovna*, *senát*)
+  a nápověda „Jednu komoru tvoří poslanci, druhou senátoři — od těchto slov se
+  odvozují i názvy" dvě z nich dodala **i s návodem, jak je složit**. Dítě mohlo
+  vybrat správně bez jediné znalosti o parlamentu, jen přiřazením kmenů slov.
+  Malá nápověda nově vede na rozlišení *oficiální název × popis postavení komor*
+  a na vyloučení cizích parlamentů. **Opravena i velká nápověda**, přestože ji
+  kontrola nehlásila: říkala „dvouslovný název odvozený od poslanců, jednoslovný
+  od senátorů", což je úplný recept na klíč — `CONTENT_AUTHORING` §0.1 přitom
+  žádá „pořád neříká výsledek" i od velké. Teď dává rozlišovací fakta
+  (200 zákonodárců × 81, pořadí projednávání) a slovo si musí vybavit dítě.
+  Ověřeno obousměrně: po opravě hlásí téma 0, po dočasném vrácení původní
+  nápovědy zase 1.
+- ℹ️ **Zámek obsahu přegenerovat nebylo třeba — a nemělo se.**
+  `frozen-content-unchanged` otiskuje jen `question` + `correctAnswer`
+  (viz hlavička testu: „nápovědy … se **smí** měnit bez blokace"), takže po
+  změně nápovědy prošel beze změny. `UPDATE_FROZEN_SNAPSHOT=1` by nebyl
+  neškodný no-op: přepíše zámek **všech** témat, takže by tiše pohltil
+  jakýkoli nesouvisející posun zadání nebo klíče. Týž omyl je o pár řádků výš
+  u kořene úniku — stojí za to ho už nezopakovat potřetí.
+- ✅ **`check:hints` má `REPEATS` jako `lint-agreement.ts` (výchozí 8).**
+  Podnět byl správný, ale původní diagnóza ne: „0 nálezů" z minulého průchodu
+  **nezpůsobilo losování**, nýbrž neinkrementované počítadlo `nalezu`
+  (opraveno v `cd4ac9f` — nález se vypsal, souhrn pod ním hlásil nulu).
+  Losování je ale druhá, samostatná díra a teď je změřená: jedno opakování
+  vidí 12 606 unikátních čtveřic (téma, úroveň, otázka, malá nápověda), osm
+  jich vidí 42 436 a osmé pořád přidává skoro 4 000 — **jeden běh tedy pokrývá
+  zhruba třetinu obsahu a nesatururje se**. Cena je 20 s → 32 s. Dedup je uvnitř
+  tématu, takže opakování nález nezduplikuje (ověřeno: 1 nález, ne 8).
+- 📊 **Obsah po rozšíření síta čistý:** `check:hints` hlásí 0 nálezů při
+  `REPEATS=8` i `REPEATS=25`. To je poprvé, kdy „0" u téhle kontroly něco
+  znamená — dřív šlo o jeden vzorek s vadným počítadlem.
+- 🐛 **Nález mimo tenhle úkol: `generator-task-count` je u fyziky šestky
+  náhodně červený.** `g6-fyz-mereni-casu-6` L1 dá někdy 11 unikátních úloh
+  místo požadovaných 12 (3 ze 4 běhů projdou, počet propadlých dvojic kolísá
+  1–2). Přesně ta příčina, kterou test sám pojmenovává: distraktor vyjde shodně
+  s klíčem a úloha se zahodí. Netýká se opravy nápovědy — diff je jen
+  `grade-3/prvouka` + skript. **K opravě zvlášť.**
 
 - ✅ **Stav ověřen sondou, ne čtením** — `origin/main` na `50be8b2`, strom
   čistý, worktree jediný, všech sedm edge funkcí (vč. `anon-progress`) vrací

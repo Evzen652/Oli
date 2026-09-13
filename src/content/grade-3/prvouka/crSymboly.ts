@@ -152,8 +152,8 @@ const POOL_L1: PracticeTask[] = [
       { o: "Rada a Kongres", why: "Kongres mají Spojené státy, rady bývají ve městech a krajích. Parlament je netvoří." },
     ],
     [
-      "Jednu komoru tvoří poslanci, druhou senátoři — od těchto slov se odvozují i názvy.",
-      "Obě komory sídlí v Praze na Malé Straně. Jedna z nich má dvouslovný název odvozený od poslanců, druhá název jednoslovný odvozený od senátorů. Když si to spojíš, poznáš mezi možnostmi jedinou dvojici oficiálních názvů.",
+      "Každá komora má vlastní oficiální název, ne jen označení, která z nich je horní a která dolní. Hledej dvojici, kterou opravdu užívá česká ústava — ne pojmenování z ciziny.",
+      "Obě komory sídlí v Praze na Malé Straně, ale liší se. V jedné zasedá 200 zákonodárců a zákon projednává jako první, ve druhé jich je 81 a posuzuje ho až potom. Vzpomeň si, jak se říká členům každé z nich — od toho slova se odvíjí i oficiální název komory.",
     ],
     "Český parlament tvoří Poslanecká sněmovna (200 poslanců) a Senát (81 senátorů). Obě komory se podílejí na schvalování zákonů, ale mají různé pravomoci i různě dlouhé volební období.",
   ),
