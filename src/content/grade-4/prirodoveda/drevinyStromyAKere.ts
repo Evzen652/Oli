@@ -44,7 +44,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Který strom je národním stromem Česka?", "Lípa", [
     { value: "Dub", why: "Dub je vážený strom, ale národním stromem je lípa." },
     { value: "Bříza", why: "Bříza národním stromem není." },
-    { value: "Smrk", why: "Smrk je u nás nejrozšířenější, ale národním stromem je lípa." },
+    { value: "Smrk ztepilý", why: "Smrk je u nás nejrozšířenější, ale národním stromem je lípa." },
   ], {
     hints: ["Z květů tohoto stromu se vaří čaj.", "Má listy ve tvaru srdíčka a v červenci voní medem. Rostla u kostelů a na návsích."],
     explanation: "Národním stromem Česka je lípa. Má srdčité listy, v létě voní a z jejích květů se vaří čaj. Lípa je symbolem Čechů a Slovanů.",
@@ -90,8 +90,8 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Strom má jeden hlavní kmen a korunu. Keř se větví už u země a má víc slabších kmínků. Proto je dub strom a líska keř.",
   }),
   choice("Který keř má na jaře voňavé fialové nebo bílé květy?", "Šeřík", [
-    { value: "Bez černý", why: "Bez černý kvete bílými plochými okolíky, fialový není." },
-    { value: "Líska", why: "Líska kvete brzy na jaře žlutými jehnědami." },
+    { value: "Bez černý", why: "Bez černý kvete bílými plochými okolíky, fialové květy nemá." },
+    { value: "Líska obecná", why: "Líska kvete brzy na jaře žlutými jehnědami." },
     { value: "Hloh", why: "Hloh kvete bíle, ale fialové květy nemá." },
   ], {
     hints: ["Jeho květy tvoří velké hrozny a v květnu krásně voní.", "Bývá na zahradách a u plotů. Kvete fialově nebo bíle a lidé si ho dávají do váz."],
@@ -115,7 +115,7 @@ const POOL_L1: PracticeTask[] = [
   }),
   choice("Jaký plod má jírovec, kterému říkáme kaštan?", "Hnědá semena v ostnaté slupce", [
     { value: "Žalud s číškou", why: "Žalud má dub." },
-    { value: "Oříšek v zelené slupce", why: "Oříšky má líska." },
+    { value: "Oříšek ukrytý v zelené slupce", why: "Oříšky má líska." },
     { value: "Šišku", why: "Šišky mají jehličnany." },
   ], {
     hints: ["Na podzim je děti sbírají v parcích a dělají z nich zvířátka.", "Lesklé kuličky jsou schované v zeleném obalu s bodlinami, který při dopadu na zem praskne."],
@@ -125,7 +125,7 @@ const POOL_L1: PracticeTask[] = [
 
 const POOL_L2: PracticeTask[] = [
   choice("Čím se liší listnatý strom od jehličnatého?", "Listnatý má listy, jehličnatý jehlice", [
-    { value: "Listnatý má vždy větší plody", why: "Velikost plodů je rozdílná u různých stromů. Rozdíl je v listech." },
+    { value: "Listnatý strom má vždycky větší plody", why: "Velikost plodů je rozdílná u různých stromů. Rozdíl je v listech." },
     { value: "Jehličnatý na zimu opadá", why: "Jehličnany na zimu většinou neopadají, výjimkou je modřín." },
     { value: "Listnatý roste jen v teple", why: "Listnaté stromy rostou u nás i na horách." },
   ], {
@@ -158,7 +158,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Jak se šíří plody javoru?", "Křidélka se točí a nese je vítr", [
     { value: "Sezobou je ptáci", why: "Javorové nažky ptáci nesezobou. Nese je vítr." },
-    { value: "Odnesou je mravenci", why: "Mravenci je neroznášejí." },
+    { value: "Odnesou je pryč mravenci", why: "Mravenci je neroznášejí." },
     { value: "Odplavou po vodě", why: "Javorové plody letí vzduchem, ne po vodě." },
   ], {
     hints: ["Jak padá javorový plod ze stromu?", "Dva plody s křidélky se při pádu točí jako vrtulka helikoptéry. Co je odnese daleko od stromu?"],
@@ -174,7 +174,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Co je angrešt?", "Keř s trny a jedlými plody", [
     { value: "Druh jehličnanu", why: "Angrešt není jehličnan, má listy." },
-    { value: "Plevel na loukách", why: "Angrešt se pěstuje na zahradách, není to plevel." },
+    { value: "Plevel rostoucí na loukách", why: "Angrešt se pěstuje na zahradách, není to plevel." },
     { value: "Druh dubu", why: "Angrešt je keř, ne strom." },
   ], {
     hints: ["Roste na zahradách vedle rybízu.", "Má trny a velké zelené nebo červené bobule, které se trhají v létě."],
@@ -182,7 +182,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Jak se dá zjistit, kolik let bylo pokácenému stromu?", "Spočítáš letokruhy na pařezu", [
     { value: "Změříš jeho výšku", why: "Výška stáří neurčí. Stromy rostou různě rychle." },
-    { value: "Spočítáš jeho větve", why: "Počet větví stáří neukáže." },
+    { value: "Spočítáš jeho hlavní větve", why: "Počet větví stáří neukáže." },
     { value: "Podle barvy listí", why: "Barva listí se mění s ročním obdobím, ne se stářím." },
   ], {
     hints: ["Na pařezu uvidíš kroužky.", "Každý rok strom přiroste o jeden kruh dřeva. Co tedy musíš na pařezu udělat?"],
@@ -207,7 +207,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Z čeho se dělá lipový čaj?", "Ze sušených lipových květů", [
     { value: "Z lipových listů", why: "Čaj se dělá z květů, ne z listů." },
     { value: "Z lipové kůry", why: "Kůra se na čaj nepoužívá." },
-    { value: "Z lipových semen", why: "Semena se na čaj nepoužívají." },
+    { value: "Z lipových semen a plodů", why: "Semena se na čaj nepoužívají." },
   ], {
     hints: ["Kdy lípa v létě voní medem?", "V červnu a červenci se trhají voňavé žlutavé kvítky, suší se a pak se z nich vaří čaj na nachlazení."],
     explanation: "Lipový čaj se vaří ze sušených květů lípy. Trhají se v létě, když lípa kvete a voní medem. Pomáhá při nachlazení.",
@@ -234,7 +234,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč jsou lesy jen ze smrků problémem?", "Snadno je zničí kůrovec a vichřice", [
     { value: "Smrk u nás vůbec neroste", why: "Smrk u nás roste, ale ne všude se mu daří." },
     { value: "Smrky jsou moc nízké", why: "Výška nevadí. Vadí, že je tam jen jeden druh." },
-    { value: "Smrkové lesy jsou odolnější", why: "Je to naopak, smíšené lesy jsou odolnější." },
+    { value: "Smrkové lesy jsou mnohem odolnější", why: "Je to naopak, smíšené lesy jsou odolnější." },
   ], {
     hints: ["Co se stane, když přijde škůdce, který napadá jen smrky?", "Kůrovec se v lese plném smrků šíří ze stromu na strom. A mělké kořeny smrků vichřice snadno vyvrátí."],
     explanation: "V lese z jediného druhu se škůdce jako kůrovec šíří bez zábran. Smrky mají mělké kořeny, takže je vyvrátí vítr. Smíšený les je mnohem odolnější.",
@@ -249,7 +249,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč jsou stromy na horských hřebenech nízké a pokroucené?", "Silný vítr, mráz a krátké léto", [
     { value: "Někdo je pořád ořezává", why: "Stromy na hřebenech nikdo neořezává. Formuje je počasí." },
-    { value: "Na horách je moc světla", why: "Světla je dost, ale vítr a mráz jim nedovolí vyrůst." },
+    { value: "Na horách je až moc světla", why: "Světla je dost, ale vítr a mráz jim nedovolí vyrůst." },
     { value: "Jsou to mladé stromky", why: "Často jsou to staré stromy, jen rostou pomalu." },
   ], {
     hints: ["Jaké počasí je na vrcholcích hor?", "Nahoře to hodně fouká, dlouho leží sníh a teplých dnů je málo. Co to udělá s růstem stromu?"],
@@ -258,14 +258,14 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč jsou staré duby tak cenné pro přírodu?", "V dutinách hnízdí ptáci a žije v nich hmyz", [
     { value: "Dají nejvíc palivového dřeva", why: "Nejde o dřevo na topení. Starý dub je domov mnoha druhů." },
     { value: "Mladé duby jsou jedovaté", why: "Mladé duby jedovaté nejsou." },
-    { value: "Staré duby nemají žádnou cenu", why: "Mají velkou cenu — žijí na nich stovky druhů." },
+    { value: "Staré duby už nemají žádnou cenu", why: "Mají velkou cenu — žijí na nich stovky druhů." },
   ], {
     hints: ["Co najdeš ve starém stromě, co mladý nemá?", "Starý dub má dutiny, suché větve a rozpraskanou kůru. Kdo se v tom všem schová a najde potravu?"],
     explanation: "Na starém dubu žijí stovky druhů hmyzu, v dutinách hnízdí sovy, datli i netopýři a na kůře rostou lišejníky. Proto se staré stromy chrání.",
   }),
   choice("Jak se les sám obnoví na vykácené pasece?", "Nejdřív byliny, pak keře a nakonec stromy", [
     { value: "Hned vyrostou vysoké stromy", why: "Stromy potřebují desítky let. Nejdřív přijdou rychlejší rostliny." },
-    { value: "Bez vysazení tam nic nevyroste", why: "Příroda si poradí i sama, jen pomaleji." },
+    { value: "Bez vysazení tam už nic nevyroste", why: "Příroda si poradí i sama, jen pomaleji." },
     { value: "Vyrostou jen jehličnany", why: "Na pasece se objeví mnoho druhů, nejdřív byliny a keře." },
   ], {
     hints: ["Která rostlina vyroste nejrychleji?", "Za rok zaroste paseka trávou a kopřivami, pak přijdou maliny a keře a v jejich stínu začnou růst stromky."],
@@ -273,7 +273,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč v létě ulice se stromy chladí víc než ulice bez nich?", "Stromy dávají stín a vypařují vodu", [
     { value: "Stromy vyrábějí led", why: "Stromy led nevyrábějí. Chladí stínem a vypařováním vody." },
-    { value: "Stromy odhánějí slunce", why: "Slunce neodženou, jen zachytí jeho paprsky." },
+    { value: "Stromy odhánějí sluneční paprsky", why: "Slunce neodženou, jen zachytí jeho paprsky." },
     { value: "Stromy vyrábějí vítr", why: "Stromy vítr nevyrábějí." },
   ], {
     hints: ["Kde bys v horkém dni raději stál — u stromu, nebo na asfaltu?", "Koruna zachytí sluneční paprsky a z listů se vypařuje voda, která okolí ochladí jako pot tělo."],
@@ -289,7 +289,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč se listy na podzim barví dožluta a dočervena?", "Listy ztratí zelené barvivo, které si strom odebere", [
     { value: "Listy obarví mráz", why: "Barvy se objeví i bez mrazu. Strom odebírá zelené barvivo." },
-    { value: "Listy obarví slunce", why: "Slunce listy nebarví. Zelená z nich mizí." },
+    { value: "Listy obarví ostré podzimní slunce", why: "Slunce listy nebarví. Zelená z nich mizí." },
     { value: "Listy jsou nemocné", why: "Je to přirozené, stromy nejsou nemocné." },
   ], {
     hints: ["Proč jsou listy v létě zelené?", "Zelené barvivo zakrývá v listu i jiné barvy. Když ho strom na podzim odebere, co zůstane vidět?"],
@@ -328,7 +328,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Červená dužina tisu jedovatá není, ale semeno uvnitř ano — stejně jako jehlice a kůra. Proto se plody tisu nikdy nejedí.",
   }),
   choice("Proč keře na okraji lesa les chrání?", "Brzdí vítr, který by vyvracel stromy", [
-    { value: "Lákají turisty dovnitř", why: "Turisty keře spíš zdrží. Chrání les před větrem." },
+    { value: "Lákají turisty dovnitř do lesa", why: "Turisty keře spíš zdrží. Chrání les před větrem." },
     { value: "Vyrábějí vodu pro les", why: "Keře vodu nevyrábějí. Chrání les před větrem a vysycháním." },
     { value: "Nijak nechrání", why: "Chrání — zbrzdí vítr a slunce." },
   ], {

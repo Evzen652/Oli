@@ -179,7 +179,7 @@ const L2: PracticeTask[] = [
     explanation: "V dospělosti člověk pracuje a stará se o sebe i o druhé.",
   }),
   choice("Proč se změny v pubertě u kamarádů liší?", "každé tělo má vlastní tempo", [
-    { value: "někdo pubertou neprojde", why: "Projde jí každý." },
+    { value: "někdo pubertou vůbec neprojde", why: "Projde jí každý, jen jindy." },
     { value: "záleží na známkách ve škole", why: "Známky to neovlivní." },
     { value: "je to náhoda bez příčiny", why: "Řídí to hormony, u každého jindy." },
   ], {

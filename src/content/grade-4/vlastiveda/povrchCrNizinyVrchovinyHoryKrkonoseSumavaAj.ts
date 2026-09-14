@@ -50,7 +50,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Polabská nížina se jmenuje podle řeky Labe, která jí protéká. Je rovná a úrodná, pěstuje se tam obilí, řepa a zelenina.",
   }),
   choice("Kde leží Šumava?", "Na jihozápadě u Německa a Rakouska", [
-    { value: "Na severovýchodě u Polska", why: "Na severovýchodě jsou Krkonoše a Jeseníky." },
+    { value: "Na severovýchodě u hranic s Polskem", why: "Na severovýchodě jsou Krkonoše a Jeseníky." },
     { value: "Uprostřed Čech u Prahy", why: "Uprostřed Čech jsou nížiny a pahorkatiny, Šumava je na hranici." },
     { value: "Na východě u Slovenska", why: "Na hranici se Slovenskem jsou Beskydy a Bílé Karpaty." },
   ], {
@@ -66,7 +66,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Nejvyšší horou Jeseníků a celé Moravy je Praděd (1 491 m). Na jeho vrcholu stojí vysílač.",
   }),
   choice("Kterou krajinou vede hranice mezi Čechami a Moravou?", "Českomoravskou vrchovinou", [
-    { value: "Polabskou nížinou", why: "Polabská nížina je ve středních Čechách." },
+    { value: "Polabskou nížinou u Labe", why: "Polabská nížina je ve středních Čechách." },
     { value: "Krkonošemi", why: "Krkonoše leží na severu na hranici s Polskem." },
     { value: "Šumavou", why: "Šumava je na hranici s Německem a Rakouskem." },
   ], {
@@ -98,7 +98,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Lysá hora (1 323 m) je nejvyšší horou Moravskoslezských Beskyd na východě Moravy. Je to jedna z nejdeštivějších hor Česka.",
   }),
   choice("Co je pohoří?", "Skupina hor a kopců se společným jménem", [
-    { value: "Jedna samotná vysoká hora", why: "Pohoří tvoří mnoho hor, ne jedna." },
+    { value: "Jedna jediná samotná vysoká hora", why: "Pohoří tvoří mnoho hor, ne jedna." },
     { value: "Rovina bez jediného kopce", why: "Rovina je nížina, pohoří je jejím opakem." },
     { value: "Horský potok v údolí", why: "Potok v pohoří teče, ale pohoří to není." },
   ], {
@@ -114,7 +114,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Sněžka měří 1 603 metrů nad mořem. Je to nejvyšší bod Česka, ale v Alpách jsou hory vysoké přes 4 000 metrů.",
   }),
   choice("Jaká krajina v Česku převládá?", "Pahorkatiny a vrchoviny", [
-    { value: "Rozlehlé nížiny", why: "Nížin je v Česku jen malá část, hlavně Polabí a jižní Morava." },
+    { value: "Rozlehlé nížiny po celé zemi", why: "Nížin je v Česku jen malá část, hlavně Polabí a jižní Morava." },
     { value: "Vysoké velehory", why: "Velehory jako Alpy v Česku nejsou." },
     { value: "Písečné pouště", why: "Pouště v Česku nejsou." },
   ], {
@@ -125,7 +125,7 @@ const POOL_L1: PracticeTask[] = [
 
 const POOL_L2: PracticeTask[] = [
   choice("Jak se liší vrchovina od hor?", "Vrchovina je nižší a má oblejší kopce", [
-    { value: "Vrchovina je vyšší než hory", why: "Je to naopak, hory jsou vyšší." },
+    { value: "Vrchovina je vždycky vyšší než hory", why: "Je to naopak, hory jsou vyšší." },
     { value: "Vrchovina je úplná rovina", why: "Rovina je nížina. Vrchovina je zvlněná." },
     { value: "Rozdíl je jen v názvu", why: "Liší se výškou a tvarem kopců." },
   ], {
@@ -135,21 +135,21 @@ const POOL_L2: PracticeTask[] = [
   choice("Proč se v nížinách daří zemědělství?", "Mají úrodnou půdu a teplé podnebí", [
     { value: "Je tam víc sněhu", why: "V nížinách je sněhu méně. Pomáhá teplo a úrodná půda." },
     { value: "Leží blízko moře", why: "Česko u moře neleží." },
-    { value: "Jsou tam velká města", why: "Města zemědělství nepomáhají, spíš zabírají půdu." },
+    { value: "Jsou tam velká a bohatá města", why: "Města zemědělství nepomáhají, spíš zabírají půdu." },
   ], {
     hints: ["Co potřebují pole, aby dala velkou úrodu?", "Rostliny potřebují teplo, dost dlouhé léto a půdu s dostatkem živin. Kde toho je víc — dole na rovině, nebo nahoře v horách?"],
     explanation: "Nížiny jsou teplé, léto je v nich dlouhé a půda úrodná. Proto jsou Polabí a jižní Morava obilnice Česka.",
   }),
   choice("Klínovec je nejvyšší horou kterého pohoří?", "Krušných hor", [
     { value: "Krkonoš", why: "Nejvyšší horou Krkonoš je Sněžka." },
-    { value: "Jeseníků", why: "Nejvyšší horou Jeseníků je Praděd." },
+    { value: "Hrubého Jeseníku", why: "Nejvyšší horou Jeseníků je Praděd." },
     { value: "Šumavy", why: "Nejvyšší horou Šumavy je Plechý." },
   ], {
     hints: ["Klínovec leží nad Karlovými Vary u hranice s Německem.", "Je to nejvyšší vrchol dlouhého hřbetu na severozápadě Čech, kde se kdysi těžilo stříbro a cín."],
     explanation: "Klínovec (1 244 m) je nejvyšší horou Krušných hor na severozápadě Čech.",
   }),
   choice("Proč se Čechám říká kotlina?", "Uprostřed jsou nižší a dokola je lemují hory", [
-    { value: "Leží v nadmořské výšce nula", why: "Nula metrů je u moře. Čechy leží výš." },
+    { value: "Leží v nadmořské výšce nula metrů", why: "Nula metrů je u moře. Čechy leží výš." },
     { value: "Jsou úplně ploché", why: "Čechy nejsou úplně ploché, uprostřed jsou nížiny i pahorkatiny." },
     { value: "Je v nich hodně rybníků", why: "Rybníky s tím nesouvisejí. Jde o tvar krajiny." },
   ], {
@@ -173,7 +173,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Na hranici se Slovenskem leží Moravskoslezské Beskydy s Lysou horou a Bílé Karpaty.",
   }),
   choice("Proč v horách žije méně lidí než v nížinách?", "Je tam chladno, strmé svahy a méně úrodná půda", [
-    { value: "V horách je zakázáno bydlet", why: "V horách bydlet smí, jen je to těžší." },
+    { value: "V horách je bydlení zákonem zakázané", why: "V horách bydlet smí, jen je to těžší." },
     { value: "V horách není voda", why: "Vody je v horách dost, prší tam víc než v nížinách." },
     { value: "Hory jsou příliš teplé", why: "Hory jsou naopak chladnější." },
   ], {
@@ -258,7 +258,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč jsou Krkonoše nebo Šumava oblé, a ne ostré jako Alpy?", "Déšť, vítr a mráz je obrušují už velmi dlouho", [
     { value: "Někdo je uhladil stroji", why: "Hory neuhladili lidé, ale příroda." },
     { value: "Jsou mladší než Alpy", why: "Je to naopak — naše hory jsou mnohem starší." },
-    { value: "Vždycky byly takhle oblé", why: "Kdysi byly vyšší a ostřejší. Obrousilo je počasí." },
+    { value: "Vždycky byly takhle nízké a oblé", why: "Kdysi byly vyšší a ostřejší. Obrousilo je počasí." },
   ], {
     hints: ["Co se stane s ostrým kamenem, když ho dlouho omílá voda v potoce?", "Naše hory jsou velmi staré. Miliony let na ně pršelo, mrzlo a foukalo. Co to udělalo s jejich vrcholky?"],
     explanation: "Naše hory jsou velmi staré. Déšť, mráz a vítr je miliony let obrušovaly, a proto jsou nižší a oblé. Alpy jsou mladé, a tak mají ostré štíty.",
@@ -280,7 +280,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Krkonoše leží mnohem výš než Praha a s výškou teplota klesá. Proto je tam chladno a sníh vydrží až do jara, kdy v Praze už kvetou stromy.",
   }),
   choice("Proč se horské oblasti často chrání jako národní parky?", "Zachovala se tam vzácná příroda málo ovlivněná lidmi", [
-    { value: "V horách se nesmí stavět silnice", why: "Silnice v horách jsou. Chráněná je vzácná příroda." },
+    { value: "V horách se nesmí stavět žádné silnice", why: "Silnice v horách jsou. Chráněná je vzácná příroda." },
     { value: "Hory nikoho nezajímají", why: "Naopak, hory lákají turisty. Chrání se kvůli přírodě." },
     { value: "Hory jsou nejteplejší místa", why: "Hory jsou chladné. Důvodem je vzácná příroda." },
   ], {
@@ -288,7 +288,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "V horách lidé kvůli chladu a svahům hospodařili méně, a tak se tam zachovala vzácná příroda. Proto jsou Krkonoše a Šumava národními parky.",
   }),
   choice("Jedeš z Prahy do Krkonoš. Kterým směrem jedeš?", "Na severovýchod", [
-    { value: "Na jihozápad", why: "Na jihozápad od Prahy leží Šumava." },
+    { value: "Na jihozápad od Prahy", why: "Na jihozápad od Prahy leží Šumava." },
     { value: "Na jih", why: "Na jih jsou jižní Čechy s rybníky." },
     { value: "Na západ", why: "Na západ leží Plzeň." },
   ], {
@@ -296,7 +296,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Krkonoše leží na severovýchodě Čech, směrem od Prahy přes Mladou Boleslav nebo Hradec Králové.",
   }),
   choice("Proč na Českomoravské vrchovině vede hranice Čech a Moravy?", "Rozdělují se tam řeky do Čech a na Moravu", [
-    { value: "Je tam nejvyšší hora Česka", why: "Nejvyšší hora je Sněžka v Krkonoších." },
+    { value: "Je tam nejvyšší hora celého Česka", why: "Nejvyšší hora je Sněžka v Krkonoších." },
     { value: "Je tam velké jezero", why: "Velké jezero tam není." },
     { value: "Hranici určili náhodně", why: "Hranice sleduje krajinu — kudy tečou řeky." },
   ], {
@@ -306,13 +306,13 @@ const POOL_L3: PracticeTask[] = [
   choice("Na mapě jsou nížiny zelené a hory hnědé. Co barva ukazuje?", "Kde je krajina vysoko a kde nízko", [
     { value: "Kde rostou lesy", why: "Lesy mají na mapě jinou značku. Barvy ukazují výšku." },
     { value: "Kde je nejtepleji", why: "Barvy neukazují teplotu, ale výšku." },
-    { value: "Kde žije nejvíc lidí", why: "Počet obyvatel barva na výškové mapě neukazuje." },
+    { value: "Kde žije nejvíc lidí a je nejvíc měst", why: "Počet obyvatel barva na výškové mapě neukazuje." },
   ], {
     hints: ["Podívej se na legendu mapy vedle barev.", "Zelená je nízko, žlutá výš, hnědá nejvýš. Co se tedy od zelené k hnědé zvyšuje?"],
     explanation: "Barvy na mapě ukazují nadmořskou výšku: zelená jsou nížiny, žlutá pahorkatiny a vrchoviny, hnědá hory. Podle barvy poznáš, kde je krajina vysoko.",
   }),
   choice("Proč se na jižní Moravě pěstuje vinná réva, a na Šumavě ne?", "Jižní Morava je nízko a teplá, Šumava vysoko a chladná", [
-    { value: "Na Šumavě je réva zákonem zakázaná", why: "Zakázaná není, jen by tam nedozrála." },
+    { value: "Na Šumavě je pěstování révy zákonem zakázané", why: "Zakázaná není, jen by tam nedozrála." },
     { value: "Na jižní Moravě prší mnohem víc", why: "Na jižní Moravě prší méně. Rozhoduje teplo." },
     { value: "Na Šumavě nejsou žádná pole", why: "I kdyby byla, réva by tam kvůli chladu nedozrála." },
   ], {
@@ -320,7 +320,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Vinná réva potřebuje teplo a dlouhé léto. Jižní Morava leží nízko a je teplá, Šumava je vysoko a chladná, takže by tam hrozny nedozrály.",
   }),
   choice("Proč v horách prší víc než v nížinách?", "Vzduch stoupá přes hory, ochladí se a vyprší", [
-    { value: "Mraky se přitahují k horám magnetem", why: "Hory mraky nepřitahují. Vzduch se na nich zvedá a ochlazuje." },
+    { value: "Mraky se k horám přitahují jako magnetem", why: "Hory mraky nepřitahují. Vzduch se na nich zvedá a ochlazuje." },
     { value: "V horách je víc řek", why: "Řeky jsou důsledek deště, ne příčina." },
     { value: "V nížinách neprší nikdy", why: "V nížinách prší, jen méně." },
   ], {

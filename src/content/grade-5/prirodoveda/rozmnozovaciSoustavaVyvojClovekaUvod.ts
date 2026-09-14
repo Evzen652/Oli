@@ -51,7 +51,7 @@ const L1: PracticeTask[] = [
   choice("Čím se živí novorozenec?", "mateřským nebo umělým mlékem", [
     { value: "tvrdou stravou", why: "Novorozenec nemá zuby a tvrdou stravu nestráví." },
     { value: "jen vodou", why: "Voda by mu nestačila." },
-    { value: "ovocem a zeleninou", why: "Příkrmy přicházejí až později." },
+    { value: "rozmixovaným ovocem a zeleninou", why: "Příkrmy přicházejí až později." },
   ], {
     hints: ["Má novorozenec zuby?", "Miminko potřebuje tekutou potravu, kterou mu dá maminka nebo láhev."],
     explanation: "Novorozenec pije mateřské nebo umělé mléko.",
@@ -81,8 +81,8 @@ const L1: PracticeTask[] = [
     explanation: "Změny v pubertě řídí hormony.",
   }),
   choice("Kde se u ženy tvoří vajíčka?", "ve vaječnících", [
-    { value: "v žaludku", why: "Žaludek tráví potravu." },
-    { value: "v ledvinách", why: "Ledviny čistí krev." },
+    { value: "v žaludku matky", why: "Žaludek tráví potravu." },
+    { value: "v ledvinách matky", why: "Ledviny čistí krev." },
     { value: "v plicích", why: "Plíce slouží k dýchání." },
   ], {
     hints: ["Název orgánu je odvozený od slova vajíčko.", "Jsou to dva malé orgány v podbřišku po stranách dělohy."],
@@ -91,7 +91,7 @@ const L1: PracticeTask[] = [
   choice("Kde se u muže tvoří spermie?", "ve varlatech", [
     { value: "v srdci", why: "Srdce pumpuje krev." },
     { value: "v játrech", why: "Játra zpracovávají živiny." },
-    { value: "v žaludku", why: "Žaludek tráví potravu." },
+    { value: "v žaludku matky", why: "Žaludek tráví potravu." },
   ], {
     hints: ["Mužské pohlavní buňky vznikají v párovém orgánu.", "Tyto dva orgány jsou uložené mimo břišní dutinu v šourku."],
     explanation: "Spermie se tvoří ve varlatech.",
@@ -174,13 +174,13 @@ const L2: PracticeTask[] = [
   choice("Proč v pubertě rosteme rychleji?", "hormony urychlí růst kostí", [
     { value: "víc sedíme", why: "Sezení růst neurychlí." },
     { value: "méně spíme", why: "Spánek naopak růstu pomáhá." },
-    { value: "je teplejší počasí", why: "Počasí to nezpůsobí." },
+    { value: "je venku teplejší počasí", why: "Počasí to nezpůsobí." },
   ], {
     hints: ["Co v pubertě dává tělu pokyny?", "Hormony spustí růstový skok — někdo vyroste za rok i o deset centimetrů."],
     explanation: "Hormony v pubertě urychlují růst kostí.",
   }),
   choice("Co je puberta?", "období, kdy tělo pohlavně dozrává", [
-    { value: "nemoc dospívajících", why: "Puberta není nemoc." },
+    { value: "nemoc, kterou dospívající prodělají", why: "Puberta není nemoc." },
     { value: "první rok života", why: "To je kojenecký věk." },
     { value: "období stáří", why: "Stáří je na konci života." },
   ], {
@@ -197,14 +197,14 @@ const L2: PracticeTask[] = [
   }),
   choice("Proč je kojení pro miminko výhodné?", "mateřské mléko má živiny i látky na obranu", [
     { value: "mléko je sladší než voda", why: "Nejde o chuť." },
-    { value: "miminko pak nepotřebuje spát", why: "Spánek potřebuje." },
+    { value: "miminko pak už nepotřebuje spát", why: "Spánek potřebuje, a hodně." },
     { value: "je to jen tradice", why: "Kojení má skutečné výhody." },
   ], {
     hints: ["Co miminko po narození potřebuje?", "Mléko od maminky obsahuje vše potřebné k růstu a látky, které chrání před nemocemi."],
     explanation: "Mateřské mléko obsahuje živiny i látky, které chrání před nemocemi.",
   }),
   choice("Kdo pomáhá ženě u porodu v porodnici?", "porodní asistentka a lékař", [
-    { value: "učitel ze školy", why: "Učitel u porodu nepomáhá." },
+    { value: "učitel z naší školy", why: "Učitel u porodu nepomáhá." },
     { value: "zubař", why: "Zubař léčí zuby." },
     { value: "hasič", why: "Hasič zasahuje u požárů." },
   ], {
@@ -214,7 +214,7 @@ const L2: PracticeTask[] = [
   choice("Kolik zhruba váží novorozenec?", "asi 3 až 4 kilogramy", [
     { value: "asi 300 gramů", why: "To je méně než půl kila." },
     { value: "asi 10 kilogramů", why: "Tolik váží dítě kolem prvního roku." },
-    { value: "asi 20 kilogramů", why: "Tolik váží předškolák." },
+    { value: "asi 20 kilogramů", why: "Tolik váží předškolák, ne novorozenec." },
   ], {
     hints: ["Je to víc než balení mouky?", "Novorozenec váží jako tři nebo čtyři balíčky kilové mouky."],
     explanation: "Novorozenec obvykle váží 3 až 4 kilogramy.",
@@ -233,14 +233,14 @@ const L3: PracticeTask[] = [
   choice("Proč pupeční šňůra po porodu už není potřeba?", "dítě začne samo dýchat a jíst", [
     { value: "zlomí se", why: "Odstřihne se, protože už není potřeba." },
     { value: "dítě ji spolkne", why: "Šňůra se odstřihne." },
-    { value: "je potřeba celý život", why: "Po porodu už potřeba není." },
+    { value: "je potřeba po celý další život", why: "Po porodu už potřeba není." },
   ], {
     hints: ["Jak dítě po narození získává kyslík a potravu?", "Novorozenec se nadechne vlastními plícemi a pije mléko — spojení s matkou už nepotřebuje."],
     explanation: "Po porodu dítě dýchá a jí samo, pupeční šňůra se proto odstřihne.",
   }),
   choice("Proč by se dospívající neměli porovnávat, kdo je dál?", "každé tělo dozrává jiným tempem", [
     { value: "kdo je dál, je lepší", why: "Tempo dospívání neurčuje hodnotu člověka." },
-    { value: "všichni musí být stejní", why: "Každý je jiný." },
+    { value: "všichni vrstevníci musí být stejní", why: "Každý je jiný a vyvíjí se svým tempem." },
     { value: "porovnávání vždy pomáhá", why: "Často ubližuje." },
   ], {
     hints: ["Začíná puberta všem ve stejném věku?", "Někdo dospívá dřív, jiný později — obojí je normální."],
@@ -249,14 +249,14 @@ const L3: PracticeTask[] = [
   choice("Co je pravda o menstruaci?", "je to přirozený projev dospívání dívek", [
     { value: "je to nemoc", why: "Menstruace není nemoc." },
     { value: "je to ostuda", why: "Není to nic, za co se stydět." },
-    { value: "týká se chlapců i dívek", why: "Týká se jen dívek a žen." },
+    { value: "týká se stejně chlapců i dívek", why: "Týká se jen dívek a žen." },
   ], {
     hints: ["Znamená menstruace, že je něco špatně?", "Menstruace ukazuje, že tělo dívky dospělo a funguje, jak má."],
     explanation: "Menstruace je přirozený projev dospívání dívek.",
   }),
   choice("Proč je dobré, aby dívky i chlapci věděli o změnách v pubertě?", "aby je nepřekvapily a nestyděli se za ně", [
     { value: "aby se jim mohli smát", why: "Posměch je špatně." },
-    { value: "o pubertě se nemá mluvit", why: "Informace pomáhají." },
+    { value: "o pubertě se nemá vůbec mluvit", why: "Informace naopak pomáhají." },
     { value: "aby změny přestaly", why: "Změny jsou přirozené a nezastaví se." },
   ], {
     hints: ["Jak se cítíš, když něco nečekaného přijde bez varování?", "Kdo ví, co ho čeká, bere změny v klidu a chápe i kamarády."],
@@ -265,13 +265,13 @@ const L3: PracticeTask[] = [
   choice("Proč má miminko na hlavě měkká místa?", "lebka se při porodu přizpůsobí a pak roste", [
     { value: "miminko nemá kosti", why: "Kosti má, jen ještě nesrostlé." },
     { value: "je to nemoc", why: "Je to přirozené." },
-    { value: "lebka se nikdy nezpevní", why: "Během prvních let se zpevní." },
+    { value: "lebka se nikdy úplně nezpevní", why: "Během prvních let se zpevní." },
   ], {
     hints: ["Jak se hlava miminka dostane na svět úzkou cestou?", "Kosti lebky ještě nejsou srostlé, aby se hlava mohla přizpůsobit a mozek mohl růst."],
     explanation: "Nesrostlé kosti lebky pomáhají při porodu a dovolí růst mozku.",
   }),
   choice("Proč miminko po narození pláče?", "začne dýchat a plíce se naplní vzduchem", [
-    { value: "je naštvané na lékaře", why: "Nejde o náladu." },
+    { value: "je naštvané na lékaře i rodiče", why: "O náladu tu vůbec nejde." },
     { value: "nechce mléko", why: "Nejde o jídlo." },
     { value: "je mu vždy zima", why: "Nejde hlavně o zimu." },
   ], {
@@ -305,7 +305,7 @@ const L3: PracticeTask[] = [
   choice("Proč se nemusíš nechat k ničemu nutit, co se týká tvého těla?", "o svém těle rozhoduji já a smím říct ne", [
     { value: "dospělí mají vždy pravdu", why: "O tvém těle rozhoduješ i ty." },
     { value: "říct ne je neslušné", why: "Říct ne je v pořádku." },
-    { value: "musím poslechnout každého", why: "Nemusíš, když ti něco není příjemné." },
+    { value: "musím poslechnout úplně každého", why: "Nemusíš, když ti něco není příjemné." },
   ], {
     hints: ["Kdo rozhoduje o tom, kdo se tě smí dotýkat?", "Když ti něco není příjemné, můžeš říct ne a svěřit se dospělému, kterému věříš."],
     explanation: "Tvoje tělo patří tobě; máš právo říct ne a svěřit se.",
@@ -319,7 +319,7 @@ const L3: PracticeTask[] = [
     explanation: "Nejlépe poradí rodiče nebo lékař.",
   }),
   choice("Proč dítě v děloze roste ve vodě?", "voda ho chrání a může se v ní hýbat", [
-    { value: "aby se naučilo plavat", why: "Nejde o plavání." },
+    { value: "aby se naučilo ve vodě plavat", why: "Nejde o plavání, plod se plavat neučí." },
     { value: "aby mohlo pít", why: "Hlavní úloha je ochrana." },
     { value: "voda ho zahřívá", why: "Hlavní úloha je ochrana a prostor k pohybu." },
   ], {

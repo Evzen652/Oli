@@ -38,7 +38,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Jak se jmenuje voda v plynném skupenství?", "Vodní pára", [
     { value: "Led", why: "Led je voda v pevném skupenství." },
     { value: "Déšť", why: "Déšť jsou kapky, tedy kapalná voda." },
-    { value: "Sníh", why: "Sníh jsou ledové krystalky, pevné skupenství." },
+    { value: "Čerstvý sníh", why: "Sníh jsou ledové krystalky, pevné skupenství." },
   ], {
     hints: ["Plynnou vodu často nevidíš, rozplyne se ve vzduchu.", "Stoupá z hrnce s vařící vodou a z horkého čaje. Jak se jmenuje?"],
     explanation: "Voda v plynném skupenství je vodní pára. Sama je neviditelná — bílý obláček nad hrncem jsou už drobné kapičky, na které se pára ve studenějším vzduchu srazila.",
@@ -86,7 +86,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Co jsou kroupy?", "Kousky ledu padající z mraků", [
     { value: "Velké kapky deště", why: "Kapky deště jsou kapalné. Kroupy jsou tvrdé kousky ledu." },
     { value: "Zmrzlá rosa na trávě", why: "Ledové krystalky na trávě jsou jinovatka. Kroupy padají z mraků." },
-    { value: "Slepené sněhové vločky", why: "Vločky jsou měkké krystalky. Kroupy jsou tvrdé kuličky ledu." },
+    { value: "Slepené sněhové vločky z mraku", why: "Vločky jsou měkké krystalky. Kroupy jsou tvrdé kuličky ledu." },
   ], {
     hints: ["Kroupy jsou tvrdé a při dopadu ťukají o okno.", "Padají z bouřkových mraků i v létě. Jsou to kuličky vody v pevném skupenství."],
     explanation: "Kroupy jsou kousky ledu, které vznikají v bouřkových mracích a padají i v létě. Mohou poškodit úrodu i auta.",
@@ -101,7 +101,7 @@ const POOL_L1: PracticeTask[] = [
   }),
   choice("Co je rosa?", "Kapky vody, které se ráno objeví na trávě", [
     { value: "Drobný déšť z mraků", why: "Rosa nepadá z mraků. Vznikne na chladné trávě ze vzduchu." },
-    { value: "Zmrzlé krystalky na trávě", why: "Ledové krystalky jsou jinovatka. Rosa jsou kapky vody." },
+    { value: "Zmrzlé ledové krystalky na trávě", why: "Ledové krystalky jsou jinovatka. Rosa jsou kapky vody." },
     { value: "Voda vytékající z půdy", why: "Rosa nevyvěrá ze země. Srazí se ze vzduchu." },
   ], {
     hints: ["Rosu najdeš ráno i tehdy, když v noci nepršelo.", "Když jdeš brzy ráno naboso po trávě, máš mokré nohy, i když nepršelo. Co je na trávě?"],
@@ -118,7 +118,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Kde je na Zemi nejvíc vody?", "V mořích a oceánech", [
     { value: "V řekách", why: "Řeky vypadají velké, ale mají jen nepatrnou část vody Země." },
     { value: "V oblacích", why: "V oblacích je vody jen málo ve srovnání s oceány." },
-    { value: "V rybnících", why: "Rybníky jsou malé. Většina vody na Zemi je slaná v mořích." },
+    { value: "V rybnících a jezerech", why: "Rybníky a jezera jsou malé. Většina vody na Zemi je slaná v mořích." },
   ], {
     hints: ["Podívej se na glóbus — které barvy je na něm nejvíc?", "Voda pokrývá většinu povrchu Země. Je slaná a tvoří obrovské modré plochy mezi pevninami."],
     explanation: "Většina vody na Zemi je v mořích a oceánech a je slaná. Sladké vody v řekách, jezerech a podzemí je jen malá část.",
@@ -144,7 +144,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč se orosí studená láhev vytažená z lednice?", "Pára ze vzduchu se na ní srazí na kapky", [
     { value: "Voda prosákne sklem", why: "Sklem voda neprojde. Kapky se vytvoří ze vzduchu kolem." },
-    { value: "Láhev se potí jako člověk", why: "Láhev se nepotí. Kapky vzniknou z páry ve vzduchu." },
+    { value: "Láhev se potí úplně jako člověk", why: "Láhev se nepotí. Kapky vzniknou z páry ve vzduchu." },
     { value: "Led v láhvi taje ven", why: "Voda z láhve ven nejde. Kapky jsou z páry ve vzduchu." },
   ], {
     hints: ["Ve vzduchu je neviditelná vodní pára. Co s ní udělá studený povrch?", "Stejně se orosí brýle, když přijdeš ze zimy do tepla. Pára se na studeném povrchu změní na kapky."],
@@ -152,7 +152,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Jak vznikají mraky?", "Pára ve výšce se ochladí na drobné kapičky", [
     { value: "Z kouře z komínů", why: "Kouř mraky netvoří. Mraky jsou z kapiček vody." },
-    { value: "Vítr zvedne vodu z moře", why: "Vítr vodu nezvedá. Voda se vypaří a jako pára vystoupá." },
+    { value: "Vítr zvedne vodu přímo z moře", why: "Vítr vodu nezvedá. Voda se vypaří a jako pára vystoupá." },
     { value: "Ze sněhu z hor", why: "Mraky nevznikají ze sněhu. Tvoří je kapičky ze srážené páry." },
   ], {
     hints: ["Pára stoupá vzhůru. Jak je nahoře — tepleji, nebo chladněji?", "Vysoko nad zemí je chladno. Co se stane s vodní párou, když se ochladí? Vzpomeň si na orosenou láhev."],
@@ -184,7 +184,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč led plave na vodě?", "Led je lehčí než stejné množství vody", [
     { value: "Drží ho nahoře vlny", why: "Led plave i na úplně klidné vodě. Rozhoduje, že je lehčí." },
-    { value: "Led je těžší, ale je studený", why: "Kdyby byl led těžší, klesl by ke dnu. Teplota to nezmění." },
+    { value: "Led je těžší než voda, jen je studený", why: "Kdyby byl led těžší, klesl by ke dnu. Teplota to nezmění." },
     { value: "Led vodu odpuzuje", why: "Led vodu neodpuzuje. Plave, protože je lehčí." },
   ], {
     hints: ["Co ve vodě plave — věci lehčí, nebo těžší než voda?", "Kostka ledu ve sklenici je vždycky u hladiny. Co z toho plyne o tom, kolik váží led proti stejně velké vodě?"],
@@ -208,7 +208,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Jaký je rozdíl mezi rosou a jinovatkou?", "Rosa jsou kapky, jinovatka ledové krystalky", [
     { value: "Jinovatka je hustší rosa", why: "Jinovatka není hustá rosa. Je z ledu, rosa z kapek." },
-    { value: "Rosa je v zimě, jinovatka v létě", why: "Je to naopak. Jinovatka vzniká v mrazu." },
+    { value: "Rosa vzniká v zimě a jinovatka v létě", why: "Je to naopak. Jinovatka vzniká v mrazu." },
     { value: "Žádný, je to totéž", why: "Rosa je kapalná, jinovatka pevná." },
   ], {
     hints: ["Kdy ráno uvidíš na trávě bílé krystalky místo kapek?", "Rosa i jinovatka vznikají ze vzduchu na chladném povrchu. Když mrzne, co se stane s kapkami?"],
@@ -216,7 +216,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč se sníh na jaře mění ve vodu?", "Oteplí se nad 0 °C a sníh taje", [
     { value: "Sníh vypijí rostliny", why: "Rostliny vodu z tajícího sněhu vsáknou, ale sníh taje teplem." },
-    { value: "Sníh se najednou vypaří", why: "Sníh na jaře hlavně taje na vodu." },
+    { value: "Sníh se najednou všechen vypaří", why: "Sníh na jaře hlavně taje na vodu." },
     { value: "Na jaře víc prší", why: "Déšť tání urychlí, ale hlavní je teplo nad nulou." },
   ], {
     hints: ["Co se na jaře děje s teplotou?", "Sníh je led. Při jaké teplotě led taje a kdy se tak na jaře oteplí?"],
@@ -244,7 +244,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Rybník v zimě zamrzne jen nahoře. Proč to rybám pomáhá?", "Pod ledem zůstane voda, ve které přežijí", [
     { value: "Led jim dodává potravu", why: "Led potravu nedává. Důležité je, že pod ním zůstane voda." },
     { value: "Led je hřeje jako kamna", why: "Led nehřeje. Jen chrání vodu pod sebou, aby nezamrzla." },
-    { value: "Ryby v zimě spí na břehu", why: "Ryby z vody nevylézají. Přežijí pod ledem." },
+    { value: "Ryby v zimě spí venku na břehu", why: "Ryby z vody nevylézají. Přežijí pod ledem." },
   ], {
     hints: ["Kde plave led — u dna, nebo u hladiny?", "Led zůstane nahoře jako víko a voda pod ním nezamrzne. Co by se stalo s rybami, kdyby rybník zamrzl celý?"],
     explanation: "Led je lehčí než voda, a proto plave nahoře. Vytvoří víko, pod kterým zůstane kapalná voda, a v ní ryby přečkají zimu. Kdyby rybník zamrzl celý, ryby by uhynuly.",
@@ -266,7 +266,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Čím je tepleji, tím rychleji se voda vypařuje. V horkém létě louže zmizí za pár hodin, v chladném počasí vydrží i několik dní.",
   }),
   choice("Proč se okna v kuchyni při vaření zamlží?", "Pára z hrnce se srazí na studeném skle", [
-    { value: "Sklo se zahřeje a zbělá", why: "Sklo se horkem nebarví. Zamlžení tvoří drobné kapky." },
+    { value: "Sklo se horkou vodou zahřeje a zbělá", why: "Sklo se horkem nebarví. Zamlžení tvoří drobné kapky." },
     { value: "Usadí se na něm kouř", why: "Kouř by nechal šedou vrstvu. Zamlžení jsou kapky vody." },
     { value: "Venku prší", why: "Déšť by byl na vnější straně. Kuchyňské okno se mlží zevnitř." },
   ], {
@@ -275,7 +275,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč se v zimě sype na silnice sůl?", "Sůl sníží teplotu, při které voda zamrzá", [
     { value: "Sůl led zahřeje", why: "Sůl nehřeje. Mění teplotu, při které voda mrzne." },
-    { value: "Sůl led rozbije na kousky", why: "Sůl led nerozbíjí. Způsobí, že slaná voda nezamrzne." },
+    { value: "Sůl led rozbije na malé kousky", why: "Sůl led nerozbíjí. Způsobí, že slaná voda nezamrzne." },
     { value: "Sůl vodu vypaří", why: "Sůl vodu nevypařuje." },
   ], {
     hints: ["Zamrzá moře stejně snadno jako rybník?", "Sladká voda mrzne při 0 °C, ale slaná potřebuje větší mráz. Co se tedy stane s náledím posypaným solí?"],
@@ -298,7 +298,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Koloběh začíná tím, že Slunce vodu ohřeje a vypaří. Bez jeho tepla by nevznikaly mraky, nepršelo by a voda by postupně zamrzla. Koloběh by se zastavil.",
   }),
   choice("Proč les pomáhá, aby po dešti nebyla povodeň?", "Zadrží vodu v půdě a zpomalí její odtok", [
-    { value: "Stromy všechnu vodu hned vypijí", why: "Stromy část vody přijmou, ale hlavně ji les zadrží a pomalu pouští." },
+    { value: "Stromy všechnu vodu hned samy vypijí", why: "Stromy část vody přijmou, ale hlavně ji les zadrží a pomalu pouští." },
     { value: "Les déšť odfoukne", why: "Les nefouká. Jeho půda vodu nasákne jako houba." },
     { value: "Les z vody udělá led", why: "Les vodu nemrazí. Zadržuje ji a zpomaluje." },
   ], {
@@ -306,7 +306,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Lesní půda, mech a listí nasáknou vodu jako houba a pomalu ji pouštějí do potoků. Z holého svahu voda steče najednou a řeky se rozvodní.",
   }),
   choice("Na horách leží sníh i v dubnu, v nížině už ne. Proč?", "Na horách je chladněji, sníh taje později", [
-    { value: "Na horách víc svítí slunce", why: "Slunce by sníh rozpustilo rychleji. Na horách je ale chladněji." },
+    { value: "Na horách mnohem víc svítí slunce", why: "Slunce by sníh rozpustilo rychleji. Na horách je ale chladněji." },
     { value: "Sníh na horách je z ledu", why: "Všechen sníh je z ledových krystalků. Rozdíl je v teplotě." },
     { value: "V nížině nikdy nesněží", why: "I v nížině sněží, jen tam sníh na jaře roztaje dřív." },
   ], {
@@ -322,7 +322,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Ve vzduchu je vždycky trochu vodní páry, i když je obloha jasná. Pára je neviditelná. Uvidíme ji až tehdy, když se ochladí a zkapalní — na studené láhvi, jako rosa nebo mrak.",
   }),
   choice("Proč je ráno na trávě někdy rosa a jindy jinovatka?", "Při mrazu se pára srazí rovnou na led", [
-    { value: "Jinovatka je zmrzlý déšť", why: "Jinovatka nepadá z mraků. Vzniká na povrchu ze vzduchu." },
+    { value: "Jinovatka je jenom zmrzlý déšť", why: "Jinovatka nepadá z mraků. Vzniká na povrchu ze vzduchu." },
     { value: "Rosa je teplejší sníh", why: "Rosa jsou kapky vody, se sněhem nesouvisí." },
     { value: "Jinovatka padá z mraků", why: "Z mraků padá sníh nebo kroupy. Jinovatka vzniká na trávě a větvích." },
   ], {
@@ -331,7 +331,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Mořskou vodu pít nemůžeme. Jak se z ní stane pitná voda na pevnině?", "Vypaří se, zprší a vsákne do země", [
     { value: "Sůl z ní vyberou ryby", why: "Ryby sůl z moře nevybírají." },
-    { value: "Řeky ji cestou přefiltrují", why: "Řeky tečou do moře, ne z něj. Sůl zmizí při vypařování." },
+    { value: "Řeky ji cestou z moře přefiltrují", why: "Řeky tečou do moře, ne z něj. Sůl zmizí při vypařování." },
     { value: "Moře ji samo vyčistí", why: "Moře zůstává slané. Sladká voda vzniká vypařováním." },
   ], {
     hints: ["Který krok koloběhu oddělí vodu od soli?", "Když se voda vypaří, sůl zůstane dole. Pára vytvoří mraky nad pevninou. Co pak s vodou z mraků?"],

@@ -17,7 +17,7 @@ import { choice, shuffle } from "./_shared";
 
 const POOL_L1: PracticeTask[] = [
   choice("Z čeho půda vzniká?", "Z rozpadlých hornin a zbytků rostlin a živočichů", [
-    { value: "Jen z písku, který nanese vítr", why: "Vítr písek přenáší, ale půda vzniká hlavně rozpadem hornin na místě a tlením zbytků." },
+    { value: "Jen z písku, který sem nanese vítr", why: "Vítr písek přenáší, ale půda vzniká hlavně rozpadem hornin na místě a tlením zbytků." },
     { value: "Ze zmrzlé vody a ledu", why: "Mráz pomáhá horniny rozbíjet, ale sám led půdou není." },
     { value: "Z kořenů stromů", why: "Kořeny půdu drží a po odumření zetlí, ale samy půdu nevytvoří." },
   ], {
@@ -43,7 +43,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Jakou barvu mívá půda, ve které je hodně humusu?", "Tmavě hnědou až černou", [
     { value: "Světle žlutou", why: "Světlá žlutá bývá písčitá půda, humusu v ní je málo." },
     { value: "Bílou", why: "Bílá bývá hornina, třeba vápenec. Humus je tmavý." },
-    { value: "Cihlově červenou", why: "Červenou barvu dávají půdě některé minerály, ne humus." },
+    { value: "Cihlově červenou až rezavou", why: "Červenou barvu dávají půdě některé minerály, ne humus." },
   ], {
     hints: ["Humus vzniká z tlejícího listí. Jakou barvu mají staré mokré listy?", "Nejúrodnější česká půda se jmenuje podle své barvy — černozem. Co to napovídá o barvě půdy plné humusu?"],
     explanation: "Humus je tmavý, a čím víc ho v půdě je, tím je tmavší. Proto je nejúrodnější česká půda černozem skoro černá.",
@@ -51,7 +51,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Co berou kořeny rostlin z půdy?", "Vodu a živiny", [
     { value: "Světlo", why: "Světlo zachycují listy, v půdě je tma." },
     { value: "Sníh", why: "Sníh roztaje a jako voda se vsákne. Kořeny berou vodu, ne sníh." },
-    { value: "Kamínky", why: "Kamínky kořeny obrůstají, ale nepřijímají je." },
+    { value: "Kamínky a štěrk", why: "Kamínky kořeny obrůstají, ale nepřijímají je." },
   ], {
     hints: ["Co dáváš do květináče, když zaléváš?", "Rostlina potřebuje pít a také se živit. Obojí jí přivádějí kořeny ze země."],
     explanation: "Kořeny nasávají z půdy vodu a v ní rozpuštěné živiny. Zároveň rostlinu v zemi pevně drží. Světlo zachycují listy.",
@@ -66,7 +66,7 @@ const POOL_L1: PracticeTask[] = [
   }),
   choice("Co je eroze půdy?", "Odnášení půdy vodou nebo větrem", [
     { value: "Vznik nové půdy", why: "Nová půda vzniká zvětráváním a tlením. Eroze půdu naopak ubírá." },
-    { value: "Promrznutí půdy v zimě", why: "Promrznutí erozí není. Eroze je odnášení půdy." },
+    { value: "Promrznutí půdy během zimy", why: "Promrznutí erozí není. Eroze je odnášení půdy." },
     { value: "Hnojení půdy kompostem", why: "Hnojení půdu zlepšuje. Eroze ji ničí." },
   ], {
     hints: ["Eroze půdě škodí.", "Po prudkém dešti teče z pole hnědá voda a na silnici zůstane bláto. Co se s půdou stalo?"],
@@ -140,7 +140,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Zrnka písku jsou velká a mezi nimi jsou mezery, takže voda rychle proteče dolů a půda vysychá. Jíl má drobné částice těsně u sebe, voda se v něm drží a půda může být mokrá a těžká.",
   }),
   choice("Proč je dobré mít na zahradě kompost?", "Vznikne z něj humus, který zúrodní půdu", [
-    { value: "Odežene krtky ze zahrady", why: "Kompost krtky neodhání. Jeho smysl je v humusu." },
+    { value: "Odežene ze zahrady krtky a hraboše", why: "Kompost krtky neodhání. Jeho smysl je v humusu." },
     { value: "Ohřeje zahradu v zimě", why: "Kompost uvnitř trochu hřeje, ale zahradu v zimě neohřeje." },
     { value: "Nahradí zalévání", why: "Kompost pomáhá půdě držet vodu, ale zalévání nenahradí." },
   ], {
@@ -180,7 +180,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Kyprá půda má mezi hrudkami mezery. Tudy se dostane vzduch ke kořenům a voda se vsákne do hloubky. Semínka v ní snadno vzejdou.",
   }),
   choice("Proč musí být v půdě i vzduch?", "Aby v ní mohly dýchat kořeny a živočichové", [
-    { value: "Aby byla lehčí pro zemědělce", why: "O váhu nejde. Vzduch potřebují živé organismy v půdě." },
+    { value: "Aby byla lehčí na orání pro zemědělce", why: "O váhu nejde. Vzduch potřebují živé organismy v půdě." },
     { value: "Aby do ní nepršelo", why: "Vzduch v půdě dešti nebrání. Voda a vzduch jsou v půdě spolu." },
     { value: "Aby se nerozpadla", why: "Vzduch půdu nedrží pohromadě. Potřebují ho kořeny a živočichové." },
   ], {
@@ -204,7 +204,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Kořeny přijímají živiny rozpuštěné ve vodě. Když je půda vyschlá, živiny v ní sice jsou, ale rostlina se k nim nedostane a vadne.",
   }),
   choice("Proč se v lese nemusí hnojit?", "Spadané listí a zbytky zetlí na humus", [
-    { value: "Stromy nepotřebují živiny", why: "Stromy živiny potřebují. Dostávají je ze zetlelého listí." },
+    { value: "Stromy v lese živiny nepotřebují", why: "Stromy živiny potřebují. Dostávají je ze zetlelého listí." },
     { value: "Les hnojí déšť", why: "Déšť přináší vodu, ne dost živin. Živiny vrací tlející listí." },
     { value: "Les hnojí sníh", why: "Sníh přinese vodu, živiny ne." },
   ], {
@@ -212,7 +212,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "V lese spadané listí, větvičky a uhynulá zvířata tlejí na humus. Živiny se tak vracejí do půdy a stromy je znovu přijmou. Na poli sklizeň odvezeme, proto se musí hnojit.",
   }),
   choice("Jak poznáš úrodnou půdu?", "Je tmavá, drobivá a žijí v ní žížaly", [
-    { value: "Je světlá a tvrdá jako kámen", why: "Světlá tvrdá půda má málo humusu a vzduchu, úrodná není." },
+    { value: "Je světlá a tvrdá skoro jako kámen", why: "Světlá tvrdá půda má málo humusu a vzduchu, úrodná není." },
     { value: "Je mokrá a zapáchá", why: "Zapáchající mokrá půda má málo vzduchu, kořeny se v ní dusí." },
     { value: "Je v ní samý písek", why: "Písčitá půda neudrží vodu a živiny." },
   ], {
@@ -231,7 +231,7 @@ const POOL_L2: PracticeTask[] = [
 
 const POOL_L3: PracticeTask[] = [
   choice("Jeden centimetr půdy vzniká stovky let. Co to znamená pro erozi?", "Co voda odnese za pár let, obnovuje se staletí", [
-    { value: "Odnesená půda se do roka obnoví", why: "Za rok vznikne jen nepatrná vrstvička. Obnova trvá staletí." },
+    { value: "Odnesená půda se do roka sama obnoví", why: "Za rok vznikne jen nepatrná vrstvička. Obnova trvá staletí." },
     { value: "Eroze nevadí, půdy je dost", why: "Půda vzniká tak pomalu, že každá odnesená vrstva chybí na dlouhou dobu." },
     { value: "Eroze vytváří novou půdu", why: "Eroze půdu odnáší, nevytváří." },
   ], {
@@ -239,7 +239,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Voda může odnést centimetr půdy během pár silných dešťů, ale nový centimetr vzniká stovky let. Proto je eroze vážná — za život člověka se ztracená půda neobnoví.",
   }),
   choice("Proč se na svahu orá napříč, a ne shora dolů?", "Aby brázdy napříč zadržely vodu a ta neodnesla půdu", [
-    { value: "Aby brázdy odvedly vodu rychle dolů", why: "To by bylo shora dolů — a voda by brázdami odnášela půdu." },
+    { value: "Aby brázdy odvedly vodu co nejrychleji dolů", why: "To by bylo shora dolů — a voda by brázdami odnášela půdu." },
     { value: "Aby na pole víc svítilo slunce", why: "Směr brázd na slunce nemá velký vliv. Jde o vodu." },
     { value: "Aby se obilí nepřevrhlo", why: "Obilí se převrhne větrem nebo deštěm, směr orby na tom nezávisí." },
   ], {
@@ -249,7 +249,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč ve městě s mnoha betonovými plochami po bouřce častěji zaplaví ulice?", "Voda se nevsákne do země a hned odtéká", [
     { value: "Beton vodu přitahuje", why: "Beton vodu nepřitahuje, jen ji nepropustí." },
     { value: "Ve městě prší víc", why: "Ve městě neprší víc. Rozdíl je v tom, kam voda zmizí." },
-    { value: "Kanály jsou vždy ucpané", why: "Kanály to často nestihnou odvést, protože voda se nemá kde vsáknout." },
+    { value: "Kanály bývají vždycky ucpané", why: "Kanály to často nestihnou odvést, protože voda se nemá kde vsáknout." },
   ], {
     hints: ["Co se stane s deštěm na louce a co na parkovišti?", "Na louce voda zmizí v půdě jako v houbě. Beton je nepropustný. Kam tedy všechna voda z parkoviště musí?"],
     explanation: "Půda déšť nasává jako houba. Beton a asfalt vodu nepropustí, takže všechna voda steče najednou do ulic a kanálů a ty ji nestíhají odvést.",
@@ -257,13 +257,13 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč je humusu nejvíc ve svrchní vrstvě půdy?", "Tam padají a tlejí zbytky rostlin a živočichů", [
     { value: "Humus stoupá nahoru jako olej", why: "Humus nahoru nestoupá. Vzniká tam, kam padají zbytky." },
     { value: "Dole ho odnesla voda", why: "Voda odnáší půdu z povrchu, ne zespodu." },
-    { value: "Humus vzniká z hornin v hloubce", why: "Z hornin vznikají minerální části. Humus vzniká ze zbytků organismů." },
+    { value: "Humus vzniká z hornin hluboko pod povrchem", why: "Z hornin vznikají minerální části. Humus vzniká ze zbytků organismů." },
   ], {
     hints: ["Odkud se humus bere?", "Humus vzniká z tlejícího listí a zbytků. Kam listí padá — dolů do hloubky, nebo na povrch?"],
     explanation: "Humus vzniká z odumřelých rostlin a živočichů. Ty padají na povrch a tam tlejí, proto je nejvíc humusu nahoře. Hlouběji převládají úlomky hornin.",
   }),
   choice("Zemědělec každý rok jen sklízí a do půdy nic nevrací. Co se stane?", "Ubude v ní živin a úroda bude klesat", [
-    { value: "Půda bude čím dál úrodnější", why: "Každá sklizeň odnese živiny. Bez vracení jich ubývá." },
+    { value: "Půda bude rok od roku úrodnější", why: "Každá sklizeň odnese živiny. Bez vracení jich ubývá." },
     { value: "Nic, živiny se doplní samy", why: "Na poli se živiny samy nedoplní, sklizeň je odveze." },
     { value: "Za rok se změní v písek", why: "Tak rychle se to nestane. Úroda ale bude rok od roku menší." },
   ], {
@@ -271,7 +271,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Rostliny berou z půdy živiny a sklizeň je odveze z pole. Když se živiny nevracejí hnojem nebo kompostem, půdy jich ubývá a úroda klesá.",
   }),
   choice("Žížaly jedí spadané listí. Jak tím pomáhají rostlinám?", "Z listí je humus a chodbičky pustí do půdy vzduch", [
-    { value: "Žerou kořeny, a tak je prořeďují", why: "Žížaly živé kořeny nežerou. Jedí odumřelé zbytky." },
+    { value: "Žerou živé kořeny, a tak je prořeďují", why: "Žížaly živé kořeny nežerou. Jedí odumřelé zbytky." },
     { value: "Odhánějí krtky", why: "Krtci žížaly naopak loví. Pomoc je v humusu a chodbičkách." },
     { value: "Nijak, jen v půdě žijí", why: "Žížaly jsou pro půdu velmi užitečné." },
   ], {
@@ -288,7 +288,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Pod parkovištěm je půda. Proč na ní nic nevyroste?", "Nedostane se k ní světlo, voda ani vzduch", [
     { value: "Beton z ní vysál živiny", why: "Beton živiny nesaje. Rostliny chybějí, protože nemají světlo, vodu ani vzduch." },
-    { value: "Půda pod betonem za den zkamení", why: "Půda nezkamení. Jen je od všeho odříznutá." },
+    { value: "Půda pod betonem během dne zkamení", why: "Půda nezkamení. Jen je od všeho odříznutá." },
     { value: "Rostliny ve městě nerostou", why: "Ve městě rostliny rostou v parcích a zahradách. Pod betonem ne." },
   ], {
     hints: ["Co potřebuje semínko, aby vyklíčilo a rostlo?", "Beton je nepropustný jako víko. Co všechno se přes něj k půdě nedostane?"],
@@ -297,7 +297,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Když je na záhoně jen písek, rostliny rostou špatně. Proč?", "Písek nedrží vodu a nemá živiny", [
     { value: "Písek je moc těžký", why: "Písek je naopak lehký a sypký. Problém je voda a živiny." },
     { value: "Písek je moc tmavý", why: "Písek bývá světlý. Chybí mu humus." },
-    { value: "V písku je příliš humusu", why: "Humusu je v písku málo, ne moc." },
+    { value: "V písku je až příliš humusu", why: "Humusu je v písku málo, ne moc." },
   ], {
     hints: ["Co se stane s vodou, když ji naliješ na písek?", "Voda pískem rychle proteče pryč. A písek jsou jen zrnka kamene, bez zbytků rostlin. Co rostlinám chybí?"],
     explanation: "Písek vodu rychle propustí a nemá humus, takže v něm chybí voda i živiny. Pomůže přimíchat kompost, který obojí dodá.",
