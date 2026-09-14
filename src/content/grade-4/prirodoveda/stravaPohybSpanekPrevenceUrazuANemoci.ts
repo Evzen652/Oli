@@ -18,7 +18,7 @@ import { choice, shuffle } from "./_shared";
 
 const POOL_L1: PracticeTask[] = [
   choice("Čeho by mělo být v jídelníčku nejvíc?", "Zeleniny, ovoce a obilovin", [
-    { value: "Sladkostí a sušenek", why: "Sladkosti patří na vrchol pyramidy — jíme jich co nejméně." },
+    { value: "Sladkostí, sušenek a limonád", why: "Sladkosti patří na vrchol pyramidy — jíme jich co nejméně." },
     { value: "Uzenin a salámů", why: "Uzeniny mají hodně soli a tuku, jíme je jen občas." },
     { value: "Smažených jídel", why: "Smažené jídlo je tučné. Nemá tvořit základ jídelníčku." },
   ], {
@@ -28,7 +28,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Čeho bychom měli jíst nejméně?", "Sladkostí a tučných jídel", [
     { value: "Zeleniny", why: "Zeleniny máme jíst hodně, dává vitamíny a vlákninu." },
     { value: "Ovoce", why: "Ovoce patří do každého dne." },
-    { value: "Celozrnného pečiva", why: "Celozrnné pečivo je zdravý základ jídelníčku." },
+    { value: "Celozrnného pečiva a příloh", why: "Celozrnné pečivo je zdravý základ jídelníčku." },
   ], {
     hints: ["Co je na úplném vrcholu potravinové pyramidy?", "Nahoře v pyramidě je malé místo pro to, co je sice dobré, ale zdraví moc neprospívá — bonbóny, čokoláda, hranolky."],
     explanation: "Na vrcholu pyramidy jsou sladkosti a tučná jídla. Mají hodně cukru a tuku, ale málo vitamínů. Stačí je jíst jen občas.",
@@ -36,7 +36,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Kolik hodin by měl školák spát?", "Asi 9 až 11 hodin", [
     { value: "Asi 5 hodin", why: "Pět hodin je pro dítě velmi málo, bylo by pořád unavené." },
     { value: "Asi 7 hodin", why: "Sedm hodin stačí některým dospělým. Děti potřebují víc." },
-    { value: "Asi 15 hodin", why: "Tolik spí miminka. Školák potřebuje méně." },
+    { value: "Asi 15 hodin denně", why: "Tolik spí miminka. Školák potřebuje méně." },
   ], {
     hints: ["Děti potřebují spát víc než dospělí.", "Když jdeš spát v devět a vstáváš v sedm, kolik hodin to je? Zhruba tolik spánku je potřeba."],
     explanation: "Školák potřebuje spát asi 9 až 11 hodin. Ve spánku tělo roste a odpočívá a mozek si ukládá, co se přes den naučil.",
@@ -99,7 +99,7 @@ const POOL_L1: PracticeTask[] = [
   }),
   choice("Kam se má správně kýchat?", "Do kapesníku nebo do lokte", [
     { value: "Do dlaní", why: "Z dlaní se bacily dostanou na všechno, na co pak sáhneš." },
-    { value: "Směrem na spolužáka", why: "Kapénky by dopadly na spolužáka a mohl by onemocnět." },
+    { value: "Směrem na spolužáka v lavici", why: "Kapénky by dopadly na spolužáka a mohl by onemocnět." },
     { value: "Volně do vzduchu", why: "Kapénky se rozletí po místnosti a ostatní je vdechnou." },
   ], {
     hints: ["Kýchnutím letí kapénky s bacily. Kam je chytit, aby nikomu neublížily?", "Rukama pak sahá na kliky a lidi, takže ruce ne. Co zbývá — papírový ubrousek, nebo ohnutá paže?"],
@@ -108,7 +108,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Která svačina je nejzdravější?", "Jablko a celozrnný rohlík", [
     { value: "Tyčinka a limonáda", why: "Tyčinka i limonáda mají hodně cukru a málo vitamínů." },
     { value: "Sáček chipsů", why: "Chipsy jsou slané a tučné, nezasytí na dlouho." },
-    { value: "Kobliha s čokoládou", why: "Kobliha je sladká a tučná, hodí se jen výjimečně." },
+    { value: "Kobliha s čokoládovou polevou", why: "Kobliha je sladká a tučná, hodí se jen výjimečně." },
   ], {
     hints: ["Hledej svačinu bez cukru a tuku navíc.", "Jedna svačina obsahuje ovoce a pečivo z celého zrna. Dodá vitamíny a zasytí až do oběda."],
     explanation: "Jablko dodá vitamíny a vlákninu a celozrnný rohlík energii na dlouho. Sladké a tučné svačiny zasytí jen na chvíli.",
@@ -126,7 +126,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   choice("Proč bychom měli jíst hodně ovoce a zeleniny?", "Dodávají vitamíny a vlákninu", [
     { value: "Mají nejvíc bílkovin", why: "Bílkoviny jsou hlavně v mase, mléce, vejcích a luštěninách." },
-    { value: "Jsou hlavní zdroj tuku", why: "Ovoce a zelenina tuku skoro nemají." },
+    { value: "Jsou pro tělo hlavní zdroj tuku", why: "Ovoce a zelenina tuku skoro nemají." },
     { value: "Nahradí pití vody", why: "Obsahují vodu, ale pití nenahradí." },
   ], {
     hints: ["Co dává tělu síla k boji s nemocemi a pomáhá trávení?", "Vitamín C v paprice a jablku a vláknina ve slupkách a listech — kde se toho najde nejvíc?"],
@@ -134,7 +134,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč nejsou sladkosti vhodná svačina?", "Brzy máš zase hlad a kazí zuby", [
     { value: "Mají hodně bílkovin", why: "Sladkosti bílkoviny skoro nemají, jsou hlavně z cukru." },
-    { value: "Obsahují moc vitamínu C", why: "Vitamín C je v ovoci a zelenině, ne v bonbónech." },
+    { value: "Obsahují hodně vitamínu C", why: "Vitamín C je v ovoci a zelenině, ne v bonbónech." },
     { value: "Zasytí na celý den", why: "Je to naopak — cukr zasytí jen na chvíli." },
   ], {
     hints: ["Jak dlouho vydržíš bez hladu po bonbónu a jak po chlebu se sýrem?", "Cukr dodá energii jen na chvíli, pak přijde hlad. A co cukr dělá se zuby, když zůstane v puse?"],
@@ -182,14 +182,14 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Co udělat po procházce lesem nebo vysokou trávou?", "Prohlédnout tělo a klíště hned odstranit", [
     { value: "Nic, klíšťata neškodí", why: "Klíšťata mohou přenášet vážné nemoci." },
-    { value: "Počkat, až klíště samo odpadne", why: "Čím déle klíště saje, tím víc hrozí nákaza. Odstraní se hned." },
+    { value: "Počkat, až klíště samo odpadne z kůže", why: "Čím déle klíště saje, tím víc hrozí nákaza. Odstraní se hned." },
     { value: "Klíště namazat máslem", why: "Máslo ani krém se nepoužívají. Klíště se opatrně vytáhne pinzetou." },
   ], {
     hints: ["Kdo číhá v trávě a přisaje se na kůži?", "Klíště je malé a přisaje se často v podpaží nebo na nohou. Co s tebou udělají rodiče, když se vrátíš z lesa?"],
     explanation: "Klíšťata mohou přenášet nemoci. Po lese nebo trávě si prohlédneme celé tělo a nalezené klíště hned pinzetou vytáhneme. Místo pak vydezinfikujeme.",
   }),
   choice("Jak správně přejít silnici?", "Na přechodu, po rozhlédnutí vlevo, vpravo a vlevo", [
-    { value: "Kdekoli, kde zrovna nejede auto", why: "Mimo přechod tě řidič nečeká. Nejbezpečnější je přechod." },
+    { value: "Kdekoli, kde zrovna nejede žádné auto", why: "Mimo přechod tě řidič nečeká. Nejbezpečnější je přechod." },
     { value: "Rychle proběhnout mezi auty", why: "Mezi stojícími auty tě řidiči nevidí. Je to velmi nebezpečné." },
     { value: "Na přechodu, bez rozhlížení", why: "I na přechodu se musíš rozhlédnout — řidič tě nemusí vidět." },
   ], {
@@ -207,7 +207,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Proč nechodit do školy s horečkou?", "Nakazily by se další děti a nemoc by trvala déle", [
     { value: "Ve škole je v zimě chladno", why: "Ve škole se topí. Důvod je nákaza a odpočinek." },
     { value: "Horečka ve škole zmizí", why: "Horečka nezmizí, tělo potřebuje odpočívat." },
-    { value: "Nemocní se ve škole uzdraví dřív", why: "Je to naopak. Nemocný potřebuje klid a odpočinek doma." },
+    { value: "Nemocní se ve škole uzdraví mnohem dřív", why: "Je to naopak. Nemocný potřebuje klid a odpočinek doma." },
   ], {
     hints: ["Na co myslíš, když mluvíš o sobě, a na co, když mluvíš o spolužácích?", "Nemocné tělo potřebuje klid, aby se uzdravilo. A co by se stalo se spolužáky, kdybys na ně kýchal?"],
     explanation: "S horečkou tělo bojuje s nemocí a potřebuje odpočívat. Ve škole by se tělo uzdravovalo hůř a nemoc by se přenesla na spolužáky i učitele.",
@@ -233,7 +233,7 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   choice("Proč si po dobrém spánku lépe pamatuješ, co bylo ve škole?", "Mozek ve spánku ukládá, co se přes den naučil", [
     { value: "Ve spánku mozek nepracuje", why: "Mozek ve spánku pracuje — třídí a ukládá zážitky dne." },
-    { value: "Nové věci se učíš ve snech", why: "Ve snech se neučíš. Mozek jen ukládá, co se naučil přes den." },
+    { value: "Nové věci se naučíš přímo ve snech", why: "Ve snech se neučíš. Mozek jen ukládá, co se naučil přes den." },
     { value: "Spánek s pamětí nesouvisí", why: "Souvisí. Nevyspalý člověk si pamatuje hůř." },
   ], {
     hints: ["Co dělá mozek, když tělo odpočívá?", "Odpoledne se naučíš básničku a ráno ji umíš líp než večer. Kdy se mozek postaral, aby ji uložil?"],
@@ -250,7 +250,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč se v autě musí děti poutat v autosedačce i na krátkou cestu?", "Při prudkém brzdění by vyletěly dopředu", [
     { value: "Kvůli pokutě, nebezpečí žádné", why: "Nejde jen o pokutu. Bez pásu hrozí vážné zranění." },
     { value: "Stačí to jen na dálnici", why: "Nehoda se stane i ve městě a na krátké cestě." },
-    { value: "Autosedačka je jen pro pohodlí", why: "Autosedačka dítě chrání. Pás pro dospělé je dítěti vysoko." },
+    { value: "Autosedačka je jen kvůli pohodlí dítěte", why: "Autosedačka dítě chrání. Pás pro dospělé je dítěti vysoko." },
   ], {
     hints: ["Co se stane s nepřipoutanou taškou na sedadle, když auto prudce zabrzdí?", "Auto zastaví, ale všechno uvnitř letí dál dopředu. Co tělo zadrží? A proč musí být dítě ve sedačce?"],
     explanation: "Při prudkém brzdění nebo nárazu letí vše v autě dál dopředu. Pás a autosedačka tělo zadrží. Autosedačka zajistí, aby pás vedl přes správná místa dětského těla.",
@@ -258,14 +258,14 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč si ruce musíme mýt mýdlem, a ne jen vodou?", "Mýdlo smyje i mastnotu, na které drží bacily", [
     { value: "Mýdlo bacily sní", why: "Mýdlo nic nejí. Pomůže je z kůže smýt." },
     { value: "Mýdlo jen hezky voní", why: "Vůně není důvod. Mýdlo rozpustí mastnotu s bacily." },
-    { value: "Stačí voda, mýdlo je zbytečné", why: "Samotná voda mastnotu s bacily nesmyje dobře." },
+    { value: "Stačí studená voda, mýdlo je zbytečné", why: "Samotná voda mastnotu s bacily nesmyje dobře." },
   ], {
     hints: ["Zkus umýt mastný talíř jen studenou vodou.", "Bacily drží na kůži v mastné vrstvičce, kterou voda sama nesmyje. Co ji rozpustí?"],
     explanation: "Na rukou je tenká mastná vrstva, ve které drží bacily. Samotná voda po ní steče. Mýdlo mastnotu rozpustí a voda ji i s bacily odplaví.",
   }),
   choice("Proč celodenní sezení u obrazovky škodí zdraví?", "Chybí pohyb, bolí záda a unavují se oči", [
     { value: "Obrazovka přenáší nemoci", why: "Obrazovka nemoci nepřenáší. Škodí nedostatek pohybu a únava očí." },
-    { value: "Neškodí, když je hra zábavná", why: "Zábava nic nemění na tom, že tělo sedí a oči jsou unavené." },
+    { value: "Neškodí to, když je hra zábavná", why: "Zábava nic nemění na tom, že tělo sedí a oči jsou unavené." },
     { value: "Škodí jen dospělým", why: "Dětem škodí stejně, protože rostou a potřebují pohyb." },
   ], {
     hints: ["Co tělo nedělá, když celý den sedí?", "Svaly nepracují, záda jsou pořád ohnutá a oči se dívají jen na jedno místo. Co z toho bude za pár měsíců?"],
@@ -288,7 +288,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Rozcvička zahřeje svaly, takže se méně zraní. Ochranné pomůcky jako přilba, chrániče nebo správná obuv ztlumí pád a náraz.",
   }),
   choice("Proč mají být v jídle i luštěniny, ryby nebo maso?", "Dodají bílkoviny, ze kterých tělo roste", [
-    { value: "Dodají hlavně vitamín C", why: "Vitamín C je hlavně v ovoci a zelenině." },
+    { value: "Dodají tělu hlavně vitamín C", why: "Vitamín C je hlavně v ovoci a zelenině." },
     { value: "Nahradí pití vody", why: "Žádné jídlo pití nenahradí." },
     { value: "Obsahují nejvíc cukru", why: "Luštěniny, ryby a maso cukru moc nemají." },
   ], {
@@ -298,7 +298,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč se nesmí skákat do neznámé nebo mělké vody?", "Pod hladinou mohou být kameny a hloubka se neodhadne", [
     { value: "Voda je vždycky ledová", why: "Teplota vody není hlavní nebezpečí. Hrozí náraz na dno." },
     { value: "Ryby by kously", why: "Ryby nekoušou. Hrozí náraz hlavou na dno nebo kámen." },
-    { value: "Mělká voda je nejbezpečnější", why: "Do mělké vody je skok nejnebezpečnější — hlava narazí na dno." },
+    { value: "Mělká voda je ke skákání nejbezpečnější", why: "Do mělké vody je skok nejnebezpečnější — hlava narazí na dno." },
   ], {
     hints: ["Vidíš z břehu, jak hluboko je dno?", "Z břehu nepoznáš, jestli je voda hluboká a čistá. Co se stane s hlavou, když skočíš a dno je blízko?"],
     explanation: "V neznámé vodě nevidíme dno ani kameny a hloubku špatně odhadneme. Skok do mělké vody může způsobit vážné poranění hlavy a páteře.",
@@ -328,7 +328,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Cesta pěšky nebo na kole je každodenní pohyb navíc. Posiluje tělo, probudí mozek před vyučováním a do toho méně aut znečišťuje vzduch.",
   }),
   choice("Proč tě po nočním hraní na mobilu ráno bolí hlava a hůř se učíš?", "Mozek si nestihl ve spánku odpočinout", [
-    { value: "Mobil vyzařuje bolest hlavy", why: "Mobil bolest hlavy nevyzařuje. Chybí spánek." },
+    { value: "Mobil bolest hlavy přímo vyzařuje", why: "Mobil bolest hlavy nevyzařuje. Chybí spánek." },
     { value: "Ráno je to tak vždycky", why: "Po dobrém spánku je ráno svěží hlava." },
     { value: "Hraní zlepšuje paměť", why: "Hraní místo spánku paměť zhorší." },
   ], {

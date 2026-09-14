@@ -11,7 +11,7 @@ const L1: PracticeTask[] = [
   choice("Proč je důležité psát čitelně?", "aby to přečetl každý, komu je to určené", [
     { value: "aby sloh vyšel co nejdelší", why: "O délku nejde." },
     { value: "aby se psalo co nejrychleji", why: "Čitelné psaní bývá naopak pomalejší." },
-    { value: "aby se spotřebovalo víc papíru", why: "S papírem to nesouvisí." },
+    { value: "aby se spotřebovalo co nejvíc papíru", why: "S papírem to nesouvisí." },
   ], { hints: ["Co se stane se slohem, který nikdo nerozluští?", "Píšeme pro čtenáře — musí rozeznat každé písmeno."], explanation: "Čitelně píšeme proto, aby text přečetl každý, komu je určený." }),
   choice("Co patří k úpravě textu?", "nadpis, okraje a odstavce", [
     { value: "jen barva inkoustu", why: "Barva o přehlednosti nerozhoduje." },
@@ -26,7 +26,7 @@ const L1: PracticeTask[] = [
   choice("Co je nadpis?", "název, který říká, o čem text bude", [
     { value: "poslední věta celého slohu", why: "Poslední věta je závěr." },
     { value: "podpis autora pod textem", why: "Podpis říká, kdo psal." },
-    { value: "datum, kdy byl sloh napsán", why: "Datum říká, kdy se psalo." },
+    { value: "datum, kdy byl celý sloh napsán", why: "Datum říká, kdy se psalo." },
   ], { hints: ["Co čteš jako první, když otevřeš článek v časopise?", "Nadpis stojí nahoře a prozradí téma, například Můj pes."], explanation: "Nadpis je název, který čtenáři řekne, o čem se bude psát." }),
   choice("Kam na stránku píšeme nadpis?", "nahoru na stránku", [
     { value: "doprostřed textu", why: "Tam už by čtenář četl." },
@@ -34,7 +34,7 @@ const L1: PracticeTask[] = [
     { value: "na okraj", why: "Okraj zůstává volný." },
   ], { hints: ["Co čtenář uvidí jako první?", "Název stojí před vším ostatním, obvykle uprostřed prvního řádku."], explanation: "Nadpis píšeme nahoru, před text." }),
   choice("Proč necháváme okraje?", "aby byl text přehledný a bylo kam psát opravy", [
-    { value: "abychom popsali co nejméně papíru", why: "O úsporu papíru nejde." },
+    { value: "abychom popsali co možná nejméně papíru", why: "O úsporu papíru nejde." },
     { value: "protože se to hezky vybarvuje", why: "Okraje se nevybarvují." },
     { value: "okraje nejsou vůbec potřeba", why: "Bez okrajů je stránka natěsnaná." },
   ], { hints: ["K čemu je volné místo po stranách stránky?", "Učitel tam píše poznámky a stránka nevypadá natěsnaná."], explanation: "Okraje dělají stránku přehlednou a je kam napsat poznámku nebo opravu." }),
@@ -59,17 +59,17 @@ const L1: PracticeTask[] = [
     { value: "křečovitě a pevně", why: "Ruka by se brzy unavila." },
   ], { hints: ["Kolik prstů se pera dotýká?", "Pero drží palec, ukazováček a prostředníček — nesvíráme ho."], explanation: "Pero držíme lehce třemi prsty." }),
   choice("Proč píšeme do řádků?", "text je rovný a dobře se čte", [
-    { value: "aby se ušetřil papír", why: "O papír nejde." },
+    { value: "aby se ušetřil papír v sešitě", why: "O papír nejde." },
     { value: "je to úplně jedno", why: "Nakřivo psaný text se čte špatně." },
     { value: "kvůli barvě sešitu", why: "Barva nehraje roli." },
   ], { hints: ["Proč má sešit linky?", "Po linkách oko snadno klouže zleva doprava a písmo nepadá."], explanation: "Do řádků píšeme, aby byl text rovný a dobře se četl." }),
   choice("Co je čistopis?", "text přepsaný načisto bez chyb", [
     { value: "první koncept", why: "Koncept je pracovní verze." },
     { value: "sešit na výkresy", why: "To je výtvarná výchova." },
-    { value: "papír na poznámky", why: "Poznámky nejsou čistopis." },
+    { value: "papír na rychlé poznámky", why: "Poznámky nejsou čistopis." },
   ], { hints: ["Kterou verzi odevzdáváme — první pokus, nebo konečnou?", "Nejdřív koncept se škrty, pak ho pečlivě přepíšeme."], explanation: "Čistopis je text přepsaný načisto, bez chyb a škrtů." }),
   choice("K čemu je koncept?", "k prvnímu zapsání myšlenek, které pak opravíme", [
-    { value: "k okamžitému odevzdání paní učitelce", why: "Odevzdává se čistopis." },
+    { value: "k okamžitému odevzdání panu nebo paní učitelce", why: "Odevzdává se čistopis." },
     { value: "ke kreslení obrázků k textu", why: "Koncept je na psaní." },
     { value: "k ničemu, rovnou píšeme načisto", why: "Bez konceptu bývá čistopis plný škrtů." },
   ], { hints: ["Co napíšeš dřív, než uděláš čistopis?", "Do konceptu smíme škrtat a přepisovat — je to pracovní verze."], explanation: "Koncept je první verze, kterou ještě opravujeme." }),
@@ -102,7 +102,7 @@ const L2: PracticeTask[] = [
     { value: "mezery", why: "Mezery jsou mezi slovy." },
   ], { hints: ["Kde se na stránce píšou poznámky učitele?", "Po stranách stránky má zůstat volný pruh, na který se nepíše."], explanation: "Chybí okraje — volné místo po stranách." }),
   choice("Při psaní ti řádky utíkají šikmo nahoru. Co pomůže?", "psát do linkovaného sešitu nebo s podložkou s linkami", [
-    { value: "psát rychleji, ať je to hotové", why: "Rychlost řádky nesrovná." },
+    { value: "psát rychleji, ať už je to hotové", why: "Rychlost řádky nesrovná." },
     { value: "otočit papír vzhůru nohama", why: "To nepomůže." },
     { value: "psát mnohem větším písmem", why: "Velikost písma řádky nesrovná." },
   ], { hints: ["Co ti ukáže, kde má řádek vést?", "Vodicí čáry pod papírem či v sešitě udrží písmo rovně."], explanation: "Pomůže linkovaný sešit nebo podložka s linkami." }),
@@ -112,32 +112,32 @@ const L2: PracticeTask[] = [
     { value: "přepíšu písmena přes ni", why: "Přepsaná písmena nejdou přečíst." },
   ], { hints: ["Jak opravit chybu, aby stránka zůstala čistá?", "Oprava má být nenápadná a čitelná — žádné čmáranice ani díry."], explanation: "Chybu přeškrtneme jednou tenkou čarou." }),
   choice("Lucie píše tak drobně, že se to nedá přečíst. Co jí poradíš?", "psát písmena větší a zřetelnější", [
-    { value: "psát ještě drobněji", why: "To by bylo horší." },
+    { value: "psát příště ještě drobněji", why: "To by bylo horší." },
     { value: "psát bez mezer", why: "Bez mezer se čte hůř." },
     { value: "psát jen tužkou", why: "Tužka velikost písma nezmění." },
   ], { hints: ["Proč se Luciino písmo nedá číst?", "Drobné tvary oko nerozliší; pomůže zvětšit je a dotáhnout."], explanation: "Lucie má psát větší a zřetelnější písmena." }),
   choice("Na konci řádku ti nestačí místo na celé slovo. Co uděláš?", "slovo rozdělím a dopíšu na další řádek", [
     { value: "napíšu ho přes okraj", why: "Okraj má zůstat volný." },
-    { value: "napíšu ho malinkými písmeny", why: "Malinká písmena nejdou přečíst." },
+    { value: "napíšu ho co nejmenšími písmeny", why: "Malinká písmena nejdou přečíst." },
     { value: "vynechám ho úplně", why: "Věta by pak nedávala smysl." },
   ], { hints: ["Smí se psát do okraje?", "Slova můžeme dělit mezi slabikami a pokračovat o linku níž."], explanation: "Slovo rozdělíme mezi slabikami a pokračujeme na dalším řádku." }),
   choice("Píšeš přání babičce. Jak ho upravíš?", "oslovení nahoře, text pod ním a podpis dole", [
-    { value: "podpis nahoře a oslovení dole", why: "Pořadí je obrácené." },
+    { value: "podpis úplně nahoře a oslovení dole", why: "Pořadí je obrácené." },
     { value: "všechno do jednoho řádku", why: "Přání by bylo nepřehledné." },
     { value: "text dokola po okrajích", why: "Tak se nedá číst." },
   ], { hints: ["Co babičce napíšeš jako první a co jako poslední?", "Přání má pevné pořadí: začíná se tím, komu píšeme, a končí se tím, kdo píše."], explanation: "Nahoře oslovení, pod ním text a dole podpis." }),
   choice("Martin píše slova nalepená na sebe a věty bez teček. Co jeho text zlepší nejvíc?", "mezery mezi slovy a tečky za větami", [
-    { value: "větší a barevnější nadpis", why: "Nadpis slova ani věty neoddělí." },
+    { value: "o něco větší a barevnější nadpis", why: "Nadpis slova ani věty neoddělí." },
     { value: "širší okraje na stránce", why: "Okraje slova neoddělí." },
     { value: "pero jiné barvy", why: "Barva nepomůže." },
   ], { hints: ["Co Martinovi chybí, aby šla slova i věty od sebe rozeznat?", "Volné místo odděluje slova, znaménko na konci odděluje věty."], explanation: "Nejvíc pomohou mezery a tečky." }),
   choice("Do sešitu píšeš dvě cvičení za sebou. Jak je oddělíš?", "vynechám řádek a napíšu číslo dalšího cvičení", [
-    { value: "napíšu je hned za sebe bez mezery", why: "Pak nepoznáš, kde jedno končí." },
+    { value: "napíšu je hned za sebe úplně bez mezery", why: "Pak nepoznáš, kde jedno končí." },
     { value: "druhé napíšu přes první", why: "Tak se nedá číst ani jedno." },
     { value: "druhé napíšu do okraje", why: "Okraj zůstává volný." },
   ], { hints: ["Jak má učitel poznat, kde jedna úloha končí a další začíná?", "Volné místo a označení úlohy stránku přehledně rozdělí."], explanation: "Vynecháme řádek a označíme další cvičení číslem." }),
   choice("Při psaní se ti třese ruka únavou. Co uděláš?", "chvíli si odpočinu a protáhnu prsty", [
-    { value: "budu psát ještě rychleji", why: "Unavená ruka píše ve spěchu hůř." },
+    { value: "budu psát ještě rychleji než dřív", why: "Unavená ruka píše ve spěchu hůř." },
     { value: "sevřu pero pevněji", why: "Ruka se unaví ještě víc." },
     { value: "dopíšu to levou rukou", why: "Písmo by bylo nečitelné." },
   ], { hints: ["Co pomůže unavené ruce?", "Unavená ruka píše nečitelně — krátká pauza a uvolnění pomůže víc než spěch."], explanation: "Chvíli si odpočineme a protáhneme prsty." }),
@@ -145,7 +145,7 @@ const L2: PracticeTask[] = [
 
 const L3: PracticeTask[] = [
   choice("Paní učitelka napsala pod sloh: „Nevím, kde končí jedna myšlenka a začíná další.“ Co máš příště udělat?", "rozdělit text do odstavců", [
-    { value: "napsat větší nadpis", why: "Nadpis myšlenky neoddělí." },
+    { value: "napsat mnohem větší nadpis", why: "Nadpis myšlenky neoddělí." },
     { value: "nechat širší okraje", why: "Okraje myšlenky neoddělí." },
     { value: "psát tmavším perem", why: "Barva myšlenky neoddělí." },
   ], { hints: ["Jak se na stránce oddělují myšlenky?", "Když přejdeš k jiné věci, začni znovu od kraje s malým odsazením."], explanation: "Každou myšlenku dáme do vlastního odstavce." }),
@@ -170,12 +170,12 @@ const L3: PracticeTask[] = [
     { value: "okraje", why: "Okraje věty neoddělí." },
   ], { hints: ["Jaké znaménko ukončuje oznamovací větu?", "Znaménko za posledním slovem říká čtenáři: tady se zastav."], explanation: "Chyběly tečky na konci vět." }),
   choice("Text: „Moje kočka se jmenuje Micka. Je černá a má zelené oči. V neděli jsme jeli na výlet do Brna. Jeli jsme vlakem.“ Kde má začít nový odstavec?", "u věty V neděli jsme jeli na výlet do Brna.", [
-    { value: "u věty Je černá a má zelené oči.", why: "Tahle věta ještě patří ke kočce." },
+    { value: "u věty Je celá černá a má zelené oči.", why: "Tahle věta ještě patří ke kočce." },
     { value: "u věty Jeli jsme vlakem.", why: "Tahle věta patří k výletu." },
     { value: "nikde, všechno patří k sobě", why: "Kočka a výlet jsou dvě různá témata." },
   ], { hints: ["Kde se mění téma? O čem je začátek a o čem zbytek?", "Nový odstavec začíná tam, kde přestaneme psát o kočce a začneme o něčem jiném."], explanation: "První dvě věty jsou o kočce, další o výletě — odstavec začíná větou o neděli." }),
   choice("Text: „Ráno jsem vstal a nasnídal se. Pak jsem šel do školy. Odpoledne jsem hrál fotbal s kamarády. Dali jsme tři góly.“ Kde má začít nový odstavec?", "u věty Odpoledne jsem hrál fotbal s kamarády.", [
-    { value: "u věty Pak jsem šel do školy.", why: "Ráno a cesta do školy patří k sobě." },
+    { value: "u věty Pak jsem se vydal do školy.", why: "Ráno a cesta do školy patří k sobě." },
     { value: "u věty Dali jsme tři góly.", why: "Góly patří k fotbalu." },
     { value: "nikde, všechno patří k sobě", why: "Dopoledne a zábava po škole jsou dva celky." },
   ], { hints: ["Rozděl den na části — co bylo dopoledne a co potom?", "Ráno a škola patří k sobě; zábava po škole je nový celek."], explanation: "Nový odstavec začíná tam, kde přechází vyprávění ke hře po škole." }),
@@ -185,7 +185,7 @@ const L3: PracticeTask[] = [
     { value: "Návštěva u babičky", why: "S textem nesouvisí." },
   ], { hints: ["O čem přesně text je?", "Nadpis má krátce a přesně pojmenovat téma — ne příliš obecně, ne o něčem jiném."], explanation: "Nejlépe sedí „Péče o morče“ — řekne přesně, o čem text je." }),
   choice("Který nadpis se nejlépe hodí k textu o výletě na hrad Karlštejn?", "Výlet na Karlštejn", [
-    { value: "Hrady v Evropě", why: "Text je o jednom výletě, ne o všech hradech." },
+    { value: "Hrady v celé Evropě", why: "Text je o jednom výletě, ne o všech hradech." },
     { value: "Moje škola", why: "S textem nesouvisí." },
     { value: "Cestování", why: "Příliš obecné." },
   ], { hints: ["Který nadpis říká přesně, kam se jelo?", "Obecný nadpis je moc široký; nadpis o jiném tématu k textu nesedí."], explanation: "„Výlet na Karlštejn“ přesně vystihuje téma." }),

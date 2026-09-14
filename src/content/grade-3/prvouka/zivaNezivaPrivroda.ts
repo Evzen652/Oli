@@ -89,7 +89,7 @@ const POOL_L1: PracticeTask[] = [
     [
       { o: "Dýchají", why: "Dýchání je jeden ze základních znaků života." },
       { o: "Rostou", why: "Růst z vlastních sil je pro živé organismy typický." },
-      { o: "Rozmnožují se", why: "Rozmnožování patří mezi hlavní znaky živých organismů." },
+      { o: "Rozmnožují se a mají potomstvo", why: "Rozmnožování patří mezi hlavní znaky živých organismů." },
     ],
     [
       "Tři možnosti popisují, co živý tvor dělá, jedna popisuje, jaký je na dotek.",
@@ -158,7 +158,7 @@ const POOL_L1: PracticeTask[] = [
     "Dýchání, výživa, růst, rozmnožování",
     [
       { o: "Tvrdost, barva, tvar, váha", why: "To jsou vlastnosti věcí, ne činnosti, které by organismus sám dělal." },
-      { o: "Pohyb, chlad, tvrdost, lesk", why: "Pohybuje se i vítr a chlad ani lesk se života netýkají." },
+      { o: "Pohyb, chlad, tvrdost a lesk", why: "Pohybuje se i vítr a chlad ani lesk se života netýkají." },
       { o: "Světlo, teplo, vzduch, voda", why: "To jsou podmínky z neživé přírody. Život umožňují, ale znaky života to nejsou." },
     ],
     [
@@ -172,7 +172,7 @@ const POOL_L1: PracticeTask[] = [
     "Rostlina",
     [
       { o: "Kov", why: "Kov se získává z rud a zpracovává ho člověk, sám se nezvětší." },
-      { o: "Plast", why: "Plast vyrábí člověk z ropy, nikdy nebyl živý." },
+      { o: "Plastová lahev", why: "Plast vyrábí člověk z ropy, nikdy nebyl živý." },
       { o: "Sklo", why: "Sklo se taví z písku — je to neživý materiál." },
     ],
     [
@@ -245,7 +245,7 @@ const POOL_L2: PracticeTask[] = [
     "Semeno má uvnitř zárodek — poroste, až dostane vodu a teplo",
     [
       { o: "Semeno je jen kousek horniny", why: "Semeno vzniklo na rostlině, ne z kamene. Z horniny nikdy nic nevyklíčí." },
-      { o: "Semeno je neživé, protože se nehýbe", why: "Pohyb není znakem života — strom se také nehýbe, a přitom žije." },
+      { o: "Semeno je neživé, protože se vůbec nehýbe", why: "Pohyb není znakem života — strom se také nehýbe, a přitom žije." },
       { o: "Semeno je neživé, dokud nevyklíčí", why: "Klíčení je jen probuzení. To, co se probouzí, muselo být živé už předtím." },
     ],
     [
@@ -272,7 +272,7 @@ const POOL_L2: PracticeTask[] = [
     "Co je fotosyntéza?",
     "Způsob, jak si rostliny vyrábějí potravu ze světla a vody",
     [
-      { o: "Způsob, jak se rozmnožují živočichové", why: "Rozmnožování je úplně jiný děj a s výrobou potravy nesouvisí." },
+      { o: "Způsob, jakým se rozmnožují živočichové", why: "Rozmnožování je úplně jiný děj a s výrobou potravy nesouvisí." },
       { o: "Způsob, jak horniny mění svůj tvar", why: "Horniny nejsou živé a žádnou potravu nepotřebují." },
       { o: "Způsob, jak vzduch vzniká v půdě", why: "Vzduch se v půdě netvoří, jen vyplňuje mezery mezi částečkami." },
     ],
@@ -342,7 +342,7 @@ const POOL_L2: PracticeTask[] = [
     "Proč rostliny potřebují světlo?",
     "Aby si fotosyntézou vyrobily potravu",
     [
-      { o: "Aby se mohly pohybovat", why: "Rostlina se z místa nepohybuje, světlo k tomu nepotřebuje." },
+      { o: "Aby se mohly samy pohybovat", why: "Rostlina se z místa nepohybuje, světlo k tomu nepotřebuje." },
       { o: "Aby mohly dýchat", why: "Dýchat rostlina dokáže i ve tmě, k dýchání světlo nutné není." },
       { o: "Aby se rozmnožovaly", why: "K rozmnožování slouží květy a semena, ne přímo světlo." },
     ],
@@ -357,7 +357,7 @@ const POOL_L2: PracticeTask[] = [
     "Ano, plíseň je živý organismus (druh houby)",
     [
       { o: "Ne, protože nemá listy ani kořeny", why: "Listy a kořeny mají rostliny. Plíseň patří jinam, a přesto žije." },
-      { o: "Ne, plíseň je jen skvrna na chlebu", why: "Ta skvrna je hustá spleť vláken, která přirůstá a šíří se dál." },
+      { o: "Ne, plíseň je jenom barevná skvrna na chlebu", why: "Ta skvrna je hustá spleť vláken, která přirůstá a šíří se dál." },
       { o: "Záleží na barvě plísně", why: "Barva o životě nic nevypovídá — živé jsou zelené i bílé plísně." },
     ],
     [
@@ -370,7 +370,7 @@ const POOL_L2: PracticeTask[] = [
     "Co vše potřebuje rostlina k fotosyntéze?",
     "Světlo, vodu a oxid uhličitý",
     [
-      { o: "Jen sluneční světlo", why: "Samotné světlo nestačí, rostlina musí mít i z čeho cukr vyrobit." },
+      { o: "Jenom samotné sluneční světlo", why: "Samotné světlo nestačí, rostlina musí mít i z čeho cukr vyrobit." },
       { o: "Jen vodu z půdy", why: "Bez světla fotosyntéza neproběhne, i kdyby měla rostlina vody dost." },
       { o: "Teplo a tmu", why: "Ve tmě fotosyntéza neprobíhá vůbec." },
     ],
@@ -385,7 +385,7 @@ const POOL_L2: PracticeTask[] = [
     "Houby nemají chlorofyl a nevyrábějí si potravu fotosyntézou",
     [
       { o: "Houby se nikdy nerozmnožují", why: "Houby se rozmnožují výtrusy, jen jinak než rostliny semeny." },
-      { o: "Houby nejsou vůbec živé organismy", why: "Houby rostou i tvoří potomstvo, takže živé bezpochyby jsou." },
+      { o: "Houby nejsou vůbec živé organismy, jen tak vypadají", why: "Houby rostou i tvoří potomstvo, takže živé bezpochyby jsou." },
       { o: "Houby nepotřebují žádné živiny", why: "Živiny potřebují — získávají je rozkladem odumřelých zbytků." },
     ],
     [
@@ -398,7 +398,7 @@ const POOL_L2: PracticeTask[] = [
     "Co znamená, že rostliny jsou v potravním řetězci „producenti“?",
     "Že si samy vyrábějí potravu fotosyntézou a ostatní na nich závisí",
     [
-      { o: "Že vyrábějí potravu pro sebe i pro kameny", why: "Kameny nejsou živé a žádnou potravu nepotřebují." },
+      { o: "Že vyrábějí potravu pro sebe i pro okolní kameny", why: "Kameny nejsou živé a žádnou potravu nepotřebují." },
       { o: "Že jsou to jediné živé organismy na Zemi", why: "Živých organismů je mnoho — živočichové, houby i bakterie." },
       { o: "Že se nikdy nerozmnožují", why: "Rostliny se rozmnožují semeny, výtrusy nebo oddenky." },
     ],
@@ -413,7 +413,7 @@ const POOL_L2: PracticeTask[] = [
     "Protože dýchá, přijímá živiny, roste a tvoří semena",
     [
       { o: "Protože je zelená", why: "Barva o životě nerozhoduje, zelený je i nátěr na plotě." },
-      { o: "Nepočítá se — živé je jen to, co se hýbe", why: "Pohyb mezi znaky života nepatří, jinak by byl živý i vítr." },
+      { o: "Nepočítá se — živé je přece jen to, co se samo hýbe", why: "Pohyb mezi znaky života nepatří, jinak by byl živý i vítr." },
       { o: "Protože ji zasadil člověk", why: "Rostliny vyrůstají i bez zásahu člověka, třeba v lese nebo na louce." },
     ],
     [
@@ -443,7 +443,7 @@ const POOL_L3: PracticeTask[] = [
     "Který příklad DOKAZUJE, že pohyb není rozhodujícím znakem živého organismu?",
     "Strom stojí na místě, ale je živý; vítr se pohybuje, ale je neživý",
     [
-      { o: "Pes běhá po zahradě, protože je živý", why: "Ukazuje jen jednu stranu — živého tvora, který se hýbe." },
+      { o: "Pes běhá po zahradě, protože je to živý tvor", why: "Ukazuje jen jednu stranu — živého tvora, který se hýbe." },
       { o: "Kámen se nehýbe, protože je neživý", why: "Také jen jedna strana — neživá věc, která se nehýbe." },
       { o: "Ryba plave, protože žije ve vodě", why: "Popisuje jen, jak se ryba pohybuje, a nic tím nedokazuje." },
     ],
@@ -457,7 +457,7 @@ const POOL_L3: PracticeTask[] = [
     "Proč je semeno klasifikováno jako živé, přestože právě neroste, nedýchá viditelně a nerozmnožuje se?",
     "Obsahuje živý zárodek, který se probudí, až dostane vodu a teplo",
     [
-      { o: "Protože je tvrdé jako kámen a kámen vydrží dlouho", why: "Tvrdost ani trvanlivost mezi znaky života nepatří." },
+      { o: "Protože je tvrdé jako kámen a kámen přece vydrží dlouho", why: "Tvrdost ani trvanlivost mezi znaky života nepatří." },
       { o: "Semeno vlastně živé není, jen to tak vypadá", why: "Kdyby živé nebylo, nikdy by z něj nevyrostla rostlina." },
       { o: "Protože má stejnou barvu jako listy stromu", why: "Barva o životě nic nevypovídá — hnědá semena jsou také živá." },
     ],
@@ -542,7 +542,7 @@ const POOL_L3: PracticeTask[] = [
     "Živočichové by neměli co jíst, protože na rostlinách závisí celý řetězec",
     [
       { o: "Nic by se nestalo, dravci by dál lovili kořist", why: "Dravci loví býložravce, a ti by bez rostlin neměli co jíst." },
-      { o: "Živočichové by začali fotosyntetizovat místo rostlin", why: "Živočichové zelené barvivo nemají, fotosyntézy proto nejsou schopni." },
+      { o: "Živočichové by začali fotosyntetizovat úplně místo rostlin", why: "Živočichové zelené barvivo nemají, fotosyntézy proto nejsou schopni." },
       { o: "Jen býložravci by měli problém, masožravci ne", why: "Masožravci by přišli o kořist, protože by vymřeli býložravci." },
     ],
     [
@@ -570,7 +570,7 @@ const POOL_L3: PracticeTask[] = [
     "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen na něj namrzá další voda",
     [
       { o: "Ano, protože roste stejně jako rostlina", why: "Rostlina přirůstá zevnitř z vlastních sil, tady jen přibývá ledová vrstva." },
-      { o: "Ano, protože má protáhlý tvar jako živý organismus", why: "Tvar o životě nic neříká — protáhlý je i klacek." },
+      { o: "Ano, protože má protáhlý tvar úplně jako živý organismus", why: "Tvar o životě nic neříká — protáhlý je i klacek." },
       { o: "Záleží na tom, jak dlouhý rampouch je", why: "Délka nerozhoduje, životní projevy chybějí i tomu nejdelšímu." },
     ],
     [
@@ -584,7 +584,7 @@ const POOL_L3: PracticeTask[] = [
     "Ne, protože nedýchá, nepřijímá živiny ani se nerozmnožuje — jen se na něj usazuje vápenec",
     [
       { o: "Ano, protože roste jako rostlina v zemi", why: "Rostlina přirůstá z vlastních sil, krápníku jen přibývá vrstva zvenčí." },
-      { o: "Ano, protože má pravidelný tvar jako živé organismy", why: "Pravidelný tvar mají i krystaly soli, a ty živé nejsou." },
+      { o: "Ano, protože má pravidelný tvar úplně jako živé organismy", why: "Pravidelný tvar mají i krystaly soli, a ty živé nejsou." },
       { o: "Záleží na tom, jak starý krápník je", why: "Stáří o životě nerozhoduje — starý je i kámen v potoce." },
     ],
     [
@@ -599,7 +599,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Protože potravní řetězec tvoří jen neživé věci", why: "Řetězec tvoří organismy, neživá příroda jim jen dává podmínky k životu." },
       { o: "Protože zvířata jedí kameny a vodu", why: "Kameny zvířata nejedí, potravu získávají z jiných organismů." },
-      { o: "Neplatí to — řetězec by fungoval i bez vody a světla", why: "Bez vody a světla by nevyrostly rostliny a řetězec by neměl začátek." },
+      { o: "Neplatí to — potravní řetězec by fungoval i úplně bez vody a světla", why: "Bez vody a světla by nevyrostly rostliny a řetězec by neměl začátek." },
     ],
     [
       "Najdi nejdřív první článek řetězce a zeptej se, co potřebuje ke svému růstu.",

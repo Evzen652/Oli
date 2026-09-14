@@ -62,7 +62,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Co je ústava?", "Nejdůležitější zákon státu", [
     { value: "Seznam měst a obcí", why: "Seznam obcí ústavou není." },
     { value: "Kniha o dějinách", why: "Ústava nepopisuje dějiny, ale pravidla státu." },
-    { value: "Řád školní jídelny", why: "Řád jídelny platí jen v jídelně." },
+    { value: "Řád naší školní jídelny", why: "Řád jídelny platí jen v jídelně." },
   ], {
     hints: ["Všechny ostatní zákony se jí musí podřídit.", "Určuje, jak stát funguje, kdo ho řídí a jaká práva mají lidé. Jak se takový hlavní dokument jmenuje?"],
     explanation: "Ústava je nejdůležitější zákon státu. Určuje, jak stát funguje, a žádný jiný zákon s ní nesmí být v rozporu.",
@@ -76,7 +76,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Zákony schvaluje parlament, ve kterém sedí poslanci a senátoři zvolení lidmi. Prezident pak zákon podepíše.",
   }),
   choice("Ze kterých dvou částí se skládá český parlament?", "Poslanecká sněmovna a Senát", [
-    { value: "Vláda a prezident", why: "Vláda a prezident nejsou parlament." },
+    { value: "Vláda spolu s prezidentem", why: "Vláda a prezident nejsou parlament." },
     { value: "Kraje a obce", why: "Kraje a obce jsou samospráva, ne parlament." },
     { value: "Policie a soudy", why: "Policie a soudy nejsou parlament." },
   ], {
@@ -94,7 +94,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Co jsou volby?", "Hlasování, kterým lidé vybírají své zástupce", [
     { value: "Sportovní soutěž mezi školami", why: "Sportovní soutěž volbami není." },
     { value: "Vyučovací předmět ve škole", why: "Volby nejsou předmět ve škole." },
-    { value: "Oslava státního svátku na náměstí", why: "Volby nejsou oslava, ale hlasování." },
+    { value: "Oslava státního svátku na hlavním náměstí", why: "Volby nejsou oslava, ale hlasování." },
   ], {
     hints: ["Dospělí při nich chodí k urně.", "Lidé zakroužkují na lístku, koho chtějí, a tak rozhodnou, kdo za ně bude v parlamentu nebo na obci."],
     explanation: "Ve volbách lidé hlasují a vybírají si zástupce — do obce, kraje, parlamentu nebo prezidenta. Je to základ demokracie.",
@@ -159,7 +159,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Ve svobodných volbách může každý dospělý občan volit tajně a podle sebe z více kandidátů. Nikdo ho nesmí nutit ani trestat.",
   }),
   choice("Co je svoboda slova?", "Právo říkat svůj názor bez strachu z trestu", [
-    { value: "Povinnost pořád mluvit", why: "Nikdo nemusí mluvit. Svoboda slova je právo, ne povinnost." },
+    { value: "Povinnost pořád nahlas mluvit", why: "Nikdo nemusí mluvit. Svoboda slova je právo, ne povinnost." },
     { value: "Právo urážet druhé", why: "Svoboda slova neznamená právo urážet nebo lhát o druhých." },
     { value: "Zákaz psát knihy", why: "Je to naopak — svoboda slova dovoluje psát a mluvit." },
   ], {
@@ -168,14 +168,14 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Co je Listina základních práv a svobod?", "Zákon, který zaručuje práva každého člověka", [
     { value: "Seznam všech obcí v Česku", why: "Seznam obcí to není." },
-    { value: "Jídelní lístek ve školní jídelně", why: "Listina práv nemá s jídlem nic společného." },
+    { value: "Jídelní lístek vyvěšený ve školní jídelně", why: "Listina práv nemá s jídlem nic společného." },
     { value: "Mapa Česka s hranicemi krajů", why: "Mapa ukazuje krajinu, ne práva." },
   ], {
     hints: ["Jméno té listiny prozrazuje, co v ní je.", "Je v ní zapsané, že každý má právo na život, svobodu, vzdělání nebo na svůj názor."],
     explanation: "Listina základních práv a svobod patří k ústavě. Zaručuje práva každého člověka, třeba na život, svobodu, vzdělání a svůj názor.",
   }),
   choice("Proč je zakázána diskriminace?", "Všichni lidé mají stejná práva", [
-    { value: "Někteří lidé jsou lepší", why: "V demokracii mají všichni stejná práva, nikdo není lepší." },
+    { value: "Někteří lidé jsou lepší než ostatní", why: "V demokracii mají všichni stejná práva, nikdo není lepší." },
     { value: "Kvůli penězům", why: "Nejde o peníze, ale o spravedlnost." },
     { value: "Zákaz neexistuje", why: "Diskriminace je zakázaná zákonem." },
   ], {
@@ -208,14 +208,14 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč se volí tajně?", "Aby nikdo nemohl nikoho nutit, koho volit", [
     { value: "Aby volby byly rychlejší", why: "Tajnost volby nezrychlí. Chrání svobodu voliče." },
-    { value: "Aby nikdo nevěděl, že jsou volby", why: "Volby jsou veřejně oznámené. Tajné je jen to, koho kdo volí." },
+    { value: "Aby nikdo nevěděl, že se konají volby", why: "Volby jsou veřejně oznámené. Tajné je jen to, koho kdo volí." },
     { value: "Protože voliči se stydí", why: "Nejde o stud, ale o ochranu před nátlakem." },
   ], {
     hints: ["Co by se mohlo stát, kdyby všichni viděli, koho volíš?", "Kdyby šéf nebo soused viděl lístek, mohl by nutit nebo trestat. Proč je tedy dobré, že je lístek skrytý za plentou?"],
     explanation: "Volí se tajně za plentou, aby nikdo nemohl voliče nutit ani ho za jeho volbu trestat. Každý tak volí podle sebe.",
   }),
   choice("Co může občan udělat, když chce něco změnit, kromě voleb?", "Podepsat petici nebo se zapojit v obci", [
-    { value: "Nic, jen počkat na další volby", why: "Občan může jednat i mezi volbami." },
+    { value: "Nic, jen počkat na příští volby za čtyři roky", why: "Občan může jednat i mezi volbami." },
     { value: "Porušit zákon", why: "Porušení zákona není správná cesta ke změně." },
     { value: "Přestat chodit do školy", why: "To nic nezmění a navíc to škodí." },
   ], {
@@ -223,7 +223,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Kromě voleb může občan podepsat petici, přijít na jednání zastupitelstva, napsat úřadu nebo se pokojně připojit k demonstraci.",
   }),
   choice("Kdo řídí obec?", "Starosta a zastupitelstvo zvolené občany", [
-    { value: "Prezident z Pražského hradu", why: "Prezident je hlava celého státu, obec neřídí." },
+    { value: "Prezident sídlící na Pražském hradě", why: "Prezident je hlava celého státu, obec neřídí." },
     { value: "Hejtman celého kraje", why: "Hejtman vede kraj." },
     { value: "Ředitel místní pošty", why: "Ředitel pošty vede poštu." },
   ], {
@@ -234,7 +234,7 @@ const POOL_L2: PracticeTask[] = [
 
 const POOL_L3: PracticeTask[] = [
   choice("Proč v demokracii nemůže jeden člověk vládnout neomezeně?", "Moc je rozdělená a navzájem se kontroluje", [
-    { value: "Protože se to nikomu nechce", why: "Nejde o chuť. Moc je záměrně rozdělená, aby ji nikdo nezneužil." },
+    { value: "Protože se to nikomu z nich nechce", why: "Nejde o chuť. Moc je záměrně rozdělená, aby ji nikdo nezneužil." },
     { value: "Může, když vyhraje volby", why: "Ani vítěz voleb nesmí vládnout bez kontroly parlamentu a soudů." },
     { value: "Protože je to drahé", why: "Nejde o peníze, ale o ochranu svobody." },
   ], {
@@ -242,7 +242,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "V demokracii je moc rozdělená: parlament dělá zákony, vláda vládne a soudy soudí. Navzájem se kontrolují, a tak nikdo nemůže moc zneužít.",
   }),
   choice("Čím se liší demokracie od diktatury?", "V demokracii lidé volí, diktátor vládne bez kontroly", [
-    { value: "V diktatuře jsou svobodné volby", why: "V diktatuře svobodné volby nejsou." },
+    { value: "V diktatuře jsou taky svobodné volby", why: "V diktatuře svobodné volby nejsou." },
     { value: "Demokracie má krále", why: "Demokracie krále mít může jen bez skutečné moci. Rozhodují zvolení zástupci." },
     { value: "Neliší se", why: "Liší se v tom, kdo rozhoduje a jestli jsou lidé svobodní." },
   ], {
@@ -266,7 +266,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Zákony musí dodržovat všichni, jinak by společnost nefungovala. Kdo s nimi nesouhlasí, může je v demokracii měnit — volbami, peticí, diskusí.",
   }),
   choice("Jak vzniká zákon?", "Navrhne se, schválí parlament a podepíše prezident", [
-    { value: "Napíše ho starosta a hned platí", why: "Starosta zákony nepíše. Zákon schvaluje parlament." },
+    { value: "Napíše ho starosta obce a hned platí", why: "Starosta zákony nepíše. Zákon schvaluje parlament." },
     { value: "Vymyslí ho soud", why: "Soudy podle zákonů rozhodují, nevymýšlejí je." },
     { value: "Stačí, když ho řekne prezident", why: "Prezident sám zákony nevydává, jen je podepisuje." },
   ], {
@@ -283,7 +283,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Ve starověkých Aténách volili jen svobodní muži. Čím se liší dnešní demokracie?", "Dnes volí všichni dospělí občané", [
     { value: "Dnes volí jen muži", why: "Dnes volí muži i ženy." },
-    { value: "Dnes volí jen bohatí", why: "Dnes volí všichni dospělí občané bez ohledu na majetek." },
+    { value: "Dnes volí jen bohatí lidé", why: "Dnes volí všichni dospělí občané bez ohledu na majetek." },
     { value: "Dnes nevolí nikdo", why: "V demokracii lidé volí." },
   ], {
     hints: ["Kdo v Aténách volit nesměl?", "V Aténách nevolily ženy ani otroci. Dnes v Česku volí každý občan od 18 let. V čem je to rozdíl?"],
@@ -292,7 +292,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč soudy nesmějí poslouchat vládu?", "Musí rozhodovat spravedlivě podle zákona", [
     { value: "Protože jsou proti vládě", why: "Soudy nejsou proti nikomu. Jsou nezávislé." },
     { value: "Protože vláda nemá zákony", why: "Vláda se zákony řídí. Soudy ale musí být nezávislé." },
-    { value: "Soudy vládu poslouchat musí", why: "Nemusí — jinak by vláda mohla trestat nevinné." },
+    { value: "Soudy musí vládu vždycky poslouchat", why: "Nemusí — jinak by vláda mohla trestat nevinné." },
   ], {
     hints: ["Co by se stalo, kdyby vláda mohla soudci říct, jak má rozhodnout?", "Vláda by pak mohla nechat odsoudit toho, kdo ji kritizuje. Proč tedy musí být soudy nezávislé?"],
     explanation: "Soudy musí být nezávislé, aby rozhodovaly spravedlivě jen podle zákona. Kdyby poslouchaly vládu, mohla by nechat trestat nevinné nebo kritiky.",
@@ -300,21 +300,21 @@ const POOL_L3: PracticeTask[] = [
   choice("Spolužák tvrdí, že ve třídě má rozhodovat ten nejsilnější. Je to demokratické?", "Ne, rozhodovat má hlasování a pravidla", [
     { value: "Ano, silný má vždy pravdu", why: "Síla neznamená pravdu. V demokracii rozhoduje hlasování." },
     { value: "Ano, když je to kamarád", why: "Kamarádství nerozhoduje. Pravidla platí pro všechny." },
-    { value: "Záleží na tom, jak je silný", why: "Síla o ničem nerozhoduje." },
+    { value: "Záleží na tom, jak je ten člověk silný", why: "Síla o ničem nerozhoduje." },
   ], {
     hints: ["Jak se rozhoduje v demokracii?", "V demokracii má každý stejný hlas a pravidla platí pro všechny, silné i slabé. Rozhoduje tedy síla?"],
     explanation: "Vláda nejsilnějšího demokratická není. V demokracii má každý stejný hlas, rozhoduje se hlasováním a pravidla platí pro všechny.",
   }),
   choice("Proč má každý člověk základní práva už od narození?", "Jsou to lidská práva, stát je jen chrání", [
     { value: "Protože si je koupil", why: "Lidská práva se nekupují. Má je každý." },
-    { value: "Dostane je až v 18 letech", why: "Základní práva má každý od narození, i dítě." },
+    { value: "Dostane je až v den osmnáctin", why: "Základní práva má každý od narození, i dítě." },
     { value: "Práva má jen prezident", why: "Základní práva mají všichni lidé." },
   ], {
     hints: ["Musí si miminko svá práva nějak zasloužit?", "Právo na život, na svobodu nebo na to, aby se s tebou jednalo lidsky, nedává stát. Kdo je tedy má?"],
     explanation: "Základní lidská práva má každý člověk od narození jen proto, že je člověk. Stát je nevytváří, jen je musí chránit.",
   }),
   choice("Co se v Česku změnilo po sametové revoluci v roce 1989?", "Lidé získali svobodné volby a svobodu slova", [
-    { value: "Česko se spojilo s Rakouskem", why: "Česko se s Rakouskem nespojilo." },
+    { value: "Česko se znovu spojilo s Rakouskem", why: "Česko se s Rakouskem nespojilo." },
     { value: "Vznikla monarchie", why: "Monarchie nevznikla. Vznikla demokracie." },
     { value: "Nic se nezměnilo", why: "Změnilo se hodně — skončila vláda jedné strany." },
   ], {
@@ -330,7 +330,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "V demokracii rozhoduje většina, takže třída pojede do zoo. Menšinu je ale dobré vyslechnout — třeba se na hrad pojede příště.",
   }),
   choice("Proč je dobré, že jsou zákony zapsané a veřejné?", "Aby si každý mohl zjistit, co smí a co ne", [
-    { value: "Aby je nikdo nemusel číst", why: "Zákony jsou veřejné právě proto, aby je každý mohl číst." },
+    { value: "Aby je nikdo nemusel číst celé", why: "Zákony jsou veřejné právě proto, aby je každý mohl číst." },
     { value: "Aby se daly často měnit", why: "Veřejnost zákonů nesouvisí s tím, jak často se mění." },
     { value: "Aby je znali jen soudci", why: "Znát je může každý, nejen soudci." },
   ], {

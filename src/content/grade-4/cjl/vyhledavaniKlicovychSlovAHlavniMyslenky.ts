@@ -12,7 +12,7 @@ import { choice, shuffle } from "../_shared";
 
 const L1: PracticeTask[] = [
   choice("Co jsou klíčová slova?", "nejdůležitější slova, která vystihují téma", [
-    { value: "všechna podstatná jména v textu", why: "Ne každé podstatné jméno je důležité pro téma." },
+    { value: "všechna podstatná jména v celém textu", why: "Ne každé podstatné jméno je důležité pro téma." },
     { value: "nejdelší slova v textu", why: "Délka o důležitosti nerozhoduje." },
     { value: "slova s háčky a čárkami", why: "Diakritika s důležitostí nesouvisí." },
   ], {
@@ -28,7 +28,7 @@ const L1: PracticeTask[] = [
     explanation: "Klíčová slova se opakují, protože se k nim autor stále vrací — jsou jádrem tématu.",
   }),
   choice("Podle čeho klíčová slova v učebnici snadno najdeš?", "jsou tučně, v nadpisu, nebo se opakují", [
-    { value: "jsou vždy na konci věty", why: "Místo ve větě o důležitosti nerozhoduje." },
+    { value: "jsou vždycky až na konci věty", why: "Místo ve větě o důležitosti nerozhoduje." },
     { value: "jsou vždy v závorce", why: "Závorka o důležitosti nic neříká." },
     { value: "jsou vždy nejkratší", why: "Délka o důležitosti nerozhoduje." },
   ], {
@@ -53,7 +53,7 @@ const L1: PracticeTask[] = [
   }),
   choice("Co je hlavní myšlenka textu?", "co nám text o tématu hlavně říká", [
     { value: "nadpis textu", why: "Nadpis myšlenku jen naznačí." },
-    { value: "nejdelší věta textu", why: "Délka o důležitosti nerozhoduje." },
+    { value: "nejdelší věta v celém textu", why: "Délka o důležitosti nerozhoduje." },
     { value: "jméno autora", why: "Autor není myšlenka." },
   ], {
     hints: ["Co si z textu máš zapamatovat, i když zapomeneš podrobnosti?", "Téma je, o čem text je. To hlavní, co o tom text tvrdí, se dá říct jednou celou větou."],
@@ -62,7 +62,7 @@ const L1: PracticeTask[] = [
   choice("Jaký je rozdíl mezi tématem a hlavní myšlenkou?", "téma je o čem, myšlenka je co se o tom říká", [
     { value: "je to totéž", why: "Téma je kratší — jen o čem text je." },
     { value: "téma je vždy delší", why: "Téma bývá kratší, jen slovo nebo dvě." },
-    { value: "myšlenka je vždy v závorce", why: "Závorka s tím nesouvisí." },
+    { value: "hlavní myšlenka je vždycky v závorce", why: "Závorka s tím nesouvisí." },
   ], {
     hints: ["Který z těch dvou pojmů se dá říct jedním slovem?", "U textu o včelách je jedno z nich „včely“ a druhé celá věta „včely pomáhají rostlinám“. Které je které?"],
     explanation: "Téma říká, o čem text je (včely). Hlavní myšlenka říká, co o tom text tvrdí (včely pomáhají rostlinám).",
@@ -100,7 +100,7 @@ const L1: PracticeTask[] = [
     explanation: "Tučně jsou napsané důležité pojmy, abychom si jich hned všimli.",
   }),
   choice("Co je rejstřík v knize?", "abecední seznam pojmů s čísly stran", [
-    { value: "seznam kapitol v pořadí", why: "To je obsah." },
+    { value: "seznam kapitol v pořadí za sebou", why: "To je obsah." },
     { value: "seznam obrázků", why: "Seznam obrázků rejstřík není." },
     { value: "poslední kapitola", why: "Rejstřík není kapitola." },
   ], {
@@ -108,7 +108,7 @@ const L1: PracticeTask[] = [
     explanation: "Rejstřík je abecední seznam pojmů s čísly stran, kde se o nich píše.",
   }),
   choice("Co najdeš v obsahu knihy?", "seznam kapitol s čísly stran", [
-    { value: "abecední seznam pojmů", why: "To je rejstřík." },
+    { value: "abecední seznam všech pojmů", why: "To je rejstřík." },
     { value: "slovníček cizích slov", why: "Slovníček je samostatná část." },
     { value: "jméno ilustrátora", why: "To bývá na titulní straně." },
   ], {
@@ -139,7 +139,7 @@ const L2: PracticeTask[] = [
   }),
   choice(`Jaká je hlavní myšlenka textu: „${VCELY}“`, "Včely opylují květy, a tak pomáhají růst ovoci.", [
     { value: "Včely létají z květu na květ.", why: "To je pravda, ale hlavní sdělení to není." },
-    { value: "Květy mají pěkné barvy a voní.", why: "To text neříká." },
+    { value: "Květy mají pěkné barvy a hezky voní.", why: "To text neříká." },
     { value: "Ovoce je zdravé a chutné.", why: "O zdraví text nemluví." },
   ], {
     hints: ["Proč je podle textu dobře, že včely létají z květu na květ?", "Hlavní myšlenka spojí všechny věty do jedné: co včely dělají a co dobrého z toho pro nás plyne."],
@@ -156,13 +156,13 @@ const L2: PracticeTask[] = [
   choice(`Jaká je hlavní myšlenka textu: „${JEZEK}“`, "Ježek je vzhůru v noci a zimu prospí.", [
     { value: "Ježek má bodliny.", why: "To je pravda, ale text o tom nemluví." },
     { value: "Žížaly žijí v zemi.", why: "Text je o ježkovi, ne o žížalách." },
-    { value: "Listí padá na podzim.", why: "To text neříká." },
+    { value: "Listí ze stromů padá na podzim.", why: "To text neříká." },
   ], {
     hints: ["Co si o ježkovi z textu zapamatuješ nejvíc?", "Hlavní myšlenka shrne celý text jednou větou — kdy je ježek aktivní a co dělá v zimě."],
     explanation: "Text říká, že ježek je aktivní v noci a na zimu upadá do zimního spánku.",
   }),
   choice("V textu o Praze hledáš, kolik lidí v ní žije. Na které slovo se zaměříš?", "obyvatelé", [
-    { value: "Vltava", why: "Vltava je řeka, o počtu lidí nic neřekne." },
+    { value: "řeka Vltava", why: "Vltava je řeka, o počtu lidí nic neřekne." },
     { value: "most", why: "Most s počtem lidí nesouvisí." },
     { value: "hrad", why: "Hrad s počtem lidí nesouvisí." },
   ], {
@@ -187,7 +187,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Klíčová slova textu jsou „kolo, přilba, přechod, semafor“. O čem text asi je?", "o bezpečné jízdě na kole", [
     { value: "o výletě do hor", why: "Semafor ani přechod na horách nejsou." },
-    { value: "o zvířatech v lese", why: "Žádné slovo o zvířatech tu není." },
+    { value: "o zvířatech, která žijí v lese", why: "Žádné slovo o zvířatech tu není." },
     { value: "o vaření polévky", why: "Tato slova s vařením nesouvisí." },
   ], {
     hints: ["Kde potřebuješ přilbu, přechod a semafor?", "Klíčová slova spoj dohromady: jízda na kole a pravidla na silnici."],
@@ -203,7 +203,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Jak si pomůžeš, když hledáš hlavní myšlenku?", "zeptám se: Co mi text hlavně chce říct?", [
     { value: "spočítám odstavce", why: "Počet odstavců o myšlence nic neřekne." },
-    { value: "najdu nejdelší slovo", why: "Délka slova nepomůže." },
+    { value: "najdu v textu nejdelší slovo", why: "Délka slova nepomůže." },
     { value: "přečtu jen nadpis", why: "Nadpis myšlenku jen naznačí." },
   ], {
     hints: ["Na co se zeptáš sám sebe po přečtení?", "Hlavní myšlenku najdeš otázkou po smyslu celého textu, ne počítáním nebo jeho vzhledem."],
@@ -212,7 +212,7 @@ const L2: PracticeTask[] = [
   choice("Co je myšlenková mapa?", "téma uprostřed a kolem něj důležitá slova", [
     { value: "mapa města", why: "Tady nejde o zeměpisnou mapu." },
     { value: "opsaný celý text", why: "Mapa je naopak krátká." },
-    { value: "seznam slov podle abecedy", why: "Mapa řadí slova kolem tématu, ne podle abecedy." },
+    { value: "seznam všech slov podle abecedy", why: "Mapa řadí slova kolem tématu, ne podle abecedy." },
   ], {
     hints: ["Jak by vypadal obrázek, kde je uprostřed slovo „včely“ a od něj vedou čáry?", "Uprostřed je to hlavní, na koncích paprsků věci, které k tomu patří — třeba med, úl, květy. Takový obrázek pomáhá myšlenky uspořádat."],
     explanation: "Myšlenková mapa má téma uprostřed a kolem něj důležitá slova, která k němu patří.",
@@ -237,7 +237,7 @@ const L3: PracticeTask[] = [
     explanation: "Hlavní myšlenka spojí všechny odstavce: kácení škodí a lesy je potřeba chránit.",
   }),
   choice("V rejstříku stojí „fotosyntéza 45, 78, 112“. Co to znamená?", "o fotosyntéze se píše na stranách 45, 78 a 112", [
-    { value: "fotosyntéza má tři různé významy", why: "Čísla jsou strany, ne významy." },
+    { value: "fotosyntéza má tři úplně různé významy", why: "Čísla jsou strany, ne významy." },
     { value: "kniha má 112 stran", why: "Číslo neříká, kolik má kniha stran." },
     { value: "fotosyntéza je jen na straně 45", why: "Stran je víc." },
   ], {
@@ -254,14 +254,14 @@ const L3: PracticeTask[] = [
   }),
   choice("Nadpis zní „Proč včely mizí?“ a první věta „Včel po celém světě ubývá.“ O čem bude text?", "o příčinách a následcích úbytku včel", [
     { value: "o výrobě medu", why: "Nadpis se ptá, proč včely mizí, ne jak se dělá med." },
-    { value: "o včelařském oblečení", why: "To nadpis ani první věta nenaznačují." },
+    { value: "o oblečení, které nosí včelaři", why: "To nadpis ani první věta nenaznačují." },
     { value: "o motýlech", why: "Text je o včelách." },
   ], {
     hints: ["Na co se nadpis ptá?", "Nadpis s otázkou „proč“ slibuje vysvětlení. První věta řekne, čeho se týká."],
     explanation: "Nadpis se ptá proč a první věta mluví o úbytku včel — text vysvětlí příčiny a následky.",
   }),
   choice("Hlavní myšlenka není v textu napsaná jednou větou. Jak ji najdeš?", "spojím důležitá slova a řeknu ji vlastními slovy", [
-    { value: "bez takové věty ji najít nejde", why: "Jde — složíš ji z celého textu." },
+    { value: "bez takové věty se hlavní myšlenka najít nedá", why: "Jde — složíš ji z celého textu." },
     { value: "opíšu první větu", why: "První věta nemusí zachytit celý text." },
     { value: "vyberu nejdelší slovo", why: "Délka slova nepomůže." },
   ], {
@@ -271,7 +271,7 @@ const L3: PracticeTask[] = [
   choice("V textu o dějinách je rok 1989. Co ověříš, než ho napíšeš jako odpověď na otázku, kdy padl komunistický režim?", "že se věta s tím rokem týká této události", [
     { value: "nic, stačí najít jakýkoli rok", why: "V textu může být víc roků k různým událostem." },
     { value: "že je rok napsaný tučně", why: "Tučné písmo o správnosti nerozhoduje." },
-    { value: "kolik je v textu dalších čísel", why: "Počet čísel nic neověří." },
+    { value: "kolik je v celém textu dalších čísel", why: "Počet čísel nic neověří." },
   ], {
     hints: ["Mohl by se ten rok týkat něčeho jiného?", "Najít číslo nestačí. Přečti větu kolem něj a zkontroluj, že mluví o té události, na kterou se ptáš."],
     explanation: "Musíme ověřit, že věta s rokem 1989 opravdu mluví o pádu režimu.",
@@ -327,7 +327,7 @@ const L3: PracticeTask[] = [
   choice("Nadpis článku zní „Pes – nejlepší přítel člověka“. Jaká bude asi hlavní myšlenka?", "psi jsou člověku věrnými kamarády", [
     { value: "psi mají čtyři nohy", why: "O nohách nadpis nic neříká." },
     { value: "psi štěkají", why: "Štěkání s přátelstvím nesouvisí." },
-    { value: "psi jsou dražší než kočky", why: "O ceně nadpis nic neříká." },
+    { value: "psi jsou o dost dražší než kočky", why: "O ceně nadpis nic neříká." },
   ], {
     hints: ["Co nadpis o psovi tvrdí?", "Nadpis často prozradí, co chce text říct. Tady říká, jaký vztah má pes k člověku."],
     explanation: "Nadpis naznačuje, že text ukáže psa jako věrného kamaráda člověka.",
