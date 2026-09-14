@@ -316,7 +316,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Co dělá tělo, když v noci spíme?",
     correctAnswer: "Odpočívá a nabírá novou energii",
-    options: ["Pracuje víc než přes den", "Odpočívá a nabírá novou energii", "Nic se s ním neděje", "Ztrácí sílu a slábne"],
+    options: ["Pracuje ještě víc než přes den", "Odpočívá a nabírá novou energii", "Nic se s ním neděje", "Ztrácí sílu a slábne"],
     emoji: "😴",
     hints: [
       "Jak se cítíme ráno po dobrém spánku?",
@@ -325,7 +325,7 @@ const POOL_L2: PracticeTask[] = [
     explanation:
       "Když spíme, tělo odpočívá a nabírá energii na další den. Proto se po dobrém spánku cítíme svěží a plní síly.",
     optionFeedback: {
-      "Pracuje víc než přes den": "Ve spánku tělo naopak odpočívá, nepracuje víc.",
+      "Pracuje ještě víc než přes den": "Ve spánku tělo naopak odpočívá, nepracuje víc.",
       "Nic se s ním neděje": "Ve spánku tělo nabírá sílu a regeneruje, děje se toho hodně.",
       "Ztrácí sílu a slábne": "Spánek sílu dodává, neubírá.",
     },
@@ -333,7 +333,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Která z těchto věcí zubům škodí nejvíc?",
     correctAnswer: "Jíst hodně sladkostí a nečistit si zuby",
-    options: ["Čistit si zuby ráno a večer", "Jíst mrkev a jablka", "Jíst hodně sladkostí a nečistit si zuby", "Pít vodu"],
+    options: ["Čistit si zuby pečlivě ráno a večer", "Jíst mrkev a jablka", "Jíst hodně sladkostí a nečistit si zuby", "Pít vodu"],
     emoji: "🍭",
     hints: [
       "Co na zubech zůstane po sladkém a způsobí kaz?",
@@ -342,7 +342,7 @@ const POOL_L2: PracticeTask[] = [
     explanation:
       "Zubům nejvíc škodí hodně sladkostí a nečištění — cukr na zubech způsobuje kaz. Čištění, mrkev, jablka i voda zubům prospívají.",
     optionFeedback: {
-      "Čistit si zuby ráno a večer": "Čištění zuby chrání, neškodí jim.",
+      "Čistit si zuby pečlivě ráno a večer": "Čištění zuby chrání, neškodí jim.",
       "Jíst mrkev a jablka": "Mrkev a jablka jsou zdravé a zuby při kousání dokonce čistí.",
       "Pít vodu": "Voda zubům neškodí, nemá cukr.",
     },
@@ -384,7 +384,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Proč je dobré jíst ovoce a zeleninu?",
     correctAnswer: "Obsahují vitamíny, které tělo potřebuje",
-    options: ["Obsahují hodně cukru a barviv", "Obsahují vitamíny, které tělo potřebuje", "Nemají pro tělo žádný význam", "Škodí zubům víc než bonbony"],
+    options: ["Obsahují hodně cukru a umělých barviv", "Obsahují vitamíny, které tělo potřebuje", "Nemají pro tělo žádný význam", "Škodí zubům víc než bonbony"],
     emoji: "🥗",
     hints: [
       "Co dobrého ovoce a zelenina tělu dodávají?",
@@ -393,7 +393,7 @@ const POOL_L2: PracticeTask[] = [
     explanation:
       "Ovoce a zeleninu jíme kvůli vitamínům, které tělo potřebuje, aby bylo zdravé. Na rozdíl od bonbonů zubům neškodí.",
     optionFeedback: {
-      "Obsahují hodně cukru a barviv": "Cukr a barviva jsou hlavně v bonbonech, ne v zelenině.",
+      "Obsahují hodně cukru a umělých barviv": "Cukr a barviva jsou hlavně v bonbonech, ne v zelenině.",
       "Nemají pro tělo žádný význam": "Ovoce a zelenina jsou pro tělo velmi důležité.",
       "Škodí zubům víc než bonbony": "Bonbony škodí zubům mnohem víc než ovoce a zelenina.",
     },
@@ -442,7 +442,7 @@ const POOL_L3: PracticeTask[] = [
       "Protože by cukr zbylý na zubech zuby poškozoval a vznikl by kaz",
       "Protože po sladkém zuby změní barvu na modrou",
       "Protože sladké jídlo zuby posiluje",
-      "Protože jinak by nám sladké chutnalo ještě víc",
+      "Protože jinak by nám všechno sladké chutnalo ještě mnohem víc",
     ],
     emoji: "🦷",
     hints: [
@@ -454,14 +454,14 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "Protože po sladkém zuby změní barvu na modrou": "Zuby po sladkém nezmodrají. Škodí jim cukr, ze kterého vzniká kaz.",
       "Protože sladké jídlo zuby posiluje": "Sladké zuby neposiluje, naopak jim škodí.",
-      "Protože jinak by nám sladké chutnalo ještě víc": "Chuť s tím nesouvisí. Čistíme kvůli cukru, který zuby kazí.",
+      "Protože jinak by nám všechno sladké chutnalo ještě mnohem víc": "Chuť s tím nesouvisí. Čistíme kvůli cukru, který zuby kazí.",
     },
   },
   {
     question: "Kamarád tvrdí, že je zdravější pít celý den kolu než vodu. Jak to opravíš?",
     correctAnswer: "Zdravější je voda — kola má hodně cukru, který škodí zubům i tělu",
     options: [
-      "Kamarád má pravdu, kola je nejzdravější nápoj",
+      "Kamarád má pravdu, kola je ze všech nápojů ta nejzdravější",
       "Zdravější je voda — kola má hodně cukru, který škodí zubům i tělu",
       "Voda i kola jsou úplně stejně zdravé",
       "Nejzdravější je nepít vůbec nic",
@@ -474,7 +474,7 @@ const POOL_L3: PracticeTask[] = [
     explanation:
       "Zdravější je voda, protože nemá cukr. Kola obsahuje hodně cukru, který škodí zubům i tělu. Nepít vůbec nic ale také nejde — tělo vodu potřebuje.",
     optionFeedback: {
-      "Kamarád má pravdu, kola je nejzdravější nápoj": "Kola má hodně cukru, zdravá není. Kamarád se plete.",
+      "Kamarád má pravdu, kola je ze všech nápojů ta nejzdravější": "Kola má hodně cukru, zdravá není. Kamarád se plete.",
       "Voda i kola jsou úplně stejně zdravé": "Nejsou. Kola má cukr, voda ne.",
       "Nejzdravější je nepít vůbec nic": "Tělo vodu potřebuje, bez pití by strádalo.",
     },
@@ -501,7 +501,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Tělo si přes krátký spánek nestihlo odpočinout a nabrat energii",
     options: [
       "Protože jsme přes noc příliš odpočatí",
-      "Protože málo spánku dodá tělu moc energie",
+      "Protože málo spánku dodá tělu ještě víc energie než dlouhý spánek",
       "S únavou spánek vůbec nesouvisí",
       "Tělo si přes krátký spánek nestihlo odpočinout a nabrat energii",
     ],
@@ -514,7 +514,7 @@ const POOL_L3: PracticeTask[] = [
       "Při krátkém spánku si tělo nestihne odpočinout a nabrat energii, proto jsme pak unavení a nesoustředění. Dost spánku únavě předchází.",
     optionFeedback: {
       "Protože jsme přes noc příliš odpočatí": "Po krátkém spánku odpočatí nejsme, je to naopak.",
-      "Protože málo spánku dodá tělu moc energie": "Málo spánku energii ubírá, nedodává.",
+      "Protože málo spánku dodá tělu ještě víc energie než dlouhý spánek": "Málo spánku energii ubírá, nedodává.",
       "S únavou spánek vůbec nesouvisí": "Souvisí velmi. Málo spánku je hlavní příčina únavy.",
     },
   },
@@ -524,7 +524,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "Protože jsou na rukou po hraní bakterie, které bychom si jinak dali s jídlem do úst",
       "Protože mokré ruce lépe drží svačinu",
-      "Protože čisté ruce se nesmějí špinit jídlem",
+      "Protože čisté ruce se pak nesmějí ušpinit od svačiny ani od jídla",
       "Protože mýdlo svačině dodá lepší chuť",
     ],
     emoji: "🧼",
@@ -536,7 +536,7 @@ const POOL_L3: PracticeTask[] = [
       "Po hraní venku jsou na rukou bakterie a nečistoty. Kdybychom si ruce neumyli, dostali bychom je se svačinou do úst a mohli onemocnět.",
     optionFeedback: {
       "Protože mokré ruce lépe drží svačinu": "Po umytí si ruce utřeme. Myjeme je kvůli bakteriím, ne kvůli držení.",
-      "Protože čisté ruce se nesmějí špinit jídlem": "Jde o to, aby se špína z rukou nedostala do jídla, ne naopak.",
+      "Protože čisté ruce se pak nesmějí ušpinit od svačiny ani od jídla": "Jde o to, aby se špína z rukou nedostala do jídla, ne naopak.",
       "Protože mýdlo svačině dodá lepší chuť": "Mýdlo chuť nezlepší. Smyje bakterie.",
     },
   },
@@ -547,7 +547,7 @@ const POOL_L3: PracticeTask[] = [
       "Protože po jídle se člověk nesmí ani pohnout",
       "Protože pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
       "Protože zdravé jídlo tělu naopak škodí",
-      "Protože pohyb nahradí jídlo, takže pak jíst nemusíme",
+      "Protože pohyb jídlo nahradí, takže pak už vůbec jíst nemusíme",
     ],
     emoji: "🏃",
     hints: [
@@ -559,14 +559,14 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "Protože po jídle se člověk nesmí ani pohnout": "Po jídle se hýbat smíme, jen ne hned divoce běhat.",
       "Protože zdravé jídlo tělu naopak škodí": "Zdravé jídlo tělu prospívá, jen samo nestačí.",
-      "Protože pohyb nahradí jídlo, takže pak jíst nemusíme": "Pohyb jídlo nenahradí. Tělo potřebuje obojí.",
+      "Protože pohyb jídlo nahradí, takže pak už vůbec jíst nemusíme": "Pohyb jídlo nenahradí. Tělo potřebuje obojí.",
     },
   },
   {
     question: "Petr sní k obědu jen tabulku čokolády. Co mu chybí, aby byl oběd zdravý?",
     correctAnswer: "Zelenina, pečivo nebo maso a k pití voda — čokoláda je samý cukr",
     options: [
-      "Nic, čokoláda je úplně vyvážený oběd",
+      "Nic, čokoláda je úplně vyvážený oběd i se svačinou",
       "Ještě víc čokolády a sladká limonáda",
       "Zelenina, pečivo nebo maso a k pití voda — čokoláda je samý cukr",
       "Jen další bonbony jako zákusek",
@@ -579,7 +579,7 @@ const POOL_L3: PracticeTask[] = [
     explanation:
       "Čokoláda je samý cukr, takže Petrovi chybí zelenina, pečivo nebo maso a k pití voda. Zdravý oběd je vyvážený, ne jen sladký.",
     optionFeedback: {
-      "Nic, čokoláda je úplně vyvážený oběd": "Čokoláda je jen cukr a tuk, vyvážený oběd to není.",
+      "Nic, čokoláda je úplně vyvážený oběd i se svačinou": "Čokoláda je jen cukr a tuk, vyvážený oběd to není.",
       "Ještě víc čokolády a sladká limonáda": "Přidat další cukr by oběd ještě zhoršilo.",
       "Jen další bonbony jako zákusek": "Bonbony jsou další cukr, obědu by nepomohly.",
     },
@@ -589,7 +589,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Jablko má vitamíny a neškodí zubům, bonbony jsou skoro jen cukr",
     options: [
       "Jablko i bonbony jsou úplně stejně zdravé",
-      "Bonbony jsou zdravější, protože jsou sladší",
+      "Bonbony jsou zdravější, protože jsou sladší a dodají rychle energii",
       "Jablko škodí zubům víc než bonbony",
       "Jablko má vitamíny a neškodí zubům, bonbony jsou skoro jen cukr",
     ],
@@ -602,7 +602,7 @@ const POOL_L3: PracticeTask[] = [
       "Jablko je lepší svačina, protože má vitamíny a zubům neškodí. Bonbony sice zasytí, ale jsou skoro jen cukr, který zubům škodí.",
     optionFeedback: {
       "Jablko i bonbony jsou úplně stejně zdravé": "Nejsou. Jablko má vitamíny, bonbony skoro jen cukr.",
-      "Bonbony jsou zdravější, protože jsou sladší": "Sladší neznamená zdravější. Cukr zubům škodí.",
+      "Bonbony jsou zdravější, protože jsou sladší a dodají rychle energii": "Sladší neznamená zdravější. Cukr zubům škodí.",
       "Jablko škodí zubům víc než bonbony": "Je to obráceně, bonbony zubům škodí mnohem víc.",
     },
   },
@@ -611,7 +611,7 @@ const POOL_L3: PracticeTask[] = [
     correctAnswer: "Jídlo pití nenahradí — tělo potřebuje vodu pravidelně po celý den",
     options: [
       "Jídlo pití nenahradí — tělo potřebuje vodu pravidelně po celý den",
-      "Kamarád má pravdu, po vydatné snídani se pít nemusí",
+      "Kamarád má pravdu, po opravdu vydatné snídani se už pít nemusí",
       "Stačí se pořádně napít jednou večer",
       "Místo pití stačí sníst víc bonbonů",
     ],
@@ -623,7 +623,7 @@ const POOL_L3: PracticeTask[] = [
     explanation:
       "Jídlo pití nenahradí — tělo vodu potřebuje pravidelně po celý den. I když se kamarád dobře nasnídá, musí během dne pít, aby tělu voda nechyběla.",
     optionFeedback: {
-      "Kamarád má pravdu, po vydatné snídani se pít nemusí": "Snídaně vodu nenahradí, kamarád se plete.",
+      "Kamarád má pravdu, po opravdu vydatné snídani se už pít nemusí": "Snídaně vodu nenahradí, kamarád se plete.",
       "Stačí se pořádně napít jednou večer": "Vodu doplňujeme průběžně, jedno napití večer nestačí.",
       "Místo pití stačí sníst víc bonbonů": "Bonbony vodu nenahradí a navíc kazí zuby.",
     },
@@ -698,7 +698,7 @@ const POOL_L3: PracticeTask[] = [
     question: "Kamarád se v noci dlouho dívá na televizi a ráno je unavený. Co mu poradíš?",
     correctAnswer: "Aby šel spát včas, protože tělo potřebuje dost spánku",
     options: [
-      "Aby se ráno napil koly, to únavu zažene",
+      "Aby se ráno napil koly, protože to únavu spolehlivě zažene",
       "Aby se díval ještě déle, zvykne si",
       "Aby šel spát včas, protože tělo potřebuje dost spánku",
       "Aby se vyspal o přestávce ve škole",
@@ -711,7 +711,7 @@ const POOL_L3: PracticeTask[] = [
     explanation:
       "Kamarád je unavený, protože místo spánku kouká na televizi. Nejlepší rada je chodit spát včas — tělo potřebuje dost spánku, aby si odpočinulo.",
     optionFeedback: {
-      "Aby se ráno napil koly, to únavu zažene": "Kola má cukr a spánek nenahradí. Příčina únavy zůstane.",
+      "Aby se ráno napil koly, protože to únavu spolehlivě zažene": "Kola má cukr a spánek nenahradí. Příčina únavy zůstane.",
       "Aby se díval ještě déle, zvykne si": "Na nedostatek spánku si tělo nezvykne, bude ještě unavenější.",
       "Aby se vyspal o přestávce ve škole": "Krátká přestávka noční spánek nenahradí.",
     },

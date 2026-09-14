@@ -9,32 +9,32 @@ import { choice, shuffle } from "../_shared";
 
 const L1: PracticeTask[] = [
   choice("Co je reprodukce textu?", "převyprávění obsahu vlastními slovy", [
-    { value: "doslovné opsání celého textu", why: "Opis není převyprávění." },
+    { value: "doslovné opsání celého textu do sešitu", why: "Opis není převyprávění." },
     { value: "překlad do jiného jazyka", why: "To je překlad." },
     { value: "nakreslení obrázku k textu", why: "To je ilustrace." },
   ], { hints: ["Když kamarádovi vyprávíš film, který jsi viděl, opakuješ každou větu?", "Reprodukce znamená říct, o čem text byl, a použít k tomu svoje formulace."], explanation: "Reprodukce je převyprávění obsahu vlastními slovy." }),
   choice("Čím začneme reprodukci?", "řekneme, o čem text je a kdo v něm vystupuje", [
-    { value: "přečteme doslova první větu", why: "Doslovné čtení není převyprávění." },
+    { value: "přečteme doslova úplně první větu", why: "Doslovné čtení není převyprávění." },
     { value: "začneme od konce příběhu", why: "Pořadí má zůstat zachované." },
     { value: "napíšeme dnešní datum", why: "Datum s obsahem nesouvisí." },
   ], { hints: ["Co potřebuje posluchač vědět hned na začátku?", "Nejdřív téma a postavy, potom děj po částech."], explanation: "Nejdřív řekneme téma a představíme postavy." }),
   choice("Co musíme při reprodukci zachovat?", "hlavní myšlenku a pořadí událostí", [
-    { value: "každé slovo originálu", why: "Slova můžeme změnit, obsah ne." },
+    { value: "každé jednotlivé slovo originálu", why: "Slova můžeme změnit, obsah ne." },
     { value: "jen samotný závěr", why: "Závěr nestačí." },
     { value: "jen jména postav", why: "Jména nestačí." },
   ], { hints: ["Co by se stalo, kdybys prohodil začátek a konec?", "Posluchač musí pochopit, o co šlo, a děj musí jít ve správném sledu."], explanation: "Zachováme hlavní myšlenku a pořadí událostí." }),
   choice("Co při reprodukci zachovat nemusíme?", "přesná slova a věty originálu", [
     { value: "hlavní postavy", why: "Bez postav by příběh nedával smysl." },
     { value: "hlavní myšlenku", why: "Ta je nejdůležitější." },
-    { value: "pořadí událostí", why: "Pořadí musí zůstat." },
+    { value: "pořadí událostí v příběhu", why: "Pořadí musí zůstat." },
   ], { hints: ["Musíš si pamatovat text nazpaměť?", "Důležitý je obsah — jak to autor formuloval, můžeš říct po svém."], explanation: "Přesná slova originálu zachovat nemusíme." }),
   choice("Proč je reprodukce užitečná?", "ukáže, že jsme textu opravdu porozuměli", [
-    { value: "naučíme se tak text nazpaměť", why: "Nazpaměť se učí básně, ne převyprávění." },
+    { value: "naučíme se tak celý text nazpaměť", why: "Nazpaměť se učí básně, ne převyprávění." },
     { value: "opisování je rychlejší", why: "Reprodukce není opisování." },
     { value: "učí nás jen pravopis", why: "Jde o porozumění." },
   ], { hints: ["Dokážeš vyprávět něco, čemu nerozumíš?", "Kdo umí příběh převyprávět po svém, musel ho pochopit."], explanation: "Reprodukce ukáže, že jsme textu porozuměli." }),
   choice("Jak zjistíme hlavní myšlenku textu?", "zeptáme se, co je v textu nejdůležitější", [
-    { value: "přečteme jen první větu", why: "První věta nemusí říct to hlavní." },
+    { value: "přečteme nahlas jen první větu", why: "První věta nemusí říct to hlavní." },
     { value: "spočítáme všechna slova", why: "Počet slov nic neřekne." },
     { value: "najdeme nejdelší slovo", why: "Délka slova nic neřekne." },
   ], { hints: ["Kdybys měl celý příběh shrnout jednou větou, co by v ní bylo?", "Hlavní myšlenka je to, bez čeho by příběh nedával smysl."], explanation: "Hlavní myšlenku najdeme otázkou: Co je nejdůležitější?" }),
@@ -46,7 +46,7 @@ const L1: PracticeTask[] = [
   choice("Jaký je rozdíl mezi reprodukcí a opisem?", "reprodukce je vlastními slovy, opis doslova", [
     { value: "žádný, jsou to stejné věci", why: "Liší se — jedno je po svém, druhé přesně." },
     { value: "opis je vždy mnohem kratší", why: "Délka o tom nerozhoduje." },
-    { value: "reprodukce se dělá vždy doslova", why: "Doslova se dělá opis." },
+    { value: "reprodukce se dělá vždycky doslova", why: "Doslova se dělá opis, ne převyprávění." },
   ], { hints: ["Když přepisuješ z tabule, měníš slova?", "Kopie z tabule je přesná, převyprávění říká totéž po svém."], explanation: "Reprodukce je vlastními slovy, opis doslova." }),
   choice("Jak dlouhé má být převyprávění?", "kratší než původní text", [
     { value: "delší než originál", why: "Převyprávění nepřidává." },
@@ -54,7 +54,7 @@ const L1: PracticeTask[] = [
     { value: "jen jedno slovo", why: "Jedno slovo děj nevypráví." },
   ], { hints: ["Musíš převyprávět každou drobnost?", "Vynecháme detaily a necháme jen to hlavní."], explanation: "Převyprávění je kratší — obsahuje jen to hlavní." }),
   choice("Co můžeme při převyprávění vynechat?", "nepodstatné drobnosti", [
-    { value: "hlavní postavu", why: "Bez ní příběh nedává smysl." },
+    { value: "hlavní postavu příběhu", why: "Bez ní příběh nedává smysl." },
     { value: "konec příběhu", why: "Konec je důležitý." },
     { value: "hlavní problém", why: "Bez něj by nebyl děj." },
   ], { hints: ["Změní se příběh, když vynecháš barvu čepice hrdiny?", "Detaily, na kterých děj nestojí, nejsou potřeba."], explanation: "Vynecháme nepodstatné drobnosti." }),
@@ -82,7 +82,7 @@ const L2: PracticeTask[] = [
     { value: "Micka je kotě, které má ráda mléko a spí.", why: "O tom text není." },
   ], { hints: ["Co se kotěti stalo a kdo mu pomohl?", "Dobré převyprávění řekne problém i řešení, a to vlastními slovy."], explanation: "Kotě uvízlo na stromě a tatínek ho zachránil — to je celý děj." }),
   choice("Text: „Honza zapomněl doma svačinu. O přestávce měl hlad. Kamarád Petr se s ním rozdělil o rohlík.“ O čem text hlavně je?", "o kamarádovi, který se rozdělil o svačinu", [
-    { value: "o tom, jak se peče rohlík", why: "O pečení text není." },
+    { value: "o tom, jak se doma peče rohlík", why: "O pečení text není." },
     { value: "o Honzově cestě do školy", why: "O cestě text nemluví." },
     { value: "o zvonění na přestávku", why: "Zvonění není hlavní." },
   ], { hints: ["Kdo Honzovi pomohl a jak?", "Hlavní je to, co se v textu stane důležitého — ne drobnosti."], explanation: "Text je o kamarádovi, který se rozdělil o jídlo." }),
@@ -94,7 +94,7 @@ const L2: PracticeTask[] = [
   choice("Text: „V lese se ztratil malý ježek. Hledal cestu domů. Nakonec ho našla jeho maminka a odvedla ho domů.“ Jak příběh dopadl?", "maminka ježka našla a vzala ho s sebou", [
     { value: "ježek zůstal v lese sám", why: "Maminka ho našla." },
     { value: "ježka našel myslivec", why: "Našla ho maminka." },
-    { value: "ježek si postavil nový domek", why: "To se nestalo." },
+    { value: "ježek si na zimu postavil nový domek", why: "To se v textu nestalo." },
   ], { hints: ["Co se stalo v poslední větě?", "Konec příběhu najdeš za slovem Nakonec."], explanation: "Maminka ježka našla a odvedla domů." }),
   choice("Text: „Babička pekla buchty. Vnučka Anička jí pomáhala plnit je povidly. Pak si spolu sedly a buchty snědly s mlékem.“ Kdo jsou hlavní postavy?", "babička a vnučka", [
     { value: "maminka a Anička", why: "Maminka v textu není." },
@@ -124,7 +124,7 @@ const L2: PracticeTask[] = [
   choice("Text: „Ráno pršelo, a tak Pavel vzal deštník. Odpoledne vysvitlo slunce a Pavel deštník zapomněl ve škole.“ O čem text hlavně je?", "jak Pavel kvůli slunci přišel domů bez deštníku", [
     { value: "jak se vyrábí deštník", why: "O výrobě text není." },
     { value: "o počasí v zimě", why: "Roční období text neuvádí." },
-    { value: "o Pavlově oblíbeném předmětu", why: "O předmětech text není." },
+    { value: "o Pavlově nejoblíbenějším předmětu", why: "O předmětech text není." },
   ], { hints: ["Co se Pavlovi odpoledne stalo?", "Hlavní téma je to, co spojuje ranní a odpolední část textu."], explanation: "Text je o tom, jak Pavel zapomněl deštník, když vysvitlo slunce." }),
   choice("Text: „Sova v noci loví myši. Ve dne spí v dutině stromu. Umí otočit hlavu skoro dozadu.“ Co je hlavní téma textu?", "život sovy", [
     { value: "stromy v lese", why: "Strom je jen místo, kde sova spí." },
@@ -137,7 +137,7 @@ const L2: PracticeTask[] = [
     { value: "Kamilin táta pracuje jako trenér plavání.", why: "To v textu není." },
   ], { hints: ["Jak se Kamila změnila od začátku do konce?", "Převyprávění zachytí, jak se hrdinka proměnila."], explanation: "Kamila překonala strach a naučila se plavat." }),
   choice("Text: „Vrána našla ořech, ale nemohla ho rozlousknout. Pustila ho z výšky na silnici. Ořech praskl a vrána si pochutnala.“ Jak vrána problém vyřešila?", "nechala ořech spadnout z velké výšky", [
-    { value: "rozlouskla ho zobákem", why: "To nedokázala." },
+    { value: "rozlouskla ořech rovnou zobákem", why: "To vrána nedokázala." },
     { value: "dala ho veverce", why: "Snědla ho sama." },
     { value: "zakopala ho do země", why: "To v textu není." },
   ], { hints: ["Co vrána s ořechem udělala?", "Řešení problému je ve druhé větě."], explanation: "Vrána ořech pustila z výšky, aby praskl." }),
@@ -202,7 +202,7 @@ const L3: PracticeTask[] = [
   choice("Text: „Honzík se bál tmy. Maminka mu koupila malou lampičku. Od té doby Honzík usínal klidně.“ Proč Honzík usínal klidně?", "protože mu v noci svítila lampička", [
     { value: "protože byl velmi unavený", why: "To v textu není." },
     { value: "protože mu maminka zpívala", why: "O zpěvu text není." },
-    { value: "protože přestal chodit spát", why: "To nedává smysl." },
+    { value: "protože úplně přestal chodit spát", why: "To z textu nevyplývá." },
   ], { hints: ["Co se změnilo po nákupu?", "Hledej souvislost: čeho se Honzík bál a co mu pomohlo."], explanation: "Lampička zahnala tmu, a tak Honzík usínal klidně." }),
   choice("Text: „Sousedův pes Rex utekl ze zahrady. Děti ho hledaly celé odpoledne. Večer Rex přiběhl sám a byl celý od bláta.“ Které převyprávění je nejlepší?", "Rex utekl, děti ho marně hledaly a večer se vrátil sám.", [
     { value: "Děti si celé odpoledne hrály na zahradě.", why: "Děti psa hledaly." },

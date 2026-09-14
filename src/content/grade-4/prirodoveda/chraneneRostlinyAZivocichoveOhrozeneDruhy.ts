@@ -60,7 +60,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "CHKO je chráněná krajinná oblast — krajina, kde lidé žijí a hospodaří, ale přírodu musí šetřit. Třeba Beskydy nebo Český ráj.",
   }),
   choice("Proč jsou některé rostliny a živočichové chránění zákonem?", "Jsou tak vzácní, že jim hrozí vyhynutí", [
-    { value: "Jsou nebezpeční pro lidi", why: "Chráněné druhy nechráníme kvůli nebezpečí, ale proto, že jich ubývá." },
+    { value: "Jsou nebezpeční pro lidi i pro zvířata", why: "Chráněné druhy nechráníme kvůli nebezpečí, ale proto, že jich ubývá." },
     { value: "Jsou nejkrásnější", why: "Krása není důvod. Rozhoduje, jestli druhu hrozí vyhynutí." },
     { value: "Jsou nejvíc užiteční", why: "Chráníme i druhy, které lidem nic nedávají. Důležité je, že jich ubývá." },
   ], {
@@ -84,7 +84,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Vlk u nás byl vyhuben, ale v posledních letech se sám vrátil ze sousedních zemí. Je chráněný a žije v několika oblastech Česka.",
   }),
   choice("Kterou kočkovitou šelmu s ušními štětičkami chrání Šumava a Beskydy?", "Rys", [
-    { value: "Liška", why: "Liška je psovitá šelma a je hojná." },
+    { value: "Liška obecná", why: "Liška je psovitá šelma a je u nás hojná." },
     { value: "Jezevec", why: "Jezevec nemá ušní štětičky a je poměrně hojný." },
     { value: "Kuna", why: "Kuna je lasicovitá šelma bez ušních štětiček." },
   ], {
@@ -129,7 +129,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Jak se liší národní park od chráněné krajinné oblasti?", "V národním parku je příroda chráněná přísněji", [
     { value: "V CHKO je ochrana přísnější", why: "Je to naopak. Nejpřísněji je příroda chráněná v národních parcích." },
     { value: "Jsou úplně stejné", why: "Liší se tím, jak přísně se přírodu chrání a co tam lidé smějí." },
-    { value: "V národním parku se může stavět", why: "V národním parku se stavět skoro nesmí. Příroda má přednost." },
+    { value: "V národním parku se smí normálně stavět", why: "V národním parku se stavět skoro nesmí. Příroda má přednost." },
   ], {
     hints: ["Který z těch dvou druhů území je vzácnější?", "V CHKO lidé žijí, hospodaří a pěstují. Ve druhém typu území jsou místa, kam se skoro nesmí ani na procházku. Kde je tedy ochrana přísnější?"],
     explanation: "Národní park chrání nejcennější přírodu nejpřísněji — některá místa se nechávají úplně bez zásahu. V CHKO lidé žijí a hospodaří, jen musí přírodu šetřit.",
@@ -144,14 +144,14 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč je náš rak říční ohrožený?", "Nemoc od cizích raků a znečištěná voda", [
     { value: "Loví ho čápi", why: "Čápi raky občas uloví, ale kvůli tomu ohrožený není." },
-    { value: "V řekách je moc čistá voda", why: "Naopak — rak potřebuje čistou vodu a ta ubývá." },
+    { value: "V řekách je až příliš čistá voda", why: "Naopak — rak potřebuje čistou vodu a ta ubývá." },
     { value: "V zimě nemá co jíst", why: "Rak zimu přečkává v úkrytu. Ohrožuje ho nemoc a znečištění." },
   ], {
     hints: ["Do našich řek se dostali raci z Ameriky. Co s sebou přinesli?", "Cizí raci přenášejí nemoc, která je jim neublíží, ale naše raky zabije. A co ještě rakovi vadí v řece?"],
     explanation: "Náš rak říční potřebuje čistou vodu. Ohrožuje ho znečištění a nemoc — račí mor — kterou přenášejí raci přivezení z Ameriky.",
   }),
   choice("Proč se nesmí trhat koniklece a bledule, i když jich někde roste hodně?", "Utržená květina nevytvoří semena", [
-    { value: "Jsou jedovaté na dotek", why: "Nejde o jed. Utržením se květina nerozmnoží." },
+    { value: "Jsou jedovaté už na pouhý dotek", why: "Nejde o jed. Utržením se květina nerozmnoží." },
     { value: "Doma rychle uvadnou", why: "Uvadnutí není hlavní důvod. Škoda je, že nevytvoří semena." },
     { value: "Rostou jen v zoo", why: "Rostou v přírodě. Právě proto se nesmějí trhat." },
   ], {
@@ -169,7 +169,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Co dělá záchranná stanice pro zvířata?", "Léčí zraněná zvířata a vrací je do přírody", [
     { value: "Prodává zvířata lidem", why: "Záchranné stanice zvířata neprodávají, léčí je." },
     { value: "Chová zvířata pro zoo", why: "Cílem je vrátit zvíře do přírody, ne do zoo." },
-    { value: "Loví přemnožená zvířata", why: "Záchranná stanice neloví, zachraňuje." },
+    { value: "Loví zvířata, kterých je přemnoženo", why: "Záchranná stanice neloví, zachraňuje." },
   ], {
     hints: ["Kam odvezeš sraženého ježka nebo ptáka se zlomeným křídlem?", "V takové stanici zvíře ošetří, vyléčí a pak ho znovu pustí tam, kde žilo."],
     explanation: "Záchranná stanice pečuje o zraněná a osiřelá divoká zvířata. Vyléčí je a pak je vrátí zpět do přírody.",
@@ -185,13 +185,13 @@ const POOL_L2: PracticeTask[] = [
   choice("Proč se v chráněném území chodí jen po cestách?", "Aby se nešlapalo po vzácných rostlinách", [
     { value: "Aby se neušpinily boty", why: "Boty nejsou důvod. Mimo cesty rostou citlivé rostliny." },
     { value: "Aby se nikdo neztratil", why: "To je výhoda navíc, ale hlavně jde o přírodu." },
-    { value: "Aby turisté šli rychleji", why: "Rychlost není důvod. Mimo cestu by se šlapalo po rostlinách a rušila zvířata." },
+    { value: "Aby turisté prošli parkem rychleji", why: "Rychlost není důvod. Mimo cestu by se šlapalo po rostlinách a rušila zvířata." },
   ], {
     hints: ["Co roste kolem cesty a kdo se tam schovává?", "Kdyby každý turista šel kudy chce, sešlapal by vzácné rostliny a vyrušil hnízdící ptáky. Proto jsou cesty vyznačené."],
     explanation: "Mimo cesty rostou vzácné rostliny a hnízdí zvířata. Když chodíme jen po cestách, nesešlapeme je a zvířata nerušíme.",
   }),
   choice("Proč je vlk v přírodě užitečný?", "Loví hlavně slabé a nemocné kusy zvěře", [
-    { value: "Chrání ovce před liškami", why: "Ovce naopak někdy napadá. Užitečný je jinak." },
+    { value: "Chrání stáda ovcí před liškami", why: "Ovce naopak někdy napadá. Užitečný je jinak." },
     { value: "Nemá žádný užitek", why: "Má. Udržuje zvěř zdravou a její počet v rovnováze." },
     { value: "Pomáhá opylovat květiny", why: "Opylovat květiny pomáhá hmyz, ne vlk." },
   ], {
@@ -207,7 +207,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Sysel obecný je kriticky ohrožený. Žije v norách na loukách a pastvinách s nízkou trávou, a těch ubylo. Srnci, kosi i divoká prasata jsou hojní.",
   }),
   choice("Proč ubývá čmeláků a včel?", "Chybí jim květy a škodí jim postřiky", [
-    { value: "Je jich příliš mnoho", why: "Je to naopak, opylovačů ubývá." },
+    { value: "Je jich v přírodě příliš mnoho", why: "Je to naopak, opylovačů ubývá." },
     { value: "Vadí jim déšť", why: "Déšť tu byl vždycky. Ubývají kvůli lidem." },
     { value: "Loví je vlaštovky", why: "Ptáci hmyz loví odjakživa. Příčinou úbytku jsou lidé." },
   ], {
@@ -217,14 +217,14 @@ const POOL_L2: PracticeTask[] = [
   choice("K čemu slouží Červená kniha?", "Ukazuje, které druhy je potřeba chránit", [
     { value: "Je to kuchařka lesních plodů", why: "Červená kniha není kuchařka." },
     { value: "Je to seznam jedlých hub", why: "Seznam hub najdeš v atlasu hub. Červená kniha je o ohrožených druzích." },
-    { value: "Je to mapa turistických cest", why: "Mapy cest mají turisté. Červená kniha je seznam ohrožených druhů." },
+    { value: "Je to mapa turistických cest v parcích", why: "Mapy cest mají turisté. Červená kniha je seznam ohrožených druhů." },
   ], {
     hints: ["Červená barva varuje.", "Kniha vyjmenuje rostliny a živočichy, kterým hrozí, že zmizí. K čemu to ochráncům je?"],
     explanation: "Červená kniha je seznam ohrožených druhů. Ukazuje, kterým rostlinám a živočichům hrozí vyhynutí, aby je lidé mohli chránit.",
   }),
   choice("Čím je Krkonošský národní park výjimečný?", "Je nejstarší národní park v Česku", [
     { value: "Je největší národní park", why: "Největší je Šumava." },
-    { value: "Je nejmenší národní park", why: "Nejmenší je Podyjí." },
+    { value: "Je to nejmenší národní park u nás", why: "Nejmenší je Podyjí." },
     { value: "Leží u moře", why: "Česko u moře neleží." },
   ], {
     hints: ["Každý ze čtyř parků je v něčem první nebo největší. Co platí pro Krkonoše?", "Šumava je největší, Podyjí nejmenší a České Švýcarsko nejmladší. Která vlastnost zbývá pro Krkonoše, kde je Sněžka?"],
@@ -236,7 +236,7 @@ const POOL_L3: PracticeTask[] = [
   choice("V lese zmizí vlci i rysové. Co se stane se srnci?", "Přemnoží se a okusují mladé stromky", [
     { value: "Srnců ubude", why: "Bez lovců srnců naopak přibude." },
     { value: "Nic se nezmění", why: "Lovci drží počet srnců v rovnováze. Bez nich se to změní." },
-    { value: "Srnci začnou lovit", why: "Srnci jsou býložravci, lovit nezačnou." },
+    { value: "Srnci začnou lovit menší zvířata", why: "Srnci jsou býložravci, lovit nezačnou." },
   ], {
     hints: ["Kdo srnce v přírodě loví?", "Když srnce nikdo neloví, rychle jich přibývá. A čím se živí? Co se stane s mladými stromky v lese?"],
     explanation: "Vlci a rysové loví srnce a drží jejich počet v rovnováze. Bez nich se srnci přemnoží a okousávají mladé stromky, takže les se hůř obnovuje.",
@@ -260,13 +260,13 @@ const POOL_L3: PracticeTask[] = [
   choice("Obec chce vysušit mokrou louku a udělat z ní pole. Proč ochránci nesouhlasí?", "Zmizí druhy, které žijí jen v mokřadech", [
     { value: "Pole je ošklivější", why: "Nejde o vzhled. Mokřad je domov vzácných druhů." },
     { value: "Na poli nic neroste", why: "Na poli roste plodina, ale mokřadní druhy tam nepřežijí." },
-    { value: "Každá louka je chráněná", why: "Chráněná není každá. Mokřady jsou ale vzácné a cenné." },
+    { value: "Každá louka u vody je chráněná", why: "Chráněná není každá. Mokřady jsou ale vzácné a cenné." },
   ], {
     hints: ["Kdo na mokré louce žije a na suchém poli by nepřežil?", "Na mokřadech kvete blatouch, kvákají žáby a hnízdí vzácní ptáci. Co se s nimi stane, když voda zmizí?"],
     explanation: "Mokřady jsou domovem rostlin a živočichů, kteří jinde nežijí. Po vysušení zmizí. Mokřady navíc zadržují vodu v krajině.",
   }),
   choice("Proč je dobré nechat v lese ležet starý padlý strom?", "Žije v něm hmyz, houby a hnízdí v něm zvířata", [
-    { value: "Je nebezpečný pro lesníky", why: "Nebezpečí není důvod ho nechat — naopak by to byl důvod ho odklidit." },
+    { value: "Je nebezpečný pro lesníky a houbaře", why: "Nebezpečí není důvod ho nechat — naopak by to byl důvod ho odklidit." },
     { value: "Aby les vypadal divočeji", why: "Nejde o vzhled. Mrtvé dřevo je domov mnoha organismů." },
     { value: "Protože ho nikdo nechce", why: "Důvod je užitek pro přírodu." },
   ], {
@@ -276,14 +276,14 @@ const POOL_L3: PracticeTask[] = [
   choice("Bolševník přivezený z Kavkazu se u nás rychle šíří. Proč vadí?", "Vytlačuje naše rostliny a jeho šťáva pálí kůži", [
     { value: "Je příliš malý a nenápadný", why: "Bolševník je naopak obrovský, i přes tři metry." },
     { value: "Nikdy nekvete", why: "Bolševník kvete velkými bílými okolíky." },
-    { value: "Ptáci ho jedí a nemají pak co jíst", why: "To s ním nesouvisí. Vadí tím, že vytlačuje naše rostliny." },
+    { value: "Ptáci ho snědí a pak už nemají co jíst", why: "To s ním nesouvisí. Vadí tím, že vytlačuje naše rostliny." },
   ], {
     hints: ["Co udělá rostlina, která u nás nemá žádného nepřítele?", "Bolševník vyroste obrovský, zastíní vše kolem a šťáva z něj na slunci způsobí puchýře. Proč je to pro přírodu i lidi problém?"],
     explanation: "Bolševník je invazní rostlina. Rychle se šíří, zastíní a vytlačí naše původní rostliny a jeho šťáva na slunci popálí kůži. Proto se likviduje.",
   }),
   choice("Jak pomáhá přírodě třídění odpadu?", "Méně odpadu skončí v přírodě a na skládkách", [
     { value: "Odpad se pak nemusí vyvážet", why: "Tříděný odpad se také vyváží, ale zpracuje se znovu." },
-    { value: "Barevné kontejnery lákají ptáky", why: "Kontejnery ptáky nelákají. Jde o to, kolik odpadu zbude." },
+    { value: "Barevné kontejnery lákají ptáky a zvěř", why: "Kontejnery ptáky nelákají. Jde o to, kolik odpadu zbude." },
     { value: "Příroda odpad roztřídí sama", why: "Plasty a sklo se v přírodě rozkládají stovky let." },
   ], {
     hints: ["Co se stane s vytříděnou plastovou lahví?", "Z vytříděného papíru a plastu se vyrobí nové věci. Co by se jinak s tím odpadem stalo?"],
@@ -308,13 +308,13 @@ const POOL_L3: PracticeTask[] = [
   choice("Vlk se do Česka vrátil sám, nikdo ho nevypustil. Jak je to možné?", "Přišel ze sousedních zemí, kde přežil", [
     { value: "Utekl ze zoo", why: "Vlci u nás nepocházejí ze zoo. Přišli z divočiny." },
     { value: "Přivezli ho myslivci", why: "Myslivci vlky nepřiváželi." },
-    { value: "Celou dobu se schovával", why: "Vlk byl u nás vyhuben. Vrátil se z jiných zemí." },
+    { value: "Celou dobu se u nás jen schovával", why: "Vlk byl u nás vyhuben. Vrátil se z jiných zemí." },
   ], {
     hints: ["Kde vlci žili, když u nás žádní nebyli?", "Vlk dokáže ujít stovky kilometrů. V Německu, Polsku a na Slovensku vlci přežili. Co se stalo, když se jich tam namnožilo?"],
     explanation: "Vlci přežili v okolních zemích. Když se jich tam namnožilo, mladí vlci hledali nová území a sami přišli i do Česka. Pomohlo, že jsou chránění.",
   }),
   choice("Proč nemají lidé krmit divoké kachny a labutě pečivem?", "Pečivo jim škodí a znečišťuje vodu", [
-    { value: "Kachny pečivo nejedí", why: "Jedí ho, ale škodí jim." },
+    { value: "Kachny pečivo vůbec nejedí", why: "Jedí ho, ale škodí jim." },
     { value: "V zimě kachny nejí", why: "Kachny jedí po celý rok." },
     { value: "Pečivo je drahé", why: "O cenu nejde. Pečivo ptákům škodí." },
   ], {
@@ -331,7 +331,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč chráníme i obyčejné louky a meze, nejen vzácné hory?", "Žije tam spousta druhů, které jinde nemají místo", [
     { value: "Louky se hodí na fotky", why: "O fotky nejde. Louky a meze jsou domovem mnoha druhů." },
-    { value: "Na loukách se budou stavět domy", why: "Právě tomu chceme zabránit." },
+    { value: "Na těch loukách se budou stavět domy", why: "Právě tomu chceme zabránit." },
     { value: "Meze nikomu k ničemu nejsou", why: "Meze jsou úkryt pro hmyz, ptáky i zajíce." },
   ], {
     hints: ["Kolik druhů květin a hmyzu najdeš na jedné louce?", "Na mezi mezi poli se schová koroptev, zajíc i čmeláci. Kam by šli, kdyby všude bylo jen pole?"],

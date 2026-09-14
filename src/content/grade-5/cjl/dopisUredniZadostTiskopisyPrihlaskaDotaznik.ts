@@ -24,7 +24,7 @@ const L1: PracticeTask[] = [
     explanation: "Úřední dopis končí pozdravem a podpisem pisatele.",
   }),
   choice("Co je žádost?", "dopis, ve kterém někoho slušně o něco prosíme", [
-    { value: "dopis kamarádovi z prázdnin", why: "To je osobní dopis." },
+    { value: "dopis kamarádovi ze školy v přírodě", why: "To je osobní dopis." },
     { value: "seznam věcí na nákup", why: "To je nákupní seznam." },
     { value: "krátký vtip pro spolužáky", why: "Vtip žádostí není." },
   ], {
@@ -50,7 +50,7 @@ const L1: PracticeTask[] = [
   choice("Co napíšeš do kolonky Datum narození?", "den, měsíc a rok mého narození", [
     { value: "dnešní den, měsíc a rok", why: "Dnešní datum patří do kolonky Datum." },
     { value: "adresu, kde bydlím", why: "Adresa má vlastní kolonku." },
-    { value: "jméno a příjmení maminky", why: "Jméno rodiče se píše jinam." },
+    { value: "jméno a příjmení maminky nebo tatínka", why: "Jméno rodiče se píše jinam." },
   ], {
     hints: ["Na co se kolonka ptá?", "Narození — kdy jsi přišel nebo přišla na svět."],
     explanation: "Do kolonky Datum narození patří den, měsíc a rok narození.",
@@ -73,14 +73,14 @@ const L1: PracticeTask[] = [
   }),
   choice("Jak v žádosti oslovíš pana ředitele?", "Vážený pane řediteli", [
     { value: "Ahoj, řediteli", why: "Tykání a ahoj se k řediteli nehodí." },
-    { value: "Milý pane Jardo", why: "Oslovení křestním jménem se do úředního dopisu nehodí." },
+    { value: "Milý pane Jardo z odboru školství", why: "Oslovení křestním jménem se do úředního dopisu nehodí." },
     { value: "Nazdar", why: "Nazdar je hovorový pozdrav." },
   ], {
     hints: ["Jak oslovujeme dospělé, kterým vykáme, v úředním dopise?", "Oslovení začíná slovem vážený a pokračuje funkcí v 5. pádě."],
     explanation: "Správně je Vážený pane řediteli.",
   }),
   choice("Který pozdrav se hodí na konec žádosti?", "S pozdravem", [
-    { value: "Měj se", why: "Tykání se do žádosti nehodí." },
+    { value: "Měj se hezky a ozvi se", why: "Tykání se do žádosti nehodí." },
     { value: "Čau", why: "Čau je hovorové." },
     { value: "Pa pa", why: "Pa pa se říká v rodině." },
   ], {
@@ -104,7 +104,7 @@ const L1: PracticeTask[] = [
     explanation: "Zákonným zástupcem je rodič; jeho podpis souhlasí s přihláškou.",
   }),
   choice("Co napíšeš do kolonky Příjmení?", "své příjmení, třeba Novák", [
-    { value: "své křestní jméno", why: "Křestní jméno má vlastní kolonku." },
+    { value: "své křestní jméno i příjmení", why: "Křestní jméno má vlastní kolonku." },
     { value: "svou přezdívku", why: "Přezdívka do tiskopisu nepatří." },
     { value: "jméno svého psa", why: "Tiskopis se ptá na tebe." },
   ], {
@@ -117,7 +117,7 @@ const L2: PracticeTask[] = [
   choice("Která věta patří do žádosti o přijetí do kroužku?", "Prosím Vás o přijetí do výtvarného kroužku.", [
     { value: "Chci do výtvarky, jasný?", why: "Hovorové a nezdvořilé." },
     { value: "Dej mě do výtvarky.", why: "Tykání a rozkaz se do žádosti nehodí." },
-    { value: "Výtvarka je fajn, beru ji.", why: "Hovorové a chybí prosba." },
+    { value: "Výtvarka je fajn, tak si ji beru.", why: "Hovorové a chybí prosba i oslovení." },
   ], {
     hints: ["Která věta zní jako slušná prosba?", "V žádosti vykáme, prosíme a píšeme spisovně."],
     explanation: "Prosím Vás o přijetí… je zdvořilá a spisovná prosba.",
@@ -125,14 +125,14 @@ const L2: PracticeTask[] = [
   choice("Co musí žádost obsahovat?", "o co žádám, proč a kdo žádá", [
     { value: "jen to, o co žádám", why: "Chybí důvod a podpis." },
     { value: "vtip na úvod", why: "Vtip do žádosti nepatří." },
-    { value: "seznam mých kamarádů", why: "To se žádosti netýká." },
+    { value: "seznam mých kamarádů ze třídy", why: "To se žádosti netýká." },
   ], {
     hints: ["Na co se adresát zeptá, když žádost dostane?", "Adresát potřebuje vědět, co chceš, proč to chceš a kdo žádost píše."],
     explanation: "Žádost obsahuje, o co žádáme, proč, a podpis pisatele.",
   }),
   choice("Proč se v úředním dopise píše Vám a Vás s velkým V?", "protože tím vyjadřujeme úctu k oslovenému člověku", [
     { value: "protože je to začátek věty", why: "Velké V se píše i uprostřed věty." },
-    { value: "protože se tak píše vždycky a všude", why: "V běžném textu se píše malé v." },
+    { value: "protože se tak píše úplně vždycky a všude", why: "V běžném textu se píše malé v." },
     { value: "protože je to jméno", why: "Není to jméno, ale zájmeno." },
   ], {
     hints: ["Komu dopisem vykáme?", "Velké písmeno u zájmena, kterým oslovujeme jednoho člověka, vyjadřuje zdvořilost."],
@@ -140,7 +140,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Kam se v dopise píše místo a datum?", "nahoru, obvykle vpravo", [
     { value: "pod podpis", why: "Datum se píše do záhlaví." },
-    { value: "doprostřed textu", why: "Do textu datum nepatří." },
+    { value: "doprostřed textu žádosti", why: "Do textu datum nepatří." },
     { value: "nikam", why: "Místo a datum v dopise být má." },
   ], {
     hints: ["Kde v dopise najdeš, kdy byl napsaný?", "Místo a datum patří do záhlaví, aby je adresát hned viděl."],
@@ -156,7 +156,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Proč musí přihlášku podepsat rodič?", "za dítě rozhoduje zákonný zástupce", [
     { value: "dítě neumí psát", why: "Dítě psát umí, ale za něj rozhoduje rodič." },
-    { value: "rodič má hezčí písmo", why: "O písmo nejde." },
+    { value: "rodič má hezčí a čitelnější písmo", why: "O písmo nejde." },
     { value: "je to jen zvyk", why: "Podpis rodiče vyjadřuje souhlas." },
   ], {
     hints: ["Kdo nese za dítě odpovědnost?", "Podpisem rodič souhlasí, že dítě bude kroužek navštěvovat, a třeba i zaplatí."],
@@ -164,7 +164,7 @@ const L2: PracticeTask[] = [
   }),
   choice("V dotazníku je otázka s možnostmi a) ano, b) ne. Co uděláš?", "zakroužkuji tu jednu možnost, která platí", [
     { value: "napíšu dlouhý příběh", why: "Stačí vybrat možnost." },
-    { value: "zakroužkuji obě možnosti", why: "Ano i ne zároveň platit nemůže." },
+    { value: "zakroužkuji rovnou obě možnosti", why: "Ano i ne zároveň platit nemůže." },
     { value: "nevyplním nic", why: "Otázka zůstane bez odpovědi." },
   ], {
     hints: ["Kolik odpovědí u takové otázky platí?", "U otázky s nabídnutými možnostmi se vybírá jedna, pokud dotazník neříká jinak."],
@@ -196,7 +196,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Proč se v žádosti uvádí důvod?", "aby adresát věděl, proč má žádosti vyhovět", [
     { value: "aby byla žádost delší", why: "Délka nerozhoduje." },
-    { value: "protože je to povinná hádanka", why: "Žádost není hádanka." },
+    { value: "protože je to taková povinná hádanka", why: "Žádost není hádanka." },
     { value: "aby se adresát nudil", why: "Důvod adresátovi pomůže rozhodnout." },
   ], {
     hints: ["Podle čeho se adresát rozhodne?", "Když vysvětlíš, proč o něco prosíš, adresát snáz pochopí a vyhoví."],
@@ -204,7 +204,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Která věta je zdvořilá?", "Děkuji Vám za vyřízení mé žádosti.", [
     { value: "Tak to vyřiďte, jo?", why: "Hovorové a příkré." },
-    { value: "Doufám, že to nezkazíte.", why: "Nezdvořilé." },
+    { value: "Doufám, že to tentokrát nezkazíte.", why: "Vyznívá nezdvořile — úřední dopis končí zdvořilou formulí." },
     { value: "Čekám rychlou odpověď!", why: "Rozkazovačné." },
   ], {
     hints: ["Která věta vyjadřuje poděkování?", "Zdvořilá věta vyká, děkuje a nikoho nepopohání."],
@@ -222,7 +222,7 @@ const L2: PracticeTask[] = [
 
 const L3: PracticeTask[] = [
   choice("Píšeš e-mail s žádostí o prodloužení výpůjčky v knihovně. Co do něj nepatří?", "smajlíky a hovorové zkratky", [
-    { value: "oslovení a pozdrav", why: "Oslovení a pozdrav do e-mailu patří." },
+    { value: "oslovení na začátku a pozdrav", why: "Oslovení a pozdrav do e-mailu patří." },
     { value: "název knihy", why: "Knihovna potřebuje vědět, o kterou knihu jde." },
     { value: "tvoje jméno", why: "Knihovna musí vědět, kdo žádá." },
   ], {
@@ -230,7 +230,7 @@ const L3: PracticeTask[] = [
     explanation: "Do úředního e-mailu nepatří smajlíky ani hovorové zkratky.",
   }),
   choice("Co napíšeš do kolonky Bydliště?", "ulici, číslo domu, obec a PSČ", [
-    { value: "jen jméno ulice", why: "Chybí číslo domu, obec a PSČ." },
+    { value: "jen jméno ulice bez čísla", why: "Chybí číslo domu, obec a PSČ." },
     { value: "název své školy", why: "Škola není bydliště." },
     { value: "telefonní číslo", why: "Telefon má vlastní kolonku." },
   ], {
@@ -246,7 +246,7 @@ const L3: PracticeTask[] = [
     explanation: "Když něčemu nerozumíme, zeptáme se.",
   }),
   choice("Proč se do dotazníku píše pravda?", "výsledky se použijí a nepravda by je zkreslila", [
-    { value: "dotazník se stejně nikdo nečte", why: "Odpovědi se zpracovávají." },
+    { value: "dotazník si stejně nikdo nepřečte", why: "Odpovědi se zpracovávají." },
     { value: "je to jen hra", why: "Dotazník slouží ke zjištění skutečnosti." },
     { value: "za pravdu je odměna", why: "Odměna není důvod." },
   ], {
@@ -255,7 +255,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Proč v dopise řediteli netykáme?", "vykáme cizím dospělým a nadřízeným", [
     { value: "ředitel neumí číst ty", why: "Nejde o čtení, ale o zdvořilost." },
-    { value: "tykání je zakázané zákonem", why: "Zákon to nezakazuje, jde o slušnost." },
+    { value: "tykání je úřadům zakázané zákonem", why: "Zákon to nezakazuje, jde o slušnost." },
     { value: "protože ředitel je starý", why: "Věk není jediný důvod — vykáme i mladým cizím dospělým." },
   ], {
     hints: ["Komu tykáme a komu vykáme?", "Tykáme rodině a kamarádům; k ostatním dospělým a v úředním styku se chováme s větší úctou."],
@@ -294,7 +294,7 @@ const L3: PracticeTask[] = [
     explanation: "Předmět e-mailu stručně vystihne obsah zprávy.",
   }),
   choice("Proč se úřední dopis podepisuje vlastní rukou?", "podpis potvrzuje, že dopis píšu opravdu já", [
-    { value: "aby dopis vypadal hezky", why: "Nejde o vzhled." },
+    { value: "aby dopis vypadal hezky a úhledně", why: "Nejde o vzhled." },
     { value: "aby se ušetřil papír", why: "Podpis papír nešetří." },
     { value: "je to jen ozdoba", why: "Podpis má důležitou úlohu." },
   ], {
@@ -310,7 +310,7 @@ const L3: PracticeTask[] = [
     explanation: "Když sourozence nemáme, napíšeme 0 — kolonka tak zůstane jasná.",
   }),
   choice("Kdy je vhodné poslat žádost e-mailem místo dopisu?", "když to adresát dovoluje a je to rychlejší", [
-    { value: "vždycky, dopisy se už nepíšou", why: "Někdy je dopis s podpisem nutný." },
+    { value: "vždycky, papírové dopisy se už nepíšou", why: "Někdy je dopis s podpisem nutný." },
     { value: "nikdy, e-mail je nezdvořilý", why: "E-mail může být zdvořilý." },
     { value: "jen v noci", why: "Denní doba nerozhoduje." },
   ], {
