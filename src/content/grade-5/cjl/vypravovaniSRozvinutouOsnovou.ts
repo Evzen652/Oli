@@ -60,7 +60,7 @@ const L3: PracticeTask[] = [
   choice("Jak nejlépe oživit vypravování přímou řečí?", "„Pomoc!“ vykřikl Petr a chytil se větve.", [
     { value: "Petr řekl, že potřebuje pomoc.", why: "To je nepřímá řeč — je méně živá." },
     { value: "Petr potřeboval pomoc.", why: "Chybí slova postavy." },
-    { value: "Petr se chytil větve, protože padal.", why: "Postava tu nemluví." },
+    { value: "Bylo vidět, že Petr potřebuje pomoc.", why: "Postava tu nemluví — vypravěč jen popisuje, co bylo vidět." },
   ], {
     hints: ["Ve které možnosti slyšíš postavu mluvit jejími vlastními slovy?", "Přímá řeč cituje přesná slova postavy v uvozovkách; čtenář pak má pocit, že je u toho."],
     explanation: "Přímá řeč s výstižným slovesem vykřikl vypravování oživí.",

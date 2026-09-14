@@ -68,13 +68,20 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   vyčnívá tvarem (všechny distraktory začínají týmž slovem, klíč jiným).
   Nahrazuje ruční hlídání zákazu binárních Ano/Ne otázek mimo L1, na které
   jsem v téhle dávce pětkrát nestačil.
-- ⏳ **K ROZHODNUTÍ: `check:options` hlásí napříč repem 140 úloh.** Vzorek
+- ✅ **VYŘÍZENO 14. 9. — uživatel rozhodl opravit; `check:options` je na nule.**
+  Původní zápis: `check:options` hlásil napříč repem 140 úloh. Vzorek
   potvrdil, že převážně nejde o falešné nálezy — dominuje otázka „Proč…?“ se
   třemi distraktory „Protože…“ a klíčem jako holou větou (28×), dále „Souvětí“
   (22×) a „Podmět“ (8×). Rozložení: g4 41, g5 38, g3 15, g2 6, g6 2.
   **Zmrazený obsah jsem nepřepisoval.** Je to plošný vzorec starších dávek
   a oprava znamená přegenerovat zámek napříč ročníky — to je rozhodnutí
   uživatele, ne vedlejší efekt obsahové dávky.
+  **Výsledek:** 38 nálezů bylo falešných (pevná škála — klíč mezi čtyřmi stále
+  stejnými možnostmi jen rotuje, takže „ta jiná“ nic neprozradí); kontrola je
+  teď pozná sama. Zbylých 102 opraveno: „Protože…“ 28, „Jen…“ 14, „Aby…“ 9,
+  binární Ano/Ne 7 (tři z nich byly na L2, kde ten formát nemá co dělat —
+  přepsány na otevřené otázky) a ~44 jednotlivých. U `g4-mat-osova-soumernost-4`
+  se opravoval generátor, ne data. Zámek obsahu přegenerován.
 - ✅ **FYZIKA 6. ROČNÍKU HOTOVÁ — 13/13** (14. 9.). Poslední téma `Magnety`.
   Šestka **18 ze 117**: fyzika 13, dějepis 5. **Další na řadě je dějepis**
   (zbývá 19 z 24 podtémat); před tou dávkou je v plánu bod 1.6 — projít

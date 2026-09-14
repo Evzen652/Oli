@@ -119,7 +119,7 @@ const L1: PracticeTask[] = [
   choice("Je velké tiskací písmeno N osově souměrné?", "ne, žádnou osu souměrnosti nemá", [
     { value: "ano, má svislou osu", why: "Po svislém přeložení se šikmá čára v N obrátí na druhou stranu." },
     { value: "ano, má vodorovnou osu", why: "Po vodorovném přeložení míří šikmá čára opačně než původně." },
-    { value: "ano, má dokonce dvě osy", why: "Písmeno N nemá ani jednu osu, natož dvě." },
+    { value: "ne, ale po otočení o půl kruhu vypadá stejně, takže osu má", why: "Otočení není překlopení. Osová souměrnost se pozná jen překládáním." },
   ], {
     hints: [
       "Napiš si velké N na papír a zkus ho přeložit nejdřív svisle uprostřed, pak vodorovně. Kryjí se půlky?",
@@ -193,7 +193,7 @@ const L1: PracticeTask[] = [
     ],
     explanation: "Osová souměrnost je zrcadlové zobrazení podle přímky.",
   }),
-  choice("Co musí platit, aby byla čára osou souměrnosti obrazce?", "obě části podél ní musí být zrcadlově shodné", [
+  choice("Co musí platit, aby byla čára osou souměrnosti obrazce?", "musí být obě části podél ní zrcadlově shodné", [
     { value: "musí rozdělit obrazec na dvě stejně velké části", why: "Stejně velké části ještě nestačí — musí být i zrcadlově shodné, ne jen stejně veliké." },
     { value: "musí procházet středem obrazce", why: "Ne každá čára středem je osa: úhlopříčka obdélníku středem prochází, a osou přesto není." },
     { value: "musí být kolmá k některé straně obrazce", why: "Kolmost k nějaké straně nic nezaručuje. Rozhoduje jen to, jestli se po přeložení půlky kryjí." },

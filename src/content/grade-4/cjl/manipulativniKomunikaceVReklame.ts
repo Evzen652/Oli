@@ -260,7 +260,7 @@ const L3: PracticeTask[] = [
     hints: ["Jak na hře „zdarma“ firma vydělá?", "Stažení bývá zdarma, ale uvnitř se často nabízejí placené věci. Než něco zaplatíš, poraď se s rodiči."],
     explanation: "Hra „zdarma“ často chce peníze za věci uvnitř hry — je dobré na to myslet a poradit se s rodiči.",
   }),
-  choice("Co mají reklamní triky společné?", "chtějí, abychom koupili bez přemýšlení", [
+  choice("Co mají reklamní triky společné?", "všechny chtějí, abychom koupili bez přemýšlení", [
     { value: "všechny jsou zakázané", why: "Většina triků zakázaná není." },
     { value: "všechny říkají celou pravdu", why: "Triky naopak ukazují jen část pravdy." },
     { value: "všechny jsou jen pro dospělé", why: "Mnoho triků míří i na děti." },

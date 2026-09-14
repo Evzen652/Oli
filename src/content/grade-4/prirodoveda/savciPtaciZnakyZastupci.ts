@@ -234,7 +234,7 @@ const POOL_L2: PracticeTask[] = [
 ];
 
 const POOL_L3: PracticeTask[] = [
-  choice("Velryba žije celý život v moři a plave jako ryba. Podle čeho poznáš, že mezi ryby nepatří?", "Dýchá plícemi a mládě kojí mlékem", [
+  choice("Velryba žije celý život v moři a plave jako ryba. Podle čeho poznáš, že mezi ryby nepatří?", "Podle toho, že dýchá plícemi a mládě kojí mlékem", [
     { value: "Podle ploutví a hladké kůže", why: "Ploutve mají i ryby. Podle tvaru těla se to nepozná — život ve vodě dává rybám i velrybám podobný tvar." },
     { value: "Podle toho, že žije ve slané vodě", why: "Ve slané vodě žije spousta ryb. Místo, kde zvíře žije, o skupině nerozhoduje." },
     { value: "Podle toho, že klade vejce na dno", why: "Velryba vejce neklade, rodí živé mládě. Vejce kladou ryby." },

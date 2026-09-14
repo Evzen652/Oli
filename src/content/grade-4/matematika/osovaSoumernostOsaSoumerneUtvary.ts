@@ -20,10 +20,17 @@ function vyber(k: number, soumerny: boolean): PracticeTask {
   const klic = moje[k];
   const jmenovany = protejsi[k];
   const zbytek = protejsi.filter((o) => o !== jmenovany);
-  // Klíč nesmí být nápadně nejdelší („rovnostranný trojúhelník“ mezi třemi písmeny).
-  let ostatni: string[];
-  do ostatni = [jmenovany, ...shuffle(zbytek).slice(0, 2)];
-  while (klic.length > 15 && klic.length >= 2 * Math.max(...ostatni.map((o) => o.length)));
+  // Klíč nesmí být nápadně nejdelší („rovnostranný trojúhelník“ mezi třemi písmeny)
+  // ani jediný jinak pojmenovaný: tři distraktory „písmeno F/G/J“ proti klíči
+  // „obdélník“ dají odpověď zadarmo, i když dítě o souměrnosti neví nic.
+  const prvniSlovo = (o: string) => o.split(" ")[0];
+  let ostatni: string[] = [jmenovany, ...shuffle(zbytek).slice(0, 2)];
+  for (let pokus = 0; pokus < 50; pokus++) {
+    ostatni = [jmenovany, ...shuffle(zbytek).slice(0, 2)];
+    const prilisDlouhy = klic.length > 15 && klic.length >= 2 * Math.max(...ostatni.map((o) => o.length));
+    const vycnivaTvarem = new Set(ostatni.map(prvniSlovo)).size === 1 && prvniSlovo(klic) !== prvniSlovo(ostatni[0]);
+    if (!prilisDlouhy && !vycnivaTvarem) break;
+  }
   return choice(soumerny ? "Který útvar je osově souměrný?" : "Který útvar NENÍ osově souměrný?", klic,
     ostatni.map((o) => ({ value: o, why: soumerny ? `${cap(o)} nejde přeložit tak, aby se obě poloviny překryly.` : `${cap(o)} osově souměrný je — dá se přeložit tak, že se poloviny překryjí.` })) as never, {
       hints: [

@@ -193,7 +193,7 @@ const POOL_L1: Uloha[] = [
   },
   {
     q: "Čím se zápis básně liší od zápisu vyprávění, ještě než začneš číst?",
-    a: "Řádky jsou krátké a nedosahují k pravému okraji",
+    a: "Báseň má krátké řádky, které nedosahují k pravému okraji",
     w: [
       ["Báseň se píše úplně bez teček", "Tečky v básni být mohou i nemusí, poznávacím znakem nejsou."],
       ["Báseň nemá nikdy nadpis", "Nadpis má většina básní stejně jako většina vyprávění."],

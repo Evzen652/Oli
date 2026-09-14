@@ -27,7 +27,7 @@ const L1: PracticeTask[] = [
     hints: ["O čem autor mluví pořád dokola?", "Když je něco hlavním tématem, autor se k tomu stále vrací — proto se ta slova opakují."],
     explanation: "Klíčová slova se opakují, protože se k nim autor stále vrací — jsou jádrem tématu.",
   }),
-  choice("Podle čeho klíčová slova v učebnici snadno najdeš?", "opakují se, bývají tučně nebo v nadpisu", [
+  choice("Podle čeho klíčová slova v učebnici snadno najdeš?", "jsou tučně, v nadpisu, nebo se opakují", [
     { value: "jsou vždy na konci věty", why: "Místo ve větě o důležitosti nerozhoduje." },
     { value: "jsou vždy v závorce", why: "Závorka o důležitosti nic neříká." },
     { value: "jsou vždy nejkratší", why: "Délka o důležitosti nerozhoduje." },
@@ -38,7 +38,7 @@ const L1: PracticeTask[] = [
   choice("Jak rychle najdeš v textu určitý údaj?", "přejedu text očima a hledám důležité slovo", [
     { value: "čtu slovo po slově od začátku", why: "To trvá dlouho, když hledáš jen jeden údaj." },
     { value: "čtu jen poslední větu", why: "Údaj může být kdekoli." },
-    { value: "čtu text pozpátku", why: "Pozpátku se text nečte a nic tím neušetříš." },
+    { value: "přečtu celý text nahlas, abych nic nepřehlédl", why: "Nahlas se čte pomaleji než očima. Na jeden údaj je to zbytečné." },
   ], {
     hints: ["Jak hledáš jméno v seznamu?", "Když hledáš jeden údaj, nemusíš číst všechno. Stačí přejet očima a hledat slovo, které s údajem souvisí."],
     explanation: "Když hledáme jeden údaj, přejedeme text očima a hledáme slovo, které k němu vede.",
@@ -324,7 +324,7 @@ const L3: PracticeTask[] = [
     hints: ["Kdy nepotřebuješ číst každé slovo?", "Rychlé přelétnutí stačí, když hledáš jen jednu věc — třeba číslo nebo jméno."],
     explanation: "Text přejedeme očima, když hledáme jeden konkrétní údaj. Na učení čteme pozorně.",
   }),
-  choice("Nadpis článku zní „Pes – nejlepší přítel člověka“. Jaká bude asi hlavní myšlenka?", "pes je člověku věrným kamarádem", [
+  choice("Nadpis článku zní „Pes – nejlepší přítel člověka“. Jaká bude asi hlavní myšlenka?", "psi jsou člověku věrnými kamarády", [
     { value: "psi mají čtyři nohy", why: "O nohách nadpis nic neříká." },
     { value: "psi štěkají", why: "Štěkání s přátelstvím nesouvisí." },
     { value: "psi jsou dražší než kočky", why: "O ceně nadpis nic neříká." },

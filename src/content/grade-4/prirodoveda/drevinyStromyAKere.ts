@@ -287,7 +287,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Kolik světla projde hustou smrkovou korunou?", "Pod smrky je stín po celý rok a zem pokrývá vrstva jehličí, ve kterém se většině bylin nedaří."],
     explanation: "Husté smrky nepropustí skoro žádné světlo a po celý rok stíní. Spadané jehličí okyseluje půdu. Proto pod nimi roste jen málo rostlin.",
   }),
-  choice("Proč se listy na podzim barví dožluta a dočervena?", "Strom z nich odebere zelené barvivo", [
+  choice("Proč se listy na podzim barví dožluta a dočervena?", "Listy ztratí zelené barvivo, které si strom odebere", [
     { value: "Listy obarví mráz", why: "Barvy se objeví i bez mrazu. Strom odebírá zelené barvivo." },
     { value: "Listy obarví slunce", why: "Slunce listy nebarví. Zelená z nich mizí." },
     { value: "Listy jsou nemocné", why: "Je to přirozené, stromy nejsou nemocné." },

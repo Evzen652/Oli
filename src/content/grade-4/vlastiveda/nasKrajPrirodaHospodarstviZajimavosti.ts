@@ -296,7 +296,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Kdo slavil masopust a dožínky před sto lety?", "Dožínky slavily konec žní a masopust konec zimy. Co nám dnes připomínají?"],
     explanation: "Tradice připomínají, jak žili naši předkové, a spojují lidi v obci. Dožínky slavily konec žní a masopust konec zimy a začátek půstu.",
   }),
-  choice("Proč je řeka pro město výhodná i nebezpečná?", "Dává vodu, ale při povodni zaplaví domy", [
+  choice("Proč je řeka pro město výhodná i nebezpečná?", "Řeka dává vodu, ale při povodni zaplaví domy", [
     { value: "Řeka je jen výhodná", why: "Řeka může být i nebezpečná, když se vylije." },
     { value: "Řeka je jen nebezpečná", why: "Řeka dává i vodu, dopravu a krásné místo k procházkám." },
     { value: "Řeka se městem nijak nesouvisí", why: "Mnoho měst vzniklo právě u řek." },

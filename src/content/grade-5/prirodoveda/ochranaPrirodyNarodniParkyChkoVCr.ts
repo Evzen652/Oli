@@ -16,10 +16,13 @@ const L1: PracticeTask[] = [
     hints: ["Vzpomeň si na Krkonoše, Šumavu, Podyjí a České Švýcarsko. Je to všechno?", "K těmto čtyřem parkům přibyl v roce 2022 ještě jeden — Křivoklátsko u Berounky. Spočítej je všechny dohromady."],
     explanation: "Česko má pět národních parků: Krkonoše, Šumavu, Podyjí, České Švýcarsko a od roku 2022 Křivoklátsko.",
   }),
-  choice("Který národní park v Česku je nejstarší?", "Krkonošský národní park", [
-    { value: "Národní park Šumava", why: "Šumava se stala národním parkem až v roce 1991." },
-    { value: "Národní park Podyjí", why: "Podyjí vzniklo v roce 1991." },
-    { value: "Národní park České Švýcarsko", why: "České Švýcarsko vzniklo v roce 2000." },
+  // Názvy parků drží v celém tématu jeden krátký tvar. Dřív stál proti třem
+  // „Národní park …“ klíč „Krkonošský národní park“ — jediný jinak psaný,
+  // a tím poznatelný bez jakékoli znalosti.
+  choice("Který národní park v Česku je nejstarší?", "Krkonoše", [
+    { value: "Šumava", why: "Šumava se stala národním parkem až v roce 1991." },
+    { value: "Podyjí", why: "Podyjí vzniklo v roce 1991." },
+    { value: "České Švýcarsko", why: "České Švýcarsko vzniklo v roce 2000." },
   ], {
     hints: ["Vznikl už v roce 1963 v našich nejvyšších horách.", "V tomto parku leží Sněžka, nejvyšší hora Česka, a pramení v něm Labe."],
     explanation: "Nejstarší je Krkonošský národní park, vyhlášený v roce 1963.",
@@ -40,10 +43,10 @@ const L1: PracticeTask[] = [
     hints: ["Název parku je odvozený od jména řeky.", "Řeka se tu zařízla do hlubokého údolí; na rakouské straně navazuje park Thayatal."],
     explanation: "Národní park Podyjí leží v údolí Dyje u Znojma; je to nejmenší z našich národních parků.",
   }),
-  choice("Ve kterém národním parku je nejvyšší hora Česka Sněžka?", "Krkonošský národní park", [
-    { value: "Národní park Šumava", why: "Nejvyšší horou Šumavy je Plechý." },
-    { value: "Národní park Podyjí", why: "Podyjí je údolí řeky, velké hory tam nejsou." },
-    { value: "Národní park Křivoklátsko", why: "Křivoklátsko je pahorkatina s lesy." },
+  choice("Ve kterém národním parku je nejvyšší hora Česka Sněžka?", "Krkonoše", [
+    { value: "Šumava", why: "Nejvyšší horou Šumavy je Plechý." },
+    { value: "Podyjí", why: "Podyjí je údolí řeky, velké hory tam nejsou." },
+    { value: "Křivoklátsko", why: "Křivoklátsko je pahorkatina s lesy, Sněžka tam není." },
   ], {
     hints: ["Sněžka měří 1 603 metrů. Ve kterém pohoří leží?", "Je to nejvyšší pohoří Česka na hranici s Polskem; park tu vznikl už v roce 1963."],
     explanation: "Sněžka leží v Krkonoších, a tedy v Krkonošském národním parku.",

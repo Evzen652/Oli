@@ -144,6 +144,40 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-14 (46) — klíč nesmí vyčnívat tvarem (rozhodnutí uživatele):
+
+- ✅ **`check:options` je napříč celým rejstříkem na nule** (ověřeno i při
+  `REPEATS=25`). Ze 140 původních nálezů bylo **38 falešných** a 102 skutečných.
+- 🐛 **Falešné nálezy měly jednu příčinu: pevnou škálu.** Když má celé téma
+  jednu a tutéž čtveřici možností („věta jednoduchá / souvětí ze dvou / ze tří /
+  ze čtyř vět“) a klíč mezi nimi jen rotuje, „ta jiná“ možnost nenapoví nic —
+  kdo ji vybere pokaždé, splete se ve většině úloh. Kontrola to teď pozná podle
+  toho, že se tatáž nabídka v tématu objevila i s jiným klíčem. Týkalo se to
+  souvětí (22), podmětu (8), způsobu slovesného (5) a druhu chyby ve větě (3).
+- ✅ **Tři plošné vzorce, 51 úloh:** „Protože…“ (28) a „Aby…“ (9) — klíč nově
+  začíná stejnou spojkou jako distraktory; „Jen…“ (14) — tenhle byl horší než
+  tvarová nápověda: tři distraktory omezující, klíč jako jediný úplný, takže
+  „vyber nejúplnější možnost“ fungovalo bez znalosti. Vyměněn vždy jeden
+  distraktor za úplný, ale věcně chybný.
+- ✅ **Binární Ano/Ne (7).** Čtyři na L1 (formát tam smí být) jen dostaly
+  vyváženou nabídku — jeden distraktor začíná taky „Ne“, ale se špatným
+  důvodem. **Tři na L2 formát porušovaly** a jsou přepsané na otevřené otázky.
+- ✅ **Zbytek (~44) po jedné.** Většinou stačilo klíč přeformulovat tak, aby
+  začínal stejným podmětem jako distraktory („Hvězdy svítí i ve dne, ale Slunce
+  je přezáří“). Dvě výjimky stály za víc:
+  - **`g4-mat-osova-soumernost-4` opravena v generátoru, ne v datech.** Tři
+    distraktory typu „písmeno F/G/J“ proti klíči „obdélník“ vznikaly losem;
+    losování teď takovou čtveřici zahazuje.
+  - **Národní parky:** klíč „Krkonošský národní park“ stál proti třem „Národní
+    park …“. Zbytek tématu přitom používá krátké názvy, tak je sjednoceno.
+- ⚠️ **Jedna vada, kterou jsem si sám vyrobil a kontrola ji chytila.** Hromadná
+  náhrada klíče zasáhla i druhou úlohu, která měla shodou okolností stejný klíč
+  („Čím se liší pověst od pohádky?“ pak odpovídala „protože…“). Vráceno zpět.
+  Je to argument pro to, že se kontrola musí pouštět po každé dávce, ne jen
+  před ní.
+- ⏳ **`check:length` hlásí 10 úloh** (klíč mnohem delší než nejkratší možnost).
+  Jsou to starší nálezy, s touhle dávkou nesouvisejí — samostatné rozhodnutí.
+
 ### Session 2026-09-14 (45) — odborné typy prošly poprvé prohlížečem:
 
 - ✅ **Bod 1.6 plánu šestky hotový: `timeline`, `diagram_label`,

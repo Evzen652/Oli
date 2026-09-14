@@ -556,7 +556,7 @@ const L3: U[] = [
   },
   {
     q: "Proč rostlině prospěje, když zvíře sní její šťavnatý plod?",
-    a: "Semena vyloučí jinde, kde mohou vyklíčit",
+    a: "Zvíře semena vyloučí jinde, kde mohou vyklíčit",
     emoji: "🦔",
     d: [
       ["Zvíře tím semena zničí a rostlin nepřibude", "Tvrdá semena projdou trávením nepoškozená. Rostlině to prospěje."],

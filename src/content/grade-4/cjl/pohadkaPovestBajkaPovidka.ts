@@ -175,7 +175,7 @@ const L2: PracticeTask[] = [
     bajka: "Nevystupují tu zvířata s ponaučením.",
   }, ["Mohlo se to stát doopravdy?", "Nová škola, strach a kamarádka — obyčejná událost ze života bez kouzel a bez zvířat."],
   "Obyčejná událost ze školy bez kouzel je povídka."),
-  choice("Čím se liší pověst od pohádky?", "protože se pověst váže ke skutečnému místu", [
+  choice("Čím se liší pověst od pohádky?", "pověst se váže ke skutečnému místu", [
     { value: "pověst je vždycky veselá", why: "Pověsti bývají i smutné (mistr Hanuš)." },
     { value: "pověst má vždy zvířata", why: "Zvířata jednající jako lidé jsou typická pro bajku." },
     { value: "pověst nemá žádné postavy", why: "Pověsti mají postavy — Libuši, rytíře, knížata." },

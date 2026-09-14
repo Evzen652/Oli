@@ -248,7 +248,7 @@ const L3: PracticeTask[] = [
     hints: ["Popisuje věta to, co je vidět, nebo co je uvnitř?", "Oblečení patří ke vzhledu. O povaze ani myšlenkách nic neřekne."],
     explanation: "Oblečení je vzhled — věta říká, jak Pavla vypadá.",
   }),
-  choice("Jak poznáš, že je postava lakomá, i když to autor nenapíše?", "nikdy se o nic nerozdělí a počítá každou korunu", [
+  choice("Jak poznáš, že je postava lakomá, i když to autor nenapíše?", "podle toho, že se nikdy o nic nerozdělí a počítá každou korunu", [
     { value: "podle barvy jejích vlasů", why: "Vlasy o povaze nic neřeknou." },
     { value: "podle jejího jména", why: "Jméno o povaze nic neříká." },
     { value: "podle toho, kde bydlí", why: "Bydliště o povaze nic neříká." },
@@ -275,7 +275,7 @@ const L3: PracticeTask[] = [
   choice("Ve kterém úryvku poznáš povahu postavy z její řeči?", "„Nechte to na mně, já to zvládnu!“ zvolal Honza.", [
     { value: "Honza měl hnědé vlasy.", why: "To je vzhled, žádná řeč." },
     { value: "Honza bydlel na kraji města.", why: "To je bydliště, žádná řeč." },
-    { value: "Honza šel domů.", why: "To je děj, Honza nic neříká." },
+    { value: "„Je pondělí,“ řekl Honza.", why: "Honza tu sice mluví, ale o povaze tím nic neprozradí — jen říká, jaký je den." },
   ], {
     hints: ["Ve kterém úryvku postava mluví?", "Z toho, co a jak postava říká, poznáš její povahu — tady sebevědomí a odvahu."],
     explanation: "Honzova slova ukazují, že je odvážný a sebevědomý — poznáme to z řeči.",

@@ -242,7 +242,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   q(
     "Proč je semeno považováno za živé, i když neroste?",
-    "Uvnitř semene je zárodek — bude růst, až dostane vodu a teplo",
+    "Semeno má uvnitř zárodek — poroste, až dostane vodu a teplo",
     [
       { o: "Semeno je jen kousek horniny", why: "Semeno vzniklo na rostlině, ne z kamene. Z horniny nikdy nic nevyklíčí." },
       { o: "Semeno je neživé, protože se nehýbe", why: "Pohyb není znakem života — strom se také nehýbe, a přitom žije." },
@@ -382,7 +382,7 @@ const POOL_L2: PracticeTask[] = [
   ),
   q(
     "Proč se houby neřadí mezi rostliny, i když obojí patří do živé přírody?",
-    "Nemají chlorofyl a nevyrábějí si potravu fotosyntézou",
+    "Houby nemají chlorofyl a nevyrábějí si potravu fotosyntézou",
     [
       { o: "Houby se nikdy nerozmnožují", why: "Houby se rozmnožují výtrusy, jen jinak než rostliny semeny." },
       { o: "Houby nejsou vůbec živé organismy", why: "Houby rostou i tvoří potomstvo, takže živé bezpochyby jsou." },
@@ -511,7 +511,7 @@ const POOL_L3: PracticeTask[] = [
   ),
   q(
     "Houby nefotosyntetizují jako rostliny. Odkud tedy získávají živiny a proč to neznamená, že jsou neživé?",
-    "Rozkládají odumřelé zbytky a získávají z nich živiny — proto stále rostou i tvoří výtrusy",
+    "Houby rozkládají odumřelé zbytky a živiny berou z nich — proto rostou i tvoří výtrusy",
     [
       { o: "Houby energii nepotřebují, protože jsou napůl neživé", why: "Energii potřebuje každý organismus, napůl živý tvor neexistuje." },
       { o: "Houby čerpají energii přímo ze slunce úplně stejně jako rostliny", why: "Bez zeleného barviva houba sluneční světlo využít neumí." },

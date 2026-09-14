@@ -273,7 +273,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Z hrnce stoupá pára. Kde se v kuchyni ochladí nejvíc?", "Okno je studené od venkovního vzduchu. Co se stane s párou, když narazí na studený povrch? Stejně se orosí láhev z lednice."],
     explanation: "Z vařící vody stoupá pára. Když dorazí ke studenému oknu, ochladí se a zkapalní na drobné kapky. Ty okno zamlží.",
   }),
-  choice("Proč se v zimě sype na silnice sůl?", "Slaná voda zamrzá až v silnějším mrazu", [
+  choice("Proč se v zimě sype na silnice sůl?", "Sůl sníží teplotu, při které voda zamrzá", [
     { value: "Sůl led zahřeje", why: "Sůl nehřeje. Mění teplotu, při které voda mrzne." },
     { value: "Sůl led rozbije na kousky", why: "Sůl led nerozbíjí. Způsobí, že slaná voda nezamrzne." },
     { value: "Sůl vodu vypaří", why: "Sůl vodu nevypařuje." },

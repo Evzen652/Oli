@@ -138,7 +138,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Která věta obsahuje přímou řeč?", "„Pojď si hrát!“ zavolala Anna.", [
     { value: "Anna zavolala, že si má jít hrát.", why: "To je nepřímá řeč — vypravěč jen převypráví, co Anna řekla." },
-    { value: "Anna si šla hrát.", why: "Tady nikdo nemluví." },
+    { value: "Podle Anny si mají jít hrát.", why: "To je převyprávění, ne Annina přesná slova v uvozovkách." },
     { value: "Anna byla veselá a hravá.", why: "To je popis Anny, ne její slova." },
   ], {
     hints: ["Ve které větě slyšíš přesná slova, která postava vyslovila?", "Přímá řeč jsou doslovná slova postavy v uvozovkách. Když vypravěč jen řekne, co postava říkala, je to nepřímá řeč."],

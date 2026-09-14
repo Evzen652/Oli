@@ -186,10 +186,10 @@ const L2: PracticeTask[] = [
     hints: ["Jaderné elektrárny máme v Česku dvě — jednu na jihu Čech a jednu na jihu Moravy.", "Tato elektrárna leží nedaleko Českých Budějovic a má čtyři obří chladicí věže."],
     explanation: "Temelín (a také Dukovany) jsou jaderné elektrárny.",
   }),
-  choice("Je uran obnovitelný zdroj?", "ne, jeho zásoby jsou omezené", [
-    { value: "ano, doroste v zemi", why: "Uran nedorůstá." },
-    { value: "ano, vyrábí ho Slunce", why: "Uran se na Zemi těží ze starých zásob." },
-    { value: "ano, je ho nekonečně mnoho", why: "Zásoby uranu jsou omezené." },
+  choice("Kam patří uran mezi zdroji energie?", "mezi neobnovitelné, jeho zásoby jsou omezené", [
+    { value: "mezi obnovitelné, v zemi postupně doroste", why: "Uran nedorůstá. Co se vytěží, už nevznikne." },
+    { value: "mezi obnovitelné, vyrábí ho Slunce", why: "Slunce uran nevyrábí. Na Zemi je ze starých zásob a ty se nedoplňují." },
+    { value: "mezi obnovitelné, je ho v zemi nekonečně mnoho", why: "Zásoby uranu jsou omezené, jen zatím vystačí na řadu let." },
   ], {
     hints: ["Odkud se uran bere?", "Uran se těží z hornin v dolech; co se vytěží, znovu nevznikne."],
     explanation: "Uran se těží z omezených zásob — obnovitelný není.",

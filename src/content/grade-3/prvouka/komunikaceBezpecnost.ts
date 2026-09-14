@@ -140,7 +140,7 @@ const POOL_L1: PracticeTask[] = [
     [
       ["Ano, pokud si píšeme dlouho", "Ani dlouhé psaní z cizího člověka neudělá známého — pořád nevíš, kdo to je."],
       ["Ano, když o to hezky poprosí", "Zdvořilá prosba nic nemění. Fotku by mohl zneužít."],
-      ["Ano, ale jen jednu fotku", "I jedna fotka se dá zneužít a rozeslat dál."],
+      ["Ne, ale mohu poslat fotku kamaráda", "Cizí fotku poslat nesmíš už vůbec — je to osobní údaj někoho jiného."],
     ],
     "Fotka je tvůj osobní údaj — ukazuje, jak vypadáš.",
     "Člověk z internetu může být ve skutečnosti úplně jiný, než tvrdí, a fotku může poslat dál. Změní na tom něco, jak dlouho si píšete?",
@@ -287,7 +287,7 @@ const POOL_L2: PracticeTask[] = [
     [
       ["Pošlu, když vypadá přátelsky", "Přátelské zprávy nic nezaručují."],
       ["Pošlu fotku, na které nejsem vidět celý", "I část fotky se dá zneužít. Neposílej nic."],
-      ["Pošlu fotku kamaráda místo sebe", "Kamarádovu fotku bez jeho svolení posílat nesmíš — a cizímu už vůbec ne."],
+      ["Neposílám, ale dám mu odkaz na svůj profil s fotkami", "Odkaz na fotky je totéž jako fotka. Cizímu člověku ho neposílej."],
     ],
     "Fotka je osobní — cizí člověk ji může zneužít.",
     "Nestačí jen fotku neposlat. Kdo by měl vědět, že tě o ni cizí člověk z internetu žádal, aby tě mohl ochránit?",

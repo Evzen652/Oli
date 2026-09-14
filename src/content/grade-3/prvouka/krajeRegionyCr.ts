@@ -116,7 +116,7 @@ const POOL_L1: PracticeTask[] = [
   ),
   t(
     "Co má kraj navíc oproti regionu?",
-    "Přesné hranice a vlastní úřad",
+    "Vlastní úřad a přesně dané hranice",
     [
       ["Vlastní úřední jazyk", "V celé republice se úřaduje česky. Jazyk se podle krajů nemění."],
       ["Vlastní platnou měnu", "V celém státě platí jedna měna — koruna. Kraj si svoji nevydává."],

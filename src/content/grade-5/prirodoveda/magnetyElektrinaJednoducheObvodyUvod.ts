@@ -122,10 +122,10 @@ const L2: PracticeTask[] = [
     hints: ["Vede plast proud?", "Kdyby byl drát holý, mohl by proud přejít do ruky, která se ho dotkne."],
     explanation: "Plast proud nevede — je izolant — a chrání nás před úrazem.",
   }),
-  choice("Obvod tvoří baterie, vypínač a žárovka. Vypínač je vypnutý. Svítí žárovka?", "ne, obvod je přerušený", [
-    { value: "ano, baterie je plná", why: "Plná baterie nestačí, proud musí mít cestu." },
-    { value: "ano, ale slabě", why: "Přerušeným obvodem neteče žádný proud." },
-    { value: "ano, jen chvíli", why: "Neteče vůbec." },
+  choice("Obvod tvoří baterie, vypínač a žárovka. Vypínač je vypnutý. Co dělá žárovka?", "nesvítí, protože je obvod přerušený", [
+    { value: "svítí naplno, protože je baterie plná", why: "Plná baterie nestačí, proud musí mít kudy projít." },
+    { value: "svítí slabě, protože proud vypínač obejde", why: "Proud nemá kudy obejít. Přerušeným obvodem neteče vůbec." },
+    { value: "blikne a zhasne, až se vybije baterie", why: "Nerozsvítí se ani na chvíli — proud neteče od začátku." },
   ], {
     hints: ["Co udělá vypnutý vypínač s cestou proudu?", "Vypnutý vypínač je jako zvednutý most: proud se přes něj nedostane dál."],
     explanation: "Vypnutý vypínač obvod přeruší a žárovka nesvítí.",
@@ -162,13 +162,13 @@ const L2: PracticeTask[] = [
     hints: ["Dá se oddělit severní pól od jižního?", "Magnet je složený z drobných magnetků. Když ho rozlomíš, každý kus je zase celý magnet."],
     explanation: "Každý kus magnetu má zase severní i jižní pól — vzniknou dva menší magnety.",
   }),
-  choice("Mohou se dva jižní póly přitahovat?", "ne, stejné póly se odpuzují", [
-    { value: "ano, vždy", why: "Přitahují se jen opačné póly." },
-    { value: "ano, ale jen pod vodou", why: "Voda na to vliv nemá." },
-    { value: "ano, když jsou magnety velké", why: "Velikost pravidlo nemění." },
+  choice("Co se stane, když k sobě přiblížíš jižní póly dvou magnetů?", "budou se odpuzovat, protože jsou to stejné póly", [
+    { value: "přitáhnou se, protože jsou to oba magnety", why: "Že jde o magnety nestačí — rozhoduje, jestli jsou póly stejné, nebo opačné." },
+    { value: "nestane se nic, magnety působí jen severními póly", why: "Působí obojí. Jižní pól odpuzuje jižní stejně, jako severní odpuzuje severní." },
+    { value: "přitáhnou se, když jsou magnety dost velké", why: "Velikost pravidlo nemění, jen zesílí sílu — a ta bude odpudivá." },
   ], {
     hints: ["Jsou dva jižní póly stejné, nebo opačné?", "Pravidlo platí pro všechny magnety: opačné póly k sobě, stejné od sebe."],
-    explanation: "Stejné póly se vždy odpuzují.",
+    explanation: "Stejné póly se vždy odpuzují, opačné přitahují.",
   }),
   choice("Který materiál je dobrý vodič proudu?", "hliník", [
     { value: "sklo", why: "Sklo je izolant." },

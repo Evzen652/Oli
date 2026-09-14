@@ -170,7 +170,7 @@ const L2: PracticeTask[] = [
     hints: ["Je součástí souhvězdí Velké medvědice.", "Podle dvou zadních hvězd tohoto obrazce najdeš Polárku."],
     explanation: "Sedm jasných hvězd ve tvaru vozu je Velký vůz, část Velké medvědice.",
   }),
-  choice("Proč Pluto od roku 2006 nepatří mezi planety?", "je malé a obíhá mezi mnoha podobnými tělesy", [
+  choice("Proč Pluto od roku 2006 nepatří mezi planety?", "Pluto je malé a obíhá mezi mnoha podobnými tělesy", [
     { value: "Pluto se rozpadlo", why: "Pluto dál obíhá Slunce." },
     { value: "Pluto odletělo ze Sluneční soustavy", why: "Pluto zůstává ve Sluneční soustavě." },
     { value: "Pluto je hvězda", why: "Pluto sám nesvítí." },

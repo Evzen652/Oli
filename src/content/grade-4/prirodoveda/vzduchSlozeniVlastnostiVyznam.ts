@@ -222,7 +222,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Co se stane s tím míčem, když ho doneseš zpátky do tepla?", "V teple se míč zase napne. Takže vzduch neutekl. Co se s ním v mrazu stalo?"],
     explanation: "Když se vzduch ochladí, zabere méně místa, a míč povolí. V teple se vzduch zase roztáhne a míč se napne. Proto se pneumatiky v zimě dofukují.",
   }),
-  choice("Proč se roztočí lopatky větrné elektrárny?", "Proudící vzduch do nich tlačí", [
+  choice("Proč se roztočí lopatky větrné elektrárny?", "Otáčí je proudící vzduch", [
     { value: "Otáčí je elektřina ze sítě", why: "Elektrárna elektřinu vyrábí, lopatky nepohání síť." },
     { value: "Otáčí je sluneční světlo", why: "Světlo lopatky neroztočí. Tlačí do nich vítr." },
     { value: "Otáčí je voda z řeky", why: "Voda pohání vodní elektrárnu. Větrnou pohání vítr." },
@@ -257,7 +257,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Co oheň potřebuje ze vzduchu?", "Kolem uhlíků je vzduch, ze kterého oheň kyslík už spotřeboval. Co se změní, když k nim fouknutím doženeš čerstvý?"],
     explanation: "Oheň potřebuje kyslík. Foukáním doženeš k uhlíkům čerstvý vzduch a víc kyslíku, a tak oheň znovu vzplane. Proto se používá i měch.",
   }),
-  choice("Proč se hasicí přístroje často plní oxidem uhličitým?", "Vytlačí od ohně kyslík, takže oheň zhasne", [
+  choice("Proč se hasicí přístroje často plní oxidem uhličitým?", "Oxid uhličitý vytlačí od ohně kyslík, a ten zhasne", [
     { value: "Oxid uhličitý hoří lépe", why: "Oxid uhličitý nehoří, naopak oheň dusí." },
     { value: "Oxid uhličitý oheň rozdrtí", why: "Plyn oheň nedrtí. Zamezí přístupu kyslíku." },
     { value: "Oxid uhličitý přinese vodu", why: "Hasicí přístroj s tímto plynem vodu neobsahuje." },
@@ -265,7 +265,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Co potřebuje oheň a co mu hasicí přístroj vezme?", "Plyn z přístroje obklopí oheň jako neviditelná deka. Který plyn se pak k plamenům nedostane?"],
     explanation: "Oxid uhličitý nehoří a je těžší než vzduch. Obklopí oheň a vytlačí od něj kyslík, takže oheň zhasne. Navíc ho ochladí.",
   }),
-  choice("Proč musí do akvárka bublat vzduch?", "Z bublin se do vody dostává kyslík", [
+  choice("Proč musí do akvárka bublat vzduch?", "Bubliny do vody dodávají kyslík", [
     { value: "Bubliny rybky krmí", why: "Bubliny nejsou potrava. Dodávají do vody kyslík." },
     { value: "Bubliny vodu ohřívají", why: "Vodu ohřívá topítko. Bubliny přinášejí kyslík." },
     { value: "Bubliny odhánějí dusík", why: "O dusík nejde. Rybky potřebují kyslík rozpuštěný ve vodě." },

@@ -251,7 +251,7 @@ const L3: PracticeTask[] = [
     explanation: "„Svoji“ je tvar zájmena „svůj“ a říká, že tužka patří tomu, kdo ji půjčuje. Je to přivlastňovací zájmeno.",
   }),
   choice("Ve které větě je zájmeno tázací?", "Co ti maminka koupila?", [
-    { value: "Maminka mi něco koupila.", why: "„Něco“ je neurčité – nevíme co." },
+    { value: "Koupila ti maminka něco?", why: "Otázka to je, ale „něco“ je zájmeno neurčité — neptá se, jen neurčitě označuje." },
     { value: "Maminka mi nic nekoupila.", why: "„Nic“ popírá, je záporné." },
     { value: "Maminka koupila to, co slíbila.", why: "Tady „co“ připojuje větu a odkazuje k „to“, je vztažné." },
   ], {

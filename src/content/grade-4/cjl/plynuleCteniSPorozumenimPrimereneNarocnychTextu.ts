@@ -72,7 +72,7 @@ const L2: PracticeTask[] = [
   text("Když prší, cesta k babičce se mění v bláto a ve strouze jsou skryté díry. Proto k ní chodíme jen za sucha.", "Proč se k babičce nechodí za deště?", "cesta je blátivá a nebezpečná", [
     ["babička není doma", "O tom text nemluví."], ["rodiče to nikdy nedovolí", "Za sucha se tam chodí."], ["cesta je delší", "O délce cesty text nic neříká."],
   ], ["Najdi v textu slovo „proto“. Co je před ním?", "Slovo „proto“ spojuje důvod s tím, co z něj plyne. Důvod je v první větě."], "Za deště je cesta blátivá a jsou na ní skryté díry — je nebezpečná."),
-  text("Petr běhá do školy deset minut. Jednou zaspal, a aby to stihl, jel autobusem.", "Co z textu plyne?", "autobus je rychlejší než Petrův běh", [
+  text("Petr běhá do školy deset minut. Jednou zaspal, a aby to stihl, jel autobusem.", "Co z textu plyne?", "Petr jel autobusem, protože je rychlejší než jeho běh", [
     ["Petr jezdí autobusem každý den", "Jel jen jednou, když zaspal."], ["Petr nemá rád autobus", "O tom text nic neříká."], ["Petr bydlí daleko od školy", "Běží jen deset minut — bydlí blízko."],
   ], ["Proč Petr jel autobusem, když zaspal?", "Jel, „aby to stihl“. Co to říká o rychlosti autobusu?"], "Petr jel autobusem, aby to stihl — autobus je tedy rychlejší než jeho běh."),
   text("Nejprve jsme zasadili semínko. Potom jsme ho zalévali. Po týdnu vyrašil malý lístek.", "Co se stalo jako poslední?", "vyrašil lístek", [

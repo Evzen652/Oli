@@ -205,7 +205,7 @@ const L3: PracticeTask[] = [
     { value: "vyberu vždy první větu", why: "Odpověď může být kdekoli." },
     { value: "vyberu vždy nejdelší větu", why: "Délka o správnosti nerozhoduje." },
   ], { hints: ["Stačí najít v textu stejné slovo jako v otázce?", "Po nalezení věty se zeptej: odpovídá opravdu na to, na co se ptám?"], explanation: "Musíme ověřit, že věta odpovídá právě na naši otázku." }),
-  choice("Text: „Pes je věrný přítel člověka. Hlídá dům, doprovází nás na procházkách a pomáhá i hasičům.“ Co je hlavní myšlenka?", "pes je pro člověka užitečný a věrný pomocník", [
+  choice("Text: „Pes je věrný přítel člověka. Hlídá dům, doprovází nás na procházkách a pomáhá i hasičům.“ Co je hlavní myšlenka?", "psi jsou pro člověka užiteční a věrní pomocníci", [
     { value: "psi pomáhají hasičům při záchraně", why: "To je jen jeden příklad." },
     { value: "psi chodí s lidmi na procházky", why: "To je jen jeden příklad." },
     { value: "psi hlídají dům jen v noci", why: "To v textu není." },

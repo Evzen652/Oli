@@ -69,7 +69,7 @@ const L1: PracticeTask[] = [
     hints: ["Kterým slovem uvedeš poslední událost příběhu?", "Hledej časové slovo, které stojí úplně na konci řady událostí."],
     explanation: "„Nakonec“ označuje děj, který byl poslední.",
   }),
-  choice("Slovo „mezitím“ znamená, že…", "dva děje probíhají ve stejnou dobu", [
+  choice("Slovo „mezitím“ znamená, že…", "děj probíhá zároveň s jiným dějem", [
     { value: "děj právě skončil", why: "Konec vyjadřuje „nakonec“." },
     { value: "děj teprve začne", why: "Začátek vyjadřuje „nejprve“." },
     { value: "děj se pořád opakuje", why: "Opakování vyjadřuje třeba „pořád“ nebo „znovu“." },

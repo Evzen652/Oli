@@ -275,7 +275,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Vzpomeň si, proč se v létě nosí bílé tričko.", "Světlá barva paprsky vrací zpátky, tmavá je spolkne. Která dlaždice si tedy nechá víc tepla?"],
     explanation: "Tmavá dlaždice pohltí většinu slunečního světla a to se v ní změní na teplo. Světlá většinu světla odrazí, a tak zůstane chladnější.",
   }),
-  choice("Liška rostliny nejí. Proč i ona potřebuje Slunce?", "Loví zvířata, která se živí rostlinami", [
+  choice("Liška rostliny nejí. Proč i ona potřebuje Slunce?", "Liška loví zvířata, která se živí rostlinami", [
     { value: "Liška se ohřívá na slunci", why: "Liška je teplokrevná, teplo si vyrábí sama. Slunce potřebuje kvůli potravě." },
     { value: "Liška loví jen ve dne", why: "Liška loví hlavně za soumraku a v noci. Na Slunci závisí přes potravu." },
     { value: "Liška Slunce nepotřebuje", why: "Potřebuje. Bez rostlin by nebyli zajíci ani myši, které loví." },
@@ -331,7 +331,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Čím vzniká střídání dne a noci?", "Posviť baterkou na míč a přestaň jím otáčet. Co bude pořád na osvětlené straně a co na druhé?"],
     explanation: "Den a noc se střídají, protože se Země otáčí. Kdyby se zastavila, jedna strana by byla pořád obrácená ke Slunci a měla stálý den, druhá by měla věčnou noc.",
   }),
-  choice("Proč ve dne nevidíme na obloze hvězdy?", "Svítí i ve dne, ale Slunce je přezáří", [
+  choice("Proč ve dne nevidíme na obloze hvězdy?", "Hvězdy svítí i ve dne, ale Slunce je přezáří", [
     { value: "Hvězdy ve dne zhasnou", why: "Hvězdy svítí pořád. Jen je ve dne přes světlo Slunce nevidíme." },
     { value: "Hvězdy ve dne schová Měsíc", why: "Měsíc je malý a hvězdy nezakryje. Přezáří je Slunce." },
     { value: "Hvězdy se ve dne otočí jinam", why: "Hvězdy se neotáčejí jinam. Jsou na obloze, jen je nevidíme." },

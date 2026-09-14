@@ -59,7 +59,7 @@ const POOL_L1: PracticeTask[] = [
     hints: ["První písmeno znamená, že je území pod ochranou.", "Ch jako chráněná, K jako krajinná, O jako oblast. Poskládej ta tři slova za sebou do jednoho názvu."],
     explanation: "CHKO je chráněná krajinná oblast — krajina, kde lidé žijí a hospodaří, ale přírodu musí šetřit. Třeba Beskydy nebo Český ráj.",
   }),
-  choice("Proč jsou některé rostliny a živočichové chránění zákonem?", "Hrozí jim, že vyhynou", [
+  choice("Proč jsou některé rostliny a živočichové chránění zákonem?", "Jsou tak vzácní, že jim hrozí vyhynutí", [
     { value: "Jsou nebezpeční pro lidi", why: "Chráněné druhy nechráníme kvůli nebezpečí, ale proto, že jich ubývá." },
     { value: "Jsou nejkrásnější", why: "Krása není důvod. Rozhoduje, jestli druhu hrozí vyhynutí." },
     { value: "Jsou nejvíc užiteční", why: "Chráníme i druhy, které lidem nic nedávají. Důležité je, že jich ubývá." },

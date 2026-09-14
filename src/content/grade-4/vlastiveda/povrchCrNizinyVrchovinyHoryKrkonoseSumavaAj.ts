@@ -303,7 +303,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Kam teče voda z jedné strany vrchoviny a kam z druhé?", "Z české strany teče voda k Vltavě a Labi, z moravské k Dyji a Moravě. Co je tedy na vrchovině?"],
     explanation: "Na Českomoravské vrchovině se dělí voda: z jedné strany teče do Čech k Labi, z druhé na Moravu k Dunaji. Po tomhle rozvodí vedla i hranice zemí.",
   }),
-  choice("Na mapě jsou nížiny zelené a hory hnědé. Co barva ukazuje?", "Nadmořskou výšku krajiny", [
+  choice("Na mapě jsou nížiny zelené a hory hnědé. Co barva ukazuje?", "Kde je krajina vysoko a kde nízko", [
     { value: "Kde rostou lesy", why: "Lesy mají na mapě jinou značku. Barvy ukazují výšku." },
     { value: "Kde je nejtepleji", why: "Barvy neukazují teplotu, ale výšku." },
     { value: "Kde žije nejvíc lidí", why: "Počet obyvatel barva na výškové mapě neukazuje." },

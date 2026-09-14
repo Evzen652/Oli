@@ -175,13 +175,13 @@ const HRANICE: Hranice[] = [
     explanation: "Historik zkoumá doloženou minulost: listiny, příčiny válek, život lidí. Drak je smyšlený — patří do pohádek a bájí.",
   },
   {
-    q: "Čím se historik NEzabývá?", ne: ["Sopečnou činností na pusté planetě bez lidí", ""],
+    q: "Čím se historik NEzabývá?", ne: ["Tím, jak vybuchla sopka na pusté planetě bez lidí", ""],
     ano: [["Tím, jak se ve městě dřív obchodovalo", "Každodenní život lidí v minulosti (obchod) je jádro dějepisu."], ["Tím, jaké nástroje používali dávní lovci", "Nástroje dávných lidí zkoumá dějepis i archeologie."], ["Tím, proč zanikla starověká říše", "Příčiny zániku říší jsou klasické téma dějepisu."]],
     hints: ["Dějepis je věda o minulosti LIDÍ — kde nejsou lidé, tam nemá co zkoumat.", "Vyber to, co se vůbec netýká lidí a jejich života."],
     explanation: "Dějepis zkoumá minulost LIDÍ. Přírodní jev na planetě bez lidí se lidské minulosti netýká, proto do dějepisu nepatří.",
   },
   {
-    q: "Čím se historik při výzkumu pravěku NEzabývá?", ne: ["Dobrodružstvím vymyšleného hrdiny z filmu", ""],
+    q: "Čím se historik při výzkumu pravěku NEzabývá?", ne: ["Tím, co zažil vymyšlený hrdina z filmu", ""],
     ano: [["Tím, jaké nástroje vyráběli lovci mamutů", "Nástroje pravěkých lidí zkoumá dějepis s archeologií."], ["Tím, jak žili první zemědělci", "Život prvních zemědělců je téma pravěku."], ["Tím, co prozrazují prameny z vykopávek", "Vykopávky jsou hlavní prameny k pravěku."]],
     hints: ["Pravěk poznáváme z vykopávek. Co z nabídky se nikdy doopravdy nestalo?", "Filmový hrdina je výmysl; historik se drží toho, co dokládají prameny."],
     explanation: "Historik zkoumá pravěk podle pramenů z vykopávek — nástroje, sídla, život lidí. Vymyšlený filmový hrdina do dějin nepatří.",

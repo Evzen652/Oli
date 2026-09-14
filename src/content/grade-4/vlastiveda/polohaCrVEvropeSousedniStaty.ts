@@ -77,7 +77,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Má Česko vlastní pobřeží u moře?", "Ne, Česko je vnitrozemský stát", [
     { value: "Ano, u Jaderského moře", why: "K Jaderskému moři má přístup Chorvatsko, ne Česko." },
     { value: "Ano, u Baltského moře", why: "U Baltského moře leží Polsko a Německo, Česko ne." },
-    { value: "Ano, u Severního moře", why: "Do Severního moře jen odtéká Labe, pobřeží tam Česko nemá." },
+    { value: "Ne, ale Labe mu dává kus pobřeží u Severního moře", why: "Labe do Severního moře odtéká, pobřeží tím ale Česko nezískává." },
   ], {
     hints: ["Obkrouž prstem hranici Česka na mapě. Dotkneš se někde moře?", "Česko je ze všech stran obklopené souší a sousedy. Jak se říká státu, který nemá pobřeží?"],
     explanation: "Česko je vnitrozemský stát — je ze všech stran obklopené souší. Na moře se jezdí přes jiné státy.",
@@ -296,7 +296,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Labe pramení v Krkonoších a nakonec doteče do Severního moře.", "Z Krkonoš teče Labe přes Hradec Králové a Mělník k Děčínu. Za Děčínem opustí Česko — jakým směrem?"],
     explanation: "Labe opouští Česko u Děčína a teče na sever přes Německo do Severního moře.",
   }),
-  choice("Morava teče z Česka na jih, Odra na sever. Co z toho plyne?", "Jejich voda skončí v různých mořích", [
+  choice("Morava teče z Česka na jih, Odra na sever. Co z toho plyne?", "Obě řeky skončí v jiném moři", [
     { value: "Obě doteče do stejného moře", why: "Neteče. Morava skončí v Černém moři, Odra v Baltském." },
     { value: "Obě řeky tečou do Vltavy", why: "Morava ani Odra se do Vltavy nevlévají." },
     { value: "Obě řeky pramení v Praze", why: "Morava pramení na Králickém Sněžníku a Odra v Oderských vrších." },

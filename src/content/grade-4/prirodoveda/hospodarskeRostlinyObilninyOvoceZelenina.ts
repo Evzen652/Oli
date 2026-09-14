@@ -247,7 +247,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Co bylo na rostlině rajčete dřív, než vyrostlo rajče?", "Nejdřív se na rostlině objeví žlutý kvítek. Co z něj pak vyroste a co najdeš uvnitř?"],
     explanation: "Plod je část rostliny, která vzniká z květu a nese semena. Rajče takhle vzniká, proto je to plod — v kuchyni ho ale kvůli chuti počítáme k zelenině.",
   }),
-  choice("Proč zemědělec nepěstuje na stejném poli pšenici každý rok?", "Půda by se vyčerpala a namnožili by se škůdci", [
+  choice("Proč zemědělec nepěstuje na stejném poli pšenici každý rok?", "Pšenice by vyčerpala půdu a namnožili by se škůdci", [
     { value: "Pšenice by vyrostla moc vysoká", why: "Výška pšenice na tom nezávisí. Problém je v půdě a ve škůdcích." },
     { value: "Pšenice roste jen každý druhý rok", why: "Pšenice může růst každý rok. Jen by jí to na stejném poli škodilo." },
     { value: "Pšenice by pak neměla zrna", why: "Zrna by měla, ale úroda by byla menší a rostliny nemocnější." },

@@ -71,7 +71,7 @@ const L1: PracticeTask[] = [
   choice("Smíš do převyprávění přidat, co v textu nebylo?", "ne, drží se toho, co text říká", [
     { value: "ano, čím víc vymyslím, tím lépe", why: "Pak by to byl jiný příběh." },
     { value: "ano, hlavně jiný konec", why: "Změna konce není převyprávění." },
-    { value: "ano, klidně nové postavy", why: "Nové postavy příběh změní." },
+    { value: "ne, ale konec si smím vymyslet", why: "Ani konec ne — pak by to byl jiný příběh." },
   ], { hints: ["Kdyby kamarád převyprávěl film a přidal scény, které tam nebyly, byl by to ten film?", "Převyprávění musí věrně odpovídat předloze."], explanation: "Převyprávění se drží toho, co v textu opravdu je." }),
 ];
 
