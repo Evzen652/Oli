@@ -58,7 +58,7 @@ const L1: PracticeTask[] = [
   }),
   choice("Co je pasivní kouření?", "vdechování kouře z cigaret druhých lidí", [
     { value: "kouření jen o víkendech", why: "I to je aktivní kouření." },
-    { value: "kouření elektronické cigarety", why: "I to je kouření — aktivní." },
+    { value: "kouření elektronické cigarety s příchutí", why: "I to je kouření — aktivní." },
     { value: "držení cigarety bez zapálení", why: "Pasivní kouření znamená dýchat cizí kouř." },
   ], {
     hints: ["Může škodit kouř i tomu, kdo sám nekouří?", "Kdo sedí v zakouřené místnosti nebo v autě s kuřákem, dýchá stejné jedovaté látky."],
@@ -83,13 +83,13 @@ const L1: PracticeTask[] = [
   choice("Proč jsou energetické nápoje pro děti nevhodné?", "obsahují hodně kofeinu a cukru", [
     { value: "obsahují zdravé vitamíny", why: "Vitamíny nejsou důvod, proč jsou nevhodné." },
     { value: "jsou jen trochu dražší", why: "Nejde o cenu, ale o účinky." },
-    { value: "mají v sobě moc bublinek", why: "Bublinky nejsou hlavní problém." },
+    { value: "mají v sobě až příliš mnoho bublinek", why: "Bublinky nejsou hlavní problém." },
   ], {
     hints: ["Jaká povzbuzující látka je v kávě i v energetických nápojích?", "Kofein zrychluje srdce a narušuje spánek; cukr škodí zubům a přidává kila."],
     explanation: "Energetické nápoje obsahují hodně kofeinu a cukru, což dětem škodí.",
   }),
   choice("Co jsou drogy?", "látky, které mění vnímání a vedou k závislosti", [
-    { value: "léky na bolest hlavy podle lékaře", why: "Léky podle lékaře drogami nejsou." },
+    { value: "léky na bolest hlavy předepsané lékařem", why: "Léky podle lékaře drogami nejsou." },
     { value: "všechny sladkosti", why: "Sladkosti drogy nejsou." },
     { value: "koření do jídla", why: "Koření drogou není." },
   ], {
@@ -118,7 +118,7 @@ const L2: PracticeTask[] = [
   choice("Jaký je rozdíl mezi tělesnou a psychickou závislostí?", "tělesná je potřeba těla, psychická touha v mysli", [
     { value: "jsou úplně stejné", why: "Liší se v tom, co látku potřebuje — tělo, nebo mysl." },
     { value: "psychická se týká jen svalů", why: "Psychická závislost se týká mysli." },
-    { value: "tělesná vzniká jen u sportovců", why: "Tělesná závislost může vzniknout u kohokoli." },
+    { value: "tělesná závislost vzniká jen u sportovců", why: "Tělesná závislost může vzniknout u kohokoli." },
   ], {
     hints: ["Co se ozve, když závislý člověk látku nemá — tělo, nebo hlava?", "U tělesné závislosti se objeví třes nebo bolest, u psychické silná touha a neklid."],
     explanation: "Tělesná závislost znamená, že látku potřebuje tělo; psychická, že po ní touží mysl.",
@@ -149,7 +149,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Jak vzniká závislost na nikotinu?", "mozek si zvykne na příjemný pocit a chce další dávku", [
     { value: "nikotin se hromadí v nehtech", why: "Nikotin působí na mozek." },
-    { value: "závislost vznikne až po mnoha letech", why: "Závislost může vzniknout velmi rychle." },
+    { value: "závislost vznikne až po mnoha dlouhých letech", why: "Závislost může vzniknout velmi rychle." },
     { value: "nikotin posiluje plíce", why: "Nikotin plíce neposiluje." },
   ], {
     hints: ["Co nikotin dělá v mozku?", "Nikotin na chvíli vyvolá příjemný pocit; mozek si ho zapamatuje a začne dávku vyžadovat."],
@@ -166,13 +166,13 @@ const L2: PracticeTask[] = [
   choice("Proč mladí lidé někdy začnou kouřit nebo pít?", "chtějí zapadnout do party nebo vypadat dospěle", [
     { value: "doporučuje jim to lékař", why: "Lékaři to nedoporučují." },
     { value: "je to pro ně zdravé", why: "Zdravé to není." },
-    { value: "jinak by nemohli chodit do školy", why: "S docházkou to nesouvisí." },
+    { value: "jinak by nemohli dál chodit do školy", why: "S docházkou to nesouvisí." },
   ], {
     hints: ["Kdo často mladé lidi k prvnímu zkoušení přemluví?", "Často jde o tlak kamarádů a o touhu vypadat starší, než člověk je."],
     explanation: "Za prvním zkoušením bývá tlak party a snaha vypadat dospěle.",
   }),
   choice("Kamarád zkouší drogy. Jak mu můžeš pomoct?", "promluvit s ním a říct to dospělému, kterému věřím", [
-    { value: "nic neříkat a nechat to být", why: "Mlčení mu nepomůže." },
+    { value: "radši nic neříkat a nechat to být", why: "Mlčení mu nepomůže." },
     { value: "vyzkoušet to s ním", why: "Tím bys ohrozil nebo ohrozila sebe." },
     { value: "vysmát se mu před ostatními", why: "Posměch nepomůže." },
   ], {
@@ -181,7 +181,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Proč jsou elektronické cigarety pro děti nebezpečné?", "obsahují nikotin a vedou k závislosti", [
     { value: "obsahují jen vodní páru", why: "Většina obsahuje nikotin." },
-    { value: "jsou bezpečné, protože voní", why: "Vůně nic nemění na nikotinu." },
+    { value: "jsou bezpečné, protože příjemně voní", why: "Vůně nic nemění na nikotinu." },
     { value: "škodí jen dospělým", why: "Dětem škodí ještě víc." },
   ], {
     hints: ["Jaká návyková látka bývá v náplních?", "Sladká vůně klame; v náplni bývá stejná návyková látka jako v tabáku."],
@@ -231,7 +231,7 @@ const L3: PracticeTask[] = [
     explanation: "Nejbezpečnější je odmítnout a říct to dospělému.",
   }),
   choice("Proč je těžké přestat kouřit?", "tělo i mysl si na nikotin zvyknou", [
-    { value: "cigarety dobře chutnají", why: "Chuť není hlavní důvod." },
+    { value: "cigarety prý docela dobře chutnají", why: "Chuť není hlavní důvod." },
     { value: "přestat je zakázané", why: "Přestat se smí a je to dobře." },
     { value: "kouření je zdravé", why: "Kouření je škodlivé." },
   ], {
@@ -241,14 +241,14 @@ const L3: PracticeTask[] = [
   choice("Kamarád tvrdí, že elektronická cigareta je neškodná. Co je pravda?", "obsahuje nikotin, který vyvolává závislost", [
     { value: "je to jen voňavá pára", why: "V náplni bývá nikotin." },
     { value: "je zdravější než ovoce", why: "Elektronická cigareta zdravá není." },
-    { value: "dětem neškodí, jen dospělým", why: "Dětem škodí ještě víc." },
+    { value: "dětem neškodí, škodí jenom dospělým", why: "Dětem škodí ještě víc." },
   ], {
     hints: ["Co bývá v náplni kromě vůně?", "V náplních bývá stejná návyková látka jako v tabáku; mladý mozek si na ni zvykne rychle."],
     explanation: "Elektronické cigarety obsahují nikotin, a proto vyvolávají závislost.",
   }),
   choice("Proč je v Česku reklama na cigarety zakázaná?", "stát chce chránit lidi, hlavně mladé, před kouřením", [
     { value: "reklama na cigarety je příliš drahá", why: "Nejde o cenu." },
-    { value: "cigarety si už stejně nikdo nekupuje", why: "Kupují, a proto je zákaz potřeba." },
+    { value: "cigarety si už stejně nikdo z mladých nekupuje", why: "Kupují, a proto je zákaz potřeba." },
     { value: "reklama na cigarety by byla nudná", why: "Jde o ochranu zdraví." },
   ], {
     hints: ["Na koho reklama působí nejvíc?", "Reklama umí udělat z kouření něco „cool“; zákaz má zabránit, aby lákala mladé."],
@@ -265,14 +265,14 @@ const L3: PracticeTask[] = [
   choice("Podle čeho poznáš, že má někdo problém se závislostí?", "bez látky je neklidný a myslí jen na ni", [
     { value: "rád sportuje", why: "Sport je zdravý zvyk." },
     { value: "má hodně kamarádů", why: "To o závislosti nic neříká." },
-    { value: "občas je unavený po škole", why: "Únava je běžná." },
+    { value: "občas bývá unavený po škole", why: "Únava je běžná." },
   ], {
     hints: ["Jak se chová člověk, který si nedovede představit ani den bez cigarety nebo alkoholu?", "Přestane se zajímat o jiné věci, a když látku nemá, je nervózní nebo smutný."],
     explanation: "Závislý člověk myslí hlavně na látku a bez ní je neklidný.",
   }),
   choice("Proč nefunguje výmluva „zkusím to jen jednou“?", "i jedno zkoušení může vést k dalšímu a k závislosti", [
     { value: "jednou se nic nikdy nestane", why: "Už první zkušenost může být nebezpečná." },
-    { value: "po prvním zkoušení vznikne imunita", why: "Imunita proti závislosti neexistuje." },
+    { value: "po prvním zkoušení vznikne proti závislosti imunita", why: "Imunita proti závislosti neexistuje." },
     { value: "zkoušet je povinné", why: "Není — odmítnout je v pořádku." },
   ], {
     hints: ["Co se může stát, když se ti to napoprvé zalíbí?", "Mozek si zapamatuje příjemný pocit a chce ho znovu — tak začíná většina závislostí."],
@@ -287,7 +287,7 @@ const L3: PracticeTask[] = [
     explanation: "Alkohol oslabuje úsudek, proto opilí lidé víc riskují.",
   }),
   choice("Jak si můžeš zlepšit náladu bez návykových látek?", "sportovat, být s přáteli nebo dělat koníček", [
-    { value: "vypít energetický nápoj", why: "Energetický nápoj obsahuje kofein a cukr." },
+    { value: "vypít velký energetický nápoj", why: "Energetický nápoj obsahuje kofein a cukr." },
     { value: "zkusit cigaretu", why: "Cigareta vede k závislosti." },
     { value: "hrát hry celou noc", why: "Nedostatek spánku náladu zhorší." },
   ], {
@@ -311,7 +311,7 @@ const L3: PracticeTask[] = [
     explanation: "Nejvíc pomůže, když se svěří rodičům nebo Lince bezpečí.",
   }),
   choice("Proč je nikotin nebezpečnější pro mladé než pro dospělé?", "mladý mozek si závislost vytvoří rychleji", [
-    { value: "mladí kouří jiné cigarety", why: "Cigarety jsou stejné." },
+    { value: "mladí lidé kouří úplně jiné cigarety", why: "Cigarety jsou stejné." },
     { value: "dospělým nikotin neškodí", why: "Škodí všem." },
     { value: "mladí mají silnější plíce", why: "Silnější plíce je nechrání." },
   ], {

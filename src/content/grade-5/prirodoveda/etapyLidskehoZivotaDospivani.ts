@@ -105,7 +105,7 @@ const L1: PracticeTask[] = [
   }),
   choice("Co pomáhá zdravému dospívání?", "pohyb, spánek a pestrá strava", [
     { value: "ponocování u mobilu", why: "Nedostatek spánku škodí." },
-    { value: "sladkosti místo jídla", why: "Tělo potřebuje pestrou stravu." },
+    { value: "sladkosti a limonády místo jídla", why: "Tělo potřebuje pestrou stravu." },
     { value: "celý den vsedě", why: "Tělo potřebuje pohyb." },
   ], {
     hints: ["Co tělo potřebuje, když rychle roste?", "Rostoucí tělo potřebuje živiny, odpočinek a pohyb."],
@@ -115,7 +115,7 @@ const L1: PracticeTask[] = [
 
 const L2: PracticeTask[] = [
   choice("Proč se dospívající víc potí a mají mastnější pleť?", "hormony zvýší činnost potních a mazových žláz", [
-    { value: "jedí víc sladkostí a tučných jídel", why: "Hlavní příčinou jsou hormony." },
+    { value: "jedí mnohem víc sladkostí a tučných jídel", why: "Hlavní příčinou jsou hormony." },
     { value: "méně se myjí", why: "Příčinou jsou hormony; mytí pomáhá." },
     { value: "je jim pořád horko", why: "Příčinou jsou hormony." },
   ], {
@@ -124,7 +124,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Proč je v pubertě důležitá hygiena?", "tělo se víc potí a pleť se víc mastí", [
     { value: "je to jen módní", why: "Hygiena je potřebná, ne módní." },
-    { value: "v pubertě se nemusíš mýt", why: "Naopak je mytí ještě důležitější." },
+    { value: "v pubertě se nemusíš tak často mýt", why: "Naopak je mytí ještě důležitější." },
     { value: "aby se zastavil růst", why: "Hygiena růst neovlivní." },
   ], {
     hints: ["Co tělo v pubertě vytváří víc?", "Pot a maz se v pubertě tvoří víc, a proto je potřeba se častěji mýt."],
@@ -139,7 +139,7 @@ const L2: PracticeTask[] = [
     explanation: "Dospíváním prochází každý člověk — je to přirozená součást života.",
   }),
   choice("Proč se dospívající častěji přou s rodiči?", "hledají vlastní názor a samostatnost", [
-    { value: "rodiče je přestanou mít rádi", why: "Rodiče mají děti rádi dál." },
+    { value: "rodiče je najednou přestanou mít rádi", why: "Rodiče mají děti rádi dál." },
     { value: "je to kvůli jídlu", why: "Nejde o jídlo." },
     { value: "je to povinné", why: "Není to povinnost." },
   ], {
@@ -164,7 +164,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Co je typické pro mladší školní věk (6–11 let)?", "dítě se učí číst, psát a počítat", [
     { value: "dítě se učí chodit", why: "Chodit se učí batole." },
-    { value: "člověk odchází do důchodu", why: "To je stáří." },
+    { value: "člověk už odchází do důchodu", why: "To je stáří." },
     { value: "tělo prudce mění puberta", why: "Puberta přichází až později." },
   ], {
     hints: ["Co se děti učí na prvním stupni?", "V tomto věku chodí děti do školy a učí se základním dovednostem."],
@@ -172,7 +172,7 @@ const L2: PracticeTask[] = [
   }),
   choice("Co je typické pro dospělost?", "člověk pracuje a stará se o sebe i rodinu", [
     { value: "člověk se učí chodit", why: "To je batolecí věk." },
-    { value: "člověk chodí do školky", why: "To je předškolní věk." },
+    { value: "člověk ještě chodí do školky", why: "To je předškolní věk." },
     { value: "člověk už nic nedělá", why: "Dospělí jsou naopak nejaktivnější." },
   ], {
     hints: ["Co dělají tvoji rodiče každý den?", "Dospělí chodí do práce, starají se o domácnost a vychovávají děti."],
@@ -197,7 +197,7 @@ const L2: PracticeTask[] = [
   choice("Proč se v pubertě mění hlas, zvlášť u chlapců?", "roste hrtan a prodlužují se hlasivky", [
     { value: "hlas se opotřebuje", why: "Hlas se neopotřebuje." },
     { value: "kvůli nachlazení", why: "Nachlazení mutaci nezpůsobuje." },
-    { value: "protože víc zpívají", why: "Zpěv to nezpůsobí." },
+    { value: "protože v tom věku víc zpívají", why: "Zpěv to nezpůsobí." },
   ], {
     hints: ["Kde vzniká hlas?", "Delší a silnější hlasivky kmitají pomaleji, a hlas je hlubší."],
     explanation: "V pubertě roste hrtan a hlasivky se prodlužují — hlas se prohloubí.",
@@ -222,7 +222,7 @@ const L2: PracticeTask[] = [
 
 const L3: PracticeTask[] = [
   choice("Kamarád se trápí, že je menší než ostatní. Co mu řekneš?", "každý roste jiným tempem", [
-    { value: "už nikdy nevyroste", why: "Většina lidí růst dožene." },
+    { value: "už nikdy nedoroste ostatním", why: "Většina lidí růst dožene." },
     { value: "je to jeho chyba", why: "Za tempo růstu nikdo nemůže." },
     { value: "má přestat jíst", why: "Jídlo potřebuje k růstu." },
   ], {
@@ -240,13 +240,13 @@ const L3: PracticeTask[] = [
   choice("Spolužák se ostatním posmívá kvůli akné. Jak se zachováš?", "zastanu se jich a řeknu, že je to normální", [
     { value: "přidám se k posměchu", why: "Posměch ubližuje." },
     { value: "budu dělat, že nic nevidím", why: "Mlčení posměch podporuje." },
-    { value: "řeknu, že za to můžou sami", why: "Za akné nikdo nemůže." },
+    { value: "řeknu jim, že si za to můžou sami", why: "Za akné nikdo nemůže." },
   ], {
     hints: ["Jak by ses cítil nebo cítila na jejich místě?", "Akné má v pubertě mnoho lidí; posměch jim jen ublíží."],
     explanation: "Akné je v pubertě běžné — je správné se zastat.",
   }),
   choice("Proč dospívající potřebují víc soukromí?", "stávají se samostatnějšími a mění se jim tělo", [
-    { value: "přestanou mít rádi rodinu", why: "Rodinu mají rádi dál." },
+    { value: "přestanou mít rádi svoji rodinu", why: "Rodinu mají rádi dál." },
     { value: "je to jen rozmar", why: "Je to přirozená potřeba." },
     { value: "soukromí je zakázané", why: "Soukromí je normální." },
   ], {
@@ -256,7 +256,7 @@ const L3: PracticeTask[] = [
   choice("Jak se může v dospívání změnit vztah s rodiči?", "víc se radíme a dostávám víc zodpovědnosti", [
     { value: "rodiče se už nemusí starat", why: "Rodiče se starají dál." },
     { value: "přestaneme spolu mluvit", why: "Mluvit spolu je důležité." },
-    { value: "rodiče rozhodují úplně o všem", why: "Dospívající rozhodují stále víc sami." },
+    { value: "rodiče dál rozhodují úplně o všem", why: "Dospívající rozhodují stále víc sami." },
   ], {
     hints: ["Co ti rodiče postupně svěřují?", "Dospívající dostávají víc samostatnosti a rodiče se s nimi víc radí."],
     explanation: "V dospívání přibývá samostatnosti a zodpovědnosti.",
@@ -272,13 +272,13 @@ const L3: PracticeTask[] = [
   choice("Proč je puberta dobrý čas naučit se o sebe pečovat?", "návyky z mládí si člověk nese do dospělosti", [
     { value: "v dospělosti se už nic nemění", why: "Návyky se dají měnit, ale těžce." },
     { value: "péče o sebe je jen pro dospělé", why: "Péče o sebe je pro každého." },
-    { value: "v pubertě se nemusí nic dodržovat", why: "Právě teď se návyky utvářejí." },
+    { value: "v pubertě se nemusí dodržovat vůbec nic", why: "Právě teď se návyky utvářejí." },
   ], {
     hints: ["Jak se mění zvyky, které máš dlouho?", "Co se naučíš teď — spánek, pohyb, hygiena — ti vydrží na celý život."],
     explanation: "Návyky z dospívání si člověk nese do dospělosti.",
   }),
   choice("Co je pravda o dospívání?", "je to přirozená proměna z dítěte v dospělého", [
-    { value: "je to nemoc, která se léčí", why: "Dospívání není nemoc." },
+    { value: "je to nemoc, která se musí léčit", why: "Dospívání není nemoc." },
     { value: "týká se jen dívek", why: "Týká se dívek i chlapců." },
     { value: "trvá jen pár dní", why: "Trvá několik let." },
   ], {
@@ -288,7 +288,7 @@ const L3: PracticeTask[] = [
   choice("Proč se v pubertě může změnit, co tě baví?", "mění se mozek, zájmy i kamarádi", [
     { value: "to se nikdy nestává", why: "Zájmy se v pubertě mění často." },
     { value: "kvůli počasí", why: "Počasí zájmy nemění." },
-    { value: "zájmy určují jen rodiče", why: "Zájmy si volíš sám nebo sama." },
+    { value: "zájmy určují jenom rodiče a škola", why: "Zájmy si volíš sám nebo sama." },
   ], {
     hints: ["Mění se v pubertě jen tělo?", "Mozek v dospívání dozrává a člověk hledá, co ho baví a kým chce být."],
     explanation: "V pubertě se mění mozek i zájmy — je to normální.",
@@ -310,7 +310,7 @@ const L3: PracticeTask[] = [
     explanation: "Pomůže vědět, že změny jsou normální a projde jimi každý.",
   }),
   choice("Proč lidé v různých etapách života potřebují různé věci?", "tělo i povinnosti se během života mění", [
-    { value: "všichni potřebují úplně totéž", why: "Potřeby se s věkem mění." },
+    { value: "všichni lidé potřebují úplně totéž", why: "Potřeby se s věkem mění." },
     { value: "potřeby se mění jen v zimě", why: "Nejde o roční období." },
     { value: "potřeby určuje jen škola", why: "Potřeby určuje hlavně věk a tělo." },
   ], {
@@ -318,7 +318,7 @@ const L3: PracticeTask[] = [
     explanation: "S věkem se mění tělo i povinnosti, a tak i potřeby.",
   }),
   choice("Někdo tě na internetu tlačí, abys mu posílal nebo posílala fotky. Co uděláš?", "přestanu odpovídat a řeknu to dospělému", [
-    { value: "pošlu fotku, aby dal pokoj", why: "Poslaná fotka se může zneužít." },
+    { value: "pošlu mu tu fotku, aby dal pokoj", why: "Poslaná fotka se může zneužít." },
     { value: "nikomu nic neřeknu", why: "Mlčení nepomůže, svěř se." },
     { value: "domluvím si s ním schůzku", why: "S cizím člověkem z internetu se nesetkávej." },
   ], {

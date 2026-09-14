@@ -212,7 +212,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Toto je popis místa: „Mnoho ulic, vysoké domy, obchody a jezdí tam tramvaje.“ O jaké místo jde?",
     correctAnswer: "město",
-    options: ["vesnice", "město", "náves", "adresa"],
+    options: ["vesnice", "město", "náves", "adresa domu"],
     emoji: "🏙️",
     hints: [
       "Kde bývá hodně domů, ulic a lidí najednou?",
@@ -294,7 +294,7 @@ const POOL_L2: PracticeTask[] = [
   {
     question: "Kde se v obci rozhoduje o důležitých věcech, jako je oprava silnice nebo stavba školy?",
     correctAnswer: "na obecním úřadě",
-    options: ["v obchodě", "na hřišti", "na obecním úřadě", "v lese"],
+    options: ["v obchodě s potravinami", "na hřišti", "na obecním úřadě", "v lese"],
     emoji: "🏛️",
     hints: [
       "Přemýšlej, kde pracují lidé, kteří se starají o celou obec.",
@@ -327,7 +327,7 @@ const POOL_L2: PracticeTask[] = [
     question:
       "Velké město se dělí na menší kousky s vlastními jmény, třeba Staré Město. Jak se jim říká?",
     correctAnswer: "části obce",
-    options: ["části obce", "ulice", "náměstí", "adresy"],
+    options: ["části obce", "ulice", "náměstí", "adresy domů"],
     emoji: "🗺️",
     hints: [
       "Hledej slovo, které říká, že jde o kousek většího celku.",
@@ -450,7 +450,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Co určuje, jestli je obec vesnicí, nebo městem?",
     correctAnswer: "hlavně velikost obce a počet lidí, kteří v ní žijí",
-    options: ["barva domů v obci", "jméno starosty obce", "počet pouličních lamp v obci", "hlavně velikost obce a počet lidí, kteří v ní žijí"],
+    options: ["barva domů v obci", "jméno starosty obce", "počet pouličních lamp a laviček v obci", "hlavně velikost obce a počet lidí, kteří v ní žijí"],
     emoji: "⚖️",
     hints: [
       "Přemýšlej, čím se vesnice a město nejvíc liší.",
@@ -459,7 +459,7 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "barva domů v obci": "Barva domů o typu obce nerozhoduje.",
       "jméno starosty obce": "Starostu má vesnice i město, jeho jméno nic neurčuje.",
-      "počet pouličních lamp v obci": "Lampy mají vesnice i města, podle nich se typ obce neurčuje.",
+      "počet pouličních lamp a laviček v obci": "Lampy mají vesnice i města, podle nich se typ obce neurčuje.",
     },
     explanation:
       "Jestli je obec vesnicí, nebo městem, určuje hlavně její velikost a počet lidí, kteří v ní žijí — ne barva domů, jméno starosty ani počet lamp.",
@@ -485,7 +485,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Které tvrzení je správné?",
     correctAnswer: "Každé město je obec, ale ne každá obec je město",
-    options: ["Obec a město znamenají vždy totéž", "Každé město je obec, ale ne každá obec je město", "Vesnice a obec spolu vůbec nesouvisí", "Město je vždycky menší než vesnice"],
+    options: ["Obec a město znamenají vždy totéž", "Každé město je obec, ale ne každá obec je město", "Vesnice a obec spolu vůbec nijak nesouvisí", "Město je vždycky menší než vesnice"],
     emoji: "🤔",
     hints: [
       "Zamysli se, jestli slovo obec zahrnuje vesnice i města, nebo jen jedno z nich.",
@@ -493,7 +493,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     optionFeedback: {
       "Obec a město znamenají vždy totéž": "Nemusí — obcí je i vesnice, a ta městem není.",
-      "Vesnice a obec spolu vůbec nesouvisí": "Souvisí — vesnice je druh obce.",
+      "Vesnice a obec spolu vůbec nijak nesouvisí": "Souvisí — vesnice je druh obce.",
       "Město je vždycky menší než vesnice": "Je to naopak, město je větší.",
     },
     explanation:
@@ -536,7 +536,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "V čem se liší sídliště od návsi?",
     correctAnswer: "Sídliště je skupina domů spíš ve městě, náves je prostranství uprostřed vesnice",
-    options: ["Sídliště a náves jsou úplně to samé", "Sídliště bývá jen na vesnici, náves jen ve městě", "Sídliště je řeka, náves je kopec", "Sídliště je skupina domů spíš ve městě, náves je prostranství uprostřed vesnice"],
+    options: ["Sídliště a náves jsou úplně to samé", "Sídliště bývá jen na vesnici a náves zase jenom ve městě", "Sídliště je řeka, náves je kopec", "Sídliště je skupina domů spíš ve městě, náves je prostranství uprostřed vesnice"],
     emoji: "🏘️",
     hints: [
       "Přemýšlej, kde se sídliště obvykle staví a kde bývá náves.",
@@ -544,7 +544,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     optionFeedback: {
       "Sídliště a náves jsou úplně to samé": "Nejsou — sídliště jsou domy, náves je prostranství.",
-      "Sídliště bývá jen na vesnici, náves jen ve městě": "Je to obráceně — náves patří k vesnici, sídliště spíš k městu.",
+      "Sídliště bývá jen na vesnici a náves zase jenom ve městě": "Je to obráceně — náves patří k vesnici, sídliště spíš k městu.",
       "Sídliště je řeka, náves je kopec": "Ani jedno není řeka ani kopec, obojí je část obce.",
     },
     explanation:
@@ -573,7 +573,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "Že bydlí buď ve vesnici, nebo ve městě, ale nevíš které",
       "Že bydlí určitě ve vesnici",
-      "Že bydlí určitě ve velkém městě",
+      "Že bydlí určitě v nějakém velkém městě",
       "Že vůbec nikde nebydlí",
     ],
     emoji: "❓",
@@ -583,7 +583,7 @@ const POOL_L3: PracticeTask[] = [
     ],
     optionFeedback: {
       "Že bydlí určitě ve vesnici": "Obcí je i město, takže vesnice to být nemusí.",
-      "Že bydlí určitě ve velkém městě": "Obcí je i vesnice, takže město to být nemusí.",
+      "Že bydlí určitě v nějakém velkém městě": "Obcí je i vesnice, takže město to být nemusí.",
       "Že vůbec nikde nebydlí": "Říká přece, že bydlí v obci.",
     },
     explanation:
@@ -592,7 +592,7 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Jsi na výletě v jiné obci a chceš zjistit její název. Kam se nejlíp podíváš?",
     correctAnswer: "Na ceduli s názvem obce při vjezdu do obce",
-    options: ["Na oblohu", "Na ceduli s názvem obce při vjezdu do obce", "Na boty kolemjdoucího", "Do jídelního lístku v restauraci"],
+    options: ["Na oblohu", "Na ceduli s názvem obce při vjezdu do obce", "Na boty kolemjdoucího", "Do jídelního lístku v místní restauraci"],
     emoji: "🪧",
     hints: [
       "Kde se obec návštěvníkům sama představí, hned když do ní přijedou?",
@@ -601,14 +601,14 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "Na oblohu": "Na obloze žádný název obce nenajdeš.",
       "Na boty kolemjdoucího": "Boty o obci nic neřeknou.",
-      "Do jídelního lístku v restauraci": "Jídelní lístek je o jídle, název obce tam většinou nebývá.",
+      "Do jídelního lístku v místní restauraci": "Jídelní lístek je o jídle, název obce tam většinou nebývá.",
     },
     explanation: "Při vjezdu do obce bývá cedule s jejím názvem — podle ní poznáme, kam jsme přijeli.",
   },
   {
     question: "Kdy všude se hodí znát svou adresu?",
     correctAnswer: "Při psaní dopisu i při volání záchranářů",
-    options: ["Jen když píšu dopis", "Jen když jdu do školy", "Při psaní dopisu i při volání záchranářů", "Nikdy, stačí znát jméno"],
+    options: ["Jen když píšu dopis", "Jen když jdu do školy", "Při psaní dopisu i při volání záchranářů", "Nikdy, vždycky stačí znát jméno"],
     emoji: "📭",
     hints: [
       "Přemýšlej, kdy ještě musí někdo vědět, kde přesně bydlíš.",
@@ -617,7 +617,7 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "Jen když píšu dopis": "Adresa se hodí i v jiných situacích, třeba když voláme pomoc.",
       "Jen když jdu do školy": "Cestu do školy znáš, adresu potřebuješ hlavně pro dopisy a přivolání pomoci.",
-      "Nikdy, stačí znát jméno": "Podle jména tě nikdo nenajde, adresa je důležitá.",
+      "Nikdy, vždycky stačí znát jméno": "Podle jména tě nikdo nenajde, adresa je důležitá.",
     },
     explanation:
       "Adresu potřebujeme nejen na dopis, ale i když voláme záchranáře nebo se ptáme cizích lidí na cestu domů.",
@@ -658,14 +658,14 @@ const POOL_L3: PracticeTask[] = [
   {
     question: "Proč do adresy píšeme i název obce, když už tam je ulice?",
     correctAnswer: "Protože stejná ulice může být ve více obcích",
-    options: ["Protože ulice nemají názvy", "Protože se to hezky čte", "Protože stejná ulice může být ve více obcích", "Protože pošťák nezná ulice"],
+    options: ["Protože ulice vůbec nemají svoje názvy", "Protože se to hezky čte", "Protože stejná ulice může být ve více obcích", "Protože pošťák nezná ulice"],
     emoji: "🛣️",
     hints: [
       "Přemýšlej, jestli název ulice sám stačí, abychom poznali přesné místo.",
       "Ulice s názvem Školní nebo Nádražní je skoro v každém městě. Kdyby na obálce stála jen ulice, do kterého města by pošta dopis poslala?",
     ],
     optionFeedback: {
-      "Protože ulice nemají názvy": "Ulice názvy mají — jen se v různých obcích opakují.",
+      "Protože ulice vůbec nemají svoje názvy": "Ulice názvy mají — jen se v různých obcích opakují.",
       "Protože se to hezky čte": "Nejde o to, jak se to čte, ale aby pošta našla správné místo.",
       "Protože pošťák nezná ulice": "Pošťák ulice ve své obci zná, potřebuje ale vědět, do které obce dopis patří.",
     },

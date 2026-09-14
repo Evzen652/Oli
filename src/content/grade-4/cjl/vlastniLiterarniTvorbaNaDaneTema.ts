@@ -63,7 +63,7 @@ const L1: PracticeTask[] = [
   }),
   choice("Které slovo oživí větu „Na kopci stál ___ hrad.“?", "starobylý", [
     { value: "běžel", why: "„Běžel“ je sloveso — děj. „Stál běžel hrad“ nedává smysl." },
-    { value: "rychle", why: "„Rychle“ říká, jak se něco děje. K hradu se nehodí." },
+    { value: "rychle a hbitě", why: "„Rychle“ říká, jak se něco děje. K hradu se nehodí." },
     { value: "tři", why: "„Tři hrad“ nedává smysl — k jednomu hradu číslo nepatří." },
   ], {
     hints: ["Jaký byl ten hrad? Hledej slovo, které odpoví na otázku „jaký?“", "Představu zpřesní přídavné jméno, které popíše vlastnost hradu — třeba jak je starý nebo velký."],
@@ -72,7 +72,7 @@ const L1: PracticeTask[] = [
   choice("O čem se ti bude nejlépe psát?", "o tom, co znáš nebo co tě baví", [
     { value: "o tom, o čem nic nevíš", why: "Bez znalostí nebudeš mít nápady." },
     { value: "o tom, co je nejdelší", why: "Délka tématu nápady nepřinese." },
-    { value: "o čemkoli, co vybere los", why: "Náhodné téma nemusí nabídnout žádné nápady." },
+    { value: "o čemkoli, co zrovna vybere los", why: "Náhodné téma nemusí nabídnout žádné nápady." },
   ], {
     hints: ["Kdy máš nejvíc nápadů?", "O tom, co tě zajímá nebo co jsi zažil či zažila, víš hodně podrobností — a text je pak živý."],
     explanation: "Nejlépe se píše o tom, co známe nebo co nás baví — máme dost nápadů a podrobností.",
@@ -86,7 +86,7 @@ const L1: PracticeTask[] = [
     explanation: "Hotový text si přečteme a opravíme chyby i místa, kde věta nedává smysl.",
   }),
   choice("Co je přirovnání?", "srovnání pomocí slova „jako“", [
-    { value: "otázka na konci textu", why: "Otázka přirovnání není." },
+    { value: "otázka položená na konci textu", why: "Otázka přirovnání není." },
     { value: "nadpis příběhu", why: "Nadpis je název textu." },
     { value: "seznam postav", why: "Seznam postav nic nepřirovnává." },
   ], {
@@ -121,7 +121,7 @@ const L1: PracticeTask[] = [
 
 const L2: PracticeTask[] = [
   choice("Která věta je nejživější?", "Pes radostně vyskočil a olízl mi tvář.", [
-    { value: "Pes tam byl a byl to pes.", why: "Věta opakuje slovo a nic neukáže." },
+    { value: "Pes tam někde byl a byl to pes.", why: "Věta opakuje slovo a nic neukáže." },
     { value: "Pes udělal nějakou věc.", why: "„Nějakou věc“ čtenáři nic neřekne." },
     { value: "Byl tam pes.", why: "Věta je správně, ale holá — nic se neděje." },
   ], {
@@ -179,13 +179,13 @@ const L2: PracticeTask[] = [
   choice("Jak ukážeš, že má postava strach, aniž bys napsal nebo napsala „měl strach“?", "Třásly se mu ruce a srdce mu bušilo.", [
     { value: "Měl hodně velký strach.", why: "Tady je strach jen řečený, ne ukázaný." },
     { value: "Byl to strach.", why: "Věta strach jen pojmenuje." },
-    { value: "Strach, strach, strach.", why: "Opakování slova strach neukáže." },
+    { value: "Strach, strach a zase strach.", why: "Opakování slova strach neukáže." },
   ], {
     hints: ["Jak poznáš na kamarádovi, že se bojí, i když to neřekne?", "Místo pojmenování pocitu popiš, co postava dělá nebo co se děje s jejím tělem. Čtenář si pocit domyslí sám."],
     explanation: "Třesoucí se ruce a bušící srdce strach ukážou — čtenář si ho domyslí a text je živější.",
   }),
   choice("Jak vylepšíš začátek „Byl jednou jeden den.“?", "Ten den začal tím, že nám z klece uletěl papoušek.", [
-    { value: "Byl jednou jeden den a byl to den.", why: "Opakování nic nepřidá." },
+    { value: "Byl jednou jeden den a byl to obyčejný den.", why: "Opakování nic nepřidá." },
     { value: "Byl den.", why: "Dvě slova nezaujmou a nic neřeknou." },
     { value: "Na konci jsme šli spát.", why: "To je konec, ne začátek." },
   ], {
@@ -195,7 +195,7 @@ const L2: PracticeTask[] = [
   choice("Co v textu kontroluješ nejdřív?", "jestli dává smysl a nic nechybí", [
     { value: "barvu pera", why: "Barva pera obsah textu nezlepší." },
     { value: "počet stránek", why: "Počet stránek o kvalitě nic neříká." },
-    { value: "jestli je nadpis tučně", why: "Vzhled nadpisu je vedlejší." },
+    { value: "jestli je nadpis napsaný tučně", why: "Vzhled nadpisu je vedlejší." },
   ], {
     hints: ["Co je důležitější — jak text vypadá, nebo jestli se dá pochopit?", "Nejdřív zkontroluj, jestli děj jde po sobě a čtenář všemu rozumí. Až potom pravopis a úpravu."],
     explanation: "Nejdřív kontrolujeme, jestli text dává smysl a nic v něm nechybí, potom pravopis.",
@@ -211,13 +211,13 @@ const L2: PracticeTask[] = [
   choice("Kterou větou nejlépe popíšeš prostředí?", "V lese vonělo jehličí a pod nohama praskaly větvičky.", [
     { value: "V lese bylo hodně stromů a keřů.", why: "Věta je pravdivá, ale čtenář si nic nepředstaví." },
     { value: "Les byl velký les a byl tam les.", why: "Věta nic nepopíše, jen opakuje slovo." },
-    { value: "Šli jsme lesem a potom jsme šli domů.", why: "To je děj, ne popis prostředí." },
+    { value: "Šli jsme lesem a potom jsme šli rovnou domů.", why: "To je děj, ne popis prostředí." },
   ], {
     hints: ["Ve které větě les cítíš a slyšíš?", "Popis ožije, když zapojíš smysly: co voní, co je slyšet, co cítíš na kůži."],
     explanation: "Vůně jehličí a praskání větviček zapojí smysly — čtenář se v lese ocitne s tebou.",
   }),
   choice("Jaký konec se hodí k příběhu o psovi, který se ztratil?", "Alík se schoulil v pelechu a my si konečně oddychli.", [
-    { value: "Najednou se Alík ztratil a nikde nebyl.", why: "To je zápletka, začátek problému." },
+    { value: "Najednou se Alík ztratil a nikde nebyl k nalezení.", why: "To je zápletka, začátek problému." },
     { value: "Byl jednou jeden pes, jmenoval se Alík.", why: "To je úvod." },
     { value: "Alík štěkal na kočku u sousedů.", why: "Věta nic neuzavírá." },
   ], {
@@ -236,7 +236,7 @@ const L3: PracticeTask[] = [
     explanation: "Nejdřív si zapíšeme nápady a uděláme osnovu, podle které pak píšeme.",
   }),
   choice("V textu je pětkrát slovo „pak“. Co s tím?", "část z nich nahradím slovy potom, nato, nakonec", [
-    { value: "přidám další „pak“, aby to sedělo", why: "Opakování by bylo ještě horší." },
+    { value: "přidám další „pak“, ať to hezky sedí", why: "Opakování by bylo ještě horší." },
     { value: "všechna „pak“ smažu a nic nedám", why: "Zmizelo by pořadí událostí." },
     { value: "text rozdělím na pět nadpisů", why: "Nadpisy opakování nevyřeší." },
   ], {
@@ -261,7 +261,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Chceš, aby čtenář cítil napětí. Která věta to udělá nejlépe?", "Najednou za námi zapraskala větev. Někdo tam byl.", [
     { value: "Potom jsme pomalu šli dál po cestě.", why: "Nic se neděje, napětí nevzniká." },
-    { value: "Bylo to hodně napínavé a strašidelné.", why: "Napětí je jen řečené, ne ukázané." },
+    { value: "Bylo to hodně napínavé a hrozně strašidelné.", why: "Napětí je jen řečené, ne ukázané." },
     { value: "Les byl velký, zelený a tichý.", why: "To je popis, ne napětí." },
   ], {
     hints: ["Při které větě by ses otočil nebo otočila?", "Napětí vznikne, když se stane něco nečekaného a čtenář neví, co přijde. Krátké věty napětí ještě zvýší."],
@@ -278,14 +278,14 @@ const L3: PracticeTask[] = [
   choice("Proč je dobré přečíst si hotový text nahlas?", "uslyším, kde věta nedává smysl", [
     { value: "text se tím prodlouží", why: "Čtením se text neprodlouží." },
     { value: "je to povinné", why: "Není to povinnost, ale dobrý pomocník." },
-    { value: "text se tím sám opraví", why: "Opravit ho musíš ty." },
+    { value: "text se tím nakonec sám opraví", why: "Opravit ho musíš ty." },
   ], {
     hints: ["Čeho si všimneš, když slyšíš vlastní text?", "Když čteš nahlas, zadrhneš se na místech, která nesedí nebo kde chybí slovo. Očima to snadno přehlédneš."],
     explanation: "Při hlasitém čtení uslyšíme, kde věta nedává smysl nebo kde něco chybí.",
   }),
   choice("Postava je smutná. Která věta to ukáže, a ne jen řekne?", "Sedla si do kouta a mlčky se dívala z okna.", [
     { value: "Byla smutná.", why: "Smutek je jen řečený." },
-    { value: "Byla hodně moc smutná.", why: "Pořád jen řečeno, žádný obraz." },
+    { value: "Byla hodně moc smutná a nešťastná.", why: "Pořád jen řečeno, žádný obraz." },
     { value: "Smutek.", why: "Jedno slovo nic neukáže." },
   ], {
     hints: ["Jak se chová člověk, když je smutný?", "Místo slova „smutná“ popiš, co postava dělá. Čtenář si pocit domyslí sám a víc ho to zasáhne."],
@@ -318,7 +318,7 @@ const L3: PracticeTask[] = [
   choice("Co uděláš, když zjistíš, že příběh nemá žádný problém ani napětí?", "přidám zápletku, která děj rozhýbe", [
     { value: "přidám další nadpis", why: "Nadpis napětí nepřinese." },
     { value: "zkrátím závěr", why: "Kratší závěr zápletku nenahradí." },
-    { value: "nic, napětí není potřeba", why: "Bez zápletky se v příběhu nic neděje." },
+    { value: "nic, napětí v příběhu není potřeba", why: "Bez zápletky se v příběhu nic neděje." },
   ], {
     hints: ["Proč je příběh bez problému nudný?", "Příběh se rozhýbe, když se objeví problém nebo nečekaná událost. Tu je potřeba vymyslet a přidat."],
     explanation: "Bez zápletky se v příběhu nic neděje. Přidáme problém, který děj rozhýbe.",

@@ -12,7 +12,7 @@ import { choice, shuffle } from "../_shared";
 
 const L1: PracticeTask[] = [
   choice("Co patří do popisu předmětu?", "tvar, barva, materiál a k čemu slouží", [
-    { value: "příběh, jak předmět vznikl", why: "Příběh patří do vypravování, ne do popisu." },
+    { value: "příběh o tom, jak předmět vznikl", why: "Příběh patří do vypravování, ne do popisu." },
     { value: "historie a stáří předmětu", why: "Popis říká, jaký předmět je, ne odkud se vzal." },
     { value: "pocity, které z něj máš", why: "Popis má být věcný, pocity do něj nepatří." },
   ], {
@@ -45,7 +45,7 @@ const L1: PracticeTask[] = [
   }),
   choice("Recept na palačinky je příkladem…", "popisu pracovního postupu", [
     { value: "popisu osoby", why: "Recept nepopisuje člověka." },
-    { value: "popisu předmětu", why: "Recept neříká, jak palačinka vypadá, ale jak ji udělat." },
+    { value: "popisu jednoho předmětu", why: "Recept neříká, jak palačinka vypadá, ale jak ji udělat." },
     { value: "vypravování", why: "Recept nevypráví příběh." },
   ], {
     hints: ["K čemu recept slouží?", "Recept vede krok za krokem, jak něco připravit. Tak se jmenuje i druh popisu."],
@@ -70,7 +70,7 @@ const L1: PracticeTask[] = [
   choice("Která slova se hodí do pracovního postupu?", "nejprve, potom, nakonec", [
     { value: "byl jednou jeden", why: "Tak začíná pohádka." },
     { value: "odvážný, laskavý", why: "Tato slova popisují povahu." },
-    { value: "zrzavý, s pihami", why: "Tato slova popisují vzhled." },
+    { value: "zrzavý, s pihami na nose", why: "Tato slova popisují vzhled." },
   ], {
     hints: ["Která slova řadí kroky za sebou?", "V postupu je důležité pořadí. Hodí se slova, která říkají, co je první, co další a co poslední."],
     explanation: "Nejprve, potom, nakonec řadí kroky postupu.",
@@ -110,7 +110,7 @@ const L1: PracticeTask[] = [
   choice("Proč se v popisu předmětu vyhýbáme slovům jako „hezký“ nebo „dobrý“?", "nic konkrétního neříkají", [
     { value: "jsou sprostá", why: "Sprostá nejsou, jen nejsou přesná." },
     { value: "jsou moc dlouhá", why: "Délka tu nevadí." },
-    { value: "píšou se s chybou", why: "S pravopisem to nesouvisí." },
+    { value: "píšou se skoro vždy s chybou", why: "S pravopisem to nesouvisí." },
   ], {
     hints: ["Představíš si věc, o které víš jen, že je „hezká“?", "Každý si pod slovem „hezký“ představí něco jiného. Barva, tvar a materiál řeknou víc."],
     explanation: "„Hezký“ a „dobrý“ nic konkrétního neříkají. Lepší je napsat barvu, tvar nebo materiál.",
@@ -137,7 +137,7 @@ const L2: PracticeTask[] = [
   choice("Který text je pracovní postup?", "Nejprve nalij vodu, potom přidej čaj a nech ho louhovat.", [
     { value: "Čaj je horký a krásně voní.", why: "To je popis čaje." },
     { value: "Včera jsme pili čaj u babičky.", why: "To je vypravování." },
-    { value: "Hrnek je bílý s modrým proužkem.", why: "To je popis předmětu." },
+    { value: "Hrnek je bílý s tenkým modrým proužkem.", why: "To je popis předmětu." },
   ], {
     hints: ["Podle kterého textu uděláš čaj?", "Postup má kroky za sebou a slova jako nejprve, potom. Říká, co máš dělat."],
     explanation: "Text vede krok za krokem (nejprve, potom), jak připravit čaj — je to pracovní postup.",
@@ -159,7 +159,7 @@ const L2: PracticeTask[] = [
     explanation: "Tvar (kulatý) a barva (zlatohnědý) jsou konkrétní vlastnosti — popis je přesný.",
   }),
   choice("V popisu stojí „Stůl je velký a dobrý.“ Co chybí?", "materiál a rozměry", [
-    { value: "jméno výrobce", why: "Výrobce do popisu nepatří." },
+    { value: "jméno výrobce a cena", why: "Výrobce do popisu nepatří." },
     { value: "cena stolu", why: "Cena není vlastnost, kterou vidíme." },
     { value: "příběh stolu", why: "Příběh patří do vypravování." },
   ], {
@@ -177,7 +177,7 @@ const L2: PracticeTask[] = [
   choice("Které přídavné jméno popíše materiál hrnku?", "keramický", [
     { value: "hezký", why: "„Hezký“ je názor, ne materiál." },
     { value: "velký", why: "„Velký“ je velikost, ne materiál." },
-    { value: "horký", why: "„Horký“ je teplota, ne materiál." },
+    { value: "horký na dotek", why: "„Horký“ je teplota, ne materiál." },
   ], {
     hints: ["Z čeho je hrnek vyrobený?", "Materiál odpovídá na otázku „z čeho?“ — třeba dřevěný, plastový, skleněný."],
     explanation: "„Keramický“ říká, z čeho je hrnek — z keramiky.",
@@ -201,14 +201,14 @@ const L2: PracticeTask[] = [
   choice("Proč pracovní postup píšeme po krocích?", "aby podle něj šla věc udělat", [
     { value: "aby byl delší", why: "O délku nejde." },
     { value: "aby se rýmoval", why: "Postup se nerýmuje." },
-    { value: "protože je to pohádka", why: "Postup není pohádka." },
+    { value: "protože je to vlastně pohádka", why: "Postup není pohádka." },
   ], {
     hints: ["Co by se stalo, kdyby kroky byly přeházené?", "Postup je návod. Kdo ho čte, dělá jeden krok po druhém — a musí mu to vyjít."],
     explanation: "Kroky v pořadí umožní podle postupu věc opravdu udělat.",
   }),
   choice("Proč popis předmětu začíná celkem?", "čtenář si nejdřív představí celou věc", [
     { value: "celek je nejkratší", why: "O délku nejde." },
-    { value: "podrobnosti nejsou důležité", why: "Důležité jsou, jen přijdou později." },
+    { value: "podrobnosti nejsou vůbec důležité", why: "Důležité jsou, jen přijdou později." },
     { value: "tak se píšou pohádky", why: "S pohádkou to nesouvisí." },
   ], {
     hints: ["Kam by si čtenář zařadil zip, kdyby nevěděl, že jde o batoh?", "Čtenář nejdřív potřebuje vědět, jak vypadá celek — pak ví, kam jednotlivé podrobnosti patří."],
@@ -251,7 +251,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Co je špatně v postupu „Upeč koláč. Pak smíchej těsto. Nakonec zapni troubu.“?", "kroky jsou v obráceném pořadí", [
     { value: "chybí nadpis", why: "Nadpis není hlavní chyba — postup nejde provést." },
-    { value: "věty jsou moc krátké", why: "Krátké věty v postupu nevadí." },
+    { value: "věty jsou v postupu moc krátké", why: "Krátké věty v postupu nevadí." },
     { value: "nic, je to správně", why: "Koláč nejde upéct dřív, než je těsto." },
   ], {
     hints: ["Dá se upéct koláč, když ještě není těsto?", "Přečti kroky a představ si, že je děláš. Co musí být dřív?"],
@@ -268,7 +268,7 @@ const L3: PracticeTask[] = [
   choice("Který text je nejlepší popis osoby?", "Děda je vysoký, má bílé vousy a rád vypráví vtipy.", [
     { value: "Děda je prostě náš děda.", why: "Nic o dědovi neříká." },
     { value: "Děda byl včera na houbách.", why: "To je děj, ne popis." },
-    { value: "Děda je hodně moc hodný a hodný.", why: "Opakování obecného slova nic nepopíše." },
+    { value: "Děda je hodně moc hodný a zase hodný.", why: "Opakování obecného slova nic nepopíše." },
   ], {
     hints: ["Ze kterého textu si dědu představíš a poznáš, jaký je?", "Dobrý popis osoby má vzhled (postava, vlasy, vousy) i povahu (co člověk rád dělá, jak se chová)."],
     explanation: "Text má vzhled (vysoký, bílé vousy) i povahu (rád vypráví vtipy).",
@@ -299,7 +299,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Která věta patří do popisu předmětu, a ne do vypravování?", "Míč je kulatý, kožený a má černobílé šestiúhelníky.", [
     { value: "Míč jsem včera kopl až do okna.", why: "To je děj — vypravování." },
-    { value: "Nejprve míč nafoukneme pumpičkou.", why: "To je krok postupu." },
+    { value: "Nejprve míč nafoukneme malou pumpičkou.", why: "To je krok postupu." },
     { value: "Míč je super a mám ho moc ráda.", why: "To je pocit, ne vlastnost." },
   ], {
     hints: ["Která věta ti řekne, jak míč vypadá?", "Popis předmětu uvádí tvar, materiál a vzhled. Vypravování říká, co se stalo."],
@@ -307,7 +307,7 @@ const L3: PracticeTask[] = [
   }),
   choice("V popisu osoby stojí jen „Petr je vysoký.“ Co doplníš, aby byl popis úplnější?", "další rysy vzhledu a povahu", [
     { value: "Petrovu adresu", why: "Adresa není popis člověka." },
-    { value: "co měl Petr k obědu", why: "To je děj, ne popis." },
+    { value: "co měl Petr včera k obědu", why: "To je děj, ne popis." },
     { value: "Petrovo rodné číslo", why: "To je osobní údaj, ne popis." },
   ], {
     hints: ["Co ještě o Petrovi potřebuješ vědět, aby sis ho představil nebo představila?", "Úplný popis osoby má víc rysů vzhledu (vlasy, oči, oblečení) a také povahu — jak se Petr chová k ostatním."],
@@ -315,7 +315,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Proč do popisu předmětu nepatří věta „Je to můj nejmilejší míč na světě“?", "vyjadřuje pocit, ne vlastnost", [
     { value: "je příliš krátká", why: "Délka věty nevadí." },
-    { value: "míče se nepopisují", why: "Míče se popisovat dají." },
+    { value: "míče se vůbec nepopisují", why: "Míče se popisovat dají." },
     { value: "patří na začátek", why: "Pocit do věcného popisu nepatří nikam." },
   ], {
     hints: ["Dozvíš se z té věty, jak míč vypadá?", "Věcný popis říká, jaká věc je. To, co k ní cítíme, do něj nepatří."],

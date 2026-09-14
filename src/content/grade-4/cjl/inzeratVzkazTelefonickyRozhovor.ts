@@ -60,7 +60,7 @@ const L1: PracticeTask[] = [
     explanation: "Vzkaz je krátká zpráva pro člověka, kterému to nemůžeme říct osobně.",
   }),
   choice("Co musí být ve vzkazu?", "komu, co, kdy a kdo ho píše", [
-    { value: "jen podpis pisatele", why: "Bez toho, co a komu, by vzkaz nic neřekl." },
+    { value: "jen podpis toho, kdo vzkaz psal", why: "Bez toho, co a komu, by vzkaz nic neřekl." },
     { value: "jen dnešní datum", why: "Datum nestačí — chybí, co se sděluje." },
     { value: "oslovení a záhlaví", why: "Záhlaví patří do dopisu." },
   ], {
@@ -86,7 +86,7 @@ const L1: PracticeTask[] = [
   choice("Jak telefonát ukončíš?", "rozloučím se a pak zavěsím", [
     { value: "prostě zavěsím", why: "Zavěsit bez rozloučení je nezdvořilé." },
     { value: "řeknu „Haló“", why: "„Haló“ se říká na začátku hovoru." },
-    { value: "zopakuji své jméno", why: "Jméno říkáme na začátku, na konci se loučíme." },
+    { value: "zopakuji na konci své jméno", why: "Jméno říkáme na začátku, na konci se loučíme." },
   ], {
     hints: ["Co řekneš, když od někoho odcházíš?", "Telefonát končí stejně jako osobní rozhovor: rozloučením. Teprve potom zavěsíme."],
     explanation: "Hovor ukončíme rozloučením (Na shledanou, Ahoj) a teprve pak zavěsíme.",
@@ -102,7 +102,7 @@ const L1: PracticeTask[] = [
   choice("Kde se inzeráty zveřejňují?", "v novinách, na internetu a na nástěnkách", [
     { value: "v dopisech kamarádům", why: "Dopis čte jen jeden člověk." },
     { value: "v učebnici čtení", why: "Učebnice inzeráty nezveřejňuje." },
-    { value: "při telefonátu s babičkou", why: "Inzerát je psaný pro hodně lidí." },
+    { value: "při telefonátu s babičkou a dědou", why: "Inzerát je psaný pro hodně lidí." },
   ], {
     hints: ["Kde si inzerát přečte co nejvíc lidí?", "Inzerát má najít toho, koho zajímá — proto se dává tam, kde ho uvidí hodně lidí."],
     explanation: "Inzeráty dáváme tam, kde je uvidí mnoho lidí: do novin, na internet, na nástěnky.",
@@ -110,7 +110,7 @@ const L1: PracticeTask[] = [
   choice("Jak mluvíme do telefonu?", "zřetelně a ne příliš rychle", [
     { value: "co nejrychleji", why: "Rychlé řeči druhý po telefonu špatně rozumí." },
     { value: "šeptem", why: "Šepot přes telefon skoro není slyšet." },
-    { value: "jen jednoslovně", why: "Jedním slovem se věc většinou vysvětlit nedá." },
+    { value: "odpovím jen jedním slovem", why: "Jedním slovem se věc většinou vysvětlit nedá." },
   ], {
     hints: ["Druhý tě nevidí. Jak mu usnadníš, aby ti rozuměl?", "Po telefonu nepomůže ukázat rukou ani výraz obličeje. Všechno musí říct hlas — jasně a v klidu."],
     explanation: "Do telefonu mluvíme zřetelně a klidně, aby nám druhý dobře rozuměl.",
@@ -127,7 +127,7 @@ const L2: PracticeTask[] = [
     explanation: "Ve vzkazu chybí podpis — táta neví, kdo mu ho nechal.",
   }),
   choice("Vzkaz: „Jdu ke kamarádovi.“ Co chybí?", "komu, kdy a od koho", [
-    { value: "jen podpis pisatele", why: "Chybí toho víc: také komu vzkaz je a kdy se pisatel vrátí." },
+    { value: "jen podpis toho, kdo vzkaz psal", why: "Chybí toho víc: také komu vzkaz je a kdy se pisatel vrátí." },
     { value: "vůbec nic", why: "Chybí hned tři údaje." },
     { value: "jen dnešní datum", why: "Datum ve vzkazu nutné není, chybí jiné věci." },
   ], {
@@ -159,7 +159,7 @@ const L2: PracticeTask[] = [
     explanation: "Nejlepší inzerát je stručný a má konkrétní údaje i telefon.",
   }),
   choice("Který údaj do inzerátu o prodeji kola nepatří?", "jak se jmenuje tvůj pes", [
-    { value: "velikost kola", why: "Velikost zájemce potřebuje vědět." },
+    { value: "velikost prodávaného kola", why: "Velikost zájemce potřebuje vědět." },
     { value: "barva kola", why: "Barva zájemce zajímá." },
     { value: "telefon", why: "Bez telefonu se zájemce neozve." },
   ], {
@@ -167,7 +167,7 @@ const L2: PracticeTask[] = [
     explanation: "Jméno psa s prodejem kola nesouvisí — do inzerátu nepatří.",
   }),
   choice("Telefonát začne: „Haló? … Co chceš?“ Co je špatně?", "chybí pozdrav a představení", [
-    { value: "je příliš dlouhý", why: "Naopak, je příliš strohý." },
+    { value: "je zbytečně příliš dlouhý", why: "Naopak, je příliš strohý." },
     { value: "chybí adresa", why: "Adresu do telefonu neříkáme." },
     { value: "nic, je správně", why: "Takový začátek je nezdvořilý." },
   ], {
@@ -177,7 +177,7 @@ const L2: PracticeTask[] = [
   choice("Voláš babičce, ale telefon zvedne děda. Co řekneš?", "Ahoj dědo, tady Eva. Je doma babička?", [
     { value: "Babičku!", why: "Chybí pozdrav, představení i prosba." },
     { value: "Kdo tam je?", why: "Víš, kdo to je — pozdrav ho a představ se." },
-    { value: "Chci babičku, rychle.", why: "Takhle to zní nezdvořile." },
+    { value: "Chci mluvit s babičkou, rychle.", why: "Takhle to zní nezdvořile." },
   ], {
     hints: ["Co řekneš jako první a jak se zeptáš na babičku?", "Pozdrav dědu, řekni, kdo volá, a slušně se zeptej, jestli můžeš mluvit s babičkou."],
     explanation: "Pozdravíme, představíme se a slušně se zeptáme: „Ahoj dědo, tady Eva. Je doma babička?“",
@@ -226,7 +226,7 @@ const L2: PracticeTask[] = [
 
 const L3: PracticeTask[] = [
   choice("Chceš prodat malé brusle. Který inzerát napíšeš?", "Prodám brusle, vel. 35, málo nošené. Tel. 777 222 333", [
-    { value: "Koupím brusle, vel. 35. Tel. 777 222 333", why: "To je poptávka — ty ale chceš prodávat." },
+    { value: "Koupím dětské brusle, vel. 35. Tel. 777 222 333", why: "To je poptávka — ty ale chceš prodávat." },
     { value: "Prodám brusle.", why: "Chybí velikost, stav i kontakt." },
     { value: "Brusle jsou super, jezdím na nich ráda.", why: "To je vyprávění, ne inzerát — chybí nabídka i kontakt." },
   ], {
@@ -234,7 +234,7 @@ const L3: PracticeTask[] = [
     explanation: "Nabídka s údaji a kontaktem: „Prodám brusle, vel. 35, málo nošené. Tel. …“",
   }),
   choice("Ve škole se ti ztratila čepice. Co napíšeš na nástěnku?", "Ztratila se modrá pletená čepice. Kdo ji najde, ať ji donese do 4.B.", [
-    { value: "Ztratila se mi čepice, tak mi ji někdo vraťte.", why: "Chybí popis čepice a kam ji vrátit." },
+    { value: "Ztratila se mi čepice, tak mi ji prosím někdo vraťte.", why: "Chybí popis čepice a kam ji vrátit." },
     { value: "Hledám čepici, je moje a chci ji zpátky!", why: "Nálezce neví, jak čepice vypadá, ani kam ji donést." },
     { value: "Prodám modrou pletenou čepici, skoro novou.", why: "Ty ji nechceš prodat — hledáš ji." },
   ], {
@@ -284,14 +284,14 @@ const L3: PracticeTask[] = [
   choice("Která zpráva není vzkaz, ale inzerát?", "Nabízím doučování matematiky. Tel. 606 000 111", [
     { value: "Mami, jsem u Petra. Jirka", why: "To je vzkaz pro mámu." },
     { value: "Tati, volala babička. Eva", why: "To je vzkaz pro tátu." },
-    { value: "Kláro, klíč je u sousedů. Máma", why: "To je vzkaz pro Kláru." },
+    { value: "Kláro, klíč najdeš u sousedů. Máma", why: "To je vzkaz pro Kláru." },
   ], {
     hints: ["Která zpráva je pro všechny, a ne pro jednoho člověka?", "Vzkaz má jednoho adresáta a podpis. Inzerát je pro kohokoli, kdo ho čte, a má kontakt."],
     explanation: "„Nabízím doučování… Tel. …“ je pro všechny a má kontakt — je to inzerát.",
   }),
   choice("Při telefonátu nerozumíš, co druhý říká. Co uděláš?", "slušně poprosím o zopakování", [
     { value: "zavěsím", why: "Zavěsit uprostřed hovoru je nezdvořilé." },
-    { value: "budu dělat, že rozumím", why: "Pak nebudeš vědět, co ti chtěl říct." },
+    { value: "budu dělat, že všemu rozumím", why: "Pak nebudeš vědět, co ti chtěl říct." },
     { value: "začnu křičet", why: "Křik nepomůže, jen poprosit o zopakování." },
   ], {
     hints: ["Jak se dozvíš, co druhý řekl?", "Nerozumět je normální. Zdvořile řekni, že jsi nerozuměl nebo nerozuměla, a požádej, ať to zopakuje."],
@@ -299,7 +299,7 @@ const L3: PracticeTask[] = [
   }),
   choice("Kamarád ti zavolá, když píšeš úkol. Jak hovor ukončíš?", "Musím psát úkol, zavolám ti potom. Ahoj!", [
     { value: "Zavěsím bez jediného slova.", why: "To je nezdvořilé — kamarád neví, co se stalo." },
-    { value: "Nemám čas, teď nemůžu mluvit.", why: "Chybí důvod a hlavně rozloučení." },
+    { value: "Nemám čas, teď s tebou nemůžu mluvit.", why: "Chybí důvod a hlavně rozloučení." },
     { value: "Neotravuj mě, píšu úkol.", why: "Důvod tam je, ale „neotravuj“ kamaráda urazí." },
   ], {
     hints: ["Jak kamarádovi vysvětlíš, proč končíš, a jak se rozloučíš?", "I když spěcháš, řekni kamarádovi, proč teď nemůžeš, slib mu, že se ozveš později, a na konci se s ním rozluč."],
@@ -314,8 +314,8 @@ const L3: PracticeTask[] = [
     explanation: "Zdvořilý telefonát obsahuje pozdrav, představení, slušnou prosbu, poděkování a rozloučení.",
   }),
   choice("V inzerátu stojí: „Prodám psa, volejte.“ Co je špatně?", "chybí popis psa i telefon", [
-    { value: "je příliš dlouhý", why: "Naopak, je příliš krátký." },
-    { value: "má tam být „Koupím“", why: "Autor chce prodávat, takže „Prodám“ je správně." },
+    { value: "je zbytečně příliš dlouhý", why: "Naopak, je příliš krátký." },
+    { value: "místo „Prodám“ tam má být „Koupím“", why: "Autor chce prodávat, takže „Prodám“ je správně." },
     { value: "nic, je správně", why: "Zájemce neví, jaký pes to je, ani kam volat." },
   ], {
     hints: ["Mohl by se zájemce ozvat? A ví, o jakého psa jde?", "Inzerát vybízí k volání, ale neuvádí číslo. A o psovi neříká nic — plemeno, věk, barvu."],

@@ -144,6 +144,33 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-14 (47) — délka odpovědi přestala prozrazovat:
+
+- ⚠️ **Číslo, které jsem uživateli nejdřív dal, bylo špatně.** Řekl jsem, že
+  `check:length` hlásí 10 úloh — těch deset byl jen vypsaný vzorek nejhorších
+  případů. Skutečný počet byl **1535**.
+- 🐛 **Skript ale měřil špatnou věc, a to dvakrát po sobě.** Nejdřív počítal
+  poměr klíč / NEJKRATŠÍ distraktor: to neříká nic o tom, jestli se dá tipovat,
+  protože žák vidí všechny čtyři možnosti a vybírá mezi nimi. Po opravě měřil,
+  jak často je klíč nejdelší — jenže „Krajské město“ proti „Hlavní město“ je
+  rozdíl jednoho znaku, který dítě nevidí.
+- ✅ **Teď měří to, co dítě opravdu může udělat:** jak často je klíč **výrazně**
+  nejdelší (≥ 1,25×) a jestli v tom nad distraktory převažuje aspoň 2,5×.
+  Doplněno i zahazování pevné škály, stejně jako u `check:options`.
+- ✅ **Naměřeno: plošný problém to nebyl.** Napříč rejstříkem byl výrazně
+  nejdelší možností klíč v 5,6 % úloh a distraktor ve 13,7 % — délka tedy vedla
+  spíš OD správné odpovědi. Naruby ten poměr obracelo **25 témat**, nejhorší
+  64 % proti 8 %.
+- ✅ **Všech 25 opraveno, kontrola je na nule.** Distraktory byly krátká odbytí
+  („Parkoviště u obchodu“, „Jen dělá povodně“, „Čich“) proti klíči, který je
+  celá věta. Nově jsou stejně konkrétní i stejně dlouhé — což je zároveň oprava
+  podle `CONTENT_AUTHORING` §2.1, protože „blízká, pravděpodobná chyba“ se do
+  dvou slov nevejde. Celkem asi 380 přepsaných distraktorů.
+- ✅ **Zámek obsahu se nehnul ani jednou** — mění se jen nabídka, ne zadání
+  a ne klíč. Ověřeno: `check:options` zůstalo 0, `check:hints` 0,
+  `audit:agreement` 30 084 úloh bez nálezu, testy 4868/0, `audit:ui` bez
+  nového nálezu.
+
 ### Session 2026-09-14 (46) — klíč nesmí vyčnívat tvarem (rozhodnutí uživatele):
 
 - ✅ **`check:options` je napříč celým rejstříkem na nule** (ověřeno i při

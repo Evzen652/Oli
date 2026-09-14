@@ -243,7 +243,7 @@ const ZAPOJENI: Polozka[] = [
         why: "Nikde se nic nehromadí. Dokud není cesta uzavřená celá, proud se nerozeběhne.",
       },
       {
-        value: "Proud teče dál, spínač ovlivňuje jen žárovku.",
+        value: "Proud teče dál, spínač ovlivňuje jenom samotnou žárovku.",
         why: "Spínač působí na celý obvod. Je jedno, na kterém místě je zapojený.",
       },
     ],
@@ -258,7 +258,7 @@ const ZAPOJENI: Polozka[] = [
     klic: "Nic, žárovka nesvítí — plast je izolant a proud jím neprojde.",
     chybne: [
       {
-        value: "Žárovka se rozsvítí, mezera je přece zaplněná.",
+        value: "Žárovka se rozsvítí, protože mezera je přece zaplněná.",
         why: "Nestačí mezeru zaplnit čímkoli. Musí tam být látka, která proud vede.",
       },
       {
@@ -289,7 +289,7 @@ const ZAPOJENI: Polozka[] = [
         why: "Tuha vydrží. A i kdyby se rozlomila, vyzkoušet se to dá s celou.",
       },
       {
-        value: "Žárovka se rozsvítí, protože je tuha z olova.",
+        value: "Žárovka se rozsvítí, protože tuha je přece z olova.",
         why: "V tužce žádné olovo není, i když se jí tak lidově říká. Je z grafitu, což je jedna z podob uhlíku.",
       },
     ],
@@ -334,7 +334,7 @@ const ZAPOJENI: Polozka[] = [
         why: "Proti korozi se používá jiná ochrana. Plast je tam kvůli tomu, že nevede proud.",
       },
       {
-        value: "Aby lépe vedl proud.",
+        value: "Aby obvodem lépe procházel proud.",
         why: "Vedení se izolací nezlepší. Vede vodivé jádro uvnitř, plast naopak nevede vůbec.",
       },
     ],
@@ -402,7 +402,7 @@ const ZAPOJENI: Polozka[] = [
         why: "Před zkratem chrání pojistka. Spínač obvod jen zapíná a vypíná.",
       },
       {
-        value: "Dodává do obvodu energii, když se stiskne.",
+        value: "Dodává do obvodu energii pokaždé, když se stiskne.",
         why: "Energii dodává zdroj. Spínač jen otevírá a zavírá cestu.",
       },
     ],
@@ -421,7 +421,7 @@ const ZAPOJENI: Polozka[] = [
         why: "Nemá kudy projít. Vyšroubovaná žárovka udělá v cestě mezeru stejně jako rozepnutý spínač.",
       },
       {
-        value: "Proud poteče vzduchem přes prázdnou objímku.",
+        value: "Proud poteče vzduchem přes tu prázdnou objímku.",
         why: "Vzduch je izolant. Proud jím v obvodu s baterií nepřeskočí.",
       },
       {
@@ -471,7 +471,7 @@ const ZAPOJENI: Polozka[] = [
         why: "Na délce drátu to nezávisí. Krátký i dlouhý drát proud vedou.",
       },
       {
-        value: "Jestli není spínač příliš slabý pro takovou žárovku.",
+        value: "Jestli náhodou není spínač příliš slabý pro takovou žárovku.",
         why: "Spínač obvod jen otevírá a zavírá. Sílu proudu neurčuje.",
       },
     ],
@@ -489,7 +489,7 @@ const PROUD: Polozka[] = [
     klic: "Přesně tolik, kolik z ní vyteklo — proud se cestou nespotřebovává.",
     chybne: [
       {
-        value: "Méně, část proudu žárovka spotřebovala.",
+        value: "Méně, protože část proudu žárovka spotřebovala.",
         why: "Žárovka spotřebovává energii, ne proud. Ten se vrací celý.",
       },
       {
@@ -511,7 +511,7 @@ const PROUD: Polozka[] = [
     klic: "Energie, kterou zdroj dodává a spotřebič mění na světlo, teplo, zvuk nebo pohyb.",
     chybne: [
       {
-        value: "Náboj — částice se ve spotřebiči spotřebují.",
+        value: "Náboj — částice se ve spotřebiči postupně spotřebují.",
         why: "Částice zůstávají v obvodu všechny. Jen cestou odevzdají energii.",
       },
       {
@@ -542,7 +542,7 @@ const PROUD: Polozka[] = [
         why: "Slaběji ne — zhasne úplně. Přerušeným obvodem neteče žádný proud.",
       },
       {
-        value: "Chvíli ještě svítí a pak pomalu zhasne.",
+        value: "Chvíli ještě svítí a teprve pak pomalu zhasne.",
         why: "Zhasne okamžitě. Proud se zastaví ve chvíli, kdy vznikne mezera.",
       },
     ],
@@ -607,7 +607,7 @@ const PROUD: Polozka[] = [
         why: "Stane se toho hodně. Uzavřený obvod stačí a proud se rozeběhne i bez spotřebiče, dokonce mnohem silněji.",
       },
       {
-        value: "Proud poteče pomalu, protože nemá co napájet.",
+        value: "Proud poteče jen pomalu, protože nemá co napájet.",
         why: "Je to naopak. Bez spotřebiče má proud cestu příliš snadnou a je velmi silný.",
       },
       {
@@ -676,7 +676,7 @@ const PROUD: Polozka[] = [
         why: "Pak by zhasla jen ta vadná a zbytek by svítil dál.",
       },
       {
-        value: "Vadná žárovička spálila i ty ostatní.",
+        value: "Vadná žárovička spálila i všechny ostatní.",
         why: "Ostatní jsou v pořádku. Po výměně té jedné se celá řada zase rozsvítí.",
       },
       {
@@ -726,7 +726,7 @@ const PROUD: Polozka[] = [
         why: "Energii dodává baterie jako celek. Dva póly nejsou dva zdroje.",
       },
       {
-        value: "Jeden pól je zásobní pro případ, že se druhý vybije.",
+        value: "Jeden z pólů je zásobní pro případ, že se ten druhý vybije.",
         why: "Vybíjí se celá baterie naráz. Zásobní pól neexistuje.",
       },
     ],

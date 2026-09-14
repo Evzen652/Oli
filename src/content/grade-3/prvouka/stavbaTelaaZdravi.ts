@@ -118,7 +118,7 @@ const L1: U[] = [
     a: "Šlachami",
     emoji: "💪",
     d: [
-      ["Cévami", "Cévami proudí krev. Sval ke kosti nepřipoutají."],
+      ["Krevními cévami", "Cévami proudí krev. Sval ke kosti nepřipoutají."],
       ["Nervy", "Nervy vedou signály z mozku, ale nic v těle nedrží."],
       ["Kůží", "Kůže je vnější obal těla, uvnitř nic nepřipevňuje."],
     ],
@@ -224,7 +224,7 @@ const L1: U[] = [
     emoji: "👂",
     d: [
       ["Zrak", "Zrakem vnímáme očima, ne ušima."],
-      ["Čich", "Čich sídlí v nose, tam vnímáme vůně a pachy."],
+      ["Čich v nose", "Čich sídlí v nose, tam vnímáme vůně a pachy."],
       ["Chuť", "Chuť vnímáme jazykem v ústech."],
     ],
     h: [
@@ -242,7 +242,7 @@ const L2: U[] = [
     emoji: "🦴",
     d: [
       ["Rozvádí po těle krev a kyslík", "Krev rozvádí srdce s cévami, ne kosti."],
-      ["Tráví jídlo a bere z něj živiny", "Trávení má na starost žaludek a střeva."],
+      ["Tráví snědené jídlo a bere z něj živiny", "Trávení má na starost žaludek a střeva."],
       ["Řídí myšlení a přijímá signály", "Řízení a myšlení zajišťuje mozek."],
     ],
     h: [
@@ -258,7 +258,7 @@ const L2: U[] = [
     d: [
       ["Rozvádějí krev do celého těla", "Krev rozvádí srdce a cévy, ne svalstvo."],
       ["Vyrábějí v těle novou krev", "Krev se tvoří v kostní dřeni uvnitř kostí."],
-      ["Chrání mozek před tvrdým nárazem", "Mozek chrání lebka, měkký sval by náraz neudržel."],
+      ["Chrání mozek před každým tvrdým nárazem", "Mozek chrání lebka, měkký sval by náraz neudržel."],
     ],
     h: [
       "Zatni biceps na paži a sleduj, co se s ním stane.",
@@ -286,7 +286,7 @@ const L2: U[] = [
     a: "Z nadechnutého vzduchu se bere kyslík a vydechuje oxid uhličitý",
     emoji: "🫁",
     d: [
-      ["Ze snědeného jídla se berou živiny pro celé tělo", "Živiny z jídla vstřebávají střeva, ne tenhle orgán."],
+      ["Ze snědeného jídla se tu berou živiny pro celé tělo", "Živiny z jídla vstřebávají střeva, ne tenhle orgán."],
       ["Z krve se odfiltrují odpadní látky a vzniká moč", "Filtrování krve a tvorbu moči mají na starost ledviny."],
       ["Vytváří se nová krev pro celé tělo", "Krev vzniká v kostní dřeni uvnitř kostí."],
     ],
@@ -348,7 +348,7 @@ const L2: U[] = [
     d: [
       ["Aby ruce hezky voněly po mýdle", "Vůně je jen příjemný doplněk, důvod je jiný."],
       ["Aby nám jídlo lépe chutnalo", "Chuť jídla se umytím rukou nezmění."],
-      ["Abychom měli hladší kůži na dlaních", "Mytí kůži nezjemní, chrání nás před nemocí."],
+      ["Abychom měli hladší a jemnější kůži na dlaních", "Mytí kůži nezjemní, chrání nás před nemocí."],
     ],
     h: [
       "Zamysli se, čeho se ruce během dne dotknou a co na nich zůstane.",
@@ -361,7 +361,7 @@ const L2: U[] = [
     a: "Zelenina, ovoce, bílkoviny, obiloviny a dost pití",
     emoji: "🥗",
     d: [
-      ["Hlavně sladkosti a slazené nápoje", "Cukr dodá jen rychlou energii, ostatní živiny chybí."],
+      ["Hlavně sladkosti, sušenky a slazené nápoje", "Cukr dodá jen rychlou energii, ostatní živiny chybí."],
       ["Jenom maso a nic jiného k tomu", "Samotné maso nedodá vitamíny ani vlákninu."],
       ["Jenom ovoce po celý den", "Samotné ovoce nedodá bílkoviny ani dost energie."],
     ],
@@ -441,7 +441,7 @@ const L3: U[] = [
     d: [
       ["Sval se stáhne a teprve potom dá mozek povel", "Sval se sám nerozhodne — povel přichází první z hlavy."],
       ["Kost se pohne a teprve pak se stáhne sval", "Kost se sama nehýbe, do pohybu ji uvede až tah svalu."],
-      ["Nerv pohne kostí a až nakonec dá mozek povel", "Nerv jen přenáší signál, kostí nehýbe a povel je vždy první."],
+      ["Nerv pohne rovnou kostí a až nakonec dá mozek povel", "Nerv jen přenáší signál, kostí nehýbe a povel je vždy první."],
     ],
     h: [
       "Kdo v těle o pohybu rozhoduje a kdo jen plní rozkaz?",
@@ -514,7 +514,7 @@ const L3: U[] = [
     a: "Svaly potřebují víc kyslíku, tak ho tělo rychleji dopravuje",
     emoji: "🏃",
     d: [
-      ["Tělo se snaží rychleji strávit oběd", "Trávení s během ani s rychlým dechem nesouvisí."],
+      ["Tělo se snaží co nejrychleji strávit oběd", "Trávení s během ani s rychlým dechem nesouvisí."],
       ["Tělo se tak zbavuje přebytečné vody", "Přebytečné vody se tělo zbavuje potem a močí."],
       ["Srdce se zahřívá, aby nenastydlo", "Srdce se takhle nezahřívá, jde o zásobení svalů."],
     ],
@@ -546,7 +546,7 @@ const L3: U[] = [
     d: [
       ["Aby se jim po zápase lépe usínalo", "To je jen důsledek, ne důvod, proč na to dbají."],
       ["Protože tréninky se tím dají vynechat", "Spánek ani jídlo samotný trénink nenahradí."],
-      ["Aby jim rychleji rostly vlasy a nehty", "Vlasy ani nehty nejsou cílem sportovní přípravy."],
+      ["Aby jim rychleji rostly vlasy, nehty a vousy", "Vlasy ani nehty nejsou cílem sportovní přípravy."],
     ],
     h: [
       "Kdy sval doopravdy zesílí — během dřiny, nebo až potom?",
@@ -574,7 +574,7 @@ const L3: U[] = [
     a: "Umyješ si ruce a nebudeš si sahat na obličej",
     emoji: "🤧",
     d: [
-      ["Budeš pít víc slazených nápojů", "Sladké nápoje před nákazou nechrání, spíš škodí zubům."],
+      ["Budeš pít víc slazených a bublinkových nápojů", "Sladké nápoje před nákazou nechrání, spíš škodí zubům."],
       ["Necháš okna celý den zavřená", "V nevětrané třídě se nákaza šíří naopak snáz."],
       ["Vyměníš si s ním lahev s pitím", "Společná lahev nákazu přenáší přímo do úst."],
     ],
@@ -591,7 +591,7 @@ const L3: U[] = [
     d: [
       ["Protože se jim bez pohybu netvoří krev", "Krev se tvoří v kostní dřeni bez ohledu na pohyb."],
       ["Protože jim bez pohybu přestane bít", "Bije stále, jde jen o to, jak je silné."],
-      ["Protože se jim bez pohybu nedostane jídlo", "Jídlo tělo přijímá bez ohledu na to, kolik se hýbe."],
+      ["Protože se jim bez pohybu vůbec nedostane jídlo", "Jídlo tělo přijímá bez ohledu na to, kolik se hýbe."],
     ],
     h: [
       "Co se stane s každým svalem, který dlouho nic nedělá?",
@@ -605,7 +605,7 @@ const L3: U[] = [
     emoji: "⛑️",
     d: [
       ["V hlavě je mnohem víc kostí než v paži", "Počet kostí o nebezpečí zranění nerozhoduje."],
-      ["Hlava je blíž k srdci než ruka nebo noha", "Vzdálenost od srdce o vážnosti zranění nerozhoduje."],
+      ["Hlava je mnohem blíž k srdci než ruka nebo noha", "Vzdálenost od srdce o vážnosti zranění nerozhoduje."],
       ["V hlavě jsou uložené plíce a žaludek", "Plíce i žaludek leží v trupu, ne v hlavě."],
     ],
     h: [

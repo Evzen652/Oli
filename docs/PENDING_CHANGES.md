@@ -82,6 +82,12 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   binární Ano/Ne 7 (tři z nich byly na L2, kde ten formát nemá co dělat —
   přepsány na otevřené otázky) a ~44 jednotlivých. U `g4-mat-osova-soumernost-4`
   se opravoval generátor, ne data. Zámek obsahu přegenerován.
+- ✅ **VYŘÍZENO 14. 9. — i `check:length` je na nule.** Kontrola měřila špatnou
+  věc (poměr ke K NEJKRATŠÍMU distraktoru, pak i rozdíl jednoho znaku) a hlásila
+  1535 úloh. Po přeměření na „jak často je klíč **výrazně** nejdelší“ vyšlo, že
+  plošný problém to není — napříč rejstříkem 5,6 % u klíče proti 13,7 %
+  u distraktoru. Naruby to obracelo **25 témat**, všechna opravena dopsáním
+  distraktorů (~380 přepsaných možností). Zámek obsahu se nehnul.
 - ✅ **FYZIKA 6. ROČNÍKU HOTOVÁ — 13/13** (14. 9.). Poslední téma `Magnety`.
   Šestka **18 ze 117**: fyzika 13, dějepis 5. **Další na řadě je dějepis**
   (zbývá 19 z 24 podtémat); před tou dávkou je v plánu bod 1.6 — projít
