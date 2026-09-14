@@ -60,7 +60,7 @@ const POOL_L1: PracticeTask[] = [
   choice("Kdy si musíš umýt ruce?", "Před jídlem a po záchodě", [
     { value: "Jen večer před spaním", why: "Bacily se na ruce dostanou během celého dne. Myjeme je víckrát." },
     { value: "Jen když jsou vidět špinavé", why: "Bacily nejsou vidět. Ruce myjeme i tehdy, když vypadají čisté." },
-    { value: "Jen po tělocviku", why: "Po tělocviku ano, ale hlavně před jídlem a po záchodě." },
+    { value: "Po záchodě a po příchodu domů, před jídlem ne", why: "Před jídlem je mytí nejdůležitější — bacily z rukou by šly rovnou do pusy." },
   ], {
     hints: ["Kdy by se bacily z rukou mohly dostat do pusy?", "Jednou je to předtím, než sáhneš na chleba, a podruhé když odejdeš z místa, kde se splachuje."],
     explanation: "Ruce myjeme hlavně před jídlem a po použití záchodu, také po příchodu zvenku. Bacily nejsou vidět, a mýdlo je z rukou smyje.",

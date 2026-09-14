@@ -555,7 +555,7 @@ const POOL_L3: PracticeTask[] = [
     options: [
       "Jen ke kamarádům a rodině",
       "Jen k dospělým, děti nepočítáme",
-      "Jen k lidem, kteří jsou slušní k nám",
+      "Ke všem, které známe — na cizí se to nevztahuje",
       "Ke všem lidem, známým i cizím",
     ],
     emoji: "🌍",
@@ -566,7 +566,7 @@ const POOL_L3: PracticeTask[] = [
     optionFeedback: {
       "Jen ke kamarádům a rodině": "Slušně se chováme i k lidem, které neznáme — třeba k prodavačce.",
       "Jen k dospělým, děti nepočítáme": "Slušnost platí i ke spolužákům a menším dětem.",
-      "Jen k lidem, kteří jsou slušní k nám": "Slušně se chováme, i když se druhý chová hůř — nemusíme se mu podobat.",
+      "Ke všem, které známe — na cizí se to nevztahuje": "Slušnost neplatí jen na známé. Pozdravíme i paní v obchodě, kterou vidíme poprvé.",
     },
     explanation:
       "Slušně se chováme ke všem lidem — ke kamarádům, k rodině i k lidem, které vůbec neznáme. Zdvořilost nezávisí na tom, koho potkáme.",

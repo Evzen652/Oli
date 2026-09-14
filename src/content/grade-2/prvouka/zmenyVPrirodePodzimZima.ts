@@ -470,10 +470,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč stromy na podzim shazují listí, než přijde zima?",
-    correctAnswer: "V zimě by přes listy ztrácely vodu, kterou nemohou z promrzlé půdy doplnit",
+    correctAnswer: "Protože by přes listy v zimě ztrácely vodu, kterou nemohou z promrzlé půdy doplnit",
     options: [
       "Protože je listí v zimě obtěžuje při kvetení",
-      "V zimě by přes listy ztrácely vodu, kterou nemohou z promrzlé půdy doplnit",
+      "Protože by přes listy v zimě ztrácely vodu, kterou nemohou z promrzlé půdy doplnit",
       "Protože jim listí na jaře už znovu nenaraší",
       "Protože se chtějí podobat jehličnatým stromům",
     ],

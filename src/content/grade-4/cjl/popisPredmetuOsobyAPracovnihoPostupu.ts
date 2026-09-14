@@ -30,7 +30,7 @@ const L1: PracticeTask[] = [
   choice("Co patří do popisu osoby?", "vzhled i povaha", [
     { value: "jen oblečení", why: "Oblečení je jen část vzhledu." },
     { value: "jen věk a jméno", why: "To jsou údaje, ne popis." },
-    { value: "jen to, co včera dělala", why: "Co kdo dělal, patří do vypravování." },
+    { value: "vzhled i to, co ten den dělala", why: "Co kdo dělal, patří do vypravování. Do popisu osoby patří povaha." },
   ], {
     hints: ["Jak kamarádovi popíšeš babičku, aby si ji představil a poznal, jaká je?", "U osoby popisuješ, jak vypadá (výška, vlasy, oblečení), a také jaká je — jak se chová k ostatním lidem."],
     explanation: "Popis osoby spojuje vzhled (jak vypadá) a povahu (jaká je).",

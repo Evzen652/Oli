@@ -179,7 +179,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Jaký rozdíl je mezi ušlapanou cestičkou a čerstvě zrytým záhonem?", "Do ušlapané hlíny voda nepronikne a steče po povrchu. Co se změní, když hlínu rozdrobíš na malé hrudky?"],
     explanation: "Kyprá půda má mezi hrudkami mezery. Tudy se dostane vzduch ke kořenům a voda se vsákne do hloubky. Semínka v ní snadno vzejdou.",
   }),
-  choice("Proč musí být v půdě i vzduch?", "Kořeny a živočichové v ní dýchají", [
+  choice("Proč musí být v půdě i vzduch?", "Aby v ní mohly dýchat kořeny a živočichové", [
     { value: "Aby byla lehčí pro zemědělce", why: "O váhu nejde. Vzduch potřebují živé organismy v půdě." },
     { value: "Aby do ní nepršelo", why: "Vzduch v půdě dešti nebrání. Voda a vzduch jsou v půdě spolu." },
     { value: "Aby se nerozpadla", why: "Vzduch půdu nedrží pohromadě. Potřebují ho kořeny a živočichové." },
@@ -238,7 +238,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Porovnej, jak rychle půda vzniká a jak rychle ji může voda odnést.", "Prudký déšť odnese z holého pole za jedno odpoledne i centimetr půdy. Kolik let bude trvat, než stejná vrstva znovu vznikne?"],
     explanation: "Voda může odnést centimetr půdy během pár silných dešťů, ale nový centimetr vzniká stovky let. Proto je eroze vážná — za život člověka se ztracená půda neobnoví.",
   }),
-  choice("Proč se na svahu orá napříč, a ne shora dolů?", "Brázdy napříč zadrží vodu, aby neodnesla půdu", [
+  choice("Proč se na svahu orá napříč, a ne shora dolů?", "Aby brázdy napříč zadržely vodu a ta neodnesla půdu", [
     { value: "Aby brázdy odvedly vodu rychle dolů", why: "To by bylo shora dolů — a voda by brázdami odnášela půdu." },
     { value: "Aby na pole víc svítilo slunce", why: "Směr brázd na slunce nemá velký vliv. Jde o vodu." },
     { value: "Aby se obilí nepřevrhlo", why: "Obilí se převrhne větrem nebo deštěm, směr orby na tom nezávisí." },

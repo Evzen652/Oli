@@ -213,7 +213,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Lidé v kraji si ho volí ve volbách.", "Obec má zastupitelstvo a starostu. Kraj má také zvolené zastupitele a v čele hejtmana."],
     explanation: "O kraji rozhoduje krajské zastupitelstvo, které si lidé volí ve volbách. V čele kraje stojí hejtman.",
   }),
-  choice("Proč jsou v kraji muzea a galerie?", "Uchovávají historii a umění pro další generace", [
+  choice("Proč jsou v kraji muzea a galerie?", "Aby uchovaly historii a umění pro další generace", [
     { value: "Aby vydělávaly nejvíc peněz", why: "Muzea peníze nevydělávají ve velkém. Jejich úkolem je uchovat historii." },
     { value: "Aby tam sídlily úřady", why: "Úřady sídlí jinde." },
     { value: "Aby děti nemusely do školy", why: "Muzea školu nenahrazují, ale doplňují." },

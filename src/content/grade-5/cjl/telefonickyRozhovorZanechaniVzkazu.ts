@@ -90,7 +90,7 @@ const L1: PracticeTask[] = [
   choice("Co řekneš operátorovi, když voláš záchranku?", "co se stalo, kde to je a kdo volá", [
     { value: "jen své jméno a zavěsím", why: "Operátor potřebuje vědět, co se stalo a kde." },
     { value: "jen „pomoc“ a zavěsím", why: "Záchranka by nevěděla, kam jet." },
-    { value: "jen to, co se stalo, bez adresy", why: "Bez místa nemůže záchranka přijet." },
+    { value: "co se stalo a kde to je, jméno není potřeba", why: "Kdyby se hovor přerušil, operátor potřebuje vědět, komu volat zpátky." },
   ], {
     hints: ["Co potřebuje záchranka vědět, aby mohla přijet?", "Operátor potřebuje vědět, jakou pomoc poslat, kam přesně jet a na koho se obrátit. Hovor neukončuj sám nebo sama."],
     explanation: "Záchrance řekneš, co se stalo, kde to je a kdo volá.",

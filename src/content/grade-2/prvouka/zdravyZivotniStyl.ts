@@ -437,9 +437,9 @@ const POOL_L2: PracticeTask[] = [
 const POOL_L3: PracticeTask[] = [
   {
     question: "Proč si po sladkém jídle čistíme zuby?",
-    correctAnswer: "Cukr zbylý na zubech by je jinak poškozoval a vznikl by kaz",
+    correctAnswer: "Protože by cukr zbylý na zubech zuby poškozoval a vznikl by kaz",
     options: [
-      "Cukr zbylý na zubech by je jinak poškozoval a vznikl by kaz",
+      "Protože by cukr zbylý na zubech zuby poškozoval a vznikl by kaz",
       "Protože po sladkém zuby změní barvu na modrou",
       "Protože sladké jídlo zuby posiluje",
       "Protože jinak by nám sladké chutnalo ještě víc",
@@ -520,9 +520,9 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Maminka řekne, ať si po hraní na zahradě před svačinou umyješ ruce. Proč to chce?",
-    correctAnswer: "Na rukou jsou po hraní bakterie, které bychom si jinak dali s jídlem do úst",
+    correctAnswer: "Protože jsou na rukou po hraní bakterie, které bychom si jinak dali s jídlem do úst",
     options: [
-      "Na rukou jsou po hraní bakterie, které bychom si jinak dali s jídlem do úst",
+      "Protože jsou na rukou po hraní bakterie, které bychom si jinak dali s jídlem do úst",
       "Protože mokré ruce lépe drží svačinu",
       "Protože čisté ruce se nesmějí špinit jídlem",
       "Protože mýdlo svačině dodá lepší chuť",
@@ -542,10 +542,10 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč nestačí ke zdraví jen zdravě jíst, ale je potřeba se i hýbat?",
-    correctAnswer: "Pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
+    correctAnswer: "Protože pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
     options: [
       "Protože po jídle se člověk nesmí ani pohnout",
-      "Pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
+      "Protože pohyb posiluje svaly a srdce, které samotné jídlo neposílí",
       "Protože zdravé jídlo tělu naopak škodí",
       "Protože pohyb nahradí jídlo, takže pak jíst nemusíme",
     ],

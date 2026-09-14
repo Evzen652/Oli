@@ -191,7 +191,7 @@ const L2: PracticeTask[] = [
     hints: ["Kamarádovi tykáš. Ve které větě je „ty“, a ne „Vy“?", "Kamarádovi píšeš stejně, jako s ním mluvíš: přátelsky a s tykáním. Úřední obraty (sděluji, dovoluji si) se hodí do žádosti."],
     explanation: "Kamarádovi tykáme a píšeme přátelsky: Jak se máš? Těším se, až tě uvidím.",
   }),
-  choice("Proč v dopise píšeme „Vy“ s velkým V?", "ze zdvořilosti k tomu, komu vykáme", [
+  choice("Proč v dopise píšeme „Vy“ s velkým V?", "protože tím vyjadřujeme zdvořilost k tomu, komu vykáme", [
     { value: "protože je to vždy začátek věty", why: "„Vy“ může stát kdekoli ve větě." },
     { value: "protože je to vlastní jméno", why: "„Vy“ je zájmeno, ne jméno." },
     { value: "protože je to zkratka", why: "Nejde o zkratku." },

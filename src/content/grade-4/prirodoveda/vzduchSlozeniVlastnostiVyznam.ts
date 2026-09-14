@@ -198,7 +198,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Čím si rostliny a lidé navzájem pomáhají?", "Rostlina vezme plyn, který vydechujeme, a vrátí plyn, který potřebujeme k dýchání. Který je který?"],
     explanation: "Rostliny berou ze vzduchu oxid uhličitý, vyrábějí z něj potravu a vydávají kyslík. Proto jsou lesy a parky pro vzduch tak důležité.",
   }),
-  choice("Proč je důležité místnost pravidelně větrat?", "Vydýchaný vzduch se vymění za čerstvý", [
+  choice("Proč je důležité místnost pravidelně větrat?", "Aby se vydýchaný vzduch vyměnil za čerstvý", [
     { value: "Aby se místnost ohřála", why: "Větráním se místnost spíš ochladí. Důvod je čerstvý vzduch." },
     { value: "Aby z pokoje odešel dusík", why: "Dusík nevadí, je ho venku stejně. Vadí vydýchaný vzduch." },
     { value: "Aby kyslík odešel ven", why: "Kyslík naopak potřebujeme dovnitř." },

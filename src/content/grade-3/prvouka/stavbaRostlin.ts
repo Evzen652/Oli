@@ -268,7 +268,7 @@ const L2: U[] = [
   },
   {
     q: "Proč jsou listy zelené?",
-    a: "Mají v sobě chlorofyl, který zachycuje sluneční světlo",
+    a: "Protože mají v sobě chlorofyl, který zachycuje sluneční světlo",
     emoji: "🍃",
     d: [
       ["Protože v nich koluje zelená voda z půdy", "Voda z půdy je průhledná a barvu listům nedává."],

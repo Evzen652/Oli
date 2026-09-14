@@ -154,7 +154,7 @@ const L2: PracticeTask[] = [
     hints: ["Který popis by šel nakreslit?", "Vzhled je vidět na obrázku. Povahu na obrázku nenakreslíš."],
     explanation: "Výška a šedivý vous jsou vidět — jde o vzhled.",
   }),
-  choice("Proč autor často vlastnost neřekne, ale ukáže ji na tom, co postava dělá?", "čtenář si ji domyslí a příběh je živější", [
+  choice("Proč autor často vlastnost neřekne, ale ukáže ji na tom, co postava dělá?", "protože si ji čtenář domyslí a příběh je živější", [
     { value: "protože autor neumí dobře psát", why: "Je to záměr, ne neumětelství." },
     { value: "protože je to v knihách zakázané", why: "Zakázané to není." },
     { value: "protože čtenáře to vůbec nebaví", why: "Naopak — čtenáře baví domýšlet." },
@@ -280,7 +280,7 @@ const L3: PracticeTask[] = [
     hints: ["Ve kterém úryvku postava mluví?", "Z toho, co a jak postava říká, poznáš její povahu — tady sebevědomí a odvahu."],
     explanation: "Honzova slova ukazují, že je odvážný a sebevědomý — poznáme to z řeči.",
   }),
-  choice("Proč nám může být sympatická i postava, která udělá chybu?", "chápeme, proč to udělala, a vidíme, že se snaží", [
+  choice("Proč nám může být sympatická i postava, která udělá chybu?", "protože chápeme, proč to udělala, a vidíme, že se snaží", [
     { value: "protože je hlavní postava", why: "Hlavní postava sympatická být nemusí." },
     { value: "protože je hezká", why: "Vzhled o sympatiích nerozhoduje." },
     { value: "protože má hezké jméno", why: "Jméno o sympatiích nerozhoduje." },
@@ -291,7 +291,7 @@ const L3: PracticeTask[] = [
   choice("Máš popsat svou oblíbenou postavu z knihy. Co do popisu dáš?", "vzhled, povahu a co v příběhu dělá", [
     { value: "jen jméno", why: "Jméno postavu nepopíše." },
     { value: "jen barvu oblečení", why: "To je jen malá část vzhledu." },
-    { value: "jen počet stran knihy", why: "To s postavou nesouvisí." },
+    { value: "vzhled a povahu, co v příběhu dělá ne", why: "Postavu poznáš hlavně podle činů. Do popisu patří i to, co dělá." },
   ], {
     hints: ["Co by kamarád potřeboval vědět, aby si postavu představil?", "Úplný popis postavy řekne, jak vypadá, jakou má povahu a jakou úlohu má v celém ději — tak si ji kamarád představí."],
     explanation: "Do popisu postavy patří vzhled, povaha a to, co v příběhu dělá.",

@@ -485,12 +485,12 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč vlaštovka na zimu odlétá do teplých krajů?",
-    correctAnswer: "V zimě u nás nenajde dost hmyzu, kterým se živí",
+    correctAnswer: "Protože v zimě u nás nenajde dost hmyzu, kterým se živí",
     options: [
       "Protože je jí v zimě jenom zima",
       "Protože se chce podívat do Afriky",
       "Protože v teple se jí líp spí zimní spánek",
-      "V zimě u nás nenajde dost hmyzu, kterým se živí",
+      "Protože v zimě u nás nenajde dost hmyzu, kterým se živí",
     ],
     emoji: "🐦",
     hints: [

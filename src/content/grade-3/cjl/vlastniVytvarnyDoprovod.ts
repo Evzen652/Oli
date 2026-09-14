@@ -66,7 +66,7 @@ const L1: PracticeTask[] = [
   choice("Čím může ilustrátor kreslit?", "pastelkami, barvami, tuší i na počítači", [
     { value: "jen obyčejnou tužkou", why: "Ilustrátor může použít mnoho technik." },
     { value: "jen fixami", why: "Fixy jsou jen jedna z možností." },
-    { value: "jen černou tuší", why: "Tuš je jen jedna z možností." },
+    { value: "pastelkami, barvami i tuší, na počítači ale ne", why: "Dnes vzniká spousta ilustrací i digitálně, v grafickém programu." },
   ], { hints: ["Musí mít všechny obrázky v knihách stejnou techniku?", "Výtvarník si vybere techniku, která se k příběhu hodí — ruční i digitální."], explanation: "Ilustrátor může použít pastelky, barvy, tuš i počítač." }),
   choice("Kam v knize obvykle patří ilustrace?", "blízko textu, ke kterému se vztahuje", [
     { value: "vždy až na úplný konec knihy", why: "Obrázek daleko od textu by čtenáře mátl." },

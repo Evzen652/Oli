@@ -408,7 +408,7 @@ const POOL_L2: PracticeTask[] = [
   ),
   q(
     "Proč se v uzavřené místnosti plné lidí brzy hůř dýchá?",
-    "Ubývá v ní kyslík a přibývá vydechovaný oxid uhličitý",
+    "Protože v ní ubývá kyslík a přibývá vydechovaný oxid uhličitý",
     [
       { o: "Protože se v ní hromadí dusík z dýchání", why: "Dusík lidé nevydechují víc, než kolik ho vdechnou." },
       { o: "Protože vzduch v místnosti přestane existovat", why: "Vzduch nezmizí, mění se jen jeho složení." },

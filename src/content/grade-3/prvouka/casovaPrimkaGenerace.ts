@@ -535,7 +535,7 @@ const POOL_L3: PracticeTask[] = [
   ),
   t(
     "Proč je užitečné povídat si s prarodiči o tom, jak žili, když byli malí?",
-    "Dozvíme se o minulosti od někoho, kdo ji sám zažil",
+    "Protože se o minulosti dozvíme od někoho, kdo ji sám zažil",
     [
       ["Protože v knihách o minulosti nic není", "V knihách o minulosti je hodně, ale prarodiče vyprávějí o vlastním životě a o tvé rodině."],
       ["Protože si nic jiného nepamatují", "O to nejde — cenné je, že minulost sami prožili."],

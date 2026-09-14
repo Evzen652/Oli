@@ -16,7 +16,7 @@ const L1: PracticeTask[] = [
   choice("Co patří k úpravě textu?", "nadpis, okraje a odstavce", [
     { value: "jen barva inkoustu", why: "Barva o přehlednosti nerozhoduje." },
     { value: "jen velikost písma", why: "Písmo je jen jedna část úpravy." },
-    { value: "jen počet stran", why: "Počet stran s úpravou nesouvisí." },
+    { value: "nadpis a okraje, odstavce ne", why: "Bez odstavců splyne text v jeden blok a špatně se v něm hledá." },
   ], { hints: ["Co všechno dělá stránku přehlednou?", "Úprava není jen písmo: patří k ní i název nahoře, volné místo po stranách a členění na části."], explanation: "K úpravě patří nadpis, okraje a odstavce." }),
   choice("Kdy začínáme nový odstavec?", "když začíná nová myšlenka", [
     { value: "po každé větě", why: "Pak by byl každý řádek odstavcem." },

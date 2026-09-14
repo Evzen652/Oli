@@ -242,7 +242,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Nedívej se na to, kde zvíře žije, ale jak dýchá.", "Ryba dýchá žábrami pod vodou. Velryba se musí chodit nadechovat k hladině — čím asi dýchá? A čím krmí mládě?"],
     explanation: "Velryba dýchá plícemi, a proto se vynořuje k hladině. Mládě rodí živé a kojí ho mlékem. To jsou znaky savců. Tvar těla má podobný rybě jen proto, že obě žijí ve vodě.",
   }),
-  choice("Netopýr létá a v noci loví hmyz jako vlaštovka. Proč ho přesto řadíme jinam než ji?", "Má srst a mláďata kojí", [
+  choice("Netopýr létá a v noci loví hmyz jako vlaštovka. Proč ho přesto řadíme jinam než ji?", "Protože má srst a mláďata kojí", [
     { value: "Protože létá jen v noci", why: "Doba lovu o skupině nerozhoduje. V noci loví i sovy, a ty jsou ptáci." },
     { value: "Protože má křídla z peří", why: "Netopýr peří nemá. Křídla má z tenké kožní blány." },
     { value: "Protože se orientuje sluchem", why: "Sluchem se orientují i sovy. O zařazení rozhoduje stavba těla a péče o mláďata." },
@@ -250,7 +250,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Rozhoduje stavba těla a péče o mláďata, ne způsob pohybu.", "Vlaštovka má peří a mláďata se jí líhnou z vajec. Co má netopýr na těle a čím krmí svá mláďata?"],
     explanation: "Netopýr má srst, rodí živá mláďata a kojí je mlékem — je to savec. Létání o zařazení nerozhoduje. Vlaštovka má peří a klade vejce, je to pták.",
   }),
-  choice("Tučňák nelétá a skvěle plave. Proč je to přesto pták?", "Má peří a líhne se z vejce", [
+  choice("Tučňák nelétá a skvěle plave. Proč je to přesto pták?", "Protože má peří a líhne se z vejce", [
     { value: "Protože žije v chladném kraji", why: "V chladu žijí i tuleni, a ti jsou savci. Místo pobytu o skupině nerozhoduje." },
     { value: "Protože má ploutve jako ryby", why: "Tučňák nemá ploutve, ale křídla, kterými pod vodou pádluje." },
     { value: "Protože chodí po dvou nohách", why: "Po dvou nohách chodí i člověk, a ten je savec." },
@@ -258,7 +258,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Zkus zapomenout, že tučňák nelétá. Jaké má tělo a jak přichází na svět?", "Létání ani plavání o skupině nerozhoduje. Rozhoduje, co pokrývá tělo a jestli mládě vylézá z vejce."],
     explanation: "Tučňák má husté krátké peří a mládě se mu líhne z vejce. Křídla má, jen je používá k plavání. To stačí k tomu, aby byl pták.",
   }),
-  choice("Ptakopysk klade vejce. Proč ho přesto řadíme mezi savce?", "Mláďata kojí a má srst", [
+  choice("Ptakopysk klade vejce. Proč ho přesto řadíme mezi savce?", "Protože kojí mláďata a má srst", [
     { value: "Protože žije ve vodě", why: "Ve vodě žijí ryby, žáby i kachny. Místo, kde zvíře žije, o zařazení nerozhoduje." },
     { value: "Protože má zobák jako kachna", why: "Zobák by spíš vedl k ptákům. Rozhodují jiné znaky." },
     { value: "Protože ho tam zařadili omylem", why: "Není to omyl. Ptakopysk má dva hlavní znaky savců." },
@@ -266,7 +266,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Který znak mají všichni savci, i ti nejpodivnější?", "Ptakopysk je výjimka, protože klade vejce. Ale co udělá s mládětem, když se vylíhne? A co má na těle?"],
     explanation: "Ptakopysk je vzácná výjimka: klade vejce, ale vylíhlé mládě kojí mlékem a tělo má pokryté srstí. Kojení a srst jsou znaky savců, proto mezi ně patří.",
   }),
-  choice("Krtek žije pod zemí a skoro nevidí. Proč je to savec?", "Má hebkou srst a kojí mláďata", [
+  choice("Krtek žije pod zemí a skoro nevidí. Proč je to savec?", "Protože má hebkou srst a kojí mláďata", [
     { value: "Protože žije v podzemních chodbách", why: "Pod zemí žijí i žížaly nebo larvy hmyzu. Místo pobytu o skupině nerozhoduje." },
     { value: "Protože se živí žížalami", why: "Žížalami se živí i kos, a ten je pták. Potrava o skupině nerozhoduje." },
     { value: "Protože nemá křídla", why: "Křídla nemají ani ryby, plazi nebo žáby. Chybějící křídla ze zvířete savce nedělají." },
@@ -282,7 +282,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Proč by pták potřeboval dlouhé nohy a dlouhý zobák zrovna ve vodě?", "Dlouhé nohy mu dovolí stát ve vodě a dlouhý krk se zobákem rychle bodne pod hladinu. Co se tam pohybuje?"],
     explanation: "Takhle vypadá brodivý pták, třeba volavka nebo čáp. Na dlouhých nohách stojí v mělké vodě a dlouhým krkem a zobákem rychle chytá žáby a rybky.",
   }),
-  choice("Proč savci nemusí na zimu odlétat do teplých krajin?", "Srst je hřeje a potravu najdou", [
+  choice("Proč savci nemusí na zimu odlétat do teplých krajin?", "Protože je hřeje srst a potravu si najdou", [
     { value: "Protože v zimě vůbec nejedí", why: "Většina savců v zimě jí. Bez jídla přečká zimu jen ten, kdo spí a žije z tuku." },
     { value: "Protože se jim v zimě zrychlí dech", why: "Rychlejší dech je nezahřeje. Teplo drží u těla hustá srst." },
     { value: "Protože všichni savci zimu prospí", why: "Zimu prospí jen někteří, třeba ježek. Srnec, liška nebo zajíc jsou vzhůru." },

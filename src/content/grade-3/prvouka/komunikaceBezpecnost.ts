@@ -176,7 +176,7 @@ const POOL_L1: PracticeTask[] = [
     [
       ["Jen fyzická (bití, strkání)", "Nejen — ubližovat se dá i slovy a vylučováním z party."],
       ["Jen psychická (posměch)", "Nejen — patří sem i bití a strkání."],
-      ["Jen slovní nadávky", "Nadávky jsou jen jedna podoba. Šikana může být i fyzická."],
+      ["Fyzická i psychická, ale musí u toho být víc útočníků", "Ubližovat může i jediný člověk. Počet útočníků o šikaně nerozhoduje."],
     ],
     "Ubližovat se dá tělem, ale i slovy.",
     "Vzpomeň si: bití a strkání je jeden druh, posměch a nechat někoho stranou je druhý. Patří k šikaně jen jeden z nich, nebo oba?",

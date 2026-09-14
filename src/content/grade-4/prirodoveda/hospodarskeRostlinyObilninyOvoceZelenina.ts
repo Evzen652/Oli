@@ -196,7 +196,7 @@ const POOL_L2: PracticeTask[] = [
     hints: ["Co zůstane ve sklepě, když brambora na jaře vyklíčí?", "Z brambory ve sklepě na jaře vyrostou klíčky. Když ji dáš do země, vyroste z ní celá nová rostlina."],
     explanation: "Brambory se sázejí jako hlízy nebo jejich kousky s očky. Z oček vyrostou klíčky a z nich nová rostlina, pod kterou se v zemi vytvoří nové hlízy.",
   }),
-  choice("Proč lidé pěstují obilí víc než jiné plodiny?", "Ze zrna je mouka na hlavní potraviny", [
+  choice("Proč lidé pěstují obilí víc než jiné plodiny?", "Protože ze zrna je mouka na hlavní potraviny", [
     { value: "Protože nepotřebuje vodu", why: "Obilí potřebuje vodu jako každá rostlina. Při suchu dá malou úrodu." },
     { value: "Protože se nemusí sklízet", why: "Obilí se sklízí kombajnem, bez sklizně by zrna vypadala." },
     { value: "Protože jíme jeho listy", why: "U obilí jíme zrna, ne listy." },
@@ -239,7 +239,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Ne všechno, co roste pod zemí, je kořen.", "Mrkev je kořen, ale brambora ne — vyrůstají z ní klíčky a má očka. Jak se takové zásobárně pod zemí říká?"],
     explanation: "U brambor jíme hlízy. Jsou to podzemní zásobárny, ze kterých vyrážejí klíčky. Kořeny jsou tenké a nejí se. Plody jsou zelené bobulky nad zemí a jsou jedovaté.",
   }),
-  choice("Rajče v kuchyni počítáme k zelenině. Proč ho přírodovědec nazve plodem?", "Vzniká z květu a nese semena", [
+  choice("Rajče v kuchyni počítáme k zelenině. Proč ho přírodovědec nazve plodem?", "Protože vzniká z květu a nese semena", [
     { value: "Protože roste nad zemí", why: "Nad zemí rostou i listy a stonky. Plod poznáš podle květu a semen." },
     { value: "Protože je červené a šťavnaté", why: "Barva ani šťáva nerozhoduje. Rozhoduje, z čeho vzniklo a co nese." },
     { value: "Protože roste na stromě", why: "Rajče neroste na stromě, ale na bylině. A plody mají i byliny." },
@@ -255,7 +255,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Každá rostlina bere z půdy jiné živiny.", "Když rok co rok roste na poli totéž, co se stane s živinami, které ta rostlina potřebuje? A komu se tam bude dařit?"],
     explanation: "Stejná plodina bere z půdy každý rok stejné živiny, až jich ubude. A škůdci a choroby, které ji napadají, se na poli rok od roku množí. Proto se plodiny na poli střídají.",
   }),
-  choice("Proč zemědělci sypou na pole hnůj nebo kompost?", "Vrací do půdy živiny, které rostliny spotřebovaly", [
+  choice("Proč zemědělci sypou na pole hnůj nebo kompost?", "Aby se do půdy vrátily živiny, které rostliny spotřebovaly", [
     { value: "Aby odehnal ptáky", why: "Hnůj ptáky neodhání. Slouží jako hnojivo." },
     { value: "Aby byla půda tvrdší", why: "Hnůj a kompost dělají půdu kyprou a úrodnou, ne tvrdou." },
     { value: "Aby rostliny nepotřebovaly vodu", why: "Vodu rostliny potřebují vždycky. Hnůj jim dodává živiny." },

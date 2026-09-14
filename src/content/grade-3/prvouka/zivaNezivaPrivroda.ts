@@ -340,7 +340,7 @@ const POOL_L2: PracticeTask[] = [
   ),
   q(
     "Proč rostliny potřebují světlo?",
-    "K fotosyntéze — výrobě potravy",
+    "Aby si fotosyntézou vyrobily potravu",
     [
       { o: "Aby se mohly pohybovat", why: "Rostlina se z místa nepohybuje, světlo k tomu nepotřebuje." },
       { o: "Aby mohly dýchat", why: "Dýchat rostlina dokáže i ve tmě, k dýchání světlo nutné není." },

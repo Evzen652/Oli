@@ -124,7 +124,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Operátor se tě ptá na podrobnosti. Co všechno mu řekneš?", "Kde to je, co se stalo, kolik je zraněných a kdo volá", [
     { value: "Jen adresu, na víc se stejně nikdo neptá", why: "Operátor potřebuje vědět i co se stalo a kolik lidí je zraněno, aby poslal správnou pomoc." },
     { value: "Jen své jméno a číslo telefonu", why: "Bez místa a popisu neštěstí pomoc nemůže vyjet." },
-    { value: "Jen to, jak k tomu zranění došlo", why: "Nejdůležitější je místo. Samotný popis nestačí." },
+    { value: "Kde to je a co se stalo, zbytek operátor nepotřebuje", why: "Potřebuje i počet zraněných, aby poslal dost sanitek, a kdo volá, kdyby se hovor přerušil." },
   ], {
     hints: ["Záchranáři musí vědět, kam jet a co je tam čeká.", "Pomůže ti čtveřice otázek: kde, co, kolik a kdo. Která odpověď obsahuje všechny?"],
     explanation: "Operátorovi řekneš: kde se to stalo, co se stalo, kolik je zraněných a kdo volá. Podle toho pošle správnou pomoc. Hovor pak ukončí on.",

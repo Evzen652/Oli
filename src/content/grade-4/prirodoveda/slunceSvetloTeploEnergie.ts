@@ -243,7 +243,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Vzdálenost od Slunce tedy roční období nezpůsobuje. Co jiného se v zimě mění?", "Podívej se v lednu v poledne, jak vysoko je Slunce, a spočítej, kolik hodin je světlo. A v červenci?"],
     explanation: "Roční období nezpůsobuje vzdálenost od Slunce. V zimě je Slunce nízko, paprsky dopadají šikmo a slabě hřejí, a den je krátký. V létě je Slunce vysoko a svítí dlouho.",
   }),
-  choice("Měsíc v noci svítí. Proč přesto není hvězda?", "Jen odráží světlo Slunce", [
+  choice("Měsíc v noci svítí. Proč přesto není hvězda?", "Protože jen odráží světlo Slunce", [
     { value: "Protože je menší než Země", why: "Velikost nerozhoduje. Rozhoduje, jestli těleso samo svítí." },
     { value: "Protože svítí jen v noci", why: "Hvězdy také vidíme jen v noci. Rozdíl je, že Měsíc světlo jen odráží." },
     { value: "Protože má kráter", why: "Krátery o tom nerozhodují. Hvězda sama vyrábí světlo." },

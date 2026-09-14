@@ -17,7 +17,7 @@ const L1: PracticeTask[] = [
   choice("Co při kontrole textu hlídáme?", "pravopis, velká písmena, interpunkci i smysl", [
     { value: "jen počet slov v celém textu", why: "Počet slov chyby neodhalí." },
     { value: "jen to, jak dlouhé jsou věty", why: "Délka vět o chybách nic neříká." },
-    { value: "jen barvu propisky, kterou píšu", why: "Barva nemá s chybami nic společného." },
+    { value: "pravopis a velká písmena, smysl textu ne", why: "I bezchybně napsaná věta může být nesrozumitelná. Smysl kontrolujeme taky." },
   ], { hints: ["Stačí zkontrolovat jen jednu věc?", "Chyba se může skrýt v písmenu, ve znaménku na konci věty i v tom, že věta čtenáři nic neřekne."], explanation: "Kontrolujeme pravopis, velká písmena, interpunkci i to, jestli text dává smysl." }),
   choice("Jak opravíme chybné slovo v sešitě?", "jednou čarou ho přeškrtneme a napíšeme ho znovu", [
     { value: "zamažeme ho, až není vidět", why: "Zamazaná skvrna je nepřehledná." },

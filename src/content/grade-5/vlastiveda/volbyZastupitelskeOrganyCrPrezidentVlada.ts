@@ -171,7 +171,7 @@ const L2: PracticeTask[] = [
     hints: ["Kdo z nich zastupuje stát navenek a kdo vede ministry?", "Prezident sídlí na Hradě a jmenuje premiéra; premiér pak s ministry každý den spravuje stát."],
     explanation: "Prezident je hlava státu, premiér stojí v čele vlády.",
   }),
-  choice("Proč mají senátoři delší volební období než poslanci?", "aby byl Senát stabilnější a nepodléhal náladám", [
+  choice("Proč mají senátoři delší volební období než poslanci?", "protože tak je Senát stabilnější a nepodléhá náladám", [
     { value: "protože senátoři jsou starší", why: "Věk s délkou období nesouvisí." },
     { value: "protože Senát schvaluje státní rozpočet", why: "Rozpočet schvaluje jen Poslanecká sněmovna." },
     { value: "protože senátory jmenuje prezident", why: "Senátory volí občané." },
@@ -262,7 +262,7 @@ const L3: PracticeTask[] = [
     hints: ["Vzpomeň si, kdo jmenuje premiéra a ministry.", "Občané volí parlament, zastupitelstva i prezidenta. Jeden orgán ale vzniká jmenováním."],
     explanation: "Vládu občané nevolí: premiéra a ministry jmenuje prezident a vláda pak potřebuje důvěru Sněmovny.",
   }),
-  choice("Proč komunistický režim nebyl demokracií?", "volby nebyly svobodné a vládla jedna strana", [
+  choice("Proč komunistický režim nebyl demokracií?", "protože volby nebyly svobodné a vládla jedna strana", [
     { value: "protože se nevolil prezident", why: "Prezidenta formálně volilo Národní shromáždění — problém byl jinde." },
     { value: "protože neexistoval parlament", why: "Parlament existoval, ale jen schvaloval, co chtěla komunistická strana." },
     { value: "protože vládl král", why: "Československo bylo za komunismu republikou." },
@@ -302,7 +302,7 @@ const L3: PracticeTask[] = [
     hints: ["Kdo jmenoval i předchozího premiéra?", "Premiéra jmenuje hlava státu — obvykle po jednání s vítězi voleb do Sněmovny."],
     explanation: "Premiéra jmenuje prezident; nová vláda pak žádá Sněmovnu o důvěru.",
   }),
-  choice("Proč musí mít vláda důvěru Sněmovny?", "aby ji kontrolovali zástupci zvolení lidmi", [
+  choice("Proč musí mít vláda důvěru Sněmovny?", "protože ji mají kontrolovat zástupci zvolení lidmi", [
     { value: "protože Sněmovna řídí ministerstva", why: "Ministerstva řídí ministři, ne poslanci." },
     { value: "protože vládu platí Senát", why: "Senát vládu neplatí ani nekontroluje." },
     { value: "protože je to jen tradice", why: "Je to pravidlo ústavy, ne jen zvyk." },

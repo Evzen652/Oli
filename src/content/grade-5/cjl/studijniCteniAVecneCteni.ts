@@ -115,7 +115,7 @@ const L2: PracticeTask[] = [
     hints: ["Jak rychle zjistíš, na které straně začíná část o savcích?", "Obsah je jako mapa knihy: názvy částí a čísla, kde je najdeš."],
     explanation: "Obsah ukáže, jaké kapitoly kniha má a na které straně začínají.",
   }),
-  choice("Proč si při čtení naučného textu klást otázky?", "pomůžou mi hledat a pochopit to podstatné", [
+  choice("Proč si při čtení naučného textu klást otázky?", "aby mi pomohly hledat a pochopit to podstatné", [
     { value: "aby bylo čtení delší", why: "Otázky čtení neprodlužují, ale zaměřují." },
     { value: "aby se text nemusel dočíst", why: "Otázky čtení nenahradí." },
     { value: "aby text vypadal jinak", why: "Text se otázkami nemění." },

@@ -230,7 +230,7 @@ const L3: PracticeTask[] = [
     hints: ["Co by se stalo, kdyby si každý návštěvník utrhl jednu květinu?", "Vzácné rostliny přežijí jen tam, kde rostou; kytka ve váze nevykvete znovu a nevytvoří semena."],
     explanation: "Vzácnou rostlinu necháme růst — jen tak se udrží.",
   }),
-  choice("Proč je důležité propojit chráněná území zelenými pásy?", "živočichové se mohou stěhovat mezi nimi", [
+  choice("Proč je důležité propojit chráněná území zelenými pásy?", "aby se živočichové mohli stěhovat mezi nimi", [
     { value: "aby se mezi nimi dalo jezdit autem", why: "Pásy slouží zvířatům, ne autům." },
     { value: "aby byla území přehlednější na mapě", why: "Nejde o mapu." },
     { value: "aby se v pásech mohlo lovit", why: "Pásy mají zvířatům pomáhat." },

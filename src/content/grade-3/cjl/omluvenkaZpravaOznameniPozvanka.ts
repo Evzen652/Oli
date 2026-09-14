@@ -26,7 +26,7 @@ const L1: PracticeTask[] = [
   choice("Co musí obsahovat pozvánka?", "co se koná, kdy, kde a kdo zve", [
     { value: "jen datum", why: "Pozvaný by nevěděl kam a na co." },
     { value: "jen adresu", why: "Pozvaný by nevěděl kdy." },
-    { value: "jen seznam dárků", why: "Dárky na pozvánku nepatří." },
+    { value: "co se koná a kdy, místo si pozvaný najde sám", why: "Bez adresy pozvaný nedorazí. Místo na pozvánku patří." },
   ], { hints: ["Co všechno musí pozvaný vědět, aby dorazil?", "Na akci trefíš, jen když víš, o jakou jde, v kolik a na jaké adrese — a od koho je pozvání."], explanation: "Pozvánka říká co, kdy, kde a kdo zve." }),
   choice("Co je oznámení?", "sdělení pro mnoho lidí najednou", [
     { value: "soukromý dopis jednomu člověku", why: "Dopis je pro jednoho." },

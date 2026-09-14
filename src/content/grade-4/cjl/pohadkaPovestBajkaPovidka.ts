@@ -175,7 +175,7 @@ const L2: PracticeTask[] = [
     bajka: "Nevystupují tu zvířata s ponaučením.",
   }, ["Mohlo se to stát doopravdy?", "Nová škola, strach a kamarádka — obyčejná událost ze života bez kouzel a bez zvířat."],
   "Obyčejná událost ze školy bez kouzel je povídka."),
-  choice("Čím se liší pověst od pohádky?", "pověst se váže ke skutečnému místu", [
+  choice("Čím se liší pověst od pohádky?", "protože se pověst váže ke skutečnému místu", [
     { value: "pověst je vždycky veselá", why: "Pověsti bývají i smutné (mistr Hanuš)." },
     { value: "pověst má vždy zvířata", why: "Zvířata jednající jako lidé jsou typická pro bajku." },
     { value: "pověst nemá žádné postavy", why: "Pověsti mají postavy — Libuši, rytíře, knížata." },
@@ -230,7 +230,7 @@ const L3: PracticeTask[] = [
     hints: ["Proč cvrček v zimě neměl co jíst?", "Mravenec pracoval, cvrček celé léto jen zpíval. Ponaučení říká, co se stane, když nemyslíme dopředu."],
     explanation: "Cvrček v létě nepracoval a v zimě neměl nic. Ponaučení: Kdo si v létě nepřipraví zásoby, v zimě hladoví.",
   }),
-  choice("Proč pověst o Blanických rytířích vypráví o skutečné hoře?", "pověst se váže ke skutečnému místu", [
+  choice("Proč pověst o Blanických rytířích vypráví o skutečné hoře?", "protože se pověst váže ke skutečnému místu", [
     { value: "protože je to pohádka", why: "Pohádka skutečné místo nepotřebuje." },
     { value: "protože hora je vymyšlená", why: "Blaník je skutečná hora." },
     { value: "protože je to bajka", why: "Bajka je o zvířatech s ponaučením." },
@@ -238,7 +238,7 @@ const L3: PracticeTask[] = [
     hints: ["Kde leží Blaník?", "Pověsti vznikaly tak, že si lidé vyprávěli o místech, která znali — a přidávali k nim neskutečné věci."],
     explanation: "Pověst vždy vychází ze skutečného místa, osoby nebo události — u Blanických rytířů je to skutečná hora Blaník.",
   }),
-  choice("Proč příběh o tom, jak si Petra zlomila ruku na bruslích, není pohádka?", "nejsou v něm kouzla a mohl se opravdu stát", [
+  choice("Proč příběh o tom, jak si Petra zlomila ruku na bruslích, není pohádka?", "protože v něm nejsou kouzla a mohl se opravdu stát", [
     { value: "protože je krátký", why: "Pohádky bývají také krátké." },
     { value: "protože v něm vystupuje dívka", why: "Dívky vystupují i v pohádkách (Popelka)." },
     { value: "protože se odehrává v zimě", why: "Roční období o druhu příběhu nerozhoduje." },

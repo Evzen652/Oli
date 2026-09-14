@@ -630,11 +630,11 @@ const POOL_L3: PracticeTask[] = [
   },
   {
     question: "Proč nejdřív sháníme dospělého, i když sami známe tísňová čísla?",
-    correctAnswer: "Dospělý líp posoudí, co se stalo, a dokáže pomoc lépe zvládnout",
+    correctAnswer: "Protože dospělý líp posoudí, co se stalo, a pomoc lépe zvládne",
     options: [
       "Protože děti nesmí nikdy nikomu pomáhat",
       "Protože tísňová čísla fungují jen dospělým",
-      "Dospělý líp posoudí, co se stalo, a dokáže pomoc lépe zvládnout",
+      "Protože dospělý líp posoudí, co se stalo, a pomoc lépe zvládne",
       "Protože dospělý musí dát svolení, jinak se volat nesmí",
     ],
     emoji: "🧑‍🚒",

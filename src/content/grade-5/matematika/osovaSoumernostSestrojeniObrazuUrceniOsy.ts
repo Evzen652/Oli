@@ -152,7 +152,7 @@ const L1: PracticeTask[] = [
   choice("Jak může být osa souměrnosti položená?", "svisle, vodorovně i šikmo", [
     { value: "jen svisle", why: "Svislá osa je nejznámější, ale třeba obdélník má i vodorovnou." },
     { value: "jen vodorovně", why: "Vodorovná osa je jen jedna z možností, čtverec má osy i šikmé." },
-    { value: "jen svisle nebo vodorovně", why: "Úhlopříčky čtverce vedou šikmo, a přesto jsou to osy souměrnosti." },
+    { value: "svisle, vodorovně i šikmo, ale vždy jen jedna", why: "Čtverec má rovnou čtyři osy souměrnosti, kruh dokonce nekonečně mnoho." },
   ], {
     hints: [
       "Vzpomeň si na čtverec: podle kterých všech čar ho můžeš přeložit, aby se půlky kryly?",

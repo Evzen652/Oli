@@ -227,7 +227,7 @@ const L3: PracticeTask[] = [
   choice("Chceš zjistit, co znamená slovo „ekosystém“, a pak si přečíst víc o lese. Co použiješ?", "slovník a pak encyklopedii", [
     { value: "jen dnešní noviny", why: "Noviny slovo nevysvětlí a o lese nemusí psát." },
     { value: "jen atlas světa", why: "Atlas má mapy." },
-    { value: "jen zpěvník písniček", why: "Ve zpěvníku jsou písničky." },
+    { value: "encyklopedii a pak slovník", why: "Pořadí je obrácené: nejdřív zjistíš, co slovo znamená, pak hledáš podrobnosti." },
   ], {
     hints: ["Máš dva úkoly. Který zdroj se hodí na který?", "Na význam slova je jeden druh knihy, na fakta o přírodě jiný. Použiješ oba."],
     explanation: "Význam slova najdeme ve slovníku, podrobnosti o lese v encyklopedii.",
@@ -267,7 +267,7 @@ const L3: PracticeTask[] = [
   choice("Chceš vědět, jak se anglicky řekne „strom“ a co přesně je strom podle přírodopisu. Co potřebuješ?", "překladový slovník i encyklopedii", [
     { value: "jen překladový slovník", why: "Ten slovo přeloží, ale nevysvětlí stavbu stromu." },
     { value: "jen encyklopedii", why: "Ta vysvětlí strom, ale nepřeloží." },
-    { value: "jen noviny", why: "Noviny ani jedno nesplní." },
+    { value: "výkladový slovník i encyklopedii", why: "Výkladový slovník vysvětluje česky, nepřekládá. Na angličtinu je překladový." },
   ], {
     hints: ["Kolik máš úkolů a na co je který zdroj?", "Jeden úkol je překlad, druhý vysvětlení z přírodopisu. Každý potřebuje jiný zdroj."],
     explanation: "Na překlad je překladový slovník, na vysvětlení z přírodopisu encyklopedie.",

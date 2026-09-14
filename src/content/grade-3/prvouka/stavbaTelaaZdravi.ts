@@ -586,7 +586,7 @@ const L3: U[] = [
   },
   {
     q: "Proč mají lidé, kteří se málo hýbou, slabší srdce?",
-    a: "Je to sval a bez zátěže slábne jako každý jiný",
+    a: "Protože je to sval a bez zátěže slábne jako každý jiný",
     emoji: "🫀",
     d: [
       ["Protože se jim bez pohybu netvoří krev", "Krev se tvoří v kostní dřeni bez ohledu na pohyb."],

@@ -533,7 +533,7 @@ const L3: U[] = [
   },
   {
     q: "Proč stojí na začátku každého potravního řetězce rostlina?",
-    a: "Jen rostlina si umí vyrobit potravu sama",
+    a: "Protože si jen rostlina umí vyrobit potravu sama",
     d: [
       ["Protože je vždy největší", "Velikost nerozhoduje — tráva je menší než kobylka, a přesto je na začátku."],
       ["Protože ji jedí úplně všichni živočichové", "Masožravci rostliny nejedí. Rozhoduje, že rostlina nikoho jíst nemusí."],

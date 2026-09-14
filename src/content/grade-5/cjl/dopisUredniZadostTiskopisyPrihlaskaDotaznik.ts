@@ -130,7 +130,7 @@ const L2: PracticeTask[] = [
     hints: ["Na co se adresát zeptá, když žádost dostane?", "Adresát potřebuje vědět, co chceš, proč to chceš a kdo žádost píše."],
     explanation: "Žádost obsahuje, o co žádáme, proč, a podpis pisatele.",
   }),
-  choice("Proč se v úředním dopise píše Vám a Vás s velkým V?", "vyjadřujeme úctu k oslovenému člověku", [
+  choice("Proč se v úředním dopise píše Vám a Vás s velkým V?", "protože tím vyjadřujeme úctu k oslovenému člověku", [
     { value: "protože je to začátek věty", why: "Velké V se píše i uprostřed věty." },
     { value: "protože se tak píše vždycky a všude", why: "V běžném textu se píše malé v." },
     { value: "protože je to jméno", why: "Není to jméno, ale zájmeno." },

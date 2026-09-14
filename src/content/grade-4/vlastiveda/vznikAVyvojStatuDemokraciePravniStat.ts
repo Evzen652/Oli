@@ -329,7 +329,7 @@ const POOL_L3: PracticeTask[] = [
     hints: ["Co chce víc dětí?", "Většina rozhodne, kam se pojede. Ale co s těmi, kdo chtěli jinam — mají se jejich názory ignorovat?"],
     explanation: "V demokracii rozhoduje většina, takže třída pojede do zoo. Menšinu je ale dobré vyslechnout — třeba se na hrad pojede příště.",
   }),
-  choice("Proč je dobré, že jsou zákony zapsané a veřejné?", "Každý může zjistit, co smí a co ne", [
+  choice("Proč je dobré, že jsou zákony zapsané a veřejné?", "Aby si každý mohl zjistit, co smí a co ne", [
     { value: "Aby je nikdo nemusel číst", why: "Zákony jsou veřejné právě proto, aby je každý mohl číst." },
     { value: "Aby se daly často měnit", why: "Veřejnost zákonů nesouvisí s tím, jak často se mění." },
     { value: "Aby je znali jen soudci", why: "Znát je může každý, nejen soudci." },
