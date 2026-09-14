@@ -57,7 +57,7 @@ const POOL_L1: PracticeTask[] = [
     "Co se stane s vodou v rybníce, když ji celý den zahřívá slunce?",
     "Vypaří se a stoupá jako neviditelná pára do vzduchu",
     [
-      { o: "Zůstane v rybníce úplně beze změny", why: "Slunce hladinu zahřívá, takže se něco dít musí — v horku hladina klesá." },
+      { o: "Zůstane v rybníce pořád úplně beze změny, jen se ohřeje", why: "Slunce hladinu zahřívá, takže se něco dít musí — v horku hladina klesá." },
       { o: "Promění se rovnou v led", why: "Led vzniká při mrazu, ne při zahřívání." },
       { o: "Vsákne se hluboko pod zem", why: "Dno rybníka je utěsněné bahnem. V horkém dni ubývá voda hlavně z hladiny." },
     ],
@@ -71,7 +71,7 @@ const POOL_L1: PracticeTask[] = [
     "Co se stane s vodou v louži po dešti, když na ni celé odpoledne svítí slunce?",
     "Postupně se vypaří a promění se v páru",
     [
-      { o: "Zůstane stejně velká", why: "Na slunci louže viditelně ubývá, od kraje se zmenšuje." },
+      { o: "Zůstane na místě pořád stejně velká", why: "Na slunci louže viditelně ubývá, od kraje se zmenšuje." },
       { o: "Promění se v led", why: "Led vzniká při mrazu, ne na rozpáleném chodníku." },
       { o: "Změní se na sníh", why: "Sníh padá z mraků v zimě, na chodníku v létě nevzniká." },
     ],
@@ -85,7 +85,7 @@ const POOL_L1: PracticeTask[] = [
     "Co vznikne, když se stoupající vodní pára vysoko v atmosféře ochladí?",
     "Oblaka — drobné kapičky vody",
     [
-      { o: "Rovnou déšť bez oblaků", why: "Déšť padá až z oblaku, ne přímo z páry." },
+      { o: "Rovnou déšť, žádné oblaky", why: "Déšť padá až z oblaku, ne přímo z páry." },
       { o: "Sníh, i v létě", why: "Sníh v létě roztaje ještě ve vzduchu, k zemi dopadá jen v zimě." },
       { o: "Duha", why: "Duha vzniká lomem světla v dešťových kapkách, ne ochlazením páry." },
     ],
@@ -115,7 +115,7 @@ const POOL_L1: PracticeTask[] = [
     [
       { o: "Teplé, studené a vlažné", why: "To je teplota, ne skupenství." },
       { o: "Mořské, říční a dešťové", why: "To je původ vody, ne její skupenství." },
-      { o: "Pitné, užitkové a odpadní", why: "To je rozdělení podle použití, ne podle skupenství." },
+      { o: "Pitné, užitkové, dešťové a odpadní (splašky)", why: "To je rozdělení podle použití, ne podle skupenství." },
     ],
     [
       "Vzpomeň si na kostku v mrazáku a na obláček nad hrncem.",
@@ -156,7 +156,7 @@ const POOL_L1: PracticeTask[] = [
     "Voda čistá a bezpečná, kterou můžeme pít",
     [
       { o: "Voda z moře, která je slaná", why: "Mořská voda se pít nedá, po slané vodě je člověku ještě hůř." },
-      { o: "Voda, která teče jen z kohoutku", why: "Pitná voda je i ve studni nebo v láhvi, nejen v kohoutku." },
+      { o: "Voda, která teče jenom z vodovodního kohoutku", why: "Pitná voda je i ve studni nebo v láhvi, nejen v kohoutku." },
       { o: "Jakákoli voda v přírodě", why: "Voda z potoka může obsahovat bakterie a nečistoty." },
     ],
     [
@@ -199,7 +199,7 @@ const POOL_L1: PracticeTask[] = [
     [
       { o: "Vysycháním mořské vody", why: "Vysycháním moře vzniká sůl, ne půda." },
       { o: "Smícháním písku s vodou", why: "Z písku a vody vznikne bláto, ne úrodná půda." },
-      { o: "Rostliny ji vyrábějí z listů", why: "Spadané listí se musí nejdřív rozložit, sama rostlina půdu nevyrobí." },
+      { o: "Rostliny ji vyrábějí ze svých spadaných listů", why: "Spadané listí se musí nejdřív rozložit, sama rostlina půdu nevyrobí." },
     ],
     [
       "Trvá to tisíce let a podílejí se na tom dvě různé věci.",
@@ -257,7 +257,7 @@ const POOL_L2: PracticeTask[] = [
     "Vypaří se, vytvoří oblaka a znovu spadne jako srážky",
     [
       { o: "Navždy zůstane jen v moři", why: "Slunce hladinu moře zahřívá a voda se z ní odpařuje dál." },
-      { o: "Promění se v led na dně moře", why: "Na mořském dně je sice chladno, ale led tam nevzniká." },
+      { o: "Promění se v led na mořském dně a zůstane tam", why: "Na mořském dně je sice chladno, ale led tam nevzniká." },
       { o: "Zmizí beze stopy", why: "Voda nikdy nemizí, jen mění skupenství a místo." },
     ],
     [
@@ -271,7 +271,7 @@ const POOL_L2: PracticeTask[] = [
     "Výpar, oblaka, srážky (déšť/sníh), řeky, moře",
     [
       { o: "Srážky, výpar, moře, oblaka, řeky", why: "Srážky nemohou být první — nejdřív musí vzniknout oblaka." },
-      { o: "Oblaka, moře, výpar, řeky, srážky", why: "Oblaka nevzniknou dřív, než se voda odpaří." },
+      { o: "Oblaka, moře, výpar, řeky, srážky (déšť)", why: "Oblaka nevzniknou dřív, než se voda odpaří." },
       { o: "Řeky, srážky, moře, výpar, oblaka", why: "Řeka odvádí vodu až po dešti, na začátku stát nemůže." },
     ],
     [
@@ -312,7 +312,7 @@ const POOL_L2: PracticeTask[] = [
     "Kdy je nejlepší zalévat zahradu, aby se šetřilo vodou?",
     "Ráno nebo večer, kdy voda tolik nevysychá",
     [
-      { o: "V poledne na plném slunci", why: "V poledne se velká část vody odpaří dřív, než ji rostlina využije." },
+      { o: "V poledne, kdy nejvíc svítí slunce", why: "V poledne se velká část vody odpaří dřív, než ji rostlina využije." },
       { o: "Kdykoli, na tom nezáleží", why: "Na denní době záleží, rozdíl ve spotřebě je velký." },
       { o: "Jen když prší", why: "Když prší, zálivka není potřeba vůbec." },
     ],
@@ -340,7 +340,7 @@ const POOL_L2: PracticeTask[] = [
     "Rostlina přijímá ze vzduchu oxid uhličitý, vodu z kořenů a energii ze slunečního světla. K čemu jí to všechno slouží?",
     "K fotosyntéze — výrobě vlastní potravy a kyslíku",
     [
-      { o: "K dýchání stejně jako u lidí", why: "Dýchání probíhá i ve tmě a žádná potrava při něm nevzniká." },
+      { o: "K dýchání listy, úplně stejně jako u lidí", why: "Dýchání probíhá i ve tmě a žádná potrava při něm nevzniká." },
       { o: "K ochlazování listů v horku", why: "List se ochladí odpařováním, světlo ani oxid uhličitý k tomu nepotřebuje." },
       { o: "K nasávání živin z kamenů", why: "Z kamenů rostlina živiny přímo nenasává, bere je z půdy." },
     ],
@@ -368,7 +368,7 @@ const POOL_L2: PracticeTask[] = [
     "Ve velkém městě je vzduch často znečištěný. Co ho znečišťuje nejvíc?",
     "Výfukové plyny z aut a kouř z továren",
     [
-      { o: "Zpívání ptáků a šelest stromů", why: "Zvuk vzduch neznečišťuje." },
+      { o: "Zpívání ptáků a šelestění stromů v lese", why: "Zvuk vzduch neznečišťuje." },
       { o: "Déšť a mlha", why: "Déšť vzduch naopak pročistí, protože prach spláchne k zemi." },
       { o: "Dýchání lidí a zvířat", why: "Při dýchání vzniká oxid uhličitý, ale saze ani jedovaté zplodiny ne." },
     ],
@@ -427,7 +427,7 @@ const POOL_L3: PracticeTask[] = [
     "Živočichové při dýchání spotřebovávají kyslík a vydechují oxid uhličitý. Rostliny při fotosyntéze spotřebovávají oxid uhličitý a uvolňují kyslík. Proč se říká, že si rostliny a živočichové navzájem „vyměňují“ plyny?",
     "Protože to, co jeden tvor vydechuje, druhý potřebuje k životu a naopak",
     [
-      { o: "Protože živočichové i rostliny vydechují stejný plyn", why: "Kdyby vydávali totéž, k žádné výměně by nedocházelo." },
+      { o: "Protože živočichové i rostliny vydechují úplně stejný plyn", why: "Kdyby vydávali totéž, k žádné výměně by nedocházelo." },
       { o: "Protože rostliny přes den vůbec nedýchají", why: "Rostliny dýchají neustále, přes den jen navíc fotosyntetizují." },
       { o: "Protože kyslík rostliny vůbec nepotřebují", why: "Kyslík potřebují i rostliny — také dýchají, v noci ho proto jen spotřebovávají." },
     ],
@@ -485,7 +485,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Protože jen rostliny vodu, vzduch a půdu potřebují, zvířata ne", why: "Zvířata také potřebují vodu a vzduch, bez nich nepřežijí." },
       { o: "Protože jen voda je opravdu důležitá, vzduch a půda tolik ne", why: "Bez vzduchu ani bez půdy by rostliny nevyrostly." },
-      { o: "Protože potravní řetězec na vodě, vzduchu a půdě vůbec nezávisí", why: "Závisí, a to celý — začíná rostlinami, které tyto tři věci nutně potřebují." },
+      { o: "Protože potravní řetězec na vodě, vzduchu ani na půdě vůbec nezávisí, začíná až u zvířat", why: "Závisí, a to celý — začíná rostlinami, které tyto tři věci nutně potřebují." },
     ],
     [
       "Neptej se jen na rostliny, ale i na všechny, kdo na nich dál závisejí.",
@@ -499,7 +499,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Rostlinám by to vůbec nevadilo", why: "Bez kypření a rozkladu by se půda časem výrazně zhoršila." },
       { o: "Rostliny by najednou rostly rychleji", why: "Živin by naopak ubylo a růst by se zpomalil." },
-      { o: "Půda by zůstala úplně stejně úrodná jako předtím", why: "Úrodnost udržují právě půdní organismy, bez nich klesne." },
+      { o: "Rostlo by jim stejně, protože půda by zůstala úplně stejně úrodná", why: "Úrodnost udržují právě půdní organismy, bez nich klesne." },
     ],
     [
       "Nejdřív si ujasni, co ti tvorové s půdou vlastně dělají.",
@@ -511,7 +511,7 @@ const POOL_L3: PracticeTask[] = [
     "Továrna vypouští do vzduchu hodně škodlivých zplodin. Proč to škodí i rostlinám a zvířatům v okolí, ne jen lidem ve městě?",
     "Protože znečištěný vzduch dýchají i rostliny a zvířata, ne jenom lidé",
     [
-      { o: "Protože rostliny a zvířata žádný vzduch nedýchají", why: "Dýchají obojí — rostliny listy, zvířata plícemi nebo žábrami." },
+      { o: "Protože rostliny ani zvířata žádný vzduch nedýchají, stačí jim voda", why: "Dýchají obojí — rostliny listy, zvířata plícemi nebo žábrami." },
       { o: "Protože znečištění zůstává jen uvnitř továrny", why: "Zplodiny odcházejí komínem a vítr je roznese do okolí." },
       { o: "Protože jen lidé mají plíce, které to poškozuje", why: "Plíce mají i zvířata a rostlinám škodí usazené zplodiny na listech." },
     ],
@@ -527,7 +527,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Srážek by přibylo, protože by nic nebránilo dešti padat", why: "Stromy dešti v padání nebrání, naopak vodu do ovzduší dodávají." },
       { o: "Množství srážek by se vůbec nezměnilo", why: "Lesy ovlivňují množství vodní páry v ovzduší, změna by nastala." },
-      { o: "Srážky by byly úplně stejné, protože počasí dělá jen slunce", why: "Počasí ovlivňuje i to, kolik vody se z krajiny odpaří." },
+      { o: "Srážky by byly úplně stejné, protože o počasí rozhoduje jenom slunce", why: "Počasí ovlivňuje i to, kolik vody se z krajiny odpaří." },
     ],
     [
       "Sleduj, odkud se nad pevninou dostává do ovzduší vodní pára.",
@@ -541,7 +541,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Protože oba plyny potřebují jen rostliny", why: "Živočichové potřebují kyslík také, a to nutně." },
       { o: "Protože oba plyny potřebují jen živočichové", why: "Rostliny bez oxidu uhličitého fotosyntetizovat nemohou." },
-      { o: "Protože vzduch by fungoval úplně stejně, i kdyby jeden z plynů chyběl", why: "Bez jednoho z nich by se zastavila celá výměna mezi rostlinami a zvířaty." },
+      { o: "Protože vzduch by fungoval úplně stejně, i kdyby jeden z těch dvou plynů úplně chyběl", why: "Bez jednoho z nich by se zastavila celá výměna mezi rostlinami a zvířaty." },
     ],
     [
       "Přiřaď ke každému z obou plynů skupinu organismů, která ho potřebuje.",
@@ -553,7 +553,7 @@ const POOL_L3: PracticeTask[] = [
     "Znečištěná půda na poli se při dešti splachuje do potoka. Proč to znamená problém i pro pitnou vodu?",
     "Protože škodliviny z půdy se dostanou do vody, kterou lidé později používají jako pitnou",
     [
-      { o: "Protože voda z potoků se nikdy nedostane do studní ani vodáren", why: "Právě do studní a vodáren se voda z potoků a řek běžně dostává." },
+      { o: "Protože voda z potoků se nikdy nedostane do studní ani do vodáren, kde se čistí", why: "Právě do studní a vodáren se voda z potoků a řek běžně dostává." },
       { o: "Protože znečištěná půda vodu naopak automaticky čistí", why: "Část nečistot půda zachytí, ale škodliviny z ní se také vyplavují." },
       { o: "Protože to na kvalitu vody nemá žádný vliv", why: "Vliv to má — splavené látky doputují až do zdroje pitné vody." },
     ],
@@ -569,7 +569,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Protože voda, vzduch a půda spolu vůbec nesouvisí", why: "Souvisí — sucho v zemi se projeví na rostlinách i na ovzduší." },
       { o: "Protože sucho ovlivní jen rostliny, na vzduch nemá žádný vliv", why: "Méně rostlin znamená méně fotosyntézy, a tedy i méně kyslíku." },
-      { o: "Protože propojené jsou jen voda se vzduchem, půda s nimi nesouvisí", why: "Půda zadržuje vláhu a živí rostliny, takže souvisí s oběma." },
+      { o: "Protože propojené jsou jen voda se vzduchem, půda s nimi nijak nesouvisí a leží zvlášť", why: "Půda zadržuje vláhu a živí rostliny, takže souvisí s oběma." },
     ],
     [
       "Vyber si jednu změnu a sleduj, kam až se její následek dostane.",
@@ -583,7 +583,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "Potok bude čistší, protože hlína ho pročistí", why: "Hlína vodu nečistí, naopak ji kalí." },
       { o: "Rybám zakalená voda vůbec nevadí", why: "Zákal ucpává žábry a ztěžuje hledání potravy." },
-      { o: "Hlína se hned usadí na dně a na vodu už dál nepůsobí", why: "Jemné částečky se vznášejí dlouho a na dně dusí nakladené jikry." },
+      { o: "Hlína se hned usadí na dně a na vodu ani na ryby už dál nepůsobí", why: "Jemné částečky se vznášejí dlouho a na dně dusí nakladené jikry." },
     ],
     [
       "Přemýšlej, co udělá zakalená voda se světlem a s dýcháním ryb.",
@@ -595,7 +595,7 @@ const POOL_L3: PracticeTask[] = [
     "Vodovod přivádí do města vodu z přehrady v horách. Proč je důležité chránit lesy kolem té přehrady?",
     "Lesy zadržují vodu a brání splachu půdy, takže do přehrady teče čistší voda",
     [
-      { o: "Lesy v horách na vodu v přehradě žádný vliv nemají", why: "Voda do přehrady stéká právě z lesnatých svahů nad ní." },
+      { o: "Lesy v horách na množství ani čistotu vody v přehradě vliv nemají", why: "Voda do přehrady stéká právě z lesnatých svahů nad ní." },
       { o: "Stromy samy vyrábějí pitnou vodu", why: "Vodu stromy nevyrábějí, jen ji zadržují a odpařují." },
       { o: "Lesy vodu naopak znečišťují spadaným listím", why: "Listí se v půdě rozloží a žádné znečištění z něj nevzniká." },
     ],

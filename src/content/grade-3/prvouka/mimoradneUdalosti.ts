@@ -129,7 +129,7 @@ const POOL_L1: PracticeTask[] = [
     [
       { o: "místo, kde je uschovaná voda na hašení", why: "Voda na hašení bývá v hydrantu, s tímto pojmem to nesouvisí." },
       { o: "místo, odkud se vždy volá na tísňovou linku", why: "Volat můžeš odkudkoli z bezpečí, pevné místo pro to není." },
-      { o: "místnost, do které se při požáru všichni schovají", why: "Při požáru se nikam neschováváme, budovu naopak opouštíme." },
+      { o: "předem dohodnutá místnost v budově, do které se při požáru všichni schovají", why: "Při požáru se nikam neschováváme, budovu naopak opouštíme." },
     ],
     [
       "Slouží k tomu, aby se zjistilo, kdo je venku a kdo možná zůstal uvnitř.",
@@ -142,7 +142,7 @@ const POOL_L1: PracticeTask[] = [
     "poloha na boku, do které uložíme člověka v bezvědomí, který sám dýchá",
     [
       { o: "poloha vsedě pro člověka, kterého bolí hlava", why: "Bolest hlavy se polohou na boku neřeší." },
-      { o: "poloha na zádech s nohama nahoře pro odpočinek", why: "Na zádech hrozí, že jazyk zapadne a ucpe dýchací cesty." },
+      { o: "poloha na zádech s nohama nahoře, do které uložíme člověka v bezvědomí", why: "Na zádech hrozí, že jazyk zapadne a ucpe dýchací cesty." },
       { o: "poloha vestoje s oporou o zeď", why: "Člověk v bezvědomí stát nedokáže." },
     ],
     [
@@ -156,7 +156,7 @@ const POOL_L1: PracticeTask[] = [
     "každou první středu v měsíci ve 12 hodin",
     [
       { o: "každé ráno v 7 hodin", why: "Siréna nehouká denně, zkouška je jen jednou za měsíc." },
-      { o: "první pondělí v měsíci o půlnoci", why: "V noci by zkouška lidi jen budila, koná se za světla a jiný den." },
+      { o: "každé první pondělí v měsíci přesně o půlnoci", why: "V noci by zkouška lidi jen budila, koná se za světla a jiný den." },
       { o: "jen na Nový rok", why: "Zkouška se opakuje pravidelně každý měsíc, ne jednou za rok." },
     ],
     [
@@ -185,7 +185,7 @@ const POOL_L1: PracticeTask[] = [
     [
       { o: "když v lese vypukl požár", why: "K požáru voláš hasiče." },
       { o: "když někdo ukradl kolo", why: "Krádež hlásíš policii." },
-      { o: "když ti doma nejde internet", why: "Porucha internetu není ohrožení života a na tísňovou linku nepatří." },
+      { o: "když ti doma nejde internet nebo televize", why: "Porucha internetu není ohrožení života a na tísňovou linku nepatří." },
     ],
     [
       "Tohle číslo vytáčíš kvůli zdraví člověka.",
@@ -225,7 +225,7 @@ const POOL_L1: PracticeTask[] = [
     "Jaký zvuk vydává siréna, když skutečně varuje před nebezpečím?",
     "kolísavý tón, který střídavě sílí a slábne",
     [
-      { o: "rovný tón, který zní pořád stejně", why: "Neměnný zvuk je jen pravidelná měsíční zkouška." },
+      { o: "rovný tón, který zní pořád stejně a nemění se", why: "Neměnný zvuk je jen pravidelná měsíční zkouška." },
       { o: "krátké tiché cinknutí", why: "Varovný signál musí být hlasitý a dlouhý, ne tiché cinknutí." },
       { o: "melodie jako z písničky", why: "Sirény žádnou melodii nehrají." },
     ],
@@ -271,7 +271,7 @@ const POOL_L2: PracticeTask[] = [
     "plazím se nízko u podlahy a ústa si zakryju tričkem",
     [
       { o: "běžím vzpřímeně co nejrychleji", why: "Ve výšce hlavy je nejvíc horkého a jedovatého kouře." },
-      { o: "vylezu si na skříň, co nejvýš to jde", why: "Nahoře se kouř hromadí úplně nejdřív." },
+      { o: "vylezu si na skříň co nejvýš, aby na mě kouř nedosáhl", why: "Nahoře se kouř hromadí úplně nejdřív." },
       { o: "lehnu si a počkám, až kouř zmizí", why: "Kouře bude naopak přibývat, čekání je nebezpečné." },
     ],
     [
@@ -284,7 +284,7 @@ const POOL_L2: PracticeTask[] = [
     "Řeka se vylévá z břehů a ty bydlíš v přízemí. Co uděláš nejdřív?",
     "přesunu se do vyššího patra nebo na jiné bezpečné vyvýšené místo",
     [
-      { o: "zůstanu v přízemí a sleduji, jak voda stoupá", why: "Voda může stoupnout rychle a odříznout ti cestu nahoru." },
+      { o: "zůstanu v přízemí a sleduji z okna, jak voda stoupá", why: "Voda může stoupnout rychle a odříznout ti cestu nahoru." },
       { o: "seběhnu do sklepa pro důležité věci", why: "Sklep zaplaví jako první, hrozí uvěznění pod vodou." },
       { o: "půjdu ven k řece se podívat, jak je vysoko", why: "U rozvodněné řeky se břeh podemílá a hrozí pád do proudu." },
     ],
@@ -300,7 +300,7 @@ const POOL_L2: PracticeTask[] = [
     [
       { o: "jak se jmenuji", why: "Jméno operátor potřebuje, ale až později." },
       { o: "kolik mi je let", why: "Věk volajícího o události nic neřekne." },
-      { o: "jaké mám doma zvíře", why: "To s tísňovým voláním vůbec nesouvisí." },
+      { o: "jak se jmenuji a jaké mám doma zvíře", why: "Jméno se řekne až později, zvíře vůbec. První je místo." },
     ],
     [
       "Bez této informace se pomoc nemůže vydat na cestu.",
@@ -342,7 +342,7 @@ const POOL_L2: PracticeTask[] = [
     [
       { o: "je to jen zkouška — nemusím dělat nic", why: "Zkouška má neměnný rovný zvuk, tenhle se ale mění." },
       { o: "je to signál k přestávce ve škole", why: "Sirény se ke zvonění ve škole nepoužívají." },
-      { o: "je to hlášení o počasí — jdu ven se podívat", why: "Při varování se jde dovnitř, rozhodně ne ven." },
+      { o: "je to jen hlášení o počasí — jdu ven se podívat na oblohu", why: "Při varování se jde dovnitř, rozhodně ne ven." },
     ],
     [
       "Zvuk, který stoupá a klesá, není obyčejné ověření techniky.",
@@ -356,7 +356,7 @@ const POOL_L2: PracticeTask[] = [
     [
       { o: "vzít si s sebou všechny hračky", why: "Sbírání věcí zdržuje a kouř se šíří velmi rychle." },
       { o: "vrátit se pro nabíječku k telefonu", why: "Návrat do hořícího domu je životu nebezpečný." },
-      { o: "schovat se pod postel a počkat tam", why: "Pod postelí tě kouř najde a hasiči hůř." },
+      { o: "schovat se pod postel a počkat tam na hasiče", why: "Pod postelí tě kouř najde a hasiči hůř." },
     ],
     [
       "Věci se dají nahradit — na čem záleží nejvíc?",
@@ -382,7 +382,7 @@ const POOL_L2: PracticeTask[] = [
     "Ulicí se po povodni valí voda. Kamarád navrhuje, ať ji přebrodíte. Co uděláš?",
     "do vody nevstoupím a najdu vyšší suchou cestu",
     [
-      { o: "vejdu do vody, vypadá jen po kotníky", why: "Hloubku nelze odhadnout, pod hladinou může být díra." },
+      { o: "vejdu do vody, vypadá jen po kotníky a rychle to přejdu", why: "Hloubku nelze odhadnout, pod hladinou může být díra." },
       { o: "půjdu první, ať to kamarád vidí", why: "Nebezpečí se tím nezmenší, jen ohrozíš sám sebe." },
       { o: "přeskákám po viditelných kamenech", why: "Mokré kameny kloužou a proud snadno strhne." },
     ],
@@ -410,7 +410,7 @@ const POOL_L2: PracticeTask[] = [
     "Po povodni máš žízeň a z kohoutku teče voda. Co uděláš?",
     "napiju se jen balené vody nebo počkám na svolení dospělých",
     [
-      { o: "napiju se z kohoutku, voda přece teče", why: "Po povodni bývá znečištěná i voda z kohoutku." },
+      { o: "napiju se rovnou z kohoutku, voda přece normálně teče", why: "Po povodni bývá znečištěná i voda z kohoutku." },
       { o: "naberu si vodu z kaluže na dvoře", why: "Kaluž po povodni obsahuje bahno i splašky." },
       { o: "napiju se ze studny za domem", why: "Studnu povodeň zaplaví a voda v ní je pitná až po rozboru." },
     ],
@@ -443,7 +443,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "voda je po povodni jen příliš studená", why: "Teplota není problém, jde o obsah škodlivin." },
       { o: "voda by měla nezvyklou chuť, jinak nevadí", why: "Bakterie ani jedy nemusí být vůbec cítit." },
-      { o: "je to zbytečné varování, voda je v pořádku", why: "Po povodni bývá voda skutečně nebezpečná." },
+      { o: "je to zbytečné varování, voda z kohoutku je vždycky v pořádku", why: "Po povodni bývá voda skutečně nebezpečná." },
     ],
     [
       "Kam všude se povodňová voda dostane, než doteče až k tobě?",
@@ -457,7 +457,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "nechat ho ležet na zádech a odejít pryč", why: "Na zádech hrozí zapadnutí jazyka a odejít v žádném případě nesmíš." },
       { o: "posadit ho a dát mu napít vody", why: "Člověk v bezvědomí polykat nedokáže, hrozí vdechnutí." },
-      { o: "zkusit ho probudit tím, že s ním zatřeseš", why: "Třesením se člověk neprobere a můžeš mu ublížit." },
+      { o: "zkusit ho probudit tím, že s ním pořádně zatřeseš a zakřičíš", why: "Třesením se člověk neprobere a můžeš mu ublížit." },
     ],
     [
       "Když člověk sám dýchá, jde hlavně o to, aby se nezadusil.",
@@ -498,7 +498,7 @@ const POOL_L3: PracticeTask[] = [
     "112 — jedním voláním přivolám pomoc k požáru i ke zraněné babičce",
     [
       { o: "zavolám jen 150 a o babičce se nezmíním", why: "Babička by zůstala bez ošetření." },
-      { o: "zavolám jen 155 a hořící hrnec nechám být", why: "Oheň by se mezitím rozšířil po celé kuchyni." },
+      { o: "zavolám jen 155 kvůli babičce a hořící hrnec nechám být", why: "Oheň by se mezitím rozšířil po celé kuchyni." },
       { o: "nevolám nikam, zvládnu obojí sám", why: "Dítě takovou situaci samo zvládnout nemůže." },
     ],
     [
@@ -525,7 +525,7 @@ const POOL_L3: PracticeTask[] = [
     "Právě jsi utekl z hořícího bytu, ale uvědomíš si, že tam zůstal tvůj telefon. Vrátíš se pro něj?",
     "ne — věci se dají nahradit a kouř omámí během chvilky; řeknu to hasičům",
     [
-      { o: "ano, telefon je drahý, rychle si pro něj doběhnu", why: "Žádná věc nestojí za riziko udušení." },
+      { o: "ano, telefon je drahý, rychle si pro něj doběhnu a hned zase ven", why: "Žádná věc nestojí za riziko udušení." },
       { o: "ano, ale nejdřív se nadechnu a zadržím dech", why: "Se zadrženým dechem nevydržíš ani cestu tam." },
       { o: "pošlu pro něj mladšího sourozence", why: "Do hořícího domu nesmíš poslat vůbec nikoho." },
     ],
@@ -541,7 +541,7 @@ const POOL_L3: PracticeTask[] = [
     [
       { o: "hned, jak řeknu, co se stalo", why: "Dispečer potřebuje ještě doplňující údaje." },
       { o: "když mě otázky začnou unavovat", why: "Otázky nejsou zbytečné, pomáhají posádce se připravit." },
-      { o: "jakmile uslyším v dálce sanitku", why: "Siréna v dálce nemusí mířit zrovna k tobě." },
+      { o: "jakmile uslyším v dálce houkat sanitku, hovor ukončím", why: "Siréna v dálce nemusí mířit zrovna k tobě." },
     ],
     [
       "Rozhoduje ten, kdo na druhé straně řídí celou pomoc.",
@@ -567,7 +567,7 @@ const POOL_L3: PracticeTask[] = [
     "Blíží se povodeň a máš ještě čas, než voda dorazí. Co je nejrozumnější udělat?",
     "s dospělými připravit potřebné věci a přejít na vyvýšené místo, dokud je čas",
     [
-      { o: "počkat, až voda opravdu přijde, a teprve pak něco řešit", why: "Na poslední chvíli bývá cesta už zaplavená." },
+      { o: "počkat doma, až voda opravdu přijde, a teprve pak začít něco řešit", why: "Na poslední chvíli bývá cesta už zaplavená." },
       { o: "jít se dívat k řece, jak rychle stoupá", why: "Podemletý břeh se může utrhnout i pod tebou." },
       { o: "nedělat nic, ono to určitě přejde samo", why: "Spoléhat při povodni na náhodu nelze." },
     ],
@@ -581,7 +581,7 @@ const POOL_L3: PracticeTask[] = [
     "Proč se při požáru plazíš u země místo toho, abys běžel vzpřímeně?",
     "horký a jedovatý kouř stoupá ke stropu, u podlahy zůstává vzduch s kyslíkem",
     [
-      { o: "u podlahy se běží rychleji než vestoje", why: "Plazení je naopak pomalejší, jde tu o dýchání." },
+      { o: "u podlahy se člověk pohybuje rychleji, než když běží vestoje", why: "Plazení je naopak pomalejší, jde tu o dýchání." },
       { o: "aby tě přes kouř nebylo vidět", why: "Před nikým se schovávat nepotřebuješ." },
       { o: "protože vestoje bys uklouzl", why: "Kluzká podlaha není důvod, proč se plazit." },
     ],
@@ -596,7 +596,7 @@ const POOL_L3: PracticeTask[] = [
     "Protože přímá linka tě spojí rovnou s tou složkou a nikdo hovor nemusí přepojovat",
     [
       { o: "Protože 112 v Česku vůbec nefunguje", why: "Funguje, jen hovor vyřizuje operátor, který ho předá dál." },
-      { o: "Protože přímá čísla jsou zdarma a 112 se platí", why: "Tísňová volání jsou zdarma úplně všechna." },
+      { o: "Protože přímá čísla 150, 155 a 158 jsou zdarma, zatímco 112 se platí", why: "Tísňová volání jsou zdarma úplně všechna." },
       { o: "Protože 112 smějí volat jen dospělí", why: "Volat může kdokoli, kdo potřebuje pomoc, i dítě." },
     ],
     [

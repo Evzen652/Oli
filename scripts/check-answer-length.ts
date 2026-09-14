@@ -24,6 +24,11 @@
 // distraktor ve 14,1 % — plošně tedy délka vede spíš OD správné odpovědi.
 // Jenže několik desítek témat ten poměr obrací naruby.
 //
+// PEVNÁ ŠKÁLA SE NEPOČÍTÁ — stejně jako u `check:options`. Když má téma jednu
+// a tutéž nabídku („Kyslík / Dusík / Oxid uhličitý / Vodní pára“) a klíč mezi
+// nimi rotuje, pak je „Oxid uhličitý“ sice dvakrát delší než „Kyslík“, ale
+// vodítko to není: v jedné úloze je klíč a ve třech distraktor.
+//
 // Nález NENÍ důkaz chyby: u faktických témat bývá definice delší z podstaty.
 // Skript proto **nekončí chybou**, jen ukáže, kde dopsat distraktory.
 import { getAllTopics } from "@/lib/contentRegistry";
@@ -44,6 +49,7 @@ const temata = getAllTopics().filter(
 );
 
 interface Ukazka { level: number; question: string; klic: string; druha: string }
+interface Kandidat { nabidka: string; klicNejdelsi: boolean; ukazka?: Ukazka }
 interface Tema { id: string; n: number; klic: number; distr: number; ukazky: Ukazka[] }
 
 const rows: Tema[] = [];
@@ -53,10 +59,10 @@ let celkemDistr = 0;
 
 for (const t of temata) {
   const videno = new Set<string>();
-  const ukazky: Ukazka[] = [];
+  const kandidati: Kandidat[] = [];
+  /** otisk nabídky → klíče, které se u ní v tématu vyskytly (pevná škála) */
+  const skaly = new Map<string, Set<string>>();
   let n = 0;
-  let klicNejdelsi = 0;
-  let distrNejdelsi = 0;
   for (const level of [1, 2, 3]) {
     for (let r = 0; r < REPEATS; r++) {
       let tasks: ReturnType<NonNullable<typeof t.generator>>;
@@ -74,24 +80,38 @@ for (const t of temata) {
         if (videno.has(id)) continue;
         videno.add(id);
         n++;
+        const nabidka = [...o].sort().join("");
+        const klice = skaly.get(nabidka) ?? new Set<string>();
+        klice.add(klic);
+        skaly.set(nabidka, klice);
         const podleDelky = [...o].sort((a, b) => b.length - a.length);
         if (podleDelky[0].length < NASOBEK * podleDelky[1].length) continue;
-        if (podleDelky[0] !== klic) {
-          distrNejdelsi++;
-          continue;
-        }
-        klicNejdelsi++;
-        ukazky.push({ level, question: task.question.slice(0, 70), klic, druha: podleDelky[1] });
+        const klicNejdelsi = podleDelky[0] === klic;
+        kandidati.push({
+          nabidka,
+          klicNejdelsi,
+          ukazka: klicNejdelsi
+            ? { level, question: task.question.slice(0, 70), klic, druha: podleDelky[1] }
+            : undefined,
+        });
       }
     }
   }
   if (n < MIN_ULOH) continue;
+  const zive = kandidati.filter((k) => (skaly.get(k.nabidka)?.size ?? 1) === 1);
+  const klicNejdelsi = zive.filter((k) => k.klicNejdelsi).length;
+  const distrNejdelsi = zive.length - klicNejdelsi;
   celkemUloh += n;
   celkemKlic += klicNejdelsi;
   celkemDistr += distrNejdelsi;
-  rows.push({ id: t.id, n, klic: klicNejdelsi, distr: distrNejdelsi, ukazky });
+  rows.push({
+    id: t.id,
+    n,
+    klic: klicNejdelsi,
+    distr: distrNejdelsi,
+    ukazky: zive.map((k) => k.ukazka).filter((u): u is Ukazka => !!u),
+  });
 }
-
 const podil = (r: Tema) => r.klic / r.n;
 rows.sort((a, b) => podil(b) - podil(a));
 const nad = rows.filter((r) => podil(r) >= PRAH && r.klic >= PREVAHA * Math.max(1, r.distr));

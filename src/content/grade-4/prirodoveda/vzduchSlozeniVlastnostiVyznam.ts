@@ -128,7 +128,7 @@ const POOL_L1: PracticeTask[] = [
 const POOL_L2: PracticeTask[] = [
   choice("Proč svíčka pod přiklopenou sklenicí po chvíli zhasne?", "Spotřebuje kyslík, který pod sklenicí byl", [
     { value: "Sklenice ji zchladí", why: "Sklenice se naopak ohřeje. Svíčce dojde kyslík." },
-    { value: "Vzduch pod sklenicí se vypaří", why: "Vzduch se nevypařuje. Oheň spotřebuje kyslík." },
+    { value: "Vzduch pod sklenicí se všechen vypaří", why: "Vzduch se nevypařuje. Oheň spotřebuje kyslík." },
     { value: "Svíčce dojde vosk", why: "Vosku zbývá dost. Svíčka zhasne kvůli kyslíku." },
   ], {
     hints: ["Co potřebuje oheň ze vzduchu?", "Pod sklenicí je jen trochu vzduchu a nový se tam nedostane. Co z něj plamen postupně spotřebuje?"],
@@ -145,7 +145,7 @@ const POOL_L2: PracticeTask[] = [
   choice("Jak se liší vzduch, který vydechujeme, od vdechovaného?", "Má méně kyslíku a víc oxidu uhličitého", [
     { value: "Má víc kyslíku", why: "Kyslík tělo spotřebuje, takže ve výdechu ho je méně." },
     { value: "Je úplně stejný", why: "Tělo si z něj kyslík vezme a přidá oxid uhličitý." },
-    { value: "Nemá v sobě žádný kyslík", why: "Nějaký kyslík ve výdechu zůstane, proto funguje dýchání z úst do úst." },
+    { value: "Nemá v sobě už vůbec žádný kyslík", why: "Nějaký kyslík ve výdechu zůstane, proto funguje dýchání z úst do úst." },
   ], {
     hints: ["Co si tělo ze vzduchu vezme a co do něj přidá?", "Plíce si z nádechu vezmou kyslík a vrátí do vzduchu odpad z těla. Jak se tedy výdech liší?"],
     explanation: "Tělo si ze vzduchu vezme část kyslíku a přidá do něj oxid uhličitý. Vydechovaný vzduch má proto méně kyslíku a víc oxidu uhličitého. Dusíku je v něm stejně.",
@@ -167,7 +167,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Slunce ohřívá zem a vzduch nestejně. Teplý vzduch stoupá a na jeho místo proudí chladnější. Tento pohyb vzduchu cítíme jako vítr.",
   }),
   choice("Proč se ve vysokých horách hůř dýchá?", "Vzduch je řidší a v nádechu je méně kyslíku", [
-    { value: "Na horách je vzduch jedovatý", why: "Horský vzduch bývá čistý. Jen je ho v nádechu méně." },
+    { value: "Na horách je vzduch jedovatý a špatně se dýchá", why: "Horský vzduch bývá čistý. Jen je ho v nádechu méně." },
     { value: "Na horách je vzduch hustší", why: "Je to naopak — nahoře je vzduch řidší." },
     { value: "Na horách chybí dusík", why: "Dusík k dýchání nepotřebujeme. Problém je méně kyslíku." },
   ], {
@@ -175,7 +175,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Čím výš, tím je vzduch řidší. Při každém nádechu se do plic dostane méně kyslíku, a tak se na vysokých horách rychleji zadýcháme.",
   }),
   choice("Co je smog?", "Znečištěný vzduch nad městem", [
-    { value: "Zvláštní druh mraku", why: "Mraky jsou z kapiček vody. Smog tvoří hlavně škodliviny ve vzduchu." },
+    { value: "Zvláštní druh nízkého mraku nad městem", why: "Mraky jsou z kapiček vody. Smog tvoří hlavně škodliviny ve vzduchu." },
     { value: "Vzduch od moře", why: "Mořský vzduch je čistý a vlhký. Smog je znečištěný." },
     { value: "Velmi silný vítr", why: "Silný vítr smog naopak rozfouká." },
   ], {
@@ -183,7 +183,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Smog je znečištěný vzduch nad městem — výfukové plyny a kouř z komínů se za bezvětří nemají kam rozptýlit. Škodí hlavně dýchacím cestám.",
   }),
   choice("Co znečišťuje vzduch ve městech nejvíc?", "Výfuky aut a kouř z komínů", [
-    { value: "Stromy v parcích", why: "Stromy vzduch naopak čistí a vyrábějí kyslík." },
+    { value: "Stromy a keře v městských parcích", why: "Stromy vzduch naopak čistí a vyrábějí kyslík." },
     { value: "Vodní pára z řek", why: "Vodní pára vzduch neznečišťuje." },
     { value: "Déšť a sníh", why: "Déšť a sníh vzduch naopak pročistí." },
   ], {
@@ -191,7 +191,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Vzduch ve městech znečišťují hlavně výfukové plyny aut a kouř z komínů domů a továren. Stromy a déšť ho naopak čistí.",
   }),
   choice("Jak rostliny mění vzduch?", "Berou oxid uhličitý a vydávají kyslík", [
-    { value: "Berou kyslík a vydávají dusík", why: "Dusík rostliny nevydávají. Vydávají kyslík." },
+    { value: "Berou ze vzduchu kyslík a vydávají dusík", why: "Dusík rostliny nevydávají. Vydávají kyslík." },
     { value: "Vzduch nijak nemění", why: "Rostliny vzduch mění hodně — vyrábějí většinu kyslíku." },
     { value: "Vyrábějí z něj vodu", why: "Vodu rostliny berou kořeny. Ze vzduchu berou oxid uhličitý." },
   ], {
@@ -200,7 +200,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Proč je důležité místnost pravidelně větrat?", "Aby se vydýchaný vzduch vyměnil za čerstvý", [
     { value: "Aby se místnost ohřála", why: "Větráním se místnost spíš ochladí. Důvod je čerstvý vzduch." },
-    { value: "Aby z pokoje odešel dusík", why: "Dusík nevadí, je ho venku stejně. Vadí vydýchaný vzduch." },
+    { value: "Aby z pokoje odešel všechen dusík", why: "Dusík nevadí, je ho venku stejně. Vadí vydýchaný vzduch." },
     { value: "Aby kyslík odešel ven", why: "Kyslík naopak potřebujeme dovnitř." },
   ], {
     hints: ["Co se stane se vzduchem v pokoji, kde spí několik lidí a okna jsou zavřená?", "Lidé dýcháním spotřebují kyslík a přidají oxid uhličitý. Jak dostat do pokoje nový vzduch?"],
@@ -236,7 +236,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Dusíku je ve vzduchu nejvíc. Proč ho přesto nepotřebujeme k dýchání?", "Tělo ho nevyužije a zase ho vydechne", [
     { value: "Dusík je jedovatý", why: "Dusík jedovatý není, dýcháme ho celý život. Tělo ho jen nevyužije." },
     { value: "Dusíku je ve vzduchu málo", why: "Je to naopak, dusíku je ve vzduchu nejvíc." },
-    { value: "Dusík dýchají jen rostliny", why: "Rostliny dusík ze vzduchu k dýchání nepoužívají." },
+    { value: "Dusík ze vzduchu dýchají jenom rostliny", why: "Rostliny dusík ze vzduchu k dýchání nepoužívají." },
   ], {
     hints: ["Kolik dusíku vdechneme a kolik vydechneme?", "Ve výdechu je dusíku stejně jako v nádechu. Co to prozrazuje o tom, jestli ho tělo spotřebovalo?"],
     explanation: "Dusík vdechneme a hned zase vydechneme — tělo ho nijak nevyužije. K dýchání potřebujeme kyslík, i když ho je ve vzduchu méně.",
@@ -260,7 +260,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč se hasicí přístroje často plní oxidem uhličitým?", "Oxid uhličitý vytlačí od ohně kyslík, a ten zhasne", [
     { value: "Oxid uhličitý hoří lépe", why: "Oxid uhličitý nehoří, naopak oheň dusí." },
     { value: "Oxid uhličitý oheň rozdrtí", why: "Plyn oheň nedrtí. Zamezí přístupu kyslíku." },
-    { value: "Oxid uhličitý přinese vodu", why: "Hasicí přístroj s tímto plynem vodu neobsahuje." },
+    { value: "Oxid uhličitý přinese k ohni vodu, která ho uhasí", why: "Hasicí přístroj s tímto plynem vodu neobsahuje." },
   ], {
     hints: ["Co potřebuje oheň a co mu hasicí přístroj vezme?", "Plyn z přístroje obklopí oheň jako neviditelná deka. Který plyn se pak k plamenům nedostane?"],
     explanation: "Oxid uhličitý nehoří a je těžší než vzduch. Obklopí oheň a vytlačí od něj kyslík, takže oheň zhasne. Navíc ho ochladí.",
@@ -274,7 +274,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Ryby dýchají žábrami kyslík rozpuštěný ve vodě. V akváriu ho rychle spotřebují, a tak se tam vhání vzduch — z bublin se kyslík rozpouští do vody.",
   }),
   choice("Proč jsou lesy a parky pro vzduch ve městě důležité?", "Vyrábějí kyslík a zachytí prach", [
-    { value: "Vyrábějí oxid uhličitý", why: "Stromy oxid uhličitý naopak ze vzduchu berou." },
+    { value: "Vyrábějí oxid uhličitý a chladí vzduch", why: "Stromy oxid uhličitý naopak ze vzduchu berou." },
     { value: "Úplně zastaví vítr", why: "Stromy vítr zbrzdí, ale nezastaví. Hlavní je kyslík a čistý vzduch." },
     { value: "Na vzduch vliv nemají", why: "Mají velký vliv — vyrábějí kyslík a na listech zachytí prach." },
   ], {
@@ -291,14 +291,14 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč je v létě v podkroví horko a ve sklepě chladno?", "Teplý vzduch stoupá, studený klesá", [
     { value: "Podkroví je blíž Slunci", why: "Rozdíl pár metrů od Slunce nic neznamená. Rozhoduje, kam stoupá teplý vzduch." },
-    { value: "Sklep je blíž středu Země", why: "Sklep chladí okolní zem, ale hlavně tam klesá studený vzduch." },
+    { value: "Sklep je blíž ke studenému středu Země", why: "Sklep chladí okolní zem, ale hlavně tam klesá studený vzduch." },
     { value: "Ve sklepě je víc dusíku", why: "Složení vzduchu je všude stejné. Liší se teplota." },
   ], {
     hints: ["Kde je v létě v domě největší horko a kde je chladno?", "Vzpomeň si na horkovzdušný balón a na to, kde je v zimě chladno u nohou. Kde se v domě shromáždí teplo a kde chlad?"],
     explanation: "Teplý vzduch je lehčí a stoupá do nejvyššího patra, studený klesá dolů. Navíc na střechu praží slunce a sklep chladí okolní zem.",
   }),
   choice("Proč vzduch v pneumatice unese celé auto?", "Stlačený vzduch silně tlačí do stěn", [
-    { value: "Pneumatika je uvnitř z kovu", why: "Pneumatika je z gumy. Auto nese stlačený vzduch." },
+    { value: "Pneumatika je uvnitř vyztužená kovem", why: "Pneumatika je z gumy. Auto nese stlačený vzduch." },
     { value: "Vzduch je těžší než auto", why: "Vzduch je velmi lehký. Nese auto, protože je stlačený." },
     { value: "Auto stojí jen na ráfcích", why: "Když je pneumatika prázdná, auto sedne na ráfky. Plná ho unese." },
   ], {
@@ -315,7 +315,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Vzduch nevidíme. Jak můžeš dokázat, že kolem nás je?", "Cítíme vítr a vzduch nafoukne balónek", [
     { value: "Vidíme ho v noci", why: "Vzduch není vidět ani v noci. Poznáme ho jinak." },
-    { value: "Slyšíme, jak šumí sám od sebe", why: "Vzduch sám nešumí. Slyšíme, když se pohybuje nebo něčím hýbe." },
+    { value: "Slyšíme, jak si vzduch sám od sebe šumí", why: "Vzduch sám nešumí. Slyšíme, když se pohybuje nebo něčím hýbe." },
     { value: "Nijak, vzduch dokázat nejde", why: "Dokázat jde — cítíme vítr a vzduch zabírá místo v balónku." },
   ], {
     hints: ["Jak poznáš něco, co nevidíš?", "Vzduch sice nevidíš, ale když fouká, cítíš ho na tváři, a když foukáš do gumového pytlíku, nafoukne se. Co to dokazuje?"],
@@ -323,7 +323,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč se v přeplněné třídě se zavřenými okny začne špatně soustředit?", "Ubývá kyslíku a přibývá vydýchaného vzduchu", [
     { value: "Přibývá kyslíku", why: "Lidé kyslík spotřebovávají, takže ho ubývá." },
-    { value: "Lidé vydechují dusík navíc", why: "Dusíku vydechujeme stejně, kolik vdechneme." },
+    { value: "Lidé do místnosti vydechují dusík navíc", why: "Dusíku vydechujeme stejně, kolik vdechneme." },
     { value: "Stěny pohlcují vzduch", why: "Stěny vzduch nepohlcují. Mění ho dýchání lidí." },
   ], {
     hints: ["Co dělají všichni lidé ve třídě celou dobu?", "Každý žák spotřebuje kyslík a vydechne oxid uhličitý. Co se se vzduchem v zavřené třídě po hodině stane?"],

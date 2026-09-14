@@ -59,7 +59,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Průmysl je výroba zboží v továrnách, třeba aut, skla nebo potravin. Dává práci mnoha lidem.",
   }),
   choice("Co je cestovní ruch?", "Cestování lidí za poznáním a odpočinkem", [
-    { value: "Doprava zboží kamiony", why: "Doprava zboží patří k dopravě, ne k cestovnímu ruchu." },
+    { value: "Doprava zboží kamiony a vlaky po celé zemi", why: "Doprava zboží patří k dopravě, ne k cestovnímu ruchu." },
     { value: "Stavba nových silnic", why: "Stavba silnic je stavebnictví." },
     { value: "Pěstování zeleniny", why: "Pěstování zeleniny je zemědělství." },
   ], {
@@ -69,14 +69,14 @@ const POOL_L1: PracticeTask[] = [
   choice("Co je kulturní památka?", "Stavba nebo věc důležitá pro historii", [
     { value: "Nová dálnice", why: "Nová dálnice není památka." },
     { value: "Parkoviště u obchodu", why: "Parkoviště památkou není." },
-    { value: "Chráněný les", why: "Chráněný les je přírodní památka, ne kulturní." },
+    { value: "Chráněný les se vzácnými starými stromy", why: "Ten nevytvořili lidé — je to přírodní památka, ne kulturní." },
   ], {
     hints: ["Kulturní památku postavili nebo vytvořili lidé dávno.", "Patří sem hrady, zámky, kostely nebo staré domy na náměstí. Proč je chráníme?"],
     explanation: "Kulturní památka je stavba nebo věc, kterou vytvořili lidé a která je důležitá pro historii — třeba hrad Karlštejn nebo Karlův most.",
   }),
   choice("Co je přírodní památka?", "Chráněné místo se vzácnou přírodou", [
     { value: "Starý hrad", why: "Hrad postavili lidé, je to kulturní památka." },
-    { value: "Městský park s lavičkami", why: "Park je upravený lidmi, přírodní památkou nebývá." },
+    { value: "Městský park s lavičkami a pěšinkami", why: "Park vysadili a upravili lidé, přírodní památkou nebývá." },
     { value: "Nádraží", why: "Nádraží je stavba, ne příroda." },
   ], {
     hints: ["Přírodní památku nevytvořili lidé.", "Může to být skála, jeskyně, vzácná louka nebo prastarý strom. Co je chráněno?"],
@@ -107,7 +107,7 @@ const POOL_L1: PracticeTask[] = [
     explanation: "Tradice jsou zvyky, řemesla a oslavy, které se předávají z generace na generaci — třeba masopust, dožínky nebo pouť.",
   }),
   choice("Co jsou regionální výrobky?", "Výrobky typické pro určitý kraj", [
-    { value: "Zboží dovezené z ciziny", why: "Dovezené zboží pochází odjinud, ne z kraje." },
+    { value: "Zboží dovezené z ciziny do našich obchodů", why: "Dovezené zboží pochází odjinud, ne z kraje." },
     { value: "Výrobky světových firem", why: "Světové firmy prodávají všude stejné věci." },
     { value: "Věci z internetu", why: "Nejde o to, kde se kupují, ale odkud pocházejí." },
   ], {
@@ -134,7 +134,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "V nížinách je teplé podnebí a úrodná půda, proto jsou tam pole s obilím, cukrovkou a kukuřicí. V horách je na to chladno.",
   }),
   choice("Čím se nejčastěji živí lidé v horských obcích?", "Lesnictvím a cestovním ruchem", [
-    { value: "Pěstováním obilí", why: "V horách je na obilí chladno a svahy jsou strmé." },
+    { value: "Pěstováním obilí na velkých polích", why: "V horách je na obilí chladno a svahy jsou strmé." },
     { value: "Rybolovem v moři", why: "Česko u moře neleží." },
     { value: "Těžkým průmyslem", why: "Velké továrny bývají spíš ve městech v nížinách." },
   ], {
@@ -143,14 +143,14 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Co znamená, že je kraj průmyslový?", "Je v něm hodně továren a lidé pracují ve výrobě", [
     { value: "Je v něm hodně lesů", why: "Hodně lesů mají spíš horské kraje." },
-    { value: "Jezdí do něj hodně turistů", why: "To by znamenalo cestovní ruch." },
+    { value: "Jezdí do něj hodně turistů za odpočinkem", why: "To by byl kraj s rozvinutým cestovním ruchem, ne průmyslový." },
     { value: "Má hodně polí", why: "Hodně polí mají zemědělské kraje." },
   ], {
     hints: ["Průmysl znamená výrobu.", "V průmyslovém kraji stojí továrny, huti a dříve i doly. V čem tam asi hledají práci?"],
     explanation: "Průmyslový kraj má hodně továren, hutí a dříve i dolů a lidé pracují ve výrobě. Příkladem je Moravskoslezský kraj s Ostravou.",
   }),
   choice("Jak turisté pomáhají hospodářství kraje?", "Utrácejí peníze v hotelech a restauracích", [
-    { value: "Stavějí v kraji nové továrny", why: "Turisté továrny nestavějí." },
+    { value: "Stavějí v kraji nové továrny a silnice", why: "Turisté továrny ani silnice nestavějí. Kraji pomáhají tím, co utratí." },
     { value: "Obdělávají místní pole", why: "Turisté pole neobdělávají." },
     { value: "Nijak, jen zabírají místo", why: "Pomáhají, protože v kraji utrácejí peníze." },
   ], {
@@ -160,14 +160,14 @@ const POOL_L2: PracticeTask[] = [
   choice("Proč kraj potřebuje dobré silnice a železnice?", "Aby lidé a zboží snadno cestovali", [
     { value: "Aby vypadal hezky", why: "Nejde o vzhled, ale o dopravu." },
     { value: "Aby měl méně aut", why: "Dobré silnice auta nepřidávají ani neubírají." },
-    { value: "Aby nemusel mít školy", why: "Doprava školy nenahradí." },
+    { value: "Aby nemusel stavět školy ani nemocnice", why: "Doprava školy ani nemocnice nenahradí, jen je zpřístupní." },
   ], {
     hints: ["Jak se lidé dostanou do práce a zboží do obchodů?", "Po silnicích a kolejích jezdí lidé do škol a do práce a nákladní auta vozí zboží. Co by se stalo bez nich?"],
     explanation: "Silnice a železnice spojují obce a města. Lidé po nich jezdí do práce a do školy a vozí se po nich zboží do obchodů a továren.",
   }),
   choice("Jak se liší obec od kraje?", "Kraj je velký a leží v něm mnoho obcí", [
     { value: "Obec je větší než kraj", why: "Je to naopak — kraj tvoří mnoho obcí." },
-    { value: "Obec a kraj jsou totéž", why: "Obec je jedno město nebo vesnice, kraj je velké území." },
+    { value: "Obec a kraj znamenají úplně totéž", why: "Obec je jedno město nebo vesnice, kraj je velké území." },
     { value: "Kraj je jen jedna vesnice", why: "Kraj je velké území s mnoha obcemi." },
   ], {
     hints: ["Kolik obcí je v jednom kraji?", "Obec je třeba jedna vesnice nebo město se starostou. Kraj je velký kus země s krajským městem."],
@@ -184,13 +184,13 @@ const POOL_L2: PracticeTask[] = [
   choice("Co jsou přírodní zdroje?", "Voda, půda, lesy a nerosty", [
     { value: "Hrady a zámky", why: "Hrady a zámky jsou kulturní památky." },
     { value: "Silnice a mosty", why: "Silnice a mosty postavili lidé." },
-    { value: "Obchody a banky", why: "Obchody a banky nejsou přírodní zdroje." },
+    { value: "Obchody, banky a nákupní centra", why: "Ty postavili lidé, příroda je nedává." },
   ], {
     hints: ["Přírodní zdroje dává lidem příroda.", "Z přírody bereme vodu na pití, dřevo z lesa, úrodnou půdu a uhlí nebo kámen ze země."],
     explanation: "Přírodní zdroje jsou věci, které nám dává příroda: voda, úrodná půda, lesy a nerosty jako uhlí nebo kámen.",
   }),
   choice("Jak může řeka pomáhat hospodářství kraje?", "Dává vodu, dopravu a elektřinu", [
-    { value: "Jen dělá povodně", why: "Povodně bývají, ale řeka dává i vodu a energii." },
+    { value: "Kraji spíš škodí, protože dělá povodně", why: "Povodně bývají, ale řeka dává i vodu, dopravu a energii." },
     { value: "Brání dopravě", why: "Po řece se naopak dá přepravovat zboží." },
     { value: "Nijak nepomáhá", why: "Řeka je pro kraj velmi užitečná." },
   ], {
@@ -198,7 +198,7 @@ const POOL_L2: PracticeTask[] = [
     explanation: "Řeka dává vodu pro lidi i továrny, po větších řekách jezdí lodě a přehrady na nich vyrábějí elektřinu. Může ale i zaplavit okolí.",
   }),
   choice("Který výrobek je typický pro Pardubice?", "Pardubický perník", [
-    { value: "Japonský čaj", why: "Čaj z Japonska není český regionální výrobek." },
+    { value: "Japonský zelený čaj", why: "Čaj z Japonska není český regionální výrobek." },
     { value: "Italská pizza", why: "Pizza pochází z Itálie." },
     { value: "Americká kola", why: "Kola je americký nápoj." },
   ], {
@@ -208,13 +208,13 @@ const POOL_L2: PracticeTask[] = [
   choice("Kdo rozhoduje o věcech celého kraje?", "Krajské zastupitelstvo, které volí lidé", [
     { value: "Ředitel jedné školy", why: "Ředitel vede jen svou školu." },
     { value: "Starosta jedné obce", why: "Starosta vede jen svou obec." },
-    { value: "Každý obyvatel sám za sebe", why: "Lidé volí zástupce, kteří rozhodují za ně." },
+    { value: "Každý obyvatel kraje sám za sebe", why: "Lidé volí zástupce, kteří rozhodují za ně." },
   ], {
     hints: ["Lidé v kraji si ho volí ve volbách.", "Obec má zastupitelstvo a starostu. Kraj má také zvolené zastupitele a v čele hejtmana."],
     explanation: "O kraji rozhoduje krajské zastupitelstvo, které si lidé volí ve volbách. V čele kraje stojí hejtman.",
   }),
   choice("Proč jsou v kraji muzea a galerie?", "Aby uchovaly historii a umění pro další generace", [
-    { value: "Aby vydělávaly nejvíc peněz", why: "Muzea peníze nevydělávají ve velkém. Jejich úkolem je uchovat historii." },
+    { value: "Aby na vstupném vydělaly co nejvíc peněz", why: "Muzea na vstupném moc nevydělají. Jejich úkolem je uchovat historii." },
     { value: "Aby tam sídlily úřady", why: "Úřady sídlí jinde." },
     { value: "Aby děti nemusely do školy", why: "Muzea školu nenahrazují, ale doplňují." },
   ], {
@@ -223,7 +223,7 @@ const POOL_L2: PracticeTask[] = [
   }),
   choice("Kde najdeš informace pro turisty?", "V informačním centru", [
     { value: "V bance", why: "V bance se řeší peníze." },
-    { value: "Na úřadu práce", why: "Úřad práce pomáhá hledat zaměstnání." },
+    { value: "Na úřadu práce v krajském městě", why: "Úřad práce pomáhá hledat zaměstnání, ne plánovat výlet." },
     { value: "V nemocnici", why: "Nemocnice léčí nemocné." },
   ], {
     hints: ["Hledej místo s velkým písmenem „i“ na ceduli.", "Dostaneš tam mapy, tipy na výlety a informace o památkách."],
@@ -241,7 +241,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Průmysl dává práci, ale může znečišťovat přírodu. Nejlepší je hledat cestu, jak vyrábět šetrně — třeba filtry, čistší technologie a úsporu energie.",
   }),
   choice("Proč se v horských obcích lidé živí hlavně turisty?", "Pole se tam obdělávají špatně, ale hory lákají", [
-    { value: "V horách je nejvíc továren", why: "Továren je v horách málo." },
+    { value: "V horách stojí nejvíc továren a dílen", why: "Továren je v horách málo, stavějí se spíš v nížinách." },
     { value: "V horách se nesmí pracovat", why: "V horách se pracovat smí." },
     { value: "Na horách nikdo nebydlí", why: "V horských obcích lidé bydlí." },
   ], {
@@ -251,7 +251,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Podle čeho poznáš zemědělský kraj od průmyslového?", "Zemědělský má pole a farmy, průmyslový továrny", [
     { value: "Zemědělský je vždy větší", why: "Velikost kraje neurčuje, čím se lidé živí." },
     { value: "Průmyslový má víc lesů", why: "Lesy s průmyslem nesouvisejí." },
-    { value: "Zemědělský nemá žádná města", why: "I zemědělský kraj má města." },
+    { value: "Zemědělský kraj nemá žádná velká města", why: "I zemědělský kraj má města, jen kolem nich převažují pole." },
   ], {
     hints: ["Čím se v kraji lidé nejvíc živí?", "Když jedeš krajem a vidíš hlavně pole a stáje, je to jeden typ. Když vidíš komíny a haly, je to druhý."],
     explanation: "V zemědělském kraji převládají pole, sady a farmy, v průmyslovém továrny, haly a dříve i doly. Většina krajů má obojí, jen v jiném poměru.",
@@ -265,7 +265,7 @@ const POOL_L3: PracticeTask[] = [
     explanation: "Technika a potřeby lidí se mění. Staré obory, jako těžba uhlí, zanikají a vznikají nové, třeba výroba aut, počítačové firmy nebo služby.",
   }),
   choice("Proč je dobré kupovat zeleninu od místních pěstitelů?", "Nevozí se z daleka a podpoří se místní lidé", [
-    { value: "Je vždy levnější než v obchodě", why: "Nemusí být levnější. Výhoda je čerstvost a krátká cesta." },
+    { value: "Je vždycky levnější než zelenina v obchodě", why: "Nemusí být levnější. Výhoda je čerstvost a krátká cesta." },
     { value: "Nikdy se nekazí", why: "Kazí se jako každá zelenina." },
     { value: "Je větší než dovezená", why: "Velikost nerozhoduje." },
   ], {
@@ -274,7 +274,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Kolem velkých měst se stavějí domy a obchody na místě polí. Co se tím změní?", "Město roste, ale ubývá polí a přírody", [
     { value: "Polí kolem města přibude", why: "Pole se naopak zastavují." },
-    { value: "Krajina zůstane úplně stejná", why: "Změní se — z polí se stanou domy a parkoviště." },
+    { value: "Krajina kolem města zůstane úplně stejná", why: "Změní se — z polí se stanou domy a parkoviště." },
     { value: "Město se tím zmenší", why: "Město se tím naopak rozroste." },
   ], {
     hints: ["Co bylo na místě nového obchodního centra dřív?", "Když se na poli postaví domy a parkoviště, co zmizí a kam se schovají zajíci a koroptve?"],
@@ -290,7 +290,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Proč se zachovávají lidové tradice, jako masopust nebo dožínky?", "Připomínají, jak žili naši předkové", [
     { value: "Protože je to povinné", why: "Povinné to není. Lidé je dodržují, protože jim na nich záleží." },
-    { value: "Aby se nemuselo pracovat", why: "Nejde o volno, ale o připomínku historie a společenství." },
+    { value: "Aby se v ten den nemuselo pracovat", why: "Nejde o volno, ale o připomínku historie a společenství." },
     { value: "Protože jsou úplně nové", why: "Tradice jsou naopak staré." },
   ], {
     hints: ["Kdo slavil masopust a dožínky před sto lety?", "Dožínky slavily konec žní a masopust konec zimy. Co nám dnes připomínají?"],
@@ -299,7 +299,7 @@ const POOL_L3: PracticeTask[] = [
   choice("Proč je řeka pro město výhodná i nebezpečná?", "Řeka dává vodu, ale při povodni zaplaví domy", [
     { value: "Řeka je jen výhodná", why: "Řeka může být i nebezpečná, když se vylije." },
     { value: "Řeka je jen nebezpečná", why: "Řeka dává i vodu, dopravu a krásné místo k procházkám." },
-    { value: "Řeka se městem nijak nesouvisí", why: "Mnoho měst vzniklo právě u řek." },
+    { value: "Řeka s hospodářstvím města nijak nesouvisí", why: "Mnoho měst vzniklo právě u řek — kvůli vodě i dopravě." },
   ], {
     hints: ["Proč vznikla většina měst u řek? A co se stane po velkých deštích?", "Z řeky se bere voda a kdysi byla i cestou pro lodě. Když ale napadne hodně deště, vystoupí z břehů a zaplaví okolí."],
     explanation: "Řeka dává městu vodu, dopravu a krásné nábřeží. Při velkých deštích se ale může vylít a zaplavit domy, proto se stavějí hráze a přehrady.",
@@ -314,7 +314,7 @@ const POOL_L3: PracticeTask[] = [
   }),
   choice("Jak se můžeš dozvědět o historii své obce?", "V muzeu, v kronice obce a od starších lidí", [
     { value: "Jen z reklam v televizi", why: "Reklamy o historii obce neinformují." },
-    { value: "Historie obcí se nikde nezapisuje", why: "Zapisuje — do obecní kroniky." },
+    { value: "Historie obcí se nikde nezapisuje a nedochovala se", why: "Zapisuje — do obecní kroniky, a leccos vědí i pamětníci." },
     { value: "Jen od kamarádů ze třídy", why: "Kamarádi toho vědí málo. Víc prozradí kronika a starší lidé." },
   ], {
     hints: ["Kdo si pamatuje, jak obec vypadala před padesáti lety?", "Každá obec má kroniku, kam se zapisují události. A dědeček nebo babička ti řeknou, co zažili."],
