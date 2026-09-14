@@ -55,6 +55,7 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
         emoji: "⚡",
         topicIds: [
           "g6-fyz-elektricky-naboj-6",
+          "g6-fyz-elektricky-obvod-6",
         ],
       },
     ],

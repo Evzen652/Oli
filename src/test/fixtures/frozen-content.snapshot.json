@@ -676,12 +676,16 @@
     "taskCount": 3
   },
   "g6-fyz-atomy-molekuly-6": {
-    "hash": "b53a7aa05b406255ed34bd0e76007cd5ebbfceec",
+    "hash": "9008fe8ae10616abea01e5e20bd412e469d75d09",
     "taskCount": 39
   },
   "g6-fyz-elektricky-naboj-6": {
-    "hash": "54b38e61e5591a0affceed5a23e75d63fe10ef57",
+    "hash": "798c426dfaa5d8e2e3690944c4ae62836eb56880",
     "taskCount": 48
+  },
+  "g6-fyz-elektricky-obvod-6": {
+    "hash": "ee7f9344bf0d693434e4d1f0453348eed277ecce",
+    "taskCount": 40
   },
   "g6-fyz-hustota-6": {
     "hash": "58bb301708b2308f2a89ec88d9f17b263710f0fb",
@@ -712,7 +716,7 @@
     "taskCount": 72
   },
   "g6-fyz-pohyb-castic-6": {
-    "hash": "ae3648afe6f8696aa4033348fe663be59a4ae7c9",
+    "hash": "3ab482ab656e5bf6333cb6439c9837e65c2dc8dd",
     "taskCount": 48
   },
   "g6-fyz-skupenstvi-latek-6": {

@@ -407,6 +407,30 @@ src/
   úloze a `latkaATeleso.ts` to tak dělá. Opraveno v obou souborech; strukturální
   kritik teď počítá, kolik různých velkých nápověd úroveň vydá (45 / 12 / 12
   u nového tématu, 9 / 12 / 12 u opraveného).
+- ✅ **Druhé téma okruhu — `Jednoduchý elektrický obvod`.** L1 úloha součástky
+  (šestnáct součástek, čtyři role se v klíči střídají), L2 rozhodnutí o konkrétním
+  zapojení (rozepnutý spínač, plastové pravítko × tuha z tužky, přerušený drát
+  pod celou izolací), L3 jádro tématu — proud se nespotřebovává a co z toho
+  plyne. Fyzika **12/13**, šestka **17 ze 117**.
+- 🆕 **Nová kontrola `npm run check:options`.** Hlásí úlohy, kde **všechny
+  distraktory začínají týmž slovem a klíč jiným** — dítě ji pak vybere jako
+  „ten jiný kus“, bez znalosti věci. Vznikla proto, že se tahle vada v dávce
+  objevila třikrát v jedné podobě (binární Ano/Ne) a **dvakrát jsem ji vyrobil
+  znovu hodinu poté, co jsem první tři ručně opravoval**. Ruční průchod na ni
+  nestačí, protože se pozná až srovnáním všech čtyř možností vedle sebe.
+  Skript nic neblokuje, jen měří — stejně jako `check:length`.
+- 🐛 **Kontrola hned našla 7 nálezů v šestce**, z toho 5 v tématech téhle
+  session (dvě z nich vyrobené tentýž den při opravě Ano/Ne otázek). Opraveno
+  v `atomyMolekuly`, `pohybCastic` (3×) a `elektrickyNaboj`. Zámek obsahu se
+  proto u těchhle tří témat přegeneroval — diffem ověřeno, že se změnila
+  právě a jen ta čtyři témata.
+- ⏳ **Napříč repem hlásí 140 úloh a to je nad rámec téhle dávky.** Vzorek
+  ukázal, že nejde o falešné nálezy: 28× otázka „Proč…?“, kde všechny tři
+  distraktory začínají „Protože“ a klíč je holá věta; 22× „Souvětí…“; 8×
+  „Podmět…“. Podle ročníků g4 41, g5 38, g3 15, g2 6, šestka po opravě 2
+  (oba v zmrazeném `co-je-dejepis`). **Zmrazený obsah jsem nepřepisoval** —
+  je to vzorec celého repa, ne chyba jedné dávky, a patří k rozhodnutí
+  uživatele. Táž situace jako u `check:length` v září.
 - ⚠️ **Oprava mého vlastního nálezu: `npx tsc --noEmit` v tomhle repu
   nekontroluje nic.** Kořenový `tsconfig.json` má `"files": []` a jen reference
   na podprojekty, takže projde i se zjevnou typovou chybou v `src/` (ověřeno

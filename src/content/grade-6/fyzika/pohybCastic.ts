@@ -494,7 +494,7 @@ const DIFUZE: Polozka[] = [
   {
     otazka:
       "Inkoust se ve sklenici rozptýlil do celé vody. Proč se sám nestáhne zpátky do jedné kapky, ani kdybys čekal sebedéle?",
-    klic: "Částice se pohybují bez jakéhokoli řádu na všechny strany, takže se samy do jednoho místa neseřadí.",
+    klic: "Protože se částice pohybují bez jakéhokoli řádu a samy se do jednoho místa neseřadí.",
     chybne: [
       {
         value: "Protože je voda příliš studená; v horké by se kapka zase složila.",
@@ -612,7 +612,7 @@ const BROWN: Polozka[] = [
   {
     otazka:
       "Dvě zrnka pylu leží v kapce vody kousek od sebe. Jak se budou pohybovat?",
-    klic: "Každé nezávisle na tom druhém a pokaždé jiným směrem.",
+    klic: "Obě nezávisle na sobě a pokaždé jiným směrem.",
     chybne: [
       {
         value: "Obě stejným směrem, protože je unáší tentýž proud vody.",
@@ -748,7 +748,7 @@ const BROWN: Polozka[] = [
   {
     otazka:
       "Proč se Brownův pohyb považuje za důkaz toho, že se látky skládají z částic?",
-    klic: "Zrnkem muselo něco strkat a nic jiného než neviditelné částice kapaliny v kapce není.",
+    klic: "Protože zrnkem muselo něco strkat a nic jiného než neviditelné částice v kapce tam není.",
     chybne: [
       {
         value: "Protože se zrnko pod mikroskopem rozpadlo na jednotlivé částice.",

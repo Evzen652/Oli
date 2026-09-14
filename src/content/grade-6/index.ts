@@ -23,6 +23,7 @@ import { SKUPENSTVI_LATEK } from "./fyzika/skupenstviLatek";
 import { ATOMY_MOLEKULY } from "./fyzika/atomyMolekuly";
 import { POHYB_CASTIC } from "./fyzika/pohybCastic";
 import { ELEKTRICKY_NABOJ } from "./fyzika/elektrickyNaboj";
+import { ELEKTRICKY_OBVOD } from "./fyzika/elektrickyObvod";
 
 // Dějepis (pilot — faktický vzor)
 import { PERIODIZACE_LETOPOCET } from "./dejepis/periodizaceLetopocet";
@@ -45,6 +46,7 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...ATOMY_MOLEKULY,
   ...POHYB_CASTIC,
   ...ELEKTRICKY_NABOJ,
+  ...ELEKTRICKY_OBVOD,
   // Dějepis — Úvod do dějepisu
   ...PERIODIZACE_LETOPOCET,
   // Dějepis — Pravěk

@@ -61,6 +61,20 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   jménu (`z sklo`, `stejná lžičku`, `u jantar`) se v téhle dávce objevila
   počtvrté. Strojová kontrola, která hledá předložku těsně před interpolací
   v šabloně, by ji chytila dřív než lidský průchod.
+- ✅ **Okruh 3 fyziky, téma 2/3 — `Jednoduchý elektrický obvod`** (14. 9.).
+  Fyzika **12/13**, šestka **17 ze 117**. Zbývají už jen `Magnety a magnetické
+  pole`, pak je fyzika hotová celá.
+- 🆕 **`npm run check:options`** — nová report-only kontrola na úlohy, kde klíč
+  vyčnívá tvarem (všechny distraktory začínají týmž slovem, klíč jiným).
+  Nahrazuje ruční hlídání zákazu binárních Ano/Ne otázek mimo L1, na které
+  jsem v téhle dávce pětkrát nestačil.
+- ⏳ **K ROZHODNUTÍ: `check:options` hlásí napříč repem 140 úloh.** Vzorek
+  potvrdil, že převážně nejde o falešné nálezy — dominuje otázka „Proč…?“ se
+  třemi distraktory „Protože…“ a klíčem jako holou větou (28×), dále „Souvětí“
+  (22×) a „Podmět“ (8×). Rozložení: g4 41, g5 38, g3 15, g2 6, g6 2.
+  **Zmrazený obsah jsem nepřepisoval.** Je to plošný vzorec starších dávek
+  a oprava znamená přegenerovat zámek napříč ročníky — to je rozhodnutí
+  uživatele, ne vedlejší efekt obsahové dávky.
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.

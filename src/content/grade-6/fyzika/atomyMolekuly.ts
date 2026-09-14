@@ -192,15 +192,15 @@ const JEVY: Polozka[] = [
   },
   {
     otazka: "Led, voda i vodní pára jsou tatáž látka. Co mají společné?",
-    klic: "Skládají se ze stejných molekul vody.",
+    klic: "Mají úplně stejné molekuly vody, jen jinak uspořádané.",
     chybne: [
-      { value: "Mají stejně uspořádané molekuly.", why: "Uspořádání se liší — právě v něm je rozdíl mezi ledem a párou." },
+      { value: "Mají v litru stejně molekul.", why: "V litru páry je molekul mnohem méně než v litru vody." },
       { value: "Mají stejnou hustotu i objem.", why: "Hustota se liší natolik, že led na vodě plave." },
-      { value: "Mají stejný počet molekul v litru.", why: "V litru páry je molekul mnohem méně než v litru vody." },
+      { value: "Mají stejně daleko od sebe sousední molekuly.", why: "Rozestupy se liší nejvíc ze všeho — v páře jsou mnohonásobně větší než v ledu." },
     ],
     h0: "Co se mezi ledem, vodou a párou mění a co naopak zůstává?",
     h1: "Vyzkoušej každou možnost zvlášť na ledu a na páře. Hustota, uspořádání i počet v litru vycházejí pokaždé jinak, takže společné být nemůžou.",
-    vysvetleni: "Skupenství mění uspořádání a rozestupy částic, ne samotné částice. Led, voda i pára jsou z týchž molekul vody.",
+    vysvetleni: "Skupenství mění uspořádání a rozestupy částic, ne samotné částice. Led, voda i pára mají tytéž molekuly vody.",
   },
   {
     otazka: "Proč atom neuvidíš ani školním mikroskopem?",

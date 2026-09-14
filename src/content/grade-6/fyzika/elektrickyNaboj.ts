@@ -702,7 +702,7 @@ const PRITAHOVANI: Polozka[] = [
   {
     otazka:
       "Záporně nabitý hřeben papírky zvedne. Jak dopadne týž pokus s hřebenem nabitým kladně?",
-    klic: "Úplně stejně — papírky se zvednou taky.",
+    klic: "Papírky se zvednou úplně stejně.",
     chybne: [
       {
         value: "Papírky se od hřebenu odtáhnou.",
