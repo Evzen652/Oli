@@ -1,12 +1,21 @@
-# Předání práce — stav k 2026-09-13
+# Předání práce — stav k 2026-09-14
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >
-> **Fáze: příprava spuštění** — právní stránky, mobilní obal, bezpečnost,
-> formuláře obchodů. **Obsah je hotový a uzavřený** (opravný průchod 87 témat
-> dojel 12. 9., viz §1). Postup práce nejde dál sám od sebe: stojí na šesti
-> rozhodnutích a úkonech, které může udělat jen Evžen — **§2**.
+> **Dvě větve práce běží vedle sebe:**
+>
+> 1. **Příprava spuštění** — právní stránky, mobilní obal, bezpečnost,
+>    formuláře obchodů. Nejde dál sama od sebe: stojí na osmi rozhodnutích
+>    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
+>    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
+> 2. **Doplnění 6. ročníku** — sem šla práce 13. a 14. 9. Fyzika je hotová
+>    celá (13/13), šestka na **18 ze 117**. **Na řadě je dějepis**, zbývá
+>    19 z 24 podtémat. Přípravné práce i vizuální smoke test odborných typů
+>    jsou hotové, takže dávka může začít rovnou — viz §1.
+>
+> ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
+> pro ročníky 1–5. Šestka rozdělaná je.
 
 ---
 
@@ -18,8 +27,8 @@ Ověř si to `git fetch`em, ne pamětí:
 git fetch origin && git status -sb && git worktree list
 ```
 
-**Pracovní větev je `main`.** K 13. 9. je všechno pushnuté, `origin/main` je na
-`b2c9dee`, pracovní strom čistý, **worktree je jediný** (hlavní repo).
+**Pracovní větev je `main`.** K 14. 9. je všechno pushnuté, `origin/main` je na
+`c99fe46`, pracovní strom čistý, **worktree je jediný** (hlavní repo).
 Lokální větve tři: `main`, `chore/remove-essay-and-ai-authoring`,
 `claude/cranky-shirley`.
 
@@ -59,9 +68,22 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: příprava spuštění
+### ▶▶ ZAČNI TADY: dějepis 6. ročníku
 
-Obsah ani kód teď nejsou úzké hrdlo. Blokuje **šest úkonů, které Claude udělat
+Přípravné práce jsou hotové, na obsahové dávce nic nevisí. Postup je popsaný
+v [`docs/GRADE_6_COMPLETION_PLAN.md`](GRADE_6_COMPLETION_PLAN.md), vzor autorské
+práce v posledních sedmi commitech fyziky (`30711bf` … `033e069`).
+
+**Než napíšeš první téma, přečti si `docs/CONTENT_AUTHORING.md` §6.4** — kontrakt
+odborných typů (`timeline`, `numeric_range`). Dějepis je bude chtít a formát
+`correctAnswer` u nich není samozřejmý.
+
+⚠️ **`image_select` ani `diagram_label` použít nejdou** — v repu nejsou žádné
+obrázky k obsahu. Je to blokované na grafice, ne na kódu (viz session 45 níž).
+
+### Druhá větev: příprava spuštění
+
+Tady kód není úzké hrdlo. Blokuje **osm úkonů, které Claude udělat
 nemůže** (§2) a k nim tři technické věci, které na ně navazují:
 
 | co | stav | kde |
@@ -69,6 +91,96 @@ nemůže** (§2) a k nim tři technické věci, které na ně navazují:
 | Redirect URLs v Supabase | ⛔ na uživateli | §2 bod 3 |
 | Spouštěč úklidu anonymních dat | ⛔ na uživateli | §2 bod 4 |
 | Hluboké odkazy (App Links / Universal Links) | blokuje podpisový klíč | §4 |
+
+### Session 43–44 (2026-09-13/14) — fyzika šestky dopsána do konce
+
+**Fyzika 13/13, šestka 18 ze 117** (dějepis 5). Sedm nových témat:
+`Látka a těleso`, `Skupenství látek`, `Atomy a molekuly`, `Pohyb částic`,
+`Elektrický náboj`, `Elektrický obvod`, `Magnety`. Přibyl okruh
+„Elektřina a magnety“ v navigaci šestky.
+
+Co z té dávky platí dál:
+
+- **`ruzneUlohy()` v `grade-6/fyzika/_shared.ts` je povinná.** Bez ní se losuje
+  24× a doufá: u tématu s 24 možnými zadáními vyjde v průměru ~15 různých úloh
+  a v nejhorším běhu 11 — pod hranicí 12. `generator-task-count.test.ts` na tom
+  padal náhodně, typicky jednou ze čtyř.
+- **Neshoda z lepení předložky k dosazenému jménu se v jedné dávce objevila
+  čtyřikrát** (`z sklo`, `stejná lžičku`, `u jantar`). Šablona potřebuje pád
+  navíc jako vlastní pole, ne interpolaci holého jména. **Strojová kontrola na
+  to zatím není** — je to námět, ne hotová věc.
+- **Binární Ano/Ne mimo L1 jsem v jedné dávce napsal pětkrát.** Ruční hlídání
+  na tuhle třídu nestačí; proto vznikl `check:options` (níž).
+
+### Session 45 (2026-09-14) — odborné typy prošly poprvé prohlížečem
+
+Bod 1.6 plánu šestky. `timeline`, `diagram_label`, `image_select`
+i `numeric_range` se vykreslí a hodnotí správně — ověřeno anonymním žákovským
+režimem (`/student`, bez přihlášení) na běžícím dev serveru, u každého typu
+špatná i správná odpověď. Komponenty i validátory existovaly od května, ale
+**celý řetěz nikdo neprošel**; testy fixovaly jen formát, který komponenta
+odesílá. Tři vady, všechny opravené a pokryté `src/test/odborne-typy-e2e.test.tsx`:
+
+1. **`numeric_range` dostalo textareu na volný text** — router pro něj neměl
+   větev a spadl na `default`.
+2. **Po chybné odpovědi se ukazoval strojový zápis klíče:** `img-modry`
+   (interní id obrázku), `A|B|C` u časové osy i diagramu, `30±1` u tolerance.
+   `CorrectAnswerDisplay` znalo jen `drag_order`, `match_pairs` a `categorize`.
+3. **Validátor se vybíral jen podle `topic.inputType`**, zatímco komponentu
+   vybírá router podle POLÍ úlohy. Při neshodě se odpověď tiše porovnala přes
+   `string_exact` — u `diagram_label` to znamená ztrátu tolerance překlepu.
+
+⚠️ **Plán měl u toho bodu chybné zadání** — tvrdil, že `resolveTaskValidation`
+má strukturovaná pole převádět na `expected`. To by bylo špatně:
+`timelineEvents` je pool v náhodném pořadí a správné pořadí v něm není.
+Odvozuje se proto validátor, ne očekávaná hodnota.
+
+**Latentní past:** `input[type=number]` zahodí desetinnou čárku (`3,5` →
+prázdné pole a zašedlé tlačítko). Dnes nedosažitelné (celý rejstřík má jediné
+téma s číselným vstupem a žádnou desetinnou odpověď), ale fyzika by na to
+narazila hned.
+
+### Session 46–47 (2026-09-14) — dvě vodítka, která šla uhodnout bez znalosti
+
+Obě kontroly jsou teď **na nule napříč celým rejstříkem** a obě si předtím
+vyžádaly opravu sebe sama. To je ta důležitější část.
+
+**`check:options` — klíč vyčnívá tvarem.** Všechny distraktory začínají týmž
+slovem a klíč jiným, takže dítě vybere „ten jiný kus“. Ze 140 nálezů bylo
+**38 falešných**: pevná škála, kde má celé téma pořád tutéž čtveřici možností
+(„věta jednoduchá / souvětí ze dvou / ze tří / ze čtyř vět“) a klíč mezi nimi
+jen rotuje — kdo vybírá tu jinak psanou pokaždé, splete se ve většině úloh.
+Skript to teď pozná podle toho, že se tatáž nabídka objevila i s jiným klíčem.
+Zbylých 102 opraveno: „Protože…“ 28, „Jen…“ 14, „Aby…“ 9, binární Ano/Ne 7
+(tři z nich na L2, kde ten formát nemá co dělat — přepsány na otevřené otázky)
+a ~44 jednotlivých.
+
+**`check:length` — klíč je nejdelší možnost.** Skript měřil špatnou věc
+**dvakrát po sobě**:
+
+1. počítal poměr klíč / **nejkratší** distraktor a hlásil **1535 úloh** — jenže
+   to nic neříká o tom, jestli se dá tipovat: žák vidí všechny čtyři možnosti;
+2. po opravě počítal, jak často je klíč nejdelší — a bral i rozdíl jednoho
+   znaku („Krajské město“ proti „Hlavní město“), který dítě nevidí.
+
+Teď měří, jak často je klíč **výrazně** nejdelší (≥ 1,25×) a jestli v tom nad
+distraktory převažuje aspoň 2,5×. **Naměřeno: plošný problém to nebyl** —
+napříč rejstříkem byl výrazně nejdelší možností klíč v 5,6 % úloh a distraktor
+ve 13,7 %, délka tedy vedla spíš OD správné odpovědi. Naruby ten poměr obracelo
+**25 témat**, nejhorší 64 % proti 8 %. Všechna opravena dopsáním distraktorů
+(~380 přepsaných možností); po opravě je poměr 3,7 % ku 12,1 %.
+
+Dvě věci z té dávky, které se vyplatí znát:
+
+- **Vada nemusí být zapsaná v datech.** U `g4-mat-osova-soumernost-4` vznikala
+  trojice „písmeno F / G / J“ proti klíči „obdélník“ **losem** při každém
+  spuštění. Opravoval se generátor, ne obsah.
+- **Hromadná náhrada klíče zasáhla i druhou úlohu se shodným klíčem** a vyrobila
+  novou vadu („Čím se liší pověst od pohádky?“ pak odpovídala „protože…“).
+  Chytila ji až kontrola pouštěná **po** opravě. Pouštěj ji na obou koncích.
+
+**Zámek obsahu:** `check:options` ho hnul (mění se klíče, 15 témat),
+`check:length` ne (mění se jen nabídka).
 
 ### Session 41 (2026-09-13) — soukromí a mobilní odkazy
 
@@ -104,7 +216,9 @@ Tři věci, které měly společné jedno: **hlídač tvrdil něco jiného, než
   takže souhrn hlásil „0 nápověd“ i pod vypsaným nálezem. Opraveno a ověřeno
   oběma směry.
 - **`check:length` nešel spustit** — skript existoval, `npm` skript ne. První
-  měření: 1 459 úloh z 18 821 při prahu 1,6× (ne „~45“).
+  měření: 1 459 úloh z 18 821 při prahu 1,6× (ne „~45“). ⚠️ **To číslo se 14. 9.
+  ukázalo jako bezcenné** — skript měřil poměr ke *nejkratší* možnosti, což
+  o uhodnutelnosti nevypovídá. Viz session 46–47.
 - **Invariant `CHECK < 60 ms` byl porušený a testová sada červená.**
   `execution-directive.test.ts` padal na 67–118 ms ve třech bězích po sobě.
 
@@ -186,13 +300,22 @@ Co ten průchod naučil a co platí dál:
 | `npm run check:keys` | **přepočítá klíč z textu zadání**, nepřebírá ho z generátoru (matematika) | ano |
 | `npm run check:keys:tables` | totéž pro tabulky, jízdní řády a diagramy | ano |
 | `npm run check:hints` | nápověda prozrazující odpověď **obsahem**, ne slovem | ne — měkká |
-| `npm run check:length` | klíč nápadně delší než distraktory (dá se tipovat) | ne — report |
+| `npm run check:options` | klíč vyčnívá **tvarem** (distraktory začínají týmž slovem) | ne — report |
+| `npm run check:length` | klíč je **výrazně** nejdelší možnost, a to systematicky | ne — report |
 | `npm run audit:ui` | prvek slibuje něco, co nedělá | ano, s baseline |
 | `generator-task-count.test.ts` | **téma × úroveň nabídne ≥ 12 různých úloh** — co nevznikne, žádný jiný audit nezkontroluje | ano |
 | `hint-structured-leak.test.ts` | únik u `match_pairs` / `categorize` / `drag_order` / `timeline` | ano |
 
-`check:hints` a `check:length` schválně neblokují: nález u nich není důkaz
-chyby a CI by padalo na legitimním obsahu.
+`check:hints`, `check:options` a `check:length` schválně neblokují: nález u nich
+není důkaz chyby a CI by padalo na legitimním obsahu. **Všechny tři jsou
+k 14. 9. na nule** — jakýkoli nález v nové dávce je tedy tvůj.
+
+⚠️ **Obě kontroly na „vodítko zadarmo“ si vyžádaly opravu sebe sama, než začaly
+měřit to, co měly.** `check:options` počítal pevnou škálu (38 falešných ze 140),
+`check:length` měřil poměr k nejkratší možnosti a pak i rozdíl jednoho znaku.
+Než podle nové kontroly začneš přepisovat obsah, **ručně přepočítej aspoň
+hrst nálezů** — falešná oprava správného obsahu je horší než nález nechat
+ležet.
 
 ⚠️ **`check:hints` do 13. 9. hlásil vždy „0 nápověd“**, i když nálezy nad tím
 vypsal — počítadlo se neinkrementovalo. Kdo četl jen poslední řádek, odešel
@@ -368,13 +491,10 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
 - **`crSymboly` L3 je z poloviny počítání letopočtů** — 6 ze 13 úloh je
   odčítání čtyřciferných čísel (1993 − 1415 = 578). Věcně správné, ale číselný
   obor 3. ročníku je do 1000 a nápověda učí písemné odčítání (učivo 4. ročníku).
-- **Klíč bývá nejdelší možnost — změřeno 13. 9. a je to jiný řád, než se
-  myslelo.** `npm run check:length` (do 13. 9. neexistoval jako npm skript,
-  jen jako soubor, takže se to nikdy nezměřilo) hlásí při výchozím prahu
-  1,6× **1 459 úloh z 18 821**; při 2,0× jich je 854, při 2,5× stále 402.
-  Číslo „~45“ pocházelo z jedné dávky, ne z celého repa. Většina nálezů je
-  legitimní („nekonečně mnoho“ proti „1“) — je to vzorec k rozhodnutí, ne
-  seznam chyb.
+- ✅ **Klíč jako nejdelší možnost — vyřízeno 14. 9.** Skript měřil špatnou věc
+  (poměr k nejkratší možnosti; čísla 1 459 a 1 535 pocházejí odtud). Po
+  přeměření na „jak často je klíč **výrazně** nejdelší“ vyšlo, že plošný problém
+  to nebyl — 25 témat ano, a všechna jsou opravená. Detail v session 46–47 výš.
 - **Dvě kontroly na leak si odporují:** `src/test/topic-gate.test.ts` hledá klíč
   v nápovědě prostým `includes` bez výjimky pro „rejstřík možností", kterou
   `supabase/functions/_shared/hintLeakage.ts` má; a `normalize()` v `hintLeakage`
@@ -383,15 +503,15 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
 - **`parovani`** (`grade-5/_shared.ts`) končí velkou nápovědu utrženou větou
   o jiné dvojici („…doplň vylučováním. V Římě stojí Koloseum…"). Týká se všech
   témat, která helper používají — souvisí s kořenem výš.
-- **Chybějící kontrola „generátor vrátil míň úloh, než má v poolech"** — co
-  nevznikne, žádný audit nezkontroluje.
+- ✅ **Kontrola „generátor vrátil míň úloh, než má v poolech" existuje** —
+  `generator-task-count.test.ts`, minimum 12 na téma × úroveň.
 - **`czechAgreementLint` hlásí planý poplach u jmenné části přísudku** —
   „0,3 m **je** 3 desetiny metru" chce opravit na „jsou". Patří do sekce
   „nesmí hlásit" v `czech-agreement-lint.test.ts`.
 
 ### 📋 6. ročník — plán doplnění
 
-Šestka je **pilot, ne hotový ročník**: **11 témat ze 117** (fyzika 6/13,
+Šestka je **pilot, ne hotový ročník**: **18 témat ze 117** (fyzika 13/13 hotová,
 dějepis 5/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
 Přitom je od 11. 9. otevřená žákům, takže šesťák vidí dva předměty z osmi.
 Pětka naproti tomu **hotová je** — 63 z 73 podtémat, zbylých 10 je informatika
@@ -404,11 +524,14 @@ z něj stojí za pozornost hned:
   jako „nízké riziko"; to se neprokázalo — kořen úniku v nápovědě seděl právě
   v pomocnících pro faktická témata. Nově: dodělat fyziku a dějepis (ověřené
   vzory), pak matematika, a teprve pak faktický blok.
-- **Pět věcí musí být hotových dřív než první nové téma**, protože se zpětně přes
-  stovku souborů dodělávají draho: rozšířit `check-hint-leak` na strukturované
-  typy, doplnit kontrolu „generátor vrátil míň úloh, než má v poolech", navigace
-  a dětské názvy pro šestku (`BY_GRADE` má jen 2–5), `vko` chybí
-  v `subjectRegistry` úplně a ilustrace chybí čtyřem předmětům.
+- ✅ **Všech pět přípravných věcí je hotových** (13. 9.) — `check-hint-leak` vidí
+  strukturované typy, `generator-task-count.test.ts` hlídá mizející úlohy,
+  navigace i dětské názvy šestky jsou doplněné. Tvrzení, že `vko` chybí
+  v `subjectRegistry`, **bylo mylné** — je tam. Zbývají jen **ilustrace čtyř
+  předmětů** (fyzika, přírodopis, zeměpis, vko), a ty psaní obsahu nedrží.
+- ✅ **Bod 1.6 (smoke test odborných typů) hotový** (14. 9.) — session 45 výš.
+- **Stav k 14. 9.: fyzika 13/13 hotová, dějepis 5 z 24.** Zbývající předměty
+  šestky (čeština, matematika, přírodopis, zeměpis, občanka) nezačaty.
 
 ### 🟠 Sliby vs. obsah
 
@@ -436,6 +559,31 @@ Otevření 7. ročníku by oslabilo rodičovskou bránu — hlídá `parent-gate
 ---
 
 ## 5. Pasti prostředí, které stály čas
+
+### Přibylo 2026-09-14
+
+**Hromadná náhrada řetězce v obsahu zasáhne i úlohu, o které nevíš.** Klíč
+„pověst se váže ke skutečnému místu" byl v jednom souboru použitý ve dvou
+úlohách; záměna kvůli jedné z nich rozbila tu druhou. Nahrazuj **celý řádek
+s kontextem** (`choice("…otázka…", "…klíč…"`), ne holý řetězec — a pusť
+kontrolu i **po** opravě, ne jen před ní.
+
+**Prohlížečový panel: `ref` klikne na špatné místo, pokud je stránka
+škálovaná.** Čtyři různá tlačítka hlásila tutéž souřadnici a klik nic neudělal.
+Spolehlivé je klikat přes DOM (`javascript_tool` + `element.click()`), stejně
+jako u vstupů. **A `preview_start` může vrátit jiný port, než na kterém Vite
+opravdu běží** — ověř v `preview_logs`, jinak navigace tiše selže.
+
+**Obrázky s `loading="lazy"` se ve skrytém panelu nenačtou** (`complete: false`,
+`naturalWidth: 0`). Není to chyba stránky; pro ověření přepni `img.loading` na
+`eager` a počkej.
+
+**Anonymní žákovský režim je cesta, jak proklikat obsah bez přihlášení.**
+`/student` + `localStorage.setItem("oli_anon_trial", JSON.stringify({startedAt:
+new Date().toISOString(), grade: 6}))`. Rozdělané sezení blokuje navigaci
+dialogem — smaž `sovicka_session_backup`. Dočasné téma musí být i v
+`navigation.ts`, jinak se v okruzích neukáže, a `subject` musí přesně sedět
+(`"dejepis"`, ne `"dějepis"`), jinak se založí druhá dlaždice předmětu.
 
 ### Přibylo 2026-09-13
 
@@ -489,3 +637,11 @@ nebo hlásí „mimo viewport". Ověřuj a klikej přes DOM
   které mlčí o skutečném zpracování, jsou horší než žádné.
 - **Hlídač, který se neověří, je jen dekorace** — nové kontrole ukaž chybu,
   kterou má chytat, a přesvědč se, že na ní spadne.
+- **Nová kontrola nad obsahem měří nejdřív sebe, až pak obsah.** Obě kontroly
+  na „vodítko zadarmo" (`check:options`, `check:length`) hlásily řádově víc
+  nálezů, než kolik jich bylo — pokaždé proto, že měřily něco jiného než to, co
+  může dítě reálně využít. Než podle nové kontroly přepíšeš obsah, přepočítej
+  hrst nálezů ručně.
+- **Vodítko existuje jen tehdy, když funguje opakovaně.** Jedna úloha, kde klíč
+  vypadá jinak, nic neprozrazuje; teprve když to platí v celém tématu, dá se
+  tipovat. Kontroly proto měří téma, ne úlohu.
