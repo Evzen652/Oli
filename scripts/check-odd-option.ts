@@ -18,6 +18,13 @@
 // a pod zákazem binárního Ano/Ne mimo L1; tenhle skript je jen jeho měřitelná
 // část.
 //
+// PEVNÁ ŠKÁLA SE NEPOČÍTÁ. Když má celé téma jednu a tutéž čtveřici možností
+// (typicky „věta jednoduchá / souvětí ze dvou / ze tří / ze čtyř vět“) a klíč
+// mezi nimi jen rotuje, pak „ta jiná“ možnost nenapovídá nic — kdo ji vybere
+// pokaždé, splete se ve většině úloh. První běh takhle nahlásil 22 úloh ze
+// dvou témat o souvětí a všechny byly falešné. Skript proto nález zahodí,
+// jakmile se tatáž nabídka objeví v tématu i s JINÝM klíčem.
+//
 // Nález NENÍ důkaz chyby. Někdy je odlišný začátek klíče věcně nutný — třeba
 // u otázky „Které z nich…“, kde jsou možnosti výčtem. Skript proto
 // **nekončí chybou**, jen vypíše, co posoudit.
@@ -39,7 +46,9 @@ function prvni(s: string): string {
     .replace(/[.!?„“"']/g, "");
 }
 
-const nalezy = new Map<string, { id: string; lvl: number; q: string; klic: string; spolecne: string }>();
+const nalezy = new Map<string, { id: string; lvl: number; q: string; klic: string; spolecne: string; nabidka: string }>();
+/** téma + otisk nabídky → všechny klíče, které se u té nabídky vyskytly. */
+const skaly = new Map<string, Set<string>>();
 
 for (const t of temata) {
   for (const lvl of [1, 2, 3]) {
@@ -53,6 +62,11 @@ for (const t of temata) {
       for (const u of ulohy) {
         const o = u.options ?? [];
         const klic = String(u.correctAnswer);
+        // Otisk nabídky bez ohledu na zamíchání → k rozpoznání pevné škály.
+        const nabidka = `${t.id}|${[...o].sort().join("")}`;
+        const videne = skaly.get(nabidka) ?? new Set<string>();
+        videne.add(klic);
+        skaly.set(nabidka, videne);
         const jine = o.filter((x) => x !== klic).map(prvni);
         // Jen plné čtyřmožnostní úlohy: u tří možností je shoda dvou začátků
         // ještě náhoda, u tří je to už vzorec.
@@ -71,19 +85,25 @@ for (const t of temata) {
           q: u.question,
           klic,
           spolecne: jine[0],
+          nabidka,
         });
       }
     }
   }
 }
 
-for (const n of nalezy.values()) {
+// Pevná škála: tatáž nabídka se v tématu objevila s víc klíči → cue nic neříká.
+const skutecne = [...nalezy.values()].filter((n) => (skaly.get(n.nabidka)?.size ?? 1) === 1);
+const zahozeno = nalezy.size - skutecne.length;
+
+for (const n of skutecne) {
   console.log(`\n[${n.id}] L${n.lvl} · distraktory začínají „${n.spolecne}“`);
   console.log(`   Q:    ${n.q.slice(0, 90)}`);
   console.log(`   KLÍČ: ${n.klic.slice(0, 90)}`);
 }
 
 console.log(`
-K posouzení: ${pad(nalezy.size, "ÚLOHA")}, kde klíč začíná jiným slovem než všechny distraktory.`
+K posouzení: ${pad(skutecne.length, "ÚLOHA")}, kde klíč začíná jiným slovem než všechny distraktory.`
+  + ` Jako pevná škála zahozeno: ${zahozeno}.`
   + ` Nález není důkaz chyby — u výčtových otázek bývá odlišný začátek v pořádku.`
   + ` (REPEATS=${REPEATS}, témat ${temata.length})`);
