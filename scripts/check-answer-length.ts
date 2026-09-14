@@ -1,61 +1,62 @@
-// Hledá témata, kde se dá uhodnout podle DÉLKY — klíč je systematicky
-// nejdelší možnost, takže žák trefí správně, aniž by tématu rozuměl.
+// Hledá témata, kde se dá uhodnout podle DÉLKY — správná odpověď je
+// systematicky ta výrazně nejdelší, takže žák trefí, aniž by tématu rozuměl.
 //
 //   npm run check:length
 //   IDS=g3-cjl-uhledne-psani npm run check:length
-//   PRAH=0.5 REPEATS=10 npm run check:length
+//   PRAH=0.25 REPEATS=10 npm run check:length
 //
-// Proč se to měří takhle, a ne poměrem klíč/nejkratší distraktor:
-// první verze skriptu počítala právě ten poměr a napříč repem jich našla
-// **1535**. Jenže poměr k NEJKRATŠÍ možnosti neříká nic o tom, jestli se dá
-// podle délky tipovat — žák vidí všechny čtyři a vybírá mezi nimi. Klíč o 60 %
-// delší než nejkratší možnost je zcela v pořádku, pokud je jiný distraktor
-// stejně dlouhý nebo delší.
+// Skript vznikl ve dvou krocích a oba omyly stojí za zapsání:
 //
-// Změřeno tedy přímo to, co dítě může udělat: **jak často uspěje strategie
-// „vyber nejdelší možnost“.** U čtyř možností je náhoda ≈ 25 %. Napříč celým
-// rejstříkem vyšlo 26,8 % — plošný problém to tedy NENÍ. Jenže rozptyl je
-// velký: 34 témat je nad 60 % a nejhorší na 88 %. Právě ta se mají opravit,
-// ne těch 1535 jednotlivých úloh.
+// 1. První verze počítala poměr klíč / NEJKRATŠÍ distraktor a napříč repem
+//    hlásila 1535 úloh. Jenže poměr k nejkratší možnosti neříká nic o tom,
+//    jestli se dá tipovat — žák vidí všechny čtyři a vybírá mezi nimi. Klíč
+//    o 60 % delší než nejkratší možnost je v pořádku, když je jiný distraktor
+//    stejně dlouhý.
+// 2. Druhá verze měřila, jak často je klíč nejdelší. To zase počítalo i rozdíl
+//    jednoho znaku („Krajské město“ proti „Hlavní město“), který dítě nevidí.
 //
-// Nález NENÍ důkaz chyby: u faktických témat bývá správná odpověď delší
-// z podstaty (celá věta proti jednomu slovu). Skript proto **nekončí chybou**,
-// jen ukáže, kde se vyplatí distraktory dopsat.
+// Teď se počítá jen **výrazně** nejdelší možnost (≥ NASOBEK× delší než druhá
+// v pořadí) a hlavně se klíč porovnává s distraktory: když je klíč výrazně
+// nejdelší ve 40 % úloh, ale distraktor taky ve 35 %, žádné vodítko to není.
+// Vzorec je až tehdy, když jedna strana výrazně převažuje.
+//
+// Naměřeno napříč rejstříkem: klíč je výrazně nejdelší v 5,6 % úloh,
+// distraktor ve 14,1 % — plošně tedy délka vede spíš OD správné odpovědi.
+// Jenže několik desítek témat ten poměr obrací naruby.
+//
+// Nález NENÍ důkaz chyby: u faktických témat bývá definice delší z podstaty.
+// Skript proto **nekončí chybou**, jen ukáže, kde dopsat distraktory.
 import { getAllTopics } from "@/lib/contentRegistry";
 
 const zadane = (process.env.IDS ?? "").split(",").filter(Boolean);
-/** Od jaké úspěšnosti strategie „vyber nejdelší“ téma nahlásit. */
-const PRAH = Number(process.env.PRAH ?? 0.6);
+/** Od kolika procent úloh s výrazně nejdelším klíčem téma nahlásit. */
+const PRAH = Number(process.env.PRAH ?? 0.35);
+/** Kolikrát převažuje klíč nad distraktorem, aby šlo o vzorec, ne o shodu. */
+const PREVAHA = Number(process.env.PREVAHA ?? 2.5);
+/** Kolikrát delší musí být možnost, aby to dítě vůbec poznalo. */
+const NASOBEK = Number(process.env.NASOBEK ?? 1.25);
 const REPEATS = Number(process.env.REPEATS ?? 6);
-/** Pod tolik úloh je úspěšnost šum, ne vzorec. */
+/** Pod tolik úloh je podíl šum, ne vzorec. */
 const MIN_ULOH = 8;
 
 const temata = getAllTopics().filter(
   (t) => t.generator && (zadane.length === 0 || zadane.includes(t.id)),
 );
 
-interface Uloha {
-  level: number;
-  question: string;
-  klic: string;
-  nejdelsiJinak: string;
-}
-interface Tema {
-  id: string;
-  n: number;
-  uspech: number;
-  ukazky: Uloha[];
-}
+interface Ukazka { level: number; question: string; klic: string; druha: string }
+interface Tema { id: string; n: number; klic: number; distr: number; ukazky: Ukazka[] }
 
 const rows: Tema[] = [];
 let celkemUloh = 0;
-let celkemTrefa = 0;
+let celkemKlic = 0;
+let celkemDistr = 0;
 
 for (const t of temata) {
   const videno = new Set<string>();
-  const ukazky: Uloha[] = [];
+  const ukazky: Ukazka[] = [];
   let n = 0;
-  let trefa = 0;
+  let klicNejdelsi = 0;
+  let distrNejdelsi = 0;
   for (const level of [1, 2, 3]) {
     for (let r = 0; r < REPEATS; r++) {
       let tasks: ReturnType<NonNullable<typeof t.generator>>;
@@ -73,50 +74,54 @@ for (const t of temata) {
         if (videno.has(id)) continue;
         videno.add(id);
         n++;
-        const max = Math.max(...o.map((x) => x.length));
-        const nejdelsi = o.filter((x) => x.length === max);
-        if (!nejdelsi.includes(klic)) continue;
-        // Při shodné délce by strategie mezi nimi tipovala — započti jen podíl.
-        trefa += 1 / nejdelsi.length;
-        if (nejdelsi.length === 1) {
-          const jinak = o.filter((x) => x !== klic).reduce((a, b) => (a.length >= b.length ? a : b));
-          ukazky.push({ level, question: task.question.slice(0, 70), klic, nejdelsiJinak: jinak });
+        const podleDelky = [...o].sort((a, b) => b.length - a.length);
+        if (podleDelky[0].length < NASOBEK * podleDelky[1].length) continue;
+        if (podleDelky[0] !== klic) {
+          distrNejdelsi++;
+          continue;
         }
+        klicNejdelsi++;
+        ukazky.push({ level, question: task.question.slice(0, 70), klic, druha: podleDelky[1] });
       }
     }
   }
   if (n < MIN_ULOH) continue;
   celkemUloh += n;
-  celkemTrefa += trefa;
-  rows.push({ id: t.id, n, uspech: trefa / n, ukazky });
+  celkemKlic += klicNejdelsi;
+  celkemDistr += distrNejdelsi;
+  rows.push({ id: t.id, n, klic: klicNejdelsi, distr: distrNejdelsi, ukazky });
 }
 
-rows.sort((a, b) => b.uspech - a.uspech);
-const nad = rows.filter((r) => r.uspech >= PRAH);
+const podil = (r: Tema) => r.klic / r.n;
+rows.sort((a, b) => podil(b) - podil(a));
+const nad = rows.filter((r) => podil(r) >= PRAH && r.klic >= PREVAHA * Math.max(1, r.distr));
 
-console.log(`Zkontrolováno ${celkemUloh} úloh ve ${rows.length} tématech (REPEATS=${REPEATS}).`);
+console.log(`Zkontrolováno ${celkemUloh} úloh ve ${rows.length} tématech (REPEATS=${REPEATS}, práh délky ${NASOBEK}×).`);
 console.log(
-  `Úspěšnost strategie „vyber nejdelší možnost“ napříč rejstříkem: `
-  + `${(100 * celkemTrefa / celkemUloh).toFixed(1)} % (náhoda ≈ 25 %).`,
+  `Výrazně nejdelší možnost je klíč v ${(100 * celkemKlic / celkemUloh).toFixed(1)} % úloh, `
+  + `distraktor v ${(100 * celkemDistr / celkemUloh).toFixed(1)} %.`,
 );
-console.log(`\nTémat nad prahem ${(100 * PRAH).toFixed(0)} %: ${nad.length}\n`);
+console.log(`\nTémat, kde klíč převažuje ≥ ${PREVAHA}× a je nejdelší v ≥ ${(100 * PRAH).toFixed(0)} % úloh: ${nad.length}\n`);
 
 for (const r of nad) {
-  console.log(`  ${(100 * r.uspech).toFixed(0).padStart(3)} %  (${String(r.n).padStart(3)} úloh)  ${r.id}`);
+  console.log(
+    `  klíč ${(100 * podil(r)).toFixed(0).padStart(3)} % / distraktor ${(100 * r.distr / r.n).toFixed(0).padStart(3)} %`
+    + `  (${String(r.n).padStart(3)} úloh)  ${r.id}`,
+  );
 }
 
 if (nad.length && nad.length <= 3) {
-  console.log("\nÚlohy, kde je klíč jediná nejdelší možnost:");
+  console.log("\nÚlohy, kde je klíč výrazně nejdelší:");
   for (const r of nad) {
-    for (const u of r.ukazky.slice(0, 12)) {
+    for (const u of r.ukazky.slice(0, 20)) {
       console.log(`\n[${r.id}] L${u.level}`);
-      console.log(`   Q:              ${u.question}`);
-      console.log(`   klíč:           ${u.klic}`);
-      console.log(`   nejdelší jinak: ${u.nejdelsiJinak}`);
+      console.log(`   Q:      ${u.question}`);
+      console.log(`   klíč:   ${u.klic}`);
+      console.log(`   druhá:  ${u.druha}`);
     }
   }
 } else if (nad.length) {
   console.log("\nDetail k jednomu tématu: IDS=<id> npm run check:length");
 }
 
-console.log("\nNález není důkaz chyby — u faktických témat bývá správná odpověď delší z podstaty.");
+console.log("\nNález není důkaz chyby — u faktických témat bývá definice delší z podstaty.");
