@@ -136,6 +136,10 @@ export function PracticeInputRouter({
       return <FractionInput onSubmit={onAnswerSubmit} disabled={loading} />;
 
     case "number":
+    // numeric_range je totéž pole, jen s tolerancí na straně validátoru.
+    // Bez téhle větve spadl na `default` a dítě dostalo na číslo textareu
+    // s celou klávesnicí (ověřeno v prohlížeči 14. 9., bod 1.6 plánu šestky).
+    case "numeric_range":
       return <NumberInput onSubmit={onAnswerSubmit} disabled={loading} />;
 
     case "select_one":

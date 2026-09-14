@@ -215,6 +215,31 @@ briefDescription: "…. (L3 obsahuje ENRICHMENT — nad rámec RVP.)"
 - Pokud potřebuješ mix (matching + select_one), buď rozděl na 2 topics,
   nebo topic.inputType = ten „hlavní" a routing se řeší podle tvaru tasku.
 
+### 6.4 Odborné typy 2. stupně — kam patří správná odpověď
+
+U `timeline`, `diagram_label`, `image_select` a `numeric_range` nese
+strukturované pole jen **nabídku**, kterou komponenta navíc zamíchá. Správná
+odpověď žije vždy v `correctAnswer`, a to v tom formátu, který komponenta
+odesílá:
+
+| typ | strukturované pole | `correctAnswer` |
+|---|---|---|
+| `timeline` | `timelineEvents` (pool) | labely ve **správném pořadí**, spojené `\|` |
+| `diagram_label` | `diagram.points` + `labelPool` | popisky **v pořadí bodů**, spojené `\|` |
+| `image_select` | `imageOptions` | **`id`** správného obrázku (ne `alt`) |
+| `numeric_range` | — | `"1347"`, `"30±1"` nebo `"5..6"` |
+
+Validátor se od 14. 9. odvozuje z tvaru úlohy (`resolveTaskValidation`), takže
+`topic.inputType` už ho nemusí trefit — ale pořád určuje, jaká komponenta se
+ukáže, když úloha strukturované pole nemá.
+
+Dvě pasti, které našel průchod prohlížečem:
+- **Popisek u `image_select` musí dávat smysl i sám o sobě** — po chybné
+  odpovědi se dítěti ukáže `alt` správného obrázku. „Obrázek B" tam nepomůže.
+- **`input[type=number]` zahodí desetinnou čárku.** Dítě, které napíše `3,5`,
+  má prázdné pole a zašedlé tlačítko. Dokud se to nespraví, dávej do
+  `numeric_range` jen celá čísla (letopočty ano, hustoty ne).
+
 ## 7. Nápověda
 
 ### 7.1 Nasměruj na strategii, neprozraď výsledek

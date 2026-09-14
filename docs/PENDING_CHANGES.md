@@ -80,6 +80,17 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   (zbývá 19 z 24 podtémat); před tou dávkou je v plánu bod 1.6 — projít
   v prohlížeči speciální typy úloh (`timeline`, `diagram_label`, `image_select`,
   `numeric_range`), protože dějepis je bude chtít.
+- ✅ **Bod 1.6 — odborné typy prošly prohlížečem** (14. 9.). `timeline`,
+  `diagram_label`, `image_select` i `numeric_range` se vykreslí a hodnotí
+  správně; ověřeno anonymním žákovským režimem na dev serveru, u každého typu
+  špatná i správná odpověď. **Tři vady opraveny:** `numeric_range` dostávalo
+  textareu místo číselného pole; po chybě se ukazoval strojový klíč
+  (`img-modry`, `A|B|C`, `30±1`); validátor se vybíral jen podle
+  `topic.inputType`, ne podle tvaru úlohy. Kontrakt pro autory je
+  v `CONTENT_AUTHORING.md` §6.4, regrese v `src/test/odborne-typy-e2e.test.tsx`.
+  **`image_select` a `diagram_label` zůstávají blokované na obrázcích** — v repu
+  žádné nejsou. Dějepis použije `timeline` a `numeric_range`.
+  **Cesta k dějepisu je tím volná.**
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.

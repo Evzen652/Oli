@@ -804,12 +804,39 @@ export function getDefaultValidator(inputType: string): Validator {
  */
 export function resolveTaskValidation(task: {
   correctAnswer: string;
+  timelineEvents?: { id: string; label: string }[];
+  diagram?: unknown;
+  imageOptions?: { id: string }[];
+  chemEquation?: unknown;
+  formulaPool?: { id: string; token: string }[];
   items?: string[];
   pairs?: { left: string; right: string }[];
   categories?: { name: string; items: string[] }[];
   correctAnswers?: string[];
   blanks?: string[];
 }): { expected: string; validatorId?: string } {
+  // Odborné typy 2. stupně: správná odpověď zůstává v `correctAnswer` (pole
+  // `timelineEvents` / `diagram` / `imageOptions` nesou jen NABÍDKU, kterou
+  // komponenta navíc míchá), takže se z tvaru úlohy odvozuje jen VALIDÁTOR.
+  // Bez toho ho určoval výhradně `topic.inputType`, zatímco komponentu vybírá
+  // router podle těchto polí — autor musel oboje ručně srovnat a při neshodě
+  // se odpověď tiše porovnávala přes string_exact (bez tolerance překlepu
+  // u diagram_label, bez pozičního feedbacku u timeline).
+  if (task.chemEquation) {
+    return { expected: task.correctAnswer.trim(), validatorId: "chemical_balance" };
+  }
+  if (task.timelineEvents && task.timelineEvents.length > 0) {
+    return { expected: task.correctAnswer.trim(), validatorId: "timeline" };
+  }
+  if (task.formulaPool && task.formulaPool.length > 0) {
+    return { expected: task.correctAnswer.trim(), validatorId: "formula_builder" };
+  }
+  if (task.diagram) {
+    return { expected: task.correctAnswer.trim(), validatorId: "diagram_label" };
+  }
+  if (task.imageOptions && task.imageOptions.length > 0) {
+    return { expected: task.correctAnswer.trim(), validatorId: "image_select" };
+  }
   if (task.categories && task.categories.length > 0) {
     return { expected: JSON.stringify(task.categories), validatorId: "categorize_groups" };
   }

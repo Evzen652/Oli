@@ -31,9 +31,81 @@ export function getTargetedFeedback(task: PracticeTask, selectedAnswer?: string)
   return null;
 }
 
+/**
+ * Převede technický zápis očekávané hodnoty na větu, kterou dítě přečte.
+ *   „30±1“   → „30 (stačí 29 až 31)“
+ *   „5..6“   → „5 až 6“
+ * Jinak vrátí vstup beze změny.
+ */
+function citelneCislo(raw: string): string {
+  const tol = raw.match(/^(-?[\d.,]+)\s*(?:±|\+-|\+\/-)\s*([\d.,]+)$/);
+  if (tol) {
+    const stred = parseFloat(tol[1].replace(",", "."));
+    const t = parseFloat(tol[2].replace(",", "."));
+    if (!Number.isNaN(stred) && !Number.isNaN(t)) {
+      const cz = (n: number) => String(Number(n.toFixed(3))).replace(".", ",");
+      return `${cz(stred)} (stačí ${cz(stred - t)} až ${cz(stred + t)})`;
+    }
+  }
+  const rozsah = raw.match(/^(-?[\d.,]+)\s*(?:\.\.|;)\s*(-?[\d.,]+)$/);
+  if (rozsah) return `${rozsah[1]} až ${rozsah[2]}`;
+  return raw;
+}
+
 /** Zobrazení správné odpovědi dle typu úlohy */
 function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
   const inputType = topic.inputType;
+
+  // Odborné typy 2. stupně se poznají podle TVARU úlohy, ne podle
+  // `topic.inputType` — stejně jako je poznává PracticeInputRouter. U nich je
+  // `correctAnswer` strojový zápis („A|B|C“, id obrázku), který se do 14. 9.
+  // ukazoval dítěti syrový: „Správná odpověď: img-modry“.
+  if (task.timelineEvents && task.timelineEvents.length > 0) {
+    return (
+      <div className="space-y-1">
+        <p className="font-semibold text-foreground">Správné pořadí:</p>
+        <ol className="list-decimal list-inside space-y-1 text-base text-muted-foreground">
+          {task.correctAnswer.split("|").map((udalost, i) => (
+            <li key={i}>{udalost.trim()}</li>
+          ))}
+        </ol>
+      </div>
+    );
+  }
+
+  if (task.diagram) {
+    return (
+      <div className="space-y-1">
+        <p className="font-semibold text-foreground">Správné popisky:</p>
+        <ul className="space-y-1 text-base text-muted-foreground">
+          {task.correctAnswer.split("|").map((popisek, i) => (
+            <li key={i}>Bod {i + 1}: {popisek.trim()}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  if (task.imageOptions && task.imageOptions.length > 0) {
+    const spravny = task.imageOptions.find((o) => o.id === task.correctAnswer.trim());
+    return (
+      <div className="space-y-2">
+        <p className="font-semibold text-foreground">Správný obrázek:</p>
+        {spravny ? (
+          <div className="flex items-center gap-3">
+            <img
+              src={spravny.url}
+              alt={spravny.alt}
+              className="h-20 w-20 rounded-xl border border-border object-cover"
+            />
+            <span className="text-base text-muted-foreground">{spravny.alt}</span>
+          </div>
+        ) : (
+          <p className="text-base text-muted-foreground">{task.correctAnswer}</p>
+        )}
+      </div>
+    );
+  }
 
   if (inputType === "drag_order" && task.items && task.items.length > 0) {
     return (
@@ -75,10 +147,12 @@ function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: Topi
     );
   }
 
-  // Výchozí: prostý text
+  // Výchozí: prostý text. U numeric_range je `correctAnswer` zápis s tolerancí
+  // („30±1“), který dítěti nic neříká — přeloží se do věty.
+  const text = inputType === "numeric_range" ? citelneCislo(task.correctAnswer) : task.correctAnswer;
   return (
     <p>
-      Správná odpověď: <span className="font-bold text-foreground">{task.correctAnswer}</span>
+      Správná odpověď: <span className="font-bold text-foreground">{text}</span>
     </p>
   );
 }

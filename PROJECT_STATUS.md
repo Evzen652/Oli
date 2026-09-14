@@ -144,6 +144,40 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-14 (45) — odborné typy prošly poprvé prohlížečem:
+
+- ✅ **Bod 1.6 plánu šestky hotový: `timeline`, `diagram_label`,
+  `image_select` i `numeric_range` se vykreslí a hodnotí správně.** Čtyři
+  dočasná témata se protáhla anonymním žákovským režimem (`/student`, bez
+  přihlášení) na běžícím dev serveru — u každého typu jednou špatná a jednou
+  správná odpověď. Komponenty i validátory existovaly od května, ale **celý
+  řetěz nikdo neprošel**; testy fixovaly jen formát, který komponenta odesílá.
+- 🐛 **`numeric_range` dostalo textareu na volný text.** `PracticeInputRouter`
+  pro něj neměl větev a spadl na `default`. Dítě mělo na letopočet psát do
+  víceřádkového pole s celou klávesnicí. Opraveno na číselné pole.
+- 🐛 **Po chybné odpovědi se dítěti ukazoval strojový zápis klíče.**
+  `Správná odpověď: img-modry` (interní id obrázku), `…A|B|C` u timeline
+  i diagram_label, `…30±1` u tolerance. `CorrectAnswerDisplay` znalo jen
+  `drag_order`, `match_pairs` a `categorize`. Nově: číslovaný seznam u pořadí,
+  „Bod 2: věž" u diagramu, náhled obrázku s popiskem, „30 (stačí 29 až 31)".
+- 🐛 **Validátor se vybíral jen podle `topic.inputType`**, zatímco komponentu
+  vybírá router podle POLÍ úlohy. Při neshodě se odpověď tiše porovnala přes
+  `string_exact` — u `diagram_label` to znamená ztrátu tolerance překlepu.
+  `resolveTaskValidation` teď odvozuje validátor z tvaru úlohy.
+- ⚠️ **Plán měl u tohohle bodu chybné zadání.** Tvrdil, že
+  `resolveTaskValidation` má strukturovaná pole převádět na `expected`. To by
+  bylo špatně: `timelineEvents` je pool v náhodném pořadí a správné pořadí
+  v něm není. Odvozuje se proto validátor, ne očekávaná hodnota.
+- ⏳ **`image_select` a `diagram_label` jsou blokované na grafice, ne na kódu** —
+  v repu nejsou žádné obrázky k obsahu. Dějepis z odborných typů reálně
+  použije `timeline` a `numeric_range`.
+- ⏳ **Latentní past: `input[type=number]` zahodí desetinnou čárku.** `3,5` →
+  prázdné pole a zašedlé tlačítko. Dnes nedosažitelné (celý rejstřík má jediné
+  téma s číselným vstupem a žádnou desetinnou odpověď), ale fyzika by na to
+  narazila hned. Zapsáno v `CONTENT_AUTHORING.md` §6.4.
+- 📄 **Kontrakt pro autory: `CONTENT_AUTHORING.md` §6.4** — tabulka, co patří do
+  `correctAnswer` u kterého typu. Regrese hlídá `src/test/odborne-typy-e2e.test.tsx`.
+
 ### Session 2026-09-14 (43) — náhodně padající kontrola počtu úloh:
 
 - 🐛 **`generator-task-count.test.ts` padal zhruba jednou ze čtyř — vinu nesla

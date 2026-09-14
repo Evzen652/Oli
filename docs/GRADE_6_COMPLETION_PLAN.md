@@ -96,7 +96,7 @@ se doplňuje.
 > Je to přesně ten případ, před kterým varuje pravidlo „nález strojové kontroly
 > nejdřív ručně přepočítej" — tentokrát jsem tou kontrolou byl já.
 
-### 1.6 Vizuální smoke test odborných typů
+### 1.6 Vizuální smoke test odborných typů — ✅ HOTOVO (14. 9.)
 
 `docs/STUPEN2_CONTENT_PLAN.md` §4 Fáze 0 to má jako otevřené: komponenty
 i validátory existují a `stupen2-odborne-typy.smoke.test.ts` fixuje formáty, ale
@@ -107,6 +107,34 @@ autor musí ručně sladit `correctAnswer`, `inputType` a strukturované pole.
 Dějepis šestky bez `timeline` neudělá chronologii pořádně. Ověřit v prohlížeči
 jeden testovací topic každého typu, který se v šestce použije — `timeline`,
 `diagram_label`, `image_select`, `numeric_range` — **než** se na nich postaví 19 témat.
+
+**Výsledek (14. 9.).** Čtyři dočasná témata se protáhla anonymním žákovským
+režimem (`/student`, bez přihlášení) na běžícím dev serveru — vždy jednou
+špatná a jednou správná odpověď. **Všechny čtyři typy se vykreslí a hodnotí
+správně.** Tři vady, všechny opravené a pokryté testem
+(`src/test/odborne-typy-e2e.test.tsx`):
+
+1. **`numeric_range` dostalo textareu na volný text**, ne číselné pole —
+   `PracticeInputRouter` pro něj neměl větev a spadl na `default`.
+2. **Po chybné odpovědi se dítěti ukazoval strojový zápis klíče:**
+   `Správná odpověď: img-modry` (interní id obrázku), `…A|B|C` u timeline
+   i diagram_label, `…30±1` u tolerance. `CorrectAnswerDisplay` znalo jen
+   `drag_order`, `match_pairs` a `categorize`.
+3. **Validátor se vybíral jen podle `topic.inputType`**, zatímco komponentu
+   vybírá router podle POLÍ úlohy. Při neshodě se odpověď tiše porovnala přes
+   `string_exact` — u `diagram_label` to znamená ztrátu tolerance překlepu.
+   `resolveTaskValidation` teď odvozuje validátor z tvaru úlohy.
+
+Původní formulace bodu tvrdila, že `resolveTaskValidation` má strukturovaná
+pole převádět na `expected`. **To by bylo špatně** — `timelineEvents` je jen
+pool v náhodném pořadí, správné pořadí v něm není. Odvozuje se proto validátor,
+ne očekávaná hodnota. Kontrakt pro autory je v `CONTENT_AUTHORING.md` §6.4.
+
+**Co zůstává otevřené:** `image_select` a `diagram_label` nemají v repu žádné
+obrázky k obsahu — jsou blokované na grafice, ne na kódu. Dějepis z nich
+reálně použije `timeline` a `numeric_range`. A `input[type=number]` zahodí
+desetinnou čárku (`3,5` → prázdné pole); dnes to nikoho netrápí, protože celý
+rejstřík má jediné téma s číselným vstupem a žádnou desetinnou odpověď.
 
 ---
 
