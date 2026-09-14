@@ -431,6 +431,29 @@ src/
   (oba v zmrazeném `co-je-dejepis`). **Zmrazený obsah jsem nepřepisoval** —
   je to vzorec celého repa, ne chyba jedné dávky, a patří k rozhodnutí
   uživatele. Táž situace jako u `check:length` v září.
+- ✅ **FYZIKA 6. ROČNÍKU JE HOTOVÁ CELÁ — 13 ze 13 témat.** Poslední je
+  `Magnety – magnetické pole, magnetické póly Země`. L1 rozhoduje podle
+  materiálu (osmnáct předmětů), L2 póly, pole a dočasný magnet, L3 Země jako
+  magnet. Šestka je na **18 ze 117** (fyzika 13, dějepis 5).
+- ℹ️ **Paralela s nábojem je v magnetech vedená záměrně včetně místa, kde
+  selhává.** Souhlasné póly se odpuzují jako náboje a nenamagnetované železo se
+  jen přitahuje jako nenabitý papírek — jenže náboj se dá oddělit a pól ne.
+  L2 i L3 se na rozlomený magnet ptají zvlášť, protože přenesená analogie by
+  tam vedla ke špatné odpovědi.
+- 🐛 **`check:options` se hned vyplatil.** V novém tématu jsem binární Ano/Ne
+  mimo L1 napsal **počtvrté v dávce** a odchytil jsem to ještě před branou.
+  L1 binární být smí, ale nabídka je vyvážená 2× „Ano“ a 2× „Ne“, aby klíč
+  nešel poznat podle tvaru; kritik to teď kontroluje samostatně.
+- 🐛 **`check:hints` našel v magnetech dva nálezy — jeden pravý, jeden artefakt.**
+  Pravý: nápověda dodala „nabité“ i „ze Slunce přilétá“, tedy skoro celý klíč.
+  Artefakt: stroj počítal slovo **„pole“ ve významu louka** jako shodu
+  s „magnetické pole“. Přepsal jsem obojí — ta kolize dvou významů vedle sebe
+  je matoucí i pro dítě, takže nález byl užitečný, i když z jiného důvodu,
+  než si stroj myslel.
+- ℹ️ **Materiály v bance jsou ověřené, ne odhadnuté.** Nerezové příbory ani
+  české mince v ní schválně nejsou: část nerezových ocelí magnetická není
+  a mince jsou z pokovené oceli, takže se magnetu chytí — obojí by úlohu
+  rozhodovalo proti tomu, co dítě doma vidí.
 - ⚠️ **Oprava mého vlastního nálezu: `npx tsc --noEmit` v tomhle repu
   nekontroluje nic.** Kořenový `tsconfig.json` má `"files": []` a jen reference
   na podprojekty, takže projde i se zjevnou typovou chybou v `src/` (ověřeno

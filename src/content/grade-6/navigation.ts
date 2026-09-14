@@ -56,6 +56,7 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
         topicIds: [
           "g6-fyz-elektricky-naboj-6",
           "g6-fyz-elektricky-obvod-6",
+          "g6-fyz-magnety-6",
         ],
       },
     ],

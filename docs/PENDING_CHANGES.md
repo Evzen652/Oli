@@ -75,6 +75,11 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   **Zmrazený obsah jsem nepřepisoval.** Je to plošný vzorec starších dávek
   a oprava znamená přegenerovat zámek napříč ročníky — to je rozhodnutí
   uživatele, ne vedlejší efekt obsahové dávky.
+- ✅ **FYZIKA 6. ROČNÍKU HOTOVÁ — 13/13** (14. 9.). Poslední téma `Magnety`.
+  Šestka **18 ze 117**: fyzika 13, dějepis 5. **Další na řadě je dějepis**
+  (zbývá 19 z 24 podtémat); před tou dávkou je v plánu bod 1.6 — projít
+  v prohlížeči speciální typy úloh (`timeline`, `diagram_label`, `image_select`,
+  `numeric_range`), protože dějepis je bude chtít.
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.

@@ -30,7 +30,7 @@
 ### Elektrické vlastnosti látek
 - [x] **Elektrické pole – kladný a záporný náboj** → `fyzika/elektrickyNaboj.ts` ✅ (L1 přitažení/odpuzení ze znamének · L2 mechanismus elektrování a zachování náboje · L3 nabité přitahuje i nenabité)
 - [x] **Jednoduchý elektrický obvod – zdroj, vodič, spotřebič, spínač** → `fyzika/elektrickyObvod.ts` ✅ (L1 úloha součástky · L2 poteče proud tímhle zapojením? · L3 proud se nespotřebovává a co z toho plyne)
-- [ ] Magnety – magnetické pole, magnetické póly Země
+- [x] **Magnety – magnetické pole, magnetické póly Země** → `fyzika/magnety.ts` ✅ (L1 přitáhne magnet tenhle předmět · L2 póly, pole a dočasný magnet · L3 Země jako magnet a hranice analogie s nábojem)
 
 ## Dějepis (24 RVP podtémat)
 
