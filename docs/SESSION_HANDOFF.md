@@ -10,8 +10,8 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — sem šla práce 13. a 14. 9. Fyzika je hotová
->    celá (13/13), šestka na **25 ze 117**. **Dějepis 12/24** (15. 9. přibylo
->    7 témat pravěku a nejstarších států), zbývá 12 témat starověku. Přípravné práce i vizuální smoke test odborných typů
+>    celá (13/13), šestka na **32 ze 117**. **Dějepis 19/24** (15. 9. přibylo
+>    14 témat ve dvou dávkách), zbývá 5 témat Říma. Přípravné práce i vizuální smoke test odborných typů
 >    jsou hotové, takže dávka může začít rovnou — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
@@ -28,8 +28,9 @@ git fetch origin && git status -sb && git worktree list
 ```
 
 **Pracovní větev je `main`.** K 14. 9. je všechno pushnuté, `origin/main` je na
-`1951c85`, pracovní strom čistý. ⚠️ **Worktree jediný není** (sonda 14. 9.:
-sedm, dva s necommitnutými změnami) — viz `SESSION_PROTOCOL.md` krok 1.
+`1951c85`, pracovní strom čistý. **Worktree jsou dva** (hlavní repo
+a `competent-johnson-de23e8`); pět zastaralých odstraněno 15. 9. bez ztráty
+práce — viz `SESSION_PROTOCOL.md` krok 1.
 Lokální větve tři: `main`, `chore/remove-essay-and-ai-authoring`,
 `claude/cranky-shirley`.
 
@@ -69,13 +70,20 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: dějepis 6. ročníku — dávka 2 (starověk, 12 témat)
+### ▶▶ ZAČNI TADY: dějepis 6. ročníku — dávka 3 (Řím, 5 témat)
 
-**15. 9. hotová dávka 1** (7 témat, detail `PROJECT_STATUS.md` §6 session 48).
-Dvě věci pro dávku 2:
+**15. 9. hotové dávky 1 a 2** (14 témat, detail `PROJECT_STATUS.md` §6
+session 48). Zbývá antika – Řím: vznik Říma a republika, punské války,
+císařství, křesťanství, stěhování národů a pád západořímské říše. Dětský
+název a zajímavost pro RVP topic „Antika - Řím“ v `displayNames.ts`
+a `topicInsight.ts` ještě nejsou — doplň je spolu s okruhem v navigaci.
+Dvě věci pro dávku 3:
 
-- **`.claude/workflows/author-batch.js` má CRLF a Workflow ho odmítne.**
-  Spusť ho z LF kopie a doplň pravidla z 13.–14. 9. (nebo soubor nejdřív oprav).
+- **Workflow spouštěj přes `scriptPath`, ne podle jména.** Od `1c99986` má
+  `.claude/workflows/author-batch.js` LF (hlídá `.gitattributes`) a pravidla
+  z 13.–14. 9. Volání `Workflow({name: "author-batch"})` přesto padá na
+  „control characters“, i když soubor žádné nemá (ověřeno po bajtech) — chyba
+  je v obsluze oprávnění, ne v souboru. `scriptPath` na tentýž soubor funguje.
   Args = pole `{rvpId, label}`, ne věta.
 - **Kritici workflow nevidí integraci.** Při zapojení se našly tři vady navíc:
   únik v nápovědě, jiná pomlčka v `topic` (rozbije sdílený klíč tématu)
@@ -371,12 +379,18 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
    zruší — teď je v nejhorším stavu: nasazená, nevolaná, a `legal.ts` ji
    rodičům uvádí mezi místy zpracování dat, takže zásady slibují zpracování,
    které neprobíhá.
-3. ⛔ **Doplnit Redirect URLs v Supabase** — Authentication → URL Configuration
+3. ✅ **HOTOVO 15. 9.** — Redirect URLs doplněné, ověřeno odkazem z e-mailu
+   (odhalilo to vadu `ResetPassword`, opravenou v `e529437`). Původní zadání:
+   **Doplnit Redirect URLs v Supabase** — Authentication → URL Configuration
    → Redirect URLs musí obsahovat `https://oli-edu.com`
    i `https://oli-edu.com/reset-password`. Co tam není, Supabase zahodí
    a přesměruje na Site URL **bez jediné chybové hlášky**. Bez tohohle kroku
    je oprava z `b2c9dee` jen poloviční.
-4. ⛔ **Naplánovat úklid anonymních dat.** Zásady soukromí slibují smazání
+4. 🟠 **Naplánováno 15. 9.** jako `cron` úloha `anon-cleanup-44d` (denně 3:17
+   UTC, SQL delete stejné jako v edge funkci). ⚠️ V `cron.job` ale už byla
+   `anon-cleanup-daily` (denně 3:00) — věta níž „nikdo nevolá“ tedy neplatila.
+   Zbývá ověřit, co stará úloha dělá, a jednu zrušit. Původní zadání:
+   **Naplánovat úklid anonymních dat.** Zásady soukromí slibují smazání
    serverové kopie po **44 dnech** bez aktivity, ale `action: "cleanup"`
    v `supabase/functions/anon-progress/index.ts` **nikdo nevolá** — žádný cron
    v `.github/workflows/`, žádný `cron.schedule` v migracích. `pg_cron` je
@@ -523,8 +537,8 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
 
 ### 📋 6. ročník — plán doplnění
 
-Šestka je **pilot, ne hotový ročník**: **25 témat ze 117** (fyzika 13/13 hotová,
-dějepis 12/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
+Šestka je **pilot, ne hotový ročník**: **32 témat ze 117** (fyzika 13/13 hotová,
+dějepis 19/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
 Přitom je od 11. 9. otevřená žákům, takže šesťák vidí dva předměty z osmi.
 Pětka naproti tomu **hotová je** — 63 z 73 podtémat, zbylých 10 je informatika
 vynechaná podle stálého pokynu.
@@ -542,7 +556,7 @@ z něj stojí za pozornost hned:
   v `subjectRegistry`, **bylo mylné** — je tam. Zbývají jen **ilustrace čtyř
   předmětů** (fyzika, přírodopis, zeměpis, vko), a ty psaní obsahu nedrží.
 - ✅ **Bod 1.6 (smoke test odborných typů) hotový** (14. 9.) — session 45 výš.
-- **Stav k 15. 9.: fyzika 13/13 hotová, dějepis 12 z 24.** Zbývající předměty
+- **Stav k 15. 9.: fyzika 13/13 hotová, dějepis 19 z 24.** Zbývající předměty
   šestky (čeština, matematika, přírodopis, zeměpis, občanka) nezačaty.
 
 ### 🟠 Sliby vs. obsah

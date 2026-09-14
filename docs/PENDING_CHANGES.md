@@ -108,9 +108,18 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   doba bronzová a železná, lovci mamutů, Keltové/Germáni/Slované, Mezopotámie,
   Egypt. Dějepis **12/24**, šestka **25 ze 117**. Zbývá 12 témat starověku
   (Indie, Čína, kultura Východu, Řecko, Řím).
-- 🐛 **`.claude/workflows/author-batch.js` má CRLF** — Workflow ho odmítá
-  („control characters“). Uložit s LF a přenést do něj pravidla z 13.–14. 9.
-  (upravená kopie je popsaná v `PROJECT_STATUS.md` §6, session 48).
+- ✅ **VYŘÍZENO 15. 9. — `author-batch.js` měl CRLF** (`1c99986`). Nově LF
+  a `.gitattributes`. Spouštět přes `scriptPath`, podle jména to pořád padá
+  na obsluze oprávnění.
+- ✅ **Dějepis, dávka 2 — 7 témat** (15. 9.): kultura Východu, Indie, Čína,
+  Kréta a Mykény, městské státy, řecko-perské války, řecká kultura.
+  Dějepis **19/24**, šestka **32 ze 117**. Zbývá Řím (5).
+- ✅ **VYŘÍZENO 15. 9. — obnova hesla visela na „Načítání…“** (`e529437`).
+- ✅ **VYŘÍZENO 15. 9. (uživatel) — Redirect URLs v Supabase** doplněné.
+- 🟠 **Úklid anonymních dat naplánován (`anon-cleanup-44d`), ale v `cron.job`
+  už byla úloha `anon-cleanup-daily`** (id 1, denně 3:00). Ověřit její
+  `command` a poslední běh; zrušit tu, která je navíc. Pak opravit komentář
+  u `LHUTA_ANON_6P` v `src/content/legal.ts` („ten úklid nikdo nevolá“).
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.

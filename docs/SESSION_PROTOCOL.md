@@ -19,12 +19,21 @@ git fetch origin && git status -sb && git worktree list
 - **Čistý strom shodný s `origin/main` není důkaz aktuálnosti**, dokud jsi
   neudělal `fetch`. Jedna session takhle začala v worktree, kde všechno
   vypadalo v pořádku, jen tam chyběla práce posledních dnů.
-- **Worktree NENÍ jediný** — sonda 14. 9. našla sedm (tvrzení „od 12. 9.
-  jediný" neplatilo). `competent-johnson-de23e8` existuje a je na aktuálním
-  `main`; zbylých pět sedí na commitech z května až září a dva z nich mají
-  necommitnuté změny (`agitated-dirac-8e91f7`, `mystifying-mestorf-117aec`) —
-  **nemazat bez rozhodnutí uživatele**. Než v některém začneš, přepni ho na
-  `main` a `git pull`.
+- **Worktree jsou dva** (k 15. 9.): hlídané repo na `main` a
+  `competent-johnson-de23e8`. Tvrzení „od 12. 9. jediný" neplatilo — sonda
+  14. 9. našla sedm. Pět zastaralých bylo 15. 9. odstraněno; **nic se
+  neztratilo**:
+  - všechny HEAD byly dosažitelné z větve (ověřeno `git branch --contains`);
+  - necommitnuté změny dvou z nich jsou uložené jako lokální commity
+    `de85783` (větev `claude/agitated-dirac-8e91f7`) a `d7c838f`
+    (`claude/mystifying-mestorf-117aec`). Posudek: zachraňovat v nich není co —
+    `capitalize` v `TopicBrowser` i popisek „Ukázat výsledky a hodnocení“
+    v `main` už jsou; zbytek je demo hack s natvrdo zapsaným e-mailem admin
+    účtu a odhlášení při kliku na „Přihlásit se“.
+  - Složka `session-handoff-docs-2dfc1f` zůstala na disku (`Permission denied`,
+    drží ji jiný proces); git ji už jako worktree nevede. Smazat ručně.
+  Kdyby nějaký worktree znovu přibyl, než v něm začneš, přepni ho na `main`
+  a `git pull`.
 - ⚠️ **`git worktree remove --force` následuje junction `node_modules`** a smaže
   obsah cíle — tedy `node_modules` hlavního repa (stalo se 13. 9., opravil
   `npm ci`).

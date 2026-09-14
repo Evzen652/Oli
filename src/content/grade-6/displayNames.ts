@@ -90,5 +90,13 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Mezopotámie a Egypt",
       description: "První města, písmo a zákony vznikly u velkých řek.",
     },
+    "Starověká Indie a Čína": {
+      name: "Indie a Čína",
+      description: "Kasty, Buddhovo učení, Velká čínská zeď i vynález papíru.",
+    },
+    "Antika - Řecko": {
+      name: "Staré Řecko",
+      description: "Athény, Sparta, války s Peršany i řečtí bohové.",
+    },
   },
 };

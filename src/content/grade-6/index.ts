@@ -39,6 +39,13 @@ import { LOVCI_MAMUTU_VESTONICKA_VENUSE } from "./dejepis/lovciMamutuVestonickaV
 import { KELTOVE_GERMANI_SLOVANE } from "./dejepis/keltoveGermaniSlovane";
 import { MEZOPOTAMIE } from "./dejepis/mezopotamie";
 import { STAROVEKY_EGYPT } from "./dejepis/starovekyEgypt";
+import { KULTURA_STAROVEKEHO_VYCHODU } from "./dejepis/kulturaStarovekehoVychodu";
+import { STAROVEKA_INDIE } from "./dejepis/starovekaIndie";
+import { STAROVEKA_CINA } from "./dejepis/starovekaCina";
+import { KRETA_MYKENY_TROJA } from "./dejepis/kretaMykenyTroja";
+import { RECKE_MESTSKE_STATY } from "./dejepis/reckeMestskeStaty";
+import { RECKO_PERSKE_VALKY_PELOPONESKA_VALKA } from "./dejepis/reckoPerskeValkyPeloponeskaValka";
+import { ANTIKA_RECKO_KULTURA } from "./dejepis/antikaReckoKultura";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
@@ -73,4 +80,13 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Dějepis — Nejstarší státy
   ...MEZOPOTAMIE,
   ...STAROVEKY_EGYPT,
+  ...KULTURA_STAROVEKEHO_VYCHODU,
+  // Dějepis — Starověká Indie a Čína
+  ...STAROVEKA_INDIE,
+  ...STAROVEKA_CINA,
+  // Dějepis — Antika: Řecko
+  ...KRETA_MYKENY_TROJA,
+  ...RECKE_MESTSKE_STATY,
+  ...RECKO_PERSKE_VALKY_PELOPONESKA_VALKA,
+  ...ANTIKA_RECKO_KULTURA,
 ];

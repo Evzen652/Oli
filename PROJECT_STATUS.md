@@ -169,8 +169,30 @@ src/
   `check:options` 0, `check:length` 0, `audit:content` ✓, `audit:agreement`
   30 370 úloh bez nálezu, `audit:ui` bez nového nálezu, build ✓, zámek obsahu
   přegenerován.
-- 📋 **Dál:** dějepis zbývá 12 — starověk (Indie, Čína, kultura Východu, Řecko 4,
-  Řím 5). Dokumentace tvrdila jediný worktree; ve skutečnosti jich je sedm,
+- ✅ **Dávka 2 — dalších 7 témat:** kultura starověkého Východu, starověká Indie,
+  starověká Čína, Kréta a Mykény, řecké městské státy, řecko-perské
+  a peloponéská válka, Alexandr a řecká kultura. Dějepis **19/24**, šestka
+  **32 ze 117**. Nové okruhy „Indie a Čína“ a „Staré Řecko“ (navigace,
+  `displayNames`, `topicInsight`). Kritici 16–25 nálezů na téma, vše opraveno.
+  Integrace tentokrát bez nálezu: `check:*` 0, testy 5330/0, `audit:agreement`
+  30 619 úloh, `audit:ui`, build ✓; okruhy ověřeny v prohlížeči.
+- ✅ **Workflow `author-batch` opraven** (`1c99986`): LF + `.gitattributes`,
+  pravidla z 13.–14. 9., „category/topic znak po znaku podle RVP“. Podle jména
+  se ale pořád nespustí (chyba obsluhy oprávnění) — spouštět přes `scriptPath`.
+- 🐛✅ **Obnova hesla na produkci visela na „Načítání…“** (`e529437`). Našel
+  uživatel při ověřování Redirect URLs. Klient Supabase zpracuje token z odkazu
+  při startu a vyčistí adresu dřív, než se `ResetPassword` připojí; stránka
+  čekala jen na hash nebo událost. Nově `getSession` + hláška „odkaz už neplatí“.
+  Test `reset-password-page.test.tsx`, ověřeno obousměrně.
+- ✅ **Supabase (uživatel):** Redirect URLs doplněné (`oli-edu.com/**`,
+  `www.`, `localhost:8080`), Site URL `https://oli-edu.com`. Úklid
+  anonymních dat naplánován jako `cron` úloha `anon-cleanup-44d`.
+  ⚠️ **V `cron.job` už byla úloha `anon-cleanup-daily`** (denně 3:00) —
+  tvrzení „úklid nikdo nevolá“ neplatilo. Co dělá, se ověřuje; jedna z nich
+  je nejspíš navíc.
+- ✅ **Pět zastaralých worktree odstraněno** bez ztráty práce (necommitnuté
+  změny uloženy jako `de85783` a `d7c838f` na jejich větvích).
+- 📋 **Dál:** dějepis zbývá 5 — Řím. Dokumentace tvrdila jediný worktree; ve skutečnosti jich je sedm,
   dva s necommitnutými změnami — opraveno v `SESSION_PROTOCOL.md`.
 
 ### Session 2026-09-14 (47) — délka odpovědi přestala prozrazovat:

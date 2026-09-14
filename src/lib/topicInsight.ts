@@ -350,6 +350,14 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "První písmo, zákony i úřady vznikly tam, kde lidé museli společně zvládat velké řeky a úrodu.",
     funFact: "Chammurapiho zákoník je vytesaný do kamenného sloupu vysokého přes dva metry. Dnes stojí v pařížském Louvru.",
   },
+  "dejepis::Starověk::Starověká Indie a Čína": {
+    useful: "Číslice, které píšeš každý den, vznikly v Indii, a papír, na který je píšeš, vynalezli v Číně.",
+    funFact: "Velkou čínskou zeď pouhým okem z Měsíce neuvidíš, i když se to často tvrdí. Je dlouhá, ale na to moc úzká.",
+  },
+  "dejepis::Starověk::Antika - Řecko": {
+    useful: "Slova demokracie, olympiáda nebo matematika přišla z řečtiny spolu s věcmi, které znamenají.",
+    funFact: "Maratonský běh připomíná posla, který podle pověsti běžel z Marathónu do Athén se zprávou o vítězství nad Peršany.",
+  },
 
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {

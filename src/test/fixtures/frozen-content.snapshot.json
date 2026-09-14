@@ -655,6 +655,10 @@
     "hash": "618fedc77fbcf90c717d7fed17b295726642abd9",
     "taskCount": 3
   },
+  "g6-dej-antika-recko-kultura-6": {
+    "hash": "7cfd9049e36dd156f6a02aa73b580a2daeeb7c39",
+    "taskCount": 54
+  },
   "g6-dej-co-je-dejepis-6": {
     "hash": "6472a286fba78b0aca202ed1959bd835090b9e22",
     "taskCount": 42
@@ -679,6 +683,14 @@
     "hash": "08d25cffadda2c96ab76b4e6397bafe14d225656",
     "taskCount": 3
   },
+  "g6-dej-kreta-mykeny-troja-6": {
+    "hash": "2f46e1f740403fbc0e1acedb75f7ea50c307d02f",
+    "taskCount": 45
+  },
+  "g6-dej-kultura-staroveky-vychod-6": {
+    "hash": "b574054654ce7a2c175c324a822eb85559081511",
+    "taskCount": 3
+  },
   "g6-dej-lovci-mamutu-vestonicka-venuse-6": {
     "hash": "defc7ebd709e538901f580b959657aba280536c6",
     "taskCount": 43
@@ -698,6 +710,22 @@
   "g6-dej-pomocne-vedy-historicke-6": {
     "hash": "705011a2acecede14c08a030e1258f83e8e142cc",
     "taskCount": 3
+  },
+  "g6-dej-recke-mestske-staty-6": {
+    "hash": "ab0762b538cf33238bf7c842d327b3713ccafcf4",
+    "taskCount": 3
+  },
+  "g6-dej-recko-perske-valky-peloponeska-valka-6": {
+    "hash": "2dc38d300cc91e3c937a2557093d93baf8ffc425",
+    "taskCount": 44
+  },
+  "g6-dej-staroveka-cina-6": {
+    "hash": "352b25f55246ff560ada905ec69af4b83da9fb86",
+    "taskCount": 43
+  },
+  "g6-dej-staroveka-indie-6": {
+    "hash": "8bf75a8a415603f0e69091b6a1860db60c467a09",
+    "taskCount": 48
   },
   "g6-dej-staroveky-egypt-6": {
     "hash": "ff0a9ab3e80553be1370a5ae8310021ebc6b52cf",
