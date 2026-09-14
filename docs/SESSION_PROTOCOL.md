@@ -19,10 +19,12 @@ git fetch origin && git status -sb && git worktree list
 - **Čistý strom shodný s `origin/main` není důkaz aktuálnosti**, dokud jsi
   neudělal `fetch`. Jedna session takhle začala v worktree, kde všechno
   vypadalo v pořádku, jen tam chyběla práce posledních dnů.
-- **Worktree je od 12. 9. jediný** (hlavní repo). Do té doby jich bylo sedm až
-  dvacet dva a většina seděla na starých commitech — kdyby nějaký znovu přibyl,
-  než v něm začneš, přepni ho na `main` a `git pull`. Zastaralý worktree
-  `competent-johnson-de23e8` už neexistuje.
+- **Worktree NENÍ jediný** — sonda 14. 9. našla sedm (tvrzení „od 12. 9.
+  jediný" neplatilo). `competent-johnson-de23e8` existuje a je na aktuálním
+  `main`; zbylých pět sedí na commitech z května až září a dva z nich mají
+  necommitnuté změny (`agitated-dirac-8e91f7`, `mystifying-mestorf-117aec`) —
+  **nemazat bez rozhodnutí uživatele**. Než v některém začneš, přepni ho na
+  `main` a `git pull`.
 - ⚠️ **`git worktree remove --force` následuje junction `node_modules`** a smaže
   obsah cíle — tedy `node_modules` hlavního repa (stalo se 13. 9., opravil
   `npm ci`).

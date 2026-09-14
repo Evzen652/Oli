@@ -342,6 +342,14 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Pravěk ukazuje, že skoro všechno, co dnes umíme, musel někdo vymyslet úplně poprvé.",
     funFact: "Věstonická venuše je stará asi devětadvacet tisíc let. Je to nejstarší známá keramická soška na světě.",
   },
+  "dejepis::Pravěk::Pravěk na našem území": {
+    useful: "Pod nohama máš stopy lidí, kteří tu žili dávno předtím, než o nás kdokoli něco napsal.",
+    funFact: "Latinské jméno Bohemia, podle kterého Čechy znají v cizině, pochází od keltského kmene Bójů.",
+  },
+  "dejepis::Starověk::Nejstarší státy - Mezopotámie a Egypt": {
+    useful: "První písmo, zákony i úřady vznikly tam, kde lidé museli společně zvládat velké řeky a úrodu.",
+    funFact: "Chammurapiho zákoník je vytesaný do kamenného sloupu vysokého přes dva metry. Dnes stojí v pařížském Louvru.",
+  },
 
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {
@@ -446,6 +454,10 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
   "dejepis::Pravěk": {
     useful: "Pravěk je devadesát devět procent dějin člověka. Zbytek je to, co se stalo potom.",
     funFact: "Oheň se lidé naučili ovládat statisíce let před tím, než vynalezli písmo.",
+  },
+  "dejepis::Starověk": {
+    useful: "Ve starověku vzniklo písmo, a proto o těch lidech čteme v pramenech, ne jen v nálezech.",
+    funFact: "Kleopatra žila blíž době prvního přistání na Měsíci než stavbě Velké pyramidy v Gíze.",
   },
   "fyzika::Měření fyzikálních veličin": {
     useful: "Fyzika začíná měřením. Bez čísla je to jen dojem.",

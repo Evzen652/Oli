@@ -5,7 +5,7 @@
  * (`category` / `topic` / `id`) zůstávají beze změny. Každé téma je v právě
  * jednom okruhu, hlídá `src/test/navigation-consistency.test.ts`.
  *
- * **Zakládá se dřív, než je čím naplnit.** Šestka má dnes 11 témat ze 117
+ * **Zakládá se dřív, než je čím naplnit.** Šestka měla při založení 11 témat ze 117
  * a plochý seznam by jim ještě stačil; při 117 už ne. Struktura vzniká teď,
  * aby každá další dávka jen přidala `topicIds` do existujícího okruhu —
  * dodělávat zařazení zpětně u stovky témat je práce navíc a
@@ -79,9 +79,23 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
       {
         id: "pravek",
         name: "Pravěk",
-        description: "Seřadíš úseky pravěku podle toho, co lidé uměli vyrobit.",
+        description: "Od prvních lidí přes lovce mamutů až po Kelty a Slovany.",
         emoji: "🦴",
-        topicIds: ["g6-dej-doba-kamenna-periodizace-6"],
+        topicIds: [
+          "g6-dej-hominizace-6",
+          "g6-dej-doba-kamenna-periodizace-6",
+          "g6-dej-neoliticka-revoluce-6",
+          "g6-dej-doba-bronzova-zelezna-6",
+          "g6-dej-lovci-mamutu-vestonicka-venuse-6",
+          "g6-dej-keltove-germani-slovane-6",
+        ],
+      },
+      {
+        id: "nejstarsi-staty",
+        name: "Nejstarší státy",
+        description: "Poznáš, jak žili lidé v Mezopotámii a ve starém Egyptě.",
+        emoji: "🏛️",
+        topicIds: ["g6-dej-mezopotamie-6", "g6-dej-staroveky-egypt-6"],
       },
     ],
   },

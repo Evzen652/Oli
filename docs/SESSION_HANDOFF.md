@@ -10,8 +10,8 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — sem šla práce 13. a 14. 9. Fyzika je hotová
->    celá (13/13), šestka na **18 ze 117**. **Na řadě je dějepis**, zbývá
->    19 z 24 podtémat. Přípravné práce i vizuální smoke test odborných typů
+>    celá (13/13), šestka na **25 ze 117**. **Dějepis 12/24** (15. 9. přibylo
+>    7 témat pravěku a nejstarších států), zbývá 12 témat starověku. Přípravné práce i vizuální smoke test odborných typů
 >    jsou hotové, takže dávka může začít rovnou — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
@@ -28,7 +28,8 @@ git fetch origin && git status -sb && git worktree list
 ```
 
 **Pracovní větev je `main`.** K 14. 9. je všechno pushnuté, `origin/main` je na
-`c99fe46`, pracovní strom čistý, **worktree je jediný** (hlavní repo).
+`1951c85`, pracovní strom čistý. ⚠️ **Worktree jediný není** (sonda 14. 9.:
+sedm, dva s necommitnutými změnami) — viz `SESSION_PROTOCOL.md` krok 1.
 Lokální větve tři: `main`, `chore/remove-essay-and-ai-authoring`,
 `claude/cranky-shirley`.
 
@@ -68,7 +69,18 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: dějepis 6. ročníku
+### ▶▶ ZAČNI TADY: dějepis 6. ročníku — dávka 2 (starověk, 12 témat)
+
+**15. 9. hotová dávka 1** (7 témat, detail `PROJECT_STATUS.md` §6 session 48).
+Dvě věci pro dávku 2:
+
+- **`.claude/workflows/author-batch.js` má CRLF a Workflow ho odmítne.**
+  Spusť ho z LF kopie a doplň pravidla z 13.–14. 9. (nebo soubor nejdřív oprav).
+  Args = pole `{rvpId, label}`, ne věta.
+- **Kritici workflow nevidí integraci.** Při zapojení se našly tři vady navíc:
+  únik v nápovědě, jiná pomlčka v `topic` (rozbije sdílený klíč tématu)
+  a chybějící okruh v `grade-6/displayNames.ts` + `topicInsight.ts`. Po dávce
+  pusť `check:*` s `IDS=…`, celou sadu a doporučenou kartu v prohlížeči.
 
 Přípravné práce jsou hotové, na obsahové dávce nic nevisí. Postup je popsaný
 v [`docs/GRADE_6_COMPLETION_PLAN.md`](GRADE_6_COMPLETION_PLAN.md), vzor autorské
@@ -511,8 +523,8 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
 
 ### 📋 6. ročník — plán doplnění
 
-Šestka je **pilot, ne hotový ročník**: **18 témat ze 117** (fyzika 13/13 hotová,
-dějepis 5/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
+Šestka je **pilot, ne hotový ročník**: **25 témat ze 117** (fyzika 13/13 hotová,
+dějepis 12/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
 Přitom je od 11. 9. otevřená žákům, takže šesťák vidí dva předměty z osmi.
 Pětka naproti tomu **hotová je** — 63 z 73 podtémat, zbylých 10 je informatika
 vynechaná podle stálého pokynu.
@@ -530,7 +542,7 @@ z něj stojí za pozornost hned:
   v `subjectRegistry`, **bylo mylné** — je tam. Zbývají jen **ilustrace čtyř
   předmětů** (fyzika, přírodopis, zeměpis, vko), a ty psaní obsahu nedrží.
 - ✅ **Bod 1.6 (smoke test odborných typů) hotový** (14. 9.) — session 45 výš.
-- **Stav k 14. 9.: fyzika 13/13 hotová, dějepis 5 z 24.** Zbývající předměty
+- **Stav k 15. 9.: fyzika 13/13 hotová, dějepis 12 z 24.** Zbývající předměty
   šestky (čeština, matematika, přírodopis, zeměpis, občanka) nezačaty.
 
 ### 🟠 Sliby vs. obsah

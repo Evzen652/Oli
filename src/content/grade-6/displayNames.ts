@@ -38,7 +38,11 @@ export const DISPLAY_NAMES: DisplayMap = {
     },
     Pravěk: {
       name: "Pravěk",
-      description: "Seřadíš úseky pravěku podle toho, co lidé uměli vyrobit.",
+      description: "Od prvních lidí přes lovce mamutů až po Kelty a Slovany.",
+    },
+    Starověk: {
+      name: "Nejstarší státy",
+      description: "Poznáš, jak žili lidé v Mezopotámii a ve starém Egyptě.",
     },
   },
 
@@ -77,6 +81,14 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Vývoj člověka": {
       name: "Vývoj člověka",
       description: "Sleduješ, jak se měnil život lidí v pravěku.",
+    },
+    "Pravěk na našem území": {
+      name: "Pravěk u nás",
+      description: "Lovci mamutů, Keltové i Slované žili tam, kde bydlíš ty.",
+    },
+    "Nejstarší státy - Mezopotámie a Egypt": {
+      name: "Mezopotámie a Egypt",
+      description: "První města, písmo a zákony vznikly u velkých řek.",
     },
   },
 };

@@ -15,7 +15,7 @@ uživatele nezobrazuje, takže do rozsahu nepatří — zbývá **117**.
 | předmět | RVP | hotovo | zbývá | charakter |
 |---|---:|---:|---:|---|
 | fyzika | 13 | 6 | **7** | výpočetní — **vzor ověřen** |
-| dějepis | 24 | 5 | **19** | faktický — **vzor ověřen** |
+| dějepis | 24 | 12 | **12** | faktický — **vzor ověřen** (15. 9.: +7 pravěk a nejstarší státy) |
 | přírodopis | 22 | 0 | **22** | faktický |
 | zeměpis | 18 | 0 | **18** | faktický + mapa |
 | čeština | 20 | 0 | **20** | smíšený |

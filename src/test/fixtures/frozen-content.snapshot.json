@@ -659,6 +659,10 @@
     "hash": "6472a286fba78b0aca202ed1959bd835090b9e22",
     "taskCount": 42
   },
+  "g6-dej-doba-bronzova-zelezna-6": {
+    "hash": "b5b055b41d6ce06ffa854535e3c355e963d2fb12",
+    "taskCount": 3
+  },
   "g6-dej-doba-kamenna-periodizace-6": {
     "hash": "e9116f44f2d68a0c4dc27f56c3920cf77808b2e3",
     "taskCount": 3
@@ -667,6 +671,26 @@
     "hash": "9c4d87bed7f64738e0a773b93f4ec956de013270",
     "taskCount": 3
   },
+  "g6-dej-hominizace-6": {
+    "hash": "648ea9d7bb9b5c9abb01fa72d975cd6e6fd4af71",
+    "taskCount": 45
+  },
+  "g6-dej-keltove-germani-slovane-6": {
+    "hash": "08d25cffadda2c96ab76b4e6397bafe14d225656",
+    "taskCount": 3
+  },
+  "g6-dej-lovci-mamutu-vestonicka-venuse-6": {
+    "hash": "defc7ebd709e538901f580b959657aba280536c6",
+    "taskCount": 43
+  },
+  "g6-dej-mezopotamie-6": {
+    "hash": "c72a944b1531a526638ffa7591a55e7cb0b6f3b6",
+    "taskCount": 46
+  },
+  "g6-dej-neoliticka-revoluce-6": {
+    "hash": "8079c4b737e10de3aa50c30d116c3a17dfe6655c",
+    "taskCount": 46
+  },
   "g6-dej-periodizace-letopocet-6": {
     "hash": "41f0d339c6231a7fa857824a6786ec358b8a3037",
     "taskCount": 72
@@ -674,6 +698,10 @@
   "g6-dej-pomocne-vedy-historicke-6": {
     "hash": "705011a2acecede14c08a030e1258f83e8e142cc",
     "taskCount": 3
+  },
+  "g6-dej-staroveky-egypt-6": {
+    "hash": "ff0a9ab3e80553be1370a5ae8310021ebc6b52cf",
+    "taskCount": 44
   },
   "g6-fyz-atomy-molekuly-6": {
     "hash": "9008fe8ae10616abea01e5e20bd412e469d75d09",

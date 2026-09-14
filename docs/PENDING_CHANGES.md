@@ -104,6 +104,13 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   **`image_select` a `diagram_label` zůstávají blokované na obrázcích** — v repu
   žádné nejsou. Dějepis použije `timeline` a `numeric_range`.
   **Cesta k dějepisu je tím volná.**
+- ✅ **Dějepis, dávka 1 — 7 témat** (15. 9.): hominizace, neolitická revoluce,
+  doba bronzová a železná, lovci mamutů, Keltové/Germáni/Slované, Mezopotámie,
+  Egypt. Dějepis **12/24**, šestka **25 ze 117**. Zbývá 12 témat starověku
+  (Indie, Čína, kultura Východu, Řecko, Řím).
+- 🐛 **`.claude/workflows/author-batch.js` má CRLF** — Workflow ho odmítá
+  („control characters“). Uložit s LF a přenést do něj pravidla z 13.–14. 9.
+  (upravená kopie je popsaná v `PROJECT_STATUS.md` §6, session 48).
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.

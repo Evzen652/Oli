@@ -144,6 +144,35 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-15 (48) — dějepis šestky, dávka 1 (7 témat):
+
+- ✅ **Sedm nových témat:** `Hominizace`, `Neolitická revoluce`, `Doba bronzová
+  a železná`, `Lovci mamutů a Věstonická venuše`, `Keltové, Germáni, Slované`,
+  `Mezopotámie`, `Starověký Egypt`. Dějepis **12/24**, šestka **25 ze 117**.
+  Nový okruh „Nejstarší státy“ v navigaci i v `displayNames`.
+- ✅ **Postup:** workflow `author-batch` — plánovač → autor + brána 0 → žák ∥
+  pedagog ∥ fakt-expert → opravář. Kritici vrátili 20–28 nálezů na téma, vše
+  opraveno. 42 agentů, ~50 min.
+- 🐛 **Workflow nešel spustit:** `.claude/workflows/author-batch.js` má CRLF,
+  které Workflow odmítá jako „skryté řídicí znaky“. Spuštěno z LF kopie;
+  do kopie doplněna pravidla z 13.–14. 9. (§6.4, `check:options`,
+  `check:length`, ≥ 12 úloh, předložka + jméno), která skript z května neznal.
+- ✅ **Integrace chytila tři vady, které kritici neviděli:**
+  - únik v nápovědě (`check:hints`): klíč „pod Pálavou na jižní Moravě“ byl
+    jediná možnost s jižní Moravou a nápověda říkala „najdi obec na mapě jižní
+    Moravy“;
+  - Mezopotámie měla v `topic` pomlčku „–“, Egypt a RVP „-“ — z jednoho
+    tématu vznikla dvě a chyběla jim „zajímavost“ (`topic-insight-coverage`);
+  - doporučená karta ukazovala „Starověk“ — `grade-6/displayNames.ts` okruh
+    neznal. Ověřeno v prohlížeči (anonymní režim).
+- ✅ **Brány:** typecheck ✓, testy 5111/0, `check:hints` 0 (po opravě),
+  `check:options` 0, `check:length` 0, `audit:content` ✓, `audit:agreement`
+  30 370 úloh bez nálezu, `audit:ui` bez nového nálezu, build ✓, zámek obsahu
+  přegenerován.
+- 📋 **Dál:** dějepis zbývá 12 — starověk (Indie, Čína, kultura Východu, Řecko 4,
+  Řím 5). Dokumentace tvrdila jediný worktree; ve skutečnosti jich je sedm,
+  dva s necommitnutými změnami — opraveno v `SESSION_PROTOCOL.md`.
+
 ### Session 2026-09-14 (47) — délka odpovědi přestala prozrazovat:
 
 - ⚠️ **Číslo, které jsem uživateli nejdřív dal, bylo špatně.** Řekl jsem, že

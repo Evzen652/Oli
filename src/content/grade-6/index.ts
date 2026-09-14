@@ -32,6 +32,13 @@ import { DOBA_KAMENNA_PERIODIZACE } from "./dejepis/dobaKamennaPeriodizace";
 import { HISTORICKE_PRAMENY } from "./dejepis/historickePrameny";
 import { POMOCNE_VEDY_HISTORICKE } from "./dejepis/pomocneVedyHistoricke";
 import { CO_JE_DEJEPIS } from "./dejepis/coJeDejepis";
+import { HOMINIZACE } from "./dejepis/hominizace";
+import { NEOLITICKA_REVOLUCE } from "./dejepis/neolitickaRevoluce";
+import { DOBA_BRONZOVA_ZELEZNA } from "./dejepis/dobaBronzovaZelezna";
+import { LOVCI_MAMUTU_VESTONICKA_VENUSE } from "./dejepis/lovciMamutuVestonickaVenuse";
+import { KELTOVE_GERMANI_SLOVANE } from "./dejepis/keltoveGermaniSlovane";
+import { MEZOPOTAMIE } from "./dejepis/mezopotamie";
+import { STAROVEKY_EGYPT } from "./dejepis/starovekyEgypt";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
@@ -57,4 +64,13 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...CO_JE_DEJEPIS,
   ...HISTORICKE_PRAMENY,
   ...POMOCNE_VEDY_HISTORICKE,
+  // Dějepis — Pravěk
+  ...HOMINIZACE,
+  ...NEOLITICKA_REVOLUCE,
+  ...DOBA_BRONZOVA_ZELEZNA,
+  ...LOVCI_MAMUTU_VESTONICKA_VENUSE,
+  ...KELTOVE_GERMANI_SLOVANE,
+  // Dějepis — Nejstarší státy
+  ...MEZOPOTAMIE,
+  ...STAROVEKY_EGYPT,
 ];
