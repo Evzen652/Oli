@@ -8,31 +8,44 @@ import { Label } from "@/components/ui/label";
 import { useT } from "@/lib/i18n";
 import { mapAuthError } from "@/lib/authErrors";
 
+type Stav = "nacitani" | "formular" | "neplatny";
+
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isRecovery, setIsRecovery] = useState(false);
+  const [stav, setStav] = useState<Stav>("nacitani");
   const navigate = useNavigate();
   const t = useT();
 
   useEffect(() => {
-    // Listen for PASSWORD_RECOVERY event
+    let aktivni = true;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setIsRecovery(true);
-      }
+      if (event === "PASSWORD_RECOVERY") setStav("formular");
     });
 
-    // Check hash for recovery token
+    // Propadlý nebo použitý odkaz vrací Supabase jako `#error=…` v adrese.
     const hash = window.location.hash;
-    if (hash.includes("type=recovery")) {
-      setIsRecovery(true);
-    }
+    if (hash.includes("error")) setStav("neplatny");
+    else if (hash.includes("type=recovery")) setStav("formular");
 
-    return () => subscription.unsubscribe();
+    // Klient Supabase zpracuje token z odkazu hned při startu aplikace a adresu
+    // vyčistí — dřív, než se tahle stránka připojí. Pak tu nezbude ani hash,
+    // ani událost PASSWORD_RECOVERY, a stránka do 15. 9. 2026 ukazovala
+    // „Načítání…" navždy. `getSession` počká na dokončení startu: přihlášení
+    // z odkazu je v tu chvíli už hotové, jinak odkaz neplatil.
+    supabase.auth.getSession().then(({ data }) => {
+      if (!aktivni) return;
+      setStav((s) => (s !== "nacitani" ? s : data.session ? "formular" : "neplatny"));
+    });
+
+    return () => {
+      aktivni = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,12 +68,30 @@ export default function ResetPassword() {
     setLoading(false);
   };
 
-  if (!isRecovery && !done) {
+  if (stav === "nacitani" && !done) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background p-4">
         <Card className="w-full max-w-sm">
           <CardContent className="p-6">
             <p className="text-sm text-muted-foreground text-center">{t("loading")}</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (stav === "neplatny" && !done) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle className="text-center text-xl">{t("auth.new_password.title")}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground text-center">{t("auth.new_password.invalid")}</p>
+            <Button className="w-full" onClick={() => navigate("/auth/forgot-password")}>
+              {t("auth.new_password.request_again")}
+            </Button>
           </CardContent>
         </Card>
       </div>

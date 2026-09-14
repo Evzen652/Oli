@@ -35,6 +35,8 @@ const cs = {
   "auth.new_password.submit": "Nastavit heslo",
   "auth.new_password.success": "Heslo bylo úspěšně změněno. Nyní se můžete přihlásit.",
   "auth.new_password.mismatch": "Hesla se neshodují.",
+  "auth.new_password.invalid": "Odkaz pro nastavení hesla už neplatí. Mohl vypršet nebo už byl použitý.",
+  "auth.new_password.request_again": "Poslat nový odkaz",
 
   // Grade select
   "grade.title": "Do jakého chodíš ročníku?",
