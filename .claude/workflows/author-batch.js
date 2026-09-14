@@ -44,6 +44,22 @@ ZLATÉ VZORY (použij jako šablonu dle typu):
   (buildChoiceTask / buildOrderTask / buildCategorizeTask / pick / pickN / shuffle)
 - výpočetní fyzika:                 src/content/grade-6/fyzika/mereniDelky.ts
 
+PRAVIDLA Z 13.–14. 9. 2026 (kontroly je chytí při integraci — napiš to rovnou správně):
+- ODBORNÉ TYPY: přečti docs/CONTENT_AUTHORING.md §6.4. timeline: timelineEvents = pool, correctAnswer = labely ve správném
+  pořadí spojené "|". numeric_range smíš použít (letopočet), jen CELÁ čísla. image_select ani diagram_label NEPOUŽÍVEJ (nejsou obrázky).
+- ≥12 RŮZNÝCH úloh na každou úroveň — deterministicky, ne losováním a doufáním (vzor ruzneUlohy() v src/content/grade-6/fyzika/_shared.ts).
+- Klíč NESMÍ být systematicky výrazně nejdelší možnost (check:length). Distraktory piš stejně dlouhé a stejně konkrétní jako klíč.
+- Klíč NESMÍ vyčnívat tvarem: když 3 distraktory začínají stejným slovem („Protože…", „Jen…"), musí tak začínat i klíč (check:options).
+- Ano/Ne (true_false) jen na L1.
+- Nápověda nesmí jmenovat prvky řešení (u drag_order/categorize/timeline ani pravou stranu dvojice). hints[0] i hints[1] unikátní pro úlohu.
+- Správná odpověď se nesmí vyskytovat ve znění otázky.
+- Předložka + dosazené jméno: pád ulož jako vlastní pole, nelep předložku k holému jménu (dřív vznikalo „z sklo", „u jantar").
+- Čeština: žádné rodové lomítkové tvary (sám/sama). Po dosazení do šablony ověř shodu.
+- category a topic ZNAK PO ZNAKU podle data/rvp_data.json (pomlčka "-", ne "–"). Témata téhož RVP topicu
+  sdílí klíč pro zajímavost (src/lib/topicInsight.ts) a dětský název (src/content/grade-N/displayNames.ts);
+  jiný znak = rozdělené téma bez zajímavosti. Ty soubory needituj, jen drž přesný zápis.
+- Historická fakta jen ta, na kterých se shodují běžné učebnice 6. ročníku; sporné datace formuluj s „asi/kolem" nebo nepoužívej jako klíč.
+
 DŮLEŽITÉ:
 - Téma NEregistruj do index.ts (kolize). Registraci dělá architekt při integraci.
 - RVP id, dětský studentTitle, briefDescription (max 14 slov), category/topic dle RVP datasetu.
