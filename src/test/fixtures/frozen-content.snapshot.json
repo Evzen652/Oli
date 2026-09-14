@@ -711,6 +711,10 @@
     "hash": "705011a2acecede14c08a030e1258f83e8e142cc",
     "taskCount": 3
   },
+  "g6-dej-punske-valky-dobyti-stredomori-6": {
+    "hash": "23c40cff2bb7497ab400c4ad19dbabb0cf0813a2",
+    "taskCount": 40
+  },
   "g6-dej-recke-mestske-staty-6": {
     "hash": "ab0762b538cf33238bf7c842d327b3713ccafcf4",
     "taskCount": 3
@@ -718,6 +722,10 @@
   "g6-dej-recko-perske-valky-peloponeska-valka-6": {
     "hash": "2dc38d300cc91e3c937a2557093d93baf8ffc425",
     "taskCount": 44
+  },
+  "g6-dej-rimske-cisarstvi-6": {
+    "hash": "c6763629d8aebda180b2e87f3c76ad5683d9cc8a",
+    "taskCount": 49
   },
   "g6-dej-staroveka-cina-6": {
     "hash": "352b25f55246ff560ada905ec69af4b83da9fb86",
@@ -730,6 +738,18 @@
   "g6-dej-staroveky-egypt-6": {
     "hash": "ff0a9ab3e80553be1370a5ae8310021ebc6b52cf",
     "taskCount": 44
+  },
+  "g6-dej-stehovani-narodu-pad-zapadorimske-rise-6": {
+    "hash": "916756853a237b67833a317bec7da6573f7383bf",
+    "taskCount": 46
+  },
+  "g6-dej-vznik-rima-republika-6": {
+    "hash": "b1aa4dc96ff95a52146581a4759d006f8411490d",
+    "taskCount": 63
+  },
+  "g6-dej-vznik-sireni-krestanstvi-6": {
+    "hash": "55ee3207e1c9803d904b8ebe6a8950e39411ab04",
+    "taskCount": 43
   },
   "g6-fyz-atomy-molekuly-6": {
     "hash": "9008fe8ae10616abea01e5e20bd412e469d75d09",

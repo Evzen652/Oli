@@ -113,13 +113,31 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   na obsluze oprávnění.
 - ✅ **Dějepis, dávka 2 — 7 témat** (15. 9.): kultura Východu, Indie, Čína,
   Kréta a Mykény, městské státy, řecko-perské války, řecká kultura.
-  Dějepis **19/24**, šestka **32 ze 117**. Zbývá Řím (5).
+  Dějepis **19/24**, šestka **32 ze 117**.
+- ✅ **DĚJEPIS 6. ROČNÍKU HOTOVÝ — 24/24** (15. 9.). Dávka 3: Řím, 5 témat.
+  Šestka **37 ze 117**. Další na řadě matematika (12).
 - ✅ **VYŘÍZENO 15. 9. — obnova hesla visela na „Načítání…“** (`e529437`).
 - ✅ **VYŘÍZENO 15. 9. (uživatel) — Redirect URLs v Supabase** doplněné.
-- 🟠 **Úklid anonymních dat naplánován (`anon-cleanup-44d`), ale v `cron.job`
-  už byla úloha `anon-cleanup-daily`** (id 1, denně 3:00). Ověřit její
-  `command` a poslední běh; zrušit tu, která je navíc. Pak opravit komentář
-  u `LHUTA_ANON_6P` v `src/content/legal.ts` („ten úklid nikdo nevolá“).
+- ✅ **VYŘÍZENO 15. 9. (uživatel) — úklid anonymních dat.** Jediná úloha
+  v `cron.job` je `anon-cleanup-44d` (id 2, `postgres`, denně 3:17 UTC, SQL
+  delete). Předtím existovala `anon-cleanup-daily` (id 1), která volala edge
+  funkci přes `net.http_post` a končila na 5s timeoutu — výsledek úklidu tak
+  nebyl známý. Zrušena. Komentář u `LHUTA_ANON_6P` v `legal.ts` opraven.
+- ⏸ **Změna domény na `.cz` (rozhodnutí uživatele 15. 9.)** — koupí se před
+  čímkoli v Google Play / App Store. Až bude doména známá:
+  - **uživatel:** doména bez diakritiky; Vercel (doména + DNS) a na staré
+    `oli-edu.com` trvalé přesměrování 301 aspoň rok; Supabase Site URL +
+    Redirect URLs (starou nechat); schránka `noreply@` + SPF/DKIM; nasadit
+    `send-parent-invite`.
+  - **Claude:** `appId` odvodit z nové domény (8 míst Android + iOS),
+    `src/lib/native.ts` (`PRODUKCNI_WEB`), `send-parent-invite` (`APP_URL`,
+    `FROM_EMAIL`), texty v `ChildAuth.tsx` a `InviteParentDialog.tsx`, testy
+    `email-redirect` a `legal-recipients`, `MOBILNI_BUILD.md`,
+    `PROJECT_STATUS.md` ř. 17. Pushnout až ve chvíli, kdy nová doména běží.
+  - Ověření: obnova hesla přes odkaz z e-mailu (jako 15. 9.).
+- 🟠 **Zásady: „po 44 dnech bez aktivity“ neodpovídá kódu** — maže se 44 dní
+  od začátku (dřív, ne později). Návrh formulace „nejpozději 44 dní od
+  zahájení zkušební doby“; patří k právní kontrole zásad.
 - ℹ️ **Pro další sessions: typecheck se spouští `npm run typecheck`.**
   `npx tsc --noEmit` z kořene projde vždycky — kořenový `tsconfig.json` má
   `"files": []` a jen reference, takže nekontroluje ani jeden soubor.

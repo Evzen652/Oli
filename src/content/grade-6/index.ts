@@ -46,6 +46,11 @@ import { KRETA_MYKENY_TROJA } from "./dejepis/kretaMykenyTroja";
 import { RECKE_MESTSKE_STATY } from "./dejepis/reckeMestskeStaty";
 import { RECKO_PERSKE_VALKY_PELOPONESKA_VALKA } from "./dejepis/reckoPerskeValkyPeloponeskaValka";
 import { ANTIKA_RECKO_KULTURA } from "./dejepis/antikaReckoKultura";
+import { VZNIK_RIMA_KRALOVSTVI_REPUBLIKA } from "./dejepis/vznikRimaRepublika";
+import { PUNSKE_VALKY_DOBYTI_STREDOMORI } from "./dejepis/punskeValky";
+import { RIMSKE_CISARSTVI_TOPICS } from "./dejepis/rimskeCisarstvi";
+import { VZNIK_SIRENI_KRESTANSTVI } from "./dejepis/vznikSireniKrestanstvi";
+import { STEHOVANI_NARODU_PAD_ZAPADORIMSKE_RISE } from "./dejepis/stehovaniNaroduPadZapadorimskeRise";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Fyzika — Měření fyzikálních veličin
@@ -89,4 +94,10 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...RECKE_MESTSKE_STATY,
   ...RECKO_PERSKE_VALKY_PELOPONESKA_VALKA,
   ...ANTIKA_RECKO_KULTURA,
+  // Dějepis — Antika: Řím
+  ...VZNIK_RIMA_KRALOVSTVI_REPUBLIKA,
+  ...PUNSKE_VALKY_DOBYTI_STREDOMORI,
+  ...RIMSKE_CISARSTVI_TOPICS,
+  ...VZNIK_SIRENI_KRESTANSTVI,
+  ...STEHOVANI_NARODU_PAD_ZAPADORIMSKE_RISE,
 ];

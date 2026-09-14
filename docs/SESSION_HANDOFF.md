@@ -10,8 +10,9 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — sem šla práce 13. a 14. 9. Fyzika je hotová
->    celá (13/13), šestka na **32 ze 117**. **Dějepis 19/24** (15. 9. přibylo
->    14 témat ve dvou dávkách), zbývá 5 témat Říma. Přípravné práce i vizuální smoke test odborných typů
+>    celá (13/13), **dějepis hotový celý (24/24)** — 15. 9. přibylo 19 témat
+>    ve třech dávkách. Šestka na **37 ze 117**. **Na řadě je matematika**
+>    (12 témat) podle `GRADE_6_COMPLETION_PLAN.md`. Přípravné práce i vizuální smoke test odborných typů
 >    jsou hotové, takže dávka může začít rovnou — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
@@ -70,14 +71,14 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: dějepis 6. ročníku — dávka 3 (Řím, 5 témat)
+### ▶▶ ZAČNI TADY: matematika 6. ročníku (12 témat)
 
-**15. 9. hotové dávky 1 a 2** (14 témat, detail `PROJECT_STATUS.md` §6
-session 48). Zbývá antika – Řím: vznik Říma a republika, punské války,
-císařství, křesťanství, stěhování národů a pád západořímské říše. Dětský
-název a zajímavost pro RVP topic „Antika - Řím“ v `displayNames.ts`
-a `topicInsight.ts` ještě nejsou — doplň je spolu s okruhem v navigaci.
-Dvě věci pro dávku 3:
+**Dějepis šestky je hotový celý** — 15. 9. tři dávky, 19 témat (detail
+`PROJECT_STATUS.md` §6 session 48). Postup se osvědčil a platí i pro
+matematiku; výpočetní vzor je ve fyzice (`grade-6/fyzika/mereniDelky.ts`),
+klíče tu navíc přepočítá `check:keys`. Před první dávkou doplň do STANDARDS
+ve workflow vzor pro matematiku (dnes jmenuje jen dějepis a fyziku).
+Dvě věci pro každou dávku:
 
 - **Workflow spouštěj přes `scriptPath`, ne podle jména.** Od `1c99986` má
   `.claude/workflows/author-batch.js` LF (hlídá `.gitattributes`) a pravidla
@@ -380,16 +381,19 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
    rodičům uvádí mezi místy zpracování dat, takže zásady slibují zpracování,
    které neprobíhá.
 3. ✅ **HOTOVO 15. 9.** — Redirect URLs doplněné, ověřeno odkazem z e-mailu
-   (odhalilo to vadu `ResetPassword`, opravenou v `e529437`). Původní zadání:
+   (odhalilo to vadu `ResetPassword`, opravenou v `e529437`; po nasazení
+   uživatel ověřil celý průchod až po formulář nového hesla). Původní zadání:
    **Doplnit Redirect URLs v Supabase** — Authentication → URL Configuration
    → Redirect URLs musí obsahovat `https://oli-edu.com`
    i `https://oli-edu.com/reset-password`. Co tam není, Supabase zahodí
    a přesměruje na Site URL **bez jediné chybové hlášky**. Bez tohohle kroku
    je oprava z `b2c9dee` jen poloviční.
-4. 🟠 **Naplánováno 15. 9.** jako `cron` úloha `anon-cleanup-44d` (denně 3:17
-   UTC, SQL delete stejné jako v edge funkci). ⚠️ V `cron.job` ale už byla
-   `anon-cleanup-daily` (denně 3:00) — věta níž „nikdo nevolá“ tedy neplatila.
-   Zbývá ověřit, co stará úloha dělá, a jednu zrušit. Původní zadání:
+4. ✅ **HOTOVO 15. 9.** — `cron` úloha `anon-cleanup-44d` (denně 3:17 UTC, SQL
+   delete stejné jako v edge funkci) je jediná v `cron.job`. Stará
+   `anon-cleanup-daily` volala edge funkci přes `net.http_post`, končila na
+   5s timeoutu a je zrušená — věta níž „nikdo nevolá“ tedy neplatila ani
+   předtím. Zbývá jen upřesnit formulaci v zásadách (maže se 44 dní od
+   začátku, ne „bez aktivity“). Původní zadání:
    **Naplánovat úklid anonymních dat.** Zásady soukromí slibují smazání
    serverové kopie po **44 dnech** bez aktivity, ale `action: "cleanup"`
    v `supabase/functions/anon-progress/index.ts` **nikdo nevolá** — žádný cron
@@ -404,7 +408,14 @@ Definice hotového: **https://claude.ai/code/artifact/7551d87a-89ec-4f31-bbce-db
 6. ⛔ **Podpisový klíč pro Android**, ověření domény pro App Links / Universal
    Links, formuláře o datech v obou obchodech (Data Safety / Privacy Nutrition
    Labels). Bez SHA-256 otisku klíče nejde `assetlinks.json` napsat.
-7. **Potvrdit `appId`** `com.oliedu.app` v `capacitor.config.ts` — po prvním
+7. ⏸ **Čeká na novou doménu (rozhodnutí uživatele 15. 9.).** Web přejde na
+   čistě českou doménu `.cz` a ta se koupí **dřív**, než se začne cokoli dělat
+   s Google Play a App Store. `appId` se pak odvodí z ní — **do té doby nic
+   nevydávat ani nenahrávat do obchodů**. Dopad změny domény (Vercel + 301
+   ze staré, Supabase URL Configuration, SMTP + SPF/DKIM, `native.ts`,
+   `send-parent-invite`, texty v `ChildAuth` a `InviteParentDialog`) je
+   rozepsaný v `PENDING_CHANGES.md`. Původní zadání:
+   **Potvrdit `appId`** `com.oliedu.app` v `capacitor.config.ts` — po prvním
    vydání je **nevratný**.
 8. **Apple Kids Category, nebo smíšené publikum.**
 
@@ -537,8 +548,8 @@ Věci, na které kritici narazili a nechali je k rozhodnutí:
 
 ### 📋 6. ročník — plán doplnění
 
-Šestka je **pilot, ne hotový ročník**: **32 témat ze 117** (fyzika 13/13 hotová,
-dějepis 19/24; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
+Šestka je **pilot, ne hotový ročník**: **37 témat ze 117** (fyzika 13/13 hotová,
+dějepis 24/24 hotový; čeština, matematika, přírodopis, zeměpis a občanka nezačaty).
 Přitom je od 11. 9. otevřená žákům, takže šesťák vidí dva předměty z osmi.
 Pětka naproti tomu **hotová je** — 63 z 73 podtémat, zbylých 10 je informatika
 vynechaná podle stálého pokynu.
@@ -556,7 +567,7 @@ z něj stojí za pozornost hned:
   v `subjectRegistry`, **bylo mylné** — je tam. Zbývají jen **ilustrace čtyř
   předmětů** (fyzika, přírodopis, zeměpis, vko), a ty psaní obsahu nedrží.
 - ✅ **Bod 1.6 (smoke test odborných typů) hotový** (14. 9.) — session 45 výš.
-- **Stav k 15. 9.: fyzika 13/13 hotová, dějepis 19 z 24.** Zbývající předměty
+- **Stav k 15. 9.: fyzika 13/13 i dějepis 24/24 hotové.** Zbývající předměty
   šestky (čeština, matematika, přírodopis, zeměpis, občanka) nezačaty.
 
 ### 🟠 Sliby vs. obsah

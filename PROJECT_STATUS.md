@@ -183,16 +183,25 @@ src/
   uživatel při ověřování Redirect URLs. Klient Supabase zpracuje token z odkazu
   při startu a vyčistí adresu dřív, než se `ResetPassword` připojí; stránka
   čekala jen na hash nebo událost. Nově `getSession` + hláška „odkaz už neplatí“.
-  Test `reset-password-page.test.tsx`, ověřeno obousměrně.
+  Test `reset-password-page.test.tsx`, ověřeno obousměrně. **Uživatel ověřil
+  na produkci** — formulář „Nové heslo" se po kliknutí na odkaz ukáže.
 - ✅ **Supabase (uživatel):** Redirect URLs doplněné (`oli-edu.com/**`,
   `www.`, `localhost:8080`), Site URL `https://oli-edu.com`. Úklid
   anonymních dat naplánován jako `cron` úloha `anon-cleanup-44d`.
   ⚠️ **V `cron.job` už byla úloha `anon-cleanup-daily`** (denně 3:00) —
-  tvrzení „úklid nikdo nevolá“ neplatilo. Co dělá, se ověřuje; jedna z nich
-  je nejspíš navíc.
+  tvrzení „úklid nikdo nevolá“ neplatilo. Volala edge funkci přes
+  `net.http_post` a končila na 5s timeoutu, takže nikdo nevěděl, jestli
+  úklid proběhl. Zrušena; zůstala jen `anon-cleanup-44d`.
 - ✅ **Pět zastaralých worktree odstraněno** bez ztráty práce (necommitnuté
   změny uloženy jako `de85783` a `d7c838f` na jejich větvích).
-- 📋 **Dál:** dějepis zbývá 5 — Řím. Dokumentace tvrdila jediný worktree; ve skutečnosti jich je sedm,
+- ✅ **Dávka 3 — Řím, 5 témat:** vznik Říma a republika, punské války,
+  císařství, křesťanství, stěhování národů a pád západořímské říše.
+  **Dějepis 6. ročníku hotový — 24/24**, šestka **37 ze 117**. Nový okruh
+  „Starý Řím“. Kritici 20–25 nálezů na téma, vše opraveno; integrace bez
+  nálezu (`check:*` 0, testy 5489/0, zámek obsahu jen přírůstky).
+- ⏸ **Změna domény na `.cz`** (rozhodnutí uživatele) — koupí se před obchody;
+  do té doby nevydávat a neměnit `appId`. Detail v `PENDING_CHANGES.md`.
+- 📋 **Dál:** matematika 6. ročníku (12 témat). Dokumentace tvrdila jediný worktree; ve skutečnosti jich je sedm,
   dva s necommitnutými změnami — opraveno v `SESSION_PROTOCOL.md`.
 
 ### Session 2026-09-14 (47) — délka odpovědi přestala prozrazovat:

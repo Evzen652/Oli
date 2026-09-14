@@ -358,6 +358,10 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Slova demokracie, olympiáda nebo matematika přišla z řečtiny spolu s věcmi, které znamenají.",
     funFact: "Maratonský běh připomíná posla, který podle pověsti běžel z Marathónu do Athén se zprávou o vítězství nad Peršany.",
   },
+  "dejepis::Starověk::Antika - Řím": {
+    useful: "Latinka, kterou píšeš, i kalendář se dvanácti měsíci k nám přišly ze starého Říma.",
+    funFact: "Měsíc červenec se v mnoha jazycích jmenuje po Juliu Caesarovi a srpen po císaři Augustovi.",
+  },
 
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {

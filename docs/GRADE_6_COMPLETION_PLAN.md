@@ -15,7 +15,7 @@ uživatele nezobrazuje, takže do rozsahu nepatří — zbývá **117**.
 | předmět | RVP | hotovo | zbývá | charakter |
 |---|---:|---:|---:|---|
 | fyzika | 13 | 6 | **7** | výpočetní — **vzor ověřen** |
-| dějepis | 24 | 19 | **5** | faktický — **vzor ověřen** (15. 9.: +14 — pravěk, nejstarší státy, Indie a Čína, Řecko; zbývá Řím) |
+| dějepis | 24 | 24 | **0** | ✅ **HOTOVO 15. 9.** — 19 témat ve třech dávkách (pravěk, nejstarší státy, Indie a Čína, Řecko, Řím) |
 | přírodopis | 22 | 0 | **22** | faktický |
 | zeměpis | 18 | 0 | **18** | faktický + mapa |
 | čeština | 20 | 0 | **20** | smíšený |

@@ -98,5 +98,9 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Staré Řecko",
       description: "Athény, Sparta, války s Peršany i řečtí bohové.",
     },
+    "Antika - Řím": {
+      name: "Starý Řím",
+      description: "Od založení Říma přes Caesara až po pád západořímské říše.",
+    },
   },
 };

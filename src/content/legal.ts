@@ -66,11 +66,19 @@ export const LHUTA_SMAZANI_2P = "třiceti dnů";
  * o jedenáct měsíců. Když se změní TTL, změň i tohle — jsou to dvě čísla
  * o téže věci a mají se hlídat navzájem.
  *
- * ⚠️ A POZOR: ten úklid **nikdo nevolá**. `action: "cleanup"` je v celém repu
- * jen ve své definici — žádný cron v `.github/workflows/`, žádný
- * `cron.schedule` v migracích. Dokud se nespustí (naplánovanou úlohou
- * v Supabase, viz `docs/PENDING_CHANGES.md`), je tahle lhůta slib, který
- * nic nevymáhá. Ověř `select * from cron.job` v dashboardu.
+ * Úklid vymáhá `pg_cron` úloha **`anon-cleanup-44d`** (naplánovaná ručně
+ * v SQL editoru 15. 9. 2026, denně 3:17 UTC). Maže přímo v databázi touž
+ * podmínkou jako `action: "cleanup"` — **když měníš TTL, změň ji i tam**
+ * (`cron.alter_job`), v repu ani v migracích totiž není.
+ *
+ * Do 15. 9. běžela jiná úloha, `anon-cleanup-daily`, která edge funkci volala
+ * přes `net.http_post`. Její požadavky končily na 5s limitu (`timed_out`),
+ * takže nikdo nevěděl, jestli úklid proběhl. Zrušena. Ověření běhu:
+ * `select * from cron.job_run_details order by start_time desc`.
+ *
+ * ⚠️ Pravidlo maže podle `created_at` / `started_at`, tedy **44 dní od
+ * začátku**, ne „bez aktivity“, jak zní vazba v zásadách. Maže se dřív, než
+ * zásady slibují, takže slib porušen není — formulace je ale nepřesná.
  */
 export const LHUTA_ANON_6P = "44 dnech";
 

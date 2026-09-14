@@ -120,6 +120,19 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-dej-antika-recko-kultura-6",
         ],
       },
+      {
+        id: "stary-rim",
+        name: "Starý Řím",
+        description: "Od založení Říma přes Caesara až po pád západořímské říše.",
+        emoji: "🛡️",
+        topicIds: [
+          "g6-dej-vznik-rima-republika-6",
+          "g6-dej-punske-valky-dobyti-stredomori-6",
+          "g6-dej-rimske-cisarstvi-6",
+          "g6-dej-vznik-sireni-krestanstvi-6",
+          "g6-dej-stehovani-narodu-pad-zapadorimske-rise-6",
+        ],
+      },
     ],
   },
 ];
