@@ -65,6 +65,73 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
     ],
   },
   {
+    subject: "prirodopis",
+    okruhy: [
+      {
+        id: "jak-funguje-zivot",
+        name: "Jak funguje život",
+        description: "Buňka, mikroskop, třídění organismů a jak se život na Zemi vyvíjel.",
+        emoji: "🔬",
+        topicIds: [
+          "g6-pri-vznik-zeme-podminky-pro-zivot-6",
+          "g6-pri-vyvoj-zivota-geologicka-obdobi-6",
+          "g6-pri-taxonomicke-skupiny-6",
+          "g6-pri-mikroskop-6",
+          "g6-pri-stavba-bunky-6",
+        ],
+      },
+      {
+        id: "viry-bakterie-prvoci",
+        name: "Viry, bakterie a prvoci",
+        description: "Nejmenší původci nemocí i užiteční pomocníci, které neuvidíš pouhým okem.",
+        emoji: "🦠",
+        topicIds: [
+          "g6-pri-viry-stavba-vyznam-6",
+          "g6-pri-bakterie-6",
+          "g6-pri-sinice-vyskyt-vyznam-6",
+          "g6-pri-prvoci-zastupci-nemoci-6",
+        ],
+      },
+      {
+        id: "houby-a-lisejniky",
+        name: "Houby a lišejníky",
+        description: "Jak houby žijí, které se dají jíst a proč lišejník není jeden organismus.",
+        emoji: "🍄",
+        topicIds: [
+          "g6-pri-houby-stavba-vyziva-vyznam-6",
+          "g6-pri-jedle-a-jedovate-houby-6",
+          "g6-pri-lisejniky-symbioza-6",
+        ],
+      },
+      {
+        id: "rasy-mechy-kapradiny",
+        name: "Řasy, mechy a kapradiny",
+        description: "Rostliny bez květů a semen — množí se výtrusy.",
+        emoji: "🌿",
+        topicIds: [
+          "g6-pri-rasy-stavba-zastupci-vyznam-6",
+          "g6-pri-mechorosty-zastupci-vyznam-6",
+          "g6-pri-kapradorosty-6",
+        ],
+      },
+      {
+        id: "zivocichove-bez-patere",
+        name: "Živočichové bez páteře",
+        description: "Od nezmara přes hlemýždě a žížaly až po hmyz a pavouky.",
+        emoji: "🐌",
+        topicIds: [
+          "g6-pri-zahavci-nezmar-meduza-koraly-6",
+          "g6-pri-plostenci-hlisti-6",
+          "g6-pri-mekkysi-plzi-mlzi-hlavonozci-6",
+          "g6-pri-krouzkovci-zizala-pijavka-6",
+          "g6-pri-pavoukovci-pavouci-stiri-klistata-6",
+          "g6-pri-korysi-6",
+          "g6-pri-hmyz-stavba-tela-druhy-vyvoj-6",
+        ],
+      },
+    ],
+  },
+  {
     subject: "fyzika",
     okruhy: [
       {

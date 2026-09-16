@@ -10,8 +10,8 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
->    **matematika 12/12 (16. 9.)**. Šestka na **49 ze 117**. **Na řadě je
->    přírodopis** (22 témat) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+>    **matematika 12/12 a přírodopis 22/22 (16. 9.)**. Šestka na **71 ze 117**.
+>    **Na řadě je zeměpis** (18 témat) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
@@ -69,14 +69,23 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: přírodopis 6. ročníku (22 témat)
+### ▶▶ ZAČNI TADY: zeměpis 6. ročníku (18 témat)
 
-**Matematika šestky je hotová** — 16. 9. dvě dávky, 12 témat (detail
-`PROJECT_STATUS.md` §6 session 49). Přírodopis je největší faktický blok:
-dělej ho **po RVP okruzích (3–6 témat)** a u každé dávky pusť kritiky
-včetně fakt-experta (workflow ho zapne sám u `isFactual`). Před první dávkou
-doplň do STANDARDS ve workflow vzor pro přírodopis (dnes jmenuje dějepis,
-fyziku a matematiku) — nejbližší je faktický vzor dějepisu.
+**Matematika i přírodopis šestky jsou hotové** — 16. 9., 34 témat (detail
+`PROJECT_STATUS.md` §6 session 49). Zeměpis je faktický + mapa. Obrázky
+k obsahu v repu nejsou, takže `image_select` ani `diagram_label` nejdou —
+úlohy musí jít vyřešit ze slov (souřadnice, popis polohy, měřítko jako
+výpočet). Před první dávkou doplň do STANDARDS ve workflow vzor pro zeměpis
+(nejbližší: přírodopis pro fakta, matematika pro měřítko) a vlastní
+`zemepis/_shared.ts` — sdílený pomocník patří do repa **před** dávkou.
+
+Poučení z přírodopisu:
+- **Po limitu relace workflow hlásí „accepted“ i u témat bez kritiků.** Čti
+  `failures` v notifikaci; obnov přes `resumeFromRunId` (hotové kroky se
+  převezmou z mezipaměti).
+- **Dvě dávky souběžně = limit relace.** Pouštěj po jedné (nebo dvě malé).
+- **`category`/`topic` kontroluj proti RVP po každé dávce** — autoři je
+  posouvali o úroveň níž a testy to zafixovaly.
 
 Poučení z matematiky:
 - **Po dávce vždy spusť celou sadu**, ne jen `IDS=…` — `generator-determinism`

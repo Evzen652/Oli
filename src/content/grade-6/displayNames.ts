@@ -35,6 +35,27 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Tabulky a grafy",
       description: "Vyčteš z tabulky i diagramu, co v datech opravdu je.",
     },
+    // Přírodopis
+    "Obecná biologie": {
+      name: "Jak funguje život",
+      description: "Buňka, mikroskop, třídění organismů a jak se život na Zemi vyvíjel.",
+    },
+    "Nebuněční a bakterie": {
+      name: "Viry, bakterie a prvoci",
+      description: "Nejmenší původci nemocí i užiteční pomocníci, které neuvidíš pouhým okem.",
+    },
+    "Biologie hub": {
+      name: "Houby a lišejníky",
+      description: "Jak houby žijí, které se dají jíst a proč lišejník není jeden organismus.",
+    },
+    "Biologie rostlin": {
+      name: "Řasy, mechy a kapradiny",
+      description: "Rostliny bez květů a semen — množí se výtrusy.",
+    },
+    "Biologie živočichů": {
+      name: "Živočichové bez páteře",
+      description: "Od nezmara přes hlemýždě a žížaly až po hmyz a pavouky.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",
@@ -97,6 +118,43 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Práce s daty": {
       name: "Tabulky a diagramy",
       description: "Roztřídíš data a vyčteš z tabulky i diagramu, co v nich je.",
+    },
+    // Přírodopis
+    "Vznik a vývoj života": {
+      name: "Jak se vyvíjel život",
+      description: "Od vzniku Země přes prvohory až po čtvrtohory a třídění organismů.",
+    },
+    "Buňka jako základ života": {
+      name: "Buňka a mikroskop",
+      description: "Z čeho se skládá buňka a jak se pracuje s mikroskopem.",
+    },
+    "Viry a bakterie": {
+      name: "Viry a bakterie",
+      description: "Čím se liší, jaké nemoci způsobují a co proti nim pomáhá.",
+    },
+    "Sinice a prvoci": {
+      name: "Sinice a prvoci",
+      description: "Vodní květ, trepka, měňavka a nemoci, které prvoci přenášejí.",
+    },
+    "Houby a lišejníky": {
+      name: "Houby a lišejníky",
+      description: "Stavba hub, bezpečný sběr a soužití houby s řasou.",
+    },
+    "Nižší rostliny": {
+      name: "Řasy, mechy a kapradiny",
+      description: "Rostliny, které se nemnoží semeny, a k čemu jsou v přírodě.",
+    },
+    "Bezobratlí - žahavci, ploštěnci, hlísti": {
+      name: "Nezmar, tasemnice a škrkavka",
+      description: "Žahavci a cizopasní červi — jak žijí a jak se před nimi chránit.",
+    },
+    "Bezobratlí - měkkýši, kroužkovci": {
+      name: "Plži, mlži a žížaly",
+      description: "Hlemýžď, škeble, chobotnice, žížala i pijavka.",
+    },
+    "Bezobratlí - členovci (úvod)": {
+      name: "Hmyz, pavouci a korýši",
+      description: "Poznáš je podle počtu nohou a stavby těla.",
     },
     // Fyzika
     "Délka, objem, hmotnost": {

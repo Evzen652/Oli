@@ -67,8 +67,60 @@ import { OSOVA_STREDOVA_SOUMERNOST } from "./matematika/osovaStredovaSoumernost"
 // Matematika — Nestandardní úlohy, Práce s daty
 import { LOGICKE_UVAHY_KOMBINACNI_USUDEK } from "./matematika/logickeUvahyKombinacniUsudek";
 import { TABULKY_A_DIAGRAMY } from "./matematika/tabulkyADiagramy";
+// Přírodopis — Obecná biologie
+import { VZNIK_ZEME_PODMINKY_PRO_ZIVOT } from "./prirodopis/vznikZemePodminkyProZivot";
+import { VYVOJ_ZIVOTA_GEOLOGICKA_OBDOBI } from "./prirodopis/vyvojZivotaGeologickaObdobi";
+import { TAXONOMICKE_SKUPINY } from "./prirodopis/taxonomickeSkupiny";
+import { MIKROSKOP } from "./prirodopis/mikroskop";
+import { STAVBA_BUNKY } from "./prirodopis/stavbaBunky";
+// Přírodopis — Nebuněční a bakterie, Biologie hub
+import { VIRY_STAVBA_VYZNAM } from "./prirodopis/viryStavbaVyznam";
+import { BAKTERIE_TOPICS } from "./prirodopis/bakterie";
+import { SINICE_VYSKYT_VYZNAM } from "./prirodopis/siniceVyskytVyznam";
+import { PRVOCI_ZASTUPCI_NEMOCI } from "./prirodopis/prvociZastupciNemoci";
+import { HOUBY_STAVBA_VYZIVA_VYZNAM } from "./prirodopis/houbyStavbaVyziva";
+import { JEDLE_A_JEDOVATE_HOUBY } from "./prirodopis/jedleAJedovateHouby";
+import { LISEJNIKY_SYMBIOZA } from "./prirodopis/lisejnikySymbioza";
+// Přírodopis — Biologie rostlin, Biologie živočichů
+import { RASY_STAVBA_ZASTUPCI_VYZNAM } from "./prirodopis/rasyStavbaZastupciVyznam";
+import { MECHOROSTY_ZASTUPCI_VYZNAM } from "./prirodopis/mechorostyZastupciVyznam";
+import { KAPRADOROSTY } from "./prirodopis/kapradorosty";
+import { ZAHAVCI_NEZMAR_MEDUZA_KORALY } from "./prirodopis/zahavciNezmarMeduzaKoraly";
+import { PLOSTENCI_HLISTI } from "./prirodopis/plostenciHlisti";
+import { MEKKYSI_PLZI_MLZI_HLAVONOZCI } from "./prirodopis/mekkysiPlziMlziHlavonozci";
+import { KROUZKOVCI_ZIZALA_PIJAVKA } from "./prirodopis/krouzkovciZizalaPijavka";
+import { PAVOUKOVCI_PAVOUCI_STIRI_KLISTATA_TOPICS } from "./prirodopis/pavoukovciPavouciStiriKlistata";
+import { KORYSI_TOPICS } from "./prirodopis/korysi";
+import { HMYZ_STAVBA_TELA_DRUHY_VYVOJ } from "./prirodopis/hmyzStavbaTelaDruhyVyvoj";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
+  // Přírodopis — Obecná biologie
+  ...VZNIK_ZEME_PODMINKY_PRO_ZIVOT,
+  ...VYVOJ_ZIVOTA_GEOLOGICKA_OBDOBI,
+  ...TAXONOMICKE_SKUPINY,
+  ...MIKROSKOP,
+  ...STAVBA_BUNKY,
+  // Přírodopis — Nebuněční a bakterie
+  ...VIRY_STAVBA_VYZNAM,
+  ...BAKTERIE_TOPICS,
+  ...SINICE_VYSKYT_VYZNAM,
+  ...PRVOCI_ZASTUPCI_NEMOCI,
+  // Přírodopis — Biologie hub
+  ...HOUBY_STAVBA_VYZIVA_VYZNAM,
+  ...JEDLE_A_JEDOVATE_HOUBY,
+  ...LISEJNIKY_SYMBIOZA,
+  // Přírodopis — Biologie rostlin
+  ...RASY_STAVBA_ZASTUPCI_VYZNAM,
+  ...MECHOROSTY_ZASTUPCI_VYZNAM,
+  ...KAPRADOROSTY,
+  // Přírodopis — Biologie živočichů
+  ...ZAHAVCI_NEZMAR_MEDUZA_KORALY,
+  ...PLOSTENCI_HLISTI,
+  ...MEKKYSI_PLZI_MLZI_HLAVONOZCI,
+  ...KROUZKOVCI_ZIZALA_PIJAVKA,
+  ...PAVOUKOVCI_PAVOUCI_STIRI_KLISTATA_TOPICS,
+  ...KORYSI_TOPICS,
+  ...HMYZ_STAVBA_TELA_DRUHY_VYVOJ,
   // Matematika — Číslo a proměnná
   ...NASOBENI_A_DELENI_DESETINNYCH_CISEL,
   ...POCETNI_OPERACE_DESETINNA_KOMPLEXNE,

@@ -832,7 +832,7 @@
     "taskCount": 68
   },
   "g6-mat-tabulky-a-diagramy-6": {
-    "hash": "bfebbd1815c9e9c3ce1d343b3ca4ac6565f16838",
+    "hash": "c9fd9180a13676c12228f52e5b1b2a3987192bc6",
     "taskCount": 72
   },
   "g6-mat-trojuhelniky-uhly-vyska-teznice-6": {
@@ -850,5 +850,93 @@
   "g6-mat-znaky-delitelnosti-6": {
     "hash": "57a74d552d6e14d3559ec4d119dc5febdb6a93c2",
     "taskCount": 72
+  },
+  "g6-pri-bakterie-6": {
+    "hash": "b70a5621f3fdf31f278755bca83e756044e578e7",
+    "taskCount": 52
+  },
+  "g6-pri-hmyz-stavba-tela-druhy-vyvoj-6": {
+    "hash": "2ce1941322115977bcd859f7c71ddc280e2f0d5b",
+    "taskCount": 4
+  },
+  "g6-pri-houby-stavba-vyziva-vyznam-6": {
+    "hash": "7a80d01f63a768fbda6d0747c5182f1776b000fc",
+    "taskCount": 47
+  },
+  "g6-pri-jedle-a-jedovate-houby-6": {
+    "hash": "76f1cfc0a39fa7344593586a004a0abeb81bb080",
+    "taskCount": 56
+  },
+  "g6-pri-kapradorosty-6": {
+    "hash": "5f7342a35cd167cb2208f3a540b6ab59dd6acdf6",
+    "taskCount": 48
+  },
+  "g6-pri-korysi-6": {
+    "hash": "3878d50233eedfc27b00df942257851b736e9eac",
+    "taskCount": 53
+  },
+  "g6-pri-krouzkovci-zizala-pijavka-6": {
+    "hash": "dcb7ea9ccf1b545c6c22ffd247f705b55a4acd4f",
+    "taskCount": 46
+  },
+  "g6-pri-lisejniky-symbioza-6": {
+    "hash": "ccf60bfa4684d91b9f9901683feca08368393035",
+    "taskCount": 56
+  },
+  "g6-pri-mechorosty-zastupci-vyznam-6": {
+    "hash": "29fd2a9621086675136365cb4176a3e7d5f21091",
+    "taskCount": 50
+  },
+  "g6-pri-mekkysi-plzi-mlzi-hlavonozci-6": {
+    "hash": "4fa7664c75fc4f9136249e37c21b1ae809380224",
+    "taskCount": 57
+  },
+  "g6-pri-mikroskop-6": {
+    "hash": "c026b009191fc03d3e2cbe0b51e67fcbeb32cbe7",
+    "taskCount": 72
+  },
+  "g6-pri-pavoukovci-pavouci-stiri-klistata-6": {
+    "hash": "f717b7657d6897d08a7703cf942f8f6aa9f33eb1",
+    "taskCount": 46
+  },
+  "g6-pri-plostenci-hlisti-6": {
+    "hash": "d81cc5e6c01ecb8409467f2e00b303c83d9fdc55",
+    "taskCount": 46
+  },
+  "g6-pri-prvoci-zastupci-nemoci-6": {
+    "hash": "6a81931014e7e27c01389c58a0c57dd9fc0b966d",
+    "taskCount": 45
+  },
+  "g6-pri-rasy-stavba-zastupci-vyznam-6": {
+    "hash": "3fba168c4dcba9d8b2b36dbda2f2659affd3045a",
+    "taskCount": 47
+  },
+  "g6-pri-sinice-vyskyt-vyznam-6": {
+    "hash": "cf7e20f10ba9b0d1bc6f9172d9c3cca1a4474f3a",
+    "taskCount": 58
+  },
+  "g6-pri-stavba-bunky-6": {
+    "hash": "70be5259253ede32b433dfcac09ef4e3d3ef3423",
+    "taskCount": 62
+  },
+  "g6-pri-taxonomicke-skupiny-6": {
+    "hash": "9cb8b930e9c3af6d87325f3322c26936f40ae95a",
+    "taskCount": 72
+  },
+  "g6-pri-viry-stavba-vyznam-6": {
+    "hash": "bc37e226ae33390524320069f417c05f082e4146",
+    "taskCount": 47
+  },
+  "g6-pri-vyvoj-zivota-geologicka-obdobi-6": {
+    "hash": "fef7d91e47d197263e1c7130f704bdde2e595ed8",
+    "taskCount": 3
+  },
+  "g6-pri-vznik-zeme-podminky-pro-zivot-6": {
+    "hash": "d65eeebcc064f23e534d026213344022c0799316",
+    "taskCount": 60
+  },
+  "g6-pri-zahavci-nezmar-meduza-koraly-6": {
+    "hash": "a0d391833115e821ccfff49bc7f131be1e94377b",
+    "taskCount": 47
   }
 }

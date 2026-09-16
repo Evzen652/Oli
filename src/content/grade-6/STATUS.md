@@ -2,8 +2,9 @@
 
 # Grade 6 — STATUS (pilot 2. stupně)
 
-> Hotovo (2026-09-16): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12** — 49 ze 117.
-> Zbývá přírodopis, zeměpis, čeština, výchova k občanství (pořadí v
+> Hotovo (2026-09-16): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
+> Přírodopis 22/22** — 71 ze 117.
+> Zbývá zeměpis, čeština, výchova k občanství (pořadí v
 > `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
 ## Fyzika (13 RVP podtémat)
@@ -55,6 +56,24 @@
 ### Nestandardní úlohy · Práce s daty
 - [x] Logické úvahy, kombinační úsudek → `matematika/logickeUvahyKombinacniUsudek.ts` ✅
 - [x] Sběr a třídění dat, tabulky, diagramy → `matematika/tabulkyADiagramy.ts` ✅ (tabulka v textu zadání)
+
+## Přírodopis (22 RVP podtémat) — HOTOVO 22/22 (2026-09-16)
+
+> Sdílené utility: `prirodopis/_shared.ts` (buildChoiceTask → null při < 3
+> distraktorech, buildOrderTask, buildCategorizeTask, losUlohy). Distraktor =
+> typická miskoncepce (pavouk je hmyz, antibiotika na virózu…). Vše select_one,
+> kromě `vyvojZivotaGeologickaObdobi` a `hmyzStavbaTelaDruhyVyvoj` (categorize).
+
+- **Obecná biologie:** `vznikZemePodminkyProZivot`, `vyvojZivotaGeologickaObdobi`,
+  `taxonomickeSkupiny`, `mikroskop`, `stavbaBunky` ✅
+- **Nebuněční a bakterie:** `viryStavbaVyznam`, `bakterie`, `siniceVyskytVyznam`,
+  `prvociZastupciNemoci` ✅
+- **Biologie hub:** `houbyStavbaVyziva`, `jedleAJedovateHouby`, `lisejnikySymbioza` ✅
+- **Biologie rostlin:** `rasyStavbaZastupciVyznam`, `mechorostyZastupciVyznam`,
+  `kapradorosty` ✅
+- **Biologie živočichů:** `zahavciNezmarMeduzaKoraly`, `plostenciHlisti`,
+  `mekkysiPlziMlziHlavonozci`, `krouzkovciZizalaPijavka`,
+  `pavoukovciPavouciStiriKlistata`, `korysi`, `hmyzStavbaTelaDruhyVyvoj` ✅
 
 ## Dějepis (24 RVP podtémat) — HOTOVO 24/24 (2026-09-15)
 

@@ -144,7 +144,7 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
-### Session 2026-09-16 (49) — matematika šestky hotová (12/12):
+### Session 2026-09-16 (49) — matematika (12/12) a přírodopis (22/22) šestky hotové:
 
 - ✅ **Dvanáct nových témat ve dvou dávkách**, šestka **49 ze 117**.
   Číslo a proměnná: násobení a dělení desetinných čísel, početní operace
@@ -181,7 +181,35 @@ src/
   `audit:content` bez nálezu u nových témat, `audit:ui` ✓, build ✓, zámek
   obsahu jen přírůstky. Ověřeno v prohlížeči (anonymní režim, 6. ročník →
   Matematika → okruhy → úloha → vyhodnocení → zajímavost).
-- 📋 **Dál:** přírodopis 6. ročníku (22 témat) podle `GRADE_6_COMPLETION_PLAN.md`.
+- ✅ **Pushnuto** (`4b223cd`).
+- ✅ **Tržby v tabulkách jen v celých korunách** (rozhodnutí uživatele): krok
+  100 haléřů, průměr tržby celý, celé částky bez „,00“, distraktor musí mít
+  stejný počet desetinných míst jako klíč.
+- ✅ **PŘÍRODOPIS 6. ROČNÍKU HOTOVÝ — 22/22**, šestka **71 ze 117**. Tři dávky
+  (5 + 7 + 10), pět okruhů: Jak funguje život · Viry, bakterie a prvoci ·
+  Houby a lišejníky · Řasy, mechy a kapradiny · Živočichové bez páteře.
+  Kritici 14–29 nálezů na téma, vše opraveno. Nový `prirodopis/_shared.ts`.
+- 🐛 **Limit relace uprostřed dávek 1 a 2** — 16 agentů spadlo (5 autorů,
+  4 opraváři, 7 kritiků), workflow přesto hlásil „fixed/accepted“. Obnoveno
+  přes `resumeFromRunId`, všechna témata prošla kritiky i opravou znovu.
+  **Poučení: status „accepted“ s padlými kritiky nic neznamená — číst
+  `failures` v notifikaci.**
+- 🐛✅ **Tři témata měla `category`/`topic` o úroveň níž** (topic/subtopic
+  místo area/topic) → chyběl by dětský název i zajímavost. Opraveno i v
+  testech, které chybu zafixovaly; pravidlo doplněno do workflow (dávka 3 už
+  bez chyby).
+- 🐛✅ `check:options` u třídění organismů: tři distraktory se stejným prvním
+  živočichem prozrazovaly klíč → úloha se losuje znovu.
+- ✅ Popis okruhu „…byly na Zemi dřív než stromy“ odporoval vlastnímu obsahu
+  (stromové přesličky v prvohorách) → „množí se výtrusy“.
+- ✅ **Brány:** typecheck ✓, testy 6733/0, `check:hints`/`length`/`options` 0,
+  `audit:agreement` bez nálezu, `audit:ui` ✓, build ✓, zámek obsahu jen
+  přírůstky + tabulky (záměrně). Ukázky všech 22 témat fakticky prošel
+  architekt (zdravotní rady: antibiotika, sinice, houby, klíšťata, pijavka).
+  Prohlížeč: šestka → Přírodopis → 5 okruhů → categorize úloha se vykreslí;
+  ruční přetahování šlo simulovat jen u první položky (omezení nástroje).
+- 📋 **Dál:** zeměpis 6. ročníku (18 témat) — faktický + mapa; `image_select`
+  a `diagram_label` stále bez obrázků.
 
 ### Session 2026-09-15 (48) — dějepis šestky, dávka 1 (7 témat):
 

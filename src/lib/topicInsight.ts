@@ -388,6 +388,44 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Měsíc červenec se v mnoha jazycích jmenuje po Juliu Caesarovi a srpen po císaři Augustovi.",
   },
 
+  // ───────────────────────── PŘÍRODOPIS ─────────────────────────
+  "prirodopis::Obecná biologie::Vznik a vývoj života": {
+    useful: "Vývoj života vysvětlí, proč dnes žijí právě tihle živočichové a kam se poděli dinosauři.",
+    funFact: "Kdyby se celé dějiny Země vešly do jednoho dne, člověk by se objevil až několik sekund před půlnocí.",
+  },
+  "prirodopis::Obecná biologie::Buňka jako základ života": {
+    useful: "Každá rána se zahojí a každý vlas povyroste jen proto, že se buňky dělí.",
+    funFact: "Slovo buňka zavedl Robert Hooke v roce 1665. Pod mikroskopem pozoroval korek a drobné komůrky mu připomněly mnišské cely.",
+  },
+  "prirodopis::Nebuněční a bakterie::Viry a bakterie": {
+    useful: "Poznáš, kdy pomůže antibiotikum a kdy jen odpočinek, mytí rukou a očkování.",
+    funFact: "Bez bakterií by nebyl jogurt, kysané zelí ani sýr.",
+  },
+  "prirodopis::Nebuněční a bakterie::Sinice a prvoci": {
+    useful: "Zelenou kaši na hladině rybníka poznáš jako sinice. Koupání v takové vodě je lepší vynechat.",
+    funFact: "Sinice plnily zemské ovzduší kyslíkem dávno předtím, než se objevily první rostliny.",
+  },
+  "prirodopis::Biologie hub::Houby a lišejníky": {
+    useful: "Houby rozkládají spadané listí a dřevo. Bez nich by se les zadusil vlastním odpadem.",
+    funFact: "Mnoho lišejníků snese jen čistý vzduch. Vědci podle nich poznávají, jak je okolí znečištěné.",
+  },
+  "prirodopis::Biologie rostlin::Nižší rostliny": {
+    useful: "Mech nasaje vodu jako houbička na nádobí a pomáhá lesu přečkat sucho.",
+    funFact: "Drobné řasy a sinice v mořích vyrábějí podle odhadů asi polovinu kyslíku na Zemi.",
+  },
+  "prirodopis::Biologie živočichů::Bezobratlí - žahavci, ploštěnci, hlísti": {
+    useful: "Poznáš, jak se chránit před cizopasníky — a proč se myje zelenina i ruce.",
+    funFact: "Nezmar dokáže dorůst celý znovu i z malého kousku svého těla.",
+  },
+  "prirodopis::Biologie živočichů::Bezobratlí - měkkýši, kroužkovci": {
+    useful: "Žížaly provzdušňují a kypří půdu, a proto je zahradníci mají rádi.",
+    funFact: "Chobotnice má tři srdce a modrou krev.",
+  },
+  "prirodopis::Biologie živočichů::Bezobratlí - členovci (úvod)": {
+    useful: "Členovci opylují rostliny, uklízejí přírodu a někteří přenášejí nemoci. Vyplatí se je umět rozeznat.",
+    funFact: "Rak nosí kostru na povrchu těla. Aby mohl vyrůst, musí ji svléknout a počkat, než ztvrdne nová.",
+  },
+
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {
     useful: "Změřit znamená dohodnout se na čísle. Bez měření by nešlo nic vyrobit ani porovnat.",
@@ -499,6 +537,26 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
   "dejepis::Starověk": {
     useful: "Ve starověku vzniklo písmo, a proto o těch lidech čteme v pramenech, ne jen v nálezech.",
     funFact: "Kleopatra žila blíž době prvního přistání na Měsíci než stavbě Velké pyramidy v Gíze.",
+  },
+  "prirodopis::Obecná biologie": {
+    useful: "Buňka je stejná stavebnice pro houbu, strom i tebe. Kdo jí rozumí, rozumí i nemocem a jejich léčbě.",
+    funFact: "Nejstarší stopy života jsou staré asi tři a půl miliardy let. Jsou to kamenné vrstvy, které po sobě nechaly sinice.",
+  },
+  "prirodopis::Nebuněční a bakterie": {
+    useful: "Poznáš, proč na chřipku nezabírají antibiotika a proč má smysl mýt si ruce.",
+    funFact: "V lidském těle žije zhruba stejně bakterií, kolik má tělo vlastních buněk.",
+  },
+  "prirodopis::Biologie hub": {
+    useful: "Houbař, který zná pár pravidel, se vrátí domů s plným košíkem, a ne do nemocnice.",
+    funFact: "Jedno z největších známých živých těles na světě je podhoubí václavky v Oregonu. Zabírá přes devět kilometrů čtverečních.",
+  },
+  "prirodopis::Biologie rostlin": {
+    useful: "Rostliny vyrábějí kyslík, který dýcháš, a stojí na začátku skoro každého potravního řetězce.",
+    funFact: "Černé uhlí vzniklo z pravěkých přesliček a plavuní, které byly vysoké jako stromy.",
+  },
+  "prirodopis::Biologie živočichů": {
+    useful: "Většina živočichů nemá páteř. Bez nich by nebyl med, opylené ovoce ani úrodná půda.",
+    funFact: "Popsaných druhů hmyzu je víc než všech ostatních živočichů dohromady.",
   },
   "fyzika::Měření fyzikálních veličin": {
     useful: "Fyzika začíná měřením. Bez čísla je to jen dojem.",

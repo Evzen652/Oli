@@ -125,8 +125,14 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   stavem mezi voláními. Nový `generator-determinism.test.ts` (všechna témata).
 - ℹ️ **`check:hints` hlásí 25× `g6-mat-trojuhelniky-…` L3** — posouzeno jako
   falešný poplach (nápověda popisuje postup, klíč je výrok se stejnými slovy).
-- 🟡 **Na rozhodnutí:** tržby stánku v `tabulkyADiagramy.ts` mají haléře
-  (1 324,40 Kč). U plateb kartou realistické, u stánku s limonádou spíš ne.
+- ✅ **VYŘÍZENO 16. 9. (rozhodnutí uživatele) — tržby stánku jen v celých
+  korunách** (`tabulkyADiagramy.ts`).
+- ✅ **PŘÍRODOPIS 6. ROČNÍKU HOTOVÝ — 22/22** (16. 9.). Šestka **71 ze 117**.
+  Další na řadě **zeměpis (18)**.
+- ℹ️ **Workflow po limitu relace hlásí „accepted“ i u témat, jejichž kritici
+  spadli.** Po každé dávce číst `failures` v notifikaci a případně obnovit
+  přes `resumeFromRunId`. Námět: ve workflow nepovažovat téma bez verdiktů
+  za přijaté.
 - ℹ️ **`grade-6/STATUS.md` měl u dějepisu stav pilotu (4/24)** — doplněna
   hlavička se skutečným stavem, podrobný seznam nepřepisován.
 - ✅ **VYŘÍZENO 15. 9. — obnova hesla visela na „Načítání…“** (`e529437`).

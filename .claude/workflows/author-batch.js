@@ -48,6 +48,28 @@ ZLATÉ VZORY (použij jako šablonu dle typu):
   Generátor: gen(level) = ruzneUlohy(() => losUlohy(genLx)). Soubor do src/content/grade-6/matematika/<camelCase>.ts,
   id "g6-mat-<kebab>-6", subject "matematika". Ten _shared.ts NEEDITUJ (sdílí ho celá dávka).
 
+- PŘÍRODOPIS: stavba jako dějepisné vzory (historickePrameny.ts pro categorize, periodizaceLetopocet.ts pro select_one),
+  ale helpery VÝHRADNĚ z src/content/grade-6/prirodopis/_shared.ts (buildChoiceTask → null při < 3 distraktorech,
+  buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy, pick, pickN, shuffle). Ten _shared.ts NEEDITUJ.
+  Soubor do src/content/grade-6/prirodopis/<camelCase>.ts, id "g6-pri-<kebab>-6", subject "prirodopis".
+  Generátor: gen(level) = ruzneUlohy(() => losUlohy(genLx)) (u order/categorize bez losUlohy).
+
+PRAVIDLA PRO PŘÍRODOPIS:
+- Fakta jen ta, na kterých se shodují běžné učebnice přírodopisu 6. ročníku (Fraus, Nová škola, SPN).
+  Zjednodušení smí být, nepravda ne (houby NEJSOU rostliny; viry NEJSOU organismy v běžném smyslu —
+  formuluj „nemají buněčnou stavbu"; lišejník = soužití houby a řasy/sinice).
+- Distraktor = typická miskoncepce šesťáka (pavouk je hmyz, antibiotika na virózu, klíště je hmyz,
+  žížala je had/hmyz, medúza je ryba, mech má kořeny, houba dělá fotosyntézu), ne náhodný pojem odjinud.
+- Zástupci jen z české přírody nebo všeobecně známí (trepka, měňavka, nezmar, škeble, hlemýžď, sépie…).
+  Latinské názvy nepoužívej jako klíč.
+- Zdraví (jedovaté houby, klíšťata, nemoci) — správné rady (houbu neznáš = netrhej; klíště vytáhnout
+  celé, místo sledovat; na viry antibiotika nezabírají). Žádná rada, která by mohla ublížit.
+- Pořadí (drag_order) jen tam, kde je pořadí jednoznačné (vývoj hmyzu, práce s mikroskopem, geologická éra).
+- L3 = přenos: poznej organismus z popisu znaků, rozhodni o neznámém případu, spoj znak s funkcí.
+
+OBECNĚ — DETERMINISMUS: generátor nesmí mít stav mezi voláními (žádné „let" počítadlo na úrovni modulu,
+které se jen zvyšuje). Rotaci šablon nastav na začátku gen() — hlídá to src/test/generator-determinism.test.ts.
+
 PRAVIDLA PRO MATEMATIKU:
 - Čísla v textu VŽDY přes cis() (česká čárka, mezera v tisících), úhly přes uhel(). Nikdy String(n) ani toFixed.
 - Desetinné výsledky jen jako možnosti select_one (číselné pole zahodí čárku). Výsledky „čisté" — nejvýš 2 desetinná místa, bez periody.
@@ -81,6 +103,8 @@ PRAVIDLA Z 13.–14. 9. 2026 (kontroly je chytí při integraci — napiš to ro
 - Správná odpověď se nesmí vyskytovat ve znění otázky.
 - Předložka + dosazené jméno: pád ulož jako vlastní pole, nelep předložku k holému jménu (dřív vznikalo „z sklo", „u jantar").
 - Čeština: žádné rodové lomítkové tvary (sám/sama). Po dosazení do šablony ověř shodu.
+- category = labels.AREA, topic = labels.TOPIC (NE subtopic — podtéma je jen v rvpNodeId a title).
+  Příklad: rvpId g6-prirodopis-biologie-hub-houby-a-lisejniky-lisejniky-… → category "Biologie hub", topic "Houby a lišejníky".
 - category a topic ZNAK PO ZNAKU podle data/rvp_data.json (pomlčka "-", ne "–"). Témata téhož RVP topicu
   sdílí klíč pro zajímavost (src/lib/topicInsight.ts) a dětský název (src/content/grade-N/displayNames.ts);
   jiný znak = rozdělené téma bez zajímavosti. Ty soubory needituj, jen drž přesný zápis.

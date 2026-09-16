@@ -133,13 +133,19 @@ interface Zaklad {
 }
 
 /** Číslo v buňce tabulky (peníze vždy na dvě desetinná místa). */
-const bunka = (k: Zaklad, h: number): string => (k.penize ? pevne(h, 2) : cis(h / 100));
+/**
+ * Peníze: tržby jsou v celých korunách (rozhodnutí uživatele 16. 9. — stánek
+ * s limonádou haléře nebere), celá částka se píše bez „,00“. Dvě desetinná
+ * místa zůstávají jen pro případ, že by částka celá nebyla.
+ */
+const kc = (h: number): string => pevne(h, h % 100 === 0 ? 0 : 2);
+const bunka = (k: Zaklad, h: number): string => (k.penize ? kc(h) : cis(h / 100));
 /** Hodnota s jednotkou, jak stojí v možnosti. */
 const hodn = (k: Zaklad, h: number): string =>
-  k.penize ? `${pevne(h, 2)} Kč` : k.jed ? `${cis(h / 100)} ${k.jed}` : cis(h / 100);
+  k.penize ? `${kc(h)} Kč` : k.jed ? `${cis(h / 100)} ${k.jed}` : cis(h / 100);
 /** Mezivýsledek součtu: s koncovou nulou ukáže i zkrácený tvar (6,30 = 6,3). */
 function mezisoucet(k: Zaklad, h: number, hodnoty: number[]): string {
-  if (k.penize) return pevne(h, 2);
+  if (k.penize) return kc(h);
   const maxD = Math.max(...hodnoty.map(dp));
   return dp(h) < maxD ? `${pevne(h, maxD)} = ${cis(h / 100)}` : cis(h / 100);
 }
@@ -201,7 +207,7 @@ function vyber(k: Zaklad, klic: number, kands: Kand[], stejnaMista: boolean): Ka
   const out: Kand[] = [];
   for (const c of kands) {
     if (!Number.isInteger(c.h) || c.h <= 0 || seen.has(c.h)) continue;
-    if (stejnaMista && !k.penize && dp(c.h) !== dp(klic)) continue;
+    if (stejnaMista && dp(c.h) !== dp(klic)) continue;
     seen.add(c.h);
     out.push(c);
   }
@@ -434,7 +440,7 @@ function l1Prah(): PracticeTask | null {
 // ── Společné kontexty L2 a L3 ──────────────────────────────────────────────
 const TRZBY: Zaklad = {
   titulek: "Tržby stánku s limonádou v jednom týdnu", hlavicka: "Den", pool: DNY, poradi: true,
-  radek: "Tržba (Kč)", jed: "Kč", penize: true, krok: 10, min: 35000, max: 160000,
+  radek: "Tržba (Kč)", jed: "Kč", penize: true, krok: 100, min: 35000, max: 160000,
 };
 const SRAZKY: Zaklad = {
   titulek: "Srážky naměřené v jednotlivých měsících", hlavicka: "Měsíc", pool: MESICE, poradi: true,
@@ -770,7 +776,7 @@ const K3_KONTEXTY: K3[] = [
     rozpeti: "Zjisti, o kolik se lišil nejdelší a nejkratší skok v tabulce.",
   },
   {
-    ...TRZBY, maxMistPrumeru: 2,
+    ...TRZBY, maxMistPrumeru: 0,
     prumer: "Urči, kolik korun stánek utržil průměrně za jeden den.",
     inverze: (x) => `Průměrná denní tržba byla ${x}.`,
     rozpeti: "Zjisti, o kolik se lišila nejvyšší a nejnižší denní tržba.",
@@ -912,7 +918,7 @@ const K3_SKUPINY: K3Skup[] = [
     otazka: "Urči, která třída přečetla za měsíc v průměru více knih a o kolik.",
   },
   {
-    ...TRZBY, titulek: "Tržby dvou stánků v korunách", skupiny: ["Stánek A", "Stánek B"], maxMistPrumeru: 2,
+    ...TRZBY, titulek: "Tržby dvou stánků v korunách", skupiny: ["Stánek A", "Stánek B"], maxMistPrumeru: 0,
     otazka: "Urči, který stánek měl vyšší průměrnou denní tržbu a o kolik.",
   },
 ];
@@ -943,7 +949,7 @@ function l3Skupiny(): PracticeTask | null {
   const distractors: Distractor[] = [];
   for (const c of kands) {
     if (!Number.isInteger(c.h) || c.h <= 0) continue;
-    if (!k.penize && dp(c.h) !== dp(dH)) continue;
+    if (dp(c.h) !== dp(dH)) continue;
     const v = moz(c.g, c.h);
     if (seen.has(v)) continue;
     seen.add(v);
