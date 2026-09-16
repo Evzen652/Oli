@@ -2,9 +2,9 @@
 
 # Grade 6 — STATUS (pilot 2. stupně)
 
-> Pilot: **Fyzika** (výpočetní vzor) + **Dějepis** (faktický vzor).
-> Ostatní předměty (čeština, matematika, zeměpis, přírodopis, výchova k občanství)
-> až po pilotu. `GRADE_6_TOPICS` obsahuje jen hotová témata.
+> Hotovo (2026-09-16): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12** — 49 ze 117.
+> Zbývá přírodopis, zeměpis, čeština, výchova k občanství (pořadí v
+> `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
 ## Fyzika (13 RVP podtémat)
 
@@ -32,7 +32,34 @@
 - [x] **Jednoduchý elektrický obvod – zdroj, vodič, spotřebič, spínač** → `fyzika/elektrickyObvod.ts` ✅ (L1 úloha součástky · L2 poteče proud tímhle zapojením? · L3 proud se nespotřebovává a co z toho plyne)
 - [x] **Magnety – magnetické pole, magnetické póly Země** → `fyzika/magnety.ts` ✅ (L1 přitáhne magnet tenhle předmět · L2 póly, pole a dočasný magnet · L3 Země jako magnet a hranice analogie s nábojem)
 
-## Dějepis (24 RVP podtémat)
+## Matematika (12 RVP podtémat) — HOTOVO 12/12 (2026-09-16)
+
+> Sdílené utility: `matematika/_shared.ts` (cis/uhel/rnd/buildChoiceTask → null při
+> < 3 distraktorech/losUlohy/ruzneUlohy). Vše select_one, klíče u výpočtů přepočítává
+> `check:keys` (desetinná čísla, dělitelnost, NSN/NSD); geometrie ověřena testy tématu.
+
+### Číslo a proměnná
+- [x] Násobení a dělení desetinných čísel → `matematika/nasobeniADeleniDesetinnychCisel.ts` ✅
+- [x] Početní operace s desetinnými čísly — komplexně → `matematika/pocetniOperaceDesetinnaKomplexne.ts` ✅
+- [x] Násobek, dělitel, znaky dělitelnosti → `matematika/znakyDelitelnosti.ts` ✅
+- [x] Prvočísla a čísla složená, rozklad → `matematika/prvocislaRozklad.ts` ✅
+- [x] Nejmenší společný násobek, největší společný dělitel → `matematika/nsnNsd.ts` ✅
+
+### Geometrie v rovině a v prostoru
+- [x] Druhy úhlů, sčítání a odčítání úhlů → `matematika/uhlyDruhyScitani.ts` ✅
+- [x] Úhel — rýsování, měření úhloměrem → `matematika/uhelRysovaniMereni.ts` ✅
+- [x] Trojúhelníky — druhy, vnitřní úhly, výška, těžnice → `matematika/trojuhelnikyUhlyVyskaTeznice.ts` ✅
+- [x] Krychle a kvádr — síť, povrch, objem → `matematika/sitKrychleAKvadruPovrchAObjem.ts` ✅
+- [x] Osová a středová souměrnost → `matematika/osovaStredovaSoumernost.ts` ✅ (bez obrázku: souřadnice ve čtvercové síti)
+
+### Nestandardní úlohy · Práce s daty
+- [x] Logické úvahy, kombinační úsudek → `matematika/logickeUvahyKombinacniUsudek.ts` ✅
+- [x] Sběr a třídění dat, tabulky, diagramy → `matematika/tabulkyADiagramy.ts` ✅ (tabulka v textu zadání)
+
+## Dějepis (24 RVP podtémat) — HOTOVO 24/24 (2026-09-15)
+
+> ⚠️ Seznam níž je z doby pilotu (4/24) a zbytek nepokrývá. Aktuální stav
+> je v `index.ts` a `navigation.ts`; detail dávek v `PROJECT_STATUS.md` §6, session 48.
 
 > Sdílené utility faktického vzoru: `dejepis/_shared.ts` (pick/shuffle/pickN/buildChoiceTask).
 > Distraktor = typický HISTORICKÝ omyl (záměna éry, „menší = dřív" u př. n. l.,

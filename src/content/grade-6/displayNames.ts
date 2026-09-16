@@ -18,6 +18,23 @@ import type { DisplayMap } from "@/lib/displayNames";
 export const DISPLAY_NAMES: DisplayMap = {
   // RVP okruh → dětský název + krátký popis
   categories: {
+    // Matematika
+    "Číslo a proměnná": {
+      name: "Čísla a počítání",
+      description: "Počítáš s desetinnými čísly a zjistíš, co je čím dělitelné.",
+    },
+    "Geometrie v rovině a v prostoru": {
+      name: "Geometrie",
+      description: "Úhly, trojúhelníky, souměrnost a krabice, do kterých se něco vejde.",
+    },
+    "Nestandardní aplikační úlohy a problémy": {
+      name: "Úlohy na přemýšlení",
+      description: "Úlohy bez naučeného postupu, na které stačí selský rozum.",
+    },
+    "Závislosti, vztahy a práce s daty": {
+      name: "Tabulky a grafy",
+      description: "Vyčteš z tabulky i diagramu, co v datech opravdu je.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",
@@ -48,6 +65,39 @@ export const DISPLAY_NAMES: DisplayMap = {
 
   // RVP téma → dětský název + krátký popis
   topics: {
+    // Matematika
+    "Desetinná čísla": {
+      name: "Desetinná čísla",
+      description: "Násobíš a dělíš desetinnými čísly a řešíš s nimi slovní úlohy.",
+    },
+    "Dělitelnost přirozených čísel": {
+      name: "Co je čím dělitelné",
+      description: "Poznáš násobky, dělitele a prvočísla a najdeš společný dělitel.",
+    },
+    Úhel: {
+      name: "Úhly",
+      description: "Rozlišíš druhy úhlů, změříš je a sečteš.",
+    },
+    Trojúhelníky: {
+      name: "Trojúhelníky",
+      description: "Poznáš druhy trojúhelníků a dopočítáš chybějící úhel.",
+    },
+    "Krychle a kvádr": {
+      name: "Krychle a kvádr",
+      description: "Spočítáš, kolik se vejde dovnitř a kolik papíru potřebuješ na obal.",
+    },
+    "Osová a středová souměrnost": {
+      name: "Souměrnost",
+      description: "Najdeš osu i střed souměrnosti a obraz bodu.",
+    },
+    "Logické úlohy": {
+      name: "Logické úlohy",
+      description: "Vyřešíš hádanku úvahou a spočítáš, kolik je možností.",
+    },
+    "Práce s daty": {
+      name: "Tabulky a diagramy",
+      description: "Roztřídíš data a vyčteš z tabulky i diagramu, co v nich je.",
+    },
     // Fyzika
     "Délka, objem, hmotnost": {
       name: "Délka a hmotnost",

@@ -43,6 +43,32 @@ ZLATÉ VZORY (použij jako šablonu dle typu):
 - sdílené helpery faktického vzoru: src/content/grade-6/dejepis/_shared.ts
   (buildChoiceTask / buildOrderTask / buildCategorizeTask / pick / pickN / shuffle)
 - výpočetní fyzika:                 src/content/grade-6/fyzika/mereniDelky.ts
+- MATEMATIKA: stavba úlohy jako mereniDelky.ts, ale helpery VÝHRADNĚ z src/content/grade-6/matematika/_shared.ts
+  (cis, uhel, rnd, pick, buildChoiceTask → vrací null při < 3 různých distraktorech, losUlohy, ruzneUlohy).
+  Generátor: gen(level) = ruzneUlohy(() => losUlohy(genLx)). Soubor do src/content/grade-6/matematika/<camelCase>.ts,
+  id "g6-mat-<kebab>-6", subject "matematika". Ten _shared.ts NEEDITUJ (sdílí ho celá dávka).
+
+PRAVIDLA PRO MATEMATIKU:
+- Čísla v textu VŽDY přes cis() (česká čárka, mezera v tisících), úhly přes uhel(). Nikdy String(n) ani toFixed.
+- Desetinné výsledky jen jako možnosti select_one (číselné pole zahodí čárku). Výsledky „čisté" — nejvýš 2 desetinná místa, bez periody.
+- Rozsah RVP 6. ročníku; navazuje na src/content/grade-5/matematika — L1 smí být rozcvička z 5. ročníku, L2/L3 ne.
+  Zlomky, procenta, záporná čísla v počtech a rovnice sem NEPATŘÍ (7. ročník).
+- Geometrie bez obrázku: zadání musí jít vyřešit ze slov (rozměry, velikosti úhlů, popis). Žádné „podívej se na obrázek".
+- Distraktor = výsledek konkrétního chybného postupu (čárka posunutá o řád, sečtené místo vynásobené, 60 ↔ 100 u minut,
+  obvod místo obsahu, povrch jen tří stěn, nsn ↔ NSD, zapomenutý prvočinitel…), spočítaný z TĚCH SAMÝCH čísel.
+- Slovní úlohy: jména a reálie střídej, čísla realistická (cena, délka, hmotnost). Jednotka ve všech možnostech stejná.
+- NÁLEZY KRITIKŮ Z 1. DÁVKY MATEMATIKY (16. 9.) — napiš rovnou správně:
+  • Mocniny ani zápis 2³ šesťák nezná (RVP 8. roč.) — piš 2 · 2 · 2 a „tolikrát, kolikrát…".
+  • optionFeedback musí platit pro KAŽDOU vylosovanou kombinaci, ne jen typickou („dělíš číslem menším než 1…" u dělitele 2,5 je lež).
+    Podmíněné tvrzení → podmíněný text. Feedback pojmenuje chybu slovníkem úrovně (na L1 bez pojmů z L2).
+  • Peníze vždy se dvěma desetinnými místy (24,80 Kč) a realistické ceny podle zboží.
+  • L3 nesmí jít vyřešit vylučováním ani vzorem (jediná možnost končící 5; klíč vždy jediné velké číslo; klíč daný polohou *).
+  • Každá úloha tématu musí obsahovat to, co téma procvičuje (téma desetinných čísel = desetinné číslo v každé úloze).
+  • Šablony střídej rovnoměrně (ne 5 ze 6 úloh L1 stejný typ); u slovních úloh ≥ 4 různé kontexty na úroveň.
+  • Čeština: s 2–4 „byly tři", ne „bylo jich 3"; „kus" jen u věcí, které se tak počítají; žádné useknuté věty.
+  • Vysvětlení nesmí být tautologie („5 560 = 5 560 + 0") a mezikrok s koncovou nulou ukaž (0,120 = 0,12).
+- Test: nezávislý solver PARSUJE čísla ze znění otázky (ne z parametrů generátoru) a spočítá klíč jinou cestou
+  (např. NSD Euklidem vs. rozklad v generátoru; objem a·b·c vs. součet vrstev).
 
 PRAVIDLA Z 13.–14. 9. 2026 (kontroly je chytí při integraci — napiš to rovnou správně):
 - ODBORNÉ TYPY: přečti docs/CONTENT_AUTHORING.md §6.4. timeline: timelineEvents = pool, correctAnswer = labely ve správném
@@ -145,6 +171,7 @@ Teprve POTOM porovnej s klíčem v souboru. Každou neshodu (tvá odpověď ≠ 
 
 const pedagogPrompt = (a) => `Jsi přísný učitel, co kontroluje pracovní list před tiskem. Default "hledej vadu".
 Soubor tématu: ${a.file}. Vzorek instancí: .audit-topic/${a.topicId}.json (pole "samples", s klíčem).
+U výpočetního tématu NEJDŘÍV sám přepočítej klíč u KAŽDÉ úlohy ve vzorku (bez pohledu do generátoru) a každou neshodu hlas jako realDefect.
 Posuď 7 kritérií: řešitelnost, jednoznačnost, realističnost, čistý výsledek, KAŽDÝ distraktor = reálný omyl (ne náhoda), nápověda učí metodu (neprozrazuje), vysvětlení ukazuje PROČ. Navíc: sedí na RVP dovednost? jazyk pro 11–12 let? roste obtížnost L1→L3 reálně?
 ADJUDIKUJ heuristické audit nálezy (mohou být falešné poplachy): ${JSON.stringify(a.reviewFindings || [])}
 — u každého rozhodni, zda je to REÁLNÁ vada (pak realDefect), nebo falešný poplach checku (např. hint_leak na jednotku "století", kde se rozlišující číslo neprozrazuje → ignoruj).

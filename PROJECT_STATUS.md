@@ -144,6 +144,45 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-16 (49) — matematika šestky hotová (12/12):
+
+- ✅ **Dvanáct nových témat ve dvou dávkách**, šestka **49 ze 117**.
+  Číslo a proměnná: násobení a dělení desetinných čísel, početní operace
+  s desetinnými čísly, znaky dělitelnosti, prvočísla a rozklad, NSN a NSD.
+  Geometrie: druhy a sčítání úhlů, měření a rýsování úhlů, trojúhelníky,
+  krychle a kvádr, osová a středová souměrnost. Dále logické úvahy
+  a kombinatorika, tabulky a diagramy. Čtyři okruhy v navigaci,
+  `displayNames` a `topicInsight` (nový okruh RVP „Číslo a proměnná“).
+- ✅ **Nové sdílené pomocníky** `grade-6/matematika/_shared.ts`: `cis()`
+  (česká čárka, mezera v tisících), `uhel()`, `buildChoiceTask` vrací `null`
+  při < 3 různých distraktorech, `losUlohy()`. Workflow zná vzor a pravidla
+  matematiky; po 1. dávce doplněny nálezy kritiků (mocniny šesťák nezná,
+  feedback musí platit pro každou kombinaci, L3 nesmí jít vylučováním…).
+- 🐛✅ **Moje chyba v `dveNapovedy`** byla nejčastější nález kritiků 1. dávky:
+  „Čísla ze zadání: 0,9, 3,25“ (oddělovač splýval s čárkou), filtr podřetězcem
+  vynechával zadaná čísla, zadání s `*` rozsekával. Opraveno (středník, přesná
+  shoda s klíčem, skrytá číslice → bez výčtu).
+- ✅ **`check:keys` umí šestku:** desetinná čísla, závorky, `·`, poměr, NSN/NSD,
+  hvězdička, rozklad, největší prvočinitel a úlohy „které z čísel…“ ověřované
+  přes nabídku. Předtím 0 ověřených klíčů, teď ~1 000–1 600 na běh, 0 neshod,
+  starší ročníky beze změny. Ověřeno obráceně (213 podvržených klíčů → 213 neshod).
+  Geometrie, logika a data zůstávají „nepokryto vzorem“ — klíče ve vzorcích
+  přepočítány ručně (úhly, trojúhelníky, kvádr, souřadnice, průměry).
+- 🐛✅ **Nový test `generator-determinism.test.ts`.** Trojúhelníky měly počitadla
+  rotace šablon na úrovni modulu → zámek obsahu prošel samostatně, v celé sadě
+  spadl. Opraveno (reset na začátku `gen()`), test ověřen obráceně.
+- ✅ **Drobné opravy obsahu při integraci:** hotovost „vrátili 139,76 Kč“ →
+  útrata jen v celých korunách; distraktor „8,10 cm“ (vyčníval tvarem)
+  nahrazen chybou „zdvojnásobena jen celá část“; zbytkový argument v
+  `uhelRysovaniMereni.ts` shazoval typecheck.
+- ✅ **Brány:** typecheck ✓, testy 5963/0, `check:keys` 0 neshod, `check:hints`
+  25× falešný poplach (nápověda „od 180° odečti zadaný úhel“ vs. klíč výroku),
+  `check:length` 0, `check:options` 0, `audit:agreement` 5 895 úloh bez nálezu,
+  `audit:content` bez nálezu u nových témat, `audit:ui` ✓, build ✓, zámek
+  obsahu jen přírůstky. Ověřeno v prohlížeči (anonymní režim, 6. ročník →
+  Matematika → okruhy → úloha → vyhodnocení → zajímavost).
+- 📋 **Dál:** přírodopis 6. ročníku (22 témat) podle `GRADE_6_COMPLETION_PLAN.md`.
+
 ### Session 2026-09-15 (48) — dějepis šestky, dávka 1 (7 témat):
 
 - ✅ **Sedm nových témat:** `Hominizace`, `Neolitická revoluce`, `Doba bronzová

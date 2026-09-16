@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-14
+# Předání práce — stav k 2026-09-16
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -9,11 +9,9 @@
 >    formuláře obchodů. Nejde dál sama od sebe: stojí na osmi rozhodnutích
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
-> 2. **Doplnění 6. ročníku** — sem šla práce 13. a 14. 9. Fyzika je hotová
->    celá (13/13), **dějepis hotový celý (24/24)** — 15. 9. přibylo 19 témat
->    ve třech dávkách. Šestka na **37 ze 117**. **Na řadě je matematika**
->    (12 témat) podle `GRADE_6_COMPLETION_PLAN.md`. Přípravné práce i vizuální smoke test odborných typů
->    jsou hotové, takže dávka může začít rovnou — viz §1.
+> 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
+>    **matematika 12/12 (16. 9.)**. Šestka na **49 ze 117**. **Na řadě je
+>    přírodopis** (22 témat) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
@@ -71,13 +69,24 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: matematika 6. ročníku (12 témat)
+### ▶▶ ZAČNI TADY: přírodopis 6. ročníku (22 témat)
 
-**Dějepis šestky je hotový celý** — 15. 9. tři dávky, 19 témat (detail
-`PROJECT_STATUS.md` §6 session 48). Postup se osvědčil a platí i pro
-matematiku; výpočetní vzor je ve fyzice (`grade-6/fyzika/mereniDelky.ts`),
-klíče tu navíc přepočítá `check:keys`. Před první dávkou doplň do STANDARDS
-ve workflow vzor pro matematiku (dnes jmenuje jen dějepis a fyziku).
+**Matematika šestky je hotová** — 16. 9. dvě dávky, 12 témat (detail
+`PROJECT_STATUS.md` §6 session 49). Přírodopis je největší faktický blok:
+dělej ho **po RVP okruzích (3–6 témat)** a u každé dávky pusť kritiky
+včetně fakt-experta (workflow ho zapne sám u `isFactual`). Před první dávkou
+doplň do STANDARDS ve workflow vzor pro přírodopis (dnes jmenuje dějepis,
+fyziku a matematiku) — nejbližší je faktický vzor dějepisu.
+
+Poučení z matematiky:
+- **Po dávce vždy spusť celou sadu**, ne jen `IDS=…` — `generator-determinism`
+  a zámek obsahu chytají jen celkový běh.
+- **Sdílený pomocník v dávce = jedna chyba × všechna témata.** Nejčastější nález
+  kritiků byl v `_shared.ts`, ne v tématech. Pomocníka před dávkou vyzkoušej
+  na několika zadáních.
+- Opraváři občas nechají po sobě nekompilovatelný kód — typecheck po dávce
+  není formalita.
+
 Dvě věci pro každou dávku:
 
 - **Workflow spouštěj přes `scriptPath`, ne podle jména.** Od `1c99986` má

@@ -92,6 +92,31 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Souměrnost hlídá, aby ti sedělo obojí — křídla motýla, obě půlky obličeje i písmena, která se v zrcadle nezmění.",
     funFact: "Písmena A, H, I, M, O, T, U, V, W, X a Y jsou souměrná podle svislé osy. V zrcadle vypadají stejně.",
   },
+  // 6. ročník — RVP 2. stupně má okruh „Číslo a proměnná“ místo „Číslo a početní operace“
+  "matematika::Číslo a proměnná::Desetinná čísla": {
+    useful: "Ceny, délky i hmotnost zboží skoro nikdy nevycházejí na celé číslo. Bez desetinných čísel by nešel spočítat ani nákup.",
+    funFact: "V Česku píšeme desetinnou čárku, v Anglii a v USA desetinnou tečku. Proto kalkulačka v telefonu někdy ukazuje tečku.",
+  },
+  "matematika::Číslo a proměnná::Dělitelnost přirozených čísel": {
+    useful: "Dělitelnost ti řekne, jestli jdou věci rozdělit spravedlivě beze zbytku — bonbony, týmy i řady židlí.",
+    funFact: "Prvočísel je nekonečně mnoho. Dokázal to řecký matematik Eukleidés už asi před 2 300 lety.",
+  },
+  "matematika::Geometrie v rovině a v prostoru::Úhel": {
+    useful: "S úhly počítá tesař u střechy, pilot v zatáčce i hráč kulečníku, když míří od mantinelu.",
+    funFact: "Plný úhel má 360 stupňů nejspíš kvůli Babyloňanům, kteří počítali v šedesátkové soustavě.",
+  },
+  "matematika::Geometrie v rovině a v prostoru::Trojúhelníky": {
+    useful: "Trojúhelník se pod tlakem nezdeformuje. Proto ho uvidíš v konstrukci mostů, jeřábů i střech.",
+    funFact: "Trojúhelník vystřižený z kartonu udržíš na špičce tužky, když ho podepřeš v místě, kde se protínají těžnice.",
+  },
+  "matematika::Geometrie v rovině a v prostoru::Krychle a kvádr": {
+    useful: "Objem ti řekne, kolik se vejde do krabice nebo akvária. Povrch zase, kolik papíru spotřebuješ na zabalení.",
+    funFact: "Krychle má jedenáct různých sítí a z každé z nich se dá složit.",
+  },
+  "matematika::Geometrie v rovině a v prostoru::Osová a středová souměrnost": {
+    useful: "Souměrnost hledají architekti i návrháři log. Souměrné tvary působí klidně a vyváženě.",
+    funFact: "Písmena N, S a Z jsou středově souměrná: když je otočíš o půl otáčky, vypadají stejně.",
+  },
   "matematika::Nestandardní aplikační úlohy a problémy::Slovní úlohy": {
     useful: "Slovní úloha je trénink na to, co tě v životě potká pořád: z běžné věty vytáhnout, co se má spočítat.",
     funFact: "Nejstarší slovní úlohy jsou na egyptském papyru starém přes tři a půl tisíce let. I v nich šlo o chleba a pivo.",
@@ -394,6 +419,10 @@ export const CATEGORY_INSIGHT: Record<string, TopicInsight> = {
   "matematika::Číslo a početní operace": {
     useful: "Počítání je nástroj, kterým si ověříš, jestli ti sedí peníze, čas i množství.",
     funFact: "Nula se do Evropy dostala až ve středověku. Římané ji ve svých číslicích vůbec neměli.",
+  },
+  "matematika::Číslo a proměnná": {
+    useful: "Na druhém stupni se z počítání stává práce s čísly. Hledáš v nich pravidla, ne jen výsledky.",
+    funFact: "Znaménko rovná se vymyslel velšský matematik Robert Recorde v roce 1557. Dvě rovnoběžné čárky mu přišly jako to nejrovnější, co zná.",
   },
   "matematika::Geometrie v rovině a v prostoru": {
     useful: "Geometrie je řeč tvarů a rozměrů. Mluví jí každý plán, výkres i návod na skládačku.",

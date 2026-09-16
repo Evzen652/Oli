@@ -802,5 +802,53 @@
   "g6-fyz-skupenstvi-latek-6": {
     "hash": "7083fd7453c0ff938283aaec657c98adba183f2a",
     "taskCount": 57
+  },
+  "g6-mat-logicke-uvahy-kombinacni-usudek-6": {
+    "hash": "37e111bd10b8e9f123eaaebebcdab1f79bcfc1f8",
+    "taskCount": 70
+  },
+  "g6-mat-nasobeni-a-deleni-desetinnych-cisel-6": {
+    "hash": "a6df776fd045338d13ed1e5a69ea615bc68efb2a",
+    "taskCount": 72
+  },
+  "g6-mat-nsn-nsd-6": {
+    "hash": "a822fbdee26be6b565e9c9119b7b35178aac9628",
+    "taskCount": 72
+  },
+  "g6-mat-osova-stredova-soumernost-6": {
+    "hash": "60387e23be881d7992b44573095c2dc64a199753",
+    "taskCount": 71
+  },
+  "g6-mat-pocetni-operace-desetinna-komplexne-6": {
+    "hash": "220fc9bb269ca59f5e17b0b69d9b5f3cc3e349ed",
+    "taskCount": 72
+  },
+  "g6-mat-prvocisla-rozklad-6": {
+    "hash": "c573085c2e83abd6ccb0cabaa47ac5b5b6218389",
+    "taskCount": 62
+  },
+  "g6-mat-sit-krychle-a-kvadru-povrch-a-objem-6": {
+    "hash": "dc7cc975dbe3ef65ea425de4fae609e33be597cb",
+    "taskCount": 68
+  },
+  "g6-mat-tabulky-a-diagramy-6": {
+    "hash": "bfebbd1815c9e9c3ce1d343b3ca4ac6565f16838",
+    "taskCount": 72
+  },
+  "g6-mat-trojuhelniky-uhly-vyska-teznice-6": {
+    "hash": "32f6381cb56b1e6ce24dc09294218144defa2bd6",
+    "taskCount": 72
+  },
+  "g6-mat-uhel-rysovani-mereni-6": {
+    "hash": "03f91cbc9b87d5d6c6f525b73927f6d5e471517c",
+    "taskCount": 72
+  },
+  "g6-mat-uhly-druhy-scitani-6": {
+    "hash": "29fda08cea3e711f84ff63f1641b2eb6aa825334",
+    "taskCount": 72
+  },
+  "g6-mat-znaky-delitelnosti-6": {
+    "hash": "57a74d552d6e14d3559ec4d119dc5febdb6a93c2",
+    "taskCount": 72
   }
 }

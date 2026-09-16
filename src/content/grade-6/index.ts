@@ -52,7 +52,38 @@ import { RIMSKE_CISARSTVI_TOPICS } from "./dejepis/rimskeCisarstvi";
 import { VZNIK_SIRENI_KRESTANSTVI } from "./dejepis/vznikSireniKrestanstvi";
 import { STEHOVANI_NARODU_PAD_ZAPADORIMSKE_RISE } from "./dejepis/stehovaniNaroduPadZapadorimskeRise";
 
+// Matematika — Číslo a proměnná
+import { NASOBENI_A_DELENI_DESETINNYCH_CISEL } from "./matematika/nasobeniADeleniDesetinnychCisel";
+import { POCETNI_OPERACE_DESETINNA_KOMPLEXNE } from "./matematika/pocetniOperaceDesetinnaKomplexne";
+import { ZNAKY_DELITELNOSTI } from "./matematika/znakyDelitelnosti";
+import { PRVOCISLA_ROZKLAD } from "./matematika/prvocislaRozklad";
+import { NSN_NSD_6 } from "./matematika/nsnNsd";
+// Matematika — Geometrie v rovině a v prostoru
+import { UHLY_DRUHY_SCITANI_TOPICS } from "./matematika/uhlyDruhyScitani";
+import { UHEL_RYSOVANI_MERENI } from "./matematika/uhelRysovaniMereni";
+import { TROJUHELNIKY_UHLY_VYSKA_TEZNICE_6 } from "./matematika/trojuhelnikyUhlyVyskaTeznice";
+import { SIT_KRYCHLE_A_KVADRU_POVRCH_A_OBJEM } from "./matematika/sitKrychleAKvadruPovrchAObjem";
+import { OSOVA_STREDOVA_SOUMERNOST } from "./matematika/osovaStredovaSoumernost";
+// Matematika — Nestandardní úlohy, Práce s daty
+import { LOGICKE_UVAHY_KOMBINACNI_USUDEK } from "./matematika/logickeUvahyKombinacniUsudek";
+import { TABULKY_A_DIAGRAMY } from "./matematika/tabulkyADiagramy";
+
 export const GRADE_6_TOPICS: TopicMetadata[] = [
+  // Matematika — Číslo a proměnná
+  ...NASOBENI_A_DELENI_DESETINNYCH_CISEL,
+  ...POCETNI_OPERACE_DESETINNA_KOMPLEXNE,
+  ...ZNAKY_DELITELNOSTI,
+  ...PRVOCISLA_ROZKLAD,
+  ...NSN_NSD_6,
+  // Matematika — Geometrie v rovině a v prostoru
+  ...UHLY_DRUHY_SCITANI_TOPICS,
+  ...UHEL_RYSOVANI_MERENI,
+  ...TROJUHELNIKY_UHLY_VYSKA_TEZNICE_6,
+  ...SIT_KRYCHLE_A_KVADRU_POVRCH_A_OBJEM,
+  ...OSOVA_STREDOVA_SOUMERNOST,
+  // Matematika — Nestandardní úlohy, Práce s daty
+  ...LOGICKE_UVAHY_KOMBINACNI_USUDEK,
+  ...TABULKY_A_DIAGRAMY,
   // Fyzika — Měření fyzikálních veličin
   ...MERENI_DELKY,
   ...MERENI_HMOTNOSTI,

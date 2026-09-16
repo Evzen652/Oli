@@ -20,6 +20,51 @@ import type { SubjectNav } from "../navigation";
 
 export const GRADE6_NAVIGATION: SubjectNav[] = [
   {
+    subject: "matematika",
+    okruhy: [
+      {
+        id: "cisla-a-pocitani",
+        name: "Čísla a počítání",
+        description: "Počítáš s desetinnými čísly a zjistíš, co je čím dělitelné.",
+        emoji: "🔢",
+        topicIds: [
+          "g6-mat-nasobeni-a-deleni-desetinnych-cisel-6",
+          "g6-mat-pocetni-operace-desetinna-komplexne-6",
+          "g6-mat-znaky-delitelnosti-6",
+          "g6-mat-prvocisla-rozklad-6",
+          "g6-mat-nsn-nsd-6",
+        ],
+      },
+      {
+        id: "geometrie",
+        name: "Geometrie",
+        description: "Úhly, trojúhelníky, souměrnost a krabice, do kterých se něco vejde.",
+        emoji: "📐",
+        topicIds: [
+          "g6-mat-uhly-druhy-scitani-6",
+          "g6-mat-uhel-rysovani-mereni-6",
+          "g6-mat-trojuhelniky-uhly-vyska-teznice-6",
+          "g6-mat-sit-krychle-a-kvadru-povrch-a-objem-6",
+          "g6-mat-osova-stredova-soumernost-6",
+        ],
+      },
+      {
+        id: "ulohy-na-premysleni",
+        name: "Úlohy na přemýšlení",
+        description: "Úlohy bez naučeného postupu, na které stačí selský rozum.",
+        emoji: "🧩",
+        topicIds: ["g6-mat-logicke-uvahy-kombinacni-usudek-6"],
+      },
+      {
+        id: "tabulky-a-grafy",
+        name: "Tabulky a grafy",
+        description: "Vyčteš z tabulky i diagramu, co v datech opravdu je.",
+        emoji: "📊",
+        topicIds: ["g6-mat-tabulky-a-diagramy-6"],
+      },
+    ],
+  },
+  {
     subject: "fyzika",
     okruhy: [
       {

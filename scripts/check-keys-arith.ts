@@ -47,6 +47,98 @@ function vyhodnot(vyraz: string): number | null {
   return cisla.reduce((acc, n, i) => (i === 0 ? n : operatory[i - 1] === "-" ? acc - n : acc + n), 0);
 }
 
+/**
+ * „(12,6 : 1,5) · 5,7" → 47,88. Desetinná čárka, závorky, přednost operací.
+ * Doplněno 2026-09-16 pro matematiku 6. ročníku — `vyhodnot` umí jen celá
+ * čísla, takže 1 442 klíčů první dávky zůstalo „nepokryto vzorem".
+ * Když výraz obsahuje cokoli dalšího, vrátí null (raději nepokryto než
+ * falešná neshoda).
+ */
+function vyhodnotDes(vyraz: string): number | null {
+  const s = vyraz.replace(/−/g, "-").replace(/\s+/g, "");
+  const tok = s.match(/\d+(?:,\d+)?|[+\-·×*:÷()]/g);
+  if (!tok || tok.join("") !== s) return null;
+  let i = 0;
+  const clen = (): number | null => {
+    const t = tok[i++];
+    if (t === "(") {
+      const v = soucet();
+      return tok[i++] === ")" ? v : null;
+    }
+    return t !== undefined && /^\d/.test(t) ? Number(t.replace(",", ".")) : null;
+  };
+  const soucin = (): number | null => {
+    let v = clen();
+    while (v !== null && /^[·×*:÷]$/.test(tok[i] ?? "")) {
+      const op = tok[i++];
+      const r = clen();
+      if (r === null || (/[:÷]/.test(op) && r === 0)) return null;
+      v = /[:÷]/.test(op) ? v / r : v * r;
+    }
+    return v;
+  };
+  const soucet = (): number | null => {
+    let v = soucin();
+    while (v !== null && /^[+-]$/.test(tok[i] ?? "")) {
+      const op = tok[i++];
+      const r = soucin();
+      if (r === null) return null;
+      v = op === "-" ? v - r : v + r;
+    }
+    return v;
+  };
+  const v = soucet();
+  return v !== null && i === tok.length && Number.isFinite(v) ? Math.round(v * 1e6) / 1e6 : null;
+}
+
+const nsd = (a: number, b: number): number => (b === 0 ? a : nsd(b, a % b));
+const desMist = (x: string) => (x.split(",")[1] ?? "").length;
+
+/** Prvočíselný rozklad pokusným dělením — jiná cesta než generátor. */
+function rozklad(n: number): number[] {
+  const out: number[] = [];
+  for (let d = 2; n > 1; ) {
+    if (n % d === 0) {
+      out.push(d);
+      n /= d;
+    } else d++;
+  }
+  return out;
+}
+const jePrvocislo = (n: number) => n > 1 && rozklad(n).length === 1;
+
+/**
+ * Úlohy, u kterých se klíč nedá spočítat ze zadání samotného, jen vybrat
+ * z nabídky („Které z čísel je dělitelné 5?"). Vrací všechny možnosti, které
+ * podmínku splňují — správně je, když je to právě jedna a rovná se klíči.
+ */
+function vyhovujiciMoznosti(q: string, options: string[]): string[] | null {
+  const cisti = sloucCisla(q);
+  const num = (o: string) => Number(sloucCisla(o).replace(/\s/g, ""));
+  if (!options.length || !options.every((o) => /^\d[\d\s]*$/.test(o.trim()))) return null;
+  const podm = (f: (n: number) => boolean) => options.filter((o) => f(num(o)));
+  let m: RegExpMatchArray | null;
+  if ((m = cisti.match(/dělitelné číslem (\d+), ale není dělitelné číslem (\d+)/))) {
+    const [a, b] = [Number(m[1]), Number(m[2])];
+    return podm((n) => n % a === 0 && n % b !== 0);
+  }
+  if ((m = cisti.match(/(?:je dělitelné číslem|je násobkem čísla) (\d+)/))) {
+    const k = Number(m[1]);
+    return podm((n) => n % k === 0);
+  }
+  if ((m = cisti.match(/(?:patří mezi dělitele|je dělitelem) čísla (\d+)/))) {
+    const k = Number(m[1]);
+    return podm((n) => n !== 0 && k % n === 0);
+  }
+  if ((m = cisti.match(/rozklad na součin prvočísel ([\d ·]+)\.\s*Kterým z nabízených čísel je dělitelné/))) {
+    const p = m[1].split("·").reduce((acc, x) => acc * Number(x.trim()), 1);
+    return podm((n) => p % n === 0);
+  }
+  if (/Které z (?:těchto|nabízených) čísel je prvočíslo\?/.test(cisti)) return podm(jePrvocislo);
+  if (/Které z (?:těchto|nabízených) čísel je číslo složené\?/.test(cisti)) return podm((n) => n > 1 && !jePrvocislo(n));
+  return null;
+}
+
 type Vysledek = { ok: number; spatne: string[]; nepokryto: string[] };
 
 /** „5 897" → „5897": mezera mezi číslicemi je oddělovač tisíců, ne konec čísla. */
@@ -84,6 +176,9 @@ function spocitejText(q: string): string | null {
   if (seradPo) return seradPo[1].split(",").map((x) => Number(x)).sort((x, y) => x - y).join(", ");
   const seradOd = cisti.match(/Seřaď čísla od největšího po nejmenší:\s*([\d,\s]+)/);
   if (seradOd) return seradOd[1].split(",").map((x) => Number(x)).sort((x, y) => y - x).join(", ");
+
+  const rozloz = cisti.match(/rozklad čísla (\d+) na součin prvočísel/);
+  if (rozloz) return rozklad(Number(rozloz[1])).join(" · ");
 
   const chybi = cisti.match(/Které číslo chybí\?\s*(\d+|___)\s*([+-])\s*(\d+|___)\s*=\s*(\d+)/);
   if (chybi) {
@@ -188,6 +283,54 @@ function spocitej(q: string): number | null {
   const kolikJe = cisti.match(/[Kk]olik je\s+((?:\d+\s*[+\-×*:÷]\s*)+\d+)/);
   if (kolikJe) return vyhodnot(kolikJe[1]);
 
+  // ── 6. ročník (2026-09-16) ──
+  // „Kolik je 6,8 : 4?" · „Vypočítej výraz bez závorek: 6,3 + 5,1 : 3" · „Kolik vyjde (12,6 : 1,5) · 5,7?"
+  const desVyraz = cisti.match(/(?:[Kk]olik je|[Kk]olik vyjde|Vypočítej (?:součin|podíl|výraz[^:]*:))\s*([\d,\s+\-−·×*:÷()]+?)\s*[?.]?\s*$/);
+  if (desVyraz) {
+    const v = vyhodnotDes(desVyraz[1]);
+    if (v !== null) return v;
+  }
+
+  // „Kolik desetinných míst má součin 0,9 · 5,5?" — před odstraněním koncových nul
+  const mista = cisti.match(/Kolik desetinných míst má součin\s+(\d+(?:,\d+)?)\s*·\s*(\d+(?:,\d+)?)/);
+  if (mista) return desMist(mista[1]) + desMist(mista[2]);
+
+  // „…aby oba podíly byly stejné: 14,4 : 0,3 = ? : 3."
+  const podil = cisti.match(/podíly byly stejné:\s*([\d,?]+)\s*:\s*([\d,?]+)\s*=\s*([\d,?]+)\s*:\s*([\d,?]+)/);
+  if (podil) {
+    const c = podil.slice(1, 5).map((x) => (x === "?" ? null : Number(x.replace(",", "."))));
+    if (c.filter((x) => x === null).length === 1) {
+      const [a, b, x, y] = c;
+      const r = a === null ? (b! * x!) / y! : b === null ? (a * y!) / x! : x === null ? (a * y!) / b : (b * x) / a;
+      return Math.round(r * 1e6) / 1e6;
+    }
+  }
+
+  // „Urči nejmenší společný násobek čísel 6 a 20." · „…trojice čísel 18, 30 a 45"
+  const spolecny = cisti.match(/(nejmenší společný násobek|největší společný dělitel)(?: trojice)? čísel ([\d, a]+?)\s*[.?]/);
+  if (spolecny) {
+    const cisla = (spolecny[2].match(/\d+/g) ?? []).map(Number);
+    if (cisla.length >= 2) {
+      return spolecny[1].startsWith("největší")
+        ? cisla.reduce(nsd)
+        : cisla.reduce((a, b) => (a * b) / nsd(a, b));
+    }
+  }
+
+  // „Jaký je největší prvočinitel čísla 333…"
+  const prvocinitel = cisti.match(/největší prvočinitel čísla (\d+)/);
+  if (prvocinitel) return Math.max(...rozklad(Number(prvocinitel[1])));
+
+  // „Kterou nejmenší číslici musíš dosadit za hvězdičku v pětimístném čísle 51 *14, aby bylo dělitelné číslem 9?"
+  // (zde bez sloucCisla — mezera kolem hvězdičky je součást zápisu)
+  const hvezda = q.match(/Kterou (nejmenší|největší) číslici .*?dosadit za hvězdičku .*?čísle ([\d\s*]+?), aby bylo dělitelné číslem (\d+)/);
+  if (hvezda) {
+    const vzor = hvezda[2].replace(/\s/g, "");
+    const k = Number(hvezda[3]);
+    const vyhovi = [...Array(10).keys()].filter((c) => !(c === 0 && vzor.startsWith("*")) && Number(vzor.replace("*", String(c))) % k === 0);
+    if (vyhovi.length) return hvezda[1] === "nejmenší" ? vyhovi[0] : vyhovi[vyhovi.length - 1];
+  }
+
   return null;
 }
 
@@ -204,6 +347,12 @@ for (const id of ids) {
       for (const task of t.generator(level) ?? []) {
         if (videno.has(task.question)) continue;
         videno.add(task.question);
+        const vyhovi = task.options ? vyhovujiciMoznosti(task.question, task.options.map(String)) : null;
+        if (vyhovi !== null) {
+          if (vyhovi.length === 1 && vyhovi[0] === String(task.correctAnswer)) v.ok++;
+          else v.spatne.push(`L${level} „${task.question}" → klíč „${task.correctAnswer}", podmínku splňuje: ${vyhovi.join(" | ") || "nic"}`);
+          continue;
+        }
         const textem = spocitejText(task.question);
         if (textem !== null) {
           const klicT = sloucCisla(String(task.correctAnswer).trim())
@@ -218,7 +367,12 @@ for (const id of ids) {
           v.nepokryto.push(`L${level} ${task.question.replace(/\n/g, " ⏎ ").slice(0, 70)}`);
           continue;
         }
-        const klic = Number(String(task.correctAnswer).replace(/[^\d-]/g, ""));
+        // Desetinný klíč („2,35 m") se čte jako první číslo; celočíselný postaru,
+        // aby se u starších ročníků nezměnilo, co se porovnává.
+        const klicS = sloucCisla(String(task.correctAnswer));
+        const klic = /\d,\d/.test(klicS)
+          ? Number(klicS.match(/-?\d+,\d+/)![0].replace(",", "."))
+          : Number(klicS.replace(/[^\d-]/g, ""));
         if (klic === ocekavano) v.ok++;
         else v.spatne.push(`L${level} „${task.question}" → klíč ${task.correctAnswer}, spočítáno ${ocekavano}`);
       }

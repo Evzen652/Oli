@@ -116,6 +116,19 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   Dějepis **19/24**, šestka **32 ze 117**.
 - ✅ **DĚJEPIS 6. ROČNÍKU HOTOVÝ — 24/24** (15. 9.). Dávka 3: Řím, 5 témat.
   Šestka **37 ze 117**. Další na řadě matematika (12).
+- ✅ **MATEMATIKA 6. ROČNÍKU HOTOVÁ — 12/12** (16. 9.). Dvě dávky (5 + 7),
+  šestka **49 ze 117**. Další na řadě **přírodopis (22)**.
+- ✅ **VYŘÍZENO 16. 9. — `check:keys` neověřil u šestky ani jeden klíč.**
+  Doplněny vzory pro desetinná čísla, dělitelnost, NSN/NSD a výběr z nabídky.
+  Geometrie, logika a data dál „nepokryto vzorem“ — námět, ne vada.
+- ✅ **VYŘÍZENO 16. 9. — zámek obsahu mohl padat náhodně** u generátorů se
+  stavem mezi voláními. Nový `generator-determinism.test.ts` (všechna témata).
+- ℹ️ **`check:hints` hlásí 25× `g6-mat-trojuhelniky-…` L3** — posouzeno jako
+  falešný poplach (nápověda popisuje postup, klíč je výrok se stejnými slovy).
+- 🟡 **Na rozhodnutí:** tržby stánku v `tabulkyADiagramy.ts` mají haléře
+  (1 324,40 Kč). U plateb kartou realistické, u stánku s limonádou spíš ne.
+- ℹ️ **`grade-6/STATUS.md` měl u dějepisu stav pilotu (4/24)** — doplněna
+  hlavička se skutečným stavem, podrobný seznam nepřepisován.
 - ✅ **VYŘÍZENO 15. 9. — obnova hesla visela na „Načítání…“** (`e529437`).
 - ✅ **VYŘÍZENO 15. 9. (uživatel) — Redirect URLs v Supabase** doplněné.
 - ✅ **VYŘÍZENO 15. 9. (uživatel) — úklid anonymních dat.** Jediná úloha
