@@ -12,8 +12,19 @@
  * Tenhle test to chytí vždy: volá každý generátor dvakrát se stejným
  * seedem a mezi tím posune globální stav.
  */
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getAllTopics } from "@/lib/contentRegistry";
+
+/** Všechny .ts soubory obsahu (bez testů). */
+function souboryObsahu(dir = "src/content"): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const cesta = join(dir, e.name);
+    if (e.isDirectory()) return e.name === "__tests__" ? [] : souboryObsahu(cesta);
+    return e.name.endsWith(".ts") ? [cesta] : [];
+  });
+}
 
 function seeded(seed = 0x9e3779b9): () => number {
   let a = seed >>> 0;
@@ -46,5 +57,31 @@ describe("generator_determinism", () => {
       if (otisk(t.generator) !== prvni) vadna.push(t.id);
     }
     expect(vadna, "Generátor si drží stav mezi voláními — nastav ho na začátku gen()").toEqual([]);
+  });
+
+  /**
+   * Losování při NAČTENÍ modulu předchozí test nechytí: hodnota se v rámci
+   * procesu nemění, takže dvě volání gen() vyjdou stejně — jiná je až v dalším
+   * běhu. Přesně tak padal zámek obsahu u trojúhelníků (`const k2 =
+   * Math.floor(Math.random() * 4)` mimo gen()), a to jen v jednom běhu ze čtyř.
+   * Proto se sem dívá zdroják: `Math.random` smí být jen uvnitř funkce.
+   */
+  it("žádné téma nelosuje při načtení modulu", () => {
+    const soubory = souboryObsahu();
+    const vadna: string[] = [];
+    for (const soubor of soubory) {
+      readFileSync(soubor, "utf8")
+        .split("\n")
+        .forEach((radek, i) => {
+          if (!/\bMath\.random\b/.test(radek)) return;
+          if (/^\s/.test(radek)) return; // odsazení = tělo funkce
+          if (/^\s*(\/\/|\/\*|\*)/.test(radek)) return; // komentář o Math.random není losování
+          // Šipková funkce hodnotu jen předpisuje, nevolá: `const rnd = () => Math.random()`.
+          if (/=>/.test(radek.slice(0, radek.indexOf("Math.random")))) return;
+          if (/^\s*(export\s+)?(function|async function)/.test(radek)) return;
+          vadna.push(`${soubor}:${i + 1} ${radek.trim()}`);
+        });
+    }
+    expect(vadna, "Math.random na úrovni modulu — přesuň losování dovnitř gen()").toEqual([]);
   });
 });

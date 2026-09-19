@@ -132,6 +132,33 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
     ],
   },
   {
+    subject: "zemepis",
+    okruhy: [
+      {
+        id: "mapa-a-globus",
+        name: "Mapa a glóbus",
+        description: "Spočítáš vzdálenost z měřítka a najdeš místo podle souřadnic.",
+        emoji: "🗺️",
+        topicIds: [
+          "g6-zem-globus-mapa-meritko-6",
+          "g6-zem-mapove-znacky-orientace-6",
+          "g6-zem-zemepisna-sit-6",
+        ],
+      },
+      {
+        id: "zeme-ve-vesmiru",
+        name: "Země ve vesmíru",
+        description: "Sluneční soustava, střídání dne a noci, roční doby a časová pásma.",
+        emoji: "🌍",
+        topicIds: [
+          "g6-zem-vesmir-slunecni-soustava-6",
+          "g6-zem-tvar-a-pohyby-zeme-6",
+          "g6-zem-rocni-doby-casova-pasma-6",
+        ],
+      },
+    ],
+  },
+  {
     subject: "fyzika",
     okruhy: [
       {

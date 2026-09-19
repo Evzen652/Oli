@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-16
+# Předání práce — stav k 2026-09-19
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -10,8 +10,9 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
->    **matematika 12/12 a přírodopis 22/22 (16. 9.)**. Šestka na **71 ze 117**.
->    **Na řadě je zeměpis** (18 témat) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+>    matematika 12/12 a přírodopis 22/22 (16. 9.), **zeměpis 6/18 (19. 9.)**.
+>    Šestka na **77 ze 117**. **Na řadě je zbytek zeměpisu** (12 témat ve dvou
+>    dávkách) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
@@ -69,20 +70,26 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: zeměpis 6. ročníku (18 témat)
+### ▶▶ ZAČNI TADY: zbytek zeměpisu 6. ročníku (12 témat)
 
-**Matematika i přírodopis šestky jsou hotové** — 16. 9., 34 témat (detail
-`PROJECT_STATUS.md` §6 session 49). Zeměpis je faktický + mapa. Obrázky
+**První dávka zeměpisu je hotová** — 19. 9., Mapa a glóbus (3) a Vesmír a Země
+(3), detail `PROJECT_STATUS.md` §6 session 50. Zbývají dvě dávky po šesti:
+**krajinné sféry (4) + polární oblasti (2)**, pak **Afrika (3) + Austrálie
+a Oceánie (3)**.
+
+Připravené je všechno, co první dávka potřebovala: `zemepis/_shared.ts`
+(souřadnice, měřítko, čas) i vzor a pravidla zeměpisu ve STANDARDS. Obrázky
 k obsahu v repu nejsou, takže `image_select` ani `diagram_label` nejdou —
-úlohy musí jít vyřešit ze slov (souřadnice, popis polohy, měřítko jako
-výpočet). Před první dávkou doplň do STANDARDS ve workflow vzor pro zeměpis
-(nejbližší: přírodopis pro fakta, matematika pro měřítko) a vlastní
-`zemepis/_shared.ts` — sdílený pomocník patří do repa **před** dávkou.
+úlohy musí jít vyřešit ze slov. Po dávce nezapomeň doplnit **zajímavosti**
+do `src/lib/topicInsight.ts`: pro krajinné sféry i regiony tam leží
+připravené jako komentář (klíč bez tématu hlásí `topic-insight-coverage`
+jako mrtvý, proto se přidává až s tématy).
 
 Poučení z přírodopisu:
-- **Po limitu relace workflow hlásí „accepted“ i u témat bez kritiků.** Čti
-  `failures` v notifikaci; obnov přes `resumeFromRunId` (hotové kroky se
-  převezmou z mezipaměti).
+- **Po limitu relace může celá dávka spadnout na autorech.** Obnov ji přes
+  `resumeFromRunId` — hotové kroky se převezmou z mezipaměti. Tématu, jehož
+  kritik nebo opravář nedoběhl, už workflow neřekne „accepted“ (opraveno 19. 9.),
+  ale `failures` v notifikaci čti stejně.
 - **Dvě dávky souběžně = limit relace.** Pouštěj po jedné (nebo dvě malé).
 - **`category`/`topic` kontroluj proti RVP po každé dávce** — autoři je
   posouvali o úroveň níž a testy to zafixovaly.
@@ -95,6 +102,14 @@ Poučení z matematiky:
   na několika zadáních.
 - Opraváři občas nechají po sobě nekompilovatelný kód — typecheck po dávce
   není formalita.
+
+Poučení ze zeměpisu:
+- **`check:keys` rozšiř dřív, než dávku odbavíš.** Bez vzoru neověří ani jeden
+  klíč a přepočítat 1 300 úloh očima nejde. Vzory pro měřítko, časová pásma
+  a souřadnice jsou ve `scripts/check-keys-arith.ts`.
+- **Kontrolu vždy otoč** — podvrhni klíče a ověř, že je skript nahlásí. Dvakrát
+  se ukázalo, že chybu má kontrola, ne obsah (číslo „1 100 m“ čtené jako 100,
+  let po rovnoběžce počítaný jako po poledníku).
 
 Dvě věci pro každou dávku:
 

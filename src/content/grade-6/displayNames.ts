@@ -56,6 +56,19 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Živočichové bez páteře",
       description: "Od nezmara přes hlemýždě a žížaly až po hmyz a pavouky.",
     },
+    // Zeměpis
+    "Geografické informace, zdroje dat, kartografie": {
+      name: "Mapa a glóbus",
+      description: "Přečteš mapu, spočítáš vzdálenost z měřítka a najdeš místo podle souřadnic.",
+    },
+    "Přírodní obraz Země": {
+      name: "Planeta Země",
+      description: "Proč se střídá den a noc, odkud se berou roční doby a co tvoří krajinu.",
+    },
+    "Regiony světa": {
+      name: "Světadíly",
+      description: "Afrika, Austrálie a Oceánie i ledové oblasti kolem pólů.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",
@@ -155,6 +168,31 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Bezobratlí - členovci (úvod)": {
       name: "Hmyz, pavouci a korýši",
       description: "Poznáš je podle počtu nohou a stavby těla.",
+    },
+    // Zeměpis
+    "Mapa a glóbus": {
+      name: "Mapa a glóbus",
+      description: "Měřítko, mapové značky, světové strany a zeměpisná síť.",
+    },
+    "Vesmír a Země": {
+      name: "Země ve vesmíru",
+      description: "Sluneční soustava, den a noc, roční doby a časová pásma.",
+    },
+    "Krajinné sféry": {
+      name: "Vzduch, voda a pevnina",
+      description: "Počasí a podnebí, řeky a oceány, sopky i půda pod nohama.",
+    },
+    Afrika: {
+      name: "Afrika",
+      description: "Poušť, savana i deštný les a jak se v nich žije.",
+    },
+    "Austrálie a Oceánie": {
+      name: "Austrálie a Oceánie",
+      description: "Světadíl klokanů, korálový útes a tisíce ostrovů v Tichém oceánu.",
+    },
+    "Polární oblasti": {
+      name: "Arktida a Antarktida",
+      description: "Ledové oblasti kolem pólů — čím se liší a proč jsou důležité.",
     },
     // Fyzika
     "Délka, objem, hmotnost": {

@@ -144,6 +144,46 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-19 (50) — zeměpis šestky, 1. dávka (6/18):
+
+- ✅ **Šest témat prvního okruhu**, šestka **77 ze 117**. Mapa a glóbus:
+  glóbus a mapa s měřítkem, mapové značky a orientace, zeměpisná síť
+  a souřadnice. Vesmír a Země: Sluneční soustava, tvar a pohyby Země,
+  roční doby a časová pásma. Dva okruhy v navigaci, `displayNames`
+  a `topicInsight` (nový předmět v obou souborech).
+- ✅ **Nový sdílený pomocník** `grade-6/zemepis/_shared.ts`: `sirka()`,
+  `delka()`, `meritko()`, `cas()` (přetečení přes půlnoc), `buildChoiceTask`
+  s `null` při < 3 distraktorech. Výpočetní úloha (má `solutionSteps`) dostane
+  jinou velkou nápovědu než faktická. Workflow zná vzor i pravidla zeměpisu
+  (bez map v repu musí jít úloha vyřešit ze slov, sporná čísla nesmí být klíč,
+  časová pásma zjednodušeně 15° = 1 h, roční doby ze sklonu osy).
+- 🐛✅ **Workflow pouštělo dál témata, která nikdo nezkontroloval.** Po limitu
+  relace vracel padlý kritik `null` a téma prošlo jako „accepted“ s nulou vad
+  (tak to bylo u přírodopisu 16. 9.). Teď se takové téma hlásí jako `failed`
+  i s počtem chybějících kritiků; totéž u padlého opraváře.
+- 🐛✅ **Trojúhelníky losovaly při načtení modulu** (`const k2 = Math.random()…`
+  mimo `gen()`). Hodnota držela celý proces, takže zámek obsahu padal asi
+  v jednom běhu ze čtyř — a 16. 9. prošel jen náhodou. Opraveno přesunem do
+  `zacniRotace()`; `generator-determinism.test.ts` teď navíc čte zdrojáky
+  a `Math.random` mimo funkci nepustí. Ověřeno obráceně.
+- ✅ **`check:keys` umí zeměpis:** význam měřítka, mapa ↔ skutečnost, tentýž
+  úsek na druhé mapě, časová pásma (posun, dopočet délky, let), rozdíl šířek,
+  posun po poledníku i rovnoběžce a zápis souřadnic slovy. 405 ověřených klíčů,
+  0 neshod; ověřeno obráceně (418 podvržených klíčů → 418 neshod). Jednotku
+  (m/km) si bere z klíče — „1 200 m“ a „1,2 km“ je táž vzdálenost.
+- ✅ **Oprava obsahu při integraci:** u druhů map začínaly všechny tři špatné
+  možnosti slovem „tematická“, takže klíč šel poznat tvarem; jeden distraktor
+  nahrazen „plánem města“.
+- ✅ **Brány:** typecheck ✓, testy 6 968/0, `check:keys` 0 neshod,
+  `check:hints` 17× falešný poplach (nápověda učí pravidlo, převod neprozradí),
+  `check:length` 0, `check:options` 0, `audit:agreement` 1 706 úloh bez nálezu,
+  `audit:ui` ✓, build ✓, zámek obsahu = 6 přírůstků + záměrná změna
+  trojúhelníků. Ověřeno v prohlížeči až po zpětnou vazbu a kartu „Co je dobré
+  vědět“.
+- ⏭️ **Dál:** krajinné sféry a polární oblasti (6), pak Afrika a Austrálie
+  s Oceánií (6). Zajímavosti pro tyhle okruhy čekají v `topicInsight.ts`
+  jako komentář — klíč bez tématu hlásí `topic-insight-coverage` jako mrtvý.
+
 ### Session 2026-09-16 (49) — matematika (12/12) a přírodopis (22/22) šestky hotové:
 
 - ✅ **Dvanáct nových témat ve dvou dávkách**, šestka **49 ze 117**.

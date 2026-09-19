@@ -92,8 +92,24 @@ import { KROUZKOVCI_ZIZALA_PIJAVKA } from "./prirodopis/krouzkovciZizalaPijavka"
 import { PAVOUKOVCI_PAVOUCI_STIRI_KLISTATA_TOPICS } from "./prirodopis/pavoukovciPavouciStiriKlistata";
 import { KORYSI_TOPICS } from "./prirodopis/korysi";
 import { HMYZ_STAVBA_TELA_DRUHY_VYVOJ } from "./prirodopis/hmyzStavbaTelaDruhyVyvoj";
+// Zeměpis — Mapa a glóbus
+import { GLOBUS_MAPA_MERITKO } from "./zemepis/globusMapaMeritko";
+import { MAPOVE_ZNACKY_ORIENTACE } from "./zemepis/mapoveZnackyOrientace";
+import { ZEMEPISNA_SIT } from "./zemepis/zemepisnaSit";
+// Zeměpis — Vesmír a Země
+import { VESMIR_SLUNECNI_SOUSTAVA } from "./zemepis/vesmirSlunecniSoustava";
+import { TVAR_A_POHYBY_ZEME } from "./zemepis/tvarAPohybyZeme";
+import { ROCNI_DOBY_CASOVA_PASMA } from "./zemepis/rocniDobyCasovaPasma";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
+  // Zeměpis — Geografické informace, zdroje dat, kartografie
+  ...GLOBUS_MAPA_MERITKO,
+  ...MAPOVE_ZNACKY_ORIENTACE,
+  ...ZEMEPISNA_SIT,
+  // Zeměpis — Přírodní obraz Země
+  ...VESMIR_SLUNECNI_SOUSTAVA,
+  ...TVAR_A_POHYBY_ZEME,
+  ...ROCNI_DOBY_CASOVA_PASMA,
   // Přírodopis — Obecná biologie
   ...VZNIK_ZEME_PODMINKY_PRO_ZIVOT,
   ...VYVOJ_ZIVOTA_GEOLOGICKA_OBDOBI,

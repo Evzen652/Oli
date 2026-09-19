@@ -129,10 +129,19 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   korunách** (`tabulkyADiagramy.ts`).
 - ✅ **PŘÍRODOPIS 6. ROČNÍKU HOTOVÝ — 22/22** (16. 9.). Šestka **71 ze 117**.
   Další na řadě **zeměpis (18)**.
-- ℹ️ **Workflow po limitu relace hlásí „accepted“ i u témat, jejichž kritici
-  spadli.** Po každé dávce číst `failures` v notifikaci a případně obnovit
-  přes `resumeFromRunId`. Námět: ve workflow nepovažovat téma bez verdiktů
-  za přijaté.
+- ✅ **ZEMĚPIS 6. ROČNÍKU — 1. dávka 6/18** (19. 9.). Mapa a glóbus (3)
+  a Vesmír a Země (3), šestka **77 ze 117**. Nový `zemepis/_shared.ts`,
+  `check:keys` rozšířený o měřítko, časová pásma a souřadnice (405 klíčů,
+  0 neshod). Dál: krajinné sféry a polární oblasti, pak Afrika a Austrálie.
+- ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
+  jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
+  vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj
+  přes `resumeFromRunId` — hotové kroky se vezmou z mezipaměti.
+- 🐛✅ **VYŘÍZENO 19. 9. — trojúhelníky losovaly při načtení modulu.**
+  `const k2 = Math.floor(Math.random() * 4)` stálo mimo `gen()`, takže hodnota
+  držela celý proces a zámek obsahu padal zhruba v jednom běhu ze čtyř (16. 9.
+  prošel jen náhodou). Opraveno; `generator-determinism.test.ts` nově čte
+  zdrojáky obsahu a `Math.random` mimo funkci nepustí.
 - ℹ️ **`grade-6/STATUS.md` měl u dějepisu stav pilotu (4/24)** — doplněna
   hlavička se skutečným stavem, podrobný seznam nepřepisován.
 - ✅ **VYŘÍZENO 15. 9. — obnova hesla visela na „Načítání…“** (`e529437`).

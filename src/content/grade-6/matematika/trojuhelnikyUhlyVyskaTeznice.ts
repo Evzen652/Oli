@@ -550,7 +550,10 @@ function genL2Zakladna(k: Exclude<Kontext, "regal">): PracticeTask | null {
 }
 
 let i2 = 0;
-const k2 = Math.floor(Math.random() * 4);
+// Posun kontextů. Losuje se v zacniRotace() spolu s ostatními počítadly —
+// dokud se losoval tady, při načtení modulu, zůstal na jednu hodnotu pro celý
+// proces a zámek obsahu padal podle toho, jak se trefil (1 ze 4 běhů).
+let k2 = 0;
 const K_BEZ_STRECHY: Exclude<Kontext, "strecha">[] = ["abc", "zahon", "regal", "satek"];
 const K_BEZ_REGALU: Exclude<Kontext, "regal">[] = ["abc", "strecha", "zahon", "satek"];
 function genL2(): PracticeTask | null {
@@ -873,7 +876,7 @@ function zacniRotace(): void {
   const r = (n: number) => Math.floor(Math.random() * n);
   iDef = r(DEFINICE.length);
   i1 = r(3); i1u = r(3); i1s = r(3);
-  i2 = r(4);
+  i2 = r(4); k2 = r(4);
   i3c = r(2);
   i3 = r(4); i3a = r(KOMBINACE.length); i3d = r(3);
 }

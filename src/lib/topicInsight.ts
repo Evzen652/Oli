@@ -426,6 +426,19 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     funFact: "Rak nosí kostru na povrchu těla. Aby mohl vyrůst, musí ji svléknout a počkat, než ztvrdne nová.",
   },
 
+  // ───────────────────────── ZEMĚPIS ─────────────────────────
+  "zemepis::Geografické informace, zdroje dat, kartografie::Mapa a glóbus": {
+    useful: "Z měřítka mapy spočítáš, jak daleko je to na výlet, dřív než vyrazíš.",
+    funFact: "Každá rovinná mapa celého světa něco zkresluje. Grónsko na ní vypadá skoro jako Afrika, přitom je asi čtrnáctkrát menší.",
+  },
+  "zemepis::Přírodní obraz Země::Vesmír a Země": {
+    useful: "Časová pásma ti řeknou, kdy zavolat kamarádovi do Ameriky, abys ho nevzbudil.",
+    funFact: "Zemská osa je skloněná. Kdyby nebyla, u nás by se roční doby skoro nestřídaly.",
+  },
+  // Krajinné sféry a regiony světa (Afrika, Austrálie a Oceánie, polární
+  // oblasti) se doplní spolu s tématy — klíč bez tématu hlásí
+  // topic-insight-coverage jako mrtvý.
+
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {
     useful: "Změřit znamená dohodnout se na čísle. Bez měření by nešlo nic vyrobit ani porovnat.",

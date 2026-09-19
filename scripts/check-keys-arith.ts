@@ -141,13 +141,164 @@ function vyhovujiciMoznosti(q: string, options: string[]): string[] | null {
 
 type Vysledek = { ok: number; spatne: string[]; nepokryto: string[] };
 
+// ── Zeměpis (2026-09-19) ──────────────────────────────────────────────────
+// Měřítko, časová pásma a souřadnice se počítají stejně mechanicky jako
+// aritmetika, jen výsledek nese jednotku nebo světovou stranu. Proto je
+// výsledek text, ne číslo — „2 cm" a „2 km" jsou dvě různé odpovědi.
+
+/** „27,5" → 27.5 · „1 000 000" → 1000000 */
+const cz = (s: string): number => Number(s.replace(/\s/g, "").replace(",", "."));
+/** 4.5 → „4,5" · 15 → „15" (bez oddělovače tisíců, klíče ho u výsledků nemají) */
+const fmt = (n: number): string => String(Math.round(n * 1e6) / 1e6).replace(".", ",");
+
+/**
+ * Vzdálenost ve skutečnosti z centimetrů na mapě.
+ *
+ * Jednotku (metry, nebo kilometry) si bere z klíče — „1 200 m" i „1,2 km" je
+ * táž vzdálenost a kontrola má hlídat číslo, ne to, jak ho autor zapsal.
+ * Kdyby se jednotka hádala pevným prahem, hlásila by kontrola neshodu tam,
+ * kde je obsah v pořádku (osm takových falešných neshod na první běh).
+ */
+function zeSkutecnychCm(cm: number, klic?: string): string {
+  const m = cm / 100;
+  const km = klic ? /\bkm\b/.test(klic) : m >= 1000;
+  return km ? `${fmt(m / 1000)} km` : `${fmt(m)} m`;
+}
+
+const CISLOVKY: Record<string, number> = { jeden: 1, jednu: 1, dva: 2, dvě: 2, tři: 3, čtyři: 4, pět: 5 };
+
+const sirkaStr = (d: number): string =>
+  d === 0 ? "0° (rovník)" : `${fmt(Math.abs(d))}° ${d < 0 ? "j. š." : "s. š."}`;
+const delkaStr = (d: number): string =>
+  d === 0 ? "0° (nultý poledník)" : Math.abs(d) === 180 ? "180°" : `${fmt(Math.abs(d))}° ${d < 0 ? "z. d." : "v. d."}`;
+
+/** Zeměpisné délky ze zadání, se znaménkem: západní záporně. */
+function delky(q: string): number[] {
+  return [...q.matchAll(/(\d+(?:,\d+)?)°\s*(v|z)\.\s*d\./g)].map((m) => cz(m[1]) * (m[2] === "z" ? -1 : 1));
+}
+/** Zeměpisné šířky ze zadání, se znaménkem: jižní záporně. */
+function sirky(q: string): number[] {
+  return [...q.matchAll(/(\d+(?:,\d+)?)°\s*(s|j)\.\s*š\./g)].map((m) => cz(m[1]) * (m[2] === "j" ? -1 : 1));
+}
+/** Čas „18:00" v minutách od půlnoci. */
+function casy(q: string): number[] {
+  return [...q.matchAll(/(\d{1,2}):(\d{2})/g)].map((m) => Number(m[1]) * 60 + Number(m[2]));
+}
+const casStr = (minut: number): string => {
+  const c = (((minut % 1440) + 1440) % 1440);
+  return `${Math.floor(c / 60)}:${String(c % 60).padStart(2, "0")}`;
+};
+
+/**
+ * Zeměpisné úlohy s vypočitatelným klíčem. Vrací klíč jako text, nebo null,
+ * když vzor nezná. Rozlišení „mapa → skutečnost" a „skutečnost → mapa" stojí
+ * na jednotce zadané délky: centimetry jsou na mapě, metry a kilometry ve
+ * skutečnosti.
+ */
+function spocitejZemepis(zadani: string, klic?: string): string | null {
+  // „1 100 m" je jedno číslo, ne 1 a 100 — mezera mezi číslicemi je oddělovač tisíců.
+  const q = sloucCisla(zadani);
+  const meritka = [...q.matchAll(/1\s*:\s*(\d[\d\s]*)/g)].map((m) => cz(m[1]));
+
+  // „Co znamená měřítko mapy 1 : 50 000?" → „1 cm na mapě = 500 m ve skutečnosti"
+  if (meritka.length === 1 && /Co (tento zápis říká|znamená)/.test(q) && !/\d+(,\d+)?\s*cm na mapě měří/.test(q)) {
+    return `1 cm na mapě = ${zeSkutecnychCm(meritka[0], klic)} ve skutečnosti`;
+  }
+
+  // Dvě měřítka: tentýž úsek na druhé mapě. „1 : A měří d cm → kolik cm na 1 : B"
+  const naMape = q.match(/(\d+(?:,\d+)?)\s*cm/);
+  if (meritka.length === 2 && naMape) {
+    return `${fmt((cz(naMape[1]) * meritka[0]) / meritka[1])} cm`;
+  }
+
+  if (meritka.length === 1) {
+    // Mapa → skutečnost: v zadání je délka v centimetrech.
+    if (naMape && /(ve skutečnosti|skutečná vzdálenost|skutečnosti\?)/.test(q)) {
+      return zeSkutecnychCm(cz(naMape[1]) * meritka[0], klic);
+    }
+    // Skutečnost → mapa: v zadání je délka v metrech nebo kilometrech.
+    const vePrirode = q.match(/(\d+(?:,\d+)?)\s*(km|m)\b/);
+    if (vePrirode && /na mapě/.test(q)) {
+      const cm = cz(vePrirode[1]) * (vePrirode[2] === "km" ? 100000 : 100);
+      return `${fmt(cm / meritka[0])} cm`;
+    }
+  }
+
+  // ── Časová pásma (15° = 1 hodina, na východ je později) ──
+  if (/časov\w+ rozdíl\s+(\d+)\s*hodin/.test(q) && /[Kk]olik stupňů zeměpisné délky/.test(q)) {
+    return `${fmt(Number(q.match(/časov\w+ rozdíl\s+(\d+)/)![1]) * 15)}°`;
+  }
+  const lon = delky(q);
+  const t = casy(q);
+  const let_ = q.match(/poletí\s+(\d+)\s*hodin/);
+  if (lon.length === 2 && t.length === 1) {
+    const posun = ((lon[1] - lon[0]) / 15) * 60;
+    // Let: k času odletu se přičte doba letu i posun pásem.
+    return casStr(t[0] + posun + (let_ ? Number(let_[1]) * 60 : 0));
+  }
+  if (lon.length === 1 && t.length === 2 && /[Nn]a jaké zeměpisné délce/.test(q)) {
+    let rozdil = (t[1] - t[0]) / 60;
+    if (rozdil > 12) rozdil -= 24;
+    if (rozdil < -12) rozdil += 24;
+    let cil = lon[0] + rozdil * 15;
+    if (cil > 180) cil -= 360;
+    if (cil < -180) cil += 360;
+    return delkaStr(cil);
+  }
+
+  // ── Zeměpisná síť ──
+  // „Dvě místa leží na stejném poledníku … 24° s. š., druhé 13° j. š. Kolik stupňů…"
+  const lat = sirky(q);
+  if (lat.length === 2 && /[Kk]olik stupňů/.test(q)) return `${fmt(Math.abs(lat[0] - lat[1]))}°`;
+
+  // „Letadlo startuje z bodu 19° s. š., 66° v. d. … na jih. Urazí 64° zeměpisné šířky."
+  // Po poledníku se mění šířka, po rovnoběžce délka — první verze téhle kontroly
+  // uměla jen poledník a nahlásila 20 falešných neshod na správných klíčích.
+  const urazi = q.match(/Urazí\D*(\d+)°/);
+  if (urazi && lat.length === 1 && lon.length === 1) {
+    const smer = /na (jih|západ)/.test(q) ? -1 : 1;
+    const o = smer * Number(urazi[1]);
+    if (/rovnoběžce/.test(q)) {
+      let cil = lon[0] + o;
+      if (cil > 180) cil -= 360;
+      if (cil < -180) cil += 360;
+      return `${sirkaStr(lat[0])}, ${delkaStr(cil)}`;
+    }
+    return `${sirkaStr(lat[0] + o)}, ${delkaStr(lon[0])}`;
+  }
+
+  // „Poledníky po 10°. Bod leží na 30° v. d. a posune se na západ o dva poledníky."
+  const posunO = q.match(/nakresleny po\s+(\d+)°.*?posune se na\s+(\w+)\s+o\s+(\w+)\s+(poledník\w*|rovnoběžk\w*)/s);
+  if (posunO) {
+    const krok = Number(posunO[1]);
+    const pocet = CISLOVKY[posunO[3]] ?? Number(posunO[3]);
+    const smer = /západ|jih/.test(posunO[2]) ? -1 : 1;
+    if (pocet) {
+      return posunO[4].startsWith("poledník")
+        ? delkaStr(lon[0] + smer * krok * pocet)
+        : sirkaStr(lat[0] + smer * krok * pocet);
+    }
+  }
+
+  // „Bod leží 59° jižně od rovníku a 15° západně od nultého poledníku."
+  const slovy = q.match(/(\d+)°\s*(sever|již)\S*\s+od rovníku a\s+(\d+)°\s*(východ|západ)\S*\s+od (?:nultého poledníku|Greenwiche)/);
+  if (slovy) {
+    return `${sirkaStr(Number(slovy[1]) * (slovy[2] === "již" ? -1 : 1))}, ${delkaStr(Number(slovy[3]) * (slovy[4] === "západ" ? -1 : 1))}`;
+  }
+
+  return null;
+}
+
 /** „5 897" → „5897": mezera mezi číslicemi je oddělovač tisíců, ne konec čísla. */
 function sloucCisla(s: string): string {
   return s.replace(/(\d)\p{White_Space}+(?=\d)/gu, "$1");
 }
 
 /** Odpovědi, které nejsou jedno číslo — dělení se zbytkem, porovnání, řazení. */
-function spocitejText(q: string): string | null {
+function spocitejText(q: string, klic?: string): string | null {
+  const zemepis = spocitejZemepis(q, klic);
+  if (zemepis !== null) return zemepis;
+
   const cisti = sloucCisla(q.replace(/−/g, "-"));
 
   // „35 ÷ 5 = ? (může být zbytek)" → klíč ve tvaru „7 zbytek 0"
@@ -353,7 +504,7 @@ for (const id of ids) {
           else v.spatne.push(`L${level} „${task.question}" → klíč „${task.correctAnswer}", podmínku splňuje: ${vyhovi.join(" | ") || "nic"}`);
           continue;
         }
-        const textem = spocitejText(task.question);
+        const textem = spocitejText(task.question, String(task.correctAnswer));
         if (textem !== null) {
           const klicT = sloucCisla(String(task.correctAnswer).trim())
             .replace(/\s+/g, " ")

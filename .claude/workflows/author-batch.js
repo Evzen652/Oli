@@ -67,6 +67,38 @@ PRAVIDLA PRO PŘÍRODOPIS:
 - Pořadí (drag_order) jen tam, kde je pořadí jednoznačné (vývoj hmyzu, práce s mikroskopem, geologická éra).
 - L3 = přenos: poznej organismus z popisu znaků, rozhodni o neznámém případu, spoj znak s funkcí.
 
+- ZEMĚPIS: stavba jako přírodopis (faktická témata) nebo mereniDelky.ts (výpočty), ale helpery VÝHRADNĚ
+  z src/content/grade-6/zemepis/_shared.ts (buildChoiceTask → null při < 3 distraktorech; s parts.solutionSteps
+  = výpočetní úloha; buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy, pick, pickN, shuffle, rnd,
+  cis = číslo česky, sirka(st, min) = „50° s. š.", delka(st, min) = „14° v. d.", meritko(n) = „1 : 50 000",
+  cas(h, min) = „21:00" s přetečením přes půlnoc). Ten _shared.ts NEEDITUJ.
+  Soubor do src/content/grade-6/zemepis/<camelCase>.ts, id "g6-zem-<kebab>-6", subject "zemepis".
+  Generátor: gen(level) = ruzneUlohy(() => losUlohy(genLx)) (u order/categorize bez losUlohy).
+
+PRAVIDLA PRO ZEMĚPIS:
+- K obsahu NEJSOU mapy ani obrázky. Úloha musí jít vyřešit ze slov: poloha přes souřadnice, sousedství,
+  světadíl, oceán; žádné „podívej se na mapu" ani „na obrázku". Mapové značky popiš slovy (modrá čára = řeka).
+- Fakta jen ta, na kterých se shodují školní atlasy a učebnice zeměpisu 6. ročníku (Fraus, Nová škola, SPN).
+  Čísla (výšky, délky řek, rozlohy) jen zaokrouhlená a nesporná; kde se zdroje liší (délka Nilu, výška
+  Kilimandžára na metr), NEdávej přesné číslo jako klíč — ptej se na pořadí nebo řád.
+- Klíč nesmí záviset na aktuálním dění (počet obyvatel na milion, HDP, hlavní město po přejmenování).
+  Politická fakta jen stálá (Austrálie je stát i světadíl; Antarktida nepatří žádnému státu — Antarktická smlouva).
+- Distraktor = typická miskoncepce šesťáka: léto = Země blíž Slunci; rovník prochází Evropou; na jižní
+  polokouli je v prosinci zima; Grónsko je světadíl; Arktida je pevnina; tučňáci žijí v Arktidě;
+  lední medvědi v Antarktidě; s. š. ↔ v. d.; poledníky ↔ rovnoběžky; východ = čas dřív; Sahara = jen písek;
+  měřítko 1 : 50 000 → 1 cm = 50 km. Ne náhodný pojem odjinud.
+- Výpočty (měřítko, časová pásma, rozdíl souřadnic): čísla přes cis(), výsledky celé nebo s jedním
+  desetinným místem, převod jednotek (cm → m → km) ukázaný v solutionSteps. Distraktor = výsledek konkrétní
+  chyby ze STEJNÝCH čísel (zapomenutý převod o řád, sečtené místo odečtené, posun času špatným směrem,
+  přičtení místo odečtení pásem, 15° na hodinu zaměněné).
+- Časová pásma pro 6. ročník zjednodušeně: 15° délky = 1 hodina, na východ je později. Letní čas
+  a nepravidelné hranice pásem NEpoužívej v klíči (nebo výslovně řekni „bez letního času").
+- Roční doby: příčinou je sklon zemské osy, NE vzdálenost od Slunce. Obratníky 23,5°, polární kruhy 66,5°.
+- Regiony (Afrika, Austrálie a Oceánie, polární oblasti): L1 poloha a přírodní fakta, L2 souvislosti
+  (podnebí → vegetace → život lidí), L3 přenos: poznej oblast z popisu, rozhodni o neznámém místě podle
+  souřadnic a podnebí, vysvětli problém (dezertifikace, sucho, tání ledu) příčinou.
+- Endemity a zvířata jen všeobecně známá (klokan, koala, ptakopysk, emu, tučňák císařský, lední medvěd, mrož).
+
 OBECNĚ — DETERMINISMUS: generátor nesmí mít stav mezi voláními (žádné „let" počítadlo na úrovni modulu,
 které se jen zvyšuje). Rotaci šablon nastav na začátku gen() — hlídá to src/test/generator-determinism.test.ts.
 
@@ -242,20 +274,31 @@ const results = await pipeline(
     if (prev.spec && prev.spec.isFactual) {
       critics.push(() => agent(faktPrompt(a), { label: `fakt:${a.topicId.slice(0, 24)}`, phase: 'Verify', schema: VERDICT_SCHEMA }))
     }
-    return parallel(critics).then((vs) => ({ ...prev, verdicts: vs.filter(Boolean) }))
+    // Kritik, který zemřel (limit relace), vrací null. Bez téhle kontroly téma
+    // s nulou vad prošlo jako „accepted", i když ho nikdo nečetl (přírodopis 16. 9.).
+    return parallel(critics).then((vs) => {
+      const verdicts = vs.filter(Boolean)
+      return { ...prev, verdicts, criticsMissing: critics.length - verdicts.length }
+    })
   },
   // 4) FIX — jen pokud kritici našli reálné vady
   (prev) => {
     if (!prev || !prev.author) return prev
     if (prev.needsReview) return { topicId: prev.author.topicId, file: prev.author.file, status: 'needs_review', reason: 'brána 0 neprošla' }
     const a = prev.author
+    if (prev.criticsMissing > 0) {
+      log(`⛔ ${a.topicId}: ${prev.criticsMissing} kritik(ů) nedoběhlo → failed (obnov přes resumeFromRunId).`)
+      return { topicId: a.topicId, file: a.file, status: 'failed', stage: 'verify', reason: `nedoběhlo kritiků: ${prev.criticsMissing}` }
+    }
     const defects = (prev.verdicts || []).flatMap((v) => (v && v.realDefects) || [])
     const mustFix = (prev.verdicts || []).some((v) => v && v.verdict === 'OPRAVIT') && defects.length > 0
     if (!mustFix) {
       return { topicId: a.topicId, file: a.file, test: a.test, exportName: a.exportName, status: 'accepted', defects: 0 }
     }
     return agent(fixPrompt(a, defects), { label: `fix:${a.topicId.slice(0, 26)}`, phase: 'Fix' })
-      .then((summary) => ({ topicId: a.topicId, file: a.file, test: a.test, exportName: a.exportName, status: 'fixed', defects: defects.length, fixSummary: summary }))
+      .then((summary) => (summary
+        ? { topicId: a.topicId, file: a.file, test: a.test, exportName: a.exportName, status: 'fixed', defects: defects.length, fixSummary: summary }
+        : { topicId: a.topicId, file: a.file, status: 'failed', stage: 'fix', reason: `opravář nedoběhl, neopraveno vad: ${defects.length}` }))
   },
 )
 

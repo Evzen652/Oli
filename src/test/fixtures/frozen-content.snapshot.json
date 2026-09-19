@@ -836,7 +836,7 @@
     "taskCount": 72
   },
   "g6-mat-trojuhelniky-uhly-vyska-teznice-6": {
-    "hash": "32f6381cb56b1e6ce24dc09294218144defa2bd6",
+    "hash": "a17c8c7cee77520878986e5fd003d937c76f7fb5",
     "taskCount": 72
   },
   "g6-mat-uhel-rysovani-mereni-6": {
@@ -938,5 +938,29 @@
   "g6-pri-zahavci-nezmar-meduza-koraly-6": {
     "hash": "a0d391833115e821ccfff49bc7f131be1e94377b",
     "taskCount": 47
+  },
+  "g6-zem-globus-mapa-meritko-6": {
+    "hash": "bfa655de04a30b6cde10a2498983d7211984ea6b",
+    "taskCount": 72
+  },
+  "g6-zem-mapove-znacky-orientace-6": {
+    "hash": "9da15dde1a536451c7d4f186d6d98ce90bb2fbcc",
+    "taskCount": 68
+  },
+  "g6-zem-rocni-doby-casova-pasma-6": {
+    "hash": "c565952176562eadf6e296de151d6308cc39803d",
+    "taskCount": 72
+  },
+  "g6-zem-tvar-a-pohyby-zeme-6": {
+    "hash": "7376185a31f4fb600159195fef6c95a38f38dcf1",
+    "taskCount": 80
+  },
+  "g6-zem-vesmir-slunecni-soustava-6": {
+    "hash": "99429d3889cc3057d36bc4bed54d0634825e73be",
+    "taskCount": 67
+  },
+  "g6-zem-zemepisna-sit-6": {
+    "hash": "1fc603a190e9e4f5d7bf21281ab5fc45018b0f6f",
+    "taskCount": 66
   }
 }
