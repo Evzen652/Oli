@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-20
+# Předání práce — stav k 2026-09-21
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -27,12 +27,21 @@ Ověř si to `git fetch`em, ne pamětí:
 git fetch origin && git status -sb && git worktree list
 ```
 
-**Pracovní větev je `main`.** K 14. 9. je všechno pushnuté, `origin/main` je na
-`1951c85`, pracovní strom čistý. **Worktree jsou dva** (hlavní repo
-a `competent-johnson-de23e8`); pět zastaralých odstraněno 15. 9. bez ztráty
-práce — viz `SESSION_PROTOCOL.md` krok 1.
-Lokální větve tři: `main`, `chore/remove-essay-and-ai-authoring`,
-`claude/cranky-shirley`.
+**Pracovní větev je `main`.** K 21. 9. je všechno pushnuté, `origin/main` je na
+`bd0ba37` (zeměpis 18/18 + rozpis češtiny), pracovní strom čistý.
+**Worktree jsou dva** (hlavní repo a `competent-johnson-de23e8`); pět
+zastaralých odstraněno 15. 9. bez ztráty práce — viz `SESSION_PROTOCOL.md` krok 1.
+
+⚠️ **Ve worktree `competent-johnson-de23e8` nejsi na `main`**, ale na větvi
+session (naposledy `claude/session-handoff-three-batches-caf5ea`), která sleduje
+zastaralý remote. `git status` tam proto hlásí „ahead“ vůči špatné větvi a
+`git push` bez argumentů míří jinam, než myslíš. Pushuj vždy výslovně:
+
+```bash
+git push origin HEAD:main
+```
+
+Po pushi ověř `git log --oneline origin/main -1`, ne `git status`.
 
 **`push do main = nasazeno na produkci`** (Vercel). Ověřit to odsud nejde —
 `gh` v tomhle prostředí není přihlášený, takže
