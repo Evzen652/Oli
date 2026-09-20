@@ -84,6 +84,33 @@ workflow) se českého jazyka netýkají, vzor faktického tématu ale ano.
 Obrázky k obsahu v repu nejsou, takže `image_select` ani `diagram_label` nejdou —
 úlohy musí jít vyřešit ze slov.
 
+**Dávky (20 podtémat, `id` z RVP má prefix `g6-cjl-`):** pouštěj po jedné,
+dvě souběžně spolehlivě vyčerpají limit relace.
+
+| # | dávka | témat | proč spolu |
+|---|---|---|---|
+| 1 | tvarosloví + slovní zásoba | 5 | Nejbližší 5. ročníku — vzory a mluvnické kategorie se dají opřít o hotový obsah. Dobrý rozjezd. |
+| 2 | skladba + zvuková stránka | 4 | Skladba je nová dovednost (větné členy), zvuková stránka potřebuje zvláštní opatrnost — viz past níž. |
+| 3 | sloh + čtení a naslouchání | 6 | Dopis, popis, vyprávění, zpráva × oznámení, klíčová slova, věcné čtení. |
+| 4 | literární výchova | 5 | Bajka a přísloví, mýty a báje, pohádka, pověst, verš a rým. Fakticky nejnáročnější — nech na konec. |
+
+**Tři pasti, které u češtiny čekám:**
+
+- **Sloh není psaní slohu.** `inputType: "essay"` v aplikaci neexistuje (CLAUDE.md).
+  „Dopis“ nebo „vyprávění“ = běžné úlohy s výběrem: poznat část dopisu, seřadit
+  kompozici, vybrat vhodnou formulaci pro úřední × soukromý dopis.
+- **Zvuková stránka jazyka bez zvuku.** Přízvuk, intonace a frázování se musí
+  dát vyřešit z psaného textu (kde ve slově leží přízvuk, kam patří pauza,
+  která výslovnost je spisovná zapsaná fonetickým přepisem). Zvukové soubory
+  v repu nejsou a nepůjdou doplnit, stejně jako obrázky.
+- **Pravopis ≠ 1. stupeň.** Pravidlo z `CONTENT_AUTHORING` o možnostech
+  lišících se jen grafémem (`i/í/y/ý`) platí pro 1. stupeň. V šestce je těžiště
+  v tvarosloví a skladbě, ne v doplňovačce.
+
+Nejbližší vzor autorské práce je zeměpis (`923aca5`, `90eb796`, `3db6239`):
+sdílený `_shared.ts` pro předmět, faktická banka místo krátkého seznamu,
+ruční průchod obsahu po dávce.
+
 Poučení z přírodopisu:
 - **Po limitu relace může celá dávka spadnout na autorech.** Obnov ji přes
   `resumeFromRunId` — hotové kroky se převezmou z mezipaměti. Tématu, jehož
