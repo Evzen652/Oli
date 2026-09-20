@@ -108,6 +108,14 @@ import { PEDOSFERA_BIOSFERA } from "./zemepis/pedosferaBiosfera";
 // Zeměpis — Polární oblasti
 import { ARKTIDA_POLOHA_KLIMA_VYZNAM } from "./zemepis/arktidaPolohaKlimaVyznam";
 import { ANTARKTIDA_POLOHA_KLIMA } from "./zemepis/antarktidaPolohaKlima";
+// Zeměpis — Afrika
+import { AFRIKA_POLOHA_POVRCH_VODSTVO_PODNEBI } from "./zemepis/afrikaPolohaPovrchVodstvoPodnebi";
+import { AFRICKE_PRIRODNI_OBLASTI } from "./zemepis/africkePrirodniOblasti";
+import { OBYVATELSTVO_HOSPODARSTVI_AFRIKY } from "./zemepis/obyvatelstvoHospodarstviAfriky";
+// Zeměpis — Austrálie a Oceánie
+import { AUSTRALIE_OCEANIE_POLOHA_POVRCH_KLIMA } from "./zemepis/australieOceaniePolohaPovrchKlima";
+import { PRIRODA_ENDEMITY_VELKY_BARIEROVY_UTES } from "./zemepis/prirodaEndemityVelkyBarierovyUtes";
+import { AUSTRALIE_OBYVATELSTVO_OSTROVY_OCEANIE } from "./zemepis/australieObyvatelstvoOstrovyOceanie";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Zeměpis — Geografické informace, zdroje dat, kartografie
@@ -125,6 +133,14 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Zeměpis — Regiony světa: Polární oblasti
   ...ARKTIDA_POLOHA_KLIMA_VYZNAM,
   ...ANTARKTIDA_POLOHA_KLIMA,
+  // Zeměpis — Regiony světa: Afrika
+  ...AFRIKA_POLOHA_POVRCH_VODSTVO_PODNEBI,
+  ...AFRICKE_PRIRODNI_OBLASTI,
+  ...OBYVATELSTVO_HOSPODARSTVI_AFRIKY,
+  // Zeměpis — Regiony světa: Austrálie a Oceánie
+  ...AUSTRALIE_OCEANIE_POLOHA_POVRCH_KLIMA,
+  ...PRIRODA_ENDEMITY_VELKY_BARIEROVY_UTES,
+  ...AUSTRALIE_OBYVATELSTVO_OSTROVY_OCEANIE,
   // Přírodopis — Obecná biologie
   ...VZNIK_ZEME_PODMINKY_PRO_ZIVOT,
   ...VYVOJ_ZIVOTA_GEOLOGICKA_OBDOBI,

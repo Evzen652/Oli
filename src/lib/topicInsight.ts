@@ -443,8 +443,14 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Tání ledu v polárních oblastech ovlivňuje hladinu moří na celém světě.",
     funFact: "Lední medvěd žije jen na dalekém severu a tučňáci skoro jen na jižní polokouli, takže se v přírodě nepotkají.",
   },
-  // Afrika a Austrálie a Oceánie se doplní spolu s tématy — klíč bez tématu
-  // hlásí topic-insight-coverage jako mrtvý.
+  "zemepis::Regiony světa::Afrika": {
+    useful: "Kakao v čokoládě nebo káva často pocházejí právě z afrických plantáží.",
+    funFact: "Sahara je z velké části kamenitá a štěrková. Písečné duny pokrývají jen menší část pouště.",
+  },
+  "zemepis::Regiony světa::Austrálie a Oceánie": {
+    useful: "Na jižní polokouli jsou roční doby obráceně, takže tam Vánoce slaví v létě.",
+    funFact: "Velký bariérový útes je největší stavba na Zemi, kterou postavili živí tvorové — drobní koráloví polypové.",
+  },
 
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {

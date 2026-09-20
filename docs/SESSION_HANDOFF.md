@@ -10,9 +10,9 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
->    matematika 12/12 a přírodopis 22/22 (16. 9.), **zeměpis 12/18 (20. 9.)**.
->    Šestka na **83 ze 117**. **Na řadě je poslední dávka zeměpisu** (6 témat)
->    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+>    matematika 12/12 a přírodopis 22/22 (16. 9.), **zeměpis 18/18 (20. 9.)**.
+>    Šestka na **89 ze 117**. **Na řadě je čeština (20)** a pak výchova
+>    k občanství (8) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
@@ -70,21 +70,19 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: zbytek zeměpisu 6. ročníku (6 témat)
+### ▶▶ ZAČNI TADY: čeština 6. ročníku (20 témat)
 
-**Dvě dávky zeměpisu jsou hotové** — 19.–20. 9., Mapa a glóbus (3), Vesmír
-a Země (3), krajinné sféry (4) a polární oblasti (2); detail `PROJECT_STATUS.md`
-§6 session 50 a 51. Zbývá poslední dávka: **Afrika (3) + Austrálie a Oceánie (3)**.
-Pokud ji rozběhla předchozí session, zkontroluj `git status` a složku
-`src/content/grade-6/zemepis/` — nezapojená témata tam leží bez registrace.
+**Zeměpis je hotový (18/18)** — tři dávky 19.–20. 9.; detail `PROJECT_STATUS.md`
+§6 session 50–52. Šestka je na **89 ze 117**. Zbývá čeština (20, „smíšený“ blok:
+mluvnice se dá opřít o vzory z 5. ročníku, literatura je nová) a výchova
+k občanství (8, konceptuální). Pořadí i odhady jsou v
+`docs/GRADE_6_COMPLETION_PLAN.md` §2. Pokud předchozí session rozběhla dávku,
+zkontroluj `git status` — nezapojená témata leží bez registrace v `src/content/grade-6/`.
 
-Připravené je všechno, co první dávka potřebovala: `zemepis/_shared.ts`
-(souřadnice, měřítko, čas) i vzor a pravidla zeměpisu ve STANDARDS. Obrázky
-k obsahu v repu nejsou, takže `image_select` ani `diagram_label` nejdou —
-úlohy musí jít vyřešit ze slov. Po dávce nezapomeň doplnit **zajímavosti**
-do `src/lib/topicInsight.ts`: pro krajinné sféry i regiony tam leží
-připravené jako komentář (klíč bez tématu hlásí `topic-insight-coverage`
-jako mrtvý, proto se přidává až s tématy).
+Zeměpisné pomůcky (`zemepis/_shared.ts`, pravidla zeměpisu ve STANDARDS
+workflow) se českého jazyka netýkají, vzor faktického tématu ale ano.
+Obrázky k obsahu v repu nejsou, takže `image_select` ani `diagram_label` nejdou —
+úlohy musí jít vyřešit ze slov.
 
 Poučení z přírodopisu:
 - **Po limitu relace může celá dávka spadnout na autorech.** Obnov ji přes
@@ -111,6 +109,15 @@ Poučení ze zeměpisu:
 - **Kontrolu vždy otoč** — podvrhni klíče a ověř, že je skript nahlásí. Dvakrát
   se ukázalo, že chybu má kontrola, ne obsah (číslo „1 100 m“ čtené jako 100,
   let po rovnoběžce počítaný jako po poledníku).
+
+Další poučení ze zeměpisu (Afrika, Austrálie):
+- **Šablona „popis → souřadnice“ se musí opírat o reálnou geografii, ne jen
+  o pásy šířky.** Pouhý interval zeměpisné šířky přiřadil pouštní popis okolí
+  Johannesburgu. Zeměpisné délky omez na oblasti, které popisu opravdu odpovídají.
+- **U faktických témat je `check:keys` slepý** (0 z 529 klíčů). Fakta si
+  po dávce projdi sám — hlavně čísla, superlativy a „kde přesně“.
+- **Ikony okruhů v `navigation.ts` se nesmí opakovat** (Afrika i „Země ve
+  vesmíru“ měly 🌍).
 
 Dvě věci pro každou dávku:
 

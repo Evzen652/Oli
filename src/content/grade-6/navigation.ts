@@ -178,6 +178,28 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-zem-antarktida-poloha-klima-6",
         ],
       },
+      {
+        id: "afrika",
+        name: "Afrika",
+        description: "Poloha, řeky a podnebí, od Sahary po deštné lesy, i život lidí.",
+        emoji: "🦁",
+        topicIds: [
+          "g6-zem-afrika-poloha-povrch-vodstvo-podnebi-6",
+          "g6-zem-africke-prirodni-oblasti-6",
+          "g6-zem-obyvatelstvo-hospodarstvi-afriky-6",
+        ],
+      },
+      {
+        id: "australie-a-oceanie",
+        name: "Austrálie a Oceánie",
+        description: "Světadíl na jižní polokouli, jeho zvláštní příroda a ostrovy v Tichém oceánu.",
+        emoji: "🦘",
+        topicIds: [
+          "g6-zem-australie-oceanie-poloha-povrch-klima-6",
+          "g6-zem-priroda-endemity-velky-barierovy-utes-6",
+          "g6-zem-australie-obyvatelstvo-ostrovy-oceanie-6",
+        ],
+      },
     ],
   },
   {

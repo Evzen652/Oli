@@ -136,6 +136,10 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - ✅ **ZEMĚPIS 6. ROČNÍKU — 2. dávka 12/18** (20. 9.). Krajinné sféry (4)
   a polární oblasti (2), šestka **83 ze 117**. `check:keys` rozšířený o teplotu
   (amplituda, pokles s výškou). Dál: Afrika a Austrálie s Oceánií.
+- ✅ **ZEMĚPIS 6. ROČNÍKU HOTOVÝ — 18/18** (20. 9.). Afrika (3) a Austrálie
+  a Oceánie (3), šestka **89 ze 117**. Při ruční kontrole opraveny zeměpisné
+  délky v úloze „popis podnebí → souřadnice“ (dvě místa trefovala reálné oblasti
+  s jiným podnebím). Dál: čeština (20), výchova k občanství (8).
 - ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
   jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
   vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj

@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-20 (52) — zeměpis šestky HOTOVÝ (18/18):
+
+- ✅ **Poslední dávka: Afrika (3) + Austrálie a Oceánie (3)**, šestka **89 ze 117**,
+  zeměpis **18/18**. Dva nové okruhy v navigaci („Afrika“ 🦁, „Austrálie
+  a Oceánie“ 🦘), zajímavosti obou témat v `topicInsight.ts`. Workflow doběhlo
+  bez pádu na limitu (36 agentů, všech šest témat „fixed“, žádné k ruční kontrole).
+- 🐛✅ **Souřadnice v Africe trefovaly reálná místa, kterým popis podnebí
+  neodpovídá.** Šablona „popis podnebí → souřadnice“ brala pro jižní tropický
+  pás zeměpisné délky 16–30° v. d. (26° j. š., 27° v. d. je okolí Johannesburgu,
+  ne poušť) a pro sever subtropického pásu 32–34° s. š., 1–8° v. d. (alžírská
+  Sahara, ne Středomoří). Zúženo na 16–24° v. d. (Namib, Kalahari) a 34–36° s. š.,
+  8–10° v. d. (Tunisko); upraven i test tématu. Zbytek obsahu jsem prošel ručně
+  (superlativy, čísla, oblasti Oceánie, souřadnice řídce osídlených míst) bez
+  dalšího nálezu.
+- ℹ️ `check:keys` na těchto šest témat ověřil 0 klíčů (529 nepokryto vzorem):
+  jsou to fakta a klasifikace, výpočet v nich není. Fakta hlídali kritici
+  workflow a moje ruční kontrola, ne skript.
+- ✅ **Brány:** typecheck ✓, testy 7 545/0, `check:hints` 3 nálezy posouzeny
+  (obecná pravidla, ne prozrazení), `check:length` 0, `check:options` 0,
+  `audit:agreement` 746 úloh bez nálezu, `audit:ui` ✓, build ✓, zámek obsahu
+  = 24 řádků přírůstku. V prohlížeči: šest okruhů zeměpisu, okruh Afrika,
+  úloha i „Co je dobré vědět“, konzole bez chyb.
+- ⏭️ **Dál:** čeština (20) a výchova k občanství (8), viz `docs/GRADE_6_COMPLETION_PLAN.md`.
+
 ### Session 2026-09-20 (51) — zeměpis šestky, 2. dávka (12/18):
 
 - ✅ **Šest dalších témat**, šestka **83 ze 117**. Krajinné sféry: atmosféra

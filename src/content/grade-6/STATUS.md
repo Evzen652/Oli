@@ -3,8 +3,8 @@
 # Grade 6 — STATUS (pilot 2. stupně)
 
 > Hotovo (2026-09-20): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 12/18** — 83 ze 117.
-> Zbývá zbytek zeměpisu (6), čeština, výchova k občanství (pořadí v
+> Přírodopis 22/22, Zeměpis 18/18** — 89 ze 117.
+> Zbývá čeština (20) a výchova k občanství (pořadí v
 > `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
 ## Fyzika (13 RVP podtémat)
@@ -75,7 +75,7 @@
   `mekkysiPlziMlziHlavonozci`, `krouzkovciZizalaPijavka`,
   `pavoukovciPavouciStiriKlistata`, `korysi`, `hmyzStavbaTelaDruhyVyvoj` ✅
 
-## Zeměpis (18 RVP podtémat) — 12/18 (2026-09-20)
+## Zeměpis (18 RVP podtémat) — HOTOVO 18/18 (2026-09-20)
 
 > Sdílené utility: `zemepis/_shared.ts` (sirka/delka/meritko/cas/cis/rnd,
 > buildChoiceTask → null při < 3 distraktorech, buildOrderTask,
@@ -91,8 +91,10 @@
 - **Krajinné sféry:** `atmosferaPocasiPodnebi`, `hydrosferaVodaNaZemi`,
   `litosferaStavbaZemeDesky`, `pedosferaBiosfera` ✅
 - **Polární oblasti:** `arktidaPolohaKlimaVyznam`, `antarktidaPolohaKlima` ✅
-- [ ] Afrika — poloha a povrch, přírodní oblasti, obyvatelstvo a hospodářství (3)
-- [ ] Austrálie a Oceánie — poloha a klima, příroda, obyvatelstvo a ostrovy (3)
+- **Afrika:** `afrikaPolohaPovrchVodstvoPodnebi`, `africkePrirodniOblasti`,
+  `obyvatelstvoHospodarstviAfriky` ✅
+- **Austrálie a Oceánie:** `australieOceaniePolohaPovrchKlima`,
+  `prirodaEndemityVelkyBarierovyUtes`, `australieObyvatelstvoOstrovyOceanie` ✅
 
 ## Dějepis (24 RVP podtémat) — HOTOVO 24/24 (2026-09-15)
 

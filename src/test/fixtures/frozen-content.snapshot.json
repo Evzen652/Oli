@@ -939,6 +939,14 @@
     "hash": "a0d391833115e821ccfff49bc7f131be1e94377b",
     "taskCount": 47
   },
+  "g6-zem-africke-prirodni-oblasti-6": {
+    "hash": "f77648aab3584dadf67bd7a993d3e06e1d5cb895",
+    "taskCount": 70
+  },
+  "g6-zem-afrika-poloha-povrch-vodstvo-podnebi-6": {
+    "hash": "a9e21423f28b0fffca0f0bbe7807bc1a17564bc6",
+    "taskCount": 65
+  },
   "g6-zem-antarktida-poloha-klima-6": {
     "hash": "311367f19616ff450e7809482368e367fad5fc84",
     "taskCount": 43
@@ -950,6 +958,14 @@
   "g6-zem-atmosfera-pocasi-podnebi-6": {
     "hash": "b85a4f976a0fe06e452eb3020e5955bb60ba437d",
     "taskCount": 66
+  },
+  "g6-zem-australie-obyvatelstvo-ostrovy-oceanie-6": {
+    "hash": "09853b3b022d182f2ec2fbd68ca5041371f74408",
+    "taskCount": 57
+  },
+  "g6-zem-australie-oceanie-poloha-povrch-klima-6": {
+    "hash": "f53454a62b22b2d13887c33fe99ac042e699cd89",
+    "taskCount": 61
   },
   "g6-zem-globus-mapa-meritko-6": {
     "hash": "bfa655de04a30b6cde10a2498983d7211984ea6b",
@@ -967,9 +983,17 @@
     "hash": "9da15dde1a536451c7d4f186d6d98ce90bb2fbcc",
     "taskCount": 68
   },
+  "g6-zem-obyvatelstvo-hospodarstvi-afriky-6": {
+    "hash": "a113a0c52f4dee1ef61a2749f82d56cab87dd525",
+    "taskCount": 49
+  },
   "g6-zem-pedosfera-biosfera-6": {
     "hash": "e61dddeca7ee3d453fe4968b4c7e4c945b63ce31",
     "taskCount": 43
+  },
+  "g6-zem-priroda-endemity-velky-barierovy-utes-6": {
+    "hash": "86e6fbf84a7869cdc506fcd02c25923fc5b28c26",
+    "taskCount": 59
   },
   "g6-zem-rocni-doby-casova-pasma-6": {
     "hash": "c565952176562eadf6e296de151d6308cc39803d",
