@@ -156,6 +156,28 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-zem-rocni-doby-casova-pasma-6",
         ],
       },
+      {
+        id: "vzduch-voda-pevnina",
+        name: "Vzduch, voda a pevnina",
+        description: "Počasí a podnebí, oceány a řeky, sopky, zemětřesení i půda pod nohama.",
+        emoji: "🌋",
+        topicIds: [
+          "g6-zem-atmosfera-pocasi-podnebi-6",
+          "g6-zem-hydrosfera-voda-na-zemi-6",
+          "g6-zem-litosfera-stavba-zeme-desky-6",
+          "g6-zem-pedosfera-biosfera-6",
+        ],
+      },
+      {
+        id: "arktida-a-antarktida",
+        name: "Arktida a Antarktida",
+        description: "Ledové oblasti kolem pólů — čím se liší a proč jsou důležité.",
+        emoji: "🧊",
+        topicIds: [
+          "g6-zem-arktida-poloha-klima-vyznam-6",
+          "g6-zem-antarktida-poloha-klima-6",
+        ],
+      },
     ],
   },
   {

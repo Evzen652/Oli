@@ -198,6 +198,36 @@ const casStr = (minut: number): string => {
 function spocitejZemepis(zadani: string, klic?: string): string | null {
   // „1 100 m" je jedno číslo, ne 1 a 100 — mezera mezi číslicemi je oddělovač tisíců.
   const q = sloucCisla(zadani);
+
+  // ── Teplota (atmosféra): amplituda a pokles s výškou ──
+  // Typografické minus v zadání čteme jako běžné, v odpovědi ho vracíme zpět,
+  // protože klíče píšou „−4 °C" (U+2212).
+  const tq = q.replace(/−/g, "-");
+  const teplotaStr = (x: number): string => `${fmt(x).replace("-", "−")} °C`;
+  const teploty = [...tq.matchAll(/(-?\d+(?:,\d+)?)\s*°C/g)].map((m) => cz(m[1]));
+  // „Roční teplotní amplituda … je 48 °C. Průměrná teplota nejteplejšího měsíce je 23 °C. Jaká je … nejchladnějšího?"
+  if (/amplituda[^.]*je\s+-?\d/.test(tq) && /nejchladnějšího měsíce\?/.test(tq) && teploty.length === 2) {
+    return teplotaStr(teploty[1] - teploty[0]);
+  }
+  // „Jaká je roční teplotní amplituda …" z dvou nebo více měsíčních teplot v zadání
+  if (/Jaká je roční teplotní amplituda/.test(tq) && teploty.length >= 2) {
+    return teplotaStr(Math.max(...teploty) - Math.min(...teploty));
+  }
+  const klesa = tq.match(/klesá průměrně o\s+(\d+(?:,\d+)?)\s*°C na každých\s+(\d+)\s*m/);
+  if (klesa) {
+    const gradient = cz(klesa[1]) / Number(klesa[2]); // °C na metr
+    // Teplota v jiné výšce: „ve výšce H1 m je … T1 °C … Jaká je průměrná teplota … ve výšce H2 m?"
+    const vysky = [...tq.matchAll(/(\d+)\s*m\b/g)].map((m) => Number(m[1]));
+    const t1 = tq.match(/výšce\s+\d+\s*m je průměrná teplota\s+(-?\d+(?:,\d+)?)\s*°C/);
+    if (t1 && /Jaká je průměrná teplota/.test(tq) && vysky.length >= 3) {
+      const [h1, h2] = [vysky[0], vysky[vysky.length - 1]];
+      return teplotaStr(cz(t1[1]) - gradient * (h2 - h1));
+    }
+    // Výška vrcholu: v údolí H1 teplota T1, na vrcholu T2 → H = H1 + (T1 − T2) / gradient
+    if (/V jaké nadmořské výšce leží vrchol/.test(tq) && teploty.length >= 3 && vysky.length >= 1) {
+      return `${fmt(vysky[0] + (teploty[0] - teploty[1]) / gradient)} m`;
+    }
+  }
   const meritka = [...q.matchAll(/1\s*:\s*(\d[\d\s]*)/g)].map((m) => cz(m[1]));
 
   // „Co znamená měřítko mapy 1 : 50 000?" → „1 cm na mapě = 500 m ve skutečnosti"

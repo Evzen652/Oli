@@ -100,6 +100,14 @@ import { ZEMEPISNA_SIT } from "./zemepis/zemepisnaSit";
 import { VESMIR_SLUNECNI_SOUSTAVA } from "./zemepis/vesmirSlunecniSoustava";
 import { TVAR_A_POHYBY_ZEME } from "./zemepis/tvarAPohybyZeme";
 import { ROCNI_DOBY_CASOVA_PASMA } from "./zemepis/rocniDobyCasovaPasma";
+// Zeměpis — Krajinné sféry
+import { ATMOSFERA_POCASI_PODNEBI } from "./zemepis/atmosferaPocasiPodnebi";
+import { HYDROSFERA_VODA_NA_ZEMI } from "./zemepis/hydrosferaVodaNaZemi";
+import { LITOSFERA_STAVBA_ZEME_DESKY } from "./zemepis/litosferaStavbaZemeDesky";
+import { PEDOSFERA_BIOSFERA } from "./zemepis/pedosferaBiosfera";
+// Zeměpis — Polární oblasti
+import { ARKTIDA_POLOHA_KLIMA_VYZNAM } from "./zemepis/arktidaPolohaKlimaVyznam";
+import { ANTARKTIDA_POLOHA_KLIMA } from "./zemepis/antarktidaPolohaKlima";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Zeměpis — Geografické informace, zdroje dat, kartografie
@@ -110,6 +118,13 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...VESMIR_SLUNECNI_SOUSTAVA,
   ...TVAR_A_POHYBY_ZEME,
   ...ROCNI_DOBY_CASOVA_PASMA,
+  ...ATMOSFERA_POCASI_PODNEBI,
+  ...HYDROSFERA_VODA_NA_ZEMI,
+  ...LITOSFERA_STAVBA_ZEME_DESKY,
+  ...PEDOSFERA_BIOSFERA,
+  // Zeměpis — Regiony světa: Polární oblasti
+  ...ARKTIDA_POLOHA_KLIMA_VYZNAM,
+  ...ANTARKTIDA_POLOHA_KLIMA,
   // Přírodopis — Obecná biologie
   ...VZNIK_ZEME_PODMINKY_PRO_ZIVOT,
   ...VYVOJ_ZIVOTA_GEOLOGICKA_OBDOBI,

@@ -435,9 +435,16 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Časová pásma ti řeknou, kdy zavolat kamarádovi do Ameriky, abys ho nevzbudil.",
     funFact: "Zemská osa je skloněná. Kdyby nebyla, u nás by se roční doby skoro nestřídaly.",
   },
-  // Krajinné sféry a regiony světa (Afrika, Austrálie a Oceánie, polární
-  // oblasti) se doplní spolu s tématy — klíč bez tématu hlásí
-  // topic-insight-coverage jako mrtvý.
+  "zemepis::Přírodní obraz Země::Krajinné sféry": {
+    useful: "Když rozumíš počasí a řekám, poznáš, kde hrozí povodeň nebo sucho.",
+    funFact: "Na Zemi je vody hodně, ale sladká je jen malý zlomek a většina z ní je zamrzlá v ledovcích.",
+  },
+  "zemepis::Regiony světa::Polární oblasti": {
+    useful: "Tání ledu v polárních oblastech ovlivňuje hladinu moří na celém světě.",
+    funFact: "Lední medvěd žije jen na dalekém severu a tučňáci skoro jen na jižní polokouli, takže se v přírodě nepotkají.",
+  },
+  // Afrika a Austrálie a Oceánie se doplní spolu s tématy — klíč bez tématu
+  // hlásí topic-insight-coverage jako mrtvý.
 
   // ───────────────────────── FYZIKA ─────────────────────────
   "fyzika::Měření fyzikálních veličin::Délka, objem, hmotnost": {

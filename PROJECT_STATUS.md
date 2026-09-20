@@ -144,6 +144,32 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-20 (51) — zeměpis šestky, 2. dávka (12/18):
+
+- ✅ **Šest dalších témat**, šestka **83 ze 117**. Krajinné sféry: atmosféra
+  (počasí, podnebí, pásy), hydrosféra, litosféra (desky, sopky, zemětřesení),
+  pedosféra a biosféra. Polární oblasti: Arktida a Antarktida. Dva nové okruhy
+  v navigaci („Vzduch, voda a pevnina“, „Arktida a Antarktida“), zajímavosti
+  pro Krajinné sféry a Polární oblasti v `topicInsight.ts`.
+- ✅ **Obnova po limitu relace fungovala tak, jak měla.** Kritici doběhli,
+  ale u pěti témat spadli opraváři. Opravená kontrola ve workflow je označila
+  jako `failed` (ne „accepted“) i s počtem neopravených vad; po
+  `resumeFromRunId` doběhli všichni a hotové kroky se převzaly z mezipaměti.
+- ✅ **`check:keys` umí teplotu:** roční amplituda (ze dvou i ze čtyř měsíců,
+  i obráceně z amplitudy a nejteplejšího měsíce), pokles teploty s výškou
+  (teplota v jiné výšce i výška vrcholu). 155 klíčů atmosféry, 0 neshod;
+  ověřeno obráceně (158 podvržených → 158 nahlášených). Ručně přepočítáno
+  všech sedm šablon ještě před psaním vzorů.
+- 🐛✅ **Sporné tvrzení v Antarktidě:** „spadne tam méně srážek než na Sahaře“
+  neplatí spolehlivě (střed Sahary je sušší). Nahrazeno „než v mnoha
+  pouštích“ v klíči i vysvětlení, upraven i solver v testu tématu.
+- ✅ **Brány:** typecheck ✓, testy 7 236/0, `check:keys` 0 neshod, `check:hints`
+  0, `check:length` 0, `check:options` 0, `audit:agreement` 737 úloh bez
+  nálezu, `audit:ui` ✓, zámek obsahu = 6 přírůstků. Ověřeno v prohlížeči:
+  čtyři okruhy zeměpisu, dvě témata polárních oblastí a úloha o Antarktidě.
+- ⏭️ **Dál:** poslední dávka (Afrika 3 + Austrálie a Oceánie 3). Zajímavosti
+  pro ně čekají v `topicInsight.ts` jako komentář.
+
 ### Session 2026-09-19 (50) — zeměpis šestky, 1. dávka (6/18):
 
 - ✅ **Šest témat prvního okruhu**, šestka **77 ze 117**. Mapa a glóbus:

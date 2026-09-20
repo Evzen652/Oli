@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-19
+# Předání práce — stav k 2026-09-20
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -10,9 +10,9 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
->    matematika 12/12 a přírodopis 22/22 (16. 9.), **zeměpis 6/18 (19. 9.)**.
->    Šestka na **77 ze 117**. **Na řadě je zbytek zeměpisu** (12 témat ve dvou
->    dávkách) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+>    matematika 12/12 a přírodopis 22/22 (16. 9.), **zeměpis 12/18 (20. 9.)**.
+>    Šestka na **83 ze 117**. **Na řadě je poslední dávka zeměpisu** (6 témat)
+>    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
@@ -70,12 +70,13 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: zbytek zeměpisu 6. ročníku (12 témat)
+### ▶▶ ZAČNI TADY: zbytek zeměpisu 6. ročníku (6 témat)
 
-**První dávka zeměpisu je hotová** — 19. 9., Mapa a glóbus (3) a Vesmír a Země
-(3), detail `PROJECT_STATUS.md` §6 session 50. Zbývají dvě dávky po šesti:
-**krajinné sféry (4) + polární oblasti (2)**, pak **Afrika (3) + Austrálie
-a Oceánie (3)**.
+**Dvě dávky zeměpisu jsou hotové** — 19.–20. 9., Mapa a glóbus (3), Vesmír
+a Země (3), krajinné sféry (4) a polární oblasti (2); detail `PROJECT_STATUS.md`
+§6 session 50 a 51. Zbývá poslední dávka: **Afrika (3) + Austrálie a Oceánie (3)**.
+Pokud ji rozběhla předchozí session, zkontroluj `git status` a složku
+`src/content/grade-6/zemepis/` — nezapojená témata tam leží bez registrace.
 
 Připravené je všechno, co první dávka potřebovala: `zemepis/_shared.ts`
 (souřadnice, měřítko, čas) i vzor a pravidla zeměpisu ve STANDARDS. Obrázky

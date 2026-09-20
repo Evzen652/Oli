@@ -133,6 +133,9 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   a Vesmír a Země (3), šestka **77 ze 117**. Nový `zemepis/_shared.ts`,
   `check:keys` rozšířený o měřítko, časová pásma a souřadnice (405 klíčů,
   0 neshod). Dál: krajinné sféry a polární oblasti, pak Afrika a Austrálie.
+- ✅ **ZEMĚPIS 6. ROČNÍKU — 2. dávka 12/18** (20. 9.). Krajinné sféry (4)
+  a polární oblasti (2), šestka **83 ze 117**. `check:keys` rozšířený o teplotu
+  (amplituda, pokles s výškou). Dál: Afrika a Austrálie s Oceánií.
 - ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
   jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
   vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj

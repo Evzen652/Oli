@@ -939,13 +939,37 @@
     "hash": "a0d391833115e821ccfff49bc7f131be1e94377b",
     "taskCount": 47
   },
+  "g6-zem-antarktida-poloha-klima-6": {
+    "hash": "311367f19616ff450e7809482368e367fad5fc84",
+    "taskCount": 43
+  },
+  "g6-zem-arktida-poloha-klima-vyznam-6": {
+    "hash": "b47d63dffe3023eb9691e6e665dc644d097586a2",
+    "taskCount": 59
+  },
+  "g6-zem-atmosfera-pocasi-podnebi-6": {
+    "hash": "b85a4f976a0fe06e452eb3020e5955bb60ba437d",
+    "taskCount": 66
+  },
   "g6-zem-globus-mapa-meritko-6": {
     "hash": "bfa655de04a30b6cde10a2498983d7211984ea6b",
     "taskCount": 72
   },
+  "g6-zem-hydrosfera-voda-na-zemi-6": {
+    "hash": "afb080cf0318f8c3661e7c72e4f0f151188411e8",
+    "taskCount": 47
+  },
+  "g6-zem-litosfera-stavba-zeme-desky-6": {
+    "hash": "8885e4250f1ed92ad4d29db227928080b59f8d8d",
+    "taskCount": 54
+  },
   "g6-zem-mapove-znacky-orientace-6": {
     "hash": "9da15dde1a536451c7d4f186d6d98ce90bb2fbcc",
     "taskCount": 68
+  },
+  "g6-zem-pedosfera-biosfera-6": {
+    "hash": "e61dddeca7ee3d453fe4968b4c7e4c945b63ce31",
+    "taskCount": 43
   },
   "g6-zem-rocni-doby-casova-pasma-6": {
     "hash": "c565952176562eadf6e296de151d6308cc39803d",
