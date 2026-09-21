@@ -178,6 +178,8 @@ src/
   a žádný `.env` → 24 souborů testů nešlo načíst. Vyřešeno `npm install`
   a kopií `.env`; nebyla to vada kódu.
 - ⏭️ **Dál:** čeština dávka 2 — skladba (2) + zvuková stránka jazyka (2).
+- ⏸️ **Předáno na druhý PC** — dávka je na `origin/claude/czech-morphology-vocabulary-71729b`,
+  do `main` (= produkce) čeká na potvrzení; postup v `docs/SESSION_HANDOFF.md` §0.
 
 ### Session 2026-09-20 (52) — zeměpis šestky HOTOVÝ (18/18):
 

@@ -28,8 +28,39 @@ Ověř si to `git fetch`em, ne pamětí:
 git fetch origin && git status -sb && git worktree list
 ```
 
-**Pracovní větev je `main`.** K 21. 9. je všechno pushnuté, `origin/main` je na
-`bd0ba37` (zeměpis 18/18 + rozpis češtiny), pracovní strom čistý.
+**Pracovní větev je `main`.**
+
+### ⛔ K 21. 9. ráno: dávka 1 češtiny NENÍ v `main`
+
+`origin/main` je na `327b381`. Dávka 1 češtiny (`ae0057f`, 5 témat) a tohle
+předání leží na **`origin/claude/czech-morphology-vocabulary-71729b`**, protože
+push do `main` = nasazení na produkci a to čeká na potvrzení Evžena.
+Větev je čistě o dva commity napřed před `main` (jen fast-forward, žádný konflikt).
+
+**První krok na druhém PC** (po potvrzení nasazení):
+
+```bash
+git fetch origin
+git checkout main && git pull
+git merge --ff-only origin/claude/czech-morphology-vocabulary-71729b
+git push origin main
+git log --oneline origin/main -1
+```
+
+Pak smaž session větev z originu (`git push origin --delete claude/czech-morphology-vocabulary-71729b`)
+a pokračuj na `main`. **Nenavazuj novou práci na session větev** — přesně tohle
+jednou stálo celý task (viz CLAUDE.md „Multi-PC workflow“).
+
+Kdyby nasazení mělo počkat: dávku 2 stejně začni od `main` s tímhle merge
+lokálně, jen nepushuj.
+
+Ověřeno na prvním PC před předáním: typecheck, 7 744 testů (1 nestabilní test
+přírodopisu nesouvisející s dávkou — úkol založen), `audit:content`,
+`audit:agreement`, `audit:ui`, build, průchod v prohlížeči.
+
+### Běžný stav
+
+Dřív tu stálo: `origin/main` na `bd0ba37` (zeměpis 18/18 + rozpis češtiny).
 **Worktree jsou dva** (hlavní repo a `competent-johnson-de23e8`); pět
 zastaralých odstraněno 15. 9. bez ztráty práce — viz `SESSION_PROTOCOL.md` krok 1.
 
@@ -80,7 +111,28 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: čeština 6. ročníku (20 témat)
+### ▶▶ ZAČNI TADY: čeština 6. ročníku — dávka 2 (skladba + zvuková stránka)
+
+Postup, který v dávce 1 fungoval (21. 9.):
+
+1. Workflow přes `scriptPath: ".claude/workflows/author-batch.js"`, args = pole
+   `{rvpId, label, authorModel: "sonnet"}`. Před spuštěním doplň do `STANDARDS`
+   pravidla pro okruh (skladba: větné členy určuj jen ve větě, kde jsou
+   jednoznačné; zvuková stránka: vše řešitelné z psaného textu — viz pasti níž).
+2. Po limitu relace obnov přes `resumeFromRunId` se **stejnými** args.
+   Rozepsané soubory mrtvých autorů odlož a smaž, ať autor píše na čisto.
+3. Integrace: `grade-6/index.ts`, `navigation.ts` (okruh + unikátní emoji),
+   `displayNames.ts` (category i topic), `topicInsight.ts` (klíč
+   `čeština::Jazyková výchova::<topic>` — „Skladba“ a „Zvuková stránka jazyka“
+   už existují).
+4. Vypiš si všechny úlohy (dočasný vitest, který projde `generator(1/2/3)`
+   25× a zapíše unikátní úlohy do scratchpadu) a projdi je ručně. V dávce 1
+   to našlo pět vad, které kritici nechali projít.
+5. `check:hints/options/length` s `IDS=…`, brána 0 znovu, zámek obsahu,
+   celá sada, `audit:content/agreement/ui`, build, prohlížeč (`/student`
+   + anonymní trial pro 6. ročník).
+
+### Čeština 6. ročníku (20 témat) — plán dávek
 
 **Zeměpis je hotový (18/18)** — tři dávky 19.–20. 9.; detail `PROJECT_STATUS.md`
 §6 session 50–52. Šestka je na **89 ze 117**. Zbývá čeština (20, „smíšený“ blok:
