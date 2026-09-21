@@ -30,37 +30,14 @@ git fetch origin && git status -sb && git worktree list
 
 **Pracovní větev je `main`.**
 
-### ⛔ K 21. 9. ráno: dávka 1 češtiny NENÍ v `main`
+K 21. 9. je všechno v `main` a pushnuté (Evžen potvrdil nasazení): dávka 1
+češtiny + tohle předání. Na druhém PC stačí `git pull` na `main`. Session větev
+`claude/czech-morphology-vocabulary-71729b` je z originu smazaná — nepoužívej ji.
 
-`origin/main` je na `327b381`. Dávka 1 češtiny (`ae0057f`, 5 témat) a tohle
-předání leží na **`origin/claude/czech-morphology-vocabulary-71729b`**, protože
-push do `main` = nasazení na produkci a to čeká na potvrzení Evžena.
-Větev je čistě o dva commity napřed před `main` (jen fast-forward, žádný konflikt).
-
-**První krok na druhém PC** (po potvrzení nasazení):
-
-```bash
-git fetch origin
-git checkout main && git pull
-git merge --ff-only origin/claude/czech-morphology-vocabulary-71729b
-git push origin main
-git log --oneline origin/main -1
-```
-
-Pak smaž session větev z originu (`git push origin --delete claude/czech-morphology-vocabulary-71729b`)
-a pokračuj na `main`. **Nenavazuj novou práci na session větev** — přesně tohle
-jednou stálo celý task (viz CLAUDE.md „Multi-PC workflow“).
-
-Kdyby nasazení mělo počkat: dávku 2 stejně začni od `main` s tímhle merge
-lokálně, jen nepushuj.
-
-Ověřeno na prvním PC před předáním: typecheck, 7 744 testů (1 nestabilní test
+Ověřeno na prvním PC před pushem: typecheck, 7 744 testů (1 nestabilní test
 přírodopisu nesouvisející s dávkou — úkol založen), `audit:content`,
-`audit:agreement`, `audit:ui`, build, průchod v prohlížeči.
-
-### Běžný stav
-
-Dřív tu stálo: `origin/main` na `bd0ba37` (zeměpis 18/18 + rozpis češtiny).
+`audit:agreement`, `audit:ui`, build, průchod v prohlížeči. Nasazení na Vercelu
+odsud ověřit nejde (viz níž).
 **Worktree jsou dva** (hlavní repo a `competent-johnson-de23e8`); pět
 zastaralých odstraněno 15. 9. bez ztráty práce — viz `SESSION_PROTOCOL.md` krok 1.
 
