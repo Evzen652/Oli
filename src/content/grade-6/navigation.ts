@@ -43,6 +43,26 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-cjl-synonyma-antonyma-homonyma-6",
         ],
       },
+      {
+        id: "skladba",
+        name: "Stavba věty",
+        description: "Základní a rozvíjející větné členy: předmět, příslovečné určení, přívlastek, doplněk.",
+        emoji: "🔗",
+        topicIds: [
+          "g6-cjl-veta-jednoducha-vetne-cleny-6",
+          "g6-cjl-predmet-prislovecne-urceni-privlastek-doplnek-6",
+        ],
+      },
+      {
+        id: "zvukova-stranka",
+        name: "Jak věta zní",
+        description: "Přízvuk, melodie věty, pauzy a spisovná výslovnost.",
+        emoji: "🗣️",
+        topicIds: [
+          "g6-cjl-prizvuk-intonace-frazovani-6",
+          "g6-cjl-spisovna-vyslovnost-modulace-souvisle-reci-6",
+        ],
+      },
     ],
   },
   {

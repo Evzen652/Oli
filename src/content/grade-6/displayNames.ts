@@ -72,7 +72,7 @@ export const DISPLAY_NAMES: DisplayMap = {
     // Čeština
     "Jazyková výchova": {
       name: "Mluvnice",
-      description: "Slovní druhy, tvary slov a slovní zásoba.",
+      description: "Slovní druhy, tvary slov, slovní zásoba, stavba věty a výslovnost.",
     },
     // Čeština
     Tvarosloví: {
@@ -82,6 +82,14 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Nauka o slovní zásobě": {
       name: "Slovní zásoba",
       description: "Jak vznikají nová slova a čím se liší synonyma, antonyma a homonyma.",
+    },
+    Skladba: {
+      name: "Stavba věty",
+      description: "Najdeš ve větě podmět, přísudek, předmět, přívlastek i doplněk.",
+    },
+    "Zvuková stránka jazyka": {
+      name: "Jak věta zní",
+      description: "Přízvuk, melodie věty, pauzy a spisovná výslovnost.",
     },
     // Fyzika
     "Měření fyzikálních veličin": {

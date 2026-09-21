@@ -123,6 +123,12 @@ import { SLOVESA_TRIDY_A_VZORY } from "./cjl/slovesaTridyAVzory";
 // Čeština — Nauka o slovní zásobě
 import { SLOVNI_ZASOBA_A_JEJI_OBOHACOVANI } from "./cjl/slovniZasobaAJejiObohacovani";
 import { SYNONYMA_ANTONYMA_HOMONYMA } from "./cjl/synonymaAntonymaHomonyma";
+// Čeština — Skladba
+import { VETA_JEDNODUCHA_ZAKLADNI_A_ROZVIJEJICI_VETNE_CLENY } from "./cjl/vetaJednoduchaZakladniARozvijejiciVetneCleny";
+import { PREDMET_PRISLOVECNE_URCENI_PRIVLASTEK_DOPLNEK } from "./cjl/predmetPrislovecneUrceniPrivlastekDoplnek";
+// Čeština — Zvuková stránka jazyka
+import { PRIZVUK_INTONACE_FRAZOVANI } from "./cjl/prizvukIntonaceFrazovani";
+import { SPISOVNA_VYSLOVNOST_MODULACE_SOUVISLE_RECI } from "./cjl/spisovnaVyslovnostModulaceSouvisleReci";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Čeština — Jazyková výchova
@@ -131,6 +137,10 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...SLOVESA_TRIDY_A_VZORY,
   ...SLOVNI_ZASOBA_A_JEJI_OBOHACOVANI,
   ...SYNONYMA_ANTONYMA_HOMONYMA,
+  ...VETA_JEDNODUCHA_ZAKLADNI_A_ROZVIJEJICI_VETNE_CLENY,
+  ...PREDMET_PRISLOVECNE_URCENI_PRIVLASTEK_DOPLNEK,
+  ...PRIZVUK_INTONACE_FRAZOVANI,
+  ...SPISOVNA_VYSLOVNOST_MODULACE_SOUVISLE_RECI,
   // Zeměpis — Geografické informace, zdroje dat, kartografie
   ...GLOBUS_MAPA_MERITKO,
   ...MAPOVE_ZNACKY_ORIENTACE,

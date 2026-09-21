@@ -130,8 +130,70 @@ PRAVIDLA PRO ČEŠTINU:
   příslovce ↔ přídavné jméno, číslovka ↔ podst. jm. (sto, pětka), předložka ↔ příslovce, dokonavé sloveso v přítomném čase,
   synonymum ↔ antonymum, homonymum ↔ synonymum. Ne náhodný pojem.
 - Formát: select_one / categorize / multi_select. Volný text (doplň) workflow nedovoluje; pravopisnou doplňovačku
-  s grafémy (i/y) NEDĚLEJ — těžiště je v tvarosloví a slovní zásobě.
+  s grafémy (i/y) NEDĚLEJ — těžiště je v tvarosloví, skladbě a slovní zásobě.
 - Žádné obrázky ani zvuk. Věty v úlohách přirozené, ze života 11–12letých, bez archaismů; jména střídej.
+
+PRAVIDLA PRO ČEŠTINU — SKLADBA (větné členy):
+- Navazuj na src/content/grade-4/cjl/stavbaVetyZakladniSkladebniDvojicePodmetPrisudek.ts a grade-5/cjl/
+  (podmetVyjadrenyNevyjadrenyNekolikanasobny.ts, shodaPrisudkuSPodmetem.ts). L1 smí být podmět/přísudek, L2/L3 za ně.
+- Terminologie učebnic 6. ročníku: podmět (vyjádřený/nevyjádřený), přísudek slovesný / jmenný se sponou, předmět,
+  příslovečné určení místa, času, způsobu, příčiny (míry a účelu jen na L3), přívlastek shodný × neshodný, doplněk.
+  Otázky na větné členy: předmět = pádové otázky kromě 1. pádu (koho/co, komu/čemu…), PU = kde/kdy/jak/proč, přívlastek =
+  jaký/který/čí, doplněk = na dva členy zároveň (podmět/předmět + přísudek). Věty „rozvíjející × základní".
+- Větný člen se určuje JEN ve větě, kde je jednoznačný. Vyhni se učebnicově sporným případům jako klíči:
+  předmět × PU u předložkových vazeb (mluvil o škole = předmět × šel do školy = PU) dávej jen v jasných, typických
+  větách; doplněk jen v prototypech (Vrátil se unavený. Zvolili ho předsedou. Viděl ho utíkat.); přívlastek × doplněk
+  jen tam, kde je rozdíl zjevný z věty. Zkoumaný člen VYZNAČ v zadání (velkými písmeny nebo uvozovkami), ať je jasné,
+  které slovo/sousloví se určuje; u víceslovných členů zvýrazni celé sousloví („na starém mostě").
+- Přívlastek rozvíjí podstatné jméno a je součástí toho členu, který rozvíjí — neptej se, zda je přívlastek „samostatný
+  základní člen". Přísudek jmenný se sponou (Petr je lékař / byl nemocný) — spona + jméno = celý přísudek.
+- Distraktor = typická chyba šesťáka: předmět ↔ podmět u 4. pádu (Míč kopl Tomáš), PU místa ↔ předmět, přívlastek
+  shodný ↔ neshodný, přívlastek ↔ doplněk, PU způsobu ↔ přívlastek, pádová otázka z předložky místo z tvaru, zaměnit
+  kdy/kde. Ne náhodný pojem.
+- Nezávislý solver: tabulka věta → vyznačený člen → správný větný člen (a druh PU); test ověří, že klíč z generátoru
+  sedí s tabulkou a že vyznačené slovo ve větě opravdu je.
+
+PRAVIDLA PRO ČEŠTINU — ZVUKOVÁ STRÁNKA JAZYKA (bez zvuku!):
+- Zvukové soubory NEJSOU a nebudou. Vše řešitelné z psaného textu: na kterou slabiku padá přízvuk (česky na první,
+  předložka přebírá přízvuk: NA stole, DO lesa), přízvukový takt, jaká melodie (intonace) patří k větě oznamovací
+  (klesavá), tázací doplňovací (klesavá: Kdo přišel?), zjišťovací (stoupavá: Přišel?), kde udělat pauzu (frázování
+  podle smyslu a interpunkce), co zdůraznit (větný přízvuk / důraz mění smysl — zvýrazněné slovo ve větě).
+- Spisovná výslovnost psaná PŘEPISEM v hranatých závorkách, jak ho dělají učebnice: spodoba znělosti ([ret] = led,
+  [kfjet] = květ, [sfatba] = svatba), di/ti/ni → [ďi], dě/tě/ně/mě/bě/pě/vě ([mňesto] = město), ě po b/p/v = [je],
+  ou jako dvojhláska, dvě stejné souhlásky ve slově vyslovujeme jako jednu (měkký [mňekí]), ráz před samohláskou
+  po předložce (v Americe). Spisovná × nespisovná výslovnost jen s jasnou odpovědí z učebnic ([mňesto] je spisovně;
+  [mlíko], [vokno], [dobrej] jsou nespisovné). Sporné jevy (míra rázu, výslovnost cizích slov, zdvojení na švu předpony) NEdávej jako klíč.
+- Každý fonetický přepis OVĚŘ písmeno po písmenu (spodoba jde podle poslední souhlásky ve skupině; na konci slova
+  před pauzou se znělá mění v neznělou: had [hat], hrad [hrat], lev [lef]). Přepis bez háčkových chyb — ď, ť, ň.
+- Modulace souvislé řeči = tempo, síla hlasu, pauzy, důraz podle situace (hlášení v rozhlase × vyprávění kamarádovi).
+  Úlohy: vyber, jak přednést danou větu v dané situaci; kam umístit pauzu, aby věta dávala smysl
+  (Jíst, nečekat. × Jíst ne, čekat.); které slovo zdůraznit, aby věta odpověděla na danou otázku.
+- Distraktor = typická chyba: přízvuk na předložce opomenutý / na druhé slabice (anglicky/polsky), stoupavá melodie
+  u doplňovací otázky, přepis bez spodoby ([hrad]), spodoba opačným směrem, pauza rozdělující sousloví.
+- Nezávislý solver: pro přepis mechanická funkce spodoby na konci slova a v souhláskové skupině (jen pro slova v bance);
+  pro intonaci klasifikace věty podle tázacího slova / otazníku.
+
+PRAVIDLA PRO ČEŠTINU — SLOH A ČTENÍ (komunikační a slohová výchova):
+- Sloh NENÍ psaní slohu: inputType "essay" neexistuje, žák nic nepíše. Úlohy = poznat, seřadit, vybrat, roztřídit:
+  část dopisu (oslovení, úvod, jádro, závěr, pozdrav, podpis; u úředního adresa odesílatele/adresáta, místo a datum,
+  věc, podpis), vhodná formulace pro úřední × soukromý dopis (Vážený pane řediteli × Ahoj Petře), seřaď kompozici
+  vyprávění (úvod – zápletka – vyvrcholení – obrat – závěr), rozliš popis prostý × odborný × umělecký podle ukázky,
+  zpráva × oznámení (zpráva = o tom, co se STALO; oznámení = o tom, co se STANE — kdo, co, kdy, kde).
+- Navazuj na grade-4/5 cjl (dopisPsaniSoukromehoDopisu, dopisUredniZadostTiskopisy…, popis…, vypravovani…,
+  vyhledavaniKlicovychSlov…, studijniCteniAVecneCteni). L1 smí být rozcvička z 5. ročníku, L2/L3 za ni.
+- Krátké ukázky (2–5 vět) napiš SÁM, přirozeně, ze života 11–12letých; žádné citace chráněných textů.
+  Banka ≥ 8 různých ukázek na úroveň (rotuj), ne jedna ukázka s obměnou otázky.
+- Klíčová slova / hlavní myšlenka: ukázka musí mít JEDNU jasnou hlavní myšlenku; distraktory = detail z textu,
+  příliš obecné tvrzení, tvrzení, které v textu není (typická chyba: vybrat první větu, vybrat zajímavý detail).
+- Věcné čtení: jízdní řád, návod, leták, tabulka — převyprávěj slovy v zadání (žádné obrázky), otázka musí jít
+  jednoznačně vyčíst. Čísla a časy konzistentní s ukázkou (ověř).
+- Distraktor = typická chyba: úřední dopis s hovorovým oslovením, chybějící věc/datum, zpráva ↔ oznámení (čas děje),
+  popis prostý ↔ odborný (odborné termíny, míry), umělecký popis ↔ vyprávění, zápletka ↔ vyvrcholení.
+- Nápověda navádí na znak (čas děje, adresát, míra termínů), neprozrazuje zařazení.
+- Formát: select_one / categorize / multi_select; drag_order (buildOrderTask) smíš pro pořadí částí dopisu nebo
+  kompozici vyprávění — téma ale typy NEMÍCHÁ (celé téma jeden typ, viz Cause C). Ano/Ne jen L1.
+- Pozor na jazyk ukázek: úřední dopis spisovně a zdvořile (Vážená paní, S pozdravem), soukromý přirozeně
+  (Ahoj, Měj se). Žádná ukázka nesmí obsahovat reálnou adresu, telefon či e-mail — jen zjevně smyšlené.
 
 OBECNĚ — DETERMINISMUS: generátor nesmí mít stav mezi voláními (žádné „let" počítadlo na úrovni modulu,
 které se jen zvyšuje). Rotaci šablon nastav na začátku gen() — hlídá to src/test/generator-determinism.test.ts.

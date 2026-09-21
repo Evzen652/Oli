@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-21
+# Předání práce — stav k 2026-09-22
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -11,8 +11,8 @@
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
 >    matematika 12/12 a přírodopis 22/22 (16. 9.), zeměpis 18/18 (20. 9.),
->    **čeština 5/20 (21. 9., dávka 1)**. Šestka na **94 ze 117**. **Na řadě je
->    čeština dávka 2** (skladba + zvuková stránka) a pak výchova k občanství (8)
+>    **čeština 9/20 (22. 9., dávky 1–2)**. Šestka na **98 ze 117**. **Na řadě je
+>    čeština dávka 3** (sloh + čtení), dávka 4 (literatura) a pak výchova k občanství (8)
 >    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
@@ -88,7 +88,13 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
-### ▶▶ ZAČNI TADY: čeština 6. ročníku — dávka 2 (skladba + zvuková stránka)
+### ✅ Dávka 2 hotová (22. 9.) — skladba + zvuková stránka, detail `PROJECT_STATUS.md` §6 session 54
+
+Poučení z dávky 2: kritici nechali projít shodu „Kdo koupila…?“ a lomítkové tvary
+„měl/a“ — ruční průchod výpisu úloh je pořád nutný. Pravidla dávky 3 (sloh, čtení)
+a 4 (literatura) jsou/budou ve `STANDARDS` workflow.
+
+### ▶▶ ZAČNI TADY: čeština 6. ročníku — dávka 3 (sloh + čtení), pak 4 (literatura)
 
 Postup, který v dávce 1 fungoval (21. 9.):
 

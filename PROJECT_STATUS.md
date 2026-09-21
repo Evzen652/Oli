@@ -144,6 +144,27 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-22 (54) — čeština šestky, 2. dávka (9/20):
+
+- ✅ **Skladba (2) + zvuková stránka jazyka (2)**, šestka **98 ze 117**.
+  Větné členy základní a rozvíjející, předmět / PU / přívlastek / doplněk,
+  přízvuk-intonace-frázování, spisovná výslovnost a modulace řeči.
+  Nové okruhy „Stavba věty“ 🔗 a „Jak věta zní“ 🗣️ (zajímavosti už existovaly).
+- ✅ **Pravidla ve workflow:** větný člen jen tam, kde je jednoznačný a vyznačený;
+  zvuková stránka řešitelná z textu (přepis v hranatých závorkách, spodoba ověřená).
+- 🔄 Workflow 22 agentů, 0 padlých, všechna čtyři témata „fixed“ (11–31 vad).
+- 🔍 **Ruční průchod:** klíče i přepisy sedí. Opraveno: „Kdo koupila / zalila /
+  upekla…?“ (tázací *kdo* chce mužský rod), lomítkové tvary „měl/a“, „zapomněl/a“,
+  dvojitá interpunkce „…?“?“ v otázkách na melodii, „jedno slovo“ u víceslovného
+  důrazu, „vyznačené slovo (nebo slova)“ → „vyznačená část“, překlep „frazování“.
+- ✅ **Brány:** typecheck ✓, testy 7 900 / 2 (zámek obsahu — jen přírůstek 4 témat,
+  přegenerován; `pavoukovci` L2 známý nestabilní test), `check:hints` 4 nálezy
+  posouzeny (nápověda jmenuje obě melodie, neprozrazuje), `check:options` 0,
+  `check:length` 0, `audit:content` ✓, `audit:agreement` 42 479 úloh bez nálezu,
+  `audit:ui` ✓, build ✓, prohlížeč (anonymní žák, 6. ročník → Čeština → nové okruhy,
+  úloha s chybnou i správnou odpovědí) ✓.
+- ⏭️ **Dál:** dávka 3 (sloh + čtení, 6 témat) běží, pak literární výchova (5).
+
 ### Session 2026-09-21 (53) — čeština šestky, 1. dávka (5/20):
 
 - ✅ **Tvarosloví (3) + nauka o slovní zásobě (2)**, šestka **94 ze 117**.

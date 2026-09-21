@@ -2,12 +2,12 @@
 
 # Grade 6 — STATUS (pilot 2. stupně)
 
-> Hotovo (2026-09-21): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 18/18, Čeština 5/20** — 94 ze 117.
-> Zbývá čeština (15) a výchova k občanství (8) (pořadí v
+> Hotovo (2026-09-22): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
+> Přírodopis 22/22, Zeměpis 18/18, Čeština 9/20** — 98 ze 117.
+> Zbývá čeština (11) a výchova k občanství (8) (pořadí v
 > `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
-## Čeština (20 RVP podtémat) — 5/20 (2026-09-21)
+## Čeština (20 RVP podtémat) — 9/20 (2026-09-22)
 
 > Sdílené utility: `cjl/_shared.ts` (buildChoiceTask → null při < 3 distraktorech,
 > buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy; nápovědy o jazyce).
@@ -22,8 +22,15 @@
 - [x] Slovní zásoba a její obohacování → `cjl/slovniZasobaAJejiObohacovani.ts` ✅ (odvozování, skládání, zkracování, přejímání, sousloví, změna významu)
 - [x] Synonyma, antonyma, homonyma → `cjl/synonymaAntonymaHomonyma.ts` ✅ (L2 synonymum/antonymum podle kontextu · L3 homonymum × mnohoznačné slovo i s důvodem)
 
+### Jazyková výchova — Skladba
+- [x] Věta jednoduchá – základní a rozvíjející větné členy → `cjl/vetaJednoduchaZakladniARozvijejiciVetneCleny.ts` ✅ (L1 podmět/přísudek/předmět · L2 druhy PU, přívlastek shodný × neshodný · L3 přísudek jmenný se sponou, doplněk, podmět za slovesem)
+- [x] Předmět, příslovečné určení, přívlastek, doplněk → `cjl/predmetPrislovecneUrceniPrivlastekDoplnek.ts` ✅ (L2 pádová otázka předmětu, druh PU · L3 doplněk × přívlastek, PU účelu a míry)
+
+### Jazyková výchova — Zvuková stránka jazyka (bez zvuku — vše z psaného textu)
+- [x] Přízvuk, intonace, frázování → `cjl/prizvukIntonaceFrazovani.ts` ✅ (přízvuk na 1. slabice i s předložkou, takty, melodie otázek, pauza mění smysl, větný důraz)
+- [x] Spisovná výslovnost, modulace souvislé řeči → `cjl/spisovnaVyslovnostModulaceSouvisleReci.ts` ✅ (spodoba znělosti v přepisu, ď/ť/ň, mě/bě, přednes podle situace)
+
 ### Zbývá
-- [ ] Skladba (2) + zvuková stránka jazyka (2) — dávka 2
 - [ ] Sloh (4) + čtení a naslouchání (2) — dávka 3
 - [ ] Literární výchova (5) — dávka 4
 

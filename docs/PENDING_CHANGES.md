@@ -143,6 +143,9 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - ✅ **ČEŠTINA 6. ROČNÍKU — 1. dávka 5/20** (21. 9.). Tvarosloví (3) a nauka
   o slovní zásobě (2), šestka **94 ze 117**. Nový `grade-6/cjl/_shared.ts`
   a pravidla češtiny ve workflow. Dál: skladba + zvuková stránka jazyka.
+- ✅ **ČEŠTINA 6. ROČNÍKU — 2. dávka 9/20** (22. 9.). Skladba (2) a zvuková
+  stránka jazyka (2), šestka **98 ze 117**. Pravidla skladby a výslovnosti bez
+  zvuku ve workflow. Dál: sloh + čtení a naslouchání (dávka 3 běží).
 - ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
   jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
   vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj
