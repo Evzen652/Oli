@@ -151,6 +151,10 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Slovní druhy jsou návod, jak se slovo chová ve větě. Podle nich poznáš, co se ohýbá a co zůstává.",
     funFact: "Čeština má sedm pádů. Finština jich má patnáct, takže na náš předložkový „v domě“ jí stačí jediné slovo.",
   },
+  "čeština::Jazyková výchova::Nauka o slovní zásobě": {
+    useful: "Když poznáš, jak slovo vzniklo, odhadneš význam i slova, které čteš poprvé.",
+    funFact: "Slovo „los“ je zvíře i lístek do loterie. Jsou to dvě různá slova, která se jen náhodou píšou stejně.",
+  },
   "čeština::Jazyková výchova::Pravopis": {
     useful: "Pravopis je slušnost vůči tomu, kdo tě čte. Chyba ho zdrží a někdy i splete.",
     funFact: "Ypsilon se kdysi vyslovovalo jinak než „i“. Rozdíl ve výslovnosti dávno zmizel, ale pravidlo zůstalo.",

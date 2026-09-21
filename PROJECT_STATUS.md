@@ -144,6 +144,41 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-21 (53) — čeština šestky, 1. dávka (5/20):
+
+- ✅ **Tvarosloví (3) + nauka o slovní zásobě (2)**, šestka **94 ze 117**.
+  Slovní druhy (ohebné × neohebné, slovní druh podle věty), podstatná jména
+  (vzory, úplné určení, pomnožná jména), slovesa (třídy a vzory, čas × vid),
+  obohacování slovní zásoby, synonyma / antonyma / homonyma × mnohoznačná slova.
+  Nový okruh v navigaci „Slovní druhy a tvary“ 🔤 a „Slovní zásoba“ 📚,
+  zajímavost pro „Nauku o slovní zásobě“.
+- ✅ **Nový `grade-6/cjl/_shared.ts`** (stavba jako přírodopis, nápovědy o jazyce)
+  a **pravidla češtiny ve workflow** `author-batch.js` (třídy a vzory, klíč nesmí
+  být vzorové slovo v zadání, slovní druh jen ve větě, homonymum × mnohoznačné
+  slovo, id `g6-cjl-…-6`, subject `"čeština"`). Workflow umí `authorModel`
+  (autoři na Sonnetu, kritici na modelu relace).
+- ⚠️ **Limit relace v 01:13 zabil všech pět autorů**; obnoveno přes
+  `resumeFromRunId` po resetu (plány převzaty z mezipaměti). 29 agentů, všech
+  pět témat „fixed“ (17–29 vad na téma od kritiků).
+- 🔍 **Ruční průchod všech úloh (1 157 řádků)**: klíče sedí, vč. pastí
+  (moci → peče, rozumět → sází, hřát/přát → kryje, zavřít/třít → umře).
+  Opraveno pět drobností: vzorové slovo „hrad“ v zadání (→ „most“), překlep
+  „poštáka“, neidiomatické „Fandili jsme s houslisty“, distraktory v ženském
+  rodě mezi mužskými (šlo tipovat vylučováním), klíč jako jediný jiný začátek
+  (`check:options`).
+- ✅ **Brány:** typecheck ✓, testy **7 744 / 1** (selhání = nestabilní
+  `pavoukovci` L2, s dávkou nesouvisí — padá 2× z 5 i samostatně; založen
+  úkol), brána 0 ✓ u všech pěti, `check:hints` 3 nálezy posouzeny (obecné
+  pravidlo, ne prozrazení), `check:options` 0 po opravě, `check:length` 0,
+  `audit:content` ✓, `audit:agreement` 41 932 úloh bez nálezu, `audit:ui` ✓,
+  build ✓, zámek obsahu = 20 řádků přírůstku.
+- ℹ️ `audit:coverage` šestku nevypisuje vůbec (prochází 2.–5. ročník) — úrovně
+  hlídá `generator-task-count.test.ts`.
+- ℹ️ Worktree měl zastaralé `node_modules` hlavního repa (bez `@capacitor/*`)
+  a žádný `.env` → 24 souborů testů nešlo načíst. Vyřešeno `npm install`
+  a kopií `.env`; nebyla to vada kódu.
+- ⏭️ **Dál:** čeština dávka 2 — skladba (2) + zvuková stránka jazyka (2).
+
 ### Session 2026-09-20 (52) — zeměpis šestky HOTOVÝ (18/18):
 
 - ✅ **Poslední dávka: Afrika (3) + Austrálie a Oceánie (3)**, šestka **89 ze 117**,

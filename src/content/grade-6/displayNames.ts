@@ -69,6 +69,20 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Světadíly",
       description: "Afrika, Austrálie a Oceánie i ledové oblasti kolem pólů.",
     },
+    // Čeština
+    "Jazyková výchova": {
+      name: "Mluvnice",
+      description: "Slovní druhy, tvary slov a slovní zásoba.",
+    },
+    // Čeština
+    Tvarosloví: {
+      name: "Slovní druhy a tvary",
+      description: "Poznáš slovní druh ve větě, určíš vzor i slovesnou třídu.",
+    },
+    "Nauka o slovní zásobě": {
+      name: "Slovní zásoba",
+      description: "Jak vznikají nová slova a čím se liší synonyma, antonyma a homonyma.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",

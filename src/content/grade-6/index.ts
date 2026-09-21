@@ -116,8 +116,21 @@ import { OBYVATELSTVO_HOSPODARSTVI_AFRIKY } from "./zemepis/obyvatelstvoHospodar
 import { AUSTRALIE_OCEANIE_POLOHA_POVRCH_KLIMA } from "./zemepis/australieOceaniePolohaPovrchKlima";
 import { PRIRODA_ENDEMITY_VELKY_BARIEROVY_UTES } from "./zemepis/prirodaEndemityVelkyBarierovyUtes";
 import { AUSTRALIE_OBYVATELSTVO_OSTROVY_OCEANIE } from "./zemepis/australieObyvatelstvoOstrovyOceanie";
+// Čeština — Tvarosloví
+import { OPAKOVANI_SLOVNICH_DRUHU_OHEBNE_NEOHEBNE } from "./cjl/opakovaniSlovnichDruhuOhebneNeohebne";
+import { PODSTATNA_JMENA_SKLONOVANI_MLUVNICKE_KATEGORIE } from "./cjl/podstatnaJmenaSklonovaniMluvnickeKategorie";
+import { SLOVESA_TRIDY_A_VZORY } from "./cjl/slovesaTridyAVzory";
+// Čeština — Nauka o slovní zásobě
+import { SLOVNI_ZASOBA_A_JEJI_OBOHACOVANI } from "./cjl/slovniZasobaAJejiObohacovani";
+import { SYNONYMA_ANTONYMA_HOMONYMA } from "./cjl/synonymaAntonymaHomonyma";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
+  // Čeština — Jazyková výchova
+  ...OPAKOVANI_SLOVNICH_DRUHU_OHEBNE_NEOHEBNE,
+  ...PODSTATNA_JMENA_SKLONOVANI_MLUVNICKE_KATEGORIE,
+  ...SLOVESA_TRIDY_A_VZORY,
+  ...SLOVNI_ZASOBA_A_JEJI_OBOHACOVANI,
+  ...SYNONYMA_ANTONYMA_HOMONYMA,
   // Zeměpis — Geografické informace, zdroje dat, kartografie
   ...GLOBUS_MAPA_MERITKO,
   ...MAPOVE_ZNACKY_ORIENTACE,

@@ -20,6 +20,32 @@ import type { SubjectNav } from "../navigation";
 
 export const GRADE6_NAVIGATION: SubjectNav[] = [
   {
+    subject: "čeština",
+    okruhy: [
+      {
+        id: "tvaroslovi",
+        name: "Slovní druhy a tvary",
+        description: "Ohebná a neohebná slova, vzory podstatných jmen a slovesné třídy.",
+        emoji: "🔤",
+        topicIds: [
+          "g6-cjl-opakovani-slovnich-druhu-ohebne-neohebne-6",
+          "g6-cjl-podstatna-jmena-sklonovani-mluvnicke-kategorie-6",
+          "g6-cjl-slovesa-tridy-a-vzory-6",
+        ],
+      },
+      {
+        id: "slovni-zasoba",
+        name: "Slovní zásoba",
+        description: "Jak vznikají nová slova a čím se liší synonyma, antonyma a homonyma.",
+        emoji: "📚",
+        topicIds: [
+          "g6-cjl-slovni-zasoba-a-jeji-obohacovani-6",
+          "g6-cjl-synonyma-antonyma-homonyma-6",
+        ],
+      },
+    ],
+  },
+  {
     subject: "matematika",
     okruhy: [
       {

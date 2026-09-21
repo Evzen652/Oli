@@ -140,6 +140,9 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   a Oceánie (3), šestka **89 ze 117**. Při ruční kontrole opraveny zeměpisné
   délky v úloze „popis podnebí → souřadnice“ (dvě místa trefovala reálné oblasti
   s jiným podnebím). Dál: čeština (20), výchova k občanství (8).
+- ✅ **ČEŠTINA 6. ROČNÍKU — 1. dávka 5/20** (21. 9.). Tvarosloví (3) a nauka
+  o slovní zásobě (2), šestka **94 ze 117**. Nový `grade-6/cjl/_shared.ts`
+  a pravidla češtiny ve workflow. Dál: skladba + zvuková stránka jazyka.
 - ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
   jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
   vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj

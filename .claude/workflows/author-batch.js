@@ -11,7 +11,7 @@ export const meta = {
 }
 
 // ── Vstup ────────────────────────────────────────────────────────────────
-// args = pole položek: buď řetězec rvpId, nebo { rvpId, label?, file?, exportName?, subject? }
+// args = pole položek: buď řetězec rvpId, nebo { rvpId, label?, file?, exportName?, subject?, authorModel? }
 const raw = Array.isArray(args) ? args : (args ? [args] : [])
 const topics = raw.map((t) => (typeof t === 'string' ? { rvpId: t } : t)).filter((t) => t && t.rvpId)
 if (!topics.length) {
@@ -98,6 +98,40 @@ PRAVIDLA PRO ZEMĚPIS:
   (podnebí → vegetace → život lidí), L3 přenos: poznej oblast z popisu, rozhodni o neznámém místě podle
   souřadnic a podnebí, vysvětli problém (dezertifikace, sucho, tání ledu) příčinou.
 - Endemity a zvířata jen všeobecně známá (klokan, koala, ptakopysk, emu, tučňák císařský, lední medvěd, mrož).
+
+- ČEŠTINA: stavba jako přírodopis (faktická/pojmová témata), helpery VÝHRADNĚ z src/content/grade-6/cjl/_shared.ts
+  (buildChoiceTask → null při < 3 distraktorech, buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy, pick,
+  pickN, shuffle). Ten _shared.ts NEEDITUJ. Soubor do src/content/grade-6/cjl/<camelCase>.ts,
+  id "g6-cjl-<kebab>-6" (konvence šestky), rvpNodeId = celé rvpId, subject "čeština"
+  (s diakritikou, jako src/content/grade-5/cjl/*). Generátor: gen(level) = ruzneUlohy(() => losUlohy(genLx)).
+  Navazuj na hotový obsah: src/content/grade-5/cjl/ (slovní druhy, přídavná jména, slovesné způsoby, zájmena,
+  slova jednoznačná/mnohoznačná) a src/content/grade-4/cjl/ (_vzory.ts, vzory podstatných jmen, časování).
+  L1 smí být rozcvička z 5. ročníku, L2/L3 musí jít za ni (vzory předseda/soudce, kategorie vidu, slovesné třídy…).
+
+PRAVIDLA PRO ČEŠTINU:
+- Mluvnice podle Pravidel českého pravopisu a běžných učebnic 6. ročníku (Fraus, SPN, Nová škola).
+  Slovesné třídy a vzory podle kmene přítomného (1. tř. nese/bere/maže/peče/umře, 2. tiskne/mine/začne,
+  3. kryje/kupuje, 4. prosí/trpí/sází, 5. dělá). Kde učebnice počítají jinak (počet vzorů 1. třídy), NEdávej
+  sporný bod jako klíč.
+- KAŽDÝ vzorový/klíčový tvar ověř nahlas: vyskloňuj/vyčasuj slovo celé a teprve pak vyber tvar. Žádné ne-slovo
+  v otázce ani mezi možnostmi, pokud úloha výslovně netestuje chybný tvar (a i pak jen tvar, který dítě reálně napíše).
+- Ptej se na slovo, které NENÍ samo vzorem (u „podle kterého vzoru se skloňuje…" nikdy slovo „předseda",
+  „pán", „žena" — klíč by stál v zadání). Stejně u slovních druhů: klíč nesmí být pojmenovaný v otázce.
+- Slovo vždy ve VĚTĚ, kde je slovní druh / pád / význam jednoznačný. Homonyma a přechodné případy (vedle = předložka
+  × příslovce, to = zájmeno × částice, „ráno" podst. jm. × příslovce) jen tam, kde je rozhoduje kontext věty,
+  a právě to je cílem L3 — nikdy jako holé slovo bez věty.
+- Mluvnické kategorie v tabulce učebnic: podst. jm. = rod (u mužského životnost), číslo, pád, vzor; sloveso = osoba,
+  číslo, čas, způsob, vid (+ třída a vzor). Rod střední nemá životnost. Vid: dokonavé nemá přítomný čas (udělám = budoucí).
+- Slovní zásoba: synonyma/antonyma/homonyma jen s jednoznačným párem v kontextu (hrubý papír × jemný, hrubý člověk ×
+  zdvořilý). Homonymum ≠ mnohoznačné slovo — pokud to rozlišuješ, drž se učebnicové definice (homonyma = shodná forma,
+  významy nesouvisí: kolej, los, jeřáb). Obohacování slovní zásoby = tvoření slov (odvozování, skládání, zkracování),
+  přejímání, zkratky/zkratková slova — příklady ověřené, ne vymyšlené.
+- Distraktor = typická chyba šesťáka: vzor podle zakončení místo rodu (předseda → žena), soudce ↔ muž, kost ↔ píseň,
+  příslovce ↔ přídavné jméno, číslovka ↔ podst. jm. (sto, pětka), předložka ↔ příslovce, dokonavé sloveso v přítomném čase,
+  synonymum ↔ antonymum, homonymum ↔ synonymum. Ne náhodný pojem.
+- Formát: select_one / categorize / multi_select. Volný text (doplň) workflow nedovoluje; pravopisnou doplňovačku
+  s grafémy (i/y) NEDĚLEJ — těžiště je v tvarosloví a slovní zásobě.
+- Žádné obrázky ani zvuk. Věty v úlohách přirozené, ze života 11–12letých, bez archaismů; jména střídej.
 
 OBECNĚ — DETERMINISMUS: generátor nesmí mít stav mezi voláními (žádné „let" počítadlo na úrovni modulu,
 které se jen zvyšuje). Rotaci šablon nastav na začátku gen() — hlídá to src/test/generator-determinism.test.ts.
@@ -256,7 +290,8 @@ const results = await pipeline(
   //    aby téma NEZMIZELO tiše, ale objevilo se v needsReview jako 'failed'.
   (spec, t) => {
     if (!spec) return { rvpId: t.rvpId, status: 'failed', stage: 'spec', reason: 'plánovač vrátil null (agent zemřel / schema fail)' }
-    return agent(authorPrompt(spec), { label: `author:${spec.exportName}`, phase: 'Author', schema: AUTHOR_SCHEMA })
+    // t.authorModel (volitelné) — autorskou práci lze pustit na levnější model, kritici zůstávají na modelu relace.
+    return agent(authorPrompt(spec), { label: `author:${spec.exportName}`, phase: 'Author', schema: AUTHOR_SCHEMA, ...(t.authorModel ? { model: t.authorModel } : {}) })
       .then((a) => (a ? { spec, author: a } : { rvpId: t.rvpId, status: 'failed', stage: 'author', reason: 'autor vrátil null (agent zemřel / schema fail)' }))
   },
   // 3) VERIFY — dvojí optika (+ fakt u faktických), paralelně

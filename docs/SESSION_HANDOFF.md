@@ -10,9 +10,10 @@
 >    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
->    matematika 12/12 a přírodopis 22/22 (16. 9.), **zeměpis 18/18 (20. 9.)**.
->    Šestka na **89 ze 117**. **Na řadě je čeština (20)** a pak výchova
->    k občanství (8) podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+>    matematika 12/12 a přírodopis 22/22 (16. 9.), zeměpis 18/18 (20. 9.),
+>    **čeština 5/20 (21. 9., dávka 1)**. Šestka na **94 ze 117**. **Na řadě je
+>    čeština dávka 2** (skladba + zvuková stránka) a pak výchova k občanství (8)
+>    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
@@ -92,6 +93,13 @@ Zeměpisné pomůcky (`zemepis/_shared.ts`, pravidla zeměpisu ve STANDARDS
 workflow) se českého jazyka netýkají, vzor faktického tématu ale ano.
 Obrázky k obsahu v repu nejsou, takže `image_select` ani `diagram_label` nejdou —
 úlohy musí jít vyřešit ze slov.
+
+**✅ Dávka 1 hotová (21. 9.)** — tvarosloví + slovní zásoba, detail
+`PROJECT_STATUS.md` §6 session 53. Pomocník `grade-6/cjl/_shared.ts` a pravidla
+češtiny ve workflow už existují — další dávky jen doplní pravidla pro svůj okruh.
+Autoři jedou na Sonnetu přes `authorModel: "sonnet"` v args. **Worktree nemusí
+mít `node_modules` ani `.env`** — bez nich spadne 24 testových souborů na
+`@capacitor/core` / `supabaseUrl is required`, což vypadá jako regrese.
 
 **Dávky (20 podtémat, `id` z RVP má prefix `g6-cjl-`):** pouštěj po jedné,
 dvě souběžně spolehlivě vyčerpají limit relace.

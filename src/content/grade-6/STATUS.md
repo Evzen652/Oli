@@ -2,10 +2,30 @@
 
 # Grade 6 — STATUS (pilot 2. stupně)
 
-> Hotovo (2026-09-20): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 18/18** — 89 ze 117.
-> Zbývá čeština (20) a výchova k občanství (pořadí v
+> Hotovo (2026-09-21): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
+> Přírodopis 22/22, Zeměpis 18/18, Čeština 5/20** — 94 ze 117.
+> Zbývá čeština (15) a výchova k občanství (8) (pořadí v
 > `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
+
+## Čeština (20 RVP podtémat) — 5/20 (2026-09-21)
+
+> Sdílené utility: `cjl/_shared.ts` (buildChoiceTask → null při < 3 distraktorech,
+> buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy; nápovědy o jazyce).
+> Id `g6-cjl-<kebab>-6`, subject `"čeština"`. Navazuje na `grade-4/cjl` a `grade-5/cjl`.
+
+### Jazyková výchova — Tvarosloví
+- [x] Opakování slovních druhů – ohebné, neohebné → `cjl/opakovaniSlovnichDruhuOhebneNeohebne.ts` ✅ (L3: slovní druh podle věty — večer/kolem/vedle/blízko; stupňování není ohýbání)
+- [x] Podstatná jména – skloňování, mluvnické kategorie → `cjl/podstatnaJmenaSklonovaniMluvnickeKategorie.ts` ✅ (L2 vzor + úplné určení · L3 pomnožná jména, tvar → 1. pád + vzor)
+- [x] Slovesa – mluvnické kategorie, slovesné třídy a vzory → `cjl/slovesaTridyAVzory.ts` ✅ (L1 třída ze 3. osoby · L2 vzor z tvaru ve větě · L3 „které nepatří“, čas × vid)
+
+### Jazyková výchova — Nauka o slovní zásobě
+- [x] Slovní zásoba a její obohacování → `cjl/slovniZasobaAJejiObohacovani.ts` ✅ (odvozování, skládání, zkracování, přejímání, sousloví, změna významu)
+- [x] Synonyma, antonyma, homonyma → `cjl/synonymaAntonymaHomonyma.ts` ✅ (L2 synonymum/antonymum podle kontextu · L3 homonymum × mnohoznačné slovo i s důvodem)
+
+### Zbývá
+- [ ] Skladba (2) + zvuková stránka jazyka (2) — dávka 2
+- [ ] Sloh (4) + čtení a naslouchání (2) — dávka 3
+- [ ] Literární výchova (5) — dávka 4
 
 ## Fyzika (13 RVP podtémat)
 
