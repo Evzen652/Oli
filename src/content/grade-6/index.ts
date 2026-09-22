@@ -129,6 +129,14 @@ import { PREDMET_PRISLOVECNE_URCENI_PRIVLASTEK_DOPLNEK } from "./cjl/predmetPris
 // Čeština — Zvuková stránka jazyka
 import { PRIZVUK_INTONACE_FRAZOVANI } from "./cjl/prizvukIntonaceFrazovani";
 import { SPISOVNA_VYSLOVNOST_MODULACE_SOUVISLE_RECI } from "./cjl/spisovnaVyslovnostModulaceSouvisleReci";
+// Čeština — Slohová výchova
+import { DOPIS_SOUKROMY_A_UREDNI } from "./cjl/dopisSoukromyAUredni";
+import { POPIS_PROSTY_ODBORNY_UMELECKY } from "./cjl/popisProstyOdbornyUmelecky";
+import { VYPRAVENI_VYSTAVBA_KOMPOZICE_ZAPLETKA } from "./cjl/vypraveniVystavbaKompoziceZapletka";
+import { ZPRAVA_A_OZNAMENI_ROZDILY } from "./cjl/zpravaAOznameniRozdily";
+// Čeština — Čtení a naslouchání
+import { KLICOVA_SLOVA_HLAVNI_MYSLENKY_TEXTU } from "./cjl/klicovaSlovaHlavniMyslenkyTextu";
+import { PRAKTICKE_VECNE_CTENI_STUDIJNI_CTENI } from "./cjl/praktickeVecneCteniStudijniCteni";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Čeština — Jazyková výchova
@@ -141,6 +149,13 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...PREDMET_PRISLOVECNE_URCENI_PRIVLASTEK_DOPLNEK,
   ...PRIZVUK_INTONACE_FRAZOVANI,
   ...SPISOVNA_VYSLOVNOST_MODULACE_SOUVISLE_RECI,
+  // Čeština — Komunikační a slohová výchova
+  ...DOPIS_SOUKROMY_A_UREDNI,
+  ...POPIS_PROSTY_ODBORNY_UMELECKY,
+  ...VYPRAVENI_VYSTAVBA_KOMPOZICE_ZAPLETKA,
+  ...ZPRAVA_A_OZNAMENI_ROZDILY,
+  ...KLICOVA_SLOVA_HLAVNI_MYSLENKY_TEXTU,
+  ...PRAKTICKE_VECNE_CTENI_STUDIJNI_CTENI,
   // Zeměpis — Geografické informace, zdroje dat, kartografie
   ...GLOBUS_MAPA_MERITKO,
   ...MAPOVE_ZNACKY_ORIENTACE,

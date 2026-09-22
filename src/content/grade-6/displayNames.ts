@@ -91,6 +91,18 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Jak věta zní",
       description: "Přízvuk, melodie věty, pauzy a spisovná výslovnost.",
     },
+    "Komunikační a slohová výchova": {
+      name: "Sloh a čtení",
+      description: "Dopis, popis, vyprávění, zpráva a čtení s porozuměním.",
+    },
+    "Slohová výchova": {
+      name: "Sloh",
+      description: "Poznáš druhy textů a jejich části: dopis, popis, vyprávění, zprávu.",
+    },
+    "Čtení a naslouchání": {
+      name: "Čtení s porozuměním",
+      description: "Najdeš v textu to hlavní a vyčteš z něj, co potřebuješ.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",

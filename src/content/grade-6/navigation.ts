@@ -63,6 +63,28 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-cjl-spisovna-vyslovnost-modulace-souvisle-reci-6",
         ],
       },
+      {
+        id: "sloh",
+        name: "Sloh",
+        description: "Dopis soukromý a úřední, druhy popisu, stavba vyprávění, zpráva a oznámení.",
+        emoji: "✉️",
+        topicIds: [
+          "g6-cjl-dopis-soukromy-a-uredni-6",
+          "g6-cjl-popis-prosty-odborny-umelecky-6",
+          "g6-cjl-vypraveni-vystavba-kompozice-zapletka-6",
+          "g6-cjl-zprava-a-oznameni-rozdily-6",
+        ],
+      },
+      {
+        id: "cteni",
+        name: "Čtení s porozuměním",
+        description: "Klíčová slova a hlavní myšlenka, návody, jízdní řády a učební texty.",
+        emoji: "📖",
+        topicIds: [
+          "g6-cjl-klicova-slova-hlavni-myslenky-textu-6",
+          "g6-cjl-prakticke-a-vecne-cteni-studijni-cteni-6",
+        ],
+      },
     ],
   },
   {

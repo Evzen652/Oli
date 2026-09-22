@@ -146,6 +146,8 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
 - ✅ **ČEŠTINA 6. ROČNÍKU — 2. dávka 9/20** (22. 9.). Skladba (2) a zvuková
   stránka jazyka (2), šestka **98 ze 117**. Pravidla skladby a výslovnosti bez
   zvuku ve workflow. Dál: sloh + čtení a naslouchání (dávka 3 běží).
+- ✅ **ČEŠTINA 6. ROČNÍKU — 3. dávka 15/20** (22. 9.). Sloh (4) a čtení
+  a naslouchání (2), šestka **104 ze 117**. Dál: literární výchova (dávka 4 běží).
 - ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
   jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
   vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj

@@ -3,11 +3,11 @@
 # Grade 6 — STATUS (pilot 2. stupně)
 
 > Hotovo (2026-09-22): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 18/18, Čeština 9/20** — 98 ze 117.
-> Zbývá čeština (11) a výchova k občanství (8) (pořadí v
+> Přírodopis 22/22, Zeměpis 18/18, Čeština 15/20** — 104 ze 117.
+> Zbývá čeština (5) a výchova k občanství (8) (pořadí v
 > `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
-## Čeština (20 RVP podtémat) — 9/20 (2026-09-22)
+## Čeština (20 RVP podtémat) — 15/20 (2026-09-22)
 
 > Sdílené utility: `cjl/_shared.ts` (buildChoiceTask → null při < 3 distraktorech,
 > buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy; nápovědy o jazyce).
@@ -30,8 +30,17 @@
 - [x] Přízvuk, intonace, frázování → `cjl/prizvukIntonaceFrazovani.ts` ✅ (přízvuk na 1. slabice i s předložkou, takty, melodie otázek, pauza mění smysl, větný důraz)
 - [x] Spisovná výslovnost, modulace souvislé řeči → `cjl/spisovnaVyslovnostModulaceSouvisleReci.ts` ✅ (spodoba znělosti v přepisu, ď/ť/ň, mě/bě, přednes podle situace)
 
+### Komunikační a slohová výchova — Slohová výchova
+- [x] Dopis soukromý a úřední → `cjl/dopisSoukromyAUredni.ts` ✅ (části dopisu, oslovení a rozloučení podle adresáta, oprava formulace)
+- [x] Popis prostý, odborný, umělecký → `cjl/popisProstyOdbornyUmelecky.ts` ✅ (druh popisu z ukázky, spojení vhodné pro daný druh, věta porušující styl)
+- [x] Vyprávění – výstavba, kompozice, zápletka → `cjl/vypraveniVystavbaKompoziceZapletka.ts` ✅ (části kompozice, zápletka × vedlejší detail, retrospektivní postup, přesunutá věta)
+- [x] Zpráva a oznámení – rozdíly → `cjl/zpravaAOznameniRozdily.ts` ✅ (co se stalo × stane, chybějící údaj, pocit ve zprávě)
+
+### Komunikační a slohová výchova — Čtení a naslouchání
+- [x] Klíčová slova, hlavní myšlenky textu → `cjl/klicovaSlovaHlavniMyslenkyTextu.ts` ✅ (klíčová slova, téma, nadpis, odbočující věta, závěr z textu)
+- [x] Praktické a věcné čtení, studijní čtení → `cjl/praktickeVecneCteniStudijniCteni.ts` ✅ (jízdní řád, ceník, pravidla s podmínkou, výpisky z učebního textu)
+
 ### Zbývá
-- [ ] Sloh (4) + čtení a naslouchání (2) — dávka 3
 - [ ] Literární výchova (5) — dávka 4
 
 ## Fyzika (13 RVP podtémat)

@@ -144,6 +144,27 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-22 (54b) — čeština šestky, 3. dávka (15/20):
+
+- ✅ **Sloh (4) + čtení a naslouchání (2)**, šestka **104 ze 117**. Dopis
+  soukromý × úřední, popis prostý / odborný / umělecký, stavba vyprávění,
+  zpráva × oznámení, klíčová slova a hlavní myšlenka, věcné a studijní čtení.
+  Okruhy „Sloh“ ✉️ a „Čtení s porozuměním“ 📖.
+- 🔄 Workflow 36 agentů, 0 padlých, všech šest „fixed“ (22–33 vad na téma).
+- 🔍 **Ruční průchod přes tři nezávislé čtenáře + ověření opraváři:** 33 nálezů,
+  všechny potvrzené a opravené. Hlavně: dvě obhajitelné odpovědi (závěr × pozdrav,
+  oslovení × úvod, „S přátelským pozdravem“, odborný popis s dobou kvetení,
+  jezírko u bobrů, druidové × řemeslníci), klíč L2 popisu uhodnutelný tvarem
+  (malé × velké písmeno), L1 vyprávění z jedné věty neodliší obrat/vyvrcholení
+  (teď jen úvod, zápletka, závěr), nápovědy prozrazující kritérium, klíč bez
+  opory v textu (pes Rex), shoda („Slepice snáší“, „které měly“), „vypustil/a“,
+  přilepená obecná nápověda „Dosaď…“ u 52 úloh bez věty.
+- ✅ **Brány:** typecheck ✓ (mimo rozepsanou dávku 4), testy 8 128 / 1 (`pavoukovci`
+  L2 nestabilní), zámek obsahu +24 řádků, `check:hints` 3 nálezy posouzeny
+  (výčet všech údajů oznámení), `check:options` 1 posouzen, `check:length` 0,
+  `audit:content` ✓, `audit:agreement` 42 989 úloh bez nálezu, `audit:ui` ✓,
+  build ✓, prohlížeč ✓.
+
 ### Session 2026-09-22 (54) — čeština šestky, 2. dávka (9/20):
 
 - ✅ **Skladba (2) + zvuková stránka jazyka (2)**, šestka **98 ze 117**.

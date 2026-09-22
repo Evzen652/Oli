@@ -11,8 +11,8 @@
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
 >    matematika 12/12 a přírodopis 22/22 (16. 9.), zeměpis 18/18 (20. 9.),
->    **čeština 9/20 (22. 9., dávky 1–2)**. Šestka na **98 ze 117**. **Na řadě je
->    čeština dávka 3** (sloh + čtení), dávka 4 (literatura) a pak výchova k občanství (8)
+>    **čeština 15/20 (22. 9., dávky 1–3)**. Šestka na **104 ze 117**. **Na řadě je
+>    čeština dávka 4** (literatura) a pak výchova k občanství (8)
 >    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
@@ -94,7 +94,12 @@ Poučení z dávky 2: kritici nechali projít shodu „Kdo koupila…?“ a lom�
 „měl/a“ — ruční průchod výpisu úloh je pořád nutný. Pravidla dávky 3 (sloh, čtení)
 a 4 (literatura) jsou/budou ve `STANDARDS` workflow.
 
-### ▶▶ ZAČNI TADY: čeština 6. ročníku — dávka 3 (sloh + čtení), pak 4 (literatura)
+### ✅ Dávka 3 hotová (22. 9.) — sloh + čtení, detail `PROJECT_STATUS.md` §6 session 54b
+
+Ruční průchod delegovaný na tři čtenáře (2 témata každý) + opraváře, kteří každý nález
+nejdřív ověřili: 33 nálezů, žádný falešný. Kritici workflow je nechali projít.
+
+### ▶▶ ZAČNI TADY: čeština 6. ročníku — dávka 4 (literatura)
 
 Postup, který v dávce 1 fungoval (21. 9.):
 

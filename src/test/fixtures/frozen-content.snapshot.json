@@ -655,6 +655,14 @@
     "hash": "618fedc77fbcf90c717d7fed17b295726642abd9",
     "taskCount": 3
   },
+  "g6-cjl-dopis-soukromy-a-uredni-6": {
+    "hash": "f8da572c7b3cd5e81178d1ee3343ccff1f44f780",
+    "taskCount": 51
+  },
+  "g6-cjl-klicova-slova-hlavni-myslenky-textu-6": {
+    "hash": "122939c1c8b9318793f1e8ac930adfdc93397715",
+    "taskCount": 56
+  },
   "g6-cjl-opakovani-slovnich-druhu-ohebne-neohebne-6": {
     "hash": "78c6998ae5357b4a8ff0eeb23ae74f7feacbf293",
     "taskCount": 67
@@ -662,6 +670,14 @@
   "g6-cjl-podstatna-jmena-sklonovani-mluvnicke-kategorie-6": {
     "hash": "922e9342f7c2786feca7182e8eb0a16b3fd57573",
     "taskCount": 60
+  },
+  "g6-cjl-popis-prosty-odborny-umelecky-6": {
+    "hash": "d1fa5155ef9810684bcc3d66194e8b4e13a7237f",
+    "taskCount": 63
+  },
+  "g6-cjl-prakticke-a-vecne-cteni-studijni-cteni-6": {
+    "hash": "00f66ec37a55a130d5e31b42cefa8aee9a5c2b31",
+    "taskCount": 66
   },
   "g6-cjl-predmet-prislovecne-urceni-privlastek-doplnek-6": {
     "hash": "bfce77ede89c88ef2233358c54913c01b79338b3",
@@ -690,6 +706,14 @@
   "g6-cjl-veta-jednoducha-vetne-cleny-6": {
     "hash": "821a794bedd0ec2c0148a1f54fb25399c93db2b2",
     "taskCount": 60
+  },
+  "g6-cjl-vypraveni-vystavba-kompozice-zapletka-6": {
+    "hash": "10e5dc69c21fc9d02560ab85350ff923c21510a8",
+    "taskCount": 69
+  },
+  "g6-cjl-zprava-a-oznameni-rozdily-6": {
+    "hash": "f30d22b87dfb746fdbd6cd67d45311fb0e08eabf",
+    "taskCount": 83
   },
   "g6-dej-antika-recko-kultura-6": {
     "hash": "7cfd9049e36dd156f6a02aa73b580a2daeeb7c39",

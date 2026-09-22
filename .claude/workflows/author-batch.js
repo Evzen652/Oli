@@ -195,6 +195,23 @@ PRAVIDLA PRO ČEŠTINU — SLOH A ČTENÍ (komunikační a slohová výchova):
 - Pozor na jazyk ukázek: úřední dopis spisovně a zdvořile (Vážená paní, S pozdravem), soukromý přirozeně
   (Ahoj, Měj se). Žádná ukázka nesmí obsahovat reálnou adresu, telefon či e-mail — jen zjevně smyšlené.
 
+PRAVIDLA PRO ČEŠTINU — LITERÁRNÍ VÝCHOVA (lidová slovesnost, základy literární teorie):
+- Navazuj na grade-4/cjl/pohadkaPovestBajkaPovidka.ts, grade-5/cjl/elementarniLiterarniPojmyPriRozboruTextu.ts,
+  basenLyrickaAEpickaRomanPovidka.ts. L1 smí být rozcvička, L2/L3 za ni.
+- Žádné citace chráněných textů. Ukázky (2–5 vět / 2–4 verše) napiš SÁM, nebo použij zlidovělé texty (lidová
+  přísloví, pranostiky, motivy lidových pohádek a pověstí, řecké báje). Banka ≥ 8 ukázek na úroveň.
+- Fakta o dílech a postavách jen všeobecně známá a nesporná (Erben, Němcová — sběratelé pohádek; Aisópos — bajky;
+  Jirásek — Staré pověsti české; Praotec Čech, Libuše, Bruncvík, Blaník; řecké báje: Prométheus, Ikaros, Héraklés,
+  Odysseus, Theseus a Minotaurus; Gilgameš). Kde se podání liší, NEdávej detail jako klíč.
+- Pojmy: bajka (zvířata s lidskými vlastnostmi, ponaučení), přísloví × pranostika (pranostika = počasí/zemědělství
+  s datem či svátkem), mýtus × báje × pověst (pověst = váže se ke skutečnému místu/osobě, jádro pravdy),
+  pohádka klasická (lidová) × autorská, verš, sloka, rým (sdružený AABB, střídavý ABAB, obkročný ABBA),
+  přirovnání (jako, jak) × metafora (přenesení bez „jako“) — jen jasné příklady.
+- Rým urči jen u veršů, které SÁM napíšeš a ověříš (koncovky se opravdu rýmují; schéma sedí).
+- Distraktor = typická chyba: bajka ↔ pohádka, přísloví ↔ pranostika, pověst ↔ pohádka, báje ↔ pověst,
+  přirovnání ↔ metafora, střídavý ↔ sdružený rým, sloka ↔ verš, autorská ↔ lidová pohádka.
+- Formát: select_one / categorize / multi_select (téma NEMÍCHÁ typy). Ano/Ne jen L1.
+
 OBECNĚ — DETERMINISMUS: generátor nesmí mít stav mezi voláními (žádné „let" počítadlo na úrovni modulu,
 které se jen zvyšuje). Rotaci šablon nastav na začátku gen() — hlídá to src/test/generator-determinism.test.ts.
 
@@ -230,7 +247,8 @@ PRAVIDLA Z 13.–14. 9. 2026 (kontroly je chytí při integraci — napiš to ro
 - Nápověda nesmí jmenovat prvky řešení (u drag_order/categorize/timeline ani pravou stranu dvojice). hints[0] i hints[1] unikátní pro úlohu.
 - Správná odpověď se nesmí vyskytovat ve znění otázky.
 - Předložka + dosazené jméno: pád ulož jako vlastní pole, nelep předložku k holému jménu (dřív vznikalo „z sklo", „u jantar").
-- Čeština: žádné rodové lomítkové tvary (sám/sama). Po dosazení do šablony ověř shodu.
+- Čeština: žádné rodové lomítkové tvary (sám/sama, měl/a, zapomněl/a) — přeformuluj neutrálně. Po dosazení do šablony ověř shodu
+  (tázací „kdo“ se pojí s mužským rodem: „Kdo koupil…?“, i když odpověď je žena).
 - category = labels.AREA, topic = labels.TOPIC (NE subtopic — podtéma je jen v rvpNodeId a title).
   Příklad: rvpId g6-prirodopis-biologie-hub-houby-a-lisejniky-lisejniky-… → category "Biologie hub", topic "Houby a lišejníky".
 - category a topic ZNAK PO ZNAKU podle data/rvp_data.json (pomlčka "-", ne "–"). Témata téhož RVP topicu
