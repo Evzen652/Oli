@@ -655,6 +655,10 @@
     "hash": "618fedc77fbcf90c717d7fed17b295726642abd9",
     "taskCount": 3
   },
+  "g6-cjl-bajka-prislovi-pranostika-6": {
+    "hash": "2332fb8b249d60e85d2fce577104feca39911d36",
+    "taskCount": 70
+  },
   "g6-cjl-dopis-soukromy-a-uredni-6": {
     "hash": "f8da572c7b3cd5e81178d1ee3343ccff1f44f780",
     "taskCount": 51
@@ -662,6 +666,10 @@
   "g6-cjl-klicova-slova-hlavni-myslenky-textu-6": {
     "hash": "122939c1c8b9318793f1e8ac930adfdc93397715",
     "taskCount": 56
+  },
+  "g6-cjl-myty-a-baje-narodu-sveta-6": {
+    "hash": "c83cc006bec1a4180786a0d2a8140dadfb597350",
+    "taskCount": 94
   },
   "g6-cjl-opakovani-slovnich-druhu-ohebne-neohebne-6": {
     "hash": "78c6998ae5357b4a8ff0eeb23ae74f7feacbf293",
@@ -671,9 +679,17 @@
     "hash": "922e9342f7c2786feca7182e8eb0a16b3fd57573",
     "taskCount": 60
   },
+  "g6-cjl-pohadka-klasicka-autorska-6": {
+    "hash": "c53f738a671b6c483053e3f2d4d9296fa0da7e63",
+    "taskCount": 57
+  },
   "g6-cjl-popis-prosty-odborny-umelecky-6": {
     "hash": "d1fa5155ef9810684bcc3d66194e8b4e13a7237f",
     "taskCount": 63
+  },
+  "g6-cjl-povest-regionalni-historicka-6": {
+    "hash": "a313bd1c52247c7183f9e1904fc8e405c2dd3190",
+    "taskCount": 76
   },
   "g6-cjl-prakticke-a-vecne-cteni-studijni-cteni-6": {
     "hash": "00f66ec37a55a130d5e31b42cefa8aee9a5c2b31",
@@ -702,6 +718,10 @@
   "g6-cjl-synonyma-antonyma-homonyma-6": {
     "hash": "9a54c235c19435069ba7ca6afff08b118596764f",
     "taskCount": 68
+  },
+  "g6-cjl-vers-rym-prirovnani-metafora-uvod-6": {
+    "hash": "3b2fadbe2ad23380abdc9bafbeae931a73f6a72c",
+    "taskCount": 91
   },
   "g6-cjl-veta-jednoducha-vetne-cleny-6": {
     "hash": "821a794bedd0ec2c0148a1f54fb25399c93db2b2",

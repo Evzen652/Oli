@@ -103,6 +103,18 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Čtení s porozuměním",
       description: "Najdeš v textu to hlavní a vyčteš z něj, co potřebuješ.",
     },
+    "Literární výchova": {
+      name: "Čtenářská dílna",
+      description: "Lidová slovesnost a základy literární teorie.",
+    },
+    "Lidová slovesnost": {
+      name: "Lidová slovesnost",
+      description: "Bajka a přísloví, mýty a báje, pohádka a pověst.",
+    },
+    "Základy literární teorie": {
+      name: "O básních a příbězích",
+      description: "Verš, rým, přirovnání a metafora.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",

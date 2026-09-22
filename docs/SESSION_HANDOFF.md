@@ -11,8 +11,8 @@
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
 >    matematika 12/12 a přírodopis 22/22 (16. 9.), zeměpis 18/18 (20. 9.),
->    **čeština 15/20 (22. 9., dávky 1–3)**. Šestka na **104 ze 117**. **Na řadě je
->    čeština dávka 4** (literatura) a pak výchova k občanství (8)
+>    **čeština 20/20 HOTOVÁ (23. 9.)**. Šestka na **109 ze 117**. **Na řadě je
+>    výchova k občanství (8)** a pak výchova k občanství (8)
 >    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
@@ -96,10 +96,19 @@ a 4 (literatura) jsou/budou ve `STANDARDS` workflow.
 
 ### ✅ Dávka 3 hotová (22. 9.) — sloh + čtení, detail `PROJECT_STATUS.md` §6 session 54b
 
-Ruční průchod delegovaný na tři čtenáře (2 témata každý) + opraváře, kteří každý nález
-nejdřív ověřili: 33 nálezů, žádný falešný. Kritici workflow je nechali projít.
+### ✅ Dávka 4 hotová (23. 9.) — literární výchova, čeština 6. ročníku KOMPLETNÍ (20/20), detail `PROJECT_STATUS.md` §6 session 54c
 
-### ▶▶ ZAČNI TADY: čeština 6. ročníku — dávka 4 (literatura)
+⚠️ Poučení, které se bude hodit i jinde: po `resumeFromRunId` workflow tentokrát
+nepoužil mezipaměť pro už přijatá témata a přepsal je znovu — ověř `git status`
+nebo mtime souborů po obnově, než pustíš ruční opravu nálezů na starý obsah.
+
+### ▶▶ ZAČNI TADY: výchova k občanství 6. ročníku (8 podtémat)
+
+Postup stejný jako u češtiny (workflow author-batch, dávky po 3–6 tématech,
+ruční průchod přes čtenáře, opraváři, kontroly, integrace, commit). Nejdřív
+doplň do STANDARDS pravidla pro výchovu k občanství (konceptuální předmět —
+navrhni sám na základě RVP uzlů `g6-vko-*`, drž se faktů bez politických
+kontroverzí, žádné hodnotové soudy jako jediná správná odpověď u sporných témat).
 
 Postup, který v dávce 1 fungoval (21. 9.):
 

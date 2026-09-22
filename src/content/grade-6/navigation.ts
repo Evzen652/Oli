@@ -85,6 +85,27 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-cjl-prakticke-a-vecne-cteni-studijni-cteni-6",
         ],
       },
+      {
+        id: "lidova-slovesnost",
+        name: "Lidová slovesnost",
+        description: "Bajka a přísloví, mýty a báje, pohádka a pověst.",
+        emoji: "📜",
+        topicIds: [
+          "g6-cjl-bajka-prislovi-pranostika-6",
+          "g6-cjl-myty-a-baje-narodu-sveta-6",
+          "g6-cjl-pohadka-klasicka-autorska-6",
+          "g6-cjl-povest-regionalni-historicka-6",
+        ],
+      },
+      {
+        id: "literarni-teorie",
+        name: "O básních a příbězích",
+        description: "Verš, rým, přirovnání a metafora.",
+        emoji: "✒️",
+        topicIds: [
+          "g6-cjl-vers-rym-prirovnani-metafora-uvod-6",
+        ],
+      },
     ],
   },
   {

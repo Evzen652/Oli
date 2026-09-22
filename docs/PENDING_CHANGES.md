@@ -148,6 +148,9 @@ dávek a pět věcí, které musí být hotové dřív než první nové téma:
   zvuku ve workflow. Dál: sloh + čtení a naslouchání (dávka 3 běží).
 - ✅ **ČEŠTINA 6. ROČNÍKU — 3. dávka 15/20** (22. 9.). Sloh (4) a čtení
   a naslouchání (2), šestka **104 ze 117**. Dál: literární výchova (dávka 4 běží).
+- ✅ **ČEŠTINA 6. ROČNÍKU HOTOVÁ — 4. dávka 20/20** (23. 9.). Literární výchova
+  (5): bajka/přísloví/pranostika, mýty a báje, pohádka, pověst, verš/rým/
+  metafora. Šestka **109 ze 117**. Zbývá jen výchova k občanství (8).
 - ✅ **VYŘÍZENO 19. 9. — workflow po limitu relace hlásilo „accepted“ i u témat,
   jejichž kritici spadli.** Téma s nedoběhlým kritikem nebo opravářem se teď
   vrací jako `failed` i s počtem chybějících verdiktů. Dávku i tak obnovuj

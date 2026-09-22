@@ -3,11 +3,11 @@
 # Grade 6 — STATUS (pilot 2. stupně)
 
 > Hotovo (2026-09-22): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 18/18, Čeština 15/20** — 104 ze 117.
-> Zbývá čeština (5) a výchova k občanství (8) (pořadí v
+> Přírodopis 22/22, Zeměpis 18/18, Čeština 20/20 (HOTOVO)** — 109 ze 117.
+> Zbývá jen výchova k občanství (8) a výchova k občanství (8) (pořadí v
 > `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
-## Čeština (20 RVP podtémat) — 15/20 (2026-09-22)
+## Čeština (20 RVP podtémat) — 20/20 HOTOVO (2026-09-23)
 
 > Sdílené utility: `cjl/_shared.ts` (buildChoiceTask → null při < 3 distraktorech,
 > buildOrderTask, buildCategorizeTask, losUlohy, ruzneUlohy; nápovědy o jazyce).
@@ -39,6 +39,13 @@
 ### Komunikační a slohová výchova — Čtení a naslouchání
 - [x] Klíčová slova, hlavní myšlenky textu → `cjl/klicovaSlovaHlavniMyslenkyTextu.ts` ✅ (klíčová slova, téma, nadpis, odbočující věta, závěr z textu)
 - [x] Praktické a věcné čtení, studijní čtení → `cjl/praktickeVecneCteniStudijniCteni.ts` ✅ (jízdní řád, ceník, pravidla s podmínkou, výpisky z učebního textu)
+
+### Literární výchova
+- [x] Bajka, přísloví, pranostika → `cjl/bajkaPrisloviPranostika.ts` ✅ (útvar podle ukázky, ponaučení bajky, výklad přísloví/pranostiky)
+- [x] Mýty a báje národů světa → `cjl/mytyABajeNaroduSveta.ts` ✅ (postava a kultura, ustálená spojení, funkce mýtu)
+- [x] Pohádka klasická, autorská → `cjl/pohadkaKlasickaAutorska.ts` ✅ (znaky lidové × autorské pohádky, smíšené ukázky)
+- [x] Pověst regionální, historická → `cjl/povestRegionalniHistoricka.ts` ✅ (místní × historická pověst, jádro pravdy, znak pověsti)
+- [x] Verš, rým, přirovnání, metafora (úvod) → `cjl/versRymPrirovnaniMetaforaUvod.ts` ✅ (rýmové schéma, metafora × přirovnání, převod mezi nimi)
 
 ### Zbývá
 - [ ] Literární výchova (5) — dávka 4

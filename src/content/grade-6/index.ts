@@ -137,6 +137,12 @@ import { ZPRAVA_A_OZNAMENI_ROZDILY } from "./cjl/zpravaAOznameniRozdily";
 // Čeština — Čtení a naslouchání
 import { KLICOVA_SLOVA_HLAVNI_MYSLENKY_TEXTU } from "./cjl/klicovaSlovaHlavniMyslenkyTextu";
 import { PRAKTICKE_VECNE_CTENI_STUDIJNI_CTENI } from "./cjl/praktickeVecneCteniStudijniCteni";
+// Čeština — Literární výchova
+import { BAJKA_PRISLOVI_PRANOSTIKA } from "./cjl/bajkaPrisloviPranostika";
+import { MYTY_A_BAJE_NARODU_SVETA } from "./cjl/mytyABajeNaroduSveta";
+import { POHADKA_KLASICKA_AUTORSKA } from "./cjl/pohadkaKlasickaAutorska";
+import { POVEST_REGIONALNI_HISTORICKA } from "./cjl/povestRegionalniHistoricka";
+import { VERS_RYM_PRIROVNANI_METAFORA_UVOD } from "./cjl/versRymPrirovnaniMetaforaUvod";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Čeština — Jazyková výchova
@@ -156,6 +162,12 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...ZPRAVA_A_OZNAMENI_ROZDILY,
   ...KLICOVA_SLOVA_HLAVNI_MYSLENKY_TEXTU,
   ...PRAKTICKE_VECNE_CTENI_STUDIJNI_CTENI,
+  // Čeština — Literární výchova
+  ...BAJKA_PRISLOVI_PRANOSTIKA,
+  ...MYTY_A_BAJE_NARODU_SVETA,
+  ...POHADKA_KLASICKA_AUTORSKA,
+  ...POVEST_REGIONALNI_HISTORICKA,
+  ...VERS_RYM_PRIROVNANI_METAFORA_UVOD,
   // Zeměpis — Geografické informace, zdroje dat, kartografie
   ...GLOBUS_MAPA_MERITKO,
   ...MAPOVE_ZNACKY_ORIENTACE,

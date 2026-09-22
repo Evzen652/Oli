@@ -144,6 +144,34 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-23 (54c) — čeština šestky HOTOVÁ, 4. dávka (20/20):
+
+- ✅ **Literární výchova (5)**, šestka **109 ze 117**. Bajka/přísloví/pranostika,
+  mýty a báje národů světa, pohádka klasická × autorská, pověst regionální ×
+  historická, verš/rým/přirovnání/metafora. Okruhy „Lidová slovesnost" 📜
+  a „O básních a příbězích" ✒️. **Čeština 6. ročníku je hotová (20/20).**
+- 🔄 Workflow po obnově z limitu relace **přepsal i tři už hotová témata**
+  (bajka, mýty, pověst) místo použití mezipaměti — nečekané, ale bez ztráty:
+  opravář pověsti to ověřil proti finálnímu stavu, opravář bajky+mýtů souběh
+  poznal a needitoval nic, dokud workflow nedoběhl. Poučení pro příště: po
+  obnově ověř `git status`/mtime souborů, než pustíš opravu nálezů.
+- 🔍 **Ruční průchod přes tři čtenáře + ověření opraváři** (dvě kola — jednou
+  na mezistav, podruhé na finální verzi po přepisu): systémová chyba v
+  `bajkaPrisloviPranostika.ts` — distraktory ponaučení brány přes pevné pořadí
+  klíčů a `.slice(0, 3)`, takže 3 ze 7 ponaučení (chamtivost, cizí, výmluva)
+  se nikdy nedostaly mezi distraktory ani jako klíč, zbylé 4 byly 100%
+  uhodnutelné podle slova v textu — opraveno deterministickou rotací
+  (`moralDistractorKeys`, seed = text ukázky). Dál: Bruncvík se sedmihlavým
+  drakem místo devítihlavé saně, Svatošské skály s obráceným dějem/viníkem,
+  „Kamenný mnich"/„Bezedné" logicky nesedící s vlastním jménem, „neprůbodná
+  kůže", vazby „polichotit na/koho" místo 3. pádu, příklonné „se" na začátku
+  možnosti, čárky před slučovacím „a" (i v hlavní čtené ukázce pohádky).
+- ✅ **Brány:** typecheck ✓, testy 8 356 / 1 (`pavoukovci` L2 nestabilní),
+  zámek obsahu +20 řádků, `check:hints/options/length` posouzeny ručně (jen
+  falešné poplachy — obecná pravidla, obsahově odlišné distraktory),
+  `audit:content` ✓, `audit:agreement` 43 308 úloh bez nálezu, `audit:ui` ✓,
+  build ✓, prohlížeč (anonymní žák 6. ročníku, okruh „Lidová slovesnost") ✓.
+
 ### Session 2026-09-22 (54b) — čeština šestky, 3. dávka (15/20):
 
 - ✅ **Sloh (4) + čtení a naslouchání (2)**, šestka **104 ze 117**. Dopis
