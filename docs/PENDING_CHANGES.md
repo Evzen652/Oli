@@ -7,6 +7,23 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-24 — únik v nápovědě H0, VKO 6. ročník (vrstevnické vztahy)
+
+Nezávislý reviewer nahlásil, že H0 u 18 ze 40 úloh v
+`src/content/grade-6/vko/vrstevnickeVztahyReseniKonfliktu.ts` (skupiny
+`L1_REAKCE`, `L2_HRA`, `L2_NEDOROZUMENI`, `L2_PUJCENA_VEC`) parafrázuje klíč
+skoro doslovně (např. H0 „…nebo klidně říct, co potřebuje?“ vs. klíč „Klidně
+Nikole říct, že sešit potřebuje…“). Vlastní ověření (Generator→Critic, čtení
+`correct` vs. `hints[0]` u každé položky) potvrdilo 16 z 18 — 2 z
+`L2_NEDOROZUMENI` už byly v bezpečném obecném stylu (jmenují jen klasifikační
+osu já-výrok/nálepka, ne konkrétní kroky z klíče dané úlohy). Přepsáno na
+neutrální styl podle vzoru `L1_KAMARADSTVI`/`L1_JA_VYROK`: H0 jmenuje jen
+společnou vadu špatných možností, správnou nechává jako nespecifikované
+„jiný/lepší způsob“. Testy tématu 20/20, `hint-leakage.test.ts` 42/42,
+`hint-structured-leak.test.ts` 16/16, `npm run typecheck` bez nových chyb.
+
+---
+
 ## 📋 6. ročník — plán doplnění (2026-09-13)
 
 Šestka je pilot: **11 témat ze 117** (fyzika 6/13, dějepis 5/24). Plán, pořadí

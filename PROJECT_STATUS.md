@@ -144,6 +144,56 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-24 — Výchova k občanství, dávka A (4/8), nový předmět v 6. ročníku:
+
+- ✅ **4 nová témata**: majetek a peníze (hospodaření v rodině), sebepoznání
+  (vlastnost/schopnost/dovednost), kultura (druhy umění, instituce, masová
+  kultura), vrstevnické vztahy (řešení konfliktů). Šestka **113 ze 117**.
+  Nové okruhy v navigaci: „Peníze a hospodaření" 💰, „Poznej sám sebe" 🧭,
+  „Kultura a vztahy" 🎭 (sdílí ho kultura + vrstevnické vztahy — stejný RVP
+  uzel „Lidská setkávání a kultura"). Nový sdílený `vko/_shared.ts` napsán
+  ručně předem (stejná stavba jako `prirodopis/_shared.ts`), ne autorem
+  dávky — poučení z matematiky o sdíleném pomocníkovi psaném autorem.
+- 🔍 **Ruční průchod přes 4 nezávislé recenzenty** (1 na téma, poslední
+  s extra důrazem na bezpečnost rad) + 4 opraváři s vlastním nezávislým
+  ověřením nálezu před opravou. Nálezy:
+  - **Majetek a peníze**: distraktor zmiňoval „banku" (zakázané slovo přes
+    STANDARDS pravidlo) — opraveno; L3 úloha „Kryštof" měla věcně špatný
+    klíč (koupený věcný dárek označen za „příjem" pro obdarovaného) —
+    scénář přepsán na peníze, po vzoru existující úlohy „Filip".
+  - **Sebepoznání**: systémová chyba interpunkce — čárka před „nebo" ve
+    výčtu tří alternativ, i v `displayName`/`studentTitle` tématu (viditelné
+    na obrazovce výběru pořád) — opraveno na 6 místech; 2 z 8 L3 úloh byly
+    jen přejmenované L2 se stejným scénářem (žádný skutečný přenos) —
+    přepsány na nový kontext.
+  - **Vrstevnické vztahy** (nejcitlivější téma): **žádný bezpečnostní
+    nález** — žádná úloha nenabízí fyzické násilí, mstu ani mlčenlivé
+    snášení ubližování jako plausibilní řešení, žádný explicitní scénář
+    šikany. Skutečný nález: nápověda H0 u 18 ze 40 úloh prakticky
+    opakovala klíč („špatná možnost, nebo [fráze z klíče]?") — přepsáno na
+    neutrální styl (pojmenuje jen vadu špatných možností).
+  - **Kultura**: reviewer nahlásil L3 jen 9 unikátních úloh místo ≥12 —
+    **falešný poplach**, ověřeno přímým voláním `gen(3)` (24 unikátů podle
+    skutečné identity úlohy otázka+klíč+možnosti; reviewer počítal jen podle
+    textu otázky, který je u `select_one` sdílený, obsah je v `options`).
+    Beze změny, `generator-task-count.test.ts` prochází.
+- ⚠️ **`topicInsight.ts` je klíčovaný na úrovni RVP `topic`, ne jednotlivého
+  generátoru.** Kultura a vrstevnické vztahy sdílí RVP uzel „Lidská setkávání
+  a kultura", takže sdílely i box „Co je dobré vědět" — původní text
+  (o muzeu/galerii) se zobrazoval i na téma o řešení konfliktů. Odhaleno
+  živě v prohlížeči, ne testem (test jen ověřuje, že klíč EXISTUJE, ne že
+  sedí na všechna témata pod ním). Přeformulováno na text sedící na obě.
+- ✅ **Brány:** typecheck ✓, celá sada 8 495/8 500 (2 skutečné nálezy před
+  opravou — chybějící `topicInsight` záznamy a chybějící zámek obsahu pro
+  4 nová témata, oba doplněny; 3. „selhání" byl jen timeout workeru při
+  přetížení, samostatně prošlo), zámek obsahu +16 (aditivně), `audit:content`
+  ✓, `audit:agreement` 43 559 úloh bez nálezu, `audit:ui` bez nového nálezu,
+  build ✓ (2m32s), průchod v prohlížeči (`/student?anon=1`) bez chyb v konzoli.
+- ▶️ **Zbývá dávka B** (4): naše obec/region, naše vlast (státní symboly —
+  role/funkce, ne jméno současného držitele úřadu), rodina/příbuzenství,
+  rok v jeho proměnách. Pravidla pro celý předmět (obě dávky) už jsou
+  v `.claude/workflows/author-batch.js` STANDARDS.
+
 ### Session 2026-09-23 (54c) — čeština šestky HOTOVÁ, 4. dávka (20/20):
 
 - ✅ **Literární výchova (5)**, šestka **109 ze 117**. Bajka/přísloví/pranostika,

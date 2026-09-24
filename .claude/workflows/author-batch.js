@@ -212,6 +212,62 @@ PRAVIDLA PRO ČEŠTINU — LITERÁRNÍ VÝCHOVA (lidová slovesnost, základy li
   přirovnání ↔ metafora, střídavý ↔ sdružený rým, sloka ↔ verš, autorská ↔ lidová pohádka.
 - Formát: select_one / categorize / multi_select (téma NEMÍCHÁ typy). Ano/Ne jen L1.
 
+- VÝCHOVA K OBČANSTVÍ: stavba jako přírodopis (faktická/pojmová témata), helpery VÝHRADNĚ
+  z src/content/grade-6/vko/_shared.ts (buildChoiceTask → null při < 3 distraktorech, buildOrderTask,
+  buildCategorizeTask, losUlohy, ruzneUlohy, pick, pickN, shuffle). Ten _shared.ts už EXISTUJE (napsaný
+  ručně, stejná stavba jako u přírodopisu) — NEEDITUJ. Soubor do src/content/grade-6/vko/<camelCase>.ts,
+  id "g6-vko-<kebab>-6", subject "vko", rvpNodeId = celé rvpId. Generátor: gen(level) = ruzneUlohy(() => losUlohy(genLx))
+  (u order/categorize bez losUlohy).
+
+PRAVIDLA PRO VÝCHOVU K OBČANSTVÍ (nový, čistě konceptuální předmět — žádné číslo, žádné historické datum):
+- Cíl je rozpoznat a zařadit pojem do situace, ne zapamatovat si fakta nazpaměť. Vzor otázky: „Co z toho je
+  spíš dovednost než vlastnost?", „Která věta popisuje oznámení, ne zprávu?" (pozor, to je čeština — u vko
+  obdobně: „Která situace patří pod obecní samosprávu?").
+- ŽÁDNÝ hodnotový soud jako jediná správná odpověď u sporného tématu (politické strany, náboženství jako
+  pravda/nepravda, „správné" složení rodiny, „lepší" kultura nebo životní styl). Klíč smí stát jen tam, kde
+  se shodnou prakticky všichni — fakta o státních symbolech, obecně přijímané zásady slušného chování,
+  definice pojmů z učebnic (Fraus, SPN, Nová škola).
+- Majetek a peníze (hospodaření v rodině): jen obecné pojmy — příjem, výdaj, rozpočet, spoření, kapesné,
+  potřeba × přání, plánovaný × impulzivní nákup. ŽÁDNÉ konkrétní částky, ceny, značky, banky ani investiční
+  rady (rychle zastará a je mimo RVP 6. ročníku).
+- Osobní rozvoj (sebepoznání): rozliš vlastnost (rys povahy) × schopnost (vrozený předpoklad) × dovednost
+  (naučené cvičením). Žádný typ osobnosti není „lepší" — distraktor je záměna pojmu, nikdy hodnocení
+  („špatná vlastnost" jako klíč nedávej).
+- Lidská setkávání a kultura: druhy umění (výtvarné, hudební, dramatické, filmové, literární, taneční),
+  kulturní instituce a jejich účel (muzeum = sbírka a uchování, galerie = výtvarné umění, divadlo = živé
+  představení, kino = film, knihovna = půjčování knih), masová kultura (šíří se médii pro široké publikum)
+  — popiš rozdíly, nehodnoť, která kultura je „lepší". Vrstevnické vztahy a konflikty: jen obecné a bezpečné
+  strategie (naslouchání, kompromis, přivolání dospělého, „já-výrok" místo obviňování). Žádný konkrétní
+  scénář šikany a žádná rada, která by v realitě mohla ublížit (nikdy neradit mlčet nebo řešit fyzicky).
+- Naše obec, region, vlast: obecní samospráva jako ROLE/FUNKCE (obec, obecní/městský úřad, starosta,
+  zastupitelstvo), ne jmenovaní současní držitelé úřadu — u prezidenta/starosty se ptej na funkci, nikdy
+  nejmenuj současnou osobu (aktuální fakt, který rychle zastará). Historicky ukotvené osobnosti smíš
+  (T. G. Masaryk — první prezident Československa). Státní symboly (vlajka, znak, hymna — popis, ne
+  vyobrazení, obrázky v repu nejsou) a státní svátky ČR (datum + důvod) jsou stálá fakta, klíč tu být smí.
+  Památky popisuj typem (hrad, zámek, chrám), ne aktuálním cenami vstupného.
+- Rodina, příbuzenství, mezigenerační vztahy: slovník vztahů (rodiče, prarodiče, sourozenec, teta/strýc,
+  bratranec/sestřenice, synovec/neteř) a úcta ke starším/předávání zkušeností. ŽÁDNÉ hodnocení „správného"
+  složení rodiny; rozvod nebo netradiční rodina jen jako neutrálně zmíněná existující situace, nikdy jako
+  „špatná" varianta v distraktoru.
+- Rok v jeho proměnách (tradice a zvyky): české lidové a křesťanské svátky (Vánoce, Velikonoce, Masopust,
+  Dušičky, Mikuláš) popisuj jako KULTURNÍ ZVYK — co se dělá, kdy, proč se to tak dělá („podle tradice…",
+  „lidé si zvykli…"), NIKDY jako náboženskou pravdu podávanou jako fakt. Klíč = zvyk, datum nebo symbol
+  svátku, ne věroučný obsah.
+- Distraktor = typická záměna pojmů šesťáka (vlastnost ↔ dovednost, obec ↔ kraj, znak ↔ vlajka, výdaj ↔
+  příjem, přání ↔ potřeba, muzeum ↔ galerie, zpráva ↔ oznámení), ne náhodný pojem a nikdy přehnané nebo
+  kontroverzní tvrzení jako lákavý „chyták".
+- Formát: select_one / categorize / multi_select; true_false jen na L1. drag_order (buildOrderTask) smíš pro
+  chronologii roku (pořadí svátků/období) nebo kroky řešení konfliktu — téma ale typy NEMÍCHÁ (celé téma
+  jeden typ, viz Cause C).
+- Nezávislý solver v testu: tabulka pojem/situace → správné zařazení, nezávislá na logice generátoru.
+
+Category/topic přesně podle RVP (needituj, ať sedí displayNames a navigace):
+- g6-vko-stat-a-hospodarstvi-majetek-a-penize-…            → category "Stát a hospodářství", topic "Majetek a peníze"
+- g6-vko-clovek-jako-jedinec-osobni-rozvoj-…                → category "Člověk jako jedinec", topic "Osobní rozvoj"
+- g6-vko-clovek-ve-spolecnosti-lidska-setkavani-a-kultura-… → category "Člověk ve společnosti", topic "Lidská setkávání a kultura"
+- g6-vko-clovek-ve-spolecnosti-nase-obec-region-vlast-…     → category "Člověk ve společnosti", topic "Naše obec, region, vlast"
+- g6-vko-clovek-ve-spolecnosti-rok-v-jeho-promenach-…       → category "Člověk ve společnosti", topic "Rok v jeho proměnách"
+
 OBECNĚ — DETERMINISMUS: generátor nesmí mít stav mezi voláními (žádné „let" počítadlo na úrovni modulu,
 které se jen zvyšuje). Rotaci šablon nastav na začátku gen() — hlídá to src/test/generator-determinism.test.ts.
 

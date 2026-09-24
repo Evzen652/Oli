@@ -1,4 +1,4 @@
-# Předání práce — stav k 2026-09-22
+# Předání práce — stav k 2026-09-24
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
@@ -11,12 +11,17 @@
 >    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
 > 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
 >    matematika 12/12 a přírodopis 22/22 (16. 9.), zeměpis 18/18 (20. 9.),
->    **čeština 20/20 HOTOVÁ (23. 9.)**. Šestka na **109 ze 117**. **Na řadě je
->    výchova k občanství (8)** a pak výchova k občanství (8)
->    podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+>    čeština 20/20 HOTOVÁ (23. 9.), **výchova k občanství 4/8 (24. 9., dávka
+>    A)**. Šestka na **113 ze 117**. **Na řadě je dávka B výchovy k občanství
+>    (4 zbylá podtémata)** podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
 >
 > ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
 > pro ročníky 1–5. Šestka rozdělaná je.
+>
+> ⚠️ **3 commity dávek 2–4 češtiny (`b020da5`, `b512d57`, `762abdd`) byly
+> pushnuté na `origin/main` 24. 9.** — nasazení samotné odsud ověřit nejde
+> (Vercel), sleduj ho na svém konci. Dávka A vko **zatím pushnutá není**,
+> čeká na tvé schválení.
 
 ---
 
@@ -102,15 +107,41 @@ a 4 (literatura) jsou/budou ve `STANDARDS` workflow.
 nepoužil mezipaměť pro už přijatá témata a přepsal je znovu — ověř `git status`
 nebo mtime souborů po obnově, než pustíš ruční opravu nálezů na starý obsah.
 
-### ▶▶ ZAČNI TADY: výchova k občanství 6. ročníku (8 podtémat)
+### ✅ Dávka A výchovy k občanství hotová (24. 9.) — detail `PROJECT_STATUS.md` §6, session 2026-09-24
 
-Postup stejný jako u češtiny (workflow author-batch, dávky po 3–6 tématech,
-ruční průchod přes čtenáře, opraváři, kontroly, integrace, commit). Nejdřív
-doplň do STANDARDS pravidla pro výchovu k občanství (konceptuální předmět —
-navrhni sám na základě RVP uzlů `g6-vko-*`, drž se faktů bez politických
-kontroverzí, žádné hodnotové soudy jako jediná správná odpověď u sporných témat).
+4 témata: majetek a peníze, sebepoznání, kultura, vrstevnické vztahy. Pravidla
+pro CELÝ předmět (obě dávky) jsou už doplněná v `STANDARDS`
+(`.claude/workflows/author-batch.js`) — dávka B je nemusí psát znovu.
 
-Postup, který v dávce 1 fungoval (21. 9.):
+⚠️ Poučení, které se bude hodit i jinde: `topicInsight.ts` je klíčovaný na
+úrovni RVP `topic`, ne jednotlivého generátoru. Když RVP seskupí dvě věcně
+různé podtémata pod jeden uzel (tady „Lidská setkávání a kultura" = kultura
+i vrstevnické vztahy), sdílí i box „Co je dobré vědět" — text musí sedět na
+OBĚ témata pod uzlem, ne jen na první napsané. Live-testuj v prohlížeči i
+druhé/třetí téma pod stejným uzlem, test na existenci klíče tohle nechytí.
+
+Vzor recenze, který se osvědčil (4 nezávislí recenzenti, 1 na téma, poslední
+s extra důrazem na bezpečnost u citlivého tématu) + 4 opraváři, každý
+s příkazem nález nejdřív sám ověřit, než sáhne na obsah — jeden nález
+(„L3 má jen 9 unikátních úloh") byl falešný poplach ze špatně počítané
+unikátnosti (podle textu otázky, ne podle skutečné identity úlohy), oprava
+zamítnuta.
+
+### ▶▶ ZAČNI TADY: dávka B výchovy k občanství (4 zbylá podtémata)
+
+RVP id (prefix `g6-vko-clovek-ve-spolecnosti-`):
+- `nase-obec-region-vlast-nase-obec-a-region-tradice-kultura-pamatky`
+- `nase-obec-region-vlast-nase-vlast-statni-symboly-vyznamne-osobnosti-svatky`
+- `nase-obec-region-vlast-rodina-pribuzenstvi-mezigeneracni-vztahy`
+- `rok-v-jeho-promenach-tradice-a-zvyky-behem-roku-vanoce-velikonoce-ad`
+
+Pravidla jsou už v STANDARDS (sekce „PRAVIDLA PRO VÝCHOVU K OBČANSTVÍ") —
+zvlášť dbej na: u obecní/státní samosprávy se ptát na ROLI/FUNKCI, nikdy
+nejmenovat současného držitele úřadu (jen historicky ukotvené osobnosti typu
+T. G. Masaryk); u svátků popisovat jako KULTURNÍ ZVYK, ne jako náboženskou
+pravdu; u rodiny žádné hodnocení „správného" složení.
+
+Postup, který v dávce 1 (čeština) a dávce A (vko) fungoval:
 
 1. Workflow přes `scriptPath: ".claude/workflows/author-batch.js"`, args = pole
    `{rvpId, label, authorModel: "sonnet"}`. Před spuštěním doplň do `STANDARDS`

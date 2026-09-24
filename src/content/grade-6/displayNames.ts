@@ -115,6 +115,19 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "O básních a příbězích",
       description: "Verš, rým, přirovnání a metafora.",
     },
+    // Výchova k občanství
+    "Stát a hospodářství": {
+      name: "Peníze a hospodaření",
+      description: "Rodinný rozpočet, kapesné, spoření a rozdíl mezi potřebou a přáním.",
+    },
+    "Člověk jako jedinec": {
+      name: "Poznej sám sebe",
+      description: "Rozlišíš vlastnost, schopnost a dovednost — a v čem jsi dobrý ty.",
+    },
+    "Člověk ve společnosti": {
+      name: "Lidé kolem nás",
+      description: "Kamarádi, rodina, kultura, obec i vlast — jak spolu lidé žijí.",
+    },
     // Fyzika
     "Měření fyzikálních veličin": {
       name: "Měření a veličiny",
@@ -293,6 +306,19 @@ export const DISPLAY_NAMES: DisplayMap = {
     "Antika - Řím": {
       name: "Starý Řím",
       description: "Od založení Říma přes Caesara až po pád západořímské říše.",
+    },
+    // Výchova k občanství
+    "Majetek a peníze": {
+      name: "Peníze a hospodaření",
+      description: "Rozpočet, kapesné, spoření a rozdíl mezi potřebou a přáním.",
+    },
+    "Osobní rozvoj": {
+      name: "Poznej sám sebe",
+      description: "Rozlišíš vlastnost, schopnost a dovednost — a v čem jsi dobrý ty.",
+    },
+    "Lidská setkávání a kultura": {
+      name: "Kultura a vztahy",
+      description: "Druhy umění, kulturní instituce i řešení sporů s kamarády.",
     },
   },
 };

@@ -477,6 +477,20 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Rozlišit věc od materiálu je první krok k tomu vybrat na práci správnou látku — jinak si koupíš pěknou lžíci, která se v horké polévce ohne.",
     funFact: "Kov gallium se roztaví v dlani — taje už při 30 °C. Teplota tání je vlastnost látky, takže roztaje stejně kostka i drobný kousek.",
   },
+
+  // ───────────────────────── VÝCHOVA K OBČANSTVÍ ─────────────────────────
+  "vko::Stát a hospodářství::Majetek a peníze": {
+    useful: "Kdo rozumí rozpočtu, pozná, proč si rodina nemůže dovolit úplně všechno najednou, i když si vydělá dost.",
+    funFact: "Slovo „rozpočet“ je jen jiné slovo pro „spočítat dopředu“ — se stejným principem hospodaří rodina i celý stát.",
+  },
+  "vko::Člověk jako jedinec::Osobní rozvoj": {
+    useful: "Když rozlišíš vlastnost od dovednosti, víš, co se dá cvičením zlepšit a co k tobě prostě patří.",
+    funFact: "I největší nadání zůstane jen možností, dokud ho někdo netrénuje — dovednost bez cvičení sama nevznikne.",
+  },
+  "vko::Člověk ve společnosti::Lidská setkávání a kultura": {
+    useful: "Umět vyjít s kamarády a orientovat se v kultuře kolem tebe jsou dvě různé dovednosti, které v životě potkáváš skoro každý den.",
+    funFact: "Slovo „muzeum“ pochází ze starořeckého „museion“ — místa zasvěceného múzám, bohyním umění a vědění.",
+  },
 };
 
 /**

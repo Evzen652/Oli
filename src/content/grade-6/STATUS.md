@@ -2,10 +2,11 @@
 
 # Grade 6 — STATUS (pilot 2. stupně)
 
-> Hotovo (2026-09-22): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 18/18, Čeština 20/20 (HOTOVO)** — 109 ze 117.
-> Zbývá jen výchova k občanství (8) a výchova k občanství (8) (pořadí v
-> `docs/GRADE_6_COMPLETION_PLAN.md`). `GRADE_6_TOPICS` obsahuje jen hotová témata.
+> Hotovo (2026-09-24): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
+> Přírodopis 22/22, Zeměpis 18/18, Čeština 20/20 (HOTOVO), Výchova k občanství 4/8** — 113 ze 117.
+> Zbývá dokončit výchovu k občanství — dávka B (naše obec/region, naše vlast,
+> rodina, rok v jeho proměnách — 4 podtémata, viz `docs/GRADE_6_COMPLETION_PLAN.md`).
+> `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
 ## Čeština (20 RVP podtémat) — 20/20 HOTOVO (2026-09-23)
 
@@ -187,3 +188,47 @@
 **Pilotní stav:** 4/24. Okruh **Úvod do dějepisu**: 3/4 (periodizace, prameny, pomocné vědy);
 zbývá „Co je dějepis" (pipeline pokus selhal — re-run). Typy: select_one + drag_order + categorize ověřeny.
 ⏳ Téma 3 (prameny): adversariální judge zbývá doplnit.
+
+## Výchova k občanství (8 RVP podtémat) — 4/8 (2026-09-24)
+
+> Nový, čistě konceptuální předmět (žádné číslo, žádné historické datum) —
+> pravidla navržena samostatně na základě RVP uzlů `g6-vko-*`, viz STANDARDS
+> v `.claude/workflows/author-batch.js`. Sdílené utility: `vko/_shared.ts`
+> (stejná stavba jako `prirodopis/_shared.ts`, napsáno ručně předem, ne
+> autorem dávky — poučení z matematiky: sdílený pomocník psaný autorem =
+> jedna chyba × celá dávka). Klíčové pravidlo: **žádný hodnotový soud jako
+> jediná správná odpověď u sporného tématu** (politika, náboženství jako
+> pravda/nepravda, „správné" složení rodiny, „lepší" kultura); u obecní/státní
+> samosprávy se ptá na ROLI/FUNKCI, nikdy nejmenuje současného držitele úřadu.
+
+### Stát a hospodářství
+- [x] Majetek a peníze — hospodaření v rodině, kapesné, šetření, plánování → `vko/majetekAPenizeHospodareniVRodine.ts` ✅ (příjem/výdaj/rozpočet/spoření, potřeba × přání, plánovaný × impulzivní nákup; žádné částky/ceny/banky)
+
+### Člověk jako jedinec
+- [x] Sebepoznání — osobní vlastnosti, schopnosti, dovednosti → `vko/sebepoznaniVlastnostiSchopnostiDovednosti.ts` ✅ (vlastnost × schopnost × dovednost, žádné hodnocení „lepší" osobnosti)
+
+### Člověk ve společnosti — Lidská setkávání a kultura
+- [x] Kultura — druhy umění, kulturní instituce, masová kultura → `vko/kulturaDruhyUmeniInstituce.ts` ✅ (muzeum/galerie/divadlo/kino/knihovna podle účelu, masová × „vysoká" kultura bez hodnocení)
+- [x] Vrstevnické vztahy, kamarádství, řešení konfliktů → `vko/vrstevnickeVztahyReseniKonfliktu.ts` ✅ (naslouchání, kompromis, já-výrok, přivolání dospělého; žádný konkrétní scénář šikany, žádná nebezpečná rada)
+
+### Zbývá — dávka B
+- [ ] Naše obec a region — tradice, kultura, památky
+- [ ] Naše vlast — státní symboly, významné osobnosti, svátky
+- [ ] Rodina, příbuzenství, mezigenerační vztahy
+- [ ] Rok v jeho proměnách — tradice a zvyky (Vánoce, Velikonoce ad.)
+
+**Poučení z dávky A:** nezávislý ruční průchod (4 recenzenti, 1 na téma) našel
+u všech 4 témat aspoň jeden skutečný nález — zmínka „banky" v distraktoru
+(zakázané slovo), věcně nepřesný klíč (dárek věcí vydávaný za „příjem"),
+systémová chyba interpunkce („, nebo" ve výčtu, i v názvu tématu), 2× L3
+jen přejmenované L2, a nejzávažnější: nápověda H0 u 18 ze 40 úloh
+(„vrstevnické vztahy") prakticky opakovala klíč — opraveno na neutrální styl.
+Jeden nález (L3 „jen 9 unikátních úloh" u kultury) byl **falešný poplach**:
+reviewer počítal unikátnost podle textu otázky, ne podle skutečné identity
+úlohy (otázka+klíč+možnosti) — `generator-task-count.test.ts` na tématu
+prochází, `gen(3)` spolehlivě vrací 24 unikátů. Další poučení: `topicInsight.ts`
+je klíčované na úrovni RVP `topic` (ne jednotlivého generátoru) — když RVP
+seskupí dvě věcně různá témata pod jeden uzel („Lidská setkávání a kultura" =
+kultura I vrstevnické vztahy), sdílí i box „Co je dobré vědět". Formulace musí
+sedět na OBĚ témata, ne jen na to, které psal autor jako první (živě odhaleno
+až v prohlížeči, ne testem).

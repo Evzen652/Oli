@@ -143,6 +143,11 @@ import { MYTY_A_BAJE_NARODU_SVETA } from "./cjl/mytyABajeNaroduSveta";
 import { POHADKA_KLASICKA_AUTORSKA } from "./cjl/pohadkaKlasickaAutorska";
 import { POVEST_REGIONALNI_HISTORICKA } from "./cjl/povestRegionalniHistoricka";
 import { VERS_RYM_PRIROVNANI_METAFORA_UVOD } from "./cjl/versRymPrirovnaniMetaforaUvod";
+// Výchova k občanství — Stát a hospodářství, Člověk jako jedinec, Člověk ve společnosti
+import { MAJETEK_A_PENIZE_HOSPODARENI_V_RODINE } from "./vko/majetekAPenizeHospodareniVRodine";
+import { SEBEPOZNANI_VLASTNOSTI_SCHOPNOSTI_DOVEDNOSTI } from "./vko/sebepoznaniVlastnostiSchopnostiDovednosti";
+import { KULTURA_DRUHY_UMENI_INSTITUCE } from "./vko/kulturaDruhyUmeniInstituce";
+import { VRSTEVNICKE_VZTAHY_RESENI_KONFLIKTU } from "./vko/vrstevnickeVztahyReseniKonfliktu";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Čeština — Jazyková výchova
@@ -280,4 +285,11 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   ...RIMSKE_CISARSTVI_TOPICS,
   ...VZNIK_SIRENI_KRESTANSTVI,
   ...STEHOVANI_NARODU_PAD_ZAPADORIMSKE_RISE,
+  // Výchova k občanství — Stát a hospodářství
+  ...MAJETEK_A_PENIZE_HOSPODARENI_V_RODINE,
+  // Výchova k občanství — Člověk jako jedinec
+  ...SEBEPOZNANI_VLASTNOSTI_SCHOPNOSTI_DOVEDNOSTI,
+  // Výchova k občanství — Člověk ve společnosti
+  ...KULTURA_DRUHY_UMENI_INSTITUCE,
+  ...VRSTEVNICKE_VZTAHY_RESENI_KONFLIKTU,
 ];

@@ -407,4 +407,33 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
       },
     ],
   },
+  {
+    subject: "vko",
+    okruhy: [
+      {
+        id: "penize-a-hospodareni",
+        name: "Peníze a hospodaření",
+        description: "Rodinný rozpočet, kapesné, spoření a rozdíl mezi potřebou a přáním.",
+        emoji: "💰",
+        topicIds: ["g6-vko-majetek-a-penize-hospodareni-v-rodine-6"],
+      },
+      {
+        id: "poznej-sam-sebe",
+        name: "Poznej sám sebe",
+        description: "Rozlišíš vlastnost, schopnost a dovednost — a v čem jsi dobrý ty.",
+        emoji: "🧭",
+        topicIds: ["g6-vko-sebepoznani-vlastnosti-schopnosti-dovednosti-6"],
+      },
+      {
+        id: "kultura-a-vztahy",
+        name: "Kultura a vztahy",
+        description: "Druhy umění, kulturní instituce i řešení sporů s kamarády.",
+        emoji: "🎭",
+        topicIds: [
+          "g6-vko-kultura-druhy-umeni-instituce-6",
+          "g6-vko-vrstevnicke-vztahy-reseni-konfliktu-6",
+        ],
+      },
+    ],
+  },
 ];
