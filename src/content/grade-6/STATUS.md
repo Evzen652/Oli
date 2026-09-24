@@ -2,11 +2,10 @@
 
 # Grade 6 — STATUS (pilot 2. stupně)
 
-> Hotovo (2026-09-24): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
-> Přírodopis 22/22, Zeměpis 18/18, Čeština 20/20 (HOTOVO), Výchova k občanství 4/8** — 113 ze 117.
-> Zbývá dokončit výchovu k občanství — dávka B (naše obec/region, naše vlast,
-> rodina, rok v jeho proměnách — 4 podtémata, viz `docs/GRADE_6_COMPLETION_PLAN.md`).
-> `GRADE_6_TOPICS` obsahuje jen hotová témata.
+> Hotovo (2026-09-25): **Fyzika 13/13, Dějepis 24/24, Matematika 12/12,
+> Přírodopis 22/22, Zeměpis 18/18, Čeština 20/20, Výchova k občanství 8/8**
+> — **117 ze 117. Šestý ročník KOMPLETNÍ.** S ročníky 1–5 hotový celý
+> obsahový plán aplikace. `GRADE_6_TOPICS` obsahuje jen hotová témata.
 
 ## Čeština (20 RVP podtémat) — 20/20 HOTOVO (2026-09-23)
 
@@ -211,11 +210,30 @@ zbývá „Co je dějepis" (pipeline pokus selhal — re-run). Typy: select_one 
 - [x] Kultura — druhy umění, kulturní instituce, masová kultura → `vko/kulturaDruhyUmeniInstituce.ts` ✅ (muzeum/galerie/divadlo/kino/knihovna podle účelu, masová × „vysoká" kultura bez hodnocení)
 - [x] Vrstevnické vztahy, kamarádství, řešení konfliktů → `vko/vrstevnickeVztahyReseniKonfliktu.ts` ✅ (naslouchání, kompromis, já-výrok, přivolání dospělého; žádný konkrétní scénář šikany, žádná nebezpečná rada)
 
-### Zbývá — dávka B
-- [ ] Naše obec a region — tradice, kultura, památky
-- [ ] Naše vlast — státní symboly, významné osobnosti, svátky
-- [ ] Rodina, příbuzenství, mezigenerační vztahy
-- [ ] Rok v jeho proměnách — tradice a zvyky (Vánoce, Velikonoce ad.)
+### Člověk ve společnosti — Naše obec, region, vlast
+- [x] Naše obec a region — tradice, kultura, památky → `vko/naseObecARegionTradiceKulturaPamatky.ts` ✅ (obec/kraj/starosta/zastupitelstvo jako role, ne osoba; hrad/zámek/chrám podle typu a dnešního využití)
+- [x] Naše vlast — státní symboly, T. G. Masaryk, státní svátky → `vko/statniSymbolyOsobnostiSvatkyNaseVlasti.ts` ✅ (vlajka/znak/hymna, všech 7 svátků ověřeno proti zákonu č. 245/2000 Sb., žádná současná osoba ve funkci)
+- [x] Rodina, příbuzenství, mezigenerační vztahy → `vko/pribuzenskeVztahyVRodine.ts` ✅ (teta/strýc/bratranec/sestřenice/synovec/neteř, žádné hodnocení „správného" složení rodiny)
+
+### Člověk ve společnosti — Rok v jeho proměnách
+- [x] Tradice a zvyky během roku (Vánoce, Velikonoce, Masopust, Dušičky, Mikuláš) → `vko/rokVPromenachTradiceAZvyky.ts` ✅ (svátek jako kulturní zvyk — „podle tradice…", nikdy jako podávaná pravda)
+
+**Výchova k občanství HOTOVÁ (8/8, 25. 9.). Šestka 117/117 — KOMPLETNÍ.**
+
+**Poučení z dávky B:** ruční průchod (4 recenzenti, 1 na téma) potvrdil, že
+citlivá témata (politická neutralita u státních symbolů, náboženská
+neutralita u ročních zvyků) prošla **bez jediného nálezu** — pravidla ze
+STANDARDS fungovala už při psaní. Skutečné nálezy byly jinde: dvě věcně
+nesmyslné časové vazby v L3 scénářích (kalendářní odstup uvedený jako
+konkrétní číslo, které v realitě neplatí — „pár týdnů" mezi zářím a
+1. květnem, „tři týdny" od pohyblivých Velikonoc), mylně přisouzená
+kompetence (stavební povolení má jen obec s rozšířenou působností, ne každý
+obecní úřad), a sdílený slovník zpětné vazby, který nerozlišoval, že L2/L3
+mluví o jmenovaných postavách ve 3. osobě, ne k žákovi samotnému. Stejné
+poučení jako v dávce A o `topicInsight.ts` (klíčováno na RVP `topic`, sdílí
+box mezi věcně různými tématy) se potvrdilo znovu — tentokrát preventivně
+ošetřeno napsáním textu, který sedí na všechna tři témata pod „Naše obec,
+region, vlast" hned napoprvé.
 
 **Poučení z dávky A:** nezávislý ruční průchod (4 recenzenti, 1 na téma) našel
 u všech 4 témat aspoň jeden skutečný nález — zmínka „banky" v distraktoru

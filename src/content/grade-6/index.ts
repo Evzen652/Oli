@@ -148,6 +148,10 @@ import { MAJETEK_A_PENIZE_HOSPODARENI_V_RODINE } from "./vko/majetekAPenizeHospo
 import { SEBEPOZNANI_VLASTNOSTI_SCHOPNOSTI_DOVEDNOSTI } from "./vko/sebepoznaniVlastnostiSchopnostiDovednosti";
 import { KULTURA_DRUHY_UMENI_INSTITUCE } from "./vko/kulturaDruhyUmeniInstituce";
 import { VRSTEVNICKE_VZTAHY_RESENI_KONFLIKTU } from "./vko/vrstevnickeVztahyReseniKonfliktu";
+import { NASE_OBEC_A_REGION_TRADICE_KULTURA_PAMATKY } from "./vko/naseObecARegionTradiceKulturaPamatky";
+import { STATNI_SYMBOLY_OSOBNOSTI_SVATKY_NASE_VLASTI } from "./vko/statniSymbolyOsobnostiSvatkyNaseVlasti";
+import { PRIBUZENSKE_VZTAHY_V_RODINE } from "./vko/pribuzenskeVztahyVRodine";
+import { ROK_V_PROMENACH_TRADICE_A_ZVYKY } from "./vko/rokVPromenachTradiceAZvyky";
 
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Čeština — Jazyková výchova
@@ -292,4 +296,8 @@ export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Výchova k občanství — Člověk ve společnosti
   ...KULTURA_DRUHY_UMENI_INSTITUCE,
   ...VRSTEVNICKE_VZTAHY_RESENI_KONFLIKTU,
+  ...NASE_OBEC_A_REGION_TRADICE_KULTURA_PAMATKY,
+  ...STATNI_SYMBOLY_OSOBNOSTI_SVATKY_NASE_VLASTI,
+  ...PRIBUZENSKE_VZTAHY_V_RODINE,
+  ...ROK_V_PROMENACH_TRADICE_A_ZVYKY,
 ];

@@ -434,6 +434,24 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
           "g6-vko-vrstevnicke-vztahy-reseni-konfliktu-6",
         ],
       },
+      {
+        id: "obec-vlast-rodina",
+        name: "Obec, vlast a rodina",
+        description: "Obec a kraj, státní symboly a svátky, rodina a příbuzenstvo.",
+        emoji: "🏘️",
+        topicIds: [
+          "g6-vko-nase-obec-a-region-tradice-kultura-pamatky-6",
+          "g6-vko-statni-symboly-osobnosti-svatky-nase-vlasti-6",
+          "g6-vko-pribuzenske-vztahy-v-rodine-6",
+        ],
+      },
+      {
+        id: "rok-v-promenach",
+        name: "Rok v proměnách",
+        description: "Vánoce, Velikonoce, Masopust a další zvyky, které se opakují každý rok.",
+        emoji: "🗓️",
+        topicIds: ["g6-vko-rok-v-promenach-tradice-a-zvyky-6"],
+      },
     ],
   },
 ];

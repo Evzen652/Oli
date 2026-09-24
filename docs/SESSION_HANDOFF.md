@@ -1,27 +1,23 @@
-# Předání práce — stav k 2026-09-24
+# Předání práce — stav k 2026-09-25
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >
-> **Dvě větve práce běží vedle sebe:**
+> ✅ **6. ročník je HOTOVÝ — 117 ze 117 podtémat (25. 9.).** Fyzika 13/13,
+> dějepis 24/24, matematika 12/12, přírodopis 22/22, zeměpis 18/18, čeština
+> 20/20, výchova k občanství 8/8 (dávka A 24. 9., dávka B 25. 9.). Spolu
+> s ročníky 1–5 je tím **hotový celý obsahový plán aplikace.** Detail
+> poslední dávky → §1.
 >
-> 1. **Příprava spuštění** — právní stránky, mobilní obal, bezpečnost,
->    formuláře obchodů. Nejde dál sama od sebe: stojí na osmi rozhodnutích
->    a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se v ní
->    nepohnulo, protože všechny zbylé kroky jsou na uživateli.
-> 2. **Doplnění 6. ročníku** — fyzika 13/13, dějepis 24/24 (15. 9.),
->    matematika 12/12 a přírodopis 22/22 (16. 9.), zeměpis 18/18 (20. 9.),
->    čeština 20/20 HOTOVÁ (23. 9.), **výchova k občanství 4/8 (24. 9., dávka
->    A)**. Šestka na **113 ze 117**. **Na řadě je dávka B výchovy k občanství
->    (4 zbylá podtémata)** podle `GRADE_6_COMPLETION_PLAN.md` — viz §1.
+> **Jediná zbylá větev práce je příprava spuštění** — právní stránky, mobilní
+> obal, bezpečnost, formuláře obchodů. Nejde dál sama od sebe: stojí na osmi
+> rozhodnutích a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se
+> v ní nepohnulo, protože všechny zbylé kroky jsou na uživateli. **Nová
+> session by měla začít TADY, ne obsahem** — obsah už dělat není co.
 >
-> ⚠️ Věta „obsah je hotový a uzavřený“, která tu stála do 13. 9., platila jen
-> pro ročníky 1–5. Šestka rozdělaná je.
->
-> ⚠️ **3 commity dávek 2–4 češtiny (`b020da5`, `b512d57`, `762abdd`) byly
-> pushnuté na `origin/main` 24. 9.** — nasazení samotné odsud ověřit nejde
-> (Vercel), sleduj ho na svém konci. Dávka A vko **zatím pushnutá není**,
-> čeká na tvé schválení.
+> ⚠️ **Commit dávky B vko zatím pushnutý není** — čeká na schválení uživatele
+> (viz `git status -sb` na začátku session). Dávky 2–4 češtiny a dávka A vko
+> pushnuté 24. 9. jsou.
 
 ---
 
@@ -127,21 +123,34 @@ s příkazem nález nejdřív sám ověřit, než sáhne na obsah — jeden nál
 unikátnosti (podle textu otázky, ne podle skutečné identity úlohy), oprava
 zamítnuta.
 
-### ▶▶ ZAČNI TADY: dávka B výchovy k občanství (4 zbylá podtémata)
+### ✅ Dávka B výchovy k občanství hotová (25. 9.) — VKO 8/8, šestka 117/117 KOMPLETNÍ
 
-RVP id (prefix `g6-vko-clovek-ve-spolecnosti-`):
-- `nase-obec-region-vlast-nase-obec-a-region-tradice-kultura-pamatky`
-- `nase-obec-region-vlast-nase-vlast-statni-symboly-vyznamne-osobnosti-svatky`
-- `nase-obec-region-vlast-rodina-pribuzenstvi-mezigeneracni-vztahy`
-- `rok-v-jeho-promenach-tradice-a-zvyky-behem-roku-vanoce-velikonoce-ad`
+4 zbylá témata: naše obec a region, naše vlast (státní symboly, T. G. Masaryk,
+státní svátky), rodina/příbuzenství, rok v proměnách. Detail nálezů a oprav →
+`PROJECT_STATUS.md` §6, session 2026-09-25.
 
-Pravidla jsou už v STANDARDS (sekce „PRAVIDLA PRO VÝCHOVU K OBČANSTVÍ") —
-zvlášť dbej na: u obecní/státní samosprávy se ptát na ROLI/FUNKCI, nikdy
-nejmenovat současného držitele úřadu (jen historicky ukotvené osobnosti typu
-T. G. Masaryk); u svátků popisovat jako KULTURNÍ ZVYK, ne jako náboženskou
-pravdu; u rodiny žádné hodnocení „správného" složení.
+⚠️ Nejcitlivější témata (politická neutralita u státních symbolů, náboženská
+neutralita u ročních zvyků) prošla recenzí **bez jediného nálezu** — pravidla
+napsaná do STANDARDS před dávkou A fungovala i tady napoprvé. Skutečné nálezy
+byly jinde: věcně nesmyslné konkrétní časové údaje v L3 scénářích („pár
+týdnů" tam, kde to bylo ~8 měsíců), mylně přisouzená kompetence úřadu, a
+sdílený slovník zpětné vazby, který nerozlišoval 2./3. osobu podle úrovně.
 
-Postup, který v dávce 1 (čeština) a dávce A (vko) fungoval:
+### ▶▶ ZAČNI TADY: příprava spuštění (§2) — obsah už dělat není co
+
+**6. ročník je hotový (117/117), s ním celý obsahový plán aplikace (ročníky
+1–6).** Další obsahová dávka není naplánovaná — pokud uživatel nezadá jinak,
+další práce patří do větve „příprava spuštění": osm kroků v **§2**, z toho
+šest čeká výhradně na uživatele (účty, právní kontrola, podpisový klíč) a dva
+technické navazují na ně (redirect URLs, cron úklidu — oba už hotové, viz §2).
+Než začneš cokoli kódovat, zkontroluj s uživatelem, jestli má nový úkol, nebo
+jestli má smysl sáhnout na některý z „drobnějších" nálezů v **§4**.
+
+---
+
+## Poučení z obsahové práce na 6. ročníku (pro budoucí ročníky/předměty)
+
+Postup, který v dávce 1 (čeština) a dávkách A/B (vko) fungoval:
 
 1. Workflow přes `scriptPath: ".claude/workflows/author-batch.js"`, args = pole
    `{rvpId, label, authorModel: "sonnet"}`. Před spuštěním doplň do `STANDARDS`

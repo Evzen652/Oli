@@ -320,5 +320,13 @@ export const DISPLAY_NAMES: DisplayMap = {
       name: "Kultura a vztahy",
       description: "Druhy umění, kulturní instituce i řešení sporů s kamarády.",
     },
+    "Naše obec, region, vlast": {
+      name: "Obec, vlast a rodina",
+      description: "Obec a kraj, státní symboly a svátky, rodina a příbuzenstvo.",
+    },
+    "Rok v jeho proměnách": {
+      name: "Rok v proměnách",
+      description: "Vánoce, Velikonoce, Masopust a další zvyky, které se opakují každý rok.",
+    },
   },
 };

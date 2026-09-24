@@ -491,6 +491,14 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
     useful: "Umět vyjít s kamarády a orientovat se v kultuře kolem tebe jsou dvě různé dovednosti, které v životě potkáváš skoro každý den.",
     funFact: "Slovo „muzeum“ pochází ze starořeckého „museion“ — místa zasvěceného múzám, bohyním umění a vědění.",
   },
+  "vko::Člověk ve společnosti::Naše obec, region, vlast": {
+    useful: "Rodina, obec i vlast jsou různě velké kruhy, do kterých patříš — každý má svá pravidla, svoje zvyky i svoje symboly.",
+    funFact: "Znak (erb) mívala kdysi jen šlechta a velká města. Dnes má svůj znak skoro každá obec v Česku, i ta nejmenší.",
+  },
+  "vko::Člověk ve společnosti::Rok v jeho proměnách": {
+    useful: "Když víš, proč se který svátek slaví, rozumíš taky tomu, proč se zrovna ten den nejde do školy nebo proč se chystá zvláštní jídlo.",
+    funFact: "Datum Velikonoc se každý rok počítá podle Měsíce, ne podle pevného kalendáře — proto může připadnout kdykoli mezi koncem března a koncem dubna.",
+  },
 };
 
 /**

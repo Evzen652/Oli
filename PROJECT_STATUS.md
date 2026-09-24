@@ -144,6 +144,52 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-25 — Výchova k občanství, dávka B (8/8), šestka HOTOVÁ (117/117):
+
+- ✅ **4 zbylá témata**: naše obec a region (obecní samospráva, památky, místní
+  tradice), naše vlast (státní symboly, T. G. Masaryk, státní svátky), rodina
+  (příbuzenské a mezigenerační vztahy), rok v proměnách (Vánoce, Velikonoce,
+  Masopust, Dušičky, Mikuláš jako kulturní zvyk). Šestka **117 ze 117 —
+  KOMPLETNÍ.** S ročníky 1–5 hotový celý obsahový plán aplikace. Nové okruhy:
+  „Obec, vlast a rodina" 🏘️ (sdílí RVP uzel, 3 témata), „Rok v proměnách" 🗓️.
+- 🔍 **Ruční průchod přes 4 nezávislé recenzenty** (1 na téma, „naše vlast"
+  s extra důrazem na politickou neutralitu, „rok v proměnách" na náboženskou
+  neutralitu) + 3 opraváři s vlastním ověřením před zásahem:
+  - **Naše vlast — státní symboly a svátky**: **žádný politický ani faktický
+    nález** — všech 7 státních svátků ČR ověřeno proti zákonu č. 245/2000 Sb.
+    (100% shoda data i důvodu), vlajka/znak/hymna dle zákona č. 3/1993 Sb.,
+    T. G. Masaryk historicky správně (žádná současná osoba ve funkci nikde).
+    Jediný nález: gramaticky chybná vazba „Přemýšlej NA + 4. pád" místo
+    „Přemýšlej, [nepřímá otázka]" — 8× v `POOL_L1`, opraveno.
+  - **Rok v proměnách**: **žádný nález** — náboženský obsah důsledně podaný
+    jako kulturní zvyk („podle tradice…", ne jako objektivní pravda), fakta
+    o zvycích (pomlázka, kraslice, mazanec, obchůzka Mikuláše, masopustní
+    průvod, dušičkové svíčky) sedí na skutečnou českou tradici.
+  - **Naše obec a region**: 4 nálezy — dvě věcně nesmyslné časové vazby v L3
+    scénářích (září→„pár týdnů"→1. květen byl ve skutečnosti ~8 měsíců;
+    Velikonoce→„tři týdny"→1. květen platí jen v některých letech kvůli
+    pohyblivému svátku) přeformulovány bez konkrétního čísla; 4 úlohy mylně
+    přisuzovaly stavební povolení každému obecnímu úřadu (ve skutečnosti jen
+    obec s rozšířenou působností) — nahrazeno obecnější, nespornou agendou;
+    jedna L3 úloha byla jen jednokroková (chyběl druhý krok oproti ostatním
+    L3 ve stejném poli) — doplněna o druhý krok.
+  - **Rodina — příbuzenské vztahy**: sdílený slovník zpětné vazby k distraktorům
+    (`WHY`) používal 2. osobu („tvé matky", „s tebou") i u L2/L3 úloh, které
+    jsou čistě ve 3. osobě o jmenovaných postavách — matoucí u 28 ze 44 úloh.
+    Přidán `WHY_NEUTRAL` (3.-osobové verze pro L2/L3), ověřeno běhovým
+    skriptem nad vygenerovanými úlohami (L1 28/48 s 2. osobou = správně,
+    L2 i L3 0/42 po opravě).
+- ✅ **Brány:** typecheck ✓, 8634/8641 testů (2 selhání: předem známý
+  nestabilní test přírodopisu + zátěžový timeout `content-audit.test.ts` ve
+  sdíleném běhu — ověřeno přímým voláním `runOfflineAudit` mimo vitest,
+  20 s, 117/117 témat, 99 % OK, **0 nálezů u VKO** — zbylé nálezy jsou
+  z dřívější, již committnuté dávky češtiny, mimo rozsah), zámek obsahu
+  +16 (aditivně, 281 témat), `audit:agreement` 43 564 úloh bez nálezu,
+  `audit:ui` bez nového nálezu, build ✓ (1m3s), průchod v prohlížeči
+  (`/student?anon=1`) bez chyb v konzoli — ověřena „naše vlast" i „rok
+  v proměnách" přímo, obě sdílejí `topicInsight` box s ostatními tématy
+  pod stejným RVP uzlem (formulace psána, ať sedí na všechna).
+
 ### Session 2026-09-24 — Výchova k občanství, dávka A (4/8), nový předmět v 6. ročníku:
 
 - ✅ **4 nová témata**: majetek a peníze (hospodaření v rodině), sebepoznání

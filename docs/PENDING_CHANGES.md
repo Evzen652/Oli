@@ -7,6 +7,48 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-25 — Výchova k občanství dávka B, šestka 117/117 KOMPLETNÍ
+
+Poslední 4 podtémata šestky: naše obec a region, naše vlast (státní symboly,
+T. G. Masaryk, státní svátky), rodina/příbuzenství, rok v proměnách. Detail
+review a oprav je v samostatných zápisech níž (jednotlivé nálezy) a
+v `PROJECT_STATUS.md` §6, session 2026-09-25. Shrnutí: politicky a
+nábožensky nejcitlivější témata prošla bez jediného nálezu, opravena byla
+jen věcná/gramatická drobnost jinde. Šestý ročník je tímto **kompletní
+(117/117)** a s ročníky 1–5 hotový celý obsahový plán aplikace — další
+obsahová dávka není naplánovaná.
+
+---
+
+## ✅ VYŘÍZENO 2026-09-24 — 2. osoba v L2/L3 feedbacku, VKO 6. ročník (příbuzenské vztahy)
+
+Nezávislý reviewer nahlásil, že sdílený slovník `WHY` v
+`src/content/grade-6/vko/pribuzenskeVztahyVRodine.ts` (mapa klíč|distraktor →
+vysvětlení) je použitý beze změny napříč L1/L2/L3, ačkoli část textů mluví
+2. osobou k žákovi („tvé matky", „s tebou", „prohodil jsi") — správně jen na
+L1, kde se tak ptá i otázka. Na L2/L3 je scénář o jmenovaných postavách
+(Petr, Hana, David…) čistě ve 3. osobě a žádné „ty" se v otázce nevyskytuje,
+takže feedback najednou mluvil o „tvém rodiči", i když otázka byla o Petrovi
+a Haně. Vlastní ověření (script nad `topic.generator(level)`, regex na
+tvé/tvého/tebou/jsi apod. v `optionFeedback`) potvrdilo: 28/44 úloh (všech 14
+L2 + všech 14 L3) mělo aspoň jeden distraktor s 2.-osobovým textem — nález
+souhlasí. Dílčí tvrzení reviewera o konkrétním textu neshodujícím se s klíčem
+(„Syn strýce nebo tety…proto bratranec" u úlohy s klíčem „sestřenice") se
+**nepotvrdilo** — skutečný text pro pár `sestřenice|strýc` správně končí
+„proto sestřenice"; reviewer si ho zjevně spletl s podobnou šablonou pro pár
+`bratranec|strýc` — beze změny.
+
+Oprava: přidán `WHY_NEUTRAL` slovník s 3.-osobovými verzemi (18 párů
+klíč|distraktor, které se v L2/L3 skutečně používají — „cílová osoba" místo
+„ty/tvůj", „jde o opačný směr příbuzenství" místo „prohodil jsi směr"),
+`uloha()` nově dostává `level` a přes `whyFor()` na L2/L3 přednostně sáhne po
+neutrální verzi, na L1 zůstává původní `WHY` beze změny. Ověřeno skriptem nad
+vygenerovanými úlohami: L1 28/48 feedbacků obsahuje 2. osobu (očekávané a
+správné), L2 i L3 teď 0/42. Testy tématu 23/23, `npm run typecheck` bez
+nových chyb.
+
+---
+
 ## ✅ VYŘÍZENO 2026-09-24 — únik v nápovědě H0, VKO 6. ročník (vrstevnické vztahy)
 
 Nezávislý reviewer nahlásil, že H0 u 18 ze 40 úloh v
