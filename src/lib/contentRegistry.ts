@@ -1,8 +1,6 @@
 import type { TopicMetadata } from "./types";
-import { ALL_TOPICS, setDiktatFilter } from "./content";
+import { ALL_TOPICS } from "./content";
 import { matchesAnyKeyword, longestMatchingKeywordLen } from "./keywordMatch";
-
-export { setDiktatFilter };
 
 /**
  * CONTENT REGISTRY — thin re-export layer.

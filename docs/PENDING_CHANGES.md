@@ -7,6 +7,29 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-26 (C) — úklid mrtvého kódu po legacy diktátu
+
+Otevřený bod z (B). Uživatel rozhodl **smazat**, ne napojovat výběr jevů na
+nová témata. Smazáno: `content/czech/diktat.ts`, `diktatPool.ts` (353 vět),
+`DiktatFilterSelect.tsx`, `curriculumMap.ts` + jeho test, `setDiktatFilter`
+v celém řetězu re-exportů a mrtvé větve v `useSessionDispatch.ts`
+a `SessionView.tsx`. −1 179 řádků, +5.
+
+Dvě věci ze zadání neplatily: `curriculumMap.ts` sice nikdo z aplikace
+neimportoval, ale **měl vlastní test** (šel s ním), a řetěz `setDiktatFilter`
+byl o jedno místo delší (`contentRegistry.ts`).
+
+**Zůstává vědomě:** `PREREQUISITE_MAP["cz-diktat"]` (celá legacy `cz-*` sekce
+té mapy je mrtvá stejně — patří to do úklidu `CZECH_TOPICS`, ne sem)
+a vizuály/CSS/prompty klíčované jménem „Diktát“ (kategorie může přijít z DB
+kurikula, takže prokazatelně mrtvé nejsou).
+
+**Nápad na později, pokud se bude chtít:** výběr pravopisných jevů před
+diktátem („vyber, co chceš procvičovat“) — smazaná `DiktatFilterSelect` je
+v gitu (`9a7bd0b^`) jako vzor UI. Napojení by znamenalo měnit podmínku na
+`topic.id.endsWith("-doplnovaci-diktat")` a promítnout filtr do sestavovačů
+v `src/content/_diktat.ts`.
+
 ## ✅ VYŘÍZENO 2026-09-26 (B) — doplňovací diktát ve všech ročnících 2–6
 
 Zadání „diktát musí být všude“. Východisko bylo horší, než vypadalo: diktát
@@ -18,10 +41,7 @@ Nově 5 témat `gN-cjl-doplnovaci-diktat` (2.–6. ročník) nad sdíleným jád
 pravidlo, L2 promíchaná (poznat jev je ta dovednost), L3 význam rozhoduje.
 Audit 0 nálezů, 13–18 unikátních úloh na úroveň, ověřeno v prohlížeči.
 
-**Zbývá k rozhodnutí:** legacy `cz-diktat`, `diktatPool.ts` (353 vět),
-`DiktatFilterSelect` a `curriculumMap.ts` jsou mrtvý kód. Buď smazat, nebo
-výběr typu diktátu (filtr jevů) napojit na nová témata — to by byla hezká
-funkce, ale je to samostatné zadání.
+**Vyřízeno v (C) níž:** mrtvý kód po legacy diktátu je smazaný.
 
 ## ✅ VYŘÍZENO 2026-09-26 — kresba v dlaždici ročníku zmenšena na 72 %
 

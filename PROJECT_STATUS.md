@@ -144,6 +144,51 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-26 (C) — Úklid mrtvého kódu po legacy diktátu:
+
+Rozhodnutí uživatele: **smazat**, ne oživovat výběr jevů. Smazáno 5 souborů
+a 3 napojení, −1 179 řádků, +5.
+
+- ✅ **Smazáno:** `src/lib/content/czech/diktat.ts` (téma `cz-diktat`),
+  `src/lib/diktatPool.ts` (353 vět), `src/components/DiktatFilterSelect.tsx`,
+  `src/lib/curriculumMap.ts` a jeho test `src/lib/__tests__/curriculumMap.test.ts`.
+  Dále `setDiktatFilter` v celém řetězu re-exportů (`content/czech/index.ts` →
+  `content/index.ts` → `contentRegistry.ts`) a mrtvé větve
+  v `useSessionDispatch.ts` (`topic.id === "cz-diktat"`, `pendingDiktatTopic`,
+  `handleDiktatFilterConfirm`) a `SessionView.tsx`.
+- ⚠️ **Dvě věci v zadání neplatily úplně, a našly se až ověřením:**
+  - `curriculumMap.ts` **neimportoval nikdo z aplikace, ale importoval ho test**
+    (`src/lib/__tests__/curriculumMap.test.ts`, 68 řádků, 9 exportů). Smazání
+    souboru bez testu by sadu rozbilo. Test testoval jen ten mrtvý soubor, šel
+    tedy s ním.
+  - Řetěz `setDiktatFilter` byl **o jedno místo delší**, než zadání uvádělo —
+    kromě `content/index.ts` ho re-exportoval i `contentRegistry.ts`.
+- ℹ️ **Obsah se nezachovával.** 353 vět z `diktatPool.ts` nemá nápovědy,
+  vysvětlení ani zpětnou vazbu k distraktorům, takže neprojdou
+  `CONTENT_AUTHORING.md` §0 — a přímo v prvním bloku je věcná chyba
+  („Nab_l jsem do pistole.“ s klíčem `y/ý` a odůvodněním „nabýt“; správně je
+  *nabil*, tedy `i`). Držet je v repu jako „zdroj k pozdějšímu použití“ by
+  znamenalo držet neprověřený obsah. Git historie je uchovává (commit 9a7bd0b^).
+- ℹ️ **Záměrně NEsmazáno, ať se úklid nerozlije:**
+  - `PREREQUISITE_MAP["cz-diktat"]` v `contentRegistry.ts` — celá legacy sekce
+    `cz-*` v té mapě je mrtvá stejně (`cz-parove-souhlasky`, `cz-rod-cislo`,
+    `cz-slovesa-urcovani`, `cz-zaklad-vety`). Vyndat z ní jeden klíč by bylo
+    nekonzistentní; patří to do úklidu celých legacy `CZECH_TOPICS`.
+  - `CZ_CATEGORY_VISUALS["Diktát"]`, `CZ_TOPIC_VISUALS["Doplňovací diktát"]`,
+    CSS proměnné `--cz-diktat*` a promptové klíče v `AdminGenerateIllustrations`.
+    Jsou klíčované **jménem** kategorie/tématu, ne ID, a „Diktát“ jako kategorie
+    může přijít i z DB kurikula (`curriculumNormalize.ts`, `useDbCurriculum.ts`
+    ji normalizují, `categoryInfo.ts` ji zná). Nejsou tedy prokazatelně mrtvé.
+  - Testy s ID `"cz-diktat"` (`skill-id-resolution.test.ts`,
+    `skill-readable-name.test.ts`) — berou ho jen jako libovolný string pro
+    `getSkillIcon`/`getSkillSubject`, které ho řeší regexem podle názvu, ne
+    přes registr témat. Na existenci tématu nezávisí.
+- ✅ **Ověřeno:** `npm run typecheck` čistý · `npm run audit:ui` bez nového
+  nálezu (baseline zůstala na 9, žádný z nich se mazaných souborů netýkal) ·
+  `npm test` 8 676 prošlo, jediný pád je známý časový limit
+  `content-audit.test.ts` ve sdíleném běhu — v izolaci prochází (2 passed,
+  0 nálezů) · `npm run build` prošel.
+
 ### Session 2026-09-26 (B) — Doplňovací diktát ve všech ročnících 2–6:
 
 - 🐞 **Východisko: diktát v aplikaci NEBYL, a to v žádném ročníku.** Na dotaz
@@ -200,10 +245,8 @@ src/
 - ℹ️ **Navigace:** ročníky 4–6 neměly žádný pravopisný okruh, dostaly nový
   „✍️ Pravopis a diktát“. Ve 2. a 3. ročníku se diktát přidal do stávajícího
   okruhu (`hlasky-pravopis`, `vyjmenovana-slova`).
-- ℹ️ **Neuklizeno, mimo zadání:** legacy `cz-diktat`, `src/lib/diktatPool.ts`
-  (353 vět), komponenta `DiktatFilterSelect` a větev `topic.id === "cz-diktat"`
-  v `useSessionDispatch.ts` zůstávají v repu jako mrtvý kód. Nový diktát je
-  nepoužívá. Také `src/lib/curriculumMap.ts` neimportuje nikdo.
+- ✅ **Uklizeno v session (C) níž** — legacy `cz-diktat`, `diktatPool.ts`,
+  `DiktatFilterSelect`, `setDiktatFilter` a `curriculumMap.ts` jsou smazané.
 - ℹ️ **Hranice vlastnictví:** `SESSION_OWNERSHIP.md` říká, že architekt nesmí
   editovat `src/content/grade-N/**` bez žádosti grade-N session. Žádná
   grade-N session neběží (obsahový plán je hotový) a zadání přišlo přímo od

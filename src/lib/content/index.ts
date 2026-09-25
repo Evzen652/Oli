@@ -13,8 +13,6 @@ import { GRADE_4_TOPICS } from "@/content/grade-4";
 import { GRADE_5_TOPICS } from "@/content/grade-5";
 import { GRADE_6_TOPICS } from "@/content/grade-6";
 
-export { setDiktatFilter } from "./czech";
-
 export const ALL_TOPICS: TopicMetadata[] = [
   // Legacy (skryté — viz komentář výše):
   // ...MATH_TOPICS,

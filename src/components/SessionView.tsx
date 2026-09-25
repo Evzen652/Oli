@@ -7,7 +7,6 @@ import { useUserRole } from "@/hooks/useUserRole";
 import { GradeSelect } from "@/components/GradeSelect";
 import { TopicBrowser } from "@/components/TopicBrowser";
 import { ChildHomePage } from "@/components/ChildHomePage";
-import { DiktatFilterSelect } from "@/components/DiktatFilterSelect";
 import { HelpButton } from "@/components/HelpButton";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { MiniExplainer } from "@/components/MiniExplainer";
@@ -126,7 +125,7 @@ export function SessionView() {
   const {
     grade, session, practiceQuestion, userInput, isLocked, loading,
     checkFeedback, lastAnswerCorrect, revealedAnswer, answeredTask, answeredTaskIndex, selectedAnswer,
-    questionTitle, questionIcon, taskResults, pendingDiktatTopic,
+    questionTitle, questionIcon, taskResults,
     // Vytažené zvlášť kvůli závislostem efektů níž: `s` je nový objekt na každý
     // render, takže by ho do deps dát nešlo. `handleGradeSelect` je stabilní
     // (`useCallback` s prázdnými deps), tedy do deps patřit může.
@@ -361,17 +360,6 @@ export function SessionView() {
       </div>
     );
   }
-
-  if (!session && pendingDiktatTopic) {
-    return (
-      <DiktatFilterSelect
-        onConfirm={s.handleDiktatFilterConfirm}
-        onBack={() => s.setPendingDiktatTopic(null)}
-      />
-    );
-  }
-
-
 
   if (!session) {
     // Během zakládání session — spinner místo ChildHomePage/TopicBrowser

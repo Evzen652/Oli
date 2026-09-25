@@ -1,14 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import type { SessionData, SessionState, PracticeTask, TopicMetadata, Grade } from "@/lib/types";
 import { createSession, processState, prepareMatchedTopic } from "@/lib/sessionOrchestrator";
-import { setDiktatFilter } from "@/lib/content";
 import { supabase } from "@/integrations/supabase/client";
 import { useSessionPersistence, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { loadCustomExercises } from "@/lib/customExerciseLoader";
 import { filterValidTasks } from "@/lib/taskValidator";
 import { markTaskCompleted as markAnonTaskCompleted } from "@/lib/anonProgress";
 import { getCurrentAnonGrade } from "@/lib/anonTrial";
-import type { DiktatType } from "@/components/DiktatFilterSelect";
 import { toast } from "sonner";
 
 const TERMINAL_STATES: SessionState[] = ["END", "STOP_2"];
@@ -103,7 +101,6 @@ export interface SessionDispatchState {
   questionTitle: string;
   questionIcon: string;
   taskResults: ("correct" | "wrong" | "help")[];
-  pendingDiktatTopic: TopicMetadata | null;
 }
 
 export interface SessionDispatchActions {
@@ -120,12 +117,10 @@ export interface SessionDispatchActions {
   setAiEvalLoading: (b: boolean) => void;
   setEvalMinReached: (b: boolean) => void;
   setAnsweredTask: (t: PracticeTask | null) => void;
-  setPendingDiktatTopic: (t: TopicMetadata | null) => void;
   /** Jen pro obnovu sezení ze zálohy — jinak si výsledky spravuje smyčka sama. */
   setTaskResults: (r: ("correct" | "wrong" | "help")[]) => void;
   handleGradeSelect: (g: Grade) => void;
   handleTopicSelect: (topic: TopicMetadata) => Promise<void>;
-  handleDiktatFilterConfirm: (types: DiktatType[]) => Promise<void>;
   handleInputSubmit: () => Promise<void>;
   handleExplainContinue: () => Promise<void>;
   handleAnswerSubmit: (answer: string) => Promise<void>;
@@ -137,7 +132,6 @@ export interface SessionDispatchActions {
 }
 
 export function useSessionDispatch(): SessionDispatchState & SessionDispatchActions {
-  const [pendingDiktatTopic, setPendingDiktatTopic] = useState<TopicMetadata | null>(null);
   const [grade, setGrade] = useState<Grade | null>(() => {
     // Anonymní mód — ročník uložený při onboardingu (single source of truth = trial state)
     const g = getCurrentAnonGrade();
@@ -318,15 +312,10 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
 
   const handleTopicSelect = useCallback(async (topic: TopicMetadata) => {
     if (!grade) return;
-    if (topic.id === "cz-diktat") {
-      setPendingDiktatTopic(topic);
-      return;
-    }
     // setLoading(true) hned na začátku → SessionView má spolehlivý signál
     // (loading true→false) i pro cesty, které session nevytvoří (prázdné téma).
     setLoading(true);
     try {
-      setDiktatFilter(null);
       replaceTaskResults([]);
       const enrichedTopic = await enrichTopicFromDb(topic);
 
@@ -407,22 +396,6 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
       setLoading(false);
     }
   }, [grade, enrichTopicFromDb, replaceTaskResults]);
-
-  const handleDiktatFilterConfirm = useCallback(async (types: DiktatType[]) => {
-    if (!grade || !pendingDiktatTopic) return;
-    setDiktatFilter(types);
-    setPendingDiktatTopic(null);
-    replaceTaskResults([]);
-    const enrichedTopic = await enrichTopicFromDb(pendingDiktatTopic);
-    const newSession = createSession(grade);
-    newSession.matchedTopic = enrichedTopic;
-    newSession.childInput = enrichedTopic.title;
-    newSession.state = "EXPLAIN" as SessionState;
-    const result = await dispatch(newSession);
-    if (result?.output) {
-      setExplanation(result.output);
-    }
-  }, [grade, pendingDiktatTopic, dispatch, enrichTopicFromDb, replaceTaskResults]);
 
   const handleInputSubmit = useCallback(async () => {
     if (!session || isLocked || loading) return;
@@ -574,8 +547,6 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     setAiEvaluation(null);
     setAiEvalLoading(false);
     setPendingEndSession(null);
-    setPendingDiktatTopic(null);
-    setDiktatFilter(null);
     replaceTaskResults([]);
   }, [replaceTaskResults]);
 
@@ -585,13 +556,13 @@ export function useSessionDispatch(): SessionDispatchState & SessionDispatchActi
     explanation, aiEvaluation, aiEvalLoading, evalMinReached, answeredTask,
     answeredTaskIndex,
     selectedAnswer,
-    questionTitle, questionIcon, taskResults, pendingDiktatTopic,
+    questionTitle, questionIcon, taskResults,
     setTaskResults: replaceTaskResults,
     setGrade, setSession, setOutput, setUserInput, setIsLocked,
     setCheckFeedback, setLastAnswerCorrect, setRevealedAnswer,
     setExplanation, setAiEvaluation, setAiEvalLoading, setEvalMinReached,
-    setAnsweredTask, setPendingDiktatTopic,
-    handleGradeSelect, handleTopicSelect, handleDiktatFilterConfirm,
+    setAnsweredTask,
+    handleGradeSelect, handleTopicSelect,
     handleInputSubmit, handleExplainContinue, handleAnswerSubmit,
     handleTextSubmit, handleTimeExpired, handleContinueAfterCheck,
     handleRevealAnswer, handleReset,
