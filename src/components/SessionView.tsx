@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useParentGate } from "@/components/ParentGate";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { FractionBarVisual } from "@/components/FractionBarVisual";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
@@ -666,14 +665,29 @@ export function SessionView() {
                     {t("session.good_to_know")}
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl w-full max-h-[90vh] flex flex-col p-0">
+                {/* `overflow-hidden` na dialogu a `min-h-0` na scroll kontejneru
+                    nejsou ozdoba — bez nich se obsah tiše uřízne, viz komentář
+                    u kontejneru níž. */}
+                <DialogContent className="max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden p-0">
                   <DialogHeader className="px-6 pt-6 pb-0 shrink-0">
                     <div className="flex items-center gap-4">
                       <img src={goodToKnowImg} alt="Co je dobré vědět" className="w-12 h-12 object-contain shrink-0 mix-blend-multiply" />
                       <DialogTitle className="text-xl text-left">{getChildTopicTitle(session.matchedTopic, grade, isStudentView)}</DialogTitle>
                     </div>
                   </DialogHeader>
-                  <ScrollArea className="flex-1 px-6 pb-6">
+                  {/* Obyčejný `overflow-y-auto` div, NE `<ScrollArea>` (Radix).
+                      Radix dává svému viewportu `h-full`, tedy `height: 100%`.
+                      To se nemá proti čemu spočítat: výška dialogu je odvozená
+                      od `max-height`, ne od `height`, takže je pro procenta
+                      neurčitá. Viewport proto spadne na výšku obsahu (naměřeno
+                      855 px v kontejneru vysokém 602 px), `overflow-hidden`
+                      kořene přebytek ustřihne a scrollbar se NEOBJEVÍ, protože
+                      Radix vidí `scrollHeight === clientHeight`. U „Pavoukovců“
+                      tak bylo 240 px textu nedosažitelných — dialog končil
+                      uprostřed věty. Stejný vzor s obyčejným divem používá
+                      `SkillDetailModal.tsx` a funguje. `min-h-0`, aby se flex
+                      položka směla zmenšit pod výšku obsahu. */}
+                  <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-6">
                     <div className="space-y-6 text-base pt-4">
                       <p className="text-muted-foreground">{session.matchedTopic.briefDescription}</p>
                       {/* K čemu to je stojí PŘED postupem a schválně NENÍ box:
@@ -755,7 +769,7 @@ export function SessionView() {
                         </div>
                       )}
                     </div>
-                  </ScrollArea>
+                  </div>
                 </DialogContent>
               </Dialog>
             </div>
