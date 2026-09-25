@@ -28,6 +28,7 @@ import { MAGICKE_CTVERCE_RADY } from "./matematika/magickeCtverceCiselneRady";
 
 // Český jazyk a literatura
 import { PRAVOPISPREDLOZEKSZSEZE } from "./cjl/pravopisPredlozekSZSeZe";
+import { DOPLNOVACIDIKTAT4 } from "./cjl/doplnovaciDiktat";
 import { PRAVOPISPREDPONVYVYSZVZ } from "./cjl/pravopisPredponVyVySZVz";
 import { PREDPONAKORENPRIPONAKONCOVKA } from "./cjl/predponaKorenPriponaKoncovka";
 import { STAVBAVETYZAKLADNISKLADEBNIDVOJICEPODMETPRISUDEK } from "./cjl/stavbaVetyZakladniSkladebniDvojicePodmetPrisudek";
@@ -100,6 +101,7 @@ export const GRADE_4_TOPICS: TopicMetadata[] = [
   ...MAGICKE_CTVERCE_RADY,
   // Český jazyk a literatura (22)
   ...PRAVOPISPREDLOZEKSZSEZE,
+  ...DOPLNOVACIDIKTAT4,
   ...PRAVOPISPREDPONVYVYSZVZ,
   ...PREDPONAKORENPRIPONAKONCOVKA,
   ...STAVBAVETYZAKLADNISKLADEBNIDVOJICEPODMETPRISUDEK,

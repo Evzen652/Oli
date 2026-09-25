@@ -70,6 +70,15 @@ export const GRADE5_NAVIGATION: SubjectNav[] = [
     subject: "čeština",
     okruhy: [
       {
+        id: "pravopis-diktat",
+        name: "Pravopis a diktát",
+        description: "Doplňuješ chybějící písmena a sám poznáváš, jaké pravidlo platí.",
+        emoji: "✍️",
+        topicIds: [
+          "g5-cjl-doplnovaci-diktat",
+        ],
+      },
+      {
         id: "slovo-vyznam",
         name: "Slovo a jeho význam",
         description: "Vícevýznamová slova a spisovná čeština.",

@@ -118,6 +118,7 @@ import { PRIRODA_ENDEMITY_VELKY_BARIEROVY_UTES } from "./zemepis/prirodaEndemity
 import { AUSTRALIE_OBYVATELSTVO_OSTROVY_OCEANIE } from "./zemepis/australieObyvatelstvoOstrovyOceanie";
 // Čeština — Tvarosloví
 import { OPAKOVANI_SLOVNICH_DRUHU_OHEBNE_NEOHEBNE } from "./cjl/opakovaniSlovnichDruhuOhebneNeohebne";
+import { DOPLNOVACIDIKTAT6 } from "./cjl/doplnovaciDiktat";
 import { PODSTATNA_JMENA_SKLONOVANI_MLUVNICKE_KATEGORIE } from "./cjl/podstatnaJmenaSklonovaniMluvnickeKategorie";
 import { SLOVESA_TRIDY_A_VZORY } from "./cjl/slovesaTridyAVzory";
 // Čeština — Nauka o slovní zásobě
@@ -156,6 +157,7 @@ import { ROK_V_PROMENACH_TRADICE_A_ZVYKY } from "./vko/rokVPromenachTradiceAZvyk
 export const GRADE_6_TOPICS: TopicMetadata[] = [
   // Čeština — Jazyková výchova
   ...OPAKOVANI_SLOVNICH_DRUHU_OHEBNE_NEOHEBNE,
+  ...DOPLNOVACIDIKTAT6,
   ...PODSTATNA_JMENA_SKLONOVANI_MLUVNICKE_KATEGORIE,
   ...SLOVESA_TRIDY_A_VZORY,
   ...SLOVNI_ZASOBA_A_JEJI_OBOHACOVANI,

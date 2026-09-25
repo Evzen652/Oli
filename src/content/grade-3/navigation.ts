@@ -82,9 +82,10 @@ export const GRADE3_NAVIGATION: Grade3SubjectNav[] = [
       {
         id: "vyjmenovana-slova",
         name: "Vyjmenovaná slova",
-        description: "Píšeš správně i/y po obojetných souhláskách.",
+        description: "Píšeš správně i/y po obojetných souhláskách, velká písmena a diktát.",
         emoji: "📋",
         topicIds: [
+          "g3-cjl-doplnovaci-diktat",
           "g3-cjl-vyjmenovana-slova",
           "g3-cjl-slova-pribuzna-vyjmenovana",
           "g3-cjl-velka-pismena",

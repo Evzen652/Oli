@@ -23,6 +23,15 @@ export const GRADE6_NAVIGATION: SubjectNav[] = [
     subject: "čeština",
     okruhy: [
       {
+        id: "pravopis-diktat",
+        name: "Pravopis a diktát",
+        description: "Doplňuješ chybějící písmena a sám poznáváš, jaké pravidlo platí.",
+        emoji: "✍️",
+        topicIds: [
+          "g6-cjl-doplnovaci-diktat",
+        ],
+      },
+      {
         id: "tvaroslovi",
         name: "Slovní druhy a tvary",
         description: "Ohebná a neohebná slova, vzory podstatných jmen a slovesné třídy.",

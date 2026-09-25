@@ -37,6 +37,7 @@ import { SLOVASOUZNACNAPROTIKLADNA } from "./cjl/slovaSouznacnaAProtikladna";
 import { SLOVAJEDNOZNACNAMNOHO } from "./cjl/slovaJednoznacnaMnohoznacna";
 import { SLOVAPRIBYZNAVANJE } from "./cjl/slovaPribuznaVyjmenovana";
 import { VYJMENOVANASLOVA } from "./cjl/vyjmenovanaSlova";
+import { DOPLNOVACIDIKTAT3 } from "./cjl/doplnovaciDiktat";
 import { VELKAPISMENA } from "./cjl/velkaPismenaVlastniJmena";
 import { SPOJOVANIVETSPOJKAMI } from "./cjl/spojovaniVetSpojkami";
 import { VETAJJEDNODUCHASONVETI } from "./cjl/vetaJednoduchaSouveti";
@@ -96,6 +97,7 @@ export const GRADE_3_TOPICS: TopicMetadata[] = [
   ...SLOVAJEDNOZNACNAMNOHO,
   ...SLOVAPRIBYZNAVANJE,
   ...VYJMENOVANASLOVA,
+  ...DOPLNOVACIDIKTAT3,
   ...VELKAPISMENA,
   ...SPOJOVANIVETSPOJKAMI,
   ...VETAJJEDNODUCHASONVETI,

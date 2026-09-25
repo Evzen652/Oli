@@ -7,6 +7,22 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-26 (B) — doplňovací diktát ve všech ročnících 2–6
+
+Zadání „diktát musí být všude“. Východisko bylo horší, než vypadalo: diktát
+v aplikaci **nebyl vůbec** — legacy téma `cz-diktat` leží pod zakomentovanými
+`CZECH_TOPICS` a jeho generátor navíc ignoroval úroveň (L1 = L2 = L3).
+
+Nově 5 témat `gN-cjl-doplnovaci-diktat` (2.–6. ročník) nad sdíleným jádrem
+`src/content/_diktat.ts`. Každý ročník míchá jen jevy, které už umí; L1 jedno
+pravidlo, L2 promíchaná (poznat jev je ta dovednost), L3 význam rozhoduje.
+Audit 0 nálezů, 13–18 unikátních úloh na úroveň, ověřeno v prohlížeči.
+
+**Zbývá k rozhodnutí:** legacy `cz-diktat`, `diktatPool.ts` (353 vět),
+`DiktatFilterSelect` a `curriculumMap.ts` jsou mrtvý kód. Buď smazat, nebo
+výběr typu diktátu (filtr jevů) napojit na nová témata — to by byla hezká
+funkce, ale je to samostatné zadání.
+
 ## ✅ VYŘÍZENO 2026-09-26 — kresba v dlaždici ročníku zmenšena na 72 %
 
 Nahlásil uživatel na `/onboarding`. Kresba zabírala 82 % dlaždice a zajížděla

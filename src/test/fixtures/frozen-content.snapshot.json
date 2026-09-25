@@ -1,4 +1,8 @@
 {
+  "g2-cjl-doplnovaci-diktat": {
+    "hash": "1454eb4a7bf5b698e1c2a7826e6261d57c131c50",
+    "taskCount": 44
+  },
   "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena": {
     "hash": "39db768af111a2065d0d02fa04f6b1c5c95980c8",
     "taskCount": 47
@@ -74,6 +78,10 @@
   "g3-cjl-dialog-pravidla": {
     "hash": "b1a781015473a97f87751c87eb073dd37c23b3df",
     "taskCount": 39
+  },
+  "g3-cjl-doplnovaci-diktat": {
+    "hash": "04fdac406ee25ff12a12651a0de432c291b254f4",
+    "taskCount": 45
   },
   "g3-cjl-jazykova-vychova-nauka-o-slove-slova-pribuzna-koren-slova": {
     "hash": "0a07e478d4513648e888c89a0f96fff562c610a2",
@@ -154,6 +162,10 @@
   "g3-prvouka-rozmanitost-prirody-ekosystemy-pole-louka-les-voda-jednoduche-ekosystemy": {
     "hash": "2d9d6d16d2a28dc4d01625a804db5e996236bcc6",
     "taskCount": 40
+  },
+  "g4-cjl-doplnovaci-diktat": {
+    "hash": "4405366414343ad10640a0922c23444976f66407",
+    "taskCount": 46
   },
   "g4-cjl-jazykova-vychova-skladba-stavba-vety-zakladni-skladebni-dvojice-podmet-prisudek": {
     "hash": "add8fc00d6f4b6426840b4f4864b31ae8cf07aec",
@@ -402,6 +414,10 @@
   "g4-vlastiveda-misto-kde-zijeme-prace-s-mapou-druhy-map-meritko-mapove-znacky-svetove-strany": {
     "hash": "3dc6c15445cf6e4bf43c057ccc1a86b520dce7b5",
     "taskCount": 39
+  },
+  "g5-cjl-doplnovaci-diktat": {
+    "hash": "262610886bbc572033e215600334e888325d2c82",
+    "taskCount": 42
   },
   "g5-cjl-jazykova-vychova-nauka-o-slove-slova-jednoznacna-mnohoznacna-vicevyznamova": {
     "hash": "f28a1f38678c032cfebc16b5af20c95fa2836113",
@@ -662,6 +678,10 @@
   "g6-cjl-dopis-soukromy-a-uredni-6": {
     "hash": "f8da572c7b3cd5e81178d1ee3343ccff1f44f780",
     "taskCount": 51
+  },
+  "g6-cjl-doplnovaci-diktat": {
+    "hash": "38d3f46af0e7a3ddf0ef8255b08e027d9280bc79",
+    "taskCount": 45
   },
   "g6-cjl-klicova-slova-hlavni-myslenky-textu-6": {
     "hash": "122939c1c8b9318793f1e8ac930adfdc93397715",

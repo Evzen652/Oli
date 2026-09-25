@@ -16,6 +16,7 @@ import { ZAPORNACISLANACISELNEOSE } from "./matematika/zapornaCislaNaCiselneOse"
 
 // ── Český jazyk ──
 import { BASENLYRICKAAEPICKAROMANPOVIDKA } from "./cjl/basenLyrickaAEpickaRomanPovidka";
+import { DOPLNOVACIDIKTAT5 } from "./cjl/doplnovaciDiktat";
 import { CISLOVKYDRUHYZAKLADNIRADOVEDRUHOVENASOBNE } from "./cjl/cislovkyDruhyZakladniRadoveDruhoveNasobne";
 import { DOPISUREDNIZADOSTTISKOPISYPRIHLASKADOTAZNIK } from "./cjl/dopisUredniZadostTiskopisyPrihlaskaDotaznik";
 import { ELEMENTARNILITERARNIPOJMYPRIROZBORUTEXTU } from "./cjl/elementarniLiterarniPojmyPriRozboruTextu";
@@ -90,6 +91,7 @@ export const GRADE_5_TOPICS: TopicMetadata[] = [
 
   // Český jazyk (22)
   ...BASENLYRICKAAEPICKAROMANPOVIDKA,
+  ...DOPLNOVACIDIKTAT5,
   ...CISLOVKYDRUHYZAKLADNIRADOVEDRUHOVENASOBNE,
   ...DOPISUREDNIZADOSTTISKOPISYPRIHLASKADOTAZNIK,
   ...ELEMENTARNILITERARNIPOJMYPRIROZBORUTEXTU,

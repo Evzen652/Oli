@@ -80,6 +80,15 @@ export const GRADE4_NAVIGATION: SubjectNav[] = [
     subject: "čeština",
     okruhy: [
       {
+        id: "pravopis-diktat",
+        name: "Pravopis a diktát",
+        description: "Doplňuješ chybějící písmena a sám poznáváš, jaké pravidlo platí.",
+        emoji: "✍️",
+        topicIds: [
+          "g4-cjl-doplnovaci-diktat",
+        ],
+      },
+      {
         id: "stavba-slova",
         name: "Stavba slova",
         description: "Části slova, předpony a předložky.",

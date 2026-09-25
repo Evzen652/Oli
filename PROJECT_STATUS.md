@@ -144,6 +144,71 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-26 (B) — Doplňovací diktát ve všech ročnících 2–6:
+
+- 🐞 **Východisko: diktát v aplikaci NEBYL, a to v žádném ročníku.** Na dotaz
+  uživatele „u kterých ročníků je diktát?“ se ukázalo, že téma `cz-diktat`
+  sice v kódu existuje (`src/lib/content/czech/diktat.ts`, `gradeRange [3,3]`),
+  ale `CZECH_TOPICS` jsou v `src/lib/content/index.ts` **zakomentované jako
+  legacy**. Sonda přes `getTopicsForGrade()` vracela pro ročníky 1–9 nulu.
+  Statické čtení kódu tvrdilo „3. ročník“ — až běh ukázal pravdu.
+- ✅ **Nový obsah: 5 témat `gN-cjl-doplnovaci-diktat` (N = 2…6).** Rozsah je
+  dán `ACTIVE_GRADES = [2,3,4,5,6]` v `contentAvailability.ts` — ročníky 1
+  a 7–9 jsou zamčené nezávisle na obsahu, takže by tam byl diktát neviditelný.
+- ✅ **Sdílené jádro `src/content/_diktat.ts`.** Rodiny pravidel (`iy`,
+  `skupina`, `shoda`) dopočítávají distraktory i zpětnou vazbu, takže se
+  u ~230 položek nemůže rozejít odůvodnění. Tři sestavovače úrovní nesou
+  i logiku nápověd: L1 smí pravidlo pojmenovat, L2 ne (poznat jev JE ta
+  dovednost), L3 se ptá na význam.
+- ✅ **Kalibrace po ročnících** — každý diktát míchá jen to, co ten ročník umí:
+  - **2.** tvrdé/měkké souhlásky · skupiny s ě · vlastní jména ·
+    L3 lípa × Lípa a slabiky di/ti/ni × dy/ty/ny
+  - **3.** vyjmenovaná slova · L3 pyl × pil, vysel × visel, nabýt × nabít
+    (vědomě JINÉ dvojice než téma „Vyjmenovaná slova“, ať se neopakuje materiál)
+  - **4.** předpony vy-/vý-, s-/z- · předložky s/z · L3 správa × zpráva,
+    sbít × zbít, svolit × zvolit + pády u vzoru pán (ptáci × ptáky)
+  - **5.** shoda přísudku s podmětem · L3 podmět několikanásobný nebo
+    nevyjádřený, tedy ten, který se musí nejdřív najít
+  - **6.** koncovky podle vzorů · L3 víceslovné názvy (Karlův most ×
+    Nové Město na Moravě)
+- ✅ **Ověřeno, ne odhadnuto:** `getTopicsForGrade` vrací diktát v R2–R6 a nikde
+  jinde; unikátních úloh L1/L2/L3 = 13–18 na ročník (limit je 12);
+  `runOfflineAudit` nad všemi pěti tématy **0 nálezů**; v prohlížeči projita
+  celá cesta žáka (Čeština → Pravopis a diktát → Diktát → úloha → chybná
+  odpověď → zpětná vazba a vysvětlení).
+- ⚠️ **Tři chyby, které jsem si při psaní udělal a chytil až kontrolou** — stojí
+  za zápis, protože ukazují, kde je tenhle typ obsahu zrádný:
+  - vymyšlené ne-slovo „pýští“ v 5. ročníku (přesně to, na co míří audit
+    `generated_word_is_valid`),
+  - v 6. ročníku klíč `-a` u věty „Chlapci a děvčata soutěžil_“, přestože
+    vlastní vysvětlení u téže položky říkalo `-i` (správně je -i),
+  - helper pro s/z ve 4. ročníku vysvětloval u PŘEDLOŽEK pravidlo pro
+    PŘEDPONY; odůvodnění se teď odvozuje z konkrétní položky.
+- ⚠️ **Testy odhalily tři konvence, které jsem neznal** (sada spadla z 2 na 6
+  selhání, čtvrté byl zámek obsahu):
+  - `briefDescription` smí mít **max 12 slov** (`grade-N/__tests__/language.test.ts`).
+    Můj původní popisek měl 15. Zkráceno u všech pěti na stejný text.
+  - **`rvpNodeId` je povinný** (`grade-5/__tests__/inputType.test.ts`), přestože
+    v typu je nepovinný. Diktát ale v RVP vlastní uzel **nemá** — je to formát
+    napříč jevy, ověřeno prohledáním `rvp_data.json`. Každý diktát je proto
+    zakotvený na hlavní pravopisný uzel svého ročníku (2. tvrdé/měkké,
+    3. vyjmenovaná, 4. předpony, 5. shoda, 6. skloňování). Unikátnost
+    `rvpNodeId` nikde vynucená není, takže uzel sdílí se svým tématem.
+  - **Zámek obsahu** (`frozen-content-unchanged`) potřebuje otisk nového tématu.
+    Přegenerováno přes `UPDATE_FROZEN_SNAPSHOT=1` a **ověřeno diffem**: 20 řádků
+    přidaných, 0 smazaných — žádný existující otisk se nepřepsal.
+- ℹ️ **Navigace:** ročníky 4–6 neměly žádný pravopisný okruh, dostaly nový
+  „✍️ Pravopis a diktát“. Ve 2. a 3. ročníku se diktát přidal do stávajícího
+  okruhu (`hlasky-pravopis`, `vyjmenovana-slova`).
+- ℹ️ **Neuklizeno, mimo zadání:** legacy `cz-diktat`, `src/lib/diktatPool.ts`
+  (353 vět), komponenta `DiktatFilterSelect` a větev `topic.id === "cz-diktat"`
+  v `useSessionDispatch.ts` zůstávají v repu jako mrtvý kód. Nový diktát je
+  nepoužívá. Také `src/lib/curriculumMap.ts` neimportuje nikdo.
+- ℹ️ **Hranice vlastnictví:** `SESSION_OWNERSHIP.md` říká, že architekt nesmí
+  editovat `src/content/grade-N/**` bez žádosti grade-N session. Žádná
+  grade-N session neběží (obsahový plán je hotový) a zadání přišlo přímo od
+  uživatele — zapsáno, ať je zřejmé, že to bylo vědomé.
+
 ### Session 2026-09-26 — Kresba v dlaždici ročníku zmenšena na 72 %:
 
 - ✅ **Nahlásil uživatel** („chtěl jsem trochu zmenšit tyhle“, snímek
