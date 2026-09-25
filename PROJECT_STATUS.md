@@ -144,6 +144,46 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-25 (C) — Zmenšení 17 starších ilustrací landing page:
+
+- ✅ **Uzavřen bod, který zůstal otevřený po (B).** 17 kreseb z 30.–31. 8.
+  (v zápisu (B) chybně datovaných na 11. 9.) zmenšeno: **14,0 MB → 3,4 MB
+  (−76 %)**. Celý `src/assets/` 66 → 56 MB. Build zrychlil z 3 m 5 s na 52 s.
+- ⚠️ **Předpoklad z (B) byl mylný a je tím vyvrácen.** Stálo tam, že staré
+  kresby „mají stejný problém s velikostí“ — tedy i průhledný okraj. **Nemají.**
+  Ořez z alfy jim ubral 0–12 px; byly nahrané už oříznuté. Problém byl jediný:
+  syrové rozlišení (0,5–1,2 MB na kresbu zobrazenou na 64–200 px). Stálo za to
+  to změřit, ne převzít — podle toho předpokladu se plánovalo řešení.
+- ✅ **Velikost počítána pro každý soubor zvlášť**, ne paušálem: `--max` =
+  3,2 × nejdelší **vykreslená** hrana, kde vykreslená hrana plyne z poměru
+  stran kresby a z CSS omezení sekce (`h-28` = 112 px, `h-20` = 80 px,
+  `h-16` = 64 px, hero `w-full max-h-44`). Rozptyl je velký a paušál by ho
+  neuhlídal: od 210 (`priprava-pisemka`, kresba na výšku v `h-16`) po 640
+  (hero). Naměřené poměry stran sedí na to, co o nich tvrdí komentáře přímo
+  v `Landing.tsx` (0,86 / 1,11 / 1,38 a 0,84–2,48) — kontrola, že jde
+  o správné soubory.
+- ✅ **Ověřeno v běžící aplikaci:** všech 17 vychází na 3,2–4,0 × zobrazované
+  velikosti, žádný pod 3 ×. (Skupina `h-20` hlásí box 235 × 80, ale to je
+  roztažený flex item; `object-contain` uvnitř kreslí 86 × 80.)
+- ✅ **Kvalita ověřena měřením i okem.** Průměrná odchylka proti originálu
+  (oba složené na pozadí karty a zmenšené na skutečnou zobrazovanou velikost)
+  0,3–11,4 / 255. Protože samo číslo nerozhodne, šest nejhorších případů
+  vykresleno vedle sebe zvětšené 3 × nad zobrazovanou velikost — dvojice
+  nerozlišitelné. **První měření bylo špatně** (až 15/255): porovnávalo RGB
+  i v plně průhledných pixelech, kde jsou hodnoty nedefinované.
+- ℹ️ **Nalezeno mimochodem, NEOPRAVENO** (mimo zadání): v sekcích „Příprava na
+  písemku“ a „Každodenní vyučování“ nemá `<img>` `mx-auto`, takže se ve
+  `flex-col` roztáhne na celou šířku karty a `object-contain` kresbu
+  vycentruje — kresba na střed nad nadpisem zarovnaným vlevo. Ostatní sekce
+  `mx-auto` mají. Kosmetika.
+- ℹ️ **Zbývá:** ~60 kreseb `topic-*` / `cat-*` (~46 MB). Nejsou na landingu,
+  zobrazují se jinde a chtějí vlastní změření. Otevřenou otázkou zůstává
+  WebP (viz B3) — hero kresby stojí ~2 B/px i po zmenšení, protože akvarel
+  se v PNG komprimuje špatně.
+- ✅ **Brány:** `audit:ui` bez nového nálezu, build ✓ (52 s). Typecheck a testy
+  neběžely znovu záměrně — **změnily se jen binární soubory, žádný zdrojový
+  kód**; poslední běh z (B) je platný.
+
 ### Session 2026-09-25 (B) — Ilustrace: ořez, velikost, hlavička karet ceníku:
 
 - ✅ **Dokončena rozdělaná ilustrační dávka** z předchozí session (dlaždice

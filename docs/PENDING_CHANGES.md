@@ -7,6 +7,42 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-25 (C) — zmenšení 17 starších ilustrací landing page
+
+Dokončení bodu, který zůstal otevřený po dávce (B). **Předpoklad z (B) byl
+částečně mylný a je tím vyvrácen:** tyhle kresby z 30.–31. 8. (ne z 11. 9.,
+jak tam stálo) **průhledný okraj nemají** — ořez z alfy jim ubral 0–12 px.
+Problém byl jen jeden, ne dva: syrové rozlišení. Nadhodnocení příčiny stálo
+za kontrolu, protože podle něj se plánovalo řešení.
+
+Zmenšeno podle pravidla „3,2 × nejdelší **vykreslená** hrana“, počítáno pro
+každý soubor zvlášť z jeho poměru stran a z CSS omezení, ne odhadem:
+
+| sekce | CSS | vykresleno (dlouhá hrana) | `--max` |
+|---|---|---|---|
+| dlaždice hero | `w-full max-h-44/40` | 164–200 px | 640 (dle tabulky §8) |
+| Jak to funguje | `h-28` | 112–156 px | 360 / 400 / 500 |
+| Písemka + Každodenní | `h-20` | 82–165 px | 270–530 |
+| FeatureCard (Přínosy) | `h-16` | 64–159 px | 210–510 |
+
+**Výsledek: 14,0 MB → 3,4 MB (−76 %).** Celý `src/assets/` 66 → 56 MB.
+Ověřeno v běžící aplikaci: všech 17 vychází na 3,2–4,0 × zobrazované
+velikosti, žádný pod 3 ×.
+
+**Ověření kvality, ne odhad.** Průměrná odchylka proti originálu, oba
+složené na pozadí karty a zmenšené na skutečnou zobrazovanou velikost, je
+0,3–11,4 / 255. Samo o sobě to nestačilo, tak jsem šest nejhorších případů
+vykreslil vedle sebe zvětšené 3 × nad zobrazovanou velikost — dvojice jsou
+nerozlišitelné, ztráta sedí ve vysokých frekvencích, které se na 80 px
+nedostanou. (První měření dávalo až 15/255 a bylo **špatně**: porovnávalo
+RGB i v plně průhledných pixelech, kde jsou hodnoty nedefinované.)
+
+**Nalezeno mimochodem, neopraveno** (mimo zadání): v sekcích „Příprava na
+písemku“ a „Každodenní vyučování“ je `<img>` v `flex-col` bez `mx-auto`,
+takže se roztáhne na celou šířku karty (235 px) a `object-contain` kresbu
+vycentruje — obrázek je na střed nad nadpisem zarovnaným vlevo. Ostatní
+sekce mají `mx-auto`. Kosmetika, ne chyba funkce.
+
 ## ✅ VYŘÍZENO 2026-09-25 (B) — ilustrace: ořez na obsah, velikost, hlavička karet ceníku
 
 Uzavřená rozdělaná ilustrační dávka (dlaždice ročníků 5, 6 a sdílená
@@ -43,9 +79,9 @@ změřené, ne odhadnuté:
 - Kresba „Fyzika“ je vodorovná kompozice 2,1 : 1, sousední dlaždice jsou na
   výšku — na dlaždici ji omezuje šířka (198 × 96 proti 200 × 179 u „Diktátu“).
   Ořez už nepomůže; buď se nechá, nebo se překreslí na výšku.
-- Starších 17 ilustrací landing page z 11. 9. (0,5–1,2 MB každá) má stejný
-  problém s velikostí a čeká na `crop-illustration.mjs`. Celý `src/assets/`
-  má 66 MB.
+- ✅ Starších 17 ilustrací landing page zmenšeno — viz (C) výš. Zbývá
+  ~60 kreseb `topic-*` / `cat-*` (0,3–1,0 MB), dohromady ~46 MB; ty se ale
+  zobrazují jinde než na landingu a chtějí vlastní změření.
 
 ## ✅ VYŘÍZENO 2026-09-25 — Výchova k občanství dávka B, šestka 117/117 KOMPLETNÍ
 

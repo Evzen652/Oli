@@ -398,11 +398,22 @@ node scripts/crop-illustration.mjs --in src/assets/<kresba>.png --max <px>
 `--max` je delší hrana výsledku a řídí se **zobrazovanou** velikostí, ne tím,
 co dal model (§5, §6: 3× zobrazovaná velikost stačí, 4× je rezerva):
 
-| kde | zobrazeno | `--max` |
-|---|---|---|
-| dlaždice ročníku (`Onboarding.tsx`) | 132 px | 420 |
-| dlaždice hero (`Landing.tsx`) | 200 px | 640 |
-| ikona plánu v ceníku | 64 px | 470 |
+| kde | CSS | vykresleno (delší hrana) | `--max` |
+|---|---|---|---|
+| dlaždice ročníku (`Onboarding.tsx`) | — | 132 px | 420 |
+| dlaždice hero (`Landing.tsx`) | `w-full max-h-44/40` | 164–200 px | 640 |
+| „Jak to funguje“ | `h-28` | 112–156 px | 360–500 |
+| „Písemka“ + „Každodenní“ | `h-20` | 82–165 px | 270–530 |
+| FeatureCard („Přínosy“) | `h-16` | 64–159 px | 210–510 |
+| ikona plánu v ceníku | `h-16` | 118–126 px | 470 |
+
+**Pozor: „zobrazeno“ NENÍ výška z CSS.** `h-16 w-auto` drží výšku 64 px, ale
+kresba s poměrem 2,49 : 1 je pak 159 px široká — delší hrana je ta šířka.
+Proto se `--max` počítá pro každý soubor zvlášť z jeho poměru stran, ne
+paušálem za sekci; u FeatureCard vychází rozptyl 210 až 510. Rozsahy výš jsou
+popis, ne hodnota k opsání.
+
+Poměr stran vezmi z ořezu (`--dry` ho vypíše), ne z původního plátna.
 
 Ořez se počítá **z alfy, ne z jasu** — vstup už musí mít vyříznuté pozadí.
 Práh (`--alpha`, výchozí 24) je nízký schválně: rozpitý okraj akvarelového
@@ -416,3 +427,16 @@ odlesk, krémový papír krabice — ne díra v pozadí.
 
 **Naměřeno 25. 9.:** jedenáct kreseb 11,6 MB → 2,7 MB (−77 %) bez viditelné
 ztráty kvality (ověřeno srovnáním dlaždic ročníků před/po v prohlížeči).
+
+**Naměřeno 25. 9. (druhá dávka):** sedmnáct starších kreseb landingu
+14,0 MB → 3,4 MB (−76 %). **Ořez u nich neudělal nic** — byly nahrané už
+oříznuté, alfa bounding box ubral 0–12 px. Zmenšení je tedy samostatný
+přínos, ne vedlejší efekt ořezu; neplatí, že „soubor bez okraje je v pořádku“.
+
+**Jak ověřit, že zmenšení není vidět** — ne od oka a ne z velikosti souboru:
+zmenši originál i novou verzi na **skutečnou zobrazovanou velikost**, obojí
+slož na pozadí karty (`flatten`) a porovnej RGB. Bez `flatten` porovnáváš
+i RGB plně průhledných pixelů, kde jsou hodnoty nedefinované — to nafoukne
+odchylku o polovinu a nic neznamená. Naměřené 0,3–11,4 / 255 samo nerozhodne;
+sporné případy vykresli vedle sebe zvětšené 3 × nad zobrazovanou velikost
+a podívej se.
