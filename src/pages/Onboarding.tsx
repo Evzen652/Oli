@@ -235,8 +235,14 @@ export default function Onboarding() {
                       boxShadow: isSelected ? "0 0 0 6px rgba(255,255,255,0.7), 0 8px 32px rgba(0,0,0,0.18)" : undefined,
                       // Hexy z GRADE_META, ne Tailwind třídy — tlumené odstíny
                       // akvarelů Tailwind v paletě nemá.
-                      backgroundImage: `linear-gradient(to bottom right, ${m.from}, ${m.to})`,
-                      borderColor: m.border,
+                      // Nedostupný ročník dostává NEUTRÁLNÍ šedou, ne odbarvenou
+                      // verzi své barvy — se `saturate-[0.55]` samotnou barvou
+                      // šlo poznat „chystá se" jen při pozorném srovnání vedle
+                      // hotových dlaždic, ne na první pohled.
+                      backgroundImage: available
+                        ? `linear-gradient(to bottom right, ${m.from}, ${m.to})`
+                        : "linear-gradient(to bottom right, #E9E5DD, #D9D3C6)",
+                      borderColor: available ? m.border : "#C7C0B0",
                       color: GRADE_INK,
                     }}
                     className={`
@@ -254,15 +260,17 @@ export default function Onboarding() {
                         available ? "" : "saturate-[0.55]"}
                     `}
                   >
-                    {/* Ročník s obsahem dostane portrét + číslo jako odznak;
-                        ročník „brzy" zůstává u holého čísla. Rozdíl mezi
-                        hotovým a chystaným je tím vidět, ne jen z popisku. */}
+                    {/* Ročníky s obsahem mají per-ročník motiv, ročníky „brzy"
+                        (1, 7, 8, 9) sdílenou kresbu „bádáme" — obojí dostane
+                        portrét + číslo jako odznak. Rozdíl hotové/chystané
+                        proto nese odbarvení a popisek níž, ne přítomnost
+                        kresby (do 2026-09 to bylo obráceně). */}
                     {illustration ? (
                       <>
                         <img
                           src={illustration}
                           alt=""
-                          className="h-[72%] w-[72%] object-contain drop-shadow-sm select-none"
+                          className="h-[82%] w-[82%] object-contain drop-shadow-sm select-none"
                         />
                         <span className="absolute top-1.5 left-1.5 h-8 w-8 rounded-full bg-card/90 shadow-sm flex items-center justify-center text-foreground text-base font-black leading-none select-none">
                           {grade}
@@ -275,7 +283,7 @@ export default function Onboarding() {
                     )}
                     {!available && (
                       <span className="absolute bottom-1.5 inset-x-0 text-center text-[0.65rem] font-bold uppercase tracking-wider select-none">
-                        brzy
+                        Připravujeme
                       </span>
                     )}
                     {isSelected && (

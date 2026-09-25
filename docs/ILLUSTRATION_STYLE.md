@@ -374,3 +374,45 @@ poměry výhradně CSS (`w-9` / `w-6` / `w-9`).
 **Bílá u knihy je v pořádku.** `check-white-pockets` hlásí 18,2 % krycí bílé
 s bboxem uvnitř knihy — to je levá stránka, tedy kresba. Panel má bílou kartu,
 takže není vidět; vyříznout ji by udělalo díru.
+
+---
+
+## 8. Ořez a velikost — POVINNÝ poslední krok (2026-09-25)
+
+Gemini vrací kresbu na celém plátně (typicky 1408 × 768). Po vyříznutí pozadí
+zbývá kolem objektu široký **průhledný** okraj. Ten není neviditelný:
+
+- **`object-contain` ho počítá do obrázku.** Dlaždice pak objekt vykreslí
+  o tolik menší, kolik zabírá okraj. Kresba chemie zabírala 49 % plátna, takže
+  se baňka vykreslila na 104 px tam, kde sousední „Diktát" (kresba bez okraje)
+  dával 200 px. Vedle sebe to čte jako chyba, ne jako záměr.
+- **Platí se za to přenosem.** Pět nových kreseb landing page vážilo 5,9 MB,
+  přestože největší z nich se zobrazuje na 200 px a tři na 64 px.
+
+Proto po `fix-landing-alpha.ps1` ještě:
+
+```bash
+node scripts/crop-illustration.mjs --in src/assets/<kresba>.png --max <px>
+```
+
+`--max` je delší hrana výsledku a řídí se **zobrazovanou** velikostí, ne tím,
+co dal model (§5, §6: 3× zobrazovaná velikost stačí, 4× je rezerva):
+
+| kde | zobrazeno | `--max` |
+|---|---|---|
+| dlaždice ročníku (`Onboarding.tsx`) | 132 px | 420 |
+| dlaždice hero (`Landing.tsx`) | 200 px | 640 |
+| ikona plánu v ceníku | 64 px | 470 |
+
+Ořez se počítá **z alfy, ne z jasu** — vstup už musí mít vyříznuté pozadí.
+Práh (`--alpha`, výchozí 24) je nízký schválně: rozpitý okraj akvarelového
+tahu je kresba, ne pozadí.
+
+**Po ořezu znovu změř krycí bílou** a porovnej s hodnotou PŘED ořezem, ne
+s absolutním limitem. Podíl roste jen tím, že se zmenšil jmenovatel: u dárku
+v ceníku 0,79 % → 1,42 %, přitom počet bílých pixelů vůči kresbě je stejný.
+Bílá u rakety (2,7 %), konve (1,0 %) a dárku je **kresba** — bílé pruhy,
+odlesk, krémový papír krabice — ne díra v pozadí.
+
+**Naměřeno 25. 9.:** jedenáct kreseb 11,6 MB → 2,7 MB (−77 %) bez viditelné
+ztráty kvality (ověřeno srovnáním dlaždic ročníků před/po v prohlížeči).

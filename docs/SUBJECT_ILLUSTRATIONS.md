@@ -66,8 +66,13 @@ Nový předmět navíc potřebuje `import` a pole `image` v `subjectRegistry.ts`
 Obě jsou 4,2 MB, obě jsou vidět na první obrazovce a pokrývají dva různé typy motivu —
 scénu a předmět. **Na jednom listu**, aby držely rukopis (`ILLUSTRATION_STYLE.md` §5).
 
-**Přilož jako referenci** `src/assets/landing-priprava-na-pisemku.png` (nebo jinou
-`landing-*.png`) — drží akvarelový rukopis.
+**Přilož jako referenci** `src/assets/landing-zlomky-kruh.png` — drží akvarelový
+rukopis a má správnou sytost (67 %).
+
+> Do 2026-09-25 tu stálo `landing-priprava-na-pisemku.png`, přestože tabulka
+> o kus níž v TOMHLE SOUBORU ji označuje za špatnou referenci (sytost 40 %,
+> výsledek bledý). Soubor je navíc od 25. 9. smazaný — pokyn tedy odkazoval
+> na neexistující kresbu a zároveň si protiřečil s vlastním měřením.
 
 > Watercolour and ink children's picture-book illustration, in exactly the style of the
 > attached reference image: hand-painted on rough cold-pressed paper, fine uneven ink
@@ -120,7 +125,7 @@ hustá scéna je na 20 px čitelnější než osamocený předmět**, protože m
 | stará matematika (cíl) | **67 %** |
 | `landing-zlomky-kruh.png` | **67 %** ← správná reference |
 | `landing-diktat.png` | 63 % |
-| `landing-priprava-na-pisemku.png` | **40 %** ← špatná reference, kterou jsem použil |
+| `landing-priprava-na-pisemku.png` (smazána 25. 9.) | **40 %** ← špatná reference, kterou jsem použil |
 | výsledek s ní | **41 %** |
 | výsledek se správnou referencí | **63 %** |
 

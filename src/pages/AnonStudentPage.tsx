@@ -346,7 +346,7 @@ function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
             <div className="flex-1 flex items-center justify-center min-h-0">
               <IllustrationImg
                 src={meta.image}
-                className="h-28 w-28 object-contain mix-blend-multiply"
+                className="h-full w-full object-contain mix-blend-multiply"
                 fallback={<span className="text-6xl">{meta.emoji}</span>}
               />
             </div>

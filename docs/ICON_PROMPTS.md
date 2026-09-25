@@ -18,8 +18,8 @@ Seznam níž je to, co ze skupiny 2 ještě zbývá.
 
 `src/assets/landing-zlomky-kruh.png`
 
-**Ne** `landing-priprava-na-pisemku.png` — to je nejbledší akvarel v repu
-(medián sytosti 40 %). Model ho jednou napodobil na procento přesně a výsledek
+**Ne** `landing-priprava-na-pisemku.png` — to byl nejbledší akvarel v repu
+(medián sytosti 40 %); 25. 9. byl nahrazen kresbou fyziky a smazán. Model ho jednou napodobil na procento přesně a výsledek
 byl bez života. Správná reference má sytost 67 %, tedy stejnou jako staré
 3D kresby, které se uživateli líbily.
 

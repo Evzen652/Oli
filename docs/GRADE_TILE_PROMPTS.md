@@ -42,8 +42,20 @@ Zpracování: rozřezat `find-gaps.ps1`, každou ikonu `make-logo.ps1 -Size 128 
 Dlaždice výběru ročníku ([`Onboarding.tsx`](../src/pages/Onboarding.tsx)) nesou motiv
 stěžejního učiva. Mapování drží [`src/lib/gradeIllustrations.ts`](../src/lib/gradeIllustrations.ts).
 
-**Hotovo:** 2., 3., 4. ročník (`Gemini_Generated_Image_7herku…jpg`).
-**Zbývá:** 1., 5.–9. — ročníky zatím bez obsahu, ale kresby se dělají dopředu.
+> **2026-09-25 update:** motivy 2.–4. ročníku přebarveny (byly tematicky správně, ale
+> barevně nudné — zemité tóny) a 5., 6. ročník doplněny. Tabulka a prompty níž jsou
+> PŮVODNÍ zadání a u ročníků 2–6 už neodpovídají tomu, co běží v `BY_GRADE` — viz
+> aktuální motivy a zdůvodnění přímo v komentáři `gradeIllustrations.ts`. Necháno tu
+> jako historický kontext + funkční vzor promptu (jednotlivé objekty místo listu více
+> najednou, generováno per-objekt přes Gemini, ne najednou na jeden list).
+>
+> **Velikost dlaždic: 420 px delší hrana** (`scripts/crop-illustration.mjs --max 420`).
+> Syrový výstup z Gemini se sem nahrávat nemá — šest kreseb v původní velikosti
+> vážilo 5,8 MB na jedné obrazovce. Odůvodnění a tabulka pro ostatní místa jsou
+> v [`ILLUSTRATION_STYLE.md`](ILLUSTRATION_STYLE.md) §8.
+
+**Hotovo:** 2., 3., 4., 5., 6. ročník.
+**Zbývá:** 1., 7.–9. — ročníky zatím bez obsahu, ale kresby se dělají dopředu.
 
 ## Odkud se motivy vzaly
 
