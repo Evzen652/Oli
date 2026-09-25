@@ -415,6 +415,12 @@ popis, ne hodnota k opsání.
 
 Poměr stran vezmi z ořezu (`--dry` ho vypíše), ne z původního plátna.
 
+**Po ořezu překontroluj i procenta v layoutu.** Ořez sebere průhledný okraj,
+který do té doby dělal v dlaždici vzduch — kresba se tím vykreslí větší, aniž
+by se v CSS cokoli změnilo. Dlaždice ročníku na tohle narazila: `h-[82%]`
+bylo naladěné na kresby s okrajem, po ořezu kresba zajížděla pod odznak
+s číslem a snížilo se na `h-[72%]` (26. 9.).
+
 Ořez se počítá **z alfy, ne z jasu** — vstup už musí mít vyříznuté pozadí.
 Práh (`--alpha`, výchozí 24) je nízký schválně: rozpitý okraj akvarelového
 tahu je kresba, ne pozadí.

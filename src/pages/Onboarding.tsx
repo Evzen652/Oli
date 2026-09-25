@@ -270,7 +270,12 @@ export default function Onboarding() {
                         <img
                           src={illustration}
                           alt=""
-                          className="h-[82%] w-[82%] object-contain drop-shadow-sm select-none"
+                          /* 72 %, ne 82 %: po ořezu kreseb na obsah (25. 9.) zmizel
+                             průhledný okraj, který dlaždici dělal vzduch, a kresba
+                             se roztáhla až pod odznak s číslem a pod popisek
+                             „Připravujeme“. Naměřeno: 132 px kresby ve 165px
+                             dlaždici, odznak končí na 38 px. */
+                          className="h-[72%] w-[72%] object-contain drop-shadow-sm select-none"
                         />
                         <span className="absolute top-1.5 left-1.5 h-8 w-8 rounded-full bg-card/90 shadow-sm flex items-center justify-center text-foreground text-base font-black leading-none select-none">
                           {grade}

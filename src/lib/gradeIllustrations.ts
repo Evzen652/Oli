@@ -47,8 +47,9 @@ import gradeSoon from "@/assets/grade-soon.png";
  * vazby na propojenost s okrajem zasáhne i zrno uvnitř kresby (ověřeno,
  * zkažený první pokus). Tam stačí jen flood-fill od okrajů.
  *
- * **Velikost: 420 px delší hrana**, ne to, co vrátil model. Dlaždice je 132 px,
- * takže 420 dává 3,2× rezervu pro retinu — víc je jen přenos navíc
+ * **Velikost: 420 px delší hrana**, ne to, co vrátil model. Kresba se vykresluje
+ * na 114 px (72 % dlaždice široké 165 px; do 26. 9. to bylo 82 %, tedy 132 px),
+ * takže 420 dává 3,7× rezervu pro retinu — víc je jen přenos navíc
  * (`ILLUSTRATION_STYLE.md` §8). Napoprvé se sem nahrálo, co dal Gemini:
  * šest kreseb 5,8 MB na jedné obrazovce, z toho `grade-4` 1,3 MB proti
  * 145 kB, které tam stály předtím. Po ořezu na obsah a zmenšení

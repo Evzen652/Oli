@@ -7,6 +7,17 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-26 — kresba v dlaždici ročníku zmenšena na 72 %
+
+Nahlásil uživatel na `/onboarding`. Kresba zabírala 82 % dlaždice a zajížděla
+pod odznak s číslem i pod popisek „Připravujeme“. Příčina je **vedlejší účinek
+ořezu z 25. 9.**: ořez sebral průhledný okraj, který dlaždici do té doby dělal
+vzduch, takže se vykreslená kresba zvětšila, aniž by se cokoli v CSS změnilo.
+`h-[82%]` → `h-[72%]`, kresba 130 → 114 px.
+
+**Pravidlo:** po ořezu kreseb na obsah překontroluj i procenta v layoutu —
+byla naladěná na kresby s okrajem.
+
 ## ✅ VYŘÍZENO 2026-09-25 (C) — zmenšení 17 starších ilustrací landing page
 
 Dokončení bodu, který zůstal otevřený po dávce (B). **Předpoklad z (B) byl

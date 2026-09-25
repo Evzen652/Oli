@@ -144,6 +144,22 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-26 — Kresba v dlaždici ročníku zmenšena na 72 %:
+
+- ✅ **Nahlásil uživatel** („chtěl jsem trochu zmenšit tyhle“, snímek
+  `/onboarding`). Kresba zabírala 82 % dlaždice a po ořezu na obsah (25. 9.)
+  jí zmizel průhledný okraj, který dlaždici do té doby dělal vzduch —
+  vykreslená kresba tím vyrostla a **zajížděla pod odznak s číslem**
+  (naměřeno: kresba 132 px ve dlaždici 165 px, tedy okraj 16 px, odznak
+  ale sahá do 38 px) **i pod popisek „Připravujeme“** dole.
+- ✅ **`h-[82%] w-[82%]` → `h-[72%] w-[72%]`** v `Onboarding.tsx`. Kresba
+  130 → 114 px. Ověřeno v prohlížeči na všech devíti dlaždicích.
+- ℹ️ **Souvislost stojí za zapamatování:** ořez na obsah je správný krok, ale
+  **mění poměr kresby k dlaždici** — procento, které bylo naladěné na kresby
+  s okrajem, po ořezu sedět nemusí. Zapsáno i v `ILLUSTRATION_STYLE.md` §8.
+- ✅ Rezerva pro retinu tím stoupla z 3,2× na 3,7× (soubory 420 px zůstávají).
+  Poznámka v `src/lib/gradeIllustrations.ts` opravena, ať neuvádí 132 px.
+
 ### Session 2026-09-25 (C) — Zmenšení 17 starších ilustrací landing page:
 
 - ✅ **Uzavřen bod, který zůstal otevřený po (B).** 17 kreseb z 30.–31. 8.
