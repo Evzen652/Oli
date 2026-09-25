@@ -7,6 +7,46 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-25 (B) — ilustrace: ořez na obsah, velikost, hlavička karet ceníku
+
+Uzavřená rozdělaná ilustrační dávka (dlaždice ročníků 5, 6 a sdílená
+„Připravujeme“, přebarvené 2.–4., Fyzika a Chemie na landing page, ikony
+u tří plánů ceníku). Ležela necommitnutá a neověřená; tři nálezy, všechny
+změřené, ne odhadnuté:
+
+1. **Kresby nahrané v syrové velikosti z Gemini** (plátno 1408 × 768
+   s průhledným okrajem). `object-contain` okraj počítá do obrázku, takže
+   „Chemie“ vykreslila baňku na 104 px proti 200 px u sousedního „Diktátu“;
+   a 11 souborů vážilo 11,6 MB, z toho 5,8 MB šest dlaždic na jedné obrazovce.
+   Po ořezu z alfy + zmenšení na 3× zobrazovanou velikost: baňka 155 px
+   (+50 %), soubory 2,7 MB (−77 %). Nový `scripts/crop-illustration.mjs`,
+   pravidlo s tabulkou v `ILLUSTRATION_STYLE.md` §8.
+2. **Ikona v hlavičce karty ceníku brala nadpisu šířku.** V řádku širokém
+   219 px ukrojila 126 px (`shrink-0`) a podtitul se lámal do čtyř řádků;
+   pod 896 px šířky by se do řádku nevešla vůbec. Přesunuta nad název.
+3. **`SUBJECT_ILLUSTRATIONS.md` odkazoval na smazaný soubor** jako na
+   referenci do promptu — a tabulka o kus níž v témže souboru ho označuje za
+   špatnou referenci. Přepsáno na `landing-zlomky-kruh.png`.
+
+4. **Dialog „Co je dobré vědět" uřezával obsah bez scrollbaru** (`SessionView.tsx`).
+   `<ScrollArea>` od Radixu dává viewportu `height: 100%`; výška dialogu je
+   ale z `max-h-[90vh]`, tedy pro procenta neurčitá, takže viewport spadl na
+   výšku obsahu (855 px v kontejneru 602 px). `overflow-hidden` přebytek
+   ustřihl a scrollbar nevznikl, protože Radix viděl `scrollHeight ===
+   clientHeight` — 240 px textu nedosažitelných. Nahrazeno obyčejným
+   `flex-1 min-h-0 overflow-y-auto` divem (vzor z `SkillDetailModal.tsx`).
+   **Pravidlo:** `<ScrollArea>` nepatří do kontejneru, jehož výška je
+   z `max-height`. Jiný výskyt v repu prověřen — není.
+
+**Otevřené, čeká na rozhodnutí uživatele:**
+
+- Kresba „Fyzika“ je vodorovná kompozice 2,1 : 1, sousední dlaždice jsou na
+  výšku — na dlaždici ji omezuje šířka (198 × 96 proti 200 × 179 u „Diktátu“).
+  Ořez už nepomůže; buď se nechá, nebo se překreslí na výšku.
+- Starších 17 ilustrací landing page z 11. 9. (0,5–1,2 MB každá) má stejný
+  problém s velikostí a čeká na `crop-illustration.mjs`. Celý `src/assets/`
+  má 66 MB.
+
 ## ✅ VYŘÍZENO 2026-09-25 — Výchova k občanství dávka B, šestka 117/117 KOMPLETNÍ
 
 Poslední 4 podtémata šestky: naše obec a region, naše vlast (státní symboly,

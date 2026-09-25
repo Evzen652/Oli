@@ -144,6 +144,78 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-25 (B) — Ilustrace: ořez, velikost, hlavička karet ceníku:
+
+- ✅ **Dokončena rozdělaná ilustrační dávka** z předchozí session (dlaždice
+  ročníků 5, 6 a sdílená „Připravujeme“, přebarvené 2.–4., kresby Fyzika
+  a Chemie na landing page, ikony u tří plánů ceníku). Ta dávka byla
+  necommitnutá, neověřená a nezdokumentovaná — tohle je její uzavření.
+- 🐞 **Kresby se nahrály tak, jak je vrátil Gemini** — celé plátno 1408 × 768
+  s průhledným okrajem kolem objektu. Dva důsledky, oba měřené v prohlížeči:
+  - `object-contain` okraj počítá do obrázku, takže „Chemie“ vykreslila baňku
+    na 104 px tam, kde sousední „Diktát“ dával 200 px. Po ořezu 155 px
+    (+50 %), viditelně srovnané se sousedy.
+  - 11 kreseb vážilo **11,6 MB**; z toho 5,8 MB je šest dlaždic na JEDNÉ
+    obrazovce výběru ročníku (`grade-4` sama 1,3 MB proti 145 kB, které tam
+    stály předtím). Po ořezu na obsah a zmenšení na 3× zobrazovanou velikost
+    **2,7 MB (−77 %)**, bez viditelné ztráty (ověřeno srovnáním v prohlížeči).
+  - Nový `scripts/crop-illustration.mjs` (ořez z alfy + zmenšení) a pravidlo
+    s tabulkou velikostí v [`ILLUSTRATION_STYLE.md`](docs/ILLUSTRATION_STYLE.md) §8,
+    aby to příští dávka nezopakovala.
+- 🐞 **Ikony v ceníku rozbíjely hlavičku karty.** Karta je v `max-w-4xl` ve
+  třech sloupcích široká 283 px, uvnitř `p-8` zbývá 219 px; obrázek vysoký
+  64 px vedle nadpisu z toho ukrojil 126 px a podtitul se lámal do **čtyř
+  řádků** místo dvou. Pod 896 px šířky by se do řádku nevešel vůbec
+  (`shrink-0`). Kresba přesunuta NAD název — text má zase celou šířku karty
+  (podtitul 1 řádek) a rozbití pod 896 px nehrozí. `alt=""`, protože název
+  plánu je hned pod kresbou jako nadpis.
+- 🐞 **Dvě dokumentace ukazovaly na smazaný soubor.** `SUBJECT_ILLUSTRATIONS.md`
+  nařizoval přiložit jako referenci `landing-priprava-na-pisemku.png` —
+  ten je od 25. 9. smazaný a navíc ho tabulka **o kus níž v témže souboru**
+  označuje za špatnou referenci (sytost 40 %, výsledek bledý). Přepsáno na
+  `landing-zlomky-kruh.png`, které tentýž soubor uvádí jako správné.
+- 🐞 **Dialog „Co je dobré vědět" tiše uřezával obsah** (nahlásil uživatel na
+  „Pavoukovcích" — text končil uprostřed věty a nešlo se dostat dál).
+  Příčina: `<ScrollArea>` (Radix) dává svému viewportu `h-full`, tedy
+  `height: 100%`. Výška dialogu je ale odvozená z `max-h-[90vh]`, ne z `height`,
+  takže je pro procenta **neurčitá** — viewport spadl na výšku obsahu
+  (naměřeno 855 px v kontejneru vysokém 602 px), `overflow-hidden` kořene
+  přebytek ustřihl a **scrollbar se neobjevil**, protože Radix viděl
+  `scrollHeight === clientHeight`. 240 px textu (Příklad, Častá chyba,
+  Zajímavost) bylo nedosažitelných. Nahrazeno obyčejným
+  `flex-1 min-h-0 overflow-y-auto` divem — stejný vzor, jaký už používá
+  `SkillDetailModal.tsx`. Ověřeno: `scrollHeight 879 > clientHeight 602`,
+  odscrollováno na konec, poslední blok celý uvnitř dialogu.
+  Ostatní `<ScrollArea>` v repu jsou v `SheetContent` / `h-full` rodičích,
+  kde se procenta spočítat mají — prověřeno, jiný výskyt téhle pasti není.
+- ℹ️ **Velikost písmen u možností** — dotaz uživatele, zda druhová jména
+  („klíště obecné“) nemají být velkým písmenem jako vlastní jména.
+  **Nejsou to vlastní jména**; česká druhová jména se píšou malým
+  (*liška obecná*, *kopřiva dvoudomá*), velké má až latinské rodové jméno.
+  Změřeno i to, co dělá zbytek obsahu: 839 možností malým (holé názvy),
+  343 velkým (bez výjimky celé věty) — konvence je důsledná a správná.
+  Ponecháno beze změny, pravidlo zapsáno do
+  [`CONTENT_AUTHORING.md`](docs/CONTENT_AUTHORING.md) §1.4, ať se dotaz nevrací.
+- ✅ **Brány:** typecheck ✓, `audit:ui` bez nového nálezu, build ✓ (3 m 5 s),
+  **8634/8641 testů**. Dvě selhání, obě předem existující a nesouvisející
+  (obsahu jsem se nedotkl):
+  - `content-audit.test.ts` — zátěžový timeout ve sdíleném běhu (známé).
+  - `pavoukovciPavouciStiriKlistata.test.ts > level 2 > klíč nevyčnívá délkou`
+    — **statisticky nestabilní**, ne konstantní chyba: ověřeno třemi běhy
+    v izolaci, prošel 2 ze 3 (`expected 0.4667 to be greater than 0.5`).
+    Práh 0,5 leží uprostřed rozptylu náhodného vzorku. To je ten „nestabilní
+    test přírodopisu“, na který už je založený úkol.
+  Průchod v prohlížeči: `/onboarding`, `/` (desktop 1200 i mobil 375, bez
+  vodorovného přetečení), `/student?anon=1`.
+- ⚠️ **Zbývá rozhodnout (na uživateli):** kresba „Fyzika“ je vodorovná
+  kompozice 2,1 : 1 (hranol + dlouhá duha), zatímco sousední dlaždice jsou
+  na výšku. Na dlaždici ji proto omezuje šířka, ne výška — vykreslí se 198 × 96,
+  kdežto „Diktát“ 200 × 179, a vedle sebe to čte jako menší kresba. Ořez už
+  pomoct nemůže (okraj je pryč). Buď se nechá, nebo se hranol překreslí do
+  kompozice na výšku. Starších 17 ilustrací landing page z 11. 9.
+  (0,5–1,2 MB každá) čeká na stejný ořez — samostatný úkol. Celý
+  `src/assets/` má 66 MB.
+
 ### Session 2026-09-25 — Výchova k občanství, dávka B (8/8), šestka HOTOVÁ (117/117):
 
 - ✅ **4 zbylá témata**: naše obec a region (obecní samospráva, památky, místní

@@ -91,6 +91,21 @@ a to ani mezi větami hlavními:
 - Pokud generuješ větu ze šablony (např. `${podmet} ${sloveso} ${predmet}`),
   ověř výsledný tvar celé věty, ne jen jednotlivá dosazení.
 
+### 1.4 Velikost počátečního písmena u možností
+
+**Celá věta velkým, holý název malým.** Napříč obsahem to tak je a je to
+záměr, ne nedůslednost: 839 možností typu „kružnice“ / „kruh“ malým,
+343 možností, které jsou celé věty („Postavil plot kolem zahrady.“), velkým.
+Žádný CSS `capitalize` na možnosti nesahá — na obrazovku jde přesně to, co
+napíšeš.
+
+**Česká druhová jména nejsou vlastní jména** a píšou se malým písmenem:
+*klíště obecné, blecha obecná, komár pisklavý, liška obecná, kopřiva
+dvoudomá*. Velké písmeno má až latinské rodové jméno (*Ixodes ricinus*).
+Dotaz na to padl 25. 9. u tématu Pavoukovci — v aplikaci, ze které se
+šesťák učí přírodopis, by velké písmeno u druhového jména bylo pravopisná
+chyba, kterou mu učitel škrtne. **Ponecháno malé, vědomě.**
+
 ## 2. Distraktory
 
 ### 2.1 Blízké chyby, ne náhodné hodnoty
