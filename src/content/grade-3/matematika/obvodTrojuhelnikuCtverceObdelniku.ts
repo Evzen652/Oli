@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "../_shared";
 
 // Přepsáno 2026-09-11 (inventura obsahu): dřív měly úlohy jednu šablonovou
@@ -23,6 +23,11 @@ interface Uloha {
   d: { v: number; why: string }[];
   /** Zápis výpočtu pro náhradní distraktor ±10. */
   calc: string;
+  /**
+   * Útvar se stranami ze zadání. Jen u úloh, které zadávají všechny strany —
+   * u obrácených („obvod je …, kolik měří strana?") by poměr prozradil odpověď.
+   */
+  visual?: TaskVisual;
 }
 
 function sestav(x: Uloha): PracticeTask | null {
@@ -43,7 +48,8 @@ function sestav(x: Uloha): PracticeTask | null {
     if (out.length === 3) break;
   }
   if (out.length < 3) return null;
-  return choice(x.q, ans, out as [Distractor, Distractor, Distractor], { hints: [x.h0, x.h1], explanation: x.e });
+  const t = choice(x.q, ans, out as [Distractor, Distractor, Distractor], { hints: [x.h0, x.h1], explanation: x.e });
+  return x.visual ? { ...t, visual: x.visual } : t;
 }
 
 const trojuhelnik = (a: number, b: number, c: number) => a + b > c && a + c > b && b + c > a;
@@ -53,6 +59,7 @@ const trojuhelnik = (a: number, b: number, c: number) => a + b > c && a + c > b 
 function ctverec(a: number): Uloha {
   const o = 4 * a;
   return {
+    visual: { kind: "shape", shape: "square", sides: [a], labels: [`${a} cm`] },
     q: `Čtverec má stranu ${a} cm. Jaký je jeho obvod?`,
     v: o, u: "cm", calc: `4 × ${a}`,
     h0: `Čtverec má čtyři strany a každá z nich měří ${a} cm.`,
@@ -71,6 +78,7 @@ function ctverec(a: number): Uloha {
 function obecnyTrojuhelnik(a: number, b: number, c: number): Uloha {
   const o = a + b + c;
   return {
+    visual: { kind: "shape", shape: "triangle", sides: [a, b, c], labels: [`${a} cm`, `${b} cm`, `${c} cm`] },
     q: `Trojúhelník má strany ${a} cm, ${b} cm a ${c} cm. Jaký je jeho obvod?`,
     v: o, u: "cm", calc: `${a} + ${b} + ${c}`,
     h0: `Kolik stran má trojúhelník? Sečti délky všech: ${a}, ${b} a ${c} cm.`,
@@ -89,6 +97,7 @@ function obecnyTrojuhelnik(a: number, b: number, c: number): Uloha {
 function obdelnik(a: number, b: number): Uloha {
   const o = 2 * (a + b);
   return {
+    visual: { kind: "shape", shape: "rectangle", sides: [a, b], labels: [`${a} cm`, `${b} cm`] },
     q: `Obdélník má délku ${a} cm a šířku ${b} cm. Jaký je jeho obvod?`,
     v: o, u: "cm", calc: `2 × (${a} + ${b})`,
     h0: `Obdélník má dvě delší strany po ${a} cm a dvě kratší po ${b} cm.`,
@@ -106,6 +115,7 @@ function obdelnik(a: number, b: number): Uloha {
 function zahrada(a: number, b: number): Uloha {
   const o = 2 * (a + b);
   return {
+    visual: { kind: "shape", shape: "rectangle", sides: [a, b], labels: [`${a} m`, `${b} m`] },
     q: `Zahrada tvaru obdélníku je dlouhá ${a} m a široká ${b} m. Kolik metrů měří její obvod?`,
     v: o, u: "m", calc: `2 × (${a} + ${b})`,
     h0: `Kolem zahrady vedou dvě strany po ${a} m a dvě strany po ${b} m.`,
@@ -122,6 +132,7 @@ function zahrada(a: number, b: number): Uloha {
 function rovnostranny(a: number): Uloha {
   const o = 3 * a;
   return {
+    visual: { kind: "shape", shape: "triangle", sides: [a, a, a], labels: [`${a} cm`, `${a} cm`, `${a} cm`] },
     q: `Rovnostranný trojúhelník má stranu ${a} cm. Jaký je jeho obvod?`,
     v: o, u: "cm", calc: `3 × ${a}`,
     h0: `Rovnostranný trojúhelník má všechny tři strany stejně dlouhé — každá měří ${a} cm.`,
@@ -139,6 +150,7 @@ function rovnostranny(a: number): Uloha {
 function rovnoramenny(z: number, r: number): Uloha {
   const o = z + 2 * r;
   return {
+    visual: { kind: "shape", shape: "triangle", sides: [z, r, r], labels: [`${z} cm`, `${r} cm`, `${r} cm`] },
     q: `Rovnoramenný trojúhelník má základnu ${z} cm a obě ramena po ${r} cm. Jaký je jeho obvod?`,
     v: o, u: "cm", calc: `${z} + ${r} + ${r}`,
     h0: `Trojúhelník má tři strany: základnu ${z} cm a dvě stejná ramena po ${r} cm.`,

@@ -20,7 +20,7 @@
  * 1 dm³ = 100 cm³, zvětšení objemu jako u obsahu …). Mocniny se nepíšou
  * (RVP je zavádí až v 8. ročníku): „2 · 2 · 2krát“.
  */
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { plural } from "@/lib/czechGrammar";
 import { cis, rnd, pick, shuffle, buildChoiceTask, losUlohy, ruzneUlohy, type Distractor } from "./_shared";
 
@@ -140,6 +140,17 @@ function uloha(
   return t;
 }
 
+/**
+ * Kvádr (krychle) s rozměry ze zadání — L1 (stěny, hrany, vrcholy, objem,
+ * povrch) a L2 (povrch a objem z rozměrů). L3 bez obrázku: úlohy tam hledají
+ * rozměr nebo stěnu a obrázek s rozměry by je prozradil.
+ */
+function sKvadrem(t: PracticeTask | null, [a, b, c]: number[]): PracticeTask | null {
+  if (!t) return null;
+  const visual: TaskVisual = { kind: "shape", shape: "cuboid", sides: [a, b, c], labels: [u(a, "cm"), u(b, "cm"), u(c, "cm")] };
+  return { ...t, visual };
+}
+
 // ── Generátor ──────────────────────────────────────────────────────────────
 type Tvurce = () => PracticeTask | null;
 
@@ -178,7 +189,7 @@ function l1Prvky(druh: DruhPrvku): PracticeTask | null {
   const rozmery = `${a} cm × ${b} cm × ${c} cm`;
 
   if (druh === "stěny") {
-    return uloha(
+    return sKvadrem(uloha(
       `Urči, kolik stěn má kvádr s rozměry ${rozmery}.`,
       steny(6),
       [
@@ -199,11 +210,11 @@ function l1Prvky(druh: DruhPrvku): PracticeTask | null {
         explanation: "Stěny kvádru jsou obdélníky, které ho ze všech stran ohraničují: dno, víko a čtyři boční stěny. Rozměry kvádru na jejich počtu nic nemění, proto má každý kvádr šest stěn.",
       },
       true,
-    );
+    ), [a, b, c]);
   }
 
   if (druh === "hrany") {
-    return uloha(
+    return sKvadrem(uloha(
       `Urči, kolik hran má kvádr s rozměry ${rozmery}.`,
       hrany(12),
       [
@@ -224,11 +235,11 @@ function l1Prvky(druh: DruhPrvku): PracticeTask | null {
         explanation: "Každý kvádr má hrany dna, hrany víka a svislé hrany mezi nimi, po čtyřech z každého druhu. Rozměry kvádru na počtu hran nic nemění, proto má kvádr dvanáct hran.",
       },
       true,
-    );
+    ), [a, b, c]);
   }
 
   if (druh === "vrcholy") {
-    return uloha(
+    return sKvadrem(uloha(
       `Urči, kolik vrcholů má kvádr s rozměry ${rozmery}.`,
       vrcholy(8),
       [
@@ -249,11 +260,11 @@ function l1Prvky(druh: DruhPrvku): PracticeTask | null {
         explanation: "Všechny vrcholy kvádru leží buď u dna, nebo u víka a každý z těchto obdélníků má čtyři rohy. Kvádr má proto osm vrcholů, ať jsou jeho rozměry jakékoli.",
       },
       true,
-    );
+    ), [a, b, c]);
   }
 
   const [[x, y], z] = pick([[[a, b], c], [[a, c], b], [[b, c], a]] as [[number, number], number][]);
-  return uloha(
+  return sKvadrem(uloha(
     `Urči, kolik stěn v síti kvádru s rozměry ${rozmery} má tvar obdélníku ${x} cm × ${y} cm.`,
     steny(2),
     [
@@ -274,7 +285,7 @@ function l1Prvky(druh: DruhPrvku): PracticeTask | null {
       explanation: `Stěny kvádru jsou po dvojicích shodné: dno s víkem, přední se zadní a levá s pravou. Protože jsou všechny tři rozměry různé, má tvar ${x} cm × ${y} cm jen jedna dvojice, tedy dvě stěny.`,
     },
     true,
-  );
+  ), [a, b, c]);
 }
 
 function l1ObjemKvadru(): PracticeTask | null {
@@ -282,7 +293,7 @@ function l1ObjemKvadru(): PracticeTask | null {
   if (a === b && b === c) return null;
   const V = objem(a, b, c);
   const ab = a * b;
-  return uloha(
+  return sKvadrem(uloha(
     `Urči objem kvádru s rozměry ${a} cm, ${b} cm a ${c} cm.`,
     u(V, "cm³"),
     shuffle([
@@ -303,13 +314,13 @@ function l1ObjemKvadru(): PracticeTask | null {
       ],
       explanation: `Objem kvádru je součin jeho tří rozměrů. Do jedné vrstvy se vejde ${a} · ${b} = ${ab} centimetrových krychliček a vrstev je ${c}, proto V = ${a} · ${b} · ${c} = ${u(V, "cm³")}.`,
     },
-  );
+  ), [a, b, c]);
 }
 
 function l1ObjemKrychle(): PracticeTask | null {
   const a = pick([2, 3, 4, 5, 7, 8, 9, 10, 11, 12]);
   const V = objem(a, a, a);
-  return uloha(
+  return sKvadrem(uloha(
     `Urči objem krychle s hranou ${a} cm.`,
     u(V, "cm³"),
     shuffle([
@@ -330,14 +341,14 @@ function l1ObjemKrychle(): PracticeTask | null {
       ],
       explanation: `Krychle je kvádr se třemi stejnými rozměry, proto je její objem hrana · hrana · hrana. Jedna vrstva má ${a * a} centimetrových krychliček a vrstev je ${a}: V = ${u(V, "cm³")}.`,
     },
-  );
+  ), [a, a, a]);
 }
 
 function l1PovrchKrychle(): PracticeTask | null {
   // Hrana 6 dává stejné číslo pro povrch i objem, hrana 4 slévá tři distraktory.
   const a = pick([2, 3, 5, 7, 8, 9, 10, 11, 12]);
   const S = 6 * a * a;
-  return uloha(
+  return sKvadrem(uloha(
     `Urči povrch krychle s hranou ${a} cm.`,
     u(S, "cm²"),
     shuffle([
@@ -358,7 +369,7 @@ function l1PovrchKrychle(): PracticeTask | null {
       ],
       explanation: `Povrch je součet obsahů všech stěn. Síť krychle tvoří šest shodných čtverců o obsahu ${a} · ${a} = ${a * a} cm², proto S = 6 · ${a} · ${a} = ${u(S, "cm²")}.`,
     },
-  );
+  ), [a, a, a]);
 }
 
 // ── L2 — použití ────────────────────────────────────────────────────────────
@@ -376,7 +387,7 @@ function l2Povrch(): PracticeTask | null {
   const S = povrch(a, b, c);
   const ab = r4(a * b), ac = r4(a * c), bc = r4(b * c);
   const pul = polovinaPovrchu(a, b, c);
-  return uloha(
+  return sKvadrem(uloha(
     `Vypočítej povrch kvádru s délkou ${u(a, "cm")}, šířkou ${u(b, "cm")} a výškou ${u(c, "cm")}.`,
     u(S, "cm²"),
     shuffle([
@@ -398,7 +409,7 @@ function l2Povrch(): PracticeTask | null {
       ],
       explanation: `Povrch je součet obsahů všech šesti stěn. Stěny jsou po dvou shodné, proto sečteme obsahy tří různých stěn (${cis(pul)} cm²) a součet zdvojnásobíme: S = ${u(S, "cm²")}.`,
     },
-  );
+  ), [a, b, c]);
 }
 
 function l2Objem(): PracticeTask | null {
@@ -407,7 +418,7 @@ function l2Objem(): PracticeTask | null {
   const V = objem(a, b, c);
   if (!ciste(V)) return null;
   const ab = r4(a * b);
-  return uloha(
+  return sKvadrem(uloha(
     `Vypočítej objem kvádru s rozměry ${u(a, "cm")}, ${u(b, "cm")} a ${u(c, "cm")}.`,
     u(V, "cm³"),
     shuffle([
@@ -428,7 +439,7 @@ function l2Objem(): PracticeTask | null {
       ],
       explanation: `Objem kvádru je součin délky, šířky a výšky. Desetinná čísla násobíme jako přirozená a čárku umístíme podle počtu desetinných míst všech činitelů: ${cis(a)} · ${cis(b)} · ${cis(c)} = ${u(V, "cm³")}.`,
     },
-  );
+  ), [a, b, c]);
 }
 
 function l2Prevod(): PracticeTask | null {

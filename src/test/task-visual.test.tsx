@@ -183,11 +183,11 @@ type Sit = {
 
 describe("čtvercová síť — obsah obrazce (5. r., L1)", () => {
   const id = () => byId("g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce");
-  it("vybarvený obdélník = řádky × čtverečky ze znění; úlohy v cm síť nemají", () => {
+  it("vybarvený obdélník = řádky × čtverečky ze znění; úlohy v cm síť nemají (nanejvýš útvar)", () => {
     let s = 0;
     for (const t of [...tasks(id(), 1), ...tasks(id(), 2), ...tasks(id(), 3)]) {
       const m = t.question.match(/ve čtvercové síti má (\d+) řád\S* a v každém řádku (\d+) čtvereč/);
-      if (!m) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      if (!m) { expect(t.visual?.kind, t.question).not.toBe("grid"); continue; }
       s++;
       const v = t.visual as Sit;
       expect(v.fills).toEqual([[1, 1, +m[2], +m[1]]]);
@@ -312,7 +312,55 @@ describe("teploměr — jen ZADANÉ teploty, nikdy výsledek", () => {
   });
 });
 
+describe("útvary — v celém obsahu jen strany ze zadání", () => {
+  const SHAPE_TOPICS = [
+    "g3-mat-obvod-trojuhelniku-ctverce-obdelniku",
+    "g4-mat-obvod-obsah-obdelnik-ctverec-4",
+    "g4-mat-trojuhelnik-druhy-stran-4",
+    "g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce",
+    "g6-mat-sit-krychle-a-kvadru-povrch-a-objem-6",
+  ];
+  it("popisky stojí v zadání, čísla sedí s délkami, klíč mezi nimi není", () => {
+    const pocet: Record<string, number> = {};
+    for (const prefix of SHAPE_TOPICS) {
+      const id = byId(prefix);
+      pocet[prefix] = 0;
+      for (const level of [1, 2, 3]) for (const t of tasks(id, level)) {
+        const v = t.visual as { kind: string; sides: number[]; labels: string[] } | undefined;
+        if (!v || v.kind !== "shape") continue;
+        pocet[prefix]++;
+        expect(v.labels).toHaveLength(v.sides.length);
+        v.labels.forEach((l, i) => {
+          expect(t.question, l).toContain(l);
+          expect(num(l.split(" ")[0]), t.question).toBeCloseTo(v.sides[i]);
+        });
+        expect(v.labels, t.question).not.toContain(t.correctAnswer);
+      }
+    }
+    for (const [k, n] of Object.entries(pocet)) expect(n, k).toBeGreaterThan(15);
+  });
+
+  it("obrácené úlohy (obvod/obsah je dán, hledá se strana) útvar nemají", () => {
+    for (const prefix of SHAPE_TOPICS) for (const level of [1, 2, 3]) for (const t of tasks(byId(prefix), level)) {
+      if (/má obvod \d|má obsah \d|Lze sestrojit|lze sestrojit/.test(t.question)) {
+        expect(t.visual?.kind, t.question).not.toBe("shape");
+      }
+    }
+  });
+});
+
 describe("TaskVisual — vykreslení", () => {
+  it("útvar: obdélník v poměru stran, popisky; trojúhelník, který nejde sestrojit, se nevykreslí", () => {
+    const r = render(<TaskVisual visual={{ kind: "shape", shape: "rectangle", sides: [20, 5], labels: ["20 cm", "5 cm"] }} />);
+    const rect = r.container.querySelector("rect")!;
+    expect(Number(rect.getAttribute("width")) / Number(rect.getAttribute("height"))).toBeCloseTo(4, 1);
+    expect([...r.container.querySelectorAll("text")].map((e) => e.textContent)).toEqual(["20 cm", "5 cm"]);
+    const bad = render(<TaskVisual visual={{ kind: "shape", shape: "triangle", sides: [2, 3, 10], labels: ["2 cm", "3 cm", "10 cm"] }} />);
+    expect(bad.container.innerHTML).toBe("");
+    const k = render(<TaskVisual visual={{ kind: "shape", shape: "cuboid", sides: [4, 3, 2], labels: ["4 cm", "3 cm", "2 cm"] }} />);
+    expect(k.container.querySelectorAll("polygon")).toHaveLength(3);
+  });
+
   it("hodiny: 12 čísel, dvě ručičky; malá u „půl“ stojí mezi čísly", () => {
     const { container } = render(<TaskVisual visual={{ kind: "clock", hour: 7, minute: 30 }} />);
     expect([...container.querySelectorAll("text")].map((e) => e.textContent)).toEqual(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]);

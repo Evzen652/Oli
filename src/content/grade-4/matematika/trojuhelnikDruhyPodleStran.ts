@@ -27,6 +27,14 @@ function strany(druh: Druh): [number, number, number] {
 
 const cm = (s: number[]) => s.map((x) => `${x} cm`).join(", ");
 
+/**
+ * Trojúhelník v poměru stran ze zadání (L1 druh, L2 obvod). Značky stejných
+ * stran nemá — u „Jaký je podle stran?" by byly nápovědou navíc. L3 („lze
+ * sestrojit?", rameno z obvodu) bez obrázku: nakreslený trojúhelník by
+ * odpověď prozradil.
+ */
+const troj = (s: number[]) => ({ kind: "shape" as const, shape: "triangle" as const, sides: [...s], labels: s.map((x) => `${x} cm`) });
+
 function druhUloha(): PracticeTask {
   const druh = DRUHY[rnd(0, 2)];
   const s = shuffle(strany(druh));
@@ -38,6 +46,7 @@ function druhUloha(): PracticeTask {
   const optionFeedback: Record<string, string> = {};
   for (const d of DRUHY) if (d !== druh) optionFeedback[d] = `${proc[d]} Tady jsou strany ${cm(s)}.`;
   return {
+    visual: troj(s),
     question: `Trojúhelník má strany ${cm(s)}. Jaký je podle stran?`,
     correctAnswer: druh,
     options: [...DRUHY],
@@ -58,7 +67,7 @@ function obvodUloha(): PracticeTask {
   const druh = DRUHY[rnd(0, 2)];
   const s = shuffle(strany(druh));
   const O = s[0] + s[1] + s[2];
-  return ciselnaUloha(`Trojúhelník má strany ${cm(s)}. Jaký je jeho obvod?`, `${O} cm`, [
+  return { ...ciselnaUloha(`Trojúhelník má strany ${cm(s)}. Jaký je jeho obvod?`, `${O} cm`, [
     { value: `${s[0] + s[1]} cm`, why: "Sečetly se jen dvě strany. Obvod je součet všech tří." },
     { value: `${s[0] * 3} cm`, why: `Tohle by platilo, jen kdyby byly všechny strany dlouhé ${s[0]} cm.` },
     { value: `${O + 1} cm`, why: "O 1 cm víc — chyba při sčítání." },
@@ -69,7 +78,7 @@ function obvodUloha(): PracticeTask {
   ], [
     `o = ${s[0]} + ${s[1]} + ${s[2]}`,
     `o = ${O} cm`,
-  ]);
+  ]), visual: troj(s) };
 }
 
 function stranaZObvodu(): PracticeTask {

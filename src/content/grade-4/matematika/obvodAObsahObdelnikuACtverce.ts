@@ -12,8 +12,10 @@ import { ciselnaUloha, rnd } from "./_mat";
 function ctverec(): PracticeTask {
   const a = rnd(3, 15);
   const o = 4 * a, s = a * a;
+  // Útvar se zadanými stranami (obvod i obsah).
+  const obr = (t: PracticeTask): PracticeTask => ({ ...t, visual: { kind: "shape", shape: "square", sides: [a], labels: [`${a} cm`] } });
   if (Math.random() < 0.5) {
-    return ciselnaUloha(`Čtverec má stranu ${a} cm. Jaký je jeho obvod?`, `${o} cm`, [
+    return obr(ciselnaUloha(`Čtverec má stranu ${a} cm. Jaký je jeho obvod?`, `${o} cm`, [
       { value: `${s} cm`, why: `${a} × ${a} je obsah, ne obvod. Obvod je délka čáry kolem čtverce.` },
       { value: `${2 * a} cm`, why: "Sečetly se jen dvě strany. Čtverec má strany čtyři." },
       { value: `${3 * a} cm`, why: "Chybí jedna strana. Čtverec má strany čtyři." },
@@ -21,9 +23,9 @@ function ctverec(): PracticeTask {
     ], [
       `Čtverec má stranu ${a}. Kolik takových stran obejdeš dokola?`,
       `Obvod je délka čáry kolem celého čtverce. Obejdi ho dokola: čtyřikrát strana ${a}, tedy 4 × ${a}.`,
-    ], [`Čtverec má čtyři stejné strany.`, `o = 4 · a = 4 · ${a} = ${o} cm`]);
+    ], [`Čtverec má čtyři stejné strany.`, `o = 4 · a = 4 · ${a} = ${o} cm`]));
   }
-  return ciselnaUloha(`Čtverec má stranu ${a} cm. Jaký je jeho obsah?`, `${s} cm²`, [
+  return obr(ciselnaUloha(`Čtverec má stranu ${a} cm. Jaký je jeho obsah?`, `${s} cm²`, [
     { value: `${o} cm²`, why: `4 × ${a} je obvod, ne obsah. Obsah je strana krát strana.` },
     { value: `${2 * a} cm²`, why: `${a} + ${a} je součet stran. Obsah je součin: ${a} × ${a}.` },
     { value: `${s} cm`, why: "Obsah je plocha, měří se ve čtverečních centimetrech (cm²)." },
@@ -31,7 +33,7 @@ function ctverec(): PracticeTask {
   ], [
     `Kolik čtverečků 1 cm × 1 cm pokryje čtverec se stranou ${a}?`,
     `V jedné řadě je tolik čtverečků, kolik měří strana (${a}), a řad je stejně. Obsah je proto ${a} × ${a}.`,
-  ], [`Obsah čtverce = strana × strana.`, `S = ${a} · ${a} = ${s} cm²`]);
+  ], [`Obsah čtverce = strana × strana.`, `S = ${a} · ${a} = ${s} cm²`]));
 }
 
 function obdelnik(): PracticeTask {
@@ -39,8 +41,10 @@ function obdelnik(): PracticeTask {
   let b = rnd(3, 20);
   while (b === a) b = rnd(3, 20);
   const o = 2 * (a + b), s = a * b;
+  // Útvar se zadanými stranami (obvod i obsah).
+  const obr = (t: PracticeTask): PracticeTask => ({ ...t, visual: { kind: "shape", shape: "rectangle", sides: [a, b], labels: [`${a} cm`, `${b} cm`] } });
   if (Math.random() < 0.5) {
-    return ciselnaUloha(`Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obvod?`, `${o} cm`, [
+    return obr(ciselnaUloha(`Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obvod?`, `${o} cm`, [
       { value: `${a + b} cm`, why: `${a} + ${b} je jen polovina obvodu — kolem obdélníku jsou dvě strany ${a} cm a dvě strany ${b} cm.` },
       { value: `${2 * a + b} cm`, why: `Chybí jedna strana ${b} cm. Obdélník má čtyři strany.` },
       { value: `${a + 2 * b} cm`, why: `Chybí jedna strana ${a} cm. Obdélník má čtyři strany.` },
@@ -48,9 +52,9 @@ function obdelnik(): PracticeTask {
     ], [
       `Obejdi obdélník dokola: kolikrát půjdeš po straně ${a} a kolikrát po straně ${b}?`,
       `Kolem obdélníku jsou dvě strany ${a} a dvě strany ${b}. Nejdřív sečti ${a} + ${b} a výsledek vezmi dvakrát.`,
-    ], [`o = 2 · (a + b)`, `o = 2 · (${a} + ${b}) = 2 · ${a + b} = ${o} cm`]);
+    ], [`o = 2 · (a + b)`, `o = 2 · (${a} + ${b}) = 2 · ${a + b} = ${o} cm`]));
   }
-  return ciselnaUloha(`Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obsah?`, `${s} cm²`, [
+  return obr(ciselnaUloha(`Obdélník má strany ${a} cm a ${b} cm. Jaký je jeho obsah?`, `${s} cm²`, [
     { value: `${o} cm²`, why: `2 × (${a} + ${b}) je obvod, ne obsah. Obsah je součin stran.` },
     { value: `${a + b} cm²`, why: "Strany se sečetly. Obsah je jejich součin." },
     { value: `${s} cm`, why: "Obsah je plocha, měří se ve čtverečních centimetrech (cm²)." },
@@ -58,7 +62,7 @@ function obdelnik(): PracticeTask {
   ], [
     `Obsah obdélníku je plocha uvnitř. Jakou početní operaci použiješ se stranami ${a} a ${b}?`,
     `Obsah je počet čtverečků 1 cm × 1 cm, které obdélník pokryjí. Jedna řada je dlouhá jako strana ${a} a řad je tolik, kolik měří strana ${b}. Vynásob ${a} × ${b}.`,
-  ], [`S = a · b`, `S = ${a} · ${b} = ${s} cm²`]);
+  ], [`S = a · b`, `S = ${a} · ${b} = ${s} cm²`]));
 }
 
 function stranaCtverceZObvodu(): PracticeTask {

@@ -111,6 +111,18 @@ export type TaskVisual =
        * (rozdíl teplot přes nulu). Nikdy výsledek.
        */
       readings: number[];
+    }
+  | {
+      kind: "shape";
+      /**
+       * Útvar kreslený v poměru skutečných délek.
+       *   rectangle `sides` [délka, šířka] · square [strana]
+       *   triangle [základna, levá, pravá] · cuboid [délka, hloubka, výška]
+       */
+      shape: "rectangle" | "square" | "triangle" | "cuboid";
+      sides: number[];
+      /** Popisky stran ve stejném pořadí jako `sides` („15 cm"). Jen ze ZADÁNÍ. */
+      labels: string[];
     };
 
 export interface HelpVisualExample {

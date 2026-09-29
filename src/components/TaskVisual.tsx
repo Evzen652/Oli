@@ -26,6 +26,8 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <Clock visual={visual} className={className} />;
     case "thermometer":
       return <Thermometer visual={visual} className={className} />;
+    case "shape":
+      return <Shape visual={visual} className={className} />;
     default:
       return null;
   }
@@ -365,6 +367,105 @@ function Thermometer({ visual, className }: { visual: Of<"thermometer">; classNa
           <text x={tubeX - 30} y={Y(t) + 5} textAnchor="end" className="fill-sky-700" style={font}>{cz(t)}</text>
         </g>
       ))}
+    </svg>
+  );
+}
+
+// ── Útvar s popsanými stranami ───────────────────────────────────────────────
+
+/**
+ * Obdélník, čtverec, trojúhelník nebo kvádr v poměru skutečných délek,
+ * s popisky stran ze zadání. Kreslí se jen útvar ZADANÝ celými stranami:
+ * u obrácených úloh („obvod je 30, jedna strana 5, kolik je druhá?") by
+ * poměr stran prozradil odpověď, tam obrázek generátor nedává.
+ *
+ * Trojúhelník se dopočítá ze tří stran (kosinová věta). Značky stejných
+ * stran schválně nekreslí — u „Jaký je podle stran?" by byly nápovědou.
+ */
+function Shape({ visual, className }: { visual: Of<"shape">; className: string }) {
+  const { shape, sides, labels } = visual;
+  const need = { rectangle: 2, square: 1, triangle: 3, cuboid: 3 }[shape];
+  if (sides.length !== need || labels.length !== need || !sides.every((x) => x > 0 && Number.isFinite(x))) return null;
+
+  const font = { fontSize: 17, fontWeight: 700 };
+  const stroke = "stroke-foreground";
+  const fill = "fill-primary/15";
+  const PAD = 44, MAXW = 260, MAXH = 170;
+  let body: JSX.Element;
+  let W: number, H: number;
+  let shiftX = 0;
+
+  if (shape === "rectangle" || shape === "square") {
+    const [a, b] = shape === "square" ? [sides[0], sides[0]] : sides;
+    // Poměr se omezí, ať z tenkého obdélníku (20 × 2) nezbude čára.
+    const k = Math.min(MAXW / a, MAXH / b);
+    const w = a * k, h = Math.max(b * k, Math.min(w, MAXH) * 0.18);
+    W = w + 2 * PAD; H = h + 2 * PAD;
+    const x0 = PAD, y0 = PAD;
+    body = (
+      <g>
+        <rect x={x0} y={y0} width={w} height={h} className={`${fill} ${stroke}`} strokeWidth={3} />
+        <text x={x0 + w / 2} y={y0 + h + 26} textAnchor="middle" className="fill-foreground" style={font}>{labels[0]}</text>
+        {shape === "rectangle" && (
+          <text x={x0 + w + 10} y={y0 + h / 2 + 6} className="fill-foreground" style={font}>{labels[1]}</text>
+        )}
+      </g>
+    );
+    if (shape === "rectangle") W += 30;
+  } else if (shape === "triangle") {
+    const [c, b, a] = sides; // základna, levá, pravá
+    if (!(a + b > c && a + c > b && b + c > a)) return null;
+    const cx = (c * c + b * b - a * a) / (2 * c);
+    const cy = Math.sqrt(Math.max(0, b * b - cx * cx));
+    const minX = Math.min(0, cx), maxX = Math.max(c, cx);
+    const k = Math.min(MAXW / (maxX - minX), MAXH / cy);
+    const P = (x: number, y: number) => [PAD + (x - minX) * k, PAD + (cy - y) * k] as const;
+    const A = P(0, 0), B = P(c, 0), C = P(cx, cy);
+    W = (maxX - minX) * k + 2 * PAD; H = cy * k + 2 * PAD;
+    const mid = (p: readonly number[], q: readonly number[]) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+    const [lx, ly] = mid(A, C), [rx, ry] = mid(B, C);
+    // Boční popisky u šikmých stran se do pevného okraje nevejdou vždy
+    // (naměřeno 16 z 295 trojúhelníků). Rámec se proto rozšíří o odhadnutou
+    // šířku popisků (≈ 0,6 × velikost písma na znak).
+    const tw = (t: string) => t.length * font.fontSize * 0.6;
+    shiftX = Math.max(0, tw(labels[1]) + 16 - lx);
+    W = Math.max(W, rx + 10 + tw(labels[2]) + 6) + shiftX;
+    body = (
+      <g>
+        <polygon points={`${A} ${B} ${C}`} className={`${fill} ${stroke}`} strokeWidth={3} strokeLinejoin="round" />
+        <text x={(A[0] + B[0]) / 2} y={A[1] + 26} textAnchor="middle" className="fill-foreground" style={font}>{labels[0]}</text>
+        <text x={lx - 10} y={ly} textAnchor="end" className="fill-foreground" style={font}>{labels[1]}</text>
+        <text x={rx + 10} y={ry} className="fill-foreground" style={font}>{labels[2]}</text>
+      </g>
+    );
+  } else {
+    const [a, d, v] = sides; // délka, hloubka, výška
+    const k = Math.min(MAXW / (a + d * 0.5), MAXH / (v + d * 0.5));
+    const w = a * k, h = v * k, dx = d * k * 0.5, dy = d * k * 0.5;
+    W = w + dx + 2 * PAD + 20; H = h + dy + 2 * PAD;
+    const x0 = PAD, y0 = PAD + dy;
+    const front = `${x0},${y0} ${x0 + w},${y0} ${x0 + w},${y0 + h} ${x0},${y0 + h}`;
+    const top = `${x0},${y0} ${x0 + dx},${y0 - dy} ${x0 + w + dx},${y0 - dy} ${x0 + w},${y0}`;
+    const side = `${x0 + w},${y0} ${x0 + w + dx},${y0 - dy} ${x0 + w + dx},${y0 + h - dy} ${x0 + w},${y0 + h}`;
+    body = (
+      <g strokeLinejoin="round">
+        <line x1={x0} y1={y0 + h} x2={x0 + dx} y2={y0 + h - dy} className={stroke} strokeWidth={1.5} strokeDasharray="5 4" />
+        <line x1={x0 + dx} y1={y0 + h - dy} x2={x0 + dx} y2={y0 - dy} className={stroke} strokeWidth={1.5} strokeDasharray="5 4" />
+        <line x1={x0 + dx} y1={y0 + h - dy} x2={x0 + w + dx} y2={y0 + h - dy} className={stroke} strokeWidth={1.5} strokeDasharray="5 4" />
+        <polygon points={front} className={`${fill} ${stroke}`} strokeWidth={3} />
+        <polygon points={top} className={`fill-primary/25 ${stroke}`} strokeWidth={3} />
+        <polygon points={side} className={`fill-primary/35 ${stroke}`} strokeWidth={3} />
+        <text x={x0 + w / 2} y={y0 + h + 26} textAnchor="middle" className="fill-foreground" style={font}>{labels[0]}</text>
+        <text x={x0 + w + dx / 2 + 8} y={y0 + h - dy / 2 + 18} className="fill-foreground" style={font}>{labels[1]}</text>
+        <text x={x0 + w + dx + 8} y={y0 + h / 2 - dy / 2 + 6} className="fill-foreground" style={font}>{labels[2]}</text>
+      </g>
+    );
+  }
+
+  return (
+    <svg role="img" aria-label="Útvar s popsanými délkami stran ze zadání." viewBox={`0 0 ${Math.ceil(W)} ${Math.ceil(H)}`}
+      className={`w-full max-w-sm h-auto ${className}`}>
+      <g transform={`translate(${shiftX} 0)`}>{body}</g>
     </svg>
   );
 }

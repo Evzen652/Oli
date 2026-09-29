@@ -43,9 +43,10 @@ function overeno(t: PracticeTask | null): PracticeTask | null {
 }
 
 /**
- * Obdélník ve čtvercové síti jako obrázek (jen L1 „Kolik čtverečků zabírá?"):
- * obsah = počet čtverečků, a ten tu dítě vidí. Dál už úlohy počítají v cm
- * a m², kde by síť neodpovídala zadání.
+ * Obrázek k úlohám L1: obdélník ve čtvercové síti („Kolik čtverečků
+ * zabírá?" — obsah = počet čtverečků, a ten tu dítě vidí), obdélník
+ * a čtverec s popsanými stranami. Složené obrazce (L2) a převody (L3) bez
+ * obrázku.
  */
 const sSiti = (t: PracticeTask | null, visual: TaskVisual): PracticeTask | null => (t ? { ...t, visual } : null);
 
@@ -79,7 +80,7 @@ function obdelnik(): PracticeTask | null {
   const a = rnd(3, 15), b = rnd(2, 12), u = pick(JEDN);
   if (a === b) return null;
   const S = (n: number) => `${fmt(n)} ${u}²`;
-  return overeno(ciselnaUloha(
+  return sSiti(overeno(ciselnaUloha(
     `Obdélník má strany ${a} ${u} a ${b} ${u}. Jaký má obsah?`,
     S(a * b),
     [
@@ -97,13 +98,13 @@ function obdelnik(): PracticeTask | null {
       `Takových řad je tolik, kolik měří druhá strana: ${b}.`,
       `${a} × ${b} = ${a * b}, obsah je tedy ${S(a * b)}.`,
     ],
-  ));
+  )), { kind: "shape", shape: "rectangle", sides: [a, b], labels: [`${a} ${u}`, `${b} ${u}`] });
 }
 
 function ctverec(): PracticeTask | null {
   const a = rnd(3, 15), u = pick(JEDN);
   const S = (n: number) => `${fmt(n)} ${u}²`;
-  return overeno(ciselnaUloha(
+  return sSiti(overeno(ciselnaUloha(
     `Čtverec má stranu ${a} ${u}. Jaký má obsah?`,
     S(a * a),
     [
@@ -121,7 +122,7 @@ function ctverec(): PracticeTask | null {
       `${a} × ${a} = ${a * a}`,
       `Obsah je ${S(a * a)}.`,
     ],
-  ));
+  )), { kind: "shape", shape: "square", sides: [a], labels: [`${a} ${u}`] });
 }
 
 // ── L2 · aplikace na složený obrazec ─────────────────────────────────────────
