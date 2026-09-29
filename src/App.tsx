@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,6 +32,14 @@ import Terms from "./pages/Terms";
 import DeleteAccountInfo from "./pages/DeleteAccountInfo";
 
 const queryClient = new QueryClient();
+
+/**
+ * Dev náhled tématu (`/dev/tema/:id`). Za `import.meta.env.DEV`, který Vite
+ * v produkčním buildu nahradí `false` — líný import pak vypadne celý a stránka
+ * v produkci neexistuje. Nezávisí na přihlášení, proto stojí mimo větve
+ * routeru podle session.
+ */
+const DevTopicPreview = import.meta.env.DEV ? lazy(() => import("./pages/DevTopicPreview")) : null;
 
 /**
  * Právní stránky — musí být ve VŠECH větvích routeru.
@@ -192,7 +200,13 @@ const App = () => {
             <Sonner />
             {import.meta.env.DEV && <DevTrialReset />}
             <BrowserRouter>
-              {session ? (
+              {DevTopicPreview && window.location.pathname.startsWith("/dev/") ? (
+                <Suspense fallback={null}>
+                  <Routes>
+                    <Route path="/dev/tema/:id?" element={<DevTopicPreview />} />
+                  </Routes>
+                </Suspense>
+              ) : session ? (
                 <AuthenticatedRoutes />
               ) : (
                 <Routes>

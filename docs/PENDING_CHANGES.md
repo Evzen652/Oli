@@ -7,6 +7,11 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-29 (G) — dev náhled tématu
+
+`/dev/tema/:id` (jen `npm run dev`): výklad a úlohy všech úrovní tématu na
+jedné stránce, bez přihlášení, do produkce se nedostane. Popsáno v `CLAUDE.md`.
+
 ## ✅ VYŘÍZENO 2026-09-29 (F) — vyřešený ukázkový příklad
 
 „Co je dobré vědět" ukazuje vyřešenou úlohu z generátoru (mimo rozdělanou

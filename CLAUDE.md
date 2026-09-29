@@ -25,6 +25,16 @@ Pravidla a jejich původ: [`docs/UI_AUDIT.md`](docs/UI_AUDIT.md).
 
 ---
 
+## Náhled obsahu — `/dev/tema/:id` (jen `npm run dev`)
+
+Téma se neověřuje proklikáváním aplikace (ročník → předmět → okruh → téma).
+`http://localhost:8080/dev/tema` = seznam s hledáním, `/dev/tema/<id>` = výklad
+a úlohy všech tří úrovní na jedné stránce: zadání, obrázek (`visual`),
+možnosti se zdůvodněním, obě nápovědy, vysvětlení, „Přegenerovat". Nepotřebuje
+přihlášení. Do produkčního buildu se nedostane (za `import.meta.env.DEV`).
+
+---
+
 ## ⚠️ ČESKÁ GRAMATIKA — POVINNÉ pro uživatelsky viditelný text
 
 Každý string s **číslem + podstatným jménem** MUSÍ použít helpery z `src/lib/czechGrammar.ts`.

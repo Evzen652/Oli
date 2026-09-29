@@ -144,6 +144,24 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 (G) — Dev náhled tématu `/dev/tema/:id`:
+
+- ✅ **`src/pages/DevTopicPreview.tsx`**: seznam 340 témat s hledáním a filtrem
+  ročníku; detail tématu = metadata, celý výklad, úlohy L1/L2/L3 (počet
+  odlišných + N karet přes `WorkedExample`: zadání, obrázek, možnosti se
+  zdůvodněním, vysvětlení) a obě nápovědy; označí úlohu, které chybí nápověda
+  nebo vysvětlení; „Přegenerovat".
+- ✅ **Jen ve vývoji:** `App.tsx` ji načítá líně za `import.meta.env.DEV`,
+  mimo větve routeru podle přihlášení. Ověřeno buildem — v `dist/` po ní není
+  ani stopa. Test to hlídá i ve zdrojáku.
+- ✅ Poznámka v `CLAUDE.md`, ať ji další sessions najdou.
+- ✅ Ověřeno v prohlížeči (seznam, hledání „souměrn", 6. r. souměrnost se
+  sítěmi, match_pairs, Přegenerovat, neexistující ID). Test 4 případy;
+  `npm test` 8 719 (jediný pád = známý nestabilní test pavoukovců).
+- ℹ️ Drobnost: u spojovacích úloh vysvětlení opakuje tytéž dvojice, které
+  stojí o řádek výš („Správné páry"). Stejně je to i ve zpětné vazbě po
+  odpovědi — obsahová věc, ne vada komponenty.
+
 ### Session 2026-09-29 (F) — Vyřešený ukázkový příklad (výklad bez nového obsahu):
 
 - ✅ **„Co je dobré vědět" ukazuje místo statického `example` vyřešenou úlohu

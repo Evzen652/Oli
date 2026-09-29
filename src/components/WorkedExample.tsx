@@ -11,15 +11,17 @@ const OPTION_TYPES = new Set(["select_one", "true_false", "multi_select"]);
  * správná odpověď zvýrazněná mezi možnostmi, u každé chybné možnosti proč
  * je špatně (`optionFeedback`) a postup řešení. Nic z toho není nový
  * obsah — je to tatáž data, která dítě dosud vidělo až PO chybě.
+ *
+ * `intro={false}` vynechá úvodní větu — dev náhled ukazuje úloh víc pod sebou.
  */
-export function WorkedExample({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
+export function WorkedExample({ task, topic, intro = true }: { task: PracticeTask; topic: TopicMetadata; intro?: boolean }) {
   const t = useT();
   const correct = new Set([task.correctAnswer, ...(task.correctAnswers ?? [])]);
   const options = OPTION_TYPES.has(topic.inputType) && task.options?.length ? task.options : null;
 
   return (
     <div className="space-y-4" data-testid="worked-example">
-      <p className="text-sm text-muted-foreground">{t("session.worked_example_intro")}</p>
+      {intro && <p className="text-sm text-muted-foreground">{t("session.worked_example_intro")}</p>}
       <p className="text-lg font-extrabold leading-snug text-foreground">{task.question}</p>
       {task.visual && <TaskVisual visual={task.visual} />}
       {options ? (
