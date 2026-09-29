@@ -144,6 +144,32 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 — Co v obsahu 2.–6. ročníku chybí (analýza, bez změn kódu):
+
+Měřeno z generátorů (340 témat, 25 volání na úroveň), ne z dokumentace.
+„Obsahový plán je hotový“ (SESSION_HANDOFF) platí jen vůči `rvp_data.json`,
+a ten má díry.
+
+- 🔴 **Párové souhlásky (b/p, d/t, z/s…) nemají téma v žádném ročníku.**
+  V RVP datasetu jsou jako uzel 2. ročníku, přesto nepokryté.
+- 🔴 **4. a 5. ročník nemají samostatné slovní úlohy** (2. a 3. ano).
+  `rvp_data.json` tam uzel nemá, proto to kontrola pokrytí nechytila.
+  Písemné operace 4. ročníku jsou čistý dril bez kontextu.
+- 🟠 **Matematika je ve všech ročnících 100 % výběr ze 4 možností.** Vstup
+  čísla (`PracticeInputRouter.tsx`, `case "number"`) existuje, žádné téma ho
+  nepoužívá. Pozor na desetinnou čárku (`CONTENT_AUTHORING.md` §6.4).
+- 🟠 2. čeština: chybí sloh (pozdrav, omluva, vzkaz, blahopřání, vyprávění
+  podle obrázků), tiché čtení s porozuměním, pořádek slov ve větě.
+  2. slovní úlohy jen +/−, přestože násobilka je ve 2. ročníku.
+- 🟠 Únik nápovědy: 21 témat / 108 úloh (hlavně 6. zeměpis, fyzika, VKO);
+  ze 4 ručně ověřených vzorků 3 skutečné. Opakující se malá nápověda: 56 témat.
+- ℹ️ Informatika 4.–6.: 0 z 29 uzlů RVP datasetu.
+- ℹ️ 17 témat má neplatné/chybějící `rvpNodeId` (10× 2. čeština, 7× 3. prvouka)
+  — obsah existuje, ale zkresluje reporty pokrytí.
+- ✅ Množství je v pořádku: medián 15 unikátních úloh na úroveň, všech 340 témat
+  má L3, 0 úloh bez nápověd či vysvětlení. Pod limitem 12 jen
+  `g6-fyz-latka-a-teleso-6` L1 = 11.
+
 ### Session 2026-09-26 (C) — Úklid mrtvého kódu po legacy diktátu:
 
 Rozhodnutí uživatele: **smazat**, ne oživovat výběr jevů. Smazáno 5 souborů

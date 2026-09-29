@@ -7,6 +7,14 @@
 
 ---
 
+## 🟠 OTEVŘENO 2026-09-29 — mezery v obsahu 2.–6. ročníku (čeká na volbu)
+
+Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
+práci, seřazeno podle dopadu: párové souhlásky (chybí úplně) · slovní úlohy
+4. a 5. ročníku · zadávání čísla v matematice místo výběru · únik nápovědy
+v 21 tématech · sloh a čtení ve 2. ročníku · oprava 17 `rvpNodeId`.
+Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
+
 ## ✅ VYŘÍZENO 2026-09-26 (C) — úklid mrtvého kódu po legacy diktátu
 
 Otevřený bod z (B). Uživatel rozhodl **smazat**, ne napojovat výběr jevů na
