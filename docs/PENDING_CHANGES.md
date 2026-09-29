@@ -7,12 +7,17 @@
 
 ---
 
-## ✅ VYŘÍZENO 2026-09-30 (D) — mobilní hlavička cvičení, pruh zkušební doby
+## ✅ VYŘÍZENO 2026-09-30 (D) — mobilní hlavička, pruh zkušební doby, nestabilní testy
 
 Na 375 px se v hlavičce cvičení kreslilo logo přes „Zpět" a začátek
 názvu předmětu. Logo je teď vidět až od `lg` (1024 px), kde vedle středového
 sloupce má místo. Pruh zkušební doby na `/student` mačkal text do úzkého
 sloupce vedle „Sdílet s rodiči"; na mobilu teď tlačítko spadne pod text.
+
+**Nestabilní testy 6. ročníku** (pavoukovci, mýty a báje) opraveny u
+příčiny: u pavoukovců nedeterministické měření délky + klíč nejdelší u 10
+z 15 úloh L2 (6 distraktorů prodlouženo); u mýtů pořadí úloh, které občas
+dalo tutéž postavu po sobě (teď ověřené a při porušení složené znovu).
 
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 

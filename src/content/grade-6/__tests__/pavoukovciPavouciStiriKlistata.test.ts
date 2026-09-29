@@ -240,7 +240,12 @@ describe.each([1, 2, 3])("Pavoukovci — level %i", (level) => {
     let poradi = 0;
     for (const t of tasks) {
       const podleDelky = [...t.options!].sort((a, b) => b.length - a.length);
-      poradi += podleDelky.indexOf(t.correctAnswer);
+      // Pořadí = kolik možností je delších; stejně dlouhá se počítá za půl.
+      // Dřív `indexOf` v seřazeném poli: při shodě délek rozhodlo náhodné
+      // zamíchání možností a L2 (průměr přesně 0,5) padala zhruba každý 3. běh.
+      const k = t.correctAnswer.length;
+      poradi += t.options!.filter((o) => o.length > k).length
+        + t.options!.filter((o) => o !== t.correctAnswer && o.length === k).length / 2;
       if (podleDelky[0] === t.correctAnswer && podleDelky[0].length >= 1.25 * podleDelky[1].length) nejdelsi++;
       const jine = t.options!.filter((o) => o !== t.correctAnswer).map(prvni);
       const vycniva = jine[0].length >= 3 && new Set(jine).size === 1 && jine[0] !== prvni(t.correctAnswer);

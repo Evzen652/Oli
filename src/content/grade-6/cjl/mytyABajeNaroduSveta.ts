@@ -45,7 +45,7 @@
  * dvě úlohy téhož typu a téhož klíče.
  */
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { buildChoiceTask, ruzneUlohy, losUlohy, pick, type Distractor } from "./_shared";
+import { buildChoiceTask, ruzneUlohy, losUlohy, pick, shuffle, type Distractor } from "./_shared";
 
 /**
  * buildChoiceTask, ale nápovědy přesně tak, jak je napíšeme. `_shared` ke krátké
@@ -833,7 +833,10 @@ export function tematUlohy(t: PracticeTask): string {
  * první vyhovující, nejpočetnější skupina by zbyla na konec a naskládala se
  * za sebe (přesně ten „pořád to samé dokola" efekt, kvůli kterému to je).
  */
-function prostridej(tasks: PracticeTask[]): PracticeTask[] {
+/** Šablona otázky bez klíče („kultura:řecké báje" → „kultura"). */
+const sablona = (t: PracticeTask) => skupinaUlohy(t).split(":")[0];
+
+function sklad(tasks: PracticeTask[]): PracticeTask[] {
   const zbyva = [...tasks];
   const pocty = new Map<string, number>();
   for (const t of zbyva) pocty.set(skupinaUlohy(t), (pocty.get(skupinaUlohy(t)) ?? 0) + 1);
@@ -852,7 +855,10 @@ function prostridej(tasks: PracticeTask[]): PracticeTask[] {
         const tema = tematUlohy(zbyva[i]);
         if (tema !== "" && tema === predTema) continue;
       }
-      const n = pocty.get(s) ?? 0;
+      // V prvních šesti úlohách (jedno sezení) má přednost dosud nepoužitá
+      // šablona; jinak by se tu střídaly jen dvě nejpočetnější.
+      const nova = out.length < 6 && !out.some((o) => sablona(o) === sablona(zbyva[i]));
+      const n = (pocty.get(s) ?? 0) + (nova ? 1000 : 0);
       if (n > nejvic) {
         nejvic = n;
         vybrany = i;
@@ -872,6 +878,44 @@ function prostridej(tasks: PracticeTask[]): PracticeTask[] {
     predTema = tematUlohy(t);
   }
   return out;
+}
+
+/**
+ * Kolik pravidel pořadí je porušeno: stejná skupina nebo tatáž postava
+ * dvakrát po sobě, a v prvních šesti úlohách (jedno sezení) méně než tři
+ * šablony, pokud jich banka tolik má.
+ */
+function poruseni(out: PracticeTask[]): number {
+  let n = 0;
+  for (let i = 1; i < out.length; i++) {
+    if (skupinaUlohy(out[i]) === skupinaUlohy(out[i - 1])) n++;
+    const tema = tematUlohy(out[i]);
+    if (tema !== "" && tema === tematUlohy(out[i - 1])) n++;
+  }
+  const potreba = Math.min(3, new Set(out.map(sablona)).size);
+  if (new Set(out.slice(0, 6).map(sablona)).size < potreba) n++;
+  return n;
+}
+
+/**
+ * Hladové skládání (`sklad`) občas ke konci nemá úlohu bez konfliktu a vezme
+ * tutéž postavu hned po sobě; o šablonách v prvních šesti úlohách zase
+ * rozhodovalo náhodné pořadí při shodě počtů. Test to chytal zhruba v každém
+ * třetím běhu. Proto se výsledek ověří a při porušení složí znovu z jinak
+ * zamíchaného vstupu; nevyjde-li to ani jednou, vrátí se nejlepší pokus.
+ */
+function prostridej(tasks: PracticeTask[]): PracticeTask[] {
+  let nejlepsi = sklad(tasks);
+  let nejmene = poruseni(nejlepsi);
+  for (let pokus = 0; pokus < 60 && nejmene > 0; pokus++) {
+    const out = sklad(shuffle(tasks));
+    const n = poruseni(out);
+    if (n < nejmene) {
+      nejlepsi = out;
+      nejmene = n;
+    }
+  }
+  return nejlepsi;
 }
 
 /** gen() nemá žádný stav mezi voláními — pool i losování se sestaví znovu při každém volání. */

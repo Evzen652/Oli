@@ -157,6 +157,23 @@ src/
   „— plný přístup ke všem tématům" se mačkal do úzkého sloupce vedle
   tlačítka. Pod `sm` teď `basis-full` → tlačítko pod textem; na 1024 px
   zůstává v jednom řádku (ověřeno měřením).
+- ✅ **Nestabilní testy 6. ročníku opraveny — obě příčiny byly skutečné.**
+  - *Pavoukovci L2 „klíč nevyčnívá délkou"*: banka má 15 úloh a generátor ji
+    vrací celou, kolísalo tedy MĚŘENÍ. `indexOf` v poli seřazeném podle
+    délky rozhodl u stejně dlouhých možností podle náhodného zamíchání;
+    skutečný průměr byl přesně 0,500 proti prahu „> 0,5". Měření teď počítá
+    shodu za půl místa (deterministické). Pod tím ale ležela i obsahová
+    vada: klíč byl nejdelší možností u 10 z 15 úloh L2, šlo tipovat podle
+    délky. Šest distraktorů prodlouženo (např. „prohlédnout jen odkryté
+    ruce, obličej a krk"), zdůvodnění k nim dál sedí → klíč nejdelší u 3
+    z 15, pořadí 0,90. Zámek obsahu se nemění (otiskuje otázku a klíč).
+  - *Mýty a báje*: hladové `prostridej()` občas ke konci nemělo úlohu bez
+    konfliktu a dalo tutéž postavu dvakrát po sobě (druhá úloha pak první
+    prozradí); v prvních šesti úlohách L1 zase střídalo jen dvě
+    nejpočetnější šablony. Teď dává v prvních šesti přednost nepoužité
+    šabloně, výsledek ověří a při porušení složí znovu z jinak zamíchaného
+    vstupu. 2 100 volání: 0 porušení (dřív ~⅓ běhů testu), 3 ms na volání.
+  - Oba soubory 10× po sobě zelené; `audit:content` ✓.
 
 ### Session 2026-09-30 (C) — Přenos úrovní při propojení anonymního dítěte:
 

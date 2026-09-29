@@ -292,7 +292,7 @@ const L2: Fakt[] = [
     q: "Po návratu z lesa chceš mít jistotu, že na tobě není klíště. Co uděláš?",
     key: "prohlédnout celé tělo i záhyby kůže",
     d: [
-      ["prohlédnout jen ruce a obličej", "Klíště často leze pod oblečení a přisaje se v teplých záhybech kůže, třeba v podkolenní jamce."],
+      ["prohlédnout jen odkryté ruce, obličej a krk", "Klíště často leze pod oblečení a přisaje se v teplých záhybech kůže, třeba v podkolenní jamce."],
       ["počkat, až se objeví svědění", "Přisátí klíštěte většinou nebolí ani nesvědí. Proto je potřeba se prohlédnout."],
       ["vyklepat z bot hlínu a jehličí", "Klíště z bot často vyleze výš na tělo. Prohlédnout je nutné celé tělo."],
     ],
@@ -321,7 +321,7 @@ const L2: Fakt[] = [
     key: "dlouhé světlé kalhoty zastrčené do ponožek",
     d: [
       ["kraťasy, aby bylo klíště hned vidět", "Na holé kůži se klíště přisaje dřív, než si ho všimneš. Zakrytá kůže chrání lépe."],
-      ["tmavé dlouhé kalhoty volně přes boty", "Na tmavé látce klíště nevidíš a volnou nohavicí se snadno dostane ke kůži."],
+      ["tmavé dlouhé kalhoty s nohavicemi volně přes boty", "Na tmavé látce klíště nevidíš a volnou nohavicí se snadno dostane ke kůži."],
       ["sandály a lehké krátké ponožky", "Odkryté kotníky jsou pro klíště nejsnazší cesta ke kůži."],
     ],
     h: [
@@ -405,7 +405,7 @@ const L2: Fakt[] = [
     key: `klíště má v dospělosti ${nohou(8)}`,
     d: [
       ["klíště saje krev", `${FB_KREV} Krev saje i hmyz, třeba komár.`],
-      ["klíště je velmi malé", "Velikost o skupině nerozhoduje. Drobný je i mnohý hmyz."],
+      ["klíště je drobné a skoro neviditelné", "Velikost o skupině nerozhoduje. Drobný je i mnohý hmyz."],
       ["klíště žije v trávě", "V trávě žije i mnoho hmyzu. Prostředí o skupině nerozhoduje."],
     ],
     h: [
@@ -420,7 +420,7 @@ const L2: Fakt[] = [
     d: [
       ["necháš ji být, klíště už je pryč", "I odstraněné klíště mohlo přenést nákazu. Místo je potřeba sledovat."],
       ["potřeš ji olejem, aby se zahojila", "Olej ranku nevyčistí. Místo se má vydezinfikovat."],
-      ["vymačkáš z ní krev a zalepíš ji", "Mačkáním ranku podráždíš a nečistoty zatlačíš hlouběji. Stačí dezinfekce."],
+      ["vymačkáš z ní krev a zalepíš ji náplastí", "Mačkáním ranku podráždíš a nečistoty zatlačíš hlouběji. Stačí dezinfekce."],
     ],
     h: [
       "Ranka se musí vyčistit. A co dál, když se nemoc může projevit až později?",
@@ -446,7 +446,7 @@ const L2: Fakt[] = [
     q: "Než vyrazíš do lesa, chceš se chránit před klíšťaty. Co kromě vhodného oblečení pomůže?",
     key: "repelent nastříkaný na kůži a oblečení",
     d: [
-      ["tableta antibiotik spolknutá předem", FB_ANTIBIOTIKA],
+      ["tableta antibiotik spolknutá předem pro jistotu", FB_ANTIBIOTIKA],
       ["česnek snědený ráno před výletem", "Jídlo klíšťata neodpuzuje. Chrání přípravek určený proti klíšťatům."],
       ["silný parfém na krku a zápěstích", "Parfém klíšťata neodpuzuje. Chrání přípravek určený proti klíšťatům."],
     ],
@@ -476,7 +476,7 @@ const L2: Fakt[] = [
     d: [
       ["k hmyzu", `Roztoči z prachu mají v dospělosti ${pary(4)} nohou a nemají tykadla, nejsou to hmyz.`],
       ["k prvokům", "Prvok je jediná buňka. Roztoč je drobný mnohobuněčný živočich s nohama."],
-      ["k bakteriím", "Bakterie jsou jednobuněčné a nohy nemají."],
+      ["k bakteriím z prachu", "Bakterie jsou jednobuněčné a nohy nemají."],
     ],
     h: [
       "Roztoč je malý, ale má článkované nohy. Spočítej je.",
