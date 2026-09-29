@@ -79,6 +79,24 @@ export type TaskVisual =
       unknown?: number;
       /** Dílek zvýrazněný tečkou — číslo ze zadání, od kterého se vychází. */
       highlight?: number;
+      /** Zvýrazněný úsek osy [od, do] — „které číslo leží mezi …". */
+      range?: [number, number];
+    }
+  | {
+      kind: "grid";
+      /** Počet políček vodorovně a svisle. Počátek [0; 0] je levý dolní roh. */
+      cols: number;
+      rows: number;
+      /** Vybarvené obdélníky v políčkách: [x, y, šířka, výška]. */
+      fills?: [number, number, number, number][];
+      /** Body na průsečících čar sítě. Jen body ZE ZADÁNÍ, nikdy odpověď. */
+      points?: { x: number; y: number; label?: string }[];
+      /** Osy souměrnosti na čarách sítě (svislá x = at, vodorovná y = at). */
+      axes?: { dir: "vertical" | "horizontal"; at: number }[];
+      /** Střed souměrnosti S. */
+      center?: { x: number; y: number };
+      /** Očíslovat čáry sítě (0 … cols vodorovně, 0 … rows svisle) — pro souřadnice [x; y]. */
+      numbered?: boolean;
     };
 
 export interface HelpVisualExample {

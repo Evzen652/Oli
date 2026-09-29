@@ -101,7 +101,181 @@ describe("číselná osa sedí se zněním úlohy a neprozradí odpověď", () =
   });
 });
 
+const ZAP = "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-zaporna-cisla-na-ciselne-ose";
+const DES = "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-desetinna-cisla-cteni-zapis-porovnavani";
+/** „−11" → −11, „3,14" → 3.14 (typografické mínus, desetinná čárka). */
+const num = (s: string) => Number(s.replace("−", "-").replace(",", "."));
+type Osa = { kind: string; from: number; to: number; step: number; labeled: number[]; unknown?: number; range?: [number, number] };
+const byId = (prefix: string) => getAllTopics().find((t) => t.id.startsWith(prefix))!.id;
+
+describe("záporná čísla (5. r.) — osa sedí se zněním", () => {
+  const id = () => byId(ZAP.slice(0, 70));
+  it("otazník = klíč; úsek „mezi“ = čísla ze zadání, klíč uvnitř, ostatní možnosti mimo", () => {
+    let s = 0, u = 0;
+    for (const t of [...tasks(id(), 1), ...tasks(id(), 2)]) {
+      const v = t.visual as Osa | undefined;
+      if (!v) continue;
+      expect(v.kind).toBe("number_line");
+      if (v.unknown !== undefined) {
+        s++;
+        expect(num(t.correctAnswer), t.question).toBe(v.unknown);
+        expect(v.labeled).not.toContain(v.unknown);
+      } else {
+        u++;
+        const m = t.question.match(/mezi (−?\d+) a (−?\d+)/)!;
+        expect(v.range).toEqual([num(m[1]), num(m[2])]);
+        const [a, b] = v.range!;
+        for (const o of t.options ?? []) {
+          const x = num(o);
+          expect(x > a && x < b, `${t.question} → ${o}`).toBe(o === t.correctAnswer);
+        }
+      }
+      expect(v.to - v.from).toBeLessThanOrEqual(20 * v.step);
+    }
+    expect(s).toBeGreaterThan(20);
+    expect(u).toBeGreaterThan(5);
+  });
+
+  it("„n dílů vlevo od nuly“: vypsaná jen nula, otazník n dílů vlevo", () => {
+    for (const t of tasks(id(), 1)) {
+      const m = t.question.match(/(\d+) díl\S* vlevo od nuly/);
+      if (!m) continue;
+      expect(t.visual).toMatchObject({ labeled: [0], unknown: -Number(m[1]) });
+    }
+  });
+
+  it("L3 obrázek nemá", () => {
+    for (const t of tasks(id(), 3)) expect(t.visual, t.question).toBeUndefined();
+  });
+});
+
+describe("desetinná čísla (5. r.) — přiblížená osa u „mezi“", () => {
+  const id = () => byId(DES.slice(0, 70));
+  it("osa od c,a do c,a+1 po setinách; klíč uvnitř úseku, ostatní možnosti mimo", () => {
+    let s = 0;
+    for (const t of tasks(id(), 3)) {
+      const m = t.question.match(/mezi (\d+,\d) a (\d+,\d)\?/);
+      if (!m) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      s++;
+      const v = t.visual as Osa;
+      expect(v.from).toBeCloseTo(num(m[1]));
+      expect(v.to).toBeCloseTo(num(m[2]));
+      expect(v.step).toBe(0.01);
+      expect(v.unknown).toBeUndefined();
+      for (const o of t.options ?? []) {
+        const x = num(o);
+        expect(x > v.from + 1e-9 && x < v.to - 1e-9, `${t.question} → ${o}`).toBe(o === t.correctAnswer);
+      }
+    }
+    expect(s).toBeGreaterThan(10);
+  });
+
+  it("L1 a L2 obrázek nemají", () => {
+    for (const t of [...tasks(id(), 1), ...tasks(id(), 2)]) expect(t.visual, t.question).toBeUndefined();
+  });
+});
+
+type Sit = {
+  kind: string; cols: number; rows: number; fills?: number[][]; numbered?: boolean;
+  points?: { x: number; y: number; label?: string }[];
+  axes?: { dir: string; at: number }[]; center?: { x: number; y: number };
+};
+
+describe("čtvercová síť — obsah obrazce (5. r., L1)", () => {
+  const id = () => byId("g5-matematika-geometrie-v-rovine-a-v-prostoru-konstrukce-a-obsah-obsah-obrazce");
+  it("vybarvený obdélník = řádky × čtverečky ze znění; úlohy v cm síť nemají", () => {
+    let s = 0;
+    for (const t of [...tasks(id(), 1), ...tasks(id(), 2), ...tasks(id(), 3)]) {
+      const m = t.question.match(/ve čtvercové síti má (\d+) řád\S* a v každém řádku (\d+) čtvereč/);
+      if (!m) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      s++;
+      const v = t.visual as Sit;
+      expect(v.fills).toEqual([[1, 1, +m[2], +m[1]]]);
+      expect(v.cols).toBe(+m[2] + 2);
+      expect(v.rows).toBe(+m[1] + 2);
+    }
+    expect(s).toBeGreaterThan(20);
+  });
+});
+
+describe("čtvercová síť — souměrnost (5. r., L3): osa a bod A, ne obraz", () => {
+  const id = () => byId("g5-matematika-geometrie-v-rovine-a-v-prostoru-soumernost-osova");
+  it("bod A a osa sedí se zněním; síť mají jen úlohy „Kde leží jeho obraz?“", () => {
+    let s = 0;
+    for (const t of tasks(id(), 3)) {
+      const m = t.question.match(/je (svislá|vodorovná) osa souměrnosti\. Bod A leží (\d+) čtvereč\S* (vlevo od osy|nad osou) a (\d+) čtvereč/);
+      if (!m) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      s++;
+      const v = t.visual as Sit, a = +m[2], b = +m[4];
+      if (m[1] === "svislá") {
+        expect(v.axes).toEqual([{ dir: "vertical", at: 7 }]);
+        expect(v.points).toEqual([{ x: 7 - a, y: b, label: "A" }]);
+      } else {
+        expect(v.axes).toEqual([{ dir: "horizontal", at: 7 }]);
+        expect(v.points).toEqual([{ x: b, y: 7 + a, label: "A" }]);
+      }
+    }
+    expect(s).toBeGreaterThan(10);
+  });
+});
+
+describe("čtvercová síť — osová a středová souměrnost (6. r.)", () => {
+  const id = () => byId("g6-mat-osova-stredova-soumernost-6");
+  const bodyZeZneni = (q: string) => [...q.matchAll(/\[(\d+); (\d+)\]/g)].map((m) => `${m[1]};${m[2]}`);
+  it("body, osy a střed jsou přesně ty ze zadání; klíč na obrázku není", () => {
+    let s = 0;
+    for (const t of [...tasks(id(), 2), ...tasks(id(), 3)]) {
+      const v = t.visual as Sit | undefined;
+      if (!v) continue;
+      s++;
+      expect(v).toMatchObject({ kind: "grid", cols: 12, rows: 12, numbered: true });
+      const zadani = bodyZeZneni(t.question);
+      const S = t.question.match(/S \[(\d+); (\d+)\]/);
+      for (const p of v.points ?? []) expect(zadani, t.question).toContain(`${p.x};${p.y}`);
+      expect(v.center ? `${v.center.x};${v.center.y}` : undefined).toBe(S ? `${S[1]};${S[2]}` : undefined);
+      const osy = [...t.question.matchAll(/prochází (sloupcem|řádkem) (\d+)/g)]
+        .map((m) => ({ dir: m[1] === "sloupcem" ? "vertical" : "horizontal", at: +m[2] }));
+      expect(v.axes ?? [], t.question).toEqual(osy);
+      const klic = t.correctAnswer.match(/^\[(\d+); (\d+)\]$/);
+      if (klic) {
+        const k = `${klic[1]};${klic[2]}`;
+        expect((v.points ?? []).map((p) => `${p.x};${p.y}`), t.question).not.toContain(k);
+        if (v.center) expect(`${v.center.x};${v.center.y}`).not.toBe(k);
+      }
+    }
+    expect(s).toBeGreaterThan(40);
+  });
+
+  it("úlohy se souřadnicemi v síti obrázek mají, L1 a vzdálenosti v cm ne", () => {
+    for (const t of [...tasks(id(), 1), ...tasks(id(), 2), ...tasks(id(), 3)]) {
+      expect(!!t.visual, t.question).toBe(/\[\d+; \d+\]/.test(t.question));
+    }
+  });
+});
+
 describe("TaskVisual — vykreslení", () => {
+  it("síť: počátek vlevo dole, body na průsečících, očíslované čáry", () => {
+    const { container } = render(<TaskVisual visual={{ kind: "grid", cols: 4, rows: 3, numbered: true, points: [{ x: 1, y: 2, label: "A" }], axes: [{ dir: "vertical", at: 2 }] }} />);
+    const texty = [...container.querySelectorAll("text")].map((e) => e.textContent);
+    expect(texty).toEqual(["0", "1", "2", "3", "4", "0", "1", "2", "3", "A"]);
+    const bod = container.querySelector("circle")!;
+    // x: levý okraj 36 + 1 políčko; y: horní okraj 16 + (3 − 2) políčka
+    expect([bod.getAttribute("cx"), bod.getAttribute("cy")]).toEqual([String(36 + 32), String(16 + 32)]);
+  });
+
+  it("síť s bodem mimo nesmyslná → nevykreslí se", () => {
+    const { container } = render(<TaskVisual visual={{ kind: "grid", cols: 4, rows: 3, points: [{ x: 5, y: 1 }] }} />);
+    expect(container.innerHTML).toBe("");
+  });
+
+  it("osa se zápornými a desetinnými čísly: typografické mínus a čárka", () => {
+    const a = render(<TaskVisual visual={{ kind: "number_line", from: -12, to: 1, step: 1, labeled: [0, -10], unknown: -11 }} />);
+    expect([...a.container.querySelectorAll("text")].map((e) => e.textContent).sort()).toEqual(["0", "?", "−10"].sort());
+    const b = render(<TaskVisual visual={{ kind: "number_line", from: 3.1, to: 3.2, step: 0.01, labeled: [3.1, 3.2], range: [3.1, 3.2] }} />);
+    expect([...b.container.querySelectorAll("text")].map((e) => e.textContent)).toEqual(["3,1", "3,2"]);
+    expect(b.container.querySelectorAll("g > line")).toHaveLength(11);
+  });
+
   it("pravítko: čísla 0…délka, žádná délka úsečky v textu", () => {
     const { container } = render(<TaskVisual visual={{ kind: "ruler", from: 3, to: 7, length: 10 }} />);
     const cisla = [...container.querySelectorAll("text")].map((e) => e.textContent);

@@ -7,6 +7,14 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-29 (E) — osa a čtvercová síť v 5.–6. ročníku
+
+Zlomky tam nejsou (RVP); místo nich záporná a desetinná čísla (osa), obsah
+ve čtvercové síti a obě souměrnosti (nový druh `grid`). Detail
+`PROJECT_STATUS.md` §6. **Rozhodnuto:** obrázky dodělat jen u zbylých
+~15 „obrázkových" témat a skončit; další práce = vyřešený ukázkový příklad
+před procvičováním (nula nového obsahu, všech 340 témat).
+
 ## ✅ VYŘÍZENO 2026-09-29 (D) — pravítko a číselná osa ve 2. ročníku
 
 `TaskVisual` umí `ruler` a `number_line`; zapojeno do `g2-mat-mereni-delky`

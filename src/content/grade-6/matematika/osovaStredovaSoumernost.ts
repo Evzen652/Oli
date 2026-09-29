@@ -24,7 +24,7 @@
  * Slova „osa“ a „políčko“ v rejstříku `NOUNS` nejsou, proto `plural()`
  * s tvary vypsanými tady.
  */
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { plural } from "@/lib/czechGrammar";
 import { cis, rnd, pick, shuffle, buildChoiceTask as sestavUlohu, losUlohy, ruzneUlohy, type Distractor } from "./_shared";
 
@@ -58,6 +58,23 @@ const poloha = (b: Bod): string =>
 const idx = (s: Smer): 0 | 1 => (s === "svisla" ? 0 : 1);
 const jina = (s: Smer): Smer => (s === "svisla" ? "vodorovna" : "svisla");
 const osy = (n: number): string => `${cis(n)} ${plural(n, "osa", "osy", "os")}`;
+
+/**
+ * Síť k úloze: JEN zadané body, osy a střed — tytéž body, které `vyberBody`
+ * dostává jako „zakázané" (ze zadání). Hledaný bod, osa ani střed na
+ * obrázku nikdy nejsou. Čáry jsou očíslované, aby šlo souřadnice [x; y]
+ * ze zadání najít v síti.
+ */
+function sMrizkou(t: PracticeTask | null, v: { points?: [Bod, string?][]; axes?: Osa[]; center?: Bod }): PracticeTask | null {
+  if (!t) return null;
+  const visual: TaskVisual = {
+    kind: "grid", cols: MAX, rows: MAX, numbered: true,
+    points: v.points?.map(([b, label]) => ({ x: b[0], y: b[1], label })),
+    axes: v.axes?.map((o) => ({ dir: o.smer === "svisla" ? "vertical" : "horizontal", at: o.k })),
+    center: v.center && { x: v.center[0], y: v.center[1] },
+  };
+  return { ...t, visual };
+}
 
 function podleOsy(b: Bod, o: Osa): Bod {
   const r: Bod = [b[0], b[1]];
@@ -640,7 +657,7 @@ function genL2Osa(ctx: KontextBod, smer: Smer): PracticeTask | null {
     ]),
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `${ctx.uvod(P)} ${osaVeta(o)} ${ctx.otazka}`,
     zap(O),
     vyberBody(O, kand, [P], false),
@@ -653,7 +670,7 @@ function genL2Osa(ctx: KontextBod, smer: Smer): PracticeTask | null {
       ],
       explanation: `V osové souměrnosti leží obraz na opačné straně osy, stejně daleko od ní jako původní bod. ${velke(w.adj)} osa mění jen ${w.nom}: ${policek(d)} na jedné straně osy se změní na ${policek(d)} na druhé straně, ${w.druhe} zůstává. Proto ${ctx.vysledek(zap(O))}.`,
     },
-  );
+  ), { points: [[P]], axes: [o] });
 }
 
 function genL2Stred(ctx: KontextBod): PracticeTask | null {
@@ -686,7 +703,7 @@ function genL2Stred(ctx: KontextBod): PracticeTask | null {
     ]),
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `${ctx.uvod(P)} ${ctx.stred(zap(S))}`,
     zap(O),
     vyberBody(O, kand, [P, S], false),
@@ -699,7 +716,7 @@ function genL2Stred(ctx: KontextBod): PracticeTask | null {
       ],
       explanation: `Ve středové souměrnosti je střed S přesně v půlce mezi bodem a jeho obrazem. Obraz proto leží na opačné straně středu, stejně daleko vodorovně i svisle, a mění se obě souřadnice. Proto ${ctx.vysledek(zap(O))}.`,
     },
-  );
+  ), { points: [[P]], center: S });
 }
 
 interface KontextVzd {
@@ -834,7 +851,7 @@ function genL3Stred(): PracticeTask | null {
     },
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `Bod ${X} ${zap(P)}, tedy ${poloha(P)}, se ve středové souměrnosti zobrazil na bod ${X}′ ${zap(P2)}. Kde leží střed souměrnosti S?`,
     zap(S),
     vyberBody(S, kand, [P, P2], true),
@@ -850,7 +867,7 @@ function genL3Stred(): PracticeTask | null {
       ],
       explanation: `Ve středové souměrnosti je střed S přesně uprostřed mezi bodem a jeho obrazem. Jeho sloupec je proto v půlce mezi ${cis(P[0])} a ${cis(P2[0])} a jeho řádek v půlce mezi ${cis(P[1])} a ${cis(P2[1])}: S ${zap(S)}.`,
     },
-  );
+  ), { points: [[P, X], [P2, `${X}′`]] });
 }
 
 function genL3VzorStred(): PracticeTask | null {
@@ -884,7 +901,7 @@ function genL3VzorStred(): PracticeTask | null {
     },
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `Ve středové souměrnosti se středem S ${zap(S)} se bod ${X} zobrazil na bod ${X}′ ${zap(C2)}, který leží ${poloha(C2)}. Jaké souřadnice má bod ${X}?`,
     zap(C),
     vyberBody(C, kand, [S, C2], true),
@@ -900,7 +917,7 @@ function genL3VzorStred(): PracticeTask | null {
       ],
       explanation: `Střed souměrnosti je v půlce mezi bodem ${X} a jeho obrazem ${X}′. Bod ${X} proto leží na opačné straně středu než ${X}′, stejně daleko vodorovně i svisle: ${X} ${zap(C)}.`,
     },
-  );
+  ), { points: [[C2, `${X}′`]], center: S });
 }
 
 function genL3VzorOsa(): PracticeTask | null {
@@ -939,7 +956,7 @@ function genL3VzorOsa(): PracticeTask | null {
     },
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `V osové souměrnosti se bod ${X} zobrazil na bod ${X}′ ${zap(C2)}, který leží ${poloha(C2)}. ${osaVeta(o)} Jaké souřadnice má bod ${X}?`,
     zap(C),
     vyberBody(C, kand, [C2], true),
@@ -957,7 +974,7 @@ function genL3VzorOsa(): PracticeTask | null {
       ],
       explanation: `Osa souměrnosti prochází středem úsečky ${X}${X}′ a je na ni kolmá. Bod ${X} proto leží na opačné straně osy než ${X}′, stejně daleko (${policek(d)}), a ${w.druhe} se nemění: ${X} ${zap(C)}.`,
     },
-  );
+  ), { points: [[C2, `${X}′`]], axes: [o] });
 }
 
 function genL3Osa(): PracticeTask | null {
@@ -1010,7 +1027,7 @@ function genL3Osa(): PracticeTask | null {
   const prvni = [vetsi, mensi].filter((x): x is KandL => !!x);
   const poradi = [...prvni, ...kand.filter((x) => !prvni.includes(x))];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `Bod ${X} ${zap(D)}, tedy ${poloha(D)}, se v osové souměrnosti zobrazil na bod ${X}′ ${zap(D2)}. Kterým sloupcem nebo řádkem prochází osa souměrnosti?`,
     linie(smer, k),
     poradi.map((x) => ({ value: linie(x.s, x.n), why: x.why })),
@@ -1026,7 +1043,7 @@ function genL3Osa(): PracticeTask | null {
       ],
       explanation: `Osa souměrnosti je kolmá na spojnici bodu a obrazu a prochází jejím středem. Body mají stejný ${jw.nom}, takže spojnice je ${smer === "svisla" ? "vodorovná" : "svislá"} a osa ${w.adj}. Její poloha je v půlce mezi ${cis(Math.min(a, b))} a ${cis(Math.max(a, b))}, tedy ${linie(smer, k)}.`,
     },
-  );
+  ), { points: [[D, X], [D2, `${X}′`]] });
 }
 
 function genL3OsaStred(): PracticeTask | null {
@@ -1061,7 +1078,7 @@ function genL3OsaStred(): PracticeTask | null {
       : null,
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `Bod ${X} ${zap(E)}, tedy ${poloha(E)}, se nejdřív zobrazí v osové souměrnosti podle ${w.adjGen} osy, která prochází ${w.ins} ${cis(o.k)}. Vzniklý bod se pak zobrazí ve středové souměrnosti se středem S ${zap(S)}. Jaké souřadnice má výsledný bod?`,
     zap(E2),
     vyberBody(E2, kand, [E, S], true),
@@ -1077,7 +1094,7 @@ function genL3OsaStred(): PracticeTask | null {
       ],
       explanation: `Dvě zobrazení se dělají postupně: výsledek prvního je vstupem druhého. Podle osy se bod ${X} ${zap(E)} zobrazí na ${zap(E1)}, ten se podle středu S zobrazí na opačnou stranu středu, na ${zap(E2)}.`,
     },
-  );
+  ), { points: [[E, X]], axes: [o], center: S });
 }
 
 function genL3DveOsy(): PracticeTask | null {
@@ -1111,7 +1128,7 @@ function genL3DveOsy(): PracticeTask | null {
     },
   ];
 
-  return buildChoiceTask(
+  return sMrizkou(buildChoiceTask(
     `Bod ${X} ${zap(E)}, tedy ${poloha(E)}, se nejdřív zobrazí v osové souměrnosti podle ${w.adjGen} osy, která prochází ${w.ins} ${cis(k1)}. Vzniklý bod se pak zobrazí podle ${w.adjGen} osy, která prochází ${w.ins} ${cis(k2)}. Jaké souřadnice má výsledný bod?`,
     zap(E2),
     vyberBody(E2, kand, [E], true),
@@ -1127,7 +1144,7 @@ function genL3DveOsy(): PracticeTask | null {
       ],
       explanation: `Zobrazení se dělají postupně: výsledek prvního je vstupem druhého. Podle první osy vznikne ${zap(E1)}, podle druhé ${zap(E2)}. Dvě osové souměrnosti s rovnoběžnými osami bod posunou o dvojnásobek vzdálenosti os, ${w.druhe} se nemění.`,
     },
-  );
+  ), { points: [[E, X]], axes: [o1, o2] });
 }
 
 function sablonyL3(): (() => PracticeTask | null)[] {

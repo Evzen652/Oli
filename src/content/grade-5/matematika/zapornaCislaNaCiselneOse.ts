@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { pad } from "@/lib/czechGrammar";
 import { ciselnaUloha, pick, rnd, sada, shuffle } from "./_mat";
 
@@ -44,11 +44,19 @@ function overeno(t: PracticeTask | null): PracticeTask | null {
   return t;
 }
 
+/**
+ * Číselná osa k úloze (L1 „n dílů vlevo od nuly", L2 soused, opačné číslo,
+ * „mezi"). L3 a teploměr bez obrázku. U „mezi" není otazník na jednom dílku
+ * (prozradil by odpověď), ale zvýrazněný úsek — dítě samo posoudí, která
+ * nabídnutá čísla do něj padnou.
+ */
+const sOsou = (t: PracticeTask | null, visual: TaskVisual): PracticeTask | null => (t ? { ...t, visual } : null);
+
 // ── L1 · rozpoznání zápisu ───────────────────────────────────────────────────
 
 function naOse(): PracticeTask | null {
   const n = rnd(2, 15);
-  return overeno(ciselnaUloha(
+  return sOsou(overeno(ciselnaUloha(
     `Které číslo leží na číselné ose ${pad(n, "DÍL")} vlevo od nuly?`,
     Z(-n),
     [
@@ -61,7 +69,7 @@ function naOse(): PracticeTask | null {
       `Číselná osa má vpravo od nuly čísla kladná a vlevo záporná. Kolik dílů od nuly ujdeš, takové je číslo, a protože jdeš doleva, patří před ně znaménko minus. Počítají se přitom mezery mezi čísly, ne čísla samotná, takže nula sama se jako první díl nepočítá.`,
     ],
     [`Vlevo od nuly leží záporná čísla.`, `${pad(n, "DÍL")} vlevo od nuly je číslo ${Z(-n)}.`],
-  ));
+  )), { kind: "number_line", from: -(n + 1), to: 1, step: 1, labeled: [0], unknown: -n, highlight: 0 });
 }
 
 function teplomer(): PracticeTask | null {
@@ -128,7 +136,7 @@ function mezi(): PracticeTask | null {
   // celý vlevo od nuly. Kdyby b bylo kladné, vysvětlení by neplatilo.
   if (b >= 0) return null;
   const nizsi = a - rnd(1, 5), vyssi = b + rnd(1, 5);
-  return overeno(ciselnaUloha(
+  return sOsou(overeno(ciselnaUloha(
     `Které z nabízených čísel leží na číselné ose mezi ${Z(a)} a ${Z(b)}?`,
     Z(m),
     [
@@ -141,14 +149,14 @@ function mezi(): PracticeTask | null {
       `Na číselné ose hodnoty rostou zleva doprava, takže ležet mezi dvěma čísly znamená být napravo od menšího z nich a nalevo od většího. U záporných čísel pozor: čím větší číslice stojí za minusem, tím dál vlevo číslo leží, takže ${Z(a)} je z dvojice to menší. Možnosti proto neposuzuj podle číslic, ale podle místa na ose.`,
     ],
     [`Úsek začíná v ${Z(a)} a končí v ${Z(b)}.`, `Uvnitř úseku leží ${Z(m)} — je napravo od ${Z(a)} a nalevo od ${Z(b)}.`],
-  ));
+  )), { kind: "number_line", from: a - 5, to: b + 5, step: 1, labeled: [a, b], range: [a, b] });
 }
 
 function soused(): PracticeTask | null {
   const x = -rnd(2, 12), vpravo = Math.random() < 0.5;
   const smer = vpravo ? "vpravo" : "vlevo";
   const key = x + (vpravo ? 1 : -1);
-  return overeno(ciselnaUloha(
+  return sOsou(overeno(ciselnaUloha(
     `Které číslo leží na číselné ose hned ${smer} od čísla ${Z(x)}?`,
     Z(key),
     [
@@ -161,12 +169,12 @@ function soused(): PracticeTask | null {
       `Sousední čísla na ose se liší přesně o jeden díl. Krok doprava znamená o jedna víc, krok doleva o jedna míň a u záporných čísel to platí stejně. Číslice za minusem se přitom chová obráceně: směrem doprava se zmenšuje, směrem doleva zvětšuje. Řiď se proto polohou na ose, ne velikostí té číslice.`,
     ],
     [`Sousední čísla se liší o jeden díl.`, `Hned ${smer} od ${Z(x)} leží ${Z(key)}.`],
-  ));
+  )), { kind: "number_line", from: Math.min(x, key) - 2, to: Math.max(x, key) + 2, step: 1, labeled: [x], unknown: key, highlight: x });
 }
 
 function opacne(): PracticeTask | null {
   const n = rnd(2, 18);
-  return overeno(ciselnaUloha(
+  return sOsou(overeno(ciselnaUloha(
     `Které číslo leží na číselné ose stejně daleko od nuly jako ${n}, ale na opačné straně?`,
     Z(-n),
     [
@@ -179,7 +187,7 @@ function opacne(): PracticeTask | null {
       `Dvojice čísel, která leží od nuly stejně daleko, ale každé z jiné strany, se liší jedině znaménkem. Vpravo od nuly jsou čísla kladná, vlevo záporná a počet dílů k nule je u obou stejný. Mění se tedy jen strana, ne vzdálenost od nuly.`,
     ],
     [`Vzdálenost od nuly zůstává ${pad(n, "DÍL")}.`, `Na opačné straně nuly proto leží ${Z(-n)}.`],
-  ));
+  )), { kind: "number_line", from: -n, to: n, step: n, labeled: [0, n], unknown: -n, highlight: n });
 }
 
 function serad(): PracticeTask | null {

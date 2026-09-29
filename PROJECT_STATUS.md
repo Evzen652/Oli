@@ -144,6 +144,33 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 (E) — Obrázky 5.–6. ročník: osa, síť; a ROZHODNUTÍ o dalším postupu:
+
+- ℹ️ **Zlomky v 5.–6. ročníku NEJSOU** (RVP dataset: 4. ročník, pak až 7.).
+  Místo nich, po volbě uživatele: záporná čísla, desetinná čísla, čtvercová síť.
+- ✅ **Číselná osa rozšířena** (záporná čísla, krok 0,01, `range` = zvýrazněný
+  úsek místo otazníku tam, kde by otazník prozradil odpověď, škálování písma
+  u delších os). Zapojeno: záporná čísla 5. r. (L1 „n dílů vlevo od nuly",
+  L2 soused/opačné/„mezi"), desetinná čísla 5. r. (L3 „mezi 3,5 a 3,6" —
+  přiblížená osa po setinách; je to L3, ale obrázek ukazuje pojem, ne odpověď).
+- ✅ **Nový druh `grid`** (čtvercová síť, počátek vlevo dole, očíslované čáry,
+  body/osy/střed/výplň). Zapojeno: obsah obrazce 5. r. (L1, vybarvený
+  obdélník), osová souměrnost 5. r. (L3 „Kde leží obraz bodu A?": osa a bod,
+  NE obraz), osová a středová souměrnost 6. r. (všech 8 šablon L2+L3 se
+  souřadnicemi — jen body/osy/střed ze zadání, nikdy klíč).
+- ✅ Test `task-visual.test.tsx` 27 případů: u každého druhu čte čísla ZE
+  ZNĚNÍ a hlídá, že klíč na obrázku není. `npm test` 8 709 bez pádu.
+  Ověřeno v prohlížeči na 375 px (harness se všemi sedmi druhy).
+- 🔴 **Rozhodnutí (uživatel, „zamysli se nad konceptem"):** cokoli „na každé
+  téma zvlášť" je drahé. Obrázky jsou OHRANIČENÝ problém (~20–30 témat
+  popisujících obrázek; 13 hotovo) — dodělat a SKONČIT, netlačit do gramatiky
+  a dějepisu. Hlavní páka pro „naučit se z appky" je **vyřešený ukázkový
+  příklad** před procvičováním: vzít úlohu z generátoru a ukázat ji
+  vyřešenou (zadání → odpověď → kroky → proč ne ostatní). Nula nového
+  obsahu, funguje pro všech 340 témat, řeší i chybějící výklad pro L3
+  (ukázka při první změně úrovně). Dál: dev náhledová stránka tématu
+  (ověřování proklikáváním stálo dnes víc než práce sama).
+
 ### Session 2026-09-29 (D) — Pravítko a číselná osa (2. ročník):
 
 - ✅ **Dva nové druhy `PracticeTask.visual`** (`ruler`, `number_line`) v téže

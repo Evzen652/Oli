@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { isAre, pad, plural } from "@/lib/czechGrammar";
 import { ciselnaUloha, fdec, fmt, pick, rnd, sada } from "./_mat";
 
@@ -42,12 +42,19 @@ function overeno(t: PracticeTask | null): PracticeTask | null {
   return t;
 }
 
+/**
+ * Obdélník ve čtvercové síti jako obrázek (jen L1 „Kolik čtverečků zabírá?"):
+ * obsah = počet čtverečků, a ten tu dítě vidí. Dál už úlohy počítají v cm
+ * a m², kde by síť neodpovídala zadání.
+ */
+const sSiti = (t: PracticeTask | null, visual: TaskVisual): PracticeTask | null => (t ? { ...t, visual } : null);
+
 // ── L1 · rozpoznání vzorce ───────────────────────────────────────────────────
 
 function sit(): PracticeTask | null {
   const r = rnd(2, 9), s = rnd(3, 12);
   if (r === s) return null;
-  return overeno(ciselnaUloha(
+  return sSiti(overeno(ciselnaUloha(
     `Obdélník ve čtvercové síti má ${pad(r, "ŘÁDEK")} a v každém řádku ${pad(s, "ČTVEREČEK")}. Kolik čtverečků zabírá celkem?`,
     r * s,
     [
@@ -65,7 +72,7 @@ function sit(): PracticeTask | null {
       `Opakované sčítání nahradí násobení: ${r} × ${s} = ${r * s}.`,
       `Obrazec zabírá ${pad(r * s, "ČTVEREČEK")}.`,
     ],
-  ));
+  )), { kind: "grid", cols: s + 2, rows: r + 2, fills: [[1, 1, s, r]] });
 }
 
 function obdelnik(): PracticeTask | null {

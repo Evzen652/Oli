@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { isAre, pad, wasCount } from "@/lib/czechGrammar";
 import { choice } from "../_shared";
 import { ciselnaUloha, pick, rnd, sada, shuffle } from "./_mat";
@@ -399,6 +399,14 @@ function obrazec(): PracticeTask | null {
 
 // ── L3 · transfer a inverze ──────────────────────────────────────────────────
 
+/**
+ * Síť k „Kde leží obraz bodu A?": osa a bod A, NE obraz (ten je odpověď).
+ * Úloha mluví o čtverečcích od osy a od okraje sítě — přesně to síť ukáže.
+ * Ostatní úlohy L3 jsou čistě o vzdálenostech (nebo o číslech sloupců)
+ * a síť nepotřebují.
+ */
+const sSiti = (t: PracticeTask | null, visual: TaskVisual): PracticeTask | null => (t ? { ...t, visual } : null);
+
 function obrazBodu(): PracticeTask | null {
   const svisla = Math.random() < 0.5;
   const a = rnd(1, 6), b = rnd(1, 6);
@@ -407,7 +415,7 @@ function obrazBodu(): PracticeTask | null {
     ? ["vlevo od osy", "vpravo od osy", "nad spodním okrajem sítě"]
     : ["nad osou", "pod osou", "od levého okraje sítě"];
   const P = (x: number, strana: string, y: number) => `${pad(x, "ČTVEREČEK")} ${strana}, ${pad(y, "ČTVEREČEK")} ${druha}`;
-  return overeno(ciselnaUloha(
+  return sSiti(overeno(ciselnaUloha(
     `Ve čtvercové síti je ${svisla ? "svislá" : "vodorovná"} osa souměrnosti. Bod A leží ${pad(a, "ČTVEREČEK")} ${tam} a ${pad(b, "ČTVEREČEK")} ${druha}. Kde leží jeho obraz?`,
     P(a, zpet, b),
     [
@@ -425,7 +433,9 @@ function obrazBodu(): PracticeTask | null {
       `Druhá vzdálenost (${pad(b, "ČTVEREČEK")} ${druha}) se překlopením nemění.`,
       `Obraz proto leží ${P(a, zpet, b)}.`,
     ],
-  ));
+  )), svisla
+      ? { kind: "grid", cols: 14, rows: 8, axes: [{ dir: "vertical", at: 7 }], points: [{ x: 7 - a, y: b, label: "A" }] }
+      : { kind: "grid", cols: 8, rows: 14, axes: [{ dir: "horizontal", at: 7 }], points: [{ x: b, y: 7 + a, label: "A" }] });
 }
 
 function osaMezi(): PracticeTask | null {

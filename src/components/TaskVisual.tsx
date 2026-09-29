@@ -20,6 +20,8 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <Ruler visual={visual} className={className} />;
     case "number_line":
       return <NumberLine visual={visual} className={className} />;
+    case "grid":
+      return <Grid visual={visual} className={className} />;
     default:
       return null;
   }
@@ -134,47 +136,138 @@ function Ruler({ visual, className }: { visual: Of<"ruler">; className: string }
 /** Rozestup dílků ve viewBoxu. */
 const TICK = 64;
 
+/** Porovnání s tolerancí — krok 0,1 dává v plovoucí čárce 3,1 + 0,1 ≠ 3,2. */
+const same = (a: number, b: number) => Math.abs(a - b) < 1e-9;
+
+/** Český zápis čísla na ose: typografické mínus, desetinná čárka. */
+function formatOsa(v: number): string {
+  const r = Math.round(v * 1e6) / 1e6;
+  const abs = String(Math.abs(r)).replace(".", ",");
+  return r < 0 ? `−${abs}` : abs;
+}
+
 /**
  * Číselná osa s dílky. Vypisuje jen čísla z `labeled` — u „hned za 68" je
  * to jen 68, jinak by osa odpověď rovnou ukázala. Hledané místo nese
- * otazník, výchozí číslo ze zadání tečku.
+ * otazník, výchozí číslo ze zadání tečku, `range` zvýrazní úsek (u „které
+ * číslo leží mezi −16 a −7" by otazník na jednom dílku prozradil odpověď).
+ *
+ * Delší osa (až 20 dílků) se ve viewBoxu roztáhne, takže by se písmo
+ * při zmenšení do karty ztratilo — popisky se proto zvětšují úměrně (`u`).
  */
 function NumberLine({ visual, className }: { visual: Of<"number_line">; className: string }) {
-  const { from, to, step, labeled, unknown, highlight } = visual;
+  const { from, to, step, labeled, unknown, highlight, range } = visual;
   if (!(step > 0) || to <= from) return null;
   const n = Math.round((to - from) / step);
-  if (n < 1 || n > 12 || from + n * step !== to) return null;
-  if (unknown !== undefined && labeled.includes(unknown)) return null;
+  if (n < 1 || n > 20 || !same(from + n * step, to)) return null;
+  if (unknown !== undefined && labeled.some((l) => same(l, unknown))) return null;
 
-  const x = (v: number) => 30 + ((v - from) / step) * TICK;
   const W = n * TICK + 60;
-  const axisY = 34;
-  const values = Array.from({ length: n + 1 }, (_, i) => from + i * step);
+  const u = Math.max(1, W / 600);
+  const x = (v: number) => 30 + ((v - from) / step) * TICK;
+  const axisY = 34 * u;
+  const values = Array.from({ length: n + 1 }, (_, i) => Math.round((from + i * step) * 1e6) / 1e6);
+  const font = { fontSize: 20 * u, fontWeight: 700 };
 
   return (
     <svg
       role="img"
-      aria-label="Číselná osa. Hledané číslo je na ose označené otazníkem."
-      viewBox={`0 0 ${W} 84`}
+      aria-label={unknown !== undefined
+        ? "Číselná osa. Hledané číslo je na ose označené otazníkem."
+        : "Číselná osa se zvýrazněným úsekem."}
+      viewBox={`0 0 ${W} ${84 * u}`}
       className={`w-full max-w-xl h-auto ${className}`}
     >
-      <line x1={8} x2={W - 12} y1={axisY} y2={axisY} className="stroke-foreground" strokeWidth={2.5} />
-      <polygon points={`${W - 4},${axisY} ${W - 16},${axisY - 7} ${W - 16},${axisY + 7}`} className="fill-foreground" />
+      <line x1={8} x2={W - 12} y1={axisY} y2={axisY} className="stroke-foreground" strokeWidth={2.5 * u} />
+      <polygon points={`${W - 4},${axisY} ${W - 4 - 12 * u},${axisY - 7 * u} ${W - 4 - 12 * u},${axisY + 7 * u}`}
+        className="fill-foreground" />
+      {range && (
+        <line x1={x(range[0])} x2={x(range[1])} y1={axisY} y2={axisY}
+          className="stroke-primary" strokeWidth={8 * u} strokeLinecap="round" />
+      )}
       {values.map((v) => (
         <g key={v}>
-          <line x1={x(v)} x2={x(v)} y1={axisY - 10} y2={axisY + 10} className="stroke-foreground" strokeWidth={2} />
-          {labeled.includes(v) && (
-            <text x={x(v)} y={axisY + 34} textAnchor="middle" className="fill-foreground"
-              style={{ fontSize: 20, fontWeight: 700 }}>{v}</text>
+          <line x1={x(v)} x2={x(v)} y1={axisY - 10 * u} y2={axisY + 10 * u} className="stroke-foreground" strokeWidth={2 * u} />
+          {labeled.some((l) => same(l, v)) && (
+            <text x={x(v)} y={axisY + 34 * u} textAnchor="middle" className="fill-foreground" style={font}>
+              {formatOsa(v)}
+            </text>
           )}
-          {v === unknown && (
+          {unknown !== undefined && same(v, unknown) && (
             <g>
-              <circle cx={x(v)} cy={axisY + 27} r={15} className="fill-sky-100 stroke-sky-500" strokeWidth={2} />
-              <text x={x(v)} y={axisY + 34} textAnchor="middle" className="fill-sky-700"
-                style={{ fontSize: 20, fontWeight: 800 }}>?</text>
+              <circle cx={x(v)} cy={axisY + 27 * u} r={15 * u} className="fill-sky-100 stroke-sky-500" strokeWidth={2 * u} />
+              <text x={x(v)} y={axisY + 34 * u} textAnchor="middle" className="fill-sky-700"
+                style={{ ...font, fontWeight: 800 }}>?</text>
             </g>
           )}
-          {v === highlight && <circle cx={x(v)} cy={axisY} r={7} className="fill-primary" />}
+          {highlight !== undefined && same(v, highlight) && (
+            <circle cx={x(v)} cy={axisY} r={7 * u} className="fill-primary" />
+          )}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// ── Čtvercová síť ────────────────────────────────────────────────────────────
+
+/** Velikost políčka ve viewBoxu. */
+const CELL = 32;
+
+/**
+ * Čtvercová síť s počátkem vlevo dole (jako v učebnici i v zadání „políček
+ * vpravo a nahoru od levého dolního rohu"). Kreslí jen ZADANÉ prvky — body,
+ * osy, střed, vybarvené obdélníky. Hledaný bod ani osa na obrázku nejsou.
+ */
+function Grid({ visual, className }: { visual: Of<"grid">; className: string }) {
+  const { cols, rows, fills = [], points = [], axes = [], center, numbered } = visual;
+  if (![cols, rows].every((n) => Number.isInteger(n) && n >= 1 && n <= 16)) return null;
+  const inside = (x: number, y: number) => x >= 0 && x <= cols && y >= 0 && y <= rows;
+  if (!points.every((b) => inside(b.x, b.y)) || (center && !inside(center.x, center.y))) return null;
+
+  // Síť 12 × 12 se na mobilu zmenší asi na 70 %: písmo 17 dá ~12 px.
+  const left = numbered ? 36 : 8, bottom = numbered ? 30 : 8, top = 16, right = 16;
+  const W = left + cols * CELL + right, H = top + rows * CELL + bottom;
+  const X = (x: number) => left + x * CELL;
+  const Y = (y: number) => top + (rows - y) * CELL;
+  const num = { fontSize: 17, fontWeight: 600 };
+  const lbl = { fontSize: 20, fontWeight: 800 };
+
+  return (
+    <svg
+      role="img"
+      aria-label="Čtvercová síť se zadanými body a osami."
+      viewBox={`0 0 ${W} ${H}`}
+      className={`w-full max-w-md h-auto ${className}`}
+    >
+      {fills.map(([x, y, w, h], i) => (
+        <rect key={`f${i}`} x={X(x)} y={Y(y + h)} width={w * CELL} height={h * CELL} className="fill-primary/70" />
+      ))}
+      {Array.from({ length: cols + 1 }, (_, i) => (
+        <line key={`v${i}`} x1={X(i)} x2={X(i)} y1={Y(0)} y2={Y(rows)} className="stroke-muted-foreground/40" strokeWidth={1} />
+      ))}
+      {Array.from({ length: rows + 1 }, (_, j) => (
+        <line key={`h${j}`} x1={X(0)} x2={X(cols)} y1={Y(j)} y2={Y(j)} className="stroke-muted-foreground/40" strokeWidth={1} />
+      ))}
+      {numbered && Array.from({ length: cols + 1 }, (_, i) => (
+        <text key={`nx${i}`} x={X(i)} y={Y(0) + 22} textAnchor="middle" className="fill-muted-foreground" style={num}>{i}</text>
+      ))}
+      {numbered && Array.from({ length: rows + 1 }, (_, j) => (
+        <text key={`ny${j}`} x={X(0) - 8} y={Y(j) + 6} textAnchor="end" className="fill-muted-foreground" style={num}>{j}</text>
+      ))}
+      {axes.map((a, i) => a.dir === "vertical"
+        ? <line key={`a${i}`} x1={X(a.at)} x2={X(a.at)} y1={Y(0) + 6} y2={Y(rows) - 6} className="stroke-sky-600" strokeWidth={3} strokeDasharray="10 6" />
+        : <line key={`a${i}`} x1={X(0) - 6} x2={X(cols) + 6} y1={Y(a.at)} y2={Y(a.at)} className="stroke-sky-600" strokeWidth={3} strokeDasharray="10 6" />)}
+      {center && (
+        <g>
+          <circle cx={X(center.x)} cy={Y(center.y)} r={6} className="fill-sky-600" />
+          <text x={X(center.x) + 9} y={Y(center.y) - 8} className="fill-sky-700" style={lbl}>S</text>
+        </g>
+      )}
+      {points.map((b, i) => (
+        <g key={`p${i}`}>
+          <circle cx={X(b.x)} cy={Y(b.y)} r={6} className="fill-primary stroke-background" strokeWidth={2} />
+          {b.label && <text x={X(b.x) + 9} y={Y(b.y) - 8} className="fill-foreground" style={lbl}>{b.label}</text>}
         </g>
       ))}
     </svg>

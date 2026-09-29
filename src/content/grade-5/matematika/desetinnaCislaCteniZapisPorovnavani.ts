@@ -107,7 +107,8 @@ function mezi(): PracticeTask | null {
   const c = rnd(0, 12), a = rnd(1, 7), k = rnd(1, 9);
   if (k === a || k === a + 1) return null;
   const key = `${c},${a}${k}`;
-  return ciselnaUloha(`Které číslo leží na číselné ose mezi ${c},${a} a ${c},${a + 1}?`, key, [
+  const od = c + a / 10, po = c + (a + 1) / 10;
+  const t = ciselnaUloha(`Které číslo leží na číselné ose mezi ${c},${a} a ${c},${a + 1}?`, key, [
     { value: `${c},${a + 1}${k}`, why: `To je až za číslem ${c},${a + 1}.` },
     { value: `${c},0${k}`, why: `Desetin je 0, takže číslo leží ještě před ${c},${a}.` },
     { value: `${c},${k}${a}`, why: `Má ${k} desetin, proto neleží mezi ${c},${a} a ${c},${a + 1}.` },
@@ -118,6 +119,10 @@ function mezi(): PracticeTask | null {
     `${c},${a} = ${c},${a}0 a ${c},${a + 1} = ${c},${a + 1}0`,
     `Mezi nimi leží ${c},${a}1 až ${c},${a}9, tedy i ${key}.`,
   ]);
+  // „Přiblížená" osa od c,a do c,a+1 po setinách. Je to L3, ale obrázek tu
+  // neukazuje odpověď — ukazuje nový pojem (mezi dvěma desetinami leží devět
+  // setin). Bez otazníku na dílku: dítě musí nabídnutá čísla umístit samo.
+  return t && { ...t, visual: { kind: "number_line", from: od, to: po, step: 0.01, labeled: [od, po], range: [od, po] } };
 }
 
 function serad(): PracticeTask | null {
