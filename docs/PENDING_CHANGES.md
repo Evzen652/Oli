@@ -7,6 +7,17 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-29 (B) — výklad tématu při prvním vstupu
+
+„Co je dobré vědět“ se samo otevře při prvním vstupu do tématu (per dítě
+a zařízení, `src/lib/topicIntroSeen.ts`), pak zůstává za tlačítkem. Detail
+v `PROJECT_STATUS.md` §6. **Zbývá z téže analýzy:** obrázky u vizuální látky
+(0/340 témat; komponenty existují) a výklad pro L3.
+
+⚠️ Nestabilní testy 6. ročníku (`mytyABajeNaroduSveta`,
+`pavoukovciPavouciStiriKlistata`) padají náhodně i na čistém `main` —
+samostatný úkol.
+
 ## 🟠 OTEVŘENO 2026-09-29 — mezery v obsahu 2.–6. ročníku (čeká na volbu)
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na

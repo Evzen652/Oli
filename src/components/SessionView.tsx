@@ -25,6 +25,7 @@ import { FractionBarVisual } from "@/components/FractionBarVisual";
 import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getTopicInsight } from "@/lib/topicInsight";
 import { readLocal, writeLocal } from "@/lib/safeStorage";
+import { claimTopicIntro } from "@/lib/topicIntroSeen";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { getTopicById } from "@/lib/contentRegistry";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
@@ -131,6 +132,26 @@ export function SessionView() {
     // (`useCallback` s prázdnými deps), tedy do deps patřit může.
     handleGradeSelect,
   } = s;
+
+  /**
+   * „Co je dobré vědět" se samo otevře při PRVNÍM vstupu do tématu
+   * (`topicIntroSeen.ts`). Spouští se až ve stavu PRACTICE, tedy když už je
+   * na obrazovce první úloha — dialog pak leží nad ní a po zavření dítě
+   * pokračuje tam, kde je. Obnovené sezení téma už „vidělo", takže se neotevře.
+   */
+  const [introOpen, setIntroOpen] = useState(false);
+  const introTopicId = session?.state === "PRACTICE" ? session.matchedTopic?.id : undefined;
+  useEffect(() => {
+    if (!introTopicId) return;
+    let cancelled = false;
+    supabase.auth.getSession()
+      .then(({ data }) => {
+        if (cancelled) return;
+        if (claimTopicIntro(data.session?.user.id ?? "anon", introTopicId)) setIntroOpen(true);
+      })
+      .catch(() => { /* bez relace výklad zůstane za tlačítkem */ });
+    return () => { cancelled = true; };
+  }, [introTopicId]);
 
   // For child role: show ChildHomePage by default, TopicBrowser on demand
   // Anon „procházet předmět" — subject čteme synchronně při mountu (stejně jako
@@ -639,7 +660,7 @@ export function SessionView() {
                   </p>
                 </div>
               </div>
-              <Dialog>
+              <Dialog open={introOpen} onOpenChange={setIntroOpen}>
                 <DialogTrigger asChild>
                   {/* Dřív plná jantarová lišta přes celou šířku, pak tichý odkaz
                       — ten ale nevypadal klikatelně. Nově kompaktní tlačítko
@@ -756,6 +777,11 @@ export function SessionView() {
                           <p className="text-foreground">{insight.funFact}</p>
                         </div>
                       )}
+                      {/* Při prvním vstupu se dialog otevře sám, takže dítě
+                          potřebuje jasný krok dál — křížek v rohu nestačí. */}
+                      <Button onClick={() => setIntroOpen(false)} className="w-full h-12 text-base font-semibold">
+                        {t("session.intro_continue")}
+                      </Button>
                     </div>
                   </div>
                 </DialogContent>

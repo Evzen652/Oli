@@ -144,6 +144,29 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 (B) — Výklad tématu se ukáže sám při prvním vstupu:
+
+- ✅ **Rozhodnutí uživatele:** výklad „Co je dobré vědět“ ukázat jen při
+  prvním vstupu do tématu, pak zůstává za tlačítkem.
+- ✅ **Nový `src/lib/topicIntroSeen.ts`** — `claimTopicIntro(vlastník, téma)`
+  vrátí `true` jen poprvé. Paměť v `localStorage` (`oli_topic_intro_seen`),
+  klíčovaná ID přihlášeného uživatele, jinak „anon“ (sourozenci na jednom
+  tabletu mají každý svůj první vstup). Když úložiště zápis odmítne, vrací
+  `false` — výklad se pak neotevírá pokaždé, zůstane za tlačítkem.
+  Cena: na druhém zařízení se výklad ukáže ještě jednou.
+- ✅ **`SessionView.tsx`:** dialog je nově řízený stavem a otevře se, když je
+  sezení ve stavu PRACTICE (první úloha už leží pod ním). Na konec dialogu
+  přibylo tlačítko „Rozumím, jdu na to“ (křížek v rohu dítěti nestačí jako
+  krok dál). Nový klíč `session.intro_continue` v `i18n/cs.ts`.
+- ✅ **Ověřeno v prohlížeči:** 1. vstup do Diktátu (3. r.) → výklad se otevře,
+  tlačítko ho zavře; odpověď → úloha 2 bez výkladu; odchod a nový vstup →
+  bez výkladu, tlačítko „Co je dobré vědět“ dál funguje. Konzole bez chyb.
+- ✅ Test `src/test/topic-intro-seen.test.ts` (5 případů), typecheck,
+  `audit:ui` bez nového nálezu, build. `npm test`: kromě známého limitu
+  `content-audit` padají náhodně dva obsahové testy 6. ročníku (mýty a báje,
+  pavoukovci) — **reprodukováno i na čistém `origin/main`** (1 ze 3 běhů),
+  tedy předchozí nestabilita, ne regrese. Založen samostatný úkol.
+
 ### Session 2026-09-29 — Co v obsahu 2.–6. ročníku chybí (analýza, bez změn kódu):
 
 Měřeno z generátorů (340 témat, 25 volání na úroveň), ne z dokumentace.

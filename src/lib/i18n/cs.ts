@@ -58,6 +58,7 @@ const cs = {
   // Bez emoji — na obrazovce cvičení se sjednocuje výtvarný jazyk a systémová
   // emoji se na každé platformě kreslí jinak. Ikonu nese lucide `Lightbulb`.
   "session.good_to_know": "Co je dobré vědět",
+  "session.intro_continue": "Rozumím, jdu na to",
   "session.how_to": "Jak na to:",
   "session.visual_examples": "Jak to vypadá:",
   "session.example_label": "Příklad:",
