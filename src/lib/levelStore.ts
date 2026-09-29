@@ -84,6 +84,16 @@ export function saveLevelState(topicId: string, state: SkillLevelState, owner: s
     .catch((err) => console.warn("[levelStore] uložení úrovně selhalo:", err));
 }
 
+/** Platné anonymní úrovně podle tématu (pro přenos do účtu při propojení). */
+export function readAnonLevels(): Record<string, SkillLevelState> {
+  return Object.fromEntries(Object.entries(anonVse()).filter(([, s]) => platny(s)));
+}
+
+/** Kolik témat má anonymní dítě na vyšší než první úrovni. */
+export function anonHigherLevelCount(): number {
+  return Object.values(readAnonLevels()).filter((s) => s.level >= 2).length;
+}
+
 /** Jen pro testy: vyprázdní paměťovou mezivrstvu. */
 export function __resetLevelMemory(): void {
   pamet.clear();

@@ -80,7 +80,9 @@ export default function ParentOnboarding() {
           body: { action: "adopt", childId: newChildId, token },
         });
         if ((data as { ok?: boolean } | null)?.ok) {
-          clearAnonData();
+          // Úrovně zůstanou: dítě ještě nemá účet, kam je zapsat (RLS).
+          // Přenesou se, až se na tomhle zařízení spáruje (ChildAuth).
+          clearAnonData({ keepLevels: true });
           setClaimState("done");
           return;
         }

@@ -7,13 +7,20 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
+
+Dítě spárované kódem na stejném zařízení si úrovně přenese do účtu
+(vyšší vyhrává). Rodičovská registrace úrovně nemaže, počkají na
+spárování dítěte na tomto zařízení. **Zbývá (nízká priorita):** spárování na
+JINÉM zařízení úrovně nepřenese — chtělo by serverovou anonymní vrstvu.
+
 ## ✅ VYŘÍZENO 2026-09-30 (B) — postup úrovní
 
 Nefungoval nikomu: výpočet byl jen v `case "END"`, do kterého se nevstoupilo,
 a anonymním se úroveň ani neukládala. Teď se počítá na každém konci sezení,
 ukládá se i anonymním (`localStorage`) a shrnutí slibuje posun jen při
 skutečném postupu. Detail `PROJECT_STATUS.md` §6.
-**Zbývá:** přenos úrovní při propojení anonymního dítěte s rodičem.
+**Přenos úrovní při propojení:** vyřízeno v (C) níž.
 
 ## ✅ VYŘÍZENO 2026-09-30 — obrázky dodělány, oblast uzavřena
 

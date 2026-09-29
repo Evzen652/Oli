@@ -10,7 +10,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { clearAnonProgress } from "./anonProgress";
 import { clearTrial } from "./anonTrial";
-import { ANON_LEVELS_KEY } from "./levelStore";
+import { ANON_LEVELS_KEY, readAnonLevels, anonHigherLevelCount } from "./levelStore";
 
 const STORAGE_KEY_PROGRESS = "oli_anon_progress";
 const STORAGE_KEY_GRADE = "oli_anon_grade";
@@ -26,6 +26,58 @@ export interface AnonProgressSummary {
   grade: number;
   completedCount: number;
   topics: { topicId: string; score: number; date: string }[];
+}
+
+/**
+ * Stojí za to nabídnout přenos? Splněný denní úkol NEBO téma na vyšší úrovni.
+ * Dřív jen splněný úkol — dítě, které procvičovalo jiné než doporučené téma,
+ * tak o dosaženou úroveň přišlo bez ptaní.
+ */
+export function hasAnonProgressToMigrate(): boolean {
+  return hasAnonProgress() || anonHigherLevelCount() > 0;
+}
+
+/**
+ * Přenese anonymní úrovně (L1–L3 po tématech) do `student_skill_level`.
+ *
+ * `studentId` MUSÍ být ID přihlášeného DÍTĚTE: RLS dovolí zapsat jen vlastní
+ * řádky (`student_id = auth.uid()`). Rodič za dítě zapisovat nemůže —
+ * proto se volá jen z `ChildAuth` po spárování, ne z `ParentOnboarding`.
+ *
+ * Když už dítě v účtu nějakou úroveň má (hrálo přihlášené jinde), vyšší
+ * vyhrává — přenos nikdy úroveň nesníží.
+ */
+export async function migrateAnonLevels(studentId: string): Promise<{ ok: boolean; migrated: number; error?: string }> {
+  const anon = readAnonLevels();
+  const temata = Object.keys(anon);
+  if (temata.length === 0) return { ok: true, migrated: 0 };
+  try {
+    const { data: stavajici, error: readErr } = await supabase
+      .from("student_skill_level")
+      .select("topic_id, level")
+      .eq("student_id", studentId)
+      .in("topic_id", temata);
+    if (readErr) return { ok: false, migrated: 0, error: readErr.message };
+    const vUctu = new Map((stavajici ?? []).map((r) => [r.topic_id, r.level]));
+    const radky = temata
+      .filter((t) => (vUctu.get(t) ?? 0) < anon[t].level || !vUctu.has(t))
+      .map((t) => ({
+        student_id: studentId,
+        topic_id: t,
+        level: Math.max(anon[t].level, vUctu.get(t) ?? 0),
+        consecutive_good: anon[t].consecutiveGood,
+        consecutive_bad: anon[t].consecutiveBad,
+        last_score: anon[t].lastScore,
+        updated_at: new Date().toISOString(),
+      }));
+    if (radky.length > 0) {
+      const { error } = await supabase.from("student_skill_level").upsert(radky, { onConflict: "student_id,topic_id" });
+      if (error) return { ok: false, migrated: 0, error: error.message };
+    }
+    return { ok: true, migrated: radky.length };
+  } catch (e) {
+    return { ok: false, migrated: 0, error: e instanceof Error ? e.message : "Neznámá chyba" };
+  }
 }
 
 /** True pokud má anonymní uživatel alespoň 1 splněný úkol. */
@@ -112,7 +164,9 @@ export async function migrateAnonProgress(
         .eq("id", childId);
     }
 
-    clearAnonData();
+    // Úrovně tu NEmazat: rodičovská cesta je přenést nemůže (dítě nemá účet)
+    // a dětská je přenáší zvlášť přes `migrateAnonLevels`.
+    clearAnonData({ keepLevels: true });
     return { ok: true, migrated: records.length };
   } catch (e) {
     return {
@@ -123,11 +177,16 @@ export async function migrateAnonProgress(
   }
 }
 
-/** Vymaže všechna anonymní data z localStorage (progress, grade, started, trial, úrovně). */
-export function clearAnonData(): void {
+/**
+ * Vymaže anonymní data z localStorage (progress, grade, started, trial, úrovně).
+ *
+ * `keepLevels`: rodičovská registrace úrovně nechá. Dítě ještě nemá účet, kam
+ * by šly zapsat (RLS), a přenesou se, až se na tomhle zařízení spáruje.
+ */
+export function clearAnonData(opts: { keepLevels?: boolean } = {}): void {
   try {
     localStorage.removeItem(STORAGE_KEY_PROGRESS);
-    localStorage.removeItem(ANON_LEVELS_KEY);
+    if (!opts.keepLevels) localStorage.removeItem(ANON_LEVELS_KEY);
     localStorage.removeItem(STORAGE_KEY_GRADE);
     localStorage.removeItem(STORAGE_KEY_STARTED);
     clearAnonProgress(); // belt-and-suspenders

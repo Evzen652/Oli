@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { useT } from "@/lib/i18n";
 import { AnonMigrationDialog } from "@/components/AnonMigrationDialog";
-import { hasAnonProgress, migrateAnonProgress, clearAnonData } from "@/lib/anonMigration";
+import { hasAnonProgressToMigrate, migrateAnonProgress, migrateAnonLevels, clearAnonData } from "@/lib/anonMigration";
 import { BackButton } from "@/components/BackButton";
 import { LandingNav } from "@/pages/LandingNav";
 import { ROLE_IMAGES } from "@/lib/roleImages";
@@ -77,7 +77,7 @@ export default function ChildAuth() {
           rememberChild({ childUserId: userId, childName: data.child_name, grade: data.grade });
         }
 
-        if (userId && hasAnonProgress()) {
+        if (userId && hasAnonProgressToMigrate()) {
           // child_id vrací pair-child; fallback dohledáním podle child_user_id
           // (funguje i před redeployem edge funkce; RLS „Children can view own record").
           let childId: string | undefined = data.child_id;
@@ -162,13 +162,17 @@ export default function ChildAuth() {
   const handleMigrationConfirm = async () => {
     if (!pairedUserId || !pairedChildId) return;
     setMigrationLoading(true);
+    // Úrovně zapisuje dítě samo za sebe (RLS: student_id = auth.uid()) —
+    // tady je přihlášené právě ono.
+    const urovne = await migrateAnonLevels(pairedUserId);
     const result = await migrateAnonProgress(pairedUserId, pairedChildId);
     setMigrationLoading(false);
     setShowMigration(false);
-    if (!result.ok) {
-      setError(`Přenos pokroku selhal: ${result.error ?? "neznámá chyba"}`);
+    if (!urovne.ok || !result.ok) {
+      setError(`Přenos pokroku selhal: ${urovne.error ?? result.error ?? "neznámá chyba"}`);
       return;
     }
+    clearAnonData();
     window.location.href = "/";
   };
 

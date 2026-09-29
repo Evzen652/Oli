@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-30 (C) — Přenos úrovní při propojení anonymního dítěte:
+
+- ✅ **Dítě se spáruje kódem na zařízení, kde procvičovalo** (`ChildAuth`):
+  `migrateAnonLevels(childUid)` zapíše anonymní úrovně do
+  `student_skill_level`. Vyšší úroveň vyhrává — přenos nikdy nesníží, co
+  dítě v účtu už má.
+- ✅ **Dialog „Přenést pokrok?"** se ukáže i bez splněného denního úkolu,
+  když má dítě nějaké téma na vyšší úrovni (dřív vrátil `null` a dítě
+  o úroveň přišlo bez ptaní). Opraveno i ruční skloňování („Splněno:
+  1 témat") — teď `pad()` a popisky s dvojtečkou.
+- ℹ️ **Rodič se zaregistruje v anonymním prohlížeči** (`ParentOnboarding`):
+  úrovně se do DB zapsat NEDAJÍ — RLS `student_skill_level` pustí jen
+  `student_id = auth.uid()` a dítě ještě nemá účet. Proto se při rodičovské
+  registraci nemažou (`clearAnonData({ keepLevels: true })`) a přenesou se,
+  až se dítě spáruje **na stejném zařízení**. Když se spáruje na jiném,
+  úrovně se nepřenesou — plné řešení by chtělo ukládat úrovně i v serverové
+  anonymní vrstvě (`anon-progress` edge funkce), mimo rozsah.
+- ✅ Test `anon-level-migration.test.ts` (6 případů, Supabase nahrazený
+  záznamníkem): co a pod čí ID se zapíše, nesnižování, poškozená data,
+  kdy nabídnout přenos, `keepLevels`. Dialog ověřen v prohlížeči pro obě
+  situace (jen úrovně / úkoly + úrovně). Celé spárování v prohlížeči ověřit
+  nešlo — potřebuje párovací kód z rodičovského účtu na produkční DB.
+  `npm test` 8 756 bez pádu, `audit:ui`, build.
+
 ### Session 2026-09-30 (B) — Postup úrovní opraven (nefungoval NIKOMU):
 
 - 🐞 **Horší, než se zdálo:** výpočet postupu byl jen v `case "END"`
