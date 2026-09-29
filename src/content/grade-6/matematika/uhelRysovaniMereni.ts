@@ -118,6 +118,15 @@ function distraktoryCteni(k: number, druhaStupnice: string): Distractor[] {
 }
 
 // ── L1: čtení úhloměru ─────────────────────────────────────────────────────
+
+/**
+ * Úhloměr k úlohám L1 na čtení stupnice. Rameno VB vychází vždy pod
+ * skutečným úhlem 180° − α; rameno VA leží na nule vnitřní stupnice (vpravo)
+ * nebo vnější (vlevo). Čísla obou stupnic u VB uvádí už zadání.
+ */
+function sUhlomerem(t: PracticeTask | null, arms: [number, number], J: Jmeno): PracticeTask | null {
+  return t && { ...t, visual: { kind: "protractor", arms, names: [J.v, J.a, J.b] } };
+}
 function genL1Stupnice(nulaVnejsi: boolean): PracticeTask | null {
   const J = pick(JMENA);
   const al = pick(ALFY);
@@ -129,7 +138,7 @@ function genL1Stupnice(nulaVnejsi: boolean): PracticeTask | null {
     ? `vnější stupnice ${u(vnejsi)} a vnitřní ${u(vnitrni)}`
     : `vnitřní stupnice ${u(vnitrni)} a vnější ${u(vnejsi)}`;
   const VA = J.v + J.a, VB = J.v + J.b;
-  return uloha(
+  return sUhlomerem(uloha(
     `Rameno ${VA} leží na nule ${nula} stupnice úhloměru. U ramene ${VB} ukazuje ${cteni}. Jak velký je úhel ${J.n}?`,
     u(k),
     distraktoryCteni(k, "Tohle číslo je na druhé stupnici. Čti tu stupnici, na které leží nula u prvního ramene."),
@@ -144,7 +153,7 @@ function genL1Stupnice(nulaVnejsi: boolean): PracticeTask | null {
       `Úhel ${J.n} = ${u(k)}`,
     ],
     `Úhel se čte na té stupnici, která u prvního ramene ukazuje nulu — tady na ${nula}. U ramene ${VB} je na ní ${u(k)}. Číslo ${u(180 - k)} patří ${druha} stupnici; ta u ramene ${VA} ukazuje ${PRIMY}, ne nulu.`,
-  );
+  ), [nulaVnejsi ? 180 : 0, 180 - al], J);
 }
 
 function genL1Druh(): PracticeTask | null {
@@ -157,7 +166,7 @@ function genL1Druh(): PracticeTask | null {
   const druhText = ostry
     ? `Úhel ${J.n} je ostrý, tedy menší než pravý úhel. Číslo ${u(o)} je větší než 90°, takové by patřilo tupému úhlu.`
     : `Úhel ${J.n} je tupý, tedy větší než pravý úhel. Číslo ${u(o)} je menší než 90°, takové by patřilo ostrému úhlu.`;
-  return uloha(
+  return sUhlomerem(uloha(
     `Úhel ${J.n} je ${ostry ? "ostrý" : "tupý"}. Úhloměr přiložený k rameni ${VA} ukazuje u ramene ${VB} dvě čísla: ${u(x)} a ${u(y)}. Jak velký je úhel ${J.n}?`,
     u(k),
     distraktoryCteni(k, druhText),
@@ -171,7 +180,7 @@ function genL1Druh(): PracticeTask | null {
       `Úhel ${J.n} = ${u(k)}`,
     ],
     `U každé rysky úhloměru jsou dvě čísla, která dávají dohromady ${PRIMY}. Jedno patří ostrému úhlu, druhé tupému. Úhel ${J.n} je ${ostry ? "ostrý" : "tupý"}, proto je jeho velikost ${u(k)}.`,
-  );
+  ), [0, k], J);
 }
 
 function genL1Rysovani(): PracticeTask | null {

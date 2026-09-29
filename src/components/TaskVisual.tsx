@@ -28,6 +28,8 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <Thermometer visual={visual} className={className} />;
     case "shape":
       return <Shape visual={visual} className={className} />;
+    case "protractor":
+      return <Protractor visual={visual} className={className} />;
     default:
       return null;
   }
@@ -466,6 +468,63 @@ function Shape({ visual, className }: { visual: Of<"shape">; className: string }
     <svg role="img" aria-label="Útvar s popsanými délkami stran ze zadání." viewBox={`0 0 ${Math.ceil(W)} ${Math.ceil(H)}`}
       className={`w-full max-w-sm h-auto ${className}`}>
       <g transform={`translate(${shiftX} 0)`}>{body}</g>
+    </svg>
+  );
+}
+
+// ── Úhloměr ──────────────────────────────────────────────────────────────────
+
+/**
+ * Úhloměr se dvěma stupnicemi, které běží proti sobě (vnitřní má nulu
+ * vpravo, vnější vlevo), a úhel s rameny ze zadání. Přesně to, na čem se
+ * chybuje: čte se na té stupnici, která má u prvního ramene nulu. Obě
+ * čísla u druhého ramene uvádí už zadání, obrázek tedy nic navíc neprozradí.
+ */
+function Protractor({ visual, className }: { visual: Of<"protractor">; className: string }) {
+  const { arms, names } = visual;
+  if (!arms.every((a) => a >= 0 && a <= 180)) return null;
+  // Okraj 60 po stranách: písmeno ramene ležícího na základně je až o R + 36 od středu.
+  const C = { x: 240, y: 215 }, R = 180;
+  const at = (deg: number, r: number) => {
+    const a = (deg * Math.PI) / 180;
+    return [C.x + r * Math.cos(a), C.y - r * Math.sin(a)] as const;
+  };
+  const num = { fontSize: 13, fontWeight: 600 };
+  const ticks = [];
+  for (let d = 0; d <= 180; d += 5) {
+    const [x1, y1] = at(d, R), [x2, y2] = at(d, d % 10 === 0 ? R - 14 : R - 8);
+    ticks.push(<line key={`t${d}`} x1={x1} y1={y1} x2={x2} y2={y2} className="stroke-foreground" strokeWidth={d % 10 === 0 ? 1.8 : 1} />);
+    if (d % 10 === 0) {
+      const [ox, oy] = at(d, R - 26), [ix, iy] = at(d, R - 48);
+      // Čísla na základně (0 a 180) zvednout nad ni — leží tam rameno a přes
+      // nulu, na kterou se úloha ptá, by vedla čára.
+      const up = d % 180 === 0 ? -10 : 4;
+      ticks.push(<text key={`o${d}`} x={ox} y={oy + up} textAnchor="middle" className="fill-foreground" style={num}>{180 - d}</text>);
+      ticks.push(<text key={`i${d}`} x={ix} y={iy + up} textAnchor="middle" className="fill-sky-700" style={num}>{d}</text>);
+    }
+  }
+  const [a1, a2] = arms;
+  const end = (deg: number) => at(deg, R + 22);
+  const lbl = (deg: number) => at(deg, R + 36);
+  const big = { fontSize: 18, fontWeight: 800 };
+
+  return (
+    <svg role="img" aria-label="Úhloměr s vnější a vnitřní stupnicí a úhel se dvěma rameny." viewBox="0 0 480 250"
+      className={`w-full max-w-md h-auto ${className}`}>
+      <path d={`M ${C.x - R} ${C.y} A ${R} ${R} 0 0 1 ${C.x + R} ${C.y} Z`} className="fill-amber-50 stroke-amber-400" strokeWidth={2} />
+      <path d={`M ${C.x - R + 62} ${C.y} A ${R - 62} ${R - 62} 0 0 1 ${C.x + R - 62} ${C.y}`} className="fill-none stroke-amber-300" strokeWidth={1} />
+      {ticks}
+      {[a1, a2].map((deg, i) => {
+        const [x, y] = end(deg), [lx, ly] = lbl(deg);
+        return (
+          <g key={i}>
+            <line x1={C.x} y1={C.y} x2={x} y2={y} className="stroke-primary" strokeWidth={3.5} strokeLinecap="round" />
+            <text x={lx} y={ly + 6} textAnchor="middle" className="fill-foreground" style={big}>{names[i + 1]}</text>
+          </g>
+        );
+      })}
+      <circle cx={C.x} cy={C.y} r={4.5} className="fill-foreground" />
+      <text x={C.x} y={C.y + 26} textAnchor="middle" className="fill-foreground" style={big}>{names[0]}</text>
     </svg>
   );
 }

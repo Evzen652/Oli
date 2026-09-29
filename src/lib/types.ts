@@ -123,6 +123,17 @@ export type TaskVisual =
       sides: number[];
       /** Popisky stran ve stejném pořadí jako `sides` („15 cm"). Jen ze ZADÁNÍ. */
       labels: string[];
+    }
+  | {
+      kind: "protractor";
+      /**
+       * Skutečné směry obou ramen ve stupních, měřeno od pravé strany proti
+       * směru hodinových ručiček (0 = vpravo, 180 = vlevo). Vnitřní stupnice
+       * ukazuje přímo tento úhel, vnější 180 − úhel.
+       */
+      arms: [number, number];
+      /** Písmena: vrchol, konec prvního ramene, konec druhého ramene. */
+      names: [string, string, string];
     };
 
 export interface HelpVisualExample {

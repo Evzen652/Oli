@@ -349,7 +349,42 @@ describe("útvary — v celém obsahu jen strany ze zadání", () => {
   });
 });
 
+describe("úhloměr (6. r.) — ramena podle zadání", () => {
+  const id = "g6-mat-uhel-rysovani-mereni-6";
+  it("první rameno na nule jmenované stupnice, druhé u čísla vnitřní stupnice; klíč = číslo na stupnici s nulou", () => {
+    let n = 0;
+    for (const t of tasks(id, 1)) {
+      const m = t.question.match(/leží na nule (vnější|vnitřní) stupnice.*?vnitřní (?:stupnice )?(\d+)°/);
+      const v = t.visual as { kind: string; arms: [number, number] } | undefined;
+      if (!m) continue;
+      n++;
+      const [nula, vnitrni] = [m[1], +m[2]];
+      expect(v?.kind, t.question).toBe("protractor");
+      expect(v!.arms).toEqual([nula === "vnitřní" ? 0 : 180, vnitrni]);
+      const cteni = nula === "vnitřní" ? v!.arms[1] : 180 - v!.arms[1];
+      expect(`${cteni}°`, t.question).toBe(t.correctAnswer);
+    }
+    expect(n).toBeGreaterThan(10);
+  });
+
+  it("jen L1 čtení stupnice; rýsování, L2 a L3 bez úhloměru", () => {
+    for (const level of [1, 2, 3]) for (const t of tasks(id, level)) {
+      const cteni = /leží na nule|Úhloměr přiložený k rameni/.test(t.question);
+      expect(t.visual?.kind === "protractor", t.question).toBe(level === 1 && cteni);
+    }
+  });
+});
+
 describe("TaskVisual — vykreslení", () => {
+  it("úhloměr: stupnice běží proti sobě (0 vnitřní = 180 vnější), písmena ramen a vrcholu", () => {
+    const { container } = render(<TaskVisual visual={{ kind: "protractor", arms: [0, 65], names: ["V", "A", "B"] }} />);
+    const texty = [...container.querySelectorAll("text")].map((e) => e.textContent);
+    // u každé rysky po 10° je dvojice čísel, která dá dohromady 180
+    expect(texty.filter((x) => x === "0")).toHaveLength(2);
+    expect(texty.filter((x) => x === "180")).toHaveLength(2);
+    expect(texty).toEqual(expect.arrayContaining(["V", "A", "B"]));
+  });
+
   it("útvar: obdélník v poměru stran, popisky; trojúhelník, který nejde sestrojit, se nevykreslí", () => {
     const r = render(<TaskVisual visual={{ kind: "shape", shape: "rectangle", sides: [20, 5], labels: ["20 cm", "5 cm"] }} />);
     const rect = r.container.querySelector("rect")!;
