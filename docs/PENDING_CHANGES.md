@@ -15,6 +15,11 @@ práci, seřazeno podle dopadu: párové souhlásky (chybí úplně) · slovní 
 v 21 tématech · sloh a čtení ve 2. ročníku · oprava 17 `rvpNodeId`.
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
 
+**Doplněno — naučí se z toho dítě látku?** Výklad se sám neukáže (jen tlačítko),
+má ~80 slov na téma a je sdílený pro L1–L3; 0 témat má obrázek, přestože
+komponenty pro ně existují. Rozhodnutí produktu: ukázat výklad při prvním
+vstupu do tématu? (v napětí s principem „čím méně času v systému, tím lépe“)
+
 ## ✅ VYŘÍZENO 2026-09-26 (C) — úklid mrtvého kódu po legacy diktátu
 
 Otevřený bod z (B). Uživatel rozhodl **smazat**, ne napojovat výběr jevů na

@@ -166,6 +166,20 @@ a ten má díry.
 - ℹ️ Informatika 4.–6.: 0 z 29 uzlů RVP datasetu.
 - ℹ️ 17 témat má neplatné/chybějící `rvpNodeId` (10× 2. čeština, 7× 3. prvouka)
   — obsah existuje, ale zkresluje reporty pokrytí.
+- 🔴 **Z pohledu „naučí se dítě látku z appky“ (doplněno týž den):**
+  - Po výběru tématu jde appka **rovnou na úlohy**; výklad je jen za
+    tlačítkem „Co je dobré vědět“ a sám se neotevře nikdy (nekontrolovaný
+    `<Dialog>` v `SessionView.tsx`).
+  - Výklad (`helpTemplate`) má každé téma, typicky ale ~80 slov
+    (2. prvouka ~33) a je **jeden pro L1–L3** — L3 („nová dovednost“) vlastní
+    výklad nemá.
+  - **0 z 340 témat má obrázek.** Infrastruktura existuje
+    (`visualExamples`, `FractionBarVisual`, `MiniExplainer`), ale nic ji
+    nepoužívá, takže `MiniExplainer` se nikdy nevykreslí. Úlohy přitom
+    popisují obrázek, který dítě nevidí („Úsečka na pravítku sahá od 0 do 16“,
+    „Motýl má jedno křídlo nakreslené“, vrstevnice na mapě, síť krychle).
+  - Silná stránka: řešení po odpovědi (`explanation`/`solutionSteps`) je
+    u úloh konkrétní a krokové.
 - ✅ Množství je v pořádku: medián 15 unikátních úloh na úroveň, všech 340 témat
   má L3, 0 úloh bez nápověd či vysvětlení. Pod limitem 12 jen
   `g6-fyz-latka-a-teleso-6` L1 = 11.
