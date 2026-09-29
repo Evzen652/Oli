@@ -35,9 +35,17 @@ const dilky = (m: number) => `${m} ${plural(m, "milimetrový dílek", "milimetro
 // ─── L1 · rozpoznání ────────────────────────────────────────────────────────
 
 /** Bod X u nuly, bod Y u čísla n → délka se přečte přímo. */
+/**
+ * Pravítko s úsečkou k úloze „bod A je na pravítku u …, bod B u …" (L1, L2).
+ * „Kde označíš bod B?" (L3) obrázek nemá — konec úsečky je tam odpověď.
+ * Pravítko má aspoň 10 cm a vždy přesahuje konec úsečky.
+ */
+const naPravitku = (t: PracticeTask, from: number, to: number): PracticeTask =>
+  ({ ...t, visual: { kind: "ruler", from, to, length: Math.max(10, Math.ceil(to) + 2) } });
+
 function odNuly(n: number, i: number): PracticeTask {
   const [X, Y] = dv(i);
-  return choice(`Bod ${X} je na pravítku u nuly, bod ${Y} u čísla ${n}. Jak dlouhá je úsečka ${X}${Y}?`, `${n} cm`, [
+  return naPravitku(choice(`Bod ${X} je na pravítku u nuly, bod ${Y} u čísla ${n}. Jak dlouhá je úsečka ${X}${Y}?`, `${n} cm`, [
     { value: `${n + 1} cm`, why: `To vyjde, když se k číslům započítá i nula. Nula je začátek úsečky, ne její první centimetr.` },
     { value: `${n - 1} cm`, why: `Tolik by měřila úsečka, kdyby bod ${Y} ležel u čísla ${n - 1}. Délku čteš přesně u bodu ${Y}.` },
     { value: `${n} mm`, why: `Čísla na pravítku značí celé centimetry. Milimetry jsou jen malé dílky mezi nimi.` },
@@ -47,7 +55,7 @@ function odNuly(n: number, i: number): PracticeTask {
       `Když bod ${X} leží přesně u nuly, délka úsečky ${X}${Y} se přečte rovnou u bodu ${Y}. Velká čísla na pravítku jsou centimetry, malé dílky mezi nimi milimetry. Kolik celých centimetrů je od nuly k číslu ${n}?`,
     ],
     explanation: `Bod ${X} leží u nuly, takže délku čteme přímo u bodu ${Y}: od 0 do ${n} je ${n} cm. Proto |${X}${Y}| = ${n} cm.`,
-  });
+  }), 0, n);
 }
 
 const POJMY: PracticeTask[] = [
@@ -125,7 +133,7 @@ const POJMY: PracticeTask[] = [
 function mimoNulu([a, b]: [number, number], i: number): PracticeTask {
   const [X, Y] = dv(i + 3);
   const L = b - a;
-  return choice(`Bod ${X} je na pravítku u čísla ${a}, bod ${Y} u čísla ${b}. Jak dlouhá je úsečka ${X}${Y}?`, `${L} cm`, tri(`${L} cm`, [
+  return naPravitku(choice(`Bod ${X} je na pravítku u čísla ${a}, bod ${Y} u čísla ${b}. Jak dlouhá je úsečka ${X}${Y}?`, `${L} cm`, tri(`${L} cm`, [
     { value: `${b} cm`, why: `${b} cm by platilo, kdyby bod ${X} ležel u nuly. Tady ale úsečka začíná u čísla ${a}.` },
     { value: `${L + 1} cm`, why: `To vyjde, když se spočítají čísla od ${a} do ${b} včetně obou. Délku ale tvoří mezery mezi čísly, ne čísla samotná.` },
     { value: `${a + b} cm`, why: `Čísla ${a} a ${b} se nesčítají — délka je vzdálenost mezi nimi, tedy rozdíl.` },
@@ -136,7 +144,7 @@ function mimoNulu([a, b]: [number, number], i: number): PracticeTask {
       `Když úsečka nezačíná u nuly, nestačí přečíst číslo u bodu ${Y}. Počítej centimetrové skoky od ${a} do ${b}, nebo od většího čísla odečti menší. Pozor, nepočítej čísla, ale mezery mezi nimi.`,
     ],
     explanation: `Úsečka začíná u čísla ${a} a končí u čísla ${b}. Její délka je vzdálenost mezi nimi: ${b} − ${a} = ${L} cm.`,
-  });
+  }), a, b);
 }
 
 /** c cm m mm → milimetry. */
@@ -160,7 +168,7 @@ function cmMmNaMm([c, m]: [number, number], i: number): PracticeTask {
 function ctiMm([c, m]: [number, number], i: number): PracticeTask {
   const [X, Y] = dv(i + 1);
   const x = 10 * c + m;
-  return choice(`Bod ${X} je u nuly, bod ${Y} o ${dilky(m)} za číslem ${c}. Kolik milimetrů měří úsečka ${X}${Y}?`, `${x} mm`, tri(`${x} mm`, [
+  return naPravitku(choice(`Bod ${X} je u nuly, bod ${Y} o ${dilky(m)} za číslem ${c}. Kolik milimetrů měří úsečka ${X}${Y}?`, `${x} mm`, tri(`${x} mm`, [
     { value: `${10 * c - m} mm`, why: `Dílky jsou ZA číslem ${c}, ne před ním, proto se k ${10 * c} mm přičítají.` },
     { value: `${c + m} mm`, why: `Číslo ${c} na pravítku znamená ${c} cm, tedy ${10 * c} mm — ne ${c} mm.` },
     { value: `${10 * (c + 1) + m} mm`, why: `Tak by to vyšlo, kdyby bod ${Y} ležel za číslem ${c + 1}. Leží ale za číslem ${c}.` },
@@ -170,7 +178,7 @@ function ctiMm([c, m]: [number, number], i: number): PracticeTask {
       `Každý centimetr má deset milimetrových dílků. Od nuly k číslu ${c} je tedy ${c} krát deset dílků a od čísla ${c} pak odpočítej ještě ${dilky(m)}. Oba počty sečti.`,
     ],
     explanation: `Od nuly k číslu ${c} je ${c} cm = ${10 * c} mm. K tomu ${dilky(m)} za číslem ${c}, tedy ${m} mm: ${10 * c} + ${m} = ${x} mm.`,
-  });
+  }), 0, c + m / 10);
 }
 
 // ─── L3 · transfer ──────────────────────────────────────────────────────────

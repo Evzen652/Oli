@@ -45,18 +45,20 @@ function overeno(t: PracticeTask | null): PracticeTask | null {
 }
 
 /**
- * Číselná osa k úloze (L1 „n dílů vlevo od nuly", L2 soused, opačné číslo,
- * „mezi"). L3 a teploměr bez obrázku. U „mezi" není otazník na jednom dílku
+ * Obrázek k úloze. Číselná osa: L1 „n dílů vlevo od nuly", L2 soused,
+ * opačné číslo, „mezi". Teploměr: slovní úlohy o změně teploty (L3) ukazují
+ * ZADANOU výchozí teplotu, nikdy výsledek. „Teploměr ukazuje 5 °C pod nulou.
+ * Jak ji zapíšeš?" teploměr NEMÁ — popisek „−5" na stupnici by byl odpověď. U „mezi" není otazník na jednom dílku
  * (prozradil by odpověď), ale zvýrazněný úsek — dítě samo posoudí, která
  * nabídnutá čísla do něj padnou.
  */
-const sOsou = (t: PracticeTask | null, visual: TaskVisual): PracticeTask | null => (t ? { ...t, visual } : null);
+const sObrazkem = (t: PracticeTask | null, visual: TaskVisual): PracticeTask | null => (t ? { ...t, visual } : null);
 
 // ── L1 · rozpoznání zápisu ───────────────────────────────────────────────────
 
 function naOse(): PracticeTask | null {
   const n = rnd(2, 15);
-  return sOsou(overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `Které číslo leží na číselné ose ${pad(n, "DÍL")} vlevo od nuly?`,
     Z(-n),
     [
@@ -136,7 +138,7 @@ function mezi(): PracticeTask | null {
   // celý vlevo od nuly. Kdyby b bylo kladné, vysvětlení by neplatilo.
   if (b >= 0) return null;
   const nizsi = a - rnd(1, 5), vyssi = b + rnd(1, 5);
-  return sOsou(overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `Které z nabízených čísel leží na číselné ose mezi ${Z(a)} a ${Z(b)}?`,
     Z(m),
     [
@@ -156,7 +158,7 @@ function soused(): PracticeTask | null {
   const x = -rnd(2, 12), vpravo = Math.random() < 0.5;
   const smer = vpravo ? "vpravo" : "vlevo";
   const key = x + (vpravo ? 1 : -1);
-  return sOsou(overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `Které číslo leží na číselné ose hned ${smer} od čísla ${Z(x)}?`,
     Z(key),
     [
@@ -174,7 +176,7 @@ function soused(): PracticeTask | null {
 
 function opacne(): PracticeTask | null {
   const n = rnd(2, 18);
-  return sOsou(overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `Které číslo leží na číselné ose stejně daleko od nuly jako ${n}, ale na opačné straně?`,
     Z(-n),
     [
@@ -221,7 +223,7 @@ function oteplilo(): PracticeTask | null {
   const start = -rnd(2, 12), zmena = rnd(3, 15), konec = start + zmena;
   if (konec === 0) return null;
   const kdy = pick([["Ráno", "do poledne"], ["V noci", "do rána"], ["V pondělí", "do úterý"]]);
-  return overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `${kdy[0]} bylo ${Z(start)} °C, ${kdy[1]} se oteplilo o ${zmena} °C. Jakou teplotu ukazoval teploměr potom?`,
     `${Z(konec)} °C`,
     [
@@ -240,13 +242,13 @@ function oteplilo(): PracticeTask | null {
         : `Oteplení o ${zmena} °C nestačí na ${pad(-start, "DÍL")} k nule, teplota zůstala pod nulou.`,
       `Výsledek: ${Z(konec)} °C.`,
     ],
-  ));
+  )), { kind: "thermometer", readings: [start] });
 }
 
 function ochladilo(): PracticeTask | null {
   const start = rnd(2, 12), zmena = start + rnd(2, 14), konec = start - zmena;
   const kde = pick(["Na horách", "Na zahradě", "Za oknem"]);
-  return overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `${kde} bylo odpoledne ${start} °C, v noci se ochladilo o ${zmena} °C. Jakou teplotu ukázal teploměr ráno?`,
     `${Z(konec)} °C`,
     [
@@ -263,7 +265,7 @@ function ochladilo(): PracticeTask | null {
       `Zbytek ochlazení: ${zmena} − ${start} = ${zmena - start}, a ten už vede pod nulu.`,
       `Výsledek: ${Z(konec)} °C.`,
     ],
-  ));
+  )), { kind: "thermometer", readings: [start] });
 }
 
 function patra(): PracticeTask | null {
@@ -316,7 +318,7 @@ function vzdalenostPresNulu(): PracticeTask | null {
 function zpetnaTeplota(): PracticeTask | null {
   const konec = rnd(-3, 4), zmena = rnd(3, 12), rano = konec - zmena;
   if (konec === 0 || rano >= 0) return null;
-  return overeno(ciselnaUloha(
+  return sObrazkem(overeno(ciselnaUloha(
     `V poledne ukazoval teploměr ${Z(konec)} °C, a to je o ${zmena} °C víc než ráno. Jakou teplotu ukazoval ráno?`,
     `${Z(rano)} °C`,
     [
@@ -338,7 +340,7 @@ function zpetnaTeplota(): PracticeTask | null {
       konec > 0 ? `Z ${Z(konec)} °C nejdřív k nule a pak ještě dál pod nulu.` : `Poledne bylo pod nulou, takže se jde jen dál doleva.`,
       `Ráno bylo ${Z(rano)} °C. Kontrola: ${Z(rano)} + ${zmena} = ${Z(konec)} ✓`,
     ],
-  ));
+  )), { kind: "thermometer", readings: [konec] });
 }
 
 function gen(level: number): PracticeTask[] {

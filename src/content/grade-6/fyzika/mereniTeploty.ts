@@ -103,7 +103,8 @@ function genL2(): PracticeTask {
   const ctx = rose
     ? `Ráno bylo ${tC(a)}, odpoledne ${tC(b)}. O kolik stupňů se oteplilo?`
     : `V poledne bylo ${tC(b)}, v noci ${tC(a)}. O kolik stupňů se ochladilo?`;
-  return task(
+  // Teploměr se dvěma zadanými teplotami — rozdíl přes nulu je vidět, výsledek ne.
+  return { ...task(
     ctx,
     tC(diff),
     [
@@ -132,7 +133,7 @@ function genL2(): PracticeTask {
       ],
       explanation: `Přes nulu se obě vzdálenosti sčítají: ${Math.abs(a)} + ${b} = ${diff} °C.`,
     },
-  );
+  ), visual: { kind: "thermometer", readings: [a, b] } };
 }
 
 // L3 — aplikace: velký rozdíl, postupné ochlazování (2 kroky), nebo převod °C → K.

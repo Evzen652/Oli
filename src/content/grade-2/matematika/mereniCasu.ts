@@ -31,11 +31,15 @@ function vyber(question: string, key: string, cands: Distractor[], hints: [strin
   return choice(question, key, d as [Distractor, Distractor, Distractor], { hints, explanation });
 }
 
+/** Ciferník k úloze, která ručičky popisuje slovy („malá ukazuje na 8, velká na 12"). */
+const naCifernik = (t: PracticeTask, hour: number, minute: number): PracticeTask =>
+  ({ ...t, visual: { kind: "clock", hour, minute } });
+
 // ── L1 ──────────────────────────────────────────────────────────────────────
 
 function celaHodina(h: number): PracticeTask {
   const dalsi = (h % 12) + 1;
-  return vyber(
+  return naCifernik(vyber(
     `Malá ručička ukazuje na ${h}, velká na 12. Kolik je hodin?`,
     cas(h, 0),
     [
@@ -49,7 +53,7 @@ function celaHodina(h: number): PracticeTask {
       `Velká ručička nahoře na 12 znamená celou hodinu, žádné minuty navíc. Hodinu ti řekne malá ručička, která míří na ${h}.`,
     ],
     `Malá ručička ukazuje hodiny: ${h}. Velká na 12 znamená 0 minut. Je tedy ${cas(h, 0)}.`,
-  );
+  ), h, 0);
 }
 
 const L1_FAKTA: PracticeTask[] = [
@@ -97,7 +101,7 @@ const PUL_GEN: Record<number, string> = {
 
 function pulHodiny(h: number): PracticeTask {
   const dalsi = (h % 12) + 1;
-  return vyber(
+  return naCifernik(vyber(
     `Malá ručička je mezi ${h} a ${dalsi}, velká ukazuje na 6. Kolik je hodin?`,
     cas(h, 30),
     [
@@ -110,11 +114,11 @@ function pulHodiny(h: number): PracticeTask {
       `Velká ručička na 6 znamená, že uběhla polovina hodiny. Hodinu urči podle čísla, které malá ručička už minula (${h}), ne podle toho, ke kterému jde.`,
     ],
     `Malá ručička minula ${h}, velká na 6 = 30 minut. Je ${cas(h, 30)}, česky „půl ${PUL_GEN[dalsi]}“.`,
-  );
+  ), h, 30);
 }
 
 function ctvrtHodiny(h: number): PracticeTask {
-  return vyber(
+  return naCifernik(vyber(
     `Malá ručička je kousek za ${h}, velká ukazuje na 3. Kolik je hodin?`,
     cas(h, 15),
     [
@@ -127,7 +131,7 @@ function ctvrtHodiny(h: number): PracticeTask {
       `Každé číslo na ciferníku znamená 5 minut. Počítej po pěti od 12 až k číslu 3. Hodina je ta, kterou malá ručička právě minula (${h}).`,
     ],
     `Velká ručička na 3 = 3 × 5 = 15 minut, tedy čtvrt hodiny. Malá minula ${h}, proto je ${cas(h, 15)}.`,
-  );
+  ), h, 15);
 }
 
 const L2_FAKTA: PracticeTask[] = [

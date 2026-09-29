@@ -97,6 +97,20 @@ export type TaskVisual =
       center?: { x: number; y: number };
       /** Očíslovat čáry sítě (0 … cols vodorovně, 0 … rows svisle) — pro souřadnice [x; y]. */
       numbered?: boolean;
+    }
+  | {
+      kind: "clock";
+      /** Hodina 1–12 a minuta 0–59; malá ručička se posune i o minuty. */
+      hour: number;
+      minute: number;
+    }
+  | {
+      kind: "thermometer";
+      /**
+       * Teploty ze ZADÁNÍ v °C. Jedna = sloupec rtuti; dvě = dvě značky
+       * (rozdíl teplot přes nulu). Nikdy výsledek.
+       */
+      readings: number[];
     };
 
 export interface HelpVisualExample {

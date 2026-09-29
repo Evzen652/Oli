@@ -22,6 +22,10 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <NumberLine visual={visual} className={className} />;
     case "grid":
       return <Grid visual={visual} className={className} />;
+    case "clock":
+      return <Clock visual={visual} className={className} />;
+    case "thermometer":
+      return <Thermometer visual={visual} className={className} />;
     default:
       return null;
   }
@@ -268,6 +272,97 @@ function Grid({ visual, className }: { visual: Of<"grid">; className: string }) 
         <g key={`p${i}`}>
           <circle cx={X(b.x)} cy={Y(b.y)} r={6} className="fill-primary stroke-background" strokeWidth={2} />
           {b.label && <text x={X(b.x) + 9} y={Y(b.y) - 8} className="fill-foreground" style={lbl}>{b.label}</text>}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// ── Hodiny ───────────────────────────────────────────────────────────────────
+
+/**
+ * Ciferník s ručičkami. Malá ručička stojí i mezi čísly (u „půl" v půlce
+ * cesty), jak to na skutečných hodinách vypadá a jak to zadání popisuje —
+ * právě na tom děti chybují („je mezi 7 a 8, tak je 8").
+ */
+function Clock({ visual, className }: { visual: Of<"clock">; className: string }) {
+  const { hour, minute } = visual;
+  if (!(hour >= 1 && hour <= 12 && minute >= 0 && minute < 60)) return null;
+  const C = 100, R = 88;
+  const at = (deg: number, r: number) => {
+    const a = ((deg - 90) * Math.PI) / 180;
+    return [C + r * Math.cos(a), C + r * Math.sin(a)];
+  };
+  const [hx, hy] = at(((hour % 12) + minute / 60) * 30, 46);
+  const [mx, my] = at(minute * 6, 70);
+
+  return (
+    <svg role="img" aria-label="Hodiny s ciferníkem a dvěma ručičkami." viewBox="0 0 200 200"
+      className={`w-full max-w-[220px] h-auto ${className}`}>
+      <circle cx={C} cy={C} r={R + 6} className="fill-card stroke-foreground" strokeWidth={4} />
+      {Array.from({ length: 60 }, (_, i) => {
+        const [x1, y1] = at(i * 6, R);
+        const [x2, y2] = at(i * 6, i % 5 === 0 ? R - 9 : R - 4);
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className="stroke-foreground" strokeWidth={i % 5 === 0 ? 2.5 : 1} />;
+      })}
+      {Array.from({ length: 12 }, (_, i) => {
+        const [x, y] = at((i + 1) * 30, R - 22);
+        return <text key={i} x={x} y={y + 6} textAnchor="middle" className="fill-foreground" style={{ fontSize: 17, fontWeight: 700 }}>{i + 1}</text>;
+      })}
+      <line x1={C} y1={C} x2={hx} y2={hy} className="stroke-primary" strokeWidth={7} strokeLinecap="round" />
+      <line x1={C} y1={C} x2={mx} y2={my} className="stroke-sky-600" strokeWidth={4} strokeLinecap="round" />
+      <circle cx={C} cy={C} r={5} className="fill-foreground" />
+    </svg>
+  );
+}
+
+// ── Teploměr ─────────────────────────────────────────────────────────────────
+
+/**
+ * Svislý teploměr, stupnice vždy obsahuje nulu (o tu v úlohách jde). Jedna
+ * zadaná teplota = sloupec rtuti; dvě = dvě značky, protože u rozdílu přes
+ * nulu jde o oba údaje a sloupec by ukázal jen jeden. Výsledek na obrázku
+ * nikdy není.
+ */
+function Thermometer({ visual, className }: { visual: Of<"thermometer">; className: string }) {
+  const { readings } = visual;
+  if (readings.length < 1 || readings.length > 2 || !readings.every(Number.isFinite)) return null;
+  const lo = Math.min(0, ...readings), hi = Math.max(0, ...readings);
+  const min = Math.floor((lo - 3) / 5) * 5, max = Math.ceil((hi + 3) / 5) * 5;
+  const span = max - min;
+  if (span > 80) return null;
+  const labelStep = span > 40 ? 10 : 5;
+  const top = 20, H = 300, tubeX = 70, W = 190;
+  const Y = (t: number) => top + ((max - t) / span) * H;
+  const bulbY = top + H + 22;
+  const font = { fontSize: 15, fontWeight: 700 };
+  const cz = (t: number) => (t < 0 ? `−${-t}` : String(t));
+
+  return (
+    <svg role="img" aria-label="Teploměr se stupnicí ve stupních Celsia, vyznačená je teplota ze zadání."
+      viewBox={`0 0 ${W} ${bulbY + 26}`} className={`w-full max-w-[170px] h-auto ${className}`}>
+      <rect x={tubeX - 9} y={top - 10} width={18} height={bulbY - top + 10} rx={9} className="fill-card stroke-foreground" strokeWidth={2.5} />
+      <circle cx={tubeX} cy={bulbY} r={17} className="fill-red-500 stroke-foreground" strokeWidth={2.5} />
+      {readings.length === 1 && (
+        <rect x={tubeX - 5} y={Y(readings[0])} width={10} height={bulbY - Y(readings[0])} className="fill-red-500" />
+      )}
+      {Array.from({ length: span + 1 }, (_, i) => {
+        const t = min + i, big = t % labelStep === 0;
+        return (
+          <g key={t}>
+            <line x1={tubeX + 11} x2={tubeX + (big ? 26 : t % 5 === 0 ? 21 : 17)} y1={Y(t)} y2={Y(t)}
+              className="stroke-foreground" strokeWidth={t === 0 ? 3 : big ? 2 : 1} />
+            {big && <text x={tubeX + 32} y={Y(t) + 5} className="fill-foreground" style={t === 0 ? { ...font, fontWeight: 900 } : font}>{cz(t)}</text>}
+          </g>
+        );
+      })}
+      {/* Jednotka vlevo nahoře: vpravo by se srazila s popiskem stupnice. Značky
+          teplot jsou vlevo taky, ale nejvýš 3 °C pod vrcholem stupnice. */}
+      <text x={tubeX - 16} y={top + 5} textAnchor="end" className="fill-muted-foreground" style={{ fontSize: 13, fontWeight: 700 }}>°C</text>
+      {readings.length === 2 && readings.map((t, i) => (
+        <g key={i}>
+          <polygon points={`${tubeX - 12},${Y(t)} ${tubeX - 26},${Y(t) - 7} ${tubeX - 26},${Y(t) + 7}`} className="fill-sky-600" />
+          <text x={tubeX - 30} y={Y(t) + 5} textAnchor="end" className="fill-sky-700" style={font}>{cz(t)}</text>
         </g>
       ))}
     </svg>

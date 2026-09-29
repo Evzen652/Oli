@@ -114,7 +114,7 @@ describe("záporná čísla (5. r.) — osa sedí se zněním", () => {
     let s = 0, u = 0;
     for (const t of [...tasks(id(), 1), ...tasks(id(), 2)]) {
       const v = t.visual as Osa | undefined;
-      if (!v) continue;
+      if (!v || v.kind === "thermometer") continue;
       expect(v.kind).toBe("number_line");
       if (v.unknown !== undefined) {
         s++;
@@ -144,8 +144,8 @@ describe("záporná čísla (5. r.) — osa sedí se zněním", () => {
     }
   });
 
-  it("L3 obrázek nemá", () => {
-    for (const t of tasks(id(), 3)) expect(t.visual, t.question).toBeUndefined();
+  it("L3 má jen teploměr (výchozí teplota ze zadání), žádnou osu", () => {
+    for (const t of tasks(id(), 3)) if (t.visual) expect(t.visual.kind, t.question).toBe("thermometer");
   });
 });
 
@@ -253,7 +253,87 @@ describe("čtvercová síť — osová a středová souměrnost (6. r.)", () => 
   });
 });
 
+describe("hodiny (2. r.) — ciferník sedí se zněním", () => {
+  it("malá ručička = hodina, velká na 12/6/3 = 0/30/15 minut; slovní úlohy o čase bez obrázku", () => {
+    let n = 0;
+    const MIN: Record<string, number> = { "12": 0, "6": 30, "3": 15 };
+    for (const t of [...tasks("g2-mat-mereni-casu", 1), ...tasks("g2-mat-mereni-casu", 2), ...tasks("g2-mat-mereni-casu", 3)]) {
+      const m = t.question.match(/Malá ručička (?:ukazuje na|je mezi|je kousek za) (\d+).*velká (?:na|ukazuje na) (\d+)/);
+      if (!m) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      n++;
+      expect(t.visual).toEqual({ kind: "clock", hour: +m[1], minute: MIN[m[2]] });
+    }
+    expect(n).toBeGreaterThan(20);
+  });
+});
+
+describe("pravítko (3. r.) — rýsování úseček", () => {
+  it("úsečka ze znění (i na milimetry); „Kde označíš bod?“ obrázek nemá", () => {
+    let n = 0;
+    const id = "g3-mat-rysovani-usecky";
+    for (const t of [...tasks(id, 1), ...tasks(id, 2), ...tasks(id, 3)]) {
+      const a = t.question.match(/na pravítku u (nuly|čísla (\d+)), bod \S+ u čísla (\d+)/);
+      const b = t.question.match(/je u nuly, bod \S+ o (\d+) milimetrov\S+ díl\S* za číslem (\d+)/);
+      if (!a && !b) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      n++;
+      const [from, to] = a ? [a[2] ? +a[2] : 0, +a[3]] : [0, +b![2] + +b![1] / 10];
+      expect(t.visual).toMatchObject({ kind: "ruler", from, to });
+      expect((t.visual as { length: number }).length).toBeGreaterThan(to);
+    }
+    expect(n).toBeGreaterThan(20);
+  });
+});
+
+describe("teploměr — jen ZADANÉ teploty, nikdy výsledek", () => {
+  const teploty = (q: string) => [...q.matchAll(/(−?\d+) °C/g)].map((m) => num(m[1]));
+  it("5. r.: změna teploty → výchozí teplota ze zadání; „n °C pod nulou — jak zapíšeš?“ bez teploměru (popisek by byl odpověď)", () => {
+    let n = 0;
+    const id = byId(ZAP.slice(0, 70));
+    for (const t of [...tasks(id, 1), ...tasks(id, 3)]) {
+      const v = t.visual as { kind: string; readings: number[] } | undefined;
+      if (!v || v.kind !== "thermometer") continue;
+      n++;
+      expect(t.question).not.toMatch(/pod nulou\. Jak ji zapíšeš/);
+      expect(v.readings, t.question).toEqual([teploty(t.question)[0]]);
+      expect(v.readings.map(String), t.question).not.toContain(t.correctAnswer.replace(" °C", "").replace("−", "-"));
+    }
+    expect(n).toBeGreaterThan(20);
+  });
+
+  it("6. r. L2 (rozdíl přes nulu): obě teploty ze zadání; L1 a L3 bez teploměru", () => {
+    let n = 0;
+    const id = "g6-fyz-mereni-teploty-6";
+    for (const t of tasks(id, 2)) {
+      n++;
+      expect([...(t.visual as { readings: number[] }).readings].sort((x, y) => x - y)).toEqual([...teploty(t.question)].sort((x, y) => x - y));
+    }
+    for (const t of [...tasks(id, 1), ...tasks(id, 3)]) expect(t.visual, t.question).toBeUndefined();
+    expect(n).toBeGreaterThan(20);
+  });
+});
+
 describe("TaskVisual — vykreslení", () => {
+  it("hodiny: 12 čísel, dvě ručičky; malá u „půl“ stojí mezi čísly", () => {
+    const { container } = render(<TaskVisual visual={{ kind: "clock", hour: 7, minute: 30 }} />);
+    expect([...container.querySelectorAll("text")].map((e) => e.textContent)).toEqual(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]);
+    const [malá, velká] = [...container.querySelectorAll("line")].slice(-2);
+    // velká na 6 → míří svisle dolů
+    expect(Number(velká.getAttribute("x2"))).toBeCloseTo(100);
+    expect(Number(velká.getAttribute("y2"))).toBeGreaterThan(160);
+    // malá mezi 7 a 8 → úhel 225°: vlevo dole
+    expect(Number(malá.getAttribute("x2"))).toBeLessThan(100);
+    expect(Number(malá.getAttribute("y2"))).toBeGreaterThan(100);
+  });
+
+  it("teploměr: stupnice obsahuje nulu; dvě teploty = dvě značky s popisky", () => {
+    const { container } = render(<TaskVisual visual={{ kind: "thermometer", readings: [-8, 5] }} />);
+    const texty = [...container.querySelectorAll("text")].map((e) => e.textContent);
+    expect(texty).toContain("0");
+    expect(texty).toContain("−8");
+    expect(texty).toContain("5");
+    expect(container.querySelectorAll("polygon")).toHaveLength(2);
+  });
+
   it("síť: počátek vlevo dole, body na průsečících, očíslované čáry", () => {
     const { container } = render(<TaskVisual visual={{ kind: "grid", cols: 4, rows: 3, numbered: true, points: [{ x: 1, y: 2, label: "A" }], axes: [{ dir: "vertical", at: 2 }] }} />);
     const texty = [...container.querySelectorAll("text")].map((e) => e.textContent);
