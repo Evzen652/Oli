@@ -873,8 +873,12 @@ export function SessionView() {
                 {/* `practiceQuestion` je kopie `task.question`, kterou obnova
                     sezení („Máš rozdělanou práci → Pokračovat") nenastaví —
                     dítě pak vidělo úlohu bez zadání. Proto záloha z úlohy. */}
+                {/* `whitespace-pre-line`: 414 zadání v 5 tématech má víc řádků
+                    (jízdní řád, piktogramový diagram, tabulka, mřížka
+                    magického čtverce, text ke čtení). Bez něj se slila do
+                    jediného řádku „3 | ? | 7 10 | 6 | 2 5 | 4 | 9". */}
                 {(practiceQuestion || (session.state === "PRACTICE" && currentTask?.question)) && (
-                  <p className="mt-4 text-[29px] leading-[1.3] font-extrabold text-foreground">
+                  <p className="mt-4 text-[29px] leading-[1.3] font-extrabold text-foreground whitespace-pre-line">
                     {practiceQuestion || currentTask?.question}
                   </p>
                 )}

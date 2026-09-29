@@ -144,6 +144,44 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-30 — Obrázky dodělány a oblast UZAVŘENA:
+
+Sken všech 340 témat (úlohy bez obrázku, jejichž zadání popisuje obrázek)
+→ 98 kandidátů, po ručním protřídění konečný seznam. Stav obrázků (`visual`):
+
+| druh | témata | commit |
+|---|---|---|
+| hodiny | měření času 2. r. | `90fd32b` |
+| pravítko | rýsování úseček 3. r. (+ 2. r. dřív) | `90fd32b` |
+| teploměr | slovní úlohy o teplotě 5. r. L3, rozdíl přes nulu 6. r. L2 | `90fd32b` |
+| útvar (obdélník, čtverec, trojúhelník, kvádr) | obvod 3. r., obvod/obsah 4. r., druhy △ 4. r., obsah 5. r., kvádr 6. r. | `5b9f344` |
+| úhloměr | čtení stupnice 6. r. L1 | `98090ae` |
+| sloupcový graf, tabulka | diagramy 5. r. (graf byl jen popsaný slovy), magický čtverec 4. r. | (tento) |
+
+- 🐞 **Nalezeno a opraveno (největší dopad dne): 414 zadání v 5 tématech mělo
+  víc řádků, ale karta úlohy je slévala do jednoho** — jízdní řády 3. r.,
+  piktogramové diagramy 4. r., tabulky 6. r., mřížka magického čtverce
+  („3 | ? | 7 10 | 6 | 2 5 | 4 | 9") a **texty ke čtení s porozuměním 3. r.**
+  Oprava: `whitespace-pre-line` v kartě úlohy a v ukázkovém příkladu.
+  Ověřeno ve skutečném sezení („Zvířata v zoo" po řádcích).
+- ✅ Tím jsou čitelné i jízdní řády, piktogramy a tabulky 6. r., které
+  vlastní obrázek nepotřebují (text je už teď uspořádaný).
+- ℹ️ **Záměrně bez obrázku:** mapy/glóbus (pojmové otázky), úlohy, kde je
+  slovo jen zmínkou, „Který útvar je souměrný?" (možnosti slovy — potřebovalo
+  by obrázek u každé možnosti), obrácené úlohy (poměr stran by prozradil
+  odpověď), „Teploměr ukazuje 5 °C pod nulou. Jak zapíšeš?" (popisek −5 na
+  stupnici = odpověď; odhalil test).
+- ✅ Test `task-visual.test.tsx` 42 případů, u každého druhu čte čísla ZE
+  ZNĚNÍ a hlídá, že klíč na obrázku není; pro útvary v celém obsahu.
+  V prohlížeči změřeno: žádný popisek z ~800 útvarů nepřečnívá (po úpravě
+  rámce trojúhelníků). `npm test` 8 735 bez pádu, build, dev stránka
+  v `dist/` není.
+- ℹ️ UI audit: 3 nálezy `empty-state-null` v `TaskVisual.tsx` přijaty do
+  baseline — jde o ochranu obrázku před nesmyslnými daty (vrátí nic, úloha
+  má zadání), ne o prázdný seznam. Zdůvodnění v komentáři komponenty.
+- 🔴 **Oblast obrázků považuji za uzavřenou.** Další práce na „naučit se
+  z appky" = postup úrovní (anonymní děti vidí jen L1, samostatný úkol).
+
 ### Session 2026-09-29 (G) — Dev náhled tématu `/dev/tema/:id`:
 
 - ✅ **`src/pages/DevTopicPreview.tsx`**: seznam 340 témat s hledáním a filtrem

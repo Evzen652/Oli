@@ -7,6 +7,14 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-30 — obrázky dodělány, oblast uzavřena
+
+Hodiny, pravítko 3. r., teploměr, útvary (obdélník/čtverec/trojúhelník/kvádr),
+úhloměr, sloupcový graf a tabulka. K tomu oprava s největším dopadem:
+414 víceřádkových zadání (jízdní řády, diagramy, tabulky, magické čtverce,
+texty ke čtení) se v kartě úlohy slévalo do jednoho řádku. Detail
+a seznam záměrně vynechaných v `PROJECT_STATUS.md` §6.
+
 ## ✅ VYŘÍZENO 2026-09-29 (G) — dev náhled tématu
 
 `/dev/tema/:id` (jen `npm run dev`): výklad a úlohy všech úrovní tématu na

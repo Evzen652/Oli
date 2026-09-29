@@ -375,7 +375,60 @@ describe("úhloměr (6. r.) — ramena podle zadání", () => {
   });
 });
 
+describe("graf a tabulka (5. r.) — stejná data jako zadání", () => {
+  it("graf = „má sloupce vysoké: …“, tabulka = „— popisek hodnota | …“", () => {
+    let g = 0, tab = 0;
+    const id = byId("g5-matematika-zavislosti-vztahy-a-prace-s-daty-prace-s-daty-diagramy");
+    for (const level of [1, 2, 3]) for (const t of tasks(id, level)) {
+      // Konec výčtu = tečka před otázkou (velké písmeno + malé). „5. A" je uvnitř výčtu.
+      // „O kolik…" má za velkým písmenem mezeru, „5. A 21" za ním mezeru a číslici.
+      const VETA = "\. (?=[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ](?:[a-záčďéěíňóřšťúůýž]| [a-z]))";
+      const graf = t.question.match(new RegExp(`sloupce vysoké: (.*?)${VETA}`));
+      const tabulka = t.question.match(new RegExp(`^Tabulka: .*? — (.*?)${VETA}`));
+      const polozky = (graf?.[1].split(", ") ?? tabulka![1].split(" | ")).map((x) => {
+        const m = x.match(/^(.*) (\d+)$/)!;
+        return { label: m[1], value: +m[2] };
+      });
+      if (graf) {
+        g++;
+        expect(t.visual).toMatchObject({ kind: "bar_chart", bars: polozky });
+      } else {
+        tab++;
+        expect(t.visual).toMatchObject({ kind: "table", rows: [polozky.map((x) => x.label), polozky.map((x) => String(x.value))] });
+      }
+    }
+    expect(g).toBeGreaterThan(15);
+    expect(tab).toBeGreaterThan(15);
+  });
+});
+
+describe("magický čtverec (4. r.) — tabulka 3 × 3 = mřížka ze zadání", () => {
+  it("řádky i otazník sedí s textem; číselné řady tabulku nemají", () => {
+    let n = 0;
+    const id = "g4-mat-magicke-ctverce-ciselne-rady-4";
+    for (const level of [1, 2, 3]) for (const t of tasks(id, level)) {
+      if (!t.question.startsWith("Magický čtverec")) { expect(t.visual, t.question).toBeUndefined(); continue; }
+      n++;
+      const radky = t.question.split("\n").filter((l) => l.includes(" | ")).map((l) => l.split(" | "));
+      expect(t.visual).toEqual({ kind: "table", header: false, rows: radky });
+      expect(radky.flat().filter((x) => x === "?")).toHaveLength(1);
+    }
+    expect(n).toBeGreaterThan(20);
+  });
+});
+
 describe("TaskVisual — vykreslení", () => {
+  it("sloupcový graf: sloupce bez čísel nad sebou, osa s dílky; tabulka se záhlavím", () => {
+    const g = render(<TaskVisual visual={{ kind: "bar_chart", title: "Zmrzliny", bars: [{ label: "po", value: 7 }, { label: "út", value: 23 }] }} />);
+    expect(g.container.querySelectorAll("rect")).toHaveLength(2);
+    const texty = [...g.container.querySelectorAll("text")].map((e) => e.textContent);
+    expect(texty).not.toContain("7");
+    expect(texty).toEqual(expect.arrayContaining(["0", "5", "20", "25", "po", "út"]));
+    const t = render(<TaskVisual visual={{ kind: "table", title: "Papír", rows: [["5. A", "5. B"], ["21", "27"]] }} />);
+    expect(t.container.querySelectorAll("th")).toHaveLength(2);
+    expect(t.container.querySelectorAll("td")).toHaveLength(2);
+  });
+
   it("úhloměr: stupnice běží proti sobě (0 vnitřní = 180 vnější), písmena ramen a vrcholu", () => {
     const { container } = render(<TaskVisual visual={{ kind: "protractor", arms: [0, 65], names: ["V", "A", "B"] }} />);
     const texty = [...container.querySelectorAll("text")].map((e) => e.textContent);

@@ -49,12 +49,14 @@ function magicky(stred: number, soucetZadan: boolean): PracticeTask {
       `Řádek ${plny.join(" | ")} je celý vyplněný a otazník stojí ve sloupci s čísly ${x} a ${y}. Kolik je součet celého řádku?`,
       `Součet celého řádku (${plny.join(" + ")}) je magický součet — stejný pro všechny řádky. V ${V_RADKU[r]} řádku jsou už čísla ${a} a ${b}; odečti je od magického součtu a výsledek ověř ve sloupci.`,
     ];
-  return ciselnaUloha(otazka, hledane, chyby, hints, [
+  // Mřížka jako skutečná tabulka 3 × 3 (v zadání je zatím i jako text „7 | 6 | 11").
+  const visual = { kind: "table" as const, header: false, rows: q.map((row, ri) => row.map((v, ci) => (ri === r && ci === c ? "?" : String(v)))) };
+  return { visual, ...ciselnaUloha(otazka, hledane, chyby, hints, [
     ...(soucetZadan ? [] : [`Magický součet: ${plny.join(" + ")} = ${S}`]),
     `${RADEK[r]} řádek: ${a} + ${b} = ${a + b}`,
     `${S} − ${a + b} = ${hledane}`,
     `Zkouška ve sloupci: ${sloupec.join(" + ")} = ${S} ✓`,
-  ]);
+  ]) };
 }
 
 function dalsiClen(): PracticeTask {

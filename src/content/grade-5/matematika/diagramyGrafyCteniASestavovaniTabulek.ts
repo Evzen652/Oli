@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { ciselnaUloha, pick, rnd, sada, shuffle, type Chyba } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
@@ -60,23 +60,37 @@ const zadani = (d: Data) => d.typ === "tabulka"
   ? `Tabulka: ${d.t.nadpis} — ${d.t.popisky.slice(0, d.n).map((p, i) => `${p} ${d.hodnoty[i]}`).join(" | ")}.`
   : `Graf: sloupcový graf „${d.t.nadpis}“ má sloupce vysoké: ${d.t.popisky.slice(0, d.n).map((p, i) => `${p} ${d.hodnoty[i]}`).join(", ")}.`;
 
+/**
+ * Tabulka nebo sloupcový graf ze stejných dat jako zadání. Dřív byla tabulka
+ * natěsnaná do jednoho řádku („5. A 21 | 5. B 27 | …") a graf jen popsaný
+ * slovy („má sloupce vysoké: …") — dítě graf vůbec nevidělo.
+ */
+function sDaty(t: PracticeTask | null, d: Data): PracticeTask | null {
+  if (!t) return null;
+  const popisky = d.t.popisky.slice(0, d.n);
+  const visual: TaskVisual = d.typ === "graf"
+    ? { kind: "bar_chart", title: d.t.nadpis, bars: popisky.map((label, i) => ({ label, value: d.hodnoty[i] })) }
+    : { kind: "table", title: d.t.nadpis, rows: [popisky, d.hodnoty.map(String)] };
+  return { ...t, visual };
+}
+
 function precti(): PracticeTask | null {
   const d = data(), i = rnd(0, d.n - 1);
   const chyby: Chyba[] = d.hodnoty.map((h, j) => ({ value: h, why: `${h} patří k položce ${d.t.popisky[j]} — přečetl se jiný ${d.typ === "tabulka" ? "řádek" : "sloupec"}.` })).filter((_, j) => j !== i);
-  return ciselnaUloha(`${zadani(d)} ${d.t.kolik(d.t.kde[i])}`, d.hodnoty[i], shuffle(chyby), [
+  return sDaty(ciselnaUloha(`${zadani(d)} ${d.t.kolik(d.t.kde[i])}`, d.hodnoty[i], shuffle(chyby), [
     `Najdi v ${d.typ === "tabulka" ? "tabulce" : "grafu"} popisek „${d.t.popisky[i]}“. Pozor, nepleť si ho se sousední položkou ${d.t.popisky[i ? i - 1 : 1]} (${d.hodnoty[i ? i - 1 : 1]}).`,
     `Nejdřív najdi správný popisek, teprve potom čti hodnotu. U každé položky je jen jedno číslo — to, které stojí hned u ní${d.typ === "graf" ? " (výška sloupce)" : ""}. Když si nejsi jistý nebo jistá, přečti popisek i číslo ještě jednou a zkontroluj, že patří k sobě.`,
-  ], [`U položky ${d.t.popisky[i]} je ${d.hodnoty[i]}.`]);
+  ], [`U položky ${d.t.popisky[i]} je ${d.hodnoty[i]}.`]), d);
 }
 
 function nejvic(): PracticeTask | null {
   const d = data();
   const max = Math.max(...d.hodnoty), i = d.hodnoty.indexOf(max);
   const chyby: Chyba[] = d.t.kde.slice(0, d.n).map((k, j) => ({ value: k, why: `${d.t.popisky[j][0].toUpperCase()}${d.t.popisky[j].slice(1)} má ${d.hodnoty[j]} — to není nejvíc.` })).filter((_, j) => j !== i);
-  return ciselnaUloha(`${zadani(d)} ${d.t.nejvic}`, d.t.kde[i], shuffle(chyby), [
+  return sDaty(ciselnaUloha(`${zadani(d)} ${d.t.nejvic}`, d.t.kde[i], shuffle(chyby), [
     `Projdi všechna čísla: ${d.hodnoty.join(", ")}. Které je nejvyšší?`,
     `U tabulky hledáš nejvyšší číslo, u grafu nejvyšší sloupec. Porovnávej postupně: vezmi první číslo a každé další, které je vyšší, si zapamatuj místo něj. Nakonec se podívej, ke kterému popisku patří.`,
-  ], [`Nejvyšší hodnota je ${max}, patří k položce ${d.t.popisky[i]}.`]);
+  ], [`Nejvyšší hodnota je ${max}, patří k položce ${d.t.popisky[i]}.`]), d);
 }
 
 function rozdil(): PracticeTask | null {
@@ -84,7 +98,7 @@ function rozdil(): PracticeTask | null {
   const [i, j] = shuffle([...Array(d.n).keys()]).slice(0, 2);
   const [a, b] = [d.hodnoty[i], d.hodnoty[j]];
   if (a <= b || a === 2 * b) return null;
-  return ciselnaUloha(`${zadani(d)} ${d.t.rozdil(d.t.kde[i], d.t.kde[j])}`, a - b, [
+  return sDaty(ciselnaUloha(`${zadani(d)} ${d.t.rozdil(d.t.kde[i], d.t.kde[j])}`, a - b, [
     { value: a + b, why: "Hodnoty se sečetly. Otázka „o kolik víc“ se řeší odčítáním." },
     { value: a, why: `${a} je jen hodnota u položky ${d.t.popisky[i]}. Ještě od ní odečti ${b}.` },
     { value: a - b + 1, why: `Zkouška: ${b} + ${a - b + 1} = ${b + a - b + 1}, ne ${a}.` },
@@ -92,14 +106,14 @@ function rozdil(): PracticeTask | null {
   ], [
     `Najdi obě hodnoty: u položky ${d.t.popisky[i]} je ${a} a u položky ${d.t.popisky[j]} je ${b}. Co s nimi uděláš?`,
     "Otázka „o kolik víc“ se řeší odčítáním: od vyšší hodnoty odečti nižší. Zkouška: nižší hodnota + výsledek = vyšší hodnota.",
-  ], [`${d.t.popisky[i]}: ${a}, ${d.t.popisky[j]}: ${b}`, `${a} − ${b} = ${a - b}`]);
+  ], [`${d.t.popisky[i]}: ${a}, ${d.t.popisky[j]}: ${b}`, `${a} − ${b} = ${a - b}`]), d);
 }
 
 function celkem(): PracticeTask | null {
   const d = data();
   const s = d.hodnoty.reduce((x, y) => x + y, 0);
   const vynechana = pick(d.hodnoty);
-  return ciselnaUloha(`${zadani(d)} ${d.t.celkem}`, s, [
+  return sDaty(ciselnaUloha(`${zadani(d)} ${d.t.celkem}`, s, [
     { value: s - vynechana, why: `Jedna hodnota (${vynechana}) se nezapočítala. Sečti všech ${d.n === 4 ? "čtyř" : "pět"} čísel.` },
     { value: Math.max(...d.hodnoty) * d.n, why: "Nejvyšší hodnota se vynásobila počtem položek. Každá položka má ale jiné číslo." },
     { value: s + 10, why: "Chyba při sčítání desítek." },
@@ -107,7 +121,7 @@ function celkem(): PracticeTask | null {
   ], [
     `Sečti postupně všechna čísla: ${d.hodnoty.join(" + ")}.`,
     `Celkem = součet všech hodnot. Sčítej postupně a odškrtávej, co už máš, ať žádnou z ${d.n === 4 ? "čtyř" : "pěti"} položek nevynecháš.`,
-  ], [`${d.hodnoty.join(" + ")} = ${s}`]);
+  ], [`${d.hodnoty.join(" + ")} = ${s}`]), d);
 }
 
 function prumer(): PracticeTask | null {
@@ -116,7 +130,7 @@ function prumer(): PracticeTask | null {
   if (s % d.n !== 0) return null;
   const p = s / d.n;
   if (d.hodnoty.includes(p)) return null;
-  return ciselnaUloha(`${zadani(d)} ${d.t.prumer}`, p, [
+  return sDaty(ciselnaUloha(`${zadani(d)} ${d.t.prumer}`, p, [
     { value: s, why: `${s} je součet. Průměr dostaneš, když součet vydělíš počtem položek (${d.n}).` },
     { value: Math.max(...d.hodnoty) - Math.min(...d.hodnoty), why: "To je rozdíl nejvyšší a nejnižší hodnoty, ne průměr." },
     { value: p + 1, why: `Zkouška: ${d.n} × ${p + 1} = ${d.n * (p + 1)}, ale součet je ${s}.` },
@@ -124,7 +138,7 @@ function prumer(): PracticeTask | null {
   ], [
     `Kolik je součet všech hodnot ${d.hodnoty.join(" + ")}? A kolik je položek?`,
     `Průměr = součet všech hodnot ÷ počet položek. Položek je ${d.n === 4 ? "čtyři" : "pět"}, takže součet vyděl ${d.n === 4 ? "čtyřmi" : "pěti"}. Průměr musí ležet mezi nejnižší a nejvyšší hodnotou — tím si výsledek zkontroluješ.`,
-  ], [`Součet: ${d.hodnoty.join(" + ")} = ${s}`, `Průměr: ${s} ÷ ${d.n} = ${p}`]);
+  ], [`Součet: ${d.hodnoty.join(" + ")} = ${s}`, `Průměr: ${s} ÷ ${d.n} = ${p}`]), d);
 }
 
 function tvrzeni(): PracticeTask | null {
@@ -147,10 +161,10 @@ function tvrzeni(): PracticeTask | null {
     { value: `Součet za položky ${d.t.popisky[p]} a ${d.t.popisky[q]} je ${soucet + 10}.`, why: `${d.hodnoty[p]} + ${d.hodnoty[q]} = ${soucet}, ne ${soucet + 10}.` },
   ].filter((n) => n.value !== pravdiva.t);
   const chyby = nepravdive.length >= 3 ? nepravdive : [...nepravdive, { value: d.t.vic(d.t.kde[b], d.t.kde[iMax] === d.t.kde[b] ? d.t.kde[a] : d.t.kde[iMax]), why: "Porovnej obě hodnoty v tabulce." }];
-  return ciselnaUloha(`${zadani(d)} Které tvrzení je pravdivé?`, pravdiva.t, chyby, [
+  return sDaty(ciselnaUloha(`${zadani(d)} Které tvrzení je pravdivé?`, pravdiva.t, chyby, [
     `Ověř každé tvrzení. Začni tím o položkách ${d.t.popisky[a]} (${d.hodnoty[a]}) a ${d.t.popisky[b]} (${d.hodnoty[b]}).`,
     "U každého tvrzení najdi čísla, o kterých mluví, a zkontroluj je: porovnej je, najdi nejvyšší nebo je sečti. Pravdivé je jen jedno — ostatní tři v něčem nesedí, třeba je pořadí obrácené nebo sčítání nevychází.",
-  ], [pravdiva.proc]);
+  ], [pravdiva.proc]), d);
 }
 
 function gen(level: number): PracticeTask[] {

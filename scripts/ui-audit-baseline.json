@@ -1,6 +1,6 @@
 {
   "note": "Přijaté (zatím neopravené) nálezy UI auditu. Guard selže jen na NOVÉM. Seznam jen zkracuj.",
-  "updated": "2026-09-05",
+  "updated": "2026-09-29",
   "accepted": [
     "branch-only-action|src/components/AdminAIChat.tsx|`handleWizardGenerate` je navěšený jen v dřívější větvi renderu — v hlavním returnu se nevyskytuje, takže akce zmizí, jakmile se komponenta překlopí do druhého stavu.",
     "dead-component|src/components/AdminAIActions.tsx|<AdminAIActions> není nikde importována ani renderována.",
@@ -8,6 +8,9 @@
     "dead-component|src/components/admin/ContentCoverageDashboard.tsx|<ContentCoverageDashboard> není nikde importována ani renderována.",
     "empty-state-null|src/components/AdminAIActions.tsx|`if (actions.length===0) return null` — prázdný stav bez vysvětlení.",
     "empty-state-null|src/components/SelfPracticeList.tsx|`if (loading||groups.length===0) return null` — prázdný stav bez vysvětlení.",
+    "empty-state-null|src/components/TaskVisual.tsx|`if (bars.length<1||bars.length>8||!bars.every((b)=>b.value>=0&&Number.isFinite(b.value))) return null` — prázdný stav bez vysvětlení.",
+    "empty-state-null|src/components/TaskVisual.tsx|`if (readings.length<1||readings.length>2||!readings.every(Number.isFinite)) return null` — prázdný stav bez vysvětlení.",
+    "empty-state-null|src/components/TaskVisual.tsx|`if (rows.length<1||rows.some((r)=>r.length!==rows[0].length)) return null` — prázdný stav bez vysvětlení.",
     "empty-state-null|src/components/admin/ExerciseTab.tsx|`if (saved.length===0) return null` — prázdný stav bez vysvětlení.",
     "empty-state-null|src/components/parent/NextWeekPlan.tsx|`if (!items||items.length===0) return null` — prázdný stav bez vysvětlení.",
     "write-only-state|src/components/ProposalReview.tsx|`savingType` se nastavuje přes `setSavingType`, ale nikde se nečte."

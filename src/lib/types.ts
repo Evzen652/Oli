@@ -134,6 +134,19 @@ export type TaskVisual =
       arms: [number, number];
       /** Písmena: vrchol, konec prvního ramene, konec druhého ramene. */
       names: [string, string, string];
+    }
+  | {
+      kind: "bar_chart";
+      title: string;
+      /** Sloupce ze zadání. Hodnoty se nad sloupce nepíšou — čtou se na ose. */
+      bars: { label: string; value: number }[];
+    }
+  | {
+      kind: "table";
+      title?: string;
+      /** Řádky tabulky; první řádek je záhlaví, když `header` je true. */
+      rows: string[][];
+      header?: boolean;
     };
 
 export interface HelpVisualExample {

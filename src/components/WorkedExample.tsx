@@ -22,7 +22,7 @@ export function WorkedExample({ task, topic, intro = true }: { task: PracticeTas
   return (
     <div className="space-y-4" data-testid="worked-example">
       {intro && <p className="text-sm text-muted-foreground">{t("session.worked_example_intro")}</p>}
-      <p className="text-lg font-extrabold leading-snug text-foreground">{task.question}</p>
+      <p className="text-lg font-extrabold leading-snug text-foreground whitespace-pre-line">{task.question}</p>
       {task.visual && <TaskVisual visual={task.visual} />}
       {options ? (
         <ul className="space-y-2">

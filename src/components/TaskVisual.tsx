@@ -4,6 +4,11 @@ import { phrase } from "@/lib/czechGrammar";
 type Of<K extends TaskVisualData["kind"]> = Extract<TaskVisualData, { kind: K }>;
 
 /**
+ * Každý druh níž při nesmyslných datech (prázdné pole, NaN, víc dílů než
+ * celek…) vrací `null` ZÁMĚRNĚ: obrázek je doplněk zadání, úloha bez něj
+ * funguje a dítě nemá vidět rozbitý graf. Nejde o prázdný stav seznamu —
+ * nálezy `empty-state-null` v UI auditu jsou proto v baseline.
+ *
  * Obrázek k úloze (`PracticeTask.visual`) — nahrazuje slovní popis
  * („úsečka na pravítku sahá od 0 do 16", „obdélník rozdělený na 4 díly")
  * tím, co dítě vidí v učebnici. Generátor vkládá jen čísla, která už má.
@@ -30,6 +35,10 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <Shape visual={visual} className={className} />;
     case "protractor":
       return <Protractor visual={visual} className={className} />;
+    case "bar_chart":
+      return <BarChart visual={visual} className={className} />;
+    case "table":
+      return <DataTable visual={visual} className={className} />;
     default:
       return null;
   }
@@ -526,5 +535,74 @@ function Protractor({ visual, className }: { visual: Of<"protractor">; className
       <circle cx={C.x} cy={C.y} r={4.5} className="fill-foreground" />
       <text x={C.x} y={C.y + 26} textAnchor="middle" className="fill-foreground" style={big}>{names[0]}</text>
     </svg>
+  );
+}
+
+// ── Sloupcový graf a tabulka ─────────────────────────────────────────────────
+
+/** Krok osy: nejmenší z 1, 2, 5, 10, 20… s nejvýš 8 dílky. */
+function krokOsy(max: number): number {
+  for (const k of [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]) if (max / k <= 8) return k;
+  return Math.ceil(max / 8);
+}
+
+/**
+ * Sloupcový graf s osou a mřížkou. Hodnoty NAD sloupci nejsou — graf se má
+ * číst na ose, přesně to je dovednost „čtu z diagramu". (Zadání je zatím
+ * uvádí i slovy; kdyby se z něj jednou vypustily, graf funguje sám.)
+ */
+function BarChart({ visual, className }: { visual: Of<"bar_chart">; className: string }) {
+  const { title, bars } = visual;
+  if (bars.length < 1 || bars.length > 8 || !bars.every((b) => b.value >= 0 && Number.isFinite(b.value))) return null;
+  const max = Math.max(...bars.map((b) => b.value));
+  const k = krokOsy(max), top = Math.ceil(max / k) * k || k;
+  const L = 44, B = 40, T = 34, H = 200, bw = 46, gap = 22;
+  const W = L + bars.length * (bw + gap) + gap;
+  const Y = (v: number) => T + H - (v / top) * H;
+  const font = { fontSize: 14, fontWeight: 600 };
+
+  return (
+    <svg role="img" aria-label={`Sloupcový graf ${title}.`} viewBox={`0 0 ${W} ${T + H + B}`} className={`w-full max-w-md h-auto ${className}`}>
+      <text x={L} y={18} className="fill-foreground" style={{ fontSize: 15, fontWeight: 800 }}>{title}</text>
+      {Array.from({ length: top / k + 1 }, (_, i) => i * k).map((v) => (
+        <g key={v}>
+          <line x1={L} x2={W - 6} y1={Y(v)} y2={Y(v)} className={v === 0 ? "stroke-foreground" : "stroke-muted-foreground/30"} strokeWidth={v === 0 ? 2 : 1} />
+          <text x={L - 8} y={Y(v) + 5} textAnchor="end" className="fill-muted-foreground" style={font}>{v}</text>
+        </g>
+      ))}
+      {bars.map((b, i) => {
+        const x = L + gap + i * (bw + gap);
+        return (
+          <g key={i}>
+            <rect x={x} y={Y(b.value)} width={bw} height={Y(0) - Y(b.value)} rx={3} className="fill-primary/80" />
+            <text x={x + bw / 2} y={T + H + 22} textAnchor="middle" className="fill-foreground" style={font}>{b.label}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/** Skutečná tabulka místo řádku „5. A 21 | 5. B 27 | …". */
+function DataTable({ visual, className }: { visual: Of<"table">; className: string }) {
+  const { title, rows, header = true } = visual;
+  if (rows.length < 1 || rows.some((r) => r.length !== rows[0].length)) return null;
+  const [head, ...body] = header ? rows : [null, ...rows];
+  return (
+    <div className={`w-fit max-w-full overflow-x-auto ${className}`}>
+      {title && <p className="mb-1.5 text-sm font-bold text-foreground">{title}</p>}
+      <table className="border-collapse text-base">
+        {head && (
+          <thead>
+            <tr>{head.map((c, i) => <th key={i} className="border border-border bg-muted px-3 py-1.5 font-bold">{c}</th>)}</tr>
+          </thead>
+        )}
+        <tbody>
+          {body.map((r, i) => (
+            <tr key={i}>{r!.map((c, j) => <td key={j} className="border border-border px-3 py-1.5 text-center tabular-nums">{c}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
