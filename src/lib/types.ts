@@ -344,6 +344,17 @@ export interface SessionData {
    * Slouží jako vstup pro computeNextLevel() a uložení do student_skill_level.
    */
   sessionScore?: number;
+  /** Stav úrovně tématu načtený na začátku sezení (DB / localStorage). */
+  levelState?: { level: number; consecutiveGood: number; consecutiveBad: number; lastScore: number };
+  /** Komu stav patří: ID přihlášeného uživatele, `null` = anonymní dítě. */
+  levelOwner?: string | null;
+  /** Nejvyšší úroveň, kterou téma má (`maxAvailableLevel`), spočtená na začátku. */
+  maxLevel?: number;
+  /**
+   * Výsledek postupu spočítaný na konci sezení. Čte ho shrnutí, aby slibovalo
+   * „těžší úlohy" jen tehdy, když se úroveň opravdu zvedla.
+   */
+  levelResult?: { direction: "up" | "down" | "same"; newLevel: number; consecutiveGood: number; maxLevel: number };
 }
 
 // ===== AI EXECUTION (mock) =====

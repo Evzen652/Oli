@@ -42,7 +42,10 @@ describe("Adaptive Engine E2E", () => {
     expect(s.adaptiveHelpOffered).toBe(true);
   });
 
-  it("should decrease currentLevel from 2 after 2 wrong answers", async () => {
+  // Uvnitř sezení se úroveň NEMĚNÍ: sada úloh je pevná od začátku, změna by
+  // jen do logu zapsala úroveň, na které dítě necvičilo. Postup je mezi
+  // sezeními — viz level-progression-e2e.test.ts.
+  it("po 2 chybách se nabídne nápověda, úroveň uprostřed sezení zůstává", async () => {
     let s = createSession(3);
     s.currentLevel = 2; // Start at level 2 to see decrease
 
@@ -62,15 +65,15 @@ describe("Adaptive Engine E2E", () => {
     result = await processState(s, "WRONG_1");
     s = result.session;
 
-    // Wrong answer 2 → errorStreak=2 → levelDelta=-1
+    // Wrong answer 2 → errorStreak=2 → nabídka nápovědy, úroveň beze změny
     result = await processState(s, "WRONG_2");
     s = result.session;
 
-    expect(s.currentLevel).toBe(1);
+    expect(s.currentLevel).toBe(2);
     expect(s.adaptiveHelpOffered).toBe(true);
   });
 
-  it("should increase level after high mastery (consecutive correct)", async () => {
+  it("ani série správných odpovědí úroveň uprostřed sezení nemění", async () => {
     let s = createSession(3);
 
     let result = await processState(s);
@@ -79,6 +82,7 @@ describe("Adaptive Engine E2E", () => {
     result = await processState(s, "sčítání");
     s = result.session;
     expect(s.state).toBe("PRACTICE");
+    const levelStart = s.currentLevel;
 
     // Answer all tasks correctly
     const batchSize = s.practiceBatch.length;
@@ -90,8 +94,9 @@ describe("Adaptive Engine E2E", () => {
       expect(result.lastAnswerCorrect).toBe(true);
     }
 
-    // After consecutive correct answers, level should have increased
-    expect(s.currentLevel).toBeGreaterThanOrEqual(1);
+    // Dřív tu stálo „level should have increased" a kontrola `>= 1`, která
+    // platí vždy — test tak nikdy nechytil, že zvýšení nemohlo nastat.
+    expect(s.currentLevel).toBe(levelStart);
     expect(s.adaptiveHelpOffered).toBe(false);
   });
 });

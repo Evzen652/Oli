@@ -73,6 +73,7 @@ export function SessionEndSummary({ session, onRepeat, onNewTopic }: SessionEndS
       briefDescription: session.matchedTopic.briefDescription,
       goals: session.matchedTopic.goals,
       inputType: session.matchedTopic.inputType,
+      levelResult: session.levelResult,
     })
       .then((text) => setAiEvaluation(text))
       .catch(() => {})

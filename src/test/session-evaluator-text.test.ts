@@ -130,3 +130,33 @@ describe("SLOVNÍ HODNOCENÍ — jazyk a věcnost", () => {
     expect(prazdne.length, "hodnocení vrátilo prázdný řetězec").toBe(0);
   });
 });
+
+describe("shrnutí slibuje posun jen tehdy, když opravdu nastal", () => {
+  const zaklad = { topicTitle: "Sčítání", totalTasks: 6, correctCount: 6, wrongCount: 0, helpUsedCount: 0, subject: "matematika" };
+  const texty = (grade: number, levelResult?: Parameters<typeof generateLocalEvaluation>[0]["levelResult"]) =>
+    Array.from({ length: 60 }, () => generateLocalEvaluation({ ...zaklad, grade, levelResult }));
+
+  for (const grade of [2, 5]) {
+    it(`${grade}. r.: bez výsledku postupu žádný slib těžších úloh`, () => {
+      for (const t of texty(grade)) expect(t).not.toMatch(/těžší|posuneme|Jdeme dál/);
+    });
+
+    it(`${grade}. r.: úroveň se zvedla → „těžší“ zazní, „když se to povede i příště“ ne`, () => {
+      const vse = texty(grade, { direction: "up", newLevel: 2, consecutiveGood: 0, maxLevel: 3 });
+      expect(vse.some((t) => /těžší/.test(t))).toBe(true);
+      for (const t of vse) expect(t).not.toMatch(/povede i příště/);
+    });
+
+    it(`${grade}. r.: první dobré sezení → „když se to povede i příště“, žádné „příště těžší“`, () => {
+      const vse = texty(grade, { direction: "same", newLevel: 1, consecutiveGood: 1, maxLevel: 3 });
+      expect(vse.some((t) => /povede i příště/.test(t))).toBe(true);
+      for (const t of vse) expect(t).not.toMatch(/Příště si dáme|Příště tě čekají/);
+    });
+
+    it(`${grade}. r.: nejvyšší úroveň tématu → žádný slib posunu`, () => {
+      for (const t of texty(grade, { direction: "same", newLevel: 3, consecutiveGood: 1, maxLevel: 3 })) {
+        expect(t).not.toMatch(/Příště si dáme|Příště tě čekají|povede i příště/);
+      }
+    });
+  }
+});

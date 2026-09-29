@@ -72,6 +72,17 @@ describe("computeNextLevel", () => {
     expect(result.newConsecutiveGood).toBe(1);
   });
 
+  it("téma s nejvyšší úrovní 2: dvě dobrá sezení na L2 úroveň NEzvednou", () => {
+    const result = computeNextLevel({ ...base, level: 2, consecutiveGood: 1 }, 1, 2);
+    expect(result.newLevel).toBe(2);
+    expect(result.direction).toBe("same");
+  });
+
+  it("téma s nejvyšší úrovní 2: z L1 na L2 postoupit jde", () => {
+    const result = computeNextLevel({ ...base, level: 1, consecutiveGood: 1 }, 1, 2);
+    expect(result.newLevel).toBe(2);
+  });
+
   it("přesně na hranici BAD (0.4) → počítá se jako špatné", () => {
     const result = computeNextLevel({ ...base, level: 2 }, 0.4);
     expect(result.newLevel).toBe(1);

@@ -38,7 +38,27 @@ export interface EvalInput {
   briefDescription?: string;
   goals?: string[];
   inputType?: string;
+  /** Výsledek postupu úrovně z konce sezení (`SessionData.levelResult`). */
+  levelResult?: { direction: "up" | "down" | "same"; newLevel: number; consecutiveGood: number; maxLevel: number };
 }
+
+/**
+ * Věta o dalším postupu — jen pravdivá. Dřív shrnutí po každém bezchybném
+ * sezení slibovalo „příště něco těžšího", přestože postup chce dvě dobrá
+ * sezení za sebou a anonymním dětem se úroveň vůbec neukládala.
+ */
+function posunVeta(r: EvalInput["levelResult"], isYoung: boolean): string {
+  if (!r || r.direction === "down") return "";
+  if (r.direction === "up") return isYoung ? "Příště si dáme něco těžšího." : "Příště tě čekají těžší úlohy.";
+  if (r.newLevel >= r.maxLevel) return "Tohle téma zvládáš i na nejtěžší úrovni.";
+  if (r.consecutiveGood >= 1) {
+    return isYoung ? "Když se to povede i příště, přejdeme na těžší úlohy." : "Když se to povede i příště, přejdeš na těžší úlohy.";
+  }
+  return "";
+}
+
+/** „Věta. " + posun, bez dvojité mezery, když posun není. */
+const s_posunem = (veta: string, posun: string) => (posun ? `${veta} ${posun}` : veta);
 
 export async function generateAiEvaluation(input: EvalInput): Promise<string> {
   return generateLocalEvaluation(input);
@@ -132,12 +152,13 @@ function buildGreatEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean)
   // „Máš všechno správně" místo „Máš 6 z 6 správně" — přirozenější a zároveň
   // se vyhne skloňování číslovky s podstatným jménem.
   const skore = vseSpravne ? "všechno správně" : `${correctCount} z ${totalTasks} správně`;
+  const posun = posunVeta(input.levelResult, isYoung);
 
   if (isYoung) {
     if (helpUsedCount === 0) {
       return pick([
-        `Skvělé! Máš ${skore}, a úplně bez pomoci. Příště si dáme něco těžšího.`,
-        `Paráda! Téma ${topicTitle} ti jde výborně. Jdeme dál!`,
+        s_posunem(`Skvělé! Máš ${skore}, a úplně bez pomoci.`, posun),
+        `Paráda! Téma ${topicTitle} ti jde výborně. ${posun || "Jen tak dál!"}`,
         vseSpravne
           ? `Výborně, všechno správně — a bez jediné nápovědy. Tohle už umíme.`
           : `Výborně, skoro všechno bylo správně — a bez nápovědy. Tohle už umíme.`,
@@ -152,9 +173,9 @@ function buildGreatEval(input: EvalInput, terms: SubjectTerms, isYoung: boolean)
   // Grade 4+: 2-3 věty
   if (helpUsedCount === 0) {
     return pick([
-      `Výborně zvládnuto! V tématu ${topicTitle} máš ${skore}, a to bez jediné nápovědy. Je za tím pěkný kus samostatné práce — příště si můžeme dát něco těžšího.`,
-      `Skvělý výkon v ${terms.activity}! ${vseSpravne ? "Všechno" : `${correctCount} z ${totalTasks}`} správně a bez pomoci, to je na jedničku. Jdeme dál.`,
-      `Téma ${topicTitle} ti evidentně jde. ${vseSpravne ? "Všechno správně" : `${correctCount} správných z ${totalTasks}`} bez nápovědy je vynikající výsledek — posuneme se o kus dál.`,
+      s_posunem(`Výborně zvládnuto! V tématu ${topicTitle} máš ${skore}, a to bez jediné nápovědy. Je za tím pěkný kus samostatné práce.`, posun),
+      `Skvělý výkon v ${terms.activity}! ${vseSpravne ? "Všechno" : `${correctCount} z ${totalTasks}`} správně a bez pomoci, to je na jedničku. ${posun || "Jen tak dál."}`,
+      s_posunem(`Téma ${topicTitle} ti evidentně jde. ${vseSpravne ? "Všechno správně" : `${correctCount} správných z ${totalTasks}`} bez nápovědy je vynikající výsledek.`, posun),
     ]);
   }
   return pick([

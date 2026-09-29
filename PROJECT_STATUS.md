@@ -144,6 +144,43 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-30 (B) — Postup úrovní opraven (nefungoval NIKOMU):
+
+- 🐞 **Horší, než se zdálo:** výpočet postupu byl jen v `case "END"`
+  orchestrátoru, do kterého se ale nikdy nevstoupilo — všech 5 míst, kde
+  sezení končí, přešlo do END a hned se vrátilo. `sessionScore` se nenastavil
+  nikdy a **úroveň se neposunula nikomu, ani přihlášeným dětem**. Navíc
+  anonymním se úroveň ani neukládala (`if (!user) return`). Dítě tak
+  napořád cvičilo L1, obsah L2/L3 (a jejich obrázky a ukázky) se k němu
+  nedostal, a shrnutí přitom slibovalo „Příště si dáme něco těžšího".
+- 🐞 **Zdánlivá změna uvnitř sezení:** `levelDelta` měnil `currentLevel`
+  uprostřed sezení, ale sada úloh je pevná od začátku — úlohy se nezměnily,
+  jen log zapsal úroveň, na které dítě necvičilo. Zvýšení navíc nemohlo
+  nastat (mastery strop 0,65, práh 0,85). Test „should increase level"
+  kontroloval `>= 1`, tedy nic.
+- ✅ **Oprava:**
+  - `ukoncit(s)` + `postupUrovne(s)` v orchestrátoru: postup se počítá na
+    všech 5 místech konce, synchronně z úrovně načtené na začátku sezení;
+    sezení bez jediné prošlé úlohy se nepočítá (skóre 0 by úroveň snížilo).
+  - `src/lib/levelStore.ts`: přihlášení DB, anonymní `localStorage`
+    (`oli_anon_levels`, maže ho `clearAnonData`); paměťová vrstva zapsaná
+    synchronně → „Procvičit znovu" už čte novou úroveň.
+  - `computeNextLevel(…, maxLevel)`: postup nepřekročí nejvyšší úroveň tématu.
+  - Uvnitř sezení adaptivní engine jen nabízí nápovědu, úroveň nemění.
+  - Shrnutí: „Příště si dáme něco těžšího" jen při skutečném postupu; po
+    prvním dobrém sezení „Když se to povede i příště, přejdeme na těžší
+    úlohy."; na nejvyšší úrovni žádný slib.
+- ✅ **Ověřeno:** nový `level-progression-e2e.test.ts` jde celou cestou přes
+  orchestrátor (5 případů) — **mutační kontrola**: po vypnutí volání postupu
+  4 z 5 spadnou. Testy textů shrnutí (60× losované varianty). V prohlížeči
+  jako anonymní dítě: Diktát 3. r. 6/6 → uloženo L1 série 1; 6/6 → „Příště
+  si dáme něco těžšího" a uloženo L2; třetí sezení začalo na L2 s výkladem
+  a ukázkou L2. `npm test` 8 749 (jediný pád = známý nestabilní test
+  pavoukovců), `audit:ui`, build.
+- ℹ️ **Nevyřešeno, mimo zadání:** při propojení anonymního dítěte s rodičem
+  se úrovně do DB nepřenesou (`anonMigration` přenáší jen denní pokrok);
+  dítě po propojení začne znovu od L1.
+
 ### Session 2026-09-30 — Obrázky dodělány a oblast UZAVŘENA:
 
 Sken všech 340 témat (úlohy bez obrázku, jejichž zadání popisuje obrázek)

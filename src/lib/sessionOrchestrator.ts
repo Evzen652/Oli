@@ -6,11 +6,11 @@ import { logSession } from "./logger";
 import { classifyIntent, CONFUSION_THRESHOLD } from "./preIntent";
 import { classifySemanticInput } from "./semanticGate";
 import { recordCheckResult } from "./performanceTracker";
-import { computeAdaptiveDecision, clampLevel, type SkillSnapshot } from "./adaptiveEngine";
+import { computeAdaptiveDecision, type SkillSnapshot } from "./adaptiveEngine";
 import { maxAvailableLevel } from "./levelCoverage";
 import { calcSessionScore } from "./sessionUtils";
 import { computeNextLevel } from "./levelProgression";
-import { supabase } from "@/integrations/supabase/client";
+import { loadLevelState, saveLevelState } from "./levelStore";
 import { validateAnswer, resolveTaskValidation } from "./validators";
 
 /** EMA alpha for mastery calculation */
@@ -69,24 +69,53 @@ export async function prepareMatchedTopic(s: SessionData): Promise<void> {
     s.misconceptionConfidence = 0;
   }
 
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { getSkillLevel } = await import("./supabase/skillLevel");
-      const skillRow = await getSkillLevel(user.id, topic.id);
-      s.currentLevel = skillRow?.level ?? topic.defaultLevel ?? 1;
-    } else {
-      s.currentLevel = topic.defaultLevel ?? 1;
-    }
-  } catch {
-    s.currentLevel = topic.defaultLevel ?? 1;
-  }
+  // Úroveň z minulých sezení — přihlášeným z DB, anonymním z localStorage
+  // (`levelStore.ts`; dřív se anonymním neukládala a začínali vždy na L1).
+  const { state, owner } = await loadLevelState(topic.id, topic.defaultLevel ?? 1);
+  s.levelState = state;
+  s.levelOwner = owner;
 
   // Pojistka: nikdy neservíruj úroveň, která nemá odlišné úlohy (generátor =
-  // zdroj pravdy). Spočítej JEDNOU a cachuj — CHECK loop pak jen čte.
-  const topicMaxLevel = maxAvailableLevel(topic);
-  (s as unknown as { _maxLevel?: number })._maxLevel = topicMaxLevel;
-  s.currentLevel = Math.min(s.currentLevel, topicMaxLevel);
+  // zdroj pravdy). Spočítá se JEDNOU; konec sezení podle ní omezí postup.
+  s.maxLevel = maxAvailableLevel(topic);
+  s.currentLevel = Math.min(state.level, s.maxLevel);
+}
+
+/**
+ * Postup úrovně po sezení. Spočítá se HNED (čistá funkce nad stavem
+ * načteným na začátku sezení), výsledek čte shrnutí; ukládá se bez čekání
+ * (`levelStore.ts`: paměť a localStorage synchronně, DB na pozadí).
+ * Idempotentní — podruhé nic neudělá.
+ *
+ * Sezení bez jediné prošlé úlohy (téma bez úloh na úrovni, konec hned na
+ * začátku) se nepočítá: skóre by vyšlo 0 a úroveň by klesla za nic.
+ */
+function postupUrovne(s: SessionData): void {
+  if (!s.matchedTopic || s.sessionScore !== undefined || s.currentTaskIndex === 0) return;
+  const score = calcSessionScore(s);
+  s.sessionScore = score;
+  const before = s.levelState ?? { level: s.currentLevel, consecutiveGood: 0, consecutiveBad: 0, lastScore: 0 };
+  const maxLevel = s.maxLevel ?? 3;
+  const r = computeNextLevel(before, score, maxLevel);
+  s.levelResult = { direction: r.direction, newLevel: r.newLevel, consecutiveGood: r.newConsecutiveGood, maxLevel };
+  saveLevelState(s.matchedTopic.id, {
+    level: r.newLevel,
+    consecutiveGood: r.newConsecutiveGood,
+    consecutiveBad: r.newConsecutiveBad,
+    lastScore: score,
+  }, s.levelOwner ?? null);
+}
+
+/**
+ * Přechod do END včetně postupu úrovně. Volá se na VŠECH místech, kde sezení
+ * končí. Dřív byl výpočet jen v `case "END"`, do kterého se ale nikdy
+ * nevstoupilo: každý přechod do END se hned vrátil. Postup úrovní tak
+ * neběžel NIKOMU — ani přihlášeným dětem (ověřeno 2026-09-30).
+ */
+function ukoncit(s: SessionData): SessionData {
+  const out = transition(s, "END");
+  postupUrovne(out);
+  return out;
 }
 
 /** Compute EMA mastery from streaks and error count */
@@ -332,7 +361,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
 
       // If batch exhausted → END (don't regenerate — batch = fixed set of tasks)
       if (s.practiceBatch.length > 0 && s.currentTaskIndex >= s.practiceBatch.length) {
-        s = transition(s, "END");
+        s = ukoncit(s);
         return { session: s, output: "Všechny úlohy dokončeny." };
       }
 
@@ -374,7 +403,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
       // session korektně ukončíme.
       const task = s.practiceBatch[s.currentTaskIndex];
       if (!task) {
-        s = transition(s, "END");
+        s = ukoncit(s);
         return { session: s, output: "Pro tuto úroveň zatím nejsou úlohy." };
       }
 
@@ -451,20 +480,20 @@ export async function processState(session: SessionData, userInput?: string): Pr
       };
       const adaptive = computeAdaptiveDecision(adaptiveSnapshot);
 
-      // ADAPTIVE ENGINE — active: apply levelDelta and offerHelp
+      // ADAPTIVE ENGINE — uvnitř sezení jen nabídka nápovědy.
+      // `levelDelta` se tu schválně NEPOUŽÍVÁ: sada úloh se generuje jednou
+      // na začátku a změna `currentLevel` uprostřed sezení úlohy nezměnila —
+      // jen do logu zapsala úroveň, na které dítě necvičilo. (Zvýšení navíc
+      // nemohlo nastat nikdy: mastery má strop 0,65, práh je 0,85.) Úroveň se
+      // posouvá MEZI sezeními, viz stav END.
       // fallbackToPrerequisite is deferred (requires mid-session topic switch)
-      s.currentLevel = clampLevel(s.currentLevel + adaptive.levelDelta);
-      // Ořež navíc na nejvyšší úroveň s odlišnými úlohami (prázdná/duplicitní pojistka).
-      // Čteme cache z INPUT_CAPTURE — žádné gen volání v realtime CHECK loopu.
-      const cachedMax = (s as unknown as { _maxLevel?: number })._maxLevel;
-      if (cachedMax) s.currentLevel = Math.min(s.currentLevel, cachedMax);
       s.adaptiveHelpOffered = adaptive.offerHelp;
 
       if (correct) {
         s.currentTaskIndex += 1;
         s.helpUsedOnCurrent = false; // Reset for next task
         if (s.currentTaskIndex >= s.practiceBatch.length) {
-          s = transition(s, "END");
+          s = ukoncit(s);
           return { session: s, output: "Správně! Všechny úlohy zvládnuty.", lastAnswerCorrect: true };
         }
         // Same topic with remaining tasks → skip EXPLAIN, go directly to PRACTICE
@@ -488,7 +517,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
 
       // If batch complete after wrong answer → END
       if (s.currentTaskIndex >= s.practiceBatch.length) {
-        s = transition(s, "END");
+        s = ukoncit(s);
         return { session: s, output: "Všechny úlohy dokončeny.", lastAnswerCorrect: false };
       }
 
@@ -499,7 +528,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
     }
 
     case "STOP_2": {
-      s = transition(s, "END");
+      s = ukoncit(s);
       return {
         session: s,
         output: "Sezení ukončeno. Požádej o pomoc rodiče nebo učitele.",
@@ -507,37 +536,7 @@ export async function processState(session: SessionData, userInput?: string): Pr
     }
 
     case "END": {
-      // Vypočítej session score a ulož nový level — fire-and-forget, neblokuje UI
-      if (s.matchedTopic && s.sessionScore === undefined) {
-        const score = calcSessionScore(s);
-        s.sessionScore = score;
-
-        (async () => {
-          try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-
-            const { getSkillLevel, upsertSkillLevel } = await import("./supabase/skillLevel");
-            const current = await getSkillLevel(user.id, s.matchedTopic!.id);
-            const state = current ?? {
-              level: s.matchedTopic!.defaultLevel ?? 1,
-              consecutiveGood: 0,
-              consecutiveBad: 0,
-              lastScore: 0,
-            };
-
-            const result = computeNextLevel(state, score);
-            await upsertSkillLevel(user.id, s.matchedTopic!.id, {
-              level: result.newLevel,
-              consecutiveGood: result.newConsecutiveGood,
-              consecutiveBad: result.newConsecutiveBad,
-              lastScore: score,
-            });
-          } catch (err) {
-            console.warn("[END] level progression save failed:", err);
-          }
-        })();
-      }
+      postupUrovne(s);
 
       return {
         session: s,

@@ -29,9 +29,15 @@ const GOOD_THRESHOLD = 0.8;
 const BAD_THRESHOLD = 0.4;
 const SESSIONS_TO_ADVANCE = 2; // 2× za sebou dobré → postup
 
+/**
+ * `maxLevel` = nejvyšší úroveň, kterou téma skutečně má (`maxAvailableLevel`).
+ * Bez něj by u tématu jen s L1–L2 „postup" na 3 prošel, shrnutí by slíbilo
+ * těžší úlohy a start dalšího sezení by úroveň stejně ořízl zpátky.
+ */
 export function computeNextLevel(
   current: SkillLevelState,
-  sessionScore: number
+  sessionScore: number,
+  maxLevel = 3,
 ): LevelProgressionResult {
   const isGood = sessionScore >= GOOD_THRESHOLD;
   const isBad = sessionScore <= BAD_THRESHOLD;
@@ -41,7 +47,7 @@ export function computeNextLevel(
 
   let newLevel = current.level;
 
-  if (newConsecutiveGood >= SESSIONS_TO_ADVANCE && current.level < 3) {
+  if (newConsecutiveGood >= SESSIONS_TO_ADVANCE && current.level < Math.min(3, maxLevel)) {
     newLevel = current.level + 1;
   } else if (isBad && current.level > 1) {
     newLevel = current.level - 1; // okamžitý sestup, nepotřebuje streak

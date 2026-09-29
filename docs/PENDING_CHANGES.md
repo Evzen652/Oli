@@ -7,6 +7,14 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-30 (B) — postup úrovní
+
+Nefungoval nikomu: výpočet byl jen v `case "END"`, do kterého se nevstoupilo,
+a anonymním se úroveň ani neukládala. Teď se počítá na každém konci sezení,
+ukládá se i anonymním (`localStorage`) a shrnutí slibuje posun jen při
+skutečném postupu. Detail `PROJECT_STATUS.md` §6.
+**Zbývá:** přenos úrovní při propojení anonymního dítěte s rodičem.
+
 ## ✅ VYŘÍZENO 2026-09-30 — obrázky dodělány, oblast uzavřena
 
 Hodiny, pravítko 3. r., teploměr, útvary (obdélník/čtverec/trojúhelník/kvádr),
@@ -25,11 +33,6 @@ jedné stránce, bez přihlášení, do produkce se nedostane. Popsáno v `CLAUD
 „Co je dobré vědět" ukazuje vyřešenou úlohu z generátoru (mimo rozdělanou
 sadu) a otevírá se při první sadě na každé úrovni. Nula nového obsahu,
 všech 340 témat. Detail `PROJECT_STATUS.md` §6.
-
-## 🔴 OTEVŘENO 2026-09-29 — postup úrovní: anonymní děti vidí jen L1
-
-Mastery uvnitř sezení nedosáhne prahu (0,65 < 0,85) a úroveň mezi sezeními
-se ukládá jen přihlášeným. Samostatný úkol založen; detail v §6.
 
 ## ✅ VYŘÍZENO 2026-09-29 (E) — osa a čtvercová síť v 5.–6. ročníku
 
