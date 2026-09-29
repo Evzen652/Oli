@@ -557,7 +557,10 @@ export function SessionView() {
       {/* Header */}
       <header className="relative border-b px-4 pt-4 pb-3">
         <div className={`absolute top-0 left-0 right-0 h-1 ${subjectPalette.accentClass}`} />
-        <div className="absolute left-4 top-1/2 -translate-y-1/2">
+        {/* Logo stojí mimo středový sloupec `max-w-2xl` (672 px); místo vedle
+            něj je až od ~920 px. Užší displej ho dřív kreslil přes „Zpět"
+            a začátek názvu předmětu. Odchod tam obstará „Zpět" se stejnou akcí. */}
+        <div className="absolute left-4 top-1/2 hidden -translate-y-1/2 lg:block">
           <OliLogo size="sm" onClick={() => requestExit(leaveSession)} />
         </div>
         <div className="mx-auto flex max-w-2xl items-center justify-between">

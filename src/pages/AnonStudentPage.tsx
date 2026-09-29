@@ -153,12 +153,15 @@ export default function AnonStudentPage() {
         {trialActive ? (
           <div className="rounded-2xl bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-violet-200">
             <div className="rounded-2xl bg-card/95 backdrop-blur px-5 py-3 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
-              <div className="flex items-center gap-3 min-w-0 flex-1">
+              {/* `flex-1` má základ 0, takže `flex-wrap` rodiče se nikdy nespustil
+                  a na mobilu se text mačkal do úzkého sloupce vedle tlačítka.
+                  Pod `sm` proto celý řádek, tlačítko se zalomí pod něj. */}
+              <div className="flex items-center gap-3 min-w-0 flex-1 basis-full sm:basis-0">
                 <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shadow-sm shrink-0">
                   <Sparkles className="h-4.5 w-4.5 text-white" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex flex-wrap items-baseline gap-x-2">
                     <span className="text-sm font-bold text-foreground">Den {currentDay}</span>
                     <span className="text-xs text-muted-foreground">z {TRIAL_DAYS}</span>
                     <span className="text-xs text-violet-600 font-medium ml-1">— plný přístup ke všem tématům</span>

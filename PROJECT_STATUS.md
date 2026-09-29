@@ -144,6 +144,20 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-30 (D, samostatně) — mobilní hlavička, nestabilní testy:
+
+- ✅ **Hlavička cvičení na mobilu.** Logo stálo `absolute left-4` mimo
+  středový sloupec `max-w-2xl`; místo vedle něj je až od ~920 px, takže na
+  375 px ležel „Zpět" (16–97 px) i název předmětu (od 109 px) pod logem
+  (16–110 px). Logo je teď `hidden lg:block`; odchod obstará „Zpět" se
+  stejnou akcí. Změřeno v prohlížeči: 375 px bez překryvu, 768 px logo
+  skryté, 1024 px logo 16–110 a „Zpět" od 168 px.
+- ✅ **Pruh zkušební doby na `/student`** (nalezeno po cestě): levá část měla
+  `flex-1` se základem 0, takže `flex-wrap` rodiče se nespustil a text
+  „— plný přístup ke všem tématům" se mačkal do úzkého sloupce vedle
+  tlačítka. Pod `sm` teď `basis-full` → tlačítko pod textem; na 1024 px
+  zůstává v jednom řádku (ověřeno měřením).
+
 ### Session 2026-09-30 (C) — Přenos úrovní při propojení anonymního dítěte:
 
 - ✅ **Dítě se spáruje kódem na zařízení, kde procvičovalo** (`ChildAuth`):

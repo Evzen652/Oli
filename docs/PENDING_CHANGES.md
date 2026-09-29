@@ -7,6 +7,13 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-30 (D) — mobilní hlavička cvičení, pruh zkušební doby
+
+Na 375 px se v hlavičce cvičení kreslilo logo přes „Zpět" a začátek
+názvu předmětu. Logo je teď vidět až od `lg` (1024 px), kde vedle středového
+sloupce má místo. Pruh zkušební doby na `/student` mačkal text do úzkého
+sloupce vedle „Sdílet s rodiči"; na mobilu teď tlačítko spadne pod text.
+
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 
 Dítě spárované kódem na stejném zařízení si úrovně přenese do účtu
