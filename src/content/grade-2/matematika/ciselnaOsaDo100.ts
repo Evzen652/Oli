@@ -1,4 +1,4 @@
-import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import type { TopicMetadata, PracticeTask, TaskVisual } from "@/lib/types";
 import { plural } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 
@@ -25,6 +25,26 @@ interface Built {
   h0: string;
   h1: string;
   expl: string;
+  /** Osa k úloze (L1 a L2; L3 je bez ní — dítě se od opory odpoutá). */
+  visual?: TaskVisual;
+}
+
+/**
+ * Osa kolem hledaného čísla. Vypisuje JEN čísla ze zadání (`labeled`) —
+ * u „hned za 68" je to jen 68, jinak by osa odpověď rovnou ukázala.
+ */
+function okoli(labeled: number[], unknown: number, highlight?: number): TaskVisual {
+  const from = Math.max(0, Math.min(unknown, ...labeled) - 2);
+  const to = Math.min(100, Math.max(unknown, ...labeled) + 2);
+  return { kind: "number_line", from, to, step: 1, labeled, unknown, highlight };
+}
+
+/** Osa řady: dílky po kroku řady, vypsaná všechna čísla kromě chybějícího. */
+function osaRady(row: number[], idx: number): TaskVisual {
+  return {
+    kind: "number_line", from: row[0], to: row[row.length - 1], step: row[1] - row[0],
+    labeled: row.filter((_, i) => i !== idx), unknown: row[idx],
+  };
 }
 
 /** Vybere 3 různé platné distraktory (čísla 0–100, ≠ klíč) a ověří, že nápověda klíč neprozradí. */
@@ -44,7 +64,8 @@ function finish(b: Built): PracticeTask | null {
   const esc = ans.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const leak = new RegExp(`(^|[^\\d])${esc}([^\\d]|$)`);
   if (leak.test(b.h0) || leak.test(b.h1)) return null;
-  return choice(b.q, ans, ds as [Distractor, Distractor, Distractor], { hints: [b.h0, b.h1], explanation: b.expl });
+  const t = choice(b.q, ans, ds as [Distractor, Distractor, Distractor], { hints: [b.h0, b.h1], explanation: b.expl });
+  return b.visual ? { ...t, visual: b.visual } : t;
 }
 
 // ── L1 ───────────────────────────────────────────────────────────────────────
@@ -61,6 +82,7 @@ function soused(): Built {
     return {
       q: `Které číslo je na číselné ose hned za číslem ${n}?`,
       ans: c,
+      visual: okoli([n], c, n),
       cands: n % 10 === 9 ? cands : shuffle(cands),
       h0: `Na číselné ose rostou čísla zleva doprava. Kterým směrem se od ${n} posuneš?`,
       h1: `„Hned za“ znamená o jeden dílek doprava, tedy o 1 víc než ${n}. Přičti jedničku a zkontroluj, jestli se nezmění i počet desítek.`,
@@ -77,6 +99,7 @@ function soused(): Built {
   return {
     q: `Které číslo je na číselné ose hned před číslem ${n}?`,
     ans: c,
+    visual: okoli([n], c, n),
     cands: n % 10 === 0 ? cands : shuffle(cands),
     h0: `Na číselné ose rostou čísla zleva doprava. Na které straně od ${n} leží menší čísla?`,
     h1: `„Hned před“ znamená o jeden dílek doleva, tedy o 1 méně než ${n}. Uber jedničku a zkontroluj, jestli se nezmění i počet desítek.`,
@@ -97,6 +120,7 @@ function mezi(): Built {
   return {
     q: `Které číslo leží na číselné ose mezi ${lo} a ${hi}?`,
     ans: n,
+    visual: okoli([lo, hi], n),
     cands,
     h0: `Najdi si na ose čísla ${lo} a ${hi}. Které číslo leží přesně mezi nimi?`,
     h1: `Od ${lo} k ${hi} jsou to dva dílky. Uprostřed je číslo o 1 větší než ${lo} a zároveň o 1 menší než ${hi}. Ověř obě podmínky.`,
@@ -113,6 +137,7 @@ function radaPoDesitkach(): Built {
   return {
     q: `Co chybí na ose? ${shown}`,
     ans: c,
+    visual: osaRady(row, idx),
     cands: shuffle([
       { v: prev + 1, why: `Posunul ses od ${prev} jen o 1 dílek. Čísla v této řadě rostou vždy o celou desítku.` },
       { v: prev + 5, why: `${prev + 5} leží jen v půlce cesty mezi ${prev} a dalším číslem řady.` },
@@ -141,6 +166,7 @@ function radaSKrokem(): Built | null {
   return {
     q: `Co chybí na ose? ${shown}`,
     ans: c,
+    visual: osaRady(row, idx),
     cands: shuffle([
       { v: prev + 1, why: `Posunul ses od ${prev} jen o 1. V této řadě se skáče vždy o ${step}.` },
       { v: c + step, why: next !== undefined ? `${c + step} už v řadě je — stojí hned za mezerou.` : `${c + step} je o krok dál, než hledáš — k ${prev} jsi přičetl krok dvakrát.` },

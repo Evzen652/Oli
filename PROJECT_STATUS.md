@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 (D) — Pravítko a číselná osa (2. ročník):
+
+- ✅ **Dva nové druhy `PracticeTask.visual`** (`ruler`, `number_line`) v téže
+  komponentě `TaskVisual` — žádná nová infrastruktura.
+  - **Pravítko:** cm s čísly, půlcentimetry a mm čárky, nad ním úsečka.
+    Délka se nepíše. Pevné tmavé čárky/čísla (pravítko je předmět se světlým
+    tělem). Písmo zvětšeno po kontrole na mobilu (10 px → 15 px na 375 px).
+    Úlohy „na pravítku sahá od … do …“ (L1) a „začíná u … a končí u …“ (L2).
+  - **Číselná osa:** dílky, jen čísla ze zadání, otazník na hledaném místě,
+    tečka na výchozím čísle. „Hned za/před“ ukazuje jen výchozí číslo (jinak
+    by osa odpověď vypsala), „mezi“ obě krajní, řady všechna kromě chybějícího.
+    „Mezi kterými desítkami“ obrázek nemá — osa by desítky vypsala.
+  - L3 obou témat bez obrázku (stejné pravidlo jako u zlomků).
+- ℹ️ **Text úloh se neměnil.** „Kolik měří úsečka?“ bez čísel by víc trénovalo
+  čtení pravítka, ale všech 15 úloh L1 by mělo stejné znění a `getTierTasks`
+  (klíč = zadání) by je slil do jedné úlohy.
+- ✅ Test přejmenován na `task-visual.test.tsx` (15 případů): čísla ze znění
+  proti obrázku, otazník = klíč, klíč nikdy mezi vypsanými čísly.
+  `npm test` 8 697 bez pádu, typecheck, `audit:ui`, build. V prohlížeči na
+  1280 i 375 px: pravítko 0–16 s úsečkou 0–14; osa „27 ?“, „30 40 ? 60 70“,
+  „91 ? 93“.
+- ➡️ Založen úkol: na 375 px se v hlavičce cvičení překrývá logo se „Zpět“
+  (existovalo už dřív, s obrázky nesouvisí).
+
 ### Session 2026-09-29 (C) — Obrázky u zlomků 4. ročníku, levnější přístup:
 
 Zadání uživatele: začít obrázky u zlomků, ale „obsahová část trvá moc dlouho,

@@ -48,16 +48,38 @@ export interface FractionBarData {
  * Obrázek k úloze (`PracticeTask.visual`). Union, aby další druhy (pravítko,
  * číselná osa, …) přibyly bez nové infrastruktury.
  */
-export type TaskVisual = {
-  kind: "fraction_bar";
-  /** Na kolik stejných dílů je celek rozdělený (jmenovatel). */
-  parts: number;
-  /**
-   * Zabarvené díly zleva po skupinách, každá skupina jinou barvou.
-   * `[3]` = 3 vybarvené díly; `[2, 3]` = sčítání 2 + 3.
-   */
-  groups: number[];
-};
+export type TaskVisual =
+  | {
+      kind: "fraction_bar";
+      /** Na kolik stejných dílů je celek rozdělený (jmenovatel). */
+      parts: number;
+      /**
+       * Zabarvené díly zleva po skupinách, každá skupina jinou barvou.
+       * `[3]` = 3 vybarvené díly; `[2, 3]` = sčítání 2 + 3.
+       */
+      groups: number[];
+    }
+  | {
+      kind: "ruler";
+      /** Úsečka nad pravítkem: začátek a konec v cm. */
+      from: number;
+      to: number;
+      /** Délka pravítka v cm (kolik čísel je na něm vidět). */
+      length: number;
+    }
+  | {
+      kind: "number_line";
+      /** Dílky od `from` do `to` po `step`. */
+      from: number;
+      to: number;
+      step: number;
+      /** Čísla, která jsou pod dílky vypsaná. Ostatní dílky jsou bez čísla. */
+      labeled: number[];
+      /** Dílek s otazníkem — hledané číslo. Nikdy není v `labeled`. */
+      unknown?: number;
+      /** Dílek zvýrazněný tečkou — číslo ze zadání, od kterého se vychází. */
+      highlight?: number;
+    };
 
 export interface HelpVisualExample {
   label: string;

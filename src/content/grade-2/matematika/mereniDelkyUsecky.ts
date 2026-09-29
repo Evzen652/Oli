@@ -19,6 +19,14 @@ import { pad, isAre } from "@/lib/czechGrammar";
 
 const cm = (n: number) => `${n} cm`;
 
+/**
+ * Pravítko s úsečkou k úloze „na pravítku sahá od … do …" (L1 a L2; L3 je
+ * bez obrázku — dítě se od opory odpoutá). Pravítko má aspoň 10 cm a vždy
+ * přesahuje konec úsečky, aby nebylo vidět, kde „končí" odpověď.
+ */
+const naPravitku = (t: PracticeTask, from: number, to: number): PracticeTask =>
+  ({ ...t, visual: { kind: "ruler", from, to, length: Math.max(10, to + 2) } });
+
 /** Vybere 3 různé distraktory (≠ klíč, kladná délka) v pořadí priority. */
 function tri(correct: string, cands: (Distractor | null)[]): [Distractor, Distractor, Distractor] {
   const out: Distractor[] = [];
@@ -36,7 +44,7 @@ function tri(correct: string, cands: (Distractor | null)[]): [Distractor, Distra
 
 function odNuly(n: number): PracticeTask {
   const key = cm(n);
-  return choice(`Úsečka na pravítku sahá od 0 do ${n}. Kolik měří?`, key, tri(key, [
+  return naPravitku(choice(`Úsečka na pravítku sahá od 0 do ${n}. Kolik měří?`, key, tri(key, [
     { value: cm(n + 1), why: "Spočítal jsi čárky i s tou u nuly. Délku ale tvoří dílky mezi čárkami a těch je o jeden méně než čárek." },
     { value: cm(n - 1), why: "Jeden centimetr chybí — asi jsi začal počítat až od čísla 1. Dílek od 0 do 1 se počítá také." },
     { value: `${n} mm`, why: "Čísla na pravítku ukazují centimetry. Milimetry jsou jen ty nejmenší čárky mezi nimi." },
@@ -47,7 +55,7 @@ function odNuly(n: number): PracticeTask {
       `Každý dílek mezi dvěma sousedními čísly na pravítku měří 1 cm. Když úsečka začíná u nuly, spočítej dílky od 0 až po ${n} — mezery, ne čárky.`,
     ],
     explanation: `Pravítko měří od nuly, takže číslo na konci úsečky rovnou udává její délku: od 0 do ${n} ${isAre(n)} ${pad(n, "CENTIMETR")}.`,
-  });
+  }), 0, n);
 }
 
 // ── L2 — pravítko mimo nulu, součet, rozdíl ─────────────────────────────────
@@ -55,7 +63,7 @@ function odNuly(n: number): PracticeTask {
 function mimoNulu(s: number, e: number): PracticeTask {
   const L = e - s;
   const key = cm(L);
-  return choice(`Úsečka na pravítku začíná u ${s} a končí u ${e}. Kolik měří?`, key, tri(key, [
+  return naPravitku(choice(`Úsečka na pravítku začíná u ${s} a končí u ${e}. Kolik měří?`, key, tri(key, [
     { value: cm(e), why: `Přečetl jsi jen číslo na konci. To stačí, jen když úsečka začíná u nuly — tahle začíná u ${s}.` },
     { value: cm(e + s), why: `Čísla ${s} a ${e} jsi sečetl. Délka je vzdálenost od začátku ke konci, proto se odečítá.` },
     { value: cm(L + 1), why: "Počítal jsi čárky místo dílků — čárek je vždycky o jednu víc než centimetrů." },
@@ -66,7 +74,7 @@ function mimoNulu(s: number, e: number): PracticeTask {
       `Délka je vzdálenost od začátku ke konci: od čísla ${e} odečti ${s}. Nebo spočítej dílky (mezery mezi čísly) od ${s} do ${e}.`,
     ],
     explanation: `Úsečka nezačíná u nuly, proto se délka počítá jako konec minus začátek: ${e} − ${s} = ${L}, tedy ${pad(L, "CENTIMETR")}.`,
-  });
+  }), s, e);
 }
 
 function soucet(a: number, b: number): PracticeTask {

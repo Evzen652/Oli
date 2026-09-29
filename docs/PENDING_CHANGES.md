@@ -7,6 +7,14 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-29 (D) — pravítko a číselná osa ve 2. ročníku
+
+`TaskVisual` umí `ruler` a `number_line`; zapojeno do `g2-mat-mereni-delky`
+a `g2-mat-ciselna-osa-100` (L1 a L2). Detail `PROJECT_STATUS.md` §6.
+**Zbývá z obrázků:** zlomky 5.–6. ročníku (hotová komponenta), osová
+souměrnost, mapy. **Nový drobný nález:** překryv loga a „Zpět“ na mobilu
+(samostatný úkol).
+
 ## ✅ VYŘÍZENO 2026-09-29 (C) — obrázky u zlomků 4. ročníku
 
 Obecné pole `PracticeTask.visual` + komponenta `TaskVisual`; zapojeno do obou
