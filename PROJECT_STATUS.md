@@ -144,6 +144,39 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 (C) — Obrázky u zlomků 4. ročníku, levnější přístup:
+
+Zadání uživatele: začít obrázky u zlomků, ale „obsahová část trvá moc dlouho,
+poměr cena/výkon není“. Proto **žádné ruční kreslení k úlohám a žádné
+workflow autor+kritik**, ale jedna obecná infrastruktura:
+
+- ✅ **`PracticeTask.visual`** (`src/lib/types.ts`, typ `TaskVisual`, union
+  pro další druhy) — generátor vloží čísla, která už má. Zámek obsahu otiskuje
+  jen zadání+klíč, takže se nezměnil.
+- ✅ **`src/components/TaskVisual.tsx`** — proužek s PEVNOU šířkou a díly
+  rovným dílem (stávající `FractionBarVisual` má díly pevné šířky, takže 1/2
+  je tam kratší než 1/10 — pro porovnání by lhal). Bez popisků (úloha se na
+  zlomek ptá), dvě skupiny = dva sčítance (oranžová + modrá; ne zelená, ta
+  znamená „správně“). Vykresluje se pod zadáním v kartě úlohy.
+- ✅ **Oba generátory zlomků 4. ročníku:** obrázek má L1 a slovní úlohy L2,
+  porovnání a L3 ne (postup „obrázek → zápis“, opora se odebírá).
+  Do výkladu obou témat přibyl `visualExamples` → ožil i `MiniExplainer`
+  („Mini-příklad“ nad odpověďmi), který dosud nikde nebyl vidět.
+- 🐞 **Opraveno po cestě:** výklad sčítání zlomků učil krácení (příklad
+  „3/6 = 1/2“ a krok „výsledek zjednoduš“), přestože klíče se ve 4. ročníku
+  nekrátí — dítě by svou odpověď mezi možnostmi nenašlo.
+- 🐞 **Opraveno po cestě:** po „Máš rozdělanou práci → Pokračovat“ chybělo
+  zadání úlohy (`practiceQuestion` se při obnově nenastavoval). Chyba byla
+  i před touto změnou; `SessionView` teď bere text z aktuální úlohy.
+- ✅ Test `task-visual-fractions.test.tsx` čte čísla ZE ZNĚNÍ úlohy nezávisle
+  na generátoru a porovná s obrázkem (7 případů). Typecheck, `audit:ui`,
+  build, `npm test` (jediný pád = známý nestabilní test pavoukovců).
+  V prohlížeči: 1. vstup → výklad s obrázkem, úloha s proužkem 4/10,
+  sčítání 2/6 + 3/6 dvěma barvami, obnova sezení se zadáním.
+- ➡️ **Další druhy do téhož pole** (každý = jedna větev v `TaskVisual` + řádek
+  v generátoru): pravítko (`g2-mat-mereni-delky`), číselná osa
+  (`g2-mat-ciselna-osa-100`), zlomky 5.–6. ročníku.
+
 ### Session 2026-09-29 (B) — Výklad tématu se ukáže sám při prvním vstupu:
 
 - ✅ **Rozhodnutí uživatele:** výklad „Co je dobré vědět“ ukázat jen při

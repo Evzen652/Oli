@@ -10,6 +10,7 @@ import { ChildHomePage } from "@/components/ChildHomePage";
 import { HelpButton } from "@/components/HelpButton";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import { MiniExplainer } from "@/components/MiniExplainer";
+import { TaskVisual } from "@/components/TaskVisual";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { SessionTimer } from "@/components/SessionTimer";
 import { PracticeInputRouter } from "@/components/PracticeInputRouter";
@@ -841,10 +842,16 @@ export function SessionView() {
                     objekt na obrazovce: mimo paletu, mimo akvarelový rukopis
                     a na každé platformě jinak kreslené. Pole `emoji` v obsahu
                     zůstává (1 061 výskytů), jen se tady nevykresluje. */}
-                {practiceQuestion && (
+                {/* `practiceQuestion` je kopie `task.question`, kterou obnova
+                    sezení („Máš rozdělanou práci → Pokračovat") nenastaví —
+                    dítě pak vidělo úlohu bez zadání. Proto záloha z úlohy. */}
+                {(practiceQuestion || (session.state === "PRACTICE" && currentTask?.question)) && (
                   <p className="mt-4 text-[29px] leading-[1.3] font-extrabold text-foreground">
-                    {practiceQuestion}
+                    {practiceQuestion || currentTask?.question}
                   </p>
+                )}
+                {session.state === "PRACTICE" && currentTask?.visual && (
+                  <TaskVisual visual={currentTask.visual} className="mt-5" />
                 )}
               </CardContent>
             </Card>

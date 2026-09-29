@@ -44,6 +44,21 @@ export interface FractionBarData {
   denominator: number;
 }
 
+/**
+ * Obrázek k úloze (`PracticeTask.visual`). Union, aby další druhy (pravítko,
+ * číselná osa, …) přibyly bez nové infrastruktury.
+ */
+export type TaskVisual = {
+  kind: "fraction_bar";
+  /** Na kolik stejných dílů je celek rozdělený (jmenovatel). */
+  parts: number;
+  /**
+   * Zabarvené díly zleva po skupinách, každá skupina jinou barvou.
+   * `[3]` = 3 vybarvené díly; `[2, 3]` = sčítání 2 + 3.
+   */
+  groups: number[];
+};
+
 export interface HelpVisualExample {
   label: string;
   illustration?: string;          // fallback ASCII
@@ -147,6 +162,12 @@ export interface PracticeTask {
    * Renderuje SessionView (question card).
    */
   emoji?: string;
+  /**
+   * Obrázek k úloze, který nahrazuje popis („obdélník rozdělený na 4 díly")
+   * skutečným obrázkem. Generátor sem vkládá čísla, která už stejně má;
+   * kreslí ho `TaskVisual`. Otisk zámku obsahu ho nezahrnuje.
+   */
+  visual?: TaskVisual;
   options?: string[]; // for select_one / true_false
   items?: string[]; // for drag_order (correct order)
   solutionSteps?: string[]; // specific step-by-step solution for this task (matematika)

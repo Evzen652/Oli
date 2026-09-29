@@ -7,6 +7,14 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-29 (C) — obrázky u zlomků 4. ročníku
+
+Obecné pole `PracticeTask.visual` + komponenta `TaskVisual`; zapojeno do obou
+témat zlomků 4. ročníku (L1 a slovní úlohy L2). Po cestě opraveno krácení ve
+výkladu sčítání zlomků a chybějící zadání po obnově sezení. Detail
+`PROJECT_STATUS.md` §6. **Zbývá:** další druhy obrázků (pravítko, číselná
+osa, souměrnost, mapy) do téhož pole.
+
 ## ✅ VYŘÍZENO 2026-09-29 (B) — výklad tématu při prvním vstupu
 
 „Co je dobré vědět“ se samo otevře při prvním vstupu do tématu (per dítě

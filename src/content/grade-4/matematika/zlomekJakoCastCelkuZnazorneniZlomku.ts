@@ -14,9 +14,15 @@ import { ciselnaUloha, rnd } from "./_mat";
 
 const z = (c: number, j: number) => `${c}/${j}`;
 
+// Obrázek (proužek zlomku) dostává L1 a slovní úloha na L2, L3 je bez něj: postup
+// „obrázek → zápis", dítě se od opory postupně odpoutá. U porovnání by
+// obrázek z úlohy udělal jen koukání, proto ho nemá.
+const sProuzkem = (task: PracticeTask, parts: number, filled: number): PracticeTask =>
+  ({ ...task, visual: { kind: "fraction_bar", parts, groups: [filled] } });
+
 function vybarveno(): PracticeTask {
   const j = rnd(2, 10), c = rnd(1, j - 1);
-  return ciselnaUloha(`Obdélník je rozdělený na ${phrase(j, "STEJNÝ", "DÍL")}. Ema vybarvila ${pad(c, "DÍL")}. Jakou část obdélníku vybarvila?`, z(c, j), [
+  return sProuzkem(ciselnaUloha(`Obdélník je rozdělený na ${phrase(j, "STEJNÝ", "DÍL")}. Ema vybarvila ${pad(c, "DÍL")}. Jakou část obdélníku vybarvila?`, z(c, j), [
     { value: z(j, c), why: "Čitatel a jmenovatel jsou prohozené. Dole je počet všech dílů, nahoře počet vybarvených." },
     { value: z(j - c, j), why: "To je nevybarvená část. Otázka se ptá na vybarvenou." },
     ...(j - c !== c ? [{ value: z(c, j - c), why: "Dole má být počet všech dílů, ne jen nevybarvených." }] : []),
@@ -29,7 +35,7 @@ function vybarveno(): PracticeTask {
     `Celek: ${pad(j, "DÍL")}, to je jmenovatel ${j}.`,
     `Vybarveno: ${pad(c, "DÍL")}, to je čitatel ${c}.`,
     `Vybarvená část: ${z(c, j)}`,
-  ]);
+  ]), j, c);
 }
 
 function porovnani(): PracticeTask {
@@ -66,7 +72,7 @@ function zbylo(): PracticeTask {
   let c = rnd(1, j - 1);
   while (2 * c === j || String(c).endsWith(String(j - c))) c = rnd(1, j - 1);
   const zb = j - c;
-  return ciselnaUloha(`Máme ${jidlo.acc} ${jidlo.rozdeleny} na ${phrase(j, "STEJNÝ", "DÍL")}. Snědli jsme ${z(c, j)} ${jidlo.gen}. Jaká část ${jidlo.gen} zbyla?`, z(zb, j), [
+  return sProuzkem(ciselnaUloha(`Máme ${jidlo.acc} ${jidlo.rozdeleny} na ${phrase(j, "STEJNÝ", "DÍL")}. Snědli jsme ${z(c, j)} ${jidlo.gen}. Jaká část ${jidlo.gen} zbyla?`, z(zb, j), [
     { value: z(c, j), why: "To je snědená část. Otázka se ptá, co zbylo." },
     { value: z(j, zb), why: "Čitatel a jmenovatel jsou prohozené." },
     { value: z(zb + 1, j), why: `Zkouška: ${c} + ${zb + 1} je víc než ${j}.` },
@@ -77,7 +83,7 @@ function zbylo(): PracticeTask {
   ], [
     `Celek: ${z(j, j)}`,
     `${z(j, j)} − ${z(c, j)} = ${z(zb, j)}`,
-  ]);
+  ]), j, c);
 }
 
 const VECI = ["JABLKO", "KULIČKA", "KORUNA", "KNÍŽKA"];
@@ -177,6 +183,13 @@ export const ZLOMEK_CAST_CELKU: TopicMetadata[] = [
       ],
       commonMistake: "Záměna čitatele a jmenovatele — děti píší dělení celkový/zbarvený místo zbarvený/celkový.",
       example: "Pizza je rozdělena na 8 dílů, Anička snědla 3 díly → snědla 3/8 pizzy.",
+      visualExamples: [
+        {
+          label: "Pizza rozdělená na 8 stejných dílů, Anička snědla 3 díly",
+          fractionBars: [{ fraction: "3/8", numerator: 3, denominator: 8 }],
+          conclusion: "Snědla 3/8 pizzy: 3 díly z 8.",
+        },
+      ],
     },
   },
 ];

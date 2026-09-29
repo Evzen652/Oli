@@ -12,12 +12,17 @@ import { ciselnaUloha, rnd } from "./_mat";
 
 const z = (c: number, j: number) => `${c}/${j}`;
 
+// Obrázek dostává L1 a slovní úloha na L2 (dvě barvy = dva sčítance), L3 je
+// bez něj: postup „obrázek → zápis", dítě se od opory postupně odpoutá.
+const sProuzkem = (task: PracticeTask, parts: number, a: number, b: number): PracticeTask =>
+  ({ ...task, visual: { kind: "fraction_bar", parts, groups: [a, b] } });
+
 function scitani(): PracticeTask {
   const j = rnd(3, 12);
   const a = rnd(1, j - 2);
   const b = rnd(1, j - 1 - a);
   const c = a + b;
-  return ciselnaUloha(`${z(a, j)} + ${z(b, j)} = ?`, z(c, j), [
+  return sProuzkem(ciselnaUloha(`${z(a, j)} + ${z(b, j)} = ?`, z(c, j), [
     { value: z(c, 2 * j), why: `Sečetly se i jmenovatele. Díly jsou pořád stejně velké (${z(1, j)}), jmenovatel ${j} se nemění.` },
     { value: z(c + 1, j), why: `Čitatele se sečetly špatně: ${a} + ${b} je méně.` },
     { value: z(a * b, j), why: "Čitatele se vynásobily. Při sčítání zlomků se čitatele sčítají." },
@@ -30,7 +35,7 @@ function scitani(): PracticeTask {
     `Jmenovatele jsou stejné (${j}), díly jsou stejně velké.`,
     `Sečteme čitatele: ${a} + ${b} = ${c}.`,
     `${z(a, j)} + ${z(b, j)} = ${z(c, j)}`,
-  ]);
+  ]), j, a, b);
 }
 
 function odcitani(): PracticeTask {
@@ -58,7 +63,7 @@ function slovniSoucet(): PracticeTask {
   const a = rnd(1, j - 2);
   const b = rnd(1, j - 1 - a);
   const c = a + b;
-  return ciselnaUloha(`Adam snědl ${z(a, j)} pizzy a Bára ${z(b, j)}. Jakou část pizzy snědli dohromady?`, z(c, j), [
+  return sProuzkem(ciselnaUloha(`Adam snědl ${z(a, j)} pizzy a Bára ${z(b, j)}. Jakou část pizzy snědli dohromady?`, z(c, j), [
     { value: z(c, 2 * j), why: `Sečetly se i jmenovatele. Pizza je pořád rozdělená na ${phrase(j, "STEJNÝ", "DÍL")}.` },
     { value: z(j - c, j), why: "Tohle je část, která zbyla. Otázka se ptá, kolik snědli." },
     { value: z(c + 1, j), why: `Dílů je o jeden víc, než snědli: ${a} + ${b} je méně.` },
@@ -69,7 +74,7 @@ function slovniSoucet(): PracticeTask {
   ], [
     `Adam ${z(a, j)}, Bára ${z(b, j)} — díly jsou stejné.`,
     `${z(a, j)} + ${z(b, j)} = ${z(c, j)}`,
-  ]);
+  ]), j, a, b);
 }
 
 function zbytek(): PracticeTask {
@@ -155,10 +160,23 @@ export const SCITANI_ODCITANI_ZLOMKU: TopicMetadata[] = [
         "Zkontroluj, že oba zlomky mají stejný jmenovatel.",
         "Sečti nebo odečti čitatele.",
         "Jmenovatel zůstane beze změny.",
-        "Pokud lze výsledný zlomek zjednodušit (čitatel i jmenovatel dělitelné stejným číslem), zjednodušíme.",
+        // Dřív tu byl 4. krok „výsledek zjednoduš" — krácení ve 4. ročníku
+        // není a klíče se nekrátí, takže dítě by svou odpověď nenašlo.
       ],
       commonMistake: "Sčítání jmenovatelů: žáci píší 1/4 + 1/4 = 2/8 místo 2/4.",
-      example: "3/8 + 2/8 = (3+2)/8 = 5/8. Nebo: 5/6 − 2/6 = 3/6 = 1/2.",
+      // Dřív „… = 3/6 = 1/2": krácení ve 4. ročníku není (viz hlavička souboru).
+      example: "3/8 + 2/8 = (3+2)/8 = 5/8. Nebo: 5/6 − 2/6 = 3/6.",
+      visualExamples: [
+        {
+          label: "3/8 + 2/8: celek rozdělený na 8 stejných dílů",
+          fractionBars: [
+            { fraction: "3/8", numerator: 3, denominator: 8 },
+            { fraction: "2/8", numerator: 2, denominator: 8 },
+            { fraction: "5/8", numerator: 5, denominator: 8 },
+          ],
+          conclusion: "3/8 + 2/8 = 5/8 — díly jsou stejně velké, sečtou se jen čitatele.",
+        },
+      ],
     },
   },
 ];
