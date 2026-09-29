@@ -7,6 +7,17 @@
 
 ---
 
+## ✅ VYŘÍZENO 2026-09-29 (F) — vyřešený ukázkový příklad
+
+„Co je dobré vědět" ukazuje vyřešenou úlohu z generátoru (mimo rozdělanou
+sadu) a otevírá se při první sadě na každé úrovni. Nula nového obsahu,
+všech 340 témat. Detail `PROJECT_STATUS.md` §6.
+
+## 🔴 OTEVŘENO 2026-09-29 — postup úrovní: anonymní děti vidí jen L1
+
+Mastery uvnitř sezení nedosáhne prahu (0,65 < 0,85) a úroveň mezi sezeními
+se ukládá jen přihlášeným. Samostatný úkol založen; detail v §6.
+
 ## ✅ VYŘÍZENO 2026-09-29 (E) — osa a čtvercová síť v 5.–6. ročníku
 
 Zlomky tam nejsou (RVP); místo nich záporná a desetinná čísla (osa), obsah

@@ -59,7 +59,7 @@ function safeGenerate(topic: TopicMetadata, level: number): PracticeTask[] {
  * identický klíč jako dřív (`question`), takže nemůže nic rozbít, jen opravit
  * falešné duplicity.
  */
-function taskKey(t: PracticeTask): string {
+export function taskKey(t: PracticeTask): string {
   const parts: string[] = [String(t.question ?? "")];
   if (t.pairs && t.pairs.length > 0) parts.push(JSON.stringify(t.pairs));
   if (t.categories && t.categories.length > 0) parts.push(JSON.stringify(t.categories));

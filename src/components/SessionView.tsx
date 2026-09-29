@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { PracticeTask, SessionState } from "@/lib/types";
 import { getChildTopicTitle } from "@/lib/displayNames";
@@ -27,6 +27,8 @@ import { getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { getTopicInsight } from "@/lib/topicInsight";
 import { readLocal, writeLocal } from "@/lib/safeStorage";
 import { claimTopicIntro } from "@/lib/topicIntroSeen";
+import { pickWorkedExample } from "@/lib/workedExample";
+import { WorkedExample } from "@/components/WorkedExample";
 import { getPersistedSession, clearPersistedSession } from "@/hooks/useSessionPersistence";
 import { getTopicById } from "@/lib/contentRegistry";
 import { SessionRecoveryDialog } from "@/components/SessionRecoveryDialog";
@@ -136,23 +138,44 @@ export function SessionView() {
 
   /**
    * „Co je dobré vědět" se samo otevře při PRVNÍM vstupu do tématu
-   * (`topicIntroSeen.ts`). Spouští se až ve stavu PRACTICE, tedy když už je
-   * na obrazovce první úloha — dialog pak leží nad ní a po zavření dítě
-   * pokračuje tam, kde je. Obnovené sezení téma už „vidělo", takže se neotevře.
+   * (`topicIntroSeen.ts`). Spouští se na začátku sady (PRACTICE, index 0),
+   * tedy když už je na obrazovce první úloha — dialog leží nad ní a po
+   * zavření dítě pokračuje tam, kde je. Obnovené sezení začíná uprostřed
+   * sady, takže se neotevře.
+   *
+   * Klíč je téma + úroveň sady: první sada na vyšší úrovni dialog otevře
+   * znovu, tentokrát s vyřešeným příkladem TÉ úrovně. To je jediný výklad,
+   * který L2/L3 mají — `helpTemplate` je jeden pro všechny úrovně.
    */
   const [introOpen, setIntroOpen] = useState(false);
-  const introTopicId = session?.state === "PRACTICE" ? session.matchedTopic?.id : undefined;
+  const [exampleLevel, setExampleLevel] = useState<number | null>(null);
+  const batchStart = session?.state === "PRACTICE" && session.currentTaskIndex === 0 && !!session.matchedTopic;
+  const introKey = batchStart ? `${session!.matchedTopic!.id}#L${session!.currentLevel}` : undefined;
   useEffect(() => {
-    if (!introTopicId) return;
+    if (!introKey) return;
+    setExampleLevel(Number(introKey.slice(introKey.lastIndexOf("#L") + 2)));
     let cancelled = false;
     supabase.auth.getSession()
       .then(({ data }) => {
         if (cancelled) return;
-        if (claimTopicIntro(data.session?.user.id ?? "anon", introTopicId)) setIntroOpen(true);
+        if (claimTopicIntro(data.session?.user.id ?? "anon", introKey)) setIntroOpen(true);
       })
       .catch(() => { /* bez relace výklad zůstane za tlačítkem */ });
     return () => { cancelled = true; };
-  }, [introTopicId]);
+  }, [introKey]);
+
+  /**
+   * Vyřešený ukázkový příklad do dialogu: úloha z generátoru, která NENÍ
+   * v rozdělané sadě. Jeden na sadu (memo přes `practiceBatch`, které se
+   * mění jen s novou sadou), aby se ukázka neměnila při každém překreslení.
+   */
+  const exampleTopic = session?.matchedTopic;
+  const exampleBatch = session?.practiceBatch;
+  const level = exampleLevel ?? session?.currentLevel ?? 1;
+  const workedExample = useMemo(
+    () => (exampleTopic && exampleBatch ? pickWorkedExample(exampleTopic, level, exampleBatch) : null),
+    [exampleTopic, level, exampleBatch],
+  );
 
   // For child role: show ChildHomePage by default, TopicBrowser on demand
   // Anon „procházet předmět" — subject čteme synchronně při mountu (stejně jako
@@ -760,7 +783,12 @@ export function SessionView() {
                           <img src={icoExample} alt="" className="h-6 w-6 object-contain" />
                           {t("session.example_label")}
                         </p>
-                        <p className="text-foreground">{session.matchedTopic.helpTemplate.example}</p>
+                        {/* Vyřešená úloha z generátoru; statický `example`
+                            z výkladu jen jako záloha, když v poolu nic
+                            mimo rozdělanou sadu nezbylo. */}
+                        {workedExample
+                          ? <WorkedExample task={workedExample} topic={session.matchedTopic} />
+                          : <p className="text-foreground">{session.matchedTopic.helpTemplate.example}</p>}
                       </div>
                       <div className="rounded-2xl border border-destructive/30 bg-card p-5 space-y-2 shadow-e1">
                         <p className="flex items-center gap-2 font-bold text-destructive">

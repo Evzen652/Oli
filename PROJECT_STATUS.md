@@ -144,6 +144,29 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-09-29 (F) — Vyřešený ukázkový příklad (výklad bez nového obsahu):
+
+- ✅ **„Co je dobré vědět" ukazuje místo statického `example` vyřešenou úlohu
+  z generátoru** (`src/lib/workedExample.ts` + `src/components/WorkedExample.tsx`):
+  zadání (i s obrázkem `visual`), správná možnost zvýrazněná, u každé chybné
+  proč je špatně (`optionFeedback`), pod tím vysvětlení / kroky řešení.
+  Tatáž data, která dítě dosud vidělo až PO chybě. Funguje pro všech 340 témat.
+- ✅ **Ukázka nikdy neprozradí úlohu ze sady:** vylučuje se podle identity
+  úlohy (zadání + dvojice/kategorie + SEŘAZENÉ možnosti — generátory možnosti
+  míchají, takže porovnání jen zadání nestačilo; odhalil to test). Když nic
+  mimo sadu nezbývá, ukáže se statický `example` jako záloha.
+- ✅ **Výklad se otevře při první sadě na KAŽDÉ úrovni** (klíč `téma#L1/L2/L3`
+  v `topicIntroSeen`), s ukázkou té úrovně — jediný výklad, který L2/L3 mají.
+  Obnovené sezení (uprostřed sady) ho neotevře.
+- ✅ Test `worked-example.test.tsx`: všech 340 témat × 3 úrovně mají ukázku
+  i po vyloučení rozdělané sady. `npm test` 8 715 (jediný pád = známý
+  nestabilní test pavoukovců). V prohlížeči: Diktát 3. r., ukázka
+  „náb_tek" mimo sadu, zvýrazněné y, důvody u í/i/ý, vysvětlení.
+- 🔴 **Nalezeno: postup úrovní nefunguje.** Uvnitř sezení je zvýšení mrtvá
+  větev (mastery max 0,65, práh 0,85); mezi sezeními se úroveň ukládá jen
+  přihlášeným. **Anonymní děti vidí vždy jen L1**, přestože shrnutí slibuje
+  „něco těžšího". Založen samostatný úkol.
+
 ### Session 2026-09-29 (E) — Obrázky 5.–6. ročník: osa, síť; a ROZHODNUTÍ o dalším postupu:
 
 - ℹ️ **Zlomky v 5.–6. ročníku NEJSOU** (RVP dataset: 4. ročník, pak až 7.).

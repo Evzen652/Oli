@@ -62,6 +62,8 @@ const cs = {
   "session.how_to": "Jak na to:",
   "session.visual_examples": "Jak to vypadá:",
   "session.example_label": "Příklad:",
+  "session.worked_example_intro": "Podívej se, jak se to řeší. Pak to zkusíš ty.",
+  "session.worked_example_answer": "Správně je:",
   "session.common_mistake": "Častá chyba:",
   "session.fun_fact": "Zajímavost",
   "session.explain.title": "Vysvětlení",

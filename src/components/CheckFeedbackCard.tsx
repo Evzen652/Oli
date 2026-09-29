@@ -52,8 +52,8 @@ function citelneCislo(raw: string): string {
   return raw;
 }
 
-/** Zobrazení správné odpovědi dle typu úlohy */
-function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
+/** Zobrazení správné odpovědi dle typu úlohy. Sdílí ho i `WorkedExample`. */
+export function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
   const inputType = topic.inputType;
 
   // Odborné typy 2. stupně se poznají podle TVARU úlohy, ne podle
@@ -157,8 +157,12 @@ function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: Topi
   );
 }
 
-/** Kontextové vysvětlení proč je odpověď správná */
-function ExplanationDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
+/**
+ * Kontextové vysvětlení proč je odpověď správná. Sdílí ho i `WorkedExample`;
+ * ten vypíná záložní `helpTemplate.hint` (`fallbackHint`), protože v dialogu
+ * stojí tentýž text o box výš.
+ */
+export function ExplanationDisplay({ task, topic, fallbackHint = true }: { task: PracticeTask; topic: TopicMetadata; fallbackHint?: boolean }) {
   // Per-task explanation má vždy nejvyšší prioritu (pro všechny typy)
   if (task.explanation) {
     return (
@@ -194,7 +198,7 @@ function ExplanationDisplay({ task, topic }: { task: PracticeTask; topic: TopicM
   }
 
   // Ostatní typy: fallback na helpTemplate.hint
-  if (topic.helpTemplate?.hint) {
+  if (fallbackHint && topic.helpTemplate?.hint) {
     return (
       <p className="text-base text-muted-foreground leading-relaxed">
         {topic.helpTemplate.hint}
