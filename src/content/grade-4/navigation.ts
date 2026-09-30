@@ -25,12 +25,13 @@ export const GRADE4_NAVIGATION: SubjectNav[] = [
       {
         id: "pisemne-pocitani",
         name: "Písemné počítání",
-        description: "Sčítání, násobení a dělení pod sebou.",
+        description: "Sčítání, násobení a dělení pod sebou, slovní úlohy.",
         emoji: "✏️",
         topicIds: [
           "g4-mat-pisemne-scitani-odcitani-4",
           "g4-mat-pisemne-nasobeni-4",
           "g4-mat-pisemne-deleni-jednociferne-4",
+          "g4-mat-slovni-ulohy-pisemne-operace-4",
         ],
       },
       {

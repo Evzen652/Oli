@@ -205,6 +205,29 @@ src/
   kritéria; krátké klíče („a", „u", „v", „se", „je") se shodovaly se
   spojkou/předložkou; „dvojpísmeno CH" v abecedě stojí u všech otázek, ne
   jen tam, kde je CH odpovědí. (Sonda byla dočasná, nezůstává v repu.)
+- ✅ **Nové téma: slovní úlohy s písemnými operacemi (4. r.)** —
+  `grade-4/matematika/slovniUlohyPisemneOperace.ts`, žák vidí „Příběhy
+  s velkými čísly" v okruhu Písemné počítání. Průzkum: ve 4. ani 5. ročníku
+  nebylo jediné téma se slovními úlohami (jen pár šablon uvnitř jiných
+  témat); písemné operace byly čistý dril.
+  - L1: jeden krok, sčítání/odčítání velkých čísel — hlavní dovednost je
+    poznat operaci (město, tachometr, spoření, stadion, knihovna).
+  - L2: jeden krok, násobení/dělení (sešity, zoo, bedny, cyklista, kniha).
+  - L3: dva kroky / přenos (autobusy se zaokrouhlují NAHORU, kino, vrácené
+    peníze, počítání odzadu, „o … víc").
+  - Distraktory = typické chyby s vysvětlením: prohozená operace,
+    zapomenutý přenos, „menší číslice od větší", neposunutý mezisoučet,
+    useknutý zbytek, zapomenutý druhý krok.
+  - **Nezávislý řešič** (`src/test/slovni-ulohy-g4.test.ts`) čte čísla ze
+    znění a počítá vlastním vzorcem. Při ladění chytil dvě šablony (autobusy,
+    úspory), které kvůli shodným distraktorům nevznikaly vůbec; dev náhled
+    pak ukázal nesmyslný distraktor „26" (sčítání bez přenosu zahodilo
+    i poslední desítku) a čárku před slučovacím „a" v nápovědě — opraveno.
+  - ⚠️ **Rozhodnutí pro uživatele:** `rvp_data.json` nemá pro 4. ani 5. ročník
+    uzel se slovními úlohami (2. a 3. ano) a je jen ke čtení. Téma má zatím
+    `rvpNodeId` = vlastní ID. Buď doplnit uzel do datasetu, nebo ponechat.
+  - 5. ročník zatím beze změny (další krok: stejný přístup s desetinnými
+    čísly a dělením dvojciferným dělitelem).
 - ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
   jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
   obecněji pro celý okruh.

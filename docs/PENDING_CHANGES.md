@@ -28,6 +28,16 @@ stránka jazyka" přepsána, aby neplatila jen pro tvrdé/měkké souhlásky.
 skutečný únik — mýty a báje, malá nápověda u „Co je pro báje typické?" —
 opraven. Ostatní nálezy posouzeny jako falešné poplachy.
 
+**Slovní úlohy 4. ročníku** — nové téma „Příběhy s velkými čísly" (L1 +/−,
+L2 ×/÷, L3 dva kroky), nezávislý řešič v `src/test/slovni-ulohy-g4.test.ts`.
+
+## 🟠 OTEVŘENO 2026-09-30 (D) — RVP uzel pro slovní úlohy 4./5. ročníku
+
+`data/rvp_data.json` (jen ke čtení) nemá pro 4. ani 5. ročník uzel se
+slovními úlohami. Nové téma `g4-mat-slovni-ulohy-pisemne-operace-4` má proto
+`rvpNodeId` = vlastní ID. **Rozhodnout:** doplnit uzel do datasetu (pak
+přepsat `rvpNodeId`), nebo ponechat. Slovní úlohy 5. ročníku zatím chybí.
+
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 
 Dítě spárované kódem na stejném zařízení si úrovně přenese do účtu
@@ -101,7 +111,7 @@ samostatný úkol.
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
 práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · slovní úlohy
-4. a 5. ročníku · zadávání čísla v matematice místo výběru · ~~únik nápovědy
+4. ✅ (D) a 5. ročníku · zadávání čísla v matematice místo výběru · ~~únik nápovědy
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · sloh a čtení ve 2. ročníku ·
 oprava 17 `rvpNodeId`.

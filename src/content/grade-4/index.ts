@@ -14,6 +14,7 @@ import type { TopicMetadata } from "@/lib/types";
 import { PISEMNE_SCITANI_ODCITANI } from "./matematika/pisemneScitaniAOdcitaniVicecifernychCisel";
 import { PISEMNE_DELENI } from "./matematika/pisemneDeleniJednocifernymDelitelem";
 import { PISEMNE_NASOBENI } from "./matematika/pisemneNasobeniJednoADvoucifernymCinitelem";
+import { SLOVNI_ULOHY_PISEMNE_OPERACE } from "./matematika/slovniUlohyPisemneOperace";
 import { ZLOMEK_CAST_CELKU } from "./matematika/zlomekJakoCastCelkuZnazorneniZlomku";
 import { SCITANI_ODCITANI_ZLOMKU } from "./matematika/scitaniAOdcitaniZlomkuSeStejnymJmenovatelem";
 import { CTENI_ZAPIS_POROVNAVANI } from "./matematika/cteniZapisAPorovnavaniCiselDoMilionu";
@@ -88,6 +89,7 @@ export const GRADE_4_TOPICS: TopicMetadata[] = [
   ...PISEMNE_SCITANI_ODCITANI,
   ...PISEMNE_DELENI,
   ...PISEMNE_NASOBENI,
+  ...SLOVNI_ULOHY_PISEMNE_OPERACE,
   ...ZLOMEK_CAST_CELKU,
   ...SCITANI_ODCITANI_ZLOMKU,
   ...CTENI_ZAPIS_POROVNAVANI,
