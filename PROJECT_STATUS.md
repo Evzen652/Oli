@@ -174,6 +174,27 @@ src/
     šabloně, výsledek ověří a při porušení složí znovu z jinak zamíchaného
     vstupu. 2 100 volání: 0 porušení (dřív ~⅓ běhů testu), 3 ms na volání.
   - Oba soubory 10× po sobě zelené; `audit:content` ✓.
+- ✅ **Nové téma: párové souhlásky (2. r.)** — `grade-2/cjl/paroveSouhlasky.ts`,
+  RVP `g2-cjl-…-souhlasky-znele-a-neznele-parove-spodoba` (v 2.–6. ročníku
+  chybělo úplně; legacy `cz-parove-souhlasky` je vypnuté). Žák vidí „B, nebo P?"
+  v okruhu Hlásky a pravopis.
+  - L1 (32): najdi párovou souhlásku k „d" / která souhláska je znělá.
+    Distraktory = souhláska stejné znělosti z jiného páru, opačné znělosti
+    z jiného páru, nepárová souhláska tvořená podobně (d → ť, b, n).
+  - L2 (16): dvě mezery na KONCI slov v jedné větě („hra_ … le_").
+  - L3 (13): aspoň jedna mezera UVNITŘ slova — spodoba („ry_ka", „kre_ba",
+    „pro_bu"), ověření příbuzným slovem.
+  - Proč dvě mezery: párová souhláska má jen dvě písmena; s jednou mezerou by
+    úloha byla 50 : 50. Možnosti jsou dvojice písmen („b, d"), nikdy celé slovo.
+  - Nápověda vede k ověřovacímu tvaru, ale nevysloví ho („jeden hra_ – dva …").
+  - **Nezávislý řešič** (`src/test/parove-souhlasky.test.ts`, vlastní slovník
+    správně psaných slov) chytil chybu, kterou jsem napsal: „úz_á" místo
+    „ú_ká" (mezera za z). Opraveno.
+  - V prohlížeči: 2. ročník → Čeština → Hlásky a pravopis → sezení, výklad,
+    vyřešený příklad, chybná odpověď → zdůvodnění + vysvětlení.
+- ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
+  jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
+  obecněji pro celý okruh.
 
 ### Session 2026-09-30 (C) — Přenos úrovní při propojení anonymního dítěte:
 

@@ -17,6 +17,7 @@ import { MERIENIDELIVKYUSECKY } from "./matematika/mereniDelkyUsecky";
 
 // ── Čeština (13) ──
 import { PRAVOPISIY } from "./cjl/pravopisIY";
+import { PAROVE_SOUHLASKY } from "./cjl/paroveSouhlasky";
 import { DOPLNOVACIDIKTAT2 } from "./cjl/doplnovaciDiktat";
 import { SKUPINYDЕТЕНЕ } from "./cjl/skupinyDeTeNe";
 import { SLABIKY } from "./cjl/slabiky";
@@ -65,6 +66,7 @@ export const GRADE_2_TOPICS: TopicMetadata[] = [
   ...MERIENIDELIVKYUSECKY,
   // ── Čeština ──
   ...PRAVOPISIY,
+  ...PAROVE_SOUHLASKY,
   ...DOPLNOVACIDIKTAT2,
   ...SKUPINYDЕТЕНЕ,
   ...SLABIKY,

@@ -7,7 +7,7 @@
 
 ---
 
-## ✅ VYŘÍZENO 2026-09-30 (D) — mobilní hlavička, pruh zkušební doby, nestabilní testy
+## ✅ VYŘÍZENO 2026-09-30 (D) — mobilní hlavička, nestabilní testy, párové souhlásky
 
 Na 375 px se v hlavičce cvičení kreslilo logo přes „Zpět" a začátek
 názvu předmětu. Logo je teď vidět až od `lg` (1024 px), kde vedle středového
@@ -18,6 +18,11 @@ sloupce vedle „Sdílet s rodiči"; na mobilu teď tlačítko spadne pod text.
 příčiny: u pavoukovců nedeterministické měření délky + klíč nejdelší u 10
 z 15 úloh L2 (6 distraktorů prodlouženo); u mýtů pořadí úloh, které občas
 dalo tutéž postavu po sobě (teď ověřené a při porušení složené znovu).
+
+**Párové souhlásky (2. r.)** — nové téma „B, nebo P?" (L1 páry a znělost,
+L2 dvě mezery na konci slov, L3 spodoba uvnitř slova), nezávislý řešič
+v `src/test/parove-souhlasky.test.ts`. Motivační věta okruhu „Zvuková
+stránka jazyka" přepsána, aby neplatila jen pro tvrdé/měkké souhlásky.
 
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 
@@ -84,14 +89,14 @@ a zařízení, `src/lib/topicIntroSeen.ts`), pak zůstává za tlačítkem. Deta
 v `PROJECT_STATUS.md` §6. **Zbývá z téže analýzy:** obrázky u vizuální látky
 (0/340 témat; komponenty existují) a výklad pro L3.
 
-⚠️ Nestabilní testy 6. ročníku (`mytyABajeNaroduSveta`,
+✅ ~~Nestabilní testy 6. ročníku~~ — opraveno 2026-09-30 (D). (`mytyABajeNaroduSveta`,
 `pavoukovciPavouciStiriKlistata`) padají náhodně i na čistém `main` —
 samostatný úkol.
 
 ## 🟠 OTEVŘENO 2026-09-29 — mezery v obsahu 2.–6. ročníku (čeká na volbu)
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
-práci, seřazeno podle dopadu: párové souhlásky (chybí úplně) · slovní úlohy
+práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · slovní úlohy
 4. a 5. ročníku · zadávání čísla v matematice místo výběru · únik nápovědy
 v 21 tématech · sloh a čtení ve 2. ročníku · oprava 17 `rvpNodeId`.
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.

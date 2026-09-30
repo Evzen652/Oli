@@ -140,7 +140,9 @@ export const TOPIC_INSIGHT: Record<string, TopicInsight> = {
 
   // ───────────────────────── ČEŠTINA ─────────────────────────
   "čeština::Jazyková výchova::Zvuková stránka jazyka": {
-    useful: "Když slyšíš, jestli je souhláska tvrdá, nebo měkká, napíšeš správně i slovo, které jsi nikdy neviděl/a.",
+    // Platí pro celý okruh (y/i, párové souhlásky, dě/tě/ně, slabiky, dělení
+    // slov). Dřív mluvila jen o tvrdých a měkkých souhláskách, i u slabik.
+    useful: "Když víš, co ve slově slyšíš a kde se píše jinak, než se vyslovuje, napíšeš správně i slovo, které jsi nikdy neviděl/a.",
     funFact: "Háček nad písmeny se připisuje Janu Husovi. Do té doby se „č“ psalo jako „cz“ a texty byly o poznání delší.",
   },
   "čeština::Jazyková výchova::Slovní zásoba": {
