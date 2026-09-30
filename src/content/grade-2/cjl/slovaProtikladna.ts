@@ -348,7 +348,7 @@ function gen(level: number): PracticeTask[] {
 export const SLOVAPROTIKLADNA: TopicMetadata[] = [
   {
     id: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna",
-    rvpNodeId: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-protikladna-a-souznacna",
+    rvpNodeId: "g2-cjl-jazykova-vychova-slovo-a-veta-slova-protikladna-slova-souznacna",
     title: "Slova protikladná a souznačná",
     studentTitle: "Opak a to samé",
     subject: "čeština",

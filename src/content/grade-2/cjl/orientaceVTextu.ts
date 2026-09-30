@@ -454,7 +454,7 @@ function gen(level: number): PracticeTask[] {
 export const ORIENTACEVTEXTU: TopicMetadata[] = [
   {
     id: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
-    rvpNodeId: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
+    rvpNodeId: "g2-cjl-komunikacni-a-slohova-vychova-cteni-s-porozumenim-orientace-v-textu-nadpis-odstavec",
     title: "Orientace v textu (věta, odstavec, nadpis)",
     studentTitle: "Vyznej se v textu",
     subject: "čeština",

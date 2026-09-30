@@ -240,7 +240,7 @@ function gen(level: number): PracticeTask[] {
 export const DRUHYVET: TopicMetadata[] = [
   {
     id: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci",
-    rvpNodeId: "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-druhy-vet-oznamovaci-tazaci-rozkazovaci",
+    rvpNodeId: "g2-cjl-jazykova-vychova-slovo-a-veta-druhy-vet-podle-postoje-mluvciho-oznam-taz-rozk-praci",
     title: "Druhy vět (oznamovací, tázací, rozkazovací)",
     studentTitle: "Jaká je to věta?",
     subject: "čeština",

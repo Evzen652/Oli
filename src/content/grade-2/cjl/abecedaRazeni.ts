@@ -255,7 +255,7 @@ function gen(level: number): PracticeTask[] {
 export const ABECEDAAZENI: TopicMetadata[] = [
   {
     id: "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
-    rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-abeceda-a-razeni",
+    rvpNodeId: "g2-cjl-jazykova-vychova-slovo-a-veta-abeceda-a-razeni-podle-abecedy",
     title: "Abeceda a řazení",
     studentTitle: "Abeceda od A do Z",
     subject: "čeština",

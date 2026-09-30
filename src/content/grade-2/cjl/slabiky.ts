@@ -270,7 +270,7 @@ function gen(level: number): PracticeTask[] {
 export const SLABIKY: TopicMetadata[] = [
   {
     id: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky",
-    rvpNodeId: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-na-slabiky",
+    rvpNodeId: "g2-cjl-jazykova-vychova-zvukova-stranka-jazyka-slabika-rozdeleni-slova-na-slabiky",
     title: "Slabika, rozdělení na slabiky",
     studentTitle: "Tleskej slabiky",
     subject: "čeština",

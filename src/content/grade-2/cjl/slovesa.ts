@@ -146,7 +146,7 @@ function gen(level: number): PracticeTask[] {
 export const SLOVESA: TopicMetadata[] = [
   {
     id: "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu",
-    rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-rozliseni-slovesneho-druhu",
+    rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-slovesa-co-osoby-a-veci-delaji",
     title: "Slovesa (rozlišení slovesného druhu)",
     studentTitle: "Co dělá?",
     subject: "čeština",

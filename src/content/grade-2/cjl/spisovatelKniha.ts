@@ -612,7 +612,7 @@ function gen(level: number): PracticeTask[] {
 export const SPISOVATELKNIHA: TopicMetadata[] = [
   {
     id: "g2-cjl-literarni-vychova-prace-s-knihou-spisovatel-ilustrator-knihovna",
-    rvpNodeId: "g2-cjl-literarni-vychova-prace-s-knihou-spisovatel-ilustrator-knihovna",
+    rvpNodeId: "g2-cjl-literarni-vychova-prace-s-literarnim-textem-spisovatel-ilustrator-kniha-knihovna",
     title: "Spisovatel, ilustrátor, knihovna",
     studentTitle: "Kdo tvoří knihu",
     subject: "čeština",

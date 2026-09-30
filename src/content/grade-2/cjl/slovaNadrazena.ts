@@ -311,7 +311,7 @@ function gen(level: number): PracticeTask[] {
 export const SLOVANADRAZENA: TopicMetadata[] = [
   {
     id: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena",
-    rvpNodeId: "g2-cjl-jazykova-vychova-slovni-zasoba-slova-nadrazena-a-podrazena",
+    rvpNodeId: "g2-cjl-jazykova-vychova-slovo-a-veta-slova-nadrazena-podrazena-souradna",
     title: "Slova nadřazená a podřazená",
     studentTitle: "Co kam patří",
     subject: "čeština",

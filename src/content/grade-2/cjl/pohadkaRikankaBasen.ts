@@ -652,7 +652,7 @@ function gen(level: number): PracticeTask[] {
 export const POHADKARIKANKABASEN: TopicMetadata[] = [
   {
     id: "g2-cjl-literarni-vychova-literarni-zanry-pohadka-rikanky-basen-hadanka",
-    rvpNodeId: "g2-cjl-literarni-vychova-literarni-zanry-pohadka-rikanky-basen-hadanka",
+    rvpNodeId: "g2-cjl-literarni-vychova-prace-s-literarnim-textem-pohadka-rikanka-basen-hadanka",
     title: "Pohádka, říkanka, báseň, hádanka",
     studentTitle: "Pohádky a básně",
     subject: "čeština",

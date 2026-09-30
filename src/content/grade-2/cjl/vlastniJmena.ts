@@ -144,7 +144,7 @@ function gen(level: number): PracticeTask[] {
 export const VLASTNIJMENA: TopicMetadata[] = [
   {
     id: "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno",
-    rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-vlastni-jmena-velke-pismeno",
+    rvpNodeId: "g2-cjl-jazykova-vychova-tvaroslovi-podstatna-jmena-co-oznacuji-vlastni-jmena",
     title: "Vlastní jména a velké písmeno",
     studentTitle: "Jména s velkým písmenem",
     subject: "čeština",
