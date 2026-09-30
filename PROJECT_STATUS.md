@@ -315,6 +315,14 @@ src/
     diagnostiku uloženou pod „40,5". Zároveň u desetinného čísla NEchodí do
     větve, která dělí odpověď podle čárky (ta patří multi_select) — jinak by
     „40,5" dostalo vysvětlení patřící ke klíči „40".
+- ✅ **`docs/SESSION_HANDOFF.md` přepsané na stav k 30. 9.** Bylo 5 dní
+  zastaralé a tvrdilo dvě nepravdy, podle kterých by nová session plánovala:
+  „commit dávky B vko zatím pushnutý není" (je) a „obsah už dělat není co"
+  (29. a 30. 9. se ukázalo, že mezery leží mimo obsahový plán — chybějící
+  témata a formát odpovědi). Nově: co je pushnuté a čím ověřené, jak se téma
+  převádí na zápis čísla a co o tom rozhoduje, obě poučení (osm testů formátu
+  odpovědi, které cílené běhy nespustí; hlídač ověřený obráceně) a §4
+  s otevřenými rozhodnutími.
 - ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
   jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
   obecněji pro celý okruh.

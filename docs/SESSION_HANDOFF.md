@@ -1,23 +1,30 @@
-# Předání práce — stav k 2026-09-25
+# Předání práce — stav k 2026-09-30
 
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >
-> ✅ **6. ročník je HOTOVÝ — 117 ze 117 podtémat (25. 9.).** Fyzika 13/13,
-> dějepis 24/24, matematika 12/12, přírodopis 22/22, zeměpis 18/18, čeština
-> 20/20, výchova k občanství 8/8 (dávka A 24. 9., dávka B 25. 9.). Spolu
-> s ročníky 1–5 je tím **hotový celý obsahový plán aplikace.** Detail
-> poslední dávky → §1.
+> ✅ **Všechno je pushnuté, `origin/main` = `5bdd172`** (30. 9., nasazeno na
+> produkci). Nic nečeká ve frontě, worktree je čistý.
 >
-> **Jediná zbylá větev práce je příprava spuštění** — právní stránky, mobilní
-> obal, bezpečnost, formuláře obchodů. Nejde dál sama od sebe: stojí na osmi
-> rozhodnutích a úkonech, které může udělat jen Evžen — **§2**. Od 13. 9. se
-> v ní nepohnulo, protože všechny zbylé kroky jsou na uživateli. **Nová
-> session by měla začít TADY, ne obsahem** — obsah už dělat není co.
+> ✅ **Obsahový plán ročníků 1–6 je hotový od 25. 9.** (6. ročník 117/117).
+> Od 29. 9. na něm ale práce běžela dál — ne „doplnit plán", ale **zavřít
+> mezery, které plán neviděl**: chybějící témata (párové souhlásky 2. r.,
+> slovní úlohy 4. a 5. r.) a formát odpovědi (**16 matematických témat
+> 2.–5. ročníku výsledek PÍŠE, nevybírá ze čtyř možností**). Detail → §1.
 >
-> ⚠️ **Commit dávky B vko zatím pushnutý není** — čeká na schválení uživatele
-> (viz `git status -sb` na začátku session). Dávky 2–4 češtiny a dávka A vko
-> pushnuté 24. 9. jsou.
+> **Dvě větve práce, ze kterých si vybrat:**
+> 1. **Příprava spuštění (§2)** — právní stránky, mobilní obal, bezpečnost,
+>    formuláře obchodů. Od 13. 9. se v ní nepohnulo, protože šest z osmi
+>    kroků může udělat jen Evžen (účty, právní kontrola, podpisový klíč).
+> 2. **Zbylé mezery v obsahu** — seznam kandidátů je v `PENDING_CHANGES.md`
+>    („mezery v obsahu 2.–6. ročníku"). Nevyčerpané zůstaly: sloh a čtení
+>    ve 2. ročníku, oprava 17 `rvpNodeId`, informatika 4.–6. (0/29, není
+>    rozhodnuto, jestli do aplikace vůbec patří).
+>
+> ⚠️ **Jedno rozhodnutí visí a blokuje úklid:** `data/rvp_data.json` nemá pro
+> 4. ani 5. ročník uzel se slovními úlohami, takže dvě nová témata mají
+> `rvpNodeId` = vlastní ID. Buď doplnit uzly do datasetu (je READONLY —
+> změnu musí odsouhlasit Evžen), nebo to nechat a napsat proč.
 
 ---
 
@@ -31,16 +38,25 @@ git fetch origin && git status -sb && git worktree list
 
 **Pracovní větev je `main`.**
 
-K 21. 9. je všechno v `main` a pushnuté (Evžen potvrdil nasazení): dávka 1
-češtiny + tohle předání. Na druhém PC stačí `git pull` na `main`. Session větev
-`claude/czech-morphology-vocabulary-71729b` je z originu smazaná — nepoužívej ji.
+K 30. 9. je všechno v `main` a pushnuté (Evžen potvrdil nasazení),
+`origin/main` = `5bdd172`. Poslední tři commity: slovní úlohy 5. ročníku
+(`a1644f3`), zápis čísla u písemného počítání (`30cd2b5`), rozšíření zápisu
+čísla na 16 témat (`5bdd172`). Na druhém PC stačí `git pull` na `main`.
 
-Ověřeno na prvním PC před pushem: typecheck, 7 744 testů (1 nestabilní test
-přírodopisu nesouvisející s dávkou — úkol založen), `audit:content`,
-`audit:agreement`, `audit:ui`, build, průchod v prohlížeči. Nasazení na Vercelu
-odsud ověřit nejde (viz níž).
-**Worktree jsou dva** (hlavní repo a `competent-johnson-de23e8`); pět
-zastaralých odstraněno 15. 9. bez ztráty práce — viz `SESSION_PROTOCOL.md` krok 1.
+Ověřeno před pushem: typecheck, **9 131 testů** (240 souborů, 0 pádů),
+`audit:content` i pedagogický, `audit:agreement` (45 292 úloh),
+`audit:ui`, `check:keys` (5 696 klíčů, 0 neshod), build a průchod
+v prohlížeči na obě strany (správná odpověď i chyba s diagnostikou).
+Nasazení na Vercelu odsud ověřit nejde (viz níž).
+
+⚠️ **Pozor na pořadí u testů:** `npm test` pouštěj jako POSLEDNÍ krok před
+commitem, ne jen cílené běhy. V téhle sérii spadlo osm testů, které cílené
+běhy vůbec nespustily — viz §1, poučení o formátu odpovědi.
+
+**Worktree** — session 30. 9. běžela v `gallant-edison-dd11ef`; pracovní větev
+uvnitř byla `claude/compassionate-williams-ef2213` a pushovalo se z ní
+výslovně přes `git push origin HEAD:main`. Starší varování o
+`competent-johnson-de23e8` platí dál (viz níž).
 
 ⚠️ **Ve worktree `competent-johnson-de23e8` nejsi na `main`**, ale na větvi
 session (naposledy `claude/session-handoff-three-batches-caf5ea`), která sleduje
@@ -89,6 +105,72 @@ jako nesloučená. Tohle už jednou stálo hodinu.
 
 ## 1. Kde jsme skončili
 
+### ✅ 29.–30. 9. — mezery, které obsahový plán neviděl
+
+Plán ročníků 1–6 byl hotový, ale inventura našla díry jiného druhu. Detail
+každé položky → `PROJECT_STATUS.md` §6, sessions 2026-09-29 a 2026-09-30 (B–D).
+
+**Nový obsah** (tři témata, všechna s nezávislým řešičem v testu):
+- **Párové souhlásky, 2. r.** — „B, nebo P?". V ročnících 2–6 chybělo úplně.
+- **Slovní úlohy s písemnými operacemi, 4. r.** — „Příběhy s velkými čísly".
+- **Slovní úlohy, 5. r.** — „Příběhy ze života" (koruny s čárkou, průměr,
+  trojčlenka, počítání pozpátku).
+
+**Formát odpovědi v matematice** — do 30. 9. bylo **všech 66 matematických
+témat výběr ze čtyř možností**; zápis čísla neuměla ani jedna živá látka
+(legacy `number` témata jsou v `src/lib/content/index.ts` zakomentovaná).
+Teď **16 témat 2.–5. ročníku výsledek píše**: násobilka 2–5 a 6–10, malá
+násobilka, sčítání a odčítání do 100 a do 1000, slovní úlohy 2. a 3. r.,
+vztah násobení a dělení, posloupnosti, tabulky, písemné sčítání/odčítání,
+písemné násobení, magické čtverce, průměr 4. i 5. r., logické úlohy.
+
+> **Jak se téma převádí:** `inputType: "number"` a
+> `generator: (level) => napisCisla(gen(level))` (helper
+> `src/content/_zapisCisla.ts`). Obsah se nemění — otázka i klíč zůstávají,
+> zahodí se jen `options`. **Zahodit, ne vyprázdnit:** `PracticeInputRouter`
+> dává přednost TVARU úlohy před `topic.inputType`, takže úloha s neprázdnými
+> `options` dostane tlačítka i u `inputType: "number"`.
+>
+> **Podmínka, která rozhoduje, co převést jde:** klíč musí projít
+> `validateTaskForInputType` pro `number` (`/^-?\d+([.,]\d+)?$/`). Zbylá
+> matematika ji nesplňuje — klíč nese jednotku („40 cm"), zbytek po dělení
+> („906 zb. 2") nebo mezeru mezi řády. Taková úloha by se zahodila v offline
+> auditu i ve `filterValidTasks` a dítě by dostalo prázdné sezení.
+>
+> **Diagnostika chyb se nemá zahazovat s menu:** `optionFeedback` je klíčované
+> hodnotou distraktoru a `getTargetedFeedback` ji hledá podle toho, co dítě
+> NAPSALO. U výběru šlo tutéž možnost tipnout — teď „menší od větší" dostane
+> ten, kdo tu chybu opravdu udělal.
+
+**Dvě vady, které to vytáhlo na světlo** — obě by se projevily až na dítěti,
+protože zápis čísla dosud nikdo nepoužíval:
+- `numericToleranceValidator` měl vedle absolutní tolerance 0,001 i relativní
+  0,1 %, takže u klíče 4 320 prošlo „4 318" jako **správně**. Relativní část
+  odstraněna; kde je rozptyl legitimní (měření), je na to `numeric_range`
+  s výslovným „5,5±0,1".
+- `<input type="number">` v českém prostředí **zahodí desetinnou čárku**, a
+  průměr v 5. ročníku vychází i „40,5" — dítě by výsledek nemělo jak napsat.
+  `NumberInput` je teď `type="text"` + `inputMode="decimal"` (číselná
+  klávesnice zůstává) s filtrem vstupu.
+
+⚠️ **Poučení, které bude platit i jinde: formát odpovědi je zadrátovaný na
+osmi místech a CÍLENÉ BĚHY TESTŮ O NĚM MLČÍ.** Osm testů spadlo až při běhu
+celé sady, ve dvou vlnách po sobě:
+`grade-4/__tests__/{pisemneNasobeni,pisemneScitaniAOdcitani,dataALogika}`,
+`grade-5/__tests__/inputType` (seznam povolených typů), `a11y` a
+`odborne-typy-e2e` (`input[type="number"]`) a `multi-role-flow`. Než převedeš
+další téma, počítej s tím, že `npm test` je jediná kontrola, která to najde.
+(Poslední z nich tvrdil, že číselné téma musí být `algorithmic`/`mixed` —
+neplatí: slovní úlohy a tabulky stojí na konečné bance příběhů, tedy
+`factual`. Formát odpovědi a původ obsahu jsou nezávislé osy.)
+
+⚠️ **A ještě jedno, které se v téhle sérii potvrdilo dvakrát: hlídač může
+mlčet o vlastním nálezu.** Kontrola shody čísla a jména u slovních úloh
+5. ročníku při prvním zápisu nechytila „3 hodin", protože lookbehind
+vylučoval každou mezeru. Nový test zápisu čísla jsem proto ověřil obráceně —
+dočasně jsem vrátil starou toleranci a **10 ze 48 kontrol zčervenalo**.
+Dokud test takhle neprojde ověřením, neví se, jestli něco hlídá.
+
 ### ✅ Dávka 2 hotová (22. 9.) — skladba + zvuková stránka, detail `PROJECT_STATUS.md` §6 session 54
 
 Poučení z dávky 2: kritici nechali projít shodu „Kdo koupila…?“ a lomítkové tvary
@@ -136,15 +218,21 @@ byly jinde: věcně nesmyslné konkrétní časové údaje v L3 scénářích (�
 týdnů" tam, kde to bylo ~8 měsíců), mylně přisouzená kompetence úřadu, a
 sdílený slovník zpětné vazby, který nerozlišoval 2./3. osobu podle úrovně.
 
-### ▶▶ ZAČNI TADY: příprava spuštění (§2) — obsah už dělat není co
+### ▶▶ ZAČNI TADY: zeptej se, která větev
 
-**6. ročník je hotový (117/117), s ním celý obsahový plán aplikace (ročníky
-1–6).** Další obsahová dávka není naplánovaná — pokud uživatel nezadá jinak,
-další práce patří do větve „příprava spuštění": osm kroků v **§2**, z toho
-šest čeká výhradně na uživatele (účty, právní kontrola, podpisový klíč) a dva
-technické navazují na ně (redirect URLs, cron úklidu — oba už hotové, viz §2).
-Než začneš cokoli kódovat, zkontroluj s uživatelem, jestli má nový úkol, nebo
-jestli má smysl sáhnout na některý z „drobnějších" nálezů v **§4**.
+Obsahový PLÁN je hotový (ročníky 1–6), ale to neznamená, že obsah je hotový —
+29. a 30. 9. se ukázalo, že mezery leží mimo plán: chybějící témata a formát
+odpovědi. Nepiš tedy do předání znovu „obsah už dělat není co"; zbylé
+kandidáty drží `PENDING_CHANGES.md` (sloh a čtení 2. r., 17 `rvpNodeId`,
+informatika 4.–6.).
+
+Druhá větev je **příprava spuštění**: osm kroků v **§2**, z toho šest čeká
+výhradně na uživateli (účty, právní kontrola, podpisový klíč) a dva technické
+navazují na ně (redirect URLs, cron úklidu — oba už hotové, viz §2). Právě
+proto se v ní od 13. 9. nepohnulo.
+
+Než začneš cokoli kódovat, zeptej se uživatele, kterou větev chce — a jestli
+nemá smysl sáhnout po některém z „drobnějších" nálezů v **§4**.
 
 ---
 
@@ -607,6 +695,22 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
 ---
 
 ## 4. Otevřené pro další session
+
+### 🟠 Přibylo 30. 9.
+
+- **RVP uzel pro slovní úlohy 4. a 5. ročníku.** `data/rvp_data.json` (jen ke
+  čtení) uzel nemá, takže `g4-mat-slovni-ulohy-pisemne-operace-4`
+  a `g5-mat-slovni-ulohy-5` mají `rvpNodeId` = vlastní ID. Rozhodnout: doplnit
+  uzly do datasetu (změnu READONLY souboru musí odsouhlasit Evžen), nebo
+  ponechat a napsat proč. **Souvisí s** položkou „oprava 17 `rvpNodeId`"
+  v `PENDING_CHANGES.md` — dávalo by smysl vyřešit obojí naráz.
+- **Zbylí kandidáti z inventury mezer** (`PENDING_CHANGES.md`, sekce „mezery
+  v obsahu 2.–6. ročníku"): sloh a čtení ve 2. ročníku · informatika 4.–6.
+  (0/29, není rozhodnuto, jestli do aplikace patří).
+- **Zbylá matematika na výběru možností.** 16 témat výsledek píše; zbytek ne,
+  protože klíč nese jednotku, zbytek po dělení nebo mezeru mezi řády. Kdyby
+  se to mělo rozšířit, je to zásah do KLÍČE (jednotku přesunout do zadání),
+  tedy do zamrazeného obsahu — ne jen do formátu. Nedělat bez zadání.
 
 ### ✅ Kořen úniku v nápovědě — opraveno 13. 9.
 
