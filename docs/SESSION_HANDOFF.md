@@ -3,8 +3,9 @@
 > Tenhle soubor je první, co si má nová session přečíst. Detail je
 > v `PROJECT_STATUS.md` §6 a `docs/PENDING_CHANGES.md`.
 >
-> ✅ **Všechno je pushnuté, `origin/main` = `5bdd172`** (30. 9., nasazeno na
-> produkci). Nic nečeká ve frontě, worktree je čistý.
+> ✅ **Všechno je pushnuté a nasazené** (30. 9.); poslední commit v `main` je
+> tohle předání, poslední commit s kódem `5bdd172`. Nic nečeká ve frontě.
+> Ověř si to `git fetch`em (§0), ne tímhle odstavcem — SHA tady zastarává.
 >
 > ✅ **Obsahový plán ročníků 1–6 je hotový od 25. 9.** (6. ročník 117/117).
 > Od 29. 9. na něm ale práce běžela dál — ne „doplnit plán", ale **zavřít
