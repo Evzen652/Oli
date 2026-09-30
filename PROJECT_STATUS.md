@@ -144,6 +144,41 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-01 — `rvpNodeId` u starších témat 2. ročníku:
+
+- ✅ **Deset `rvpNodeId` mířilo na neexistující uzel RVP** (`421cff6`).
+  Admin strom RVP páruje téma s uzlem přes `rvpNodeId === node.id`
+  ([AdminRvpTree.tsx:27](src/pages/AdminRvpTree.tsx#L27)), takže deset uzlů
+  2. ročníku se hlásilo jako „bez obsahu", i když obsah dávno je. Změřeno
+  simulací té stejné shody: **2. ročník / čeština 4 z 25 uzlů → 14 z 25**.
+  Přemapováno na skutečné uzly, `data/rvp_data.json` se nedotklo. Ověřeno, že
+  žádný cílový uzel nebyl obsazený jiným tématem a že obsah tématu odpovídá
+  labelu uzlu (např. „Slovesa (rozlišení slovesného druhu)" → *Tvarosloví >
+  Slovesa – co osoby a věci dělají*).
+  - **Mění se jen `rvpNodeId`, `id` zůstává.** U starších témat jsou to tytéž
+    řetězce, ale na `id` visí pokrok dítěte, sezení i `custom_exercises`.
+    Skript oprav to sám odmítal provést, kdyby se `id` změnilo; čtvrté měřítko
+    testu na to dohlíží dál.
+  - Hlídá `src/test/rvp-node-id.test.ts`, čtyři měřítka. **Ověřeno obráceně:**
+    po dočasném vrácení všech deseti starých ID test spadl, pojmenoval je a
+    zčervenala dvě měřítka ze čtyř. (Vraceno obráceným průchodem téhož
+    skriptu, ne `git stash` — zásobník je sdílený mezi worktree.)
+- ⚠️ **Údaj „oprava 17 `rvpNodeId`" byl osm měsíců nepřeměřený.** Skutečných
+  je **13**, a z toho jen 10 byla chyba: 1 je zástupný text v
+  `grade-4/TEMPLATE.ts` (není registrovaný, není to vada) a 2 jsou slovní úlohy
+  4./5. ročníku, kterým uzel v datasetu opravdu chybí — to je otevřené
+  rozhodnutí, ne překlep. V testu jsou jako doložená výjimka, ne skrytě.
+- 📋 **Vedlejší zisk: mezery 2. ročníku jsou teď pojmenované.** Ze 25 uzlů
+  češtiny zbývá bez obsahu 11 a rozpadají se na tři skupiny:
+  - **3 × Psaní** (upevňování tvarů písmen, opis a přepis, diktát kratších
+    slov a vět) — nácvik psaní rukou, do aplikace na dotek nepatří.
+  - **3 × Slohová výchova** + **2 × Čtení s porozuměním** — to je ta položka
+    „sloh a čtení ve 2. ročníku" z `PENDING_CHANGES`; teď je konkrétní.
+  - **2 × Práce s literárním textem** (dramatizace, vyjádření pocitů)
+    + **1 × Pořádek slov ve větě**.
+- ⚠️ **`SESSION_PROTOCOL.md` uvádělo baseline `audit:ui` = 9; skutečnost je
+  12.** Opraveno.
+
 ### Session 2026-09-30 (D, samostatně) — mobilní hlavička, nestabilní testy:
 
 - ✅ **Hlavička cvičení na mobilu.** Logo stálo `absolute left-4` mimo

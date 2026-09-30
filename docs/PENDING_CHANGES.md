@@ -45,12 +45,29 @@ zůstává na výběru — klíč tam nese jednotku, zbytek po dělení nebo mez
 relativní tolerance 0,1 % uznávala „4 318" místo „4 320", a `type="number"`
 zahazovalo desetinnou čárku, takže „40,5" u průměru nešlo napsat.
 
+## ✅ VYŘÍZENO 2026-10-01 — 10 `rvpNodeId` mířilo mimo dataset
+
+Admin strom RVP páruje téma s uzlem přes `rvpNodeId === node.id`, takže deset
+témat 2. ročníku se starým ID hlásilo své uzly jako „bez obsahu". 2. ročník /
+čeština: **4 z 25 uzlů → 14 z 25**. `data/rvp_data.json` se nedotklo, mění se
+jen `rvpNodeId` — `id` zůstává, visí na něm pokrok dítěte.
+
+Položka v seznamu mezer říkala „17"; přeměřeno je jich **13**, z toho 10 chyba,
+1 zástupný text v `TEMPLATE.ts` a 2 otevřené rozhodnutí níž. Hlídá
+`src/test/rvp-node-id.test.ts` (ověřený obráceně).
+
 ## 🟠 OTEVŘENO 2026-09-30 (D) — RVP uzel pro slovní úlohy 4./5. ročníku
 
 `data/rvp_data.json` (jen ke čtení) nemá pro 4. ani 5. ročník uzel se
 slovními úlohami. Nové téma `g4-mat-slovni-ulohy-pisemne-operace-4` má proto
 `rvpNodeId` = vlastní ID; totéž `g5-mat-slovni-ulohy-5`. **Rozhodnout:**
 doplnit uzly do datasetu (pak přepsat `rvpNodeId`), nebo ponechat.
+
+Obě ID jsou od 2026-10-01 zapsaná jako **doložená výjimka** v
+`BEZ_UZLU_V_DATASETU` (`src/test/rvp-node-id.test.ts`), aby je nový hlídač
+nehlásil jako překlep. Seznam smí jen ubývat — až se rozhodne, zmizí odtud
+i z něj. Dokud tam jsou, dva uzly kurikula 4. a 5. ročníku v admin stromu
+chybí, protože neexistují.
 
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 
@@ -128,9 +145,17 @@ práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~
 4. a 5. ročníku~~ ✅ (D) · ~~zadávání čísla v matematice místo výběru~~ ✅
 2026-09-30 (D), 16 témat 2.–5. ročníku · ~~únik nápovědy
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
-báje) opraven, zbytek falešné poplachy · sloh a čtení ve 2. ročníku ·
-oprava 17 `rvpNodeId`.
+báje) opraven, zbytek falešné poplachy · ~~oprava 17 `rvpNodeId`~~ ✅ 2026-10-01
+(viz níž; bylo jich 13, opravitelných 10) · sloh a čtení ve 2. ročníku
+— **teď konkrétně 5 uzlů:** Slohová výchova (adresa a blahopřání · pozdrav,
+oslovení, omluva, prosba, vzkaz · vyprávění podle obrázkové osnovy) a Čtení
+s porozuměním (plynulé čtení vět · tiché čtení a porozumění obsahu).
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
+
+Ze zbytku mezer 2. ročníku **3 uzly do aplikace nepatří** — okruh „Psaní"
+(upevňování tvarů písmen a číslic, opis a přepis, diktát kratších slov a vět)
+je nácvik psaní rukou. Zbývají ještě 2 × Práce s literárním textem
+(dramatizace pohádky, vyjádření pocitů z přečteného) a Pořádek slov ve větě.
 
 **Doplněno — naučí se z toho dítě látku?** Výklad se sám neukáže (jen tlačítko),
 má ~80 slov na téma a je sdílený pro L1–L3; 0 témat má obrázek, přestože

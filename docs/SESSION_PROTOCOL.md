@@ -118,8 +118,9 @@ příští session víc než ta oprava teď.
 npm run typecheck && npm run audit:ui && npm test && npm run build
 ```
 
-`audit:ui` hlídá chyby typu „prvek slibuje něco, co nedělá" (baseline 9
-přijatých; selže jen na novém nálezu).
+`audit:ui` hlídá chyby typu „prvek slibuje něco, co nedělá" (baseline **12**
+přijatých k 1. 10.; selže jen na novém nálezu). Číslo tady zastarává s každým
+přijatým nálezem — když se rozejde, věř výstupu skriptu, ne téhle větě.
 
 ### Po každém tasku — i jednořádkovém
 
