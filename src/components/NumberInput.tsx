@@ -19,11 +19,17 @@ export function NumberInput({ onSubmit, disabled }: NumberInputProps) {
   return (
     <div className="space-y-4">
       <p className="text-base text-muted-foreground">Zadej výsledek.</p>
+      {/* `type="text"` + `inputMode="decimal"`, ne `type="number"`:
+          u průměru vychází „40,5" a `type="number"` desetinnou ČÁRKU
+          v českém prostředí zahodí — dítě by výsledek nemělo jak napsat.
+          Klávesnice na mobilu zůstává číselná, jen s oddělovačem navíc.
+          Vstup se rovnou filtruje, takže písmena do pole nejdou. */}
       <input
-        type="number"
-        inputMode="numeric"
+        type="text"
+        inputMode="decimal"
+        autoComplete="off"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => setValue(e.target.value.replace(/[^\d,.-]/g, ""))}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();

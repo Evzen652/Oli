@@ -1,5 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { ciselnaUloha, rnd } from "./_mat";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (audit 4. ročníku). Nápovědy byly u všech úloh stejné
 // („Sečti všechna čísla.“), distraktory jen ±1 a ±2 bez vysvětlení a klíč se
@@ -104,12 +105,15 @@ export const ARITMETICKY_PRUMER: TopicMetadata[] = [
       "Nezahrnuje vážený průměr ani medián.",
     ],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
     recommendedNext: ["g4-mat-tabulky-diagramy-4"],
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Průměr = (součet všech čísel) ÷ (počet čísel). Lze si to představit jako: kdybychom vše rozdělili rovnoměrně, kolik dostane každý?",
       steps: [

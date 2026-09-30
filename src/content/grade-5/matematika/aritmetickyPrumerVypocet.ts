@@ -1,6 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad } from "@/lib/czechGrammar";
 import { ciselnaUloha, fdec, pick, rnd, sada } from "./_mat";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (audit 5. ročníku). Úlohy byly pevný seznam bez nápověd
 // a bez vysvětlení chybných možností. Teď generátor s typickými chybami
@@ -140,11 +141,14 @@ export const ARITMETICKYPRUMERVYPOCET: TopicMetadata[] = [
     ],
     boundaries: ["Bez váženého průměru", "Bez záporných čísel v průměru"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Průměr = součet všech čísel ÷ počet čísel. Příklad: průměr 4, 6, 8 = (4+6+8) ÷ 3 = 18 ÷ 3 = 6.",
       steps: [

@@ -1,6 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { plural, pad, isAre } from "@/lib/czechGrammar";
 import { choice, pick, type Distractor } from "../_shared";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (inventura obsahu): dřív měly všechny úlohy stejné dvě
 // nápovědy a žádnou zpětnou vazbu k možnostem; distraktory byly výsledek ±5/10.
@@ -426,11 +427,14 @@ export const SLOVNIULOHYSEDVEMAOPERACEMI: TopicMetadata[] = [
     ],
     boundaries: ["Max 2–3 operace.", "Čísla do 1000."],
     gradeRange: [3, 3],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Přečti úlohu dvakrát. Podtrhni čísla a klíčová slova (přidali, odebrali, koupili…). Řeš krok za krokem.",
       steps: [

@@ -1,5 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad, form, agree } from "@/lib/czechGrammar";
+import { napisCisla } from "@/content/_zapisCisla";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -311,11 +312,14 @@ export const TABULKYAJEDNODUCHASHEMA: TopicMetadata[] = [
     ],
     boundaries: ["Pouze 2–3 řádky.", "Čísla do 100."],
     gradeRange: [2, 2],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "factual",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Podle otázky poznáš, co počítat: „celkem“ a „dohromady“ znamená sčítat všechny hodnoty, „kolik zbývá“ a „o kolik víc“ znamená odečítat.",
       steps: [

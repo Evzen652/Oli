@@ -20,7 +20,10 @@ describe("aritmetickyPrumer – generator", () => {
       const tasks = meta.generator(level);
       expect(tasks.length).toBeGreaterThanOrEqual(30);
       for (const t of tasks) {
-        expect(t.options).toContain(t.correctAnswer);
+        // Průměr se od 2026-09-30 píše, nevybírá → žádné options, diagnostika
+        // chyb zůstává v optionFeedback (src/test/zapis-cisla-matematika.test.ts).
+        expect(t.options, t.question).toBeUndefined();
+        expect(Object.keys(t.optionFeedback ?? {}).length, t.question).toBeGreaterThanOrEqual(3);
         // Ověř matematiku: otázka obsahuje "průměr čísel: X, Y, Z"
         const match = t.question.match(/průměr čísel: (.+?)\?/);
         if (!match) continue;
@@ -72,12 +75,15 @@ describe("magickeCtverce – generator", () => {
   for (const level of [1, 2, 3] as const) {
     // PED-3 kalibrace (2026-07-08): disjunktní L1/L2/L3 pooly = 20/level
     // (dřív L2/L3 sdílely vzory a getTierTasks je ořezával, viz komentář nahoře).
-    it(`level ${level}: ≥20 úloh, correctAnswer v options`, () => {
+    it(`level ${level}: ≥20 úloh, klíč je číslo k napsání`, () => {
       const tasks = meta.generator(level);
       expect(tasks.length).toBeGreaterThanOrEqual(20);
       for (const t of tasks) {
         expect(t.correctAnswer).toBeTruthy();
-        expect(t.options).toContain(t.correctAnswer);
+        // Od 2026-09-30 se číslo píše, nevybírá — viz
+        // src/test/zapis-cisla-matematika.test.ts
+        expect(t.options, t.question).toBeUndefined();
+        expect(Object.keys(t.optionFeedback ?? {}).length, t.question).toBeGreaterThanOrEqual(3);
       }
     });
   }

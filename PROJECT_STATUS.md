@@ -274,25 +274,47 @@ src/
     rozptyl legitimní (měření ve fyzice), je na to `numeric_range`
     s výslovným „5,5±0,1". Ověřeno i v prohlížeči: 1 458 + 4 649, zápis
     „6 105" → „Zkus to ještě jednou" (dřív „Správně").
+  - ✅ **Shoda v nápovědě malé násobilky** (nalezeno cestou): „dokud nesečteš
+    2 stejných čísel" → `phrase(n, "STEJNÝ", "ČÍSLO")`, tedy „2 stejná čísla"
+    a „5 stejných čísel".
   - **Test si ověřil sám sebe:** po dočasném vrácení staré tolerance spadlo
     10 z 48 kontrol v `src/test/zapis-cisla-matematika.test.ts`, mimo jiné
     „typická chyba se vysvětlí tomu, kdo ji napsal" (distraktor lišící se
     o 10 se na vyšších úrovních vyhodnocoval jako správná odpověď). Test má
     i nezávislý řešič, který čte čísla ze znění úlohy (1 430 klíčů,
     `check:keys` 0 neshod).
-  - **Formát odpovědi hlídaly i starší testy témat** (`src/content/grade-4/
-    __tests__/pisemne*.test.ts`, „correctAnswer je vždy v options") — celá
-    sada je našla až napodruhé, cílené běhy o nich mlčely. Přepsané na nový
-    kontrakt: options nesmí existovat, diagnostika má mít ≥ 3 položky.
+  - **Formát odpovědi hlídalo šest dalších míst, o kterých jsem nevěděl** —
+    a našla je vždy až CELÁ sada, cílené běhy mlčely. `grade-4/__tests__/
+    pisemne*.test.ts` a `dataALogika.test.ts` („correctAnswer je vždy
+    v options"), `grade-5/__tests__/inputType.test.ts` (seznam povolených
+    typů bez `number`), `a11y.test.tsx` a `odborne-typy-e2e.test.tsx`
+    (`input[type="number"]`) a `multi-role-flow.test.ts` (číselné téma prý
+    musí být `algorithmic`/`mixed` — neplatí, slovní úlohy a tabulky mají
+    konečnou banku příběhů, tedy `factual`; formát odpovědi a původ obsahu
+    jsou nezávislé osy). Všechna přepsaná na nový kontrakt.
   - **Odpověď se ukazuje s řády.** Klíč je syrové `847231`, zadání píše
     `847 231` — `CorrectAnswerDisplay` u `number` doplní mezery. Dev náhled
     navíc u úloh bez možností vypíše diagnostiku, jinak by nebyla vidět.
-  - ⚠️ **Rozhodnutí pro uživatele:** sonda našla **16 matematických témat
-    (1 304 úloh)**, kde jsou klíč i všechny možnosti čisté číslo — převod by
-    je stál jen `options` (násobilka 2.–3. r., sčítání do 100/1000, slovní
-    úlohy 2.–3. r., magické čtverce, průměr, logické úlohy 5. r.). Zbytek
-    má v klíči jednotku („40 cm"), zbytek po dělení („906 zb. 2") nebo
-    mezeru mezi řády. Pilot běží na dvou; **rozšířit, nebo nechat?**
+  - ✅ **Rozšířeno na všech 16 témat** (rozhodnutí uživatele 30. 9.):
+    2. r. sčítání a odčítání do 100, násobilka 2–5, vztah násobení a dělení,
+    slovní úlohy do 100, posloupnosti, tabulky · 3. r. sčítání a odčítání do
+    1000, násobilka 6–10, malá násobilka, slovní úlohy se dvěma operacemi ·
+    4. r. písemné sčítání/odčítání, písemné násobení, průměr, magické čtverce ·
+    5. r. průměr, logické úlohy. Zbylá matematika zůstává na výběru, protože
+    klíč nese jednotku („40 cm"), zbytek po dělení („906 zb. 2") nebo mezeru
+    mezi řády — tam by ho `validateTaskForInputType` zahodil.
+    Helper je teď sdílený: `src/content/_zapisCisla.ts` (`napisCislo`,
+    `napisCisla`), témata mají `generator: (level) => napisCisla(gen(level))`.
+  - 🐞 **`type="number"` zahazovalo desetinnou čárku.** Průměr v 5. ročníku
+    vychází i „40,5" a do `<input type="number">` se v českém prostředí
+    čárka nenapíše — dítě by výsledek nemělo jak zadat. `NumberInput` je
+    teď `type="text"` + `inputMode="decimal"` (klávesnice na mobilu zůstává
+    číselná) a vstup se filtruje, takže písmena do pole nejdou. Ověřeno
+    v prohlížeči: zápis „40,5x" → v poli stojí „40,5".
+  - `getTargetedFeedback` srovnává čísla, ne řetězce: „40.5" najde
+    diagnostiku uloženou pod „40,5". Zároveň u desetinného čísla NEchodí do
+    větve, která dělí odpověď podle čárky (ta patří multi_select) — jinak by
+    „40,5" dostalo vysvětlení patřící ke klíči „40".
 - ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
   jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
   obecněji pro celý okruh.

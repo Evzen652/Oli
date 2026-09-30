@@ -1,6 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad, isAre } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "../_shared";
+import { napisCisla } from "@/content/_zapisCisla";
 
 /**
  * PED-2 kalibrace L1 < L2 < L3 (disjunktní otázky, rozdíl množin drží gradaci).
@@ -147,11 +148,14 @@ export const NASOBILKA6789A10: TopicMetadata[] = [
     ],
     boundaries: ["Pouze násobilka 6–10.", "Nezahrnuje písemné násobení ani velkou násobilku."],
     gradeRange: [3, 3],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Každý příklad v násobilce se dá spočítat opakovaným sčítáním: 6 × 4 = 6+6+6+6 = 24. U inverzních úloh (? × 7 = 56) se ptej: kolikrát vezmu 7, abych dostal 56?",
       steps: [

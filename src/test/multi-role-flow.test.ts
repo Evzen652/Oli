@@ -132,14 +132,20 @@ describe("Multi-role — content type matrix", () => {
   const topics = getAllTopics();
 
 
-  it("number/comparison/fraction topics jsou algorithmic nebo undefined (default)", () => {
+  it("number/comparison/fraction topics mají známý contentType", () => {
+    // Do 2026-09-30 se tu smělo jen „algorithmic"/„mixed" — tehdy zápis čísla
+    // používaly výhradně početní driller. Teď ho mají i slovní úlohy a tabulky,
+    // které stojí na konečné bance příběhů (`factual`). Formát odpovědi a původ
+    // obsahu jsou nezávislé osy, takže tenhle test hlídá jen platnou hodnotu;
+    // co u číselných témat platit MUSÍ (klíč je číslo, projde offline auditem,
+    // úloha nenese options), hlídá src/test/zapis-cisla-matematika.test.ts.
     const algorithmicCandidates = ["number", "comparison", "fraction"];
     topics
       .filter((t) => algorithmicCandidates.includes(t.inputType))
       .forEach((t) => {
         // Default je undefined (zpětná kompatibilita = algorithmic)
         const ct = t.contentType ?? "algorithmic";
-        expect(["algorithmic", "mixed"], t.id).toContain(ct);
+        expect(["algorithmic", "mixed", "factual"], t.id).toContain(ct);
       });
   });
 });

@@ -29,23 +29,10 @@ export function rnd(min: number, max: number): number {
 
 export interface Chyba { value: number | string; why: string }
 
-/**
- * Z výběrové úlohy udělá úlohu na ZÁPIS ČÍSLA (`inputType: "number"`).
- *
- * Menu zmizí, diagnostika chyb zůstane: `optionFeedback` je klíčované
- * hodnotou distraktoru, a `getTargetedFeedback` ji hledá podle toho, co dítě
- * napsalo. Takže „zapomenutý přenos" se vysvětlí právě tomu dítěti, které tu
- * chybu skutečně udělalo — u výběru ze čtyř možností ji naopak mohlo jen
- * tipnout, nebo výsledek uhádnout podle poslední číslice.
- *
- * `options` se MUSÍ zahodit, ne vyprázdnit: `PracticeInputRouter` dává
- * přednost tvaru úlohy před `topic.inputType`, takže úloha s neprázdnými
- * `options` dostane tlačítka i u `inputType: "number"`.
- */
-export function napisCislo(t: PracticeTask): PracticeTask {
-  const { options: _options, ...bezMenu } = t;
-  return bezMenu;
-}
+// Zápis čísla místo výběru — helper je sdílený přes ročníky, viz
+// `src/content/_zapisCisla.ts`. Tady jen re-export, aby témata 4. ročníku
+// dál importovala všechno z `./_mat`.
+export { napisCislo, napisCisla } from "@/content/_zapisCisla";
 
 /**
  * Výběrová úloha s číselnou (nebo krátkou textovou) odpovědí.

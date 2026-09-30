@@ -11,6 +11,9 @@ describe("grade-5 inputType konzistence", () => {
     const VALID_TYPES = [
       "select_one", "fill_blank", "true_false", "drag_order",
       "match_pairs", "multi_select", "text", "short_answer", "categorize",
+      // „number" = dítě výsledek píše (2026-09-30), viz
+      // src/test/zapis-cisla-matematika.test.ts
+      "number",
     ];
     for (const topic of GRADE_5_TOPICS) {
       expect(

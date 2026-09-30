@@ -1,6 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { pad, plural } from "@/lib/czechGrammar";
 import { ciselnaUloha, pick, rnd, sada } from "./_mat";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-12 (inventura obsahu). Předchozí verze měla nápovědy, které
 // nenesly data konkrétní úlohy — jedna věta obsloužila celou skupinu (u triček
@@ -377,11 +378,14 @@ export const ULOHYNEZAVISLENABEZNYCHPOSTUPECHPROSTOROVAPREDSTAVIVOST: TopicMetad
     ],
     boundaries: ["Bez složité pravděpodobnosti", "Bez algebraických rovnic"],
     gradeRange: [5, 5],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "mixed",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Nejprve zkus rozeznat vzor (co se opakuje nebo jak roste). U prostorových úloh si tvar nakresli nebo představ krok po kroku.",
       steps: [

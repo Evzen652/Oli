@@ -1,5 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { ciselnaUloha, rnd, shuffle, type Chyba } from "./_mat";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (audit 4. ročníku). Magický čtverec byl jen jeden
 // (posunutý), takže úrovně měly 8–12 různých úloh, nápovědy byly obecné
@@ -182,12 +183,15 @@ export const MAGICKE_CTVERCE_RADY: TopicMetadata[] = [
       "L3 obsahuje enrichment (čtverce n², trojúhelníková čísla, Fibonacci) nad rámec běžného RVP 4. ročníku.",
     ],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "mixed",
     recommendedNext: ["g4-mat-aritmeticky-prumer-4", "g4-mat-tabulky-diagramy-4"],
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Magický čtverec: každý řádek, sloupec i obě úhlopříčky mají stejný součet. Číselná řada: najdi, o kolik se každý člen mění (nebo jaký vzor tvoří).",
       steps: [

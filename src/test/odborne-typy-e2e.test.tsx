@@ -175,7 +175,9 @@ describe("PracticeInputRouter — numeric_range dostane číselné pole", () => 
         onTextSubmit={vi.fn()}
       />,
     );
-    expect(document.querySelector('input[type="number"]')).toBeTruthy();
+    // `inputMode`, ne `type="number"`: to od 2026-09-30 zahazovalo desetinnou
+    // čárku („40,5" u průměru), takže pole je text s číselnou klávesnicí.
+    expect(document.querySelector('input[inputmode="decimal"]')).toBeTruthy();
     expect(document.querySelector("textarea")).toBeNull();
   });
 });

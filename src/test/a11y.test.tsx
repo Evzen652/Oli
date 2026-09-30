@@ -142,12 +142,14 @@ describe("A11y — manuální checks (dokumentace specifických invariants)", ()
     expect(btn?.getAttribute("aria-label")).toBeTruthy();
   });
 
-  it("NumberInput: input má numeric inputMode pro mobile keyboard", () => {
+  it("NumberInput: input má decimal inputMode pro mobile keyboard", () => {
     const { container } = render(<NumberInput onSubmit={() => {}} />);
     const input = container.querySelector("input");
-    expect(input?.getAttribute("inputmode")).toBe("numeric");
+    // „decimal" místo „numeric" a text místo number: `type="number"` zahodí
+    // desetinnou čárku (průměr „40,5"). Klávesnice zůstává číselná.
+    expect(input?.getAttribute("inputmode")).toBe("decimal");
     // autoFocus je React prop → DOM property focus, ne HTML attribute v jsdom
-    expect(input?.type).toBe("number");
+    expect(input?.type).toBe("text");
   });
 
   it("FractionInput: oba inputy mají numeric inputMode", () => {

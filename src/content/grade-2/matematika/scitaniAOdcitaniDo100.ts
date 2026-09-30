@@ -1,6 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { plural } from "@/lib/czechGrammar";
 import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (inventura obsahu): původní pevné banky měly 9/10/7 úloh,
 // jednu nápovědu a žádnou zpětnou vazbu. Teď parametrický generátor, jehož
@@ -355,11 +356,14 @@ export const SCITANIAODCITANIDO100: TopicMetadata[] = [
     ],
     boundaries: ["Pouze čísla do 100.", "Nezahrnuje násobení ani dělení."],
     gradeRange: [2, 2],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Počítej po desítkách, pak doplň jedničky.",
       steps: [

@@ -1,6 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "@/content/grade-3/_shared";
 import { pad, plural, pluralWithNumber } from "@/lib/czechGrammar";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (inventura obsahu): 9/9/9 úloh, jedna nápověda bez
 // zpětné vazby. Teď oddělené úrovně, u každé úlohy dvě vlastní nápovědy,
@@ -199,11 +200,14 @@ export const VZTAHNASOBENIADELENI: TopicMetadata[] = [
     ],
     boundaries: ["Dělenci do 50.", "Pouze tabulky 2–5."],
     gradeRange: [2, 2],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Dělení je opak násobení — použij násobilku.",
       steps: [

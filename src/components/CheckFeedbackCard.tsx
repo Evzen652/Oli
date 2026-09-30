@@ -25,6 +25,19 @@ export function getTargetedFeedback(task: PracticeTask, selectedAnswer?: string)
   if (!task.optionFeedback || !selectedAnswer) return null;
   const direct = task.optionFeedback[selectedAnswer.trim()];
   if (direct) return direct;
+  // Zápis čísla: klíč diagnostiky je „40,5", dítě ale může napsat „40.5"
+  // nebo „1 234". Bez tohohle srovnání by dostalo jen obecné vysvětlení,
+  // přestože jeho chyba je popsaná.
+  const cislo = (s: string) => s.trim().replace(/[\s ]/g, "").replace(".", ",");
+  const psane = cislo(selectedAnswer);
+  if (/^-?\d+(,\d+)?$/.test(psane)) {
+    for (const [klic, proc] of Object.entries(task.optionFeedback)) {
+      if (cislo(klic) === psane) return proc;
+    }
+    // Dělení podle čárky je pro multi_select. U „40,5" by rozdělilo desetinné
+    // číslo a vrátilo vysvětlení patřící ke klíči „40" — proto tudy nechodíme.
+    return null;
+  }
   for (const part of selectedAnswer.split(/[,;|]/).map((p) => p.trim()).filter(Boolean)) {
     if (task.optionFeedback[part]) return task.optionFeedback[part];
   }

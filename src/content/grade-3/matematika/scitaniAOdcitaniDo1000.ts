@@ -1,5 +1,6 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { doplnVelkou, shuffle, type Distractor } from "../_shared";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (inventura obsahu): všechny úlohy měly stejné dvě
 // nápovědy, chybné možnosti byly jen ±1/±10/±100 bez zpětné vazby a postup
@@ -345,11 +346,14 @@ export const SCITANIAODCITANIDO1000: TopicMetadata[] = [
     ],
     boundaries: ["Čísla do 1000.", "Nezahrnuje násobení ani dělení."],
     gradeRange: [3, 3],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Při sčítání začni od jednotek, pak desítky, pak stovky. Dávej pozor na přechod přes 10 nebo 100.",
       steps: [

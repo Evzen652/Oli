@@ -1,4 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
+import { napisCisla } from "@/content/_zapisCisla";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -208,11 +209,14 @@ export const NASOBILKA2345: TopicMetadata[] = [
     ],
     boundaries: ["Pouze násobilka 2–5.", "Nezahrnuje dělení ani násobilku 6–10."],
     gradeRange: [2, 3],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Každý příklad jde spočítat opakovaným sčítáním: 3 × 4 = 3+3+3+3 = 12.",
       steps: [

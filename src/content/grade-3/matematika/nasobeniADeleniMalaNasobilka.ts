@@ -1,5 +1,7 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
 import { choice, shuffle, type Distractor } from "../_shared";
+import { phrase } from "@/lib/czechGrammar";
+import { napisCisla } from "@/content/_zapisCisla";
 
 // Přepsáno 2026-09-11 (audit 3. ročníku): úrovně se překrývaly (L1 násobilky
 // 2–5, L2 2–7, L3 2–10), takže L2 přinesla málo nových úloh (poměr 0,59).
@@ -36,7 +38,8 @@ function nasob(t: number, n: number): PracticeTask {
   return choice(`${t} × ${n} = ?`, String(x), d, {
     hints: [
       `Řekni si řadu násobků čísla ${t} a zastav se u ${n}. čísla v řadě.`,
-      `${t} × ${n} je totéž jako ${n} × ${t}. Vyber si pořadí, které znáš lépe, a přičítej postupně po ${t}, dokud nesečteš ${n} stejných čísel.`,
+      // `phrase` kvůli shodě: 2–4 „2 stejná čísla", 5+ „5 stejných čísel".
+      `${t} × ${n} je totéž jako ${n} × ${t}. Vyber si pořadí, které znáš lépe, a přičítej postupně po ${t}, dokud nesečteš ${phrase(n, "STEJNÝ", "ČÍSLO")}.`,
     ],
     explanation,
   });
@@ -99,11 +102,14 @@ export const NASOBENIADELENIMALANASOBILKA: TopicMetadata[] = [
     ],
     boundaries: ["Pouze malá násobilka (1–10).", "Bez zbytku."],
     gradeRange: [3, 3],
-    inputType: "select_one",
+    // Výsledek se píše, nevybírá ze čtyř možností (2026-09-30).
+    // Zadání i klíč zůstávají, mizí jen menu; diagnostika chyb žije
+    // dál v `optionFeedback` a najde se podle toho, co dítě napsalo.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",
-    generator: gen,
+    generator: (level) => napisCisla(gen(level)),
     helpTemplate: {
       hint: "Násobení a dělení jsou opačné operace: 4 × 3 = 12 → 12 ÷ 4 = 3 a 12 ÷ 3 = 4.",
       steps: [
