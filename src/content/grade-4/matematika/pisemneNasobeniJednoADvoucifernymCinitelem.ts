@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { ciselnaUloha, fmt, rnd, RADY } from "./_mat";
+import { ciselnaUloha, fmt, napisCislo, rnd, RADY } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 4. ročníku). Distraktory byly jen výsledek
 // ± činitel (žádná typická chyba), nápovědy stejné pro všechny úlohy
@@ -76,15 +76,20 @@ function dvouciferny(a: number, b: number): PracticeTask {
   ]);
 }
 
+// Dítě výsledek PÍŠE, nevybírá z nabídky (2026-09-30). U písemného násobení
+// šlo z nabídky uhádnout hodně: poslední číslice součinu se dá spočítat
+// z hlavy a řádově se možnosti lišily, takže celý algoritmus provádět nemuselo.
+// Distraktory zůstávají v `optionFeedback` a vysvětlí se tomu, kdo tu chybu
+// napsal. Viz `napisCislo` v `_mat.ts`.
 function gen(level: number): PracticeTask[] {
   const tasks: PracticeTask[] = [];
   for (let i = 0; i < 40; i++) {
-    if (level === 1) tasks.push(jednociferny(rnd(100, 999), rnd(2, 9)));
-    else if (level === 2) tasks.push(jednociferny(rnd(1000, 9999), rnd(2, 9)));
+    if (level === 1) tasks.push(napisCislo(jednociferny(rnd(100, 999), rnd(2, 9))));
+    else if (level === 2) tasks.push(napisCislo(jednociferny(rnd(1000, 9999), rnd(2, 9))));
     else {
       let b = rnd(11, 99);
       while (b % 10 === 0) b = rnd(11, 99);
-      tasks.push(dvouciferny(rnd(100, 999), b));
+      tasks.push(napisCislo(dvouciferny(rnd(100, 999), b)));
     }
   }
   return tasks;
@@ -116,7 +121,8 @@ export const PISEMNE_NASOBENI: TopicMetadata[] = [
       "Nezahrnuje desetinná čísla.",
     ],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    // Výsledek se píše — viz komentář u `gen`.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",

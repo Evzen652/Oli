@@ -134,6 +134,19 @@ function TaskCard({ task, topic }: { task: PracticeTask; topic: TopicMetadata })
       <div className="space-y-1 border-t border-border pt-3 text-sm">
         {task.hints?.[0] && <p><b>Nápověda 1:</b> {task.hints[0]}</p>}
         {task.hints?.[1] && <p><b>Nápověda 2:</b> {task.hints[1]}</p>}
+        {/* U zápisu čísla nejsou možnosti, takže `WorkedExample` diagnostiku
+            chyb neukáže — a ta je tu jediný zpětnovazební kanál. Vypíšeme ji,
+            ať se dá při čtení obsahu zkontrolovat. */}
+        {!task.options?.length && task.optionFeedback && Object.keys(task.optionFeedback).length > 0 && (
+          <div className="pt-1">
+            <p className="font-semibold">Diagnostika napsané chyby:</p>
+            <ul className="list-disc list-inside text-muted-foreground">
+              {Object.entries(task.optionFeedback).map(([hodnota, proc]) => (
+                <li key={hodnota}><b>{hodnota}</b> — {proc}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         {chybi.length > 0 && <p className="font-semibold text-destructive">Chybí: {chybi.join(", ")}</p>}
       </div>
     </div>

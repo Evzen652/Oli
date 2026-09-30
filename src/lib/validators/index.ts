@@ -81,16 +81,27 @@ export const blankTextValidator: Validator = {
 };
 
 // ─── Numeric Tolerance (matika s desetinnými čísly) ──────────────────────
+/**
+ * Tolerance je jen 0.001 ABSOLUTNĚ — na zaokrouhlení desetinného výsledku
+ * a na nepřesnost plovoucí čárky. Relativní 0,1 % tu do 2026-09-30 bylo
+ * také, a u aritmetiky to znamenalo, že dítě dostalo „správně" za špatný
+ * výsledek: u klíče 4 320 byla tolerance ±4,32, takže „4 318" prošlo.
+ * Nikdo si toho nevšiml, protože žádné aktivní téma zadávání čísla
+ * nepoužívalo (`ALL_TOPICS` má legacy `number` témata zakomentovaná).
+ * Kde se odpověď MĚŘÍ a rozptyl je v zadání legitimní (fyzika, chemie),
+ * je na to `numeric_range` s výslovným „5,5±0,1" / „5,5..6,5".
+ */
 export const numericToleranceValidator: Validator = {
   id: "numeric_tolerance",
   validate(answer, expected) {
-    const a = parseFloat(answer.replace(",", ".").trim());
-    const e = parseFloat(expected.replace(",", ".").trim());
+    // Mezery (i nezlomitelná) se zahazují: „1 234" je pro dítě totéž číslo
+    // jako „1234" — jen ho napsalo tak, jak ho vidí v zadání.
+    const cislo = (s: string) => parseFloat(s.replace(/[\s ]/g, "").replace(",", ".").trim());
+    const a = cislo(answer);
+    const e = cislo(expected);
     if (Number.isNaN(a)) return { correct: false, errorType: "not_a_number" };
     if (Number.isNaN(e)) return { correct: false, errorType: "expected_invalid" };
-    // Tolerance: 0.001 absolutní, 0.1% relativní (větší z obou)
-    const tol = Math.max(0.001, Math.abs(e) * 0.001);
-    const ok = Math.abs(a - e) <= tol;
+    const ok = Math.abs(a - e) <= 0.001;
     return ok ? { correct: true } : { correct: false, errorType: "numeric_off" };
   },
 };

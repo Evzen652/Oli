@@ -8,7 +8,8 @@ describe("pisemneNasobeni – metadata", () => {
     expect(meta.id).toBeTruthy();
     expect(meta.rvpNodeId).toBeTruthy();
     expect(meta.subject).toBe("matematika");
-    expect(meta.inputType).toBe("select_one");
+    // Od 2026-09-30 se výsledek píše, nevybírá — viz src/test/zapis-cisla-matematika.test.ts
+    expect(meta.inputType).toBe("number");
   });
 
   it("má helpTemplate vyplněný", () => {
@@ -27,17 +28,19 @@ describe("pisemneNasobeni – generator", () => {
         expect(tasks.length).toBeGreaterThanOrEqual(30);
       });
 
-      it("každá úloha má question, correctAnswer a 4 options", () => {
+      it("každá úloha má question a correctAnswer, ale žádné options", () => {
         for (const t of tasks) {
           expect(t.question).toMatch(/×/);
           expect(t.correctAnswer).toBeTruthy();
-          expect(t.options?.length).toBe(4);
+          // Výsledek se píše. `options` musí CHYBĚT, ne být prázdné pole —
+          // router dává přednost tvaru úlohy před `topic.inputType`.
+          expect(t.options, t.question).toBeUndefined();
         }
       });
 
-      it("correctAnswer je vždy v options", () => {
+      it("typické chyby zůstaly popsané (diagnostika napsané odpovědi)", () => {
         for (const t of tasks) {
-          expect(t.options).toContain(t.correctAnswer);
+          expect(Object.keys(t.optionFeedback ?? {}).length, t.question).toBeGreaterThanOrEqual(3);
         }
       });
 

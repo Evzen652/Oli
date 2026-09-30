@@ -52,6 +52,14 @@ function citelneCislo(raw: string): string {
   return raw;
 }
 
+/** „847231" → „847 231" (nezlomitelná mezera). Co nevypadá jako číslo, projde beze změny. */
+function sRady(raw: string): string {
+  const m = raw.trim().match(/^(-?)(\d+)([.,]\d+)?$/);
+  if (!m) return raw;
+  const cele = Number(m[2]).toLocaleString("cs-CZ").replace(/\s/g, " ");
+  return `${m[1]}${cele}${(m[3] ?? "").replace(".", ",")}`;
+}
+
 /** Zobrazení správné odpovědi dle typu úlohy. Sdílí ho i `WorkedExample`. */
 export function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topic: TopicMetadata }) {
   const inputType = topic.inputType;
@@ -148,8 +156,13 @@ export function CorrectAnswerDisplay({ task, topic }: { task: PracticeTask; topi
   }
 
   // Výchozí: prostý text. U numeric_range je `correctAnswer` zápis s tolerancí
-  // („30±1“), který dítěti nic neříká — přeloží se do věty.
-  const text = inputType === "numeric_range" ? citelneCislo(task.correctAnswer) : task.correctAnswer;
+  // („30±1“), který dítěti nic neříká — přeloží se do věty. U zápisu čísla je
+  // klíč syrové číslice („847231“), zatímco zadání píše řády s mezerou
+  // („847 231 − 12 940“) — odpověď se proto oddělí stejně.
+  const text =
+    inputType === "numeric_range" ? citelneCislo(task.correctAnswer)
+    : inputType === "number" ? sRady(task.correctAnswer)
+    : task.correctAnswer;
   return (
     <p>
       Správná odpověď: <span className="font-bold text-foreground">{text}</span>

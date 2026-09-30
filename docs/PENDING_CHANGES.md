@@ -35,6 +35,24 @@ L2 ×/÷, L3 dva kroky), nezávislý řešič v `src/test/slovni-ulohy-g4.test.t
 včetně korun s čárkou, L2 dva kroky a průměr, L3 pozpátku, součet a rozdíl,
 trojčlenka, chybějící hodnota do průměru), řešič v `src/test/slovni-ulohy-g5.test.ts`.
 
+**Zápis čísla místo výběru** — písemné sčítání/odčítání a písemné násobení
+ve 4. ročníku se píší, nevybírají. Otázka i klíč zůstávají (zámek obsahu
+zelený), zahodí se jen `options` (`napisCislo()` v `grade-4/matematika/_mat.ts`);
+diagnostika chyb žije dál v `optionFeedback` a najde se podle toho, co dítě
+napsalo. Při tom se našla vada validátoru: relativní tolerance 0,1 %
+uznávala „4 318" místo „4 320" — odstraněna.
+
+## 🟠 OTEVŘENO 2026-09-30 (D) — rozšířit zápis čísla na další matematiku?
+
+Pilot běží na dvou tématech 4. ročníku (viz výše). Sonda přes všech 66
+matematických témat našla **16 témat / 1 304 úloh**, kde jsou klíč i všechny
+možnosti čisté číslo, takže převod by je stál jen `options`: násobilka
+2. a 3. ročníku, sčítání a odčítání do 100 a do 1000, slovní úlohy 2. a 3.
+ročníku, posloupnosti, tabulky, magické čtverce, aritmetický průměr 4. r.,
+logické úlohy 5. r. Zbytek se převést nedá bez zásahu do klíče — nese
+jednotku („40 cm"), zbytek po dělení („906 zb. 2") nebo mezeru mezi řády.
+**Rozhodnout:** rozšířit na těch 16, nechat jen pilot, nebo vrátit zpět.
+
 ## 🟠 OTEVŘENO 2026-09-30 (D) — RVP uzel pro slovní úlohy 4./5. ročníku
 
 `data/rvp_data.json` (jen ke čtení) nemá pro 4. ani 5. ročník uzel se
@@ -115,7 +133,8 @@ samostatný úkol.
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
 práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~slovní úlohy
-4. a 5. ročníku~~ ✅ (D) · zadávání čísla v matematice místo výběru · ~~únik nápovědy
+4. a 5. ročníku~~ ✅ (D) · ~~zadávání čísla v matematice místo výběru~~ ✅ pilot
+2026-09-30 (D) na dvou tématech 4. r.; rozšíření čeká na rozhodnutí · ~~únik nápovědy
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · sloh a čtení ve 2. ročníku ·
 oprava 17 `rvpNodeId`.

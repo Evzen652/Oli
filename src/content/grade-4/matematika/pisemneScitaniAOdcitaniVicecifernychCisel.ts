@@ -1,5 +1,5 @@
 import type { TopicMetadata, PracticeTask } from "@/lib/types";
-import { ciselnaUloha, fmt, rnd, RADY } from "./_mat";
+import { ciselnaUloha, fmt, napisCislo, rnd, RADY } from "./_mat";
 
 // Přepsáno 2026-09-11 (audit 4. ročníku). Distraktory byly jen výsledek
 // ± 1, 10, 100 a nápovědy stejné pro všechny úlohy. Teď distraktory
@@ -86,6 +86,11 @@ function odcitani(a: number, b: number): PracticeTask {
   ]);
 }
 
+// Dítě výsledek PÍŠE, nevybírá z nabídky (2026-09-30). Písemné sčítání je
+// algoritmus a nabídka čtyř možností ho dá obejít — stačí porovnat poslední
+// číslici nebo řád. Distraktory zůstávají v `optionFeedback`, takže typickou
+// chybu („menší od větší", zapomenutý přenos) vysvětlíme tomu, kdo ji napsal.
+// Viz `napisCislo` v `_mat.ts`.
 function gen(level: number): PracticeTask[] {
   const [minA, maxA, minB, maxB] = level === 1 ? [1000, 9999, 1000, 8999]
     : level === 2 ? [10000, 99999, 10000, 89999] : [100000, 999999, 100000, 899999];
@@ -95,12 +100,12 @@ function gen(level: number): PracticeTask[] {
     if (Math.random() < 0.55) {
       // Součet zůstává v oboru úrovně (L1 do 9 999, L2 do 99 999, L3 do 999 999).
       while (a + b > maxA) { a = rnd(minA, maxA); b = rnd(minB, maxB); }
-      tasks.push(scitani(a, b));
+      tasks.push(napisCislo(scitani(a, b)));
     } else {
       // Rozdíl aspoň desetina nejmenšího menšence — u „4 522 − 4 520“ by malá nápověda (2 − 0) prozradila výsledek.
       while (Math.abs(a - b) < minA / 10) { a = rnd(minA, maxA); b = rnd(minB, maxB); }
       if (b > a) [a, b] = [b, a];
-      tasks.push(odcitani(a, b));
+      tasks.push(napisCislo(odcitani(a, b)));
     }
   }
   return tasks;
@@ -132,7 +137,8 @@ export const PISEMNE_SCITANI_ODCITANI: TopicMetadata[] = [
       "Rozsah: čísla do 999 999 (level 3).",
     ],
     gradeRange: [4, 4],
-    inputType: "select_one",
+    // Výsledek se píše — viz komentář u `gen`.
+    inputType: "number",
     defaultLevel: 1,
     sessionTaskCount: 6,
     contentType: "algorithmic",

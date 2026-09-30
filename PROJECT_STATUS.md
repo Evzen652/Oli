@@ -248,6 +248,51 @@ src/
     Opraveno a ověřeno na záměrně chybném vzorku. („Za 3 hodin" ve vlaku
     se opravilo už při ručním čtení → `plural()`.)
   - `rvpNodeId` = vlastní ID (stejné rozhodnutí jako u 4. r., viz výše).
+- ✅ **Zápis čísla místo výběru — pilot na písemném počítání ve 4. r.**
+  (další kandidát z mezer v obsahu). Sonda přes všech 66 matematických témat:
+  **žádné aktivní téma zadávání čísla nepoužívalo** — legacy `number` témata
+  jsou v `src/lib/content/index.ts` zakomentovaná, takže celá matematika 2.–6.
+  ročníku byla výběr ze čtyř možností. Převedena dvě témata, u kterých je
+  nabídka zkratka kolem celého algoritmu (poslední číslice nebo řád napoví):
+  `g4-mat-pisemne-scitani-odcitani-4` a `g4-mat-pisemne-nasobeni-4`.
+  - **Obsah se nemění, jen formát odpovědi.** Otázka i klíč zůstávají (zámek
+    obsahu je zelený), zahodí se jen `options` — helper `napisCislo()`
+    v `grade-4/matematika/_mat.ts`. Zahodit se MUSÍ: `PracticeInputRouter`
+    dává přednost tvaru úlohy před `topic.inputType`, takže úloha
+    s neprázdnými `options` dostane tlačítka i u `inputType: "number"`.
+  - **Diagnostika chyb zůstala a zesílila.** `optionFeedback` je klíčované
+    hodnotou distraktoru a `getTargetedFeedback` ji hledá podle toho, CO
+    DÍTĚ NAPSALO. Dřív šlo tutéž možnost tipnout; teď „menší od větší"
+    dostane ten, kdo tu chybu skutečně udělal. Ověřeno v prohlížeči:
+    8 571 − 5 657, zápis 3 126 → „V některém sloupci se odečetla menší
+    číslice od větší."
+  - 🐞 **Validátor uznával špatné výsledky.** `numericToleranceValidator`
+    měl vedle absolutní tolerance 0,001 i relativní 0,1 %, takže u klíče
+    4 320 prošlo „4 318" jako správně. Nikoho to dosud nepálilo (viz výše —
+    žádné aktivní téma zápis čísla nepoužívalo), ale s převodem by to byla
+    první věc, kterou by dítě poznalo. Relativní část odstraněna; kde je
+    rozptyl legitimní (měření ve fyzice), je na to `numeric_range`
+    s výslovným „5,5±0,1". Ověřeno i v prohlížeči: 1 458 + 4 649, zápis
+    „6 105" → „Zkus to ještě jednou" (dřív „Správně").
+  - **Test si ověřil sám sebe:** po dočasném vrácení staré tolerance spadlo
+    10 z 48 kontrol v `src/test/zapis-cisla-matematika.test.ts`, mimo jiné
+    „typická chyba se vysvětlí tomu, kdo ji napsal" (distraktor lišící se
+    o 10 se na vyšších úrovních vyhodnocoval jako správná odpověď). Test má
+    i nezávislý řešič, který čte čísla ze znění úlohy (1 430 klíčů,
+    `check:keys` 0 neshod).
+  - **Formát odpovědi hlídaly i starší testy témat** (`src/content/grade-4/
+    __tests__/pisemne*.test.ts`, „correctAnswer je vždy v options") — celá
+    sada je našla až napodruhé, cílené běhy o nich mlčely. Přepsané na nový
+    kontrakt: options nesmí existovat, diagnostika má mít ≥ 3 položky.
+  - **Odpověď se ukazuje s řády.** Klíč je syrové `847231`, zadání píše
+    `847 231` — `CorrectAnswerDisplay` u `number` doplní mezery. Dev náhled
+    navíc u úloh bez možností vypíše diagnostiku, jinak by nebyla vidět.
+  - ⚠️ **Rozhodnutí pro uživatele:** sonda našla **16 matematických témat
+    (1 304 úloh)**, kde jsou klíč i všechny možnosti čisté číslo — převod by
+    je stál jen `options` (násobilka 2.–3. r., sčítání do 100/1000, slovní
+    úlohy 2.–3. r., magické čtverce, průměr, logické úlohy 5. r.). Zbytek
+    má v klíči jednotku („40 cm"), zbytek po dělení („906 zb. 2") nebo
+    mezeru mezi řády. Pilot běží na dvou; **rozšířit, nebo nechat?**
 - ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
   jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
   obecněji pro celý okruh.
