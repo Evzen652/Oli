@@ -192,6 +192,19 @@ src/
     „ú_ká" (mezera za z). Opraveno.
   - V prohlížeči: 2. ročník → Čeština → Hlásky a pravopis → sezení, výklad,
     vyřešený příklad, chybná odpověď → zdůvodnění + vysvětlení.
+- ✅ **Úniky v nápovědách přeměřeny — údaj „21 témat / 108 úloh" (29. 9.) už
+  neplatí.** Dvě sondy: `check:hints` (překryv slov s klíčem) → 53 nálezů
+  v 10 tématech 6. r.; vlastní sonda (klíč doslova v nápovědě, klíč není
+  v otázce, nápověda nejmenuje i distraktor) přes **25 085 úloh všech 341
+  témat** → 21 nálezů. Vše ručně posouzeno: **jediný skutečný únik** —
+  mýty a báje, „Co je pro báje typické?": malá nápověda končila doslova
+  klíčem („u báje jsou to bohové a mytičtí hrdinové…"), a to u všech variant
+  otázky na znak báje. Nahrazena navedením přes známou báji (Prométheus,
+  Ikaros). Zbytek jsou falešné poplachy: měřítko mapy a úhly v trojúhelníku
+  dávají pravidlo/postup, intonace jmenuje obě melodie, oznámení vyjmenuje
+  kritéria; krátké klíče („a", „u", „v", „se", „je") se shodovaly se
+  spojkou/předložkou; „dvojpísmeno CH" v abecedě stojí u všech otázek, ne
+  jen tam, kde je CH odpovědí. (Sonda byla dočasná, nezůstává v repu.)
 - ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
   jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
   obecněji pro celý okruh.

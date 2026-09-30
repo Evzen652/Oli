@@ -24,6 +24,10 @@ L2 dvě mezery na konci slov, L3 spodoba uvnitř slova), nezávislý řešič
 v `src/test/parove-souhlasky.test.ts`. Motivační věta okruhu „Zvuková
 stránka jazyka" přepsána, aby neplatila jen pro tvrdé/měkké souhlásky.
 
+**Úniky v nápovědách** přeměřeny dvěma sondami (25 085 úloh): jediný
+skutečný únik — mýty a báje, malá nápověda u „Co je pro báje typické?" —
+opraven. Ostatní nálezy posouzeny jako falešné poplachy.
+
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 
 Dítě spárované kódem na stejném zařízení si úrovně přenese do účtu
@@ -97,8 +101,10 @@ samostatný úkol.
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
 práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · slovní úlohy
-4. a 5. ročníku · zadávání čísla v matematice místo výběru · únik nápovědy
-v 21 tématech · sloh a čtení ve 2. ročníku · oprava 17 `rvpNodeId`.
+4. a 5. ročníku · zadávání čísla v matematice místo výběru · ~~únik nápovědy
+v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
+báje) opraven, zbytek falešné poplachy · sloh a čtení ve 2. ročníku ·
+oprava 17 `rvpNodeId`.
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
 
 **Doplněno — naučí se z toho dítě látku?** Výklad se sám neukáže (jen tlačítko),

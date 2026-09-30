@@ -127,7 +127,9 @@ function ukolZnak(v: ZnakVarianta): PracticeTask | null {
     ],
     {
       hints: [
-        "Ptej se, kdo v příběhu vystupuje a co příběh vykládá — u báje jsou to bohové a mytičtí hrdinové z doby před dějinami.",
+        // Dřív končila „— u báje jsou to bohové a mytičtí hrdinové z doby před
+        // dějinami", tedy doslova klíčem (check:hints, 2026-09-30).
+        "Vzpomeň si na báji, kterou znáš, třeba o Prométheovi nebo o Ikarovi. Kdo v ní jedná a o jaké době vypráví?",
         "Pověst se vypráví jako vzpomínka na skutečné místo nebo osobu z naší minulosti a má jádro pravdy, bajka má zvířecí postavy a ponaučení, pohádka se odehrává v neurčitém vymyšleném světě. Žádný z těch tří znaků k báji nepatří.",
       ],
       explanation: v.proc,
