@@ -226,8 +226,28 @@ src/
   - ⚠️ **Rozhodnutí pro uživatele:** `rvp_data.json` nemá pro 4. ani 5. ročník
     uzel se slovními úlohami (2. a 3. ano) a je jen ke čtení. Téma má zatím
     `rvpNodeId` = vlastní ID. Buď doplnit uzel do datasetu, nebo ponechat.
-  - 5. ročník zatím beze změny (další krok: stejný přístup s desetinnými
-    čísly a dělením dvojciferným dělitelem).
+  - 5. ročník → viz další bod.
+- ✅ **Nové téma: slovní úlohy (5. r.)** —
+  `grade-5/matematika/slovniUlohyVelkaADesetinnaCisla.ts`, žák vidí
+  „Příběhy ze života" v okruhu Velká čísla a počítání. Rozsah 5. ročníku:
+  násobení a dělení dvojciferným číslem, koruny s desetinnou čárkou (jen
+  + a −, obecné násobení desetinných čísel 5. ročník nemá), průměr.
+  - L1: jeden krok, vybrat ze čtyř operací (hrad „o … víc", pekárna ×,
+    přepravky ÷ dvojciferným, letadlo rozdíl, nákup v korunách s přenosem
+    přes čárku).
+  - L2: dva kroky (výlet: vybrat a zaplatit autobus, balení vs. kusy,
+    vlak: kolik zbývá, vrácení z bankovky, průměr tří dnů).
+  - L3: přenos (součet a rozdíl, „myslím si číslo" pozpátku, trojčlenka
+    přes cenu kusu, rozpočet ve třech krocích, chybějící den do průměru).
+  - Distraktory = typické chyby s vysvětlením: odpověď mezivýsledkem,
+    rozdělení napůl místo součtu a rozdílu, obrácení kroků ve špatném
+    pořadí, přičtení rozdílu kusů místo ceny, zapomenutý přenos koruny.
+  - **Nezávislý řešič** (`src/test/slovni-ulohy-g5.test.ts`), 20 běhů na
+    úroveň; koruny počítá v haléřích. Kontrola shody při prvním zápisu
+    mlčela: lookbehind vylučoval každou mezeru, takže „3 hodin" nechytila.
+    Opraveno a ověřeno na záměrně chybném vzorku. („Za 3 hodin" ve vlaku
+    se opravilo už při ručním čtení → `plural()`.)
+  - `rvpNodeId` = vlastní ID (stejné rozhodnutí jako u 4. r., viz výše).
 - ✅ **Motivace okruhu „Zvuková stránka jazyka"** (`topicInsight.ts`) mluvila
   jen o tvrdých a měkkých souhláskách, i u slabik a dělení slov. Přepsáno
   obecněji pro celý okruh.

@@ -13,6 +13,7 @@ import { PISEMNEDELENIDVOUCIFERNYMDELITELEM } from "./matematika/pisemneDeleniDv
 import { SCITANIAODCITANIDESETINNYCHCISEL } from "./matematika/scitaniAOdcitaniDesetinnychCisel";
 import { ULOHYNEZAVISLENABEZNYCHPOSTUPECHPROSTOROVAPREDSTAVIVOST } from "./matematika/ulohyNezavisleNaBeznychPostupechProstorovaPredstavivost";
 import { ZAPORNACISLANACISELNEOSE } from "./matematika/zapornaCislaNaCiselneOse";
+import { SLOVNI_ULOHY_VELKA_A_DESETINNA_CISLA } from "./matematika/slovniUlohyVelkaADesetinnaCisla";
 
 // ── Český jazyk ──
 import { BASENLYRICKAAEPICKAROMANPOVIDKA } from "./cjl/basenLyrickaAEpickaRomanPovidka";
@@ -88,6 +89,7 @@ export const GRADE_5_TOPICS: TopicMetadata[] = [
   ...SCITANIAODCITANIDESETINNYCHCISEL,
   ...ULOHYNEZAVISLENABEZNYCHPOSTUPECHPROSTOROVAPREDSTAVIVOST,
   ...ZAPORNACISLANACISELNEOSE,
+  ...SLOVNI_ULOHY_VELKA_A_DESETINNA_CISLA,
 
   // Český jazyk (22)
   ...BASENLYRICKAAEPICKAROMANPOVIDKA,

@@ -15,12 +15,13 @@ export const GRADE5_NAVIGATION: SubjectNav[] = [
       {
         id: "velka-cisla",
         name: "Velká čísla a počítání",
-        description: "Miliardy, záporná čísla a dělení pod sebou.",
+        description: "Miliardy, záporná čísla, dělení pod sebou a slovní úlohy.",
         emoji: "🔢",
         topicIds: [
           "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-cisla-nad-milion-miliardy",
           "g5-matematika-cislo-a-pocetni-operace-velka-cisla-a-desetinna-cisla-zaporna-cisla-na-ciselne-ose",
           "g5-matematika-cislo-a-pocetni-operace-pisemne-pocetni-operace-pisemne-deleni-dvoucifernym-delitelem",
+          "g5-mat-slovni-ulohy-5",
         ],
       },
       {

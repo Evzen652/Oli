@@ -31,12 +31,16 @@ opraven. Ostatní nálezy posouzeny jako falešné poplachy.
 **Slovní úlohy 4. ročníku** — nové téma „Příběhy s velkými čísly" (L1 +/−,
 L2 ×/÷, L3 dva kroky), nezávislý řešič v `src/test/slovni-ulohy-g4.test.ts`.
 
+**Slovní úlohy 5. ročníku** — nové téma „Příběhy ze života" (L1 jeden krok
+včetně korun s čárkou, L2 dva kroky a průměr, L3 pozpátku, součet a rozdíl,
+trojčlenka, chybějící hodnota do průměru), řešič v `src/test/slovni-ulohy-g5.test.ts`.
+
 ## 🟠 OTEVŘENO 2026-09-30 (D) — RVP uzel pro slovní úlohy 4./5. ročníku
 
 `data/rvp_data.json` (jen ke čtení) nemá pro 4. ani 5. ročník uzel se
 slovními úlohami. Nové téma `g4-mat-slovni-ulohy-pisemne-operace-4` má proto
-`rvpNodeId` = vlastní ID. **Rozhodnout:** doplnit uzel do datasetu (pak
-přepsat `rvpNodeId`), nebo ponechat. Slovní úlohy 5. ročníku zatím chybí.
+`rvpNodeId` = vlastní ID; totéž `g5-mat-slovni-ulohy-5`. **Rozhodnout:**
+doplnit uzly do datasetu (pak přepsat `rvpNodeId`), nebo ponechat.
 
 ## ✅ VYŘÍZENO 2026-09-30 (C) — přenos úrovní při propojení
 
@@ -110,8 +114,8 @@ samostatný úkol.
 ## 🟠 OTEVŘENO 2026-09-29 — mezery v obsahu 2.–6. ročníku (čeká na volbu)
 
 Analýza (detail `PROJECT_STATUS.md` §6, session 2026-09-29). Kandidáti na
-práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · slovní úlohy
-4. ✅ (D) a 5. ročníku · zadávání čísla v matematice místo výběru · ~~únik nápovědy
+práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~slovní úlohy
+4. a 5. ročníku~~ ✅ (D) · zadávání čísla v matematice místo výběru · ~~únik nápovědy
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · sloh a čtení ve 2. ročníku ·
 oprava 17 `rvpNodeId`.
