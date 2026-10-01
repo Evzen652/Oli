@@ -144,6 +144,64 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-01 — `rvpNodeId` 2. ročníku + první slohové téma:
+
+- ✅ **Nové téma: Pozdrav, oslovení, omluva, prosba, vzkaz (2. r.)** —
+  `grade-2/cjl/pozdravOsloveniOmluva.ts`, žák vidí „Jak to říct" v novém okruhu
+  **Jak to říct lidem**. První naplněný uzel Slohové výchovy ve 2. ročníku.
+  Pokrytí `31/13/15`, max L3.
+  - **Sloh ≠ volný text.** `inputType: "essay"` neexistuje a existovat nemá,
+    takže dítě vzkaz neskládá, ale pozná, který ze čtyř je použitelný.
+  - **L1** (31) dvě podoby: co ta věta dělá (pozdrav × omluva × prosba ×
+    poděkování) a které slovo ve větě je oslovení. Distraktory u oslovení jsou
+    další slova **z téže věty** (podmět, sloveso, předmět), ne cizí slova.
+  - **L2** (13) situace a tři druhy chyb: denní doba, tykání dospělému proti
+    vykání, a zdvořilá věta s jinou funkcí, než situace žádá.
+  - **L3** (15) posouzení celého krátkého textu — úplnost vzkazu (kdo, co,
+    kdy), prosba proti rozkazu s přilepeným „prosím", a omluva, která vinu
+    přijímá, proti třem způsobům, jak se jí vyhnout.
+  - **Nezávislý řešič** `src/test/pozdrav-osloveni-omluva.test.ts` — pět
+    vlastních pravidel (vykání, denní doba, podmiňovací způsob u prosby,
+    první osoba minulého času u omluvy, vlastní tabulka údajů vzkazu).
+    **Ověřeno obráceně:** u každého z pěti měřítek dočasná záměna klíče za
+    distraktor shodila to a jen to měřítko.
+- ⚠️ **Dvě vady našly kontroly, ne autor — a jedna z nich našla i tu kontrolu.**
+  - *Vlastní kontrola v souboru* chytila únik, který jsem napsal: nápověda
+    u oslovení citovala začátek věty, a tam oslovení stojí — tedy doslovný klíč.
+  - *Ta kontrola ale sama mlčela o pěti dalších únicích.* Porovnávala přesnou
+    shodu, zatímco nápověda nesla „Dobrou noc" a klíč byl „Dobrou noc." —
+    lišily se tečkou. Našel je až `audit:content`, který text normalizuje.
+    Kontrola i test teď porovnávají po normalizaci; nápovědy L1 navádějí
+    vylučováním a klíč nejmenují. Patří k poučení
+    [[kontrola-se-musi-kontrolovat]] a [[hlidac-muze-mlcet-o-vlastnim-nalezu]].
+  - *Nezávislý test našel slabou úlohu:* u „zopakovat zadání" byly všechny
+    čtyři možnosti tvary jednoho slovesa, takže se měřilo jen vykání, ne volba
+    toho, co se v situaci říká. Jeden distraktor vyměněn.
+  - *A dvakrát byl vadný test, ne obsah.* `\b` v JavaScriptu je ASCII, takže
+    `/\bpromiň\b/` se chytilo i uvnitř „Promiňte" a test hlásil vadu ve
+    správném klíči. Diakritická slova se teď ohraničují výslovně.
+- ⚠️ **`npm test` padal na timeoutu, ne na obsahu — a rezerva byla vyčerpaná
+  už před touhle session.** `OFFLINE PŘEHLED` v `content-audit.test.ts` měl
+  limit 60 s. Změřeno: nad 19 528 úlohami (tedy **bez** nového tématu) běžel
+  **50 979 ms**, tj. 85 % budgetu; v plné sadě, kde workery soupeří o procesor,
+  **125 486 ms**. Nové téma přidalo 59 úloh z 19 528, tedy 0,3 % — příčinou
+  nebylo. Limit zvednut na 240 s a čísla jsou v komentáři u testu, aby se
+  příště neodhadovalo. Tenhle test hlásí vadu až pod 70 % průchodnosti, takže
+  jeho timeout o obsahu neříká nic — jen zneplatní celý běh.
+- ✅ **Zámek obsahu přegenerován bezpečně.** Nové téma do něj muselo přibýt;
+  ověřeno diffem, že šlo o **4 přidané řádky, 0 odebraných** a jediné dotčené
+  téma je to nové. Zámek ostatních 289 témat se nezměnil — právě tomu se mělo
+  předejít ([[zamek-obsahu-neotiskuje-napovedy]]).
+- 📋 **Zbývající uzly 2. ročníku — posouzeno, co jde a co ne.** Z pěti uzlů
+  „sloh a čtení" je jeden hotový (výš), tři jsou na práci (adresa a blahopřání ·
+  pozdrav z prázdnin je součást téhož uzlu · vyprávění podle obrázkové osnovy ·
+  tiché čtení a porozumění obsahu) a **jeden poctivě udělat nejde**:
+  *Plynulé čtení vět a krátkých textů* je nácvik čtení nahlas. Aplikace nemá
+  mikrofon ani rozpoznávání řeči, takže by z toho byl test, který slibuje
+  plynulost a měří něco jiného — přesně chyba, na kterou je `audit:ui`.
+  Patří ke třem uzlům okruhu „Psaní" jako látka, která do aplikace na dotek
+  nepatří.
+
 ### Session 2026-10-01 — `rvpNodeId` u starších témat 2. ročníku:
 
 - ✅ **Deset `rvpNodeId` mířilo na neexistující uzel RVP** (`421cff6`).

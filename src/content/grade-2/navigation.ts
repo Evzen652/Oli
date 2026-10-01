@@ -184,6 +184,15 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
         ],
       },
       {
+        id: "jak-to-rict",
+        name: "Jak to říct lidem",
+        description: "Pozdrav, prosba, omluva a vzkaz.",
+        emoji: "💬",
+        topicIds: [
+          "g2-cjl-komunikacni-a-slohova-vychova-slohova-vychova-pozdrav-osloveni-omluva-prosba-vzkaz",
+        ],
+      },
+      {
         id: "cteni-knihy",
         name: "Čtení a knihy",
         description: "Pohádky, básně a práce s knihou.",

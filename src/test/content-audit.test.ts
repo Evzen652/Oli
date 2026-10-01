@@ -55,7 +55,14 @@ describe("CONTENT AUDIT — offline (vždy běží)", () => {
       report.passingPct,
       `Pouze ${report.passingPct}% cvičení je technicky OK (cíl ≥70%)`,
     ).toBeGreaterThanOrEqual(70);
-  }, 60_000);
+    // Limit 60 s (původní) byl 2026-10-01 vyčerpaný: audit nad 19 528 úlohami
+    // trval samostatně 50 979 ms, tedy 85 % budgetu — a v plné sadě, kde
+    // workery soupeří o procesor, 125 486 ms. `npm test` proto padal na
+    // TIMEOUTU, ne na obsahu: tenhle test hlásí vadu až pod 70 % průchodnosti,
+    // takže jeho timeout o obsahu neříká nic, jen zneplatní celý běh.
+    // Změřeno, že přírůstek obsahu to nebyl — nové téma přidalo 59 úloh
+    // z 19 528 (0,3 %). Rezerva je teď ~4× měřená doba samostatného běhu.
+  }, 240_000);
 
   it("POKRYTÍ ÚROVNÍ: aktivní scope (2.–4. třída, matematika + čeština)", () => {
     // Aktivní scope dle DECISIONS D9 — kde má smysl doplňovat L2/L3.

@@ -45,6 +45,21 @@ zůstává na výběru — klíč tam nese jednotku, zbytek po dělení nebo mez
 relativní tolerance 0,1 % uznávala „4 318" místo „4 320", a `type="number"`
 zahazovalo desetinnou čárku, takže „40,5" u průměru nešlo napsat.
 
+## ✅ VYŘÍZENO 2026-10-01 — slohové téma 2. ročníku (1 z 5 zbylých uzlů)
+
+Nové téma „Pozdrav, oslovení, omluva, prosba, vzkaz" (`grade-2/cjl/
+pozdravOsloveniOmluva.ts`, dětsky „Jak to říct", nový okruh **Jak to říct
+lidem**). Pokrytí `31/13/15`, max L3, nezávislý řešič s pěti vlastními
+pravidly ověřenými obráceně.
+
+**Zbývají tři uzly na práci:** adresa a blahopřání · vyprávění podle obrázkové
+osnovy · tiché čtení a porozumění obsahu.
+
+**Jeden uzel se vyřazuje:** *Plynulé čtení vět a krátkých textů* je nácvik
+čtení nahlas. Bez mikrofonu a rozpoznávání řeči by z toho byl test slibující
+plynulost a měřící něco jiného. Patří ke třem uzlům okruhu „Psaní" jako látka,
+která do aplikace na dotek nepatří — ne jako nedodělek.
+
 ## ✅ VYŘÍZENO 2026-10-01 — 10 `rvpNodeId` mířilo mimo dataset
 
 Admin strom RVP páruje téma s uzlem přes `rvpNodeId === node.id`, takže deset
@@ -147,9 +162,10 @@ práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · ~~oprava 17 `rvpNodeId`~~ ✅ 2026-10-01
 (viz níž; bylo jich 13, opravitelných 10) · sloh a čtení ve 2. ročníku
-— **teď konkrétně 5 uzlů:** Slohová výchova (adresa a blahopřání · pozdrav,
-oslovení, omluva, prosba, vzkaz · vyprávění podle obrázkové osnovy) a Čtení
-s porozuměním (plynulé čtení vět · tiché čtení a porozumění obsahu).
+— **z pěti uzlů: 1 hotový, 3 na práci, 1 vyřazený** (viz níž). Hotovo: pozdrav,
+oslovení, omluva, prosba, vzkaz. Na práci: adresa a blahopřání · vyprávění
+podle obrázkové osnovy · tiché čtení a porozumění obsahu. Vyřazeno: plynulé
+čtení vět (čtení nahlas, nejde měřit bez mikrofonu).
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
 
 Ze zbytku mezer 2. ročníku **3 uzly do aplikace nepatří** — okruh „Psaní"
