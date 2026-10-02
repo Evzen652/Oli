@@ -45,6 +45,25 @@ zůstává na výběru — klíč tam nese jednotku, zbytek po dělení nebo mez
 relativní tolerance 0,1 % uznávala „4 318" místo „4 320", a `type="number"`
 zahazovalo desetinnou čárku, takže „40,5" u průměru nešlo napsat.
 
+## ✅ VYŘÍZENO 2026-10-02 — adresa, blahopřání, pozdrav z prázdnin (2 z 5)
+
+Nové téma „Adresa, blahopřání, pozdrav z prázdnin" (`grade-2/cjl/
+adresaBlahopraniPozdrav.ts`, dětsky „Pohled a dopis"). Pokrytí `32/21/12`,
+max L3. Okruh přejmenován na **Jak to říct a napsat** a téma je v něm druhé.
+
+Obrácené ověření hlídače je teď spustitelný příkaz:
+`MUTACE=1 npx vitest run src/test/adresa-blahoprani.test.ts` — normálně 23/23
+prošlo, pod mutací padlo všech 10 měřítek správnosti klíče.
+
+**Tři vady našly kontroly, ne autor:** `check:hints` skutečný únik u tří
+situací (nápověda citovala distraktor, který je klonem klíče) · náhled
+v prohlížeči nesmyslné dolepování obecných vět k velké nápovědě ve 14 úlohách ·
+vlastní hlídač „kontrola má co měřit" mrtvou skupinu testů, která prošla nad
+prázdnou množinou.
+
+**Zbývají dva uzly na práci:** vyprávění podle obrázkové osnovy · tiché čtení
+a porozumění obsahu.
+
 ## ✅ VYŘÍZENO 2026-10-01 — slohové téma 2. ročníku (1 z 5 zbylých uzlů)
 
 Nové téma „Pozdrav, oslovení, omluva, prosba, vzkaz" (`grade-2/cjl/
@@ -162,10 +181,11 @@ práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · ~~oprava 17 `rvpNodeId`~~ ✅ 2026-10-01
 (viz níž; bylo jich 13, opravitelných 10) · sloh a čtení ve 2. ročníku
-— **z pěti uzlů: 1 hotový, 3 na práci, 1 vyřazený** (viz níž). Hotovo: pozdrav,
-oslovení, omluva, prosba, vzkaz. Na práci: adresa a blahopřání · vyprávění
-podle obrázkové osnovy · tiché čtení a porozumění obsahu. Vyřazeno: plynulé
-čtení vět (čtení nahlas, nejde měřit bez mikrofonu).
+— **z pěti uzlů: 2 hotové, 2 na práci, 1 vyřazený** (viz níž). Hotovo: pozdrav,
+oslovení, omluva, prosba, vzkaz ✅ 2026-10-01 · adresa, blahopřání, pozdrav
+z prázdnin ✅ 2026-10-02. Na práci: vyprávění podle obrázkové osnovy · tiché
+čtení a porozumění obsahu. Vyřazeno: plynulé čtení vět (čtení nahlas, nejde
+měřit bez mikrofonu).
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
 
 Ze zbytku mezer 2. ročníku **3 uzly do aplikace nepatří** — okruh „Psaní"

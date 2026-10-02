@@ -15,7 +15,7 @@ import { TABULKYAJEDNODUCHASHEMA } from "./matematika/tabulkyAJednoduchaSchema";
 import { BODPRIMKAUSECKA } from "./matematika/bodPrimkaUsecka";
 import { MERIENIDELIVKYUSECKY } from "./matematika/mereniDelkyUsecky";
 
-// ── Čeština (16) ──
+// ── Čeština (17) ──
 import { PRAVOPISIY } from "./cjl/pravopisIY";
 import { PAROVE_SOUHLASKY } from "./cjl/paroveSouhlasky";
 import { DOPLNOVACIDIKTAT2 } from "./cjl/doplnovaciDiktat";
@@ -32,6 +32,7 @@ import { SPISOVATELKNIHA } from "./cjl/spisovatelKniha";
 import { ORIENTACEVTEXTU } from "./cjl/orientaceVTextu";
 import { DELENISLOVNAKONCIRADKU } from "./cjl/deleniSlovNaKonciRadku";
 import { POZDRAV_OSLOVENI_OMLUVA } from "./cjl/pozdravOsloveniOmluva";
+import { ADRESA_BLAHOPRANI_POZDRAV } from "./cjl/adresaBlahopraniPozdrav";
 
 // ── Prvouka (15) ──
 import { HODINYKALENDARCAS } from "./prvouka/hodinyKalendarCas";
@@ -82,6 +83,7 @@ export const GRADE_2_TOPICS: TopicMetadata[] = [
   ...ORIENTACEVTEXTU,
   ...DELENISLOVNAKONCIRADKU,
   ...POZDRAV_OSLOVENI_OMLUVA,
+  ...ADRESA_BLAHOPRANI_POZDRAV,
   // ── Prvouka ──
   ...HODINYKALENDARCAS,
   ...TRADICEAZVYKY,

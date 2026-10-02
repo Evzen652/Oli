@@ -144,6 +144,74 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-02 — druhé slohové téma 2. ročníku (adresa, přání, pohled):
+
+- ✅ **Nové téma: Adresa, blahopřání, pozdrav z prázdnin (2. r.)** —
+  `grade-2/cjl/adresaBlahopraniPozdrav.ts`, žák vidí „Pohled a dopis".
+  Druhý naplněný uzel Slohové výchovy. Pokrytí `32/21/12`, max L3.
+  - **L1** (32) pojmenovat údaj v hotové adrese („390 01" je směrovací číslo
+    pošty, ne číslo domu) a poznat žánr textu (blahopřání × pozdrav z prázdnin
+    × vzkaz × poděkování). Všechny čtyři nálepky v L1a jsou dlouhé 18–23
+    znaků, takže se nedá hádat podle délky.
+  - **L2** (21) použít pravidlo na konkrétní obálku a vybrat přání, které sedí
+    na příležitost **i** na oslovení. Čtvrtou možností u obálky je jméno
+    odesílatele, takže u prvního řádku stojí proti sobě **dvě** jména —
+    nestačí poznat, že nahoru patří člověk.
+  - **L3** (12) posoudit celý text: která adresa je napsaná celá, která
+    pohlednice nese tři potřebné údaje (kde jsi, co tam děláš, podpis) a které
+    blahopřání opravdu přeje tomu druhému (proti větě o mně, žádosti o dárek
+    a pouhému oznámení, co je za den).
+  - **PSČ jsou skutečná** (602 00 Brno, 760 01 Zlín, 390 01 Tábor, 266 01
+    Beroun, 110 00 Praha) — dítě si to může zkontrolovat na obálce doma.
+  - **Okruh přejmenován** „Jak to říct lidem" → **„Jak to říct a napsat"**
+    a téma je v něm druhé. Šlo to bez rizika: commit s původním názvem ještě
+    nebyl v produkci, takže ho žádné dítě nevidělo.
+- ✅ **Obrácené ověření hlídače je teď příkaz, ne jednorázový úkon.**
+  `MUTACE=1 npx vitest run src/test/adresa-blahoprani.test.ts` prohlásí za klíč
+  distraktor. Změřeno: normálně **23/23 prošlo**, pod mutací padlo **všech 10
+  měřítek správnosti klíče** (+ kontrola dokumentace), zatímco čtyři zpětné
+  kontroly pravidel a tři strukturní testy zůstaly zelené — ty o správnosti
+  klíče nic netvrdí, takže padat nemají. V sousedním tématu se tohle dělalo
+  rukou a výsledek zůstal jen v zápisu ze session; teď to zopakuje kdokoli.
+- ⚠️ **Čtyři vady našly kontroly, ne autor.**
+  - *`check:hints` našel skutečný únik u tří ze šesti situací L2b.* Nápověda
+    citovala distraktor s jinou příležitostí — a ten je u části situací téměř
+    klon klíče (stejné oslovení i tvar, jiná jen příležitost). Citace plus
+    jméno správné příležitosti dohromady klíč poskládaly. **Moje vlastní
+    kontrola v souboru o tom mlčela**, protože hlídá doslovný výskyt celého
+    klíče, ne překryv. Nápověda teď distraktor jen popíše („přeje k Vánocům"),
+    necituje ho; překryv spadl ze 75 % na 0 nálezů. Znovu
+    [[hlidac-muze-mlcet-o-vlastnim-nalezu]].
+  - *Náhled v prohlížeči našel nesmyslné nápovědy.* `choice()` dolepuje
+    k velké nápovědě obecné věty, dokud není aspoň o pětinu delší než malá
+    (pravidlo auditu `hint_progression`). U podrobných nápověd tohohle tématu
+    z toho vyšlo: po konkrétním „vyřaď tyhle dvě možnosti" přišlo obecné
+    „nejdřív škrtni tu, která s otázkou vůbec nesouvisí". Dotčeno **14 úloh**
+    v pěti skupinách. Opraveno tím, že velká nápověda je delší sama a nese
+    pravidlo — a do souboru přidán guard, který na kratší velkou nápovědu padá
+    už při generování, takže se to nemůže vrátit.
+  - *`audit:content` hlásil `hint_leak` u čtyř úloh L2b* — nápověda doslova
+    obsahovala dvojslovný začátek klíče („milá babičko", „ahoj marku"). **Byl
+    to falešný poplach a je to přepočítané:** ten začátek je u všech čtyř
+    možností v úloze shodný, takže nenese žádnou informaci o tom, která je
+    správná; doložené testem, který padne, kdyby se oslovení u jedné možnosti
+    změnilo ([[kontrola-se-musi-kontrolovat]]). Nápověda se přesto upravila,
+    aby citovala jen část **za** oslovením — je to konkrétnější vodítko a
+    v auditu nezůstane nález, který bude muset někdo příště znovu rozebírat.
+    Nálezy `hint_leak` u tématu: **4 → 0**.
+  - *Vlastní hlídač „kontrola má co měřit" chytil mrtvou skupinu testů.*
+    Skupinu L3c jsem filtroval na `^Které blahopřání`, ale zadání začíná
+    situací („Kamarádka Anička má narozeniny. Které blahopřání…"). Skupina
+    matchovala **nula úloh a oba její testy prošly** nad prázdnou množinou.
+    Odhalil to až přesný očekávaný počet úloh ve skupině — proto tam je.
+- ✅ **Zámek obsahu přegenerován bezpečně.** Ověřeno diffem: **4 přidané
+  řádky, 0 odebraných**, jediné dotčené téma je to nové. Zámek ostatních 290
+  témat se nezměnil ([[zamek-obsahu-neotiskuje-napovedy]]).
+- 📋 **Zbývají dva uzly na práci:** *Vyprávění podle obrázkové osnovy*
+  a *tiché čtení a porozumění obsahu*. (Z pěti uzlů „sloh a čtení" jsou tedy
+  dva hotové, dva na práci a jeden vyřazený — *plynulé čtení nahlas*. Pozdrav
+  z prázdnin nebyl samostatný uzel, ale část toho dnešního.)
+
 ### Session 2026-10-01 — `rvpNodeId` 2. ročníku + první slohové téma:
 
 - ✅ **Nové téma: Pozdrav, oslovení, omluva, prosba, vzkaz (2. r.)** —

@@ -183,13 +183,18 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
           "g2-cjl-komunikacni-a-slohova-vychova-prace-s-textem-orientace-v-textu-veta-odstavec-nadpis",
         ],
       },
+      // Okruh vznikl 2026-10-01 s tématem „Jak to říct“ a hned se rozšířil
+      // o psané žánry (adresa, přání, pohled). Název proto nese obojí —
+      // přejmenovat šlo bez rizika, protože commit s původním názvem ještě
+      // nebyl v produkci, takže ho žádné dítě nevidělo.
       {
         id: "jak-to-rict",
-        name: "Jak to říct lidem",
-        description: "Pozdrav, prosba, omluva a vzkaz.",
+        name: "Jak to říct a napsat",
+        description: "Pozdrav, prosba, omluva, vzkaz, přání a pohled.",
         emoji: "💬",
         topicIds: [
           "g2-cjl-komunikacni-a-slohova-vychova-slohova-vychova-pozdrav-osloveni-omluva-prosba-vzkaz",
+          "g2-cjl-komunikacni-a-slohova-vychova-slohova-vychova-adresa-blahoprani-pozdrav-z-prazdnin",
         ],
       },
       {
