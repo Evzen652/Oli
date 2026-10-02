@@ -144,6 +144,62 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-02 — třetí slohové téma 2. ročníku (vyprávění podle osnovy):
+
+- ✅ **Nové téma: Vyprávění podle obrázkové osnovy (2. r.)** —
+  `grade-2/cjl/vypraveniPodleOsnovy.ts`, žák vidí „Vyprávěj podle obrázků".
+  Třetí naplněný uzel Slohové výchovy. Pokrytí `30/20/15`, max L3.
+  - **L1** (30) přiřadit větu k obrázku v osnově a vědět, že vyprávění začíná
+    vlevo a končí vpravo. Odpovědí je **pořadí** („k druhému obrázku"), ne
+    popisek z pásu — jinak by ho dítě jen opsalo a nic nepřečetlo.
+  - **L2** (20) posunout se o jeden obrázek dál (ne zpátky, ne přeskočit) a
+    poznat větu, pro kterou v osnově obrázek vůbec není.
+  - **L3** (15) posoudit celek: které ze čtyř vyprávění osnovu dodrží, jak
+    osnova dopadne, když poslední obrázek chybí, a jak se dá celý příběh
+    pojmenovat.
+  - **Okruh „Jak to říct a napsat"** má teď tři témata.
+- ✅ **Nový druh obrázku `story_strip`** (`src/lib/types.ts`,
+  `src/components/TaskVisual.tsx`) — pás číslovaných polí, v každém emoji a pár
+  slov. Vznikl z nutnosti: bez něj by osnova musela být vepsaná do zadání a to
+  u 2. ročníku dává otázku o třiceti slovech, zatímco audit
+  `sentence_complexity` povoluje dvanáct. Všech 65 zadání se do dvanácti slov
+  vejde (nejdelší má přesně 12). Volba `unknown` nakreslí místo posledního pole
+  otazník — používá to úloha „jak osnova skončí", aby klíč nestál v obrázku.
+  `audit:ui` bez nového nálezu, na šířku mobilu se nic nepřetéká.
+- ✅ **Obrácené ověření je deterministické.**
+  `MUTACE=1 npx vitest run src/test/vypraveni-osnova.test.ts`. Normálně
+  **43/43 prošlo**, pod mutací padá **13 ze 43** — a pokaždé stejná třináctka.
+  První verze vybírala mutovaný klíč podle indexu v poli, jenže generátor
+  možnosti míchá, takže jeden běh hlásil 13 a jiný 12. Číslo, které se mezi
+  běhy mění, nic nedokazuje; teď se mutovaný klíč vybírá abecedně.
+- ⚠️ **Čtyři vady našly kontroly, ne autor.**
+  - *Prohlížeč našel dvě gramatické zkomoleniny*, které stroj chytit nemohl:
+    zpětná vazba skládaná v šabloně říkala „Na **prvnímu** obrázku je tohle"
+    (3. pád místo 6.) a „patří **k čtvrtému**" bez vokalizace předložky.
+    Typecheck, kritik v souboru ani `audit:content` o tom mlčely — řetězec
+    vzniká až za běhu. Hlídá to teď test shody číslovky s předložkou a
+    **ověřil jsem ho obráceně**: po vrácení původní chyby padá.
+  - *Vlastní kontrola našla povrchní znak, kterým se dalo téma obejít.*
+    U pojmenování osnovy (L3c) začínalo **všech pět** klíčů slovem „Jak" a
+    žádný distraktor ne — stačilo hledat „Jak". Teď má „Jak" aspoň jeden
+    distraktor v každém příběhu a dva klíče z pěti začínají jinak.
+  - *Totéž u konce osnovy (L3b):* klíč byl vždy jediná možnost, která dopadne
+    dobře, takže „vyber tu veselou" fungovalo bez pohledu na obrázky. Každý
+    příběh má teď i veselý distraktor (pamlsek pro psa, horký čaj, slunečnice
+    na okně, mléko pro kočku, dědeček pouštějící draka).
+  - *`audit:content` hlásil 10× `hint_leak`* nad slovem „obrázku" z klíče.
+    Přepočítáno: planý poplach, to slovo nesou **všechny čtyři** možnosti,
+    takže nerozlišuje nic — doloženo testem, který padne, kdyby ho jedna
+    možnost neměla. Nápověda i tak přepsána na „políčka" pásu, aby nález
+    nemusel nikdo posuzovat při každém běhu. **10 → 0.**
+- **Ověřeno:** typecheck ✓ · **9 243 testů, 244 souborů, 0 pádů** ✓ ·
+  `audit:content` 0 nálezů u tématu ✓ · `check:hints` 0 ✓ · `audit:ui` bez
+  nového nálezu ✓ · build ✓ · průchod v `/dev/tema` ✓ · zámek obsahu
+  **4 přidané řádky, 0 odebraných**, jediné dotčené téma je nové ✓
+- **Zbývá jeden uzel na práci:** tiché čtení a porozumění obsahu.
+  (*Plynulé čtení vět* zůstává vyřazené — čte se nahlas, mikrofon ani
+  rozpoznávání řeči v aplikaci nejsou.)
+
 ### Session 2026-10-02 — druhé slohové téma 2. ročníku (adresa, přání, pohled):
 
 - ✅ **Nové téma: Adresa, blahopřání, pozdrav z prázdnin (2. r.)** —

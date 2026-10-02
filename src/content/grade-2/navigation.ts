@@ -190,11 +190,12 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
       {
         id: "jak-to-rict",
         name: "Jak to říct a napsat",
-        description: "Pozdrav, prosba, omluva, vzkaz, přání a pohled.",
+        description: "Pozdrav, prosba, omluva, vzkaz, přání, pohled a vyprávění.",
         emoji: "💬",
         topicIds: [
           "g2-cjl-komunikacni-a-slohova-vychova-slohova-vychova-pozdrav-osloveni-omluva-prosba-vzkaz",
           "g2-cjl-komunikacni-a-slohova-vychova-slohova-vychova-adresa-blahoprani-pozdrav-z-prazdnin",
+          "g2-cjl-komunikacni-a-slohova-vychova-slohova-vychova-vypraveni-podle-obrazkove-osnovy",
         ],
       },
       {

@@ -45,6 +45,49 @@ zůstává na výběru — klíč tam nese jednotku, zbytek po dělení nebo mez
 relativní tolerance 0,1 % uznávala „4 318" místo „4 320", a `type="number"`
 zahazovalo desetinnou čárku, takže „40,5" u průměru nešlo napsat.
 
+## ✅ VYŘÍZENO 2026-10-02 — vyprávění podle obrázkové osnovy (3 z 5)
+
+Nové téma „Vyprávění podle obrázkové osnovy" (`grade-2/cjl/
+vypraveniPodleOsnovy.ts`, dětsky „Vyprávěj podle obrázků"). Pokrytí `30/20/15`,
+max L3. Okruh **Jak to říct a napsat** má teď tři témata.
+
+Téma si vyžádalo **nový druh obrázku** `story_strip` (`src/lib/types.ts`,
+`src/components/TaskVisual.tsx`) — pás číslovaných polí s emoji a pár slovy.
+Bez něj by osnova musela být vepsaná do zadání, a to u 2. ročníku dává otázku
+o třiceti slovech; audit `sentence_complexity` povoluje dvanáct. Volba
+`unknown` nakreslí místo posledního pole otazník, aby klíč úlohy „jak osnova
+skončí" nestál rovnou v obrázku. `audit:ui` bez nového nálezu.
+
+Obrácené ověření je spustitelné a **deterministické**:
+
+```bash
+MUTACE=1 npx vitest run src/test/vypraveni-osnova.test.ts
+```
+
+Normálně 43/43 prošlo, pod mutací padá 13 ze 43 — pokaždé stejná třináctka.
+(První verze vybírala mutovaný klíč podle indexu v míchaném poli, takže jeden
+běh hlásil 13 a jiný 12; číslo, které se mezi běhy mění, nic nedokazuje.)
+
+Čtyři vady našly kontroly, ne autor:
+
+1. **Prohlížeč našel dvě gramatické zkomoleniny** skládané v šabloně až za
+   běhu — „Na **prvnímu** obrázku" (3. pád místo 6.) a „patří **k čtvrtému**"
+   bez vokalizace. Typecheck, kritik v souboru ani `audit:content` o nich
+   mlčely. Hlídá to teď test shody číslovky s předložkou, ověřený obráceně.
+2. **„Jak" na začátku prozrazovalo klíč** u pojmenování osnovy: všech pět
+   klíčů jím začínalo a žádný distraktor. Opraveno a změřeno testem.
+3. **„Vyber tu veselou" fungovalo** u konce osnovy. Každý příběh má teď
+   i veselý distraktor.
+4. **`audit:content` hlásil 10× `hint_leak`** nad slovem „obrázku" z klíče —
+   planý poplach (nesou ho všechny čtyři možnosti), doložený testem, a nález
+   i tak odstraněn přepsáním nápovědy. **10 → 0.**
+
+Ověřeno: typecheck ✓ · 9 243 testů / 244 souborů / 0 pádů ✓ · `audit:content`
+0 nálezů u tématu ✓ · `check:hints` 0 ✓ · `audit:ui` ✓ · build ✓ ·
+průchod v `/dev/tema` ✓ · zámek obsahu 4 přidané řádky, 0 odebraných ✓
+
+---
+
 ## ✅ VYŘÍZENO 2026-10-02 — adresa, blahopřání, pozdrav z prázdnin (2 z 5)
 
 Nové téma „Adresa, blahopřání, pozdrav z prázdnin" (`grade-2/cjl/
@@ -181,10 +224,10 @@ práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · ~~oprava 17 `rvpNodeId`~~ ✅ 2026-10-01
 (viz níž; bylo jich 13, opravitelných 10) · sloh a čtení ve 2. ročníku
-— **z pěti uzlů: 2 hotové, 2 na práci, 1 vyřazený** (viz níž). Hotovo: pozdrav,
+— **z pěti uzlů: 3 hotové, 1 na práci, 1 vyřazený** (viz níž). Hotovo: pozdrav,
 oslovení, omluva, prosba, vzkaz ✅ 2026-10-01 · adresa, blahopřání, pozdrav
-z prázdnin ✅ 2026-10-02. Na práci: vyprávění podle obrázkové osnovy · tiché
-čtení a porozumění obsahu. Vyřazeno: plynulé čtení vět (čtení nahlas, nejde
+z prázdnin ✅ 2026-10-02 · vyprávění podle obrázkové osnovy ✅ 2026-10-02.
+Na práci: tiché čtení a porozumění obsahu. Vyřazeno: plynulé čtení vět (čtení nahlas, nejde
 měřit bez mikrofonu).
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
 

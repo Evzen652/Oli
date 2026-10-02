@@ -147,6 +147,23 @@ export type TaskVisual =
       /** Řádky tabulky; první řádek je záhlaví, když `header` je true. */
       rows: string[][];
       header?: boolean;
+    }
+  | {
+      /**
+       * Obrázková osnova — pás polí zleva doprava, v každém jeden obrázek
+       * (emoji) a pod ním pár slov. Přidáno 2026-10-02 pro RVP uzel
+       * „vyprávění podle obrázkové osnovy": bez pásu by osnova musela být
+       * vepsaná do zadání, a to u 2. ročníku znamená otázku o třiceti
+       * slovech (audit `sentence_complexity` povoluje dvanáct).
+       */
+      kind: "story_strip";
+      /** Pole osnovy zleva doprava, 2–6 položek. */
+      frames: { emoji: string; caption: string }[];
+      /**
+       * Přidá na konec pás pole s otazníkem — „co bude dál?".
+       * Pole je bez popisku záměrně: obrázek nikdy nenese odpověď.
+       */
+      unknown?: boolean;
     };
 
 export interface HelpVisualExample {

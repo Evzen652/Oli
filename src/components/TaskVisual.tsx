@@ -39,6 +39,8 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <BarChart visual={visual} className={className} />;
     case "table":
       return <DataTable visual={visual} className={className} />;
+    case "story_strip":
+      return <StoryStrip visual={visual} className={className} />;
     default:
       return null;
   }
@@ -603,6 +605,48 @@ function DataTable({ visual, className }: { visual: Of<"table">; className: stri
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+// ── Obrázková osnova ─────────────────────────────────────────────────────────
+
+/**
+ * Pás polí zleva doprava: v každém emoji a pod ním pár slov. Pořadí je celá
+ * podstata úlohy, takže číslo pole je vidět — dítě se podle něj odpovídá
+ * („k druhému obrázku").
+ *
+ * `unknown` přidá pole s otazníkem navíc. Popisek v něm není: úloha „co bude
+ * dál" by se jím vyřešila sama.
+ *
+ * Při nesmyslných datech vrací `null` ze stejného důvodu jako druhy výš —
+ * zadání i bez obrázku drží, rozbitý pás dítě vidět nemá.
+ */
+function StoryStrip({ visual, className }: { visual: Of<"story_strip">; className: string }) {
+  const { frames, unknown = false } = visual;
+  if (frames.length < 2 || frames.length > 6) return null;
+  if (frames.some((f) => !f.emoji || !f.caption)) return null;
+
+  const popis = frames.map((f) => f.caption).join(", ");
+  const label = unknown
+    ? `Obrázková osnova: ${popis}. Poslední pole je prázdné, s otazníkem.`
+    : `Obrázková osnova: ${popis}.`;
+
+  return (
+    <div role="img" aria-label={label} className={`flex flex-wrap items-stretch gap-2 ${className}`}>
+      {frames.map((f, i) => (
+        <div key={i} className="flex w-24 flex-col items-center rounded-xl border border-border bg-card px-2 py-2 text-center">
+          <span aria-hidden className="text-xs font-bold text-muted-foreground">{i + 1}</span>
+          <span aria-hidden className="text-3xl leading-none">{f.emoji}</span>
+          <span aria-hidden className="mt-1.5 text-xs leading-tight text-foreground">{f.caption}</span>
+        </div>
+      ))}
+      {unknown && (
+        <div className="flex w-24 flex-col items-center justify-center rounded-xl border-2 border-dashed border-border px-2 py-2">
+          <span aria-hidden className="text-xs font-bold text-muted-foreground">{frames.length + 1}</span>
+          <span aria-hidden className="text-3xl leading-none text-muted-foreground">?</span>
+        </div>
+      )}
     </div>
   );
 }
