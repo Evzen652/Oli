@@ -164,6 +164,28 @@ export type TaskVisual =
        * Pole je bez popisku záměrně: obrázek nikdy nenese odpověď.
        */
       unknown?: boolean;
+    }
+  | {
+      /**
+       * Čtený text k úloze. Přidáno 2026-10-04 pro RVP uzel „tiché čtení
+       * a porozumění obsahu": u čtení s porozuměním je text **zadání samo**,
+       * takže ho nejde vepsat do otázky — vyšla by otázka o čtyřiceti slovech
+       * a audit `sentence_complexity` povoluje pro 2. ročník dvanáct.
+       *
+       * Oddělení textu od otázky není jen úklid: dítě má text přečíst
+       * potichu celý a teprve pak hledat odpověď, což je přesně ta
+       * dovednost. Vedle sebe stojící „text" a „otázka" to říkají samy.
+       *
+       * ⚠️ Text odpověď nese — jinak by se z něj nedalo nic vyčíst. Pravidlo
+       * „obrázek nenese odpověď" se tady proto obrací: hlídat je potřeba, aby
+       * žádná **možnost** nebyla doslovná věta z textu, jinak úloha měří
+       * hledání shody, ne porozumění.
+       */
+      kind: "text_passage";
+      /** Nadpis nad textem. Nepovinný — jsou úlohy, které se ptají právě na něj. */
+      title?: string;
+      /** Odstavce textu, 1–4. */
+      paragraphs: string[];
     };
 
 export interface HelpVisualExample {

@@ -45,6 +45,62 @@ zůstává na výběru — klíč tam nese jednotku, zbytek po dělení nebo mez
 relativní tolerance 0,1 % uznávala „4 318" místo „4 320", a `type="number"`
 zahazovalo desetinnou čárku, takže „40,5" u průměru nešlo napsat.
 
+## ✅ VYŘÍZENO 2026-10-04 — tiché čtení a porozumění obsahu (okruh hotový)
+
+Nové téma „Tiché čtení a porozumění obsahu" (`grade-2/cjl/
+ticheCteniPorozumeni.ts`, dětsky „Čti a rozuměj"). Pokrytí `15/15/15`, max L3.
+Pět textů po pěti větách, devět úloh z každého. Okruh **Čtení a knihy** má
+teď tři témata.
+
+Vymezení proti sousednímu tématu „Vyznej se v textu": tam jde o **tvar** textu
+(kolik vět, odstavec, nadpis), tady o jeho **obsah**. Stojí to v `boundaries`
+obou témat a hlídá to test.
+
+Téma si vyžádalo **nový druh obrázku** `text_passage` (`src/lib/types.ts`,
+`src/components/TaskVisual.tsx`) — čtený text ve vlastním rámečku nad otázkou.
+Vepsaný do zadání by dal otázku o čtyřiceti slovech; strop auditu je dvanáct
+a nejdelší zadání tady má sedm slov.
+
+⚠️ **U tohohle druhu se pravidlo „obrázek nenese odpověď" obrací.** Čtený text
+ji nést musí, jinak z něj nejde nic vyčíst. Hlídá se proto druhá strana:
+žádná možnost nesmí být doslovná věta z textu, jinak úloha měří hledání
+shodného řádku, ne porozumění.
+
+Obrácené ověření je spustitelné a deterministické:
+
+```bash
+MUTACE=1 npx vitest run src/test/tiche-cteni.test.ts
+```
+
+Normálně 31/31 prošlo, pod mutací padají 3 z 31 — pokaždé stejné tři. Jsou to
+právě ta tři měřítka, která o klíči něco tvrdí.
+
+Pět vad našly kontroly, ne autor:
+
+1. **Kritik chytil dvě doslovné věty z textu** mezi možnostmi a tři sady
+   možností, které se daly uhodnout podle délky.
+2. **Dva nadpisy prozrazovaly odpověď** („Ztracená rukavice", „Spadlý řetěz").
+   Nadpis se čte dřív než otázka, takže úloha šla vyřešit bez čtení textu.
+   Přejmenováno — a od teď to hlídá kritik.
+3. **22 z 90 nápověd se opakovalo** napříč texty. Teď 90 z 90 unikátních.
+4. **`audit:ui` ohlásil nový `empty-state-null`** u nového rendereru. Pravda
+   s jiným odůvodněním než u ostatních druhů: tam je obrázek doplněk, tady je
+   text zadání samo. Ošetřeno v obsahu, nález v baseline. **Baseline 12 → 13.**
+5. **Náhled v prohlížeči našel spřežené věty** v deseti nápovědách
+   („Hledej čtvrtou větu, ta mluví o pláštěnkách."). Přepsáno.
+
+⚠️ Dvě chyby byly v **mojí kontrole**, ne v obsahu, a odhalilo je až obrácené
+ověření hlídače: kontrola pravdivosti zpětné vazby porovnávala špatné slovo
+a pak neuměla české ohýbání koncovky („škola" × „školy"). Podstrčil jsem do
+obsahu lživou vazbu a test prošel; teprve pak jsem pravidlo přepsal.
+
+Ověřeno: typecheck ✓ · 9 284 testů / 245 souborů / 0 pádů ✓ · `audit:content`
+0 nálezů u tématu ✓ · `check:hints` 0 ✓ · `audit:ui` bez nového nálezu ✓ ·
+build ✓ · průchod v `/dev/tema` včetně mobilní šířky ✓ · zámek obsahu
+4 přidané řádky, 0 odebraných ✓
+
+---
+
 ## ✅ VYŘÍZENO 2026-10-02 — vyprávění podle obrázkové osnovy (3 z 5)
 
 Nové téma „Vyprávění podle obrázkové osnovy" (`grade-2/cjl/
@@ -224,11 +280,11 @@ práci, seřazeno podle dopadu: ~~párové souhlásky~~ ✅ 2026-09-30 (D) · ~~
 v 21 tématech~~ ✅ přeměřeno 2026-09-30 (D): jediný skutečný únik (mýty a
 báje) opraven, zbytek falešné poplachy · ~~oprava 17 `rvpNodeId`~~ ✅ 2026-10-01
 (viz níž; bylo jich 13, opravitelných 10) · sloh a čtení ve 2. ročníku
-— **z pěti uzlů: 3 hotové, 1 na práci, 1 vyřazený** (viz níž). Hotovo: pozdrav,
+— ✅ **HOTOVO 2026-10-04: ze pěti uzlů 4 naplněné, 1 vyřazený.** Pozdrav,
 oslovení, omluva, prosba, vzkaz ✅ 2026-10-01 · adresa, blahopřání, pozdrav
-z prázdnin ✅ 2026-10-02 · vyprávění podle obrázkové osnovy ✅ 2026-10-02.
-Na práci: tiché čtení a porozumění obsahu. Vyřazeno: plynulé čtení vět (čtení nahlas, nejde
-měřit bez mikrofonu).
+z prázdnin ✅ 2026-10-02 · vyprávění podle obrázkové osnovy ✅ 2026-10-02 ·
+tiché čtení a porozumění obsahu ✅ 2026-10-04. Vyřazeno: plynulé čtení vět
+(čte se nahlas, nejde měřit bez mikrofonu).
 Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
 
 Ze zbytku mezer 2. ročníku **3 uzly do aplikace nepatří** — okruh „Psaní"

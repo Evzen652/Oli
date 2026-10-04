@@ -41,6 +41,8 @@ export function TaskVisual({ visual, className = "" }: { visual: TaskVisualData;
       return <DataTable visual={visual} className={className} />;
     case "story_strip":
       return <StoryStrip visual={visual} className={className} />;
+    case "text_passage":
+      return <TextPassage visual={visual} className={className} />;
     default:
       return null;
   }
@@ -647,6 +649,41 @@ function StoryStrip({ visual, className }: { visual: Of<"story_strip">; classNam
           <span aria-hidden className="text-3xl leading-none text-muted-foreground">?</span>
         </div>
       )}
+    </div>
+  );
+}
+
+// ── Čtený text ───────────────────────────────────────────────────────────────
+
+/**
+ * Text k přečtení, oddělený od zadání. Používá ho čtení s porozuměním:
+ * dítě si text přečte potichu celé a teprve pod ním najde otázku.
+ *
+ * Na rozdíl od ostatních druhů tenhle odpověď **nese** — to je jeho smysl.
+ * Hlídat je proto potřeba opačnou stranu: aby žádná možnost nebyla doslovná
+ * věta z textu. To je úkol kritika v obsahu, ne tohohle komponentu.
+ *
+ * ⚠️ Při nesmyslných datech vrací `null` jako druhy výš, ale **důvod se tu
+ * neopakuje**. U ostatních je obrázek doplněk a úloha bez něj drží; tady je
+ * text zadání samo, takže prázdno by znamenalo otázku, na kterou nejde
+ * odpovědět. Větev proto není záchrana, jen poslední pojistka — že se do ní
+ * nedá dostat, hlídá kritik v obsahu (`ticheCteniPorozumeni.ts`), který na
+ * špatný počet odstavců padá už při generování.
+ *
+ * Nález `empty-state-null` v UI auditu je k tomuhle místu v baseline
+ * vědomě, se stejným zdůvodněním jako dvanáct nálezů u druhů výš.
+ */
+function TextPassage({ visual, className }: { visual: Of<"text_passage">; className: string }) {
+  const { title, paragraphs } = visual;
+  if (paragraphs.length < 1 || paragraphs.length > 4) return null;
+  if (paragraphs.some((p) => !p.trim())) return null;
+
+  return (
+    <div className={`w-full max-w-prose rounded-xl border border-border bg-card px-4 py-3 ${className}`}>
+      {title && <p className="mb-1.5 text-center text-base font-bold text-foreground">{title}</p>}
+      {paragraphs.map((p, i) => (
+        <p key={i} className={`text-base leading-relaxed text-foreground ${i > 0 ? "mt-2" : ""}`}>{p}</p>
+      ))}
     </div>
   );
 }

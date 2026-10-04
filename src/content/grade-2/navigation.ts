@@ -201,9 +201,12 @@ export const GRADE2_NAVIGATION: SubjectNav[] = [
       {
         id: "cteni-knihy",
         name: "Čtení a knihy",
-        description: "Pohádky, básně a práce s knihou.",
+        // Čtení s porozuměním patří sem, ne k „Větě a textu": tam se řeší
+        // tvar textu (druhy vět, odstavec, nadpis), tady jeho obsah.
+        description: "Čtení s porozuměním, pohádky, básně a práce s knihou.",
         emoji: "📚",
         topicIds: [
+          "g2-cjl-komunikacni-a-slohova-vychova-cteni-s-porozumenim-tiche-cteni-a-porozumeni-obsahu",
           "g2-cjl-literarni-vychova-literarni-zanry-pohadka-rikanky-basen-hadanka",
           "g2-cjl-literarni-vychova-prace-s-knihou-spisovatel-ilustrator-knihovna",
         ],

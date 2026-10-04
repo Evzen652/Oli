@@ -144,6 +144,72 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-04 — poslední uzel okruhu „sloh a čtení" 2. ročníku:
+
+- ✅ **Nové téma: Tiché čtení a porozumění obsahu (2. r.)** —
+  `grade-2/cjl/ticheCteniPorozumeni.ts`, žák vidí „Čti a rozuměj".
+  Pokrytí `15/15/15`, max L3. Pět textů po pěti větách, devět úloh z každého.
+  - **L1** (15) najít v textu údaj, který je v něm napsaný.
+  - **L2** (15) poskládat odpověď ze dvou vět: proč se něco stalo, co bylo
+    dřív a co potom, co zastupuje zájmeno a co znamená slovo v té které větě
+    („třída" jsou děti, ne místnost).
+  - **L3** (15) vyvodit, co v textu napsané **není**: které tvrzení z něj
+    plyne, na co naopak neodpovídá a jak se to nejspíš sešlo dál.
+  - **Vymezení proti sousedovi.** Uzel *orientace v textu* (téma „Vyznej se
+    v textu") řeší **tvar** textu — kolik má vět, kde je odstavec, nadpis.
+    Tohle téma řeší **obsah**. Stojí to v `boundaries` obou témat a hlídá to
+    test.
+  - **Okruh „Čtení a knihy"** má teď tři témata a téma je v něm první.
+- ✅ **Nový druh obrázku `text_passage`** (`src/lib/types.ts`,
+  `src/components/TaskVisual.tsx`) — čtený text ve vlastním rámečku nad
+  otázkou. Vepsaný do zadání by dal otázku o čtyřiceti slovech (strop auditu
+  je dvanáct); nejdelší zadání tady má **sedm slov**. Oddělení navíc říká
+  samo, co se má dělat: přečíst potichu celé, teprve pak hledat odpověď.
+- ⚠️ **U tohohle druhu se pravidlo o obrázku obrací.** Ostatní `TaskVisual`
+  nesmějí nést odpověď; čtený text ji nést musí, jinak z něj nejde nic
+  vyčíst. Hlídá se proto druhá strana: **žádná možnost nesmí být doslovná
+  věta z textu** — jinak by úloha měřila hledání shodného řádku, ne
+  porozumění. Kritik na to padl hned napoprvé u dvou možností.
+- ⚠️ **Pět vad našly kontroly, ne autor.**
+  - *Kritik chytil dvě doslovné věty z textu* mezi možnostmi („Lenka si vzala
+    rukavice.", „Po obědě začalo pršet.") a tři sady možností, které se daly
+    uhodnout podle délky.
+  - *Dva nadpisy prozrazovaly odpověď:* „Ztracená rukavice" k otázce, co si
+    Lenka vzala, a „Spadlý řetěz" k otázce, co se stalo na kopci. Nadpis se
+    čte dřív než otázka, takže úloha šla vyřešit bez čtení textu.
+    Přejmenováno na „Cesta do školy" a „Adamův dárek" — a od teď to **hlídá
+    kritik**, ne moje pozornost.
+  - *22 z 90 nápověd se opakovalo* napříč texty. Opraveno tím, že stopa
+    v nápovědě ukazuje do **toho** textu; teď je unikátních 90 z 90 a hlídá
+    to test.
+  - *`audit:ui` ohlásil nový nález* `empty-state-null` u nového rendereru.
+    Byla to pravda s jiným odůvodněním: u ostatních druhů je obrázek doplněk
+    a `null` nevadí, tady je text zadání samo. Ošetřeno v obsahu (kritik padá
+    na špatný počet odstavců, takže se do té větve nedá dostat) a nález je
+    v baseline se zdůvodněním. **Baseline 12 → 13.**
+  - *Náhled v prohlížeči našel spřežené věty* — „Hledej čtvrtou větu, ta
+    mluví o pláštěnkách." jsou dvě hlavní věty spojené čárkou. Deset nápověd
+    přepsáno na větu vztažnou.
+- ⚠️ **Dvě chyby byly v mojí kontrole, ne v obsahu**, a obě odhalilo až
+  obrácené ověření hlídače: kontrola „zpětná vazba nelže, když tvrdí, že se
+  něco v textu nepíše" nejdřív porovnávala poslední slovo možnosti (u
+  „houbovou polévku" tedy „polévku") a pak hledala shodu podmínkou „jedno
+  slovo je začátkem druhého" — jenže čeština koncovku **vyměňuje**, takže
+  „škola" × „školy" neprošlo. Podstrčil jsem do obsahu lživou vazbu a test
+  **prošel**; teprve pak jsem pravidlo přepsal.
+- ✅ **Obrácené ověření je deterministické.**
+  `MUTACE=1 npx vitest run src/test/tiche-cteni.test.ts`. Normálně
+  **31/31 prošlo**, pod mutací padají **3 z 31** — pokaždé stejné tři.
+  Jsou to právě ta tři měřítka, která o klíči něco tvrdí; zbylých 28 jsou
+  pravidla o tvaru a struktuře, která o správnosti klíče nevypovídají.
+- **Ověřeno:** typecheck ✓ · **9 284 testů, 245 souborů, 0 pádů** ✓ ·
+  `audit:content` 0 nálezů u tématu ✓ · `check:hints` 0 ✓ · `audit:ui` bez
+  nového nálezu (baseline 13) ✓ · build ✓ · průchod v `/dev/tema` včetně
+  mobilní šířky ✓ · zámek obsahu **4 přidané řádky, 0 odebraných** ✓
+- 🎉 **Okruh „sloh a čtení" 2. ročníku je hotový:** ze pěti uzlů **4 naplněné**
+  a 1 vyřazený se zdůvodněním (*plynulé čtení vět* — čte se nahlas, mikrofon
+  ani rozpoznávání řeči v aplikaci nejsou).
+
 ### Session 2026-10-02 — třetí slohové téma 2. ročníku (vyprávění podle osnovy):
 
 - ✅ **Nové téma: Vyprávění podle obrázkové osnovy (2. r.)** —
