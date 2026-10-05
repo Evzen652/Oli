@@ -286,8 +286,12 @@ z prázdnin ✅ 2026-10-02 · vyprávění podle obrázkové osnovy ✅ 2026-10-
 tiché čtení a porozumění obsahu ✅ 2026-10-04. Vyřazeno: plynulé čtení vět
 (čte se nahlas, nejde měřit bez mikrofonu).
 Informatika — **změřeno 5. 10.: 4. ročník 10/10, 5. ročník 10/10, 6. ročník
-0/9.** Staré „informatika 4.–6. (0/29)" tedy neplatilo; otevřený je jen
-6. ročník a u něj rozhodnutí, jestli vůbec patří do aplikace.
+0/9.** Staré „informatika 4.–6. (0/29)" tedy neplatilo. **Rozhodnutí Evžena
+5. 10.: informatika do aplikace nepatří** → 9 uzlů 6. ročníku se nedoplňuje
+a bod je tím uzavřený. 🟠 **Otevřený důsledek:** 20 hotových témat
+informatiky ve 4. a 5. ročníku je v produkci (předmět bez okruhů, dítě ho
+v `TopicBrowser` vidí plochý). Smazat, nebo jen skrýt? Rozhoduje Evžen —
+je to zásah do toho, co dítě v aplikaci vidí.
 
 **Celková míra naplnění** (měřeno 5. 10. proti `data/rvp_data.json`; uzel se
 počítá za naplněný, když ho nese `id` nebo `rvpNodeId` nějakého tématu):

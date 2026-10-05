@@ -152,6 +152,18 @@ při volném i striktním porovnání (360 = 360), takže to nejsou nálezy z ko
 
 - ✅ **Aktivní scope 2.–6. ročník: 360 z 376 uzlů RVP naplněno.** Zbývá 16:
   **informatika 6. ročníku 0/9** a **čeština 2. ročníku 7 uzlů**.
+- 🟠 **Rozhodnutí Evžena 5. 10.: informatika do aplikace nepatří.** Těch 9 uzlů
+  6. ročníku se tedy nedoplňuje. Otevřený důsledek: **20 hotových témat
+  informatiky ve 4. a 5. ročníku** (`src/content/grade-4/informatika/`,
+  `grade-5/informatika/`) je v produkci a dítě se k nim v `TopicBrowser`
+  dostane — předmět nemá okruhy, kreslí se plochý. Smazat, nebo skrýt,
+  rozhoduje Evžen; je to zásah do toho, co dítě vidí.
+- ✅ **Slovní úlohy i diktáty zařazené jsou** (dotaz 5. 10.): slovní úlohy ve
+  2.–5. ročníku (`g2-mat-slovni-ulohy-100` 17/19/21, `g3-mat-slovni-ulohy-dve-operace`
+  a `g4-mat-slovni-ulohy-pisemne-operace-4` a `g5-mat-slovni-ulohy-5` po 30/30/30),
+  doplňovací diktát ve všech ročnících 2–6 (13–18 úloh na úroveň, všude maxL3),
+  všechno v navigaci. 6. ročník vlastní slovní úlohy nemá, protože je RVP
+  v jeho matematice nemá — místo nich jsou logické úlohy (24/24/24).
 - ✅ **Hloubka je bez mezery** — `audit:coverage` pro ročníky 2–6 vypsal
   347 témat, všechna `maxL3` a všechna ≥12 unikátních úloh na každé úrovni
   (0 témat pod prahem). Výchozí scope skriptu je 2–4, proto se pouštělo
