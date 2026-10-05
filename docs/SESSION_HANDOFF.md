@@ -19,14 +19,15 @@
 >    kroků může udělat jen Evžen (účty, právní kontrola, podpisový klíč).
 > 2. **Zbylé mezery v obsahu** — seznam kandidátů je v `PENDING_CHANGES.md`
 >    („mezery v obsahu 2.–6. ročníku"). **Změřeno 5. 10.** proti
->    `data/rvp_data.json`: v aktivním scope (2.–6. ročník) je naplněno
->    **360 z 376 uzlů RVP**. Sloh a čtení 2. ročníku i oprava `rvpNodeId`
->    jsou hotové. **Informatika do aplikace nepatří — rozhodl Evžen 5. 10.**,
->    takže 9 uzlů 6. ročníku se nedoplňuje (4. a 5. ročník mají 10/10 hotových
->    už teď — co s nimi, je otevřené, viz §4). Zbývá **7 uzlů v češtině
->    2. ročníku**, z nichž šest aplikace nabídnout nemůže (3× psaní rukou,
->    čtení nahlas, dramatizace, vyjádření pocitů z textu) a jediný
->    realizovatelný je **Pořádek slov ve větě**.
+>    `data/rvp_data.json`, a to dvakrát: grep přes zdrojové soubory dal
+>    **360 z 376**, měření proti `ALL_TOPICS` **340 z 376**. Platí to druhé —
+>    rozdíl je 20 souborů informatiky, které na disku leží, ale **nikdo je
+>    neimportuje** (mrtvý obsah). Měř pokrytí vždy proti registru, ne grepem.
+>    Sloh a čtení 2. ročníku i oprava `rvpNodeId` jsou hotové.
+>    **Informatika do aplikace nepatří — rozhodl Evžen 5. 10.** Zbývá tedy
+>    **7 uzlů v češtině 2. ročníku**, z nichž šest aplikace nabídnout nemůže
+>    (3× psaní rukou, čtení nahlas, dramatizace, vyjádření pocitů z textu)
+>    a jediný realizovatelný je **Pořádek slov ve větě**.
 >
 > ⚠️ **Jedno rozhodnutí visí a blokuje úklid:** `data/rvp_data.json` nemá pro
 > 4. ani 5. ročník uzel se slovními úlohami, takže dvě nová témata mají
@@ -717,10 +718,13 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
   a čtení 2. ročníku jsou hotové (4. a 5. 10.), zbylých šest uzlů g2-cjl
   aplikace nabídnout nemůže (psaní rukou, čtení nahlas, dramatizace,
   volná odpověď).
-- 🟠 **Informatika do aplikace nepatří (Evžen, 5. 10.).** 6. ročník se
-  tedy nedoplňuje. Otevřené zůstává, co s **20 hotovými tématy
-  informatiky ve 4. a 5. ročníku**, která jsou v produkci a dítě se k nim
-  v `TopicBrowser` dostane jako k plochému předmětu — smazat, nebo skrýt.
+- ✅ **Informatika do aplikace nepatří (Evžen, 5. 10.) — uzavřeno.** Nikdy
+  v ní nebyla: 20 souborů ve `grade-4/informatika/` a `grade-5/informatika/`
+  není naimportováno v žádném `index.ts`, takže se do `ALL_TOPICS` nedostaly.
+  Nechávají se ležet jako mrtvý obsah (smazání se nikdy nevrátí, tohle ano).
+  Pojistka proti tichému zapnutí: `src/lib/hiddenSubjects.ts`, hlídá
+  `src/test/hidden-subjects.test.ts` — včetně toho, že si dětská cesta nesmí
+  psát vlastní filtr podle `gradeRange`.
 - **Zbylá matematika na výběru možností.** 16 témat výsledek píše; zbytek ne,
   protože klíč nese jednotku, zbytek po dělení nebo mezeru mezi řády. Kdyby
   se to mělo rozšířit, je to zásah do KLÍČE (jednotku přesunout do zadání),

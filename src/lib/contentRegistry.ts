@@ -1,6 +1,7 @@
 import type { TopicMetadata } from "./types";
 import { ALL_TOPICS } from "./content";
 import { matchesAnyKeyword, longestMatchingKeywordLen } from "./keywordMatch";
+import { isSubjectHidden } from "./hiddenSubjects";
 
 /**
  * CONTENT REGISTRY — thin re-export layer.
@@ -87,9 +88,22 @@ export function getAllTopics(): readonly TopicMetadata[] {
   return Object.freeze([...TOPICS]);
 }
 
-/** Get topics available for a specific grade. */
-export function getTopicsForGrade(grade: number): readonly TopicMetadata[] {
-  return TOPICS.filter((t) => grade >= t.gradeRange[0] && grade <= t.gradeRange[1]);
+/**
+ * Get topics available for a specific grade.
+ *
+ * Skryté předměty (`HIDDEN_SUBJECTS`) vynechává — tohle je seznam pro DÍTĚ.
+ * Admin a audity si je vyžádají přes `includeHidden`.
+ */
+export function getTopicsForGrade(
+  grade: number,
+  opts: { includeHidden?: boolean } = {},
+): readonly TopicMetadata[] {
+  return TOPICS.filter(
+    (t) =>
+      grade >= t.gradeRange[0] &&
+      grade <= t.gradeRange[1] &&
+      (opts.includeHidden || !isSubjectHidden(t.subject)),
+  );
 }
 
 /** Find a topic by ID. */
@@ -111,6 +125,8 @@ export function matchTopic(childInput: string, grade: number): TopicMetadata | n
 
   const candidates = TOPICS.filter((topic) => {
     if (grade < topic.gradeRange[0] || grade > topic.gradeRange[1]) return false;
+    // Dítě napíše, co chce procvičovat — skrytý předmět mu sem spadnout nesmí.
+    if (isSubjectHidden(topic.subject)) return false;
     return matchesAnyKeyword(input, topic.keywords);
   });
 

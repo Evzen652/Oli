@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SessionView } from "@/components/SessionView";
-import { getAllTopics } from "@/lib/contentRegistry";
+import { getAllTopics, getTopicsForGrade } from "@/lib/contentRegistry";
 import { getTodayProgress, allTasksCompleted, markTaskCompleted } from "@/lib/anonProgress";
 import { serverGetProgress } from "@/lib/anonServerSync";
 import { getContentWarning } from "@/lib/contentAvailability";
@@ -389,10 +389,8 @@ function DailyTaskList({ topics, onStart, grade }: DailyTaskListProps) {
 }
 
 function SubjectGrid({ grade, onSelect }: { grade: number; onSelect: (subject: string) => void }) {
-  const topicsForGrade = useMemo(
-    () => getAllTopics().filter((t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade),
-    [grade],
-  );
+  // getTopicsForGrade, ne vlastní filtr — vynechává i skryté předměty.
+  const topicsForGrade = useMemo(() => getTopicsForGrade(grade), [grade]);
   const subjects = useMemo(() => [...new Set(topicsForGrade.map((t) => t.subject))], [topicsForGrade]);
 
   return (

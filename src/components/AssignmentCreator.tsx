@@ -15,7 +15,8 @@ import { cs } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
-import { getAllTopics } from "@/lib/contentRegistry";
+import { getAllTopics, getTopicsForGrade } from "@/lib/contentRegistry";
+import { isSubjectHidden } from "@/lib/hiddenSubjects";
 import type { Grade, TopicMetadata } from "@/lib/types";
 import { getSubjectMeta } from "@/lib/subjectRegistry";
 
@@ -49,11 +50,12 @@ export function AssignmentCreator({ childId, childName, grade, onCreated, prefil
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const [note, setNote] = useState("");
 
-  // All topics from code registry — filtered by grade if provided
+  // All topics from code registry — filtered by grade if provided.
+  // Skryté předměty (`HIDDEN_SUBJECTS`) ven: rodič zadává úkol DÍTĚTI, takže
+  // by ho jinak poslal do předmětu, který v aplikaci není.
   const allTopics = useMemo<TopicMetadata[]>(() => {
-    const all = getAllTopics();
-    if (!grade) return [...all];
-    return all.filter(t => grade >= t.gradeRange[0] && grade <= t.gradeRange[1]);
+    if (!grade) return getAllTopics().filter((t) => !isSubjectHidden(t.subject));
+    return [...getTopicsForGrade(grade)];
   }, [grade]);
 
   // Derived hierarchy

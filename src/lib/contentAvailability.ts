@@ -7,7 +7,7 @@
  * (banner) a v anonDailyTasks (effective grade pro výběr topics).
  */
 
-import { getAllTopics } from "@/lib/contentRegistry";
+import { getTopicsForGrade } from "@/lib/contentRegistry";
 
 /**
  * Aktivní scope (rozhodnutí D9, zamknutí 2026-07-12, rozšíření 2026-09-11):
@@ -21,11 +21,13 @@ export const ACTIVE_GRADES: readonly number[] = [2, 3, 4, 5, 6];
 
 const FALLBACK_GRADE = 4;
 
-/** True pokud existuje aspoň 1 topic pokrývající daný ročník (bez ohledu na scope). */
+/**
+ * True pokud existuje aspoň 1 topic pokrývající daný ročník (bez ohledu na scope).
+ * Skryté předměty se nepočítají — ročník, kde by byla jen informatika, by jinak
+ * hlásil obsah a dítě by uvidělo prázdno.
+ */
 export function hasContentForGrade(grade: number): boolean {
-  return getAllTopics().some(
-    (t) => t.gradeRange[0] <= grade && t.gradeRange[1] >= grade,
-  );
+  return getTopicsForGrade(grade).length > 0;
 }
 
 /**

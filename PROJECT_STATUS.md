@@ -150,14 +150,32 @@ Měřeno proti `data/rvp_data.json` (uzel = naplněný, když ho nese `id` nebo
 `rvpNodeId` nějakého tématu v `src/content/**` či `src/lib/content/**`); shodně
 při volném i striktním porovnání (360 = 360), takže to nejsou nálezy z komentářů.
 
-- ✅ **Aktivní scope 2.–6. ročník: 360 z 376 uzlů RVP naplněno.** Zbývá 16:
-  **informatika 6. ročníku 0/9** a **čeština 2. ročníku 7 uzlů**.
-- 🟠 **Rozhodnutí Evžena 5. 10.: informatika do aplikace nepatří.** Těch 9 uzlů
-  6. ročníku se tedy nedoplňuje. Otevřený důsledek: **20 hotových témat
-  informatiky ve 4. a 5. ročníku** (`src/content/grade-4/informatika/`,
-  `grade-5/informatika/`) je v produkci a dítě se k nim v `TopicBrowser`
-  dostane — předmět nemá okruhy, kreslí se plochý. Smazat, nebo skrýt,
-  rozhoduje Evžen; je to zásah do toho, co dítě vidí.
+- ⚠️ **Opraveno druhým měřením: aktivní scope 2.–6. ročník je 340 z 376 uzlů,
+  ne 360.** První měření hledalo ID uzlů **grepem přes zdrojové soubory**,
+  takže počítalo i 20 souborů informatiky, které na disku leží, ale **žádný
+  `index.ts` je neimportuje** — do `ALL_TOPICS` se nikdy nedostaly. Mrtvý
+  soubor vypadá při grepu stejně jako živý. **Pokrytí měř proti registru**
+  (`ALL_TOPICS`), ne grepem; rozdíl byl 20 uzlů a poslal mě dvakrát
+  k nepravdivému závěru o informatice.
+- ✅ **Informatika do aplikace nepatří (rozhodnutí Evžena 5. 10.) — uzavřeno.**
+  Nikdy v ní nebyla, takže nebylo co vypínat: 0 z 29 uzlů (4. r. 0/10,
+  5. r. 0/10, 6. r. 0/9). Původní tvrzení „informatika 4.–6. (0/29)"
+  v dokumentaci **platilo** a moje „oprava" v `7aa4de3` byla chybná.
+  Soubory se nechávají ležet — smazání se nevrátí, tohle ano.
+- ✅ **Pojistka proti tichému zapnutí** — `src/lib/hiddenSubjects.ts`
+  (`HIDDEN_SUBJECTS`, jediný zdroj pravdy) a filtr přímo v
+  `getTopicsForGrade`, kterým teď prochází celá dětská cesta: `TopicBrowser`
+  (admin dál vidí vše přes `includeHidden`), `ChildHomePage`, `AnonStudentPage`,
+  denní úkoly, `matchTopic` (dítě napíše, co chce procvičovat)
+  i `AssignmentCreator` (rodič zadává úkol dítěti). Dřív si čtyři různá místa
+  psala vlastní `filter` nad `gradeRange` — právě tím by každé nové skrytí
+  uteklo, takže `src/test/hidden-subjects.test.ts` to hlídá i na úrovni
+  zdrojového kódu. Ověřeno obousměrně: po vložení obou vad (prázdný
+  `HIDDEN_SUBJECTS`, vlastní filtr v `TopicBrowser`) test padá, po vrácení
+  prochází (20/20).
+- ✅ **Zbývá tedy 36 uzlů:** 29 informatika (vyřazená rozhodnutím) a 7 čeština
+  2. ročníku, z nichž šest aplikace nabídnout nemůže. Realizovatelný je
+  jediný: **Pořádek slov ve větě**.
 - ✅ **Slovní úlohy i diktáty zařazené jsou** (dotaz 5. 10.): slovní úlohy ve
   2.–5. ročníku (`g2-mat-slovni-ulohy-100` 17/19/21, `g3-mat-slovni-ulohy-dve-operace`
   a `g4-mat-slovni-ulohy-pisemne-operace-4` a `g5-mat-slovni-ulohy-5` po 30/30/30),

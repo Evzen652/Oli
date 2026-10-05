@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { IllustrationImg } from "@/components/IllustrationImg";
 import { PaintedArrow } from "@/components/icons/PaintedArrow";
 import type { TopicMetadata, Grade } from "@/lib/types";
-import { getAllTopics } from "@/lib/contentRegistry";
+import { getTopicsForGrade } from "@/lib/contentRegistry";
 import { getTopicInsight } from "@/lib/topicInsight";
 import { getCategoryVisual, getTopicEmoji, getCategoryIllustrationUrl, getTopicIllustrationUrl } from "@/lib/prvoukaVisuals";
 import { BackButton } from "@/components/BackButton";
@@ -43,10 +43,12 @@ export function TopicBrowser({ grade, onSelectTopic, onBack, isAdmin, initialSub
 
   // Use only code registry topics for student view (no DB-only duplicates)
   const { dbOnlyTopics } = useDbCurriculum(grade);
-  const codeTopics = useMemo(() => {
-    const all = getAllTopics();
-    return all.filter((t) => grade >= t.gradeRange[0] && grade <= t.gradeRange[1]);
-  }, [grade]);
+  // Skryté předměty (`HIDDEN_SUBJECTS`) dítě nevidí; admin ano, aby se k nim
+  // dal dostat bez odblokování pro všechny.
+  const codeTopics = useMemo(
+    () => getTopicsForGrade(grade, { includeHidden: !!isAdmin }),
+    [grade, isAdmin],
+  );
   // Only add DB-only topics that have actual exercises (not just metadata stubs)
   const topics = useMemo(() => {
     const realDbOnly = dbOnlyTopics.filter((t) => (t as any)._dbOnly && t.generator(1).length === 0 === false);

@@ -4,7 +4,7 @@
  */
 
 import type { TopicMetadata } from "@/lib/types";
-import { getAllTopics } from "@/lib/contentRegistry";
+import { getTopicsForGrade } from "@/lib/contentRegistry";
 import { getBestAvailableGrade } from "./contentAvailability";
 
 /**
@@ -77,12 +77,11 @@ export function getDailyTasksForGrade(
 ): TopicMetadata[] {
   // Pokud daný ročník nemá obsah, použij nejlepší dostupný (typicky grade-4)
   const effectiveGrade = getBestAvailableGrade(grade);
-  const allTopics = getAllTopics();
   // Denní úkoly = ochutnávka napříč VŠEMI okruhy (i zamčenými v TopicBrowseru).
   // Zamykání se týká jen volného výběru okruhů, ne kurátorovaných denních úkolů.
-  const sourceTopics = allTopics.filter(
-    (t) => t.gradeRange[0] <= effectiveGrade && t.gradeRange[1] >= effectiveGrade,
-  );
+  // Skryté předměty (`HIDDEN_SUBJECTS`) ale vynechává i tady — proto
+  // `getTopicsForGrade`, ne vlastní filtr nad `getAllTopics()`.
+  const sourceTopics = getTopicsForGrade(effectiveGrade);
 
   if (sourceTopics.length === 0) return [];
 
