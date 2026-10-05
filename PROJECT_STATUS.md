@@ -144,6 +144,30 @@ src/
 
 ## 6. Otevřené / další v pořadí
 
+### Session 2026-10-05 — přeměřeno, kolik obsahu ještě chybí
+
+Měřeno proti `data/rvp_data.json` (uzel = naplněný, když ho nese `id` nebo
+`rvpNodeId` nějakého tématu v `src/content/**` či `src/lib/content/**`); shodně
+při volném i striktním porovnání (360 = 360), takže to nejsou nálezy z komentářů.
+
+- ✅ **Aktivní scope 2.–6. ročník: 360 z 376 uzlů RVP naplněno.** Zbývá 16:
+  **informatika 6. ročníku 0/9** a **čeština 2. ročníku 7 uzlů**.
+- ✅ **Hloubka je bez mezery** — `audit:coverage` pro ročníky 2–6 vypsal
+  347 témat, všechna `maxL3` a všechna ≥12 unikátních úloh na každé úrovni
+  (0 témat pod prahem). Výchozí scope skriptu je 2–4, proto se pouštělo
+  s `COVERAGE_GRADES=2,3,4,5,6` — jinak 5. a 6. ročník ve výpisu chybí.
+- ⛔ **Z těch 7 českých uzlů 6 aplikace nabídnout nemůže:** 3× okruh Psaní
+  (tvary písmen, opis a přepis, diktát kratších slov a vět — nácvik psaní
+  rukou), plynulé čtení vět (čte se nahlas), dramatizace pohádky, vyjádření
+  pocitů z přečteného (volná odpověď, kterou nelze vyhodnotit výběrem).
+  Realizovatelný je jediný: **Pořádek slov ve větě**.
+- 🟠 **Opraveno zastaralé tvrzení v dokumentaci** — `SESSION_HANDOFF.md`
+  (3 místa) i `PENDING_CHANGES.md` uváděly „informatika 4.–6. (0/29)".
+  Naměřeno: 4. ročník 10/10, 5. ročník 10/10, otevřený je jen 6. (0/9).
+  Podle téhle věty se plánovalo, takže šla opravit hned.
+- Mimo scope (záměrně, `ACTIVE_GRADES` v `src/lib/contentAvailability.ts`):
+  1. ročník 47 uzlů, 7.–9. ročník 418 uzlů. Celkem dataset 841.
+
 ### Session 2026-10-04 — poslední uzel okruhu „sloh a čtení" 2. ročníku:
 
 - ✅ **Nové téma: Tiché čtení a porozumění obsahu (2. r.)** —

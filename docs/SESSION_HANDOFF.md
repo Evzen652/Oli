@@ -18,9 +18,15 @@
 >    formuláře obchodů. Od 13. 9. se v ní nepohnulo, protože šest z osmi
 >    kroků může udělat jen Evžen (účty, právní kontrola, podpisový klíč).
 > 2. **Zbylé mezery v obsahu** — seznam kandidátů je v `PENDING_CHANGES.md`
->    („mezery v obsahu 2.–6. ročníku"). Nevyčerpané zůstaly: sloh a čtení
->    ve 2. ročníku, oprava 17 `rvpNodeId`, informatika 4.–6. (0/29, není
->    rozhodnuto, jestli do aplikace vůbec patří).
+>    („mezery v obsahu 2.–6. ročníku"). **Změřeno 5. 10.** proti
+>    `data/rvp_data.json`: v aktivním scope (2.–6. ročník) je naplněno
+>    **360 z 376 uzlů RVP**. Sloh a čtení 2. ročníku i oprava `rvpNodeId`
+>    jsou hotové. Zbývá dvojí: **informatika 6. ročníku** (0/9 — tvrzení
+>    „informatika 4.–6. (0/29)" bylo nepravdivé, 4. i 5. ročník mají 10/10;
+>    není rozhodnuto, jestli do aplikace patří) a **7 uzlů v češtině
+>    2. ročníku**, z nichž šest aplikace nabídnout nemůže (3× psaní rukou,
+>    čtení nahlas, dramatizace, vyjádření pocitů z textu) a jediný
+>    realizovatelný je **Pořádek slov ve větě**.
 >
 > ⚠️ **Jedno rozhodnutí visí a blokuje úklid:** `data/rvp_data.json` nemá pro
 > 4. ani 5. ročník uzel se slovními úlohami, takže dvě nová témata mají
@@ -224,8 +230,9 @@ sdílený slovník zpětné vazby, který nerozlišoval 2./3. osobu podle úrovn
 Obsahový PLÁN je hotový (ročníky 1–6), ale to neznamená, že obsah je hotový —
 29. a 30. 9. se ukázalo, že mezery leží mimo plán: chybějící témata a formát
 odpovědi. Nepiš tedy do předání znovu „obsah už dělat není co"; zbylé
-kandidáty drží `PENDING_CHANGES.md` (sloh a čtení 2. r., 17 `rvpNodeId`,
-informatika 4.–6.).
+kandidáty drží `PENDING_CHANGES.md`. K 5. 10. z nich zbývá informatika
+6. ročníku (0/9) a „Pořádek slov ve větě" ve 2. ročníku — sloh, čtení
+i `rvpNodeId` jsou hotové.
 
 Druhá větev je **příprava spuštění**: osm kroků v **§2**, z toho šest čeká
 výhradně na uživateli (účty, právní kontrola, podpisový klíč) a dva technické
@@ -706,8 +713,10 @@ v SQL editoru (nejsou v `supabase_migrations`, jsou idempotentní).
   ponechat a napsat proč. **Souvisí s** položkou „oprava 17 `rvpNodeId`"
   v `PENDING_CHANGES.md` — dávalo by smysl vyřešit obojí naráz.
 - **Zbylí kandidáti z inventury mezer** (`PENDING_CHANGES.md`, sekce „mezery
-  v obsahu 2.–6. ročníku"): sloh a čtení ve 2. ročníku · informatika 4.–6.
-  (0/29, není rozhodnuto, jestli do aplikace patří).
+  v obsahu 2.–6. ročníku"): **informatika 6. ročníku** (0/9; 4. i 5. ročník
+  jsou 10/10, takže staré „informatika 4.–6. (0/29)" neplatilo) ·
+  **Pořádek slov ve větě** ve 2. ročníku. Sloh a čtení 2. ročníku jsou
+  hotové (4. a 5. 10.), zbylých šest uzlů g2-cjl aplikace nabídnout nemůže.
 - **Zbylá matematika na výběru možností.** 16 témat výsledek píše; zbytek ne,
   protože klíč nese jednotku, zbytek po dělení nebo mezeru mezi řády. Kdyby
   se to mělo rozšířit, je to zásah do KLÍČE (jednotku přesunout do zadání),

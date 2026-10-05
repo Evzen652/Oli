@@ -285,7 +285,17 @@ oslovení, omluva, prosba, vzkaz ✅ 2026-10-01 · adresa, blahopřání, pozdra
 z prázdnin ✅ 2026-10-02 · vyprávění podle obrázkové osnovy ✅ 2026-10-02 ·
 tiché čtení a porozumění obsahu ✅ 2026-10-04. Vyřazeno: plynulé čtení vět
 (čte se nahlas, nejde měřit bez mikrofonu).
-Informatika 4.–6. (0/29) — rozhodnout, jestli vůbec patří do aplikace.
+Informatika — **změřeno 5. 10.: 4. ročník 10/10, 5. ročník 10/10, 6. ročník
+0/9.** Staré „informatika 4.–6. (0/29)" tedy neplatilo; otevřený je jen
+6. ročník a u něj rozhodnutí, jestli vůbec patří do aplikace.
+
+**Celková míra naplnění** (měřeno 5. 10. proti `data/rvp_data.json`; uzel se
+počítá za naplněný, když ho nese `id` nebo `rvpNodeId` nějakého tématu):
+**v aktivním scope 2.–6. ročníku 360 z 376 uzlů.** Zbylých 16 = 9 informatika
+6. ročníku + 7 čeština 2. ročníku (z toho 6 nerealizovatelných, viz níž).
+Všech 347 témat má naplněnou L3 a ≥12 unikátních úloh na úroveň, takže
+mezera v hloubce není žádná. Ročník 1 (47 uzlů) a ročníky 7.–9. (418) jsou
+mimo `ACTIVE_GRADES` v `src/lib/contentAvailability.ts`.
 
 Ze zbytku mezer 2. ročníku **3 uzly do aplikace nepatří** — okruh „Psaní"
 (upevňování tvarů písmen a číslic, opis a přepis, diktát kratších slov a vět)
